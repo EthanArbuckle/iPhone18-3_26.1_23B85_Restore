@@ -1,35 +1,35 @@
 @interface GGMMetalToolBox
 - ($0A9CE08A0C783CC25037BAF5B2C76EB4)updateMetaContainerBuffer:(GGMMetalToolBox *)self WithDetectedROI:isLowLight:;
-- ($3383F814A2C9529A407B627A92A46277)generateMetaContainerArrayBufFromMetaContainerBuf:(id)a3 imageRect:(CGRect)a4;
-- (GGMMetalToolBox)initWithMetalContext:(id)a3;
-- (GGMMetalToolBox)initWithMetalContext:(id)a3 tuningParamDict:(id)a4;
-- (id)clusterIndicesOfRois:(id *)a3 withExtendedRadius:(float)a4 roiCnt:(signed __int16)a5 imageRect:(CGRect)a6;
-- (id)clusterTheGreenGhostRois:(id)a3 withExtendedRadius:(float)a4 imageRect:(CGRect)a5;
-- (id)createGhostRoiFromGhostBox:(id *)a3 computeLocalMotion:(BOOL)a4;
-- (id)findGhostCandidatesFromDesGenAndTinyKeypointsFromInputTexture:(double)a3 ref4LocalMotionTexture:(double)a4 inputTPlus1Texture:(int32x2_t)a5 LSList:(double)a6 desGenKeypoints:(uint64_t)a7 homography:(void *)a8 colorParams:(void *)a9 computeLocalMotion:(void *)a10 LSDilation:(void *)a11 LSReflectCenter:(uint64_t)a12 maxLightSourceCount:(unsigned int *)a13 maxDesGenKeypoints:(BOOL)a14 maxTinyKeypoints:(unsigned int)a15 metalBuffers:(int)a16 isPrevLSFeaturesAvailable:(int)a17;
+- ($3383F814A2C9529A407B627A92A46277)generateMetaContainerArrayBufFromMetaContainerBuf:(id)buf imageRect:(CGRect)rect;
+- (GGMMetalToolBox)initWithMetalContext:(id)context;
+- (GGMMetalToolBox)initWithMetalContext:(id)context tuningParamDict:(id)dict;
+- (id)clusterIndicesOfRois:(id *)rois withExtendedRadius:(float)radius roiCnt:(signed __int16)cnt imageRect:(CGRect)rect;
+- (id)clusterTheGreenGhostRois:(id)rois withExtendedRadius:(float)radius imageRect:(CGRect)rect;
+- (id)createGhostRoiFromGhostBox:(id *)box computeLocalMotion:(BOOL)motion;
+- (id)findGhostCandidatesFromDesGenAndTinyKeypointsFromInputTexture:(double)texture ref4LocalMotionTexture:(double)motionTexture inputTPlus1Texture:(int32x2_t)plus1Texture LSList:(double)list desGenKeypoints:(uint64_t)keypoints homography:(void *)homography colorParams:(void *)params computeLocalMotion:(void *)self0 LSDilation:(void *)self1 LSReflectCenter:(uint64_t)self2 maxLightSourceCount:(unsigned int *)self3 maxDesGenKeypoints:(BOOL)self4 maxTinyKeypoints:(unsigned int)self5 metalBuffers:(int)self6 isPrevLSFeaturesAvailable:(int)self7;
 - (int)_compileShaders;
-- (void)addComputeBoxDoGToCommandEncoder:(id)a3 inputTexture:(id)a4 inputlocationsBuf:(id)a5 DoGAndLumaBuf:(id)a6 inputLocationsSize:(unsigned int)a7;
-- (void)addComputeBoxFeatureVectorToCommandEncoder:(id)a3 inputTexture:(id)a4 inputlocationsBuf:(id)a5 DoGAndLumaBuf:(id)a6 inputLocationsSize:(unsigned int)a7;
-- (void)addFindDesGenGhostsToCommandEncoder:(__n128)a3 inputTexture:(__n128)a4 refTexture:(uint64_t)a5 homography:(void *)a6 colorParams:(void *)a7 kpCnt:(void *)a8 kpIdx:(uint64_t)a9 reflectedLsBboxList:(unsigned int)a10 lsCnt:(void *)a11 desGenKeypoints:(id)a12 desGenMappingInfo:(uint64_t)a13 ghostBoxes:(id)a14;
-- (void)addFindTinyKPsToCommandEncoder:(__n128)a3 inputTexture:(__n128)a4 referenceTexture:(uint64_t)a5 inputlocationsBuf:(void *)a6 ggIdxBuf:(void *)a7 tinyGhostBoxes:(void *)a8 colorParams:(void *)a9 homography:(void *)a10 reflectedLsBboxList:(void *)a11 lsCnt:(id *)a12 inputLocationsSize:(id)a13;
-- (void)backWarpYUV:(double)a3 warped:(double)a4 withHomography:(uint64_t)a5 waitForComplete:(__CVBuffer *)a6;
-- (void)computeBlendingWeightsSpatialOnlyYUVInput:(id)a3 metadataBuf:(id)a4;
+- (void)addComputeBoxDoGToCommandEncoder:(id)encoder inputTexture:(id)texture inputlocationsBuf:(id)buf DoGAndLumaBuf:(id)lumaBuf inputLocationsSize:(unsigned int)size;
+- (void)addComputeBoxFeatureVectorToCommandEncoder:(id)encoder inputTexture:(id)texture inputlocationsBuf:(id)buf DoGAndLumaBuf:(id)lumaBuf inputLocationsSize:(unsigned int)size;
+- (void)addFindDesGenGhostsToCommandEncoder:(__n128)encoder inputTexture:(__n128)texture refTexture:(uint64_t)refTexture homography:(void *)homography colorParams:(void *)params kpCnt:(void *)cnt kpIdx:(uint64_t)idx reflectedLsBboxList:(unsigned int)self0 lsCnt:(void *)self1 desGenKeypoints:(id)self2 desGenMappingInfo:(uint64_t)self3 ghostBoxes:(id)self4;
+- (void)addFindTinyKPsToCommandEncoder:(__n128)encoder inputTexture:(__n128)texture referenceTexture:(uint64_t)referenceTexture inputlocationsBuf:(void *)buf ggIdxBuf:(void *)idxBuf tinyGhostBoxes:(void *)boxes colorParams:(void *)params homography:(void *)self0 reflectedLsBboxList:(void *)self1 lsCnt:(id *)self2 inputLocationsSize:(id)self3;
+- (void)backWarpYUV:(double)v warped:(double)warped withHomography:(uint64_t)homography waitForComplete:(__CVBuffer *)complete;
+- (void)computeBlendingWeightsSpatialOnlyYUVInput:(id)input metadataBuf:(id)buf;
 - (void)dealloc;
-- (void)encodeBackWarpYUVToCommandBuffer:(__n128)a3 reference:(__n128)a4 toOutput:(uint64_t)a5 withHomography:(void *)a6;
-- (void)encodeCollectClusterStats:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5;
-- (void)encodeComputeBlendingWeightsForRepairYUV:(id)a3 input:(id)a4 temporalRepaired:(id)a5 metadataBuf:(id)a6;
-- (void)encodeComputeBlendingWeightsSpatialOnlyForRepairYUV:(id)a3 input:(id)a4 metadataBuf:(id)a5;
-- (void)encodeComputeDiffForLocalMotionYUVToCommandBuffer:(id)a3 input0Texture:(id)a4 input1Texture:(id)a5 outputTexture:(id)a6;
-- (void)encodeComputeIntegralBinImageToCommandBuffer:(id)a3 inputBuf:(id)a4 toIntegral:(id)a5;
-- (void)encodeGetGhostMaxLumaYUV:(id)a3 input:(id)a4 metaBuf:(id)a5;
-- (void)encodeGetRefTypeYUV:(__n128)a3 input:(__n128)a4 ref0:(__n128)a5 ref1:(__n128)a6 metaBuf:(__n128)a7 meta0Buf:(uint64_t)a8 meta1Buf:(void *)a9 hmgrphy0:(void *)a10 hmgrphy1:(void *)a11;
-- (void)encodeStrongTemporalRepairYUVToCommandBuffer:(__n128)a3 input:(__n128)a4 frRef0:(__n128)a5 frRef1:(__n128)a6 trRef0:(__n128)a7 trRef1:(uint64_t)a8 hmgrphy0:(void *)a9 hmgrphy1:(void *)a10 strongTemporalOutput:(void *)a11 temporalOutput:(void *)a12 metaBuf:(void *)a13 ref0MetaBuf:(void *)a14 ref1MetaBuf:(id)a15;
-- (void)encodeSyncMaxLuma:(id)a3 metaBuf:(id)a4;
-- (void)encodeSyncRefType:(id)a3 metaBuf:(id)a4;
-- (void)encodeYCbCrToRGBToCommandBuffer:(id)a3 inputTexture:(id)a4 outTexture:(id)a5;
-- (void)getGhostMaxLumaYUVInput:(id)a3 metaBuf:(id)a4 commandEncoder:(id)a5;
-- (void)getRefTypeYUVInput:(double)a3 ref0:(double)a4 ref1:(double)a5 metaBuf:(double)a6 meta0Buf:(double)a7 meta1Buf:(uint64_t)a8 hmgrphy0:(uint64_t)a9 hmgrphy1:(uint64_t)a10 commandEncoder:(uint64_t)a11;
-- (void)setRepairTuningParams:(id *)a3 withDict:(id)a4;
+- (void)encodeBackWarpYUVToCommandBuffer:(__n128)buffer reference:(__n128)reference toOutput:(uint64_t)output withHomography:(void *)homography;
+- (void)encodeCollectClusterStats:(id)stats clusterMetaBuf:(id)buf metaBuf:(id)metaBuf;
+- (void)encodeComputeBlendingWeightsForRepairYUV:(id)v input:(id)input temporalRepaired:(id)repaired metadataBuf:(id)buf;
+- (void)encodeComputeBlendingWeightsSpatialOnlyForRepairYUV:(id)v input:(id)input metadataBuf:(id)buf;
+- (void)encodeComputeDiffForLocalMotionYUVToCommandBuffer:(id)buffer input0Texture:(id)texture input1Texture:(id)input1Texture outputTexture:(id)outputTexture;
+- (void)encodeComputeIntegralBinImageToCommandBuffer:(id)buffer inputBuf:(id)buf toIntegral:(id)integral;
+- (void)encodeGetGhostMaxLumaYUV:(id)v input:(id)input metaBuf:(id)buf;
+- (void)encodeGetRefTypeYUV:(__n128)v input:(__n128)input ref0:(__n128)ref0 ref1:(__n128)ref1 metaBuf:(__n128)buf meta0Buf:(uint64_t)meta0Buf meta1Buf:(void *)meta1Buf hmgrphy0:(void *)self0 hmgrphy1:(void *)self1;
+- (void)encodeStrongTemporalRepairYUVToCommandBuffer:(__n128)buffer input:(__n128)input frRef0:(__n128)ref0 frRef1:(__n128)ref1 trRef0:(__n128)trRef0 trRef1:(uint64_t)trRef1 hmgrphy0:(void *)hmgrphy0 hmgrphy1:(void *)self0 strongTemporalOutput:(void *)self1 temporalOutput:(void *)self2 metaBuf:(void *)self3 ref0MetaBuf:(void *)self4 ref1MetaBuf:(id)self5;
+- (void)encodeSyncMaxLuma:(id)luma metaBuf:(id)buf;
+- (void)encodeSyncRefType:(id)type metaBuf:(id)buf;
+- (void)encodeYCbCrToRGBToCommandBuffer:(id)buffer inputTexture:(id)texture outTexture:(id)outTexture;
+- (void)getGhostMaxLumaYUVInput:(id)input metaBuf:(id)buf commandEncoder:(id)encoder;
+- (void)getRefTypeYUVInput:(double)input ref0:(double)ref0 ref1:(double)ref1 metaBuf:(double)buf meta0Buf:(double)meta0Buf meta1Buf:(uint64_t)meta1Buf hmgrphy0:(uint64_t)hmgrphy0 hmgrphy1:(uint64_t)self0 commandEncoder:(uint64_t)self1;
+- (void)setRepairTuningParams:(id *)params withDict:(id)dict;
 @end
 
 @implementation GGMMetalToolBox
@@ -227,9 +227,9 @@
   return 0;
 }
 
-- (void)setRepairTuningParams:(id *)a3 withDict:(id)a4
+- (void)setRepairTuningParams:(id *)params withDict:(id)dict
 {
-  v5 = [a4 objectForKeyedSubscript:@"Repair"];
+  v5 = [dict objectForKeyedSubscript:@"Repair"];
   if (!v5)
   {
     goto LABEL_9;
@@ -269,23 +269,23 @@ LABEL_8:
   {
     v14 = [v20 objectForKeyedSubscript:@"repairTargetArea"];
     [v14 floatValue];
-    a3->var0 = v15;
+    params->var0 = v15;
 
     v16 = [v20 objectForKeyedSubscript:@"repairTargetGhostCntHi"];
     [v16 floatValue];
-    a3->var2 = v17;
+    params->var2 = v17;
 
     v18 = [v20 objectForKeyedSubscript:@"repairTargetGhostCntLo"];
     [v18 floatValue];
-    a3->var1 = v19;
+    params->var1 = v19;
 
     v5 = v20;
     goto LABEL_10;
   }
 
 LABEL_9:
-  a3->var2 = 60.0;
-  *&a3->var0 = 0x41F0000048000000;
+  params->var2 = 60.0;
+  *&params->var0 = 0x41F0000048000000;
 LABEL_10:
 }
 
@@ -294,8 +294,8 @@ LABEL_10:
   v4 = v3;
   v5 = v1;
   v7 = v2;
-  v8 = [v5 contents];
-  LOBYTE(v8->var19[2]) = v4;
+  contents = [v5 contents];
+  LOBYTE(contents->var19[2]) = v4;
   if ([v7 count])
   {
     v9 = 0;
@@ -312,7 +312,7 @@ LABEL_10:
     }
 
     while (v9 < [v7 count]);
-    v8->var24[1] = v10;
+    contents->var24[1] = v10;
     v15 = 1.0;
     if (v10 != 0.0)
     {
@@ -322,7 +322,7 @@ LABEL_10:
 
   else
   {
-    v8->var24[1] = 0.0;
+    contents->var24[1] = 0.0;
     v15 = 1.0;
   }
 
@@ -332,15 +332,15 @@ LABEL_10:
     v16 = 0.0;
   }
 
-  v8->var24[0] = v16;
+  contents->var24[0] = v16;
   v17 = fminf(fmaxf(([v7 count] - self->_tuningParams.repairTargetGhostCntLo) / (self->_tuningParams.repairTargetGhostCntHi - self->_tuningParams.repairTargetGhostCntLo), 0.0), 1.0) * -0.9 + 1.0;
-  if (v8->var24[0] < v17)
+  if (contents->var24[0] < v17)
   {
-    v17 = v8->var24[0];
+    v17 = contents->var24[0];
   }
 
-  v8->var24[0] = v17;
-  v8->var24[2] = 1.0 / v17;
+  contents->var24[0] = v17;
+  contents->var24[2] = 1.0 / v17;
   LOWORD(v19) = 0;
   if ([v7 count])
   {
@@ -355,7 +355,7 @@ LABEL_10:
       [v23 roi];
       v25 = v24;
       [v23 roi];
-      if (v25 * v26 * v8->var24[0] * v8->var24[0] >= 100.0)
+      if (v25 * v26 * contents->var24[0] * contents->var24[0] >= 100.0)
       {
         [v23 roi];
         v48 = v27;
@@ -378,15 +378,15 @@ LABEL_10:
         v34.i64[1] = v34.i64[0];
         v36.i64[0] = vaddq_s32(v34, v30).u64[0];
         v36.i64[1] = vsubq_s32(v34, v30).i64[1];
-        p_var3 = &v8->var7[v19].var3;
+        p_var3 = &contents->var7[v19].var3;
         v34.i64[0] = 0x3F0000003F000000;
         v34.i64[1] = 0x3F0000003F000000;
         *p_var3->f32 = v31;
         *&p_var3->u32[2] = v35;
         p_var3[1] = vmulq_f32(vcvtq_f32_s32(v36), v34);
-        v8->var19[v19 + 3] = [v23 trackID];
+        contents->var19[v19 + 3] = [v23 trackID];
         [v23 confidence];
-        v8->var15[v19 + 3] = v38;
+        contents->var15[v19 + 3] = v38;
         *(&v39 + 1) = *(&v50 + 1);
         v40 = vcgt_f32(v31, *&v50);
         if (v21 < v49.f32[0])
@@ -402,14 +402,14 @@ LABEL_10:
         }
 
         [v23 ROIWOriginal];
-        v8->var16[v19 + 3] = v41;
+        contents->var16[v19 + 3] = v41;
         [v23 ROIWSpatial];
-        v8->var8[v19 + 3] = v42;
+        contents->var8[v19 + 3] = v42;
         [v23 ROIWStrongRepairInSpatial];
-        v8->var13[v19 + 3] = v43;
-        v8->var14[v19 + 3] = 0;
-        v8->var9[v19 + 3] = 0;
-        *(&v8[1].var3 + v19) = 0;
+        contents->var13[v19 + 3] = v43;
+        contents->var14[v19 + 3] = 0;
+        contents->var9[v19 + 3] = 0;
+        *(&contents[1].var3 + v19) = 0;
         v19 = (v19 + 1);
         if (v19 >= 61)
         {
@@ -434,29 +434,29 @@ LABEL_10:
   }
 
 LABEL_22:
-  v8->var0 = v19;
-  LODWORD(v8->var1) = v50;
-  v8->var2 = v21;
-  v8->var3 = *(&v50 + 1);
-  v8->var4 = v22;
-  v8->var5 = (v21 - *&v50);
-  v8->var6 = (v22 - *(&v50 + 1));
+  contents->var0 = v19;
+  LODWORD(contents->var1) = v50;
+  contents->var2 = v21;
+  contents->var3 = *(&v50 + 1);
+  contents->var4 = v22;
+  contents->var5 = (v21 - *&v50);
+  contents->var6 = (v22 - *(&v50 + 1));
   v44 = vmovn_s64(vcvtq_s64_f64(vmaxnmq_f64(vaddq_f64(vcvtq_f64_f32(*&v50), vdupq_n_s64(0xC050000000000000)), 0)));
-  *&v8->var7[0].var1 = *&vsra_n_u32(v44, vcltz_s32(v44), 0x1EuLL) & 0xFFFFFFFCFFFFFFFCLL;
+  *&contents->var7[0].var1 = *&vsra_n_u32(v44, vcltz_s32(v44), 0x1EuLL) & 0xFFFFFFFCFFFFFFFCLL;
 
-  return v8;
+  return contents;
 }
 
-- (id)clusterTheGreenGhostRois:(id)a3 withExtendedRadius:(float)a4 imageRect:(CGRect)a5
+- (id)clusterTheGreenGhostRois:(id)rois withExtendedRadius:(float)radius imageRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  roisCopy = rois;
   v11 = objc_alloc_init(NSMutableArray);
   v12 = objc_alloc_init(NSMutableArray);
-  v13 = [v10 count];
+  v13 = [roisCopy count];
   if (v13 < 1)
   {
     v22 = v11;
@@ -465,11 +465,11 @@ LABEL_22:
   else
   {
     v14 = 0;
-    v15 = -a4;
+    v15 = -radius;
     v16 = v13 & 0x7FFFFFFF;
     do
     {
-      v17 = [v10 objectAtIndexedSubscript:v14];
+      v17 = [roisCopy objectAtIndexedSubscript:v14];
       v18 = objc_alloc_init(boundingBoxForMerge);
       [v17 roi];
       v46 = CGRectInset(v45, v15, v15);
@@ -542,7 +542,7 @@ LABEL_22:
       while ([v29 count])
       {
         v31 = [v29 objectAtIndexedSubscript:0];
-        v32 = [v31 index2RoiArray];
+        index2RoiArray = [v31 index2RoiArray];
         if ([v29 count] < 2)
         {
           v38 = 0;
@@ -557,11 +557,11 @@ LABEL_22:
             v35 = v31;
             v31 = [v29 objectAtIndexedSubscript:v34];
 
-            v36 = [v31 index2RoiArray];
-            v37 = v32 <= v36;
-            if (v32 >= v36)
+            index2RoiArray2 = [v31 index2RoiArray];
+            v37 = index2RoiArray <= index2RoiArray2;
+            if (index2RoiArray >= index2RoiArray2)
             {
-              v32 = v36;
+              index2RoiArray = index2RoiArray2;
             }
 
             if (!v37)
@@ -576,7 +576,7 @@ LABEL_22:
           v38 = v33;
         }
 
-        v39 = [v10 objectAtIndexedSubscript:v32];
+        v39 = [roisCopy objectAtIndexedSubscript:index2RoiArray];
         [v30 addObject:v39];
 
         [v29 removeObjectAtIndex:v38];
@@ -593,16 +593,16 @@ LABEL_22:
   return v41;
 }
 
-- (id)clusterIndicesOfRois:(id *)a3 withExtendedRadius:(float)a4 roiCnt:(signed __int16)a5 imageRect:(CGRect)a6
+- (id)clusterIndicesOfRois:(id *)rois withExtendedRadius:(float)radius roiCnt:(signed __int16)cnt imageRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  cntCopy = cnt;
   v13 = objc_alloc_init(NSMutableArray);
   v14 = objc_alloc_init(NSMutableArray);
-  if (v10 < 1)
+  if (cntCopy < 1)
   {
     v30 = v13;
   }
@@ -610,8 +610,8 @@ LABEL_22:
   else
   {
     v15 = 0;
-    v16 = v10;
-    p_var2 = &a3->var2;
+    v16 = cntCopy;
+    p_var2 = &rois->var2;
     v46 = x;
     do
     {
@@ -623,14 +623,14 @@ LABEL_22:
       v23 = p_var2[1];
       p_var2 += 8;
       v24 = objc_alloc_init(boundingBoxForMerge);
-      v49.origin.x = (v18 - a4);
-      v49.origin.y = (v19 - a4);
+      v49.origin.x = (v18 - radius);
+      v49.origin.y = (v19 - radius);
       v25 = v22 - v18;
       height = v20;
-      v49.size.width = (v25 + (a4 * 2.0));
+      v49.size.width = (v25 + (radius * 2.0));
       v26 = v23 - v19;
       width = v21;
-      v49.size.height = (v26 + (a4 * 2.0));
+      v49.size.height = (v26 + (radius * 2.0));
       v51.origin.x = v46;
       v51.origin.y = y;
       v51.size.width = v21;
@@ -722,18 +722,18 @@ LABEL_22:
   return v47;
 }
 
-- ($3383F814A2C9529A407B627A92A46277)generateMetaContainerArrayBufFromMetaContainerBuf:(id)a3 imageRect:(CGRect)a4
+- ($3383F814A2C9529A407B627A92A46277)generateMetaContainerArrayBufFromMetaContainerBuf:(id)buf imageRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = v9;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  bufCopy = buf;
+  v10 = bufCopy;
   p_metaBufArray = &self->_metaBufArray;
-  v45 = self;
+  selfCopy = self;
   self->_metaBufArray.clusterCnt = 0;
-  if (!v9)
+  if (!bufCopy)
   {
     sub_27868();
 LABEL_19:
@@ -741,18 +741,18 @@ LABEL_19:
     goto LABEL_16;
   }
 
-  v11 = [v9 contents];
-  if (!v11)
+  contents = [bufCopy contents];
+  if (!contents)
   {
     sub_277E8();
     goto LABEL_19;
   }
 
-  v13 = v11;
-  v14 = v11 + 20;
+  v13 = contents;
+  v14 = contents + 20;
   LODWORD(v12) = 1120403456;
-  v46 = [(GGMMetalToolBox *)v45 clusterIndicesOfRois:v11 + 20 withExtendedRadius:*v11 roiCnt:v12 imageRect:x, y, width, height];
-  v15 = [v46 count];
+  height = [(GGMMetalToolBox *)selfCopy clusterIndicesOfRois:contents + 20 withExtendedRadius:*contents roiCnt:v12 imageRect:x, y, width, height];
+  v15 = [height count];
   if (v15 >= 1)
   {
     v40 = v10;
@@ -785,12 +785,12 @@ LABEL_19:
     v44 = v13;
     do
     {
-      v19 = [v46 objectAtIndexedSubscript:{v16, v40}];
+      v19 = [height objectAtIndexedSubscript:{v16, v40}];
       v48 = v16;
-      v20 = [(MTLBuffer *)p_metaBufArray->bufArray[v16] contents];
-      bzero(v20, 0x2548uLL);
-      *(v20 + 4360) = *(v13 + 4360);
-      *v20 = [v19 count];
+      contents2 = [(MTLBuffer *)p_metaBufArray->bufArray[v16] contents];
+      bzero(contents2, 0x2548uLL);
+      *(contents2 + 4360) = *(v13 + 4360);
+      *contents2 = [v19 count];
       if ([v19 count])
       {
         v22 = 0;
@@ -805,38 +805,38 @@ LABEL_19:
         do
         {
           v27 = [v19 objectAtIndex:v23];
-          v28 = [v27 intValue];
+          intValue = [v27 intValue];
 
-          v29 = &v20[v25];
-          v30 = &v14[16 * v28];
+          v29 = &contents2[v25];
+          v30 = &v14[16 * intValue];
           v31 = *(v30 + 1);
           *v29 = *v30;
           v29[1] = v31;
-          v32 = &v20[v22];
-          v33 = *&v58[2 * v28];
-          v32[1091] = *&v59[2 * v28];
+          v32 = &contents2[v22];
+          v33 = *&v58[2 * intValue];
+          v32[1091] = *&v59[2 * intValue];
           v32[910] = v33;
-          v34 = *&v20[v25];
+          v34 = *&contents2[v25];
           *(&v36 + 1) = *(&v60 + 1);
           *(&v35 + 1) = *(&v61 + 1);
-          v37 = *&v20[2 * v22 + 24];
-          v32[490] = *&v41[2 * v28];
-          v32[970] = *&v57[2 * v28];
-          v32[790] = *&v56[2 * v28];
+          v37 = *&contents2[2 * v22 + 24];
+          v32[490] = *&v41[2 * intValue];
+          v32[970] = *&v57[2 * intValue];
+          v32[790] = *&v56[2 * intValue];
           *&v36 = vbsl_s8(vcgt_f32(v34, *&v60), *&v60, v34);
           v60 = v36;
-          *&v20[v24] = *&v55[4 * v28];
-          v34.i32[0] = *&v53[2 * v28];
-          v32[1664] = *&v54[2 * v28];
+          *&contents2[v24] = *&v55[4 * intValue];
+          v34.i32[0] = *&v53[2 * intValue];
+          v32[1664] = *&v54[2 * intValue];
           v32[1724] = v34.i32[0];
-          v34.i32[0] = *&v52[2 * v28];
+          v34.i32[0] = *&v52[2 * intValue];
           *&v35 = vbsl_s8(vcgt_f32(v37, *&v61), v37, *&v61);
           v61 = v35;
-          v32[2204] = *&v51[2 * v28];
-          v32[2264] = *&v50[2 * v28];
+          v32[2204] = *&v51[2 * intValue];
+          v32[2264] = *&v50[2 * intValue];
           v32[2084] = v34.i32[0];
-          LODWORD(v29) = *&v49[2 * v28];
-          v20[v26] = v28;
+          LODWORD(v29) = *&v49[2 * intValue];
+          contents2[v26] = intValue;
           ++v23;
           v32[2324] = v29;
           ++v26;
@@ -856,14 +856,14 @@ LABEL_19:
 
       v38.i64[0] = v60;
       v38.i64[1] = v61;
-      *(v20 + 2) = vuzp1q_s32(v38, vrev64q_s32(v38));
-      *(v20 + 10) = vcvt_u32_f32(vsub_f32(*&v61, *&v60));
+      *(contents2 + 2) = vuzp1q_s32(v38, vrev64q_s32(v38));
+      *(contents2 + 10) = vcvt_u32_f32(vsub_f32(*&v61, *&v60));
       *v38.i8 = vmovn_s64(vcvtq_s64_f64(vmaxnmq_f64(vaddq_f64(vcvtq_f64_f32(*&v60), v42), 0)));
-      *(v20 + 4) = *&vsra_n_u32(*v38.i8, vcltz_s32(*v38.i8), 0x1EuLL) & 0xFFFFFFFCFFFFFFFCLL;
+      *(contents2 + 4) = *&vsra_n_u32(*v38.i8, vcltz_s32(*v38.i8), 0x1EuLL) & 0xFFFFFFFCFFFFFFFCLL;
       v13 = v44;
-      *(v20 + 1181) = *(v44 + 1181);
-      *(v20 + 1183) = *(v44 + 1183);
-      ++v45->_metaBufArray.clusterCnt;
+      *(contents2 + 1181) = *(v44 + 1181);
+      *(contents2 + 1183) = *(v44 + 1183);
+      ++selfCopy->_metaBufArray.clusterCnt;
 
       v16 = v48 + 1;
     }
@@ -876,44 +876,44 @@ LABEL_16:
   return p_metaBufArray;
 }
 
-- (void)encodeBackWarpYUVToCommandBuffer:(__n128)a3 reference:(__n128)a4 toOutput:(uint64_t)a5 withHomography:(void *)a6
+- (void)encodeBackWarpYUVToCommandBuffer:(__n128)buffer reference:(__n128)reference toOutput:(uint64_t)output withHomography:(void *)homography
 {
   v20[0] = a2;
-  v20[1] = a3;
-  v20[2] = a4;
+  v20[1] = buffer;
+  v20[2] = reference;
   v11 = a8;
   v12 = a7;
-  v13 = [a6 computeCommandEncoder];
-  [v13 setComputePipelineState:*(a1 + 24)];
-  [v13 setTexture:v12 atIndex:0];
-  [v13 setTexture:v11 atIndex:1];
+  computeCommandEncoder = [homography computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:*(self + 24)];
+  [computeCommandEncoder setTexture:v12 atIndex:0];
+  [computeCommandEncoder setTexture:v11 atIndex:1];
 
-  [v13 setBytes:v20 length:48 atIndex:0];
-  [v13 setImageblockWidth:objc_msgSend(*(a1 + 24) height:{"threadExecutionWidth"), objc_msgSend(*(a1 + 24), "threadExecutionWidth")}];
-  v14 = [*(a1 + 24) threadExecutionWidth];
-  v15 = [*(a1 + 24) maxTotalThreadsPerThreadgroup] / v14;
-  v16 = [v12 width];
-  v17 = [v12 height];
+  [computeCommandEncoder setBytes:v20 length:48 atIndex:0];
+  [computeCommandEncoder setImageblockWidth:objc_msgSend(*(self + 24) height:{"threadExecutionWidth"), objc_msgSend(*(self + 24), "threadExecutionWidth")}];
+  threadExecutionWidth = [*(self + 24) threadExecutionWidth];
+  v15 = [*(self + 24) maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
+  width = [v12 width];
+  height = [v12 height];
 
-  v19[0] = v16;
-  v19[1] = v17;
+  v19[0] = width;
+  v19[1] = height;
   v19[2] = 1;
-  v18[0] = v14;
+  v18[0] = threadExecutionWidth;
   v18[1] = v15;
   v18[2] = 1;
-  [v13 dispatchThreads:v19 threadsPerThreadgroup:v18];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreads:v19 threadsPerThreadgroup:v18];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)backWarpYUV:(double)a3 warped:(double)a4 withHomography:(uint64_t)a5 waitForComplete:(__CVBuffer *)a6
+- (void)backWarpYUV:(double)v warped:(double)warped withHomography:(uint64_t)homography waitForComplete:(__CVBuffer *)complete
 {
-  v17 = [a1[2] commandBuffer];
-  if (v17)
+  commandBuffer = [self[2] commandBuffer];
+  if (commandBuffer)
   {
-    v12 = sub_C6CC(a6, a1[85], 0, 0);
-    v13 = sub_C6CC(a7, a1[85], 0, 0);
-    [a1 encodeBackWarpYUVToCommandBuffer:v17 reference:v12 toOutput:v13 withHomography:{a2, a3, a4}];
-    [a1 commitCmdBuffer:v17 waitForComplete:a8];
+    v12 = sub_C6CC(complete, self[85], 0, 0);
+    v13 = sub_C6CC(a7, self[85], 0, 0);
+    [self encodeBackWarpYUVToCommandBuffer:commandBuffer reference:v12 toOutput:v13 withHomography:{a2, v, warped}];
+    [self commitCmdBuffer:commandBuffer waitForComplete:a8];
   }
 
   else
@@ -922,85 +922,85 @@ LABEL_16:
   }
 }
 
-- (void)encodeComputeIntegralBinImageToCommandBuffer:(id)a3 inputBuf:(id)a4 toIntegral:(id)a5
+- (void)encodeComputeIntegralBinImageToCommandBuffer:(id)buffer inputBuf:(id)buf toIntegral:(id)integral
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 computeCommandEncoder];
-  [v11 setComputePipelineState:self->_integralBinImageRow];
-  [v11 setTexture:v9 atIndex:0];
+  integralCopy = integral;
+  bufCopy = buf;
+  bufferCopy = buffer;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_integralBinImageRow];
+  [computeCommandEncoder setTexture:bufCopy atIndex:0];
 
-  [v11 setTexture:v8 atIndex:1];
-  v12 = [(MTLComputePipelineState *)self->_integralBinImageRow threadExecutionWidth];
-  v18 = ([v8 height] + v12 - 1) / v12;
+  [computeCommandEncoder setTexture:integralCopy atIndex:1];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_integralBinImageRow threadExecutionWidth];
+  v18 = ([integralCopy height] + threadExecutionWidth - 1) / threadExecutionWidth;
   v15 = vdupq_n_s64(1uLL);
   v19 = v15;
-  v16 = v12;
+  v16 = threadExecutionWidth;
   v17 = v15;
-  [v11 dispatchThreadgroups:&v18 threadsPerThreadgroup:&v16];
-  [v11 endEncoding];
-  v13 = [v10 computeCommandEncoder];
+  [computeCommandEncoder dispatchThreadgroups:&v18 threadsPerThreadgroup:&v16];
+  [computeCommandEncoder endEncoding];
+  computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
 
-  [v13 setComputePipelineState:self->_integralBinImageCol];
-  [v13 setTexture:v8 atIndex:0];
-  v14 = [v8 width];
+  [computeCommandEncoder2 setComputePipelineState:self->_integralBinImageCol];
+  [computeCommandEncoder2 setTexture:integralCopy atIndex:0];
+  width = [integralCopy width];
 
-  v18 = (v14 + v12 - 1) / v12;
+  v18 = (width + threadExecutionWidth - 1) / threadExecutionWidth;
   v19 = v15;
-  v16 = v12;
+  v16 = threadExecutionWidth;
   v17 = v15;
-  [v13 dispatchThreadgroups:&v18 threadsPerThreadgroup:&v16];
-  [v13 endEncoding];
+  [computeCommandEncoder2 dispatchThreadgroups:&v18 threadsPerThreadgroup:&v16];
+  [computeCommandEncoder2 endEncoding];
 }
 
-- (void)encodeComputeBlendingWeightsSpatialOnlyForRepairYUV:(id)a3 input:(id)a4 metadataBuf:(id)a5
+- (void)encodeComputeBlendingWeightsSpatialOnlyForRepairYUV:(id)v input:(id)input metadataBuf:(id)buf
 {
-  v9 = a5;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 contents];
-  v14 = [v12 computeCommandEncoder];
+  bufCopy = buf;
+  bufCopy2 = buf;
+  inputCopy = input;
+  vCopy = v;
+  contents = [bufCopy2 contents];
+  computeCommandEncoder = [vCopy computeCommandEncoder];
 
-  [v14 setComputePipelineState:self->_computeBlendingWeightsSpatialOnlyYUV];
-  [v14 setTexture:v11 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_computeBlendingWeightsSpatialOnlyYUV];
+  [computeCommandEncoder setTexture:inputCopy atIndex:0];
 
-  [v14 setBuffer:v10 offset:0 atIndex:0];
-  [v14 setImageblockWidth:32 height:32];
-  v15 = vshr_n_u32(vsra_n_u32(0x1F0000001FLL, vadd_s32(*(v13 + 20), 0x4400000044), 2uLL), 5uLL);
+  [computeCommandEncoder setBuffer:bufCopy2 offset:0 atIndex:0];
+  [computeCommandEncoder setImageblockWidth:32 height:32];
+  v15 = vshr_n_u32(vsra_n_u32(0x1F0000001FLL, vadd_s32(*(contents + 20), 0x4400000044), 2uLL), 5uLL);
   *&v16 = v15.u32[0];
   *(&v16 + 1) = v15.u32[1];
   v19 = v16;
   v20 = 1;
   v17 = vdupq_n_s64(0x20uLL);
   v18 = 1;
-  [v14 dispatchThreadgroups:&v19 threadsPerThreadgroup:&v17];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v19 threadsPerThreadgroup:&v17];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)computeBlendingWeightsSpatialOnlyYUVInput:(id)a3 metadataBuf:(id)a4
+- (void)computeBlendingWeightsSpatialOnlyYUVInput:(id)input metadataBuf:(id)buf
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  if (v7)
+  inputCopy = input;
+  bufCopy = buf;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  if (commandBuffer)
   {
-    [(GGMMetalToolBox *)self encodeComputeBlendingWeightsSpatialOnlyForRepairYUV:v7 input:v12 metadataBuf:v6];
-    [(GGMMetalToolBox *)self commitCmdBuffer:v7 waitForComplete:1];
-    v8 = [v6 contents];
-    v9 = *v8;
+    [(GGMMetalToolBox *)self encodeComputeBlendingWeightsSpatialOnlyForRepairYUV:commandBuffer input:inputCopy metadataBuf:bufCopy];
+    [(GGMMetalToolBox *)self commitCmdBuffer:commandBuffer waitForComplete:1];
+    contents = [bufCopy contents];
+    v9 = *contents;
     if (v9 >= 1)
     {
-      v10 = (v8 + 26);
+      v10 = (contents + 26);
       do
       {
-        *(v8 + 490) = 1065353216;
-        *(v8 + 1184) = 1065353216;
+        *(contents + 490) = 1065353216;
+        *(contents + 1184) = 1065353216;
         v11 = (fminf(fmaxf((((*(v10 - 1) - *(v10 - 3)) * (*v10 - *(v10 - 2))) + -900.0) / 2700.0, 0.0), 1.0) * -0.9 + 1.0) * 0.03;
-        *(v8 + 790) = 1.0 - fminf(fmaxf((*(v8 + 850) / 1023.0) / v11, 0.0), 1.0);
-        *(v8 + 970) = 0;
-        v8 += 2;
+        *(contents + 790) = 1.0 - fminf(fmaxf((*(contents + 850) / 1023.0) / v11, 0.0), 1.0);
+        *(contents + 970) = 0;
+        contents += 2;
         v10 += 8;
         --v9;
       }
@@ -1015,21 +1015,21 @@ LABEL_16:
   }
 }
 
-- (void)encodeComputeBlendingWeightsForRepairYUV:(id)a3 input:(id)a4 temporalRepaired:(id)a5 metadataBuf:(id)a6
+- (void)encodeComputeBlendingWeightsForRepairYUV:(id)v input:(id)input temporalRepaired:(id)repaired metadataBuf:(id)buf
 {
-  v11 = a6;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v12 contents];
-  [v15 setComputePipelineState:self->_computeBlendingWeightsYUV];
-  [v15 setTexture:v14 atIndex:0];
+  bufCopy = buf;
+  bufCopy2 = buf;
+  repairedCopy = repaired;
+  inputCopy = input;
+  vCopy = v;
+  contents = [bufCopy2 contents];
+  [vCopy setComputePipelineState:self->_computeBlendingWeightsYUV];
+  [vCopy setTexture:inputCopy atIndex:0];
 
-  [v15 setTexture:v13 atIndex:1];
-  [v15 setBuffer:v12 offset:0 atIndex:0];
+  [vCopy setTexture:repairedCopy atIndex:1];
+  [vCopy setBuffer:bufCopy2 offset:0 atIndex:0];
 
-  v17 = vcvt_s32_f32(vrndp_f32(vmul_n_f32(vcvt_f32_u32(vadd_s32(*(v16 + 20), 0x8400000084)), *(v16 + 1181))));
+  v17 = vcvt_s32_f32(vrndp_f32(vmul_n_f32(vcvt_f32_u32(vadd_s32(*(contents + 20), 0x8400000084)), *(contents + 1181))));
   v18 = vsra_n_s32(0xF0000000FLL, vsra_n_u32(v17, vcltz_s32(v17), 0x1EuLL), 2uLL);
   v19.i64[0] = v18.i32[0];
   v19.i64[1] = v18.i32[1];
@@ -1037,113 +1037,113 @@ LABEL_16:
   v23 = 1;
   v20 = vdupq_n_s64(0x10uLL);
   v21 = 1;
-  [v15 dispatchThreadgroups:&v22 threadsPerThreadgroup:&v20];
+  [vCopy dispatchThreadgroups:&v22 threadsPerThreadgroup:&v20];
 }
 
-- (void)encodeYCbCrToRGBToCommandBuffer:(id)a3 inputTexture:(id)a4 outTexture:(id)a5
+- (void)encodeYCbCrToRGBToCommandBuffer:(id)buffer inputTexture:(id)texture outTexture:(id)outTexture
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 computeCommandEncoder];
-  [v10 setComputePipelineState:self->_YCbCrToRGB];
-  [v10 setTexture:v9 atIndex:0];
-  [v10 setTexture:v8 atIndex:1];
+  outTextureCopy = outTexture;
+  textureCopy = texture;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_YCbCrToRGB];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setTexture:outTextureCopy atIndex:1];
 
-  v11 = [(MTLComputePipelineState *)self->_YCbCrToRGB threadExecutionWidth];
-  v12 = [(MTLComputePipelineState *)self->_YCbCrToRGB maxTotalThreadsPerThreadgroup]/ v11;
-  v13 = [v9 width];
-  v14 = [v9 height];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_YCbCrToRGB threadExecutionWidth];
+  v12 = [(MTLComputePipelineState *)self->_YCbCrToRGB maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+  width = [textureCopy width];
+  height = [textureCopy height];
 
-  v16[0] = v13;
-  v16[1] = v14;
+  v16[0] = width;
+  v16[1] = height;
   v16[2] = 1;
-  v15[0] = v11;
+  v15[0] = threadExecutionWidth;
   v15[1] = v12;
   v15[2] = 1;
-  [v10 dispatchThreads:v16 threadsPerThreadgroup:v15];
-  [v10 endEncoding];
+  [computeCommandEncoder dispatchThreads:v16 threadsPerThreadgroup:v15];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)encodeComputeDiffForLocalMotionYUVToCommandBuffer:(id)a3 input0Texture:(id)a4 input1Texture:(id)a5 outputTexture:(id)a6
+- (void)encodeComputeDiffForLocalMotionYUVToCommandBuffer:(id)buffer input0Texture:(id)texture input1Texture:(id)input1Texture outputTexture:(id)outputTexture
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 computeCommandEncoder];
-  [v13 setComputePipelineState:self->_computeDiffForLocalMotionYUV];
-  [v13 setTexture:v12 atIndex:0];
-  [v13 setTexture:v11 atIndex:1];
+  outputTextureCopy = outputTexture;
+  input1TextureCopy = input1Texture;
+  textureCopy = texture;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computeDiffForLocalMotionYUV];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
+  [computeCommandEncoder setTexture:input1TextureCopy atIndex:1];
 
-  [v13 setTexture:v10 atIndex:2];
-  v14 = [(MTLComputePipelineState *)self->_computeDiffForLocalMotionYUV threadExecutionWidth];
-  v15 = [(MTLComputePipelineState *)self->_computeDiffForLocalMotionYUV maxTotalThreadsPerThreadgroup]/ v14;
-  v16 = [v12 width];
-  v17 = [v12 height];
+  [computeCommandEncoder setTexture:outputTextureCopy atIndex:2];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_computeDiffForLocalMotionYUV threadExecutionWidth];
+  v15 = [(MTLComputePipelineState *)self->_computeDiffForLocalMotionYUV maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+  width = [textureCopy width];
+  height = [textureCopy height];
 
-  v19[0] = v16;
-  v19[1] = v17;
+  v19[0] = width;
+  v19[1] = height;
   v19[2] = 1;
-  v18[0] = v14;
+  v18[0] = threadExecutionWidth;
   v18[1] = v15;
   v18[2] = 1;
-  [v13 dispatchThreads:v19 threadsPerThreadgroup:v18];
-  [v13 endEncoding];
+  [computeCommandEncoder dispatchThreads:v19 threadsPerThreadgroup:v18];
+  [computeCommandEncoder endEncoding];
 }
 
-- (id)findGhostCandidatesFromDesGenAndTinyKeypointsFromInputTexture:(double)a3 ref4LocalMotionTexture:(double)a4 inputTPlus1Texture:(int32x2_t)a5 LSList:(double)a6 desGenKeypoints:(uint64_t)a7 homography:(void *)a8 colorParams:(void *)a9 computeLocalMotion:(void *)a10 LSDilation:(void *)a11 LSReflectCenter:(uint64_t)a12 maxLightSourceCount:(unsigned int *)a13 maxDesGenKeypoints:(BOOL)a14 maxTinyKeypoints:(unsigned int)a15 metalBuffers:(int)a16 isPrevLSFeaturesAvailable:(int)a17
+- (id)findGhostCandidatesFromDesGenAndTinyKeypointsFromInputTexture:(double)texture ref4LocalMotionTexture:(double)motionTexture inputTPlus1Texture:(int32x2_t)plus1Texture LSList:(double)list desGenKeypoints:(uint64_t)keypoints homography:(void *)homography colorParams:(void *)params computeLocalMotion:(void *)self0 LSDilation:(void *)self1 LSReflectCenter:(uint64_t)self2 maxLightSourceCount:(unsigned int *)self3 maxDesGenKeypoints:(BOOL)self4 maxTinyKeypoints:(unsigned int)self5 metalBuffers:(int)self6 isPrevLSFeaturesAvailable:(int)self7
 {
-  v79 = a8;
-  v78 = a9;
-  v83 = a10;
-  v25 = a11;
+  homographyCopy = homography;
+  paramsCopy = params;
+  motionCopy = motion;
+  dilationCopy = dilation;
   *a19 = 0;
-  v26 = [a1[2] commandBuffer];
-  v27 = v26;
-  if (v26)
+  commandBuffer = [self[2] commandBuffer];
+  v27 = commandBuffer;
+  if (commandBuffer)
   {
-    v77 = v26;
-    v73 = [v26 computeCommandEncoderWithDispatchType:1];
-    v28 = a1[1];
+    v77 = commandBuffer;
+    v73 = [commandBuffer computeCommandEncoderWithDispatchType:1];
+    v28 = self[1];
     IOSurface = CVDataBufferGetIOSurface();
     IOSurfaceLock(IOSurface, 1u, 0);
     v30 = *(IOSurfaceGetBaseAddress(IOSurface) + 5);
     IOSurfaceUnlock(IOSurface, 1u, 0);
     v76 = [v28 newBufferWithIOSurface:IOSurface];
-    if (v30 >= a16)
+    if (v30 >= buffers)
     {
-      v31 = a16;
+      buffersCopy = buffers;
     }
 
     else
     {
-      v31 = v30;
+      buffersCopy = v30;
     }
 
-    v72 = v31;
-    v32 = [v25 count];
+    v72 = buffersCopy;
+    v32 = [dilationCopy count];
     v75 = a18->var1;
     v33 = a18->var0;
-    if (v32 >= a15)
+    if (v32 >= tinyKeypoints)
     {
-      v34 = a15;
+      tinyKeypointsCopy = tinyKeypoints;
     }
 
     else
     {
-      v34 = v32;
+      tinyKeypointsCopy = v32;
     }
 
     v74 = v33;
-    v35 = [v74 contents];
-    if (v34)
+    contents = [v74 contents];
+    if (tinyKeypointsCopy)
     {
-      v36 = v35;
+      v36 = contents;
       v37 = 0;
-      v38 = vdup_lane_s32(a5, 0);
+      v38 = vdup_lane_s32(plus1Texture, 0);
       do
       {
-        v39 = [v25 objectAtIndex:v37];
-        [v39 reflectAroundCenter:a6];
+        v39 = [dilationCopy objectAtIndex:v37];
+        [v39 reflectAroundCenter:list];
         [v39 bbox];
         v86 = vsub_f32(v40, v38);
         [v39 bbox];
@@ -1152,22 +1152,22 @@ LABEL_16:
         *v43.f32 = v86;
         *&v43.u32[2] = vadd_f32(v38, vadd_f32(v85, *&vextq_s8(v42, v42, 8uLL)));
         v36[v37] = vcvtq_s32_f32(v43);
-        [v39 reflectAroundCenter:a6];
+        [v39 reflectAroundCenter:list];
 
         ++v37;
       }
 
-      while (v34 != v37);
+      while (tinyKeypointsCopy != v37);
     }
 
-    v44 = *a13;
-    v45 = a13[1];
-    v46 = a13[2];
-    v47 = a13[3];
-    v48 = a13[4];
-    v49 = a13[5];
-    v50 = a13[6];
-    v51 = a13[7];
+    v44 = *count;
+    v45 = count[1];
+    v46 = count[2];
+    v47 = count[3];
+    v48 = count[4];
+    v49 = count[5];
+    v50 = count[6];
+    v51 = count[7];
     *[a18->var4 contents] = 0;
     *[a18->var2 contents] = 0;
     v52 = *[a18->var12 contents];
@@ -1175,19 +1175,19 @@ LABEL_16:
     v54 = *[a18->var7 contents];
     if (v52)
     {
-      [a1 addComputeBoxDoGToCommandEncoder:v73 inputTexture:v79 inputlocationsBuf:a18->var8 DoGAndLumaBuf:a18->var10 inputLocationsSize:v52];
-      [a1 addComputeBoxFeatureVectorToCommandEncoder:v73 inputTexture:v79 inputlocationsBuf:a18->var8 DoGAndLumaBuf:a18->var10 inputLocationsSize:v52];
+      [self addComputeBoxDoGToCommandEncoder:v73 inputTexture:homographyCopy inputlocationsBuf:a18->var8 DoGAndLumaBuf:a18->var10 inputLocationsSize:v52];
+      [self addComputeBoxFeatureVectorToCommandEncoder:v73 inputTexture:homographyCopy inputlocationsBuf:a18->var8 DoGAndLumaBuf:a18->var10 inputLocationsSize:v52];
     }
 
-    if (v83 && v53)
+    if (motionCopy && v53)
     {
-      [a1 addComputeBoxDoGToCommandEncoder:v73 inputTexture:v83 inputlocationsBuf:a18->var9 DoGAndLumaBuf:a18->var11 inputLocationsSize:v53];
-      [a1 addComputeBoxFeatureVectorToCommandEncoder:v73 inputTexture:v83 inputlocationsBuf:a18->var9 DoGAndLumaBuf:a18->var11 inputLocationsSize:v53];
+      [self addComputeBoxDoGToCommandEncoder:v73 inputTexture:motionCopy inputlocationsBuf:a18->var9 DoGAndLumaBuf:a18->var11 inputLocationsSize:v53];
+      [self addComputeBoxFeatureVectorToCommandEncoder:v73 inputTexture:motionCopy inputlocationsBuf:a18->var9 DoGAndLumaBuf:a18->var11 inputLocationsSize:v53];
       *a19 = 1;
     }
 
-    v55 = a3;
-    v56 = a4;
+    textureCopy2 = texture;
+    motionTextureCopy2 = motionTexture;
     v57 = a2;
     if (v54)
     {
@@ -1198,10 +1198,10 @@ LABEL_16:
       *(&v98 + 1) = __PAIR64__(v47, v46);
       *&v99 = __PAIR64__(v49, v48);
       *(&v99 + 1) = __PAIR64__(v51, v50);
-      [a1 addFindTinyKPsToCommandEncoder:v73 inputTexture:v79 referenceTexture:v78 inputlocationsBuf:var5 ggIdxBuf:var4 tinyGhostBoxes:var6 colorParams:a2 homography:a3 reflectedLsBboxList:a4 lsCnt:&v98 inputLocationsSize:{v74, __PAIR64__(v54, v34)}];
+      [self addFindTinyKPsToCommandEncoder:v73 inputTexture:homographyCopy referenceTexture:paramsCopy inputlocationsBuf:var5 ggIdxBuf:var4 tinyGhostBoxes:var6 colorParams:a2 homography:texture reflectedLsBboxList:motionTexture lsCnt:&v98 inputLocationsSize:{v74, __PAIR64__(v54, tinyKeypointsCopy)}];
       v57 = a2;
-      v55 = a3;
-      v56 = a4;
+      textureCopy2 = texture;
+      motionTextureCopy2 = motionTexture;
     }
 
     var2 = a18->var2;
@@ -1210,30 +1210,30 @@ LABEL_16:
     *(&v98 + 1) = __PAIR64__(v47, v46);
     *&v99 = __PAIR64__(v49, v48);
     *(&v99 + 1) = __PAIR64__(v51, v50);
-    LODWORD(v71) = v34;
-    [a1 addFindDesGenGhostsToCommandEncoder:v73 inputTexture:v79 refTexture:v78 homography:&v98 colorParams:v72 kpCnt:var2 kpIdx:v57 reflectedLsBboxList:v55 lsCnt:v56 desGenKeypoints:v74 desGenMappingInfo:v71 ghostBoxes:{v76, v75, var3}];
+    LODWORD(v71) = tinyKeypointsCopy;
+    [self addFindDesGenGhostsToCommandEncoder:v73 inputTexture:homographyCopy refTexture:paramsCopy homography:&v98 colorParams:v72 kpCnt:var2 kpIdx:v57 reflectedLsBboxList:textureCopy2 lsCnt:motionTextureCopy2 desGenKeypoints:v74 desGenMappingInfo:v71 ghostBoxes:{v76, v75, var3}];
     [v73 endEncoding];
-    [a1 commitCmdBuffer:v77 waitForComplete:1];
-    v63 = [a18->var6 contents];
+    [self commitCmdBuffer:v77 waitForComplete:1];
+    contents2 = [a18->var6 contents];
     v64 = *[a18->var4 contents];
-    v65 = [a18->var3 contents];
+    contents3 = [a18->var3 contents];
     v66 = *[a18->var2 contents];
     v67 = +[NSMutableArray array];
-    if (v64 <= a17 && v64 >= 1)
+    if (v64 <= available && v64 >= 1)
     {
       do
       {
-        v105 = v63[7];
-        v106 = v63[8];
-        v107 = v63[9];
-        v108 = v63[10];
-        v101 = v63[3];
-        v102 = v63[4];
-        v103 = v63[5];
-        v104 = v63[6];
-        v98 = *v63;
-        v99 = v63[1];
-        v100 = v63[2];
+        v105 = contents2[7];
+        v106 = contents2[8];
+        v107 = contents2[9];
+        v108 = contents2[10];
+        v101 = contents2[3];
+        v102 = contents2[4];
+        v103 = contents2[5];
+        v104 = contents2[6];
+        v98 = *contents2;
+        v99 = contents2[1];
+        v100 = contents2[2];
         v95 = v106;
         v96 = v107;
         v97 = v108;
@@ -1245,32 +1245,32 @@ LABEL_16:
         v88 = v99;
         v89 = v100;
         v90 = v101;
-        v68 = [a1 createGhostRoiFromGhostBox:&v87 computeLocalMotion:a14];
+        v68 = [self createGhostRoiFromGhostBox:&v87 computeLocalMotion:genKeypoints];
         [v68 setKpIsFromHW:0];
         [v67 addObject:v68];
 
-        v63 += 11;
+        contents2 += 11;
         --v64;
       }
 
       while (v64);
     }
 
-    if (v66 <= a16 && v66 >= 1)
+    if (v66 <= buffers && v66 >= 1)
     {
       do
       {
-        v105 = v65[7];
-        v106 = v65[8];
-        v107 = v65[9];
-        v108 = v65[10];
-        v101 = v65[3];
-        v102 = v65[4];
-        v103 = v65[5];
-        v104 = v65[6];
-        v98 = *v65;
-        v99 = v65[1];
-        v100 = v65[2];
+        v105 = contents3[7];
+        v106 = contents3[8];
+        v107 = contents3[9];
+        v108 = contents3[10];
+        v101 = contents3[3];
+        v102 = contents3[4];
+        v103 = contents3[5];
+        v104 = contents3[6];
+        v98 = *contents3;
+        v99 = contents3[1];
+        v100 = contents3[2];
         v95 = v106;
         v96 = v107;
         v97 = v108;
@@ -1282,11 +1282,11 @@ LABEL_16:
         v88 = v99;
         v89 = v100;
         v90 = v101;
-        v69 = [a1 createGhostRoiFromGhostBox:&v87 computeLocalMotion:a14];
+        v69 = [self createGhostRoiFromGhostBox:&v87 computeLocalMotion:genKeypoints];
         [v69 setKpIsFromHW:1];
         [v67 addObject:v69];
 
-        v65 += 11;
+        contents3 += 11;
         --v66;
       }
 
@@ -1305,11 +1305,11 @@ LABEL_16:
   return v67;
 }
 
-- (id)createGhostRoiFromGhostBox:(id *)a3 computeLocalMotion:(BOOL)a4
+- (id)createGhostRoiFromGhostBox:(id *)box computeLocalMotion:(BOOL)motion
 {
-  v5 = a4;
-  v4.i64[0] = *&a3->var1;
-  v7 = &a3[1].var0.var0[4];
+  motionCopy = motion;
+  v4.i64[0] = *&box->var1;
+  v7 = &box[1].var0.var0[4];
   __asm { FMOV            V0.4S, #5.0 }
 
   v12 = vld1q_dup_f32(v7);
@@ -1349,18 +1349,18 @@ LABEL_16:
   }
 
   *&v49 = v33;
-  DWORD2(v49) = LODWORD(a3[1].var0.var0[5]);
-  v17 = *&a3->var3;
+  DWORD2(v49) = LODWORD(box[1].var0.var0[5]);
+  v17 = *&box->var3;
   v51 = v17;
   v18 = 1.0;
   v19 = 1.0;
-  if (v5)
+  if (motionCopy)
   {
-    v19 = a3[1].var0.var0[3];
+    v19 = box[1].var0.var0[3];
   }
 
   v20 = 0;
-  v21 = a3[1].var0.var0[2];
+  v21 = box[1].var0.var0[2];
   v23 = *&v17 >= 0.4 && v21 >= 0.4;
   *&v52 = v19;
   *(&v49 + 3) = v21;
@@ -1376,7 +1376,7 @@ LABEL_16:
   v27 = 0uLL;
   do
   {
-    v28 = a3->var0.var0[v20];
+    v28 = box->var0.var0[v20];
     v35 = v24;
     v36 = v25;
     v37 = v26;
@@ -1404,7 +1404,7 @@ LABEL_16:
   v53 = v34;
   v54 = v32;
   LODWORD(v57) = 32;
-  [(ROI *)v16 setDifferenceOfGaussianAndLumaFeature:*&a3->var0.var1];
+  [(ROI *)v16 setDifferenceOfGaussianAndLumaFeature:*&box->var0.var1];
   v45 = v55;
   v46 = v56;
   v47 = v57;
@@ -1420,93 +1420,93 @@ LABEL_16:
   return v16;
 }
 
-- (void)addFindDesGenGhostsToCommandEncoder:(__n128)a3 inputTexture:(__n128)a4 refTexture:(uint64_t)a5 homography:(void *)a6 colorParams:(void *)a7 kpCnt:(void *)a8 kpIdx:(uint64_t)a9 reflectedLsBboxList:(unsigned int)a10 lsCnt:(void *)a11 desGenKeypoints:(id)a12 desGenMappingInfo:(uint64_t)a13 ghostBoxes:(id)a14
+- (void)addFindDesGenGhostsToCommandEncoder:(__n128)encoder inputTexture:(__n128)texture refTexture:(uint64_t)refTexture homography:(void *)homography colorParams:(void *)params kpCnt:(void *)cnt kpIdx:(uint64_t)idx reflectedLsBboxList:(unsigned int)self0 lsCnt:(void *)self1 desGenKeypoints:(id)self2 desGenMappingInfo:(uint64_t)self3 ghostBoxes:(id)self4
 {
-  v22 = a14;
+  boxesCopy = boxes;
   v21 = a15;
   v37[0] = a2;
-  v37[1] = a3;
-  v37[2] = a4;
-  v36 = a10;
-  v23 = *(a1 + 56);
+  v37[1] = encoder;
+  v37[2] = texture;
+  listCopy = list;
+  v23 = *(self + 56);
   v31 = a16;
   v24 = v21;
-  v25 = v22;
-  v26 = a12;
-  v27 = a11;
-  v28 = a8;
-  v29 = a7;
-  v30 = a6;
-  [v30 setComputePipelineState:v23];
-  [v30 setTexture:v29 atIndex:0];
+  v25 = boxesCopy;
+  keypointsCopy = keypoints;
+  lsCntCopy = lsCnt;
+  cntCopy = cnt;
+  paramsCopy = params;
+  homographyCopy = homography;
+  [homographyCopy setComputePipelineState:v23];
+  [homographyCopy setTexture:paramsCopy atIndex:0];
 
-  [v30 setTexture:v28 atIndex:1];
-  [v30 setBytes:a9 length:32 atIndex:0];
-  [v30 setBytes:v37 length:48 atIndex:1];
-  [v30 setBytes:&v36 length:4 atIndex:2];
-  [v30 setBuffer:v27 offset:0 atIndex:3];
+  [homographyCopy setTexture:cntCopy atIndex:1];
+  [homographyCopy setBytes:idx length:32 atIndex:0];
+  [homographyCopy setBytes:v37 length:48 atIndex:1];
+  [homographyCopy setBytes:&listCopy length:4 atIndex:2];
+  [homographyCopy setBuffer:lsCntCopy offset:0 atIndex:3];
 
-  [v30 setBuffer:v26 offset:0 atIndex:4];
-  [v30 setBytes:&a13 length:4 atIndex:5];
-  [v30 setBuffer:v25 offset:0 atIndex:6];
+  [homographyCopy setBuffer:keypointsCopy offset:0 atIndex:4];
+  [homographyCopy setBytes:&info length:4 atIndex:5];
+  [homographyCopy setBuffer:v25 offset:0 atIndex:6];
 
-  [v30 setBuffer:v24 offset:0 atIndex:7];
-  [v30 setBuffer:v31 offset:0 atIndex:8];
+  [homographyCopy setBuffer:v24 offset:0 atIndex:7];
+  [homographyCopy setBuffer:v31 offset:0 atIndex:8];
 
-  v34 = (v36 + 31) >> 5;
+  v34 = (listCopy + 31) >> 5;
   v35 = vdupq_n_s64(1uLL);
   v32 = 32;
   v33 = xmmword_2EB70;
-  [v30 dispatchThreadgroups:&v34 threadsPerThreadgroup:&v32];
+  [homographyCopy dispatchThreadgroups:&v34 threadsPerThreadgroup:&v32];
 }
 
-- (void)addFindTinyKPsToCommandEncoder:(__n128)a3 inputTexture:(__n128)a4 referenceTexture:(uint64_t)a5 inputlocationsBuf:(void *)a6 ggIdxBuf:(void *)a7 tinyGhostBoxes:(void *)a8 colorParams:(void *)a9 homography:(void *)a10 reflectedLsBboxList:(void *)a11 lsCnt:(id *)a12 inputLocationsSize:(id)a13
+- (void)addFindTinyKPsToCommandEncoder:(__n128)encoder inputTexture:(__n128)texture referenceTexture:(uint64_t)referenceTexture inputlocationsBuf:(void *)buf ggIdxBuf:(void *)idxBuf tinyGhostBoxes:(void *)boxes colorParams:(void *)params homography:(void *)self0 reflectedLsBboxList:(void *)self1 lsCnt:(id *)self2 inputLocationsSize:(id)self3
 {
   v32[0] = a2;
-  v32[1] = a3;
-  v32[2] = a4;
-  v20 = *(a1 + 48);
-  v21 = a13;
-  v22 = a11;
-  v23 = a10;
-  v24 = a9;
-  v25 = a8;
-  v26 = a7;
-  v27 = a6;
-  [v27 setComputePipelineState:v20];
-  [v27 setTexture:v26 atIndex:0];
+  v32[1] = encoder;
+  v32[2] = texture;
+  v20 = *(self + 48);
+  sizeCopy = size;
+  listCopy = list;
+  homographyCopy = homography;
+  paramsCopy = params;
+  boxesCopy = boxes;
+  idxBufCopy = idxBuf;
+  bufCopy = buf;
+  [bufCopy setComputePipelineState:v20];
+  [bufCopy setTexture:idxBufCopy atIndex:0];
 
-  [v27 setTexture:v25 atIndex:1];
-  [v27 setBuffer:v24 offset:0 atIndex:0];
+  [bufCopy setTexture:boxesCopy atIndex:1];
+  [bufCopy setBuffer:paramsCopy offset:0 atIndex:0];
 
-  [v27 setBytes:&a14 + 4 length:4 atIndex:1];
-  [v27 setBuffer:v23 offset:0 atIndex:2];
+  [bufCopy setBytes:&a14 + 4 length:4 atIndex:1];
+  [bufCopy setBuffer:homographyCopy offset:0 atIndex:2];
 
-  [v27 setBuffer:v22 offset:0 atIndex:3];
-  [v27 setBytes:a12 length:32 atIndex:4];
-  [v27 setBytes:v32 length:48 atIndex:5];
-  [v27 setBuffer:v21 offset:0 atIndex:6];
+  [bufCopy setBuffer:listCopy offset:0 atIndex:3];
+  [bufCopy setBytes:cnt length:32 atIndex:4];
+  [bufCopy setBytes:v32 length:48 atIndex:5];
+  [bufCopy setBuffer:sizeCopy offset:0 atIndex:6];
 
-  [v27 setBytes:&a14 length:4 atIndex:7];
+  [bufCopy setBytes:&a14 length:4 atIndex:7];
   v30 = (HIDWORD(a14) + 31) >> 5;
   v31 = vdupq_n_s64(1uLL);
   v28 = 32;
   v29 = xmmword_2EB70;
-  [v27 dispatchThreadgroups:&v30 threadsPerThreadgroup:&v28];
+  [bufCopy dispatchThreadgroups:&v30 threadsPerThreadgroup:&v28];
 }
 
-- (void)encodeGetGhostMaxLumaYUV:(id)a3 input:(id)a4 metaBuf:(id)a5
+- (void)encodeGetGhostMaxLumaYUV:(id)v input:(id)input metaBuf:(id)buf
 {
-  v9 = a5;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 contents];
-  [v12 setComputePipelineState:self->_getGhostMaxLumaYUV];
-  [v12 setTexture:v11 atIndex:0];
+  bufCopy = buf;
+  bufCopy2 = buf;
+  inputCopy = input;
+  vCopy = v;
+  contents = [bufCopy2 contents];
+  [vCopy setComputePipelineState:self->_getGhostMaxLumaYUV];
+  [vCopy setTexture:inputCopy atIndex:0];
 
-  [v12 setBuffer:v10 offset:0 atIndex:0];
-  v14 = vadd_s32(*(v13 + 20), 0x8400000084);
+  [vCopy setBuffer:bufCopy2 offset:0 atIndex:0];
+  v14 = vadd_s32(*(contents + 20), 0x8400000084);
   v15 = vsra_n_s32(0x1F0000001FLL, vsra_n_u32(v14, vcltz_s32(v14), 0x1EuLL), 2uLL);
   v16.i64[0] = v15.i32[0];
   v16.i64[1] = v15.i32[1];
@@ -1514,47 +1514,47 @@ LABEL_16:
   v20 = 1;
   v17 = vdupq_n_s64(0x20uLL);
   v18 = 1;
-  [v12 dispatchThreadgroups:&v19 threadsPerThreadgroup:&v17];
+  [vCopy dispatchThreadgroups:&v19 threadsPerThreadgroup:&v17];
 }
 
-- (void)getGhostMaxLumaYUVInput:(id)a3 metaBuf:(id)a4 commandEncoder:(id)a5
+- (void)getGhostMaxLumaYUVInput:(id)input metaBuf:(id)buf commandEncoder:(id)encoder
 {
-  v8 = a5;
-  v9 = a4;
-  [(GGMMetalToolBox *)self encodeGetGhostMaxLumaYUV:v8 input:a3 metaBuf:v9];
-  [(GGMMetalToolBox *)self encodeSyncMaxLuma:v8 metaBuf:v9];
+  encoderCopy = encoder;
+  bufCopy = buf;
+  [(GGMMetalToolBox *)self encodeGetGhostMaxLumaYUV:encoderCopy input:input metaBuf:bufCopy];
+  [(GGMMetalToolBox *)self encodeSyncMaxLuma:encoderCopy metaBuf:bufCopy];
 }
 
-- (void)encodeGetRefTypeYUV:(__n128)a3 input:(__n128)a4 ref0:(__n128)a5 ref1:(__n128)a6 metaBuf:(__n128)a7 meta0Buf:(uint64_t)a8 meta1Buf:(void *)a9 hmgrphy0:(void *)a10 hmgrphy1:(void *)a11
+- (void)encodeGetRefTypeYUV:(__n128)v input:(__n128)input ref0:(__n128)ref0 ref1:(__n128)ref1 metaBuf:(__n128)buf meta0Buf:(uint64_t)meta0Buf meta1Buf:(void *)meta1Buf hmgrphy0:(void *)self0 hmgrphy1:(void *)self1
 {
   v39[0] = a2;
-  v39[1] = a3;
-  v39[2] = a4;
-  v38[0] = a5;
-  v38[1] = a6;
-  v38[2] = a7;
+  v39[1] = v;
+  v39[2] = input;
+  v38[0] = ref0;
+  v38[1] = ref1;
+  v38[2] = buf;
   v22 = a13;
   v23 = a15;
   v24 = a14;
   v25 = a13;
   v26 = a12;
-  v27 = a11;
-  v28 = a10;
-  v29 = a9;
-  v30 = [v25 contents];
-  [v29 setComputePipelineState:*(a1 + 80)];
-  [v29 setTexture:v28 atIndex:0];
+  hmgrphy1Copy = hmgrphy1;
+  hmgrphy0Copy = hmgrphy0;
+  meta1BufCopy = meta1Buf;
+  contents = [v25 contents];
+  [meta1BufCopy setComputePipelineState:*(self + 80)];
+  [meta1BufCopy setTexture:hmgrphy0Copy atIndex:0];
 
-  [v29 setTexture:v27 atIndex:1];
-  [v29 setTexture:v26 atIndex:2];
+  [meta1BufCopy setTexture:hmgrphy1Copy atIndex:1];
+  [meta1BufCopy setTexture:v26 atIndex:2];
 
-  [v29 setBuffer:v25 offset:0 atIndex:0];
-  [v29 setBuffer:v24 offset:0 atIndex:1];
+  [meta1BufCopy setBuffer:v25 offset:0 atIndex:0];
+  [meta1BufCopy setBuffer:v24 offset:0 atIndex:1];
 
-  [v29 setBuffer:v23 offset:0 atIndex:2];
-  [v29 setBytes:v39 length:48 atIndex:3];
-  [v29 setBytes:v38 length:48 atIndex:4];
-  v31 = vadd_s32(*(v30 + 20), 0x8400000084);
+  [meta1BufCopy setBuffer:v23 offset:0 atIndex:2];
+  [meta1BufCopy setBytes:v39 length:48 atIndex:3];
+  [meta1BufCopy setBytes:v38 length:48 atIndex:4];
+  v31 = vadd_s32(*(contents + 20), 0x8400000084);
   v32 = vsra_n_s32(0x1F0000001FLL, vsra_n_u32(v31, vcltz_s32(v31), 0x1EuLL), 2uLL);
   v33.i64[0] = v32.i32[0];
   v33.i64[1] = v32.i32[1];
@@ -1562,113 +1562,113 @@ LABEL_16:
   v37 = 1;
   v34 = vdupq_n_s64(0x20uLL);
   v35 = 1;
-  [v29 dispatchThreadgroups:&v36 threadsPerThreadgroup:&v34];
+  [meta1BufCopy dispatchThreadgroups:&v36 threadsPerThreadgroup:&v34];
 }
 
-- (void)getRefTypeYUVInput:(double)a3 ref0:(double)a4 ref1:(double)a5 metaBuf:(double)a6 meta0Buf:(double)a7 meta1Buf:(uint64_t)a8 hmgrphy0:(uint64_t)a9 hmgrphy1:(uint64_t)a10 commandEncoder:(uint64_t)a11
+- (void)getRefTypeYUVInput:(double)input ref0:(double)ref0 ref1:(double)ref1 metaBuf:(double)buf meta0Buf:(double)meta0Buf meta1Buf:(uint64_t)meta1Buf hmgrphy0:(uint64_t)hmgrphy0 hmgrphy1:(uint64_t)self0 commandEncoder:(uint64_t)self1
 {
   v22 = a15;
   v29 = a12;
-  [a1 encodeGetRefTypeYUV:v22 input:a9 ref0:a10 ref1:a11 metaBuf:v29 meta0Buf:a13 meta1Buf:a2 hmgrphy0:a3 hmgrphy1:{a4, a5, a6, a7, a14}];
-  [a1 encodeSyncRefType:v22 metaBuf:v29];
+  [self encodeGetRefTypeYUV:v22 input:hmgrphy0 ref0:hmgrphy1 ref1:encoder metaBuf:v29 meta0Buf:a13 meta1Buf:a2 hmgrphy0:input hmgrphy1:{ref0, ref1, buf, meta0Buf, a14}];
+  [self encodeSyncRefType:v22 metaBuf:v29];
 }
 
-- (void)encodeStrongTemporalRepairYUVToCommandBuffer:(__n128)a3 input:(__n128)a4 frRef0:(__n128)a5 frRef1:(__n128)a6 trRef0:(__n128)a7 trRef1:(uint64_t)a8 hmgrphy0:(void *)a9 hmgrphy1:(void *)a10 strongTemporalOutput:(void *)a11 temporalOutput:(void *)a12 metaBuf:(void *)a13 ref0MetaBuf:(void *)a14 ref1MetaBuf:(id)a15
+- (void)encodeStrongTemporalRepairYUVToCommandBuffer:(__n128)buffer input:(__n128)input frRef0:(__n128)ref0 frRef1:(__n128)ref1 trRef0:(__n128)trRef0 trRef1:(uint64_t)trRef1 hmgrphy0:(void *)hmgrphy0 hmgrphy1:(void *)self0 strongTemporalOutput:(void *)self1 temporalOutput:(void *)self2 metaBuf:(void *)self3 ref0MetaBuf:(void *)self4 ref1MetaBuf:(id)self5
 {
   v43[0] = a2;
-  v43[1] = a3;
-  v43[2] = a4;
-  v42[0] = a5;
-  v42[1] = a6;
-  v42[2] = a7;
-  v24 = *(a1 + 104);
+  v43[1] = buffer;
+  v43[2] = input;
+  v42[0] = ref0;
+  v42[1] = ref1;
+  v42[2] = trRef0;
+  v24 = *(self + 104);
   v37 = a19;
   v36 = a18;
   v25 = a17;
   v35 = a16;
-  v26 = a15;
-  v27 = a14;
-  v28 = a13;
-  v29 = a12;
-  v30 = a11;
-  v31 = a10;
-  v32 = a9;
-  [v32 setComputePipelineState:v24];
-  [v32 setTexture:v31 atIndex:0];
+  ref1MetaBufCopy = ref1MetaBuf;
+  metaBufCopy = metaBuf;
+  bufCopy = buf;
+  temporalOutputCopy = temporalOutput;
+  outputCopy = output;
+  hmgrphy1Copy = hmgrphy1;
+  hmgrphy0Copy = hmgrphy0;
+  [hmgrphy0Copy setComputePipelineState:v24];
+  [hmgrphy0Copy setTexture:hmgrphy1Copy atIndex:0];
 
-  [v32 setTexture:v30 atIndex:1];
-  [v32 setTexture:v29 atIndex:2];
+  [hmgrphy0Copy setTexture:outputCopy atIndex:1];
+  [hmgrphy0Copy setTexture:temporalOutputCopy atIndex:2];
 
-  [v32 setTexture:v28 atIndex:3];
-  [v32 setTexture:v27 atIndex:4];
+  [hmgrphy0Copy setTexture:bufCopy atIndex:3];
+  [hmgrphy0Copy setTexture:metaBufCopy atIndex:4];
 
-  [v32 setTexture:v26 atIndex:5];
-  [v32 setTexture:v35 atIndex:6];
+  [hmgrphy0Copy setTexture:ref1MetaBufCopy atIndex:5];
+  [hmgrphy0Copy setTexture:v35 atIndex:6];
 
-  [v32 setBuffer:v25 offset:0 atIndex:0];
-  [v32 setBuffer:v36 offset:0 atIndex:1];
+  [hmgrphy0Copy setBuffer:v25 offset:0 atIndex:0];
+  [hmgrphy0Copy setBuffer:v36 offset:0 atIndex:1];
 
-  [v32 setBuffer:v37 offset:0 atIndex:2];
-  [v32 setBytes:v43 length:48 atIndex:3];
-  [v32 setBytes:v42 length:48 atIndex:4];
-  [v32 setImageblockWidth:32 height:32];
-  v33 = [v25 contents];
+  [hmgrphy0Copy setBuffer:v37 offset:0 atIndex:2];
+  [hmgrphy0Copy setBytes:v43 length:48 atIndex:3];
+  [hmgrphy0Copy setBytes:v42 length:48 atIndex:4];
+  [hmgrphy0Copy setImageblockWidth:32 height:32];
+  contents = [v25 contents];
 
-  v40 = vshrq_n_u64(vaddw_s32(vdupq_n_s64(0x1FuLL), vadd_s32(*(v33 + 20), 0x8400000084)), 5uLL);
+  v40 = vshrq_n_u64(vaddw_s32(vdupq_n_s64(0x1FuLL), vadd_s32(*(contents + 20), 0x8400000084)), 5uLL);
   v41 = 1;
   v38 = vdupq_n_s64(0x20uLL);
   v39 = 1;
-  [v32 dispatchThreadgroups:&v40 threadsPerThreadgroup:&v38];
+  [hmgrphy0Copy dispatchThreadgroups:&v40 threadsPerThreadgroup:&v38];
 }
 
-- (void)addComputeBoxDoGToCommandEncoder:(id)a3 inputTexture:(id)a4 inputlocationsBuf:(id)a5 DoGAndLumaBuf:(id)a6 inputLocationsSize:(unsigned int)a7
+- (void)addComputeBoxDoGToCommandEncoder:(id)encoder inputTexture:(id)texture inputlocationsBuf:(id)buf DoGAndLumaBuf:(id)lumaBuf inputLocationsSize:(unsigned int)size
 {
-  v19 = a7;
+  sizeCopy = size;
   computeBoxDoG = self->_computeBoxDoG;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  [v14 setComputePipelineState:computeBoxDoG];
-  [v14 setTexture:v13 atIndex:0];
+  lumaBufCopy = lumaBuf;
+  bufCopy = buf;
+  textureCopy = texture;
+  encoderCopy = encoder;
+  [encoderCopy setComputePipelineState:computeBoxDoG];
+  [encoderCopy setTexture:textureCopy atIndex:0];
 
-  [v14 setBuffer:v12 offset:0 atIndex:0];
-  [v14 setBuffer:v11 offset:0 atIndex:1];
+  [encoderCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [encoderCopy setBuffer:lumaBufCopy offset:0 atIndex:1];
 
-  [v14 setBytes:&v19 length:4 atIndex:2];
-  v17 = (v19 + 31) >> 5;
+  [encoderCopy setBytes:&sizeCopy length:4 atIndex:2];
+  v17 = (sizeCopy + 31) >> 5;
   v18 = vdupq_n_s64(1uLL);
   v15 = 32;
   v16 = xmmword_2EB70;
-  [v14 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+  [encoderCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
 }
 
-- (void)addComputeBoxFeatureVectorToCommandEncoder:(id)a3 inputTexture:(id)a4 inputlocationsBuf:(id)a5 DoGAndLumaBuf:(id)a6 inputLocationsSize:(unsigned int)a7
+- (void)addComputeBoxFeatureVectorToCommandEncoder:(id)encoder inputTexture:(id)texture inputlocationsBuf:(id)buf DoGAndLumaBuf:(id)lumaBuf inputLocationsSize:(unsigned int)size
 {
-  v19 = a7;
+  sizeCopy = size;
   computeBoxLumaFeatureVector = self->_computeBoxLumaFeatureVector;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  [v14 setComputePipelineState:computeBoxLumaFeatureVector];
-  [v14 setTexture:v13 atIndex:0];
+  lumaBufCopy = lumaBuf;
+  bufCopy = buf;
+  textureCopy = texture;
+  encoderCopy = encoder;
+  [encoderCopy setComputePipelineState:computeBoxLumaFeatureVector];
+  [encoderCopy setTexture:textureCopy atIndex:0];
 
-  [v14 setBuffer:v12 offset:0 atIndex:0];
-  [v14 setBuffer:v11 offset:0 atIndex:1];
+  [encoderCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [encoderCopy setBuffer:lumaBufCopy offset:0 atIndex:1];
 
-  [v14 setBytes:&v19 length:4 atIndex:2];
-  v17 = (v19 + 31) >> 5;
+  [encoderCopy setBytes:&sizeCopy length:4 atIndex:2];
+  v17 = (sizeCopy + 31) >> 5;
   v18 = vdupq_n_s64(1uLL);
   v15 = 32;
   v16 = xmmword_2EB70;
-  [v14 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+  [encoderCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
 }
 
-- (GGMMetalToolBox)initWithMetalContext:(id)a3
+- (GGMMetalToolBox)initWithMetalContext:(id)context
 {
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v19.receiver = self;
     v19.super_class = GGMMetalToolBox;
@@ -1676,14 +1676,14 @@ LABEL_16:
     self = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_metalContext, a3);
-      v7 = [v5 device];
+      objc_storeStrong(&v6->_metalContext, context);
+      device = [contextCopy device];
       device = self->_device;
-      self->_device = v7;
+      self->_device = device;
 
-      v9 = [v5 commandQueue];
+      commandQueue = [contextCopy commandQueue];
       commandQueue = self->_commandQueue;
-      self->_commandQueue = v9;
+      self->_commandQueue = commandQueue;
 
       if (![(GGMMetalToolBox *)self _compileShaders])
       {
@@ -1709,7 +1709,7 @@ LABEL_16:
         {
 
           self = self;
-          v15 = self;
+          selfCopy = self;
           goto LABEL_9;
         }
 
@@ -1727,70 +1727,70 @@ LABEL_11:
     FigDebugAssert3();
   }
 
-  v15 = 0;
+  selfCopy = 0;
 LABEL_9:
 
-  return v15;
+  return selfCopy;
 }
 
-- (GGMMetalToolBox)initWithMetalContext:(id)a3 tuningParamDict:(id)a4
+- (GGMMetalToolBox)initWithMetalContext:(id)context tuningParamDict:(id)dict
 {
-  v6 = a4;
-  v7 = [(GGMMetalToolBox *)self initWithMetalContext:a3];
+  dictCopy = dict;
+  v7 = [(GGMMetalToolBox *)self initWithMetalContext:context];
   v8 = v7;
   if (v7)
   {
-    [(GGMMetalToolBox *)v7 setRepairTuningParams:&v7->_tuningParams withDict:v6];
+    [(GGMMetalToolBox *)v7 setRepairTuningParams:&v7->_tuningParams withDict:dictCopy];
     v9 = v8;
   }
 
   return v8;
 }
 
-- (void)encodeSyncMaxLuma:(id)a3 metaBuf:(id)a4
+- (void)encodeSyncMaxLuma:(id)luma metaBuf:(id)buf
 {
-  v6 = a3;
-  v7 = a4;
-  sub_1EAA8([v7 contents]);
+  lumaCopy = luma;
+  bufCopy = buf;
+  sub_1EAA8([bufCopy contents]);
   if (v8)
   {
-    [v6 setComputePipelineState:self->_syncMaxLuma];
+    [lumaCopy setComputePipelineState:self->_syncMaxLuma];
     sub_1EA50();
     sub_1EA28();
     sub_1EA70(xmmword_2EB70, v9, v10, v11, v12, v13, v14, v15, v16, v18, v17, v19);
   }
 }
 
-- (void)encodeSyncRefType:(id)a3 metaBuf:(id)a4
+- (void)encodeSyncRefType:(id)type metaBuf:(id)buf
 {
-  v6 = a3;
-  v7 = a4;
-  sub_1EAA8([v7 contents]);
+  typeCopy = type;
+  bufCopy = buf;
+  sub_1EAA8([bufCopy contents]);
   if (v8)
   {
-    [v6 setComputePipelineState:self->_syncRefType];
+    [typeCopy setComputePipelineState:self->_syncRefType];
     sub_1EA50();
     sub_1EA28();
     sub_1EA70(xmmword_2EB70, v9, v10, v11, v12, v13, v14, v15, v16, v18, v17, v19);
   }
 }
 
-- (void)encodeCollectClusterStats:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5
+- (void)encodeCollectClusterStats:(id)stats clusterMetaBuf:(id)buf metaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 contents];
-  v12 = [v10 contents];
-  if (*v11 - 61 >= 0xFFFFFFC4)
+  statsCopy = stats;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  contents = [bufCopy contents];
+  contents2 = [metaBufCopy contents];
+  if (*contents - 61 >= 0xFFFFFFC4)
   {
-    sub_1EAA8(v12);
+    sub_1EAA8(contents2);
     if (v13)
     {
-      [v8 setComputePipelineState:self->_collectClusterStats];
+      [statsCopy setComputePipelineState:self->_collectClusterStats];
       sub_1EA50();
-      v14 = [v8 setBuffer:v10 offset:0 atIndex:1];
-      v24 = (*v11 + 31) >> 5;
+      v14 = [statsCopy setBuffer:metaBufCopy offset:0 atIndex:1];
+      v24 = (*contents + 31) >> 5;
       sub_1EA70(xmmword_2EB70, v14, v15, v16, v17, v18, v19, v20, v21, 32, v22, v23);
     }
   }

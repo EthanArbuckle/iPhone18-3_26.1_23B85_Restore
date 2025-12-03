@@ -1,21 +1,21 @@
 @interface UIScriptSwitcherButton
 - (CGSize)intrinsicContentSize;
 - (NSDirectionalEdgeInsets)contentInsets;
-- (UIScriptSwitcherButton)initWithFrame:(CGRect)a3;
-- (void)_setRenderConfig:(id)a3;
+- (UIScriptSwitcherButton)initWithFrame:(CGRect)frame;
+- (void)_setRenderConfig:(id)config;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)updateContentInsets;
 - (void)updateTintColor;
 @end
 
 @implementation UIScriptSwitcherButton
 
-- (UIScriptSwitcherButton)initWithFrame:(CGRect)a3
+- (UIScriptSwitcherButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIScriptSwitcherButton;
-  v3 = [(UIButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIImageView);
@@ -34,9 +34,9 @@
   v29.receiver = self;
   v29.super_class = UIScriptSwitcherButton;
   [(UIButton *)&v29 layoutSubviews];
-  v3 = [(UIScriptSwitcherButton *)self image];
+  image = [(UIScriptSwitcherButton *)self image];
 
-  if (v3)
+  if (image)
   {
     [(UIScriptSwitcherButton *)self contentInsets];
     v5 = v4;
@@ -54,13 +54,13 @@
     v17 = v15 - v16;
     [(UIScriptSwitcherButton *)self contentInsets];
     v19 = v17 - v18;
-    v20 = [(UIScriptSwitcherButton *)self contentImageView];
-    [v20 setFrame:{v5, v7, v13, v19}];
+    contentImageView = [(UIScriptSwitcherButton *)self contentImageView];
+    [contentImageView setFrame:{v5, v7, v13, v19}];
 
-    v21 = [(UIScriptSwitcherButton *)self image];
-    v22 = [v21 imageWithRenderingMode:2];
-    v23 = [(UIScriptSwitcherButton *)self contentImageView];
-    [v23 setImage:v22];
+    image2 = [(UIScriptSwitcherButton *)self image];
+    v22 = [image2 imageWithRenderingMode:2];
+    contentImageView2 = [(UIScriptSwitcherButton *)self contentImageView];
+    [contentImageView2 setImage:v22];
   }
 
   else
@@ -69,22 +69,22 @@
     v25 = *(MEMORY[0x1E695F058] + 8);
     v26 = *(MEMORY[0x1E695F058] + 16);
     v27 = *(MEMORY[0x1E695F058] + 24);
-    v28 = [(UIScriptSwitcherButton *)self contentImageView];
-    [v28 setFrame:{v24, v25, v26, v27}];
+    contentImageView3 = [(UIScriptSwitcherButton *)self contentImageView];
+    [contentImageView3 setFrame:{v24, v25, v26, v27}];
 
-    v21 = [(UIScriptSwitcherButton *)self contentImageView];
-    [v21 setImage:0];
+    image2 = [(UIScriptSwitcherButton *)self contentImageView];
+    [image2 setImage:0];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(UIScriptSwitcherButton *)self image];
+  image = [(UIScriptSwitcherButton *)self image];
 
-  if (v3)
+  if (image)
   {
-    v4 = [(UIScriptSwitcherButton *)self image];
-    [v4 size];
+    image2 = [(UIScriptSwitcherButton *)self image];
+    [image2 size];
     v6 = v5;
     v8 = v7;
 
@@ -112,11 +112,11 @@
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = UIScriptSwitcherButton;
-  [(UIButton *)&v4 setHighlighted:a3];
+  [(UIButton *)&v4 setHighlighted:highlighted];
   [(UIScriptSwitcherButton *)self updateTintColor];
 }
 
@@ -141,8 +141,8 @@
   else
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v3 = [v5 _inheritedRenderConfig];
-    if ([v3 lightKeyboard])
+    _inheritedRenderConfig = [v5 _inheritedRenderConfig];
+    if ([_inheritedRenderConfig lightKeyboard])
     {
       +[UIColor systemDarkGrayTintColor];
     }
@@ -156,7 +156,7 @@
   }
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
   [(UIScriptSwitcherButton *)self updateContentInsets];
 

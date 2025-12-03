@@ -1,77 +1,77 @@
 @interface MSOAuthTokenHandler
-+ (id)tokenHandlerWithConfiguration:(id)a3 existingCredential:(id)a4 URLSessionConfiguration:(id)a5 parentNetworkActivity:(id)a6;
-- (MSOAuthTokenHandler)initWithConfiguration:(id)a3 existingCredential:(id)a4 URLSessionConfiguration:(id)a5 parentNetworkActivity:(id)a6;
-- (void)fetchTokens:(id)a3;
-- (void)performTokenFetchTaskWithSession:(id)a3 bodyString:(id)a4 completionHandler:(id)a5;
-- (void)performTokenGrantRequestWithSession:(id)a3 completionHandler:(id)a4;
-- (void)performTokenRefreshWithSession:(id)a3 completionHandler:(id)a4;
++ (id)tokenHandlerWithConfiguration:(id)configuration existingCredential:(id)credential URLSessionConfiguration:(id)sessionConfiguration parentNetworkActivity:(id)activity;
+- (MSOAuthTokenHandler)initWithConfiguration:(id)configuration existingCredential:(id)credential URLSessionConfiguration:(id)sessionConfiguration parentNetworkActivity:(id)activity;
+- (void)fetchTokens:(id)tokens;
+- (void)performTokenFetchTaskWithSession:(id)session bodyString:(id)string completionHandler:(id)handler;
+- (void)performTokenGrantRequestWithSession:(id)session completionHandler:(id)handler;
+- (void)performTokenRefreshWithSession:(id)session completionHandler:(id)handler;
 @end
 
 @implementation MSOAuthTokenHandler
 
-+ (id)tokenHandlerWithConfiguration:(id)a3 existingCredential:(id)a4 URLSessionConfiguration:(id)a5 parentNetworkActivity:(id)a6
++ (id)tokenHandlerWithConfiguration:(id)configuration existingCredential:(id)credential URLSessionConfiguration:(id)sessionConfiguration parentNetworkActivity:(id)activity
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[MSOAuthTokenHandler alloc] initWithConfiguration:v12 existingCredential:v11 URLSessionConfiguration:v10 parentNetworkActivity:v9];
+  activityCopy = activity;
+  sessionConfigurationCopy = sessionConfiguration;
+  credentialCopy = credential;
+  configurationCopy = configuration;
+  v13 = [[MSOAuthTokenHandler alloc] initWithConfiguration:configurationCopy existingCredential:credentialCopy URLSessionConfiguration:sessionConfigurationCopy parentNetworkActivity:activityCopy];
 
   return v13;
 }
 
-- (MSOAuthTokenHandler)initWithConfiguration:(id)a3 existingCredential:(id)a4 URLSessionConfiguration:(id)a5 parentNetworkActivity:(id)a6
+- (MSOAuthTokenHandler)initWithConfiguration:(id)configuration existingCredential:(id)credential URLSessionConfiguration:(id)sessionConfiguration parentNetworkActivity:(id)activity
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  configurationCopy = configuration;
+  credentialCopy = credential;
+  sessionConfigurationCopy = sessionConfiguration;
+  activityCopy = activity;
   v18.receiver = self;
   v18.super_class = MSOAuthTokenHandler;
   v15 = [(MSOAuthTokenHandler *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_authorizationConfiguration, a3);
-    objc_storeStrong(&v16->_authorizationCredential, a4);
-    objc_storeStrong(&v16->_URLSessionConfiguration, a5);
-    objc_storeStrong(&v16->_parentNetworkActivity, a6);
+    objc_storeStrong(&v15->_authorizationConfiguration, configuration);
+    objc_storeStrong(&v16->_authorizationCredential, credential);
+    objc_storeStrong(&v16->_URLSessionConfiguration, sessionConfiguration);
+    objc_storeStrong(&v16->_parentNetworkActivity, activity);
   }
 
   return v16;
 }
 
-- (void)performTokenFetchTaskWithSession:(id)a3 bodyString:(id)a4 completionHandler:(id)a5
+- (void)performTokenFetchTaskWithSession:(id)session bodyString:(id)string completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v29 = a3;
+  stringCopy = string;
+  handlerCopy = handler;
+  sessionCopy = session;
   v10 = _MSLogingFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v34 = v8;
+    v34 = stringCopy;
     _os_log_impl(&dword_23986C000, v10, OS_LOG_TYPE_INFO, "bodyString: %@", buf, 0xCu);
   }
 
   v11 = MEMORY[0x277CCAB70];
-  v12 = [(CMSAuthenticationConfiguration *)self->_authorizationConfiguration authorizationURL];
-  v13 = [v11 requestWithURL:v12];
+  authorizationURL = [(CMSAuthenticationConfiguration *)self->_authorizationConfiguration authorizationURL];
+  v13 = [v11 requestWithURL:authorizationURL];
 
   [v13 setHTTPMethod:@"POST"];
   [v13 setValue:@"application/json" forHTTPHeaderField:@"Accept"];
   v14 = MEMORY[0x277CCACA8];
-  v15 = [(CMSAuthenticationConfiguration *)self->_authorizationConfiguration clientID];
-  v16 = [(CMSAuthenticationConfiguration *)self->_authorizationConfiguration clientSecret];
-  v17 = [v14 stringWithFormat:@"%@:%@", v15, v16];
+  clientID = [(CMSAuthenticationConfiguration *)self->_authorizationConfiguration clientID];
+  clientSecret = [(CMSAuthenticationConfiguration *)self->_authorizationConfiguration clientSecret];
+  v17 = [v14 stringWithFormat:@"%@:%@", clientID, clientSecret];
 
   v18 = [v17 dataUsingEncoding:4];
   v19 = [v18 base64EncodedStringWithOptions:0];
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Basic %@", v19];
   [v13 setValue:v20 forHTTPHeaderField:@"Authorization"];
-  [v8 dataUsingEncoding:4];
-  v21 = v28 = v8;
+  [stringCopy dataUsingEncoding:4];
+  v21 = v28 = stringCopy;
   [v13 setHTTPBody:v21];
 
   v22 = [MEMORY[0x277CBEAA8] now];
@@ -80,13 +80,13 @@
   v30[2] = __85__MSOAuthTokenHandler_performTokenFetchTaskWithSession_bodyString_completionHandler___block_invoke;
   v30[3] = &unk_278AA2B70;
   v31 = v22;
-  v32 = v9;
-  v23 = v9;
+  v32 = handlerCopy;
+  v23 = handlerCopy;
   v24 = v22;
-  v25 = [v29 dataTaskWithRequest:v13 completionHandler:v30];
+  v25 = [sessionCopy dataTaskWithRequest:v13 completionHandler:v30];
 
-  v26 = [(MSOAuthTokenHandler *)self networkActivity];
-  [v26 associateWithTask:v25];
+  networkActivity = [(MSOAuthTokenHandler *)self networkActivity];
+  [networkActivity associateWithTask:v25];
 
   [v25 resume];
   v27 = *MEMORY[0x277D85DE8];
@@ -340,71 +340,71 @@ LABEL_45:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performTokenGrantRequestWithSession:(id)a3 completionHandler:(id)a4
+- (void)performTokenGrantRequestWithSession:(id)session completionHandler:(id)handler
 {
   v6 = MEMORY[0x277CCAB68];
-  v7 = a4;
-  v8 = a3;
-  v13 = [v6 string];
-  [v13 appendString:@"grant_type=client_credentials"];
-  v9 = [(CMSAuthenticationConfiguration *)self->_authorizationConfiguration scope];
+  handlerCopy = handler;
+  sessionCopy = session;
+  string = [v6 string];
+  [string appendString:@"grant_type=client_credentials"];
+  scope = [(CMSAuthenticationConfiguration *)self->_authorizationConfiguration scope];
 
-  if (v9)
+  if (scope)
   {
-    v10 = [(CMSAuthenticationConfiguration *)self->_authorizationConfiguration scope];
-    v11 = [v10 formEncodedString];
-    [v13 appendFormat:@"&scope=%@", v11];
+    scope2 = [(CMSAuthenticationConfiguration *)self->_authorizationConfiguration scope];
+    formEncodedString = [scope2 formEncodedString];
+    [string appendFormat:@"&scope=%@", formEncodedString];
   }
 
-  v12 = [MEMORY[0x277CCACA8] stringWithString:v13];
-  [(MSOAuthTokenHandler *)self performTokenFetchTaskWithSession:v8 bodyString:v12 completionHandler:v7];
+  v12 = [MEMORY[0x277CCACA8] stringWithString:string];
+  [(MSOAuthTokenHandler *)self performTokenFetchTaskWithSession:sessionCopy bodyString:v12 completionHandler:handlerCopy];
 }
 
-- (void)performTokenRefreshWithSession:(id)a3 completionHandler:(id)a4
+- (void)performTokenRefreshWithSession:(id)session completionHandler:(id)handler
 {
   v6 = MEMORY[0x277CCAB68];
-  v7 = a4;
-  v8 = a3;
-  v15 = [v6 string];
-  [v15 appendString:@"grant_type=refresh_token"];
-  v9 = [(CMSAuthenticationCredential *)self->_authorizationCredential refreshToken];
-  v10 = [v9 formEncodedString];
-  [v15 appendFormat:@"&refresh_token=%@", v10];
+  handlerCopy = handler;
+  sessionCopy = session;
+  string = [v6 string];
+  [string appendString:@"grant_type=refresh_token"];
+  refreshToken = [(CMSAuthenticationCredential *)self->_authorizationCredential refreshToken];
+  formEncodedString = [refreshToken formEncodedString];
+  [string appendFormat:@"&refresh_token=%@", formEncodedString];
 
-  v11 = [(CMSAuthenticationCredential *)self->_authorizationCredential scope];
+  scope = [(CMSAuthenticationCredential *)self->_authorizationCredential scope];
 
-  if (v11)
+  if (scope)
   {
-    v12 = [(CMSAuthenticationCredential *)self->_authorizationCredential scope];
-    v13 = [v12 formEncodedString];
-    [v15 appendFormat:@"&scope=%@", v13];
+    scope2 = [(CMSAuthenticationCredential *)self->_authorizationCredential scope];
+    formEncodedString2 = [scope2 formEncodedString];
+    [string appendFormat:@"&scope=%@", formEncodedString2];
   }
 
-  v14 = [MEMORY[0x277CCACA8] stringWithString:v15];
-  [(MSOAuthTokenHandler *)self performTokenFetchTaskWithSession:v8 bodyString:v14 completionHandler:v7];
+  v14 = [MEMORY[0x277CCACA8] stringWithString:string];
+  [(MSOAuthTokenHandler *)self performTokenFetchTaskWithSession:sessionCopy bodyString:v14 completionHandler:handlerCopy];
 }
 
-- (void)fetchTokens:(id)a3
+- (void)fetchTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   URLSessionConfiguration = self->_URLSessionConfiguration;
   if (URLSessionConfiguration)
   {
-    v6 = URLSessionConfiguration;
+    ephemeralSessionConfiguration = URLSessionConfiguration;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+    ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v6];
+  v7 = ephemeralSessionConfiguration;
+  v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:ephemeralSessionConfiguration];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __35__MSOAuthTokenHandler_fetchTokens___block_invoke;
   v28[3] = &unk_278AA2B98;
-  v9 = v4;
+  v9 = tokensCopy;
   v30 = v9;
   v10 = v8;
   v29 = v10;
@@ -413,8 +413,8 @@ LABEL_45:
   if (authorizationCredential && ([(CMSAuthenticationCredential *)authorizationCredential refreshToken], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
     v14 = objc_alloc(MEMORY[0x277CFB0A0]);
-    v15 = [(MSOAuthTokenHandler *)self parentNetworkActivity];
-    v16 = [v14 initWithLabel:2 parentActivity:v15];
+    parentNetworkActivity = [(MSOAuthTokenHandler *)self parentNetworkActivity];
+    v16 = [v14 initWithLabel:2 parentActivity:parentNetworkActivity];
     [(MSOAuthTokenHandler *)self setNetworkActivity:v16];
 
     v25[0] = MEMORY[0x277D85DD0];
@@ -432,8 +432,8 @@ LABEL_45:
   else
   {
     v19 = objc_alloc(MEMORY[0x277CFB0A0]);
-    v20 = [(MSOAuthTokenHandler *)self parentNetworkActivity];
-    v21 = [v19 initWithLabel:1 parentActivity:v20];
+    parentNetworkActivity2 = [(MSOAuthTokenHandler *)self parentNetworkActivity];
+    v21 = [v19 initWithLabel:1 parentActivity:parentNetworkActivity2];
     [(MSOAuthTokenHandler *)self setNetworkActivity:v21];
 
     v23[0] = MEMORY[0x277D85DD0];

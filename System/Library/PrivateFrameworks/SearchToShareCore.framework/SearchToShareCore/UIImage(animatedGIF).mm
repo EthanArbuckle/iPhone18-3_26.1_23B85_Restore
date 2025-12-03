@@ -26,9 +26,9 @@
   [v3 duration];
   v5 = v4;
   v6 = MEMORY[0x277D755B8];
-  v7 = [v3 frames];
+  frames = [v3 frames];
 
-  v8 = [v6 animatedImageWithImages:v7 duration:v5];
+  v8 = [v6 animatedImageWithImages:frames duration:v5];
 
   return v8;
 }

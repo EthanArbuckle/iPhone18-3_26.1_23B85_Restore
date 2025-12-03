@@ -1,13 +1,13 @@
 @interface CNContactPosterDeleteRequest
 + (id)os_log;
-+ (id)requestToDeletePosterForIdentifier:(id)a3;
-+ (id)requestToDeletePosterForIdentifiers:(id)a3;
-+ (id)requestToDeletePostersForContactIdentifiers:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CNContactPosterDeleteRequest)initWithAttributeName:(id)a3 attributesToDeleteBy:(id)a4;
-- (CNContactPosterDeleteRequest)initWithCoder:(id)a3;
++ (id)requestToDeletePosterForIdentifier:(id)identifier;
++ (id)requestToDeletePosterForIdentifiers:(id)identifiers;
++ (id)requestToDeletePostersForContactIdentifiers:(id)identifiers;
+- (BOOL)isEqual:(id)equal;
+- (CNContactPosterDeleteRequest)initWithAttributeName:(id)name attributesToDeleteBy:(id)by;
+- (CNContactPosterDeleteRequest)initWithCoder:(id)coder;
 - (id)persistentStoreRequest;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNContactPosterDeleteRequest
@@ -33,38 +33,38 @@ uint64_t __38__CNContactPosterDeleteRequest_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)requestToDeletePosterForIdentifiers:(id)a3
++ (id)requestToDeletePosterForIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = [[CNContactPosterDeleteRequest alloc] initWithAttributeName:@"identifier" attributesToDeleteBy:v3];
+  identifiersCopy = identifiers;
+  v4 = [[CNContactPosterDeleteRequest alloc] initWithAttributeName:@"identifier" attributesToDeleteBy:identifiersCopy];
 
   return v4;
 }
 
-+ (id)requestToDeletePosterForIdentifier:(id)a3
++ (id)requestToDeletePosterForIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  identifierCopy = identifier;
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
-  v5 = [v3 arrayWithObjects:&v8 count:1];
-  v6 = [CNContactPosterDeleteRequest requestToDeletePosterForIdentifiers:v5, v8, v9];
+  identifierCopy2 = identifier;
+  v5 = [v3 arrayWithObjects:&identifierCopy count:1];
+  v6 = [CNContactPosterDeleteRequest requestToDeletePosterForIdentifiers:v5, identifierCopy, v9];
 
   return v6;
 }
 
-+ (id)requestToDeletePostersForContactIdentifiers:(id)a3
++ (id)requestToDeletePostersForContactIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = [[CNContactPosterDeleteRequest alloc] initWithAttributeName:@"contactIdentifier" attributesToDeleteBy:v3];
+  identifiersCopy = identifiers;
+  v4 = [[CNContactPosterDeleteRequest alloc] initWithAttributeName:@"contactIdentifier" attributesToDeleteBy:identifiersCopy];
 
   return v4;
 }
 
-- (CNContactPosterDeleteRequest)initWithAttributeName:(id)a3 attributesToDeleteBy:(id)a4
+- (CNContactPosterDeleteRequest)initWithAttributeName:(id)name attributesToDeleteBy:(id)by
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  byCopy = by;
   v27.receiver = self;
   v27.super_class = CNContactPosterDeleteRequest;
   v9 = [(CNContactPosterDeleteRequest *)&v27 init];
@@ -73,12 +73,12 @@ uint64_t __38__CNContactPosterDeleteRequest_os_log__block_invoke()
     goto LABEL_11;
   }
 
-  if (!v7 || ![v7 length])
+  if (!nameCopy || ![nameCopy length])
   {
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      [(CNContactPosterDeleteRequest *)v11 initWithAttributeName:v12 attributesToDeleteBy:v13, v14, v15, v16, v17, v18];
+      [(CNContactPosterDeleteRequest *)os_log initWithAttributeName:v12 attributesToDeleteBy:v13, v14, v15, v16, v17, v18];
     }
 
     goto LABEL_10;
@@ -86,10 +86,10 @@ uint64_t __38__CNContactPosterDeleteRequest_os_log__block_invoke()
 
   if (((*(*MEMORY[0x1E6996538] + 16))() & 1) == 0)
   {
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      [(CNContactPosterDeleteRequest *)v11 initWithAttributeName:v19 attributesToDeleteBy:v20, v21, v22, v23, v24, v25];
+      [(CNContactPosterDeleteRequest *)os_log initWithAttributeName:v19 attributesToDeleteBy:v20, v21, v22, v23, v24, v25];
     }
 
 LABEL_10:
@@ -99,8 +99,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  objc_storeStrong(&v9->_attributeName, a3);
-  objc_storeStrong(&v9->_attributesToDeleteBy, a4);
+  objc_storeStrong(&v9->_attributeName, name);
+  objc_storeStrong(&v9->_attributesToDeleteBy, by);
   v10 = v9;
 LABEL_12:
 
@@ -112,24 +112,24 @@ LABEL_12:
   v23[2] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695D560] batchUpdateRequestWithEntityName:@"CNContactPoster"];
   v4 = *MEMORY[0x1E6996538];
-  v5 = [(CNContactPosterDeleteRequest *)self attributesToDeleteBy];
-  LODWORD(v4) = (*(v4 + 16))(v4, v5);
+  attributesToDeleteBy = [(CNContactPosterDeleteRequest *)self attributesToDeleteBy];
+  LODWORD(v4) = (*(v4 + 16))(v4, attributesToDeleteBy);
 
   if (v4)
   {
     v6 = MEMORY[0x1E696AE18];
-    v7 = [(CNContactPosterDeleteRequest *)self attributeName];
-    v8 = [(CNContactPosterDeleteRequest *)self attributesToDeleteBy];
-    v9 = [v6 predicateWithFormat:@"%K IN %@", v7, v8];
+    attributeName = [(CNContactPosterDeleteRequest *)self attributeName];
+    attributesToDeleteBy2 = [(CNContactPosterDeleteRequest *)self attributesToDeleteBy];
+    v9 = [v6 predicateWithFormat:@"%K IN %@", attributeName, attributesToDeleteBy2];
     [v3 setPredicate:v9];
   }
 
   else
   {
-    v10 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
-      [(CNContactPosterDeleteRequest *)v10 initWithAttributeName:v11 attributesToDeleteBy:v12, v13, v14, v15, v16, v17];
+      [(CNContactPosterDeleteRequest *)os_log initWithAttributeName:v11 attributesToDeleteBy:v12, v13, v14, v15, v16, v17];
     }
 
     v18 = [MEMORY[0x1E696AE18] predicateWithValue:0];
@@ -137,9 +137,9 @@ LABEL_12:
   }
 
   v22[0] = @"deletionDate";
-  v19 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v22[1] = @"isCurrent";
-  v23[0] = v19;
+  v23[0] = date;
   v23[1] = MEMORY[0x1E695E110];
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
   [v3 setPropertiesToUpdate:v20];
@@ -147,13 +147,13 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (attributeName = self->_attributeName, attributeName | v4->_attributeName) && ![(NSString *)attributeName isEqual:?]|| (attributesToDeleteBy = self->_attributesToDeleteBy, attributesToDeleteBy | v4->_attributesToDeleteBy) && ![(NSArray *)attributesToDeleteBy isEqual:?])
+    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (attributeName = self->_attributeName, attributeName | equalCopy->_attributeName) && ![(NSString *)attributeName isEqual:?]|| (attributesToDeleteBy = self->_attributesToDeleteBy, attributesToDeleteBy | equalCopy->_attributesToDeleteBy) && ![(NSArray *)attributesToDeleteBy isEqual:?])
     {
       v7 = 0;
     }
@@ -162,19 +162,19 @@ LABEL_12:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   attributeName = self->_attributeName;
-  v5 = a3;
-  [v5 encodeObject:attributeName forKey:@"attributeName"];
-  [v5 encodeObject:self->_attributesToDeleteBy forKey:@"attributesToDeleteBy"];
+  coderCopy = coder;
+  [coderCopy encodeObject:attributeName forKey:@"attributeName"];
+  [coderCopy encodeObject:self->_attributesToDeleteBy forKey:@"attributesToDeleteBy"];
 }
 
-- (CNContactPosterDeleteRequest)initWithCoder:(id)a3
+- (CNContactPosterDeleteRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributeName"];
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"attributesToDeleteBy"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributeName"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"attributesToDeleteBy"];
 
   v7 = [(CNContactPosterDeleteRequest *)self initWithAttributeName:v5 attributesToDeleteBy:v6];
   return v7;

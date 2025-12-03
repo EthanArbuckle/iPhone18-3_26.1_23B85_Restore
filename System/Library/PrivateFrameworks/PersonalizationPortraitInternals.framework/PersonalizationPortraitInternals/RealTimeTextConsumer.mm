@@ -1,10 +1,10 @@
 @interface RealTimeTextConsumer
-- (id)consumeInteractionWithContext:(id)a3;
-- (id)consumeMessagesContentWithContext:(id)a3;
-- (id)consumeRemindersContentWithContext:(id)a3;
-- (id)consumeSafariContentWithContext:(id)a3;
+- (id)consumeInteractionWithContext:(id)context;
+- (id)consumeMessagesContentWithContext:(id)context;
+- (id)consumeRemindersContentWithContext:(id)context;
+- (id)consumeSafariContentWithContext:(id)context;
 - (id)consumerName;
-- (id)deleteDataDerivedFromContentMatchingRequest:(id)a3;
+- (id)deleteDataDerivedFromContentMatchingRequest:(id)request;
 @end
 
 @implementation RealTimeTextConsumer
@@ -17,47 +17,47 @@
   return v2;
 }
 
-- (id)deleteDataDerivedFromContentMatchingRequest:(id)a3
+- (id)deleteDataDerivedFromContentMatchingRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_23224DF64(v4);
+  requestCopy = request;
+  selfCopy = self;
+  v6 = sub_23224DF64(requestCopy);
 
   return v6;
 }
 
-- (id)consumeInteractionWithContext:(id)a3
+- (id)consumeInteractionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_23225174C(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_23225174C(contextCopy);
 
   return v6;
 }
 
-- (id)consumeSafariContentWithContext:(id)a3
+- (id)consumeSafariContentWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_232258E4C(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_232258E4C(contextCopy);
 
   return v6;
 }
 
-- (id)consumeMessagesContentWithContext:(id)a3
+- (id)consumeMessagesContentWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_232258EE4(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_232258EE4(contextCopy);
 
   return v6;
 }
 
-- (id)consumeRemindersContentWithContext:(id)a3
+- (id)consumeRemindersContentWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_232259048(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_232259048(contextCopy);
 
   return v6;
 }

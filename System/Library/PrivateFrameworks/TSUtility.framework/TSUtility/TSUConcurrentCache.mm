@@ -1,20 +1,20 @@
 @interface TSUConcurrentCache
 - (BOOL)hasFlushableContent;
-- (TSUConcurrentCache)initWithName:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)objectsForKeys:(id)a3 notFoundMarker:(id)a4;
+- (TSUConcurrentCache)initWithName:(id)name;
+- (id)objectForKey:(id)key;
+- (id)objectsForKeys:(id)keys notFoundMarker:(id)marker;
 - (unint64_t)count;
-- (void)addEntriesFromDictionary:(id)a3;
+- (void)addEntriesFromDictionary:(id)dictionary;
 - (void)dealloc;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3 andWait:(BOOL)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key andWait:(BOOL)wait;
+- (void)setObject:(id)object forKey:(id)key;
 - (void)unload;
 @end
 
 @implementation TSUConcurrentCache
 
-- (TSUConcurrentCache)initWithName:(id)a3
+- (TSUConcurrentCache)initWithName:(id)name
 {
   v7.receiver = self;
   v7.super_class = TSUConcurrentCache;
@@ -22,7 +22,7 @@
   if (v4)
   {
     v5 = [TSUReadWriteQueue alloc];
-    v4->mReadWriteQueue = -[TSUReadWriteQueue initWithIdentifier:](v5, "initWithIdentifier:", [MEMORY[0x277CCACA8] stringWithFormat:@"TSUConcurrentCache:%@", a3]);
+    v4->mReadWriteQueue = -[TSUReadWriteQueue initWithIdentifier:](v5, "initWithIdentifier:", [MEMORY[0x277CCACA8] stringWithFormat:@"TSUConcurrentCache:%@", name]);
   }
 
   return v4;
@@ -54,15 +54,15 @@ id __28__TSUConcurrentCache_unload__block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v2, sel_unload);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   mReadWriteQueue = self->mReadWriteQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__TSUConcurrentCache_setObject_forKey___block_invoke;
   v5[3] = &unk_279D66140;
-  v5[4] = a3;
-  v5[5] = a4;
+  v5[4] = object;
+  v5[5] = key;
   v5[6] = self;
   [(TSUReadWriteQueue *)mReadWriteQueue performAsyncWrite:v5];
 }
@@ -76,7 +76,7 @@ id __39__TSUConcurrentCache_setObject_forKey___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v4, sel_setObject_forKey_, v2, v1);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v7 = 0;
   v8 = &v7;
@@ -91,7 +91,7 @@ id __39__TSUConcurrentCache_setObject_forKey___block_invoke(uint64_t a1)
   v6[3] = &unk_279D66168;
   v6[5] = self;
   v6[6] = &v7;
-  v6[4] = a3;
+  v6[4] = key;
   [(TSUReadWriteQueue *)mReadWriteQueue performSyncRead:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -108,18 +108,18 @@ id __35__TSUConcurrentCache_objectForKey___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeObjectForKey:(id)a3 andWait:(BOOL)a4
+- (void)removeObjectForKey:(id)key andWait:(BOOL)wait
 {
-  v4 = a4;
+  waitCopy = wait;
   mReadWriteQueue = self->mReadWriteQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__TSUConcurrentCache_removeObjectForKey_andWait___block_invoke;
   v7[3] = &unk_279D65F40;
-  v7[4] = a3;
+  v7[4] = key;
   v7[5] = self;
   [(TSUReadWriteQueue *)mReadWriteQueue performAsyncWrite:v7];
-  if (v4)
+  if (waitCopy)
   {
     [(TSUReadWriteQueue *)self->mReadWriteQueue waitOnInFlightWriters];
   }
@@ -186,15 +186,15 @@ id __27__TSUConcurrentCache_count__block_invoke(uint64_t a1)
   return [(TSUCache *)&v3 hasFlushableContent];
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   mReadWriteQueue = self->mReadWriteQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__TSUConcurrentCache_addEntriesFromDictionary___block_invoke;
   v7[3] = &unk_279D65F40;
-  v7[4] = a3;
+  v7[4] = dictionary;
   v7[5] = self;
   [(TSUReadWriteQueue *)mReadWriteQueue performAsyncWrite:v7];
 }
@@ -207,9 +207,9 @@ void __47__TSUConcurrentCache_addEntriesFromDictionary___block_invoke(uint64_t a
   objc_msgSendSuper2(&v3, sel_p_addEntriesFromDictionary_, v2);
 }
 
-- (id)objectsForKeys:(id)a3 notFoundMarker:(id)a4
+- (id)objectsForKeys:(id)keys notFoundMarker:(id)marker
 {
-  v7 = a3;
+  keysCopy = keys;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3052000000;
@@ -221,8 +221,8 @@ void __47__TSUConcurrentCache_addEntriesFromDictionary___block_invoke(uint64_t a
   v11[1] = 3221225472;
   v11[2] = __52__TSUConcurrentCache_objectsForKeys_notFoundMarker___block_invoke;
   v11[3] = &unk_279D661B8;
-  v11[4] = a3;
-  v11[5] = a4;
+  v11[4] = keys;
+  v11[5] = marker;
   v11[6] = self;
   v11[7] = &v12;
   [(TSUReadWriteQueue *)mReadWriteQueue performSyncRead:v11];

@@ -1,6 +1,6 @@
 @interface IAUtility
 + (BOOL)xpcEnabled;
-+ (id)lookupAppBundle:(id)a3;
++ (id)lookupAppBundle:(id)bundle;
 @end
 
 @implementation IAUtility
@@ -15,13 +15,13 @@
   return byte_1ED82C540;
 }
 
-+ (id)lookupAppBundle:(id)a3
++ (id)lookupAppBundle:(id)bundle
 {
-  v3 = a3;
-  v5 = v3;
+  bundleCopy = bundle;
+  v5 = bundleCopy;
   if (qword_1ED82C5E0 == -1)
   {
-    if (v3)
+    if (bundleCopy)
     {
       goto LABEL_3;
     }

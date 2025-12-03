@@ -1,12 +1,12 @@
 @interface INRestaurant
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INRestaurant)init;
-- (INRestaurant)initWithCoder:(id)a3;
+- (INRestaurant)initWithCoder:(id)coder;
 - (INRestaurant)initWithLocation:(CLLocation *)location name:(NSString *)name vendorIdentifier:(NSString *)vendorIdentifier restaurantIdentifier:(NSString *)restaurantIdentifier;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRestaurant
@@ -16,40 +16,40 @@
   v15[4] = *MEMORY[0x1E69E9840];
   v14[0] = @"location";
   location = self->_location;
-  v4 = location;
+  null = location;
   if (!location)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v4;
+  v15[0] = null;
   v14[1] = @"name";
   name = self->_name;
-  v6 = name;
+  null2 = name;
   if (!name)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v6;
+  v15[1] = null2;
   v14[2] = @"vendorIdentifier";
   vendorIdentifier = self->_vendorIdentifier;
-  v8 = vendorIdentifier;
+  null3 = vendorIdentifier;
   if (!vendorIdentifier)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v8;
+  v15[2] = null3;
   v14[3] = @"restaurantIdentifier";
   restaurantIdentifier = self->_restaurantIdentifier;
-  v10 = restaurantIdentifier;
+  null4 = restaurantIdentifier;
   if (!restaurantIdentifier)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
   if (restaurantIdentifier)
   {
@@ -100,23 +100,23 @@ LABEL_13:
   return v11;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INRestaurant;
   v6 = [(INRestaurant *)&v11 description];
-  v7 = [(INRestaurant *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INRestaurant *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -126,25 +126,25 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(INRestaurant *)v5 location];
-      v7 = [(INRestaurant *)self location];
-      v8 = [(INRestaurant *)self location:v6 equalToLocation:v7];
+      v5 = equalCopy;
+      location = [(INRestaurant *)v5 location];
+      location2 = [(INRestaurant *)self location];
+      v8 = [(INRestaurant *)self location:location equalToLocation:location2];
 
-      v9 = [(INRestaurant *)self name];
-      v10 = [(INRestaurant *)v5 name];
-      LOBYTE(v6) = [v9 isEqualToString:v10];
+      name = [(INRestaurant *)self name];
+      name2 = [(INRestaurant *)v5 name];
+      LOBYTE(location) = [name isEqualToString:name2];
 
-      v11 = [(INRestaurant *)v5 vendorIdentifier];
-      v12 = [(INRestaurant *)self vendorIdentifier];
-      v13 = [v11 isEqualToString:v12];
+      vendorIdentifier = [(INRestaurant *)v5 vendorIdentifier];
+      vendorIdentifier2 = [(INRestaurant *)self vendorIdentifier];
+      v13 = [vendorIdentifier isEqualToString:vendorIdentifier2];
 
-      v14 = [(INRestaurant *)v5 restaurantIdentifier];
+      restaurantIdentifier = [(INRestaurant *)v5 restaurantIdentifier];
 
-      v15 = [(INRestaurant *)self restaurantIdentifier];
-      LOBYTE(v5) = [v14 isEqualToString:v15];
+      restaurantIdentifier2 = [(INRestaurant *)self restaurantIdentifier];
+      LOBYTE(v5) = [restaurantIdentifier isEqualToString:restaurantIdentifier2];
 
-      v16 = v8 & v6 & v13 & v5;
+      v16 = v8 & location & v13 & v5;
     }
 
     else
@@ -156,45 +156,45 @@ LABEL_13:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[INRestaurant allocWithZone:?]];
-  v5 = [(INRestaurant *)self location];
-  [(INRestaurant *)v4 setLocation:v5];
+  location = [(INRestaurant *)self location];
+  [(INRestaurant *)v4 setLocation:location];
 
-  v6 = [(INRestaurant *)self name];
-  [(INRestaurant *)v4 setName:v6];
+  name = [(INRestaurant *)self name];
+  [(INRestaurant *)v4 setName:name];
 
-  v7 = [(INRestaurant *)self vendorIdentifier];
-  [(INRestaurant *)v4 setVendorIdentifier:v7];
+  vendorIdentifier = [(INRestaurant *)self vendorIdentifier];
+  [(INRestaurant *)v4 setVendorIdentifier:vendorIdentifier];
 
-  v8 = [(INRestaurant *)self restaurantIdentifier];
-  [(INRestaurant *)v4 setRestaurantIdentifier:v8];
+  restaurantIdentifier = [(INRestaurant *)self restaurantIdentifier];
+  [(INRestaurant *)v4 setRestaurantIdentifier:restaurantIdentifier];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   location = self->_location;
-  v5 = a3;
-  [v5 encodeObject:location forKey:@"location"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_vendorIdentifier forKey:@"vendorIdentifier"];
-  [v5 encodeObject:self->_restaurantIdentifier forKey:@"restaurantIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:location forKey:@"location"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_vendorIdentifier forKey:@"vendorIdentifier"];
+  [coderCopy encodeObject:self->_restaurantIdentifier forKey:@"restaurantIdentifier"];
 }
 
-- (INRestaurant)initWithCoder:(id)a3
+- (INRestaurant)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(INRestaurant *)self init];
   if (!v5)
   {
     goto LABEL_7;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
   if (!v6)
   {
     v15 = INSiriLogContextIntents;
@@ -215,7 +215,7 @@ LABEL_16:
   location = v5->_location;
   v5->_location = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   if (!v8)
   {
     v15 = INSiriLogContextIntents;
@@ -234,7 +234,7 @@ LABEL_16:
   name = v5->_name;
   v5->_name = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vendorIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vendorIdentifier"];
   if (!v10)
   {
     v15 = INSiriLogContextIntents;
@@ -253,7 +253,7 @@ LABEL_16:
   vendorIdentifier = v5->_vendorIdentifier;
   v5->_vendorIdentifier = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"restaurantIdentifier"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"restaurantIdentifier"];
   if (!v12)
   {
     v15 = INSiriLogContextIntents;

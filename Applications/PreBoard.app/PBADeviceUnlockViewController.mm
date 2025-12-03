@@ -1,26 +1,26 @@
 @interface PBADeviceUnlockViewController
-- (void)successfulAuthHandler:(id)a3;
+- (void)successfulAuthHandler:(id)handler;
 @end
 
 @implementation PBADeviceUnlockViewController
 
-- (void)successfulAuthHandler:(id)a3
+- (void)successfulAuthHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   dispatch_group_notify(v5, &_dispatch_main_q, &stru_10001CA28);
-  if ([v4 type] == 1)
+  if ([handlerCopy type] == 1)
   {
     dispatch_group_enter(v5);
-    v6 = [(PBADevicePasscodeViewController *)self authenticationController];
-    v7 = [v6 createKeybagUnlockAssertionWithReason:@"com.apple.PreBoard.StashBagCreate"];
+    authenticationController = [(PBADevicePasscodeViewController *)self authenticationController];
+    v7 = [authenticationController createKeybagUnlockAssertionWithReason:@"com.apple.PreBoard.StashBagCreate"];
 
     [v7 activate];
     v8 = +[SBFMobileKeyBag sharedInstance];
     v9 = [SBFMobileKeyBagUnlockOptions alloc];
-    v10 = [v4 passcode];
-    v11 = [v10 dataUsingEncoding:4];
+    passcode = [handlerCopy passcode];
+    v11 = [passcode dataUsingEncoding:4];
     v12 = [v9 initWithPasscode:v11 skipSEKeepUserDataOperation:1];
 
     v17[0] = _NSConcreteStackBlock;

@@ -1,22 +1,22 @@
 @interface SKUIEditorialLayout
-- (SKUIEditorialLayout)initWithEditorial:(id)a3 layoutCache:(id)a4;
-- (double)layoutHeightForOrientation:(int64_t)a3 expanded:(BOOL)a4;
-- (id)_bodyTextLayoutRequestWithTotalWidth:(double)a3;
-- (id)_linkLayoutRequestWithTotalWidth:(double)a3;
-- (id)_titleTextLayoutRequestWithTotalWidth:(double)a3;
-- (id)bodyTextLayoutForOrientation:(int64_t)a3;
-- (id)linkLayoutForOrientation:(int64_t)a3;
-- (id)titleTextLayoutForOrientation:(int64_t)a3;
+- (SKUIEditorialLayout)initWithEditorial:(id)editorial layoutCache:(id)cache;
+- (double)layoutHeightForOrientation:(int64_t)orientation expanded:(BOOL)expanded;
+- (id)_bodyTextLayoutRequestWithTotalWidth:(double)width;
+- (id)_linkLayoutRequestWithTotalWidth:(double)width;
+- (id)_titleTextLayoutRequestWithTotalWidth:(double)width;
+- (id)bodyTextLayoutForOrientation:(int64_t)orientation;
+- (id)linkLayoutForOrientation:(int64_t)orientation;
+- (id)titleTextLayoutForOrientation:(int64_t)orientation;
 - (void)enqueueLayoutRequests;
-- (void)setLayoutWidth:(double)a3 forOrientation:(int64_t)a4;
+- (void)setLayoutWidth:(double)width forOrientation:(int64_t)orientation;
 @end
 
 @implementation SKUIEditorialLayout
 
-- (SKUIEditorialLayout)initWithEditorial:(id)a3 layoutCache:(id)a4
+- (SKUIEditorialLayout)initWithEditorial:(id)editorial layoutCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  editorialCopy = editorial;
+  cacheCopy = cache;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIEditorialLayout initWithEditorial:layoutCache:];
@@ -28,8 +28,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_editorial, a3);
-    objc_storeStrong(&v10->_textLayoutCache, a4);
+    objc_storeStrong(&v9->_editorial, editorial);
+    objc_storeStrong(&v10->_textLayoutCache, cache);
     v11.f64[0] = NAN;
     v11.f64[1] = NAN;
     v12 = vnegq_f64(v11);
@@ -42,11 +42,11 @@
   return v10;
 }
 
-- (id)bodyTextLayoutForOrientation:(int64_t)a3
+- (id)bodyTextLayoutForOrientation:(int64_t)orientation
 {
-  if (a3)
+  if (orientation)
   {
-    if (a3 != 1)
+    if (orientation != 1)
     {
       goto LABEL_6;
     }
@@ -72,11 +72,11 @@ LABEL_6:
   return v6;
 }
 
-- (double)layoutHeightForOrientation:(int64_t)a3 expanded:(BOOL)a4
+- (double)layoutHeightForOrientation:(int64_t)orientation expanded:(BOOL)expanded
 {
   v7 = [(SKUIEditorialLayout *)self bodyTextLayoutForOrientation:?];
-  v8 = [(SKUIEditorialLayout *)self linkLayoutForOrientation:a3];
-  v9 = [(SKUIEditorialLayout *)self titleTextLayoutForOrientation:a3];
+  v8 = [(SKUIEditorialLayout *)self linkLayoutForOrientation:orientation];
+  v9 = [(SKUIEditorialLayout *)self titleTextLayoutForOrientation:orientation];
   v10 = v9;
   if (!v7 && !v8 && !v9)
   {
@@ -95,7 +95,7 @@ LABEL_6:
 
   if (v7)
   {
-    if (a4 || ![v7 requiresTruncation])
+    if (expanded || ![v7 requiresTruncation])
     {
       [v7 textSize];
     }
@@ -142,29 +142,29 @@ LABEL_18:
 - (void)enqueueLayoutRequests
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v4 = self->_landscapeWidth > 0.00000011920929;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v4 = v6 > 375.0 && self->_landscapeWidth > 0.00000011920929;
   }
 
-  v7 = [(SKUIEditorialComponent *)self->_editorial bodyText];
-  if (v7)
+  bodyText = [(SKUIEditorialComponent *)self->_editorial bodyText];
+  if (bodyText)
   {
   }
 
   else
   {
-    v8 = [(SKUIEditorialComponent *)self->_editorial bodyAttributedText];
+    bodyAttributedText = [(SKUIEditorialComponent *)self->_editorial bodyAttributedText];
 
-    if (!v8)
+    if (!bodyAttributedText)
     {
       goto LABEL_12;
     }
@@ -189,9 +189,9 @@ LABEL_18:
   }
 
 LABEL_12:
-  v17 = [(SKUIEditorialComponent *)self->_editorial titleText];
+  titleText = [(SKUIEditorialComponent *)self->_editorial titleText];
 
-  if (v17)
+  if (titleText)
   {
     v18 = self->_textLayoutCache;
     v19 = [(SKUIEditorialLayout *)self _titleTextLayoutRequestWithTotalWidth:self->_portraitWidth];
@@ -212,8 +212,8 @@ LABEL_12:
     }
   }
 
-  v26 = [(SKUIEditorialComponent *)self->_editorial links];
-  v27 = [v26 count];
+  links = [(SKUIEditorialComponent *)self->_editorial links];
+  v27 = [links count];
 
   if (v27)
   {
@@ -237,11 +237,11 @@ LABEL_12:
   }
 }
 
-- (id)linkLayoutForOrientation:(int64_t)a3
+- (id)linkLayoutForOrientation:(int64_t)orientation
 {
-  if (a3)
+  if (orientation)
   {
-    if (a3 != 1)
+    if (orientation != 1)
     {
       goto LABEL_6;
     }
@@ -267,16 +267,16 @@ LABEL_6:
   return v6;
 }
 
-- (void)setLayoutWidth:(double)a3 forOrientation:(int64_t)a4
+- (void)setLayoutWidth:(double)width forOrientation:(int64_t)orientation
 {
-  if (a4 == 1)
+  if (orientation == 1)
   {
     v4 = 40;
   }
 
   else
   {
-    if (a4)
+    if (orientation)
     {
       return;
     }
@@ -284,14 +284,14 @@ LABEL_6:
     v4 = 72;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = width;
 }
 
-- (id)titleTextLayoutForOrientation:(int64_t)a3
+- (id)titleTextLayoutForOrientation:(int64_t)orientation
 {
-  if (a3)
+  if (orientation)
   {
-    if (a3 != 1)
+    if (orientation != 1)
     {
       goto LABEL_6;
     }
@@ -317,7 +317,7 @@ LABEL_6:
   return v6;
 }
 
-- (id)_bodyTextLayoutRequestWithTotalWidth:(double)a3
+- (id)_bodyTextLayoutRequestWithTotalWidth:(double)width
 {
   v5 = objc_alloc_init(SKUITextLayoutRequest);
   v10 = 0;
@@ -328,16 +328,16 @@ LABEL_6:
     editorial = self->_editorial;
   }
 
-  v7 = [(SKUIEditorialComponent *)editorial bodyAttributedText];
-  [(SKUITextLayoutRequest *)v5 setAttributedText:v7];
+  bodyAttributedText = [(SKUIEditorialComponent *)editorial bodyAttributedText];
+  [(SKUITextLayoutRequest *)v5 setAttributedText:bodyAttributedText];
 
   [(SKUITextLayoutRequest *)v5 setFontWeight:0];
   [(SKUITextLayoutRequest *)v5 setNumberOfLines:[(SKUIEditorialComponent *)self->_editorial maximumBodyLines]];
-  v8 = [(SKUIEditorialComponent *)self->_editorial bodyText];
-  [(SKUITextLayoutRequest *)v5 setText:v8];
+  bodyText = [(SKUIEditorialComponent *)self->_editorial bodyText];
+  [(SKUITextLayoutRequest *)v5 setText:bodyText];
 
   [(SKUITextLayoutRequest *)v5 setTextAlignment:SKUICTTextAlignmentForPageComponentAlignment(v11)];
-  [(SKUITextLayoutRequest *)v5 setWidth:a3];
+  [(SKUITextLayoutRequest *)v5 setWidth:width];
   if (0.0 > 0.00000011921)
   {
     [(SKUITextLayoutRequest *)v5 setFontSize:0.0];
@@ -346,18 +346,18 @@ LABEL_6:
   return v5;
 }
 
-- (id)_linkLayoutRequestWithTotalWidth:(double)a3
+- (id)_linkLayoutRequestWithTotalWidth:(double)width
 {
   v5 = objc_alloc_init(SKUIEditorialLinkLayoutRequest);
-  v6 = [(SKUIEditorialComponent *)self->_editorial links];
-  [(SKUIEditorialLinkLayoutRequest *)v5 setLinks:v6];
+  links = [(SKUIEditorialComponent *)self->_editorial links];
+  [(SKUIEditorialLinkLayoutRequest *)v5 setLinks:links];
 
-  [(SKUIEditorialLinkLayoutRequest *)v5 setWidth:a3];
+  [(SKUIEditorialLinkLayoutRequest *)v5 setWidth:width];
 
   return v5;
 }
 
-- (id)_titleTextLayoutRequestWithTotalWidth:(double)a3
+- (id)_titleTextLayoutRequestWithTotalWidth:(double)width
 {
   v5 = objc_alloc_init(SKUITextLayoutRequest);
   v14 = 0;
@@ -368,18 +368,18 @@ LABEL_6:
   }
 
   [(SKUITextLayoutRequest *)v5 setFontWeight:0, v14];
-  v7 = [(SKUIEditorialComponent *)self->_editorial titleText];
-  [(SKUITextLayoutRequest *)v5 setText:v7];
+  titleText = [(SKUIEditorialComponent *)self->_editorial titleText];
+  [(SKUITextLayoutRequest *)v5 setText:titleText];
 
   [(SKUITextLayoutRequest *)v5 setTextAlignment:SKUICTTextAlignmentForPageComponentAlignment(v15)];
-  [(SKUITextLayoutRequest *)v5 setWidth:a3];
+  [(SKUITextLayoutRequest *)v5 setWidth:width];
   LODWORD(v8) = 0;
   if (0.0 <= 0.00000011921)
   {
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v11 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v12 = &kSKUITextBoxLayoutTitleFontSizeIPad;
     }

@@ -1,42 +1,42 @@
 @interface POJWTSigning
-+ (BOOL)verifyJWTSignature:(id)a3 algorithm:(id)a4 key:(__SecKey *)a5;
-+ (BOOL)verifyJWTSignature:(id)a3 signingAlgorithm:(id)a4 key:(__SecKey *)a5;
-+ (id)algorithmWithIdentifier:(id)a3;
-+ (id)algorithmWithSigningAlgorithm:(id)a3;
-+ (id)encodeAndSignJWT:(id)a3 algorithm:(id)a4 key:(__SecKey *)a5 certificate:(__SecCertificate *)a6 error:(id *)a7;
-+ (id)encodeAndSignJWT:(id)a3 signingAlgorithm:(id)a4 key:(__SecKey *)a5 certificate:(__SecCertificate *)a6 error:(id *)a7;
-- (BOOL)verifyJWTSignature:(id)a3 key:(__SecKey *)a4;
-- (BOOL)verifySignature:(id)a3 onData:(id)a4 usingCertificateString:(id)a5;
-- (BOOL)verifySignature:(id)a3 onData:(id)a4 usingKey:(__SecKey *)a5;
-- (POJWTSigning)initWithSecKeyAlgorithm:(__CFString *)a3 algorithmName:(id)a4 alg:(id)a5;
-- (id)encodeAndSignJWT:(id)a3 key:(__SecKey *)a4 certificate:(__SecCertificate *)a5 error:(id *)a6;
-- (id)signData:(id)a3 usingKey:(__SecKey *)a4 error:(id *)a5;
++ (BOOL)verifyJWTSignature:(id)signature algorithm:(id)algorithm key:(__SecKey *)key;
++ (BOOL)verifyJWTSignature:(id)signature signingAlgorithm:(id)algorithm key:(__SecKey *)key;
++ (id)algorithmWithIdentifier:(id)identifier;
++ (id)algorithmWithSigningAlgorithm:(id)algorithm;
++ (id)encodeAndSignJWT:(id)t algorithm:(id)algorithm key:(__SecKey *)key certificate:(__SecCertificate *)certificate error:(id *)error;
++ (id)encodeAndSignJWT:(id)t signingAlgorithm:(id)algorithm key:(__SecKey *)key certificate:(__SecCertificate *)certificate error:(id *)error;
+- (BOOL)verifyJWTSignature:(id)signature key:(__SecKey *)key;
+- (BOOL)verifySignature:(id)signature onData:(id)data usingCertificateString:(id)string;
+- (BOOL)verifySignature:(id)signature onData:(id)data usingKey:(__SecKey *)key;
+- (POJWTSigning)initWithSecKeyAlgorithm:(__CFString *)algorithm algorithmName:(id)name alg:(id)alg;
+- (id)encodeAndSignJWT:(id)t key:(__SecKey *)key certificate:(__SecCertificate *)certificate error:(id *)error;
+- (id)signData:(id)data usingKey:(__SecKey *)key error:(id *)error;
 @end
 
 @implementation POJWTSigning
 
-- (POJWTSigning)initWithSecKeyAlgorithm:(__CFString *)a3 algorithmName:(id)a4 alg:(id)a5
+- (POJWTSigning)initWithSecKeyAlgorithm:(__CFString *)algorithm algorithmName:(id)name alg:(id)alg
 {
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  algCopy = alg;
   v14.receiver = self;
   v14.super_class = POJWTSigning;
   v11 = [(POJWTSigning *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_algorithm = a3;
-    objc_storeStrong(&v11->_algorithmName, a4);
-    objc_storeStrong(&v12->_alg, a5);
+    v11->_algorithm = algorithm;
+    objc_storeStrong(&v11->_algorithmName, name);
+    objc_storeStrong(&v12->_alg, alg);
   }
 
   return v12;
 }
 
-+ (id)algorithmWithIdentifier:(id)a3
++ (id)algorithmWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ES256"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"ES256"])
   {
     v4 = [POJWTSigning alloc];
     v5 = *MEMORY[0x277CDC2D0];
@@ -49,7 +49,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"ES384"])
+  if ([identifierCopy isEqualToString:@"ES384"])
   {
     v4 = [POJWTSigning alloc];
     v5 = *MEMORY[0x277CDC2D8];
@@ -58,7 +58,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"ES512"])
+  if ([identifierCopy isEqualToString:@"ES512"])
   {
     v4 = [POJWTSigning alloc];
     v5 = *MEMORY[0x277CDC2E0];
@@ -67,7 +67,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"RS256"])
+  if ([identifierCopy isEqualToString:@"RS256"])
   {
     v4 = [POJWTSigning alloc];
     v5 = *MEMORY[0x277CDC3B8];
@@ -76,7 +76,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"RS384"])
+  if ([identifierCopy isEqualToString:@"RS384"])
   {
     v4 = [POJWTSigning alloc];
     v5 = *MEMORY[0x277CDC3C0];
@@ -85,7 +85,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"RS512"])
+  if ([identifierCopy isEqualToString:@"RS512"])
   {
     v4 = [POJWTSigning alloc];
     v5 = *MEMORY[0x277CDC3C8];
@@ -94,7 +94,7 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:@"EdDSA"])
+  if ([identifierCopy isEqualToString:@"EdDSA"])
   {
     v8 = objc_alloc_init(_TtC15PlatformSSOCore30POCryptoKitAlgorithmCurve25519);
     goto LABEL_14;
@@ -106,10 +106,10 @@ LABEL_15:
   return v9;
 }
 
-+ (id)algorithmWithSigningAlgorithm:(id)a3
++ (id)algorithmWithSigningAlgorithm:(id)algorithm
 {
-  v3 = a3;
-  if ([v3 isEqualToNumber:0x2870A9198])
+  algorithmCopy = algorithm;
+  if ([algorithmCopy isEqualToNumber:0x2870A9198])
   {
     v4 = [POJWTSigning alloc];
     v5 = *MEMORY[0x277CDC2D0];
@@ -122,7 +122,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToNumber:0x2870A91B0])
+  if ([algorithmCopy isEqualToNumber:0x2870A91B0])
   {
     v4 = [POJWTSigning alloc];
     v5 = *MEMORY[0x277CDC2D8];
@@ -131,7 +131,7 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToNumber:0x2870A91C8])
+  if ([algorithmCopy isEqualToNumber:0x2870A91C8])
   {
     v8 = objc_alloc_init(_TtC15PlatformSSOCore30POCryptoKitAlgorithmCurve25519);
     goto LABEL_6;
@@ -143,14 +143,14 @@ LABEL_7:
   return v9;
 }
 
-+ (BOOL)verifyJWTSignature:(id)a3 algorithm:(id)a4 key:(__SecKey *)a5
++ (BOOL)verifyJWTSignature:(id)signature algorithm:(id)algorithm key:(__SecKey *)key
 {
-  v7 = a3;
-  v8 = [POJWTSigning algorithmWithIdentifier:a4];
+  signatureCopy = signature;
+  v8 = [POJWTSigning algorithmWithIdentifier:algorithm];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 verifyJWTSignature:v7 key:a5];
+    v10 = [v8 verifyJWTSignature:signatureCopy key:key];
   }
 
   else
@@ -174,14 +174,14 @@ id __49__POJWTSigning_verifyJWTSignature_algorithm_key___block_invoke()
   return v0;
 }
 
-+ (BOOL)verifyJWTSignature:(id)a3 signingAlgorithm:(id)a4 key:(__SecKey *)a5
++ (BOOL)verifyJWTSignature:(id)signature signingAlgorithm:(id)algorithm key:(__SecKey *)key
 {
-  v7 = a3;
-  v8 = [POJWTSigning algorithmWithSigningAlgorithm:a4];
+  signatureCopy = signature;
+  v8 = [POJWTSigning algorithmWithSigningAlgorithm:algorithm];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 verifyJWTSignature:v7 key:a5];
+    v10 = [v8 verifyJWTSignature:signatureCopy key:key];
   }
 
   else
@@ -193,22 +193,22 @@ id __49__POJWTSigning_verifyJWTSignature_algorithm_key___block_invoke()
   return v10;
 }
 
-- (BOOL)verifyJWTSignature:(id)a3 key:(__SecKey *)a4
+- (BOOL)verifyJWTSignature:(id)signature key:(__SecKey *)key
 {
-  v6 = a3;
+  signatureCopy = signature;
   v7 = objc_alloc(MEMORY[0x277CBEA90]);
-  v8 = [v6 rawSignature];
-  v9 = [v7 psso_initWithBase64URLEncodedString:v8];
+  rawSignature = [signatureCopy rawSignature];
+  v9 = [v7 psso_initWithBase64URLEncodedString:rawSignature];
 
   if (v9)
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v6 rawHeader];
-    v12 = [v6 rawBody];
-    v13 = [v10 stringWithFormat:@"%@.%@", v11, v12];
+    rawHeader = [signatureCopy rawHeader];
+    rawBody = [signatureCopy rawBody];
+    v13 = [v10 stringWithFormat:@"%@.%@", rawHeader, rawBody];
     v14 = [v13 dataUsingEncoding:1];
 
-    v15 = [(POJWTSigning *)self verifySignature:v9 onData:v14 usingKey:a4];
+    v15 = [(POJWTSigning *)self verifySignature:v9 onData:v14 usingKey:key];
   }
 
   else
@@ -232,14 +232,14 @@ id __39__POJWTSigning_verifyJWTSignature_key___block_invoke()
   return v0;
 }
 
-+ (id)encodeAndSignJWT:(id)a3 algorithm:(id)a4 key:(__SecKey *)a5 certificate:(__SecCertificate *)a6 error:(id *)a7
++ (id)encodeAndSignJWT:(id)t algorithm:(id)algorithm key:(__SecKey *)key certificate:(__SecCertificate *)certificate error:(id *)error
 {
-  v11 = a3;
-  v12 = [POJWTSigning algorithmWithIdentifier:a4];
+  tCopy = t;
+  v12 = [POJWTSigning algorithmWithIdentifier:algorithm];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 encodeAndSignJWT:v11 key:a5 certificate:a6 error:a7];
+    v14 = [v12 encodeAndSignJWT:tCopy key:key certificate:certificate error:error];
   }
 
   else
@@ -263,14 +263,14 @@ id __65__POJWTSigning_encodeAndSignJWT_algorithm_key_certificate_error___block_i
   return v0;
 }
 
-+ (id)encodeAndSignJWT:(id)a3 signingAlgorithm:(id)a4 key:(__SecKey *)a5 certificate:(__SecCertificate *)a6 error:(id *)a7
++ (id)encodeAndSignJWT:(id)t signingAlgorithm:(id)algorithm key:(__SecKey *)key certificate:(__SecCertificate *)certificate error:(id *)error
 {
-  v11 = a3;
-  v12 = [POJWTSigning algorithmWithSigningAlgorithm:a4];
+  tCopy = t;
+  v12 = [POJWTSigning algorithmWithSigningAlgorithm:algorithm];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 encodeAndSignJWT:v11 key:a5 certificate:a6 error:a7];
+    v14 = [v12 encodeAndSignJWT:tCopy key:key certificate:certificate error:error];
   }
 
   else
@@ -282,36 +282,36 @@ id __65__POJWTSigning_encodeAndSignJWT_algorithm_key_certificate_error___block_i
   return v14;
 }
 
-- (id)encodeAndSignJWT:(id)a3 key:(__SecKey *)a4 certificate:(__SecCertificate *)a5 error:(id *)a6
+- (id)encodeAndSignJWT:(id)t key:(__SecKey *)key certificate:(__SecCertificate *)certificate error:(id *)error
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [v10 header];
+  tCopy = t;
+  header = [tCopy header];
 
-  if (!v11)
+  if (!header)
   {
     v12 = objc_alloc_init(POMutableJWTHeader);
-    [v10 setHeader:v12];
+    [tCopy setHeader:v12];
   }
 
   v13 = [(POJWTSigning *)self alg];
-  v14 = [v10 header];
-  [v14 setAlg:v13];
+  header2 = [tCopy header];
+  [header2 setAlg:v13];
 
-  v15 = [v10 header];
-  v16 = [v15 typ];
+  header3 = [tCopy header];
+  v16 = [header3 typ];
 
   if (!v16)
   {
-    v17 = [v10 header];
-    [v17 setTyp:@"JWT"];
+    header4 = [tCopy header];
+    [header4 setTyp:@"JWT"];
   }
 
-  v18 = SecKeyCopyPublicKey(a4);
+  v18 = SecKeyCopyPublicKey(key);
   if (!v18)
   {
     v23 = __55__POJWTSigning_encodeAndSignJWT_key_certificate_error___block_invoke();
-    if (!a6)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -320,19 +320,19 @@ id __65__POJWTSigning_encodeAndSignJWT_algorithm_key_certificate_error___block_i
   }
 
   v19 = v18;
-  v20 = [v10 header];
-  v21 = [v20 kid];
+  header5 = [tCopy header];
+  v21 = [header5 kid];
   v22 = [v21 length];
 
   if (v22)
   {
-    if (!a5)
+    if (!certificate)
     {
       goto LABEL_17;
     }
 
 LABEL_13:
-    v29 = SecCertificateCopyData(a5);
+    v29 = SecCertificateCopyData(certificate);
     if (v29)
     {
       v30 = v29;
@@ -346,14 +346,14 @@ LABEL_13:
 
       v52[0] = v33;
       v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
-      v35 = [v10 header];
-      [v35 setX5c:v34];
+      header6 = [tCopy header];
+      [header6 setX5c:v34];
 
       goto LABEL_17;
     }
 
     v23 = __55__POJWTSigning_encodeAndSignJWT_key_certificate_error___block_invoke_71();
-    if (!a6)
+    if (!error)
     {
 LABEL_11:
 
@@ -363,33 +363,33 @@ LABEL_11:
 
 LABEL_10:
     v23 = v23;
-    *a6 = v23;
+    *error = v23;
     goto LABEL_11;
   }
 
   v25 = SecKeyCopyExternalRepresentation(v19, 0);
-  v26 = [(__CFData *)v25 psso_sha256Hash];
-  v27 = [v26 base64EncodedStringWithOptions:0];
-  v28 = [v10 header];
-  [v28 setKid:v27];
+  psso_sha256Hash = [(__CFData *)v25 psso_sha256Hash];
+  v27 = [psso_sha256Hash base64EncodedStringWithOptions:0];
+  header7 = [tCopy header];
+  [header7 setKid:v27];
 
-  if (a5)
+  if (certificate)
   {
     goto LABEL_13;
   }
 
 LABEL_17:
   CFRelease(v19);
-  v36 = [v10 header];
-  v37 = [v36 dataRepresentation];
+  header8 = [tCopy header];
+  dataRepresentation = [header8 dataRepresentation];
 
-  v38 = [v37 psso_base64URLEncodedString];
-  v39 = [v10 body];
-  v40 = [v39 dataRepresentation];
+  psso_base64URLEncodedString = [dataRepresentation psso_base64URLEncodedString];
+  body = [tCopy body];
+  dataRepresentation2 = [body dataRepresentation];
 
-  v41 = [v40 psso_base64URLEncodedString];
+  psso_base64URLEncodedString2 = [dataRepresentation2 psso_base64URLEncodedString];
   v42 = SecCFAllocatorZeroize();
-  v43 = CFStringCreateWithFormat(v42, 0, @"%@.%@", v38, v41);
+  v43 = CFStringCreateWithFormat(v42, 0, @"%@.%@", psso_base64URLEncodedString, psso_base64URLEncodedString2);
   v44 = SecCFAllocatorZeroize();
   ExternalRepresentation = CFStringCreateExternalRepresentation(v44, v43, 0x8000100u, 0);
   if (v43)
@@ -403,13 +403,13 @@ LABEL_17:
     [POJWTSigning encodeAndSignJWT:v46 key:? certificate:? error:?];
   }
 
-  v47 = [(POJWTSigning *)self signData:ExternalRepresentation usingKey:a4 error:a6];
+  v47 = [(POJWTSigning *)self signData:ExternalRepresentation usingKey:key error:error];
 
   if ([v47 length])
   {
-    v48 = [v47 psso_base64URLEncodedString];
+    psso_base64URLEncodedString3 = [v47 psso_base64URLEncodedString];
     v49 = SecCFAllocatorZeroize();
-    v24 = CFStringCreateWithFormat(v49, 0, @"%@.%@.%@", v38, v41, v48);
+    v24 = CFStringCreateWithFormat(v49, 0, @"%@.%@.%@", psso_base64URLEncodedString, psso_base64URLEncodedString2, psso_base64URLEncodedString3);
   }
 
   else
@@ -447,10 +447,10 @@ id __55__POJWTSigning_encodeAndSignJWT_key_certificate_error___block_invoke_71()
   return v0;
 }
 
-- (id)signData:(id)a3 usingKey:(__SecKey *)a4 error:(id *)a5
+- (id)signData:(id)data usingKey:(__SecKey *)key error:(id *)error
 {
-  v8 = a3;
-  if (!SecKeyIsAlgorithmSupported(a4, kSecKeyOperationTypeSign, [(POJWTSigning *)self algorithm]))
+  dataCopy = data;
+  if (!SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeSign, [(POJWTSigning *)self algorithm]))
   {
     error[6] = MEMORY[0x277D85DD0];
     error[7] = 3221225472;
@@ -458,7 +458,7 @@ id __55__POJWTSigning_encodeAndSignJWT_key_certificate_error___block_invoke_71()
     error[9] = &unk_279A3DC48;
     error[10] = self;
     v11 = __40__POJWTSigning_signData_usingKey_error___block_invoke();
-    if (!a5)
+    if (!error)
     {
 LABEL_9:
 
@@ -468,11 +468,11 @@ LABEL_9:
 
 LABEL_8:
     v11 = v11;
-    *a5 = v11;
+    *error = v11;
     goto LABEL_9;
   }
 
-  if (![v8 length])
+  if (![dataCopy length])
   {
     error[1] = MEMORY[0x277D85DD0];
     error[2] = 3221225472;
@@ -480,7 +480,7 @@ LABEL_8:
     error[4] = &unk_279A3DC48;
     error[5] = self;
     v11 = __40__POJWTSigning_signData_usingKey_error___block_invoke_87();
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -489,7 +489,7 @@ LABEL_8:
   }
 
   error[0] = 0;
-  Signature = SecKeyCreateSignature(a4, [(POJWTSigning *)self algorithm], v8, error);
+  Signature = SecKeyCreateSignature(key, [(POJWTSigning *)self algorithm], dataCopy, error);
   if (error[0])
   {
     if (CFErrorGetCode(error[0]) == -3)
@@ -501,7 +501,7 @@ LABEL_8:
       v15[4] = self;
       v15[5] = error[0];
       v10 = __40__POJWTSigning_signData_usingKey_error___block_invoke_91(v15);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_15;
       }
@@ -516,7 +516,7 @@ LABEL_8:
       v14[4] = self;
       v14[5] = error[0];
       v10 = __40__POJWTSigning_signData_usingKey_error___block_invoke_95(v14);
-      if (!a5)
+      if (!error)
       {
 LABEL_15:
 
@@ -526,7 +526,7 @@ LABEL_15:
     }
 
     v10 = v10;
-    *a5 = v10;
+    *error = v10;
     goto LABEL_15;
   }
 
@@ -590,14 +590,14 @@ id __40__POJWTSigning_signData_usingKey_error___block_invoke_95(uint64_t a1)
   return v2;
 }
 
-- (BOOL)verifySignature:(id)a3 onData:(id)a4 usingCertificateString:(id)a5
+- (BOOL)verifySignature:(id)signature onData:(id)data usingCertificateString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 length])
+  signatureCopy = signature;
+  dataCopy = data;
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v10 options:0];
+    v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:stringCopy options:0];
     if ([(__CFData *)v11 length])
     {
       v12 = SecCertificateCreateWithData(0, v11);
@@ -608,7 +608,7 @@ id __40__POJWTSigning_signData_usingKey_error___block_invoke_95(uint64_t a1)
         CFRelease(v13);
         if (v14)
         {
-          v15 = [(POJWTSigning *)self verifySignature:v8 onData:v9 usingKey:v14];
+          v15 = [(POJWTSigning *)self verifySignature:signatureCopy onData:dataCopy usingKey:v14];
           CFRelease(v14);
 LABEL_11:
 
@@ -688,11 +688,11 @@ id __62__POJWTSigning_verifySignature_onData_usingCertificateString___block_invo
   return v0;
 }
 
-- (BOOL)verifySignature:(id)a3 onData:(id)a4 usingKey:(__SecKey *)a5
+- (BOOL)verifySignature:(id)signature onData:(id)data usingKey:(__SecKey *)key
 {
-  v8 = a3;
-  v9 = a4;
-  if (!SecKeyIsAlgorithmSupported(a5, kSecKeyOperationTypeVerify, [(POJWTSigning *)self algorithm]))
+  signatureCopy = signature;
+  dataCopy = data;
+  if (!SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeVerify, [(POJWTSigning *)self algorithm]))
   {
     error[11] = MEMORY[0x277D85DD0];
     error[12] = 3221225472;
@@ -705,7 +705,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![v8 length])
+  if (![signatureCopy length])
   {
     error[6] = MEMORY[0x277D85DD0];
     error[7] = 3221225472;
@@ -716,7 +716,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (![v9 length])
+  if (![dataCopy length])
   {
     error[1] = MEMORY[0x277D85DD0];
     error[2] = 3221225472;
@@ -728,7 +728,7 @@ LABEL_9:
   }
 
   error[0] = 0;
-  v10 = SecKeyVerifySignature(a5, [(POJWTSigning *)self algorithm], v9, v8, error);
+  v10 = SecKeyVerifySignature(key, [(POJWTSigning *)self algorithm], dataCopy, signatureCopy, error);
   v11 = v10 != 0;
   if (!v10)
   {

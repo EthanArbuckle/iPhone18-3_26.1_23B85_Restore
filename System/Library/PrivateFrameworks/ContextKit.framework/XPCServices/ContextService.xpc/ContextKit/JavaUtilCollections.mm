@@ -39,7 +39,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100554DB8, [JavaUtilCollections__1 alloc]);
     JreStrongAssignAndConsume(&qword_100554DC0, [JavaUtilCollections__2 alloc]);

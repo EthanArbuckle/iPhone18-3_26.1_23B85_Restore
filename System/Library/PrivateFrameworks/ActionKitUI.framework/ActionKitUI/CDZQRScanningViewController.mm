@@ -1,16 +1,16 @@
 @interface CDZQRScanningViewController
 - (CDZQRScanningViewController)init;
-- (CDZQRScanningViewController)initWithMetadataObjectTypes:(id)a3;
+- (CDZQRScanningViewController)initWithMetadataObjectTypes:(id)types;
 - (UILabel)cameraUnavailableLabel;
-- (void)cancelItemSelected:(id)a3;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5;
+- (void)cancelItemSelected:(id)selected;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection;
 - (void)dealloc;
-- (void)handleFocusTap:(id)a3;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionRuntimeError:(id)a3;
-- (void)sessionWasInterrupted:(id)a3;
-- (void)setAvSession:(id)a3;
-- (void)toggleTorch:(id)a3;
+- (void)handleFocusTap:(id)tap;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionRuntimeError:(id)error;
+- (void)sessionWasInterrupted:(id)interrupted;
+- (void)setAvSession:(id)session;
+- (void)toggleTorch:(id)torch;
 - (void)turnTorchOff;
 - (void)turnTorchOn;
 - (void)viewDidLayoutSubviews;
@@ -26,12 +26,12 @@
   return WeakRetained;
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
-  v4 = [(CDZQRScanningViewController *)self cameraUnavailableLabel];
-  v5 = [v4 isHidden];
+  cameraUnavailableLabel = [(CDZQRScanningViewController *)self cameraUnavailableLabel];
+  isHidden = [cameraUnavailableLabel isHidden];
 
-  if ((v5 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -63,10 +63,10 @@ void __56__CDZQRScanningViewController_sessionInterruptionEnded___block_invoke_2
   [v1 setHidden:1];
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  interruptedCopy = interrupted;
+  userInfo = [interruptedCopy userInfo];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -88,10 +88,10 @@ void __56__CDZQRScanningViewController_sessionInterruptionEnded___block_invoke_2
   _Block_object_dispose(&v18, 8);
   if (v6)
   {
-    v8 = [v5 objectForKeyedSubscript:*v6];
-    v9 = [v8 integerValue];
+    v8 = [userInfo objectForKeyedSubscript:*v6];
+    integerValue = [v8 integerValue];
 
-    if (v9 == 4)
+    if (integerValue == 4)
     {
       v10 = @"Camera Unavailable in Multitasking";
     }
@@ -101,14 +101,14 @@ void __56__CDZQRScanningViewController_sessionInterruptionEnded___block_invoke_2
       v10 = @"Camera Unavailable";
     }
 
-    v11 = [(CDZQRScanningViewController *)self cameraUnavailableLabel];
-    [v11 setText:v10];
+    cameraUnavailableLabel = [(CDZQRScanningViewController *)self cameraUnavailableLabel];
+    [cameraUnavailableLabel setText:v10];
 
-    v12 = [(CDZQRScanningViewController *)self cameraUnavailableLabel];
-    [v12 setAlpha:0.0];
+    cameraUnavailableLabel2 = [(CDZQRScanningViewController *)self cameraUnavailableLabel];
+    [cameraUnavailableLabel2 setAlpha:0.0];
 
-    v13 = [(CDZQRScanningViewController *)self cameraUnavailableLabel];
-    [v13 setHidden:0];
+    cameraUnavailableLabel3 = [(CDZQRScanningViewController *)self cameraUnavailableLabel];
+    [cameraUnavailableLabel3 setHidden:0];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -120,9 +120,9 @@ void __56__CDZQRScanningViewController_sessionInterruptionEnded___block_invoke_2
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVCaptureSessionInterruptionReasonKey(void)"];
-    [v14 handleFailureInFunction:v15 file:@"CDZQRScanningViewController.m" lineNumber:39 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v15 file:@"CDZQRScanningViewController.m" lineNumber:39 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -138,10 +138,10 @@ void __53__CDZQRScanningViewController_sessionWasInterrupted___block_invoke(uint
   [v4 setOpacity:v3];
 }
 
-- (void)sessionRuntimeError:(id)a3
+- (void)sessionRuntimeError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -158,36 +158,36 @@ void __53__CDZQRScanningViewController_sessionWasInterrupted___block_invoke(uint
   _Block_object_dispose(&v13, 8);
   if (v6)
   {
-    v8 = [v5 objectForKeyedSubscript:*v6];
+    v8 = [userInfo objectForKeyedSubscript:*v6];
 
-    v9 = [(CDZQRScanningViewController *)self errorBlock];
+    errorBlock = [(CDZQRScanningViewController *)self errorBlock];
 
-    if (v9)
+    if (errorBlock)
     {
-      v10 = [(CDZQRScanningViewController *)self errorBlock];
-      (v10)[2](v10, v8);
+      errorBlock2 = [(CDZQRScanningViewController *)self errorBlock];
+      (errorBlock2)[2](errorBlock2, v8);
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVCaptureSessionErrorKey(void)"];
-    [v11 handleFailureInFunction:v12 file:@"CDZQRScanningViewController.m" lineNumber:38 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v12 file:@"CDZQRScanningViewController.m" lineNumber:38 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  objectsCopy = objects;
+  v7 = [objectsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = *v22;
@@ -197,13 +197,13 @@ LABEL_3:
     {
       if (*v22 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(objectsCopy);
       }
 
       v10 = *(*(&v21 + 1) + 8 * v9);
-      v11 = [(CDZQRScanningViewController *)self metadataObjectTypes];
-      v12 = [v10 type];
-      v13 = [v11 containsObject:v12];
+      metadataObjectTypes = [(CDZQRScanningViewController *)self metadataObjectTypes];
+      type = [v10 type];
+      v13 = [metadataObjectTypes containsObject:type];
 
       if (v13)
       {
@@ -212,7 +212,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v7 = [objectsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -223,25 +223,25 @@ LABEL_3:
     }
 
     v7 = v10;
-    v14 = [v7 stringValue];
+    stringValue = [v7 stringValue];
 
-    if (v14)
+    if (stringValue)
     {
-      v16 = [(CDZQRScanningViewController *)self lastCapturedString];
-      v17 = [v16 isEqualToString:v14];
+      lastCapturedString = [(CDZQRScanningViewController *)self lastCapturedString];
+      v17 = [lastCapturedString isEqualToString:stringValue];
 
       if ((v17 & 1) == 0)
       {
-        [(CDZQRScanningViewController *)self setLastCapturedString:v14];
-        v18 = [(CDZQRScanningViewController *)self avSession];
-        [v18 stopRunning];
+        [(CDZQRScanningViewController *)self setLastCapturedString:stringValue];
+        avSession = [(CDZQRScanningViewController *)self avSession];
+        [avSession stopRunning];
 
-        v19 = [(CDZQRScanningViewController *)self resultBlock];
+        resultBlock = [(CDZQRScanningViewController *)self resultBlock];
 
-        if (v19)
+        if (resultBlock)
         {
-          v15 = [(CDZQRScanningViewController *)self resultBlock];
-          (v15)[2](v15, v7);
+          resultBlock2 = [(CDZQRScanningViewController *)self resultBlock];
+          (resultBlock2)[2](resultBlock2, v7);
           goto LABEL_14;
         }
       }
@@ -251,8 +251,8 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v14 = 0;
-    v15 = v6;
+    stringValue = 0;
+    resultBlock2 = objectsCopy;
 LABEL_14:
   }
 
@@ -261,25 +261,25 @@ LABEL_14:
 
 - (void)turnTorchOff
 {
-  v7 = [(CDZQRScanningViewController *)self captureDevice];
-  if ([v7 hasTorch])
+  captureDevice = [(CDZQRScanningViewController *)self captureDevice];
+  if ([captureDevice hasTorch])
   {
-    v3 = [(CDZQRScanningViewController *)self captureDevice];
-    if ([v3 isTorchModeSupported:0])
+    captureDevice2 = [(CDZQRScanningViewController *)self captureDevice];
+    if ([captureDevice2 isTorchModeSupported:0])
     {
-      v4 = [(CDZQRScanningViewController *)self captureDevice];
-      v5 = [v4 lockForConfiguration:0];
+      captureDevice3 = [(CDZQRScanningViewController *)self captureDevice];
+      v5 = [captureDevice3 lockForConfiguration:0];
 
       if (!v5)
       {
         return;
       }
 
-      v6 = [(CDZQRScanningViewController *)self captureDevice];
-      [v6 setTorchMode:0];
+      captureDevice4 = [(CDZQRScanningViewController *)self captureDevice];
+      [captureDevice4 setTorchMode:0];
 
-      v7 = [(CDZQRScanningViewController *)self captureDevice];
-      [v7 unlockForConfiguration];
+      captureDevice = [(CDZQRScanningViewController *)self captureDevice];
+      [captureDevice unlockForConfiguration];
     }
 
     else
@@ -290,77 +290,77 @@ LABEL_14:
 
 - (void)turnTorchOn
 {
-  v9 = [(CDZQRScanningViewController *)self captureDevice];
-  if (![v9 hasTorch])
+  captureDevice = [(CDZQRScanningViewController *)self captureDevice];
+  if (![captureDevice hasTorch])
   {
     goto LABEL_8;
   }
 
-  v3 = [(CDZQRScanningViewController *)self captureDevice];
-  if (([v3 isTorchAvailable] & 1) == 0)
+  captureDevice2 = [(CDZQRScanningViewController *)self captureDevice];
+  if (([captureDevice2 isTorchAvailable] & 1) == 0)
   {
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v4 = [(CDZQRScanningViewController *)self captureDevice];
-  if (([v4 isTorchModeSupported:1] & 1) == 0)
+  captureDevice3 = [(CDZQRScanningViewController *)self captureDevice];
+  if (([captureDevice3 isTorchModeSupported:1] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v5 = [(CDZQRScanningViewController *)self captureDevice];
-  v6 = [v5 lockForConfiguration:0];
+  captureDevice4 = [(CDZQRScanningViewController *)self captureDevice];
+  v6 = [captureDevice4 lockForConfiguration:0];
 
   if (!v6)
   {
     return;
   }
 
-  v7 = [(CDZQRScanningViewController *)self captureDevice];
+  captureDevice5 = [(CDZQRScanningViewController *)self captureDevice];
   LODWORD(v8) = 0.25;
-  [v7 setTorchModeOnWithLevel:0 error:v8];
+  [captureDevice5 setTorchModeOnWithLevel:0 error:v8];
 
-  v9 = [(CDZQRScanningViewController *)self captureDevice];
-  [v9 unlockForConfiguration];
+  captureDevice = [(CDZQRScanningViewController *)self captureDevice];
+  [captureDevice unlockForConfiguration];
 LABEL_8:
 }
 
-- (void)handleFocusTap:(id)a3
+- (void)handleFocusTap:(id)tap
 {
-  v4 = a3;
-  v5 = [(CDZQRScanningViewController *)self view];
-  [v4 locationInView:v5];
+  tapCopy = tap;
+  view = [(CDZQRScanningViewController *)self view];
+  [tapCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CDZQRScanningViewController *)self previewLayer];
-  [v10 captureDevicePointOfInterestForPoint:{v7, v9}];
+  previewLayer = [(CDZQRScanningViewController *)self previewLayer];
+  [previewLayer captureDevicePointOfInterestForPoint:{v7, v9}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(CDZQRScanningViewController *)self captureDevice];
+  captureDevice = [(CDZQRScanningViewController *)self captureDevice];
   v18 = 0;
-  LODWORD(v5) = [v15 lockForConfiguration:&v18];
+  LODWORD(view) = [captureDevice lockForConfiguration:&v18];
   v16 = v18;
   v17 = v16;
-  if (v5)
+  if (view)
   {
-    if ([v15 isFocusPointOfInterestSupported] && objc_msgSend(v15, "isFocusModeSupported:", 1))
+    if ([captureDevice isFocusPointOfInterestSupported] && objc_msgSend(captureDevice, "isFocusModeSupported:", 1))
     {
-      [v15 setFocusMode:1];
-      [v15 setFocusPointOfInterest:{v12, v14}];
+      [captureDevice setFocusMode:1];
+      [captureDevice setFocusPointOfInterest:{v12, v14}];
     }
 
-    if ([v15 isExposurePointOfInterestSupported] && objc_msgSend(v15, "isExposureModeSupported:", 1))
+    if ([captureDevice isExposurePointOfInterestSupported] && objc_msgSend(captureDevice, "isExposureModeSupported:", 1))
     {
-      [v15 setExposureMode:1];
-      [v15 setExposurePointOfInterest:{v12, v14}];
+      [captureDevice setExposureMode:1];
+      [captureDevice setExposurePointOfInterest:{v12, v14}];
     }
 
-    [v15 unlockForConfiguration];
+    [captureDevice unlockForConfiguration];
   }
 
   else
@@ -369,12 +369,12 @@ LABEL_8:
   }
 }
 
-- (void)toggleTorch:(id)a3
+- (void)toggleTorch:(id)torch
 {
-  v4 = [(CDZQRScanningViewController *)self captureDevice];
-  v5 = [v4 isTorchActive];
+  captureDevice = [(CDZQRScanningViewController *)self captureDevice];
+  isTorchActive = [captureDevice isTorchActive];
 
-  if (v5)
+  if (isTorchActive)
   {
     [(CDZQRScanningViewController *)self turnTorchOff];
   }
@@ -384,21 +384,21 @@ LABEL_8:
     [(CDZQRScanningViewController *)self turnTorchOn];
   }
 
-  v6 = [(CDZQRScanningViewController *)self torchButton];
-  [v6 setSelected:v5 ^ 1u];
+  torchButton = [(CDZQRScanningViewController *)self torchButton];
+  [torchButton setSelected:isTorchActive ^ 1u];
 }
 
-- (void)cancelItemSelected:(id)a3
+- (void)cancelItemSelected:(id)selected
 {
-  v4 = [(CDZQRScanningViewController *)self avSession];
-  [v4 stopRunning];
+  avSession = [(CDZQRScanningViewController *)self avSession];
+  [avSession stopRunning];
 
-  v5 = [(CDZQRScanningViewController *)self cancelBlock];
+  cancelBlock = [(CDZQRScanningViewController *)self cancelBlock];
 
-  if (v5)
+  if (cancelBlock)
   {
-    v6 = [(CDZQRScanningViewController *)self cancelBlock];
-    v6[2]();
+    cancelBlock2 = [(CDZQRScanningViewController *)self cancelBlock];
+    cancelBlock2[2]();
   }
 }
 
@@ -407,15 +407,15 @@ LABEL_8:
   v23.receiver = self;
   v23.super_class = CDZQRScanningViewController;
   [(CDZQRScanningViewController *)&v23 viewDidLayoutSubviews];
-  v3 = [(CDZQRScanningViewController *)self view];
-  [v3 bounds];
+  view = [(CDZQRScanningViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CDZQRScanningViewController *)self previewLayer];
-  [v12 setBounds:{v5, v7, v9, v11}];
+  previewLayer = [(CDZQRScanningViewController *)self previewLayer];
+  [previewLayer setBounds:{v5, v7, v9, v11}];
 
   v24.origin.x = v5;
   v24.origin.y = v7;
@@ -427,14 +427,14 @@ LABEL_8:
   v25.size.width = v9;
   v25.size.height = v11;
   MidY = CGRectGetMidY(v25);
-  v15 = [(CDZQRScanningViewController *)self previewLayer];
-  [v15 setPosition:{MidX, MidY}];
+  previewLayer2 = [(CDZQRScanningViewController *)self previewLayer];
+  [previewLayer2 setPosition:{MidX, MidY}];
 
-  v16 = [(CDZQRScanningViewController *)self previewLayer];
-  v17 = [v16 connection];
-  v18 = [v17 isVideoOrientationSupported];
+  previewLayer3 = [(CDZQRScanningViewController *)self previewLayer];
+  connection = [previewLayer3 connection];
+  isVideoOrientationSupported = [connection isVideoOrientationSupported];
 
-  if (v18)
+  if (isVideoOrientationSupported)
   {
     v19 = [objc_msgSend(MEMORY[0x277D75128] performSelector:{sel_sharedApplication), "statusBarOrientation"}];
     if ((v19 - 2) >= 3)
@@ -447,9 +447,9 @@ LABEL_8:
       v20 = v19;
     }
 
-    v21 = [(CDZQRScanningViewController *)self previewLayer];
-    v22 = [v21 connection];
-    [v22 setVideoOrientation:v20];
+    previewLayer4 = [(CDZQRScanningViewController *)self previewLayer];
+    connection2 = [previewLayer4 connection];
+    [connection2 setVideoOrientation:v20];
   }
 }
 
@@ -748,9 +748,9 @@ void __46__CDZQRScanningViewController_viewWillAppear___block_invoke_5(uint64_t 
   v5.receiver = self;
   v5.super_class = CDZQRScanningViewController;
   [(CDZQRScanningViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] blackColor];
-  v4 = [(CDZQRScanningViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  view = [(CDZQRScanningViewController *)self view];
+  [view setBackgroundColor:blackColor];
 }
 
 - (CDZQRScanningViewController)init
@@ -772,9 +772,9 @@ void __46__CDZQRScanningViewController_viewWillAppear___block_invoke_5(uint64_t 
   _Block_object_dispose(&v13, 8);
   if (!v3)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataObjectType getAVMetadataObjectTypeQRCode(void)"];
-    [v11 handleFailureInFunction:v12 file:@"CDZQRScanningViewController.m" lineNumber:35 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v12 file:@"CDZQRScanningViewController.m" lineNumber:35 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -789,38 +789,38 @@ void __46__CDZQRScanningViewController_viewWillAppear___block_invoke_5(uint64_t 
   return v8;
 }
 
-- (void)setAvSession:(id)a3
+- (void)setAvSession:(id)session
 {
-  v17 = a3;
+  sessionCopy = session;
   if (self->_avSession)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = getAVCaptureSessionRuntimeErrorNotification();
-    [v5 removeObserver:self name:v6 object:self->_avSession];
+    [defaultCenter removeObserver:self name:v6 object:self->_avSession];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v8 = getAVCaptureSessionWasInterruptedNotification();
-    [v7 removeObserver:self name:v8 object:self->_avSession];
+    [defaultCenter2 removeObserver:self name:v8 object:self->_avSession];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v10 = getAVCaptureSessionInterruptionEndedNotification();
-    [v9 removeObserver:self name:v10 object:self->_avSession];
+    [defaultCenter3 removeObserver:self name:v10 object:self->_avSession];
   }
 
-  objc_storeStrong(&self->_avSession, a3);
+  objc_storeStrong(&self->_avSession, session);
   if (self->_avSession)
   {
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
     v12 = getAVCaptureSessionRuntimeErrorNotification();
-    [v11 addObserver:self selector:sel_sessionRuntimeError_ name:v12 object:self->_avSession];
+    [defaultCenter4 addObserver:self selector:sel_sessionRuntimeError_ name:v12 object:self->_avSession];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
     v14 = getAVCaptureSessionWasInterruptedNotification();
-    [v13 addObserver:self selector:sel_sessionWasInterrupted_ name:v14 object:self->_avSession];
+    [defaultCenter5 addObserver:self selector:sel_sessionWasInterrupted_ name:v14 object:self->_avSession];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
     v16 = getAVCaptureSessionInterruptionEndedNotification();
-    [v15 addObserver:self selector:sel_sessionInterruptionEnded_ name:v16 object:self->_avSession];
+    [defaultCenter6 addObserver:self selector:sel_sessionInterruptionEnded_ name:v16 object:self->_avSession];
   }
 }
 
@@ -832,18 +832,18 @@ void __46__CDZQRScanningViewController_viewWillAppear___block_invoke_5(uint64_t 
   [(CDZQRScanningViewController *)&v3 dealloc];
 }
 
-- (CDZQRScanningViewController)initWithMetadataObjectTypes:(id)a3
+- (CDZQRScanningViewController)initWithMetadataObjectTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v36.receiver = self;
   v36.super_class = CDZQRScanningViewController;
   v5 = [(CDZQRScanningViewController *)&v36 init];
   v6 = v5;
   if (v5)
   {
-    [(CDZQRScanningViewController *)v5 setMetadataObjectTypes:v4];
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = [v7 localizedStringForKey:@"Scan QR Code" value:&stru_2850A01A8 table:0];
+    [(CDZQRScanningViewController *)v5 setMetadataObjectTypes:typesCopy];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v8 = [mainBundle localizedStringForKey:@"Scan QR Code" value:&stru_2850A01A8 table:0];
     [(CDZQRScanningViewController *)v6 setTitle:v8];
 
     v9 = [MEMORY[0x277D755B8] systemImageNamed:@"bolt.fill"];
@@ -882,22 +882,22 @@ void __46__CDZQRScanningViewController_viewWillAppear___block_invoke_5(uint64_t 
     v23 = v17;
 
     v24 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v23];
-    v25 = [(CDZQRScanningViewController *)v6 navigationItem];
-    [v25 setRightBarButtonItem:v24];
+    navigationItem = [(CDZQRScanningViewController *)v6 navigationItem];
+    [navigationItem setRightBarButtonItem:v24];
 
     v26 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v26 setHidden:1];
     [v26 setTextAlignment:1];
     [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v27 = [MEMORY[0x277D75348] whiteColor];
-    [v26 setTextColor:v27];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v26 setTextColor:whiteColor];
 
     v28 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [v26 setFont:v28];
 
     objc_storeWeak(&v6->_cameraUnavailableLabel, v26);
-    v29 = [(CDZQRScanningViewController *)v6 view];
-    [v29 addSubview:v26];
+    view = [(CDZQRScanningViewController *)v6 view];
+    [view addSubview:v26];
 
     v30 = _NSDictionaryOfVariableBindings(&cfstr_Unavailablelab.isa, v26, 0);
     v31 = objc_opt_new();

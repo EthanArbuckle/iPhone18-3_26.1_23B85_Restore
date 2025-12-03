@@ -1,12 +1,12 @@
 @interface MenstrualCyclesOnboardingChangeDetector
-- (void)onboardingManagerDidUpdateOnboardingCompletion:(id)a3;
+- (void)onboardingManagerDidUpdateOnboardingCompletion:(id)completion;
 @end
 
 @implementation MenstrualCyclesOnboardingChangeDetector
 
-- (void)onboardingManagerDidUpdateOnboardingCompletion:(id)a3
+- (void)onboardingManagerDidUpdateOnboardingCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
 
   sub_29E271B98();
 }

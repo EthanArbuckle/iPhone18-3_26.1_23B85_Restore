@@ -1,28 +1,28 @@
 @interface ATXHomeScreenWidgetFeedbackProcessor
-+ (BOOL)_shouldProcessEvent:(id)a3;
++ (BOOL)_shouldProcessEvent:(id)event;
 + (id)_retrieveLastHistogramUpdateDate;
-+ (void)_storeLastHistogramUpdateDate:(id)a3;
++ (void)_storeLastHistogramUpdateDate:(id)date;
 - (ATXHomeScreenWidgetFeedbackProcessor)init;
-- (ATXHomeScreenWidgetFeedbackProcessor)initWithWidgetFeedback:(id)a3 publisher:(id)a4;
-- (void)_addToHistogramForWidgetsInEvent:(id)a3 type:(unint64_t)a4;
-- (void)_updateHistogramForEvent:(id)a3;
+- (ATXHomeScreenWidgetFeedbackProcessor)initWithWidgetFeedback:(id)feedback publisher:(id)publisher;
+- (void)_addToHistogramForWidgetsInEvent:(id)event type:(unint64_t)type;
+- (void)_updateHistogramForEvent:(id)event;
 - (void)updateHistogramsForRecentHomeScreenEvents;
 @end
 
 @implementation ATXHomeScreenWidgetFeedbackProcessor
 
-+ (BOOL)_shouldProcessEvent:(id)a3
++ (BOOL)_shouldProcessEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 homeScreenEvent];
-    v5 = v4;
-    if (v4)
+    homeScreenEvent = [eventCopy homeScreenEvent];
+    v5 = homeScreenEvent;
+    if (homeScreenEvent)
     {
-      v6 = [v4 eventTypeString];
-      if ([v6 isEqualToString:@"Unknown"])
+      eventTypeString = [homeScreenEvent eventTypeString];
+      if ([eventTypeString isEqualToString:@"Unknown"])
       {
         v7 = 0;
 LABEL_13:
@@ -41,133 +41,133 @@ LABEL_14:
         goto LABEL_17;
       }
 
-      if ([v6 isEqualToString:@"HomeScreenPageShown"])
+      if ([eventTypeString isEqualToString:@"HomeScreenPageShown"])
       {
         v7 = 1;
         goto LABEL_13;
       }
 
-      if ([v6 isEqualToString:@"HomeScreenDisappeared"])
+      if ([eventTypeString isEqualToString:@"HomeScreenDisappeared"])
       {
         v7 = 2;
         goto LABEL_13;
       }
 
-      if ([v6 isEqualToString:@"StackChanged"])
+      if ([eventTypeString isEqualToString:@"StackChanged"])
       {
         v7 = 3;
         goto LABEL_13;
       }
 
-      if ([v6 isEqualToString:@"WidgetTapped"])
+      if ([eventTypeString isEqualToString:@"WidgetTapped"])
       {
         goto LABEL_20;
       }
 
-      if ([v6 isEqualToString:@"WidgetLongLook"])
+      if ([eventTypeString isEqualToString:@"WidgetLongLook"])
       {
         v7 = 5;
         goto LABEL_13;
       }
 
-      if ([v6 isEqualToString:@"WidgetUserFeedback"])
+      if ([eventTypeString isEqualToString:@"WidgetUserFeedback"])
       {
 LABEL_20:
       }
 
       else
       {
-        if ([v6 isEqualToString:@"UserStackConfigChanged"])
+        if ([eventTypeString isEqualToString:@"UserStackConfigChanged"])
         {
           v7 = 7;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"DeviceLocked"])
+        if ([eventTypeString isEqualToString:@"DeviceLocked"])
         {
           v7 = 8;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"DeviceUnlocked"])
+        if ([eventTypeString isEqualToString:@"DeviceUnlocked"])
         {
           v7 = 9;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"PinnedWidgetAdded"])
+        if ([eventTypeString isEqualToString:@"PinnedWidgetAdded"])
         {
           v7 = 10;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"PinnedWidgetDeleted"])
+        if ([eventTypeString isEqualToString:@"PinnedWidgetDeleted"])
         {
           v7 = 11;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"SpecialPageAppeared"])
+        if ([eventTypeString isEqualToString:@"SpecialPageAppeared"])
         {
           v7 = 12;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"SpecialPageDisappeared"])
+        if ([eventTypeString isEqualToString:@"SpecialPageDisappeared"])
         {
           v7 = 13;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"StackShown"])
+        if ([eventTypeString isEqualToString:@"StackShown"])
         {
           v7 = 14;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"StackDisappeared"])
+        if ([eventTypeString isEqualToString:@"StackDisappeared"])
         {
           v7 = 15;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"StackCreated"])
+        if ([eventTypeString isEqualToString:@"StackCreated"])
         {
           v7 = 16;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"StackDeleted"])
+        if ([eventTypeString isEqualToString:@"StackDeleted"])
         {
           v7 = 17;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"WidgetAddedToStack"])
+        if ([eventTypeString isEqualToString:@"WidgetAddedToStack"])
         {
           v7 = 18;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"WidgetRemovedFromStack"])
+        if ([eventTypeString isEqualToString:@"WidgetRemovedFromStack"])
         {
           v7 = 19;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"StackVisibilityChanged"])
+        if ([eventTypeString isEqualToString:@"StackVisibilityChanged"])
         {
           v7 = 20;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"AppAdded"])
+        if ([eventTypeString isEqualToString:@"AppAdded"])
         {
           v7 = 21;
           goto LABEL_13;
         }
 
-        if ([v6 isEqualToString:@"AppRemoved"])
+        if ([eventTypeString isEqualToString:@"AppRemoved"])
         {
           v7 = 22;
         }
@@ -202,17 +202,17 @@ LABEL_18:
   return v8 & 1;
 }
 
-- (void)_addToHistogramForWidgetsInEvent:(id)a3 type:(unint64_t)a4
+- (void)_addToHistogramForWidgetsInEvent:(id)event type:(unint64_t)type
 {
-  v6 = [a3 metadata];
-  v7 = [v6 stacks];
+  metadata = [event metadata];
+  stacks = [metadata stacks];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__ATXHomeScreenWidgetFeedbackProcessor__addToHistogramForWidgetsInEvent_type___block_invoke;
   v8[3] = &unk_278598B58;
   v8[4] = self;
-  v8[5] = a4;
-  [v7 enumerateKeysAndObjectsUsingBlock:v8];
+  v8[5] = type;
+  [stacks enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __78__ATXHomeScreenWidgetFeedbackProcessor__addToHistogramForWidgetsInEvent_type___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -229,45 +229,45 @@ void __78__ATXHomeScreenWidgetFeedbackProcessor__addToHistogramForWidgetsInEvent
   [v6 addEventForWidgetBundleId:v7 type:*(a1 + 40)];
 }
 
-- (void)_updateHistogramForEvent:(id)a3
+- (void)_updateHistogramForEvent:(id)event
 {
-  v41 = a3;
-  v5 = [v41 eventTypeString];
-  if ([v5 isEqualToString:@"Unknown"])
+  eventCopy = event;
+  eventTypeString = [eventCopy eventTypeString];
+  if ([eventTypeString isEqualToString:@"Unknown"])
   {
     goto LABEL_2;
   }
 
-  if ([v5 isEqualToString:@"HomeScreenPageShown"])
+  if ([eventTypeString isEqualToString:@"HomeScreenPageShown"])
   {
 
-    [(ATXHomeScreenWidgetFeedbackProcessor *)self _addToHistogramForWidgetsInEvent:v41 type:2];
-    objc_storeStrong(&self->_lastPageAppearEvent, a3);
+    [(ATXHomeScreenWidgetFeedbackProcessor *)self _addToHistogramForWidgetsInEvent:eventCopy type:2];
+    objc_storeStrong(&self->_lastPageAppearEvent, event);
     goto LABEL_6;
   }
 
-  if ([v5 isEqualToString:@"HomeScreenDisappeared"])
+  if ([eventTypeString isEqualToString:@"HomeScreenDisappeared"])
   {
 
     lastPageAppearEvent = self->_lastPageAppearEvent;
     if (lastPageAppearEvent)
     {
-      v7 = [(ATXHomeScreenEvent *)lastPageAppearEvent metadata];
-      v8 = [v7 pageIndex];
-      v9 = [v41 metadata];
-      v10 = [v9 pageIndex];
-      v11 = [v8 isEqual:v10];
+      metadata = [(ATXHomeScreenEvent *)lastPageAppearEvent metadata];
+      pageIndex = [metadata pageIndex];
+      metadata2 = [eventCopy metadata];
+      pageIndex2 = [metadata2 pageIndex];
+      v11 = [pageIndex isEqual:pageIndex2];
 
       if (v11)
       {
-        v12 = [v41 date];
-        v13 = [(ATXHomeScreenEvent *)self->_lastPageAppearEvent date];
-        [v12 timeIntervalSinceDate:v13];
+        date = [eventCopy date];
+        date2 = [(ATXHomeScreenEvent *)self->_lastPageAppearEvent date];
+        [date timeIntervalSinceDate:date2];
         v15 = v14;
 
         if (v15 > 5.0)
         {
-          [(ATXHomeScreenWidgetFeedbackProcessor *)self _addToHistogramForWidgetsInEvent:v41 type:1];
+          [(ATXHomeScreenWidgetFeedbackProcessor *)self _addToHistogramForWidgetsInEvent:eventCopy type:1];
         }
 
         v16 = self->_lastPageAppearEvent;
@@ -278,12 +278,12 @@ void __78__ATXHomeScreenWidgetFeedbackProcessor__addToHistogramForWidgetsInEvent
     goto LABEL_6;
   }
 
-  if ([v5 isEqualToString:@"StackChanged"])
+  if ([eventTypeString isEqualToString:@"StackChanged"])
   {
 
-    v17 = [v41 reason];
+    reason = [eventCopy reason];
     v18 = NSStringForATXHomeScreenStackChangeReason();
-    v19 = [v17 isEqualToString:v18];
+    v19 = [reason isEqualToString:v18];
 
     if (v19)
     {
@@ -292,9 +292,9 @@ void __78__ATXHomeScreenWidgetFeedbackProcessor__addToHistogramForWidgetsInEvent
 
     else
     {
-      v25 = [v41 reason];
+      reason2 = [eventCopy reason];
       v26 = NSStringForATXHomeScreenStackChangeReason();
-      v27 = [v25 isEqualToString:v26];
+      v27 = [reason2 isEqualToString:v26];
 
       if (v27)
       {
@@ -303,9 +303,9 @@ void __78__ATXHomeScreenWidgetFeedbackProcessor__addToHistogramForWidgetsInEvent
 
       else
       {
-        v32 = [v41 reason];
+        reason3 = [eventCopy reason];
         v33 = NSStringForATXHomeScreenStackChangeReason();
-        v34 = [v32 isEqualToString:v33];
+        v34 = [reason3 isEqualToString:v33];
 
         if (v34)
         {
@@ -314,17 +314,17 @@ void __78__ATXHomeScreenWidgetFeedbackProcessor__addToHistogramForWidgetsInEvent
 
         else
         {
-          v35 = [v41 reason];
+          reason4 = [eventCopy reason];
           v36 = NSStringForATXHomeScreenStackChangeReason();
-          v37 = [v35 isEqualToString:v36];
+          v37 = [reason4 isEqualToString:v36];
 
           if (!v37)
           {
 LABEL_38:
             widgetFeedback = self->_widgetFeedback;
-            v5 = [v41 widgetBundleId];
+            eventTypeString = [eventCopy widgetBundleId];
             v22 = widgetFeedback;
-            v23 = v5;
+            v23 = eventTypeString;
             v24 = 2;
             goto LABEL_39;
           }
@@ -335,34 +335,34 @@ LABEL_38:
     }
 
     v38 = self->_widgetFeedback;
-    v39 = [v41 widgetBundleId];
-    [(ATXHomeScreenWidgetFeedback *)v38 addEventForWidgetBundleId:v39 type:v20];
+    widgetBundleId = [eventCopy widgetBundleId];
+    [(ATXHomeScreenWidgetFeedback *)v38 addEventForWidgetBundleId:widgetBundleId type:v20];
 
     goto LABEL_38;
   }
 
-  if ([v5 isEqualToString:@"WidgetTapped"])
+  if ([eventTypeString isEqualToString:@"WidgetTapped"])
   {
 
     v21 = self->_widgetFeedback;
-    v5 = [v41 widgetBundleId];
+    eventTypeString = [eventCopy widgetBundleId];
     v22 = v21;
-    v23 = v5;
+    v23 = eventTypeString;
     v24 = 0;
     goto LABEL_39;
   }
 
-  if ([v5 isEqualToString:@"WidgetLongLook"])
+  if ([eventTypeString isEqualToString:@"WidgetLongLook"])
   {
     goto LABEL_2;
   }
 
-  if ([v5 isEqualToString:@"WidgetUserFeedback"])
+  if ([eventTypeString isEqualToString:@"WidgetUserFeedback"])
   {
 
-    v28 = [v41 reason];
+    reason5 = [eventCopy reason];
     v29 = NSStringForATXHomeScreenWidgetExplicitFeedback();
-    v30 = [v28 isEqualToString:v29];
+    v30 = [reason5 isEqualToString:v29];
 
     if (!v30)
     {
@@ -370,16 +370,16 @@ LABEL_38:
     }
 
     v31 = self->_widgetFeedback;
-    v5 = [v41 widgetBundleId];
+    eventTypeString = [eventCopy widgetBundleId];
     v22 = v31;
-    v23 = v5;
+    v23 = eventTypeString;
     v24 = 7;
 LABEL_39:
     [(ATXHomeScreenWidgetFeedback *)v22 addEventForWidgetBundleId:v23 type:v24];
     goto LABEL_3;
   }
 
-  if ([v5 isEqualToString:@"UserStackConfigChanged"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"DeviceLocked") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"DeviceUnlocked") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"PinnedWidgetAdded") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"PinnedWidgetDeleted"))
+  if ([eventTypeString isEqualToString:@"UserStackConfigChanged"] & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"DeviceLocked") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"DeviceUnlocked") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"PinnedWidgetAdded") & 1) != 0 || (objc_msgSend(eventTypeString, "isEqualToString:", @"PinnedWidgetDeleted"))
   {
 LABEL_2:
 
@@ -387,17 +387,17 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  if (([v5 isEqualToString:@"SpecialPageAppeared"] & 1) == 0)
+  if (([eventTypeString isEqualToString:@"SpecialPageAppeared"] & 1) == 0)
   {
-    if (([v5 isEqualToString:@"SpecialPageDisappeared"] & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackShown") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackDisappeared") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackCreated") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackDeleted") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"WidgetAddedToStack") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"WidgetRemovedFromStack") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"StackVisibilityChanged") & 1) == 0 && (objc_msgSend(v5, "isEqualToString:", @"AppAdded") & 1) == 0)
+    if (([eventTypeString isEqualToString:@"SpecialPageDisappeared"] & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackShown") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackDisappeared") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackCreated") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackDeleted") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetAddedToStack") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"WidgetRemovedFromStack") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"StackVisibilityChanged") & 1) == 0 && (objc_msgSend(eventTypeString, "isEqualToString:", @"AppAdded") & 1) == 0)
     {
-      [v5 isEqualToString:@"AppRemoved"];
+      [eventTypeString isEqualToString:@"AppRemoved"];
     }
 
     goto LABEL_2;
   }
 
-  [(ATXHomeScreenWidgetFeedbackProcessor *)self _addToHistogramForWidgetsInEvent:v41 type:2];
+  [(ATXHomeScreenWidgetFeedbackProcessor *)self _addToHistogramForWidgetsInEvent:eventCopy type:2];
 LABEL_6:
 
   MEMORY[0x2821F96F8]();
@@ -425,13 +425,13 @@ LABEL_6:
   return v4;
 }
 
-+ (void)_storeLastHistogramUpdateDate:(id)a3
++ (void)_storeLastHistogramUpdateDate:(id)date
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
+  dateCopy = date;
   v5 = [v3 alloc];
   v6 = [v5 initWithSuiteName:*MEMORY[0x277CEBD00]];
-  [v6 setObject:v4 forKey:@"HomeScreenLastEventDateProcessedForHistograms"];
+  [v6 setObject:dateCopy forKey:@"HomeScreenLastEventDateProcessedForHistograms"];
 }
 
 - (ATXHomeScreenWidgetFeedbackProcessor)init
@@ -447,18 +447,18 @@ LABEL_6:
   return v7;
 }
 
-- (ATXHomeScreenWidgetFeedbackProcessor)initWithWidgetFeedback:(id)a3 publisher:(id)a4
+- (ATXHomeScreenWidgetFeedbackProcessor)initWithWidgetFeedback:(id)feedback publisher:(id)publisher
 {
-  v7 = a3;
-  v8 = a4;
+  feedbackCopy = feedback;
+  publisherCopy = publisher;
   v12.receiver = self;
   v12.super_class = ATXHomeScreenWidgetFeedbackProcessor;
   v9 = [(ATXHomeScreenWidgetFeedbackProcessor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_widgetFeedback, a3);
-    objc_storeStrong(&v10->_publisher, a4);
+    objc_storeStrong(&v9->_widgetFeedback, feedback);
+    objc_storeStrong(&v10->_publisher, publisher);
   }
 
   return v10;

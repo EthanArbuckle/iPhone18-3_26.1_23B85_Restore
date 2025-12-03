@@ -1,6 +1,6 @@
 @interface SharePlaySessionDetour
 - (_TtC10Blackbeard22SharePlaySessionDetour)init;
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5;
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error;
 @end
 
 @implementation SharePlaySessionDetour
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ED0735B0, &qword_1E65EA000);
   v10 = *(*(v9 - 8) + 64);
@@ -23,14 +23,14 @@
   v14 = swift_allocObject();
   v14[2] = 0;
   v14[3] = 0;
-  v14[4] = a5;
+  v14[4] = error;
   v14[5] = self;
-  v14[6] = a3;
-  v14[7] = a4;
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
-  v18 = a5;
+  v14[6] = controller;
+  v14[7] = result;
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
   sub_1E64B80F8(0, 0, v12, &unk_1E65EAB58, v14);
 }
 

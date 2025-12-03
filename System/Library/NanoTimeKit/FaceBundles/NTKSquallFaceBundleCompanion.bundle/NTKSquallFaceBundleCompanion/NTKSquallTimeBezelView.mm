@@ -1,19 +1,19 @@
 @interface NTKSquallTimeBezelView
-- (NTKSquallTimeBezelView)initWithDevice:(id)a3 progressProvider:(id)a4;
+- (NTKSquallTimeBezelView)initWithDevice:(id)device progressProvider:(id)provider;
 - (id)_logoDimmedColor;
 - (id)_logoHighlightedColor;
 - (id)_logoTritiumColor;
-- (void)_compositeBezelImagesA:(id)a3 andB:(id)a4 clippingPath:(id)a5 context:(CGContext *)a6;
-- (void)_renderBezelTemplateForSize:(CGSize)a3 highlighted:(BOOL)a4 tritium:(BOOL)a5 rendererContext:(id)a6;
+- (void)_compositeBezelImagesA:(id)a andB:(id)b clippingPath:(id)path context:(CGContext *)context;
+- (void)_renderBezelTemplateForSize:(CGSize)size highlighted:(BOOL)highlighted tritium:(BOOL)tritium rendererContext:(id)context;
 @end
 
 @implementation NTKSquallTimeBezelView
 
-- (NTKSquallTimeBezelView)initWithDevice:(id)a3 progressProvider:(id)a4
+- (NTKSquallTimeBezelView)initWithDevice:(id)device progressProvider:(id)provider
 {
   v9.receiver = self;
   v9.super_class = NTKSquallTimeBezelView;
-  v4 = [(NTKSquallBezelView *)&v9 initWithDevice:a3 progressProvider:a4];
+  v4 = [(NTKSquallBezelView *)&v9 initWithDevice:device progressProvider:provider];
   if (v4)
   {
     v5 = [NTKSquallFaceBundle imageWithName:@"hermes-logo"];
@@ -27,84 +27,84 @@
 
 - (id)_logoHighlightedColor
 {
-  v3 = [(NTKSquallBezelView *)self colorPalette];
+  colorPalette = [(NTKSquallBezelView *)self colorPalette];
 
-  if (v3)
+  if (colorPalette)
   {
-    v4 = [(NTKSquallBezelView *)self colorPalette];
-    v5 = [v4 logoHighlighted];
+    colorPalette2 = [(NTKSquallBezelView *)self colorPalette];
+    logoHighlighted = [colorPalette2 logoHighlighted];
   }
 
   else
   {
-    v5 = +[UIColor blackColor];
+    logoHighlighted = +[UIColor blackColor];
   }
 
-  return v5;
+  return logoHighlighted;
 }
 
 - (id)_logoDimmedColor
 {
-  v3 = [(NTKSquallBezelView *)self colorPalette];
+  colorPalette = [(NTKSquallBezelView *)self colorPalette];
 
-  if (v3)
+  if (colorPalette)
   {
-    v4 = [(NTKSquallBezelView *)self colorPalette];
-    v5 = [v4 logoDimmed];
+    colorPalette2 = [(NTKSquallBezelView *)self colorPalette];
+    logoDimmed = [colorPalette2 logoDimmed];
   }
 
   else
   {
-    v5 = +[UIColor whiteColor];
+    logoDimmed = +[UIColor whiteColor];
   }
 
-  return v5;
+  return logoDimmed;
 }
 
 - (id)_logoTritiumColor
 {
-  v3 = [(NTKSquallBezelView *)self colorPalette];
+  colorPalette = [(NTKSquallBezelView *)self colorPalette];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(NTKSquallBezelView *)self colorPalette];
-    v6 = [v5 tritiumPalette];
-    v7 = [v6 logoDimmed];
+    colorPalette2 = [(NTKSquallBezelView *)self colorPalette];
+    tritiumPalette = [colorPalette2 tritiumPalette];
+    logoDimmed = [tritiumPalette logoDimmed];
   }
 
   else
   {
-    v7 = +[UIColor whiteColor];
+    logoDimmed = +[UIColor whiteColor];
   }
 
-  return v7;
+  return logoDimmed;
 }
 
-- (void)_renderBezelTemplateForSize:(CGSize)a3 highlighted:(BOOL)a4 tritium:(BOOL)a5 rendererContext:(id)a6
+- (void)_renderBezelTemplateForSize:(CGSize)size highlighted:(BOOL)highlighted tritium:(BOOL)tritium rendererContext:(id)context
 {
-  v6 = a5;
-  v7 = a4;
-  height = a3.height;
-  width = a3.width;
+  tritiumCopy = tritium;
+  highlightedCopy = highlighted;
+  height = size.height;
+  width = size.width;
   v25.receiver = self;
   v25.super_class = NTKSquallTimeBezelView;
-  v11 = a6;
-  [(NTKSquallBezelView *)&v25 _renderBezelTemplateForSize:v7 highlighted:v6 tritium:v11 rendererContext:width, height];
-  v12 = [(NTKSquallBezelView *)self device];
-  v13 = sub_3758(v12, v12);
+  contextCopy = context;
+  [(NTKSquallBezelView *)&v25 _renderBezelTemplateForSize:highlightedCopy highlighted:tritiumCopy tritium:contextCopy rendererContext:width, height];
+  device = [(NTKSquallBezelView *)self device];
+  v13 = sub_3758(device, device);
   v15 = v14;
 
-  v16 = [v11 CGContext];
-  if (v6)
+  cGContext = [contextCopy CGContext];
+  if (tritiumCopy)
   {
-    v17 = [(NTKSquallTimeBezelView *)self _logoTritiumColor];
+    _logoTritiumColor = [(NTKSquallTimeBezelView *)self _logoTritiumColor];
   }
 
   else
   {
-    if (v7)
+    if (highlightedCopy)
     {
       [(NTKSquallTimeBezelView *)self _logoHighlightedColor];
     }
@@ -113,17 +113,17 @@
     {
       [(NTKSquallTimeBezelView *)self _logoDimmedColor];
     }
-    v17 = ;
+    _logoTritiumColor = ;
   }
 
-  v18 = v17;
-  CGContextSaveGState(v16);
+  v18 = _logoTritiumColor;
+  CGContextSaveGState(cGContext);
   transform.b = 0.0;
   transform.c = 0.0;
   transform.a = 1.0;
   *&transform.d = xmmword_9A50;
   transform.ty = height;
-  CGContextConcatCTM(v16, &transform);
+  CGContextConcatCTM(cGContext, &transform);
   [(UIImage *)self->_logoImage size];
   v20 = v19;
   [(UIImage *)self->_logoImage size];
@@ -132,74 +132,74 @@
   v26.origin.y = v15;
   v26.size.width = v20;
   v26.size.height = v22;
-  CGContextBeginTransparencyLayerWithRect(v16, v26, 0);
-  CGContextSetFillColorWithColor(v16, [v18 CGColor]);
-  v23 = [(UIImage *)self->_logoImage CGImage];
+  CGContextBeginTransparencyLayerWithRect(cGContext, v26, 0);
+  CGContextSetFillColorWithColor(cGContext, [v18 CGColor]);
+  cGImage = [(UIImage *)self->_logoImage CGImage];
   v27.origin.x = v13;
   v27.origin.y = v15;
   v27.size.width = v20;
   v27.size.height = v22;
-  CGContextDrawImage(v16, v27, v23);
-  CGContextSetBlendMode(v16, kCGBlendModeSourceIn);
+  CGContextDrawImage(cGContext, v27, cGImage);
+  CGContextSetBlendMode(cGContext, kCGBlendModeSourceIn);
   v28.origin.x = v13;
   v28.origin.y = v15;
   v28.size.width = v20;
   v28.size.height = v22;
-  CGContextFillRect(v16, v28);
-  CGContextEndTransparencyLayer(v16);
+  CGContextFillRect(cGContext, v28);
+  CGContextEndTransparencyLayer(cGContext);
   transform.b = 0.0;
   transform.c = 0.0;
   transform.a = 1.0;
   *&transform.d = xmmword_9A50;
   transform.ty = height;
-  CGContextConcatCTM(v16, &transform);
-  CGContextRestoreGState(v16);
+  CGContextConcatCTM(cGContext, &transform);
+  CGContextRestoreGState(cGContext);
 }
 
-- (void)_compositeBezelImagesA:(id)a3 andB:(id)a4 clippingPath:(id)a5 context:(CGContext *)a6
+- (void)_compositeBezelImagesA:(id)a andB:(id)b clippingPath:(id)path context:(CGContext *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(NTKSquallBezelView *)self device];
-  sub_3758(v13, v13);
+  aCopy = a;
+  bCopy = b;
+  pathCopy = path;
+  device = [(NTKSquallBezelView *)self device];
+  sub_3758(device, device);
   v15 = v14;
 
   v26.receiver = self;
   v26.super_class = NTKSquallTimeBezelView;
-  [(NTKSquallBezelView *)&v26 _compositeBezelImageA:v10 clippingPath:v12 context:a6];
+  [(NTKSquallBezelView *)&v26 _compositeBezelImageA:aCopy clippingPath:pathCopy context:context];
   [(NTKSquallBezelView *)self progress];
   if (v16 < v15)
   {
     [(NTKSquallBezelView *)self tritiumFraction];
     if (v17 == 0.0)
     {
-      [v10 size];
+      [aCopy size];
       v19 = v18;
       v21 = v20;
       [(NTKSquallBezelView *)self progress];
-      CGContextSetAlpha(a6, 1.0 - v22 / v15);
-      CGContextSaveGState(a6);
+      CGContextSetAlpha(context, 1.0 - v22 / v15);
+      CGContextSaveGState(context);
       transform.b = 0.0;
       transform.c = 0.0;
       transform.a = 1.0;
       *&transform.d = xmmword_9A50;
       transform.ty = v21;
-      CGContextConcatCTM(a6, &transform);
-      v23 = [v11 CGImage];
+      CGContextConcatCTM(context, &transform);
+      cGImage = [bCopy CGImage];
       v27.origin.x = 0.0;
       v27.origin.y = 0.0;
       v27.size.width = v19;
       v27.size.height = v21;
-      CGContextDrawImage(a6, v27, v23);
-      CGContextRestoreGState(a6);
-      CGContextSetAlpha(a6, 1.0);
+      CGContextDrawImage(context, v27, cGImage);
+      CGContextRestoreGState(context);
+      CGContextSetAlpha(context, 1.0);
     }
   }
 
   v24.receiver = self;
   v24.super_class = NTKSquallTimeBezelView;
-  [(NTKSquallBezelView *)&v24 _compositeBezelImageB:v11 clippingPath:v12 context:a6];
+  [(NTKSquallBezelView *)&v24 _compositeBezelImageB:bCopy clippingPath:pathCopy context:context];
 }
 
 @end

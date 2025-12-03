@@ -1,32 +1,32 @@
 @interface PAAccessRecordCoalescingDoneState
-- (id)initByEndingLastWindow:(id)a3 reversed:(BOOL)a4;
+- (id)initByEndingLastWindow:(id)window reversed:(BOOL)reversed;
 @end
 
 @implementation PAAccessRecordCoalescingDoneState
 
-- (id)initByEndingLastWindow:(id)a3 reversed:(BOOL)a4
+- (id)initByEndingLastWindow:(id)window reversed:(BOOL)reversed
 {
-  v6 = a3;
+  windowCopy = window;
   v12.receiver = self;
   v12.super_class = PAAccessRecordCoalescingDoneState;
   v7 = [(PAAccessRecordCoalescingDoneState *)&v12 init];
   if (v7)
   {
-    if ([v6 conformsToProtocol:&unk_1F5A5C188])
+    if ([windowCopy conformsToProtocol:&unk_1F5A5C188])
     {
-      v8 = [v6 groupedRecordsByMatcher];
-      v9 = [v8 allValues];
+      groupedRecordsByMatcher = [windowCopy groupedRecordsByMatcher];
+      allValues = [groupedRecordsByMatcher allValues];
       groupedRecordsToRepublish = v7->_groupedRecordsToRepublish;
-      v7->_groupedRecordsToRepublish = v9;
+      v7->_groupedRecordsToRepublish = allValues;
     }
 
     else
     {
-      v8 = v7->_groupedRecordsToRepublish;
+      groupedRecordsByMatcher = v7->_groupedRecordsToRepublish;
       v7->_groupedRecordsToRepublish = MEMORY[0x1E695E0F0];
     }
 
-    v7->_reversed = a4;
+    v7->_reversed = reversed;
   }
 
   return v7;

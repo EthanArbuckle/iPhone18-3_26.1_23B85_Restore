@@ -1,12 +1,12 @@
 @interface TimerClass
-- (_TtC15MapsSuggestions10TimerClass)initWithName:(id)a3 estimatedDownload:(int64_t)a4 estimatedUpload:(int64_t)a5 queue:(id)a6 block:(id)a7;
+- (_TtC15MapsSuggestions10TimerClass)initWithName:(id)name estimatedDownload:(int64_t)download estimatedUpload:(int64_t)upload queue:(id)queue block:(id)block;
 @end
 
 @implementation TimerClass
 
-- (_TtC15MapsSuggestions10TimerClass)initWithName:(id)a3 estimatedDownload:(int64_t)a4 estimatedUpload:(int64_t)a5 queue:(id)a6 block:(id)a7
+- (_TtC15MapsSuggestions10TimerClass)initWithName:(id)name estimatedDownload:(int64_t)download estimatedUpload:(int64_t)upload queue:(id)queue block:(id)block
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(block);
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
   aBlock[4] = sub_1C5258AE8;
@@ -16,12 +16,12 @@
   aBlock[2] = sub_1C5139244;
   aBlock[3] = &block_descriptor_162;
   v14 = _Block_copy(aBlock);
-  v15 = a3;
-  v16 = a6;
+  nameCopy = name;
+  queueCopy = queue;
 
   v19.receiver = self;
   v19.super_class = type metadata accessor for TimerClass();
-  v17 = [(MapsSuggestionsXPCActivityTimer *)&v19 initWithName:v15 estimatedDownload:a4 estimatedUpload:a5 queue:v16 block:v14];
+  v17 = [(MapsSuggestionsXPCActivityTimer *)&v19 initWithName:nameCopy estimatedDownload:download estimatedUpload:upload queue:queueCopy block:v14];
 
   _Block_release(v14);
 

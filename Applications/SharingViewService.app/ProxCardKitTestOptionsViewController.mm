@@ -1,15 +1,15 @@
 @interface ProxCardKitTestOptionsViewController
-- (ProxCardKitTestOptionsViewController)initWithContentView:(id)a3;
+- (ProxCardKitTestOptionsViewController)initWithContentView:(id)view;
 @end
 
 @implementation ProxCardKitTestOptionsViewController
 
-- (ProxCardKitTestOptionsViewController)initWithContentView:(id)a3
+- (ProxCardKitTestOptionsViewController)initWithContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v17.receiver = self;
   v17.super_class = ProxCardKitTestOptionsViewController;
-  v5 = [(ProxCardKitTestOptionsViewController *)&v17 initWithContentView:v4];
+  v5 = [(ProxCardKitTestOptionsViewController *)&v17 initWithContentView:viewCopy];
   v6 = v5;
   if (v5)
   {

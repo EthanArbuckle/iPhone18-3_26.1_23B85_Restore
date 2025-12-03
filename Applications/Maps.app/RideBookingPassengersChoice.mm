@@ -1,55 +1,55 @@
 @interface RideBookingPassengersChoice
 - (NSString)formattedPriceRange;
 - (NSString)title;
-- (RideBookingPassengersChoice)initWithNumberOfPassengers:(unint64_t)a3;
+- (RideBookingPassengersChoice)initWithNumberOfPassengers:(unint64_t)passengers;
 - (unint64_t)size;
-- (void)setIntentsPartySizeOption:(id)a3;
-- (void)setIntentsPriceRange:(id)a3;
+- (void)setIntentsPartySizeOption:(id)option;
+- (void)setIntentsPriceRange:(id)range;
 @end
 
 @implementation RideBookingPassengersChoice
 
 - (NSString)title
 {
-  v2 = [(RideBookingPassengersChoice *)self intentsPartySizeOption];
-  v3 = [v2 sizeDescription];
+  intentsPartySizeOption = [(RideBookingPassengersChoice *)self intentsPartySizeOption];
+  sizeDescription = [intentsPartySizeOption sizeDescription];
 
-  return v3;
+  return sizeDescription;
 }
 
 - (unint64_t)size
 {
-  v3 = [(RideBookingPassengersChoice *)self intentsPartySizeOption];
-  v4 = [v3 partySizeRange];
-  v5 = [(RideBookingPassengersChoice *)self intentsPartySizeOption];
-  [v5 partySizeRange];
+  intentsPartySizeOption = [(RideBookingPassengersChoice *)self intentsPartySizeOption];
+  partySizeRange = [intentsPartySizeOption partySizeRange];
+  intentsPartySizeOption2 = [(RideBookingPassengersChoice *)self intentsPartySizeOption];
+  [intentsPartySizeOption2 partySizeRange];
   v7 = v6;
 
-  return v4 + v7;
+  return partySizeRange + v7;
 }
 
 - (NSString)formattedPriceRange
 {
-  v3 = [(RideBookingPassengersChoice *)self intentsPartySizeOption];
-  v4 = [v3 priceRange];
-  v5 = v4;
-  if (v4)
+  intentsPartySizeOption = [(RideBookingPassengersChoice *)self intentsPartySizeOption];
+  priceRange = [intentsPartySizeOption priceRange];
+  v5 = priceRange;
+  if (priceRange)
   {
-    v6 = v4;
+    intentsPriceRange = priceRange;
   }
 
   else
   {
-    v6 = [(RideBookingPassengersChoice *)self intentsPriceRange];
+    intentsPriceRange = [(RideBookingPassengersChoice *)self intentsPriceRange];
   }
 
-  v7 = v6;
+  v7 = intentsPriceRange;
 
-  v8 = [v7 _maps_formattedStringWithDefaultShortFormatStrings];
-  v9 = v8;
-  if (v8)
+  _maps_formattedStringWithDefaultShortFormatStrings = [v7 _maps_formattedStringWithDefaultShortFormatStrings];
+  v9 = _maps_formattedStringWithDefaultShortFormatStrings;
+  if (_maps_formattedStringWithDefaultShortFormatStrings)
   {
-    v10 = v8;
+    v10 = _maps_formattedStringWithDefaultShortFormatStrings;
   }
 
   else
@@ -62,34 +62,34 @@
   return &v10->isa;
 }
 
-- (RideBookingPassengersChoice)initWithNumberOfPassengers:(unint64_t)a3
+- (RideBookingPassengersChoice)initWithNumberOfPassengers:(unint64_t)passengers
 {
   v5.receiver = self;
   v5.super_class = RideBookingPassengersChoice;
   result = [(RideBookingPassengersChoice *)&v5 init];
   if (result)
   {
-    result->_numberOfPassengers = a3;
+    result->_numberOfPassengers = passengers;
   }
 
   return result;
 }
 
-- (void)setIntentsPartySizeOption:(id)a3
+- (void)setIntentsPartySizeOption:(id)option
 {
-  value = a3;
-  v4 = [(RideBookingPassengersChoice *)self intentsPartySizeOption];
-  if (([v4 isEqual:value] & 1) == 0)
+  value = option;
+  intentsPartySizeOption = [(RideBookingPassengersChoice *)self intentsPartySizeOption];
+  if (([intentsPartySizeOption isEqual:value] & 1) == 0)
   {
     objc_setAssociatedObject(self, &unk_101215CC1, value, 3);
   }
 }
 
-- (void)setIntentsPriceRange:(id)a3
+- (void)setIntentsPriceRange:(id)range
 {
-  value = a3;
-  v4 = [(RideBookingPassengersChoice *)self intentsPriceRange];
-  if (([v4 isEqual:value] & 1) == 0)
+  value = range;
+  intentsPriceRange = [(RideBookingPassengersChoice *)self intentsPriceRange];
+  if (([intentsPriceRange isEqual:value] & 1) == 0)
   {
     objc_setAssociatedObject(self, &unk_101215CC0, value, 3);
   }

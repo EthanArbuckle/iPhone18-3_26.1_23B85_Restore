@@ -7,18 +7,18 @@
 - (id)_convertedPunchout
 {
   v3 = objc_alloc_init(SFPunchout);
-  v4 = [(SAUIAppPunchOut *)self punchOutName];
-  [v3 setName:v4];
+  punchOutName = [(SAUIAppPunchOut *)self punchOutName];
+  [v3 setName:punchOutName];
 
-  v5 = [(SAUIAppPunchOut *)self punchOutUri];
-  v10 = v5;
+  punchOutUri = [(SAUIAppPunchOut *)self punchOutUri];
+  v10 = punchOutUri;
   v6 = [NSArray arrayWithObjects:&v10 count:1];
   [v3 setUrls:v6];
 
-  v7 = [(SAUIAppPunchOut *)self bundleId];
-  if (v7)
+  bundleId = [(SAUIAppPunchOut *)self bundleId];
+  if (bundleId)
   {
-    [v3 setBundleIdentifier:v7];
+    [v3 setBundleIdentifier:bundleId];
   }
 
   else

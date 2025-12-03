@@ -1,16 +1,16 @@
 @interface MFAccountHealer
 + (OS_os_log)log;
-- (BOOL)_shouldHealAccount:(id)a3 withNewAccount:(id)a4;
+- (BOOL)_shouldHealAccount:(id)account withNewAccount:(id)newAccount;
 - (BOOL)shouldHealFromAlternateAccount;
-- (MFAccountHealer)initWithAccount:(id)a3 networkController:(id)a4 error:(id)a5;
+- (MFAccountHealer)initWithAccount:(id)account networkController:(id)controller error:(id)error;
 - (id)_alternateAccount;
-- (id)_fetchServerFromACEDB:(id)a3 forIncomingServer:(BOOL)a4;
-- (id)_getMailAccountFromDeliveryAccount:(id)a3;
-- (id)_lastTimeConnectToACEDBForAccount:(id)a3;
-- (void)_overwriteAccount:(id)a3 withAlternateAccount:(id)a4;
-- (void)_renewCredentialsWithError:(id)a3 completionHandler:(id)a4;
-- (void)healFromAlternateAccountWithCompletion:(id)a3;
-- (void)healSilentlyWithCompletion:(id)a3;
+- (id)_fetchServerFromACEDB:(id)b forIncomingServer:(BOOL)server;
+- (id)_getMailAccountFromDeliveryAccount:(id)account;
+- (id)_lastTimeConnectToACEDBForAccount:(id)account;
+- (void)_overwriteAccount:(id)account withAlternateAccount:(id)alternateAccount;
+- (void)_renewCredentialsWithError:(id)error completionHandler:(id)handler;
+- (void)healFromAlternateAccountWithCompletion:(id)completion;
+- (void)healSilentlyWithCompletion:(id)completion;
 @end
 
 @implementation MFAccountHealer
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = sub_100048D6C;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185768 != -1)
   {
     dispatch_once(&qword_100185768, block);
@@ -32,63 +32,63 @@
   return v2;
 }
 
-- (MFAccountHealer)initWithAccount:(id)a3 networkController:(id)a4 error:(id)a5
+- (MFAccountHealer)initWithAccount:(id)account networkController:(id)controller error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  controllerCopy = controller;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = MFAccountHealer;
   v12 = [(MFAccountHealer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a3);
-    objc_storeStrong(&v13->_error, a5);
-    objc_storeStrong(&v13->_networkController, a4);
+    objc_storeStrong(&v12->_account, account);
+    objc_storeStrong(&v13->_error, error);
+    objc_storeStrong(&v13->_networkController, controller);
   }
 
   return v13;
 }
 
-- (void)healSilentlyWithCompletion:(id)a3
+- (void)healSilentlyWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (pthread_main_np())
   {
     v17 = +[NSAssertionHandler currentHandler];
     [v17 handleFailureInMethod:a2 object:self file:@"MFAccountHealer.m" lineNumber:40 description:@"Current thread is main"];
   }
 
-  v6 = [(MFAccountHealer *)self error];
-  v7 = [v6 code];
+  error = [(MFAccountHealer *)self error];
+  code = [error code];
 
-  v8 = [(MFAccountHealer *)self account];
-  v9 = [v8 baseAccount];
-  v10 = [v9 hasPasswordCredential];
+  account = [(MFAccountHealer *)self account];
+  baseAccount = [account baseAccount];
+  hasPasswordCredential = [baseAccount hasPasswordCredential];
 
-  if (v10)
+  if (hasPasswordCredential)
   {
     goto LABEL_12;
   }
 
-  v11 = [(MFAccountHealer *)self networkController];
-  if (![v11 isDataAvailable])
+  networkController = [(MFAccountHealer *)self networkController];
+  if (![networkController isDataAvailable])
   {
 
     goto LABEL_12;
   }
 
-  if (v7 != 1032 && v7 != 1055)
+  if (code != 1032 && code != 1055)
   {
 
-    if (v7 == 1056)
+    if (code == 1056)
     {
       goto LABEL_8;
     }
 
 LABEL_12:
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_13;
   }
 
@@ -96,10 +96,10 @@ LABEL_8:
   v12 = MFLogGeneral();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(MFAccountHealer *)self account];
-    v14 = [v13 ef_publicDescription];
+    account2 = [(MFAccountHealer *)self account];
+    ef_publicDescription = [account2 ef_publicDescription];
     *buf = 138543362;
-    v25 = v14;
+    v25 = ef_publicDescription;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Attempting renewal of credentials for account: %{public}@", buf, 0xCu);
   }
 
@@ -107,8 +107,8 @@ LABEL_8:
   v19 = 3221225472;
   v20 = sub_10004919C;
   v21 = &unk_100157990;
-  v22 = self;
-  v23 = v5;
+  selfCopy = self;
+  v23 = completionCopy;
   v15 = objc_retainBlock(&v18);
   v16 = [(MFAccountHealer *)self error:v18];
   [(MFAccountHealer *)self _renewCredentialsWithError:v16 completionHandler:v15];
@@ -116,20 +116,20 @@ LABEL_8:
 LABEL_13:
 }
 
-- (void)healFromAlternateAccountWithCompletion:(id)a3
+- (void)healFromAlternateAccountWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (pthread_main_np() != 1)
   {
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"MFAccountHealer.m" lineNumber:64 description:@"Current thread must be main"];
   }
 
-  v6 = [(MFAccountHealer *)self _alternateAccount];
-  if (v6)
+  _alternateAccount = [(MFAccountHealer *)self _alternateAccount];
+  if (_alternateAccount)
   {
     v7 = [[MFAccountValidator alloc] initWithPerformsValidationInBackground:0];
-    [v7 validateAccount:v6 useSSL:{objc_msgSend(v6, "usesSSL")}];
+    [v7 validateAccount:_alternateAccount useSSL:{objc_msgSend(_alternateAccount, "usesSSL")}];
     v8 = +[EFScheduler globalAsyncScheduler];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -137,54 +137,54 @@ LABEL_13:
     v11[3] = &unk_1001579E0;
     v9 = v7;
     v12 = v9;
-    v13 = self;
-    v14 = v6;
-    v15 = v5;
+    selfCopy = self;
+    v14 = _alternateAccount;
+    v15 = completionCopy;
     [v8 performBlock:v11];
   }
 
   else
   {
-    (*(v5 + 2))(v5, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
 - (BOOL)shouldHealFromAlternateAccount
 {
-  v3 = [(MFAccountHealer *)self account];
+  account = [(MFAccountHealer *)self account];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(MFAccountHealer *)self account];
+  account2 = [(MFAccountHealer *)self account];
   objc_opt_class();
   v6 = objc_opt_isKindOfClass();
 
-  v7 = [(MFAccountHealer *)self account];
-  v8 = [v7 isManaged];
+  account3 = [(MFAccountHealer *)self account];
+  isManaged = [account3 isManaged];
 
   v9 = 0;
-  if (v8 & 1) == 0 && ((isKindOfClass | v6))
+  if (isManaged & 1) == 0 && ((isKindOfClass | v6))
   {
-    v10 = [(MFAccountHealer *)self account];
-    v11 = [(MFAccountHealer *)self error];
-    v9 = [v10 shouldFetchACEDBInfoForError:v11];
+    account4 = [(MFAccountHealer *)self account];
+    error = [(MFAccountHealer *)self error];
+    v9 = [account4 shouldFetchACEDBInfoForError:error];
   }
 
   v12 = MFLogGeneral();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v19 = [(MFAccountHealer *)self error];
-    v20 = [v19 ef_publicDescription];
+    error2 = [(MFAccountHealer *)self error];
+    ef_publicDescription = [error2 ef_publicDescription];
     v21 = [NSNumber numberWithBool:v9];
     v22 = 138543618;
-    v23 = v20;
+    v23 = ef_publicDescription;
     v24 = 2112;
     v25 = v21;
     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Error for error we use to determind to heal with another account or not: %{public}@, should heal? %@", &v22, 0x16u);
   }
 
-  v13 = [(MFAccountHealer *)self account];
-  v14 = [(MFAccountHealer *)self _lastTimeConnectToACEDBForAccount:v13];
+  account5 = [(MFAccountHealer *)self account];
+  v14 = [(MFAccountHealer *)self _lastTimeConnectToACEDBForAccount:account5];
 
   if (v14)
   {
@@ -204,36 +204,36 @@ LABEL_13:
 {
   if ([(MFAccountHealer *)self shouldHealFromAlternateAccount])
   {
-    v3 = [(MFAccountHealer *)self account];
+    account = [(MFAccountHealer *)self account];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v5 = [(MFAccountHealer *)self account];
-    v6 = [(MFAccountHealer *)self _fetchServerFromACEDB:v5 forIncomingServer:isKindOfClass & 1];
+    account2 = [(MFAccountHealer *)self account];
+    v6 = [(MFAccountHealer *)self _fetchServerFromACEDB:account2 forIncomingServer:isKindOfClass & 1];
 
     if (v6 && ([(MFAccountHealer *)self account], v7 = objc_claimAutoreleasedReturnValue(), v8 = [(MFAccountHealer *)self _shouldHealAccount:v7 withNewAccount:v6], v7, v8))
     {
       v9 = +[MFAccountHealer log];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v6 hostname];
+        hostname = [v6 hostname];
         v17 = 138412802;
-        v18 = v10;
+        v18 = hostname;
         v19 = 1024;
-        v20 = [v6 portNumber];
+        portNumber = [v6 portNumber];
         v21 = 1024;
-        v22 = [v6 usesSSL];
+        usesSSL = [v6 usesSSL];
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Informations we got back from Ace DB: %@, %i, %i", &v17, 0x18u);
       }
 
       v11 = v6;
-      v12 = [(MFAccountHealer *)self account];
-      v13 = [v12 username];
-      [v11 setUsername:v13];
+      account3 = [(MFAccountHealer *)self account];
+      username = [account3 username];
+      [v11 setUsername:username];
 
-      v14 = [(MFAccountHealer *)self account];
-      v15 = [v14 password];
-      [v11 setPassword:v15];
+      account4 = [(MFAccountHealer *)self account];
+      password = [account4 password];
+      [v11 setPassword:password];
     }
 
     else
@@ -250,16 +250,16 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)_shouldHealAccount:(id)a3 withNewAccount:(id)a4
+- (BOOL)_shouldHealAccount:(id)account withNewAccount:(id)newAccount
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 usesSSL];
-  if (v7 == [v6 usesSSL] && (v8 = objc_msgSend(v5, "portNumber"), v8 == objc_msgSend(v6, "portNumber")))
+  accountCopy = account;
+  newAccountCopy = newAccount;
+  usesSSL = [accountCopy usesSSL];
+  if (usesSSL == [newAccountCopy usesSSL] && (v8 = objc_msgSend(accountCopy, "portNumber"), v8 == objc_msgSend(newAccountCopy, "portNumber")))
   {
-    v9 = [v5 hostname];
-    v10 = [v6 hostname];
-    v11 = [v9 caseInsensitiveCompare:v10] != 0;
+    hostname = [accountCopy hostname];
+    hostname2 = [newAccountCopy hostname];
+    v11 = [hostname caseInsensitiveCompare:hostname2] != 0;
   }
 
   else
@@ -267,9 +267,9 @@ LABEL_13:
     v11 = 1;
   }
 
-  v12 = [v5 type];
-  v13 = [v6 type];
-  v14 = [v12 caseInsensitiveCompare:v13];
+  type = [accountCopy type];
+  type2 = [newAccountCopy type];
+  v14 = [type caseInsensitiveCompare:type2];
 
   if (v14)
   {
@@ -284,34 +284,34 @@ LABEL_13:
   return v15;
 }
 
-- (id)_fetchServerFromACEDB:(id)a3 forIncomingServer:(BOOL)a4
+- (id)_fetchServerFromACEDB:(id)b forIncomingServer:(BOOL)server
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  serverCopy = server;
+  bCopy = b;
+  v7 = bCopy;
   v18 = 0;
   v19 = 0;
-  if (v4)
+  if (serverCopy)
   {
-    v8 = [v6 firstEmailAddress];
+    firstEmailAddress = [bCopy firstEmailAddress];
   }
 
   else
   {
-    v9 = [(MFAccountHealer *)self _getMailAccountFromDeliveryAccount:v6];
+    v9 = [(MFAccountHealer *)self _getMailAccountFromDeliveryAccount:bCopy];
     v10 = v9;
     if (v9)
     {
-      v8 = [v9 firstEmailAddress];
+      firstEmailAddress = [v9 firstEmailAddress];
     }
 
     else
     {
-      v8 = &stru_10015BEC8;
+      firstEmailAddress = &stru_10015BEC8;
     }
   }
 
-  if ([(__CFString *)v8 length])
+  if ([(__CFString *)firstEmailAddress length])
   {
     v11 = AccountConfigurationServiceCopyAccountsForEmailAddress() == 2;
   }
@@ -322,7 +322,7 @@ LABEL_13:
   }
 
   v12 = &v18;
-  if (v4)
+  if (serverCopy)
   {
     v12 = &v19;
   }
@@ -344,59 +344,59 @@ LABEL_13:
   return v16;
 }
 
-- (id)_getMailAccountFromDeliveryAccount:(id)a3
+- (id)_getMailAccountFromDeliveryAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[MailAccount activeAccounts];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004A3D4;
   v8[3] = &unk_100157A08;
-  v5 = v3;
+  v5 = accountCopy;
   v9 = v5;
   v6 = [v4 ef_firstObjectPassingTest:v8];
 
   return v6;
 }
 
-- (id)_lastTimeConnectToACEDBForAccount:(id)a3
+- (id)_lastTimeConnectToACEDBForAccount:(id)account
 {
-  v3 = [a3 accountPropertyForKey:MFHealAccountDateLastFetched];
+  v3 = [account accountPropertyForKey:MFHealAccountDateLastFetched];
   [v3 doubleValue];
   v4 = [NSDate dateWithTimeIntervalSince1970:?];
 
   return v4;
 }
 
-- (void)_overwriteAccount:(id)a3 withAlternateAccount:(id)a4
+- (void)_overwriteAccount:(id)account withAlternateAccount:(id)alternateAccount
 {
-  v9 = a3;
-  v5 = a4;
-  [v9 setUsesSSL:{objc_msgSend(v5, "usesSSL")}];
-  [v9 setPortNumber:{objc_msgSend(v5, "portNumber")}];
-  v6 = [v5 hostname];
-  [v9 setHostname:v6];
+  accountCopy = account;
+  alternateAccountCopy = alternateAccount;
+  [accountCopy setUsesSSL:{objc_msgSend(alternateAccountCopy, "usesSSL")}];
+  [accountCopy setPortNumber:{objc_msgSend(alternateAccountCopy, "portNumber")}];
+  hostname = [alternateAccountCopy hostname];
+  [accountCopy setHostname:hostname];
 
   v7 = +[NSDate date];
   [v7 timeIntervalSince1970];
   v8 = [NSNumber numberWithDouble:?];
-  [v9 setValueInAccountProperties:v8 forKey:MFHealAccountDateLastFetched];
+  [accountCopy setValueInAccountProperties:v8 forKey:MFHealAccountDateLastFetched];
 
-  [v9 savePersistentAccount];
+  [accountCopy savePersistentAccount];
 }
 
-- (void)_renewCredentialsWithError:(id)a3 completionHandler:(id)a4
+- (void)_renewCredentialsWithError:(id)error completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [(MFAccountHealer *)self account];
+  account = [(MFAccountHealer *)self account];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10004A71C;
   v9[3] = &unk_100157A30;
-  v8 = v5;
+  v8 = handlerCopy;
   v10 = v8;
-  [v7 renewCredentialsWithOptions:v6 completion:v9];
+  [account renewCredentialsWithOptions:v6 completion:v9];
 }
 
 @end

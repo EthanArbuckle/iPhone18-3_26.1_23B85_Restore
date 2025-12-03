@@ -28,13 +28,13 @@
 
 - (double)_px_currentContentSize
 {
-  [a1 contentSize];
+  [self contentSize];
   v3 = v2;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [a1 collectionViewLayout];
-    [v4 collectionViewContentSize];
+    collectionViewLayout = [self collectionViewLayout];
+    [collectionViewLayout collectionViewContentSize];
     v3 = v5;
   }
 
@@ -43,16 +43,16 @@
 
 - (uint64_t)px_isBouncing
 {
-  v2 = [a1 px_scrollableAxis];
-  if (v2)
+  px_scrollableAxis = [self px_scrollableAxis];
+  if (px_scrollableAxis)
   {
-    if ([a1 px_isScrolledBeyondEdge:0])
+    if ([self px_isScrolledBeyondEdge:0])
     {
       v4 = 1;
       return v4 & 1;
     }
 
-    v3 = [a1 px_isScrolledBeyondEdge:2];
+    v3 = [self px_isScrolledBeyondEdge:2];
   }
 
   else
@@ -60,8 +60,8 @@
     v3 = 0;
   }
 
-  v4 = ((v2 & 2) != 0) | v3;
-  if ((v2 & 2) == 0)
+  v4 = ((px_scrollableAxis & 2) != 0) | v3;
+  if ((px_scrollableAxis & 2) == 0)
   {
     return v4 & 1;
   }
@@ -72,18 +72,18 @@
   }
 
   v4 = 1;
-  if ([a1 px_isScrolledBeyondEdge:1])
+  if ([self px_isScrolledBeyondEdge:1])
   {
     return v4 & 1;
   }
 
-  return [a1 px_isScrolledBeyondEdge:3];
+  return [self px_isScrolledBeyondEdge:3];
 }
 
 - (uint64_t)px_scrollableAxis
 {
-  IsScrollableAlongAxis = PXScrollViewIsScrollableAlongAxis(a1, 2);
-  if (PXScrollViewIsScrollableAlongAxis(a1, 1))
+  IsScrollableAlongAxis = PXScrollViewIsScrollableAlongAxis(self, 2);
+  if (PXScrollViewIsScrollableAlongAxis(self, 1))
   {
     return IsScrollableAlongAxis | 2;
   }
@@ -96,8 +96,8 @@
 
 - (void)px_setPocketPreferredUserInterfaceStyleForAllEdges:()PhotosUICore
 {
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v5 stringForKey:@"OverridePocketBias"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults stringForKey:@"OverridePocketBias"];
 
   if ([v7 isEqualToString:@"dark"])
   {
@@ -119,61 +119,61 @@
     v6 = 2 * (a3 == 2);
   }
 
-  [a1 _setPocketPreferredUserInterfaceStyle:v6 forEdge:1];
-  [a1 _setPocketPreferredUserInterfaceStyle:v6 forEdge:4];
-  [a1 _setPocketPreferredUserInterfaceStyle:v6 forEdge:2];
-  [a1 _setPocketPreferredUserInterfaceStyle:v6 forEdge:8];
+  [self _setPocketPreferredUserInterfaceStyle:v6 forEdge:1];
+  [self _setPocketPreferredUserInterfaceStyle:v6 forEdge:4];
+  [self _setPocketPreferredUserInterfaceStyle:v6 forEdge:2];
+  [self _setPocketPreferredUserInterfaceStyle:v6 forEdge:8];
 }
 
 - (void)px_setPocketColorForAllEdges:()PhotosUICore
 {
   v10 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"DebugStaticPocket"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"DebugStaticPocket"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DC888] systemRedColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
 LABEL_5:
 
-    v9 = v6;
+    v9 = systemRedColor;
     goto LABEL_7;
   }
 
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v8 = [v7 BOOLForKey:@"DisableStaticPocket"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v8 = [standardUserDefaults2 BOOLForKey:@"DisableStaticPocket"];
 
   if (v8)
   {
-    v6 = 0;
+    systemRedColor = 0;
     goto LABEL_5;
   }
 
   v9 = v10;
 LABEL_7:
   v11 = v9;
-  [a1 _setPocketColor:v9 forEdge:1];
-  [a1 _setPocketColor:v11 forEdge:4];
-  [a1 _setPocketColor:v11 forEdge:2];
-  [a1 _setPocketColor:v11 forEdge:8];
+  [self _setPocketColor:v9 forEdge:1];
+  [self _setPocketColor:v11 forEdge:4];
+  [self _setPocketColor:v11 forEdge:2];
+  [self _setPocketColor:v11 forEdge:8];
 }
 
 - (BOOL)px_performDecelerationWithInitialVelocity:()PhotosUICore axis:targetContentOffsetForProposedOffset:
 {
   v8 = a5;
-  [a1 decelerationRate];
+  [self decelerationRate];
   v10 = log(v9);
-  [a1 contentOffset];
+  [self contentOffset];
   v12 = v11;
   v14 = v13;
   v15 = PXPointValueForAxis(a4, v11, v13);
-  [a1 px_decelerationOffsetForInitialVelocity:a2];
+  [self px_decelerationOffsetForInitialVelocity:a2];
   v17 = v8[2](v8, v15 + v16);
 
   v37 = v12;
   v38 = v14;
   PXPointSetValueForAxis(&v37, a4, v17);
-  [a1 px_constrainedContentOffset:{v37, v38}];
+  [self px_constrainedContentOffset:{v37, v38}];
   v20 = v14 != v19 || v12 != v18;
   if (v20)
   {
@@ -219,7 +219,7 @@ LABEL_7:
     v32 = [MEMORY[0x1E69793D0] functionWithControlPoints:0.0 :v29 :v30 :v31];
     [(PXCASpringAnimationWorkaround132759829 *)v26 setTimingFunction:v32];
 
-    [a1 _setContentOffset:v26 animation:{v21, v22}];
+    [self _setContentOffset:v26 animation:{v21, v22}];
   }
 
   return v20;
@@ -228,28 +228,28 @@ LABEL_7:
 - (long)px_initialVelocityForDecelerationOffset:()PhotosUICore
 {
   v3 = a2 < 0.0;
-  [a1 decelerationRate];
+  [self decelerationRate];
   return (dbl_1B4074F10[v3] - log(v4) * a2) * -1000.0;
 }
 
 - (uint64_t)px_contentOffsetYFraction
 {
-  [a1 px_minimumContentOffset];
-  [a1 px_maximumContentOffset];
-  return [a1 contentOffset];
+  [self px_minimumContentOffset];
+  [self px_maximumContentOffset];
+  return [self contentOffset];
 }
 
 - (double)px_maximumContentOffset
 {
-  [a1 bounds];
+  [self bounds];
   v3 = v2;
-  [a1 px_minimumContentOffset];
+  [self px_minimumContentOffset];
   v5 = v4;
-  [a1 adjustedContentInset];
+  [self adjustedContentInset];
   v7 = v6;
-  [a1 contentSize];
+  [self contentSize];
   v9 = v7 + v8;
-  [a1 px_screenScale];
+  [self px_screenScale];
   v11 = round(v9 * v10) / v10 - v3;
   if (v5 >= v11)
   {
@@ -261,52 +261,52 @@ LABEL_7:
     v12 = v11;
   }
 
-  [a1 contentSize];
-  [a1 px_screenScale];
+  [self contentSize];
+  [self px_screenScale];
   return v12;
 }
 
 - (double)px_minimumContentOffset
 {
-  [a1 adjustedContentInset];
+  [self adjustedContentInset];
   v3 = v2;
-  [a1 px_screenScale];
+  [self px_screenScale];
   v5 = round(-(v3 * v4)) / v4;
-  [a1 px_screenScale];
+  [self px_screenScale];
   return v5;
 }
 
 - (BOOL)px_isPerformingScrollTest
 {
-  v1 = [a1 scrollTestParameters];
-  v2 = v1 != 0;
+  scrollTestParameters = [self scrollTestParameters];
+  v2 = scrollTestParameters != 0;
 
   return v2;
 }
 
 - (uint64_t)px_cancelScrollAnimation
 {
-  [a1 contentOffset];
+  [self contentOffset];
 
-  return [a1 setContentOffset:0 animated:?];
+  return [self setContentOffset:0 animated:?];
 }
 
 - (uint64_t)px_cancelScrollGesture
 {
-  result = [a1 isScrollEnabled];
+  result = [self isScrollEnabled];
   if (result)
   {
     if (objc_opt_respondsToSelector())
     {
 
-      return [a1 _forcePanGestureToEndImmediately];
+      return [self _forcePanGestureToEndImmediately];
     }
 
     else
     {
-      [a1 setScrollEnabled:0];
+      [self setScrollEnabled:0];
 
-      return [a1 setScrollEnabled:1];
+      return [self setScrollEnabled:1];
     }
   }
 
@@ -315,14 +315,14 @@ LABEL_7:
 
 - (void)px_scrollDistanceFromEdge:()PhotosUICore
 {
-  [a1 bounds];
+  [self bounds];
   v6 = v5;
   v8 = v7;
   v11 = v9;
   v12 = v10;
-  [a1 contentOffset];
-  [a1 _px_currentContentSize];
-  [a1 adjustedContentInset];
+  [self contentOffset];
+  [self _px_currentContentSize];
+  [self adjustedContentInset];
   if (a3 > 1)
   {
     if (a3 == 2)
@@ -351,16 +351,16 @@ LABEL_7:
   v9 = [v8 objectForKey:*MEMORY[0x1E69DDFA0]];
   if (v9)
   {
-    v10 = [a1 superview];
-    [a1 frame];
-    [v10 convertRect:0 toView:?];
+    superview = [self superview];
+    [self frame];
+    [superview convertRect:0 toView:?];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [a1 window];
-    [v19 convertRect:0 toView:{v12, v14, v16, v18}];
+    window = [self window];
+    [window convertRect:0 toView:{v12, v14, v16, v18}];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -388,18 +388,18 @@ LABEL_7:
       height = *(MEMORY[0x1E695F058] + 24);
     }
 
-    v36 = [a1 window];
-    [v36 convertRect:0 fromWindow:{x, y, width, height}];
+    window2 = [self window];
+    [window2 convertRect:0 fromWindow:{x, y, width, height}];
     v38 = v37;
     v40 = v39;
     v42 = v41;
     v44 = v43;
 
-    v45 = [a1 superview];
-    [v45 convertRect:0 fromView:{v38, v40, v42, v44}];
+    superview2 = [self superview];
+    [superview2 convertRect:0 fromView:{v38, v40, v42, v44}];
     v47 = v46;
 
-    [a1 contentInset];
+    [self contentInset];
     v49 = v48;
     v51 = v50;
     v53 = v52;
@@ -413,43 +413,43 @@ LABEL_7:
     v56 = v55;
 
     v57 = [v8 objectForKey:*MEMORY[0x1E69DDF38]];
-    v58 = [v57 integerValue];
+    integerValue = [v57 integerValue];
 
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
     v59[2] = __76__UIScrollView_PhotosUICore__px_adjustInsetsForKeyboardInfo_safeAreaInsets___block_invoke;
     v59[3] = &unk_1E7BB78D0;
-    v59[4] = a1;
+    v59[4] = self;
     v59[5] = v49;
     v59[6] = v51;
     *&v59[7] = v47;
     v59[8] = v53;
-    [MEMORY[0x1E69DD250] animateWithDuration:v58 << 16 delay:v59 options:0 animations:v56 completion:0.0];
+    [MEMORY[0x1E69DD250] animateWithDuration:integerValue << 16 delay:v59 options:0 animations:v56 completion:0.0];
   }
 }
 
 - (uint64_t)px_isDecelerating
 {
-  if ([a1 isDecelerating])
+  if ([self isDecelerating])
   {
     return 1;
   }
 
-  return [a1 px_isBouncing];
+  return [self px_isBouncing];
 }
 
 - (double)px_contentOffsetForEdge:()PhotosUICore padding:
 {
-  [a1 bounds];
+  [self bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [a1 contentOffset];
+  [self contentOffset];
   v18 = v17;
-  [a1 _px_currentContentSize];
+  [self _px_currentContentSize];
   v20 = v19;
-  [a1 adjustedContentInset];
+  [self adjustedContentInset];
   if (a7 > 1)
   {
     if (a7 == 2)
@@ -482,25 +482,25 @@ LABEL_7:
 
 - (uint64_t)px_scrollToEdge:()PhotosUICore animated:
 {
-  [a1 px_contentOffsetForEdge:?];
+  [self px_contentOffsetForEdge:?];
 
-  return [a1 px_scrollToContentOffset:a4 animated:?];
+  return [self px_scrollToContentOffset:a4 animated:?];
 }
 
 - (uint64_t)px_isScrolledAtEdge:()PhotosUICore tolerance:
 {
   if (a4 < 0.0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"UIScrollView+PhotosUIFoundation.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"tolerance >= 0.0f"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScrollView+PhotosUIFoundation.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"tolerance >= 0.0f"}];
   }
 
-  return [a1 _px_isScrolledAtEdge:a3 tolerance:a4];
+  return [self _px_isScrolledAtEdge:a3 tolerance:a4];
 }
 
 - (uint64_t)px_isScrolledAtEdge:()PhotosUICore
 {
-  [a1 px_screenScale];
+  [self px_screenScale];
   if (v5 == 0.0)
   {
     v6 = 0.5;
@@ -511,26 +511,26 @@ LABEL_7:
     v6 = 0.5 / v5;
   }
 
-  return [a1 px_isScrolledAtEdge:a3 tolerance:v6];
+  return [self px_isScrolledAtEdge:a3 tolerance:v6];
 }
 
 - (uint64_t)px_scrollToContentOffset:()PhotosUICore animated:
 {
-  [a1 px_constrainedContentOffset:?];
+  [self px_constrainedContentOffset:?];
 
-  return [a1 setContentOffset:a3 animated:?];
+  return [self setContentOffset:a3 animated:?];
 }
 
 - (void)px_constrainedContentOffset:()PhotosUICore
 {
-  [a1 bounds];
+  [self bounds];
   v3 = v2;
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  [a1 _px_currentContentSize];
-  [a1 adjustedContentInset];
-  [a1 px_screenScale];
+  [self _px_currentContentSize];
+  [self adjustedContentInset];
+  [self px_screenScale];
   v10.origin.x = v3;
   v10.origin.y = v5;
   v10.size.width = v7;

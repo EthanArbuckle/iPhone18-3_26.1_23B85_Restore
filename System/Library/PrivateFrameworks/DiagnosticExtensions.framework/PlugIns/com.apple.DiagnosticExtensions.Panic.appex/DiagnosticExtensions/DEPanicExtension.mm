@@ -1,10 +1,10 @@
 @interface DEPanicExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4;
+- (id)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler;
 - (id)getAllCoreFiles;
 - (id)getAllPanicLogs;
-- (id)getFilePathsFromBreadCrumbWithError:(id)a3 withProgressHandler:(id)a4;
-- (id)readBreadCrumbWithError:(id)a3;
+- (id)getFilePathsFromBreadCrumbWithError:(id)error withProgressHandler:(id)handler;
+- (id)readBreadCrumbWithError:(id)error;
 @end
 
 @implementation DEPanicExtension
@@ -19,19 +19,19 @@
   }
 
   v5 = +[NSMutableArray array];
-  v6 = [(DEPanicExtension *)self getAllPanicLogs];
-  [v5 addObjectsFromArray:v6];
+  getAllPanicLogs = [(DEPanicExtension *)self getAllPanicLogs];
+  [v5 addObjectsFromArray:getAllPanicLogs];
 
-  v7 = [(DEPanicExtension *)self getAllCoreFiles];
-  [v5 addObjectsFromArray:v7];
+  getAllCoreFiles = [(DEPanicExtension *)self getAllCoreFiles];
+  [v5 addObjectsFromArray:getAllCoreFiles];
 
   return v5;
 }
 
-- (id)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4
+- (id)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler
 {
-  v32 = a3;
-  v6 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   if (!qword_100008208)
   {
     v7 = os_log_create("com.apple.DumpPanic", "PanicDiagnosticExtension");
@@ -44,7 +44,7 @@
   v37[1] = 3221225472;
   v37[2] = sub_100000F9C;
   v37[3] = &unk_1000041E0;
-  v31 = v6;
+  v31 = handlerCopy;
   v38 = v31;
   v10 = [(DEPanicExtension *)self getFilePathsFromBreadCrumbWithError:0 withProgressHandler:v37];
   v11 = [v10 objectForKey:@"paniclogKey"];
@@ -60,11 +60,11 @@
 
     v13 = [DEAttachmentItem attachmentWithPath:v11];
     [v9 addObject:v13];
-    v14 = [v11 stringByDeletingLastPathComponent];
-    v15 = [v14 stringByAppendingPathComponent:@"Retired"];
+    stringByDeletingLastPathComponent = [v11 stringByDeletingLastPathComponent];
+    v15 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"Retired"];
 
-    v16 = [v11 lastPathComponent];
-    v17 = [v15 stringByAppendingPathComponent:v16];
+    lastPathComponent = [v11 lastPathComponent];
+    v17 = [v15 stringByAppendingPathComponent:lastPathComponent];
 
     v18 = qword_100008208;
     if (os_log_type_enabled(qword_100008208, OS_LOG_TYPE_DEFAULT))
@@ -121,10 +121,10 @@
   return v9;
 }
 
-- (id)getFilePathsFromBreadCrumbWithError:(id)a3 withProgressHandler:(id)a4
+- (id)getFilePathsFromBreadCrumbWithError:(id)error withProgressHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  handlerCopy = handler;
   v8 = objc_alloc_init(NSMutableDictionary);
   if (qword_100008228 != -1)
   {
@@ -147,7 +147,7 @@
       }
     }
 
-    v15 = [(DEPanicExtension *)self readBreadCrumbWithError:v6];
+    v15 = [(DEPanicExtension *)self readBreadCrumbWithError:errorCopy];
 
     if (!v15)
     {
@@ -193,9 +193,9 @@ LABEL_11:
     [v8 setObject:v17 forKey:@"paniclogKey"];
   }
 
-  v7[2](v7, 50.0);
+  handlerCopy[2](handlerCopy, 50.0);
 LABEL_14:
-  v49 = v7;
+  v49 = handlerCopy;
   if (qword_100008218 != -1)
   {
     dispatch_once(&qword_100008218, &stru_1000041B8);
@@ -208,7 +208,7 @@ LABEL_14:
   if (v18)
   {
     v47 = v8;
-    v48 = v6;
+    v48 = errorCopy;
     if (v21)
     {
       *buf = 138412290;
@@ -284,8 +284,8 @@ LABEL_14:
     }
 
     v8 = v47;
-    v6 = v48;
-    v7 = v49;
+    errorCopy = v48;
+    handlerCopy = v49;
     if (!v27 && v26 && (v26 & 0x20000) == 0)
     {
       v43 = 180;
@@ -328,7 +328,7 @@ LABEL_40:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "boot-args NVRAM variable is either not set or inaccessible", buf, 2u);
     }
 
-    v7 = v49;
+    handlerCopy = v49;
   }
 
   v35 = qword_100008208;
@@ -340,7 +340,7 @@ LABEL_40:
   }
 
 LABEL_41:
-  v37 = [(DEPanicExtension *)self readBreadCrumbWithError:v6];
+  v37 = [(DEPanicExtension *)self readBreadCrumbWithError:errorCopy];
 
   if (v37)
   {
@@ -369,16 +369,16 @@ LABEL_41:
   }
 
 LABEL_48:
-  v7[2](v7, 100.0);
+  handlerCopy[2](handlerCopy, 100.0);
 
   return v8;
 }
 
-- (id)readBreadCrumbWithError:(id)a3
+- (id)readBreadCrumbWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = [NSURL fileURLWithPath:@"/var/db/com.apple.DumpPanic.panicLogPathBreadcrumb"];
-  v15 = v3;
+  v15 = errorCopy;
   v5 = [NSData dataWithContentsOfURL:v4 options:0 error:&v15];
   v6 = v15;
 

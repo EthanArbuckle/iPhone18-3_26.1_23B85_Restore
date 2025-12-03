@@ -1,16 +1,16 @@
 @interface KTAccountStateTracker
-- (BOOL)notifyCKAccountStatusChangeAndWait:(unint64_t)a3;
+- (BOOL)notifyCKAccountStatusChangeAndWait:(unint64_t)wait;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)checkForAllDeliveries;
-- (id)descriptionInternal:(id)a3;
-- (id)init:(id)a3 nsnotificationCenterClass:(Class)a4;
-- (id)notifyCKAccountStatusChange:(id)a3;
-- (id)registerForNotificationsOfCloudKitAccountStatusChange:(id)a3;
-- (void)_onqueueDeliverCloudKitStateChanges:(id)a3 dispatchGroup:(id)a4;
-- (void)_onqueueDeliverCurrentCloudKitState:(id)a3 listenerQueue:(id)a4 oldStatus:(id)a5 group:(id)a6;
-- (void)_onqueueUpdateAccountState:(id)a3 deliveredSemaphore:(id)a4;
-- (void)_onqueueUpdateAccountState:(id)a3 dispatchGroup:(id)a4;
+- (id)descriptionInternal:(id)internal;
+- (id)init:(id)init nsnotificationCenterClass:(Class)class;
+- (id)notifyCKAccountStatusChange:(id)change;
+- (id)registerForNotificationsOfCloudKitAccountStatusChange:(id)change;
+- (void)_onqueueDeliverCloudKitStateChanges:(id)changes dispatchGroup:(id)group;
+- (void)_onqueueDeliverCurrentCloudKitState:(id)state listenerQueue:(id)queue oldStatus:(id)status group:(id)group;
+- (void)_onqueueUpdateAccountState:(id)state deliveredSemaphore:(id)semaphore;
+- (void)_onqueueUpdateAccountState:(id)state dispatchGroup:(id)group;
 - (void)dealloc;
 - (void)performInitialDispatches;
 - (void)recheckCKAccountStatus;
@@ -18,16 +18,16 @@
 
 @implementation KTAccountStateTracker
 
-- (id)init:(id)a3 nsnotificationCenterClass:(Class)a4
+- (id)init:(id)init nsnotificationCenterClass:(Class)class
 {
-  v7 = a3;
+  initCopy = init;
   v28.receiver = self;
   v28.super_class = KTAccountStateTracker;
   v8 = [(KTAccountStateTracker *)&v28 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_nsnotificationCenterClass, a4);
+    objc_storeStrong(&v8->_nsnotificationCenterClass, class);
     v10 = +[NSMapTable strongToWeakObjectsMapTable];
     ckChangeListeners = v9->_ckChangeListeners;
     v9->_ckChangeListeners = v10;
@@ -39,7 +39,7 @@
     ckAccountInfoInitialized = v9->_ckAccountInfoInitialized;
     v9->_ckAccountInfoInitialized = v13;
 
-    objc_storeStrong(&v9->_container, a3);
+    objc_storeStrong(&v9->_container, init);
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_create("ck-account-state", v15);
     queue = v9->_queue;
@@ -51,7 +51,7 @@
     finishedInitialDispatches = v9->_finishedInitialDispatches;
     v9->_finishedInitialDispatches = v18;
 
-    v20 = [(objc_class *)[(KTAccountStateTracker *)v9 nsnotificationCenterClass] defaultCenter];
+    defaultCenter = [(objc_class *)[(KTAccountStateTracker *)v9 nsnotificationCenterClass] defaultCenter];
     if (qword_10039C9C0 != -1)
     {
       sub_10025C550();
@@ -61,11 +61,11 @@
     if (os_log_type_enabled(qword_10039C9C8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v30 = v20;
+      v30 = defaultCenter;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Registering with notification center %@", buf, 0xCu);
     }
 
-    [v20 addObserver:v9 selector:"notifyCKAccountStatusChange:" name:CKAccountChangedNotification object:0];
+    [defaultCenter addObserver:v9 selector:"notifyCKAccountStatusChange:" name:CKAccountChangedNotification object:0];
     objc_initWeak(buf, v9);
     v22 = [KTNearFutureScheduler alloc];
     v26[0] = _NSConcreteStackBlock;
@@ -88,27 +88,27 @@
 {
   v3 = objc_autoreleasePoolPush();
   v4 = [(KTAccountStateTracker *)self notifyCKAccountStatusChange:0];
-  v5 = [(KTAccountStateTracker *)self finishedInitialDispatches];
-  [v5 fulfill];
+  finishedInitialDispatches = [(KTAccountStateTracker *)self finishedInitialDispatches];
+  [finishedInitialDispatches fulfill];
 
   objc_autoreleasePoolPop(v3);
 }
 
 - (void)dealloc
 {
-  v3 = [(objc_class *)[(KTAccountStateTracker *)self nsnotificationCenterClass] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [(objc_class *)[(KTAccountStateTracker *)self nsnotificationCenterClass] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = KTAccountStateTracker;
   [(KTAccountStateTracker *)&v4 dealloc];
 }
 
-- (id)descriptionInternal:(id)a3
+- (id)descriptionInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(KTAccountStateTracker *)self currentCKAccountInfo];
-  v6 = [NSString stringWithFormat:@"<%@: %@>", v4, v5];
+  internalCopy = internal;
+  currentCKAccountInfo = [(KTAccountStateTracker *)self currentCKAccountInfo];
+  v6 = [NSString stringWithFormat:@"<%@: %@>", internalCopy, currentCKAccountInfo];
 
   return v6;
 }
@@ -131,21 +131,21 @@
   return v4;
 }
 
-- (id)registerForNotificationsOfCloudKitAccountStatusChange:(id)a3
+- (id)registerForNotificationsOfCloudKitAccountStatusChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(KTAccountStateTracker *)self queue];
+  queue = [(KTAccountStateTracker *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D09BC;
   block[3] = &unk_10031E018;
   block[4] = self;
-  v13 = v4;
+  v13 = changeCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = changeCopy;
+  dispatch_async(queue, block);
 
   v9 = v14;
   v10 = v7;
@@ -153,9 +153,9 @@
   return v7;
 }
 
-- (id)notifyCKAccountStatusChange:(id)a3
+- (id)notifyCKAccountStatusChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = dispatch_semaphore_create(0);
   objc_initWeak(&location, self);
   v16[0] = _NSConcreteStackBlock;
@@ -167,11 +167,11 @@
   v17 = v6;
   v7 = objc_retainBlock(v16);
   os_unfair_lock_lock(&self->_reloadLock);
-  v8 = [(KTAccountStateTracker *)self forceReload];
+  forceReload = [(KTAccountStateTracker *)self forceReload];
   [(KTAccountStateTracker *)self setForceReload:0];
   os_unfair_lock_unlock(&self->_reloadLock);
-  v9 = [(KTAccountStateTracker *)self container];
-  if (v8)
+  container = [(KTAccountStateTracker *)self container];
+  if (forceReload)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -180,14 +180,14 @@
     objc_copyWeak(&v15, &location);
     v13 = v6;
     v14 = v7;
-    [v9 reloadAccountWithCompletionHandler:v12];
+    [container reloadAccountWithCompletionHandler:v12];
 
     objc_destroyWeak(&v15);
   }
 
   else
   {
-    [v9 accountInfoWithCompletionHandler:v7];
+    [container accountInfoWithCompletionHandler:v7];
   }
 
   v10 = v6;
@@ -198,24 +198,24 @@
   return v10;
 }
 
-- (void)_onqueueUpdateAccountState:(id)a3 deliveredSemaphore:(id)a4
+- (void)_onqueueUpdateAccountState:(id)state deliveredSemaphore:(id)semaphore
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KTAccountStateTracker *)self queue];
-  dispatch_assert_queue_V2(v8);
+  stateCopy = state;
+  semaphoreCopy = semaphore;
+  queue = [(KTAccountStateTracker *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = dispatch_group_create();
   if (v9)
   {
-    [(KTAccountStateTracker *)self _onqueueUpdateAccountState:v6 dispatchGroup:v9];
-    v10 = [(KTAccountStateTracker *)self queue];
+    [(KTAccountStateTracker *)self _onqueueUpdateAccountState:stateCopy dispatchGroup:v9];
+    queue2 = [(KTAccountStateTracker *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001D1768;
     block[3] = &unk_100316FE0;
-    v13 = v7;
-    dispatch_group_notify(v9, v10, block);
+    v13 = semaphoreCopy;
+    dispatch_group_notify(v9, queue2, block);
   }
 
   else
@@ -232,37 +232,37 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Unable to get dispatch group.", buf, 2u);
     }
 
-    dispatch_semaphore_signal(v7);
+    dispatch_semaphore_signal(semaphoreCopy);
   }
 }
 
-- (void)_onqueueUpdateAccountState:(id)a3 dispatchGroup:(id)a4
+- (void)_onqueueUpdateAccountState:(id)state dispatchGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KTAccountStateTracker *)self queue];
-  dispatch_assert_queue_V2(v8);
+  stateCopy = state;
+  groupCopy = group;
+  queue = [(KTAccountStateTracker *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(KTAccountStateTracker *)self currentCKAccountInfo];
-  v10 = [v9 isEqual:v6];
+  currentCKAccountInfo = [(KTAccountStateTracker *)self currentCKAccountInfo];
+  v10 = [currentCKAccountInfo isEqual:stateCopy];
 
   if (!v10)
   {
-    v17 = [(KTAccountStateTracker *)self currentCKAccountInfo];
-    v18 = v17;
-    if (!v6 || v17)
+    currentCKAccountInfo2 = [(KTAccountStateTracker *)self currentCKAccountInfo];
+    currentCKAccountInfo5 = currentCKAccountInfo2;
+    if (!stateCopy || currentCKAccountInfo2)
     {
-      v19 = [(KTAccountStateTracker *)self currentCKAccountInfo];
-      v20 = v19;
-      if (v19 == v6)
+      currentCKAccountInfo3 = [(KTAccountStateTracker *)self currentCKAccountInfo];
+      v20 = currentCKAccountInfo3;
+      if (currentCKAccountInfo3 == stateCopy)
       {
 
 LABEL_16:
         goto LABEL_17;
       }
 
-      v21 = [(KTAccountStateTracker *)self currentCKAccountInfo];
-      v22 = [v21 isEqual:v6];
+      currentCKAccountInfo4 = [(KTAccountStateTracker *)self currentCKAccountInfo];
+      v22 = [currentCKAccountInfo4 isEqual:stateCopy];
 
       if (v22)
       {
@@ -279,23 +279,23 @@ LABEL_16:
     if (os_log_type_enabled(qword_10039C9C8, OS_LOG_TYPE_INFO))
     {
       v24 = v23;
-      v25 = [(KTAccountStateTracker *)self container];
-      v26 = [v25 options];
-      v27 = [v26 accountOverrideInfo];
-      v28 = [v27 accountID];
+      container = [(KTAccountStateTracker *)self container];
+      options = [container options];
+      accountOverrideInfo = [options accountOverrideInfo];
+      accountID = [accountOverrideInfo accountID];
       v30 = 138412546;
-      v31 = v28;
+      v31 = accountID;
       v32 = 2112;
-      v33 = v6;
+      v33 = stateCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "moving to CK Account info(altDSID: %@): %@", &v30, 0x16u);
     }
 
-    v18 = [(KTAccountStateTracker *)self currentCKAccountInfo];
-    [(KTAccountStateTracker *)self setCurrentCKAccountInfo:v6];
-    v29 = [(KTAccountStateTracker *)self ckAccountInfoInitialized];
-    [v29 fulfill];
+    currentCKAccountInfo5 = [(KTAccountStateTracker *)self currentCKAccountInfo];
+    [(KTAccountStateTracker *)self setCurrentCKAccountInfo:stateCopy];
+    ckAccountInfoInitialized = [(KTAccountStateTracker *)self ckAccountInfoInitialized];
+    [ckAccountInfoInitialized fulfill];
 
-    [(KTAccountStateTracker *)self _onqueueDeliverCloudKitStateChanges:v18 dispatchGroup:v7];
+    [(KTAccountStateTracker *)self _onqueueDeliverCloudKitStateChanges:currentCKAccountInfo5 dispatchGroup:groupCopy];
     goto LABEL_16;
   }
 
@@ -308,69 +308,69 @@ LABEL_16:
   if (os_log_type_enabled(qword_10039C9C8, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [(KTAccountStateTracker *)self container];
-    v14 = [v13 options];
-    v15 = [v14 accountOverrideInfo];
-    v16 = [v15 accountID];
+    container2 = [(KTAccountStateTracker *)self container];
+    options2 = [container2 options];
+    accountOverrideInfo2 = [options2 accountOverrideInfo];
+    accountID2 = [accountOverrideInfo2 accountID];
     v30 = 138412546;
-    v31 = v16;
+    v31 = accountID2;
     v32 = 2112;
-    v33 = v6;
+    v33 = stateCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "received another notification of CK Account State(altDSID: %@) %@", &v30, 0x16u);
   }
 
 LABEL_17:
 }
 
-- (void)_onqueueDeliverCloudKitStateChanges:(id)a3 dispatchGroup:(id)a4
+- (void)_onqueueDeliverCloudKitStateChanges:(id)changes dispatchGroup:(id)group
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(KTAccountStateTracker *)self queue];
-  dispatch_assert_queue_V2(v7);
+  changesCopy = changes;
+  groupCopy = group;
+  queue = [(KTAccountStateTracker *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(KTAccountStateTracker *)self ckChangeListeners];
-  v9 = [v8 keyEnumerator];
+  ckChangeListeners = [(KTAccountStateTracker *)self ckChangeListeners];
+  keyEnumerator = [ckChangeListeners keyEnumerator];
 
-  v10 = [v9 nextObject];
-  if (v10)
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v11 = v10;
+    v11 = nextObject;
     do
     {
-      v12 = [(KTAccountStateTracker *)self ckChangeListeners];
-      v13 = [v12 objectForKey:v11];
+      ckChangeListeners2 = [(KTAccountStateTracker *)self ckChangeListeners];
+      v13 = [ckChangeListeners2 objectForKey:v11];
 
-      [(KTAccountStateTracker *)self _onqueueDeliverCurrentCloudKitState:v13 listenerQueue:v11 oldStatus:v15 group:v6];
-      v14 = [v9 nextObject];
+      [(KTAccountStateTracker *)self _onqueueDeliverCurrentCloudKitState:v13 listenerQueue:v11 oldStatus:changesCopy group:groupCopy];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v11 = v14;
+      v11 = nextObject2;
     }
 
-    while (v14);
+    while (nextObject2);
   }
 }
 
-- (void)_onqueueDeliverCurrentCloudKitState:(id)a3 listenerQueue:(id)a4 oldStatus:(id)a5 group:(id)a6
+- (void)_onqueueDeliverCurrentCloudKitState:(id)state listenerQueue:(id)queue oldStatus:(id)status group:(id)group
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [(KTAccountStateTracker *)self queue];
-  dispatch_assert_queue_V2(v14);
+  queueCopy = queue;
+  statusCopy = status;
+  groupCopy = group;
+  stateCopy = state;
+  queue = [(KTAccountStateTracker *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  objc_initWeak(&location, v13);
-  if (v13)
+  objc_initWeak(&location, stateCopy);
+  if (stateCopy)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1001D1D18;
     v15[3] = &unk_1003174D8;
     objc_copyWeak(&v18, &location);
-    v16 = v11;
-    v17 = self;
-    dispatch_group_async(v12, v10, v15);
+    v16 = statusCopy;
+    selfCopy = self;
+    dispatch_group_async(groupCopy, queueCopy, v15);
 
     objc_destroyWeak(&v18);
   }
@@ -383,17 +383,17 @@ LABEL_17:
   os_unfair_lock_lock(&self->_reloadLock);
   [(KTAccountStateTracker *)self setForceReload:1];
   os_unfair_lock_unlock(&self->_reloadLock);
-  v3 = [(KTAccountStateTracker *)self fetchCKAccountStatusScheduler];
-  [v3 trigger];
+  fetchCKAccountStatusScheduler = [(KTAccountStateTracker *)self fetchCKAccountStatusScheduler];
+  [fetchCKAccountStatusScheduler trigger];
 }
 
-- (BOOL)notifyCKAccountStatusChangeAndWait:(unint64_t)a3
+- (BOOL)notifyCKAccountStatusChangeAndWait:(unint64_t)wait
 {
   v4 = [(KTAccountStateTracker *)self notifyCKAccountStatusChange:0];
-  v5 = dispatch_time(0, a3);
-  LOBYTE(a3) = dispatch_semaphore_wait(v4, v5) == 0;
+  v5 = dispatch_time(0, wait);
+  LOBYTE(wait) = dispatch_semaphore_wait(v4, v5) == 0;
 
-  return a3;
+  return wait;
 }
 
 - (id)checkForAllDeliveries
@@ -401,7 +401,7 @@ LABEL_17:
   v3 = dispatch_group_create();
   if (v3)
   {
-    v4 = [(KTAccountStateTracker *)self queue];
+    queue = [(KTAccountStateTracker *)self queue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1001D1FC4;
@@ -409,7 +409,7 @@ LABEL_17:
     v9[4] = self;
     v5 = v3;
     v10 = v5;
-    dispatch_sync(v4, v9);
+    dispatch_sync(queue, v9);
 
     v6 = v5;
   }

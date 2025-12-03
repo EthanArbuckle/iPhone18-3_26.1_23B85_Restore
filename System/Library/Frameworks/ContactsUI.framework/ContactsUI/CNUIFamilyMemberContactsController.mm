@@ -1,28 +1,28 @@
 @interface CNUIFamilyMemberContactsController
-+ (BOOL)isViewController:(id)a3 presentedByContactPicker:(id)a4;
++ (BOOL)isViewController:(id)controller presentedByContactPicker:(id)picker;
 - (CNContactPickerViewController)contactPickerViewController;
 - (CNUIFamilyMemberContactsController)init;
-- (CNUIFamilyMemberContactsController)initWithFamilyMember:(id)a3 familyMemberContactsPresentation:(id)a4;
+- (CNUIFamilyMemberContactsController)initWithFamilyMember:(id)member familyMemberContactsPresentation:(id)presentation;
 - (CNUIFamilyMemberContactsControllerDelegate)delegate;
 - (CNUIFamilyMemberContactsPresentation)familyMemberContactsPresentation;
 - (id)anchorViewForAddContactsInteraction;
 - (int64_t)countOfFamilyMemberContacts;
 - (int64_t)fetchStatus;
-- (void)addContactsOptionsSheetViewControllerDidSelectAddFromLocalContacts:(id)a3;
-- (void)addContactsOptionsSheetViewControllerDidSelectAddNewContact:(id)a3;
-- (void)cancelPresentationOfViewController:(id)a3;
-- (void)contactPickerDidCancel:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)dismissPresentedViewController:(id)a3;
-- (void)downtimePickerController:(id)a3 didFinishWithContacts:(id)a4;
+- (void)addContactsOptionsSheetViewControllerDidSelectAddFromLocalContacts:(id)contacts;
+- (void)addContactsOptionsSheetViewControllerDidSelectAddNewContact:(id)contact;
+- (void)cancelPresentationOfViewController:(id)controller;
+- (void)contactPickerDidCancel:(id)cancel;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)dismissPresentedViewController:(id)controller;
+- (void)downtimePickerController:(id)controller didFinishWithContacts:(id)contacts;
 - (void)familyMemberContactItemsDidChange;
 - (void)performAddContactsInteraction;
 - (void)performAddFromMainContactsInteraction;
 - (void)performDefaultInteraction;
 - (void)performDisplayContactsInteraction;
-- (void)performInteraction:(int64_t)a3;
-- (void)pickerDidSelectAddNewContact:(id)a3;
-- (void)presentViewController:(id)a3;
+- (void)performInteraction:(int64_t)interaction;
+- (void)pickerDidSelectAddNewContact:(id)contact;
+- (void)presentViewController:(id)controller;
 @end
 
 @implementation CNUIFamilyMemberContactsController
@@ -41,61 +41,61 @@
   return WeakRetained;
 }
 
-- (void)downtimePickerController:(id)a3 didFinishWithContacts:(id)a4
+- (void)downtimePickerController:(id)controller didFinishWithContacts:(id)contacts
 {
-  v9 = a4;
+  contactsCopy = contacts;
   v6 = *MEMORY[0x1E6996530];
   v7 = *(*MEMORY[0x1E6996530] + 16);
-  v8 = a3;
-  if (v7(v6, v9))
+  controllerCopy = controller;
+  if (v7(v6, contactsCopy))
   {
-    [(CNUIFamilyMemberContactsController *)self cancelPresentationOfViewController:v8];
+    [(CNUIFamilyMemberContactsController *)self cancelPresentationOfViewController:controllerCopy];
   }
 
   else
   {
-    [(CNUIFamilyMemberContactsController *)self dismissPresentedViewController:v8];
+    [(CNUIFamilyMemberContactsController *)self dismissPresentedViewController:controllerCopy];
 
-    v8 = [(CNUIFamilyMemberContactsController *)self dataSource];
-    [v8 updateListByAddingContacts:v9];
+    controllerCopy = [(CNUIFamilyMemberContactsController *)self dataSource];
+    [controllerCopy updateListByAddingContacts:contactsCopy];
   }
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   [(CNUIFamilyMemberContactsController *)self setContactPickerViewController:0];
-  [(CNUIFamilyMemberContactsController *)self cancelPresentationOfViewController:v4];
+  [(CNUIFamilyMemberContactsController *)self cancelPresentationOfViewController:cancelCopy];
 }
 
-- (void)pickerDidSelectAddNewContact:(id)a3
+- (void)pickerDidSelectAddNewContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNUIFamilyMemberContactsController *)self familyMember];
-  v9 = [CNUIFamilyMemberControllerShared addContactsOptionsSheetForFamilyMember:v5 delegate:self];
+  contactCopy = contact;
+  familyMember = [(CNUIFamilyMemberContactsController *)self familyMember];
+  v9 = [CNUIFamilyMemberControllerShared addContactsOptionsSheetForFamilyMember:familyMember delegate:self];
 
-  v6 = [v4 addContactBarButtonItem];
-  v7 = [v9 popoverPresentationController];
-  [v7 setBarButtonItem:v6];
+  addContactBarButtonItem = [contactCopy addContactBarButtonItem];
+  popoverPresentationController = [v9 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:addContactBarButtonItem];
 
-  v8 = [v9 popoverPresentationController];
-  [v8 setCanOverlapSourceViewRect:1];
+  popoverPresentationController2 = [v9 popoverPresentationController];
+  [popoverPresentationController2 setCanOverlapSourceViewRect:1];
 
-  [v4 presentViewController:v9 animated:1 completion:0];
+  [contactCopy presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v5 = [a3 navigationController];
-  [(CNUIFamilyMemberContactsController *)self dismissPresentedViewController:v5];
+  navigationController = [controller navigationController];
+  [(CNUIFamilyMemberContactsController *)self dismissPresentedViewController:navigationController];
 }
 
-- (void)cancelPresentationOfViewController:(id)a3
+- (void)cancelPresentationOfViewController:(id)controller
 {
-  v10 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_class();
-  v5 = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
-  LODWORD(v4) = [v4 isViewController:v10 presentedByContactPicker:v5];
+  contactPickerViewController = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
+  LODWORD(v4) = [v4 isViewController:controllerCopy presentedByContactPicker:contactPickerViewController];
 
   if (v4)
   {
@@ -105,37 +105,37 @@
       goto LABEL_8;
     }
 
-    v6 = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    contactPickerViewController2 = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
+    [contactPickerViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v7 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
+    familyMemberContactsPresentation = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
     v8 = objc_opt_respondsToSelector();
 
-    v9 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
-    v6 = v9;
+    familyMemberContactsPresentation2 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
+    contactPickerViewController2 = familyMemberContactsPresentation2;
     if (v8)
     {
-      [v9 presentedViewControllerDidCancel:v10];
+      [familyMemberContactsPresentation2 presentedViewControllerDidCancel:controllerCopy];
     }
 
     else
     {
-      [v9 dismissPresentedViewController:v10];
+      [familyMemberContactsPresentation2 dismissPresentedViewController:controllerCopy];
     }
   }
 
 LABEL_8:
 }
 
-- (void)dismissPresentedViewController:(id)a3
+- (void)dismissPresentedViewController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_class();
-  v5 = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
-  LODWORD(v4) = [v4 isViewController:v7 presentedByContactPicker:v5];
+  contactPickerViewController = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
+  LODWORD(v4) = [v4 isViewController:controllerCopy presentedByContactPicker:contactPickerViewController];
 
   if (v4)
   {
@@ -145,61 +145,61 @@ LABEL_8:
       goto LABEL_6;
     }
 
-    v6 = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    contactPickerViewController2 = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
+    [contactPickerViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v6 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
-    [v6 dismissPresentedViewController:v7];
+    contactPickerViewController2 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
+    [contactPickerViewController2 dismissPresentedViewController:controllerCopy];
   }
 
 LABEL_6:
 }
 
-- (void)presentViewController:(id)a3
+- (void)presentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
+  controllerCopy = controller;
+  contactPickerViewController = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
 
-  if (v5)
+  if (contactPickerViewController)
   {
-    v6 = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
-    [v6 presentViewController:v4 animated:1 completion:0];
+    contactPickerViewController2 = [(CNUIFamilyMemberContactsController *)self contactPickerViewController];
+    [contactPickerViewController2 presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
-    v6 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
-    [v6 presentViewController:v4];
+    contactPickerViewController2 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
+    [contactPickerViewController2 presentViewController:controllerCopy];
   }
 }
 
-- (void)addContactsOptionsSheetViewControllerDidSelectAddNewContact:(id)a3
+- (void)addContactsOptionsSheetViewControllerDidSelectAddNewContact:(id)contact
 {
   v7 = [CNContactViewController viewControllerForNewContact:0];
   [v7 setIgnoresParentalRestrictions:1];
-  v4 = [(CNUIFamilyMemberContactsController *)self familyMemberScopedContactStore];
-  [v7 setContactStore:v4];
+  familyMemberScopedContactStore = [(CNUIFamilyMemberContactsController *)self familyMemberScopedContactStore];
+  [v7 setContactStore:familyMemberScopedContactStore];
 
   [v7 setDisplayMode:2];
   [v7 setDelegate:self];
-  v5 = [MEMORY[0x1E6996B18] propertyKeysContainingSenstiveData];
-  [v7 setProhibitedPropertyKeys:v5];
+  propertyKeysContainingSenstiveData = [MEMORY[0x1E6996B18] propertyKeysContainingSenstiveData];
+  [v7 setProhibitedPropertyKeys:propertyKeysContainingSenstiveData];
 
   v6 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v7];
   [v6 setModalPresentationStyle:2];
   [(CNUIFamilyMemberContactsController *)self presentViewController:v6];
 }
 
-- (void)addContactsOptionsSheetViewControllerDidSelectAddFromLocalContacts:(id)a3
+- (void)addContactsOptionsSheetViewControllerDidSelectAddFromLocalContacts:(id)contacts
 {
   v9 = objc_alloc_init(MEMORY[0x1E695CE18]);
   v4 = [CNUIFamilyMemberDowntimeContactPickerController alloc];
-  v5 = [(CNUIFamilyMemberContactsController *)self familyMember];
+  familyMember = [(CNUIFamilyMemberContactsController *)self familyMember];
   v6 = +[CNUIFamilyMemberContactsEditingStrategy managedContactsStrategy];
-  v7 = [(CNUIFamilyMemberDowntimeContactPickerController *)v4 initWithChildFamilyMember:v5 allFamilyMembers:0 contactStore:v9 editingStrategy:v6 showingFamilyMemberContacts:0];
+  v7 = [(CNUIFamilyMemberDowntimeContactPickerController *)v4 initWithChildFamilyMember:familyMember allFamilyMembers:0 contactStore:v9 editingStrategy:v6 showingFamilyMemberContacts:0];
 
   [(CNUIFamilyMemberDowntimeContactPickerController *)v7 setShouldPreselectFamilyMemberContacts:[(CNUIFamilyMemberContactsController *)self countOfFamilyMemberContacts]== 0];
   [(CNUIFamilyMemberDowntimeContactPickerController *)v7 setDelegate:self];
@@ -210,63 +210,63 @@ LABEL_6:
 
 - (id)anchorViewForAddContactsInteraction
 {
-  v3 = [(CNUIFamilyMemberContactsController *)self delegate];
+  delegate = [(CNUIFamilyMemberContactsController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNUIFamilyMemberContactsController *)self delegate];
-    v6 = [v5 contactsController:self anchorViewForPresentationOfInteraction:1];
+    delegate2 = [(CNUIFamilyMemberContactsController *)self delegate];
+    view = [delegate2 contactsController:self anchorViewForPresentationOfInteraction:1];
   }
 
   else
   {
-    v5 = [*MEMORY[0x1E69DDA98] windows];
-    v7 = [v5 firstObject];
-    v8 = [v7 rootViewController];
-    v6 = [v8 view];
+    delegate2 = [*MEMORY[0x1E69DDA98] windows];
+    firstObject = [delegate2 firstObject];
+    rootViewController = [firstObject rootViewController];
+    view = [rootViewController view];
   }
 
-  return v6;
+  return view;
 }
 
 - (void)performAddContactsInteraction
 {
-  v3 = [(CNUIFamilyMemberContactsController *)self familyMember];
-  v11 = [CNUIFamilyMemberControllerShared addContactsOptionsSheetForFamilyMember:v3 delegate:self];
+  familyMember = [(CNUIFamilyMemberContactsController *)self familyMember];
+  v11 = [CNUIFamilyMemberControllerShared addContactsOptionsSheetForFamilyMember:familyMember delegate:self];
 
-  v4 = [(CNUIFamilyMemberContactsController *)self anchorViewForAddContactsInteraction];
-  v5 = [v11 popoverPresentationController];
-  [v5 setSourceView:v4];
+  anchorViewForAddContactsInteraction = [(CNUIFamilyMemberContactsController *)self anchorViewForAddContactsInteraction];
+  popoverPresentationController = [v11 popoverPresentationController];
+  [popoverPresentationController setSourceView:anchorViewForAddContactsInteraction];
 
-  [v4 bounds];
+  [anchorViewForAddContactsInteraction bounds];
   MidX = CGRectGetMidX(v13);
-  [v4 bounds];
+  [anchorViewForAddContactsInteraction bounds];
   MinY = CGRectGetMinY(v14);
-  v8 = [v11 popoverPresentationController];
-  [v8 setSourceRect:{MidX, MinY, 0.0, 0.0}];
+  popoverPresentationController2 = [v11 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{MidX, MinY, 0.0, 0.0}];
 
-  v9 = [v11 popoverPresentationController];
-  [v9 setPermittedArrowDirections:2];
+  popoverPresentationController3 = [v11 popoverPresentationController];
+  [popoverPresentationController3 setPermittedArrowDirections:2];
 
-  v10 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
-  [v10 presentViewController:v11];
+  familyMemberContactsPresentation = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
+  [familyMemberContactsPresentation presentViewController:v11];
 }
 
 - (void)performAddFromMainContactsInteraction
 {
   v9 = objc_alloc_init(MEMORY[0x1E695CE18]);
   v3 = [CNUIFamilyMemberDowntimeContactPickerController alloc];
-  v4 = [(CNUIFamilyMemberContactsController *)self familyMember];
+  familyMember = [(CNUIFamilyMemberContactsController *)self familyMember];
   v5 = +[CNUIFamilyMemberContactsEditingStrategy managedContactsStrategy];
-  v6 = [(CNUIFamilyMemberDowntimeContactPickerController *)v3 initWithChildFamilyMember:v4 allFamilyMembers:0 contactStore:v9 editingStrategy:v5 showingFamilyMemberContacts:0];
+  v6 = [(CNUIFamilyMemberDowntimeContactPickerController *)v3 initWithChildFamilyMember:familyMember allFamilyMembers:0 contactStore:v9 editingStrategy:v5 showingFamilyMemberContacts:0];
 
   [(CNUIFamilyMemberDowntimeContactPickerController *)v6 setShouldPreselectFamilyMemberContacts:[(CNUIFamilyMemberContactsController *)self countOfFamilyMemberContacts]== 0];
   [(CNUIFamilyMemberDowntimeContactPickerController *)v6 setDelegate:self];
   v7 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v6];
   [v7 setModalPresentationStyle:2];
-  v8 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
-  [v8 presentViewController:v7];
+  familyMemberContactsPresentation = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
+  [familyMemberContactsPresentation presentViewController:v7];
 }
 
 - (void)performDisplayContactsInteraction
@@ -279,15 +279,15 @@ LABEL_6:
   [(CNContactPickerViewController *)v6 setAllowsCancel:0];
   [(CNContactPickerViewController *)v6 setAllowsDone:1];
   [(CNContactPickerViewController *)v6 setIgnoresParentalRestrictions:1];
-  v3 = [(CNUIFamilyMemberContactsController *)self familyMember];
-  [(CNContactPickerViewController *)v6 setFamilyMember:v3];
+  familyMember = [(CNUIFamilyMemberContactsController *)self familyMember];
+  [(CNContactPickerViewController *)v6 setFamilyMember:familyMember];
 
-  v4 = [MEMORY[0x1E6996B18] propertyKeysContainingSenstiveData];
-  [(CNContactPickerViewController *)v6 setProhibitedPropertyKeys:v4];
+  propertyKeysContainingSenstiveData = [MEMORY[0x1E6996B18] propertyKeysContainingSenstiveData];
+  [(CNContactPickerViewController *)v6 setProhibitedPropertyKeys:propertyKeysContainingSenstiveData];
 
   [(CNUIFamilyMemberContactsController *)self setContactPickerViewController:v6];
-  v5 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
-  [v5 presentViewController:v6];
+  familyMemberContactsPresentation = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
+  [familyMemberContactsPresentation presentViewController:v6];
 }
 
 - (void)performDefaultInteraction
@@ -305,24 +305,24 @@ LABEL_6:
   }
 }
 
-- (void)performInteraction:(int64_t)a3
+- (void)performInteraction:(int64_t)interaction
 {
-  if (a3 > 1)
+  if (interaction > 1)
   {
-    if (a3 == 2)
+    if (interaction == 2)
     {
       [(CNUIFamilyMemberContactsController *)self performAddFromMainContactsInteraction];
     }
 
-    else if (a3 == 3)
+    else if (interaction == 3)
     {
       [(CNUIFamilyMemberContactsController *)self performDisplayContactsInteraction];
     }
   }
 
-  else if (a3)
+  else if (interaction)
   {
-    if (a3 == 1)
+    if (interaction == 1)
     {
       [(CNUIFamilyMemberContactsController *)self performAddContactsInteraction];
     }
@@ -336,23 +336,23 @@ LABEL_6:
 
 - (void)familyMemberContactItemsDidChange
 {
-  v2 = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
-  [v2 familyMemberContactsDidChange];
+  familyMemberContactsPresentation = [(CNUIFamilyMemberContactsController *)self familyMemberContactsPresentation];
+  [familyMemberContactsPresentation familyMemberContactsDidChange];
 }
 
 - (int64_t)countOfFamilyMemberContacts
 {
-  v2 = [(CNUIFamilyMemberContactsController *)self dataSource];
-  v3 = [v2 countOfFamilyMemberContacts];
-  v4 = [v3 integerValue];
+  dataSource = [(CNUIFamilyMemberContactsController *)self dataSource];
+  countOfFamilyMemberContacts = [dataSource countOfFamilyMemberContacts];
+  integerValue = [countOfFamilyMemberContacts integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)fetchStatus
 {
-  v2 = [(CNUIFamilyMemberContactsController *)self dataSource];
-  v3 = +[CNUIFamilyMemberControllerShared contactsUIFetchStatusFromContactsUICoreFetchStatus:](CNUIFamilyMemberControllerShared, "contactsUIFetchStatusFromContactsUICoreFetchStatus:", [v2 fetchStatus]);
+  dataSource = [(CNUIFamilyMemberContactsController *)self dataSource];
+  v3 = +[CNUIFamilyMemberControllerShared contactsUIFetchStatusFromContactsUICoreFetchStatus:](CNUIFamilyMemberControllerShared, "contactsUIFetchStatusFromContactsUICoreFetchStatus:", [dataSource fetchStatus]);
 
   return v3;
 }
@@ -361,8 +361,8 @@ LABEL_6:
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"CNUIFamilyMemberContactsController.m" lineNumber:70 description:@"communication with presentation should only take place on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNUIFamilyMemberContactsController.m" lineNumber:70 description:@"communication with presentation should only take place on main thread"];
   }
 
   familyMemberContactsPresentation = self->_familyMemberContactsPresentation;
@@ -370,11 +370,11 @@ LABEL_6:
   return familyMemberContactsPresentation;
 }
 
-- (CNUIFamilyMemberContactsController)initWithFamilyMember:(id)a3 familyMemberContactsPresentation:(id)a4
+- (CNUIFamilyMemberContactsController)initWithFamilyMember:(id)member familyMemberContactsPresentation:(id)presentation
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  memberCopy = member;
+  presentationCopy = presentation;
+  if (!memberCopy)
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D940];
@@ -382,8 +382,8 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = presentationCopy;
+  if (!presentationCopy)
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D940];
@@ -399,17 +399,17 @@ LABEL_8:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_familyMember, a3);
-    objc_storeStrong(&v11->_familyMemberContactsPresentation, a4);
-    v12 = [MEMORY[0x1E695CE18] storeForFamilyMember:v7];
+    objc_storeStrong(&v10->_familyMember, member);
+    objc_storeStrong(&v11->_familyMemberContactsPresentation, presentation);
+    v12 = [MEMORY[0x1E695CE18] storeForFamilyMember:memberCopy];
     familyMemberScopedContactStore = v11->_familyMemberScopedContactStore;
     v11->_familyMemberScopedContactStore = v12;
 
-    v14 = [MEMORY[0x1E6996820] defaultProvider];
+    defaultProvider = [MEMORY[0x1E6996820] defaultProvider];
     schedulerProvider = v11->_schedulerProvider;
-    v11->_schedulerProvider = v14;
+    v11->_schedulerProvider = defaultProvider;
 
-    v16 = [objc_alloc(MEMORY[0x1E6996B18]) initWithFamilyMember:v7 schedulerProvider:v11->_schedulerProvider];
+    v16 = [objc_alloc(MEMORY[0x1E6996B18]) initWithFamilyMember:memberCopy schedulerProvider:v11->_schedulerProvider];
     dataSource = v11->_dataSource;
     v11->_dataSource = v16;
 
@@ -422,16 +422,16 @@ LABEL_8:
 
 - (CNUIFamilyMemberContactsController)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-+ (BOOL)isViewController:(id)a3 presentedByContactPicker:(id)a4
++ (BOOL)isViewController:(id)controller presentedByContactPicker:(id)picker
 {
-  if (a4)
+  if (picker)
   {
-    v4 = a3 == a4;
+    v4 = controller == picker;
   }
 
   else

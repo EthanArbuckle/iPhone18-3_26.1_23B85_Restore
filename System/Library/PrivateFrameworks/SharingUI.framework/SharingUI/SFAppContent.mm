@@ -1,36 +1,36 @@
 @interface SFAppContent
 - (BOOL)installed;
-- (SFAppContent)initWithAdamIDs:(id)a3;
-- (id)_amsAppNameFromResult:(id)a3;
-- (id)_amsArtworkDictionaryFromResult:(id)a3;
-- (id)_amsFirstResponseDataItemFromResult:(id)a3;
-- (id)_amsLaunchURLFromResult:(id)a3;
-- (void)_amsFetchAppResultsWithCompletion:(id)a3;
+- (SFAppContent)initWithAdamIDs:(id)ds;
+- (id)_amsAppNameFromResult:(id)result;
+- (id)_amsArtworkDictionaryFromResult:(id)result;
+- (id)_amsFirstResponseDataItemFromResult:(id)result;
+- (id)_amsLaunchURLFromResult:(id)result;
+- (void)_amsFetchAppResultsWithCompletion:(id)completion;
 - (void)_amsFetchArtworkIfNeeded;
-- (void)_amsFetchArtworkWithRequest:(id)a3;
+- (void)_amsFetchArtworkWithRequest:(id)request;
 - (void)_amsFetchResults;
 - (void)_amsLaunchIfNeeded;
 - (void)_amsRun;
-- (void)_fetchNameAndIconWithSize:(CGSize)a3 completion:(id)a4;
-- (void)_launchWithCompletion:(id)a3;
-- (void)fetchNameAndIconWithSize:(CGSize)a3 completion:(id)a4;
-- (void)launchWithCompletion:(id)a3;
+- (void)_fetchNameAndIconWithSize:(CGSize)size completion:(id)completion;
+- (void)_launchWithCompletion:(id)completion;
+- (void)fetchNameAndIconWithSize:(CGSize)size completion:(id)completion;
+- (void)launchWithCompletion:(id)completion;
 @end
 
 @implementation SFAppContent
 
-- (SFAppContent)initWithAdamIDs:(id)a3
+- (SFAppContent)initWithAdamIDs:(id)ds
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dsCopy = ds;
   v32.receiver = self;
   v32.super_class = SFAppContent;
   v6 = [(SFAppContent *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    v27 = v5;
-    objc_storeStrong(&v6->_adamIDs, a3);
+    v27 = dsCopy;
+    objc_storeStrong(&v6->_adamIDs, ds);
     v8 = MEMORY[0x1BFAEA9F0]();
     dispatchQueue = v7->_dispatchQueue;
     v7->_dispatchQueue = v8;
@@ -62,18 +62,18 @@
           v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(*(*(&v28 + 1) + 8 * i), "integerValue")}];
           v19 = [v17 applicationProxyForItemID:v18];
 
-          v20 = [v19 appState];
-          v21 = [v20 isInstalled];
+          appState = [v19 appState];
+          isInstalled = [appState isInstalled];
 
-          if (v21)
+          if (isInstalled)
           {
             appProxy = v7->_appProxy;
             v7->_appProxy = v19;
             v23 = v19;
 
-            v24 = [(LSApplicationProxy *)v7->_appProxy itemName];
+            itemName = [(LSApplicationProxy *)v7->_appProxy itemName];
             appName = v7->_appName;
-            v7->_appName = v24;
+            v7->_appName = itemName;
 
             goto LABEL_12;
           }
@@ -91,7 +91,7 @@
 
 LABEL_12:
 
-    v5 = v27;
+    dsCopy = v27;
   }
 
   return v7;
@@ -99,10 +99,10 @@ LABEL_12:
 
 - (BOOL)installed
 {
-  v2 = [(LSApplicationProxy *)self->_appProxy appState];
-  v3 = [v2 isInstalled];
+  appState = [(LSApplicationProxy *)self->_appProxy appState];
+  isInstalled = [appState isInstalled];
 
-  return v3;
+  return isInstalled;
 }
 
 - (void)_amsRun
@@ -214,17 +214,17 @@ void __32__SFAppContent__amsFetchResults__block_invoke_2(uint64_t a1)
   *(*(a1 + 48) + 64) = v18;
 }
 
-- (void)_amsFetchAppResultsWithCompletion:(id)a3
+- (void)_amsFetchAppResultsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [getAMSMediaTaskClass[0]() bagSubProfile];
-  v6 = [getAMSMediaTaskClass[0]() bagSubProfileVersion];
+  bagSubProfile = [getAMSMediaTaskClass[0]() bagSubProfile];
+  bagSubProfileVersion = [getAMSMediaTaskClass[0]() bagSubProfileVersion];
   v7 = getAMSBagKeySetClass[0]();
-  v8 = [getAMSMediaTaskClass[0]() bagKeySet];
-  [(objc_class *)v7 registerBagKeySet:v8 forProfile:v5 profileVersion:v6];
+  bagKeySet = [getAMSMediaTaskClass[0]() bagKeySet];
+  [(objc_class *)v7 registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
-  v9 = [getAMSBagClass[0]() bagForProfile:v5 profileVersion:v6];
+  v9 = [getAMSBagClass[0]() bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
   v10 = [objc_alloc(getAMSMediaTaskClass[0]()) initWithType:0 clientIdentifier:@"com.apple.sharing" clientVersion:@"1" bag:v9];
   [v10 setItemIdentifiers:self->_adamIDs];
   [v10 setIncludedResultKeys:&unk_1F37F3F90];
@@ -234,21 +234,21 @@ void __32__SFAppContent__amsFetchResults__block_invoke_2(uint64_t a1)
   }
 
   v11 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_dispatchQueue);
-  v12 = [v10 perform];
+  perform = [v10 perform];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __50__SFAppContent__amsFetchAppResultsWithCompletion___block_invoke;
   v17[3] = &unk_1E7EE38F8;
   v17[4] = v11;
-  v18 = v4;
-  v13 = v4;
-  [v12 addFinishBlock:v17];
+  v18 = completionCopy;
+  v13 = completionCopy;
+  [perform addFinishBlock:v17];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __50__SFAppContent__amsFetchAppResultsWithCompletion___block_invoke_2;
   handler[3] = &unk_1E7EE3720;
-  v16 = v12;
-  v14 = v12;
+  v16 = perform;
+  v14 = perform;
   dispatch_source_set_event_handler(v11, handler);
   CUDispatchTimerSet();
   dispatch_activate(v11);
@@ -277,16 +277,16 @@ uint64_t __50__SFAppContent__amsFetchAppResultsWithCompletion___block_invoke_2(u
 
 - (void)_amsFetchArtworkIfNeeded
 {
-  v1 = [a1 objectForKeyedSubscript:@"storefrontID"];
+  v1 = [self objectForKeyedSubscript:@"storefrontID"];
   LogPrintF();
 }
 
-- (void)_amsFetchArtworkWithRequest:(id)a3
+- (void)_amsFetchArtworkWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v5 = [objc_alloc(getAMSMediaArtworkClass[0]()) initWithDictionary:self->_amsArtworkDict];
-  [v4 iconSize];
+  [requestCopy iconSize];
   v7 = v6;
   v9 = v8;
   v10 = getAMSMediaArtworkCropStyleBoundedBox[0]();
@@ -294,15 +294,15 @@ uint64_t __50__SFAppContent__amsFetchAppResultsWithCompletion___block_invoke_2(u
   v12 = objc_alloc_init(MEMORY[0x1E696AD68]);
   [v12 setURL:v11];
   [v12 setTimeoutInterval:5.0];
-  v13 = [MEMORY[0x1E696AF78] sharedSession];
+  mEMORY[0x1E696AF78] = [MEMORY[0x1E696AF78] sharedSession];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __44__SFAppContent__amsFetchArtworkWithRequest___block_invoke;
   v19 = &unk_1E7EE3948;
-  v20 = self;
-  v21 = v4;
-  v14 = v4;
-  v15 = [v13 dataTaskWithRequest:v12 completionHandler:&v16];
+  selfCopy = self;
+  v21 = requestCopy;
+  v14 = requestCopy;
+  v15 = [mEMORY[0x1E696AF78] dataTaskWithRequest:v12 completionHandler:&v16];
 
   [v15 resume];
 }
@@ -385,18 +385,18 @@ void __44__SFAppContent__amsFetchArtworkWithRequest___block_invoke_2(uint64_t a1
         [SFAppContent _amsLaunchIfNeeded];
       }
 
-      v8 = [MEMORY[0x1E6963608] defaultWorkspace];
-      v9 = [(SFAppContent *)self _launchOptions];
+      defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+      _launchOptions = [(SFAppContent *)self _launchOptions];
       v15 = 0;
-      [v8 openURL:v7 withOptions:v9 error:&v15];
+      [defaultWorkspace openURL:v7 withOptions:_launchOptions error:&v15];
       v10 = v15;
 
-      v11 = [(SFLaunchRequest *)self->_launchRequest completionHandler];
+      completionHandler = [(SFLaunchRequest *)self->_launchRequest completionHandler];
 
-      if (v11)
+      if (completionHandler)
       {
-        v12 = [(SFLaunchRequest *)self->_launchRequest completionHandler];
-        (v12)[2](v12, v10);
+        completionHandler2 = [(SFLaunchRequest *)self->_launchRequest completionHandler];
+        (completionHandler2)[2](completionHandler2, v10);
       }
 
       else if (gLogCategory_SFSubCredentialAppContent <= 90 && (gLogCategory_SFSubCredentialAppContent != -1 || _LogCategory_Initialize()))
@@ -410,42 +410,42 @@ void __44__SFAppContent__amsFetchArtworkWithRequest___block_invoke_2(uint64_t a1
 
     else if (self->_amsResultsError)
     {
-      v6 = [(SFLaunchRequest *)launchRequest completionHandler];
+      completionHandler3 = [(SFLaunchRequest *)launchRequest completionHandler];
 
-      if (v6)
+      if (completionHandler3)
       {
-        v14 = [(SFLaunchRequest *)self->_launchRequest completionHandler];
-        v14[2](v14, self->_amsResultsError);
+        completionHandler4 = [(SFLaunchRequest *)self->_launchRequest completionHandler];
+        completionHandler4[2](completionHandler4, self->_amsResultsError);
       }
     }
   }
 }
 
-- (id)_amsAppNameFromResult:(id)a3
+- (id)_amsAppNameFromResult:(id)result
 {
-  v3 = [(SFAppContent *)self _amsFirstResponseDataItemFromResult:a3];
+  v3 = [(SFAppContent *)self _amsFirstResponseDataItemFromResult:result];
   v4 = [v3 valueForKeyPath:@"attributes.name"];
 
   return v4;
 }
 
-- (id)_amsArtworkDictionaryFromResult:(id)a3
+- (id)_amsArtworkDictionaryFromResult:(id)result
 {
-  v3 = [(SFAppContent *)self _amsFirstResponseDataItemFromResult:a3];
+  v3 = [(SFAppContent *)self _amsFirstResponseDataItemFromResult:result];
   v4 = [v3 valueForKeyPath:@"attributes.platformAttributes.ios.artwork"];
 
   return v4;
 }
 
-- (id)_amsFirstResponseDataItemFromResult:(id)a3
+- (id)_amsFirstResponseDataItemFromResult:(id)result
 {
-  v3 = [a3 responseDataItems];
-  v4 = [v3 firstObject];
+  responseDataItems = [result responseDataItems];
+  firstObject = [responseDataItems firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = firstObject;
   }
 
   else
@@ -456,19 +456,19 @@ void __44__SFAppContent__amsFetchArtworkWithRequest___block_invoke_2(uint64_t a1
   return v5;
 }
 
-- (id)_amsLaunchURLFromResult:(id)a3
+- (id)_amsLaunchURLFromResult:(id)result
 {
-  v3 = [(SFAppContent *)self _amsFirstResponseDataItemFromResult:a3];
+  v3 = [(SFAppContent *)self _amsFirstResponseDataItemFromResult:result];
   v4 = [v3 valueForKeyPath:@"attributes.url"];
 
   return v4;
 }
 
-- (void)fetchNameAndIconWithSize:(CGSize)a3 completion:(id)a4
+- (void)fetchNameAndIconWithSize:(CGSize)size completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -477,26 +477,26 @@ void __44__SFAppContent__amsFetchArtworkWithRequest___block_invoke_2(uint64_t a1
   v12 = width;
   v13 = height;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_async(dispatchQueue, v10);
 }
 
-- (void)_fetchNameAndIconWithSize:(CGSize)a3 completion:(id)a4
+- (void)_fetchNameAndIconWithSize:(CGSize)size completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v7)
+  if (completionCopy)
   {
     if ([(SFAppContent *)self installed])
     {
-      v8 = [(LSApplicationProxy *)self->_appProxy bundleIdentifier];
-      if (v8)
+      bundleIdentifier = [(LSApplicationProxy *)self->_appProxy bundleIdentifier];
+      if (bundleIdentifier)
       {
-        v9 = [objc_alloc(getISIconClass[0]()) initWithBundleIdentifier:v8];
+        v9 = [objc_alloc(getISIconClass[0]()) initWithBundleIdentifier:bundleIdentifier];
         if (gLogCategory_SFSubCredentialAppContent <= 50 && (gLogCategory_SFSubCredentialAppContent != -1 || _LogCategory_Initialize()))
         {
           [SFAppContent _fetchNameAndIconWithSize:completion:];
@@ -512,14 +512,14 @@ void __44__SFAppContent__amsFetchArtworkWithRequest___block_invoke_2(uint64_t a1
         v13[2] = __53__SFAppContent__fetchNameAndIconWithSize_completion___block_invoke;
         v13[3] = &unk_1E7EE39C0;
         v13[4] = self;
-        v14 = v7;
+        v14 = completionCopy;
         [v9 getCGImageForImageDescriptor:v10 completion:v13];
       }
 
       else
       {
         v12 = NSErrorWithOSStatusF();
-        (*(v7 + 2))(v7, 0, 0, v12);
+        (*(completionCopy + 2))(completionCopy, 0, 0, v12);
       }
     }
 
@@ -530,10 +530,10 @@ void __44__SFAppContent__amsFetchArtworkWithRequest___block_invoke_2(uint64_t a1
         [SFAppContent _fetchNameAndIconWithSize:completion:];
       }
 
-      v8 = objc_opt_new();
-      [v8 setIconSize:{width, height}];
-      [v8 setInfoResponseHandler:v7];
-      [(NSMutableArray *)self->_infoFetchRequests addObject:v8];
+      bundleIdentifier = objc_opt_new();
+      [bundleIdentifier setIconSize:{width, height}];
+      [bundleIdentifier setInfoResponseHandler:completionCopy];
+      [(NSMutableArray *)self->_infoFetchRequests addObject:bundleIdentifier];
       [(SFAppContent *)self _amsRun];
     }
   }
@@ -575,45 +575,45 @@ void __53__SFAppContent__fetchNameAndIconWithSize_completion___block_invoke_2(ui
   }
 }
 
-- (void)launchWithCompletion:(id)a3
+- (void)launchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__SFAppContent_launchWithCompletion___block_invoke;
   v7[3] = &unk_1E7EE39E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_launchWithCompletion:(id)a3
+- (void)_launchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if ([(SFAppContent *)self installed])
   {
-    v5 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v6 = objc_alloc_init(MEMORY[0x1E69636B8]);
-    v7 = [(SFAppContent *)self _launchOptions];
-    [v6 setFrontBoardOptions:v7];
+    _launchOptions = [(SFAppContent *)self _launchOptions];
+    [v6 setFrontBoardOptions:_launchOptions];
 
-    v8 = [(LSApplicationProxy *)self->_appProxy bundleIdentifier];
+    bundleIdentifier = [(LSApplicationProxy *)self->_appProxy bundleIdentifier];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __38__SFAppContent__launchWithCompletion___block_invoke;
     v11[3] = &unk_1E7EE3A38;
     v11[4] = self;
-    v12 = v4;
-    [v5 openApplicationWithBundleIdentifier:v8 configuration:v6 completionHandler:v11];
+    v12 = completionCopy;
+    [defaultWorkspace openApplicationWithBundleIdentifier:bundleIdentifier configuration:v6 completionHandler:v11];
   }
 
   else
   {
     v9 = objc_opt_new();
-    [(SFLaunchRequest *)v9 setCompletionHandler:v4];
+    [(SFLaunchRequest *)v9 setCompletionHandler:completionCopy];
     launchRequest = self->_launchRequest;
     self->_launchRequest = v9;
 

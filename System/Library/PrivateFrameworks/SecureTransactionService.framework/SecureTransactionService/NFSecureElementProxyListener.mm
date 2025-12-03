@@ -1,42 +1,42 @@
 @interface NFSecureElementProxyListener
-- (NFSecureElementProxyListener)initWithSTSSession:(id)a3;
-- (id)transceiveWithData:(id)a3 outError:(id *)a4;
+- (NFSecureElementProxyListener)initWithSTSSession:(id)session;
+- (id)transceiveWithData:(id)data outError:(id *)error;
 @end
 
 @implementation NFSecureElementProxyListener
 
-- (NFSecureElementProxyListener)initWithSTSSession:(id)a3
+- (NFSecureElementProxyListener)initWithSTSSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = NFSecureElementProxyListener;
   v5 = [(NFSecureElementProxyListener *)&v9 init];
   if (v5)
   {
-    v6 = [v4 masterSESession];
+    masterSESession = [sessionCopy masterSESession];
     seSession = v5->_seSession;
-    v5->_seSession = v6;
+    v5->_seSession = masterSESession;
   }
 
   return v5;
 }
 
-- (id)transceiveWithData:(id)a3 outError:(id *)a4
+- (id)transceiveWithData:(id)data outError:(id *)error
 {
-  v6 = a3;
-  sub_265398094(OS_LOG_TYPE_INFO, 0, "[NFSecureElementProxyListener transceiveWithData:outError:]", 45, self, @"data = %@", v7, v8, v6);
+  dataCopy = data;
+  sub_265398094(OS_LOG_TYPE_INFO, 0, "[NFSecureElementProxyListener transceiveWithData:outError:]", 45, self, @"data = %@", v7, v8, dataCopy);
   v17 = 0;
   v9 = [MEMORY[0x277D2C870] embeddedSecureElementWithError:&v17];
   v10 = v17;
-  v11 = [v9 info];
+  info = [v9 info];
 
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
       v13 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -47,9 +47,9 @@
 
   else
   {
-    v14 = [(NFSecureElementProxyListener *)self seSession];
-    v15 = [v11 serialNumber];
-    v13 = [v14 transceive:v6 forSEID:v15 error:a4];
+    seSession = [(NFSecureElementProxyListener *)self seSession];
+    serialNumber = [info serialNumber];
+    v13 = [seSession transceive:dataCopy forSEID:serialNumber error:error];
   }
 
   return v13;

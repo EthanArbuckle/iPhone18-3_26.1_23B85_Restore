@@ -1,6 +1,6 @@
 @interface HUAvailableRelatedTriggerItemModuleContext
 - (HUAvailableRelatedTriggerItemModuleContext)init;
-- (HUAvailableRelatedTriggerItemModuleContext)initWithContext:(id)a3;
+- (HUAvailableRelatedTriggerItemModuleContext)initWithContext:(id)context;
 @end
 
 @implementation HUAvailableRelatedTriggerItemModuleContext
@@ -28,26 +28,26 @@
   return v3;
 }
 
-- (HUAvailableRelatedTriggerItemModuleContext)initWithContext:(id)a3
+- (HUAvailableRelatedTriggerItemModuleContext)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(HUAvailableRelatedTriggerItemModuleContext *)self init];
-  -[HUAvailableRelatedTriggerItemModuleContext setShowsIcons:](v5, "setShowsIcons:", [v4 showsIcons]);
-  -[HUAvailableRelatedTriggerItemModuleContext setHidesAddAutomationItem:](v5, "setHidesAddAutomationItem:", [v4 hidesAddAutomationItem]);
-  -[HUAvailableRelatedTriggerItemModuleContext setCommitsAutomatically:](v5, "setCommitsAutomatically:", [v4 commitsAutomatically]);
-  -[HUAvailableRelatedTriggerItemModuleContext setItemsAreEditable:](v5, "setItemsAreEditable:", [v4 itemsAreEditable]);
-  -[HUAvailableRelatedTriggerItemModuleContext setErrorHandlingStrategy:](v5, "setErrorHandlingStrategy:", [v4 errorHandlingStrategy]);
-  -[HUAvailableRelatedTriggerItemModuleContext setHidesCustomTriggers:](v5, "setHidesCustomTriggers:", [v4 hidesCustomTriggers]);
-  v6 = [v4 analyticsPresentationContext];
-  [(HUAvailableRelatedTriggerItemModuleContext *)v5 setAnalyticsPresentationContext:v6];
+  -[HUAvailableRelatedTriggerItemModuleContext setShowsIcons:](v5, "setShowsIcons:", [contextCopy showsIcons]);
+  -[HUAvailableRelatedTriggerItemModuleContext setHidesAddAutomationItem:](v5, "setHidesAddAutomationItem:", [contextCopy hidesAddAutomationItem]);
+  -[HUAvailableRelatedTriggerItemModuleContext setCommitsAutomatically:](v5, "setCommitsAutomatically:", [contextCopy commitsAutomatically]);
+  -[HUAvailableRelatedTriggerItemModuleContext setItemsAreEditable:](v5, "setItemsAreEditable:", [contextCopy itemsAreEditable]);
+  -[HUAvailableRelatedTriggerItemModuleContext setErrorHandlingStrategy:](v5, "setErrorHandlingStrategy:", [contextCopy errorHandlingStrategy]);
+  -[HUAvailableRelatedTriggerItemModuleContext setHidesCustomTriggers:](v5, "setHidesCustomTriggers:", [contextCopy hidesCustomTriggers]);
+  analyticsPresentationContext = [contextCopy analyticsPresentationContext];
+  [(HUAvailableRelatedTriggerItemModuleContext *)v5 setAnalyticsPresentationContext:analyticsPresentationContext];
 
-  v7 = [v4 defaultActiveValue];
-  [(HUAvailableRelatedTriggerItemModuleContext *)v5 setDefaultActiveValue:v7];
+  defaultActiveValue = [contextCopy defaultActiveValue];
+  [(HUAvailableRelatedTriggerItemModuleContext *)v5 setDefaultActiveValue:defaultActiveValue];
 
-  -[HUAvailableRelatedTriggerItemModuleContext setEngineOptions:](v5, "setEngineOptions:", [v4 engineOptions]);
-  v8 = [v4 showNaturalLightingItem];
+  -[HUAvailableRelatedTriggerItemModuleContext setEngineOptions:](v5, "setEngineOptions:", [contextCopy engineOptions]);
+  showNaturalLightingItem = [contextCopy showNaturalLightingItem];
 
-  [(HUAvailableRelatedTriggerItemModuleContext *)v5 setShowNaturalLightingItem:v8];
+  [(HUAvailableRelatedTriggerItemModuleContext *)v5 setShowNaturalLightingItem:showNaturalLightingItem];
   return v5;
 }
 

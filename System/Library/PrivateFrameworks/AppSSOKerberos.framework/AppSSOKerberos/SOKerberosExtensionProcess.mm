@@ -1,26 +1,26 @@
 @interface SOKerberosExtensionProcess
-- (BOOL)checkSourceAppACLWithContext:(id)a3;
+- (BOOL)checkSourceAppACLWithContext:(id)context;
 - (SOKerberosExtensionProcess)init;
-- (id)createContextForRequest:(id)a3;
-- (id)kerberosForRealm:(id)a3;
-- (id)mapKnownPasswordErrorToString:(id)a3;
-- (id)settingsForContext:(id)a3 includeSiteCodeCache:(BOOL)a4;
-- (void)attemptKerberosWithContext:(id)a3 andDelegate:(id)a4;
-- (void)beginAuthorizationWithRequest:(id)a3;
-- (void)cancelAuthorizationWithRequest:(id)a3;
-- (void)completeRequestWithHTTPResponseFromContext:(id)a3;
-- (void)completeRequestWithToken:(id)a3 andContext:(id)a4;
-- (void)destroyCredentialsWithContext:(id)a3;
-- (void)handleAddKeychainCreds:(id)a3;
-- (void)handleGetRealmInfo:(id)a3;
-- (void)handleGetSiteCode:(id)a3;
-- (void)handleKerberosOperations:(id)a3 andDelegate:(id)a4;
-- (void)handleLogoutWithContext:(id)a3 removeRealm:(BOOL)a4;
+- (id)createContextForRequest:(id)request;
+- (id)kerberosForRealm:(id)realm;
+- (id)mapKnownPasswordErrorToString:(id)string;
+- (id)settingsForContext:(id)context includeSiteCodeCache:(BOOL)cache;
+- (void)attemptKerberosWithContext:(id)context andDelegate:(id)delegate;
+- (void)beginAuthorizationWithRequest:(id)request;
+- (void)cancelAuthorizationWithRequest:(id)request;
+- (void)completeRequestWithHTTPResponseFromContext:(id)context;
+- (void)completeRequestWithToken:(id)token andContext:(id)context;
+- (void)destroyCredentialsWithContext:(id)context;
+- (void)handleAddKeychainCreds:(id)creds;
+- (void)handleGetRealmInfo:(id)info;
+- (void)handleGetSiteCode:(id)code;
+- (void)handleKerberosOperations:(id)operations andDelegate:(id)delegate;
+- (void)handleLogoutWithContext:(id)context removeRealm:(BOOL)realm;
 - (void)handleMigration;
-- (void)handleRemoveRealm:(id)a3;
-- (void)handleResetKeychainChoice:(id)a3;
-- (void)removeSettingFile:(int)a3;
-- (void)saveValuesAfterSuccessfulAuthentication:(id)a3;
+- (void)handleRemoveRealm:(id)realm;
+- (void)handleResetKeychainChoice:(id)choice;
+- (void)removeSettingFile:(int)file;
+- (void)saveValuesAfterSuccessfulAuthentication:(id)authentication;
 @end
 
 @implementation SOKerberosExtensionProcess
@@ -36,9 +36,9 @@
     kerberosByRealm = v2->_kerberosByRealm;
     v2->_kerberosByRealm = v3;
 
-    v5 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     requestContextMapping = v2->_requestContextMapping;
-    v2->_requestContextMapping = v5;
+    v2->_requestContextMapping = weakToWeakObjectsMapTable;
 
     v7 = objc_alloc_init(SOKerberosHelper);
     kerberosHelper = v2->_kerberosHelper;
@@ -93,9 +93,9 @@ void __45__SOKerberosExtensionProcess_handleMigration__block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeSettingFile:(int)a3
+- (void)removeSettingFile:(int)file
 {
-  if (a3 <= 0)
+  if (file <= 0)
   {
     v3 = SO_LOG_SOKerberosExtensionProcess();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -104,25 +104,25 @@ void __45__SOKerberosExtensionProcess_handleMigration__block_invoke(uint64_t a1)
     }
 
     v4 = [SOKerberosFileManager documentsDirectoryURLForFileName:@"realmSettings.plist"];
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    [v5 removeItemAtURL:v4 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtURL:v4 error:0];
   }
 }
 
-- (void)beginAuthorizationWithRequest:(id)a3
+- (void)beginAuthorizationWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SOKerberosExtensionProcess *)v4 beginAuthorizationWithRequest:v5];
+    [(SOKerberosExtensionProcess *)requestCopy beginAuthorizationWithRequest:v5];
   }
 
   [(SOKerberosExtensionProcess *)self handleMigration];
-  v6 = [v4 requestedOperation];
-  if (![v6 isEqualToString:@"logout"])
+  requestedOperation = [requestCopy requestedOperation];
+  if (![requestedOperation isEqualToString:@"logout"])
   {
-    v7 = [v4 requestedOperation];
+    requestedOperation2 = [requestCopy requestedOperation];
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
@@ -139,50 +139,50 @@ void __45__SOKerberosExtensionProcess_handleMigration__block_invoke(uint64_t a1)
     _Block_object_dispose(&v28, 8);
     if (v8)
     {
-      v10 = [v7 isEqualToString:*v8];
+      v10 = [requestedOperation2 isEqualToString:*v8];
 
       if (v10)
       {
         goto LABEL_9;
       }
 
-      v14 = [v4 requestedOperation];
-      v15 = [v14 isEqualToString:@"get_site_code"];
+      requestedOperation3 = [requestCopy requestedOperation];
+      v15 = [requestedOperation3 isEqualToString:@"get_site_code"];
 
       if (v15)
       {
-        [(SOKerberosExtensionProcess *)self handleGetSiteCode:v4];
+        [(SOKerberosExtensionProcess *)self handleGetSiteCode:requestCopy];
         goto LABEL_11;
       }
 
-      v16 = [v4 requestedOperation];
-      v17 = [v16 isEqualToString:@"remove_realm"];
+      requestedOperation4 = [requestCopy requestedOperation];
+      v17 = [requestedOperation4 isEqualToString:@"remove_realm"];
 
       if (v17)
       {
-        [(SOKerberosExtensionProcess *)self handleRemoveRealm:v4];
+        [(SOKerberosExtensionProcess *)self handleRemoveRealm:requestCopy];
         goto LABEL_11;
       }
 
-      v18 = [v4 requestedOperation];
-      v19 = [v18 isEqualToString:@"reset_keychain_preference"];
+      requestedOperation5 = [requestCopy requestedOperation];
+      v19 = [requestedOperation5 isEqualToString:@"reset_keychain_preference"];
 
       if (v19)
       {
-        [(SOKerberosExtensionProcess *)self handleResetKeychainChoice:v4];
+        [(SOKerberosExtensionProcess *)self handleResetKeychainChoice:requestCopy];
         goto LABEL_11;
       }
 
-      v20 = [v4 requestedOperation];
-      v21 = [v20 isEqualToString:@"get_realm_info"];
+      requestedOperation6 = [requestCopy requestedOperation];
+      v21 = [requestedOperation6 isEqualToString:@"get_realm_info"];
 
       if (v21)
       {
-        [(SOKerberosExtensionProcess *)self handleGetRealmInfo:v4];
+        [(SOKerberosExtensionProcess *)self handleGetRealmInfo:requestCopy];
         goto LABEL_11;
       }
 
-      v22 = [v4 requestedOperation];
+      requestedOperation7 = [requestCopy requestedOperation];
       v28 = 0;
       v29 = &v28;
       v30 = 0x2020000000;
@@ -199,18 +199,18 @@ void __45__SOKerberosExtensionProcess_handleMigration__block_invoke(uint64_t a1)
       _Block_object_dispose(&v28, 8);
       if (v23)
       {
-        v25 = [v22 isEqualToString:*v23];
+        v25 = [requestedOperation7 isEqualToString:*v23];
 
         if (!v25)
         {
-          v26 = [MEMORY[0x277CCA9B8] invalidKerberosOperation];
-          [v4 completeWithError:v26];
+          invalidKerberosOperation = [MEMORY[0x277CCA9B8] invalidKerberosOperation];
+          [requestCopy completeWithError:invalidKerberosOperation];
 
           goto LABEL_11;
         }
 
-        v11 = self;
-        v12 = v4;
+        selfCopy2 = self;
+        v12 = requestCopy;
         v13 = 1;
         goto LABEL_10;
       }
@@ -227,17 +227,17 @@ void __45__SOKerberosExtensionProcess_handleMigration__block_invoke(uint64_t a1)
   }
 
 LABEL_9:
-  v11 = self;
-  v12 = v4;
+  selfCopy2 = self;
+  v12 = requestCopy;
   v13 = 0;
 LABEL_10:
-  [(SOKerberosExtensionProcess *)v11 handleLogout:v12 removeRealm:v13];
+  [(SOKerberosExtensionProcess *)selfCopy2 handleLogout:v12 removeRealm:v13];
 LABEL_11:
 }
 
-- (void)cancelAuthorizationWithRequest:(id)a3
+- (void)cancelAuthorizationWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -250,8 +250,8 @@ LABEL_11:
     [SOKerberosExtensionProcess cancelAuthorizationWithRequest:?];
   }
 
-  v7 = [(SOKerberosExtensionProcess *)self requestContextMapping];
-  v8 = [v7 objectForKey:v4];
+  requestContextMapping = [(SOKerberosExtensionProcess *)self requestContextMapping];
+  v8 = [requestContextMapping objectForKey:requestCopy];
 
   if (v8)
   {
@@ -265,60 +265,60 @@ LABEL_11:
   }
 }
 
-- (void)handleKerberosOperations:(id)a3 andDelegate:(id)a4
+- (void)handleKerberosOperations:(id)operations andDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  operationsCopy = operations;
+  delegateCopy = delegate;
   v8 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosExtensionProcess handleKerberosOperations:v6 andDelegate:?];
+    [SOKerberosExtensionProcess handleKerberosOperations:operationsCopy andDelegate:?];
   }
 
-  v9 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-  v10 = [v6 realm];
-  v11 = [v10 uppercaseString];
-  v12 = [v9 objectForKeyedSubscript:v11];
+  kerberosByRealm = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+  realm = [operationsCopy realm];
+  uppercaseString = [realm uppercaseString];
+  v12 = [kerberosByRealm objectForKeyedSubscript:uppercaseString];
 
   if (!v12)
   {
     v13 = SO_LOG_SOKerberosExtensionProcess();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [SOKerberosExtensionProcess handleKerberosOperations:v6 andDelegate:?];
+      [SOKerberosExtensionProcess handleKerberosOperations:operationsCopy andDelegate:?];
     }
 
     v14 = [SOKerberosAuthentication alloc];
-    v15 = [v6 realm];
-    v16 = [v15 uppercaseString];
-    v17 = [(SOKerberosAuthentication *)v14 initWithRealm:v16];
-    v18 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-    v19 = [v6 realm];
-    v20 = [v19 uppercaseString];
-    [v18 setObject:v17 forKeyedSubscript:v20];
+    realm2 = [operationsCopy realm];
+    uppercaseString2 = [realm2 uppercaseString];
+    v17 = [(SOKerberosAuthentication *)v14 initWithRealm:uppercaseString2];
+    kerberosByRealm2 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+    realm3 = [operationsCopy realm];
+    uppercaseString3 = [realm3 uppercaseString];
+    [kerberosByRealm2 setObject:v17 forKeyedSubscript:uppercaseString3];
   }
 
-  v21 = [(SOKerberosExtensionProcess *)self createContextForRequest:v6];
+  v21 = [(SOKerberosExtensionProcess *)self createContextForRequest:operationsCopy];
   if ([(SOKerberosExtensionProcess *)self checkSourceAppACLWithContext:v21])
   {
-    v22 = [v21 extensionData];
-    if ([v22 usePlatformSSOTGT])
+    extensionData = [v21 extensionData];
+    if ([extensionData usePlatformSSOTGT])
     {
-      v23 = [v21 currentSettings];
-      if ([v23 platformSSOLoginInProgress])
+      currentSettings = [v21 currentSettings];
+      if ([currentSettings platformSSOLoginInProgress])
       {
-        v24 = [v21 currentSettings];
-        v25 = [v24 platformSSOLoginSemaphore];
+        currentSettings2 = [v21 currentSettings];
+        platformSSOLoginSemaphore = [currentSettings2 platformSSOLoginSemaphore];
 
-        if (!v25)
+        if (!platformSSOLoginSemaphore)
         {
           goto LABEL_20;
         }
 
-        v26 = [v21 currentSettings];
-        v27 = [v26 platformSSOLoginSemaphore];
+        currentSettings3 = [v21 currentSettings];
+        platformSSOLoginSemaphore2 = [currentSettings3 platformSSOLoginSemaphore];
         v28 = dispatch_time(0, 120000000000);
-        v29 = dispatch_semaphore_wait(v27, v28);
+        v29 = dispatch_semaphore_wait(platformSSOLoginSemaphore2, v28);
 
         if (!v29)
         {
@@ -328,15 +328,15 @@ LABEL_20:
             v32 = SO_LOG_SOKerberosExtensionProcess();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
             {
-              [SOKerberosExtensionProcess handleKerberosOperations:v6 andDelegate:?];
+              [SOKerberosExtensionProcess handleKerberosOperations:operationsCopy andDelegate:?];
             }
 
-            [v7 handleResult:2 context:v21 error:0];
+            [delegateCopy handleResult:2 context:v21 error:0];
           }
 
           else
           {
-            [(SOKerberosExtensionProcess *)self attemptKerberosWithContext:v21 andDelegate:v7];
+            [(SOKerberosExtensionProcess *)self attemptKerberosWithContext:v21 andDelegate:delegateCopy];
           }
 
           goto LABEL_25;
@@ -345,11 +345,11 @@ LABEL_20:
         v30 = SO_LOG_SOKerberosExtensionProcess();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
         {
-          [SOKerberosExtensionProcess handleKerberosOperations:v6 andDelegate:?];
+          [SOKerberosExtensionProcess handleKerberosOperations:operationsCopy andDelegate:?];
         }
 
-        v22 = [v21 currentSettings];
-        [v22 setPlatformSSOLoginInProgress:0];
+        extensionData = [v21 currentSettings];
+        [extensionData setPlatformSSOLoginInProgress:0];
       }
 
       else
@@ -370,55 +370,55 @@ LABEL_20:
 LABEL_25:
 }
 
-- (void)handleGetSiteCode:(id)a3
+- (void)handleGetSiteCode:(id)code
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   v5 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosExtensionProcess handleGetSiteCode:v4];
+    [SOKerberosExtensionProcess handleGetSiteCode:codeCopy];
   }
 
-  v6 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-  v7 = [v4 realm];
-  v8 = [v7 uppercaseString];
-  v9 = [v6 objectForKeyedSubscript:v8];
+  kerberosByRealm = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+  realm = [codeCopy realm];
+  uppercaseString = [realm uppercaseString];
+  v9 = [kerberosByRealm objectForKeyedSubscript:uppercaseString];
 
   if (!v9)
   {
     v10 = SO_LOG_SOKerberosExtensionProcess();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [SOKerberosExtensionProcess handleKerberosOperations:v4 andDelegate:?];
+      [SOKerberosExtensionProcess handleKerberosOperations:codeCopy andDelegate:?];
     }
 
     v11 = [SOKerberosAuthentication alloc];
-    v12 = [v4 realm];
-    v13 = [v12 uppercaseString];
-    v14 = [(SOKerberosAuthentication *)v11 initWithRealm:v13];
-    v15 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-    v16 = [v4 realm];
-    v17 = [v16 uppercaseString];
-    [v15 setObject:v14 forKeyedSubscript:v17];
+    realm2 = [codeCopy realm];
+    uppercaseString2 = [realm2 uppercaseString];
+    v14 = [(SOKerberosAuthentication *)v11 initWithRealm:uppercaseString2];
+    kerberosByRealm2 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+    realm3 = [codeCopy realm];
+    uppercaseString3 = [realm3 uppercaseString];
+    [kerberosByRealm2 setObject:v14 forKeyedSubscript:uppercaseString3];
   }
 
-  v18 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-  v19 = [v4 realm];
-  v20 = [v19 uppercaseString];
-  v21 = [v18 objectForKeyedSubscript:v20];
+  kerberosByRealm3 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+  realm4 = [codeCopy realm];
+  uppercaseString4 = [realm4 uppercaseString];
+  v21 = [kerberosByRealm3 objectForKeyedSubscript:uppercaseString4];
 
-  v22 = [(SOKerberosExtensionProcess *)self createContextForRequest:v4];
-  v23 = [v22 extensionData];
-  LODWORD(v19) = [v23 useSiteAutoDiscovery];
+  v22 = [(SOKerberosExtensionProcess *)self createContextForRequest:codeCopy];
+  extensionData = [v22 extensionData];
+  LODWORD(realm4) = [extensionData useSiteAutoDiscovery];
 
-  if (v19)
+  if (realm4)
   {
-    v24 = [v22 networkIdentity];
-    [v24 determineNetworkFingerprint];
+    networkIdentity = [v22 networkIdentity];
+    [networkIdentity determineNetworkFingerprint];
 
-    v25 = [v4 httpHeaders];
-    v26 = [v25 objectForKey:@"force"];
+    httpHeaders = [codeCopy httpHeaders];
+    v26 = [httpHeaders objectForKey:@"force"];
     v27 = [v26 isEqualToString:@"1"];
 
     if (v27)
@@ -442,23 +442,23 @@ LABEL_25:
       }
     }
 
-    v32 = [v4 httpHeaders];
-    v33 = [v32 objectForKey:@"verbose"];
+    httpHeaders2 = [codeCopy httpHeaders];
+    v33 = [httpHeaders2 objectForKey:@"verbose"];
     v34 = [v33 isEqualToString:@"1"];
 
     if (v34)
     {
       v57 = v22;
       v35 = [SOKerberosRealmSettings alloc];
-      v36 = [v4 realm];
-      v37 = [(SOKerberosRealmSettings *)v35 initWithRealm:v36];
+      realm5 = [codeCopy realm];
+      siteCode = [(SOKerberosRealmSettings *)v35 initWithRealm:realm5];
 
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v38 = [(SOKerberosRealmSettings *)v37 dumpSiteCodeCache];
-      v39 = [v38 countByEnumeratingWithState:&v58 objects:v68 count:16];
+      dumpSiteCodeCache = [(SOKerberosRealmSettings *)siteCode dumpSiteCodeCache];
+      v39 = [dumpSiteCodeCache countByEnumeratingWithState:&v58 objects:v68 count:16];
       if (v39)
       {
         v40 = v39;
@@ -473,7 +473,7 @@ LABEL_25:
           {
             if (*v59 != v41)
             {
-              objc_enumerationMutation(v38);
+              objc_enumerationMutation(dumpSiteCodeCache);
             }
 
             v46 = [*(*(&v58 + 1) + 8 * v44) description];
@@ -487,7 +487,7 @@ LABEL_25:
           }
 
           while (v40 != v44);
-          v40 = [v38 countByEnumeratingWithState:&v58 objects:v68 count:16];
+          v40 = [dumpSiteCodeCache countByEnumeratingWithState:&v58 objects:v68 count:16];
           v43 = @"\n";
         }
 
@@ -502,7 +502,7 @@ LABEL_25:
       v66 = @"site_code_cache";
       v67 = v42;
       v54 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-      [v4 completeWithHTTPAuthorizationHeaders:v54];
+      [codeCopy completeWithHTTPAuthorizationHeaders:v54];
 
       v55 = SO_LOG_SOKerberosExtensionProcess();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
@@ -514,34 +514,34 @@ LABEL_25:
       goto LABEL_36;
     }
 
-    v48 = [v4 callerBundleIdentifier];
-    v49 = [v22 networkIdentity];
-    v50 = [v49 networkFingerprint];
-    v37 = [v21 retrieveCachedSiteCodeFromCacheForBundleIdentifier:v48 networkFingerprint:v50];
+    callerBundleIdentifier = [codeCopy callerBundleIdentifier];
+    networkIdentity2 = [v22 networkIdentity];
+    networkFingerprint = [networkIdentity2 networkFingerprint];
+    siteCode = [v21 retrieveCachedSiteCodeFromCacheForBundleIdentifier:callerBundleIdentifier networkFingerprint:networkFingerprint];
   }
 
   else
   {
-    v37 = [v22 siteCode];
+    siteCode = [v22 siteCode];
   }
 
-  v51 = [(SOKerberosRealmSettings *)v37 code];
+  code = [(SOKerberosRealmSettings *)siteCode code];
 
-  if (v51)
+  if (code)
   {
     v64 = @"site_code";
-    v52 = [(SOKerberosRealmSettings *)v37 code];
-    v65 = v52;
+    code2 = [(SOKerberosRealmSettings *)siteCode code];
+    v65 = code2;
     v53 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
-    [v4 completeWithHTTPAuthorizationHeaders:v53];
+    [codeCopy completeWithHTTPAuthorizationHeaders:v53];
   }
 
   else
   {
     v62 = @"site_code";
     v63 = @"no site code";
-    v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-    [v4 completeWithHTTPAuthorizationHeaders:v52];
+    code2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
+    [codeCopy completeWithHTTPAuthorizationHeaders:code2];
   }
 
   v42 = SO_LOG_SOKerberosExtensionProcess();
@@ -555,21 +555,21 @@ LABEL_36:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemoveRealm:(id)a3
+- (void)handleRemoveRealm:(id)realm
 {
-  v3 = a3;
+  realmCopy = realm;
   v4 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosExtensionProcess handleRemoveRealm:v3];
+    [SOKerberosExtensionProcess handleRemoveRealm:realmCopy];
   }
 
   v5 = [SOKerberosRealmSettings alloc];
-  v6 = [v3 realm];
-  v7 = [(SOKerberosRealmSettings *)v5 initWithRealm:v6];
+  realm = [realmCopy realm];
+  v7 = [(SOKerberosRealmSettings *)v5 initWithRealm:realm];
   [(SOKerberosRealmSettings *)v7 removeAllValues];
 
-  [v3 complete];
+  [realmCopy complete];
   v8 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -577,115 +577,115 @@ LABEL_36:
   }
 }
 
-- (void)handleLogoutWithContext:(id)a3 removeRealm:(BOOL)a4
+- (void)handleLogoutWithContext:(id)context removeRealm:(BOOL)realm
 {
-  v4 = a4;
-  v6 = a3;
+  realmCopy = realm;
+  contextCopy = context;
   objc_sync_enter(0);
-  v7 = [v6 impersonationBundleIdentifier];
+  impersonationBundleIdentifier = [contextCopy impersonationBundleIdentifier];
 
-  if (v7)
+  if (impersonationBundleIdentifier)
   {
-    [v6 impersonationBundleIdentifier];
+    [contextCopy impersonationBundleIdentifier];
   }
 
   else
   {
-    [v6 callerBundleIdentifier];
+    [contextCopy callerBundleIdentifier];
   }
   v8 = ;
   HeimCredSetImpersonateBundle();
 
-  v9 = [(SOKerberosExtensionProcess *)self kerberosHelper];
-  v10 = [v6 credentialUUID];
-  [v9 destroyCredential:v10];
+  kerberosHelper = [(SOKerberosExtensionProcess *)self kerberosHelper];
+  credentialUUID = [contextCopy credentialUUID];
+  [kerberosHelper destroyCredential:credentialUUID];
 
   HeimCredSetImpersonateBundle();
   objc_sync_exit(0);
-  v11 = [v6 currentSettings];
-  [v11 setUserPrincipalName:0];
+  currentSettings = [contextCopy currentSettings];
+  [currentSettings setUserPrincipalName:0];
 
-  v12 = [v6 currentSettings];
-  [v12 setUserName:0];
+  currentSettings2 = [contextCopy currentSettings];
+  [currentSettings2 setUserName:0];
 
-  [v6 setCredentialUUID:0];
-  [v6 setUserNameIsReadOnly:0];
-  [v6 setUserName:0];
-  v13 = [v6 currentSettings];
-  [v13 setCredentialUUID:0];
+  [contextCopy setCredentialUUID:0];
+  [contextCopy setUserNameIsReadOnly:0];
+  [contextCopy setUserName:0];
+  currentSettings3 = [contextCopy currentSettings];
+  [currentSettings3 setCredentialUUID:0];
 
-  v14 = [v6 currentSettings];
-  [v14 setPkinitPersistentRef:0];
+  currentSettings4 = [contextCopy currentSettings];
+  [currentSettings4 setPkinitPersistentRef:0];
 
-  v15 = [v6 currentSettings];
-  [v15 setSmartCardTokenID:0];
+  currentSettings5 = [contextCopy currentSettings];
+  [currentSettings5 setSmartCardTokenID:0];
 
-  v16 = [v6 currentSettings];
-  [v16 setDateLastLogin:0];
+  currentSettings6 = [contextCopy currentSettings];
+  [currentSettings6 setDateLastLogin:0];
 
-  v17 = [v6 currentSettings];
-  [v17 setDateNextPacRefresh:0];
+  currentSettings7 = [contextCopy currentSettings];
+  [currentSettings7 setDateNextPacRefresh:0];
 
-  v18 = [v6 currentSettings];
-  [v18 setDatePasswordLastChangedAtLogin:0];
+  currentSettings8 = [contextCopy currentSettings];
+  [currentSettings8 setDatePasswordLastChangedAtLogin:0];
 
-  v19 = [v6 currentSettings];
-  [v19 setDatePasswordLastChanged:0];
+  currentSettings9 = [contextCopy currentSettings];
+  [currentSettings9 setDatePasswordLastChanged:0];
 
-  v20 = [v6 currentSettings];
-  [v20 setDatePasswordExpires:0];
+  currentSettings10 = [contextCopy currentSettings];
+  [currentSettings10 setDatePasswordExpires:0];
 
-  v21 = [v6 currentSettings];
-  [v21 setPasswordNeverExpires:0];
+  currentSettings11 = [contextCopy currentSettings];
+  [currentSettings11 setPasswordNeverExpires:0];
 
-  v22 = [v6 currentSettings];
-  [v22 setNetworkHomeDirectory:0];
+  currentSettings12 = [contextCopy currentSettings];
+  [currentSettings12 setNetworkHomeDirectory:0];
 
-  v23 = [v6 currentSettings];
-  [v23 setDateADPasswordCanChange:0];
+  currentSettings13 = [contextCopy currentSettings];
+  [currentSettings13 setDateADPasswordCanChange:0];
 
-  v24 = [v6 currentSettings];
-  [v24 setDateLocalPasswordLastChanged:0];
+  currentSettings14 = [contextCopy currentSettings];
+  [currentSettings14 setDateLocalPasswordLastChanged:0];
 
-  v25 = [v6 currentSettings];
-  [v25 setDateExpirationChecked:0];
+  currentSettings15 = [contextCopy currentSettings];
+  [currentSettings15 setDateExpirationChecked:0];
 
-  v26 = [v6 currentSettings];
-  [v26 setDateExpirationNotificationSent:0];
+  currentSettings16 = [contextCopy currentSettings];
+  [currentSettings16 setDateExpirationNotificationSent:0];
 
-  v27 = [v6 currentSettings];
-  [v27 setUserCancelledLogin:0];
+  currentSettings17 = [contextCopy currentSettings];
+  [currentSettings17 setUserCancelledLogin:0];
 
-  v28 = [v6 currentSettings];
-  [v28 setDateLoginCancelled:0];
+  currentSettings18 = [contextCopy currentSettings];
+  [currentSettings18 setDateLoginCancelled:0];
 
-  v29 = [v6 currentSettings];
-  [v29 setPasswordChangeInProgress:0];
+  currentSettings19 = [contextCopy currentSettings];
+  [currentSettings19 setPasswordChangeInProgress:0];
 
-  v30 = [(SOKerberosExtensionProcess *)self keychainHelper];
-  v31 = [v6 serviceName];
-  [v30 removeCredentialsFromKeychainWithService:v31];
+  keychainHelper = [(SOKerberosExtensionProcess *)self keychainHelper];
+  serviceName = [contextCopy serviceName];
+  [keychainHelper removeCredentialsFromKeychainWithService:serviceName];
 
-  v32 = [v6 extensionUserData];
-  [v32 setUserSetKeychainChoice:0];
+  extensionUserData = [contextCopy extensionUserData];
+  [extensionUserData setUserSetKeychainChoice:0];
 
-  v33 = [v6 extensionUserData];
-  [v33 setUseKeychain:1];
+  extensionUserData2 = [contextCopy extensionUserData];
+  [extensionUserData2 setUseKeychain:1];
 
-  if (v4)
+  if (realmCopy)
   {
     v34 = SO_LOG_SOKerberosExtensionProcess();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
     {
-      [SOKerberosExtensionProcess handleLogoutWithContext:v6 removeRealm:?];
+      [SOKerberosExtensionProcess handleLogoutWithContext:contextCopy removeRealm:?];
     }
 
-    v35 = [v6 currentSettings];
-    [v35 removeAllValues];
+    currentSettings20 = [contextCopy currentSettings];
+    [currentSettings20 removeAllValues];
 
-    v36 = [v6 realm];
+    realm = [contextCopy realm];
     v40 = 0;
-    v37 = [SOKerberosHeimdalPluginSettings deleteSettingsForRealm:v36 error:&v40];
+    v37 = [SOKerberosHeimdalPluginSettings deleteSettingsForRealm:realm error:&v40];
     v38 = v40;
 
     if (!v37)
@@ -700,27 +700,27 @@ LABEL_36:
 
   else
   {
-    [SOKerberosAuthentication saveValuesForPlugins:v6];
+    [SOKerberosAuthentication saveValuesForPlugins:contextCopy];
   }
 }
 
-- (void)destroyCredentialsWithContext:(id)a3
+- (void)destroyCredentialsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosExtensionProcess destroyCredentialsWithContext:];
   }
 
-  if ([(SOKerberosExtensionProcess *)self checkSourceAppACLWithContext:v4])
+  if ([(SOKerberosExtensionProcess *)self checkSourceAppACLWithContext:contextCopy])
   {
-    v6 = [v4 credentialUUID];
+    credentialUUID = [contextCopy credentialUUID];
 
-    if (v6)
+    if (credentialUUID)
     {
-      v7 = [v4 credentialUUID];
-      v8 = [v7 UUIDString];
+      credentialUUID2 = [contextCopy credentialUUID];
+      uUIDString = [credentialUUID2 UUIDString];
 
       v9 = SO_LOG_SOKerberosExtensionProcess();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -729,23 +729,23 @@ LABEL_36:
       }
 
       objc_sync_enter(0);
-      v10 = [v4 impersonationBundleIdentifier];
+      impersonationBundleIdentifier = [contextCopy impersonationBundleIdentifier];
 
-      if (v10)
+      if (impersonationBundleIdentifier)
       {
-        [v4 impersonationBundleIdentifier];
+        [contextCopy impersonationBundleIdentifier];
       }
 
       else
       {
-        [v4 callerBundleIdentifier];
+        [contextCopy callerBundleIdentifier];
       }
       v11 = ;
       HeimCredSetImpersonateBundle();
 
-      v20 = [(SOKerberosExtensionProcess *)self kerberosHelper];
-      v21 = [v4 credentialUUID];
-      [v20 destroyCredential:v21];
+      kerberosHelper = [(SOKerberosExtensionProcess *)self kerberosHelper];
+      credentialUUID3 = [contextCopy credentialUUID];
+      [kerberosHelper destroyCredential:credentialUUID3];
 
       HeimCredSetImpersonateBundle();
       objc_sync_exit(0);
@@ -753,39 +753,39 @@ LABEL_36:
 
     else
     {
-      v13 = [v4 userPrincipalName];
-      if (v13)
+      userPrincipalName = [contextCopy userPrincipalName];
+      if (userPrincipalName)
       {
-        v14 = v13;
-        v15 = [v4 userPrincipalName];
-        v16 = [v15 isEqualToString:&stru_285206D08];
+        v14 = userPrincipalName;
+        userPrincipalName2 = [contextCopy userPrincipalName];
+        v16 = [userPrincipalName2 isEqualToString:&stru_285206D08];
 
         if ((v16 & 1) == 0)
         {
           v17 = SO_LOG_SOKerberosExtensionProcess();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
-            [SOKerberosExtensionProcess destroyCredentialsWithContext:v4];
+            [SOKerberosExtensionProcess destroyCredentialsWithContext:contextCopy];
           }
 
           objc_sync_enter(0);
-          v18 = [v4 impersonationBundleIdentifier];
+          impersonationBundleIdentifier2 = [contextCopy impersonationBundleIdentifier];
 
-          if (v18)
+          if (impersonationBundleIdentifier2)
           {
-            [v4 impersonationBundleIdentifier];
+            [contextCopy impersonationBundleIdentifier];
           }
 
           else
           {
-            [v4 callerBundleIdentifier];
+            [contextCopy callerBundleIdentifier];
           }
           v19 = ;
           HeimCredSetImpersonateBundle();
 
-          v22 = [(SOKerberosExtensionProcess *)self kerberosHelper];
-          v23 = [v4 userPrincipalName];
-          [v22 destroyCredentialForUPN:v23];
+          kerberosHelper2 = [(SOKerberosExtensionProcess *)self kerberosHelper];
+          userPrincipalName3 = [contextCopy userPrincipalName];
+          [kerberosHelper2 destroyCredentialForUPN:userPrincipalName3];
 
           HeimCredSetImpersonateBundle();
           objc_sync_exit(0);
@@ -802,32 +802,32 @@ LABEL_36:
       [SOKerberosExtensionProcess destroyCredentialsWithContext:];
     }
 
-    [v4 completeRequestWithDoNotHandle];
+    [contextCopy completeRequestWithDoNotHandle];
   }
 }
 
-- (void)handleResetKeychainChoice:(id)a3
+- (void)handleResetKeychainChoice:(id)choice
 {
-  v3 = a3;
+  choiceCopy = choice;
   v4 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosExtensionProcess handleResetKeychainChoice:v3];
+    [SOKerberosExtensionProcess handleResetKeychainChoice:choiceCopy];
   }
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v5 removeObjectForKey:@"useKeychain"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"useKeychain"];
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v6 removeObjectForKey:@"userSetKeychainChoice"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 removeObjectForKey:@"userSetKeychainChoice"];
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 removeObjectForKey:@"rememberKeychainChoice"];
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults3 removeObjectForKey:@"rememberKeychainChoice"];
 
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v8 synchronize];
+  standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults4 synchronize];
 
-  [v3 complete];
+  [choiceCopy complete];
   v9 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -835,50 +835,50 @@ LABEL_36:
   }
 }
 
-- (void)handleGetRealmInfo:(id)a3
+- (void)handleGetRealmInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosExtensionProcess handleGetRealmInfo:v4];
+    [SOKerberosExtensionProcess handleGetRealmInfo:infoCopy];
   }
 
-  v6 = [v4 httpHeaders];
-  v7 = [v6 objectForKey:@"verbose"];
+  httpHeaders = [infoCopy httpHeaders];
+  v7 = [httpHeaders objectForKey:@"verbose"];
   v8 = [v7 isEqualToString:@"1"];
 
-  v9 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-  v10 = [v4 realm];
-  v11 = [v10 uppercaseString];
-  v12 = [v9 objectForKeyedSubscript:v11];
+  kerberosByRealm = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+  realm = [infoCopy realm];
+  uppercaseString = [realm uppercaseString];
+  v12 = [kerberosByRealm objectForKeyedSubscript:uppercaseString];
 
   if (!v12)
   {
     v13 = SO_LOG_SOKerberosExtensionProcess();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [SOKerberosExtensionProcess handleKerberosOperations:v4 andDelegate:?];
+      [SOKerberosExtensionProcess handleKerberosOperations:infoCopy andDelegate:?];
     }
 
     v14 = [SOKerberosAuthentication alloc];
-    v15 = [v4 realm];
-    v16 = [v15 uppercaseString];
-    v17 = [(SOKerberosAuthentication *)v14 initWithRealm:v16];
-    v18 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-    v19 = [v4 realm];
-    v20 = [v19 uppercaseString];
-    [v18 setObject:v17 forKeyedSubscript:v20];
+    realm2 = [infoCopy realm];
+    uppercaseString2 = [realm2 uppercaseString];
+    v17 = [(SOKerberosAuthentication *)v14 initWithRealm:uppercaseString2];
+    kerberosByRealm2 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+    realm3 = [infoCopy realm];
+    uppercaseString3 = [realm3 uppercaseString];
+    [kerberosByRealm2 setObject:v17 forKeyedSubscript:uppercaseString3];
   }
 
-  v21 = [(SOKerberosExtensionProcess *)self createContextForRequest:v4];
-  v22 = [v21 extensionData];
-  v23 = [v22 useSiteAutoDiscovery];
+  v21 = [(SOKerberosExtensionProcess *)self createContextForRequest:infoCopy];
+  extensionData = [v21 extensionData];
+  useSiteAutoDiscovery = [extensionData useSiteAutoDiscovery];
 
-  if (v23)
+  if (useSiteAutoDiscovery)
   {
-    v24 = [v21 networkIdentity];
-    [v24 determineNetworkFingerprint];
+    networkIdentity = [v21 networkIdentity];
+    [networkIdentity determineNetworkFingerprint];
   }
 
   v25 = [(SOKerberosExtensionProcess *)self settingsForContext:v21 includeSiteCodeCache:v8];
@@ -888,7 +888,7 @@ LABEL_36:
     [SOKerberosExtensionProcess handleGetRealmInfo:];
   }
 
-  [v4 completeWithHTTPAuthorizationHeaders:v25];
+  [infoCopy completeWithHTTPAuthorizationHeaders:v25];
   v27 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
@@ -896,73 +896,73 @@ LABEL_36:
   }
 }
 
-- (id)settingsForContext:(id)a3 includeSiteCodeCache:(BOOL)a4
+- (id)settingsForContext:(id)context includeSiteCodeCache:(BOOL)cache
 {
-  v4 = a4;
+  cacheCopy = cache;
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v7 = [SOKerberosRealmSettings alloc];
-  v8 = [v6 realm];
-  v9 = [(SOKerberosRealmSettings *)v7 initWithRealm:v8];
+  realm = [contextCopy realm];
+  v9 = [(SOKerberosRealmSettings *)v7 initWithRealm:realm];
 
-  v10 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-  v11 = [v6 realm];
-  v12 = [v11 uppercaseString];
-  v13 = [v10 objectForKeyedSubscript:v12];
+  kerberosByRealm = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+  realm2 = [contextCopy realm];
+  uppercaseString = [realm2 uppercaseString];
+  v13 = [kerberosByRealm objectForKeyedSubscript:uppercaseString];
 
   v14 = objc_opt_new();
-  v15 = [v6 realm];
+  realm3 = [contextCopy realm];
 
-  if (v15)
+  if (realm3)
   {
-    v16 = [v6 realm];
-    [v14 setObject:v16 forKeyedSubscript:@"realm"];
+    realm4 = [contextCopy realm];
+    [v14 setObject:realm4 forKeyedSubscript:@"realm"];
   }
 
-  v17 = [(SOKerberosRealmSettings *)v9 userPrincipalName];
+  userPrincipalName = [(SOKerberosRealmSettings *)v9 userPrincipalName];
 
-  if (v17)
+  if (userPrincipalName)
   {
-    v18 = [(SOKerberosRealmSettings *)v9 userPrincipalName];
-    [v14 setObject:v18 forKeyedSubscript:@"upn"];
+    userPrincipalName2 = [(SOKerberosRealmSettings *)v9 userPrincipalName];
+    [v14 setObject:userPrincipalName2 forKeyedSubscript:@"upn"];
   }
 
-  v19 = [(SOKerberosRealmSettings *)v9 userName];
+  userName = [(SOKerberosRealmSettings *)v9 userName];
 
-  if (v19)
+  if (userName)
   {
-    v20 = [(SOKerberosRealmSettings *)v9 userName];
-    [v14 setObject:v20 forKeyedSubscript:@"user_name"];
+    userName2 = [(SOKerberosRealmSettings *)v9 userName];
+    [v14 setObject:userName2 forKeyedSubscript:@"user_name"];
   }
 
-  v21 = [(SOKerberosRealmSettings *)v9 credentialUUID];
+  credentialUUID = [(SOKerberosRealmSettings *)v9 credentialUUID];
 
-  if (v21)
+  if (credentialUUID)
   {
-    v22 = [(SOKerberosRealmSettings *)v9 credentialUUID];
-    v23 = [v22 UUIDString];
-    [v14 setObject:v23 forKeyedSubscript:@"gss_cred_uuid"];
+    credentialUUID2 = [(SOKerberosRealmSettings *)v9 credentialUUID];
+    uUIDString = [credentialUUID2 UUIDString];
+    [v14 setObject:uUIDString forKeyedSubscript:@"gss_cred_uuid"];
   }
 
-  v24 = [v6 extensionData];
-  v25 = [v24 useSiteAutoDiscovery];
+  extensionData = [contextCopy extensionData];
+  useSiteAutoDiscovery = [extensionData useSiteAutoDiscovery];
 
   v69 = v13;
-  if (v25)
+  if (useSiteAutoDiscovery)
   {
-    v26 = [v6 callerBundleIdentifier];
-    v27 = [v6 networkIdentity];
-    v28 = [v27 networkFingerprint];
-    v29 = [v13 retrieveCachedSiteCodeFromCacheForBundleIdentifier:v26 networkFingerprint:v28];
+    callerBundleIdentifier = [contextCopy callerBundleIdentifier];
+    networkIdentity = [contextCopy networkIdentity];
+    networkFingerprint = [networkIdentity networkFingerprint];
+    v29 = [v13 retrieveCachedSiteCodeFromCacheForBundleIdentifier:callerBundleIdentifier networkFingerprint:networkFingerprint];
 
-    v30 = [v29 code];
+    code = [v29 code];
 
-    if (v30)
+    if (code)
     {
-      v31 = [v29 code];
-      [v14 setObject:v31 forKeyedSubscript:@"site_code"];
+      code2 = [v29 code];
+      [v14 setObject:code2 forKeyedSubscript:@"site_code"];
 
-      if (!v4)
+      if (!cacheCopy)
       {
         goto LABEL_27;
       }
@@ -971,7 +971,7 @@ LABEL_36:
     else
     {
       [v14 setObject:@"no site code" forKeyedSubscript:@"site_code"];
-      if (!v4)
+      if (!cacheCopy)
       {
 LABEL_27:
 
@@ -980,13 +980,13 @@ LABEL_27:
     }
 
     v67 = v29;
-    v68 = v6;
+    v68 = contextCopy;
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v35 = [(SOKerberosRealmSettings *)v9 dumpSiteCodeCache];
-    v36 = [v35 countByEnumeratingWithState:&v70 objects:v74 count:16];
+    dumpSiteCodeCache = [(SOKerberosRealmSettings *)v9 dumpSiteCodeCache];
+    v36 = [dumpSiteCodeCache countByEnumeratingWithState:&v70 objects:v74 count:16];
     if (v36)
     {
       v37 = v36;
@@ -1001,7 +1001,7 @@ LABEL_27:
         {
           if (*v71 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(dumpSiteCodeCache);
           }
 
           v43 = [*(*(&v70 + 1) + 8 * v41) description];
@@ -1015,7 +1015,7 @@ LABEL_27:
         }
 
         while (v37 != v41);
-        v37 = [v35 countByEnumeratingWithState:&v70 objects:v74 count:16];
+        v37 = [dumpSiteCodeCache countByEnumeratingWithState:&v70 objects:v74 count:16];
         v40 = @"\n";
       }
 
@@ -1029,17 +1029,17 @@ LABEL_27:
 
     [v14 setObject:v39 forKeyedSubscript:@"site_code_cache"];
     v29 = v67;
-    v6 = v68;
+    contextCopy = v68;
     goto LABEL_27;
   }
 
-  v32 = [v6 siteCode];
+  siteCode = [contextCopy siteCode];
 
-  if (v32)
+  if (siteCode)
   {
-    v33 = [v6 siteCode];
-    v34 = [v33 code];
-    [v14 setObject:v34 forKeyedSubscript:@"site_code"];
+    siteCode2 = [contextCopy siteCode];
+    code3 = [siteCode2 code];
+    [v14 setObject:code3 forKeyedSubscript:@"site_code"];
   }
 
   else
@@ -1050,54 +1050,54 @@ LABEL_27:
 LABEL_28:
   v45 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v45 setFormatOptions:1907];
-  v46 = [(SOKerberosRealmSettings *)v9 dateLastLogin];
+  dateLastLogin = [(SOKerberosRealmSettings *)v9 dateLastLogin];
 
-  if (v46)
+  if (dateLastLogin)
   {
-    v47 = [(SOKerberosRealmSettings *)v9 dateLastLogin];
-    v48 = [v45 stringFromDate:v47];
+    dateLastLogin2 = [(SOKerberosRealmSettings *)v9 dateLastLogin];
+    v48 = [v45 stringFromDate:dateLastLogin2];
 
     [v14 setObject:v48 forKeyedSubscript:@"login_date"];
   }
 
-  v49 = [(SOKerberosRealmSettings *)v9 datePasswordLastChanged];
-  if (v49)
+  datePasswordLastChanged = [(SOKerberosRealmSettings *)v9 datePasswordLastChanged];
+  if (datePasswordLastChanged)
   {
-    v50 = v49;
-    v51 = [(SOKerberosRealmSettings *)v9 dateExpirationChecked];
+    v50 = datePasswordLastChanged;
+    dateExpirationChecked = [(SOKerberosRealmSettings *)v9 dateExpirationChecked];
 
-    if (v51)
+    if (dateExpirationChecked)
     {
-      v52 = [(SOKerberosRealmSettings *)v9 datePasswordLastChanged];
-      v53 = [v45 stringFromDate:v52];
+      datePasswordLastChanged2 = [(SOKerberosRealmSettings *)v9 datePasswordLastChanged];
+      v53 = [v45 stringFromDate:datePasswordLastChanged2];
       [v14 setObject:v53 forKeyedSubscript:@"password_changed_date"];
     }
   }
 
-  v54 = [(SOKerberosRealmSettings *)v9 dateLocalPasswordLastChanged];
+  dateLocalPasswordLastChanged = [(SOKerberosRealmSettings *)v9 dateLocalPasswordLastChanged];
 
-  if (v54)
+  if (dateLocalPasswordLastChanged)
   {
-    v55 = [(SOKerberosRealmSettings *)v9 dateLocalPasswordLastChanged];
-    v56 = [v45 stringFromDate:v55];
+    dateLocalPasswordLastChanged2 = [(SOKerberosRealmSettings *)v9 dateLocalPasswordLastChanged];
+    v56 = [v45 stringFromDate:dateLocalPasswordLastChanged2];
     [v14 setObject:v56 forKeyedSubscript:@"local_password_changed_date"];
   }
 
-  v57 = [(SOKerberosRealmSettings *)v9 datePasswordExpires];
+  datePasswordExpires = [(SOKerberosRealmSettings *)v9 datePasswordExpires];
 
-  if (v57)
+  if (datePasswordExpires)
   {
-    v58 = [(SOKerberosRealmSettings *)v9 datePasswordExpires];
-    v59 = [v45 stringFromDate:v58];
+    datePasswordExpires2 = [(SOKerberosRealmSettings *)v9 datePasswordExpires];
+    v59 = [v45 stringFromDate:datePasswordExpires2];
     [v14 setObject:v59 forKeyedSubscript:@"password_expires_date"];
   }
 
-  v60 = [(SOKerberosRealmSettings *)v9 networkHomeDirectory];
+  networkHomeDirectory = [(SOKerberosRealmSettings *)v9 networkHomeDirectory];
 
-  if (v60)
+  if (networkHomeDirectory)
   {
-    v61 = [(SOKerberosRealmSettings *)v9 networkHomeDirectory];
-    [v14 setObject:v61 forKeyedSubscript:@"home_directory"];
+    networkHomeDirectory2 = [(SOKerberosRealmSettings *)v9 networkHomeDirectory];
+    [v14 setObject:networkHomeDirectory2 forKeyedSubscript:@"home_directory"];
   }
 
   if ([(SOKerberosRealmSettings *)v9 delayUserSetupCleared])
@@ -1150,22 +1150,22 @@ LABEL_28:
   return v14;
 }
 
-- (BOOL)checkSourceAppACLWithContext:(id)a3
+- (BOOL)checkSourceAppACLWithContext:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 extensionData];
-  v5 = [v4 credentialBundleIdACL];
-  if (v5)
+  contextCopy = context;
+  extensionData = [contextCopy extensionData];
+  credentialBundleIdACL = [extensionData credentialBundleIdACL];
+  if (credentialBundleIdACL)
   {
   }
 
   else
   {
-    v6 = [v3 extensionData];
-    v7 = [v6 includeManagedAppsInBundleIdACL];
+    extensionData2 = [contextCopy extensionData];
+    includeManagedAppsInBundleIdACL = [extensionData2 includeManagedAppsInBundleIdACL];
 
-    if (!v7)
+    if (!includeManagedAppsInBundleIdACL)
     {
 LABEL_20:
       LOBYTE(v11) = 1;
@@ -1176,17 +1176,17 @@ LABEL_20:
   v8 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosExtensionProcess checkSourceAppACLWithContext:v3];
+    [SOKerberosExtensionProcess checkSourceAppACLWithContext:contextCopy];
   }
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v3 extensionData];
-  v10 = [v9 credentialBundleIdACL];
+  extensionData3 = [contextCopy extensionData];
+  credentialBundleIdACL2 = [extensionData3 credentialBundleIdACL];
 
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v11 = [credentialBundleIdACL2 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
     v12 = *v24;
@@ -1196,13 +1196,13 @@ LABEL_20:
       {
         if (*v24 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(credentialBundleIdACL2);
         }
 
-        v14 = [*(*(&v23 + 1) + 8 * i) lowercaseString];
-        v15 = [v3 callerBundleIdentifier];
-        v16 = [v15 lowercaseString];
-        v17 = [v14 isEqualToString:v16];
+        lowercaseString = [*(*(&v23 + 1) + 8 * i) lowercaseString];
+        callerBundleIdentifier = [contextCopy callerBundleIdentifier];
+        lowercaseString2 = [callerBundleIdentifier lowercaseString];
+        v17 = [lowercaseString isEqualToString:lowercaseString2];
 
         if (v17)
         {
@@ -1217,7 +1217,7 @@ LABEL_20:
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v11 = [credentialBundleIdACL2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v11)
       {
         continue;
@@ -1229,12 +1229,12 @@ LABEL_20:
 
 LABEL_18:
 
-  v18 = [v3 extensionData];
-  if ([v18 includeManagedAppsInBundleIdACL])
+  extensionData4 = [contextCopy extensionData];
+  if ([extensionData4 includeManagedAppsInBundleIdACL])
   {
-    v19 = [v3 isManagedApp];
+    isManagedApp = [contextCopy isManagedApp];
 
-    if ((v11 | v19))
+    if ((v11 | isManagedApp))
     {
       goto LABEL_20;
     }
@@ -1260,42 +1260,42 @@ LABEL_25:
   return v11;
 }
 
-- (id)createContextForRequest:(id)a3
+- (id)createContextForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [SOKerberosExtensionProcess createContextForRequest:v4];
+    [SOKerberosExtensionProcess createContextForRequest:requestCopy];
   }
 
-  v6 = [v4 httpHeaders];
+  httpHeaders = [requestCopy httpHeaders];
   v7 = [SOKerberosExtensionData alloc];
-  v8 = [v4 extensionData];
-  v9 = [(SOKerberosExtensionData *)v7 initWithDictionary:v8];
+  extensionData = [requestCopy extensionData];
+  v9 = [(SOKerberosExtensionData *)v7 initWithDictionary:extensionData];
 
   if (!v9)
   {
     v10 = SO_LOG_SOKerberosExtensionProcess();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [SOKerberosExtensionProcess createContextForRequest:v4];
+      [SOKerberosExtensionProcess createContextForRequest:requestCopy];
     }
   }
 
-  v11 = [[SOKerberosContext alloc] initWithRequest:v4 extensionData:v9];
-  v12 = [(SOKerberosExtensionData *)v9 siteCode];
-  if (v12)
+  v11 = [[SOKerberosContext alloc] initWithRequest:requestCopy extensionData:v9];
+  siteCode = [(SOKerberosExtensionData *)v9 siteCode];
+  if (siteCode)
   {
-    v13 = v12;
-    v14 = [(SOKerberosExtensionData *)v9 siteCode];
+    v13 = siteCode;
+    siteCode2 = [(SOKerberosExtensionData *)v9 siteCode];
 
-    if (v14 != @"no site code")
+    if (siteCode2 != @"no site code")
     {
       [(SOKerberosExtensionData *)v9 setUseSiteAutoDiscovery:0];
       v15 = [SOSiteCode alloc];
-      v16 = [(SOKerberosExtensionData *)v9 siteCode];
-      v17 = [(SOSiteCode *)v15 initWithSiteCode:v16 forNetworkFingerprint:@"profile"];
+      siteCode3 = [(SOKerberosExtensionData *)v9 siteCode];
+      v17 = [(SOSiteCode *)v15 initWithSiteCode:siteCode3 forNetworkFingerprint:@"profile"];
       [(SOKerberosContext *)v11 setSiteCode:v17];
     }
   }
@@ -1303,24 +1303,24 @@ LABEL_25:
   if ([(SOKerberosExtensionData *)v9 useSiteAutoDiscovery])
   {
     v18 = [SONetworkIdentity alloc];
-    v19 = [v4 realm];
-    v20 = [v19 uppercaseString];
-    v21 = [(SOKerberosContext *)v11 callerBundleIdentifier];
-    v22 = [(SOKerberosContext *)v11 auditToken];
-    v23 = [(SONetworkIdentity *)v18 initForRealm:v20 bundleIdentifier:v21 auditToken:v22];
+    realm = [requestCopy realm];
+    uppercaseString = [realm uppercaseString];
+    callerBundleIdentifier = [(SOKerberosContext *)v11 callerBundleIdentifier];
+    auditToken = [(SOKerberosContext *)v11 auditToken];
+    v23 = [(SONetworkIdentity *)v18 initForRealm:uppercaseString bundleIdentifier:callerBundleIdentifier auditToken:auditToken];
     [(SOKerberosContext *)v11 setNetworkIdentity:v23];
   }
 
-  v24 = [v4 requestedOperation];
-  if (([v24 isEqualToString:@"login"] & 1) == 0)
+  requestedOperation = [requestCopy requestedOperation];
+  if (([requestedOperation isEqualToString:@"login"] & 1) == 0)
   {
-    v25 = [v4 requestedOperation];
-    if (([v25 isEqualToString:@"get_credential_uuid"] & 1) == 0)
+    requestedOperation2 = [requestCopy requestedOperation];
+    if (([requestedOperation2 isEqualToString:@"get_credential_uuid"] & 1) == 0)
     {
-      v26 = [v4 requestedOperation];
-      if (([v26 isEqualToString:@"change_password"] & 1) == 0)
+      requestedOperation3 = [requestCopy requestedOperation];
+      if (([requestedOperation3 isEqualToString:@"change_password"] & 1) == 0)
       {
-        v27 = [v4 requestedOperation];
+        requestedOperation4 = [requestCopy requestedOperation];
         v54 = 0;
         v55 = &v54;
         v56 = 0x2020000000;
@@ -1347,13 +1347,13 @@ LABEL_25:
           _Unwind_Resume(v48);
         }
 
-        if (([v27 isEqualToString:*v28] & 1) == 0)
+        if (([requestedOperation4 isEqualToString:*v28] & 1) == 0)
         {
-          v49 = [v4 url];
+          v49 = [requestCopy url];
           [v49 scheme];
-          v46 = v50 = v27;
-          v47 = [v46 lowercaseString];
-          v51 = [v47 isEqualToString:@"realm"];
+          v46 = v50 = requestedOperation4;
+          lowercaseString = [v46 lowercaseString];
+          v51 = [lowercaseString isEqualToString:@"realm"];
 
           if ((v51 & 1) == 0)
           {
@@ -1368,7 +1368,7 @@ LABEL_25:
 
 LABEL_23:
   [(SOKerberosContext *)v11 setReturnCredentialOnly:1];
-  v30 = [v6 objectForKey:@"force"];
+  v30 = [httpHeaders objectForKey:@"force"];
   v31 = [v30 isEqualToString:@"1"];
 
   if (v31)
@@ -1376,7 +1376,7 @@ LABEL_23:
     [(SOKerberosContext *)v11 setForceLoginViewController:1];
   }
 
-  v32 = [v6 objectForKey:@"refresh"];
+  v32 = [httpHeaders objectForKey:@"refresh"];
   v33 = [v32 isEqualToString:@"1"];
 
   if (v33)
@@ -1385,19 +1385,19 @@ LABEL_23:
   }
 
 LABEL_27:
-  v34 = [(SOKerberosExtensionProcess *)self requestContextMapping];
-  [v34 setObject:v11 forKey:v4];
+  requestContextMapping = [(SOKerberosExtensionProcess *)self requestContextMapping];
+  [requestContextMapping setObject:v11 forKey:requestCopy];
 
-  v35 = [(SOKerberosContext *)v11 userName];
-  if (v35)
+  userName = [(SOKerberosContext *)v11 userName];
+  if (userName)
   {
   }
 
   else
   {
-    v37 = [(SOKerberosExtensionData *)v9 certificateUUID];
+    certificateUUID = [(SOKerberosExtensionData *)v9 certificateUUID];
 
-    if (v37)
+    if (certificateUUID)
     {
       v38 = SO_LOG_SOKerberosExtensionProcess();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -1405,9 +1405,9 @@ LABEL_27:
         [SOKerberosExtensionProcess createContextForRequest:];
       }
 
-      v39 = [(SOKerberosExtensionProcess *)self keychainHelper];
-      v40 = [(SOKerberosExtensionData *)v9 certificateUUID];
-      v41 = [v39 identityForUUIDString:v40];
+      keychainHelper = [(SOKerberosExtensionProcess *)self keychainHelper];
+      certificateUUID2 = [(SOKerberosExtensionData *)v9 certificateUUID];
+      v41 = [keychainHelper identityForUUIDString:certificateUUID2];
 
       if (v41)
       {
@@ -1447,42 +1447,42 @@ LABEL_27:
   return v11;
 }
 
-- (void)attemptKerberosWithContext:(id)a3 andDelegate:(id)a4
+- (void)attemptKerberosWithContext:(id)context andDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v8 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosExtensionProcess attemptKerberosWithContext:andDelegate:];
   }
 
-  if (([v6 requestCancelled] & 1) == 0)
+  if (([contextCopy requestCancelled] & 1) == 0)
   {
-    if ([(SOKerberosExtensionProcess *)self checkSourceAppACLWithContext:v6])
+    if ([(SOKerberosExtensionProcess *)self checkSourceAppACLWithContext:contextCopy])
     {
-      v9 = [v6 userPrincipalName];
-      if (!v9)
+      userPrincipalName = [contextCopy userPrincipalName];
+      if (!userPrincipalName)
       {
-        [v7 handleResult:2 context:v6 error:0];
+        [delegateCopy handleResult:2 context:contextCopy error:0];
 LABEL_22:
 
         goto LABEL_23;
       }
 
       v10 = MEMORY[0x277CCACA8];
-      v11 = [v6 hostName];
-      v12 = [v10 stringWithFormat:@"HTTP@%@", v11];
-      [v6 setServicePrincipalName:v12];
+      hostName = [contextCopy hostName];
+      v12 = [v10 stringWithFormat:@"HTTP@%@", hostName];
+      [contextCopy setServicePrincipalName:v12];
 
-      v13 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-      v14 = [v6 realm];
-      v15 = [v14 uppercaseString];
-      v16 = [v13 objectForKeyedSubscript:v15];
+      kerberosByRealm = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+      realm = [contextCopy realm];
+      uppercaseString = [realm uppercaseString];
+      v16 = [kerberosByRealm objectForKeyedSubscript:uppercaseString];
 
       v31 = 0;
       v32 = 0;
-      v17 = [v16 attemptKerberosWithContext:v6 returningToken:&v32 orError:&v31];
+      v17 = [v16 attemptKerberosWithContext:contextCopy returningToken:&v32 orError:&v31];
       v18 = v32;
       v19 = v31;
       if (v17 <= 5)
@@ -1497,7 +1497,7 @@ LABEL_22:
               [SOKerberosExtensionProcess attemptKerberosWithContext:andDelegate:];
             }
 
-            [(SOKerberosExtensionProcess *)self completeRequestWithToken:v18 andContext:v6];
+            [(SOKerberosExtensionProcess *)self completeRequestWithToken:v18 andContext:contextCopy];
             goto LABEL_21;
           }
 
@@ -1509,7 +1509,7 @@ LABEL_22:
               [SOKerberosExtensionProcess attemptKerberosWithContext:andDelegate:];
             }
 
-            [(SOKerberosExtensionProcess *)self completeRequestWithHTTPResponseFromContext:v6];
+            [(SOKerberosExtensionProcess *)self completeRequestWithHTTPResponseFromContext:contextCopy];
             goto LABEL_21;
           }
 
@@ -1534,7 +1534,7 @@ LABEL_22:
               [SOKerberosExtensionProcess attemptKerberosWithContext:v19 andDelegate:?];
             }
 
-            [v6 completeRequestWithError:v19];
+            [contextCopy completeRequestWithError:v19];
             goto LABEL_21;
           }
 
@@ -1543,12 +1543,12 @@ LABEL_22:
             v20 = SO_LOG_SOKerberosExtensionProcess();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
             {
-              [SOKerberosExtensionProcess attemptKerberosWithContext:v6 andDelegate:?];
+              [SOKerberosExtensionProcess attemptKerberosWithContext:contextCopy andDelegate:?];
             }
 
-            [(SOKerberosExtensionProcess *)self saveValuesAfterSuccessfulAuthentication:v6];
+            [(SOKerberosExtensionProcess *)self saveValuesAfterSuccessfulAuthentication:contextCopy];
 LABEL_35:
-            [v6 completeRequestWithDoNotHandle];
+            [contextCopy completeRequestWithDoNotHandle];
             goto LABEL_21;
           }
         }
@@ -1568,10 +1568,10 @@ LABEL_35:
               goto LABEL_35;
             }
 
-            v22 = v7;
+            v22 = delegateCopy;
             v23 = 7;
 LABEL_20:
-            [v22 handleResult:v23 context:v6 error:v19];
+            [v22 handleResult:v23 context:contextCopy error:v19];
 LABEL_21:
 
             goto LABEL_22;
@@ -1584,20 +1584,20 @@ LABEL_39:
             [SOKerberosExtensionProcess attemptKerberosWithContext:andDelegate:];
           }
 
-          v28 = [MEMORY[0x277CCA9B8] unhandledKerberosResult];
+          unhandledKerberosResult = [MEMORY[0x277CCA9B8] unhandledKerberosResult];
           v29 = SO_LOG_SOKerberosExtensionProcess();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             [SOKerberosExtensionProcess attemptKerberosWithContext:andDelegate:];
           }
 
-          [v6 completeRequestWithError:v28];
+          [contextCopy completeRequestWithError:unhandledKerberosResult];
           goto LABEL_21;
         }
       }
 
 LABEL_19:
-      v22 = v7;
+      v22 = delegateCopy;
       v23 = v17;
       goto LABEL_20;
     }
@@ -1608,19 +1608,19 @@ LABEL_19:
       [SOKerberosExtensionProcess handleKerberosOperations:andDelegate:];
     }
 
-    [v6 completeRequestWithDoNotHandle];
+    [contextCopy completeRequestWithDoNotHandle];
   }
 
 LABEL_23:
 }
 
-- (void)completeRequestWithToken:(id)a3 andContext:(id)a4
+- (void)completeRequestWithToken:(id)token andContext:(id)context
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  [(SOKerberosExtensionProcess *)self saveValuesAfterSuccessfulAuthentication:v6];
-  v8 = [v7 base64EncodedStringWithOptions:16];
+  contextCopy = context;
+  tokenCopy = token;
+  [(SOKerberosExtensionProcess *)self saveValuesAfterSuccessfulAuthentication:contextCopy];
+  v8 = [tokenCopy base64EncodedStringWithOptions:16];
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Negotiate %@", v8];
   v10 = SO_LOG_SOKerberosExtensionProcess();
@@ -1632,114 +1632,114 @@ LABEL_23:
   v13 = @"Authorization";
   v14[0] = v9;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  [v6 completeRequestWithHeaders:v11];
+  [contextCopy completeRequestWithHeaders:v11];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)completeRequestWithHTTPResponseFromContext:(id)a3
+- (void)completeRequestWithHTTPResponseFromContext:(id)context
 {
-  v4 = a3;
-  [(SOKerberosExtensionProcess *)self saveValuesAfterSuccessfulAuthentication:v4];
-  v5 = [(SOKerberosExtensionProcess *)self settingsForContext:v4 includeSiteCodeCache:0];
+  contextCopy = context;
+  [(SOKerberosExtensionProcess *)self saveValuesAfterSuccessfulAuthentication:contextCopy];
+  v5 = [(SOKerberosExtensionProcess *)self settingsForContext:contextCopy includeSiteCodeCache:0];
   v6 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosExtensionProcess handleGetRealmInfo:];
   }
 
-  [v4 completeRequestWithHTTPResponseHeaders:v5];
+  [contextCopy completeRequestWithHTTPResponseHeaders:v5];
 }
 
-- (void)saveValuesAfterSuccessfulAuthentication:(id)a3
+- (void)saveValuesAfterSuccessfulAuthentication:(id)authentication
 {
-  v24 = a3;
-  v4 = [v24 credentialUUID];
-  v5 = [v24 currentSettings];
-  [v5 setCredentialUUID:v4];
+  authenticationCopy = authentication;
+  credentialUUID = [authenticationCopy credentialUUID];
+  currentSettings = [authenticationCopy currentSettings];
+  [currentSettings setCredentialUUID:credentialUUID];
 
-  v6 = [v24 userPrincipalName];
-  v7 = [v24 currentSettings];
-  [v7 setUserPrincipalName:v6];
+  userPrincipalName = [authenticationCopy userPrincipalName];
+  currentSettings2 = [authenticationCopy currentSettings];
+  [currentSettings2 setUserPrincipalName:userPrincipalName];
 
-  v8 = [v24 userName];
-  v9 = [v24 currentSettings];
-  [v9 setUserName:v8];
+  userName = [authenticationCopy userName];
+  currentSettings3 = [authenticationCopy currentSettings];
+  [currentSettings3 setUserName:userName];
 
-  v10 = [v24 currentSettings];
-  [v10 setUserCancelledLogin:0];
+  currentSettings4 = [authenticationCopy currentSettings];
+  [currentSettings4 setUserCancelledLogin:0];
 
-  v11 = [v24 currentSettings];
-  [v11 setDateLoginCancelled:0];
+  currentSettings5 = [authenticationCopy currentSettings];
+  [currentSettings5 setDateLoginCancelled:0];
 
-  v12 = [v24 loginTimeStamp];
+  loginTimeStamp = [authenticationCopy loginTimeStamp];
 
-  if (v12)
+  if (loginTimeStamp)
   {
-    v13 = [v24 loginTimeStamp];
-    v14 = [v24 currentSettings];
-    [v14 setDateLastLogin:v13];
+    loginTimeStamp2 = [authenticationCopy loginTimeStamp];
+    currentSettings6 = [authenticationCopy currentSettings];
+    [currentSettings6 setDateLastLogin:loginTimeStamp2];
   }
 
-  v15 = [v24 currentSettings];
-  [v15 setDateUserSignedOut:0];
+  currentSettings7 = [authenticationCopy currentSettings];
+  [currentSettings7 setDateUserSignedOut:0];
 
-  v16 = [v24 currentSettings];
-  [v16 setDelayUserSetupCleared:1];
+  currentSettings8 = [authenticationCopy currentSettings];
+  [currentSettings8 setDelayUserSetupCleared:1];
 
-  v17 = [v24 currentSettings];
-  [v17 setPasswordChangeInProgress:0];
+  currentSettings9 = [authenticationCopy currentSettings];
+  [currentSettings9 setPasswordChangeInProgress:0];
 
-  v18 = [v24 extensionData];
-  if ([v18 allowAutomaticLogin])
+  extensionData = [authenticationCopy extensionData];
+  if ([extensionData allowAutomaticLogin])
   {
-    v19 = [v24 extensionUserData];
-    v20 = [v19 useKeychain];
+    extensionUserData = [authenticationCopy extensionUserData];
+    useKeychain = [extensionUserData useKeychain];
 
-    if (!v20)
+    if (!useKeychain)
     {
       goto LABEL_7;
     }
 
-    v21 = [v24 pkinitPersistentRef];
-    v22 = [v24 currentSettings];
-    [v22 setPkinitPersistentRef:v21];
+    pkinitPersistentRef = [authenticationCopy pkinitPersistentRef];
+    currentSettings10 = [authenticationCopy currentSettings];
+    [currentSettings10 setPkinitPersistentRef:pkinitPersistentRef];
 
-    v18 = [v24 certificateTokenID];
-    v23 = [v24 currentSettings];
-    [v23 setSmartCardTokenID:v18];
+    extensionData = [authenticationCopy certificateTokenID];
+    currentSettings11 = [authenticationCopy currentSettings];
+    [currentSettings11 setSmartCardTokenID:extensionData];
   }
 
 LABEL_7:
-  [(SOKerberosExtensionProcess *)self handleAddKeychainCreds:v24];
+  [(SOKerberosExtensionProcess *)self handleAddKeychainCreds:authenticationCopy];
 }
 
-- (void)handleAddKeychainCreds:(id)a3
+- (void)handleAddKeychainCreds:(id)creds
 {
-  v13 = a3;
-  v4 = [v13 extensionUserData];
-  v5 = [v4 useKeychain];
+  credsCopy = creds;
+  extensionUserData = [credsCopy extensionUserData];
+  useKeychain = [extensionUserData useKeychain];
 
-  v6 = [v13 extensionData];
-  v7 = [v6 allowAutomaticLogin];
+  extensionData = [credsCopy extensionData];
+  allowAutomaticLogin = [extensionData allowAutomaticLogin];
 
-  if (([v13 credsCameFromKeychain] & 1) == 0 && v7 && v5)
+  if (([credsCopy credsCameFromKeychain] & 1) == 0 && allowAutomaticLogin && useKeychain)
   {
-    v8 = [(SOKerberosExtensionProcess *)self keychainHelper];
-    v9 = [v13 serviceName];
-    v10 = [v13 userPrincipalName];
-    v11 = [v13 password];
-    v12 = [v13 extensionData];
-    [v8 addCredentialsToKeychainWithService:v9 withUsername:v10 withPassword:v11 requireUserPresence:{objc_msgSend(v12, "requireUserPresence")}];
+    keychainHelper = [(SOKerberosExtensionProcess *)self keychainHelper];
+    serviceName = [credsCopy serviceName];
+    userPrincipalName = [credsCopy userPrincipalName];
+    password = [credsCopy password];
+    extensionData2 = [credsCopy extensionData];
+    [keychainHelper addCredentialsToKeychainWithService:serviceName withUsername:userPrincipalName withPassword:password requireUserPresence:{objc_msgSend(extensionData2, "requireUserPresence")}];
   }
 }
 
-- (id)mapKnownPasswordErrorToString:(id)a3
+- (id)mapKnownPasswordErrorToString:(id)string
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"kGSSMinorErrorCode"];
+  stringCopy = string;
+  userInfo = [stringCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"kGSSMinorErrorCode"];
 
   v6 = SO_LOG_SOKerberosExtensionProcess();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1760,8 +1760,8 @@ LABEL_7:
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = v10;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    userInfo2 = mainBundle;
     v12 = @"PASSWORD_CHANGE_PASSWORD_CHANGE_FAILED_OLD_PASSWORD_ALERT_TEXT";
   }
 
@@ -1772,8 +1772,8 @@ LABEL_7:
 
     if (v14)
     {
-      v10 = [MEMORY[0x277CCA8D8] mainBundle];
-      v11 = v10;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      userInfo2 = mainBundle;
       v12 = @"PASSWORD_CHANGE_PASSWORD_CHANGE_FAILED_SERVER_ALERT_TEXT";
     }
 
@@ -1784,8 +1784,8 @@ LABEL_7:
 
       if (v16)
       {
-        v10 = [MEMORY[0x277CCA8D8] mainBundle];
-        v11 = v10;
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        userInfo2 = mainBundle;
         v12 = @"KDC_UNREACHABLE";
       }
 
@@ -1796,8 +1796,8 @@ LABEL_7:
 
         if (v18)
         {
-          v10 = [MEMORY[0x277CCA8D8] mainBundle];
-          v11 = v10;
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          userInfo2 = mainBundle;
           v12 = @"REALM_CASE_MISMATCH";
         }
 
@@ -1808,44 +1808,44 @@ LABEL_7:
 
           if (!v20)
           {
-            v11 = [v3 userInfo];
-            v24 = [v11 objectForKeyedSubscript:@"NSDescription"];
+            userInfo2 = [stringCopy userInfo];
+            v24 = [userInfo2 objectForKeyedSubscript:@"NSDescription"];
             if (v24)
             {
-              v25 = [v3 userInfo];
-              v21 = [v25 objectForKeyedSubscript:@"NSDescription"];
+              userInfo3 = [stringCopy userInfo];
+              localizedDescription = [userInfo3 objectForKeyedSubscript:@"NSDescription"];
             }
 
             else
             {
-              v21 = [v3 localizedDescription];
+              localizedDescription = [stringCopy localizedDescription];
             }
 
             goto LABEL_16;
           }
 
-          v10 = [MEMORY[0x277CCA8D8] mainBundle];
-          v11 = v10;
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          userInfo2 = mainBundle;
           v12 = @"DEFAULT_REALM_MISSING";
         }
       }
     }
   }
 
-  v21 = [v10 localizedStringForKey:v12 value:&stru_285206D08 table:0];
+  localizedDescription = [mainBundle localizedStringForKey:v12 value:&stru_285206D08 table:0];
 LABEL_16:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return localizedDescription;
 }
 
-- (id)kerberosForRealm:(id)a3
+- (id)kerberosForRealm:(id)realm
 {
-  v4 = a3;
-  v5 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-  v6 = [v4 uppercaseString];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  realmCopy = realm;
+  kerberosByRealm = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+  uppercaseString = [realmCopy uppercaseString];
+  v7 = [kerberosByRealm objectForKeyedSubscript:uppercaseString];
 
   if (!v7)
   {
@@ -1856,16 +1856,16 @@ LABEL_16:
     }
 
     v9 = [SOKerberosAuthentication alloc];
-    v10 = [v4 uppercaseString];
-    v11 = [(SOKerberosAuthentication *)v9 initWithRealm:v10];
-    v12 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-    v13 = [v4 uppercaseString];
-    [v12 setObject:v11 forKeyedSubscript:v13];
+    uppercaseString2 = [realmCopy uppercaseString];
+    v11 = [(SOKerberosAuthentication *)v9 initWithRealm:uppercaseString2];
+    kerberosByRealm2 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+    uppercaseString3 = [realmCopy uppercaseString];
+    [kerberosByRealm2 setObject:v11 forKeyedSubscript:uppercaseString3];
   }
 
-  v14 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
-  v15 = [v4 uppercaseString];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  kerberosByRealm3 = [(SOKerberosExtensionProcess *)self kerberosByRealm];
+  uppercaseString4 = [realmCopy uppercaseString];
+  v16 = [kerberosByRealm3 objectForKeyedSubscript:uppercaseString4];
 
   return v16;
 }

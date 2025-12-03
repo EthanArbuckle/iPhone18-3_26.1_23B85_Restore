@@ -1,18 +1,18 @@
 @interface CKCloudSyncViewCoordinator
 - (BOOL)isSyncViewCurrentlyVisible;
 - (BOOL)isSyncViewInitialized;
-- (double)heightForSyncViewForFittingSize:(CGSize)a3;
-- (void)addSyncStatusViewToViewControllerWithView:(id)a3 navigationItem:(id)a4;
+- (double)heightForSyncViewForFittingSize:(CGSize)size;
+- (void)addSyncStatusViewToViewControllerWithView:(id)view navigationItem:(id)item;
 - (void)createSyncStatusView;
 - (void)tearDownView;
-- (void)updateWithSyncState:(id)a3;
+- (void)updateWithSyncState:(id)state;
 @end
 
 @implementation CKCloudSyncViewCoordinator
 
 - (BOOL)isSyncViewCurrentlyVisible
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1909D54C8();
 
   return v3 & 1;
@@ -34,7 +34,7 @@
   return v3 != 0;
 }
 
-- (double)heightForSyncViewForFittingSize:(CGSize)a3
+- (double)heightForSyncViewForFittingSize:(CGSize)size
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC7ChatKit26CKCloudSyncViewCoordinator_toolbarSyncStatusView);
   if (!v3)
@@ -42,9 +42,9 @@
     return 0.0;
   }
 
-  height = a3.height;
-  width = a3.width;
-  v6 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v7 = v3;
   [v7 systemLayoutSizeFittingSize_];
   v9 = v8;
@@ -56,29 +56,29 @@
 
 - (void)tearDownView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1909D57BC();
 }
 
 - (void)createSyncStatusView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1909D5900();
 }
 
-- (void)addSyncStatusViewToViewControllerWithView:(id)a3 navigationItem:(id)a4
+- (void)addSyncStatusViewToViewControllerWithView:(id)view navigationItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1909D5ACC(v6);
+  viewCopy = view;
+  itemCopy = item;
+  selfCopy = self;
+  sub_1909D5ACC(viewCopy);
 }
 
-- (void)updateWithSyncState:(id)a3
+- (void)updateWithSyncState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1909D5E40(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1909D5E40(stateCopy);
 }
 
 @end

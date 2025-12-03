@@ -1,46 +1,46 @@
 @interface DNDSIDSSyncEngineMetadataStore
-- (BOOL)_areSyncDatesValidAtDate:(id)a3;
-- (BOOL)_canTombstoneBeRemovedWithRecordID:(id)a3;
-- (BOOL)_isMetadataValidAtDate:(id)a3;
-- (BOOL)_isPairedDeviceOutdated:(id)a3;
-- (BOOL)hasMetadataForPairedDeviceIdentifier:(id)a3;
-- (BOOL)isValidAtDate:(id)a3;
-- (DNDSIDSSyncEngineMetadataStore)initWithDeviceObsoletionDuration:(double)a3 tombstoneObsoletionDuration:(double)a4;
-- (DNDSIDSSyncEngineMetadataStore)initWithURL:(id)a3;
-- (id)deletedRecordIDsForPairedDeviceIdentifier:(id)a3;
-- (id)modifiedRecordIDsForPairedDeviceIdentifier:(id)a3;
-- (id)unknownRecordIDsInRecordIDs:(id)a3;
-- (void)_forgetMetadataForRecordID:(id)a3;
+- (BOOL)_areSyncDatesValidAtDate:(id)date;
+- (BOOL)_canTombstoneBeRemovedWithRecordID:(id)d;
+- (BOOL)_isMetadataValidAtDate:(id)date;
+- (BOOL)_isPairedDeviceOutdated:(id)outdated;
+- (BOOL)hasMetadataForPairedDeviceIdentifier:(id)identifier;
+- (BOOL)isValidAtDate:(id)date;
+- (DNDSIDSSyncEngineMetadataStore)initWithDeviceObsoletionDuration:(double)duration tombstoneObsoletionDuration:(double)obsoletionDuration;
+- (DNDSIDSSyncEngineMetadataStore)initWithURL:(id)l;
+- (id)deletedRecordIDsForPairedDeviceIdentifier:(id)identifier;
+- (id)modifiedRecordIDsForPairedDeviceIdentifier:(id)identifier;
+- (id)unknownRecordIDsInRecordIDs:(id)ds;
+- (void)_forgetMetadataForRecordID:(id)d;
 - (void)_forgetObsoleteTombstones;
-- (void)_forgetRecordID:(id)a3;
+- (void)_forgetRecordID:(id)d;
 - (void)_forgetSyncDatesForDevicesWithoutInitialSync;
 - (void)_forgetSyncDatesForOutdatedDevices;
-- (void)_forgetSyncDatesForRecordID:(id)a3;
-- (void)_parseDictionary:(id)a3;
+- (void)_forgetSyncDatesForRecordID:(id)d;
+- (void)_parseDictionary:(id)dictionary;
 - (void)_read;
 - (void)_write;
 - (void)garbageCollect;
 - (void)purge;
-- (void)removePairedDeviceIdentifier:(id)a3;
-- (void)setDeletedAtDate:(id)a3 forRecordIDs:(id)a4;
-- (void)setLastModifiedDate:(id)a3 forRecordIDs:(id)a4;
-- (void)setPerformedInitialSyncForPairedDeviceIdentifier:(id)a3;
-- (void)setSyncDate:(id)a3 forRecordIDs:(id)a4 forPairedDeviceIdentifier:(id)a5;
-- (void)setSyncDate:(id)a3 forRecordsMatchingMetadata:(id)a4 forPairedDeviceIdentifier:(id)a5;
-- (void)updateMetadata:(id)a3;
+- (void)removePairedDeviceIdentifier:(id)identifier;
+- (void)setDeletedAtDate:(id)date forRecordIDs:(id)ds;
+- (void)setLastModifiedDate:(id)date forRecordIDs:(id)ds;
+- (void)setPerformedInitialSyncForPairedDeviceIdentifier:(id)identifier;
+- (void)setSyncDate:(id)date forRecordIDs:(id)ds forPairedDeviceIdentifier:(id)identifier;
+- (void)setSyncDate:(id)date forRecordsMatchingMetadata:(id)metadata forPairedDeviceIdentifier:(id)identifier;
+- (void)updateMetadata:(id)metadata;
 @end
 
 @implementation DNDSIDSSyncEngineMetadataStore
 
-- (DNDSIDSSyncEngineMetadataStore)initWithURL:(id)a3
+- (DNDSIDSSyncEngineMetadataStore)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = DNDSIDSSyncEngineMetadataStore;
   v5 = [(DNDSIDSSyncEngineMetadataStore *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     v7 = *(v5 + 4);
     *(v5 + 4) = v6;
 
@@ -53,7 +53,7 @@
   return v5;
 }
 
-- (DNDSIDSSyncEngineMetadataStore)initWithDeviceObsoletionDuration:(double)a3 tombstoneObsoletionDuration:(double)a4
+- (DNDSIDSSyncEngineMetadataStore)initWithDeviceObsoletionDuration:(double)duration tombstoneObsoletionDuration:(double)obsoletionDuration
 {
   v9.receiver = self;
   v9.super_class = DNDSIDSSyncEngineMetadataStore;
@@ -61,24 +61,24 @@
   v7 = v6;
   if (v6)
   {
-    v6->_deviceObsoletionDuration = a3;
-    v6->_tombstoneObsoletionDuration = a4;
+    v6->_deviceObsoletionDuration = duration;
+    v6->_tombstoneObsoletionDuration = obsoletionDuration;
     [(DNDSIDSSyncEngineMetadataStore *)v6 _parseDictionary:0];
   }
 
   return v7;
 }
 
-- (id)unknownRecordIDsInRecordIDs:(id)a3
+- (id)unknownRecordIDsInRecordIDs:(id)ds
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  dsCopy = ds;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -97,7 +97,7 @@
         v12 = [(NSMutableDictionary *)self->_recordMetadataByRecordID objectForKeyedSubscript:v11, v15];
         if (!v12)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -109,16 +109,16 @@
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)modifiedRecordIDsForPairedDeviceIdentifier:(id)a3
+- (id)modifiedRecordIDsForPairedDeviceIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   [MEMORY[0x277CBEB18] array];
-  v18 = v17 = v4;
-  v5 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:v4];
+  v18 = v17 = identifierCopy;
+  v5 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:identifierCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -161,13 +161,13 @@
   return v18;
 }
 
-- (id)deletedRecordIDsForPairedDeviceIdentifier:(id)a3
+- (id)deletedRecordIDsForPairedDeviceIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   [MEMORY[0x277CBEB18] array];
-  v18 = v17 = v4;
-  v5 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:v4];
+  v18 = v17 = identifierCopy;
+  v5 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:identifierCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -210,18 +210,18 @@
   return v18;
 }
 
-- (void)setLastModifiedDate:(id)a3 forRecordIDs:(id)a4
+- (void)setLastModifiedDate:(id)date forRecordIDs:(id)ds
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  dateCopy = date;
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v7;
+    v8 = dsCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -239,7 +239,7 @@
 
           v13 = *(*(&v17 + 1) + 8 * v12);
           v14 = [DNDSIDSRecordMetadata alloc];
-          v15 = [(DNDSIDSRecordMetadata *)v14 initWithRecordID:v13 lastModified:v6 deleted:0, v17];
+          v15 = [(DNDSIDSRecordMetadata *)v14 initWithRecordID:v13 lastModified:dateCopy deleted:0, v17];
           [(NSMutableDictionary *)self->_recordMetadataByRecordID setObject:v15 forKeyedSubscript:v13];
 
           ++v12;
@@ -258,18 +258,18 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeletedAtDate:(id)a3 forRecordIDs:(id)a4
+- (void)setDeletedAtDate:(id)date forRecordIDs:(id)ds
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  dateCopy = date;
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v7;
+    v8 = dsCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -287,7 +287,7 @@
 
           v13 = *(*(&v17 + 1) + 8 * v12);
           v14 = [DNDSIDSRecordMetadata alloc];
-          v15 = [(DNDSIDSRecordMetadata *)v14 initWithRecordID:v13 lastModified:v6 deleted:1, v17];
+          v15 = [(DNDSIDSRecordMetadata *)v14 initWithRecordID:v13 lastModified:dateCopy deleted:1, v17];
           [(NSMutableDictionary *)self->_recordMetadataByRecordID setObject:v15 forKeyedSubscript:v13];
 
           ++v12;
@@ -306,26 +306,26 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSyncDate:(id)a3 forRecordIDs:(id)a4 forPairedDeviceIdentifier:(id)a5
+- (void)setSyncDate:(id)date forRecordIDs:(id)ds forPairedDeviceIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  dateCopy = date;
+  dsCopy = ds;
+  identifierCopy = identifier;
+  if ([dsCopy count])
   {
-    v11 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:v10];
-    if (!v11)
+    dictionary = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:identifierCopy];
+    if (!dictionary)
     {
-      v11 = [MEMORY[0x277CBEB38] dictionary];
-      [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier setObject:v11 forKeyedSubscript:v10];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier setObject:dictionary forKeyedSubscript:identifierCopy];
     }
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = v9;
+    v12 = dsCopy;
     v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
@@ -341,7 +341,7 @@
             objc_enumerationMutation(v12);
           }
 
-          [v11 setObject:v8 forKeyedSubscript:{*(*(&v18 + 1) + 8 * v16++), v18}];
+          [dictionary setObject:dateCopy forKeyedSubscript:{*(*(&v18 + 1) + 8 * v16++), v18}];
         }
 
         while (v14 != v16);
@@ -358,28 +358,28 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSyncDate:(id)a3 forRecordsMatchingMetadata:(id)a4 forPairedDeviceIdentifier:(id)a5
+- (void)setSyncDate:(id)date forRecordsMatchingMetadata:(id)metadata forPairedDeviceIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  dateCopy = date;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  if ([metadataCopy count])
   {
-    v11 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:v10];
-    if (!v11)
+    dictionary = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:identifierCopy];
+    if (!dictionary)
     {
-      v11 = [MEMORY[0x277CBEB38] dictionary];
-      [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier setObject:v11 forKeyedSubscript:v10];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier setObject:dictionary forKeyedSubscript:identifierCopy];
     }
 
-    v23 = v10;
-    v24 = v9;
+    v23 = identifierCopy;
+    v24 = metadataCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = v9;
+    v12 = metadataCopy;
     v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
@@ -396,13 +396,13 @@
 
           v17 = *(*(&v25 + 1) + 8 * i);
           recordMetadataByRecordID = self->_recordMetadataByRecordID;
-          v19 = [v17 recordID];
-          v20 = [(NSMutableDictionary *)recordMetadataByRecordID objectForKeyedSubscript:v19];
+          recordID = [v17 recordID];
+          v20 = [(NSMutableDictionary *)recordMetadataByRecordID objectForKeyedSubscript:recordID];
 
           if ([v17 isEqual:v20])
           {
-            v21 = [v17 recordID];
-            [v11 setObject:v8 forKeyedSubscript:v21];
+            recordID2 = [v17 recordID];
+            [dictionary setObject:dateCopy forKeyedSubscript:recordID2];
           }
         }
 
@@ -415,8 +415,8 @@
     [(DNDSIDSSyncEngineMetadataStore *)self garbageCollect];
     [(DNDSIDSSyncEngineMetadataStore *)self _write];
 
-    v10 = v23;
-    v9 = v24;
+    identifierCopy = v23;
+    metadataCopy = v24;
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -431,13 +431,13 @@
     _os_log_impl(&dword_24912E000, v3, OS_LOG_TYPE_DEFAULT, "Purging metadata store", v10, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   recordIDSyncDatesByPairedDeviceIdentifier = self->_recordIDSyncDatesByPairedDeviceIdentifier;
-  self->_recordIDSyncDatesByPairedDeviceIdentifier = v4;
+  self->_recordIDSyncDatesByPairedDeviceIdentifier = dictionary;
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   recordMetadataByRecordID = self->_recordMetadataByRecordID;
-  self->_recordMetadataByRecordID = v6;
+  self->_recordMetadataByRecordID = dictionary2;
 
   v8 = [MEMORY[0x277CBEB58] set];
   initialSyncPairedDeviceIdentifiers = self->_initialSyncPairedDeviceIdentifiers;
@@ -446,15 +446,15 @@
   [(DNDSIDSSyncEngineMetadataStore *)self _write];
 }
 
-- (void)updateMetadata:(id)a3
+- (void)updateMetadata:(id)metadata
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v5 = [metadataCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -466,32 +466,32 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(metadataCopy);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
         recordMetadataByRecordID = self->_recordMetadataByRecordID;
-        v12 = [v10 recordID];
-        v13 = [(NSMutableDictionary *)recordMetadataByRecordID objectForKeyedSubscript:v12];
+        recordID = [v10 recordID];
+        v13 = [(NSMutableDictionary *)recordMetadataByRecordID objectForKeyedSubscript:recordID];
 
         if (v10 != v13)
         {
           v14 = !v10 || v13 == 0;
           if (v14 || ([v10 isEqual:v13] & 1) == 0)
           {
-            v15 = [v10 recordID];
-            [(DNDSIDSSyncEngineMetadataStore *)self _forgetSyncDatesForRecordID:v15];
+            recordID2 = [v10 recordID];
+            [(DNDSIDSSyncEngineMetadataStore *)self _forgetSyncDatesForRecordID:recordID2];
 
             v16 = self->_recordMetadataByRecordID;
-            v17 = [v10 recordID];
-            [(NSMutableDictionary *)v16 setObject:v10 forKeyedSubscript:v17];
+            recordID3 = [v10 recordID];
+            [(NSMutableDictionary *)v16 setObject:v10 forKeyedSubscript:recordID3];
 
             v7 = 1;
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [metadataCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -504,9 +504,9 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasMetadataForPairedDeviceIdentifier:(id)a3
+- (BOOL)hasMetadataForPairedDeviceIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:identifier];
   v4 = v3 != 0;
 
   return v4;
@@ -520,12 +520,12 @@
   [(DNDSIDSSyncEngineMetadataStore *)self _forgetObsoleteTombstones];
 }
 
-- (BOOL)isValidAtDate:(id)a3
+- (BOOL)isValidAtDate:(id)date
 {
-  v4 = a3;
-  if ([(DNDSIDSSyncEngineMetadataStore *)self _isMetadataValidAtDate:v4])
+  dateCopy = date;
+  if ([(DNDSIDSSyncEngineMetadataStore *)self _isMetadataValidAtDate:dateCopy])
   {
-    v5 = [(DNDSIDSSyncEngineMetadataStore *)self _areSyncDatesValidAtDate:v4];
+    v5 = [(DNDSIDSSyncEngineMetadataStore *)self _areSyncDatesValidAtDate:dateCopy];
   }
 
   else
@@ -536,22 +536,22 @@
   return v5;
 }
 
-- (void)removePairedDeviceIdentifier:(id)a3
+- (void)removePairedDeviceIdentifier:(id)identifier
 {
   initialSyncPairedDeviceIdentifiers = self->_initialSyncPairedDeviceIdentifiers;
-  v5 = a3;
-  [(NSMutableSet *)initialSyncPairedDeviceIdentifiers removeObject:v5];
-  [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier removeObjectForKey:v5];
+  identifierCopy = identifier;
+  [(NSMutableSet *)initialSyncPairedDeviceIdentifiers removeObject:identifierCopy];
+  [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier removeObjectForKey:identifierCopy];
 
   [(DNDSIDSSyncEngineMetadataStore *)self _write];
 }
 
-- (void)setPerformedInitialSyncForPairedDeviceIdentifier:(id)a3
+- (void)setPerformedInitialSyncForPairedDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (([(NSMutableSet *)self->_initialSyncPairedDeviceIdentifiers containsObject:?]& 1) == 0)
   {
-    [(NSMutableSet *)self->_initialSyncPairedDeviceIdentifiers addObject:v4];
+    [(NSMutableSet *)self->_initialSyncPairedDeviceIdentifiers addObject:identifierCopy];
     [(DNDSIDSSyncEngineMetadataStore *)self _write];
   }
 }
@@ -566,7 +566,7 @@
   }
 
   v8 = 0;
-  v5 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:url error:&v8];
+  dictionary = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:url error:&v8];
   v6 = v8;
   if (v6)
   {
@@ -577,22 +577,22 @@
     }
   }
 
-  if (!v5)
+  if (!dictionary)
   {
 LABEL_6:
-    v5 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  [(DNDSIDSSyncEngineMetadataStore *)self _parseDictionary:v5];
+  [(DNDSIDSSyncEngineMetadataStore *)self _parseDictionary:dictionary];
 }
 
-- (void)_parseDictionary:(id)a3
+- (void)_parseDictionary:(id)dictionary
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:3 redactSensitiveData:0 contactProvider:0 applicationIdentifierMapper:0];
-  v6 = [v4 objectForKeyedSubscript:@"metadata"];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -616,8 +616,8 @@ LABEL_6:
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 recordID];
-          [v7 setObject:v13 forKeyedSubscript:v14];
+          recordID = [v12 recordID];
+          [dictionary setObject:v13 forKeyedSubscript:recordID];
         }
       }
 
@@ -627,12 +627,12 @@ LABEL_6:
     while (v9);
   }
 
-  v38 = v7;
-  v39 = self;
-  objc_storeStrong(&self->_recordMetadataByRecordID, v7);
-  v40 = v4;
-  v15 = [v4 objectForKeyedSubscript:@"syncDates"];
-  v16 = [MEMORY[0x277CBEB38] dictionary];
+  v38 = dictionary;
+  selfCopy = self;
+  objc_storeStrong(&self->_recordMetadataByRecordID, dictionary);
+  v40 = dictionaryCopy;
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"syncDates"];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -675,14 +675,14 @@ LABEL_6:
 
         if (!v29 && v27 != 0)
         {
-          v31 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v27];
-          if (!v31)
+          dictionary3 = [(NSMutableDictionary *)dictionary2 objectForKeyedSubscript:v27];
+          if (!dictionary3)
           {
-            v31 = [MEMORY[0x277CBEB38] dictionary];
-            [(NSMutableDictionary *)v16 setObject:v31 forKeyedSubscript:v28];
+            dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+            [(NSMutableDictionary *)dictionary2 setObject:dictionary3 forKeyedSubscript:v28];
           }
 
-          [v31 setObject:v24 forKeyedSubscript:v26];
+          [dictionary3 setObject:v24 forKeyedSubscript:v26];
         }
       }
 
@@ -692,9 +692,9 @@ LABEL_6:
     while (v18);
   }
 
-  recordIDSyncDatesByPairedDeviceIdentifier = v39->_recordIDSyncDatesByPairedDeviceIdentifier;
-  v39->_recordIDSyncDatesByPairedDeviceIdentifier = v16;
-  v33 = v16;
+  recordIDSyncDatesByPairedDeviceIdentifier = selfCopy->_recordIDSyncDatesByPairedDeviceIdentifier;
+  selfCopy->_recordIDSyncDatesByPairedDeviceIdentifier = dictionary2;
+  v33 = dictionary2;
 
   v34 = [v40 objectForKeyedSubscript:@"initialSyncs"];
   if (v34)
@@ -707,8 +707,8 @@ LABEL_6:
     [MEMORY[0x277CBEB58] set];
   }
   v35 = ;
-  initialSyncPairedDeviceIdentifiers = v39->_initialSyncPairedDeviceIdentifiers;
-  v39->_initialSyncPairedDeviceIdentifiers = v35;
+  initialSyncPairedDeviceIdentifiers = selfCopy->_initialSyncPairedDeviceIdentifiers;
+  selfCopy->_initialSyncPairedDeviceIdentifiers = v35;
 
   v37 = *MEMORY[0x277D85DE8];
 }
@@ -718,15 +718,15 @@ LABEL_6:
   v59 = *MEMORY[0x277D85DE8];
   if (self->_url)
   {
-    v2 = self;
+    selfCopy = self;
     v38 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:3 redactSensitiveData:0 contactProvider:0 applicationIdentifierMapper:0];
-    v3 = [MEMORY[0x277CBEB18] array];
-    v37 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v4 = v2->_recordMetadataByRecordID;
+    v4 = selfCopy->_recordMetadataByRecordID;
     v5 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v48 objects:v58 count:16];
     if (v5)
     {
@@ -741,9 +741,9 @@ LABEL_6:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [(NSMutableDictionary *)v2->_recordMetadataByRecordID objectForKeyedSubscript:*(*(&v48 + 1) + 8 * i)];
+          v9 = [(NSMutableDictionary *)selfCopy->_recordMetadataByRecordID objectForKeyedSubscript:*(*(&v48 + 1) + 8 * i)];
           v10 = [v9 dictionaryRepresentationWithContext:v38];
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
 
         v6 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v48 objects:v58 count:16];
@@ -752,18 +752,18 @@ LABEL_6:
       while (v6);
     }
 
-    v31 = v3;
+    v31 = array;
 
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v2->_recordIDSyncDatesByPairedDeviceIdentifier;
+    obj = selfCopy->_recordIDSyncDatesByPairedDeviceIdentifier;
     v35 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v44 objects:v57 count:16];
     if (v35)
     {
       v33 = *v45;
-      v34 = v2;
+      v34 = selfCopy;
       do
       {
         v11 = 0;
@@ -776,7 +776,7 @@ LABEL_6:
 
           v36 = v11;
           v12 = *(*(&v44 + 1) + 8 * v11);
-          v13 = [(NSMutableDictionary *)v2->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:v12];
+          v13 = [(NSMutableDictionary *)selfCopy->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:v12];
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
@@ -808,7 +808,7 @@ LABEL_6:
                 v22 = [v21 numberWithDouble:?];
                 v55[2] = v22;
                 v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:3];
-                [v37 addObject:v23];
+                [array2 addObject:v23];
               }
 
               v15 = [v13 countByEnumeratingWithState:&v40 objects:v56 count:16];
@@ -818,7 +818,7 @@ LABEL_6:
           }
 
           v11 = v36 + 1;
-          v2 = v34;
+          selfCopy = v34;
         }
 
         while (v36 + 1 != v35);
@@ -828,15 +828,15 @@ LABEL_6:
       while (v35);
     }
 
-    v24 = [(NSMutableSet *)v2->_initialSyncPairedDeviceIdentifiers allObjects];
+    allObjects = [(NSMutableSet *)selfCopy->_initialSyncPairedDeviceIdentifiers allObjects];
     v52[0] = @"metadata";
     v52[1] = @"syncDates";
     v53[0] = v31;
-    v53[1] = v37;
+    v53[1] = array2;
     v52[2] = @"initialSyncs";
-    v53[2] = v24;
+    v53[2] = allObjects;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:3];
-    url = v2->_url;
+    url = selfCopy->_url;
     v39 = 0;
     v27 = [v25 writeToURL:url error:&v39];
     v28 = v39;
@@ -1010,10 +1010,10 @@ LABEL_6:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isPairedDeviceOutdated:(id)a3
+- (BOOL)_isPairedDeviceOutdated:(id)outdated
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:outdated];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -1043,13 +1043,13 @@ LABEL_6:
           v11 = v6;
           v13 = v12 = v4;
           v14 = [v13 dateByAddingTimeInterval:self->_deviceObsoletionDuration];
-          v15 = [MEMORY[0x277CBEAA8] date];
-          v16 = [v14 laterDate:v15];
+          date = [MEMORY[0x277CBEAA8] date];
+          v16 = [v14 laterDate:date];
 
           v4 = v12;
           v6 = v11;
           v5 = v19;
-          if (v16 == v15)
+          if (v16 == date)
           {
 
             LOBYTE(v5) = 1;
@@ -1145,15 +1145,15 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_forgetSyncDatesForRecordID:(id)a3
+- (void)_forgetSyncDatesForRecordID:(id)d
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = DNDSLogIDSSyncEngine;
   if (os_log_type_enabled(DNDSLogIDSSyncEngine, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v31 = v4;
+    v31 = dCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Forgetting sync dates for record: %{public}@", buf, 0xCu);
   }
 
@@ -1179,7 +1179,7 @@ LABEL_12:
 
         v12 = *(*(&v24 + 1) + 8 * i);
         v13 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:v12];
-        [v13 setObject:0 forKeyedSubscript:v4];
+        [v13 setObject:0 forKeyedSubscript:dCopy];
         if (![v13 count])
         {
           [v6 addObject:v12];
@@ -1223,53 +1223,53 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_forgetMetadataForRecordID:(id)a3
+- (void)_forgetMetadataForRecordID:(id)d
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = DNDSLogIDSSyncEngine;
   if (os_log_type_enabled(DNDSLogIDSSyncEngine, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = dCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Forgetting metadata for record: %{public}@", &v7, 0xCu);
   }
 
-  [(NSMutableDictionary *)self->_recordMetadataByRecordID setObject:0 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_recordMetadataByRecordID setObject:0 forKeyedSubscript:dCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_forgetRecordID:(id)a3
+- (void)_forgetRecordID:(id)d
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = DNDSLogIDSSyncEngine;
   if (os_log_type_enabled(DNDSLogIDSSyncEngine, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = dCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Forgetting record: %{public}@", &v7, 0xCu);
   }
 
-  [(DNDSIDSSyncEngineMetadataStore *)self _forgetSyncDatesForRecordID:v4];
-  [(DNDSIDSSyncEngineMetadataStore *)self _forgetMetadataForRecordID:v4];
+  [(DNDSIDSSyncEngineMetadataStore *)self _forgetSyncDatesForRecordID:dCopy];
+  [(DNDSIDSSyncEngineMetadataStore *)self _forgetMetadataForRecordID:dCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_canTombstoneBeRemovedWithRecordID:(id)a3
+- (BOOL)_canTombstoneBeRemovedWithRecordID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_recordMetadataByRecordID objectForKeyedSubscript:v4];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v5 lastModified];
-  v8 = [v7 dateByAddingTimeInterval:self->_tombstoneObsoletionDuration];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_recordMetadataByRecordID objectForKeyedSubscript:dCopy];
+  date = [MEMORY[0x277CBEAA8] date];
+  lastModified = [v5 lastModified];
+  v8 = [lastModified dateByAddingTimeInterval:self->_tombstoneObsoletionDuration];
 
-  v9 = [v6 laterDate:v8];
+  v9 = [date laterDate:v8];
 
-  if (v9 == v6)
+  if (v9 == date)
   {
     v23 = 0u;
     v24 = 0u;
@@ -1292,7 +1292,7 @@ LABEL_12:
           }
 
           v16 = [(NSMutableDictionary *)self->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:*(*(&v21 + 1) + 8 * i)];
-          v17 = [v16 objectForKeyedSubscript:v4];
+          v17 = [v16 objectForKeyedSubscript:dCopy];
 
           if (!v17)
           {
@@ -1330,10 +1330,10 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)_isMetadataValidAtDate:(id)a3
+- (BOOL)_isMetadataValidAtDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1354,10 +1354,10 @@ LABEL_13:
         }
 
         v10 = [(NSMutableDictionary *)self->_recordMetadataByRecordID objectForKeyedSubscript:*(*(&v16 + 1) + 8 * i), v16];
-        v11 = [v10 lastModified];
-        v12 = [v11 earlierDate:v4];
+        lastModified = [v10 lastModified];
+        v12 = [lastModified earlierDate:dateCopy];
 
-        if (v12 == v4)
+        if (v12 == dateCopy)
         {
           v13 = 0;
           goto LABEL_11;
@@ -1381,15 +1381,15 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)_areSyncDatesValidAtDate:(id)a3
+- (BOOL)_areSyncDatesValidAtDate:(id)date
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = self->_recordIDSyncDatesByPairedDeviceIdentifier;
   v5 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v5)
@@ -1406,7 +1406,7 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [(NSMutableDictionary *)v21->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:*(*(&v26 + 1) + 8 * i)];
+        v9 = [(NSMutableDictionary *)selfCopy->_recordIDSyncDatesByPairedDeviceIdentifier objectForKeyedSubscript:*(*(&v26 + 1) + 8 * i)];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
@@ -1427,9 +1427,9 @@ LABEL_11:
               }
 
               v15 = [v10 objectForKeyedSubscript:*(*(&v22 + 1) + 8 * j)];
-              v16 = [v15 earlierDate:v4];
+              v16 = [v15 earlierDate:dateCopy];
 
-              if (v16 == v4)
+              if (v16 == dateCopy)
               {
                 v20 = 0;
                 goto LABEL_16;

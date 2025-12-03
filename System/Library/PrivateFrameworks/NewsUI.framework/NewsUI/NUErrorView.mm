@@ -1,17 +1,17 @@
 @interface NUErrorView
-- (NUErrorView)initWithErrorMessage:(id)a3;
+- (NUErrorView)initWithErrorMessage:(id)message;
 - (NUTrait)labelMaxWidthTrait;
 - (id)accessibilityLabel;
-- (id)attributedStringForErrorMessage:(id)a3;
-- (void)errorMessage:(id)a3;
+- (id)attributedStringForErrorMessage:(id)message;
+- (void)errorMessage:(id)message;
 - (void)layoutSubviews;
 @end
 
 @implementation NUErrorView
 
-- (NUErrorView)initWithErrorMessage:(id)a3
+- (NUErrorView)initWithErrorMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v17.receiver = self;
   v17.super_class = NUErrorView;
   v6 = *MEMORY[0x277CBF3A0];
@@ -22,7 +22,7 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_errorMessage, a3);
+    objc_storeStrong(&v10->_errorMessage, message);
     v11->_verticalAlignment = 0;
     v11->_textAlignment = 1;
     v12 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v6, v7, v8, v9}];
@@ -34,7 +34,7 @@
 
     [(UILabel *)v11->_label setNumberOfLines:0];
     [(UILabel *)v11->_label setAutoresizingMask:2];
-    v15 = [(NUErrorView *)v11 attributedStringForErrorMessage:v5];
+    v15 = [(NUErrorView *)v11 attributedStringForErrorMessage:messageCopy];
     [(UILabel *)v11->_label setAttributedText:v15];
 
     [(NUErrorView *)v11 addSubview:v11->_label];
@@ -49,36 +49,36 @@
   v32.receiver = self;
   v32.super_class = NUErrorView;
   [(NUErrorView *)&v32 layoutSubviews];
-  v3 = [(NUErrorView *)self labelMaxWidthTrait];
-  v4 = [(NUErrorView *)self traitCollection];
+  labelMaxWidthTrait = [(NUErrorView *)self labelMaxWidthTrait];
+  traitCollection = [(NUErrorView *)self traitCollection];
   [(NUErrorView *)self bounds];
-  [v3 valueForTraitCollection:v4 size:{v5, v6}];
+  [labelMaxWidthTrait valueForTraitCollection:traitCollection size:{v5, v6}];
   v8 = v7;
-  v9 = [(NUErrorView *)self label];
-  [v9 setPreferredMaxLayoutWidth:v8];
+  label = [(NUErrorView *)self label];
+  [label setPreferredMaxLayoutWidth:v8];
 
-  v10 = [(NUErrorView *)self label];
-  [v10 frame];
+  label2 = [(NUErrorView *)self label];
+  [label2 frame];
   v12 = v11;
 
-  v13 = [(NUErrorView *)self label];
-  [v13 preferredMaxLayoutWidth];
+  label3 = [(NUErrorView *)self label];
+  [label3 preferredMaxLayoutWidth];
   v15 = v14;
 
-  v16 = [(NUErrorView *)self label];
-  [v16 intrinsicContentSize];
+  label4 = [(NUErrorView *)self label];
+  [label4 intrinsicContentSize];
   v18 = v17;
 
   [(NUErrorView *)self bounds];
   v20 = v19;
-  v21 = [(NUErrorView *)self label];
-  [v21 preferredMaxLayoutWidth];
+  label5 = [(NUErrorView *)self label];
+  [label5 preferredMaxLayoutWidth];
   v23 = v22;
 
-  v24 = [(NUErrorView *)self verticalAlignment];
-  if (v24)
+  verticalAlignment = [(NUErrorView *)self verticalAlignment];
+  if (verticalAlignment)
   {
-    if (v24 == 1)
+    if (verticalAlignment == 1)
     {
       [(NUErrorView *)self center];
       v12 = v25 + v18 * -0.5;
@@ -100,23 +100,23 @@
   y = v34.origin.y;
   width = v34.size.width;
   height = v34.size.height;
-  v31 = [(NUErrorView *)self label];
-  [v31 setFrame:{x, y, width, height}];
+  label6 = [(NUErrorView *)self label];
+  [label6 setFrame:{x, y, width, height}];
 }
 
-- (void)errorMessage:(id)a3
+- (void)errorMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   errorMessage = self->_errorMessage;
-  v9 = v4;
-  if (!errorMessage || ![(NUErrorMessage *)errorMessage isEqual:v4])
+  v9 = messageCopy;
+  if (!errorMessage || ![(NUErrorMessage *)errorMessage isEqual:messageCopy])
   {
     v6 = [(NUErrorView *)self attributedStringForErrorMessage:v9];
-    v7 = [(NUErrorView *)self label];
-    [v7 setAttributedText:v6];
+    label = [(NUErrorView *)self label];
+    [label setAttributedText:v6];
 
-    v8 = [(NUErrorView *)self label];
-    [v8 sizeToFit];
+    label2 = [(NUErrorView *)self label];
+    [label2 sizeToFit];
 
     [(NUErrorView *)self setNeedsLayout];
     [(NUErrorView *)self layoutIfNeeded];
@@ -127,28 +127,28 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(NUErrorView *)self label];
-  v3 = [v2 text];
+  label = [(NUErrorView *)self label];
+  text = [label text];
 
-  return v3;
+  return text;
 }
 
-- (id)attributedStringForErrorMessage:(id)a3
+- (id)attributedStringForErrorMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v4 subtitle];
+  messageCopy = message;
+  title = [messageCopy title];
+  subtitle = [messageCopy subtitle];
 
   v7 = &stru_286E03B58;
-  if (v5 && v6)
+  if (title && subtitle)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v5, v6];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", title, subtitle];
     v9 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v8];
     v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
     v11 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     v12 = *MEMORY[0x277D740A8];
-    [v9 addAttribute:*MEMORY[0x277D740A8] value:v10 range:{0, objc_msgSend(v5, "length")}];
-    [v9 addAttribute:v12 value:v11 range:{objc_msgSend(v5, "length"), objc_msgSend(v6, "length")}];
+    [v9 addAttribute:*MEMORY[0x277D740A8] value:v10 range:{0, objc_msgSend(title, "length")}];
+    [v9 addAttribute:v12 value:v11 range:{objc_msgSend(title, "length"), objc_msgSend(subtitle, "length")}];
     v13 = objc_alloc_init(MEMORY[0x277D74240]);
     [v13 setLineSpacing:2.0];
     [v13 setAlignment:{-[NUErrorView textAlignment](self, "textAlignment")}];

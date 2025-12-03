@@ -1,34 +1,34 @@
 @interface MPModelLibraryHasPurchasesRequest
 - (MPMediaLibrary)mediaLibrary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPModelLibraryHasPurchasesRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPModelLibraryHasPurchasesRequestOperation);
   [(MPModelLibraryHasPurchasesRequestOperation *)v5 setRequest:self];
-  [(MPModelLibraryHasPurchasesRequestOperation *)v5 setResponseHandler:v4];
+  [(MPModelLibraryHasPurchasesRequestOperation *)v5 setResponseHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
   {
-    v5 = [(MPModelLibraryHasPurchasesRequest *)self modelObject];
-    [v4 setModelObject:v5];
+    modelObject = [(MPModelLibraryHasPurchasesRequest *)self modelObject];
+    [v4 setModelObject:modelObject];
 
-    v6 = [(MPModelLibraryHasPurchasesRequest *)self itemKind];
-    [v4 setItemKind:v6];
+    itemKind = [(MPModelLibraryHasPurchasesRequest *)self itemKind];
+    [v4 setItemKind:itemKind];
 
-    v7 = [(MPModelLibraryHasPurchasesRequest *)self mediaLibrary];
-    [v4 setMediaLibrary:v7];
+    mediaLibrary = [(MPModelLibraryHasPurchasesRequest *)self mediaLibrary];
+    [v4 setMediaLibrary:mediaLibrary];
   }
 
   return v4;

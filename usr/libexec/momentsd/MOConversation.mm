@@ -1,26 +1,26 @@
 @interface MOConversation
-+ (id)conversationWithContactIdentifier:(id)a3 scoredContact:(id)a4 interactions:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConversation:(id)a3;
-- (MOConversation)initWithCoder:(id)a3;
-- (MOConversation)initWithContactIdentifier:(id)a3 scoredContact:(id)a4 interactions:(id)a5;
++ (id)conversationWithContactIdentifier:(id)identifier scoredContact:(id)contact interactions:(id)interactions;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConversation:(id)conversation;
+- (MOConversation)initWithCoder:(id)coder;
+- (MOConversation)initWithContactIdentifier:(id)identifier scoredContact:(id)contact interactions:(id)interactions;
 - (id)description;
-- (id)providerIdFromConcatenatedIdentifiers:(id)a3;
+- (id)providerIdFromConcatenatedIdentifiers:(id)identifiers;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOConversation
 
-- (MOConversation)initWithContactIdentifier:(id)a3 scoredContact:(id)a4 interactions:(id)a5
+- (MOConversation)initWithContactIdentifier:(id)identifier scoredContact:(id)contact interactions:(id)interactions
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v10)
+  identifierCopy = identifier;
+  contactCopy = contact;
+  interactionsCopy = interactions;
+  v13 = interactionsCopy;
+  if (identifierCopy)
   {
-    if (v12)
+    if (interactionsCopy)
     {
       goto LABEL_10;
     }
@@ -57,18 +57,18 @@ LABEL_10:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_contactIdentifier, a3);
-    objc_storeStrong(&v19->_scoredContact, a4);
-    objc_storeStrong(&v19->_interactions, a5);
+    objc_storeStrong(&v18->_contactIdentifier, identifier);
+    objc_storeStrong(&v19->_scoredContact, contact);
+    objc_storeStrong(&v19->_interactions, interactions);
     v20 = [v13 objectAtIndexedSubscript:0];
-    v21 = [v20 startDate];
+    startDate = [v20 startDate];
     startDate = v19->_startDate;
-    v19->_startDate = v21;
+    v19->_startDate = startDate;
 
     v23 = [v13 objectAtIndexedSubscript:0];
-    v24 = [v23 endDate];
+    endDate = [v23 endDate];
     endDate = v19->_endDate;
-    v19->_endDate = v24;
+    v19->_endDate = endDate;
 
     v26 = objc_alloc_init(NSMutableArray);
     v33[0] = _NSConcreteStackBlock;
@@ -122,65 +122,65 @@ void __71__MOConversation_initWithContactIdentifier_scoredContact_interactions__
   }
 }
 
-+ (id)conversationWithContactIdentifier:(id)a3 scoredContact:(id)a4 interactions:(id)a5
++ (id)conversationWithContactIdentifier:(id)identifier scoredContact:(id)contact interactions:(id)interactions
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithContactIdentifier:v10 scoredContact:v9 interactions:v8];
+  interactionsCopy = interactions;
+  contactCopy = contact;
+  identifierCopy = identifier;
+  v11 = [[self alloc] initWithContactIdentifier:identifierCopy scoredContact:contactCopy interactions:interactionsCopy];
 
   return v11;
 }
 
-- (id)providerIdFromConcatenatedIdentifiers:(id)a3
+- (id)providerIdFromConcatenatedIdentifiers:(id)identifiers
 {
-  if (!a3)
+  if (!identifiers)
   {
-    v5 = 0;
+    bytes = 0;
     goto LABEL_9;
   }
 
-  v3 = [a3 dataUsingEncoding:2];
+  v3 = [identifiers dataUsingEncoding:2];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_7;
   }
 
-  v5 = [v3 bytes];
+  bytes = [v3 bytes];
   [v4 length];
-  if (v5)
+  if (bytes)
   {
     if ([v4 length])
     {
       _PASMurmur3_x86_128();
-      v5 = _PASBytesToHex();
+      bytes = _PASBytesToHex();
       goto LABEL_8;
     }
 
 LABEL_7:
-    v5 = 0;
+    bytes = 0;
   }
 
 LABEL_8:
 
 LABEL_9:
 
-  return v5;
+  return bytes;
 }
 
-- (BOOL)isEqualToConversation:(id)a3
+- (BOOL)isEqualToConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  conversationCopy = conversation;
+  v5 = conversationCopy;
+  if (!conversationCopy)
   {
     goto LABEL_11;
   }
 
   v6 = self->_contactIdentifier == 0;
-  v7 = [v4 contactIdentifier];
-  v8 = v7 != 0;
+  contactIdentifier = [conversationCopy contactIdentifier];
+  v8 = contactIdentifier != 0;
 
   if (v6 == v8)
   {
@@ -190,8 +190,8 @@ LABEL_9:
   contactIdentifier = self->_contactIdentifier;
   if (contactIdentifier)
   {
-    v10 = [v5 contactIdentifier];
-    v11 = [(NSString *)contactIdentifier isEqual:v10];
+    contactIdentifier2 = [v5 contactIdentifier];
+    v11 = [(NSString *)contactIdentifier isEqual:contactIdentifier2];
 
     if (!v11)
     {
@@ -200,8 +200,8 @@ LABEL_9:
   }
 
   v12 = self->_scoredContact == 0;
-  v13 = [v5 scoredContact];
-  v14 = v13 != 0;
+  scoredContact = [v5 scoredContact];
+  v14 = scoredContact != 0;
 
   if (v12 == v14)
   {
@@ -211,8 +211,8 @@ LABEL_9:
   scoredContact = self->_scoredContact;
   if (scoredContact)
   {
-    v16 = [v5 scoredContact];
-    v17 = [(PPScoredContact *)scoredContact isEqual:v16];
+    scoredContact2 = [v5 scoredContact];
+    v17 = [(PPScoredContact *)scoredContact isEqual:scoredContact2];
 
     if (!v17)
     {
@@ -221,8 +221,8 @@ LABEL_9:
   }
 
   v18 = self->_interactions == 0;
-  v19 = [v5 interactions];
-  v20 = v19 != 0;
+  interactions = [v5 interactions];
+  v20 = interactions != 0;
 
   if (v18 == v20)
   {
@@ -235,8 +235,8 @@ LABEL_11:
     interactions = self->_interactions;
     if (interactions)
     {
-      v22 = [v5 interactions];
-      v23 = [(NSArray *)interactions isEqual:v22];
+      interactions2 = [v5 interactions];
+      v23 = [(NSArray *)interactions isEqual:interactions2];
     }
 
     else
@@ -248,16 +248,16 @@ LABEL_11:
   return v23 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(MOConversation *)self isEqualToConversation:v5];
   }
@@ -277,23 +277,23 @@ LABEL_11:
   return [(NSArray *)self->_interactions hash]- v4 + 32 * v4;
 }
 
-- (MOConversation)initWithCoder:(id)a3
+- (MOConversation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scoredContact"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scoredContact"];
       if (!v6)
       {
-        v18 = [v4 error];
+        error = [coderCopy error];
 
-        if (v18)
+        if (error)
         {
-          v11 = 0;
+          selfCopy = 0;
 LABEL_18:
 
           goto LABEL_19;
@@ -303,13 +303,13 @@ LABEL_18:
       v7 = [NSSet alloc];
       v8 = objc_opt_class();
       v9 = [v7 initWithObjects:{v8, objc_opt_class(), 0}];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"interactions"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"interactions"];
 
       if (!v10)
       {
-        v19 = [v4 error];
+        error2 = [coderCopy error];
 
-        if (v19)
+        if (error2)
         {
           goto LABEL_16;
         }
@@ -318,7 +318,7 @@ LABEL_18:
         v28 = @"Retrieved nil serialized value for nonnull MOConversation.interactions";
         v15 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
         v16 = [[NSError alloc] initWithDomain:@"MOConversationOCNTErrorDomain" code:2 userInfo:v15];
-        [v4 failWithError:v16];
+        [coderCopy failWithError:v16];
         goto LABEL_11;
       }
 
@@ -326,7 +326,7 @@ LABEL_18:
       if (objc_opt_isKindOfClass())
       {
         self = [(MOConversation *)self initWithContactIdentifier:v5 scoredContact:v6 interactions:v10];
-        v11 = self;
+        selfCopy = self;
 LABEL_17:
 
         goto LABEL_18;
@@ -341,7 +341,7 @@ LABEL_17:
       v26 = v17;
       v23 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v24 = [[NSError alloc] initWithDomain:@"MOConversationOCNTErrorDomain" code:3 userInfo:v23];
-      [v4 failWithError:v24];
+      [coderCopy failWithError:v24];
     }
 
     else
@@ -355,56 +355,56 @@ LABEL_17:
       v30 = v15;
       v16 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
       v17 = [[NSError alloc] initWithDomain:@"MOConversationOCNTErrorDomain" code:3 userInfo:v16];
-      [v4 failWithError:v17];
+      [coderCopy failWithError:v17];
     }
 
 LABEL_11:
 LABEL_16:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
-  v12 = [v4 error];
+  error3 = [coderCopy error];
 
-  if (!v12)
+  if (!error3)
   {
     v31 = NSLocalizedDescriptionKey;
     v32 = @"Retrieved nil serialized value for nonnull MOConversation.contactIdentifier";
     v6 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v10 = [[NSError alloc] initWithDomain:@"MOConversationOCNTErrorDomain" code:2 userInfo:v6];
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
     goto LABEL_16;
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_19:
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   contactIdentifier = self->_contactIdentifier;
-  v8 = v4;
+  v8 = coderCopy;
   if (contactIdentifier)
   {
-    [v4 encodeObject:contactIdentifier forKey:@"contactIdentifier"];
-    v4 = v8;
+    [coderCopy encodeObject:contactIdentifier forKey:@"contactIdentifier"];
+    coderCopy = v8;
   }
 
   scoredContact = self->_scoredContact;
   if (scoredContact)
   {
     [v8 encodeObject:scoredContact forKey:@"scoredContact"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   interactions = self->_interactions;
   if (interactions)
   {
     [v8 encodeObject:interactions forKey:@"interactions"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 

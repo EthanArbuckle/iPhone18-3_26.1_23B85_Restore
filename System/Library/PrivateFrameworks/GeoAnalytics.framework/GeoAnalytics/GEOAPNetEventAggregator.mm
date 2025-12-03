@@ -1,8 +1,8 @@
 @interface GEOAPNetEventAggregator
 + (id)sharedAggregator;
-- (void)_computeDistributionStatsOver:(id)a3 statsResultsBlock:(id)a4;
+- (void)_computeDistributionStatsOver:(id)over statsResultsBlock:(id)block;
 - (void)runAggregation;
-- (void)runAggregationForDate:(id)a3;
+- (void)runAggregationForDate:(id)date;
 @end
 
 @implementation GEOAPNetEventAggregator
@@ -32,19 +32,19 @@
   }
 }
 
-- (void)runAggregationForDate:(id)a3
+- (void)runAggregationForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = sub_10000776C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v71 = v4;
+    v71 = dateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "run aggregation for date '%@'", buf, 0xCu);
   }
 
   v6 = +[GEOAnalyticsDataService sharedService];
-  v7 = [v6 networkEventFileDescriptorForRepresentativeDate:v4];
+  v7 = [v6 networkEventFileDescriptorForRepresentativeDate:dateCopy];
 
   if ((v7 & 0x80000000) != 0)
   {
@@ -61,7 +61,7 @@
     v8 = [[GEONetworkEventFile alloc] initForReadWithFileDescriptor:v7];
     if (v8)
     {
-      v44 = v4;
+      v44 = dateCopy;
       v66[0] = _NSConcreteStackBlock;
       v66[1] = 3221225472;
       v66[2] = sub_100008424;
@@ -241,7 +241,7 @@
       }
 
       v8 = v43;
-      v4 = v44;
+      dateCopy = v44;
     }
 
     else
@@ -256,20 +256,20 @@
   }
 }
 
-- (void)_computeDistributionStatsOver:(id)a3 statsResultsBlock:(id)a4
+- (void)_computeDistributionStatsOver:(id)over statsResultsBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  overCopy = over;
+  blockCopy = block;
+  if ([overCopy count])
   {
-    v7 = [v5 sortedArrayUsingComparator:&stru_10003C728];
+    v7 = [overCopy sortedArrayUsingComparator:&stru_10003C728];
     v8 = [v7 count];
-    v9 = [v7 firstObject];
-    [v9 doubleValue];
+    firstObject = [v7 firstObject];
+    [firstObject doubleValue];
     v39 = v10;
 
-    v11 = [v7 lastObject];
-    [v11 doubleValue];
+    lastObject = [v7 lastObject];
+    [lastObject doubleValue];
     v38 = v12;
 
     v13 = [v7 objectAtIndexedSubscript:(v8 * 0.1)];
@@ -300,7 +300,7 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v31 = v5;
+    v31 = overCopy;
     v32 = [v31 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v32)
     {
@@ -331,12 +331,12 @@
       v35 = 0.0;
     }
 
-    v6[2](v6, v8, v35 / v8, v39, v38, v15, v18, v21, v24, v27, v30);
+    blockCopy[2](blockCopy, v8, v35 / v8, v39, v38, v15, v18, v21, v24, v27, v30);
   }
 
   else
   {
-    v6[2](v6, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    blockCopy[2](blockCopy, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
   }
 }
 

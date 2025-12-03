@@ -1,28 +1,28 @@
 @interface PKManager
 + (id)defaultManager;
-- (BOOL)releaseHold:(id)a3 flags:(unint64_t)a4 withError:(id *)a5;
-- (BOOL)terminatePlugInAtURL:(id)a3 withError:(id *)a4;
-- (PKManager)initWithDaemon:(id)a3;
-- (PKManager)initWithDaemon:(id)a3 externalProviders:(id)a4;
-- (PKManager)initWithExternalProviders:(id)a3;
-- (id)containingAppForExtensionProperties:(id)a3;
-- (id)containingAppForPlugInConnectedTo:(id)a3;
-- (id)forceHoldPlugIn:(id)a3 withError:(id *)a4;
-- (id)holdPlugInsInApplication:(id)a3 withError:(id *)a4;
-- (id)holdPlugInsWithExtensionPointName:(id)a3 error:(id *)a4;
-- (id)holdPlugInsWithExtensionPointName:(id)a3 platforms:(id)a4 terminate:(BOOL)a5 error:(id *)a6;
-- (id)initForService:(const char *)a3;
-- (id)terminatePlugInsInApplication:(id)a3 options:(int64_t)a4 withError:(id *)a5;
-- (void)holdPlugInsWithExtensionPointName:(id)a3 platforms:(id)a4 terminate:(BOOL)a5 result:(id)a6;
-- (void)holdRequest:(id)a3 extensionPointName:(id)a4 platforms:(id)a5 flags:(unint64_t)a6 result:(id)a7;
-- (void)registerPlugInAtURL:(id)a3 result:(id)a4;
-- (void)registerPlugInsInBundle:(id)a3 result:(id)a4;
-- (void)releaseHold:(id)a3;
-- (void)releaseHold:(id)a3 reply:(id)a4;
-- (void)terminatePlugInsInApplication:(id)a3 options:(int64_t)a4 result:(id)a5;
-- (void)unregisterPlugInAtURL:(id)a3 result:(id)a4;
-- (void)unregisterPlugInsInBundle:(id)a3 result:(id)a4;
-- (void)updateExtensionStatesForPlugIns:(id)a3 result:(id)a4;
+- (BOOL)releaseHold:(id)hold flags:(unint64_t)flags withError:(id *)error;
+- (BOOL)terminatePlugInAtURL:(id)l withError:(id *)error;
+- (PKManager)initWithDaemon:(id)daemon;
+- (PKManager)initWithDaemon:(id)daemon externalProviders:(id)providers;
+- (PKManager)initWithExternalProviders:(id)providers;
+- (id)containingAppForExtensionProperties:(id)properties;
+- (id)containingAppForPlugInConnectedTo:(id)to;
+- (id)forceHoldPlugIn:(id)in withError:(id *)error;
+- (id)holdPlugInsInApplication:(id)application withError:(id *)error;
+- (id)holdPlugInsWithExtensionPointName:(id)name error:(id *)error;
+- (id)holdPlugInsWithExtensionPointName:(id)name platforms:(id)platforms terminate:(BOOL)terminate error:(id *)error;
+- (id)initForService:(const char *)service;
+- (id)terminatePlugInsInApplication:(id)application options:(int64_t)options withError:(id *)error;
+- (void)holdPlugInsWithExtensionPointName:(id)name platforms:(id)platforms terminate:(BOOL)terminate result:(id)result;
+- (void)holdRequest:(id)request extensionPointName:(id)name platforms:(id)platforms flags:(unint64_t)flags result:(id)result;
+- (void)registerPlugInAtURL:(id)l result:(id)result;
+- (void)registerPlugInsInBundle:(id)bundle result:(id)result;
+- (void)releaseHold:(id)hold;
+- (void)releaseHold:(id)hold reply:(id)reply;
+- (void)terminatePlugInsInApplication:(id)application options:(int64_t)options result:(id)result;
+- (void)unregisterPlugInAtURL:(id)l result:(id)result;
+- (void)unregisterPlugInsInBundle:(id)bundle result:(id)result;
+- (void)updateExtensionStatesForPlugIns:(id)ins result:(id)result;
 @end
 
 @implementation PKManager
@@ -39,84 +39,84 @@
   return v3;
 }
 
-- (id)initForService:(const char *)a3
+- (id)initForService:(const char *)service
 {
-  v4 = [[PKDaemonClient alloc] initWithServiceName:a3];
+  v4 = [[PKDaemonClient alloc] initWithServiceName:service];
   v5 = [(PKManager *)self initWithDaemon:v4];
 
   return v5;
 }
 
-- (PKManager)initWithDaemon:(id)a3
+- (PKManager)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = objc_opt_new();
-  v6 = [(PKManager *)self initWithDaemon:v4 externalProviders:v5];
+  v6 = [(PKManager *)self initWithDaemon:daemonCopy externalProviders:v5];
 
   return v6;
 }
 
-- (PKManager)initWithDaemon:(id)a3 externalProviders:(id)a4
+- (PKManager)initWithDaemon:(id)daemon externalProviders:(id)providers
 {
-  v6 = a3;
-  v7 = a4;
+  daemonCopy = daemon;
+  providersCopy = providers;
   v11.receiver = self;
   v11.super_class = PKManager;
   v8 = [(PKManager *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(PKManager *)v8 setClient:v6];
-    objc_storeStrong(&v9->_external, a4);
+    [(PKManager *)v8 setClient:daemonCopy];
+    objc_storeStrong(&v9->_external, providers);
   }
 
   return v9;
 }
 
-- (PKManager)initWithExternalProviders:(id)a3
+- (PKManager)initWithExternalProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v5 = [[PKDaemonClient alloc] initWithServiceName:0];
-  v6 = [(PKManager *)self initWithDaemon:v5 externalProviders:v4];
+  v6 = [(PKManager *)self initWithDaemon:v5 externalProviders:providersCopy];
 
   return v6;
 }
 
-- (void)registerPlugInAtURL:(id)a3 result:(id)a4
+- (void)registerPlugInAtURL:(id)l result:(id)result
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKManager *)self client];
-  objc_initWeak(&location, v8);
+  lCopy = l;
+  resultCopy = result;
+  client = [(PKManager *)self client];
+  objc_initWeak(&location, client);
 
   objc_initWeak(&from, self);
   v9 = pklog_handle_for_category(12);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 path];
+    path = [lCopy path];
     *buf = 134218242;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
-    v28 = v10;
+    v28 = path;
     _os_log_impl(&dword_1C6892000, v9, OS_LOG_TYPE_DEFAULT, "<PKManager:%p> register plugin at [%@]", buf, 0x16u);
   }
 
-  v11 = [(PKManager *)self client];
+  client2 = [(PKManager *)self client];
   v12 = MEMORY[0x1E695DEC8];
-  v13 = [v6 path];
-  v14 = [v12 arrayWithObject:v13];
+  path2 = [lCopy path];
+  v14 = [v12 arrayWithObject:path2];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_1C68B04FC;
   v18[3] = &unk_1E827FE00;
   objc_copyWeak(&v21, &location);
   objc_copyWeak(&v22, &from);
-  v15 = v6;
+  v15 = lCopy;
   v19 = v15;
-  v16 = v7;
+  v16 = resultCopy;
   v20 = v16;
-  [v11 addPlugIns:v14 reply:v18];
+  [client2 addPlugIns:v14 reply:v18];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&v21);
@@ -126,41 +126,41 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterPlugInAtURL:(id)a3 result:(id)a4
+- (void)unregisterPlugInAtURL:(id)l result:(id)result
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKManager *)self client];
-  objc_initWeak(&location, v8);
+  lCopy = l;
+  resultCopy = result;
+  client = [(PKManager *)self client];
+  objc_initWeak(&location, client);
 
   objc_initWeak(&from, self);
   v9 = pklog_handle_for_category(12);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 path];
+    path = [lCopy path];
     *buf = 134218242;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
-    v28 = v10;
+    v28 = path;
     _os_log_impl(&dword_1C6892000, v9, OS_LOG_TYPE_DEFAULT, "<PKManager:%p> unregister plugin at [%@]", buf, 0x16u);
   }
 
-  v11 = [(PKManager *)self client];
+  client2 = [(PKManager *)self client];
   v12 = MEMORY[0x1E695DEC8];
-  v13 = [v6 path];
-  v14 = [v12 arrayWithObject:v13];
+  path2 = [lCopy path];
+  v14 = [v12 arrayWithObject:path2];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_1C68B0888;
   v18[3] = &unk_1E827FE00;
   objc_copyWeak(&v21, &location);
   objc_copyWeak(&v22, &from);
-  v15 = v6;
+  v15 = lCopy;
   v19 = v15;
-  v16 = v7;
+  v16 = resultCopy;
   v20 = v16;
-  [v11 removePlugIns:v14 reply:v18];
+  [client2 removePlugIns:v14 reply:v18];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&v21);
@@ -170,14 +170,14 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerPlugInsInBundle:(id)a3 result:(id)a4
+- (void)registerPlugInsInBundle:(id)bundle result:(id)result
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v29 = a4;
-  if (v6)
+  bundleCopy = bundle;
+  resultCopy = result;
+  if (bundleCopy)
   {
-    [MEMORY[0x1E696AAE8] bundleWithURL:v6];
+    [MEMORY[0x1E696AAE8] bundleWithURL:bundleCopy];
   }
 
   else
@@ -188,22 +188,22 @@
   v8 = pklog_handle_for_category(12);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 path];
-    v10 = [v7 bundlePath];
+    path = [bundleCopy path];
+    bundlePath = [v7 bundlePath];
     *buf = 134218498;
-    v44 = self;
+    selfCopy3 = self;
     v45 = 2112;
-    v46 = v9;
+    v46 = path;
     v47 = 2112;
-    v48 = v10;
+    v48 = bundlePath;
     _os_log_impl(&dword_1C6892000, v8, OS_LOG_TYPE_DEFAULT, "<PKManager:%p> register plugins in bundle at [%@] resolved to [%@]", buf, 0x20u);
   }
 
-  v30 = [v7 builtInPlugInsURL];
-  v11 = [(PKManager *)self external];
-  v12 = [v11 filesystem];
+  builtInPlugInsURL = [v7 builtInPlugInsURL];
+  external = [(PKManager *)self external];
+  filesystem = [external filesystem];
   v41 = 0;
-  v13 = [v12 contentsOfDirectoryAtURL:v30 includingPropertiesForKeys:0 options:4 error:&v41];
+  v13 = [filesystem contentsOfDirectoryAtURL:builtInPlugInsURL includingPropertiesForKeys:0 options:4 error:&v41];
   v28 = v41;
 
   if (v13)
@@ -238,8 +238,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v37 + 1) + 8 * v18) path];
-          [v14 addObject:v20];
+          path2 = [*(*(&v37 + 1) + 8 * v18) path];
+          [v14 addObject:path2];
 
           ++v18;
         }
@@ -253,11 +253,11 @@
 
     if ([v14 count])
     {
-      v21 = [(PKManager *)self client];
-      objc_initWeak(buf, v21);
+      client = [(PKManager *)self client];
+      objc_initWeak(buf, client);
 
       objc_initWeak(&location, self);
-      v22 = [(PKManager *)self client];
+      client2 = [(PKManager *)self client];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = sub_1C68B0EA8;
@@ -265,8 +265,8 @@
       objc_copyWeak(&v34, buf);
       objc_copyWeak(&v35, &location);
       v32 = v7;
-      v33 = v29;
-      [v22 addPlugIns:v14 reply:v31];
+      v33 = resultCopy;
+      [client2 addPlugIns:v14 reply:v31];
 
       objc_destroyWeak(&v35);
       objc_destroyWeak(&v34);
@@ -279,15 +279,15 @@
       v24 = pklog_handle_for_category(12);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v7 bundlePath];
+        bundlePath2 = [v7 bundlePath];
         *buf = 134218242;
-        v44 = self;
+        selfCopy3 = self;
         v45 = 2112;
-        v46 = v25;
+        v46 = bundlePath2;
         _os_log_impl(&dword_1C6892000, v24, OS_LOG_TYPE_DEFAULT, "<PKManager:%p> register plugins in bundle at [%@] completed, there were no plugins in that bundle", buf, 0x16u);
       }
 
-      (*(v29 + 2))(v29, 0);
+      (*(resultCopy + 2))(resultCopy, 0);
     }
   }
 
@@ -296,55 +296,55 @@
     v23 = pklog_handle_for_category(12);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v7 bundlePath];
+      bundlePath3 = [v7 bundlePath];
       *buf = 134218498;
-      v44 = self;
+      selfCopy3 = self;
       v45 = 2112;
-      v46 = v27;
+      v46 = bundlePath3;
       v47 = 2112;
       v48 = v28;
       _os_log_error_impl(&dword_1C6892000, v23, OS_LOG_TYPE_ERROR, "<PKManager:%p> register plugins in bundle at [%@] failed to fetch candidates: %@", buf, 0x20u);
     }
 
-    (*(v29 + 2))(v29, v28);
+    (*(resultCopy + 2))(resultCopy, v28);
   }
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterPlugInsInBundle:(id)a3 result:(id)a4
+- (void)unregisterPlugInsInBundle:(id)bundle result:(id)result
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v27 = a4;
-  if (!v6)
+  bundleCopy = bundle;
+  resultCopy = result;
+  if (!bundleCopy)
   {
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v7 bundleURL];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleCopy = [mainBundle bundleURL];
   }
 
   v8 = pklog_handle_for_category(12);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 path];
+    path = [bundleCopy path];
     *buf = 134218242;
-    v40 = self;
+    selfCopy2 = self;
     v41 = 2112;
-    v42 = v9;
+    v42 = path;
     _os_log_impl(&dword_1C6892000, v8, OS_LOG_TYPE_DEFAULT, "<PKManager:%p> unregister plugins in bundle at [%@]", buf, 0x16u);
   }
 
-  v10 = [(PKManager *)self external];
-  v11 = [v10 ls];
-  v12 = [v11 applicationProxyForBundleURL:v6];
+  external = [(PKManager *)self external];
+  v11 = [external ls];
+  v12 = [v11 applicationProxyForBundleURL:bundleCopy];
 
-  v13 = [v12 plugInKitPlugins];
-  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v13, "count")}];
+  plugInKitPlugins = [v12 plugInKitPlugins];
+  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(plugInKitPlugins, "count")}];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v15 = v13;
+  v15 = plugInKitPlugins;
   v16 = [v15 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v16)
   {
@@ -369,9 +369,9 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v34 + 1) + 8 * v18) bundleURL];
-        v21 = [v20 path];
-        [v14 addObject:v21];
+        bundleURL = [*(*(&v34 + 1) + 8 * v18) bundleURL];
+        path2 = [bundleURL path];
+        [v14 addObject:path2];
 
         ++v18;
       }
@@ -385,20 +385,20 @@
 
   if ([v14 count])
   {
-    v22 = [(PKManager *)self client];
-    objc_initWeak(buf, v22);
+    client = [(PKManager *)self client];
+    objc_initWeak(buf, client);
 
     objc_initWeak(&location, self);
-    v23 = [(PKManager *)self client];
+    client2 = [(PKManager *)self client];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = sub_1C68B13EC;
     v28[3] = &unk_1E827FE00;
     objc_copyWeak(&v31, buf);
     objc_copyWeak(&v32, &location);
-    v29 = v6;
-    v30 = v27;
-    [v23 removePlugIns:v14 reply:v28];
+    v29 = bundleCopy;
+    v30 = resultCopy;
+    [client2 removePlugIns:v14 reply:v28];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&v31);
@@ -411,71 +411,71 @@
     v24 = pklog_handle_for_category(12);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v6 path];
+      path3 = [bundleCopy path];
       *buf = 134218242;
-      v40 = self;
+      selfCopy2 = self;
       v41 = 2112;
-      v42 = v25;
+      v42 = path3;
       _os_log_impl(&dword_1C6892000, v24, OS_LOG_TYPE_DEFAULT, "<PKManager:%p> unregister plugins in bundle at [%@] completed, there were plugins in that bundle registered with LaunchServices", buf, 0x16u);
     }
 
-    (*(v27 + 2))(v27, 0);
+    (*(resultCopy + 2))(resultCopy, 0);
   }
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)containingAppForPlugInConnectedTo:(id)a3
+- (id)containingAppForPlugInConnectedTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PKManager *)self external];
-  v6 = [v5 launch];
-  v7 = [v6 copy_extension_properties:v4];
+  toCopy = to;
+  external = [(PKManager *)self external];
+  launch = [external launch];
+  v7 = [launch copy_extension_properties:toCopy];
 
   v8 = [(PKManager *)self containingAppForExtensionProperties:v7];
 
   return v8;
 }
 
-- (id)containingAppForExtensionProperties:(id)a3
+- (id)containingAppForExtensionProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (!propertiesCopy)
   {
     goto LABEL_7;
   }
 
-  string = xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9F30]);
+  string = xpc_dictionary_get_string(propertiesCopy, *MEMORY[0x1E69E9F30]);
   if (!string)
   {
     goto LABEL_7;
   }
 
   v7 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithFileSystemRepresentation:string isDirectory:1 relativeToURL:0];
-  v8 = [(PKManager *)self external];
-  v9 = [v8 ls];
+  external = [(PKManager *)self external];
+  v9 = [external ls];
   v10 = [v9 plugInKitProxyForURL:v7];
 
-  v11 = [v10 containingBundle];
-  v12 = v11;
-  if (v11)
+  containingBundle = [v10 containingBundle];
+  v12 = containingBundle;
+  if (containingBundle)
   {
-    v8 = [v11 bundleIdentifier];
+    external = [containingBundle bundleIdentifier];
   }
 
   if (!v12)
   {
 LABEL_7:
-    v8 = 0;
+    external = 0;
   }
 
-  return v8;
+  return external;
 }
 
-- (void)holdPlugInsWithExtensionPointName:(id)a3 platforms:(id)a4 terminate:(BOOL)a5 result:(id)a6
+- (void)holdPlugInsWithExtensionPointName:(id)name platforms:(id)platforms terminate:(BOOL)terminate result:(id)result
 {
-  if (a5)
+  if (terminate)
   {
     v7 = 36;
   }
@@ -485,25 +485,25 @@ LABEL_7:
     v7 = 32;
   }
 
-  [(PKManager *)self holdRequest:0 extensionPointName:a3 platforms:a4 flags:v7 result:a6];
+  [(PKManager *)self holdRequest:0 extensionPointName:name platforms:platforms flags:v7 result:result];
 }
 
-- (void)terminatePlugInsInApplication:(id)a3 options:(int64_t)a4 result:(id)a5
+- (void)terminatePlugInsInApplication:(id)application options:(int64_t)options result:(id)result
 {
-  v10 = a3;
-  v8 = a5;
-  if (a4)
+  applicationCopy = application;
+  resultCopy = result;
+  if (options)
   {
     v9 = pkError(18, @"unrecognized option to terminatePlugInsInApplication");
-    v8[2](v8, 0, v9);
+    resultCopy[2](resultCopy, 0, v9);
   }
 
-  [(PKManager *)self holdRequest:v10 flags:4 result:v8];
+  [(PKManager *)self holdRequest:applicationCopy flags:4 result:resultCopy];
 }
 
-- (id)holdPlugInsInApplication:(id)a3 withError:(id *)a4
+- (id)holdPlugInsInApplication:(id)application withError:(id *)error
 {
-  v6 = a3;
+  applicationCopy = application;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -522,15 +522,15 @@ LABEL_7:
   v10[3] = &unk_1E827FE28;
   v10[4] = &v17;
   v10[5] = &v11;
-  [(PKManager *)self holdRequest:v6 flags:10 result:v10];
+  [(PKManager *)self holdRequest:applicationCopy flags:10 result:v10];
   if (!v18[5])
   {
-    if (a4)
+    if (error)
     {
       v7 = v12[5];
       if (v7)
       {
-        *a4 = v7;
+        *error = v7;
       }
     }
   }
@@ -543,11 +543,11 @@ LABEL_7:
   return v8;
 }
 
-- (id)holdPlugInsWithExtensionPointName:(id)a3 platforms:(id)a4 terminate:(BOOL)a5 error:(id *)a6
+- (id)holdPlugInsWithExtensionPointName:(id)name platforms:(id)platforms terminate:(BOOL)terminate error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  terminateCopy = terminate;
+  nameCopy = name;
+  platformsCopy = platforms;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -560,7 +560,7 @@ LABEL_7:
   v20 = sub_1C68936D4;
   v21 = sub_1C689456C;
   v22 = 0;
-  if (v7)
+  if (terminateCopy)
   {
     v12 = 44;
   }
@@ -576,15 +576,15 @@ LABEL_7:
   v16[3] = &unk_1E827FE28;
   v16[4] = &v23;
   v16[5] = &v17;
-  [(PKManager *)self holdRequest:0 extensionPointName:v10 platforms:v11 flags:v12 result:v16];
+  [(PKManager *)self holdRequest:0 extensionPointName:nameCopy platforms:platformsCopy flags:v12 result:v16];
   if (!v24[5])
   {
-    if (a6)
+    if (error)
     {
       v13 = v18[5];
       if (v13)
       {
-        *a6 = v13;
+        *error = v13;
       }
     }
   }
@@ -597,16 +597,16 @@ LABEL_7:
   return v14;
 }
 
-- (id)holdPlugInsWithExtensionPointName:(id)a3 error:(id *)a4
+- (id)holdPlugInsWithExtensionPointName:(id)name error:(id *)error
 {
-  v4 = [(PKManager *)self holdPlugInsWithExtensionPointName:a3 platforms:MEMORY[0x1E695E0F0] terminate:1 error:a4];
+  v4 = [(PKManager *)self holdPlugInsWithExtensionPointName:name platforms:MEMORY[0x1E695E0F0] terminate:1 error:error];
 
   return v4;
 }
 
-- (id)forceHoldPlugIn:(id)a3 withError:(id *)a4
+- (id)forceHoldPlugIn:(id)in withError:(id *)error
 {
-  v6 = a3;
+  inCopy = in;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -625,15 +625,15 @@ LABEL_7:
   v10[3] = &unk_1E827FE28;
   v10[4] = &v17;
   v10[5] = &v11;
-  [(PKManager *)self holdRequest:v6 flags:9 result:v10];
+  [(PKManager *)self holdRequest:inCopy flags:9 result:v10];
   if (!v18[5])
   {
-    if (a4)
+    if (error)
     {
       v7 = v12[5];
       if (v7)
       {
-        *a4 = v7;
+        *error = v7;
       }
     }
   }
@@ -646,9 +646,9 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)terminatePlugInAtURL:(id)a3 withError:(id *)a4
+- (BOOL)terminatePlugInAtURL:(id)l withError:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -667,7 +667,7 @@ LABEL_7:
   v14[3] = &unk_1E827FE28;
   v14[4] = &v21;
   v14[5] = &v15;
-  [(PKManager *)self holdRequest:v6 flags:29 result:v14];
+  [(PKManager *)self holdRequest:lCopy flags:29 result:v14];
   v7 = v16[5];
   if (v22[5])
   {
@@ -685,14 +685,14 @@ LABEL_7:
     }
 
     v11 = 0;
-    if (a4)
+    if (error)
     {
       v7 = v16[5];
       if (v7)
       {
 LABEL_9:
         v11 = 0;
-        *a4 = v7;
+        *error = v7;
       }
     }
   }
@@ -700,7 +700,7 @@ LABEL_9:
   else
   {
     v11 = 0;
-    if (a4 && v7)
+    if (error && v7)
     {
       goto LABEL_9;
     }
@@ -713,9 +713,9 @@ LABEL_10:
   return v11;
 }
 
-- (id)terminatePlugInsInApplication:(id)a3 options:(int64_t)a4 withError:(id *)a5
+- (id)terminatePlugInsInApplication:(id)application options:(int64_t)options withError:(id *)error
 {
-  v8 = a3;
+  applicationCopy = application;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -728,7 +728,7 @@ LABEL_10:
   v18 = sub_1C68936D4;
   v19 = sub_1C689456C;
   v20 = 0;
-  if (a4)
+  if (options)
   {
     v9 = pkError(18, @"unrecognized option to terminatePlugInsInApplication");
     v10 = v16[5];
@@ -743,17 +743,17 @@ LABEL_10:
     v14[3] = &unk_1E827FE28;
     v14[4] = &v21;
     v14[5] = &v15;
-    [(PKManager *)self holdRequest:v8 flags:12 result:v14];
+    [(PKManager *)self holdRequest:applicationCopy flags:12 result:v14];
   }
 
   if (!v22[5])
   {
-    if (a5)
+    if (error)
     {
       v11 = v16[5];
       if (v11)
       {
-        *a5 = v11;
+        *error = v11;
       }
     }
   }
@@ -766,28 +766,28 @@ LABEL_10:
   return v12;
 }
 
-- (void)holdRequest:(id)a3 extensionPointName:(id)a4 platforms:(id)a5 flags:(unint64_t)a6 result:(id)a7
+- (void)holdRequest:(id)request extensionPointName:(id)name platforms:(id)platforms flags:(unint64_t)flags result:(id)result
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(PKManager *)self client];
-  objc_initWeak(&location, v16);
+  requestCopy = request;
+  nameCopy = name;
+  platformsCopy = platforms;
+  resultCopy = result;
+  client = [(PKManager *)self client];
+  objc_initWeak(&location, client);
 
-  if (v12)
+  if (requestCopy)
   {
-    v17 = [v12 path];
+    path = [requestCopy path];
   }
 
   else
   {
-    v17 = v13;
+    path = nameCopy;
   }
 
-  v18 = v17;
-  if (v12)
+  v18 = path;
+  if (requestCopy)
   {
   }
 
@@ -795,48 +795,48 @@ LABEL_10:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v34 = self;
+    selfCopy = self;
     v35 = 2112;
     v36 = v18;
     v37 = 2048;
-    v38 = a6;
+    flagsCopy = flags;
     _os_log_impl(&dword_1C6892000, v19, OS_LOG_TYPE_DEFAULT, "<PKManager:%p> hold request for [%@] with flags: 0x%llx", buf, 0x20u);
   }
 
-  if (v13)
+  if (nameCopy)
   {
     v20 = 1;
   }
 
   else
   {
-    v20 = v12 != 0;
+    v20 = requestCopy != 0;
   }
 
   if (v20)
   {
-    if (v12 && v13)
+    if (requestCopy && nameCopy)
     {
       v21 = pkError(18, @"Malformed hold request: only one of URL or extension point allowed");
-      v15[2](v15, 0, v21);
+      resultCopy[2](resultCopy, 0, v21);
     }
 
     else
     {
-      if (v12)
+      if (requestCopy)
       {
-        v22 = [v12 path];
-        v23 = v22 == 0;
+        path2 = [requestCopy path];
+        v23 = path2 == 0;
 
         if (v23)
         {
           v21 = pkError(18, @"Malformed NSURL passed by the client.");
-          v15[2](v15, 0, v21);
+          resultCopy[2](resultCopy, 0, v21);
           goto LABEL_22;
         }
 
-        v24 = [v12 path];
-        v32 = v24;
+        path3 = [requestCopy path];
+        v32 = path3;
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
       }
 
@@ -845,7 +845,7 @@ LABEL_10:
         v21 = 0;
       }
 
-      v25 = [(PKManager *)self client];
+      client2 = [(PKManager *)self client];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = sub_1C68B2A34;
@@ -853,9 +853,9 @@ LABEL_10:
       objc_copyWeak(v30, &location);
       v27[4] = self;
       v28 = v18;
-      v30[1] = a6;
-      v29 = v15;
-      [v25 holdPlugins:v21 extensionPointName:v13 platforms:v14 flags:a6 reply:v27];
+      v30[1] = flags;
+      v29 = resultCopy;
+      [client2 holdPlugins:v21 extensionPointName:nameCopy platforms:platformsCopy flags:flags reply:v27];
 
       objc_destroyWeak(v30);
     }
@@ -864,7 +864,7 @@ LABEL_10:
   else
   {
     v21 = pkError(18, @"Malformed hold request: must supply URL or extension point");
-    v15[2](v15, 0, v21);
+    resultCopy[2](resultCopy, 0, v21);
   }
 
 LABEL_22:
@@ -873,74 +873,74 @@ LABEL_22:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)releaseHold:(id)a3
+- (void)releaseHold:(id)hold
 {
-  v4 = a3;
+  holdCopy = hold;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     sub_1C68B7704();
   }
 
-  v5 = [(PKManager *)self client];
-  objc_initWeak(&location, v5);
+  client = [(PKManager *)self client];
+  objc_initWeak(&location, client);
 
-  v6 = [(PKManager *)self client];
+  client2 = [(PKManager *)self client];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1C68B2E4C;
   v8[3] = &unk_1E827FE78;
   objc_copyWeak(&v10, &location);
   v8[4] = self;
-  v7 = v4;
+  v7 = holdCopy;
   v9 = v7;
-  [v6 releaseHold:v7 flags:0 reply:v8];
+  [client2 releaseHold:v7 flags:0 reply:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)releaseHold:(id)a3 reply:(id)a4
+- (void)releaseHold:(id)hold reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  holdCopy = hold;
+  replyCopy = reply;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     sub_1C68B77F4();
   }
 
-  v8 = [(PKManager *)self client];
-  objc_initWeak(&location, v8);
+  client = [(PKManager *)self client];
+  objc_initWeak(&location, client);
 
-  v9 = [(PKManager *)self client];
+  client2 = [(PKManager *)self client];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_1C68B30D8;
   v12[3] = &unk_1E827FEA0;
   objc_copyWeak(&v15, &location);
   v12[4] = self;
-  v10 = v6;
+  v10 = holdCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = replyCopy;
   v14 = v11;
-  [v9 releaseHold:v10 flags:0 reply:v12];
+  [client2 releaseHold:v10 flags:0 reply:v12];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)releaseHold:(id)a3 flags:(unint64_t)a4 withError:(id *)a5
+- (BOOL)releaseHold:(id)hold flags:(unint64_t)flags withError:(id *)error
 {
-  v8 = a3;
+  holdCopy = hold;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     sub_1C68B78E4();
   }
 
-  v9 = [(PKManager *)self client];
-  objc_initWeak(&location, v9);
+  client = [(PKManager *)self client];
+  objc_initWeak(&location, client);
 
   v19 = 0;
   v20 = &v19;
@@ -948,7 +948,7 @@ LABEL_22:
   v22 = sub_1C68936D4;
   v23 = sub_1C689456C;
   v24 = 0;
-  v10 = [(PKManager *)self client];
+  client2 = [(PKManager *)self client];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_1C68B33F0;
@@ -956,16 +956,16 @@ LABEL_22:
   v17 = &v19;
   objc_copyWeak(&v18, &location);
   v15[4] = self;
-  v11 = v8;
+  v11 = holdCopy;
   v16 = v11;
-  [v10 releaseHold:v11 flags:a4 reply:v15];
+  [client2 releaseHold:v11 flags:flags reply:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
     if (v12)
     {
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -978,36 +978,36 @@ LABEL_22:
   return v13;
 }
 
-- (void)updateExtensionStatesForPlugIns:(id)a3 result:(id)a4
+- (void)updateExtensionStatesForPlugIns:(id)ins result:(id)result
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  insCopy = ins;
+  resultCopy = result;
   v8 = pklog_handle_for_category(10);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v6;
+    v21 = insCopy;
     _os_log_impl(&dword_1C6892000, v8, OS_LOG_TYPE_DEFAULT, "<PKManager:%p> bulk update extension states: %@", buf, 0x16u);
   }
 
-  v9 = [(PKManager *)self client];
-  objc_initWeak(buf, v9);
+  client = [(PKManager *)self client];
+  objc_initWeak(buf, client);
 
-  v10 = [(PKManager *)self client];
+  client2 = [(PKManager *)self client];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_1C68B3700;
   v14[3] = &unk_1E827FEA0;
   objc_copyWeak(&v17, buf);
   v14[4] = self;
-  v11 = v6;
+  v11 = insCopy;
   v15 = v11;
-  v12 = v7;
+  v12 = resultCopy;
   v16 = v12;
-  [v10 bulkSetPluginAnnotations:v11 reply:v14];
+  [client2 bulkSetPluginAnnotations:v11 reply:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);

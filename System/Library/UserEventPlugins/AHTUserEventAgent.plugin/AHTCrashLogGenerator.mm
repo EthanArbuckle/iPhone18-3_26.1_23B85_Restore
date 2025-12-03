@@ -1,11 +1,11 @@
 @interface AHTCrashLogGenerator
 - (AHTCrashLogGenerator)init;
-- (BOOL)clearMemoryDumps:(id)a3;
-- (BOOL)getMemoryDumps:(id)a3;
-- (BOOL)start:(id)a3 error:(id *)a4;
-- (BOOL)stop:(id *)a3;
+- (BOOL)clearMemoryDumps:(id)dumps;
+- (BOOL)getMemoryDumps:(id)dumps;
+- (BOOL)start:(id)start error:(id *)error;
+- (BOOL)stop:(id *)stop;
 - (void)dealloc;
-- (void)registerNotification:(id)a3 memoryDumpLevel:(id)a4;
+- (void)registerNotification:(id)notification memoryDumpLevel:(id)level;
 @end
 
 @implementation AHTCrashLogGenerator
@@ -71,11 +71,11 @@
   return v11;
 }
 
-- (BOOL)start:(id)a3 error:(id *)a4
+- (BOOL)start:(id)start error:(id *)error
 {
-  v7 = a3;
+  startCopy = start;
   objc_initWeak(&location, self);
-  objc_storeStrong(&self->_queue, a3);
+  objc_storeStrong(&self->_queue, start);
   v8 = +[NSUserDefaults standardUserDefaults];
   v9 = [v8 persistentDomainForName:@"com.apple.hid.memory-dump"];
   v10 = [v9 objectForKey:@"level"];
@@ -95,9 +95,9 @@
   v13 = v11;
   v18 = v13;
   v14 = objc_retainBlock(v17);
-  if ([(AHTDeviceMatchingNotification *)self->_deviceAdded startWithDispatchQueue:v7 error:a4 action:v12])
+  if ([(AHTDeviceMatchingNotification *)self->_deviceAdded startWithDispatchQueue:startCopy error:error action:v12])
   {
-    v15 = [(AHTDeviceMatchingNotification *)self->_interfaceAdded startWithDispatchQueue:v7 error:a4 action:v14];
+    v15 = [(AHTDeviceMatchingNotification *)self->_interfaceAdded startWithDispatchQueue:startCopy error:error action:v14];
   }
 
   else
@@ -112,7 +112,7 @@
   return v15;
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
   v12 = 0u;
   v13 = 0u;
@@ -146,15 +146,15 @@
   }
 
   [(NSMutableArray *)self->_sources removeAllObjects];
-  v10 = [(AHTDeviceMatchingNotification *)self->_deviceAdded stop:a3];
-  return v10 & [(AHTDeviceMatchingNotification *)self->_interfaceAdded stop:a3];
+  v10 = [(AHTDeviceMatchingNotification *)self->_deviceAdded stop:stop];
+  return v10 & [(AHTDeviceMatchingNotification *)self->_interfaceAdded stop:stop];
 }
 
-- (void)registerNotification:(id)a3 memoryDumpLevel:(id)a4
+- (void)registerNotification:(id)notification memoryDumpLevel:(id)level
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 supportsMemoryDump])
+  notificationCopy = notification;
+  levelCopy = level;
+  if ([notificationCopy supportsMemoryDump])
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -164,7 +164,7 @@
     v8 = objc_retainBlock(v17);
     queue = self->_queue;
     v16 = 0;
-    v10 = [v6 dispatchSourceForNotification:queue action:v8 error:&v16];
+    v10 = [notificationCopy dispatchSourceForNotification:queue action:v8 error:&v16];
     v11 = v16;
     if (v10)
     {
@@ -177,19 +177,19 @@
       sub_613C();
     }
 
-    (v8[2])(v8, v6, 1);
-    if (v7)
+    (v8[2])(v8, notificationCopy, 1);
+    if (levelCopy)
     {
-      v12 = [v7 unsignedIntValue];
+      unsignedIntValue = [levelCopy unsignedIntValue];
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v19 = v12;
+        v19 = unsignedIntValue;
         _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Set memory dump level to 0x%X", buf, 8u);
       }
 
       v15 = v11;
-      v13 = [v6 setMemoryDumpLevel:v12 error:&v15];
+      v13 = [notificationCopy setMemoryDumpLevel:unsignedIntValue error:&v15];
       v14 = v15;
 
       if ((v13 & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -205,12 +205,12 @@
   }
 }
 
-- (BOOL)getMemoryDumps:(id)a3
+- (BOOL)getMemoryDumps:(id)dumps
 {
-  v4 = a3;
+  dumpsCopy = dumps;
   v30 = 0;
   v31 = 0;
-  v5 = [v4 getMemoryDumps:&v31 error:&v30];
+  v5 = [dumpsCopy getMemoryDumps:&v31 error:&v30];
   v6 = v31;
   v7 = v30;
   if ((v5 & 1) == 0)
@@ -238,7 +238,7 @@ LABEL_23:
     goto LABEL_31;
   }
 
-  v22 = self;
+  selfCopy = self;
   v8 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
@@ -260,11 +260,11 @@ LABEL_23:
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 reporterResults];
-        if (v15)
+        reporterResults = [v14 reporterResults];
+        if (reporterResults)
         {
-          v16 = [v14 name];
-          [v8 setObject:v15 forKeyedSubscript:v16];
+          name = [v14 name];
+          [v8 setObject:reporterResults forKeyedSubscript:name];
         }
       }
 
@@ -295,7 +295,7 @@ LABEL_23:
         _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Crash log generated", buf, 2u);
       }
 
-      [(AHTCrashLogGenerator *)v22 clearMemoryDumps:v4];
+      [(AHTCrashLogGenerator *)selfCopy clearMemoryDumps:dumpsCopy];
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -318,10 +318,10 @@ LABEL_31:
   return v20;
 }
 
-- (BOOL)clearMemoryDumps:(id)a3
+- (BOOL)clearMemoryDumps:(id)dumps
 {
   v6 = 0;
-  v3 = [a3 clearMemoryDumps:&v6];
+  v3 = [dumps clearMemoryDumps:&v6];
   v4 = v6;
   if ((v3 & 1) == 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {

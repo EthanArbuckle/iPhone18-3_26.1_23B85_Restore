@@ -1,11 +1,11 @@
 @interface UIUndoGestureInteraction
 + (BOOL)_isKeyWindowSceneSessionRoleValidForTutorial;
 + (id)iWorkFamily;
-+ (void)presentProductivityGestureTutorialIfNeededWithCompletion:(id)a3;
-+ (void)presentProductivityGestureTutorialInlineWithCompletion:(id)a3;
-+ (void)showSecurePasteConfirmationWithCompletionHandler:(id)a3;
-- (BOOL)_endPanWithDirection:(int64_t)a3;
-- (BOOL)bundleIniWorkFamily:(id)a3;
++ (void)presentProductivityGestureTutorialIfNeededWithCompletion:(id)completion;
++ (void)presentProductivityGestureTutorialInlineWithCompletion:(id)completion;
++ (void)showSecurePasteConfirmationWithCompletionHandler:(id)handler;
+- (BOOL)_endPanWithDirection:(int64_t)direction;
+- (BOOL)bundleIniWorkFamily:(id)family;
 - (BOOL)canCopy;
 - (BOOL)canCut;
 - (BOOL)canPaste;
@@ -13,16 +13,16 @@
 - (BOOL)canUndo;
 - (BOOL)currentInteractiveHUDVisible;
 - (BOOL)currentStateHUDVisible;
-- (BOOL)editingInteractionOptionsAllowGestureRecognizerToBegin:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)editingInteractionOptionsAllowGestureRecognizerToBegin:(id)begin;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isRTLMode;
 - (BOOL)needUpdateHUDForContainerChange;
-- (BOOL)performActionWithDirection:(int64_t)a3;
-- (BOOL)performGestureWithDirection:(int64_t)a3 authenticationMessage:(id)a4;
-- (BOOL)textEditingOperationsAvailableWithGestureRecognizer:(id)a3;
-- (BOOL)undoGestureIsMoving:(id)a3;
+- (BOOL)performActionWithDirection:(int64_t)direction;
+- (BOOL)performGestureWithDirection:(int64_t)direction authenticationMessage:(id)message;
+- (BOOL)textEditingOperationsAvailableWithGestureRecognizer:(id)recognizer;
+- (BOOL)undoGestureIsMoving:(id)moving;
 - (BOOL)undoManagerOperationsCutCopyPasteAvailable;
 - (BOOL)undoManagerOperationsUndoRedoAvailable;
 - (CGPoint)beginPanLocation;
@@ -32,33 +32,33 @@
 - (UIKBTextEditingTraits)editingTraits;
 - (UIView)view;
 - (id)_undoManager;
-- (id)interactiveHUDButtonForDirection:(int64_t)a3;
-- (id)responderForOperation:(SEL)a3 withSender:(id)a4;
+- (id)interactiveHUDButtonForDirection:(int64_t)direction;
+- (id)responderForOperation:(SEL)operation withSender:(id)sender;
 - (id)scrollViewForInputDelegate;
 - (int64_t)keyboardAppearance;
-- (int64_t)slideDirectionWithGesture:(id)a3;
-- (int64_t)undoControlTypeWithDirection:(int64_t)a3;
+- (int64_t)slideDirectionWithGesture:(id)gesture;
+- (int64_t)undoControlTypeWithDirection:(int64_t)direction;
 - (unint64_t)privateEditingInteractionOptions;
 - (void)_addGestureRecognizers;
-- (void)_cancelPinch:(id)a3;
+- (void)_cancelPinch:(id)pinch;
 - (void)_createAndUpdateUndoInteractiveHUDIfNecessary;
 - (void)_createAndUpdateUndoStateHUDIfNecessary;
 - (void)_createGestureRecognizersIfNecessary;
-- (void)_endPan:(id)a3;
-- (void)_endPinch:(id)a3;
-- (void)_endPinchWithDirection:(int64_t)a3;
+- (void)_endPan:(id)pan;
+- (void)_endPinch:(id)pinch;
+- (void)_endPinchWithDirection:(int64_t)direction;
 - (void)_installUndoManagerObservers;
 - (void)_removeGestureRecognizers;
-- (void)_startPinch:(id)a3;
-- (void)_startUndoPan:(id)a3;
+- (void)_startPinch:(id)pinch;
+- (void)_startUndoPan:(id)pan;
 - (void)_threeFingerSingleTapAction;
 - (void)_uninstallUndoManagerObservers;
 - (void)_updateHUDControlState;
-- (void)_updatePinch:(id)a3;
-- (void)_updateUndoPan:(id)a3;
+- (void)_updatePinch:(id)pinch;
+- (void)_updateUndoPan:(id)pan;
 - (void)animateDisplayingStateHUD;
 - (void)animateInStateHUD;
-- (void)animateSpringCoverWithSuccess:(BOOL)a3 direction:(int64_t)a4 remainingDistanceToTravel:(double)a5;
+- (void)animateSpringCoverWithSuccess:(BOOL)success direction:(int64_t)direction remainingDistanceToTravel:(double)travel;
 - (void)applicationWillSuspend;
 - (void)clearHUDViews;
 - (void)clearMultiPansTimer;
@@ -66,34 +66,34 @@
 - (void)clearUndoStateHUDDismissTimer;
 - (void)copyOperation;
 - (void)cutOperation;
-- (void)deactiveActiveKeysIfNeeded:(id)a3;
-- (void)didMoveToView:(id)a3;
+- (void)deactiveActiveKeysIfNeeded:(id)needed;
+- (void)didMoveToView:(id)view;
 - (void)disableEnclosingScrollViewScrolling;
-- (void)fullyCloseCoverWithComplete:(id)a3;
-- (void)fullyOpenAndCloseCoverWithBeginDirection:(int64_t)a3;
+- (void)fullyCloseCoverWithComplete:(id)complete;
+- (void)fullyOpenAndCloseCoverWithBeginDirection:(int64_t)direction;
 - (void)layoutUndoInteractiveHUD;
 - (void)layoutUndoStateHUD;
-- (void)multiPansTimerElaspsed:(id)a3;
-- (void)observerGestureHandler:(id)a3;
+- (void)multiPansTimerElaspsed:(id)elaspsed;
+- (void)observerGestureHandler:(id)handler;
 - (void)pasteOperation;
-- (void)redo:(BOOL)a3;
+- (void)redo:(BOOL)redo;
 - (void)removeAllHUDOnContainerChange;
-- (void)setPasteConfirmationHUDVisibility:(BOOL)a3;
-- (void)setUndoHUDType:(int64_t)a3 visibility:(BOOL)a4;
-- (void)setUndoInteractiveHUDVisibility:(BOOL)a3;
-- (void)setUndoStateHUDVisibility:(BOOL)a3 withType:(int64_t)a4 available:(BOOL)a5;
-- (void)startMultiPinchTimer:(double)a3;
-- (void)threeFingerDoubleTap:(id)a3;
+- (void)setPasteConfirmationHUDVisibility:(BOOL)visibility;
+- (void)setUndoHUDType:(int64_t)type visibility:(BOOL)visibility;
+- (void)setUndoInteractiveHUDVisibility:(BOOL)visibility;
+- (void)setUndoStateHUDVisibility:(BOOL)visibility withType:(int64_t)type available:(BOOL)available;
+- (void)startMultiPinchTimer:(double)timer;
+- (void)threeFingerDoubleTap:(id)tap;
 - (void)threeFingerDoubleTapUndoAction;
-- (void)threeFingerLongPress:(id)a3;
-- (void)threeFingerPinch:(id)a3;
-- (void)threeFingerSingleTap:(id)a3;
-- (void)threeFingerSlide:(id)a3;
+- (void)threeFingerLongPress:(id)press;
+- (void)threeFingerPinch:(id)pinch;
+- (void)threeFingerSingleTap:(id)tap;
+- (void)threeFingerSlide:(id)slide;
 - (void)touchMultiPansTimer;
 - (void)touchUndoStateHUDDismissTimer;
-- (void)undo:(BOOL)a3;
-- (void)undoStateHUDDismissTimerElaspsed:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)undo:(BOOL)undo;
+- (void)undoStateHUDDismissTimerElaspsed:(id)elaspsed;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIUndoGestureInteraction
@@ -108,80 +108,80 @@
 - (void)_addGestureRecognizers
 {
   [(UIUndoGestureInteraction *)self _createGestureRecognizersIfNecessary];
-  v3 = [(UIUndoGestureInteraction *)self view];
-  v4 = [(UIUndoGestureInteraction *)self observerGesture];
-  [v3 addGestureRecognizer:v4];
+  view = [(UIUndoGestureInteraction *)self view];
+  observerGesture = [(UIUndoGestureInteraction *)self observerGesture];
+  [view addGestureRecognizer:observerGesture];
 
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v5 = [(UIUndoGestureInteraction *)self view];
-    v6 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-    [v5 addGestureRecognizer:v6];
+    view2 = [(UIUndoGestureInteraction *)self view];
+    threeFingerSingleTap = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+    [view2 addGestureRecognizer:threeFingerSingleTap];
 
-    v7 = [(UIUndoGestureInteraction *)self view];
-    v8 = [(UIUndoGestureInteraction *)self threeFingerSlide];
-    [v7 addGestureRecognizer:v8];
+    view3 = [(UIUndoGestureInteraction *)self view];
+    threeFingerSlide = [(UIUndoGestureInteraction *)self threeFingerSlide];
+    [view3 addGestureRecognizer:threeFingerSlide];
 
-    v9 = [(UIUndoGestureInteraction *)self view];
-    v10 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
-    [v9 addGestureRecognizer:v10];
+    view4 = [(UIUndoGestureInteraction *)self view];
+    threeFingerLongPress = [(UIUndoGestureInteraction *)self threeFingerLongPress];
+    [view4 addGestureRecognizer:threeFingerLongPress];
 
-    v11 = [(UIUndoGestureInteraction *)self view];
-    v12 = [(UIUndoGestureInteraction *)self threeFingerPinch];
-    [v11 addGestureRecognizer:v12];
+    view5 = [(UIUndoGestureInteraction *)self view];
+    threeFingerPinch = [(UIUndoGestureInteraction *)self threeFingerPinch];
+    [view5 addGestureRecognizer:threeFingerPinch];
 
-    v13 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-    v14 = [(UIUndoGestureInteraction *)self threeFingerSlide];
-    [v13 requireGestureRecognizerToFail:v14];
+    threeFingerSingleTap2 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+    threeFingerSlide2 = [(UIUndoGestureInteraction *)self threeFingerSlide];
+    [threeFingerSingleTap2 requireGestureRecognizerToFail:threeFingerSlide2];
 
-    v15 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-    v16 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
-    [v15 requireGestureRecognizerToFail:v16];
+    threeFingerSingleTap3 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+    threeFingerLongPress2 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
+    [threeFingerSingleTap3 requireGestureRecognizerToFail:threeFingerLongPress2];
 
-    v17 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-    v18 = [(UIUndoGestureInteraction *)self threeFingerPinch];
-    [v17 requireGestureRecognizerToFail:v18];
+    threeFingerSingleTap4 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+    threeFingerPinch2 = [(UIUndoGestureInteraction *)self threeFingerPinch];
+    [threeFingerSingleTap4 requireGestureRecognizerToFail:threeFingerPinch2];
 
-    v19 = [(UIUndoGestureInteraction *)self observerGesture];
-    v20 = [(UIUndoGestureInteraction *)self threeFingerSlide];
-    [v19 requireGestureRecognizerToFail:v20];
+    observerGesture2 = [(UIUndoGestureInteraction *)self observerGesture];
+    threeFingerSlide3 = [(UIUndoGestureInteraction *)self threeFingerSlide];
+    [observerGesture2 requireGestureRecognizerToFail:threeFingerSlide3];
 
-    v21 = [(UIUndoGestureInteraction *)self observerGesture];
-    v22 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-    [v21 requireGestureRecognizerToFail:v22];
+    observerGesture3 = [(UIUndoGestureInteraction *)self observerGesture];
+    threeFingerSingleTap5 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+    [observerGesture3 requireGestureRecognizerToFail:threeFingerSingleTap5];
 
-    v23 = [(UIUndoGestureInteraction *)self observerGesture];
-    v24 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
-    [v23 requireGestureRecognizerToFail:v24];
+    observerGesture4 = [(UIUndoGestureInteraction *)self observerGesture];
+    threeFingerLongPress3 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
+    [observerGesture4 requireGestureRecognizerToFail:threeFingerLongPress3];
 
-    v25 = [(UIUndoGestureInteraction *)self observerGesture];
-    v26 = [(UIUndoGestureInteraction *)self threeFingerPinch];
-    [v25 requireGestureRecognizerToFail:v26];
+    observerGesture5 = [(UIUndoGestureInteraction *)self observerGesture];
+    threeFingerPinch3 = [(UIUndoGestureInteraction *)self threeFingerPinch];
+    [observerGesture5 requireGestureRecognizerToFail:threeFingerPinch3];
 
-    v27 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+    threeFingerDoubleTap = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
 
-    if (v27)
+    if (threeFingerDoubleTap)
     {
-      v28 = [(UIUndoGestureInteraction *)self view];
-      v29 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
-      [v28 addGestureRecognizer:v29];
+      view6 = [(UIUndoGestureInteraction *)self view];
+      threeFingerDoubleTap2 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+      [view6 addGestureRecognizer:threeFingerDoubleTap2];
 
-      v30 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-      v31 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
-      [v30 requireGestureRecognizerToFail:v31];
+      threeFingerSingleTap6 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+      threeFingerDoubleTap3 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+      [threeFingerSingleTap6 requireGestureRecognizerToFail:threeFingerDoubleTap3];
 
-      v33 = [(UIUndoGestureInteraction *)self observerGesture];
-      v32 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
-      [v33 requireGestureRecognizerToFail:v32];
+      observerGesture6 = [(UIUndoGestureInteraction *)self observerGesture];
+      threeFingerDoubleTap4 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+      [observerGesture6 requireGestureRecognizerToFail:threeFingerDoubleTap4];
     }
   }
 }
 
 - (void)_createGestureRecognizersIfNecessary
 {
-  v3 = [(UIUndoGestureInteraction *)self observerGesture];
+  observerGesture = [(UIUndoGestureInteraction *)self observerGesture];
 
-  if (!v3)
+  if (!observerGesture)
   {
     v4 = [_UIKBUndoGestureObserver undoGestureObserverWithTarget:self action:sel_observerGestureHandler_ delegate:self];
     [(UIUndoGestureInteraction *)self setObserverGesture:v4];
@@ -189,9 +189,9 @@
 
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v5 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+    threeFingerSingleTap = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
 
-    if (!v5)
+    if (!threeFingerSingleTap)
     {
       v6 = [_UIKBProductivitySingleTapGesture productivitySingleTapGestureRecognizerWithTarget:self action:sel_threeFingerSingleTap_ delegate:self];
       if (_os_feature_enabled_impl())
@@ -202,34 +202,34 @@
       [(UIUndoGestureInteraction *)self setThreeFingerSingleTap:v6];
     }
 
-    v7 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
-    if (!v7)
+    threeFingerDoubleTap = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+    if (!threeFingerDoubleTap)
     {
-      v8 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-      v9 = [v8 continuousTapRecognition];
+      threeFingerSingleTap2 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+      continuousTapRecognition = [threeFingerSingleTap2 continuousTapRecognition];
 
-      if (v9)
+      if (continuousTapRecognition)
       {
 LABEL_12:
-        v10 = [(UIUndoGestureInteraction *)self threeFingerSlide];
+        threeFingerSlide = [(UIUndoGestureInteraction *)self threeFingerSlide];
 
-        if (!v10)
+        if (!threeFingerSlide)
         {
           v11 = [_UIKBProductivityPanGestureRecognizer productivityPanGestureRecognizerWithTarget:self action:sel_threeFingerSlide_ delegate:self];
           [(UIUndoGestureInteraction *)self setThreeFingerSlide:v11];
         }
 
-        v12 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
+        threeFingerLongPress = [(UIUndoGestureInteraction *)self threeFingerLongPress];
 
-        if (!v12)
+        if (!threeFingerLongPress)
         {
           v13 = [_UIKBProductivityLongPressGestureRecognizer productivityLongPressGestureRecognizerWithTarget:self action:sel_threeFingerLongPress_ delegate:self];
           [(UIUndoGestureInteraction *)self setThreeFingerLongPress:v13];
         }
 
-        v14 = [(UIUndoGestureInteraction *)self threeFingerPinch];
+        threeFingerPinch = [(UIUndoGestureInteraction *)self threeFingerPinch];
 
-        if (!v14)
+        if (!threeFingerPinch)
         {
           v15 = [_UIKBProductivityPinchGestureRecognizer productivityPinchGestureRecognizerWithTarget:self action:sel_threeFingerPinch_ delegate:self];
           [(UIUndoGestureInteraction *)self setThreeFingerPinch:v15];
@@ -238,8 +238,8 @@ LABEL_12:
         return;
       }
 
-      v7 = [_UIKBProductivityDoubleTapGesture productivityDoubleTapGestureRecognizerWithTarget:self action:sel_threeFingerDoubleTap_ delegate:self];
-      [(UIUndoGestureInteraction *)self setThreeFingerDoubleTap:v7];
+      threeFingerDoubleTap = [_UIKBProductivityDoubleTapGesture productivityDoubleTapGestureRecognizerWithTarget:self action:sel_threeFingerDoubleTap_ delegate:self];
+      [(UIUndoGestureInteraction *)self setThreeFingerDoubleTap:threeFingerDoubleTap];
     }
 
     goto LABEL_12;
@@ -248,16 +248,16 @@ LABEL_12:
 
 - (BOOL)currentInteractiveHUDVisible
 {
-  v3 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  if (v3)
+  undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  if (undoInteractiveHUD)
   {
-    v4 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-    v5 = [v4 superview];
-    v6 = [(UIUndoGestureInteraction *)self view];
-    if (v5 == v6)
+    undoInteractiveHUD2 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+    superview = [undoInteractiveHUD2 superview];
+    view = [(UIUndoGestureInteraction *)self view];
+    if (superview == view)
     {
-      v8 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-      [v8 alpha];
+      undoInteractiveHUD3 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+      [undoInteractiveHUD3 alpha];
       v7 = v9 > 0.0;
     }
 
@@ -288,13 +288,13 @@ LABEL_12:
   }
 
   [(UIUndoGestureInteraction *)self clearHUDViews];
-  v3 = [(UIUndoGestureInteraction *)self layoutGuide];
+  layoutGuide = [(UIUndoGestureInteraction *)self layoutGuide];
 
-  if (v3)
+  if (layoutGuide)
   {
-    v4 = [(UIUndoGestureInteraction *)self view];
-    v5 = [(UIUndoGestureInteraction *)self layoutGuide];
-    [v4 removeLayoutGuide:v5];
+    view = [(UIUndoGestureInteraction *)self view];
+    layoutGuide2 = [(UIUndoGestureInteraction *)self layoutGuide];
+    [view removeLayoutGuide:layoutGuide2];
 
     [(UIUndoGestureInteraction *)self setLayoutGuide:0];
   }
@@ -302,16 +302,16 @@ LABEL_12:
 
 - (BOOL)currentStateHUDVisible
 {
-  v3 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  if (v3)
+  undoStateHUD = [(UIUndoGestureInteraction *)self undoStateHUD];
+  if (undoStateHUD)
   {
-    v4 = [(UIUndoGestureInteraction *)self undoStateHUD];
-    v5 = [v4 superview];
-    v6 = [(UIUndoGestureInteraction *)self view];
-    if (v5 == v6)
+    undoStateHUD2 = [(UIUndoGestureInteraction *)self undoStateHUD];
+    superview = [undoStateHUD2 superview];
+    view = [(UIUndoGestureInteraction *)self view];
+    if (superview == view)
     {
-      v8 = [(UIUndoGestureInteraction *)self undoStateHUD];
-      [v8 alpha];
+      undoStateHUD3 = [(UIUndoGestureInteraction *)self undoStateHUD];
+      [undoStateHUD3 alpha];
       v7 = v9 > 0.0;
     }
 
@@ -331,42 +331,42 @@ LABEL_12:
 
 - (void)clearHUDViews
 {
-  v3 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
 
-  if (v3)
+  if (undoInteractiveHUD)
   {
-    v4 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-    [v4 removeFromSuperview];
+    undoInteractiveHUD2 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+    [undoInteractiveHUD2 removeFromSuperview];
 
     [(UIUndoGestureInteraction *)self setUndoInteractiveHUD:0];
   }
 
-  v5 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  undoStateHUD = [(UIUndoGestureInteraction *)self undoStateHUD];
 
-  if (v5)
+  if (undoStateHUD)
   {
-    v6 = [(UIUndoGestureInteraction *)self undoStateHUD];
-    [v6 removeFromSuperview];
+    undoStateHUD2 = [(UIUndoGestureInteraction *)self undoStateHUD];
+    [undoStateHUD2 removeFromSuperview];
 
     [(UIUndoGestureInteraction *)self setUndoStateHUD:0];
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
     [(UIUndoGestureInteraction *)self _removeGestureRecognizers];
     [(UIUndoGestureInteraction *)self clearHUDViews];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  objc_storeWeak(&self->_view, a3);
-  if (a3)
+  objc_storeWeak(&self->_view, view);
+  if (view)
   {
     self->_previousRecognizedPanDirection = 0;
     self->_undoStateHUDIsAnimating = 0;
@@ -374,24 +374,24 @@ LABEL_12:
     self->_lastTapTimestamp = 0.0;
     [(UIUndoGestureInteraction *)self _addGestureRecognizers];
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v6 = [WeakRetained window];
-    [v6 actualSceneBounds];
+    window = [WeakRetained window];
+    [window actualSceneBounds];
     self->_currentActuallSceneBounds.origin.x = v7;
     self->_currentActuallSceneBounds.origin.y = v8;
     self->_currentActuallSceneBounds.size.width = v9;
     self->_currentActuallSceneBounds.size.height = v10;
 
     v11 = +[UIDevice currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-    if (!v12)
+    if (!userInterfaceIdiom)
     {
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v13 addObserver:self selector:sel_removeAllHUDOnContainerChange name:@"UIKeyboardWillChangeFrameNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_removeAllHUDOnContainerChange name:@"UIKeyboardWillChangeFrameNotification" object:0];
     }
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:self selector:sel_applicationWillSuspend name:@"UIApplicationSuspendedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_applicationWillSuspend name:@"UIApplicationSuspendedNotification" object:0];
   }
 }
 
@@ -406,17 +406,17 @@ LABEL_12:
 - (int64_t)keyboardAppearance
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 textInputTraits];
-  v4 = [v3 keyboardAppearance];
+  textInputTraits = [v2 textInputTraits];
+  keyboardAppearance = [textInputTraits keyboardAppearance];
 
-  return v4;
+  return keyboardAppearance;
 }
 
 - (CGRect)actualSceneBounds
 {
-  v2 = [(UIUndoGestureInteraction *)self view];
-  v3 = [v2 window];
-  [v3 actualSceneBounds];
+  view = [(UIUndoGestureInteraction *)self view];
+  window = [view window];
+  [window actualSceneBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -436,20 +436,20 @@ LABEL_12:
 - (BOOL)isRTLMode
 {
   v2 = MEMORY[0x1E695DF58];
-  v3 = [MEMORY[0x1E695DF58] _deviceLanguage];
-  LOBYTE(v2) = [v2 characterDirectionForLanguage:v3] == 2;
+  _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+  LOBYTE(v2) = [v2 characterDirectionForLanguage:_deviceLanguage] == 2;
 
   return v2;
 }
 
 - (void)layoutUndoInteractiveHUD
 {
-  v3 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
 
-  if (v3)
+  if (undoInteractiveHUD)
   {
-    v4 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-    [v4 removeFromSuperview];
+    undoInteractiveHUD2 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+    [undoInteractiveHUD2 removeFromSuperview];
 
     [(UIUndoGestureInteraction *)self setUndoInteractiveHUD:0];
   }
@@ -463,55 +463,55 @@ LABEL_12:
   v13 = [[UIKBUndoInteractionHUD alloc] initWithKeyboardAppearance:[(UIUndoGestureInteraction *)self keyboardAppearance] isRTL:[(UIUndoGestureInteraction *)self isRTLMode] mode:self->_interactiveHUDMode sceneBounds:v6, v8, v10, v12];
   [(UIUndoGestureInteraction *)self setUndoInteractiveHUD:v13];
 
-  v14 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  [v14 setActionDelegate:self];
+  undoInteractiveHUD3 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  [undoInteractiveHUD3 setActionDelegate:self];
 
-  v15 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  [v15 setAlpha:0.0];
+  undoInteractiveHUD4 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  [undoInteractiveHUD4 setAlpha:0.0];
 
-  v16 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  undoInteractiveHUD5 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  [undoInteractiveHUD5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v17 = [(UIUndoGestureInteraction *)self view];
-  v18 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  [v17 addSubview:v18];
+  view = [(UIUndoGestureInteraction *)self view];
+  undoInteractiveHUD6 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  [view addSubview:undoInteractiveHUD6];
 
-  v19 = [(UIUndoGestureInteraction *)self layoutGuide];
+  layoutGuide = [(UIUndoGestureInteraction *)self layoutGuide];
 
-  if (!v19)
+  if (!layoutGuide)
   {
     v20 = objc_alloc_init(UILayoutGuide);
     [(UIUndoGestureInteraction *)self setLayoutGuide:v20];
 
-    v21 = [(UIUndoGestureInteraction *)self view];
-    v22 = [(UIUndoGestureInteraction *)self layoutGuide];
-    [v21 addLayoutGuide:v22];
+    view2 = [(UIUndoGestureInteraction *)self view];
+    layoutGuide2 = [(UIUndoGestureInteraction *)self layoutGuide];
+    [view2 addLayoutGuide:layoutGuide2];
 
-    v23 = [(UIUndoGestureInteraction *)self layoutGuide];
-    v24 = [v23 leftAnchor];
-    v25 = [(UIUndoGestureInteraction *)self view];
-    v26 = [v25 leftAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
+    layoutGuide3 = [(UIUndoGestureInteraction *)self layoutGuide];
+    leftAnchor = [layoutGuide3 leftAnchor];
+    view3 = [(UIUndoGestureInteraction *)self view];
+    leftAnchor2 = [view3 leftAnchor];
+    v27 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v27 setActive:1];
 
-    v28 = [(UIUndoGestureInteraction *)self layoutGuide];
-    v29 = [v28 topAnchor];
-    v30 = [(UIUndoGestureInteraction *)self view];
-    v31 = [v30 safeAreaLayoutGuide];
-    v32 = [v31 topAnchor];
-    v33 = [v29 constraintEqualToAnchor:v32];
+    layoutGuide4 = [(UIUndoGestureInteraction *)self layoutGuide];
+    topAnchor = [layoutGuide4 topAnchor];
+    view4 = [(UIUndoGestureInteraction *)self view];
+    safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v33 setActive:1];
 
-    v34 = [(UIUndoGestureInteraction *)self layoutGuide];
-    v35 = [v34 widthAnchor];
-    v36 = [v35 constraintEqualToConstant:v10];
+    layoutGuide5 = [(UIUndoGestureInteraction *)self layoutGuide];
+    widthAnchor = [layoutGuide5 widthAnchor];
+    v36 = [widthAnchor constraintEqualToConstant:v10];
     undoHUDContainerWidthConstraint = self->_undoHUDContainerWidthConstraint;
     self->_undoHUDContainerWidthConstraint = v36;
 
     [(NSLayoutConstraint *)self->_undoHUDContainerWidthConstraint setActive:1];
-    v38 = [(UIUndoGestureInteraction *)self layoutGuide];
-    v39 = [v38 heightAnchor];
-    v40 = [v39 constraintEqualToConstant:v12];
+    layoutGuide6 = [(UIUndoGestureInteraction *)self layoutGuide];
+    heightAnchor = [layoutGuide6 heightAnchor];
+    v40 = [heightAnchor constraintEqualToConstant:v12];
     undoHUDContainerHeightConstraint = self->_undoHUDContainerHeightConstraint;
     self->_undoHUDContainerHeightConstraint = v40;
 
@@ -520,49 +520,49 @@ LABEL_12:
 
   [(UIUndoGestureInteraction *)self currentActuallSceneBounds];
   v43 = v42;
-  v44 = [(UIUndoGestureInteraction *)self undoHUDContainerWidthConstraint];
-  [v44 setConstant:v43];
+  undoHUDContainerWidthConstraint = [(UIUndoGestureInteraction *)self undoHUDContainerWidthConstraint];
+  [undoHUDContainerWidthConstraint setConstant:v43];
 
   [(UIUndoGestureInteraction *)self currentActuallSceneBounds];
   v46 = v45;
-  v47 = [(UIUndoGestureInteraction *)self undoHUDContainerHeightConstraint];
-  [v47 setConstant:v46];
+  undoHUDContainerHeightConstraint = [(UIUndoGestureInteraction *)self undoHUDContainerHeightConstraint];
+  [undoHUDContainerHeightConstraint setConstant:v46];
 
-  v48 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  v49 = [v48 centerXAnchor];
-  v50 = [(UIUndoGestureInteraction *)self layoutGuide];
-  v51 = [v50 centerXAnchor];
-  v52 = [v49 constraintEqualToAnchor:v51];
+  undoInteractiveHUD7 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  centerXAnchor = [undoInteractiveHUD7 centerXAnchor];
+  layoutGuide7 = [(UIUndoGestureInteraction *)self layoutGuide];
+  centerXAnchor2 = [layoutGuide7 centerXAnchor];
+  v52 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v52 setActive:1];
 
-  v53 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  v54 = [v53 topAnchor];
-  v55 = [(UIUndoGestureInteraction *)self view];
-  v56 = [v55 topAnchor];
-  v57 = [v54 constraintGreaterThanOrEqualToAnchor:v56 constant:31.0];
+  undoInteractiveHUD8 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  topAnchor3 = [undoInteractiveHUD8 topAnchor];
+  view5 = [(UIUndoGestureInteraction *)self view];
+  topAnchor4 = [view5 topAnchor];
+  v57 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:31.0];
   [v57 setActive:1];
 
-  v58 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  v59 = [v58 topAnchor];
-  v60 = [(UIUndoGestureInteraction *)self layoutGuide];
-  v61 = [v60 topAnchor];
-  v64 = [v59 constraintEqualToAnchor:v61 constant:7.0];
+  undoInteractiveHUD9 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  topAnchor5 = [undoInteractiveHUD9 topAnchor];
+  layoutGuide8 = [(UIUndoGestureInteraction *)self layoutGuide];
+  topAnchor6 = [layoutGuide8 topAnchor];
+  v64 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:7.0];
 
   LODWORD(v62) = 1144750080;
   [v64 setPriority:v62];
   [v64 setActive:1];
-  v63 = [(UIUndoGestureInteraction *)self view];
-  [v63 layoutIfNeeded];
+  view6 = [(UIUndoGestureInteraction *)self view];
+  [view6 layoutIfNeeded];
 }
 
 - (void)layoutUndoStateHUD
 {
-  v3 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  undoStateHUD = [(UIUndoGestureInteraction *)self undoStateHUD];
 
-  if (v3)
+  if (undoStateHUD)
   {
-    v4 = [(UIUndoGestureInteraction *)self undoStateHUD];
-    [v4 removeFromSuperview];
+    undoStateHUD2 = [(UIUndoGestureInteraction *)self undoStateHUD];
+    [undoStateHUD2 removeFromSuperview];
 
     [(UIUndoGestureInteraction *)self setUndoStateHUD:0];
   }
@@ -570,56 +570,56 @@ LABEL_12:
   v5 = [[UIKBUndoStateHUD alloc] initWithKeyboardAppearance:[(UIUndoGestureInteraction *)self keyboardAppearance]];
   [(UIUndoGestureInteraction *)self setUndoStateHUD:v5];
 
-  v6 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  [v6 setAlpha:0.0];
+  undoStateHUD3 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  [undoStateHUD3 setAlpha:0.0];
 
-  v7 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  undoStateHUD4 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  [undoStateHUD4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(UIUndoGestureInteraction *)self view];
-  v9 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  [v8 addSubview:v9];
+  view = [(UIUndoGestureInteraction *)self view];
+  undoStateHUD5 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  [view addSubview:undoStateHUD5];
 
   [(UIUndoGestureInteraction *)self actualSceneBounds];
   v11 = v10;
   v13 = v12;
   [(UIUndoGestureInteraction *)self setCurrentActuallSceneBounds:?];
-  v14 = [(UIUndoGestureInteraction *)self layoutGuide];
+  layoutGuide = [(UIUndoGestureInteraction *)self layoutGuide];
 
-  if (!v14)
+  if (!layoutGuide)
   {
     v15 = objc_alloc_init(UILayoutGuide);
     [(UIUndoGestureInteraction *)self setLayoutGuide:v15];
 
-    v16 = [(UIUndoGestureInteraction *)self view];
-    v17 = [(UIUndoGestureInteraction *)self layoutGuide];
-    [v16 addLayoutGuide:v17];
+    view2 = [(UIUndoGestureInteraction *)self view];
+    layoutGuide2 = [(UIUndoGestureInteraction *)self layoutGuide];
+    [view2 addLayoutGuide:layoutGuide2];
 
-    v18 = [(UIUndoGestureInteraction *)self layoutGuide];
-    v19 = [v18 leftAnchor];
-    v20 = [(UIUndoGestureInteraction *)self view];
-    v21 = [v20 leftAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21];
+    layoutGuide3 = [(UIUndoGestureInteraction *)self layoutGuide];
+    leftAnchor = [layoutGuide3 leftAnchor];
+    view3 = [(UIUndoGestureInteraction *)self view];
+    leftAnchor2 = [view3 leftAnchor];
+    v22 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v22 setActive:1];
 
-    v23 = [(UIUndoGestureInteraction *)self layoutGuide];
-    v24 = [v23 topAnchor];
-    v25 = [(UIUndoGestureInteraction *)self view];
-    v26 = [v25 safeAreaLayoutGuide];
-    v27 = [v26 topAnchor];
-    v28 = [v24 constraintEqualToAnchor:v27];
+    layoutGuide4 = [(UIUndoGestureInteraction *)self layoutGuide];
+    topAnchor = [layoutGuide4 topAnchor];
+    view4 = [(UIUndoGestureInteraction *)self view];
+    safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v28 setActive:1];
 
-    v29 = [(UIUndoGestureInteraction *)self layoutGuide];
-    v30 = [v29 widthAnchor];
-    v31 = [v30 constraintEqualToConstant:v11];
+    layoutGuide5 = [(UIUndoGestureInteraction *)self layoutGuide];
+    widthAnchor = [layoutGuide5 widthAnchor];
+    v31 = [widthAnchor constraintEqualToConstant:v11];
     undoHUDContainerWidthConstraint = self->_undoHUDContainerWidthConstraint;
     self->_undoHUDContainerWidthConstraint = v31;
 
     [(NSLayoutConstraint *)self->_undoHUDContainerWidthConstraint setActive:1];
-    v33 = [(UIUndoGestureInteraction *)self layoutGuide];
-    v34 = [v33 heightAnchor];
-    v35 = [v34 constraintEqualToConstant:v13];
+    layoutGuide6 = [(UIUndoGestureInteraction *)self layoutGuide];
+    heightAnchor = [layoutGuide6 heightAnchor];
+    v35 = [heightAnchor constraintEqualToConstant:v13];
     undoHUDContainerHeightConstraint = self->_undoHUDContainerHeightConstraint;
     self->_undoHUDContainerHeightConstraint = v35;
 
@@ -628,49 +628,49 @@ LABEL_12:
 
   [(UIUndoGestureInteraction *)self currentActuallSceneBounds];
   v38 = v37;
-  v39 = [(UIUndoGestureInteraction *)self undoHUDContainerWidthConstraint];
-  [v39 setConstant:v38];
+  undoHUDContainerWidthConstraint = [(UIUndoGestureInteraction *)self undoHUDContainerWidthConstraint];
+  [undoHUDContainerWidthConstraint setConstant:v38];
 
   [(UIUndoGestureInteraction *)self currentActuallSceneBounds];
   v41 = v40;
-  v42 = [(UIUndoGestureInteraction *)self undoHUDContainerHeightConstraint];
-  [v42 setConstant:v41];
+  undoHUDContainerHeightConstraint = [(UIUndoGestureInteraction *)self undoHUDContainerHeightConstraint];
+  [undoHUDContainerHeightConstraint setConstant:v41];
 
-  v43 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  v44 = [v43 centerYAnchor];
-  v45 = [(UIUndoGestureInteraction *)self view];
-  v46 = [v45 topAnchor];
-  v47 = [v44 constraintGreaterThanOrEqualToAnchor:v46 constant:45.0];
+  undoStateHUD6 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  centerYAnchor = [undoStateHUD6 centerYAnchor];
+  view5 = [(UIUndoGestureInteraction *)self view];
+  topAnchor3 = [view5 topAnchor];
+  v47 = [centerYAnchor constraintGreaterThanOrEqualToAnchor:topAnchor3 constant:45.0];
   undoStateHUDTopConstraint = self->_undoStateHUDTopConstraint;
   self->_undoStateHUDTopConstraint = v47;
 
   [(NSLayoutConstraint *)self->_undoStateHUDTopConstraint setActive:1];
-  v49 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  v50 = [v49 centerYAnchor];
-  v51 = [(UIUndoGestureInteraction *)self layoutGuide];
-  v52 = [v51 topAnchor];
-  v61 = [v50 constraintEqualToAnchor:v52 constant:21.0];
+  undoStateHUD7 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  centerYAnchor2 = [undoStateHUD7 centerYAnchor];
+  layoutGuide7 = [(UIUndoGestureInteraction *)self layoutGuide];
+  topAnchor4 = [layoutGuide7 topAnchor];
+  v61 = [centerYAnchor2 constraintEqualToAnchor:topAnchor4 constant:21.0];
 
   LODWORD(v53) = 1144750080;
   [v61 setPriority:v53];
   [v61 setActive:1];
-  v54 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  v55 = [v54 centerXAnchor];
-  v56 = [(UIUndoGestureInteraction *)self layoutGuide];
-  v57 = [v56 centerXAnchor];
-  v58 = [v55 constraintEqualToAnchor:v57 constant:0.0];
+  undoStateHUD8 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  centerXAnchor = [undoStateHUD8 centerXAnchor];
+  layoutGuide8 = [(UIUndoGestureInteraction *)self layoutGuide];
+  centerXAnchor2 = [layoutGuide8 centerXAnchor];
+  v58 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
   undoStateHUDCenterConstraint = self->_undoStateHUDCenterConstraint;
   self->_undoStateHUDCenterConstraint = v58;
 
   [(NSLayoutConstraint *)self->_undoStateHUDCenterConstraint setActive:1];
-  v60 = [(UIUndoGestureInteraction *)self view];
-  [v60 layoutIfNeeded];
+  view6 = [(UIUndoGestureInteraction *)self view];
+  [view6 layoutIfNeeded];
 }
 
 - (BOOL)needUpdateHUDForContainerChange
 {
-  v3 = [(UIUndoGestureInteraction *)self currentAppearance];
-  if (v3 != [(UIUndoGestureInteraction *)self keyboardAppearance])
+  currentAppearance = [(UIUndoGestureInteraction *)self currentAppearance];
+  if (currentAppearance != [(UIUndoGestureInteraction *)self keyboardAppearance])
   {
     return 1;
   }
@@ -694,16 +694,16 @@ LABEL_12:
     return 1;
   }
 
-  v16 = [(UIUndoGestureInteraction *)self layoutGuide];
-  v17 = v16 == 0;
+  layoutGuide = [(UIUndoGestureInteraction *)self layoutGuide];
+  v17 = layoutGuide == 0;
 
   return v17;
 }
 
 - (void)_createAndUpdateUndoInteractiveHUDIfNecessary
 {
-  v3 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  if (!v3 || [(UIUndoGestureInteraction *)self needUpdateHUDForContainerChange])
+  undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  if (!undoInteractiveHUD || [(UIUndoGestureInteraction *)self needUpdateHUDForContainerChange])
   {
 
 LABEL_4:
@@ -712,92 +712,92 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v4 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  v5 = [v4 mode];
+  undoInteractiveHUD2 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  mode = [undoInteractiveHUD2 mode];
   interactiveHUDMode = self->_interactiveHUDMode;
 
-  if (v5 != interactiveHUDMode)
+  if (mode != interactiveHUDMode)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  v7 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  [v7 setNeedsLayout];
+  undoInteractiveHUD3 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  [undoInteractiveHUD3 setNeedsLayout];
 }
 
 - (void)_createAndUpdateUndoStateHUDIfNecessary
 {
-  v3 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  if (!v3 || (v4 = v3, v5 = [(UIUndoGestureInteraction *)self needUpdateHUDForContainerChange], v4, v5))
+  undoStateHUD = [(UIUndoGestureInteraction *)self undoStateHUD];
+  if (!undoStateHUD || (v4 = undoStateHUD, v5 = [(UIUndoGestureInteraction *)self needUpdateHUDForContainerChange], v4, v5))
   {
     [(UIUndoGestureInteraction *)self layoutUndoStateHUD];
     [(UIUndoGestureInteraction *)self setCurrentAppearance:[(UIUndoGestureInteraction *)self keyboardAppearance]];
   }
 
-  v6 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  [v6 setNeedsLayout];
+  undoStateHUD2 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  [undoStateHUD2 setNeedsLayout];
 }
 
 - (void)animateInStateHUD
 {
-  v3 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  v4 = [v3 controlType];
+  undoStateHUD = [(UIUndoGestureInteraction *)self undoStateHUD];
+  controlType = [undoStateHUD controlType];
 
-  if (v4 != 1)
+  if (controlType != 1)
   {
-    v7 = [(UIUndoGestureInteraction *)self undoStateHUD];
-    v8 = [v7 controlType];
+    undoStateHUD2 = [(UIUndoGestureInteraction *)self undoStateHUD];
+    controlType2 = [undoStateHUD2 controlType];
 
-    if (v8 == 2)
+    if (controlType2 == 2)
     {
       undoStateHUDCenterConstraint = self->_undoStateHUDCenterConstraint;
       v6 = -15.0;
       goto LABEL_5;
     }
 
-    v9 = [(UIUndoGestureInteraction *)self undoStateHUD];
-    if ([v9 controlType] == 4)
+    undoStateHUD3 = [(UIUndoGestureInteraction *)self undoStateHUD];
+    if ([undoStateHUD3 controlType] == 4)
     {
     }
 
     else
     {
-      v10 = [(UIUndoGestureInteraction *)self undoStateHUD];
-      v11 = [v10 controlType];
+      undoStateHUD4 = [(UIUndoGestureInteraction *)self undoStateHUD];
+      controlType3 = [undoStateHUD4 controlType];
 
-      if (v11 != 3)
+      if (controlType3 != 3)
       {
-        v19 = [(UIUndoGestureInteraction *)self undoStateHUD];
-        v20 = [v19 controlType];
+        undoStateHUD5 = [(UIUndoGestureInteraction *)self undoStateHUD];
+        controlType4 = [undoStateHUD5 controlType];
 
-        if (v20 != 5)
+        if (controlType4 != 5)
         {
           goto LABEL_11;
         }
 
-        v21 = [(UIUndoGestureInteraction *)self undoStateHUD];
-        v22 = [v21 undoStateHUDWidthConstraint];
-        [v22 setConstant:-30.0];
+        undoStateHUD6 = [(UIUndoGestureInteraction *)self undoStateHUD];
+        undoStateHUDWidthConstraint = [undoStateHUD6 undoStateHUDWidthConstraint];
+        [undoStateHUDWidthConstraint setConstant:-30.0];
 
-        v14 = [(UIUndoGestureInteraction *)self undoStateHUD];
-        v15 = [v14 undoStateHUDHeightConstraint];
-        v16 = v15;
+        undoStateHUD7 = [(UIUndoGestureInteraction *)self undoStateHUD];
+        undoStateHUDHeightConstraint = [undoStateHUD7 undoStateHUDHeightConstraint];
+        v16 = undoStateHUDHeightConstraint;
         v17 = -30.0;
         goto LABEL_10;
       }
     }
 
-    v12 = [(UIUndoGestureInteraction *)self undoStateHUD];
-    v13 = [v12 undoStateHUDWidthConstraint];
-    [v13 setConstant:30.0];
+    undoStateHUD8 = [(UIUndoGestureInteraction *)self undoStateHUD];
+    undoStateHUDWidthConstraint2 = [undoStateHUD8 undoStateHUDWidthConstraint];
+    [undoStateHUDWidthConstraint2 setConstant:30.0];
 
-    v14 = [(UIUndoGestureInteraction *)self undoStateHUD];
-    v15 = [v14 undoStateHUDHeightConstraint];
-    v16 = v15;
+    undoStateHUD7 = [(UIUndoGestureInteraction *)self undoStateHUD];
+    undoStateHUDHeightConstraint = [undoStateHUD7 undoStateHUDHeightConstraint];
+    v16 = undoStateHUDHeightConstraint;
     v17 = 30.0;
 LABEL_10:
-    [v15 setConstant:v17];
+    [undoStateHUDHeightConstraint setConstant:v17];
 
     goto LABEL_11;
   }
@@ -807,8 +807,8 @@ LABEL_10:
 LABEL_5:
   [(NSLayoutConstraint *)undoStateHUDCenterConstraint setConstant:v6];
 LABEL_11:
-  v18 = [(UIUndoGestureInteraction *)self view];
-  [v18 layoutIfNeeded];
+  view = [(UIUndoGestureInteraction *)self view];
+  [view layoutIfNeeded];
 
   v23[4] = self;
   v24[0] = MEMORY[0x1E69E9820];
@@ -884,10 +884,10 @@ LABEL_10:
 
 - (void)animateDisplayingStateHUD
 {
-  v3 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  v4 = [v3 controlType];
+  undoStateHUD = [(UIUndoGestureInteraction *)self undoStateHUD];
+  controlType = [undoStateHUD controlType];
 
-  if (v4 == 1)
+  if (controlType == 1)
   {
     _Q0 = xmmword_18A680860;
 LABEL_9:
@@ -908,17 +908,17 @@ LABEL_9:
     return;
   }
 
-  v6 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  v7 = [v6 controlType];
+  undoStateHUD2 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  controlType2 = [undoStateHUD2 controlType];
 
-  if (v7 == 2)
+  if (controlType2 == 2)
   {
     _Q0 = xmmword_18A680870;
     goto LABEL_9;
   }
 
-  v8 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  if ([v8 controlType] == 4)
+  undoStateHUD3 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  if ([undoStateHUD3 controlType] == 4)
   {
 
 LABEL_8:
@@ -927,18 +927,18 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  v10 = [v9 controlType];
+  undoStateHUD4 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  controlType3 = [undoStateHUD4 controlType];
 
-  if (v10 == 3)
+  if (controlType3 == 3)
   {
     goto LABEL_8;
   }
 
-  v15 = [(UIUndoGestureInteraction *)self undoStateHUD];
-  v16 = [v15 controlType];
+  undoStateHUD5 = [(UIUndoGestureInteraction *)self undoStateHUD];
+  controlType4 = [undoStateHUD5 controlType];
 
-  if (v16 == 5)
+  if (controlType4 == 5)
   {
     __asm { FMOV            V0.2D, #3.75 }
 
@@ -1081,33 +1081,33 @@ LABEL_10:
 
 - (void)_installUndoManagerObservers
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__updateHUDControlState name:*MEMORY[0x1E696AA30] object:0];
-  [v3 addObserver:self selector:sel__updateHUDControlState name:*MEMORY[0x1E696AA28] object:0];
-  [v3 addObserver:self selector:sel__updateHUDControlState name:*MEMORY[0x1E696AA18] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateHUDControlState name:*MEMORY[0x1E696AA30] object:0];
+  [defaultCenter addObserver:self selector:sel__updateHUDControlState name:*MEMORY[0x1E696AA28] object:0];
+  [defaultCenter addObserver:self selector:sel__updateHUDControlState name:*MEMORY[0x1E696AA18] object:0];
 }
 
 - (void)_uninstallUndoManagerObservers
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E696AA30] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E696AA28] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E696AA18] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA30] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA28] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA18] object:0];
 }
 
-- (void)setUndoHUDType:(int64_t)a3 visibility:(BOOL)a4
+- (void)setUndoHUDType:(int64_t)type visibility:(BOOL)visibility
 {
-  v4 = a4;
-  v7 = [(UIUndoGestureInteraction *)self currentStateHUDVisible];
-  v8 = [(UIUndoGestureInteraction *)self currentInteractiveHUDVisible];
-  if (a3)
+  visibilityCopy = visibility;
+  currentStateHUDVisible = [(UIUndoGestureInteraction *)self currentStateHUDVisible];
+  currentInteractiveHUDVisible = [(UIUndoGestureInteraction *)self currentInteractiveHUDVisible];
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      if (v4)
+      if (visibilityCopy)
       {
         [(UIUndoGestureInteraction *)self touchUndoStateHUDDismissTimer];
-        if (v7)
+        if (currentStateHUDVisible)
         {
           [(UIUndoGestureInteraction *)self animateDisplayingStateHUD];
         }
@@ -1120,9 +1120,9 @@ LABEL_10:
 
       else
       {
-        v13 = [(UIUndoGestureInteraction *)self undoStateHUDIsAnimating];
+        undoStateHUDIsAnimating = [(UIUndoGestureInteraction *)self undoStateHUDIsAnimating];
         v14 = 0.0;
-        if (v13)
+        if (undoStateHUDIsAnimating)
         {
           v14 = 0.2;
         }
@@ -1143,9 +1143,9 @@ LABEL_10:
     }
   }
 
-  else if (v8 != v4)
+  else if (currentInteractiveHUDVisible != visibilityCopy)
   {
-    if (v4)
+    if (visibilityCopy)
     {
       v9 = 1.0;
     }
@@ -1155,13 +1155,13 @@ LABEL_10:
       v9 = 0.0;
     }
 
-    if (v4)
+    if (visibilityCopy)
     {
-      v10 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-      [v10 updateHUDControlState];
+      undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+      [undoInteractiveHUD updateHUDControlState];
     }
 
-    if (v7)
+    if (currentStateHUDVisible)
     {
       [(UIUndoGestureInteraction *)self _uninstallUndoManagerObservers];
       [(UIUndoGestureInteraction *)self touchUndoStateHUDDismissTimer];
@@ -1169,14 +1169,14 @@ LABEL_10:
       v35 = 3221225472;
       v36 = __54__UIUndoGestureInteraction_setUndoHUDType_visibility___block_invoke_3;
       v37 = &unk_1E70F3590;
-      v38 = self;
+      selfCopy = self;
       v27 = MEMORY[0x1E69E9820];
       v28 = 3221225472;
       v29 = __54__UIUndoGestureInteraction_setUndoHUDType_visibility___block_invoke_4;
       v30 = &unk_1E7119868;
-      v31 = self;
+      selfCopy2 = self;
       v32 = v9;
-      LOBYTE(v33) = v4;
+      LOBYTE(v33) = visibilityCopy;
       v11 = &v34;
       v12 = &v27;
     }
@@ -1188,22 +1188,22 @@ LABEL_10:
       v22 = 3221225472;
       v23 = __54__UIUndoGestureInteraction_setUndoHUDType_visibility___block_invoke_9;
       v24 = &unk_1E70F32F0;
-      v25 = self;
+      selfCopy3 = self;
       v26 = v9;
       v16 = MEMORY[0x1E69E9820];
       v17 = 3221225472;
       v18 = __54__UIUndoGestureInteraction_setUndoHUDType_visibility___block_invoke_10;
       v19 = &__block_descriptor_33_e8_v12__0B8l;
-      LOBYTE(v20) = v4;
+      LOBYTE(v20) = visibilityCopy;
       v11 = &v21;
       v12 = &v16;
     }
 
-    [UIView animateWithDuration:v11 animations:v12 completion:0.2, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, *&v26, v27, v28, v29, v30, v31, *&v32, v33, v34, v35, v36, v37, v38];
+    [UIView animateWithDuration:v11 animations:v12 completion:0.2, v16, v17, v18, v19, v20, v21, v22, v23, v24, selfCopy3, *&v26, v27, v28, v29, v30, selfCopy2, *&v32, v33, v34, v35, v36, v37, selfCopy];
   }
 
-  v15 = [(UIUndoGestureInteraction *)self view];
-  [v15 layoutIfNeeded];
+  view = [(UIUndoGestureInteraction *)self view];
+  [view layoutIfNeeded];
 }
 
 void __54__UIUndoGestureInteraction_setUndoHUDType_visibility___block_invoke(uint64_t a1)
@@ -1302,76 +1302,76 @@ void __54__UIUndoGestureInteraction_setUndoHUDType_visibility___block_invoke_10(
   }
 }
 
-- (void)setUndoInteractiveHUDVisibility:(BOOL)a3
+- (void)setUndoInteractiveHUDVisibility:(BOOL)visibility
 {
-  v3 = a3;
-  if (a3)
+  visibilityCopy = visibility;
+  if (visibility)
   {
     self->_interactiveHUDMode = 0;
     [(UIUndoGestureInteraction *)self _createAndUpdateUndoInteractiveHUDIfNecessary];
-    v5 = [(UIUndoGestureInteraction *)self view];
-    v6 = [_UIEditMenuSceneComponent sceneComponentForView:v5];
+    view = [(UIUndoGestureInteraction *)self view];
+    v6 = [_UIEditMenuSceneComponent sceneComponentForView:view];
     [v6 dismissCurrentMenu];
   }
 
-  [(UIUndoGestureInteraction *)self setUndoHUDType:0 visibility:v3];
+  [(UIUndoGestureInteraction *)self setUndoHUDType:0 visibility:visibilityCopy];
 }
 
-- (void)setPasteConfirmationHUDVisibility:(BOOL)a3
+- (void)setPasteConfirmationHUDVisibility:(BOOL)visibility
 {
-  v3 = a3;
-  if (a3)
+  visibilityCopy = visibility;
+  if (visibility)
   {
     self->_interactiveHUDMode = 1;
     [(UIUndoGestureInteraction *)self _createAndUpdateUndoInteractiveHUDIfNecessary];
   }
 
-  [(UIUndoGestureInteraction *)self setUndoHUDType:0 visibility:v3];
+  [(UIUndoGestureInteraction *)self setUndoHUDType:0 visibility:visibilityCopy];
 }
 
-- (void)setUndoStateHUDVisibility:(BOOL)a3 withType:(int64_t)a4 available:(BOOL)a5
+- (void)setUndoStateHUDVisibility:(BOOL)visibility withType:(int64_t)type available:(BOOL)available
 {
-  v5 = a5;
-  v7 = a3;
+  availableCopy = available;
+  visibilityCopy = visibility;
   if (![(UIUndoGestureInteraction *)self currentInteractiveHUDVisible])
   {
-    if (v7)
+    if (visibilityCopy)
     {
       [(UIUndoGestureInteraction *)self _createAndUpdateUndoStateHUDIfNecessary];
-      v9 = [(UIUndoGestureInteraction *)self undoStateHUD];
-      [v9 updateUndoStateHUDControlType:a4 available:v5];
+      undoStateHUD = [(UIUndoGestureInteraction *)self undoStateHUD];
+      [undoStateHUD updateUndoStateHUDControlType:type available:availableCopy];
     }
 
-    [(UIUndoGestureInteraction *)self setUndoHUDType:1 visibility:v7];
+    [(UIUndoGestureInteraction *)self setUndoHUDType:1 visibility:visibilityCopy];
   }
 }
 
 - (void)touchUndoStateHUDDismissTimer
 {
-  v3 = [(UIUndoGestureInteraction *)self undoStateHUDDismissTimer];
+  undoStateHUDDismissTimer = [(UIUndoGestureInteraction *)self undoStateHUDDismissTimer];
 
-  if (v3)
+  if (undoStateHUDDismissTimer)
   {
-    v4 = [(UIUndoGestureInteraction *)self undoStateHUDDismissTimer];
-    [(UIDelayedAction *)v4 touch];
+    undoStateHUDDismissTimer2 = [(UIUndoGestureInteraction *)self undoStateHUDDismissTimer];
+    [(UIDelayedAction *)undoStateHUDDismissTimer2 touch];
   }
 
   else
   {
-    v4 = [[UIDelayedAction alloc] initWithTarget:self action:sel_undoStateHUDDismissTimerElaspsed_ userInfo:0 delay:2.0];
+    undoStateHUDDismissTimer2 = [[UIDelayedAction alloc] initWithTarget:self action:sel_undoStateHUDDismissTimerElaspsed_ userInfo:0 delay:2.0];
     [(UIUndoGestureInteraction *)self setUndoStateHUDDismissTimer:?];
   }
 }
 
 - (void)clearUndoStateHUDDismissTimer
 {
-  v3 = [(UIUndoGestureInteraction *)self undoStateHUDDismissTimer];
-  [v3 cancel];
+  undoStateHUDDismissTimer = [(UIUndoGestureInteraction *)self undoStateHUDDismissTimer];
+  [undoStateHUDDismissTimer cancel];
 
   [(UIUndoGestureInteraction *)self setUndoStateHUDDismissTimer:0];
 }
 
-- (void)undoStateHUDDismissTimerElaspsed:(id)a3
+- (void)undoStateHUDDismissTimerElaspsed:(id)elaspsed
 {
   if ([(UIUndoGestureInteraction *)self currentStateHUDVisible]&& [(UIUndoGestureInteraction *)self currentInteractiveHUDVisible])
   {
@@ -1382,63 +1382,63 @@ void __54__UIUndoGestureInteraction_setUndoHUDType_visibility___block_invoke_10(
   else
   {
     [(UIUndoGestureInteraction *)self setUndoStateHUDVisibility:0 withType:0 available:1];
-    v4 = [(UIUndoGestureInteraction *)self undoStateHUDTopConstraint];
-    [v4 setConstant:31.0];
+    undoStateHUDTopConstraint = [(UIUndoGestureInteraction *)self undoStateHUDTopConstraint];
+    [undoStateHUDTopConstraint setConstant:31.0];
   }
 }
 
 - (void)_removeGestureRecognizers
 {
-  v3 = [(UIUndoGestureInteraction *)self view];
-  v4 = [(UIUndoGestureInteraction *)self observerGesture];
-  [v3 removeGestureRecognizer:v4];
+  view = [(UIUndoGestureInteraction *)self view];
+  observerGesture = [(UIUndoGestureInteraction *)self observerGesture];
+  [view removeGestureRecognizer:observerGesture];
 
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v5 = [(UIUndoGestureInteraction *)self view];
-    v6 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-    [v5 removeGestureRecognizer:v6];
+    view2 = [(UIUndoGestureInteraction *)self view];
+    threeFingerSingleTap = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+    [view2 removeGestureRecognizer:threeFingerSingleTap];
 
-    v7 = [(UIUndoGestureInteraction *)self view];
-    v8 = [(UIUndoGestureInteraction *)self threeFingerSlide];
-    [v7 removeGestureRecognizer:v8];
+    view3 = [(UIUndoGestureInteraction *)self view];
+    threeFingerSlide = [(UIUndoGestureInteraction *)self threeFingerSlide];
+    [view3 removeGestureRecognizer:threeFingerSlide];
 
-    v9 = [(UIUndoGestureInteraction *)self view];
-    v10 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
-    [v9 removeGestureRecognizer:v10];
+    view4 = [(UIUndoGestureInteraction *)self view];
+    threeFingerLongPress = [(UIUndoGestureInteraction *)self threeFingerLongPress];
+    [view4 removeGestureRecognizer:threeFingerLongPress];
 
-    v11 = [(UIUndoGestureInteraction *)self view];
-    v12 = [(UIUndoGestureInteraction *)self threeFingerPinch];
-    [v11 removeGestureRecognizer:v12];
+    view5 = [(UIUndoGestureInteraction *)self view];
+    threeFingerPinch = [(UIUndoGestureInteraction *)self threeFingerPinch];
+    [view5 removeGestureRecognizer:threeFingerPinch];
 
-    v13 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+    threeFingerDoubleTap = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
 
-    if (v13)
+    if (threeFingerDoubleTap)
     {
-      v15 = [(UIUndoGestureInteraction *)self view];
-      v14 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
-      [v15 removeGestureRecognizer:v14];
+      view6 = [(UIUndoGestureInteraction *)self view];
+      threeFingerDoubleTap2 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+      [view6 removeGestureRecognizer:threeFingerDoubleTap2];
     }
   }
 }
 
 - (id)_undoManager
 {
-  v2 = [(UIUndoGestureInteraction *)self currentResponder];
-  v3 = [v2 undoManager];
+  currentResponder = [(UIUndoGestureInteraction *)self currentResponder];
+  undoManager = [currentResponder undoManager];
 
-  return v3;
+  return undoManager;
 }
 
 - (unint64_t)privateEditingInteractionOptions
 {
-  v2 = [(UIUndoGestureInteraction *)self currentResponder];
-  if (!v2)
+  currentResponder = [(UIUndoGestureInteraction *)self currentResponder];
+  if (!currentResponder)
   {
     return 6;
   }
 
-  v3 = v2;
+  v3 = currentResponder;
   v4 = 6;
   while (1)
   {
@@ -1462,10 +1462,10 @@ void __54__UIUndoGestureInteraction_setUndoHUDType_visibility___block_invoke_10(
       break;
     }
 
-    v6 = [v3 nextResponder];
+    nextResponder = [v3 nextResponder];
 
-    v3 = v6;
-    if (!v6)
+    v3 = nextResponder;
+    if (!nextResponder)
     {
       return v4;
     }
@@ -1494,59 +1494,59 @@ void __54__UIUndoGestureInteraction_setUndoHUDType_visibility___block_invoke_10(
   return [(UIUndoGestureInteraction *)self canPaste];
 }
 
-- (BOOL)editingInteractionOptionsAllowGestureRecognizerToBegin:(id)a3
+- (BOOL)editingInteractionOptionsAllowGestureRecognizerToBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(UIUndoGestureInteraction *)self currentResponder];
+  beginCopy = begin;
+  currentResponder = [(UIUndoGestureInteraction *)self currentResponder];
 
-  if (!v5)
+  if (!currentResponder)
   {
     goto LABEL_15;
   }
 
-  v6 = [(UIUndoGestureInteraction *)self observerGesture];
+  observerGesture = [(UIUndoGestureInteraction *)self observerGesture];
 
-  if (v6 != v4)
+  if (observerGesture != beginCopy)
   {
-    v7 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-    if (v7 == v4)
+    threeFingerSingleTap = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+    if (threeFingerSingleTap == beginCopy)
     {
       v10 = 6;
     }
 
     else
     {
-      v8 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
+      threeFingerLongPress = [(UIUndoGestureInteraction *)self threeFingerLongPress];
 
-      if (v8 == v4)
+      if (threeFingerLongPress == beginCopy)
       {
         v10 = 6;
         goto LABEL_13;
       }
 
-      v7 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
-      if (v7 != v4)
+      threeFingerSingleTap = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+      if (threeFingerSingleTap != beginCopy)
       {
-        v9 = [(UIUndoGestureInteraction *)self threeFingerSlide];
+        threeFingerSlide = [(UIUndoGestureInteraction *)self threeFingerSlide];
 
-        if (v9)
+        if (threeFingerSlide)
         {
           v10 = 2;
 LABEL_13:
-          v11 = ([(UIUndoGestureInteraction *)self privateEditingInteractionOptions]& v10) != 0;
+          currentInteractiveHUDVisible = ([(UIUndoGestureInteraction *)self privateEditingInteractionOptions]& v10) != 0;
           goto LABEL_16;
         }
 
-        v12 = [(UIUndoGestureInteraction *)self threeFingerPinch];
+        threeFingerPinch = [(UIUndoGestureInteraction *)self threeFingerPinch];
 
-        if (v12 == v4)
+        if (threeFingerPinch == beginCopy)
         {
           v10 = 4;
           goto LABEL_13;
         }
 
 LABEL_15:
-        v11 = 0;
+        currentInteractiveHUDVisible = 0;
         goto LABEL_16;
       }
 
@@ -1556,31 +1556,31 @@ LABEL_15:
     goto LABEL_13;
   }
 
-  v11 = [(UIUndoGestureInteraction *)self currentInteractiveHUDVisible];
+  currentInteractiveHUDVisible = [(UIUndoGestureInteraction *)self currentInteractiveHUDVisible];
 LABEL_16:
 
-  return v11;
+  return currentInteractiveHUDVisible;
 }
 
-- (BOOL)textEditingOperationsAvailableWithGestureRecognizer:(id)a3
+- (BOOL)textEditingOperationsAvailableWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if (![(UIUndoGestureInteraction *)self editingInteractionOptionsAllowGestureRecognizerToBegin:v4])
+  recognizerCopy = recognizer;
+  if (![(UIUndoGestureInteraction *)self editingInteractionOptionsAllowGestureRecognizerToBegin:recognizerCopy])
   {
     goto LABEL_9;
   }
 
-  v5 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+  threeFingerSingleTap = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
 
-  v6 = self;
-  if (v5 == v4)
+  selfCopy2 = self;
+  if (threeFingerSingleTap == recognizerCopy)
   {
     goto LABEL_13;
   }
 
-  v7 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
+  threeFingerLongPress = [(UIUndoGestureInteraction *)self threeFingerLongPress];
 
-  if (v7 == v4)
+  if (threeFingerLongPress == recognizerCopy)
   {
     if ([(UIUndoGestureInteraction *)self interactiveHUDIsVisible])
     {
@@ -1589,9 +1589,9 @@ LABEL_9:
       goto LABEL_16;
     }
 
-    v6 = self;
+    selfCopy2 = self;
 LABEL_13:
-    if ([(UIUndoGestureInteraction *)v6 undoManagerOperationsUndoRedoAvailable])
+    if ([(UIUndoGestureInteraction *)selfCopy2 undoManagerOperationsUndoRedoAvailable])
     {
       goto LABEL_7;
     }
@@ -1599,31 +1599,31 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
-  v9 = v8;
-  if (v8 == v4)
+  threeFingerDoubleTap = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+  v9 = threeFingerDoubleTap;
+  if (threeFingerDoubleTap == recognizerCopy)
   {
 
     goto LABEL_11;
   }
 
-  v10 = [(UIUndoGestureInteraction *)self threeFingerSlide];
+  threeFingerSlide = [(UIUndoGestureInteraction *)self threeFingerSlide];
 
-  if (v10 == v4)
+  if (threeFingerSlide == recognizerCopy)
   {
 LABEL_11:
-    v13 = [(UIUndoGestureInteraction *)self undoManagerOperationsUndoRedoAvailable];
+    undoManagerOperationsUndoRedoAvailable = [(UIUndoGestureInteraction *)self undoManagerOperationsUndoRedoAvailable];
 LABEL_15:
-    v12 = v13;
+    v12 = undoManagerOperationsUndoRedoAvailable;
     goto LABEL_16;
   }
 
-  v11 = [(UIUndoGestureInteraction *)self threeFingerPinch];
+  threeFingerPinch = [(UIUndoGestureInteraction *)self threeFingerPinch];
 
-  if (v11 == v4)
+  if (threeFingerPinch == recognizerCopy)
   {
 LABEL_14:
-    v13 = [(UIUndoGestureInteraction *)self undoManagerOperationsCutCopyPasteAvailable];
+    undoManagerOperationsUndoRedoAvailable = [(UIUndoGestureInteraction *)self undoManagerOperationsCutCopyPasteAvailable];
     goto LABEL_15;
   }
 
@@ -1634,30 +1634,30 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = +[UIWindowScene _keyWindowScene];
-  v6 = [v5 _visibleWindows];
+  _visibleWindows = [v5 _visibleWindows];
 
-  v7 = [(UIUndoGestureInteraction *)self view];
-  v8 = [v7 window];
+  view = [(UIUndoGestureInteraction *)self view];
+  window = [view window];
 
-  if (v6 && [v6 count] && objc_msgSend(v6, "containsObject:", v8))
+  if (_visibleWindows && [_visibleWindows count] && objc_msgSend(_visibleWindows, "containsObject:", window))
   {
-    v9 = [(UIUndoGestureInteraction *)self observerGesture];
+    observerGesture = [(UIUndoGestureInteraction *)self observerGesture];
 
-    if (v9 == v4)
+    if (observerGesture == beginCopy)
     {
-      v10 = [(UIUndoGestureInteraction *)self currentInteractiveHUDVisible];
+      currentInteractiveHUDVisible = [(UIUndoGestureInteraction *)self currentInteractiveHUDVisible];
     }
 
     else
     {
-      v10 = [(UIUndoGestureInteraction *)self textEditingOperationsAvailableWithGestureRecognizer:v4];
+      currentInteractiveHUDVisible = [(UIUndoGestureInteraction *)self textEditingOperationsAvailableWithGestureRecognizer:beginCopy];
     }
 
-    v11 = v10;
+    v11 = currentInteractiveHUDVisible;
   }
 
   else
@@ -1686,16 +1686,16 @@ void __39__UIUndoGestureInteraction_iWorkFamily__block_invoke()
   qword_1ED49F9F8 = &unk_1EFE2D090;
 }
 
-- (BOOL)bundleIniWorkFamily:(id)a3
+- (BOOL)bundleIniWorkFamily:(id)family
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  familyCopy = family;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [objc_opt_class() iWorkFamily];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  iWorkFamily = [objc_opt_class() iWorkFamily];
+  v5 = [iWorkFamily countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -1705,17 +1705,17 @@ void __39__UIUndoGestureInteraction_iWorkFamily__block_invoke()
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(iWorkFamily);
         }
 
-        if ([*(*(&v9 + 1) + 8 * i) isEqualToString:v3])
+        if ([*(*(&v9 + 1) + 8 * i) isEqualToString:familyCopy])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [iWorkFamily countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         continue;
@@ -1730,24 +1730,24 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-  v9 = v8;
-  if (v8 == v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  threeFingerSingleTap = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+  v9 = threeFingerSingleTap;
+  if (threeFingerSingleTap == recognizerCopy)
   {
 
     goto LABEL_7;
   }
 
-  v10 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+  threeFingerDoubleTap = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
 
-  if (v10 == v6)
+  if (threeFingerDoubleTap == recognizerCopy)
   {
 LABEL_7:
-    v15 = [v7 _isGestureType:0];
+    v15 = [gestureRecognizerCopy _isGestureType:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (v15)
@@ -1756,13 +1756,13 @@ LABEL_7:
       v18 = _UIMainBundleIdentifier();
       v19 = [(UIUndoGestureInteraction *)self bundleIniWorkFamily:v18];
 
-      v20 = [v7 numberOfTouchesRequired];
-      v21 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-      v22 = [v21 numberOfTouchesRequired];
+      numberOfTouchesRequired = [gestureRecognizerCopy numberOfTouchesRequired];
+      threeFingerSingleTap2 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+      numberOfTouchesRequired2 = [threeFingerSingleTap2 numberOfTouchesRequired];
 
       if ((v17 & 1) == 0)
       {
-        v14 = (v20 == v22) & ~v19;
+        v14 = (numberOfTouchesRequired == numberOfTouchesRequired2) & ~v19;
         goto LABEL_10;
       }
     }
@@ -1770,32 +1770,32 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v11 = [(UIUndoGestureInteraction *)self threeFingerSlide];
+  threeFingerSlide = [(UIUndoGestureInteraction *)self threeFingerSlide];
 
-  if (v11 != v6 || ![v7 _isGestureType:8])
+  if (threeFingerSlide != recognizerCopy || ![gestureRecognizerCopy _isGestureType:8])
   {
 LABEL_9:
     v14 = 0;
     goto LABEL_10;
   }
 
-  v12 = [v7 minimumNumberOfTouches];
-  v13 = [(UIUndoGestureInteraction *)self threeFingerSlide];
-  v14 = v12 == [v13 minimumNumberOfTouches];
+  minimumNumberOfTouches = [gestureRecognizerCopy minimumNumberOfTouches];
+  threeFingerSlide2 = [(UIUndoGestureInteraction *)self threeFingerSlide];
+  v14 = minimumNumberOfTouches == [threeFingerSlide2 minimumNumberOfTouches];
 
 LABEL_10:
   return v14;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
-  if (v11 == v9)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  threeFingerLongPress = [(UIUndoGestureInteraction *)self threeFingerLongPress];
+  if (threeFingerLongPress == recognizerCopy)
   {
-    v19 = [(UIUndoGestureInteraction *)self threeFingerSlide];
-    if (v19 == v10)
+    threeFingerSlide = [(UIUndoGestureInteraction *)self threeFingerSlide];
+    if (threeFingerSlide == gestureRecognizerCopy)
     {
       v14 = 1;
 LABEL_21:
@@ -1804,8 +1804,8 @@ LABEL_21:
     }
   }
 
-  v12 = [(UIUndoGestureInteraction *)self threeFingerSlide];
-  if (v12 == v9)
+  threeFingerSlide2 = [(UIUndoGestureInteraction *)self threeFingerSlide];
+  if (threeFingerSlide2 == recognizerCopy)
   {
     v15 = 0;
     v16 = 0;
@@ -1813,8 +1813,8 @@ LABEL_21:
 
   else
   {
-    v4 = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
-    if (v4 == v9)
+    threeFingerSingleTap = [(UIUndoGestureInteraction *)self threeFingerSingleTap];
+    if (threeFingerSingleTap == recognizerCopy)
     {
       v15 = 0;
       v16 = 0;
@@ -1822,8 +1822,8 @@ LABEL_21:
 
     else
     {
-      v5 = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
-      if (v5 == v9)
+      threeFingerDoubleTap = [(UIUndoGestureInteraction *)self threeFingerDoubleTap];
+      if (threeFingerDoubleTap == recognizerCopy)
       {
         v16 = 0;
         v15 = 1;
@@ -1831,9 +1831,9 @@ LABEL_21:
 
       else
       {
-        v13 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
-        v6 = v13;
-        if (v13 != v9)
+        threeFingerLongPress2 = [(UIUndoGestureInteraction *)self threeFingerLongPress];
+        v6 = threeFingerLongPress2;
+        if (threeFingerLongPress2 != recognizerCopy)
         {
 
           v14 = 0;
@@ -1846,8 +1846,8 @@ LABEL_21:
     }
   }
 
-  v17 = [(UIUndoGestureInteraction *)self threeFingerPinch];
-  v14 = v17 == v10;
+  threeFingerPinch = [(UIUndoGestureInteraction *)self threeFingerPinch];
+  v14 = threeFingerPinch == gestureRecognizerCopy;
 
   if (v16)
   {
@@ -1866,12 +1866,12 @@ LABEL_14:
   }
 
 LABEL_15:
-  if (v12 != v9)
+  if (threeFingerSlide2 != recognizerCopy)
   {
   }
 
 LABEL_18:
-  if (v11 == v9)
+  if (threeFingerLongPress == recognizerCopy)
   {
     goto LABEL_21;
   }
@@ -1883,17 +1883,17 @@ LABEL_22:
 
 - (void)touchMultiPansTimer
 {
-  v3 = [(UIUndoGestureInteraction *)self multiPansTimer];
+  multiPansTimer = [(UIUndoGestureInteraction *)self multiPansTimer];
 
-  if (v3)
+  if (multiPansTimer)
   {
-    v4 = [(UIUndoGestureInteraction *)self multiPansTimer];
-    [(UIDelayedAction *)v4 touch];
+    multiPansTimer2 = [(UIUndoGestureInteraction *)self multiPansTimer];
+    [(UIDelayedAction *)multiPansTimer2 touch];
   }
 
   else
   {
-    v4 = [[UIDelayedAction alloc] initWithTarget:self action:sel_multiPansTimerElaspsed_ userInfo:0 delay:0.5];
+    multiPansTimer2 = [[UIDelayedAction alloc] initWithTarget:self action:sel_multiPansTimerElaspsed_ userInfo:0 delay:0.5];
     [(UIUndoGestureInteraction *)self setMultiPansTimer:?];
   }
 }
@@ -1902,35 +1902,35 @@ LABEL_22:
 {
   [(UIUndoGestureInteraction *)self setPreviousRecognizedPanDirection:0];
   [(UIUndoGestureInteraction *)self setPanDownStateChangedCounter:0];
-  v3 = [(UIUndoGestureInteraction *)self multiPansTimer];
-  [v3 cancel];
+  multiPansTimer = [(UIUndoGestureInteraction *)self multiPansTimer];
+  [multiPansTimer cancel];
 
   [(UIUndoGestureInteraction *)self setMultiPansTimer:0];
 }
 
-- (void)multiPansTimerElaspsed:(id)a3
+- (void)multiPansTimerElaspsed:(id)elaspsed
 {
   [(UIUndoGestureInteraction *)self setPreviousRecognizedPanDirection:0];
 
   [(UIUndoGestureInteraction *)self setPanDownStateChangedCounter:0];
 }
 
-- (void)observerGestureHandler:(id)a3
+- (void)observerGestureHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  [v4 locationInView:v5];
+  handlerCopy = handler;
+  undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  [handlerCopy locationInView:undoInteractiveHUD];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  LOBYTE(v5) = [v10 pointInside:0 withEvent:{v7, v9}];
+  undoInteractiveHUD2 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  LOBYTE(undoInteractiveHUD) = [undoInteractiveHUD2 pointInside:0 withEvent:{v7, v9}];
 
-  if ((v5 & 1) == 0 && [(UIUndoGestureInteraction *)self currentInteractiveHUDVisible])
+  if ((undoInteractiveHUD & 1) == 0 && [(UIUndoGestureInteraction *)self currentInteractiveHUDVisible])
   {
     [(UIUndoGestureInteraction *)self setUndoInteractiveHUDVisibility:0];
-    v11 = [MEMORY[0x1E69D4E18] sharedInstance];
-    [v11 logBlock:&__block_literal_global_57_0 domain:@"com.apple.keyboard.UIKit"];
+    mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
+    [mEMORY[0x1E69D4E18] logBlock:&__block_literal_global_57_0 domain:@"com.apple.keyboard.UIKit"];
   }
 
   v12 = dispatch_time(0, 2000000000);
@@ -1956,22 +1956,22 @@ id __51__UIUndoGestureInteraction_observerGestureHandler___block_invoke()
   return v0;
 }
 
-- (void)deactiveActiveKeysIfNeeded:(id)a3
+- (void)deactiveActiveKeysIfNeeded:(id)needed
 {
-  if ([a3 state] >= 3)
+  if ([needed state] >= 3)
   {
     v3 = +[UIKeyboardImpl activeInstance];
     [v3 _deactiveActiveKeys];
   }
 }
 
-- (void)threeFingerSingleTap:(id)a3
+- (void)threeFingerSingleTap:(id)tap
 {
-  v4 = a3;
-  if ([v4 continuousTapRecognition] && (objc_msgSend(v4, "state") == 1 || objc_msgSend(v4, "state") == 2))
+  tapCopy = tap;
+  if ([tapCopy continuousTapRecognition] && (objc_msgSend(tapCopy, "state") == 1 || objc_msgSend(tapCopy, "state") == 2))
   {
-    [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:v4];
-    if ([v4 tapCount] != 1)
+    [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:tapCopy];
+    if ([tapCopy tapCount] != 1)
     {
       [(UIUndoGestureInteraction *)self threeFingerDoubleTapUndoAction];
       [UIKBAnalyticsDispatcher analyticsDispatchEventTextEditingOperation:@"Undo" trigger:@"UndoHUDGestureDoubleTap"];
@@ -1981,12 +1981,12 @@ id __51__UIUndoGestureInteraction_observerGestureHandler___block_invoke()
 
   else
   {
-    if ([v4 continuousTapRecognition])
+    if ([tapCopy continuousTapRecognition])
     {
       goto LABEL_9;
     }
 
-    [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:v4];
+    [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:tapCopy];
   }
 
   [(UIUndoGestureInteraction *)self _threeFingerSingleTapAction];
@@ -2010,19 +2010,19 @@ LABEL_9:
     if (!-[UIUndoGestureInteraction currentInteractiveHUDVisible](self, "currentInteractiveHUDVisible") && (!-[UIUndoGestureInteraction currentStateHUDVisible](self, "currentStateHUDVisible") || -[UIUndoGestureInteraction currentStateHUDVisible](self, "currentStateHUDVisible") && ((-[UIUndoGestureInteraction undoStateHUD](self, "undoStateHUD"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 controlType], v12, v6 >= 1.2) ? (v14 = v13 == 1) : (v14 = 0), v14)))
     {
       [(UIUndoGestureInteraction *)self setUndoInteractiveHUDVisibility:1];
-      v9 = [MEMORY[0x1E69D4E18] sharedInstance];
-      v10 = v9;
+      mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
+      v10 = mEMORY[0x1E69D4E18];
       v11 = &__block_literal_global_61_3;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69D4E18] sharedInstance];
-      v10 = v9;
+      mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
+      v10 = mEMORY[0x1E69D4E18];
       v11 = &__block_literal_global_63_2;
     }
 
-    [v9 logBlock:v11 domain:@"com.apple.keyboard.UIKit"];
+    [mEMORY[0x1E69D4E18] logBlock:v11 domain:@"com.apple.keyboard.UIKit"];
   }
 
   [(UIUndoGestureInteraction *)self currentTime];
@@ -2067,49 +2067,49 @@ id __55__UIUndoGestureInteraction__threeFingerSingleTapAction__block_invoke_2()
   [(UIUndoGestureInteraction *)self setLastTapTimestamp:?];
 }
 
-- (void)threeFingerDoubleTap:(id)a3
+- (void)threeFingerDoubleTap:(id)tap
 {
-  [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:a3];
+  [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:tap];
   [(UIUndoGestureInteraction *)self threeFingerDoubleTapUndoAction];
 
   [UIKBAnalyticsDispatcher analyticsDispatchEventTextEditingOperation:@"Undo" trigger:@"UndoHUDGestureDoubleTap"];
 }
 
-- (void)threeFingerSlide:(id)a3
+- (void)threeFingerSlide:(id)slide
 {
-  v7 = a3;
-  [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:v7];
-  if ([v7 state] == 1)
+  slideCopy = slide;
+  [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:slideCopy];
+  if ([slideCopy state] == 1)
   {
     [(UIUndoGestureInteraction *)self disableEnclosingScrollViewScrolling];
   }
 
-  v4 = [v7 state];
-  if ((v4 - 3) < 2)
+  state = [slideCopy state];
+  if ((state - 3) < 2)
   {
-    [(UIUndoGestureInteraction *)self _endPan:v7];
+    [(UIUndoGestureInteraction *)self _endPan:slideCopy];
     goto LABEL_10;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    [(UIUndoGestureInteraction *)self _updateUndoPan:v7];
+    [(UIUndoGestureInteraction *)self _updateUndoPan:slideCopy];
     goto LABEL_10;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = state == 1;
+  v6 = slideCopy;
   if (v5)
   {
-    [(UIUndoGestureInteraction *)self _startUndoPan:v7];
+    [(UIUndoGestureInteraction *)self _startUndoPan:slideCopy];
 LABEL_10:
-    v6 = v7;
+    v6 = slideCopy;
   }
 }
 
-- (void)threeFingerLongPress:(id)a3
+- (void)threeFingerLongPress:(id)press
 {
-  [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:a3];
+  [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:press];
   if (![(UIUndoGestureInteraction *)self currentInteractiveHUDVisible])
   {
 
@@ -2127,81 +2127,81 @@ LABEL_10:
   [(UIUndoGestureInteraction *)self setMultiPinchTimerOn:0];
 }
 
-- (void)startMultiPinchTimer:(double)a3
+- (void)startMultiPinchTimer:(double)timer
 {
   [(UIUndoGestureInteraction *)self clearMultiPinchTimer];
   [(UIUndoGestureInteraction *)self setMultiPinchTimerOn:1];
 
-  [(UIUndoGestureInteraction *)self performSelector:sel_tooSlow_ withObject:0 afterDelay:a3];
+  [(UIUndoGestureInteraction *)self performSelector:sel_tooSlow_ withObject:0 afterDelay:timer];
 }
 
-- (void)threeFingerPinch:(id)a3
+- (void)threeFingerPinch:(id)pinch
 {
-  v6 = a3;
-  [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:v6];
-  if ([v6 state] == 1)
+  pinchCopy = pinch;
+  [(UIUndoGestureInteraction *)self deactiveActiveKeysIfNeeded:pinchCopy];
+  if ([pinchCopy state] == 1)
   {
     [(UIUndoGestureInteraction *)self disableEnclosingScrollViewScrolling];
   }
 
-  v4 = [v6 state];
-  if (v4 > 3)
+  state = [pinchCopy state];
+  if (state > 3)
   {
-    v5 = v6;
-    if ((v4 - 4) >= 2)
+    v5 = pinchCopy;
+    if ((state - 4) >= 2)
     {
       goto LABEL_13;
     }
 
-    [(UIUndoGestureInteraction *)self _cancelPinch:v6];
+    [(UIUndoGestureInteraction *)self _cancelPinch:pinchCopy];
   }
 
-  else if (v4 == 1)
+  else if (state == 1)
   {
-    [(UIUndoGestureInteraction *)self _startPinch:v6];
+    [(UIUndoGestureInteraction *)self _startPinch:pinchCopy];
   }
 
   else
   {
-    v5 = v6;
-    if (v4 == 2)
+    v5 = pinchCopy;
+    if (state == 2)
     {
-      [(UIUndoGestureInteraction *)self _updatePinch:v6];
+      [(UIUndoGestureInteraction *)self _updatePinch:pinchCopy];
     }
 
     else
     {
-      if (v4 != 3)
+      if (state != 3)
       {
         goto LABEL_13;
       }
 
-      [(UIUndoGestureInteraction *)self _endPinch:v6];
+      [(UIUndoGestureInteraction *)self _endPinch:pinchCopy];
     }
   }
 
-  v5 = v6;
+  v5 = pinchCopy;
 LABEL_13:
 }
 
-- (id)interactiveHUDButtonForDirection:(int64_t)a3
+- (id)interactiveHUDButtonForDirection:(int64_t)direction
 {
   v4 = 0;
-  if (a3 > 7)
+  if (direction > 7)
   {
-    switch(a3)
+    switch(direction)
     {
       case 10:
-        v5 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-        v6 = [v5 aPasteButtonView];
+        undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+        aPasteButtonView = [undoInteractiveHUD aPasteButtonView];
         break;
       case 9:
-        v5 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-        v6 = [v5 aCutButtonView];
+        undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+        aPasteButtonView = [undoInteractiveHUD aCutButtonView];
         break;
       case 8:
-        v5 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-        v6 = [v5 aCopyButtonView];
+        undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+        aPasteButtonView = [undoInteractiveHUD aCopyButtonView];
         break;
       default:
         goto LABEL_15;
@@ -2210,56 +2210,56 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a3 != 2)
+  if (direction != 2)
   {
-    if (a3 != 3)
+    if (direction != 3)
     {
       goto LABEL_15;
     }
 
-    v7 = [(UIUndoGestureInteraction *)self isRTLMode];
-    v5 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-    if (!v7)
+    isRTLMode = [(UIUndoGestureInteraction *)self isRTLMode];
+    undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+    if (!isRTLMode)
     {
       goto LABEL_9;
     }
 
 LABEL_13:
-    v6 = [v5 leftButtonView];
+    aPasteButtonView = [undoInteractiveHUD leftButtonView];
     goto LABEL_14;
   }
 
-  v8 = [(UIUndoGestureInteraction *)self isRTLMode];
-  v5 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-  if (!v8)
+  isRTLMode2 = [(UIUndoGestureInteraction *)self isRTLMode];
+  undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+  if (!isRTLMode2)
   {
     goto LABEL_13;
   }
 
 LABEL_9:
-  v6 = [v5 rightButtonView];
+  aPasteButtonView = [undoInteractiveHUD rightButtonView];
 LABEL_14:
-  v4 = v6;
+  v4 = aPasteButtonView;
 
 LABEL_15:
 
   return v4;
 }
 
-- (void)_startPinch:(id)a3
+- (void)_startPinch:(id)pinch
 {
-  [a3 avgTouchesToCentroidDistance];
+  [pinch avgTouchesToCentroidDistance];
 
   [(UIUndoGestureInteraction *)self setInitPinchableDistance:?];
 }
 
-- (void)_updatePinch:(id)a3
+- (void)_updatePinch:(id)pinch
 {
-  v4 = a3;
+  pinchCopy = pinch;
   if ([(UIUndoGestureInteraction *)self currentInteractiveHUDVisible])
   {
-    -[UIUndoGestureInteraction setPotentialPinchDirection:](self, "setPotentialPinchDirection:", [v4 pinchDirection]);
-    [v4 avgTouchesToCentroidDistance];
+    -[UIUndoGestureInteraction setPotentialPinchDirection:](self, "setPotentialPinchDirection:", [pinchCopy pinchDirection]);
+    [pinchCopy avgTouchesToCentroidDistance];
     v6 = v5;
     if ([(UIUndoGestureInteraction *)self multiPinchTimerOn])
     {
@@ -2306,26 +2306,26 @@ void __41__UIUndoGestureInteraction__updatePinch___block_invoke(uint64_t a1)
   [v2 updateControlWithDirection:objc_msgSend(*(a1 + 32) travelProgress:"potentialPinchDirection") isRTL:{objc_msgSend(*(a1 + 32), "isRTLMode"), *(a1 + 40)}];
 }
 
-- (void)_endPinch:(id)a3
+- (void)_endPinch:(id)pinch
 {
-  v4 = [a3 pinchDirection];
+  pinchDirection = [pinch pinchDirection];
 
-  [(UIUndoGestureInteraction *)self _endPinchWithDirection:v4];
+  [(UIUndoGestureInteraction *)self _endPinchWithDirection:pinchDirection];
 }
 
-- (void)_endPinchWithDirection:(int64_t)a3
+- (void)_endPinchWithDirection:(int64_t)direction
 {
-  if (!-[UIUndoGestureInteraction currentInteractiveHUDVisible](self, "currentInteractiveHUDVisible") || (-[UIUndoGestureInteraction interactiveHUDButtonForDirection:](self, "interactiveHUDButtonForDirection:", a3), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 state], v5, v6 != 2))
+  if (!-[UIUndoGestureInteraction currentInteractiveHUDVisible](self, "currentInteractiveHUDVisible") || (-[UIUndoGestureInteraction interactiveHUDButtonForDirection:](self, "interactiveHUDButtonForDirection:", direction), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 state], v5, v6 != 2))
   {
-    if (a3 == 8)
+    if (direction == 8)
     {
       [(UIUndoGestureInteraction *)self setUndoStateHUDVisibility:1 withType:[(UIUndoGestureInteraction *)self undoControlTypeWithDirection:8] available:[(UIUndoGestureInteraction *)self performActionWithDirection:8]];
       if (![(UIUndoGestureInteraction *)self multiPinchTimerOn])
       {
         [(UIUndoGestureInteraction *)self startMultiPinchTimer:2.0];
-        a3 = 8;
+        direction = 8;
 LABEL_13:
-        [(UIUndoGestureInteraction *)self fullyOpenAndCloseCoverWithBeginDirection:a3];
+        [(UIUndoGestureInteraction *)self fullyOpenAndCloseCoverWithBeginDirection:direction];
         if (![(UIUndoGestureInteraction *)self multiPinchTimerOn])
         {
           [(UIUndoGestureInteraction *)self setInitPinchableDistance:0.0];
@@ -2337,21 +2337,21 @@ LABEL_13:
       }
 
       [(UIUndoGestureInteraction *)self clearMultiPinchTimer];
-      a3 = 9;
+      direction = 9;
       v7 = [(UIUndoGestureInteraction *)self performActionWithDirection:9];
-      v8 = self;
-      v9 = 9;
+      selfCopy2 = self;
+      directionCopy = 9;
 LABEL_8:
-      [(UIUndoGestureInteraction *)self setUndoStateHUDVisibility:1 withType:[(UIUndoGestureInteraction *)v8 undoControlTypeWithDirection:v9] available:v7];
+      [(UIUndoGestureInteraction *)self setUndoStateHUDVisibility:1 withType:[(UIUndoGestureInteraction *)selfCopy2 undoControlTypeWithDirection:directionCopy] available:v7];
       goto LABEL_13;
     }
 
     [(UIUndoGestureInteraction *)self clearMultiPinchTimer];
-    if (a3)
+    if (direction)
     {
-      v7 = [(UIUndoGestureInteraction *)self performActionWithDirection:a3];
-      v8 = self;
-      v9 = a3;
+      v7 = [(UIUndoGestureInteraction *)self performActionWithDirection:direction];
+      selfCopy2 = self;
+      directionCopy = direction;
       goto LABEL_8;
     }
   }
@@ -2359,7 +2359,7 @@ LABEL_8:
   [(UIUndoGestureInteraction *)self fullyCloseCoverWithComplete:0];
 }
 
-- (void)_cancelPinch:(id)a3
+- (void)_cancelPinch:(id)pinch
 {
   [(UIUndoGestureInteraction *)self fullyCloseCoverWithComplete:0];
   if (![(UIUndoGestureInteraction *)self multiPinchTimerOn])
@@ -2398,11 +2398,11 @@ void __41__UIUndoGestureInteraction__cancelPinch___block_invoke(uint64_t a1)
   [v6 layoutIfNeeded];
 }
 
-- (int64_t)slideDirectionWithGesture:(id)a3
+- (int64_t)slideDirectionWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(UIUndoGestureInteraction *)self view];
-  [v4 translationInView:v5];
+  gestureCopy = gesture;
+  view = [(UIUndoGestureInteraction *)self view];
+  [gestureCopy translationInView:view];
   v7 = v6;
 
   v8 = fabs(v7);
@@ -2423,15 +2423,15 @@ void __41__UIUndoGestureInteraction__cancelPinch___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)undoGestureIsMoving:(id)a3
+- (BOOL)undoGestureIsMoving:(id)moving
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a3 _allActiveTouches];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _allActiveTouches = [moving _allActiveTouches];
+  v4 = [_allActiveTouches countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2442,7 +2442,7 @@ void __41__UIUndoGestureInteraction__cancelPinch___block_invoke(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allActiveTouches);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) phase] == 2)
@@ -2452,7 +2452,7 @@ void __41__UIUndoGestureInteraction__cancelPinch___block_invoke(uint64_t a1)
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [_allActiveTouches countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -2471,77 +2471,77 @@ LABEL_11:
 - (id)scrollViewForInputDelegate
 {
   v2 = +[UIKeyboardImpl activeInstance];
-  v3 = [v2 inputDelegate];
+  inputDelegate = [v2 inputDelegate];
 
-  if (v3 || (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v4 = objc_claimAutoreleasedReturnValue(), [v4 delegateAsResponder], v3 = objc_claimAutoreleasedReturnValue(), v4, v3))
+  if (inputDelegate || (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v4 = objc_claimAutoreleasedReturnValue(), [v4 delegateAsResponder], inputDelegate = objc_claimAutoreleasedReturnValue(), v4, inputDelegate))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v3 _scroller];
+      _scroller = [inputDelegate _scroller];
       goto LABEL_10;
     }
 
-    if ([v3 conformsToProtocol:&unk_1EFE8B2D0] && (objc_opt_respondsToSelector() & 1) != 0)
+    if ([inputDelegate conformsToProtocol:&unk_1EFE8B2D0] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v6 = [v3 textInputView];
-      v7 = v6;
-      if (v6)
+      textInputView = [inputDelegate textInputView];
+      v7 = textInputView;
+      if (textInputView)
       {
-        v5 = [v6 _scroller];
+        _scroller = [textInputView _scroller];
       }
 
       else
       {
-        v5 = 0;
+        _scroller = 0;
       }
 
       goto LABEL_10;
     }
   }
 
-  v5 = 0;
+  _scroller = 0;
 LABEL_10:
 
-  return v5;
+  return _scroller;
 }
 
 - (void)disableEnclosingScrollViewScrolling
 {
-  v2 = [(UIUndoGestureInteraction *)self scrollViewForInputDelegate];
-  if (v2)
+  scrollViewForInputDelegate = [(UIUndoGestureInteraction *)self scrollViewForInputDelegate];
+  if (scrollViewForInputDelegate)
   {
-    v4 = v2;
-    v3 = [v2 panGestureRecognizer];
-    if ([v3 isEnabled])
+    v4 = scrollViewForInputDelegate;
+    panGestureRecognizer = [scrollViewForInputDelegate panGestureRecognizer];
+    if ([panGestureRecognizer isEnabled])
     {
-      [v3 setEnabled:0];
-      [v3 setEnabled:1];
+      [panGestureRecognizer setEnabled:0];
+      [panGestureRecognizer setEnabled:1];
     }
 
-    v2 = v4;
+    scrollViewForInputDelegate = v4;
   }
 }
 
-- (void)_startUndoPan:(id)a3
+- (void)_startUndoPan:(id)pan
 {
-  v4 = a3;
-  v5 = [(UIUndoGestureInteraction *)self view];
-  [v4 locationInView:v5];
+  panCopy = pan;
+  view = [(UIUndoGestureInteraction *)self view];
+  [panCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
   [(UIUndoGestureInteraction *)self setPreviousPanLocation:v7, v9];
   [(UIUndoGestureInteraction *)self setBeginPanDirection:0];
   [(UIUndoGestureInteraction *)self setPanDownStateChangedCounter:[(UIUndoGestureInteraction *)self panDownStateChangedCounter]+ 1];
-  v10 = [MEMORY[0x1E69D4E18] sharedInstance];
+  mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __42__UIUndoGestureInteraction__startUndoPan___block_invoke;
   v12[3] = &unk_1E70FD370;
-  v13 = v4;
-  v11 = v4;
-  [v10 logBlock:v12 domain:@"com.apple.keyboard.UIKit"];
+  v13 = panCopy;
+  v11 = panCopy;
+  [mEMORY[0x1E69D4E18] logBlock:v12 domain:@"com.apple.keyboard.UIKit"];
 }
 
 id __42__UIUndoGestureInteraction__startUndoPan___block_invoke(uint64_t a1)
@@ -2559,17 +2559,17 @@ id __42__UIUndoGestureInteraction__startUndoPan___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_updateUndoPan:(id)a3
+- (void)_updateUndoPan:(id)pan
 {
-  v4 = a3;
-  if ([(UIUndoGestureInteraction *)self undoGestureIsMoving:v4])
+  panCopy = pan;
+  if ([(UIUndoGestureInteraction *)self undoGestureIsMoving:panCopy])
   {
-    v5 = [(UIUndoGestureInteraction *)self view];
-    [v4 locationInView:v5];
+    view = [(UIUndoGestureInteraction *)self view];
+    [panCopy locationInView:view];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(UIUndoGestureInteraction *)self slideDirectionWithGesture:v4];
+    v10 = [(UIUndoGestureInteraction *)self slideDirectionWithGesture:panCopy];
     if (v10)
     {
       v11 = v10;
@@ -2587,9 +2587,9 @@ id __42__UIUndoGestureInteraction__startUndoPan___block_invoke(uint64_t a1)
       if ([(UIUndoGestureInteraction *)self currentInteractiveHUDVisible])
       {
         v12 = [(UIUndoGestureInteraction *)self interactiveHUDButtonForDirection:[(UIUndoGestureInteraction *)self beginPanDirection]];
-        v13 = [v12 state];
+        state = [v12 state];
 
-        if (v13 != 2)
+        if (state != 2)
         {
           if ([(UIUndoGestureInteraction *)self beginPanDirection]== 2)
           {
@@ -2654,8 +2654,8 @@ LABEL_22:
             [UIView animateWithDuration:v24 animations:0.2];
             [(UIUndoGestureInteraction *)self setRemainingDistanceToTravel:v17];
             [(UIUndoGestureInteraction *)self setPreviousPanLocation:v7, v9];
-            v23 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-            [v23 layoutIfNeeded];
+            undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+            [undoInteractiveHUD layoutIfNeeded];
           }
         }
       }
@@ -2671,10 +2671,10 @@ void __43__UIUndoGestureInteraction__updateUndoPan___block_invoke(uint64_t a1)
   [v2 updateControlWithDirection:objc_msgSend(*(a1 + 32) travelProgress:"beginPanDirection") isRTL:{objc_msgSend(*(a1 + 32), "isRTLMode"), 1.0 - *(a1 + 40)}];
 }
 
-- (void)_endPan:(id)a3
+- (void)_endPan:(id)pan
 {
-  v10 = a3;
-  if ([v10 state] == 3)
+  panCopy = pan;
+  if ([panCopy state] == 3)
   {
     [(UIUndoGestureInteraction *)self clearMultiPinchTimer];
   }
@@ -2707,13 +2707,13 @@ void __43__UIUndoGestureInteraction__updateUndoPan___block_invoke(uint64_t a1)
 LABEL_15:
     [(UIUndoGestureInteraction *)self remainingDistanceToTravel];
     v8 = v7 / v6;
-    v9 = [(UIUndoGestureInteraction *)self beginPanDirection];
+    beginPanDirection = [(UIUndoGestureInteraction *)self beginPanDirection];
     [(UIUndoGestureInteraction *)self remainingDistanceToTravel];
-    [(UIUndoGestureInteraction *)self animateSpringCoverWithSuccess:v8 < v4 direction:v9 remainingDistanceToTravel:?];
+    [(UIUndoGestureInteraction *)self animateSpringCoverWithSuccess:v8 < v4 direction:beginPanDirection remainingDistanceToTravel:?];
     goto LABEL_16;
   }
 
-  if ([v10 state] == 3)
+  if ([panCopy state] == 3)
   {
     [(UIUndoGestureInteraction *)self _endPanWithDirection:[(UIUndoGestureInteraction *)self beginPanDirection]];
   }
@@ -2721,28 +2721,28 @@ LABEL_15:
 LABEL_16:
 }
 
-- (BOOL)_endPanWithDirection:(int64_t)a3
+- (BOOL)_endPanWithDirection:(int64_t)direction
 {
-  if (!a3)
+  if (!direction)
   {
     return 0;
   }
 
   v5 = [(UIUndoGestureInteraction *)self performActionWithDirection:?];
-  v6 = [(UIUndoGestureInteraction *)self undoControlTypeWithDirection:a3];
+  v6 = [(UIUndoGestureInteraction *)self undoControlTypeWithDirection:direction];
   [(UIUndoGestureInteraction *)self setUndoStateHUDVisibility:1 withType:v6 available:v5];
   if (!v5)
   {
     return 0;
   }
 
-  v7 = [MEMORY[0x1E69D4E18] sharedInstance];
+  mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__UIUndoGestureInteraction__endPanWithDirection___block_invoke;
   v9[3] = &__block_descriptor_40_e5__8__0l;
   v9[4] = v6;
-  [v7 logBlock:v9 domain:@"com.apple.keyboard.UIKit"];
+  [mEMORY[0x1E69D4E18] logBlock:v9 domain:@"com.apple.keyboard.UIKit"];
 
   return 1;
 }
@@ -2765,11 +2765,11 @@ id __49__UIUndoGestureInteraction__endPanWithDirection___block_invoke(uint64_t a
   return v3;
 }
 
-- (int64_t)undoControlTypeWithDirection:(int64_t)a3
+- (int64_t)undoControlTypeWithDirection:(int64_t)direction
 {
-  if (a3 > 7)
+  if (direction > 7)
   {
-    switch(a3)
+    switch(direction)
     {
       case 8:
         return 4;
@@ -2782,7 +2782,7 @@ id __49__UIUndoGestureInteraction__endPanWithDirection___block_invoke(uint64_t a
     return 0;
   }
 
-  if (a3 == 2)
+  if (direction == 2)
   {
     if ([(UIUndoGestureInteraction *)self isRTLMode])
     {
@@ -2797,7 +2797,7 @@ id __49__UIUndoGestureInteraction__endPanWithDirection___block_invoke(uint64_t a
 
   else
   {
-    if (a3 != 3)
+    if (direction != 3)
     {
       return 0;
     }
@@ -2814,12 +2814,12 @@ id __49__UIUndoGestureInteraction__endPanWithDirection___block_invoke(uint64_t a
   }
 }
 
-- (BOOL)performActionWithDirection:(int64_t)a3
+- (BOOL)performActionWithDirection:(int64_t)direction
 {
-  v4 = 0;
-  if (a3 <= 7)
+  canRedo = 0;
+  if (direction <= 7)
   {
-    if (a3 == 2)
+    if (direction == 2)
     {
       if ([(UIUndoGestureInteraction *)self isRTLMode])
       {
@@ -2829,41 +2829,41 @@ id __49__UIUndoGestureInteraction__endPanWithDirection___block_invoke(uint64_t a
 
     else
     {
-      if (a3 != 3)
+      if (direction != 3)
       {
-        return v4;
+        return canRedo;
       }
 
       if (![(UIUndoGestureInteraction *)self isRTLMode])
       {
 LABEL_9:
-        v4 = [(UIUndoGestureInteraction *)self canRedo];
+        canRedo = [(UIUndoGestureInteraction *)self canRedo];
         [(UIUndoGestureInteraction *)self redo:0];
         v5 = UIKBAnalyticsTextEditingOperationRedo;
         goto LABEL_14;
       }
     }
 
-    v4 = [(UIUndoGestureInteraction *)self canUndo];
+    canRedo = [(UIUndoGestureInteraction *)self canUndo];
     [(UIUndoGestureInteraction *)self undo:0];
     v5 = UIKBAnalyticsTextEditingOperationUndo;
     goto LABEL_14;
   }
 
-  switch(a3)
+  switch(direction)
   {
     case 8:
-      v4 = [(UIUndoGestureInteraction *)self canCopy];
+      canRedo = [(UIUndoGestureInteraction *)self canCopy];
       [(UIUndoGestureInteraction *)self copyOperation];
       v5 = UIKBAnalyticsTextEditingOperationCopy;
       goto LABEL_14;
     case 9:
-      v4 = [(UIUndoGestureInteraction *)self canCut];
+      canRedo = [(UIUndoGestureInteraction *)self canCut];
       [(UIUndoGestureInteraction *)self cutOperation];
       v5 = UIKBAnalyticsTextEditingOperationCut;
       goto LABEL_14;
     case 10:
-      v4 = [(UIUndoGestureInteraction *)self canPaste];
+      canRedo = [(UIUndoGestureInteraction *)self canPaste];
       [(UIUndoGestureInteraction *)self pasteOperation];
       v5 = UIKBAnalyticsTextEditingOperationPaste;
 LABEL_14:
@@ -2871,39 +2871,39 @@ LABEL_14:
       break;
   }
 
-  return v4;
+  return canRedo;
 }
 
-- (BOOL)performGestureWithDirection:(int64_t)a3 authenticationMessage:(id)a4
+- (BOOL)performGestureWithDirection:(int64_t)direction authenticationMessage:(id)message
 {
-  v6 = a4;
-  if (a3 != 1)
+  messageCopy = message;
+  if (direction != 1)
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((direction & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v9 = +[UIKeyboardImpl activeInstance];
       [v9 _deactiveActiveKeys];
 
       if ([(UIUndoGestureInteraction *)self undoManagerOperationsUndoRedoAvailable])
       {
-        v8 = [(UIUndoGestureInteraction *)self _endPanWithDirection:a3];
+        v8 = [(UIUndoGestureInteraction *)self _endPanWithDirection:direction];
         goto LABEL_16;
       }
     }
 
-    else if ((a3 | 2) == 0xA)
+    else if ((direction | 2) == 0xA)
     {
       v10 = +[UIKeyboardImpl activeInstance];
       [v10 _deactiveActiveKeys];
 
       if ([(UIUndoGestureInteraction *)self undoManagerOperationsCutCopyPasteAvailable])
       {
-        if (a3 == 10 && v6)
+        if (direction == 10 && messageCopy)
         {
-          [UIPasteboard _attemptAuthenticationWithMessage:v6];
+          [UIPasteboard _attemptAuthenticationWithMessage:messageCopy];
         }
 
-        [(UIUndoGestureInteraction *)self _endPinchWithDirection:a3];
+        [(UIUndoGestureInteraction *)self _endPinchWithDirection:direction];
         goto LABEL_5;
       }
     }
@@ -2929,7 +2929,7 @@ LABEL_16:
   return v8;
 }
 
-- (void)fullyOpenAndCloseCoverWithBeginDirection:(int64_t)a3
+- (void)fullyOpenAndCloseCoverWithBeginDirection:(int64_t)direction
 {
   v3[4] = self;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2937,7 +2937,7 @@ LABEL_16:
   v4[2] = __69__UIUndoGestureInteraction_fullyOpenAndCloseCoverWithBeginDirection___block_invoke;
   v4[3] = &unk_1E70F32F0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = direction;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __69__UIUndoGestureInteraction_fullyOpenAndCloseCoverWithBeginDirection___block_invoke_2;
@@ -2966,14 +2966,14 @@ void __69__UIUndoGestureInteraction_fullyOpenAndCloseCoverWithBeginDirection___b
   [v6 layoutIfNeeded];
 }
 
-- (void)fullyCloseCoverWithComplete:(id)a3
+- (void)fullyCloseCoverWithComplete:(id)complete
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__UIUndoGestureInteraction_fullyCloseCoverWithComplete___block_invoke;
   v3[3] = &unk_1E70F3590;
   v3[4] = self;
-  [UIView animateWithDuration:0 delay:v3 options:a3 animations:0.1 completion:0.0];
+  [UIView animateWithDuration:0 delay:v3 options:complete animations:0.1 completion:0.0];
 }
 
 void __56__UIUndoGestureInteraction_fullyCloseCoverWithComplete___block_invoke(uint64_t a1)
@@ -2997,35 +2997,35 @@ void __56__UIUndoGestureInteraction_fullyCloseCoverWithComplete___block_invoke(u
   [v7 layoutIfNeeded];
 }
 
-- (void)animateSpringCoverWithSuccess:(BOOL)a3 direction:(int64_t)a4 remainingDistanceToTravel:(double)a5
+- (void)animateSpringCoverWithSuccess:(BOOL)success direction:(int64_t)direction remainingDistanceToTravel:(double)travel
 {
-  if (a3 && ([(UIUndoGestureInteraction *)self performActionWithDirection:a4], a5 > 0.0))
+  if (success && ([(UIUndoGestureInteraction *)self performActionWithDirection:direction], travel > 0.0))
   {
 
-    [(UIUndoGestureInteraction *)self fullyOpenAndCloseCoverWithBeginDirection:a4];
+    [(UIUndoGestureInteraction *)self fullyOpenAndCloseCoverWithBeginDirection:direction];
   }
 
   else
   {
 
-    [(UIUndoGestureInteraction *)self fullyCloseCoverWithComplete:0, a4, a5];
+    [(UIUndoGestureInteraction *)self fullyCloseCoverWithComplete:0, direction, travel];
   }
 }
 
 - (BOOL)canUndo
 {
-  v2 = [(UIUndoGestureInteraction *)self _undoManager];
-  v3 = [v2 canUndo];
+  _undoManager = [(UIUndoGestureInteraction *)self _undoManager];
+  canUndo = [_undoManager canUndo];
 
-  return v3;
+  return canUndo;
 }
 
 - (BOOL)canRedo
 {
-  v2 = [(UIUndoGestureInteraction *)self _undoManager];
-  v3 = [v2 canRedo];
+  _undoManager = [(UIUndoGestureInteraction *)self _undoManager];
+  canRedo = [_undoManager canRedo];
 
-  return v3;
+  return canRedo;
 }
 
 - (void)_updateHUDControlState
@@ -3035,46 +3035,46 @@ void __56__UIUndoGestureInteraction_fullyCloseCoverWithComplete___block_invoke(u
     v3 = +[UIKeyboardImpl activeInstance];
     [v3 setEditingTraitsMarkedDirty:1];
 
-    v4 = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
-    [v4 updateHUDControlState];
+    undoInteractiveHUD = [(UIUndoGestureInteraction *)self undoInteractiveHUD];
+    [undoInteractiveHUD updateHUDControlState];
   }
 }
 
-- (void)undo:(BOOL)a3
+- (void)undo:(BOOL)undo
 {
-  v3 = [(UIUndoGestureInteraction *)self _undoManager];
-  if ([v3 canUndo])
+  _undoManager = [(UIUndoGestureInteraction *)self _undoManager];
+  if ([_undoManager canUndo])
   {
-    [v3 undo];
+    [_undoManager undo];
   }
 }
 
-- (void)redo:(BOOL)a3
+- (void)redo:(BOOL)redo
 {
-  v3 = [(UIUndoGestureInteraction *)self _undoManager];
-  if ([v3 canRedo])
+  _undoManager = [(UIUndoGestureInteraction *)self _undoManager];
+  if ([_undoManager canRedo])
   {
-    [v3 redo];
+    [_undoManager redo];
   }
 }
 
-- (id)responderForOperation:(SEL)a3 withSender:(id)a4
+- (id)responderForOperation:(SEL)operation withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(UIUndoGestureInteraction *)self currentResponder];
-  if (([v7 canPerformAction:a3 withSender:v6] & 1) == 0)
+  senderCopy = sender;
+  currentResponder = [(UIUndoGestureInteraction *)self currentResponder];
+  if (([currentResponder canPerformAction:operation withSender:senderCopy] & 1) == 0)
   {
-    v8 = [UIApp _unswizzledTargetInChainForAction:a3 sender:v6];
+    v8 = [UIApp _unswizzledTargetInChainForAction:operation sender:senderCopy];
     if (!v8)
     {
       goto LABEL_5;
     }
 
-    v7 = v8;
+    currentResponder = v8;
   }
 
-  v7 = v7;
-  v8 = v7;
+  currentResponder = currentResponder;
+  v8 = currentResponder;
 LABEL_5:
 
   return v8;
@@ -3083,20 +3083,20 @@ LABEL_5:
 - (UIKBTextEditingTraits)editingTraits
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [(UIUndoGestureInteraction *)self currentResponder];
-  v5 = [(UIKBTextEditingTraits *)self->_editingTraits firstResponder];
+  currentResponder = [(UIUndoGestureInteraction *)self currentResponder];
+  firstResponder = [(UIKBTextEditingTraits *)self->_editingTraits firstResponder];
 
   v6 = _UIMainBundleIdentifier();
   v7 = [(UIUndoGestureInteraction *)self bundleIniWorkFamily:v6];
 
-  if (v4 && (!self->_editingTraits || v5 != v4 || !v3 || (([v3 editingTraitsMarkedDirty] | v7) & 1) != 0))
+  if (currentResponder && (!self->_editingTraits || firstResponder != currentResponder || !v3 || (([v3 editingTraitsMarkedDirty] | v7) & 1) != 0))
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __41__UIUndoGestureInteraction_editingTraits__block_invoke;
     v13[3] = &unk_1E7117648;
     v13[4] = self;
-    v8 = [UIKBTextEditingTraits traitsForEditingInteractionWithFirstResponder:v4 canRespondBlock:v13 keyMaskFlags:2];
+    v8 = [UIKBTextEditingTraits traitsForEditingInteractionWithFirstResponder:currentResponder canRespondBlock:v13 keyMaskFlags:2];
     editingTraits = self->_editingTraits;
     self->_editingTraits = v8;
 
@@ -3122,53 +3122,53 @@ BOOL __41__UIUndoGestureInteraction_editingTraits__block_invoke(uint64_t a1, uin
 
 - (BOOL)canCut
 {
-  v3 = [(UIUndoGestureInteraction *)self editingTraits];
-  if (v3)
+  editingTraits = [(UIUndoGestureInteraction *)self editingTraits];
+  if (editingTraits)
   {
-    v4 = [(UIUndoGestureInteraction *)self editingTraits];
-    v5 = [v4 canCut];
+    editingTraits2 = [(UIUndoGestureInteraction *)self editingTraits];
+    canCut = [editingTraits2 canCut];
   }
 
   else
   {
-    v5 = 0;
+    canCut = 0;
   }
 
-  return v5;
+  return canCut;
 }
 
 - (BOOL)canCopy
 {
-  v3 = [(UIUndoGestureInteraction *)self editingTraits];
-  if (v3)
+  editingTraits = [(UIUndoGestureInteraction *)self editingTraits];
+  if (editingTraits)
   {
-    v4 = [(UIUndoGestureInteraction *)self editingTraits];
-    v5 = [v4 canCopy];
+    editingTraits2 = [(UIUndoGestureInteraction *)self editingTraits];
+    canCopy = [editingTraits2 canCopy];
   }
 
   else
   {
-    v5 = 0;
+    canCopy = 0;
   }
 
-  return v5;
+  return canCopy;
 }
 
 - (BOOL)canPaste
 {
-  v3 = [(UIUndoGestureInteraction *)self editingTraits];
-  if (v3)
+  editingTraits = [(UIUndoGestureInteraction *)self editingTraits];
+  if (editingTraits)
   {
-    v4 = [(UIUndoGestureInteraction *)self editingTraits];
-    v5 = [v4 canPaste];
+    editingTraits2 = [(UIUndoGestureInteraction *)self editingTraits];
+    canPaste = [editingTraits2 canPaste];
   }
 
   else
   {
-    v5 = 0;
+    canPaste = 0;
   }
 
-  return v5;
+  return canPaste;
 }
 
 - (void)cutOperation
@@ -3177,13 +3177,13 @@ BOOL __41__UIUndoGestureInteraction_editingTraits__block_invoke(uint64_t a1, uin
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _dataOwnerForCopy];
+    _dataOwnerForCopy = [v3 _dataOwnerForCopy];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__UIUndoGestureInteraction_cutOperation__block_invoke;
     v6[3] = &unk_1E70F3590;
     v7 = v4;
-    [UIPasteboard _performAsDataOwner:v5 block:v6];
+    [UIPasteboard _performAsDataOwner:_dataOwnerForCopy block:v6];
   }
 
   [(UIUndoGestureInteraction *)self _updateHUDControlState];
@@ -3195,13 +3195,13 @@ BOOL __41__UIUndoGestureInteraction_editingTraits__block_invoke(uint64_t a1, uin
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _dataOwnerForCopy];
+    _dataOwnerForCopy = [v3 _dataOwnerForCopy];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __41__UIUndoGestureInteraction_copyOperation__block_invoke;
     v6[3] = &unk_1E70F3590;
     v7 = v4;
-    [UIPasteboard _performAsDataOwner:v5 block:v6];
+    [UIPasteboard _performAsDataOwner:_dataOwnerForCopy block:v6];
   }
 
   [(UIUndoGestureInteraction *)self _updateHUDControlState];
@@ -3224,43 +3224,43 @@ BOOL __41__UIUndoGestureInteraction_editingTraits__block_invoke(uint64_t a1, uin
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 _dataOwnerForPaste];
+    _dataOwnerForPaste = [v6 _dataOwnerForPaste];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __42__UIUndoGestureInteraction_pasteOperation__block_invoke;
     v9[3] = &unk_1E70F3590;
     v10 = v7;
-    [UIPasteboard _performAsDataOwner:v8 block:v9];
+    [UIPasteboard _performAsDataOwner:_dataOwnerForPaste block:v9];
   }
 
   [(UIUndoGestureInteraction *)self _updateHUDControlState];
 }
 
-+ (void)showSecurePasteConfirmationWithCompletionHandler:(id)a3
++ (void)showSecurePasteConfirmationWithCompletionHandler:(id)handler
 {
   v3 = UIApp;
-  v4 = a3;
-  v5 = [v3 keyWindow];
-  v9 = [v5 windowScene];
+  handlerCopy = handler;
+  keyWindow = [v3 keyWindow];
+  windowScene = [keyWindow windowScene];
 
-  v6 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:v9];
-  v7 = [v6 editingOverlayViewController];
-  v8 = [v7 undoInteraction];
+  v6 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:windowScene];
+  editingOverlayViewController = [v6 editingOverlayViewController];
+  undoInteraction = [editingOverlayViewController undoInteraction];
 
-  [v8 setPasteConfirmationAction:v4];
-  [v8 setPasteConfirmationHUDVisibility:1];
+  [undoInteraction setPasteConfirmationAction:handlerCopy];
+  [undoInteraction setPasteConfirmationHUDVisibility:1];
 }
 
 + (BOOL)_isKeyWindowSceneSessionRoleValidForTutorial
 {
   v2 = +[UIWindow _applicationKeyWindow];
-  v3 = [v2 windowScene];
-  v4 = [v3 session];
-  v5 = [v4 role];
+  windowScene = [v2 windowScene];
+  session = [windowScene session];
+  role = [session role];
 
-  if (v5)
+  if (role)
   {
-    v6 = [v5 isEqualToString:@"SBSUIWindowSceneSessionRoleSystemNotes"] ^ 1;
+    v6 = [role isEqualToString:@"SBSUIWindowSceneSessionRoleSystemNotes"] ^ 1;
   }
 
   else
@@ -3271,13 +3271,13 @@ BOOL __41__UIUndoGestureInteraction_editingTraits__block_invoke(uint64_t a1, uin
   return v6;
 }
 
-+ (void)presentProductivityGestureTutorialIfNeededWithCompletion:(id)a3
++ (void)presentProductivityGestureTutorialIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _UIMainBundleIdentifier();
   v6 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v7 = [v6 preferencesActions];
-  if ([v7 oneTimeActionCompleted:*MEMORY[0x1E69D9838]])
+  preferencesActions = [v6 preferencesActions];
+  if ([preferencesActions oneTimeActionCompleted:*MEMORY[0x1E69D9838]])
   {
   }
 
@@ -3285,22 +3285,22 @@ BOOL __41__UIUndoGestureInteraction_editingTraits__block_invoke(uint64_t a1, uin
   {
     v8 = [v5 isEqualToString:@"com.apple.purplebuddy"];
 
-    if ((v8 & 1) == 0 && [a1 _isKeyWindowSceneSessionRoleValidForTutorial])
+    if ((v8 & 1) == 0 && [self _isKeyWindowSceneSessionRoleValidForTutorial])
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __85__UIUndoGestureInteraction_presentProductivityGestureTutorialIfNeededWithCompletion___block_invoke;
       block[3] = &unk_1E70F0F78;
-      v10 = v4;
+      v10 = completionCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
 
       goto LABEL_8;
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_8:
@@ -3319,24 +3319,24 @@ void __85__UIUndoGestureInteraction_presentProductivityGestureTutorialIfNeededWi
   [v4 didTriggerOneTimeAction:*MEMORY[0x1E69D9838]];
 }
 
-+ (void)presentProductivityGestureTutorialInlineWithCompletion:(id)a3
++ (void)presentProductivityGestureTutorialInlineWithCompletion:(id)completion
 {
-  v10 = a3;
+  completionCopy = completion;
   if (!+[UIKeyboard isOnScreen](UIKeyboard, "isOnScreen") || (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1 || +[UIKeyboardImpl isFloating])
   {
-    [objc_opt_class() presentProductivityGestureTutorialIfNeededWithCompletion:v10];
+    [objc_opt_class() presentProductivityGestureTutorialIfNeededWithCompletion:completionCopy];
     goto LABEL_5;
   }
 
   v4 = _UIMainBundleIdentifier();
   v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v6 = [v5 preferencesActions];
+  preferencesActions = [v5 preferencesActions];
   v7 = *MEMORY[0x1E69D9838];
-  if (([v6 oneTimeActionCompleted:*MEMORY[0x1E69D9838]] & 1) == 0)
+  if (([preferencesActions oneTimeActionCompleted:*MEMORY[0x1E69D9838]] & 1) == 0)
   {
     v8 = [v4 isEqualToString:@"com.apple.purplebuddy"];
 
-    if ((v8 & 1) != 0 || ![a1 _isKeyWindowSceneSessionRoleValidForTutorial])
+    if ((v8 & 1) != 0 || ![self _isKeyWindowSceneSessionRoleValidForTutorial])
     {
       goto LABEL_13;
     }
@@ -3345,14 +3345,14 @@ void __85__UIUndoGestureInteraction_presentProductivityGestureTutorialIfNeededWi
     [v9 presentEditingIntroductionView];
 
     v5 = +[UIKeyboardPreferencesController sharedPreferencesController];
-    v6 = [v5 preferencesActions];
-    [v6 didTriggerOneTimeAction:v7];
+    preferencesActions = [v5 preferencesActions];
+    [preferencesActions didTriggerOneTimeAction:v7];
   }
 
 LABEL_13:
-  if (v10)
+  if (completionCopy)
   {
-    v10[2]();
+    completionCopy[2]();
   }
 
 LABEL_5:

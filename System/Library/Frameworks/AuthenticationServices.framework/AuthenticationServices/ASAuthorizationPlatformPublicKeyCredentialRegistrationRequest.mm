@@ -1,6 +1,6 @@
 @interface ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest
 + (id)emptyExtensions;
-- (ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest)initWithCoder:(id)a3;
+- (ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest)initWithCoder:(id)coder;
 - (ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput)__largeBlobSwift;
 - (ASAuthorizationPublicKeyCredentialPRFRegistrationInput)__prfSwift;
 - (ASCPublicKeyCredentialCreationOptions)coreCredentialCreationOptions;
@@ -13,64 +13,64 @@
 - (NSString)displayName;
 - (NSString)name;
 - (NSString)userVerificationPreference;
-- (id)_initWithProvider:(id)a3 relyingPartyIdentifier:(id)a4 challenge:(id)a5 name:(id)a6 userID:(id)a7 clientData:(id)a8 requestStyle:(int64_t)a9;
-- (void)__setLargeBlobSwift:(id)a3;
-- (void)__setPRFSwift:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttestationPreference:(id)a3;
-- (void)setChallenge:(id)a3;
-- (void)setClientData:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setExcludedCredentials:(id)a3;
-- (void)setName:(id)a3;
-- (void)setShouldShowHybridTransport:(BOOL)a3;
-- (void)setUserID:(id)a3;
-- (void)setUserVerificationPreference:(id)a3;
+- (id)_initWithProvider:(id)provider relyingPartyIdentifier:(id)identifier challenge:(id)challenge name:(id)name userID:(id)d clientData:(id)data requestStyle:(int64_t)style;
+- (void)__setLargeBlobSwift:(id)swift;
+- (void)__setPRFSwift:(id)swift;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttestationPreference:(id)preference;
+- (void)setChallenge:(id)challenge;
+- (void)setClientData:(id)data;
+- (void)setDisplayName:(id)name;
+- (void)setExcludedCredentials:(id)credentials;
+- (void)setName:(id)name;
+- (void)setShouldShowHybridTransport:(BOOL)transport;
+- (void)setUserID:(id)d;
+- (void)setUserVerificationPreference:(id)preference;
 @end
 
 @implementation ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest
 
-- (id)_initWithProvider:(id)a3 relyingPartyIdentifier:(id)a4 challenge:(id)a5 name:(id)a6 userID:(id)a7 clientData:(id)a8 requestStyle:(int64_t)a9
+- (id)_initWithProvider:(id)provider relyingPartyIdentifier:(id)identifier challenge:(id)challenge name:(id)name userID:(id)d clientData:(id)data requestStyle:(int64_t)style
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  challengeCopy = challenge;
+  nameCopy = name;
+  dCopy = d;
+  dataCopy = data;
   v34.receiver = self;
   v34.super_class = ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest;
-  v20 = [(ASAuthorizationRequest *)&v34 initWithProvider:a3];
+  v20 = [(ASAuthorizationRequest *)&v34 initWithProvider:provider];
   if (v20)
   {
-    v21 = [v15 copy];
+    v21 = [identifierCopy copy];
     relyingPartyIdentifier = v20->_relyingPartyIdentifier;
     v20->_relyingPartyIdentifier = v21;
 
-    v23 = [v16 copy];
+    v23 = [challengeCopy copy];
     challenge = v20->_challenge;
     v20->_challenge = v23;
 
     displayName = v20->_displayName;
     v20->_displayName = &stru_1F28DE020;
 
-    v26 = [v17 copy];
+    v26 = [nameCopy copy];
     name = v20->_name;
     v20->_name = v26;
 
-    v28 = [v18 copy];
+    v28 = [dCopy copy];
     userID = v20->_userID;
     v20->_userID = v28;
 
     objc_storeStrong(&v20->_userVerificationPreference, @"preferred");
     objc_storeStrong(&v20->_attestationPreference, @"none");
     v20->_internalLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v20->_clientData, a8);
+    objc_storeStrong(&v20->_clientData, data);
     v20->_shouldShowHybridTransport = 1;
-    v30 = [objc_opt_class() emptyExtensions];
+    emptyExtensions = [objc_opt_class() emptyExtensions];
     extensions = v20->_extensions;
-    v20->_extensions = v30;
+    v20->_extensions = emptyExtensions;
 
-    v20->_requestStyle = a9;
+    v20->_requestStyle = style;
     v32 = v20;
   }
 
@@ -79,22 +79,22 @@
 
 - (ASCPublicKeyCredentialCreationOptions)coreCredentialCreationOptions
 {
-  v3 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self excludedCredentials];
-  v17 = [v3 safari_mapObjectsUsingBlock:&__block_literal_global_17];
+  excludedCredentials = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self excludedCredentials];
+  v17 = [excludedCredentials safari_mapObjectsUsingBlock:&__block_literal_global_17];
 
   v14 = objc_alloc(MEMORY[0x1E698DFF8]);
-  v16 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self challenge];
-  v18 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self clientData];
-  v13 = [v18 jsonForOperationType:0];
-  v4 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self relyingPartyIdentifier];
-  v5 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self name];
-  v6 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self userID];
-  v7 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self displayName];
-  v8 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self attestationPreference];
-  v9 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self userVerificationPreference];
+  challenge = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self challenge];
+  clientData = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self clientData];
+  v13 = [clientData jsonForOperationType:0];
+  relyingPartyIdentifier = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self relyingPartyIdentifier];
+  name = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self name];
+  userID = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self userID];
+  displayName = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self displayName];
+  attestationPreference = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self attestationPreference];
+  userVerificationPreference = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self userVerificationPreference];
   extensions = self->_extensions;
-  v11 = [(ASPublicKeyCredentialClientData *)self->_clientData origin];
-  v15 = [v14 initWithChallenge:v16 clientDataJSON:v13 clientDataHash:0 relyingPartyIdentifier:v4 userName:v5 userIdentifier:v6 userDisplayName:v7 supportedAlgorithmIdentifiers:&unk_1F28F0500 attestationPreference:v8 userVerificationPreference:v9 excludedCredentials:v17 extensions:extensions origin:v11];
+  origin = [(ASPublicKeyCredentialClientData *)self->_clientData origin];
+  v15 = [v14 initWithChallenge:challenge clientDataJSON:v13 clientDataHash:0 relyingPartyIdentifier:relyingPartyIdentifier userName:name userIdentifier:userID userDisplayName:displayName supportedAlgorithmIdentifiers:&unk_1F28F0500 attestationPreference:attestationPreference userVerificationPreference:userVerificationPreference excludedCredentials:v17 extensions:extensions origin:origin];
 
   [v15 setShouldHideHybrid:!self->_shouldShowHybridTransport];
 
@@ -113,18 +113,18 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return v6;
 }
 
-- (ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest)initWithCoder:(id)a3
+- (ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"challenge"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"userVerificationPreference"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"attestationPreference"];
-  v11 = [v3 decodeIntegerForKey:@"requestStyle"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"clientData"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"challenge"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userVerificationPreference"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attestationPreference"];
+  v11 = [coderCopy decodeIntegerForKey:@"requestStyle"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientData"];
 
   v13 = [[ASAuthorizationPlatformPublicKeyCredentialProvider alloc] initWithRelyingPartyIdentifier:v4];
   v14 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)self _initWithProvider:v13 relyingPartyIdentifier:v4 challenge:v8 name:v7 userID:v5 clientData:v12 requestStyle:v11];
@@ -140,19 +140,19 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   relyingPartyIdentifier = self->_relyingPartyIdentifier;
-  v5 = a3;
-  [v5 encodeObject:relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
-  [v5 encodeObject:self->_userID forKey:@"userID"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_challenge forKey:@"challenge"];
-  [v5 encodeObject:self->_userVerificationPreference forKey:@"userVerificationPreference"];
-  [v5 encodeObject:self->_attestationPreference forKey:@"attestationPreference"];
-  [v5 encodeObject:self->_clientData forKey:@"clientData"];
-  [v5 encodeInteger:self->_requestStyle forKey:@"requestStyle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
+  [coderCopy encodeObject:self->_userID forKey:@"userID"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_challenge forKey:@"challenge"];
+  [coderCopy encodeObject:self->_userVerificationPreference forKey:@"userVerificationPreference"];
+  [coderCopy encodeObject:self->_attestationPreference forKey:@"attestationPreference"];
+  [coderCopy encodeObject:self->_clientData forKey:@"clientData"];
+  [coderCopy encodeInteger:self->_requestStyle forKey:@"requestStyle"];
 }
 
 - (NSData)userID
@@ -164,12 +164,12 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return v3;
 }
 
-- (void)setUserID:(id)a3
+- (void)setUserID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_internalLock);
   userID = self->_userID;
-  self->_userID = v4;
+  self->_userID = dCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -183,12 +183,12 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_internalLock);
   name = self->_name;
-  self->_name = v4;
+  self->_name = nameCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -202,12 +202,12 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return v3;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_internalLock);
   displayName = self->_displayName;
-  self->_displayName = v4;
+  self->_displayName = nameCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -221,12 +221,12 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return v3;
 }
 
-- (void)setChallenge:(id)a3
+- (void)setChallenge:(id)challenge
 {
-  v4 = a3;
+  challengeCopy = challenge;
   os_unfair_lock_lock(&self->_internalLock);
   challenge = self->_challenge;
-  self->_challenge = v4;
+  self->_challenge = challengeCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -240,12 +240,12 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return v3;
 }
 
-- (void)setUserVerificationPreference:(id)a3
+- (void)setUserVerificationPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   os_unfair_lock_lock(&self->_internalLock);
   userVerificationPreference = self->_userVerificationPreference;
-  self->_userVerificationPreference = v4;
+  self->_userVerificationPreference = preferenceCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -259,12 +259,12 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return v3;
 }
 
-- (void)setAttestationPreference:(id)a3
+- (void)setAttestationPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   os_unfair_lock_lock(&self->_internalLock);
   attestationPreference = self->_attestationPreference;
-  self->_attestationPreference = v4;
+  self->_attestationPreference = preferenceCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -278,12 +278,12 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return v3;
 }
 
-- (void)setClientData:(id)a3
+- (void)setClientData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_internalLock);
   clientData = self->_clientData;
-  self->_clientData = v4;
+  self->_clientData = dataCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -297,12 +297,12 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return v3;
 }
 
-- (void)setExcludedCredentials:(id)a3
+- (void)setExcludedCredentials:(id)credentials
 {
-  v4 = a3;
+  credentialsCopy = credentials;
   os_unfair_lock_lock(&self->_internalLock);
   excludedCredentials = self->_excludedCredentials;
-  self->_excludedCredentials = v4;
+  self->_excludedCredentials = credentialsCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -315,49 +315,49 @@ id __94__ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest_coreCrede
   return shouldShowHybridTransport;
 }
 
-- (void)setShouldShowHybridTransport:(BOOL)a3
+- (void)setShouldShowHybridTransport:(BOOL)transport
 {
   os_unfair_lock_lock(&self->_internalLock);
-  self->_shouldShowHybridTransport = a3;
+  self->_shouldShowHybridTransport = transport;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
 
 - (ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput)__largeBlobSwift
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest.__largeBlobSwift.getter();
 
   return v3;
 }
 
-- (void)__setLargeBlobSwift:(id)a3
+- (void)__setLargeBlobSwift:(id)swift
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B1D05C80(a3);
+  swiftCopy = swift;
+  selfCopy = self;
+  sub_1B1D05C80(swift);
 }
 
 - (ASAuthorizationPublicKeyCredentialPRFRegistrationInput)__prfSwift
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest.__prfSwift.getter();
 
   return v3;
 }
 
-- (void)__setPRFSwift:(id)a3
+- (void)__setPRFSwift:(id)swift
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB7756D0, &qword_1B1D88840);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = self;
-  v10 = a3;
-  v11 = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)v9 extensions];
-  if (v10)
+  selfCopy = self;
+  swiftCopy = swift;
+  extensions = [(ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest *)selfCopy extensions];
+  if (swiftCopy)
   {
-    v12 = v10;
+    v12 = swiftCopy;
     sub_1B1D0E548();
 
     v13 = sub_1B1D7BBFC();

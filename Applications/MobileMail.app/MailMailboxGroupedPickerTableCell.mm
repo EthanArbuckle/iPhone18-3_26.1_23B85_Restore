@@ -1,14 +1,14 @@
 @interface MailMailboxGroupedPickerTableCell
-- (id)nameForMailbox:(id)a3;
-- (int)levelForMailbox:(id)a3;
+- (id)nameForMailbox:(id)mailbox;
+- (int)levelForMailbox:(id)mailbox;
 @end
 
 @implementation MailMailboxGroupedPickerTableCell
 
-- (int)levelForMailbox:(id)a3
+- (int)levelForMailbox:(id)mailbox
 {
-  v4 = a3;
-  if ([v4 mailboxType] || -[MailMailboxGroupedPickerTableCell alwaysDisplayAsTopLevel](self, "alwaysDisplayAsTopLevel"))
+  mailboxCopy = mailbox;
+  if ([mailboxCopy mailboxType] || -[MailMailboxGroupedPickerTableCell alwaysDisplayAsTopLevel](self, "alwaysDisplayAsTopLevel"))
   {
     v5 = 0;
   }
@@ -16,25 +16,25 @@
   else
   {
     v7 = +[MailChangeManager sharedChangeManager];
-    v5 = [v7 levelForMailbox:v4];
+    v5 = [v7 levelForMailbox:mailboxCopy];
   }
 
   return v5;
 }
 
-- (id)nameForMailbox:(id)a3
+- (id)nameForMailbox:(id)mailbox
 {
-  v3 = a3;
-  if ([v3 mailboxType] == 7)
+  mailboxCopy = mailbox;
+  if ([mailboxCopy mailboxType] == 7)
   {
     v4 = +[MailChangeManager sharedChangeManager];
-    [v4 displayNameUsingSpecialNamesForMailbox:v3];
+    [v4 displayNameUsingSpecialNamesForMailbox:mailboxCopy];
   }
 
   else
   {
     v4 = +[MailChangeManager sharedChangeManager];
-    [v4 displayNameForMailbox:v3];
+    [v4 displayNameForMailbox:mailboxCopy];
   }
   v5 = ;
 

@@ -1,26 +1,26 @@
 @interface PCSDelayedAction
-- (PCSDelayedAction)initWithLabel:(id)a3 delay:(unint64_t)a4 operationQueue:(id)a5;
-- (void)setAction:(id)a3;
-- (void)setHoldTransaction:(BOOL)a3;
+- (PCSDelayedAction)initWithLabel:(id)label delay:(unint64_t)delay operationQueue:(id)queue;
+- (void)setAction:(id)action;
+- (void)setHoldTransaction:(BOOL)transaction;
 - (void)trigger;
 @end
 
 @implementation PCSDelayedAction
 
-- (PCSDelayedAction)initWithLabel:(id)a3 delay:(unint64_t)a4 operationQueue:(id)a5
+- (PCSDelayedAction)initWithLabel:(id)label delay:(unint64_t)delay operationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
+  labelCopy = label;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = PCSDelayedAction;
   v10 = [(PCSDelayedAction *)&v20 init];
   v11 = v10;
   if (v10)
   {
-    [(PCSDelayedAction *)v10 setLabel:v8];
+    [(PCSDelayedAction *)v10 setLabel:labelCopy];
     objc_initWeak(&location, v11);
-    objc_storeStrong(&v11->_operationQueue, a5);
-    v11->_delayInSeconds = a4;
+    objc_storeStrong(&v11->_operationQueue, queue);
+    v11->_delayInSeconds = delay;
     v12 = sub_100014EFC();
     v13 = dispatch_source_create(&_dispatch_source_type_data_add, 0, 0, v12);
     waitSource = v11->_waitSource;
@@ -40,11 +40,11 @@
   return v11;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
   if (!self->_running)
   {
-    v5 = objc_retainBlock(a3);
+    v5 = objc_retainBlock(action);
     actionOnTrigger = self->_actionOnTrigger;
     self->_actionOnTrigger = v5;
 
@@ -52,7 +52,7 @@
   }
 }
 
-- (void)setHoldTransaction:(BOOL)a3
+- (void)setHoldTransaction:(BOOL)transaction
 {
   v5 = sub_100014EFC();
   v6[0] = _NSConcreteStackBlock;
@@ -60,7 +60,7 @@
   v6[2] = sub_1000152A0;
   v6[3] = &unk_100039210;
   v6[4] = self;
-  v7 = a3;
+  transactionCopy = transaction;
   dispatch_sync(v5, v6);
 }
 

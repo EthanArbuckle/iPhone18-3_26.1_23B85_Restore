@@ -1,15 +1,15 @@
 @interface HFAnalyticsDiscoverTabContentViewedEvent
-- (HFAnalyticsDiscoverTabContentViewedEvent)initWithData:(id)a3;
+- (HFAnalyticsDiscoverTabContentViewedEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsDiscoverTabContentViewedEvent
 
-- (HFAnalyticsDiscoverTabContentViewedEvent)initWithData:(id)a3
+- (HFAnalyticsDiscoverTabContentViewedEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"discoverTabContentViewedIDKey"];
+  v5 = [dataCopy objectForKeyedSubscript:@"discoverTabContentViewedIDKey"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -23,7 +23,7 @@
   v7 = v6;
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"discoverTabContentViewedLocaleKey"];
+  v8 = [dataCopy objectForKeyedSubscript:@"discoverTabContentViewedLocaleKey"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -54,14 +54,14 @@
 {
   v8.receiver = self;
   v8.super_class = HFAnalyticsDiscoverTabContentViewedEvent;
-  v3 = [(HFAnalyticsEvent *)&v8 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v8 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsDiscoverTabContentViewedEvent *)self contentID];
-  [v4 na_safeSetObject:v5 forKey:@"id"];
+  contentID = [(HFAnalyticsDiscoverTabContentViewedEvent *)self contentID];
+  [v4 na_safeSetObject:contentID forKey:@"id"];
 
-  v6 = [(HFAnalyticsDiscoverTabContentViewedEvent *)self locale];
-  [v4 na_safeSetObject:v6 forKey:@"locale"];
+  locale = [(HFAnalyticsDiscoverTabContentViewedEvent *)self locale];
+  [v4 na_safeSetObject:locale forKey:@"locale"];
 
   return v4;
 }

@@ -1,15 +1,15 @@
 @interface ENCypher_AES128
-+ (id)_decryptData:(id)a3 withKey:(id)a4;
-+ (id)_encryptData:(id)a3 withKey:(id)a4;
-+ (id)_randomDataWithLength:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (ENCypher_AES128)initWithCoder:(id)a3;
-- (ENCypher_AES128)initWithKey:(id)a3;
++ (id)_decryptData:(id)data withKey:(id)key;
++ (id)_encryptData:(id)data withKey:(id)key;
++ (id)_randomDataWithLength:(int64_t)length;
+- (BOOL)isEqual:(id)equal;
+- (ENCypher_AES128)initWithCoder:(id)coder;
+- (ENCypher_AES128)initWithKey:(id)key;
 - (ENCypher_AES128)initWithRandomKey;
-- (id)cypherData:(id)a3 withAccountIdentity:(id)a4 identifier:(id *)a5 error:(id *)a6;
-- (id)decypherData:(id)a3 withAccountIdentity:(id)a4 signingDevicePublicKey:(id)a5 identifier:(id)a6 error:(id *)a7;
+- (id)cypherData:(id)data withAccountIdentity:(id)identity identifier:(id *)identifier error:(id *)error;
+- (id)decypherData:(id)data withAccountIdentity:(id)identity signingDevicePublicKey:(id)key identifier:(id)identifier error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENCypher_AES128
@@ -22,28 +22,28 @@
   return v4;
 }
 
-- (ENCypher_AES128)initWithKey:(id)a3
+- (ENCypher_AES128)initWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = ENCypher_AES128;
   v6 = [(ENCypher_AES128 *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_key, a3);
+    objc_storeStrong(&v6->_key, key);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 key];
+    v5 = [equalCopy key];
     v6 = [(ENCypher_AES128 *)self key];
     v7 = [v5 isEqual:v6];
   }
@@ -64,53 +64,53 @@
   return v3;
 }
 
-- (ENCypher_AES128)initWithCoder:(id)a3
+- (ENCypher_AES128)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ENCypher_AES128KeyKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ENCypher_AES128KeyKey"];
 
   v6 = [(ENCypher_AES128 *)self initWithKey:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ENCypher_AES128 *)self key];
-  [v4 encodeObject:v5 forKey:@"ENCypher_AES128KeyKey"];
+  [coderCopy encodeObject:v5 forKey:@"ENCypher_AES128KeyKey"];
 }
 
-- (id)cypherData:(id)a3 withAccountIdentity:(id)a4 identifier:(id *)a5 error:(id *)a6
+- (id)cypherData:(id)data withAccountIdentity:(id)identity identifier:(id *)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (!a5)
+  dataCopy = data;
+  identityCopy = identity;
+  if (!identifier)
   {
     goto LABEL_5;
   }
 
-  v12 = *a5;
-  if (!*a5 || (-[ENCypher_AES128 identifier](self, "identifier"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v12 isEqualToString:v13], v13, v14))
+  v12 = *identifier;
+  if (!*identifier || (-[ENCypher_AES128 identifier](self, "identifier"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v12 isEqualToString:v13], v13, v14))
   {
-    *a5 = [(ENCypher_AES128 *)self identifier];
+    *identifier = [(ENCypher_AES128 *)self identifier];
 LABEL_5:
     v15 = objc_opt_class();
     v16 = [(ENCypher_AES128 *)self key];
-    v17 = [v15 _encryptData:v10 withKey:v16];
+    v17 = [v15 _encryptData:dataCopy withKey:v16];
 
     goto LABEL_6;
   }
 
-  if (a6)
+  if (error)
   {
     v19 = +[ENLog groupContext];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
-      sub_24A059728(a5, self, v19);
+      sub_24A059728(identifier, self, v19);
     }
 
     [MEMORY[0x277CCA9B8] errorWithDomain:@"ENCypherErrorDomain" code:-1001 userInfo:0];
-    *a6 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -123,18 +123,18 @@ LABEL_6:
   return v17;
 }
 
-- (id)decypherData:(id)a3 withAccountIdentity:(id)a4 signingDevicePublicKey:(id)a5 identifier:(id)a6 error:(id *)a7
+- (id)decypherData:(id)data withAccountIdentity:(id)identity signingDevicePublicKey:(id)key identifier:(id)identifier error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v15 && (-[ENCypher_AES128 identifier](self, "identifier"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v15 isEqualToString:v16], v16, !v17))
+  dataCopy = data;
+  identityCopy = identity;
+  keyCopy = key;
+  identifierCopy = identifier;
+  if (identifierCopy && (-[ENCypher_AES128 identifier](self, "identifier"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [identifierCopy isEqualToString:v16], v16, !v17))
   {
-    if (a7)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"ENCypherErrorDomain" code:-1001 userInfo:0];
-      *a7 = v20 = 0;
+      *error = v20 = 0;
     }
 
     else
@@ -147,16 +147,16 @@ LABEL_6:
   {
     v18 = objc_opt_class();
     v19 = [(ENCypher_AES128 *)self key];
-    v20 = [v18 _decryptData:v12 withKey:v19];
+    v20 = [v18 _decryptData:dataCopy withKey:v19];
   }
 
   return v20;
 }
 
-+ (id)_randomDataWithLength:(int64_t)a3
++ (id)_randomDataWithLength:(int64_t)length
 {
-  v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:a3];
-  if (SecRandomCopyBytes(*MEMORY[0x277CDC540], a3, [v4 mutableBytes]))
+  v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:length];
+  if (SecRandomCopyBytes(*MEMORY[0x277CDC540], length, [v4 mutableBytes]))
   {
     v5 = 0;
   }
@@ -171,22 +171,22 @@ LABEL_6:
   return v5;
 }
 
-+ (id)_encryptData:(id)a3 withKey:(id)a4
++ (id)_encryptData:(id)data withKey:(id)key
 {
   v15 = *MEMORY[0x277D85DE8];
   memset(key, 0, sizeof(key));
-  v5 = a4;
-  v6 = a3;
-  [v5 bytes];
-  [v5 length];
+  keyCopy = key;
+  dataCopy = data;
+  [keyCopy bytes];
+  [keyCopy length];
 
   __memcpy_chk();
-  v7 = [v6 length];
+  v7 = [dataCopy length];
   dataOut = malloc_type_malloc(v7 + 16, 0x238D3D26uLL);
   v13 = 0;
-  v9 = [v6 bytes];
+  bytes = [dataCopy bytes];
 
-  if (CCCrypt(0, 0, 3u, key, 0x10uLL, 0, v9, v7, dataOut, v7 + 16, &v13))
+  if (CCCrypt(0, 0, 3u, key, 0x10uLL, 0, bytes, v7, dataOut, v7 + 16, &v13))
   {
     free(dataOut);
     v10 = 0;
@@ -202,22 +202,22 @@ LABEL_6:
   return v10;
 }
 
-+ (id)_decryptData:(id)a3 withKey:(id)a4
++ (id)_decryptData:(id)data withKey:(id)key
 {
   v15 = *MEMORY[0x277D85DE8];
   memset(key, 0, sizeof(key));
-  v5 = a4;
-  v6 = a3;
-  [v5 bytes];
-  [v5 length];
+  keyCopy = key;
+  dataCopy = data;
+  [keyCopy bytes];
+  [keyCopy length];
 
   __memcpy_chk();
-  v7 = [v6 length];
+  v7 = [dataCopy length];
   dataOut = malloc_type_malloc(v7 + 16, 0x3B692598uLL);
   v13 = 0;
-  v9 = [v6 bytes];
+  bytes = [dataCopy bytes];
 
-  if (CCCrypt(1u, 0, 3u, key, 0x10uLL, 0, v9, v7, dataOut, v7 + 16, &v13))
+  if (CCCrypt(1u, 0, 3u, key, 0x10uLL, 0, bytes, v7, dataOut, v7 + 16, &v13))
   {
     free(dataOut);
     v10 = 0;

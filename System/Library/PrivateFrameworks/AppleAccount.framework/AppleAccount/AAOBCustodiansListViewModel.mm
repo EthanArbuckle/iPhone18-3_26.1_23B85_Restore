@@ -1,6 +1,6 @@
 @interface AAOBCustodiansListViewModel
 - (AAOBCustodiansListViewModel)init;
-- (AAOBCustodiansListViewModel)initWithContacts:(id)a3;
+- (AAOBCustodiansListViewModel)initWithContacts:(id)contacts;
 - (id)contacts;
 - (void)_updatePrimaryButtonTitle;
 @end
@@ -42,14 +42,14 @@
   return v2;
 }
 
-- (AAOBCustodiansListViewModel)initWithContacts:(id)a3
+- (AAOBCustodiansListViewModel)initWithContacts:(id)contacts
 {
-  v5 = a3;
+  contactsCopy = contacts;
   v6 = [(AAOBCustodiansListViewModel *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contacts, a3);
+    objc_storeStrong(&v6->_contacts, contacts);
     [(AAOBCustodiansListViewModel *)v7 _updatePrimaryButtonTitle];
   }
 
@@ -67,16 +67,16 @@
 {
   if ([(NSArray *)self->_contacts count]== 1)
   {
-    v3 = [(NSArray *)self->_contacts firstObject];
+    firstObject = [(NSArray *)self->_contacts firstObject];
     contactsManager = self->_contactsManager;
-    v12 = v3;
-    v5 = [v3 handle];
-    v6 = [(AAContactsManager *)contactsManager contactForHandle:v5];
+    v12 = firstObject;
+    handle = [firstObject handle];
+    v6 = [(AAContactsManager *)contactsManager contactForHandle:handle];
 
     if (v6)
     {
-      v7 = [v6 phoneNumbers];
-      v8 = [v7 count];
+      phoneNumbers = [v6 phoneNumbers];
+      v8 = [phoneNumbers count];
 
       if (v8 == 1)
       {

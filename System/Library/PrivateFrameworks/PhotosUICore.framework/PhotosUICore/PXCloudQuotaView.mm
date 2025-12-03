@@ -1,61 +1,61 @@
 @interface PXCloudQuotaView
-- (CGSize)_performLayoutInWidth:(double)a3 updateSubviewFrames:(BOOL)a4;
-- (CGSize)contentViewSizeForWidth:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXCloudQuotaView)initWithContentView:(id)a3;
+- (CGSize)_performLayoutInWidth:(double)width updateSubviewFrames:(BOOL)frames;
+- (CGSize)contentViewSizeForWidth:(double)width;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXCloudQuotaView)initWithContentView:(id)view;
 - (id)contentViewFont;
 - (void)layoutSubviews;
 @end
 
 @implementation PXCloudQuotaView
 
-- (CGSize)contentViewSizeForWidth:(double)a3
+- (CGSize)contentViewSizeForWidth:(double)width
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXCloudQuotaView.m" lineNumber:93 description:{@"Method %s is a responsibility of subclass %@", "-[PXCloudQuotaView contentViewSizeForWidth:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCloudQuotaView.m" lineNumber:93 description:{@"Method %s is a responsibility of subclass %@", "-[PXCloudQuotaView contentViewSizeForWidth:]", v7}];
 
   abort();
 }
 
 - (id)contentViewFont
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCloudQuotaView.m" lineNumber:89 description:{@"Method %s is a responsibility of subclass %@", "-[PXCloudQuotaView contentViewFont]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCloudQuotaView.m" lineNumber:89 description:{@"Method %s is a responsibility of subclass %@", "-[PXCloudQuotaView contentViewFont]", v6}];
 
   abort();
 }
 
-- (CGSize)_performLayoutInWidth:(double)a3 updateSubviewFrames:(BOOL)a4
+- (CGSize)_performLayoutInWidth:(double)width updateSubviewFrames:(BOOL)frames
 {
-  v7 = [(PXCloudQuotaView *)self contentViewFont];
-  [(PXCloudQuotaView *)self contentViewSizeForWidth:a3];
+  contentViewFont = [(PXCloudQuotaView *)self contentViewFont];
+  [(PXCloudQuotaView *)self contentViewSizeForWidth:width];
   UICeilToViewScale();
   v9 = v8;
-  [v7 ascender];
+  [contentViewFont ascender];
   UICeilToViewScale();
   v11 = v10;
-  if (a4)
+  if (frames)
   {
-    [(UIView *)self->_contentView setFrame:0.0, v10, a3, v9];
+    [(UIView *)self->_contentView setFrame:0.0, v10, width, v9];
   }
 
   v17.origin.x = 0.0;
   v17.origin.y = v11;
-  v17.size.width = a3;
+  v17.size.width = width;
   v17.size.height = v9;
   CGRectGetMaxY(v17);
-  [v7 descender];
+  [contentViewFont descender];
   UICeilToViewScale();
   v13 = v12;
 
-  v14 = a3;
+  widthCopy = width;
   v15 = v13;
   result.height = v15;
-  result.width = v14;
+  result.width = widthCopy;
   return result;
 }
 
@@ -68,21 +68,21 @@
   [(PXCloudQuotaView *)self _performLayoutInWidth:1 updateSubviewFrames:v3];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PXCloudQuotaView *)self _performLayoutInWidth:0 updateSubviewFrames:a3.width, a3.height];
+  [(PXCloudQuotaView *)self _performLayoutInWidth:0 updateSubviewFrames:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (PXCloudQuotaView)initWithContentView:(id)a3
+- (PXCloudQuotaView)initWithContentView:(id)view
 {
-  v6 = a3;
-  if (!v6)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCloudQuotaView.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"contentView"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCloudQuotaView.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"contentView"}];
   }
 
   v11.receiver = self;
@@ -91,8 +91,8 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_contentView, a3);
-    [(PXCloudQuotaView *)v8 addSubview:v6];
+    objc_storeStrong(&v7->_contentView, view);
+    [(PXCloudQuotaView *)v8 addSubview:viewCopy];
   }
 
   return v8;

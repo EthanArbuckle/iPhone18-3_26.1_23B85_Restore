@@ -1,12 +1,12 @@
 @interface LPAppleMapsMetadataProviderSpecialization
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3;
-- (LPAppleMapsMetadataProviderSpecialization)initWithContext:(id)a3 URLParser:(id)a4;
-- (id)mapMetadataWithDirections:(id)a3;
-- (id)mapMetadataWithGuide:(id)a3 snapshot:(id)a4;
-- (id)mapMetadataWithLocationInfo:(id)a3 snapshot:(id)a4;
-- (id)mapMetadataWithPublisher:(id)a3;
-- (id)mapMetadataWithSearch:(id)a3 snapshot:(id)a4;
-- (void)_internalPostProcessResolvedMetadataWithCompletionHandler:(id)a3;
++ (id)specializedMetadataProviderForURLWithContext:(id)context;
+- (LPAppleMapsMetadataProviderSpecialization)initWithContext:(id)context URLParser:(id)parser;
+- (id)mapMetadataWithDirections:(id)directions;
+- (id)mapMetadataWithGuide:(id)guide snapshot:(id)snapshot;
+- (id)mapMetadataWithLocationInfo:(id)info snapshot:(id)snapshot;
+- (id)mapMetadataWithPublisher:(id)publisher;
+- (id)mapMetadataWithSearch:(id)search snapshot:(id)snapshot;
+- (void)_internalPostProcessResolvedMetadataWithCompletionHandler:(id)handler;
 - (void)complete;
 - (void)fail;
 - (void)start;
@@ -14,18 +14,18 @@
 
 @implementation LPAppleMapsMetadataProviderSpecialization
 
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3
++ (id)specializedMetadataProviderForURLWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 postRedirectURL];
-  if ([LPPresentationSpecializations isAppleMapsURL:v4])
+  contextCopy = context;
+  postRedirectURL = [contextCopy postRedirectURL];
+  if ([LPPresentationSpecializations isAppleMapsURL:postRedirectURL])
   {
   }
 
   else
   {
-    v5 = [v3 postRedirectURL];
-    v6 = [LPPresentationSpecializations isAppleMapsCollectionURL:v5];
+    postRedirectURL2 = [contextCopy postRedirectURL];
+    v6 = [LPPresentationSpecializations isAppleMapsCollectionURL:postRedirectURL2];
 
     if (!v6)
     {
@@ -53,12 +53,12 @@
   v8 = v7;
   _Block_object_dispose(&v15, 8);
   v9 = [v7 alloc];
-  v10 = [v3 postRedirectURL];
-  v11 = [v9 initWithURL:v10];
+  postRedirectURL3 = [contextCopy postRedirectURL];
+  v11 = [v9 initWithURL:postRedirectURL3];
 
   if ([v11 parseIncludingCustomParameters:1])
   {
-    v12 = [[LPAppleMapsMetadataProviderSpecialization alloc] initWithContext:v3 URLParser:v11];
+    v12 = [[LPAppleMapsMetadataProviderSpecialization alloc] initWithContext:contextCopy URLParser:v11];
   }
 
   else
@@ -71,15 +71,15 @@ LABEL_11:
   return v12;
 }
 
-- (LPAppleMapsMetadataProviderSpecialization)initWithContext:(id)a3 URLParser:(id)a4
+- (LPAppleMapsMetadataProviderSpecialization)initWithContext:(id)context URLParser:(id)parser
 {
   v8.receiver = self;
   v8.super_class = LPAppleMapsMetadataProviderSpecialization;
-  v4 = [(LPMetadataProviderSpecialization *)&v8 initWithContext:a3, a4];
-  v5 = v4;
-  if (v4)
+  parser = [(LPMetadataProviderSpecialization *)&v8 initWithContext:context, parser];
+  v5 = parser;
+  if (parser)
   {
-    v6 = v4;
+    v6 = parser;
   }
 
   return v5;
@@ -107,9 +107,9 @@ LABEL_11:
   v4 = v3;
   _Block_object_dispose(&v15, 8);
   v5 = [v3 alloc];
-  v6 = [(LPMetadataProviderSpecialization *)self context];
-  v7 = [v6 postRedirectURL];
-  v8 = [v5 initWithURL:v7];
+  context = [(LPMetadataProviderSpecialization *)self context];
+  postRedirectURL = [context postRedirectURL];
+  v8 = [v5 initWithURL:postRedirectURL];
   request = self->_request;
   self->_request = v8;
 
@@ -404,85 +404,85 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)mapMetadataWithDirections:(id)a3
+- (id)mapMetadataWithDirections:(id)directions
 {
-  v3 = a3;
+  directionsCopy = directions;
   v4 = objc_alloc_init(LPMapMetadata);
-  v5 = [v3 transportType];
-  [(LPMapMetadata *)v4 setTransportType:v5];
+  transportType = [directionsCopy transportType];
+  [(LPMapMetadata *)v4 setTransportType:transportType];
 
-  v6 = [v3 sourceName];
-  [(LPMapMetadata *)v4 setDirectionsSourceLocationName:v6];
+  sourceName = [directionsCopy sourceName];
+  [(LPMapMetadata *)v4 setDirectionsSourceLocationName:sourceName];
 
-  v7 = [v3 sourceAddress];
-  [(LPMapMetadata *)v4 setDirectionsSourceAddress:v7];
+  sourceAddress = [directionsCopy sourceAddress];
+  [(LPMapMetadata *)v4 setDirectionsSourceAddress:sourceAddress];
 
-  v8 = [v3 sourceAddressComponents];
-  [(LPMapMetadata *)v4 setDirectionsSourceAddressComponents:v8];
+  sourceAddressComponents = [directionsCopy sourceAddressComponents];
+  [(LPMapMetadata *)v4 setDirectionsSourceAddressComponents:sourceAddressComponents];
 
-  v9 = [v3 destinationName];
-  [(LPMapMetadata *)v4 setDirectionsDestinationLocationName:v9];
+  destinationName = [directionsCopy destinationName];
+  [(LPMapMetadata *)v4 setDirectionsDestinationLocationName:destinationName];
 
-  v10 = [v3 destinationAddress];
-  [(LPMapMetadata *)v4 setDirectionsDestinationAddress:v10];
+  destinationAddress = [directionsCopy destinationAddress];
+  [(LPMapMetadata *)v4 setDirectionsDestinationAddress:destinationAddress];
 
-  v11 = [v3 destinationAddressComponents];
-  [(LPMapMetadata *)v4 setDirectionsDestinationAddressComponents:v11];
+  destinationAddressComponents = [directionsCopy destinationAddressComponents];
+  [(LPMapMetadata *)v4 setDirectionsDestinationAddressComponents:destinationAddressComponents];
 
-  v12 = [v3 distance];
-  [(LPMapMetadata *)v4 setDistance:v12];
+  distance = [directionsCopy distance];
+  [(LPMapMetadata *)v4 setDistance:distance];
 
   return v4;
 }
 
-- (id)mapMetadataWithSearch:(id)a3 snapshot:(id)a4
+- (id)mapMetadataWithSearch:(id)search snapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = [(LPAppleMapsMetadataProviderSpecialization *)self mapMetadataWithLocationInfo:v6 snapshot:a4];
-  v8 = [v6 searchQuery];
-  [v7 setSearchQuery:v8];
+  searchCopy = search;
+  v7 = [(LPAppleMapsMetadataProviderSpecialization *)self mapMetadataWithLocationInfo:searchCopy snapshot:snapshot];
+  searchQuery = [searchCopy searchQuery];
+  [v7 setSearchQuery:searchQuery];
 
   return v7;
 }
 
-- (id)mapMetadataWithLocationInfo:(id)a3 snapshot:(id)a4
+- (id)mapMetadataWithLocationInfo:(id)info snapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  snapshotCopy = snapshot;
   v7 = objc_alloc_init(LPMapMetadata);
-  -[LPMapMetadata setIsPointOfInterest:](v7, "setIsPointOfInterest:", [v5 isPointOfInterest]);
-  [v5 coordinate];
+  -[LPMapMetadata setIsPointOfInterest:](v7, "setIsPointOfInterest:", [infoCopy isPointOfInterest]);
+  [infoCopy coordinate];
   [(LPMapMetadata *)v7 setLocation:?];
-  v8 = [v5 name];
-  [(LPMapMetadata *)v7 setName:v8];
+  name = [infoCopy name];
+  [(LPMapMetadata *)v7 setName:name];
 
-  v9 = [v5 address];
-  [(LPMapMetadata *)v7 setAddress:v9];
+  address = [infoCopy address];
+  [(LPMapMetadata *)v7 setAddress:address];
 
-  v10 = [v5 addressComponents];
-  [(LPMapMetadata *)v7 setAddressComponents:v10];
+  addressComponents = [infoCopy addressComponents];
+  [(LPMapMetadata *)v7 setAddressComponents:addressComponents];
 
-  v11 = [v5 category];
-  [(LPMapMetadata *)v7 setCategory:v11];
+  category = [infoCopy category];
+  [(LPMapMetadata *)v7 setCategory:category];
 
-  v12 = [v6 lightImage];
+  lightImage = [snapshotCopy lightImage];
 
-  if (v12)
+  if (lightImage)
   {
     v13 = [LPImage alloc];
-    v14 = [v6 lightImage];
-    v15 = [v14 _lp_imageForcingUserInterfaceStyle:0];
+    lightImage2 = [snapshotCopy lightImage];
+    v15 = [lightImage2 _lp_imageForcingUserInterfaceStyle:0];
     v16 = [(LPImage *)v13 initWithPlatformImage:v15];
     [(LPMapMetadata *)v7 setImage:v16];
   }
 
-  v17 = [v6 darkImage];
+  darkImage = [snapshotCopy darkImage];
 
-  if (v17)
+  if (darkImage)
   {
     v18 = [LPImage alloc];
-    v19 = [v6 darkImage];
-    v20 = [v19 _lp_imageForcingUserInterfaceStyle:1];
+    darkImage2 = [snapshotCopy darkImage];
+    v20 = [darkImage2 _lp_imageForcingUserInterfaceStyle:1];
     v21 = [(LPImage *)v18 initWithPlatformImage:v20];
     [(LPMapMetadata *)v7 setDarkImage:v21];
   }
@@ -490,44 +490,44 @@ LABEL_12:
   return v7;
 }
 
-- (id)mapMetadataWithGuide:(id)a3 snapshot:(id)a4
+- (id)mapMetadataWithGuide:(id)guide snapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = a4;
+  guideCopy = guide;
+  snapshotCopy = snapshot;
   v7 = objc_alloc_init(LPMapCollectionMetadata);
-  v8 = [v5 name];
-  [(LPMapCollectionMetadata *)v7 setName:v8];
+  name = [guideCopy name];
+  [(LPMapCollectionMetadata *)v7 setName:name];
 
-  -[LPMapCollectionMetadata setNumberOfItems:](v7, "setNumberOfItems:", [v5 numberOfItems]);
-  v9 = [v5 addresses];
-  [(LPMapCollectionMetadata *)v7 setAddresses:v9];
+  -[LPMapCollectionMetadata setNumberOfItems:](v7, "setNumberOfItems:", [guideCopy numberOfItems]);
+  addresses = [guideCopy addresses];
+  [(LPMapCollectionMetadata *)v7 setAddresses:addresses];
 
-  v10 = [v5 publisherName];
-  [(LPMapCollectionMetadata *)v7 setPublisherName:v10];
+  publisherName = [guideCopy publisherName];
+  [(LPMapCollectionMetadata *)v7 setPublisherName:publisherName];
 
   v11 = [LPImage alloc];
-  v12 = [v5 publisherIcon];
-  v13 = [(LPImage *)v11 initWithPlatformImage:v12];
+  publisherIcon = [guideCopy publisherIcon];
+  v13 = [(LPImage *)v11 initWithPlatformImage:publisherIcon];
   [(LPMapCollectionMetadata *)v7 setPublisherIcon:v13];
 
-  v14 = [v6 lightImage];
+  lightImage = [snapshotCopy lightImage];
 
-  if (v14)
+  if (lightImage)
   {
     v15 = [LPImage alloc];
-    v16 = [v6 lightImage];
-    v17 = [v16 _lp_imageForcingUserInterfaceStyle:0];
+    lightImage2 = [snapshotCopy lightImage];
+    v17 = [lightImage2 _lp_imageForcingUserInterfaceStyle:0];
     v18 = [(LPImage *)v15 initWithPlatformImage:v17];
     [(LPMapCollectionMetadata *)v7 setImage:v18];
   }
 
-  v19 = [v6 darkImage];
+  darkImage = [snapshotCopy darkImage];
 
-  if (v19)
+  if (darkImage)
   {
     v20 = [LPImage alloc];
-    v21 = [v6 darkImage];
-    v22 = [v21 _lp_imageForcingUserInterfaceStyle:1];
+    darkImage2 = [snapshotCopy darkImage];
+    v22 = [darkImage2 _lp_imageForcingUserInterfaceStyle:1];
     v23 = [(LPImage *)v20 initWithPlatformImage:v22];
     [(LPMapCollectionMetadata *)v7 setDarkImage:v23];
   }
@@ -535,17 +535,17 @@ LABEL_12:
   return v7;
 }
 
-- (id)mapMetadataWithPublisher:(id)a3
+- (id)mapMetadataWithPublisher:(id)publisher
 {
-  v3 = a3;
+  publisherCopy = publisher;
   v4 = objc_alloc_init(LPMapCollectionPublisherMetadata);
-  v5 = [v3 name];
-  [(LPMapCollectionPublisherMetadata *)v4 setName:v5];
+  name = [publisherCopy name];
+  [(LPMapCollectionPublisherMetadata *)v4 setName:name];
 
-  -[LPMapCollectionPublisherMetadata setNumberOfPublishedCollections:](v4, "setNumberOfPublishedCollections:", [v3 numberOfPublishedCollections]);
+  -[LPMapCollectionPublisherMetadata setNumberOfPublishedCollections:](v4, "setNumberOfPublishedCollections:", [publisherCopy numberOfPublishedCollections]);
   v6 = [LPImage alloc];
-  v7 = [v3 icon];
-  v8 = [(LPImage *)v6 initWithPlatformImage:v7];
+  icon = [publisherCopy icon];
+  v8 = [(LPImage *)v6 initWithPlatformImage:icon];
   [(LPMapCollectionPublisherMetadata *)v4 setIcon:v8];
 
   return v4;
@@ -554,8 +554,8 @@ LABEL_12:
 - (void)fail
 {
   [(LPAppleMapsMetadataProviderSpecialization *)self cancel];
-  v3 = [(LPMetadataProviderSpecialization *)self delegate];
-  [v3 metadataProviderSpecializationDidFail:self];
+  delegate = [(LPMetadataProviderSpecialization *)self delegate];
+  [delegate metadataProviderSpecializationDidFail:self];
 }
 
 - (void)complete
@@ -571,20 +571,20 @@ LABEL_12:
   }
 
   v5 = [(LPMetadataProviderSpecialization *)self createMetadataWithSpecialization:mapMetadata];
-  v4 = [(LPMetadataProviderSpecialization *)self delegate];
-  [v4 metadataProviderSpecialization:self didCompleteWithMetadata:v5];
+  delegate = [(LPMetadataProviderSpecialization *)self delegate];
+  [delegate metadataProviderSpecialization:self didCompleteWithMetadata:v5];
 }
 
-- (void)_internalPostProcessResolvedMetadataWithCompletionHandler:(id)a3
+- (void)_internalPostProcessResolvedMetadataWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(LPMapMetadata *)self->_mapMetadata image];
-  [v4 _computeDominantColorForProperties];
+  handlerCopy = handler;
+  image = [(LPMapMetadata *)self->_mapMetadata image];
+  [image _computeDominantColorForProperties];
 
-  v5 = [(LPMapMetadata *)self->_mapMetadata darkImage];
-  [v5 _computeDominantColorForProperties];
+  darkImage = [(LPMapMetadata *)self->_mapMetadata darkImage];
+  [darkImage _computeDominantColorForProperties];
 
-  v6[2]();
+  handlerCopy[2]();
 }
 
 @end

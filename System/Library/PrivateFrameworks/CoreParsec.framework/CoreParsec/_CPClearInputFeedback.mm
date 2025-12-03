@@ -1,19 +1,19 @@
 @interface _CPClearInputFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPClearInputFeedback)init;
-- (_CPClearInputFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPClearInputFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPClearInputFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (timestamp = self->_timestamp, timestamp == objc_msgSend(v4, "timestamp")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (timestamp = self->_timestamp, timestamp == objc_msgSend(equalCopy, "timestamp")))
   {
     triggerEvent = self->_triggerEvent;
-    v7 = triggerEvent == [v4 triggerEvent];
+    v7 = triggerEvent == [equalCopy triggerEvent];
   }
 
   else
@@ -24,9 +24,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_CPClearInputFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -54,16 +54,16 @@
   return v2;
 }
 
-- (_CPClearInputFeedback)initWithFacade:(id)a3
+- (_CPClearInputFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v8.receiver = self;
   v8.super_class = _CPClearInputFeedback;
   v5 = [(_CPClearInputFeedback *)&v8 init];
   if (v5)
   {
-    -[_CPClearInputFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    -[_CPClearInputFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
+    -[_CPClearInputFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    -[_CPClearInputFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
     v6 = v5;
   }
 

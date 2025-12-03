@@ -1,5 +1,5 @@
 @interface HUGridServiceCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_asIsSensor;
 - (id)_axComposedString;
 - (id)_axServiceIconDescription;
@@ -11,29 +11,29 @@
 
 @implementation HUGridServiceCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HFSensorServiceItem"];
-  [v3 validateClass:@"HUGridServiceCell" hasInstanceMethod:@"serviceItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridServiceCell" hasInstanceMethod:@"serviceTextView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridServiceCell" hasInstanceMethod:@"coloredDescriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridServiceCellTextView" hasInstanceMethod:@"serviceNameComponents" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HFServiceNameComponents" hasInstanceMethod:@"composedString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HFServiceNameComponents" hasInstanceMethod:@"serviceName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HFServiceNameComponents" hasInstanceMethod:@"roomName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridServiceCell" hasInstanceMethod:@"accessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridServiceCell" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUCheckmarkAccessoryView" hasInstanceMethod:@"checked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUGridServiceCell" hasInstanceMethod:@"showingProgressIndicator" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HUGridServiceCellTextView" hasInstanceMethod:@"_combinedAttributedString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridServiceCellTextView" hasInstanceMethod:@"descriptionText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUIconView" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridServiceCell" hasInstanceMethod:@"_textConfiguration" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridServiceCell" hasInstanceMethod:@"accessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridServiceCell" hasInstanceMethod:@"exclamationView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUIconView" hasInstanceMethod:@"displayStyle" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"HUGridServiceCellTextConfiguration" hasInstanceMethod:@"nameComponents" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HFSensorServiceItem"];
+  [validationsCopy validateClass:@"HUGridServiceCell" hasInstanceMethod:@"serviceItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCell" hasInstanceMethod:@"serviceTextView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCell" hasInstanceMethod:@"coloredDescriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCellTextView" hasInstanceMethod:@"serviceNameComponents" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HFServiceNameComponents" hasInstanceMethod:@"composedString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HFServiceNameComponents" hasInstanceMethod:@"serviceName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HFServiceNameComponents" hasInstanceMethod:@"roomName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCell" hasInstanceMethod:@"accessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCell" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUCheckmarkAccessoryView" hasInstanceMethod:@"checked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCell" hasInstanceMethod:@"showingProgressIndicator" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCellTextView" hasInstanceMethod:@"_combinedAttributedString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCellTextView" hasInstanceMethod:@"descriptionText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUIconView" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCell" hasInstanceMethod:@"_textConfiguration" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCell" hasInstanceMethod:@"accessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCell" hasInstanceMethod:@"exclamationView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUIconView" hasInstanceMethod:@"displayStyle" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCellTextConfiguration" hasInstanceMethod:@"nameComponents" withFullSignature:{"@", 0}];
 }
 
 - (id)_axServiceNameComponents
@@ -48,16 +48,16 @@
 {
   v2 = [(HUGridServiceCellAccessibility *)self safeValueForKey:@"iconView"];
   v3 = [v2 safeValueForKey:@"iconDescriptor"];
-  v4 = [v3 accessibilityValue];
+  accessibilityValue = [v3 accessibilityValue];
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)_axComposedString
 {
   objc_opt_class();
-  v3 = [(HUGridServiceCellAccessibility *)self _axServiceNameComponents];
-  v4 = [v3 safeValueForKey:@"composedString"];
+  _axServiceNameComponents = [(HUGridServiceCellAccessibility *)self _axServiceNameComponents];
+  v4 = [_axServiceNameComponents safeValueForKey:@"composedString"];
   v5 = __UIAccessibilityCastAsClass();
 
   return v5;
@@ -89,8 +89,8 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(HUGridServiceCellAccessibility *)self _axServiceIconDescription];
-  v4 = [(HUGridServiceCellAccessibility *)self _axComposedString];
+  _axServiceIconDescription = [(HUGridServiceCellAccessibility *)self _axServiceIconDescription];
+  _axComposedString = [(HUGridServiceCellAccessibility *)self _axComposedString];
   if ([(HUGridServiceCellAccessibility *)self safeBoolForKey:@"showingProgressIndicator"])
   {
     v5 = accessibilityHomeUILocalizedString(@"in.progress");
@@ -113,9 +113,9 @@ LABEL_8:
   }
 
   v9 = [(HUGridServiceCellAccessibility *)self safeValueForKey:@"accessoryView"];
-  v10 = [v9 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v9 _accessibilityViewIsVisible];
 
-  if (!v10)
+  if (!_accessibilityViewIsVisible)
   {
     goto LABEL_8;
   }
@@ -123,8 +123,8 @@ LABEL_8:
   v11 = accessibilityHomeUILocalizedString(@"attention.icon");
 LABEL_9:
   v12 = [(HUGridServiceCellAccessibility *)self safeValueForKey:@"coloredDescriptionLabel"];
-  v13 = [v12 accessibilityLabel];
-  if ([v12 _accessibilityViewIsVisible] && objc_msgSend(v13, "length"))
+  accessibilityLabel = [v12 accessibilityLabel];
+  if ([v12 _accessibilityViewIsVisible] && objc_msgSend(accessibilityLabel, "length"))
   {
     v14 = __UIAXStringForVariables();
   }
@@ -138,25 +138,25 @@ LABEL_9:
   {
     v15 = [(HUGridServiceCellAccessibility *)self safeValueForKey:@"serviceTextView"];
     v16 = [v15 safeValueForKey:@"descriptionText"];
-    if ([v16 length] && (objc_msgSend(v16, "isEqualToString:", v4) & 1) == 0)
+    if ([v16 length] && (objc_msgSend(v16, "isEqualToString:", _axComposedString) & 1) == 0)
     {
       v14 = __UIAXStringForVariables();
-      v19 = v16;
+      string = v16;
     }
 
     else
     {
-      v23 = v4;
+      v23 = _axComposedString;
       v25 = 0;
       objc_opt_class();
       v17 = [v15 safeValueForKey:@"_combinedAttributedString"];
       v18 = __UIAccessibilityCastAsClass();
 
       v22 = v18;
-      v19 = [v18 string];
+      string = [v18 string];
 
-      v4 = v23;
-      if ([v19 length] && (objc_msgSend(v19, "isEqualToString:", v23) & 1) == 0)
+      _axComposedString = v23;
+      if ([string length] && (objc_msgSend(string, "isEqualToString:", v23) & 1) == 0)
       {
         v14 = __UIAXStringForVariables();
       }
@@ -165,10 +165,10 @@ LABEL_9:
       {
         v24.receiver = self;
         v24.super_class = HUGridServiceCellAccessibility;
-        v20 = [(HUGridServiceCellAccessibility *)&v24 accessibilityValue];
+        accessibilityValue = [(HUGridServiceCellAccessibility *)&v24 accessibilityValue];
         v14 = __UIAXStringForVariables();
 
-        v4 = v23;
+        _axComposedString = v23;
       }
     }
   }

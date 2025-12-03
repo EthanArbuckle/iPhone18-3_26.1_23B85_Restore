@@ -1,9 +1,9 @@
 @interface CSSpeakerRecognitionProxy
-- (CSSpeakerRecognitionProxy)initWithDelegate:(id)a3;
+- (CSSpeakerRecognitionProxy)initWithDelegate:(id)delegate;
 - (CSSpeakerRecognitionProxyProtocol)delegate;
 - (void)dealloc;
-- (void)didFinishSpeakerRecognition:(id)a3;
-- (void)didReceiveSpeakerRecognitionScoreCard:(id)a3;
+- (void)didFinishSpeakerRecognition:(id)recognition;
+- (void)didReceiveSpeakerRecognitionScoreCard:(id)card;
 - (void)invalidateXPCConnection;
 - (void)startXPCConnection;
 @end
@@ -17,10 +17,10 @@
   return WeakRetained;
 }
 
-- (void)didFinishSpeakerRecognition:(id)a3
+- (void)didFinishSpeakerRecognition:(id)recognition
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recognitionCopy = recognition;
   v5 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
@@ -39,17 +39,17 @@
     if (v9)
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      [v10 didFinishSpeakerRecognition:v4];
+      [v10 didFinishSpeakerRecognition:recognitionCopy];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveSpeakerRecognitionScoreCard:(id)a3
+- (void)didReceiveSpeakerRecognitionScoreCard:(id)card
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cardCopy = card;
   v5 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
   {
@@ -68,7 +68,7 @@
     if (v9)
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      [v10 didReceiveSpeakerRecognitionScoreCard:v4];
+      [v10 didReceiveSpeakerRecognitionScoreCard:cardCopy];
     }
   }
 
@@ -113,14 +113,14 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (CSSpeakerRecognitionProxy)initWithDelegate:(id)a3
+- (CSSpeakerRecognitionProxy)initWithDelegate:(id)delegate
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = CSSpeakerRecognitionProxy;
   v5 = [(CSSpeakerRecognitionProxy *)&v12 init];
-  if (v5 && (v6 = objc_alloc_init(CSSSRXPCClient), ssrXPCClient = v5->_ssrXPCClient, v5->_ssrXPCClient = v6, ssrXPCClient, [(CSSSRXPCClient *)v5->_ssrXPCClient setDelegate:v5], objc_storeWeak(&v5->_delegate, v4), !v5->_ssrXPCClient))
+  if (v5 && (v6 = objc_alloc_init(CSSSRXPCClient), ssrXPCClient = v5->_ssrXPCClient, v5->_ssrXPCClient = v6, ssrXPCClient, [(CSSSRXPCClient *)v5->_ssrXPCClient setDelegate:v5], objc_storeWeak(&v5->_delegate, delegateCopy), !v5->_ssrXPCClient))
   {
     v9 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))

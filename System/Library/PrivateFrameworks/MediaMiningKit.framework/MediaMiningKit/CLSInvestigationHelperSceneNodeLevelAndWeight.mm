@@ -1,21 +1,21 @@
 @interface CLSInvestigationHelperSceneNodeLevelAndWeight
-- (CLSInvestigationHelperSceneNodeLevelAndWeight)initWithTaxonomyNode:(id)a3 level:(unint64_t)a4 andWeight:(double)a5;
+- (CLSInvestigationHelperSceneNodeLevelAndWeight)initWithTaxonomyNode:(id)node level:(unint64_t)level andWeight:(double)weight;
 @end
 
 @implementation CLSInvestigationHelperSceneNodeLevelAndWeight
 
-- (CLSInvestigationHelperSceneNodeLevelAndWeight)initWithTaxonomyNode:(id)a3 level:(unint64_t)a4 andWeight:(double)a5
+- (CLSInvestigationHelperSceneNodeLevelAndWeight)initWithTaxonomyNode:(id)node level:(unint64_t)level andWeight:(double)weight
 {
-  v9 = a3;
+  nodeCopy = node;
   v13.receiver = self;
   v13.super_class = CLSInvestigationHelperSceneNodeLevelAndWeight;
   v10 = [(CLSInvestigationHelperSceneNodeLevelAndWeight *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_taxonomyNode, a3);
-    v11->_level = a4;
-    v11->_weight = a5;
+    objc_storeStrong(&v10->_taxonomyNode, node);
+    v11->_level = level;
+    v11->_weight = weight;
   }
 
   return v11;

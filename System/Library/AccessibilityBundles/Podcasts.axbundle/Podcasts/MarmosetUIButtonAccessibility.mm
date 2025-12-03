@@ -11,17 +11,17 @@
 {
   v3 = [(MarmosetUIButtonAccessibility *)self backgroundImageForState:0];
   v4 = [(MarmosetUIButtonAccessibility *)self imageForState:0];
-  v5 = [v4 accessibilityIdentifier];
-  v6 = [v3 accessibilityIdentifier];
-  if (([v5 hasPrefix:@"settingsglyph"] & 1) != 0 || objc_msgSend(v6, "hasPrefix:", @"settingsglyph"))
+  accessibilityIdentifier = [v4 accessibilityIdentifier];
+  accessibilityIdentifier2 = [v3 accessibilityIdentifier];
+  if (([accessibilityIdentifier hasPrefix:@"settingsglyph"] & 1) != 0 || objc_msgSend(accessibilityIdentifier2, "hasPrefix:", @"settingsglyph"))
   {
     v7 = @"settings.button";
 LABEL_9:
-    v8 = accessibilityLocalizedString(v7);
+    accessibilityLabel = accessibilityLocalizedString(v7);
     goto LABEL_10;
   }
 
-  if (([v5 hasPrefix:@"shareGlyph"] & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"barShareGlyph") & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"shareGlyph") & 1) != 0 || objc_msgSend(v6, "hasPrefix:", @"barShareGlyph"))
+  if (([accessibilityIdentifier hasPrefix:@"shareGlyph"] & 1) != 0 || (objc_msgSend(accessibilityIdentifier, "hasPrefix:", @"barShareGlyph") & 1) != 0 || (objc_msgSend(accessibilityIdentifier2, "hasPrefix:", @"shareGlyph") & 1) != 0 || objc_msgSend(accessibilityIdentifier2, "hasPrefix:", @"barShareGlyph"))
   {
     v7 = @"share.button";
     goto LABEL_9;
@@ -29,37 +29,37 @@ LABEL_9:
 
   v11.receiver = self;
   v11.super_class = MarmosetUIButtonAccessibility;
-  v8 = [(MarmosetUIButtonAccessibility *)&v11 accessibilityLabel];
+  accessibilityLabel = [(MarmosetUIButtonAccessibility *)&v11 accessibilityLabel];
 LABEL_10:
-  v9 = v8;
+  v9 = accessibilityLabel;
 
   return v9;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(MarmosetUIButtonAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"SpeedButton"];
+  accessibilityIdentifier = [(MarmosetUIButtonAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"SpeedButton"];
 
   if (v4)
   {
-    v5 = [(MarmosetUIButtonAccessibility *)self titleForState:0];
+    accessibilityValue = [(MarmosetUIButtonAccessibility *)self titleForState:0];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = MarmosetUIButtonAccessibility;
-    v5 = [(MarmosetUIButtonAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(MarmosetUIButtonAccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(MarmosetUIButtonAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"NowPlayingBackButton"];
+  accessibilityIdentifier = [(MarmosetUIButtonAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"NowPlayingBackButton"];
 
   if (v4)
   {

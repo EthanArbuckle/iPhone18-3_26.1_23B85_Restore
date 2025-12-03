@@ -13,23 +13,23 @@
 - (NSString)isrc;
 - (NSURL)artworkDictionary;
 - (NSURL)hapticsURL;
-- (SHSongsResponseItem)initWithSongItemDictionary:(id)a3;
-- (id)extractIDsFromRelation:(id)a3;
-- (id)rawResponseDataWithCampaignToken:(id)a3;
+- (SHSongsResponseItem)initWithSongItemDictionary:(id)dictionary;
+- (id)extractIDsFromRelation:(id)relation;
+- (id)rawResponseDataWithCampaignToken:(id)token;
 @end
 
 @implementation SHSongsResponseItem
 
-- (SHSongsResponseItem)initWithSongItemDictionary:(id)a3
+- (SHSongsResponseItem)initWithSongItemDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SHSongsResponseItem;
   v6 = [(SHSongsResponseItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_songItemDictionary, a3);
+    objc_storeStrong(&v6->_songItemDictionary, dictionary);
   }
 
   return v7;
@@ -37,16 +37,16 @@
 
 - (NSString)appleMusicID
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"id"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"id"];
 
   return v3;
 }
 
 - (NSURL)artworkDictionary
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"artwork"];
 
   return v4;
@@ -54,8 +54,8 @@
 
 - (NSString)appleMusicURLString
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"url"];
 
   return v4;
@@ -63,8 +63,8 @@
 
 - (NSURL)hapticsURL
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"hapticsAssetUrl"];
 
   if (v4)
@@ -82,18 +82,18 @@
 
 - (BOOL)hasHaptics
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"hasHaptics"];
 
-  LOBYTE(v2) = [v4 BOOLValue];
-  return v2;
+  LOBYTE(songItemDictionary) = [v4 BOOLValue];
+  return songItemDictionary;
 }
 
 - (NSNumber)durationInMilliseconds
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"durationInMillis"];
 
   return v4;
@@ -101,8 +101,8 @@
 
 - (NSDictionary)spatialAttributes
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"spatialOffsets"];
 
   return v4;
@@ -110,8 +110,8 @@
 
 - (NSArray)genreNames
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"genreNames"];
 
   return v4;
@@ -119,8 +119,8 @@
 
 - (NSDate)releaseDate
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"releaseDate"];
 
   if (v4)
@@ -140,19 +140,19 @@
 
 - (BOOL)isExplicitContent
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"contentRating"];
-  v5 = [v4 uppercaseString];
-  v6 = [v5 isEqualToString:@"EXPLICIT"];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [uppercaseString isEqualToString:@"EXPLICIT"];
 
   return v6;
 }
 
 - (NSString)albumName
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"albumName"];
 
   return v4;
@@ -160,8 +160,8 @@
 
 - (NSString)isrc
 {
-  v2 = [(SHSongsResponseItem *)self songItemDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"attributes"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v3 = [songItemDictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"isrc"];
 
   return v4;
@@ -169,8 +169,8 @@
 
 - (NSArray)lyricsRelationIDs
 {
-  v3 = [(SHSongsResponseItem *)self songItemDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"relationships"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v4 = [songItemDictionary objectForKeyedSubscript:@"relationships"];
   v5 = [v4 objectForKeyedSubscript:@"public-lyrics"];
 
   v6 = [(SHSongsResponseItem *)self extractIDsFromRelation:v5];
@@ -180,8 +180,8 @@
 
 - (NSArray)musicVideoRelationIDs
 {
-  v3 = [(SHSongsResponseItem *)self songItemDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"relationships"];
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v4 = [songItemDictionary objectForKeyedSubscript:@"relationships"];
   v5 = [v4 objectForKeyedSubscript:@"music-videos"];
 
   v6 = [(SHSongsResponseItem *)self extractIDsFromRelation:v5];
@@ -189,33 +189,33 @@
   return v6;
 }
 
-- (id)rawResponseDataWithCampaignToken:(id)a3
+- (id)rawResponseDataWithCampaignToken:(id)token
 {
-  v4 = a3;
-  v5 = [(SHSongsResponseItem *)self songItemDictionary];
-  v6 = [v5 mutableCopy];
+  tokenCopy = token;
+  songItemDictionary = [(SHSongsResponseItem *)self songItemDictionary];
+  v6 = [songItemDictionary mutableCopy];
 
-  v7 = [(SHSongsResponseItem *)self appleMusicURLString];
-  v8 = [v7 copy];
+  appleMusicURLString = [(SHSongsResponseItem *)self appleMusicURLString];
+  v8 = [appleMusicURLString copy];
 
   if (v8)
   {
     v9 = [[SHTokenizedURL alloc] initWithString:v8];
     if ([v9 containsTokens])
     {
-      [v9 updateToken:5 withValue:v4];
+      [v9 updateToken:5 withValue:tokenCopy];
     }
 
-    v10 = [v9 URLRepresentation];
+    uRLRepresentation = [v9 URLRepresentation];
 
-    if (v10)
+    if (uRLRepresentation)
     {
       v11 = [v6 objectForKeyedSubscript:@"attributes"];
       v12 = [v11 mutableCopy];
 
-      v13 = [v9 URLRepresentation];
-      v14 = [v13 absoluteString];
-      [v12 setValue:v14 forKey:@"url"];
+      uRLRepresentation2 = [v9 URLRepresentation];
+      absoluteString = [uRLRepresentation2 absoluteString];
+      [v12 setValue:absoluteString forKey:@"url"];
 
       v15 = [v12 copy];
       [v6 setValue:v15 forKey:@"attributes"];
@@ -232,9 +232,9 @@
     v19 = sh_log_object();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(SHSongsResponseItem *)self appleMusicID];
+      appleMusicID = [(SHSongsResponseItem *)self appleMusicID];
       *buf = 138412546;
-      v24 = v20;
+      v24 = appleMusicID;
       v25 = 2112;
       v26 = v18;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Error occured with serializing song response for AdamID %@. Error: %@", buf, 0x16u);
@@ -244,9 +244,9 @@
   return v17;
 }
 
-- (id)extractIDsFromRelation:(id)a3
+- (id)extractIDsFromRelation:(id)relation
 {
-  v3 = [a3 objectForKeyedSubscript:@"data"];
+  v3 = [relation objectForKeyedSubscript:@"data"];
   v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
   v15 = 0u;
   v16 = 0u;

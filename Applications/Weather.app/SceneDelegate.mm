@@ -1,88 +1,88 @@
 @interface SceneDelegate
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)traitActiveAppearanceDidChangeWithScene:(id)a3 previousTraitCollection:(id)a4;
-- (void)windowScene:(id)a3 didUpdateEffectiveGeometry:(id)a4;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)traitActiveAppearanceDidChangeWithScene:(id)scene previousTraitCollection:(id)collection;
+- (void)windowScene:(id)scene didUpdateEffectiveGeometry:(id)geometry;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation SceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1000A6290(v8, v11, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1000A6290(sceneCopy, selfCopy, optionsCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000BEB58(v5, "Scene will enter foreground", &dispatch thunk of SceneStateManagerType.willEnterForeground());
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_1000BEB58(selfCopy, "Scene will enter foreground", &dispatch thunk of SceneStateManagerType.willEnterForeground());
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003BFB70(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_1003BFB70(activeCopy);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_1003BFEC4();
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1003BFF80(v8, v7);
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
+  sub_1003BFF80(selfCopy, activityCopy);
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v12 = self;
-  v11.super.isa = v10;
-  sub_1003C0120(v9, v11, v12, v8);
+  sceneCopy = scene;
+  itemCopy = item;
+  selfCopy = self;
+  v11.super.isa = itemCopy;
+  sub_1003C0120(sceneCopy, v11, selfCopy, v8);
   _Block_release(v8);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000BEB58(v5, "Scene did enter background", &dispatch thunk of SceneStateManagerType.didEnterBackground());
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_1000BEB58(selfCopy, "Scene did enter background", &dispatch thunk of SceneStateManagerType.didEnterBackground());
 }
 
-- (void)traitActiveAppearanceDidChangeWithScene:(id)a3 previousTraitCollection:(id)a4
+- (void)traitActiveAppearanceDidChangeWithScene:(id)scene previousTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1003BF84C(v6);
+  sceneCopy = scene;
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_1003BF84C(sceneCopy);
 }
 
-- (void)windowScene:(id)a3 didUpdateEffectiveGeometry:(id)a4
+- (void)windowScene:(id)scene didUpdateEffectiveGeometry:(id)geometry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1003C033C(v6, v7);
+  sceneCopy = scene;
+  geometryCopy = geometry;
+  selfCopy = self;
+  sub_1003C033C(sceneCopy, geometryCopy);
 }
 
 @end

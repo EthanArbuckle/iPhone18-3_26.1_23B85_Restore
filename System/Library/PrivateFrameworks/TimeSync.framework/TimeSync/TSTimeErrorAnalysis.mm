@@ -1,24 +1,24 @@
 @interface TSTimeErrorAnalysis
-+ (id)generatePythonScriptWithOutputPath:(id)a3 fileName:(id)a4 titleName:(id)a5 plotPath:(id)a6 showPlot:(BOOL)a7;
-- (BOOL)exportTimeErrorsToDirectoryURL:(id)a3 withFilename:(id)a4;
-- (TSTimeErrorAnalysis)initWithTimeErrorValues:(id)a3;
++ (id)generatePythonScriptWithOutputPath:(id)path fileName:(id)name titleName:(id)titleName plotPath:(id)plotPath showPlot:(BOOL)plot;
+- (BOOL)exportTimeErrorsToDirectoryURL:(id)l withFilename:(id)filename;
+- (TSTimeErrorAnalysis)initWithTimeErrorValues:(id)values;
 - (void)dealloc;
-- (void)performAnalysisFromStartWindowSize:(int64_t)a3 toEndWindowSize:(int64_t)a4 stepSize:(int64_t)a5 withThreadingOption:(int64_t)a6;
-- (void)performAnalysisWithThreadingOption:(int64_t)a3;
+- (void)performAnalysisFromStartWindowSize:(int64_t)size toEndWindowSize:(int64_t)windowSize stepSize:(int64_t)stepSize withThreadingOption:(int64_t)option;
+- (void)performAnalysisWithThreadingOption:(int64_t)option;
 @end
 
 @implementation TSTimeErrorAnalysis
 
-- (TSTimeErrorAnalysis)initWithTimeErrorValues:(id)a3
+- (TSTimeErrorAnalysis)initWithTimeErrorValues:(id)values
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   v23.receiver = self;
   v23.super_class = TSTimeErrorAnalysis;
   v5 = [(TSTimeErrorAnalysis *)&v23 init];
   if (v5)
   {
-    v6 = [v4 count];
+    v6 = [valuesCopy count];
     v5->_numberOfErrors = v6;
     if (v6 < 1)
     {
@@ -33,14 +33,14 @@
       v7 = malloc_type_calloc(v5->_numberOfErrors, 8uLL, 0x100004000313F17uLL);
       if (v7 && v5->_timestamps && v5->_timeErrors)
       {
-        v8 = [v4 objectAtIndexedSubscript:0];
-        v9 = [v8 timestamp];
+        v8 = [valuesCopy objectAtIndexedSubscript:0];
+        timestamp = [v8 timestamp];
 
         v21 = 0u;
         v22 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v10 = v4;
+        v10 = valuesCopy;
         v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
         if (v11)
         {
@@ -57,7 +57,7 @@
               }
 
               v16 = *(*(&v19 + 1) + 8 * i);
-              v5->_timestamps[v13] = ([v16 timestamp] - v9);
+              v5->_timestamps[v13] = ([v16 timestamp] - timestamp);
               v5->_timeErrors[v13++] = [v16 error];
             }
 
@@ -85,34 +85,34 @@
   return v5;
 }
 
-- (void)performAnalysisWithThreadingOption:(int64_t)a3
+- (void)performAnalysisWithThreadingOption:(int64_t)option
 {
-  v5 = [(TSTimeErrorAnalysis *)self analysisLimit];
+  analysisLimit = [(TSTimeErrorAnalysis *)self analysisLimit];
 
-  [(TSTimeErrorAnalysis *)self performAnalysisFromStartWindowSize:2 toEndWindowSize:v5 stepSize:1 withThreadingOption:a3];
+  [(TSTimeErrorAnalysis *)self performAnalysisFromStartWindowSize:2 toEndWindowSize:analysisLimit stepSize:1 withThreadingOption:option];
 }
 
-- (void)performAnalysisFromStartWindowSize:(int64_t)a3 toEndWindowSize:(int64_t)a4 stepSize:(int64_t)a5 withThreadingOption:(int64_t)a6
+- (void)performAnalysisFromStartWindowSize:(int64_t)size toEndWindowSize:(int64_t)windowSize stepSize:(int64_t)stepSize withThreadingOption:(int64_t)option
 {
   v11 = mach_absolute_time();
-  if (a3 <= 2)
+  if (size <= 2)
   {
-    v12 = 2;
+    sizeCopy = 2;
   }
 
   else
   {
-    v12 = a3;
+    sizeCopy = size;
   }
 
-  if ([(TSTimeErrorAnalysis *)self analysisLimit]< a4)
+  if ([(TSTimeErrorAnalysis *)self analysisLimit]< windowSize)
   {
-    a4 = [(TSTimeErrorAnalysis *)self analysisLimit];
+    windowSize = [(TSTimeErrorAnalysis *)self analysisLimit];
   }
 
-  if (a6 != 1 && (a6 || (numberOfErrors = self->_numberOfErrors, numberOfErrors < -[TSTimeErrorAnalysis threadingLimit](self, "threadingLimit"))) || ([MEMORY[0x277CCAC38] processInfo], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "activeProcessorCount"), v14, v15 == 1))
+  if (option != 1 && (option || (numberOfErrors = self->_numberOfErrors, numberOfErrors < -[TSTimeErrorAnalysis threadingLimit](self, "threadingLimit"))) || ([MEMORY[0x277CCAC38] processInfo], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "activeProcessorCount"), v14, v15 == 1))
   {
-    [(TSTimeErrorAnalysis *)self _performAnalysisFromWindowSize:v12 toWindowSize:a4 stepSize:a5];
+    [(TSTimeErrorAnalysis *)self _performAnalysisFromWindowSize:sizeCopy toWindowSize:windowSize stepSize:stepSize];
   }
 
   else
@@ -122,8 +122,8 @@
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     v19 = [v16 stringWithFormat:@"com.apple.timesync.%@.parallel", v18];
-    v20 = [v19 UTF8String];
-    v41 = dispatch_queue_create(v20, MEMORY[0x277D85CD8]);
+    uTF8String = [v19 UTF8String];
+    v41 = dispatch_queue_create(uTF8String, MEMORY[0x277D85CD8]);
 
     v21 = MEMORY[0x277CCACA8];
     v22 = objc_opt_class();
@@ -133,26 +133,26 @@
 
     v26 = dispatch_semaphore_create(v15);
     v27 = dispatch_group_create();
-    v28 = (a4 - v12 + 1) / v15;
-    if ([(TSTimeErrorAnalysis *)self threadingSegment]< v28)
+    threadingSegment = (windowSize - sizeCopy + 1) / v15;
+    if ([(TSTimeErrorAnalysis *)self threadingSegment]< threadingSegment)
     {
-      v28 = [(TSTimeErrorAnalysis *)self threadingSegment];
+      threadingSegment = [(TSTimeErrorAnalysis *)self threadingSegment];
     }
 
-    if (a5 >= 2)
+    if (stepSize >= 2)
     {
-      v28 = v28 / a5 * a5 - v28 + 2 * v28;
+      threadingSegment = threadingSegment / stepSize * stepSize - threadingSegment + 2 * threadingSegment;
     }
 
-    v42 = self;
-    v43 = a5;
-    v39 = v12;
+    selfCopy = self;
+    stepSizeCopy = stepSize;
+    v39 = sizeCopy;
     v29 = v25;
     v30 = v26;
-    if (v12 < a4 - 1)
+    if (sizeCopy < windowSize - 1)
     {
       v40 = MEMORY[0x277D85DD0];
-      v31 = v28;
+      windowSizeCopy = threadingSegment;
       do
       {
         block[0] = v40;
@@ -160,49 +160,49 @@
         block[2] = __103__TSTimeErrorAnalysis_performAnalysisFromStartWindowSize_toEndWindowSize_stepSize_withThreadingOption___block_invoke;
         block[3] = &unk_279DBD5F0;
         v45 = v30;
-        v32 = v28;
+        v32 = threadingSegment;
         v33 = v30;
         v34 = v29;
         v35 = v27;
         v46 = v35;
         v47 = v41;
-        v48 = v42;
-        v49 = v12;
-        v50 = v31;
-        v51 = v43;
+        v48 = selfCopy;
+        v49 = sizeCopy;
+        v50 = windowSizeCopy;
+        v51 = stepSizeCopy;
         v36 = v35;
         v29 = v34;
         v30 = v33;
-        v28 = v32;
+        threadingSegment = v32;
         dispatch_group_async(v36, v29, block);
-        v12 = v31 + 1;
-        if (v31 + v32 >= a4)
+        sizeCopy = windowSizeCopy + 1;
+        if (windowSizeCopy + v32 >= windowSize)
         {
-          v31 = a4;
+          windowSizeCopy = windowSize;
         }
 
         else
         {
-          v31 += v32;
+          windowSizeCopy += v32;
         }
       }
 
-      while (v12 < a4 - 1);
+      while (sizeCopy < windowSize - 1);
     }
 
     dispatch_group_wait(v27, 0xFFFFFFFFFFFFFFFFLL);
 
     v11 = v38;
-    v12 = v39;
-    self = v42;
-    a5 = v43;
+    sizeCopy = v39;
+    self = selfCopy;
+    stepSize = stepSizeCopy;
   }
 
   v37 = mach_absolute_time();
   self->_calculated = 1;
-  self->_lowestWindowSize = v12;
-  self->_highestWindowSize = a4;
-  self->_calculatedStepSize = a5;
+  self->_lowestWindowSize = sizeCopy;
+  self->_highestWindowSize = windowSize;
+  self->_calculatedStepSize = stepSize;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [TSAudioTimeErrorCalculator calculateTimeErrorFromStartOffset:v37 toEndOffset:v11 withThreadingOption:?];
@@ -225,14 +225,14 @@ intptr_t __103__TSTimeErrorAnalysis_performAnalysisFromStartWindowSize_toEndWind
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)exportTimeErrorsToDirectoryURL:(id)a3 withFilename:(id)a4
+- (BOOL)exportTimeErrorsToDirectoryURL:(id)l withFilename:(id)filename
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isFileURL])
+  lCopy = l;
+  filenameCopy = filename;
+  if ([lCopy isFileURL])
   {
-    v8 = [v6 path];
-    v9 = [v8 stringByAppendingPathComponent:v7];
+    path = [lCopy path];
+    v9 = [path stringByAppendingPathComponent:filenameCopy];
 
     v10 = fopen([v9 UTF8String], "w");
     v11 = v10 != 0;
@@ -273,54 +273,54 @@ intptr_t __103__TSTimeErrorAnalysis_performAnalysisFromStartWindowSize_toEndWind
   [(TSTimeErrorAnalysis *)&v3 dealloc];
 }
 
-+ (id)generatePythonScriptWithOutputPath:(id)a3 fileName:(id)a4 titleName:(id)a5 plotPath:(id)a6 showPlot:(BOOL)a7
++ (id)generatePythonScriptWithOutputPath:(id)path fileName:(id)name titleName:(id)titleName plotPath:(id)plotPath showPlot:(BOOL)plot
 {
-  v29 = a7;
-  v11 = a3;
-  v12 = a6;
+  plotCopy = plot;
+  pathCopy = path;
+  plotPathCopy = plotPath;
   v13 = MEMORY[0x277CCAB68];
-  v14 = a5;
-  v15 = a4;
-  v16 = [v13 string];
-  v17 = [a1 variableName];
-  v18 = [a1 additionalScriptInitialization];
-  [v16 appendFormat:@"#!/usr/bin/env python3\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport os\nimport sys\n\n%@\n", v18];
+  titleNameCopy = titleName;
+  nameCopy = name;
+  string = [v13 string];
+  variableName = [self variableName];
+  additionalScriptInitialization = [self additionalScriptInitialization];
+  [string appendFormat:@"#!/usr/bin/env python3\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport os\nimport sys\n\n%@\n", additionalScriptInitialization];
 
-  v30 = v12;
-  v31 = v11;
-  if (v11)
+  v30 = plotPathCopy;
+  v31 = pathCopy;
+  if (pathCopy)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"'%@/%@'", v11, v15];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"'%@/%@'", pathCopy, nameCopy];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"os.path.split(sys.argv[0])[0]+'/%@'", v15, v28];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"os.path.split(sys.argv[0])[0]+'/%@'", nameCopy, v28];
   }
   v19 = ;
 
-  v20 = [a1 additionalScriptRecords];
-  [v16 appendFormat:@"%@Records = np.rec.array(np.genfromtxt(%@, dtype=None, delimiter=', ', names=True, encoding='utf-8'))\n\ntau = %@Records.observation_interval\n%@ = %@Records.%@\n\n%@\n", v17, v19, v17, v17, v17, v17, v20];
+  additionalScriptRecords = [self additionalScriptRecords];
+  [string appendFormat:@"%@Records = np.rec.array(np.genfromtxt(%@, dtype=None, delimiter=', ', names=True, encoding='utf-8'))\n\ntau = %@Records.observation_interval\n%@ = %@Records.%@\n\n%@\n", variableName, v19, variableName, variableName, variableName, variableName, additionalScriptRecords];
 
-  v21 = [v17 uppercaseString];
-  v22 = [a1 additionalScriptPlots:@"ax1"];
-  v23 = [a1 plotYLabel];
-  v24 = [a1 plotTitle];
-  v25 = [a1 plotYLimits:@"ax1"];
-  [v16 appendFormat:@"f1, ax1 = plt.subplots()\nl1, = ax1.plot(tau, %@, 'r-', label='%@')\n%@\nax1.set_ylabel('%@')\nax1.set_xlabel('Observation Interval (s)')\nax1.set_title('%@ - %@')\nax1.set_xscale('log')\nax1.set_yscale('log')\n%@\nax1.set_aspect(1)\nax1.grid(True)\n\nplt.subplots_adjust(left=0.05, right=0.97, bottom=0.05, top=0.97)\n", v17, v21, v22, v23, v24, v14, v25];
+  uppercaseString = [variableName uppercaseString];
+  v22 = [self additionalScriptPlots:@"ax1"];
+  plotYLabel = [self plotYLabel];
+  plotTitle = [self plotTitle];
+  v25 = [self plotYLimits:@"ax1"];
+  [string appendFormat:@"f1, ax1 = plt.subplots()\nl1, = ax1.plot(tau, %@, 'r-', label='%@')\n%@\nax1.set_ylabel('%@')\nax1.set_xlabel('Observation Interval (s)')\nax1.set_title('%@ - %@')\nax1.set_xscale('log')\nax1.set_yscale('log')\n%@\nax1.set_aspect(1)\nax1.grid(True)\n\nplt.subplots_adjust(left=0.05, right=0.97, bottom=0.05, top=0.97)\n", variableName, uppercaseString, v22, plotYLabel, plotTitle, titleNameCopy, v25];
 
   if (v30)
   {
-    v26 = [a1 plotSize];
-    [v16 appendFormat:@"\n%@\n\nf1.savefig('%@')\n", v26, v30];
+    plotSize = [self plotSize];
+    [string appendFormat:@"\n%@\n\nf1.savefig('%@')\n", plotSize, v30];
   }
 
-  if (v29)
+  if (plotCopy)
   {
-    [v16 appendString:@"\nplt.show()\n"];
+    [string appendString:@"\nplt.show()\n"];
   }
 
-  return v16;
+  return string;
 }
 
 @end

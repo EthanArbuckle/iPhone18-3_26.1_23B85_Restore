@@ -1,24 +1,24 @@
 @interface CXProviderExtensionContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 @end
 
 @implementation CXProviderExtensionContext
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CXProviderExtensionContext *)self _auxiliaryConnection];
-  v6 = v5;
-  if (v4)
+  handlerCopy = handler;
+  _auxiliaryConnection = [(CXProviderExtensionContext *)self _auxiliaryConnection];
+  v6 = _auxiliaryConnection;
+  if (handlerCopy)
   {
-    [v5 remoteObjectProxyWithErrorHandler:v4];
+    [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    [v5 remoteObjectProxy];
+    [_auxiliaryConnection remoteObjectProxy];
   }
   v7 = ;
 

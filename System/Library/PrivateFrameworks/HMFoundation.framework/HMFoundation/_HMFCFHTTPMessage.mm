@@ -1,19 +1,19 @@
 @interface _HMFCFHTTPMessage
 + (id)dateFormatter;
-+ (id)requestWithMethod:(id)a3 url:(id)a4 protocolVersion:(int64_t)a5;
-+ (id)responseWithStatusCode:(int64_t)a3 statusDescription:(id)a4 protocolVersion:(int64_t)a5;
++ (id)requestWithMethod:(id)method url:(id)url protocolVersion:(int64_t)version;
++ (id)responseWithStatusCode:(int64_t)code statusDescription:(id)description protocolVersion:(int64_t)version;
 - (NSData)body;
 - (NSDictionary)headerFields;
 - (_HMFCFHTTPMessage)init;
-- (_HMFCFHTTPMessage)initWithMessageRef:(__CFHTTPMessage *)a3;
+- (_HMFCFHTTPMessage)initWithMessageRef:(__CFHTTPMessage *)ref;
 - (id)date;
-- (id)valueForHeaderField:(id)a3;
+- (id)valueForHeaderField:(id)field;
 - (int64_t)contentLength;
 - (void)dealloc;
-- (void)setBody:(id)a3;
-- (void)setContentLength:(int64_t)a3;
-- (void)setDate:(id)a3;
-- (void)setValue:(id)a3 forHeaderField:(id)a4;
+- (void)setBody:(id)body;
+- (void)setContentLength:(int64_t)length;
+- (void)setDate:(id)date;
+- (void)setValue:(id)value forHeaderField:(id)field;
 @end
 
 @implementation _HMFCFHTTPMessage
@@ -30,17 +30,17 @@
   return v3;
 }
 
-+ (id)requestWithMethod:(id)a3 url:(id)a4 protocolVersion:(int64_t)a5
++ (id)requestWithMethod:(id)method url:(id)url protocolVersion:(int64_t)version
 {
   v8 = *MEMORY[0x277CBECE8];
-  v9 = a4;
-  v10 = a3;
-  v11 = HMFHTTPProtocolVersionString(a5);
-  Request = CFHTTPMessageCreateRequest(v8, v10, v9, v11);
+  urlCopy = url;
+  methodCopy = method;
+  v11 = HMFHTTPProtocolVersionString(version);
+  Request = CFHTTPMessageCreateRequest(v8, methodCopy, urlCopy, v11);
 
   if (Request)
   {
-    v13 = [[a1 alloc] initWithMessageRef:Request];
+    v13 = [[self alloc] initWithMessageRef:Request];
     CFRelease(Request);
   }
 
@@ -52,16 +52,16 @@
   return v13;
 }
 
-+ (id)responseWithStatusCode:(int64_t)a3 statusDescription:(id)a4 protocolVersion:(int64_t)a5
++ (id)responseWithStatusCode:(int64_t)code statusDescription:(id)description protocolVersion:(int64_t)version
 {
   v8 = *MEMORY[0x277CBECE8];
-  v9 = a4;
-  v10 = HMFHTTPProtocolVersionString(a5);
-  Response = CFHTTPMessageCreateResponse(v8, a3, v9, v10);
+  descriptionCopy = description;
+  v10 = HMFHTTPProtocolVersionString(version);
+  Response = CFHTTPMessageCreateResponse(v8, code, descriptionCopy, v10);
 
   if (Response)
   {
-    v12 = [[a1 alloc] initWithMessageRef:Response];
+    v12 = [[self alloc] initWithMessageRef:Response];
     CFRelease(Response);
   }
 
@@ -86,14 +86,14 @@
   objc_exception_throw(v7);
 }
 
-- (_HMFCFHTTPMessage)initWithMessageRef:(__CFHTTPMessage *)a3
+- (_HMFCFHTTPMessage)initWithMessageRef:(__CFHTTPMessage *)ref
 {
   v6.receiver = self;
   v6.super_class = _HMFCFHTTPMessage;
   v4 = [(_HMFCFHTTPMessage *)&v6 init];
   if (v4)
   {
-    v4->_message = CFRetain(a3);
+    v4->_message = CFRetain(ref);
   }
 
   return v4;
@@ -119,35 +119,35 @@
   return v2;
 }
 
-- (id)valueForHeaderField:(id)a3
+- (id)valueForHeaderField:(id)field
 {
-  v4 = a3;
-  v5 = CFHTTPMessageCopyHeaderFieldValue([(_HMFCFHTTPMessage *)self message], v4);
+  fieldCopy = field;
+  v5 = CFHTTPMessageCopyHeaderFieldValue([(_HMFCFHTTPMessage *)self message], fieldCopy);
 
   return v5;
 }
 
-- (void)setValue:(id)a3 forHeaderField:(id)a4
+- (void)setValue:(id)value forHeaderField:(id)field
 {
-  v6 = a4;
-  value = a3;
-  CFHTTPMessageSetHeaderFieldValue([(_HMFCFHTTPMessage *)self message], v6, value);
+  fieldCopy = field;
+  value = value;
+  CFHTTPMessageSetHeaderFieldValue([(_HMFCFHTTPMessage *)self message], fieldCopy, value);
 }
 
 - (id)date
 {
   v2 = [(_HMFCFHTTPMessage *)self valueForHeaderField:@"Date"];
-  v3 = [objc_opt_class() dateFormatter];
-  v4 = [v3 dateFromString:v2];
+  dateFormatter = [objc_opt_class() dateFormatter];
+  v4 = [dateFormatter dateFromString:v2];
 
   return v4;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_opt_class() dateFormatter];
-  v6 = [v5 stringFromDate:v4];
+  dateCopy = date;
+  dateFormatter = [objc_opt_class() dateFormatter];
+  v6 = [dateFormatter stringFromDate:dateCopy];
 
   [(_HMFCFHTTPMessage *)self setValue:v6 forHeaderField:@"Date"];
 }
@@ -158,20 +158,20 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setContentLength:(int64_t)a3
+- (void)setContentLength:(int64_t)length
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", length];
   [(_HMFCFHTTPMessage *)self setValue:v4 forHeaderField:@"Content-Length"];
 }
 
@@ -182,11 +182,11 @@
   return v2;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v4 = a3;
-  CFHTTPMessageSetBody([(_HMFCFHTTPMessage *)self message], v4);
-  v5 = [(__CFData *)v4 length];
+  bodyCopy = body;
+  CFHTTPMessageSetBody([(_HMFCFHTTPMessage *)self message], bodyCopy);
+  v5 = [(__CFData *)bodyCopy length];
 
   [(_HMFCFHTTPMessage *)self setContentLength:v5];
 }

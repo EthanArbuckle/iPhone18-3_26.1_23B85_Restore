@@ -7,9 +7,9 @@
 + (BOOL)isInternetReachable
 {
   v2 = +[ICReachability sharedReachabilityForInternetConnection];
-  v3 = [v2 currentReachabilityStatus];
+  currentReachabilityStatus = [v2 currentReachabilityStatus];
 
-  return v3 != 0;
+  return currentReachabilityStatus != 0;
 }
 
 @end

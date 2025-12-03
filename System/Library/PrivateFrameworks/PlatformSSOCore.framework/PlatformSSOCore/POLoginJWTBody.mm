@@ -13,7 +13,7 @@
 - (NSString)scope;
 - (NSString)sub;
 - (NSString)username;
-- (POLoginJWTBody)initWithJWTData:(id)a3;
+- (POLoginJWTBody)initWithJWTData:(id)data;
 - (id)dataRepresentation;
 - (id)description;
 - (id)mutableCopy;
@@ -23,29 +23,29 @@
 
 @implementation POLoginJWTBody
 
-- (POLoginJWTBody)initWithJWTData:(id)a3
+- (POLoginJWTBody)initWithJWTData:(id)data
 {
   v15.receiver = self;
   v15.super_class = POLoginJWTBody;
-  v3 = [(_POJWTBodyBase *)&v15 initWithJWTData:a3];
+  v3 = [(_POJWTBodyBase *)&v15 initWithJWTData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(_POJWTBodyBase *)v3 data];
-    v6 = [v5 objectForKeyedSubscript:@"password"];
+    data = [(_POJWTBodyBase *)v3 data];
+    v6 = [data objectForKeyedSubscript:@"password"];
 
     if (v6)
     {
       v7 = objc_alloc(MEMORY[0x277CBEB28]);
-      v8 = [(_POJWTBodyBase *)v4 data];
-      v9 = [v8 objectForKeyedSubscript:@"password"];
+      data2 = [(_POJWTBodyBase *)v4 data];
+      v9 = [data2 objectForKeyedSubscript:@"password"];
       v10 = [v9 dataUsingEncoding:4];
       v11 = [v7 initWithData:v10];
       passwordData = v4->_passwordData;
       v4->_passwordData = v11;
 
-      v13 = [(_POJWTBodyBase *)v4 data];
-      [v13 removeObjectForKey:@"password"];
+      data3 = [(_POJWTBodyBase *)v4 data];
+      [data3 removeObjectForKey:@"password"];
     }
   }
 
@@ -75,8 +75,8 @@
 - (id)mutableCopy
 {
   v3 = objc_alloc_init(POMutableLoginJWTBody);
-  v4 = [(_POJWTBodyBase *)self data];
-  v5 = [v4 mutableCopy];
+  data = [(_POJWTBodyBase *)self data];
+  v5 = [data mutableCopy];
   [(_POJWTBodyBase *)v3 setData:v5];
 
   v6 = [(NSMutableData *)self->_passwordData mutableCopy];
@@ -87,8 +87,8 @@
 
 - (id)dataRepresentation
 {
-  v3 = [(_POJWTBodyBase *)self data];
-  v4 = [v3 mutableCopy];
+  data = [(_POJWTBodyBase *)self data];
+  v4 = [data mutableCopy];
 
   if (self->_passwordData)
   {
@@ -217,13 +217,13 @@ id __21__POLoginJWTBody_sub__block_invoke(uint64_t a1)
   v9[4] = self;
   v4 = __21__POLoginJWTBody_iat__block_invoke_2(v9);
   v5 = MEMORY[0x277CBEAA8];
-  v6 = [v3 intValue];
-  if (!v6)
+  intValue = [v3 intValue];
+  if (!intValue)
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
-  v7 = [v5 dateWithTimeIntervalSince1970:v6];
+  v7 = [v5 dateWithTimeIntervalSince1970:intValue];
 
   return v7;
 }
@@ -285,13 +285,13 @@ id __21__POLoginJWTBody_iat__block_invoke_2(uint64_t a1)
   v9[4] = self;
   v4 = __21__POLoginJWTBody_exp__block_invoke_2(v9);
   v5 = MEMORY[0x277CBEAA8];
-  v6 = [v3 intValue];
-  if (!v6)
+  intValue = [v3 intValue];
+  if (!intValue)
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
-  v7 = [v5 dateWithTimeIntervalSince1970:v6];
+  v7 = [v5 dateWithTimeIntervalSince1970:intValue];
 
   return v7;
 }
@@ -637,8 +637,8 @@ id __21__POLoginJWTBody_amr__block_invoke(uint64_t a1)
 
 - (id)description
 {
-  v3 = [(_POJWTBodyBase *)self data];
-  v4 = [v3 mutableCopy];
+  data = [(_POJWTBodyBase *)self data];
+  v4 = [data mutableCopy];
 
   if (self->_passwordData)
   {

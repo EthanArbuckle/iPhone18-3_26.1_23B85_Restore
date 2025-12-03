@@ -1,19 +1,19 @@
 @interface NSItemProviderRepresentation
-- (NSItemProviderRepresentation)initWithType:(id)a3 preferredRepresentation:(int64_t)a4 loader:(id)a5;
-- (NSItemProviderRepresentation)initWithType_v2:(id)a3 preferredRepresentation:(int64_t)a4 loader:(id)a5;
-- (id)_loadWithOptions:(id)a3 completionBlock:(id)a4;
+- (NSItemProviderRepresentation)initWithType:(id)type preferredRepresentation:(int64_t)representation loader:(id)loader;
+- (NSItemProviderRepresentation)initWithType_v2:(id)type_v2 preferredRepresentation:(int64_t)representation loader:(id)loader;
+- (id)_loadWithOptions:(id)options completionBlock:(id)block;
 - (id)copyWithDoNothingLoaderBlock;
-- (id)loadDataWithOptions:(id)a3 completionHandler:(id)a4;
-- (id)loadDataWithOptions_v2:(id)a3 completionHandler:(id)a4;
-- (id)loadFileCopyWithOptions:(id)a3 completionHandler:(id)a4;
-- (id)loadFileCopyWithOptions_v2:(id)a3 completionHandler:(id)a4;
-- (id)loadOpenInPlaceWithOptions:(id)a3 completionHandler:(id)a4;
-- (id)loadOpenInPlaceWithOptions_v2:(id)a3 completionHandler:(id)a4;
-- (id)loadWithOptions:(id)a3 completionHandler:(id)a4;
-- (id)loadWithOptions_v2:(id)a3 completionHandler:(id)a4;
-- (id)performProgressTrackingWithLoaderBlock:(id)a3 onCancelCallback:(id)a4;
+- (id)loadDataWithOptions:(id)options completionHandler:(id)handler;
+- (id)loadDataWithOptions_v2:(id)options_v2 completionHandler:(id)handler;
+- (id)loadFileCopyWithOptions:(id)options completionHandler:(id)handler;
+- (id)loadFileCopyWithOptions_v2:(id)options_v2 completionHandler:(id)handler;
+- (id)loadOpenInPlaceWithOptions:(id)options completionHandler:(id)handler;
+- (id)loadOpenInPlaceWithOptions_v2:(id)options_v2 completionHandler:(id)handler;
+- (id)loadWithOptions:(id)options completionHandler:(id)handler;
+- (id)loadWithOptions_v2:(id)options_v2 completionHandler:(id)handler;
+- (id)performProgressTrackingWithLoaderBlock:(id)block onCancelCallback:(id)callback;
 - (void)dealloc;
-- (void)setLoaderBlock:(id)a3;
+- (void)setLoaderBlock:(id)block;
 @end
 
 @implementation NSItemProviderRepresentation
@@ -27,7 +27,7 @@
   [(NSItemProviderRepresentation *)&v3 dealloc];
 }
 
-- (NSItemProviderRepresentation)initWithType_v2:(id)a3 preferredRepresentation:(int64_t)a4 loader:(id)a5
+- (NSItemProviderRepresentation)initWithType_v2:(id)type_v2 preferredRepresentation:(int64_t)representation loader:(id)loader
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -35,24 +35,24 @@
   v8 = [(NSItemProviderRepresentation *)&v10 init];
   if (v8)
   {
-    v8->_typeIdentifier = [a3 copy];
-    v8->_loader = [a5 copy];
+    v8->_typeIdentifier = [type_v2 copy];
+    v8->_loader = [loader copy];
     v8->_visibility = 0;
-    v8->_preferredRepresentation = a4;
+    v8->_preferredRepresentation = representation;
   }
 
   return v8;
 }
 
-- (NSItemProviderRepresentation)initWithType:(id)a3 preferredRepresentation:(int64_t)a4 loader:(id)a5
+- (NSItemProviderRepresentation)initWithType:(id)type preferredRepresentation:(int64_t)representation loader:(id)loader
 {
   v6[5] = *MEMORY[0x1E69E9840];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__NSItemProviderRepresentation_initWithType_preferredRepresentation_loader___block_invoke;
   v6[3] = &unk_1E69F56E0;
-  v6[4] = a5;
-  return [(NSItemProviderRepresentation *)self initWithType_v2:a3 preferredRepresentation:a4 loader:v6];
+  v6[4] = loader;
+  return [(NSItemProviderRepresentation *)self initWithType_v2:type preferredRepresentation:representation loader:v6];
 }
 
 uint64_t __76__NSItemProviderRepresentation_initWithType_preferredRepresentation_loader___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6)
@@ -115,7 +115,7 @@ uint64_t __60__NSItemProviderRepresentation_copyWithDoNothingLoaderBlock__block_
   return v3(v1, v2);
 }
 
-- (id)performProgressTrackingWithLoaderBlock:(id)a3 onCancelCallback:(id)a4
+- (id)performProgressTrackingWithLoaderBlock:(id)block onCancelCallback:(id)callback
 {
   v14 = *MEMORY[0x1E69E9840];
   v6 = [NSProgress discreteProgressWithTotalUnitCount:100];
@@ -127,7 +127,7 @@ uint64_t __60__NSItemProviderRepresentation_copyWithDoNothingLoaderBlock__block_
   v11[1] = 3221225472;
   v11[2] = __88__NSItemProviderRepresentation_performProgressTrackingWithLoaderBlock_onCancelCallback___block_invoke;
   v11[3] = &unk_1E69F7CF0;
-  v11[4] = a4;
+  v11[4] = callback;
   v11[5] = v12;
   [(NSProgress *)v6 setCancellationHandler:v11];
   v7 = [NSProgress discreteProgressWithTotalUnitCount:100];
@@ -137,7 +137,7 @@ uint64_t __60__NSItemProviderRepresentation_copyWithDoNothingLoaderBlock__block_
   v10[3] = &unk_1E69F7D40;
   v10[4] = v7;
   v10[5] = v12;
-  v8 = (*(a3 + 2))(a3, v10);
+  v8 = (*(block + 2))(block, v10);
   if (v8)
   {
     [(NSProgress *)v6 addChild:v8 withPendingUnitCount:100];
@@ -211,7 +211,7 @@ uint64_t __88__NSItemProviderRepresentation_performProgressTrackingWithLoaderBlo
   return result;
 }
 
-- (id)_loadWithOptions:(id)a3 completionBlock:(id)a4
+- (id)_loadWithOptions:(id)options completionBlock:(id)block
 {
   v9[6] = *MEMORY[0x1E69E9840];
   v9[0] = 0;
@@ -230,14 +230,14 @@ uint64_t __88__NSItemProviderRepresentation_performProgressTrackingWithLoaderBlo
   v7[2] = __65__NSItemProviderRepresentation__loadWithOptions_completionBlock___block_invoke_2;
   v7[3] = &unk_1E69F7E30;
   v7[4] = self;
-  v7[5] = a3;
-  v7[6] = a4;
+  v7[5] = options;
+  v7[6] = block;
   v7[7] = v8;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__NSItemProviderRepresentation__loadWithOptions_completionBlock___block_invoke_4_69;
   v6[3] = &unk_1E69F7D90;
-  v6[4] = a4;
+  v6[4] = block;
   v6[5] = v8;
   v4 = [(NSItemProviderRepresentation *)self performProgressTrackingWithLoaderBlock:v7 onCancelCallback:v6];
   _Block_object_dispose(v9, 8);
@@ -372,15 +372,15 @@ void __65__NSItemProviderRepresentation__loadWithOptions_completionBlock___block
   _NSIPDispatchAsyncCallback(v1);
 }
 
-- (id)loadWithOptions_v2:(id)a3 completionHandler:(id)a4
+- (id)loadWithOptions_v2:(id)options_v2 completionHandler:(id)handler
 {
   v5[5] = *MEMORY[0x1E69E9840];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __69__NSItemProviderRepresentation_loadWithOptions_v2_completionHandler___block_invoke;
   v5[3] = &unk_1E69F7E58;
-  v5[4] = a4;
-  return [(NSItemProviderRepresentation *)self _loadWithOptions:a3 completionBlock:v5];
+  v5[4] = handler;
+  return [(NSItemProviderRepresentation *)self _loadWithOptions:options_v2 completionBlock:v5];
 }
 
 void __69__NSItemProviderRepresentation_loadWithOptions_v2_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -399,15 +399,15 @@ void __69__NSItemProviderRepresentation_loadWithOptions_v2_completionHandler___b
   }
 }
 
-- (id)loadWithOptions:(id)a3 completionHandler:(id)a4
+- (id)loadWithOptions:(id)options completionHandler:(id)handler
 {
   v5[5] = *MEMORY[0x1E69E9840];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __66__NSItemProviderRepresentation_loadWithOptions_completionHandler___block_invoke;
   v5[3] = &unk_1E69F7E58;
-  v5[4] = a4;
-  return [(NSItemProviderRepresentation *)self loadWithOptions_v2:a3 completionHandler:v5];
+  v5[4] = handler;
+  return [(NSItemProviderRepresentation *)self loadWithOptions_v2:options completionHandler:v5];
 }
 
 uint64_t __66__NSItemProviderRepresentation_loadWithOptions_completionHandler___block_invoke(uint64_t result, void *a2)
@@ -427,14 +427,14 @@ uint64_t __66__NSItemProviderRepresentation_loadWithOptions_completionHandler___
   return result;
 }
 
-- (void)setLoaderBlock:(id)a3
+- (void)setLoaderBlock:(id)block
 {
   v3[5] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __47__NSItemProviderRepresentation_setLoaderBlock___block_invoke;
   v3[3] = &unk_1E69F56E0;
-  v3[4] = a3;
+  v3[4] = block;
   [(NSItemProviderRepresentation *)self setLoaderBlock_v2:v3];
 }
 
@@ -459,7 +459,7 @@ uint64_t __47__NSItemProviderRepresentation_setLoaderBlock___block_invoke_2(uint
   return v8(v6, v7);
 }
 
-- (id)loadDataWithOptions_v2:(id)a3 completionHandler:(id)a4
+- (id)loadDataWithOptions_v2:(id)options_v2 completionHandler:(id)handler
 {
   v14[7] = *MEMORY[0x1E69E9840];
   v7 = [NSProgress discreteProgressWithTotalUnitCount:100];
@@ -478,9 +478,9 @@ uint64_t __47__NSItemProviderRepresentation_setLoaderBlock___block_invoke_2(uint
   v14[2] = __73__NSItemProviderRepresentation_loadDataWithOptions_v2_completionHandler___block_invoke;
   v14[3] = &unk_1E69F7F70;
   v14[5] = v8;
-  v14[6] = a4;
+  v14[6] = handler;
   v14[4] = self;
-  v9 = [(NSItemProviderRepresentation *)self _loadWithOptions:a3 completionBlock:v14];
+  v9 = [(NSItemProviderRepresentation *)self _loadWithOptions:options_v2 completionBlock:v14];
   if (v8)
   {
     if ([(NSItemProviderRepresentation *)self preferredRepresentation]== 2)
@@ -676,15 +676,15 @@ uint64_t __73__NSItemProviderRepresentation_loadDataWithOptions_v2_completionHan
   return result;
 }
 
-- (id)loadDataWithOptions:(id)a3 completionHandler:(id)a4
+- (id)loadDataWithOptions:(id)options completionHandler:(id)handler
 {
   v5[5] = *MEMORY[0x1E69E9840];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __70__NSItemProviderRepresentation_loadDataWithOptions_completionHandler___block_invoke;
   v5[3] = &unk_1E69F7E58;
-  v5[4] = a4;
-  return [(NSItemProviderRepresentation *)self loadDataWithOptions_v2:a3 completionHandler:v5];
+  v5[4] = handler;
+  return [(NSItemProviderRepresentation *)self loadDataWithOptions_v2:options completionHandler:v5];
 }
 
 uint64_t __70__NSItemProviderRepresentation_loadDataWithOptions_completionHandler___block_invoke(uint64_t result, void *a2)
@@ -702,7 +702,7 @@ uint64_t __70__NSItemProviderRepresentation_loadDataWithOptions_completionHandle
   return result;
 }
 
-- (id)loadFileCopyWithOptions_v2:(id)a3 completionHandler:(id)a4
+- (id)loadFileCopyWithOptions_v2:(id)options_v2 completionHandler:(id)handler
 {
   v14[7] = *MEMORY[0x1E69E9840];
   v7 = [NSProgress discreteProgressWithTotalUnitCount:100];
@@ -721,9 +721,9 @@ uint64_t __70__NSItemProviderRepresentation_loadDataWithOptions_completionHandle
   v14[2] = __77__NSItemProviderRepresentation_loadFileCopyWithOptions_v2_completionHandler___block_invoke;
   v14[3] = &unk_1E69F7F70;
   v14[5] = v8;
-  v14[6] = a4;
+  v14[6] = handler;
   v14[4] = self;
-  v9 = [(NSItemProviderRepresentation *)self _loadWithOptions:a3 completionBlock:v14];
+  v9 = [(NSItemProviderRepresentation *)self _loadWithOptions:options_v2 completionBlock:v14];
   if (v8)
   {
     if ([(NSItemProviderRepresentation *)self preferredRepresentation]== 2)
@@ -957,15 +957,15 @@ uint64_t __77__NSItemProviderRepresentation_loadFileCopyWithOptions_v2_completio
   return (*(*(a1 + 48) + 16))(*(a1 + 48), v5, RepresentationError, v11, [*(a1 + 40) cleanupHandler]);
 }
 
-- (id)loadFileCopyWithOptions:(id)a3 completionHandler:(id)a4
+- (id)loadFileCopyWithOptions:(id)options completionHandler:(id)handler
 {
   v5[5] = *MEMORY[0x1E69E9840];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __74__NSItemProviderRepresentation_loadFileCopyWithOptions_completionHandler___block_invoke;
   v5[3] = &unk_1E69F7E58;
-  v5[4] = a4;
-  return [(NSItemProviderRepresentation *)self loadFileCopyWithOptions_v2:a3 completionHandler:v5];
+  v5[4] = handler;
+  return [(NSItemProviderRepresentation *)self loadFileCopyWithOptions_v2:options completionHandler:v5];
 }
 
 uint64_t __74__NSItemProviderRepresentation_loadFileCopyWithOptions_completionHandler___block_invoke(uint64_t result, void *a2)
@@ -983,7 +983,7 @@ uint64_t __74__NSItemProviderRepresentation_loadFileCopyWithOptions_completionHa
   return result;
 }
 
-- (id)loadOpenInPlaceWithOptions_v2:(id)a3 completionHandler:(id)a4
+- (id)loadOpenInPlaceWithOptions_v2:(id)options_v2 completionHandler:(id)handler
 {
   v5[6] = *MEMORY[0x1E69E9840];
   v5[0] = MEMORY[0x1E69E9820];
@@ -991,8 +991,8 @@ uint64_t __74__NSItemProviderRepresentation_loadFileCopyWithOptions_completionHa
   v5[2] = __80__NSItemProviderRepresentation_loadOpenInPlaceWithOptions_v2_completionHandler___block_invoke;
   v5[3] = &unk_1E69F8008;
   v5[4] = self;
-  v5[5] = a4;
-  return [(NSItemProviderRepresentation *)self _loadWithOptions:a3 completionBlock:v5];
+  v5[5] = handler;
+  return [(NSItemProviderRepresentation *)self _loadWithOptions:options_v2 completionBlock:v5];
 }
 
 void __80__NSItemProviderRepresentation_loadOpenInPlaceWithOptions_v2_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1321,15 +1321,15 @@ void __80__NSItemProviderRepresentation_loadOpenInPlaceWithOptions_v2_completion
   }
 }
 
-- (id)loadOpenInPlaceWithOptions:(id)a3 completionHandler:(id)a4
+- (id)loadOpenInPlaceWithOptions:(id)options completionHandler:(id)handler
 {
   v5[5] = *MEMORY[0x1E69E9840];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __77__NSItemProviderRepresentation_loadOpenInPlaceWithOptions_completionHandler___block_invoke;
   v5[3] = &unk_1E69F7E58;
-  v5[4] = a4;
-  return [(NSItemProviderRepresentation *)self loadOpenInPlaceWithOptions_v2:a3 completionHandler:v5];
+  v5[4] = handler;
+  return [(NSItemProviderRepresentation *)self loadOpenInPlaceWithOptions_v2:options completionHandler:v5];
 }
 
 uint64_t __77__NSItemProviderRepresentation_loadOpenInPlaceWithOptions_completionHandler___block_invoke(uint64_t result, void *a2)

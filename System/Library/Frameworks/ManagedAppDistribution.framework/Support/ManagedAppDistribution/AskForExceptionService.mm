@@ -1,10 +1,10 @@
 @interface AskForExceptionService
-- (void)handleAgeExceptionResponse:(id)a3;
+- (void)handleAgeExceptionResponse:(id)response;
 @end
 
 @implementation AskForExceptionService
 
-- (void)handleAgeExceptionResponse:(id)a3
+- (void)handleAgeExceptionResponse:(id)response
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

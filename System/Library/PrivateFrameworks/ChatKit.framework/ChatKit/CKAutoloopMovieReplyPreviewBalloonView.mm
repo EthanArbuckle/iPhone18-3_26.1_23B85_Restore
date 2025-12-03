@@ -1,5 +1,5 @@
 @interface CKAutoloopMovieReplyPreviewBalloonView
-- (CKAutoloopMovieReplyPreviewBalloonView)initWithFrame:(CGRect)a3;
+- (CKAutoloopMovieReplyPreviewBalloonView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)updateContentAlpha;
@@ -7,16 +7,16 @@
 
 @implementation CKAutoloopMovieReplyPreviewBalloonView
 
-- (CKAutoloopMovieReplyPreviewBalloonView)initWithFrame:(CGRect)a3
+- (CKAutoloopMovieReplyPreviewBalloonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKAutoloopMovieReplyPreviewBalloonView;
-  v3 = [(CKAutoloopMovieBalloonView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKAutoloopMovieBalloonView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKBalloonView *)v3 doubleTapGestureRecognizer];
-    [v5 setEnabled:0];
+    doubleTapGestureRecognizer = [(CKBalloonView *)v3 doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer setEnabled:0];
   }
 
   return v4;
@@ -27,8 +27,8 @@
   v4.receiver = self;
   v4.super_class = CKAutoloopMovieReplyPreviewBalloonView;
   [(CKAutoloopMovieBalloonView *)&v4 layoutSubviews];
-  v3 = [(CKAutoloopMovieBalloonView *)self muteButton];
-  [v3 setHidden:1];
+  muteButton = [(CKAutoloopMovieBalloonView *)self muteButton];
+  [muteButton setHidden:1];
 
   [(CKAutoloopMovieReplyPreviewBalloonView *)self updateContentAlpha];
 }
@@ -43,10 +43,10 @@
 
 - (void)updateContentAlpha
 {
-  v3 = [(CKAutoloopMovieReplyPreviewBalloonView *)self traitCollection];
-  v4 = [v3 isTranscriptBackgroundActive];
+  traitCollection = [(CKAutoloopMovieReplyPreviewBalloonView *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  if (v4)
+  if (isTranscriptBackgroundActive)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
     [v5 replyPreviewBalloonImageAlpha];

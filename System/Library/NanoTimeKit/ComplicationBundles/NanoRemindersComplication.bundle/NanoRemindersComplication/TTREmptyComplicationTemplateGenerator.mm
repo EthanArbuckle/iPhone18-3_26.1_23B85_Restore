@@ -1,10 +1,10 @@
 @interface TTREmptyComplicationTemplateGenerator
-- (id)templateForTimelineModelEntry:(id)a3;
+- (id)templateForTimelineModelEntry:(id)entry;
 @end
 
 @implementation TTREmptyComplicationTemplateGenerator
 
-- (id)templateForTimelineModelEntry:(id)a3
+- (id)templateForTimelineModelEntry:(id)entry
 {
   v3 = [CLKSimpleTextProvider textProviderWithText:&stru_10758];
   v4 = [[CLKComplicationTemplateModularSmallSimpleText alloc] initWithTextProvider:v3];

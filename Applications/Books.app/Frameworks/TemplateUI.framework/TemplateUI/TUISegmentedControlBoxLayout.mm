@@ -1,7 +1,7 @@
 @interface TUISegmentedControlBoxLayout
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentWidth;
 - (double)computeDerivedHeight;
-- (id)axModelTreeWithCustomActionsCollector:(id)a3 scrollAncestorLayout:(id)a4 scrollAncestorTranslation:(CGPoint)a5 liveTransformAncestorLayout:(id)a6;
+- (id)axModelTreeWithCustomActionsCollector:(id)collector scrollAncestorLayout:(id)layout scrollAncestorTranslation:(CGPoint)translation liveTransformAncestorLayout:(id)ancestorLayout;
 @end
 
 @implementation TUISegmentedControlBoxLayout
@@ -38,11 +38,11 @@
   return (v6 & 0xFFFFFFFFFFFFLL | 0x7FC0000000000000);
 }
 
-- (id)axModelTreeWithCustomActionsCollector:(id)a3 scrollAncestorLayout:(id)a4 scrollAncestorTranslation:(CGPoint)a5 liveTransformAncestorLayout:(id)a6
+- (id)axModelTreeWithCustomActionsCollector:(id)collector scrollAncestorLayout:(id)layout scrollAncestorTranslation:(CGPoint)translation liveTransformAncestorLayout:(id)ancestorLayout
 {
   v8.receiver = self;
   v8.super_class = TUISegmentedControlBoxLayout;
-  v6 = [(TUIStatefulElementBoxLayout *)&v8 axModelTreeWithCustomActionsCollector:a3 scrollAncestorLayout:a4 scrollAncestorTranslation:a6 liveTransformAncestorLayout:a5.x, a5.y];
+  v6 = [(TUIStatefulElementBoxLayout *)&v8 axModelTreeWithCustomActionsCollector:collector scrollAncestorLayout:layout scrollAncestorTranslation:ancestorLayout liveTransformAncestorLayout:translation.x, translation.y];
   [v6 setShouldVendControlView:1];
 
   return v6;

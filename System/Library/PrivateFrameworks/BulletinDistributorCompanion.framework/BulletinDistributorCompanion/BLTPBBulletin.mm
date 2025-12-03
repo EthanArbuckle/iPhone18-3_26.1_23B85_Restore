@@ -1,70 +1,70 @@
 @interface BLTPBBulletin
-+ (id)_handleThumbnailResponse:(id)a3 attachmentMetadata:(id)a4 transcodedAttachmentSaveURL:(id)a5 wantsData:(BOOL)a6 imageContentType:(id)a7;
-+ (id)bulletinWithBBBulletin:(id)a3 sockPuppetAppBundleID:(id)a4 observer:(id)a5 feed:(unint64_t)a6 teamID:(id)a7 universalSectionID:(id)a8 shouldUseExpirationDate:(BOOL)a9 replyToken:(id)a10 gizmoLegacyPublisherBulletinID:(id)a11 gizmoLegacyCategoryID:(id)a12 gizmoSectionID:(id)a13 gizmoSectionSubtype:(id)a14 useUserInfoForContext:(BOOL)a15 removeSubtitleForOlderWatches:(BOOL)a16;
-+ (void)_addAttachmentsFromBBBulletin:(id)a3 toBLTPBBulletin:(id)a4 observer:(id)a5 attachOption:(unint64_t)a6 completion:(id)a7;
-+ (void)_attachmentFromBBAttachmentMetadata:(id)a3 bulletin:(id)a4 observer:(id)a5 fileOption:(unint64_t)a6 attachOption:(unint64_t)a7 completion:(id)a8;
-+ (void)bulletinWithBBBulletin:(id)a3 sockPuppetAppBundleID:(id)a4 observer:(id)a5 feed:(unint64_t)a6 teamID:(id)a7 universalSectionID:(id)a8 shouldUseExpirationDate:(BOOL)a9 replyToken:(id)a10 gizmoLegacyPublisherBulletinID:(id)a11 gizmoLegacyCategoryID:(id)a12 gizmoSectionID:(id)a13 gizmoSectionSubtype:(id)a14 useUserInfoForContext:(BOOL)a15 removeSubtitleForOlderWatches:(BOOL)a16 attachOption:(unint64_t)a17 completion:(id)a18;
-- (BOOL)isEqual:(id)a3;
-- (id)attachmentKey:(id)a3;
++ (id)_handleThumbnailResponse:(id)response attachmentMetadata:(id)metadata transcodedAttachmentSaveURL:(id)l wantsData:(BOOL)data imageContentType:(id)type;
++ (id)bulletinWithBBBulletin:(id)bulletin sockPuppetAppBundleID:(id)d observer:(id)observer feed:(unint64_t)feed teamID:(id)iD universalSectionID:(id)sectionID shouldUseExpirationDate:(BOOL)date replyToken:(id)self0 gizmoLegacyPublisherBulletinID:(id)self1 gizmoLegacyCategoryID:(id)self2 gizmoSectionID:(id)self3 gizmoSectionSubtype:(id)self4 useUserInfoForContext:(BOOL)self5 removeSubtitleForOlderWatches:(BOOL)self6;
++ (void)_addAttachmentsFromBBBulletin:(id)bulletin toBLTPBBulletin:(id)bBulletin observer:(id)observer attachOption:(unint64_t)option completion:(id)completion;
++ (void)_attachmentFromBBAttachmentMetadata:(id)metadata bulletin:(id)bulletin observer:(id)observer fileOption:(unint64_t)option attachOption:(unint64_t)attachOption completion:(id)completion;
++ (void)bulletinWithBBBulletin:(id)bulletin sockPuppetAppBundleID:(id)d observer:(id)observer feed:(unint64_t)feed teamID:(id)iD universalSectionID:(id)sectionID shouldUseExpirationDate:(BOOL)date replyToken:(id)self0 gizmoLegacyPublisherBulletinID:(id)self1 gizmoLegacyCategoryID:(id)self2 gizmoSectionID:(id)self3 gizmoSectionSubtype:(id)self4 useUserInfoForContext:(BOOL)self5 removeSubtitleForOlderWatches:(BOOL)self6 attachOption:(unint64_t)self7 completion:(id)self8;
+- (BOOL)isEqual:(id)equal;
+- (id)attachmentKey:(id)key;
 - (id)attachmentURLURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)publisherMatchID;
 - (unint64_t)hash;
-- (void)addAdditionalAttachments:(id)a3;
-- (void)addPeopleIDs:(id)a3;
-- (void)addSubsectionIDs:(id)a3;
-- (void)addSupplementaryActions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAttachmentType:(BOOL)a3;
-- (void)setHasContainsUpdateIcon:(BOOL)a3;
-- (void)setHasContainsUpdatedAttachment:(BOOL)a3;
-- (void)setHasHasCriticalIcon:(BOOL)a3;
-- (void)setHasHasSubordinateIcon:(BOOL)a3;
-- (void)setHasIgnoresQuietMode:(BOOL)a3;
-- (void)setHasInterruptionLevel:(BOOL)a3;
-- (void)setHasIsHighlight:(BOOL)a3;
-- (void)setHasLoading:(BOOL)a3;
-- (void)setHasPreemptsPresentedAlert:(BOOL)a3;
-- (void)setHasPriorityNotificationStatus:(BOOL)a3;
-- (void)setHasPublicationDate:(BOOL)a3;
-- (void)setHasRequiredExpirationDate:(BOOL)a3;
-- (void)setHasSectionSubtype:(BOOL)a3;
-- (void)setHasSoundAlertType:(BOOL)a3;
-- (void)setHasSoundAudioVolume:(BOOL)a3;
-- (void)setHasSoundMaximumDuration:(BOOL)a3;
-- (void)setHasSoundShouldIgnoreRingerSwitch:(BOOL)a3;
-- (void)setHasSoundShouldRepeat:(BOOL)a3;
-- (void)setHasSuppressDelayForForwardedBulletins:(BOOL)a3;
-- (void)setHasTurnsOnDisplay:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAdditionalAttachments:(id)attachments;
+- (void)addPeopleIDs:(id)ds;
+- (void)addSubsectionIDs:(id)ds;
+- (void)addSupplementaryActions:(id)actions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAttachmentType:(BOOL)type;
+- (void)setHasContainsUpdateIcon:(BOOL)icon;
+- (void)setHasContainsUpdatedAttachment:(BOOL)attachment;
+- (void)setHasHasCriticalIcon:(BOOL)icon;
+- (void)setHasHasSubordinateIcon:(BOOL)icon;
+- (void)setHasIgnoresQuietMode:(BOOL)mode;
+- (void)setHasInterruptionLevel:(BOOL)level;
+- (void)setHasIsHighlight:(BOOL)highlight;
+- (void)setHasLoading:(BOOL)loading;
+- (void)setHasPreemptsPresentedAlert:(BOOL)alert;
+- (void)setHasPriorityNotificationStatus:(BOOL)status;
+- (void)setHasPublicationDate:(BOOL)date;
+- (void)setHasRequiredExpirationDate:(BOOL)date;
+- (void)setHasSectionSubtype:(BOOL)subtype;
+- (void)setHasSoundAlertType:(BOOL)type;
+- (void)setHasSoundAudioVolume:(BOOL)volume;
+- (void)setHasSoundMaximumDuration:(BOOL)duration;
+- (void)setHasSoundShouldIgnoreRingerSwitch:(BOOL)switch;
+- (void)setHasSoundShouldRepeat:(BOOL)repeat;
+- (void)setHasSuppressDelayForForwardedBulletins:(BOOL)bulletins;
+- (void)setHasTurnsOnDisplay:(BOOL)display;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBBulletin
 
-- (void)addSupplementaryActions:(id)a3
+- (void)addSupplementaryActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   supplementaryActions = self->_supplementaryActions;
-  v8 = v4;
+  v8 = actionsCopy;
   if (!supplementaryActions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_supplementaryActions;
     self->_supplementaryActions = v6;
 
-    v4 = v8;
+    actionsCopy = v8;
     supplementaryActions = self->_supplementaryActions;
   }
 
-  [(NSMutableArray *)supplementaryActions addObject:v4];
+  [(NSMutableArray *)supplementaryActions addObject:actionsCopy];
 }
 
-- (void)setHasSectionSubtype:(BOOL)a3
+- (void)setHasSectionSubtype:(BOOL)subtype
 {
-  if (a3)
+  if (subtype)
   {
     v3 = 256;
   }
@@ -77,9 +77,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasPublicationDate:(BOOL)a3
+- (void)setHasPublicationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -92,9 +92,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasSoundAlertType:(BOOL)a3
+- (void)setHasSoundAlertType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 512;
   }
@@ -107,9 +107,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasAttachmentType:(BOOL)a3
+- (void)setHasAttachmentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -122,9 +122,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasContainsUpdatedAttachment:(BOOL)a3
+- (void)setHasContainsUpdatedAttachment:(BOOL)attachment
 {
-  if (a3)
+  if (attachment)
   {
     v3 = 2048;
   }
@@ -137,9 +137,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasLoading:(BOOL)a3
+- (void)setHasLoading:(BOOL)loading
 {
-  if (a3)
+  if (loading)
   {
     v3 = 0x10000;
   }
@@ -152,9 +152,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasTurnsOnDisplay:(BOOL)a3
+- (void)setHasTurnsOnDisplay:(BOOL)display
 {
-  if (a3)
+  if (display)
   {
     v3 = 0x200000;
   }
@@ -167,45 +167,45 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)addSubsectionIDs:(id)a3
+- (void)addSubsectionIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   subsectionIDs = self->_subsectionIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!subsectionIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_subsectionIDs;
     self->_subsectionIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     subsectionIDs = self->_subsectionIDs;
   }
 
-  [(NSMutableArray *)subsectionIDs addObject:v4];
+  [(NSMutableArray *)subsectionIDs addObject:dsCopy];
 }
 
-- (void)addPeopleIDs:(id)a3
+- (void)addPeopleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   peopleIDs = self->_peopleIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!peopleIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_peopleIDs;
     self->_peopleIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     peopleIDs = self->_peopleIDs;
   }
 
-  [(NSMutableArray *)peopleIDs addObject:v4];
+  [(NSMutableArray *)peopleIDs addObject:dsCopy];
 }
 
-- (void)setHasIgnoresQuietMode:(BOOL)a3
+- (void)setHasIgnoresQuietMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x4000;
   }
@@ -218,27 +218,27 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)addAdditionalAttachments:(id)a3
+- (void)addAdditionalAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   additionalAttachments = self->_additionalAttachments;
-  v8 = v4;
+  v8 = attachmentsCopy;
   if (!additionalAttachments)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_additionalAttachments;
     self->_additionalAttachments = v6;
 
-    v4 = v8;
+    attachmentsCopy = v8;
     additionalAttachments = self->_additionalAttachments;
   }
 
-  [(NSMutableArray *)additionalAttachments addObject:v4];
+  [(NSMutableArray *)additionalAttachments addObject:attachmentsCopy];
 }
 
-- (void)setHasRequiredExpirationDate:(BOOL)a3
+- (void)setHasRequiredExpirationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 8;
   }
@@ -251,9 +251,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasSoundMaximumDuration:(BOOL)a3
+- (void)setHasSoundMaximumDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 32;
   }
@@ -266,9 +266,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasSoundShouldRepeat:(BOOL)a3
+- (void)setHasSoundShouldRepeat:(BOOL)repeat
 {
-  if (a3)
+  if (repeat)
   {
     v3 = 0x80000;
   }
@@ -281,9 +281,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasSoundShouldIgnoreRingerSwitch:(BOOL)a3
+- (void)setHasSoundShouldIgnoreRingerSwitch:(BOOL)switch
 {
-  if (a3)
+  if (switch)
   {
     v3 = 0x40000;
   }
@@ -296,9 +296,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasHasCriticalIcon:(BOOL)a3
+- (void)setHasHasCriticalIcon:(BOOL)icon
 {
-  if (a3)
+  if (icon)
   {
     v3 = 4096;
   }
@@ -311,9 +311,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasSoundAudioVolume:(BOOL)a3
+- (void)setHasSoundAudioVolume:(BOOL)volume
 {
-  if (a3)
+  if (volume)
   {
     v3 = 16;
   }
@@ -326,9 +326,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasPreemptsPresentedAlert:(BOOL)a3
+- (void)setHasPreemptsPresentedAlert:(BOOL)alert
 {
-  if (a3)
+  if (alert)
   {
     v3 = 0x20000;
   }
@@ -341,9 +341,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasSuppressDelayForForwardedBulletins:(BOOL)a3
+- (void)setHasSuppressDelayForForwardedBulletins:(BOOL)bulletins
 {
-  if (a3)
+  if (bulletins)
   {
     v3 = 0x100000;
   }
@@ -356,9 +356,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasContainsUpdateIcon:(BOOL)a3
+- (void)setHasContainsUpdateIcon:(BOOL)icon
 {
-  if (a3)
+  if (icon)
   {
     v3 = 1024;
   }
@@ -371,9 +371,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasInterruptionLevel:(BOOL)a3
+- (void)setHasInterruptionLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 128;
   }
@@ -386,9 +386,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasHasSubordinateIcon:(BOOL)a3
+- (void)setHasHasSubordinateIcon:(BOOL)icon
 {
-  if (a3)
+  if (icon)
   {
     v3 = 0x2000;
   }
@@ -401,9 +401,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasPriorityNotificationStatus:(BOOL)a3
+- (void)setHasPriorityNotificationStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -416,9 +416,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasIsHighlight:(BOOL)a3
+- (void)setHasIsHighlight:(BOOL)highlight
 {
-  if (a3)
+  if (highlight)
   {
     v3 = 0x8000;
   }
@@ -437,8 +437,8 @@
   v8.receiver = self;
   v8.super_class = BLTPBBulletin;
   v4 = [(BLTPBBulletin *)&v8 description];
-  v5 = [(BLTPBBulletin *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBBulletin *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -446,12 +446,12 @@
 - (id)dictionaryRepresentation
 {
   v103 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   bulletinID = self->_bulletinID;
   if (bulletinID)
   {
-    [v3 setObject:bulletinID forKey:@"bulletinID"];
+    [dictionary setObject:bulletinID forKey:@"bulletinID"];
   }
 
   sectionID = self->_sectionID;
@@ -518,8 +518,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v97 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation = [*(*(&v97 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v97 objects:v102 count:16];
@@ -537,8 +537,8 @@
   snoozeAction = self->_snoozeAction;
   if (snoozeAction)
   {
-    v22 = [(BLTPBAction *)snoozeAction dictionaryRepresentation];
-    [v4 setObject:v22 forKey:@"snoozeAction"];
+    dictionaryRepresentation2 = [(BLTPBAction *)snoozeAction dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"snoozeAction"];
   }
 
   recordID = self->_recordID;
@@ -556,8 +556,8 @@
   dismissAction = self->_dismissAction;
   if (dismissAction)
   {
-    v26 = [(BLTPBAction *)dismissAction dictionaryRepresentation];
-    [v4 setObject:v26 forKey:@"dismissAction"];
+    dictionaryRepresentation3 = [(BLTPBAction *)dismissAction dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"dismissAction"];
   }
 
   if (*(&self->_has + 1))
@@ -762,8 +762,8 @@ LABEL_61:
             objc_enumerationMutation(v52);
           }
 
-          v57 = [*(*(&v93 + 1) + 8 * j) dictionaryRepresentation];
-          [v51 addObject:v57];
+          dictionaryRepresentation4 = [*(*(&v93 + 1) + 8 * j) dictionaryRepresentation];
+          [v51 addObject:dictionaryRepresentation4];
         }
 
         v54 = [(NSMutableArray *)v52 countByEnumeratingWithState:&v93 objects:v101 count:16];
@@ -889,8 +889,8 @@ LABEL_102:
   icon = self->_icon;
   if (icon)
   {
-    v63 = [(BLTPBSectionIcon *)icon dictionaryRepresentation];
-    [v4 setObject:v63 forKey:@"icon"];
+    dictionaryRepresentation5 = [(BLTPBSectionIcon *)icon dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"icon"];
   }
 
   if ((*(&self->_has + 1) & 4) != 0)
@@ -914,8 +914,8 @@ LABEL_102:
   communicationContext = self->_communicationContext;
   if (communicationContext)
   {
-    v68 = [(BLTPBCommunicationContext *)communicationContext dictionaryRepresentation];
-    [v4 setObject:v68 forKey:@"communicationContext"];
+    dictionaryRepresentation6 = [(BLTPBCommunicationContext *)communicationContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"communicationContext"];
   }
 
   contentType = self->_contentType;
@@ -933,8 +933,8 @@ LABEL_102:
   followActivityAction = self->_followActivityAction;
   if (followActivityAction)
   {
-    v72 = [(BLTPBAction *)followActivityAction dictionaryRepresentation];
-    [v4 setObject:v72 forKey:@"followActivityAction"];
+    dictionaryRepresentation7 = [(BLTPBAction *)followActivityAction dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation7 forKey:@"followActivityAction"];
   }
 
   if ((*(&self->_has + 1) & 0x20) != 0)
@@ -988,10 +988,10 @@ LABEL_102:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v77 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_bulletinID)
   {
     PBDataWriterWriteStringField();
@@ -1521,50 +1521,50 @@ LABEL_108:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v26 = v4;
+  toCopy = to;
+  v26 = toCopy;
   if (self->_bulletinID)
   {
-    [v4 setBulletinID:?];
-    v4 = v26;
+    [toCopy setBulletinID:?];
+    toCopy = v26;
   }
 
   if (self->_sectionID)
   {
     [v26 setSectionID:?];
-    v4 = v26;
+    toCopy = v26;
   }
 
   if (self->_sectionDisplayName)
   {
     [v26 setSectionDisplayName:?];
-    v4 = v26;
+    toCopy = v26;
   }
 
   if (self->_title)
   {
     [v26 setTitle:?];
-    v4 = v26;
+    toCopy = v26;
   }
 
   if (self->_subtitle)
   {
     [v26 setSubtitle:?];
-    v4 = v26;
+    toCopy = v26;
   }
 
   if (self->_messageTitle)
   {
     [v26 setMessageTitle:?];
-    v4 = v26;
+    toCopy = v26;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_date;
-    *(v4 + 110) |= 1u;
+    *(toCopy + 1) = *&self->_date;
+    *(toCopy + 110) |= 1u;
   }
 
   if (self->_attachment)
@@ -1575,10 +1575,10 @@ LABEL_108:
   if ([(BLTPBBulletin *)self supplementaryActionsCount])
   {
     [v26 clearSupplementaryActions];
-    v5 = [(BLTPBBulletin *)self supplementaryActionsCount];
-    if (v5)
+    supplementaryActionsCount = [(BLTPBBulletin *)self supplementaryActionsCount];
+    if (supplementaryActionsCount)
     {
-      v6 = v5;
+      v6 = supplementaryActionsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BLTPBBulletin *)self supplementaryActionsAtIndex:i];
@@ -1731,10 +1731,10 @@ LABEL_56:
   if ([(BLTPBBulletin *)self subsectionIDsCount])
   {
     [v26 clearSubsectionIDs];
-    v11 = [(BLTPBBulletin *)self subsectionIDsCount];
-    if (v11)
+    subsectionIDsCount = [(BLTPBBulletin *)self subsectionIDsCount];
+    if (subsectionIDsCount)
     {
-      v12 = v11;
+      v12 = subsectionIDsCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(BLTPBBulletin *)self subsectionIDsAtIndex:j];
@@ -1756,10 +1756,10 @@ LABEL_56:
   if ([(BLTPBBulletin *)self peopleIDsCount])
   {
     [v26 clearPeopleIDs];
-    v15 = [(BLTPBBulletin *)self peopleIDsCount];
-    if (v15)
+    peopleIDsCount = [(BLTPBBulletin *)self peopleIDsCount];
+    if (peopleIDsCount)
     {
-      v16 = v15;
+      v16 = peopleIDsCount;
       for (k = 0; k != v16; ++k)
       {
         v18 = [(BLTPBBulletin *)self peopleIDsAtIndex:k];
@@ -1802,10 +1802,10 @@ LABEL_56:
   if ([(BLTPBBulletin *)self additionalAttachmentsCount])
   {
     [v26 clearAdditionalAttachments];
-    v19 = [(BLTPBBulletin *)self additionalAttachmentsCount];
-    if (v19)
+    additionalAttachmentsCount = [(BLTPBBulletin *)self additionalAttachmentsCount];
+    if (additionalAttachmentsCount)
     {
-      v20 = v19;
+      v20 = additionalAttachmentsCount;
       for (m = 0; m != v20; ++m)
       {
         v22 = [(BLTPBBulletin *)self additionalAttachmentsAtIndex:m];
@@ -2013,31 +2013,31 @@ LABEL_96:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v129 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bulletinID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bulletinID copyWithZone:zone];
   v7 = *(v5 + 120);
   *(v5 + 120) = v6;
 
-  v8 = [(NSString *)self->_sectionID copyWithZone:a3];
+  v8 = [(NSString *)self->_sectionID copyWithZone:zone];
   v9 = *(v5 + 296);
   *(v5 + 296) = v8;
 
-  v10 = [(NSString *)self->_sectionDisplayName copyWithZone:a3];
+  v10 = [(NSString *)self->_sectionDisplayName copyWithZone:zone];
   v11 = *(v5 + 288);
   *(v5 + 288) = v10;
 
-  v12 = [(NSString *)self->_title copyWithZone:a3];
+  v12 = [(NSString *)self->_title copyWithZone:zone];
   v13 = *(v5 + 408);
   *(v5 + 408) = v12;
 
-  v14 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v14 = [(NSString *)self->_subtitle copyWithZone:zone];
   v15 = *(v5 + 360);
   *(v5 + 360) = v14;
 
-  v16 = [(NSString *)self->_messageTitle copyWithZone:a3];
+  v16 = [(NSString *)self->_messageTitle copyWithZone:zone];
   v17 = *(v5 + 248);
   *(v5 + 248) = v16;
 
@@ -2047,7 +2047,7 @@ LABEL_96:
     *(v5 + 440) |= 1u;
   }
 
-  v18 = [(NSData *)self->_attachment copyWithZone:a3];
+  v18 = [(NSData *)self->_attachment copyWithZone:zone];
   v19 = *(v5 + 80);
   *(v5 + 80) = v18;
 
@@ -2071,7 +2071,7 @@ LABEL_96:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v121 + 1) + 8 * v24) copyWithZone:a3];
+        v25 = [*(*(&v121 + 1) + 8 * v24) copyWithZone:zone];
         [v5 addSupplementaryActions:v25];
 
         ++v24;
@@ -2085,19 +2085,19 @@ LABEL_96:
   }
 
   *(v5 + 200) = self->_feed;
-  v26 = [(BLTPBAction *)self->_snoozeAction copyWithZone:a3];
+  v26 = [(BLTPBAction *)self->_snoozeAction copyWithZone:zone];
   v27 = *(v5 + 312);
   *(v5 + 312) = v26;
 
-  v28 = [(NSString *)self->_recordID copyWithZone:a3];
+  v28 = [(NSString *)self->_recordID copyWithZone:zone];
   v29 = *(v5 + 272);
   *(v5 + 272) = v28;
 
-  v30 = [(NSString *)self->_publisherBulletinID copyWithZone:a3];
+  v30 = [(NSString *)self->_publisherBulletinID copyWithZone:zone];
   v31 = *(v5 + 264);
   *(v5 + 264) = v30;
 
-  v32 = [(BLTPBAction *)self->_dismissAction copyWithZone:a3];
+  v32 = [(BLTPBAction *)self->_dismissAction copyWithZone:zone];
   v33 = *(v5 + 176);
   *(v5 + 176) = v32;
 
@@ -2107,11 +2107,11 @@ LABEL_96:
     *(v5 + 440) |= 0x100u;
   }
 
-  v34 = [(NSString *)self->_sockPuppetAppBundleID copyWithZone:a3];
+  v34 = [(NSString *)self->_sockPuppetAppBundleID copyWithZone:zone];
   v35 = *(v5 + 320);
   *(v5 + 320) = v34;
 
-  v36 = [(NSString *)self->_category copyWithZone:a3];
+  v36 = [(NSString *)self->_category copyWithZone:zone];
   v37 = *(v5 + 128);
   *(v5 + 128) = v36;
 
@@ -2122,19 +2122,19 @@ LABEL_96:
   }
 
   *(v5 + 429) = self->_includesSound;
-  v38 = [(NSString *)self->_teamID copyWithZone:a3];
+  v38 = [(NSString *)self->_teamID copyWithZone:zone];
   v39 = *(v5 + 384);
   *(v5 + 384) = v38;
 
-  v40 = [(NSData *)self->_context copyWithZone:a3];
+  v40 = [(NSData *)self->_context copyWithZone:zone];
   v41 = *(v5 + 160);
   *(v5 + 160) = v40;
 
-  v42 = [(NSString *)self->_universalSectionID copyWithZone:a3];
+  v42 = [(NSString *)self->_universalSectionID copyWithZone:zone];
   v43 = *(v5 + 416);
   *(v5 + 416) = v42;
 
-  v44 = [(NSData *)self->_alertSuppressionContexts copyWithZone:a3];
+  v44 = [(NSData *)self->_alertSuppressionContexts copyWithZone:zone];
   v45 = *(v5 + 64);
   *(v5 + 64) = v44;
 
@@ -2144,11 +2144,11 @@ LABEL_96:
     *(v5 + 440) |= 0x200u;
   }
 
-  v46 = [(NSString *)self->_soundAccountIdentifier copyWithZone:a3];
+  v46 = [(NSString *)self->_soundAccountIdentifier copyWithZone:zone];
   v47 = *(v5 + 328);
   *(v5 + 328) = v46;
 
-  v48 = [(NSString *)self->_soundToneIdentifier copyWithZone:a3];
+  v48 = [(NSString *)self->_soundToneIdentifier copyWithZone:zone];
   v49 = *(v5 + 344);
   *(v5 + 344) = v48;
 
@@ -2220,7 +2220,7 @@ LABEL_21:
           objc_enumerationMutation(v51);
         }
 
-        v56 = [*(*(&v117 + 1) + 8 * v55) copyWithZone:a3];
+        v56 = [*(*(&v117 + 1) + 8 * v55) copyWithZone:zone];
         [v5 addSubsectionIDs:v56];
 
         ++v55;
@@ -2233,11 +2233,11 @@ LABEL_21:
     while (v53);
   }
 
-  v57 = [(NSString *)self->_dismissalID copyWithZone:a3];
+  v57 = [(NSString *)self->_dismissalID copyWithZone:zone];
   v58 = *(v5 + 184);
   *(v5 + 184) = v57;
 
-  v59 = [(NSString *)self->_attachmentURL copyWithZone:a3];
+  v59 = [(NSString *)self->_attachmentURL copyWithZone:zone];
   v60 = *(v5 + 104);
   *(v5 + 104) = v59;
 
@@ -2261,7 +2261,7 @@ LABEL_21:
           objc_enumerationMutation(v61);
         }
 
-        v66 = [*(*(&v113 + 1) + 8 * v65) copyWithZone:a3];
+        v66 = [*(*(&v113 + 1) + 8 * v65) copyWithZone:zone];
         [v5 addPeopleIDs:v66];
 
         ++v65;
@@ -2280,23 +2280,23 @@ LABEL_21:
     *(v5 + 440) |= 0x4000u;
   }
 
-  v67 = [(NSString *)self->_categoryID copyWithZone:a3];
+  v67 = [(NSString *)self->_categoryID copyWithZone:zone];
   v68 = *(v5 + 136);
   *(v5 + 136) = v67;
 
-  v69 = [(NSData *)self->_contextNulls copyWithZone:a3];
+  v69 = [(NSData *)self->_contextNulls copyWithZone:zone];
   v70 = *(v5 + 168);
   *(v5 + 168) = v69;
 
-  v71 = [(NSData *)self->_alertSuppressionContextsNulls copyWithZone:a3];
+  v71 = [(NSData *)self->_alertSuppressionContextsNulls copyWithZone:zone];
   v72 = *(v5 + 72);
   *(v5 + 72) = v71;
 
-  v73 = [(NSString *)self->_threadID copyWithZone:a3];
+  v73 = [(NSString *)self->_threadID copyWithZone:zone];
   v74 = *(v5 + 392);
   *(v5 + 392) = v73;
 
-  v75 = [(NSString *)self->_attachmentID copyWithZone:a3];
+  v75 = [(NSString *)self->_attachmentID copyWithZone:zone];
   v76 = *(v5 + 88);
   *(v5 + 88) = v75;
 
@@ -2320,7 +2320,7 @@ LABEL_21:
           objc_enumerationMutation(v77);
         }
 
-        v82 = [*(*(&v109 + 1) + 8 * v81) copyWithZone:{a3, v109}];
+        v82 = [*(*(&v109 + 1) + 8 * v81) copyWithZone:{zone, v109}];
         [v5 addAdditionalAttachments:v82];
 
         ++v81;
@@ -2339,9 +2339,9 @@ LABEL_21:
     *(v5 + 440) |= 8u;
   }
 
-  v83 = [(NSString *)self->_replyToken copyWithZone:a3, v109];
+  v109 = [(NSString *)self->_replyToken copyWithZone:zone, v109];
   v84 = *(v5 + 280);
-  *(v5 + 280) = v83;
+  *(v5 + 280) = v109;
 
   v85 = self->_has;
   if ((*&v85 & 0x20) != 0)
@@ -2436,7 +2436,7 @@ LABEL_53:
   }
 
 LABEL_54:
-  v86 = [(BLTPBSectionIcon *)self->_icon copyWithZone:a3];
+  v86 = [(BLTPBSectionIcon *)self->_icon copyWithZone:zone];
   v87 = *(v5 + 232);
   *(v5 + 232) = v86;
 
@@ -2446,7 +2446,7 @@ LABEL_54:
     *(v5 + 440) |= 0x400u;
   }
 
-  v88 = [(NSString *)self->_header copyWithZone:a3];
+  v88 = [(NSString *)self->_header copyWithZone:zone];
   v89 = *(v5 + 224);
   *(v5 + 224) = v88;
 
@@ -2456,19 +2456,19 @@ LABEL_54:
     *(v5 + 440) |= 0x80u;
   }
 
-  v90 = [(BLTPBCommunicationContext *)self->_communicationContext copyWithZone:a3];
+  v90 = [(BLTPBCommunicationContext *)self->_communicationContext copyWithZone:zone];
   v91 = *(v5 + 144);
   *(v5 + 144) = v90;
 
-  v92 = [(NSString *)self->_contentType copyWithZone:a3];
+  v92 = [(NSString *)self->_contentType copyWithZone:zone];
   v93 = *(v5 + 152);
   *(v5 + 152) = v92;
 
-  v94 = [(NSString *)self->_filterCriteria copyWithZone:a3];
+  v94 = [(NSString *)self->_filterCriteria copyWithZone:zone];
   v95 = *(v5 + 208);
   *(v5 + 208) = v94;
 
-  v96 = [(BLTPBAction *)self->_followActivityAction copyWithZone:a3];
+  v96 = [(BLTPBAction *)self->_followActivityAction copyWithZone:zone];
   v97 = *(v5 + 216);
   *(v5 + 216) = v96;
 
@@ -2478,19 +2478,19 @@ LABEL_54:
     *(v5 + 440) |= 0x2000u;
   }
 
-  v98 = [(NSData *)self->_summary copyWithZone:a3];
+  v98 = [(NSData *)self->_summary copyWithZone:zone];
   v99 = *(v5 + 368);
   *(v5 + 368) = v98;
 
-  v100 = [(NSData *)self->_threadSummary copyWithZone:a3];
+  v100 = [(NSData *)self->_threadSummary copyWithZone:zone];
   v101 = *(v5 + 400);
   *(v5 + 400) = v100;
 
-  v102 = [(NSData *)self->_attributedMessage copyWithZone:a3];
+  v102 = [(NSData *)self->_attributedMessage copyWithZone:zone];
   v103 = *(v5 + 112);
   *(v5 + 112) = v102;
 
-  v104 = [(NSData *)self->_eventBehavior copyWithZone:a3];
+  v104 = [(NSData *)self->_eventBehavior copyWithZone:zone];
   v105 = *(v5 + 192);
   *(v5 + 192) = v104;
 
@@ -2512,16 +2512,16 @@ LABEL_54:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_223;
   }
 
   bulletinID = self->_bulletinID;
-  if (bulletinID | *(v4 + 15))
+  if (bulletinID | *(equalCopy + 15))
   {
     if (![(NSString *)bulletinID isEqual:?])
     {
@@ -2530,7 +2530,7 @@ LABEL_54:
   }
 
   sectionID = self->_sectionID;
-  if (sectionID | *(v4 + 37))
+  if (sectionID | *(equalCopy + 37))
   {
     if (![(NSString *)sectionID isEqual:?])
     {
@@ -2539,7 +2539,7 @@ LABEL_54:
   }
 
   sectionDisplayName = self->_sectionDisplayName;
-  if (sectionDisplayName | *(v4 + 36))
+  if (sectionDisplayName | *(equalCopy + 36))
   {
     if (![(NSString *)sectionDisplayName isEqual:?])
     {
@@ -2548,7 +2548,7 @@ LABEL_54:
   }
 
   title = self->_title;
-  if (title | *(v4 + 51))
+  if (title | *(equalCopy + 51))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -2557,7 +2557,7 @@ LABEL_54:
   }
 
   subtitle = self->_subtitle;
-  if (subtitle | *(v4 + 45))
+  if (subtitle | *(equalCopy + 45))
   {
     if (![(NSString *)subtitle isEqual:?])
     {
@@ -2566,7 +2566,7 @@ LABEL_54:
   }
 
   messageTitle = self->_messageTitle;
-  if (messageTitle | *(v4 + 31))
+  if (messageTitle | *(equalCopy + 31))
   {
     if (![(NSString *)messageTitle isEqual:?])
     {
@@ -2574,10 +2574,10 @@ LABEL_54:
     }
   }
 
-  v11 = *(v4 + 110);
+  v11 = *(equalCopy + 110);
   if (*&self->_has)
   {
-    if ((v11 & 1) == 0 || self->_date != *(v4 + 1))
+    if ((v11 & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_223;
     }
@@ -2589,13 +2589,13 @@ LABEL_54:
   }
 
   attachment = self->_attachment;
-  if (attachment | *(v4 + 10) && ![(NSData *)attachment isEqual:?])
+  if (attachment | *(equalCopy + 10) && ![(NSData *)attachment isEqual:?])
   {
     goto LABEL_223;
   }
 
   supplementaryActions = self->_supplementaryActions;
-  if (supplementaryActions | *(v4 + 47))
+  if (supplementaryActions | *(equalCopy + 47))
   {
     if (![(NSMutableArray *)supplementaryActions isEqual:?])
     {
@@ -2603,13 +2603,13 @@ LABEL_54:
     }
   }
 
-  if (self->_feed != *(v4 + 50))
+  if (self->_feed != *(equalCopy + 50))
   {
     goto LABEL_223;
   }
 
   snoozeAction = self->_snoozeAction;
-  if (snoozeAction | *(v4 + 39))
+  if (snoozeAction | *(equalCopy + 39))
   {
     if (![(BLTPBAction *)snoozeAction isEqual:?])
     {
@@ -2618,7 +2618,7 @@ LABEL_54:
   }
 
   recordID = self->_recordID;
-  if (recordID | *(v4 + 34))
+  if (recordID | *(equalCopy + 34))
   {
     if (![(NSString *)recordID isEqual:?])
     {
@@ -2627,7 +2627,7 @@ LABEL_54:
   }
 
   publisherBulletinID = self->_publisherBulletinID;
-  if (publisherBulletinID | *(v4 + 33))
+  if (publisherBulletinID | *(equalCopy + 33))
   {
     if (![(NSString *)publisherBulletinID isEqual:?])
     {
@@ -2636,7 +2636,7 @@ LABEL_54:
   }
 
   dismissAction = self->_dismissAction;
-  if (dismissAction | *(v4 + 22))
+  if (dismissAction | *(equalCopy + 22))
   {
     if (![(BLTPBAction *)dismissAction isEqual:?])
     {
@@ -2644,10 +2644,10 @@ LABEL_54:
     }
   }
 
-  v18 = *(v4 + 110);
+  v18 = *(equalCopy + 110);
   if (*(&self->_has + 1))
   {
-    if ((v18 & 0x100) == 0 || self->_sectionSubtype != *(v4 + 76))
+    if ((v18 & 0x100) == 0 || self->_sectionSubtype != *(equalCopy + 76))
     {
       goto LABEL_223;
     }
@@ -2659,13 +2659,13 @@ LABEL_54:
   }
 
   sockPuppetAppBundleID = self->_sockPuppetAppBundleID;
-  if (sockPuppetAppBundleID | *(v4 + 40) && ![(NSString *)sockPuppetAppBundleID isEqual:?])
+  if (sockPuppetAppBundleID | *(equalCopy + 40) && ![(NSString *)sockPuppetAppBundleID isEqual:?])
   {
     goto LABEL_223;
   }
 
   category = self->_category;
-  if (category | *(v4 + 16))
+  if (category | *(equalCopy + 16))
   {
     if (![(NSString *)category isEqual:?])
     {
@@ -2673,10 +2673,10 @@ LABEL_54:
     }
   }
 
-  v21 = *(v4 + 110);
+  v21 = *(equalCopy + 110);
   if ((*&self->_has & 4) != 0)
   {
-    if ((v21 & 4) == 0 || self->_publicationDate != *(v4 + 3))
+    if ((v21 & 4) == 0 || self->_publicationDate != *(equalCopy + 3))
     {
       goto LABEL_223;
     }
@@ -2687,28 +2687,28 @@ LABEL_54:
     goto LABEL_223;
   }
 
-  v22 = *(v4 + 429);
+  v22 = *(equalCopy + 429);
   if (self->_includesSound)
   {
-    if ((*(v4 + 429) & 1) == 0)
+    if ((*(equalCopy + 429) & 1) == 0)
     {
       goto LABEL_223;
     }
   }
 
-  else if (*(v4 + 429))
+  else if (*(equalCopy + 429))
   {
     goto LABEL_223;
   }
 
   teamID = self->_teamID;
-  if (teamID | *(v4 + 48) && ![(NSString *)teamID isEqual:?])
+  if (teamID | *(equalCopy + 48) && ![(NSString *)teamID isEqual:?])
   {
     goto LABEL_223;
   }
 
   context = self->_context;
-  if (context | *(v4 + 20))
+  if (context | *(equalCopy + 20))
   {
     if (![(NSData *)context isEqual:?])
     {
@@ -2717,7 +2717,7 @@ LABEL_54:
   }
 
   universalSectionID = self->_universalSectionID;
-  if (universalSectionID | *(v4 + 52))
+  if (universalSectionID | *(equalCopy + 52))
   {
     if (![(NSString *)universalSectionID isEqual:?])
     {
@@ -2726,7 +2726,7 @@ LABEL_54:
   }
 
   alertSuppressionContexts = self->_alertSuppressionContexts;
-  if (alertSuppressionContexts | *(v4 + 8))
+  if (alertSuppressionContexts | *(equalCopy + 8))
   {
     if (![(NSData *)alertSuppressionContexts isEqual:?])
     {
@@ -2734,10 +2734,10 @@ LABEL_54:
     }
   }
 
-  v27 = *(v4 + 110);
+  v27 = *(equalCopy + 110);
   if ((*(&self->_has + 1) & 2) != 0)
   {
-    if ((v27 & 0x200) == 0 || self->_soundAlertType != *(v4 + 84))
+    if ((v27 & 0x200) == 0 || self->_soundAlertType != *(equalCopy + 84))
     {
       goto LABEL_223;
     }
@@ -2749,13 +2749,13 @@ LABEL_54:
   }
 
   soundAccountIdentifier = self->_soundAccountIdentifier;
-  if (soundAccountIdentifier | *(v4 + 41) && ![(NSString *)soundAccountIdentifier isEqual:?])
+  if (soundAccountIdentifier | *(equalCopy + 41) && ![(NSString *)soundAccountIdentifier isEqual:?])
   {
     goto LABEL_223;
   }
 
   soundToneIdentifier = self->_soundToneIdentifier;
-  if (soundToneIdentifier | *(v4 + 43))
+  if (soundToneIdentifier | *(equalCopy + 43))
   {
     if (![(NSString *)soundToneIdentifier isEqual:?])
     {
@@ -2764,10 +2764,10 @@ LABEL_54:
   }
 
   has = self->_has;
-  v31 = *(v4 + 110);
+  v31 = *(equalCopy + 110);
   if ((*&has & 0x40) != 0)
   {
-    if ((v31 & 0x40) == 0 || self->_attachmentType != *(v4 + 24))
+    if ((v31 & 0x40) == 0 || self->_attachmentType != *(equalCopy + 24))
     {
       goto LABEL_223;
     }
@@ -2785,16 +2785,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v37 = *(v4 + 425);
+    v37 = *(equalCopy + 425);
     if (self->_containsUpdatedAttachment)
     {
-      if ((*(v4 + 425) & 1) == 0)
+      if ((*(equalCopy + 425) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 425))
+    else if (*(equalCopy + 425))
     {
       goto LABEL_223;
     }
@@ -2812,16 +2812,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v38 = *(v4 + 431);
+    v38 = *(equalCopy + 431);
     if (self->_loading)
     {
-      if ((*(v4 + 431) & 1) == 0)
+      if ((*(equalCopy + 431) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 431))
+    else if (*(equalCopy + 431))
     {
       goto LABEL_223;
     }
@@ -2839,16 +2839,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v39 = *(v4 + 436);
+    v39 = *(equalCopy + 436);
     if (self->_turnsOnDisplay)
     {
-      if ((*(v4 + 436) & 1) == 0)
+      if ((*(equalCopy + 436) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 436))
+    else if (*(equalCopy + 436))
     {
       goto LABEL_223;
     }
@@ -2860,13 +2860,13 @@ LABEL_54:
   }
 
   subsectionIDs = self->_subsectionIDs;
-  if (subsectionIDs | *(v4 + 44) && ![(NSMutableArray *)subsectionIDs isEqual:?])
+  if (subsectionIDs | *(equalCopy + 44) && ![(NSMutableArray *)subsectionIDs isEqual:?])
   {
     goto LABEL_223;
   }
 
   dismissalID = self->_dismissalID;
-  if (dismissalID | *(v4 + 23))
+  if (dismissalID | *(equalCopy + 23))
   {
     if (![(NSString *)dismissalID isEqual:?])
     {
@@ -2875,7 +2875,7 @@ LABEL_54:
   }
 
   attachmentURL = self->_attachmentURL;
-  if (attachmentURL | *(v4 + 13))
+  if (attachmentURL | *(equalCopy + 13))
   {
     if (![(NSString *)attachmentURL isEqual:?])
     {
@@ -2884,7 +2884,7 @@ LABEL_54:
   }
 
   peopleIDs = self->_peopleIDs;
-  if (peopleIDs | *(v4 + 32))
+  if (peopleIDs | *(equalCopy + 32))
   {
     if (![(NSMutableArray *)peopleIDs isEqual:?])
     {
@@ -2892,7 +2892,7 @@ LABEL_54:
     }
   }
 
-  v36 = *(v4 + 110);
+  v36 = *(equalCopy + 110);
   if ((*(&self->_has + 1) & 0x40) != 0)
   {
     if ((v36 & 0x4000) == 0)
@@ -2900,16 +2900,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v40 = *(v4 + 428);
+    v40 = *(equalCopy + 428);
     if (self->_ignoresQuietMode)
     {
-      if ((*(v4 + 428) & 1) == 0)
+      if ((*(equalCopy + 428) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 428))
+    else if (*(equalCopy + 428))
     {
       goto LABEL_223;
     }
@@ -2921,13 +2921,13 @@ LABEL_54:
   }
 
   categoryID = self->_categoryID;
-  if (categoryID | *(v4 + 17) && ![(NSString *)categoryID isEqual:?])
+  if (categoryID | *(equalCopy + 17) && ![(NSString *)categoryID isEqual:?])
   {
     goto LABEL_223;
   }
 
   contextNulls = self->_contextNulls;
-  if (contextNulls | *(v4 + 21))
+  if (contextNulls | *(equalCopy + 21))
   {
     if (![(NSData *)contextNulls isEqual:?])
     {
@@ -2936,7 +2936,7 @@ LABEL_54:
   }
 
   alertSuppressionContextsNulls = self->_alertSuppressionContextsNulls;
-  if (alertSuppressionContextsNulls | *(v4 + 9))
+  if (alertSuppressionContextsNulls | *(equalCopy + 9))
   {
     if (![(NSData *)alertSuppressionContextsNulls isEqual:?])
     {
@@ -2945,7 +2945,7 @@ LABEL_54:
   }
 
   threadID = self->_threadID;
-  if (threadID | *(v4 + 49))
+  if (threadID | *(equalCopy + 49))
   {
     if (![(NSString *)threadID isEqual:?])
     {
@@ -2954,7 +2954,7 @@ LABEL_54:
   }
 
   attachmentID = self->_attachmentID;
-  if (attachmentID | *(v4 + 11))
+  if (attachmentID | *(equalCopy + 11))
   {
     if (![(NSString *)attachmentID isEqual:?])
     {
@@ -2963,7 +2963,7 @@ LABEL_54:
   }
 
   additionalAttachments = self->_additionalAttachments;
-  if (additionalAttachments | *(v4 + 7))
+  if (additionalAttachments | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)additionalAttachments isEqual:?])
     {
@@ -2972,10 +2972,10 @@ LABEL_54:
   }
 
   v47 = self->_has;
-  v48 = *(v4 + 110);
+  v48 = *(equalCopy + 110);
   if ((*&v47 & 8) != 0)
   {
-    if ((v48 & 8) == 0 || self->_requiredExpirationDate != *(v4 + 4))
+    if ((v48 & 8) == 0 || self->_requiredExpirationDate != *(equalCopy + 4))
     {
       goto LABEL_223;
     }
@@ -2987,7 +2987,7 @@ LABEL_54:
   }
 
   replyToken = self->_replyToken;
-  if (replyToken | *(v4 + 35))
+  if (replyToken | *(equalCopy + 35))
   {
     if (![(NSString *)replyToken isEqual:?])
     {
@@ -2997,10 +2997,10 @@ LABEL_54:
     v47 = self->_has;
   }
 
-  v50 = *(v4 + 110);
+  v50 = *(equalCopy + 110);
   if ((*&v47 & 0x20) != 0)
   {
-    if ((v50 & 0x20) == 0 || self->_soundMaximumDuration != *(v4 + 6))
+    if ((v50 & 0x20) == 0 || self->_soundMaximumDuration != *(equalCopy + 6))
     {
       goto LABEL_223;
     }
@@ -3018,16 +3018,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v51 = *(v4 + 434);
+    v51 = *(equalCopy + 434);
     if (self->_soundShouldRepeat)
     {
-      if ((*(v4 + 434) & 1) == 0)
+      if ((*(equalCopy + 434) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 434))
+    else if (*(equalCopy + 434))
     {
       goto LABEL_223;
     }
@@ -3045,16 +3045,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v52 = *(v4 + 433);
+    v52 = *(equalCopy + 433);
     if (self->_soundShouldIgnoreRingerSwitch)
     {
-      if ((*(v4 + 433) & 1) == 0)
+      if ((*(equalCopy + 433) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 433))
+    else if (*(equalCopy + 433))
     {
       goto LABEL_223;
     }
@@ -3072,16 +3072,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v53 = *(v4 + 426);
+    v53 = *(equalCopy + 426);
     if (self->_hasCriticalIcon)
     {
-      if ((*(v4 + 426) & 1) == 0)
+      if ((*(equalCopy + 426) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 426))
+    else if (*(equalCopy + 426))
     {
       goto LABEL_223;
     }
@@ -3094,7 +3094,7 @@ LABEL_54:
 
   if ((*&v47 & 0x10) != 0)
   {
-    if ((v50 & 0x10) == 0 || self->_soundAudioVolume != *(v4 + 5))
+    if ((v50 & 0x10) == 0 || self->_soundAudioVolume != *(equalCopy + 5))
     {
       goto LABEL_223;
     }
@@ -3112,16 +3112,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v56 = *(v4 + 432);
+    v56 = *(equalCopy + 432);
     if (self->_preemptsPresentedAlert)
     {
-      if ((*(v4 + 432) & 1) == 0)
+      if ((*(equalCopy + 432) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 432))
+    else if (*(equalCopy + 432))
     {
       goto LABEL_223;
     }
@@ -3139,16 +3139,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v57 = *(v4 + 435);
+    v57 = *(equalCopy + 435);
     if (self->_suppressDelayForForwardedBulletins)
     {
-      if ((*(v4 + 435) & 1) == 0)
+      if ((*(equalCopy + 435) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 435))
+    else if (*(equalCopy + 435))
     {
       goto LABEL_223;
     }
@@ -3160,7 +3160,7 @@ LABEL_54:
   }
 
   icon = self->_icon;
-  if (icon | *(v4 + 29))
+  if (icon | *(equalCopy + 29))
   {
     if (![(BLTPBSectionIcon *)icon isEqual:?])
     {
@@ -3170,7 +3170,7 @@ LABEL_54:
     v47 = self->_has;
   }
 
-  v55 = *(v4 + 110);
+  v55 = *(equalCopy + 110);
   if ((*&v47 & 0x400) != 0)
   {
     if ((v55 & 0x400) == 0)
@@ -3178,16 +3178,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v58 = *(v4 + 424);
+    v58 = *(equalCopy + 424);
     if (self->_containsUpdateIcon)
     {
-      if ((*(v4 + 424) & 1) == 0)
+      if ((*(equalCopy + 424) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 424))
+    else if (*(equalCopy + 424))
     {
       goto LABEL_223;
     }
@@ -3199,7 +3199,7 @@ LABEL_54:
   }
 
   header = self->_header;
-  if (header | *(v4 + 28))
+  if (header | *(equalCopy + 28))
   {
     if (![(NSString *)header isEqual:?])
     {
@@ -3209,10 +3209,10 @@ LABEL_54:
     v47 = self->_has;
   }
 
-  v60 = *(v4 + 110);
+  v60 = *(equalCopy + 110);
   if ((*&v47 & 0x80) != 0)
   {
-    if ((v60 & 0x80) == 0 || self->_interruptionLevel != *(v4 + 60))
+    if ((v60 & 0x80) == 0 || self->_interruptionLevel != *(equalCopy + 60))
     {
       goto LABEL_223;
     }
@@ -3224,13 +3224,13 @@ LABEL_54:
   }
 
   communicationContext = self->_communicationContext;
-  if (communicationContext | *(v4 + 18) && ![(BLTPBCommunicationContext *)communicationContext isEqual:?])
+  if (communicationContext | *(equalCopy + 18) && ![(BLTPBCommunicationContext *)communicationContext isEqual:?])
   {
     goto LABEL_223;
   }
 
   contentType = self->_contentType;
-  if (contentType | *(v4 + 19))
+  if (contentType | *(equalCopy + 19))
   {
     if (![(NSString *)contentType isEqual:?])
     {
@@ -3239,7 +3239,7 @@ LABEL_54:
   }
 
   filterCriteria = self->_filterCriteria;
-  if (filterCriteria | *(v4 + 26))
+  if (filterCriteria | *(equalCopy + 26))
   {
     if (![(NSString *)filterCriteria isEqual:?])
     {
@@ -3248,7 +3248,7 @@ LABEL_54:
   }
 
   followActivityAction = self->_followActivityAction;
-  if (followActivityAction | *(v4 + 27))
+  if (followActivityAction | *(equalCopy + 27))
   {
     if (![(BLTPBAction *)followActivityAction isEqual:?])
     {
@@ -3256,7 +3256,7 @@ LABEL_54:
     }
   }
 
-  v65 = *(v4 + 110);
+  v65 = *(equalCopy + 110);
   if ((*(&self->_has + 1) & 0x20) != 0)
   {
     if ((v65 & 0x2000) == 0)
@@ -3264,16 +3264,16 @@ LABEL_54:
       goto LABEL_223;
     }
 
-    v74 = *(v4 + 427);
+    v74 = *(equalCopy + 427);
     if (self->_hasSubordinateIcon)
     {
-      if ((*(v4 + 427) & 1) == 0)
+      if ((*(equalCopy + 427) & 1) == 0)
       {
         goto LABEL_223;
       }
     }
 
-    else if (*(v4 + 427))
+    else if (*(equalCopy + 427))
     {
       goto LABEL_223;
     }
@@ -3285,13 +3285,13 @@ LABEL_54:
   }
 
   summary = self->_summary;
-  if (summary | *(v4 + 46) && ![(NSData *)summary isEqual:?])
+  if (summary | *(equalCopy + 46) && ![(NSData *)summary isEqual:?])
   {
     goto LABEL_223;
   }
 
   threadSummary = self->_threadSummary;
-  if (threadSummary | *(v4 + 50))
+  if (threadSummary | *(equalCopy + 50))
   {
     if (![(NSData *)threadSummary isEqual:?])
     {
@@ -3300,7 +3300,7 @@ LABEL_54:
   }
 
   attributedMessage = self->_attributedMessage;
-  if (attributedMessage | *(v4 + 14))
+  if (attributedMessage | *(equalCopy + 14))
   {
     if (![(NSData *)attributedMessage isEqual:?])
     {
@@ -3309,7 +3309,7 @@ LABEL_54:
   }
 
   eventBehavior = self->_eventBehavior;
-  if (eventBehavior | *(v4 + 24))
+  if (eventBehavior | *(equalCopy + 24))
   {
     if (![(NSData *)eventBehavior isEqual:?])
     {
@@ -3318,10 +3318,10 @@ LABEL_54:
   }
 
   v70 = self->_has;
-  v71 = *(v4 + 110);
+  v71 = *(equalCopy + 110);
   if ((*&v70 & 2) != 0)
   {
-    if ((v71 & 2) == 0 || self->_priorityNotificationStatus != *(v4 + 2))
+    if ((v71 & 2) == 0 || self->_priorityNotificationStatus != *(equalCopy + 2))
     {
       goto LABEL_223;
     }
@@ -3334,7 +3334,7 @@ LABEL_54:
 
   if ((*&v70 & 0x8000) == 0)
   {
-    v72 = (*(v4 + 110) & 0x8000) == 0;
+    v72 = (*(equalCopy + 110) & 0x8000) == 0;
     goto LABEL_224;
   }
 
@@ -3342,13 +3342,13 @@ LABEL_54:
   {
     if (self->_isHighlight)
     {
-      if (*(v4 + 430))
+      if (*(equalCopy + 430))
       {
         goto LABEL_239;
       }
     }
 
-    else if (!*(v4 + 430))
+    else if (!*(equalCopy + 430))
     {
 LABEL_239:
       v72 = 1;
@@ -3799,47 +3799,47 @@ LABEL_63:
   return v103 ^ v104 ^ v102 ^ v101 ^ v100 ^ v99 ^ v98 ^ v95 ^ v94 ^ (2654435761 * feed) ^ v97 ^ v93 ^ v92 ^ v91 ^ v90 ^ v88 ^ v87 ^ v89 ^ (2654435761 * includesSound) ^ v86 ^ v85 ^ v83 ^ v82 ^ v81 ^ v80 ^ v79 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v59 ^ v58 ^ v60 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v33 ^ v34 ^ v35 ^ v36 ^ v37 ^ v38 ^ v39 ^ v40 ^ v44 ^ v48;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 15))
+  fromCopy = from;
+  if (*(fromCopy + 15))
   {
     [(BLTPBBulletin *)self setBulletinID:?];
   }
 
-  if (*(v4 + 37))
+  if (*(fromCopy + 37))
   {
     [(BLTPBBulletin *)self setSectionID:?];
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
     [(BLTPBBulletin *)self setSectionDisplayName:?];
   }
 
-  if (*(v4 + 51))
+  if (*(fromCopy + 51))
   {
     [(BLTPBBulletin *)self setTitle:?];
   }
 
-  if (*(v4 + 45))
+  if (*(fromCopy + 45))
   {
     [(BLTPBBulletin *)self setSubtitle:?];
   }
 
-  if (*(v4 + 31))
+  if (*(fromCopy + 31))
   {
     [(BLTPBBulletin *)self setMessageTitle:?];
   }
 
-  if (*(v4 + 440))
+  if (*(fromCopy + 440))
   {
-    self->_date = *(v4 + 1);
+    self->_date = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(BLTPBBulletin *)self setAttachment:?];
   }
@@ -3848,7 +3848,7 @@ LABEL_63:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v5 = *(v4 + 47);
+  v5 = *(fromCopy + 47);
   v6 = [v5 countByEnumeratingWithState:&v51 objects:v58 count:16];
   if (v6)
   {
@@ -3872,9 +3872,9 @@ LABEL_63:
     while (v7);
   }
 
-  self->_feed = *(v4 + 50);
+  self->_feed = *(fromCopy + 50);
   snoozeAction = self->_snoozeAction;
-  v11 = *(v4 + 39);
+  v11 = *(fromCopy + 39);
   if (snoozeAction)
   {
     if (v11)
@@ -3888,18 +3888,18 @@ LABEL_63:
     [(BLTPBBulletin *)self setSnoozeAction:?];
   }
 
-  if (*(v4 + 34))
+  if (*(fromCopy + 34))
   {
     [(BLTPBBulletin *)self setRecordID:?];
   }
 
-  if (*(v4 + 33))
+  if (*(fromCopy + 33))
   {
     [(BLTPBBulletin *)self setPublisherBulletinID:?];
   }
 
   dismissAction = self->_dismissAction;
-  v13 = *(v4 + 22);
+  v13 = *(fromCopy + 22);
   if (dismissAction)
   {
     if (v13)
@@ -3913,71 +3913,71 @@ LABEL_63:
     [(BLTPBBulletin *)self setDismissAction:?];
   }
 
-  if (*(v4 + 441))
+  if (*(fromCopy + 441))
   {
-    self->_sectionSubtype = *(v4 + 76);
+    self->_sectionSubtype = *(fromCopy + 76);
     *&self->_has |= 0x100u;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
     [(BLTPBBulletin *)self setSockPuppetAppBundleID:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(BLTPBBulletin *)self setCategory:?];
   }
 
-  if ((*(v4 + 440) & 4) != 0)
+  if ((*(fromCopy + 440) & 4) != 0)
   {
-    self->_publicationDate = *(v4 + 3);
+    self->_publicationDate = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  self->_includesSound = *(v4 + 429);
-  if (*(v4 + 48))
+  self->_includesSound = *(fromCopy + 429);
+  if (*(fromCopy + 48))
   {
     [(BLTPBBulletin *)self setTeamID:?];
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(BLTPBBulletin *)self setContext:?];
   }
 
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
     [(BLTPBBulletin *)self setUniversalSectionID:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BLTPBBulletin *)self setAlertSuppressionContexts:?];
   }
 
-  if ((*(v4 + 441) & 2) != 0)
+  if ((*(fromCopy + 441) & 2) != 0)
   {
-    self->_soundAlertType = *(v4 + 84);
+    self->_soundAlertType = *(fromCopy + 84);
     *&self->_has |= 0x200u;
   }
 
-  if (*(v4 + 41))
+  if (*(fromCopy + 41))
   {
     [(BLTPBBulletin *)self setSoundAccountIdentifier:?];
   }
 
-  if (*(v4 + 43))
+  if (*(fromCopy + 43))
   {
     [(BLTPBBulletin *)self setSoundToneIdentifier:?];
   }
 
-  v14 = *(v4 + 110);
+  v14 = *(fromCopy + 110);
   if ((v14 & 0x40) != 0)
   {
-    self->_attachmentType = *(v4 + 24);
+    self->_attachmentType = *(fromCopy + 24);
     *&self->_has |= 0x40u;
-    v14 = *(v4 + 110);
+    v14 = *(fromCopy + 110);
     if ((v14 & 0x800) == 0)
     {
 LABEL_62:
@@ -3995,9 +3995,9 @@ LABEL_62:
     goto LABEL_62;
   }
 
-  self->_containsUpdatedAttachment = *(v4 + 425);
+  self->_containsUpdatedAttachment = *(fromCopy + 425);
   *&self->_has |= 0x800u;
-  v14 = *(v4 + 110);
+  v14 = *(fromCopy + 110);
   if ((v14 & 0x10000) == 0)
   {
 LABEL_63:
@@ -4010,12 +4010,12 @@ LABEL_63:
   }
 
 LABEL_119:
-  self->_loading = *(v4 + 431);
+  self->_loading = *(fromCopy + 431);
   *&self->_has |= 0x10000u;
-  if ((*(v4 + 110) & 0x200000) != 0)
+  if ((*(fromCopy + 110) & 0x200000) != 0)
   {
 LABEL_64:
-    self->_turnsOnDisplay = *(v4 + 436);
+    self->_turnsOnDisplay = *(fromCopy + 436);
     *&self->_has |= 0x200000u;
   }
 
@@ -4024,7 +4024,7 @@ LABEL_65:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v15 = *(v4 + 44);
+  v15 = *(fromCopy + 44);
   v16 = [v15 countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v16)
   {
@@ -4048,12 +4048,12 @@ LABEL_65:
     while (v17);
   }
 
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(BLTPBBulletin *)self setDismissalID:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(BLTPBBulletin *)self setAttachmentURL:?];
   }
@@ -4062,7 +4062,7 @@ LABEL_65:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v20 = *(v4 + 32);
+  v20 = *(fromCopy + 32);
   v21 = [v20 countByEnumeratingWithState:&v43 objects:v56 count:16];
   if (v21)
   {
@@ -4086,33 +4086,33 @@ LABEL_65:
     while (v22);
   }
 
-  if ((*(v4 + 441) & 0x40) != 0)
+  if ((*(fromCopy + 441) & 0x40) != 0)
   {
-    self->_ignoresQuietMode = *(v4 + 428);
+    self->_ignoresQuietMode = *(fromCopy + 428);
     *&self->_has |= 0x4000u;
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(BLTPBBulletin *)self setCategoryID:?];
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(BLTPBBulletin *)self setContextNulls:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(BLTPBBulletin *)self setAlertSuppressionContextsNulls:?];
   }
 
-  if (*(v4 + 49))
+  if (*(fromCopy + 49))
   {
     [(BLTPBBulletin *)self setThreadID:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(BLTPBBulletin *)self setAttachmentID:?];
   }
@@ -4121,7 +4121,7 @@ LABEL_65:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v25 = *(v4 + 7);
+  v25 = *(fromCopy + 7);
   v26 = [v25 countByEnumeratingWithState:&v39 objects:v55 count:16];
   if (v26)
   {
@@ -4145,23 +4145,23 @@ LABEL_65:
     while (v27);
   }
 
-  if ((*(v4 + 440) & 8) != 0)
+  if ((*(fromCopy + 440) & 8) != 0)
   {
-    self->_requiredExpirationDate = *(v4 + 4);
+    self->_requiredExpirationDate = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 35))
+  if (*(fromCopy + 35))
   {
     [(BLTPBBulletin *)self setReplyToken:?];
   }
 
-  v30 = *(v4 + 110);
+  v30 = *(fromCopy + 110);
   if ((v30 & 0x20) != 0)
   {
-    self->_soundMaximumDuration = *(v4 + 6);
+    self->_soundMaximumDuration = *(fromCopy + 6);
     *&self->_has |= 0x20u;
-    v30 = *(v4 + 110);
+    v30 = *(fromCopy + 110);
     if ((v30 & 0x80000) == 0)
     {
 LABEL_108:
@@ -4179,9 +4179,9 @@ LABEL_108:
     goto LABEL_108;
   }
 
-  self->_soundShouldRepeat = *(v4 + 434);
+  self->_soundShouldRepeat = *(fromCopy + 434);
   *&self->_has |= 0x80000u;
-  v30 = *(v4 + 110);
+  v30 = *(fromCopy + 110);
   if ((v30 & 0x40000) == 0)
   {
 LABEL_109:
@@ -4194,9 +4194,9 @@ LABEL_109:
   }
 
 LABEL_123:
-  self->_soundShouldIgnoreRingerSwitch = *(v4 + 433);
+  self->_soundShouldIgnoreRingerSwitch = *(fromCopy + 433);
   *&self->_has |= 0x40000u;
-  v30 = *(v4 + 110);
+  v30 = *(fromCopy + 110);
   if ((v30 & 0x1000) == 0)
   {
 LABEL_110:
@@ -4209,9 +4209,9 @@ LABEL_110:
   }
 
 LABEL_124:
-  self->_hasCriticalIcon = *(v4 + 426);
+  self->_hasCriticalIcon = *(fromCopy + 426);
   *&self->_has |= 0x1000u;
-  v30 = *(v4 + 110);
+  v30 = *(fromCopy + 110);
   if ((v30 & 0x10) == 0)
   {
 LABEL_111:
@@ -4224,9 +4224,9 @@ LABEL_111:
   }
 
 LABEL_125:
-  self->_soundAudioVolume = *(v4 + 5);
+  self->_soundAudioVolume = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v30 = *(v4 + 110);
+  v30 = *(fromCopy + 110);
   if ((v30 & 0x20000) == 0)
   {
 LABEL_112:
@@ -4239,18 +4239,18 @@ LABEL_112:
   }
 
 LABEL_126:
-  self->_preemptsPresentedAlert = *(v4 + 432);
+  self->_preemptsPresentedAlert = *(fromCopy + 432);
   *&self->_has |= 0x20000u;
-  if ((*(v4 + 110) & 0x100000) != 0)
+  if ((*(fromCopy + 110) & 0x100000) != 0)
   {
 LABEL_113:
-    self->_suppressDelayForForwardedBulletins = *(v4 + 435);
+    self->_suppressDelayForForwardedBulletins = *(fromCopy + 435);
     *&self->_has |= 0x100000u;
   }
 
 LABEL_114:
   icon = self->_icon;
-  v32 = *(v4 + 29);
+  v32 = *(fromCopy + 29);
   if (icon)
   {
     if (v32)
@@ -4264,25 +4264,25 @@ LABEL_114:
     [(BLTPBBulletin *)self setIcon:?];
   }
 
-  if ((*(v4 + 441) & 4) != 0)
+  if ((*(fromCopy + 441) & 4) != 0)
   {
-    self->_containsUpdateIcon = *(v4 + 424);
+    self->_containsUpdateIcon = *(fromCopy + 424);
     *&self->_has |= 0x400u;
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
     [(BLTPBBulletin *)self setHeader:?];
   }
 
-  if ((*(v4 + 440) & 0x80) != 0)
+  if ((*(fromCopy + 440) & 0x80) != 0)
   {
-    self->_interruptionLevel = *(v4 + 60);
+    self->_interruptionLevel = *(fromCopy + 60);
     *&self->_has |= 0x80u;
   }
 
   communicationContext = self->_communicationContext;
-  v34 = *(v4 + 18);
+  v34 = *(fromCopy + 18);
   if (communicationContext)
   {
     if (v34)
@@ -4296,18 +4296,18 @@ LABEL_114:
     [(BLTPBBulletin *)self setCommunicationContext:?];
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(BLTPBBulletin *)self setContentType:?];
   }
 
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
     [(BLTPBBulletin *)self setFilterCriteria:?];
   }
 
   followActivityAction = self->_followActivityAction;
-  v36 = *(v4 + 27);
+  v36 = *(fromCopy + 27);
   if (followActivityAction)
   {
     if (v36)
@@ -4321,73 +4321,73 @@ LABEL_114:
     [(BLTPBBulletin *)self setFollowActivityAction:?];
   }
 
-  if ((*(v4 + 441) & 0x20) != 0)
+  if ((*(fromCopy + 441) & 0x20) != 0)
   {
-    self->_hasSubordinateIcon = *(v4 + 427);
+    self->_hasSubordinateIcon = *(fromCopy + 427);
     *&self->_has |= 0x2000u;
   }
 
-  if (*(v4 + 46))
+  if (*(fromCopy + 46))
   {
     [(BLTPBBulletin *)self setSummary:?];
   }
 
-  if (*(v4 + 50))
+  if (*(fromCopy + 50))
   {
     [(BLTPBBulletin *)self setThreadSummary:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(BLTPBBulletin *)self setAttributedMessage:?];
   }
 
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
     [(BLTPBBulletin *)self setEventBehavior:?];
   }
 
-  v37 = *(v4 + 110);
+  v37 = *(fromCopy + 110);
   if ((v37 & 2) != 0)
   {
-    self->_priorityNotificationStatus = *(v4 + 2);
+    self->_priorityNotificationStatus = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v37 = *(v4 + 110);
+    v37 = *(fromCopy + 110);
   }
 
   if ((v37 & 0x8000) != 0)
   {
-    self->_isHighlight = *(v4 + 430);
+    self->_isHighlight = *(fromCopy + 430);
     *&self->_has |= 0x8000u;
   }
 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)bulletinWithBBBulletin:(id)a3 sockPuppetAppBundleID:(id)a4 observer:(id)a5 feed:(unint64_t)a6 teamID:(id)a7 universalSectionID:(id)a8 shouldUseExpirationDate:(BOOL)a9 replyToken:(id)a10 gizmoLegacyPublisherBulletinID:(id)a11 gizmoLegacyCategoryID:(id)a12 gizmoSectionID:(id)a13 gizmoSectionSubtype:(id)a14 useUserInfoForContext:(BOOL)a15 removeSubtitleForOlderWatches:(BOOL)a16
++ (id)bulletinWithBBBulletin:(id)bulletin sockPuppetAppBundleID:(id)d observer:(id)observer feed:(unint64_t)feed teamID:(id)iD universalSectionID:(id)sectionID shouldUseExpirationDate:(BOOL)date replyToken:(id)self0 gizmoLegacyPublisherBulletinID:(id)self1 gizmoLegacyCategoryID:(id)self2 gizmoSectionID:(id)self3 gizmoSectionSubtype:(id)self4 useUserInfoForContext:(BOOL)self5 removeSubtitleForOlderWatches:(BOOL)self6
 {
   v288 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v235 = a4;
-  v226 = a5;
-  v234 = a7;
-  v233 = a8;
-  v227 = a10;
-  v21 = a11;
-  v22 = a12;
-  v232 = a13;
-  v231 = a14;
+  bulletinCopy = bulletin;
+  dCopy = d;
+  observerCopy = observer;
+  iDCopy = iD;
+  sectionIDCopy = sectionID;
+  tokenCopy = token;
+  bulletinIDCopy = bulletinID;
+  categoryIDCopy = categoryID;
+  gizmoSectionIDCopy = gizmoSectionID;
+  subtypeCopy = subtype;
   v23 = +[BLTPBActionFactory sharedInstance];
   v24 = MEMORY[0x277CBEB18];
-  v25 = [v20 supplementaryActions];
-  v26 = [v24 arrayWithCapacity:{objc_msgSend(v25, "count")}];
+  supplementaryActions = [bulletinCopy supplementaryActions];
+  v26 = [v24 arrayWithCapacity:{objc_msgSend(supplementaryActions, "count")}];
 
   v274 = 0u;
   v275 = 0u;
   v272 = 0u;
   v273 = 0u;
-  v27 = [v20 supplementaryActions];
-  v28 = [v27 countByEnumeratingWithState:&v272 objects:v287 count:16];
+  supplementaryActions2 = [bulletinCopy supplementaryActions];
+  v28 = [supplementaryActions2 countByEnumeratingWithState:&v272 objects:v287 count:16];
   if (v28)
   {
     v29 = v28;
@@ -4398,7 +4398,7 @@ LABEL_114:
       {
         if (*v273 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(supplementaryActions2);
         }
 
         v32 = [v23 actionWithBBAction:*(*(&v272 + 1) + 8 * i)];
@@ -4408,83 +4408,83 @@ LABEL_114:
         }
       }
 
-      v29 = [v27 countByEnumeratingWithState:&v272 objects:v287 count:16];
+      v29 = [supplementaryActions2 countByEnumeratingWithState:&v272 objects:v287 count:16];
     }
 
     while (v29);
   }
 
-  v33 = [v20 snoozeAction];
-  v230 = [v23 actionWithBBAction:v33];
+  snoozeAction = [bulletinCopy snoozeAction];
+  v230 = [v23 actionWithBBAction:snoozeAction];
 
-  v34 = [v20 dismissAction];
-  v229 = [v23 actionWithBBAction:v34];
+  dismissAction = [bulletinCopy dismissAction];
+  v229 = [v23 actionWithBBAction:dismissAction];
 
   v35 = objc_alloc_init(BLTPBBulletin);
-  v36 = [v20 bulletinID];
-  v37 = nilForNSNull(v36);
+  bulletinID = [bulletinCopy bulletinID];
+  v37 = nilForNSNull(bulletinID);
   [(BLTPBBulletin *)v35 setBulletinID:v37];
 
-  v38 = v232;
-  if (!v232)
+  sectionID = gizmoSectionIDCopy;
+  if (!gizmoSectionIDCopy)
   {
-    v38 = [v20 sectionID];
+    sectionID = [bulletinCopy sectionID];
   }
 
-  v39 = nilForNSNull(v38);
+  v39 = nilForNSNull(sectionID);
   [(BLTPBBulletin *)v35 setSectionID:v39];
 
-  if (!v232)
+  if (!gizmoSectionIDCopy)
   {
   }
 
-  v40 = [v20 sectionDisplayName];
-  v41 = nilForNSNull(v40);
+  sectionDisplayName = [bulletinCopy sectionDisplayName];
+  v41 = nilForNSNull(sectionDisplayName);
   [(BLTPBBulletin *)v35 setSectionDisplayName:v41];
 
-  v42 = [v20 recordID];
-  v43 = nilForNSNull(v42);
+  recordID = [bulletinCopy recordID];
+  v43 = nilForNSNull(recordID);
   [(BLTPBBulletin *)v35 setRecordID:v43];
 
-  v44 = v21;
-  if (!v21)
+  publisherBulletinID = bulletinIDCopy;
+  if (!bulletinIDCopy)
   {
-    v44 = [v20 publisherBulletinID];
+    publisherBulletinID = [bulletinCopy publisherBulletinID];
   }
 
-  v45 = nilForNSNull(v44);
+  v45 = nilForNSNull(publisherBulletinID);
   [(BLTPBBulletin *)v35 setPublisherBulletinID:v45];
 
-  if (!v21)
+  if (!bulletinIDCopy)
   {
   }
 
-  v225 = v21;
-  if (v231)
+  v225 = bulletinIDCopy;
+  if (subtypeCopy)
   {
-    v46 = [v231 integerValue];
+    integerValue = [subtypeCopy integerValue];
   }
 
   else
   {
-    v46 = [v20 sectionSubtype];
+    integerValue = [bulletinCopy sectionSubtype];
   }
 
-  [(BLTPBBulletin *)v35 setSectionSubtype:v46];
-  [(BLTPBBulletin *)v35 setFeed:a6];
-  v47 = [v20 dismissalID];
-  v48 = nilForNSNull(v47);
+  [(BLTPBBulletin *)v35 setSectionSubtype:integerValue];
+  [(BLTPBBulletin *)v35 setFeed:feed];
+  dismissalID = [bulletinCopy dismissalID];
+  v48 = nilForNSNull(dismissalID);
   [(BLTPBBulletin *)v35 setDismissalID:v48];
 
-  if (v22)
+  if (categoryIDCopy)
   {
-    v49 = nilForNSNull(v22);
+    v49 = nilForNSNull(categoryIDCopy);
   }
 
   else
   {
-    v50 = [v20 categoryID];
-    v49 = nilForNSNull(v50);
+    categoryID = [bulletinCopy categoryID];
+    v49 = nilForNSNull(categoryID);
   }
 
   [(BLTPBBulletin *)v35 setCategoryID:v49];
@@ -4494,37 +4494,37 @@ LABEL_114:
   }
 
   v223 = v49;
-  v51 = [v20 threadID];
-  v52 = nilForNSNull(v51);
+  threadID = [bulletinCopy threadID];
+  v52 = nilForNSNull(threadID);
   [(BLTPBBulletin *)v35 setThreadID:v52];
 
-  if (a9)
+  if (date)
   {
-    v53 = [v20 expirationDate];
-    [v53 timeIntervalSince1970];
+    expirationDate = [bulletinCopy expirationDate];
+    [expirationDate timeIntervalSince1970];
     [(BLTPBBulletin *)v35 setRequiredExpirationDate:?];
   }
 
   if ([MEMORY[0x277D2BCC8] activePairedDeviceSupportsAddBulletinReplyToken])
   {
-    [(BLTPBBulletin *)v35 setReplyToken:v227];
+    [(BLTPBBulletin *)v35 setReplyToken:tokenCopy];
   }
 
-  v54 = [v20 subsectionIDs];
-  v55 = [v54 count];
+  subsectionIDs = [bulletinCopy subsectionIDs];
+  v55 = [subsectionIDs count];
 
   if (v55)
   {
     v56 = MEMORY[0x277CBEB18];
-    v57 = [v20 subsectionIDs];
-    v58 = [v56 arrayWithCapacity:{objc_msgSend(v57, "count")}];
+    subsectionIDs2 = [bulletinCopy subsectionIDs];
+    v58 = [v56 arrayWithCapacity:{objc_msgSend(subsectionIDs2, "count")}];
 
     v270 = 0u;
     v271 = 0u;
     v268 = 0u;
     v269 = 0u;
-    v59 = [v20 subsectionIDs];
-    v60 = [v59 countByEnumeratingWithState:&v268 objects:v286 count:16];
+    subsectionIDs3 = [bulletinCopy subsectionIDs];
+    v60 = [subsectionIDs3 countByEnumeratingWithState:&v268 objects:v286 count:16];
     if (v60)
     {
       v61 = v60;
@@ -4535,13 +4535,13 @@ LABEL_114:
         {
           if (*v269 != v62)
           {
-            objc_enumerationMutation(v59);
+            objc_enumerationMutation(subsectionIDs3);
           }
 
           [v58 addObject:*(*(&v268 + 1) + 8 * j)];
         }
 
-        v61 = [v59 countByEnumeratingWithState:&v268 objects:v286 count:16];
+        v61 = [subsectionIDs3 countByEnumeratingWithState:&v268 objects:v286 count:16];
       }
 
       while (v61);
@@ -4550,24 +4550,24 @@ LABEL_114:
     [(BLTPBBulletin *)v35 setSubsectionIDs:v58];
   }
 
-  v64 = [v20 peopleIDs];
-  v65 = [v64 mutableCopy];
+  peopleIDs = [bulletinCopy peopleIDs];
+  v65 = [peopleIDs mutableCopy];
   [(BLTPBBulletin *)v35 setPeopleIDs:v65];
 
-  v66 = [v20 date];
+  date = [bulletinCopy date];
 
-  if (v66)
+  if (date)
   {
-    v67 = [v20 date];
-    [v67 timeIntervalSince1970];
+    date2 = [bulletinCopy date];
+    [date2 timeIntervalSince1970];
     [(BLTPBBulletin *)v35 setDate:?];
   }
 
-  v68 = [v20 title];
-  v69 = nilForNSNull(v68);
+  title = [bulletinCopy title];
+  v69 = nilForNSNull(title);
 
-  v70 = [v20 subtitle];
-  v71 = nilForNSNull(v70);
+  subtitle = [bulletinCopy subtitle];
+  v71 = nilForNSNull(subtitle);
 
   if ([MEMORY[0x277D2BCC8] activePairedDeviceSupportsDisplayingSubtitle])
   {
@@ -4599,21 +4599,21 @@ LABEL_114:
       v228 = v73;
     }
 
-    if (a16)
+    if (watches)
     {
 
       v71 = 0;
     }
   }
 
-  v74 = [v20 summary];
-  if (v74)
+  summary = [bulletinCopy summary];
+  if (summary)
   {
-    v75 = v74;
+    v75 = summary;
     v76 = MEMORY[0x277CCAAB0];
-    v77 = [v20 summary];
+    summary2 = [bulletinCopy summary];
     v267 = 0;
-    v78 = [v76 archivedDataWithRootObject:v77 requiringSecureCoding:1 error:&v267];
+    v78 = [v76 archivedDataWithRootObject:summary2 requiringSecureCoding:1 error:&v267];
     v79 = v267;
     v80 = v78;
 
@@ -4632,14 +4632,14 @@ LABEL_114:
     }
   }
 
-  v82 = [v20 threadSummary];
-  if (v82)
+  threadSummary = [bulletinCopy threadSummary];
+  if (threadSummary)
   {
-    v83 = v82;
+    v83 = threadSummary;
     v84 = MEMORY[0x277CCAAB0];
-    v85 = [v20 threadSummary];
+    threadSummary2 = [bulletinCopy threadSummary];
     v266 = 0;
-    v86 = [v84 archivedDataWithRootObject:v85 requiringSecureCoding:1 error:&v266];
+    v86 = [v84 archivedDataWithRootObject:threadSummary2 requiringSecureCoding:1 error:&v266];
     v87 = v266;
     v88 = v86;
 
@@ -4658,14 +4658,14 @@ LABEL_114:
     }
   }
 
-  v90 = [v20 attributedMessage];
-  if (v90)
+  attributedMessage = [bulletinCopy attributedMessage];
+  if (attributedMessage)
   {
-    v91 = v90;
+    v91 = attributedMessage;
     v92 = MEMORY[0x277CCAAB0];
-    v93 = [v20 attributedMessage];
+    attributedMessage2 = [bulletinCopy attributedMessage];
     v265 = 0;
-    v94 = [v92 archivedDataWithRootObject:v93 requiringSecureCoding:1 error:&v265];
+    v94 = [v92 archivedDataWithRootObject:attributedMessage2 requiringSecureCoding:1 error:&v265];
     v95 = v265;
     v96 = v94;
 
@@ -4684,14 +4684,14 @@ LABEL_114:
     }
   }
 
-  v98 = [v20 eventBehavior];
-  if (v98)
+  eventBehavior = [bulletinCopy eventBehavior];
+  if (eventBehavior)
   {
-    v99 = v98;
+    v99 = eventBehavior;
     v100 = MEMORY[0x277CCAAB0];
-    v101 = [v20 eventBehavior];
+    eventBehavior2 = [bulletinCopy eventBehavior];
     v264 = 0;
-    v102 = [v100 archivedDataWithRootObject:v101 requiringSecureCoding:1 error:&v264];
+    v102 = [v100 archivedDataWithRootObject:eventBehavior2 requiringSecureCoding:1 error:&v264];
     v103 = v264;
     v104 = v102;
 
@@ -4710,55 +4710,55 @@ LABEL_114:
     }
   }
 
-  v106 = [v20 header];
-  v107 = nilForNSNull(v106);
+  header = [bulletinCopy header];
+  v107 = nilForNSNull(header);
   [(BLTPBBulletin *)v35 setHeader:v107];
 
   [(BLTPBBulletin *)v35 setTitle:v228];
   [(BLTPBBulletin *)v35 setSubtitle:v71];
-  v108 = [v20 message];
-  v109 = nilForNSNull(v108);
+  message = [bulletinCopy message];
+  v109 = nilForNSNull(message);
   [(BLTPBBulletin *)v35 setMessageTitle:v109];
 
-  -[BLTPBBulletin setLoading:](v35, "setLoading:", [v20 isLoading]);
-  -[BLTPBBulletin setTurnsOnDisplay:](v35, "setTurnsOnDisplay:", [v20 turnsOnDisplay]);
+  -[BLTPBBulletin setLoading:](v35, "setLoading:", [bulletinCopy isLoading]);
+  -[BLTPBBulletin setTurnsOnDisplay:](v35, "setTurnsOnDisplay:", [bulletinCopy turnsOnDisplay]);
   [(BLTPBBulletin *)v35 setSnoozeAction:v230];
   [(BLTPBBulletin *)v35 setDismissAction:v229];
   [(BLTPBBulletin *)v35 setSupplementaryActions:v26];
-  [(BLTPBBulletin *)v35 setSockPuppetAppBundleID:v235];
-  if ([v20 suppressDelayForForwardedBulletins])
+  [(BLTPBBulletin *)v35 setSockPuppetAppBundleID:dCopy];
+  if ([bulletinCopy suppressDelayForForwardedBulletins])
   {
     [(BLTPBBulletin *)v35 setSuppressDelayForForwardedBulletins:1];
   }
 
-  v221 = [v20 publishDate];
-  [v221 timeIntervalSince1970];
+  publishDate = [bulletinCopy publishDate];
+  [publishDate timeIntervalSince1970];
   [(BLTPBBulletin *)v35 setPublicationDate:?];
-  v110 = [v20 sound];
-  [(BLTPBBulletin *)v35 setIncludesSound:v110 != 0];
-  v111 = [v110 alertConfiguration];
-  -[BLTPBBulletin setSoundAlertType:](v35, "setSoundAlertType:", [v111 type]);
+  sound = [bulletinCopy sound];
+  [(BLTPBBulletin *)v35 setIncludesSound:sound != 0];
+  alertConfiguration = [sound alertConfiguration];
+  -[BLTPBBulletin setSoundAlertType:](v35, "setSoundAlertType:", [alertConfiguration type]);
 
-  v112 = [v110 alertConfiguration];
-  v113 = [v112 topic];
-  v114 = nilForNSNull(v113);
+  alertConfiguration2 = [sound alertConfiguration];
+  topic = [alertConfiguration2 topic];
+  v114 = nilForNSNull(topic);
   [(BLTPBBulletin *)v35 setSoundAccountIdentifier:v114];
 
-  v115 = [v110 alertConfiguration];
-  v116 = [v115 toneIdentifier];
-  v117 = nilForNSNull(v116);
+  alertConfiguration3 = [sound alertConfiguration];
+  toneIdentifier = [alertConfiguration3 toneIdentifier];
+  v117 = nilForNSNull(toneIdentifier);
   [(BLTPBBulletin *)v35 setSoundToneIdentifier:v117];
 
-  v118 = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
-  v119 = [v118 bltVersion];
+  blt_boundedWaitForActivePairedDevice = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
+  bltVersion = [blt_boundedWaitForActivePairedDevice bltVersion];
 
-  if (v119 >= 6)
+  if (bltVersion >= 6)
   {
-    v120 = v119;
-    v121 = [v110 alertConfiguration];
-    if ([v121 shouldRepeat])
+    v120 = bltVersion;
+    alertConfiguration4 = [sound alertConfiguration];
+    if ([alertConfiguration4 shouldRepeat])
     {
-      v122 = [v20 blt_isVOIPCall] ^ 1;
+      v122 = [bulletinCopy blt_isVOIPCall] ^ 1;
     }
 
     else
@@ -4767,50 +4767,50 @@ LABEL_114:
     }
 
     [(BLTPBBulletin *)v35 setSoundShouldRepeat:v122];
-    v123 = [v110 alertConfiguration];
-    -[BLTPBBulletin setSoundShouldIgnoreRingerSwitch:](v35, "setSoundShouldIgnoreRingerSwitch:", [v123 shouldIgnoreRingerSwitch]);
+    alertConfiguration5 = [sound alertConfiguration];
+    -[BLTPBBulletin setSoundShouldIgnoreRingerSwitch:](v35, "setSoundShouldIgnoreRingerSwitch:", [alertConfiguration5 shouldIgnoreRingerSwitch]);
 
-    v124 = [v110 alertConfiguration];
-    [v124 maximumDuration];
+    alertConfiguration6 = [sound alertConfiguration];
+    [alertConfiguration6 maximumDuration];
     [(BLTPBBulletin *)v35 setSoundMaximumDuration:?];
 
-    v119 = v120;
+    bltVersion = v120;
   }
 
   if ([MEMORY[0x277D2BCC8] activePairedDeviceSupportsCriticalAndGroupingSettings])
   {
-    -[BLTPBBulletin setHasCriticalIcon:](v35, "setHasCriticalIcon:", [v20 hasCriticalIcon]);
-    v125 = [v110 alertConfiguration];
-    [v125 audioVolume];
+    -[BLTPBBulletin setHasCriticalIcon:](v35, "setHasCriticalIcon:", [bulletinCopy hasCriticalIcon]);
+    alertConfiguration7 = [sound alertConfiguration];
+    [alertConfiguration7 audioVolume];
     [(BLTPBBulletin *)v35 setSoundAudioVolume:v126];
   }
 
-  [(BLTPBBulletin *)v35 setTeamID:v234];
-  -[BLTPBBulletin setIgnoresQuietMode:](v35, "setIgnoresQuietMode:", [v20 ignoresQuietMode]);
-  -[BLTPBBulletin setPreemptsPresentedAlert:](v35, "setPreemptsPresentedAlert:", [v20 preemptsPresentedAlert]);
-  v127 = [v20 bltContext];
-  v128 = v127;
-  v224 = v22;
+  [(BLTPBBulletin *)v35 setTeamID:iDCopy];
+  -[BLTPBBulletin setIgnoresQuietMode:](v35, "setIgnoresQuietMode:", [bulletinCopy ignoresQuietMode]);
+  -[BLTPBBulletin setPreemptsPresentedAlert:](v35, "setPreemptsPresentedAlert:", [bulletinCopy preemptsPresentedAlert]);
+  bltContext = [bulletinCopy bltContext];
+  v128 = bltContext;
+  v224 = categoryIDCopy;
   v222 = v71;
-  v220 = v110;
-  if (v127 && v119 <= 7)
+  v220 = sound;
+  if (bltContext && bltVersion <= 7)
   {
-    v129 = a15;
-    v237 = v127;
-    v130 = [v127 mutableCopy];
+    contextCopy2 = context;
+    v237 = bltContext;
+    v130 = [bltContext mutableCopy];
     [v130 removeObjectForKey:@"userInfo"];
-    if (v119 == 7)
+    if (bltVersion == 7)
     {
-      [MEMORY[0x277CE1F78] notificationForBulletin:v20];
+      [MEMORY[0x277CE1F78] notificationForBulletin:bulletinCopy];
       v260 = 0u;
       v261 = 0u;
       v262 = 0u;
       v217 = v263 = 0u;
-      v131 = [v217 request];
-      v132 = [v131 content];
-      v133 = [v132 attachments];
+      request = [v217 request];
+      content = [request content];
+      attachments = [content attachments];
 
-      v134 = [v133 countByEnumeratingWithState:&v260 objects:v285 count:16];
+      v134 = [attachments countByEnumeratingWithState:&v260 objects:v285 count:16];
       if (v134)
       {
         v135 = v134;
@@ -4821,28 +4821,28 @@ LABEL_114:
           {
             if (*v261 != v136)
             {
-              objc_enumerationMutation(v133);
+              objc_enumerationMutation(attachments);
             }
 
             [*(*(&v260 + 1) + 8 * k) blt_preEncodeShouldAddNotificationAttachmentOptions];
           }
 
-          v135 = [v133 countByEnumeratingWithState:&v260 objects:v285 count:16];
+          v135 = [attachments countByEnumeratingWithState:&v260 objects:v285 count:16];
         }
 
         while (v135);
       }
 
-      v138 = [v217 bs_secureEncoded];
+      bs_secureEncoded = [v217 bs_secureEncoded];
       v256 = 0u;
       v257 = 0u;
       v258 = 0u;
       v259 = 0u;
-      v139 = [v217 request];
-      v140 = [v139 content];
-      v141 = [v140 attachments];
+      request2 = [v217 request];
+      content2 = [request2 content];
+      attachments2 = [content2 attachments];
 
-      v142 = [v141 countByEnumeratingWithState:&v256 objects:v284 count:16];
+      v142 = [attachments2 countByEnumeratingWithState:&v256 objects:v284 count:16];
       if (v142)
       {
         v143 = v142;
@@ -4853,21 +4853,21 @@ LABEL_114:
           {
             if (*v257 != v144)
             {
-              objc_enumerationMutation(v141);
+              objc_enumerationMutation(attachments2);
             }
 
             [*(*(&v256 + 1) + 8 * m) blt_postEncodeNotificationAttachmentOptions];
           }
 
-          v143 = [v141 countByEnumeratingWithState:&v256 objects:v284 count:16];
+          v143 = [attachments2 countByEnumeratingWithState:&v256 objects:v284 count:16];
         }
 
         while (v143);
       }
 
-      v119 = 7;
-      v129 = a15;
-      if (v217 && v138)
+      bltVersion = 7;
+      contextCopy2 = context;
+      if (v217 && bs_secureEncoded)
       {
         goto LABEL_111;
       }
@@ -4876,52 +4876,52 @@ LABEL_114:
       if (os_log_type_enabled(v146, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v279 = v20;
+        v279 = bulletinCopy;
         v280 = 2112;
         v281 = v217;
         v282 = 2112;
-        v283 = v138;
+        v283 = bs_secureEncoded;
         _os_log_error_impl(&dword_241FB3000, v146, OS_LOG_TYPE_ERROR, "Error getting a plist serialazable UNNotification from BBBulletin,  bulletin=%@ UNNotification=%@  plistSeriazableData=%@", buf, 0x20u);
       }
 
-      if (v138)
+      if (bs_secureEncoded)
       {
 LABEL_111:
-        [v130 setObject:v138 forKeyedSubscript:@"UNBulletinContextArchivedUserNotification"];
+        [v130 setObject:bs_secureEncoded forKeyedSubscript:@"UNBulletinContextArchivedUserNotification"];
       }
     }
 
     v147 = v130;
 
-    if (v129 || ![MEMORY[0x277D2BCC8] activePairedDeviceSupportsUserNotificationListDestination] || (v128 = v147, (objc_msgSend(MEMORY[0x277D2BCC8], "activePairedDeviceSupportsNoLocalRemoteNotificationInBulletinContext") & 1) == 0))
+    if (contextCopy2 || ![MEMORY[0x277D2BCC8] activePairedDeviceSupportsUserNotificationListDestination] || (v128 = v147, (objc_msgSend(MEMORY[0x277D2BCC8], "activePairedDeviceSupportsNoLocalRemoteNotificationInBulletinContext") & 1) == 0))
     {
-      if (v147 && ([MEMORY[0x277CE1F78] notificationForBulletin:v20], v148 = objc_claimAutoreleasedReturnValue(), v148, v148))
+      if (v147 && ([MEMORY[0x277CE1F78] notificationForBulletin:bulletinCopy], v148 = objc_claimAutoreleasedReturnValue(), v148, v148))
       {
-        if (v129)
+        if (contextCopy2)
         {
-          v149 = [v148 request];
-          [v149 content];
-          v151 = v150 = v119;
-          v152 = [v151 userInfo];
+          request3 = [v148 request];
+          [request3 content];
+          v151 = v150 = bltVersion;
+          userInfo = [v151 userInfo];
 
-          v119 = v150;
-          v128 = v152;
+          bltVersion = v150;
+          v128 = userInfo;
         }
 
         else
         {
           v153 = [v147 mutableCopy];
-          v216 = v119;
+          v216 = bltVersion;
           if (([MEMORY[0x277D2BCC8] activePairedDeviceSupportsUserNotificationListDestination] & 1) == 0)
           {
-            v154 = [v148 request];
-            v155 = [v154 content];
+            request4 = [v148 request];
+            content3 = [request4 content];
 
-            if (v155)
+            if (content3)
             {
               v238 = v153;
-              v156 = [v148 request];
-              v157 = [v156 destinations] & 6;
+              request5 = [v148 request];
+              v157 = [request5 destinations] & 6;
 
               v158 = blt_ids_log();
               if (os_log_type_enabled(v158, OS_LOG_TYPE_DEFAULT))
@@ -4937,9 +4937,9 @@ LABEL_111:
               v255 = 0u;
               v252 = 0u;
               v253 = 0u;
-              v218 = v155;
-              v159 = [v155 attachments];
-              v160 = [v159 countByEnumeratingWithState:&v252 objects:v277 count:16];
+              v218 = content3;
+              attachments3 = [content3 attachments];
+              v160 = [attachments3 countByEnumeratingWithState:&v252 objects:v277 count:16];
               if (v160)
               {
                 v161 = v160;
@@ -4950,30 +4950,30 @@ LABEL_111:
                   {
                     if (*v253 != v162)
                     {
-                      objc_enumerationMutation(v159);
+                      objc_enumerationMutation(attachments3);
                     }
 
                     [*(*(&v252 + 1) + 8 * n) blt_preEncodeShouldAddNotificationAttachmentOptions];
                   }
 
-                  v161 = [v159 countByEnumeratingWithState:&v252 objects:v277 count:16];
+                  v161 = [attachments3 countByEnumeratingWithState:&v252 objects:v277 count:16];
                 }
 
                 while (v161);
               }
 
-              v155 = v218;
+              content3 = v218;
               [v218 blt_preEncodeShouldAddToNotificationsList:v215 != 0];
-              v164 = [v148 bs_secureEncoded];
-              [v238 setObject:v164 forKeyedSubscript:@"UNBulletinContextArchivedUserNotification"];
+              bs_secureEncoded2 = [v148 bs_secureEncoded];
+              [v238 setObject:bs_secureEncoded2 forKeyedSubscript:@"UNBulletinContextArchivedUserNotification"];
 
               [v218 blt_postEncode];
               v250 = 0u;
               v251 = 0u;
               v248 = 0u;
               v249 = 0u;
-              v165 = [v218 attachments];
-              v166 = [v165 countByEnumeratingWithState:&v248 objects:v276 count:16];
+              attachments4 = [v218 attachments];
+              v166 = [attachments4 countByEnumeratingWithState:&v248 objects:v276 count:16];
               if (v166)
               {
                 v167 = v166;
@@ -4984,18 +4984,18 @@ LABEL_111:
                   {
                     if (*v249 != v168)
                     {
-                      objc_enumerationMutation(v165);
+                      objc_enumerationMutation(attachments4);
                     }
 
                     [*(*(&v248 + 1) + 8 * ii) blt_postEncodeNotificationAttachmentOptions];
                   }
 
-                  v167 = [v165 countByEnumeratingWithState:&v248 objects:v276 count:16];
+                  v167 = [attachments4 countByEnumeratingWithState:&v248 objects:v276 count:16];
                 }
 
                 while (v167);
                 v153 = v238;
-                v155 = v218;
+                content3 = v218;
               }
 
               else
@@ -5006,21 +5006,21 @@ LABEL_111:
 
             else
             {
-              v165 = blt_ids_log();
-              if (os_log_type_enabled(v165, OS_LOG_TYPE_ERROR))
+              attachments4 = blt_ids_log();
+              if (os_log_type_enabled(attachments4, OS_LOG_TYPE_ERROR))
               {
-                [BLTPBBulletin(BBBulletin) bulletinWithBBBulletin:v148 sockPuppetAppBundleID:v165 observer:? feed:? teamID:? universalSectionID:? shouldUseExpirationDate:? replyToken:? gizmoLegacyPublisherBulletinID:? gizmoLegacyCategoryID:? gizmoSectionID:? gizmoSectionSubtype:? useUserInfoForContext:? removeSubtitleForOlderWatches:?];
+                [BLTPBBulletin(BBBulletin) bulletinWithBBBulletin:v148 sockPuppetAppBundleID:attachments4 observer:? feed:? teamID:? universalSectionID:? shouldUseExpirationDate:? replyToken:? gizmoLegacyPublisherBulletinID:? gizmoLegacyCategoryID:? gizmoSectionID:? gizmoSectionSubtype:? useUserInfoForContext:? removeSubtitleForOlderWatches:?];
               }
             }
 
-            v119 = v216;
+            bltVersion = v216;
           }
 
           if (([MEMORY[0x277D2BCC8] activePairedDeviceSupportsNoLocalRemoteNotificationInBulletinContext] & 1) == 0)
           {
             v239 = v153;
-            v170 = [v148 request];
-            v171 = [v170 trigger];
+            request6 = [v148 request];
+            trigger = [request6 trigger];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -5034,11 +5034,11 @@ LABEL_111:
                 _os_log_impl(&dword_241FB3000, v173, OS_LOG_TYPE_INFO, "Adding back remoteNotification to bulletin context for paired watch", buf, 2u);
               }
 
-              v175 = [v148 request];
-              v176 = [v175 content];
-              v177 = [v176 userInfo];
+              request7 = [v148 request];
+              content4 = [request7 content];
+              userInfo2 = [content4 userInfo];
               v153 = v239;
-              [v239 setObject:v177 forKey:@"remoteNotification"];
+              [v239 setObject:userInfo2 forKey:@"remoteNotification"];
             }
 
             else
@@ -5049,13 +5049,13 @@ LABEL_111:
                 _os_log_impl(&dword_241FB3000, v173, OS_LOG_TYPE_INFO, "Adding back localNotification to bulletin context for paired watch", buf, 2u);
               }
 
-              v175 = (*(*MEMORY[0x277D772E0] + 16))();
-              v176 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v175 requiringSecureCoding:1 error:0];
+              request7 = (*(*MEMORY[0x277D772E0] + 16))();
+              content4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:request7 requiringSecureCoding:1 error:0];
               v153 = v239;
-              [v239 setObject:v176 forKey:@"localNotification"];
+              [v239 setObject:content4 forKey:@"localNotification"];
             }
 
-            v119 = v216;
+            bltVersion = v216;
           }
 
           v128 = v153;
@@ -5077,7 +5077,7 @@ LABEL_111:
   }
 
   v240 = v128;
-  if (v119 > 7)
+  if (bltVersion > 7)
   {
     v245 = 0;
     v181 = &v245;
@@ -5086,9 +5086,9 @@ LABEL_111:
 
   else
   {
-    v178 = [MEMORY[0x277D2BCC8] activePairedDeviceSupportsNSNullPListExtenion];
-    v179 = v178;
-    if (v178)
+    activePairedDeviceSupportsNSNullPListExtenion = [MEMORY[0x277D2BCC8] activePairedDeviceSupportsNSNullPListExtenion];
+    v179 = activePairedDeviceSupportsNSNullPListExtenion;
+    if (activePairedDeviceSupportsNSNullPListExtenion)
     {
       v180 = &v247;
     }
@@ -5098,7 +5098,7 @@ LABEL_111:
       v180 = 0;
     }
 
-    if (v178)
+    if (activePairedDeviceSupportsNSNullPListExtenion)
     {
       v247 = 0;
     }
@@ -5128,7 +5128,7 @@ LABEL_168:
       v280 = 2112;
       v281 = v182;
       v282 = 2112;
-      v283 = v20;
+      v283 = bulletinCopy;
       _os_log_error_impl(&dword_241FB3000, v185, OS_LOG_TYPE_ERROR, "Error serializing bulletin context: %@, %@, %@", buf, 0x20u);
     }
   }
@@ -5140,21 +5140,21 @@ LABEL_168:
   }
 
   v186 = MEMORY[0x277CBEB18];
-  v187 = [v20 alertSuppressionContexts];
-  v188 = [v186 arrayWithCapacity:{objc_msgSend(v187, "count")}];
+  alertSuppressionContexts = [bulletinCopy alertSuppressionContexts];
+  v188 = [v186 arrayWithCapacity:{objc_msgSend(alertSuppressionContexts, "count")}];
 
-  v189 = [v20 alertSuppressionContexts];
+  alertSuppressionContexts2 = [bulletinCopy alertSuppressionContexts];
   v243[0] = MEMORY[0x277D85DD0];
   v243[1] = 3221225472;
   v243[2] = __289__BLTPBBulletin_BBBulletin__bulletinWithBBBulletin_sockPuppetAppBundleID_observer_feed_teamID_universalSectionID_shouldUseExpirationDate_replyToken_gizmoLegacyPublisherBulletinID_gizmoLegacyCategoryID_gizmoSectionID_gizmoSectionSubtype_useUserInfoForContext_removeSubtitleForOlderWatches___block_invoke;
   v243[3] = &unk_278D32E30;
   v190 = v188;
   v244 = v190;
-  [v189 enumerateObjectsUsingBlock:v243];
+  [alertSuppressionContexts2 enumerateObjectsUsingBlock:v243];
 
-  v191 = [MEMORY[0x277D2BCC8] activePairedDeviceSupportsNSNullPListExtenion];
-  v192 = v191;
-  if (v191)
+  activePairedDeviceSupportsNSNullPListExtenion2 = [MEMORY[0x277D2BCC8] activePairedDeviceSupportsNSNullPListExtenion];
+  v192 = activePairedDeviceSupportsNSNullPListExtenion2;
+  if (activePairedDeviceSupportsNSNullPListExtenion2)
   {
     v193 = &v242;
   }
@@ -5164,7 +5164,7 @@ LABEL_168:
     v193 = 0;
   }
 
-  if (v191)
+  if (activePairedDeviceSupportsNSNullPListExtenion2)
   {
     v242 = 0;
   }
@@ -5193,7 +5193,7 @@ LABEL_168:
       v280 = 2112;
       v281 = v194;
       v282 = 2112;
-      v283 = v20;
+      v283 = bulletinCopy;
       _os_log_error_impl(&dword_241FB3000, v197, OS_LOG_TYPE_ERROR, "Error serializing alert suppression contexts: %@, %@, %@", buf, 0x20u);
     }
   }
@@ -5204,73 +5204,73 @@ LABEL_168:
     [(BLTPBBulletin *)v35 setAlertSuppressionContextsNulls:v195];
   }
 
-  v198 = [(BLTPBBulletin *)v35 sectionDisplayName];
+  sectionDisplayName2 = [(BLTPBBulletin *)v35 sectionDisplayName];
 
-  if (!v198)
+  if (!sectionDisplayName2)
   {
     v199 = MEMORY[0x277CC1E88];
-    v200 = [(BLTPBBulletin *)v35 sectionID];
-    v201 = [v199 bundleProxyForIdentifier:v200];
+    sectionID2 = [(BLTPBBulletin *)v35 sectionID];
+    v201 = [v199 bundleProxyForIdentifier:sectionID2];
 
     if (v201)
     {
-      v202 = [v201 localizedName];
-      [(BLTPBBulletin *)v35 setSectionDisplayName:v202];
+      localizedName = [v201 localizedName];
+      [(BLTPBBulletin *)v35 setSectionDisplayName:localizedName];
     }
   }
 
-  [(BLTPBBulletin *)v35 setUniversalSectionID:v233];
+  [(BLTPBBulletin *)v35 setUniversalSectionID:sectionIDCopy];
   if ([MEMORY[0x277D2BCC8] activePairedDeviceSupportsIconsPerNotification])
   {
-    v203 = [v20 icon];
-    v204 = BLTPBSectionIconFromBBSectionIcon(v203, 0);
+    icon = [bulletinCopy icon];
+    v204 = BLTPBSectionIconFromBBSectionIcon(icon, 0);
     [(BLTPBBulletin *)v35 setIcon:v204];
   }
 
-  v205 = [v20 contentType];
-  [(BLTPBBulletin *)v35 setContentType:v205];
+  contentType = [bulletinCopy contentType];
+  [(BLTPBBulletin *)v35 setContentType:contentType];
 
-  -[BLTPBBulletin setInterruptionLevel:](v35, "setInterruptionLevel:", [v20 interruptionLevel]);
-  v206 = [v20 communicationContext];
-  v207 = [v206 blt_protobuf];
-  [(BLTPBBulletin *)v35 setCommunicationContext:v207];
+  -[BLTPBBulletin setInterruptionLevel:](v35, "setInterruptionLevel:", [bulletinCopy interruptionLevel]);
+  communicationContext = [bulletinCopy communicationContext];
+  blt_protobuf = [communicationContext blt_protobuf];
+  [(BLTPBBulletin *)v35 setCommunicationContext:blt_protobuf];
 
-  v208 = [v20 filterCriteria];
-  [(BLTPBBulletin *)v35 setFilterCriteria:v208];
+  filterCriteria = [bulletinCopy filterCriteria];
+  [(BLTPBBulletin *)v35 setFilterCriteria:filterCriteria];
 
-  v209 = [v20 followActivityAction];
+  followActivityAction = [bulletinCopy followActivityAction];
 
-  if (v209)
+  if (followActivityAction)
   {
-    v210 = [v20 followActivityAction];
-    v211 = [v23 actionWithBBAction:v210];
+    followActivityAction2 = [bulletinCopy followActivityAction];
+    v211 = [v23 actionWithBBAction:followActivityAction2];
     [(BLTPBBulletin *)v35 setFollowActivityAction:v211];
   }
 
-  -[BLTPBBulletin setHasSubordinateIcon:](v35, "setHasSubordinateIcon:", [v20 hasSubordinateIcon]);
-  -[BLTPBBulletin setPriorityNotificationStatus:](v35, "setPriorityNotificationStatus:", [v20 priorityNotificationStatus]);
-  -[BLTPBBulletin setIsHighlight:](v35, "setIsHighlight:", [v20 isHighlight]);
+  -[BLTPBBulletin setHasSubordinateIcon:](v35, "setHasSubordinateIcon:", [bulletinCopy hasSubordinateIcon]);
+  -[BLTPBBulletin setPriorityNotificationStatus:](v35, "setPriorityNotificationStatus:", [bulletinCopy priorityNotificationStatus]);
+  -[BLTPBBulletin setIsHighlight:](v35, "setIsHighlight:", [bulletinCopy isHighlight]);
   v212 = v35;
 
   v213 = *MEMORY[0x277D85DE8];
   return v35;
 }
 
-+ (void)bulletinWithBBBulletin:(id)a3 sockPuppetAppBundleID:(id)a4 observer:(id)a5 feed:(unint64_t)a6 teamID:(id)a7 universalSectionID:(id)a8 shouldUseExpirationDate:(BOOL)a9 replyToken:(id)a10 gizmoLegacyPublisherBulletinID:(id)a11 gizmoLegacyCategoryID:(id)a12 gizmoSectionID:(id)a13 gizmoSectionSubtype:(id)a14 useUserInfoForContext:(BOOL)a15 removeSubtitleForOlderWatches:(BOOL)a16 attachOption:(unint64_t)a17 completion:(id)a18
++ (void)bulletinWithBBBulletin:(id)bulletin sockPuppetAppBundleID:(id)d observer:(id)observer feed:(unint64_t)feed teamID:(id)iD universalSectionID:(id)sectionID shouldUseExpirationDate:(BOOL)date replyToken:(id)self0 gizmoLegacyPublisherBulletinID:(id)self1 gizmoLegacyCategoryID:(id)self2 gizmoSectionID:(id)self3 gizmoSectionSubtype:(id)self4 useUserInfoForContext:(BOOL)self5 removeSubtitleForOlderWatches:(BOOL)self6 attachOption:(unint64_t)self7 completion:(id)self8
 {
-  v23 = a18;
-  v24 = a5;
-  v25 = a3;
-  LOWORD(v29) = __PAIR16__(a16, a15);
-  LOBYTE(v28) = a9;
-  v26 = [a1 bulletinWithBBBulletin:v25 sockPuppetAppBundleID:a4 observer:v24 feed:a6 teamID:a7 universalSectionID:a8 shouldUseExpirationDate:v28 replyToken:a10 gizmoLegacyPublisherBulletinID:a11 gizmoLegacyCategoryID:a12 gizmoSectionID:a13 gizmoSectionSubtype:a14 useUserInfoForContext:v29 removeSubtitleForOlderWatches:?];
+  completionCopy = completion;
+  observerCopy = observer;
+  bulletinCopy = bulletin;
+  LOWORD(v29) = __PAIR16__(watches, context);
+  LOBYTE(v28) = date;
+  v26 = [self bulletinWithBBBulletin:bulletinCopy sockPuppetAppBundleID:d observer:observerCopy feed:feed teamID:iD universalSectionID:sectionID shouldUseExpirationDate:v28 replyToken:token gizmoLegacyPublisherBulletinID:bulletinID gizmoLegacyCategoryID:categoryID gizmoSectionID:gizmoSectionID gizmoSectionSubtype:subtype useUserInfoForContext:v29 removeSubtitleForOlderWatches:?];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __313__BLTPBBulletin_BBBulletin__bulletinWithBBBulletin_sockPuppetAppBundleID_observer_feed_teamID_universalSectionID_shouldUseExpirationDate_replyToken_gizmoLegacyPublisherBulletinID_gizmoLegacyCategoryID_gizmoSectionID_gizmoSectionSubtype_useUserInfoForContext_removeSubtitleForOlderWatches_attachOption_completion___block_invoke;
   v32[3] = &unk_278D32E58;
-  v33 = v23;
-  v27 = v23;
-  [a1 _addAttachmentsFromBBBulletin:v25 toBLTPBBulletin:v26 observer:v24 attachOption:a17 completion:v32];
+  v33 = completionCopy;
+  v27 = completionCopy;
+  [self _addAttachmentsFromBBBulletin:bulletinCopy toBLTPBBulletin:v26 observer:observerCopy attachOption:option completion:v32];
 }
 
 uint64_t __313__BLTPBBulletin_BBBulletin__bulletinWithBBBulletin_sockPuppetAppBundleID_observer_feed_teamID_universalSectionID_shouldUseExpirationDate_replyToken_gizmoLegacyPublisherBulletinID_gizmoLegacyCategoryID_gizmoSectionID_gizmoSectionSubtype_useUserInfoForContext_removeSubtitleForOlderWatches_attachOption_completion___block_invoke(uint64_t a1)
@@ -5286,38 +5286,38 @@ uint64_t __313__BLTPBBulletin_BBBulletin__bulletinWithBBBulletin_sockPuppetAppBu
 
 - (id)publisherMatchID
 {
-  v3 = [(BLTPBBulletin *)self publisherBulletinID];
-  v4 = v3;
-  if (v3)
+  publisherBulletinID = [(BLTPBBulletin *)self publisherBulletinID];
+  v4 = publisherBulletinID;
+  if (publisherBulletinID)
   {
-    v5 = v3;
+    recordID = publisherBulletinID;
   }
 
   else
   {
-    v5 = [(BLTPBBulletin *)self recordID];
+    recordID = [(BLTPBBulletin *)self recordID];
   }
 
-  v6 = v5;
+  v6 = recordID;
 
   return v6;
 }
 
-- (id)attachmentKey:(id)a3
+- (id)attachmentKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(BLTPBBulletin *)self sectionID];
-  v7 = [(BLTPBBulletin *)self publisherMatchID];
-  v8 = v7;
-  if (v4)
+  sectionID = [(BLTPBBulletin *)self sectionID];
+  publisherMatchID = [(BLTPBBulletin *)self publisherMatchID];
+  v8 = publisherMatchID;
+  if (keyCopy)
   {
-    [v5 stringWithFormat:@"%@--%@--%@", v6, v7, v4];
+    [v5 stringWithFormat:@"%@--%@--%@", sectionID, publisherMatchID, keyCopy];
   }
 
   else
   {
-    [v5 stringWithFormat:@"%@--%@", v6, v7, v11];
+    [v5 stringWithFormat:@"%@--%@", sectionID, publisherMatchID, v11];
   }
   v9 = ;
 
@@ -5326,12 +5326,12 @@ uint64_t __313__BLTPBBulletin_BBBulletin__bulletinWithBBBulletin_sockPuppetAppBu
 
 - (id)attachmentURLURL
 {
-  v3 = [(BLTPBBulletin *)self attachmentURL];
-  if (v3)
+  attachmentURL = [(BLTPBBulletin *)self attachmentURL];
+  if (attachmentURL)
   {
     v4 = MEMORY[0x277CBEBC0];
-    v5 = [(BLTPBBulletin *)self attachmentURL];
-    v6 = [v4 URLWithString:v5];
+    attachmentURL2 = [(BLTPBBulletin *)self attachmentURL];
+    v6 = [v4 URLWithString:attachmentURL2];
   }
 
   else
@@ -5342,41 +5342,41 @@ uint64_t __313__BLTPBBulletin_BBBulletin__bulletinWithBBBulletin_sockPuppetAppBu
   return v6;
 }
 
-+ (void)_attachmentFromBBAttachmentMetadata:(id)a3 bulletin:(id)a4 observer:(id)a5 fileOption:(unint64_t)a6 attachOption:(unint64_t)a7 completion:(id)a8
++ (void)_attachmentFromBBAttachmentMetadata:(id)metadata bulletin:(id)bulletin observer:(id)observer fileOption:(unint64_t)option attachOption:(unint64_t)attachOption completion:(id)completion
 {
   v118 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (!v17)
+  metadataCopy = metadata;
+  bulletinCopy = bulletin;
+  observerCopy = observer;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     +[BLTPBBulletin(BBBulletin) _attachmentFromBBAttachmentMetadata:bulletin:observer:fileOption:attachOption:completion:];
   }
 
-  v18 = v17;
-  v19 = [v14 type];
-  v20 = a7 == 1;
+  v18 = completionCopy;
+  type = [metadataCopy type];
+  v20 = attachOption == 1;
   v108[0] = MEMORY[0x277D85DD0];
   v108[1] = 3221225472;
   v108[2] = __118__BLTPBBulletin_BBBulletin___attachmentFromBBAttachmentMetadata_bulletin_observer_fileOption_attachOption_completion___block_invoke;
   v108[3] = &unk_278D32E80;
-  v112 = v19;
-  v21 = v14;
+  v112 = type;
+  v21 = metadataCopy;
   v109 = v21;
-  v114 = a7 == 2;
-  v22 = v15;
+  v114 = attachOption == 2;
+  v22 = bulletinCopy;
   v110 = v22;
   v23 = v18;
   v111 = v23;
-  v113 = a6;
+  optionCopy = option;
   v24 = MEMORY[0x245D067A0](v108);
-  if (a7 == 2)
+  if (attachOption == 2)
   {
     goto LABEL_39;
   }
 
-  if (v19 == 1)
+  if (type == 1)
   {
     v25 = blt_ids_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -5386,7 +5386,7 @@ uint64_t __313__BLTPBBulletin_BBBulletin__bulletinWithBBBulletin_sockPuppetAppBu
       _os_log_impl(&dword_241FB3000, v25, OS_LOG_TYPE_INFO, "%@ Image attachment processing", buf, 0xCu);
     }
 
-    if (!a6)
+    if (!option)
     {
       goto LABEL_39;
     }
@@ -5397,26 +5397,26 @@ uint64_t __313__BLTPBBulletin_BBBulletin__bulletinWithBBBulletin_sockPuppetAppBu
       goto LABEL_39;
     }
 
-    v27 = v26;
+    blt_boundedWaitForActivePairedDevice = v26;
     v28 = [v21 URL];
-    v29 = [MEMORY[0x277CBEB68] null];
-    v30 = v29;
-    if (v28 == v29)
+    null = [MEMORY[0x277CBEB68] null];
+    v30 = null;
+    if (v28 == null)
     {
     }
 
     else
     {
       [v21 URL];
-      v31 = v88 = v16;
+      v31 = v88 = observerCopy;
       [v31 path];
-      v86 = v27;
+      v86 = blt_boundedWaitForActivePairedDevice;
       v32 = v20;
-      v33 = a1;
+      selfCopy = self;
       v35 = v34 = v28;
 
-      v16 = v88;
-      v36 = v33;
+      observerCopy = v88;
+      v36 = selfCopy;
       v37 = v32;
 
       if (!v35)
@@ -5426,11 +5426,11 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      v27 = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
+      blt_boundedWaitForActivePairedDevice = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
       v38 = MEMORY[0x277CBEBC0];
       v39 = [v21 URL];
-      v40 = [v39 path];
-      v41 = [v38 fileURLWithPath:v40];
+      path = [v39 path];
+      v41 = [v38 fileURLWithPath:path];
 
       v42 = BLTFileURLInAttachmentsPath(v22, v21);
       v87 = v41;
@@ -5453,21 +5453,21 @@ LABEL_39:
       v46 = blt_ids_log();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
       {
-        v47 = [v22 publisherBulletinID];
+        publisherBulletinID = [v22 publisherBulletinID];
         *buf = 138412546;
-        *&buf[4] = v47;
+        *&buf[4] = publisherBulletinID;
         v116 = 2112;
         v117 = v87;
         _os_log_impl(&dword_241FB3000, v46, OS_LOG_TYPE_INFO, "%@ Image attachment processing: %@", buf, 0x16u);
       }
 
-      if (v27 && v85)
+      if (blt_boundedWaitForActivePairedDevice && v85)
       {
-        v48 = [v27 valueForProperty:*MEMORY[0x277D2BBE8]];
+        v48 = [blt_boundedWaitForActivePairedDevice valueForProperty:*MEMORY[0x277D2BBE8]];
         [v48 floatValue];
         v50 = v49;
 
-        v51 = [v27 valueForProperty:*MEMORY[0x277D2BBF0]];
+        v51 = [blt_boundedWaitForActivePairedDevice valueForProperty:*MEMORY[0x277D2BBF0]];
         [v51 CGSizeValue];
         v53 = v52;
         v55 = v54;
@@ -5481,9 +5481,9 @@ LABEL_39:
           v79 = blt_ids_log();
           if (os_log_type_enabled(v79, OS_LOG_TYPE_INFO))
           {
-            v80 = [v22 publisherBulletinID];
+            publisherBulletinID2 = [v22 publisherBulletinID];
             *buf = 138412546;
-            *&buf[4] = v80;
+            *&buf[4] = publisherBulletinID2;
             v116 = 2112;
             v117 = v87;
             _os_log_impl(&dword_241FB3000, v79, OS_LOG_TYPE_INFO, "%@ Image attachment will be sent scaled: %@", buf, 0x16u);
@@ -5491,8 +5491,8 @@ LABEL_39:
 
           v83 = [objc_alloc(MEMORY[0x277CDAAD8]) initWithFileAtURL:v87 size:4 scale:v56 representationTypes:{v57, v50}];
           [v83 setMinimumDimension:50.0];
-          v81 = [MEMORY[0x277CDAAE0] sharedGenerator];
-          v82 = [v44 contentType];
+          mEMORY[0x277CDAAE0] = [MEMORY[0x277CDAAE0] sharedGenerator];
+          contentType = [v44 contentType];
           v94[0] = MEMORY[0x277D85DD0];
           v94[1] = 3221225472;
           v94[2] = __118__BLTPBBulletin_BBBulletin___attachmentFromBBAttachmentMetadata_bulletin_observer_fileOption_attachOption_completion___block_invoke_97;
@@ -5504,7 +5504,7 @@ LABEL_39:
           v97 = v44;
           v98 = v24;
           v64 = v87;
-          [v81 saveBestRepresentationForRequest:v83 toFileAtURL:v96 withContentType:v82 completionHandler:v94];
+          [mEMORY[0x277CDAAE0] saveBestRepresentationForRequest:v83 toFileAtURL:v96 withContentType:contentType completionHandler:v94];
 
           v42 = v85;
         }
@@ -5514,9 +5514,9 @@ LABEL_39:
           v62 = blt_ids_log();
           if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
           {
-            v63 = [v22 publisherBulletinID];
+            publisherBulletinID3 = [v22 publisherBulletinID];
             *buf = 138412546;
-            *&buf[4] = v63;
+            *&buf[4] = publisherBulletinID3;
             v116 = 2112;
             v117 = v87;
             _os_log_impl(&dword_241FB3000, v62, OS_LOG_TYPE_INFO, "%@ Image attachment will be sent without scaling: %@", buf, 0x16u);
@@ -5540,20 +5540,20 @@ LABEL_39:
 
 LABEL_44:
 
-        v16 = v88;
+        observerCopy = v88;
         goto LABEL_40;
       }
 
       v28 = v87;
-      v16 = v88;
+      observerCopy = v88;
     }
 
     goto LABEL_37;
   }
 
   v65 = [v21 URL];
-  v27 = v65;
-  if ((v19 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  blt_boundedWaitForActivePairedDevice = v65;
+  if ((type & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
 LABEL_38:
 
@@ -5561,31 +5561,31 @@ LABEL_38:
   }
 
   v66 = [v21 URL];
-  if (!v27)
+  if (!blt_boundedWaitForActivePairedDevice)
   {
-    v27 = v66;
+    blt_boundedWaitForActivePairedDevice = v66;
     goto LABEL_38;
   }
 
-  v89 = v16;
+  v89 = observerCopy;
   v67 = MEMORY[0x277CCAA00];
-  v27 = v66;
-  v68 = [v67 defaultManager];
-  v69 = [v27 absoluteURL];
+  blt_boundedWaitForActivePairedDevice = v66;
+  defaultManager = [v67 defaultManager];
+  absoluteURL = [blt_boundedWaitForActivePairedDevice absoluteURL];
 
-  v70 = [v69 path];
+  path2 = [absoluteURL path];
   *buf = 0;
-  v71 = [v68 attributesOfItemAtPath:v70 error:buf];
-  v72 = [v71 fileSize];
+  v71 = [defaultManager attributesOfItemAtPath:path2 error:buf];
+  fileSize = [v71 fileSize];
 
-  if (v72 <= 0x100000)
+  if (fileSize <= 0x100000)
   {
-    v16 = v89;
+    observerCopy = v89;
     goto LABEL_38;
   }
 
   v73 = BLTFileURLInAttachmentsPath(v22, v21);
-  v16 = v89;
+  observerCopy = v89;
   if (!v73)
   {
     v28 = blt_general_log();
@@ -5604,11 +5604,11 @@ LABEL_37:
   v90[1] = 3221225472;
   v90[2] = __118__BLTPBBulletin_BBBulletin___attachmentFromBBAttachmentMetadata_bulletin_observer_fileOption_attachOption_completion___block_invoke_100;
   v90[3] = &unk_278D32F20;
-  v91 = v27;
+  v91 = blt_boundedWaitForActivePairedDevice;
   v92 = v73;
   v93 = v24;
   v75 = v74;
-  v76 = v27;
+  v76 = blt_boundedWaitForActivePairedDevice;
   [BLTAVUtil transcodeURL:v76 outURL:v75 maxBytes:0x100000 completion:v90];
 
 LABEL_40:
@@ -5832,20 +5832,20 @@ void __118__BLTPBBulletin_BBBulletin___attachmentFromBBAttachmentMetadata_bullet
   (*(*(a1 + 48) + 16))();
 }
 
-+ (id)_handleThumbnailResponse:(id)a3 attachmentMetadata:(id)a4 transcodedAttachmentSaveURL:(id)a5 wantsData:(BOOL)a6 imageContentType:(id)a7
++ (id)_handleThumbnailResponse:(id)response attachmentMetadata:(id)metadata transcodedAttachmentSaveURL:(id)l wantsData:(BOOL)data imageContentType:(id)type
 {
-  v8 = a6;
+  dataCopy = data;
   v32 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (v11)
+  responseCopy = response;
+  metadataCopy = metadata;
+  lCopy = l;
+  typeCopy = type;
+  if (responseCopy)
   {
-    v15 = blt_general_log();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    path = blt_general_log();
+    if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
     {
-      [BLTPBBulletin(BBBulletin) _handleThumbnailResponse:v11 attachmentMetadata:v12 transcodedAttachmentSaveURL:? wantsData:? imageContentType:?];
+      [BLTPBBulletin(BBBulletin) _handleThumbnailResponse:responseCopy attachmentMetadata:metadataCopy transcodedAttachmentSaveURL:? wantsData:? imageContentType:?];
     }
 
     v16 = 0;
@@ -5857,20 +5857,20 @@ void __118__BLTPBBulletin_BBBulletin___attachmentFromBBAttachmentMetadata_bullet
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v26 = 138412290;
-      v27 = v13;
+      v27 = lCopy;
       _os_log_impl(&dword_241FB3000, v17, OS_LOG_TYPE_INFO, "_handleThumbnailResponse: Image attachment generated and saved to file URL %@", &v26, 0xCu);
     }
 
-    if (!v8)
+    if (!dataCopy)
     {
       v16 = 0;
       goto LABEL_18;
     }
 
-    v15 = [(UIImage *)v13 path];
-    v18 = [MEMORY[0x277D755B8] imageWithContentsOfFile:v15];
-    v19 = [*MEMORY[0x277CE1E10] identifier];
-    v20 = [v14 isEqualToString:v19];
+    path = [(UIImage *)lCopy path];
+    v18 = [MEMORY[0x277D755B8] imageWithContentsOfFile:path];
+    identifier = [*MEMORY[0x277CE1E10] identifier];
+    v20 = [typeCopy isEqualToString:identifier];
 
     v21 = blt_ids_log();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
@@ -5881,9 +5881,9 @@ void __118__BLTPBBulletin_BBBulletin___attachmentFromBBAttachmentMetadata_bullet
         v26 = 138412802;
         v27 = v18;
         v28 = 2112;
-        v29 = v15;
+        v29 = path;
         v30 = 2112;
-        v31 = v14;
+        v31 = typeCopy;
         _os_log_impl(&dword_241FB3000, v21, OS_LOG_TYPE_INFO, "_handleThumbnailResponse: PNG is being added manually, backwards compatibility for older watches image: %@ filepath: %@ imageContentType: %@", &v26, 0x20u);
       }
 
@@ -5897,9 +5897,9 @@ void __118__BLTPBBulletin_BBBulletin___attachmentFromBBAttachmentMetadata_bullet
         v26 = 138412802;
         v27 = v18;
         v28 = 2112;
-        v29 = v15;
+        v29 = path;
         v30 = 2112;
-        v31 = v14;
+        v31 = typeCopy;
         _os_log_impl(&dword_241FB3000, v21, OS_LOG_TYPE_INFO, "_handleThumbnailResponse: JPEG attachment is being added manually, backwards compatibility for older watches image: %@ filepath: %@ imageContentType: %@", &v26, 0x20u);
       }
 
@@ -5915,31 +5915,31 @@ LABEL_18:
   return v16;
 }
 
-+ (void)_addAttachmentsFromBBBulletin:(id)a3 toBLTPBBulletin:(id)a4 observer:(id)a5 attachOption:(unint64_t)a6 completion:(id)a7
++ (void)_addAttachmentsFromBBBulletin:(id)bulletin toBLTPBBulletin:(id)bBulletin observer:(id)observer attachOption:(unint64_t)option completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [MEMORY[0x277D2BCC8] activePairedDeviceSupportsMultipleAttachments];
-  v17 = [v12 primaryAttachment];
+  bulletinCopy = bulletin;
+  bBulletinCopy = bBulletin;
+  observerCopy = observer;
+  completionCopy = completion;
+  activePairedDeviceSupportsMultipleAttachments = [MEMORY[0x277D2BCC8] activePairedDeviceSupportsMultipleAttachments];
+  primaryAttachment = [bulletinCopy primaryAttachment];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __108__BLTPBBulletin_BBBulletin___addAttachmentsFromBBBulletin_toBLTPBBulletin_observer_attachOption_completion___block_invoke;
   v22[3] = &unk_278D32F70;
-  v29 = a6 == 1;
-  v30 = v16;
-  v23 = v13;
-  v24 = v12;
-  v27 = a1;
-  v28 = a6;
-  v25 = v14;
-  v26 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v12;
-  v21 = v13;
-  [a1 _attachmentFromBBAttachmentMetadata:v17 bulletin:v20 observer:v19 fileOption:v16 attachOption:a6 completion:v22];
+  v29 = option == 1;
+  v30 = activePairedDeviceSupportsMultipleAttachments;
+  v23 = bBulletinCopy;
+  v24 = bulletinCopy;
+  selfCopy = self;
+  optionCopy = option;
+  v25 = observerCopy;
+  v26 = completionCopy;
+  v18 = completionCopy;
+  v19 = observerCopy;
+  v20 = bulletinCopy;
+  v21 = bBulletinCopy;
+  [self _attachmentFromBBAttachmentMetadata:primaryAttachment bulletin:v20 observer:v19 fileOption:activePairedDeviceSupportsMultipleAttachments attachOption:option completion:v22];
 }
 
 void __108__BLTPBBulletin_BBBulletin___addAttachmentsFromBBBulletin_toBLTPBBulletin_observer_attachOption_completion___block_invoke(uint64_t a1, void *a2, void *a3)

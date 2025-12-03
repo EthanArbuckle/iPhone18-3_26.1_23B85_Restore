@@ -1,54 +1,54 @@
 @interface CONode
-+ (id)descriptionForState:(int64_t)a3;
-+ (id)statusFromState:(int64_t)a3;
++ (id)descriptionForState:(int64_t)state;
++ (id)statusFromState:(int64_t)state;
 - (COClusterMemberRoleSnapshot)memberSnapshot;
 - (COConstituent)remote;
-- (CONode)initWithRecord:(id)a3 executionContext:(id)a4 delegate:(id)a5;
+- (CONode)initWithRecord:(id)record executionContext:(id)context delegate:(id)delegate;
 - (CONodeDelegate)delegate;
 - (NSUUID)HomeKitIdentifier;
 - (int64_t)state;
 - (void)_resetElectionRelatedInformation;
-- (void)_withLock:(id)a3;
-- (void)discoveryRecordAdded:(id)a3;
-- (void)discoveryRecordRemoved:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)discoveryRecordAdded:(id)added;
+- (void)discoveryRecordRemoved:(id)removed;
 - (void)resetBackoffInformation;
-- (void)setBackoffTimer:(id)a3;
-- (void)setHomeKitIdentifier:(id)a3;
-- (void)setMemberSnapshot:(id)a3;
-- (void)setRemote:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)setBackoffTimer:(id)timer;
+- (void)setHomeKitIdentifier:(id)identifier;
+- (void)setMemberSnapshot:(id)snapshot;
+- (void)setRemote:(id)remote;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation CONode
 
-- (CONode)initWithRecord:(id)a3 executionContext:(id)a4 delegate:(id)a5
+- (CONode)initWithRecord:(id)record executionContext:(id)context delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  contextCopy = context;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = CONode;
   v11 = [(CONode *)&v25 init];
   if (v11)
   {
-    v12 = [v9 constituentForMe];
-    objc_storeStrong(&v11->_meConstituent, v12);
-    v13 = [v8 IDSIdentifier];
-    v14 = [v13 copy];
+    constituentForMe = [contextCopy constituentForMe];
+    objc_storeStrong(&v11->_meConstituent, constituentForMe);
+    iDSIdentifier = [recordCopy IDSIdentifier];
+    v14 = [iDSIdentifier copy];
     IDSIdentifier = v11->_IDSIdentifier;
     v11->_IDSIdentifier = v14;
 
-    v16 = [v8 HomeKitIdentifier];
-    v17 = [v16 copy];
+    homeKitIdentifier = [recordCopy HomeKitIdentifier];
+    v17 = [homeKitIdentifier copy];
     HomeKitIdentifier = v11->_HomeKitIdentifier;
     v11->_HomeKitIdentifier = v17;
 
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v11->_lock._os_unfair_lock_opaque = 0;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v11->_remote, v12);
+      objc_storeStrong(&v11->_remote, constituentForMe);
     }
 
     else
@@ -87,21 +87,21 @@ LABEL_8:
   return v11;
 }
 
-- (void)setBackoffTimer:(id)a3
+- (void)setBackoffTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   backoffTimer = self->_backoffTimer;
   p_backoffTimer = &self->_backoffTimer;
   v6 = backoffTimer;
-  v9 = v5;
-  if (backoffTimer != v5)
+  v9 = timerCopy;
+  if (backoffTimer != timerCopy)
   {
     if (v6)
     {
       dispatch_source_cancel(v6);
     }
 
-    objc_storeStrong(p_backoffTimer, a3);
+    objc_storeStrong(p_backoffTimer, timer);
     if (*p_backoffTimer)
     {
       dispatch_resume(*p_backoffTimer);
@@ -127,27 +127,27 @@ LABEL_8:
   return v2;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __19__CONode_setState___block_invoke;
   v3[3] = &unk_278E17CC8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   [(CONode *)self _withLock:v3];
 }
 
-- (void)setMemberSnapshot:(id)a3
+- (void)setMemberSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __28__CONode_setMemberSnapshot___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = snapshotCopy;
+  v5 = snapshotCopy;
   [(CONode *)self _withLock:v6];
 }
 
@@ -172,16 +172,16 @@ LABEL_8:
   return v2;
 }
 
-- (void)setRemote:(id)a3
+- (void)setRemote:(id)remote
 {
-  v4 = a3;
+  remoteCopy = remote;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __20__CONode_setRemote___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = remoteCopy;
+  v5 = remoteCopy;
   [(CONode *)self _withLock:v6];
 }
 
@@ -224,10 +224,10 @@ LABEL_8:
   v3 = v10[5];
   if (!v3)
   {
-    v4 = [(CONode *)self delegate];
+    delegate = [(CONode *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 reconcileNode];
+      [delegate reconcileNode];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __27__CONode_HomeKitIdentifier__block_invoke_2;
@@ -246,32 +246,32 @@ LABEL_8:
   return v5;
 }
 
-- (void)setHomeKitIdentifier:(id)a3
+- (void)setHomeKitIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__CONode_setHomeKitIdentifier___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(CONode *)self _withLock:v6];
 }
 
-- (void)discoveryRecordAdded:(id)a3
+- (void)discoveryRecordAdded:(id)added
 {
-  v4 = a3;
-  v5 = [(CONode *)self HomeKitIdentifier];
+  addedCopy = added;
+  homeKitIdentifier = [(CONode *)self HomeKitIdentifier];
 
-  if (!v5)
+  if (!homeKitIdentifier)
   {
     v7 = MEMORY[0x277D85DD0];
     v8 = 3221225472;
     v9 = __31__CONode_discoveryRecordAdded___block_invoke;
     v10 = &unk_278E156B0;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = addedCopy;
     [(CONode *)self _withLock:&v7];
   }
 
@@ -308,9 +308,9 @@ uint64_t __31__CONode_discoveryRecordAdded___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)discoveryRecordRemoved:(id)a3
+- (void)discoveryRecordRemoved:(id)removed
 {
-  if ([a3 producesElectionCapableTransport])
+  if ([removed producesElectionCapableTransport])
   {
 
     [(CONode *)self _resetElectionRelatedInformation];
@@ -338,37 +338,37 @@ uint64_t __31__CONode_discoveryRecordAdded___block_invoke(uint64_t a1)
   [(CONode *)self resetBackoffInformation];
 }
 
-+ (id)descriptionForState:(int64_t)a3
++ (id)descriptionForState:(int64_t)state
 {
-  if (a3 > 0xE)
+  if (state > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return off_278E17CE8[a3];
+    return off_278E17CE8[state];
   }
 }
 
-+ (id)statusFromState:(int64_t)a3
++ (id)statusFromState:(int64_t)state
 {
-  if (a3 > 0xE)
+  if (state > 0xE)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_278E17D60[a3];
+    return off_278E17D60[state];
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }

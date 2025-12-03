@@ -1,23 +1,23 @@
 @interface PKNotification
-- (PKNotification)initWithNotifier:(id)a3 notifyKind:(int)a4;
+- (PKNotification)initWithNotifier:(id)notifier notifyKind:(int)kind;
 - (id)_makeDict;
-- (void)_interpretResult:(unint64_t)a3 responseDict:(id)a4;
+- (void)_interpretResult:(unint64_t)result responseDict:(id)dict;
 - (void)start;
 @end
 
 @implementation PKNotification
 
-- (PKNotification)initWithNotifier:(id)a3 notifyKind:(int)a4
+- (PKNotification)initWithNotifier:(id)notifier notifyKind:(int)kind
 {
-  v7 = a3;
+  notifierCopy = notifier;
   v11.receiver = self;
   v11.super_class = PKNotification;
   v8 = [(PKNotification *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_notifier, a3);
-    v9->_kind = a4;
+    objc_storeStrong(&v8->_notifier, notifier);
+    v9->_kind = kind;
   }
 
   return v9;
@@ -26,44 +26,44 @@
 - (void)start
 {
   notifier = self->_notifier;
-  v4 = [(PKNotification *)self _makeFlags];
-  v5 = [(PKNotification *)self _makeDict];
-  [(PKNotifier *)notifier startNotification:self options:v4 dict:?];
+  _makeFlags = [(PKNotification *)self _makeFlags];
+  _makeDict = [(PKNotification *)self _makeDict];
+  [(PKNotifier *)notifier startNotification:self options:_makeFlags dict:?];
 }
 
 - (id)_makeDict
 {
   v3 = objc_opt_new();
-  v4 = [(PKNotification *)self headerString];
+  headerString = [(PKNotification *)self headerString];
 
-  if (v4)
+  if (headerString)
   {
-    v5 = [(PKNotification *)self headerString];
-    [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x277CBF188]];
+    headerString2 = [(PKNotification *)self headerString];
+    [v3 setObject:headerString2 forKeyedSubscript:*MEMORY[0x277CBF188]];
   }
 
-  v6 = [(PKNotification *)self messageString];
+  messageString = [(PKNotification *)self messageString];
 
-  if (v6)
+  if (messageString)
   {
-    v7 = [(PKNotification *)self messageString];
-    [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x277CBF198]];
+    messageString2 = [(PKNotification *)self messageString];
+    [v3 setObject:messageString2 forKeyedSubscript:*MEMORY[0x277CBF198]];
   }
 
-  v8 = [(PKNotification *)self defaultButtonTitle];
+  defaultButtonTitle = [(PKNotification *)self defaultButtonTitle];
 
-  if (v8)
+  if (defaultButtonTitle)
   {
-    v9 = [(PKNotification *)self defaultButtonTitle];
-    [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x277CBF1E8]];
+    defaultButtonTitle2 = [(PKNotification *)self defaultButtonTitle];
+    [v3 setObject:defaultButtonTitle2 forKeyedSubscript:*MEMORY[0x277CBF1E8]];
   }
 
-  v10 = [(PKNotification *)self alternateButtonTitle];
+  alternateButtonTitle = [(PKNotification *)self alternateButtonTitle];
 
-  if (v10)
+  if (alternateButtonTitle)
   {
-    v11 = [(PKNotification *)self alternateButtonTitle];
-    [v3 setObject:v11 forKeyedSubscript:*MEMORY[0x277CBF1C0]];
+    alternateButtonTitle2 = [(PKNotification *)self alternateButtonTitle];
+    [v3 setObject:alternateButtonTitle2 forKeyedSubscript:*MEMORY[0x277CBF1C0]];
   }
 
   [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D67320]];
@@ -73,16 +73,16 @@
   return v3;
 }
 
-- (void)_interpretResult:(unint64_t)a3 responseDict:(id)a4
+- (void)_interpretResult:(unint64_t)result responseDict:(id)dict
 {
-  v6 = [(PKNotification *)self resultHandler:a3];
-  v7 = [(PKNotification *)self resultQueue];
-  v8 = 2 * (a3 == 1);
+  v6 = [(PKNotification *)self resultHandler:result];
+  resultQueue = [(PKNotification *)self resultQueue];
+  v8 = 2 * (result == 1);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__PKNotification__interpretResult_responseDict___block_invoke;
   v10[3] = &unk_279A91C68;
-  if (!a3)
+  if (!result)
   {
     v8 = 1;
   }
@@ -90,7 +90,7 @@
   v11 = v6;
   v12 = v8;
   v9 = v6;
-  dispatch_async(v7, v10);
+  dispatch_async(resultQueue, v10);
 }
 
 uint64_t __48__PKNotification__interpretResult_responseDict___block_invoke(uint64_t a1)

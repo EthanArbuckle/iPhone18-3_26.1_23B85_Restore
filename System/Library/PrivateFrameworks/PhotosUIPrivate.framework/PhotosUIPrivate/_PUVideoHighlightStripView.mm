@@ -1,30 +1,30 @@
 @interface _PUVideoHighlightStripView
-- (_PUVideoHighlightStripView)initWithFrame:(CGRect)a3;
+- (_PUVideoHighlightStripView)initWithFrame:(CGRect)frame;
 - (void)_updateBarsExpanded;
 - (void)_updateCurrentTimeRangeIndex;
 - (void)_updateHighlightViews;
 - (void)layoutSubviews;
-- (void)setCurrentTime:(id *)a3;
-- (void)setCurrentTimeRangeIndex:(int64_t)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setHighlightTimeRanges:(id)a3;
-- (void)setIsPlaying:(BOOL)a3;
-- (void)setVideoDuration:(id *)a3;
+- (void)setCurrentTime:(id *)time;
+- (void)setCurrentTimeRangeIndex:(int64_t)index;
+- (void)setHighlightColor:(id)color;
+- (void)setHighlightTimeRanges:(id)ranges;
+- (void)setIsPlaying:(BOOL)playing;
+- (void)setVideoDuration:(id *)duration;
 @end
 
 @implementation _PUVideoHighlightStripView
 
 - (void)_updateBarsExpanded
 {
-  v3 = [(_PUVideoHighlightStripView *)self currentTimeRangeIndex];
-  v4 = [(_PUVideoHighlightStripView *)self isPlaying];
+  currentTimeRangeIndex = [(_PUVideoHighlightStripView *)self currentTimeRangeIndex];
+  isPlaying = [(_PUVideoHighlightStripView *)self isPlaying];
   highlightViews = self->_highlightViews;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49___PUVideoHighlightStripView__updateBarsExpanded__block_invoke;
   v6[3] = &__block_descriptor_41_e41_v32__0___PUVideoHighlightBarView_8Q16_B24l;
-  v7 = v4;
-  v6[4] = v3;
+  v7 = isPlaying;
+  v6[4] = currentTimeRangeIndex;
   [(NSArray *)highlightViews enumerateObjectsUsingBlock:v6];
 }
 
@@ -42,31 +42,31 @@
   [(_PUVideoHighlightStripView *)self videoDuration];
   time = v30;
   Seconds = CMTimeGetSeconds(&time);
-  v12 = [(_PUVideoHighlightStripView *)self highlightTimeRanges];
-  v13 = [(_PUVideoHighlightStripView *)self highlightColor];
+  highlightTimeRanges = [(_PUVideoHighlightStripView *)self highlightTimeRanges];
+  highlightColor = [(_PUVideoHighlightStripView *)self highlightColor];
   highlightViews = self->_highlightViews;
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __44___PUVideoHighlightStripView_layoutSubviews__block_invoke;
   v20 = &unk_1E7B7E598;
-  v21 = v13;
-  v22 = v12;
+  v21 = highlightColor;
+  v22 = highlightTimeRanges;
   v23 = Seconds;
   v24 = v4;
   v25 = v6;
   v26 = v8;
   v27 = v10;
   v28 = v8;
-  v15 = v12;
-  v16 = v13;
+  v15 = highlightTimeRanges;
+  v16 = highlightColor;
   [(NSArray *)highlightViews enumerateObjectsUsingBlock:&v17];
   [(_PUVideoHighlightStripView *)self _updateBarsExpanded:v17];
 }
 
 - (void)_updateHighlightViews
 {
-  v3 = [(_PUVideoHighlightStripView *)self highlightTimeRanges];
-  v4 = [v3 count];
+  highlightTimeRanges = [(_PUVideoHighlightStripView *)self highlightTimeRanges];
+  v4 = [highlightTimeRanges count];
 
   v9 = self->_highlightViews;
   if ([(NSArray *)v9 count]< v4)
@@ -88,11 +88,11 @@
   [(_PUVideoHighlightStripView *)self layoutIfNeeded];
 }
 
-- (void)setCurrentTimeRangeIndex:(int64_t)a3
+- (void)setCurrentTimeRangeIndex:(int64_t)index
 {
-  if (self->_currentTimeRangeIndex != a3)
+  if (self->_currentTimeRangeIndex != index)
   {
-    self->_currentTimeRangeIndex = a3;
+    self->_currentTimeRangeIndex = index;
     [(_PUVideoHighlightStripView *)self _updateBarsExpanded];
   }
 }
@@ -106,7 +106,7 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0x7FFFFFFFFFFFFFFFLL;
-  v3 = [(_PUVideoHighlightStripView *)self highlightTimeRanges];
+  highlightTimeRanges = [(_PUVideoHighlightStripView *)self highlightTimeRanges];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58___PUVideoHighlightStripView__updateCurrentTimeRangeIndex__block_invoke;
@@ -114,22 +114,22 @@
   v5 = v11;
   v6 = v12;
   v4[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [highlightTimeRanges enumerateObjectsUsingBlock:v4];
 
   [(_PUVideoHighlightStripView *)self setCurrentTimeRangeIndex:v8[3]];
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)setHighlightTimeRanges:(id)a3
+- (void)setHighlightTimeRanges:(id)ranges
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_highlightTimeRanges != v4)
+  rangesCopy = ranges;
+  v5 = rangesCopy;
+  if (self->_highlightTimeRanges != rangesCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqual:?];
+    v8 = rangesCopy;
+    rangesCopy = [rangesCopy isEqual:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((rangesCopy & 1) == 0)
     {
       v6 = [v8 copy];
       highlightTimeRanges = self->_highlightTimeRanges;
@@ -137,76 +137,76 @@
 
       [(_PUVideoHighlightStripView *)self _updateHighlightViews];
       [(_PUVideoHighlightStripView *)self _updateCurrentTimeRangeIndex];
-      v4 = [(_PUVideoHighlightStripView *)self setNeedsLayout];
+      rangesCopy = [(_PUVideoHighlightStripView *)self setNeedsLayout];
       v5 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](rangesCopy, v5);
 }
 
-- (void)setIsPlaying:(BOOL)a3
+- (void)setIsPlaying:(BOOL)playing
 {
-  if (self->_isPlaying != a3)
+  if (self->_isPlaying != playing)
   {
-    self->_isPlaying = a3;
+    self->_isPlaying = playing;
     [(_PUVideoHighlightStripView *)self _updateBarsExpanded];
   }
 }
 
-- (void)setCurrentTime:(id *)a3
+- (void)setCurrentTime:(id *)time
 {
   p_currentTime = &self->_currentTime;
-  time1 = *a3;
+  time1 = *time;
   currentTime = self->_currentTime;
   if (CMTimeCompare(&time1, &currentTime))
   {
-    v6 = *&a3->var0;
-    p_currentTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_currentTime->epoch = time->var3;
     *&p_currentTime->value = v6;
     [(_PUVideoHighlightStripView *)self _updateCurrentTimeRangeIndex];
   }
 }
 
-- (void)setVideoDuration:(id *)a3
+- (void)setVideoDuration:(id *)duration
 {
   p_videoDuration = &self->_videoDuration;
-  time1 = *a3;
+  time1 = *duration;
   videoDuration = self->_videoDuration;
   if (CMTimeCompare(&time1, &videoDuration))
   {
-    v6 = *&a3->var0;
-    p_videoDuration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_videoDuration->epoch = duration->var3;
     *&p_videoDuration->value = v6;
     [(_PUVideoHighlightStripView *)self setNeedsLayout];
   }
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_highlightColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_highlightColor != colorCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = colorCopy;
+    colorCopy = [colorCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((colorCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_highlightColor, a3);
-      v5 = [(_PUVideoHighlightStripView *)self setNeedsLayout];
+      objc_storeStrong(&self->_highlightColor, color);
+      colorCopy = [(_PUVideoHighlightStripView *)self setNeedsLayout];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](colorCopy, v6);
 }
 
-- (_PUVideoHighlightStripView)initWithFrame:(CGRect)a3
+- (_PUVideoHighlightStripView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _PUVideoHighlightStripView;
-  v3 = [(_PUVideoHighlightStripView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PUVideoHighlightStripView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

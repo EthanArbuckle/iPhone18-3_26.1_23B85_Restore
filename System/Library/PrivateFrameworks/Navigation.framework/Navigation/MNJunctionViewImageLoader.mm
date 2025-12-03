@@ -1,26 +1,26 @@
 @interface MNJunctionViewImageLoader
 - (MNJunctionViewImageLoader)init;
-- (id)_imagesForRequest:(id)a3 response:(id)a4;
-- (id)_stringForImageIDs:(id)a3;
-- (void)_imagesForIDs:(id)a3 handler:(id)a4;
-- (void)imagesForJunctionView:(id)a3 eventID:(id)a4 handler:(id)a5;
-- (void)setJunctionViewEvents:(id)a3;
-- (void)setJunctionViewImageWidth:(double)a3 height:(double)a4;
-- (void)updateForLocation:(id)a3 remainingDistanceOnRoute:(double)a4;
+- (id)_imagesForRequest:(id)request response:(id)response;
+- (id)_stringForImageIDs:(id)ds;
+- (void)_imagesForIDs:(id)ds handler:(id)handler;
+- (void)imagesForJunctionView:(id)view eventID:(id)d handler:(id)handler;
+- (void)setJunctionViewEvents:(id)events;
+- (void)setJunctionViewImageWidth:(double)width height:(double)height;
+- (void)updateForLocation:(id)location remainingDistanceOnRoute:(double)route;
 @end
 
 @implementation MNJunctionViewImageLoader
 
-- (id)_stringForImageIDs:(id)a3
+- (id)_stringForImageIDs:(id)ds
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
+  dsCopy = ds;
+  string = [MEMORY[0x1E696AD60] string];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -36,8 +36,8 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v5 firstObject];
-        if (v10 == v11)
+        firstObject = [v5 firstObject];
+        if (v10 == firstObject)
         {
           v12 = @"%llu";
         }
@@ -49,7 +49,7 @@
 
         v13 = v12;
 
-        [v4 appendFormat:v13, objc_msgSend(v10, "_navigation_unsignedIntegerValue")];
+        [string appendFormat:v13, objc_msgSend(v10, "_navigation_unsignedIntegerValue")];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -60,21 +60,21 @@
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return string;
 }
 
-- (id)_imagesForRequest:(id)a3 response:(id)a4
+- (id)_imagesForRequest:(id)request response:(id)response
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "imagesCount")}];
+  requestCopy = request;
+  responseCopy = response;
+  v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(responseCopy, "imagesCount")}];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v8 = [v6 images];
-  v9 = [v8 countByEnumeratingWithState:&v39 objects:v48 count:16];
+  images = [responseCopy images];
+  v9 = [images countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v9)
   {
     v10 = v9;
@@ -85,29 +85,29 @@
       {
         if (*v40 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(images);
         }
 
         v13 = *(*(&v39 + 1) + 8 * i);
-        v14 = [v13 imageId];
-        [v7 setObject:v13 forKeyedSubscript:v14];
+        imageId = [v13 imageId];
+        [v7 setObject:v13 forKeyedSubscript:imageId];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v39 objects:v48 count:16];
+      v10 = [images countByEnumeratingWithState:&v39 objects:v48 count:16];
     }
 
     while (v10);
   }
 
-  v33 = v6;
-  v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "imagesCount")}];
+  v33 = responseCopy;
+  v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(responseCopy, "imagesCount")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v34 = v5;
-  v16 = [v5 imageIds];
-  v17 = [v16 countByEnumeratingWithState:&v35 objects:v47 count:16];
+  v34 = requestCopy;
+  imageIds = [requestCopy imageIds];
+  v17 = [imageIds countByEnumeratingWithState:&v35 objects:v47 count:16];
   if (v17)
   {
     v18 = v17;
@@ -118,7 +118,7 @@
       {
         if (*v36 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(imageIds);
         }
 
         v21 = *(*(&v35 + 1) + 8 * j);
@@ -126,11 +126,11 @@
         if (v22)
         {
           v23 = objc_alloc_init(MNGuidanceJunctionViewImage);
-          v24 = [v22 imageId];
-          -[MNGuidanceJunctionViewImage setImageID:](v23, "setImageID:", [v24 _navigation_unsignedIntegerValue]);
+          imageId2 = [v22 imageId];
+          -[MNGuidanceJunctionViewImage setImageID:](v23, "setImageID:", [imageId2 _navigation_unsignedIntegerValue]);
 
-          v25 = [v22 image];
-          [(MNGuidanceJunctionViewImage *)v23 setImageData:v25];
+          image = [v22 image];
+          [(MNGuidanceJunctionViewImage *)v23 setImageData:image];
 
           [v15 addObject:v23];
         }
@@ -140,15 +140,15 @@
           v23 = GEOFindOrCreateLog();
           if (os_log_type_enabled(&v23->super, OS_LOG_TYPE_ERROR))
           {
-            v26 = [v21 _navigation_unsignedIntegerValue];
+            _navigation_unsignedIntegerValue = [v21 _navigation_unsignedIntegerValue];
             *buf = 134217984;
-            v44 = v26;
+            v44 = _navigation_unsignedIntegerValue;
             _os_log_impl(&dword_1D311E000, &v23->super, OS_LOG_TYPE_ERROR, "Requested junction view image (%llu) was not found in response", buf, 0xCu);
           }
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v35 objects:v47 count:16];
+      v18 = [imageIds countByEnumeratingWithState:&v35 objects:v47 count:16];
     }
 
     while (v18);
@@ -157,8 +157,8 @@
   v27 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
-    v28 = [v34 imageIds];
-    v29 = [(MNJunctionViewImageLoader *)self _stringForImageIDs:v28];
+    imageIds2 = [v34 imageIds];
+    v29 = [(MNJunctionViewImageLoader *)self _stringForImageIDs:imageIds2];
     *buf = 134218242;
     v44 = v34;
     v45 = 2112;
@@ -171,13 +171,13 @@
   return v15;
 }
 
-- (void)_imagesForIDs:(id)a3 handler:(id)a4
+- (void)_imagesForIDs:(id)ds handler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x1E69A1E00]);
-  v9 = [v6 mutableCopy];
+  v9 = [dsCopy mutableCopy];
   [v8 setImageIds:v9];
 
   [v8 setWidth:self->_imageWidth];
@@ -190,7 +190,7 @@
   objc_copyWeak(&v31, &location);
   v10 = v8;
   v29 = v10;
-  v11 = v7;
+  v11 = handlerCopy;
   v30 = v11;
   v12 = _Block_copy(aBlock);
   v23 = MEMORY[0x1E69E9820];
@@ -203,24 +203,24 @@
   v15 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [v13 width];
-    v17 = [v13 height];
-    v18 = [(MNJunctionViewImageLoader *)self _stringForImageIDs:v6];
+    width = [v13 width];
+    height = [v13 height];
+    v18 = [(MNJunctionViewImageLoader *)self _stringForImageIDs:dsCopy];
     *buf = 134218754;
     v34 = v13;
     v35 = 1024;
-    v36 = v16;
+    v36 = width;
     v37 = 1024;
-    v38 = v17;
+    v38 = height;
     v39 = 2112;
     v40 = v18;
     _os_log_impl(&dword_1D311E000, v15, OS_LOG_TYPE_INFO, "Requesting junction view images (%p) [%u x %u] for IDs: %@", buf, 0x22u);
   }
 
-  v19 = [MEMORY[0x1E69A1E08] sharedRequester];
+  mEMORY[0x1E69A1E08] = [MEMORY[0x1E69A1E08] sharedRequester];
   v20 = MEMORY[0x1E69E96A0];
   v21 = MEMORY[0x1E69E96A0];
-  [v19 startImageServiceRequest:v13 auditToken:0 throttleToken:0 queue:v20 finished:v12 networkActivity:0 error:{v14, v23, v24, v25, v26}];
+  [mEMORY[0x1E69A1E08] startImageServiceRequest:v13 auditToken:0 throttleToken:0 queue:v20 finished:v12 networkActivity:0 error:{v14, v23, v24, v25, v26}];
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(&location);
@@ -259,20 +259,20 @@ void __51__MNJunctionViewImageLoader__imagesForIDs_handler___block_invoke_2(uint
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)imagesForJunctionView:(id)a3 eventID:(id)a4 handler:(id)a5
+- (void)imagesForJunctionView:(id)view eventID:(id)d handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 imageIds];
+  dCopy = d;
+  handlerCopy = handler;
+  imageIds = [view imageIds];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__MNJunctionViewImageLoader_imagesForJunctionView_eventID_handler___block_invoke;
   v13[3] = &unk_1E842B338;
-  v14 = v8;
-  v15 = v9;
-  v11 = v8;
-  v12 = v9;
-  [(MNJunctionViewImageLoader *)self _imagesForIDs:v10 handler:v13];
+  v14 = dCopy;
+  v15 = handlerCopy;
+  v11 = dCopy;
+  v12 = handlerCopy;
+  [(MNJunctionViewImageLoader *)self _imagesForIDs:imageIds handler:v13];
 }
 
 void __67__MNJunctionViewImageLoader_imagesForJunctionView_eventID_handler___block_invoke(uint64_t a1, void *a2)
@@ -286,7 +286,7 @@ void __67__MNJunctionViewImageLoader_imagesForJunctionView_eventID_handler___blo
   }
 }
 
-- (void)updateForLocation:(id)a3 remainingDistanceOnRoute:(double)a4
+- (void)updateForLocation:(id)location remainingDistanceOnRoute:(double)route
 {
   v33 = *MEMORY[0x1E69E9840];
   GEOConfigGetDouble();
@@ -315,30 +315,30 @@ void __67__MNJunctionViewImageLoader_imagesForJunctionView_eventID_handler___blo
         v14 = *(*(&v24 + 1) + 8 * i);
         if ([v14 needsPreload])
         {
-          v15 = [v14 junctionViewEvent];
-          [v15 endValidDistance];
-          if (v16 > a4)
+          junctionViewEvent = [v14 junctionViewEvent];
+          [junctionViewEvent endValidDistance];
+          if (v16 > route)
           {
             goto LABEL_12;
           }
 
-          [v15 startValidDistance];
+          [junctionViewEvent startValidDistance];
           v18 = v17 + v7;
-          if (v17 + v7 >= a4)
+          if (v17 + v7 >= route)
           {
             v19 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
             {
               *buf = v23;
-              v29 = a4;
+              routeCopy = route;
               v30 = 2048;
               v31 = v18;
               _os_log_impl(&dword_1D311E000, v19, OS_LOG_TYPE_INFO, "Preloading junction view images | remainingDistance: %0.1f | preloadDistance: %0.1f", buf, 0x16u);
             }
 
-            v20 = [v15 junctionView];
-            v21 = [v15 uniqueID];
-            [(MNJunctionViewImageLoader *)self imagesForJunctionView:v20 eventID:v21 handler:0];
+            junctionView = [junctionViewEvent junctionView];
+            uniqueID = [junctionViewEvent uniqueID];
+            [(MNJunctionViewImageLoader *)self imagesForJunctionView:junctionView eventID:uniqueID handler:0];
 
 LABEL_12:
             [v14 setNeedsPreload:0];
@@ -357,20 +357,20 @@ LABEL_12:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setJunctionViewImageWidth:(double)a3 height:(double)a4
+- (void)setJunctionViewImageWidth:(double)width height:(double)height
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (vabdd_f64(self->_imageWidth, a3) >= 0.000001 || vabdd_f64(self->_imageHeight, a4) >= 0.000001)
+  if (vabdd_f64(self->_imageWidth, width) >= 0.000001 || vabdd_f64(self->_imageHeight, height) >= 0.000001)
   {
-    self->_imageWidth = a3;
-    self->_imageHeight = a4;
+    self->_imageWidth = width;
+    self->_imageHeight = height;
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v20 = a3;
+      widthCopy = width;
       v21 = 2048;
-      v22 = a4;
+      heightCopy = height;
       _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_INFO, "Setting desired junction view image size to [%g x %g]", buf, 0x16u);
     }
 
@@ -406,16 +406,16 @@ LABEL_12:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setJunctionViewEvents:(id)a3
+- (void)setJunctionViewEvents:(id)events
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  eventsCopy = events;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v6 = v4;
+  v6 = eventsCopy;
   v7 = [v6 countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v7)
   {
@@ -464,7 +464,7 @@ LABEL_12:
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v35 = self;
+    selfCopy = self;
     obj = self->_preloadEvents;
     v17 = [(NSArray *)obj countByEnumeratingWithState:&v36 objects:v46 count:16];
     if (v17)
@@ -481,18 +481,18 @@ LABEL_12:
           }
 
           v20 = *(*(&v36 + 1) + 8 * j);
-          v21 = [v20 junctionViewEvent];
-          v22 = [v21 uniqueID];
-          [v21 startValidDistance];
+          junctionViewEvent = [v20 junctionViewEvent];
+          uniqueID = [junctionViewEvent uniqueID];
+          [junctionViewEvent startValidDistance];
           v24 = v23;
-          v25 = [v21 junctionView];
-          v26 = [v25 imageIds];
-          v27 = [(MNJunctionViewImageLoader *)v35 _stringForImageIDs:v26];
-          [v16 appendFormat:@"\t%@ | startDistance: %0.1f | images: (%@)", v22, v24, v27];
+          junctionView = [junctionViewEvent junctionView];
+          imageIds = [junctionView imageIds];
+          v27 = [(MNJunctionViewImageLoader *)selfCopy _stringForImageIDs:imageIds];
+          [v16 appendFormat:@"\t%@ | startDistance: %0.1f | images: (%@)", uniqueID, v24, v27];
 
-          v28 = [(NSArray *)v35->_preloadEvents lastObject];
+          lastObject = [(NSArray *)selfCopy->_preloadEvents lastObject];
 
-          if (v20 != v28)
+          if (v20 != lastObject)
           {
             [v16 appendFormat:@"\n"];
           }
@@ -543,9 +543,9 @@ uint64_t __51__MNJunctionViewImageLoader_setJunctionViewEvents___block_invoke(ui
   v2 = [(MNJunctionViewImageLoader *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69A2398] sharedPlatform];
-    v2->_imageWidth = [v3 deviceScreenWidthInPixels];
-    v2->_imageHeight = [v3 deviceScreenHeightInPixels];
+    mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+    v2->_imageWidth = [mEMORY[0x1E69A2398] deviceScreenWidthInPixels];
+    v2->_imageHeight = [mEMORY[0x1E69A2398] deviceScreenHeightInPixels];
     v4 = v2;
   }
 

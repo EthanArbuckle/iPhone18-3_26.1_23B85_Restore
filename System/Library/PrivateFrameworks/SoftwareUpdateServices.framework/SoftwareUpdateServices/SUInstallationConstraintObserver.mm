@@ -1,46 +1,46 @@
 @interface SUInstallationConstraintObserver
 - (BOOL)_hasAnyBlockObservers;
 - (SUInstallationConstraintObserver)init;
-- (SUInstallationConstraintObserver)initWithDownload:(id)a3 andInstallOptions:(id)a4;
-- (SUInstallationConstraintObserver)initWithDownload:(id)a3 installOptions:(id)a4 queue:(id)a5 constraints:(id)a6;
-- (id)monitorOfClass:(Class)a3;
-- (id)registerObserverBlock:(id)a3;
-- (void)_queue_noteInstallationConstraintMonitor:(id)a3 constraintsDidChange:(unint64_t)a4;
-- (void)_removeToken:(id)a3;
+- (SUInstallationConstraintObserver)initWithDownload:(id)download andInstallOptions:(id)options;
+- (SUInstallationConstraintObserver)initWithDownload:(id)download installOptions:(id)options queue:(id)queue constraints:(id)constraints;
+- (id)monitorOfClass:(Class)class;
+- (id)registerObserverBlock:(id)block;
+- (void)_queue_noteInstallationConstraintMonitor:(id)monitor constraintsDidChange:(unint64_t)change;
+- (void)_removeToken:(id)token;
 - (void)dealloc;
-- (void)invalidateWithError:(id)a3;
+- (void)invalidateWithError:(id)error;
 @end
 
 @implementation SUInstallationConstraintObserver
 
 - (SUInstallationConstraintObserver)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SUInstallationConstraintObserver.m" lineNumber:86 description:@"Init is unsupported.  Please use -[SUInstallationConstraintObserver initWithDownload:] instead."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SUInstallationConstraintObserver.m" lineNumber:86 description:@"Init is unsupported.  Please use -[SUInstallationConstraintObserver initWithDownload:] instead."];
 
   return 0;
 }
 
-- (SUInstallationConstraintObserver)initWithDownload:(id)a3 andInstallOptions:(id)a4
+- (SUInstallationConstraintObserver)initWithDownload:(id)download andInstallOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  downloadCopy = download;
+  optionsCopy = options;
   v8 = dispatch_queue_create("com.apple.softwareupdateservices.installationconstraints.bg", 0);
   v9 = [MEMORY[0x277CBEB58] set];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 bundleIdentifier];
-  v12 = [v11 isEqualToString:@"com.apple.softwareupdateservices"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v12 = [bundleIdentifier isEqualToString:@"com.apple.softwareupdateservices"];
 
   if (v12)
   {
-    v13 = [MEMORY[0x277D6EDF8] sharedInstance];
-    v14 = [v13 currentAudioAndVideoCallCount] != 0;
+    mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+    v14 = [mEMORY[0x277D6EDF8] currentAudioAndVideoCallCount] != 0;
   }
 
   else
   {
     v14 = 0;
-    v13 = 0;
+    mEMORY[0x277D6EDF8] = 0;
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -49,14 +49,14 @@
   block[3] = &unk_279CABA38;
   v31 = v9;
   v32 = v8;
-  v33 = v6;
-  v34 = v7;
+  v33 = downloadCopy;
+  v34 = optionsCopy;
   v36 = v12;
-  v35 = v13;
+  v35 = mEMORY[0x277D6EDF8];
   v37 = v14;
-  v15 = v13;
-  v16 = v7;
-  v17 = v6;
+  v15 = mEMORY[0x277D6EDF8];
+  v16 = optionsCopy;
+  v17 = downloadCopy;
   v18 = v8;
   v19 = v9;
   dispatch_sync(v18, block);
@@ -125,18 +125,18 @@ void __71__SUInstallationConstraintObserver_initWithDownload_andInstallOptions__
   [v24 addObject:v25];
 }
 
-- (SUInstallationConstraintObserver)initWithDownload:(id)a3 installOptions:(id)a4 queue:(id)a5 constraints:(id)a6
+- (SUInstallationConstraintObserver)initWithDownload:(id)download installOptions:(id)options queue:(id)queue constraints:(id)constraints
 {
-  v11 = a3;
-  v12 = a4;
+  downloadCopy = download;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = SUInstallationConstraintObserver;
-  v13 = [(SUComposedInstallationConstraintMonitor *)&v18 initWithInternalQueue:a5 withInstallationConstraintMonitors:a6];
+  v13 = [(SUComposedInstallationConstraintMonitor *)&v18 initWithInternalQueue:queue withInstallationConstraintMonitors:constraints];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_download, a3);
-    objc_storeStrong(&v14->_installOptions, a4);
+    objc_storeStrong(&v13->_download, download);
+    objc_storeStrong(&v14->_installOptions, options);
     v15 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:517 valueOptions:0];
     queue_observerBlockTokens = v14->_queue_observerBlockTokens;
     v14->_queue_observerBlockTokens = v15;
@@ -157,10 +157,10 @@ void __71__SUInstallationConstraintObserver_initWithDownload_andInstallOptions__
   [(SUComposedInstallationConstraintMonitor *)&v10 dealloc];
 }
 
-- (id)registerObserverBlock:(id)a3
+- (id)registerObserverBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(SUInstallationConstraintObserver *)a2 registerObserverBlock:?];
   }
@@ -178,7 +178,7 @@ void __71__SUInstallationConstraintObserver_initWithDownload_andInstallOptions__
   block[3] = &unk_279CABA60;
   block[4] = self;
   v16 = &v17;
-  v7 = v5;
+  v7 = blockCopy;
   v15 = v7;
   dispatch_sync(queue, block);
   v8 = self->super._queue;
@@ -227,17 +227,17 @@ uint64_t __58__SUInstallationConstraintObserver_registerObserverBlock___block_in
   return v5(v2, v3, v4, 0);
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->super._queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SUInstallationConstraintObserver_invalidateWithError___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
@@ -300,7 +300,7 @@ void __56__SUInstallationConstraintObserver_invalidateWithError___block_invoke(u
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)monitorOfClass:(Class)a3
+- (id)monitorOfClass:(Class)class
 {
   v7 = 0;
   v8 = &v7;
@@ -314,7 +314,7 @@ void __56__SUInstallationConstraintObserver_invalidateWithError___block_invoke(u
   block[2] = __51__SUInstallationConstraintObserver_monitorOfClass___block_invoke;
   block[3] = &unk_279CABA88;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = class;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = v8[5];
@@ -369,24 +369,24 @@ LABEL_11:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_noteInstallationConstraintMonitor:(id)a3 constraintsDidChange:(unint64_t)a4
+- (void)_queue_noteInstallationConstraintMonitor:(id)monitor constraintsDidChange:(unint64_t)change
 {
   v30 = *MEMORY[0x277D85DE8];
   queue = self->super._queue;
   BSDispatchQueueAssert();
-  v7 = [(SUComposedInstallationConstraintMonitor *)self _queue_unsatisfiedConstraints];
+  _queue_unsatisfiedConstraints = [(SUComposedInstallationConstraintMonitor *)self _queue_unsatisfiedConstraints];
   v8 = SULogInstallConstraints();
-  v24 = SUStringFromInstallationConstraints(v7);
+  v24 = SUStringFromInstallationConstraints(_queue_unsatisfiedConstraints);
   SULogInfoForSubsystem(v8, @"%@ - unsatisfied constraints changed (unsatisfied? %@)", v9, v10, v11, v12, v13, v14, self);
 
   v15 = [(NSMapTable *)self->_queue_observerBlockTokens copy];
-  v16 = [v15 objectEnumerator];
+  objectEnumerator = [v15 objectEnumerator];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = v16;
+  v17 = objectEnumerator;
   v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v18)
   {
@@ -412,15 +412,15 @@ LABEL_11:
     while (v19);
   }
 
-  v22 = [(SUComposedInstallationConstraintMonitor *)self _queue_delegate];
-  [v22 installationConstraintMonitor:self constraintsDidChange:a4];
+  _queue_delegate = [(SUComposedInstallationConstraintMonitor *)self _queue_delegate];
+  [_queue_delegate installationConstraintMonitor:self constraintsDidChange:change];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeToken:(id)a3
+- (void)_removeToken:(id)token
 {
-  if (!a3)
+  if (!token)
   {
     [(SUInstallationConstraintObserver *)a2 _removeToken:?];
   }

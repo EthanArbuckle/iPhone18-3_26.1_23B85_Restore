@@ -1,30 +1,30 @@
 @interface MAHandleCacheMapItem
-- (id)_performWithServiceHelper:(id)a3;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (id)_performWithServiceHelper:(id)helper;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation MAHandleCacheMapItem
 
-- (id)_performWithServiceHelper:(id)a3
+- (id)_performWithServiceHelper:(id)helper
 {
   v4 = +[GEOMapService sharedService];
-  v5 = [(MAHandleCacheMapItem *)self mapItem];
-  v6 = [v5 placeData2];
-  [v4 trackSerializedPlaceData:v6];
+  mapItem = [(MAHandleCacheMapItem *)self mapItem];
+  placeData2 = [mapItem placeData2];
+  [v4 trackSerializedPlaceData:placeData2];
 
   v7 = objc_alloc_init(SACommandSucceeded);
 
   return v7;
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v8 = a3;
-  v6 = [(MAHandleCacheMapItem *)self _performWithServiceHelper:a4];
-  if (v8)
+  completionCopy = completion;
+  v6 = [(MAHandleCacheMapItem *)self _performWithServiceHelper:helper];
+  if (completionCopy)
   {
-    v7 = [v6 dictionary];
-    v8[2](v8, v7);
+    dictionary = [v6 dictionary];
+    completionCopy[2](completionCopy, dictionary);
   }
 }
 

@@ -8,9 +8,9 @@
 - (id)hf_debugValueDescription
 {
   v2 = objc_opt_class();
-  v3 = [a1 value];
-  v4 = [a1 keyPath];
-  v5 = [v2 hf_debugDescriptionForValue:v3 keyPath:v4];
+  value = [self value];
+  keyPath = [self keyPath];
+  v5 = [v2 hf_debugDescriptionForValue:value keyPath:keyPath];
 
   return v5;
 }

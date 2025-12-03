@@ -8,14 +8,14 @@
 
 - (void)activate
 {
-  v3 = [(SDAirDropHandler *)self transfer];
-  [v3 setCancelAction:0];
+  transfer = [(SDAirDropHandler *)self transfer];
+  [transfer setCancelAction:0];
 
-  v4 = [(SDAirDropHandler *)self transfer];
-  [v4 setSelectedAction:0];
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  [transfer2 setSelectedAction:0];
 
-  v5 = [(SDAirDropHandler *)self transfer];
-  [v5 setPossibleActions:0];
+  transfer3 = [(SDAirDropHandler *)self transfer];
+  [transfer3 setPossibleActions:0];
 
   v6.receiver = self;
   v6.super_class = SDAirDropHandlerFailed;
@@ -24,24 +24,24 @@
 
 - (NSString)errorString
 {
-  v3 = [(SDAirDropHandler *)self transfer];
-  [v3 transferState];
+  transfer = [(SDAirDropHandler *)self transfer];
+  [transfer transferState];
 
   v4 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:0];
   v5 = SFLocalizedStringForKey();
 
-  v6 = [(SDAirDropHandler *)self senderName];
-  v7 = [NSString stringWithFormat:v5, v6];
+  senderName = [(SDAirDropHandler *)self senderName];
+  v7 = [NSString stringWithFormat:v5, senderName];
 
   return v7;
 }
 
 - (NSString)errorDetailedString
 {
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 transferState];
+  transfer = [(SDAirDropHandler *)self transfer];
+  transferState = [transfer transferState];
 
-  if (v4 == 9 && (-[SDAirDropHandler transfer](self, "transfer"), v5 = objc_claimAutoreleasedReturnValue(), [v5 error], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "code"), v6, v5, v7 == -2))
+  if (transferState == 9 && (-[SDAirDropHandler transfer](self, "transfer"), v5 = objc_claimAutoreleasedReturnValue(), [v5 error], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "code"), v6, v5, v7 == -2))
   {
     v8 = SFLocalizedStringForKey();
   }

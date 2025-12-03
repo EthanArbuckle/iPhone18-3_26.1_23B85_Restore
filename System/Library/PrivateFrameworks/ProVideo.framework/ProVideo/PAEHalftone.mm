@@ -1,20 +1,20 @@
 @interface PAEHalftone
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEHalftone)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEHalftone)initWithAPIManager:(id)manager;
 - (id)properties;
-- (void)compute_2x2_matrix:(double *)a3 fromAngle:(double)a4 andScale:(double)a5;
+- (void)compute_2x2_matrix:(double *)compute_2x2_matrix fromAngle:(double)angle andScale:(double)scale;
 - (void)dealloc;
 @end
 
 @implementation PAEHalftone
 
-- (PAEHalftone)initWithAPIManager:(id)a3
+- (PAEHalftone)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEHalftone;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -56,21 +56,21 @@
   return v3 != 0;
 }
 
-- (void)compute_2x2_matrix:(double *)a3 fromAngle:(double)a4 andScale:(double)a5
+- (void)compute_2x2_matrix:(double *)compute_2x2_matrix fromAngle:(double)angle andScale:(double)scale
 {
-  v6 = 1.0 / a5;
+  v6 = 1.0 / scale;
   v12 = v6;
-  v7 = a4;
-  v8 = __sincosf_stret(v7);
+  angleCopy = angle;
+  v8 = __sincosf_stret(angleCopy);
   v9 = vmul_f32(v8, 0);
   v10 = vrev64_s32(v8);
   v11.i32[0] = vadd_f32(v9, v10).u32[0];
   v11.i32[1] = vsub_f32(v9, v10).i32[1];
-  *a3 = vcvtq_f64_f32(vmul_n_f32(v11, v12));
-  *(a3 + 1) = vcvtq_f64_f32(vmul_n_f32(v8, v12));
+  *compute_2x2_matrix = vcvtq_f64_f32(vmul_n_f32(v11, v12));
+  *(compute_2x2_matrix + 1) = vcvtq_f64_f32(vmul_n_f32(v8, v12));
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v26[4] = *MEMORY[0x277D85DE8];
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
@@ -91,29 +91,29 @@
   if (!v12)
   {
     v14 = v10;
-    v15 = [v9 versionAtCreation];
+    versionAtCreation = [v9 versionAtCreation];
     v24 = 0x3FE0000000000000;
     v25 = 0x3FE0000000000000;
     v23 = 45.0;
     v21 = 0x3FE0000000000000;
     v22 = 6.0;
-    [a4 width];
-    [a4 height];
-    [v8 getXValue:&v25 YValue:&v24 fromParm:1 atFxTime:a5->var0.var1];
-    [v8 getFloatValue:&v23 fromParm:2 atFxTime:a5->var0.var1];
-    [v8 getFloatValue:&v22 fromParm:3 atFxTime:a5->var0.var1];
-    [v8 getFloatValue:&v21 fromParm:4 atFxTime:a5->var0.var1];
-    [v8 mixAmountAtTime:a5->var0.var1];
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a4];
+    [input width];
+    [input height];
+    [v8 getXValue:&v25 YValue:&v24 fromParm:1 atFxTime:info->var0.var1];
+    [v8 getFloatValue:&v23 fromParm:2 atFxTime:info->var0.var1];
+    [v8 getFloatValue:&v22 fromParm:3 atFxTime:info->var0.var1];
+    [v8 getFloatValue:&v21 fromParm:4 atFxTime:info->var0.var1];
+    [v8 mixAmountAtTime:info->var0.var1];
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:input];
     [(PAEHalftone *)self compute_2x2_matrix:v26 fromAngle:v23 andScale:v22];
-    [objc_msgSend(v14 colorMatrixFromDesiredRGBToYCbCrAtTime:{a5->var0.var1), "matrix"}];
-    if ([(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1])
+    [objc_msgSend(v14 colorMatrixFromDesiredRGBToYCbCrAtTime:{info->var0.var1), "matrix"}];
+    if ([(PAESharedDefaultBase *)self getRenderMode:info->var0.var1])
     {
-      if ([a4 imageType] == 3)
+      if ([input imageType] == 3)
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         else
@@ -121,13 +121,13 @@
           v20 = 0;
         }
 
-        if (!a5->var5)
+        if (!info->var5)
         {
           v16 = HGObject::operator new(0x1C0uLL);
           HGColorClamp::HGColorClamp(v16);
         }
 
-        if (!v15)
+        if (!versionAtCreation)
         {
           v17 = HGObject::operator new(0x1B0uLL);
           HGGamma::HGGamma(v17);
@@ -155,15 +155,15 @@
   return v13;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

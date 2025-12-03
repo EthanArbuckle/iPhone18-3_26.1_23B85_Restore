@@ -1,41 +1,41 @@
 @interface CNAutocompleteSupplementalGroupMember
-- (CNAutocompleteSupplementalGroupMember)initWithName:(id)a3 address:(id)a4 addressType:(int64_t)a5;
-- (CNAutocompleteSupplementalGroupMember)initWithNameComponents:(id)a3 address:(id)a4 addressType:(int64_t)a5;
+- (CNAutocompleteSupplementalGroupMember)initWithName:(id)name address:(id)address addressType:(int64_t)type;
+- (CNAutocompleteSupplementalGroupMember)initWithNameComponents:(id)components address:(id)address addressType:(int64_t)type;
 @end
 
 @implementation CNAutocompleteSupplementalGroupMember
 
-- (CNAutocompleteSupplementalGroupMember)initWithName:(id)a3 address:(id)a4 addressType:(int64_t)a5
+- (CNAutocompleteSupplementalGroupMember)initWithName:(id)name address:(id)address addressType:(int64_t)type
 {
-  v9 = a3;
-  v10 = [(CNAutocompleteSupplementalGroupMember *)self initWithNameComponents:0 address:a4 addressType:a5];
+  nameCopy = name;
+  v10 = [(CNAutocompleteSupplementalGroupMember *)self initWithNameComponents:0 address:address addressType:type];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_name, a3);
+    objc_storeStrong(&v10->_name, name);
   }
 
   return v11;
 }
 
-- (CNAutocompleteSupplementalGroupMember)initWithNameComponents:(id)a3 address:(id)a4 addressType:(int64_t)a5
+- (CNAutocompleteSupplementalGroupMember)initWithNameComponents:(id)components address:(id)address addressType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  componentsCopy = components;
+  addressCopy = address;
   v16.receiver = self;
   v16.super_class = CNAutocompleteSupplementalGroupMember;
   v10 = [(CNAutocompleteSupplementalGroupMember *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [componentsCopy copy];
     nameComponents = v10->_nameComponents;
     v10->_nameComponents = v11;
 
-    v13 = [v9 copy];
+    v13 = [addressCopy copy];
     address = v10->_address;
     v10->_address = v13;
 
-    v10->_addressType = a5;
+    v10->_addressType = type;
   }
 
   return v10;

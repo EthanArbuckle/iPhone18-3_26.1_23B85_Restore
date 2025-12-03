@@ -2,29 +2,29 @@
 + (CGSize)defaultContentSize;
 + (CGSize)defaultScreenScaleContentSize;
 + (CGSize)defaultSize;
-- (CEKWheelScrubberViewCell)initWithFrame:(CGRect)a3;
+- (CEKWheelScrubberViewCell)initWithFrame:(CGRect)frame;
 - (void)_updateSelectionDot;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setContentInsetWidth:(double)a3;
-- (void)setDotPlacement:(int64_t)a3;
-- (void)setOverlayView:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelectionDotCenterTopSpacing:(double)a3;
+- (void)setContentInsetWidth:(double)width;
+- (void)setDotPlacement:(int64_t)placement;
+- (void)setOverlayView:(id)view;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelectionDotCenterTopSpacing:(double)spacing;
 @end
 
 @implementation CEKWheelScrubberViewCell
 
 + (CGSize)defaultScreenScaleContentSize
 {
-  [a1 defaultContentSize];
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  [self defaultContentSize];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
 
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
   UIRoundToScreenScale();
   v5 = v4;
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
+  mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
   UIRoundToScreenScale();
   v8 = v7;
 
@@ -50,17 +50,17 @@
   return result;
 }
 
-- (CEKWheelScrubberViewCell)initWithFrame:(CGRect)a3
+- (CEKWheelScrubberViewCell)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = CEKWheelScrubberViewCell;
-  v3 = [(CEKWheelScrubberViewCell *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKWheelScrubberViewCell *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [objc_opt_class() defaultContentInsetWidth];
     v3->_contentInsetWidth = v4;
-    v5 = [(CEKWheelScrubberViewCell *)v3 contentView];
-    [v5 setAutoresizingMask:18];
+    contentView = [(CEKWheelScrubberViewCell *)v3 contentView];
+    [contentView setAutoresizingMask:18];
     [(CEKWheelScrubberViewCell *)v3 bounds];
     v21 = CGRectInset(v20, v3->_contentInsetWidth, v3->_contentInsetWidth);
     v6 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v21.origin.x, v21.origin.y, v21.size.width, v21.size.height}];
@@ -69,7 +69,7 @@
 
     [(UIView *)v3->__clippingView setAutoresizingMask:18];
     [(UIView *)v3->__clippingView setClipsToBounds:1];
-    [v5 addSubview:v3->__clippingView];
+    [contentView addSubview:v3->__clippingView];
     [(UIView *)v3->__clippingView bounds];
     v12 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v8, v9, v10, v11}];
     itemView = v3->_itemView;
@@ -83,7 +83,7 @@
     selectionDotView = v3->__selectionDotView;
     v3->__selectionDotView = v15;
 
-    [v5 addSubview:v3->__selectionDotView];
+    [contentView addSubview:v3->__selectionDotView];
     [(CEKWheelScrubberViewCell *)v3 _updateSelectionDot];
     v3->_dotPlacement = 0;
     v17 = v3;
@@ -107,71 +107,71 @@
   +[CEKWheelScrubberUtilities dotIndicatorDiameter];
   v5 = v4;
   v10 = +[CEKWheelScrubberUtilities dotIndicatorBackgroundColor];
-  v6 = [(CEKWheelScrubberViewCell *)self _selectionDotView];
-  [v6 setBackgroundColor:v10];
+  _selectionDotView = [(CEKWheelScrubberViewCell *)self _selectionDotView];
+  [_selectionDotView setBackgroundColor:v10];
 
-  v7 = [(CEKWheelScrubberViewCell *)self _selectionDotView];
-  v8 = [v7 layer];
-  [v8 setCornerRadius:v5 * 0.5];
+  _selectionDotView2 = [(CEKWheelScrubberViewCell *)self _selectionDotView];
+  layer = [_selectionDotView2 layer];
+  [layer setCornerRadius:v5 * 0.5];
 
-  v9 = [(CEKWheelScrubberViewCell *)self _selectionDotView];
-  [v9 setAlpha:v3];
+  _selectionDotView3 = [(CEKWheelScrubberViewCell *)self _selectionDotView];
+  [_selectionDotView3 setAlpha:v3];
 }
 
-- (void)setSelectionDotCenterTopSpacing:(double)a3
+- (void)setSelectionDotCenterTopSpacing:(double)spacing
 {
-  if (self->_selectionDotCenterTopSpacing != a3)
+  if (self->_selectionDotCenterTopSpacing != spacing)
   {
-    self->_selectionDotCenterTopSpacing = a3;
+    self->_selectionDotCenterTopSpacing = spacing;
     [(CEKWheelScrubberViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setDotPlacement:(int64_t)a3
+- (void)setDotPlacement:(int64_t)placement
 {
-  if (self->_dotPlacement != a3)
+  if (self->_dotPlacement != placement)
   {
-    self->_dotPlacement = a3;
+    self->_dotPlacement = placement;
     [(CEKWheelScrubberViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(CEKWheelScrubberViewCell *)self isSelected];
+  selectedCopy = selected;
+  isSelected = [(CEKWheelScrubberViewCell *)self isSelected];
   v6.receiver = self;
   v6.super_class = CEKWheelScrubberViewCell;
-  [(CEKWheelScrubberViewCell *)&v6 setSelected:v3];
-  if (v5 != v3)
+  [(CEKWheelScrubberViewCell *)&v6 setSelected:selectedCopy];
+  if (isSelected != selectedCopy)
   {
     [(CEKWheelScrubberViewCell *)self _updateSelectionDot];
   }
 }
 
-- (void)setContentInsetWidth:(double)a3
+- (void)setContentInsetWidth:(double)width
 {
-  if (self->_contentInsetWidth != a3)
+  if (self->_contentInsetWidth != width)
   {
-    self->_contentInsetWidth = a3;
+    self->_contentInsetWidth = width;
     [(CEKWheelScrubberViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setOverlayView:(id)a3
+- (void)setOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   overlayView = self->_overlayView;
-  if (overlayView != v5)
+  if (overlayView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)overlayView removeFromSuperview];
-    objc_storeStrong(&self->_overlayView, a3);
+    objc_storeStrong(&self->_overlayView, view);
     overlayView = [(CEKWheelScrubberViewCell *)self addSubview:self->_overlayView];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](overlayView, v5);
+  MEMORY[0x1EEE66BB8](overlayView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -195,15 +195,15 @@
   y = v37.origin.y;
   width = v37.size.width;
   height = v37.size.height;
-  v17 = [(CEKWheelScrubberViewCell *)self _clippingView];
+  _clippingView = [(CEKWheelScrubberViewCell *)self _clippingView];
   v34 = x;
-  [v17 setFrame:{x, y, width, height}];
+  [_clippingView setFrame:{x, y, width, height}];
 
   +[CEKWheelScrubberUtilities dotIndicatorDiameter];
   v19 = v18;
   [(CEKWheelScrubberViewCell *)self selectionDotCenterTopSpacing];
-  v20 = [(CEKWheelScrubberViewCell *)self dotPlacement];
-  if (v20 == 2 || v20 == 1)
+  dotPlacement = [(CEKWheelScrubberViewCell *)self dotPlacement];
+  if (dotPlacement == 2 || dotPlacement == 1)
   {
     v40.origin.x = v4;
     v40.origin.y = v6;
@@ -222,7 +222,7 @@
     v22 = v27;
   }
 
-  else if (v20)
+  else if (dotPlacement)
   {
     v22 = *MEMORY[0x1E695F058];
     v25 = *(MEMORY[0x1E695F058] + 8);
@@ -248,15 +248,15 @@
     v25 = v24;
   }
 
-  v28 = [(CEKWheelScrubberViewCell *)self _selectionDotView];
-  [v28 setFrame:{v22, v25, v19, v19}];
+  _selectionDotView = [(CEKWheelScrubberViewCell *)self _selectionDotView];
+  [_selectionDotView setFrame:{v22, v25, v19, v19}];
 
-  v29 = [(CEKWheelScrubberViewCell *)self overlayView];
+  overlayView = [(CEKWheelScrubberViewCell *)self overlayView];
 
-  if (v29)
+  if (overlayView)
   {
-    v30 = [(CEKWheelScrubberViewCell *)self overlayView];
-    [v30 setBounds:{0.0, 0.0, width, height}];
+    overlayView2 = [(CEKWheelScrubberViewCell *)self overlayView];
+    [overlayView2 setBounds:{0.0, 0.0, width, height}];
 
     v42.origin.x = v23;
     v42.origin.y = y;
@@ -268,8 +268,8 @@
     v43.size.width = width;
     v43.size.height = height;
     MidY = CGRectGetMidY(v43);
-    v33 = [(CEKWheelScrubberViewCell *)self overlayView];
-    [v33 setCenter:{MidX, MidY}];
+    overlayView3 = [(CEKWheelScrubberViewCell *)self overlayView];
+    [overlayView3 setCenter:{MidX, MidY}];
   }
 }
 
@@ -283,9 +283,9 @@
 
 + (CGSize)defaultSize
 {
-  [a1 defaultContentInsetWidth];
+  [self defaultContentInsetWidth];
   v4 = v3;
-  [a1 defaultContentSize];
+  [self defaultContentSize];
   v6 = v5 + v4 * 2.0;
   v8 = v7 + v4 * 2.0;
   result.height = v8;

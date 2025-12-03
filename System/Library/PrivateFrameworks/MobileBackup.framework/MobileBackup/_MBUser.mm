@@ -1,6 +1,6 @@
 @interface _MBUser
 + (_MBUser)currentUser;
-- (_MBUser)initWithUser:(id)a3;
+- (_MBUser)initWithUser:(id)user;
 - (id)description;
 @end
 
@@ -9,22 +9,22 @@
 + (_MBUser)currentUser
 {
   v2 = [_MBUser alloc];
-  v3 = [MEMORY[0x1E69DF068] sharedManager];
-  v4 = [v3 currentUser];
-  v5 = [(_MBUser *)v2 initWithUser:v4];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentUser = [mEMORY[0x1E69DF068] currentUser];
+  v5 = [(_MBUser *)v2 initWithUser:currentUser];
 
   return v5;
 }
 
-- (_MBUser)initWithUser:(id)a3
+- (_MBUser)initWithUser:(id)user
 {
-  v4 = a3;
-  if (!v4)
+  userCopy = user;
+  if (!userCopy)
   {
     [_MBUser initWithUser:];
   }
 
-  v5 = v4;
+  v5 = userCopy;
   v9.receiver = self;
   v9.super_class = _MBUser;
   v6 = [(_MBUser *)&v9 init];

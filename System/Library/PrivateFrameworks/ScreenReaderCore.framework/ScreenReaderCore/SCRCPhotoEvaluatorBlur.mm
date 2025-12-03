@@ -1,17 +1,17 @@
 @interface SCRCPhotoEvaluatorBlur
-+ (id)detect:(id)a3 inRect:(CGRect)a4;
++ (id)detect:(id)detect inRect:(CGRect)rect;
 @end
 
 @implementation SCRCPhotoEvaluatorBlur
 
-+ (id)detect:(id)a3 inRect:(CGRect)a4
++ (id)detect:(id)detect inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v86 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  detectCopy = detect;
   if (detect_inRect__onceToken != -1)
   {
     +[SCRCPhotoEvaluatorBlur detect:inRect:];
@@ -23,17 +23,17 @@
   v88.size.height = height;
   if (CGRectIsEmpty(v88) || (v89.origin.x = x, v89.origin.y = y, v89.size.width = width, v89.size.height = height, CGRectIsNull(v89)) || (v90.origin.x = x, v90.origin.y = y, v90.size.width = width, v90.size.height = height, CGRectIsInfinite(v90)))
   {
-    v10 = [a1 detect:v9];
+    v10 = [self detect:detectCopy];
     goto LABEL_7;
   }
 
-  v12 = [v9 width];
-  v13 = [v9 data];
-  v14 = [v9 bytesPerPixel];
-  v15 = [v9 width];
-  [v9 height];
+  width = [detectCopy width];
+  data = [detectCopy data];
+  bytesPerPixel = [detectCopy bytesPerPixel];
+  width2 = [detectCopy width];
+  [detectCopy height];
   v76[2] = v76;
-  v16 = v15 - width;
+  v16 = width2 - width;
   if (v16 >= x)
   {
     v16 = x;
@@ -51,15 +51,15 @@
 
   v18 = (MEMORY[0x28223BE20])();
   v24 = (v76 - v22);
-  v85 = v15;
-  v77 = v9;
+  v85 = width2;
+  v77 = detectCopy;
   if (v25 < 1)
   {
     v42 = 0;
 LABEL_23:
     v76[0] = v42;
     v76[1] = v76;
-    v44 = vcvtd_n_f64_s64(v18 / 15 * (v15 / 15), 2uLL);
+    v44 = vcvtd_n_f64_s64(v18 / 15 * (width2 / 15), 2uLL);
     if (v44 < 150.0)
     {
       v44 = 150.0;
@@ -72,7 +72,7 @@ LABEL_23:
     v53 = 0;
     v54 = 0;
     v55 = 0;
-    if ((v15 + 14) < 0x1D)
+    if ((width2 + 14) < 0x1D)
     {
       v56 = 1;
     }
@@ -110,8 +110,8 @@ LABEL_23:
           do
           {
             v64 = (rand() / v59 * v57 + 1.0);
-            v65 = (v61 + v64 + (v63 + (rand() / v59 * v58)) * v85) * v14;
-            v66 = ((21846 * (*(v13 + v65 + 1) + *(v13 + v65) + *(v13 + v65 + 2))) >> 16) - ((21846 * (*(v13 + v65 - v14 + 1) + *(v13 + v65 - v14) + *(v13 + v65 - v14 + 2))) >> 16);
+            v65 = (v61 + v64 + (v63 + (rand() / v59 * v58)) * v85) * bytesPerPixel;
+            v66 = ((21846 * (*(data + v65 + 1) + *(data + v65) + *(data + v65 + 2))) >> 16) - ((21846 * (*(data + v65 - bytesPerPixel + 1) + *(data + v65 - bytesPerPixel) + *(data + v65 - bytesPerPixel + 2))) >> 16);
             *&v52[8 * v62] = v66;
             v55 += v66;
             ++v62;
@@ -145,7 +145,7 @@ LABEL_23:
     }
 
     while (v80 != 14);
-    v9 = v77;
+    detectCopy = v77;
     if (v76[0] > 59)
     {
       goto LABEL_45;
@@ -189,7 +189,7 @@ LABEL_45:
 
   v83 = v18;
   v26 = 0;
-  v27 = fmax(v12 / 500.0, 1.0);
+  v27 = fmax(width / 500.0, 1.0);
   v28 = (v21 - v27);
   v84 = v27;
   v29 = v27;
@@ -204,9 +204,9 @@ LABEL_45:
     v35 = rand();
     v19 = v33;
     v36 = v17 + v34;
-    v15 = v85;
+    width2 = v85;
     v37 = v36 + (v33 + (v35 / 2147483650.0 * v30)) * v85;
-    v38 = ((21846 * (*(v13 + v37 * v14 + 1) + *(v13 + v37 * v14) + *(v13 + v37 * v14 + 2))) >> 16) - ((21846 * (*(v13 + (v37 - v84) * v14 + 1) + *(v13 + (v37 - v84) * v14) + *(v13 + (v37 - v84) * v14 + 2))) >> 16);
+    v38 = ((21846 * (*(data + v37 * bytesPerPixel + 1) + *(data + v37 * bytesPerPixel) + *(data + v37 * bytesPerPixel + 2))) >> 16) - ((21846 * (*(data + (v37 - v84) * bytesPerPixel + 1) + *(data + (v37 - v84) * bytesPerPixel) + *(data + (v37 - v84) * bytesPerPixel + 2))) >> 16);
     *v32++ = v38;
     v26 += v38;
     --v31;
@@ -225,7 +225,7 @@ LABEL_45:
   while (v40);
   v42 = v39 / v82;
   v43 = 0.0;
-  v9 = v77;
+  detectCopy = v77;
   v18 = v83;
   if (v42 <= 150)
   {

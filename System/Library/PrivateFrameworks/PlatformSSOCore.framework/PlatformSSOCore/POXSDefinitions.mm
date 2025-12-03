@@ -1,25 +1,25 @@
 @interface POXSDefinitions
-+ (id)definitionForType:(Class)a3;
++ (id)definitionForType:(Class)type;
 @end
 
 @implementation POXSDefinitions
 
-+ (id)definitionForType:(Class)a3
++ (id)definitionForType:(Class)type
 {
   if (definitionForType__predicate != -1)
   {
     +[POXSDefinitions definitionForType:];
-    if (a3)
+    if (type)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v5 = 0;
+    definition = 0;
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!type)
   {
     goto LABEL_10;
   }
@@ -27,21 +27,21 @@ LABEL_10:
 LABEL_3:
   v4 = definitionForType__definitions;
   objc_sync_enter(v4);
-  v5 = [definitionForType__definitions objectForKey:a3];
-  if (!v5)
+  definition = [definitionForType__definitions objectForKey:type];
+  if (!definition)
   {
-    if ([(objc_class *)a3 conformsToProtocol:&unk_2870AA6E8])
+    if ([(objc_class *)type conformsToProtocol:&unk_2870AA6E8])
     {
-      v5 = [(objc_class *)a3 definition];
-      if (v5)
+      definition = [(objc_class *)type definition];
+      if (definition)
       {
-        [definitionForType__definitions setObject:v5 forKey:a3];
+        [definitionForType__definitions setObject:definition forKey:type];
       }
     }
 
     else
     {
-      v5 = 0;
+      definition = 0;
     }
   }
 
@@ -49,7 +49,7 @@ LABEL_3:
 
 LABEL_11:
 
-  return v5;
+  return definition;
 }
 
 uint64_t __37__POXSDefinitions_definitionForType___block_invoke()

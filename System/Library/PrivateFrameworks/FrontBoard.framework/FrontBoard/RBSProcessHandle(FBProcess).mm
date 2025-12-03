@@ -6,10 +6,10 @@
 
 - (uint64_t)fb_canTaskSuspend
 {
-  result = [a1 isManaged];
+  result = [self isManaged];
   if (result)
   {
-    return [a1 isDaemon] ^ 1;
+    return [self isDaemon] ^ 1;
   }
 
   return result;

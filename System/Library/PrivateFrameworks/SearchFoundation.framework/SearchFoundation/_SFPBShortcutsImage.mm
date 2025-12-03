@@ -1,28 +1,28 @@
 @interface _SFPBShortcutsImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBShortcutsImage)initWithDictionary:(id)a3;
-- (_SFPBShortcutsImage)initWithFacade:(id)a3;
-- (_SFPBShortcutsImage)initWithJSON:(id)a3;
+- (_SFPBShortcutsImage)initWithDictionary:(id)dictionary;
+- (_SFPBShortcutsImage)initWithFacade:(id)facade;
+- (_SFPBShortcutsImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setLnPropertyIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setLnPropertyIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBShortcutsImage
 
-- (_SFPBShortcutsImage)initWithFacade:(id)a3
+- (_SFPBShortcutsImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBShortcutsImage *)self init];
   if (v5)
   {
-    v6 = [v4 lnPropertyIdentifier];
+    lnPropertyIdentifier = [facadeCopy lnPropertyIdentifier];
 
-    if (v6)
+    if (lnPropertyIdentifier)
     {
-      v7 = [v4 lnPropertyIdentifier];
-      [(_SFPBShortcutsImage *)v5 setLnPropertyIdentifier:v7];
+      lnPropertyIdentifier2 = [facadeCopy lnPropertyIdentifier];
+      [(_SFPBShortcutsImage *)v5 setLnPropertyIdentifier:lnPropertyIdentifier2];
     }
 
     v8 = v5;
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (_SFPBShortcutsImage)initWithDictionary:(id)a3
+- (_SFPBShortcutsImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBShortcutsImage;
   v5 = [(_SFPBShortcutsImage *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"lnPropertyIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"lnPropertyIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (_SFPBShortcutsImage)initWithJSON:(id)a3
+- (_SFPBShortcutsImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBShortcutsImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBShortcutsImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBShortcutsImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -89,29 +89,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_lnPropertyIdentifier)
   {
-    v4 = [(_SFPBShortcutsImage *)self lnPropertyIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"lnPropertyIdentifier"];
+    lnPropertyIdentifier = [(_SFPBShortcutsImage *)self lnPropertyIdentifier];
+    v5 = [lnPropertyIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"lnPropertyIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBShortcutsImage *)self lnPropertyIdentifier];
-    v6 = [v4 lnPropertyIdentifier];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    lnPropertyIdentifier = [(_SFPBShortcutsImage *)self lnPropertyIdentifier];
+    lnPropertyIdentifier2 = [equalCopy lnPropertyIdentifier];
+    v7 = lnPropertyIdentifier2;
+    if ((lnPropertyIdentifier != 0) != (lnPropertyIdentifier2 == 0))
     {
-      v8 = [(_SFPBShortcutsImage *)self lnPropertyIdentifier];
-      if (!v8)
+      lnPropertyIdentifier3 = [(_SFPBShortcutsImage *)self lnPropertyIdentifier];
+      if (!lnPropertyIdentifier3)
       {
 
 LABEL_10:
@@ -119,10 +119,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBShortcutsImage *)self lnPropertyIdentifier];
-      v11 = [v4 lnPropertyIdentifier];
-      v12 = [v10 isEqual:v11];
+      v9 = lnPropertyIdentifier3;
+      lnPropertyIdentifier4 = [(_SFPBShortcutsImage *)self lnPropertyIdentifier];
+      lnPropertyIdentifier5 = [equalCopy lnPropertyIdentifier];
+      v12 = [lnPropertyIdentifier4 isEqual:lnPropertyIdentifier5];
 
       if (v12)
       {
@@ -141,19 +141,19 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBShortcutsImage *)self lnPropertyIdentifier];
-  if (v4)
+  toCopy = to;
+  lnPropertyIdentifier = [(_SFPBShortcutsImage *)self lnPropertyIdentifier];
+  if (lnPropertyIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setLnPropertyIdentifier:(id)a3
+- (void)setLnPropertyIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   lnPropertyIdentifier = self->_lnPropertyIdentifier;
   self->_lnPropertyIdentifier = v4;
 

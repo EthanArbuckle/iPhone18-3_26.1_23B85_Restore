@@ -1,21 +1,21 @@
 @interface BSCanonicalOrientationMapResolver
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BSCanonicalOrientationMapResolver)initWithTargetOrientation:(int64_t)a3 currentOrientation:(int64_t)a4 fallbackOrientations:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BSCanonicalOrientationMapResolver)initWithTargetOrientation:(int64_t)orientation currentOrientation:(int64_t)currentOrientation fallbackOrientations:(id)orientations;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)membersForCoder;
-- (int64_t)interfaceOrientationForSupportedOrientations:(unint64_t)a3 preferredOrientation:(int64_t)a4;
+- (int64_t)interfaceOrientationForSupportedOrientations:(unint64_t)orientations preferredOrientation:(int64_t)orientation;
 @end
 
 @implementation BSCanonicalOrientationMapResolver
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    BSXPCAutoCodingInitialize(a1, &__block_literal_global);
+    BSXPCAutoCodingInitialize(self, &__block_literal_global);
   }
 }
 
@@ -100,21 +100,21 @@ void __47__BSCanonicalOrientationMapResolver_initialize__block_invoke(uint64_t a
   return v32;
 }
 
-- (BSCanonicalOrientationMapResolver)initWithTargetOrientation:(int64_t)a3 currentOrientation:(int64_t)a4 fallbackOrientations:(id)a5
+- (BSCanonicalOrientationMapResolver)initWithTargetOrientation:(int64_t)orientation currentOrientation:(int64_t)currentOrientation fallbackOrientations:(id)orientations
 {
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = a5;
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  orientationsCopy = orientations;
+  v10 = [orientationsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v10)
   {
 
 LABEL_11:
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"BSCanonicalOrientationMapResolver.m" lineNumber:43 description:@"The fallback orientation order does not contain all interface orientations."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSCanonicalOrientationMapResolver.m" lineNumber:43 description:@"The fallback orientation order does not contain all interface orientations."];
 
     goto LABEL_12;
   }
@@ -127,13 +127,13 @@ LABEL_11:
     {
       if (*v22 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(orientationsCopy);
       }
 
       v11 |= 1 << [*(*(&v21 + 1) + 8 * i) unsignedIntegerValue];
     }
 
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v10 = [orientationsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   }
 
   while (v10);
@@ -150,9 +150,9 @@ LABEL_12:
   v16 = v15;
   if (v15)
   {
-    v15->_targetOrientation = a3;
-    v15->_currentOrientation = a4;
-    v17 = [v9 copy];
+    v15->_targetOrientation = orientation;
+    v15->_currentOrientation = currentOrientation;
+    v17 = [orientationsCopy copy];
     fallbackOrientations = v16->_fallbackOrientations;
     v16->_fallbackOrientations = v17;
   }
@@ -160,14 +160,14 @@ LABEL_12:
   return v16;
 }
 
-- (int64_t)interfaceOrientationForSupportedOrientations:(unint64_t)a3 preferredOrientation:(int64_t)a4
+- (int64_t)interfaceOrientationForSupportedOrientations:(unint64_t)orientations preferredOrientation:(int64_t)orientation
 {
   v17[3] = *MEMORY[0x1E69E9840];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_targetOrientation];
   v17[0] = v7;
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_currentOrientation];
   v17[1] = v8;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
   v17[2] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:3];
 
@@ -177,17 +177,17 @@ LABEL_12:
   v16[1] = 3221225472;
   v16[2] = __103__BSCanonicalOrientationMapResolver_interfaceOrientationForSupportedOrientations_preferredOrientation___block_invoke;
   v16[3] = &__block_descriptor_40_e18_B16__0__NSNumber_8l;
-  v16[4] = a3;
+  v16[4] = orientations;
   v12 = [v11 bs_firstObjectPassingTest:v16];
-  v13 = [v12 integerValue];
-  if ((v13 - 1) >= 4)
+  integerValue = [v12 integerValue];
+  if ((integerValue - 1) >= 4)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = v13;
+    v14 = integerValue;
   }
 
   return v14;
@@ -202,10 +202,10 @@ BOOL __103__BSCanonicalOrientationMapResolver_interfaceOrientationForSupportedOr
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -215,7 +215,7 @@ BOOL __103__BSCanonicalOrientationMapResolver_interfaceOrientationForSupportedOr
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (v5->_targetOrientation == self->_targetOrientation && v5->_currentOrientation == self->_currentOrientation)
       {

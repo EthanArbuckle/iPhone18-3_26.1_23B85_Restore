@@ -1,34 +1,34 @@
 @interface RMModelAnyPayload
-+ (id)buildFromDictionary:(id)a3;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)buildFromDictionary:(id)dictionary;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RMModelAnyPayload
 
-+ (id)buildFromDictionary:(id)a3
++ (id)buildFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  [v4 loadFromDictionary:v3 serializationType:0 error:0];
+  [v4 loadFromDictionary:dictionaryCopy serializationType:0 error:0];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v6 = [a3 copy];
+  v6 = [dictionary copy];
   dictKeys = self->_dictKeys;
   self->_dictKeys = v6;
 
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = RMModelAnyPayload;
-  v4 = [(RMModelPayloadBase *)&v8 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v8 copyWithZone:zone];
   v5 = [(NSDictionary *)self->_dictKeys copy];
   v6 = v4[2];
   v4[2] = v5;

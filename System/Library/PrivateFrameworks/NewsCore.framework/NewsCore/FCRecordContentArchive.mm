@@ -1,24 +1,24 @@
 @interface FCRecordContentArchive
-- (BOOL)isEqual:(id)a3;
-- (FCRecordContentArchive)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FCRecordContentArchive)initWithCoder:(id)coder;
 - (id)description;
 - (id)manifest;
 - (id)recordBase;
-- (id)unarchiveIntoContentContext:(id)a3;
+- (id)unarchiveIntoContentContext:(id)context;
 - (unint64_t)hash;
 @end
 
 @implementation FCRecordContentArchive
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -36,11 +36,11 @@
 
   if (v6)
   {
-    v7 = [(FCRecordContentArchive *)&self->super.super.isa recordBase];
-    v8 = [v6[1] base];
-    v9 = [v7 identifier];
-    v10 = [v8 identifier];
-    v11 = [v9 isEqualToString:v10];
+    recordBase = [(FCRecordContentArchive *)&self->super.super.isa recordBase];
+    base = [v6[1] base];
+    identifier = [recordBase identifier];
+    identifier2 = [base identifier];
+    v11 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -53,20 +53,20 @@
 
 - (id)recordBase
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] base];
+    self = [self[1] base];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(FCRecordContentArchive *)&self->super.super.isa recordBase];
-  v3 = [v2 identifier];
-  v4 = [v3 hash];
+  recordBase = [(FCRecordContentArchive *)&self->super.super.isa recordBase];
+  identifier = [recordBase identifier];
+  v4 = [identifier hash];
 
   return v4;
 }
@@ -74,32 +74,32 @@
 - (id)description
 {
   v3 = [[FCDescription alloc] initWithObject:self];
-  v4 = [(FCRecordContentArchive *)&self->super.super.isa recordBase];
+  recordBase = [(FCRecordContentArchive *)&self->super.super.isa recordBase];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __37__FCRecordContentArchive_description__block_invoke;
   v16[3] = &unk_1E7C371A8;
-  v17 = v4;
-  v5 = v4;
+  v17 = recordBase;
+  v5 = recordBase;
   v6 = __37__FCRecordContentArchive_description__block_invoke(v16);
   [(FCDescription *)v3 addField:@"type" object:v6];
 
-  v7 = [v5 identifier];
-  [(FCDescription *)v3 addField:@"identifier" value:v7];
+  identifier = [v5 identifier];
+  [(FCDescription *)v3 addField:@"identifier" value:identifier];
 
   v8 = MEMORY[0x1E695DF00];
-  v9 = [v5 fetchDate];
-  v10 = [v8 dateWithPBDate:v9];
+  fetchDate = [v5 fetchDate];
+  v10 = [v8 dateWithPBDate:fetchDate];
   [(FCDescription *)v3 addField:@"fetchDate" object:v10];
 
   v11 = MEMORY[0x1E695DF00];
-  v12 = [v5 modificationDate];
-  v13 = [v11 dateWithPBDate:v12];
+  modificationDate = [v5 modificationDate];
+  v13 = [v11 dateWithPBDate:modificationDate];
   [(FCDescription *)v3 addField:@"modificationDate" object:v13];
 
-  v14 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v14;
+  return descriptionString;
 }
 
 __CFString *__37__FCRecordContentArchive_description__block_invoke(uint64_t a1)
@@ -116,15 +116,15 @@ __CFString *__37__FCRecordContentArchive_description__block_invoke(uint64_t a1)
   }
 }
 
-- (FCRecordContentArchive)initWithCoder:(id)a3
+- (FCRecordContentArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FCRecordContentArchive;
   v5 = [(FCRecordContentArchive *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"record"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"record"];
     record = v5->_record;
     v5->_record = v6;
   }
@@ -132,21 +132,21 @@ __CFString *__37__FCRecordContentArchive_description__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)unarchiveIntoContentContext:(id)a3
+- (id)unarchiveIntoContentContext:(id)context
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCRecordContentArchive *)&self->super.super.isa recordBase];
-  v6 = [v4 internalContentContext];
+  contextCopy = context;
+  recordBase = [(FCRecordContentArchive *)&self->super.super.isa recordBase];
+  internalContentContext = [contextCopy internalContentContext];
 
-  v7 = [v6 recordSources];
+  recordSources = [internalContentContext recordSources];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __54__FCRecordContentArchive_unarchiveIntoContentContext___block_invoke;
   v15[3] = &unk_1E7C371D0;
-  v16 = v5;
-  v8 = v5;
-  v9 = [v7 fc_firstObjectPassingTest:v15];
+  v16 = recordBase;
+  v8 = recordBase;
+  v9 = [recordSources fc_firstObjectPassingTest:v15];
 
   v17[0] = self->_record;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -162,9 +162,9 @@ __CFString *__37__FCRecordContentArchive_description__block_invoke(uint64_t a1)
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = [FCContentManifest alloc];
-  v4 = [(FCRecordContentArchive *)&self->super.super.isa recordBase];
-  v5 = [v4 identifier];
-  v10[0] = v5;
+  recordBase = [(FCRecordContentArchive *)&self->super.super.isa recordBase];
+  identifier = [recordBase identifier];
+  v10[0] = identifier;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v7 = [(FCContentManifest *)v3 initWithRecordIDs:v6];
 

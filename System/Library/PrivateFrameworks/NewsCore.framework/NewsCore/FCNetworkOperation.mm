@@ -1,12 +1,12 @@
 @interface FCNetworkOperation
-- (BOOL)areNetworkRequirementsSatisfiedWithReachability:(id)a3 offlineReason:(int64_t *)a4;
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4;
-- (BOOL)shouldStartThrottlingWithError:(id)a3 retryAfter:(double *)a4;
-- (BOOL)validateOperationError:(id *)a3;
+- (BOOL)areNetworkRequirementsSatisfiedWithReachability:(id)reachability offlineReason:(int64_t *)reason;
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after;
+- (BOOL)shouldStartThrottlingWithError:(id)error retryAfter:(double *)after;
+- (BOOL)validateOperationError:(id *)error;
 - (FCNetworkOperation)init;
-- (FCNetworkOperation)initWithNetworkReachability:(id)a3;
+- (FCNetworkOperation)initWithNetworkReachability:(id)reachability;
 - (double)preferredTimeoutIntervalForRequest;
-- (void)networkReachabilityDidChange:(id)a3;
+- (void)networkReachabilityDidChange:(id)change;
 - (void)prepareOperation;
 @end
 
@@ -14,15 +14,15 @@
 
 - (void)prepareOperation
 {
-  v3 = [(FCNetworkOperation *)self networkReachability];
-  [v3 addObserver:self];
+  networkReachability = [(FCNetworkOperation *)self networkReachability];
+  [networkReachability addObserver:self];
 }
 
 - (double)preferredTimeoutIntervalForRequest
 {
-  v2 = [(FCOperation *)self retryCount];
+  retryCount = [(FCOperation *)self retryCount];
   result = 15.0;
-  if (!v2)
+  if (!retryCount)
   {
     return 10.0;
   }
@@ -38,11 +38,11 @@
   return v4;
 }
 
-- (FCNetworkOperation)initWithNetworkReachability:(id)a3
+- (FCNetworkOperation)initWithNetworkReachability:(id)reachability
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  reachabilityCopy = reachability;
+  if (!reachabilityCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "networkReachability"];
     *buf = 136315906;
@@ -62,36 +62,36 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_networkReachability, a3);
+    objc_storeStrong(&v6->_networkReachability, reachability);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after
 {
-  v6 = a3;
+  errorCopy = error;
   v7 = *MEMORY[0x1E696AA08];
   v8 = *MEMORY[0x1E696A250];
   v9 = *MEMORY[0x1E696A978];
-  v10 = v6;
+  v10 = errorCopy;
   while (1)
   {
     v11 = v10;
     v12 = v11;
     if (self)
     {
-      v13 = [v11 fc_retryAfter];
+      fc_retryAfter = [v11 fc_retryAfter];
 
-      if (!v13)
+      if (!fc_retryAfter)
       {
-        v14 = [v12 domain];
-        if ([v14 isEqualToString:v8])
+        domain = [v12 domain];
+        if ([domain isEqualToString:v8])
         {
-          v15 = [v12 code];
+          code = [v12 code];
 
-          if (v15 == 4097)
+          if (code == 4097)
           {
             break;
           }
@@ -101,8 +101,8 @@
         {
         }
 
-        v16 = [v12 domain];
-        v17 = [v16 isEqualToString:v9];
+        domain2 = [v12 domain];
+        v17 = [domain2 isEqualToString:v9];
 
         if (v17)
         {
@@ -114,8 +114,8 @@
       }
     }
 
-    v18 = [v12 userInfo];
-    v10 = [v18 objectForKeyedSubscript:v7];
+    userInfo = [v12 userInfo];
+    v10 = [userInfo objectForKeyedSubscript:v7];
 
     if (!v10)
     {
@@ -125,9 +125,9 @@
     }
   }
 
-  if (a4)
+  if (after)
   {
-    *a4 = [[FCOperationDelayedRetrySignal alloc] initWithDelay:1.0];
+    *after = [[FCOperationDelayedRetrySignal alloc] initWithDelay:1.0];
   }
 
   v19 = 1;
@@ -136,19 +136,19 @@ LABEL_15:
   return v19;
 }
 
-- (BOOL)validateOperationError:(id *)a3
+- (BOOL)validateOperationError:(id *)error
 {
-  v5 = [(FCNetworkOperation *)self networkReachability];
+  networkReachability = [(FCNetworkOperation *)self networkReachability];
   v8 = 0;
-  v6 = [(FCNetworkOperation *)self areNetworkRequirementsSatisfiedWithReachability:v5 offlineReason:&v8];
+  v6 = [(FCNetworkOperation *)self areNetworkRequirementsSatisfiedWithReachability:networkReachability offlineReason:&v8];
   if (v6)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   else
   {
-    *a3 = [MEMORY[0x1E696ABC0] fc_offlineErrorWithReason:?];
+    *error = [MEMORY[0x1E696ABC0] fc_offlineErrorWithReason:?];
   }
 
   return v6;
@@ -160,25 +160,25 @@ uint64_t __45__FCNetworkOperation_validateOperationError___block_invoke(uint64_t
   return 0;
 }
 
-- (BOOL)areNetworkRequirementsSatisfiedWithReachability:(id)a3 offlineReason:(int64_t *)a4
+- (BOOL)areNetworkRequirementsSatisfiedWithReachability:(id)reachability offlineReason:(int64_t *)reason
 {
-  v5 = a3;
-  v6 = [v5 isNetworkReachable];
-  if ((v6 & 1) == 0)
+  reachabilityCopy = reachability;
+  isNetworkReachable = [reachabilityCopy isNetworkReachable];
+  if ((isNetworkReachable & 1) == 0)
   {
-    *a4 = [v5 offlineReason];
+    *reason = [reachabilityCopy offlineReason];
   }
 
-  return v6;
+  return isNetworkReachable;
 }
 
-- (BOOL)shouldStartThrottlingWithError:(id)a3 retryAfter:(double *)a4
+- (BOOL)shouldStartThrottlingWithError:(id)error retryAfter:(double *)after
 {
-  v6 = [a3 fc_retryAfter];
-  v7 = [(FCOperation *)self throttleGroup];
-  if (v7)
+  fc_retryAfter = [error fc_retryAfter];
+  throttleGroup = [(FCOperation *)self throttleGroup];
+  if (throttleGroup)
   {
-    v8 = v6 == 0;
+    v8 = fc_retryAfter == 0;
   }
 
   else
@@ -191,33 +191,33 @@ uint64_t __45__FCNetworkOperation_validateOperationError___block_invoke(uint64_t
   v10 = 0;
   if (v9)
   {
-    [v6 doubleValue];
+    [fc_retryAfter doubleValue];
   }
 
-  if (a4)
+  if (after)
   {
-    *a4 = v10;
+    *after = v10;
   }
 
   return v9;
 }
 
-- (void)networkReachabilityDidChange:(id)a3
+- (void)networkReachabilityDidChange:(id)change
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if ([(FCOperation *)self hasOperationStarted])
   {
     v9 = 0;
-    if (![(FCNetworkOperation *)self areNetworkRequirementsSatisfiedWithReachability:v4 offlineReason:&v9])
+    if (![(FCNetworkOperation *)self areNetworkRequirementsSatisfiedWithReachability:changeCopy offlineReason:&v9])
     {
       v5 = FCOperationLog;
       if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
       {
         v6 = v5;
-        v7 = [(FCOperation *)self shortOperationDescription];
+        shortOperationDescription = [(FCOperation *)self shortOperationDescription];
         *buf = 138543618;
-        v11 = v7;
+        v11 = shortOperationDescription;
         v12 = 2048;
         v13 = v9;
         _os_log_impl(&dword_1B63EF000, v6, OS_LOG_TYPE_DEFAULT, "cancelling %{public}@ due to failure to satisfy network requirements with offline reason %ld", buf, 0x16u);

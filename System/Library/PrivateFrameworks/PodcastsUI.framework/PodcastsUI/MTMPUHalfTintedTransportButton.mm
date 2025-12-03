@@ -1,30 +1,30 @@
 @interface MTMPUHalfTintedTransportButton
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isEnabled;
 - (BOOL)shouldTrack;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTMPUHalfTintedTransportButton)initWithFrame:(CGRect)a3;
-- (id)_handleButtonHitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTMPUHalfTintedTransportButton)initWithFrame:(CGRect)frame;
+- (id)_handleButtonHitTest:(CGPoint)test withEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateRegularImage;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRegularImage:(id)a3;
-- (void)setRegularImageColor:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTintedImage:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRegularImage:(id)image;
+- (void)setRegularImageColor:(id)color;
+- (void)setSelected:(BOOL)selected;
+- (void)setTintedImage:(id)image;
 @end
 
 @implementation MTMPUHalfTintedTransportButton
 
-- (MTMPUHalfTintedTransportButton)initWithFrame:(CGRect)a3
+- (MTMPUHalfTintedTransportButton)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = MTMPUHalfTintedTransportButton;
-  v3 = [(MTMPUHalfTintedTransportButton *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTMPUHalfTintedTransportButton *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MTMPUTransportButtonEventHandler);
@@ -32,16 +32,16 @@
     v3->_transportButtonEventHandler = v4;
 
     [(MTMPUTransportButtonEventHandler *)v3->_transportButtonEventHandler setButton:v3];
-    v6 = [(MTMPUHalfTintedTransportButton *)v3 _newButton];
+    _newButton = [(MTMPUHalfTintedTransportButton *)v3 _newButton];
     regularButton = v3->_regularButton;
-    v3->_regularButton = v6;
+    v3->_regularButton = _newButton;
 
     [(UIButton *)v3->_regularButton setHidden:1];
     [(UIButton *)v3->_regularButton setUserInteractionEnabled:0];
     [(MTMPUHalfTintedTransportButton *)v3 addSubview:v3->_regularButton];
-    v8 = [(MTMPUHalfTintedTransportButton *)v3 _newButton];
+    _newButton2 = [(MTMPUHalfTintedTransportButton *)v3 _newButton];
     tintedButton = v3->_tintedButton;
-    v3->_tintedButton = v8;
+    v3->_tintedButton = _newButton2;
 
     [(UIButton *)v3->_tintedButton setHidden:1];
     [(UIButton *)v3->_tintedButton setUserInteractionEnabled:0];
@@ -65,11 +65,11 @@
   [(UIButton *)self->_tintedButton setFrame:v4, v6, v8, v10];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   transportButtonEventHandler = self->_transportButtonEventHandler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -78,33 +78,33 @@
   v14 = x;
   v15 = y;
   v12[4] = self;
-  v13 = v7;
-  v9 = v7;
+  v13 = eventCopy;
+  v9 = eventCopy;
   v10 = [(MTMPUTransportButtonEventHandler *)transportButtonEventHandler performHitTestingBlock:v12];
 
   return v10;
 }
 
-- (id)_handleButtonHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_handleButtonHitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = MTMPUHalfTintedTransportButton;
-  v5 = [(MTMPUHalfTintedTransportButton *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(MTMPUHalfTintedTransportButton *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self->_regularButton || v5 == self->_tintedButton)
   {
-    v7 = self;
+    selfCopy = self;
 
-    v6 = v7;
+    v6 = selfCopy;
   }
 
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIButton *)self->_regularButton sizeThatFits:?];
   v7 = v6;
   v9 = v8;
@@ -124,39 +124,39 @@
   return result;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = self;
+  selfCopy = self;
   transportButtonEventHandler = self->_transportButtonEventHandler;
-  v7 = a4;
-  v8 = a3;
-  [(MTMPUTransportButtonEventHandler *)transportButtonEventHandler beginTrackingWithTouch:v8 withEvent:v7];
-  v10.receiver = v5;
+  eventCopy = event;
+  touchCopy = touch;
+  [(MTMPUTransportButtonEventHandler *)transportButtonEventHandler beginTrackingWithTouch:touchCopy withEvent:eventCopy];
+  v10.receiver = selfCopy;
   v10.super_class = MTMPUHalfTintedTransportButton;
-  LOBYTE(v5) = [(MTMPUHalfTintedTransportButton *)&v10 beginTrackingWithTouch:v8 withEvent:v7];
+  LOBYTE(selfCopy) = [(MTMPUHalfTintedTransportButton *)&v10 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   transportButtonEventHandler = self->_transportButtonEventHandler;
-  v5 = a3;
-  [(MTMPUTransportButtonEventHandler *)transportButtonEventHandler cancelTrackingWithEvent:v5];
+  eventCopy = event;
+  [(MTMPUTransportButtonEventHandler *)transportButtonEventHandler cancelTrackingWithEvent:eventCopy];
   v6.receiver = self;
   v6.super_class = MTMPUHalfTintedTransportButton;
-  [(MTMPUHalfTintedTransportButton *)&v6 cancelTrackingWithEvent:v5];
+  [(MTMPUHalfTintedTransportButton *)&v6 cancelTrackingWithEvent:eventCopy];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   transportButtonEventHandler = self->_transportButtonEventHandler;
-  v7 = a4;
-  v8 = a3;
-  [(MTMPUTransportButtonEventHandler *)transportButtonEventHandler endTrackingWithTouch:v8 withEvent:v7];
+  eventCopy = event;
+  touchCopy = touch;
+  [(MTMPUTransportButtonEventHandler *)transportButtonEventHandler endTrackingWithTouch:touchCopy withEvent:eventCopy];
   v9.receiver = self;
   v9.super_class = MTMPUHalfTintedTransportButton;
-  [(MTMPUHalfTintedTransportButton *)&v9 endTrackingWithTouch:v8 withEvent:v7];
+  [(MTMPUHalfTintedTransportButton *)&v9 endTrackingWithTouch:touchCopy withEvent:eventCopy];
 }
 
 - (BOOL)isEnabled
@@ -166,36 +166,36 @@
   return [(MTMPUHalfTintedTransportButton *)&v4 isEnabled]|| [(MTMPUTransportButtonEventHandler *)self->_transportButtonEventHandler shouldFakeEnabled];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = MTMPUHalfTintedTransportButton;
   [(MTMPUHalfTintedTransportButton *)&v5 setEnabled:?];
-  [(UIButton *)self->_regularButton setEnabled:v3];
-  [(UIButton *)self->_tintedButton setEnabled:v3];
+  [(UIButton *)self->_regularButton setEnabled:enabledCopy];
+  [(UIButton *)self->_tintedButton setEnabled:enabledCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = MTMPUHalfTintedTransportButton;
   [(MTMPUHalfTintedTransportButton *)&v5 setHighlighted:?];
-  [(UIButton *)self->_regularButton setHighlighted:v3];
-  [(UIButton *)self->_tintedButton setHighlighted:v3];
+  [(UIButton *)self->_regularButton setHighlighted:highlightedCopy];
+  [(UIButton *)self->_tintedButton setHighlighted:highlightedCopy];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = MTMPUHalfTintedTransportButton;
   [(MTMPUHalfTintedTransportButton *)&v5 setSelected:?];
   if ([(MTMPUHalfTintedTransportButton *)self _shouldForwardSelectedState])
   {
-    [(UIButton *)self->_regularButton setSelected:v3];
-    [(UIButton *)self->_tintedButton setSelected:v3];
+    [(UIButton *)self->_regularButton setSelected:selectedCopy];
+    [(UIButton *)self->_tintedButton setSelected:selectedCopy];
   }
 }
 
@@ -206,48 +206,48 @@
   return [(MTMPUHalfTintedTransportButton *)&v4 shouldTrack]|| [(MTMPUTransportButtonEventHandler *)self->_transportButtonEventHandler shouldForceTrackingEnabled];
 }
 
-- (void)setRegularImage:(id)a3
+- (void)setRegularImage:(id)image
 {
-  v5 = a3;
-  if (self->_regularImage != v5)
+  imageCopy = image;
+  if (self->_regularImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_regularImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_regularImage, image);
     [(MTMPUHalfTintedTransportButton *)self _updateRegularImage];
     [(UIButton *)self->_regularButton setHidden:v6 == 0];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setRegularImageColor:(id)a3
+- (void)setRegularImageColor:(id)color
 {
-  v5 = a3;
-  if (self->_regularImageColor != v5)
+  colorCopy = color;
+  if (self->_regularImageColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_regularImageColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_regularImageColor, color);
     [(UIButton *)self->_regularButton setTintColor:v6];
-    v5 = v6;
+    colorCopy = v6;
     if ((v6 != 0) == (self->_regularImageColor == 0))
     {
       [(MTMPUHalfTintedTransportButton *)self _updateRegularImage];
-      v5 = v6;
+      colorCopy = v6;
     }
   }
 }
 
-- (void)setTintedImage:(id)a3
+- (void)setTintedImage:(id)image
 {
-  v5 = a3;
-  if (self->_tintedImage != v5)
+  imageCopy = image;
+  if (self->_tintedImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_tintedImage, a3);
+    v7 = imageCopy;
+    objc_storeStrong(&self->_tintedImage, image);
     v6 = [(UIImage *)v7 imageWithRenderingMode:2];
     [(MTMPUHalfTintedTransportButton *)self _applyImage:v6 toButton:self->_tintedButton];
 
     [(UIButton *)self->_tintedButton setHidden:v7 == 0];
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 

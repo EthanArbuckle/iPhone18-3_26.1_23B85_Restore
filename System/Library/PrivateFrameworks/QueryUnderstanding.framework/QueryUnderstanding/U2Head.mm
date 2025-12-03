@@ -1,18 +1,18 @@
 @interface U2Head
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (U2Head)init;
-- (U2Head)initWithConfiguration:(id)a3 error:(id *)a4;
-- (U2Head)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (U2Head)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (U2Head)initWithMLModel:(id)a3;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionFromInput_mask:(id)a3 input_span_features:(id)a4 sequence_output:(id)a5 error:(id *)a6;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (U2Head)initWithConfiguration:(id)configuration error:(id *)error;
+- (U2Head)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (U2Head)initWithContentsOfURL:(id)l error:(id *)error;
+- (U2Head)initWithMLModel:(id)model;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionFromInput_mask:(id)input_mask input_span_features:(id)input_span_features sequence_output:(id)sequence_output error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation U2Head
@@ -40,14 +40,14 @@
   return v4;
 }
 
-- (U2Head)initWithMLModel:(id)a3
+- (U2Head)initWithMLModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = U2Head;
   v6 = [(U2Head *)&v10 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_model, a3), v7->_model))
+  if (v6 && (objc_storeStrong(&v6->_model, model), v7->_model))
   {
     v8 = v7;
   }
@@ -62,74 +62,74 @@
 
 - (U2Head)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
-  v4 = [(U2Head *)self initWithContentsOfURL:v3 error:0];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v4 = [(U2Head *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (U2Head)initWithConfiguration:(id)a3 error:(id *)a4
+- (U2Head)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
-  v8 = [(U2Head *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v8 = [(U2Head *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (U2Head)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (U2Head)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:a3 error:a4];
+  v5 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:l error:error];
   if (v5)
   {
     self = [(U2Head *)self initWithMLModel:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (U2Head)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (U2Head)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v6 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:a3 configuration:a4 error:a5];
+  v6 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:l configuration:configuration error:error];
   if (v6)
   {
     self = [(U2Head *)self initWithMLModel:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 URLOfModelInThisBundle];
-  [a1 loadContentsOfURL:v8 configuration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [self URLOfModelInThisBundle];
+  [self loadContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy completionHandler:handlerCopy];
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBFF20];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__U2Head_loadContentsOfURL_configuration_completionHandler___block_invoke;
   v10[3] = &unk_279ADA1D8;
-  v11 = v7;
-  v9 = v7;
-  [v8 loadContentsOfURL:a3 configuration:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v8 loadContentsOfURL:l configuration:configuration completionHandler:v10];
 }
 
 void __60__U2Head_loadContentsOfURL_configuration_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -147,35 +147,35 @@ void __60__U2Head_loadContentsOfURL_configuration_completionHandler___block_invo
   }
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   v6 = MEMORY[0x277CBFF68];
-  v7 = a3;
+  featuresCopy = features;
   v8 = objc_alloc_init(v6);
-  v9 = [(U2Head *)self predictionFromFeatures:v7 options:v8 error:a4];
+  v9 = [(U2Head *)self predictionFromFeatures:featuresCopy options:v8 error:error];
 
   return v9;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(U2Head *)self model];
-  v11 = [v10 predictionFromFeatures:v9 options:v8 error:a5];
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(U2Head *)self model];
+  v11 = [model predictionFromFeatures:featuresCopy options:optionsCopy error:error];
 
   if (v11)
   {
     v12 = [U2HeadOutput alloc];
     v13 = [v11 featureValueForName:@"top_arg_ids"];
-    v14 = [v13 multiArrayValue];
+    multiArrayValue = [v13 multiArrayValue];
     v15 = [v11 featureValueForName:@"arg_conf_scores"];
-    v16 = [v15 multiArrayValue];
+    multiArrayValue2 = [v15 multiArrayValue];
     v17 = [v11 featureValueForName:@"intent_scores"];
-    v18 = [v17 multiArrayValue];
+    multiArrayValue3 = [v17 multiArrayValue];
     v19 = [v11 featureValueForName:@"safety_head_scores"];
-    v20 = [v19 multiArrayValue];
-    v21 = [(U2HeadOutput *)v12 initWithTop_arg_ids:v14 arg_conf_scores:v16 intent_scores:v18 safety_head_scores:v20];
+    multiArrayValue4 = [v19 multiArrayValue];
+    v21 = [(U2HeadOutput *)v12 initWithTop_arg_ids:multiArrayValue arg_conf_scores:multiArrayValue2 intent_scores:multiArrayValue3 safety_head_scores:multiArrayValue4];
   }
 
   else
@@ -186,18 +186,18 @@ void __60__U2Head_loadContentsOfURL_configuration_completionHandler___block_invo
   return v21;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(U2Head *)self model];
+  handlerCopy = handler;
+  featuresCopy = features;
+  model = [(U2Head *)self model];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__U2Head_predictionFromFeatures_completionHandler___block_invoke;
   v10[3] = &unk_279ADA200;
-  v11 = v6;
-  v9 = v6;
-  [v8 predictionFromFeatures:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy completionHandler:v10];
 }
 
 void __51__U2Head_predictionFromFeatures_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -229,19 +229,19 @@ void __51__U2Head_predictionFromFeatures_completionHandler___block_invoke(uint64
   }
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(U2Head *)self model];
+  handlerCopy = handler;
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(U2Head *)self model];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__U2Head_predictionFromFeatures_options_completionHandler___block_invoke;
   v13[3] = &unk_279ADA200;
-  v14 = v8;
-  v12 = v8;
-  [v11 predictionFromFeatures:v10 options:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy options:optionsCopy completionHandler:v13];
 }
 
 void __59__U2Head_predictionFromFeatures_options_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -273,25 +273,25 @@ void __59__U2Head_predictionFromFeatures_options_completionHandler___block_invok
   }
 }
 
-- (id)predictionFromInput_mask:(id)a3 input_span_features:(id)a4 sequence_output:(id)a5 error:(id *)a6
+- (id)predictionFromInput_mask:(id)input_mask input_span_features:(id)input_span_features sequence_output:(id)sequence_output error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[U2HeadInput alloc] initWithInput_mask:v12 input_span_features:v11 sequence_output:v10];
+  sequence_outputCopy = sequence_output;
+  input_span_featuresCopy = input_span_features;
+  input_maskCopy = input_mask;
+  v13 = [[U2HeadInput alloc] initWithInput_mask:input_maskCopy input_span_features:input_span_featuresCopy sequence_output:sequence_outputCopy];
 
-  v14 = [(U2Head *)self predictionFromFeatures:v13 error:a6];
+  v14 = [(U2Head *)self predictionFromFeatures:v13 error:error];
 
   return v14;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:v8];
-  v11 = [(U2Head *)self model];
-  v12 = [v11 predictionsFromBatch:v10 options:v9 error:a5];
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v10 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:inputsCopy];
+  model = [(U2Head *)self model];
+  v12 = [model predictionsFromBatch:v10 options:optionsCopy error:error];
 
   if (v12)
   {
@@ -299,8 +299,8 @@ void __59__U2Head_predictionFromFeatures_options_completionHandler___block_invok
     if ([v12 count] >= 1)
     {
       v26 = v10;
-      v27 = v9;
-      v28 = v8;
+      v27 = optionsCopy;
+      v28 = inputsCopy;
       v29 = v13;
       v14 = 0;
       v30 = v12;
@@ -309,14 +309,14 @@ void __59__U2Head_predictionFromFeatures_options_completionHandler___block_invok
         v15 = [v12 featuresAtIndex:{v14, v26, v27, v28}];
         v16 = [U2HeadOutput alloc];
         v31 = [v15 featureValueForName:@"top_arg_ids"];
-        v17 = [v31 multiArrayValue];
+        multiArrayValue = [v31 multiArrayValue];
         v18 = [v15 featureValueForName:@"arg_conf_scores"];
-        v19 = [v18 multiArrayValue];
+        multiArrayValue2 = [v18 multiArrayValue];
         v20 = [v15 featureValueForName:@"intent_scores"];
-        v21 = [v20 multiArrayValue];
+        multiArrayValue3 = [v20 multiArrayValue];
         v22 = [v15 featureValueForName:@"safety_head_scores"];
-        v23 = [v22 multiArrayValue];
-        v24 = [(U2HeadOutput *)v16 initWithTop_arg_ids:v17 arg_conf_scores:v19 intent_scores:v21 safety_head_scores:v23];
+        multiArrayValue4 = [v22 multiArrayValue];
+        v24 = [(U2HeadOutput *)v16 initWithTop_arg_ids:multiArrayValue arg_conf_scores:multiArrayValue2 intent_scores:multiArrayValue3 safety_head_scores:multiArrayValue4];
 
         v13 = v29;
         v12 = v30;
@@ -326,8 +326,8 @@ void __59__U2Head_predictionFromFeatures_options_completionHandler___block_invok
       }
 
       while (v14 < [v30 count]);
-      v9 = v27;
-      v8 = v28;
+      optionsCopy = v27;
+      inputsCopy = v28;
       v10 = v26;
     }
   }

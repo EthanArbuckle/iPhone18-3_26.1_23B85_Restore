@@ -1,20 +1,20 @@
 @interface NavDebugLocationManager
 - (NavDebugLocationManager)init;
-- (id)rendererForOverlay:(id)a3;
-- (id)viewForAnnotation:(id)a3;
-- (void)addLocation:(id)a3;
+- (id)rendererForOverlay:(id)overlay;
+- (id)viewForAnnotation:(id)annotation;
+- (void)addLocation:(id)location;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setMapView:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setMapView:(id)view;
 @end
 
 @implementation NavDebugLocationManager
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"NavigationShowRawGPSTrail"] && (objc_msgSend(v9, "BOOLForKey:", v8) & 1) == 0)
+  pathCopy = path;
+  objectCopy = object;
+  if ([pathCopy isEqualToString:@"NavigationShowRawGPSTrail"] && (objc_msgSend(objectCopy, "BOOLForKey:", pathCopy) & 1) == 0)
   {
     v17 = 0u;
     v18 = 0u;
@@ -51,13 +51,13 @@
   }
 }
 
-- (id)viewForAnnotation:(id)a3
+- (id)viewForAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = annotationCopy;
     v6 = [(MKMapView *)self->_mapView dequeueReusableAnnotationViewWithIdentifier:@"NavDebugLocationManager"];
     if (v6)
     {
@@ -79,15 +79,15 @@
   return v7;
 }
 
-- (id)rendererForOverlay:(id)a3
+- (id)rendererForOverlay:(id)overlay
 {
-  v4 = a3;
+  overlayCopy = overlay;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_overlays allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_overlays allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -97,20 +97,20 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 overlay];
+        overlay = [v9 overlay];
 
-        if (v10 == v4)
+        if (overlay == overlayCopy)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -125,9 +125,9 @@ LABEL_11:
   return v6;
 }
 
-- (void)addLocation:(id)a3
+- (void)addLocation:(id)location
 {
-  v8 = a3;
+  locationCopy = location;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"NavigationShowRawGPSTrail"];
 
@@ -135,32 +135,32 @@ LABEL_11:
   {
     if ([(NSMutableArray *)self->_annotations count]>= 3)
     {
-      v6 = [(NSMutableArray *)self->_annotations firstObject];
+      firstObject = [(NSMutableArray *)self->_annotations firstObject];
       [(NSMutableArray *)self->_annotations removeObjectAtIndex:0];
-      [(MKMapView *)self->_mapView removeAnnotation:v6];
+      [(MKMapView *)self->_mapView removeAnnotation:firstObject];
     }
 
     v7 = objc_alloc_init(DebugLocationAnnotation);
-    [(DebugLocationAnnotation *)v7 setLocation:v8];
+    [(DebugLocationAnnotation *)v7 setLocation:locationCopy];
     [(DebugLocationAnnotation *)v7 setLocationType:0];
     [(NSMutableArray *)self->_annotations addObject:v7];
     [(MKMapView *)self->_mapView addAnnotation:v7];
   }
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_mapView = &self->_mapView;
-  if (self->_mapView != v5)
+  if (self->_mapView != viewCopy)
   {
-    obj = a3;
+    obj = view;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [(NSMutableDictionary *)self->_overlays allValues];
-    v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    allValues = [(NSMutableDictionary *)self->_overlays allValues];
+    v8 = [allValues countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v8)
     {
       v9 = v8;
@@ -171,19 +171,19 @@ LABEL_11:
         {
           if (*v28 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v12 = *(*(&v27 + 1) + 8 * i);
           v13 = *p_mapView;
-          v14 = [v12 overlay];
-          [v13 removeOverlay:v14];
+          overlay = [v12 overlay];
+          [v13 removeOverlay:overlay];
 
-          v15 = [v12 overlay];
-          [(MKMapView *)v5 addOverlay:v15];
+          overlay2 = [v12 overlay];
+          [(MKMapView *)viewCopy addOverlay:overlay2];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v9);
@@ -210,7 +210,7 @@ LABEL_11:
 
           v21 = *(*(&v23 + 1) + 8 * j);
           [*p_mapView removeAnnotation:v21];
-          [(MKMapView *)v5 addAnnotation:v21];
+          [(MKMapView *)viewCopy addAnnotation:v21];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -219,7 +219,7 @@ LABEL_11:
       while (v18);
     }
 
-    if (!v5)
+    if (!viewCopy)
     {
       [(NSMutableDictionary *)self->_overlays removeAllObjects];
       [(NSMutableArray *)self->_annotations removeAllObjects];
@@ -238,8 +238,8 @@ LABEL_11:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(NSMutableDictionary *)self->_overlays allValues];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  allValues = [(NSMutableDictionary *)self->_overlays allValues];
+  v5 = [allValues countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -251,18 +251,18 @@ LABEL_11:
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         mapView = self->_mapView;
-        v10 = [*(*(&v21 + 1) + 8 * v8) overlay];
-        [(MKMapView *)mapView removeOverlay:v10];
+        overlay = [*(*(&v21 + 1) + 8 * v8) overlay];
+        [(MKMapView *)mapView removeOverlay:overlay];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);

@@ -1,47 +1,47 @@
 @interface WFLinkChoiceDialogRequest
-- (WFLinkChoiceDialogRequest)initWithCoder:(id)a3;
-- (WFLinkChoiceDialogRequest)initWithRequest:(id)a3 title:(id)a4 attribution:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (WFLinkChoiceDialogRequest)initWithCoder:(id)coder;
+- (WFLinkChoiceDialogRequest)initWithRequest:(id)request title:(id)title attribution:(id)attribution;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLinkChoiceDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = WFLinkChoiceDialogRequest;
-  v4 = a3;
-  [(WFLinkSnippetDialogRequest *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFLinkSnippetDialogRequest *)&v8 encodeWithCoder:coderCopy];
   v5 = [(WFLinkChoiceDialogRequest *)self request:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"request"];
+  [coderCopy encodeObject:v5 forKey:@"request"];
 
-  v6 = [(WFLinkChoiceDialogRequest *)self title];
-  [v4 encodeObject:v6 forKey:@"title"];
+  title = [(WFLinkChoiceDialogRequest *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v7 = [(WFLinkChoiceDialogRequest *)self buttons];
-  [v4 encodeObject:v7 forKey:@"buttons"];
+  buttons = [(WFLinkChoiceDialogRequest *)self buttons];
+  [coderCopy encodeObject:buttons forKey:@"buttons"];
 }
 
-- (WFLinkChoiceDialogRequest)initWithCoder:(id)a3
+- (WFLinkChoiceDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = WFLinkChoiceDialogRequest;
-  v5 = [(WFLinkSnippetDialogRequest *)&v17 initWithCoder:v4];
+  v5 = [(WFLinkSnippetDialogRequest *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"request"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"request"];
     request = v5->_request;
     v5->_request = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"buttons"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"buttons"];
     buttons = v5->_buttons;
     v5->_buttons = v13;
 
@@ -51,25 +51,25 @@
   return v5;
 }
 
-- (WFLinkChoiceDialogRequest)initWithRequest:(id)a3 title:(id)a4 attribution:(id)a5
+- (WFLinkChoiceDialogRequest)initWithRequest:(id)request title:(id)title attribution:(id)attribution
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 viewSnippet];
+  requestCopy = request;
+  titleCopy = title;
+  attributionCopy = attribution;
+  viewSnippet = [requestCopy viewSnippet];
   v21.receiver = self;
   v21.super_class = WFLinkChoiceDialogRequest;
-  v13 = [(WFLinkSnippetDialogRequest *)&v21 initWithViewSnippet:v12 snippetAction:0 encodedSnippetActionToolInvocation:0 attribution:v11 showPrompt:1];
+  v13 = [(WFLinkSnippetDialogRequest *)&v21 initWithViewSnippet:viewSnippet snippetAction:0 encodedSnippetActionToolInvocation:0 attribution:attributionCopy showPrompt:1];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_request, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v13->_request, request);
+    v14 = [titleCopy copy];
     title = v13->_title;
     v13->_title = v14;
 
-    v16 = [v9 options];
-    v17 = [v16 if_map:&__block_literal_global_9645];
+    options = [requestCopy options];
+    v17 = [options if_map:&__block_literal_global_9645];
     buttons = v13->_buttons;
     v13->_buttons = v17;
 

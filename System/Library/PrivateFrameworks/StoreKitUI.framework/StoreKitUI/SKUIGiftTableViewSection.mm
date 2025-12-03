@@ -1,13 +1,13 @@
 @interface SKUIGiftTableViewSection
-+ (id)aloneRowBackgroundImageWithSize:(CGSize)a3;
-- (SKUIGiftTableViewSection)initWithGiftConfiguration:(id)a3;
++ (id)aloneRowBackgroundImageWithSize:(CGSize)size;
+- (SKUIGiftTableViewSection)initWithGiftConfiguration:(id)configuration;
 @end
 
 @implementation SKUIGiftTableViewSection
 
-- (SKUIGiftTableViewSection)initWithGiftConfiguration:(id)a3
+- (SKUIGiftTableViewSection)initWithGiftConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGiftTableViewSection initWithGiftConfiguration:];
@@ -19,17 +19,17 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_giftConfiguration, a3);
+    objc_storeStrong(&v6->_giftConfiguration, configuration);
   }
 
   return v7;
 }
 
-+ (id)aloneRowBackgroundImageWithSize:(CGSize)a3
++ (id)aloneRowBackgroundImageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  UIGraphicsBeginImageContextWithOptions(a3, 1, 0.0);
+  height = size.height;
+  width = size.width;
+  UIGraphicsBeginImageContextWithOptions(size, 1, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   v6 = [MEMORY[0x277D75348] colorWithWhite:0.921568627 alpha:1.0];
   [v6 set];
@@ -46,8 +46,8 @@
   v18 = CGRectInset(v17, 1.0, 1.0);
   v7 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:v18.origin.x cornerRadius:{v18.origin.y, v18.size.width, v18.size.height, 7.5}];
   CGContextSaveGState(CurrentContext);
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  [v8 set];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [whiteColor set];
 
   [v7 addClip];
   v19.origin.x = 0.0;

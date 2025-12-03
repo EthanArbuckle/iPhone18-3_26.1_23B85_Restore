@@ -1,50 +1,50 @@
 @interface SUSplitViewController
-+ (BOOL)isValidSplitPositionValue:(id)a3;
-+ (BOOL)isValidSplitTypeString:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
++ (BOOL)isValidSplitPositionValue:(id)value;
++ (BOOL)isValidSplitTypeString:(id)string;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isSkLoaded;
 - (BOOL)isVertical;
 - (BOOL)shouldExcludeFromNavigationHistory;
 - (SUSplitViewController)init;
 - (double)minimumPaneSize;
 - (double)splitPosition;
-- (id)_newGradientWithValue:(id)a3;
-- (id)_newViewControllerFromDictionary:(id)a3;
+- (id)_newGradientWithValue:(id)value;
+- (id)_newViewControllerFromDictionary:(id)dictionary;
 - (id)_splitView;
 - (id)copyArchivableContext;
-- (id)copyChildViewControllersForReason:(int64_t)a3;
+- (id)copyChildViewControllersForReason:(int64_t)reason;
 - (id)copyScriptViewController;
 - (id)newRotationController;
 - (id)splitPositionString;
 - (id)splitTypeString;
 - (int64_t)layoutType;
-- (void)_loadingDidChangeNotification:(id)a3;
-- (void)_navigationItemDidChangeNotification:(id)a3;
+- (void)_loadingDidChangeNotification:(id)notification;
+- (void)_navigationItemDidChangeNotification:(id)notification;
 - (void)_reloadLoadingState;
 - (void)_reloadTitle;
 - (void)_reloadView;
-- (void)_reloadViewController:(id)a3 fromDictionary:(id)a4;
-- (void)_reloadWithStorePageDictionary:(id)a3;
-- (void)_setPlaceholderVisible:(BOOL)a3;
-- (void)_setStructuredPage:(id)a3;
-- (void)_setViewController:(id *)a3 toValue:(id)a4;
-- (void)addChildViewController:(id)a3;
+- (void)_reloadViewController:(id)controller fromDictionary:(id)dictionary;
+- (void)_reloadWithStorePageDictionary:(id)dictionary;
+- (void)_setPlaceholderVisible:(BOOL)visible;
+- (void)_setStructuredPage:(id)page;
+- (void)_setViewController:(id *)controller toValue:(id)value;
+- (void)addChildViewController:(id)controller;
 - (void)dealloc;
 - (void)loadView;
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4;
-- (void)removeChildViewController:(id)a3;
-- (void)restoreArchivableContext:(id)a3;
-- (void)setLayoutType:(int64_t)a3;
-- (void)setMainTitle:(id)a3;
-- (void)setMinimumPaneSize:(double)a3;
-- (void)setSkLoading:(BOOL)a3;
-- (void)setSplitPosition:(double)a3;
-- (void)setSplitPositionAndLayoutTypeFromValue:(id)a3;
-- (void)setSplitShadow:(id)a3;
-- (void)setSplitTypeString:(id)a3;
-- (void)setUsesSharedPlaceholder:(BOOL)a3;
-- (void)setVertical:(BOOL)a3;
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4;
+- (void)reloadWithStorePage:(id)page forURL:(id)l;
+- (void)removeChildViewController:(id)controller;
+- (void)restoreArchivableContext:(id)context;
+- (void)setLayoutType:(int64_t)type;
+- (void)setMainTitle:(id)title;
+- (void)setMinimumPaneSize:(double)size;
+- (void)setSkLoading:(BOOL)loading;
+- (void)setSplitPosition:(double)position;
+- (void)setSplitPositionAndLayoutTypeFromValue:(id)value;
+- (void)setSplitShadow:(id)shadow;
+- (void)setSplitTypeString:(id)string;
+- (void)setUsesSharedPlaceholder:(BOOL)placeholder;
+- (void)setVertical:(BOOL)vertical;
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success;
 @end
 
 @implementation SUSplitViewController
@@ -70,9 +70,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"SUViewControllerLoadingDidChangeNotification" object:0];
-  [v3 removeObserver:self name:@"SUViewControllerNavigationItemDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SUViewControllerLoadingDidChangeNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SUViewControllerNavigationItemDidChangeNotification" object:0];
   if (self->_firstViewController)
   {
     [(SUSplitViewController *)self removeChildViewController:?];
@@ -99,36 +99,36 @@
   [(SUViewController *)&v4 dealloc];
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__loadingDidChangeNotification_ name:@"SUViewControllerLoadingDidChangeNotification" object:a3];
-  [v5 addObserver:self selector:sel__navigationItemDidChangeNotification_ name:@"SUViewControllerNavigationItemDidChangeNotification" object:{objc_msgSend(a3, "navigationItem")}];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__loadingDidChangeNotification_ name:@"SUViewControllerLoadingDidChangeNotification" object:controller];
+  [defaultCenter addObserver:self selector:sel__navigationItemDidChangeNotification_ name:@"SUViewControllerNavigationItemDidChangeNotification" object:{objc_msgSend(controller, "navigationItem")}];
   v6.receiver = self;
   v6.super_class = SUSplitViewController;
-  [(SUSplitViewController *)&v6 addChildViewController:a3];
+  [(SUSplitViewController *)&v6 addChildViewController:controller];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v13.receiver = self;
   v13.super_class = SUSplitViewController;
   v7 = [SUViewController canPerformAction:sel_canPerformAction_withSender_ withSender:?];
   if (v7)
   {
-    if (sel_isEqual(a3, sel_storePage_finishedWithSuccess_) && (v8 = [(SUSplitViewController *)self nextResponder]) != 0)
+    if (sel_isEqual(action, sel_storePage_finishedWithSuccess_) && (v8 = [(SUSplitViewController *)self nextResponder]) != 0)
     {
       v9 = v8;
       do
       {
-        v10 = [v9 canPerformAction:a3 withSender:a4];
-        v11 = [v9 nextResponder];
-        if (!v11)
+        v10 = [v9 canPerformAction:action withSender:sender];
+        nextResponder = [v9 nextResponder];
+        if (!nextResponder)
         {
           break;
         }
 
-        v9 = v11;
+        v9 = nextResponder;
       }
 
       while (!v10);
@@ -148,45 +148,45 @@
 {
   v13.receiver = self;
   v13.super_class = SUSplitViewController;
-  v3 = [(SUViewController *)&v13 copyArchivableContext];
-  [v3 setType:5];
+  copyArchivableContext = [(SUViewController *)&v13 copyArchivableContext];
+  [copyArchivableContext setType:5];
   if (![(SUSplitViewController *)self shouldExcludeFromNavigationHistory])
   {
-    v4 = [(UIViewController *)self->_firstViewController copyArchivableContext];
-    v5 = v4;
-    if (v4 && [v4 type])
+    copyArchivableContext2 = [(UIViewController *)self->_firstViewController copyArchivableContext];
+    v5 = copyArchivableContext2;
+    if (copyArchivableContext2 && [copyArchivableContext2 type])
     {
-      [v3 setValue:v5 forMetadataKey:@"first"];
+      [copyArchivableContext setValue:v5 forMetadataKey:@"first"];
     }
 
-    v6 = [(UIViewController *)self->_secondViewController copyArchivableContext];
-    v7 = v6;
-    if (v6 && [v6 type])
+    copyArchivableContext3 = [(UIViewController *)self->_secondViewController copyArchivableContext];
+    v7 = copyArchivableContext3;
+    if (copyArchivableContext3 && [copyArchivableContext3 type])
     {
-      [v3 setValue:v7 forMetadataKey:@"second"];
+      [copyArchivableContext setValue:v7 forMetadataKey:@"second"];
     }
 
-    [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forMetadataKey:{"numberWithInteger:", -[SUSplitViewController layoutType](self, "layoutType")), @"layoutType"}];
-    [v3 setValue:-[SUSplitViewController mainTitle](self forMetadataKey:{"mainTitle"), @"mainTitle"}];
+    [copyArchivableContext setValue:objc_msgSend(MEMORY[0x1E696AD98] forMetadataKey:{"numberWithInteger:", -[SUSplitViewController layoutType](self, "layoutType")), @"layoutType"}];
+    [copyArchivableContext setValue:-[SUSplitViewController mainTitle](self forMetadataKey:{"mainTitle"), @"mainTitle"}];
     v8 = MEMORY[0x1E696AD98];
     [(SUSplitViewController *)self minimumPaneSize];
     *&v9 = v9;
-    [v3 setValue:objc_msgSend(v8 forMetadataKey:{"numberWithFloat:", v9), @"minPaneSize"}];
+    [copyArchivableContext setValue:objc_msgSend(v8 forMetadataKey:{"numberWithFloat:", v9), @"minPaneSize"}];
     v10 = MEMORY[0x1E696AD98];
     [(SUSplitViewController *)self splitPosition];
     *&v11 = v11;
-    [v3 setValue:objc_msgSend(v10 forMetadataKey:{"numberWithFloat:", v11), @"splitPosition"}];
-    [v3 setValue:-[SUSplitViewController splitShadow](self forMetadataKey:{"splitShadow"), @"shadow"}];
-    [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forMetadataKey:{"numberWithBool:", -[SUSplitViewController usesSharedPlaceholder](self, "usesSharedPlaceholder")), @"sharedLoading"}];
-    [v3 setValue:objc_msgSend(MEMORY[0x1E696AD98] forMetadataKey:{"numberWithBool:", -[SUSplitViewController isVertical](self, "isVertical")), @"vertical"}];
+    [copyArchivableContext setValue:objc_msgSend(v10 forMetadataKey:{"numberWithFloat:", v11), @"splitPosition"}];
+    [copyArchivableContext setValue:-[SUSplitViewController splitShadow](self forMetadataKey:{"splitShadow"), @"shadow"}];
+    [copyArchivableContext setValue:objc_msgSend(MEMORY[0x1E696AD98] forMetadataKey:{"numberWithBool:", -[SUSplitViewController usesSharedPlaceholder](self, "usesSharedPlaceholder")), @"sharedLoading"}];
+    [copyArchivableContext setValue:objc_msgSend(MEMORY[0x1E696AD98] forMetadataKey:{"numberWithBool:", -[SUSplitViewController isVertical](self, "isVertical")), @"vertical"}];
   }
 
-  return v3;
+  return copyArchivableContext;
 }
 
-- (id)copyChildViewControllersForReason:(int64_t)a3
+- (id)copyChildViewControllersForReason:(int64_t)reason
 {
-  if (a3 == 1)
+  if (reason == 1)
   {
     return 0;
   }
@@ -231,84 +231,84 @@
   v7.receiver = self;
   v7.super_class = SUSplitViewController;
   [(SUViewController *)&v7 loadView];
-  v3 = [(SUSplitViewController *)self view];
-  v4 = [(SUSplitViewController *)self _splitView];
-  [v3 bounds];
-  [v4 setFrame:?];
+  view = [(SUSplitViewController *)self view];
+  _splitView = [(SUSplitViewController *)self _splitView];
+  [view bounds];
+  [_splitView setFrame:?];
   [(SUSplitViewController *)self _reloadView];
-  [v3 addSubview:v4];
+  [view addSubview:_splitView];
   placeholderViewController = self->_placeholderViewController;
   if (placeholderViewController)
   {
-    v6 = [(SUPlaceholderViewController *)placeholderViewController view];
-    [v3 bounds];
-    [v6 setFrame:?];
-    [v3 addSubview:v6];
+    view2 = [(SUPlaceholderViewController *)placeholderViewController view];
+    [view bounds];
+    [view2 setFrame:?];
+    [view addSubview:view2];
   }
 }
 
-- (void)removeChildViewController:(id)a3
+- (void)removeChildViewController:(id)controller
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"SUViewControllerLoadingDidChangeNotification" object:a3];
-  [v5 removeObserver:self name:@"SUViewControllerNavigationItemDidChangeNotification" object:{objc_msgSend(a3, "navigationItem")}];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SUViewControllerLoadingDidChangeNotification" object:controller];
+  [defaultCenter removeObserver:self name:@"SUViewControllerNavigationItemDidChangeNotification" object:{objc_msgSend(controller, "navigationItem")}];
   v6.receiver = self;
   v6.super_class = SUSplitViewController;
-  [(SUSplitViewController *)&v6 removeChildViewController:a3];
+  [(SUSplitViewController *)&v6 removeChildViewController:controller];
 }
 
-- (void)restoreArchivableContext:(id)a3
+- (void)restoreArchivableContext:(id)context
 {
-  v5 = [a3 valueForMetadataKey:@"first"];
+  v5 = [context valueForMetadataKey:@"first"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 copyViewController];
-    [(SUSplitViewController *)self setFirstViewController:v6];
+    copyViewController = [v5 copyViewController];
+    [(SUSplitViewController *)self setFirstViewController:copyViewController];
   }
 
-  v7 = [a3 valueForMetadataKey:@"second"];
+  v7 = [context valueForMetadataKey:@"second"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 copyViewController];
-    [(SUSplitViewController *)self setSecondViewController:v8];
+    copyViewController2 = [v7 copyViewController];
+    [(SUSplitViewController *)self setSecondViewController:copyViewController2];
   }
 
-  v9 = [a3 valueForMetadataKey:@"layoutType"];
+  v9 = [context valueForMetadataKey:@"layoutType"];
   if (objc_opt_respondsToSelector())
   {
     -[SUSplitViewController setLayoutType:](self, "setLayoutType:", [v9 intValue]);
   }
 
-  v10 = [a3 valueForMetadataKey:@"mainTitle"];
+  v10 = [context valueForMetadataKey:@"mainTitle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUSplitViewController *)self setMainTitle:v10];
   }
 
-  v11 = [a3 valueForMetadataKey:@"splitPosition"];
+  v11 = [context valueForMetadataKey:@"splitPosition"];
   if (objc_opt_respondsToSelector())
   {
     [v11 floatValue];
     [(SUSplitViewController *)self setSplitPosition:v12];
   }
 
-  v13 = [a3 valueForMetadataKey:@"shadow"];
+  v13 = [context valueForMetadataKey:@"shadow"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUSplitViewController *)self setSplitShadow:v13];
   }
 
-  v14 = [a3 valueForMetadataKey:@"sharedLoading"];
+  v14 = [context valueForMetadataKey:@"sharedLoading"];
   if (objc_opt_respondsToSelector())
   {
     -[SUSplitViewController setUsesSharedPlaceholder:](self, "setUsesSharedPlaceholder:", [v14 BOOLValue]);
   }
 
-  v15 = [a3 valueForMetadataKey:@"vertical"];
+  v15 = [context valueForMetadataKey:@"vertical"];
   if (objc_opt_respondsToSelector())
   {
     -[SUSplitViewController setVertical:](self, "setVertical:", [v15 BOOLValue]);
@@ -316,19 +316,19 @@
 
   v16.receiver = self;
   v16.super_class = SUSplitViewController;
-  [(SUViewController *)&v16 restoreArchivableContext:a3];
+  [(SUViewController *)&v16 restoreArchivableContext:context];
 }
 
-- (void)setSkLoading:(BOOL)a3
+- (void)setSkLoading:(BOOL)loading
 {
-  v3 = a3;
-  if ([(SUSplitViewController *)self isSkLoaded]!= a3)
+  loadingCopy = loading;
+  if ([(SUSplitViewController *)self isSkLoaded]!= loading)
   {
     v5.receiver = self;
     v5.super_class = SUSplitViewController;
-    [(SUViewController *)&v5 setSkLoading:v3];
-    [(SUSplitViewController *)self _setPlaceholderVisible:v3];
-    [(SUPlaceholderViewController *)self->_placeholderViewController setSkLoading:v3];
+    [(SUViewController *)&v5 setSkLoading:loadingCopy];
+    [(SUSplitViewController *)self _setPlaceholderVisible:loadingCopy];
+    [(SUPlaceholderViewController *)self->_placeholderViewController setSkLoading:loadingCopy];
   }
 }
 
@@ -356,18 +356,18 @@
   return [(SURotationController *)v3 initWithViewController:self];
 }
 
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4
+- (void)reloadWithStorePage:(id)page forURL:(id)l
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = objc_alloc_init(SUStructuredPage);
-    if ([(SUStructuredPage *)v8 loadFromDictionary:a3])
+    if ([(SUStructuredPage *)v8 loadFromDictionary:page])
     {
-      [(SUSplitViewController *)self setDisplayedURL:a4];
+      [(SUSplitViewController *)self setDisplayedURL:l];
       [(SUSplitViewController *)self setMainTitle:[(SUStructuredPage *)v8 title]];
       [(SUSplitViewController *)self _setStructuredPage:v8];
-      [(SUSplitViewController *)self _reloadWithStorePageDictionary:a3];
+      [(SUSplitViewController *)self _reloadWithStorePageDictionary:page];
     }
 
     v7 = v8;
@@ -379,7 +379,7 @@
   }
 }
 
-+ (BOOL)isValidSplitPositionValue:(id)a3
++ (BOOL)isValidSplitPositionValue:(id)value
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -394,7 +394,7 @@
     return v4;
   }
 
-  if (([a3 isEqualToString:@"first"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"second") & 1) != 0 || (objc_msgSend(a3, "hasSuffix:", @"px") & 1) != 0 || (v4 = objc_msgSend(a3, "hasSuffix:", @"%")) != 0)
+  if (([value isEqualToString:@"first"] & 1) != 0 || (objc_msgSend(value, "isEqualToString:", @"second") & 1) != 0 || (objc_msgSend(value, "hasSuffix:", @"px") & 1) != 0 || (v4 = objc_msgSend(value, "hasSuffix:", @"%")) != 0)
   {
 LABEL_2:
     LOBYTE(v4) = 1;
@@ -403,7 +403,7 @@ LABEL_2:
   return v4;
 }
 
-+ (BOOL)isValidSplitTypeString:(id)a3
++ (BOOL)isValidSplitTypeString:(id)string
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -411,52 +411,52 @@ LABEL_2:
     return 0;
   }
 
-  if ([a3 isEqualToString:@"horizontal"])
+  if ([string isEqualToString:@"horizontal"])
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"vertical"];
+  return [string isEqualToString:@"vertical"];
 }
 
-- (void)setSplitPositionAndLayoutTypeFromValue:(id)a3
+- (void)setSplitPositionAndLayoutTypeFromValue:(id)value
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = a3;
+    valueCopy = value;
   }
 
   else
   {
-    if ([a3 isEqualToString:@"first"])
+    if ([value isEqualToString:@"first"])
     {
       v7 = 2;
       goto LABEL_9;
     }
 
-    if ([a3 isEqualToString:@"second"])
+    if ([value isEqualToString:@"second"])
     {
       v7 = 3;
       goto LABEL_9;
     }
 
-    if (![a3 hasSuffix:@"px"])
+    if (![value hasSuffix:@"px"])
     {
-      if (![a3 hasSuffix:@"%"])
+      if (![value hasSuffix:@"%"])
       {
         return;
       }
 
-      v6 = [objc_msgSend(a3 substringToIndex:{objc_msgSend(a3, "length") - 1), "intValue"}] / 100.0;
+      v6 = [objc_msgSend(value substringToIndex:{objc_msgSend(value, "length") - 1), "intValue"}] / 100.0;
       v7 = 1;
       goto LABEL_4;
     }
 
-    v5 = [a3 substringToIndex:{objc_msgSend(a3, "length") - 2}];
+    valueCopy = [value substringToIndex:{objc_msgSend(value, "length") - 2}];
   }
 
-  [v5 floatValue];
+  [valueCopy floatValue];
   v7 = 0;
 LABEL_4:
   [(SUSplitViewController *)self setSplitPosition:v6];
@@ -465,13 +465,13 @@ LABEL_9:
   [(SUSplitViewController *)self setLayoutType:v7];
 }
 
-- (void)setSplitTypeString:(id)a3
+- (void)setSplitTypeString:(id)string
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 isEqualToString:@"horizontal"];
-    if ((v5 & 1) != 0 || [a3 isEqualToString:@"vertical"])
+    v5 = [string isEqualToString:@"horizontal"];
+    if ((v5 & 1) != 0 || [string isEqualToString:@"vertical"])
     {
 
       [(SUSplitViewController *)self setVertical:v5 ^ 1u];
@@ -481,16 +481,16 @@ LABEL_9:
 
 - (id)splitPositionString
 {
-  v3 = [(SUSplitViewController *)self layoutType];
-  if (v3 > 1)
+  layoutType = [(SUSplitViewController *)self layoutType];
+  if (layoutType > 1)
   {
     v7 = @"first";
-    if (v3 != 2)
+    if (layoutType != 2)
     {
       v7 = 0;
     }
 
-    if (v3 == 3)
+    if (layoutType == 3)
     {
       return @"second";
     }
@@ -501,9 +501,9 @@ LABEL_9:
     }
   }
 
-  else if (v3)
+  else if (layoutType)
   {
-    if (v3 == 1)
+    if (layoutType == 1)
     {
       v4 = MEMORY[0x1E696AEC0];
       [(SUSplitViewController *)self splitPosition];
@@ -539,108 +539,108 @@ LABEL_9:
 
 - (BOOL)isVertical
 {
-  v2 = [(SUSplitViewController *)self _splitView];
+  _splitView = [(SUSplitViewController *)self _splitView];
 
-  return [v2 isVertical];
+  return [_splitView isVertical];
 }
 
 - (int64_t)layoutType
 {
-  v2 = [(SUSplitViewController *)self _splitView];
+  _splitView = [(SUSplitViewController *)self _splitView];
 
-  return [v2 layoutType];
+  return [_splitView layoutType];
 }
 
 - (double)minimumPaneSize
 {
-  v2 = [(SUSplitViewController *)self _splitView];
+  _splitView = [(SUSplitViewController *)self _splitView];
 
-  [v2 minimumPaneSize];
+  [_splitView minimumPaneSize];
   return result;
 }
 
-- (void)setLayoutType:(int64_t)a3
+- (void)setLayoutType:(int64_t)type
 {
-  v4 = [(SUSplitViewController *)self _splitView];
+  _splitView = [(SUSplitViewController *)self _splitView];
 
-  [v4 setLayoutType:a3];
+  [_splitView setLayoutType:type];
 }
 
-- (void)setMainTitle:(id)a3
+- (void)setMainTitle:(id)title
 {
   mainTitle = self->_mainTitle;
-  if (mainTitle != a3)
+  if (mainTitle != title)
   {
 
-    self->_mainTitle = a3;
+    self->_mainTitle = title;
 
     [(SUSplitViewController *)self _reloadTitle];
   }
 }
 
-- (void)setMinimumPaneSize:(double)a3
+- (void)setMinimumPaneSize:(double)size
 {
-  v4 = [(SUSplitViewController *)self _splitView];
+  _splitView = [(SUSplitViewController *)self _splitView];
 
-  [v4 setMinimumPaneSize:a3];
+  [_splitView setMinimumPaneSize:size];
 }
 
-- (void)setSplitPosition:(double)a3
+- (void)setSplitPosition:(double)position
 {
-  v4 = [(SUSplitViewController *)self _splitView];
+  _splitView = [(SUSplitViewController *)self _splitView];
 
-  [v4 setSplitPosition:a3];
+  [_splitView setSplitPosition:position];
 }
 
-- (void)setSplitShadow:(id)a3
+- (void)setSplitShadow:(id)shadow
 {
   splitShadow = self->_splitShadow;
-  if (splitShadow != a3)
+  if (splitShadow != shadow)
   {
 
-    self->_splitShadow = [a3 copy];
+    self->_splitShadow = [shadow copy];
 
     [(SUSplitViewController *)self _reloadView];
   }
 }
 
-- (void)setUsesSharedPlaceholder:(BOOL)a3
+- (void)setUsesSharedPlaceholder:(BOOL)placeholder
 {
-  if (self->_usesSharedPlaceholder != a3)
+  if (self->_usesSharedPlaceholder != placeholder)
   {
-    self->_usesSharedPlaceholder = a3;
+    self->_usesSharedPlaceholder = placeholder;
     [(SUSplitViewController *)self _reloadLoadingState];
   }
 }
 
-- (void)setVertical:(BOOL)a3
+- (void)setVertical:(BOOL)vertical
 {
-  v3 = a3;
-  v4 = [(SUSplitViewController *)self _splitView];
+  verticalCopy = vertical;
+  _splitView = [(SUSplitViewController *)self _splitView];
 
-  [v4 setVertical:v3];
+  [_splitView setVertical:verticalCopy];
 }
 
 - (double)splitPosition
 {
-  v2 = [(SUSplitViewController *)self _splitView];
+  _splitView = [(SUSplitViewController *)self _splitView];
 
-  [v2 splitPosition];
+  [_splitView splitPosition];
   return result;
 }
 
-- (void)storePage:(id)a3 finishedWithSuccess:(BOOL)a4
+- (void)storePage:(id)page finishedWithSuccess:(BOOL)success
 {
-  if (!a4)
+  if (!success)
   {
     [(UIViewController *)self dismissAnimated:1];
   }
 }
 
-- (void)_loadingDidChangeNotification:(id)a3
+- (void)_loadingDidChangeNotification:(id)notification
 {
-  v4 = [a3 object];
-  if (v4 == self->_firstViewController || v4 == self->_secondViewController)
+  object = [notification object];
+  if (object == self->_firstViewController || object == self->_secondViewController)
   {
     if (([(SUSplitViewController *)self layoutType]& 0xFFFFFFFFFFFFFFFELL) == 2)
     {
@@ -651,30 +651,30 @@ LABEL_9:
   }
 }
 
-- (void)_navigationItemDidChangeNotification:(id)a3
+- (void)_navigationItemDidChangeNotification:(id)notification
 {
-  v4 = [a3 object];
-  if (v4 == [(UIViewController *)self->_firstViewController navigationItem]|| v4 == [(UIViewController *)self->_secondViewController navigationItem])
+  object = [notification object];
+  if (object == [(UIViewController *)self->_firstViewController navigationItem]|| object == [(UIViewController *)self->_secondViewController navigationItem])
   {
 
     [(SUSplitViewController *)self _reloadTitle];
   }
 }
 
-- (id)_newGradientWithValue:(id)a3
+- (id)_newGradientWithValue:(id)value
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [SUGradient alloc];
 
-    return [(SUGradient *)v4 initWithPropertyList:a3];
+    return [(SUGradient *)v4 initWithPropertyList:value];
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = [objc_alloc(MEMORY[0x1E69DC888]) initWithStyleString:a3]) != 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = [objc_alloc(MEMORY[0x1E69DC888]) initWithStyleString:value]) != 0)
     {
       v7 = v6;
       v8 = [SUGradient gradientWithColor:v6];
@@ -689,33 +689,33 @@ LABEL_9:
   }
 }
 
-- (id)_newViewControllerFromDictionary:(id)a3
+- (id)_newViewControllerFromDictionary:(id)dictionary
 {
   v5 = [-[SUViewController viewControllerFactory](self "viewControllerFactory")];
   [v5 setClientInterface:{-[SUViewController clientInterface](self, "clientInterface")}];
-  v6 = [v5 copyScriptProperties];
-  v7 = [a3 objectForKey:@"loads-progressively"];
+  copyScriptProperties = [v5 copyScriptProperties];
+  v7 = [dictionary objectForKey:@"loads-progressively"];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  [v6 setShouldLoadProgressively:v8];
-  v9 = [a3 objectForKey:@"scrolling-enabled"];
+  [copyScriptProperties setShouldLoadProgressively:bOOLValue];
+  v9 = [dictionary objectForKey:@"scrolling-enabled"];
   if (objc_opt_respondsToSelector())
   {
-    [v6 setScrollingDisabled:{objc_msgSend(v9, "BOOLValue") ^ 1}];
+    [copyScriptProperties setScrollingDisabled:{objc_msgSend(v9, "BOOLValue") ^ 1}];
   }
 
-  v10 = -[SUSplitViewController _newGradientWithValue:](self, "_newGradientWithValue:", [a3 objectForKey:@"background-color"]);
-  [v6 setPlaceholderBackgroundGradient:v10];
+  v10 = -[SUSplitViewController _newGradientWithValue:](self, "_newGradientWithValue:", [dictionary objectForKey:@"background-color"]);
+  [copyScriptProperties setPlaceholderBackgroundGradient:v10];
 
-  [v5 setScriptProperties:v6];
+  [v5 setScriptProperties:copyScriptProperties];
   return v5;
 }
 
@@ -740,8 +740,8 @@ LABEL_9:
   }
 
   [(SUSplitViewController *)self setSkLoading:v3];
-  v4 = [(SUSplitViewController *)self viewIsReady];
-  if ((v3 & 1) == 0 && !v4)
+  viewIsReady = [(SUSplitViewController *)self viewIsReady];
+  if ((v3 & 1) == 0 && !viewIsReady)
   {
     [(SUSplitViewController *)self _reloadView];
 
@@ -751,8 +751,8 @@ LABEL_9:
 
 - (void)_reloadTitle
 {
-  v3 = [(SUSplitViewController *)self mainTitle];
-  if (!v3)
+  mainTitle = [(SUSplitViewController *)self mainTitle];
+  if (!mainTitle)
   {
     firstViewController = self->_firstViewController;
     if (!firstViewController)
@@ -760,27 +760,27 @@ LABEL_9:
       firstViewController = self->_secondViewController;
     }
 
-    v3 = [(UINavigationItem *)[(UIViewController *)firstViewController navigationItem] title];
+    mainTitle = [(UINavigationItem *)[(UIViewController *)firstViewController navigationItem] title];
   }
 
-  [(SUViewController *)self setTitle:v3];
+  [(SUViewController *)self setTitle:mainTitle];
 }
 
 - (void)_reloadView
 {
-  v3 = [(SUSplitViewController *)self _splitView];
-  v4 = [(SUSplitViewController *)self layoutType];
-  if (v4 == 3)
+  _splitView = [(SUSplitViewController *)self _splitView];
+  layoutType = [(SUSplitViewController *)self layoutType];
+  if (layoutType == 3)
   {
-    [v3 bounds];
+    [_splitView bounds];
     v11 = v10;
     v13 = v12;
     [(UIViewController *)self->_secondViewController minimumViewSize];
     v15 = v14;
     v17 = v16;
-    v18 = [(SUSplitViewController *)self isVertical];
+    isVertical = [(SUSplitViewController *)self isVertical];
     v9 = v11 - v15;
-    if (v18)
+    if (isVertical)
     {
       v9 = v13 - v17;
     }
@@ -788,7 +788,7 @@ LABEL_9:
 
   else
   {
-    if (v4 != 2)
+    if (layoutType != 2)
     {
       goto LABEL_9;
     }
@@ -807,14 +807,14 @@ LABEL_9:
     }
   }
 
-  [v3 setSplitPosition:v9];
+  [_splitView setSplitPosition:v9];
 LABEL_9:
-  v19 = [(UIViewController *)self->_firstViewController view];
-  v20 = [(UIViewController *)self->_secondViewController view];
-  [v3 setFirstView:v19];
-  [v3 setSecondView:v20];
-  [(CALayer *)[(UIView *)v19 layer] setShadowOpacity:0.0];
-  [(CALayer *)[(UIView *)v20 layer] setShadowOpacity:0.0];
+  view = [(UIViewController *)self->_firstViewController view];
+  view2 = [(UIViewController *)self->_secondViewController view];
+  [_splitView setFirstView:view];
+  [_splitView setSecondView:view2];
+  [(CALayer *)[(UIView *)view layer] setShadowOpacity:0.0];
+  [(CALayer *)[(UIView *)view2 layer] setShadowOpacity:0.0];
   splitShadow = self->_splitShadow;
   if (!splitShadow)
   {
@@ -830,32 +830,32 @@ LABEL_9:
       goto LABEL_14;
     }
 
-    v19 = v20;
+    view = view2;
   }
 
-  [v3 bringSubviewToFront:v19];
-  [(SUShadow *)self->_splitShadow applyToLayer:[(UIView *)v19 layer]];
+  [_splitView bringSubviewToFront:view];
+  [(SUShadow *)self->_splitShadow applyToLayer:[(UIView *)view layer]];
 LABEL_14:
 
-  [v3 layoutIfNeeded];
+  [_splitView layoutIfNeeded];
 }
 
-- (void)_reloadViewController:(id)a3 fromDictionary:(id)a4
+- (void)_reloadViewController:(id)controller fromDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = [a4 objectForKey:@"contents"];
+  v7 = [dictionary objectForKey:@"contents"];
   if (!v7)
   {
     return;
   }
 
   v8 = v7;
-  v9 = [a4 objectForKey:@"type"];
+  v9 = [dictionary objectForKey:@"type"];
   if (!v9 || (v10 = v9, [v9 isEqualToString:@"html-section"]))
   {
-    v11 = [(SUSplitViewController *)self displayedURL];
+    displayedURL = [(SUSplitViewController *)self displayedURL];
 
-    [a3 reloadWithStorePage:v8 ofType:1 forURL:v11];
+    [controller reloadWithStorePage:v8 ofType:1 forURL:displayedURL];
     return;
   }
 
@@ -878,7 +878,7 @@ LABEL_29:
         {
           v24 = objc_alloc_init(SUStructuredPage);
           [(SUStructuredPage *)v24 loadFromDictionary:v8];
-          [a3 reloadWithStorePage:v24 ofType:0 forURL:{-[SUSplitViewController displayedURL](self, "displayedURL")}];
+          [controller reloadWithStorePage:v24 ofType:0 forURL:{-[SUSplitViewController displayedURL](self, "displayedURL")}];
         }
 
         return;
@@ -889,19 +889,19 @@ LABEL_29:
     v8 = [MEMORY[0x1E696AE40] propertyListWithData:v12 options:0 format:0 error:&v26];
     if (v26)
     {
-      v18 = [MEMORY[0x1E69D4938] sharedConfig];
-      v19 = [v18 shouldLog];
-      if ([v18 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v20 = v19 | 2;
+        v20 = shouldLog | 2;
       }
 
       else
       {
-        v20 = v19;
+        v20 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v20 &= 2u;
       }
@@ -928,19 +928,19 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v13 = [MEMORY[0x1E69D4938] sharedConfig];
-  v14 = [v13 shouldLog];
-  if ([v13 shouldLogToDisk])
+  mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+  if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog2 | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog2;
   }
 
-  if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v15 &= 2u;
   }
@@ -963,24 +963,24 @@ LABEL_29:
   }
 }
 
-- (void)_reloadWithStorePageDictionary:(id)a3
+- (void)_reloadWithStorePageDictionary:(id)dictionary
 {
-  -[SUSplitViewController setSplitPositionAndLayoutTypeFromValue:](self, "setSplitPositionAndLayoutTypeFromValue:", [a3 objectForKey:@"split-position"]);
-  -[SUSplitViewController setSplitTypeString:](self, "setSplitTypeString:", [a3 objectForKey:@"split-type"]);
+  -[SUSplitViewController setSplitPositionAndLayoutTypeFromValue:](self, "setSplitPositionAndLayoutTypeFromValue:", [dictionary objectForKey:@"split-position"]);
+  -[SUSplitViewController setSplitTypeString:](self, "setSplitTypeString:", [dictionary objectForKey:@"split-type"]);
 
-  self->_placeholderGradient = -[SUSplitViewController _newGradientWithValue:](self, "_newGradientWithValue:", [a3 objectForKey:@"background-color"]);
+  self->_placeholderGradient = -[SUSplitViewController _newGradientWithValue:](self, "_newGradientWithValue:", [dictionary objectForKey:@"background-color"]);
   if ([(SUStorePageProtocol *)[(SUStructuredPage *)self->_structuredPage protocol] shouldDisplayInOverlay])
   {
-    v5 = [(SUSplitViewController *)self view];
-    [v5 frame];
+    view = [(SUSplitViewController *)self view];
+    [view frame];
     v7 = v6;
     v9 = v8;
     +[SUOverlayViewController defaultOverlaySize];
-    [v5 setFrame:{v7, v9, v10, v11}];
+    [view setFrame:{v7, v9, v10, v11}];
   }
 
   [(SUSplitViewController *)self setViewIsReady:0];
-  v12 = [a3 objectForKey:@"first-section"];
+  v12 = [dictionary objectForKey:@"first-section"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -989,7 +989,7 @@ LABEL_29:
     [(SUSplitViewController *)self _reloadViewController:v13 fromDictionary:v12];
   }
 
-  v14 = [a3 objectForKey:@"second-section"];
+  v14 = [dictionary objectForKey:@"second-section"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1001,10 +1001,10 @@ LABEL_29:
   [(SUSplitViewController *)self _reloadLoadingState];
 }
 
-- (void)_setPlaceholderVisible:(BOOL)a3
+- (void)_setPlaceholderVisible:(BOOL)visible
 {
   placeholderViewController = self->_placeholderViewController;
-  if (a3)
+  if (visible)
   {
     if (!placeholderViewController)
     {
@@ -1015,12 +1015,12 @@ LABEL_29:
       [(SUSplitViewController *)self addChildViewController:self->_placeholderViewController];
       if ([(SUSplitViewController *)self isViewLoaded])
       {
-        v6 = [(SUSplitViewController *)self view];
+        view = [(SUSplitViewController *)self view];
         [(SUViewController *)self->_placeholderViewController viewWillAppear:0];
-        v7 = [(SUPlaceholderViewController *)self->_placeholderViewController view];
-        [v6 bounds];
-        [v7 setFrame:?];
-        [v6 addSubview:v7];
+        view2 = [(SUPlaceholderViewController *)self->_placeholderViewController view];
+        [view bounds];
+        [view2 setFrame:?];
+        [view addSubview:view2];
         v8 = self->_placeholderViewController;
 
         [(SUViewController *)v8 viewDidAppear:0];
@@ -1046,25 +1046,25 @@ LABEL_29:
   }
 }
 
-- (void)_setStructuredPage:(id)a3
+- (void)_setStructuredPage:(id)page
 {
   structuredPage = self->_structuredPage;
-  if (structuredPage != a3)
+  if (structuredPage != page)
   {
 
-    self->_structuredPage = a3;
+    self->_structuredPage = page;
 
     [(SUViewController *)self storePageProtocolDidChange];
   }
 }
 
-- (void)_setViewController:(id *)a3 toValue:(id)a4
+- (void)_setViewController:(id *)controller toValue:(id)value
 {
-  if (*a3 != a4)
+  if (*controller != value)
   {
-    v8 = *a3;
+    v8 = *controller;
 
-    *a3 = a4;
+    *controller = value;
     if (v8)
     {
       [(SUSplitViewController *)self removeChildViewController:v8];
@@ -1073,13 +1073,13 @@ LABEL_29:
     if ([(SUSplitViewController *)self isViewLoaded])
     {
       [v8 viewWillDisappear:0];
-      [*a3 viewWillAppear:0];
+      [*controller viewWillAppear:0];
       [(SUSplitViewController *)self _reloadView];
-      [*a3 viewDidAppear:0];
+      [*controller viewDidAppear:0];
       [v8 viewDidDisappear:0];
     }
 
-    if (*a3)
+    if (*controller)
     {
       [(SUSplitViewController *)self addChildViewController:?];
     }

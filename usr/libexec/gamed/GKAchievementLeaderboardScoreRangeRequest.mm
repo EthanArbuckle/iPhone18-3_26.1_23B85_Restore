@@ -1,14 +1,14 @@
 @interface GKAchievementLeaderboardScoreRangeRequest
-- (id)serverRequestWithService:(id)a3;
+- (id)serverRequestWithService:(id)service;
 @end
 
 @implementation GKAchievementLeaderboardScoreRangeRequest
 
-- (id)serverRequestWithService:(id)a3
+- (id)serverRequestWithService:(id)service
 {
   v10[0] = @"player-scope";
-  v4 = [(GKAchievementLeaderboardScoreRangeRequest *)self serverPlayerScope];
-  v11[0] = v4;
+  serverPlayerScope = [(GKAchievementLeaderboardScoreRangeRequest *)self serverPlayerScope];
+  v11[0] = serverPlayerScope;
   v10[1] = @"count";
   [(GKAchievementLeaderboardScoreRangeRequest *)self range];
   v6 = [NSNumber numberWithInteger:v5];

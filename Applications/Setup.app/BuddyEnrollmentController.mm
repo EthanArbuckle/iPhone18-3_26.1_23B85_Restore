@@ -1,19 +1,19 @@
 @interface BuddyEnrollmentController
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyEnrollmentController
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyEnrollmentFlowItem *)v6 enrollmentCoordinator];
-  [(BuddyEnrollmentCoordinator *)v3 restoreChoiceWasNotRestore];
+  objc_storeStrong(location, completion);
+  enrollmentCoordinator = [(BuddyEnrollmentFlowItem *)selfCopy enrollmentCoordinator];
+  [(BuddyEnrollmentCoordinator *)enrollmentCoordinator restoreChoiceWasNotRestore];
 
-  v4.receiver = v6;
+  v4.receiver = selfCopy;
   v4.super_class = BuddyEnrollmentController;
   [(BuddyEnrollmentFlowItem *)&v4 performExtendedInitializationWithCompletion:location[0]];
   objc_storeStrong(location, 0);

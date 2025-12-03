@@ -1,43 +1,43 @@
 @interface CKContactBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKContactBalloonView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKContactBalloonView)initWithFrame:(CGRect)frame;
 - (NSString)description;
-- (id)_truncateNameIfNeeded:(id)a3;
+- (id)_truncateNameIfNeeded:(id)needed;
 - (id)traitMutationsForSnapshotRendering;
-- (void)configureForComposition:(id)a3;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5;
-- (void)configureForMessagePart:(id)a3;
-- (void)insertHighlightOverlayLayer:(id)a3;
+- (void)configureForComposition:(id)composition;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation;
+- (void)configureForMessagePart:(id)part;
+- (void)insertHighlightOverlayLayer:(id)layer;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setMediaObject:(id)a3;
+- (void)setMediaObject:(id)object;
 @end
 
 @implementation CKContactBalloonView
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation
 {
-  v5 = a5;
+  orientationCopy = orientation;
   v9.receiver = self;
   v9.super_class = CKContactBalloonView;
-  v8 = a3;
-  [(CKBalloonView *)&v9 configureForMediaObject:v8 previewWidth:v5 orientation:a4];
-  [(CKContactBalloonView *)self setMediaObject:v8, v9.receiver, v9.super_class];
+  objectCopy = object;
+  [(CKBalloonView *)&v9 configureForMediaObject:objectCopy previewWidth:orientationCopy orientation:width];
+  [(CKContactBalloonView *)self setMediaObject:objectCopy, v9.receiver, v9.super_class];
 }
 
-- (void)configureForComposition:(id)a3
+- (void)configureForComposition:(id)composition
 {
   v8.receiver = self;
   v8.super_class = CKContactBalloonView;
-  v4 = a3;
-  [(CKColoredBalloonView *)&v8 configureForComposition:v4];
-  v5 = [v4 mediaObjects];
+  compositionCopy = composition;
+  [(CKColoredBalloonView *)&v8 configureForComposition:compositionCopy];
+  mediaObjects = [compositionCopy mediaObjects];
 
-  v6 = [v5 lastObject];
+  lastObject = [mediaObjects lastObject];
   v7 = +[CKUIBehavior sharedBehaviors];
   [v7 previewMaxWidth];
-  [(CKContactBalloonView *)self configureForMediaObject:v6 previewWidth:1 orientation:?];
+  [(CKContactBalloonView *)self configureForMediaObject:lastObject previewWidth:1 orientation:?];
 }
 
 - (NSString)description
@@ -46,20 +46,20 @@
   v11.receiver = self;
   v11.super_class = CKContactBalloonView;
   v4 = [(CKColoredBalloonView *)&v11 description];
-  v5 = [(CKContactBalloonView *)self nameLabel];
-  v6 = [v5 text];
-  v7 = [(CKContactBalloonView *)self organizationLabel];
-  v8 = [v7 text];
-  v9 = [v3 stringWithFormat:@"%@ name:%@ organization:%@", v4, v6, v8];
+  nameLabel = [(CKContactBalloonView *)self nameLabel];
+  text = [nameLabel text];
+  organizationLabel = [(CKContactBalloonView *)self organizationLabel];
+  text2 = [organizationLabel text];
+  v9 = [v3 stringWithFormat:@"%@ name:%@ organization:%@", v4, text, text2];
 
   return v9;
 }
 
-- (CKContactBalloonView)initWithFrame:(CGRect)a3
+- (CKContactBalloonView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = CKContactBalloonView;
-  v3 = [(CKColoredBalloonView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKColoredBalloonView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -111,20 +111,20 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKContactBalloonView *)self _shouldReverseLayoutDirection];
-  v12 = [(CKContactBalloonView *)self contactImageView];
+  _shouldReverseLayoutDirection = [(CKContactBalloonView *)self _shouldReverseLayoutDirection];
+  contactImageView = [(CKContactBalloonView *)self contactImageView];
   if ([objc_opt_class() canShowChevron])
   {
-    v13 = [(CKContactBalloonView *)self chevron];
-    v14 = [v13 image];
-    [v14 size];
+    chevron = [(CKContactBalloonView *)self chevron];
+    image = [chevron image];
+    [image size];
     v16 = v15;
 
     v17 = v4;
     v18 = v6;
     v19 = v8;
     v20 = v10;
-    if (v11)
+    if (_shouldReverseLayoutDirection)
     {
       MinX = CGRectGetMinX(*&v17);
     }
@@ -134,8 +134,8 @@
       MinX = CGRectGetMaxX(*&v17) - v16;
     }
 
-    [v13 setFrame:{MinX, v6, v16, v10}];
-    if (v11)
+    [chevron setFrame:{MinX, v6, v16, v10}];
+    if (_shouldReverseLayoutDirection)
     {
       v52.origin.x = MinX;
       v52.origin.y = v6;
@@ -160,7 +160,7 @@
     v23 = v6;
     v24 = v8;
     v25 = v10;
-    if (v11)
+    if (_shouldReverseLayoutDirection)
     {
       v26 = CGRectGetMinX(*&v22);
     }
@@ -171,10 +171,10 @@
     }
   }
 
-  [v12 setFrame:{v26, v6, 38.0, v10}];
-  v29 = [(CKContactBalloonView *)self nameLabel];
-  v30 = [(CKContactBalloonView *)self organizationLabel];
-  if (v11)
+  [contactImageView setFrame:{v26, v6, 38.0, v10}];
+  nameLabel = [(CKContactBalloonView *)self nameLabel];
+  organizationLabel = [(CKContactBalloonView *)self organizationLabel];
+  if (_shouldReverseLayoutDirection)
   {
     v53.origin.x = v4;
     v53.origin.y = v6;
@@ -210,22 +210,22 @@
     v35 = v4 + 0.0;
   }
 
-  [v29 setFrame:{v35, v6, v32, v10}];
-  [v30 setFrame:{v35, v6, v32, v10}];
-  v36 = [v30 text];
-  v37 = [v36 length];
+  [nameLabel setFrame:{v35, v6, v32, v10}];
+  [organizationLabel setFrame:{v35, v6, v32, v10}];
+  text = [organizationLabel text];
+  v37 = [text length];
 
   if (v37)
   {
-    v38 = [v30 font];
-    [v38 _bodyLeading];
+    font = [organizationLabel font];
+    [font _bodyLeading];
     v40 = v39 * 0.59375;
 
-    v41 = [v29 font];
-    [v41 capHeight];
+    font2 = [nameLabel font];
+    [font2 capHeight];
     v43 = v40 + v42;
-    v44 = [v30 font];
-    [v44 capHeight];
+    font3 = [organizationLabel font];
+    [font3 capHeight];
     v46 = v43 + v45;
     if (CKMainScreenScale_once_40 != -1)
     {
@@ -252,12 +252,12 @@
     }
 
     v50 = floor((v6 + (v10 - v48) * 0.5) * v49) / v49;
-    [v29 _setFirstLineCapFrameOriginY:v50];
+    [nameLabel _setFirstLineCapFrameOriginY:v50];
     v58.origin.x = v33;
     v58.origin.y = v50;
     v58.size.width = v32;
     v58.size.height = v48;
-    [v30 _setLastLineBaselineFrameOriginY:CGRectGetMaxY(v58)];
+    [organizationLabel _setLastLineBaselineFrameOriginY:CGRectGetMaxY(v58)];
   }
 }
 
@@ -265,13 +265,13 @@
 {
   v9.receiver = self;
   v9.super_class = CKContactBalloonView;
-  v2 = [(CKBalloonView *)&v9 traitMutationsForSnapshotRendering];
+  traitMutationsForSnapshotRendering = [(CKBalloonView *)&v9 traitMutationsForSnapshotRendering];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__CKContactBalloonView_traitMutationsForSnapshotRendering__block_invoke;
   aBlock[3] = &unk_1E72F0828;
-  v8 = v2;
-  v3 = v2;
+  v8 = traitMutationsForSnapshotRendering;
+  v3 = traitMutationsForSnapshotRendering;
   v4 = _Block_copy(aBlock);
   v5 = _Block_copy(v4);
 
@@ -292,11 +292,11 @@ void __58__CKContactBalloonView_traitMutationsForSnapshotRendering__block_invoke
   v5.receiver = self;
   v5.super_class = CKContactBalloonView;
   [(CKColoredBalloonView *)&v5 prepareForReuse];
-  v3 = [(CKContactBalloonView *)self chevron];
-  [v3 setHidden:0];
+  chevron = [(CKContactBalloonView *)self chevron];
+  [chevron setHidden:0];
 
-  v4 = [(CKContactBalloonView *)self nameLabel];
-  [v4 setText:0];
+  nameLabel = [(CKContactBalloonView *)self nameLabel];
+  [nameLabel setText:0];
 }
 
 - (void)prepareForDisplay
@@ -304,45 +304,45 @@ void __58__CKContactBalloonView_traitMutationsForSnapshotRendering__block_invoke
   v18.receiver = self;
   v18.super_class = CKContactBalloonView;
   [(CKColoredBalloonView *)&v18 prepareForDisplay];
-  v3 = [(CKContactBalloonView *)self mediaObject];
+  mediaObject = [(CKContactBalloonView *)self mediaObject];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 theme];
-  v6 = [v5 balloonTextColorForColorType:{-[CKBalloonView color](self, "color")}];
+  theme = [v4 theme];
+  v6 = [theme balloonTextColorForColorType:{-[CKBalloonView color](self, "color")}];
 
-  v7 = [(CKContactBalloonView *)self chevron];
+  chevron = [(CKContactBalloonView *)self chevron];
   v8 = +[CKUIBehavior sharedBehaviors];
   v9 = [v8 chevronImageForColorType:{-[CKBalloonView color](self, "color")}];
-  [v7 setImage:v9];
+  [chevron setImage:v9];
 
-  v10 = [(CKContactBalloonView *)self contactImageView];
-  v11 = [v3 icon];
-  [v10 setImage:v11];
+  contactImageView = [(CKContactBalloonView *)self contactImageView];
+  icon = [mediaObject icon];
+  [contactImageView setImage:icon];
 
-  v12 = [(CKContactBalloonView *)self nameLabel];
-  v13 = [v3 title];
-  v14 = [(CKContactBalloonView *)self _truncateNameIfNeeded:v13];
+  nameLabel = [(CKContactBalloonView *)self nameLabel];
+  title = [mediaObject title];
+  v14 = [(CKContactBalloonView *)self _truncateNameIfNeeded:title];
 
-  [v12 setText:v14];
-  [v12 setTextColor:v6];
-  v15 = [(CKContactBalloonView *)self organizationLabel];
-  v16 = [v3 subtitle];
-  v17 = [(CKContactBalloonView *)self _truncateNameIfNeeded:v16];
+  [nameLabel setText:v14];
+  [nameLabel setTextColor:v6];
+  organizationLabel = [(CKContactBalloonView *)self organizationLabel];
+  subtitle = [mediaObject subtitle];
+  v17 = [(CKContactBalloonView *)self _truncateNameIfNeeded:subtitle];
 
-  [v15 setText:v17];
-  [v15 setTextColor:v6];
+  [organizationLabel setText:v17];
+  [organizationLabel setTextColor:v6];
 }
 
-- (id)_truncateNameIfNeeded:(id)a3
+- (id)_truncateNameIfNeeded:(id)needed
 {
-  v3 = a3;
-  if ([v3 length] < 0xC9)
+  neededCopy = needed;
+  if ([neededCopy length] < 0xC9)
   {
-    v4 = v3;
+    v4 = neededCopy;
   }
 
   else
   {
-    v4 = [v3 substringWithRange:{0, 200}];
+    v4 = [neededCopy substringWithRange:{0, 200}];
   }
 
   v5 = v4;
@@ -350,16 +350,16 @@ void __58__CKContactBalloonView_traitMutationsForSnapshotRendering__block_invoke
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  width = a3.width;
-  v7 = [(CKContactBalloonView *)self nameLabel:a4];
+  width = fits.width;
+  v7 = [(CKContactBalloonView *)self nameLabel:insets];
   [v7 sizeThatFits:{1.79769313e308, 1.79769313e308}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKContactBalloonView *)self organizationLabel];
-  [v12 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+  organizationLabel = [(CKContactBalloonView *)self organizationLabel];
+  [organizationLabel sizeThatFits:{1.79769313e308, 1.79769313e308}];
   v14 = v13;
   v16 = v15;
 
@@ -372,9 +372,9 @@ void __58__CKContactBalloonView_traitMutationsForSnapshotRendering__block_invoke
   v18 = v9 + v17 + 0.0 + 10.0 + 38.0;
   if ([objc_opt_class() canShowChevron])
   {
-    v19 = [(CKContactBalloonView *)self chevron];
-    v20 = [v19 image];
-    [v20 size];
+    chevron = [(CKContactBalloonView *)self chevron];
+    image = [chevron image];
+    [image size];
     v18 = v18 + v21 + 5.0;
   }
 
@@ -418,41 +418,41 @@ void __58__CKContactBalloonView_traitMutationsForSnapshotRendering__block_invoke
   return result;
 }
 
-- (void)insertHighlightOverlayLayer:(id)a3
+- (void)insertHighlightOverlayLayer:(id)layer
 {
-  v4 = a3;
-  v7 = [(CKContactBalloonView *)self layer];
-  v5 = [(CKContactBalloonView *)self contactImageView];
-  v6 = [v5 layer];
-  [v7 insertSublayer:v4 below:v6];
+  layerCopy = layer;
+  layer = [(CKContactBalloonView *)self layer];
+  contactImageView = [(CKContactBalloonView *)self contactImageView];
+  layer2 = [contactImageView layer];
+  [layer insertSublayer:layerCopy below:layer2];
 }
 
-- (void)setMediaObject:(id)a3
+- (void)setMediaObject:(id)object
 {
-  v5 = a3;
-  if (self->_mediaObject != v5)
+  objectCopy = object;
+  if (self->_mediaObject != objectCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mediaObject, a3);
+    v6 = objectCopy;
+    objc_storeStrong(&self->_mediaObject, object);
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
     [(CKContactBalloonView *)self setNeedsLayout];
-    v5 = v6;
+    objectCopy = v6;
   }
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
   v10.receiver = self;
   v10.super_class = CKContactBalloonView;
-  v4 = a3;
-  [(CKColoredBalloonView *)&v10 configureForMessagePart:v4];
-  v5 = [v4 mediaObject];
+  partCopy = part;
+  [(CKColoredBalloonView *)&v10 configureForMessagePart:partCopy];
+  mediaObject = [partCopy mediaObject];
   v6 = +[CKUIBehavior sharedBehaviors];
   [v6 previewMaxWidth];
   v8 = v7;
-  v9 = [v4 balloonOrientation];
+  balloonOrientation = [partCopy balloonOrientation];
 
-  [(CKContactBalloonView *)self configureForMediaObject:v5 previewWidth:v9 orientation:v8];
+  [(CKContactBalloonView *)self configureForMediaObject:mediaObject previewWidth:balloonOrientation orientation:v8];
 }
 
 @end

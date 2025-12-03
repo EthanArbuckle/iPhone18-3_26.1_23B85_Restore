@@ -29,8 +29,8 @@
   {
     v4 = objc_alloc_init(SUGradientButton);
     self->_button = v4;
-    v5 = [(SUGradientButton *)v4 titleLabel];
-    [v5 setFont:{objc_msgSend(MEMORY[0x1E69DB878], "boldSystemFontOfSize:", 17.0)}];
+    titleLabel = [(SUGradientButton *)v4 titleLabel];
+    [titleLabel setFont:{objc_msgSend(MEMORY[0x1E69DB878], "boldSystemFontOfSize:", 17.0)}];
     [(SUGradientButton *)self->_button sizeToFit];
     button = self->_button;
   }

@@ -1,15 +1,15 @@
 @interface DetailViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySpeakThisViewController;
 @end
 
 @implementation DetailViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DetailViewController" hasInstanceMethod:@"contentViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"_accessibilitySpeakThisViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DetailViewController" hasInstanceMethod:@"contentViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"_accessibilitySpeakThisViewController" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilitySpeakThisViewController

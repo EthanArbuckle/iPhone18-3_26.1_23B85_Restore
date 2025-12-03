@@ -1,7 +1,7 @@
 @interface ATXChargerConnectedAnchor
 + (BOOL)isActive;
 + (BOOL)shouldProcessContextStoreNotification;
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4;
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate;
 + (id)sampleEvent;
 @end
 
@@ -38,21 +38,21 @@ BOOL __40__ATXChargerConnectedAnchor_filterBlock__block_invoke(uint64_t a1, void
   return v8;
 }
 
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate
 {
   v5 = MEMORY[0x277CEBC30];
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = objc_alloc_init(v5);
   v9 = objc_opt_new();
-  v10 = [objc_opt_class() filterBlock];
+  filterBlock = [objc_opt_class() filterBlock];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__ATXChargerConnectedAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate___block_invoke;
   v13[3] = &unk_2785A0208;
   v11 = v9;
   v14 = v11;
-  [v8 enumeratePluggedInEventsFromStartDate:v7 endDate:v6 filterBlock:v10 limit:1000000 block:v13];
+  [v8 enumeratePluggedInEventsFromStartDate:dateCopy endDate:endDateCopy filterBlock:filterBlock limit:1000000 block:v13];
 
   return v11;
 }

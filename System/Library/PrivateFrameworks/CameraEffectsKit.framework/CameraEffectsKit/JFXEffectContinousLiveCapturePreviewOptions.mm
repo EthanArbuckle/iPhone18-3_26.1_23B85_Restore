@@ -1,5 +1,5 @@
 @interface JFXEffectContinousLiveCapturePreviewOptions
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initLiveCaptureOptions;
 @end
 
@@ -9,21 +9,21 @@
 {
   v5.receiver = self;
   v5.super_class = JFXEffectContinousLiveCapturePreviewOptions;
-  v2 = [(JFXEffectContinousPreviewOptions *)&v5 initContinousPreviewOptions];
-  v3 = v2;
-  if (v2)
+  initContinousPreviewOptions = [(JFXEffectContinousPreviewOptions *)&v5 initContinousPreviewOptions];
+  v3 = initContinousPreviewOptions;
+  if (initContinousPreviewOptions)
   {
-    [v2 setBackgroundType:1];
+    [initContinousPreviewOptions setBackgroundType:1];
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = JFXEffectContinousLiveCapturePreviewOptions;
-  result = [(JFXEffectContinousPreviewOptions *)&v5 copyWithZone:a3];
+  result = [(JFXEffectContinousPreviewOptions *)&v5 copyWithZone:zone];
   *(result + 88) = self->_rotateCameraFrameToInterfaceOrientation;
   return result;
 }

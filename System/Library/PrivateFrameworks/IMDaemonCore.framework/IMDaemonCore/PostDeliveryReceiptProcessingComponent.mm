@@ -1,24 +1,24 @@
 @interface PostDeliveryReceiptProcessingComponent
-- (BOOL)validBundleID:(id)a3;
+- (BOOL)validBundleID:(id)d;
 - (PostDeliveryReceiptProcessingComponent)init;
-- (id)runIndividuallyWithInput:(id)a3;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation PostDeliveryReceiptProcessingComponent
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = PostDeliveryReceiptProcessingComponent.runIndividually(withInput:)(a3);
+  selfCopy = self;
+  v6 = PostDeliveryReceiptProcessingComponent.runIndividually(withInput:)(input);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (BOOL)validBundleID:(id)a3
+- (BOOL)validBundleID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_22B7DB6A8();
     v6 = v5;
@@ -30,7 +30,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_22B7CDB5C(v4, v6);
 
   return v8;

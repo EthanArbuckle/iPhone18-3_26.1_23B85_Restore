@@ -1,29 +1,29 @@
 @interface HIDTimestampSyncErrorHandler
-- (HIDTimestampSyncErrorHandler)initWithSubType:(id)a3;
-- (void)reportFailure:(id)a3;
+- (HIDTimestampSyncErrorHandler)initWithSubType:(id)type;
+- (void)reportFailure:(id)failure;
 @end
 
 @implementation HIDTimestampSyncErrorHandler
 
-- (HIDTimestampSyncErrorHandler)initWithSubType:(id)a3
+- (HIDTimestampSyncErrorHandler)initWithSubType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = HIDTimestampSyncErrorHandler;
   v6 = [(HIDTimestampSyncErrorHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subType, a3);
+    objc_storeStrong(&v6->_subType, type);
     v7->_consecutiveErrors = 0;
   }
 
   return v7;
 }
 
-- (void)reportFailure:(id)a3
+- (void)reportFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   v5 = self->_consecutiveErrors + 1;
   self->_consecutiveErrors = v5;
   if (v5 > 0x1D)
@@ -38,8 +38,8 @@
       v6 = qword_1000DDAF0;
       subType = self->_subType;
       v8 = +[NSProcessInfo processInfo];
-      v9 = [v8 processName];
-      v10 = [v6 signatureWithDomain:@"MobileBluetoothServices" type:@"HIDTimestampSync" subType:subType subtypeContext:0 detectedProcess:v9 triggerThresholdValues:0];
+      processName = [v8 processName];
+      v10 = [v6 signatureWithDomain:@"MobileBluetoothServices" type:@"HIDTimestampSync" subType:subType subtypeContext:0 detectedProcess:processName triggerThresholdValues:0];
 
       v11 = [qword_1000DDAF0 snapshotWithSignature:v10 duration:0 events:0 payload:0 actions:&stru_1000BDF90 reply:0.0];
       v12 = qword_1000DDBC8;

@@ -1,8 +1,8 @@
 @interface NSPProxyAgentNetworkStatistics
-- (NSPProxyAgentNetworkStatistics)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSPProxyAgentNetworkStatistics)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPProxyAgentNetworkStatistics
@@ -37,9 +37,9 @@
   return v3;
 }
 
-- (NSPProxyAgentNetworkStatistics)initWithCoder:(id)a3
+- (NSPProxyAgentNetworkStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NSPProxyAgentNetworkStatistics;
   v5 = [(NSPProxyAgentNetworkStatistics *)&v13 init];
@@ -49,76 +49,76 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v6, v7, v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"ProxyAgentNetworkStatisticsNetworkCharacteristics"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"ProxyAgentNetworkStatisticsNetworkCharacteristics"];
     networkCharacteristics = v5->_networkCharacteristics;
     v5->_networkCharacteristics = v10;
 
-    v5->_proxyConnectionSuccess = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsSuccess"];
-    v5->_ingressProxyConnectionTimeout = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressConnectionTimeout"];
-    v5->_ingressProxyConnectionRefused = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressConnectionRefused"];
-    v5->_ingressProxyConnectionHostDown = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressHostDown"];
-    v5->_ingressProxyConnectionHostUnreachable = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressHostUnreachable"];
-    v5->_ingressProxyConnectionError = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressConnectionError"];
-    v5->_ingressProxyConnectionDNSBlocked = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressDNSBlocked"];
-    v5->_ingressProxyConnectionDNSTimeout = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressDNSTimeoutError"];
-    v5->_ingressProxyConnectionCertError = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressConnectionCertError"];
-    v5->_egressProxyConnectionError = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsEgressConnectionError"];
-    v5->_originProxyConnectionError = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsOriginConnectionError"];
-    v5->_egressProxyUnavailableError = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsEgressProxyUnavailableError"];
-    v5->_incompleteHandshakeStall = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIncompleteHandshakeStall"];
-    v5->_postHandshakeStall = [v4 decodeIntegerForKey:@"ProxyAgentNetworkStatisticsPostHandshakeStall"];
+    v5->_proxyConnectionSuccess = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsSuccess"];
+    v5->_ingressProxyConnectionTimeout = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressConnectionTimeout"];
+    v5->_ingressProxyConnectionRefused = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressConnectionRefused"];
+    v5->_ingressProxyConnectionHostDown = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressHostDown"];
+    v5->_ingressProxyConnectionHostUnreachable = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressHostUnreachable"];
+    v5->_ingressProxyConnectionError = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressConnectionError"];
+    v5->_ingressProxyConnectionDNSBlocked = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressDNSBlocked"];
+    v5->_ingressProxyConnectionDNSTimeout = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressDNSTimeoutError"];
+    v5->_ingressProxyConnectionCertError = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIngressConnectionCertError"];
+    v5->_egressProxyConnectionError = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsEgressConnectionError"];
+    v5->_originProxyConnectionError = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsOriginConnectionError"];
+    v5->_egressProxyUnavailableError = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsEgressProxyUnavailableError"];
+    v5->_incompleteHandshakeStall = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsIncompleteHandshakeStall"];
+    v5->_postHandshakeStall = [coderCopy decodeIntegerForKey:@"ProxyAgentNetworkStatisticsPostHandshakeStall"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
     networkCharacteristics = self->_networkCharacteristics;
-    v5 = a3;
-    [v5 encodeObject:networkCharacteristics forKey:@"ProxyAgentNetworkStatisticsNetworkCharacteristics"];
-    [v5 encodeInteger:self->_proxyConnectionSuccess forKey:@"ProxyAgentNetworkStatisticsSuccess"];
-    [v5 encodeInteger:self->_ingressProxyConnectionTimeout forKey:@"ProxyAgentNetworkStatisticsIngressConnectionTimeout"];
-    [v5 encodeInteger:self->_ingressProxyConnectionRefused forKey:@"ProxyAgentNetworkStatisticsIngressConnectionRefused"];
-    [v5 encodeInteger:self->_ingressProxyConnectionHostDown forKey:@"ProxyAgentNetworkStatisticsIngressHostDown"];
-    [v5 encodeInteger:self->_ingressProxyConnectionHostUnreachable forKey:@"ProxyAgentNetworkStatisticsIngressHostUnreachable"];
-    [v5 encodeInteger:self->_ingressProxyConnectionError forKey:@"ProxyAgentNetworkStatisticsIngressConnectionError"];
-    [v5 encodeInteger:self->_ingressProxyConnectionDNSBlocked forKey:@"ProxyAgentNetworkStatisticsIngressDNSBlocked"];
-    [v5 encodeInteger:self->_ingressProxyConnectionDNSTimeout forKey:@"ProxyAgentNetworkStatisticsIngressDNSTimeoutError"];
-    [v5 encodeInteger:self->_ingressProxyConnectionCertError forKey:@"ProxyAgentNetworkStatisticsIngressConnectionCertError"];
-    [v5 encodeInteger:self->_egressProxyConnectionError forKey:@"ProxyAgentNetworkStatisticsEgressConnectionError"];
-    [v5 encodeInteger:self->_originProxyConnectionError forKey:@"ProxyAgentNetworkStatisticsOriginConnectionError"];
-    [v5 encodeInteger:self->_egressProxyUnavailableError forKey:@"ProxyAgentNetworkStatisticsEgressProxyUnavailableError"];
-    [v5 encodeInteger:self->_incompleteHandshakeStall forKey:@"ProxyAgentNetworkStatisticsIncompleteHandshakeStall"];
+    coderCopy = coder;
+    [coderCopy encodeObject:networkCharacteristics forKey:@"ProxyAgentNetworkStatisticsNetworkCharacteristics"];
+    [coderCopy encodeInteger:self->_proxyConnectionSuccess forKey:@"ProxyAgentNetworkStatisticsSuccess"];
+    [coderCopy encodeInteger:self->_ingressProxyConnectionTimeout forKey:@"ProxyAgentNetworkStatisticsIngressConnectionTimeout"];
+    [coderCopy encodeInteger:self->_ingressProxyConnectionRefused forKey:@"ProxyAgentNetworkStatisticsIngressConnectionRefused"];
+    [coderCopy encodeInteger:self->_ingressProxyConnectionHostDown forKey:@"ProxyAgentNetworkStatisticsIngressHostDown"];
+    [coderCopy encodeInteger:self->_ingressProxyConnectionHostUnreachable forKey:@"ProxyAgentNetworkStatisticsIngressHostUnreachable"];
+    [coderCopy encodeInteger:self->_ingressProxyConnectionError forKey:@"ProxyAgentNetworkStatisticsIngressConnectionError"];
+    [coderCopy encodeInteger:self->_ingressProxyConnectionDNSBlocked forKey:@"ProxyAgentNetworkStatisticsIngressDNSBlocked"];
+    [coderCopy encodeInteger:self->_ingressProxyConnectionDNSTimeout forKey:@"ProxyAgentNetworkStatisticsIngressDNSTimeoutError"];
+    [coderCopy encodeInteger:self->_ingressProxyConnectionCertError forKey:@"ProxyAgentNetworkStatisticsIngressConnectionCertError"];
+    [coderCopy encodeInteger:self->_egressProxyConnectionError forKey:@"ProxyAgentNetworkStatisticsEgressConnectionError"];
+    [coderCopy encodeInteger:self->_originProxyConnectionError forKey:@"ProxyAgentNetworkStatisticsOriginConnectionError"];
+    [coderCopy encodeInteger:self->_egressProxyUnavailableError forKey:@"ProxyAgentNetworkStatisticsEgressProxyUnavailableError"];
+    [coderCopy encodeInteger:self->_incompleteHandshakeStall forKey:@"ProxyAgentNetworkStatisticsIncompleteHandshakeStall"];
     postHandshakeStall = self->_postHandshakeStall;
   }
 
   else
   {
-    v7 = a3;
-    [v7 encodeObject:0 forKey:@"ProxyAgentNetworkStatisticsNetworkCharacteristics"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsSuccess"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressConnectionTimeout"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressConnectionRefused"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressHostDown"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressHostUnreachable"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressConnectionError"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressDNSBlocked"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressDNSTimeoutError"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressConnectionCertError"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsEgressConnectionError"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsOriginConnectionError"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsEgressProxyUnavailableError"];
-    [v7 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIncompleteHandshakeStall"];
+    coderCopy2 = coder;
+    [coderCopy2 encodeObject:0 forKey:@"ProxyAgentNetworkStatisticsNetworkCharacteristics"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsSuccess"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressConnectionTimeout"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressConnectionRefused"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressHostDown"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressHostUnreachable"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressConnectionError"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressDNSBlocked"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressDNSTimeoutError"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIngressConnectionCertError"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsEgressConnectionError"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsOriginConnectionError"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsEgressProxyUnavailableError"];
+    [coderCopy2 encodeInteger:0 forKey:@"ProxyAgentNetworkStatisticsIncompleteHandshakeStall"];
     postHandshakeStall = 0;
   }
 
-  [a3 encodeInteger:postHandshakeStall forKey:@"ProxyAgentNetworkStatisticsPostHandshakeStall"];
+  [coder encodeInteger:postHandshakeStall forKey:@"ProxyAgentNetworkStatisticsPostHandshakeStall"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPProxyAgentNetworkStatistics allocWithZone:?]];
   v5 = v4;

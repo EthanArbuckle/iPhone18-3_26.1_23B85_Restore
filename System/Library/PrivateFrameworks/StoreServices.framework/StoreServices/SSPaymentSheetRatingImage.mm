@@ -1,28 +1,28 @@
 @interface SSPaymentSheetRatingImage
-- (SSPaymentSheetRatingImage)initWithDictionary:(id)a3;
-- (SSPaymentSheetRatingImage)initWithURLString:(id)a3;
-- (SSPaymentSheetRatingImage)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSPaymentSheetRatingImage)initWithDictionary:(id)dictionary;
+- (SSPaymentSheetRatingImage)initWithURLString:(id)string;
+- (SSPaymentSheetRatingImage)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)localAssetName;
-- (int64_t)_ratingTypeForType:(id)a3;
+- (int64_t)_ratingTypeForType:(id)type;
 @end
 
 @implementation SSPaymentSheetRatingImage
 
-- (SSPaymentSheetRatingImage)initWithDictionary:(id)a3
+- (SSPaymentSheetRatingImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SSPaymentSheetRatingImage;
   v5 = [(SSPaymentSheetRatingImage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"type"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v5->_ratingType = [(SSPaymentSheetRatingImage *)v5 _ratingTypeForType:v6];
-    v7 = [v4 objectForKeyedSubscript:@"value"];
-    v8 = [v7 uppercaseString];
-    v9 = [v8 copy];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"value"];
+    uppercaseString = [v7 uppercaseString];
+    v9 = [uppercaseString copy];
     value = v5->_value;
     v5->_value = v9;
   }
@@ -30,15 +30,15 @@
   return v5;
 }
 
-- (SSPaymentSheetRatingImage)initWithURLString:(id)a3
+- (SSPaymentSheetRatingImage)initWithURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = SSPaymentSheetRatingImage;
   v5 = [(SSPaymentSheetRatingImage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     urlString = v5->_urlString;
     v5->_urlString = v6;
 
@@ -338,40 +338,40 @@ LABEL_25:
   }
 }
 
-- (int64_t)_ratingTypeForType:(id)a3
+- (int64_t)_ratingTypeForType:(id)type
 {
-  v3 = [a3 uppercaseString];
-  if ([v3 isEqualToString:@"APPS-BRAZIL"])
+  uppercaseString = [type uppercaseString];
+  if ([uppercaseString isEqualToString:@"APPS-BRAZIL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GAMES"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"ITUNESGAMES") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"ITUNES-GAMES"))
+  else if ([uppercaseString isEqualToString:@"GAMES"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"ITUNESGAMES") & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"ITUNES-GAMES"))
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NZ-OFLC"])
+  else if ([uppercaseString isEqualToString:@"NZ-OFLC"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"BBFC"])
+  else if ([uppercaseString isEqualToString:@"BBFC"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"MPAA"])
+  else if ([uppercaseString isEqualToString:@"MPAA"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RIAA"])
+  else if ([uppercaseString isEqualToString:@"RIAA"])
   {
     v4 = 5;
   }
 
-  else if (([v3 isEqualToString:@"TV-US"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"US-TV") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"TV"))
+  else if (([uppercaseString isEqualToString:@"TV-US"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"US-TV") & 1) != 0 || objc_msgSend(uppercaseString, "isEqualToString:", @"TV"))
   {
     v4 = 8;
   }
@@ -384,15 +384,15 @@ LABEL_25:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(SSPaymentSheetRatingImage);
   v5->_ratingType = self->_ratingType;
-  v6 = [(NSString *)self->_urlString copyWithZone:a3];
+  v6 = [(NSString *)self->_urlString copyWithZone:zone];
   urlString = v5->_urlString;
   v5->_urlString = v6;
 
-  v8 = [(NSString *)self->_value copyWithZone:a3];
+  v8 = [(NSString *)self->_value copyWithZone:zone];
   value = v5->_value;
   v5->_value = v8;
 
@@ -408,11 +408,11 @@ LABEL_25:
   return v3;
 }
 
-- (SSPaymentSheetRatingImage)initWithXPCEncoding:(id)a3
+- (SSPaymentSheetRatingImage)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v14.receiver = self;
     v14.super_class = SSPaymentSheetRatingImage;

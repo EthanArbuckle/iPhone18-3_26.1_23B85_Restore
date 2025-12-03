@@ -13,47 +13,47 @@
 
   WeakRetained = objc_loadWeakRetained(&self->super.super._inputSize);
   v4 = [WeakRetained objectAtIndexedSubscript:0];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
   v6 = objc_loadWeakRetained(&self->super.super._inputSize);
   v7 = [v6 objectAtIndexedSubscript:1];
-  v8 = [v7 intValue];
+  intValue2 = [v7 intValue];
 
   v9 = objc_loadWeakRetained(&self->super.super._inputSize);
   v10 = [v9 objectAtIndexedSubscript:2];
-  v11 = [v10 intValue];
+  intValue3 = [v10 intValue];
 
   px = self->super._px;
   v13 = *(&self->super.super._executedOnGPU + 3);
   v14 = objc_loadWeakRetained(&self->super.super._input);
-  v15 = [v14 data];
+  data = [v14 data];
 
-  v16 = [(VCPCNNData *)self->super.super._output data];
+  data2 = [(VCPCNNData *)self->super.super._output data];
   LODWORD(py) = self->super._py;
-  if (v5 / py >= 1)
+  if (intValue / py >= 1)
   {
     v18 = 0;
-    v19 = v8 / px;
-    v20 = v11 * v8 * py;
-    v21 = py * v11;
+    v19 = intValue2 / px;
+    v20 = intValue3 * intValue2 * py;
+    v21 = py * intValue3;
     do
     {
       if (v19 >= 1)
       {
         v22 = 0;
-        v23 = v15;
+        v23 = data;
         do
         {
-          v24 = v11 / v13;
+          v24 = intValue3 / v13;
           v25 = v23;
-          if (v11 / v13 >= 1)
+          if (intValue3 / v13 >= 1)
           {
             do
             {
-              *v16 = vmaxq_f32(vmaxq_f32(*v25, *(v25 + 4 * v21)), vmaxq_f32(v25[1], *(v25 + 4 * v21 + 16)));
+              *data2 = vmaxq_f32(vmaxq_f32(*v25, *(v25 + 4 * v21)), vmaxq_f32(v25[1], *(v25 + 4 * v21 + 16)));
               py = self->super._py;
               v25 = (v25 + 8 * py);
-              v16 += py;
+              data2 += py;
               --v24;
             }
 
@@ -67,11 +67,11 @@
         while (v22 != v19);
       }
 
-      v15 += 4 * v20;
+      data += 4 * v20;
       ++v18;
     }
 
-    while (v18 < v5 / py);
+    while (v18 < intValue / py);
   }
 
   return 0;

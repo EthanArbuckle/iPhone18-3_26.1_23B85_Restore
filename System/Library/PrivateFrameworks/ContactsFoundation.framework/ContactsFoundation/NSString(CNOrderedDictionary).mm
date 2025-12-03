@@ -7,17 +7,17 @@
 - (void)_cn_stringByReplacingStrings:()CNOrderedDictionary
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v6 = [v5 _cn_replaceStrings:v4];
 
   if (v6)
   {
-    a1 = v5;
+    self = v5;
   }
 
-  v7 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
 @end

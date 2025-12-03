@@ -1,6 +1,6 @@
 @interface IdentityServicesAgent
 - (_TtC8SOSBuddy21IdentityServicesAgent)init;
-- (void)manager:(id)a3 offGridModeUpdated:(int64_t)a4 publishStatus:(int64_t)a5 context:(id)a6;
+- (void)manager:(id)manager offGridModeUpdated:(int64_t)updated publishStatus:(int64_t)status context:(id)context;
 @end
 
 @implementation IdentityServicesAgent
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)manager:(id)a3 offGridModeUpdated:(int64_t)a4 publishStatus:(int64_t)a5 context:(id)a6
+- (void)manager:(id)manager offGridModeUpdated:(int64_t)updated publishStatus:(int64_t)status context:(id)context
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = self;
-  sub_10022F86C(a4, a5);
+  managerCopy = manager;
+  contextCopy = context;
+  selfCopy = self;
+  sub_10022F86C(updated, status);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface EMMessageTransferAllAction
-- (EMMessageTransferAllAction)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EMMessageTransferAllAction)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMMessageTransferAllAction
@@ -12,18 +12,18 @@ id __141__EMMessageTransferAllAction_initWithMailboxes_messageListItemsToExclude
   return v2;
 }
 
-- (EMMessageTransferAllAction)initWithCoder:(id)a3
+- (EMMessageTransferAllAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = EMMessageTransferAllAction;
-  v5 = [(EMMessageTransferAction *)&v12 initWithCoder:v4];
+  v5 = [(EMMessageTransferAction *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"EFPropertyKey_mailboxObjectIDs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"EFPropertyKey_mailboxObjectIDs"];
     mailboxObjectIDs = v5->_mailboxObjectIDs;
     v5->_mailboxObjectIDs = v9;
   }
@@ -31,14 +31,14 @@ id __141__EMMessageTransferAllAction_initWithMailboxes_messageListItemsToExclude
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = EMMessageTransferAllAction;
-  [(EMMessageTransferAction *)&v6 encodeWithCoder:v4];
-  v5 = [(EMMessageTransferAllAction *)self mailboxObjectIDs];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_mailboxObjectIDs"];
+  [(EMMessageTransferAction *)&v6 encodeWithCoder:coderCopy];
+  mailboxObjectIDs = [(EMMessageTransferAllAction *)self mailboxObjectIDs];
+  [coderCopy encodeObject:mailboxObjectIDs forKey:@"EFPropertyKey_mailboxObjectIDs"];
 }
 
 @end

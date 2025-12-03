@@ -1,13 +1,13 @@
 @interface SKRunAction
-+ (id)runAction:(id)a3 afterActionWithKey:(id)a4;
-+ (id)runAction:(id)a3 onFirstChildWithName:(id)a4;
++ (id)runAction:(id)action afterActionWithKey:(id)key;
++ (id)runAction:(id)action onFirstChildWithName:(id)name;
 - (SKRunAction)init;
-- (SKRunAction)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKRunAction)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithTarget:(id)target forTime:(double)time;
+- (void)willStartWithTarget:(id)target atTime:(double)time;
 @end
 
 @implementation SKRunAction
@@ -37,30 +37,30 @@
   return v3;
 }
 
-- (SKRunAction)initWithCoder:(id)a3
+- (SKRunAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SKRunAction;
-  v5 = [(SKAction *)&v15 initWithCoder:v4];
+  v5 = [(SKAction *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_action"];
     action = v5->_action;
     v5->_action = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_subSpriteKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_subSpriteKey"];
     subSpriteKey = v5->_subSpriteKey;
     v5->_subSpriteKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_actionKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_actionKey"];
     actionKey = v5->_actionKey;
     v5->_actionKey = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_waitForKeyedAction"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_waitForKeyedAction"];
     v5->_waitForKeyedAction = [v12 BOOLValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_runOnSubSprite"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_runOnSubSprite"];
     v5->_runOnSubSprite = [v13 BOOLValue];
 
     v5->_fired = 0;
@@ -69,73 +69,73 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SKRunAction;
-  [(SKAction *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_action forKey:@"_action"];
-  [v4 encodeObject:self->_subSpriteKey forKey:@"_subSpriteKey"];
-  [v4 encodeObject:self->_actionKey forKey:@"_actionKey"];
+  [(SKAction *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_action forKey:@"_action"];
+  [coderCopy encodeObject:self->_subSpriteKey forKey:@"_subSpriteKey"];
+  [coderCopy encodeObject:self->_actionKey forKey:@"_actionKey"];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_waitForKeyedAction];
-  [v4 encodeObject:v5 forKey:@"_waitForKeyedAction"];
+  [coderCopy encodeObject:v5 forKey:@"_waitForKeyedAction"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_runOnSubSprite];
-  [v4 encodeObject:v6 forKey:@"_runOnSubSprite"];
+  [coderCopy encodeObject:v6 forKey:@"_runOnSubSprite"];
 }
 
-+ (id)runAction:(id)a3 onFirstChildWithName:(id)a4
++ (id)runAction:(id)action onFirstChildWithName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  actionCopy = action;
+  nameCopy = name;
   v7 = objc_alloc_init(SKRunAction);
-  v8 = [v5 copy];
+  v8 = [actionCopy copy];
   action = v7->_action;
   v7->_action = v8;
 
   subSpriteKey = v7->_subSpriteKey;
-  v7->_subSpriteKey = v6;
+  v7->_subSpriteKey = nameCopy;
 
   v7->_runOnSubSprite = 1;
 
   return v7;
 }
 
-+ (id)runAction:(id)a3 afterActionWithKey:(id)a4
++ (id)runAction:(id)action afterActionWithKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  actionCopy = action;
+  keyCopy = key;
   v7 = objc_alloc_init(SKRunAction);
-  v8 = [v5 copy];
+  v8 = [actionCopy copy];
   action = v7->_action;
   v7->_action = v8;
 
   actionKey = v7->_actionKey;
-  v7->_actionKey = v6;
+  v7->_actionKey = keyCopy;
 
   v7->_waitForKeyedAction = 1;
 
   return v7;
 }
 
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4
+- (void)willStartWithTarget:(id)target atTime:(double)time
 {
   v5.receiver = self;
   v5.super_class = SKRunAction;
-  [(SKAction *)&v5 willStartWithTarget:a3 atTime:a4];
+  [(SKAction *)&v5 willStartWithTarget:target atTime:time];
   self->_fired = 0;
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
-  v5 = a3;
+  targetCopy = target;
   if (!self->_fired)
   {
     if (self->_runOnSubSprite)
     {
-      v9 = v5;
-      v6 = [v5 childNodeWithName:self->_subSpriteKey];
+      v9 = targetCopy;
+      v6 = [targetCopy childNodeWithName:self->_subSpriteKey];
       v7 = v6;
       if (v6)
       {
@@ -150,22 +150,22 @@
 
     if (self->_waitForKeyedAction)
     {
-      v9 = v5;
-      v8 = [v5 actionForKey:self->_actionKey];
+      v9 = targetCopy;
+      v8 = [targetCopy actionForKey:self->_actionKey];
 
-      v5 = v9;
+      targetCopy = v9;
       if (!v8)
       {
         [v9 runAction:self->_action];
         self->_fired = 1;
 LABEL_6:
-        v5 = v9;
+        targetCopy = v9;
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SKRunAction);
   v5 = [(SKAction *)self->_action copy];
@@ -182,9 +182,9 @@ LABEL_6:
 - (id)reversedAction
 {
   v3 = objc_alloc_init(SKRunAction);
-  v4 = [(SKAction *)self->_action reversedAction];
+  reversedAction = [(SKAction *)self->_action reversedAction];
   action = v3->_action;
-  v3->_action = v4;
+  v3->_action = reversedAction;
 
   objc_storeStrong(&v3->_actionKey, self->_actionKey);
   objc_storeStrong(&v3->_subSpriteKey, self->_subSpriteKey);

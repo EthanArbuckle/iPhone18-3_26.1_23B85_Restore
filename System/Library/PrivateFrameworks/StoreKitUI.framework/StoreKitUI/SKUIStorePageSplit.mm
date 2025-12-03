@@ -1,12 +1,12 @@
 @interface SKUIStorePageSplit
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)description;
 @end
 
 @implementation SKUIStorePageSplit
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content())
   {
@@ -20,7 +20,7 @@
     }
   }
 
-  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v13 setDividerColor:self->_dividerColor];
   [v13 setNumberOfPageSections:self->_numberOfPageSections];
   [v13 setPageComponents:self->_pageComponents];

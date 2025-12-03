@@ -1,8 +1,8 @@
 @interface _TVTemplateFactory
 - (_TVTemplateFactory)init;
-- (void)_registerStyleSheet:(id)a3 forTemplate:(id)a4 parentStyleSheets:(id)a5;
+- (void)_registerStyleSheet:(id)sheet forTemplate:(id)template parentStyleSheets:(id)sheets;
 - (void)_registerTemplateControllers;
-- (void)registerProductTemplateURL:(id)a3 forTemplateName:(id)a4 includeParentStyleSheets:(BOOL)a5;
+- (void)registerProductTemplateURL:(id)l forTemplateName:(id)name includeParentStyleSheets:(BOOL)sheets;
 @end
 
 @implementation _TVTemplateFactory
@@ -55,17 +55,17 @@
   [v11 _registerViewControllerCreator:&__block_literal_global_37_1 withType:73];
 }
 
-- (void)registerProductTemplateURL:(id)a3 forTemplateName:(id)a4 includeParentStyleSheets:(BOOL)a5
+- (void)registerProductTemplateURL:(id)l forTemplateName:(id)name includeParentStyleSheets:(BOOL)sheets
 {
-  v5 = a5;
+  sheetsCopy = sheets;
   v25[1] = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v7 = a4;
+  lCopy = l;
+  nameCopy = name;
   v25[0] = @"BaseStyleSheet";
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
   v9 = [MEMORY[0x277CBEB18] arrayWithArray:v8];
   v10 = v9;
-  if (v5)
+  if (sheetsCopy)
   {
     [v9 addObject:@"ProductStyleSheet"];
   }
@@ -108,28 +108,28 @@
     while (v15);
   }
 
-  [MEMORY[0x277D1B0F0] registerStyleSheetURL:v19 parentStyleSheets:v12 forTemplateName:v7];
+  [MEMORY[0x277D1B0F0] registerStyleSheetURL:lCopy parentStyleSheets:v12 forTemplateName:nameCopy];
 }
 
-- (void)_registerStyleSheet:(id)a3 forTemplate:(id)a4 parentStyleSheets:(id)a5
+- (void)_registerStyleSheet:(id)sheet forTemplate:(id)template parentStyleSheets:(id)sheets
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sheetCopy = sheet;
+  templateCopy = template;
+  sheetsCopy = sheets;
   v10 = +[TVMLUtilities TVMLKitBundle];
   v11 = +[TVInterfaceFactory sharedInterfaceFactory];
-  v22 = v8;
-  v12 = [v11 _styleSheetURLForTemplate:v8];
+  v22 = templateCopy;
+  v12 = [v11 _styleSheetURLForTemplate:templateCopy];
 
-  v23 = v7;
-  v13 = [v10 URLForResource:v7 withExtension:@"xml"];
+  v23 = sheetCopy;
+  v13 = [v10 URLForResource:sheetCopy withExtension:@"xml"];
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = v9;
+  v15 = sheetsCopy;
   v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v16)
   {

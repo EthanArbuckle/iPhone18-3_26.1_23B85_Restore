@@ -1,5 +1,5 @@
 @interface COSSecurePairingHeaderAccessibility
-- (COSSecurePairingHeaderAccessibility)initWithFrame:(CGRect)a3;
+- (COSSecurePairingHeaderAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateHeaderLabel;
 @end
@@ -21,11 +21,11 @@
   [(COSSecurePairingHeaderAccessibility *)self _axAnnotateHeaderLabel];
 }
 
-- (COSSecurePairingHeaderAccessibility)initWithFrame:(CGRect)a3
+- (COSSecurePairingHeaderAccessibility)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = COSSecurePairingHeaderAccessibility;
-  v3 = [(COSSecurePairingHeaderAccessibility *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSSecurePairingHeaderAccessibility *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

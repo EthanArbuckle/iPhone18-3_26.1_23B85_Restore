@@ -7,8 +7,8 @@
 
 - (BOOL)ae_isBeingTested
 {
-  v1 = [a1 environment];
-  v2 = [v1 objectForKeyedSubscript:@"XCTestConfigurationFilePath"];
+  environment = [self environment];
+  v2 = [environment objectForKeyedSubscript:@"XCTestConfigurationFilePath"];
   v3 = v2 != 0;
 
   return v3;

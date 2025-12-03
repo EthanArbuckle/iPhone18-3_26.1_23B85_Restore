@@ -1,7 +1,7 @@
 @interface STYSpecialAppLaunchSignpostMonitorHelper
 - (STYSpecialAppLaunchSignpostMonitorHelper)init;
-- (void)handleInterval:(id)a3;
-- (void)processAppLaunch:(id)a3 tailspinFilenamePrefix:(id)a4 duration:(id)a5 andPID:(id)a6 reason:(id)a7;
+- (void)handleInterval:(id)interval;
+- (void)processAppLaunch:(id)launch tailspinFilenamePrefix:(id)prefix duration:(id)duration andPID:(id)d reason:(id)reason;
 @end
 
 @implementation STYSpecialAppLaunchSignpostMonitorHelper
@@ -27,10 +27,10 @@
   return v2;
 }
 
-- (void)handleInterval:(id)a3
+- (void)handleInterval:(id)interval
 {
   v72 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intervalCopy = interval;
   if (+[STYDeviceInfo isAppleInternal])
   {
     v6 = @"ApplicationLaunchExtendedResponsive";
@@ -41,20 +41,20 @@
     v6 = @"ApplicationFirstFramePresentation";
   }
 
-  v7 = [v5 number1Name];
-  v8 = [v7 isEqualToString:@"IsForeground"];
+  number1Name = [intervalCopy number1Name];
+  v8 = [number1Name isEqualToString:@"IsForeground"];
   if (v8)
   {
-    v3 = [v5 number1Value];
-    if (([v3 isEqual:MEMORY[0x277CBEC38]] & 1) == 0)
+    number1Value = [intervalCopy number1Value];
+    if (([number1Value isEqual:MEMORY[0x277CBEC38]] & 1) == 0)
     {
 
       goto LABEL_58;
     }
   }
 
-  v9 = [v5 name];
-  v10 = [v9 isEqualToString:v6];
+  name = [intervalCopy name];
+  v10 = [name isEqualToString:v6];
 
   if (v8)
   {
@@ -74,13 +74,13 @@
     }
   }
 
-  v11 = [v5 endEvent];
-  v12 = eventEndToNow(v11);
+  endEvent = [intervalCopy endEvent];
+  v12 = eventEndToNow(endEvent);
 
   v13 = +[STYFrameworkHelper sharedHelper];
-  v14 = [v13 logHandle];
+  logHandle = [v13 logHandle];
 
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     [STYSpecialAppLaunchSignpostMonitorHelper handleInterval:];
   }
@@ -92,7 +92,7 @@
     v67 = 0x3032000000;
     v68 = __Block_byref_object_copy__0;
     v69 = __Block_byref_object_dispose__0;
-    v17 = v5;
+    v17 = intervalCopy;
     v70 = v17;
     v64 = 0;
     v18 = [STYScenarioReport reportFromSignpostInterval:v17 error:&v64];
@@ -105,9 +105,9 @@
         if ([v19 code] == -2007 || objc_msgSend(v20, "code") == -2002)
         {
           v31 = +[STYFrameworkHelper sharedHelper];
-          v22 = [v31 logHandle];
+          logHandle2 = [v31 logHandle];
 
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
           {
             [v20 description];
             objc_claimAutoreleasedReturnValue();
@@ -118,9 +118,9 @@
         else if ([v20 code] == -2000)
         {
           v55 = +[STYFrameworkHelper sharedHelper];
-          v22 = [v55 logHandle];
+          logHandle2 = [v55 logHandle];
 
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+          if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
           {
             +[STYUserScenarioCache sharedCache];
             [objc_claimAutoreleasedReturnValue() scenarioIdForSignpostInterval:v17];
@@ -132,9 +132,9 @@
         else
         {
           v56 = +[STYFrameworkHelper sharedHelper];
-          v22 = [v56 logHandle];
+          logHandle2 = [v56 logHandle];
 
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+          if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
           {
             [v20 description];
             objc_claimAutoreleasedReturnValue();
@@ -146,9 +146,9 @@
       else
       {
         v53 = +[STYFrameworkHelper sharedHelper];
-        v22 = [v53 logHandle];
+        logHandle2 = [v53 logHandle];
 
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
         {
           [STYGeneralSignpostMonitorHelper handleInterval:];
         }
@@ -159,17 +159,17 @@
 
     v21 = MEMORY[0x277CCABB0];
     [v17 durationMs];
-    v22 = [v21 numberWithDouble:?];
+    logHandle2 = [v21 numberWithDouble:?];
     v23 = MEMORY[0x277CCABB0];
-    v24 = [v17 endEvent];
-    v57 = [v23 numberWithUnsignedInt:{objc_msgSend(v24, "processID")}];
+    endEvent2 = [v17 endEvent];
+    v57 = [v23 numberWithUnsignedInt:{objc_msgSend(endEvent2, "processID")}];
 
     v25 = +[STYFrameworkHelper sharedHelper];
-    v26 = [v25 logHandle];
+    logHandle3 = [v25 logHandle];
 
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEBUG))
     {
-      [(STYSpecialAppLaunchSignpostMonitorHelper *)[(NSUserDefaults *)self->_defaults BOOLForKey:kSTYDefaultsEnforceAppLaunchThreshold handleInterval:buf, v26];
+      [(STYSpecialAppLaunchSignpostMonitorHelper *)[(NSUserDefaults *)self->_defaults BOOLForKey:kSTYDefaultsEnforceAppLaunchThreshold handleInterval:buf, logHandle3];
     }
 
     if (+[STYDeviceInfo isAppleInternal]&& ![(NSUserDefaults *)self->_defaults BOOLForKey:kSTYDefaultsEnforceAppLaunchThreshold])
@@ -180,9 +180,9 @@
     else
     {
       v27 = +[STYFrameworkHelper sharedHelper];
-      v28 = [v27 logHandle];
+      logHandle4 = [v27 logHandle];
 
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEBUG))
       {
         [STYSpecialAppLaunchSignpostMonitorHelper handleInterval:];
       }
@@ -195,9 +195,9 @@
     if (+[STYDeviceInfo isAppleInternal])
     {
       v33 = +[STYFrameworkHelper sharedHelper];
-      v34 = [v33 logHandle];
+      logHandle5 = [v33 logHandle];
 
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(logHandle5, OS_LOG_TYPE_DEBUG))
       {
         [STYSpecialAppLaunchSignpostMonitorHelper handleInterval:];
       }
@@ -206,9 +206,9 @@
       if (v32 * 100.0 / 2147483650.0 < 20.0)
       {
         v36 = +[STYFrameworkHelper sharedHelper];
-        v37 = [v36 logHandle];
+        logHandle6 = [v36 logHandle];
 
-        if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+        if (os_log_type_enabled(logHandle6, OS_LOG_TYPE_DEBUG))
         {
           [STYSpecialAppLaunchSignpostMonitorHelper handleInterval:];
         }
@@ -218,22 +218,22 @@ LABEL_46:
 
         if (dateOfLastTailspinRequest)
         {
-          v41 = [MEMORY[0x277CBEAA8] date];
-          [v41 timeIntervalSinceDate:dateOfLastTailspinRequest];
+          date = [MEMORY[0x277CBEAA8] date];
+          [date timeIntervalSinceDate:dateOfLastTailspinRequest];
           if (v42 >= 60.0)
           {
           }
 
           else
           {
-            v43 = [(STYSpecialAppLaunchSignpostMonitorHelper *)self forceAppLaunchDiagnostics];
+            forceAppLaunchDiagnostics = [(STYSpecialAppLaunchSignpostMonitorHelper *)self forceAppLaunchDiagnostics];
 
-            if (!v43)
+            if (!forceAppLaunchDiagnostics)
             {
               v44 = +[STYFrameworkHelper sharedHelper];
-              v45 = [v44 logHandle];
+              logHandle7 = [v44 logHandle];
 
-              if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(logHandle7, OS_LOG_TYPE_ERROR))
               {
                 +[STYUserScenarioCache sharedCache];
                 [objc_claimAutoreleasedReturnValue() scenarioIdForSignpostInterval:v66[5]];
@@ -241,7 +241,7 @@ LABEL_46:
                 [STYSpecialAppLaunchSignpostMonitorHelper handleInterval:];
               }
 
-              v46 = v66[5];
+              logHandle8 = v66[5];
               v66[5] = 0;
 LABEL_56:
 
@@ -268,14 +268,14 @@ LABEL_57:
         v63 = &v65;
         block[4] = self;
         v59 = v18;
-        v60 = v22;
+        v60 = logHandle2;
         v61 = v57;
-        v46 = v48;
-        v62 = v46;
+        logHandle8 = v48;
+        v62 = logHandle8;
         dispatch_async(v49, block);
-        v50 = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
         v51 = dateOfLastTailspinRequest;
-        dateOfLastTailspinRequest = v50;
+        dateOfLastTailspinRequest = date2;
 
         goto LABEL_56;
       }
@@ -292,9 +292,9 @@ LABEL_42:
       if (![(STYSpecialAppLaunchSignpostMonitorHelper *)self forceAppLaunchDiagnostics])
       {
         v54 = +[STYFrameworkHelper sharedHelper];
-        v46 = [v54 logHandle];
+        logHandle8 = [v54 logHandle];
 
-        if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
+        if (os_log_type_enabled(logHandle8, OS_LOG_TYPE_DEBUG))
         {
           [STYSpecialAppLaunchSignpostMonitorHelper handleInterval:];
         }
@@ -303,9 +303,9 @@ LABEL_42:
       }
 
       v40 = +[STYFrameworkHelper sharedHelper];
-      v37 = [v40 logHandle];
+      logHandle6 = [v40 logHandle];
 
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(logHandle6, OS_LOG_TYPE_DEBUG))
       {
         [STYSpecialAppLaunchSignpostMonitorHelper handleInterval:];
       }
@@ -314,9 +314,9 @@ LABEL_42:
     }
 
     v39 = +[STYFrameworkHelper sharedHelper];
-    v37 = [v39 logHandle];
+    logHandle6 = [v39 logHandle];
 
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(logHandle6, OS_LOG_TYPE_DEBUG))
     {
       [STYSpecialAppLaunchSignpostMonitorHelper handleInterval:];
     }
@@ -327,9 +327,9 @@ LABEL_45:
   }
 
   v15 = +[STYFrameworkHelper sharedHelper];
-  v16 = [v15 logHandle];
+  logHandle9 = [v15 logHandle];
 
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(logHandle9, OS_LOG_TYPE_ERROR))
   {
     [STYSpecialAppLaunchSignpostMonitorHelper handleInterval:];
   }
@@ -348,27 +348,27 @@ void __59__STYSpecialAppLaunchSignpostMonitorHelper_handleInterval___block_invok
   [*(a1 + 32) processAppLaunch:*(a1 + 40) tailspinFilenamePrefix:v4 duration:*(a1 + 48) andPID:*(a1 + 56) reason:*(a1 + 64)];
 }
 
-- (void)processAppLaunch:(id)a3 tailspinFilenamePrefix:(id)a4 duration:(id)a5 andPID:(id)a6 reason:(id)a7
+- (void)processAppLaunch:(id)launch tailspinFilenamePrefix:(id)prefix duration:(id)duration andPID:(id)d reason:(id)reason
 {
   v39[10] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v34 = a5;
-  v33 = a6;
-  v32 = a7;
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "hash")}];
+  launchCopy = launch;
+  prefixCopy = prefix;
+  durationCopy = duration;
+  dCopy = d;
+  reasonCopy = reason;
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(launchCopy, "hash")}];
   v14 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v14 setDateFormat:@"yyyy-MM-dd-HHmmss"];
-  v15 = v12;
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v11, "scenarioStartTime")}];
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v11, "scenarioEndTime")}];
+  v15 = prefixCopy;
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(launchCopy, "scenarioStartTime")}];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(launchCopy, "scenarioEndTime")}];
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:1000.0];
   v19 = +[STYFrameworkHelper sharedHelper];
-  v20 = [v19 logHandle];
+  logHandle = [v19 logHandle];
 
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    [STYGeneralSignpostMonitorHelper perfProblemDetected:v11 tailspinFilenamePrefix:?];
+    [STYGeneralSignpostMonitorHelper perfProblemDetected:launchCopy tailspinFilenamePrefix:?];
   }
 
   v38[0] = kSTYScenarioReportRefKey;
@@ -381,29 +381,29 @@ void __59__STYSpecialAppLaunchSignpostMonitorHelper_handleInterval___block_invok
   v39[3] = v17;
   v38[4] = kSTYScenarioReportKey;
   v38[5] = kSTYReportTypeKey;
-  v39[4] = v11;
+  v39[4] = launchCopy;
   v39[5] = kSTYAppLaunchReportType;
   v38[6] = kSTYDurationKey;
   v38[7] = kSTYThresholdKey;
-  v39[6] = v34;
+  v39[6] = durationCopy;
   v39[7] = v18;
   v38[8] = kSTYPIDKey;
   v38[9] = kSTYReasonKey;
-  v39[8] = v33;
-  v39[9] = v32;
+  v39[8] = dCopy;
+  v39[9] = reasonCopy;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:10];
   v22 = +[STYFrameworkHelper sharedHelper];
-  v23 = [v22 logHandle];
+  logHandle2 = [v22 logHandle];
 
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
   {
     [STYSpecialAppLaunchSignpostMonitorHelper processAppLaunch:v21 tailspinFilenamePrefix:? duration:? andPID:? reason:?];
   }
 
-  [outstandingTailspinSaveRequests setObject:v11 forKey:v13];
+  [outstandingTailspinSaveRequests setObject:launchCopy forKey:v13];
   v24 = perfIssueDetectionTimeLogs;
-  v25 = [MEMORY[0x277CBEAA8] date];
-  [v24 setObject:v25 forKey:v13];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v24 setObject:date forKey:v13];
 
   LocalCenter = CFNotificationCenterGetLocalCenter();
   CFNotificationCenterPostNotification(LocalCenter, kSTYPerfProblemDetectedNotification, 0, v21, 1u);
@@ -414,8 +414,8 @@ void __59__STYSpecialAppLaunchSignpostMonitorHelper_handleInterval___block_invok
   block[2] = __107__STYSpecialAppLaunchSignpostMonitorHelper_processAppLaunch_tailspinFilenamePrefix_duration_andPID_reason___block_invoke;
   block[3] = &unk_279B9B4C0;
   v36 = v13;
-  v37 = v11;
-  v29 = v11;
+  v37 = launchCopy;
+  v29 = launchCopy;
   v30 = v13;
   dispatch_after(v27, v28, block);
 

@@ -8,16 +8,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFProximityAlertCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFProximityAlertCharacteristic *)self proximityAlertValue];
+  proximityAlertValue = [(CAFProximityAlertCharacteristic *)self proximityAlertValue];
 
-  return NSStringFromProximityAlert(v2);
+  return NSStringFromProximityAlert(proximityAlertValue);
 }
 
 + (id)secondaryCharacteristicFormats

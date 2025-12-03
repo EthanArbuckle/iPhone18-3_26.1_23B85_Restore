@@ -1,6 +1,6 @@
 @interface FSStatFSResult
-- (FSStatFSResult)initWithCoder:(id)a3;
-- (FSStatFSResult)initWithFileSystemTypeName:(id)a3;
+- (FSStatFSResult)initWithCoder:(id)coder;
+- (FSStatFSResult)initWithFileSystemTypeName:(id)name;
 - (unint64_t)availableBlocks;
 - (unint64_t)availableBytes;
 - (unint64_t)freeBlocks;
@@ -10,7 +10,7 @@
 - (unint64_t)usedBlocks;
 - (unint64_t)usedBytes;
 - (void)_fixUpValues;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FSStatFSResult
@@ -215,9 +215,9 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(FSStatFSResult *)self _fixUpValues];
   v10 = 0;
   v5 = *&self->_totalBlocks;
@@ -230,14 +230,14 @@
   v9[4] = *&self->_freeBytes;
   v9[5] = v7;
   LODWORD(v10) = self->_fileSystemSubType;
-  [v4 encodeBytes:v9 length:104 forKey:@"FSStatFSResult"];
-  v8 = [(FSStatFSResult *)self fileSystemTypeName];
-  [v4 encodeObject:v8 forKey:@"FSStatFSResult.fsTypeName"];
+  [coderCopy encodeBytes:v9 length:104 forKey:@"FSStatFSResult"];
+  fileSystemTypeName = [(FSStatFSResult *)self fileSystemTypeName];
+  [coderCopy encodeObject:fileSystemTypeName forKey:@"FSStatFSResult.fsTypeName"];
 }
 
-- (FSStatFSResult)initWithCoder:(id)a3
+- (FSStatFSResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = FSStatFSResult;
   v13 = 0;
@@ -247,7 +247,7 @@
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeBytesForKey:@"FSStatFSResult" returnedLength:&v13];
+  v6 = [coderCopy decodeBytesForKey:@"FSStatFSResult" returnedLength:&v13];
   v7 = 0;
   if (v6 && v13 == 104)
   {
@@ -264,7 +264,7 @@
     v8 = *(v6 + 96);
     *(v5 + 12) = *(v6 + 88);
     *(v5 + 13) = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FSStatFSResult.fsTypeName"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FSStatFSResult.fsTypeName"];
     v10 = *(v5 + 14);
     *(v5 + 14) = v9;
 
@@ -275,9 +275,9 @@ LABEL_5:
   return v7;
 }
 
-- (FSStatFSResult)initWithFileSystemTypeName:(id)a3
+- (FSStatFSResult)initWithFileSystemTypeName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = FSStatFSResult;
   v5 = [(FSStatFSResult *)&v10 init];
@@ -285,7 +285,7 @@ LABEL_5:
   if (v5)
   {
     v5->_blockSize = 4096;
-    v7 = [v4 copy];
+    v7 = [nameCopy copy];
     fileSystemTypeName = v6->_fileSystemTypeName;
     v6->_fileSystemTypeName = v7;
   }

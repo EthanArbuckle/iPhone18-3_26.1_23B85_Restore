@@ -1,29 +1,29 @@
 @interface NTKModularSmallBatteryTemplateView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (NTKModularSmallBatteryTemplateView)initWithFrame:(CGRect)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (NTKModularSmallBatteryTemplateView)initWithFrame:(CGRect)frame;
 - (id)forcedRingColor;
 - (id)preferredRingColor;
 - (void)_refreshRingImage;
 - (void)_update;
-- (void)applyColorScheme:(id)a3;
+- (void)applyColorScheme:(id)scheme;
 @end
 
 @implementation NTKModularSmallBatteryTemplateView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v3 isCompatibleWithFamily:0])
+    if ([templateCopy isCompatibleWithFamily:0])
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = [v3 isCompatibleWithFamily:7];
+      v4 = [templateCopy isCompatibleWithFamily:7];
     }
   }
 
@@ -35,16 +35,16 @@
   return v4;
 }
 
-- (NTKModularSmallBatteryTemplateView)initWithFrame:(CGRect)a3
+- (NTKModularSmallBatteryTemplateView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NTKModularSmallBatteryTemplateView;
-  v3 = [(NTKModularSmallRingTemplateView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKModularSmallRingTemplateView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(NTKModularSmallRingTemplateView *)v3 label];
-    [v5 setHidden:0];
+    label = [(NTKModularSmallRingTemplateView *)v3 label];
+    [label setHidden:0];
   }
 
   return v4;
@@ -52,72 +52,72 @@
 
 - (void)_update
 {
-  v15 = [(NTKModularTemplateView *)self complicationTemplate];
-  v3 = [(NTKModularSmallRingTemplateView *)self label];
-  v4 = [v15 textProvider];
-  [v3 setTextProvider:v4];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  label = [(NTKModularSmallRingTemplateView *)self label];
+  textProvider = [complicationTemplate textProvider];
+  [label setTextProvider:textProvider];
 
   v5 = [NTKRing alloc];
-  [v15 level];
+  [complicationTemplate level];
   v6 = [(NTKRing *)v5 initWithFillFraction:0 style:?];
   [(NTKModularSmallRingTemplateView *)self _updateRingWithRingDescription:v6];
-  v7 = [(NTKModularSmallBatteryTemplateView *)self forcedRingColor];
-  v8 = [(NTKModularSmallBatteryTemplateView *)self preferredRingColor];
-  v9 = [(NTKModuleView *)self colorScheme];
-  v10 = [(NTKModularSmallRingTemplateView *)self stateRing];
-  v11 = v10;
-  if (v7)
+  forcedRingColor = [(NTKModularSmallBatteryTemplateView *)self forcedRingColor];
+  preferredRingColor = [(NTKModularSmallBatteryTemplateView *)self preferredRingColor];
+  colorScheme = [(NTKModuleView *)self colorScheme];
+  stateRing = [(NTKModularSmallRingTemplateView *)self stateRing];
+  v11 = stateRing;
+  if (forcedRingColor)
   {
-    v12 = v7;
+    v12 = forcedRingColor;
 LABEL_6:
-    [v10 setColor:v12];
+    [stateRing setColor:v12];
     goto LABEL_7;
   }
 
-  if ([v9 containsOverrideFaceColor] && v8)
+  if ([colorScheme containsOverrideFaceColor] && preferredRingColor)
   {
-    v10 = v11;
-    v12 = v8;
+    stateRing = v11;
+    v12 = preferredRingColor;
     goto LABEL_6;
   }
 
-  v14 = [v9 foregroundColor];
-  [v11 setColor:v14];
+  foregroundColor = [colorScheme foregroundColor];
+  [v11 setColor:foregroundColor];
 
 LABEL_7:
-  v13 = [(NTKModuleView *)self contentView];
-  [v13 setNeedsLayout];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView setNeedsLayout];
 }
 
 - (void)_refreshRingImage
 {
-  v5 = [(NTKModularTemplateView *)self complicationTemplate];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
   v3 = [NTKRing alloc];
-  [v5 level];
+  [complicationTemplate level];
   v4 = [(NTKRing *)v3 initWithFillFraction:0 style:?];
   [(NTKModularSmallRingTemplateView *)self _refreshRingImageWithRing:v4];
 }
 
-- (void)applyColorScheme:(id)a3
+- (void)applyColorScheme:(id)scheme
 {
-  v4 = a3;
+  schemeCopy = scheme;
   v9.receiver = self;
   v9.super_class = NTKModularSmallBatteryTemplateView;
-  [(NTKModuleView *)&v9 applyColorScheme:v4];
-  v5 = [(NTKModularSmallRingTemplateView *)self stateRing];
-  v6 = [(NTKModularSmallBatteryTemplateView *)self forcedRingColor];
-  v7 = [(NTKModularSmallBatteryTemplateView *)self preferredRingColor];
-  v8 = v6;
-  if (v6 || [v4 containsOverrideFaceColor] && (v8 = v7) != 0)
+  [(NTKModuleView *)&v9 applyColorScheme:schemeCopy];
+  stateRing = [(NTKModularSmallRingTemplateView *)self stateRing];
+  forcedRingColor = [(NTKModularSmallBatteryTemplateView *)self forcedRingColor];
+  preferredRingColor = [(NTKModularSmallBatteryTemplateView *)self preferredRingColor];
+  v8 = forcedRingColor;
+  if (forcedRingColor || [schemeCopy containsOverrideFaceColor] && (v8 = preferredRingColor) != 0)
   {
-    [v5 setColor:v8];
+    [stateRing setColor:v8];
   }
 }
 
 - (id)forcedRingColor
 {
-  v2 = [(NTKModularTemplateView *)self complicationTemplate];
-  if ([v2 charging])
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  if ([complicationTemplate charging])
   {
     v3 = 2;
   }
@@ -127,7 +127,7 @@ LABEL_7:
     v3 = 1;
   }
 
-  [v2 level];
+  [complicationTemplate level];
   *&v4 = v4;
   v5 = [NTKBatteryUtilities colorForLevel:v3 andState:v4];
 
@@ -136,8 +136,8 @@ LABEL_7:
 
 - (id)preferredRingColor
 {
-  v2 = [(NTKModularTemplateView *)self complicationTemplate];
-  [v2 level];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  [complicationTemplate level];
   *&v3 = v3;
   v4 = [NTKBatteryUtilities modularRingColorForLevel:v3];
 

@@ -1,7 +1,7 @@
 @interface NTKUpNextRichFace
 + (id)_complicationSlotDescriptors;
 + (id)_leftSlotDescriptorTypes;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
++ (id)_richComplicationSlotsForDevice:(id)device;
 @end
 
 @implementation NTKUpNextRichFace
@@ -20,7 +20,7 @@
 
 + (id)_complicationSlotDescriptors
 {
-  v2 = [a1 _leftSlotDescriptorTypes];
+  _leftSlotDescriptorTypes = [self _leftSlotDescriptorTypes];
   v3 = NTKAllUtilitySmallFlatComplicationTypes();
   v11 = &off_19080;
   v12[0] = NTKComplicationSlotTopLeft;
@@ -37,7 +37,7 @@
   return v9;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v5 = NTKComplicationSlotTopLeft;
   v3 = [NSArray arrayWithObjects:&v5 count:1];

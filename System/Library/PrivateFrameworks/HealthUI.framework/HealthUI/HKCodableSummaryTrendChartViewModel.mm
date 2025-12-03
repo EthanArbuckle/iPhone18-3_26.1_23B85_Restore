@@ -1,12 +1,12 @@
 @interface HKCodableSummaryTrendChartViewModel
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryTrendChartViewModel
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryTrendChartViewModel;
   v4 = [(HKCodableSummaryTrendChartViewModel *)&v8 description];
-  v5 = [(HKCodableSummaryTrendChartViewModel *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryTrendChartViewModel *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   chartString = self->_chartString;
   if (chartString)
   {
-    [v3 setObject:chartString forKey:@"chartString"];
+    [dictionary setObject:chartString forKey:@"chartString"];
   }
 
   changeTypeRawValue = self->_changeTypeRawValue;
@@ -54,152 +54,152 @@
   baselineDateInterval = self->_baselineDateInterval;
   if (baselineDateInterval)
   {
-    v10 = [(HKCodableDateInterval *)baselineDateInterval dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"baselineDateInterval"];
+    dictionaryRepresentation = [(HKCodableDateInterval *)baselineDateInterval dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"baselineDateInterval"];
   }
 
   baselineQuantity = self->_baselineQuantity;
   if (baselineQuantity)
   {
-    v12 = [(HKCodableQuantity *)baselineQuantity dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"baselineQuantity"];
+    dictionaryRepresentation2 = [(HKCodableQuantity *)baselineQuantity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"baselineQuantity"];
   }
 
   changeDateInterval = self->_changeDateInterval;
   if (changeDateInterval)
   {
-    v14 = [(HKCodableDateInterval *)changeDateInterval dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"changeDateInterval"];
+    dictionaryRepresentation3 = [(HKCodableDateInterval *)changeDateInterval dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"changeDateInterval"];
   }
 
   changeQuantity = self->_changeQuantity;
   if (changeQuantity)
   {
-    v16 = [(HKCodableQuantity *)changeQuantity dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"changeQuantity"];
+    dictionaryRepresentation4 = [(HKCodableQuantity *)changeQuantity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"changeQuantity"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_chartString)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_changeTypeRawValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_objectTypeIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_baselineDateInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_baselineQuantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_changeDateInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_changeQuantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_chartString)
   {
-    [v4 setChartString:?];
-    v4 = v5;
+    [toCopy setChartString:?];
+    toCopy = v5;
   }
 
   if (self->_changeTypeRawValue)
   {
     [v5 setChangeTypeRawValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_objectTypeIdentifier)
   {
     [v5 setObjectTypeIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_coveredTimeScopeRawValue;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 1) = self->_coveredTimeScopeRawValue;
+    *(toCopy + 72) |= 1u;
   }
 
   if (self->_baselineDateInterval)
   {
     [v5 setBaselineDateInterval:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_baselineQuantity)
   {
     [v5 setBaselineQuantity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_changeDateInterval)
   {
     [v5 setChangeDateInterval:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_changeQuantity)
   {
     [v5 setChangeQuantity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_chartString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_chartString copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_changeTypeRawValue copyWithZone:a3];
+  v8 = [(NSString *)self->_changeTypeRawValue copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_objectTypeIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_objectTypeIdentifier copyWithZone:zone];
   v11 = *(v5 + 64);
   *(v5 + 64) = v10;
 
@@ -209,35 +209,35 @@
     *(v5 + 72) |= 1u;
   }
 
-  v12 = [(HKCodableDateInterval *)self->_baselineDateInterval copyWithZone:a3];
+  v12 = [(HKCodableDateInterval *)self->_baselineDateInterval copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(HKCodableQuantity *)self->_baselineQuantity copyWithZone:a3];
+  v14 = [(HKCodableQuantity *)self->_baselineQuantity copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
-  v16 = [(HKCodableDateInterval *)self->_changeDateInterval copyWithZone:a3];
+  v16 = [(HKCodableDateInterval *)self->_changeDateInterval copyWithZone:zone];
   v17 = *(v5 + 32);
   *(v5 + 32) = v16;
 
-  v18 = [(HKCodableQuantity *)self->_changeQuantity copyWithZone:a3];
+  v18 = [(HKCodableQuantity *)self->_changeQuantity copyWithZone:zone];
   v19 = *(v5 + 40);
   *(v5 + 40) = v18;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   chartString = self->_chartString;
-  if (chartString | *(v4 + 7))
+  if (chartString | *(equalCopy + 7))
   {
     if (![(NSString *)chartString isEqual:?])
     {
@@ -246,7 +246,7 @@
   }
 
   changeTypeRawValue = self->_changeTypeRawValue;
-  if (changeTypeRawValue | *(v4 + 6))
+  if (changeTypeRawValue | *(equalCopy + 6))
   {
     if (![(NSString *)changeTypeRawValue isEqual:?])
     {
@@ -255,7 +255,7 @@
   }
 
   objectTypeIdentifier = self->_objectTypeIdentifier;
-  if (objectTypeIdentifier | *(v4 + 8))
+  if (objectTypeIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)objectTypeIdentifier isEqual:?])
     {
@@ -265,13 +265,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_coveredTimeScopeRawValue != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_coveredTimeScopeRawValue != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
 LABEL_21:
     v12 = 0;
@@ -279,13 +279,13 @@ LABEL_21:
   }
 
   baselineDateInterval = self->_baselineDateInterval;
-  if (baselineDateInterval | *(v4 + 2) && ![(HKCodableDateInterval *)baselineDateInterval isEqual:?])
+  if (baselineDateInterval | *(equalCopy + 2) && ![(HKCodableDateInterval *)baselineDateInterval isEqual:?])
   {
     goto LABEL_21;
   }
 
   baselineQuantity = self->_baselineQuantity;
-  if (baselineQuantity | *(v4 + 3))
+  if (baselineQuantity | *(equalCopy + 3))
   {
     if (![(HKCodableQuantity *)baselineQuantity isEqual:?])
     {
@@ -294,7 +294,7 @@ LABEL_21:
   }
 
   changeDateInterval = self->_changeDateInterval;
-  if (changeDateInterval | *(v4 + 4))
+  if (changeDateInterval | *(equalCopy + 4))
   {
     if (![(HKCodableDateInterval *)changeDateInterval isEqual:?])
     {
@@ -303,7 +303,7 @@ LABEL_21:
   }
 
   changeQuantity = self->_changeQuantity;
-  if (changeQuantity | *(v4 + 5))
+  if (changeQuantity | *(equalCopy + 5))
   {
     v12 = [(HKCodableQuantity *)changeQuantity isEqual:?];
   }
@@ -340,36 +340,36 @@ LABEL_22:
   return v10 ^ [(HKCodableQuantity *)self->_changeQuantity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v13 = v4;
-  if (v4[7])
+  fromCopy = from;
+  v13 = fromCopy;
+  if (fromCopy[7])
   {
     [(HKCodableSummaryTrendChartViewModel *)self setChartString:?];
-    v4 = v13;
+    fromCopy = v13;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(HKCodableSummaryTrendChartViewModel *)self setChangeTypeRawValue:?];
-    v4 = v13;
+    fromCopy = v13;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
     [(HKCodableSummaryTrendChartViewModel *)self setObjectTypeIdentifier:?];
-    v4 = v13;
+    fromCopy = v13;
   }
 
-  if (v4[9])
+  if (fromCopy[9])
   {
-    self->_coveredTimeScopeRawValue = v4[1];
+    self->_coveredTimeScopeRawValue = fromCopy[1];
     *&self->_has |= 1u;
   }
 
   baselineDateInterval = self->_baselineDateInterval;
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (baselineDateInterval)
   {
     if (!v6)
@@ -390,10 +390,10 @@ LABEL_22:
     [(HKCodableSummaryTrendChartViewModel *)self setBaselineDateInterval:?];
   }
 
-  v4 = v13;
+  fromCopy = v13;
 LABEL_15:
   baselineQuantity = self->_baselineQuantity;
-  v8 = v4[3];
+  v8 = fromCopy[3];
   if (baselineQuantity)
   {
     if (!v8)
@@ -414,10 +414,10 @@ LABEL_15:
     [(HKCodableSummaryTrendChartViewModel *)self setBaselineQuantity:?];
   }
 
-  v4 = v13;
+  fromCopy = v13;
 LABEL_21:
   changeDateInterval = self->_changeDateInterval;
-  v10 = v4[4];
+  v10 = fromCopy[4];
   if (changeDateInterval)
   {
     if (!v10)
@@ -438,10 +438,10 @@ LABEL_21:
     [(HKCodableSummaryTrendChartViewModel *)self setChangeDateInterval:?];
   }
 
-  v4 = v13;
+  fromCopy = v13;
 LABEL_27:
   changeQuantity = self->_changeQuantity;
-  v12 = v4[5];
+  v12 = fromCopy[5];
   if (changeQuantity)
   {
     if (!v12)
@@ -462,10 +462,10 @@ LABEL_27:
     changeQuantity = [(HKCodableSummaryTrendChartViewModel *)self setChangeQuantity:?];
   }
 
-  v4 = v13;
+  fromCopy = v13;
 LABEL_33:
 
-  MEMORY[0x1EEE66BB8](changeQuantity, v4);
+  MEMORY[0x1EEE66BB8](changeQuantity, fromCopy);
 }
 
 @end

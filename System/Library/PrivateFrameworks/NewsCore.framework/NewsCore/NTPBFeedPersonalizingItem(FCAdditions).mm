@@ -19,19 +19,19 @@
 - (id)initWithItem:()FCAdditions
 {
   v4 = a3;
-  v20.receiver = a1;
+  v20.receiver = self;
   v20.super_class = &off_1F2EDD2D8;
   v5 = objc_msgSendSuper2(&v20, sel_init);
   if (v5)
   {
-    v6 = [v4 itemID];
-    [v5 setIdentifier:v6];
+    itemID = [v4 itemID];
+    [v5 setIdentifier:itemID];
 
-    v7 = [v4 topicIDs];
-    [v5 setTopicIDs:v7];
+    topicIDs = [v4 topicIDs];
+    [v5 setTopicIDs:topicIDs];
 
-    v8 = [v4 publisherID];
-    [v5 setPublisherID:v8];
+    publisherID = [v4 publisherID];
+    [v5 setPublisherID:publisherID];
 
     [v5 setBodyTextLength:{objc_msgSend(v4, "bodyTextLength")}];
     [v5 setHasAudioTrack:{objc_msgSend(v4, "hasAudioTrack")}];
@@ -41,35 +41,35 @@
     [v5 setIsBundlePaid:{objc_msgSend(v4, "isBundlePaid")}];
     [v5 setHasVideo:{objc_msgSend(v4, "hasVideo")}];
     [v5 setIsAIGenerated:{objc_msgSend(v4, "isAIGenerated")}];
-    v9 = [v4 globalCohorts];
-    [v5 setGlobalCohorts:v9];
+    globalCohorts = [v4 globalCohorts];
+    [v5 setGlobalCohorts:globalCohorts];
 
-    v10 = [v4 publisherCohorts];
-    [v5 setPublisherCohorts:v10];
+    publisherCohorts = [v4 publisherCohorts];
+    [v5 setPublisherCohorts:publisherCohorts];
 
-    v11 = [v4 globalConversionStats];
-    [v5 setGlobalConversionStats:v11];
+    globalConversionStats = [v4 globalConversionStats];
+    [v5 setGlobalConversionStats:globalConversionStats];
 
-    v12 = [v4 publisherConversionStats];
-    [v5 setPublisherConversionStats:v12];
+    publisherConversionStats = [v4 publisherConversionStats];
+    [v5 setPublisherConversionStats:publisherConversionStats];
 
-    v13 = [v4 topics];
-    [v5 setTopics:v13];
+    topics = [v4 topics];
+    [v5 setTopics:topics];
 
-    v14 = [v4 publishDate];
-    [v5 setPublishDateMilliseconds:{objc_msgSend(v14, "fc_millisecondTimeIntervalSince1970")}];
+    publishDate = [v4 publishDate];
+    [v5 setPublishDateMilliseconds:{objc_msgSend(publishDate, "fc_millisecondTimeIntervalSince1970")}];
 
-    v15 = [v4 lastModifiedDate];
-    [v5 setLastModifiedDateMilliseconds:{objc_msgSend(v15, "fc_millisecondTimeIntervalSince1970")}];
+    lastModifiedDate = [v4 lastModifiedDate];
+    [v5 setLastModifiedDateMilliseconds:{objc_msgSend(lastModifiedDate, "fc_millisecondTimeIntervalSince1970")}];
 
-    v16 = [v4 publisherTagMetadata];
-    [v5 setPublisherTagMetadata:v16];
+    publisherTagMetadata = [v4 publisherTagMetadata];
+    [v5 setPublisherTagMetadata:publisherTagMetadata];
 
-    v17 = [v4 float16TitleEncoding];
-    [v5 setFloat16TitleEncoding:v17];
+    float16TitleEncoding = [v4 float16TitleEncoding];
+    [v5 setFloat16TitleEncoding:float16TitleEncoding];
 
-    v18 = [v4 float16FullBodyEncoding];
-    [v5 setFloat16FullBodyEncoding:v18];
+    float16FullBodyEncoding = [v4 float16FullBodyEncoding];
+    [v5 setFloat16FullBodyEncoding:float16FullBodyEncoding];
   }
 
   return v5;
@@ -78,50 +78,50 @@
 - (uint64_t)publishDate
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = [a1 publishDateMilliseconds];
+  publishDateMilliseconds = [self publishDateMilliseconds];
 
-  return [v1 fc_dateWithMillisecondTimeIntervalSince1970:v2];
+  return [v1 fc_dateWithMillisecondTimeIntervalSince1970:publishDateMilliseconds];
 }
 
 - (uint64_t)lastModifiedDate
 {
   v1 = MEMORY[0x1E695DF00];
-  v2 = [a1 lastModifiedDateMilliseconds];
+  lastModifiedDateMilliseconds = [self lastModifiedDateMilliseconds];
 
-  return [v1 fc_dateWithMillisecondTimeIntervalSince1970:v2];
+  return [v1 fc_dateWithMillisecondTimeIntervalSince1970:lastModifiedDateMilliseconds];
 }
 
 - (void)enumerateTopicCohortsWithBlock:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 topics];
+  topics = [self topics];
 
-  if (v5)
+  if (topics)
   {
-    v6 = [a1 topics];
+    topics2 = [self topics];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __73__NTPBFeedPersonalizingItem_FCAdditions__enumerateTopicCohortsWithBlock___block_invoke_2;
     v7[3] = &unk_1E7C3B988;
     v8 = v4;
-    [v6 enumerateObjectsUsingBlock:v7];
+    [topics2 enumerateObjectsUsingBlock:v7];
   }
 }
 
 - (void)enumerateTopicConversionStatsWithBlock:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 topics];
+  topics = [self topics];
 
-  if (v5)
+  if (topics)
   {
-    v6 = [a1 topics];
+    topics2 = [self topics];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __81__NTPBFeedPersonalizingItem_FCAdditions__enumerateTopicConversionStatsWithBlock___block_invoke_2;
     v7[3] = &unk_1E7C3B988;
     v8 = v4;
-    [v6 enumerateObjectsUsingBlock:v7];
+    [topics2 enumerateObjectsUsingBlock:v7];
   }
 }
 

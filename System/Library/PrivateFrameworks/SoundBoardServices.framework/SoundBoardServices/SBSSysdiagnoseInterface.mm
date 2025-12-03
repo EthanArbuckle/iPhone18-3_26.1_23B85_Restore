@@ -1,8 +1,8 @@
 @interface SBSSysdiagnoseInterface
-- (SBSSysdiagnoseInterface)initWithTarget:(id)a3;
-- (void)airDropSysdiagnose:(id)a3 airDropID:(id)a4 completionHandler:(id)a5;
-- (void)cancelSysdiagnose:(id)a3;
-- (void)createSysdiagnose:(id)a3;
+- (SBSSysdiagnoseInterface)initWithTarget:(id)target;
+- (void)airDropSysdiagnose:(id)sysdiagnose airDropID:(id)d completionHandler:(id)handler;
+- (void)cancelSysdiagnose:(id)sysdiagnose;
+- (void)createSysdiagnose:(id)sysdiagnose;
 - (void)dealloc;
 @end
 
@@ -16,42 +16,42 @@
   [(SBSSysdiagnoseInterface *)&v3 dealloc];
 }
 
-- (void)airDropSysdiagnose:(id)a3 airDropID:(id)a4 completionHandler:(id)a5
+- (void)airDropSysdiagnose:(id)sysdiagnose airDropID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   sbProxy = self->_sbProxy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__SBSSysdiagnoseInterface_airDropSysdiagnose_airDropID_completionHandler___block_invoke;
   v11[3] = &unk_279CD52E8;
-  v12 = v8;
-  v10 = v8;
-  [(SBSImplementer *)sbProxy airDropSysdiagnose:a3 airDropID:a4 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(SBSImplementer *)sbProxy airDropSysdiagnose:sysdiagnose airDropID:d completionHandler:v11];
 }
 
-- (void)cancelSysdiagnose:(id)a3
+- (void)cancelSysdiagnose:(id)sysdiagnose
 {
-  v4 = a3;
+  sysdiagnoseCopy = sysdiagnose;
   sbProxy = self->_sbProxy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__SBSSysdiagnoseInterface_cancelSysdiagnose___block_invoke;
   v7[3] = &unk_279CD55F8;
-  v8 = v4;
-  v6 = v4;
+  v8 = sysdiagnoseCopy;
+  v6 = sysdiagnoseCopy;
   [(SBSImplementer *)sbProxy cancelCurrentSysdiagnose:v7];
 }
 
-- (void)createSysdiagnose:(id)a3
+- (void)createSysdiagnose:(id)sysdiagnose
 {
-  v4 = a3;
+  sysdiagnoseCopy = sysdiagnose;
   sbProxy = self->_sbProxy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__SBSSysdiagnoseInterface_createSysdiagnose___block_invoke;
   v7[3] = &unk_279CD52C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = sysdiagnoseCopy;
+  v6 = sysdiagnoseCopy;
   [(SBSImplementer *)sbProxy createSysdiagnose:v7];
 }
 
@@ -73,30 +73,30 @@ void __49__SBSSysdiagnoseInterface_sysdiagnoseHasStarted___block_invoke(uint64_t
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (SBSSysdiagnoseInterface)initWithTarget:(id)a3
+- (SBSSysdiagnoseInterface)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v13.receiver = self;
   v13.super_class = SBSSysdiagnoseInterface;
   v5 = [(SBSSysdiagnoseInterface *)&v13 init];
   if (v5)
   {
-    if ([v4 isEqualToString:@"localhost"])
+    if ([targetCopy isEqualToString:@"localhost"])
     {
       v6 = [SBSUtils connectionWithExportedObject:0];
       sbConnection = v5->_sbConnection;
       v5->_sbConnection = v6;
 
-      v8 = [(SBSSysdiagnoseInterface *)v5 sbConnection];
-      v9 = [v8 remoteObjectProxy];
+      sbConnection = [(SBSSysdiagnoseInterface *)v5 sbConnection];
+      remoteObjectProxy = [sbConnection remoteObjectProxy];
       sbProxy = v5->_sbProxy;
-      v5->_sbProxy = v9;
+      v5->_sbProxy = remoteObjectProxy;
     }
 
     else
     {
-      v11 = [SBSUtils createProxyConnectionForRapportTarget:v4];
-      v8 = v5->_sbProxy;
+      v11 = [SBSUtils createProxyConnectionForRapportTarget:targetCopy];
+      sbConnection = v5->_sbProxy;
       v5->_sbProxy = v11;
     }
   }

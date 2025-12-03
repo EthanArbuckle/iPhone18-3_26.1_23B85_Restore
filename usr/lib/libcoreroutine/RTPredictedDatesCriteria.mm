@@ -1,7 +1,7 @@
 @interface RTPredictedDatesCriteria
-- (BOOL)evaluatePredictedDate:(id)a3;
+- (BOOL)evaluatePredictedDate:(id)date;
 - (RTPredictedDatesCriteria)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RTPredictedDatesCriteria
@@ -20,10 +20,10 @@
   return result;
 }
 
-- (BOOL)evaluatePredictedDate:(id)a3
+- (BOOL)evaluatePredictedDate:(id)date
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (self->_referenceLocation)
   {
     goto LABEL_36;
@@ -60,7 +60,7 @@ LABEL_36:
     if (self->_referenceDate)
     {
 LABEL_9:
-      if (!v4)
+      if (!dateCopy)
       {
         v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -75,9 +75,9 @@ LABEL_9:
         goto LABEL_26;
       }
 
-      v7 = [v4 date];
-      v8 = v7;
-      if (!v7)
+      date = [dateCopy date];
+      v8 = date;
+      if (!date)
       {
         v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -92,12 +92,12 @@ LABEL_9:
         goto LABEL_25;
       }
 
-      [v7 timeIntervalSinceDate:self->_referenceDate];
+      [date timeIntervalSinceDate:self->_referenceDate];
       if (v9 >= 0.0)
       {
         if (v9 <= self->_windowDuration)
         {
-          [v4 confidence];
+          [dateCopy confidence];
           v17 = v16;
           if (v16 >= self->_minimumConfidence)
           {
@@ -116,7 +116,7 @@ LABEL_9:
               v21 = 2048;
               v22 = minimumConfidence;
               v23 = 2112;
-              v24 = v4;
+              v24 = dateCopy;
               _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "predicted date failed minimum confidence check, confidence, %f, minimumConfidence, %f, predicted date, %@", &v19, 0x20u);
             }
 
@@ -129,14 +129,14 @@ LABEL_9:
           v10 = _rt_log_facility_get_os_log(RTLogFacilityDeviceLocationPredictor);
           if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
           {
-            v11 = [v8 stringFromDate];
-            v12 = [(NSDate *)self->_referenceDate stringFromDate];
+            stringFromDate = [v8 stringFromDate];
+            stringFromDate2 = [(NSDate *)self->_referenceDate stringFromDate];
             v19 = 138412802;
-            v20 = v11;
+            v20 = stringFromDate;
             v21 = 2112;
-            v22 = *&v12;
+            v22 = *&stringFromDate2;
             v23 = 2112;
-            v24 = v4;
+            v24 = dateCopy;
             v13 = "predicted date failed interval check, nextEntryDate, %@, referenceDate, %@, predicted date, %@";
             goto LABEL_24;
           }
@@ -150,14 +150,14 @@ LABEL_25:
         v10 = _rt_log_facility_get_os_log(RTLogFacilityDeviceLocationPredictor);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [v8 stringFromDate];
-          v12 = [(NSDate *)self->_referenceDate stringFromDate];
+          stringFromDate = [v8 stringFromDate];
+          stringFromDate2 = [(NSDate *)self->_referenceDate stringFromDate];
           v19 = 138412802;
-          v20 = v11;
+          v20 = stringFromDate;
           v21 = 2112;
-          v22 = *&v12;
+          v22 = *&stringFromDate2;
           v23 = 2112;
-          v24 = v4;
+          v24 = dateCopy;
           v13 = "predicted date failed reference date check, nextEntryDate, %@, referenceDate, %@, predicted date, %@";
 LABEL_24:
           _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, v13, &v19, 0x20u);
@@ -182,19 +182,19 @@ LABEL_28:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
   if (v4)
   {
-    v5 = [(RTPredictedDatesCriteria *)self referenceDate];
-    [v4 setReferenceDate:v5];
+    referenceDate = [(RTPredictedDatesCriteria *)self referenceDate];
+    [v4 setReferenceDate:referenceDate];
 
     [(RTPredictedDatesCriteria *)self windowDuration];
     [v4 setWindowDuration:?];
-    v6 = [(RTPredictedDatesCriteria *)self referenceLocation];
-    [v4 setReferenceLocation:v6];
+    referenceLocation = [(RTPredictedDatesCriteria *)self referenceLocation];
+    [v4 setReferenceLocation:referenceLocation];
 
     [(RTPredictedDatesCriteria *)self minimumConfidence];
     [v4 setMinimumConfidence:?];

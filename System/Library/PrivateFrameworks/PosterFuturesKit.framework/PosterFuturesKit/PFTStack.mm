@@ -2,9 +2,9 @@
 - (PFTStack)init;
 - (id)pop;
 - (id)popAll;
-- (void)popAllWithHandler:(id)a3;
-- (void)popWithHandler:(id)a3;
-- (void)push:(id)a3;
+- (void)popAllWithHandler:(id)handler;
+- (void)popWithHandler:(id)handler;
+- (void)push:(id)push;
 @end
 
 @implementation PFTStack
@@ -26,9 +26,9 @@
   return v2;
 }
 
-- (void)push:(id)a3
+- (void)push:(id)push
 {
-  if (a3)
+  if (push)
   {
     [(NSMutableArray *)self->_objects addObject:?];
   }
@@ -38,16 +38,16 @@
 {
   if (off_2870E41C0(&__block_literal_global_4, self->_objects))
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
   else
   {
-    v3 = [(NSMutableArray *)self->_objects lastObject];
+    lastObject = [(NSMutableArray *)self->_objects lastObject];
     [(NSMutableArray *)self->_objects removeLastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
 - (id)popAll
@@ -58,26 +58,26 @@
   return v3;
 }
 
-- (void)popWithHandler:(id)a3
+- (void)popWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v4 = [(PFTStack *)self pop];
   if (v4)
   {
-    v5[2](v5, v4);
+    handlerCopy[2](handlerCopy, v4);
   }
 }
 
-- (void)popAllWithHandler:(id)a3
+- (void)popAllWithHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   v4 = [(PFTStack *)self pop];
   if (v4)
   {
     v5 = v4;
     do
     {
-      v7[2](v7, v5);
+      handlerCopy[2](handlerCopy, v5);
       v6 = [(PFTStack *)self pop];
 
       v5 = v6;

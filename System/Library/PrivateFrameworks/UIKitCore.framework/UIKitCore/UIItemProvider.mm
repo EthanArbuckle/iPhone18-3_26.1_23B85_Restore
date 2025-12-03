@@ -1,28 +1,28 @@
 @interface UIItemProvider
-- (BOOL)canLoadObjectOfClass:(Class)a3;
-- (BOOL)copyFileRepresentationForTypeIdentifier:(id)a3 toURL:(id)a4 options:(id)a5 error:(id *)a6;
-- (UIItemProvider)initWithPBItem:(id)a3 loadRequestContext:(id)a4 secureRetryHandler:(id)a5;
+- (BOOL)canLoadObjectOfClass:(Class)class;
+- (BOOL)copyFileRepresentationForTypeIdentifier:(id)identifier toURL:(id)l options:(id)options error:(id *)error;
+- (UIItemProvider)initWithPBItem:(id)item loadRequestContext:(id)context secureRetryHandler:(id)handler;
 - (id)_availableTypes;
-- (id)_objectOfClass:(Class)a3 data:(id)a4 typeIdentifier:(id)a5 error:(id *)a6;
-- (id)_readableTypeIdentifiersForItemProviderForClass:(Class)a3;
-- (id)copyDataRepresentationForTypeIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)copyFileRepresentationForTypeIdentifier:(id)a3 error:(id *)a4;
-- (id)instantiateObjectOfClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (id)loadObjectOfClass:(Class)a3 completionHandler:(id)a4;
-- (void)copyDataRepresentationForTypeIdentifier:(id)a3 options:(id)a4 completionBlock:(id)a5;
-- (void)copyFileRepresentationForTypeIdentifier:(id)a3 toURL:(id)a4 options:(id)a5 completionBlock:(id)a6;
-- (void)registerDataRepresentationForTypeIdentifier:(id)a3 loadHandler:(id)a4;
-- (void)registerFileRepresentationForTypeIdentifier:(id)a3 fileOptions:(int64_t)a4 loadHandler:(id)a5;
+- (id)_objectOfClass:(Class)class data:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (id)_readableTypeIdentifiersForItemProviderForClass:(Class)class;
+- (id)copyDataRepresentationForTypeIdentifier:(id)identifier options:(id)options error:(id *)error;
+- (id)copyFileRepresentationForTypeIdentifier:(id)identifier error:(id *)error;
+- (id)instantiateObjectOfClass:(Class)class options:(id)options error:(id *)error;
+- (id)loadObjectOfClass:(Class)class completionHandler:(id)handler;
+- (void)copyDataRepresentationForTypeIdentifier:(id)identifier options:(id)options completionBlock:(id)block;
+- (void)copyFileRepresentationForTypeIdentifier:(id)identifier toURL:(id)l options:(id)options completionBlock:(id)block;
+- (void)registerDataRepresentationForTypeIdentifier:(id)identifier loadHandler:(id)handler;
+- (void)registerFileRepresentationForTypeIdentifier:(id)identifier fileOptions:(int64_t)options loadHandler:(id)handler;
 @end
 
 @implementation UIItemProvider
 
-- (UIItemProvider)initWithPBItem:(id)a3 loadRequestContext:(id)a4 secureRetryHandler:(id)a5
+- (UIItemProvider)initWithPBItem:(id)item loadRequestContext:(id)context secureRetryHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v33 = a4;
-  v32 = a5;
+  itemCopy = item;
+  contextCopy = context;
+  handlerCopy = handler;
   v42.receiver = self;
   v42.super_class = UIItemProvider;
   v9 = [(UIItemProvider *)&v42 init];
@@ -32,7 +32,7 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = [v8 availableTypes];
+    obj = [itemCopy availableTypes];
     v10 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v10)
     {
@@ -48,8 +48,8 @@
           }
 
           v13 = *(*(&v38 + 1) + 8 * i);
-          v14 = [v8 representationConformingToType:v13];
-          if ([v8 isDataAvailableImmediatelyForType:v13])
+          v14 = [itemCopy representationConformingToType:v13];
+          if ([itemCopy isDataAvailableImmediatelyForType:v13])
           {
             [(NSItemProvider *)v9 setDataAvailability:1 forTypeIdentifier:v13];
           }
@@ -59,7 +59,7 @@
             [(NSItemProvider *)v9 setDerivedRepresentation:1 forTypeIdentifier:v13];
           }
 
-          [v8 preferredRepresentationForType:v13];
+          [itemCopy preferredRepresentationForType:v13];
           v15 = PBNSPreferredRepresentationFromPB();
           v34[0] = MEMORY[0x1E69E9820];
           v34[1] = 3221225472;
@@ -67,14 +67,14 @@
           v34[3] = &unk_1E711A190;
           v16 = v14;
           v35 = v16;
-          v36 = v33;
-          v37 = v32;
+          v36 = contextCopy;
+          v37 = handlerCopy;
           [(UIItemProvider *)v9 _addRepresentationType_v2:v13 preferredRepresentation:v15 loader:v34];
           if (objc_opt_respondsToSelector())
           {
-            v17 = [v16 visibility];
+            visibility = [v16 visibility];
             v18 = [(UIItemProvider *)v9 _representationConformingToType:v13];
-            [v18 setVisibility:v17];
+            [v18 setVisibility:visibility];
           }
         }
 
@@ -84,8 +84,8 @@
       while (v11);
     }
 
-    v19 = [v8 metadata];
-    v20 = [v19 mutableCopy];
+    metadata = [itemCopy metadata];
+    v20 = [metadata mutableCopy];
 
     v21 = *MEMORY[0x1E69BC860];
     v22 = [v20 objectForKeyedSubscript:*MEMORY[0x1E69BC860]];
@@ -207,18 +207,18 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)loadObjectOfClass:(Class)a3 completionHandler:(id)a4
+- (id)loadObjectOfClass:(Class)class completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__UIItemProvider_loadObjectOfClass_completionHandler___block_invoke;
   v11[3] = &unk_1E711A1B8;
-  v12 = v6;
+  v12 = handlerCopy;
   v10.receiver = self;
   v10.super_class = UIItemProvider;
-  v7 = v6;
-  v8 = [(UIItemProvider *)&v10 loadObjectOfClass:a3 completionHandler:v11];
+  v7 = handlerCopy;
+  v8 = [(UIItemProvider *)&v10 loadObjectOfClass:class completionHandler:v11];
 
   return v8;
 }
@@ -260,46 +260,46 @@ void __54__UIItemProvider_loadObjectOfClass_completionHandler___block_invoke(uin
   {
     v5.receiver = self;
     v5.super_class = UIItemProvider;
-    v3 = [(UIItemProvider *)&v5 _availableTypes];
+    _availableTypes = [(UIItemProvider *)&v5 _availableTypes];
   }
 
   else
   {
-    v3 = [(UIItemProvider *)self registeredTypeIdentifiers];
+    _availableTypes = [(UIItemProvider *)self registeredTypeIdentifiers];
   }
 
-  return v3;
+  return _availableTypes;
 }
 
-- (BOOL)canLoadObjectOfClass:(Class)a3
+- (BOOL)canLoadObjectOfClass:(Class)class
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(UIItemProvider *)self _readableTypeIdentifiersForItemProviderForClass:a3];
+  v5 = [(UIItemProvider *)self _readableTypeIdentifiersForItemProviderForClass:class];
   v6 = MEMORY[0x1E696ACA0];
-  v7 = [(UIItemProvider *)self _availableTypes];
-  v8 = [v6 _uikit_bestMatchConformingToTypes:v5 availableTypes:v7];
+  _availableTypes = [(UIItemProvider *)self _availableTypes];
+  v8 = [v6 _uikit_bestMatchConformingToTypes:v5 availableTypes:_availableTypes];
   v9 = v8 != 0;
 
   return v9;
 }
 
-- (id)_readableTypeIdentifiersForItemProviderForClass:(Class)a3
+- (id)_readableTypeIdentifiersForItemProviderForClass:(Class)class
 {
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(objc_class *)a3 _uikit_readableTypeIdentifiersForItemProviderConsideringLinkage:0];
+    readableTypeIdentifiersForItemProvider = [(objc_class *)class _uikit_readableTypeIdentifiersForItemProviderConsideringLinkage:0];
 LABEL_5:
-    v6 = v5;
+    v6 = readableTypeIdentifiersForItemProvider;
     goto LABEL_7;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(objc_class *)a3 readableTypeIdentifiersForItemProvider];
+    readableTypeIdentifiersForItemProvider = [(objc_class *)class readableTypeIdentifiersForItemProvider];
     goto LABEL_5;
   }
 
@@ -307,22 +307,22 @@ LABEL_5:
 LABEL_7:
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(objc_class *)a3 _ui_augmentingNSItemProviderReadingClass];
-    v8 = [v7 additionalLeadingReadableTypeIdentifiersForItemProvider];
-    v9 = [v7 additionalTrailingReadableTypeIdentifiersForItemProvider];
-    v10 = [v6 arrayByAddingObjectsFromArray:v9];
-    v11 = [v8 arrayByAddingObjectsFromArray:v10];
+    _ui_augmentingNSItemProviderReadingClass = [(objc_class *)class _ui_augmentingNSItemProviderReadingClass];
+    additionalLeadingReadableTypeIdentifiersForItemProvider = [_ui_augmentingNSItemProviderReadingClass additionalLeadingReadableTypeIdentifiersForItemProvider];
+    additionalTrailingReadableTypeIdentifiersForItemProvider = [_ui_augmentingNSItemProviderReadingClass additionalTrailingReadableTypeIdentifiersForItemProvider];
+    v10 = [v6 arrayByAddingObjectsFromArray:additionalTrailingReadableTypeIdentifiersForItemProvider];
+    v11 = [additionalLeadingReadableTypeIdentifiersForItemProvider arrayByAddingObjectsFromArray:v10];
 
     v6 = v11;
   }
 
   if ([(NSItemProvider *)self hasDerivedRepresentations])
   {
-    v12 = [(UIItemProvider *)self registeredTypeIdentifiers];
+    registeredTypeIdentifiers = [(UIItemProvider *)self registeredTypeIdentifiers];
     v13 = [v6 mutableCopy];
     while (1)
     {
-      v14 = [MEMORY[0x1E696ACA0] _uikit_bestMatchConformingToTypes:v13 availableTypes:v12];
+      v14 = [MEMORY[0x1E696ACA0] _uikit_bestMatchConformingToTypes:v13 availableTypes:registeredTypeIdentifiers];
       if (!v14 || ![(NSItemProvider *)self isDerivedRepresentationForTypeIdentifier:v14])
       {
         break;
@@ -361,28 +361,28 @@ LABEL_17:
   return v16;
 }
 
-- (id)_objectOfClass:(Class)a3 data:(id)a4 typeIdentifier:(id)a5 error:(id *)a6
+- (id)_objectOfClass:(Class)class data:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([-[objc_class _ui_augmentingNSItemProviderReadingClass](a3 "_ui_augmentingNSItemProviderReadingClass")], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+  dataCopy = data;
+  identifierCopy = identifier;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([-[objc_class _ui_augmentingNSItemProviderReadingClass](class "_ui_augmentingNSItemProviderReadingClass")], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v11 = [(objc_class *)a3 objectWithItemProviderData:v9 typeIdentifier:v10 error:a6];
+    v11 = [(objc_class *)class objectWithItemProviderData:dataCopy typeIdentifier:identifierCopy error:error];
   }
 
   return v11;
 }
 
-- (void)registerDataRepresentationForTypeIdentifier:(id)a3 loadHandler:(id)a4
+- (void)registerDataRepresentationForTypeIdentifier:(id)identifier loadHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__UIItemProvider_registerDataRepresentationForTypeIdentifier_loadHandler___block_invoke;
   v8[3] = &unk_1E711A1E0;
-  v9 = v6;
-  v7 = v6;
-  [(UIItemProvider *)self registerDataRepresentationForTypeIdentifier:a3 visibility:0 loadHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(UIItemProvider *)self registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v8];
 }
 
 uint64_t __74__UIItemProvider_registerDataRepresentationForTypeIdentifier_loadHandler___block_invoke(uint64_t a1, void *a2)
@@ -401,16 +401,16 @@ uint64_t __74__UIItemProvider_registerDataRepresentationForTypeIdentifier_loadHa
   return 0;
 }
 
-- (void)registerFileRepresentationForTypeIdentifier:(id)a3 fileOptions:(int64_t)a4 loadHandler:(id)a5
+- (void)registerFileRepresentationForTypeIdentifier:(id)identifier fileOptions:(int64_t)options loadHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __86__UIItemProvider_registerFileRepresentationForTypeIdentifier_fileOptions_loadHandler___block_invoke;
   v10[3] = &unk_1E711A208;
-  v11 = v8;
-  v9 = v8;
-  [(UIItemProvider *)self registerFileRepresentationForTypeIdentifier:a3 fileOptions:a4 visibility:0 loadHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(UIItemProvider *)self registerFileRepresentationForTypeIdentifier:identifier fileOptions:options visibility:0 loadHandler:v10];
 }
 
 uint64_t __86__UIItemProvider_registerFileRepresentationForTypeIdentifier_fileOptions_loadHandler___block_invoke(uint64_t a1, void *a2)
@@ -429,16 +429,16 @@ uint64_t __86__UIItemProvider_registerFileRepresentationForTypeIdentifier_fileOp
   return 0;
 }
 
-- (void)copyDataRepresentationForTypeIdentifier:(id)a3 options:(id)a4 completionBlock:(id)a5
+- (void)copyDataRepresentationForTypeIdentifier:(id)identifier options:(id)options completionBlock:(id)block
 {
-  v7 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__UIItemProvider_copyDataRepresentationForTypeIdentifier_options_completionBlock___block_invoke;
   v10[3] = &unk_1E7119F30;
-  v11 = v7;
-  v8 = v7;
-  v9 = [(UIItemProvider *)self loadDataRepresentationForTypeIdentifier:a3 completionHandler:v10];
+  v11 = blockCopy;
+  v8 = blockCopy;
+  v9 = [(UIItemProvider *)self loadDataRepresentationForTypeIdentifier:identifier completionHandler:v10];
 }
 
 uint64_t __82__UIItemProvider_copyDataRepresentationForTypeIdentifier_options_completionBlock___block_invoke(uint64_t a1)
@@ -452,10 +452,10 @@ uint64_t __82__UIItemProvider_copyDataRepresentationForTypeIdentifier_options_co
   return result;
 }
 
-- (id)copyDataRepresentationForTypeIdentifier:(id)a3 options:(id)a4 error:(id *)a5
+- (id)copyDataRepresentationForTypeIdentifier:(id)identifier options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -477,14 +477,14 @@ uint64_t __82__UIItemProvider_copyDataRepresentationForTypeIdentifier_options_co
   v18 = &v19;
   v11 = v10;
   v16 = v11;
-  [(UIItemProvider *)self copyDataRepresentationForTypeIdentifier:v8 options:v9 completionBlock:v15];
+  [(UIItemProvider *)self copyDataRepresentationForTypeIdentifier:identifierCopy options:optionsCopy completionBlock:v15];
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
     if (v12)
     {
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -513,19 +513,19 @@ void __72__UIItemProvider_copyDataRepresentationForTypeIdentifier_options_error_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)copyFileRepresentationForTypeIdentifier:(id)a3 toURL:(id)a4 options:(id)a5 completionBlock:(id)a6
+- (void)copyFileRepresentationForTypeIdentifier:(id)identifier toURL:(id)l options:(id)options completionBlock:(id)block
 {
-  v9 = a4;
-  v10 = a6;
+  lCopy = l;
+  blockCopy = block;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __88__UIItemProvider_copyFileRepresentationForTypeIdentifier_toURL_options_completionBlock___block_invoke;
   v14[3] = &unk_1E711A258;
-  v15 = v9;
-  v16 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = [(UIItemProvider *)self loadFileRepresentationForTypeIdentifier:a3 completionHandler:v14];
+  v15 = lCopy;
+  v16 = blockCopy;
+  v11 = blockCopy;
+  v12 = lCopy;
+  v13 = [(UIItemProvider *)self loadFileRepresentationForTypeIdentifier:identifier completionHandler:v14];
 }
 
 void __88__UIItemProvider_copyFileRepresentationForTypeIdentifier_toURL_options_completionBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -549,16 +549,16 @@ void __88__UIItemProvider_copyFileRepresentationForTypeIdentifier_toURL_options_
   }
 }
 
-- (id)copyFileRepresentationForTypeIdentifier:(id)a3 error:(id *)a4
+- (id)copyFileRepresentationForTypeIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = _UITemporaryFileWithUniqueName(@"com.apple.UIKit.ItemProvider", v6, 0);
-  LOBYTE(a4) = [(UIItemProvider *)self copyFileRepresentationForTypeIdentifier:v6 toURL:v7 options:0 error:a4];
+  identifierCopy = identifier;
+  v7 = _UITemporaryFileWithUniqueName(@"com.apple.UIKit.ItemProvider", identifierCopy, 0);
+  LOBYTE(error) = [(UIItemProvider *)self copyFileRepresentationForTypeIdentifier:identifierCopy toURL:v7 options:0 error:error];
 
-  if ((a4 & 1) == 0)
+  if ((error & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    [v8 removeItemAtURL:v7 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:v7 error:0];
 
     return 0;
   }
@@ -566,11 +566,11 @@ void __88__UIItemProvider_copyFileRepresentationForTypeIdentifier_toURL_options_
   return v7;
 }
 
-- (BOOL)copyFileRepresentationForTypeIdentifier:(id)a3 toURL:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)copyFileRepresentationForTypeIdentifier:(id)identifier toURL:(id)l options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  lCopy = l;
+  optionsCopy = options;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -590,14 +590,14 @@ void __88__UIItemProvider_copyFileRepresentationForTypeIdentifier_toURL_options_
   v21 = &v22;
   v14 = v13;
   v19 = v14;
-  [(UIItemProvider *)self copyFileRepresentationForTypeIdentifier:v10 toURL:v11 options:v12 completionBlock:v18];
+  [(UIItemProvider *)self copyFileRepresentationForTypeIdentifier:identifierCopy toURL:lCopy options:optionsCopy completionBlock:v18];
   dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
-  if (a6)
+  if (error)
   {
     v15 = v23[5];
     if (v15)
     {
-      *a6 = v15;
+      *error = v15;
     }
   }
 
@@ -617,9 +617,9 @@ void __78__UIItemProvider_copyFileRepresentationForTypeIdentifier_toURL_options_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)instantiateObjectOfClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)instantiateObjectOfClass:(Class)class options:(id)options error:(id *)error
 {
-  v8 = a4;
+  optionsCopy = options;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -641,14 +641,14 @@ void __78__UIItemProvider_copyFileRepresentationForTypeIdentifier_toURL_options_
   v17 = &v18;
   v10 = v9;
   v15 = v10;
-  [(UIItemProvider *)self instantiateObjectOfClass:a3 options:v8 completionBlock:v14];
+  [(UIItemProvider *)self instantiateObjectOfClass:class options:optionsCopy completionBlock:v14];
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
     v11 = v19[5];
     if (v11)
     {
-      *a5 = v11;
+      *error = v11;
     }
   }
 

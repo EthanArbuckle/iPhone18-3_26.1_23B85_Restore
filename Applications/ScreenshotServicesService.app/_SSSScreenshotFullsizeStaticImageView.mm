@@ -1,19 +1,19 @@
 @interface _SSSScreenshotFullsizeStaticImageView
 - (CGSize)sizeMultiplier;
 - (SSSCropInfo)cropInfo;
-- (_SSSScreenshotFullsizeStaticImageView)initWithFrame:(CGRect)a3;
+- (_SSSScreenshotFullsizeStaticImageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCropInfo:(SSSCropInfo *)a3;
-- (void)setImage:(id)a3;
+- (void)setCropInfo:(SSSCropInfo *)info;
+- (void)setImage:(id)image;
 @end
 
 @implementation _SSSScreenshotFullsizeStaticImageView
 
-- (_SSSScreenshotFullsizeStaticImageView)initWithFrame:(CGRect)a3
+- (_SSSScreenshotFullsizeStaticImageView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _SSSScreenshotFullsizeStaticImageView;
-  v3 = [(_SSSScreenshotFullsizeStaticImageView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SSSScreenshotFullsizeStaticImageView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(UIImageView);
   imageView = v3->_imageView;
   v3->_imageView = v4;
@@ -32,31 +32,31 @@
     v4 = *&v9[16] * v3;
     [(_SSSScreenshotFullsizeStaticImageView *)self sizeMultiplier];
     [(UIImageView *)self->_imageView setFrame:*v9, *&v9[8], v4, *&v9[24] * v5];
-    v6 = [(UIImageView *)self->_imageView layer];
-    v7 = [(_SSSScreenshotFullsizeStaticImageView *)self useTrilinearMinificationFilter];
+    layer = [(UIImageView *)self->_imageView layer];
+    useTrilinearMinificationFilter = [(_SSSScreenshotFullsizeStaticImageView *)self useTrilinearMinificationFilter];
     v8 = &kCAFilterTrilinear;
-    if (!v7)
+    if (!useTrilinearMinificationFilter)
     {
       v8 = &kCAFilterLinear;
     }
 
-    [v6 setMinificationFilter:*v8];
+    [layer setMinificationFilter:*v8];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  [(UIImageView *)self->_imageView setImage:a3];
+  [(UIImageView *)self->_imageView setImage:image];
   [(_SSSScreenshotFullsizeStaticImageView *)self setNeedsLayout];
 
   [(_SSSScreenshotFullsizeStaticImageView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setCropInfo:(SSSCropInfo *)a3
+- (void)setCropInfo:(SSSCropInfo *)info
 {
-  origin = a3->currentRect.origin;
-  size = a3->currentRect.size;
-  self->_cropInfo.totalSize = a3->totalSize;
+  origin = info->currentRect.origin;
+  size = info->currentRect.size;
+  self->_cropInfo.totalSize = info->totalSize;
   self->_cropInfo.currentRect.origin = origin;
   self->_cropInfo.currentRect.size = size;
   [(_SSSScreenshotFullsizeStaticImageView *)self setNeedsLayout];

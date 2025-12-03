@@ -1,20 +1,20 @@
 @interface MinimumTimeIntervalRadarRequestFilter
-- (BOOL)shouldRequestRadarForDisplayReason:(id)a3;
+- (BOOL)shouldRequestRadarForDisplayReason:(id)reason;
 - (_TtC14HomeKitMetrics37MinimumTimeIntervalRadarRequestFilter)init;
-- (void)radarRequestedForDisplayReason:(id)a3;
+- (void)radarRequestedForDisplayReason:(id)reason;
 @end
 
 @implementation MinimumTimeIntervalRadarRequestFilter
 
-- (BOOL)shouldRequestRadarForDisplayReason:(id)a3
+- (BOOL)shouldRequestRadarForDisplayReason:(id)reason
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_22B0D1A68();
 
   return v4;
 }
 
-- (void)radarRequestedForDisplayReason:(id)a3
+- (void)radarRequestedForDisplayReason:(id)reason
 {
   v4 = sub_22B0DF0E0();
   v5 = *(*(v4 - 8) + 64);
@@ -22,9 +22,9 @@
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = *(&self->super.isa + OBJC_IVAR____TtC14HomeKitMetrics37MinimumTimeIntervalRadarRequestFilter_dateFactory);
   v8 = *&self->minimumRequestInterval[OBJC_IVAR____TtC14HomeKitMetrics37MinimumTimeIntervalRadarRequestFilter_dateFactory];
-  v10 = self;
+  selfCopy = self;
   v9();
-  v11 = v10 + OBJC_IVAR____TtC14HomeKitMetrics37MinimumTimeIntervalRadarRequestFilter_filterStorage;
+  v11 = selfCopy + OBJC_IVAR____TtC14HomeKitMetrics37MinimumTimeIntervalRadarRequestFilter_filterStorage;
   swift_beginAccess();
   v12 = *(v11 + 24);
   v13 = *(v11 + 32);

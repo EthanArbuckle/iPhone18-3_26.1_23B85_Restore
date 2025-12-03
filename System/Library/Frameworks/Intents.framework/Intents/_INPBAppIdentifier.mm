@@ -1,43 +1,43 @@
 @interface _INPBAppIdentifier
-- (BOOL)isEqual:(id)a3;
-- (_INPBAppIdentifier)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBAppIdentifier)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAppName:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setBundleVersion:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAppName:(id)name;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setBundleVersion:(id)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBAppIdentifier
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appName)
   {
-    v4 = [(_INPBAppIdentifier *)self appName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appName"];
+    appName = [(_INPBAppIdentifier *)self appName];
+    v5 = [appName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appName"];
   }
 
   if (self->_bundleIdentifier)
   {
-    v6 = [(_INPBAppIdentifier *)self bundleIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(_INPBAppIdentifier *)self bundleIdentifier];
+    v7 = [bundleIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"bundleIdentifier"];
   }
 
   if (self->_bundleVersion)
   {
-    v8 = [(_INPBAppIdentifier *)self bundleVersion];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"bundleVersion"];
+    bundleVersion = [(_INPBAppIdentifier *)self bundleVersion];
+    v9 = [bundleVersion copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"bundleVersion"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -47,28 +47,28 @@
   return v4 ^ [(NSString *)self->_bundleVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBAppIdentifier *)self appName];
-  v6 = [v4 appName];
-  if ((v5 != 0) == (v6 == 0))
+  appName = [(_INPBAppIdentifier *)self appName];
+  appName2 = [equalCopy appName];
+  if ((appName != 0) == (appName2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBAppIdentifier *)self appName];
-  if (v7)
+  appName3 = [(_INPBAppIdentifier *)self appName];
+  if (appName3)
   {
-    v8 = v7;
-    v9 = [(_INPBAppIdentifier *)self appName];
-    v10 = [v4 appName];
-    v11 = [v9 isEqual:v10];
+    v8 = appName3;
+    appName4 = [(_INPBAppIdentifier *)self appName];
+    appName5 = [equalCopy appName];
+    v11 = [appName4 isEqual:appName5];
 
     if (!v11)
     {
@@ -80,20 +80,20 @@
   {
   }
 
-  v5 = [(_INPBAppIdentifier *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  appName = [(_INPBAppIdentifier *)self bundleIdentifier];
+  appName2 = [equalCopy bundleIdentifier];
+  if ((appName != 0) == (appName2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBAppIdentifier *)self bundleIdentifier];
-  if (v12)
+  bundleIdentifier = [(_INPBAppIdentifier *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v13 = v12;
-    v14 = [(_INPBAppIdentifier *)self bundleIdentifier];
-    v15 = [v4 bundleIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = bundleIdentifier;
+    bundleIdentifier2 = [(_INPBAppIdentifier *)self bundleIdentifier];
+    bundleIdentifier3 = [equalCopy bundleIdentifier];
+    v16 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
     if (!v16)
     {
@@ -105,12 +105,12 @@
   {
   }
 
-  v5 = [(_INPBAppIdentifier *)self bundleVersion];
-  v6 = [v4 bundleVersion];
-  if ((v5 != 0) != (v6 == 0))
+  appName = [(_INPBAppIdentifier *)self bundleVersion];
+  appName2 = [equalCopy bundleVersion];
+  if ((appName != 0) != (appName2 == 0))
   {
-    v17 = [(_INPBAppIdentifier *)self bundleVersion];
-    if (!v17)
+    bundleVersion = [(_INPBAppIdentifier *)self bundleVersion];
+    if (!bundleVersion)
     {
 
 LABEL_20:
@@ -118,10 +118,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBAppIdentifier *)self bundleVersion];
-    v20 = [v4 bundleVersion];
-    v21 = [v19 isEqual:v20];
+    v18 = bundleVersion;
+    bundleVersion2 = [(_INPBAppIdentifier *)self bundleVersion];
+    bundleVersion3 = [equalCopy bundleVersion];
+    v21 = [bundleVersion2 isEqual:bundleVersion3];
 
     if (v21)
     {
@@ -141,96 +141,96 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBAppIdentifier allocWithZone:](_INPBAppIdentifier init];
-  v6 = [(NSString *)self->_appName copyWithZone:a3];
+  v6 = [(NSString *)self->_appName copyWithZone:zone];
   [(_INPBAppIdentifier *)v5 setAppName:v6];
 
-  v7 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   [(_INPBAppIdentifier *)v5 setBundleIdentifier:v7];
 
-  v8 = [(NSString *)self->_bundleVersion copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleVersion copyWithZone:zone];
   [(_INPBAppIdentifier *)v5 setBundleVersion:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBAppIdentifier *)self data];
+  coderCopy = coder;
+  data = [(_INPBAppIdentifier *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBAppIdentifier)initWithCoder:(id)a3
+- (_INPBAppIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBAppIdentifier *)self initWithData:v6];
+    self = [(_INPBAppIdentifier *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBAppIdentifier *)self appName];
+  toCopy = to;
+  appName = [(_INPBAppIdentifier *)self appName];
 
-  if (v4)
+  if (appName)
   {
     appName = self->_appName;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBAppIdentifier *)self bundleIdentifier];
+  bundleIdentifier = [(_INPBAppIdentifier *)self bundleIdentifier];
 
-  if (v6)
+  if (bundleIdentifier)
   {
     bundleIdentifier = self->_bundleIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_INPBAppIdentifier *)self bundleVersion];
+  bundleVersion = [(_INPBAppIdentifier *)self bundleVersion];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (bundleVersion)
   {
     bundleVersion = self->_bundleVersion;
     PBDataWriterWriteStringField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setBundleVersion:(id)a3
+- (void)setBundleVersion:(id)version
 {
-  v4 = [a3 copy];
+  v4 = [version copy];
   bundleVersion = self->_bundleVersion;
   self->_bundleVersion = v4;
 
   MEMORY[0x1EEE66BB8](v4, bundleVersion);
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, bundleIdentifier);
 }
 
-- (void)setAppName:(id)a3
+- (void)setAppName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   appName = self->_appName;
   self->_appName = v4;
 

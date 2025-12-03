@@ -28,8 +28,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -39,7 +39,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -50,7 +50,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -74,8 +74,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -86,7 +86,7 @@ LABEL_11:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -96,7 +96,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -116,8 +116,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -128,7 +128,7 @@ LABEL_11:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v14 + 1) + 8 * i));
@@ -138,7 +138,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -158,7 +158,7 @@ LABEL_11:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a1;
+  obj = self;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
@@ -227,15 +227,15 @@ LABEL_11:
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{(objc_msgSend(a1, "count") * 1.5)}];
+    v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{(objc_msgSend(self, "count") * 1.5)}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = a1;
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    selfCopy = self;
+    v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -246,7 +246,7 @@ LABEL_11:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = v4[2](v4, *(*(&v14 + 1) + 8 * i));
@@ -256,7 +256,7 @@ LABEL_11:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -276,8 +276,8 @@ LABEL_11:
 - (uint64_t)crk_containsObjectMatchingPredicate:()CRKGenericAdditions
 {
   v4 = a3;
-  v5 = [a1 objectEnumerator];
-  v6 = [v5 crk_containsObjectMatchingPredicate:v4];
+  objectEnumerator = [self objectEnumerator];
+  v6 = [objectEnumerator crk_containsObjectMatchingPredicate:v4];
 
   return v6;
 }
@@ -285,15 +285,15 @@ LABEL_11:
 - (uint64_t)crk_allObjectsMatchPredicate:()CRKGenericAdditions
 {
   v4 = a3;
-  v5 = [a1 objectEnumerator];
-  v6 = [v5 crk_allObjectsMatchPredicate:v4];
+  objectEnumerator = [self objectEnumerator];
+  v6 = [objectEnumerator crk_allObjectsMatchPredicate:v4];
 
   return v6;
 }
 
 - (id)crk_arrayByRemovingFirstObject
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 removeObjectAtIndex:0];
   v2 = [v1 copy];
 
@@ -305,14 +305,14 @@ LABEL_11:
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 mutableCopy];
+    v5 = [self mutableCopy];
     [v5 removeObject:v4];
     v6 = [v5 copy];
   }
 
   else
   {
-    v6 = [a1 copy];
+    v6 = [self copy];
   }
 
   return v6;
@@ -321,7 +321,7 @@ LABEL_11:
 - (id)crk_arrayByRemovingObjectsInArray:()CRKGenericAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObjectsInArray:v4];
 
   v6 = [v5 copy];
@@ -332,13 +332,13 @@ LABEL_11:
 - (BOOL)crk_isSortedByComparator:()CRKGenericAdditions
 {
   v4 = a3;
-  if ([a1 count] >= 2 && objc_msgSend(a1, "count") >= 2)
+  if ([self count] >= 2 && objc_msgSend(self, "count") >= 2)
   {
     v7 = 1;
     do
     {
-      v8 = [a1 objectAtIndexedSubscript:v7 - 1];
-      v9 = [a1 objectAtIndexedSubscript:v7];
+      v8 = [self objectAtIndexedSubscript:v7 - 1];
+      v9 = [self objectAtIndexedSubscript:v7];
       v10 = v4[2](v4, v8, v9);
 
       v5 = v10 != 1;
@@ -350,7 +350,7 @@ LABEL_11:
       ++v7;
     }
 
-    while (v7 < [a1 count]);
+    while (v7 < [self count]);
   }
 
   else
@@ -364,13 +364,13 @@ LABEL_11:
 - (id)crk_sortedArrayForRange:()CRKGenericAdditions usingComparator:
 {
   v9 = a5;
-  if (a3 + a4 > [a1 count])
+  if (a3 + a4 > [self count])
   {
-    [NSArray(CRKGenericAdditions) crk_sortedArrayForRange:a2 usingComparator:a1];
+    [NSArray(CRKGenericAdditions) crk_sortedArrayForRange:a2 usingComparator:self];
   }
 
-  v10 = [a1 crk_sortedSubarrayWithRange:a3 comparator:{a4, v9}];
-  v11 = [a1 mutableCopy];
+  v10 = [self crk_sortedSubarrayWithRange:a3 comparator:{a4, v9}];
+  v11 = [self mutableCopy];
   [v11 replaceObjectsInRange:a3 withObjectsFromArray:{a4, v10}];
   v12 = [v11 copy];
 
@@ -387,7 +387,7 @@ LABEL_11:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = a1;
+  obj = self;
   v9 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -443,13 +443,13 @@ LABEL_11:
 {
   v9 = a3 + a4;
   v10 = a5;
-  if (v9 > [a1 count])
+  if (v9 > [self count])
   {
-    [NSArray(CRKGenericAdditions) crk_sortedSubarrayWithRange:a2 comparator:a1];
+    [NSArray(CRKGenericAdditions) crk_sortedSubarrayWithRange:a2 comparator:self];
   }
 
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
-  [v11 replaceObjectsInRange:0 withObjectsFromArray:0 range:{a1, a3, a4}];
+  [v11 replaceObjectsInRange:0 withObjectsFromArray:0 range:{self, a3, a4}];
   [v11 sortUsingComparator:v10];
 
   v12 = [v11 copy];
@@ -489,7 +489,7 @@ LABEL_11:
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = a1;
+  obj = self;
   v10 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v10)
   {
@@ -527,8 +527,8 @@ LABEL_11:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v18 = [v9 allKeys];
-  v19 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  allKeys = [v9 allKeys];
+  v19 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v19)
   {
     v20 = v19;
@@ -539,7 +539,7 @@ LABEL_11:
       {
         if (*v31 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allKeys);
         }
 
         v23 = *(*(&v30 + 1) + 8 * j);
@@ -548,7 +548,7 @@ LABEL_11:
         [v9 setObject:v25 forKeyedSubscript:v23];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v20 = [allKeys countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v20);
@@ -563,14 +563,14 @@ LABEL_11:
 {
   v4 = a3;
   v5 = [v4 count];
-  if (v5 <= [a1 count])
+  if (v5 <= [self count])
   {
     if ([v4 count])
     {
       v7 = 0;
       do
       {
-        v8 = [a1 objectAtIndexedSubscript:v7];
+        v8 = [self objectAtIndexedSubscript:v7];
         v9 = [v4 objectAtIndexedSubscript:v7];
         v6 = [v8 isEqual:v9];
 
@@ -601,14 +601,14 @@ LABEL_11:
 
 - (id)crk_optionalObjectAtIndex:()CRKGenericAdditions
 {
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [a1 objectAtIndexedSubscript:a3];
+    v5 = [self objectAtIndexedSubscript:a3];
   }
 
   return v5;

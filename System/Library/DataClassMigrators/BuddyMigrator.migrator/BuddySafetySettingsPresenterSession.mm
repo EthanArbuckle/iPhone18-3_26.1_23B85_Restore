@@ -1,28 +1,28 @@
 @interface BuddySafetySettingsPresenterSession
 - (BuddySafetySettingsPresenterSessionDelegate)delegate;
-- (void)presentWithNavigationController:(id)a3;
-- (void)safetySettingsDidFinishWithResult:(id)a3 viewControllersToRemove:(id)a4 error:(id)a5;
+- (void)presentWithNavigationController:(id)controller;
+- (void)safetySettingsDidFinishWithResult:(id)result viewControllersToRemove:(id)remove error:(id)error;
 @end
 
 @implementation BuddySafetySettingsPresenterSession
 
-- (void)safetySettingsDidFinishWithResult:(id)a3 viewControllersToRemove:(id)a4 error:(id)a5
+- (void)safetySettingsDidFinishWithResult:(id)result viewControllersToRemove:(id)remove error:(id)error
 {
-  v6 = a4;
-  v7 = [(BuddySafetySettingsPresenterSession *)self delegate];
+  removeCopy = remove;
+  delegate = [(BuddySafetySettingsPresenterSession *)self delegate];
   v8 = _BYLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v7;
+    v13 = delegate;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Safety session presentation session did finish. Forwarding to delegate %{public}@", buf, 0xCu);
   }
 
-  if (v7)
+  if (delegate)
   {
     if (+[NSThread isMainThread])
     {
-      [v7 safetySettingsPresenterSessionDidFinishWithViewControllersToRemove:v6];
+      [delegate safetySettingsPresenterSessionDidFinishWithViewControllersToRemove:removeCopy];
     }
 
     else
@@ -31,27 +31,27 @@
       v9[1] = 3221225472;
       v9[2] = sub_A38C;
       v9[3] = &unk_28C00;
-      v10 = v7;
-      v11 = v6;
+      v10 = delegate;
+      v11 = removeCopy;
       dispatch_async(&_dispatch_main_q, v9);
     }
   }
 }
 
-- (void)presentWithNavigationController:(id)a3
+- (void)presentWithNavigationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = _BYLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = controllerCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Safety session presentation session will present with navigation controller %@", &v8, 0xCu);
   }
 
-  v6 = [(BuddySafetySettingsPresenterSession *)self presenter];
-  v7 = [(BuddySafetySettingsPresenterSession *)self context];
-  [v6 presentSafetySettingsWithContext:v7 navigationController:v4];
+  presenter = [(BuddySafetySettingsPresenterSession *)self presenter];
+  context = [(BuddySafetySettingsPresenterSession *)self context];
+  [presenter presentSafetySettingsWithContext:context navigationController:controllerCopy];
 }
 
 - (BuddySafetySettingsPresenterSessionDelegate)delegate

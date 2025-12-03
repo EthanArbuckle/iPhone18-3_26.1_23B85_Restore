@@ -1,25 +1,25 @@
 @interface PNLibraryProcessingProgressProvider
-+ ($DF4FB41D2F0E3F59E20087ACD782DC9D)faceProcessingProgressForLibrary:(SEL)a3;
-+ (void)requestHighlightEnrichmentProgressForLibrary:(id)a3 result:(id)a4;
-+ (void)requestProcessingProgressForLibrary:(id)a3 result:(id)a4;
-+ (void)requestSyndicationProgressForLibrary:(id)a3 result:(id)a4;
++ ($DF4FB41D2F0E3F59E20087ACD782DC9D)faceProcessingProgressForLibrary:(SEL)library;
++ (void)requestHighlightEnrichmentProgressForLibrary:(id)library result:(id)result;
++ (void)requestProcessingProgressForLibrary:(id)library result:(id)result;
++ (void)requestSyndicationProgressForLibrary:(id)library result:(id)result;
 @end
 
 @implementation PNLibraryProcessingProgressProvider
 
-+ (void)requestSyndicationProgressForLibrary:(id)a3 result:(id)a4
++ (void)requestSyndicationProgressForLibrary:(id)library result:(id)result
 {
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  resultCopy = result;
   v7 = _AnalysisProgressQueue();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__PNLibraryProcessingProgressProvider_requestSyndicationProgressForLibrary_result___block_invoke;
   v10[3] = &unk_1E82A26E0;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = libraryCopy;
+  v12 = resultCopy;
+  v8 = resultCopy;
+  v9 = libraryCopy;
   dispatch_async(v7, v10);
 }
 
@@ -200,19 +200,19 @@ void __83__PNLibraryProcessingProgressProvider_requestSyndicationProgressForLibr
   v28();
 }
 
-+ (void)requestHighlightEnrichmentProgressForLibrary:(id)a3 result:(id)a4
++ (void)requestHighlightEnrichmentProgressForLibrary:(id)library result:(id)result
 {
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  resultCopy = result;
   v7 = _AnalysisProgressQueue();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __91__PNLibraryProcessingProgressProvider_requestHighlightEnrichmentProgressForLibrary_result___block_invoke;
   v10[3] = &unk_1E82A26E0;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = libraryCopy;
+  v12 = resultCopy;
+  v8 = resultCopy;
+  v9 = libraryCopy;
   dispatch_async(v7, v10);
 }
 
@@ -384,7 +384,7 @@ void __91__PNLibraryProcessingProgressProvider_requestHighlightEnrichmentProgres
   v31();
 }
 
-+ ($DF4FB41D2F0E3F59E20087ACD782DC9D)faceProcessingProgressForLibrary:(SEL)a3
++ ($DF4FB41D2F0E3F59E20087ACD782DC9D)faceProcessingProgressForLibrary:(SEL)library
 {
   v38 = *MEMORY[0x1E69E9840];
   v5 = a4;
@@ -405,8 +405,8 @@ void __91__PNLibraryProcessingProgressProvider_requestHighlightEnrichmentProgres
   v10 = MEMORY[0x1E69E9C10];
 
   v11 = mach_absolute_time();
-  v12 = [v5 fetchCountOfAssetsWithAllowedForAnalysis];
-  retstr->var0 = v12;
+  fetchCountOfAssetsWithAllowedForAnalysis = [v5 fetchCountOfAssetsWithAllowedForAnalysis];
+  retstr->var0 = fetchCountOfAssetsWithAllowedForAnalysis;
   v13 = mach_absolute_time();
   numer = info.numer;
   denom = info.denom;
@@ -441,23 +441,23 @@ void __91__PNLibraryProcessingProgressProvider_requestHighlightEnrichmentProgres
   }
 
   v22 = mach_absolute_time();
-  v23 = [v5 fetchCountOfAssetsWithFacesProcessedToLatestVersion];
-  retstr->var1 = v23;
-  if (v12)
+  fetchCountOfAssetsWithFacesProcessedToLatestVersion = [v5 fetchCountOfAssetsWithFacesProcessedToLatestVersion];
+  retstr->var1 = fetchCountOfAssetsWithFacesProcessedToLatestVersion;
+  if (fetchCountOfAssetsWithAllowedForAnalysis)
   {
-    retstr->var3 = v23 * 100.0 / v12;
-    v24 = [v5 fetchCountOfAssetsWithFacesProcessedToAnyVersion];
-    v25 = v24 * 100.0 / v12;
+    retstr->var3 = fetchCountOfAssetsWithFacesProcessedToLatestVersion * 100.0 / fetchCountOfAssetsWithAllowedForAnalysis;
+    fetchCountOfAssetsWithFacesProcessedToAnyVersion = [v5 fetchCountOfAssetsWithFacesProcessedToAnyVersion];
+    v25 = fetchCountOfAssetsWithFacesProcessedToAnyVersion * 100.0 / fetchCountOfAssetsWithAllowedForAnalysis;
   }
 
   else
   {
     retstr->var3 = 0.0;
-    v24 = [v5 fetchCountOfAssetsWithFacesProcessedToAnyVersion];
+    fetchCountOfAssetsWithFacesProcessedToAnyVersion = [v5 fetchCountOfAssetsWithFacesProcessedToAnyVersion];
     v25 = 0.0;
   }
 
-  retstr->var2 = v24;
+  retstr->var2 = fetchCountOfAssetsWithFacesProcessedToAnyVersion;
   retstr->var4 = v25;
   v26 = mach_absolute_time();
   v27 = v32;
@@ -484,19 +484,19 @@ void __91__PNLibraryProcessingProgressProvider_requestHighlightEnrichmentProgres
   return result;
 }
 
-+ (void)requestProcessingProgressForLibrary:(id)a3 result:(id)a4
++ (void)requestProcessingProgressForLibrary:(id)library result:(id)result
 {
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  resultCopy = result;
   v7 = _AnalysisProgressQueue();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__PNLibraryProcessingProgressProvider_requestProcessingProgressForLibrary_result___block_invoke;
   v10[3] = &unk_1E82A26E0;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = libraryCopy;
+  v12 = resultCopy;
+  v8 = resultCopy;
+  v9 = libraryCopy;
   dispatch_async(v7, v10);
 }
 

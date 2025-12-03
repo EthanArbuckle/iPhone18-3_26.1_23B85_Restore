@@ -1,38 +1,38 @@
 @interface _ATXNeuralNetwork
-- (_ATXNeuralNetwork)initWithData:(id)a3;
-- (double)predict:(const double *)a3;
-- (float)_runOnInputs:(float *)a3 freeInputsAfterUse:(BOOL)a4;
-- (void)forInputs:(const float *)a3 computeOutputLayer:(float *)a4;
+- (_ATXNeuralNetwork)initWithData:(id)data;
+- (double)predict:(const double *)predict;
+- (float)_runOnInputs:(float *)inputs freeInputsAfterUse:(BOOL)use;
+- (void)forInputs:(const float *)inputs computeOutputLayer:(float *)layer;
 @end
 
 @implementation _ATXNeuralNetwork
 
-- (_ATXNeuralNetwork)initWithData:(id)a3
+- (_ATXNeuralNetwork)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = _ATXNeuralNetwork;
   v6 = [(_ATXNeuralNetwork *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
-    v8 = [v5 bytes];
-    v9 = *v8;
-    v7->_dataBytes = v8;
+    objc_storeStrong(&v6->_data, data);
+    bytes = [dataCopy bytes];
+    v9 = *bytes;
+    v7->_dataBytes = bytes;
     v7->_nlayers = v9;
     if (!v9)
     {
       [_ATXNeuralNetwork initWithData:];
     }
 
-    v7->_layers = (v8 + 1);
+    v7->_layers = (bytes + 1);
   }
 
   return v7;
 }
 
-- (double)predict:(const double *)a3
+- (double)predict:(const double *)predict
 {
   v5 = malloc_type_malloc(4 * self->_layers->var0, 0x100004052888210uLL);
   if (!v5)
@@ -47,7 +47,7 @@
     v7 = v5;
     do
     {
-      v8 = *a3++;
+      v8 = *predict++;
       v9 = v8;
       *v7++ = v9;
       --var0;
@@ -60,15 +60,15 @@
   return result;
 }
 
-- (float)_runOnInputs:(float *)a3 freeInputsAfterUse:(BOOL)a4
+- (float)_runOnInputs:(float *)inputs freeInputsAfterUse:(BOOL)use
 {
-  v4 = a3;
+  inputsCopy = inputs;
   if (!self->_nlayers)
   {
-    return a3;
+    return inputs;
   }
 
-  v5 = a4;
+  useCopy = use;
   v7 = 0;
   do
   {
@@ -153,39 +153,39 @@
     v25 = &layers[v7];
     if (v25->var5)
     {
-      memcpy(&v11[layers[v7].var1], v4, 4 * v25->var0);
+      memcpy(&v11[layers[v7].var1], inputsCopy, 4 * v25->var0);
     }
 
-    if (v7 || v5)
+    if (v7 || useCopy)
     {
-      free(v4);
+      free(inputsCopy);
     }
 
     ++v7;
-    v4 = v11;
+    inputsCopy = v11;
   }
 
   while (v7 < self->_nlayers);
   return v11;
 }
 
-- (void)forInputs:(const float *)a3 computeOutputLayer:(float *)a4
+- (void)forInputs:(const float *)inputs computeOutputLayer:(float *)layer
 {
-  v6 = [(_ATXNeuralNetwork *)self _runOnInputs:a3 freeInputsAfterUse:0];
+  v6 = [(_ATXNeuralNetwork *)self _runOnInputs:inputs freeInputsAfterUse:0];
   v7 = &self->_layers[self->_nlayers];
   var1 = v7[-1].var1;
   v13 = v7[-1].var1;
   if (v7[-1].var6)
   {
-    vvexpf(a4, v6, &v13);
+    vvexpf(layer, v6, &v13);
     v9 = 0.0;
     if (v13 >= 1)
     {
       v10 = v13;
-      v11 = a4;
+      layerCopy = layer;
       do
       {
-        v12 = *v11++;
+        v12 = *layerCopy++;
         v9 = v9 + v12;
         --v10;
       }
@@ -198,7 +198,7 @@
 
   else
   {
-    memcpy(a4, v6, 4 * var1);
+    memcpy(layer, v6, 4 * var1);
   }
 
   free(v6);

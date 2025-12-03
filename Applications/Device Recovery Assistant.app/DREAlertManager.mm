@@ -3,12 +3,12 @@
 - (BOOL)_isAnyAlertOrModalVisible;
 - (DREAlertManager)init;
 - (UIViewController)presentedPowerDownVC;
-- (id)_findTopViewController:(id)a3;
+- (id)_findTopViewController:(id)controller;
 - (id)_getTopViewController;
-- (void)powerDownViewRequestCancel:(id)a3;
-- (void)powerDownViewRequestPowerDown:(id)a3;
-- (void)showMenuSheetWithOptions:(unint64_t)a3 completion:(id)a4 response:(id)a5;
-- (void)showPowerDownWithCompletion:(id)a3 response:(id)a4;
+- (void)powerDownViewRequestCancel:(id)cancel;
+- (void)powerDownViewRequestPowerDown:(id)down;
+- (void)showMenuSheetWithOptions:(unint64_t)options completion:(id)completion response:(id)response;
+- (void)showPowerDownWithCompletion:(id)completion response:(id)response;
 @end
 
 @implementation DREAlertManager
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000073F0;
   block[3] = &unk_100028880;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100032150 != -1)
   {
     dispatch_once(&qword_100032150, block);
@@ -43,24 +43,24 @@
   return result;
 }
 
-- (id)_findTopViewController:(id)a3
+- (id)_findTopViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (!controllerCopy)
   {
     v8 = 0;
     goto LABEL_10;
   }
 
-  v6 = [v4 presentedViewController];
+  presentedViewController = [controllerCopy presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
-    v7 = [v5 presentedViewController];
+    presentedViewController2 = [v5 presentedViewController];
 LABEL_9:
-    v9 = v7;
-    v8 = [(DREAlertManager *)self _findTopViewController:v7];
+    v9 = presentedViewController2;
+    v8 = [(DREAlertManager *)self _findTopViewController:presentedViewController2];
 
     goto LABEL_10;
   }
@@ -68,14 +68,14 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 visibleViewController];
+    presentedViewController2 = [v5 visibleViewController];
     goto LABEL_9;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 selectedViewController];
+    presentedViewController2 = [v5 selectedViewController];
     goto LABEL_9;
   }
 
@@ -92,9 +92,9 @@ LABEL_10:
   v31 = 0u;
   v32 = 0u;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
+  connectedScenes = [v3 connectedScenes];
 
-  v5 = [v4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v5 = [connectedScenes countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v5)
   {
     v6 = v5;
@@ -105,7 +105,7 @@ LABEL_10:
       {
         if (*v30 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v29 + 1) + 8 * i);
@@ -114,17 +114,17 @@ LABEL_10:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [v9 keyWindow];
-            if (v10)
+            keyWindow = [v9 keyWindow];
+            if (keyWindow)
             {
-              v12 = v10;
+              keyWindow2 = keyWindow;
               goto LABEL_25;
             }
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v6)
       {
         continue;
@@ -135,19 +135,19 @@ LABEL_10:
   }
 
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 keyWindow];
+  keyWindow2 = [v11 keyWindow];
 
-  if (!v12 || [v12 isHidden])
+  if (!keyWindow2 || [keyWindow2 isHidden])
   {
     v13 = +[UIApplication sharedApplication];
-    v14 = [v13 windows];
+    windows = [v13 windows];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v4 = v14;
-    v15 = [v4 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    connectedScenes = windows;
+    v15 = [connectedScenes countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v15)
     {
       v16 = v15;
@@ -158,7 +158,7 @@ LABEL_10:
         {
           if (*v26 != v17)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(connectedScenes);
           }
 
           v19 = *(*(&v25 + 1) + 8 * j);
@@ -166,12 +166,12 @@ LABEL_10:
           {
             v20 = v19;
 
-            v12 = v20;
+            keyWindow2 = v20;
             goto LABEL_24;
           }
         }
 
-        v16 = [v4 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v16 = [connectedScenes countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v16)
         {
           continue;
@@ -186,10 +186,10 @@ LABEL_24:
 LABEL_25:
   }
 
-  v21 = [v12 rootViewController];
-  if (v21)
+  rootViewController = [keyWindow2 rootViewController];
+  if (rootViewController)
   {
-    v22 = [(DREAlertManager *)self _findTopViewController:v21];
+    v22 = [(DREAlertManager *)self _findTopViewController:rootViewController];
   }
 
   else
@@ -206,16 +206,16 @@ LABEL_25:
   return v22;
 }
 
-- (void)showMenuSheetWithOptions:(unint64_t)a3 completion:(id)a4 response:(id)a5
+- (void)showMenuSheetWithOptions:(unint64_t)options completion:(id)completion response:(id)response
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
+  responseCopy = response;
   if ([(DREAlertManager *)self _isAnyAlertOrModalVisible])
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -235,7 +235,7 @@ LABEL_25:
     v13 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:v12];
     v14 = MSUCopyInstalledRecoveryOSVersion();
     v15 = [v14 length];
-    if ((v6 & 4) != 0 && v15)
+    if ((optionsCopy & 4) != 0 && v15)
     {
       v16 = +[NSBundle mainBundle];
       v17 = [v16 localizedStringForKey:@"NEARBY_DEVICE_RECOVERY_MENU" value:&stru_100028E90 table:0];
@@ -245,12 +245,12 @@ LABEL_25:
       v38[2] = sub_100007D98;
       v38[3] = &unk_1000288A8;
       v38[4] = self;
-      v39 = v9;
+      v39 = responseCopy;
       v18 = [UIAlertAction actionWithTitle:v17 style:0 handler:v38];
       [v13 addAction:v18];
     }
 
-    if ((v6 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
       v19 = +[NSBundle mainBundle];
       v20 = [v19 localizedStringForKey:@"RESTART_ALERT_BUTTON" value:&stru_100028E90 table:0];
@@ -259,12 +259,12 @@ LABEL_25:
       v36[2] = sub_100007E64;
       v36[3] = &unk_1000288A8;
       v36[4] = self;
-      v37 = v9;
+      v37 = responseCopy;
       v21 = [UIAlertAction actionWithTitle:v20 style:2 handler:v36];
       [v13 addAction:v21];
     }
 
-    if (v6)
+    if (optionsCopy)
     {
       v22 = +[NSBundle mainBundle];
       v23 = [v22 localizedStringForKey:@"SHUT_DOWN" value:&stru_100028E90 table:0];
@@ -273,7 +273,7 @@ LABEL_25:
       v34[2] = sub_100007F30;
       v34[3] = &unk_1000288A8;
       v34[4] = self;
-      v35 = v9;
+      v35 = responseCopy;
       v24 = [UIAlertAction actionWithTitle:v23 style:0 handler:v34];
       [v13 addAction:v24];
     }
@@ -285,20 +285,20 @@ LABEL_25:
     v32[2] = sub_100007FFC;
     v32[3] = &unk_1000288A8;
     v32[4] = self;
-    v33 = v9;
+    v33 = responseCopy;
     v27 = [UIAlertAction actionWithTitle:v26 style:1 handler:v32];
     [v13 addAction:v27];
 
-    v28 = [(DREAlertManager *)self _getTopViewController];
-    if (v28)
+    _getTopViewController = [(DREAlertManager *)self _getTopViewController];
+    if (_getTopViewController)
     {
       [(DREAlertManager *)self setAlertVisible:1];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_1000080C8;
       v30[3] = &unk_1000288D0;
-      v31 = v8;
-      [v28 presentViewController:v13 animated:1 completion:v30];
+      v31 = completionCopy;
+      [_getTopViewController presentViewController:v13 animated:1 completion:v30];
     }
 
     else
@@ -309,21 +309,21 @@ LABEL_25:
         sub_100012A34();
       }
 
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
   }
 }
 
-- (void)showPowerDownWithCompletion:(id)a3 response:(id)a4
+- (void)showPowerDownWithCompletion:(id)completion response:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  completionCopy = completion;
+  responseCopy = response;
+  if (completionCopy)
   {
-    v8 = v6;
+    v8 = completionCopy;
   }
 
   else
@@ -346,19 +346,19 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}s: Presenting power down UI…", buf, 0xCu);
     }
 
-    [(DREAlertManager *)self setPowerDownResponse:v7];
+    [(DREAlertManager *)self setPowerDownResponse:responseCopy];
     v10 = +[SBUIPowerDownViewControllerFactory newPowerDownViewController];
     if (v10)
     {
       v11 = +[UIColor lightGrayColor];
-      v12 = [v10 view];
-      [v12 setBackgroundColor:v11];
+      view = [v10 view];
+      [view setBackgroundColor:v11];
 
       [v10 setPowerDownDelegate:self];
       [v10 setModalPresentationStyle:5];
       [v10 setModalTransitionStyle:2];
-      v13 = [(DREAlertManager *)self _getTopViewController];
-      if (v13)
+      _getTopViewController = [(DREAlertManager *)self _getTopViewController];
+      if (_getTopViewController)
       {
         [(DREAlertManager *)self setPowerDownVisible:1];
         [(DREAlertManager *)self setPresentedPowerDownVC:v10];
@@ -367,7 +367,7 @@ LABEL_25:
         v16[2] = sub_100008448;
         v16[3] = &unk_1000288D0;
         v17 = v8;
-        [v13 presentViewController:v10 animated:1 completion:v16];
+        [_getTopViewController presentViewController:v10 animated:1 completion:v16];
       }
 
       else
@@ -397,9 +397,9 @@ LABEL_25:
   }
 }
 
-- (void)powerDownViewRequestCancel:(id)a3
+- (void)powerDownViewRequestCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -408,9 +408,9 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Power down request canceled - dismissing power down UI.", buf, 0xCu);
   }
 
-  v6 = [(DREAlertManager *)self presentedPowerDownVC];
+  presentedPowerDownVC = [(DREAlertManager *)self presentedPowerDownVC];
 
-  if (v6 == v4)
+  if (presentedPowerDownVC == cancelCopy)
   {
     [(DREAlertManager *)self setPowerDownVisible:0];
     [(DREAlertManager *)self setPresentedPowerDownVC:0];
@@ -419,7 +419,7 @@ LABEL_25:
     v8[2] = sub_100008684;
     v8[3] = &unk_100028938;
     v8[4] = self;
-    [v4 dismissViewControllerAnimated:1 completion:v8];
+    [cancelCopy dismissViewControllerAnimated:1 completion:v8];
   }
 
   else
@@ -432,9 +432,9 @@ LABEL_25:
   }
 }
 
-- (void)powerDownViewRequestPowerDown:(id)a3
+- (void)powerDownViewRequestPowerDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   v5 = sub_100012608();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -443,18 +443,18 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: Power down requested.", &v10, 0xCu);
   }
 
-  v6 = [(DREAlertManager *)self presentedPowerDownVC];
+  presentedPowerDownVC = [(DREAlertManager *)self presentedPowerDownVC];
 
-  if (v6 == v4)
+  if (presentedPowerDownVC == downCopy)
   {
     [(DREAlertManager *)self setPowerDownVisible:0];
     [(DREAlertManager *)self setPresentedPowerDownVC:0];
-    v8 = [(DREAlertManager *)self powerDownResponse];
+    powerDownResponse = [(DREAlertManager *)self powerDownResponse];
 
-    if (v8)
+    if (powerDownResponse)
     {
-      v9 = [(DREAlertManager *)self powerDownResponse];
-      v9[2](v9, 0);
+      powerDownResponse2 = [(DREAlertManager *)self powerDownResponse];
+      powerDownResponse2[2](powerDownResponse2, 0);
 
       [(DREAlertManager *)self setPowerDownResponse:0];
     }

@@ -1,66 +1,66 @@
 @interface MTStoreIdentifier
-+ (BOOL)isEmptyNumber:(id)a3;
-+ (id)adamIdNumberFromStoreId:(int64_t)a3;
-+ (id)identifierWithFeedUrl:(id)a3;
-+ (id)identifierWithFeedUrl:(id)a3 storeIdentifier:(id)a4;
-+ (id)validatedIdNumberFromStoreId:(int64_t)a3;
-+ (int64_t)adamIdFromSerpentId:(int64_t)a3;
-+ (int64_t)serpentIdFromAdamId:(int64_t)a3;
-- (MTStoreIdentifier)initWithFeedUrl:(id)a3 storeIdentifier:(id)a4;
++ (BOOL)isEmptyNumber:(id)number;
++ (id)adamIdNumberFromStoreId:(int64_t)id;
++ (id)identifierWithFeedUrl:(id)url;
++ (id)identifierWithFeedUrl:(id)url storeIdentifier:(id)identifier;
++ (id)validatedIdNumberFromStoreId:(int64_t)id;
++ (int64_t)adamIdFromSerpentId:(int64_t)id;
++ (int64_t)serpentIdFromAdamId:(int64_t)id;
+- (MTStoreIdentifier)initWithFeedUrl:(id)url storeIdentifier:(id)identifier;
 @end
 
 @implementation MTStoreIdentifier
 
-- (MTStoreIdentifier)initWithFeedUrl:(id)a3 storeIdentifier:(id)a4
+- (MTStoreIdentifier)initWithFeedUrl:(id)url storeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  urlCopy = url;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MTStoreIdentifier;
   v8 = [(MTStoreIdentifier *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(MTStoreIdentifier *)v8 setFeedUrl:v6];
-    [(MTStoreIdentifier *)v9 setStoreIdentifier:v7];
+    [(MTStoreIdentifier *)v8 setFeedUrl:urlCopy];
+    [(MTStoreIdentifier *)v9 setStoreIdentifier:identifierCopy];
   }
 
   return v9;
 }
 
-+ (id)identifierWithFeedUrl:(id)a3
++ (id)identifierWithFeedUrl:(id)url
 {
-  v3 = a3;
-  v4 = [[MTStoreIdentifier alloc] initWithFeedUrl:v3];
+  urlCopy = url;
+  v4 = [[MTStoreIdentifier alloc] initWithFeedUrl:urlCopy];
 
   return v4;
 }
 
-+ (id)identifierWithFeedUrl:(id)a3 storeIdentifier:(id)a4
++ (id)identifierWithFeedUrl:(id)url storeIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MTStoreIdentifier alloc] initWithFeedUrl:v6 storeIdentifier:v5];
+  identifierCopy = identifier;
+  urlCopy = url;
+  v7 = [[MTStoreIdentifier alloc] initWithFeedUrl:urlCopy storeIdentifier:identifierCopy];
 
   return v7;
 }
 
-+ (int64_t)adamIdFromSerpentId:(int64_t)a3
++ (int64_t)adamIdFromSerpentId:(int64_t)id
 {
   v3 = 1000000000000;
-  if (a3 <= 1000000000000)
+  if (id <= 1000000000000)
   {
     v3 = 0;
   }
 
-  return a3 - v3;
+  return id - v3;
 }
 
-+ (id)adamIdNumberFromStoreId:(int64_t)a3
++ (id)adamIdNumberFromStoreId:(int64_t)id
 {
-  if ([a1 isNotEmpty:?])
+  if ([self isNotEmpty:?])
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithLongLong:id];
   }
 
   else
@@ -71,22 +71,22 @@
   return v4;
 }
 
-+ (int64_t)serpentIdFromAdamId:(int64_t)a3
++ (int64_t)serpentIdFromAdamId:(int64_t)id
 {
   v3 = 1000000000000;
-  if (a3 >= 1000000000000)
+  if (id >= 1000000000000)
   {
     v3 = 0;
   }
 
-  return v3 + a3;
+  return v3 + id;
 }
 
-+ (id)validatedIdNumberFromStoreId:(int64_t)a3
++ (id)validatedIdNumberFromStoreId:(int64_t)id
 {
-  if ([a1 isNotEmpty:?])
+  if ([self isNotEmpty:?])
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithLongLong:id];
   }
 
   else
@@ -97,11 +97,11 @@
   return v4;
 }
 
-+ (BOOL)isEmptyNumber:(id)a3
++ (BOOL)isEmptyNumber:(id)number
 {
-  v4 = [a3 longLongValue];
+  longLongValue = [number longLongValue];
 
-  return [a1 isEmpty:v4];
+  return [self isEmpty:longLongValue];
 }
 
 @end

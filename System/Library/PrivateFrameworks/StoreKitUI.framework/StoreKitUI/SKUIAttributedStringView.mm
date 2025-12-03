@@ -1,39 +1,39 @@
 @interface SKUIAttributedStringView
-+ (CGSize)sizeWithLayout:(id)a3 treatment:(int64_t)a4;
-- (BOOL)_touchInsideLinkText:(CGPoint)a3 linkTextRange:(_NSRange *)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (CGSize)sizeWithLayout:(id)layout treatment:(int64_t)treatment;
+- (BOOL)_touchInsideLinkText:(CGPoint)text linkTextRange:(_NSRange *)range;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)description;
-- (SKUIAttributedStringView)initWithFrame:(CGRect)a3;
+- (SKUIAttributedStringView)initWithFrame:(CGRect)frame;
 - (SKUILinkHandler)linkDelegate;
 - (void)_reloadTopInset;
-- (void)_setTouchInside:(BOOL)a3;
-- (void)_setTrackingTouch:(BOOL)a3;
+- (void)_setTouchInside:(BOOL)inside;
+- (void)_setTrackingTouch:(BOOL)touch;
 - (void)_setupTapLocatorContainer;
-- (void)drawRect:(CGRect)a3;
-- (void)setBadgePlacement:(int64_t)a3;
-- (void)setFirstLineTopInset:(int64_t)a3;
-- (void)setLayout:(id)a3;
-- (void)setRequiredBadges:(id)a3;
-- (void)setStringTreatment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextColorFollowsTintColor:(BOOL)a3;
-- (void)setTreatmentColor:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setBadgePlacement:(int64_t)placement;
+- (void)setFirstLineTopInset:(int64_t)inset;
+- (void)setLayout:(id)layout;
+- (void)setRequiredBadges:(id)badges;
+- (void)setStringTreatment:(int64_t)treatment;
+- (void)setTextColor:(id)color;
+- (void)setTextColorFollowsTintColor:(BOOL)color;
+- (void)setTreatmentColor:(id)color;
 - (void)tintColorDidChange;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)viewWasRecycled;
 @end
 
 @implementation SKUIAttributedStringView
 
-- (SKUIAttributedStringView)initWithFrame:(CGRect)a3
+- (SKUIAttributedStringView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIAttributedStringView initWithFrame:];
@@ -41,11 +41,11 @@
 
   v11.receiver = self;
   v11.super_class = SKUIAttributedStringView;
-  v8 = [(SKUIAttributedStringView *)&v11 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIAttributedStringView *)&v11 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    [(SKUIAttributedStringView *)v8 setContentMode:3];
+    [(SKUIAttributedStringView *)height setContentMode:3];
   }
 
   return v9;
@@ -75,24 +75,24 @@
   self->_treatmentColor = 0;
 }
 
-+ (CGSize)sizeWithLayout:(id)a3 treatment:(int64_t)a4
++ (CGSize)sizeWithLayout:(id)layout treatment:(int64_t)treatment
 {
-  v5 = a3;
+  layoutCopy = layout;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIAttributedStringView sizeWithLayout:treatment:];
   }
 
-  [v5 boundingSize];
+  [layoutCopy boundingSize];
   v8 = v6;
   v9 = v7;
-  if (a4 == 1)
+  if (treatment == 1)
   {
     v8 = v6 + 14.0;
     v10 = v7 + 6.0;
-    v11 = v5;
-    v12 = [v11 attributedString];
-    v13 = [v12 attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
+    v11 = layoutCopy;
+    attributedString = [v11 attributedString];
+    v13 = [attributedString attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
 
     [v11 baselineOffset];
     v15 = v14;
@@ -116,40 +116,40 @@
   return result;
 }
 
-- (void)setBadgePlacement:(int64_t)a3
+- (void)setBadgePlacement:(int64_t)placement
 {
-  if (self->_badgePlacement != a3)
+  if (self->_badgePlacement != placement)
   {
-    self->_badgePlacement = a3;
+    self->_badgePlacement = placement;
     [(SKUIAttributedStringView *)self setNeedsDisplay];
   }
 }
 
-- (void)setFirstLineTopInset:(int64_t)a3
+- (void)setFirstLineTopInset:(int64_t)inset
 {
-  if (self->_firstLineTopInset != a3)
+  if (self->_firstLineTopInset != inset)
   {
-    self->_firstLineTopInset = a3;
+    self->_firstLineTopInset = inset;
     [(SKUIAttributedStringView *)self _reloadTopInset];
 
     [(SKUIAttributedStringView *)self setNeedsDisplay];
   }
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_layout != v5)
+  layoutCopy = layout;
+  if (self->_layout != layoutCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_layout, a3);
+    v8 = layoutCopy;
+    objc_storeStrong(&self->_layout, layout);
     textStorage = self->_textStorage;
     if (textStorage)
     {
       if (v8)
       {
-        v7 = [(SKUIAttributedStringLayout *)v8 attributedString];
-        [(NSTextStorage *)textStorage setAttributedString:v7];
+        attributedString = [(SKUIAttributedStringLayout *)v8 attributedString];
+        [(NSTextStorage *)textStorage setAttributedString:attributedString];
       }
 
       else
@@ -160,15 +160,15 @@
 
     [(SKUIAttributedStringView *)self _reloadTopInset];
     [(SKUIAttributedStringView *)self setNeedsDisplay];
-    v5 = v8;
+    layoutCopy = v8;
   }
 }
 
-- (void)setRequiredBadges:(id)a3
+- (void)setRequiredBadges:(id)badges
 {
-  if (self->_requiredBadges != a3)
+  if (self->_requiredBadges != badges)
   {
-    v4 = [a3 copy];
+    v4 = [badges copy];
     requiredBadges = self->_requiredBadges;
     self->_requiredBadges = v4;
 
@@ -176,32 +176,32 @@
   }
 }
 
-- (void)setStringTreatment:(int64_t)a3
+- (void)setStringTreatment:(int64_t)treatment
 {
-  if (self->_stringTreatment != a3)
+  if (self->_stringTreatment != treatment)
   {
-    self->_stringTreatment = a3;
+    self->_stringTreatment = treatment;
     [(SKUIAttributedStringView *)self setNeedsDisplay];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(SKUIAttributedStringView *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setTextColorFollowsTintColor:(BOOL)a3
+- (void)setTextColorFollowsTintColor:(BOOL)color
 {
-  if (self->_textColorFollowsTintColor != a3)
+  if (self->_textColorFollowsTintColor != color)
   {
-    self->_textColorFollowsTintColor = a3;
+    self->_textColorFollowsTintColor = color;
     if (!self->_textColor)
     {
       [(SKUIAttributedStringView *)self setNeedsDisplay];
@@ -209,31 +209,31 @@
   }
 }
 
-- (void)setTreatmentColor:(id)a3
+- (void)setTreatmentColor:(id)color
 {
-  v5 = a3;
-  if (self->_treatmentColor != v5)
+  colorCopy = color;
+  if (self->_treatmentColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_treatmentColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_treatmentColor, color);
     [(SKUIAttributedStringView *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
 - (NSString)description
 {
-  v3 = [(SKUIAttributedStringLayout *)self->_layout attributedString];
-  v4 = [v3 string];
+  attributedString = [(SKUIAttributedStringLayout *)self->_layout attributedString];
+  string = [attributedString string];
 
-  v5 = [v4 length];
+  v5 = [string length];
   v6 = MEMORY[0x277CCACA8];
   if (v5 > 0x13)
   {
     v11.receiver = self;
     v11.super_class = SKUIAttributedStringView;
     v7 = [(SKUIAttributedStringView *)&v11 description];
-    v9 = [v4 substringToIndex:20];
+    v9 = [string substringToIndex:20];
     v8 = [v6 stringWithFormat:@"%@: %@...", v7, v9];
   }
 
@@ -242,18 +242,18 @@
     v12.receiver = self;
     v12.super_class = SKUIAttributedStringView;
     v7 = [(SKUIAttributedStringView *)&v12 description];
-    v8 = [v6 stringWithFormat:@"%@: %@", v7, v4];
+    v8 = [v6 stringWithFormat:@"%@: %@", v7, string];
   }
 
   return v8;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 anyObject];
-  [v8 locationInView:self];
+  beganCopy = began;
+  eventCopy = event;
+  anyObject = [beganCopy anyObject];
+  [anyObject locationInView:self];
   if ([(SKUIAttributedStringView *)self _touchInsideLinkText:&self->_trackingRange linkTextRange:?])
   {
     [(SKUIAttributedStringView *)self _setTrackingTouch:1];
@@ -264,16 +264,16 @@
   {
     v9.receiver = self;
     v9.super_class = SKUIAttributedStringView;
-    [(SKUIAttributedStringView *)&v9 touchesBegan:v6 withEvent:v7];
+    [(SKUIAttributedStringView *)&v9 touchesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if (self->_trackingTouch)
   {
-    v5 = [a3 anyObject];
-    [v5 locationInView:self];
+    anyObject = [moved anyObject];
+    [anyObject locationInView:self];
     [(SKUIAttributedStringView *)self _setTouchInside:[(SKUIAttributedStringView *)self _touchInsideLinkText:&self->_trackingRange linkTextRange:?]];
   }
 
@@ -281,16 +281,16 @@
   {
     v6.receiver = self;
     v6.super_class = SKUIAttributedStringView;
-    [(SKUIAttributedStringView *)&v6 touchesMoved:a3 withEvent:a4];
+    [(SKUIAttributedStringView *)&v6 touchesMoved:moved withEvent:event];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if (self->_trackingTouch)
   {
-    v8 = [a3 anyObject];
-    [v8 locationInView:self];
+    anyObject = [ended anyObject];
+    [anyObject locationInView:self];
     if ([(SKUIAttributedStringView *)self _touchInsideLinkText:&self->_trackingRange linkTextRange:?])
     {
       WeakRetained = objc_loadWeakRetained(&self->_linkDelegate);
@@ -311,15 +311,15 @@
   {
     v9.receiver = self;
     v9.super_class = SKUIAttributedStringView;
-    [(SKUIAttributedStringView *)&v9 touchesEnded:a3 withEvent:a4];
+    [(SKUIAttributedStringView *)&v9 touchesEnded:ended withEvent:event];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   if (self->_trackingTouch)
   {
-    [(SKUIAttributedStringView *)self _setTrackingTouch:0, a4];
+    [(SKUIAttributedStringView *)self _setTrackingTouch:0, event];
 
     [(SKUIAttributedStringView *)self _setTouchInside:0];
   }
@@ -328,14 +328,14 @@
   {
     v5.receiver = self;
     v5.super_class = SKUIAttributedStringView;
-    [(SKUIAttributedStringView *)&v5 touchesCancelled:a3 withEvent:a4];
+    [(SKUIAttributedStringView *)&v5 touchesCancelled:cancelled withEvent:event];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v192 = *MEMORY[0x277D85DE8];
-  [(SKUIAttributedStringView *)self bounds:a3.origin.x];
+  [(SKUIAttributedStringView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -389,8 +389,8 @@
       [v28 fill];
 
       v29 = self->_layout;
-      v30 = [(SKUIAttributedStringLayout *)v29 attributedString];
-      v31 = [v30 attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
+      attributedString = [(SKUIAttributedStringLayout *)v29 attributedString];
+      v31 = [attributedString attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
 
       [(SKUIAttributedStringLayout *)v29 baselineOffset];
       v33 = v32;
@@ -411,10 +411,10 @@
     }
   }
 
-  v43 = [(SKUIAttributedStringLayout *)self->_layout attributedString];
-  if (v43)
+  attributedString2 = [(SKUIAttributedStringLayout *)self->_layout attributedString];
+  if (attributedString2)
   {
-    v44 = v43;
+    v44 = attributedString2;
     v45 = [(NSArray *)self->_requiredBadges count];
     v167 = v45;
     v170 = v26;
@@ -519,16 +519,16 @@
 LABEL_40:
     if (self->_textColorFollowsTintColor)
     {
-      v66 = [(SKUIAttributedStringView *)self tintColor];
+      tintColor = [(SKUIAttributedStringView *)self tintColor];
     }
 
     else
     {
-      v66 = self->_textColor;
+      tintColor = self->_textColor;
     }
 
-    v67 = v66;
-    if (v66)
+    v67 = tintColor;
+    if (tintColor)
     {
       v68 = [v44 mutableCopy];
       [v68 addAttribute:*MEMORY[0x277D740C0] value:v67 range:{0, objc_msgSend(v68, "length")}];
@@ -566,39 +566,39 @@ LABEL_40:
       v72 = v44;
     }
 
-    v74 = [(SKUIAttributedStringLayout *)self->_layout shadow];
+    shadow = [(SKUIAttributedStringLayout *)self->_layout shadow];
     v168 = v15;
-    if (v74)
+    if (shadow)
     {
       v75 = [v72 mutableCopy];
       [v75 removeAttribute:*MEMORY[0x277D74138] range:{0, objc_msgSend(v75, "length")}];
 
       CurrentContext = UIGraphicsGetCurrentContext();
-      [v74 shadowOffset];
+      [shadow shadowOffset];
       v77 = v55;
       v79 = v78;
       v81 = v80;
-      [v74 shadowBlurRadius];
+      [shadow shadowBlurRadius];
       v83 = v82;
-      v84 = [v74 shadowColor];
-      v85 = [v84 CGColor];
+      shadowColor = [shadow shadowColor];
+      cGColor = [shadowColor CGColor];
       v193.width = v79;
       v55 = v77;
       v193.height = v81;
       v86 = v83;
       v15 = v168;
-      CGContextSetShadowWithColor(CurrentContext, v193, v86, v85);
+      CGContextSetShadowWithColor(CurrentContext, v193, v86, cGColor);
 
       v72 = v75;
     }
 
     if (self->_badgePlacement == 1)
     {
-      v87 = [v72 mutableCopy];
+      stringDrawingContext = [v72 mutableCopy];
       v180 = 0;
       v181 = [v72 length];
-      v88 = [v87 length] - 1;
-      v89 = [v87 attribute:*MEMORY[0x277D740A8] atIndex:v88 effectiveRange:&v180];
+      v88 = [stringDrawingContext length] - 1;
+      v89 = [stringDrawingContext attribute:*MEMORY[0x277D740A8] atIndex:v88 effectiveRange:&v180];
       v162 = v89;
       if (v89)
       {
@@ -612,16 +612,16 @@ LABEL_40:
 
       rect.origin.y = v90;
       v94 = *MEMORY[0x277D74118];
-      v95 = [v87 attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:&v180];
-      v163 = v74;
+      v95 = [stringDrawingContext attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:&v180];
+      v163 = shadow;
       v164 = v72;
       v161 = v95;
       if (v95 && (v96 = v95, [v95 lineBreakMode]))
       {
-        v97 = [v96 lineBreakMode];
+        lineBreakMode = [v96 lineBreakMode];
         v98 = [v96 mutableCopy];
         [v98 setLineBreakMode:0];
-        [v87 addAttribute:v94 value:v98 range:{v180, v181}];
+        [stringDrawingContext addAttribute:v94 value:v98 range:{v180, v181}];
 
         v99 = 1;
       }
@@ -629,12 +629,12 @@ LABEL_40:
       else
       {
         v99 = 0;
-        v97 = 4;
+        lineBreakMode = 4;
       }
 
       v165 = v67;
       v166 = v9;
-      v100 = [objc_alloc(MEMORY[0x277D742D8]) initWithAttributedString:v87];
+      v100 = [objc_alloc(MEMORY[0x277D742D8]) initWithAttributedString:stringDrawingContext];
       v101 = objc_alloc_init(MEMORY[0x277D74238]);
       v160 = v100;
       [v100 addLayoutManager:v101];
@@ -642,7 +642,7 @@ LABEL_40:
       [v102 setLineFragmentPadding:0.0];
       if (v99)
       {
-        [v102 setLineBreakMode:v97];
+        [v102 setLineBreakMode:lineBreakMode];
       }
 
       [v101 addTextContainer:v102];
@@ -700,7 +700,7 @@ LABEL_40:
       v15 = v168;
       v93 = v170;
       v67 = v165;
-      v74 = v163;
+      shadow = v163;
       v72 = v164;
     }
 
@@ -708,9 +708,9 @@ LABEL_40:
     {
       v92 = *MEMORY[0x277CBF348];
       MaxY = *(MEMORY[0x277CBF348] + 8);
-      v87 = [(SKUIAttributedStringLayout *)self->_layout stringDrawingContext];
+      stringDrawingContext = [(SKUIAttributedStringLayout *)self->_layout stringDrawingContext];
       v93 = v170;
-      [v72 drawWithRect:33 options:v87 context:{rect.origin.x, v15, v170, v55}];
+      [v72 drawWithRect:33 options:stringDrawingContext context:{rect.origin.x, v15, v170, v55}];
       rect.origin.y = 0.0;
     }
 
@@ -743,17 +743,17 @@ LABEL_40:
               [v126 badgeSize];
               v128 = v127;
               v130 = v129;
-              v131 = [v126 image];
-              if (v131)
+              image = [v126 image];
+              if (image)
               {
                 v132 = v123;
                 v133 = roundf(v132);
-                v134 = [MEMORY[0x277D759A0] mainScreen];
-                [v134 scale];
+                mainScreen = [MEMORY[0x277D759A0] mainScreen];
+                [mainScreen scale];
                 *&v135 = rect.origin.y + MaxY - v130 + 1.0 / v135;
                 v136 = roundf(*&v135);
 
-                [v131 drawInRect:{v133, v136, v128, v130}];
+                [image drawInRect:{v133, v136, v128, v130}];
               }
 
               v123 = v123 + v128 + 4.0;
@@ -803,7 +803,7 @@ LABEL_40:
         if (v141)
         {
           v142 = v141;
-          v143 = v74;
+          v143 = shadow;
           v144 = v72;
           v145 = *v172;
           v146 = v15 + v138;
@@ -820,12 +820,12 @@ LABEL_40:
               [v148 badgeSize];
               v150 = v149;
               v152 = v151;
-              v153 = [v148 image];
-              v154 = v153;
-              if (v153)
+              image2 = [v148 image];
+              v154 = image2;
+              if (image2)
               {
                 v155 = v146 - v152;
-                [v153 drawInRect:{v139, roundf(v155), v150, v152}];
+                [image2 drawInRect:{v139, roundf(v155), v150, v152}];
               }
 
               v156 = v150 + 4.0;
@@ -842,7 +842,7 @@ LABEL_40:
 
           while (v142);
           v72 = v144;
-          v74 = v143;
+          shadow = v143;
         }
       }
     }
@@ -888,8 +888,8 @@ void __37__SKUIAttributedStringView_drawRect___block_invoke(uint64_t a1, void *a
 
     [(NSTextStorage *)self->_textStorage addLayoutManager:self->_layoutManager];
     v9 = objc_alloc(MEMORY[0x277CCAB48]);
-    v10 = [(SKUIAttributedStringLayout *)self->_layout attributedString];
-    v13 = [v9 initWithAttributedString:v10];
+    attributedString = [(SKUIAttributedStringLayout *)self->_layout attributedString];
+    v13 = [v9 initWithAttributedString:attributedString];
 
     v11 = objc_alloc_init(MEMORY[0x277D74240]);
     v12 = [v13 length];
@@ -898,15 +898,15 @@ void __37__SKUIAttributedStringView_drawRect___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (BOOL)_touchInsideLinkText:(CGPoint)a3 linkTextRange:(_NSRange *)a4
+- (BOOL)_touchInsideLinkText:(CGPoint)text linkTextRange:(_NSRange *)range
 {
   if (!self->_containsLinks)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = text.y;
+  x = text.x;
   [(SKUIAttributedStringView *)self bounds];
   v16.x = x;
   v16.y = y;
@@ -915,8 +915,8 @@ void __37__SKUIAttributedStringView_drawRect___block_invoke(uint64_t a1, void *a
     return 0;
   }
 
-  v8 = [(SKUIAttributedStringLayout *)self->_layout attributedString];
-  v9 = [v8 length];
+  attributedString = [(SKUIAttributedStringLayout *)self->_layout attributedString];
+  v9 = [attributedString length];
   if (v9 < 1)
   {
     v14 = 0;
@@ -934,7 +934,7 @@ void __37__SKUIAttributedStringView_drawRect___block_invoke(uint64_t a1, void *a
       v12 = y;
     }
 
-    v13 = [v8 attribute:@"SKUILinkAttributeName" atIndex:-[NSLayoutManager characterIndexForGlyphAtIndex:](self->_layoutManager longestEffectiveRange:"characterIndexForGlyphAtIndex:" inRange:{-[NSLayoutManager glyphIndexForPoint:inTextContainer:](self->_layoutManager, "glyphIndexForPoint:inTextContainer:", self->_textContainer, x, v12)), a4, 0, v10}];
+    v13 = [attributedString attribute:@"SKUILinkAttributeName" atIndex:-[NSLayoutManager characterIndexForGlyphAtIndex:](self->_layoutManager longestEffectiveRange:"characterIndexForGlyphAtIndex:" inRange:{-[NSLayoutManager glyphIndexForPoint:inTextContainer:](self->_layoutManager, "glyphIndexForPoint:inTextContainer:", self->_textContainer, x, v12)), range, 0, v10}];
 
     v14 = v13 != 0;
   }
@@ -942,13 +942,13 @@ void __37__SKUIAttributedStringView_drawRect___block_invoke(uint64_t a1, void *a
   return v14;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v42 = *MEMORY[0x277D85DE8];
   layout = self->_layout;
   if (layout)
   {
-    [(SKUIAttributedStringLayout *)layout boundingSize:a3.width];
+    [(SKUIAttributedStringLayout *)layout boundingSize:fits.width];
     v7 = v6;
   }
 
@@ -964,8 +964,8 @@ void __37__SKUIAttributedStringView_drawRect___block_invoke(uint64_t a1, void *a
     v7 = v7 + 14.0;
     v9 = v8 + 6.0;
     v10 = self->_layout;
-    v11 = [(SKUIAttributedStringLayout *)v10 attributedString];
-    v12 = [v11 attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
+    attributedString = [(SKUIAttributedStringLayout *)v10 attributedString];
+    v12 = [attributedString attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
 
     [(SKUIAttributedStringLayout *)v10 baselineOffset];
     v14 = v13;
@@ -1064,8 +1064,8 @@ void __37__SKUIAttributedStringView_drawRect___block_invoke(uint64_t a1, void *a
     if (self->_firstLineTopInset)
     {
       v4 = layout;
-      v5 = [(SKUIAttributedStringLayout *)v4 attributedString];
-      v6 = [v5 attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
+      attributedString = [(SKUIAttributedStringLayout *)v4 attributedString];
+      v6 = [attributedString attribute:*MEMORY[0x277D740A8] atIndex:0 effectiveRange:0];
 
       [(SKUIAttributedStringLayout *)v4 baselineOffset];
       v8 = v7;
@@ -1084,20 +1084,20 @@ void __37__SKUIAttributedStringView_drawRect___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)_setTrackingTouch:(BOOL)a3
+- (void)_setTrackingTouch:(BOOL)touch
 {
-  if (self->_trackingTouch != a3)
+  if (self->_trackingTouch != touch)
   {
-    self->_trackingTouch = a3;
+    self->_trackingTouch = touch;
     [(SKUIAttributedStringView *)self setNeedsDisplay];
   }
 }
 
-- (void)_setTouchInside:(BOOL)a3
+- (void)_setTouchInside:(BOOL)inside
 {
-  if (self->_touchInside != a3)
+  if (self->_touchInside != inside)
   {
-    self->_touchInside = a3;
+    self->_touchInside = inside;
     [(SKUIAttributedStringView *)self setNeedsDisplay];
   }
 }

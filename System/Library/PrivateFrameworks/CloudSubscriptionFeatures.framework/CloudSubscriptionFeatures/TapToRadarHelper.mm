@@ -1,6 +1,6 @@
 @interface TapToRadarHelper
 + (id)dispatchQueue;
-+ (void)tapToRadar:(id)a3 withMessage:(id)a4 withReason:(id)a5;
++ (void)tapToRadar:(id)radar withMessage:(id)message withReason:(id)reason;
 @end
 
 @implementation TapToRadarHelper
@@ -24,11 +24,11 @@ uint64_t __33__TapToRadarHelper_dispatchQueue__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)tapToRadar:(id)a3 withMessage:(id)a4 withReason:(id)a5
++ (void)tapToRadar:(id)radar withMessage:(id)message withReason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  radarCopy = radar;
+  messageCopy = message;
+  reasonCopy = reason;
   v11 = _CSFGetLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -36,18 +36,18 @@ uint64_t __33__TapToRadarHelper_dispatchQueue__block_invoke()
     _os_log_impl(&dword_1DF47C000, v11, OS_LOG_TYPE_DEFAULT, "Attempting to post a new TTR, dispatching.", buf, 2u);
   }
 
-  v12 = [a1 dispatchQueue];
+  dispatchQueue = [self dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__TapToRadarHelper_tapToRadar_withMessage_withReason___block_invoke;
   block[3] = &unk_1E86BB378;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, block);
+  v17 = radarCopy;
+  v18 = messageCopy;
+  v19 = reasonCopy;
+  v13 = reasonCopy;
+  v14 = messageCopy;
+  v15 = radarCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
 void __54__TapToRadarHelper_tapToRadar_withMessage_withReason___block_invoke(void *a1)

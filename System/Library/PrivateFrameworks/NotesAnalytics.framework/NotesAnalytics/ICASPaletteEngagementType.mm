@@ -1,24 +1,24 @@
 @interface ICASPaletteEngagementType
-- (ICASPaletteEngagementType)initWithPaletteEngagementType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASPaletteEngagementType)initWithPaletteEngagementType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASPaletteEngagementType
 
-- (ICASPaletteEngagementType)initWithPaletteEngagementType:(int64_t)a3
+- (ICASPaletteEngagementType)initWithPaletteEngagementType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASPaletteEngagementType;
   result = [(ICASPaletteEngagementType *)&v5 init];
   if (result)
   {
-    result->_paletteEngagementType = a3;
+    result->_paletteEngagementType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
   if ([(ICASPaletteEngagementType *)self paletteEngagementType])
   {

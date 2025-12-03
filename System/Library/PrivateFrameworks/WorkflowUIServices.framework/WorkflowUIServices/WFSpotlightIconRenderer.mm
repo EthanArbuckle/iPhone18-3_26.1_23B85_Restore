@@ -1,14 +1,14 @@
 @interface WFSpotlightIconRenderer
-+ (id)loadIconFromData:(id)a3 size:(CGSize)a4;
++ (id)loadIconFromData:(id)data size:(CGSize)size;
 @end
 
 @implementation WFSpotlightIconRenderer
 
-+ (id)loadIconFromData:(id)a3 size:(CGSize)a4
++ (id)loadIconFromData:(id)data size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
   v7 = sub_1C840B17C();
   v9 = v8;
 

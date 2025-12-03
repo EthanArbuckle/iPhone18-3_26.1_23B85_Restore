@@ -11,11 +11,11 @@
 - (void)_transferQueue_sendFinishedCallback;
 - (void)cancelOutstandingRequests;
 - (void)dealloc;
-- (void)itemCollection:(id)a3 item:(id)a4 representation:(id)a5 beganDataTransferWithProgress:(id)a6;
-- (void)itemCollection:(id)a3 item:(id)a4 representationFinishedDataTransfer:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)itemCollection:(id)collection item:(id)item representation:(id)representation beganDataTransferWithProgress:(id)progress;
+- (void)itemCollection:(id)collection item:(id)item representationFinishedDataTransfer:(id)transfer;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)sendDelegateEventsIfNeeded;
-- (void)setSuppressEventsUntilRequested:(BOOL)a3;
+- (void)setSuppressEventsUntilRequested:(BOOL)requested;
 @end
 
 @implementation PBDataTransferMonitor
@@ -27,9 +27,9 @@
   v2 = [(PBDataTransferMonitor *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     transferQueue_requestsBySourceItemUUID = v2->_transferQueue_requestsBySourceItemUUID;
-    v2->_transferQueue_requestsBySourceItemUUID = v3;
+    v2->_transferQueue_requestsBySourceItemUUID = dictionary;
 
     v5 = [MEMORY[0x277CBEB58] set];
     transferQueue_requestsInProgress = v2->_transferQueue_requestsInProgress;
@@ -50,9 +50,9 @@
     v17 = &unk_279A07198;
     objc_copyWeak(&v18, &location);
     [(NSProgress *)v2->_transferQueue_masterProgress setCancellationHandler:&v14];
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     transferQueue_childProgresses = v2->_transferQueue_childProgresses;
-    v2->_transferQueue_childProgresses = v11;
+    v2->_transferQueue_childProgresses = array;
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -72,7 +72,7 @@ void __29__PBDataTransferMonitor_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSuppressEventsUntilRequested:(BOOL)a3
+- (void)setSuppressEventsUntilRequested:(BOOL)requested
 {
   v5 = _transferQueue();
   v6[0] = MEMORY[0x277D85DD0];
@@ -80,7 +80,7 @@ void __29__PBDataTransferMonitor_init__block_invoke(uint64_t a1)
   v6[2] = __57__PBDataTransferMonitor_setSuppressEventsUntilRequested___block_invoke;
   v6[3] = &unk_279A070D0;
   v6[4] = self;
-  v7 = a3;
+  requestedCopy = requested;
   dispatch_sync(v5, v6);
 }
 
@@ -323,12 +323,12 @@ void __50__PBDataTransferMonitor_cancelOutstandingRequests__block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)itemCollection:(id)a3 item:(id)a4 representation:(id)a5 beganDataTransferWithProgress:(id)a6
+- (void)itemCollection:(id)collection item:(id)item representation:(id)representation beganDataTransferWithProgress:(id)progress
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  collectionCopy = collection;
+  itemCopy = item;
+  representationCopy = representation;
+  progressCopy = progress;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -338,15 +338,15 @@ void __50__PBDataTransferMonitor_cancelOutstandingRequests__block_invoke(uint64_
   v20 = 3221225472;
   v21 = __90__PBDataTransferMonitor_itemCollection_item_representation_beganDataTransferWithProgress___block_invoke;
   v22 = &unk_279A075C0;
-  v15 = v10;
+  v15 = collectionCopy;
   v23 = v15;
-  v16 = v11;
+  v16 = itemCopy;
   v24 = v16;
-  v17 = v12;
+  v17 = representationCopy;
   v25 = v17;
-  v18 = v13;
+  v18 = progressCopy;
   v26 = v18;
-  v27 = self;
+  selfCopy = self;
   v28 = &v29;
   dispatch_sync(v14, &v19);
 
@@ -444,14 +444,14 @@ uint64_t __63__PBDataTransferMonitor__transferQueue_recomputeMasterProgress__blo
   return [v3 setCompletedUnitCount:v2];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) != 0 && [v8 isEqualToString:@"fractionCompleted"])
+  if ((isKindOfClass & 1) != 0 && [pathCopy isEqualToString:@"fractionCompleted"])
   {
     v11 = _transferQueue();
     block[0] = MEMORY[0x277D85DD0];
@@ -463,11 +463,11 @@ uint64_t __63__PBDataTransferMonitor__transferQueue_recomputeMasterProgress__blo
   }
 }
 
-- (void)itemCollection:(id)a3 item:(id)a4 representationFinishedDataTransfer:(id)a5
+- (void)itemCollection:(id)collection item:(id)item representationFinishedDataTransfer:(id)transfer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  itemCopy = item;
+  transferCopy = transfer;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -482,12 +482,12 @@ uint64_t __63__PBDataTransferMonitor__transferQueue_recomputeMasterProgress__blo
   v18 = __80__PBDataTransferMonitor_itemCollection_item_representationFinishedDataTransfer___block_invoke;
   v19 = &unk_279A07610;
   v24 = &v30;
-  v20 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = itemCopy;
   v21 = v12;
-  v13 = v8;
+  v13 = collectionCopy;
   v22 = v13;
-  v14 = v10;
+  v14 = transferCopy;
   v23 = v14;
   v25 = &v26;
   dispatch_sync(v11, &v16);
@@ -495,7 +495,7 @@ uint64_t __63__PBDataTransferMonitor__transferQueue_recomputeMasterProgress__blo
   v15 = v31[3];
   if (v15 != v27[3])
   {
-    [(PBDataTransferMonitor *)self willChangeValueForKey:@"outstandingItemsCount", v16, v17, v18, v19, v20, v21, v22];
+    [(PBDataTransferMonitor *)self willChangeValueForKey:@"outstandingItemsCount", v16, v17, v18, v19, selfCopy, v21, v22];
     self->_outstandingItemsCount = v27[3];
     [(PBDataTransferMonitor *)self didChangeValueForKey:@"outstandingItemsCount"];
     v15 = v31[3];
@@ -639,8 +639,8 @@ LABEL_11:
                 objc_enumerationMutation(v8);
               }
 
-              v13 = [*(*(&v18 + 1) + 8 * v12) progress];
-              [v13 removeObserver:self forKeyPath:@"fractionCompleted"];
+              progress = [*(*(&v18 + 1) + 8 * v12) progress];
+              [progress removeObserver:self forKeyPath:@"fractionCompleted"];
 
               ++v12;
             }

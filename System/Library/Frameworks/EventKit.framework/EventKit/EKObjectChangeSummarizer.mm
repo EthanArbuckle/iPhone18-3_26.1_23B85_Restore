@@ -1,40 +1,40 @@
 @interface EKObjectChangeSummarizer
-+ (id)changeSummaryForObject:(id)a3;
-+ (id)diffSummaryBetweenObject:(id)a3 andObject:(id)a4;
++ (id)changeSummaryForObject:(id)object;
++ (id)diffSummaryBetweenObject:(id)object andObject:(id)andObject;
 @end
 
 @implementation EKObjectChangeSummarizer
 
-+ (id)changeSummaryForObject:(id)a3
++ (id)changeSummaryForObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  objectCopy = object;
+  v5 = [objectCopy copy];
   [v5 rollback];
-  v6 = [a1 diffSummaryBetweenObject:v5 andObject:v4];
+  v6 = [self diffSummaryBetweenObject:v5 andObject:objectCopy];
 
   return v6;
 }
 
-+ (id)diffSummaryBetweenObject:(id)a3 andObject:(id)a4
++ (id)diffSummaryBetweenObject:(id)object andObject:(id)andObject
 {
   v63 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  objectCopy = object;
+  andObjectCopy = andObject;
+  v9 = andObjectCopy;
   v47 = 0;
-  v42 = v7;
-  if (v7 && v8)
+  v42 = objectCopy;
+  if (objectCopy && andObjectCopy)
   {
     v44 = objc_opt_class();
     if (v44 != objc_opt_class())
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:a1 file:@"EKObjectChangeSummarizer.m" lineNumber:93 description:@"Diff summary called on objects of different class"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EKObjectChangeSummarizer.m" lineNumber:93 description:@"Diff summary called on objects of different class"];
     }
 
     v39 = v9;
-    v11 = [v7 diffWithObject:v9];
-    v12 = [v11 summaryDictionary];
+    v11 = [objectCopy diffWithObject:v9];
+    summaryDictionary = [v11 summaryDictionary];
 
     v47 = objc_opt_new();
     [v44 EKObjectChangeSummarizer_singleValueDiffKeys];
@@ -42,8 +42,8 @@
     v57 = 0u;
     v58 = 0u;
     v41 = v59 = 0u;
-    v13 = [v41 allKeys];
-    v14 = [v13 countByEnumeratingWithState:&v56 objects:v62 count:16];
+    allKeys = [v41 allKeys];
+    v14 = [allKeys countByEnumeratingWithState:&v56 objects:v62 count:16];
     if (v14)
     {
       v15 = v14;
@@ -54,11 +54,11 @@
         {
           if (*v57 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allKeys);
           }
 
           v18 = *(*(&v56 + 1) + 8 * i);
-          v19 = [v12 objectForKey:v18];
+          v19 = [summaryDictionary objectForKey:v18];
 
           if (v19)
           {
@@ -66,21 +66,21 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v21 = v20;
+              null = v20;
             }
 
             else
             {
-              v21 = [MEMORY[0x1E695DFB0] null];
+              null = [MEMORY[0x1E695DFB0] null];
             }
 
-            v22 = v21;
+            v22 = null;
             v23 = [v41 objectForKeyedSubscript:v18];
             [v47 setObject:v22 forKeyedSubscript:v23];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v56 objects:v62 count:16];
+        v15 = [allKeys countByEnumeratingWithState:&v56 objects:v62 count:16];
       }
 
       while (v15);
@@ -107,8 +107,8 @@
 
           v46 = v24;
           v25 = *(*(&v52 + 1) + 8 * v24);
-          v26 = [v44 EKObjectChangeSummarizer_multiValueDiffKeys];
-          v27 = [v26 objectForKeyedSubscript:v25];
+          eKObjectChangeSummarizer_multiValueDiffKeys = [v44 EKObjectChangeSummarizer_multiValueDiffKeys];
+          v27 = [eKObjectChangeSummarizer_multiValueDiffKeys objectForKeyedSubscript:v25];
 
           v50 = 0u;
           v51 = 0u;
@@ -130,14 +130,14 @@
 
                 v32 = *(*(&v48 + 1) + 8 * j);
                 v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v25, v32];
-                v34 = [v12 objectForKey:v33];
+                v34 = [summaryDictionary objectForKey:v33];
 
                 if (v34)
                 {
                   v35 = [v27 objectForKeyedSubscript:v32];
                   if (v35)
                   {
-                    v36 = [v12 objectForKeyedSubscript:v33];
+                    v36 = [summaryDictionary objectForKeyedSubscript:v33];
                     [v47 setObject:v36 forKeyedSubscript:v35];
                   }
                 }

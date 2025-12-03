@@ -1,9 +1,9 @@
 @interface GeographicCoordinate
-+ (id)fromECEFCoordinate:(id)a3;
++ (id)fromECEFCoordinate:(id)coordinate;
 - (GeographicCoordinate)init;
-- (id)initFromECEFCoordinate:(id)a3;
-- (void)setFromECEFCoordinate:(id)a3;
-- (void)setFromLatitude:(double)a3 longitude:(double)a4 andAltitude:(double)a5;
+- (id)initFromECEFCoordinate:(id)coordinate;
+- (void)setFromECEFCoordinate:(id)coordinate;
+- (void)setFromLatitude:(double)latitude longitude:(double)longitude andAltitude:(double)altitude;
 @end
 
 @implementation GeographicCoordinate
@@ -15,43 +15,43 @@
   return [[(GeographicCoordinate *)&v3 init] initWithLatitude:NAN longitude:NAN andAltitude:NAN];
 }
 
-- (void)setFromLatitude:(double)a3 longitude:(double)a4 andAltitude:(double)a5
+- (void)setFromLatitude:(double)latitude longitude:(double)longitude andAltitude:(double)altitude
 {
-  self->_latitude = a3;
-  self->_longitude = a4;
-  self->_altitude = a5;
+  self->_latitude = latitude;
+  self->_longitude = longitude;
+  self->_altitude = altitude;
 }
 
-+ (id)fromECEFCoordinate:(id)a3
++ (id)fromECEFCoordinate:(id)coordinate
 {
-  v3 = a3;
+  coordinateCopy = coordinate;
   v4 = objc_alloc_init(GeographicCoordinate);
-  [(GeographicCoordinate *)v4 setFromECEFCoordinate:v3];
+  [(GeographicCoordinate *)v4 setFromECEFCoordinate:coordinateCopy];
 
   return v4;
 }
 
-- (id)initFromECEFCoordinate:(id)a3
+- (id)initFromECEFCoordinate:(id)coordinate
 {
-  v4 = [GeographicCoordinate fromECEFCoordinate:a3];
+  v4 = [GeographicCoordinate fromECEFCoordinate:coordinate];
 
   return v4;
 }
 
-- (void)setFromECEFCoordinate:(id)a3
+- (void)setFromECEFCoordinate:(id)coordinate
 {
-  v28 = a3;
-  [v28 x];
+  coordinateCopy = coordinate;
+  [coordinateCopy x];
   v5 = v4;
-  [v28 x];
+  [coordinateCopy x];
   v7 = v6;
-  [v28 y];
+  [coordinateCopy y];
   v9 = v8;
-  [v28 y];
+  [coordinateCopy y];
   v11 = v10;
-  [v28 y];
+  [coordinateCopy y];
   v13 = v12;
-  [v28 x];
+  [coordinateCopy x];
   v14 = sqrt(v9 * v11 + v5 * v7);
   self->_longitude = atan2(v13, v15) / 0.0174532925;
   v16 = v14 * 0.99330562;
@@ -59,7 +59,7 @@
   v18 = 1.57079633;
   if (v14 * 0.99330562 == 0.0)
   {
-    v19 = v28;
+    v19 = coordinateCopy;
   }
 
   else
@@ -67,7 +67,7 @@
     v20 = 0;
     v21 = 0.0;
     v22 = 0.0;
-    [v28 z];
+    [coordinateCopy z];
     while (1)
     {
       v18 = atan2(v23, v16);
@@ -76,7 +76,7 @@
       v17 = v14 / v24.__cosval - v25;
       if (vabdd_f64(v22, v18) >= 0.000001)
       {
-        v19 = v28;
+        v19 = coordinateCopy;
         if (v20 > 8)
         {
           goto LABEL_15;
@@ -86,7 +86,7 @@
       else
       {
         v26 = vabdd_f64(v21, v17) < 0.001 || v20 >= 9;
-        v19 = v28;
+        v19 = coordinateCopy;
         if (v26)
         {
           goto LABEL_15;

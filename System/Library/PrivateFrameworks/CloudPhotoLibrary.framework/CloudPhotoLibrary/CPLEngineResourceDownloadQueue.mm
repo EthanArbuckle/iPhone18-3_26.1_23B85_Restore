@@ -1,27 +1,27 @@
 @interface CPLEngineResourceDownloadQueue
-+ (BOOL)shouldRetryDownloadOnError:(id)a3;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
++ (BOOL)shouldRetryDownloadOnError:(id)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
 - (BOOL)hasActiveOrQueuedBackgroundDownloadOperations;
-- (BOOL)markBackgroundDownloadTaskForResourceAsSuceeded:(id)a3 error:(id *)a4;
-- (BOOL)removeAllBackgroundDownloadTasksForItemWithScopedIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)removeBackgroundDownloadTaskForResource:(id)a3 error:(id *)a4;
-- (BOOL)resetDequeuedBackgroundDownloadTasksWithError:(id *)a3;
-- (CPLEngineResourceDownloadQueue)initWithEngineStore:(id)a3 name:(id)a4;
-- (CPLEngineResourceDownloadTask)_failedTaskWithCompletionHandler:(void *)a3 error:(void *)a4 resource:(void *)a5 taskIdentifier:(void *)a6 options:;
-- (id)_activeQueueForTransferTask:(uint64_t)a1;
-- (id)_cloudResourceForLocalResource:(void *)a3 cloudRecord:(void *)a4 target:(_BYTE *)a5 shouldNotTrustCaches:(int)a6 allowUnsafeClientCache:(int)a7 allowBypassingAllCaches:(void *)a8 transportScopeMapping:(void *)a9 error:;
+- (BOOL)markBackgroundDownloadTaskForResourceAsSuceeded:(id)suceeded error:(id *)error;
+- (BOOL)removeAllBackgroundDownloadTasksForItemWithScopedIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeBackgroundDownloadTaskForResource:(id)resource error:(id *)error;
+- (BOOL)resetDequeuedBackgroundDownloadTasksWithError:(id *)error;
+- (CPLEngineResourceDownloadQueue)initWithEngineStore:(id)store name:(id)name;
+- (CPLEngineResourceDownloadTask)_failedTaskWithCompletionHandler:(void *)handler error:(void *)error resource:(void *)resource taskIdentifier:(void *)identifier options:;
+- (id)_activeQueueForTransferTask:(uint64_t)task;
+- (id)_cloudResourceForLocalResource:(void *)resource cloudRecord:(void *)record target:(_BYTE *)target shouldNotTrustCaches:(int)caches allowUnsafeClientCache:(int)cache allowBypassingAllCaches:(void *)allCaches transportScopeMapping:(void *)mapping error:;
 - (id)_queuesStatus;
-- (id)createGroupForBackgroundDownloadsOfResourceType:(unint64_t)a3 transferIntent:(unint64_t)a4 transport:(id)a5;
-- (id)dequeueNextBackgroundDownloadTasksForResourceType:(unint64_t)a3 andIntent:(unint64_t)a4 maximumSize:(unint64_t)a5 maximumCount:(unint64_t)a6 error:(id *)a7;
-- (id)downloadTaskForLocalResource:(id)a3 clientBundleID:(id)a4 options:(id)a5 proposedTaskIdentifier:(id)a6 didStartHandler:(id)a7 progressHandler:(id)a8 completionHandler:(id)a9;
+- (id)createGroupForBackgroundDownloadsOfResourceType:(unint64_t)type transferIntent:(unint64_t)intent transport:(id)transport;
+- (id)dequeueNextBackgroundDownloadTasksForResourceType:(unint64_t)type andIntent:(unint64_t)intent maximumSize:(unint64_t)size maximumCount:(unint64_t)count error:(id *)error;
+- (id)downloadTaskForLocalResource:(id)resource clientBundleID:(id)d options:(id)options proposedTaskIdentifier:(id)identifier didStartHandler:(id)handler progressHandler:(id)progressHandler completionHandler:(id)completionHandler;
 - (id)enumeratorForDownloadedResources;
 - (id)status;
 - (uint64_t)_canScheduleBackgroundDownloads;
-- (uint64_t)_launchTransportTaskForQueue:(uint64_t)a1;
+- (uint64_t)_launchTransportTaskForQueue:(uint64_t)queue;
 - (uint64_t)_transportTaskCount;
 - (unint64_t)countOfQueuedDownloadTasks;
-- (void)_dequeueTransferTaskInActiveQueue:(uint64_t)a1;
-- (void)_enqueueTransferTaskInActiveQueue:(uint64_t)a1;
+- (void)_dequeueTransferTaskInActiveQueue:(uint64_t)queue;
+- (void)_enqueueTransferTaskInActiveQueue:(uint64_t)queue;
 - (void)_requestBackgroundDownloads;
 - (void)_scheduleBackgroundDownloadsIfNecessary;
 @end
@@ -32,8 +32,8 @@
 {
   v12.receiver = self;
   v12.super_class = CPLEngineResourceDownloadQueue;
-  v3 = [(CPLEngineStorage *)&v12 status];
-  v4 = [v3 mutableCopy];
+  status = [(CPLEngineStorage *)&v12 status];
+  v4 = [status mutableCopy];
 
   downloadLock = self->_downloadLock;
   v10[0] = MEMORY[0x1E69E9820];
@@ -93,13 +93,13 @@ void __40__CPLEngineResourceDownloadQueue_status__block_invoke(uint64_t a1)
 - (id)_queuesStatus
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v1 = *(a1 + 48);
+    v1 = *(self + 48);
     v2 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (!v2)
     {
@@ -119,15 +119,15 @@ LABEL_15:
           objc_enumerationMutation(v1);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) status];
-        if (v6)
+        status = [*(*(&v9 + 1) + 8 * i) status];
+        if (status)
         {
           if (!v3)
           {
             v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
           }
 
-          [v3 addObject:v6];
+          [v3 addObject:status];
         }
       }
 
@@ -153,35 +153,35 @@ LABEL_17:
 
 - (BOOL)hasActiveOrQueuedBackgroundDownloadOperations
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 hasActiveOrQueuedBackgroundDownloadOperations];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  hasActiveOrQueuedBackgroundDownloadOperations = [platformObject hasActiveOrQueuedBackgroundDownloadOperations];
 
-  return v3;
+  return hasActiveOrQueuedBackgroundDownloadOperations;
 }
 
 - (unint64_t)countOfQueuedDownloadTasks
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 countOfQueuedDownloadTasks];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  countOfQueuedDownloadTasks = [platformObject countOfQueuedDownloadTasks];
 
-  return v3;
+  return countOfQueuedDownloadTasks;
 }
 
 - (id)enumeratorForDownloadedResources
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 enumeratorForDownloadedResources];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  enumeratorForDownloadedResources = [platformObject enumeratorForDownloadedResources];
 
-  return v3;
+  return enumeratorForDownloadedResources;
 }
 
-- (BOOL)removeAllBackgroundDownloadTasksForItemWithScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeAllBackgroundDownloadTasksForItemWithScopedIdentifier:(id)identifier error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v14 = 0;
-  v8 = [v7 removeAllBackgroundDownloadTasksForItemWithScopedIdentifier:v6 error:&v14];
+  v8 = [platformObject removeAllBackgroundDownloadTasksForItemWithScopedIdentifier:identifierCopy error:&v14];
   v9 = v14;
 
   if ((v8 & 1) == 0)
@@ -192,17 +192,17 @@ LABEL_17:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v16 = v6;
+        v16 = identifierCopy;
         v17 = 2112;
         v18 = v9;
         _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "Unable to remove all background tasks for %@: %@", buf, 0x16u);
       }
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -210,12 +210,12 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)resetDequeuedBackgroundDownloadTasksWithError:(id *)a3
+- (BOOL)resetDequeuedBackgroundDownloadTasksWithError:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(CPLEngineStorage *)self platformObject];
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v11 = 0;
-  v5 = [v4 resetDequeuedBackgroundDownloadTasksWithError:&v11];
+  v5 = [platformObject resetDequeuedBackgroundDownloadTasksWithError:&v11];
   v6 = v11;
 
   if ((v5 & 1) == 0)
@@ -231,10 +231,10 @@ LABEL_17:
       }
     }
 
-    if (a3)
+    if (error)
     {
       v8 = v6;
-      *a3 = v6;
+      *error = v6;
     }
   }
 
@@ -242,12 +242,12 @@ LABEL_17:
   return v5;
 }
 
-- (id)dequeueNextBackgroundDownloadTasksForResourceType:(unint64_t)a3 andIntent:(unint64_t)a4 maximumSize:(unint64_t)a5 maximumCount:(unint64_t)a6 error:(id *)a7
+- (id)dequeueNextBackgroundDownloadTasksForResourceType:(unint64_t)type andIntent:(unint64_t)intent maximumSize:(unint64_t)size maximumCount:(unint64_t)count error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v12 = [(CPLEngineStorage *)self platformObject];
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v19 = 0;
-  v13 = [v12 dequeueNextBackgroundDownloadTasksForResourceType:a3 andIntent:a4 maximumSize:a5 maximumCount:a6 error:&v19];
+  v13 = [platformObject dequeueNextBackgroundDownloadTasksForResourceType:type andIntent:intent maximumSize:size maximumCount:count error:&v19];
   v14 = v19;
 
   if (!v13)
@@ -263,10 +263,10 @@ LABEL_17:
       }
     }
 
-    if (a7)
+    if (error)
     {
       v16 = v14;
-      *a7 = v14;
+      *error = v14;
     }
   }
 
@@ -275,13 +275,13 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)markBackgroundDownloadTaskForResourceAsSuceeded:(id)a3 error:(id *)a4
+- (BOOL)markBackgroundDownloadTaskForResourceAsSuceeded:(id)suceeded error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
+  suceededCopy = suceeded;
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v14 = 0;
-  v8 = [v7 markBackgroundDownloadTaskForResourceAsSuceeded:v6 taskIdentifier:objc_msgSend(v6 error:{"_backgroundDownloadTaskIdentifier"), &v14}];
+  v8 = [platformObject markBackgroundDownloadTaskForResourceAsSuceeded:suceededCopy taskIdentifier:objc_msgSend(suceededCopy error:{"_backgroundDownloadTaskIdentifier"), &v14}];
   v9 = v14;
 
   if ((v8 & 1) == 0)
@@ -292,17 +292,17 @@ LABEL_17:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v16 = v6;
+        v16 = suceededCopy;
         v17 = 2112;
         v18 = v9;
         _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "Unable to mark background task for %@ as succeeded: %@", buf, 0x16u);
       }
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -310,13 +310,13 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)removeBackgroundDownloadTaskForResource:(id)a3 error:(id *)a4
+- (BOOL)removeBackgroundDownloadTaskForResource:(id)resource error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
+  resourceCopy = resource;
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v14 = 0;
-  v8 = [v7 removeBackgroundDownloadTaskForResource:v6 taskIdentifier:objc_msgSend(v6 error:{"_backgroundDownloadTaskIdentifier"), &v14}];
+  v8 = [platformObject removeBackgroundDownloadTaskForResource:resourceCopy taskIdentifier:objc_msgSend(resourceCopy error:{"_backgroundDownloadTaskIdentifier"), &v14}];
   v9 = v14;
 
   if ((v8 & 1) == 0)
@@ -327,17 +327,17 @@ LABEL_17:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v16 = v6;
+        v16 = resourceCopy;
         v17 = 2112;
         v18 = v9;
         _os_log_impl(&dword_1DC05A000, v10, OS_LOG_TYPE_ERROR, "Unable to remove background task for %@: %@", buf, 0x16u);
       }
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -347,14 +347,14 @@ LABEL_17:
 
 - (void)_requestBackgroundDownloads
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __61__CPLEngineResourceDownloadQueue__requestBackgroundDownloads__block_invoke;
     v5[3] = &unk_1E861A940;
-    v5[4] = a1;
+    v5[4] = self;
     v2 = v5;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -391,18 +391,18 @@ void __61__CPLEngineResourceDownloadQueue__requestBackgroundDownloads__block_inv
 
 - (void)_scheduleBackgroundDownloadsIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
-    if (*(a1 + 136) == 1)
+    dispatch_assert_queue_V2(*(self + 40));
+    if (*(self + 136) == 1)
     {
-      if (([(CPLEngineResourceDownloadQueue *)a1 _canScheduleBackgroundDownloads]& 1) != 0)
+      if (([(CPLEngineResourceDownloadQueue *)self _canScheduleBackgroundDownloads]& 1) != 0)
       {
         v7[0] = MEMORY[0x1E69E9820];
         v7[1] = 3221225472;
         v7[2] = __73__CPLEngineResourceDownloadQueue__scheduleBackgroundDownloadsIfNecessary__block_invoke;
         v7[3] = &unk_1E861A940;
-        v7[4] = a1;
+        v7[4] = self;
         v2 = MEMORY[0x1E128EBA0](v7);
         v3 = v2;
         if (__CPLEngineResourceDownloadQueueRequestBackgroundDownloadQueueImmediately == 1)
@@ -413,11 +413,11 @@ void __61__CPLEngineResourceDownloadQueue__requestBackgroundDownloads__block_inv
         else
         {
           v5 = dispatch_time(0, 2000000000);
-          dispatch_after(v5, *(a1 + 40), v3);
+          dispatch_after(v5, *(self + 40), v3);
         }
       }
 
-      else if ((*(a1 + 136) & 1) != 0 && (_CPLSilentLogging & 1) == 0)
+      else if ((*(self + 136) & 1) != 0 && (_CPLSilentLogging & 1) == 0)
       {
         v4 = __CPLStorageOSLogDomain_7908();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -433,13 +433,13 @@ void __61__CPLEngineResourceDownloadQueue__requestBackgroundDownloads__block_inv
 - (uint64_t)_canScheduleBackgroundDownloads
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1 && ![(CPLEngineResourceDownloadQueue *)a1 _transportTaskCount])
+  if (self && ![(CPLEngineResourceDownloadQueue *)self _transportTaskCount])
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = *(a1 + 48);
+    v3 = *(self + 48);
     v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
@@ -528,12 +528,12 @@ void __73__CPLEngineResourceDownloadQueue__scheduleBackgroundDownloadsIfNecessar
 - (uint64_t)_transportTaskCount
 {
   v15 = *MEMORY[0x1E69E9840];
-  dispatch_assert_queue_V2(*(a1 + 40));
+  dispatch_assert_queue_V2(*(self + 40));
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = *(a1 + 48);
+  v2 = *(self + 48);
   v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
@@ -567,30 +567,30 @@ void __73__CPLEngineResourceDownloadQueue__scheduleBackgroundDownloadsIfNecessar
   return v5;
 }
 
-- (id)createGroupForBackgroundDownloadsOfResourceType:(unint64_t)a3 transferIntent:(unint64_t)a4 transport:(id)a5
+- (id)createGroupForBackgroundDownloadsOfResourceType:(unint64_t)type transferIntent:(unint64_t)intent transport:(id)transport
 {
-  v7 = a5;
-  v8 = [[CPLResourceTransferTaskOptions alloc] initWithIntent:a4 priority:2];
+  transportCopy = transport;
+  v8 = [[CPLResourceTransferTaskOptions alloc] initWithIntent:intent priority:2];
   v9 = (*(self->_lowPriorityQueuePerResourceTypeAndTransferIntent + 2))();
-  v10 = [v9 groupConstructor];
-  v11 = (v10)[2](v10, v7);
+  groupConstructor = [v9 groupConstructor];
+  v11 = (groupConstructor)[2](groupConstructor, transportCopy);
 
   return v11;
 }
 
-- (id)downloadTaskForLocalResource:(id)a3 clientBundleID:(id)a4 options:(id)a5 proposedTaskIdentifier:(id)a6 didStartHandler:(id)a7 progressHandler:(id)a8 completionHandler:(id)a9
+- (id)downloadTaskForLocalResource:(id)resource clientBundleID:(id)d options:(id)options proposedTaskIdentifier:(id)identifier didStartHandler:(id)handler progressHandler:(id)progressHandler completionHandler:(id)completionHandler
 {
   v184 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v120 = a4;
-  v16 = a5;
-  v17 = a6;
-  v121 = a7;
-  v122 = a8;
-  v18 = a9;
-  if (v16)
+  resourceCopy = resource;
+  dCopy = d;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  progressHandlerCopy = progressHandler;
+  completionHandlerCopy = completionHandler;
+  if (optionsCopy)
   {
-    if (v17)
+    if (identifierCopy)
     {
       goto LABEL_6;
     }
@@ -598,15 +598,15 @@ void __73__CPLEngineResourceDownloadQueue__scheduleBackgroundDownloadsIfNecessar
 
   else
   {
-    v16 = +[CPLResourceTransferTaskOptions defaultOptions];
-    if (v17)
+    optionsCopy = +[CPLResourceTransferTaskOptions defaultOptions];
+    if (identifierCopy)
     {
       goto LABEL_6;
     }
   }
 
-  v19 = [MEMORY[0x1E696AFB0] UUID];
-  v17 = [v19 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  identifierCopy = [uUID UUIDString];
 
 LABEL_6:
   downloadLock = self->_downloadLock;
@@ -621,12 +621,12 @@ LABEL_6:
   v123[2] = __159__CPLEngineResourceDownloadQueue_downloadTaskForLocalResource_clientBundleID_options_proposedTaskIdentifier_didStartHandler_progressHandler_completionHandler___block_invoke_3;
   v123[3] = &unk_1E861C6F8;
   v123[4] = self;
-  v21 = v18;
+  v21 = completionHandlerCopy;
   v124 = v21;
   v22 = MEMORY[0x1E128EBA0](v123);
-  v23 = [v15 identity];
-  v24 = [v23 fileURL];
-  v25 = v24 == 0;
+  identity = [resourceCopy identity];
+  fileURL = [identity fileURL];
+  v25 = fileURL == 0;
 
   if (v25)
   {
@@ -636,75 +636,75 @@ LABEL_6:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *&buf[4] = v15;
+        *&buf[4] = resourceCopy;
         _os_log_impl(&dword_1DC05A000, v32, OS_LOG_TYPE_ERROR, "Client asked to download %@ without specifying a destination URL", buf, 0xCu);
       }
     }
 
-    v30 = [CPLErrors incorrectParametersErrorForParameter:@"identity.fileURL"];
-    v31 = [(CPLEngineResourceDownloadQueue *)self _failedTaskWithCompletionHandler:v22 error:v30 resource:v15 taskIdentifier:v17 options:v16];
+    scopeIdentifier = [CPLErrors incorrectParametersErrorForParameter:@"identity.fileURL"];
+    v31 = [(CPLEngineResourceDownloadQueue *)self _failedTaskWithCompletionHandler:v22 error:scopeIdentifier resource:resourceCopy taskIdentifier:identifierCopy options:optionsCopy];
     goto LABEL_14;
   }
 
-  v26 = [(CPLEngineStorage *)self engineStore];
-  v27 = [v26 engineLibrary];
-  v28 = [v27 systemMonitor];
-  v29 = [v28 diskPressureState];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  engineLibrary = [engineStore engineLibrary];
+  systemMonitor = [engineLibrary systemMonitor];
+  diskPressureState = [systemMonitor diskPressureState];
 
-  if (v29 == 2)
+  if (diskPressureState == 2)
   {
-    v30 = [CPLErrors cplErrorWithCode:1005 description:@"Disk space is very low"];
-    v31 = [(CPLEngineResourceDownloadQueue *)self _failedTaskWithCompletionHandler:v22 error:v30 resource:v15 taskIdentifier:v17 options:v16];
+    scopeIdentifier = [CPLErrors cplErrorWithCode:1005 description:@"Disk space is very low"];
+    v31 = [(CPLEngineResourceDownloadQueue *)self _failedTaskWithCompletionHandler:v22 error:scopeIdentifier resource:resourceCopy taskIdentifier:identifierCopy options:optionsCopy];
 LABEL_14:
     v33 = v31;
     goto LABEL_60;
   }
 
-  v34 = [v15 itemScopedIdentifier];
-  v30 = [v34 scopeIdentifier];
+  itemScopedIdentifier = [resourceCopy itemScopedIdentifier];
+  scopeIdentifier = [itemScopedIdentifier scopeIdentifier];
 
-  if (v30)
+  if (scopeIdentifier)
   {
-    v35 = [(CPLEngineStorage *)self engineStore];
-    v36 = [v35 scopes];
+    engineStore2 = [(CPLEngineStorage *)self engineStore];
+    scopes = [engineStore2 scopes];
 
-    v119 = [v36 scopeWithIdentifier:v30];
+    v119 = [scopes scopeWithIdentifier:scopeIdentifier];
     if (!v119)
     {
-      v38 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v30];
-      v33 = [(CPLEngineResourceDownloadQueue *)self _failedTaskWithCompletionHandler:v22 error:v38 resource:v15 taskIdentifier:v17 options:v16];
+      v38 = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier];
+      v33 = [(CPLEngineResourceDownloadQueue *)self _failedTaskWithCompletionHandler:v22 error:v38 resource:resourceCopy taskIdentifier:identifierCopy options:optionsCopy];
 
       goto LABEL_58;
     }
 
-    if ([v36 valueForFlag:0x40000 forScope:?])
+    if ([scopes valueForFlag:0x40000 forScope:?])
     {
-      v37 = [CPLErrors cplErrorWithCode:1002 description:@"Feature for %@ is disabled", v30];
-      v33 = [(CPLEngineResourceDownloadQueue *)self _failedTaskWithCompletionHandler:v22 error:v37 resource:v15 taskIdentifier:v17 options:v16];
+      v37 = [CPLErrors cplErrorWithCode:1002 description:@"Feature for %@ is disabled", scopeIdentifier];
+      v33 = [(CPLEngineResourceDownloadQueue *)self _failedTaskWithCompletionHandler:v22 error:v37 resource:resourceCopy taskIdentifier:identifierCopy options:optionsCopy];
 
 LABEL_58:
       goto LABEL_59;
     }
 
-    v39 = v15;
-    v107 = v120;
-    v118 = v16;
-    v113 = v17;
-    v109 = v121;
-    v110 = v122;
+    v39 = resourceCopy;
+    v107 = dCopy;
+    v118 = optionsCopy;
+    v113 = identifierCopy;
+    v109 = handlerCopy;
+    v110 = progressHandlerCopy;
     v111 = v22;
     v144 = 0;
     v117 = v39;
-    v40 = [(CPLEngineStorage *)self engineStore];
-    v115 = [v40 transactionTransportScopeMapping];
+    engineStore3 = [(CPLEngineStorage *)self engineStore];
+    transactionTransportScopeMapping = [engineStore3 transactionTransportScopeMapping];
 
     v143 = v117;
     v142 = 0;
     v141 = 0;
-    LODWORD(v40) = [v118 allowsUnsafeClientCache];
-    v41 = [v118 shouldBypassCaches];
+    LODWORD(engineStore3) = [v118 allowsUnsafeClientCache];
+    shouldBypassCaches = [v118 shouldBypassCaches];
     v140 = 0;
-    v116 = [(CPLEngineResourceDownloadQueue *)self _cloudResourceForLocalResource:&v142 cloudRecord:&v141 target:&v144 shouldNotTrustCaches:v40 allowUnsafeClientCache:v41 allowBypassingAllCaches:v115 transportScopeMapping:&v140 error:?];
+    v116 = [(CPLEngineResourceDownloadQueue *)self _cloudResourceForLocalResource:&v142 cloudRecord:&v141 target:&v144 shouldNotTrustCaches:engineStore3 allowUnsafeClientCache:shouldBypassCaches allowBypassingAllCaches:transactionTransportScopeMapping transportScopeMapping:&v140 error:?];
     v114 = v143;
 
     v112 = v142;
@@ -719,7 +719,7 @@ LABEL_57:
       goto LABEL_58;
     }
 
-    v103 = [(CPLEngineStorage *)self engineStore];
+    engineStore4 = [(CPLEngineStorage *)self engineStore];
     v138[0] = 0;
     v138[1] = v138;
     v138[2] = 0x2020000000;
@@ -760,13 +760,13 @@ LABEL_57:
         goto LABEL_56;
       }
 
-      v45 = [(CPLEngineStorage *)self platformObject];
-      [v114 _setBackgroundDownloadTaskIdentifier:{objc_msgSend(v45, "newTaskIdentifier")}];
+      platformObject = [(CPLEngineStorage *)self platformObject];
+      [v114 _setBackgroundDownloadTaskIdentifier:{objc_msgSend(platformObject, "newTaskIdentifier")}];
 
       [v116 _setBackgroundDownloadTaskIdentifier:{objc_msgSend(v114, "_backgroundDownloadTaskIdentifier")}];
-      v46 = [v118 intent];
+      intent = [v118 intent];
       v137 = 0;
-      v47 = [(CPLEngineResourceDownloadQueue *)self enqueueBackgroundDownloadTaskForResource:v114 intent:v46 downloading:1 error:&v137];
+      v47 = [(CPLEngineResourceDownloadQueue *)self enqueueBackgroundDownloadTaskForResource:v114 intent:intent downloading:1 error:&v137];
       v48 = v137;
       if (!v47 && (_CPLSilentLogging & 1) == 0)
       {
@@ -791,8 +791,8 @@ LABEL_57:
       v43 = v48;
       v130 = v43;
       v131 = v114;
-      v132 = v103;
-      v133 = self;
+      v132 = engineStore4;
+      selfCopy = self;
       v134 = v111;
       v104 = [&v126 copy];
     }
@@ -816,19 +816,19 @@ LABEL_57:
     v169 = __Block_byref_object_copy__7957;
     v170 = __Block_byref_object_dispose__7958;
     v171 = 0;
-    v99 = [(CPLEngineStorage *)self engineStore];
-    v51 = [v99 resourceStorage];
+    engineStore5 = [(CPLEngineStorage *)self engineStore];
+    resourceStorage = [engineStore5 resourceStorage];
     v52 = (v167 + 40);
     obj = *(v167 + 40);
-    v97 = v51;
-    v101 = [v51 retainFileURLForResource:v50 error:&obj];
+    v97 = resourceStorage;
+    v101 = [resourceStorage retainFileURLForResource:v50 error:&obj];
     objc_storeStrong(v52, obj);
     if (v101)
     {
-      v53 = [v50 identity];
-      v77 = [v53 fileURL];
+      identity2 = [v50 identity];
+      fileURL2 = [identity2 fileURL];
 
-      if (!v77)
+      if (!fileURL2)
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -841,9 +841,9 @@ LABEL_57:
           }
         }
 
-        v72 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v73 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineResourceDownloadQueue.m"];
-        [v72 handleFailureInMethod:sel__resourceStorageCopyTaskForResource_taskIdentifier_cloudResource_ofRecord_target_didStartHandler_progressHandler_completionHandler_ object:self file:v73 lineNumber:917 description:{@"Resource %@ should have a destination URL by now", v50}];
+        [currentHandler handleFailureInMethod:sel__resourceStorageCopyTaskForResource_taskIdentifier_cloudResource_ofRecord_target_didStartHandler_progressHandler_completionHandler_ object:self file:v73 lineNumber:917 description:{@"Resource %@ should have a destination URL by now", v50}];
 
         abort();
       }
@@ -868,12 +868,12 @@ LABEL_57:
       *&buf[8] = 3221225472;
       *&buf[16] = __165__CPLEngineResourceDownloadQueue__resourceStorageCopyTaskForResource_taskIdentifier_cloudResource_ofRecord_target_didStartHandler_progressHandler_completionHandler___block_invoke;
       v173 = &unk_1E861C7E8;
-      v174 = v99;
+      selfCopy6 = engineStore5;
       v55 = v50;
       v175 = v55;
-      v78 = v77;
+      v78 = fileURL2;
       v176 = v78;
-      v177 = self;
+      selfCopy2 = self;
       v178 = v101;
       v179 = v97;
       v182 = &v166;
@@ -887,7 +887,7 @@ LABEL_57:
       v156 = 3221225472;
       v157 = __165__CPLEngineResourceDownloadQueue__resourceStorageCopyTaskForResource_taskIdentifier_cloudResource_ofRecord_target_didStartHandler_progressHandler_completionHandler___block_invoke_202;
       v158 = &unk_1E861C810;
-      v159 = self;
+      selfCopy7 = self;
       v162 = v163;
       v57 = v55;
       v160 = v57;
@@ -902,7 +902,7 @@ LABEL_57:
       v146 = 3221225472;
       v147 = __165__CPLEngineResourceDownloadQueue__resourceStorageCopyTaskForResource_taskIdentifier_cloudResource_ofRecord_target_didStartHandler_progressHandler_completionHandler___block_invoke_2_205;
       v148 = &unk_1E861C838;
-      v149 = self;
+      selfCopy5 = self;
       v152 = v163;
       v59 = v57;
       v150 = v59;
@@ -959,22 +959,22 @@ LABEL_50:
         }
       }
 
-      v63 = [(CPLEngineStorage *)self engineStore];
-      v64 = [v63 engineLibrary];
-      v83 = [v64 scheduler];
+      engineStore6 = [(CPLEngineStorage *)self engineStore];
+      engineLibrary2 = [engineStore6 engineLibrary];
+      scheduler = [engineLibrary2 scheduler];
 
       v81 = [CPLEngineResourceDownloadTask alloc];
       v145 = MEMORY[0x1E69E9820];
       v146 = 3221225472;
       v147 = __163__CPLEngineResourceDownloadQueue__realDownloadTaskForLocalResource_taskIdentifier_cloudResource_ofRecord_target_didStartHandler_progressHandler_completionHandler___block_invoke;
       v148 = &unk_1E861C860;
-      v149 = self;
+      selfCopy5 = self;
       v150 = v90;
       *buf = MEMORY[0x1E69E9820];
       *&buf[8] = 3221225472;
       *&buf[16] = __163__CPLEngineResourceDownloadQueue__realDownloadTaskForLocalResource_taskIdentifier_cloudResource_ofRecord_target_didStartHandler_progressHandler_completionHandler___block_invoke_206;
       v173 = &unk_1E861C888;
-      v174 = self;
+      selfCopy6 = self;
       v65 = v150;
       v175 = v65;
       v91 = v85;
@@ -983,19 +983,19 @@ LABEL_50:
       v167 = 3221225472;
       v168 = __163__CPLEngineResourceDownloadQueue__realDownloadTaskForLocalResource_taskIdentifier_cloudResource_ofRecord_target_didStartHandler_progressHandler_completionHandler___block_invoke_208;
       v169 = &unk_1E861C8B0;
-      v170 = v83;
+      v170 = scheduler;
       v88 = v87;
       v171 = v88;
       v155 = MEMORY[0x1E69E9820];
       v156 = 3221225472;
       v157 = __163__CPLEngineResourceDownloadQueue__realDownloadTaskForLocalResource_taskIdentifier_cloudResource_ofRecord_target_didStartHandler_progressHandler_completionHandler___block_invoke_2_209;
       v158 = &unk_1E861C8D8;
-      v159 = self;
+      selfCopy7 = self;
       v66 = v65;
       v160 = v66;
       v67 = v91;
       v161 = v67;
-      v92 = v83;
+      v92 = scheduler;
       v68 = v66;
       v33 = [(CPLEngineResourceDownloadTask *)v81 initWithResource:v66 taskIdentifier:v94 target:v100 launchHandler:&v145 cancelHandler:buf didStartHandler:&v166 progressHandler:v102 completionHandler:&v155];
       [(CPLEngineResourceDownloadTask *)v33 associateCloudResource:v96 ofRecord:v98];
@@ -1003,7 +1003,7 @@ LABEL_50:
 
     [(CPLResourceTransferTask *)v33 setClientBundleID:v107];
     [(CPLEngineResourceDownloadTask *)v33 associateCloudResource:v116 ofRecord:v112];
-    [(CPLEngineResourceDownloadTask *)v33 setTransportScopeMapping:v115];
+    [(CPLEngineResourceDownloadTask *)v33 setTransportScopeMapping:transactionTransportScopeMapping];
     [(CPLResourceTransferTask *)v33 setOptions:v118];
 LABEL_56:
 
@@ -1011,8 +1011,8 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  v36 = [CPLErrors incorrectParametersErrorForParameter:@"itemScopedIdentifier"];
-  v33 = [(CPLEngineResourceDownloadQueue *)self _failedTaskWithCompletionHandler:v22 error:v36 resource:v15 taskIdentifier:v17 options:v16];
+  scopes = [CPLErrors incorrectParametersErrorForParameter:@"itemScopedIdentifier"];
+  v33 = [(CPLEngineResourceDownloadQueue *)self _failedTaskWithCompletionHandler:v22 error:scopes resource:resourceCopy taskIdentifier:identifierCopy options:optionsCopy];
 LABEL_59:
 
 LABEL_60:
@@ -1056,33 +1056,33 @@ void __159__CPLEngineResourceDownloadQueue_downloadTaskForLocalResource_clientBu
   }
 }
 
-- (CPLEngineResourceDownloadTask)_failedTaskWithCompletionHandler:(void *)a3 error:(void *)a4 resource:(void *)a5 taskIdentifier:(void *)a6 options:
+- (CPLEngineResourceDownloadTask)_failedTaskWithCompletionHandler:(void *)handler error:(void *)error resource:(void *)resource taskIdentifier:(void *)identifier options:
 {
   v11 = a2;
-  v12 = a3;
-  if (a1)
+  handlerCopy = handler;
+  if (self)
   {
-    v13 = a6;
-    v14 = a5;
-    v15 = a4;
+    identifierCopy = identifier;
+    resourceCopy = resource;
+    errorCopy = error;
     v16 = [CPLRecordTarget alloc];
-    v17 = [v15 itemScopedIdentifier];
-    v18 = [(CPLRecordTarget *)v16 initWithScopedIdentifier:v17];
+    itemScopedIdentifier = [errorCopy itemScopedIdentifier];
+    v18 = [(CPLRecordTarget *)v16 initWithScopedIdentifier:itemScopedIdentifier];
 
     v19 = [CPLEngineResourceDownloadTask alloc];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __105__CPLEngineResourceDownloadQueue__failedTaskWithCompletionHandler_error_resource_taskIdentifier_options___block_invoke;
     v24[3] = &unk_1E861C770;
-    v25 = v12;
+    v25 = handlerCopy;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __105__CPLEngineResourceDownloadQueue__failedTaskWithCompletionHandler_error_resource_taskIdentifier_options___block_invoke_3;
     v22[3] = &unk_1E861CD18;
     v23 = v11;
-    v20 = [(CPLEngineResourceDownloadTask *)v19 initWithResource:v15 taskIdentifier:v14 target:v18 launchHandler:v24 cancelHandler:&__block_literal_global_190 didStartHandler:0 progressHandler:0 completionHandler:v22];
+    v20 = [(CPLEngineResourceDownloadTask *)v19 initWithResource:errorCopy taskIdentifier:resourceCopy target:v18 launchHandler:v24 cancelHandler:&__block_literal_global_190 didStartHandler:0 progressHandler:0 completionHandler:v22];
 
-    [(CPLResourceTransferTask *)v20 setOptions:v13];
+    [(CPLResourceTransferTask *)v20 setOptions:identifierCopy];
   }
 
   else
@@ -1093,20 +1093,20 @@ void __159__CPLEngineResourceDownloadQueue_downloadTaskForLocalResource_clientBu
   return v20;
 }
 
-- (id)_cloudResourceForLocalResource:(void *)a3 cloudRecord:(void *)a4 target:(_BYTE *)a5 shouldNotTrustCaches:(int)a6 allowUnsafeClientCache:(int)a7 allowBypassingAllCaches:(void *)a8 transportScopeMapping:(void *)a9 error:
+- (id)_cloudResourceForLocalResource:(void *)resource cloudRecord:(void *)record target:(_BYTE *)target shouldNotTrustCaches:(int)caches allowUnsafeClientCache:(int)cache allowBypassingAllCaches:(void *)allCaches transportScopeMapping:(void *)mapping error:
 {
   v120 = *MEMORY[0x1E69E9840];
-  v14 = a8;
-  if (a1)
+  allCachesCopy = allCaches;
+  if (self)
   {
-    *a5 = 0;
-    v107 = a1;
-    v15 = [a1 engineStore];
-    v16 = [v15 scopes];
+    *target = 0;
+    selfCopy = self;
+    engineStore = [self engineStore];
+    scopes = [engineStore scopes];
 
-    v17 = [*a2 identity];
-    v18 = [*a2 itemScopedIdentifier];
-    v19 = [v18 copy];
+    identity = [*a2 identity];
+    itemScopedIdentifier = [*a2 itemScopedIdentifier];
+    v19 = [itemScopedIdentifier copy];
 
     if (!v19)
     {
@@ -1122,29 +1122,29 @@ void __159__CPLEngineResourceDownloadQueue_downloadTaskForLocalResource_clientBu
         }
       }
 
-      if (a9)
+      if (mapping)
       {
-        *a9 = [CPLErrors incorrectParametersErrorForParameter:@"itemScopedIdentifier"];
+        *mapping = [CPLErrors incorrectParametersErrorForParameter:@"itemScopedIdentifier"];
       }
     }
 
-    v22 = [v19 scopeIdentifier];
-    v109 = v22;
-    v102 = a4;
-    if (v22)
+    scopeIdentifier = [v19 scopeIdentifier];
+    v109 = scopeIdentifier;
+    recordCopy = record;
+    if (scopeIdentifier)
     {
       if (v19)
       {
-        v23 = [v16 scopeWithIdentifier:v22];
+        v23 = [scopes scopeWithIdentifier:scopeIdentifier];
         if (v23)
         {
           v24 = v23;
-          v104 = [v23 localIndex];
+          localIndex = [v23 localIndex];
           v25 = 1;
 LABEL_28:
-          v31 = [v17 fingerPrint];
-          v110 = v31;
-          if (v25 && !v31)
+          fingerPrint = [identity fingerPrint];
+          v110 = fingerPrint;
+          if (v25 && !fingerPrint)
           {
             if ((_CPLSilentLogging & 1) == 0)
             {
@@ -1158,38 +1158,38 @@ LABEL_28:
               }
             }
 
-            if (a9)
+            if (mapping)
             {
-              *a9 = [CPLErrors incorrectParametersErrorForParameter:@"identity.fingerPrint"];
+              *mapping = [CPLErrors incorrectParametersErrorForParameter:@"identity.fingerPrint"];
             }
 
-            v34 = [v17 fileURL];
+            fileURL = [identity fileURL];
             goto LABEL_45;
           }
 
-          v34 = [v17 fileURL];
+          fileURL = [identity fileURL];
           if (!v25)
           {
 LABEL_45:
             v42 = 0;
-            v43 = 0;
+            mappingCopy = 0;
             v44 = 0;
 LABEL_118:
 
             goto LABEL_119;
           }
 
-          v93 = a5;
+          targetCopy = target;
           v35 = v24;
-          v36 = v17;
-          v97 = v34;
-          v101 = v16;
-          v37 = [v107 engineStore];
-          [v37 idMapping];
-          v96 = v95 = v37;
-          v38 = [v37 transactionClientCacheView];
-          v39 = [*a2 resourceType];
-          if (a3)
+          v36 = identity;
+          v97 = fileURL;
+          v101 = scopes;
+          engineStore2 = [selfCopy engineStore];
+          [engineStore2 idMapping];
+          v96 = v95 = engineStore2;
+          transactionClientCacheView = [engineStore2 transactionClientCacheView];
+          resourceType = [*a2 resourceType];
+          if (resource)
           {
             v40 = &v115;
           }
@@ -1199,15 +1199,15 @@ LABEL_118:
             v40 = 0;
           }
 
-          if (a3)
+          if (resource)
           {
             v115 = 0;
           }
 
           v114 = 0;
-          v41 = [v38 resourceOfType:v39 forRecordWithScopedIdentifier:v19 record:v40 error:&v114];
-          v98 = v14;
-          if (a3)
+          v41 = [transactionClientCacheView resourceOfType:resourceType forRecordWithScopedIdentifier:v19 record:v40 error:&v114];
+          v98 = allCachesCopy;
+          if (resource)
           {
             v94 = v115;
           }
@@ -1220,25 +1220,25 @@ LABEL_118:
           v100 = v114;
           v45 = [v41 copy];
 
-          if (!v45 && a6 && [v100 isCPLErrorWithCode:25])
+          if (!v45 && caches && [v100 isCPLErrorWithCode:25])
           {
             buf[0] = 0;
             [v96 cloudScopedIdentifierForLocalScopedIdentifier:v19 isFinal:buf];
-            v16 = v101;
-            v106 = v17 = v36;
+            scopes = v101;
+            v106 = identity = v36;
             if (v106)
             {
-              v46 = a7;
+              cacheCopy = cache;
 LABEL_52:
-              v92 = v46;
+              v92 = cacheCopy;
               v45 = [*a2 copy];
-              *v93 = 1;
+              *targetCopy = 1;
               goto LABEL_54;
             }
 
             v70 = [v101 hasFinishedInitialSyncForScope:v35];
-            v46 = 1;
-            if (!v70 || a7)
+            cacheCopy = 1;
+            if (!v70 || cache)
             {
               goto LABEL_52;
             }
@@ -1249,10 +1249,10 @@ LABEL_52:
 
           else
           {
-            v16 = v101;
+            scopes = v101;
             v106 = 0;
-            v92 = [v101 hasFinishedInitialSyncForScope:v35] ^ 1 | a7;
-            v17 = v36;
+            v92 = [v101 hasFinishedInitialSyncForScope:v35] ^ 1 | cache;
+            identity = v36;
           }
 
 LABEL_54:
@@ -1262,39 +1262,39 @@ LABEL_54:
             v24 = v35;
             v42 = 0;
             v55 = 0;
-            v43 = 0;
-            if (a9)
+            mappingCopy = 0;
+            if (mapping)
             {
-              *a9 = v100;
+              *mapping = v100;
             }
 
             goto LABEL_76;
           }
 
           v47 = v110;
-          v48 = [v45 identity];
-          v49 = [v48 fingerPrint];
+          identity2 = [v45 identity];
+          fingerPrint2 = [identity2 fingerPrint];
 
           v24 = v35;
-          if (v110 && v49)
+          if (v110 && fingerPrint2)
           {
-            v50 = [v47 isEqual:v49];
+            v50 = [v47 isEqual:fingerPrint2];
 
-            v51 = v93;
+            v51 = targetCopy;
             if ((v50 & 1) == 0)
             {
 LABEL_58:
-              v43 = a9;
-              if (a9)
+              mappingCopy = mapping;
+              if (mapping)
               {
                 v52 = *a2;
-                v53 = [v99 identity];
-                v54 = [v53 fingerPrint];
-                *a9 = [CPLErrors cplErrorWithCode:27 description:@"%@ is stale (client cache fingerprint is %@)", v52, v54];
+                identity3 = [v99 identity];
+                fingerPrint3 = [identity3 fingerPrint];
+                *mapping = [CPLErrors cplErrorWithCode:27 description:@"%@ is stale (client cache fingerprint is %@)", v52, fingerPrint3];
 
                 v42 = 0;
                 v55 = 0;
-                v43 = 0;
+                mappingCopy = 0;
               }
 
               else
@@ -1303,12 +1303,12 @@ LABEL_58:
                 v55 = 0;
               }
 
-              v16 = v101;
+              scopes = v101;
 LABEL_76:
               v62 = v94;
 LABEL_100:
 
-              if (v55 && !v43)
+              if (v55 && !mappingCopy)
               {
                 if ((_CPLSilentLogging & 1) == 0)
                 {
@@ -1320,11 +1320,11 @@ LABEL_100:
                   }
                 }
 
-                v83 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                 v84 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineResourceDownloadQueue.m"];
                 v85 = @"We should have a cloud resource here";
-                v86 = v83;
-                v87 = v107;
+                v86 = currentHandler;
+                v87 = selfCopy;
                 v88 = v84;
                 v89 = 620;
               }
@@ -1334,61 +1334,61 @@ LABEL_100:
                 if (!v55)
                 {
                   v44 = 0;
-                  v14 = v98;
+                  allCachesCopy = v98;
 LABEL_117:
-                  v34 = v97;
+                  fileURL = v97;
                   goto LABEL_118;
                 }
 
                 if (v24)
                 {
-                  v71 = [v24 cloudIndex];
-                  v72 = [*a2 itemScopedIdentifier];
-                  [v72 setScopeIndex:v104];
+                  cloudIndex = [v24 cloudIndex];
+                  itemScopedIdentifier2 = [*a2 itemScopedIdentifier];
+                  [itemScopedIdentifier2 setScopeIndex:localIndex];
 
-                  v73 = [v43 itemScopedIdentifier];
-                  [v73 setScopeIndex:v71];
+                  itemScopedIdentifier3 = [mappingCopy itemScopedIdentifier];
+                  [itemScopedIdentifier3 setScopeIndex:cloudIndex];
 
-                  v74 = [v43 itemScopedIdentifier];
-                  v75 = [v74 scopeIdentifier];
+                  itemScopedIdentifier4 = [mappingCopy itemScopedIdentifier];
+                  scopeIdentifier2 = [itemScopedIdentifier4 scopeIdentifier];
 
                   v111 = 0;
-                  LODWORD(v74) = [v98 addTransportScopeForScope:v24 scopes:v16 allowsTentativeTransportScope:v92 useStagingScopeIfNecessary:1 error:&v111];
+                  LODWORD(itemScopedIdentifier4) = [v98 addTransportScopeForScope:v24 scopes:scopes allowsTentativeTransportScope:v92 useStagingScopeIfNecessary:1 error:&v111];
                   v76 = v111;
-                  if (v74)
+                  if (itemScopedIdentifier4)
                   {
-                    [v43 _setBackgroundDownloadTaskIdentifier:{objc_msgSend(*a2, "_backgroundDownloadTaskIdentifier")}];
-                    if (a3)
+                    [mappingCopy _setBackgroundDownloadTaskIdentifier:{objc_msgSend(*a2, "_backgroundDownloadTaskIdentifier")}];
+                    if (resource)
                     {
                       v77 = v42;
-                      *a3 = v42;
+                      *resource = v42;
                     }
 
-                    v44 = v43;
-                    v14 = v98;
+                    v44 = mappingCopy;
+                    allCachesCopy = v98;
                   }
 
                   else
                   {
-                    v14 = v98;
+                    allCachesCopy = v98;
                     if ((_CPLSilentLogging & 1) == 0)
                     {
                       v78 = __CPLStorageOSLogDomain_7908();
                       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 138543618;
-                        v117 = v75;
+                        v117 = scopeIdentifier2;
                         v118 = 2112;
                         v119 = v76;
                         _os_log_impl(&dword_1DC05A000, v78, OS_LOG_TYPE_ERROR, "Can't find a transport scope for %{public}@: %@", buf, 0x16u);
                       }
                     }
 
-                    if (a9)
+                    if (mapping)
                     {
                       v79 = v76;
                       v44 = 0;
-                      *a9 = v76;
+                      *mapping = v76;
                     }
 
                     else
@@ -1397,7 +1397,7 @@ LABEL_117:
                     }
                   }
 
-                  v16 = v101;
+                  scopes = v101;
                   goto LABEL_117;
                 }
 
@@ -1411,11 +1411,11 @@ LABEL_117:
                   }
                 }
 
-                v83 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                 v84 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineResourceDownloadQueue.m"];
                 v85 = @"We should have a scope here";
-                v86 = v83;
-                v87 = v107;
+                v86 = currentHandler;
+                v87 = selfCopy;
                 v88 = v84;
                 v89 = 623;
               }
@@ -1429,8 +1429,8 @@ LABEL_117:
           else
           {
 
-            v51 = v93;
-            if (v110 | v49)
+            v51 = targetCopy;
+            if (v110 | fingerPrint2)
             {
               goto LABEL_58;
             }
@@ -1439,8 +1439,8 @@ LABEL_117:
           [v99 _setBackgroundDownloadTaskIdentifier:{objc_msgSend(*a2, "_backgroundDownloadTaskIdentifier")}];
           v56 = v99;
           *a2 = v99;
-          v57 = [v56 identity];
-          [v57 setFileURL:v97];
+          identity4 = [v56 identity];
+          [identity4 setFileURL:v97];
 
           v58 = v106;
           if (!v106)
@@ -1454,9 +1454,9 @@ LABEL_117:
             }
           }
 
-          v59 = [v95 cloudCache];
-          v60 = [*a2 resourceType];
-          if (a3)
+          cloudCache = [v95 cloudCache];
+          resourceType2 = [*a2 resourceType];
+          if (resource)
           {
             v61 = &v113;
           }
@@ -1466,14 +1466,14 @@ LABEL_117:
             v61 = 0;
           }
 
-          if (a3)
+          if (resource)
           {
             v113 = 0;
           }
 
           v112 = 0;
-          v43 = [v59 resourceOfType:v60 forRecordWithScopedIdentifier:v58 record:v61 target:v102 error:&v112];
-          if (a3)
+          mappingCopy = [cloudCache resourceOfType:resourceType2 forRecordWithScopedIdentifier:v58 record:v61 target:recordCopy error:&v112];
+          if (resource)
           {
             v42 = v113;
           }
@@ -1486,15 +1486,15 @@ LABEL_117:
           v103 = v112;
 
           v106 = v58;
-          if (!v43)
+          if (!mappingCopy)
           {
-            if (![v103 isCPLErrorWithCode:25] || (v43 = objc_msgSend(*a2, "copy"), objc_msgSend(v43, "setItemScopedIdentifier:", v58), !v43))
+            if (![v103 isCPLErrorWithCode:25] || (mappingCopy = objc_msgSend(*a2, "copy"), objc_msgSend(mappingCopy, "setItemScopedIdentifier:", v58), !mappingCopy))
             {
-              v43 = 0;
+              mappingCopy = 0;
               v55 = 0;
-              if (a9)
+              if (mapping)
               {
-                *a9 = v103;
+                *mapping = v103;
               }
 
               goto LABEL_97;
@@ -1502,27 +1502,27 @@ LABEL_117:
           }
 
           v63 = v47;
-          v64 = [v43 identity];
-          v65 = [v64 fingerPrint];
+          identity5 = [mappingCopy identity];
+          fingerPrint4 = [identity5 fingerPrint];
 
-          if (v110 && v65)
+          if (v110 && fingerPrint4)
           {
-            v66 = [v63 isEqual:v65];
+            v66 = [v63 isEqual:fingerPrint4];
 
             if ((v66 & 1) == 0)
             {
 LABEL_82:
               v62 = v94;
-              if (a9)
+              if (mapping)
               {
                 v91 = *a2;
-                v67 = [v43 identity];
-                v68 = [v67 fingerPrint];
-                *a9 = [CPLErrors cplErrorWithCode:27 description:@"%@ is stale (cloud cache fingerprint is %@)", v91, v68];
+                identity6 = [mappingCopy identity];
+                fingerPrint5 = [identity6 fingerPrint];
+                *mapping = [CPLErrors cplErrorWithCode:27 description:@"%@ is stale (cloud cache fingerprint is %@)", v91, fingerPrint5];
               }
 
               v55 = 0;
-              v16 = v101;
+              scopes = v101;
               goto LABEL_99;
             }
           }
@@ -1530,19 +1530,19 @@ LABEL_82:
           else
           {
 
-            if (v110 | v65)
+            if (v110 | fingerPrint4)
             {
               goto LABEL_82;
             }
           }
 
-          v69 = [v43 identity];
-          [v69 setFileURL:v97];
+          identity7 = [mappingCopy identity];
+          [identity7 setFileURL:v97];
 
           v55 = 1;
-          if (a3)
+          if (resource)
           {
-            v16 = v101;
+            scopes = v101;
             if (!v42)
             {
               v62 = v94;
@@ -1558,7 +1558,7 @@ LABEL_82:
           }
 
 LABEL_97:
-          v16 = v101;
+          scopes = v101;
 LABEL_98:
           v62 = v94;
 LABEL_99:
@@ -1578,7 +1578,7 @@ LABEL_99:
           }
         }
 
-        if (a9)
+        if (mapping)
         {
           v28 = [CPLErrors invalidScopeErrorWithScopedIdentifier:v19];
           goto LABEL_25;
@@ -1600,15 +1600,15 @@ LABEL_99:
         }
       }
 
-      if (a9)
+      if (mapping)
       {
         v28 = [CPLErrors incorrectParametersErrorForParameter:@"itemScopedIdentifier"];
 LABEL_25:
         v24 = 0;
         v25 = 0;
-        *a9 = v28;
+        *mapping = v28;
 LABEL_27:
-        v104 = 0x7FFFFFFFFFFFFFFFLL;
+        localIndex = 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_28;
       }
     }
@@ -1970,38 +1970,38 @@ void __163__CPLEngineResourceDownloadQueue__realDownloadTaskForLocalResource_tas
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dequeueTransferTaskInActiveQueue:(uint64_t)a1
+- (void)_dequeueTransferTaskInActiveQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    v3 = *(a1 + 40);
+    v3 = *(queue + 40);
     v4 = a2;
     dispatch_assert_queue_V2(v3);
-    v5 = [(CPLEngineResourceDownloadQueue *)a1 _activeQueueForTransferTask:v4];
+    v5 = [(CPLEngineResourceDownloadQueue *)queue _activeQueueForTransferTask:v4];
     [v5 removeTransferTask:v4];
 
-    [(CPLEngineResourceDownloadQueue *)a1 _scheduleBackgroundDownloadsIfNecessary];
+    [(CPLEngineResourceDownloadQueue *)queue _scheduleBackgroundDownloadsIfNecessary];
   }
 }
 
-- (id)_activeQueueForTransferTask:(uint64_t)a1
+- (id)_activeQueueForTransferTask:(uint64_t)task
 {
   v3 = a2;
-  v4 = [v3 resource];
-  v5 = [v4 resourceType];
+  resource = [v3 resource];
+  resourceType = [resource resourceType];
 
-  v6 = [v3 options];
-  v7 = [v6 isHighPriority];
+  options = [v3 options];
+  isHighPriority = [options isHighPriority];
 
   v8 = &OBJC_IVAR___CPLEngineResourceDownloadQueue__lowPriorityQueuePerResourceTypeAndTransferIntent;
-  if (v7)
+  if (isHighPriority)
   {
     v8 = &OBJC_IVAR___CPLEngineResourceDownloadQueue__highPriorityQueuePerResourceTypeAndTransferIntent;
   }
 
-  v9 = *(a1 + *v8);
-  v10 = [v3 options];
-  v11 = (*(v9 + 16))(v9, v5, v10);
+  v9 = *(task + *v8);
+  options2 = [v3 options];
+  v11 = (*(v9 + 16))(v9, resourceType, options2);
 
   return v11;
 }
@@ -2028,36 +2028,36 @@ void __163__CPLEngineResourceDownloadQueue__realDownloadTaskForLocalResource_tas
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enqueueTransferTaskInActiveQueue:(uint64_t)a1
+- (void)_enqueueTransferTaskInActiveQueue:(uint64_t)queue
 {
   v3 = a2;
-  if (a1)
+  if (queue)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(queue + 40));
     if ([v3 willGenerateReport])
     {
-      v4 = [(CPLEngineResourceDownloadQueue *)a1 _queuesStatus];
-      [v3 noteActiveQueuesStatusAtEnqueingTime:v4];
+      _queuesStatus = [(CPLEngineResourceDownloadQueue *)queue _queuesStatus];
+      [v3 noteActiveQueuesStatusAtEnqueingTime:_queuesStatus];
     }
 
-    v5 = [(CPLEngineResourceDownloadQueue *)a1 _activeQueueForTransferTask:v3];
+    v5 = [(CPLEngineResourceDownloadQueue *)queue _activeQueueForTransferTask:v3];
     [v5 addTransferTask:v3];
-    v6 = [v5 coalescingInterval];
-    if (v6 < 1)
+    coalescingInterval = [v5 coalescingInterval];
+    if (coalescingInterval < 1)
     {
-      [(CPLEngineResourceDownloadQueue *)a1 _launchTransportTaskForQueue:v5];
+      [(CPLEngineResourceDownloadQueue *)queue _launchTransportTaskForQueue:v5];
     }
 
     else
     {
       if (__CPLEngineResourceDownloadQueueRequestBackgroundDownloadQueueImmediately == 1)
       {
-        v7 = *(a1 + 40);
+        v7 = *(queue + 40);
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __68__CPLEngineResourceDownloadQueue__enqueueTransferTaskInActiveQueue___block_invoke;
         v16[3] = &unk_1E861B290;
-        v16[4] = a1;
+        v16[4] = queue;
         v17 = v5;
         v8 = v16;
         block[0] = MEMORY[0x1E69E9820];
@@ -2074,13 +2074,13 @@ void __163__CPLEngineResourceDownloadQueue__realDownloadTaskForLocalResource_tas
 
       else
       {
-        v12 = dispatch_time(0, v6);
-        v13 = *(a1 + 40);
+        v12 = dispatch_time(0, coalescingInterval);
+        v13 = *(queue + 40);
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __68__CPLEngineResourceDownloadQueue__enqueueTransferTaskInActiveQueue___block_invoke_2;
         v14[3] = &unk_1E861B290;
-        v14[4] = a1;
+        v14[4] = queue;
         v15 = v5;
         dispatch_after(v12, v13, v14);
         v11 = v15;
@@ -2089,44 +2089,44 @@ void __163__CPLEngineResourceDownloadQueue__realDownloadTaskForLocalResource_tas
   }
 }
 
-- (uint64_t)_launchTransportTaskForQueue:(uint64_t)a1
+- (uint64_t)_launchTransportTaskForQueue:(uint64_t)queue
 {
   v92 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (queue)
   {
     if (![v3 countOfTransferTasks])
     {
       goto LABEL_73;
     }
 
-    v5 = [v4 isHighPriority];
-    if (v5)
+    isHighPriority = [v4 isHighPriority];
+    if (isHighPriority)
     {
 LABEL_19:
-      v22 = [v4 maximumConcurrentTransportTasks];
-      if ([v4 countOfTransportTasks] < v22)
+      maximumConcurrentTransportTasks = [v4 maximumConcurrentTransportTasks];
+      if ([v4 countOfTransportTasks] < maximumConcurrentTransportTasks)
       {
-        if ([(CPLEngineResourceDownloadQueue *)a1 _transportTaskCount]< 8)
+        if ([(CPLEngineResourceDownloadQueue *)queue _transportTaskCount]< 8)
         {
 LABEL_60:
           *buf = 0;
           v49 = [v4 dequeueBatchOfTransferTasksDequeuedSize:buf];
           if ([v49 count])
           {
-            v50 = [a1 engineStore];
-            v51 = [v50 engineLibrary];
-            v52 = [v51 transport];
+            engineStore = [queue engineStore];
+            engineLibrary = [engineStore engineLibrary];
+            transport = [engineLibrary transport];
 
             v69[0] = MEMORY[0x1E69E9820];
             v69[1] = 3221225472;
             v69[2] = __63__CPLEngineResourceDownloadQueue__launchTransportTaskForQueue___block_invoke;
             v69[3] = &unk_1E861C900;
-            v69[4] = a1;
+            v69[4] = queue;
             v53 = v4;
             v70 = v53;
-            v54 = [v52 resourcesDownloadTaskWithCompletionHandler:v69];
+            v54 = [transport resourcesDownloadTaskWithCompletionHandler:v69];
             v65 = 0u;
             v66 = 0u;
             v67 = 0u;
@@ -2156,12 +2156,12 @@ LABEL_60:
             }
 
             [v54 setDownloadTasks:v55];
-            v60 = [v53 type];
-            if (v60 != 2)
+            type = [v53 type];
+            if (type != 2)
             {
-              if (v60 != 1)
+              if (type != 1)
               {
-                if (!v60)
+                if (!type)
                 {
                   [v54 setBackgroundTask:1];
                 }
@@ -2174,8 +2174,8 @@ LABEL_60:
 
             [v54 setForeground:{1, v65}];
 LABEL_77:
-            v63 = [v53 groupConstructor];
-            v64 = (v63)[2](v63, v52);
+            groupConstructor = [v53 groupConstructor];
+            v64 = (groupConstructor)[2](groupConstructor, transport);
 
             [v64 setRoughCPLRecordCount:{objc_msgSend(v55, "count")}];
             [v64 setRoughCPLDownloadEstimatedSize:*buf];
@@ -2183,20 +2183,20 @@ LABEL_77:
             [v53 addTransportTask:v54];
             [v54 runWithNoSyncSession];
 
-            a1 = 1;
+            queue = 1;
             goto LABEL_74;
           }
 
           goto LABEL_73;
         }
 
-        if (v5)
+        if (isHighPriority)
         {
           v83 = 0u;
           v84 = 0u;
           v85 = 0u;
           v86 = 0u;
-          v23 = *(a1 + 80);
+          v23 = *(queue + 80);
           v24 = [v23 countByEnumeratingWithState:&v83 objects:buf count:16];
           if (v24)
           {
@@ -2238,7 +2238,7 @@ LABEL_30:
             v82 = 0u;
             v79 = 0u;
             v80 = 0u;
-            v23 = *(a1 + 72);
+            v23 = *(queue + 72);
             v29 = [v23 countByEnumeratingWithState:&v79 objects:v90 count:16];
             if (!v29)
             {
@@ -2281,13 +2281,13 @@ LABEL_32:
 
           if (v42)
           {
-            v43 = [v42 dequeueLastTransportTask];
+            dequeueLastTransportTask = [v42 dequeueLastTransportTask];
             v71 = 0u;
             v72 = 0u;
             v73 = 0u;
             v74 = 0u;
-            v44 = [v43 downloadTasks];
-            v45 = [v44 countByEnumeratingWithState:&v71 objects:v88 count:16];
+            downloadTasks = [dequeueLastTransportTask downloadTasks];
+            v45 = [downloadTasks countByEnumeratingWithState:&v71 objects:v88 count:16];
             if (v45)
             {
               v46 = v45;
@@ -2298,34 +2298,34 @@ LABEL_32:
                 {
                   if (*v72 != v47)
                   {
-                    objc_enumerationMutation(v44);
+                    objc_enumerationMutation(downloadTasks);
                   }
 
                   [*(*(&v71 + 1) + 8 * j) setCancelledByEngine:1];
                 }
 
-                v46 = [v44 countByEnumeratingWithState:&v71 objects:v88 count:16];
+                v46 = [downloadTasks countByEnumeratingWithState:&v71 objects:v88 count:16];
               }
 
               while (v46);
             }
 
-            [v43 cancel];
+            [dequeueLastTransportTask cancel];
             goto LABEL_60;
           }
         }
       }
 
 LABEL_73:
-      a1 = 0;
+      queue = 0;
       goto LABEL_74;
     }
 
-    v6 = [a1 engineStore];
-    v7 = [v6 engineLibrary];
-    v8 = [v7 scheduler];
+    engineStore2 = [queue engineStore];
+    engineLibrary2 = [engineStore2 engineLibrary];
+    scheduler = [engineLibrary2 scheduler];
 
-    if (([v8 isClientInForeground] & 1) == 0)
+    if (([scheduler isClientInForeground] & 1) == 0)
     {
       v11 = [CPLErrors cplErrorWithCode:10 description:@"Client is in background. Will download resource in background"];
       v14 = v11;
@@ -2335,7 +2335,7 @@ LABEL_73:
     }
 
     *buf = 0;
-    v9 = [v8 isSynchronizationDisabledWithReasonError:buf];
+    v9 = [scheduler isSynchronizationDisabledWithReasonError:buf];
     v10 = *buf;
     if (v9)
     {
@@ -2353,9 +2353,9 @@ LABEL_17:
           v33 = __CPLStorageOSLogDomain_7908();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v34 = [v4 countOfTransferTasks];
+            countOfTransferTasks = [v4 countOfTransferTasks];
             *buf = 134217984;
-            *&buf[4] = v34;
+            *&buf[4] = countOfTransferTasks;
             _os_log_impl(&dword_1DC05A000, v33, OS_LOG_TYPE_DEFAULT, "Enqueuing %lu background downloads", buf, 0xCu);
           }
         }
@@ -2364,8 +2364,8 @@ LABEL_17:
         v78 = 0u;
         v75 = 0u;
         v76 = 0u;
-        v35 = [v4 allTransferTasks];
-        v36 = [v35 countByEnumeratingWithState:&v75 objects:v89 count:16];
+        allTransferTasks = [v4 allTransferTasks];
+        v36 = [allTransferTasks countByEnumeratingWithState:&v75 objects:v89 count:16];
         if (v36)
         {
           v37 = v36;
@@ -2376,22 +2376,22 @@ LABEL_17:
             {
               if (*v76 != v38)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(allTransferTasks);
               }
 
               v40 = *(*(&v75 + 1) + 8 * k);
-              v41 = [v40 completionHandler];
-              (v41)[2](v41, v40, v21);
+              completionHandler = [v40 completionHandler];
+              (completionHandler)[2](completionHandler, v40, v21);
             }
 
-            v37 = [v35 countByEnumeratingWithState:&v75 objects:v89 count:16];
+            v37 = [allTransferTasks countByEnumeratingWithState:&v75 objects:v89 count:16];
           }
 
           while (v37);
         }
 
         [v4 removeAllTransferTasks];
-        [(CPLEngineResourceDownloadQueue *)a1 _scheduleBackgroundDownloadsIfNecessary];
+        [(CPLEngineResourceDownloadQueue *)queue _scheduleBackgroundDownloadsIfNecessary];
 
         goto LABEL_73;
       }
@@ -2399,23 +2399,23 @@ LABEL_17:
       goto LABEL_19;
     }
 
-    v15 = [a1 engineStore];
-    v16 = [v15 engineLibrary];
-    v17 = [v16 systemMonitor];
+    engineStore3 = [queue engineStore];
+    engineLibrary3 = [engineStore3 engineLibrary];
+    systemMonitor = [engineLibrary3 systemMonitor];
 
-    if ([v17 isOnCellularOrUnknown] && (objc_msgSend(v17, "isDataBudgetOverriden") & 1) != 0)
+    if ([systemMonitor isOnCellularOrUnknown] && (objc_msgSend(systemMonitor, "isDataBudgetOverriden") & 1) != 0)
     {
       v18 = @"On cellular with Data override. Will download resource in background";
     }
 
-    else if ([v17 isNetworkConstrained])
+    else if ([systemMonitor isNetworkConstrained])
     {
       v18 = @"On constrained network. Will download resource in background";
     }
 
     else
     {
-      if (![v17 diskPressureState])
+      if (![systemMonitor diskPressureState])
       {
         v11 = 0;
         v13 = 1;
@@ -2436,7 +2436,7 @@ LABEL_16:
 LABEL_74:
 
   v61 = *MEMORY[0x1E69E9840];
-  return a1;
+  return queue;
 }
 
 void __63__CPLEngineResourceDownloadQueue__launchTransportTaskForQueue___block_invoke(uint64_t a1, void *a2)
@@ -3247,27 +3247,27 @@ void __159__CPLEngineResourceDownloadQueue_downloadTaskForLocalResource_clientBu
   }
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a6) = [v10 deleteRecordsForScopeIndex:a3 maxCount:a4 deletedCount:a5 error:a6];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject deleteRecordsForScopeIndex:index maxCount:count deletedCount:deletedCount error:error];
 
-  return a6;
+  return error;
 }
 
-- (CPLEngineResourceDownloadQueue)initWithEngineStore:(id)a3 name:(id)a4
+- (CPLEngineResourceDownloadQueue)initWithEngineStore:(id)store name:(id)name
 {
   v118[18] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  nameCopy = name;
   v114.receiver = self;
   v114.super_class = CPLEngineResourceDownloadQueue;
-  v85 = [(CPLEngineStorage *)&v114 initWithEngineStore:v7 name:v8];
+  v85 = [(CPLEngineStorage *)&v114 initWithEngineStore:storeCopy name:nameCopy];
   if (v85)
   {
     v61 = a2;
-    v62 = v8;
-    v63 = v7;
+    v62 = nameCopy;
+    v63 = storeCopy;
     v9 = CPLCopyDefaultSerialQueueAttributes();
     v10 = dispatch_queue_create("com.apple.cpl.resourceDownloadQueue", v9);
     downloadLock = v85->_downloadLock;
@@ -3414,9 +3414,9 @@ void __159__CPLEngineResourceDownloadQueue_downloadTaskForLocalResource_clientBu
         }
       }
 
-      v59 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v60 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineResourceDownloadQueue.m"];
-      [v59 handleFailureInMethod:v61 object:v85 file:v60 lineNumber:422 description:@"Incorrect array of active download queues"];
+      [currentHandler handleFailureInMethod:v61 object:v85 file:v60 lineNumber:422 description:@"Incorrect array of active download queues"];
 
       abort();
     }
@@ -3447,8 +3447,8 @@ void __159__CPLEngineResourceDownloadQueue_downloadTaskForLocalResource_clientBu
     allQueues = v85->_allQueues;
     v85->_allQueues = v54;
 
-    v8 = v62;
-    v7 = v63;
+    nameCopy = v62;
+    storeCopy = v63;
   }
 
   v56 = *MEMORY[0x1E69E9840];
@@ -3589,17 +3589,17 @@ void *__59__CPLEngineResourceDownloadQueue_initWithEngineStore_name___block_invo
   return v9;
 }
 
-+ (BOOL)shouldRetryDownloadOnError:(id)a3
++ (BOOL)shouldRetryDownloadOnError:(id)error
 {
-  v3 = a3;
-  if ([v3 isCPLErrorWithCode:25] & 1) != 0 || (objc_msgSend(v3, "isCPLErrorWithCode:", 26) & 1) != 0 || (objc_msgSend(v3, "isCPLErrorWithCode:", 27))
+  errorCopy = error;
+  if ([errorCopy isCPLErrorWithCode:25] & 1) != 0 || (objc_msgSend(errorCopy, "isCPLErrorWithCode:", 26) & 1) != 0 || (objc_msgSend(errorCopy, "isCPLErrorWithCode:", 27))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 isCPLErrorWithCode:51] ^ 1;
+    v4 = [errorCopy isCPLErrorWithCode:51] ^ 1;
   }
 
   return v4;

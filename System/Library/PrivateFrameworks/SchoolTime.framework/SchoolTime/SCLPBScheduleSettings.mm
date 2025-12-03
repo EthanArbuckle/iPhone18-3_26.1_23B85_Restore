@@ -1,21 +1,21 @@
 @interface SCLPBScheduleSettings
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRecurrences:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecurrences:(id)recurrences;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SCLPBScheduleSettings
 
-- (void)setHasIsEnabled:(BOOL)a3
+- (void)setHasIsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -28,22 +28,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addRecurrences:(id)a3
+- (void)addRecurrences:(id)recurrences
 {
-  v4 = a3;
+  recurrencesCopy = recurrences;
   recurrences = self->_recurrences;
-  v8 = v4;
+  v8 = recurrencesCopy;
   if (!recurrences)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_recurrences;
     self->_recurrences = v6;
 
-    v4 = v8;
+    recurrencesCopy = v8;
     recurrences = self->_recurrences;
   }
 
-  [(NSMutableArray *)recurrences addObject:v4];
+  [(NSMutableArray *)recurrences addObject:recurrencesCopy];
 }
 
 - (id)description
@@ -52,8 +52,8 @@
   v8.receiver = self;
   v8.super_class = SCLPBScheduleSettings;
   v4 = [(SCLPBScheduleSettings *)&v8 description];
-  v5 = [(SCLPBScheduleSettings *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SCLPBScheduleSettings *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -61,12 +61,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_version];
-    [v3 setObject:v5 forKey:@"version"];
+    [dictionary setObject:v5 forKey:@"version"];
 
     has = self->_has;
   }
@@ -74,7 +74,7 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isEnabled];
-    [v3 setObject:v6 forKey:@"isEnabled"];
+    [dictionary setObject:v6 forKey:@"isEnabled"];
   }
 
   if ([(NSMutableArray *)self->_recurrences count])
@@ -99,8 +99,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -109,18 +109,18 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"recurrences"];
+    [dictionary setObject:v7 forKey:@"recurrences"];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -167,31 +167,31 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[4] = self->_version;
-    *(v4 + 24) |= 1u;
+    toCopy[4] = self->_version;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 20) = self->_isEnabled;
-    *(v4 + 24) |= 2u;
+    *(toCopy + 20) = self->_isEnabled;
+    *(toCopy + 24) |= 2u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(SCLPBScheduleSettings *)self recurrencesCount])
   {
     [v10 clearRecurrences];
-    v6 = [(SCLPBScheduleSettings *)self recurrencesCount];
-    if (v6)
+    recurrencesCount = [(SCLPBScheduleSettings *)self recurrencesCount];
+    if (recurrencesCount)
     {
-      v7 = v6;
+      v7 = recurrencesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(SCLPBScheduleSettings *)self recurrencesAtIndex:i];
@@ -201,10 +201,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -239,7 +239,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v6 addRecurrences:v13];
       }
 
@@ -253,31 +253,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_version != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_version != *(equalCopy + 4))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_12;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 24) & 2) == 0)
+    if ((*(equalCopy + 24) & 2) == 0)
     {
       goto LABEL_9;
     }
@@ -287,28 +287,28 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ((*(v4 + 24) & 2) == 0)
+  if ((*(equalCopy + 24) & 2) == 0)
   {
     goto LABEL_12;
   }
 
-  v9 = *(v4 + 20);
+  v9 = *(equalCopy + 20);
   if (self->_isEnabled)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
     goto LABEL_12;
   }
 
 LABEL_9:
   recurrences = self->_recurrences;
-  if (recurrences | *(v4 + 1))
+  if (recurrences | *(equalCopy + 1))
   {
     v7 = [(NSMutableArray *)recurrences isEqual:?];
   }
@@ -349,22 +349,22 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSMutableArray *)self->_recurrences hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 24);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 24);
   if (v6)
   {
-    self->_version = *(v4 + 4);
+    self->_version = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v6 = *(v4 + 24);
+    v6 = *(fromCopy + 24);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_isEnabled = *(v4 + 20);
+    self->_isEnabled = *(fromCopy + 20);
     *&self->_has |= 2u;
   }
 
@@ -372,7 +372,7 @@ LABEL_3:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

@@ -1,41 +1,41 @@
 @interface RTVisitManager
 + (id)vendedClasses;
-- (BOOL)shouldFindPointOfInterestForVisit:(id)a3;
-- (RTVisitManager)initWithDefaultsManager:(id)a3 deviceLocationPredictor:(id)a4 hintManager:(id)a5 learnedLocationManager:(id)a6 locationAwarenessManager:(id)a7 locationManager:(id)a8 metricManager:(id)a9 motionActivityManager:(id)a10 platform:(id)a11 pointOfInterestMonitor:(id)a12 visitLabeler:(id)a13 visitStore:(id)a14 xpcActivityManager:(id)a15;
-- (id)registerForSpoofVisitIncidentOfCategory:(id)a3;
-- (void)_fetchVisitsFromDate:(id)a3 toDate:(id)a4 handler:(id)a5;
-- (void)_injectRealtimeVisit:(id)a3 handler:(id)a4;
-- (void)_injectSyncedVisitLocation:(id)a3;
-- (void)_onLowConfidenceVisitIncident:(id)a3 error:(id)a4;
-- (void)_onPointOfInterestVisitNotification:(id)a3;
-- (void)_onVisitIncident:(id)a3 error:(id)a4;
-- (void)_onVisitStoreNotification:(id)a3;
-- (void)_performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
+- (BOOL)shouldFindPointOfInterestForVisit:(id)visit;
+- (RTVisitManager)initWithDefaultsManager:(id)manager deviceLocationPredictor:(id)predictor hintManager:(id)hintManager learnedLocationManager:(id)locationManager locationAwarenessManager:(id)awarenessManager locationManager:(id)a8 metricManager:(id)metricManager motionActivityManager:(id)self0 platform:(id)self1 pointOfInterestMonitor:(id)self2 visitLabeler:(id)self3 visitStore:(id)self4 xpcActivityManager:(id)self5;
+- (id)registerForSpoofVisitIncidentOfCategory:(id)category;
+- (void)_fetchVisitsFromDate:(id)date toDate:(id)toDate handler:(id)handler;
+- (void)_injectRealtimeVisit:(id)visit handler:(id)handler;
+- (void)_injectSyncedVisitLocation:(id)location;
+- (void)_onLowConfidenceVisitIncident:(id)incident error:(id)error;
+- (void)_onPointOfInterestVisitNotification:(id)notification;
+- (void)_onVisitIncident:(id)incident error:(id)error;
+- (void)_onVisitStoreNotification:(id)notification;
+- (void)_performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
 - (void)_registerXpcActivityFindPointOfInterest;
 - (void)_setup;
-- (void)_setupVisitMonitorWithHandler:(id)a3;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_simulateVisit:(id)a3 handler:(id)a4;
+- (void)_setupVisitMonitorWithHandler:(id)handler;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_simulateVisit:(id)visit handler:(id)handler;
 - (void)_unregisterXpcActivityFindPointOfInterest;
 - (void)_updateStateForLeechedVisitIncidents;
 - (void)_updateStateForLowConfidenceVisitIncidents;
 - (void)_updateStateForVisitIncidents;
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(unint64_t)a4 handler:(id)a5;
-- (void)fetchStoredVisitsWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchVisitsFromDate:(id)a3 toDate:(id)a4 handler:(id)a5;
-- (void)injectRealtimeVisit:(id)a3 handler:(id)a4;
-- (void)injectSyncedVisitLocation:(id)a3;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)onLowConfidenceVisitIncident:(id)a3 error:(id)a4;
-- (void)onPointOfInterestVisitNotification:(id)a3;
-- (void)onVisitIncident:(id)a3 error:(id)a4;
-- (void)onVisitStoreNotification:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)setFindingPointOfInterest:(BOOL)a3;
-- (void)setSpoofMode:(BOOL)a3;
-- (void)simulateVisit:(id)a3 handler:(id)a4;
-- (void)unregisterForSpoofVisitIncidentWithToken:(int)a3;
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(unint64_t)offset handler:(id)handler;
+- (void)fetchStoredVisitsWithOptions:(id)options handler:(id)handler;
+- (void)fetchVisitsFromDate:(id)date toDate:(id)toDate handler:(id)handler;
+- (void)injectRealtimeVisit:(id)visit handler:(id)handler;
+- (void)injectSyncedVisitLocation:(id)location;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)onLowConfidenceVisitIncident:(id)incident error:(id)error;
+- (void)onPointOfInterestVisitNotification:(id)notification;
+- (void)onVisitIncident:(id)incident error:(id)error;
+- (void)onVisitStoreNotification:(id)notification;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)setFindingPointOfInterest:(BOOL)interest;
+- (void)setSpoofMode:(BOOL)mode;
+- (void)simulateVisit:(id)visit handler:(id)handler;
+- (void)unregisterForSpoofVisitIncidentWithToken:(int)token;
 @end
 
 @implementation RTVisitManager
@@ -55,56 +55,56 @@
   return v2;
 }
 
-- (RTVisitManager)initWithDefaultsManager:(id)a3 deviceLocationPredictor:(id)a4 hintManager:(id)a5 learnedLocationManager:(id)a6 locationAwarenessManager:(id)a7 locationManager:(id)a8 metricManager:(id)a9 motionActivityManager:(id)a10 platform:(id)a11 pointOfInterestMonitor:(id)a12 visitLabeler:(id)a13 visitStore:(id)a14 xpcActivityManager:(id)a15
+- (RTVisitManager)initWithDefaultsManager:(id)manager deviceLocationPredictor:(id)predictor hintManager:(id)hintManager learnedLocationManager:(id)locationManager locationAwarenessManager:(id)awarenessManager locationManager:(id)a8 metricManager:(id)metricManager motionActivityManager:(id)self0 platform:(id)self1 pointOfInterestMonitor:(id)self2 visitLabeler:(id)self3 visitStore:(id)self4 xpcActivityManager:(id)self5
 {
-  v51 = a3;
-  v39 = a4;
-  v20 = a4;
-  v40 = a5;
-  v47 = a5;
-  v41 = a6;
-  v45 = a6;
-  v42 = a7;
-  v44 = a7;
+  managerCopy = manager;
+  predictorCopy = predictor;
+  predictorCopy2 = predictor;
+  hintManagerCopy = hintManager;
+  hintManagerCopy2 = hintManager;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
+  awarenessManagerCopy = awarenessManager;
+  awarenessManagerCopy2 = awarenessManager;
   v43 = a8;
   v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v50 = a13;
-  v49 = a14;
-  v26 = a15;
-  v46 = v26;
-  if (v51)
+  metricManagerCopy = metricManager;
+  activityManagerCopy = activityManager;
+  platformCopy = platform;
+  monitorCopy = monitor;
+  labelerCopy = labeler;
+  storeCopy = store;
+  xpcActivityManagerCopy = xpcActivityManager;
+  v46 = xpcActivityManagerCopy;
+  if (managerCopy)
   {
-    v27 = v20;
-    if (v20)
+    v27 = predictorCopy2;
+    if (predictorCopy2)
     {
-      v28 = v47;
-      v29 = v44;
-      v30 = v45;
-      if (v47)
+      v28 = hintManagerCopy2;
+      v29 = awarenessManagerCopy2;
+      v30 = locationManagerCopy2;
+      if (hintManagerCopy2)
       {
-        if (v45)
+        if (locationManagerCopy2)
         {
-          if (v44)
+          if (awarenessManagerCopy2)
           {
             if (v21)
             {
-              if (v22)
+              if (metricManagerCopy)
               {
-                if (v23)
+                if (activityManagerCopy)
                 {
-                  if (v24)
+                  if (platformCopy)
                   {
-                    if (v25)
+                    if (monitorCopy)
                     {
-                      if (v50)
+                      if (labelerCopy)
                       {
-                        if (v49)
+                        if (storeCopy)
                         {
-                          if (v26)
+                          if (xpcActivityManagerCopy)
                           {
                             v52.receiver = self;
                             v52.super_class = RTVisitManager;
@@ -112,19 +112,19 @@
                             v32 = v31;
                             if (v31)
                             {
-                              objc_storeStrong(&v31->_defaultsManager, a3);
-                              objc_storeStrong(&v32->_deviceLocationPredictor, v39);
-                              objc_storeStrong(&v32->_hintManager, v40);
-                              objc_storeStrong(&v32->_learnedLocationManager, v41);
-                              objc_storeStrong(&v32->_locationAwarenessManager, v42);
+                              objc_storeStrong(&v31->_defaultsManager, manager);
+                              objc_storeStrong(&v32->_deviceLocationPredictor, predictorCopy);
+                              objc_storeStrong(&v32->_hintManager, hintManagerCopy);
+                              objc_storeStrong(&v32->_learnedLocationManager, locationManagerCopy);
+                              objc_storeStrong(&v32->_locationAwarenessManager, awarenessManagerCopy);
                               objc_storeStrong(&v32->_locationManager, v43);
-                              objc_storeStrong(&v32->_metricManager, a9);
-                              objc_storeStrong(&v32->_motionActivityManager, a10);
-                              objc_storeStrong(&v32->_platform, a11);
-                              objc_storeStrong(&v32->_pointOfInterestMonitor, a12);
-                              objc_storeStrong(&v32->_visitLabeler, a13);
-                              objc_storeStrong(&v32->_visitStore, a14);
-                              objc_storeStrong(&v32->_xpcActivityManager, a15);
+                              objc_storeStrong(&v32->_metricManager, metricManager);
+                              objc_storeStrong(&v32->_motionActivityManager, activityManager);
+                              objc_storeStrong(&v32->_platform, platform);
+                              objc_storeStrong(&v32->_pointOfInterestMonitor, monitor);
+                              objc_storeStrong(&v32->_visitLabeler, labeler);
+                              objc_storeStrong(&v32->_visitStore, store);
+                              objc_storeStrong(&v32->_xpcActivityManager, xpcActivityManager);
                               v32->_findingPointOfInterest = 0;
                               v32->_pointOfInterestUpdateEnabled = 0;
                               [(RTService *)v32 setup];
@@ -279,9 +279,9 @@ LABEL_45:
     else
     {
       v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v28 = v47;
-      v29 = v44;
-      v30 = v45;
+      v28 = hintManagerCopy2;
+      v29 = awarenessManagerCopy2;
+      v30 = locationManagerCopy2;
       if (!os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_45;
@@ -304,10 +304,10 @@ LABEL_44:
   }
 
   v33 = 0;
-  v27 = v20;
-  v28 = v47;
-  v29 = v44;
-  v30 = v45;
+  v27 = predictorCopy2;
+  v28 = hintManagerCopy2;
+  v29 = awarenessManagerCopy2;
+  v30 = locationManagerCopy2;
 LABEL_46:
 
   return v33;
@@ -315,33 +315,33 @@ LABEL_46:
 
 - (void)_setup
 {
-  v3 = [(RTVisitManager *)self visitStore];
+  visitStore = [(RTVisitManager *)self visitStore];
   v4 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-  [v3 addObserver:self selector:sel_onVisitStoreNotification_ name:v4];
+  [visitStore addObserver:self selector:sel_onVisitStoreNotification_ name:v4];
 
   v5 = [(RTDefaultsManager *)self->_defaultsManager objectForKey:@"InstantPOIEvalMode"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [(RTVisitManager *)self pointOfInterestMonitor];
+    pointOfInterestMonitor = [(RTVisitManager *)self pointOfInterestMonitor];
     v8 = +[(RTNotification *)RTPointOfInterestMonitorVisitNotification];
-    [v7 addObserver:self selector:sel_onPointOfInterestVisitNotification_ name:v8];
+    [pointOfInterestMonitor addObserver:self selector:sel_onPointOfInterestVisitNotification_ name:v8];
   }
 
   if ([(RTPlatform *)self->_platform internalInstall])
   {
     objc_initWeak(&location, self);
     out_token = 0;
-    v9 = [@"SpoofVisit" UTF8String];
-    v10 = [(RTNotifier *)self queue];
+    uTF8String = [@"SpoofVisit" UTF8String];
+    queue = [(RTNotifier *)self queue];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __24__RTVisitManager__setup__block_invoke;
     handler[3] = &unk_2788CF120;
     handler[4] = self;
     objc_copyWeak(&v19, &location);
-    notify_register_dispatch(v9, &out_token, v10, handler);
+    notify_register_dispatch(uTF8String, &out_token, queue, handler);
 
     v11 = objc_opt_new();
     [(RTVisitManager *)self setSpoofVisitIncidentTokens:v11];
@@ -354,9 +354,9 @@ LABEL_46:
     objc_copyWeak(&v16, &location);
     aBlock[4] = self;
     v12 = _Block_copy(aBlock);
-    v13 = [@"SpoofVisitIncidentsUpdate" UTF8String];
-    v14 = [(RTNotifier *)self queue];
-    notify_register_dispatch(v13, &v17, v14, v12);
+    uTF8String2 = [@"SpoofVisitIncidentsUpdate" UTF8String];
+    queue2 = [(RTNotifier *)self queue];
+    notify_register_dispatch(uTF8String2, &v17, queue2, v12);
 
     (*(v12 + 2))(v12, 0xFFFFFFFFLL);
     objc_destroyWeak(&v16);
@@ -395,14 +395,14 @@ void __24__RTVisitManager__setup__block_invoke_90(uint64_t a1)
   [WeakRetained setSpoofMode:v2];
 }
 
-- (void)_onVisitStoreNotification:(id)a3
+- (void)_onVisitStoreNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [v7 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v5 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [name isEqualToString:v5];
 
-  if (v6 && [v7 availability] == 2)
+  if (v6 && [notificationCopy availability] == 2)
   {
     [(RTVisitManager *)self _setupVisitMonitorWithHandler:&__block_literal_global_105];
   }
@@ -424,86 +424,86 @@ void __44__RTVisitManager__onVisitStoreNotification___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)onVisitStoreNotification:(id)a3
+- (void)onVisitStoreNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__RTVisitManager_onVisitStoreNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onPointOfInterestVisitNotification:(id)a3
+- (void)_onPointOfInterestVisitNotification:(id)notification
 {
-  v13 = a3;
-  v4 = [v13 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v5 = +[(RTNotification *)RTPointOfInterestMonitorVisitNotification];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [name isEqualToString:v5];
 
-  v7 = v13;
+  v7 = notificationCopy;
   if (v6)
   {
-    v8 = v13;
-    v9 = [v8 visit];
+    v8 = notificationCopy;
+    visit = [v8 visit];
 
-    if (v9)
+    if (visit)
     {
       v10 = [RTVisitManagerVisitIncidentNotification alloc];
-      v11 = [v8 visit];
-      v12 = [(RTVisitManagerVisitIncidentNotification *)v10 initWithVisitIncident:v11];
+      visit2 = [v8 visit];
+      v12 = [(RTVisitManagerVisitIncidentNotification *)v10 initWithVisitIncident:visit2];
 
       [(RTNotifier *)self postNotification:v12];
     }
 
-    v7 = v13;
+    v7 = notificationCopy;
   }
 }
 
-- (void)onPointOfInterestVisitNotification:(id)a3
+- (void)onPointOfInterestVisitNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__RTVisitManager_onPointOfInterestVisitNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)injectSyncedVisitLocation:(id)a3
+- (void)injectSyncedVisitLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__RTVisitManager_injectSyncedVisitLocation___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = locationCopy;
+  v6 = locationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_injectSyncedVisitLocation:(id)a3
+- (void)_injectSyncedVisitLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(RTVisitManager *)self locationManager];
+  locationCopy = location;
+  locationManager = [(RTVisitManager *)self locationManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__RTVisitManager__injectSyncedVisitLocation___block_invoke;
   v7[3] = &unk_2788CF148;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchCurrentLocationWithHandler:v7];
+  v8 = locationCopy;
+  v6 = locationCopy;
+  [locationManager fetchCurrentLocationWithHandler:v7];
 }
 
 void __45__RTVisitManager__injectSyncedVisitLocation___block_invoke(uint64_t a1, uint64_t a2)
@@ -515,9 +515,9 @@ void __45__RTVisitManager__injectSyncedVisitLocation___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_setupVisitMonitorWithHandler:(id)a3
+- (void)_setupVisitMonitorWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_group_create();
   v42[0] = 0;
   v42[1] = v42;
@@ -532,7 +532,7 @@ void __45__RTVisitManager__injectSyncedVisitLocation___block_invoke(uint64_t a1,
   v40[4] = __Block_byref_object_dispose__127;
   v41 = 0;
   dispatch_group_enter(v5);
-  v6 = [(RTVisitManager *)self visitStore];
+  visitStore = [(RTVisitManager *)self visitStore];
   v7 = objc_alloc(MEMORY[0x277D01340]);
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D01470]];
   v9 = [v7 initWithAscending:0 confidence:v8 dateInterval:0 labelVisit:0 limit:&unk_28459F198];
@@ -544,7 +544,7 @@ void __45__RTVisitManager__injectSyncedVisitLocation___block_invoke(uint64_t a1,
   v39 = v40;
   v10 = v5;
   v37 = v10;
-  [v6 fetchVisitsWithOptions:v9 handler:v36];
+  [visitStore fetchVisitsWithOptions:v9 handler:v36];
 
   v34[0] = 0;
   v34[1] = v34;
@@ -559,7 +559,7 @@ void __45__RTVisitManager__injectSyncedVisitLocation___block_invoke(uint64_t a1,
   v32[4] = __Block_byref_object_dispose__127;
   v33 = 0;
   dispatch_group_enter(v10);
-  v11 = [(RTVisitManager *)self visitStore];
+  visitStore2 = [(RTVisitManager *)self visitStore];
   v12 = objc_alloc(MEMORY[0x277D01340]);
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D01478]];
   v14 = [v12 initWithAscending:0 confidence:v13 dateInterval:0 labelVisit:0 limit:&unk_28459F198];
@@ -571,23 +571,23 @@ void __45__RTVisitManager__injectSyncedVisitLocation___block_invoke(uint64_t a1,
   v31 = v32;
   v15 = v10;
   v29 = v15;
-  [v11 fetchVisitsWithOptions:v14 handler:v28];
+  [visitStore2 fetchVisitsWithOptions:v14 handler:v28];
 
-  v16 = [(RTVisitManager *)self visitMonitor];
+  visitMonitor = [(RTVisitManager *)self visitMonitor];
 
-  if (v16)
+  if (visitMonitor)
   {
     dispatch_group_enter(v15);
-    v17 = [(RTVisitManager *)self visitMonitor];
+    visitMonitor2 = [(RTVisitManager *)self visitMonitor];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_3;
     v26[3] = &unk_2788C4730;
     v27 = v15;
-    [v17 shutdownWithHandler:v26];
+    [visitMonitor2 shutdownWithHandler:v26];
   }
 
-  v18 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4;
@@ -595,11 +595,11 @@ void __45__RTVisitManager__injectSyncedVisitLocation___block_invoke(uint64_t a1,
   v22 = v42;
   v23 = v34;
   block[4] = self;
-  v21 = v4;
+  v21 = handlerCopy;
   v24 = v40;
   v25 = v32;
-  v19 = v4;
-  dispatch_group_notify(v15, v18, block);
+  v19 = handlerCopy;
+  dispatch_group_notify(v15, queue, block);
 
   _Block_object_dispose(v32, 8);
   _Block_object_dispose(v34, 8);
@@ -694,23 +694,23 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
   (*(v21 + 16))(v21, v23);
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v8 = a3;
-  v4 = [(RTVisitManager *)self visitMonitor];
-  [v4 setDelegate:0];
+  handlerCopy = handler;
+  visitMonitor = [(RTVisitManager *)self visitMonitor];
+  [visitMonitor setDelegate:0];
 
-  v5 = [(RTVisitManager *)self visitMonitor];
-  [v5 shutdownWithHandler:0];
+  visitMonitor2 = [(RTVisitManager *)self visitMonitor];
+  [visitMonitor2 shutdownWithHandler:0];
 
-  v6 = [(RTVisitManager *)self visitStore];
-  [v6 removeObserver:self];
+  visitStore = [(RTVisitManager *)self visitStore];
+  [visitStore removeObserver:self];
 
-  v7 = v8;
-  if (v8)
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v8 + 2))(v8, 0);
-    v7 = v8;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v7 = handlerCopy;
   }
 }
 
@@ -719,16 +719,16 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
   v3 = +[(RTNotification *)RTVisitManagerVisitIncidentNotification];
   v4 = [(RTNotifier *)self getNumberOfObservers:v3];
 
-  v5 = [(RTVisitManager *)self visitMonitor];
-  v6 = v5;
+  visitMonitor = [(RTVisitManager *)self visitMonitor];
+  v6 = visitMonitor;
   if (v4)
   {
-    [v5 startMonitoringVisitIncidents];
+    [visitMonitor startMonitoringVisitIncidents];
   }
 
   else
   {
-    [v5 stopMonitoringVisitIncidents];
+    [visitMonitor stopMonitoringVisitIncidents];
   }
 }
 
@@ -737,16 +737,16 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
   v3 = +[(RTNotification *)RTVisitManagerLeechedVisitIncidentNotification];
   v4 = [(RTNotifier *)self getNumberOfObservers:v3];
 
-  v5 = [(RTVisitManager *)self visitMonitor];
-  v6 = v5;
+  visitMonitor = [(RTVisitManager *)self visitMonitor];
+  v6 = visitMonitor;
   if (v4)
   {
-    [v5 startMonitoringLeechedVisitIncidents];
+    [visitMonitor startMonitoringLeechedVisitIncidents];
   }
 
   else
   {
-    [v5 stopMonitoringLeechedVisitIncidents];
+    [visitMonitor stopMonitoringLeechedVisitIncidents];
   }
 }
 
@@ -755,26 +755,26 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
   v3 = +[(RTNotification *)RTVisitManagerLowConfidenceVisitIncidentNotification];
   v4 = [(RTNotifier *)self getNumberOfObservers:v3];
 
-  v5 = [(RTVisitManager *)self visitMonitor];
-  v6 = v5;
+  visitMonitor = [(RTVisitManager *)self visitMonitor];
+  v6 = visitMonitor;
   if (v4)
   {
-    [v5 startMonitoringLowConfidenceVisitIncidents];
+    [visitMonitor startMonitoringLowConfidenceVisitIncidents];
   }
 
   else
   {
-    [v5 stopMonitoringLowConfidenceVisitIncidents];
+    [visitMonitor stopMonitoringLowConfidenceVisitIncidents];
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   v8 = +[(RTNotification *)RTVisitManagerVisitIncidentNotification];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if (v9)
   {
@@ -784,7 +784,7 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
   else
   {
     v10 = +[(RTNotification *)RTVisitManagerLeechedVisitIncidentNotification];
-    v11 = [v7 isEqualToString:v10];
+    v11 = [nameCopy isEqualToString:v10];
 
     if (v11)
     {
@@ -794,7 +794,7 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
     else
     {
       v12 = +[(RTNotification *)RTVisitManagerLowConfidenceVisitIncidentNotification];
-      v13 = [v7 isEqualToString:v12];
+      v13 = [nameCopy isEqualToString:v12];
 
       if (v13)
       {
@@ -804,27 +804,27 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
       else
       {
         v14 = +[(RTNotification *)RTVisitManagerAvailableNotification];
-        v15 = [v7 isEqualToString:v14];
+        v15 = [nameCopy isEqualToString:v14];
 
         if (v15)
         {
-          v16 = [(RTVisitManager *)self visitMonitor];
+          visitMonitor = [(RTVisitManager *)self visitMonitor];
 
-          if (v16)
+          if (visitMonitor)
           {
             v17 = objc_opt_new();
-            [(RTNotifier *)self postNotification:v17 toObserver:v6];
+            [(RTNotifier *)self postNotification:v17 toObserver:observerCopy];
           }
         }
 
         else
         {
           v18 = +[(RTNotification *)RTVisitManagerPointOfInterestUpdateNotification];
-          v19 = [v7 isEqualToString:v18];
+          v19 = [nameCopy isEqualToString:v18];
 
           if (v19)
           {
-            [(RTVisitManager *)self setPointOfInterestUpdateEnabled:[(RTNotifier *)self getNumberOfObservers:v7]!= 0];
+            [(RTVisitManager *)self setPointOfInterestUpdateEnabled:[(RTNotifier *)self getNumberOfObservers:nameCopy]!= 0];
           }
 
           else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -833,7 +833,7 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
               v21 = 138412290;
-              v22 = v7;
+              v22 = nameCopy;
               _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "unsupported notification, %@", &v21, 0xCu);
             }
           }
@@ -843,12 +843,12 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  nameCopy = name;
   v6 = +[(RTNotification *)RTVisitManagerVisitIncidentNotification];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [nameCopy isEqualToString:v6];
 
   if (v7)
   {
@@ -858,7 +858,7 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
   else
   {
     v8 = +[(RTNotification *)RTVisitManagerLeechedVisitIncidentNotification];
-    v9 = [v5 isEqualToString:v8];
+    v9 = [nameCopy isEqualToString:v8];
 
     if (v9)
     {
@@ -868,7 +868,7 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
     else
     {
       v10 = +[(RTNotification *)RTVisitManagerLowConfidenceVisitIncidentNotification];
-      v11 = [v5 isEqualToString:v10];
+      v11 = [nameCopy isEqualToString:v10];
 
       if (v11)
       {
@@ -878,16 +878,16 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
       else
       {
         v12 = +[(RTNotification *)RTVisitManagerAvailableNotification];
-        v13 = [v5 isEqualToString:v12];
+        v13 = [nameCopy isEqualToString:v12];
 
         if ((v13 & 1) == 0)
         {
           v14 = +[(RTNotification *)RTVisitManagerPointOfInterestUpdateNotification];
-          v15 = [v5 isEqualToString:v14];
+          v15 = [nameCopy isEqualToString:v14];
 
           if (v15)
           {
-            [(RTVisitManager *)self setPointOfInterestUpdateEnabled:[(RTNotifier *)self getNumberOfObservers:v5]!= 0];
+            [(RTVisitManager *)self setPointOfInterestUpdateEnabled:[(RTNotifier *)self getNumberOfObservers:nameCopy]!= 0];
           }
 
           else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -896,7 +896,7 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
             if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
             {
               v17 = 138412290;
-              v18 = v5;
+              v18 = nameCopy;
               _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "unsupported notification, %@", &v17, 0xCu);
             }
           }
@@ -906,15 +906,15 @@ void __48__RTVisitManager__setupVisitMonitorWithHandler___block_invoke_4(uint64_
   }
 }
 
-- (void)_fetchVisitsFromDate:(id)a3 toDate:(id)a4 handler:(id)a5
+- (void)_fetchVisitsFromDate:(id)date toDate:(id)toDate handler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dateCopy = date;
+  toDateCopy = toDate;
+  handlerCopy = handler;
+  if (dateCopy)
   {
-    if (v9)
+    if (toDateCopy)
     {
       goto LABEL_3;
     }
@@ -930,7 +930,7 @@ LABEL_11:
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: toDate (in %s:%d)", buf, 0x12u);
     }
 
-    if (v10)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -948,60 +948,60 @@ LABEL_11:
     _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fromDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v9)
+  if (!toDateCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
-  if (v10)
+  if (handlerCopy)
   {
 LABEL_4:
-    if (v8 && v9)
+    if (dateCopy && toDateCopy)
     {
-      if ([v8 compare:v9] == 1)
+      if ([dateCopy compare:toDateCopy] == 1)
       {
         v11 = MEMORY[0x277CCA9B8];
         v12 = *MEMORY[0x277D01448];
         v41 = *MEMORY[0x277CCA450];
         v13 = MEMORY[0x277CCACA8];
-        v14 = [v8 stringFromDate];
-        v15 = [v9 stringFromDate];
-        v16 = [v13 stringWithFormat:@"fromDate, %@, postdates toDate, %@", v14, v15];
+        stringFromDate = [dateCopy stringFromDate];
+        stringFromDate2 = [toDateCopy stringFromDate];
+        v16 = [v13 stringWithFormat:@"fromDate, %@, postdates toDate, %@", stringFromDate, stringFromDate2];
         v42 = v16;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
         v18 = [v11 errorWithDomain:v12 code:7 userInfo:v17];
-        v10[2](v10, 0, v18);
+        handlerCopy[2](handlerCopy, 0, v18);
       }
 
       else
       {
         v23 = [RTVisitMonitor alloc];
         v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v23];
-        v14 = dispatch_queue_create([v24 UTF8String], 0);
+        stringFromDate = dispatch_queue_create([v24 UTF8String], 0);
 
         v33 = v23;
-        v37 = [(RTVisitManager *)self defaultsManager];
-        v36 = [(RTVisitManager *)self deviceLocationPredictor];
-        v35 = [(RTVisitManager *)self hintManager];
-        v32 = [(RTVisitManager *)self learnedLocationManager];
-        v31 = [(RTVisitManager *)self locationAwarenessManager];
-        v30 = [(RTVisitManager *)self locationManager];
-        v29 = [(RTVisitManager *)self metricManager];
-        v28 = [(RTVisitManager *)self motionActivityManager];
-        v27 = [(RTVisitManager *)self platform];
+        defaultsManager = [(RTVisitManager *)self defaultsManager];
+        deviceLocationPredictor = [(RTVisitManager *)self deviceLocationPredictor];
+        hintManager = [(RTVisitManager *)self hintManager];
+        learnedLocationManager = [(RTVisitManager *)self learnedLocationManager];
+        locationAwarenessManager = [(RTVisitManager *)self locationAwarenessManager];
+        locationManager = [(RTVisitManager *)self locationManager];
+        metricManager = [(RTVisitManager *)self metricManager];
+        motionActivityManager = [(RTVisitManager *)self motionActivityManager];
+        platform = [(RTVisitManager *)self platform];
         v25 = [[RTVisitMonitorState alloc] initWithLastVisit:0 lastLowConfidenceVisit:0];
-        v26 = [(RTVisitManager *)self visitLabeler];
-        v34 = [(RTVisitMonitor *)v33 initWithDefaultsManager:v37 deviceLocationPredictor:v36 hintManager:v35 learnedLocationManager:v32 locationAwarenessManager:v31 locationManager:v30 metricManager:v29 motionActivityManager:v28 platform:v27 queue:v14 state:v25 visitLabeler:v26];
+        visitLabeler = [(RTVisitManager *)self visitLabeler];
+        v34 = [(RTVisitMonitor *)v33 initWithDefaultsManager:defaultsManager deviceLocationPredictor:deviceLocationPredictor hintManager:hintManager learnedLocationManager:learnedLocationManager locationAwarenessManager:locationAwarenessManager locationManager:locationManager metricManager:metricManager motionActivityManager:motionActivityManager platform:platform queue:stringFromDate state:v25 visitLabeler:visitLabeler];
 
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __54__RTVisitManager__fetchVisitsFromDate_toDate_handler___block_invoke;
         v38[3] = &unk_2788C4550;
         v39 = v34;
-        v40 = v10;
-        v15 = v34;
-        [(RTVisitMonitor *)v15 fetchVisitsFromDate:v8 toDate:v9 handler:v38];
+        v40 = handlerCopy;
+        stringFromDate2 = v34;
+        [(RTVisitMonitor *)stringFromDate2 fetchVisitsFromDate:dateCopy toDate:toDateCopy handler:v38];
       }
     }
 
@@ -1011,23 +1011,23 @@ LABEL_4:
       v22 = *MEMORY[0x277D01448];
       v43 = *MEMORY[0x277CCA450];
       v44 = @"requires valid dates.";
-      v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-      v15 = [v21 errorWithDomain:v22 code:7 userInfo:v14];
-      v10[2](v10, 0, v15);
+      stringFromDate = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
+      stringFromDate2 = [v21 errorWithDomain:v22 code:7 userInfo:stringFromDate];
+      handlerCopy[2](handlerCopy, 0, stringFromDate2);
     }
 
     goto LABEL_19;
   }
 
 LABEL_14:
-  v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+  stringFromDate = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(stringFromDate, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     v46 = "[RTVisitManager _fetchVisitsFromDate:toDate:handler:]";
     v47 = 1024;
     v48 = 520;
-    _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
+    _os_log_error_impl(&dword_2304B3000, stringFromDate, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
   }
 
 LABEL_19:
@@ -1041,42 +1041,42 @@ uint64_t __54__RTVisitManager__fetchVisitsFromDate_toDate_handler___block_invoke
   return [v2 shutdownWithHandler:0];
 }
 
-- (void)fetchVisitsFromDate:(id)a3 toDate:(id)a4 handler:(id)a5
+- (void)fetchVisitsFromDate:(id)date toDate:(id)toDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  toDateCopy = toDate;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__RTVisitManager_fetchVisitsFromDate_toDate_handler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = toDateCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = toDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)fetchStoredVisitsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchStoredVisitsWithOptions:(id)options handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__RTVisitManager_fetchStoredVisitsWithOptions_handler___block_invoke;
   v12[3] = &unk_2788C4C20;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = optionsCopy;
+  v14 = handlerCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, v12);
+  v10 = handlerCopy;
+  v11 = optionsCopy;
+  dispatch_async(queue, v12);
 }
 
 void __55__RTVisitManager_fetchStoredVisitsWithOptions_handler___block_invoke(uint64_t a1)
@@ -1458,12 +1458,12 @@ void __55__RTVisitManager_fetchStoredVisitsWithOptions_handler___block_invoke_2_
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)setFindingPointOfInterest:(BOOL)a3
+- (void)setFindingPointOfInterest:(BOOL)interest
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_findingPointOfInterest != a3)
+  if (self->_findingPointOfInterest != interest)
   {
-    v3 = a3;
+    interestCopy = interest;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
@@ -1486,7 +1486,7 @@ void __55__RTVisitManager_fetchStoredVisitsWithOptions_handler___block_invoke_2_
         v12 = v7;
         v14 = v10;
         v13 = 2112;
-        if (v3)
+        if (interestCopy)
         {
           v9 = @"YES";
         }
@@ -1497,8 +1497,8 @@ void __55__RTVisitManager_fetchStoredVisitsWithOptions_handler___block_invoke_2_
       }
     }
 
-    self->_findingPointOfInterest = v3;
-    if (v3)
+    self->_findingPointOfInterest = interestCopy;
+    if (interestCopy)
     {
       [(RTVisitManager *)self _registerXpcActivityFindPointOfInterest];
     }
@@ -1514,9 +1514,9 @@ void __55__RTVisitManager_fetchStoredVisitsWithOptions_handler___block_invoke_2_
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEAA8] now];
-  v5 = [(RTVisitManager *)self lastHighConfidenceVisit];
-  v6 = [v5 entry];
-  [v4 timeIntervalSinceDate:v6];
+  lastHighConfidenceVisit = [(RTVisitManager *)self lastHighConfidenceVisit];
+  entry = [lastHighConfidenceVisit entry];
+  [v4 timeIntervalSinceDate:entry];
   v8 = 900.0 - v7;
 
   if (v8 < 1.0)
@@ -1542,14 +1542,14 @@ void __55__RTVisitManager_fetchStoredVisitsWithOptions_handler___block_invoke_2_
 
   LOBYTE(v13) = 1;
   v11 = [[RTXPCActivityCriteria alloc] initWithInterval:1 gracePeriod:1 priority:0 requireNetworkConnectivity:1024 requireInexpensiveNetworkConnectivity:102400 networkTransferUploadSize:1 networkTransferDownloadSize:9.22337204e18 allowBattery:60.0 powerNap:v8 delay:v13 requireBatteryLevel:0];
-  v12 = [(RTVisitManager *)self xpcActivityManager];
+  xpcActivityManager = [(RTVisitManager *)self xpcActivityManager];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __57__RTVisitManager__registerXpcActivityFindPointOfInterest__block_invoke;
   v14[3] = &unk_2788C9518;
   v14[4] = self;
   v14[5] = a2;
-  [v12 registerActivityWithIdentifier:@"com.apple.routined.visitManager.findPointOfInterest" criteria:v11 handler:v14];
+  [xpcActivityManager registerActivityWithIdentifier:@"com.apple.routined.visitManager.findPointOfInterest" criteria:v11 handler:v14];
 }
 
 void __57__RTVisitManager__registerXpcActivityFindPointOfInterest__block_invoke(uint64_t a1, void *a2)
@@ -1734,7 +1734,7 @@ void __57__RTVisitManager__registerXpcActivityFindPointOfInterest__block_invoke_
   v37 = __Block_byref_object_dispose__127;
   v38 = 0;
   v4 = dispatch_semaphore_create(0);
-  v5 = [(RTVisitManager *)self xpcActivityManager];
+  xpcActivityManager = [(RTVisitManager *)self xpcActivityManager];
   v27 = MEMORY[0x277D85DD0];
   v28 = 3221225472;
   v29 = __59__RTVisitManager__unregisterXpcActivityFindPointOfInterest__block_invoke;
@@ -1742,7 +1742,7 @@ void __57__RTVisitManager__registerXpcActivityFindPointOfInterest__block_invoke_
   v32 = &v33;
   v6 = v4;
   v31 = v6;
-  [v5 unregisterActivityWithIdentifier:@"com.apple.routined.visitManager.findPointOfInterest" handler:&v27];
+  [xpcActivityManager unregisterActivityWithIdentifier:@"com.apple.routined.visitManager.findPointOfInterest" handler:&v27];
 
   v7 = v6;
   v8 = [MEMORY[0x277CBEAA8] now];
@@ -1754,11 +1754,11 @@ void __57__RTVisitManager__registerXpcActivityFindPointOfInterest__block_invoke_
     v12 = v11;
     v13 = objc_opt_new();
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_392];
-    v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v16 = [v15 filteredArrayUsingPredicate:v14];
-    v17 = [v16 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+    firstObject = [v16 firstObject];
 
-    [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+    [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
@@ -1814,15 +1814,15 @@ void __59__RTVisitManager__unregisterXpcActivityFindPointOfInterest__block_invok
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)shouldFindPointOfInterestForVisit:(id)a3
+- (BOOL)shouldFindPointOfInterestForVisit:(id)visit
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  visitCopy = visit;
   v6 = objc_opt_new();
-  if (_os_feature_enabled_impl() && ([v5 confidence], v7 == *MEMORY[0x277D01470]) && objc_msgSend(v5, "type") == 1 && (objc_msgSend(v5, "placeInference"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "mapItem"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
+  if (_os_feature_enabled_impl() && ([visitCopy confidence], v7 == *MEMORY[0x277D01470]) && objc_msgSend(visitCopy, "type") == 1 && (objc_msgSend(visitCopy, "placeInference"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "mapItem"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
   {
-    v16 = [(RTVisitManager *)self defaultsManager];
-    v17 = [v16 objectForKey:@"VisitManagerPreviousPOIVisitDates"];
+    defaultsManager = [(RTVisitManager *)self defaultsManager];
+    v17 = [defaultsManager objectForKey:@"VisitManagerPreviousPOIVisitDates"];
 
     v18 = MEMORY[0x277CBEB98];
     v19 = objc_opt_class();
@@ -1842,17 +1842,17 @@ void __59__RTVisitManager__unregisterXpcActivityFindPointOfInterest__block_invok
     v24 = v6;
     v40 = v24;
     [v21 enumerateObjectsUsingBlock:v38];
-    v25 = [(RTVisitManager *)self defaultsManager];
-    v26 = [v25 objectForKey:@"VisitManagerQueryingBluePOIMaxDailyVisitCount"];
+    defaultsManager2 = [(RTVisitManager *)self defaultsManager];
+    v26 = [defaultsManager2 objectForKey:@"VisitManagerQueryingBluePOIMaxDailyVisitCount"];
 
     if (v26)
     {
-      v27 = [(RTVisitManager *)self defaultsManager];
-      [v27 objectForKey:@"VisitManagerQueryingBluePOIMaxDailyVisitCount"];
+      defaultsManager3 = [(RTVisitManager *)self defaultsManager];
+      [defaultsManager3 objectForKey:@"VisitManagerQueryingBluePOIMaxDailyVisitCount"];
       v34 = v22;
       v28 = v21;
       v30 = v29 = v20;
-      v31 = [v30 unsignedIntegerValue];
+      unsignedIntegerValue = [v30 unsignedIntegerValue];
 
       v20 = v29;
       v21 = v28;
@@ -1861,16 +1861,16 @@ void __59__RTVisitManager__unregisterXpcActivityFindPointOfInterest__block_invok
 
     else
     {
-      v31 = 2;
+      unsignedIntegerValue = 2;
     }
 
-    v10 = [v24 count] < v31;
+    v10 = [v24 count] < unsignedIntegerValue;
     v37 = 0;
     v32 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v24 requiringSecureCoding:1 error:&v37];
     if (!v37)
     {
-      v33 = [(RTVisitManager *)self defaultsManager];
-      [v33 setObject:v32 forKey:@"VisitManagerPreviousPOIVisitDates"];
+      defaultsManager4 = [(RTVisitManager *)self defaultsManager];
+      [defaultsManager4 setObject:v32 forKey:@"VisitManagerPreviousPOIVisitDates"];
     }
   }
 
@@ -1903,7 +1903,7 @@ void __59__RTVisitManager__unregisterXpcActivityFindPointOfInterest__block_invok
       v47 = 2048;
       v48 = v14;
       v49 = 2117;
-      v50 = v5;
+      v50 = visitCopy;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%@, result, %@, filtered date count, %lu, visit, %{sensitive}@", buf, 0x2Au);
     }
   }
@@ -1937,12 +1937,12 @@ void __52__RTVisitManager_shouldFindPointOfInterestForVisit___block_invoke(uint6
   }
 }
 
-- (void)_onVisitIncident:(id)a3 error:(id)a4
+- (void)_onVisitIncident:(id)incident error:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  incidentCopy = incident;
+  errorCopy = error;
+  if (errorCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1951,58 +1951,58 @@ void __52__RTVisitManager_shouldFindPointOfInterestForVisit___block_invoke(uint6
       *buf = 138412546;
       v27 = v19;
       v28 = 2112;
-      v29 = v8;
+      v29 = errorCopy;
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
     }
   }
 
-  v10 = [(RTVisitManager *)self visitMonitor];
-  if ([v10 monitoringVisitIncidents])
+  visitMonitor = [(RTVisitManager *)self visitMonitor];
+  if ([visitMonitor monitoringVisitIncidents])
   {
   }
 
   else
   {
-    v11 = [(RTVisitManager *)self spoofMode];
+    spoofMode = [(RTVisitManager *)self spoofMode];
 
-    if (!v11)
+    if (!spoofMode)
     {
       goto LABEL_9;
     }
   }
 
-  v12 = [[RTVisitManagerVisitIncidentNotification alloc] initWithVisitIncident:v7];
+  v12 = [[RTVisitManagerVisitIncidentNotification alloc] initWithVisitIncident:incidentCopy];
   [(RTNotifier *)self postNotification:v12];
 
 LABEL_9:
-  v13 = [(RTVisitManager *)self visitMonitor];
-  if ([v13 monitoringLeechedVisitIncidents])
+  visitMonitor2 = [(RTVisitManager *)self visitMonitor];
+  if ([visitMonitor2 monitoringLeechedVisitIncidents])
   {
   }
 
   else
   {
-    v14 = [(RTVisitManager *)self spoofMode];
+    spoofMode2 = [(RTVisitManager *)self spoofMode];
 
-    if (!v14)
+    if (!spoofMode2)
     {
       goto LABEL_13;
     }
   }
 
-  v15 = [[RTVisitManagerLeechedVisitIncidentNotification alloc] initWithVisitIncident:v7];
+  v15 = [[RTVisitManagerLeechedVisitIncidentNotification alloc] initWithVisitIncident:incidentCopy];
   [(RTNotifier *)self postNotification:v15];
 
 LABEL_13:
-  v16 = [(RTVisitManager *)self visitStore];
+  visitStore = [(RTVisitManager *)self visitStore];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __41__RTVisitManager__onVisitIncident_error___block_invoke;
   v23 = &unk_2788C4D10;
   v25 = a2;
-  v17 = v7;
+  v17 = incidentCopy;
   v24 = v17;
-  [v16 storeVisit:v17 handler:&v20];
+  [visitStore storeVisit:v17 handler:&v20];
 
   if ([(RTVisitManager *)self shouldFindPointOfInterestForVisit:v17, v20, v21, v22, v23])
   {
@@ -2042,21 +2042,21 @@ void __41__RTVisitManager__onVisitIncident_error___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)onVisitIncident:(id)a3 error:(id)a4
+- (void)onVisitIncident:(id)incident error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  incidentCopy = incident;
+  errorCopy = error;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__RTVisitManager_onVisitIncident_error___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = incidentCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = incidentCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __40__RTVisitManager_onVisitIncident_error___block_invoke(uint64_t a1)
@@ -2074,12 +2074,12 @@ uint64_t __40__RTVisitManager_onVisitIncident_error___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_onLowConfidenceVisitIncident:(id)a3 error:(id)a4
+- (void)_onLowConfidenceVisitIncident:(id)incident error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  incidentCopy = incident;
+  errorCopy = error;
+  if (errorCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2088,22 +2088,22 @@ uint64_t __40__RTVisitManager_onVisitIncident_error___block_invoke(uint64_t a1)
       *buf = 138412546;
       v18 = v13;
       v19 = 2112;
-      v20 = v8;
+      v20 = errorCopy;
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
     }
   }
 
-  v10 = [[RTVisitManagerLowConfidenceVisitIncidentNotification alloc] initWithVisitIncident:v7];
+  v10 = [[RTVisitManagerLowConfidenceVisitIncidentNotification alloc] initWithVisitIncident:incidentCopy];
   [(RTNotifier *)self postNotification:v10];
-  v11 = [(RTVisitManager *)self visitStore];
+  visitStore = [(RTVisitManager *)self visitStore];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __54__RTVisitManager__onLowConfidenceVisitIncident_error___block_invoke;
   v14[3] = &unk_2788C4D10;
-  v15 = v7;
+  v15 = incidentCopy;
   v16 = a2;
-  v12 = v7;
-  [v11 storeVisit:v12 handler:v14];
+  v12 = incidentCopy;
+  [visitStore storeVisit:v12 handler:v14];
 }
 
 void __54__RTVisitManager__onLowConfidenceVisitIncident_error___block_invoke(uint64_t a1, void *a2)
@@ -2128,21 +2128,21 @@ void __54__RTVisitManager__onLowConfidenceVisitIncident_error___block_invoke(uin
   }
 }
 
-- (void)onLowConfidenceVisitIncident:(id)a3 error:(id)a4
+- (void)onLowConfidenceVisitIncident:(id)incident error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  incidentCopy = incident;
+  errorCopy = error;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__RTVisitManager_onLowConfidenceVisitIncident_error___block_invoke;
   block[3] = &unk_2788C76F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = incidentCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = incidentCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __53__RTVisitManager_onLowConfidenceVisitIncident_error___block_invoke(uint64_t a1)
@@ -2160,77 +2160,77 @@ uint64_t __53__RTVisitManager_onLowConfidenceVisitIncident_error___block_invoke(
   return result;
 }
 
-- (void)_performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)_performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3 > 1)
+  dateCopy = date;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (type > 1)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   else
   {
-    v11 = [(RTVisitManager *)self visitStore];
+    visitStore = [(RTVisitManager *)self visitStore];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __63__RTVisitManager__performPurgeOfType_referenceDate_completion___block_invoke;
     v12[3] = &unk_2788C48C0;
     v13 = v10;
-    [v11 purgeVisitsPredating:v8 handler:v12];
+    [visitStore purgeVisitsPredating:dateCopy handler:v12];
   }
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__RTVisitManager_performPurgeOfType_referenceDate_completion___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dateCopy;
+  v15 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = dateCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)setSpoofMode:(BOOL)a3
+- (void)setSpoofMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v27 = *MEMORY[0x277D85DE8];
-  if (self->_spoofMode == a3)
+  if (self->_spoofMode == mode)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       return;
     }
 
-    v4 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    spoofVisitIncidentTokens3 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
+    if (os_log_type_enabled(spoofVisitIncidentTokens3, OS_LOG_TYPE_INFO))
     {
       v5 = @"OFF";
-      if (v3)
+      if (modeCopy)
       {
         v5 = @"ON";
       }
 
       *buf = 138412290;
       v26 = v5;
-      _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "Spoof mode remains %@.", buf, 0xCu);
+      _os_log_impl(&dword_2304B3000, spoofVisitIncidentTokens3, OS_LOG_TYPE_INFO, "Spoof mode remains %@.", buf, 0xCu);
     }
   }
 
   else
   {
-    self->_spoofMode = a3;
+    self->_spoofMode = mode;
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-    if (v3)
+    if (modeCopy)
     {
       if (v7)
       {
@@ -2242,17 +2242,17 @@ uint64_t __53__RTVisitManager_onLowConfidenceVisitIncident_error___block_invoke(
         }
       }
 
-      v9 = [(RTVisitManager *)self spoofVisitIncidentTokens];
+      spoofVisitIncidentTokens = [(RTVisitManager *)self spoofVisitIncidentTokens];
       v10 = [(RTVisitManager *)self registerForSpoofVisitIncidentOfCategory:@"SpoofVisitIncident"];
-      [v9 addObject:v10];
+      [spoofVisitIncidentTokens addObject:v10];
 
-      v11 = [(RTVisitManager *)self spoofVisitIncidentTokens];
+      spoofVisitIncidentTokens2 = [(RTVisitManager *)self spoofVisitIncidentTokens];
       v12 = [(RTVisitManager *)self registerForSpoofVisitIncidentOfCategory:@"SpoofLeechedVisitIncident"];
-      [v11 addObject:v12];
+      [spoofVisitIncidentTokens2 addObject:v12];
 
-      v4 = [(RTVisitManager *)self spoofVisitIncidentTokens];
+      spoofVisitIncidentTokens3 = [(RTVisitManager *)self spoofVisitIncidentTokens];
       v13 = [(RTVisitManager *)self registerForSpoofVisitIncidentOfCategory:@"SpoofLowConfidenceVisitIncident"];
-      [v4 addObject:v13];
+      [spoofVisitIncidentTokens3 addObject:v13];
     }
 
     else
@@ -2271,8 +2271,8 @@ uint64_t __53__RTVisitManager_onLowConfidenceVisitIncident_error___block_invoke(
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v15 = [(RTVisitManager *)self spoofVisitIncidentTokens];
-      v16 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      spoofVisitIncidentTokens4 = [(RTVisitManager *)self spoofVisitIncidentTokens];
+      v16 = [spoofVisitIncidentTokens4 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v16)
       {
         v17 = v16;
@@ -2284,28 +2284,28 @@ uint64_t __53__RTVisitManager_onLowConfidenceVisitIncident_error___block_invoke(
           {
             if (*v21 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(spoofVisitIncidentTokens4);
             }
 
             -[RTVisitManager unregisterForSpoofVisitIncidentWithToken:](self, "unregisterForSpoofVisitIncidentWithToken:", [*(*(&v20 + 1) + 8 * v19++) intValue]);
           }
 
           while (v17 != v19);
-          v17 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v17 = [spoofVisitIncidentTokens4 countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v17);
       }
 
-      v4 = [(RTVisitManager *)self spoofVisitIncidentTokens];
-      [v4 removeAllObjects];
+      spoofVisitIncidentTokens3 = [(RTVisitManager *)self spoofVisitIncidentTokens];
+      [spoofVisitIncidentTokens3 removeAllObjects];
     }
   }
 }
 
-- (id)registerForSpoofVisitIncidentOfCategory:(id)a3
+- (id)registerForSpoofVisitIncidentOfCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   if ([(RTPlatform *)self->_platform internalInstall])
   {
     objc_initWeak(&location, self);
@@ -2315,13 +2315,13 @@ uint64_t __53__RTVisitManager_onLowConfidenceVisitIncident_error___block_invoke(
     aBlock[3] = &unk_2788CF208;
     objc_copyWeak(&v14, &location);
     aBlock[4] = self;
-    v5 = v4;
+    v5 = categoryCopy;
     v13 = v5;
     v6 = _Block_copy(aBlock);
     out_token = 0;
-    v7 = [v5 UTF8String];
-    v8 = [(RTNotifier *)self queue];
-    notify_register_dispatch(v7, &out_token, v8, v6);
+    uTF8String = [v5 UTF8String];
+    queue = [(RTNotifier *)self queue];
+    notify_register_dispatch(uTF8String, &out_token, queue, v6);
 
     v9 = [MEMORY[0x277CCABB0] numberWithInt:out_token];
 
@@ -2393,39 +2393,39 @@ LABEL_11:
   }
 }
 
-- (void)unregisterForSpoofVisitIncidentWithToken:(int)a3
+- (void)unregisterForSpoofVisitIncidentWithToken:(int)token
 {
   if ([(RTPlatform *)self->_platform internalInstall])
   {
 
-    notify_cancel(a3);
+    notify_cancel(token);
   }
 }
 
-- (void)_simulateVisit:(id)a3 handler:(id)a4
+- (void)_simulateVisit:(id)visit handler:(id)handler
 {
   v71 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  visitCopy = visit;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138739971;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = visitCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "simulate visit, %{sensitive}@", &buf, 0xCu);
     }
   }
 
-  if (v7)
+  if (visitCopy)
   {
     if (_os_feature_enabled_impl())
     {
-      v10 = [(RTVisitManager *)self platform];
-      v11 = [v10 iPhoneDevice];
+      platform = [(RTVisitManager *)self platform];
+      iPhoneDevice = [platform iPhoneDevice];
 
-      v12 = v11 & 1;
+      v12 = iPhoneDevice & 1;
     }
 
     else
@@ -2433,16 +2433,16 @@ LABEL_11:
       v12 = 0;
     }
 
-    v15 = [(RTVisitManager *)self visitLabeler];
+    visitLabeler = [(RTVisitManager *)self visitLabeler];
     v59 = 0;
-    [v15 labelVisit:v7 clientIdentifier:@"com.apple.CoreRoutine.visitManager" policy:v12 error:&v59];
+    [visitLabeler labelVisit:visitCopy clientIdentifier:@"com.apple.CoreRoutine.visitManager" policy:v12 error:&v59];
     v48 = v59;
 
-    v16 = [[RTVisitManagerVisitIncidentNotification alloc] initWithVisitIncident:v7];
+    v16 = [[RTVisitManagerVisitIncidentNotification alloc] initWithVisitIncident:visitCopy];
     v66[0] = v16;
-    v17 = [[RTVisitManagerLeechedVisitIncidentNotification alloc] initWithVisitIncident:v7];
+    v17 = [[RTVisitManagerLeechedVisitIncidentNotification alloc] initWithVisitIncident:visitCopy];
     v66[1] = v17;
-    v18 = [[RTVisitManagerLowConfidenceVisitIncidentNotification alloc] initWithVisitIncident:v7];
+    v18 = [[RTVisitManagerLowConfidenceVisitIncidentNotification alloc] initWithVisitIncident:visitCopy];
     v66[2] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:3];
 
@@ -2475,15 +2475,15 @@ LABEL_11:
 
     if (self->_spoofMode)
     {
-      v23 = [(RTVisitManager *)self visitStore];
+      visitStore = [(RTVisitManager *)self visitStore];
       v52[0] = MEMORY[0x277D85DD0];
       v52[1] = 3221225472;
       v52[2] = __41__RTVisitManager__simulateVisit_handler___block_invoke;
       v52[3] = &unk_2788C4D10;
       v54 = a2;
-      v24 = v7;
+      v24 = visitCopy;
       v53 = v24;
-      [v23 storeVisit:v24 handler:v52];
+      [visitStore storeVisit:v24 handler:v52];
 
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -2492,7 +2492,7 @@ LABEL_11:
       v63 = __Block_byref_object_dispose__127;
       v64 = 0;
       v25 = dispatch_semaphore_create(0);
-      v26 = [(RTVisitManager *)self visitStore];
+      visitStore2 = [(RTVisitManager *)self visitStore];
       v27 = objc_alloc(MEMORY[0x277D01340]);
       v28 = MEMORY[0x277CCABB0];
       [v24 confidence];
@@ -2505,7 +2505,7 @@ LABEL_11:
       p_buf = &buf;
       v31 = v25;
       v50 = v31;
-      [v26 fetchVisitsWithOptions:v30 handler:v49];
+      [visitStore2 fetchVisitsWithOptions:v30 handler:v49];
 
       v32 = v31;
       v47 = [MEMORY[0x277CBEAA8] now];
@@ -2517,11 +2517,11 @@ LABEL_11:
         v35 = v34;
         v45 = objc_opt_new();
         v36 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_392];
-        v37 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v38 = [v37 filteredArrayUsingPredicate:v36];
-        v39 = [v38 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v38 = [callStackSymbols filteredArrayUsingPredicate:v36];
+        firstObject = [v38 firstObject];
 
-        [v45 submitToCoreAnalytics:v39 type:1 duration:v35];
+        [v45 submitToCoreAnalytics:firstObject type:1 duration:v35];
         v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
         {
@@ -2536,13 +2536,13 @@ LABEL_11:
         v43 = [v41 errorWithDomain:*MEMORY[0x277D01448] code:15 userInfo:v42];
       }
 
-      v44 = [(RTVisitManager *)self visitMonitor];
-      [v44 compareVisit:v24 previousVisit:*(*(&buf + 1) + 40)];
+      visitMonitor = [(RTVisitManager *)self visitMonitor];
+      [visitMonitor compareVisit:v24 previousVisit:*(*(&buf + 1) + 40)];
 
       _Block_object_dispose(&buf, 8);
     }
 
-    if (!v8)
+    if (!handlerCopy)
     {
       goto LABEL_26;
     }
@@ -2550,7 +2550,7 @@ LABEL_11:
     goto LABEL_25;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     v13 = MEMORY[0x277CCA9B8];
     v67 = *MEMORY[0x277CCA450];
@@ -2558,7 +2558,7 @@ LABEL_11:
     v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
     v14 = [v13 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v48];
 LABEL_25:
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
 LABEL_26:
   }
 }
@@ -2597,50 +2597,50 @@ intptr_t __41__RTVisitManager__simulateVisit_handler___block_invoke_175(uint64_t
   return dispatch_semaphore_signal(v6);
 }
 
-- (void)simulateVisit:(id)a3 handler:(id)a4
+- (void)simulateVisit:(id)visit handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  visitCopy = visit;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__RTVisitManager_simulateVisit_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = visitCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = visitCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_injectRealtimeVisit:(id)a3 handler:(id)a4
+- (void)_injectRealtimeVisit:(id)visit handler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  visitCopy = visit;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138739971;
-      v22 = v7;
+      v22 = visitCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "inject visit, %{sensitive}@", buf, 0xCu);
     }
   }
 
-  if (v7)
+  if (visitCopy)
   {
-    v10 = [(RTVisitManager *)self visitStore];
+    visitStore = [(RTVisitManager *)self visitStore];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __47__RTVisitManager__injectRealtimeVisit_handler___block_invoke;
     v15[3] = &unk_2788C56C0;
     v18 = a2;
-    v16 = v7;
-    v17 = v8;
-    [v10 storeVisit:v16 handler:v15];
+    v16 = visitCopy;
+    v17 = handlerCopy;
+    [visitStore storeVisit:v16 handler:v15];
 
     v11 = v16;
 LABEL_9:
@@ -2648,7 +2648,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277D01448];
@@ -2656,7 +2656,7 @@ LABEL_9:
     v20 = @"requires a valid visit.";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v14 = [v12 errorWithDomain:v13 code:7 userInfo:v11];
-    (*(v8 + 2))(v8, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
 
     goto LABEL_9;
   }
@@ -2692,39 +2692,39 @@ void __47__RTVisitManager__injectRealtimeVisit_handler___block_invoke(uint64_t a
   }
 }
 
-- (void)injectRealtimeVisit:(id)a3 handler:(id)a4
+- (void)injectRealtimeVisit:(id)visit handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  visitCopy = visit;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__RTVisitManager_injectRealtimeVisit_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = visitCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = visitCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(unint64_t)a4 handler:(id)a5
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(unint64_t)offset handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __67__RTVisitManager_fetchEnumerableObjectsWithOptions_offset_handler___block_invoke;
     v12[3] = &unk_2788C6940;
-    v13 = v8;
-    v14 = self;
-    v15 = v9;
-    v16 = a4;
-    dispatch_async(v10, v12);
+    v13 = optionsCopy;
+    selfCopy = self;
+    v15 = handlerCopy;
+    offsetCopy = offset;
+    dispatch_async(queue, v12);
 
     v11 = v13;
   }

@@ -1,22 +1,22 @@
 @interface SCATModernMenuItemDeviceFactory
-+ (id)_stringForRingerOn:(BOOL)a3;
-+ (id)itemDetailsForItem:(id)a3 menu:(id)a4;
-+ (id)menuItemWithItemDictionary:(id)a3 menu:(id)a4 delegate:(id)a5;
-+ (id)menuItemsForItem:(id)a3 menu:(id)a4 delegate:(id)a5;
-+ (id)updateBlockForIdentifier:(id)a3;
-+ (void)_handleSpeakThis:(id)a3;
-+ (void)_handleSysdiagnose:(id)a3;
++ (id)_stringForRingerOn:(BOOL)on;
++ (id)itemDetailsForItem:(id)item menu:(id)menu;
++ (id)menuItemWithItemDictionary:(id)dictionary menu:(id)menu delegate:(id)delegate;
++ (id)menuItemsForItem:(id)item menu:(id)menu delegate:(id)delegate;
++ (id)updateBlockForIdentifier:(id)identifier;
++ (void)_handleSpeakThis:(id)this;
++ (void)_handleSysdiagnose:(id)sysdiagnose;
 @end
 
 @implementation SCATModernMenuItemDeviceFactory
 
-+ (id)menuItemsForItem:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemsForItem:(id)item menu:(id)menu delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  menuCopy = menu;
+  delegateCopy = delegate;
   v11 = objc_alloc_init(NSMutableArray);
-  v12 = [a1 actionMenuItemForItem:v8 menu:v9 delegate:v10];
+  v12 = [self actionMenuItemForItem:itemCopy menu:menuCopy delegate:delegateCopy];
   if (v12)
   {
     [v11 addObject:v12];
@@ -28,8 +28,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v20 = v8;
-    v13 = [a1 itemDetailsForItem:v8 menu:v9];
+    v20 = itemCopy;
+    v13 = [self itemDetailsForItem:itemCopy menu:menuCopy];
     v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v14)
     {
@@ -44,7 +44,7 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [a1 menuItemWithItemDictionary:*(*(&v21 + 1) + 8 * i) menu:v9 delegate:v10];
+          v18 = [self menuItemWithItemDictionary:*(*(&v21 + 1) + 8 * i) menu:menuCopy delegate:delegateCopy];
           [v11 addObject:v18];
         }
 
@@ -54,17 +54,17 @@
       while (v15);
     }
 
-    v8 = v20;
+    itemCopy = v20;
   }
 
   return v11;
 }
 
-+ (id)itemDetailsForItem:(id)a3 menu:(id)a4
++ (id)itemDetailsForItem:(id)item menu:(id)menu
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceAppSwitcher])
+  itemCopy = item;
+  menuCopy = menu;
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceAppSwitcher])
   {
     v133[0] = @"device_appSwitcher";
     v132[0] = @"identifier";
@@ -84,7 +84,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceNotificationCenter])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceNotificationCenter])
   {
     v130[0] = @"device_notificationCenter";
     v129[0] = @"identifier";
@@ -99,7 +99,7 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceControlCenter])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceControlCenter])
   {
     v127[0] = @"device_controlCenter";
     v126[0] = @"identifier";
@@ -114,7 +114,7 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceLockScreen])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceLockScreen])
   {
     v124[0] = @"device_lock";
     v123[0] = @"identifier";
@@ -129,7 +129,7 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceRotateScreen])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceRotateScreen])
   {
     v121[0] = @"device_rotate";
     v120[0] = @"identifier";
@@ -144,12 +144,12 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceMute])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceMute])
   {
     v118[0] = @"device_mute";
     v117[0] = @"identifier";
     v117[1] = @"title";
-    v13 = [a1 _stringForRingerOn:sub_100042494()];
+    v13 = [self _stringForRingerOn:sub_100042494()];
     v117[2] = @"activateBehavior";
     v118[1] = v13;
     v118[2] = &off_1001E56D0;
@@ -181,7 +181,7 @@ LABEL_78:
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceVolumeUpDown])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceVolumeUpDown])
   {
     v112[0] = @"device_volumeDown";
     v111[0] = @"identifier";
@@ -212,7 +212,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceSpotlightSearch])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceSpotlightSearch])
   {
     v107[0] = @"device_spotlightSearch";
     v106[0] = @"identifier";
@@ -227,14 +227,14 @@ LABEL_23:
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceSiriVoiceControl])
+  if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceSiriVoiceControl])
   {
     if (j__AXDeviceIsSiriAvailable())
     {
       v19 = +[AXSystemAppServer server];
-      v20 = [v19 isSiriVisible];
+      isSiriVisible = [v19 isSiriVisible];
 
-      if ((v20 & 1) == 0)
+      if ((isSiriVisible & 1) == 0)
       {
         v101[0] = @"device_siri";
         v100[0] = @"identifier";
@@ -266,7 +266,7 @@ LABEL_23:
     }
   }
 
-  else if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceTypeToSiri])
+  else if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceTypeToSiri])
   {
     if (j__AXDeviceIsSiriAvailable())
     {
@@ -286,7 +286,7 @@ LABEL_23:
 
   else
   {
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceTripleClick])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceTripleClick])
     {
       v95[0] = @"device_tripleClick";
       v94[0] = @"identifier";
@@ -316,7 +316,7 @@ LABEL_23:
       goto LABEL_20;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceShake])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceShake])
     {
       v92[0] = @"device_shake";
       v91[0] = @"identifier";
@@ -336,7 +336,7 @@ LABEL_23:
       goto LABEL_20;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceScreenshot])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceScreenshot])
     {
       v89[0] = @"device_screenshot";
       v88[0] = @"identifier";
@@ -351,7 +351,7 @@ LABEL_23:
       goto LABEL_11;
     }
 
-    if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceIncreaseDecreaseZoom])
+    if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceIncreaseDecreaseZoom])
     {
       if (_AXSZoomTouchEnabled())
       {
@@ -386,14 +386,14 @@ LABEL_23:
       }
     }
 
-    else if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceSpeakScreen])
+    else if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceSpeakScreen])
     {
       if (_AXSSpeakThisEnabled())
       {
         v22 = +[AXSpringBoardServer server];
-        v23 = [v22 isSpeakThisTemporarilyDisabled];
+        isSpeakThisTemporarilyDisabled = [v22 isSpeakThisTemporarilyDisabled];
 
-        if ((v23 & 1) == 0)
+        if ((isSpeakThisTemporarilyDisabled & 1) == 0)
         {
           v81[0] = @"device_speakThis";
           v80[0] = @"identifier";
@@ -412,7 +412,7 @@ LABEL_23:
       }
     }
 
-    else if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceSOS])
+    else if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceSOS])
     {
       if (AXDeviceIsSOSAvailable())
       {
@@ -432,10 +432,10 @@ LABEL_23:
       }
     }
 
-    else if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceInterDevice])
+    else if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceInterDevice])
     {
-      v24 = [v7 delegate];
-      v25 = [v24 canSearchForControllableDevicesWithMenu:v7];
+      delegate = [menuCopy delegate];
+      v25 = [delegate canSearchForControllableDevicesWithMenu:menuCopy];
 
       if (v25)
       {
@@ -454,8 +454,8 @@ LABEL_23:
         goto LABEL_11;
       }
 
-      v26 = [v7 delegate];
-      v27 = [v26 canReturnControlToForwarderDevice:v7];
+      delegate2 = [menuCopy delegate];
+      v27 = [delegate2 canReturnControlToForwarderDevice:menuCopy];
 
       if (v27)
       {
@@ -477,7 +477,7 @@ LABEL_23:
 
     else
     {
-      if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceSysdiagnose])
+      if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceSysdiagnose])
       {
         v69[0] = @"device_sysdiagnose";
         v68[0] = @"identifier";
@@ -494,7 +494,7 @@ LABEL_23:
         goto LABEL_11;
       }
 
-      if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceRebootDevice])
+      if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceRebootDevice])
       {
         v66[0] = @"device_restart";
         v65[0] = @"identifier";
@@ -509,7 +509,7 @@ LABEL_23:
         goto LABEL_11;
       }
 
-      if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceToggleDock])
+      if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceToggleDock])
       {
         if (AXDeviceSupportsSideApp())
         {
@@ -530,20 +530,20 @@ LABEL_23:
         }
       }
 
-      else if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceArmApplePay])
+      else if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceArmApplePay])
       {
         if (sub_100042534())
         {
           v28 = +[SCATScannerManager sharedManager];
-          v29 = [v28 waitingForSecureIntent];
+          waitingForSecureIntent = [v28 waitingForSecureIntent];
         }
 
         else
         {
-          v29 = 0;
+          waitingForSecureIntent = 0;
         }
 
-        if ((AXDeviceCanArmApplePay() & 1) != 0 || v29)
+        if ((AXDeviceCanArmApplePay() & 1) != 0 || waitingForSecureIntent)
         {
           v60[0] = @"device_applePay";
           v59[0] = @"identifier";
@@ -556,7 +556,7 @@ LABEL_23:
           v61 = v31;
           v8 = [NSArray arrayWithObjects:&v61 count:1];
 
-          if (v29)
+          if (waitingForSecureIntent)
           {
             v57[0] = @"device_faceID";
             v56[0] = @"identifier";
@@ -577,7 +577,7 @@ LABEL_23:
 
       else
       {
-        if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceToggleCommandAndControl])
+        if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceToggleCommandAndControl])
         {
           v53[0] = @"identifier";
           v53[1] = @"imageName";
@@ -595,7 +595,7 @@ LABEL_23:
         }
 
         v32 = AXSSwitchControlMenuItemDeviceAssistiveTouch;
-        if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceAssistiveTouch])
+        if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceAssistiveTouch])
         {
           v51[0] = v32;
           v50[0] = @"identifier";
@@ -614,7 +614,7 @@ LABEL_23:
           goto LABEL_11;
         }
 
-        if ([v6 isEqualToString:AXSSwitchControlMenuItemCameraButton])
+        if ([itemCopy isEqualToString:AXSSwitchControlMenuItemCameraButton])
         {
           if (AXDeviceSupportsCameraButton())
           {
@@ -634,7 +634,7 @@ LABEL_23:
           }
         }
 
-        else if ([v6 isEqualToString:AXSSwitchControlMenuItemCameraButtonLightPress])
+        else if ([itemCopy isEqualToString:AXSSwitchControlMenuItemCameraButtonLightPress])
         {
           if (AXDeviceSupportsCameraButton())
           {
@@ -654,7 +654,7 @@ LABEL_23:
           }
         }
 
-        else if ([v6 isEqualToString:AXSSwitchControlMenuItemCameraButtonDoubleLightPress])
+        else if ([itemCopy isEqualToString:AXSSwitchControlMenuItemCameraButtonDoubleLightPress])
         {
           if (AXDeviceSupportsCameraButton())
           {
@@ -674,7 +674,7 @@ LABEL_23:
           }
         }
 
-        else if ([v6 isEqualToString:AXSSwitchControlMenuItemVisualIntelligence])
+        else if ([itemCopy isEqualToString:AXSSwitchControlMenuItemVisualIntelligence])
         {
           if (AXDeviceSupportsCameraButton() && AXDeviceHasGreyMatterEnabled())
           {
@@ -692,12 +692,12 @@ LABEL_23:
           }
         }
 
-        else if ([v6 isEqualToString:AXSSwitchControlMenuItemDeviceMenuBar])
+        else if ([itemCopy isEqualToString:AXSSwitchControlMenuItemDeviceMenuBar])
         {
           v33 = +[AXSBMenuBarManager sharedInstance];
-          v34 = [v33 isMenuBarSupported];
+          isMenuBarSupported = [v33 isMenuBarSupported];
 
-          if (v34)
+          if (isMenuBarSupported)
           {
             v36[0] = @"device_menuBar";
             v35[0] = @"identifier";
@@ -729,25 +729,25 @@ LABEL_14:
   return v11;
 }
 
-+ (id)menuItemWithItemDictionary:(id)a3 menu:(id)a4 delegate:(id)a5
++ (id)menuItemWithItemDictionary:(id)dictionary menu:(id)menu delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 objectForKey:@"identifier"];
-  v26 = [v7 objectForKey:@"title"];
-  v10 = [v7 objectForKey:@"imageName"];
-  v11 = [v7 objectForKey:@"activateBehavior"];
-  v25 = [v11 unsignedIntegerValue];
+  dictionaryCopy = dictionary;
+  delegateCopy = delegate;
+  v9 = [dictionaryCopy objectForKey:@"identifier"];
+  v26 = [dictionaryCopy objectForKey:@"title"];
+  v10 = [dictionaryCopy objectForKey:@"imageName"];
+  v11 = [dictionaryCopy objectForKey:@"activateBehavior"];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-  v12 = [v7 objectForKey:@"guidedAccess"];
-  v13 = [v12 BOOLValue];
+  v12 = [dictionaryCopy objectForKey:@"guidedAccess"];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [v7 objectForKeyedSubscript:@"assistiveAccess"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"assistiveAccess"];
   v15 = v14;
-  v16 = v13;
+  bOOLValue2 = bOOLValue;
   if (v14)
   {
-    v16 = [v14 BOOLValue];
+    bOOLValue2 = [v14 BOOLValue];
   }
 
   if ([v9 isEqualToString:@"device_siri"])
@@ -855,7 +855,7 @@ LABEL_14:
 LABEL_37:
     v18[2] = v19;
     v18[3] = &unk_1001D6298;
-    v18[4] = a1;
+    v18[4] = self;
     v17 = objc_retainBlock(v18);
     goto LABEL_46;
   }
@@ -954,31 +954,31 @@ LABEL_37:
 
 LABEL_46:
   v20 = [objc_opt_class() updateBlockForIdentifier:v9];
-  LOBYTE(v24) = v16;
-  v21 = [SCATModernMenuItem itemWithIdentifier:v9 delegate:v8 title:v26 imageName:v10 activateBehavior:v25 allowedWithGuidedAccess:v13 allowedWithAssistiveAccess:v24 activateHandler:v17 updateHandler:v20];
+  LOBYTE(v24) = bOOLValue2;
+  v21 = [SCATModernMenuItem itemWithIdentifier:v9 delegate:delegateCopy title:v26 imageName:v10 activateBehavior:unsignedIntegerValue allowedWithGuidedAccess:bOOLValue allowedWithAssistiveAccess:v24 activateHandler:v17 updateHandler:v20];
 
-  v22 = [v7 objectForKeyedSubscript:@"menuItemGroup"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"menuItemGroup"];
   [v21 setMenuItemGroupName:v22];
 
   return v21;
 }
 
-+ (void)_handleSpeakThis:(id)a3
++ (void)_handleSpeakThis:(id)this
 {
-  v11 = a3;
-  v3 = [v11 screenPoint];
+  thisCopy = this;
+  screenPoint = [thisCopy screenPoint];
 
-  if (!v3)
+  if (!screenPoint)
   {
     _AXAssert();
   }
 
-  v4 = [v11 screenPoint];
+  screenPoint2 = [thisCopy screenPoint];
 
-  if (v4)
+  if (screenPoint2)
   {
-    v5 = [v11 screenPoint];
-    [v5 CGPointValue];
+    screenPoint3 = [thisCopy screenPoint];
+    [screenPoint3 CGPointValue];
     x = v6;
     y = v8;
   }
@@ -993,22 +993,22 @@ LABEL_46:
   [v10 speakThisWithOptions:12 useAppAtPoint:&stru_1001D7BE8 errorHandler:{x, y}];
 }
 
-+ (void)_handleSysdiagnose:(id)a3
++ (void)_handleSysdiagnose:(id)sysdiagnose
 {
-  v3 = a3;
+  sysdiagnoseCopy = sysdiagnose;
   v4 = +[AXPISystemActionHelper sharedInstance];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F1C94;
   v6[3] = &unk_1001D3AB0;
-  v7 = v3;
-  v5 = v3;
+  v7 = sysdiagnoseCopy;
+  v5 = sysdiagnoseCopy;
   [v4 performSysdiagnoseWithStatusUpdateHandler:v6];
 }
 
-+ (id)_stringForRingerOn:(BOOL)a3
++ (id)_stringForRingerOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = @"MUTE";
   }
@@ -1023,25 +1023,25 @@ LABEL_46:
   return v4;
 }
 
-+ (id)updateBlockForIdentifier:(id)a3
++ (id)updateBlockForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"device_mute"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"device_mute"])
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000F1E40;
     v7[3] = &unk_1001D4AA8;
-    v7[4] = a1;
+    v7[4] = self;
     v5 = objc_retainBlock(v7);
   }
 
-  else if ([v4 isEqualToString:@"device_tripleClick"])
+  else if ([identifierCopy isEqualToString:@"device_tripleClick"])
   {
     v5 = &stru_1001D7C08;
   }
 
-  else if ([v4 isEqualToString:@"device_visualIntelligence"])
+  else if ([identifierCopy isEqualToString:@"device_visualIntelligence"])
   {
     v5 = &stru_1001D7C28;
   }

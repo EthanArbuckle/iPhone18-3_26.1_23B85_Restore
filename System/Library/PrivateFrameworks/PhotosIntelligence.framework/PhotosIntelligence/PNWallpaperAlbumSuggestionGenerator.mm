@@ -1,35 +1,35 @@
 @interface PNWallpaperAlbumSuggestionGenerator
-+ (id)cloudIdentifierForShuffleUserAlbumWithAssetCollection:(id)a3 photoLibrary:(id)a4;
-+ (id)shuffleUserAlbumForCloudIdentifier:(id)a3 photoLibrary:(id)a4;
-- (id)assetsForDate:(id)a3 numberOfAssets:(int64_t)a4;
-- (id)updateSuggestionsForDate:(id)a3 numberOfSuggestions:(int64_t)a4;
++ (id)cloudIdentifierForShuffleUserAlbumWithAssetCollection:(id)collection photoLibrary:(id)library;
++ (id)shuffleUserAlbumForCloudIdentifier:(id)identifier photoLibrary:(id)library;
+- (id)assetsForDate:(id)date numberOfAssets:(int64_t)assets;
+- (id)updateSuggestionsForDate:(id)date numberOfSuggestions:(int64_t)suggestions;
 @end
 
 @implementation PNWallpaperAlbumSuggestionGenerator
 
-- (id)updateSuggestionsForDate:(id)a3 numberOfSuggestions:(int64_t)a4
+- (id)updateSuggestionsForDate:(id)date numberOfSuggestions:(int64_t)suggestions
 {
   v6 = sub_1C754DF6C();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C754DF2C();
-  v10 = self;
-  v11 = sub_1C7259D24(v9, a4);
+  selfCopy = self;
+  v11 = sub_1C7259D24(v9, suggestions);
 
   (*(v7 + 8))(v9, v6);
 
   return v11;
 }
 
-- (id)assetsForDate:(id)a3 numberOfAssets:(int64_t)a4
+- (id)assetsForDate:(id)date numberOfAssets:(int64_t)assets
 {
   v5 = sub_1C754DF6C();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C754DF2C();
-  v9 = self;
+  selfCopy = self;
   sub_1C725A380(v8);
 
   (*(v6 + 8))(v8, v5);
@@ -39,11 +39,11 @@
   return v10;
 }
 
-+ (id)cloudIdentifierForShuffleUserAlbumWithAssetCollection:(id)a3 photoLibrary:(id)a4
++ (id)cloudIdentifierForShuffleUserAlbumWithAssetCollection:(id)collection photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  static WallpaperAlbumSuggestionGenerator.cloudIdentifierForShuffleUserAlbum(assetCollection:photoLibrary:)(v5, v6);
+  collectionCopy = collection;
+  libraryCopy = library;
+  static WallpaperAlbumSuggestionGenerator.cloudIdentifierForShuffleUserAlbum(assetCollection:photoLibrary:)(collectionCopy, libraryCopy);
   v8 = v7;
 
   if (v8)
@@ -59,12 +59,12 @@
   return v9;
 }
 
-+ (id)shuffleUserAlbumForCloudIdentifier:(id)a3 photoLibrary:(id)a4
++ (id)shuffleUserAlbumForCloudIdentifier:(id)identifier photoLibrary:(id)library
 {
   v5 = sub_1C755068C();
   v7 = v6;
-  v8 = a4;
-  v9 = static WallpaperAlbumSuggestionGenerator.shuffleUserAlbumForCloudIdentifier(_:photoLibrary:)(v5, v7, v8);
+  libraryCopy = library;
+  v9 = static WallpaperAlbumSuggestionGenerator.shuffleUserAlbumForCloudIdentifier(_:photoLibrary:)(v5, v7, libraryCopy);
 
   return v9;
 }

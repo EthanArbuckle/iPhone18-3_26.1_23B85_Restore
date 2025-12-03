@@ -6,10 +6,10 @@
 
 - (BOOL)nc_modeConfigurationHasExclusiveAppConfigurationType
 {
-  v1 = [a1 configuration];
-  v2 = [v1 applicationConfigurationType];
+  configuration = [self configuration];
+  applicationConfigurationType = [configuration applicationConfigurationType];
 
-  return v2 == 0;
+  return applicationConfigurationType == 0;
 }
 
 @end

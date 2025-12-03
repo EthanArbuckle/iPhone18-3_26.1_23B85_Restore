@@ -1,20 +1,20 @@
 @interface HDCloudSyncManagerDiscardCachedOwnerIdentifiersTask
-- (HDCloudSyncManagerDiscardCachedOwnerIdentifiersTask)initWithDaemon:(id)a3;
+- (HDCloudSyncManagerDiscardCachedOwnerIdentifiersTask)initWithDaemon:(id)daemon;
 - (void)main;
 @end
 
 @implementation HDCloudSyncManagerDiscardCachedOwnerIdentifiersTask
 
-- (HDCloudSyncManagerDiscardCachedOwnerIdentifiersTask)initWithDaemon:(id)a3
+- (HDCloudSyncManagerDiscardCachedOwnerIdentifiersTask)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v8.receiver = self;
   v8.super_class = HDCloudSyncManagerDiscardCachedOwnerIdentifiersTask;
   v5 = [(HDCloudSyncManagerTask *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
   }
 
   return v6;
@@ -28,10 +28,10 @@
   v19 = 0u;
   v20 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v4 = [WeakRetained profileManager];
-  v5 = [v4 allProfileIdentifiers];
+  profileManager = [WeakRetained profileManager];
+  allProfileIdentifiers = [profileManager allProfileIdentifiers];
 
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [allProfileIdentifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -43,23 +43,23 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allProfileIdentifiers);
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
         v11 = objc_loadWeakRetained(&self->_daemon);
-        v12 = [v11 profileManager];
-        v13 = [v12 profileForIdentifier:v10];
+        profileManager2 = [v11 profileManager];
+        v13 = [profileManager2 profileForIdentifier:v10];
 
-        v14 = [v13 cloudSyncManager];
-        v15 = [v14 ownerIdentifierManager];
-        [v15 discardCachedIdentifiers];
+        cloudSyncManager = [v13 cloudSyncManager];
+        ownerIdentifierManager = [cloudSyncManager ownerIdentifierManager];
+        [ownerIdentifierManager discardCachedIdentifiers];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [allProfileIdentifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);

@@ -1,7 +1,7 @@
 @interface SBBannerSourceListenerTemplatePresentableViewController
 - (BOOL)shouldAcquireWindowLevelAssertion;
-- (SBBannerSourceListenerTemplatePresentableViewController)initWithPresentable:(id)a3;
-- (SBBannerSourceListenerTemplatePresentableViewController)initWithSpecification:(id)a3 serviceDomain:(id)a4 readyCompletion:(id)a5;
+- (SBBannerSourceListenerTemplatePresentableViewController)initWithPresentable:(id)presentable;
+- (SBBannerSourceListenerTemplatePresentableViewController)initWithSpecification:(id)specification serviceDomain:(id)domain readyCompletion:(id)completion;
 - (UIEdgeInsets)bannerContentOutsets;
 - (id)_pillView;
 - (id)_templateContentProvider;
@@ -16,23 +16,23 @@
 
 @implementation SBBannerSourceListenerTemplatePresentableViewController
 
-- (SBBannerSourceListenerTemplatePresentableViewController)initWithSpecification:(id)a3 serviceDomain:(id)a4 readyCompletion:(id)a5
+- (SBBannerSourceListenerTemplatePresentableViewController)initWithSpecification:(id)specification serviceDomain:(id)domain readyCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v10 providesTemplateContent] & 1) == 0)
+  specificationCopy = specification;
+  domainCopy = domain;
+  completionCopy = completion;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([specificationCopy providesTemplateContent] & 1) == 0)
   {
-    [SBBannerSourceListenerTemplatePresentableViewController initWithSpecification:a2 serviceDomain:self readyCompletion:v10];
+    [SBBannerSourceListenerTemplatePresentableViewController initWithSpecification:a2 serviceDomain:self readyCompletion:specificationCopy];
   }
 
   v18.receiver = self;
   v18.super_class = SBBannerSourceListenerTemplatePresentableViewController;
-  v13 = [(BNBannerSourceListenerPresentableViewController *)&v18 initWithSpecification:v10 serviceDomain:v11 readyCompletion:v12];
+  v13 = [(BNBannerSourceListenerPresentableViewController *)&v18 initWithSpecification:specificationCopy serviceDomain:domainCopy readyCompletion:completionCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_templateContentProvidingSpecification, a3);
+    objc_storeStrong(&v13->_templateContentProvidingSpecification, specification);
     v15 = objc_alloc_init(SBBannerCustomTransitioningDelegate);
     customTransitioningDelegate = v14->_customTransitioningDelegate;
     v14->_customTransitioningDelegate = v15;
@@ -43,11 +43,11 @@
   return v14;
 }
 
-- (SBBannerSourceListenerTemplatePresentableViewController)initWithPresentable:(id)a3
+- (SBBannerSourceListenerTemplatePresentableViewController)initWithPresentable:(id)presentable
 {
   v7.receiver = self;
   v7.super_class = SBBannerSourceListenerTemplatePresentableViewController;
-  v3 = [(BNBannerSourceListenerPresentableViewController *)&v7 initWithPresentable:a3];
+  v3 = [(BNBannerSourceListenerPresentableViewController *)&v7 initWithPresentable:presentable];
   if (v3)
   {
     v4 = objc_alloc_init(SBBannerCustomTransitioningDelegate);
@@ -62,82 +62,82 @@
 
 - (id)leadingTemplateViewProvider
 {
-  v2 = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
+  _templateContentProvider = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 leadingTemplateViewProvider];
+    leadingTemplateViewProvider = [_templateContentProvider leadingTemplateViewProvider];
   }
 
   else
   {
-    v3 = 0;
+    leadingTemplateViewProvider = 0;
   }
 
-  return v3;
+  return leadingTemplateViewProvider;
 }
 
 - (id)trailingTemplateViewProvider
 {
-  v2 = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
+  _templateContentProvider = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 trailingTemplateViewProvider];
+    trailingTemplateViewProvider = [_templateContentProvider trailingTemplateViewProvider];
   }
 
   else
   {
-    v3 = 0;
+    trailingTemplateViewProvider = 0;
   }
 
-  return v3;
+  return trailingTemplateViewProvider;
 }
 
 - (id)primaryTemplateItemProvider
 {
-  v2 = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
+  _templateContentProvider = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 primaryTemplateItemProvider];
+    primaryTemplateItemProvider = [_templateContentProvider primaryTemplateItemProvider];
   }
 
   else
   {
-    v3 = 0;
+    primaryTemplateItemProvider = 0;
   }
 
-  return v3;
+  return primaryTemplateItemProvider;
 }
 
 - (id)secondaryTemplateItemProvider
 {
-  v2 = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
+  _templateContentProvider = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 secondaryTemplateItemProvider];
+    secondaryTemplateItemProvider = [_templateContentProvider secondaryTemplateItemProvider];
   }
 
   else
   {
-    v3 = 0;
+    secondaryTemplateItemProvider = 0;
   }
 
-  return v3;
+  return secondaryTemplateItemProvider;
 }
 
 - (int64_t)userInterfaceStyleOverride
 {
-  v2 = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
+  _templateContentProvider = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 userInterfaceStyleOverride];
+    userInterfaceStyleOverride = [_templateContentProvider userInterfaceStyleOverride];
   }
 
   else
   {
-    v3 = 0;
+    userInterfaceStyleOverride = 0;
   }
 
-  return v3;
+  return userInterfaceStyleOverride;
 }
 
 - (void)viewDidLoad
@@ -145,17 +145,17 @@
   v6.receiver = self;
   v6.super_class = SBBannerSourceListenerTemplatePresentableViewController;
   [(BNBannerSourceListenerPresentableViewController *)&v6 viewDidLoad];
-  v3 = [(SBBannerSourceListenerTemplatePresentableViewController *)self _pillView];
-  [(BNBannerSourceListenerPresentableViewController *)self _setContentView:v3];
-  [v3 intrinsicContentSize];
+  _pillView = [(SBBannerSourceListenerTemplatePresentableViewController *)self _pillView];
+  [(BNBannerSourceListenerPresentableViewController *)self _setContentView:_pillView];
+  [_pillView intrinsicContentSize];
   [(SBBannerSourceListenerTemplatePresentableViewController *)self setPreferredContentSize:?];
-  v4 = [(SBBannerSourceListenerTemplatePresentableViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(SBBannerSourceListenerTemplatePresentableViewController *)self view];
+  [view addSubview:_pillView];
 
-  v5 = [(SBBannerSourceListenerTemplatePresentableViewController *)self userInterfaceStyleOverride];
-  if (v5)
+  userInterfaceStyleOverride = [(SBBannerSourceListenerTemplatePresentableViewController *)self userInterfaceStyleOverride];
+  if (userInterfaceStyleOverride)
   {
-    [(SBBannerSourceListenerTemplatePresentableViewController *)self setOverrideUserInterfaceStyle:v5];
+    [(SBBannerSourceListenerTemplatePresentableViewController *)self setOverrideUserInterfaceStyle:userInterfaceStyleOverride];
   }
 }
 
@@ -164,8 +164,8 @@
   v4.receiver = self;
   v4.super_class = SBBannerSourceListenerTemplatePresentableViewController;
   [(SBBannerSourceListenerTemplatePresentableViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(SBBannerSourceListenerTemplatePresentableViewController *)self view];
-  [v3 bounds];
+  view = [(SBBannerSourceListenerTemplatePresentableViewController *)self view];
+  [view bounds];
 
   [(SBBannerSourceListenerTemplatePresentableViewController *)self bannerContentOutsets];
   UIRectInset();
@@ -174,8 +174,8 @@
 
 - (UIEdgeInsets)bannerContentOutsets
 {
-  v2 = [(SBBannerSourceListenerTemplatePresentableViewController *)self _pillView];
-  [v2 shadowOutsets];
+  _pillView = [(SBBannerSourceListenerTemplatePresentableViewController *)self _pillView];
+  [_pillView shadowOutsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -194,24 +194,24 @@
 
 - (BOOL)shouldAcquireWindowLevelAssertion
 {
-  v2 = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
+  _templateContentProvider = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 shouldAcquireWindowLevelAssertion];
+    shouldAcquireWindowLevelAssertion = [_templateContentProvider shouldAcquireWindowLevelAssertion];
   }
 
   else
   {
-    v3 = 0;
+    shouldAcquireWindowLevelAssertion = 0;
   }
 
-  return v3;
+  return shouldAcquireWindowLevelAssertion;
 }
 
 - (id)_templateContentProvider
 {
-  v3 = [(BNBannerSourceListenerPresentableViewController *)self presentable];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (templateContentProvidingSpecification = v3, ([(BNTemplateContentProvidingSpecifying *)v3 providesTemplateContent]& 1) == 0))
+  presentable = [(BNBannerSourceListenerPresentableViewController *)self presentable];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (templateContentProvidingSpecification = presentable, ([(BNTemplateContentProvidingSpecifying *)presentable providesTemplateContent]& 1) == 0))
   {
     templateContentProvidingSpecification = self->_templateContentProvidingSpecification;
   }
@@ -226,15 +226,15 @@
   pillView = self->_pillView;
   if (!pillView)
   {
-    v4 = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
+    _templateContentProvider = [(SBBannerSourceListenerTemplatePresentableViewController *)self _templateContentProvider];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 leadingTemplateViewProvider];
+      leadingTemplateViewProvider = [_templateContentProvider leadingTemplateViewProvider];
     }
 
     else
     {
-      v5 = 0;
+      leadingTemplateViewProvider = 0;
     }
 
     objc_initWeak(location, self);
@@ -243,15 +243,15 @@
     v36[2] = __68__SBBannerSourceListenerTemplatePresentableViewController__pillView__block_invoke;
     v36[3] = &unk_2783B3140;
     objc_copyWeak(&v37, location);
-    v6 = SBTemplateItemViewFromProvider(v5, v36);
+    v6 = SBTemplateItemViewFromProvider(leadingTemplateViewProvider, v36);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v4 trailingTemplateViewProvider];
+      trailingTemplateViewProvider = [_templateContentProvider trailingTemplateViewProvider];
     }
 
     else
     {
-      v7 = 0;
+      trailingTemplateViewProvider = 0;
     }
 
     v34[0] = MEMORY[0x277D85DD0];
@@ -259,7 +259,7 @@
     v34[2] = __68__SBBannerSourceListenerTemplatePresentableViewController__pillView__block_invoke_3;
     v34[3] = &unk_2783B3140;
     objc_copyWeak(&v35, location);
-    v8 = SBTemplateItemViewFromProvider(v7, v34);
+    v8 = SBTemplateItemViewFromProvider(trailingTemplateViewProvider, v34);
     v9 = [objc_alloc(MEMORY[0x277D3D318]) initWithLeadingAccessoryView:v6 trailingAccessoryView:v8];
     v10 = self->_pillView;
     self->_pillView = v9;
@@ -271,10 +271,10 @@
     v33[3] = &unk_2783B3168;
     v33[4] = self;
     v11 = MEMORY[0x223D6F7F0](v33);
-    (v11)[2](v11, v6, v5);
-    (v11)[2](v11, v8, v7);
+    (v11)[2](v11, v6, leadingTemplateViewProvider);
+    (v11)[2](v11, v8, trailingTemplateViewProvider);
     v28 = v8;
-    v29 = v7;
+    v29 = trailingTemplateViewProvider;
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __68__SBBannerSourceListenerTemplatePresentableViewController__pillView__block_invoke_6;
@@ -284,17 +284,17 @@
     v13 = objc_opt_respondsToSelector();
     if (v13)
     {
-      v14 = [v4 primaryTemplateItemProvider];
+      primaryTemplateItemProvider = [_templateContentProvider primaryTemplateItemProvider];
     }
 
     else
     {
-      v14 = 0;
+      primaryTemplateItemProvider = 0;
     }
 
-    v30 = (v12)[2](v12, v14, 1);
+    v30 = (v12)[2](v12, primaryTemplateItemProvider, 1);
     v26 = v6;
-    v27 = v5;
+    v27 = leadingTemplateViewProvider;
     if (v13)
     {
     }
@@ -302,15 +302,15 @@
     v15 = objc_opt_respondsToSelector();
     if (v15)
     {
-      v16 = [v4 secondaryTemplateItemProvider];
+      secondaryTemplateItemProvider = [_templateContentProvider secondaryTemplateItemProvider];
     }
 
     else
     {
-      v16 = 0;
+      secondaryTemplateItemProvider = 0;
     }
 
-    v17 = (v12)[2](v12, v16, 0);
+    v17 = (v12)[2](v12, secondaryTemplateItemProvider, 0);
     if (v15)
     {
     }
@@ -332,15 +332,15 @@
     v21 = objc_opt_respondsToSelector();
     if (v21)
     {
-      v22 = [v4 presentableAccessibilityIdentifier];
+      presentableAccessibilityIdentifier = [_templateContentProvider presentableAccessibilityIdentifier];
     }
 
     else
     {
-      v22 = 0;
+      presentableAccessibilityIdentifier = 0;
     }
 
-    [(PLPillView *)v20 setAccessibilityIdentifier:v22];
+    [(PLPillView *)v20 setAccessibilityIdentifier:presentableAccessibilityIdentifier];
     if (v21)
     {
     }

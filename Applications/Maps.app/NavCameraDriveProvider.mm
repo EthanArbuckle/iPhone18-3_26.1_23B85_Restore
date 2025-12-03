@@ -2,13 +2,13 @@
 - (MNLocation)lastLocation;
 - (NavCameraDriveProvider)init;
 - (NavCameraNavigationDelegate)delegate;
-- (id)_matchedLocationForLocation:(id)a3;
+- (id)_matchedLocationForLocation:(id)location;
 - (int)navigationState;
 - (unint64_t)navigationDestination;
-- (void)_updateWithRoute:(id)a3;
+- (void)_updateWithRoute:(id)route;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)setRouteGeniusEntry:(id)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)setRouteGeniusEntry:(id)entry;
 @end
 
 @implementation NavCameraDriveProvider
@@ -20,22 +20,22 @@
   return WeakRetained;
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
   if (self->_roadMatcher)
   {
-    v4 = [a3 lastLocation];
-    if (v4)
+    lastLocation = [location lastLocation];
+    if (lastLocation)
     {
-      v7 = v4;
-      v5 = [(NavCameraDriveProvider *)self _matchedLocationForLocation:v4];
+      v7 = lastLocation;
+      v5 = [(NavCameraDriveProvider *)self _matchedLocationForLocation:lastLocation];
       if (v5)
       {
-        v6 = [(NavCameraDriveProvider *)self delegate];
-        [v6 navigationProvider:self didUpdateMatchedLocation:v5];
+        delegate = [(NavCameraDriveProvider *)self delegate];
+        [delegate navigationProvider:self didUpdateMatchedLocation:v5];
       }
 
-      v4 = v7;
+      lastLocation = v7;
     }
   }
 }
@@ -46,8 +46,8 @@
   if (!lastLocation)
   {
     v4 = +[MKLocationManager sharedLocationManager];
-    v5 = [v4 lastLocation];
-    v6 = [(NavCameraDriveProvider *)self _matchedLocationForLocation:v5];
+    lastLocation = [v4 lastLocation];
+    v6 = [(NavCameraDriveProvider *)self _matchedLocationForLocation:lastLocation];
     v7 = self->_lastLocation;
     self->_lastLocation = v6;
 
@@ -59,33 +59,33 @@
 
 - (unint64_t)navigationDestination
 {
-  v2 = [(NavCameraDriveProvider *)self routeGeniusEntry];
-  v3 = 2 * (v2 != 0);
+  routeGeniusEntry = [(NavCameraDriveProvider *)self routeGeniusEntry];
+  v3 = 2 * (routeGeniusEntry != 0);
 
   return v3;
 }
 
 - (int)navigationState
 {
-  v2 = [(NavCameraDriveProvider *)self route];
-  v3 = 2 * (v2 != 0);
+  route = [(NavCameraDriveProvider *)self route];
+  v3 = 2 * (route != 0);
 
   return v3;
 }
 
-- (id)_matchedLocationForLocation:(id)a3
+- (id)_matchedLocationForLocation:(id)location
 {
-  v4 = a3;
-  if (v4)
+  locationCopy = location;
+  if (locationCopy)
   {
-    v5 = [[GEOLocation alloc] initWithCLLocation:v4];
+    v5 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
     routeMatcher = self->_routeMatcher;
-    if (!routeMatcher || (-[GEORouteMatcher matchToRouteWithLocation:previousRouteMatch:](routeMatcher, "matchToRouteWithLocation:previousRouteMatch:", v5, self->_previousRouteMatch), v7 = objc_claimAutoreleasedReturnValue(), objc_storeStrong(&self->_previousRouteMatch, v7), !v7) || (v8 = [[MNLocation alloc] initWithRouteMatch:v7 rawLocation:v4 locationFixType:2], v7, !v8))
+    if (!routeMatcher || (-[GEORouteMatcher matchToRouteWithLocation:previousRouteMatch:](routeMatcher, "matchToRouteWithLocation:previousRouteMatch:", v5, self->_previousRouteMatch), v7 = objc_claimAutoreleasedReturnValue(), objc_storeStrong(&self->_previousRouteMatch, v7), !v7) || (v8 = [[MNLocation alloc] initWithRouteMatch:v7 rawLocation:locationCopy locationFixType:2], v7, !v8))
     {
       v9 = [(GEORoadMatcher *)self->_roadMatcher matchLocation:v5 forTransportType:0];
-      if (!v9 || (v10 = v9, v8 = [[MNLocation alloc] initWithRoadMatch:v9 rawLocation:v4 locationFixType:0], v10, !v8))
+      if (!v9 || (v10 = v9, v8 = [[MNLocation alloc] initWithRoadMatch:v9 rawLocation:locationCopy locationFixType:0], v10, !v8))
       {
-        v8 = [[MNLocation alloc] initWithRawLocation:v4 locationFixType:1];
+        v8 = [[MNLocation alloc] initWithRawLocation:locationCopy locationFixType:1];
       }
     }
   }
@@ -98,13 +98,13 @@
   return v8;
 }
 
-- (void)_updateWithRoute:(id)a3
+- (void)_updateWithRoute:(id)route
 {
   p_route = &self->_route;
-  v11 = a3;
+  routeCopy = route;
   if (([(GEOComposedRoute *)*p_route _MapsCarPlay_isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_route, a3);
+    objc_storeStrong(&self->_route, route);
     if (self->_route)
     {
       v6 = [[GEORouteMatcher alloc] initWithRoute:*p_route auditToken:0];
@@ -121,24 +121,24 @@
     routeMatcher = self->_routeMatcher;
     self->_routeMatcher = v6;
 
-    v9 = [(NavCameraDriveProvider *)self delegate];
-    [v9 navigationProvider:self didChangeNavigationState:{-[NavCameraDriveProvider navigationState](self, "navigationState")}];
+    delegate = [(NavCameraDriveProvider *)self delegate];
+    [delegate navigationProvider:self didChangeNavigationState:{-[NavCameraDriveProvider navigationState](self, "navigationState")}];
 
-    v10 = [(NavCameraDriveProvider *)self delegate];
-    [v10 navigationProvider:self didUpdateRoute:self->_route traffic:0];
+    delegate2 = [(NavCameraDriveProvider *)self delegate];
+    [delegate2 navigationProvider:self didUpdateRoute:self->_route traffic:0];
   }
 }
 
-- (void)setRouteGeniusEntry:(id)a3
+- (void)setRouteGeniusEntry:(id)entry
 {
-  objc_storeStrong(&self->_routeGeniusEntry, a3);
-  v5 = a3;
-  v6 = [(NavCameraDriveProvider *)self delegate];
-  [v6 navigationProvider:self didChangeNavigationDestination:{-[NavCameraDriveProvider navigationDestination](self, "navigationDestination")}];
+  objc_storeStrong(&self->_routeGeniusEntry, entry);
+  entryCopy = entry;
+  delegate = [(NavCameraDriveProvider *)self delegate];
+  [delegate navigationProvider:self didChangeNavigationDestination:{-[NavCameraDriveProvider navigationDestination](self, "navigationDestination")}];
 
-  v7 = [v5 route];
+  route = [entryCopy route];
 
-  [(NavCameraDriveProvider *)self _updateWithRoute:v7];
+  [(NavCameraDriveProvider *)self _updateWithRoute:route];
 }
 
 - (NavCameraDriveProvider)init

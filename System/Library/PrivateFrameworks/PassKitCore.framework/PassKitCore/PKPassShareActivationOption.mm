@@ -1,49 +1,49 @@
 @interface PKPassShareActivationOption
 + (id)vehicleEnteredPin;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPassShareActivationOption:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPassShareActivationOption:(id)option;
 - (BOOL)requiresActivationCode;
 - (NSString)localizationKeyPostfix;
 - (NSString)localizationKeyPostfixForInitiation;
 - (NSString)localizedName;
-- (PKPassShareActivationOption)initWithCarKeyIdentifier:(id)a3;
-- (PKPassShareActivationOption)initWithCoder:(id)a3;
-- (PKPassShareActivationOption)initWithDefaultIdentifierForType:(unint64_t)a3;
-- (PKPassShareActivationOption)initWithIdentifier:(id)a3 type:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPassShareActivationOption)initWithCarKeyIdentifier:(id)identifier;
+- (PKPassShareActivationOption)initWithCoder:(id)coder;
+- (PKPassShareActivationOption)initWithDefaultIdentifierForType:(unint64_t)type;
+- (PKPassShareActivationOption)initWithIdentifier:(id)identifier type:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)redactedDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassShareActivationOption
 
-- (PKPassShareActivationOption)initWithDefaultIdentifierForType:(unint64_t)a3
+- (PKPassShareActivationOption)initWithDefaultIdentifierForType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = off_1E79CC238[a3 - 1];
+    v4 = off_1E79CC238[type - 1];
   }
 
-  return [(PKPassShareActivationOption *)self initWithIdentifier:v4 type:a3];
+  return [(PKPassShareActivationOption *)self initWithIdentifier:v4 type:type];
 }
 
-- (PKPassShareActivationOption)initWithCarKeyIdentifier:(id)a3
+- (PKPassShareActivationOption)initWithCarKeyIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"onlineSharingPinActivation")
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy == @"onlineSharingPinActivation")
   {
     goto LABEL_4;
   }
 
-  if (!v4)
+  if (!identifierCopy)
   {
 LABEL_19:
 
@@ -51,7 +51,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v6 = [(__CFString *)v4 isEqualToString:@"onlineSharingPinActivation"];
+  v6 = [(__CFString *)identifierCopy isEqualToString:@"onlineSharingPinActivation"];
 
   if ((v6 & 1) == 0)
   {
@@ -88,18 +88,18 @@ LABEL_20:
   return v8;
 }
 
-- (PKPassShareActivationOption)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPassShareActivationOption)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = PKPassShareActivationOption;
   v8 = [(PKPassShareActivationOption *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_type = a4;
-    if (a4 <= 4 && ((1 << a4) & 0x16) != 0)
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_type = type;
+    if (type <= 4 && ((1 << type) & 0x16) != 0)
     {
       v9->_valueLength = 6;
     }
@@ -139,8 +139,8 @@ LABEL_20:
 - (NSString)localizedName
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PKPassShareActivationOption *)self localizationKeyPostfix];
-  v4 = [v2 stringWithFormat:@"SHARE_ACTIVATION_NAME_%@", v3];
+  localizationKeyPostfix = [(PKPassShareActivationOption *)self localizationKeyPostfix];
+  v4 = [v2 stringWithFormat:@"SHARE_ACTIVATION_NAME_%@", localizationKeyPostfix];
 
   v5 = PKLocalizedShareableCredentialString(v4, 0);
 
@@ -291,36 +291,36 @@ LABEL_20:
   return result;
 }
 
-- (PKPassShareActivationOption)initWithCoder:(id)a3
+- (PKPassShareActivationOption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPassShareActivationOption;
   v5 = [(PKPassShareActivationOption *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = PKPassShareActivationOptionTypeFromString(v8);
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v9;
 
-    v5->_valueLength = [v4 decodeIntegerForKey:@"valueLength"];
+    v5->_valueLength = [coderCopy decodeIntegerForKey:@"valueLength"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v7 = a3;
-  [v7 encodeObject:identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
   v5 = self->_type - 1;
   if (v5 > 3)
   {
@@ -332,9 +332,9 @@ LABEL_20:
     v6 = off_1E79CC238[v5];
   }
 
-  [v7 encodeObject:v6 forKey:@"type"];
-  [v7 encodeObject:self->_value forKey:@"value"];
-  [v7 encodeInteger:self->_valueLength forKey:@"valueLength"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
+  [coderCopy encodeInteger:self->_valueLength forKey:@"valueLength"];
 }
 
 - (id)description
@@ -398,11 +398,11 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_identifier)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_value)
@@ -417,33 +417,33 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassShareActivationOption *)self isEqualToPassShareActivationOption:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassShareActivationOption *)self isEqualToPassShareActivationOption:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPassShareActivationOption:(id)a3
+- (BOOL)isEqualToPassShareActivationOption:(id)option
 {
-  v4 = a3;
-  if (!v4)
+  optionCopy = option;
+  if (!optionCopy)
   {
     goto LABEL_16;
   }
 
   identifier = self->_identifier;
-  v6 = v4[1];
+  v6 = optionCopy[1];
   if (identifier)
   {
     v7 = v6 == 0;
@@ -467,13 +467,13 @@ LABEL_20:
     goto LABEL_16;
   }
 
-  if (self->_type != v4[2])
+  if (self->_type != optionCopy[2])
   {
     goto LABEL_16;
   }
 
   value = self->_value;
-  v9 = v4[3];
+  v9 = optionCopy[3];
   if (!value || !v9)
   {
     if (value == v9)
@@ -492,13 +492,13 @@ LABEL_16:
   }
 
 LABEL_14:
-  v10 = self->_valueLength == v4[4];
+  v10 = self->_valueLength == optionCopy[4];
 LABEL_17:
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PKPassShareActivationOption);
   v5 = [(NSString *)self->_identifier copy];

@@ -1,9 +1,9 @@
 @interface _NSSwiftURLQueryItem
 - (NSString)name;
 - (NSString)value;
-- (_NSSwiftURLQueryItem)initWithName:(id)a3 value:(id)a4;
+- (_NSSwiftURLQueryItem)initWithName:(id)name value:(id)value;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _NSSwiftURLQueryItem
@@ -34,7 +34,7 @@
 {
   v3 = *&self->queryItem[OBJC_IVAR____NSSwiftURLQueryItem_queryItem];
   Hasher.init(_seed:)();
-  v4 = self;
+  selfCopy = self;
   String.hash(into:)();
   if (v3)
   {
@@ -52,14 +52,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(NSURLQueryItem *)&v4 encodeWithCoder:a3];
+  [(NSURLQueryItem *)&v4 encodeWithCoder:coder];
 }
 
-- (_NSSwiftURLQueryItem)initWithName:(id)a3 value:(id)a4
+- (_NSSwiftURLQueryItem)initWithName:(id)name value:(id)value
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

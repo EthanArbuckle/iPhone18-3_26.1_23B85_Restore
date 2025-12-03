@@ -1,18 +1,18 @@
 @interface POIAnnotationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation POIAnnotationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"POIAnnotation" hasInstanceVariable:@"_subtext" withType:"NSString"];
-  [v3 validateClass:@"POIAnnotation" hasInstanceVariable:@"_compoundItem" withType:"PersonalizedCompoundItem"];
-  [v3 validateClass:@"PersonalizedCompoundItem" hasInstanceMethod:@"items" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DroppedPinMapItem"];
-  [v3 validateClass:@"MKAnnotationView" hasClassMethod:@"droppedPinTitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"POIAnnotation" hasInstanceVariable:@"_subtext" withType:"NSString"];
+  [validationsCopy validateClass:@"POIAnnotation" hasInstanceVariable:@"_compoundItem" withType:"PersonalizedCompoundItem"];
+  [validationsCopy validateClass:@"PersonalizedCompoundItem" hasInstanceMethod:@"items" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DroppedPinMapItem"];
+  [validationsCopy validateClass:@"MKAnnotationView" hasClassMethod:@"droppedPinTitle" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

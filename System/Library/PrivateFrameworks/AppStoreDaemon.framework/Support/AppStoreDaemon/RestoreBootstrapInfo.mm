@@ -18,9 +18,9 @@
     preflightOnly = 0;
   }
 
-  v5 = [NSString stringWithFormat:@"{ reason: %@ preflightOnly: %d }", v3, preflightOnly];
+  preflightOnly = [NSString stringWithFormat:@"{ reason: %@ preflightOnly: %d }", v3, preflightOnly];
 
-  return v5;
+  return preflightOnly;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface ProductTapToRateView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore20ProductTapToRateView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore20ProductTapToRateView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation ProductTapToRateView
 
-- (_TtC8AppStore20ProductTapToRateView)initWithCoder:(id)a3
+- (_TtC8AppStore20ProductTapToRateView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore20ProductTapToRateView_rateAction;
   v5 = sub_10002849C(&qword_10098E2C0);
@@ -19,14 +19,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005DF1BC();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1005DE30C(width);
   v7 = v6;
 

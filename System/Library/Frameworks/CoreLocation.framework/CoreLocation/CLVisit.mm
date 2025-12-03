@@ -1,57 +1,57 @@
 @interface CLVisit
 - (CLLocationCoordinate2D)coordinate;
-- (CLVisit)initWithCoder:(id)a3;
-- (CLVisit)initWithCoordinate:(CLLocationCoordinate2D)a3 horizontalAccuracy:(double)a4 arrivalDate:(id)a5 departureDate:(id)a6 detectionDate:(id)a7 placeInference:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLVisit)initWithCoder:(id)coder;
+- (CLVisit)initWithCoordinate:(CLLocationCoordinate2D)coordinate horizontalAccuracy:(double)accuracy arrivalDate:(id)date departureDate:(id)departureDate detectionDate:(id)detectionDate placeInference:(id)inference;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLVisit
 
-- (CLVisit)initWithCoder:(id)a3
+- (CLVisit)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 decodeDoubleForKey:@"kCLVisitCodingKeyLatitude"];
-  [a3 decodeDoubleForKey:@"kCLVisitCodingKeyLongitude"];
-  [a3 decodeDoubleForKey:@"kCLVisitCodingKeyHorizontalAccuracy"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLVisitCodingKeyArrivalDate"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLVisitCodingKeyDepartureDate"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLVisitCodingKeyDetectionDate"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLVisitCodingKeyPlaceInference"];
+  [coder decodeDoubleForKey:@"kCLVisitCodingKeyLatitude"];
+  [coder decodeDoubleForKey:@"kCLVisitCodingKeyLongitude"];
+  [coder decodeDoubleForKey:@"kCLVisitCodingKeyHorizontalAccuracy"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLVisitCodingKeyArrivalDate"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLVisitCodingKeyDepartureDate"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLVisitCodingKeyDetectionDate"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLVisitCodingKeyPlaceInference"];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithCoordinate_horizontalAccuracy_arrivalDate_departureDate_detectionDate_placeInference_);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   [(CLVisit *)self coordinate];
-  [a3 encodeDouble:@"kCLVisitCodingKeyLatitude" forKey:?];
+  [coder encodeDouble:@"kCLVisitCodingKeyLatitude" forKey:?];
   [(CLVisit *)self coordinate];
-  [a3 encodeDouble:@"kCLVisitCodingKeyLongitude" forKey:v6];
+  [coder encodeDouble:@"kCLVisitCodingKeyLongitude" forKey:v6];
   [(CLVisit *)self horizontalAccuracy];
-  [a3 encodeDouble:@"kCLVisitCodingKeyHorizontalAccuracy" forKey:?];
-  [a3 encodeObject:-[CLVisit arrivalDate](self forKey:{"arrivalDate"), @"kCLVisitCodingKeyArrivalDate"}];
-  [a3 encodeObject:-[CLVisit departureDate](self forKey:{"departureDate"), @"kCLVisitCodingKeyDepartureDate"}];
-  [a3 encodeObject:-[CLVisit detectionDate](self forKey:{"detectionDate"), @"kCLVisitCodingKeyDetectionDate"}];
-  v7 = [(CLVisit *)self _placeInference];
+  [coder encodeDouble:@"kCLVisitCodingKeyHorizontalAccuracy" forKey:?];
+  [coder encodeObject:-[CLVisit arrivalDate](self forKey:{"arrivalDate"), @"kCLVisitCodingKeyArrivalDate"}];
+  [coder encodeObject:-[CLVisit departureDate](self forKey:{"departureDate"), @"kCLVisitCodingKeyDepartureDate"}];
+  [coder encodeObject:-[CLVisit detectionDate](self forKey:{"detectionDate"), @"kCLVisitCodingKeyDetectionDate"}];
+  _placeInference = [(CLVisit *)self _placeInference];
 
-  [a3 encodeObject:v7 forKey:@"kCLVisitCodingKeyPlaceInference"];
+  [coder encodeObject:_placeInference forKey:@"kCLVisitCodingKeyPlaceInference"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CLVisit allocWithZone:a3];
+  v4 = [CLVisit allocWithZone:zone];
   [(CLVisit *)self coordinate];
   [(CLVisit *)self horizontalAccuracy];
   [(CLVisit *)self arrivalDate];
@@ -62,41 +62,41 @@
   return MEMORY[0x1EEE66B58](v4, sel_initWithCoordinate_horizontalAccuracy_arrivalDate_departureDate_detectionDate_placeInference_);
 }
 
-- (CLVisit)initWithCoordinate:(CLLocationCoordinate2D)a3 horizontalAccuracy:(double)a4 arrivalDate:(id)a5 departureDate:(id)a6 detectionDate:(id)a7 placeInference:(id)a8
+- (CLVisit)initWithCoordinate:(CLLocationCoordinate2D)coordinate horizontalAccuracy:(double)accuracy arrivalDate:(id)date departureDate:(id)departureDate detectionDate:(id)detectionDate placeInference:(id)inference
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v17.receiver = self;
   v17.super_class = CLVisit;
   v15 = [(CLVisit *)&v17 init];
   if (v15)
   {
-    if (a6)
+    if (departureDate)
     {
-      if (a5)
+      if (date)
       {
 LABEL_4:
         v15->_coordinate.latitude = latitude;
         v15->_coordinate.longitude = longitude;
-        v15->_horizontalAccuracy = a4;
-        v15->_arrivalDate = a5;
-        v15->_departureDate = a6;
-        v15->_detectionDate = a7;
-        v15->__placeInference = a8;
+        v15->_horizontalAccuracy = accuracy;
+        v15->_arrivalDate = date;
+        v15->_departureDate = departureDate;
+        v15->_detectionDate = detectionDate;
+        v15->__placeInference = inference;
         return v15;
       }
     }
 
     else
     {
-      a6 = [MEMORY[0x1E695DF00] distantFuture];
-      if (a5)
+      departureDate = [MEMORY[0x1E695DF00] distantFuture];
+      if (date)
       {
         goto LABEL_4;
       }
     }
 
-    a5 = [MEMORY[0x1E695DF00] distantPast];
+    date = [MEMORY[0x1E695DF00] distantPast];
     goto LABEL_4;
   }
 

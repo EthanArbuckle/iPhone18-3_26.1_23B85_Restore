@@ -1,17 +1,17 @@
 @interface UIDebuggingIvarTableViewCell
-- (UIDebuggingIvarTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (UIDebuggingIvarTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_prepareConstraints;
 - (void)prepareForReuse;
-- (void)setIvar:(id)a3;
+- (void)setIvar:(id)ivar;
 @end
 
 @implementation UIDebuggingIvarTableViewCell
 
-- (UIDebuggingIvarTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (UIDebuggingIvarTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = UIDebuggingIvarTableViewCell;
-  v4 = [(UITableViewCell *)&v15 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(UITableViewCell *)&v15 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -34,14 +34,14 @@
     [(UIDebuggingIvarTableViewCell *)v4 setNameLabel:v5];
     [(UIDebuggingIvarTableViewCell *)v4 setTypeLabel:v6];
     [(UIDebuggingIvarTableViewCell *)v4 setValueLabel:v7];
-    v11 = [(UITableViewCell *)v4 contentView];
-    [v11 addSubview:v5];
+    contentView = [(UITableViewCell *)v4 contentView];
+    [contentView addSubview:v5];
 
-    v12 = [(UITableViewCell *)v4 contentView];
-    [v12 addSubview:v6];
+    contentView2 = [(UITableViewCell *)v4 contentView];
+    [contentView2 addSubview:v6];
 
-    v13 = [(UITableViewCell *)v4 contentView];
-    [v13 addSubview:v7];
+    contentView3 = [(UITableViewCell *)v4 contentView];
+    [contentView3 addSubview:v7];
 
     [(UIDebuggingIvarTableViewCell *)v4 _prepareConstraints];
   }
@@ -59,111 +59,111 @@
 
 - (void)_prepareConstraints
 {
-  v56 = [MEMORY[0x1E695DF70] array];
-  v3 = [(UITableViewCell *)self contentView];
-  v4 = [v3 layoutMarginsGuide];
+  array = [MEMORY[0x1E695DF70] array];
+  contentView = [(UITableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
 
-  v5 = [(UIDebuggingIvarTableViewCell *)self nameLabel];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 leadingAnchor];
-  v55 = [v6 constraintEqualToAnchor:v7];
+  nameLabel = [(UIDebuggingIvarTableViewCell *)self nameLabel];
+  leadingAnchor = [nameLabel leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v55 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v8 = [(UIDebuggingIvarTableViewCell *)self nameLabel];
-  v9 = [v8 trailingAnchor];
-  v10 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
-  v11 = [v10 trailingAnchor];
-  v54 = [v9 constraintEqualToAnchor:v11];
+  nameLabel2 = [(UIDebuggingIvarTableViewCell *)self nameLabel];
+  trailingAnchor = [nameLabel2 trailingAnchor];
+  valueLabel = [(UIDebuggingIvarTableViewCell *)self valueLabel];
+  trailingAnchor2 = [valueLabel trailingAnchor];
+  v54 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v12 = [(UIDebuggingIvarTableViewCell *)self nameLabel];
-  v13 = [v12 topAnchor];
-  v14 = [v4 topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  nameLabel3 = [(UIDebuggingIvarTableViewCell *)self nameLabel];
+  topAnchor = [nameLabel3 topAnchor];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v16 = [(UIDebuggingIvarTableViewCell *)self nameLabel];
-  v17 = [v16 bottomAnchor];
-  v18 = [(UIDebuggingIvarTableViewCell *)self typeLabel];
-  v19 = [v18 topAnchor];
-  v53 = [v17 constraintEqualToAnchor:v19];
+  nameLabel4 = [(UIDebuggingIvarTableViewCell *)self nameLabel];
+  bottomAnchor = [nameLabel4 bottomAnchor];
+  typeLabel = [(UIDebuggingIvarTableViewCell *)self typeLabel];
+  topAnchor3 = [typeLabel topAnchor];
+  v53 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
 
-  v20 = [(UIDebuggingIvarTableViewCell *)self typeLabel];
-  v21 = [v20 leadingAnchor];
-  v22 = [v4 leadingAnchor];
-  v52 = [v21 constraintEqualToAnchor:v22];
+  typeLabel2 = [(UIDebuggingIvarTableViewCell *)self typeLabel];
+  leadingAnchor3 = [typeLabel2 leadingAnchor];
+  leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+  v52 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-  v23 = [(UIDebuggingIvarTableViewCell *)self typeLabel];
-  v24 = [v23 trailingAnchor];
-  v25 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
-  v26 = [v25 trailingAnchor];
-  v51 = [v24 constraintEqualToAnchor:v26];
+  typeLabel3 = [(UIDebuggingIvarTableViewCell *)self typeLabel];
+  trailingAnchor3 = [typeLabel3 trailingAnchor];
+  valueLabel2 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
+  trailingAnchor4 = [valueLabel2 trailingAnchor];
+  v51 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
-  v27 = [(UIDebuggingIvarTableViewCell *)self typeLabel];
-  v28 = [v27 topAnchor];
-  v29 = [v4 centerYAnchor];
-  v50 = [v28 constraintEqualToAnchor:v29];
+  typeLabel4 = [(UIDebuggingIvarTableViewCell *)self typeLabel];
+  topAnchor4 = [typeLabel4 topAnchor];
+  centerYAnchor = [layoutMarginsGuide centerYAnchor];
+  v50 = [topAnchor4 constraintEqualToAnchor:centerYAnchor];
 
-  v30 = [(UIDebuggingIvarTableViewCell *)self typeLabel];
-  v31 = [v30 bottomAnchor];
-  v32 = [v4 bottomAnchor];
-  v49 = [v31 constraintEqualToAnchor:v32];
+  typeLabel5 = [(UIDebuggingIvarTableViewCell *)self typeLabel];
+  bottomAnchor2 = [typeLabel5 bottomAnchor];
+  bottomAnchor3 = [layoutMarginsGuide bottomAnchor];
+  v49 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
 
-  v33 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
-  v34 = [v33 leadingAnchor];
-  v35 = [v4 centerXAnchor];
-  v48 = [v34 constraintEqualToAnchor:v35];
+  valueLabel3 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
+  leadingAnchor5 = [valueLabel3 leadingAnchor];
+  centerXAnchor = [layoutMarginsGuide centerXAnchor];
+  v48 = [leadingAnchor5 constraintEqualToAnchor:centerXAnchor];
 
-  v36 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
-  v37 = [v36 trailingAnchor];
-  v38 = [v4 trailingAnchor];
-  v47 = [v37 constraintEqualToAnchor:v38];
+  valueLabel4 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
+  trailingAnchor5 = [valueLabel4 trailingAnchor];
+  trailingAnchor6 = [layoutMarginsGuide trailingAnchor];
+  v47 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
 
-  v39 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
-  v40 = [v39 topAnchor];
-  v41 = [v4 topAnchor];
-  v46 = [v40 constraintEqualToAnchor:v41];
+  valueLabel5 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
+  topAnchor5 = [valueLabel5 topAnchor];
+  topAnchor6 = [layoutMarginsGuide topAnchor];
+  v46 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
 
-  v42 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
-  v43 = [v42 bottomAnchor];
-  v44 = [v4 bottomAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
+  valueLabel6 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
+  bottomAnchor4 = [valueLabel6 bottomAnchor];
+  bottomAnchor5 = [layoutMarginsGuide bottomAnchor];
+  v45 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
 
-  [v56 addObject:v55];
-  [v56 addObject:v54];
-  [v56 addObject:v15];
-  [v56 addObject:v53];
-  [v56 addObject:v52];
-  [v56 addObject:v51];
-  [v56 addObject:v50];
-  [v56 addObject:v49];
-  [v56 addObject:v48];
-  [v56 addObject:v47];
-  [v56 addObject:v46];
-  [v56 addObject:v45];
-  [MEMORY[0x1E69977A0] activateConstraints:v56];
+  [array addObject:v55];
+  [array addObject:v54];
+  [array addObject:v15];
+  [array addObject:v53];
+  [array addObject:v52];
+  [array addObject:v51];
+  [array addObject:v50];
+  [array addObject:v49];
+  [array addObject:v48];
+  [array addObject:v47];
+  [array addObject:v46];
+  [array addObject:v45];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
 }
 
-- (void)setIvar:(id)a3
+- (void)setIvar:(id)ivar
 {
-  v13 = a3;
-  objc_storeStrong(&self->_ivar, a3);
-  v5 = [(UIDebuggingIvarTableViewCell *)self nameLabel];
-  v6 = [v13 name];
-  [v5 setText:v6];
+  ivarCopy = ivar;
+  objc_storeStrong(&self->_ivar, ivar);
+  nameLabel = [(UIDebuggingIvarTableViewCell *)self nameLabel];
+  name = [ivarCopy name];
+  [nameLabel setText:name];
 
-  v7 = [(UIDebuggingIvarTableViewCell *)self typeLabel];
-  v8 = [v13 typeDescription];
-  [v7 setText:v8];
+  typeLabel = [(UIDebuggingIvarTableViewCell *)self typeLabel];
+  typeDescription = [ivarCopy typeDescription];
+  [typeLabel setText:typeDescription];
 
-  v9 = [v13 valueDescription];
-  if ([v13 isObject])
+  valueDescription = [ivarCopy valueDescription];
+  if ([ivarCopy isObject])
   {
-    v10 = [v13 value];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p\n%@", v10, objc_opt_class()];
+    value = [ivarCopy value];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p\n%@", value, objc_opt_class()];
 
-    v9 = v11;
+    valueDescription = v11;
   }
 
-  v12 = [(UIDebuggingIvarTableViewCell *)self valueLabel];
-  [v12 setText:v9];
+  valueLabel = [(UIDebuggingIvarTableViewCell *)self valueLabel];
+  [valueLabel setText:valueDescription];
 }
 
 @end

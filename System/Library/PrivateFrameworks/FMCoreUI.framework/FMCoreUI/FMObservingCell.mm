@@ -1,11 +1,11 @@
 @interface FMObservingCell
 - (id)representedObject;
-- (void)addKVOObservationToken:(id)a3 forObject:(id)a4;
-- (void)addNotificationToken:(id)a3;
+- (void)addKVOObservationToken:(id)token forObject:(id)object;
+- (void)addNotificationToken:(id)token;
 - (void)prepareForReuse;
 - (void)removeKVOObservationTokens;
 - (void)removeNotificationTokens;
-- (void)setRepresentedObject:(id)a3;
+- (void)setRepresentedObject:(id)object;
 @end
 
 @implementation FMObservingCell
@@ -20,9 +20,9 @@
   [(FMObservingCell *)self setRepresentedObject:0];
 }
 
-- (void)setRepresentedObject:(id)a3
+- (void)setRepresentedObject:(id)object
 {
-  obj = a3;
+  obj = object;
   [(FMObservingCell *)self removeKVOObservationTokens];
   [(FMObservingCell *)self removeNotificationTokens];
   objc_storeWeak(&self->_representedObject, obj);
@@ -40,30 +40,30 @@
   [(FMObservingCell *)self setNeedsLayout];
 }
 
-- (void)addKVOObservationToken:(id)a3 forObject:(id)a4
+- (void)addKVOObservationToken:(id)token forObject:(id)object
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  tokenCopy = token;
+  objectCopy = object;
+  v8 = objectCopy;
+  if (tokenCopy && objectCopy)
   {
-    v9 = [(FMObservingCell *)self kvoObservationTokens];
+    kvoObservationTokens = [(FMObservingCell *)self kvoObservationTokens];
 
-    if (!v9)
+    if (!kvoObservationTokens)
     {
-      v10 = [MEMORY[0x277CBEB38] dictionary];
-      [(FMObservingCell *)self setKvoObservationTokens:v10];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(FMObservingCell *)self setKvoObservationTokens:dictionary];
     }
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = [(FMObservingCell *)self kvoObservationTokens];
-    v12 = [v11 allKeys];
+    kvoObservationTokens2 = [(FMObservingCell *)self kvoObservationTokens];
+    allKeys = [kvoObservationTokens2 allKeys];
 
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v13 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -74,20 +74,20 @@ LABEL_7:
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v17 = *(*(&v23 + 1) + 8 * v16);
-        v18 = [v17 object];
+        object = [v17 object];
 
-        if (v18 == v8)
+        if (object == v8)
         {
           break;
         }
 
         if (v14 == ++v16)
         {
-          v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v14 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v14)
           {
             goto LABEL_7;
@@ -112,17 +112,17 @@ LABEL_13:
 
     v20 = [objc_alloc(MEMORY[0x277D07B50]) initWithObject:v8];
 LABEL_18:
-    v21 = [(FMObservingCell *)self kvoObservationTokens];
-    v19 = [v21 objectForKeyedSubscript:v20];
+    kvoObservationTokens3 = [(FMObservingCell *)self kvoObservationTokens];
+    v19 = [kvoObservationTokens3 objectForKeyedSubscript:v20];
 
     if (!v19)
     {
       v19 = [MEMORY[0x277CBEB58] set];
-      v22 = [(FMObservingCell *)self kvoObservationTokens];
-      [v22 setObject:v19 forKeyedSubscript:v20];
+      kvoObservationTokens4 = [(FMObservingCell *)self kvoObservationTokens];
+      [kvoObservationTokens4 setObject:v19 forKeyedSubscript:v20];
     }
 
-    [v19 addObject:v6];
+    [v19 addObject:tokenCopy];
   }
 
   else
@@ -159,11 +159,11 @@ LABEL_18:
         }
 
         v7 = *(*(&v22 + 1) + 8 * v6);
-        v8 = [(FMObservingCell *)self kvoObservationTokens];
-        v9 = [v8 objectForKeyedSubscript:v7];
+        kvoObservationTokens = [(FMObservingCell *)self kvoObservationTokens];
+        v9 = [kvoObservationTokens objectForKeyedSubscript:v7];
 
-        v10 = [v7 object];
-        if (v10)
+        object = [v7 object];
+        if (object)
         {
           v20 = 0u;
           v21 = 0u;
@@ -185,7 +185,7 @@ LABEL_18:
                   objc_enumerationMutation(v11);
                 }
 
-                [v10 removeKVOBlockForToken:*(*(&v18 + 1) + 8 * v15++)];
+                [object removeKVOBlockForToken:*(*(&v18 + 1) + 8 * v15++)];
               }
 
               while (v13 != v15);
@@ -206,41 +206,41 @@ LABEL_18:
     while (v4);
   }
 
-  v16 = [(FMObservingCell *)self kvoObservationTokens];
-  [v16 removeAllObjects];
+  kvoObservationTokens2 = [(FMObservingCell *)self kvoObservationTokens];
+  [kvoObservationTokens2 removeAllObjects];
 }
 
-- (void)addNotificationToken:(id)a3
+- (void)addNotificationToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   objc_opt_class();
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     [(FMObservingCell *)a2 addNotificationToken:?];
   }
 
-  v6 = [(FMObservingCell *)self notificationTokens];
+  notificationTokens = [(FMObservingCell *)self notificationTokens];
 
-  if (!v6)
+  if (!notificationTokens)
   {
     v7 = [MEMORY[0x277CBEB58] set];
     [(FMObservingCell *)self setNotificationTokens:v7];
   }
 
-  v8 = [(FMObservingCell *)self notificationTokens];
-  [v8 addObject:v5];
+  notificationTokens2 = [(FMObservingCell *)self notificationTokens];
+  [notificationTokens2 addObject:tokenCopy];
 }
 
 - (void)removeNotificationTokens
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(FMObservingCell *)self notificationTokens];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  notificationTokens = [(FMObservingCell *)self notificationTokens];
+  v5 = [notificationTokens countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -252,21 +252,21 @@ LABEL_18:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(notificationTokens);
         }
 
-        [v3 removeObserver:*(*(&v10 + 1) + 8 * v8++)];
+        [defaultCenter removeObserver:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [notificationTokens countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(FMObservingCell *)self notificationTokens];
-  [v9 removeAllObjects];
+  notificationTokens2 = [(FMObservingCell *)self notificationTokens];
+  [notificationTokens2 removeAllObjects];
 }
 
 - (id)representedObject

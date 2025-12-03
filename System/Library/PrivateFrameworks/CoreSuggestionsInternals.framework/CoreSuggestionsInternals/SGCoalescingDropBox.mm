@@ -1,7 +1,7 @@
 @interface SGCoalescingDropBox
-- (SGCoalescingDropBox)initWithName:(const char *)a3 boxMaker:(id)a4 handler:(id)a5 qos:(unsigned int)a6;
+- (SGCoalescingDropBox)initWithName:(const char *)name boxMaker:(id)maker handler:(id)handler qos:(unsigned int)qos;
 - (void)dealloc;
-- (void)updateBox:(id)a3 delay:(double)a4;
+- (void)updateBox:(id)box delay:(double)delay;
 - (void)wait;
 @end
 
@@ -33,13 +33,13 @@
   [(SGCoalescingDropBox *)&v3 dealloc];
 }
 
-- (void)updateBox:(id)a3 delay:(double)a4
+- (void)updateBox:(id)box delay:(double)delay
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  boxCopy = box;
   pthread_mutex_lock(&self->_boxLock);
   v19 = 0;
-  v6[2](v6, self->_box, &v19);
+  boxCopy[2](boxCopy, self->_box, &v19);
 
   pendingMerge = self->_pendingMerge;
   if (pendingMerge)
@@ -74,7 +74,7 @@
 
   ++self->_outstanding;
   pthread_mutex_unlock(&self->_boxLock);
-  if (a4 <= 0.0 || (v19 & 1) != 0)
+  if (delay <= 0.0 || (v19 & 1) != 0)
   {
     dispatch_source_merge_data(self->_source, 1uLL);
   }
@@ -87,29 +87,29 @@
     v18[2] = __39__SGCoalescingDropBox_updateBox_delay___block_invoke_2;
     v18[3] = &unk_278954A30;
     v18[4] = self;
-    [MEMORY[0x277D425A0] runAsyncOnQueue:v16 afterDelaySeconds:v18 block:a4];
+    [MEMORY[0x277D425A0] runAsyncOnQueue:v16 afterDelaySeconds:v18 block:delay];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (SGCoalescingDropBox)initWithName:(const char *)a3 boxMaker:(id)a4 handler:(id)a5 qos:(unsigned int)a6
+- (SGCoalescingDropBox)initWithName:(const char *)name boxMaker:(id)maker handler:(id)handler qos:(unsigned int)qos
 {
-  v10 = a4;
-  v11 = a5;
+  makerCopy = maker;
+  handlerCopy = handler;
   v34.receiver = self;
   v34.super_class = SGCoalescingDropBox;
   v12 = [(SGCoalescingDropBox *)&v34 init];
   v13 = v12;
   if (v12)
   {
-    v12->_name = a3;
+    v12->_name = name;
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v15 UTF8String];
+    uTF8String = [v15 UTF8String];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v18 = dispatch_queue_attr_make_with_qos_class(v17, a6, 0);
-    v19 = dispatch_queue_create(v16, v18);
+    v18 = dispatch_queue_attr_make_with_qos_class(v17, qos, 0);
+    v19 = dispatch_queue_create(uTF8String, v18);
     queue = v13->_queue;
     v13->_queue = v19;
 
@@ -117,11 +117,11 @@
     source = v13->_source;
     v13->_source = v21;
 
-    v23 = [v10 copy];
+    v23 = [makerCopy copy];
     makeEmptyBox = v13->_makeEmptyBox;
     v13->_makeEmptyBox = v23;
 
-    v25 = [v11 copy];
+    v25 = [handlerCopy copy];
     handler = v13->_handler;
     v13->_handler = v25;
 

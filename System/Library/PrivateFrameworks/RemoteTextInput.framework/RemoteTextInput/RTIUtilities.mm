@@ -1,17 +1,17 @@
 @interface RTIUtilities
-+ (id)_attributeToReplaceForCoding:(id)a3;
-+ (id)_attributeToReplaceForDecoding:(id)a3;
++ (id)_attributeToReplaceForCoding:(id)coding;
++ (id)_attributeToReplaceForDecoding:(id)decoding;
 + (id)_attributesToAllowForCoding;
-+ (id)_codableAttributedString:(id)a3 validAttributes:(id)a4;
-+ (id)_decodableAttributedString:(id)a3;
++ (id)_codableAttributedString:(id)string validAttributes:(id)attributes;
++ (id)_decodableAttributedString:(id)string;
 + (id)_textAnnotationAttributes;
 + (id)currentClientCodingServiceOptions;
-+ (id)customInfoClassesForType:(id)a3 forClass:(Class)a4;
++ (id)customInfoClassesForType:(id)type forClass:(Class)class;
 + (id)customInfoDictionary;
 + (void)makeClientCodingQueuePthreadKeyOnce;
-+ (void)performClientCoding:(id)a3 withServiceOptions:(id)a4;
-+ (void)registerCustomInfoClasses:(id)a3 forType:(id)a4 forClass:(Class)a5;
-+ (void)unregisterCustomInfoType:(id)a3 forClass:(Class)a4;
++ (void)performClientCoding:(id)coding withServiceOptions:(id)options;
++ (void)registerCustomInfoClasses:(id)classes forType:(id)type forClass:(Class)class;
++ (void)unregisterCustomInfoType:(id)type forClass:(Class)class;
 @end
 
 @implementation RTIUtilities
@@ -62,33 +62,33 @@ uint64_t __41__RTIUtilities__textAnnotationAttributes__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_codableAttributedString:(id)a3 validAttributes:(id)a4
++ (id)_codableAttributedString:(id)string validAttributes:(id)attributes
 {
-  v6 = a4;
-  if (a3)
+  attributesCopy = attributes;
+  if (string)
   {
     v7 = MEMORY[0x1E696AD40];
-    v8 = a3;
+    stringCopy = string;
     v9 = [v7 alloc];
-    v10 = [v8 string];
-    v11 = [v9 initWithString:v10];
+    string = [stringCopy string];
+    v11 = [v9 initWithString:string];
 
     v12 = [v11 length];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __57__RTIUtilities__codableAttributedString_validAttributes___block_invoke;
     v16[3] = &unk_1E7514A58;
-    v17 = v6;
-    v19 = a1;
+    v17 = attributesCopy;
+    selfCopy = self;
     v13 = v11;
     v18 = v13;
-    [v8 enumerateAttributesInRange:0 options:v12 usingBlock:{0, v16}];
+    [stringCopy enumerateAttributesInRange:0 options:v12 usingBlock:{0, v16}];
 
     v14 = v18;
-    a3 = v13;
+    string = v13;
   }
 
-  return a3;
+  return string;
 }
 
 void __57__RTIUtilities__codableAttributedString_validAttributes___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -134,25 +134,25 @@ void __57__RTIUtilities__codableAttributedString_validAttributes___block_invoke_
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_decodableAttributedString:(id)a3
++ (id)_decodableAttributedString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = MEMORY[0x1E696AD40];
-    v5 = a3;
+    stringCopy = string;
     v6 = [v4 alloc];
-    v7 = [v5 string];
-    v8 = [v6 initWithString:v7];
+    string = [stringCopy string];
+    v8 = [v6 initWithString:string];
 
     v9 = [v8 length];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __43__RTIUtilities__decodableAttributedString___block_invoke;
     v12[3] = &unk_1E7514AA8;
-    v14 = a1;
+    selfCopy = self;
     v10 = v8;
     v13 = v10;
-    [v5 enumerateAttributesInRange:0 options:v9 usingBlock:{0, v12}];
+    [stringCopy enumerateAttributesInRange:0 options:v9 usingBlock:{0, v12}];
   }
 
   else
@@ -222,18 +222,18 @@ uint64_t __43__RTIUtilities__attributesToAllowForCoding__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_attributeToReplaceForCoding:(id)a3
++ (id)_attributeToReplaceForCoding:(id)coding
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"NSAttachment"];
-  v6 = [v4 objectForKey:@"NSParagraphStyle"];
-  v7 = [v4 objectForKey:@"NSTextAnimation"];
+  codingCopy = coding;
+  v5 = [codingCopy objectForKey:@"NSAttachment"];
+  v6 = [codingCopy objectForKey:@"NSParagraphStyle"];
+  v7 = [codingCopy objectForKey:@"NSTextAnimation"];
   if (objc_opt_respondsToSelector())
   {
     v27 = @"RTITextAnimation";
-    v8 = [v7 name];
-    v28[0] = v8;
+    name = [v7 name];
+    v28[0] = name;
     v9 = MEMORY[0x1E695DF20];
     v10 = v28;
     v11 = &v27;
@@ -253,14 +253,14 @@ LABEL_3:
     goto LABEL_15;
   }
 
-  v13 = [v4 objectForKey:@"CTAdaptiveImageProvider"];
+  v13 = [codingCopy objectForKey:@"CTAdaptiveImageProvider"];
 
   if (v13)
   {
-    v14 = [a1 currentClientCodingServiceOptions];
-    v15 = [v14 displayOptions];
+    currentClientCodingServiceOptions = [self currentClientCodingServiceOptions];
+    displayOptions = [currentClientCodingServiceOptions displayOptions];
 
-    if ((v15 & 2) != 0)
+    if ((displayOptions & 2) != 0)
     {
       goto LABEL_9;
     }
@@ -272,11 +272,11 @@ LABEL_3:
     {
       if ([objc_opt_class() supportsSecureCoding])
       {
-        v8 = [v6 mutableCopy];
-        [v8 setTabStops:0];
-        [v8 setTextLists:MEMORY[0x1E695E0F0]];
+        name = [v6 mutableCopy];
+        [name setTabStops:0];
+        [name setTextLists:MEMORY[0x1E695E0F0]];
         v25 = @"NSParagraphStyle";
-        v26 = v8;
+        v26 = name;
         v9 = MEMORY[0x1E695DF20];
         v10 = &v26;
         v11 = &v25;
@@ -286,21 +286,21 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    v16 = [a1 _attributesToAllowForCoding];
-    v17 = [v4 keyEnumerator];
-    v18 = [v17 nextObject];
-    v19 = [v16 containsObject:v18];
+    _attributesToAllowForCoding = [self _attributesToAllowForCoding];
+    keyEnumerator = [codingCopy keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    v19 = [_attributesToAllowForCoding containsObject:nextObject];
 
     if (v19)
     {
-      v20 = [v4 objectEnumerator];
-      v21 = [v20 nextObject];
-      v22 = [objc_opt_class() supportsSecureCoding];
+      objectEnumerator = [codingCopy objectEnumerator];
+      nextObject2 = [objectEnumerator nextObject];
+      supportsSecureCoding = [objc_opt_class() supportsSecureCoding];
 
-      if (v22)
+      if (supportsSecureCoding)
       {
 LABEL_9:
-        v12 = v4;
+        v12 = codingCopy;
         goto LABEL_16;
       }
     }
@@ -315,11 +315,11 @@ LABEL_16:
   return v12;
 }
 
-+ (id)_attributeToReplaceForDecoding:(id)a3
++ (id)_attributeToReplaceForDecoding:(id)decoding
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"RTITextAnimation"];
+  decodingCopy = decoding;
+  v4 = [decodingCopy objectForKey:@"RTITextAnimation"];
   v5 = v4;
   if (v4 && (RTITextAnimationWithName(v4), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -331,7 +331,7 @@ LABEL_16:
 
   else
   {
-    v8 = v3;
+    v8 = decodingCopy;
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -339,27 +339,27 @@ LABEL_16:
   return v8;
 }
 
-+ (void)performClientCoding:(id)a3 withServiceOptions:(id)a4
++ (void)performClientCoding:(id)coding withServiceOptions:(id)options
 {
-  v7 = a3;
-  v6 = a4;
-  [a1 makeClientCodingQueuePthreadKeyOnce];
-  if (v7 && v6)
+  codingCopy = coding;
+  optionsCopy = options;
+  [self makeClientCodingQueuePthreadKeyOnce];
+  if (codingCopy && optionsCopy)
   {
-    pthread_setspecific(kRTIUtilitiesClientCodingQueuePthreadKey, v6);
-    v7[2]();
+    pthread_setspecific(kRTIUtilitiesClientCodingQueuePthreadKey, optionsCopy);
+    codingCopy[2]();
     pthread_setspecific(kRTIUtilitiesClientCodingQueuePthreadKey, 0);
   }
 
-  else if (v7)
+  else if (codingCopy)
   {
-    v7[2]();
+    codingCopy[2]();
   }
 }
 
 + (id)currentClientCodingServiceOptions
 {
-  [a1 makeClientCodingQueuePthreadKeyOnce];
+  [self makeClientCodingQueuePthreadKeyOnce];
   v2 = pthread_getspecific(kRTIUtilitiesClientCodingQueuePthreadKey);
   v3 = v2;
   if (v2)
@@ -370,16 +370,16 @@ LABEL_16:
   return v3;
 }
 
-+ (void)registerCustomInfoClasses:(id)a3 forType:(id)a4 forClass:(Class)a5
++ (void)registerCustomInfoClasses:(id)classes forType:(id)type forClass:(Class)class
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  classesCopy = classes;
+  typeCopy = type;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [classesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -388,12 +388,12 @@ LABEL_16:
     {
       if (*v20 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(classesCopy);
       }
 
       if (!--v11)
       {
-        v11 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [classesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (!v11)
         {
           break;
@@ -403,45 +403,45 @@ LABEL_16:
   }
 
   os_unfair_lock_lock(&_rtiUtilities_lock);
-  v13 = [a1 customInfoDictionary];
-  v14 = NSStringFromClass(a5);
-  v15 = [v13 objectForKey:v14];
+  customInfoDictionary = [self customInfoDictionary];
+  v14 = NSStringFromClass(class);
+  dictionary = [customInfoDictionary objectForKey:v14];
 
-  if (!v15)
+  if (!dictionary)
   {
-    v15 = [MEMORY[0x1E695DF90] dictionary];
-    v16 = [a1 customInfoDictionary];
-    v17 = NSStringFromClass(a5);
-    [v16 setObject:v15 forKey:v17];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    customInfoDictionary2 = [self customInfoDictionary];
+    v17 = NSStringFromClass(class);
+    [customInfoDictionary2 setObject:dictionary forKey:v17];
   }
 
-  [v15 setObject:v8 forKey:v9];
+  [dictionary setObject:classesCopy forKey:typeCopy];
   os_unfair_lock_unlock(&_rtiUtilities_lock);
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)unregisterCustomInfoType:(id)a3 forClass:(Class)a4
++ (void)unregisterCustomInfoType:(id)type forClass:(Class)class
 {
-  v6 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&_rtiUtilities_lock);
-  v7 = [a1 customInfoDictionary];
-  v8 = NSStringFromClass(a4);
-  v9 = [v7 objectForKey:v8];
+  customInfoDictionary = [self customInfoDictionary];
+  v8 = NSStringFromClass(class);
+  v9 = [customInfoDictionary objectForKey:v8];
 
-  [v9 removeObjectForKey:v6];
+  [v9 removeObjectForKey:typeCopy];
   os_unfair_lock_unlock(&_rtiUtilities_lock);
 }
 
-+ (id)customInfoClassesForType:(id)a3 forClass:(Class)a4
++ (id)customInfoClassesForType:(id)type forClass:(Class)class
 {
-  v6 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&_rtiUtilities_lock);
-  v7 = [a1 customInfoDictionary];
-  v8 = NSStringFromClass(a4);
-  v9 = [v7 objectForKey:v8];
+  customInfoDictionary = [self customInfoDictionary];
+  v8 = NSStringFromClass(class);
+  v9 = [customInfoDictionary objectForKey:v8];
 
-  v10 = [v9 objectForKey:v6];
+  v10 = [v9 objectForKey:typeCopy];
 
   os_unfair_lock_unlock(&_rtiUtilities_lock);
 

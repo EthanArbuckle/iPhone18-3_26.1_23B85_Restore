@@ -1,19 +1,19 @@
 @interface _UISystemGestureGateGestureRecognizer
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3;
-- (_UISystemGestureGateGestureRecognizer)initWithCoder:(id)a3;
-- (_UISystemGestureGateGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (_UISystemGestureGateGestureRecognizer)initWithWindow:(id)a3 type:(unsigned __int8)a4;
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer;
+- (_UISystemGestureGateGestureRecognizer)initWithCoder:(id)coder;
+- (_UISystemGestureGateGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (_UISystemGestureGateGestureRecognizer)initWithWindow:(id)window type:(unsigned __int8)type;
 - (id)_gateGestureTypeString;
 - (void)_cancelTimeoutTimerIfNeeded;
-- (void)_notifyWindowNoLongerAwaitingSystemGestureNotification:(id)a3;
+- (void)_notifyWindowNoLongerAwaitingSystemGestureNotification:(id)notification;
 - (void)_resetGestureRecognizer;
-- (void)_systemGestureStateChanged:(id)a3;
+- (void)_systemGestureStateChanged:(id)changed;
 - (void)_timeOut;
 - (void)dealloc;
-- (void)setDelaysTouchesBegan:(BOOL)a3;
-- (void)setDelaysTouchesEnded:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setDelaysTouchesBegan:(BOOL)began;
+- (void)setDelaysTouchesEnded:(BOOL)ended;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UISystemGestureGateGestureRecognizer
@@ -22,9 +22,9 @@
 {
   *(self + 281) &= ~2u;
   self->_lastTouchTime = 0.0;
-  v3 = [(UIGestureRecognizer *)self view];
-  v4 = [v3 _window];
-  [(_UISystemGestureGateGestureRecognizer *)self _notifyWindowNoLongerAwaitingSystemGestureNotification:v4];
+  view = [(UIGestureRecognizer *)self view];
+  _window = [view _window];
+  [(_UISystemGestureGateGestureRecognizer *)self _notifyWindowNoLongerAwaitingSystemGestureNotification:_window];
 
   [(_UISystemGestureGateGestureRecognizer *)self _cancelTimeoutTimerIfNeeded];
   v5.receiver = self;
@@ -45,8 +45,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0x1EFB921B0 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0x1EFB921B0 object:0];
 
   [(_UISystemGestureGateGestureRecognizer *)self _cancelTimeoutTimerIfNeeded];
   v4.receiver = self;
@@ -67,35 +67,35 @@
   }
 }
 
-- (_UISystemGestureGateGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UISystemGestureGateGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"_UISystemGestureGateGestureRecognizer must be initialized with initWithWindow:"];
 
   return 0;
 }
 
-- (_UISystemGestureGateGestureRecognizer)initWithCoder:(id)a3
+- (_UISystemGestureGateGestureRecognizer)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"_UISystemGestureGateGestureRecognizer must be initialized with initWithWindow:"];
 
   return 0;
 }
 
-- (_UISystemGestureGateGestureRecognizer)initWithWindow:(id)a3 type:(unsigned __int8)a4
+- (_UISystemGestureGateGestureRecognizer)initWithWindow:(id)window type:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  windowCopy = window;
   v14.receiver = self;
   v14.super_class = _UISystemGestureGateGestureRecognizer;
   v7 = [(UIGestureRecognizer *)&v14 initWithTarget:0 action:0];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel__systemGestureStateChanged_ name:0x1EFB921B0 object:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__systemGestureStateChanged_ name:0x1EFB921B0 object:windowCopy];
 
-    *(v7 + 281) = *(v7 + 281) & 0xFE | [v6 _systemGestureRecognitionIsPossible];
-    v7->_systemGestureGateType = v4;
-    if (v4 == 1)
+    *(v7 + 281) = *(v7 + 281) & 0xFE | [windowCopy _systemGestureRecognitionIsPossible];
+    v7->_systemGestureGateType = typeCopy;
+    if (typeCopy == 1)
     {
       v13.receiver = v7;
       v13.super_class = _UISystemGestureGateGestureRecognizer;
@@ -117,14 +117,14 @@
   return v7;
 }
 
-- (void)setDelaysTouchesBegan:(BOOL)a3
+- (void)setDelaysTouchesBegan:(BOOL)began
 {
-  v3 = a3;
+  beganCopy = began;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63___UISystemGestureGateGestureRecognizer_setDelaysTouchesBegan___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v7 = a3;
+  beganCopy2 = began;
   if (setDelaysTouchesBegan__once != -1)
   {
     dispatch_once(&setDelaysTouchesBegan__once, block);
@@ -132,17 +132,17 @@
 
   v5.receiver = self;
   v5.super_class = _UISystemGestureGateGestureRecognizer;
-  [(UIGestureRecognizer *)&v5 setDelaysTouchesBegan:v3];
+  [(UIGestureRecognizer *)&v5 setDelaysTouchesBegan:beganCopy];
 }
 
-- (void)setDelaysTouchesEnded:(BOOL)a3
+- (void)setDelaysTouchesEnded:(BOOL)ended
 {
-  v3 = a3;
+  endedCopy = ended;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63___UISystemGestureGateGestureRecognizer_setDelaysTouchesEnded___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v7 = a3;
+  endedCopy2 = ended;
   if (setDelaysTouchesEnded__once != -1)
   {
     dispatch_once(&setDelaysTouchesEnded__once, block);
@@ -150,19 +150,19 @@
 
   v5.receiver = self;
   v5.super_class = _UISystemGestureGateGestureRecognizer;
-  [(UIGestureRecognizer *)&v5 setDelaysTouchesEnded:v3];
+  [(UIGestureRecognizer *)&v5 setDelaysTouchesEnded:endedCopy];
 }
 
-- (void)_notifyWindowNoLongerAwaitingSystemGestureNotification:(id)a3
+- (void)_notifyWindowNoLongerAwaitingSystemGestureNotification:(id)notification
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(UIGestureRecognizer *)self _activeEvents];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _activeEvents = [(UIGestureRecognizer *)self _activeEvents];
+  v6 = [_activeEvents countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -174,48 +174,48 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_activeEvents);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v10 _windowNoLongerAwaitingSystemGestureNotification:v4];
+          [v10 _windowNoLongerAwaitingSystemGestureNotification:notificationCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_activeEvents countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_systemGestureStateChanged:(id)a3
+- (void)_systemGestureStateChanged:(id)changed
 {
-  v12 = a3;
-  v4 = [v12 object];
-  v5 = [v4 _systemGestureRecognitionIsPossible];
-  v6 = v5;
-  if ((*(self + 281) & 1) != 0 && (v5 & 1) == 0)
+  changedCopy = changed;
+  object = [changedCopy object];
+  _systemGestureRecognitionIsPossible = [object _systemGestureRecognitionIsPossible];
+  v6 = _systemGestureRecognitionIsPossible;
+  if ((*(self + 281) & 1) != 0 && (_systemGestureRecognitionIsPossible & 1) == 0)
   {
     if ((*(self + 281) & 2) != 0)
     {
       *(self + 281) &= ~2u;
-      v7 = [(UIGestureRecognizer *)self view];
-      v8 = [v7 _window];
-      [(_UISystemGestureGateGestureRecognizer *)self _notifyWindowNoLongerAwaitingSystemGestureNotification:v8];
+      view = [(UIGestureRecognizer *)self view];
+      _window = [view _window];
+      [(_UISystemGestureGateGestureRecognizer *)self _notifyWindowNoLongerAwaitingSystemGestureNotification:_window];
     }
 
-    v9 = [v12 userInfo];
-    v10 = [v9 valueForKey:0x1EFB921D0];
-    v11 = [v10 BOOLValue];
+    userInfo = [changedCopy userInfo];
+    v10 = [userInfo valueForKey:0x1EFB921D0];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       [(UIGestureRecognizer *)self setState:3];
     }
@@ -238,12 +238,12 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       v4 = v3;
-      v5 = [(_UISystemGestureGateGestureRecognizer *)self _gateGestureTypeString];
+      _gateGestureTypeString = [(_UISystemGestureGateGestureRecognizer *)self _gateGestureTypeString];
       v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"System gesture gate timed out."];
       v7 = 134218498;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v5;
+      v10 = _gateGestureTypeString;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_ERROR, "<%p> %@: %@", &v7, 0x20u);
@@ -253,23 +253,23 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if ((*(self + 281) & 2) != 0)
   {
     v8 = *(__UILogGetCategoryCachedImpl("SystemGestureGate", &touchesBegan_withEvent____s_category) + 8);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(_UISystemGestureGateGestureRecognizer *)self _gateGestureTypeString];
+      _gateGestureTypeString = [(_UISystemGestureGateGestureRecognizer *)self _gateGestureTypeString];
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to receive system gesture state notification before next touch"];
       *buf = 134218498;
-      v34 = self;
+      selfCopy = self;
       v35 = 2112;
-      v36 = v10;
+      v36 = _gateGestureTypeString;
       v37 = 2112;
       v38 = v11;
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "<%p> %@: %@", buf, 0x20u);
@@ -292,7 +292,7 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v12 = v6;
+    v12 = beganCopy;
     v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v13)
     {
@@ -308,16 +308,16 @@
           }
 
           v17 = *(*(&v28 + 1) + 8 * i);
-          v18 = [v17 view];
-          if (v18)
+          view = [v17 view];
+          if (view)
           {
-            v19 = v18;
+            v19 = view;
             while (![v19 _shouldDelayTouchForSystemGestures:v17])
             {
-              v20 = [v19 superview];
+              superview = [v19 superview];
 
-              v19 = v20;
-              if (!v20)
+              v19 = superview;
+              if (!superview)
               {
                 goto LABEL_18;
               }
@@ -328,7 +328,7 @@
           {
 LABEL_18:
 
-            [(UIGestureRecognizer *)self ignoreTouch:v17 forEvent:v7];
+            [(UIGestureRecognizer *)self ignoreTouch:v17 forEvent:eventCopy];
           }
         }
 
@@ -370,16 +370,16 @@ LABEL_18:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [v7 touchesForGestureRecognizer:self];
+  v8 = [eventCopy touchesForGestureRecognizer:self];
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v9)
   {
@@ -428,7 +428,7 @@ LABEL_9:
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = v6;
+    v8 = endedCopy;
     v13 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v13)
     {
@@ -445,8 +445,8 @@ LABEL_9:
           }
 
           v17 = *(*(&v23 + 1) + 8 * v16);
-          v18 = [(UIGestureRecognizer *)self view];
-          v19 = [v18 _window];
+          view = [(UIGestureRecognizer *)self view];
+          _window = [view _window];
           if (v17)
           {
             v20 = *(v17 + 360);
@@ -458,7 +458,7 @@ LABEL_9:
           }
 
           v21 = v20;
-          [v7 _addWindowAwaitingLatentSystemGestureNotification:v19 deliveredToEventWindow:v21];
+          [eventCopy _addWindowAwaitingLatentSystemGestureNotification:_window deliveredToEventWindow:v21];
 
           ++v16;
         }
@@ -475,11 +475,11 @@ LABEL_9:
 LABEL_22:
 }
 
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer
 {
   if (self->_systemGestureGateType)
   {
-    return [a3 _requiresSystemGesturesToFail];
+    return [recognizer _requiresSystemGesturesToFail];
   }
 
   else

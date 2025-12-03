@@ -1,6 +1,6 @@
 @interface CPLSyncSessionThroughputMetrics
-- (CPLSyncSessionThroughputMetrics)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CPLSyncSessionThroughputMetrics)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,7 +13,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CPLSyncSessionThroughputMetrics alloc] initWithIdentifier:self->_metricsIdentifier];
   objc_storeStrong(&v4->_startTime, self->_startTime);
@@ -21,16 +21,16 @@
   return v4;
 }
 
-- (CPLSyncSessionThroughputMetrics)initWithIdentifier:(id)a3
+- (CPLSyncSessionThroughputMetrics)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = CPLSyncSessionThroughputMetrics;
   v6 = [(CPLSyncSessionThroughputMetrics *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metricsIdentifier, a3);
+    objc_storeStrong(&v6->_metricsIdentifier, identifier);
   }
 
   return v7;

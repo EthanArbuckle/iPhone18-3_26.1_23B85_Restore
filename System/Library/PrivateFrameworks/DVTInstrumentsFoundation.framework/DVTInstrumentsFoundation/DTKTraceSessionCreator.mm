@@ -1,16 +1,16 @@
 @interface DTKTraceSessionCreator
-+ (id)getDefaultedRemotePath:(int *)a3;
-- (BOOL)stopWithError:(id *)a3;
-- (DTKTraceSessionCreator)initWithFD:(int)a3 configuration:(id)a4 error:(id *)a5;
++ (id)getDefaultedRemotePath:(int *)path;
+- (BOOL)stopWithError:(id *)error;
+- (DTKTraceSessionCreator)initWithFD:(int)d configuration:(id)configuration error:(id *)error;
 - (id)_providerTopErrors;
 @end
 
 @implementation DTKTraceSessionCreator
 
-- (DTKTraceSessionCreator)initWithFD:(int)a3 configuration:(id)a4 error:(id *)a5
+- (DTKTraceSessionCreator)initWithFD:(int)d configuration:(id)configuration error:(id *)error
 {
   v68[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  configurationCopy = configuration;
   v58.receiver = self;
   v58.super_class = DTKTraceSessionCreator;
   v8 = [(DTKTraceSessionCreator *)&v58 init];
@@ -19,18 +19,18 @@
     goto LABEL_40;
   }
 
-  v9 = [v7 bitmap];
-  if (!v9)
+  bitmap = [configurationCopy bitmap];
+  if (!bitmap)
   {
-    v12 = a5 != 0;
+    v12 = error != 0;
 LABEL_9:
     v16 = ktrace_session_create();
     ktrace_session_set_event_names_enabled();
     ktrace_session_set_default_event_names_enabled();
     ktrace_set_only_do_time_sensitive_postprocess();
-    if ([v7 collectionInterval])
+    if ([configurationCopy collectionInterval])
     {
-      [v7 collectionInterval];
+      [configurationCopy collectionInterval];
     }
 
     ktrace_set_collection_interval();
@@ -39,12 +39,12 @@ LABEL_9:
       goto LABEL_19;
     }
 
-    v17 = [v7 bitmap];
-    if (v17)
+    bitmap2 = [configurationCopy bitmap];
+    if (bitmap2)
     {
-      v18 = [v7 bitmap];
-      v19 = v18;
-      [v18 bytes];
+      bitmap3 = [configurationCopy bitmap];
+      v19 = bitmap3;
+      [bitmap3 bytes];
       v20 = ktrace_events_filter_bitmap();
     }
 
@@ -62,7 +62,7 @@ LABEL_9:
         v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"error: %d", v20];
         v66 = v22;
         v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
-        *a5 = [v21 errorWithDomain:@"DTKTraceSessionCreator" code:-1 userInfo:v23];
+        *error = [v21 errorWithDomain:@"DTKTraceSessionCreator" code:-1 userInfo:v23];
       }
 
 LABEL_18:
@@ -70,7 +70,7 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    if ([v7 useExisting])
+    if ([configurationCopy useExisting])
     {
       v25 = ktrace_set_use_existing();
       if (v25)
@@ -82,7 +82,7 @@ LABEL_18:
           v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"error: %d", v25];
           v64 = v27;
           v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
-          *a5 = [v26 errorWithDomain:@"DTKTraceSessionCreator" code:-1 userInfo:v28];
+          *error = [v26 errorWithDomain:@"DTKTraceSessionCreator" code:-1 userInfo:v28];
         }
 
         goto LABEL_18;
@@ -98,7 +98,7 @@ LABEL_18:
       v55 = sub_247F70E14;
       v56 = sub_247F70E24;
       v57 = 0;
-      v30 = [v7 providers];
+      providers = [configurationCopy providers];
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
       v48[2] = sub_247F70E2C;
@@ -107,7 +107,7 @@ LABEL_18:
       v51 = v16;
       v47 = v29;
       v49 = v47;
-      [v30 enumerateKeysAndObjectsUsingBlock:v48];
+      [providers enumerateKeysAndObjectsUsingBlock:v48];
 
       v31 = v53[5];
       if (v31)
@@ -122,7 +122,7 @@ LABEL_18:
         if (v12)
         {
           v36 = providerLoggers;
-          *a5 = providerLoggers;
+          *error = providerLoggers;
         }
 
         ktrace_session_destroy();
@@ -153,16 +153,16 @@ LABEL_18:
       {
         v41 = MEMORY[0x277CCA9B8];
         v59 = *MEMORY[0x277CCA450];
-        v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"error: %d", started];
-        v60 = v42;
+        started = [MEMORY[0x277CCACA8] stringWithFormat:@"error: %d", started];
+        v60 = started;
         v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-        *a5 = [v41 errorWithDomain:@"DTKTraceSessionCreator" code:-1 userInfo:v43];
+        *error = [v41 errorWithDomain:@"DTKTraceSessionCreator" code:-1 userInfo:v43];
       }
 
       goto LABEL_19;
     }
 
-    if ([v7 useExisting])
+    if ([configurationCopy useExisting])
     {
       dispatch_semaphore_wait(v39, 0xFFFFFFFFFFFFFFFFLL);
       if (v8->_ktraceSession)
@@ -182,11 +182,11 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v10 = [v7 bitmap];
-  v11 = [v10 length] != 0x2000;
+  bitmap4 = [configurationCopy bitmap];
+  v11 = [bitmap4 length] != 0x2000;
 
-  v12 = a5 != 0;
-  if (a5)
+  v12 = error != 0;
+  if (error)
   {
     v13 = v11;
   }
@@ -205,7 +205,7 @@ LABEL_40:
   v67 = *MEMORY[0x277CCA450];
   v68[0] = @"Invalid tracing configuration bitmap";
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v68 forKeys:&v67 count:1];
-  *a5 = [v14 errorWithDomain:@"DTKTraceSessionCreator" code:-1 userInfo:v15];
+  *error = [v14 errorWithDomain:@"DTKTraceSessionCreator" code:-1 userInfo:v15];
 
 LABEL_19:
   v24 = 0;
@@ -238,11 +238,11 @@ LABEL_41:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) errors];
-        if ([v9 count])
+        errors = [*(*(&v13 + 1) + 8 * i) errors];
+        if ([errors count])
         {
-          v10 = [v9 firstObject];
-          [v3 addObject:v10];
+          firstObject = [errors firstObject];
+          [v3 addObject:firstObject];
         }
       }
 
@@ -257,7 +257,7 @@ LABEL_41:
   return v3;
 }
 
-- (BOOL)stopWithError:(id *)a3
+- (BOOL)stopWithError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   if (!self->_ktraceSession)
@@ -275,8 +275,8 @@ LABEL_41:
   ktraceSession = self->_ktraceSession;
   ktrace_session_destroy();
   self->_ktraceSession = 0;
-  v6 = [(DTKTraceSessionCreator *)self _providerTopErrors];
-  if (![v6 count])
+  _providerTopErrors = [(DTKTraceSessionCreator *)self _providerTopErrors];
+  if (![_providerTopErrors count])
   {
 
 LABEL_17:
@@ -289,7 +289,7 @@ LABEL_17:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = _providerTopErrors;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v9)
   {
@@ -304,8 +304,8 @@ LABEL_17:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v25 + 1) + 8 * i) userInfo];
-        v14 = [v13 objectForKeyedSubscript:@"DVTKtraceSessionProviderName"];
+        userInfo = [*(*(&v25 + 1) + 8 * i) userInfo];
+        v14 = [userInfo objectForKeyedSubscript:@"DVTKtraceSessionProviderName"];
 
         if (v14)
         {
@@ -322,8 +322,8 @@ LABEL_17:
   v15 = MEMORY[0x277CCA9B8];
   v29[0] = *MEMORY[0x277CCA450];
   v16 = MEMORY[0x277CCACA8];
-  v17 = [v7 allObjects];
-  v18 = [v17 componentsJoinedByString:{@", "}];
+  allObjects = [v7 allObjects];
+  v18 = [allObjects componentsJoinedByString:{@", "}];
   v19 = [v16 stringWithFormat:@"Data Providers emitted errors: %@", v18];
   v29[1] = @"DVTKtraceSessionProviderErrorsArrayKey";
   v30[0] = v19;
@@ -331,10 +331,10 @@ LABEL_17:
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
   v21 = [v15 errorWithDomain:@"com.apple.dt.ktrace_recording.provider" code:2 userInfo:v20];
 
-  if (a3)
+  if (error)
   {
     v22 = v21;
-    *a3 = v21;
+    *error = v21;
   }
 
   result = 0;
@@ -343,18 +343,18 @@ LABEL_18:
   return result;
 }
 
-+ (id)getDefaultedRemotePath:(int *)a3
++ (id)getDefaultedRemotePath:(int *)path
 {
-  if (!a3)
+  if (!path)
   {
-    sub_24802C2AC(a2, a1);
+    sub_24802C2AC(a2, self);
   }
 
   v4 = NSTemporaryDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"instrumentsXXXXXX.ktrace"];
 
   v6 = strdup([v5 fileSystemRepresentation]);
-  *a3 = mkstemps(v6, 7);
+  *path = mkstemps(v6, 7);
   v7 = MEMORY[0x277CBEBC0];
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v6];
   v9 = [v7 fileURLWithPath:v8];

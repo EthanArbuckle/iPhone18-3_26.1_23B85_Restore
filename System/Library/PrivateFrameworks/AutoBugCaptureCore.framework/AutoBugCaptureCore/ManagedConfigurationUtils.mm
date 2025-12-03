@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (ManagedConfigurationUtils)init;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation ManagedConfigurationUtils
@@ -42,19 +42,19 @@ uint64_t __43__ManagedConfigurationUtils_sharedInstance__block_invoke()
       sMCProfileConnectionClass = Class;
       if (Class)
       {
-        v5 = [(objc_class *)Class sharedConnection];
-        [v5 addObserver:v2];
-        v6 = [v5 installedProfileIdentifiersWithFilterFlags:1];
+        class = [(objc_class *)Class sharedConnection];
+        [class addObserver:v2];
+        v6 = [class installedProfileIdentifiersWithFilterFlags:1];
         [(ManagedConfigurationUtils *)v2 setInstalledVisibleProfileIdentifiers:v6];
 
-        [(ManagedConfigurationUtils *)v2 setDiagnosticsAndUsageEnabled:[v5 effectiveBoolValueForSetting:@"allowDiagnosticSubmission"]== 1];
+        [(ManagedConfigurationUtils *)v2 setDiagnosticsAndUsageEnabled:[class effectiveBoolValueForSetting:@"allowDiagnosticSubmission"]== 1];
 LABEL_10:
 
         return v2;
       }
 
-      v5 = symptomsLogHandle();
-      if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      class = symptomsLogHandle();
+      if (!os_log_type_enabled(class, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_10;
       }
@@ -65,8 +65,8 @@ LABEL_10:
 
     else
     {
-      v5 = symptomsLogHandle();
-      if (!os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      class = symptomsLogHandle();
+      if (!os_log_type_enabled(class, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_10;
       }
@@ -75,7 +75,7 @@ LABEL_10:
       v7 = "Couldn't load ManagedConfiguration framework";
     }
 
-    _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_ERROR, v7, v9, 2u);
+    _os_log_impl(&dword_241804000, class, OS_LOG_TYPE_ERROR, v7, v9, 2u);
     goto LABEL_10;
   }
 
@@ -84,8 +84,8 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [sMCProfileConnectionClass sharedConnection];
-  [v3 removeObserver:self];
+  sharedConnection = [sMCProfileConnectionClass sharedConnection];
+  [sharedConnection removeObserver:self];
 
   managedConfigurationDylibHandle = self->_managedConfigurationDylibHandle;
   if (managedConfigurationDylibHandle)
@@ -98,10 +98,10 @@ LABEL_10:
   [(ManagedConfigurationUtils *)&v5 dealloc];
 }
 
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [a3 installedProfileIdentifiersWithFilterFlags:{1, a4}];
+  v5 = [notification installedProfileIdentifiersWithFilterFlags:{1, info}];
   v6 = symptomsLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -110,8 +110,8 @@ LABEL_10:
     _os_log_impl(&dword_241804000, v6, OS_LOG_TYPE_DEBUG, "Received ProfileListChangedNotification with installed visible profiles: %@", &v11, 0xCu);
   }
 
-  v7 = [(ManagedConfigurationUtils *)self installedVisibleProfileIdentifiers];
-  v8 = [v7 isEqualToArray:v5];
+  installedVisibleProfileIdentifiers = [(ManagedConfigurationUtils *)self installedVisibleProfileIdentifiers];
+  v8 = [installedVisibleProfileIdentifiers isEqualToArray:v5];
 
   if ((v8 & 1) == 0)
   {
@@ -122,10 +122,10 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [a3 effectiveBoolValueForSetting:{@"allowDiagnosticSubmission", a4}];
+  v5 = [notification effectiveBoolValueForSetting:{@"allowDiagnosticSubmission", info}];
   v6 = symptomsLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {

@@ -2,7 +2,7 @@
 + (id)wallet;
 - (OSIWalletMonitor)init;
 - (id)relevantEventDeadline;
-- (void)passLibraryDidChange:(id)a3;
+- (void)passLibraryDidChange:(id)change;
 @end
 
 @implementation OSIWalletMonitor
@@ -24,7 +24,7 @@
   if (v34)
   {
     v9 = *v41;
-    v31 = self;
+    selfCopy = self;
     v32 = v5;
     v35 = v8;
     v30 = *v41;
@@ -43,8 +43,8 @@
         v38 = 0u;
         v39 = 0u;
         v33 = v11;
-        v12 = [v11 relevantDates];
-        v13 = [v12 countByEnumeratingWithState:&v36 objects:v48 count:16];
+        relevantDates = [v11 relevantDates];
+        v13 = [relevantDates countByEnumeratingWithState:&v36 objects:v48 count:16];
         if (v13)
         {
           v14 = v13;
@@ -55,38 +55,38 @@
             {
               if (*v37 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(relevantDates);
               }
 
               v17 = *(*(&v36 + 1) + 8 * j);
-              v18 = [v17 date];
-              [v18 timeIntervalSinceDate:v6];
+              date = [v17 date];
+              [date timeIntervalSinceDate:v6];
               if (v19 < 0.0)
               {
               }
 
               else
               {
-                v20 = [v17 date];
-                [v20 timeIntervalSinceDate:v7];
+                date2 = [v17 date];
+                [date2 timeIntervalSinceDate:v7];
                 v22 = v21;
 
                 if (v22 <= 0.0)
                 {
-                  log = v31->_log;
+                  log = selfCopy->_log;
                   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
                   {
                     v26 = log;
-                    v27 = [v33 localizedName];
-                    v28 = [v17 date];
+                    localizedName = [v33 localizedName];
+                    date3 = [v17 date];
                     *buf = 138412546;
-                    v45 = v27;
+                    v45 = localizedName;
                     v46 = 2112;
-                    v47 = v28;
+                    v47 = date3;
                     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Found pass, forcing immediate charge: %@, %@", buf, 0x16u);
                   }
 
-                  v23 = [v17 date];
+                  date4 = [v17 date];
 
                   v8 = v35;
                   v5 = v32;
@@ -95,7 +95,7 @@
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v36 objects:v48 count:16];
+            v14 = [relevantDates countByEnumeratingWithState:&v36 objects:v48 count:16];
             if (v14)
             {
               continue;
@@ -116,10 +116,10 @@
     while (v34);
   }
 
-  v23 = +[NSDate distantFuture];
+  date4 = +[NSDate distantFuture];
 LABEL_23:
 
-  return v23;
+  return date4;
 }
 
 + (id)wallet
@@ -153,7 +153,7 @@ LABEL_23:
   return v2;
 }
 
-- (void)passLibraryDidChange:(id)a3
+- (void)passLibraryDidChange:(id)change
 {
   v4 = [(OSIWalletMonitor *)self log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

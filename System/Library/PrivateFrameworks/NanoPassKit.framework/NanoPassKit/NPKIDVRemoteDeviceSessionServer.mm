@@ -1,63 +1,63 @@
 @interface NPKIDVRemoteDeviceSessionServer
-- (NPKIDVRemoteDeviceSessionServer)initWithConnection:(id)a3 eventsCoordinator:(id)a4 connectionCoordinator:(id)a5 preflightManager:(id)a6;
+- (NPKIDVRemoteDeviceSessionServer)initWithConnection:(id)connection eventsCoordinator:(id)coordinator connectionCoordinator:(id)connectionCoordinator preflightManager:(id)manager;
 - (NPKIDVRemoteDeviceSessionServerDataSource)dataSource;
 - (id)_checkCredentialProvisioningEntitlement;
 - (id)_checkCredentialStoreBiometricsEntitlement;
-- (id)_checkCredentialStoreEntitlementWithPartition:(id)a3;
-- (void)addNotificationWithType:(unint64_t)a3 documentType:(unint64_t)a4 issuerName:(id)a5 completion:(id)a6;
-- (void)configureWithPartition:(id)a3 ackHandler:(id)a4;
-- (void)confirmRemoteDeviceID:(id)a3 withCompletion:(id)a4;
-- (void)createCredentialInPartition:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)credentialIdentifiersInPartitions:(id)a3 completion:(id)a4;
-- (void)credentialPreflightStatusForType:(unint64_t)a3 minOSVersion:(id)a4 completion:(id)a5;
-- (void)deleteCredential:(id)a3 completion:(id)a4;
-- (void)deleteGlobalAuthACLWithCompletion:(id)a3;
-- (void)deletePIIHashDataForCredentialIdentifier:(id)a3 completion:(id)a4;
-- (void)establishPrearmTrustV2:(id)a3 completion:(id)a4;
-- (void)fetchRemoteBiometricAuthenticationStatusForCredentialType:(unint64_t)a3 completion:(id)a4;
-- (void)generateKeyWithType:(unint64_t)a3 credentialIdentifier:(id)a4 completion:(id)a5;
-- (void)generatePresentmentKeysForCredential:(id)a3 numKeys:(int64_t)a4 completion:(id)a5;
-- (void)getCASDCertificateWithCompletion:(id)a3;
-- (void)nonceForAuthorizationTokenWithCompletion:(id)a3;
-- (void)pairedWatchSEIDWithCompletion:(id)a3;
-- (void)prearmCredentialWithAuthorizationToken:(id)a3 completion:(id)a4;
-- (void)propertiesOfCredential:(id)a3 completion:(id)a4;
-- (void)provisionCredentialWithType:(unint64_t)a3 metadata:(id)a4 credentialIdentifier:(id)a5 attestations:(id)a6 supplementalData:(id)a7 completion:(id)a8;
-- (void)provisionedCredentialCountForType:(unint64_t)a3 completion:(id)a4;
-- (void)registerForEvents:(unint64_t)a3 withRemoteProcessServiceName:(id)a4 completion:(id)a5;
-- (void)retrievePIIHashDataForCredentialIdentifier:(id)a3 completion:(id)a4;
-- (void)storePIIHashDataForCredentialIdentifier:(id)a3 data:(id)a4 completion:(id)a5;
-- (void)unregisterFromEvents:(unint64_t)a3 withRemoteProcessServiceName:(id)a4 completion:(id)a5;
-- (void)updateProofingConfiguration:(id)a3 completion:(id)a4;
+- (id)_checkCredentialStoreEntitlementWithPartition:(id)partition;
+- (void)addNotificationWithType:(unint64_t)type documentType:(unint64_t)documentType issuerName:(id)name completion:(id)completion;
+- (void)configureWithPartition:(id)partition ackHandler:(id)handler;
+- (void)confirmRemoteDeviceID:(id)d withCompletion:(id)completion;
+- (void)createCredentialInPartition:(id)partition options:(id)options completion:(id)completion;
+- (void)credentialIdentifiersInPartitions:(id)partitions completion:(id)completion;
+- (void)credentialPreflightStatusForType:(unint64_t)type minOSVersion:(id)version completion:(id)completion;
+- (void)deleteCredential:(id)credential completion:(id)completion;
+- (void)deleteGlobalAuthACLWithCompletion:(id)completion;
+- (void)deletePIIHashDataForCredentialIdentifier:(id)identifier completion:(id)completion;
+- (void)establishPrearmTrustV2:(id)v2 completion:(id)completion;
+- (void)fetchRemoteBiometricAuthenticationStatusForCredentialType:(unint64_t)type completion:(id)completion;
+- (void)generateKeyWithType:(unint64_t)type credentialIdentifier:(id)identifier completion:(id)completion;
+- (void)generatePresentmentKeysForCredential:(id)credential numKeys:(int64_t)keys completion:(id)completion;
+- (void)getCASDCertificateWithCompletion:(id)completion;
+- (void)nonceForAuthorizationTokenWithCompletion:(id)completion;
+- (void)pairedWatchSEIDWithCompletion:(id)completion;
+- (void)prearmCredentialWithAuthorizationToken:(id)token completion:(id)completion;
+- (void)propertiesOfCredential:(id)credential completion:(id)completion;
+- (void)provisionCredentialWithType:(unint64_t)type metadata:(id)metadata credentialIdentifier:(id)identifier attestations:(id)attestations supplementalData:(id)data completion:(id)completion;
+- (void)provisionedCredentialCountForType:(unint64_t)type completion:(id)completion;
+- (void)registerForEvents:(unint64_t)events withRemoteProcessServiceName:(id)name completion:(id)completion;
+- (void)retrievePIIHashDataForCredentialIdentifier:(id)identifier completion:(id)completion;
+- (void)storePIIHashDataForCredentialIdentifier:(id)identifier data:(id)data completion:(id)completion;
+- (void)unregisterFromEvents:(unint64_t)events withRemoteProcessServiceName:(id)name completion:(id)completion;
+- (void)updateProofingConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation NPKIDVRemoteDeviceSessionServer
 
-- (NPKIDVRemoteDeviceSessionServer)initWithConnection:(id)a3 eventsCoordinator:(id)a4 connectionCoordinator:(id)a5 preflightManager:(id)a6
+- (NPKIDVRemoteDeviceSessionServer)initWithConnection:(id)connection eventsCoordinator:(id)coordinator connectionCoordinator:(id)connectionCoordinator preflightManager:(id)manager
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  coordinatorCopy = coordinator;
+  connectionCoordinatorCopy = connectionCoordinator;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = NPKIDVRemoteDeviceSessionServer;
-  v14 = [(PDXPCService *)&v17 initWithConnection:a3];
+  v14 = [(PDXPCService *)&v17 initWithConnection:connection];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_eventsCoordinator, a4);
-    objc_storeStrong(&v15->_connectionCoordinator, a5);
-    objc_storeStrong(&v15->_preflightManager, a6);
+    objc_storeStrong(&v14->_eventsCoordinator, coordinator);
+    objc_storeStrong(&v15->_connectionCoordinator, connectionCoordinator);
+    objc_storeStrong(&v15->_preflightManager, manager);
   }
 
   return v15;
 }
 
-- (void)confirmRemoteDeviceID:(id)a3 withCompletion:(id)a4
+- (void)confirmRemoteDeviceID:(id)d withCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self->_eventsCoordinator remoteDeviceID];
+  dCopy = d;
+  completionCopy = completion;
+  remoteDeviceID = [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self->_eventsCoordinator remoteDeviceID];
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -67,14 +67,14 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412546;
-      v21 = v6;
+      v21 = dCopy;
       v22 = 2112;
-      v23 = v8;
+      v23 = remoteDeviceID;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested confirm deviceID:%@ actual deviceID:%@", &v20, 0x16u);
     }
   }
 
-  if (!v8)
+  if (!remoteDeviceID)
   {
     v13 = pk_Payment_log();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
@@ -85,7 +85,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v20 = 138412290;
-        v21 = v6;
+        v21 = dCopy;
         _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_ERROR, "Error: NPKIDVRemoteDeviceService: Fail to confirm given deviceID:%@, no active device is initialized", &v20, 0xCu);
       }
     }
@@ -94,7 +94,7 @@
     goto LABEL_19;
   }
 
-  if (v6 && ([v6 isEqualToString:v8] & 1) == 0)
+  if (dCopy && ([dCopy isEqualToString:remoteDeviceID] & 1) == 0)
   {
     v16 = pk_Payment_log();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -105,7 +105,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v20 = 138412290;
-        v21 = v6;
+        v21 = dCopy;
         _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_ERROR, "Error: NPKIDVRemoteDeviceService: Fail to confirm given deviceID:%@", &v20, 0xCu);
       }
     }
@@ -113,22 +113,22 @@
     v12 = NPKIDVRemoteDeviceSessionError(-1002, 0);
 
 LABEL_19:
-    v8 = 0;
+    remoteDeviceID = 0;
     goto LABEL_20;
   }
 
   v12 = 0;
 LABEL_20:
-  v7[2](v7, v8, v12);
+  completionCopy[2](completionCopy, remoteDeviceID, v12);
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)credentialPreflightStatusForType:(unint64_t)a3 minOSVersion:(id)a4 completion:(id)a5
+- (void)credentialPreflightStatusForType:(unint64_t)type minOSVersion:(id)version completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  versionCopy = version;
+  completionCopy = completion;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -137,17 +137,17 @@ LABEL_20:
     v12 = pk_Payment_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = NSStringFromNPKIDVRemoteDeviceCredentialType(a3);
+      v13 = NSStringFromNPKIDVRemoteDeviceCredentialType(type);
       *buf = 138412546;
       v29 = v13;
       v30 = 2112;
-      v31 = v8;
+      v31 = versionCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested credential Preflight Status ForType:%@ minOSVersion:%@", buf, 0x16u);
     }
   }
 
-  v14 = [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self->_eventsCoordinator remoteDeviceID];
-  if (!v14)
+  remoteDeviceID = [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self->_eventsCoordinator remoteDeviceID];
+  if (!remoteDeviceID)
   {
     v17 = pk_Payment_log();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
@@ -166,7 +166,7 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v21 = pk_Payment_log();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
@@ -185,7 +185,7 @@ LABEL_20:
     v20 = -1050;
 LABEL_18:
     v16 = NPKIDVRemoteDeviceSessionError(v20, 0);
-    v9[2](v9, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
     goto LABEL_19;
   }
 
@@ -195,8 +195,8 @@ LABEL_18:
   v25[2] = __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minOSVersion_completion___block_invoke;
   v25[3] = &unk_2799450D8;
   v27 = 1;
-  v26 = v9;
-  [(NPKBiometricPassPreflightManager *)preflightManager preflightStatusForType:1 pairedDeviceMinOSVersion:v8 completion:v25];
+  v26 = completionCopy;
+  [(NPKBiometricPassPreflightManager *)preflightManager preflightStatusForType:1 pairedDeviceMinOSVersion:versionCopy completion:v25];
   v16 = v26;
 LABEL_19:
 
@@ -232,16 +232,16 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provisionedCredentialCountForType:(unint64_t)a3 completion:(id)a4
+- (void)provisionedCredentialCountForType:(unint64_t)type completion:(id)completion
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NPKIDVRemoteDeviceSessionServer *)self dataSource];
+  completionCopy = completion;
+  dataSource = [(NPKIDVRemoteDeviceSessionServer *)self dataSource];
 
-  if (v7)
+  if (dataSource)
   {
-    v8 = [(NPKIDVRemoteDeviceSessionServer *)self dataSource];
-    [v8 remoteDevicesSessionServer:self provisionedCredentialCountsForType:a3 completion:v6];
+    dataSource2 = [(NPKIDVRemoteDeviceSessionServer *)self dataSource];
+    [dataSource2 remoteDevicesSessionServer:self provisionedCredentialCountsForType:type completion:completionCopy];
   }
 
   else
@@ -259,7 +259,7 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
       }
     }
 
-    if (v6)
+    if (completionCopy)
     {
       v12 = MEMORY[0x277CCA9B8];
       v17 = *MEMORY[0x277CCA450];
@@ -267,23 +267,23 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       v14 = [v12 errorWithDomain:@"com.apple.NPKErrorDomain" code:-1000 userInfo:v13];
 
-      v6[2](v6, 0, v14);
+      completionCopy[2](completionCopy, 0, v14);
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchRemoteBiometricAuthenticationStatusForCredentialType:(unint64_t)a3 completion:(id)a4
+- (void)fetchRemoteBiometricAuthenticationStatusForCredentialType:(unint64_t)type completion:(id)completion
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NPKIDVRemoteDeviceSessionServer *)self dataSource];
+  completionCopy = completion;
+  dataSource = [(NPKIDVRemoteDeviceSessionServer *)self dataSource];
 
-  if (v7)
+  if (dataSource)
   {
-    v8 = [(NPKIDVRemoteDeviceSessionServer *)self dataSource];
-    [v8 remoteDevicesSessionServer:self remoteBiometricAuthenticationStatusForCredentialType:a3 completion:v6];
+    dataSource2 = [(NPKIDVRemoteDeviceSessionServer *)self dataSource];
+    [dataSource2 remoteDevicesSessionServer:self remoteBiometricAuthenticationStatusForCredentialType:type completion:completionCopy];
   }
 
   else
@@ -301,7 +301,7 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
       }
     }
 
-    if (v6)
+    if (completionCopy)
     {
       v12 = MEMORY[0x277CCA9B8];
       v17 = *MEMORY[0x277CCA450];
@@ -309,17 +309,17 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       v14 = [v12 errorWithDomain:@"com.apple.NPKErrorDomain" code:-1000 userInfo:v13];
 
-      v6[2](v6, 0, v14);
+      completionCopy[2](completionCopy, 0, v14);
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForEvents:(unint64_t)a3 withRemoteProcessServiceName:(id)a4 completion:(id)a5
+- (void)registerForEvents:(unint64_t)events withRemoteProcessServiceName:(id)name completion:(id)completion
 {
-  v10 = a5;
-  v8 = [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self->_eventsCoordinator registerEvents:a3 forServiceName:a4];
+  completionCopy = completion;
+  v8 = [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self->_eventsCoordinator registerEvents:events forServiceName:name];
   if (v8 == 0xFFFFFFFF80000000)
   {
     v9 = NPKIDVRemoteDeviceSessionError(-1003, 0);
@@ -330,13 +330,13 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     v9 = 0;
   }
 
-  v10[2](v10, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)unregisterFromEvents:(unint64_t)a3 withRemoteProcessServiceName:(id)a4 completion:(id)a5
+- (void)unregisterFromEvents:(unint64_t)events withRemoteProcessServiceName:(id)name completion:(id)completion
 {
-  v10 = a5;
-  v8 = [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self->_eventsCoordinator unregisterEvents:a3 forServiceName:a4];
+  completionCopy = completion;
+  v8 = [(NPKIDVRemoteDeviceServiceEventsCoordinator *)self->_eventsCoordinator unregisterEvents:events forServiceName:name];
   if (v8 == 0xFFFFFFFF80000000)
   {
     v9 = NPKIDVRemoteDeviceSessionError(-1003, 0);
@@ -347,12 +347,12 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     v9 = 0;
   }
 
-  v10[2](v10, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)getCASDCertificateWithCompletion:(id)a3
+- (void)getCASDCertificateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -366,51 +366,51 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
-  if (v8)
+  _checkCredentialStoreBiometricsEntitlement = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
+  if (_checkCredentialStoreBiometricsEntitlement)
   {
-    v4[2](v4, 0, v8);
+    completionCopy[2](completionCopy, 0, _checkCredentialStoreBiometricsEntitlement);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator getCASDCertificateWithCompletion:v4];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator getCASDCertificateWithCompletion:completionCopy];
   }
 }
 
-- (void)pairedWatchSEIDWithCompletion:(id)a3
+- (void)pairedWatchSEIDWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
-  if (v4)
+  completionCopy = completion;
+  _checkCredentialStoreBiometricsEntitlement = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
+  if (_checkCredentialStoreBiometricsEntitlement)
   {
-    v9[2](v9, 0, v4);
+    completionCopy[2](completionCopy, 0, _checkCredentialStoreBiometricsEntitlement);
   }
 
   else
   {
-    v5 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v6 = [v5 getActivePairedDevice];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-    v7 = [v6 valueForProperty:*MEMORY[0x277D2BBE0]];
+    v7 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBE0]];
     if (v7)
     {
-      (v9)[2](v9, v7, 0);
+      (completionCopy)[2](completionCopy, v7, 0);
     }
 
     else
     {
       v8 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.nanopasskit.IDVRemoteDeviceSession.error" code:-1003 userInfo:0];
-      v9[2](v9, 0, v8);
+      completionCopy[2](completionCopy, 0, v8);
     }
   }
 }
 
-- (void)configureWithPartition:(id)a3 ackHandler:(id)a4
+- (void)configureWithPartition:(id)partition ackHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  partitionCopy = partition;
+  handlerCopy = handler;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -420,7 +420,7 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v6;
+      v20 = partitionCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested configure Credential store partitions:%@", &v19, 0xCu);
     }
   }
@@ -443,27 +443,27 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     }
 
     v15 = NPKIDVRemoteDeviceSessionError(-1000, 0);
-    v7[2](v7, v15);
+    handlerCopy[2](handlerCopy, v15);
   }
 
   else
   {
-    v16 = [MEMORY[0x277CBEB98] setWithArray:v6];
+    v16 = [MEMORY[0x277CBEB98] setWithArray:partitionCopy];
     v17 = self->_partitions;
     self->_partitions = v16;
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createCredentialInPartition:(id)a3 options:(id)a4 completion:(id)a5
+- (void)createCredentialInPartition:(id)partition options:(id)options completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  partitionCopy = partition;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -473,35 +473,35 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = v8;
+      v19 = partitionCopy;
       v20 = 2112;
-      v21 = v9;
+      v21 = optionsCopy;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested create credential in partition:%@ with options:%@", buf, 0x16u);
     }
   }
 
-  v17 = v8;
+  v17 = partitionCopy;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
   v15 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreEntitlementWithPartition:v14];
 
   if (v15)
   {
-    v10[2](v10, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator createCredentialInPartition:v8 options:v9 completion:v10];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator createCredentialInPartition:partitionCopy options:optionsCopy completion:completionCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateKeyWithType:(unint64_t)a3 credentialIdentifier:(id)a4 completion:(id)a5
+- (void)generateKeyWithType:(unint64_t)type credentialIdentifier:(id)identifier completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -510,11 +510,11 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     v12 = pk_Payment_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = NSStringFromNPKIDVRemoteDeviceCredentialStorageKeyType(a3);
+      v13 = NSStringFromNPKIDVRemoteDeviceCredentialStorageKeyType(type);
       v16 = 138412546;
       v17 = v13;
       v18 = 2112;
-      v19 = v8;
+      v19 = identifierCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested generate Key of type:%@ For Credential:%@", &v16, 0x16u);
     }
   }
@@ -522,22 +522,22 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
   v14 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreEntitlementWithPartition:0];
   if (v14)
   {
-    v9[2](v9, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator generateKeyWithType:a3 credentialIdentifier:v8 withConfiguredPartitions:self->_partitions completion:v9];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator generateKeyWithType:type credentialIdentifier:identifierCopy withConfiguredPartitions:self->_partitions completion:completionCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generatePresentmentKeysForCredential:(id)a3 numKeys:(int64_t)a4 completion:(id)a5
+- (void)generatePresentmentKeysForCredential:(id)credential numKeys:(int64_t)keys completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  credentialCopy = credential;
+  completionCopy = completion;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -547,7 +547,7 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v8;
+      v16 = credentialCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested generate presentent keys for Credential:%@", &v15, 0xCu);
     }
   }
@@ -555,22 +555,22 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
   v13 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreEntitlementWithPartition:0];
   if (v13)
   {
-    v9[2](v9, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator generatePresentmentKeysForCredential:v8 numKeys:a4 withConfiguredPartitions:self->_partitions completion:v9];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator generatePresentmentKeysForCredential:credentialCopy numKeys:keys withConfiguredPartitions:self->_partitions completion:completionCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteCredential:(id)a3 completion:(id)a4
+- (void)deleteCredential:(id)credential completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -580,7 +580,7 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = credentialCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested delete Credential:%@", &v13, 0xCu);
     }
   }
@@ -588,22 +588,22 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
   v11 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreEntitlementWithPartition:0];
   if (v11)
   {
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator deleteCredential:v6 withConfiguredPartitions:self->_partitions completion:v7];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator deleteCredential:credentialCopy withConfiguredPartitions:self->_partitions completion:completionCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)propertiesOfCredential:(id)a3 completion:(id)a4
+- (void)propertiesOfCredential:(id)credential completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -613,7 +613,7 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = credentialCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested fetch properties Of Credential:%@", &v13, 0xCu);
     }
   }
@@ -621,22 +621,22 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
   v11 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreEntitlementWithPartition:0];
   if (v11)
   {
-    v7[2](v7, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator propertiesOfCredential:v6 withConfiguredPartitions:self->_partitions completion:v7];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator propertiesOfCredential:credentialCopy withConfiguredPartitions:self->_partitions completion:completionCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)credentialIdentifiersInPartitions:(id)a3 completion:(id)a4
+- (void)credentialIdentifiersInPartitions:(id)partitions completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  partitionsCopy = partitions;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -646,37 +646,37 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = partitionsCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested fetch credential Identifiers In Partitions:%@", &v13, 0xCu);
     }
   }
 
-  v11 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreEntitlementWithPartition:v6];
+  v11 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreEntitlementWithPartition:partitionsCopy];
   if (v11)
   {
-    v7[2](v7, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator credentialIdentifiersInPartitions:v6 completion:v7];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator credentialIdentifiersInPartitions:partitionsCopy completion:completionCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provisionCredentialWithType:(unint64_t)a3 metadata:(id)a4 credentialIdentifier:(id)a5 attestations:(id)a6 supplementalData:(id)a7 completion:(id)a8
+- (void)provisionCredentialWithType:(unint64_t)type metadata:(id)metadata credentialIdentifier:(id)identifier attestations:(id)attestations supplementalData:(id)data completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialProvisioningEntitlement];
-  if (v19)
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  attestationsCopy = attestations;
+  dataCopy = data;
+  completionCopy = completion;
+  _checkCredentialProvisioningEntitlement = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialProvisioningEntitlement];
+  if (_checkCredentialProvisioningEntitlement)
   {
-    v18[2](v18, 0, v19);
+    completionCopy[2](completionCopy, 0, _checkCredentialProvisioningEntitlement);
   }
 
   else
@@ -689,11 +689,11 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
       v22 = pk_Payment_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = NSStringFromNPKIDVRemoteDeviceCredentialType(a3);
+        v23 = NSStringFromNPKIDVRemoteDeviceCredentialType(type);
         *buf = 138412546;
         v34 = v23;
         v35 = 2112;
-        v36 = v15;
+        v36 = identifierCopy;
         _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested provision credential type:%@ identifier:%@", buf, 0x16u);
       }
     }
@@ -702,11 +702,11 @@ void __92__NPKIDVRemoteDeviceSessionServer_credentialPreflightStatusForType_minO
     v28 = 3221225472;
     v29 = __134__NPKIDVRemoteDeviceSessionServer_provisionCredentialWithType_metadata_credentialIdentifier_attestations_supplementalData_completion___block_invoke;
     v30 = &unk_279945100;
-    v24 = v15;
+    v24 = identifierCopy;
     v31 = v24;
-    v32 = v18;
+    v32 = completionCopy;
     v25 = _Block_copy(&v27);
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator provisionCredentialWithType:a3 metadata:v14 credentialIdentifier:v24 attestations:v16 supplementalData:v17 completion:v25, v27, v28, v29, v30];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator provisionCredentialWithType:type metadata:metadataCopy credentialIdentifier:v24 attestations:attestationsCopy supplementalData:dataCopy completion:v25, v27, v28, v29, v30];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -745,9 +745,9 @@ void __134__NPKIDVRemoteDeviceSessionServer_provisionCredentialWithType_metadata
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)nonceForAuthorizationTokenWithCompletion:(id)a3
+- (void)nonceForAuthorizationTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -761,23 +761,23 @@ void __134__NPKIDVRemoteDeviceSessionServer_provisionCredentialWithType_metadata
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
-  if (v8)
+  _checkCredentialStoreBiometricsEntitlement = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
+  if (_checkCredentialStoreBiometricsEntitlement)
   {
-    v4[2](v4, 0, v8);
+    completionCopy[2](completionCopy, 0, _checkCredentialStoreBiometricsEntitlement);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator nonceForAuthorizationTokenWithCompletion:v4];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator nonceForAuthorizationTokenWithCompletion:completionCopy];
   }
 }
 
-- (void)prearmCredentialWithAuthorizationToken:(id)a3 completion:(id)a4
+- (void)prearmCredentialWithAuthorizationToken:(id)token completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -787,30 +787,30 @@ void __134__NPKIDVRemoteDeviceSessionServer_provisionCredentialWithType_metadata
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = tokenCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested pre-arm credential with authentication token:%@", &v13, 0xCu);
     }
   }
 
-  v11 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
-  if (v11)
+  _checkCredentialStoreBiometricsEntitlement = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
+  if (_checkCredentialStoreBiometricsEntitlement)
   {
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, _checkCredentialStoreBiometricsEntitlement);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator prearmCredentialWithAuthorizationToken:v6 completion:v7];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator prearmCredentialWithAuthorizationToken:tokenCopy completion:completionCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)establishPrearmTrustV2:(id)a3 completion:(id)a4
+- (void)establishPrearmTrustV2:(id)v2 completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  v2Copy = v2;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -820,28 +820,28 @@ void __134__NPKIDVRemoteDeviceSessionServer_provisionCredentialWithType_metadata
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = v2Copy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Server requested establish trust V2 with Key:%@", &v13, 0xCu);
     }
   }
 
-  v11 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
-  if (v11)
+  _checkCredentialStoreBiometricsEntitlement = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
+  if (_checkCredentialStoreBiometricsEntitlement)
   {
-    v7[2](v7, 0, v11);
+    completionCopy[2](completionCopy, 0, _checkCredentialStoreBiometricsEntitlement);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator establishPrearmTrustV2:v6 completion:v7];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator establishPrearmTrustV2:v2Copy completion:completionCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteGlobalAuthACLWithCompletion:(id)a3
+- (void)deleteGlobalAuthACLWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -855,23 +855,23 @@ void __134__NPKIDVRemoteDeviceSessionServer_provisionCredentialWithType_metadata
     }
   }
 
-  v8 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
-  if (v8)
+  _checkCredentialStoreBiometricsEntitlement = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreBiometricsEntitlement];
+  if (_checkCredentialStoreBiometricsEntitlement)
   {
-    v4[2](v4, v8);
+    completionCopy[2](completionCopy, _checkCredentialStoreBiometricsEntitlement);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator deleteGlobalAuthACLWithCompletion:v4];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator deleteGlobalAuthACLWithCompletion:completionCopy];
   }
 }
 
-- (void)addNotificationWithType:(unint64_t)a3 documentType:(unint64_t)a4 issuerName:(id)a5 completion:(id)a6
+- (void)addNotificationWithType:(unint64_t)type documentType:(unint64_t)documentType issuerName:(id)name completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  nameCopy = name;
+  completionCopy = completion;
   v12 = pk_Payment_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -880,20 +880,20 @@ void __134__NPKIDVRemoteDeviceSessionServer_provisionCredentialWithType_metadata
     v14 = pk_Payment_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = NSStringFromNPKIDVRemoteDeviceNotificationType(a3);
-      v16 = NSStringFromNPKIDVRemoteDeviceDocumentType(a4);
+      v15 = NSStringFromNPKIDVRemoteDeviceNotificationType(type);
+      v16 = NSStringFromNPKIDVRemoteDeviceDocumentType(documentType);
       *buf = 138412802;
       v30 = v15;
       v31 = 2112;
       v32 = v16;
       v33 = 2112;
-      v34 = v10;
+      v34 = nameCopy;
       _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested add notification type:%@ document type:%@ issuerName:%@", buf, 0x20u);
     }
   }
 
-  v17 = [(PDXPCService *)self connection];
-  v18 = [v17 valueForEntitlement:@"com.apple.NanoPassbook.IDVRemoteDeviceService.extendedReviewNotification"];
+  connection = [(PDXPCService *)self connection];
+  v18 = [connection valueForEntitlement:@"com.apple.NanoPassbook.IDVRemoteDeviceService.extendedReviewNotification"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v18 BOOLValue])
@@ -903,9 +903,9 @@ void __134__NPKIDVRemoteDeviceSessionServer_provisionCredentialWithType_metadata
     v26[1] = 3221225472;
     v26[2] = __94__NPKIDVRemoteDeviceSessionServer_addNotificationWithType_documentType_issuerName_completion___block_invoke;
     v26[3] = &unk_279945128;
-    v28 = a3;
-    v27 = v11;
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)connectionCoordinator addNotificationWithType:a3 documentType:a4 issuerName:v10 completion:v26];
+    typeCopy = type;
+    v27 = completionCopy;
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)connectionCoordinator addNotificationWithType:type documentType:documentType issuerName:nameCopy completion:v26];
     v20 = v27;
   }
 
@@ -920,7 +920,7 @@ void __134__NPKIDVRemoteDeviceSessionServer_provisionCredentialWithType_metadata
       v23 = pk_Payment_log();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = NSStringFromNPKIDVRemoteDeviceNotificationType(a3);
+        v24 = NSStringFromNPKIDVRemoteDeviceNotificationType(type);
         *buf = 138412546;
         v30 = v24;
         v31 = 2112;
@@ -929,9 +929,9 @@ void __134__NPKIDVRemoteDeviceSessionServer_provisionCredentialWithType_metadata
       }
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, v20);
+      (*(completionCopy + 2))(completionCopy, v20);
     }
   }
 
@@ -1004,11 +1004,11 @@ LABEL_10:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateProofingConfiguration:(id)a3 completion:(id)a4
+- (void)updateProofingConfiguration:(id)configuration completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1018,7 +1018,7 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = configurationCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested to update proofing configuration: %@", buf, 0xCu);
     }
   }
@@ -1028,10 +1028,10 @@ LABEL_10:
   v15[1] = 3221225472;
   v15[2] = __74__NPKIDVRemoteDeviceSessionServer_updateProofingConfiguration_completion___block_invoke;
   v15[3] = &unk_279945150;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = configurationCopy;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = configurationCopy;
   [(NPKIDVRemoteDeviceConnectionCoordinator *)connectionCoordinator updateProofingConfiguration:v13 completion:v15];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1103,12 +1103,12 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storePIIHashDataForCredentialIdentifier:(id)a3 data:(id)a4 completion:(id)a5
+- (void)storePIIHashDataForCredentialIdentifier:(id)identifier data:(id)data completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dataCopy = data;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -1118,7 +1118,7 @@ LABEL_10:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v8;
+      v17 = identifierCopy;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested store PII hash for Credential:%@", &v16, 0xCu);
     }
   }
@@ -1126,22 +1126,22 @@ LABEL_10:
   v14 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreEntitlementWithPartition:0];
   if (v14)
   {
-    v10[2](v10, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator storePIIHashDataForCredentialIdentifier:v8 data:v9 withConfiguredPartitions:self->_partitions completion:v10];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator storePIIHashDataForCredentialIdentifier:identifierCopy data:dataCopy withConfiguredPartitions:self->_partitions completion:completionCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrievePIIHashDataForCredentialIdentifier:(id)a3 completion:(id)a4
+- (void)retrievePIIHashDataForCredentialIdentifier:(id)identifier completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1151,7 +1151,7 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = identifierCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested retrieve PII hash for Credential:%@", &v13, 0xCu);
     }
   }
@@ -1159,22 +1159,22 @@ LABEL_10:
   v11 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreEntitlementWithPartition:0];
   if (v11)
   {
-    v7[2](v7, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator retrievePIIHashDataForCredentialIdentifier:v6 withConfiguredPartitions:self->_partitions completion:v7];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator retrievePIIHashDataForCredentialIdentifier:identifierCopy withConfiguredPartitions:self->_partitions completion:completionCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePIIHashDataForCredentialIdentifier:(id)a3 completion:(id)a4
+- (void)deletePIIHashDataForCredentialIdentifier:(id)identifier completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1184,7 +1184,7 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = identifierCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: NPKIDVRemoteDeviceService: Requested delete PII hash for Credential:%@", &v13, 0xCu);
     }
   }
@@ -1192,12 +1192,12 @@ LABEL_10:
   v11 = [(NPKIDVRemoteDeviceSessionServer *)self _checkCredentialStoreEntitlementWithPartition:0];
   if (v11)
   {
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   else
   {
-    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator deletePIIHashDataForCredentialIdentifier:v6 withConfiguredPartitions:self->_partitions completion:v7];
+    [(NPKIDVRemoteDeviceConnectionCoordinator *)self->_connectionCoordinator deletePIIHashDataForCredentialIdentifier:identifierCopy withConfiguredPartitions:self->_partitions completion:completionCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1205,8 +1205,8 @@ LABEL_10:
 
 - (id)_checkCredentialProvisioningEntitlement
 {
-  v2 = [(PDXPCService *)self connection];
-  v3 = [v2 valueForEntitlement:@"com.apple.NanoPassbook.IDVRemoteDeviceService.credentialprovisioning"];
+  connection = [(PDXPCService *)self connection];
+  v3 = [connection valueForEntitlement:@"com.apple.NanoPassbook.IDVRemoteDeviceService.credentialprovisioning"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v3 BOOLValue])
@@ -1224,8 +1224,8 @@ LABEL_10:
 
 - (id)_checkCredentialStoreBiometricsEntitlement
 {
-  v2 = [(PDXPCService *)self connection];
-  v3 = [v2 valueForEntitlement:@"com.apple.idcredentials.biometrics"];
+  connection = [(PDXPCService *)self connection];
+  v3 = [connection valueForEntitlement:@"com.apple.idcredentials.biometrics"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v3 BOOLValue])
@@ -1241,12 +1241,12 @@ LABEL_10:
   return v4;
 }
 
-- (id)_checkCredentialStoreEntitlementWithPartition:(id)a3
+- (id)_checkCredentialStoreEntitlementWithPartition:(id)partition
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PDXPCService *)self connection];
-  v6 = [v5 valueForEntitlement:@"com.apple.idcredentials.storage"];
+  partitionCopy = partition;
+  connection = [(PDXPCService *)self connection];
+  v6 = [connection valueForEntitlement:@"com.apple.idcredentials.storage"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1282,7 +1282,7 @@ LABEL_10:
       }
     }
 
-    else if (-[NSSet count](v4, "count") && ([MEMORY[0x277CBEB98] setWithArray:v4], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isSubsetOfSet:", self->_partitions), v8, (v9 & 1) == 0))
+    else if (-[NSSet count](partitionCopy, "count") && ([MEMORY[0x277CBEB98] setWithArray:partitionCopy], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isSubsetOfSet:", self->_partitions), v8, (v9 & 1) == 0))
     {
       v21 = pk_Payment_log();
       v22 = os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
@@ -1294,7 +1294,7 @@ LABEL_10:
         {
           partitions = self->_partitions;
           v28 = 138412546;
-          v29 = v4;
+          v29 = partitionCopy;
           v30 = 2112;
           v31 = partitions;
           v18 = "Error: NPKIDVRemoteDeviceService: Partitions:%@ must be part of the configured partitions:%@";

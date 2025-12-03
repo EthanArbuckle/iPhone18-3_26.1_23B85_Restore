@@ -4,9 +4,9 @@
 - (id)delegate;
 - (void)didFinishLaunching;
 - (void)loadDelegate;
-- (void)prepareForSceneConnectionWithConfiguration:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setStrongDelegate:(id)a3;
+- (void)prepareForSceneConnectionWithConfiguration:(id)configuration;
+- (void)setDelegate:(id)delegate;
+- (void)setStrongDelegate:(id)delegate;
 - (void)willFinishLaunching;
 @end
 
@@ -14,14 +14,14 @@
 
 - (BOOL)loadDelegate
 {
-  v3 = [(_EXExtension *)self delegateClass];
+  delegateClass = [(_EXExtension *)self delegateClass];
   v4 = _EXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(_EXExtension *)v3 loadDelegate];
+    [(_EXExtension *)delegateClass loadDelegate];
   }
 
-  v5 = objc_alloc_init(v3);
+  v5 = objc_alloc_init(delegateClass);
   if (v5)
   {
     v6 = _EXDefaultLog();
@@ -37,21 +37,21 @@
   return v5 != 0;
 }
 
-- (void)setStrongDelegate:(id)a3
+- (void)setStrongDelegate:(id)delegate
 {
-  v5 = a3;
-  if (self->_strongDelegate != v5)
+  delegateCopy = delegate;
+  if (self->_strongDelegate != delegateCopy)
   {
-    objc_storeWeak(&self->_delegate, v5);
-    objc_storeStrong(&self->_strongDelegate, a3);
+    objc_storeWeak(&self->_delegate, delegateCopy);
+    objc_storeStrong(&self->_strongDelegate, delegate);
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -70,51 +70,51 @@
 
 - (void)willFinishLaunching
 {
-  v3 = [(_EXExtension *)self delegate];
+  delegate = [(_EXExtension *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_EXExtension *)self delegate];
-    [v5 extensionWillFinishLaunching:self];
+    delegate2 = [(_EXExtension *)self delegate];
+    [delegate2 extensionWillFinishLaunching:self];
   }
 }
 
 - (void)didFinishLaunching
 {
-  v3 = [(_EXExtension *)self delegate];
+  delegate = [(_EXExtension *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_EXExtension *)self delegate];
-    [v5 extensionDidFinishLaunching:self];
+    delegate2 = [(_EXExtension *)self delegate];
+    [delegate2 extensionDidFinishLaunching:self];
   }
 }
 
-- (void)prepareForSceneConnectionWithConfiguration:(id)a3
+- (void)prepareForSceneConnectionWithConfiguration:(id)configuration
 {
-  v7 = a3;
-  v4 = [(_EXExtension *)self delegate];
+  configurationCopy = configuration;
+  delegate = [(_EXExtension *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_EXExtension *)self delegate];
-    [v6 extension:self prepareForSceneConnectionWithConfiguration:v7];
+    delegate2 = [(_EXExtension *)self delegate];
+    [delegate2 extension:self prepareForSceneConnectionWithConfiguration:configurationCopy];
   }
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)hostAuditToken
 {
-  v4 = [MEMORY[0x1E69C75D0] currentProcess];
-  v7 = [v4 hostProcess];
+  currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+  hostProcess = [currentProcess hostProcess];
 
-  v5 = v7;
-  if (v7)
+  v5 = hostProcess;
+  if (hostProcess)
   {
-    [v7 auditToken];
-    v5 = v7;
+    [hostProcess auditToken];
+    v5 = hostProcess;
   }
 
   else
@@ -137,7 +137,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1847D1000, a2, OS_LOG_TYPE_DEBUG, "Extension delegate is: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

@@ -1,43 +1,43 @@
 @interface DYEmbeddedDaemon
-- (BOOL)bringAppToForeground:(id)a3;
-- (BOOL)createInferiorTransportAndSetEnvironment:(id)a3 uniqueIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)launchInferior:(id)a3 finalEnvironment:(id *)a4 error:(id *)a5;
-- (BOOL)launchUIServer:(id)a3 error:(id *)a4;
-- (DYEmbeddedDaemon)initWithTransport:(id)a3 terminationHandler:(id)a4;
+- (BOOL)bringAppToForeground:(id)foreground;
+- (BOOL)createInferiorTransportAndSetEnvironment:(id)environment uniqueIdentifier:(id)identifier error:(id *)error;
+- (BOOL)launchInferior:(id)inferior finalEnvironment:(id *)environment error:(id *)error;
+- (BOOL)launchUIServer:(id)server error:(id *)error;
+- (DYEmbeddedDaemon)initWithTransport:(id)transport terminationHandler:(id)handler;
 - (id)getApplications;
-- (id)processApplication:(id)a3;
-- (int)launchInferiorWithIdentifer:(id)a3 environment:(id)a4 arguments:(id)a5 error:(id *)a6;
-- (int)launchInferiorWithPath:(id)a3 arguments:(id)a4 environment:(id)a5 workingDirectory:(id)a6 error:(id *)a7;
+- (id)processApplication:(id)application;
+- (int)launchInferiorWithIdentifer:(id)identifer environment:(id)environment arguments:(id)arguments error:(id *)error;
+- (int)launchInferiorWithPath:(id)path arguments:(id)arguments environment:(id)environment workingDirectory:(id)directory error:(id *)error;
 - (void)cacheInferiorAppIdentifier;
-- (void)handleMessage:(id)a3;
-- (void)terminate:(int)a3;
+- (void)handleMessage:(id)message;
+- (void)terminate:(int)terminate;
 @end
 
 @implementation DYEmbeddedDaemon
 
-- (DYEmbeddedDaemon)initWithTransport:(id)a3 terminationHandler:(id)a4
+- (DYEmbeddedDaemon)initWithTransport:(id)transport terminationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  transportCopy = transport;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = DYEmbeddedDaemon;
   v8 = [(DYEmbeddedDaemon *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    [(DYEmbeddedDaemon *)v8 setTransport:v6];
-    v10 = objc_retainBlock(v7);
+    [(DYEmbeddedDaemon *)v8 setTransport:transportCopy];
+    v10 = objc_retainBlock(handlerCopy);
     terminationHandler = v9->_terminationHandler;
     v9->_terminationHandler = v10;
 
-    v12 = [(DYEmbeddedDaemon *)v9 transport];
-    if (!v12)
+    transport = [(DYEmbeddedDaemon *)v9 transport];
+    if (!transport)
     {
       __assert_rtn("[DYEmbeddedDaemon initWithTransport:terminationHandler:]", ", 0, "self.transport"");
     }
 
-    v13 = [(DYEmbeddedDaemon *)v9 transport];
-    [v13 setPrioritizeOutgoingMessages:1];
+    transport2 = [(DYEmbeddedDaemon *)v9 transport];
+    [transport2 setPrioritizeOutgoingMessages:1];
 
     v14 = dispatch_get_global_queue(-2, 0);
     v15 = dispatch_queue_create_with_target_V2("symbolicator", 0, v14);
@@ -50,27 +50,27 @@
   return v9;
 }
 
-- (BOOL)createInferiorTransportAndSetEnvironment:(id)a3 uniqueIdentifier:(id)a4 error:(id *)a5
+- (BOOL)createInferiorTransportAndSetEnvironment:(id)environment uniqueIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 objectForKey:@"METAL_LOAD_INTERPOSER"];
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  v10 = [environmentCopy objectForKey:@"METAL_LOAD_INTERPOSER"];
   if ([v10 BOOLValue])
   {
-    v11 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v12 = [v8 objectForKey:@"METAL_DIAGNOSTICS_ENABLED"];
-    v11 = [v12 BOOLValue];
+    v12 = [environmentCopy objectForKey:@"METAL_DIAGNOSTICS_ENABLED"];
+    bOOLValue = [v12 BOOLValue];
   }
 
   v13 = [(DYEmbeddedDaemon *)self captureAPISupportForAPI:1];
-  v14 = [v13 interposeDylibPath];
-  [v8 setObject:v14 forKeyedSubscript:@"DYMTL_TOOLS_DYLIB_PATH"];
+  interposeDylibPath = [v13 interposeDylibPath];
+  [environmentCopy setObject:interposeDylibPath forKeyedSubscript:@"DYMTL_TOOLS_DYLIB_PATH"];
 
-  v15 = [(DYEmbeddedDaemon *)self createInferiorTransportAndSetEnvironment:v8 withAPI:v11 uniqueIdentifier:v9 error:a5];
+  v15 = [(DYEmbeddedDaemon *)self createInferiorTransportAndSetEnvironment:environmentCopy withAPI:bOOLValue uniqueIdentifier:identifierCopy error:error];
   return v15;
 }
 
@@ -81,10 +81,10 @@
 
   if (v7)
   {
-    v4 = [v7 bundle];
-    v5 = [v4 identifier];
+    bundle = [v7 bundle];
+    identifier = [bundle identifier];
     guestAppIdentifier = self->_guestAppIdentifier;
-    self->_guestAppIdentifier = v5;
+    self->_guestAppIdentifier = identifier;
   }
 
   else
@@ -94,12 +94,12 @@
   }
 }
 
-- (BOOL)bringAppToForeground:(id)a3
+- (BOOL)bringAppToForeground:(id)foreground
 {
-  v3 = a3;
-  if (sub_100001938(v3) == -1)
+  foregroundCopy = foreground;
+  if (sub_100001938(foregroundCopy) == -1)
   {
-    v7 = 0;
+    bOOLResult = 0;
   }
 
   else
@@ -112,56 +112,56 @@
     v9[3] = &unk_10000C660;
     v6 = v4;
     v10 = v6;
-    [v5 openApplication:v3 withOptions:0 completion:v9];
-    v7 = [v6 BOOLResult];
+    [v5 openApplication:foregroundCopy withOptions:0 completion:v9];
+    bOOLResult = [v6 BOOLResult];
   }
 
-  return v7;
+  return bOOLResult;
 }
 
-- (int)launchInferiorWithPath:(id)a3 arguments:(id)a4 environment:(id)a5 workingDirectory:(id)a6 error:(id *)a7
+- (int)launchInferiorWithPath:(id)path arguments:(id)arguments environment:(id)environment workingDirectory:(id)directory error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  pathCopy = path;
+  argumentsCopy = arguments;
+  environmentCopy = environment;
+  directoryCopy = directory;
   if (([(DYEmbeddedDaemon *)self isAppleInternal]& 1) == 0)
   {
     [(DYEmbeddedDaemon *)self terminate:1];
-    v30 = 0;
+    intValue = 0;
     goto LABEL_25;
   }
 
-  if ([v15 length])
+  if ([directoryCopy length])
   {
     v47 = 0;
     v16 = +[NSFileManager defaultManager];
-    v17 = [v16 fileExistsAtPath:v15 isDirectory:&v47];
+    v17 = [v16 fileExistsAtPath:directoryCopy isDirectory:&v47];
 
     if (!v17 || (v47 & 1) == 0)
     {
       v50 = NSLocalizedDescriptionKey;
-      v31 = [NSString stringWithFormat:@"Working directory doesn't exist. %@", v15];
-      v51 = v31;
+      directoryCopy = [NSString stringWithFormat:@"Working directory doesn't exist. %@", directoryCopy];
+      v51 = directoryCopy;
       v32 = [NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1];
-      *a7 = [DYError errorWithDomain:DYErrorDomain code:1 userInfo:v32];
+      *error = [DYError errorWithDomain:DYErrorDomain code:1 userInfo:v32];
 
 LABEL_16:
-      v30 = -1;
+      intValue = -1;
       goto LABEL_25;
     }
   }
 
   v18 = +[NSFileManager defaultManager];
-  v19 = [v18 fileExistsAtPath:v12];
+  v19 = [v18 fileExistsAtPath:pathCopy];
 
   if ((v19 & 1) == 0)
   {
     v48 = NSLocalizedDescriptionKey;
-    v33 = [NSString stringWithFormat:@"Binary Launch Path doesn't exist. %@", v12];
-    v49 = v33;
+    pathCopy = [NSString stringWithFormat:@"Binary Launch Path doesn't exist. %@", pathCopy];
+    v49 = pathCopy;
     v34 = [NSDictionary dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-    *a7 = [DYError errorWithDomain:DYErrorDomain code:1 userInfo:v34];
+    *error = [DYError errorWithDomain:DYErrorDomain code:1 userInfo:v34];
 
     goto LABEL_16;
   }
@@ -184,11 +184,11 @@ LABEL_16:
     v46[4] = self;
     [v23 setCancellationHandler:v46];
     [v24 resume];
-    v43 = [(DYTransport *)self->_helperTransport connect];
-    [v43 timeoutAfter:0 label:500.0];
-    if ([v43 BOOLResult])
+    connect = [(DYTransport *)self->_helperTransport connect];
+    [connect timeoutAfter:0 label:500.0];
+    if ([connect BOOLResult])
     {
-      v41 = [NSDictionary dictionaryWithObjectsAndKeys:v12, kDYGuestAppLaunchPathKey, v14, kDYGuestAppLaunchEnvironmentKey, v13, kDYGuestAppLaunchArgumentsKey, v15, kDYGuestAppLaunchCurrentDirectoryKey, 0];
+      v41 = [NSDictionary dictionaryWithObjectsAndKeys:pathCopy, kDYGuestAppLaunchPathKey, environmentCopy, kDYGuestAppLaunchEnvironmentKey, argumentsCopy, kDYGuestAppLaunchArgumentsKey, directoryCopy, kDYGuestAppLaunchCurrentDirectoryKey, 0];
       v42 = [DYTransportMessage messageWithKind:1291 plistPayload:?];
       if (v42)
       {
@@ -201,25 +201,25 @@ LABEL_16:
         v44[3] = &unk_10000C6B0;
         v40 = v25;
         v45 = v40;
-        LOBYTE(v25) = [(DYTransport *)v26 send:v42 error:a7 replyQueue:v27 timeout:0 handler:v44];
+        LOBYTE(v25) = [(DYTransport *)v26 send:v42 error:error replyQueue:v27 timeout:0 handler:v44];
 
-        v28 = v43;
+        v28 = connect;
         if (v25)
         {
-          v29 = [v40 result];
-          if (a7)
+          result = [v40 result];
+          if (error)
           {
-            *a7 = [v40 error];
+            *error = [v40 error];
           }
 
-          v30 = [v29 intValue];
+          intValue = [result intValue];
         }
 
         else
         {
           DYLog();
           [(DYEmbeddedDaemon *)self terminate:1];
-          v30 = 0;
+          intValue = 0;
         }
       }
 
@@ -227,8 +227,8 @@ LABEL_16:
       {
         DYLog();
         [(DYEmbeddedDaemon *)self terminate:1];
-        v30 = 0;
-        v28 = v43;
+        intValue = 0;
+        v28 = connect;
       }
     }
 
@@ -236,39 +236,39 @@ LABEL_16:
     {
       DYLog();
       [(DYEmbeddedDaemon *)self terminate:1];
-      v30 = 0;
-      v28 = v43;
+      intValue = 0;
+      v28 = connect;
     }
   }
 
   else
   {
-    v35 = [(DYTransport *)self->_helperTransport error];
-    v36 = [v35 description];
+    error = [(DYTransport *)self->_helperTransport error];
+    v36 = [error description];
     v37 = v36;
-    v39 = [v36 UTF8String];
+    uTF8String = [v36 UTF8String];
     DYLog();
 
-    [(DYEmbeddedDaemon *)self terminate:1, v39];
-    v30 = 0;
+    [(DYEmbeddedDaemon *)self terminate:1, uTF8String];
+    intValue = 0;
   }
 
 LABEL_25:
-  return v30;
+  return intValue;
 }
 
-- (int)launchInferiorWithIdentifer:(id)a3 environment:(id)a4 arguments:(id)a5 error:(id *)a6
+- (int)launchInferiorWithIdentifer:(id)identifer environment:(id)environment arguments:(id)arguments error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identiferCopy = identifer;
+  environmentCopy = environment;
+  argumentsCopy = arguments;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
   v37 = 0;
   while (1)
   {
-    v11 = sub_100001938(v8);
+    v11 = sub_100001938(identiferCopy);
     *(v35 + 6) = v11;
     if (v11 == -1)
     {
@@ -283,9 +283,9 @@ LABEL_25:
   v38[0] = FBSDebugOptionKeyWaitForDebugger;
   v38[1] = FBSDebugOptionKeyEnvironment;
   v39[0] = &__kCFBooleanTrue;
-  v39[1] = v9;
+  v39[1] = environmentCopy;
   v38[2] = FBSDebugOptionKeyArguments;
-  v39[2] = v10;
+  v39[2] = argumentsCopy;
   v12 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:3];
   v40[1] = FBSOpenApplicationOptionKeyUnlockDevice;
   v41[0] = v12;
@@ -302,27 +302,27 @@ LABEL_25:
   v33 = &v34;
   v17 = v14;
   v32 = v17;
-  [v15 openApplication:v8 withOptions:v16 completion:v31];
+  [v15 openApplication:identiferCopy withOptions:v16 completion:v31];
 
   v18 = dispatch_time(0, 30000000000);
   dispatch_semaphore_wait(v17, v18);
   if (*(v35 + 6) == -1)
   {
-    v22 = [v8 description];
+    v22 = [identiferCopy description];
     v23 = v22;
-    v27 = [v22 UTF8String];
+    uTF8String = [v22 UTF8String];
     DYLog();
 
-    if (a6)
+    if (error)
     {
-      v24 = [NSDictionary dictionaryWithObject:@"Timed-out waiting for the application to launch." forKey:NSLocalizedDescriptionKey, v27];
-      *a6 = [DYError errorWithDomain:DYErrorDomain code:5 userInfo:v24];
+      v24 = [NSDictionary dictionaryWithObject:@"Timed-out waiting for the application to launch." forKey:NSLocalizedDescriptionKey, uTF8String];
+      *error = [DYError errorWithDomain:DYErrorDomain code:5 userInfo:v24];
     }
 
     goto LABEL_12;
   }
 
-  if ((sub_1000028F4(v8) & 1) == 0)
+  if ((sub_1000028F4(identiferCopy) & 1) == 0)
   {
     v30 = 0;
     v19 = task_for_pid(mach_task_self_, *(v35 + 6), &v30);
@@ -332,10 +332,10 @@ LABEL_25:
       v28 = mach_error_string(v19);
       DYLog();
       kill(*(v35 + 6), 9);
-      if (a6)
+      if (error)
       {
         v20 = [NSDictionary dictionaryWithObject:@"Failed to get the application's task port." forKey:NSLocalizedDescriptionKey, v26, v28];
-        *a6 = [DYError errorWithDomain:DYErrorDomain code:29 userInfo:v20];
+        *error = [DYError errorWithDomain:DYErrorDomain code:29 userInfo:v20];
       }
 
 LABEL_12:
@@ -351,42 +351,42 @@ LABEL_13:
   return v21;
 }
 
-- (BOOL)launchUIServer:(id)a3 error:(id *)a4
+- (BOOL)launchUIServer:(id)server error:(id *)error
 {
-  v7 = a3;
+  serverCopy = server;
   if (([(DYEmbeddedDaemon *)self isAppleInternal]& 1) == 0)
   {
     [(DYEmbeddedDaemon *)self terminate:1];
   }
 
   v8 = +[NSMutableDictionary dictionary];
-  v9 = [v7 objectForKey:kDYGuestAppLaunchEnvironmentKey];
+  v9 = [serverCopy objectForKey:kDYGuestAppLaunchEnvironmentKey];
   if (v9)
   {
     [v8 addEntriesFromDictionary:v9];
   }
 
-  v10 = [v7 objectForKey:kDYGuestAppLaunchReplayer];
+  v10 = [serverCopy objectForKey:kDYGuestAppLaunchReplayer];
   if (v10)
   {
-    v4 = [v7 objectForKeyedSubscript:kDYGuestAppLaunchCapture];
-    v11 = [v4 BOOLValue];
+    v4 = [serverCopy objectForKeyedSubscript:kDYGuestAppLaunchCapture];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v11 = 1;
+    bOOLValue = 1;
   }
 
-  [(DYEmbeddedDaemon *)self setShouldLoadCapture:v11];
+  [(DYEmbeddedDaemon *)self setShouldLoadCapture:bOOLValue];
   if (v10)
   {
   }
 
-  v12 = [v7 objectForKeyedSubscript:kDYGuestAppLaunchDiagnostics];
+  v12 = [serverCopy objectForKeyedSubscript:kDYGuestAppLaunchDiagnostics];
   -[DYEmbeddedDaemon setShouldLoadDiagnostics:](self, "setShouldLoadDiagnostics:", [v12 BOOLValue]);
 
-  v13 = [(DYEmbeddedDaemon *)self createInferiorTransportAndSetEnvironment:v8 uniqueIdentifier:0 error:a4];
+  v13 = [(DYEmbeddedDaemon *)self createInferiorTransportAndSetEnvironment:v8 uniqueIdentifier:0 error:error];
   if (v13)
   {
     v14 = [[DYUNIXDomainSocketTransport alloc] initWithMode:1];
@@ -399,12 +399,12 @@ LABEL_13:
     v17 = [(DYTransport *)self->_helperTransport newSourceWithQueue:&_dispatch_main_q];
     if (!v17)
     {
-      v18 = [(DYTransport *)self->_helperTransport error];
-      v19 = [v18 description];
-      v23 = [v19 UTF8String];
+      error = [(DYTransport *)self->_helperTransport error];
+      v19 = [error description];
+      uTF8String = [v19 UTF8String];
       DYLog();
 
-      [(DYEmbeddedDaemon *)self terminate:1, v23];
+      [(DYEmbeddedDaemon *)self terminate:1, uTF8String];
     }
 
     v29[0] = _NSConcreteStackBlock;
@@ -414,35 +414,35 @@ LABEL_13:
     v29[4] = self;
     [v17 setCancellationHandler:v29];
     [v17 resume];
-    v20 = [(DYTransport *)self->_helperTransport connect];
-    [v20 timeoutAfter:0 label:500.0];
+    connect = [(DYTransport *)self->_helperTransport connect];
+    [connect timeoutAfter:0 label:500.0];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100002EFC;
     v24[3] = &unk_10000C700;
-    v21 = v20;
+    v21 = connect;
     v25 = v21;
-    v26 = self;
+    selfCopy = self;
     v27 = v8;
-    v28 = v7;
+    v28 = serverCopy;
     [v21 notifyOnQueue:&_dispatch_main_q handler:v24];
   }
 
   return v13;
 }
 
-- (BOOL)launchInferior:(id)a3 finalEnvironment:(id *)a4 error:(id *)a5
+- (BOOL)launchInferior:(id)inferior finalEnvironment:(id *)environment error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 objectForKey:kDYGuestAppLaunchBundleIdentifierKey];
-  v45 = [v8 objectForKey:kDYGuestAppLaunchPathKey];
-  v10 = [v8 objectForKey:kDYGuestAppLaunchEnvironmentKey];
+  inferiorCopy = inferior;
+  v9 = [inferiorCopy objectForKey:kDYGuestAppLaunchBundleIdentifierKey];
+  v45 = [inferiorCopy objectForKey:kDYGuestAppLaunchPathKey];
+  v10 = [inferiorCopy objectForKey:kDYGuestAppLaunchEnvironmentKey];
   v11 = [v10 mutableCopy];
 
-  v12 = [v8 objectForKey:kDYGuestAppLaunchArgumentsKey];
+  v12 = [inferiorCopy objectForKey:kDYGuestAppLaunchArgumentsKey];
   v43 = [v12 mutableCopy];
 
-  v13 = [v8 objectForKey:kDYGuestAppLaunchCurrentDirectoryKey];
+  v13 = [inferiorCopy objectForKey:kDYGuestAppLaunchCurrentDirectoryKey];
   v42 = [v13 mutableCopy];
 
   v14 = [(__CFString *)v9 isEqualToString:@"com.apple.gputools.ui-server"];
@@ -454,24 +454,24 @@ LABEL_13:
     v45 = v13;
   }
 
-  v44 = [v8 objectForKey:kDYGuestAppLaunchReplayer];
+  v44 = [inferiorCopy objectForKey:kDYGuestAppLaunchReplayer];
   if (v44)
   {
-    v13 = [v8 objectForKeyedSubscript:kDYGuestAppLaunchCapture];
-    v15 = [v13 BOOLValue];
+    v13 = [inferiorCopy objectForKeyedSubscript:kDYGuestAppLaunchCapture];
+    bOOLValue = [v13 BOOLValue];
   }
 
   else
   {
-    v15 = 1;
+    bOOLValue = 1;
   }
 
-  [(DYEmbeddedDaemon *)self setShouldLoadCapture:v15];
+  [(DYEmbeddedDaemon *)self setShouldLoadCapture:bOOLValue];
   if (v44)
   {
   }
 
-  v16 = [v8 objectForKeyedSubscript:kDYGuestAppLaunchDiagnostics];
+  v16 = [inferiorCopy objectForKeyedSubscript:kDYGuestAppLaunchDiagnostics];
   -[DYEmbeddedDaemon setShouldLoadDiagnostics:](self, "setShouldLoadDiagnostics:", [v16 BOOLValue]);
 
   if (v14)
@@ -483,14 +483,14 @@ LABEL_13:
       v41 = [v11 objectForKey:@"GT_HOST_URL_MTL_DIAGNOSTICS"];
       v18 = [NSURL URLWithString:v17];
       v19 = [NSURL URLWithString:v41];
-      v20 = [(DYEmbeddedDaemon *)self transport];
+      transport = [(DYEmbeddedDaemon *)self transport];
       v21 = v18;
       v22 = v19;
-      v23 = [(DYEmbeddedDaemon *)self shouldLoadCapture];
-      v24 = [(DYEmbeddedDaemon *)self shouldLoadDiagnostics];
-      if (v20)
+      shouldLoadCapture = [(DYEmbeddedDaemon *)self shouldLoadCapture];
+      shouldLoadDiagnostics = [(DYEmbeddedDaemon *)self shouldLoadDiagnostics];
+      if (transport)
       {
-        self = [v20 createNewSharedMemoryTransportWithURLs:v21 uniqueIdentifier:v22 loadCapture:0 loadDiagnostics:{v23, v24}];
+        self = [transport createNewSharedMemoryTransportWithURLs:v21 uniqueIdentifier:v22 loadCapture:0 loadDiagnostics:{shouldLoadCapture, shouldLoadDiagnostics}];
       }
 
       else
@@ -522,7 +522,7 @@ LABEL_45:
 
   [v26 intValue];
   DYSetGTMTLCaptureMode();
-  if (![(DYEmbeddedDaemon *)self createInferiorTransportAndSetEnvironment:v11 uniqueIdentifier:0 error:a5])
+  if (![(DYEmbeddedDaemon *)self createInferiorTransportAndSetEnvironment:v11 uniqueIdentifier:0 error:error])
   {
 
     goto LABEL_29;
@@ -583,7 +583,7 @@ LABEL_45:
       }
     }
 
-    [(DYEmbeddedDaemon *)self setInferiorPid:[(DYEmbeddedDaemon *)self launchInferiorWithIdentifer:v9 environment:v11 arguments:v43 error:a5]];
+    [(DYEmbeddedDaemon *)self setInferiorPid:[(DYEmbeddedDaemon *)self launchInferiorWithIdentifer:v9 environment:v11 arguments:v43 error:error]];
     if ([(DYEmbeddedDaemon *)self inferiorPid]>= 1)
     {
       objc_storeStrong(&self->_guestAppIdentifier, v9);
@@ -595,14 +595,14 @@ LABEL_45:
   if (v45)
   {
     v9 = 0;
-    [(DYEmbeddedDaemon *)self setInferiorPid:[(DYEmbeddedDaemon *)self launchInferiorWithPath:v45 arguments:v43 environment:v11 workingDirectory:v42 error:a5]];
+    [(DYEmbeddedDaemon *)self setInferiorPid:[(DYEmbeddedDaemon *)self launchInferiorWithPath:v45 arguments:v43 environment:v11 workingDirectory:v42 error:error]];
 LABEL_40:
     if ([(DYEmbeddedDaemon *)self inferiorPid]>= 1)
     {
-      if (a4)
+      if (environment)
       {
         v37 = v11;
-        *a4 = v11;
+        *environment = v11;
       }
 
       [(DYEmbeddedDaemon *)self setOwnsInferior:1];
@@ -620,25 +620,25 @@ LABEL_40:
   return result;
 }
 
-- (id)processApplication:(id)a3
+- (id)processApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = objc_opt_new();
-  v5 = [v3 bundleURL];
-  v6 = [v5 path];
+  bundleURL = [applicationCopy bundleURL];
+  path = [bundleURL path];
 
-  v7 = [v3 bundleIdentifier];
-  [v4 setObject:v7 forKeyedSubscript:@"bundleIdentifier"];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  [v4 setObject:bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
 
-  v8 = [v3 localizedName];
-  [v4 setObject:v8 forKeyedSubscript:@"title"];
+  localizedName = [applicationCopy localizedName];
+  [v4 setObject:localizedName forKeyedSubscript:@"title"];
 
-  if (v6)
+  if (path)
   {
-    [v4 setObject:v6 forKeyedSubscript:@"fullpath"];
+    [v4 setObject:path forKeyedSubscript:@"fullpath"];
   }
 
-  if (!CFStringGetFileSystemRepresentation(v6, buffer, 1024) || stat(buffer, &v22) == -1)
+  if (!CFStringGetFileSystemRepresentation(path, buffer, 1024) || stat(buffer, &v22) == -1)
   {
     v11 = 0;
   }
@@ -728,7 +728,7 @@ LABEL_40:
   v13 = 3221225472;
   v14 = sub_100003F80;
   v15 = &unk_10000C748;
-  v16 = self;
+  selfCopy = self;
   v5 = v3;
   v17 = v5;
   [v4 enumerateBundlesOfType:1 block:&v12];
@@ -740,7 +740,7 @@ LABEL_40:
     [v6 setObject:@"com.apple.gputools.ui-server" forKey:@"bundleIdentifier"];
     [v6 setObject:@"UI Server" forKey:@"title"];
     v7 = [NSDictionary alloc];
-    v8 = [v7 initWithObjectsAndKeys:{@"Binary Launch", @"title", @"com.apple.gputools.BinaryLaunch", @"bundleIdentifier", 0, v12, v13, v14, v15, v16}];
+    v8 = [v7 initWithObjectsAndKeys:{@"Binary Launch", @"title", @"com.apple.gputools.BinaryLaunch", @"bundleIdentifier", 0, v12, v13, v14, v15, selfCopy}];
     [v5 addObject:v8];
   }
 
@@ -750,15 +750,15 @@ LABEL_40:
   return v5;
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 kind];
-  if (v5 > 1291)
+  messageCopy = message;
+  kind = [messageCopy kind];
+  if (kind > 1291)
   {
-    if (v5 > 1537)
+    if (kind > 1537)
     {
-      if (v5 == 1538)
+      if (kind == 1538)
       {
         if ([(DYEmbeddedDaemon *)self inferiorPid])
         {
@@ -768,51 +768,51 @@ LABEL_40:
           block[2] = sub_100004934;
           block[3] = &unk_10000C770;
           block[4] = self;
-          v52 = v4;
+          v52 = messageCopy;
           dispatch_async(symbolicatorQueue, block);
         }
 
         goto LABEL_57;
       }
 
-      if (v5 != 2304)
+      if (kind != 2304)
       {
         goto LABEL_33;
       }
 
       v22 = DYMobileArchivesDirectory();
-      v6 = [NSURL fileURLWithPath:v22 isDirectory:1];
+      objectPayload = [NSURL fileURLWithPath:v22 isDirectory:1];
 
       v23 = [DYFSStreamer alloc];
-      v24 = [(DYEmbeddedDaemon *)self transport];
-      v7 = [v23 initWithURL:v6 transport:v24 asSender:0];
+      transport = [(DYEmbeddedDaemon *)self transport];
+      v7 = [v23 initWithURL:objectPayload transport:transport asSender:0];
 
       if (v7)
       {
         [v7 setOwner:@"mobile"];
-        v14 = [v7 receiveTransfer:v4];
+        transport2 = [v7 receiveTransfer:messageCopy];
       }
 
       else
       {
-        v14 = [(DYEmbeddedDaemon *)self transport];
-        [DYFSStreamer denyTransfer:v4 transport:v14];
+        transport2 = [(DYEmbeddedDaemon *)self transport];
+        [DYFSStreamer denyTransfer:messageCopy transport:transport2];
       }
     }
 
     else
     {
-      if (v5 == 1292)
+      if (kind == 1292)
       {
-        v6 = [v4 objectPayload];
-        v30 = [v6 intValue];
-        if (v30 != [(DYEmbeddedDaemon *)self inferiorPid]&& [(DYEmbeddedDaemon *)self inferiorPid]> 0 || !v30)
+        objectPayload = [messageCopy objectPayload];
+        intValue = [objectPayload intValue];
+        if (intValue != [(DYEmbeddedDaemon *)self inferiorPid]&& [(DYEmbeddedDaemon *)self inferiorPid]> 0 || !intValue)
         {
           DYLog();
-          [(DYEmbeddedDaemon *)self terminate:1, v30];
+          [(DYEmbeddedDaemon *)self terminate:1, intValue];
         }
 
-        if (v30 == [(DYEmbeddedDaemon *)self inferiorPid])
+        if (intValue == [(DYEmbeddedDaemon *)self inferiorPid])
         {
           if (!self->_guestAppIdentifier)
           {
@@ -823,15 +823,15 @@ LABEL_40:
         else
         {
           v53[0] = 0;
-          v33 = task_for_pid(mach_task_self_, v30, v53);
+          v33 = task_for_pid(mach_task_self_, intValue, v53);
           if (v33)
           {
-            v47 = v30;
+            v47 = intValue;
             v48 = mach_error_string(v33);
             DYLog();
           }
 
-          [(DYEmbeddedDaemon *)self setInferiorPid:v30, v47, v48];
+          [(DYEmbeddedDaemon *)self setInferiorPid:intValue, v47, v48];
           [(DYEmbeddedDaemon *)self observeInferior];
           v34 = objc_alloc_init(DYGPUStatsReport);
           statsReport = self->_statsReport;
@@ -848,12 +848,12 @@ LABEL_40:
         goto LABEL_56;
       }
 
-      if (v5 != 1294)
+      if (kind != 1294)
       {
         goto LABEL_33;
       }
 
-      v6 = objc_opt_new();
+      objectPayload = objc_opt_new();
       v7 = objc_opt_new();
       for (i = 0; i != 5; ++i)
       {
@@ -867,31 +867,31 @@ LABEL_40:
 
       if ([v7 count])
       {
-        [v6 setObject:v7 forKey:@"screen-dimensions"];
+        [objectPayload setObject:v7 forKey:@"screen-dimensions"];
       }
 
-      v11 = [v4 attributeForKey:@"enable-metal-info"];
-      v12 = [v11 BOOLValue];
+      v11 = [messageCopy attributeForKey:@"enable-metal-info"];
+      bOOLValue = [v11 BOOLValue];
 
       v13 = copy_metal_version();
-      [v6 setObject:v13 forKey:@"metal_version"];
+      [objectPayload setObject:v13 forKey:@"metal_version"];
 
-      v14 = +[NSMutableArray array];
+      transport2 = +[NSMutableArray array];
       v15 = 0;
       v16 = 1;
       do
       {
         v17 = v16;
-        if (((v12 | v16) & 1) == 0)
+        if (((bOOLValue | v16) & 1) == 0)
         {
           break;
         }
 
         v18 = [(DYEmbeddedDaemon *)self captureAPISupportForAPI:*(&unk_100008F60 + v15)];
-        v19 = [v18 graphicsAPIInfo];
-        if (v19)
+        graphicsAPIInfo = [v18 graphicsAPIInfo];
+        if (graphicsAPIInfo)
         {
-          [v14 addObjectsFromArray:v19];
+          [transport2 addObjectsFromArray:graphicsAPIInfo];
         }
 
         v16 = 0;
@@ -899,27 +899,27 @@ LABEL_40:
       }
 
       while ((v17 & 1) != 0);
-      [v6 setObject:v14 forKey:@"gputools.contexts-info"];
-      [v6 setObject:&off_10000D2B0 forKeyedSubscript:@"nativePointerSize"];
-      v20 = [DYTransportMessage messageWithKind:1294 objectPayload:v6];
-      v21 = [(DYEmbeddedDaemon *)self transport];
-      [v21 send:v20 inReplyTo:v4 error:0];
+      [objectPayload setObject:transport2 forKey:@"gputools.contexts-info"];
+      [objectPayload setObject:&off_10000D2B0 forKeyedSubscript:@"nativePointerSize"];
+      v20 = [DYTransportMessage messageWithKind:1294 objectPayload:objectPayload];
+      transport3 = [(DYEmbeddedDaemon *)self transport];
+      [transport3 send:v20 inReplyTo:messageCopy error:0];
     }
 
     goto LABEL_54;
   }
 
-  if (v5 > 1288)
+  if (kind > 1288)
   {
-    if (v5 != 1289)
+    if (kind != 1289)
     {
-      if (v5 != 1290)
+      if (kind != 1290)
       {
         goto LABEL_33;
       }
 
-      v6 = [NSBundle bundleWithIdentifier:@"com.apple.GPUTools"];
-      v7 = [v6 URLForResource:@"version" withExtension:@"plist"];
+      objectPayload = [NSBundle bundleWithIdentifier:@"com.apple.GPUTools"];
+      v7 = [objectPayload URLForResource:@"version" withExtension:@"plist"];
       if (v7)
       {
         v49 = [[NSDictionary alloc] initWithContentsOfURL:v7];
@@ -948,22 +948,22 @@ LABEL_40:
       v40 = [NSNumber numberWithUnsignedInt:v38];
       v41 = [NSNumber numberWithUnsignedInt:v37];
       v42 = [NSNumber numberWithBool:v39];
-      v43 = [v6 infoDictionary];
-      v44 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v40, @"interpose_version_metal", v41, @"interpose_version", v42, @"gl-dispatch-table-size-matches", v43, @"info", v49, @"version", 0];
+      infoDictionary = [objectPayload infoDictionary];
+      v44 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v40, @"interpose_version_metal", v41, @"interpose_version", v42, @"gl-dispatch-table-size-matches", infoDictionary, @"info", v49, @"version", 0];
 
       plist_filter(v44);
       v45 = [DYTransportMessage messageWithKind:1290 plistPayload:v44];
-      v46 = [(DYEmbeddedDaemon *)self transport];
-      [v46 send:v45 inReplyTo:v4 error:0];
+      transport4 = [(DYEmbeddedDaemon *)self transport];
+      [transport4 send:v45 inReplyTo:messageCopy error:0];
 
       goto LABEL_55;
     }
 
     v31 = [(DYEmbeddedDaemon *)self bringAppToForeground:self->_guestAppIdentifier];
-    v6 = [(DYEmbeddedDaemon *)self transport];
+    objectPayload = [(DYEmbeddedDaemon *)self transport];
     v7 = [NSNumber numberWithBool:v31];
-    v14 = [DYTransportMessage messageWithKind:1289 attributes:0 objectPayload:v7];
-    [v6 send:v14 inReplyTo:v4 error:0];
+    transport2 = [DYTransportMessage messageWithKind:1289 attributes:0 objectPayload:v7];
+    [objectPayload send:transport2 inReplyTo:messageCopy error:0];
 LABEL_54:
 
 LABEL_55:
@@ -972,40 +972,40 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  if (v5 == 264)
+  if (kind == 264)
   {
     v25 = self->_statsReport;
     if (v25)
     {
-      v26 = [(DYGPUStatsReport *)v25 lastStatsReport];
-      v27 = [v26 copy];
+      lastStatsReport = [(DYGPUStatsReport *)v25 lastStatsReport];
+      v27 = [lastStatsReport copy];
 
       if (v27)
       {
         v28 = [DYTransportMessage messageWithKind:1296 objectPayload:v27];
-        v29 = [(DYEmbeddedDaemon *)self transport];
-        [v29 send:v28 error:0];
+        transport5 = [(DYEmbeddedDaemon *)self transport];
+        [transport5 send:v28 error:0];
       }
     }
 
     goto LABEL_33;
   }
 
-  if (v5 != 1288)
+  if (kind != 1288)
   {
 LABEL_33:
     v50.receiver = self;
     v50.super_class = DYEmbeddedDaemon;
-    [(DYEmbeddedDaemon *)&v50 handleMessage:v4];
+    [(DYEmbeddedDaemon *)&v50 handleMessage:messageCopy];
   }
 
 LABEL_57:
 }
 
-- (void)terminate:(int)a3
+- (void)terminate:(int)terminate
 {
   DYLog();
-  v4 = [(DYEmbeddedDaemon *)self inferiorPid];
+  inferiorPid = [(DYEmbeddedDaemon *)self inferiorPid];
   [(DYEmbeddedDaemon *)self setInferiorPid:0];
   statsReport = self->_statsReport;
   if (statsReport)
@@ -1015,25 +1015,25 @@ LABEL_57:
     self->_statsReport = 0;
   }
 
-  if (v4 >= 1)
+  if (inferiorPid >= 1)
   {
     if ([(DYEmbeddedDaemon *)self ownsInferior])
     {
-      kill(v4, 9);
+      kill(inferiorPid, 9);
     }
 
     if ([(DYEmbeddedDaemon *)self capturingInferior])
     {
-      kill(v4, 9);
+      kill(inferiorPid, 9);
     }
   }
 
   [(DYTransport *)self->_helperTransport invalidate];
-  v7 = [(DYEmbeddedDaemon *)self transport];
-  [v7 destroySharedMemoryTransport];
+  transport = [(DYEmbeddedDaemon *)self transport];
+  [transport destroySharedMemoryTransport];
 
-  v8 = [(DYEmbeddedDaemon *)self transport];
-  [v8 invalidate];
+  transport2 = [(DYEmbeddedDaemon *)self transport];
+  [transport2 invalidate];
 
   v10.receiver = self;
   v10.super_class = DYEmbeddedDaemon;

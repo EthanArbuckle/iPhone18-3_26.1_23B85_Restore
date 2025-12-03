@@ -12,14 +12,14 @@
   v4 = [(CoreDAVSRVResourceRecord *)&v9 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVSRVResourceRecord *)self serviceString];
-  [v3 appendFormat:@"\n  Service string: [%@]", v5];
+  serviceString = [(CoreDAVSRVResourceRecord *)self serviceString];
+  [v3 appendFormat:@"\n  Service string: [%@]", serviceString];
 
-  v6 = [(CoreDAVSRVResourceRecord *)self port];
-  [v3 appendFormat:@"\n  Port: [%@]", v6];
+  port = [(CoreDAVSRVResourceRecord *)self port];
+  [v3 appendFormat:@"\n  Port: [%@]", port];
 
-  v7 = [(CoreDAVSRVResourceRecord *)self target];
-  [v3 appendFormat:@"\n  Target: [%@]", v7];
+  target = [(CoreDAVSRVResourceRecord *)self target];
+  [v3 appendFormat:@"\n  Target: [%@]", target];
 
   return v3;
 }

@@ -1,89 +1,89 @@
 @interface INObjectSection
-- (INObjectSection)initWithCoder:(id)a3;
-- (INObjectSection)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 image:(id)a6 items:(id)a7;
+- (INObjectSection)initWithCoder:(id)coder;
+- (INObjectSection)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle image:(id)image items:(id)items;
 - (INObjectSection)initWithTitle:(NSString *)title items:(NSArray *)items;
-- (INObjectSection)initWithTitle:(id)a3 subtitle:(id)a4 image:(id)a5 items:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (INObjectSection)initWithTitle:(id)title subtitle:(id)subtitle image:(id)image items:(id)items;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INObjectSection
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_image forKey:@"image"];
-  [v5 encodeObject:self->_items forKey:@"items"];
-  [v5 encodeObject:self->_identifier forKey:@"_identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_image forKey:@"image"];
+  [coderCopy encodeObject:self->_items forKey:@"items"];
+  [coderCopy encodeObject:self->_identifier forKey:@"_identifier"];
 }
 
-- (INObjectSection)initWithCoder:(id)a3
+- (INObjectSection)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"title"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"title"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"subtitle"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"subtitle"];
 
-  v13 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
   v14 = +[INSchema _supportedClasses];
   v25 = objc_opt_class();
   v26 = objc_opt_class();
   v27 = objc_opt_class();
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:3];
   v16 = [v14 setByAddingObjectsFromArray:v15];
-  v17 = [v5 decodeObjectOfClasses:v16 forKey:@"items"];
+  v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"items"];
 
   v18 = MEMORY[0x1E695DFD8];
   v19 = objc_opt_class();
   v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0, v25, v26}];
-  v21 = [v5 decodeObjectOfClasses:v20 forKey:@"_identifier"];
+  v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"_identifier"];
 
   if (v17)
   {
     self = [(INObjectSection *)self initWithIdentifier:v21 title:v8 subtitle:v12 image:v13 items:v17];
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
-- (INObjectSection)initWithTitle:(id)a3 subtitle:(id)a4 image:(id)a5 items:(id)a6
+- (INObjectSection)initWithTitle:(id)title subtitle:(id)subtitle image:(id)image items:(id)items
 {
-  if (a3)
+  if (title)
   {
-    v11 = a6;
-    v12 = a5;
-    v13 = a4;
-    v14 = [a3 copy];
+    itemsCopy = items;
+    imageCopy = image;
+    subtitleCopy = subtitle;
+    v14 = [title copy];
   }
 
   else
   {
     v15 = MEMORY[0x1E696AFB0];
-    v16 = a6;
-    v17 = a5;
-    v18 = a4;
-    v19 = [v15 UUID];
-    v20 = [v19 UUIDString];
-    v14 = [v20 copy];
+    itemsCopy2 = items;
+    imageCopy2 = image;
+    subtitleCopy2 = subtitle;
+    uUID = [v15 UUID];
+    uUIDString = [uUID UUIDString];
+    v14 = [uUIDString copy];
   }
 
-  v21 = [(INObjectSection *)self initWithIdentifier:v14 title:a3 subtitle:a4 image:a5 items:a6];
+  v21 = [(INObjectSection *)self initWithIdentifier:v14 title:title subtitle:subtitle image:image items:items];
 
   return v21;
 }
@@ -100,9 +100,9 @@
   {
     v9 = MEMORY[0x1E696AFB0];
     v10 = items;
-    v11 = [v9 UUID];
-    v12 = [v11 UUIDString];
-    v8 = [v12 copy];
+    uUID = [v9 UUID];
+    uUIDString = [uUID UUIDString];
+    v8 = [uUIDString copy];
   }
 
   v13 = [(INObjectSection *)self initWithIdentifier:v8 title:title subtitle:0 image:0 items:items];
@@ -110,35 +110,35 @@
   return v13;
 }
 
-- (INObjectSection)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 image:(id)a6 items:(id)a7
+- (INObjectSection)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle image:(id)image items:(id)items
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
+  itemsCopy = items;
   v29.receiver = self;
   v29.super_class = INObjectSection;
   v17 = [(INObjectSection *)&v29 init];
   if (v17)
   {
-    v18 = [v13 copy];
+    v18 = [titleCopy copy];
     title = v17->_title;
     v17->_title = v18;
 
-    v20 = [v16 copy];
+    v20 = [itemsCopy copy];
     items = v17->_items;
     v17->_items = v20;
 
-    v22 = [v14 copy];
+    v22 = [subtitleCopy copy];
     subtitle = v17->_subtitle;
     v17->_subtitle = v22;
 
-    v24 = [v15 copy];
+    v24 = [imageCopy copy];
     image = v17->_image;
     v17->_image = v24;
 
-    v26 = [v12 copy];
+    v26 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v26;
   }

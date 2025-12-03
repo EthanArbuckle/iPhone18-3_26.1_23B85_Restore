@@ -1,17 +1,17 @@
 @interface SDAirDropMoveToAppShareSheet
 - (_TtC16DaemoniOSLibrary28SDAirDropMoveToAppShareSheet)init;
-- (void)showShareSheetWith:(id)a3 completion:(id)a4;
+- (void)showShareSheetWith:(id)with completion:(id)completion;
 @end
 
 @implementation SDAirDropMoveToAppShareSheet
 
-- (void)showShareSheetWith:(id)a3 completion:(id)a4
+- (void)showShareSheetWith:(id)with completion:(id)completion
 {
   v6 = sub_10028088C(&qword_100976160, &qword_1007F8770);
   v7 = *(*(v6 - 8) + 64);
   __chkstk_darwin(v6 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   type metadata accessor for URL();
   v11 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = swift_allocObject();
@@ -25,7 +25,7 @@
   v14[5] = v11;
   v14[6] = sub_10066E1F8;
   v14[7] = v12;
-  v15 = self;
+  selfCopy = self;
   sub_1002B3098(0, 0, v9, &unk_10080F1E8, v14);
 }
 

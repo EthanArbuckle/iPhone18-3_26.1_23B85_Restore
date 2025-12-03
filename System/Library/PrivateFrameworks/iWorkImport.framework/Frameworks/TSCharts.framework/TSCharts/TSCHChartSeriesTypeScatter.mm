@@ -5,7 +5,7 @@
 - (id)p_supportedSymbolsIfSymbolsSupported;
 - (id)propertiesForReferenceColors;
 - (id)userInterfaceName;
-- (unsigned)filterChartLabelPosition:(unsigned int)a3;
+- (unsigned)filterChartLabelPosition:(unsigned int)position;
 @end
 
 @implementation TSCHChartSeriesTypeScatter
@@ -30,12 +30,12 @@
   return v2;
 }
 
-- (unsigned)filterChartLabelPosition:(unsigned int)a3
+- (unsigned)filterChartLabelPosition:(unsigned int)position
 {
-  v3 = a3 & 0xFFFFFFBE;
-  if ((~a3 & 0xC) == 0)
+  v3 = position & 0xFFFFFFBE;
+  if ((~position & 0xC) == 0)
   {
-    v3 = a3 & 0xFFFFFFB6;
+    v3 = position & 0xFFFFFFB6;
   }
 
   if ((~v3 & 0x30) == 0)

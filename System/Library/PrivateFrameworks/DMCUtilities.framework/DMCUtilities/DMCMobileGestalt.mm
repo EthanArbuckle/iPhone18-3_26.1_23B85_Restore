@@ -10,7 +10,7 @@
 + (BOOL)isPhone;
 + (BOOL)isVisionDevice;
 + (BOOL)isWatch;
-+ (id)_overridableGestaltForKey:(__CFString *)a3 expectedClass:(Class)a4;
++ (id)_overridableGestaltForKey:(__CFString *)key expectedClass:(Class)class;
 + (id)availableCapacity;
 + (id)buildVersion;
 + (id)chipID;
@@ -34,7 +34,7 @@
 
 @implementation DMCMobileGestalt
 
-+ (id)_overridableGestaltForKey:(__CFString *)a3 expectedClass:(Class)a4
++ (id)_overridableGestaltForKey:(__CFString *)key expectedClass:(Class)class
 {
   v24 = *MEMORY[0x1E69E9840];
   v6 = MGCopyAnswer();
@@ -48,7 +48,7 @@
         v8 = v7;
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
-        v11 = NSStringFromClass(a4);
+        v11 = NSStringFromClass(class);
         v20 = 138543618;
         v21 = v10;
         v22 = 2114;
@@ -58,7 +58,7 @@
     }
   }
 
-  v12 = [DMCFeatureOverrides gestaltOverrideForKey:a3 withDefaultValue:v6];
+  v12 = [DMCFeatureOverrides gestaltOverrideForKey:key withDefaultValue:v6];
   if (v12 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v13 = *DMCLogObjects();
@@ -67,7 +67,7 @@
       v14 = v13;
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = NSStringFromClass(a4);
+      v17 = NSStringFromClass(class);
       v20 = 138543618;
       v21 = v16;
       v22 = 2114;
@@ -85,7 +85,7 @@
 
 + (id)deviceClass
 {
-  v2 = [a1 _overridableGestaltForKey:@"DeviceClass" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"DeviceClass" expectedClass:objc_opt_class()];
   if (!v2)
   {
     v2 = @"iPhone";
@@ -100,7 +100,7 @@
   block[1] = 3221225472;
   block[2] = __25__DMCMobileGestalt_isPad__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isPad_onceToken != -1)
   {
     dispatch_once(&isPad_onceToken, block);
@@ -121,7 +121,7 @@ void __25__DMCMobileGestalt_isPad__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __29__DMCMobileGestalt_isAppleTV__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isAppleTV_onceToken != -1)
   {
     dispatch_once(&isAppleTV_onceToken, block);
@@ -142,7 +142,7 @@ void __29__DMCMobileGestalt_isAppleTV__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __27__DMCMobileGestalt_isWatch__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isWatch_onceToken != -1)
   {
     dispatch_once(&isWatch_onceToken, block);
@@ -163,7 +163,7 @@ void __27__DMCMobileGestalt_isWatch__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __29__DMCMobileGestalt_isHomePod__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isHomePod_onceToken != -1)
   {
     dispatch_once(&isHomePod_onceToken, block);
@@ -184,7 +184,7 @@ void __29__DMCMobileGestalt_isHomePod__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __27__DMCMobileGestalt_isPhone__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isPhone_onceToken != -1)
   {
     dispatch_once(&isPhone_onceToken, block);
@@ -205,7 +205,7 @@ void __27__DMCMobileGestalt_isPhone__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__DMCMobileGestalt_isVisionDevice__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isVisionDevice_onceToken != -1)
   {
     dispatch_once(&isVisionDevice_onceToken, block);
@@ -222,7 +222,7 @@ void __34__DMCMobileGestalt_isVisionDevice__block_invoke(uint64_t a1)
 
 + (id)deviceUDID
 {
-  v2 = [a1 _overridableGestaltForKey:@"UniqueDeviceID" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"UniqueDeviceID" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -241,7 +241,7 @@ void __34__DMCMobileGestalt_isVisionDevice__block_invoke(uint64_t a1)
 
 + (id)serialNumber
 {
-  v2 = [a1 _overridableGestaltForKey:@"SerialNumber" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"SerialNumber" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -260,7 +260,7 @@ void __34__DMCMobileGestalt_isVisionDevice__block_invoke(uint64_t a1)
 
 + (id)productName
 {
-  v2 = [a1 _overridableGestaltForKey:@"ProductName" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"ProductName" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -279,7 +279,7 @@ void __34__DMCMobileGestalt_isVisionDevice__block_invoke(uint64_t a1)
 
 + (id)modelNumber
 {
-  v2 = [a1 _overridableGestaltForKey:@"ModelNumber" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"ModelNumber" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -298,7 +298,7 @@ void __34__DMCMobileGestalt_isVisionDevice__block_invoke(uint64_t a1)
 
 + (id)deviceColor
 {
-  v2 = [a1 _overridableGestaltForKey:@"DeviceColor" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"DeviceColor" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -317,7 +317,7 @@ void __34__DMCMobileGestalt_isVisionDevice__block_invoke(uint64_t a1)
 
 + (id)regionCode
 {
-  v2 = [a1 _overridableGestaltForKey:@"RegionCode" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"RegionCode" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -336,7 +336,7 @@ void __34__DMCMobileGestalt_isVisionDevice__block_invoke(uint64_t a1)
 
 + (id)regionInfo
 {
-  v2 = [a1 _overridableGestaltForKey:@"RegionInfo" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"RegionInfo" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -355,7 +355,7 @@ void __34__DMCMobileGestalt_isVisionDevice__block_invoke(uint64_t a1)
 
 + (id)productType
 {
-  v2 = [a1 _overridableGestaltForKey:@"ProductType" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"ProductType" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -376,15 +376,15 @@ void __34__DMCMobileGestalt_isVisionDevice__block_invoke(uint64_t a1)
 {
   v3 = objc_opt_class();
 
-  return [a1 _overridableGestaltForKey:@"ChipID" expectedClass:v3];
+  return [self _overridableGestaltForKey:@"ChipID" expectedClass:v3];
 }
 
 + (BOOL)hasInternetTetheringCapability
 {
-  v2 = [a1 _overridableGestaltForKey:@"personal-hotspot" expectedClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  v2 = [self _overridableGestaltForKey:@"personal-hotspot" expectedClass:objc_opt_class()];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (BOOL)hasTelephonyCapability
@@ -393,7 +393,7 @@ void __34__DMCMobileGestalt_isVisionDevice__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__DMCMobileGestalt_hasTelephonyCapability__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (hasTelephonyCapability_onceToken != -1)
   {
     dispatch_once(&hasTelephonyCapability_onceToken, block);
@@ -414,7 +414,7 @@ void __42__DMCMobileGestalt_hasTelephonyCapability__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__DMCMobileGestalt_hasCellularDataCapability__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (hasCellularDataCapability_onceToken != -1)
   {
     dispatch_once(&hasCellularDataCapability_onceToken, block);
@@ -431,23 +431,23 @@ void __45__DMCMobileGestalt_hasCellularDataCapability__block_invoke(uint64_t a1)
 
 + (BOOL)hasBattery
 {
-  v2 = [a1 _overridableGestaltForKey:@"pX2TxZTxWKS7QSXZDC/Z6A" expectedClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  v2 = [self _overridableGestaltForKey:@"pX2TxZTxWKS7QSXZDC/Z6A" expectedClass:objc_opt_class()];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (BOOL)hasBatteryInformationCapability
 {
-  v2 = [a1 _overridableGestaltForKey:@"DeviceSupportsBatteryInformation" expectedClass:objc_opt_class()];
-  v3 = [v2 BOOLValue];
+  v2 = [self _overridableGestaltForKey:@"DeviceSupportsBatteryInformation" expectedClass:objc_opt_class()];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (id)marketingVersion
 {
-  v2 = [a1 _overridableGestaltForKey:@"ProductVersion" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"ProductVersion" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -466,7 +466,7 @@ void __45__DMCMobileGestalt_hasCellularDataCapability__block_invoke(uint64_t a1)
 
 + (id)buildVersion
 {
-  v2 = [a1 _overridableGestaltForKey:@"BuildVersion" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"BuildVersion" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -487,12 +487,12 @@ void __45__DMCMobileGestalt_hasCellularDataCapability__block_invoke(uint64_t a1)
 {
   v3 = objc_opt_class();
 
-  return [a1 _overridableGestaltForKey:@"ProductVersionExtra" expectedClass:v3];
+  return [self _overridableGestaltForKey:@"ProductVersionExtra" expectedClass:v3];
 }
 
 + (id)supplementalBuildVersion
 {
-  v2 = [a1 _overridableGestaltForKey:@"SupplementalBuildVersion" expectedClass:objc_opt_class()];
+  v2 = [self _overridableGestaltForKey:@"SupplementalBuildVersion" expectedClass:objc_opt_class()];
   v3 = v2;
   if (v2)
   {
@@ -511,14 +511,14 @@ void __45__DMCMobileGestalt_hasCellularDataCapability__block_invoke(uint64_t a1)
 
 + (id)supplementalMarketingVersion
 {
-  v3 = [a1 marketingVersion];
-  v4 = [v3 mutableCopy];
+  marketingVersion = [self marketingVersion];
+  v4 = [marketingVersion mutableCopy];
 
-  v5 = [a1 supplementalMarketingVersionExtra];
-  v6 = v5;
-  if (v5)
+  supplementalMarketingVersionExtra = [self supplementalMarketingVersionExtra];
+  v6 = supplementalMarketingVersionExtra;
+  if (supplementalMarketingVersionExtra)
   {
-    [v4 appendFormat:@" (%@)", v5];
+    [v4 appendFormat:@" (%@)", supplementalMarketingVersionExtra];
   }
 
   return v4;
@@ -528,18 +528,18 @@ void __45__DMCMobileGestalt_hasCellularDataCapability__block_invoke(uint64_t a1)
 {
   v3 = objc_opt_class();
 
-  return [a1 _overridableGestaltForKey:@"DiskUsage" expectedClass:v3];
+  return [self _overridableGestaltForKey:@"DiskUsage" expectedClass:v3];
 }
 
 + (id)deviceCapacity
 {
-  v2 = [a1 diskUsage];
+  diskUsage = [self diskUsage];
   v3 = *MEMORY[0x1E69E5120];
-  v4 = [v2 objectForKey:*MEMORY[0x1E69E5120]];
+  v4 = [diskUsage objectForKey:*MEMORY[0x1E69E5120]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v2 objectForKey:v3];
+    v5 = [diskUsage objectForKey:v3];
   }
 
   else
@@ -552,13 +552,13 @@ void __45__DMCMobileGestalt_hasCellularDataCapability__block_invoke(uint64_t a1)
 
 + (id)diskCapacity
 {
-  v2 = [a1 diskUsage];
+  diskUsage = [self diskUsage];
   v3 = *MEMORY[0x1E69E5128];
-  v4 = [v2 objectForKey:*MEMORY[0x1E69E5128]];
+  v4 = [diskUsage objectForKey:*MEMORY[0x1E69E5128]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v2 objectForKey:v3];
+    v5 = [diskUsage objectForKey:v3];
   }
 
   else
@@ -571,13 +571,13 @@ void __45__DMCMobileGestalt_hasCellularDataCapability__block_invoke(uint64_t a1)
 
 + (id)availableCapacity
 {
-  v2 = [a1 diskUsage];
+  diskUsage = [self diskUsage];
   v3 = *MEMORY[0x1E69E5108];
-  v4 = [v2 objectForKey:*MEMORY[0x1E69E5108]];
+  v4 = [diskUsage objectForKey:*MEMORY[0x1E69E5108]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v2 objectForKey:v3];
+    v5 = [diskUsage objectForKey:v3];
   }
 
   else

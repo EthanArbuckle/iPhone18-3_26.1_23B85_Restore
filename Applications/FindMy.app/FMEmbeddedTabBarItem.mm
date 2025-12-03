@@ -1,5 +1,5 @@
 @interface FMEmbeddedTabBarItem
-- (_TtC6FindMy20FMEmbeddedTabBarItem)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy20FMEmbeddedTabBarItem)initWithFrame:(CGRect)frame;
 - (void)onButtonTapped;
 @end
 
@@ -9,13 +9,13 @@
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = self;
-    sub_100289400(v3);
+    selfCopy = self;
+    sub_100289400(selfCopy);
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC6FindMy20FMEmbeddedTabBarItem)initWithFrame:(CGRect)a3
+- (_TtC6FindMy20FMEmbeddedTabBarItem)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

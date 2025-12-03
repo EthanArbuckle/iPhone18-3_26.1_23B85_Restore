@@ -8,47 +8,47 @@
 
 - (id)vs_dateRoundedToDay
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [v2 components:30 fromDate:a1];
-  [v3 setCalendar:v2];
-  v4 = [v3 date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v3 = [currentCalendar components:30 fromDate:self];
+  [v3 setCalendar:currentCalendar];
+  date = [v3 date];
 
-  if (!v4)
+  if (!date)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [components date] parameter must not be nil."];
   }
 
-  v5 = [v3 date];
+  date2 = [v3 date];
 
-  return v5;
+  return date2;
 }
 
 - (id)vs_dateIncrementedByDays:()VSAdditions
 {
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 dateByAddingUnit:16 value:a3 toDate:a1 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar dateByAddingUnit:16 value:a3 toDate:self options:0];
 
   if (!v6)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [calendar dateByAddingUnit:NSCalendarUnitDay value:days toDate:self options:0] parameter must not be nil."];
   }
 
-  v7 = [v5 dateByAddingUnit:16 value:a3 toDate:a1 options:0];
+  v7 = [currentCalendar dateByAddingUnit:16 value:a3 toDate:self options:0];
 
   return v7;
 }
 
 - (id)vs_dateIncrementedByMinutes:()VSAdditions
 {
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 dateByAddingUnit:64 value:a3 toDate:a1 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v6 = [currentCalendar dateByAddingUnit:64 value:a3 toDate:self options:0];
 
   if (!v6)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [calendar dateByAddingUnit:NSCalendarUnitMinute value:minutes toDate:self options:0] parameter must not be nil."];
   }
 
-  v7 = [v5 dateByAddingUnit:64 value:a3 toDate:a1 options:0];
+  v7 = [currentCalendar dateByAddingUnit:64 value:a3 toDate:self options:0];
 
   return v7;
 }

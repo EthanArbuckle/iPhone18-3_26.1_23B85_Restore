@@ -1,14 +1,14 @@
 @interface IMTransferAgentController
 + (id)sharedInstance;
-- (BOOL)_isAllowlistedURL:(id)a3;
-- (BOOL)_shouldRetryUploadGivenMMCSError:(id)a3 retryAttemptCount:(unint64_t)a4;
-- (void)_receiveFileTransfer:(id)a3 topic:(id)a4 path:(id)a5 requestURLString:(id)a6 ownerID:(id)a7 signature:(id)a8 allowReauthorize:(BOOL)a9 fileSize:(unint64_t)a10 sourceAppID:(id)a11 progressBlock:(id)a12 completionBlock:(id)a13;
-- (void)_sendFilePath:(id)a3 topic:(id)a4 transferID:(id)a5 sourceAppID:(id)a6 retryAttemptCount:(unint64_t)a7 userInfo:(id)a8 progressBlock:(id)a9 completionBlock:(id)a10;
-- (void)cancelSendTransferID:(id)a3;
+- (BOOL)_isAllowlistedURL:(id)l;
+- (BOOL)_shouldRetryUploadGivenMMCSError:(id)error retryAttemptCount:(unint64_t)count;
+- (void)_receiveFileTransfer:(id)transfer topic:(id)topic path:(id)path requestURLString:(id)string ownerID:(id)d signature:(id)signature allowReauthorize:(BOOL)reauthorize fileSize:(unint64_t)self0 sourceAppID:(id)self1 progressBlock:(id)self2 completionBlock:(id)self3;
+- (void)_sendFilePath:(id)path topic:(id)topic transferID:(id)d sourceAppID:(id)iD retryAttemptCount:(unint64_t)count userInfo:(id)info progressBlock:(id)block completionBlock:(id)self0;
+- (void)cancelSendTransferID:(id)d;
 - (void)dealloc;
-- (void)ensureSafeAttachment:(id)a3 topic:(id)a4 withCompletionBlock:(id)a5;
-- (void)receiveFileTransfer:(id)a3 topic:(id)a4 path:(id)a5 requestURLString:(id)a6 ownerID:(id)a7 signature:(id)a8 fileSize:(unint64_t)a9 decryptionKey:(id)a10 sourceAppID:(id)a11 progressBlock:(id)a12 completionBlock:(id)a13;
-- (void)sendFilePath:(id)a3 encrypt:(BOOL)a4 topic:(id)a5 transferID:(id)a6 sourceAppID:(id)a7 userInfo:(id)a8 progressBlock:(id)a9 completionBlock:(id)a10;
+- (void)ensureSafeAttachment:(id)attachment topic:(id)topic withCompletionBlock:(id)block;
+- (void)receiveFileTransfer:(id)transfer topic:(id)topic path:(id)path requestURLString:(id)string ownerID:(id)d signature:(id)signature fileSize:(unint64_t)size decryptionKey:(id)self0 sourceAppID:(id)self1 progressBlock:(id)self2 completionBlock:(id)self3;
+- (void)sendFilePath:(id)path encrypt:(BOOL)encrypt topic:(id)topic transferID:(id)d sourceAppID:(id)iD userInfo:(id)info progressBlock:(id)block completionBlock:(id)self0;
 - (void)warm;
 @end
 
@@ -34,23 +34,23 @@
   [(IMTransferAgentController *)&v3 dealloc];
 }
 
-- (BOOL)_shouldRetryUploadGivenMMCSError:(id)a3 retryAttemptCount:(unint64_t)a4
+- (BOOL)_shouldRetryUploadGivenMMCSError:(id)error retryAttemptCount:(unint64_t)count
 {
-  v5 = a3;
+  errorCopy = error;
   im_assert_primary_queue();
-  if (!v5)
+  if (!errorCopy)
   {
     goto LABEL_10;
   }
 
-  v8 = objc_msgSend_domain(v5, v6, v7);
+  v8 = objc_msgSend_domain(errorCopy, v6, v7);
   if ((objc_msgSend_isEqualToString_(v8, v9, *MEMORY[0x277D25460]) & 1) == 0)
   {
 
     goto LABEL_10;
   }
 
-  v12 = objc_msgSend_code(v5, v10, v11);
+  v12 = objc_msgSend_code(errorCopy, v10, v11);
 
   if (v12 != 4)
   {
@@ -71,7 +71,7 @@ LABEL_10:
 
   v14 = 0;
 LABEL_11:
-  if (a4 < 3)
+  if (count < 3)
   {
     v15 = v14;
   }
@@ -84,16 +84,16 @@ LABEL_11:
   return v15;
 }
 
-- (void)_sendFilePath:(id)a3 topic:(id)a4 transferID:(id)a5 sourceAppID:(id)a6 retryAttemptCount:(unint64_t)a7 userInfo:(id)a8 progressBlock:(id)a9 completionBlock:(id)a10
+- (void)_sendFilePath:(id)path topic:(id)topic transferID:(id)d sourceAppID:(id)iD retryAttemptCount:(unint64_t)count userInfo:(id)info progressBlock:(id)block completionBlock:(id)self0
 {
   v127 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v90 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
-  v88 = a10;
+  pathCopy = path;
+  topicCopy = topic;
+  dCopy = d;
+  iDCopy = iD;
+  infoCopy = info;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   im_assert_primary_queue();
   if (!self->_controller)
   {
@@ -116,7 +116,7 @@ LABEL_11:
   v31 = objc_msgSend_stringGUID(MEMORY[0x277CCACA8], v29, v30);
   objc_msgSend_setGuid_(v28, v32, v31);
 
-  v35 = objc_msgSend_stringByResolvingAndStandardizingPath(v15, v33, v34);
+  v35 = objc_msgSend_stringByResolvingAndStandardizingPath(pathCopy, v33, v34);
   objc_msgSend_setLocalPath_(v28, v36, v35);
 
   objc_msgSend_setEncryptionBehavior_(v28, v37, 1);
@@ -124,9 +124,9 @@ LABEL_11:
   v119[1] = 3221225472;
   v119[2] = sub_254854734;
   v119[3] = &unk_27978CB88;
-  v38 = v16;
+  v38 = dCopy;
   v120 = v38;
-  v39 = v19;
+  v39 = blockCopy;
   v121 = v39;
   updated = objc_msgSend_setProgressUpdateBlock_(v28, v40, v119);
   v43 = IMOptOutOfOptimizedMadridAttachmentUploadPath(updated, v42);
@@ -149,20 +149,20 @@ LABEL_11:
   v109[3] = &unk_27978CBD8;
   objc_copyWeak(v117, &location);
   v109[4] = self;
-  v117[1] = a7;
+  v117[1] = count;
   v93 = v38;
   v110 = v93;
-  v86 = v15;
+  v86 = pathCopy;
   v111 = v86;
-  v48 = v90;
+  v48 = topicCopy;
   v112 = v48;
-  v91 = v17;
+  v91 = iDCopy;
   v113 = v91;
-  v49 = v18;
+  v49 = infoCopy;
   v114 = v49;
   v50 = v39;
   v115 = v50;
-  v51 = v88;
+  v51 = completionBlockCopy;
   v116 = v51;
   objc_msgSend_setCompletionBlock_(v28, v52, v109);
   v89 = v51;
@@ -200,7 +200,7 @@ LABEL_11:
   v108 = v72;
   v84 = v48;
   v98 = v84;
-  v99 = self;
+  selfCopy = self;
   v76 = v49;
   v100 = v76;
   v77 = v64;
@@ -249,22 +249,22 @@ LABEL_11:
   MEMORY[0x2821F9670](v12, sel_preMMCSWarm, v11);
 }
 
-- (void)sendFilePath:(id)a3 encrypt:(BOOL)a4 topic:(id)a5 transferID:(id)a6 sourceAppID:(id)a7 userInfo:(id)a8 progressBlock:(id)a9 completionBlock:(id)a10
+- (void)sendFilePath:(id)path encrypt:(BOOL)encrypt topic:(id)topic transferID:(id)d sourceAppID:(id)iD userInfo:(id)info progressBlock:(id)block completionBlock:(id)self0
 {
-  v14 = a4;
+  encryptCopy = encrypt;
   v72 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v52 = a6;
-  v53 = a7;
-  v54 = a8;
-  v18 = a9;
-  v19 = a10;
+  pathCopy = path;
+  topicCopy = topic;
+  dCopy = d;
+  iDCopy = iD;
+  infoCopy = info;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   im_assert_primary_queue();
-  if (v16)
+  if (pathCopy)
   {
     v22 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v20, v21);
-    v24 = objc_msgSend_attributesOfItemAtPath_error_(v22, v23, v16, 0);
+    v24 = objc_msgSend_attributesOfItemAtPath_error_(v22, v23, pathCopy, 0);
 
     v26 = objc_msgSend_objectForKeyedSubscript_(v24, v25, *MEMORY[0x277CCA1C0]);
     v29 = objc_msgSend_unsignedIntegerValue(v26, v27, v28);
@@ -291,7 +291,7 @@ LABEL_11:
     }
   }
 
-  if (objc_msgSend_isEqualToString_(v17, v34, @"com.apple.private.alloy.lightrose"))
+  if (objc_msgSend_isEqualToString_(topicCopy, v34, @"com.apple.private.alloy.lightrose"))
   {
     v36 = 0x80000000;
   }
@@ -307,16 +307,16 @@ LABEL_11:
     v57[1] = 3221225472;
     v57[2] = sub_254857D2C;
     v57[3] = &unk_27978CCA0;
-    v64 = v19;
-    v67 = v14;
+    v64 = completionBlockCopy;
+    v67 = encryptCopy;
     v58 = v33;
     v66 = v29;
-    v59 = v17;
-    v60 = v52;
-    v61 = v53;
-    v62 = self;
-    v63 = v54;
-    v65 = v18;
+    v59 = topicCopy;
+    v60 = dCopy;
+    v61 = iDCopy;
+    selfCopy = self;
+    v63 = infoCopy;
+    v65 = blockCopy;
     v40 = MEMORY[0x259C1C440](v57);
     if (IMOSLoggingEnabled())
     {
@@ -329,7 +329,7 @@ LABEL_11:
     }
 
     v42 = IMOSLoggingEnabled();
-    if (v14)
+    if (encryptCopy)
     {
       if (v42)
       {
@@ -342,7 +342,7 @@ LABEL_11:
       }
 
       v46 = objc_msgSend_sharedInstance(IMTransferEncryptionController, v43, v44);
-      v48 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v47, v16);
+      v48 = objc_msgSend_fileURLWithPath_(MEMORY[0x277CBEBC0], v47, pathCopy);
       v55[0] = MEMORY[0x277D85DD0];
       v55[1] = 3221225472;
       v55[2] = sub_2548580E4;
@@ -363,7 +363,7 @@ LABEL_11:
         }
       }
 
-      (v40)[2](v40, v16, 0);
+      (v40)[2](v40, pathCopy, 0);
     }
 
     v39 = v64;
@@ -383,23 +383,23 @@ LABEL_11:
     }
 
     v39 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v37, @"IMTransferServicesErrorDomain", -6, 0);
-    (*(v19 + 2))(v19, 0, v16, v29, 0, 0, 0, 0, v39, 0, v52, v53, v54);
+    (*(completionBlockCopy + 2))(completionBlockCopy, 0, pathCopy, v29, 0, 0, 0, 0, v39, 0, dCopy, iDCopy, infoCopy);
   }
 
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelSendTransferID:(id)a3
+- (void)cancelSendTransferID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   im_assert_primary_queue();
-  objc_msgSend_cancelPutRequestID_(self->_controller, v4, v5);
+  objc_msgSend_cancelPutRequestID_(self->_controller, v4, dCopy);
 }
 
-- (BOOL)_isAllowlistedURL:(id)a3
+- (BOOL)_isAllowlistedURL:(id)l
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   im_assert_primary_queue();
   v6 = objc_msgSend_sharedInstanceForBagType_(MEMORY[0x277D18A10], v5, 1);
   v8 = objc_msgSend_objectForKey_(v6, v7, @"mmcs-whitelist");
@@ -429,7 +429,7 @@ LABEL_11:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v33 = v4;
+      v33 = lCopy;
       v34 = 2112;
       v35 = v13;
       _os_log_impl(&dword_254850000, v15, OS_LOG_TYPE_INFO, "Checking URL %@ with domains %@", buf, 0x16u);
@@ -454,7 +454,7 @@ LABEL_11:
           objc_enumerationMutation(v16);
         }
 
-        if (objc_msgSend___im_conformsToDomain_domainExtension_(v4, v18, *(*(&v27 + 1) + 8 * i), @"com", v27))
+        if (objc_msgSend___im_conformsToDomain_domainExtension_(lCopy, v18, *(*(&v27 + 1) + 8 * i), @"com", v27))
         {
           if (IMOSLoggingEnabled())
           {
@@ -462,7 +462,7 @@ LABEL_11:
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v33 = v4;
+              v33 = lCopy;
               _os_log_impl(&dword_254850000, v24, OS_LOG_TYPE_INFO, "URL is allowlisted %@", buf, 0xCu);
             }
           }
@@ -488,7 +488,7 @@ LABEL_11:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v33 = v4;
+      v33 = lCopy;
       _os_log_impl(&dword_254850000, v22, OS_LOG_TYPE_INFO, "MMCS: Invalid URL %@", buf, 0xCu);
     }
   }
@@ -500,18 +500,18 @@ LABEL_29:
   return v23;
 }
 
-- (void)_receiveFileTransfer:(id)a3 topic:(id)a4 path:(id)a5 requestURLString:(id)a6 ownerID:(id)a7 signature:(id)a8 allowReauthorize:(BOOL)a9 fileSize:(unint64_t)a10 sourceAppID:(id)a11 progressBlock:(id)a12 completionBlock:(id)a13
+- (void)_receiveFileTransfer:(id)transfer topic:(id)topic path:(id)path requestURLString:(id)string ownerID:(id)d signature:(id)signature allowReauthorize:(BOOL)reauthorize fileSize:(unint64_t)self0 sourceAppID:(id)self1 progressBlock:(id)self2 completionBlock:(id)self3
 {
   v146 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v91 = a4;
-  v96 = a5;
-  v98 = a6;
-  v92 = a7;
-  v95 = a8;
-  v93 = a11;
-  v94 = a12;
-  v97 = a13;
+  transferCopy = transfer;
+  topicCopy = topic;
+  pathCopy = path;
+  stringCopy = string;
+  dCopy = d;
+  signatureCopy = signature;
+  iDCopy = iD;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   im_assert_primary_queue();
   if (!self->_controller)
   {
@@ -529,7 +529,7 @@ LABEL_29:
     self->_networkMonitor = v26;
   }
 
-  v28 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], v20, v98);
+  v28 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], v20, stringCopy);
   isAllowlistedURL = objc_msgSend__isAllowlistedURL_(self, v29, v28);
 
   if (isAllowlistedURL)
@@ -544,9 +544,9 @@ LABEL_29:
     v144 = sub_254854F34;
     v34 = v32;
     v145 = v34;
-    if (v98)
+    if (stringCopy)
     {
-      v35 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], v33, v98);
+      v35 = objc_msgSend_URLWithString_(MEMORY[0x277CBEBC0], v33, stringCopy);
     }
 
     else
@@ -554,20 +554,20 @@ LABEL_29:
       v35 = 0;
     }
 
-    objc_msgSend_setSignature_(v31, v33, v95);
-    objc_msgSend_setGuid_(v31, v39, v19);
-    v42 = objc_msgSend_stringByResolvingAndStandardizingPath(v96, v40, v41);
+    objc_msgSend_setSignature_(v31, v33, signatureCopy);
+    objc_msgSend_setGuid_(v31, v39, transferCopy);
+    v42 = objc_msgSend_stringByResolvingAndStandardizingPath(pathCopy, v40, v41);
     objc_msgSend_setLocalPath_(v31, v43, v42);
 
     objc_msgSend_setRequestURL_(v31, v44, v35);
-    objc_msgSend_setProtocolFileSize_(v31, v45, a10);
+    objc_msgSend_setProtocolFileSize_(v31, v45, size);
     v132[0] = MEMORY[0x277D85DD0];
     v132[1] = 3221225472;
     v132[2] = sub_254858F48;
     v132[3] = &unk_27978CCF0;
-    v46 = v19;
+    v46 = transferCopy;
     v133 = v46;
-    v47 = v94;
+    v47 = blockCopy;
     v134 = v47;
     objc_msgSend_setProgressUpdateBlock_(v31, v48, v132);
     if (IMOSLoggingEnabled())
@@ -618,27 +618,27 @@ LABEL_29:
     objc_copyWeak(v128, &location);
     v89 = v35;
     v90 = v34;
-    v87 = v19;
+    v87 = transferCopy;
     v126 = v130;
-    v129 = a9;
+    reauthorizeCopy = reauthorize;
     v62 = v46;
     v116 = v62;
-    v117 = self;
-    v63 = v91;
+    selfCopy = self;
+    v63 = topicCopy;
     v118 = v63;
-    v64 = v96;
+    v64 = pathCopy;
     v119 = v64;
-    v65 = v98;
+    v65 = stringCopy;
     v120 = v65;
-    v66 = v92;
+    v66 = dCopy;
     v121 = v66;
-    v67 = v95;
+    v67 = signatureCopy;
     v122 = v67;
-    v128[1] = a10;
-    v88 = v93;
+    v128[1] = size;
+    v88 = iDCopy;
     v123 = v88;
     v124 = v47;
-    v125 = v97;
+    v125 = completionBlockCopy;
     p_buf = &buf;
     objc_msgSend_setCompletionBlock_(v31, v68, v115);
     v86 = v64;
@@ -666,7 +666,7 @@ LABEL_29:
     v102 = v66;
     v103 = v67;
     v104 = v62;
-    v105 = self;
+    selfCopy2 = self;
     v79 = v89;
     v106 = v79;
     v80 = v85;
@@ -682,7 +682,7 @@ LABEL_29:
     v113 = v88;
     objc_msgSend_registerFilesForDownload_completionBlock_(v77, v83, v82, v99);
 
-    v19 = v87;
+    transferCopy = v87;
     _Block_object_dispose(&v136, 8);
 
     objc_destroyWeak(v128);
@@ -699,41 +699,41 @@ LABEL_29:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v98;
+      *(&buf + 4) = stringCopy;
       _os_log_impl(&dword_254850000, v37, OS_LOG_TYPE_INFO, "MMCS failing transfer invalid url %@", &buf, 0xCu);
     }
   }
 
-  if (v97)
+  if (completionBlockCopy)
   {
     v38 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v36, @"IMTransferAgentErrorDomain", 10, 0);
-    (*(v97 + 2))(v97, v19, v96, 0, v38, @"Invalid url");
+    (*(completionBlockCopy + 2))(completionBlockCopy, transferCopy, pathCopy, 0, v38, @"Invalid url");
 LABEL_28:
   }
 
   v84 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receiveFileTransfer:(id)a3 topic:(id)a4 path:(id)a5 requestURLString:(id)a6 ownerID:(id)a7 signature:(id)a8 fileSize:(unint64_t)a9 decryptionKey:(id)a10 sourceAppID:(id)a11 progressBlock:(id)a12 completionBlock:(id)a13
+- (void)receiveFileTransfer:(id)transfer topic:(id)topic path:(id)path requestURLString:(id)string ownerID:(id)d signature:(id)signature fileSize:(unint64_t)size decryptionKey:(id)self0 sourceAppID:(id)self1 progressBlock:(id)self2 completionBlock:(id)self3
 {
-  v52 = a3;
-  v53 = a4;
-  v54 = a5;
-  v51 = a6;
-  v19 = a7;
-  v50 = a8;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
+  transferCopy = transfer;
+  topicCopy = topic;
+  pathCopy = path;
+  stringCopy = string;
+  dCopy = d;
+  signatureCopy = signature;
+  keyCopy = key;
+  iDCopy = iD;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   im_assert_primary_queue();
-  v49 = v22;
+  v49 = blockCopy;
   if (IMGetCachedDomainBoolForKey())
   {
-    v26 = v20;
-    v28 = v51;
-    v27 = v52;
-    v29 = v50;
+    v26 = keyCopy;
+    v28 = stringCopy;
+    v27 = transferCopy;
+    v29 = signatureCopy;
     if (IMOSLoggingEnabled())
     {
       v30 = OSLogHandleForIMFoundationCategory();
@@ -755,26 +755,26 @@ LABEL_28:
     }
 
     v33 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v31, @"com.apple.private.IMTransferAgentForcedFailure", 0, 0);
-    (*(v23 + 2))(v23, v52, v54, 0, v33, 0);
-    v34 = v53;
+    (*(completionBlockCopy + 2))(completionBlockCopy, transferCopy, pathCopy, 0, v33, 0);
+    v34 = topicCopy;
     v35 = v49;
   }
 
   else
   {
-    v38 = v20;
-    v48 = v19;
-    if (objc_msgSend_length(v20, v24, v25))
+    v38 = keyCopy;
+    v48 = dCopy;
+    if (objc_msgSend_length(keyCopy, v24, v25))
     {
       v39 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v36, v37);
-      v40 = v54;
-      v33 = objc_msgSend__randomSimilarFilePathAsPath_(v39, v41, v54);
+      v40 = pathCopy;
+      v33 = objc_msgSend__randomSimilarFilePathAsPath_(v39, v41, pathCopy);
     }
 
     else
     {
-      v40 = v54;
-      v33 = v54;
+      v40 = pathCopy;
+      v33 = pathCopy;
     }
 
     v60[0] = MEMORY[0x277D85DD0];
@@ -782,9 +782,9 @@ LABEL_28:
     v60[2] = sub_25485C060;
     v60[3] = &unk_27978CE58;
     v60[4] = self;
-    v42 = v53;
+    v42 = topicCopy;
     v61 = v42;
-    v62 = v23;
+    v62 = completionBlockCopy;
     v43 = MEMORY[0x259C1C440](v60);
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
@@ -794,29 +794,29 @@ LABEL_28:
     v57 = v40;
     v59 = v43;
     v26 = v38;
-    v27 = v52;
-    v58 = v52;
+    v27 = transferCopy;
+    v58 = transferCopy;
     v44 = v43;
     v35 = v49;
     v47 = 1;
     v45 = v42;
-    v29 = v50;
-    v28 = v51;
-    objc_msgSend__receiveFileTransfer_topic_path_requestURLString_ownerID_signature_allowReauthorize_fileSize_sourceAppID_progressBlock_completionBlock_(self, v46, v58, v45, v33, v51, v48, v50, v47, a9, v21, v49, v55);
+    v29 = signatureCopy;
+    v28 = stringCopy;
+    objc_msgSend__receiveFileTransfer_topic_path_requestURLString_ownerID_signature_allowReauthorize_fileSize_sourceAppID_progressBlock_completionBlock_(self, v46, v58, v45, v33, stringCopy, v48, signatureCopy, v47, size, iDCopy, v49, v55);
 
-    v19 = v48;
-    v34 = v53;
+    dCopy = v48;
+    v34 = topicCopy;
   }
 }
 
-- (void)ensureSafeAttachment:(id)a3 topic:(id)a4 withCompletionBlock:(id)a5
+- (void)ensureSafeAttachment:(id)attachment topic:(id)topic withCompletionBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  attachmentCopy = attachment;
+  topicCopy = topic;
+  blockCopy = block;
   im_assert_primary_queue();
-  if (objc_msgSend_deviceIsLockedDown(MEMORY[0x277D1A9A0], v10, v11) && (objc_msgSend_path(v7, v12, v13), v14 = objc_claimAutoreleasedReturnValue(), v15 = IMTransferRequestIsForMessages(v8, v14), v14, v15))
+  if (objc_msgSend_deviceIsLockedDown(MEMORY[0x277D1A9A0], v10, v11) && (objc_msgSend_path(attachmentCopy, v12, v13), v14 = objc_claimAutoreleasedReturnValue(), v15 = IMTransferRequestIsForMessages(topicCopy, v14), v14, v15))
   {
     if (IMOSLoggingEnabled())
     {
@@ -824,7 +824,7 @@ LABEL_28:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v31 = v7;
+        v31 = attachmentCopy;
         _os_log_impl(&dword_254850000, v16, OS_LOG_TYPE_INFO, "Lockdown mode enabled, generating safe render for attachment: %@", buf, 0xCu);
       }
     }
@@ -833,9 +833,9 @@ LABEL_28:
     v25 = 3221225472;
     v26 = sub_25485C94C;
     v27 = &unk_27978CED0;
-    v17 = v7;
+    v17 = attachmentCopy;
     v28 = v17;
-    v29 = v9;
+    v29 = blockCopy;
     v18 = MEMORY[0x259C1C440](&v24);
     v21 = objc_msgSend_sharedInstance(MEMORY[0x277D1ADE0], v19, v20, v24, v25, v26, v27);
     objc_msgSend_generateSafeRender_completionBlock_(v21, v22, v17, v18);
@@ -843,7 +843,7 @@ LABEL_28:
 
   else
   {
-    (*(v9 + 2))(v9, 1, v7, 0);
+    (*(blockCopy + 2))(blockCopy, 1, attachmentCopy, 0);
   }
 
   v23 = *MEMORY[0x277D85DE8];

@@ -92,7 +92,7 @@
       handler[1] = 3221225472;
       handler[2] = sub_10010882C;
       handler[3] = &unk_100253C20;
-      v11 = self;
+      selfCopy = self;
       IOHIDUserDeviceSetCancelHandler(device, handler);
       IOHIDUserDeviceActivate(self->_device);
       NSLog(@"Created HID device successfully");
@@ -103,16 +103,16 @@
     NSLog(@"Error : Failed in creating device");
 
 LABEL_7:
-    v8 = 0;
+    selfCopy2 = 0;
     goto LABEL_8;
   }
 
 LABEL_5:
   self = self;
-  v8 = self;
+  selfCopy2 = self;
 LABEL_8:
 
-  return v8;
+  return selfCopy2;
 }
 
 + (id)propertyDictForDarwin

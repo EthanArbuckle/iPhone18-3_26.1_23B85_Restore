@@ -1,22 +1,22 @@
 @interface MADPhotosOnDemandStaticStickerScoreTask
-+ (id)taskWithPhotoLibrary:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (BOOL)run:(id *)a3;
-- (MADPhotosOnDemandStaticStickerScoreTask)initWithPhotoLibrary:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)publishResults:(id)a3;
++ (id)taskWithPhotoLibrary:(id)library options:(id)options completionHandler:(id)handler;
+- (BOOL)run:(id *)run;
+- (MADPhotosOnDemandStaticStickerScoreTask)initWithPhotoLibrary:(id)library options:(id)options completionHandler:(id)handler;
+- (void)publishResults:(id)results;
 @end
 
 @implementation MADPhotosOnDemandStaticStickerScoreTask
 
-- (MADPhotosOnDemandStaticStickerScoreTask)initWithPhotoLibrary:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (MADPhotosOnDemandStaticStickerScoreTask)initWithPhotoLibrary:(id)library options:(id)options completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
+  libraryCopy = library;
+  optionsCopy = options;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10015BD98;
   v26[3] = &unk_100284038;
-  v11 = a5;
-  v27 = v11;
+  handlerCopy = handler;
+  v27 = handlerCopy;
   v12 = objc_retainBlock(v26);
   v25.receiver = self;
   v25.super_class = MADPhotosOnDemandStaticStickerScoreTask;
@@ -24,9 +24,9 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_photoLibrary, a3);
+    objc_storeStrong(&v13->_photoLibrary, library);
     v14->_targetResultCount = 10;
-    v15 = [v10 objectForKeyedSubscript:VCPMediaAnalysisService_TargetResultCount];
+    v15 = [optionsCopy objectForKeyedSubscript:VCPMediaAnalysisService_TargetResultCount];
     if (v15)
     {
       objc_opt_class();
@@ -64,19 +64,19 @@
   return v14;
 }
 
-+ (id)taskWithPhotoLibrary:(id)a3 options:(id)a4 completionHandler:(id)a5
++ (id)taskWithPhotoLibrary:(id)library options:(id)options completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v7 options:v8 completionHandler:v9];
+  libraryCopy = library;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v10 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy options:optionsCopy completionHandler:handlerCopy];
 
   return v10;
 }
 
-- (void)publishResults:(id)a3
+- (void)publishResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   dispatch_semaphore_wait(self->_publishSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   publishGroup = self->_publishGroup;
   publishQueue = self->_publishQueue;
@@ -85,12 +85,12 @@
   v8[2] = sub_10015BF1C;
   v8[3] = &unk_100282BC8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = resultsCopy;
+  v7 = resultsCopy;
   dispatch_group_async(publishGroup, publishQueue, v8);
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v4 = +[NSDate now];
   [v4 timeIntervalSince1970];
@@ -127,27 +127,27 @@
     v14 = [v7 objectAtIndexedSubscript:v8];
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
     {
-      v15 = [v14 localIdentifier];
+      localIdentifier = [v14 localIdentifier];
       *buf = 138412290;
-      v88 = v15;
+      v88 = localIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[Sticker][%@] Evaluating asset...", buf, 0xCu);
     }
 
-    v79 = [v14 visualSearchProperties];
-    if ([v79 stickerAlgorithmVersion] == 1)
+    visualSearchProperties = [v14 visualSearchProperties];
+    if ([visualSearchProperties stickerAlgorithmVersion] == 1)
     {
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
       {
-        v16 = [v14 localIdentifier];
-        [v79 stickerConfidenceScore];
+        localIdentifier2 = [v14 localIdentifier];
+        [visualSearchProperties stickerConfidenceScore];
         *buf = 138412546;
-        v88 = v16;
+        v88 = localIdentifier2;
         v89 = 2048;
         v90 = v17;
         _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[Sticker][%@] Asset already processed (confidence: %0.3f)", buf, 0x16u);
       }
 
-      [v79 stickerConfidenceScore];
+      [visualSearchProperties stickerConfidenceScore];
       v19 = v80;
       if (v18 >= 0.2)
       {
@@ -161,18 +161,18 @@
 
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v71))
     {
-      v21 = [v14 localIdentifier];
+      localIdentifier3 = [v14 localIdentifier];
       *buf = 138412290;
-      v88 = v21;
+      v88 = localIdentifier3;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v71, "[Sticker][%@] Processing asset...", buf, 0xCu);
     }
 
     v74 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v14];
-    v22 = [v74 vcp_thumbnailResource];
-    v75 = v22;
-    if (v22)
+    vcp_thumbnailResource = [v74 vcp_thumbnailResource];
+    v75 = vcp_thumbnailResource;
+    if (vcp_thumbnailResource)
     {
-      if ([v22 isLocallyAvailable])
+      if ([vcp_thumbnailResource isLocallyAvailable])
       {
         v23 = VCPSignPostLog();
         v24 = os_signpost_id_generate(v23);
@@ -187,8 +187,8 @@
 
         v83 = 0;
         v27 = +[VCPImageManager sharedImageManager];
-        v28 = [v75 privateFileURL];
-        v82 = [v27 pixelBufferWithFormat:875704422 fromImageURL:v28 flushCache:0 orientation:&v83];
+        privateFileURL = [v75 privateFileURL];
+        v82 = [v27 pixelBufferWithFormat:875704422 fromImageURL:privateFileURL flushCache:0 orientation:&v83];
 
         v29 = VCPSignPostLog();
         v30 = v29;
@@ -234,22 +234,22 @@
 
         if (v38)
         {
-          v41 = [v70 results];
-          v42 = [v41 count] == 0;
+          results = [v70 results];
+          v42 = [results count] == 0;
 
           if (!v42)
           {
-            v43 = [v70 results];
-            v44 = [v43 firstObject];
-            [v44 confidence];
+            results2 = [v70 results];
+            firstObject = [results2 firstObject];
+            [firstObject confidence];
             v46 = v45;
 
             v47 = v46;
             if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v71))
             {
-              v48 = [v14 localIdentifier];
+              localIdentifier4 = [v14 localIdentifier];
               *buf = 138412546;
-              v88 = v48;
+              v88 = localIdentifier4;
               v89 = 2048;
               v90 = v47;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v71, "[Sticker][%@] Confidence: %0.3f", buf, 0x16u);
@@ -284,20 +284,20 @@
 
           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v10))
           {
-            v56 = [v14 localIdentifier];
+            localIdentifier5 = [v14 localIdentifier];
             *buf = 138412290;
-            v88 = v56;
+            v88 = localIdentifier5;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "[Sticker][%@] Vision request produced no observations", buf, 0xCu);
           }
         }
 
         else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v10))
         {
-          v54 = [v14 localIdentifier];
+          localIdentifier6 = [v14 localIdentifier];
           [v69 description];
           v55 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
           *buf = 138412546;
-          v88 = v54;
+          v88 = localIdentifier6;
           v89 = 2112;
           v90 = v55;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "[Sticker][%@] Vision request failed (%@)", buf, 0x16u);
@@ -312,18 +312,18 @@ LABEL_61:
 
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v10))
       {
-        v53 = [v14 localIdentifier];
+        localIdentifier7 = [v14 localIdentifier];
         *buf = 138412290;
-        v88 = v53;
+        v88 = localIdentifier7;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "[Sticker][%@] Thumbnail resource not locally available", buf, 0xCu);
       }
     }
 
     else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v10))
     {
-      v52 = [v14 localIdentifier];
+      localIdentifier8 = [v14 localIdentifier];
       *buf = 138412290;
-      v88 = v52;
+      v88 = localIdentifier8;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "[Sticker][%@] No thumbnail resource", buf, 0xCu);
     }
 
@@ -355,11 +355,11 @@ LABEL_17:
   v58 = atomic_load(&self->_publishFailed);
   if (v58)
   {
-    if (a3)
+    if (run)
     {
       v59 = [(NSError *)self->_publishError copy];
-      v60 = *a3;
-      *a3 = v59;
+      v60 = *run;
+      *run = v59;
     }
 
     goto LABEL_76;
@@ -367,15 +367,15 @@ LABEL_17:
 
   if ([(MADPhotosOnDemandStaticStickerScoreTask *)self isCanceled])
   {
-    if (a3)
+    if (run)
     {
       v84 = NSLocalizedDescriptionKey;
       v61 = [NSString stringWithFormat:@"On-demand sticker scoring cancelled"];
       v85 = v61;
       v62 = [NSDictionary dictionaryWithObjects:&v85 forKeys:&v84 count:1];
       v63 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v62];
-      v64 = *a3;
-      *a3 = v63;
+      v64 = *run;
+      *run = v63;
 
       v9 = v10;
     }
@@ -392,8 +392,8 @@ LABEL_76:
 
   else
   {
-    v66 = [(MADPhotosOnDemandStaticStickerScoreTask *)self completionHandler];
-    v66[2](v66, 0, 0);
+    completionHandler = [(MADPhotosOnDemandStaticStickerScoreTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
 
     v65 = 1;
   }

@@ -1,67 +1,67 @@
 @interface MADAutoAssetScheduler
-+ (BOOL)isAssetTypeAtAggressiveFrequency:(id)a3;
-+ (BOOL)isAssetTypeAtHeightenedFrequency:(id)a3;
-+ (BOOL)isSelector:(id)a3 consideredEqualTo:(id)a4;
++ (BOOL)isAssetTypeAtAggressiveFrequency:(id)frequency;
++ (BOOL)isAssetTypeAtHeightenedFrequency:(id)frequency;
++ (BOOL)isSelector:(id)selector consideredEqualTo:(id)to;
 + (id)autoAssetScheduler;
-+ (id)jobTypeName:(BOOL)a3 setJob:(BOOL)a4 requiringRetry:(BOOL)a5;
++ (id)jobTypeName:(BOOL)name setJob:(BOOL)job requiringRetry:(BOOL)retry;
 + (id)jobsAwaitingTrigger;
-+ (id)nameForXPCStatus:(int64_t)a3;
-+ (id)newSetPolicyForDomainName:(id)a3 forAssetSetIdentifier:(id)a4;
-+ (id)persistedEntryIDForClientDomain:(id)a3 forAssetSetIdentifier:(id)a4;
-+ (id)stringFromDate:(id)a3;
++ (id)nameForXPCStatus:(int64_t)status;
++ (id)newSetPolicyForDomainName:(id)name forAssetSetIdentifier:(id)identifier;
++ (id)persistedEntryIDForClientDomain:(id)domain forAssetSetIdentifier:(id)identifier;
++ (id)stringFromDate:(id)date;
 + (int64_t)_preferenceChosenTickerIntervalSecs;
 + (int64_t)persistedScheduledCount;
-+ (int64_t)tickerIntervalForActivityIntervalSecs:(int64_t)a3;
-+ (void)addScheduledJobs:(id)a3 basedOnControl:(id)a4;
-+ (void)controlEliminateSelector:(id)a3;
-+ (void)controlEliminateSetDomainName:(id)a3 forAssetSetIdentifier:(id)a4 indicatingWhenEliminated:(BOOL)a5;
-+ (void)forceGlobalForget:(id)a3;
-+ (void)jobFinishedForSelector:(id)a3 withPotentialNetworkFailure:(BOOL)a4;
-+ (void)jobFinishedForSetDomainName:(id)a3 forAssetSetIdentifier:(id)a4 withPotentialNetworkFailure:(BOOL)a5;
-+ (void)resumeFromPersisted:(id)a3;
-+ (void)schedulePushNotifications:(id)a3;
-+ (void)scheduleSelector:(id)a3 triggeringAtIntervalSecs:(int64_t)a4;
-+ (void)scheduleSetDomainName:(id)a3 forAssetSetIdentifier:(id)a4 usingSetUpdatePolicy:(id)a5 forSetConfiguration:(id)a6;
-+ (void)setPersistedStateCaching:(BOOL)a3;
++ (int64_t)tickerIntervalForActivityIntervalSecs:(int64_t)secs;
++ (void)addScheduledJobs:(id)jobs basedOnControl:(id)control;
++ (void)controlEliminateSelector:(id)selector;
++ (void)controlEliminateSetDomainName:(id)name forAssetSetIdentifier:(id)identifier indicatingWhenEliminated:(BOOL)eliminated;
++ (void)forceGlobalForget:(id)forget;
++ (void)jobFinishedForSelector:(id)selector withPotentialNetworkFailure:(BOOL)failure;
++ (void)jobFinishedForSetDomainName:(id)name forAssetSetIdentifier:(id)identifier withPotentialNetworkFailure:(BOOL)failure;
++ (void)resumeFromPersisted:(id)persisted;
++ (void)schedulePushNotifications:(id)notifications;
++ (void)scheduleSelector:(id)selector triggeringAtIntervalSecs:(int64_t)secs;
++ (void)scheduleSetDomainName:(id)name forAssetSetIdentifier:(id)identifier usingSetUpdatePolicy:(id)policy forSetConfiguration:(id)configuration;
++ (void)setPersistedStateCaching:(BOOL)caching;
 + (void)shutdown;
-+ (void)triggerWithRetrySetDomainName:(id)a3 forAssetSetIdentifier:(id)a4 usingSetUpdatePolicy:(id)a5;
++ (void)triggerWithRetrySetDomainName:(id)name forAssetSetIdentifier:(id)identifier usingSetUpdatePolicy:(id)policy;
 - (MADAutoAssetScheduler)init;
-- (id)_assetTypeForAssetSelector:(id)a3;
+- (id)_assetTypeForAssetSelector:(id)selector;
 - (id)_currentlyScheduledMarkers;
 - (id)_currentlyScheduledMarkersRequiringRetry;
-- (id)_markerForSelector:(id)a3 andJob:(id)a4;
-- (id)_newSetPolicyForDomainName:(id)a3 forAssetSetIdentifier:(id)a4 fromLocation:(id)a5;
-- (id)_setConfigurationForAssetSelector:(id)a3;
+- (id)_markerForSelector:(id)selector andJob:(id)job;
+- (id)_newSetPolicyForDomainName:(id)name forAssetSetIdentifier:(id)identifier fromLocation:(id)location;
+- (id)_setConfigurationForAssetSelector:(id)selector;
 - (id)_snapshotOfJobsBySelector;
 - (id)defaultSchedulerSetPolicy;
 - (id)summary;
 - (int64_t)_aggressiveIntervalSecs;
-- (int64_t)_decideTriggerIntervalSecs:(id)a3 forAssetSelector:(id)a4;
+- (int64_t)_decideTriggerIntervalSecs:(id)secs forAssetSelector:(id)selector;
 - (int64_t)_heightenedIntervalSecs;
-- (void)_eliminateSelector:(id)a3 forSetJob:(BOOL)a4 indicatingWhenEliminated:(BOOL)a5;
-- (void)_eliminateSpecificSelector:(id)a3;
-- (void)_informConnectorActiveJobFinishedforSelector:(id)a3 withPotentialNetworkFailure:(BOOL)a4;
+- (void)_eliminateSelector:(id)selector forSetJob:(BOOL)job indicatingWhenEliminated:(BOOL)eliminated;
+- (void)_eliminateSpecificSelector:(id)selector;
+- (void)_informConnectorActiveJobFinishedforSelector:(id)selector withPotentialNetworkFailure:(BOOL)failure;
 - (void)_informConnectorAlteredSelectors;
-- (void)_informConnectorTriggeredSelectors:(id)a3 withTriggeredRequiringRetry:(id)a4;
-- (void)_jobFinishedForSelector:(id)a3 withPotentialNetworkFailure:(BOOL)a4;
-- (void)_jobFinishedForSetDomainName:(id)a3 forAssetSetIdentifier:(id)a4 withPotentialNetworkFailure:(BOOL)a5;
-- (void)_logPersistedConfigLoad:(id)a3 activityIntervalSecs:(int64_t)a4 pushTriggerSecs:(int64_t)a5 lastTickDate:(id)a6 message:(id)a7;
-- (void)_logPersistedConfigSet:(id)a3 activityIntervalSecs:(int64_t)a4 pushTriggerSecs:(int64_t)a5 lastTickDate:(id)a6 message:(id)a7;
-- (void)_logPersistedEntry:(id)a3 operation:(id)a4 persistingSelector:(id)a5 intervalSecs:(int64_t)a6 remainingSecs:(int64_t)a7 pushedJob:(BOOL)a8 setJob:(BOOL)a9 setPolicy:(id)a10 pushedPolicy:(id)a11 requiringRetry:(BOOL)a12 message:(id)a13;
-- (void)_logPersistedRemovedEntry:(id)a3 removedSelector:(id)a4 message:(id)a5;
-- (void)_logPersistedTableOfContents:(id)a3;
+- (void)_informConnectorTriggeredSelectors:(id)selectors withTriggeredRequiringRetry:(id)retry;
+- (void)_jobFinishedForSelector:(id)selector withPotentialNetworkFailure:(BOOL)failure;
+- (void)_jobFinishedForSetDomainName:(id)name forAssetSetIdentifier:(id)identifier withPotentialNetworkFailure:(BOOL)failure;
+- (void)_logPersistedConfigLoad:(id)load activityIntervalSecs:(int64_t)secs pushTriggerSecs:(int64_t)triggerSecs lastTickDate:(id)date message:(id)message;
+- (void)_logPersistedConfigSet:(id)set activityIntervalSecs:(int64_t)secs pushTriggerSecs:(int64_t)triggerSecs lastTickDate:(id)date message:(id)message;
+- (void)_logPersistedEntry:(id)entry operation:(id)operation persistingSelector:(id)selector intervalSecs:(int64_t)secs remainingSecs:(int64_t)remainingSecs pushedJob:(BOOL)job setJob:(BOOL)setJob setPolicy:(id)self0 pushedPolicy:(id)self1 requiringRetry:(BOOL)self2 message:(id)self3;
+- (void)_logPersistedRemovedEntry:(id)entry removedSelector:(id)selector message:(id)message;
+- (void)_logPersistedTableOfContents:(id)contents;
 - (void)_performActivityOperations;
 - (void)_performPushNotificationOperations;
-- (void)_performTickerOperations:(int64_t)a3;
-- (void)_performTriggeredSetJobForSetConfiguration:(id)a3 usingSetUpdatePolicy:(id)a4;
-- (void)_registerForAndStartActivity:(int64_t)a3;
+- (void)_performTickerOperations:(int64_t)operations;
+- (void)_performTriggeredSetJobForSetConfiguration:(id)configuration usingSetUpdatePolicy:(id)policy;
+- (void)_registerForAndStartActivity:(int64_t)activity;
 - (void)_resumeConnector;
-- (void)_schedulePushNotifications:(id)a3;
-- (void)_scheduleSelector:(id)a3 triggeringAtIntervalSecs:(int64_t)a4 withRemainingSecs:(int64_t)a5 forPushedJob:(BOOL)a6 forSetJob:(BOOL)a7 withSetPolicy:(id)a8 triggeringIfLearned:(BOOL)a9 resettingRemaining:(BOOL)a10 isReadOnlyForResumeFromPersisted:(BOOL)a11;
-- (void)_setActivityCriteria:(id)a3 pushNotificationInitiated:(BOOL)a4 withActivityDelay:(int64_t)a5;
+- (void)_schedulePushNotifications:(id)notifications;
+- (void)_scheduleSelector:(id)selector triggeringAtIntervalSecs:(int64_t)secs withRemainingSecs:(int64_t)remainingSecs forPushedJob:(BOOL)job forSetJob:(BOOL)setJob withSetPolicy:(id)policy triggeringIfLearned:(BOOL)learned resettingRemaining:(BOOL)self0 isReadOnlyForResumeFromPersisted:(BOOL)self1;
+- (void)_setActivityCriteria:(id)criteria pushNotificationInitiated:(BOOL)initiated withActivityDelay:(int64_t)delay;
 - (void)_startActivityBackupTrigger;
-- (void)_startPushDelayTimer:(int64_t)a3;
-- (void)_trackSetConfigurations:(id)a3;
+- (void)_startPushDelayTimer:(int64_t)timer;
+- (void)_trackSetConfigurations:(id)configurations;
 @end
 
 @implementation MADAutoAssetScheduler
@@ -76,14 +76,14 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "{AUTO-SCHEDULER:shutdown}: Dispatching shutdown request for autoAssetScheduler", buf, 2u);
   }
 
-  v4 = [v2 schedulerQueue];
+  schedulerQueue = [v2 schedulerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __33__MADAutoAssetScheduler_shutdown__block_invoke;
   block[3] = &unk_4B2AA0;
   v8 = v2;
   v5 = v2;
-  dispatch_sync(v4, block);
+  dispatch_sync(schedulerQueue, block);
 
   v6 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -113,9 +113,9 @@ void __33__MADAutoAssetScheduler_shutdown__block_invoke(uint64_t a1)
   v2 = [(MADAutoAssetScheduler *)&v28 init];
   if (v2)
   {
-    v3 = [@"com.apple.MobileAsset.daemon.autoassetscheduler" UTF8String];
+    uTF8String = [@"com.apple.MobileAsset.daemon.autoassetscheduler" UTF8String];
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v5 = dispatch_queue_create(v3, v4);
+    v5 = dispatch_queue_create(uTF8String, v4);
     schedulerQueue = v2->_schedulerQueue;
     v2->_schedulerQueue = v5;
 
@@ -177,9 +177,9 @@ void __33__MADAutoAssetScheduler_shutdown__block_invoke(uint64_t a1)
     v10->_lastTickTimestampString = 0;
 
     v20 = +[NSUUID UUID];
-    v21 = [v20 UUIDString];
+    uUIDString = [v20 UUIDString];
     xpcActivityUUID = v10->_xpcActivityUUID;
-    v10->_xpcActivityUUID = v21;
+    v10->_xpcActivityUUID = uUIDString;
 
     v23 = objc_alloc_init(NSMutableDictionary);
     setConfigurations = v10->_setConfigurations;
@@ -189,10 +189,10 @@ void __33__MADAutoAssetScheduler_shutdown__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (BOOL)isAssetTypeAtHeightenedFrequency:(id)a3
++ (BOOL)isAssetTypeAtHeightenedFrequency:(id)frequency
 {
-  v3 = a3;
-  if (v3 && ([&off_4F6E00 containsObject:v3] & 1) != 0)
+  frequencyCopy = frequency;
+  if (frequencyCopy && ([&off_4F6E00 containsObject:frequencyCopy] & 1) != 0)
   {
     v4 = 1;
   }
@@ -200,16 +200,16 @@ void __33__MADAutoAssetScheduler_shutdown__block_invoke(uint64_t a1)
   else
   {
     v5 = +[MADAutoAssetControlManager preferenceActivityHeightenedAssetType];
-    v4 = [SUCore stringIsEqual:v3 to:v5];
+    v4 = [SUCore stringIsEqual:frequencyCopy to:v5];
   }
 
   return v4;
 }
 
-+ (BOOL)isAssetTypeAtAggressiveFrequency:(id)a3
++ (BOOL)isAssetTypeAtAggressiveFrequency:(id)frequency
 {
-  v3 = a3;
-  if (v3 && ([&off_4F6E18 containsObject:v3] & 1) != 0)
+  frequencyCopy = frequency;
+  if (frequencyCopy && ([&off_4F6E18 containsObject:frequencyCopy] & 1) != 0)
   {
     v4 = 1;
   }
@@ -217,7 +217,7 @@ void __33__MADAutoAssetScheduler_shutdown__block_invoke(uint64_t a1)
   else
   {
     v5 = +[MADAutoAssetControlManager preferenceActivityAggressiveAssetType];
-    v4 = [SUCore stringIsEqual:v3 to:v5];
+    v4 = [SUCore stringIsEqual:frequencyCopy to:v5];
   }
 
   return v4;
@@ -242,9 +242,9 @@ void __43__MADAutoAssetScheduler_autoAssetScheduler__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (void)resumeFromPersisted:(id)a3
++ (void)resumeFromPersisted:(id)persisted
 {
-  v3 = a3;
+  persistedCopy = persisted;
   v4 = +[MADAutoAssetScheduler autoAssetScheduler];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -253,14 +253,14 @@ void __43__MADAutoAssetScheduler_autoAssetScheduler__block_invoke(id a1)
 
   if (v4)
   {
-    v6 = [v4 schedulerQueue];
+    schedulerQueue = [v4 schedulerQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = __45__MADAutoAssetScheduler_resumeFromPersisted___block_invoke_1213;
     v8[3] = &unk_4B2B18;
     v9 = v4;
-    v10 = v3;
-    dispatch_async(v6, v8);
+    v10 = persistedCopy;
+    dispatch_async(schedulerQueue, v8);
 
     v7 = v9;
   }
@@ -819,14 +819,14 @@ LABEL_37:
   v15 = -1;
   if (v2)
   {
-    v4 = [v2 schedulerQueue];
+    schedulerQueue = [v2 schedulerQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = __48__MADAutoAssetScheduler_persistedScheduledCount__block_invoke;
     v8[3] = &unk_4B2AC8;
     v10 = &v12;
     v9 = v3;
-    dispatch_sync(v4, v8);
+    dispatch_sync(schedulerQueue, v8);
 
     v5 = v9;
   }
@@ -853,10 +853,10 @@ void __48__MADAutoAssetScheduler_persistedScheduledCount__block_invoke(uint64_t 
   *(*(*(a1 + 40) + 8) + 24) = [v2 persistedEntryCount:@"AUTO-SCHEDULER"];
 }
 
-+ (id)newSetPolicyForDomainName:(id)a3 forAssetSetIdentifier:(id)a4
++ (id)newSetPolicyForDomainName:(id)name forAssetSetIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v7 = +[MADAutoAssetScheduler autoAssetScheduler];
   v8 = v7;
   v19 = 0;
@@ -867,16 +867,16 @@ void __48__MADAutoAssetScheduler_persistedScheduledCount__block_invoke(uint64_t 
   v24 = 0;
   if (v7)
   {
-    v9 = [v7 schedulerQueue];
+    schedulerQueue = [v7 schedulerQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = __73__MADAutoAssetScheduler_newSetPolicyForDomainName_forAssetSetIdentifier___block_invoke;
     v13[3] = &unk_4B32D8;
     v17 = &v19;
     v14 = v8;
-    v15 = v5;
-    v16 = v6;
-    dispatch_sync(v9, v13);
+    v15 = nameCopy;
+    v16 = identifierCopy;
+    dispatch_sync(schedulerQueue, v13);
 
     v10 = v14;
   }
@@ -904,15 +904,15 @@ uint64_t __73__MADAutoAssetScheduler_newSetPolicyForDomainName_forAssetSetIdenti
   return _objc_release_x1();
 }
 
-+ (void)scheduleSelector:(id)a3 triggeringAtIntervalSecs:(int64_t)a4
++ (void)scheduleSelector:(id)selector triggeringAtIntervalSecs:(int64_t)secs
 {
-  v5 = a3;
+  selectorCopy = selector;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v6 = _os_activity_create(&dword_0, "MADScheduler:scheduleSelector", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v6, &state);
 
-  if (!v5)
+  if (!selectorCopy)
   {
     v8 = _MADLog(@"Auto");
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -929,7 +929,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (a4 < 0)
+  if (secs < 0)
   {
     v8 = _MADLog(@"Auto");
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -938,7 +938,7 @@ LABEL_9:
     }
 
     *buf = 134217984;
-    v21 = a4;
+    secsCopy = secs;
     v11 = "{AUTO-SCHEDULER:scheduleSelector} no scheduling change | invalid trigger-interval-secs: %ld";
     v12 = v8;
     v13 = 12;
@@ -949,15 +949,15 @@ LABEL_9:
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 schedulerQueue];
+    schedulerQueue = [v7 schedulerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __67__MADAutoAssetScheduler_scheduleSelector_triggeringAtIntervalSecs___block_invoke;
     block[3] = &unk_4B3300;
     v16 = v8;
-    v17 = v5;
-    v18 = a4;
-    dispatch_async(v9, block);
+    v17 = selectorCopy;
+    secsCopy2 = secs;
+    dispatch_async(schedulerQueue, block);
 
     v10 = v16;
   }
@@ -967,9 +967,9 @@ LABEL_9:
     v10 = _MADLog(@"Auto");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v5 summary];
+      summary = [selectorCopy summary];
       *buf = 138543362;
-      v21 = v14;
+      secsCopy = summary;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "{AUTO-SCHEDULER:scheduleSelector} | unable to locate auto-asset-scheduler | failed to [re-]schedule selector:%{public}@", buf, 0xCu);
     }
   }
@@ -985,18 +985,18 @@ id __67__MADAutoAssetScheduler_scheduleSelector_triggeringAtIntervalSecs___block
   return [*(a1 + 32) _scheduleSelector:*(a1 + 40) triggeringAtIntervalSecs:*(a1 + 48) withRemainingSecs:*(a1 + 48) forPushedJob:0 forSetJob:0 withSetPolicy:0 triggeringIfLearned:v2 resettingRemaining:? isReadOnlyForResumeFromPersisted:?];
 }
 
-+ (void)scheduleSetDomainName:(id)a3 forAssetSetIdentifier:(id)a4 usingSetUpdatePolicy:(id)a5 forSetConfiguration:(id)a6
++ (void)scheduleSetDomainName:(id)name forAssetSetIdentifier:(id)identifier usingSetUpdatePolicy:(id)policy forSetConfiguration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
+  policyCopy = policy;
+  configurationCopy = configuration;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v13 = _os_activity_create(&dword_0, "MADScheduler:scheduleSetDomainName", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v13, &state);
 
-  if (!v9)
+  if (!nameCopy)
   {
     v14 = _MADLog(@"Auto");
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1011,7 +1011,7 @@ LABEL_17:
     goto LABEL_26;
   }
 
-  if (!v10)
+  if (!identifierCopy)
   {
     v14 = _MADLog(@"Auto");
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1024,9 +1024,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v12)
+  if (configurationCopy)
   {
-    v14 = [[MAAutoAssetSelector alloc] initForAssetType:v9 withAssetSpecifier:v10];
+    v14 = [[MAAutoAssetSelector alloc] initForAssetType:nameCopy withAssetSpecifier:identifierCopy];
     v15 = +[MADAutoAssetScheduler autoAssetScheduler];
     v16 = v15;
     if (v14)
@@ -1044,9 +1044,9 @@ LABEL_17:
           v18 = v17;
         }
 
-        if (v11)
+        if (policyCopy)
         {
-          v19 = [[MADAutoSetPolicy alloc] initFromAutoAssetSetPolicy:v11];
+          v19 = [[MADAutoSetPolicy alloc] initFromAutoAssetSetPolicy:policyCopy];
         }
 
         else
@@ -1054,20 +1054,20 @@ LABEL_17:
           v19 = 0;
         }
 
-        v23 = [v16 schedulerQueue];
+        schedulerQueue = [v16 schedulerQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __110__MADAutoAssetScheduler_scheduleSetDomainName_forAssetSetIdentifier_usingSetUpdatePolicy_forSetConfiguration___block_invoke;
         block[3] = &unk_4B3328;
-        v25 = v9;
-        v26 = v10;
+        v25 = nameCopy;
+        v26 = identifierCopy;
         v27 = v16;
-        v28 = v12;
+        v28 = configurationCopy;
         v30 = v19;
         v31 = v18;
         v29 = v14;
         v21 = v19;
-        dispatch_async(v23, block);
+        dispatch_async(schedulerQueue, block);
 
         goto LABEL_25;
       }
@@ -1076,9 +1076,9 @@ LABEL_17:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v34 = v9;
+        v34 = nameCopy;
         v35 = 2114;
-        v36 = v10;
+        v36 = identifierCopy;
         v22 = "{AUTO-SCHEDULER:scheduleSetDomainName} | unable to locate auto-asset-scheduler | clientDomainName:%{public}@ | assetSetIdentifier:%{public}@";
         goto LABEL_22;
       }
@@ -1090,9 +1090,9 @@ LABEL_17:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v34 = v9;
+        v34 = nameCopy;
         v35 = 2114;
-        v36 = v10;
+        v36 = identifierCopy;
         v22 = "{AUTO-SCHEDULER:scheduleSetDomainName} | unable to create set-selector | clientDomainName:%{public}@ | assetSetIdentifier:%{public}@";
 LABEL_22:
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, v22, buf, 0x16u);
@@ -1131,17 +1131,17 @@ void __110__MADAutoAssetScheduler_scheduleSetDomainName_forAssetSetIdentifier_us
   [*(a1 + 48) _scheduleSelector:*(a1 + 64) triggeringAtIntervalSecs:*(a1 + 80) withRemainingSecs:*(a1 + 80) forPushedJob:0 forSetJob:1 withSetPolicy:*(a1 + 72) triggeringIfLearned:v3 resettingRemaining:? isReadOnlyForResumeFromPersisted:?];
 }
 
-+ (void)triggerWithRetrySetDomainName:(id)a3 forAssetSetIdentifier:(id)a4 usingSetUpdatePolicy:(id)a5
++ (void)triggerWithRetrySetDomainName:(id)name forAssetSetIdentifier:(id)identifier usingSetUpdatePolicy:(id)policy
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  policyCopy = policy;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v10 = _os_activity_create(&dword_0, "MADScheduler:triggerWithRetrySetDomainName", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v10, &state);
 
-  if (!v7)
+  if (!nameCopy)
   {
     v12 = _MADLog(@"SecureMA");
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1156,7 +1156,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (!v8)
+  if (!identifierCopy)
   {
     v12 = _MADLog(@"SecureMA");
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1173,16 +1173,16 @@ LABEL_9:
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 schedulerQueue];
+    schedulerQueue = [v11 schedulerQueue];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = __98__MADAutoAssetScheduler_triggerWithRetrySetDomainName_forAssetSetIdentifier_usingSetUpdatePolicy___block_invoke;
     v16[3] = &unk_4B3350;
-    v17 = v7;
-    v18 = v8;
+    v17 = nameCopy;
+    v18 = identifierCopy;
     v19 = v12;
-    v20 = v9;
-    dispatch_async(v13, v16);
+    v20 = policyCopy;
+    dispatch_async(schedulerQueue, v16);
 
     v14 = v17;
   }
@@ -1193,9 +1193,9 @@ LABEL_9:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v23 = v7;
+      v23 = nameCopy;
       v24 = 2114;
-      v25 = v8;
+      v25 = identifierCopy;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "{AUTO-SCHEDULER:triggerWithRetrySetDomainName} | unable to locate auto-asset-scheduler | clientDomainName:%{public}@ | assetSetIdentifier:%{public}@", buf, 0x16u);
     }
   }
@@ -1234,29 +1234,29 @@ void __98__MADAutoAssetScheduler_triggerWithRetrySetDomainName_forAssetSetIdenti
   }
 }
 
-+ (void)jobFinishedForSelector:(id)a3 withPotentialNetworkFailure:(BOOL)a4
++ (void)jobFinishedForSelector:(id)selector withPotentialNetworkFailure:(BOOL)failure
 {
-  v5 = a3;
+  selectorCopy = selector;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v6 = _os_activity_create(&dword_0, "MADScheduler:jobFinishedForSelector", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v6, &state);
 
-  if (v5)
+  if (selectorCopy)
   {
     v7 = +[MADAutoAssetScheduler autoAssetScheduler];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 schedulerQueue];
+      schedulerQueue = [v7 schedulerQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __76__MADAutoAssetScheduler_jobFinishedForSelector_withPotentialNetworkFailure___block_invoke;
       block[3] = &unk_4B3378;
       v13 = v8;
-      v14 = v5;
-      v15 = a4;
-      dispatch_async(v9, block);
+      v14 = selectorCopy;
+      failureCopy = failure;
+      dispatch_async(schedulerQueue, block);
 
       v10 = v13;
     }
@@ -1266,9 +1266,9 @@ void __98__MADAutoAssetScheduler_triggerWithRetrySetDomainName_forAssetSetIdenti
       v10 = _MADLog(@"Auto");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v5 summary];
+        summary = [selectorCopy summary];
         *buf = 138543362;
-        v18 = v11;
+        v18 = summary;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "{AUTO-SCHEDULER:jobFinishedForSelector} | no auto-asset-scheduler | selector:%{public}@", buf, 0xCu);
       }
     }
@@ -1287,16 +1287,16 @@ void __98__MADAutoAssetScheduler_triggerWithRetrySetDomainName_forAssetSetIdenti
   os_activity_scope_leave(&state);
 }
 
-+ (void)jobFinishedForSetDomainName:(id)a3 forAssetSetIdentifier:(id)a4 withPotentialNetworkFailure:(BOOL)a5
++ (void)jobFinishedForSetDomainName:(id)name forAssetSetIdentifier:(id)identifier withPotentialNetworkFailure:(BOOL)failure
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v9 = _os_activity_create(&dword_0, "MADScheduler:jobFinishedForSetDomainName", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v9, &state);
 
-  if (!v7)
+  if (!nameCopy)
   {
     v11 = _MADLog(@"Auto");
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1313,7 +1313,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (!v8)
+  if (!identifierCopy)
   {
     v11 = _MADLog(@"Auto");
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1322,7 +1322,7 @@ LABEL_9:
     }
 
     *buf = 138543362;
-    v24 = v7;
+    v24 = nameCopy;
     v14 = "{AUTO-SCHEDULER:jobFinishedForSetDomainName} no scheduling change | nil asset-set-identifier provided | clientDomainName:%{public}@";
     v15 = v11;
     v16 = 12;
@@ -1333,16 +1333,16 @@ LABEL_9:
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 schedulerQueue];
+    schedulerQueue = [v10 schedulerQueue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = __103__MADAutoAssetScheduler_jobFinishedForSetDomainName_forAssetSetIdentifier_withPotentialNetworkFailure___block_invoke;
     v17[3] = &unk_4B33A0;
     v18 = v11;
-    v19 = v7;
-    v20 = v8;
-    v21 = a5;
-    dispatch_async(v12, v17);
+    v19 = nameCopy;
+    v20 = identifierCopy;
+    failureCopy = failure;
+    dispatch_async(schedulerQueue, v17);
 
     v13 = v18;
   }
@@ -1353,9 +1353,9 @@ LABEL_9:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v24 = v7;
+      v24 = nameCopy;
       v25 = 2114;
-      v26 = v8;
+      v26 = identifierCopy;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "{AUTO-SCHEDULER:jobFinishedForSetDomainName} | no auto-asset-scheduler | clientDomainName:%{public}@ | assetSetIdentifier:%{public}@", buf, 0x16u);
     }
   }
@@ -1364,28 +1364,28 @@ LABEL_13:
   os_activity_scope_leave(&state);
 }
 
-+ (void)schedulePushNotifications:(id)a3
++ (void)schedulePushNotifications:(id)notifications
 {
-  v3 = a3;
+  notificationsCopy = notifications;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v4 = _os_activity_create(&dword_0, "MADScheduler:schedulePushNotifications", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v4, &state);
 
-  if (v3)
+  if (notificationsCopy)
   {
     v5 = +[MADAutoAssetScheduler autoAssetScheduler];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 schedulerQueue];
+      schedulerQueue = [v5 schedulerQueue];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = __51__MADAutoAssetScheduler_schedulePushNotifications___block_invoke;
       v10[3] = &unk_4B2B18;
       v11 = v6;
-      v12 = v3;
-      dispatch_async(v7, v10);
+      v12 = notificationsCopy;
+      dispatch_async(schedulerQueue, v10);
 
       v8 = v11;
     }
@@ -1395,9 +1395,9 @@ LABEL_13:
       v8 = _MADLog(@"Auto");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v3 safeSummary];
+        safeSummary = [notificationsCopy safeSummary];
         *buf = 138543362;
-        v15 = v9;
+        v15 = safeSummary;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "{AUTO-SCHEDULER:schedulePushNotifications} | unable to locate auto-asset-scheduler | failed to schedule pushNotificationsBySelector:%{public}@", buf, 0xCu);
       }
     }
@@ -1416,28 +1416,28 @@ LABEL_13:
   os_activity_scope_leave(&state);
 }
 
-+ (void)controlEliminateSelector:(id)a3
++ (void)controlEliminateSelector:(id)selector
 {
-  v3 = a3;
+  selectorCopy = selector;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v4 = _os_activity_create(&dword_0, "MADScheduler:controlEliminateSelector", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v4, &state);
 
-  if (v3)
+  if (selectorCopy)
   {
     v5 = +[MADAutoAssetScheduler autoAssetScheduler];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 schedulerQueue];
+      schedulerQueue = [v5 schedulerQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __50__MADAutoAssetScheduler_controlEliminateSelector___block_invoke_2;
       block[3] = &unk_4B2B18;
       v13 = v6;
-      v14 = v3;
-      dispatch_async(v7, block);
+      v14 = selectorCopy;
+      dispatch_async(schedulerQueue, block);
 
       v8 = &v13;
       v9 = v14;
@@ -1448,9 +1448,9 @@ LABEL_13:
       v10 = _MADLog(@"Auto");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v3 summary];
+        summary = [selectorCopy summary];
         *buf = 138543362;
-        v19 = v11;
+        v19 = summary;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "{AUTO-SCHEDULER:eliminateSelector} | unable to locate auto-asset-scheduler | failed to eliminate selector:%{public}@", buf, 0xCu);
       }
 
@@ -1460,7 +1460,7 @@ LABEL_13:
       v15[2] = __50__MADAutoAssetScheduler_controlEliminateSelector___block_invoke;
       v15[3] = &unk_4B2AA0;
       v8 = &v16;
-      v16 = v3;
+      v16 = selectorCopy;
       dispatch_async(v9, v15);
     }
   }
@@ -1478,34 +1478,34 @@ LABEL_13:
   os_activity_scope_leave(&state);
 }
 
-+ (void)controlEliminateSetDomainName:(id)a3 forAssetSetIdentifier:(id)a4 indicatingWhenEliminated:(BOOL)a5
++ (void)controlEliminateSetDomainName:(id)name forAssetSetIdentifier:(id)identifier indicatingWhenEliminated:(BOOL)eliminated
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  eliminatedCopy = eliminated;
+  nameCopy = name;
+  identifierCopy = identifier;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v9 = _os_activity_create(&dword_0, "MADScheduler:controlEliminateSetDomainName", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v9, &state);
 
-  v10 = [[MAAutoAssetSelector alloc] initForAssetType:v7 withAssetSpecifier:v8];
+  v10 = [[MAAutoAssetSelector alloc] initForAssetType:nameCopy withAssetSpecifier:identifierCopy];
   if (v10)
   {
     v11 = +[MADAutoAssetScheduler autoAssetScheduler];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 schedulerQueue];
+      schedulerQueue = [v11 schedulerQueue];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = __102__MADAutoAssetScheduler_controlEliminateSetDomainName_forAssetSetIdentifier_indicatingWhenEliminated___block_invoke_2;
       v18[3] = &unk_4B33C8;
-      v19 = v7;
-      v20 = v8;
+      v19 = nameCopy;
+      v20 = identifierCopy;
       v21 = v12;
       v22 = v10;
-      v23 = v5;
-      dispatch_async(v13, v18);
+      v23 = eliminatedCopy;
+      dispatch_async(schedulerQueue, v18);
 
       v14 = &v19;
       v15 = v20;
@@ -1517,13 +1517,13 @@ LABEL_10:
     v16 = _MADLog(@"Auto");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v10 summary];
+      summary = [v10 summary];
       *buf = 138543362;
-      v28 = v17;
+      v28 = summary;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "{AUTO-SCHEDULER:eliminateSelector} | unable to locate auto-asset-scheduler | failed to eliminate setJobSelector:%{public}@", buf, 0xCu);
     }
 
-    if (v5)
+    if (eliminatedCopy)
     {
       v15 = [MADAutoAssetControlManager selectDispatchQueue:0];
       block[0] = _NSConcreteStackBlock;
@@ -1543,9 +1543,9 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v28 = v7;
+      v28 = nameCopy;
       v29 = 2114;
-      v30 = v8;
+      v30 = identifierCopy;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "{AUTO-SCHEDULER:controlEliminateSetDomainName} no scheduling change | unable to create set-job-selector | clientDomainName:%{public}@ | assetSetIdentifier:%{public}@", buf, 0x16u);
     }
   }
@@ -1574,17 +1574,17 @@ void __102__MADAutoAssetScheduler_controlEliminateSetDomainName_forAssetSetIdent
   [*(a1 + 48) _eliminateSelector:*(a1 + 56) forSetJob:1 indicatingWhenEliminated:*(a1 + 64)];
 }
 
-- (void)_trackSetConfigurations:(id)a3
+- (void)_trackSetConfigurations:(id)configurations
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v5);
+  configurationsCopy = configurations;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = configurationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
@@ -1603,12 +1603,12 @@ void __102__MADAutoAssetScheduler_controlEliminateSetDomainName_forAssetSetIdent
         v12 = objc_autoreleasePoolPush();
         if (v11)
         {
-          v13 = [v11 clientDomainName];
-          v14 = [v11 assetSetIdentifier];
-          v15 = [MADAutoAssetScheduler persistedEntryIDForClientDomain:v13 forAssetSetIdentifier:v14];
+          clientDomainName = [v11 clientDomainName];
+          assetSetIdentifier = [v11 assetSetIdentifier];
+          v15 = [MADAutoAssetScheduler persistedEntryIDForClientDomain:clientDomainName forAssetSetIdentifier:assetSetIdentifier];
 
-          v16 = [(MADAutoAssetScheduler *)self setConfigurations];
-          [v16 setSafeObject:v11 forKey:v15];
+          setConfigurations = [(MADAutoAssetScheduler *)self setConfigurations];
+          [setConfigurations setSafeObject:v11 forKey:v15];
         }
 
         else
@@ -1616,9 +1616,9 @@ void __102__MADAutoAssetScheduler_controlEliminateSetDomainName_forAssetSetIdent
           v15 = _MADLog(@"AutoScheduler");
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
-            v17 = [(MADAutoAssetScheduler *)self summary];
+            summary = [(MADAutoAssetScheduler *)self summary];
             *buf = 138543362;
-            v23 = v17;
+            v23 = summary;
             _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_trackSetConfigurations} unable to access entry in allDefinedSetConfigurations", buf, 0xCu);
           }
         }
@@ -1633,11 +1633,11 @@ void __102__MADAutoAssetScheduler_controlEliminateSetDomainName_forAssetSetIdent
   }
 }
 
-- (id)_setConfigurationForAssetSelector:(id)a3
+- (id)_setConfigurationForAssetSelector:(id)selector
 {
-  v25 = a3;
-  v4 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v4);
+  selectorCopy = selector;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v28 = 0u;
   v29 = 0u;
@@ -1666,32 +1666,32 @@ LABEL_3:
         v12 = _MADLog(@"AutoScheduler");
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          v19 = [(MADAutoAssetScheduler *)self summary];
+          summary = [(MADAutoAssetScheduler *)self summary];
           *buf = 138543362;
-          v31 = v19;
+          v31 = summary;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_setConfigurationForAssetSelector} unable to access entry key in self.setConfigurations", buf, 0xCu);
         }
 
         goto LABEL_18;
       }
 
-      v11 = [(MADAutoAssetScheduler *)self setConfigurations];
-      v12 = [v11 safeObjectForKey:v9 ofClass:objc_opt_class()];
+      setConfigurations = [(MADAutoAssetScheduler *)self setConfigurations];
+      v12 = [setConfigurations safeObjectForKey:v9 ofClass:objc_opt_class()];
 
       if (v12)
       {
         break;
       }
 
-      v13 = _MADLog(@"AutoScheduler");
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      clientDomainName = _MADLog(@"AutoScheduler");
+      if (os_log_type_enabled(clientDomainName, OS_LOG_TYPE_ERROR))
       {
-        v20 = [(MADAutoAssetScheduler *)self summary];
+        summary2 = [(MADAutoAssetScheduler *)self summary];
         *buf = 138543618;
-        v31 = v20;
+        v31 = summary2;
         v32 = 2114;
         v33 = v9;
-        _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_setConfigurationForAssetSelector} unable to access entry in self.setConfigurations | nextSetConfigurationKey:%{public}@", buf, 0x16u);
+        _os_log_impl(&dword_0, clientDomainName, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_setConfigurationForAssetSelector} unable to access entry in self.setConfigurations | nextSetConfigurationKey:%{public}@", buf, 0x16u);
 
 LABEL_16:
         v6 = v23;
@@ -1711,15 +1711,15 @@ LABEL_18:
       }
     }
 
-    v13 = [v12 clientDomainName];
-    v14 = [v25 assetType];
-    if (([SUCore stringIsEqual:v13 to:v14]& 1) != 0)
+    clientDomainName = [v12 clientDomainName];
+    assetType = [selectorCopy assetType];
+    if (([SUCore stringIsEqual:clientDomainName to:assetType]& 1) != 0)
     {
       v15 = v7;
-      v16 = self;
-      v17 = [v12 assetSetIdentifier];
-      v18 = [v25 assetSpecifier];
-      v22 = [SUCore stringIsEqual:v17 to:v18];
+      selfCopy = self;
+      assetSetIdentifier = [v12 assetSetIdentifier];
+      assetSpecifier = [selectorCopy assetSpecifier];
+      v22 = [SUCore stringIsEqual:assetSetIdentifier to:assetSpecifier];
 
       if (v22)
       {
@@ -1727,7 +1727,7 @@ LABEL_18:
         goto LABEL_22;
       }
 
-      self = v16;
+      self = selfCopy;
       v7 = v15;
       v6 = v23;
       goto LABEL_18;
@@ -1745,17 +1745,17 @@ LABEL_22:
 
 - (id)_snapshotOfJobsBySelector
 {
-  v2 = self;
-  v3 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v4 = objc_alloc_init(NSMutableArray);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(MADAutoAssetScheduler *)v2 jobsBySelector];
-  v22 = [v5 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  jobsBySelector = [(MADAutoAssetScheduler *)selfCopy jobsBySelector];
+  v22 = [jobsBySelector countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v22)
   {
     v6 = *v24;
@@ -1766,13 +1766,13 @@ LABEL_22:
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(jobsBySelector);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [(MADAutoAssetScheduler *)v2 jobsBySelector];
-        v12 = [v11 safeObjectForKey:v9 ofClass:objc_opt_class()];
+        jobsBySelector2 = [(MADAutoAssetScheduler *)selfCopy jobsBySelector];
+        v12 = [jobsBySelector2 safeObjectForKey:v9 ofClass:objc_opt_class()];
 
         if (v12)
         {
@@ -1784,20 +1784,20 @@ LABEL_22:
           v13 = _MADLog(@"AutoScheduler");
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
-            [(MADAutoAssetScheduler *)v2 summary];
+            [(MADAutoAssetScheduler *)selfCopy summary];
             v14 = v6;
-            v15 = v2;
+            v15 = selfCopy;
             v16 = p_weak_ivar_lyt;
-            v17 = v5;
+            v17 = jobsBySelector;
             v19 = v18 = v4;
             *buf = 138543362;
             v28 = v19;
             _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_snapshotOfJobsBySelector} unable to load scheduledJob entry", buf, 0xCu);
 
             v4 = v18;
-            v5 = v17;
+            jobsBySelector = v17;
             p_weak_ivar_lyt = v16;
-            v2 = v15;
+            selfCopy = v15;
             v6 = v14;
           }
         }
@@ -1805,7 +1805,7 @@ LABEL_22:
         objc_autoreleasePoolPop(v10);
       }
 
-      v22 = [v5 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v22 = [jobsBySelector countByEnumeratingWithState:&v23 objects:v29 count:16];
     }
 
     while (v22);
@@ -1824,24 +1824,24 @@ LABEL_22:
   return v20;
 }
 
-- (void)_scheduleSelector:(id)a3 triggeringAtIntervalSecs:(int64_t)a4 withRemainingSecs:(int64_t)a5 forPushedJob:(BOOL)a6 forSetJob:(BOOL)a7 withSetPolicy:(id)a8 triggeringIfLearned:(BOOL)a9 resettingRemaining:(BOOL)a10 isReadOnlyForResumeFromPersisted:(BOOL)a11
+- (void)_scheduleSelector:(id)selector triggeringAtIntervalSecs:(int64_t)secs withRemainingSecs:(int64_t)remainingSecs forPushedJob:(BOOL)job forSetJob:(BOOL)setJob withSetPolicy:(id)policy triggeringIfLearned:(BOOL)learned resettingRemaining:(BOOL)self0 isReadOnlyForResumeFromPersisted:(BOOL)self1
 {
-  v12 = a7;
-  v13 = a6;
-  v16 = a3;
-  v17 = a8;
-  v18 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v18);
+  setJobCopy = setJob;
+  jobCopy = job;
+  selectorCopy = selector;
+  policyCopy = policy;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v19 = [v16 assetType];
-  if (v12)
+  assetType = [selectorCopy assetType];
+  if (setJobCopy)
   {
-    v20 = [(MADAutoAssetScheduler *)self _assetTypeForAssetSelector:v16];
+    v20 = [(MADAutoAssetScheduler *)self _assetTypeForAssetSelector:selectorCopy];
 
-    v19 = v20;
+    assetType = v20;
   }
 
-  if (!v19)
+  if (!assetType)
   {
     v22 = _MADLog(@"AutoScheduler");
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1849,20 +1849,20 @@ LABEL_22:
       goto LABEL_74;
     }
 
-    v30 = [(MADAutoAssetScheduler *)self summary];
-    v31 = [v16 summary];
+    summary = [(MADAutoAssetScheduler *)self summary];
+    summary2 = [selectorCopy summary];
     *buf = 138543618;
-    v115 = v30;
+    v115 = summary;
     v116 = 2114;
-    v117 = v31;
+    v117 = summary2;
     _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_scheduleSelector} unable to determine asset-type | assetSelector:%{public}@", buf, 0x16u);
 LABEL_18:
 
     goto LABEL_62;
   }
 
-  v101 = v13;
-  v99 = v17;
+  v101 = jobCopy;
+  v99 = policyCopy;
   v21 = +[MADAutoAssetControlManager preferenceScheduledOnlyForAssetTypes];
   if (v21)
   {
@@ -1879,12 +1879,12 @@ LABEL_13:
       v27 = _MADLog(@"AutoScheduler");
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [(MADAutoAssetScheduler *)self summary];
-        v29 = [v16 summary];
+        summary3 = [(MADAutoAssetScheduler *)self summary];
+        summary4 = [selectorCopy summary];
         *buf = 138543618;
-        v115 = v28;
+        v115 = summary3;
         v116 = 2114;
-        v117 = v29;
+        v117 = summary4;
         _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_scheduleSelector} asset-type blocked | assetSelector:%{public}@", buf, 0x16u);
       }
 
@@ -1902,7 +1902,7 @@ LABEL_7:
         objc_enumerationMutation(v22);
       }
 
-      if (([SUCore stringIsEqual:v19 to:*(*(&v108 + 1) + 8 * v26)]& 1) != 0)
+      if (([SUCore stringIsEqual:assetType to:*(*(&v108 + 1) + 8 * v26)]& 1) != 0)
       {
         break;
       }
@@ -1920,27 +1920,27 @@ LABEL_7:
     }
   }
 
-  v96 = v12;
-  v95 = v19;
-  v32 = v16;
-  v33 = [(MADAutoAssetScheduler *)self _decideTriggerIntervalSecs:@"_scheduleSelector" forAssetSelector:v16];
+  v96 = setJobCopy;
+  v95 = assetType;
+  v32 = selectorCopy;
+  v33 = [(MADAutoAssetScheduler *)self _decideTriggerIntervalSecs:@"_scheduleSelector" forAssetSelector:selectorCopy];
   v104 = 0u;
   v105 = 0u;
-  if (v33 >= a5)
+  if (v33 >= remainingSecs)
   {
-    v34 = a5;
+    remainingSecsCopy = remainingSecs;
   }
 
   else
   {
-    v34 = v33;
+    remainingSecsCopy = v33;
   }
 
-  v92 = v34;
+  v92 = remainingSecsCopy;
   v93 = v33;
   v106 = 0uLL;
   v107 = 0uLL;
-  v98 = self;
+  selfCopy = self;
   obj = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
   v35 = [obj countByEnumeratingWithState:&v104 objects:v112 count:16];
   if (!v35)
@@ -1961,26 +1961,26 @@ LABEL_7:
 
       v39 = *(*(&v104 + 1) + 8 * i);
       v40 = objc_autoreleasePoolPush();
-      v41 = [v39 assetSelector];
-      v42 = [v41 persistedEntryID];
+      assetSelector = [v39 assetSelector];
+      persistedEntryID = [assetSelector persistedEntryID];
 
-      v43 = [v39 assetSelector];
-      LODWORD(v41) = [MADAutoAssetScheduler isSelector:v32 consideredEqualTo:v43];
+      assetSelector2 = [v39 assetSelector];
+      LODWORD(assetSelector) = [MADAutoAssetScheduler isSelector:v32 consideredEqualTo:assetSelector2];
 
-      if (v41)
+      if (assetSelector)
       {
-        v64 = [v39 intervalSecs];
-        v65 = v64 != v93;
-        if (v64 != v93)
+        intervalSecs = [v39 intervalSecs];
+        v65 = intervalSecs != v93;
+        if (intervalSecs != v93)
         {
           [v39 setIntervalSecs:v93];
         }
 
-        v16 = v32;
+        selectorCopy = v32;
         v22 = obj;
-        if (a10)
+        if (remaining)
         {
-          v17 = v99;
+          policyCopy = v99;
           if ([v39 remainingSecs] != v93)
           {
             [v39 setRemainingSecs:v93];
@@ -1990,23 +1990,23 @@ LABEL_7:
 
         else
         {
-          v17 = v99;
+          policyCopy = v99;
         }
 
         if (([v39 pushedJob] & 1) == 0 && v101)
         {
           v65 = 1;
           [v39 setPushedJob:1];
-          [v39 setPushedPolicy:v17];
-          [(MADAutoAssetScheduler *)v98 setJobsAwaitingPushTrigger:[(MADAutoAssetScheduler *)v98 jobsAwaitingPushTrigger]+ 1];
+          [v39 setPushedPolicy:policyCopy];
+          [(MADAutoAssetScheduler *)selfCopy setJobsAwaitingPushTrigger:[(MADAutoAssetScheduler *)selfCopy jobsAwaitingPushTrigger]+ 1];
         }
 
-        v66 = [v39 assetSelector];
-        v67 = [v16 isEqual:v66];
+        assetSelector3 = [v39 assetSelector];
+        v67 = [selectorCopy isEqual:assetSelector3];
 
         if ((v67 & 1) == 0)
         {
-          [v39 setAssetSelector:v16];
+          [v39 setAssetSelector:selectorCopy];
           v65 = 1;
         }
 
@@ -2018,17 +2018,17 @@ LABEL_7:
 
         if ([v39 setJob])
         {
-          if (v17)
+          if (policyCopy)
           {
-            v68 = [v39 setPolicy];
-            v69 = [v17 isEqual:v68];
+            setPolicy = [v39 setPolicy];
+            v69 = [policyCopy isEqual:setPolicy];
 
             if (v69)
             {
               goto LABEL_56;
             }
 
-            [v39 setSetPolicy:v17];
+            [v39 setSetPolicy:policyCopy];
           }
 
           else if (!v65)
@@ -2037,49 +2037,49 @@ LABEL_7:
           }
 
 LABEL_68:
-          v78 = [(MADAutoAssetScheduler *)v98 persistedState];
-          v75 = [v78 persistedEntry:v42 fromLocation:@"_scheduleSelector"];
+          persistedState = [(MADAutoAssetScheduler *)selfCopy persistedState];
+          v75 = [persistedState persistedEntry:persistedEntryID fromLocation:@"_scheduleSelector"];
 
           v102 = [v75 BOOLeanForKey:@"requiringRetry"];
-          v79 = [v39 assetSelector];
-          [v75 persistSecureCodedObject:v79 forKey:@"assetSelector"];
+          assetSelector4 = [v39 assetSelector];
+          [v75 persistSecureCodedObject:assetSelector4 forKey:@"assetSelector"];
 
           -[NSObject persistULL:forKey:](v75, "persistULL:forKey:", [v39 intervalSecs], @"intervalSecs");
           -[NSObject persistULL:forKey:](v75, "persistULL:forKey:", [v39 remainingSecs], @"remainingSecs");
           -[NSObject persistBoolean:forKey:](v75, "persistBoolean:forKey:", [v39 pushedJob], @"pushJob");
           -[NSObject persistBoolean:forKey:](v75, "persistBoolean:forKey:", [v39 setJob], @"setJob");
-          v80 = [v39 setPolicy];
+          setPolicy2 = [v39 setPolicy];
 
-          if (v80)
+          if (setPolicy2)
           {
-            v81 = [v39 setPolicy];
-            [v75 persistSecureCodedObject:v81 forKey:@"setPolicy"];
+            setPolicy3 = [v39 setPolicy];
+            [v75 persistSecureCodedObject:setPolicy3 forKey:@"setPolicy"];
           }
 
-          v82 = [v39 pushedPolicy];
+          pushedPolicy = [v39 pushedPolicy];
 
-          if (v82)
+          if (pushedPolicy)
           {
-            v83 = [v39 pushedPolicy];
-            [v75 persistSecureCodedObject:v83 forKey:@"pushedPolicy"];
+            pushedPolicy2 = [v39 pushedPolicy];
+            [v75 persistSecureCodedObject:pushedPolicy2 forKey:@"pushedPolicy"];
           }
 
-          v84 = [(MADAutoAssetScheduler *)v98 persistedState];
-          v85 = [v39 summary];
-          [v84 storePersistedEntry:v42 withEntrySummary:v85 fromLocation:@"_scheduleSelector"];
+          persistedState2 = [(MADAutoAssetScheduler *)selfCopy persistedState];
+          summary5 = [v39 summary];
+          [persistedState2 storePersistedEntry:persistedEntryID withEntrySummary:summary5 fromLocation:@"_scheduleSelector"];
 
-          v86 = [v39 assetSelector];
-          v100 = [v39 intervalSecs];
-          v97 = [v39 remainingSecs];
-          v94 = [v39 pushedJob];
-          v87 = [v39 setJob];
-          v88 = [v39 setPolicy];
-          v89 = [v39 pushedPolicy];
+          assetSelector5 = [v39 assetSelector];
+          intervalSecs2 = [v39 intervalSecs];
+          remainingSecs = [v39 remainingSecs];
+          pushedJob = [v39 pushedJob];
+          setJob = [v39 setJob];
+          setPolicy4 = [v39 setPolicy];
+          pushedPolicy3 = [v39 pushedPolicy];
           LOBYTE(v91) = v102;
-          LOBYTE(v90) = v87;
-          [(MADAutoAssetScheduler *)v98 _logPersistedEntry:@"_scheduleSelector" operation:@"ENTRY_MODIFY" persistingSelector:v86 intervalSecs:v100 remainingSecs:v97 pushedJob:v94 setJob:v90 setPolicy:v88 pushedPolicy:v89 requiringRetry:v91 message:@"already scheduled job (adjusted)"];
+          LOBYTE(v90) = setJob;
+          [(MADAutoAssetScheduler *)selfCopy _logPersistedEntry:@"_scheduleSelector" operation:@"ENTRY_MODIFY" persistingSelector:assetSelector5 intervalSecs:intervalSecs2 remainingSecs:remainingSecs pushedJob:pushedJob setJob:v90 setPolicy:setPolicy4 pushedPolicy:pushedPolicy3 requiringRetry:v91 message:@"already scheduled job (adjusted)"];
 
-          v19 = v95;
+          assetType = v95;
           v22 = obj;
 LABEL_73:
 
@@ -2097,16 +2097,16 @@ LABEL_64:
         v75 = _MADLog(@"AutoScheduler");
         if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
         {
-          v76 = [(MADAutoAssetScheduler *)v98 summary];
-          v77 = [v39 summary];
+          summary6 = [(MADAutoAssetScheduler *)selfCopy summary];
+          summary7 = [v39 summary];
           *buf = 138543618;
-          v115 = v76;
+          v115 = summary6;
           v116 = 2114;
-          v117 = v77;
+          v117 = summary7;
           _os_log_impl(&dword_0, v75, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_scheduleSelector} already scheduled | alreadyAwaiting:%{public}@", buf, 0x16u);
         }
 
-        v19 = v95;
+        assetType = v95;
         goto LABEL_73;
       }
 
@@ -2125,97 +2125,97 @@ LABEL_64:
 LABEL_31:
 
   v44 = [MADAutoAssetScheduledJob alloc];
-  v16 = v32;
+  selectorCopy = v32;
   v45 = v32;
-  v17 = v99;
+  policyCopy = v99;
   v46 = [(MADAutoAssetScheduledJob *)v44 initForAssetSelector:v45 withActivityInterval:v93 forPushedJob:v101 forSetJob:v96 withSetPolicy:v99 requiringRetry:0];
   v22 = v46;
   if (!v46)
   {
-    v30 = _MADLog(@"AutoScheduler");
-    v19 = v95;
-    if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+    summary = _MADLog(@"AutoScheduler");
+    assetType = v95;
+    if (!os_log_type_enabled(summary, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_62;
     }
 
-    v31 = [(MADAutoAssetScheduler *)v98 summary];
-    v70 = [v16 summary];
+    summary2 = [(MADAutoAssetScheduler *)selfCopy summary];
+    summary8 = [selectorCopy summary];
     *buf = 138543618;
-    v115 = v31;
+    v115 = summary2;
     v116 = 2114;
-    v117 = v70;
-    _os_log_impl(&dword_0, v30, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_scheduleSelector} no scheduling change | unable to allocate job for selector:%{public}@", buf, 0x16u);
+    v117 = summary8;
+    _os_log_impl(&dword_0, summary, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_scheduleSelector} no scheduling change | unable to allocate job for selector:%{public}@", buf, 0x16u);
 
     goto LABEL_18;
   }
 
   v47 = v46;
   [v46 setRemainingSecs:v92];
-  v48 = v98;
-  v49 = [(MADAutoAssetScheduler *)v98 jobsAwaitingTrigger];
-  [v49 addObject:v47];
+  v48 = selfCopy;
+  jobsAwaitingTrigger = [(MADAutoAssetScheduler *)selfCopy jobsAwaitingTrigger];
+  [jobsAwaitingTrigger addObject:v47];
 
-  v50 = [(MADAutoAssetScheduler *)v98 jobsBySelector];
-  v51 = [v16 persistedEntryID];
-  [v50 setSafeObject:v47 forKey:v51];
+  jobsBySelector = [(MADAutoAssetScheduler *)selfCopy jobsBySelector];
+  persistedEntryID2 = [selectorCopy persistedEntryID];
+  [jobsBySelector setSafeObject:v47 forKey:persistedEntryID2];
 
-  v19 = v95;
-  if (!a11)
+  assetType = v95;
+  if (!persisted)
   {
-    v52 = [v16 persistedEntryID];
-    v53 = [(MADAutoAssetScheduler *)v98 persistedState];
-    v54 = [v53 persistedEntry:v52 fromLocation:@"_scheduleSelector"];
+    persistedEntryID3 = [selectorCopy persistedEntryID];
+    persistedState3 = [(MADAutoAssetScheduler *)selfCopy persistedState];
+    v54 = [persistedState3 persistedEntry:persistedEntryID3 fromLocation:@"_scheduleSelector"];
 
-    [v54 persistSecureCodedObject:v16 forKey:@"assetSelector"];
+    [v54 persistSecureCodedObject:selectorCopy forKey:@"assetSelector"];
     [v54 persistULL:-[NSObject intervalSecs](v47 forKey:{"intervalSecs"), @"intervalSecs"}];
     [v54 persistULL:-[NSObject remainingSecs](v47 forKey:{"remainingSecs"), @"remainingSecs"}];
     [v54 persistBoolean:v101 forKey:@"pushJob"];
     [v54 persistBoolean:v96 forKey:@"setJob"];
-    v55 = [v47 setPolicy];
+    setPolicy5 = [v47 setPolicy];
 
-    if (v55)
+    if (setPolicy5)
     {
-      v56 = [v47 setPolicy];
-      [v54 persistSecureCodedObject:v56 forKey:@"setPolicy"];
+      setPolicy6 = [v47 setPolicy];
+      [v54 persistSecureCodedObject:setPolicy6 forKey:@"setPolicy"];
     }
 
-    v57 = [v47 pushedPolicy];
+    pushedPolicy4 = [v47 pushedPolicy];
 
-    if (v57)
+    if (pushedPolicy4)
     {
-      v58 = [v47 pushedPolicy];
-      [v54 persistSecureCodedObject:v58 forKey:@"pushedPolicy"];
+      pushedPolicy5 = [v47 pushedPolicy];
+      [v54 persistSecureCodedObject:pushedPolicy5 forKey:@"pushedPolicy"];
     }
 
     [v54 persistBoolean:0 forKey:@"requiringRetry"];
-    v48 = v98;
-    v59 = [(MADAutoAssetScheduler *)v98 persistedState];
-    v60 = [v47 summary];
-    [v59 storePersistedEntry:v52 withEntrySummary:v60 fromLocation:@"_scheduleSelector"];
+    v48 = selfCopy;
+    persistedState4 = [(MADAutoAssetScheduler *)selfCopy persistedState];
+    summary9 = [v47 summary];
+    [persistedState4 storePersistedEntry:persistedEntryID3 withEntrySummary:summary9 fromLocation:@"_scheduleSelector"];
   }
 
-  v61 = [v47 intervalSecs];
-  v62 = [v47 remainingSecs];
-  v63 = [v47 pushedPolicy];
+  intervalSecs3 = [v47 intervalSecs];
+  remainingSecs2 = [v47 remainingSecs];
+  pushedPolicy6 = [v47 pushedPolicy];
   LOBYTE(v91) = 0;
   LOBYTE(v90) = v96;
-  [(MADAutoAssetScheduler *)v48 _logPersistedEntry:@"_scheduleSelector" operation:@"ENTRY_ADD" persistingSelector:v16 intervalSecs:v61 remainingSecs:v62 pushedJob:v101 setJob:v90 setPolicy:v99 pushedPolicy:v63 requiringRetry:v91 message:@"now tracking scheduled job"];
+  [(MADAutoAssetScheduler *)v48 _logPersistedEntry:@"_scheduleSelector" operation:@"ENTRY_ADD" persistingSelector:selectorCopy intervalSecs:intervalSecs3 remainingSecs:remainingSecs2 pushedJob:v101 setJob:v90 setPolicy:v99 pushedPolicy:pushedPolicy6 requiringRetry:v91 message:@"now tracking scheduled job"];
 
-  if (a9)
+  if (learned)
   {
-    v30 = objc_alloc_init(NSMutableArray);
-    [v30 addObject:v16];
-    [(MADAutoAssetScheduler *)v48 _informConnectorTriggeredSelectors:0 withTriggeredRequiringRetry:v30];
+    summary = objc_alloc_init(NSMutableArray);
+    [summary addObject:selectorCopy];
+    [(MADAutoAssetScheduler *)v48 _informConnectorTriggeredSelectors:0 withTriggeredRequiringRetry:summary];
   }
 
   else
   {
-    v30 = +[MADAnalyticsManager getAnalyticsManager];
-    v71 = [(MADAutoAssetScheduler *)v48 xpcActivityUUID];
+    summary = +[MADAnalyticsManager getAnalyticsManager];
+    xpcActivityUUID = [(MADAutoAssetScheduler *)v48 xpcActivityUUID];
     v72 = [NSNumber numberWithBool:v101];
     v73 = [NSNumber numberWithBool:v96];
-    v74 = [v30 recordMobileAssetScheduler:v92 forSelector:v16 withXpcID:v71 forPushJob:v72 forSetJob:v73 inSchedulerState:0 inXPCState:0 didJobFail:0];
+    v74 = [summary recordMobileAssetScheduler:v92 forSelector:selectorCopy withXpcID:xpcActivityUUID forPushJob:v72 forSetJob:v73 inSchedulerState:0 inXPCState:0 didJobFail:0];
   }
 
   v22 = v47;
@@ -2224,19 +2224,19 @@ LABEL_62:
 LABEL_74:
 }
 
-- (void)_schedulePushNotifications:(id)a3
+- (void)_schedulePushNotifications:(id)notifications
 {
-  v4 = a3;
-  v85 = self;
-  v5 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v5);
+  notificationsCopy = notifications;
+  selfCopy = self;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v75 = objc_alloc_init(NSMutableDictionary);
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v6 = v4;
+  v6 = notificationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v90 objects:v111 count:16];
   obj = v6;
   if (v7)
@@ -2255,22 +2255,22 @@ LABEL_74:
         v11 = *(*(&v90 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
         v13 = [obj safeObjectForKey:v11 ofClass:objc_opt_class()];
-        v14 = [(MADAutoAssetScheduler *)v85 jobsBySelector];
-        v15 = [v14 safeObjectForKey:v11 ofClass:objc_opt_class()];
+        jobsBySelector = [(MADAutoAssetScheduler *)selfCopy jobsBySelector];
+        v15 = [jobsBySelector safeObjectForKey:v11 ofClass:objc_opt_class()];
 
         if (!v15)
         {
           v16 = _MADLog(@"AutoScheduler");
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [(MADAutoAssetScheduler *)v85 summary];
-            v18 = [v13 summary];
+            summary = [(MADAutoAssetScheduler *)selfCopy summary];
+            summary2 = [v13 summary];
             *buf = 138543874;
-            v95 = v17;
+            v95 = summary;
             v96 = 2114;
             v97 = v11;
             v98 = 2114;
-            v99 = v18;
+            v99 = summary2;
             v19 = v16;
             v20 = "%{public}@ | {AUTO-SCHEDULER:_schedulePushNotifications} requested push-notification dropped (no scheduled job) | pushSelectorKey:%{public}@ | pushPolicy:%{public}@";
 LABEL_12:
@@ -2287,14 +2287,14 @@ LABEL_13:
           v16 = _MADLog(@"AutoScheduler");
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [(MADAutoAssetScheduler *)v85 summary];
-            v18 = [v13 summary];
+            summary = [(MADAutoAssetScheduler *)selfCopy summary];
+            summary2 = [v13 summary];
             *buf = 138543874;
-            v95 = v17;
+            v95 = summary;
             v96 = 2114;
             v97 = v11;
             v98 = 2114;
-            v99 = v18;
+            v99 = summary2;
             v19 = v16;
             v20 = "%{public}@ | {AUTO-SCHEDULER:_schedulePushNotifications} requested push-notification not modified (already scheduled push-job) | pushSelectorKey:%{public}@ | pushPolicy:%{public}@";
             goto LABEL_12;
@@ -2323,7 +2323,7 @@ LABEL_15:
     v86 = 0u;
     v87 = 0u;
     v82 = v75;
-    v22 = v85;
+    v22 = selfCopy;
     v81 = [v82 countByEnumeratingWithState:&v86 objects:v110 count:16];
     if (v81)
     {
@@ -2340,8 +2340,8 @@ LABEL_15:
           v24 = *(*(&v86 + 1) + 8 * j);
           v25 = objc_autoreleasePoolPush();
           v84 = [v82 safeObjectForKey:v24 ofClass:objc_opt_class()];
-          v26 = [(MADAutoAssetScheduler *)v22 jobsBySelector];
-          v27 = [v26 safeObjectForKey:v24 ofClass:objc_opt_class()];
+          jobsBySelector2 = [(MADAutoAssetScheduler *)v22 jobsBySelector];
+          v27 = [jobsBySelector2 safeObjectForKey:v24 ofClass:objc_opt_class()];
 
           if (v27)
           {
@@ -2350,15 +2350,15 @@ LABEL_15:
               v28 = _MADLog(@"AutoScheduler");
               if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
               {
-                v29 = [(MADAutoAssetScheduler *)v22 summary];
+                summary3 = [(MADAutoAssetScheduler *)v22 summary];
                 v30 = v84;
-                v31 = [v84 summary];
+                summary4 = [v84 summary];
                 *buf = 138543874;
-                v95 = v29;
+                v95 = summary3;
                 v96 = 2114;
                 v97 = v24;
                 v98 = 2114;
-                v99 = v31;
+                v99 = summary4;
                 v32 = v28;
                 v33 = "%{public}@ | {AUTO-SCHEDULER:_schedulePushNotifications} trimmed push-notification when already push-job (ignored) | pushSelectorKey:%{public}@ | pushPolicy:%{public}@";
 LABEL_29:
@@ -2371,29 +2371,29 @@ LABEL_29:
             else
             {
               v78 = v25;
-              v34 = [v27 assetSelector];
-              v79 = [v34 persistedEntryID];
+              assetSelector = [v27 assetSelector];
+              persistedEntryID = [assetSelector persistedEntryID];
 
               if ([v84 checkForNewerIntervalSecs])
               {
                 if ([v84 checkForNewerIntervalSecs] >= 600)
                 {
-                  v35 = &loc_93A80;
+                  checkForNewerIntervalSecs = &loc_93A80;
                   if ([v84 checkForNewerIntervalSecs] <= 604800)
                   {
-                    v35 = [v84 checkForNewerIntervalSecs];
+                    checkForNewerIntervalSecs = [v84 checkForNewerIntervalSecs];
                   }
                 }
 
                 else
                 {
-                  v35 = (&stru_248 + 16);
+                  checkForNewerIntervalSecs = (&stru_248 + 16);
                 }
               }
 
               else
               {
-                v35 = (&stru_338 + 76);
+                checkForNewerIntervalSecs = (&stru_338 + 76);
               }
 
               if ([v84 newerFoundAutoDownloadJitterSecs])
@@ -2402,24 +2402,24 @@ LABEL_29:
                 {
                   if ([v84 newerFoundAutoDownloadJitterSecs] <= 604800)
                   {
-                    v36 = [v84 newerFoundAutoDownloadJitterSecs];
+                    newerFoundAutoDownloadJitterSecs = [v84 newerFoundAutoDownloadJitterSecs];
                   }
 
                   else
                   {
-                    v36 = 604800;
+                    newerFoundAutoDownloadJitterSecs = 604800;
                   }
                 }
 
                 else
                 {
-                  v36 = 600;
+                  newerFoundAutoDownloadJitterSecs = 600;
                 }
               }
 
               else
               {
-                v36 = 900;
+                newerFoundAutoDownloadJitterSecs = 900;
               }
 
               [(MADAutoAssetScheduler *)v22 setJobsAwaitingPushTrigger:[(MADAutoAssetScheduler *)v22 jobsAwaitingPushTrigger]+ 1];
@@ -2433,65 +2433,65 @@ LABEL_29:
               [v37 setAllowCheckDownloadWhenBatteryLow:1];
               v77 = v37;
               [v27 setPushedPolicy:v37];
-              v38 = [(MADAutoAssetScheduler *)v22 jobsBySelector];
-              [v38 setSafeObject:v27 forKey:v24];
+              jobsBySelector3 = [(MADAutoAssetScheduler *)v22 jobsBySelector];
+              [jobsBySelector3 setSafeObject:v27 forKey:v24];
 
-              v39 = [(MADAutoAssetScheduler *)v22 persistedState];
-              v40 = [v39 persistedEntry:v79 fromLocation:@"_schedulePushNotifications"];
+              persistedState = [(MADAutoAssetScheduler *)v22 persistedState];
+              v40 = [persistedState persistedEntry:persistedEntryID fromLocation:@"_schedulePushNotifications"];
 
               v76 = v40;
               if (v40)
               {
                 v72 = [v40 BOOLeanForKey:@"requiringRetry"];
                 [v40 persistBoolean:1 forKey:@"pushJob"];
-                v41 = [v27 pushedPolicy];
-                [v40 persistSecureCodedObject:v41 forKey:@"pushedPolicy"];
+                pushedPolicy = [v27 pushedPolicy];
+                [v40 persistSecureCodedObject:pushedPolicy forKey:@"pushedPolicy"];
 
-                v42 = [(MADAutoAssetScheduler *)v22 persistedState];
-                v43 = [v27 summary];
-                [v42 storePersistedEntry:v79 withEntrySummary:v43 fromLocation:@"_schedulePushNotifications"];
+                persistedState2 = [(MADAutoAssetScheduler *)v22 persistedState];
+                summary5 = [v27 summary];
+                [persistedState2 storePersistedEntry:persistedEntryID withEntrySummary:summary5 fromLocation:@"_schedulePushNotifications"];
 
-                v44 = [v27 assetSelector];
-                v45 = [v27 intervalSecs];
-                v70 = [v27 remainingSecs];
-                v46 = [v27 pushedJob];
-                v47 = [v27 setJob];
+                assetSelector2 = [v27 assetSelector];
+                intervalSecs = [v27 intervalSecs];
+                remainingSecs = [v27 remainingSecs];
+                pushedJob = [v27 pushedJob];
+                setJob = [v27 setJob];
                 [v27 setPolicy];
-                v74 = v36;
+                v74 = newerFoundAutoDownloadJitterSecs;
                 v48 = v24;
-                v50 = v49 = v35;
-                v51 = [v27 pushedPolicy];
+                v50 = v49 = checkForNewerIntervalSecs;
+                pushedPolicy2 = [v27 pushedPolicy];
                 LOBYTE(v63) = v72;
-                LOBYTE(v62) = v47;
-                v22 = v85;
-                [(MADAutoAssetScheduler *)v85 _logPersistedEntry:@"_schedulePushNotifications" operation:@"ENTRY_MODIFY" persistingSelector:v44 intervalSecs:v45 remainingSecs:v70 pushedJob:v46 setJob:v62 setPolicy:v50 pushedPolicy:v51 requiringRetry:v63 message:@"scheduled-job now push-job"];
+                LOBYTE(v62) = setJob;
+                v22 = selfCopy;
+                [(MADAutoAssetScheduler *)selfCopy _logPersistedEntry:@"_schedulePushNotifications" operation:@"ENTRY_MODIFY" persistingSelector:assetSelector2 intervalSecs:intervalSecs remainingSecs:remainingSecs pushedJob:pushedJob setJob:v62 setPolicy:v50 pushedPolicy:pushedPolicy2 requiringRetry:v63 message:@"scheduled-job now push-job"];
 
-                v35 = v49;
+                checkForNewerIntervalSecs = v49;
                 v24 = v48;
-                v36 = v74;
+                newerFoundAutoDownloadJitterSecs = v74;
               }
 
               else
               {
-                v44 = _MADLog(@"AutoScheduler");
-                if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+                assetSelector2 = _MADLog(@"AutoScheduler");
+                if (os_log_type_enabled(assetSelector2, OS_LOG_TYPE_ERROR))
                 {
-                  v52 = [(MADAutoAssetScheduler *)v22 summary];
+                  summary6 = [(MADAutoAssetScheduler *)v22 summary];
                   [v27 summary];
-                  v54 = v53 = v36;
+                  v54 = v53 = newerFoundAutoDownloadJitterSecs;
                   *buf = 138543874;
-                  v95 = v52;
+                  v95 = summary6;
                   v96 = 2114;
                   v97 = v24;
                   v98 = 2114;
                   v99 = v54;
-                  _os_log_impl(&dword_0, v44, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_schedulePushNotifications} already-scheduled-job without persisted entry (unable to persist that job has been pushed) | pushSelectorKey:%{public}@ | alreadyScheduledJob:%{public}@", buf, 0x20u);
+                  _os_log_impl(&dword_0, assetSelector2, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_schedulePushNotifications} already-scheduled-job without persisted entry (unable to persist that job has been pushed) | pushSelectorKey:%{public}@ | alreadyScheduledJob:%{public}@", buf, 0x20u);
 
-                  v36 = v53;
+                  newerFoundAutoDownloadJitterSecs = v53;
                 }
               }
 
-              v55 = &v35[arc4random_uniform(v36)];
+              v55 = &checkForNewerIntervalSecs[arc4random_uniform(newerFoundAutoDownloadJitterSecs)];
               v56 = +[MADAutoAssetControlManager preferencePushActivityIntervalSecs];
               if (v56 <= 0)
               {
@@ -2506,8 +2506,8 @@ LABEL_29:
               v58 = _MADLog(@"AutoScheduler");
               if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
               {
-                v73 = [(MADAutoAssetScheduler *)v22 summary];
-                v71 = [v84 summary];
+                summary7 = [(MADAutoAssetScheduler *)v22 summary];
+                summary8 = [v84 summary];
                 v69 = [MADAutoAssetControlManager allocIntervalString:604800];
                 v65 = v69;
                 v67 = [MADAutoAssetControlManager allocIntervalString:0];
@@ -2518,11 +2518,11 @@ LABEL_29:
                 v60 = [MADAutoAssetControlManager allocIntervalString:v57];
 
                 *buf = 138545154;
-                v95 = v73;
+                v95 = summary7;
                 v96 = 2114;
                 v97 = v24;
                 v98 = 2114;
-                v99 = v71;
+                v99 = summary8;
                 v100 = 2114;
                 v101 = v69;
                 v102 = 2114;
@@ -2535,12 +2535,12 @@ LABEL_29:
                 v109 = v60;
                 _os_log_impl(&dword_0, v58, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_schedulePushNotifications} scheduled-job now push-job | pushSelectorKey:%{public}@ | pushPolicy:%{public}@ | delay(%{public}@..%{public}@), jitter(%{public}@..%{public}@) | finalDelaySecs:%{public}@", buf, 0x52u);
 
-                v22 = v85;
+                v22 = selfCopy;
               }
 
               [(MADAutoAssetScheduler *)v22 _startPushDelayTimer:v57];
               v25 = v78;
-              v28 = v79;
+              v28 = persistedEntryID;
             }
           }
 
@@ -2549,15 +2549,15 @@ LABEL_29:
             v28 = _MADLog(@"AutoScheduler");
             if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
             {
-              v29 = [(MADAutoAssetScheduler *)v22 summary];
+              summary3 = [(MADAutoAssetScheduler *)v22 summary];
               v30 = v84;
-              v31 = [v84 summary];
+              summary4 = [v84 summary];
               *buf = 138543874;
-              v95 = v29;
+              v95 = summary3;
               v96 = 2114;
               v97 = v24;
               v98 = 2114;
-              v99 = v31;
+              v99 = summary4;
               v32 = v28;
               v33 = "%{public}@ | {AUTO-SCHEDULER:_schedulePushNotifications} trimmed push-notification without already-scheduled-job (dropped) | pushSelectorKey:%{public}@ | pushPolicy:%{public}@";
               goto LABEL_29;
@@ -2585,46 +2585,46 @@ LABEL_54:
     v82 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
     {
-      v61 = [(MADAutoAssetScheduler *)v85 summary];
+      summary9 = [(MADAutoAssetScheduler *)selfCopy summary];
       *buf = 138543362;
-      v95 = v61;
+      v95 = summary9;
       _os_log_impl(&dword_0, v82, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_schedulePushNotifications} no new push-notification (no scheduling change)", buf, 0xCu);
     }
   }
 }
 
-- (int64_t)_decideTriggerIntervalSecs:(id)a3 forAssetSelector:(id)a4
+- (int64_t)_decideTriggerIntervalSecs:(id)secs forAssetSelector:(id)selector
 {
-  v5 = a4;
-  v6 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v6);
+  selectorCopy = selector;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v7 = +[MADAutoAssetControlManager preferenceActivityIntervalSecs];
-  v8 = [(MADAutoAssetScheduler *)self _assetTypeForAssetSelector:v5];
-  if (v7 < 0)
+  _heightenedIntervalSecs = +[MADAutoAssetControlManager preferenceActivityIntervalSecs];
+  v8 = [(MADAutoAssetScheduler *)self _assetTypeForAssetSelector:selectorCopy];
+  if (_heightenedIntervalSecs < 0)
   {
     if (_MAPreferencesIsInternalAllowed() && !+[MADAutoAssetControlManager preferenceScheduledAsIfNotInternal])
     {
       v9 = @"internal image";
-      v7 = 86400;
+      _heightenedIntervalSecs = 86400;
     }
 
     else if ([MADAutoAssetScheduler isAssetTypeAtHeightenedFrequency:v8])
     {
-      v7 = [(MADAutoAssetScheduler *)self _heightenedIntervalSecs];
+      _heightenedIntervalSecs = [(MADAutoAssetScheduler *)self _heightenedIntervalSecs];
       v9 = @"heightened";
     }
 
     else if ([MADAutoAssetScheduler isAssetTypeAtAggressiveFrequency:v8])
     {
-      v7 = [(MADAutoAssetScheduler *)self _aggressiveIntervalSecs];
+      _heightenedIntervalSecs = [(MADAutoAssetScheduler *)self _aggressiveIntervalSecs];
       v9 = @"aggressive";
     }
 
     else
     {
       v9 = @"default";
-      v7 = 604800;
+      _heightenedIntervalSecs = 604800;
     }
   }
 
@@ -2636,22 +2636,22 @@ LABEL_54:
   v10 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MADAutoAssetScheduler *)self summary];
-    v12 = [v5 summary];
+    summary = [(MADAutoAssetScheduler *)self summary];
+    summary2 = [selectorCopy summary];
     v14 = 138544386;
-    v15 = v11;
+    v15 = summary;
     v16 = 2114;
     v17 = v9;
     v18 = 2114;
-    v19 = v12;
+    v19 = summary2;
     v20 = 2114;
     v21 = v8;
     v22 = 2048;
-    v23 = v7;
+    v23 = _heightenedIntervalSecs;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_decideTriggerIntervalSecs} reason:%{public}@ | assetSelector:%{public}@ | scheduledJobAssetType:%{public}@ | determinedIntervalSecs:%ld", &v14, 0x34u);
   }
 
-  return v7;
+  return _heightenedIntervalSecs;
 }
 
 - (int64_t)_heightenedIntervalSecs
@@ -2676,14 +2676,14 @@ LABEL_54:
   return result;
 }
 
-- (id)_assetTypeForAssetSelector:(id)a3
+- (id)_assetTypeForAssetSelector:(id)selector
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v5);
+  selectorCopy = selector;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v25 = v4;
-  v6 = [v4 assetType];
+  v25 = selectorCopy;
+  assetType = [selectorCopy assetType];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -2693,8 +2693,8 @@ LABEL_54:
   if (v7)
   {
     v8 = v7;
-    v22 = v6;
-    v23 = self;
+    v22 = assetType;
+    selfCopy = self;
     v9 = *v27;
     do
     {
@@ -2706,28 +2706,28 @@ LABEL_54:
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [(MADAutoAssetScheduler *)self setConfigurations];
-        v13 = [v12 safeObjectForKey:v11 ofClass:objc_opt_class()];
+        setConfigurations = [(MADAutoAssetScheduler *)self setConfigurations];
+        v13 = [setConfigurations safeObjectForKey:v11 ofClass:objc_opt_class()];
 
         if (v13)
         {
-          v14 = [v25 assetType];
-          v15 = [v13 clientDomainName];
-          if (([SUCore stringIsEqual:v14 to:v15]& 1) != 0)
+          assetType2 = [v25 assetType];
+          clientDomainName = [v13 clientDomainName];
+          if (([SUCore stringIsEqual:assetType2 to:clientDomainName]& 1) != 0)
           {
-            v16 = [v25 assetSpecifier];
+            assetSpecifier = [v25 assetSpecifier];
             [v13 assetSetIdentifier];
             v17 = v8;
             v19 = v18 = v9;
-            v20 = [SUCore stringIsEqual:v16 to:v19];
+            v20 = [SUCore stringIsEqual:assetSpecifier to:v19];
 
             v9 = v18;
             v8 = v17;
 
-            self = v23;
+            self = selfCopy;
             if (v20)
             {
-              v6 = [v13 firstEntryAssetType];
+              assetType = [v13 firstEntryAssetType];
 
               goto LABEL_14;
             }
@@ -2743,67 +2743,67 @@ LABEL_54:
     }
 
     while (v8);
-    v6 = v22;
+    assetType = v22;
   }
 
 LABEL_14:
 
-  return v6;
+  return assetType;
 }
 
-- (void)_jobFinishedForSelector:(id)a3 withPotentialNetworkFailure:(BOOL)a4
+- (void)_jobFinishedForSelector:(id)selector withPotentialNetworkFailure:(BOOL)failure
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v7);
+  failureCopy = failure;
+  selectorCopy = selector;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v8 = [(MADAutoAssetScheduler *)self jobsBySelector];
-  v9 = [v6 persistedEntryID];
-  v10 = [v8 safeObjectForKey:v9 ofClass:objc_opt_class()];
+  jobsBySelector = [(MADAutoAssetScheduler *)self jobsBySelector];
+  persistedEntryID = [selectorCopy persistedEntryID];
+  v10 = [jobsBySelector safeObjectForKey:persistedEntryID ofClass:objc_opt_class()];
 
   if (v10)
   {
-    v11 = [v6 persistedEntryID];
-    v12 = [(MADAutoAssetScheduler *)self persistedState];
-    v37 = v11;
-    v13 = [v12 persistedEntry:v11 fromLocation:@"_jobFinishedForSelector"];
+    persistedEntryID2 = [selectorCopy persistedEntryID];
+    persistedState = [(MADAutoAssetScheduler *)self persistedState];
+    v37 = persistedEntryID2;
+    v13 = [persistedState persistedEntry:persistedEntryID2 fromLocation:@"_jobFinishedForSelector"];
 
-    if ([v13 BOOLeanForKey:@"requiringRetry"] != v4)
+    if ([v13 BOOLeanForKey:@"requiringRetry"] != failureCopy)
     {
-      [v13 persistBoolean:v4 forKey:@"requiringRetry"];
-      v14 = [(MADAutoAssetScheduler *)self persistedState];
-      v15 = [v10 summary];
-      [v14 storePersistedEntry:v11 withEntrySummary:v15 fromLocation:@"_jobFinishedForSelector"];
+      [v13 persistBoolean:failureCopy forKey:@"requiringRetry"];
+      persistedState2 = [(MADAutoAssetScheduler *)self persistedState];
+      summary = [v10 summary];
+      [persistedState2 storePersistedEntry:persistedEntryID2 withEntrySummary:summary fromLocation:@"_jobFinishedForSelector"];
 
-      v16 = [v10 assetSelector];
-      v36 = [v10 intervalSecs];
-      v35 = [v10 remainingSecs];
-      v34 = [v10 pushedJob];
-      v17 = [v10 setJob];
-      v18 = [v10 setPolicy];
-      v19 = [v10 pushedPolicy];
+      assetSelector = [v10 assetSelector];
+      intervalSecs = [v10 intervalSecs];
+      remainingSecs = [v10 remainingSecs];
+      pushedJob = [v10 pushedJob];
+      setJob = [v10 setJob];
+      setPolicy = [v10 setPolicy];
+      pushedPolicy = [v10 pushedPolicy];
       v20 = [NSString alloc];
       v21 = @"no longer retry-required";
-      if (v4)
+      if (failureCopy)
       {
         v21 = @"retry-required (potential network failure)";
       }
 
       v22 = [v20 initWithFormat:@"scheduled job finished (%@)", v21];
-      LOBYTE(v33) = v4;
-      LOBYTE(v32) = v17;
-      [(MADAutoAssetScheduler *)self _logPersistedEntry:@"_jobFinishedForSelector" operation:@"ENTRY_MODIFY" persistingSelector:v16 intervalSecs:v36 remainingSecs:v35 pushedJob:v34 setJob:v32 setPolicy:v18 pushedPolicy:v19 requiringRetry:v33 message:v22];
+      LOBYTE(v33) = failureCopy;
+      LOBYTE(v32) = setJob;
+      [(MADAutoAssetScheduler *)self _logPersistedEntry:@"_jobFinishedForSelector" operation:@"ENTRY_MODIFY" persistingSelector:assetSelector intervalSecs:intervalSecs remainingSecs:remainingSecs pushedJob:pushedJob setJob:v32 setPolicy:setPolicy pushedPolicy:pushedPolicy requiringRetry:v33 message:v22];
     }
 
     v23 = +[MADAnalyticsManager getAnalyticsManager];
-    v24 = [v10 assetSelector];
+    assetSelector2 = [v10 assetSelector];
     v25 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 pushedJob]);
     v26 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 setJob]);
-    v27 = [NSNumber numberWithBool:v4];
-    v28 = [v23 recordMobileAssetScheduler:-1 forSelector:v24 withXpcID:0 forPushJob:v25 forSetJob:v26 inSchedulerState:4 inXPCState:0 didJobFail:v27];
+    v27 = [NSNumber numberWithBool:failureCopy];
+    v28 = [v23 recordMobileAssetScheduler:-1 forSelector:assetSelector2 withXpcID:0 forPushJob:v25 forSetJob:v26 inSchedulerState:4 inXPCState:0 didJobFail:v27];
 
-    [(MADAutoAssetScheduler *)self _informConnectorActiveJobFinishedforSelector:v6 withPotentialNetworkFailure:v4];
+    [(MADAutoAssetScheduler *)self _informConnectorActiveJobFinishedforSelector:selectorCopy withPotentialNetworkFailure:failureCopy];
   }
 
   else
@@ -2811,69 +2811,69 @@ LABEL_14:
     v29 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(MADAutoAssetScheduler *)self summary];
-      v31 = [v6 summary];
+      summary2 = [(MADAutoAssetScheduler *)self summary];
+      summary3 = [selectorCopy summary];
       *buf = 138543618;
-      v39 = v30;
+      v39 = summary2;
       v40 = 2114;
-      v41 = v31;
+      v41 = summary3;
       _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_jobFinishedForSelector} no longer associated with scheduled job (presumed eliminated) | assetSelector:%{public}@", buf, 0x16u);
     }
   }
 }
 
-- (void)_jobFinishedForSetDomainName:(id)a3 forAssetSetIdentifier:(id)a4 withPotentialNetworkFailure:(BOOL)a5
+- (void)_jobFinishedForSetDomainName:(id)name forAssetSetIdentifier:(id)identifier withPotentialNetworkFailure:(BOOL)failure
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v10);
+  failureCopy = failure;
+  identifierCopy = identifier;
+  nameCopy = name;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v11 = [[MAAutoAssetSelector alloc] initForAssetType:v9 withAssetSpecifier:v8];
-  v12 = [(MADAutoAssetScheduler *)self jobsBySelector];
-  v13 = [v11 persistedEntryID];
-  v14 = [v12 safeObjectForKey:v13 ofClass:objc_opt_class()];
+  v11 = [[MAAutoAssetSelector alloc] initForAssetType:nameCopy withAssetSpecifier:identifierCopy];
+  jobsBySelector = [(MADAutoAssetScheduler *)self jobsBySelector];
+  persistedEntryID = [v11 persistedEntryID];
+  v14 = [jobsBySelector safeObjectForKey:persistedEntryID ofClass:objc_opt_class()];
 
   if (v14)
   {
-    v15 = [v11 persistedEntryID];
-    v16 = [(MADAutoAssetScheduler *)self persistedState];
-    v17 = [v16 persistedEntry:v15 fromLocation:@"_jobFinishedForSetDomainName"];
+    persistedEntryID2 = [v11 persistedEntryID];
+    persistedState = [(MADAutoAssetScheduler *)self persistedState];
+    v17 = [persistedState persistedEntry:persistedEntryID2 fromLocation:@"_jobFinishedForSetDomainName"];
 
-    if ([v17 BOOLeanForKey:@"requiringRetry"] != v5)
+    if ([v17 BOOLeanForKey:@"requiringRetry"] != failureCopy)
     {
-      [v17 persistBoolean:v5 forKey:@"requiringRetry"];
-      v18 = [(MADAutoAssetScheduler *)self persistedState];
-      v19 = [v14 summary];
-      [v18 storePersistedEntry:v15 withEntrySummary:v19 fromLocation:@"_jobFinishedForSetDomainName"];
+      [v17 persistBoolean:failureCopy forKey:@"requiringRetry"];
+      persistedState2 = [(MADAutoAssetScheduler *)self persistedState];
+      summary = [v14 summary];
+      [persistedState2 storePersistedEntry:persistedEntryID2 withEntrySummary:summary fromLocation:@"_jobFinishedForSetDomainName"];
 
-      v38 = [v14 assetSelector];
-      v37 = [v14 intervalSecs];
-      v36 = [v14 remainingSecs];
-      v35 = [v14 pushedJob];
-      v20 = [v14 setJob];
-      v21 = [v14 setPolicy];
-      v22 = [v14 pushedPolicy];
+      assetSelector = [v14 assetSelector];
+      intervalSecs = [v14 intervalSecs];
+      remainingSecs = [v14 remainingSecs];
+      pushedJob = [v14 pushedJob];
+      setJob = [v14 setJob];
+      setPolicy = [v14 setPolicy];
+      pushedPolicy = [v14 pushedPolicy];
       v23 = [NSString alloc];
       v24 = @"no longer retry-required";
-      if (v5)
+      if (failureCopy)
       {
         v24 = @"retry-required (potential network failure)";
       }
 
       v25 = [v23 initWithFormat:@"scheduled job finished (%@)", v24];
-      LOBYTE(v34) = v5;
-      LOBYTE(v33) = v20;
-      [(MADAutoAssetScheduler *)self _logPersistedEntry:@"_jobFinishedForSetDomainName" operation:@"ENTRY_MODIFY" persistingSelector:v38 intervalSecs:v37 remainingSecs:v36 pushedJob:v35 setJob:v33 setPolicy:v21 pushedPolicy:v22 requiringRetry:v34 message:v25];
+      LOBYTE(v34) = failureCopy;
+      LOBYTE(v33) = setJob;
+      [(MADAutoAssetScheduler *)self _logPersistedEntry:@"_jobFinishedForSetDomainName" operation:@"ENTRY_MODIFY" persistingSelector:assetSelector intervalSecs:intervalSecs remainingSecs:remainingSecs pushedJob:pushedJob setJob:v33 setPolicy:setPolicy pushedPolicy:pushedPolicy requiringRetry:v34 message:v25];
     }
 
     v26 = +[MADAnalyticsManager getAnalyticsManager];
     v27 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v14 pushedJob]);
-    v28 = [NSNumber numberWithBool:v5];
+    v28 = [NSNumber numberWithBool:failureCopy];
     v29 = [v26 recordMobileAssetScheduler:-1 forSelector:v11 withXpcID:0 forPushJob:v27 forSetJob:&__kCFBooleanTrue inSchedulerState:4 inXPCState:0 didJobFail:v28];
 
-    [(MADAutoAssetScheduler *)self _informConnectorActiveJobFinishedforSelector:v11 withPotentialNetworkFailure:v5];
+    [(MADAutoAssetScheduler *)self _informConnectorActiveJobFinishedforSelector:v11 withPotentialNetworkFailure:failureCopy];
   }
 
   else
@@ -2881,30 +2881,30 @@ LABEL_14:
     v30 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [(MADAutoAssetScheduler *)self summary];
-      v32 = [v11 summary];
+      summary2 = [(MADAutoAssetScheduler *)self summary];
+      summary3 = [v11 summary];
       *buf = 138543618;
-      v40 = v31;
+      v40 = summary2;
       v41 = 2114;
-      v42 = v32;
+      v42 = summary3;
       _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_jobFinishedForSetDomainName} no longer associated with scheduled job (presumed eliminated) | setJobSelector:%{public}@", buf, 0x16u);
     }
   }
 }
 
-- (void)_eliminateSelector:(id)a3 forSetJob:(BOOL)a4 indicatingWhenEliminated:(BOOL)a5
+- (void)_eliminateSelector:(id)selector forSetJob:(BOOL)job indicatingWhenEliminated:(BOOL)eliminated
 {
-  v61 = a5;
-  v5 = a4;
-  v7 = a3;
-  v8 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v8);
+  eliminatedCopy = eliminated;
+  jobCopy = job;
+  selectorCopy = selector;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v9 = [v7 assetSpecifier];
+  assetSpecifier = [selectorCopy assetSpecifier];
 
-  if (v9 || (v5 & 1) != 0)
+  if (assetSpecifier || (jobCopy & 1) != 0)
   {
-    [(MADAutoAssetScheduler *)self _eliminateSpecificSelector:v7];
+    [(MADAutoAssetScheduler *)self _eliminateSpecificSelector:selectorCopy];
     goto LABEL_36;
   }
 
@@ -2922,9 +2922,9 @@ LABEL_14:
 
   v11 = v10;
   v12 = *v82;
-  v64 = self;
-  v65 = v7;
-  v63 = v5;
+  selfCopy = self;
+  v65 = selectorCopy;
+  v63 = jobCopy;
   v62 = *v82;
   do
   {
@@ -2940,18 +2940,18 @@ LABEL_14:
       v70 = v13;
       v14 = *(*(&v81 + 1) + 8 * v13);
       context = objc_autoreleasePoolPush();
-      v15 = [(MADAutoAssetScheduler *)self jobsBySelector];
-      v16 = [v15 safeObjectForKey:v14 ofClass:objc_opt_class()];
+      jobsBySelector = [(MADAutoAssetScheduler *)self jobsBySelector];
+      v16 = [jobsBySelector safeObjectForKey:v14 ofClass:objc_opt_class()];
 
-      v17 = [v16 assetSelector];
+      assetSelector = [v16 assetSelector];
 
       v72 = v16;
-      if (v17)
+      if (assetSelector)
       {
-        v18 = [v16 assetSelector];
-        v19 = [v18 assetType];
-        v20 = [v7 assetType];
-        v21 = [SUCore stringIsEqual:v19 to:v20];
+        assetSelector2 = [v16 assetSelector];
+        assetType = [assetSelector2 assetType];
+        assetType2 = [selectorCopy assetType];
+        v21 = [SUCore stringIsEqual:assetType to:assetType2];
 
         if (!v21)
         {
@@ -2982,28 +2982,28 @@ LABEL_14:
 
               v29 = *(*(&v77 + 1) + 8 * i);
               v30 = p_weak_ivar_lyt[223];
-              v31 = [v25 assetSelector];
-              v32 = [v31 assetType];
-              v33 = [v29 assetType];
-              if ([v30 stringIsEqual:v32 to:v33])
+              assetSelector3 = [v25 assetSelector];
+              assetType3 = [assetSelector3 assetType];
+              assetType4 = [v29 assetType];
+              if ([v30 stringIsEqual:assetType3 to:assetType4])
               {
                 v34 = p_weak_ivar_lyt[223];
-                v35 = [v25 assetSelector];
-                v36 = [v35 assetSpecifier];
-                v37 = [v29 assetSpecifier];
-                LOBYTE(v34) = [v34 stringIsEqual:v36 to:v37];
+                assetSelector4 = [v25 assetSelector];
+                assetSpecifier2 = [assetSelector4 assetSpecifier];
+                assetSpecifier3 = [v29 assetSpecifier];
+                LOBYTE(v34) = [v34 stringIsEqual:assetSpecifier2 to:assetSpecifier3];
 
                 p_weak_ivar_lyt = (&MAAIRBMobileAssetOperationMetadata__metaData + 56);
                 v25 = v72;
 
                 if (v34)
                 {
-                  self = v64;
-                  v7 = v65;
-                  v5 = v63;
+                  self = selfCopy;
+                  selectorCopy = v65;
+                  jobCopy = v63;
                   v12 = v62;
                   v11 = v67;
-                  v40 = v71;
+                  assetSelector5 = v71;
                   goto LABEL_24;
                 }
               }
@@ -3020,27 +3020,27 @@ LABEL_14:
           while (v26);
         }
 
-        v40 = [v25 assetSelector];
-        [v22 addObject:v40];
-        self = v64;
-        v7 = v65;
-        v5 = v63;
+        assetSelector5 = [v25 assetSelector];
+        [v22 addObject:assetSelector5];
+        self = selfCopy;
+        selectorCopy = v65;
+        jobCopy = v63;
         v12 = v62;
         v11 = v67;
       }
 
       else
       {
-        v40 = _MADLog(@"AutoScheduler");
-        if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
+        assetSelector5 = _MADLog(@"AutoScheduler");
+        if (os_log_type_enabled(assetSelector5, OS_LOG_TYPE_ERROR))
         {
-          v38 = [(MADAutoAssetScheduler *)self summary];
-          v39 = [v7 summary];
+          summary = [(MADAutoAssetScheduler *)self summary];
+          summary2 = [selectorCopy summary];
           *buf = 138543618;
-          v86 = v38;
+          v86 = summary;
           v87 = 2114;
-          v88 = v39;
-          _os_log_impl(&dword_0, v40, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_eliminateSelector} scheduledJob with nil assetSelector encountered on jobsBySelector | eliminateSelector:%{public}@", buf, 0x16u);
+          v88 = summary2;
+          _os_log_impl(&dword_0, assetSelector5, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_eliminateSelector} scheduledJob with nil assetSelector encountered on jobsBySelector | eliminateSelector:%{public}@", buf, 0x16u);
         }
       }
 
@@ -3092,17 +3092,17 @@ LABEL_27:
 LABEL_36:
   [(MADAutoAssetScheduler *)self _informConnectorAlteredSelectors];
   v48 = +[MADAnalyticsManager getAnalyticsManager];
-  v49 = [NSNumber numberWithBool:v5];
-  v50 = [v48 recordMobileAssetScheduler:-1 forSelector:v7 withXpcID:0 forPushJob:0 forSetJob:v49 inSchedulerState:2 inXPCState:0 didJobFail:0];
+  v49 = [NSNumber numberWithBool:jobCopy];
+  v50 = [v48 recordMobileAssetScheduler:-1 forSelector:selectorCopy withXpcID:0 forPushJob:0 forSetJob:v49 inSchedulerState:2 inXPCState:0 didJobFail:0];
 
   v51 = _MADLog(@"AutoScheduler");
   v52 = os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (jobCopy)
   {
     if (v52)
     {
-      v53 = [(MADAutoAssetScheduler *)self summary];
-      if (v61)
+      summary3 = [(MADAutoAssetScheduler *)self summary];
+      if (eliminatedCopy)
       {
         v54 = @"Y";
       }
@@ -3112,21 +3112,21 @@ LABEL_36:
         v54 = @"N";
       }
 
-      v55 = [v7 summary];
+      summary4 = [selectorCopy summary];
       *buf = 138543874;
-      v86 = v53;
+      v86 = summary3;
       v87 = 2114;
       v88 = v54;
       v89 = 2114;
-      v90 = v55;
+      v90 = summary4;
       _os_log_impl(&dword_0, v51, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_eliminateSelector} set-job | indicatingEliminated:%{public}@ | eliminateSelector:%{public}@", buf, 0x20u);
     }
 
-    if (v61)
+    if (eliminatedCopy)
     {
-      v56 = [v7 assetType];
-      v57 = [v7 assetSpecifier];
-      [MADAutoAssetControlManager schedulerEliminatedSetDomainName:v56 forAssetSetIdentifier:v57];
+      assetType5 = [selectorCopy assetType];
+      assetSpecifier4 = [selectorCopy assetSpecifier];
+      [MADAutoAssetControlManager schedulerEliminatedSetDomainName:assetType5 forAssetSetIdentifier:assetSpecifier4];
     }
   }
 
@@ -3134,8 +3134,8 @@ LABEL_36:
   {
     if (v52)
     {
-      v58 = [(MADAutoAssetScheduler *)self summary];
-      if (v61)
+      summary5 = [(MADAutoAssetScheduler *)self summary];
+      if (eliminatedCopy)
       {
         v59 = @"Y";
       }
@@ -3145,42 +3145,42 @@ LABEL_36:
         v59 = @"N";
       }
 
-      v60 = [v7 summary];
+      summary6 = [selectorCopy summary];
       *buf = 138543874;
-      v86 = v58;
+      v86 = summary5;
       v87 = 2114;
       v88 = v59;
       v89 = 2114;
-      v90 = v60;
+      v90 = summary6;
       _os_log_impl(&dword_0, v51, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_eliminateSelector} auto-asset-job | indicatingEliminated:%{public}@ | eliminateSelector:%{public}@", buf, 0x20u);
     }
 
-    if (v61)
+    if (eliminatedCopy)
     {
-      [MADAutoAssetControlManager schedulerEliminatedSelector:v7];
+      [MADAutoAssetControlManager schedulerEliminatedSelector:selectorCopy];
     }
   }
 }
 
-- (void)_eliminateSpecificSelector:(id)a3
+- (void)_eliminateSpecificSelector:(id)selector
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v5);
+  selectorCopy = selector;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v6 = [v4 persistedEntryID];
-  if (v6)
+  persistedEntryID = [selectorCopy persistedEntryID];
+  if (persistedEntryID)
   {
-    v7 = [(MADAutoAssetScheduler *)self persistedState];
-    v8 = [v7 persistedEntryAlreadyExists:v6 fromLocation:@"_eliminateSpecificSelector"];
+    persistedState = [(MADAutoAssetScheduler *)self persistedState];
+    v8 = [persistedState persistedEntryAlreadyExists:persistedEntryID fromLocation:@"_eliminateSpecificSelector"];
 
     if (v8)
     {
-      v9 = [(MADAutoAssetScheduler *)self persistedState];
-      v10 = [v9 persistedEntry:v6 fromLocation:@"_eliminateSpecificSelector"];
+      persistedState2 = [(MADAutoAssetScheduler *)self persistedState];
+      v10 = [persistedState2 persistedEntry:persistedEntryID fromLocation:@"_eliminateSpecificSelector"];
 
-      v11 = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
-      v12 = [v11 count];
+      jobsAwaitingTrigger = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
+      v12 = [jobsAwaitingTrigger count];
 
       if (v12)
       {
@@ -3188,13 +3188,13 @@ LABEL_36:
         while (1)
         {
           v14 = objc_autoreleasePoolPush();
-          v15 = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
-          v16 = [v15 objectAtIndex:v13];
+          jobsAwaitingTrigger2 = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
+          v16 = [jobsAwaitingTrigger2 objectAtIndex:v13];
 
           if (v16)
           {
-            v17 = [v16 assetSelector];
-            v18 = [MADAutoAssetScheduler isSelector:v17 consideredEqualTo:v4];
+            assetSelector = [v16 assetSelector];
+            v18 = [MADAutoAssetScheduler isSelector:assetSelector consideredEqualTo:selectorCopy];
 
             if (v18)
             {
@@ -3204,8 +3204,8 @@ LABEL_36:
 
           objc_autoreleasePoolPop(v14);
           ++v13;
-          v19 = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
-          v20 = [v19 count];
+          jobsAwaitingTrigger3 = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
+          v20 = [jobsAwaitingTrigger3 count];
 
           if (v13 >= v20)
           {
@@ -3214,8 +3214,8 @@ LABEL_36:
         }
 
         objc_autoreleasePoolPop(v14);
-        v25 = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
-        [v25 removeObjectAtIndex:v13];
+        jobsAwaitingTrigger4 = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
+        [jobsAwaitingTrigger4 removeObjectAtIndex:v13];
       }
     }
 
@@ -3225,15 +3225,15 @@ LABEL_36:
     }
 
 LABEL_13:
-    v23 = [(MADAutoAssetScheduler *)self jobsBySelector];
-    [v23 removeObjectForKey:v6];
+    jobsBySelector = [(MADAutoAssetScheduler *)self jobsBySelector];
+    [jobsBySelector removeObjectForKey:persistedEntryID];
 
     if (v10)
     {
-      v24 = [(MADAutoAssetScheduler *)self persistedState];
-      [v24 removePersistedEntry:v6 fromLocation:@"_eliminateSpecificSelector"];
+      persistedState3 = [(MADAutoAssetScheduler *)self persistedState];
+      [persistedState3 removePersistedEntry:persistedEntryID fromLocation:@"_eliminateSpecificSelector"];
 
-      [(MADAutoAssetScheduler *)self _logPersistedRemovedEntry:@"_eliminateSpecificSelector" removedSelector:v4 message:@"eliminated specific asset-selector scheduled job"];
+      [(MADAutoAssetScheduler *)self _logPersistedRemovedEntry:@"_eliminateSpecificSelector" removedSelector:selectorCopy message:@"eliminated specific asset-selector scheduled job"];
     }
   }
 
@@ -3242,36 +3242,36 @@ LABEL_13:
     v21 = _MADLog(@"Auto");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v4 summary];
+      summary = [selectorCopy summary];
       v26 = 138543362;
-      v27 = v22;
+      v27 = summary;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "{AUTO-SCHEDULER:_eliminateSpecificSelector} no selectorKey for eliminateSelector:%{public}@", &v26, 0xCu);
     }
   }
 }
 
-- (void)_registerForAndStartActivity:(int64_t)a3
+- (void)_registerForAndStartActivity:(int64_t)activity
 {
-  v5 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v5);
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  if (a3 >= 60)
+  if (activity >= 60)
   {
-    v6 = a3;
+    activityCopy = activity;
   }
 
   else
   {
-    v6 = 86400;
+    activityCopy = 86400;
   }
 
   [(MADAutoAssetScheduler *)self setScheduledJobsXPCActivity:1];
   v7 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(MADAutoAssetScheduler *)self summary];
+    summary = [(MADAutoAssetScheduler *)self summary];
     *buf = 138543362;
-    v13 = v8;
+    v13 = summary;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_registerForAndStartActivity} xpc_activity_register...", buf, 0xCu);
   }
 
@@ -3280,14 +3280,14 @@ LABEL_13:
   v11[2] = __54__MADAutoAssetScheduler__registerForAndStartActivity___block_invoke;
   v11[3] = &unk_4B3418;
   v11[4] = self;
-  v11[5] = v6;
+  v11[5] = activityCopy;
   xpc_activity_register([@"com.apple.mobileassetd.auto-asset-scheduler" UTF8String], XPC_ACTIVITY_CHECK_IN, v11);
   v9 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(MADAutoAssetScheduler *)self summary];
+    summary2 = [(MADAutoAssetScheduler *)self summary];
     *buf = 138543362;
-    v13 = v10;
+    v13 = summary2;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_registerForAndStartActivity} ...xpc_activity_register", buf, 0xCu);
   }
 }
@@ -3472,17 +3472,17 @@ LABEL_11:
 
 - (void)_startActivityBackupTrigger
 {
-  v3 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v3);
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   if (+[MADAutoAssetControlManager preferenceScheduledBackupTriggersDisabled])
   {
     v4 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(MADAutoAssetScheduler *)self summary];
+      summary = [(MADAutoAssetScheduler *)self summary];
       *buf = 138543362;
-      v11 = v5;
+      v11 = summary;
       v6 = "%{public}@ | {AUTO-SCHEDULER:_startActivityBackupTrigger} backup ticker DISABLED";
 LABEL_7:
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, v6, buf, 0xCu);
@@ -3492,9 +3492,9 @@ LABEL_9:
 
   else
   {
-    v7 = [(MADAutoAssetScheduler *)self scheduledJobsBackupTriggerTimer];
+    scheduledJobsBackupTriggerTimer = [(MADAutoAssetScheduler *)self scheduledJobsBackupTriggerTimer];
 
-    if (!v7)
+    if (!scheduledJobsBackupTriggerTimer)
     {
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
@@ -3505,17 +3505,17 @@ LABEL_9:
       [(MADAutoAssetScheduler *)self setScheduledJobsBackupTriggerTimer:v8];
 
       v4 = +[NSRunLoop mainRunLoop];
-      v5 = [(MADAutoAssetScheduler *)self scheduledJobsBackupTriggerTimer];
-      [v4 addTimer:v5 forMode:NSDefaultRunLoopMode];
+      summary = [(MADAutoAssetScheduler *)self scheduledJobsBackupTriggerTimer];
+      [v4 addTimer:summary forMode:NSDefaultRunLoopMode];
       goto LABEL_9;
     }
 
     v4 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(MADAutoAssetScheduler *)self summary];
+      summary = [(MADAutoAssetScheduler *)self summary];
       *buf = 138543362;
-      v11 = v5;
+      v11 = summary;
       v6 = "%{public}@ | {AUTO-SCHEDULER:_startActivityBackupTrigger} backup timer already running - no adjustments made";
       goto LABEL_7;
     }
@@ -3560,26 +3560,26 @@ void __52__MADAutoAssetScheduler__startActivityBackupTrigger__block_invoke_2(uin
   }
 }
 
-- (void)_startPushDelayTimer:(int64_t)a3
+- (void)_startPushDelayTimer:(int64_t)timer
 {
-  v5 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v5);
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   if (+[MADAutoAssetControlManager preferenceScheduledBackupTriggersDisabled])
   {
     v6 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(MADAutoAssetScheduler *)self summary];
+      summary = [(MADAutoAssetScheduler *)self summary];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = summary;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_startPushBackupTrigger} push delay timer DISABLED", &buf, 0xCu);
     }
   }
 
   else
   {
-    [(MADAutoAssetScheduler *)self setPushDelaySecs:a3];
+    [(MADAutoAssetScheduler *)self setPushDelaySecs:timer];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v16 = 0x3032000000;
@@ -3587,10 +3587,10 @@ void __52__MADAutoAssetScheduler__startActivityBackupTrigger__block_invoke_2(uin
     v18 = __Block_byref_object_dispose__2;
     [@"com.apple.MobileAsset.handlePushNotificationReceived" UTF8String];
     v19 = os_transaction_create();
-    v8 = [(MADAutoAssetScheduler *)self schedulerQueue];
-    v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v8);
+    schedulerQueue2 = [(MADAutoAssetScheduler *)self schedulerQueue];
+    v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, schedulerQueue2);
 
-    v10 = dispatch_time(0, 1000000000 * a3);
+    v10 = dispatch_time(0, 1000000000 * timer);
     dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
@@ -3635,29 +3635,29 @@ void __46__MADAutoAssetScheduler__startPushDelayTimer___block_invoke(uint64_t a1
   dispatch_source_cancel(*(a1 + 40));
 }
 
-- (void)_setActivityCriteria:(id)a3 pushNotificationInitiated:(BOOL)a4 withActivityDelay:(int64_t)a5
+- (void)_setActivityCriteria:(id)criteria pushNotificationInitiated:(BOOL)initiated withActivityDelay:(int64_t)delay
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v9);
+  initiatedCopy = initiated;
+  criteriaCopy = criteria;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v10 = xpc_dictionary_create(0, 0, 0);
   v11 = v10;
-  if (a5 <= 60)
+  if (delay <= 60)
   {
-    v12 = 60;
+    delayCopy = 60;
   }
 
   else
   {
-    v12 = a5;
+    delayCopy = delay;
   }
 
   v13 = &XPC_ACTIVITY_DELAY;
-  if ((a5 * 0.05) > 5.0)
+  if ((delay * 0.05) > 5.0)
   {
-    v14 = a5 * 0.05;
+    v14 = delay * 0.05;
   }
 
   else
@@ -3665,21 +3665,21 @@ void __46__MADAutoAssetScheduler__startPushDelayTimer___block_invoke(uint64_t a1
     v14 = 5.0;
   }
 
-  if (!v6)
+  if (!initiatedCopy)
   {
     v13 = &XPC_ACTIVITY_INTERVAL;
   }
 
-  xpc_dictionary_set_uint64(v10, *v13, v12);
-  xpc_dictionary_set_BOOL(v11, XPC_ACTIVITY_REPEATING, !v6);
+  xpc_dictionary_set_uint64(v10, *v13, delayCopy);
+  xpc_dictionary_set_BOOL(v11, XPC_ACTIVITY_REPEATING, !initiatedCopy);
   xpc_dictionary_set_uint64(v11, XPC_ACTIVITY_GRACE_PERIOD, v14);
   xpc_dictionary_set_BOOL(v11, XPC_ACTIVITY_POWER_NAP, 1);
   xpc_dictionary_set_string(v11, XPC_ACTIVITY_PRIORITY, XPC_ACTIVITY_PRIORITY_MAINTENANCE);
   v15 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(MADAutoAssetScheduler *)self summary];
-    if (v6)
+    summary = [(MADAutoAssetScheduler *)self summary];
+    if (initiatedCopy)
     {
       v17 = @"push";
     }
@@ -3689,11 +3689,11 @@ void __46__MADAutoAssetScheduler__startPushDelayTimer___block_invoke(uint64_t a1
       v17 = @"scheduled";
     }
 
-    v18 = [MADAutoAssetControlManager allocIntervalString:v12];
+    v18 = [MADAutoAssetControlManager allocIntervalString:delayCopy];
     v19 = v18;
     v20 = @"s";
     v21 = 138544642;
-    v22 = v16;
+    v22 = summary;
     v24 = @"MAINTENANCE";
     v23 = 2114;
     v25 = 2114;
@@ -3712,18 +3712,18 @@ void __46__MADAutoAssetScheduler__startPushDelayTimer___block_invoke(uint64_t a1
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_setActivityCriteria} [%{public}@] %{public}@-jobs XPC activity started | delayPeriod:%{public}@, grace period:%llu sec%{public}@ | run from power-nap:true", &v21, 0x3Eu);
   }
 
-  xpc_activity_set_criteria(v8, v11);
+  xpc_activity_set_criteria(criteriaCopy, v11);
 }
 
 - (void)_performActivityOperations
 {
-  v3 = [(MADAutoAssetScheduler *)self schedulerQueue];
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __51__MADAutoAssetScheduler__performActivityOperations__block_invoke;
   block[3] = &unk_4B2AA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(schedulerQueue, block);
 }
 
 void __51__MADAutoAssetScheduler__performActivityOperations__block_invoke(uint64_t a1)
@@ -3751,74 +3751,74 @@ void __51__MADAutoAssetScheduler__performActivityOperations__block_invoke(uint64
   }
 }
 
-- (void)_performTickerOperations:(int64_t)a3
+- (void)_performTickerOperations:(int64_t)operations
 {
-  v5 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v5);
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v6 = objc_alloc_init(NSMutableArray);
-  v7 = self;
+  selfCopy = self;
   v8 = objc_alloc_init(NSMutableArray);
-  v9 = [(MADAutoAssetScheduler *)self persistedState];
-  v10 = [v9 persistedConfig];
-  v11 = [v10 dateForKey:@"lastActivityTickerDate"];
+  persistedState = [(MADAutoAssetScheduler *)self persistedState];
+  persistedConfig = [persistedState persistedConfig];
+  v11 = [persistedConfig dateForKey:@"lastActivityTickerDate"];
 
   v12 = objc_alloc_init(NSDate);
-  if (a3 <= 0)
+  if (operations <= 0)
   {
     v13 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(MADAutoAssetScheduler *)v7 summary];
+      summary = [(MADAutoAssetScheduler *)selfCopy summary];
       *buf = 138543618;
-      v89 = v14;
+      v89 = summary;
       v90 = 2048;
-      v91 = a3;
+      operationsCopy2 = operations;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_performActivityOperations} invalid elapsed ticker seconds - using minimum | elapsedTickerSecs:%ld", buf, 0x16u);
     }
 
-    a3 = 60;
+    operations = 60;
   }
 
   v74 = v8;
   v75 = v6;
   v72 = v12;
   v73 = v11;
-  if (v11 && v12 && ([v12 timeIntervalSinceDate:v11], v15 > 0.0) && (v16 = v15 / a3, v16 >= 2))
+  if (v11 && v12 && ([v12 timeIntervalSinceDate:v11], v15 > 0.0) && (v16 = v15 / operations, v16 >= 2))
   {
-    v17 = v16 * a3;
+    operationsCopy3 = v16 * operations;
     v18 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(MADAutoAssetScheduler *)v7 summary];
+      summary2 = [(MADAutoAssetScheduler *)selfCopy summary];
       *buf = 138543874;
-      v89 = v19;
+      v89 = summary2;
       v90 = 2048;
-      v91 = a3;
+      operationsCopy2 = operations;
       v92 = 2048;
-      v93 = v17;
+      v93 = operationsCopy3;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_performActivityOperations} making up for missed tick(s) | standardTickSecs:%ld, elapsedTickerSecs:%ld", buf, 0x20u);
     }
   }
 
   else
   {
-    v17 = a3;
+    operationsCopy3 = operations;
   }
 
   v85 = 0u;
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = [(MADAutoAssetScheduler *)v7 jobsAwaitingTrigger];
+  obj = [(MADAutoAssetScheduler *)selfCopy jobsAwaitingTrigger];
   v20 = [obj countByEnumeratingWithState:&v83 objects:v87 count:16];
-  v78 = v7;
+  v78 = selfCopy;
   if (v20)
   {
     v21 = v20;
     v22 = *v84;
     v76 = *v84;
-    v77 = v17;
+    v77 = operationsCopy3;
     do
     {
       v23 = 0;
@@ -3834,50 +3834,50 @@ void __51__MADAutoAssetScheduler__performActivityOperations__block_invoke(uint64
         v25 = objc_autoreleasePoolPush();
         if (v24)
         {
-          v26 = [v24 assetSelector];
+          assetSelector = [v24 assetSelector];
 
-          if (v26)
+          if (assetSelector)
           {
-            v27 = [v24 assetSelector];
-            v28 = [v27 persistedEntryID];
+            assetSelector2 = [v24 assetSelector];
+            persistedEntryID = [assetSelector2 persistedEntryID];
 
-            v29 = [(MADAutoAssetScheduler *)v7 persistedState];
-            v30 = [v29 persistedEntry:v28 fromLocation:@"_performActivityOperations"];
+            persistedState2 = [(MADAutoAssetScheduler *)selfCopy persistedState];
+            v30 = [persistedState2 persistedEntry:persistedEntryID fromLocation:@"_performActivityOperations"];
 
             v31 = [v30 BOOLeanForKey:@"requiringRetry"];
             v81 = v25;
             v82 = v30;
-            if ([v24 remainingSecs] > v17)
+            if ([v24 remainingSecs] > operationsCopy3)
             {
-              [v24 setRemainingSecs:{objc_msgSend(v24, "remainingSecs") - v17}];
+              [v24 setRemainingSecs:{objc_msgSend(v24, "remainingSecs") - operationsCopy3}];
               [v30 persistULL:objc_msgSend(v24 forKey:{"remainingSecs"), @"remainingSecs"}];
 LABEL_41:
-              v53 = [(MADAutoAssetScheduler *)v7 persistedState];
-              v54 = [v24 summary];
-              [v53 storePersistedEntry:v28 withEntrySummary:v54 fromLocation:@"_performActivityOperations"];
+              persistedState3 = [(MADAutoAssetScheduler *)selfCopy persistedState];
+              summary3 = [v24 summary];
+              [persistedState3 storePersistedEntry:persistedEntryID withEntrySummary:summary3 fromLocation:@"_performActivityOperations"];
 
-              v55 = [v24 assetSelector];
-              v56 = [v24 intervalSecs];
-              v57 = [v24 remainingSecs];
-              v58 = [v24 pushedJob];
-              v59 = [v24 setJob];
-              v60 = [v24 setPolicy];
-              v61 = [v24 pushedPolicy];
+              assetSelector3 = [v24 assetSelector];
+              intervalSecs = [v24 intervalSecs];
+              remainingSecs = [v24 remainingSecs];
+              pushedJob = [v24 pushedJob];
+              setJob = [v24 setJob];
+              setPolicy = [v24 setPolicy];
+              pushedPolicy = [v24 pushedPolicy];
               LOBYTE(v71) = v31;
-              LOBYTE(v70) = v59;
-              v7 = v78;
-              [(MADAutoAssetScheduler *)v78 _logPersistedEntry:@"_performTickerOperations" operation:@"ENTRY_MODIFY" persistingSelector:v55 intervalSecs:v56 remainingSecs:v57 pushedJob:v58 setJob:v70 setPolicy:v60 pushedPolicy:v61 requiringRetry:v71 message:@"adjusted currently awaiting scheduled job"];
+              LOBYTE(v70) = setJob;
+              selfCopy = v78;
+              [(MADAutoAssetScheduler *)v78 _logPersistedEntry:@"_performTickerOperations" operation:@"ENTRY_MODIFY" persistingSelector:assetSelector3 intervalSecs:intervalSecs remainingSecs:remainingSecs pushedJob:pushedJob setJob:v70 setPolicy:setPolicy pushedPolicy:pushedPolicy requiringRetry:v71 message:@"adjusted currently awaiting scheduled job"];
 
               v22 = v76;
-              v17 = v77;
+              operationsCopy3 = v77;
               v21 = v79;
               v25 = v81;
               goto LABEL_42;
             }
 
-            v35 = [v24 requiringRetry];
-            v36 = [v24 assetSelector];
-            if (v35)
+            requiringRetry = [v24 requiringRetry];
+            assetSelector4 = [v24 assetSelector];
+            if (requiringRetry)
             {
               v37 = v74;
             }
@@ -3887,35 +3887,35 @@ LABEL_41:
               v37 = v75;
             }
 
-            [v37 addObject:v36];
+            [v37 addObject:assetSelector4];
 
             v38 = +[MADAnalyticsManager getAnalyticsManager];
-            v39 = [v24 assetSelector];
-            v40 = [(MADAutoAssetScheduler *)v7 xpcActivityUUID];
+            assetSelector5 = [v24 assetSelector];
+            xpcActivityUUID = [(MADAutoAssetScheduler *)selfCopy xpcActivityUUID];
             v41 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v24 setJob]);
-            v42 = [v38 recordMobileAssetScheduler:-1 forSelector:v39 withXpcID:v40 forPushJob:&__kCFBooleanFalse forSetJob:v41 inSchedulerState:3 inXPCState:0 didJobFail:0];
+            v42 = [v38 recordMobileAssetScheduler:-1 forSelector:assetSelector5 withXpcID:xpcActivityUUID forPushJob:&__kCFBooleanFalse forSetJob:v41 inSchedulerState:3 inXPCState:0 didJobFail:0];
 
-            LODWORD(v39) = [v24 pushedJob];
+            LODWORD(assetSelector5) = [v24 pushedJob];
             v43 = _MADLog(@"AutoScheduler");
             v44 = os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT);
-            if (v39)
+            if (assetSelector5)
             {
               if (v44)
               {
-                v45 = [(MADAutoAssetScheduler *)v7 summary];
-                v46 = [v24 summary];
+                summary4 = [(MADAutoAssetScheduler *)selfCopy summary];
+                summary5 = [v24 summary];
                 *buf = 138543618;
-                v89 = v45;
+                v89 = summary4;
                 v90 = 2114;
-                v91 = v46;
+                operationsCopy2 = summary5;
                 _os_log_impl(&dword_0, v43, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_performActivityOperations} scheduler triggered push-job | currentlyAwaiting:%{public}@", buf, 0x16u);
               }
 
               [v24 setPushedJob:0];
               [v24 setPushedPolicy:0];
-              if ([(MADAutoAssetScheduler *)v7 jobsAwaitingPushTrigger]>= 1)
+              if ([(MADAutoAssetScheduler *)selfCopy jobsAwaitingPushTrigger]>= 1)
               {
-                [(MADAutoAssetScheduler *)v7 setJobsAwaitingPushTrigger:[(MADAutoAssetScheduler *)v7 jobsAwaitingPushTrigger]- 1];
+                [(MADAutoAssetScheduler *)selfCopy setJobsAwaitingPushTrigger:[(MADAutoAssetScheduler *)selfCopy jobsAwaitingPushTrigger]- 1];
 LABEL_40:
                 v52 = [v82 ullForKey:@"intervalSecs"];
                 [v24 setRemainingSecs:v52];
@@ -3929,12 +3929,12 @@ LABEL_40:
               v43 = _MADLog(@"AutoScheduler");
               if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
               {
-                v47 = [(MADAutoAssetScheduler *)v7 summary];
-                v48 = [v24 summary];
+                summary6 = [(MADAutoAssetScheduler *)selfCopy summary];
+                summary7 = [v24 summary];
                 *buf = 138543618;
-                v89 = v47;
+                v89 = summary6;
                 v90 = 2114;
-                v91 = v48;
+                operationsCopy2 = summary7;
                 v49 = v43;
                 v50 = OS_LOG_TYPE_ERROR;
                 v51 = "%{public}@ | {AUTO-SCHEDULER:_performActivityOperations} scheduler triggered push-job when no job awaiting push trigger | currentlyAwaiting:%{public}@";
@@ -3945,12 +3945,12 @@ LABEL_38:
 
             else if (v44)
             {
-              v47 = [(MADAutoAssetScheduler *)v7 summary];
-              v48 = [v24 summary];
+              summary6 = [(MADAutoAssetScheduler *)selfCopy summary];
+              summary7 = [v24 summary];
               *buf = 138543618;
-              v89 = v47;
+              v89 = summary6;
               v90 = 2114;
-              v91 = v48;
+              operationsCopy2 = summary7;
               v49 = v43;
               v50 = OS_LOG_TYPE_DEFAULT;
               v51 = "%{public}@ | {AUTO-SCHEDULER:_performActivityOperations} scheduler triggered job | currentlyAwaiting:%{public}@";
@@ -3960,28 +3960,28 @@ LABEL_38:
             goto LABEL_40;
           }
 
-          v28 = _MADLog(@"AutoScheduler");
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+          persistedEntryID = _MADLog(@"AutoScheduler");
+          if (os_log_type_enabled(persistedEntryID, OS_LOG_TYPE_ERROR))
           {
-            v33 = [(MADAutoAssetScheduler *)v7 summary];
-            v34 = [v24 summary];
+            summary8 = [(MADAutoAssetScheduler *)selfCopy summary];
+            summary9 = [v24 summary];
             *buf = 138543618;
-            v89 = v33;
+            v89 = summary8;
             v90 = 2114;
-            v91 = v34;
-            _os_log_impl(&dword_0, v28, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_performActivityOperations} nil currentlyAwaiting.assetSelector encountered on jobsAwaitingTrigger | currentlyAwaiting:%{public}@", buf, 0x16u);
+            operationsCopy2 = summary9;
+            _os_log_impl(&dword_0, persistedEntryID, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_performActivityOperations} nil currentlyAwaiting.assetSelector encountered on jobsAwaitingTrigger | currentlyAwaiting:%{public}@", buf, 0x16u);
           }
         }
 
         else
         {
-          v28 = _MADLog(@"AutoScheduler");
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+          persistedEntryID = _MADLog(@"AutoScheduler");
+          if (os_log_type_enabled(persistedEntryID, OS_LOG_TYPE_ERROR))
           {
-            v32 = [(MADAutoAssetScheduler *)v7 summary];
+            summary10 = [(MADAutoAssetScheduler *)selfCopy summary];
             *buf = 138543362;
-            v89 = v32;
-            _os_log_impl(&dword_0, v28, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_performActivityOperations} nil currentlyAwaiting encountered on jobsAwaitingTrigger", buf, 0xCu);
+            v89 = summary10;
+            _os_log_impl(&dword_0, persistedEntryID, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_performActivityOperations} nil currentlyAwaiting encountered on jobsAwaitingTrigger", buf, 0xCu);
           }
         }
 
@@ -3998,9 +3998,9 @@ LABEL_42:
     while (v21);
   }
 
-  v62 = [(MADAutoAssetScheduler *)v7 persistedState];
-  v63 = [v62 persistedConfig];
-  [v63 persistDate:v72 forKey:@"lastActivityTickerDate" shouldPersist:1];
+  persistedState4 = [(MADAutoAssetScheduler *)selfCopy persistedState];
+  persistedConfig2 = [persistedState4 persistedConfig];
+  [persistedConfig2 persistDate:v72 forKey:@"lastActivityTickerDate" shouldPersist:1];
 
   v64 = v78;
   [(MADAutoAssetScheduler *)v78 _logPersistedConfigSet:@"_performTickerOperations" activityIntervalSecs:[(MADAutoAssetScheduler *)v78 activityIntervalSecs] pushTriggerSecs:-1 lastTickDate:v72 message:@"updated last tick date"];
@@ -4010,13 +4010,13 @@ LABEL_42:
     v66 = v73;
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
     {
-      v67 = [(MADAutoAssetScheduler *)v78 summary];
+      summary11 = [(MADAutoAssetScheduler *)v78 summary];
       v68 = [v75 count];
       v69 = [v74 count];
       *buf = 138543874;
-      v89 = v67;
+      v89 = summary11;
       v90 = 2048;
-      v91 = v68;
+      operationsCopy2 = v68;
       v92 = 2048;
       v93 = v69;
       _os_log_impl(&dword_0, v65, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_performActivityOperations} scheduled triggered selectors | NoRetry:%ld RequiringRetry:%ld | MA_MILESTONE", buf, 0x20u);
@@ -4038,25 +4038,25 @@ LABEL_42:
 
 - (void)_performPushNotificationOperations
 {
-  v2 = self;
-  v3 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  [(MADAutoAssetScheduler *)v2 setPushCounter:[(MADAutoAssetScheduler *)v2 pushCounter]+ 1];
+  [(MADAutoAssetScheduler *)selfCopy setPushCounter:[(MADAutoAssetScheduler *)selfCopy pushCounter]+ 1];
   v50 = objc_alloc_init(NSMutableArray);
   v49 = objc_alloc_init(NSMutableArray);
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v4 = [(MADAutoAssetScheduler *)v2 jobsAwaitingTrigger];
-  v5 = [v4 countByEnumeratingWithState:&v55 objects:v65 count:16];
+  jobsAwaitingTrigger = [(MADAutoAssetScheduler *)selfCopy jobsAwaitingTrigger];
+  v5 = [jobsAwaitingTrigger countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v56;
     v47 = *v56;
-    v48 = v4;
+    v48 = jobsAwaitingTrigger;
     do
     {
       v8 = 0;
@@ -4065,31 +4065,31 @@ LABEL_42:
       {
         if (*v56 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(jobsAwaitingTrigger);
         }
 
         v9 = *(*(&v55 + 1) + 8 * v8);
         v10 = objc_autoreleasePoolPush();
         if (v9)
         {
-          v11 = [v9 assetSelector];
+          assetSelector = [v9 assetSelector];
 
-          if (v11)
+          if (assetSelector)
           {
             v54 = v10;
-            v12 = [v9 assetSelector];
-            v13 = [v12 persistedEntryID];
+            assetSelector2 = [v9 assetSelector];
+            persistedEntryID = [assetSelector2 persistedEntryID];
 
-            v14 = [(MADAutoAssetScheduler *)v2 persistedState];
-            v15 = [v14 persistedEntry:v13 fromLocation:@"_performPushNotificationOperations"];
+            persistedState = [(MADAutoAssetScheduler *)selfCopy persistedState];
+            v15 = [persistedState persistedEntry:persistedEntryID fromLocation:@"_performPushNotificationOperations"];
 
             v16 = [v15 BOOLeanForKey:@"requiringRetry"];
             if ([v9 pushedJob])
             {
               v53 = v16;
-              v17 = [v9 requiringRetry];
-              v18 = [v9 assetSelector];
-              if (v17)
+              requiringRetry = [v9 requiringRetry];
+              assetSelector3 = [v9 assetSelector];
+              if (requiringRetry)
               {
                 v19 = v49;
               }
@@ -4099,51 +4099,51 @@ LABEL_42:
                 v19 = v50;
               }
 
-              [v19 addObject:v18];
+              [v19 addObject:assetSelector3];
 
               [v9 setPushedJob:0];
-              [(MADAutoAssetScheduler *)v2 setJobsAwaitingPushTrigger:[(MADAutoAssetScheduler *)v2 jobsAwaitingPushTrigger]- 1];
+              [(MADAutoAssetScheduler *)selfCopy setJobsAwaitingPushTrigger:[(MADAutoAssetScheduler *)selfCopy jobsAwaitingPushTrigger]- 1];
               v20 = _MADLog(@"AutoScheduler");
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
               {
-                v21 = [(MADAutoAssetScheduler *)v2 summary];
-                v22 = [v9 summary];
+                summary = [(MADAutoAssetScheduler *)selfCopy summary];
+                summary2 = [v9 summary];
                 *buf = 138543618;
-                v60 = v21;
+                v60 = summary;
                 v61 = 2114;
-                v62 = v22;
+                v62 = summary2;
                 _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_performPushNotificationOperations} 1-shot triggered push-job | currentlyAwaiting:%{public}@", buf, 0x16u);
               }
 
               v23 = +[MADAnalyticsManager getAnalyticsManager];
-              v24 = [v9 assetSelector];
-              v25 = [(MADAutoAssetScheduler *)v2 xpcActivityUUID];
+              assetSelector4 = [v9 assetSelector];
+              xpcActivityUUID = [(MADAutoAssetScheduler *)selfCopy xpcActivityUUID];
               v26 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v9 setJob]);
-              v27 = [v23 recordMobileAssetScheduler:-1 forSelector:v24 withXpcID:v25 forPushJob:&__kCFBooleanTrue forSetJob:v26 inSchedulerState:3 inXPCState:0 didJobFail:0];
+              v27 = [v23 recordMobileAssetScheduler:-1 forSelector:assetSelector4 withXpcID:xpcActivityUUID forPushJob:&__kCFBooleanTrue forSetJob:v26 inSchedulerState:3 inXPCState:0 didJobFail:0];
 
               [v15 persistULL:objc_msgSend(v15 forKey:{"ullForKey:", @"intervalSecs", @"remainingSecs"}];
               [v15 persistBoolean:0 forKey:@"pushJob"];
-              v28 = [(MADAutoAssetScheduler *)v2 persistedState];
-              v29 = [v9 summary];
-              [v28 storePersistedEntry:v13 withEntrySummary:v29 fromLocation:@"_performPushNotificationOperations"];
+              persistedState2 = [(MADAutoAssetScheduler *)selfCopy persistedState];
+              summary3 = [v9 summary];
+              [persistedState2 storePersistedEntry:persistedEntryID withEntrySummary:summary3 fromLocation:@"_performPushNotificationOperations"];
 
-              v30 = [v9 assetSelector];
-              v52 = [v9 intervalSecs];
-              v31 = [v9 remainingSecs];
-              v32 = [v9 pushedJob];
+              assetSelector5 = [v9 assetSelector];
+              intervalSecs = [v9 intervalSecs];
+              remainingSecs = [v9 remainingSecs];
+              pushedJob = [v9 pushedJob];
               v33 = v15;
-              v34 = v2;
-              v35 = [v9 setJob];
-              v36 = [v9 setPolicy];
-              v37 = [v9 pushedPolicy];
+              v34 = selfCopy;
+              setJob = [v9 setJob];
+              setPolicy = [v9 setPolicy];
+              pushedPolicy = [v9 pushedPolicy];
               LOBYTE(v46) = v53;
-              LOBYTE(v45) = v35;
-              v2 = v34;
+              LOBYTE(v45) = setJob;
+              selfCopy = v34;
               v15 = v33;
-              [(MADAutoAssetScheduler *)v2 _logPersistedEntry:@"_performPushNotificationOperations" operation:@"ENTRY_MODIFY" persistingSelector:v30 intervalSecs:v52 remainingSecs:v31 pushedJob:v32 setJob:v45 setPolicy:v36 pushedPolicy:v37 requiringRetry:v46 message:@"adjusted currently awaiting push job"];
+              [(MADAutoAssetScheduler *)selfCopy _logPersistedEntry:@"_performPushNotificationOperations" operation:@"ENTRY_MODIFY" persistingSelector:assetSelector5 intervalSecs:intervalSecs remainingSecs:remainingSecs pushedJob:pushedJob setJob:v45 setPolicy:setPolicy pushedPolicy:pushedPolicy requiringRetry:v46 message:@"adjusted currently awaiting push job"];
 
               v7 = v47;
-              v4 = v48;
+              jobsAwaitingTrigger = v48;
               v6 = v51;
             }
 
@@ -4152,29 +4152,29 @@ LABEL_42:
 
           else
           {
-            v13 = _MADLog(@"AutoScheduler");
-            if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+            persistedEntryID = _MADLog(@"AutoScheduler");
+            if (os_log_type_enabled(persistedEntryID, OS_LOG_TYPE_ERROR))
             {
-              v39 = [(MADAutoAssetScheduler *)v2 summary];
-              v40 = [v9 summary];
+              summary4 = [(MADAutoAssetScheduler *)selfCopy summary];
+              summary5 = [v9 summary];
               *buf = 138543618;
-              v60 = v39;
+              v60 = summary4;
               v61 = 2114;
-              v62 = v40;
-              _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_performPushNotificationOperations} nil currentlyAwaiting.assetSelector encountered on jobsAwaitingTrigger | assetSelector:%{public}@", buf, 0x16u);
+              v62 = summary5;
+              _os_log_impl(&dword_0, persistedEntryID, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_performPushNotificationOperations} nil currentlyAwaiting.assetSelector encountered on jobsAwaitingTrigger | assetSelector:%{public}@", buf, 0x16u);
             }
           }
         }
 
         else
         {
-          v13 = _MADLog(@"AutoScheduler");
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+          persistedEntryID = _MADLog(@"AutoScheduler");
+          if (os_log_type_enabled(persistedEntryID, OS_LOG_TYPE_ERROR))
           {
-            v38 = [(MADAutoAssetScheduler *)v2 summary];
+            summary6 = [(MADAutoAssetScheduler *)selfCopy summary];
             *buf = 138543362;
-            v60 = v38;
-            _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_performPushNotificationOperations} nil currentlyAwaiting encountered on jobsAwaitingTrigger", buf, 0xCu);
+            v60 = summary6;
+            _os_log_impl(&dword_0, persistedEntryID, OS_LOG_TYPE_ERROR, "%{public}@ | {AUTO-SCHEDULER:_performPushNotificationOperations} nil currentlyAwaiting encountered on jobsAwaitingTrigger", buf, 0xCu);
           }
         }
 
@@ -4183,7 +4183,7 @@ LABEL_42:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v55 objects:v65 count:16];
+      v6 = [jobsAwaitingTrigger countByEnumeratingWithState:&v55 objects:v65 count:16];
     }
 
     while (v6);
@@ -4194,11 +4194,11 @@ LABEL_42:
     v41 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = [(MADAutoAssetScheduler *)v2 summary];
+      summary7 = [(MADAutoAssetScheduler *)selfCopy summary];
       v43 = [v50 count];
       v44 = [v49 count];
       *buf = 138543874;
-      v60 = v42;
+      v60 = summary7;
       v61 = 2048;
       v62 = v43;
       v63 = 2048;
@@ -4206,32 +4206,32 @@ LABEL_42:
       _os_log_impl(&dword_0, v41, OS_LOG_TYPE_DEFAULT, "%{public}@ | {AUTO-SCHEDULER:_performPushNotificationOperations} 1-shot triggered selectors | NoRetry:%ld RequiringRetry:%ld | MA_MILESTONE", buf, 0x20u);
     }
 
-    [(MADAutoAssetScheduler *)v2 _informConnectorTriggeredSelectors:v50 withTriggeredRequiringRetry:v49];
+    [(MADAutoAssetScheduler *)selfCopy _informConnectorTriggeredSelectors:v50 withTriggeredRequiringRetry:v49];
   }
 }
 
-- (void)_performTriggeredSetJobForSetConfiguration:(id)a3 usingSetUpdatePolicy:(id)a4
+- (void)_performTriggeredSetJobForSetConfiguration:(id)configuration usingSetUpdatePolicy:(id)policy
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v6);
+  configurationCopy = configuration;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v7 = objc_alloc_init(NSMutableArray);
   v8 = objc_alloc_init(NSMutableArray);
   v9 = [MAAutoAssetSelector alloc];
-  v10 = [v5 clientDomainName];
-  v11 = [v5 assetSetIdentifier];
+  clientDomainName = [configurationCopy clientDomainName];
+  assetSetIdentifier = [configurationCopy assetSetIdentifier];
 
-  v12 = [v9 initForAssetType:v10 withAssetSpecifier:v11];
+  v12 = [v9 initForAssetType:clientDomainName withAssetSpecifier:assetSetIdentifier];
   if (v8 && v12)
   {
     [v8 addObject:v12];
     v13 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(MADAutoAssetScheduler *)self summary];
+      summary = [(MADAutoAssetScheduler *)self summary];
       v15 = 138543874;
-      v16 = v14;
+      v16 = summary;
       v17 = 2048;
       v18 = [v7 count];
       v19 = 2048;
@@ -4243,44 +4243,44 @@ LABEL_42:
   }
 }
 
-- (id)_newSetPolicyForDomainName:(id)a3 forAssetSetIdentifier:(id)a4 fromLocation:(id)a5
+- (id)_newSetPolicyForDomainName:(id)name forAssetSetIdentifier:(id)identifier fromLocation:(id)location
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v11);
+  locationCopy = location;
+  identifierCopy = identifier;
+  nameCopy = name;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v12 = [[NSString alloc] initWithFormat:@"%@:_newSetPolicyForDomainName", v8];
-  v13 = [[MAAutoAssetSelector alloc] initForAssetType:v10 withAssetSpecifier:v9];
+  locationCopy = [[NSString alloc] initWithFormat:@"%@:_newSetPolicyForDomainName", locationCopy];
+  v13 = [[MAAutoAssetSelector alloc] initForAssetType:nameCopy withAssetSpecifier:identifierCopy];
 
-  v14 = [(MADAutoAssetScheduler *)self jobsBySelector];
-  v15 = [v13 persistedEntryID];
-  v16 = [v14 safeObjectForKey:v15 ofClass:objc_opt_class()];
+  jobsBySelector = [(MADAutoAssetScheduler *)self jobsBySelector];
+  persistedEntryID = [v13 persistedEntryID];
+  v16 = [jobsBySelector safeObjectForKey:persistedEntryID ofClass:objc_opt_class()];
 
   if (v16)
   {
-    v17 = [v13 persistedEntryID];
-    v18 = [(MADAutoAssetScheduler *)self persistedState];
-    v19 = [v18 persistedEntry:v17 fromLocation:v12];
+    persistedEntryID2 = [v13 persistedEntryID];
+    persistedState = [(MADAutoAssetScheduler *)self persistedState];
+    v19 = [persistedState persistedEntry:persistedEntryID2 fromLocation:locationCopy];
 
     if ([v19 BOOLeanForKey:@"setJob"])
     {
-      v20 = [v19 secureCodedObjectForKey:@"setPolicy" ofClass:objc_opt_class()];
-      if (!v20)
+      defaultSchedulerSetPolicy = [v19 secureCodedObjectForKey:@"setPolicy" ofClass:objc_opt_class()];
+      if (!defaultSchedulerSetPolicy)
       {
-        v20 = [(MADAutoAssetScheduler *)self defaultSchedulerSetPolicy];
+        defaultSchedulerSetPolicy = [(MADAutoAssetScheduler *)self defaultSchedulerSetPolicy];
       }
 
       v21 = objc_alloc_init(MANAutoAssetSetPolicy);
-      -[MANAutoAssetSetPolicy setUserInitiated:](v21, "setUserInitiated:", [v20 userInitiated]);
-      -[MANAutoAssetSetPolicy setLockInhibitsEmergencyRemoval:](v21, "setLockInhibitsEmergencyRemoval:", [v20 lockInhibitsEmergencyRemoval]);
-      -[MANAutoAssetSetPolicy setAllowCheckDownloadOnBattery:](v21, "setAllowCheckDownloadOnBattery:", [v20 allowCheckDownloadOnBattery]);
-      -[MANAutoAssetSetPolicy setAllowCheckDownloadWhenBatteryLow:](v21, "setAllowCheckDownloadWhenBatteryLow:", [v20 allowCheckDownloadWhenBatteryLow]);
-      -[MANAutoAssetSetPolicy setAllowCheckDownloadWhenCPUHigh:](v21, "setAllowCheckDownloadWhenCPUHigh:", [v20 allowCheckDownloadWhenCPUHigh]);
-      -[MANAutoAssetSetPolicy setAllowCheckDownloadOverExpensive:](v21, "setAllowCheckDownloadOverExpensive:", [v20 allowCheckDownloadOverExpensive]);
-      -[MANAutoAssetSetPolicy setAllowCheckDownloadOverCellular:](v21, "setAllowCheckDownloadOverCellular:", [v20 allowCheckDownloadOverCellular]);
-      -[MANAutoAssetSetPolicy setBlockCheckDownload:](v21, "setBlockCheckDownload:", [v20 blockCheckDownload]);
+      -[MANAutoAssetSetPolicy setUserInitiated:](v21, "setUserInitiated:", [defaultSchedulerSetPolicy userInitiated]);
+      -[MANAutoAssetSetPolicy setLockInhibitsEmergencyRemoval:](v21, "setLockInhibitsEmergencyRemoval:", [defaultSchedulerSetPolicy lockInhibitsEmergencyRemoval]);
+      -[MANAutoAssetSetPolicy setAllowCheckDownloadOnBattery:](v21, "setAllowCheckDownloadOnBattery:", [defaultSchedulerSetPolicy allowCheckDownloadOnBattery]);
+      -[MANAutoAssetSetPolicy setAllowCheckDownloadWhenBatteryLow:](v21, "setAllowCheckDownloadWhenBatteryLow:", [defaultSchedulerSetPolicy allowCheckDownloadWhenBatteryLow]);
+      -[MANAutoAssetSetPolicy setAllowCheckDownloadWhenCPUHigh:](v21, "setAllowCheckDownloadWhenCPUHigh:", [defaultSchedulerSetPolicy allowCheckDownloadWhenCPUHigh]);
+      -[MANAutoAssetSetPolicy setAllowCheckDownloadOverExpensive:](v21, "setAllowCheckDownloadOverExpensive:", [defaultSchedulerSetPolicy allowCheckDownloadOverExpensive]);
+      -[MANAutoAssetSetPolicy setAllowCheckDownloadOverCellular:](v21, "setAllowCheckDownloadOverCellular:", [defaultSchedulerSetPolicy allowCheckDownloadOverCellular]);
+      -[MANAutoAssetSetPolicy setBlockCheckDownload:](v21, "setBlockCheckDownload:", [defaultSchedulerSetPolicy blockCheckDownload]);
     }
 
     else
@@ -4335,29 +4335,29 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
 
 - (void)_resumeConnector
 {
-  v3 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v3);
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v5 = [(MADAutoAssetScheduler *)self _currentlyScheduledMarkers];
-  v4 = [(MADAutoAssetScheduler *)self _currentlyScheduledMarkersRequiringRetry];
-  [MADAutoAssetConnector resumeMonitoringMarkers:v5 withMarkersRequiringRetry:v4];
+  _currentlyScheduledMarkers = [(MADAutoAssetScheduler *)self _currentlyScheduledMarkers];
+  _currentlyScheduledMarkersRequiringRetry = [(MADAutoAssetScheduler *)self _currentlyScheduledMarkersRequiringRetry];
+  [MADAutoAssetConnector resumeMonitoringMarkers:_currentlyScheduledMarkers withMarkersRequiringRetry:_currentlyScheduledMarkersRequiringRetry];
 }
 
 - (void)_informConnectorAlteredSelectors
 {
-  v3 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v3);
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v4 = [(MADAutoAssetScheduler *)self _currentlyScheduledMarkers];
-  [MADAutoAssetConnector alteredMonitoringMarkers:v4 withTriggeredNoRetry:0 withTriggeredRequiringRetry:0];
+  _currentlyScheduledMarkers = [(MADAutoAssetScheduler *)self _currentlyScheduledMarkers];
+  [MADAutoAssetConnector alteredMonitoringMarkers:_currentlyScheduledMarkers withTriggeredNoRetry:0 withTriggeredRequiringRetry:0];
 }
 
-- (void)_informConnectorTriggeredSelectors:(id)a3 withTriggeredRequiringRetry:(id)a4
+- (void)_informConnectorTriggeredSelectors:(id)selectors withTriggeredRequiringRetry:(id)retry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v8);
+  selectorsCopy = selectors;
+  retryCopy = retry;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v9 = objc_opt_new();
   v10 = objc_opt_new();
@@ -4365,7 +4365,7 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v11 = v6;
+  v11 = selectorsCopy;
   v12 = [v11 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v12)
   {
@@ -4401,7 +4401,7 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = v7;
+  v19 = retryCopy;
   v20 = [v19 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v20)
   {
@@ -4433,34 +4433,34 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
     while (v21);
   }
 
-  v27 = [(MADAutoAssetScheduler *)self _currentlyScheduledMarkers];
-  [MADAutoAssetConnector alteredMonitoringMarkers:v27 withTriggeredNoRetry:v9 withTriggeredRequiringRetry:v10];
+  _currentlyScheduledMarkers = [(MADAutoAssetScheduler *)self _currentlyScheduledMarkers];
+  [MADAutoAssetConnector alteredMonitoringMarkers:_currentlyScheduledMarkers withTriggeredNoRetry:v9 withTriggeredRequiringRetry:v10];
 }
 
-- (void)_informConnectorActiveJobFinishedforSelector:(id)a3 withPotentialNetworkFailure:(BOOL)a4
+- (void)_informConnectorActiveJobFinishedforSelector:(id)selector withPotentialNetworkFailure:(BOOL)failure
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v7);
+  failureCopy = failure;
+  selectorCopy = selector;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v8 = [(MADAutoAssetScheduler *)self _markerForSelector:v6];
+  v8 = [(MADAutoAssetScheduler *)self _markerForSelector:selectorCopy];
 
-  [MADAutoAssetConnector scheduledMarkerFinished:v8 withPotentialNetworkFailure:v4];
+  [MADAutoAssetConnector scheduledMarkerFinished:v8 withPotentialNetworkFailure:failureCopy];
 }
 
 - (id)_currentlyScheduledMarkers
 {
-  v3 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v3);
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  jobsAwaitingTrigger = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
+  v6 = [jobsAwaitingTrigger countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4471,19 +4471,19 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(jobsAwaitingTrigger);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
         if (v10)
         {
-          v12 = [v10 assetSelector];
+          assetSelector = [v10 assetSelector];
 
-          if (v12)
+          if (assetSelector)
           {
-            v13 = [v10 assetSelector];
-            v14 = [(MADAutoAssetScheduler *)self _markerForSelector:v13 andJob:v10];
+            assetSelector2 = [v10 assetSelector];
+            v14 = [(MADAutoAssetScheduler *)self _markerForSelector:assetSelector2 andJob:v10];
 
             [v4 addObject:v14];
           }
@@ -4492,7 +4492,7 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
         objc_autoreleasePoolPop(v11);
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [jobsAwaitingTrigger countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -4503,16 +4503,16 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
 
 - (id)_currentlyScheduledMarkersRequiringRetry
 {
-  v3 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v3);
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  jobsAwaitingTrigger = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
+  v6 = [jobsAwaitingTrigger countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4523,23 +4523,23 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(jobsAwaitingTrigger);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
         if (v10)
         {
-          v11 = [*(*(&v18 + 1) + 8 * i) assetSelector];
-          if (v11)
+          assetSelector = [*(*(&v18 + 1) + 8 * i) assetSelector];
+          if (assetSelector)
           {
-            v12 = v11;
-            v13 = [v10 requiringRetry];
+            v12 = assetSelector;
+            requiringRetry = [v10 requiringRetry];
 
-            if (v13)
+            if (requiringRetry)
             {
               v14 = objc_autoreleasePoolPush();
-              v15 = [v10 assetSelector];
-              v16 = [(MADAutoAssetScheduler *)self _markerForSelector:v15 andJob:v10];
+              assetSelector2 = [v10 assetSelector];
+              v16 = [(MADAutoAssetScheduler *)self _markerForSelector:assetSelector2 andJob:v10];
 
               [v4 addObject:v16];
               objc_autoreleasePoolPop(v14);
@@ -4548,7 +4548,7 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [jobsAwaitingTrigger countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -4557,64 +4557,64 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
   return v4;
 }
 
-- (id)_markerForSelector:(id)a3 andJob:(id)a4
+- (id)_markerForSelector:(id)selector andJob:(id)job
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if ((v7 || (-[MADAutoAssetScheduler jobsBySelector](self, "jobsBySelector"), v9 = objc_claimAutoreleasedReturnValue(), [v6 persistedEntryID], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "safeObjectForKey:ofClass:", v10, objc_opt_class()), v8 = objc_claimAutoreleasedReturnValue(), v10, v9, v8)) && objc_msgSend(v8, "setJob"))
+  selectorCopy = selector;
+  jobCopy = job;
+  v8 = jobCopy;
+  if ((jobCopy || (-[MADAutoAssetScheduler jobsBySelector](self, "jobsBySelector"), v9 = objc_claimAutoreleasedReturnValue(), [selectorCopy persistedEntryID], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "safeObjectForKey:ofClass:", v10, objc_opt_class()), v8 = objc_claimAutoreleasedReturnValue(), v10, v9, v8)) && objc_msgSend(v8, "setJob"))
   {
-    v11 = [v8 assetSelector];
-    v12 = [(MADAutoAssetScheduler *)self _setConfigurationForAssetSelector:v11];
+    assetSelector = [v8 assetSelector];
+    assetType2 = [(MADAutoAssetScheduler *)self _setConfigurationForAssetSelector:assetSelector];
 
-    v13 = [v8 setPolicy];
-    if (!v13)
+    setPolicy = [v8 setPolicy];
+    if (!setPolicy)
     {
-      v13 = [(MADAutoAssetScheduler *)self defaultSchedulerSetPolicy];
+      setPolicy = [(MADAutoAssetScheduler *)self defaultSchedulerSetPolicy];
     }
 
     v14 = [MADMarker alloc];
-    v15 = [v6 assetType];
-    v16 = [v12 clientDomainName];
-    v17 = [v12 assetSetIdentifier];
-    v18 = [v8 pushedPolicy];
-    v19 = [(MADMarker *)v14 initForAssetType:v15 forClientDomainName:v16 forAssetSetIdentifier:v17 forAssetSelector:0 forSetJob:1 withSetPolicy:v13 withPushedPolicy:v18];
+    assetType = [selectorCopy assetType];
+    clientDomainName = [assetType2 clientDomainName];
+    assetSetIdentifier = [assetType2 assetSetIdentifier];
+    pushedPolicy = [v8 pushedPolicy];
+    v19 = [(MADMarker *)v14 initForAssetType:assetType forClientDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier forAssetSelector:0 forSetJob:1 withSetPolicy:setPolicy withPushedPolicy:pushedPolicy];
   }
 
   else
   {
     v20 = [MADMarker alloc];
-    v12 = [v6 assetType];
-    v19 = [(MADMarker *)v20 initForAssetType:v12 forClientDomainName:0 forAssetSetIdentifier:0 forAssetSelector:v6 forSetJob:0 withSetPolicy:0 withPushedPolicy:0];
+    assetType2 = [selectorCopy assetType];
+    v19 = [(MADMarker *)v20 initForAssetType:assetType2 forClientDomainName:0 forAssetSetIdentifier:0 forAssetSelector:selectorCopy forSetJob:0 withSetPolicy:0 withPushedPolicy:0];
   }
 
   return v19;
 }
 
-+ (id)persistedEntryIDForClientDomain:(id)a3 forAssetSetIdentifier:(id)a4
++ (id)persistedEntryIDForClientDomain:(id)domain forAssetSetIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@_%@", v6, v5];
+  identifierCopy = identifier;
+  domainCopy = domain;
+  identifierCopy = [[NSString alloc] initWithFormat:@"%@_%@", domainCopy, identifierCopy];
 
-  return v7;
+  return identifierCopy;
 }
 
-- (void)_logPersistedConfigLoad:(id)a3 activityIntervalSecs:(int64_t)a4 pushTriggerSecs:(int64_t)a5 lastTickDate:(id)a6 message:(id)a7
+- (void)_logPersistedConfigLoad:(id)load activityIntervalSecs:(int64_t)secs pushTriggerSecs:(int64_t)triggerSecs lastTickDate:(id)date message:(id)message
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v15);
+  loadCopy = load;
+  dateCopy = date;
+  messageCopy = message;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v16 = [NSString alloc];
-  v17 = [MADAutoAssetControlManager allocIntervalString:a4];
-  v18 = [MADAutoAssetControlManager allocIntervalString:a5];
+  v17 = [MADAutoAssetControlManager allocIntervalString:secs];
+  v18 = [MADAutoAssetControlManager allocIntervalString:triggerSecs];
   v19 = v18;
-  if (v13)
+  if (dateCopy)
   {
-    v20 = [MADAutoAssetScheduler stringFromDate:v13];
+    v20 = [MADAutoAssetScheduler stringFromDate:dateCopy];
     v21 = [v16 initWithFormat:@"activityIntervalSecs:%@ | pushTriggerSecs:%@ | lastTickDate:%@", v17, v19, v20];
   }
 
@@ -4638,9 +4638,9 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
     v32 = 2114;
     v33 = @">----->";
     v34 = 2114;
-    v35 = v12;
+    v35 = loadCopy;
     v36 = 2114;
-    v37 = v14;
+    v37 = messageCopy;
     v38 = 2114;
     v39 = @"SCHED";
     v40 = 2114;
@@ -4655,23 +4655,23 @@ void __50__MADAutoAssetScheduler_defaultSchedulerSetPolicy__block_invoke(id a1)
   }
 }
 
-- (void)_logPersistedConfigSet:(id)a3 activityIntervalSecs:(int64_t)a4 pushTriggerSecs:(int64_t)a5 lastTickDate:(id)a6 message:(id)a7
+- (void)_logPersistedConfigSet:(id)set activityIntervalSecs:(int64_t)secs pushTriggerSecs:(int64_t)triggerSecs lastTickDate:(id)date message:(id)message
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v15);
+  setCopy = set;
+  dateCopy = date;
+  messageCopy = message;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v16 = [NSString alloc];
-  if (a4 < 0)
+  if (secs < 0)
   {
     v17 = @"UNCHANGED";
-    if ((a5 & 0x8000000000000000) == 0)
+    if ((triggerSecs & 0x8000000000000000) == 0)
     {
 LABEL_3:
-      v18 = [MADAutoAssetControlManager allocIntervalString:a5];
-      if (v13)
+      v18 = [MADAutoAssetControlManager allocIntervalString:triggerSecs];
+      if (dateCopy)
       {
         goto LABEL_4;
       }
@@ -4682,21 +4682,21 @@ LABEL_3:
 
   else
   {
-    v17 = [MADAutoAssetControlManager allocIntervalString:a4];
-    if ((a5 & 0x8000000000000000) == 0)
+    v17 = [MADAutoAssetControlManager allocIntervalString:secs];
+    if ((triggerSecs & 0x8000000000000000) == 0)
     {
       goto LABEL_3;
     }
   }
 
   v18 = @"UNCHANGED";
-  if (v13)
+  if (dateCopy)
   {
 LABEL_4:
-    v19 = [MADAutoAssetScheduler stringFromDate:v13];
+    v19 = [MADAutoAssetScheduler stringFromDate:dateCopy];
     v20 = [v16 initWithFormat:@"activityIntervalSecs:%@ | pushTriggerSecs:%@ | lastTickDate:%@", v17, v18, v19];
 
-    if (a5 < 0)
+    if (triggerSecs < 0)
     {
       goto LABEL_6;
     }
@@ -4706,13 +4706,13 @@ LABEL_4:
 
 LABEL_13:
   v20 = [v16 initWithFormat:@"activityIntervalSecs:%@ | pushTriggerSecs:%@ | lastTickDate:%@", v17, v18, @"N"];
-  if ((a5 & 0x8000000000000000) == 0)
+  if ((triggerSecs & 0x8000000000000000) == 0)
   {
 LABEL_5:
   }
 
 LABEL_6:
-  if ((a4 & 0x8000000000000000) == 0)
+  if ((secs & 0x8000000000000000) == 0)
   {
   }
 
@@ -4731,9 +4731,9 @@ LABEL_6:
     v31 = 2114;
     v32 = @">----->";
     v33 = 2114;
-    v34 = v12;
+    v34 = setCopy;
     v35 = 2114;
-    v36 = v14;
+    v36 = messageCopy;
     v37 = 2114;
     v38 = @"SCHED";
     v39 = 2114;
@@ -4748,50 +4748,50 @@ LABEL_6:
   }
 }
 
-- (void)_logPersistedEntry:(id)a3 operation:(id)a4 persistingSelector:(id)a5 intervalSecs:(int64_t)a6 remainingSecs:(int64_t)a7 pushedJob:(BOOL)a8 setJob:(BOOL)a9 setPolicy:(id)a10 pushedPolicy:(id)a11 requiringRetry:(BOOL)a12 message:(id)a13
+- (void)_logPersistedEntry:(id)entry operation:(id)operation persistingSelector:(id)selector intervalSecs:(int64_t)secs remainingSecs:(int64_t)remainingSecs pushedJob:(BOOL)job setJob:(BOOL)setJob setPolicy:(id)self0 pushedPolicy:(id)self1 requiringRetry:(BOOL)self2 message:(id)self3
 {
-  v13 = a8;
-  v40 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a10;
-  v22 = a11;
-  v39 = a13;
-  v23 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v23);
+  jobCopy = job;
+  entryCopy = entry;
+  operationCopy = operation;
+  selectorCopy = selector;
+  policyCopy = policy;
+  pushedPolicyCopy = pushedPolicy;
+  messageCopy = message;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
-  v24 = [MADAutoAssetPersisted persistedOperationSymbol:v19];
-  v25 = [v20 persistedEntryID];
-  if (v25)
+  v24 = [MADAutoAssetPersisted persistedOperationSymbol:operationCopy];
+  persistedEntryID = [selectorCopy persistedEntryID];
+  if (persistedEntryID)
   {
     v38 = v24;
-    v26 = [MADAutoAssetScheduler jobTypeName:v13 setJob:a9 requiringRetry:a12];
+    v26 = [MADAutoAssetScheduler jobTypeName:jobCopy setJob:setJob requiringRetry:retry];
     v27 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [MADAutoAssetControlManager allocIntervalString:a6];
-      v28 = [MADAutoAssetControlManager allocIntervalString:a7];
-      v29 = @"N";
+      v37 = [MADAutoAssetControlManager allocIntervalString:secs];
+      v28 = [MADAutoAssetControlManager allocIntervalString:remainingSecs];
+      summary = @"N";
       v30 = @"Y";
-      if (!a12)
+      if (!retry)
       {
         v30 = @"N";
       }
 
       v36 = v30;
-      if (v21)
+      if (policyCopy)
       {
-        v29 = [v21 summary];
+        summary = [policyCopy summary];
       }
 
-      if (v22)
+      if (pushedPolicyCopy)
       {
-        v31 = [v22 summary];
+        summary2 = [pushedPolicyCopy summary];
       }
 
       else
       {
-        v31 = @"N";
+        summary2 = @"N";
       }
 
       *buf = 138547714;
@@ -4799,21 +4799,21 @@ LABEL_6:
       v43 = 2114;
       v44 = @"AUTO-SCHEDULER";
       v45 = 2114;
-      v46 = v19;
+      v46 = operationCopy;
       v47 = 2114;
       v48 = @"SCHED";
       v49 = 2114;
       v50 = @">----->";
       v51 = 2114;
-      v52 = v40;
+      v52 = entryCopy;
       v53 = 2114;
-      v54 = v39;
+      v54 = messageCopy;
       v55 = 2114;
       v56 = @"SCHED";
       v57 = 2114;
       v58 = v24;
       v59 = 2114;
-      v60 = v25;
+      v60 = persistedEntryID;
       v61 = 2114;
       v62 = v26;
       v63 = 2114;
@@ -4824,20 +4824,20 @@ LABEL_6:
       v67 = 2114;
       v68 = v36;
       v69 = 2114;
-      v70 = v29;
+      v70 = summary;
       v71 = 2114;
-      v35 = v31;
-      v72 = v31;
+      v35 = summary2;
+      v72 = summary2;
       v73 = 2114;
       v74 = @"SCHED";
       v75 = 2114;
       v76 = @"<-----<";
       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@][%{public}@]\n#_%{public}@:%{public}@ {%{public}@} %{public}@\n#_%{public}@:(%{public}@) [%{public}@] | [%{public}@] intervalSecs:%{public}@ | remainingSecs:%{public}@ | requiringRetry:%{public}@ | setPolicy:%{public}@ | pushedPolicy:%{public}@\n#_%{public}@:%{public}@", buf, 0xB6u);
-      if (v22)
+      if (pushedPolicyCopy)
       {
       }
 
-      if (v21)
+      if (policyCopy)
       {
       }
     }
@@ -4850,36 +4850,36 @@ LABEL_6:
     v26 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v32 = [(MADAutoAssetScheduler *)self summary];
-      v33 = [v20 summary];
+      summary3 = [(MADAutoAssetScheduler *)self summary];
+      summary4 = [selectorCopy summary];
       *buf = 138544386;
-      v42 = v32;
+      v42 = summary3;
       v43 = 2114;
-      v44 = v40;
+      v44 = entryCopy;
       v45 = 2114;
-      v46 = v19;
+      v46 = operationCopy;
       v47 = 2114;
-      v48 = v39;
+      v48 = messageCopy;
       v49 = 2114;
-      v50 = v33;
+      v50 = summary4;
       _os_log_impl(&dword_0, v26, OS_LOG_TYPE_ERROR, "%{public}@ | {%{public}@:_logPersistedEntry} %{public}@ | no selectorKey | %{public}@ | assetSelector:%{public}@", buf, 0x34u);
     }
   }
 }
 
-- (void)_logPersistedRemovedEntry:(id)a3 removedSelector:(id)a4 message:(id)a5
+- (void)_logPersistedRemovedEntry:(id)entry removedSelector:(id)selector message:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v11);
+  entryCopy = entry;
+  selectorCopy = selector;
+  messageCopy = message;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   v12 = [MADAutoAssetPersisted persistedOperationSymbol:@"ENTRY_REMOVE"];
-  v13 = [v9 persistedEntryID];
+  persistedEntryID = [selectorCopy persistedEntryID];
   v14 = _MADLog(@"AutoScheduler");
   v15 = v14;
-  if (v13)
+  if (persistedEntryID)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -4894,15 +4894,15 @@ LABEL_6:
       v26 = 2114;
       v27 = @">----->";
       v28 = 2114;
-      v29 = v8;
+      v29 = entryCopy;
       v30 = 2114;
-      v31 = v10;
+      v31 = messageCopy;
       v32 = 2114;
       v33 = @"SCHED";
       v34 = 2114;
       v35 = v12;
       v36 = 2114;
-      v37 = v13;
+      v37 = persistedEntryID;
       v38 = 2114;
       v39 = @"SCHED";
       v40 = 2114;
@@ -4913,30 +4913,30 @@ LABEL_6:
 
   else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v16 = [(MADAutoAssetScheduler *)self summary];
-    v17 = [v9 summary];
+    summary = [(MADAutoAssetScheduler *)self summary];
+    summary2 = [selectorCopy summary];
     v18 = 138544130;
-    v19 = v16;
+    v19 = summary;
     v20 = 2114;
-    v21 = v8;
+    v21 = entryCopy;
     v22 = 2114;
-    v23 = v10;
+    v23 = messageCopy;
     v24 = 2114;
-    v25 = v17;
+    v25 = summary2;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "%{public}@ | {%{public}@:_logPersistedRemovedEntry} %{public}@ | no selectorKey to remove | removedSelector:%{public}@", &v18, 0x2Au);
   }
 }
 
-- (void)_logPersistedTableOfContents:(id)a3
+- (void)_logPersistedTableOfContents:(id)contents
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetScheduler *)self schedulerQueue];
-  dispatch_assert_queue_V2(v5);
+  contentsCopy = contents;
+  schedulerQueue = [(MADAutoAssetScheduler *)self schedulerQueue];
+  dispatch_assert_queue_V2(schedulerQueue);
 
   if (+[MADAutoAssetControlManager preferencePersistedTableLoggingEnabled])
   {
-    v6 = [(MADAutoAssetScheduler *)self persistedState];
-    v7 = [v6 persistedEntryIDs:v4];
+    persistedState = [(MADAutoAssetScheduler *)self persistedState];
+    v7 = [persistedState persistedEntryIDs:contentsCopy];
 
     v31 = v7;
     if ([v7 count])
@@ -4956,7 +4956,7 @@ LABEL_6:
         v43 = 2114;
         v44 = @">----->";
         v45 = 2114;
-        v46 = v4;
+        v46 = contentsCopy;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@][%{public}@]\n#_%{public}@:%{public}@ {%{public}@} table-of-contents...", buf, 0x3Eu);
       }
 
@@ -4965,12 +4965,12 @@ LABEL_6:
         v11 = 0;
         *&v10 = 138543874;
         v30 = v10;
-        v32 = self;
+        selfCopy = self;
         do
         {
           v12 = [v7 objectAtIndexedSubscript:{v11, v30}];
-          v13 = [(MADAutoAssetScheduler *)self persistedState];
-          v14 = [v13 persistedEntry:v12 fromLocation:v4];
+          persistedState2 = [(MADAutoAssetScheduler *)self persistedState];
+          v14 = [persistedState2 persistedEntry:v12 fromLocation:contentsCopy];
 
           if (v14)
           {
@@ -5026,7 +5026,7 @@ LABEL_6:
               v8 = v21;
             }
 
-            self = v32;
+            self = selfCopy;
           }
 
           else
@@ -5034,11 +5034,11 @@ LABEL_6:
             v18 = _MADLog(@"AutoScheduler");
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v19 = [(MADAutoAssetScheduler *)self summary];
+              summary = [(MADAutoAssetScheduler *)self summary];
               *buf = v30;
-              v36 = v4;
+              v36 = contentsCopy;
               v37 = 2114;
-              v38 = v19;
+              v38 = summary;
               v39 = 2114;
               v40 = v12;
               _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "{%{public}@:_logPersistedTableOfContents} | %{public}@ | unable to load entry:%{public}@", buf, 0x20u);
@@ -5068,7 +5068,7 @@ LABEL_6:
       v43 = 2114;
       v44 = @"<-----<";
       v45 = 2114;
-      v46 = v4;
+      v46 = contentsCopy;
       v27 = "[%{public}@][%{public}@][%{public}@]\n#_%{public}@:%{public}@ {%{public}@} ...table-of-contents";
       v28 = v26;
       v29 = 62;
@@ -5095,7 +5095,7 @@ LABEL_24:
       v43 = 2114;
       v44 = @">----->";
       v45 = 2114;
-      v46 = v4;
+      v46 = contentsCopy;
       v47 = 2114;
       v48 = @"empty table-of-contents";
       v49 = 2114;
@@ -5116,11 +5116,11 @@ LABEL_25:
 
 - (id)summary
 {
-  v20 = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
-  v18 = [v20 count];
-  v19 = [(MADAutoAssetScheduler *)self jobsBySelector];
-  v17 = [v19 count];
-  v16 = [(MADAutoAssetScheduler *)self jobsAwaitingPushTrigger];
+  jobsAwaitingTrigger = [(MADAutoAssetScheduler *)self jobsAwaitingTrigger];
+  v18 = [jobsAwaitingTrigger count];
+  jobsBySelector = [(MADAutoAssetScheduler *)self jobsBySelector];
+  v17 = [jobsBySelector count];
+  jobsAwaitingPushTrigger = [(MADAutoAssetScheduler *)self jobsAwaitingPushTrigger];
   v15 = [MADAutoAssetControlManager allocIntervalString:[(MADAutoAssetScheduler *)self activityIntervalSecs]];
   v3 = [MADAutoAssetControlManager allocIntervalString:[(MADAutoAssetScheduler *)self tickerIntervalSecs]];
   if ([(MADAutoAssetScheduler *)self activityTickerFired])
@@ -5134,56 +5134,56 @@ LABEL_25:
   }
 
   v5 = [MADAutoAssetControlManager allocIntervalString:[(MADAutoAssetScheduler *)self pushDelaySecs]];
-  v6 = [(MADAutoAssetScheduler *)self pushCounter];
-  v7 = [(MADAutoAssetScheduler *)self lastTickTimestampString];
-  if (v7)
+  pushCounter = [(MADAutoAssetScheduler *)self pushCounter];
+  lastTickTimestampString = [(MADAutoAssetScheduler *)self lastTickTimestampString];
+  if (lastTickTimestampString)
   {
-    v8 = [(MADAutoAssetScheduler *)self lastTickTimestampString];
+    lastTickTimestampString2 = [(MADAutoAssetScheduler *)self lastTickTimestampString];
   }
 
   else
   {
-    v8 = @"N";
+    lastTickTimestampString2 = @"N";
   }
 
   v9 = [MADAutoAssetScheduler nameForXPCStatus:[(MADAutoAssetScheduler *)self scheduledJobsXPCActivity]];
   v10 = [MADAutoAssetScheduler nameForXPCStatus:[(MADAutoAssetScheduler *)self pushJobsXPCActivity]];
-  v11 = [(MADAutoAssetScheduler *)self tickerIntervalReRegistering];
+  tickerIntervalReRegistering = [(MADAutoAssetScheduler *)self tickerIntervalReRegistering];
   v12 = @"Y";
-  if (!v11)
+  if (!tickerIntervalReRegistering)
   {
     v12 = @"N";
   }
 
-  v13 = [NSString stringWithFormat:@"[jobsAwaitingTrigger:%ld, jobsBySelector:%ld, jobsAwaitingPushTrigger:%ld|activityInterval:%@, tickerInterval:%@, tickerFired:%@, pushDelay:%@, pushCounter:%ld, lastTick:%@|[xpcActivity]scheduled:%@, push:%@|[issueReRegister]scheduled:%@]", v18, v17, v16, v15, v3, v4, v5, v6, v8, v9, v10, v12];
+  v13 = [NSString stringWithFormat:@"[jobsAwaitingTrigger:%ld, jobsBySelector:%ld, jobsAwaitingPushTrigger:%ld|activityInterval:%@, tickerInterval:%@, tickerFired:%@, pushDelay:%@, pushCounter:%ld, lastTick:%@|[xpcActivity]scheduled:%@, push:%@|[issueReRegister]scheduled:%@]", v18, v17, jobsAwaitingPushTrigger, v15, v3, v4, v5, pushCounter, lastTickTimestampString2, v9, v10, v12];
 
-  if (v7)
+  if (lastTickTimestampString)
   {
   }
 
   return v13;
 }
 
-+ (id)jobTypeName:(BOOL)a3 setJob:(BOOL)a4 requiringRetry:(BOOL)a5
++ (id)jobTypeName:(BOOL)name setJob:(BOOL)job requiringRetry:(BOOL)retry
 {
   v5 = @"scheduled-job";
-  if (a5)
+  if (retry)
   {
     v5 = @"scheduled-job(requiring-retry)";
   }
 
   v6 = @"set-job";
-  if (a5)
+  if (retry)
   {
     v6 = @"set-job(requiring-retry)";
   }
 
-  if (a4)
+  if (job)
   {
     v5 = v6;
   }
 
-  if (a5)
+  if (retry)
   {
     v7 = @"push-job(requiring-retry)";
   }
@@ -5193,7 +5193,7 @@ LABEL_25:
     v7 = @"push-job";
   }
 
-  if (a3)
+  if (name)
   {
     return v7;
   }
@@ -5204,27 +5204,27 @@ LABEL_25:
   }
 }
 
-+ (id)nameForXPCStatus:(int64_t)a3
++ (id)nameForXPCStatus:(int64_t)status
 {
-  if (a3 > 6)
+  if (status > 6)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return *(&off_4B34A8 + a3);
+    return *(&off_4B34A8 + status);
   }
 }
 
-+ (id)stringFromDate:(id)a3
++ (id)stringFromDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v3 = a3;
+    dateCopy = date;
     v4 = objc_alloc_init(NSDateFormatter);
     [v4 setDateFormat:@"yyyy-MM-dd_HH:mm:ss"];
-    v5 = [v4 stringFromDate:v3];
+    v5 = [v4 stringFromDate:dateCopy];
 
     if (!v5)
     {
@@ -5240,48 +5240,48 @@ LABEL_25:
   return v5;
 }
 
-+ (int64_t)tickerIntervalForActivityIntervalSecs:(int64_t)a3
++ (int64_t)tickerIntervalForActivityIntervalSecs:(int64_t)secs
 {
   result = 14400;
-  if (a3 >= 60 && a3 != 86400 && a3 != 604800)
+  if (secs >= 60 && secs != 86400 && secs != 604800)
   {
-    if (a3 < 0x258)
+    if (secs < 0x258)
     {
-      return a3;
+      return secs;
     }
 
     else
     {
-      return ((a3 / 10.0) + 1.0);
+      return ((secs / 10.0) + 1.0);
     }
   }
 
   return result;
 }
 
-+ (BOOL)isSelector:(id)a3 consideredEqualTo:(id)a4
++ (BOOL)isSelector:(id)selector consideredEqualTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!(v5 | v6))
+  selectorCopy = selector;
+  toCopy = to;
+  v7 = toCopy;
+  if (!(selectorCopy | toCopy))
   {
     v8 = 1;
     goto LABEL_22;
   }
 
   v8 = 0;
-  if (v5 && v6)
+  if (selectorCopy && toCopy)
   {
-    v9 = [v5 assetType];
-    if (!v9)
+    assetType = [selectorCopy assetType];
+    if (!assetType)
     {
       goto LABEL_16;
     }
 
-    v10 = v9;
-    v11 = [v7 assetType];
-    if (!v11)
+    assetType3 = assetType;
+    assetType2 = [v7 assetType];
+    if (!assetType2)
     {
       v8 = 0;
 LABEL_21:
@@ -5289,21 +5289,21 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v12 = v11;
-    v13 = [v5 assetSpecifier];
-    if (v13)
+    assetType4 = assetType2;
+    assetSpecifier = [selectorCopy assetSpecifier];
+    if (assetSpecifier)
     {
-      v14 = v13;
-      v15 = [v7 assetSpecifier];
-      if (!v15)
+      assetSpecifier3 = assetSpecifier;
+      assetSpecifier2 = [v7 assetSpecifier];
+      if (!assetSpecifier2)
       {
         v8 = 0;
         goto LABEL_14;
       }
 
-      v16 = v15;
-      v17 = [v5 assetVersion];
-      if (v17)
+      assetSpecifier4 = assetSpecifier2;
+      assetVersion = [selectorCopy assetVersion];
+      if (assetVersion)
       {
 
         v8 = 0;
@@ -5315,22 +5315,22 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v18 = [v7 assetVersion];
+      assetVersion2 = [v7 assetVersion];
 
-      if (v18)
+      if (assetVersion2)
       {
 LABEL_16:
         v8 = 0;
         goto LABEL_22;
       }
 
-      v10 = [v5 assetType];
-      v12 = [v7 assetType];
-      if ([SUCore stringIsEqual:v10 to:v12])
+      assetType3 = [selectorCopy assetType];
+      assetType4 = [v7 assetType];
+      if ([SUCore stringIsEqual:assetType3 to:assetType4])
       {
-        v14 = [v5 assetSpecifier];
-        v16 = [v7 assetSpecifier];
-        v8 = [SUCore stringIsEqual:v14 to:v16];
+        assetSpecifier3 = [selectorCopy assetSpecifier];
+        assetSpecifier4 = [v7 assetSpecifier];
+        v8 = [SUCore stringIsEqual:assetSpecifier3 to:assetSpecifier4];
         goto LABEL_11;
       }
     }
@@ -5344,23 +5344,23 @@ LABEL_22:
   return v8;
 }
 
-+ (void)addScheduledJobs:(id)a3 basedOnControl:(id)a4
++ (void)addScheduledJobs:(id)jobs basedOnControl:(id)control
 {
-  v5 = a3;
-  v6 = a4;
+  jobsCopy = jobs;
+  controlCopy = control;
   v7 = +[MADAutoAssetScheduler autoAssetScheduler];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 schedulerQueue];
+    schedulerQueue = [v7 schedulerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __57__MADAutoAssetScheduler_addScheduledJobs_basedOnControl___block_invoke;
     block[3] = &unk_4B2AF0;
     v12 = v8;
-    v13 = v6;
-    v14 = v5;
-    dispatch_sync(v9, block);
+    v13 = controlCopy;
+    v14 = jobsCopy;
+    dispatch_sync(schedulerQueue, block);
 
     v10 = v12;
   }
@@ -5490,14 +5490,14 @@ void __57__MADAutoAssetScheduler_addScheduledJobs_basedOnControl___block_invoke(
   v17 = 0;
   if (v2)
   {
-    v4 = [v2 schedulerQueue];
+    schedulerQueue = [v2 schedulerQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = __44__MADAutoAssetScheduler_jobsAwaitingTrigger__block_invoke;
     v8[3] = &unk_4B2AC8;
     v10 = &v12;
     v9 = v3;
-    dispatch_sync(v4, v8);
+    dispatch_sync(schedulerQueue, v8);
 
     v5 = v9;
   }
@@ -5527,21 +5527,21 @@ void __44__MADAutoAssetScheduler_jobsAwaitingTrigger__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-+ (void)forceGlobalForget:(id)a3
++ (void)forceGlobalForget:(id)forget
 {
-  v3 = a3;
+  forgetCopy = forget;
   v4 = +[MADAutoAssetScheduler autoAssetScheduler];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 schedulerQueue];
+    schedulerQueue = [v4 schedulerQueue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = __43__MADAutoAssetScheduler_forceGlobalForget___block_invoke;
     v9[3] = &unk_4B2B18;
     v10 = v5;
-    v11 = v3;
-    dispatch_sync(v6, v9);
+    v11 = forgetCopy;
+    dispatch_sync(schedulerQueue, v9);
 
     v7 = v10;
   }
@@ -5551,9 +5551,9 @@ void __44__MADAutoAssetScheduler_jobsAwaitingTrigger__block_invoke(uint64_t a1)
     v7 = _MADLog(@"Auto");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v3 summary];
+      summary = [forgetCopy summary];
       *buf = 138543362;
-      v13 = v8;
+      v13 = summary;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "{AUTO-SCHEDULER:forceGlobalForget} unable to locate auto-asset-scheduler | unable to force forgetting of selector:%{public}@", buf, 0xCu);
     }
   }
@@ -5739,18 +5739,18 @@ LABEL_26:
   return result;
 }
 
-+ (void)setPersistedStateCaching:(BOOL)a3
++ (void)setPersistedStateCaching:(BOOL)caching
 {
   v4 = +[MADAutoAssetScheduler autoAssetScheduler];
-  v5 = [v4 schedulerQueue];
+  schedulerQueue = [v4 schedulerQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __50__MADAutoAssetScheduler_setPersistedStateCaching___block_invoke;
   v7[3] = &unk_4B3488;
   v8 = v4;
-  v9 = a3;
+  cachingCopy = caching;
   v6 = v4;
-  dispatch_sync(v5, v7);
+  dispatch_sync(schedulerQueue, v7);
 }
 
 void __50__MADAutoAssetScheduler_setPersistedStateCaching___block_invoke(uint64_t a1)

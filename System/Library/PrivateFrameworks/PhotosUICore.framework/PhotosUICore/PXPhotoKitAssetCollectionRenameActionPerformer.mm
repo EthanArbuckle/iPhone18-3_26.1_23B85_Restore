@@ -1,29 +1,29 @@
 @interface PXPhotoKitAssetCollectionRenameActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)_reallyPerformUserInteractionTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionRenameActionPerformer
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = [a4 assetCollection];
-  v6 = PXCollectionRenameActionLocalizedTitle(v5);
+  assetCollection = [reference assetCollection];
+  v6 = PXCollectionRenameActionLocalizedTitle(assetCollection);
 
   return v6;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v6 = [a3 assetCollection];
-  if (!v6)
+  assetCollection = [reference assetCollection];
+  if (!assetCollection)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionRenameActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionRenameActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v11}];
 LABEL_6:
 
     goto LABEL_3;
@@ -32,31 +32,31 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v11 = NSStringFromClass(v12);
-    v13 = [v6 px_descriptionForAssertionMessage];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionRenameActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v11, v13}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionRenameActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v11, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v7 = [v6 canPerformEditOperation:7];
+  v7 = [assetCollection canPerformEditOperation:7];
 
   return v7;
 }
 
 - (void)_reallyPerformUserInteractionTask
 {
-  v3 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v4 = [(PXActionPerformer *)self undoManager];
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __83__PXPhotoKitAssetCollectionRenameActionPerformer__reallyPerformUserInteractionTask__block_invoke;
   v7[3] = &unk_1E774C5C0;
   v7[4] = self;
-  v5 = PXCollectionRenameActionAlertController(v3, v4, v7);
+  v5 = PXCollectionRenameActionAlertController(assetCollection, undoManager, v7);
 
   if (![(PXActionPerformer *)self presentViewController:v5])
   {

@@ -1,40 +1,40 @@
 @interface SFRequestProductPageCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFRequestProductPageCommand)initWithCoder:(id)a3;
-- (SFRequestProductPageCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFRequestProductPageCommand)initWithCoder:(id)coder;
+- (SFRequestProductPageCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFRequestProductPageCommand
 
-- (SFRequestProductPageCommand)initWithProtobuf:(id)a3
+- (SFRequestProductPageCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFRequestProductPageCommand;
   v5 = [(SFRequestProductPageCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 distributorBundleIdentifier];
+    distributorBundleIdentifier = [protobufCopy distributorBundleIdentifier];
 
-    if (v6)
+    if (distributorBundleIdentifier)
     {
-      v7 = [v4 distributorBundleIdentifier];
-      [(SFRequestProductPageCommand *)v5 setDistributorBundleIdentifier:v7];
+      distributorBundleIdentifier2 = [protobufCopy distributorBundleIdentifier];
+      [(SFRequestProductPageCommand *)v5 setDistributorBundleIdentifier:distributorBundleIdentifier2];
     }
 
-    if ([v4 itemIdentifier])
+    if ([protobufCopy itemIdentifier])
     {
-      -[SFRequestProductPageCommand setItemIdentifier:](v5, "setItemIdentifier:", [v4 itemIdentifier]);
+      -[SFRequestProductPageCommand setItemIdentifier:](v5, "setItemIdentifier:", [protobufCopy itemIdentifier]);
     }
 
-    if ([v4 versionIdentifier])
+    if ([protobufCopy versionIdentifier])
     {
-      -[SFRequestProductPageCommand setVersionIdentifier:](v5, "setVersionIdentifier:", [v4 versionIdentifier]);
+      -[SFRequestProductPageCommand setVersionIdentifier:](v5, "setVersionIdentifier:", [protobufCopy versionIdentifier]);
     }
 
     v8 = v5;
@@ -48,34 +48,34 @@
   v9.receiver = self;
   v9.super_class = SFRequestProductPageCommand;
   v3 = [(SFCommand *)&v9 hash];
-  v4 = [(SFRequestProductPageCommand *)self distributorBundleIdentifier];
-  v5 = [v4 hash];
+  distributorBundleIdentifier = [(SFRequestProductPageCommand *)self distributorBundleIdentifier];
+  v5 = [distributorBundleIdentifier hash];
   v6 = v5 ^ [(SFRequestProductPageCommand *)self itemIdentifier];
   v7 = v6 ^ [(SFRequestProductPageCommand *)self versionIdentifier];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFRequestProductPageCommand *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(SFRequestProductPageCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v15.receiver = self;
       v15.super_class = SFRequestProductPageCommand;
-      if ([(SFCommand *)&v15 isEqual:v6])
+      if ([(SFCommand *)&v15 isEqual:equalCopy])
       {
-        v7 = v6;
-        v8 = [(SFRequestProductPageCommand *)self distributorBundleIdentifier];
-        v9 = [(SFRequestProductPageCommand *)v7 distributorBundleIdentifier];
-        if ((v8 != 0) == (v9 == 0))
+        v7 = equalCopy;
+        distributorBundleIdentifier = [(SFRequestProductPageCommand *)self distributorBundleIdentifier];
+        distributorBundleIdentifier2 = [(SFRequestProductPageCommand *)v7 distributorBundleIdentifier];
+        if ((distributorBundleIdentifier != 0) == (distributorBundleIdentifier2 == 0))
         {
           v11 = 0;
 LABEL_17:
@@ -83,15 +83,15 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        v10 = [(SFRequestProductPageCommand *)self distributorBundleIdentifier];
-        if (!v10 || (-[SFRequestProductPageCommand distributorBundleIdentifier](self, "distributorBundleIdentifier"), v3 = objc_claimAutoreleasedReturnValue(), -[SFRequestProductPageCommand distributorBundleIdentifier](v7, "distributorBundleIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+        distributorBundleIdentifier3 = [(SFRequestProductPageCommand *)self distributorBundleIdentifier];
+        if (!distributorBundleIdentifier3 || (-[SFRequestProductPageCommand distributorBundleIdentifier](self, "distributorBundleIdentifier"), v3 = objc_claimAutoreleasedReturnValue(), -[SFRequestProductPageCommand distributorBundleIdentifier](v7, "distributorBundleIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
         {
-          v12 = [(SFRequestProductPageCommand *)self itemIdentifier];
-          if (v12 == [(SFRequestProductPageCommand *)v7 itemIdentifier])
+          itemIdentifier = [(SFRequestProductPageCommand *)self itemIdentifier];
+          if (itemIdentifier == [(SFRequestProductPageCommand *)v7 itemIdentifier])
           {
-            v13 = [(SFRequestProductPageCommand *)self versionIdentifier];
-            v11 = v13 == [(SFRequestProductPageCommand *)v7 versionIdentifier];
-            if (!v10)
+            versionIdentifier = [(SFRequestProductPageCommand *)self versionIdentifier];
+            v11 = versionIdentifier == [(SFRequestProductPageCommand *)v7 versionIdentifier];
+            if (!distributorBundleIdentifier3)
             {
               goto LABEL_16;
             }
@@ -100,7 +100,7 @@ LABEL_17:
           else
           {
             v11 = 0;
-            if (!v10)
+            if (!distributorBundleIdentifier3)
             {
 LABEL_16:
 
@@ -126,13 +126,13 @@ LABEL_18:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFRequestProductPageCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFRequestProductPageCommand *)self distributorBundleIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  distributorBundleIdentifier = [(SFRequestProductPageCommand *)self distributorBundleIdentifier];
+  v6 = [distributorBundleIdentifier copy];
   [v4 setDistributorBundleIdentifier:v6];
 
   [v4 setItemIdentifier:{-[SFRequestProductPageCommand itemIdentifier](self, "itemIdentifier")}];
@@ -143,53 +143,53 @@ LABEL_18:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRequestProductPageCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBRequestProductPageCommand *)v2 jsonData];
+  jsonData = [(_SFPBRequestProductPageCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRequestProductPageCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBRequestProductPageCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRequestProductPageCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFRequestProductPageCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFRequestProductPageCommand)initWithCoder:(id)a3
+- (SFRequestProductPageCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFRequestProductPageCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 distributorBundleIdentifier];
-    [(SFRequestProductPageCommand *)v5 setDistributorBundleIdentifier:v9];
+    distributorBundleIdentifier = [(SFCommand *)v8 distributorBundleIdentifier];
+    [(SFRequestProductPageCommand *)v5 setDistributorBundleIdentifier:distributorBundleIdentifier];
 
     [(SFRequestProductPageCommand *)v5 setItemIdentifier:[(SFCommand *)v8 itemIdentifier]];
     [(SFRequestProductPageCommand *)v5 setVersionIdentifier:[(SFCommand *)v8 versionIdentifier]];
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

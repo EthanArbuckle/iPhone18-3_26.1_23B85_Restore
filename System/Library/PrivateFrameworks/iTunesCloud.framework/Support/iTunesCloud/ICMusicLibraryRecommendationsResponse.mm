@@ -1,21 +1,21 @@
 @interface ICMusicLibraryRecommendationsResponse
-- (ICMusicLibraryRecommendationsResponse)initWithNewArtistContentResponseModel:(id)a3 andMLModel:(id)a4;
+- (ICMusicLibraryRecommendationsResponse)initWithNewArtistContentResponseModel:(id)model andMLModel:(id)lModel;
 @end
 
 @implementation ICMusicLibraryRecommendationsResponse
 
-- (ICMusicLibraryRecommendationsResponse)initWithNewArtistContentResponseModel:(id)a3 andMLModel:(id)a4
+- (ICMusicLibraryRecommendationsResponse)initWithNewArtistContentResponseModel:(id)model andMLModel:(id)lModel
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  lModelCopy = lModel;
   v12.receiver = self;
   v12.super_class = ICMusicLibraryRecommendationsResponse;
   v9 = [(ICMusicLibraryRecommendationsResponse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_responseModel, a3);
-    objc_storeStrong(&v10->_mlModel, a4);
+    objc_storeStrong(&v9->_responseModel, model);
+    objc_storeStrong(&v10->_mlModel, lModel);
   }
 
   return v10;

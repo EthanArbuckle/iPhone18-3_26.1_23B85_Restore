@@ -1,40 +1,40 @@
 @interface INSchema
-+ (BOOL)_defaultSchemaCanSupportIntent:(id)a3;
++ (BOOL)_defaultSchemaCanSupportIntent:(id)intent;
 + (id)_cache;
-+ (id)_defaultSchemaForBundle:(id)a3 contentOptions:(unint64_t)a4;
++ (id)_defaultSchemaForBundle:(id)bundle contentOptions:(unint64_t)options;
 + (id)_loadSystemSchema;
-+ (id)_schemaWithIntentDefinitionURLs:(id)a3 bundleIdentifier:(id)a4 mainBundleIdentifier:(id)a5 contentOptions:(unint64_t)a6;
++ (id)_schemaWithIntentDefinitionURLs:(id)ls bundleIdentifier:(id)identifier mainBundleIdentifier:(id)bundleIdentifier contentOptions:(unint64_t)options;
 + (id)_supportedClasses;
 + (id)_supportedTypesDictionary;
 + (id)defaultSchema;
 + (id)systemSchema;
 + (void)_resetCache;
 - (INSchema)init;
-- (INSchema)initWithCoder:(id)a3;
-- (id)_classNamesForClass:(Class)a3;
-- (id)_codableDescriptionWithDictionary:(id)a3 intentDefinitionNamespace:(id)a4 filename:(id)a5 bundleIdentifier:(id)a6 codableDescriptionClass:(Class)a7;
-- (id)_codableDescriptionsForClass:(Class)a3;
-- (id)_configurableParameterCombinationsForClassName:(id)a3;
-- (id)_dictionaryRepresentationForIntentCodableDescription:(id)a3 intentResponseCodableDescription:(id)a4 appInfo:(id)a5 localizer:(id)a6;
-- (id)_initWithContentsOfURLs:(id)a3 bundleIdentifier:(id)a4 mainBundleIdentifier:(id)a5 contentOptions:(unint64_t)a6;
-- (id)_intentResponseWithDictionary:(id)a3 intentDefinitionNamespace:(id)a4 className:(id)a5 filename:(id)a6 bundleIdentifier:(id)a7 referencedCodableDescriptions:(id)a8;
-- (id)_intentWithDictionary:(id)a3 intentDefinitionNamespace:(id)a4 filename:(id)a5 bundleIdentifier:(id)a6;
-- (id)_objectDescriptionForClass:(Class)a3 identifier:(id)a4;
-- (id)_objectDescriptionForTypeOfClass:(Class)a3;
-- (id)_objectDescriptionWithSemanticKeypath:(id)a3;
-- (id)_parameterCombinationsForClass:(Class)a3;
-- (id)_parameterCombinationsForClassName:(id)a3;
-- (id)_typesWithDictionary:(id)a3 filename:(id)a4 bundleIdentifier:(id)a5;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (id)dictionaryRepresentationForIntent:(id)a3;
-- (id)dictionaryRepresentationForIntent:(id)a3 localizer:(id)a4;
-- (id)intentCodableDescriptionWithIntentClassName:(id)a3;
-- (id)intentResponseCodableDescriptionWithIntentClassName:(id)a3;
-- (id)intentResponseCodableDescriptionWithIntentResponseClassName:(id)a3;
-- (id)intentWithName:(id)a3;
-- (void)_loadIntentsFromArrayOfDictionaries:(id)a3 intentDefinitionNamespace:(id)a4 fromFile:(id)a5 bundleIdentifier:(id)a6 referencedCodableDescriptions:(id)a7 contentOptions:(unint64_t)a8;
-- (void)_setObjectDescription:(id)a3 forClass:(Class)a4 identifier:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (INSchema)initWithCoder:(id)coder;
+- (id)_classNamesForClass:(Class)class;
+- (id)_codableDescriptionWithDictionary:(id)dictionary intentDefinitionNamespace:(id)namespace filename:(id)filename bundleIdentifier:(id)identifier codableDescriptionClass:(Class)class;
+- (id)_codableDescriptionsForClass:(Class)class;
+- (id)_configurableParameterCombinationsForClassName:(id)name;
+- (id)_dictionaryRepresentationForIntentCodableDescription:(id)description intentResponseCodableDescription:(id)codableDescription appInfo:(id)info localizer:(id)localizer;
+- (id)_initWithContentsOfURLs:(id)ls bundleIdentifier:(id)identifier mainBundleIdentifier:(id)bundleIdentifier contentOptions:(unint64_t)options;
+- (id)_intentResponseWithDictionary:(id)dictionary intentDefinitionNamespace:(id)namespace className:(id)name filename:(id)filename bundleIdentifier:(id)identifier referencedCodableDescriptions:(id)descriptions;
+- (id)_intentWithDictionary:(id)dictionary intentDefinitionNamespace:(id)namespace filename:(id)filename bundleIdentifier:(id)identifier;
+- (id)_objectDescriptionForClass:(Class)class identifier:(id)identifier;
+- (id)_objectDescriptionForTypeOfClass:(Class)class;
+- (id)_objectDescriptionWithSemanticKeypath:(id)keypath;
+- (id)_parameterCombinationsForClass:(Class)class;
+- (id)_parameterCombinationsForClassName:(id)name;
+- (id)_typesWithDictionary:(id)dictionary filename:(id)filename bundleIdentifier:(id)identifier;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (id)dictionaryRepresentationForIntent:(id)intent;
+- (id)dictionaryRepresentationForIntent:(id)intent localizer:(id)localizer;
+- (id)intentCodableDescriptionWithIntentClassName:(id)name;
+- (id)intentResponseCodableDescriptionWithIntentClassName:(id)name;
+- (id)intentResponseCodableDescriptionWithIntentResponseClassName:(id)name;
+- (id)intentWithName:(id)name;
+- (void)_loadIntentsFromArrayOfDictionaries:(id)dictionaries intentDefinitionNamespace:(id)namespace fromFile:(id)file bundleIdentifier:(id)identifier referencedCodableDescriptions:(id)descriptions contentOptions:(unint64_t)options;
+- (void)_setObjectDescription:(id)description forClass:(Class)class identifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INSchema
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __25__INSchema_defaultSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultSchema_onceToken != -1)
   {
     dispatch_once(&defaultSchema_onceToken, block);
@@ -169,8 +169,8 @@ void __37__INSchema__supportedTypesDictionary__block_invoke()
     goto LABEL_5;
   }
 
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  if ([v3 isMainThread])
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  if ([currentThread isMainThread])
   {
 
 LABEL_5:
@@ -178,9 +178,9 @@ LABEL_5:
     systemSchema_isImmortal = 1;
     if (!systemSchema)
     {
-      v6 = [a1 _loadSystemSchema];
+      _loadSystemSchema = [self _loadSystemSchema];
       v7 = systemSchema;
-      systemSchema = v6;
+      systemSchema = _loadSystemSchema;
     }
 
     os_unfair_lock_unlock(&systemSchemaAccessorLock);
@@ -188,10 +188,10 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v4 = [MEMORY[0x1E69C75D0] currentProcess];
-  v5 = [v4 isApplication];
+  currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+  isApplication = [currentProcess isApplication];
 
-  if (v5)
+  if (isApplication)
   {
     goto LABEL_5;
   }
@@ -200,9 +200,9 @@ LABEL_5:
   v10 = systemSchema;
   if (!systemSchema)
   {
-    v11 = [a1 _loadSystemSchema];
+    _loadSystemSchema2 = [self _loadSystemSchema];
     v12 = systemSchema;
-    systemSchema = v11;
+    systemSchema = _loadSystemSchema2;
 
     v10 = systemSchema;
   }
@@ -235,17 +235,17 @@ LABEL_8:
   v2 = [(INSchema *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     schemaDictionary = v2->_schemaDictionary;
-    v2->_schemaDictionary = v3;
+    v2->_schemaDictionary = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     parameterCombinationDictionary = v2->_parameterCombinationDictionary;
-    v2->_parameterCombinationDictionary = v5;
+    v2->_parameterCombinationDictionary = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     configurableParameterCombinationDictionary = v2->_configurableParameterCombinationDictionary;
-    v2->_configurableParameterCombinationDictionary = v7;
+    v2->_configurableParameterCombinationDictionary = dictionary3;
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     types = v2->_types;
@@ -264,16 +264,16 @@ LABEL_8:
   v2 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v3 = [INSchema alloc];
   v4 = INSchemaURLsWithBundle(v2);
-  v5 = [v2 bundleIdentifier];
-  v6 = [(INSchema *)v3 _initWithContentsOfURLs:v4 bundleIdentifier:v5 mainBundleIdentifier:0 contentOptions:31];
+  bundleIdentifier = [v2 bundleIdentifier];
+  v6 = [(INSchema *)v3 _initWithContentsOfURLs:v4 bundleIdentifier:bundleIdentifier mainBundleIdentifier:0 contentOptions:31];
 
   return v6;
 }
 
 + (void)_resetCache
 {
-  v2 = [a1 _cache];
-  [v2 removeAllObjects];
+  _cache = [self _cache];
+  [_cache removeAllObjects];
 
   os_unfair_lock_lock(&systemSchemaAccessorLock);
   v3 = systemSchema;
@@ -294,22 +294,22 @@ void __24__INSchema_systemSchema__block_invoke()
   os_unfair_lock_unlock(&systemSchemaAccessorLock);
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INSchema;
   v6 = [(INSchema *)&v11 description];
-  v7 = [(INSchema *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INSchema *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (INSchema)initWithCoder:(id)a3
+- (INSchema)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = INSchema;
   v5 = [(INSchema *)&v20 init];
@@ -324,11 +324,11 @@ void __24__INSchema_systemSchema__block_invoke()
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v6 setWithObjects:{v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"schemaDictionary"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"schemaDictionary"];
     schemaDictionary = v5->_schemaDictionary;
     v5->_schemaDictionary = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_mainBundleIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_mainBundleIdentifier"];
     mainBundleIdentifier = v5->_mainBundleIdentifier;
     v5->_mainBundleIdentifier = v17;
   }
@@ -336,34 +336,34 @@ void __24__INSchema_systemSchema__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   schemaDictionary = self->_schemaDictionary;
-  v5 = a3;
-  [v5 encodeObject:schemaDictionary forKey:@"schemaDictionary"];
-  [v5 encodeObject:self->_mainBundleIdentifier forKey:@"_mainBundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:schemaDictionary forKey:@"schemaDictionary"];
+  [coderCopy encodeObject:self->_mainBundleIdentifier forKey:@"_mainBundleIdentifier"];
 }
 
-- (id)_objectDescriptionWithSemanticKeypath:(id)a3
+- (id)_objectDescriptionWithSemanticKeypath:(id)keypath
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  keypathCopy = keypath;
+  if (keypathCopy)
   {
     if (!self->_typeForSemanticKeypathDictionary)
     {
       v5 = MEMORY[0x1E695DF90];
-      v6 = [(INSchema *)self _types];
-      v7 = [v5 dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+      _types = [(INSchema *)self _types];
+      v7 = [v5 dictionaryWithCapacity:{objc_msgSend(_types, "count")}];
 
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v8 = [(INSchema *)self _types];
-      v9 = [v8 allValues];
+      _types2 = [(INSchema *)self _types];
+      allValues = [_types2 allValues];
 
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v10)
       {
         v11 = v10;
@@ -374,18 +374,18 @@ void __24__INSchema_systemSchema__block_invoke()
           {
             if (*v22 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allValues);
             }
 
             v14 = *(*(&v21 + 1) + 8 * i);
-            v15 = [v14 semanticRoot];
-            if (v15)
+            semanticRoot = [v14 semanticRoot];
+            if (semanticRoot)
             {
-              [(NSDictionary *)v7 setObject:v14 forKey:v15];
+              [(NSDictionary *)v7 setObject:v14 forKey:semanticRoot];
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v11 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v11);
@@ -395,8 +395,8 @@ void __24__INSchema_systemSchema__block_invoke()
       self->_typeForSemanticKeypathDictionary = v7;
     }
 
-    v17 = [(INSchema *)self _typeForSemanticKeypathDictionary];
-    v18 = [v17 objectForKeyedSubscript:v4];
+    _typeForSemanticKeypathDictionary = [(INSchema *)self _typeForSemanticKeypathDictionary];
+    v18 = [_typeForSemanticKeypathDictionary objectForKeyedSubscript:keypathCopy];
   }
 
   else
@@ -409,25 +409,25 @@ void __24__INSchema_systemSchema__block_invoke()
   return v18;
 }
 
-- (id)_dictionaryRepresentationForIntentCodableDescription:(id)a3 intentResponseCodableDescription:(id)a4 appInfo:(id)a5 localizer:(id)a6
+- (id)_dictionaryRepresentationForIntentCodableDescription:(id)description intentResponseCodableDescription:(id)codableDescription appInfo:(id)info localizer:(id)localizer
 {
   v102 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v78 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 className];
+  descriptionCopy = description;
+  codableDescriptionCopy = codableDescription;
+  infoCopy = info;
+  localizerCopy = localizer;
+  className = [descriptionCopy className];
   v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v15 = v13;
+  v15 = className;
   v16 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v76 = v10;
-  v17 = [v10 dictionaryRepresentationWithLocalizer:v12];
+  v76 = descriptionCopy;
+  v17 = [descriptionCopy dictionaryRepresentationWithLocalizer:localizerCopy];
   v18 = [v17 mutableCopy];
 
-  if (v11)
+  if (infoCopy)
   {
-    v19 = [v11 actionsRestrictedWhileProtectedDataUnavailable];
-    v20 = [v19 containsObject:v15];
+    actionsRestrictedWhileProtectedDataUnavailable = [infoCopy actionsRestrictedWhileProtectedDataUnavailable];
+    v20 = [actionsRestrictedWhileProtectedDataUnavailable containsObject:v15];
 
     if (v20)
     {
@@ -436,8 +436,8 @@ void __24__INSchema_systemSchema__block_invoke()
 
     else
     {
-      v22 = [v11 actionsRestrictedWhileLocked];
-      v23 = [v22 containsObject:v15];
+      actionsRestrictedWhileLocked = [infoCopy actionsRestrictedWhileLocked];
+      v23 = [actionsRestrictedWhileLocked containsObject:v15];
 
       v21 = v23;
     }
@@ -447,8 +447,8 @@ void __24__INSchema_systemSchema__block_invoke()
     [v18 if_setObjectIfNonNil:v24 forKey:v25];
   }
 
-  v77 = v11;
-  v26 = [v78 dictionaryRepresentationWithLocalizer:v12];
+  v77 = infoCopy;
+  v26 = [codableDescriptionCopy dictionaryRepresentationWithLocalizer:localizerCopy];
   v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INIntent%@", @"Response"];
   v75 = v26;
   [v18 setObject:v26 forKey:v27];
@@ -457,7 +457,7 @@ void __24__INSchema_systemSchema__block_invoke()
   v95[1] = 3221225472;
   v95[2] = __116__INSchema__dictionaryRepresentationForIntentCodableDescription_intentResponseCodableDescription_appInfo_localizer___block_invoke;
   v95[3] = &unk_1E727EA40;
-  v28 = v12;
+  v28 = localizerCopy;
   v96 = v28;
   v29 = MEMORY[0x193AD7780](v95);
   v73 = [(INSchema *)self _parameterCombinationsForClassName:v15];
@@ -476,8 +476,8 @@ void __24__INSchema_systemSchema__block_invoke()
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v35 = [v76 referencedCodableDescriptions];
-  v36 = [v35 countByEnumeratingWithState:&v91 objects:v101 count:16];
+  referencedCodableDescriptions = [v76 referencedCodableDescriptions];
+  v36 = [referencedCodableDescriptions countByEnumeratingWithState:&v91 objects:v101 count:16];
   if (v36)
   {
     v37 = v36;
@@ -488,14 +488,14 @@ void __24__INSchema_systemSchema__block_invoke()
       {
         if (*v92 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(referencedCodableDescriptions);
         }
 
         v40 = [*(*(&v91 + 1) + 8 * i) dictionaryRepresentationWithLocalizer:v28];
         [v16 addObject:v40];
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v91 objects:v101 count:16];
+      v37 = [referencedCodableDescriptions countByEnumeratingWithState:&v91 objects:v101 count:16];
     }
 
     while (v37);
@@ -505,8 +505,8 @@ void __24__INSchema_systemSchema__block_invoke()
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v41 = [v76 referencedCodableEnums];
-  v42 = [v41 countByEnumeratingWithState:&v87 objects:v100 count:16];
+  referencedCodableEnums = [v76 referencedCodableEnums];
+  v42 = [referencedCodableEnums countByEnumeratingWithState:&v87 objects:v100 count:16];
   if (v42)
   {
     v43 = v42;
@@ -517,14 +517,14 @@ void __24__INSchema_systemSchema__block_invoke()
       {
         if (*v88 != v44)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(referencedCodableEnums);
         }
 
         v46 = [*(*(&v87 + 1) + 8 * j) dictionaryRepresentationWithLocalizer:v28];
         [v14 addObject:v46];
       }
 
-      v43 = [v41 countByEnumeratingWithState:&v87 objects:v100 count:16];
+      v43 = [referencedCodableEnums countByEnumeratingWithState:&v87 objects:v100 count:16];
     }
 
     while (v43);
@@ -534,8 +534,8 @@ void __24__INSchema_systemSchema__block_invoke()
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v47 = [v78 referencedCodableDescriptions];
-  v48 = [v47 countByEnumeratingWithState:&v83 objects:v99 count:16];
+  referencedCodableDescriptions2 = [codableDescriptionCopy referencedCodableDescriptions];
+  v48 = [referencedCodableDescriptions2 countByEnumeratingWithState:&v83 objects:v99 count:16];
   if (v48)
   {
     v49 = v48;
@@ -546,14 +546,14 @@ void __24__INSchema_systemSchema__block_invoke()
       {
         if (*v84 != v50)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(referencedCodableDescriptions2);
         }
 
         v52 = [*(*(&v83 + 1) + 8 * k) dictionaryRepresentationWithLocalizer:v28];
         [v16 addObject:v52];
       }
 
-      v49 = [v47 countByEnumeratingWithState:&v83 objects:v99 count:16];
+      v49 = [referencedCodableDescriptions2 countByEnumeratingWithState:&v83 objects:v99 count:16];
     }
 
     while (v49);
@@ -563,8 +563,8 @@ void __24__INSchema_systemSchema__block_invoke()
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v53 = [v78 referencedCodableEnums];
-  v54 = [v53 countByEnumeratingWithState:&v79 objects:v98 count:16];
+  referencedCodableEnums2 = [codableDescriptionCopy referencedCodableEnums];
+  v54 = [referencedCodableEnums2 countByEnumeratingWithState:&v79 objects:v98 count:16];
   if (v54)
   {
     v55 = v54;
@@ -575,25 +575,25 @@ void __24__INSchema_systemSchema__block_invoke()
       {
         if (*v80 != v56)
         {
-          objc_enumerationMutation(v53);
+          objc_enumerationMutation(referencedCodableEnums2);
         }
 
         v58 = [*(*(&v79 + 1) + 8 * m) dictionaryRepresentationWithLocalizer:v28];
         [v14 addObject:v58];
       }
 
-      v55 = [v53 countByEnumeratingWithState:&v79 objects:v98 count:16];
+      v55 = [referencedCodableEnums2 countByEnumeratingWithState:&v79 objects:v98 count:16];
     }
 
     while (v55);
   }
 
   v59 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v60 = [v76 intentDefinitionNamespace];
-  v61 = v60;
-  if (v60)
+  intentDefinitionNamespace = [v76 intentDefinitionNamespace];
+  v61 = intentDefinitionNamespace;
+  if (intentDefinitionNamespace)
   {
-    v62 = v60;
+    v62 = intentDefinitionNamespace;
   }
 
   else
@@ -603,21 +603,21 @@ void __24__INSchema_systemSchema__block_invoke()
 
   [v59 setObject:v62 forKeyedSubscript:@"INIntentDefinitionNamespace"];
 
-  v63 = [v14 allObjects];
+  allObjects = [v14 allObjects];
   v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INEnum%@", @"s"];
-  [v59 setObject:v63 forKeyedSubscript:v64];
+  [v59 setObject:allObjects forKeyedSubscript:v64];
 
-  v65 = [v16 allObjects];
+  allObjects2 = [v16 allObjects];
   v66 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INType%@", @"s"];
-  [v59 setObject:v65 forKeyedSubscript:v66];
+  [v59 setObject:allObjects2 forKeyedSubscript:v66];
 
   v97 = v18;
   v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v97 count:1];
   v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INIntent%@", @"s"];
   [v59 setObject:v67 forKeyedSubscript:v68];
 
-  v69 = [v77 developmentRegion];
-  [v59 setObject:v69 forKeyedSubscript:*MEMORY[0x1E695E4E0]];
+  developmentRegion = [v77 developmentRegion];
+  [v59 setObject:developmentRegion forKeyedSubscript:*MEMORY[0x1E695E4E0]];
 
   v70 = *MEMORY[0x1E69E9840];
 
@@ -668,19 +668,19 @@ id __116__INSchema__dictionaryRepresentationForIntentCodableDescription_intentRe
   return v4;
 }
 
-- (id)dictionaryRepresentationForIntent:(id)a3 localizer:(id)a4
+- (id)dictionaryRepresentationForIntent:(id)intent localizer:(id)localizer
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _className];
-  v9 = [(INSchema *)self intentCodableDescriptionWithIntentClassName:v8];
-  v10 = [(INSchema *)self intentResponseCodableDescriptionWithIntentClassName:v8];
+  intentCopy = intent;
+  localizerCopy = localizer;
+  _className = [intentCopy _className];
+  v9 = [(INSchema *)self intentCodableDescriptionWithIntentClassName:_className];
+  v10 = [(INSchema *)self intentResponseCodableDescriptionWithIntentClassName:_className];
   v11 = v10;
   v12 = 0;
   if (v9 && v10)
   {
-    v13 = [INAppInfo appInfoWithIntent:v6];
+    v13 = [INAppInfo appInfoWithIntent:intentCopy];
     v32 = 0;
     v33 = &v32;
     v34 = 0x3032000000;
@@ -698,15 +698,15 @@ id __116__INSchema__dictionaryRepresentationForIntentCodableDescription_intentRe
     v28 = v11;
     v24 = v13;
     v29 = v24;
-    v30 = v7;
+    v30 = localizerCopy;
     v15 = MEMORY[0x193AD7780](v26);
-    v16 = [v14 _localizationTable];
-    v17 = [v16 bundleIdentifier];
+    _localizationTable = [v14 _localizationTable];
+    bundleIdentifier = [_localizationTable bundleIdentifier];
 
-    if (v17)
+    if (bundleIdentifier)
     {
       v18 = +[INImageServiceConnection sharedConnection];
-      v19 = [MEMORY[0x1E695DFD8] setWithObject:v17];
+      v19 = [MEMORY[0x1E695DFD8] setWithObject:bundleIdentifier];
       v25 = 0;
       [v18 accessBundleContentForBundleIdentifiers:v19 withBlock:v15 error:&v25];
       v20 = v25;
@@ -732,7 +732,7 @@ LABEL_10:
       *buf = 136315650;
       v39 = "[INSchema dictionaryRepresentationForIntent:localizer:]";
       v40 = 2112;
-      v41 = v17;
+      v41 = bundleIdentifier;
       v42 = 2112;
       v43 = v20;
       _os_log_error_impl(&dword_18E991000, v21, OS_LOG_TYPE_ERROR, "%s Error accessing bundle (%@) content: %@", buf, 0x20u);
@@ -759,56 +759,56 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)dictionaryRepresentationForIntent:(id)a3
+- (id)dictionaryRepresentationForIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   v5 = objc_opt_new();
-  v6 = [(INSchema *)self dictionaryRepresentationForIntent:v4 localizer:v5];
+  v6 = [(INSchema *)self dictionaryRepresentationForIntent:intentCopy localizer:v5];
 
   return v6;
 }
 
-- (id)_objectDescriptionForTypeOfClass:(Class)a3
+- (id)_objectDescriptionForTypeOfClass:(Class)class
 {
-  v3 = a3;
-  if (a3)
+  classCopy = class;
+  if (class)
   {
-    v4 = [(INSchema *)self _typeForClassDictionary];
-    v5 = NSStringFromClass(v3);
-    v3 = [v4 objectForKeyedSubscript:v5];
+    _typeForClassDictionary = [(INSchema *)self _typeForClassDictionary];
+    v5 = NSStringFromClass(classCopy);
+    classCopy = [_typeForClassDictionary objectForKeyedSubscript:v5];
   }
 
-  return v3;
+  return classCopy;
 }
 
-- (id)_codableDescriptionsForClass:(Class)a3
+- (id)_codableDescriptionsForClass:(Class)class
 {
   schemaDictionary = self->_schemaDictionary;
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v5 = [(NSMutableDictionary *)schemaDictionary objectForKeyedSubscript:v4];
-  v6 = [v5 allValues];
+  allValues = [v5 allValues];
 
-  return v6;
+  return allValues;
 }
 
-- (id)_classNamesForClass:(Class)a3
+- (id)_classNamesForClass:(Class)class
 {
   schemaDictionary = self->_schemaDictionary;
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v5 = [(NSMutableDictionary *)schemaDictionary objectForKeyedSubscript:v4];
-  v6 = [v5 allKeys];
+  allKeys = [v5 allKeys];
 
-  return v6;
+  return allKeys;
 }
 
-- (id)_configurableParameterCombinationsForClassName:(id)a3
+- (id)_configurableParameterCombinationsForClassName:(id)name
 {
-  v4 = [a3 componentsSeparatedByString:@"."];
-  v5 = [v4 lastObject];
+  v4 = [name componentsSeparatedByString:@"."];
+  lastObject = [v4 lastObject];
 
-  if (v5)
+  if (lastObject)
   {
-    v6 = [(NSMutableDictionary *)self->_configurableParameterCombinationDictionary objectForKeyedSubscript:v5];
+    v6 = [(NSMutableDictionary *)self->_configurableParameterCombinationDictionary objectForKeyedSubscript:lastObject];
   }
 
   else
@@ -819,14 +819,14 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
   return v6;
 }
 
-- (id)_parameterCombinationsForClassName:(id)a3
+- (id)_parameterCombinationsForClassName:(id)name
 {
-  v4 = [a3 componentsSeparatedByString:@"."];
-  v5 = [v4 lastObject];
+  v4 = [name componentsSeparatedByString:@"."];
+  lastObject = [v4 lastObject];
 
-  if (v5)
+  if (lastObject)
   {
-    v6 = [(NSMutableDictionary *)self->_parameterCombinationDictionary objectForKeyedSubscript:v5];
+    v6 = [(NSMutableDictionary *)self->_parameterCombinationDictionary objectForKeyedSubscript:lastObject];
   }
 
   else
@@ -837,25 +837,25 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
   return v6;
 }
 
-- (id)_parameterCombinationsForClass:(Class)a3
+- (id)_parameterCombinationsForClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v5 = [(INSchema *)self _parameterCombinationsForClassName:v4];
 
   return v5;
 }
 
-- (id)_objectDescriptionForClass:(Class)a3 identifier:(id)a4
+- (id)_objectDescriptionForClass:(Class)class identifier:(id)identifier
 {
-  v6 = [a4 componentsSeparatedByString:@"."];
-  v7 = [v6 lastObject];
+  v6 = [identifier componentsSeparatedByString:@"."];
+  lastObject = [v6 lastObject];
 
-  if (v7)
+  if (lastObject)
   {
     schemaDictionary = self->_schemaDictionary;
-    v9 = NSStringFromClass(a3);
+    v9 = NSStringFromClass(class);
     v10 = [(NSMutableDictionary *)schemaDictionary objectForKeyedSubscript:v9];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    v11 = [v10 objectForKeyedSubscript:lastObject];
   }
 
   else
@@ -866,12 +866,12 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
   return v11;
 }
 
-- (void)_setObjectDescription:(id)a3 forClass:(Class)a4 identifier:(id)a5
+- (void)_setObjectDescription:(id)description forClass:(Class)class identifier:(id)identifier
 {
   schemaDictionary = self->_schemaDictionary;
-  v9 = a5;
-  v10 = a3;
-  v11 = NSStringFromClass(a4);
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  v11 = NSStringFromClass(class);
   v12 = [(NSMutableDictionary *)schemaDictionary objectForKeyedSubscript:v11];
   v13 = v12;
   if (v12)
@@ -883,28 +883,28 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
   {
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v14 = self->_schemaDictionary;
-    v15 = NSStringFromClass(a4);
+    v15 = NSStringFromClass(class);
     [(NSMutableDictionary *)v14 setObject:v16 forKeyedSubscript:v15];
   }
 
-  [v16 setObject:v10 forKey:v9];
+  [v16 setObject:descriptionCopy forKey:identifierCopy];
 }
 
-- (void)_loadIntentsFromArrayOfDictionaries:(id)a3 intentDefinitionNamespace:(id)a4 fromFile:(id)a5 bundleIdentifier:(id)a6 referencedCodableDescriptions:(id)a7 contentOptions:(unint64_t)a8
+- (void)_loadIntentsFromArrayOfDictionaries:(id)dictionaries intentDefinitionNamespace:(id)namespace fromFile:(id)file bundleIdentifier:(id)identifier referencedCodableDescriptions:(id)descriptions contentOptions:(unint64_t)options
 {
-  v48 = a8;
+  optionsCopy = options;
   v54 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v41 = a4;
-  v46 = a5;
-  v45 = a6;
-  v40 = a7;
+  dictionariesCopy = dictionaries;
+  namespaceCopy = namespace;
+  fileCopy = file;
+  identifierCopy = identifier;
+  descriptionsCopy = descriptions;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v13;
-  v44 = [v13 countByEnumeratingWithState:&v49 objects:v53 count:16];
+  obj = dictionariesCopy;
+  v44 = [dictionariesCopy countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v44)
   {
     v43 = *v50;
@@ -922,11 +922,11 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INIntent%@", @"UnsupportedPlatforms"];
         v47 = [v15 objectForKeyedSubscript:v16];
 
-        if ((v48 & 8) != 0)
+        if ((optionsCopy & 8) != 0)
         {
           v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INIntent%@", @"ParameterCombinations"];
           v19 = [v15 objectForKeyedSubscript:v18];
-          v17 = _INParameterCombinationsWithDictionary(v19, v46, v45);
+          v17 = _INParameterCombinationsWithDictionary(v19, fileCopy, identifierCopy);
         }
 
         else
@@ -934,11 +934,11 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
           v17 = 0;
         }
 
-        if ((v48 & 0x10) != 0)
+        if ((optionsCopy & 0x10) != 0)
         {
           v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INIntent%@", @"ManagedParameterCombinations"];
           v22 = [v15 objectForKeyedSubscript:v21];
-          v20 = _INParameterCombinationsWithDictionary(v22, v46, v45);
+          v20 = _INParameterCombinationsWithDictionary(v22, fileCopy, identifierCopy);
         }
 
         else
@@ -946,17 +946,17 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
           v20 = 0;
         }
 
-        if (v48)
+        if (optionsCopy)
         {
-          v23 = [(INSchema *)self _intentWithDictionary:v15 intentDefinitionNamespace:v41 filename:v46 bundleIdentifier:v45];
-          v24 = [v23 className];
-          v25 = [v24 stringByAppendingString:@"Response"];
+          v23 = [(INSchema *)self _intentWithDictionary:v15 intentDefinitionNamespace:namespaceCopy filename:fileCopy bundleIdentifier:identifierCopy];
+          className = [v23 className];
+          v25 = [className stringByAppendingString:@"Response"];
 
-          v26 = [(INSchema *)self _intentResponseWithDictionary:v15 intentDefinitionNamespace:v41 className:v25 filename:v46 bundleIdentifier:v45 referencedCodableDescriptions:v40];
-          [v23 _establishReferencedCodableDescriptionsUsingTypes:v40 intentResponseCodableDescription:v26];
+          v26 = [(INSchema *)self _intentResponseWithDictionary:v15 intentDefinitionNamespace:namespaceCopy className:v25 filename:fileCopy bundleIdentifier:identifierCopy referencedCodableDescriptions:descriptionsCopy];
+          [v23 _establishReferencedCodableDescriptionsUsingTypes:descriptionsCopy intentResponseCodableDescription:v26];
           v27 = objc_opt_class();
-          v28 = [v23 className];
-          [(INSchema *)self _setObjectDescription:v23 forClass:v27 identifier:v28];
+          className2 = [v23 className];
+          [(INSchema *)self _setObjectDescription:v23 forClass:v27 identifier:className2];
 
           [(INSchema *)self _setObjectDescription:v26 forClass:objc_opt_class() identifier:v25];
         }
@@ -1000,48 +1000,48 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_intentResponseWithDictionary:(id)a3 intentDefinitionNamespace:(id)a4 className:(id)a5 filename:(id)a6 bundleIdentifier:(id)a7 referencedCodableDescriptions:(id)a8
+- (id)_intentResponseWithDictionary:(id)dictionary intentDefinitionNamespace:(id)namespace className:(id)name filename:(id)filename bundleIdentifier:(id)identifier referencedCodableDescriptions:(id)descriptions
 {
   v14 = MEMORY[0x1E696AEC0];
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  descriptionsCopy = descriptions;
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  nameCopy = name;
+  namespaceCopy = namespace;
+  dictionaryCopy = dictionary;
   v21 = [v14 stringWithFormat:@"INIntent%@", @"Response"];
-  v22 = [v20 objectForKeyedSubscript:v21];
+  v22 = [dictionaryCopy objectForKeyedSubscript:v21];
 
-  v23 = [(INSchema *)self _codableDescriptionWithDictionary:v22 intentDefinitionNamespace:v19 filename:v17 bundleIdentifier:v16 codableDescriptionClass:objc_opt_class()];
+  v23 = [(INSchema *)self _codableDescriptionWithDictionary:v22 intentDefinitionNamespace:namespaceCopy filename:filenameCopy bundleIdentifier:identifierCopy codableDescriptionClass:objc_opt_class()];
 
-  [v23 _establishReferencedCodableDescriptionsUsingTypes:v15];
-  [v23 setClassName:v18];
+  [v23 _establishReferencedCodableDescriptionsUsingTypes:descriptionsCopy];
+  [v23 setClassName:nameCopy];
 
   return v23;
 }
 
-- (id)_intentWithDictionary:(id)a3 intentDefinitionNamespace:(id)a4 filename:(id)a5 bundleIdentifier:(id)a6
+- (id)_intentWithDictionary:(id)dictionary intentDefinitionNamespace:(id)namespace filename:(id)filename bundleIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(INSchema *)self _codableDescriptionWithDictionary:v13 intentDefinitionNamespace:v12 filename:v11 bundleIdentifier:v10 codableDescriptionClass:objc_opt_class()];
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  namespaceCopy = namespace;
+  dictionaryCopy = dictionary;
+  v14 = [(INSchema *)self _codableDescriptionWithDictionary:dictionaryCopy intentDefinitionNamespace:namespaceCopy filename:filenameCopy bundleIdentifier:identifierCopy codableDescriptionClass:objc_opt_class()];
 
   return v14;
 }
 
-- (id)_typesWithDictionary:(id)a3 filename:(id)a4 bundleIdentifier:(id)a5
+- (id)_typesWithDictionary:(id)dictionary filename:(id)filename bundleIdentifier:(id)identifier
 {
   v67 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v48 = a4;
-  v47 = a5;
+  dictionaryCopy = dictionary;
+  filenameCopy = filename;
+  identifierCopy = identifier;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INType%@", @"s"];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [dictionaryCopy objectForKeyedSubscript:v9];
 
-  v43 = v8;
-  v51 = [v8 objectForKeyedSubscript:@"INIntentDefinitionNamespace"];
+  v43 = dictionaryCopy;
+  v51 = [dictionaryCopy objectForKeyedSubscript:@"INIntentDefinitionNamespace"];
   v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v10, "count")}];
   v60 = 0u;
   v61 = 0u;
@@ -1063,9 +1063,9 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
         }
 
         v16 = *(*(&v60 + 1) + 8 * i);
-        v17 = [(INSchema *)self _codableDescriptionWithDictionary:v16 intentDefinitionNamespace:v51 filename:v48 bundleIdentifier:v47 codableDescriptionClass:objc_opt_class()];
-        v18 = [(INSchema *)self _mainBundleIdentifier];
-        [v17 setMainBundleIdentifier:v18];
+        v17 = [(INSchema *)self _codableDescriptionWithDictionary:v16 intentDefinitionNamespace:v51 filename:filenameCopy bundleIdentifier:identifierCopy codableDescriptionClass:objc_opt_class()];
+        _mainBundleIdentifier = [(INSchema *)self _mainBundleIdentifier];
+        [v17 setMainBundleIdentifier:_mainBundleIdentifier];
 
         v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INType%@", @"SemanticRoot"];
         v20 = [v16 objectForKeyedSubscript:v19];
@@ -1075,8 +1075,8 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
           [v17 setSemanticRoot:v20];
         }
 
-        v21 = [v17 typeName];
-        v22 = INIntentDefinitionNamespacedName(v51, v21);
+        typeName = [v17 typeName];
+        v22 = INIntentDefinitionNamespacedName(v51, typeName);
         [v11 setObject:v17 forKeyedSubscript:v22];
       }
 
@@ -1090,8 +1090,8 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v44 = [v11 allValues];
-  v49 = [v44 countByEnumeratingWithState:&v56 objects:v65 count:16];
+  allValues = [v11 allValues];
+  v49 = [allValues countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v49)
   {
     v46 = *v57;
@@ -1102,7 +1102,7 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
       {
         if (*v57 != v46)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(allValues);
         }
 
         v50 = v23;
@@ -1111,10 +1111,10 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v25 = [v24 attributes];
-        v26 = [v25 allValues];
+        attributes = [v24 attributes];
+        allValues2 = [attributes allValues];
 
-        v27 = [v26 countByEnumeratingWithState:&v52 objects:v64 count:16];
+        v27 = [allValues2 countByEnumeratingWithState:&v52 objects:v64 count:16];
         if (v27)
         {
           v28 = v27;
@@ -1125,7 +1125,7 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
             {
               if (*v53 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(allValues2);
               }
 
               v31 = *(*(&v52 + 1) + 8 * j);
@@ -1150,9 +1150,9 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
 
               v33 = v32;
 
-              v34 = [v33 objectTypeNamespace];
-              v35 = [v33 objectTypeName];
-              v36 = INIntentDefinitionNamespacedName(v34, v35);
+              objectTypeNamespace = [v33 objectTypeNamespace];
+              objectTypeName = [v33 objectTypeName];
+              v36 = INIntentDefinitionNamespacedName(objectTypeNamespace, objectTypeName);
               v37 = [v11 objectForKeyedSubscript:v36];
 
               if (v33)
@@ -1165,7 +1165,7 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
               }
             }
 
-            v28 = [v26 countByEnumeratingWithState:&v52 objects:v64 count:16];
+            v28 = [allValues2 countByEnumeratingWithState:&v52 objects:v64 count:16];
           }
 
           while (v28);
@@ -1175,7 +1175,7 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
       }
 
       while (v50 + 1 != v49);
-      v49 = [v44 countByEnumeratingWithState:&v56 objects:v65 count:16];
+      v49 = [allValues countByEnumeratingWithState:&v56 objects:v65 count:16];
     }
 
     while (v49);
@@ -1186,31 +1186,31 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
   return v11;
 }
 
-- (id)_codableDescriptionWithDictionary:(id)a3 intentDefinitionNamespace:(id)a4 filename:(id)a5 bundleIdentifier:(id)a6 codableDescriptionClass:(Class)a7
+- (id)_codableDescriptionWithDictionary:(id)dictionary intentDefinitionNamespace:(id)namespace filename:(id)filename bundleIdentifier:(id)identifier codableDescriptionClass:(Class)class
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = objc_alloc_init(a7);
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  namespaceCopy = namespace;
+  dictionaryCopy = dictionary;
+  v16 = objc_alloc_init(class);
   [v16 setSchema:self];
-  [v16 updateWithDictionary:v15];
+  [v16 updateWithDictionary:dictionaryCopy];
 
-  [v16 setIntentDefinitionNamespace:v14];
+  [v16 setIntentDefinitionNamespace:namespaceCopy];
   v17 = [INCodableLocalizationTable alloc];
-  v18 = [v13 stringByDeletingPathExtension];
+  stringByDeletingPathExtension = [filenameCopy stringByDeletingPathExtension];
 
-  v19 = [(INCodableLocalizationTable *)v17 initWithBundleIdentifier:v12 tableName:v18];
+  v19 = [(INCodableLocalizationTable *)v17 initWithBundleIdentifier:identifierCopy tableName:stringByDeletingPathExtension];
   [v16 _setLocalizationTable:v19];
 
   return v16;
 }
 
-- (id)intentWithName:(id)a3
+- (id)intentWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_class();
-  v6 = NSClassFromString(v4);
+  v6 = NSClassFromString(nameCopy);
   if (v6)
   {
     v7 = v6;
@@ -1228,25 +1228,25 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
   }
 
   v9 = [v6 alloc];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v9 _initWithIdentifier:v11 schema:self name:v4 data:0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [v9 _initWithIdentifier:uUIDString schema:self name:nameCopy data:0];
 
   return v12;
 }
 
-- (id)_initWithContentsOfURLs:(id)a3 bundleIdentifier:(id)a4 mainBundleIdentifier:(id)a5 contentOptions:(unint64_t)a6
+- (id)_initWithContentsOfURLs:(id)ls bundleIdentifier:(id)identifier mainBundleIdentifier:(id)bundleIdentifier contentOptions:(unint64_t)options
 {
   v103 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v65 = a5;
+  lsCopy = ls;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v11 = [(INSchema *)self init];
   if (v11)
   {
-    v11->_system = [v10 isEqualToString:@"com.apple.Intents"];
-    objc_storeStrong(&v11->_mainBundleIdentifier, a5);
-    v12 = [v9 copy];
+    v11->_system = [identifierCopy isEqualToString:@"com.apple.Intents"];
+    objc_storeStrong(&v11->_mainBundleIdentifier, bundleIdentifier);
+    v12 = [lsCopy copy];
     definitionFileURLs = v11->_definitionFileURLs;
     v11->_definitionFileURLs = v12;
 
@@ -1254,14 +1254,14 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v64 = v9;
-    obj = v9;
+    v64 = lsCopy;
+    obj = lsCopy;
     v75 = [obj countByEnumeratingWithState:&v87 objects:v96 count:16];
     if (v75)
     {
       v14 = *v88;
       v15 = 0x1E695D000uLL;
-      v67 = v10;
+      v67 = identifierCopy;
       v68 = v11;
       v66 = *v88;
       do
@@ -1285,16 +1285,16 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
             context = v19;
             v78 = v18;
             v76 = [v21 objectForKeyedSubscript:@"INIntentDefinitionNamespace"];
-            v22 = a6;
-            if ((a6 & 2) != 0)
+            optionsCopy2 = options;
+            if ((options & 2) != 0)
             {
               v73 = v17;
               v74 = i;
               enums = v11->_enums;
-              v23 = [v17 lastPathComponent];
+              lastPathComponent = [v17 lastPathComponent];
               v72 = v21;
               v24 = v21;
-              v25 = v10;
+              v25 = identifierCopy;
               v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INEnum%@", @"s"];
               v27 = [v24 objectForKeyedSubscript:v26];
 
@@ -1324,13 +1324,13 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
                     v35 = objc_alloc_init(INCodableEnum);
                     [(INCodableEnum *)v35 updateWithDictionary:v34];
                     v36 = [INCodableLocalizationTable alloc];
-                    v37 = [v23 stringByDeletingPathExtension];
-                    v38 = [(INCodableLocalizationTable *)v36 initWithBundleIdentifier:v25 tableName:v37];
+                    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+                    v38 = [(INCodableLocalizationTable *)v36 initWithBundleIdentifier:v25 tableName:stringByDeletingPathExtension];
                     [(INCodableEnum *)v35 _setLocalizationTable:v38];
 
                     [(INCodableEnum *)v35 _setEnumNamespace:v28];
-                    v39 = [(INCodableEnum *)v35 name];
-                    v40 = INIntentDefinitionNamespacedName(v28, v39);
+                    name = [(INCodableEnum *)v35 name];
+                    v40 = INIntentDefinitionNamespacedName(v28, name);
                     [v29 setObject:v35 forKey:v40];
                   }
 
@@ -1343,9 +1343,9 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
               v41 = [v29 copy];
               [(NSMutableDictionary *)enums addEntriesFromDictionary:v41];
 
-              v10 = v67;
+              identifierCopy = v67;
               v11 = v68;
-              v22 = a6;
+              optionsCopy2 = options;
               v14 = v66;
               v17 = v73;
               i = v74;
@@ -1353,11 +1353,11 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
             }
 
             v42 = i;
-            if ((v22 & 4) != 0)
+            if ((optionsCopy2 & 4) != 0)
             {
               [v17 lastPathComponent];
               v46 = v44 = v17;
-              v43 = [(INSchema *)v11 _typesWithDictionary:v21 filename:v46 bundleIdentifier:v10];
+              v43 = [(INSchema *)v11 _typesWithDictionary:v21 filename:v46 bundleIdentifier:identifierCopy];
 
               [(NSMutableDictionary *)v11->_types addEntriesFromDictionary:v43];
             }
@@ -1373,8 +1373,8 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
 
             objc_autoreleasePoolPop(context);
             v49 = objc_autoreleasePoolPush();
-            v50 = [v44 lastPathComponent];
-            [(INSchema *)v11 _loadIntentsFromArrayOfDictionaries:v48 intentDefinitionNamespace:v76 fromFile:v50 bundleIdentifier:v10 referencedCodableDescriptions:v43 contentOptions:a6];
+            lastPathComponent2 = [v44 lastPathComponent];
+            [(INSchema *)v11 _loadIntentsFromArrayOfDictionaries:v48 intentDefinitionNamespace:v76 fromFile:lastPathComponent2 bundleIdentifier:identifierCopy referencedCodableDescriptions:v43 contentOptions:options];
 
             objc_autoreleasePoolPop(v49);
             i = v42;
@@ -1388,11 +1388,11 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
             if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
             {
               v51 = v45;
-              v52 = [v17 path];
+              path = [v17 path];
               *buf = 136315650;
               v98 = "[INSchema _initWithContentsOfURLs:bundleIdentifier:mainBundleIdentifier:contentOptions:]";
               v99 = 2114;
-              v100 = v52;
+              v100 = path;
               v101 = 2114;
               v102 = v80;
               _os_log_error_impl(&dword_18E991000, v51, OS_LOG_TYPE_ERROR, "%s Invalid intent definition plist found at %{public}@, error: %{public}@", buf, 0x20u);
@@ -1415,8 +1415,8 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v54 = [(NSMutableDictionary *)v11->_types allValues];
-    v55 = [v54 countByEnumeratingWithState:&v82 objects:v95 count:16];
+    allValues = [(NSMutableDictionary *)v11->_types allValues];
+    v55 = [allValues countByEnumeratingWithState:&v82 objects:v95 count:16];
     if (v55)
     {
       v56 = v55;
@@ -1427,15 +1427,15 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
         {
           if (*v83 != v57)
           {
-            objc_enumerationMutation(v54);
+            objc_enumerationMutation(allValues);
           }
 
           v59 = *(*(&v82 + 1) + 8 * k);
-          v60 = [v59 className];
-          [(NSDictionary *)v53 setObject:v59 forKey:v60];
+          className = [v59 className];
+          [(NSDictionary *)v53 setObject:v59 forKey:className];
         }
 
-        v56 = [v54 countByEnumeratingWithState:&v82 objects:v95 count:16];
+        v56 = [allValues countByEnumeratingWithState:&v82 objects:v95 count:16];
       }
 
       while (v56);
@@ -1444,17 +1444,17 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
     typeForClassDictionary = v11->_typeForClassDictionary;
     v11->_typeForClassDictionary = v53;
 
-    v9 = v64;
+    lsCopy = v64;
   }
 
   v62 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (id)intentResponseCodableDescriptionWithIntentResponseClassName:(id)a3
+- (id)intentResponseCodableDescriptionWithIntentResponseClassName:(id)name
 {
-  v4 = a3;
-  v5 = [(INSchema *)self _objectDescriptionForClass:objc_opt_class() identifier:v4];
+  nameCopy = name;
+  v5 = [(INSchema *)self _objectDescriptionForClass:objc_opt_class() identifier:nameCopy];
   if (v5)
   {
     objc_opt_class();
@@ -1482,7 +1482,7 @@ uint64_t __56__INSchema_dictionaryRepresentationForIntent_localizer___block_invo
   }
 
   v8 = objc_opt_class();
-  v9 = NSClassFromString(v4);
+  v9 = NSClassFromString(nameCopy);
   if (v9)
   {
     v10 = v9;
@@ -1510,7 +1510,7 @@ LABEL_17:
   else
   {
     v13 = +[INSchema systemSchema];
-    v14 = [v13 _objectDescriptionForClass:objc_opt_class() identifier:v4];
+    v14 = [v13 _objectDescriptionForClass:objc_opt_class() identifier:nameCopy];
 
     if (v14)
     {
@@ -1537,18 +1537,18 @@ LABEL_17:
   return v16;
 }
 
-- (id)intentResponseCodableDescriptionWithIntentClassName:(id)a3
+- (id)intentResponseCodableDescriptionWithIntentClassName:(id)name
 {
-  v4 = [a3 stringByAppendingString:@"Response"];
+  v4 = [name stringByAppendingString:@"Response"];
   v5 = [(INSchema *)self intentResponseCodableDescriptionWithIntentResponseClassName:v4];
 
   return v5;
 }
 
-- (id)intentCodableDescriptionWithIntentClassName:(id)a3
+- (id)intentCodableDescriptionWithIntentClassName:(id)name
 {
-  v4 = a3;
-  v5 = [(INSchema *)self _objectDescriptionForClass:objc_opt_class() identifier:v4];
+  nameCopy = name;
+  v5 = [(INSchema *)self _objectDescriptionForClass:objc_opt_class() identifier:nameCopy];
   if (v5)
   {
     objc_opt_class();
@@ -1576,7 +1576,7 @@ LABEL_17:
   }
 
   v8 = objc_opt_class();
-  v9 = NSClassFromString(v4);
+  v9 = NSClassFromString(nameCopy);
   if (v9)
   {
     v10 = v9;
@@ -1604,7 +1604,7 @@ LABEL_17:
   else
   {
     v13 = +[INSchema systemSchema];
-    v14 = [v13 _objectDescriptionForClass:objc_opt_class() identifier:v4];
+    v14 = [v13 _objectDescriptionForClass:objc_opt_class() identifier:nameCopy];
 
     if (v14)
     {
@@ -1725,38 +1725,38 @@ void __29__INSchema__supportedClasses__block_invoke()
   return v3;
 }
 
-+ (id)_schemaWithIntentDefinitionURLs:(id)a3 bundleIdentifier:(id)a4 mainBundleIdentifier:(id)a5 contentOptions:(unint64_t)a6
++ (id)_schemaWithIntentDefinitionURLs:(id)ls bundleIdentifier:(id)identifier mainBundleIdentifier:(id)bundleIdentifier contentOptions:(unint64_t)options
 {
   v67 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v50 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() _cache];
-  v12 = [v9 valueForKeyPath:@"path"];
+  lsCopy = ls;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  _cache = [objc_opt_class() _cache];
+  v12 = [lsCopy valueForKeyPath:@"path"];
   v13 = [v12 sortedArrayUsingSelector:sel_compare_];
   v14 = [v13 componentsJoinedByString:@"-"];
 
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
   v17 = [v15 stringWithFormat:@"%@-%@", v14, v16];
 
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v14, &unk_1F02D7F00];
-  v19 = [v9 count];
+  v19 = [lsCopy count];
   v20 = 0;
   v51 = v17;
   if (v17 && v19)
   {
     v49 = v18;
-    v45 = a6;
+    optionsCopy = options;
     v46 = v14;
-    v47 = v11;
-    v48 = v10;
+    v47 = _cache;
+    v48 = bundleIdentifierCopy;
     v52 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v19];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v21 = v9;
+    v21 = lsCopy;
     v22 = [v21 countByEnumeratingWithState:&v54 objects:v66 count:16];
     if (v22)
     {
@@ -1772,10 +1772,10 @@ void __29__INSchema__supportedClasses__block_invoke()
           }
 
           v26 = *(*(&v54 + 1) + 8 * i);
-          v27 = [MEMORY[0x1E696AC08] defaultManager];
-          v28 = [v26 path];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          path = [v26 path];
           v53 = 0;
-          v29 = [v27 attributesOfItemAtPath:v28 error:&v53];
+          v29 = [defaultManager attributesOfItemAtPath:path error:&v53];
           v30 = v53;
 
           if (v29)
@@ -1790,10 +1790,10 @@ void __29__INSchema__supportedClasses__block_invoke()
 
           if (v31)
           {
-            v35 = [v29 fileModificationDate];
-            if (v35)
+            fileModificationDate = [v29 fileModificationDate];
+            if (fileModificationDate)
             {
-              [v52 addObject:v35];
+              [v52 addObject:fileModificationDate];
             }
           }
 
@@ -1803,11 +1803,11 @@ void __29__INSchema__supportedClasses__block_invoke()
             if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
             {
               v33 = v32;
-              v34 = [v26 path];
+              path2 = [v26 path];
               *buf = 136315650;
               v61 = "+[INSchema _schemaWithIntentDefinitionURLs:bundleIdentifier:mainBundleIdentifier:contentOptions:]";
               v62 = 2112;
-              v63 = v34;
+              v63 = path2;
               v64 = 2114;
               v65 = v30;
               _os_log_error_impl(&dword_18E991000, v33, OS_LOG_TYPE_ERROR, "%s Error reading file (%@) attributes: %{public}@", buf, 0x20u);
@@ -1821,18 +1821,18 @@ void __29__INSchema__supportedClasses__block_invoke()
       while (v23);
     }
 
-    v11 = v47;
+    _cache = v47;
     v36 = [v47 objectForKey:v49];
     if ([v49 isEqualToString:v51])
     {
-      v10 = v48;
-      v37 = v50;
+      bundleIdentifierCopy = v48;
+      v37 = identifierCopy;
     }
 
     else
     {
-      v10 = v48;
-      v37 = v50;
+      bundleIdentifierCopy = v48;
+      v37 = identifierCopy;
       if (v36)
       {
         [v47 removeObjectForKey:v51];
@@ -1853,7 +1853,7 @@ void __29__INSchema__supportedClasses__block_invoke()
 
     else
     {
-      v41 = [[INSchema alloc] _initWithContentsOfURLs:v21 bundleIdentifier:v37 mainBundleIdentifier:v10 contentOptions:v45];
+      v41 = [[INSchema alloc] _initWithContentsOfURLs:v21 bundleIdentifier:v37 mainBundleIdentifier:bundleIdentifierCopy contentOptions:optionsCopy];
 
       if (v41)
       {
@@ -1885,29 +1885,29 @@ void __29__INSchema__supportedClasses__block_invoke()
   return v20;
 }
 
-+ (id)_defaultSchemaForBundle:(id)a3 contentOptions:(unint64_t)a4
++ (id)_defaultSchemaForBundle:(id)bundle contentOptions:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [v6 bundleIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.Intents"];
+  bundleCopy = bundle;
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  v8 = [bundleIdentifier isEqualToString:@"com.apple.Intents"];
 
   if (v8)
   {
-    v9 = [a1 systemSchema];
+    systemSchema = [self systemSchema];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
-    v11 = [v10 bundleIdentifier];
-    v12 = [INSchema _applicationBundleIdentifierFromBundleIdentifier:v11];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier2 = [mainBundle bundleIdentifier];
+    v12 = [INSchema _applicationBundleIdentifierFromBundleIdentifier:bundleIdentifier2];
 
-    v13 = INSchemaURLsWithBundle(v6);
-    v14 = [v6 bundleIdentifier];
-    v9 = [a1 _schemaWithIntentDefinitionURLs:v13 bundleIdentifier:v14 mainBundleIdentifier:v12 contentOptions:a4];
+    v13 = INSchemaURLsWithBundle(bundleCopy);
+    bundleIdentifier3 = [bundleCopy bundleIdentifier];
+    systemSchema = [self _schemaWithIntentDefinitionURLs:v13 bundleIdentifier:bundleIdentifier3 mainBundleIdentifier:v12 contentOptions:options];
   }
 
-  return v9;
+  return systemSchema;
 }
 
 uint64_t __58__INSchema_schemaWithBundleRecord_fallbackToSystemSchema___block_invoke(uint64_t a1, void *a2)
@@ -1920,15 +1920,15 @@ uint64_t __58__INSchema_schemaWithBundleRecord_fallbackToSystemSchema___block_in
   return v5;
 }
 
-+ (BOOL)_defaultSchemaCanSupportIntent:(id)a3
++ (BOOL)_defaultSchemaCanSupportIntent:(id)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   v4 = INContainingAppProxyForCurrentProcess();
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 siriActionDefinitionURLs];
-    v7 = [v6 objectForKey:v3];
+    siriActionDefinitionURLs = [v4 siriActionDefinitionURLs];
+    v7 = [siriActionDefinitionURLs objectForKey:intentCopy];
     v8 = v7 != 0;
   }
 

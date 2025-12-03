@@ -1,16 +1,16 @@
 @interface VoiceOverBrailleCommandDetailController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (VoiceOverBrailleCommandDetailController)init;
 - (id)_assignedCommandSpecifiers;
-- (id)_specifierForBrailleKeyIdentifier:(id)a3;
+- (id)_specifierForBrailleKeyIdentifier:(id)identifier;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_donePressed;
-- (void)_editPressed:(id)a3;
+- (void)_editPressed:(id)pressed;
 - (void)_updateEditButtonState;
-- (void)handleBrailleKeyMemorize:(id)a3;
-- (void)memorizeNextKey:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)handleBrailleKeyMemorize:(id)memorize;
+- (void)memorizeNextKey:(id)key;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverBrailleCommandDetailController
@@ -36,23 +36,23 @@
 - (id)specifiers
 {
   v3 = OBJC_IVAR___PSViewController__specifier;
-  v4 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v5 = [v4 objectForKey:@"bt-device"];
+  userInfo = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v5 = [userInfo objectForKey:@"bt-device"];
   device = self->_device;
   self->_device = v5;
 
-  v7 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
-  v8 = [v7 objectForKey:@"braille-command"];
+  userInfo2 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
+  v8 = [userInfo2 objectForKey:@"braille-command"];
   command = self->_command;
   self->_command = v8;
 
-  v10 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
-  v11 = [v10 objectForKey:@"input-manager"];
+  userInfo3 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
+  v11 = [userInfo3 objectForKey:@"input-manager"];
   inputManager = self->_inputManager;
   self->_inputManager = v11;
 
-  v13 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
-  v14 = [v13 objectForKey:@"display-token"];
+  userInfo4 = [*&self->AXUISettingsBaseListController_opaque[v3] userInfo];
+  v14 = [userInfo4 objectForKey:@"display-token"];
   self->_token = [v14 intValue];
 
   v15 = OBJC_IVAR___PSListController__specifiers;
@@ -64,11 +64,11 @@
     v19 = [PSSpecifier groupSpecifierWithID:@"BrailleCommandGroup" name:v18];
 
     [v17 addObject:v19];
-    v20 = [(VoiceOverBrailleCommandDetailController *)self _assignedCommandSpecifiers];
-    if ([v20 count])
+    _assignedCommandSpecifiers = [(VoiceOverBrailleCommandDetailController *)self _assignedCommandSpecifiers];
+    if ([_assignedCommandSpecifiers count])
     {
       [(VoiceOverBrailleCommandDetailController *)self _updateEditButtonState];
-      [v17 addObjectsFromArray:v20];
+      [v17 addObjectsFromArray:_assignedCommandSpecifiers];
     }
 
     else
@@ -126,46 +126,46 @@ void __69__VoiceOverBrailleCommandDetailController__assignedCommandSpecifiers__b
   }
 }
 
-- (id)_specifierForBrailleKeyIdentifier:(id)a3
+- (id)_specifierForBrailleKeyIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(VoiceOverBrailleCommandDetailController *)self _buttonNameForKeyIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(VoiceOverBrailleCommandDetailController *)self _buttonNameForKeyIdentifier:identifierCopy];
   v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:objc_opt_class() cell:3 edit:0];
-  [v6 setProperty:v4 forKey:@"braille-key"];
+  [v6 setProperty:identifierCopy forKey:@"braille-key"];
 
   return v6;
 }
 
 - (void)_updateEditButtonState
 {
-  v3 = [(VoiceOverBrailleCommandDetailController *)self _assignedCommandSpecifiers];
-  v4 = [v3 count];
+  _assignedCommandSpecifiers = [(VoiceOverBrailleCommandDetailController *)self _assignedCommandSpecifiers];
+  v4 = [_assignedCommandSpecifiers count];
 
   if (v4)
   {
     if (([*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] isEditing] & 1) == 0)
     {
       v7 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:2 target:self action:"_editPressed:"];
-      v6 = [(VoiceOverBrailleCommandDetailController *)self navigationItem];
-      [v6 setRightBarButtonItem:v7];
+      navigationItem = [(VoiceOverBrailleCommandDetailController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:v7];
     }
   }
 
   else
   {
-    v5 = [(VoiceOverBrailleCommandDetailController *)self navigationItem];
-    [v5 setRightBarButtonItem:0];
+    navigationItem2 = [(VoiceOverBrailleCommandDetailController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
 
     [(VoiceOverBrailleCommandDetailController *)self setEditing:0 animated:1];
   }
 }
 
-- (void)_editPressed:(id)a3
+- (void)_editPressed:(id)pressed
 {
   [(VoiceOverBrailleCommandDetailController *)self setEditing:1 animated:1];
   v5 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:0 target:self action:"_donePressed"];
-  v4 = [(VoiceOverBrailleCommandDetailController *)self navigationItem];
-  [v4 setRightBarButtonItem:v5];
+  navigationItem = [(VoiceOverBrailleCommandDetailController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
 - (void)_donePressed
@@ -175,19 +175,19 @@ void __69__VoiceOverBrailleCommandDetailController__assignedCommandSpecifiers__b
   [(VoiceOverBrailleCommandDetailController *)self _updateEditButtonState];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 >= [v6 numberOfSections] || (v9 = objc_msgSend(v7, "row"), v9 >= objc_msgSend(v6, "numberOfRowsInSection:", objc_msgSend(v7, "section"))))
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= [viewCopy numberOfSections] || (v9 = objc_msgSend(pathCopy, "row"), v9 >= objc_msgSend(viewCopy, "numberOfRowsInSection:", objc_msgSend(pathCopy, "section"))))
   {
     v12 = 0;
   }
 
   else
   {
-    v10 = [(VoiceOverBrailleCommandDetailController *)self specifierAtIndex:[(VoiceOverBrailleCommandDetailController *)self indexForIndexPath:v7]];
+    v10 = [(VoiceOverBrailleCommandDetailController *)self specifierAtIndex:[(VoiceOverBrailleCommandDetailController *)self indexForIndexPath:pathCopy]];
     v11 = [v10 propertyForKey:@"braille-key"];
     v12 = v11 != 0;
   }
@@ -195,24 +195,24 @@ void __69__VoiceOverBrailleCommandDetailController__assignedCommandSpecifiers__b
   return v12;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverBrailleCommandDetailController *)self specifierAtIndex:[(VoiceOverBrailleCommandDetailController *)self indexForIndexPath:a4]];
+  v4 = [(VoiceOverBrailleCommandDetailController *)self specifierAtIndex:[(VoiceOverBrailleCommandDetailController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"braille-key"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a5;
+  pathCopy = path;
   [(VoiceOverBrailleCommandDetailController *)self beginUpdates];
-  v8 = [(VoiceOverBrailleCommandDetailController *)self indexForIndexPath:v7];
+  v8 = [(VoiceOverBrailleCommandDetailController *)self indexForIndexPath:pathCopy];
 
   v9 = [(VoiceOverBrailleCommandDetailController *)self specifierAtIndex:v8];
   v10 = v9;
-  if (a4 == 1)
+  if (style == 1)
   {
     v11 = [v9 propertyForKey:@"braille-key"];
     if (v11)
@@ -228,9 +228,9 @@ void __69__VoiceOverBrailleCommandDetailController__assignedCommandSpecifiers__b
   [(VoiceOverBrailleCommandDetailController *)self endUpdates];
 }
 
-- (void)memorizeNextKey:(id)a3
+- (void)memorizeNextKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (self->_token == kSCROSystemVirtualBrailleDisplayToken)
   {
     v5 = @"BRAILLE_PRESS_KEYS_TO_BIND_BSI_BKI";
@@ -258,14 +258,14 @@ void __69__VoiceOverBrailleCommandDetailController__assignedCommandSpecifiers__b
   self->_hasMemorizedKey = 0;
   if (([(VoiceOverBrailleCommandDetailController *)self inSetup]& 1) != 0)
   {
-    v15 = [(VoiceOverBrailleCommandDetailController *)self navigationController];
+    navigationController = [(VoiceOverBrailleCommandDetailController *)self navigationController];
   }
 
   else
   {
-    v16 = [(VoiceOverBrailleCommandDetailController *)self view];
-    v17 = [v16 window];
-    v15 = [v17 rootViewController];
+    view = [(VoiceOverBrailleCommandDetailController *)self view];
+    window = [view window];
+    navigationController = [window rootViewController];
   }
 
   v18 = self->_alertController;
@@ -274,7 +274,7 @@ void __69__VoiceOverBrailleCommandDetailController__assignedCommandSpecifiers__b
   v19[2] = __59__VoiceOverBrailleCommandDetailController_memorizeNextKey___block_invoke;
   v19[3] = &unk_2553B0;
   v19[4] = self;
-  [v15 presentViewController:v18 animated:1 completion:v19];
+  [navigationController presentViewController:v18 animated:1 completion:v19];
 }
 
 id __59__VoiceOverBrailleCommandDetailController_memorizeNextKey___block_invoke(uint64_t a1)
@@ -287,15 +287,15 @@ id __59__VoiceOverBrailleCommandDetailController_memorizeNextKey___block_invoke(
   return [v3 setPrepareToMemorizeNextKey:1 immediate:1 forDisplayWithToken:v4];
 }
 
-- (void)handleBrailleKeyMemorize:(id)a3
+- (void)handleBrailleKeyMemorize:(id)memorize
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __68__VoiceOverBrailleCommandDetailController_handleBrailleKeyMemorize___block_invoke;
   v4[3] = &unk_255538;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  memorizeCopy = memorize;
+  v3 = memorizeCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 

@@ -1,27 +1,27 @@
 @interface IFTSchemaIFTUpdateParametersExpression
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTUpdateParametersExpression)initWithDictionary:(id)a3;
-- (IFTSchemaIFTUpdateParametersExpression)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTUpdateParametersExpression)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTUpdateParametersExpression)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addUpdates:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUpdates:(id)updates;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTUpdateParametersExpression
 
-- (IFTSchemaIFTUpdateParametersExpression)initWithDictionary:(id)a3
+- (IFTSchemaIFTUpdateParametersExpression)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = IFTSchemaIFTUpdateParametersExpression;
   v5 = [(IFTSchemaIFTUpdateParametersExpression *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"callStatementId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"callStatementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(IFTSchemaIFTUpdateParametersExpression *)v5 setCallStatementId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"updates"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"updates"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTUpdateParametersExpression)initWithJSON:(id)a3
+- (IFTSchemaIFTUpdateParametersExpression)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTUpdateParametersExpression *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTUpdateParametersExpression *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTUpdateParametersExpression *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,26 +118,26 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_callStatementId)
   {
-    v4 = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    callStatementId = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
+    dictionaryRepresentation = [callStatementId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"callStatementId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"callStatementId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"callStatementId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"callStatementId"];
     }
   }
 
   if ([(NSArray *)self->_updates count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -157,16 +157,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -176,36 +176,36 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"updates"];
+    [dictionary setObject:array forKeyedSubscript:@"updates"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
-  v6 = [v4 callStatementId];
-  if ((v5 != 0) == (v6 == 0))
+  callStatementId = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
+  callStatementId2 = [equalCopy callStatementId];
+  if ((callStatementId != 0) == (callStatementId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
-  if (v7)
+  callStatementId3 = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
+  if (callStatementId3)
   {
-    v8 = v7;
-    v9 = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
-    v10 = [v4 callStatementId];
-    v11 = [v9 isEqual:v10];
+    v8 = callStatementId3;
+    callStatementId4 = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
+    callStatementId5 = [equalCopy callStatementId];
+    v11 = [callStatementId4 isEqual:callStatementId5];
 
     if (!v11)
     {
@@ -217,12 +217,12 @@
   {
   }
 
-  v5 = [(IFTSchemaIFTUpdateParametersExpression *)self updates];
-  v6 = [v4 updates];
-  if ((v5 != 0) != (v6 == 0))
+  callStatementId = [(IFTSchemaIFTUpdateParametersExpression *)self updates];
+  callStatementId2 = [equalCopy updates];
+  if ((callStatementId != 0) != (callStatementId2 == 0))
   {
-    v12 = [(IFTSchemaIFTUpdateParametersExpression *)self updates];
-    if (!v12)
+    updates = [(IFTSchemaIFTUpdateParametersExpression *)self updates];
+    if (!updates)
     {
 
 LABEL_15:
@@ -230,10 +230,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(IFTSchemaIFTUpdateParametersExpression *)self updates];
-    v15 = [v4 updates];
-    v16 = [v14 isEqual:v15];
+    v13 = updates;
+    updates2 = [(IFTSchemaIFTUpdateParametersExpression *)self updates];
+    updates3 = [equalCopy updates];
+    v16 = [updates2 isEqual:updates3];
 
     if (v16)
     {
@@ -253,15 +253,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
+  toCopy = to;
+  callStatementId = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
 
-  if (v5)
+  if (callStatementId)
   {
-    v6 = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
+    callStatementId2 = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -297,41 +297,41 @@ LABEL_13:
   }
 }
 
-- (void)addUpdates:(id)a3
+- (void)addUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   updates = self->_updates;
-  v8 = v4;
+  v8 = updatesCopy;
   if (!updates)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_updates;
-    self->_updates = v6;
+    self->_updates = array;
 
-    v4 = v8;
+    updatesCopy = v8;
     updates = self->_updates;
   }
 
-  [(NSArray *)updates addObject:v4];
+  [(NSArray *)updates addObject:updatesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = IFTSchemaIFTUpdateParametersExpression;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  callStatementId = [(IFTSchemaIFTUpdateParametersExpression *)self callStatementId];
+  v7 = [callStatementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTUpdateParametersExpression *)self deleteCallStatementId];
   }
 
-  v9 = [(IFTSchemaIFTUpdateParametersExpression *)self updates];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  updates = [(IFTSchemaIFTUpdateParametersExpression *)self updates];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:updates underConditions:policyCopy];
   [(IFTSchemaIFTUpdateParametersExpression *)self setUpdates:v10];
 
   return v5;

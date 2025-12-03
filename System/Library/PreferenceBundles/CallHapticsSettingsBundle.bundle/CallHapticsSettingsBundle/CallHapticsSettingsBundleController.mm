@@ -1,22 +1,22 @@
 @interface CallHapticsSettingsBundleController
-+ (id)localizedStringForKey:(id)a3;
-- (CallHapticsSettingsBundleController)initWithParentListController:(id)a3;
++ (id)localizedStringForKey:(id)key;
+- (CallHapticsSettingsBundleController)initWithParentListController:(id)controller;
 - (PSListController)parentListController;
 - (id)createCallHapticsSpecifier;
 - (id)currentControllerSpecifierIdentifier;
-- (id)getCallHapticsEnabled:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
+- (id)getCallHapticsEnabled:(id)enabled;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (void)refreshView;
-- (void)setCallHapticsEnabled:(id)a3 specifier:(id)a4;
+- (void)setCallHapticsEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation CallHapticsSettingsBundleController
 
-- (CallHapticsSettingsBundleController)initWithParentListController:(id)a3
+- (CallHapticsSettingsBundleController)initWithParentListController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = CallHapticsSettingsBundleController;
-  v3 = [(CallHapticsSettingsBundleController *)&v7 initWithParentListController:a3];
+  v3 = [(CallHapticsSettingsBundleController *)&v7 initWithParentListController:controller];
   if (v3)
   {
     v4 = objc_alloc_init(TUConfigurationProvider);
@@ -29,28 +29,28 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = +[NSMutableArray array];
-  v5 = [(CallHapticsSettingsBundleController *)self activeSpecifier];
-  if (!v5)
+  activeSpecifier = [(CallHapticsSettingsBundleController *)self activeSpecifier];
+  if (!activeSpecifier)
   {
-    v6 = [(CallHapticsSettingsBundleController *)self configurationProvider];
-    v7 = [v6 isCallHapticsAvailable];
+    configurationProvider = [(CallHapticsSettingsBundleController *)self configurationProvider];
+    isCallHapticsAvailable = [configurationProvider isCallHapticsAvailable];
 
-    if (!v7)
+    if (!isCallHapticsAvailable)
     {
       goto LABEL_8;
     }
 
-    v5 = [PSSpecifier groupSpecifierWithID:@"CALL_HAPTICS" name:&stru_4198];
+    activeSpecifier = [PSSpecifier groupSpecifierWithID:@"CALL_HAPTICS" name:&stru_4198];
     v8 = [CallHapticsSettingsBundleController localizedStringForKey:@"CALL_HAPTICS_EXPLANATION"];
-    [v5 setProperty:v8 forKey:PSFooterTextGroupKey];
-    v9 = [(CallHapticsSettingsBundleController *)self createCallHapticsSpecifier];
-    v10 = v9;
-    if (v5 && v9)
+    [activeSpecifier setProperty:v8 forKey:PSFooterTextGroupKey];
+    createCallHapticsSpecifier = [(CallHapticsSettingsBundleController *)self createCallHapticsSpecifier];
+    v10 = createCallHapticsSpecifier;
+    if (activeSpecifier && createCallHapticsSpecifier)
     {
-      [v4 addObject:v5];
+      [v4 addObject:activeSpecifier];
       [v4 addObject:v10];
     }
   }
@@ -72,12 +72,12 @@ LABEL_8:
   return v4;
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_4198 table:v6];
+  localizationTableName = [self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_4198 table:localizationTableName];
 
   return v7;
 }
@@ -91,37 +91,37 @@ LABEL_8:
 
 - (void)refreshView
 {
-  v4 = [(CallHapticsSettingsBundleController *)self parentListController];
-  v3 = [(CallHapticsSettingsBundleController *)self activeSpecifier];
-  [v4 reloadSpecifier:v3];
+  parentListController = [(CallHapticsSettingsBundleController *)self parentListController];
+  activeSpecifier = [(CallHapticsSettingsBundleController *)self activeSpecifier];
+  [parentListController reloadSpecifier:activeSpecifier];
 }
 
-- (void)setCallHapticsEnabled:(id)a3 specifier:(id)a4
+- (void)setCallHapticsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v7 = [(CallHapticsSettingsBundleController *)self configurationProvider];
-  v6 = [v5 BOOLValue];
+  enabledCopy = enabled;
+  configurationProvider = [(CallHapticsSettingsBundleController *)self configurationProvider];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v7 setCallHapticsEnabled:v6];
+  [configurationProvider setCallHapticsEnabled:bOOLValue];
 }
 
-- (id)getCallHapticsEnabled:(id)a3
+- (id)getCallHapticsEnabled:(id)enabled
 {
-  v3 = [(CallHapticsSettingsBundleController *)self configurationProvider];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isCallHapticsEnabled]);
+  configurationProvider = [(CallHapticsSettingsBundleController *)self configurationProvider];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [configurationProvider isCallHapticsEnabled]);
 
   return v4;
 }
 
 - (id)currentControllerSpecifierIdentifier
 {
-  v2 = [(CallHapticsSettingsBundleController *)self parentListController];
-  v3 = [v2 specifier];
-  v4 = [v3 identifier];
+  parentListController = [(CallHapticsSettingsBundleController *)self parentListController];
+  specifier = [parentListController specifier];
+  identifier = [specifier identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = v4;
+    v5 = identifier;
   }
 
   else

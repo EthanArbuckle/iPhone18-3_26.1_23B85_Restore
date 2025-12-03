@@ -7,8 +7,8 @@
 
 - (void)serviceHasNewTodayResults
 {
-  v2 = [(NDNewsServiceConnectionClientProxy *)self client];
-  [v2 serviceHasNewTodayResults];
+  client = [(NDNewsServiceConnectionClientProxy *)self client];
+  [client serviceHasNewTodayResults];
 }
 
 - (NDNewsServiceClient)client

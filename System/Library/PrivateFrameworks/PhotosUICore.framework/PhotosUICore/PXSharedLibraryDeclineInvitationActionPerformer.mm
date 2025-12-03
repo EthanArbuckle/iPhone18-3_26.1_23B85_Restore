@@ -1,6 +1,6 @@
 @interface PXSharedLibraryDeclineInvitationActionPerformer
 - (PXSharedLibraryDeclineInvitationActionPerformer)init;
-- (void)performActionWithInvitation:(id)a3 presentationEnvironment:(id)a4 completionHandler:(id)a5;
+- (void)performActionWithInvitation:(id)invitation presentationEnvironment:(id)environment completionHandler:(id)handler;
 - (void)performUserInteractionTask;
 @end
 
@@ -89,39 +89,39 @@ void __77__PXSharedLibraryDeclineInvitationActionPerformer_performUserInteractio
   [v3 completeUserInteractionTaskWithSuccess:0 error:v4];
 }
 
-- (void)performActionWithInvitation:(id)a3 presentationEnvironment:(id)a4 completionHandler:(id)a5
+- (void)performActionWithInvitation:(id)invitation presentationEnvironment:(id)environment completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  invitationCopy = invitation;
+  environmentCopy = environment;
+  handlerCopy = handler;
+  if (!invitationCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDeclineInvitationActionPerformer.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"invitation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDeclineInvitationActionPerformer.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"invitation"}];
 
-    if (v10)
+    if (environmentCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDeclineInvitationActionPerformer.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDeclineInvitationActionPerformer.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!environmentCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [(PXSharedLibraryDeclineInvitationActionPerformer *)self setInvitation:v9];
-  [(PXActionPerformer *)self setPresentationEnvironment:v10];
+  [(PXSharedLibraryDeclineInvitationActionPerformer *)self setInvitation:invitationCopy];
+  [(PXActionPerformer *)self setPresentationEnvironment:environmentCopy];
   v14.receiver = self;
   v14.super_class = PXSharedLibraryDeclineInvitationActionPerformer;
-  [(PXActionPerformer *)&v14 performActionWithCompletionHandler:v11];
+  [(PXActionPerformer *)&v14 performActionWithCompletionHandler:handlerCopy];
 }
 
 - (PXSharedLibraryDeclineInvitationActionPerformer)init

@@ -1,11 +1,11 @@
 @interface TransitPayFeatureDiscoveryMetadataStore
-- (BOOL)_userHasBecomeLocalAndTipShouldDisplayInMarket:(unint64_t)a3 tipType:(int)a4 currentTip:(id)a5;
-- (BOOL)shouldDisplayTipInMarket:(unint64_t)a3 tipType:(int)a4 sinkType:(int)a5;
-- (TransitPayFeatureDiscoveryMetadataStore)initWithTouristStatus:(BOOL)a3;
-- (id)_tipInfoForMarket:(unint64_t)a3 tipType:(int)a4;
+- (BOOL)_userHasBecomeLocalAndTipShouldDisplayInMarket:(unint64_t)market tipType:(int)type currentTip:(id)tip;
+- (BOOL)shouldDisplayTipInMarket:(unint64_t)market tipType:(int)type sinkType:(int)sinkType;
+- (TransitPayFeatureDiscoveryMetadataStore)initWithTouristStatus:(BOOL)status;
+- (id)_tipInfoForMarket:(unint64_t)market tipType:(int)type;
 - (void)_persistData;
-- (void)handleManualTipDismissForMarket:(unint64_t)a3 tipType:(int)a4 sinkType:(int)a5;
-- (void)handleTipDisplayForMarket:(unint64_t)a3 tipType:(int)a4 sinkType:(int)a5;
+- (void)handleManualTipDismissForMarket:(unint64_t)market tipType:(int)type sinkType:(int)sinkType;
+- (void)handleTipDisplayForMarket:(unint64_t)market tipType:(int)type sinkType:(int)sinkType;
 @end
 
 @implementation TransitPayFeatureDiscoveryMetadataStore
@@ -21,12 +21,12 @@
   [v6 setObject:v5 forKey:@"__internal__TransitPayTipInfoKey"];
 }
 
-- (BOOL)_userHasBecomeLocalAndTipShouldDisplayInMarket:(unint64_t)a3 tipType:(int)a4 currentTip:(id)a5
+- (BOOL)_userHasBecomeLocalAndTipShouldDisplayInMarket:(unint64_t)market tipType:(int)type currentTip:(id)tip
 {
-  v8 = a5;
-  v9 = v8;
-  v10 = v8 != 0;
-  if (!v8)
+  tipCopy = tip;
+  v9 = tipCopy;
+  v10 = tipCopy != 0;
+  if (!tipCopy)
   {
     v19 = sub_10003D020();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -59,10 +59,10 @@
     goto LABEL_18;
   }
 
-  if (([v8 tipType] == 1 || objc_msgSend(v9, "tipType") == 2) && objc_msgSend(v9, "isTourist"))
+  if (([tipCopy tipType] == 1 || objc_msgSend(v9, "tipType") == 2) && objc_msgSend(v9, "isTourist"))
   {
     v11 = 0;
-    if (a4 == 3 && !self->_isTourist)
+    if (type == 3 && !self->_isTourist)
     {
       v12 = [[_TransitPayTipInteractionRecord alloc] initWithTipType:3 isTourist:self->_isTourist];
       tipInfoDictionary = self->_tipInfoDictionary;
@@ -74,9 +74,9 @@
         v16 = sub_10003D020();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v17 = [v15 localizedDescription];
+          localizedDescription = [v15 localizedDescription];
           *buf = 138412290;
-          v24 = v17;
+          v24 = localizedDescription;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "There was an error archiving the tip metadata: %@", buf, 0xCu);
         }
 
@@ -88,8 +88,8 @@
         v18 = v14;
       }
 
-      v20 = [NSString stringWithFormat:@"%llu", a3];
-      [(NSMutableDictionary *)tipInfoDictionary setObject:v18 forKey:v20];
+      market = [NSString stringWithFormat:@"%llu", market];
+      [(NSMutableDictionary *)tipInfoDictionary setObject:v18 forKey:market];
 
       [(TransitPayFeatureDiscoveryMetadataStore *)self _persistData];
 LABEL_18:
@@ -106,12 +106,12 @@ LABEL_18:
   return v11;
 }
 
-- (id)_tipInfoForMarket:(unint64_t)a3 tipType:(int)a4
+- (id)_tipInfoForMarket:(unint64_t)market tipType:(int)type
 {
-  v4 = *&a4;
+  v4 = *&type;
   tipInfoDictionary = self->_tipInfoDictionary;
-  v8 = [NSString stringWithFormat:@"%llu", a3];
-  v9 = [(NSMutableDictionary *)tipInfoDictionary objectForKey:v8];
+  market = [NSString stringWithFormat:@"%llu", market];
+  v9 = [(NSMutableDictionary *)tipInfoDictionary objectForKey:market];
 
   if (v9)
   {
@@ -126,7 +126,7 @@ LABEL_18:
       {
         v14 = [v12 debugDescription];
         *buf = 138412290;
-        v20 = v14;
+        marketCopy = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "There was an error unarchiving the tip metadata: %@", buf, 0xCu);
       }
 
@@ -145,7 +145,7 @@ LABEL_18:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v20 = a3;
+      marketCopy = market;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "This market: %llu has no tip data", buf, 0xCu);
     }
 
@@ -155,12 +155,12 @@ LABEL_18:
   return v15;
 }
 
-- (void)handleTipDisplayForMarket:(unint64_t)a3 tipType:(int)a4 sinkType:(int)a5
+- (void)handleTipDisplayForMarket:(unint64_t)market tipType:(int)type sinkType:(int)sinkType
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&sinkType;
+  v6 = *&type;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (a3)
+  if (market)
   {
     if (v6 == 5)
     {
@@ -178,18 +178,18 @@ LABEL_7:
 
     else
     {
-      v9 = [(TransitPayFeatureDiscoveryMetadataStore *)self _tipInfoForMarket:a3 tipType:v6];
-      v13 = [v9 lastDisplayed];
-      if (v13)
+      v9 = [(TransitPayFeatureDiscoveryMetadataStore *)self _tipInfoForMarket:market tipType:v6];
+      lastDisplayed = [v9 lastDisplayed];
+      if (lastDisplayed)
       {
-        v14 = [v9 lastDisplayed];
+        lastDisplayed2 = [v9 lastDisplayed];
         v15 = objc_alloc_init(NSDateComponents);
         [v15 setDay:-1];
         v16 = +[NSCalendar currentCalendar];
         v17 = +[NSDate now];
         v18 = [v16 dateByAddingComponents:v15 toDate:v17 options:0];
 
-        v19 = [v14 compare:v18] == -1;
+        v19 = [lastDisplayed2 compare:v18] == -1;
       }
 
       else
@@ -219,13 +219,13 @@ LABEL_7:
             v23 = v22;
           }
 
-          v24 = [v9 lastDisplayed];
+          lastDisplayed3 = [v9 lastDisplayed];
           *buf = 134218754;
-          v35 = a3;
+          marketCopy = market;
           v36 = 2112;
           v37 = v23;
           v38 = 2112;
-          v39 = v24;
+          v39 = lastDisplayed3;
           v40 = 2112;
           v41 = v20;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Incremented tip displays in market: %llu for %@. Last tip display: %@. Current count: %@", buf, 0x2Au);
@@ -246,9 +246,9 @@ LABEL_7:
           v29 = sub_10003D020();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
-            v30 = [v28 localizedDescription];
+            localizedDescription = [v28 localizedDescription];
             *buf = 138412290;
-            v35 = v30;
+            marketCopy = localizedDescription;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "There was an error archiving the tip metadata: %@", buf, 0xCu);
           }
 
@@ -260,8 +260,8 @@ LABEL_7:
           v31 = v27;
         }
 
-        v32 = [NSString stringWithFormat:@"%llu", a3];
-        [(NSMutableDictionary *)tipInfoDictionary setObject:v31 forKey:v32];
+        market = [NSString stringWithFormat:@"%llu", market];
+        [(NSMutableDictionary *)tipInfoDictionary setObject:v31 forKey:market];
 
         [(TransitPayFeatureDiscoveryMetadataStore *)self _persistData];
       }
@@ -274,7 +274,7 @@ LABEL_7:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v35 = 0;
+      marketCopy = 0;
       v10 = "Server gave us invalid market MUID: %llu";
       v11 = v9;
       v12 = 12;
@@ -283,12 +283,12 @@ LABEL_7:
   }
 }
 
-- (void)handleManualTipDismissForMarket:(unint64_t)a3 tipType:(int)a4 sinkType:(int)a5
+- (void)handleManualTipDismissForMarket:(unint64_t)market tipType:(int)type sinkType:(int)sinkType
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&sinkType;
+  v6 = *&type;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (a3)
+  if (market)
   {
     if (v6 == 5)
     {
@@ -306,7 +306,7 @@ LABEL_7:
 
     else
     {
-      v9 = [(TransitPayFeatureDiscoveryMetadataStore *)self _tipInfoForMarket:a3 tipType:v6];
+      v9 = [(TransitPayFeatureDiscoveryMetadataStore *)self _tipInfoForMarket:market tipType:v6];
       [v9 userDismissedInSink:v5];
       tipInfoDictionary = self->_tipInfoDictionary;
       v20 = 0;
@@ -317,9 +317,9 @@ LABEL_7:
         v16 = sub_10003D020();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v17 = [v15 localizedDescription];
+          localizedDescription = [v15 localizedDescription];
           *buf = 138412290;
-          v22 = v17;
+          v22 = localizedDescription;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "There was an error archiving the tip metadata: %@", buf, 0xCu);
         }
 
@@ -331,8 +331,8 @@ LABEL_7:
         v18 = v14;
       }
 
-      v19 = [NSString stringWithFormat:@"%llu", a3];
-      [(NSMutableDictionary *)tipInfoDictionary setObject:v18 forKey:v19];
+      market = [NSString stringWithFormat:@"%llu", market];
+      [(NSMutableDictionary *)tipInfoDictionary setObject:v18 forKey:market];
 
       [(TransitPayFeatureDiscoveryMetadataStore *)self _persistData];
     }
@@ -353,12 +353,12 @@ LABEL_7:
   }
 }
 
-- (BOOL)shouldDisplayTipInMarket:(unint64_t)a3 tipType:(int)a4 sinkType:(int)a5
+- (BOOL)shouldDisplayTipInMarket:(unint64_t)market tipType:(int)type sinkType:(int)sinkType
 {
-  if (a3)
+  if (market)
   {
-    v5 = *&a4;
-    if (a4 == 5)
+    v5 = *&type;
+    if (type == 5)
     {
       v6 = sub_10003D020();
       v7 = 1;
@@ -372,8 +372,8 @@ LABEL_7:
     }
 
     tipInfoDictionary = self->_tipInfoDictionary;
-    v13 = [NSString stringWithFormat:@"%llu", a3];
-    v6 = [(NSMutableDictionary *)tipInfoDictionary objectForKey:v13];
+    market = [NSString stringWithFormat:@"%llu", market];
+    v6 = [(NSMutableDictionary *)tipInfoDictionary objectForKey:market];
 
     if (!v6)
     {
@@ -385,11 +385,11 @@ LABEL_7:
         v21 = v20;
         v22 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v39 = v20;
+        marketCopy4 = v20;
         v40 = 2112;
         v41 = v22;
         v42 = 2048;
-        v43 = a3;
+        marketCopy = market;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%@ %@: This market: %llu has no tip data", buf, 0x20u);
       }
 
@@ -407,7 +407,7 @@ LABEL_7:
       {
         v18 = [v16 debugDescription];
         *buf = 138412290;
-        v39 = v18;
+        marketCopy4 = v18;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "There was an error unarchiving the tip metadata: %@", buf, 0xCu);
       }
 
@@ -419,14 +419,14 @@ LABEL_7:
       v19 = v15;
     }
 
-    if ([(TransitPayFeatureDiscoveryMetadataStore *)self _userHasBecomeLocalAndTipShouldDisplayInMarket:a3 tipType:v5 currentTip:v19])
+    if ([(TransitPayFeatureDiscoveryMetadataStore *)self _userHasBecomeLocalAndTipShouldDisplayInMarket:market tipType:v5 currentTip:v19])
     {
       v23 = sub_10003D020();
       v7 = 1;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v39 = a3;
+        marketCopy4 = market;
         v24 = "The user dismissed the open-loop tip when they were a tourist and are now being shown the closed-loop tip since they are a local in this market: %llu";
 LABEL_19:
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, v24, buf, 0xCu);
@@ -435,15 +435,15 @@ LABEL_19:
 
     else
     {
-      if (a5 == 4)
+      if (sinkType == 4)
       {
-        v25 = [v19 dismissalDate];
-        if (v25)
+        dismissalDate = [v19 dismissalDate];
+        if (dismissalDate)
         {
-          v26 = v25;
-          v27 = [v19 dismissalDate];
+          v26 = dismissalDate;
+          dismissalDate2 = [v19 dismissalDate];
           UInteger = GEOConfigGetUInteger();
-          v29 = v27;
+          v29 = dismissalDate2;
           v30 = objc_alloc_init(NSDateComponents);
           [v30 setDay:-UInteger];
           v31 = +[NSCalendar currentCalendar];
@@ -461,16 +461,16 @@ LABEL_19:
             }
 
             *buf = 134217984;
-            v39 = a3;
+            marketCopy4 = market;
             v24 = "The tip has been dismissed in this market, but it is now reappearing: %llu";
             goto LABEL_19;
           }
         }
       }
 
-      v35 = [v19 dismissalDate];
+      dismissalDate3 = [v19 dismissalDate];
 
-      if (!v35)
+      if (!dismissalDate3)
       {
         v7 = 1;
         goto LABEL_28;
@@ -480,7 +480,7 @@ LABEL_19:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v39 = a3;
+        marketCopy4 = market;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "The tip was either manually or automatically dismissed in this market: %llu", buf, 0xCu);
       }
 
@@ -497,7 +497,7 @@ LABEL_28:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v39 = 0;
+    marketCopy4 = 0;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Server gave us invalid market MUID: %llu", buf, 0xCu);
   }
 
@@ -507,7 +507,7 @@ LABEL_29:
   return v7;
 }
 
-- (TransitPayFeatureDiscoveryMetadataStore)initWithTouristStatus:(BOOL)a3
+- (TransitPayFeatureDiscoveryMetadataStore)initWithTouristStatus:(BOOL)status
 {
   v19.receiver = self;
   v19.super_class = TransitPayFeatureDiscoveryMetadataStore;
@@ -515,7 +515,7 @@ LABEL_29:
   v5 = v4;
   if (v4)
   {
-    v4->_isTourist = a3;
+    v4->_isTourist = status;
     v6 = +[NSUserDefaults standardUserDefaults];
     v7 = [v6 dictionaryForKey:@"__internal__TransitPayTipInfoKey"];
     v8 = [v7 mutableCopy];

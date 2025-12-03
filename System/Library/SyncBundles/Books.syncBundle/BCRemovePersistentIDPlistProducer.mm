@@ -1,5 +1,5 @@
 @interface BCRemovePersistentIDPlistProducer
-- (BCRemovePersistentIDPlistProducer)initWithPath:(id)a3 persistentIDs:(id)a4;
+- (BCRemovePersistentIDPlistProducer)initWithPath:(id)path persistentIDs:(id)ds;
 - (BOOL)shouldRetry;
 - (id)produceData;
 - (void)dealloc;
@@ -7,12 +7,12 @@
 
 @implementation BCRemovePersistentIDPlistProducer
 
-- (BCRemovePersistentIDPlistProducer)initWithPath:(id)a3 persistentIDs:(id)a4
+- (BCRemovePersistentIDPlistProducer)initWithPath:(id)path persistentIDs:(id)ds
 {
-  v5 = [(BCPlistProducer *)self initWithPath:a3];
+  v5 = [(BCPlistProducer *)self initWithPath:path];
   if (v5)
   {
-    v5->_persistentIDs = a4;
+    v5->_persistentIDs = ds;
   }
 
   return v5;

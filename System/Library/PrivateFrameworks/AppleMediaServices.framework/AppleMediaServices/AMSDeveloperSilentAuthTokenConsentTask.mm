@@ -1,29 +1,29 @@
 @interface AMSDeveloperSilentAuthTokenConsentTask
-- (AMSDeveloperSilentAuthTokenConsentTask)initWithBundleId:(id)a3 account:(id)a4 mediaType:(id)a5 bag:(id)a6;
+- (AMSDeveloperSilentAuthTokenConsentTask)initWithBundleId:(id)id account:(id)account mediaType:(id)type bag:(id)bag;
 - (id)performPresentation;
 @end
 
 @implementation AMSDeveloperSilentAuthTokenConsentTask
 
-- (AMSDeveloperSilentAuthTokenConsentTask)initWithBundleId:(id)a3 account:(id)a4 mediaType:(id)a5 bag:(id)a6
+- (AMSDeveloperSilentAuthTokenConsentTask)initWithBundleId:(id)id account:(id)account mediaType:(id)type bag:(id)bag
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  accountCopy = account;
+  typeCopy = type;
+  bagCopy = bag;
   v19.receiver = self;
   v19.super_class = AMSDeveloperSilentAuthTokenConsentTask;
   v14 = [(AMSTask *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_account, a4);
-    objc_storeStrong(&v15->_mediaType, a5);
-    v16 = [v10 copy];
+    objc_storeStrong(&v14->_account, account);
+    objc_storeStrong(&v15->_mediaType, type);
+    v16 = [idCopy copy];
     bundleId = v15->_bundleId;
     v15->_bundleId = v16;
 
-    objc_storeStrong(&v15->_bag, a6);
+    objc_storeStrong(&v15->_bag, bag);
   }
 
   return v15;

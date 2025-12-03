@@ -1,9 +1,9 @@
 @interface MTRGroupsClusterGetGroupMembershipResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRGroupsClusterGetGroupMembershipResponseParams)init;
-- (MTRGroupsClusterGetGroupMembershipResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRGroupsClusterGetGroupMembershipResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRGroupsClusterGetGroupMembershipResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,9 +20,9 @@
     capacity = v2->_capacity;
     v2->_capacity = 0;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     groupList = v3->_groupList;
-    v3->_groupList = v5;
+    v3->_groupList = array;
 
     timedInvokeTimeoutMs = v3->_timedInvokeTimeoutMs;
     v3->_timedInvokeTimeoutMs = 0;
@@ -31,17 +31,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGroupsClusterGetGroupMembershipResponseParams);
-  v5 = [(MTRGroupsClusterGetGroupMembershipResponseParams *)self capacity];
-  [(MTRGroupsClusterGetGroupMembershipResponseParams *)v4 setCapacity:v5];
+  capacity = [(MTRGroupsClusterGetGroupMembershipResponseParams *)self capacity];
+  [(MTRGroupsClusterGetGroupMembershipResponseParams *)v4 setCapacity:capacity];
 
-  v6 = [(MTRGroupsClusterGetGroupMembershipResponseParams *)self groupList];
-  [(MTRGroupsClusterGetGroupMembershipResponseParams *)v4 setGroupList:v6];
+  groupList = [(MTRGroupsClusterGetGroupMembershipResponseParams *)self groupList];
+  [(MTRGroupsClusterGetGroupMembershipResponseParams *)v4 setGroupList:groupList];
 
-  v7 = [(MTRGroupsClusterGetGroupMembershipResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRGroupsClusterGetGroupMembershipResponseParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRGroupsClusterGetGroupMembershipResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRGroupsClusterGetGroupMembershipResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -102,7 +102,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRGroupsClusterGetGroupMembershipResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRGroupsClusterGetGroupMembershipResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRGroupsClusterGetGroupMembershipResponseParams;
@@ -110,7 +110,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRGroupsClusterGetGroupMembershipResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRGroupsClusterGetGroupMembershipResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -126,11 +126,11 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  if (*(a3 + 1))
+  if (*(struct + 1))
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
     [(MTRGroupsClusterGetGroupMembershipResponseParams *)self setCapacity:v5];
   }
 
@@ -143,7 +143,7 @@ LABEL_6:
   sub_2393C5AAC(v14);
   v12 = 0;
   v13 = 0;
-  sub_2393C5BDC(v14, a3 + 8);
+  sub_2393C5BDC(v14, struct + 8);
   while (sub_238DD5C4C(&v12))
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v14[36]];

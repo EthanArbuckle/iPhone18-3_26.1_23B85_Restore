@@ -1,18 +1,18 @@
 @interface AVTAttributeSectionSeparator
-- (AVTAttributeSectionSeparator)initWithFrame:(CGRect)a3;
+- (AVTAttributeSectionSeparator)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)edgeInsets;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation AVTAttributeSectionSeparator
 
-- (AVTAttributeSectionSeparator)initWithFrame:(CGRect)a3
+- (AVTAttributeSectionSeparator)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = AVTAttributeSectionSeparator;
-  v3 = [(AVTAttributeSectionSeparator *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTAttributeSectionSeparator *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -21,14 +21,14 @@
     [(AVTAttributeSectionSeparator *)v3 setSeparatorView:v5];
 
     v6 = +[AVTUIColorRepository separatorColor];
-    v7 = [(AVTAttributeSectionSeparator *)v3 separatorView];
-    [v7 setBackgroundColor:v6];
+    separatorView = [(AVTAttributeSectionSeparator *)v3 separatorView];
+    [separatorView setBackgroundColor:v6];
 
-    v8 = [(AVTAttributeSectionSeparator *)v3 separatorView];
-    [(AVTAttributeSectionSeparator *)v3 addSubview:v8];
+    separatorView2 = [(AVTAttributeSectionSeparator *)v3 separatorView];
+    [(AVTAttributeSectionSeparator *)v3 addSubview:separatorView2];
 
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    [(AVTAttributeSectionSeparator *)v3 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(AVTAttributeSectionSeparator *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;
@@ -49,19 +49,19 @@
   v10 = v6 - (v8 + v9);
   [(AVTAttributeSectionSeparator *)self bounds];
   v12 = v11;
-  v13 = [(AVTAttributeSectionSeparator *)self separatorView];
-  [v13 setFrame:{v4, 0.0, v10, v12}];
+  separatorView = [(AVTAttributeSectionSeparator *)self separatorView];
+  [separatorView setFrame:{v4, 0.0, v10, v12}];
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_edgeInsets.top), vceqq_f64(v4, *&self->_edgeInsets.bottom)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(AVTAttributeSectionSeparator *)self setNeedsLayout];
   }
 }

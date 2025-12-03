@@ -1,24 +1,24 @@
 @interface RPControlCenterModuleBackgroundViewController
 - (BOOL)_isIPhoneLandscape;
 - (CCUIContentModuleContentViewController)contentViewController;
-- (RPControlCenterModuleBackgroundViewController)initWithClient:(id)a3;
+- (RPControlCenterModuleBackgroundViewController)initWithClient:(id)client;
 - (double)CCUIMenuModuleViewHeight;
 - (double)CCUIMenuModuleViewWidth;
 - (double)_determineButtonWidth;
 - (id)_determineButtonCategorySizeThreshold;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)didStartRecordingOrBroadcast;
 - (void)didStopRecordingOrBroadcast;
-- (void)didUpdateClientStateWithAvailableExtensions:(id)a3 completionHandler:(id)a4;
-- (void)hqlrButtonPressed:(id)a3;
-- (void)micButtonPressed:(id)a3;
+- (void)didUpdateClientStateWithAvailableExtensions:(id)extensions completionHandler:(id)handler;
+- (void)hqlrButtonPressed:(id)pressed;
+- (void)micButtonPressed:(id)pressed;
 - (void)sessionDidFailToStart;
 - (void)sessionIsStarting;
-- (void)setAvailableExtensions:(id)a3;
-- (void)setHQLRButtonSubtitle:(BOOL)a3;
-- (void)setMicButtonSubtitle:(BOOL)a3;
+- (void)setAvailableExtensions:(id)extensions;
+- (void)setHQLRButtonSubtitle:(BOOL)subtitle;
+- (void)setMicButtonSubtitle:(BOOL)subtitle;
 - (void)setupDisclaimerLabel;
 - (void)setupHQLRButton;
 - (void)setupMicrophoneButton;
@@ -34,9 +34,9 @@
 
 @implementation RPControlCenterModuleBackgroundViewController
 
-- (RPControlCenterModuleBackgroundViewController)initWithClient:(id)a3
+- (RPControlCenterModuleBackgroundViewController)initWithClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v28.receiver = self;
   v28.super_class = RPControlCenterModuleBackgroundViewController;
   v5 = [(RPControlCenterModuleBackgroundViewController *)&v28 init];
@@ -53,8 +53,8 @@
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
     }
 
-    v6 = objc_storeWeak(&v5->_client, v4);
-    [v4 addDegate:v5];
+    v6 = objc_storeWeak(&v5->_client, clientCopy);
+    [clientCopy addDegate:v5];
 
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     RPCCModuleBundle = v5->_RPCCModuleBundle;
@@ -75,8 +75,8 @@
     v5->_micButton = v16;
 
     v5->_showsMicrophoneButton = 1;
-    v18 = [(CCUILabeledRoundButtonViewController *)v5->_micButton button];
-    [v18 setEnabled:1];
+    button = [(CCUILabeledRoundButtonViewController *)v5->_micButton button];
+    [button setEnabled:1];
 
     v19 = [UIImage systemImageNamed:@"person.circle"];
     v20 = +[UIColor whiteColor];
@@ -88,8 +88,8 @@
     HQLRButton = v5->_HQLRButton;
     v5->_HQLRButton = v24;
 
-    v26 = [(CCUILabeledRoundButtonViewController *)v5->_HQLRButton button];
-    [v26 setEnabled:1];
+    button2 = [(CCUILabeledRoundButtonViewController *)v5->_HQLRButton button];
+    [button2 setEnabled:1];
   }
 
   return v5;
@@ -111,17 +111,17 @@
   [(RPControlCenterModuleBackgroundViewController *)&v8 viewDidLoad];
   self->_currentMode = -1;
   [(RPControlCenterModuleBackgroundViewController *)self setupDisclaimerLabel];
-  v3 = [(RPControlCenterModuleBackgroundViewController *)self view];
-  [v3 addSubview:self->_disclaimerLabel];
+  view = [(RPControlCenterModuleBackgroundViewController *)self view];
+  [view addSubview:self->_disclaimerLabel];
 
   [(RPControlCenterModuleBackgroundViewController *)self setupMicrophoneButton];
-  v4 = [(RPControlCenterModuleBackgroundViewController *)self view];
-  v5 = [(CCUILabeledRoundButtonViewController *)self->_micButton view];
-  [v4 addSubview:v5];
+  view2 = [(RPControlCenterModuleBackgroundViewController *)self view];
+  view3 = [(CCUILabeledRoundButtonViewController *)self->_micButton view];
+  [view2 addSubview:view3];
 
   [(RPControlCenterModuleBackgroundViewController *)self setupHQLRButton];
-  v6 = [(RPControlCenterModuleBackgroundViewController *)self view];
-  [v6 setNeedsUpdateConstraints];
+  view4 = [(RPControlCenterModuleBackgroundViewController *)self view];
+  [view4 setNeedsUpdateConstraints];
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 addObserver:self selector:"contentSizeCategoryDidChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -136,7 +136,7 @@
     v8 = 1024;
     v9 = 101;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -172,15 +172,15 @@
 - (void)updateMicrophoneState
 {
   WeakRetained = objc_loadWeakRetained(&self->_client);
-  v4 = [WeakRetained microphoneOn];
-  v5 = [(CCUILabeledRoundButtonViewController *)self->_micButton isEnabled];
+  microphoneOn = [WeakRetained microphoneOn];
+  isEnabled = [(CCUILabeledRoundButtonViewController *)self->_micButton isEnabled];
 
-  if (v4 != v5 && self->_showsMicrophoneButton)
+  if (microphoneOn != isEnabled && self->_showsMicrophoneButton)
   {
     v6 = objc_loadWeakRetained(&self->_client);
-    v7 = [v6 microphoneOn];
+    microphoneOn2 = [v6 microphoneOn];
 
-    if (v7)
+    if (microphoneOn2)
     {
       if (__RPLogLevel > 1u || !os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -222,15 +222,15 @@ LABEL_11:
 - (void)updateHQLRState
 {
   WeakRetained = objc_loadWeakRetained(&self->_client);
-  v4 = [WeakRetained highQualityLocalRecordingOn];
-  v5 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton isEnabled];
+  highQualityLocalRecordingOn = [WeakRetained highQualityLocalRecordingOn];
+  isEnabled = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton isEnabled];
 
-  if (v4 != v5)
+  if (highQualityLocalRecordingOn != isEnabled)
   {
     v6 = objc_loadWeakRetained(&self->_client);
-    v7 = [v6 highQualityLocalRecordingOn];
+    highQualityLocalRecordingOn2 = [v6 highQualityLocalRecordingOn];
 
-    if (v7)
+    if (highQualityLocalRecordingOn2)
     {
       if (__RPLogLevel > 1u || !os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -269,12 +269,12 @@ LABEL_10:
   }
 }
 
-- (void)setAvailableExtensions:(id)a3
+- (void)setAvailableExtensions:(id)extensions
 {
-  v6 = a3;
-  if ([v6 count])
+  extensionsCopy = extensions;
+  if ([extensionsCopy count])
   {
-    if ([v6 count] && objc_msgSend(v6, "count") < 3)
+    if ([extensionsCopy count] && objc_msgSend(extensionsCopy, "count") < 3)
     {
       v4 = 1;
     }
@@ -293,8 +293,8 @@ LABEL_10:
   self->_currentMode = v4;
   [(RPControlCenterModuleBackgroundViewController *)self updateMicrophoneState];
   [(RPControlCenterModuleBackgroundViewController *)self updateHQLRState];
-  v5 = [(RPControlCenterModuleBackgroundViewController *)self view];
-  [v5 setNeedsLayout];
+  view = [(RPControlCenterModuleBackgroundViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewWillLayoutSubviews
@@ -323,11 +323,11 @@ LABEL_10:
   [(RPControlCenterModuleBackgroundViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   [(RPControlCenterModuleBackgroundViewController *)self updateDisclaimerLabelFont];
-  v4 = [(RPControlCenterModuleBackgroundViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(RPControlCenterModuleBackgroundViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)setupDisclaimerLabel
@@ -372,12 +372,12 @@ LABEL_10:
   v8 = v7;
   v10 = v9;
   v11 = +[UIDevice currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-  if (v12 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
-    v13 = [(RPControlCenterModuleBackgroundViewController *)self view];
-    [v13 bounds];
+    view = [(RPControlCenterModuleBackgroundViewController *)self view];
+    [view bounds];
     v4 = v14;
     v6 = v15;
     v8 = v16;
@@ -405,11 +405,11 @@ LABEL_10:
     v31 = 1024;
     v32 = v18;
     v33 = 2048;
-    v34 = [UIApp activeInterfaceOrientation];
+    activeInterfaceOrientation = [UIApp activeInterfaceOrientation];
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d portrait mode: %d, orientation: %ld", &v27, 0x22u);
   }
 
-  v20 = [(RPControlCenterModuleBackgroundViewController *)self view];
+  view2 = [(RPControlCenterModuleBackgroundViewController *)self view];
   v35.origin.x = v4;
   v35.origin.y = v6;
   v35.size.width = v8;
@@ -419,7 +419,7 @@ LABEL_10:
   v36.origin.y = v6;
   v36.size.width = v8;
   v36.size.height = v10;
-  [v20 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v36), 1.0}];
+  [view2 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v36), 1.0}];
   CGRectGetMinX(v37);
 
   v38.origin.x = v4;
@@ -430,8 +430,8 @@ LABEL_10:
   CGFloatIsValid();
   if (v18)
   {
-    v22 = [(RPControlCenterModuleBackgroundViewController *)self view];
-    [v22 safeAreaInsets];
+    view3 = [(RPControlCenterModuleBackgroundViewController *)self view];
+    [view3 safeAreaInsets];
 
     v39.origin.x = v4;
     v39.origin.y = v6;
@@ -530,8 +530,8 @@ LABEL_3:
 LABEL_11:
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(UILabel *)self->_disclaimerLabel font];
-    [v12 pointSize];
+    font = [(UILabel *)self->_disclaimerLabel font];
+    [font pointSize];
     v16 = 136446978;
     v17 = "[RPControlCenterModuleBackgroundViewController updateDisclaimerLabelFont]";
     v18 = 1024;
@@ -548,7 +548,7 @@ LABEL_11:
   [(UILabel *)disclaimerLabel setFont:v15];
 }
 
-- (void)micButtonPressed:(id)a3
+- (void)micButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_client);
   v5 = [WeakRetained microphoneOn] ^ 1;
@@ -571,10 +571,10 @@ LABEL_11:
   [(RPControlCenterModuleBackgroundViewController *)self setMicButtonSubtitle:v5];
 }
 
-- (void)setMicButtonSubtitle:(BOOL)a3
+- (void)setMicButtonSubtitle:(BOOL)subtitle
 {
   micButton = self->_micButton;
-  if (a3)
+  if (subtitle)
   {
     v4 = @"CONTROL_CENTER_MICROPHONE_ON";
   }
@@ -590,10 +590,10 @@ LABEL_11:
 
 - (void)updateMicrophoneButtonConstraints
 {
-  v3 = [(CCUILabeledRoundButtonViewController *)self->_micButton view];
-  [v3 sizeToFit];
-  v4 = [(RPControlCenterModuleBackgroundViewController *)self view];
-  [v4 bounds];
+  view = [(CCUILabeledRoundButtonViewController *)self->_micButton view];
+  [view sizeToFit];
+  view2 = [(RPControlCenterModuleBackgroundViewController *)self view];
+  [view2 bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -619,11 +619,11 @@ LABEL_11:
     v36 = 1024;
     v37 = v13;
     v38 = 2048;
-    v39 = [UIApp activeInterfaceOrientation];
+    activeInterfaceOrientation = [UIApp activeInterfaceOrientation];
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d portrait mode: %d, orientation: %ld", buf, 0x22u);
   }
 
-  v15 = [(RPControlCenterModuleBackgroundViewController *)self view];
+  view3 = [(RPControlCenterModuleBackgroundViewController *)self view];
   v40.origin.x = v6;
   v40.origin.y = v8;
   v40.size.width = v10;
@@ -634,7 +634,7 @@ LABEL_11:
   v41.size.width = v10;
   v41.size.height = v12;
   v17 = 0.0;
-  [v15 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v41), 1.0}];
+  [view3 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v41), 1.0}];
   MaxX = CGRectGetMaxX(v42);
 
   v43.origin.x = v6;
@@ -679,12 +679,12 @@ LABEL_11:
   }
 
   [(RPControlCenterModuleBackgroundViewController *)self CCUIMenuModuleViewWidth];
-  [v3 frame];
+  [view frame];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   [(RPControlCenterModuleBackgroundViewController *)self _determineButtonWidth];
-  [v3 setFrame:{v24, v26, v29, v28}];
+  [view setFrame:{v24, v26, v29, v28}];
   v30 = +[RPFeatureFlagUtility sharedInstance];
   [v30 screenRecordingCameraPip];
 
@@ -699,7 +699,7 @@ LABEL_11:
   v48.size.height = v12;
   CGRectGetHeight(v48);
   UIPointRoundToViewScale();
-  [v3 setCenter:?];
+  [view setCenter:?];
 }
 
 - (void)setupMicrophoneButton
@@ -729,26 +729,26 @@ LABEL_11:
   v8 = objc_loadWeakRetained(&self->_client);
   -[CCUILabeledRoundButtonViewController setEnabled:](v7, "setEnabled:", [v8 microphoneOn]);
 
-  v9 = [(CCUILabeledRoundButtonViewController *)self->_micButton button];
-  [v9 setUserInteractionEnabled:1];
+  button = [(CCUILabeledRoundButtonViewController *)self->_micButton button];
+  [button setUserInteractionEnabled:1];
 
-  v10 = [(CCUILabeledRoundButtonViewController *)self->_micButton button];
-  [v10 addTarget:self action:"micButtonPressed:" forEvents:64];
+  button2 = [(CCUILabeledRoundButtonViewController *)self->_micButton button];
+  [button2 addTarget:self action:"micButtonPressed:" forEvents:64];
 
   [(CCUILabeledRoundButtonViewController *)self->_micButton setUseTintedGlassAppearance:1];
   [(RPControlCenterModuleBackgroundViewController *)self updateMicrophoneButtonConstraints];
   if (!self->_showsMicrophoneButton)
   {
-    v11 = [(CCUILabeledRoundButtonViewController *)self->_micButton view];
-    [v11 setAlpha:0.0];
+    view = [(CCUILabeledRoundButtonViewController *)self->_micButton view];
+    [view setAlpha:0.0];
   }
 
   v12 = self->_micButton;
-  v13 = [(RPControlCenterModuleBackgroundViewController *)self _determineButtonCategorySizeThreshold];
-  [(CCUILabeledRoundButtonViewController *)v12 setContentSizeCategoryThreshold:v13];
+  _determineButtonCategorySizeThreshold = [(RPControlCenterModuleBackgroundViewController *)self _determineButtonCategorySizeThreshold];
+  [(CCUILabeledRoundButtonViewController *)v12 setContentSizeCategoryThreshold:_determineButtonCategorySizeThreshold];
 }
 
-- (void)hqlrButtonPressed:(id)a3
+- (void)hqlrButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_client);
   v5 = [WeakRetained highQualityLocalRecordingOn] ^ 1;
@@ -771,10 +771,10 @@ LABEL_11:
   [(RPControlCenterModuleBackgroundViewController *)self setHQLRButtonSubtitle:v5];
 }
 
-- (void)setHQLRButtonSubtitle:(BOOL)a3
+- (void)setHQLRButtonSubtitle:(BOOL)subtitle
 {
   HQLRButton = self->_HQLRButton;
-  if (a3)
+  if (subtitle)
   {
     v4 = @"CONTROL_CENTER_MICROPHONE_ON";
   }
@@ -790,10 +790,10 @@ LABEL_11:
 
 - (void)updateHQLRButtonConstraints
 {
-  v3 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton view];
-  [v3 sizeToFit];
-  v4 = [(RPControlCenterModuleBackgroundViewController *)self view];
-  [v4 bounds];
+  view = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton view];
+  [view sizeToFit];
+  view2 = [(RPControlCenterModuleBackgroundViewController *)self view];
+  [view2 bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -819,11 +819,11 @@ LABEL_11:
     v35 = 1024;
     v36 = v13;
     v37 = 2048;
-    v38 = [UIApp activeInterfaceOrientation];
+    activeInterfaceOrientation = [UIApp activeInterfaceOrientation];
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d portrait mode: %d, orientation: %ld", buf, 0x22u);
   }
 
-  v15 = [(RPControlCenterModuleBackgroundViewController *)self view];
+  view3 = [(RPControlCenterModuleBackgroundViewController *)self view];
   v39.origin.x = v6;
   v39.origin.y = v8;
   v39.size.width = v10;
@@ -834,7 +834,7 @@ LABEL_11:
   v40.size.width = v10;
   v40.size.height = v12;
   v17 = 0.0;
-  [v15 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v40), 1.0}];
+  [view3 _inscribedRectInBoundingPathByInsettingRect:10 onEdges:1 withOptions:{0.0, MidY, CGRectGetWidth(v40), 1.0}];
   MaxX = CGRectGetMaxX(v41);
 
   v42.origin.x = v6;
@@ -879,12 +879,12 @@ LABEL_11:
   }
 
   [(RPControlCenterModuleBackgroundViewController *)self CCUIMenuModuleViewWidth];
-  [v3 frame];
+  [view frame];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   [(RPControlCenterModuleBackgroundViewController *)self _determineButtonWidth];
-  [v3 setFrame:{v24, v26, v29, v28}];
+  [view setFrame:{v24, v26, v29, v28}];
   v46.origin.x = v6;
   v46.origin.y = v8;
   v46.size.width = v10;
@@ -896,7 +896,7 @@ LABEL_11:
   v47.size.height = v12;
   CGRectGetHeight(v47);
   UIPointRoundToViewScale();
-  [v3 setCenter:?];
+  [view setCenter:?];
 }
 
 - (void)setupHQLRButton
@@ -913,20 +913,20 @@ LABEL_11:
   v7 = objc_loadWeakRetained(&self->_client);
   -[CCUILabeledRoundButtonViewController setEnabled:](v6, "setEnabled:", [v7 highQualityLocalRecordingOn]);
 
-  v8 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
-  [v8 setUserInteractionEnabled:1];
+  button = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
+  [button setUserInteractionEnabled:1];
 
-  v9 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
-  [v9 addTarget:self action:"hqlrButtonPressed:" forEvents:64];
+  button2 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
+  [button2 addTarget:self action:"hqlrButtonPressed:" forEvents:64];
 
   [(CCUILabeledRoundButtonViewController *)self->_HQLRButton setUseTintedGlassAppearance:1];
   [(RPControlCenterModuleBackgroundViewController *)self updateHQLRButtonConstraints];
-  v10 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton view];
-  [v10 setAlpha:1.0];
+  view = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton view];
+  [view setAlpha:1.0];
 
   v11 = self->_HQLRButton;
-  v12 = [(RPControlCenterModuleBackgroundViewController *)self _determineButtonCategorySizeThreshold];
-  [(CCUILabeledRoundButtonViewController *)v11 setContentSizeCategoryThreshold:v12];
+  _determineButtonCategorySizeThreshold = [(RPControlCenterModuleBackgroundViewController *)self _determineButtonCategorySizeThreshold];
+  [(CCUILabeledRoundButtonViewController *)v11 setContentSizeCategoryThreshold:_determineButtonCategorySizeThreshold];
 }
 
 - (void)sessionIsStarting
@@ -940,11 +940,11 @@ LABEL_11:
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v5, 0x12u);
   }
 
-  v3 = [(CCUILabeledRoundButtonViewController *)self->_micButton button];
-  [v3 setEnabled:0];
+  button = [(CCUILabeledRoundButtonViewController *)self->_micButton button];
+  [button setEnabled:0];
 
-  v4 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
-  [v4 setEnabled:0];
+  button2 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
+  [button2 setEnabled:0];
 }
 
 - (void)sessionDidFailToStart
@@ -958,11 +958,11 @@ LABEL_11:
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v5, 0x12u);
   }
 
-  v3 = [(CCUILabeledRoundButtonViewController *)self->_micButton button];
-  [v3 setEnabled:1];
+  button = [(CCUILabeledRoundButtonViewController *)self->_micButton button];
+  [button setEnabled:1];
 
-  v4 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
-  [v4 setEnabled:1];
+  button2 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
+  [button2 setEnabled:1];
 }
 
 - (void)didStartRecordingOrBroadcast
@@ -976,11 +976,11 @@ LABEL_11:
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v5, 0x12u);
   }
 
-  v3 = [(CCUILabeledRoundButtonViewController *)self->_micButton button];
-  [v3 setEnabled:1];
+  button = [(CCUILabeledRoundButtonViewController *)self->_micButton button];
+  [button setEnabled:1];
 
-  v4 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
-  [v4 setEnabled:0];
+  button2 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
+  [button2 setEnabled:0];
 }
 
 - (void)didStopRecordingOrBroadcast
@@ -994,14 +994,14 @@ LABEL_11:
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v4, 0x12u);
   }
 
-  v3 = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
-  [v3 setEnabled:1];
+  button = [(CCUILabeledRoundButtonViewController *)self->_HQLRButton button];
+  [button setEnabled:1];
 }
 
-- (void)didUpdateClientStateWithAvailableExtensions:(id)a3 completionHandler:(id)a4
+- (void)didUpdateClientStateWithAvailableExtensions:(id)extensions completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  extensionsCopy = extensions;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136446466;
@@ -1011,7 +1011,7 @@ LABEL_11:
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d ", &v8, 0x12u);
   }
 
-  [(RPControlCenterModuleBackgroundViewController *)self setAvailableExtensions:v6];
+  [(RPControlCenterModuleBackgroundViewController *)self setAvailableExtensions:extensionsCopy];
   [(RPControlCenterModuleBackgroundViewController *)self updateMicrophoneState];
   [(RPControlCenterModuleBackgroundViewController *)self updateHQLRState];
 }
@@ -1034,18 +1034,18 @@ LABEL_11:
 
 - (double)_determineButtonWidth
 {
-  v3 = [(RPControlCenterModuleBackgroundViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(RPControlCenterModuleBackgroundViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
     return 85.0;
   }
 
-  v6 = [(RPControlCenterModuleBackgroundViewController *)self _isIPhoneLandscape];
+  _isIPhoneLandscape = [(RPControlCenterModuleBackgroundViewController *)self _isIPhoneLandscape];
   result = 212.0;
-  if (v6)
+  if (_isIPhoneLandscape)
   {
     return 173.0;
   }
@@ -1063,10 +1063,10 @@ LABEL_11:
   else
   {
     v3 = +[RPFeatureFlagUtility sharedInstance];
-    v4 = [v3 screenRecordingCameraPip];
+    screenRecordingCameraPip = [v3 screenRecordingCameraPip];
 
     v2 = &UIContentSizeCategoryAccessibilityMedium;
-    if (v4)
+    if (screenRecordingCameraPip)
     {
       v2 = &UIContentSizeCategoryExtraExtraExtraLarge;
     }

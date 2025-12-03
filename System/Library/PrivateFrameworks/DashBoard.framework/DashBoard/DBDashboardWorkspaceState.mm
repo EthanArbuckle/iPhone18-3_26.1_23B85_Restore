@@ -1,9 +1,9 @@
 @interface DBDashboardWorkspaceState
 - (NSString)activeBundleIdentifier;
 - (NSString)description;
-- (id)_bundleIdentifierFromEntity:(id)a3;
-- (id)_initWithState:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_bundleIdentifierFromEntity:(id)entity;
+- (id)_initWithState:(id)state;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DBDashboardWorkspaceState
@@ -13,9 +13,9 @@
   v3 = [objc_alloc(MEMORY[0x277CF0C00]) initWithObject:self];
   v4 = [v3 appendObject:self->_baseEntity withName:@"baseEntity" skipIfNil:1];
   v5 = [v3 appendObject:self->_stackedEntity withName:@"stackedEntity" skipIfNil:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (NSString)activeBundleIdentifier
@@ -37,17 +37,17 @@
   return v6;
 }
 
-- (id)_initWithState:(id)a3
+- (id)_initWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v10.receiver = self;
   v10.super_class = DBDashboardWorkspaceState;
   v5 = [(DBDashboardWorkspaceState *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_baseEntity, v4[1]);
-    v7 = [v4[2] copy];
+    objc_storeStrong(&v5->_baseEntity, stateCopy[1]);
+    v7 = [stateCopy[2] copy];
     stackedEntity = v6->_stackedEntity;
     v6->_stackedEntity = v7;
   }
@@ -55,16 +55,16 @@
   return v6;
 }
 
-- (id)_bundleIdentifierFromEntity:(id)a3
+- (id)_bundleIdentifierFromEntity:(id)entity
 {
-  v3 = a3;
+  entityCopy = entity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 applicationToProxy];
+    applicationToProxy = [entityCopy applicationToProxy];
 LABEL_5:
-    v5 = v4;
-    v6 = [v4 bundleIdentifier];
+    v5 = applicationToProxy;
+    bundleIdentifier = [applicationToProxy bundleIdentifier];
 
     goto LABEL_6;
   }
@@ -72,27 +72,27 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 application];
+    applicationToProxy = [entityCopy application];
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 identifier];
+    bundleIdentifier = [entityCopy identifier];
   }
 
   else
   {
-    v6 = 0;
+    bundleIdentifier = 0;
   }
 
 LABEL_6:
 
-  return v6;
+  return bundleIdentifier;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DBMutableDashboardWorkspaceState alloc];
 

@@ -1,22 +1,22 @@
 @interface CKTranscriptScrollIntentEntryViewChangedTrigger
 - (CKTranscriptScrollIntentEntryViewChangedTrigger)init;
-- (CKTranscriptScrollIntentEntryViewChangedTrigger)initWithEntryView:(id)a3 isTextChange:(BOOL)a4 isShelfChange:(BOOL)a5 isSendLaterPluginChange:(BOOL)a6;
-- (id)updateRequestWithUpdateContext:(id)a3;
+- (CKTranscriptScrollIntentEntryViewChangedTrigger)initWithEntryView:(id)view isTextChange:(BOOL)change isShelfChange:(BOOL)shelfChange isSendLaterPluginChange:(BOOL)pluginChange;
+- (id)updateRequestWithUpdateContext:(id)context;
 @end
 
 @implementation CKTranscriptScrollIntentEntryViewChangedTrigger
 
-- (CKTranscriptScrollIntentEntryViewChangedTrigger)initWithEntryView:(id)a3 isTextChange:(BOOL)a4 isShelfChange:(BOOL)a5 isSendLaterPluginChange:(BOOL)a6
+- (CKTranscriptScrollIntentEntryViewChangedTrigger)initWithEntryView:(id)view isTextChange:(BOOL)change isShelfChange:(BOOL)shelfChange isSendLaterPluginChange:(BOOL)pluginChange
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = [v10 sendLaterPluginInfo];
-  if (v11)
+  changeCopy = change;
+  viewCopy = view;
+  sendLaterPluginInfo = [viewCopy sendLaterPluginInfo];
+  if (sendLaterPluginInfo)
   {
 
     v12 = 1;
     *(&self->super.isa + OBJC_IVAR___CKTranscriptScrollIntentEntryViewChangedTrigger_hasSendLaterPluginInfo) = 1;
-    if (v8)
+    if (changeCopy)
     {
       goto LABEL_7;
     }
@@ -25,17 +25,17 @@
   }
 
   *(&self->super.isa + OBJC_IVAR___CKTranscriptScrollIntentEntryViewChangedTrigger_hasSendLaterPluginInfo) = 0;
-  if (!v8)
+  if (!changeCopy)
   {
 LABEL_6:
-    v12 = a5 || a6;
+    v12 = shelfChange || pluginChange;
     goto LABEL_7;
   }
 
   v12 = 1;
 LABEL_7:
   *(&self->super.isa + OBJC_IVAR___CKTranscriptScrollIntentEntryViewChangedTrigger_hadContentChange) = v12;
-  *(&self->super.isa + OBJC_IVAR___CKTranscriptScrollIntentEntryViewChangedTrigger_isSendLaterPluginChange) = a6;
+  *(&self->super.isa + OBJC_IVAR___CKTranscriptScrollIntentEntryViewChangedTrigger_isSendLaterPluginChange) = pluginChange;
   v15.receiver = self;
   v15.super_class = CKTranscriptScrollIntentEntryViewChangedTrigger;
   v13 = [(CKTranscriptScrollIntentEntryViewChangedTrigger *)&v15 init];
@@ -43,11 +43,11 @@ LABEL_7:
   return v13;
 }
 
-- (id)updateRequestWithUpdateContext:(id)a3
+- (id)updateRequestWithUpdateContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_190838B10(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_190838B10(contextCopy);
 
   return v6;
 }

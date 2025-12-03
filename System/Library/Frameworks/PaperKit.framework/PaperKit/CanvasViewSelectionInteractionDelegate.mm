@@ -1,92 +1,92 @@
 @interface CanvasViewSelectionInteractionDelegate
-- (BOOL)selectionInteraction:(id)a3 canPerformAction:(SEL)a4 withSender:(id)a5 inAttachment:(id)a6;
-- (BOOL)selectionInteraction:(id)a3 didLongPressElement:(id)a4 withGesture:(id)a5 inAttachment:(id)a6;
-- (BOOL)selectionInteraction:(id)a3 handleLassoSelection:(id)a4 strokes:(id)a5 inAttachment:(id)a6;
-- (BOOL)selectionInteraction:(id)a3 handleTapOnCanvasAtLocation:(CGPoint)a4 inAttachment:(id)a5;
-- (BOOL)selectionInteraction:(id)a3 selectionContainsPoint:(CGPoint)a4 inAttachment:(id)a5;
-- (BOOL)selectionInteractionShouldBegin:(id)a3 atPoint:(CGPoint)a4 forEvent:(id)a5 orGestureRecognizer:(id)a6;
-- (BOOL)selectionInteractionShouldForwardToElements:(id)a3 atPoint:(CGPoint)a4 forEvent:(id)a5;
+- (BOOL)selectionInteraction:(id)interaction canPerformAction:(SEL)action withSender:(id)sender inAttachment:(id)attachment;
+- (BOOL)selectionInteraction:(id)interaction didLongPressElement:(id)element withGesture:(id)gesture inAttachment:(id)attachment;
+- (BOOL)selectionInteraction:(id)interaction handleLassoSelection:(id)selection strokes:(id)strokes inAttachment:(id)attachment;
+- (BOOL)selectionInteraction:(id)interaction handleTapOnCanvasAtLocation:(CGPoint)location inAttachment:(id)attachment;
+- (BOOL)selectionInteraction:(id)interaction selectionContainsPoint:(CGPoint)point inAttachment:(id)attachment;
+- (BOOL)selectionInteractionShouldBegin:(id)begin atPoint:(CGPoint)point forEvent:(id)event orGestureRecognizer:(id)recognizer;
+- (BOOL)selectionInteractionShouldForwardToElements:(id)elements atPoint:(CGPoint)point forEvent:(id)event;
 - (_TtC8PaperKit38CanvasViewSelectionInteractionDelegate)init;
-- (const)selectionInteraction:(id)a3 pathForElement:(id)a4 inAttachment:(id)a5;
-- (id)selectionInteraction:(id)a3 contextMenuInteraction:(id)a4 configurationForElement:(id)a5 inAttachment:(id)a6;
-- (id)selectionInteraction:(id)a3 contextMenuInteraction:(id)a4 previewForHighlightingMenuWithConfiguration:(id)a5 forElement:(id)a6 inAttachment:(id)a7;
-- (id)selectionInteraction:(id)a3 didDuplicateElements:(id)a4 inAttachment:(id)a5;
-- (id)selectionInteraction:(id)a3 elementsForSpaceInsertedAtPoint:(CGPoint)a4 inAttachment:(id)a5;
-- (id)selectionInteraction:(id)a3 pasteboardRepresentationsForElements:(id)a4 strokes:(id)a5 inAttachment:(id)a6;
-- (id)selectionInteraction:(id)a3 requestElementsInPath:(id)a4 inAttachment:(id)a5;
-- (id)selectionInteraction:(id)a3 requestElementsInRect:(CGRect)a4 inAttachment:(id)a5;
-- (void)selectionInteraction:(id)a3 clearSelectionInAttachment:(id)a4;
-- (void)selectionInteraction:(id)a3 didClearSelectionForElements:(id)a4 inAttachment:(id)a5;
-- (void)selectionInteraction:(id)a3 didDeleteElements:(id)a4 inAttachment:(id)a5;
-- (void)selectionInteraction:(id)a3 didDragElements:(id)a4 withTransform:(CGAffineTransform *)a5 inAttachment:(id)a6;
-- (void)selectionInteraction:(id)a3 didDropItemProvider:(id)a4 inAttachment:(id)a5 withCompletion:(id)a6;
-- (void)selectionInteraction:(id)a3 didEndInsertSpaceInAttachment:(id)a4;
-- (void)selectionInteraction:(id)a3 didSelectElements:(id)a4 inAttachment:(id)a5;
-- (void)selectionInteraction:(id)a3 didSelectStrokes:(id)a4 selectionType:(int64_t)a5 inAttachment:(id)a6;
-- (void)selectionInteraction:(id)a3 didTapElement:(id)a4 withGesture:(id)a5 inAttachment:(id)a6;
-- (void)selectionInteraction:(id)a3 dragInteractionWillEndForElements:(id)a4 withOperation:(unint64_t)a5 inAttachment:(id)a6;
-- (void)selectionInteraction:(id)a3 handleDeleteForTextStrokes:(id)a4 inAttachment:(id)a5;
-- (void)selectionInteraction:(id)a3 handleDeleteForTextStrokes:(id)a4 nonTextStrokes:(id)a5 inAttachment:(id)a6;
-- (void)selectionInteraction:(id)a3 handleGenerationToolForSelectedStrokes:(id)a4 inBounds:(CGRect)a5 inAttachment:(id)a6;
-- (void)selectionInteraction:(id)a3 handleTapOnCanvasAtLocation:(CGPoint)a4 hitStrokes:(id)a5 inAttachment:(id)a6;
-- (void)selectionInteraction:(id)a3 insertSpaceDidMove:(double)a4 inAttachment:(id)a5;
-- (void)selectionInteraction:(id)a3 renderPreviewForElements:(id)a4 inContext:(CGContext *)a5 withConfig:(id)a6 inAttachment:(id)a7 withCompletion:(id)a8;
-- (void)selectionInteraction:(id)a3 replaceStrokes:(id)a4 withString:(id)a5 proofreadingItem:(id)a6 inBounds:(CGRect)a7 inAttachment:(id)a8;
-- (void)selectionInteraction:(id)a3 willBeginInsertSpaceInAttachment:(id)a4;
-- (void)selectionInteractionDidPaste:(id)a3 atPoint:(CGPoint)a4 inAttachment:(id)a5;
+- (const)selectionInteraction:(id)interaction pathForElement:(id)element inAttachment:(id)attachment;
+- (id)selectionInteraction:(id)interaction contextMenuInteraction:(id)menuInteraction configurationForElement:(id)element inAttachment:(id)attachment;
+- (id)selectionInteraction:(id)interaction contextMenuInteraction:(id)menuInteraction previewForHighlightingMenuWithConfiguration:(id)configuration forElement:(id)element inAttachment:(id)attachment;
+- (id)selectionInteraction:(id)interaction didDuplicateElements:(id)elements inAttachment:(id)attachment;
+- (id)selectionInteraction:(id)interaction elementsForSpaceInsertedAtPoint:(CGPoint)point inAttachment:(id)attachment;
+- (id)selectionInteraction:(id)interaction pasteboardRepresentationsForElements:(id)elements strokes:(id)strokes inAttachment:(id)attachment;
+- (id)selectionInteraction:(id)interaction requestElementsInPath:(id)path inAttachment:(id)attachment;
+- (id)selectionInteraction:(id)interaction requestElementsInRect:(CGRect)rect inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction clearSelectionInAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction didClearSelectionForElements:(id)elements inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction didDeleteElements:(id)elements inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction didDragElements:(id)elements withTransform:(CGAffineTransform *)transform inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction didDropItemProvider:(id)provider inAttachment:(id)attachment withCompletion:(id)completion;
+- (void)selectionInteraction:(id)interaction didEndInsertSpaceInAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction didSelectElements:(id)elements inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction didSelectStrokes:(id)strokes selectionType:(int64_t)type inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction didTapElement:(id)element withGesture:(id)gesture inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction dragInteractionWillEndForElements:(id)elements withOperation:(unint64_t)operation inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction handleDeleteForTextStrokes:(id)strokes inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction handleDeleteForTextStrokes:(id)strokes nonTextStrokes:(id)textStrokes inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction handleGenerationToolForSelectedStrokes:(id)strokes inBounds:(CGRect)bounds inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction handleTapOnCanvasAtLocation:(CGPoint)location hitStrokes:(id)strokes inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction insertSpaceDidMove:(double)move inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction renderPreviewForElements:(id)elements inContext:(CGContext *)context withConfig:(id)config inAttachment:(id)attachment withCompletion:(id)completion;
+- (void)selectionInteraction:(id)interaction replaceStrokes:(id)strokes withString:(id)string proofreadingItem:(id)item inBounds:(CGRect)bounds inAttachment:(id)attachment;
+- (void)selectionInteraction:(id)interaction willBeginInsertSpaceInAttachment:(id)attachment;
+- (void)selectionInteractionDidPaste:(id)paste atPoint:(CGPoint)point inAttachment:(id)attachment;
 @end
 
 @implementation CanvasViewSelectionInteractionDelegate
 
-- (BOOL)selectionInteraction:(id)a3 handleLassoSelection:(id)a4 strokes:(id)a5 inAttachment:(id)a6
+- (BOOL)selectionInteraction:(id)interaction handleLassoSelection:(id)selection strokes:(id)strokes inAttachment:(id)attachment
 {
   type metadata accessor for UUID();
   _s9Coherence9CRKeyPathVACSQAAWlTm_0(&lazy protocol witness table cache variable for type UUID and conformance UUID, MEMORY[0x1E69695A8]);
   v10 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = self;
-  LOBYTE(a4) = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:handleLassoSelection:strokes:inAttachment:)(a4, v10);
+  interactionCopy = interaction;
+  selectionCopy = selection;
+  attachmentCopy = attachment;
+  selfCopy = self;
+  LOBYTE(selection) = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:handleLassoSelection:strokes:inAttachment:)(selection, v10);
 
-  return a4 & 1;
+  return selection & 1;
 }
 
-- (BOOL)selectionInteractionShouldBegin:(id)a3 atPoint:(CGPoint)a4 forEvent:(id)a5 orGestureRecognizer:(id)a6
+- (BOOL)selectionInteractionShouldBegin:(id)begin atPoint:(CGPoint)point forEvent:(id)event orGestureRecognizer:(id)recognizer
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  CanvasViewSelectionInteractionDelegate.selectionInteractionShouldBegin(_:at:for:orGestureRecognizer:)(v11, a5, a6, x, y);
-  LOBYTE(a6) = v15;
+  y = point.y;
+  x = point.x;
+  beginCopy = begin;
+  eventCopy = event;
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  CanvasViewSelectionInteractionDelegate.selectionInteractionShouldBegin(_:at:for:orGestureRecognizer:)(beginCopy, event, recognizer, x, y);
+  LOBYTE(recognizer) = v15;
 
-  return a6 & 1;
+  return recognizer & 1;
 }
 
-- (BOOL)selectionInteractionShouldForwardToElements:(id)a3 atPoint:(CGPoint)a4 forEvent:(id)a5
+- (BOOL)selectionInteractionShouldForwardToElements:(id)elements atPoint:(CGPoint)point forEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  LOBYTE(a5) = CanvasViewSelectionInteractionDelegate.selectionInteractionShouldForwardToElements(_:at:for:)(v9, a5, x, y);
+  y = point.y;
+  x = point.x;
+  elementsCopy = elements;
+  eventCopy = event;
+  selfCopy = self;
+  LOBYTE(event) = CanvasViewSelectionInteractionDelegate.selectionInteractionShouldForwardToElements(_:at:for:)(elementsCopy, event, x, y);
 
-  return a5 & 1;
+  return event & 1;
 }
 
-- (id)selectionInteraction:(id)a3 requestElementsInRect:(CGRect)a4 inAttachment:(id)a5
+- (id)selectionInteraction:(id)interaction requestElementsInRect:(CGRect)rect inAttachment:(id)attachment
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
-  v13 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
   v14 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:requestElementsIn:inAttachment:)(x, y, width, height);
 
   if (v14)
@@ -102,13 +102,13 @@
   return v15.super.isa;
 }
 
-- (id)selectionInteraction:(id)a3 requestElementsInPath:(id)a4 inAttachment:(id)a5
+- (id)selectionInteraction:(id)interaction requestElementsInPath:(id)path inAttachment:(id)attachment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:requestElementsIn:inAttachment:)(v9);
+  interactionCopy = interaction;
+  pathCopy = path;
+  attachmentCopy = attachment;
+  selfCopy = self;
+  v12 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:requestElementsIn:inAttachment:)(pathCopy);
 
   if (v12)
   {
@@ -123,10 +123,10 @@
   return v13.super.isa;
 }
 
-- (const)selectionInteraction:(id)a3 pathForElement:(id)a4 inAttachment:(id)a5
+- (const)selectionInteraction:(id)interaction pathForElement:(id)element inAttachment:(id)attachment
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   v13 = &type metadata for PencilAndPaperFeatureFlags;
@@ -148,7 +148,7 @@
     v9 = v8;
     v10 = (*((*MEMORY[0x1E69E7D40] & v8->super.isa) + 0x1A8))();
 
-    v6 = v9;
+    selfCopy = v9;
   }
 
   __swift_destroy_boxed_opaque_existential_0(v15);
@@ -156,29 +156,29 @@
   return v10;
 }
 
-- (void)selectionInteraction:(id)a3 didSelectElements:(id)a4 inAttachment:(id)a5
+- (void)selectionInteraction:(id)interaction didSelectElements:(id)elements inAttachment:(id)attachment
 {
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didSelectElements:inAttachment:)(v9, v8);
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
+  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didSelectElements:inAttachment:)(interactionCopy, v8);
 }
 
-- (void)selectionInteraction:(id)a3 didDragElements:(id)a4 withTransform:(CGAffineTransform *)a5 inAttachment:(id)a6
+- (void)selectionInteraction:(id)interaction didDragElements:(id)elements withTransform:(CGAffineTransform *)transform inAttachment:(id)attachment
 {
-  v9 = *&a5->c;
-  v14[0] = *&a5->a;
+  v9 = *&transform->c;
+  v14[0] = *&transform->a;
   v14[1] = v9;
-  v14[2] = *&a5->tx;
+  v14[2] = *&transform->tx;
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a6;
-  v13 = self;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
   specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didDragElements:with:inAttachment:)(v10, v14);
 }
 
-- (void)selectionInteraction:(id)a3 willBeginInsertSpaceInAttachment:(id)a4
+- (void)selectionInteraction:(id)interaction willBeginInsertSpaceInAttachment:(id)attachment
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -186,22 +186,22 @@
     v8 = MEMORY[0x1E69E7D40];
     v9 = Strong;
     v10 = (*((*MEMORY[0x1E69E7D40] & *Strong) + 0x90))();
-    v11 = a3;
-    v12 = a4;
-    v13 = self;
+    interactionCopy = interaction;
+    attachmentCopy = attachment;
+    selfCopy = self;
 
     if (v10)
     {
       (*((*v8 & v10->super.isa) + 0x828))();
 
-      v11 = v12;
-      v12 = v13;
-      v13 = v10;
+      interactionCopy = attachmentCopy;
+      attachmentCopy = selfCopy;
+      selfCopy = v10;
     }
   }
 }
 
-- (void)selectionInteraction:(id)a3 insertSpaceDidMove:(double)a4 inAttachment:(id)a5
+- (void)selectionInteraction:(id)interaction insertSpaceDidMove:(double)move inAttachment:(id)attachment
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -209,22 +209,22 @@
     v10 = MEMORY[0x1E69E7D40];
     v11 = Strong;
     v12 = (*((*MEMORY[0x1E69E7D40] & *Strong) + 0x90))();
-    v13 = a3;
-    v14 = a5;
-    v15 = self;
+    interactionCopy = interaction;
+    attachmentCopy = attachment;
+    selfCopy = self;
 
     if (v12)
     {
-      (*((*v10 & v12->super.isa) + 0x830))(a4);
+      (*((*v10 & v12->super.isa) + 0x830))(move);
 
-      v13 = v14;
-      v14 = v15;
-      v15 = v12;
+      interactionCopy = attachmentCopy;
+      attachmentCopy = selfCopy;
+      selfCopy = v12;
     }
   }
 }
 
-- (void)selectionInteraction:(id)a3 didEndInsertSpaceInAttachment:(id)a4
+- (void)selectionInteraction:(id)interaction didEndInsertSpaceInAttachment:(id)attachment
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -232,43 +232,43 @@
     v8 = MEMORY[0x1E69E7D40];
     v9 = Strong;
     v10 = (*((*MEMORY[0x1E69E7D40] & *Strong) + 0x90))();
-    v11 = a3;
-    v12 = a4;
-    v13 = self;
+    interactionCopy = interaction;
+    attachmentCopy = attachment;
+    selfCopy = self;
 
     if (v10)
     {
       (*((*v8 & v10->super.isa) + 0x838))(0);
 
-      v11 = v12;
-      v12 = v13;
-      v13 = v10;
+      interactionCopy = attachmentCopy;
+      attachmentCopy = selfCopy;
+      selfCopy = v10;
     }
   }
 }
 
-- (void)selectionInteraction:(id)a3 didClearSelectionForElements:(id)a4 inAttachment:(id)a5
+- (void)selectionInteraction:(id)interaction didClearSelectionForElements:(id)elements inAttachment:(id)attachment
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = self;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
   specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didClearSelectionForElements:inAttachment:)();
 }
 
-- (void)selectionInteraction:(id)a3 clearSelectionInAttachment:(id)a4
+- (void)selectionInteraction:(id)interaction clearSelectionInAttachment:(id)attachment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
   specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:clearSelectionInAttachment:)();
 }
 
-- (BOOL)selectionInteraction:(id)a3 canPerformAction:(SEL)a4 withSender:(id)a5 inAttachment:(id)a6
+- (BOOL)selectionInteraction:(id)interaction canPerformAction:(SEL)action withSender:(id)sender inAttachment:(id)attachment
 {
-  v8 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v9 = a6;
-  v10 = self;
+  attachmentCopy = attachment;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   v11 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:canPerformAction:withSender:inAttachment:)();
@@ -277,15 +277,15 @@
   return v11 & 1;
 }
 
-- (id)selectionInteraction:(id)a3 pasteboardRepresentationsForElements:(id)a4 strokes:(id)a5 inAttachment:(id)a6
+- (id)selectionInteraction:(id)interaction pasteboardRepresentationsForElements:(id)elements strokes:(id)strokes inAttachment:(id)attachment
 {
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   type metadata accessor for UUID();
   _s9Coherence9CRKeyPathVACSQAAWlTm_0(&lazy protocol witness table cache variable for type UUID and conformance UUID, MEMORY[0x1E69695A8]);
   v10 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a6;
-  v13 = self;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
   v14 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:pasteboardRepresentationsForElements:strokes:inAttachment:)(v9, v10);
 
   if (v14)
@@ -302,17 +302,17 @@
   return v15.super.isa;
 }
 
-- (void)selectionInteractionDidPaste:(id)a3 atPoint:(CGPoint)a4 inAttachment:(id)a5
+- (void)selectionInteractionDidPaste:(id)paste atPoint:(CGPoint)point inAttachment:(id)attachment
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
+  y = point.y;
+  x = point.x;
+  pasteCopy = paste;
+  attachmentCopy = attachment;
+  selfCopy = self;
   specialized CanvasViewSelectionInteractionDelegate.selectionInteractionDidPaste(_:at:in:)(x, y);
 }
 
-- (void)selectionInteraction:(id)a3 didDeleteElements:(id)a4 inAttachment:(id)a5
+- (void)selectionInteraction:(id)interaction didDeleteElements:(id)elements inAttachment:(id)attachment
 {
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = self + OBJC_IVAR____TtC8PaperKit38CanvasViewSelectionInteractionDelegate_containerView;
@@ -322,7 +322,7 @@
     v9 = Strong;
     v10 = *(v7 + 1);
     ObjectType = swift_getObjectType();
-    v15 = self;
+    selfCopy = self;
     v12 = specialized _arrayForceCast<A, B>(_:)(v6);
 
     v13 = _sShyShyxGqd__nc7ElementQyd__RszSTRd__lufC9Coherence13WeakTagged_10Vy8PaperKit0d6CanvasA0VG_SayAJGTt0g5Tf4g_n(v12);
@@ -336,12 +336,12 @@
   }
 }
 
-- (id)selectionInteraction:(id)a3 didDuplicateElements:(id)a4 inAttachment:(id)a5
+- (id)selectionInteraction:(id)interaction didDuplicateElements:(id)elements inAttachment:(id)attachment
 {
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
   v12 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didDuplicateElements:inAttachment:)(v8);
 
   if (v12)
@@ -357,13 +357,13 @@
   return v13.super.isa;
 }
 
-- (id)selectionInteraction:(id)a3 elementsForSpaceInsertedAtPoint:(CGPoint)a4 inAttachment:(id)a5
+- (id)selectionInteraction:(id)interaction elementsForSpaceInsertedAtPoint:(CGPoint)point inAttachment:(id)attachment
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
   v12 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:elementsForSpaceInsertedAt:inAttachment:)(x, y);
 
   if (v12)
@@ -379,151 +379,151 @@
   return v13.super.isa;
 }
 
-- (BOOL)selectionInteraction:(id)a3 selectionContainsPoint:(CGPoint)a4 inAttachment:(id)a5
+- (BOOL)selectionInteraction:(id)interaction selectionContainsPoint:(CGPoint)point inAttachment:(id)attachment
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
   v12 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:selectionContains:inAttachment:)(x, y);
 
   return v12 & 1;
 }
 
-- (void)selectionInteraction:(id)a3 didSelectStrokes:(id)a4 selectionType:(int64_t)a5 inAttachment:(id)a6
+- (void)selectionInteraction:(id)interaction didSelectStrokes:(id)strokes selectionType:(int64_t)type inAttachment:(id)attachment
 {
   type metadata accessor for PKStroke();
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a6;
-  v13 = self;
-  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didSelect:selectionType:inAttachment:)(v10, a5);
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
+  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didSelect:selectionType:inAttachment:)(v10, type);
 }
 
-- (void)selectionInteraction:(id)a3 renderPreviewForElements:(id)a4 inContext:(CGContext *)a5 withConfig:(id)a6 inAttachment:(id)a7 withCompletion:(id)a8
+- (void)selectionInteraction:(id)interaction renderPreviewForElements:(id)elements inContext:(CGContext *)context withConfig:(id)config inAttachment:(id)attachment withCompletion:(id)completion
 {
-  v13 = _Block_copy(a8);
+  v13 = _Block_copy(completion);
   v14 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = swift_allocObject();
   *(v15 + 16) = v13;
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = self;
-  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:renderPreviewForElements:in:with:inAttachment:withCompletion:)(v14, v17, v18, partial apply for thunk for @escaping @callee_unowned @convention(block) () -> (), v15);
+  interactionCopy = interaction;
+  contextCopy = context;
+  configCopy = config;
+  attachmentCopy = attachment;
+  selfCopy = self;
+  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:renderPreviewForElements:in:with:inAttachment:withCompletion:)(v14, contextCopy, configCopy, partial apply for thunk for @escaping @callee_unowned @convention(block) () -> (), v15);
 }
 
-- (void)selectionInteraction:(id)a3 dragInteractionWillEndForElements:(id)a4 withOperation:(unint64_t)a5 inAttachment:(id)a6
+- (void)selectionInteraction:(id)interaction dragInteractionWillEndForElements:(id)elements withOperation:(unint64_t)operation inAttachment:(id)attachment
 {
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a6;
-  v13 = self;
-  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:dragInteractionWillEndForElements:with:inAttachment:)(v10, a5);
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
+  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:dragInteractionWillEndForElements:with:inAttachment:)(v10, operation);
 }
 
-- (void)selectionInteraction:(id)a3 didDropItemProvider:(id)a4 inAttachment:(id)a5 withCompletion:(id)a6
+- (void)selectionInteraction:(id)interaction didDropItemProvider:(id)provider inAttachment:(id)attachment withCompletion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   _Block_copy(v10);
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = self;
-  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didDrop:inAttachment:withCompletion:)(a4, v14, v10);
+  interactionCopy = interaction;
+  providerCopy = provider;
+  attachmentCopy = attachment;
+  selfCopy = self;
+  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didDrop:inAttachment:withCompletion:)(provider, selfCopy, v10);
   _Block_release(v10);
   _Block_release(v10);
 }
 
-- (void)selectionInteraction:(id)a3 didTapElement:(id)a4 withGesture:(id)a5 inAttachment:(id)a6
+- (void)selectionInteraction:(id)interaction didTapElement:(id)element withGesture:(id)gesture inAttachment:(id)attachment
 {
-  v9 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v10 = a5;
-  v11 = a6;
-  v12 = self;
+  gestureCopy = gesture;
+  attachmentCopy = attachment;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didTapElement:withGesture:inAttachment:)(v13, v10);
+  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didTapElement:withGesture:inAttachment:)(v13, gestureCopy);
 
   __swift_destroy_boxed_opaque_existential_0(v13);
 }
 
-- (BOOL)selectionInteraction:(id)a3 didLongPressElement:(id)a4 withGesture:(id)a5 inAttachment:(id)a6
+- (BOOL)selectionInteraction:(id)interaction didLongPressElement:(id)element withGesture:(id)gesture inAttachment:(id)attachment
 {
-  v9 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v10 = a5;
-  v11 = a6;
-  v12 = self;
+  gestureCopy = gesture;
+  attachmentCopy = attachment;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  v13 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didLongPressElement:withGesture:inAttachment:)(v15, v10);
+  v13 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:didLongPressElement:withGesture:inAttachment:)(v15, gestureCopy);
 
   __swift_destroy_boxed_opaque_existential_0(v15);
   return v13 & 1;
 }
 
-- (id)selectionInteraction:(id)a3 contextMenuInteraction:(id)a4 configurationForElement:(id)a5 inAttachment:(id)a6
+- (id)selectionInteraction:(id)interaction contextMenuInteraction:(id)menuInteraction configurationForElement:(id)element inAttachment:(id)attachment
 {
-  v9 = a3;
-  v10 = a4;
+  interactionCopy = interaction;
+  menuInteractionCopy = menuInteraction;
   swift_unknownObjectRetain();
-  v11 = a6;
-  v12 = self;
+  attachmentCopy = attachment;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  v13 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:contextMenuInteraction:configurationForElement:inAttachment:)(v10, v15);
+  v13 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:contextMenuInteraction:configurationForElement:inAttachment:)(menuInteractionCopy, v15);
 
   __swift_destroy_boxed_opaque_existential_0(v15);
 
   return v13;
 }
 
-- (id)selectionInteraction:(id)a3 contextMenuInteraction:(id)a4 previewForHighlightingMenuWithConfiguration:(id)a5 forElement:(id)a6 inAttachment:(id)a7
+- (id)selectionInteraction:(id)interaction contextMenuInteraction:(id)menuInteraction previewForHighlightingMenuWithConfiguration:(id)configuration forElement:(id)element inAttachment:(id)attachment
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  interactionCopy = interaction;
+  menuInteractionCopy = menuInteraction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v14 = a7;
-  v15 = self;
+  attachmentCopy = attachment;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  v16 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:contextMenuInteraction:previewForHighlightingMenuWith:forElement:inAttachment:)(v12, v13, v18);
+  v16 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:contextMenuInteraction:previewForHighlightingMenuWith:forElement:inAttachment:)(menuInteractionCopy, configurationCopy, v18);
 
   __swift_destroy_boxed_opaque_existential_0(v18);
 
   return v16;
 }
 
-- (void)selectionInteraction:(id)a3 handleDeleteForTextStrokes:(id)a4 inAttachment:(id)a5
+- (void)selectionInteraction:(id)interaction handleDeleteForTextStrokes:(id)strokes inAttachment:(id)attachment
 {
   type metadata accessor for PKStroke();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
   v12._rawValue = v8;
   specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:handleDeleteForTextStrokes:inAttachment:)(v12);
 }
 
-- (void)selectionInteraction:(id)a3 handleDeleteForTextStrokes:(id)a4 nonTextStrokes:(id)a5 inAttachment:(id)a6
+- (void)selectionInteraction:(id)interaction handleDeleteForTextStrokes:(id)strokes nonTextStrokes:(id)textStrokes inAttachment:(id)attachment
 {
   type metadata accessor for PKStroke();
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a6;
-  v13 = self;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
   v14._rawValue = v9;
   v15._rawValue = v10;
   specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:handleDeleteForTextStrokes:nonTextStrokes:inAttachment:)(v14, v15);
 }
 
-- (void)selectionInteraction:(id)a3 handleGenerationToolForSelectedStrokes:(id)a4 inBounds:(CGRect)a5 inAttachment:(id)a6
+- (void)selectionInteraction:(id)interaction handleGenerationToolForSelectedStrokes:(id)strokes inBounds:(CGRect)bounds inAttachment:(id)attachment
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -533,52 +533,52 @@
   v11 = type metadata accessor for TaskPriority();
   (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   type metadata accessor for MainActor();
-  v12 = self;
+  selfCopy = self;
   v13 = static MainActor.shared.getter();
   v14 = swift_allocObject();
   v15 = MEMORY[0x1E69E85E0];
   v14[2] = v13;
   v14[3] = v15;
-  v14[4] = v12;
+  v14[4] = selfCopy;
   v14[5] = v10;
   _sScTss5NeverORs_rlE8detached4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntFZyt_Tt2g5(0, 0, v9, &async function pointer to partial apply for closure #1 in CanvasViewSelectionInteractionDelegate.selectionInteraction(_:handleGenerationToolForSelectedStrokes:inBounds:inAttachment:), v14);
 
   outlined destroy of StocksKitCurrencyCache.Provider?(v9, &_sScPSgMd);
 }
 
-- (void)selectionInteraction:(id)a3 replaceStrokes:(id)a4 withString:(id)a5 proofreadingItem:(id)a6 inBounds:(CGRect)a7 inAttachment:(id)a8
+- (void)selectionInteraction:(id)interaction replaceStrokes:(id)strokes withString:(id)string proofreadingItem:(id)item inBounds:(CGRect)bounds inAttachment:(id)attachment
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   type metadata accessor for PKStroke();
   v16 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v19 = v18;
-  v20 = a3;
-  v21 = a6;
-  v22 = a8;
-  v23 = self;
-  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:replace:with:proofreadingItem:in:in:)(v16, v17, v19, a6, v22, x, y, width, height);
+  interactionCopy = interaction;
+  itemCopy = item;
+  attachmentCopy = attachment;
+  selfCopy = self;
+  specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:replace:with:proofreadingItem:in:in:)(v16, v17, v19, item, attachmentCopy, x, y, width, height);
 }
 
-- (BOOL)selectionInteraction:(id)a3 handleTapOnCanvasAtLocation:(CGPoint)a4 inAttachment:(id)a5
+- (BOOL)selectionInteraction:(id)interaction handleTapOnCanvasAtLocation:(CGPoint)location inAttachment:(id)attachment
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  v12 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:handleTapOnCanvasAtLocation:inAttachment:)(v10, x, y);
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  attachmentCopy = attachment;
+  selfCopy = self;
+  v12 = specialized CanvasViewSelectionInteractionDelegate.selectionInteraction(_:handleTapOnCanvasAtLocation:inAttachment:)(attachmentCopy, x, y);
 
   return v12 & 1;
 }
 
-- (void)selectionInteraction:(id)a3 handleTapOnCanvasAtLocation:(CGPoint)a4 hitStrokes:(id)a5 inAttachment:(id)a6
+- (void)selectionInteraction:(id)interaction handleTapOnCanvasAtLocation:(CGPoint)location hitStrokes:(id)strokes inAttachment:(id)attachment
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   type metadata accessor for PKStroke();
   v11 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   Strong = swift_unknownObjectWeakLoadStrong();
@@ -587,9 +587,9 @@
     v13 = Strong;
     v14 = MEMORY[0x1E69E7D40];
     v18 = (*((*MEMORY[0x1E69E7D40] & *Strong) + 0x90))();
-    v15 = a3;
-    v16 = a6;
-    v17 = self;
+    interactionCopy = interaction;
+    attachmentCopy = attachment;
+    selfCopy = self;
 
     if (v18)
     {

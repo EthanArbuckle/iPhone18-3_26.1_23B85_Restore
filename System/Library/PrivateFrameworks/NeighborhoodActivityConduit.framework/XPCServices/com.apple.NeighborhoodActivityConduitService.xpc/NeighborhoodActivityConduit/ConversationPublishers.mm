@@ -1,33 +1,33 @@
 @interface ConversationPublishers
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4 fromOldConversation:(id)a5;
-- (void)conversationsChangedForConversationManager:(id)a3;
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation;
+- (void)conversationsChangedForConversationManager:(id)manager;
 @end
 
 @implementation ConversationPublishers
 
-- (void)conversationsChangedForConversationManager:(id)a3
+- (void)conversationsChangedForConversationManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000DF6C0(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_1000DF6C0(managerCopy);
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4 fromOldConversation:(id)a5
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1000E03C4(v9, v10);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  oldConversationCopy = oldConversation;
+  selfCopy = self;
+  sub_1000E03C4(conversationCopy, oldConversationCopy);
 }
 
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1000E08A4(v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_1000E08A4(conversationCopy);
 }
 
 @end

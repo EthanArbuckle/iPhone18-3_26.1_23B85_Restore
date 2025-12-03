@@ -1,15 +1,15 @@
 @interface BMHealthMedicationsAddedMed
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMHealthMedicationsAddedMed)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMHealthMedicationsAddedMed)initWithMedicationName:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BMHealthMedicationsAddedMed)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMHealthMedicationsAddedMed)initWithMedicationName:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMHealthMedicationsAddedMed
@@ -28,25 +28,25 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMHealthMedicationsAddedMed *)self medicationName];
-    v7 = [v5 medicationName];
-    if (v6 == v7)
+    v5 = equalCopy;
+    medicationName = [(BMHealthMedicationsAddedMed *)self medicationName];
+    medicationName2 = [v5 medicationName];
+    if (medicationName == medicationName2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(BMHealthMedicationsAddedMed *)self medicationName];
-      v9 = [v5 medicationName];
-      v10 = [v8 isEqual:v9];
+      medicationName3 = [(BMHealthMedicationsAddedMed *)self medicationName];
+      medicationName4 = [v5 medicationName];
+      v10 = [medicationName3 isEqual:medicationName4];
     }
   }
 
@@ -61,25 +61,25 @@
 - (id)jsonDictionary
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMHealthMedicationsAddedMed *)self medicationName];
-  v4 = v3;
+  medicationName = [(BMHealthMedicationsAddedMed *)self medicationName];
+  v4 = medicationName;
   v9 = @"medicationName";
-  if (v3)
+  if (medicationName)
   {
     v10 = @"medication_name";
-    v11[0] = v3;
-    v5 = v3;
+    v11[0] = medicationName;
+    null2 = medicationName;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v10 = @"medication_name";
-    v11[0] = v2;
-    v5 = [MEMORY[0x1E695DFB0] null];
+    v11[0] = null;
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v5;
+  v11[1] = null2;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v9 count:2];
   if (!v4)
   {
@@ -90,11 +90,11 @@
   return v6;
 }
 
-- (BMHealthMedicationsAddedMed)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMHealthMedicationsAddedMed)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"medicationName"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"medicationName"];
   if (v7)
   {
     v8 = v7;
@@ -102,14 +102,14 @@
 
   else
   {
-    v8 = [v6 objectForKeyedSubscript:@"medication_name"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"medication_name"];
     if (!v8)
     {
 LABEL_5:
-      a4 = 0;
+      error = 0;
 LABEL_8:
-      self = [(BMHealthMedicationsAddedMed *)self initWithMedicationName:a4];
-      v9 = self;
+      self = [(BMHealthMedicationsAddedMed *)self initWithMedicationName:error];
+      selfCopy = self;
       goto LABEL_12;
     }
   }
@@ -124,11 +124,11 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v8 = v8;
-    a4 = v8;
+    error = v8;
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
     v10 = objc_alloc(MEMORY[0x1E696ABC0]);
     v11 = *MEMORY[0x1E698F240];
@@ -136,28 +136,28 @@ LABEL_8:
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"medicationName"];
     v17[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    *a4 = [v10 initWithDomain:v11 code:2 userInfo:v13];
+    *error = [v10 initWithDomain:v11 code:2 userInfo:v13];
 
-    a4 = 0;
+    error = 0;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_12:
 
   v14 = *MEMORY[0x1E69E9840];
-  return v9;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMHealthMedicationsAddedMed *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_medicationName)
   {
@@ -165,9 +165,9 @@ LABEL_12:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v20.receiver = self;
   v20.super_class = BMHealthMedicationsAddedMed;
   v5 = [(BMEventBase *)&v20 init];
@@ -176,12 +176,12 @@ LABEL_12:
     goto LABEL_24;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -192,18 +192,18 @@ LABEL_12:
       while (1)
       {
         v21 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v21 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v21 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v21 & 0x7F) << v7;
@@ -220,9 +220,9 @@ LABEL_12:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -239,13 +239,13 @@ LABEL_16:
         goto LABEL_23;
       }
 
-      v17 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v17 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_23:
     v18 = 0;
@@ -263,22 +263,22 @@ LABEL_24:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMHealthMedicationsAddedMed *)self medicationName];
-  v5 = [v3 initWithFormat:@"BMHealthMedicationsAddedMed with medicationName: %@", v4];
+  medicationName = [(BMHealthMedicationsAddedMed *)self medicationName];
+  v5 = [v3 initWithFormat:@"BMHealthMedicationsAddedMed with medicationName: %@", medicationName];
 
   return v5;
 }
 
-- (BMHealthMedicationsAddedMed)initWithMedicationName:(id)a3
+- (BMHealthMedicationsAddedMed)initWithMedicationName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = BMHealthMedicationsAddedMed;
   v6 = [(BMEventBase *)&v8 init];
   if (v6)
   {
     v6->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v6->_medicationName, a3);
+    objc_storeStrong(&v6->_medicationName, name);
   }
 
   return v6;
@@ -296,9 +296,9 @@ LABEL_24:
   return v3;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -306,8 +306,8 @@ LABEL_24:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMHealthMedicationsAddedMed alloc] initByReadFrom:v7];
     v4 = v8;

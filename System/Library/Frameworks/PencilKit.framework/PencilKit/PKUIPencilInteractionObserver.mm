@@ -1,30 +1,30 @@
 @interface PKUIPencilInteractionObserver
 - (void)dealloc;
-- (void)initWithPrefersPencilOnlyDrawsDidChangeHandler:(void *)a1;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)initWithPrefersPencilOnlyDrawsDidChangeHandler:(void *)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PKUIPencilInteractionObserver
 
-- (void)initWithPrefersPencilOnlyDrawsDidChangeHandler:(void *)a1
+- (void)initWithPrefersPencilOnlyDrawsDidChangeHandler:(void *)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    v7.receiver = a1;
+    v7.receiver = handler;
     v7.super_class = PKUIPencilInteractionObserver;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    handler = objc_msgSendSuper2(&v7, sel_init);
+    if (handler)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = handler[1];
+      handler[1] = v4;
 
-      [objc_opt_class() addObserver:a1 forKeyPath:@"prefersPencilOnlyDrawing" options:0 context:&kKVOContext_1];
+      [objc_opt_class() addObserver:handler forKeyPath:@"prefersPencilOnlyDrawing" options:0 context:&kKVOContext_1];
     }
   }
 
-  return a1;
+  return handler;
 }
 
 - (void)dealloc
@@ -35,14 +35,14 @@
   [(PKUIPencilInteractionObserver *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
-  if (kKVOContext_1 == a6)
+  pathCopy = path;
+  v11 = pathCopy;
+  if (kKVOContext_1 == context)
   {
-    if ([v10 isEqualToString:@"prefersPencilOnlyDrawing"])
+    if ([pathCopy isEqualToString:@"prefersPencilOnlyDrawing"])
     {
       (*(self->_prefersPencilOnlyDrawsDidChangeHandler + 2))();
     }
@@ -63,7 +63,7 @@
   {
     v13.receiver = self;
     v13.super_class = PKUIPencilInteractionObserver;
-    [(PKUIPencilInteractionObserver *)&v13 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(PKUIPencilInteractionObserver *)&v13 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 

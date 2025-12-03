@@ -1,26 +1,26 @@
 @interface _INPBColor
-- (BOOL)isEqual:(id)a3;
-- (_INPBColor)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBColor)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasGreen:(BOOL)a3;
-- (void)setHasRed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasGreen:(BOOL)green;
+- (void)setHasRed:(BOOL)red;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBColor
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBColor *)self hasBlue])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBColor *)self blue];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"blue"];
+    [dictionary setObject:v5 forKeyedSubscript:@"blue"];
   }
 
   if ([(_INPBColor *)self hasGreen])
@@ -28,7 +28,7 @@
     v6 = MEMORY[0x1E696AD98];
     [(_INPBColor *)self green];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"green"];
+    [dictionary setObject:v7 forKeyedSubscript:@"green"];
   }
 
   if ([(_INPBColor *)self hasRed])
@@ -36,10 +36,10 @@
     v8 = MEMORY[0x1E696AD98];
     [(_INPBColor *)self red];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"red"];
+    [dictionary setObject:v9 forKeyedSubscript:@"red"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -146,26 +146,26 @@
   return v14 ^ v8 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = [(_INPBColor *)self hasBlue];
-  if (v5 != [v4 hasBlue])
+  hasBlue = [(_INPBColor *)self hasBlue];
+  if (hasBlue != [equalCopy hasBlue])
   {
     goto LABEL_11;
   }
 
   if ([(_INPBColor *)self hasBlue])
   {
-    if ([v4 hasBlue])
+    if ([equalCopy hasBlue])
     {
       blue = self->_blue;
-      [v4 blue];
+      [equalCopy blue];
       if (blue != v7)
       {
         goto LABEL_11;
@@ -173,7 +173,7 @@
     }
   }
 
-  if ((v8 = -[_INPBColor hasGreen](self, "hasGreen"), v8 == [v4 hasGreen]) && (!-[_INPBColor hasGreen](self, "hasGreen") || !objc_msgSend(v4, "hasGreen") || (green = self->_green, objc_msgSend(v4, "green"), green == v10)) && (v11 = -[_INPBColor hasRed](self, "hasRed"), v11 == objc_msgSend(v4, "hasRed")) && (!-[_INPBColor hasRed](self, "hasRed") || !objc_msgSend(v4, "hasRed") || (red = self->_red, objc_msgSend(v4, "red"), red == v15)))
+  if ((v8 = -[_INPBColor hasGreen](self, "hasGreen"), v8 == [equalCopy hasGreen]) && (!-[_INPBColor hasGreen](self, "hasGreen") || !objc_msgSend(equalCopy, "hasGreen") || (green = self->_green, objc_msgSend(equalCopy, "green"), green == v10)) && (v11 = -[_INPBColor hasRed](self, "hasRed"), v11 == objc_msgSend(equalCopy, "hasRed")) && (!-[_INPBColor hasRed](self, "hasRed") || !objc_msgSend(equalCopy, "hasRed") || (red = self->_red, objc_msgSend(equalCopy, "red"), red == v15)))
   {
     v12 = 1;
   }
@@ -187,7 +187,7 @@ LABEL_11:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBColor allocWithZone:?]];
   if ([(_INPBColor *)self hasBlue])
@@ -211,33 +211,33 @@ LABEL_11:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBColor *)self data];
+  coderCopy = coder;
+  data = [(_INPBColor *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBColor)initWithCoder:(id)a3
+- (_INPBColor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBColor *)self initWithData:v6];
+    self = [(_INPBColor *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(_INPBColor *)self hasBlue])
   {
     blue = self->_blue;
@@ -257,9 +257,9 @@ LABEL_11:
   }
 }
 
-- (void)setHasRed:(BOOL)a3
+- (void)setHasRed:(BOOL)red
 {
-  if (a3)
+  if (red)
   {
     v3 = 4;
   }
@@ -272,9 +272,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasGreen:(BOOL)a3
+- (void)setHasGreen:(BOOL)green
 {
-  if (a3)
+  if (green)
   {
     v3 = 2;
   }

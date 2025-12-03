@@ -7,16 +7,16 @@
 - (MTLRenderCommandEncoder)renderEncoder;
 - (MTLRenderPassDescriptor)passDescriptor;
 - (TSDMetalShader)shader;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)retainObject:(id)a3;
-- (void)setCommandBuffer:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)retainObject:(id)object;
+- (void)setCommandBuffer:(id)buffer;
 @end
 
 @implementation TSDMetalContext
 
-- (void)setCommandBuffer:(id)a3
+- (void)setCommandBuffer:(id)buffer
 {
-  obj = a3;
+  obj = buffer;
   WeakRetained = objc_loadWeakRetained(&self->_commandBuffer);
 
   if (WeakRetained != obj)
@@ -29,10 +29,10 @@
   objc_storeWeak(&self->_commandBuffer, obj);
 }
 
-- (void)retainObject:(id)a3
+- (void)retainObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (!retainedObjects)
@@ -43,7 +43,7 @@
     if ([(NSMutableSet *)retainedObjects count])
     {
 LABEL_7:
-      [(NSMutableSet *)self->_retainedObjects addObject:v4];
+      [(NSMutableSet *)self->_retainedObjects addObject:objectCopy];
       goto LABEL_8;
     }
 
@@ -60,15 +60,15 @@ LABEL_5:
     v13[2] = 0x3032000000;
     v13[3] = __Block_byref_object_copy__14;
     v13[4] = __Block_byref_object_dispose__14;
-    v8 = self;
-    v14 = v8;
+    selfCopy = self;
+    v14 = selfCopy;
     v11[0] = 0;
     v11[1] = v11;
     v11[2] = 0x3032000000;
     v11[3] = __Block_byref_object_copy__14;
     v11[4] = __Block_byref_object_dispose__14;
     v12 = self->_retainedObjects;
-    WeakRetained = objc_loadWeakRetained(&v8->_commandBuffer);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_commandBuffer);
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __32__TSDMetalContext_retainObject___block_invoke;
@@ -97,7 +97,7 @@ void __32__TSDMetalContext_retainObject___block_invoke(uint64_t a1)
   *(v4 + 40) = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSDMetalContext);
   WeakRetained = objc_loadWeakRetained(&self->_device);

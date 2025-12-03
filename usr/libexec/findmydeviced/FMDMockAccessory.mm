@@ -1,22 +1,22 @@
 @interface FMDMockAccessory
 + (id)volatileKeysToExcludeFromRegisterDigest;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)playingSound;
-- (BOOL)updatePlaybackChannels:(id)a3;
+- (BOOL)updatePlaybackChannels:(id)channels;
 - (FMDMockAccessory)init;
-- (FMDMockAccessory)initWithBluetoothManagerDevice:(id)a3;
-- (FMDMockAccessory)initWithCoder:(id)a3;
+- (FMDMockAccessory)initWithBluetoothManagerDevice:(id)device;
+- (FMDMockAccessory)initWithCoder:(id)coder;
 - (NSDictionary)deviceInfoForHostRegister;
 - (NSDictionary)lastKnownLocationDeviceInfo;
 - (NSURL)audioURL;
 - (id)connectionStateAsString;
 - (id)otherDeviceInfo;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateAudioChannelPlayingState:(id)a3;
-- (void)updateAudioChannelsWithArray:(id)a3;
-- (void)updateBeaconsWithArray:(id)a3;
-- (void)updateWithAccessory:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateAudioChannelPlayingState:(id)state;
+- (void)updateAudioChannelsWithArray:(id)array;
+- (void)updateBeaconsWithArray:(id)array;
+- (void)updateWithAccessory:(id)accessory;
 @end
 
 @implementation FMDMockAccessory
@@ -38,124 +38,124 @@
   return v2;
 }
 
-- (FMDMockAccessory)initWithBluetoothManagerDevice:(id)a3
+- (FMDMockAccessory)initWithBluetoothManagerDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [(FMDMockAccessory *)self init];
   v6 = v5;
   if (v5)
   {
-    [(FMDMockAccessory *)v5 setBluetoothManagerDevice:v4];
-    if ([v4 bluetoothConnected])
+    [(FMDMockAccessory *)v5 setBluetoothManagerDevice:deviceCopy];
+    if ([deviceCopy bluetoothConnected])
     {
       v7 = +[NSDate date];
       [(FMDMockAccessory *)v6 setLastActiveTime:v7];
     }
 
-    v8 = [v4 name];
-    [(FMDMockAccessory *)v6 setName:v8];
+    name = [deviceCopy name];
+    [(FMDMockAccessory *)v6 setName:name];
 
-    v9 = [v4 scoUID];
-    [(FMDMockAccessory *)v6 setScoUID:v9];
+    scoUID = [deviceCopy scoUID];
+    [(FMDMockAccessory *)v6 setScoUID:scoUID];
 
-    v10 = [v4 address];
-    [(FMDMockAccessory *)v6 setAddress:v10];
+    address = [deviceCopy address];
+    [(FMDMockAccessory *)v6 setAddress:address];
 
-    v11 = [v4 bluetoothDevice];
-    v12 = [v11 serialNumber];
-    [(FMDMockAccessory *)v6 setSerialNumber:v12];
+    bluetoothDevice = [deviceCopy bluetoothDevice];
+    serialNumber = [bluetoothDevice serialNumber];
+    [(FMDMockAccessory *)v6 setSerialNumber:serialNumber];
 
-    v13 = [v4 firmwareRevision];
-    [(FMDMockAccessory *)v6 setFirmwareRevision:v13];
+    firmwareRevision = [deviceCopy firmwareRevision];
+    [(FMDMockAccessory *)v6 setFirmwareRevision:firmwareRevision];
 
-    v14 = [v4 hardwareRevision];
-    [(FMDMockAccessory *)v6 setHardwareRevision:v14];
+    hardwareRevision = [deviceCopy hardwareRevision];
+    [(FMDMockAccessory *)v6 setHardwareRevision:hardwareRevision];
 
-    v15 = [v4 beacons];
-    [(FMDMockAccessory *)v6 updateBeaconsWithArray:v15];
+    beacons = [deviceCopy beacons];
+    [(FMDMockAccessory *)v6 updateBeaconsWithArray:beacons];
 
-    v16 = [v4 audioChannelInfo];
-    [(FMDMockAccessory *)v6 updateAudioChannelsWithArray:v16];
+    audioChannelInfo = [deviceCopy audioChannelInfo];
+    [(FMDMockAccessory *)v6 updateAudioChannelsWithArray:audioChannelInfo];
 
-    v17 = [v4 bluetoothColorCode];
-    [(FMDMockAccessory *)v6 setBluetoothColorCode:v17];
+    bluetoothColorCode = [deviceCopy bluetoothColorCode];
+    [(FMDMockAccessory *)v6 setBluetoothColorCode:bluetoothColorCode];
 
-    v18 = [v4 batteryInfo];
-    [(FMDMockAccessory *)v6 setBatteryInfo:v18];
+    batteryInfo = [deviceCopy batteryInfo];
+    [(FMDMockAccessory *)v6 setBatteryInfo:batteryInfo];
 
-    v6->_vendorID = [v4 vendorID];
-    v6->_productID = [v4 productID];
-    v19 = [v4 accessoryRSSI];
-    [(FMDMockAccessory *)v6 setAccessoryRSSI:v19];
+    v6->_vendorID = [deviceCopy vendorID];
+    v6->_productID = [deviceCopy productID];
+    accessoryRSSI = [deviceCopy accessoryRSSI];
+    [(FMDMockAccessory *)v6 setAccessoryRSSI:accessoryRSSI];
 
-    v20 = [v4 rssiUpdateDate];
-    [(FMDMockAccessory *)v6 setRssiUpdateDate:v20];
+    rssiUpdateDate = [deviceCopy rssiUpdateDate];
+    [(FMDMockAccessory *)v6 setRssiUpdateDate:rssiUpdateDate];
 
-    v21 = [(FMDMockAccessory *)v6 address];
-    [(FMDMockAccessory *)v6 setAudioRoutingIdentifier:v21];
+    address2 = [(FMDMockAccessory *)v6 address];
+    [(FMDMockAccessory *)v6 setAudioRoutingIdentifier:address2];
 
     v22 = [FMDAccessoryIdentifier alloc];
-    v23 = [(FMDMockAccessory *)v6 address];
-    v24 = [v22 initWithAddress:v23];
+    address3 = [(FMDMockAccessory *)v6 address];
+    v24 = [v22 initWithAddress:address3];
     [(FMDMockAccessory *)v6 setAccessoryIdentifier:v24];
   }
 
   return v6;
 }
 
-- (BOOL)updatePlaybackChannels:(id)a3
+- (BOOL)updatePlaybackChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(FMDMockAccessory *)self accessoryQueue];
+  accessoryQueue = [(FMDMockAccessory *)self accessoryQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001DEC14;
   block[3] = &unk_1002CD450;
-  v9 = v4;
-  v10 = self;
+  v9 = channelsCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = channelsCopy;
+  dispatch_sync(accessoryQueue, block);
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(channelsCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return channelsCopy;
 }
 
-- (void)updateAudioChannelPlayingState:(id)a3
+- (void)updateAudioChannelPlayingState:(id)state
 {
-  v4 = a3;
-  v5 = [(FMDMockAccessory *)self audioChannelInfo];
-  v6 = [v5 allValues];
+  stateCopy = state;
+  audioChannelInfo = [(FMDMockAccessory *)self audioChannelInfo];
+  allValues = [audioChannelInfo allValues];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001DEDB8;
   v8[3] = &unk_1002CFE00;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateObjectsUsingBlock:v8];
+  v9 = stateCopy;
+  v7 = stateCopy;
+  [allValues enumerateObjectsUsingBlock:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDMockAccessory *)self persistedValue];
-  v6 = [v5 UUIDString];
+  coderCopy = coder;
+  persistedValue = [(FMDMockAccessory *)self persistedValue];
+  uUIDString = [persistedValue UUIDString];
   v7 = NSStringFromSelector("persistedValue");
-  [v4 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:uUIDString forKey:v7];
 
-  v9 = [(FMDMockAccessory *)self accessoryIdentifier];
+  accessoryIdentifier = [(FMDMockAccessory *)self accessoryIdentifier];
   v8 = NSStringFromSelector("accessoryIdentifier");
-  [v4 encodeObject:v9 forKey:v8];
+  [coderCopy encodeObject:accessoryIdentifier forKey:v8];
 }
 
-- (FMDMockAccessory)initWithCoder:(id)a3
+- (FMDMockAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = FMDMockAccessory;
   v5 = [(FMDMockAccessory *)&v15 init];
@@ -164,23 +164,23 @@
     v6 = [NSUUID alloc];
     v7 = objc_opt_class();
     v8 = NSStringFromSelector("persistedValue");
-    v9 = [v4 decodeObjectOfClass:v7 forKey:v8];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
     v10 = [v6 initWithUUIDString:v9];
     [(FMDMockAccessory *)v5 setPersistedValue:v10];
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector("accessoryIdentifier");
-    v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
     [(FMDMockAccessory *)v5 setAccessoryIdentifier:v13];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -190,19 +190,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(FMDMockAccessory *)v4 persistedValue];
-      v6 = [v5 UUIDString];
-      v7 = [(FMDMockAccessory *)self persistedValue];
-      v8 = [v7 UUIDString];
-      if ([v6 isEqualToString:v8])
+      persistedValue = [(FMDMockAccessory *)equalCopy persistedValue];
+      uUIDString = [persistedValue UUIDString];
+      persistedValue2 = [(FMDMockAccessory *)self persistedValue];
+      uUIDString2 = [persistedValue2 UUIDString];
+      if ([uUIDString isEqualToString:uUIDString2])
       {
-        v9 = [(FMDMockAccessory *)self accessoryIdentifier];
-        v10 = [(FMDMockAccessory *)v4 accessoryIdentifier];
-        if ([v9 isEqual:v10])
+        accessoryIdentifier = [(FMDMockAccessory *)self accessoryIdentifier];
+        accessoryIdentifier2 = [(FMDMockAccessory *)equalCopy accessoryIdentifier];
+        if ([accessoryIdentifier isEqual:accessoryIdentifier2])
         {
-          v11 = [(FMDMockAccessory *)self name];
-          v12 = [(FMDMockAccessory *)v4 name];
-          v13 = [v11 isEqualToString:v12];
+          name = [(FMDMockAccessory *)self name];
+          name2 = [(FMDMockAccessory *)equalCopy name];
+          v13 = [name isEqualToString:name2];
         }
 
         else
@@ -228,18 +228,18 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FMDMockAccessory *)self persistedValue];
-  v3 = [v2 hash];
+  persistedValue = [(FMDMockAccessory *)self persistedValue];
+  v3 = [persistedValue hash];
 
   return v3;
 }
 
-- (void)updateAudioChannelsWithArray:(id)a3
+- (void)updateAudioChannelsWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(FMDMockAccessory *)self audioChannelInfo];
-  [v5 addEntriesFromDictionary:v6];
+  audioChannelInfo = [(FMDMockAccessory *)self audioChannelInfo];
+  [v5 addEntriesFromDictionary:audioChannelInfo];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -247,28 +247,28 @@
   v8[3] = &unk_1002CFE00;
   v9 = v5;
   v7 = v5;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [arrayCopy enumerateObjectsUsingBlock:v8];
 
   [(FMDMockAccessory *)self setAudioChannelInfo:v7];
 }
 
-- (void)updateBeaconsWithArray:(id)a3
+- (void)updateBeaconsWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(FMDMockAccessory *)self beacons];
-  [v5 addEntriesFromDictionary:v6];
+  beacons = [(FMDMockAccessory *)self beacons];
+  [v5 addEntriesFromDictionary:beacons];
 
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1001DF43C;
   v11 = &unk_1002D02F8;
-  v12 = self;
+  selfCopy = self;
   v13 = v5;
   v7 = v5;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [arrayCopy enumerateObjectsUsingBlock:&v8];
 
-  [(FMDMockAccessory *)self setBeacons:v7, v8, v9, v10, v11, v12];
+  [(FMDMockAccessory *)self setBeacons:v7, v8, v9, v10, v11, selfCopy];
 }
 
 - (BOOL)playingSound
@@ -277,80 +277,80 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(FMDMockAccessory *)self audioChannelInfo];
-  v3 = [v2 allValues];
+  audioChannelInfo = [(FMDMockAccessory *)self audioChannelInfo];
+  allValues = [audioChannelInfo allValues];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001DF600;
   v5[3] = &unk_1002D0348;
   v5[4] = &v6;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [allValues enumerateObjectsUsingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(audioChannelInfo) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return audioChannelInfo;
 }
 
 - (NSURL)audioURL
 {
-  v2 = [(FMDMockAccessory *)self audioAsset];
-  v3 = [v2 fileURL];
+  audioAsset = [(FMDMockAccessory *)self audioAsset];
+  fileURL = [audioAsset fileURL];
 
-  return v3;
+  return fileURL;
 }
 
-- (void)updateWithAccessory:(id)a3
+- (void)updateWithAccessory:(id)accessory
 {
-  v25 = a3;
+  accessoryCopy = accessory;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v25;
+  v5 = accessoryCopy;
   if (isKindOfClass)
   {
-    v6 = [v25 persistedValue];
-    [(FMDMockAccessory *)self setPersistedValue:v6];
+    persistedValue = [accessoryCopy persistedValue];
+    [(FMDMockAccessory *)self setPersistedValue:persistedValue];
 
-    v7 = v25;
-    v8 = [v7 lastActiveTime];
-    [v8 timeIntervalSinceReferenceDate];
+    v7 = accessoryCopy;
+    lastActiveTime = [v7 lastActiveTime];
+    [lastActiveTime timeIntervalSinceReferenceDate];
     v10 = v9;
-    v11 = [(FMDMockAccessory *)self lastActiveTime];
-    [v11 timeIntervalSinceReferenceDate];
+    lastActiveTime2 = [(FMDMockAccessory *)self lastActiveTime];
+    [lastActiveTime2 timeIntervalSinceReferenceDate];
     v13 = v12;
 
     if (v10 > v13)
     {
-      objc_storeStrong(&self->_lastActiveTime, v8);
+      objc_storeStrong(&self->_lastActiveTime, lastActiveTime);
     }
 
-    v14 = [v7 rssiUpdateDate];
-    [v14 timeIntervalSinceReferenceDate];
+    rssiUpdateDate = [v7 rssiUpdateDate];
+    [rssiUpdateDate timeIntervalSinceReferenceDate];
     v16 = v15;
-    v17 = [(FMDMockAccessory *)self rssiUpdateDate];
-    [v17 timeIntervalSinceReferenceDate];
+    rssiUpdateDate2 = [(FMDMockAccessory *)self rssiUpdateDate];
+    [rssiUpdateDate2 timeIntervalSinceReferenceDate];
     v19 = v18;
 
     if (v16 > v19)
     {
-      [(FMDMockAccessory *)self setRssiUpdateDate:v14];
+      [(FMDMockAccessory *)self setRssiUpdateDate:rssiUpdateDate];
     }
 
-    v20 = [v7 beacons];
-    v21 = [v20 allValues];
-    [(FMDMockAccessory *)self updateBeaconsWithArray:v21];
+    beacons = [v7 beacons];
+    allValues = [beacons allValues];
+    [(FMDMockAccessory *)self updateBeaconsWithArray:allValues];
 
-    v22 = [v7 bluetoothColorCode];
-    v23 = [(FMDMockAccessory *)self bluetoothColorCode];
+    bluetoothColorCode = [v7 bluetoothColorCode];
+    bluetoothColorCode2 = [(FMDMockAccessory *)self bluetoothColorCode];
 
-    if (!v23)
+    if (!bluetoothColorCode2)
     {
-      [(FMDMockAccessory *)self setBluetoothColorCode:v22];
+      [(FMDMockAccessory *)self setBluetoothColorCode:bluetoothColorCode];
     }
 
-    v24 = [v7 playbackChannels];
-    [(FMDMockAccessory *)self updatePlaybackChannels:v24];
+    playbackChannels = [v7 playbackChannels];
+    [(FMDMockAccessory *)self updatePlaybackChannels:playbackChannels];
 
-    v5 = v25;
+    v5 = accessoryCopy;
   }
 
   _objc_release_x1(isKindOfClass, v5);
@@ -372,18 +372,18 @@
 - (NSDictionary)lastKnownLocationDeviceInfo
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(FMDMockAccessory *)self name];
-  [v3 setValue:v4 forKey:@"deviceName"];
+  name = [(FMDMockAccessory *)self name];
+  [v3 setValue:name forKey:@"deviceName"];
 
-  v5 = [(FMDMockAccessory *)self accessoryIdentifier];
-  v6 = [v5 stringValue];
-  [v3 setValue:v6 forKey:@"udid"];
+  accessoryIdentifier = [(FMDMockAccessory *)self accessoryIdentifier];
+  stringValue = [accessoryIdentifier stringValue];
+  [v3 setValue:stringValue forKey:@"udid"];
 
-  v7 = [(FMDMockAccessory *)self lastActiveTime];
-  v8 = v7;
-  if (v7)
+  lastActiveTime = [(FMDMockAccessory *)self lastActiveTime];
+  v8 = lastActiveTime;
+  if (lastActiveTime)
   {
-    v9 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v7 fm_epoch]);
+    v9 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [lastActiveTime fm_epoch]);
     [v3 setValue:v9 forKey:@"lastActiveTime"];
   }
 
@@ -392,14 +392,14 @@
     [v3 setValue:&off_1002E7C78 forKey:@"lastActiveTime"];
   }
 
-  v10 = [(FMDMockAccessory *)self accessoryRSSI];
-  [v3 fm_safeSetObject:v10 forKey:@"accessoryRSSI"];
+  accessoryRSSI = [(FMDMockAccessory *)self accessoryRSSI];
+  [v3 fm_safeSetObject:accessoryRSSI forKey:@"accessoryRSSI"];
 
-  v11 = [(FMDMockAccessory *)self rssiUpdateDate];
-  if (v11)
+  rssiUpdateDate = [(FMDMockAccessory *)self rssiUpdateDate];
+  if (rssiUpdateDate)
   {
-    v12 = [(FMDMockAccessory *)self rssiUpdateDate];
-    v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v12 fm_epoch]);
+    rssiUpdateDate2 = [(FMDMockAccessory *)self rssiUpdateDate];
+    v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [rssiUpdateDate2 fm_epoch]);
     [v3 fm_safeSetObject:v13 forKey:@"accessoryRSSITimestamp"];
   }
 
@@ -413,8 +413,8 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v15 = [(FMDMockAccessory *)self batteryInfo];
-  v16 = [v15 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  batteryInfo = [(FMDMockAccessory *)self batteryInfo];
+  v16 = [batteryInfo countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v16)
   {
     v17 = v16;
@@ -425,14 +425,14 @@
       {
         if (*v43 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(batteryInfo);
         }
 
-        v20 = [*(*(&v42 + 1) + 8 * i) dictionaryValue];
-        [v14 addObject:v20];
+        dictionaryValue = [*(*(&v42 + 1) + 8 * i) dictionaryValue];
+        [v14 addObject:dictionaryValue];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      v17 = [batteryInfo countByEnumeratingWithState:&v42 objects:v47 count:16];
     }
 
     while (v17);
@@ -444,10 +444,10 @@
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v22 = [(FMDMockAccessory *)self beacons];
-  v23 = [v22 allValues];
+  beacons = [(FMDMockAccessory *)self beacons];
+  allValues = [beacons allValues];
 
-  v24 = [v23 countByEnumeratingWithState:&v38 objects:v46 count:16];
+  v24 = [allValues countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v24)
   {
     v25 = v24;
@@ -458,14 +458,14 @@
       {
         if (*v39 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(allValues);
         }
 
-        v28 = [*(*(&v38 + 1) + 8 * j) dictionaryValue];
-        [v21 addObject:v28];
+        dictionaryValue2 = [*(*(&v38 + 1) + 8 * j) dictionaryValue];
+        [v21 addObject:dictionaryValue2];
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      v25 = [allValues countByEnumeratingWithState:&v38 objects:v46 count:16];
     }
 
     while (v25);
@@ -475,67 +475,67 @@
   [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:@"locationServicesEnabled"];
   [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:@"findMyiPhone"];
   [v3 setObject:&__kCFBooleanFalse forKeyedSubscript:@"activationLock"];
-  v29 = [(FMDMockAccessory *)self firmwareRevision];
-  [v3 fm_safeSetObject:v29 forKey:@"firmwareVersion"];
+  firmwareRevision = [(FMDMockAccessory *)self firmwareRevision];
+  [v3 fm_safeSetObject:firmwareRevision forKey:@"firmwareVersion"];
 
   v30 = +[FMDSystemConfig sharedInstance];
-  v31 = [v30 productVersion];
-  [v3 fm_safelyMapKey:@"productVersion" toObject:v31];
+  productVersion = [v30 productVersion];
+  [v3 fm_safelyMapKey:@"productVersion" toObject:productVersion];
 
   [v3 setObject:@"Accessory" forKeyedSubscript:@"deviceClass"];
   v32 = [NSString stringWithFormat:@"%i_%i", [(FMDMockAccessory *)self vendorID], [(FMDMockAccessory *)self productID]];
   [v3 setObject:v32 forKeyedSubscript:@"productType"];
 
   v33 = +[FMDSystemConfig sharedInstance];
-  v34 = [v33 platform];
-  v35 = [NSString stringWithFormat:@"%@_proxy", v34];
+  platform = [v33 platform];
+  v35 = [NSString stringWithFormat:@"%@_proxy", platform];
 
   [v3 fm_safelyMapKey:@"platform" toObject:v35];
-  v36 = [(FMDMockAccessory *)self bluetoothColorCode];
-  [v3 fm_safeSetObject:v36 forKey:@"colorCode"];
+  bluetoothColorCode = [(FMDMockAccessory *)self bluetoothColorCode];
+  [v3 fm_safeSetObject:bluetoothColorCode forKey:@"colorCode"];
 
   return v3;
 }
 
 - (id)connectionStateAsString
 {
-  v2 = [(FMDMockAccessory *)self connectionState];
-  if (v2 > 2)
+  connectionState = [(FMDMockAccessory *)self connectionState];
+  if (connectionState > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1002D1308 + v2);
+    return *(&off_1002D1308 + connectionState);
   }
 }
 
 - (NSDictionary)deviceInfoForHostRegister
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(FMDMockAccessory *)self name];
-  [v3 setValue:v4 forKey:@"deviceName"];
+  name = [(FMDMockAccessory *)self name];
+  [v3 setValue:name forKey:@"deviceName"];
 
-  v5 = [(FMDMockAccessory *)self accessoryIdentifier];
-  v6 = [v5 stringValue];
-  [v3 setValue:v6 forKey:@"udid"];
+  accessoryIdentifier = [(FMDMockAccessory *)self accessoryIdentifier];
+  stringValue = [accessoryIdentifier stringValue];
+  [v3 setValue:stringValue forKey:@"udid"];
 
   v7 = [NSString stringWithFormat:@"%i_%i", [(FMDMockAccessory *)self vendorID], [(FMDMockAccessory *)self productID]];
   [v3 setObject:v7 forKeyedSubscript:@"productType"];
 
-  v8 = [(FMDMockAccessory *)self connectionStateAsString];
-  [v3 setValue:v8 forKey:@"connectionStatus"];
+  connectionStateAsString = [(FMDMockAccessory *)self connectionStateAsString];
+  [v3 setValue:connectionStateAsString forKey:@"connectionStatus"];
 
   v9 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = [(FMDMockAccessory *)self beacons];
-  v11 = [v10 allValues];
+  beacons = [(FMDMockAccessory *)self beacons];
+  allValues = [beacons allValues];
 
-  v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v12 = [allValues countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
     v13 = v12;
@@ -546,25 +546,25 @@
       {
         if (*v29 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues);
         }
 
-        v16 = [*(*(&v28 + 1) + 8 * i) dictionaryValue];
-        [v9 addObject:v16];
+        dictionaryValue = [*(*(&v28 + 1) + 8 * i) dictionaryValue];
+        [v9 addObject:dictionaryValue];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v13);
   }
 
   [v3 setValue:v9 forKey:@"beacons"];
-  v17 = [(FMDMockAccessory *)self lastActiveTime];
-  v18 = v17;
-  if (v17)
+  lastActiveTime = [(FMDMockAccessory *)self lastActiveTime];
+  v18 = lastActiveTime;
+  if (lastActiveTime)
   {
-    v19 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v17 fm_epoch]);
+    v19 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [lastActiveTime fm_epoch]);
     [v3 setValue:v19 forKey:@"lastActiveTime"];
   }
 
@@ -575,18 +575,18 @@
 
   [v3 setObject:@"Accessory" forKeyedSubscript:@"deviceClass"];
   v20 = +[FMDSystemConfig sharedInstance];
-  v21 = [v20 platform];
-  v22 = [NSString stringWithFormat:@"%@_proxy", v21];
+  platform = [v20 platform];
+  v22 = [NSString stringWithFormat:@"%@_proxy", platform];
 
   [v3 fm_safelyMapKey:@"platform" toObject:v22];
-  v23 = [(FMDMockAccessory *)self accessoryRSSI];
-  [v3 fm_safeSetObject:v23 forKey:@"accessoryRSSI"];
+  accessoryRSSI = [(FMDMockAccessory *)self accessoryRSSI];
+  [v3 fm_safeSetObject:accessoryRSSI forKey:@"accessoryRSSI"];
 
-  v24 = [(FMDMockAccessory *)self rssiUpdateDate];
-  if (v24)
+  rssiUpdateDate = [(FMDMockAccessory *)self rssiUpdateDate];
+  if (rssiUpdateDate)
   {
-    v25 = [(FMDMockAccessory *)self rssiUpdateDate];
-    v26 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v25 fm_epoch]);
+    rssiUpdateDate2 = [(FMDMockAccessory *)self rssiUpdateDate];
+    v26 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [rssiUpdateDate2 fm_epoch]);
     [v3 fm_safeSetObject:v26 forKey:@"accessoryRSSITimestamp"];
   }
 
@@ -602,14 +602,14 @@
 {
   v3 = +[NSMutableDictionary dictionary];
   v4 = +[FMDSystemConfig sharedInstance];
-  v5 = [v4 deviceName];
-  [v3 fm_safelyMapKey:@"deviceName" toObject:v5];
+  deviceName = [v4 deviceName];
+  [v3 fm_safelyMapKey:@"deviceName" toObject:deviceName];
 
-  v6 = [(FMDMockAccessory *)self lastActiveTime];
-  v7 = v6;
-  if (v6)
+  lastActiveTime = [(FMDMockAccessory *)self lastActiveTime];
+  v7 = lastActiveTime;
+  if (lastActiveTime)
   {
-    v8 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 fm_epoch]);
+    v8 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [lastActiveTime fm_epoch]);
     [v3 setValue:v8 forKey:@"lastActiveTime"];
   }
 
@@ -619,20 +619,20 @@
   }
 
   v9 = +[FMDSystemConfig sharedInstance];
-  v10 = [v9 deviceClassString];
-  [v3 fm_safelyMapKey:@"deviceClass" toObject:v10];
+  deviceClassString = [v9 deviceClassString];
+  [v3 fm_safelyMapKey:@"deviceClass" toObject:deviceClassString];
 
   v11 = +[FMDSystemConfig sharedInstance];
-  v12 = [v11 platform];
-  [v3 fm_safelyMapKey:@"platform" toObject:v12];
+  platform = [v11 platform];
+  [v3 fm_safelyMapKey:@"platform" toObject:platform];
 
   v13 = +[FMDSystemConfig sharedInstance];
-  v14 = [v13 deviceUDID];
-  [v3 fm_safelyMapKey:@"udid" toObject:v14];
+  deviceUDID = [v13 deviceUDID];
+  [v3 fm_safelyMapKey:@"udid" toObject:deviceUDID];
 
   v15 = +[FMDSystemConfig sharedInstance];
-  v16 = [v15 productType];
-  [v3 fm_safelyMapKey:@"productType" toObject:v16];
+  productType = [v15 productType];
+  [v3 fm_safelyMapKey:@"productType" toObject:productType];
 
   v19 = v3;
   v17 = [NSArray arrayWithObjects:&v19 count:1];

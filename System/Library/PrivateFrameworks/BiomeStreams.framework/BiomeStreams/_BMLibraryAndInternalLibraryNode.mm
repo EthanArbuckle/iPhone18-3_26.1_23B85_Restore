@@ -12,16 +12,16 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 sublibraries];
-    [v2 addObjectsFromArray:v5];
+    sublibraries = [v3 sublibraries];
+    [v2 addObjectsFromArray:sublibraries];
   }
 
   v6 = BiomeLibraryInternalNodeBridge();
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 sublibraries];
-    [v2 addObjectsFromArray:v8];
+    sublibraries2 = [v6 sublibraries];
+    [v2 addObjectsFromArray:sublibraries2];
   }
 
   return v2;

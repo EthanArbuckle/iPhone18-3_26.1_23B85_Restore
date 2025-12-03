@@ -1,22 +1,22 @@
 @interface HTMonitorPidHangEvent
 + (void)_updateRunningBoardProcessMonitor;
-+ (void)checkHangForPid:(int)a3;
-+ (void)removePidFromProcessMonitoring:(int)a3;
-- (id)initHTMonitorPidHangEvent:(id *)a3 shmem_size:(unint64_t)a4;
++ (void)checkHangForPid:(int)pid;
++ (void)removePidFromProcessMonitoring:(int)monitoring;
+- (id)initHTMonitorPidHangEvent:(id *)event shmem_size:(unint64_t)shmem_size;
 - (void)dealloc;
 @end
 
 @implementation HTMonitorPidHangEvent
 
-- (id)initHTMonitorPidHangEvent:(id *)a3 shmem_size:(unint64_t)a4
+- (id)initHTMonitorPidHangEvent:(id *)event shmem_size:(unint64_t)shmem_size
 {
   v7.receiver = self;
   v7.super_class = HTMonitorPidHangEvent;
   result = [(HTMonitorPidHangEvent *)&v7 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
+    *(result + 1) = event;
+    *(result + 2) = shmem_size;
   }
 
   return result;
@@ -32,13 +32,13 @@
   [(HTMonitorPidHangEvent *)&v3 dealloc];
 }
 
-+ (void)checkHangForPid:(int)a3
++ (void)checkHangForPid:(int)pid
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000C440;
   block[3] = &unk_100024FD0;
-  v4 = a3;
+  pidCopy = pid;
   dispatch_async(_htMonitorConnectionQueue, block);
 }
 
@@ -50,7 +50,7 @@
   }
 }
 
-+ (void)removePidFromProcessMonitoring:(int)a3
++ (void)removePidFromProcessMonitoring:(int)monitoring
 {
   v10 = 0u;
   v11 = 0u;
@@ -72,7 +72,7 @@
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
-        if ([v9 pid] == a3)
+        if ([v9 pid] == monitoring)
         {
           [qword_10002B080 removeObject:v9];
           goto LABEL_11;

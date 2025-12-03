@@ -1,14 +1,14 @@
 @interface TKAKSParameters
-+ (void)_dumpPlist:(id)a3 into:(id)a4;
++ (void)_dumpPlist:(id)plist into:(id)into;
 - (NSData)data;
-- (TKAKSParameters)initWithParameters:(id)a3;
+- (TKAKSParameters)initWithParameters:(id)parameters;
 - (const)bytes;
 - (id)description;
 - (unint64_t)length;
 - (void)data;
 - (void)dealloc;
-- (void)setData:(id)a3 forKey:(unsigned int)a4;
-- (void)setNumber:(int64_t)a3 forKey:(unsigned int)a4;
+- (void)setData:(id)data forKey:(unsigned int)key;
+- (void)setNumber:(int64_t)number forKey:(unsigned int)key;
 @end
 
 @implementation TKAKSParameters
@@ -23,10 +23,10 @@
 
 - (const)bytes
 {
-  v2 = [(TKAKSParameters *)self data];
-  v3 = [v2 bytes];
+  data = [(TKAKSParameters *)self data];
+  bytes = [data bytes];
 
-  return v3;
+  return bytes;
 }
 
 - (NSData)data
@@ -61,22 +61,22 @@
 
 - (unint64_t)length
 {
-  v2 = [(TKAKSParameters *)self data];
-  v3 = [v2 length];
+  data = [(TKAKSParameters *)self data];
+  v3 = [data length];
 
   return v3;
 }
 
-+ (void)_dumpPlist:(id)a3 into:(id)a4
++ (void)_dumpPlist:(id)plist into:(id)into
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  plistCopy = plist;
+  intoCopy = into;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = v6;
+    v8 = intoCopy;
+    v9 = plistCopy;
 LABEL_13:
     [v8 appendString:v9];
     goto LABEL_14;
@@ -85,14 +85,14 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v6;
-    v11 = [(__CFString *)v10 bytes];
+    v10 = plistCopy;
+    bytes = [(__CFString *)v10 bytes];
     if ([(__CFString *)v10 length])
     {
       v12 = 0;
       do
       {
-        [v7 appendFormat:@"%02x", *(v11 + v12++)];
+        [intoCopy appendFormat:@"%02x", *(bytes + v12++)];
       }
 
       while (v12 < [(__CFString *)v10 length]);
@@ -101,10 +101,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v13 = CFGetTypeID(v6);
+  v13 = CFGetTypeID(plistCopy);
   if (v13 == CFBooleanGetTypeID())
   {
-    if (CFEqual(v6, *MEMORY[0x1E695E4D0]))
+    if (CFEqual(plistCopy, *MEMORY[0x1E695E4D0]))
     {
       v9 = @"true";
     }
@@ -115,26 +115,26 @@ LABEL_13:
     }
 
 LABEL_12:
-    v8 = v7;
+    v8 = intoCopy;
     goto LABEL_13;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 appendFormat:@"%@", v6];
+    [intoCopy appendFormat:@"%@", plistCopy];
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 appendString:@"["];
+    [intoCopy appendString:@"["];
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v15 = v6;
+    v15 = plistCopy;
     v16 = [(__CFString *)v15 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v16)
     {
@@ -153,10 +153,10 @@ LABEL_12:
           v21 = *(*(&v35 + 1) + 8 * i);
           if ((v19 & 1) == 0)
           {
-            [v7 appendString:{@", "}];
+            [intoCopy appendString:{@", "}];
           }
 
-          [a1 _dumpPlist:v21 into:v7];
+          [self _dumpPlist:v21 into:intoCopy];
           v19 = 0;
         }
 
@@ -174,13 +174,13 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 appendString:@"{"];
+    [intoCopy appendString:@"{"];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v30 = v6;
-    v22 = v6;
+    v30 = plistCopy;
+    v22 = plistCopy;
     v23 = [(__CFString *)v22 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v23)
     {
@@ -200,11 +200,11 @@ LABEL_12:
           v28 = *(*(&v31 + 1) + 8 * v27);
           if ((v25 & 1) == 0)
           {
-            [v7 appendString:{@", "}];
+            [intoCopy appendString:{@", "}];
           }
 
-          [a1 _dumpPlist:v28 into:v7];
-          [v7 appendString:@":"];
+          [self _dumpPlist:v28 into:intoCopy];
+          [intoCopy appendString:@":"];
           if (_dumpPlist_into__onceToken != -1)
           {
             +[TKAKSParameters _dumpPlist:into:];
@@ -212,13 +212,13 @@ LABEL_12:
 
           if ([_dumpPlist_into__deniedKeys containsObject:v28])
           {
-            [v7 appendFormat:@"###"];
+            [intoCopy appendFormat:@"###"];
           }
 
           else
           {
             v29 = [(__CFString *)v22 objectForKeyedSubscript:v28];
-            [a1 _dumpPlist:v29 into:v7];
+            [self _dumpPlist:v29 into:intoCopy];
           }
 
           v25 = 0;
@@ -233,8 +233,8 @@ LABEL_12:
       while (v24);
     }
 
-    [v7 appendString:@"}"];
-    v6 = v30;
+    [intoCopy appendString:@"}"];
+    plistCopy = v30;
   }
 
 LABEL_14:
@@ -251,31 +251,31 @@ void __35__TKAKSParameters__dumpPlist_into___block_invoke()
 - (id)description
 {
   v3 = [@"<AKSp:" mutableCopy];
-  v4 = [(TKAKSParameters *)self data];
-  v5 = [(TKTLVRecord *)TKBERTLVRecord recordFromData:v4];
-  v6 = [v5 propertyList];
+  data = [(TKAKSParameters *)self data];
+  v5 = [(TKTLVRecord *)TKBERTLVRecord recordFromData:data];
+  propertyList = [v5 propertyList];
 
-  if (v6)
+  if (propertyList)
   {
-    [objc_opt_class() _dumpPlist:v6 into:v3];
+    [objc_opt_class() _dumpPlist:propertyList into:v3];
   }
 
   else
   {
-    v7 = [(TKAKSParameters *)self data];
-    v8 = [v7 bytes];
+    data2 = [(TKAKSParameters *)self data];
+    bytes = [data2 bytes];
 
-    v9 = [(TKAKSParameters *)self data];
-    v10 = [v9 length];
+    data3 = [(TKAKSParameters *)self data];
+    v10 = [data3 length];
 
     if (v10)
     {
       v11 = 0;
       do
       {
-        [v3 appendFormat:@"%02x", *(v8 + v11++)];
-        v12 = [(TKAKSParameters *)self data];
-        v13 = [v12 length];
+        [v3 appendFormat:@"%02x", *(bytes + v11++)];
+        data4 = [(TKAKSParameters *)self data];
+        v13 = [data4 length];
       }
 
       while (v11 < v13);
@@ -288,36 +288,36 @@ void __35__TKAKSParameters__dumpPlist_into___block_invoke()
   return v14;
 }
 
-- (TKAKSParameters)initWithParameters:(id)a3
+- (TKAKSParameters)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v7.receiver = self;
   v7.super_class = TKAKSParameters;
   v5 = [(TKAKSParameters *)&v7 init];
   if (v5)
   {
-    [v4 bytes];
-    [v4 length];
+    [parametersCopy bytes];
+    [parametersCopy length];
     v5->_params = aks_params_create();
   }
 
   return v5;
 }
 
-- (void)setData:(id)a3 forKey:(unsigned int)a4
+- (void)setData:(id)data forKey:(unsigned int)key
 {
   params = self->_params;
-  v7 = a3;
-  v8 = a3;
-  [v8 bytes];
-  [v8 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  [dataCopy2 bytes];
+  [dataCopy2 length];
 
   aks_params_set_data();
   encoded = self->_encoded;
   self->_encoded = 0;
 }
 
-- (void)setNumber:(int64_t)a3 forKey:(unsigned int)a4
+- (void)setNumber:(int64_t)number forKey:(unsigned int)key
 {
   params = self->_params;
   aks_params_set_number();

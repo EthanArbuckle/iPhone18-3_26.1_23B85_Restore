@@ -2,26 +2,26 @@
 - (CGRect)sceneRelativeFrame;
 - (id)description;
 - (id)element;
-- (void)setElement:(id)a3;
+- (void)setElement:(id)element;
 @end
 
 @implementation UIAccessibilityOpaqueFocusState
 
 - (id)description
 {
-  v3 = [(UIAccessibilityOpaqueFocusState *)self element];
+  element = [(UIAccessibilityOpaqueFocusState *)self element];
 
-  if (v3)
+  if (element)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(UIAccessibilityOpaqueFocusState *)self hasFocus];
-    v6 = [(UIAccessibilityOpaqueFocusState *)self element];
-    v7 = [(UIAccessibilityOpaqueFocusState *)self element];
-    v8 = [v7 accessibilityLabel];
+    hasFocus = [(UIAccessibilityOpaqueFocusState *)self hasFocus];
+    element2 = [(UIAccessibilityOpaqueFocusState *)self element];
+    element3 = [(UIAccessibilityOpaqueFocusState *)self element];
+    accessibilityLabel = [element3 accessibilityLabel];
     [(UIAccessibilityOpaqueFocusState *)self sceneRelativeFrame];
     v9 = NSStringFromCGRect(v14);
-    v10 = [(UIAccessibilityOpaqueFocusState *)self reusableView];
-    v11 = [v4 stringWithFormat:@"Has focus: %i\nElement: %@ (%@)\nScene relative frame: %@\nReusable view: %@\nHas been reused: %i", v5, v6, v8, v9, v10, -[UIAccessibilityOpaqueFocusState hasBeenReused](self, "hasBeenReused")];
+    reusableView = [(UIAccessibilityOpaqueFocusState *)self reusableView];
+    v11 = [v4 stringWithFormat:@"Has focus: %i\nElement: %@ (%@)\nScene relative frame: %@\nReusable view: %@\nHas been reused: %i", hasFocus, element2, accessibilityLabel, v9, reusableView, -[UIAccessibilityOpaqueFocusState hasBeenReused](self, "hasBeenReused")];
   }
 
   else
@@ -32,9 +32,9 @@
   return v11;
 }
 
-- (void)setElement:(id)a3
+- (void)setElement:(id)element
 {
-  obj = a3;
+  obj = element;
   WeakRetained = objc_loadWeakRetained(&self->_element);
 
   if (WeakRetained != obj)

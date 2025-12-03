@@ -1,15 +1,15 @@
 @interface BMPBDeviceMetadataEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPlatform:(id)a3;
+- (int)StringAsPlatform:(id)platform;
 - (int)platform;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRapidSecurityResponsePreReboot:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRapidSecurityResponsePreReboot:(BOOL)reboot;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBDeviceMetadataEvent
@@ -27,50 +27,50 @@
   }
 }
 
-- (int)StringAsPlatform:(id)a3
+- (int)StringAsPlatform:(id)platform
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"iPad"])
+  platformCopy = platform;
+  if ([platformCopy isEqualToString:@"iPad"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"iPhone"])
+  else if ([platformCopy isEqualToString:@"iPhone"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MacDesktop"])
+  else if ([platformCopy isEqualToString:@"MacDesktop"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MacPortable"])
+  else if ([platformCopy isEqualToString:@"MacPortable"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TV"])
+  else if ([platformCopy isEqualToString:@"TV"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Watch"])
+  else if ([platformCopy isEqualToString:@"Watch"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"HomePod"])
+  else if ([platformCopy isEqualToString:@"HomePod"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Unknown"])
+  else if ([platformCopy isEqualToString:@"Unknown"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Vision"])
+  else if ([platformCopy isEqualToString:@"Vision"])
   {
     v4 = 8;
   }
@@ -83,9 +83,9 @@
   return v4;
 }
 
-- (void)setHasRapidSecurityResponsePreReboot:(BOOL)a3
+- (void)setHasRapidSecurityResponsePreReboot:(BOOL)reboot
 {
-  if (a3)
+  if (reboot)
   {
     v3 = 2;
   }
@@ -104,20 +104,20 @@
   v8.receiver = self;
   v8.super_class = BMPBDeviceMetadataEvent;
   v4 = [(BMPBDeviceMetadataEvent *)&v8 description];
-  v5 = [(BMPBDeviceMetadataEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBDeviceMetadataEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   build = self->_build;
@@ -157,86 +157,86 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_build)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     platform = self->_platform;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_supplementalBuild)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     rapidSecurityResponsePreReboot = self->_rapidSecurityResponsePreReboot;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v5;
+    [toCopy setName:?];
+    toCopy = v5;
   }
 
   if (self->_build)
   {
     [v5 setBuild:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_platform;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 6) = self->_platform;
+    *(toCopy + 44) |= 1u;
   }
 
   if (self->_supplementalBuild)
   {
     [v5 setSupplementalBuild:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 40) = self->_rapidSecurityResponsePreReboot;
-    *(v4 + 44) |= 2u;
+    *(toCopy + 40) = self->_rapidSecurityResponsePreReboot;
+    *(toCopy + 44) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_build copyWithZone:a3];
+  v8 = [(NSString *)self->_build copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -246,7 +246,7 @@
     *(v5 + 44) |= 1u;
   }
 
-  v10 = [(NSString *)self->_supplementalBuild copyWithZone:a3];
+  v10 = [(NSString *)self->_supplementalBuild copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -259,16 +259,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   name = self->_name;
-  if (name | *(v4 + 2))
+  if (name | *(equalCopy + 2))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -277,7 +277,7 @@
   }
 
   build = self->_build;
-  if (build | *(v4 + 1))
+  if (build | *(equalCopy + 1))
   {
     if (![(NSString *)build isEqual:?])
     {
@@ -286,22 +286,22 @@
   }
 
   has = self->_has;
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if (has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_platform != *(v4 + 6))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_platform != *(equalCopy + 6))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_16;
   }
 
   supplementalBuild = self->_supplementalBuild;
-  if (supplementalBuild | *(v4 + 4))
+  if (supplementalBuild | *(equalCopy + 4))
   {
     if (![(NSString *)supplementalBuild isEqual:?])
     {
@@ -311,20 +311,20 @@
     has = self->_has;
   }
 
-  v10 = (*(v4 + 44) & 2) == 0;
+  v10 = (*(equalCopy + 44) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) != 0)
+    if ((*(equalCopy + 44) & 2) != 0)
     {
       if (self->_rapidSecurityResponsePreReboot)
       {
-        if ((*(v4 + 40) & 1) == 0)
+        if ((*(equalCopy + 40) & 1) == 0)
         {
           goto LABEL_16;
         }
       }
 
-      else if (*(v4 + 40))
+      else if (*(equalCopy + 40))
       {
         goto LABEL_16;
       }
@@ -370,37 +370,37 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(BMPBDeviceMetadataEvent *)self setName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BMPBDeviceMetadataEvent *)self setBuild:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_platform = *(v4 + 6);
+    self->_platform = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBDeviceMetadataEvent *)self setSupplementalBuild:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 44) & 2) != 0)
+  if ((*(fromCopy + 44) & 2) != 0)
   {
-    self->_rapidSecurityResponsePreReboot = *(v4 + 40);
+    self->_rapidSecurityResponsePreReboot = *(fromCopy + 40);
     *&self->_has |= 2u;
   }
 }

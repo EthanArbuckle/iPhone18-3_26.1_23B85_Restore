@@ -1,6 +1,6 @@
 @interface FCAppActivationMonitor
 - (FCAppActivationMonitor)init;
-- (FCAppActivationMonitor)initWithAppActivityMonitor:(id)a3;
+- (FCAppActivationMonitor)initWithAppActivityMonitor:(id)monitor;
 - (void)activityObservingApplicationDidBecomeActive;
 - (void)activityObservingApplicationDidEnterBackground;
 @end
@@ -9,8 +9,8 @@
 
 - (void)activityObservingApplicationDidBecomeActive
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(FCAppActivationMonitor *)self setLastActivationDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FCAppActivationMonitor *)self setLastActivationDate:date];
 }
 
 - (FCAppActivationMonitor)init
@@ -39,15 +39,15 @@
   objc_exception_throw(v6);
 }
 
-- (FCAppActivationMonitor)initWithAppActivityMonitor:(id)a3
+- (FCAppActivationMonitor)initWithAppActivityMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   v7.receiver = self;
   v7.super_class = FCAppActivationMonitor;
   v5 = [(FCAppActivationMonitor *)&v7 init];
   if (v5)
   {
-    [v4 addObserver:v5];
+    [monitorCopy addObserver:v5];
   }
 
   return v5;
@@ -55,8 +55,8 @@
 
 - (void)activityObservingApplicationDidEnterBackground
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(FCAppActivationMonitor *)self setLastBackgroundDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(FCAppActivationMonitor *)self setLastBackgroundDate:date];
 }
 
 @end

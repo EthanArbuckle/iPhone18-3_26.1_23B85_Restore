@@ -6,8 +6,8 @@
 
 - (BOOL)hoverTypingShouldAdjustDockedMode
 {
-  v2 = [(AXElement *)self uiElement];
-  v3 = [v2 BOOLWithAXAttribute:4006];
+  uiElement = [(AXElement *)self uiElement];
+  v3 = [uiElement BOOLWithAXAttribute:4006];
 
   return v3;
 }

@@ -1,21 +1,21 @@
 @interface CSDeviceUnblockPolicy
 - (BOOL)canUnblockDevice;
 - (BOOL)canUnblockDeviceUsingErase;
-- (CSDeviceUnblockPolicy)initWithEnvironment:(id)a3;
+- (CSDeviceUnblockPolicy)initWithEnvironment:(id)environment;
 @end
 
 @implementation CSDeviceUnblockPolicy
 
-- (CSDeviceUnblockPolicy)initWithEnvironment:(id)a3
+- (CSDeviceUnblockPolicy)initWithEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = CSDeviceUnblockPolicy;
   v6 = [(CSDeviceUnblockPolicy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_env, a3);
+    objc_storeStrong(&v6->_env, environment);
   }
 
   return v7;

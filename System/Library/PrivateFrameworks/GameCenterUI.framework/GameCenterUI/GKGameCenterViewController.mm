@@ -4,31 +4,31 @@
 - (BOOL)shouldShowQuitForTurnBasedMatch;
 - (GKGameCenterViewController)init;
 - (GKGameCenterViewController)initWithAchievementID:(NSString *)achievementID;
-- (GKGameCenterViewController)initWithGame:(id)a3 hostPID:(int)a4 restrictionMode:(int64_t)a5 deeplink:(id)a6 launchContext:(id)a7;
+- (GKGameCenterViewController)initWithGame:(id)game hostPID:(int)d restrictionMode:(int64_t)mode deeplink:(id)deeplink launchContext:(id)context;
 - (GKGameCenterViewController)initWithLeaderboard:(GKLeaderboard *)leaderboard playerScope:(GKLeaderboardPlayerScope)playerScope;
 - (GKGameCenterViewController)initWithLeaderboardID:(NSString *)leaderboardID playerScope:(GKLeaderboardPlayerScope)playerScope timeScope:(GKLeaderboardTimeScope)timeScope;
-- (GKGameCenterViewController)initWithLeaderboardSetID:(id)a3;
-- (GKGameCenterViewController)initWithPlayer:(id)a3;
+- (GKGameCenterViewController)initWithLeaderboardSetID:(id)d;
+- (GKGameCenterViewController)initWithPlayer:(id)player;
 - (GKGameCenterViewController)initWithState:(GKGameCenterViewControllerState)state;
 - (id)constructInitialState;
 - (id)gameCenterDelegate;
 - (void)_setupChildViewController;
 - (void)_setupRemoteViewController;
-- (void)animateTransition:(id)a3;
-- (void)checkArcadeStateWithCompletion:(id)a3;
+- (void)animateTransition:(id)transition;
+- (void)checkArcadeStateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)extensionDidFinishWithError:(id)a3;
+- (void)extensionDidFinishWithError:(id)error;
 - (void)loadView;
 - (void)notifyDelegateOnWillFinish;
-- (void)presentOverlayWithInitialState:(id)a3;
+- (void)presentOverlayWithInitialState:(id)state;
 - (void)setLeaderboardIdentifier:(NSString *)leaderboardIdentifier;
-- (void)setLeaderboardPlayerScope:(int64_t)a3;
+- (void)setLeaderboardPlayerScope:(int64_t)scope;
 - (void)setLeaderboardTimeScope:(GKLeaderboardTimeScope)leaderboardTimeScope;
-- (void)setRemoteViewController:(id)a3;
+- (void)setRemoteViewController:(id)controller;
 - (void)setViewState:(GKGameCenterViewControllerState)viewState;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKGameCenterViewController
@@ -105,9 +105,9 @@
   return v9;
 }
 
-- (GKGameCenterViewController)initWithLeaderboardSetID:(id)a3
+- (GKGameCenterViewController)initWithLeaderboardSetID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = GKGameCenterViewController;
   v6 = [(GKGameCenterViewController *)&v9 init];
@@ -115,7 +115,7 @@
   if (v6)
   {
     v6->_viewState = 0;
-    objc_storeStrong(&v6->_leaderboardSetIdentifier, a3);
+    objc_storeStrong(&v6->_leaderboardSetIdentifier, d);
     [(GKGameCenterViewController *)v7 _commonInit];
   }
 
@@ -139,9 +139,9 @@
   return v7;
 }
 
-- (GKGameCenterViewController)initWithPlayer:(id)a3
+- (GKGameCenterViewController)initWithPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v11.receiver = self;
   v11.super_class = GKGameCenterViewController;
   v5 = [(GKGameCenterViewController *)&v11 init];
@@ -149,10 +149,10 @@
   if (v5)
   {
     v5->_viewState = 3;
-    v7 = [v4 internal];
-    v8 = [v7 playerID];
+    internal = [playerCopy internal];
+    playerID = [internal playerID];
     playerIdentifier = v6->_playerIdentifier;
-    v6->_playerIdentifier = v8;
+    v6->_playerIdentifier = playerID;
 
     [(GKGameCenterViewController *)v6 _commonInit];
   }
@@ -180,64 +180,64 @@
   [(GKGameCenterViewController *)&v5 dealloc];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v7 = [v4 containerView];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  containerView = [transitionCopy containerView];
   if ([(GKGameCenterViewController *)self isPresenting])
   {
-    v8 = [v5 view];
-    [v8 frame];
+    view = [v5 view];
+    [view frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v17 = [v6 view];
-    [v17 setFrame:{v10, v12, v14, v16}];
+    view2 = [v6 view];
+    [view2 setFrame:{v10, v12, v14, v16}];
 
-    v18 = [v6 view];
-    [v18 setAutoresizingMask:18];
+    view3 = [v6 view];
+    [view3 setAutoresizingMask:18];
 
-    v19 = [v6 view];
-    [v7 addSubview:v19];
+    view4 = [v6 view];
+    [containerView addSubview:view4];
 
-    v20 = [v6 view];
-    [v20 layoutIfNeeded];
+    view5 = [v6 view];
+    [view5 layoutIfNeeded];
 
-    v21 = [v5 view];
-    [v21 layoutIfNeeded];
+    view6 = [v5 view];
+    [view6 layoutIfNeeded];
 
-    [v4 completeTransition:1];
+    [transitionCopy completeTransition:1];
   }
 
   else
   {
-    v22 = [(GKGameCenterViewController *)self remoteViewController];
+    remoteViewController = [(GKGameCenterViewController *)self remoteViewController];
 
-    if (v22)
+    if (remoteViewController)
     {
-      v23 = [(GKGameCenterViewController *)self remoteViewController];
+      remoteViewController2 = [(GKGameCenterViewController *)self remoteViewController];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __48__GKGameCenterViewController_animateTransition___block_invoke;
       v26[3] = &unk_27966AED8;
-      v27 = v4;
+      v27 = transitionCopy;
       v28 = v5;
       v29 = v6;
-      [v23 tearDownExtensionWithReply:v26];
+      [remoteViewController2 tearDownExtensionWithReply:v26];
     }
 
     else
     {
-      [v4 completeTransition:1];
-      v24 = [v5 view];
-      [v24 removeFromSuperview];
+      [transitionCopy completeTransition:1];
+      view7 = [v5 view];
+      [view7 removeFromSuperview];
 
-      v25 = [v6 view];
-      [v25 layoutIfNeeded];
+      view8 = [v6 view];
+      [view8 layoutIfNeeded];
     }
   }
 }
@@ -269,10 +269,10 @@ void __48__GKGameCenterViewController_animateTransition___block_invoke_2(id *a1)
   v7.receiver = self;
   v7.super_class = GKGameCenterViewController;
   [(GKGameCenterViewController *)&v7 loadView];
-  v3 = [MEMORY[0x277D0C1D8] shared];
-  v4 = [v3 isGameCenterDisabled];
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  isGameCenterDisabled = [mEMORY[0x277D0C1D8] isGameCenterDisabled];
 
-  if (v4)
+  if (isGameCenterDisabled)
   {
     v5 = objc_alloc(MEMORY[0x277D75D18]);
     v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -281,81 +281,81 @@ void __48__GKGameCenterViewController_animateTransition___block_invoke_2(id *a1)
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D0C138] local];
-  [v5 hideAccessPoint];
+  appearCopy = appear;
+  local = [MEMORY[0x277D0C138] local];
+  [local hideAccessPoint];
 
-  v6 = [(GKGameCenterViewController *)self remoteViewController];
+  remoteViewController = [(GKGameCenterViewController *)self remoteViewController];
 
-  if (!v6)
+  if (!remoteViewController)
   {
     [(GKGameCenterViewController *)self _setupChildViewController];
     goto LABEL_7;
   }
 
-  v7 = [(GKGameCenterViewController *)self alertController];
-  if (!v7)
+  alertController = [(GKGameCenterViewController *)self alertController];
+  if (!alertController)
   {
-    v8 = [(GKGameCenterViewController *)self viewControllers];
-    v9 = [v8 count];
+    viewControllers = [(GKGameCenterViewController *)self viewControllers];
+    v9 = [viewControllers count];
 
     if (v9)
     {
       goto LABEL_6;
     }
 
-    v7 = [(GKGameCenterViewController *)self remoteViewController];
-    [(UINavigationController *)self _updateViewControllerStackWithViewController:v7];
+    alertController = [(GKGameCenterViewController *)self remoteViewController];
+    [(UINavigationController *)self _updateViewControllerStackWithViewController:alertController];
   }
 
 LABEL_6:
-  v10 = [(GKGameCenterViewController *)self remoteViewController];
-  [v10 setDelegate:self];
+  remoteViewController2 = [(GKGameCenterViewController *)self remoteViewController];
+  [remoteViewController2 setDelegate:self];
 
 LABEL_7:
   v13.receiver = self;
   v13.super_class = GKGameCenterViewController;
-  [(GKGameCenterViewController *)&v13 viewWillAppear:v3];
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  [(GKGameCenterViewController *)&v13 viewWillAppear:appearCopy];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v12 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(GKGameCenterViewController *)self _setClipsToBounds:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = GKGameCenterViewController;
-  [(GKGameCenterViewController *)&v7 viewDidAppear:a3];
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 postNotificationName:@"GameControllerNavigation_GKInGameViewAppeared" object:0 userInfo:0 deliverImmediately:1];
+  [(GKGameCenterViewController *)&v7 viewDidAppear:appear];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:@"GameControllerNavigation_GKInGameViewAppeared" object:0 userInfo:0 deliverImmediately:1];
 
-  v5 = [(GKGameCenterViewController *)self alertController];
+  alertController = [(GKGameCenterViewController *)self alertController];
 
-  if (v5)
+  if (alertController)
   {
-    v6 = [(GKGameCenterViewController *)self alertController];
-    [(GKGameCenterViewController *)self presentViewController:v6 animated:1 completion:&__block_literal_global_15];
+    alertController2 = [(GKGameCenterViewController *)self alertController];
+    [(GKGameCenterViewController *)self presentViewController:alertController2 animated:1 completion:&__block_literal_global_15];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = GKGameCenterViewController;
-  [(GKGameCenterViewController *)&v9 viewDidDisappear:a3];
+  [(GKGameCenterViewController *)&v9 viewDidDisappear:disappear];
   [(UINavigationController *)self _updateViewControllerStackWithViewController:0];
   [(GKGameCenterViewController *)self setRemoteViewController:0];
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 postNotificationName:@"GameControllerNavigation_GKInGameViewDisappeared" object:0 userInfo:0 deliverImmediately:1];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:@"GameControllerNavigation_GKInGameViewDisappeared" object:0 userInfo:0 deliverImmediately:1];
 
-  v5 = [MEMORY[0x277D0C138] local];
-  [v5 showAccessPoint];
+  local = [MEMORY[0x277D0C138] local];
+  [local showAccessPoint];
 
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -374,34 +374,34 @@ LABEL_7:
 
 - (void)_setupChildViewController
 {
-  v3 = [(GKGameCenterViewController *)self restrictionMode];
+  restrictionMode = [(GKGameCenterViewController *)self restrictionMode];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __55__GKGameCenterViewController__setupChildViewController__block_invoke;
   v13[3] = &unk_2796699A8;
   v13[4] = self;
-  v4 = [(GKGameCenterViewController *)self _gkInGameUIUnavailableAlertWithRestrictionMode:v3 dismissHandler:v13];
+  v4 = [(GKGameCenterViewController *)self _gkInGameUIUnavailableAlertWithRestrictionMode:restrictionMode dismissHandler:v13];
   [(GKGameCenterViewController *)self setAlertController:v4];
 
-  v5 = [(GKGameCenterViewController *)self alertController];
+  alertController = [(GKGameCenterViewController *)self alertController];
 
-  if (!v5)
+  if (!alertController)
   {
-    v6 = [(GKGameCenterViewController *)self view];
-    [v6 setAlpha:1.0];
+    view = [(GKGameCenterViewController *)self view];
+    [view setAlpha:1.0];
 
     [(GKGameCenterViewController *)self setNavigationBarHidden:1];
     [(GKGameCenterViewController *)self setWantsFullScreenLayout:1];
     [(GKGameCenterViewController *)self setTransitioningDelegate:self];
     [(GKGameCenterViewController *)self setModalPresentationStyle:4];
     [(GKGameCenterViewController *)self setModalPresentationCapturesStatusBarAppearance:1];
-    v7 = [(GKGameCenterViewController *)self presentingViewController];
-    if (v7)
+    presentingViewController = [(GKGameCenterViewController *)self presentingViewController];
+    if (presentingViewController)
     {
-      v8 = v7;
-      v9 = [(GKGameCenterViewController *)self isPresentingOverlay];
+      v8 = presentingViewController;
+      isPresentingOverlay = [(GKGameCenterViewController *)self isPresentingOverlay];
 
-      if (!v9)
+      if (!isPresentingOverlay)
       {
         [(GKGameCenterViewController *)self _beginDelayingPresentation:&__block_literal_global_54 cancellationHandler:5.0];
         objc_initWeak(&location, self);
@@ -525,11 +525,11 @@ void __56__GKGameCenterViewController__setupRemoteViewController__block_invoke_2
   v42 = *MEMORY[0x277D85DE8];
   if (![(GKGameCenterViewController *)self isArcade])
   {
-    v3 = [MEMORY[0x277D0C048] currentGame];
-    v4 = v3;
-    if (v3)
+    currentGame = [MEMORY[0x277D0C048] currentGame];
+    v4 = currentGame;
+    if (currentGame)
     {
-      [v3 gameInfo];
+      [currentGame gameInfo];
       v5 = BYTE5(v35);
     }
 
@@ -569,8 +569,8 @@ void __56__GKGameCenterViewController__setupRemoteViewController__block_invoke_2
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[GKGameCenterViewController isArcade](self, "isArcade")}];
   [v8 setObject:v15 forKeyedSubscript:@"isArcadeGame"];
 
-  v16 = [(GKGameCenterViewController *)self launchContext];
-  [v8 setObject:v16 forKeyedSubscript:@"launchContext"];
+  launchContext = [(GKGameCenterViewController *)self launchContext];
+  [v8 setObject:launchContext forKeyedSubscript:@"launchContext"];
 
   leaderboardIdentifier = self->_leaderboardIdentifier;
   if (leaderboardIdentifier)
@@ -593,8 +593,8 @@ void __56__GKGameCenterViewController__setupRemoteViewController__block_invoke_2
   leaderboard = self->_leaderboard;
   if (leaderboard)
   {
-    v21 = [(GKLeaderboard *)leaderboard internal];
-    [v8 setObject:v21 forKeyedSubscript:@"leaderboardInternal"];
+    internal = [(GKLeaderboard *)leaderboard internal];
+    [v8 setObject:internal forKeyedSubscript:@"leaderboardInternal"];
   }
 
   leaderboardTitle = self->_leaderboardTitle;
@@ -639,10 +639,10 @@ void __56__GKGameCenterViewController__setupRemoteViewController__block_invoke_2
     {
       actualGame = self->_actualGame;
       v30 = v28;
-      v31 = [(GKGame *)actualGame bundleIdentifier];
+      bundleIdentifier = [(GKGame *)actualGame bundleIdentifier];
       v32 = [MEMORY[0x277CCABB0] numberWithInt:self->_actualHostPID];
       *buf = 138412546;
-      v39 = v31;
+      v39 = bundleIdentifier;
       v40 = 2112;
       v41 = v32;
       _os_log_impl(&dword_24DE53000, v30, OS_LOG_TYPE_INFO, "GKGameCenterViewController is overriding game.bundleIdentifier=%@ hostPID=%@", buf, 0x16u);
@@ -656,14 +656,14 @@ void __56__GKGameCenterViewController__setupRemoteViewController__block_invoke_2
   return v8;
 }
 
-- (void)setRemoteViewController:(id)a3
+- (void)setRemoteViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_remoteViewController != v5)
+  controllerCopy = controller;
+  if (self->_remoteViewController != controllerCopy)
   {
-    objc_storeStrong(&self->_remoteViewController, a3);
+    objc_storeStrong(&self->_remoteViewController, controller);
     [(GKDashboardHostViewController *)self->_remoteViewController setDelegate:self];
-    v6 = [(GKGameCenterViewController *)self constructInitialState];
+    constructInitialState = [(GKGameCenterViewController *)self constructInitialState];
     objc_initWeak(&location, self);
     remoteViewController = self->_remoteViewController;
     v8[0] = MEMORY[0x277D85DD0];
@@ -671,7 +671,7 @@ void __56__GKGameCenterViewController__setupRemoteViewController__block_invoke_2
     v8[2] = __54__GKGameCenterViewController_setRemoteViewController___block_invoke;
     v8[3] = &unk_27966AE80;
     objc_copyWeak(&v9, &location);
-    [(GKExtensionRemoteViewController *)remoteViewController setInitialState:v6 withReply:v8];
+    [(GKExtensionRemoteViewController *)remoteViewController setInitialState:constructInitialState withReply:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
@@ -694,9 +694,9 @@ void __54__GKGameCenterViewController_setRemoteViewController___block_invoke_2(u
   [WeakRetained _endDelayingPresentation];
 }
 
-- (void)checkArcadeStateWithCompletion:(id)a3
+- (void)checkArcadeStateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = MEMORY[0x277D0C020];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKGameCenterViewController_iOS.m", 530, "-[GKGameCenterViewController checkArcadeStateWithCompletion:]"];
   v6 = [v4 dispatchGroupWithName:v5];
@@ -713,8 +713,8 @@ void __54__GKGameCenterViewController_setRemoteViewController___block_invoke_2(u
   v10[2] = __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block_invoke_3;
   v10[3] = &unk_27966A958;
   v11 = v7;
-  v12 = v3;
-  v8 = v3;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v7;
   [v9 notifyOnMainQueueWithBlock:v10];
 }
@@ -754,13 +754,13 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
   return v3();
 }
 
-- (void)extensionDidFinishWithError:(id)a3
+- (void)extensionDidFinishWithError:(id)error
 {
   [(GKGameCenterViewController *)self notifyDelegateOnWillFinish];
   if (+[GKDashboardHostViewController dismissAutomaticallyAfterExtensionCompletion])
   {
-    v4 = [(GKGameCenterViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(GKGameCenterViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   [(UINavigationController *)self _updateViewControllerStackWithViewController:0];
@@ -770,9 +770,9 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
 
 - (BOOL)shouldShowPlayForChallenge
 {
-  v2 = [MEMORY[0x277D0C138] localPlayer];
-  v3 = [v2 eventEmitter];
-  v4 = [v3 listenerRegisteredForSelector:sel_player_wantsToPlayChallenge_];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  eventEmitter = [localPlayer eventEmitter];
+  v4 = [eventEmitter listenerRegisteredForSelector:sel_player_wantsToPlayChallenge_];
 
   if (v4)
   {
@@ -781,8 +781,8 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
 
   else
   {
-    v6 = [MEMORY[0x277D0BFF8] challengeEventHandler];
-    v7 = [v6 delegate];
+    challengeEventHandler = [MEMORY[0x277D0BFF8] challengeEventHandler];
+    delegate = [challengeEventHandler delegate];
 
     v5 = objc_opt_respondsToSelector();
   }
@@ -792,18 +792,18 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
 
 - (BOOL)shouldShowPlayForTurnBasedMatch
 {
-  v2 = [MEMORY[0x277D0C138] localPlayer];
-  v3 = [v2 eventEmitter];
-  v4 = [v3 listenerRegisteredForSelector:sel_player_receivedTurnEventForMatch_didBecomeActive_];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  eventEmitter = [localPlayer eventEmitter];
+  v4 = [eventEmitter listenerRegisteredForSelector:sel_player_receivedTurnEventForMatch_didBecomeActive_];
 
   return v4;
 }
 
 - (BOOL)shouldShowQuitForTurnBasedMatch
 {
-  v2 = [MEMORY[0x277D0C138] localPlayer];
-  v3 = [v2 eventEmitter];
-  v4 = [v3 listenerRegisteredForSelector:sel_player_wantsToQuitMatch_];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  eventEmitter = [localPlayer eventEmitter];
+  v4 = [eventEmitter listenerRegisteredForSelector:sel_player_wantsToQuitMatch_];
 
   return v4;
 }
@@ -829,9 +829,9 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
 
     if (self->_viewState)
     {
-      v8 = [(GKGameCenterViewController *)self leaderboardIdentifier];
+      leaderboardIdentifier = [(GKGameCenterViewController *)self leaderboardIdentifier];
 
-      if (v8)
+      if (leaderboardIdentifier)
       {
         leaderboardIdentifier = self->_leaderboardIdentifier;
         self->_leaderboardIdentifier = 0;
@@ -886,9 +886,9 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
   }
 }
 
-- (void)setLeaderboardPlayerScope:(int64_t)a3
+- (void)setLeaderboardPlayerScope:(int64_t)scope
 {
-  if (self->_leaderboardPlayerScope != a3)
+  if (self->_leaderboardPlayerScope != scope)
   {
     if (!*MEMORY[0x277D0C2A0])
     {
@@ -900,9 +900,9 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
       [GKGameCenterViewController setLeaderboardPlayerScope:];
     }
 
-    self->_leaderboardPlayerScope = a3;
+    self->_leaderboardPlayerScope = scope;
     remoteViewController = self->_remoteViewController;
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:scope];
     [(GKDashboardHostViewController *)remoteViewController hostDidChangeLeaderboardPlayerScope:v7];
   }
 }
@@ -914,12 +914,12 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
   return WeakRetained;
 }
 
-- (GKGameCenterViewController)initWithGame:(id)a3 hostPID:(int)a4 restrictionMode:(int64_t)a5 deeplink:(id)a6 launchContext:(id)a7
+- (GKGameCenterViewController)initWithGame:(id)game hostPID:(int)d restrictionMode:(int64_t)mode deeplink:(id)deeplink launchContext:(id)context
 {
   v57 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  gameCopy = game;
+  deeplinkCopy = deeplink;
+  contextCopy = context;
   if (!*MEMORY[0x277D0C2A0])
   {
     v16 = GKOSLoggers();
@@ -928,33 +928,33 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
   v17 = *MEMORY[0x277D0C2C8];
   if (os_log_type_enabled(*MEMORY[0x277D0C2C8], OS_LOG_TYPE_INFO))
   {
-    v44 = a7;
-    v18 = v15;
-    v19 = a5;
-    v20 = v13;
+    contextCopy2 = context;
+    v18 = contextCopy;
+    modeCopy = mode;
+    v20 = gameCopy;
     actualGame = self->_actualGame;
     v22 = MEMORY[0x277CCABB0];
-    v45 = a4;
+    dCopy = d;
     actualHostPID = self->_actualHostPID;
     v24 = v17;
     v25 = [v22 numberWithInt:actualHostPID];
     *buf = 138413314;
     v48 = actualGame;
-    v13 = v20;
-    a5 = v19;
-    v15 = v18;
-    a7 = v44;
+    gameCopy = v20;
+    mode = modeCopy;
+    contextCopy = v18;
+    context = contextCopy2;
     v49 = 2112;
     v50 = v25;
     v51 = 2048;
-    v52 = a5;
+    modeCopy2 = mode;
     v53 = 2112;
-    v54 = v14;
+    v54 = deeplinkCopy;
     v55 = 2112;
-    v56 = v15;
+    v56 = contextCopy;
     _os_log_impl(&dword_24DE53000, v24, OS_LOG_TYPE_INFO, "GKGameCenterViewController.initWithGame:%@\n hostPID:%@\n restrictionMode:%ld\n deeplink:%@\n launchContext:%@", buf, 0x34u);
 
-    a4 = v45;
+    d = dCopy;
   }
 
   v46.receiver = self;
@@ -962,49 +962,49 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
   v26 = [(GKGameCenterViewController *)&v46 init];
   if (v26)
   {
-    v27 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BD98]];
+    v27 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BD98]];
     if ([v27 isEqualToString:*MEMORY[0x277D0BDA0]])
     {
       v26->_viewState = 0;
-      v28 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BD90]];
+      v28 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BD90]];
       leaderboardIdentifier = v26->_leaderboardIdentifier;
       v26->_leaderboardIdentifier = v28;
 
-      v30 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BDA8]];
+      v30 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BDA8]];
       leaderboardTitle = v26->_leaderboardTitle;
       v26->_leaderboardTitle = v30;
 
-      v32 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BDC0]];
+      v32 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BDC0]];
       playerIdentifier = v26->_playerIdentifier;
       v26->_playerIdentifier = v32;
 
-      v34 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BDB8]];
+      v34 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BDB8]];
       v35 = 1576;
     }
 
     else if ([v27 isEqualToString:*MEMORY[0x277D0BDB0]])
     {
       v26->_viewState = 3;
-      v34 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BDC0]];
+      v34 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BDC0]];
       v35 = 1560;
     }
 
     else if ([v27 isEqualToString:*MEMORY[0x277D0BD80]])
     {
       v26->_viewState = 1;
-      v36 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BD78]];
+      v36 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BD78]];
       achievementIdentifier = v26->_achievementIdentifier;
       v26->_achievementIdentifier = v36;
 
-      v38 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BDB8]];
+      v38 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BDB8]];
       gameBundleID = v26->_gameBundleID;
       v26->_gameBundleID = v38;
 
-      v40 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BDC0]];
+      v40 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BDC0]];
       v41 = v26->_playerIdentifier;
       v26->_playerIdentifier = v40;
 
-      v34 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BDA8]];
+      v34 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BDA8]];
       v35 = 1568;
     }
 
@@ -1017,7 +1017,7 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
       }
 
       v26->_viewState = 4;
-      v34 = [v14 objectForKeyedSubscript:*MEMORY[0x277D0BD90]];
+      v34 = [deeplinkCopy objectForKeyedSubscript:*MEMORY[0x277D0BD90]];
       v35 = 1552;
     }
 
@@ -1027,10 +1027,10 @@ uint64_t __61__GKGameCenterViewController_checkArcadeStateWithCompletion___block
 LABEL_15:
     v26->_leaderboardTimeScope = 2;
     v26->_leaderboardPlayerScope = 1;
-    objc_storeStrong(&v26->_actualGame, a3);
-    v26->_actualHostPID = a4;
-    v26->_restrictionMode = a5;
-    objc_storeStrong(&v26->_launchContext, a7);
+    objc_storeStrong(&v26->_actualGame, game);
+    v26->_actualHostPID = d;
+    v26->_restrictionMode = mode;
+    objc_storeStrong(&v26->_launchContext, context);
     [(GKGameCenterViewController *)v26 _setupChildViewController];
   }
 
@@ -1039,17 +1039,17 @@ LABEL_15:
 
 - (void)notifyDelegateOnWillFinish
 {
-  v3 = [(GKGameCenterViewController *)self gameCenterDelegate];
+  gameCenterDelegate = [(GKGameCenterViewController *)self gameCenterDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 gameCenterViewControllerDidFinish:self];
+    [gameCenterDelegate gameCenterViewControllerDidFinish:self];
   }
 }
 
-- (void)presentOverlayWithInitialState:(id)a3
+- (void)presentOverlayWithInitialState:(id)state
 {
   v4 = sub_24E347C08();
-  v5 = self;
+  selfCopy = self;
   GKGameCenterViewController.presentOverlay(initialState:)(v4);
 }
 

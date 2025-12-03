@@ -1,6 +1,6 @@
 @interface QSSCheckForSpeechRequest
-- (Offset<siri::speech::schema_fb::CheckForSpeechRequest>)addObjectToBuffer:(void *)a3;
-- (QSSCheckForSpeechRequest)initWithFlatbuffData:(id)a3 root:(const CheckForSpeechRequest *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::CheckForSpeechRequest>)addObjectToBuffer:(void *)buffer;
+- (QSSCheckForSpeechRequest)initWithFlatbuffData:(id)data root:(const CheckForSpeechRequest *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int64_t)end_speech_time;
 - (int64_t)start_speech_time;
@@ -37,18 +37,18 @@ flatbuffers::DetachedBuffer *__40__QSSCheckForSpeechRequest_flatbuffData__block_
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::CheckForSpeechRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::CheckForSpeechRequest>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSCheckForSpeechRequest *)self start_speech_time];
-  v6 = [(QSSCheckForSpeechRequest *)self end_speech_time];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v7 = *(a3 + 10);
-  v8 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned long long>(a3, 4, v5);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned long long>(a3, 6, v6);
+  start_speech_time = [(QSSCheckForSpeechRequest *)self start_speech_time];
+  end_speech_time = [(QSSCheckForSpeechRequest *)self end_speech_time];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v7 = *(buffer + 10);
+  v8 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 4, start_speech_time);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 6, end_speech_time);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v8 + v7);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v8 + v7);
 }
 
 - (int64_t)end_speech_time
@@ -81,42 +81,42 @@ flatbuffers::DetachedBuffer *__40__QSSCheckForSpeechRequest_flatbuffData__block_
   }
 }
 
-- (QSSCheckForSpeechRequest)initWithFlatbuffData:(id)a3 root:(const CheckForSpeechRequest *)a4 verify:(BOOL)a5
+- (QSSCheckForSpeechRequest)initWithFlatbuffData:(id)data root:(const CheckForSpeechRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSCheckForSpeechRequest;
   v10 = [(QSSCheckForSpeechRequest *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -138,9 +138,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

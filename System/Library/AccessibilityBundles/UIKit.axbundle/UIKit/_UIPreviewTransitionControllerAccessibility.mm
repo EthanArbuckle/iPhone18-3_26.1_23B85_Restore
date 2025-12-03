@@ -1,39 +1,39 @@
 @interface _UIPreviewTransitionControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_axPostNotificationForPhase:(uint64_t)a1;
-- (void)_layoutForPresentationPhase:(unint64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_axPostNotificationForPhase:(uint64_t)phase;
+- (void)_layoutForPresentationPhase:(unint64_t)phase;
 @end
 
 @implementation _UIPreviewTransitionControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIPreviewTransitionController" hasInstanceMethod:@"_layoutForPresentationPhase:" withFullSignature:{"v", "Q", 0}];
   objc_storeStrong(v4, obj);
 }
 
-- (void)_layoutForPresentationPhase:(unint64_t)a3
+- (void)_layoutForPresentationPhase:(unint64_t)phase
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  phaseCopy = phase;
   v3.receiver = self;
   v3.super_class = _UIPreviewTransitionControllerAccessibility;
-  [(_UIPreviewTransitionControllerAccessibility *)&v3 _layoutForPresentationPhase:a3];
-  [(_UIPreviewTransitionControllerAccessibility *)v6 _axPostNotificationForPhase:v4];
+  [(_UIPreviewTransitionControllerAccessibility *)&v3 _layoutForPresentationPhase:phase];
+  [(_UIPreviewTransitionControllerAccessibility *)selfCopy _axPostNotificationForPhase:phaseCopy];
 }
 
-- (void)_axPostNotificationForPhase:(uint64_t)a1
+- (void)_axPostNotificationForPhase:(uint64_t)phase
 {
-  v4 = a1;
+  phaseCopy = phase;
   v3 = a2;
-  if (a1)
+  if (phase)
   {
     location = 0;
     if (v3 > 1)

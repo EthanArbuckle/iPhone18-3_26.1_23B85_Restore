@@ -1,37 +1,37 @@
 @interface PUOneUpMergedVideoProvider
-- (PUOneUpMergedVideoProvider)initWithBrowsingViewModel:(id)a3;
-- (id)wrappedVideoPlayerForPlayer:(id)a3;
-- (void)_handleRequestChanges:(id)a3;
+- (PUOneUpMergedVideoProvider)initWithBrowsingViewModel:(id)model;
+- (id)wrappedVideoPlayerForPlayer:(id)player;
+- (void)_handleRequestChanges:(id)changes;
 - (void)_updateLivePhotoPlayerItem;
 - (void)_updateRequest;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)playerWillRelinquishVideoPlayer:(id)a3;
-- (void)setError:(id)a3;
-- (void)setIsEnabled:(BOOL)a3;
-- (void)setMergedVideo:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)playerWillRelinquishVideoPlayer:(id)player;
+- (void)setError:(id)error;
+- (void)setIsEnabled:(BOOL)enabled;
+- (void)setMergedVideo:(id)video;
+- (void)setState:(int64_t)state;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUOneUpMergedVideoProvider
 
 - (void)_updateLivePhotoPlayerItem
 {
-  v3 = [(PUOneUpMergedVideoProvider *)self mergedVideo];
-  v4 = v3;
-  if (v3)
+  mergedVideo = [(PUOneUpMergedVideoProvider *)self mergedVideo];
+  v4 = mergedVideo;
+  if (mergedVideo)
   {
-    v5 = [v3 mergedVideoAsset];
-    v6 = [v4 mergedVideoComposition];
+    mergedVideoAsset = [mergedVideo mergedVideoAsset];
+    mergedVideoComposition = [v4 mergedVideoComposition];
     v7 = 2 * ([v4 options] & 1);
-    v8 = [objc_alloc(MEMORY[0x1E69C1AE8]) initWithVideoAsset:v5 UIImage:0 photoTime:0 photoEXIFOrientation:v7 options:0.0];
+    v8 = [objc_alloc(MEMORY[0x1E69C1AE8]) initWithVideoAsset:mergedVideoAsset UIImage:0 photoTime:0 photoEXIFOrientation:v7 options:0.0];
     v9 = MEMORY[0x1E69C1B00];
     v10 = MEMORY[0x1E696AD98];
     [v4 videoAspectRatio];
     v11 = [v10 numberWithDouble:?];
     v13 = [v9 playerItemWithAsset:v8 targetSize:v11 contentAspectRatio:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
 
-    [v13 setVideoComposition:v6];
+    [v13 setVideoComposition:mergedVideoComposition];
   }
 
   else
@@ -39,58 +39,58 @@
     v13 = 0;
   }
 
-  v12 = [(PUOneUpMergedVideoProvider *)self livePhotoPlayer];
-  [v12 setPlayerItem:v13];
+  livePhotoPlayer = [(PUOneUpMergedVideoProvider *)self livePhotoPlayer];
+  [livePhotoPlayer setPlayerItem:v13];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(PUOneUpMergedVideoProvider *)self signalChange:1];
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
-  if (self->_error != v5)
+  errorCopy = error;
+  if (self->_error != errorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_error, a3);
+    v6 = errorCopy;
+    objc_storeStrong(&self->_error, error);
     [(PUOneUpMergedVideoProvider *)self signalChange:4];
-    v5 = v6;
+    errorCopy = v6;
   }
 }
 
-- (void)setMergedVideo:(id)a3
+- (void)setMergedVideo:(id)video
 {
-  v5 = a3;
-  if (self->_mergedVideo != v5)
+  videoCopy = video;
+  if (self->_mergedVideo != videoCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mergedVideo, a3);
+    v6 = videoCopy;
+    objc_storeStrong(&self->_mergedVideo, video);
     [(PUOneUpMergedVideoProvider *)self _updateLivePhotoPlayerItem];
     [(PUOneUpMergedVideoProvider *)self signalChange:2];
-    v5 = v6;
+    videoCopy = v6;
   }
 }
 
-- (void)_handleRequestChanges:(id)a3
+- (void)_handleRequestChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 > 2)
+  changesCopy = changes;
+  state = [changesCopy state];
+  if (state > 2)
   {
-    if (v5 == 4)
+    if (state == 4)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __52__PUOneUpMergedVideoProvider__handleRequestChanges___block_invoke_2;
       v11[3] = &unk_1E7B806D8;
       v11[4] = self;
-      v8 = v4;
+      v8 = changesCopy;
       v12 = v8;
       [(PUOneUpMergedVideoProvider *)self performChanges:v11];
       [v8 unregisterChangeObserver:self context:0];
@@ -99,7 +99,7 @@
 
     else
     {
-      if (v5 != 3)
+      if (state != 3)
       {
         goto LABEL_11;
       }
@@ -109,7 +109,7 @@
       v13[2] = __52__PUOneUpMergedVideoProvider__handleRequestChanges___block_invoke;
       v13[3] = &unk_1E7B806D8;
       v13[4] = self;
-      v6 = v4;
+      v6 = changesCopy;
       v14 = v6;
       [(PUOneUpMergedVideoProvider *)self performChanges:v13];
       [v6 unregisterChangeObserver:self context:0];
@@ -119,7 +119,7 @@
     goto LABEL_11;
   }
 
-  if (v5 == 1)
+  if (state == 1)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -129,7 +129,7 @@
     [(PUOneUpMergedVideoProvider *)self performChanges:v9];
   }
 
-  else if (v5 == 2)
+  else if (state == 2)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -137,7 +137,7 @@
     v10[3] = &unk_1E7B806B0;
     v10[4] = self;
     [(PUOneUpMergedVideoProvider *)self performChanges:v10];
-    [v4 unregisterChangeObserver:self context:0];
+    [changesCopy unregisterChangeObserver:self context:0];
   }
 
 LABEL_11:
@@ -185,44 +185,44 @@ uint64_t __52__PUOneUpMergedVideoProvider__handleRequestChanges___block_invoke_4
 
 - (void)_updateRequest
 {
-  v3 = [(PUOneUpMergedVideoProvider *)self browsingViewModel];
-  v4 = [v3 currentAssetReference];
-  v5 = [(PUOneUpMergedVideoProvider *)self currentRequest];
-  v6 = [v5 assetReference];
-  v7 = [v3 isVideoContentAllowed];
-  if (v4 && v7 && ([v3 isScrubbing] & 1) == 0)
+  browsingViewModel = [(PUOneUpMergedVideoProvider *)self browsingViewModel];
+  currentAssetReference = [browsingViewModel currentAssetReference];
+  currentRequest = [(PUOneUpMergedVideoProvider *)self currentRequest];
+  assetReference = [currentRequest assetReference];
+  isVideoContentAllowed = [browsingViewModel isVideoContentAllowed];
+  if (currentAssetReference && isVideoContentAllowed && ([browsingViewModel isScrubbing] & 1) == 0)
   {
-    v8 = [v6 asset];
-    v9 = [v4 asset];
-    v10 = v8;
+    asset = [assetReference asset];
+    asset2 = [currentAssetReference asset];
+    v10 = asset;
     v11 = v10;
-    if (v9 == v10)
+    if (asset2 == v10)
     {
     }
 
     else
     {
-      v12 = [v9 isContentEqualTo:v10];
+      v12 = [asset2 isContentEqualTo:v10];
       if (!v12)
       {
-        v12 = [v11 isContentEqualTo:v9];
+        v12 = [v11 isContentEqualTo:asset2];
       }
 
       if (v12 != 2)
       {
 LABEL_12:
-        [v5 cancel];
-        v14 = [v3 assetsDataSource];
-        if (v14)
+        [currentRequest cancel];
+        assetsDataSource = [browsingViewModel assetsDataSource];
+        if (assetsDataSource)
         {
-          v15 = [v4 asset];
-          v16 = [v15 playbackStyle];
+          asset3 = [currentAssetReference asset];
+          playbackStyle = [asset3 playbackStyle];
 
-          if (v16 == 3)
+          if (playbackStyle == 3)
           {
             v17 = [PUMergedLivePhotosVideoRequest alloc];
-            v18 = [(PUOneUpMergedVideoProvider *)self dataCache];
-            v19 = [(PUMergedLivePhotosVideoRequest *)v17 initWithAssetReference:v4 dataSource:v14 dataCache:v18];
+            dataCache = [(PUOneUpMergedVideoProvider *)self dataCache];
+            v19 = [(PUMergedLivePhotosVideoRequest *)v17 initWithAssetReference:currentAssetReference dataSource:assetsDataSource dataCache:dataCache];
 
             [(PUMergedLivePhotosVideoRequest *)v19 registerChangeObserver:self context:0];
             [(PUOneUpMergedVideoProvider *)self setCurrentRequest:v19];
@@ -230,20 +230,20 @@ LABEL_12:
         }
 
 LABEL_16:
-        v20 = [v3 assetViewModelForCurrentAssetReference];
-        if ([v20 isFullyInFocus])
+        assetViewModelForCurrentAssetReference = [browsingViewModel assetViewModelForCurrentAssetReference];
+        if ([assetViewModelForCurrentAssetReference isFullyInFocus])
         {
-          v21 = [(PUOneUpMergedVideoProvider *)self isEnabled];
+          isEnabled = [(PUOneUpMergedVideoProvider *)self isEnabled];
 
-          if (!v21)
+          if (!isEnabled)
           {
 LABEL_20:
 
             goto LABEL_21;
           }
 
-          v20 = [(PUOneUpMergedVideoProvider *)self currentRequest];
-          [v20 start];
+          assetViewModelForCurrentAssetReference = [(PUOneUpMergedVideoProvider *)self currentRequest];
+          [assetViewModelForCurrentAssetReference start];
         }
 
         goto LABEL_20;
@@ -259,7 +259,7 @@ LABEL_20:
     goto LABEL_12;
   }
 
-  [v5 cancel];
+  [currentRequest cancel];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __44__PUOneUpMergedVideoProvider__updateRequest__block_invoke;
@@ -279,30 +279,30 @@ uint64_t __44__PUOneUpMergedVideoProvider__updateRequest__block_invoke(uint64_t 
   return [v2 setCurrentRequest:0];
 }
 
-- (void)playerWillRelinquishVideoPlayer:(id)a3
+- (void)playerWillRelinquishVideoPlayer:(id)player
 {
   v3 = MEMORY[0x1E69C3C70];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 checkInReusableWrappedPlayer:v4];
+  playerCopy = player;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance checkInReusableWrappedPlayer:playerCopy];
 }
 
-- (id)wrappedVideoPlayerForPlayer:(id)a3
+- (id)wrappedVideoPlayerForPlayer:(id)player
 {
-  v3 = [MEMORY[0x1E69C3C70] sharedInstance];
-  v4 = [v3 checkOutReusableWrappedPlayer];
+  mEMORY[0x1E69C3C70] = [MEMORY[0x1E69C3C70] sharedInstance];
+  checkOutReusableWrappedPlayer = [mEMORY[0x1E69C3C70] checkOutReusableWrappedPlayer];
 
-  return v4;
+  return checkOutReusableWrappedPlayer;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v5)
+  changeCopy = change;
+  observableCopy = observable;
+  v7 = observableCopy;
+  if (changeCopy)
   {
-    v8 = v6;
+    v8 = observableCopy;
     px_dispatch_on_main_queue();
   }
 }
@@ -351,28 +351,28 @@ LABEL_3:
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v7 = a3;
-  v6 = a4;
-  if ((([v6 currentAssetDidChange] & 1) != 0 || (objc_msgSend(v6, "videoOverlayPlayStateDidChange") & 1) != 0 || (objc_msgSend(v6, "isVideoContentAllowedDidChange") & 1) != 0 || (objc_msgSend(v6, "isScrubbingDidChange") & 1) != 0 || objc_msgSend(v6, "currentAssetTransitionProgressDidChange")) && !objc_msgSend(v7, "videoOverlayPlayState"))
+  modelCopy = model;
+  changeCopy = change;
+  if ((([changeCopy currentAssetDidChange] & 1) != 0 || (objc_msgSend(changeCopy, "videoOverlayPlayStateDidChange") & 1) != 0 || (objc_msgSend(changeCopy, "isVideoContentAllowedDidChange") & 1) != 0 || (objc_msgSend(changeCopy, "isScrubbingDidChange") & 1) != 0 || objc_msgSend(changeCopy, "currentAssetTransitionProgressDidChange")) && !objc_msgSend(modelCopy, "videoOverlayPlayState"))
   {
     [(PUOneUpMergedVideoProvider *)self _updateRequest];
   }
 }
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
-  if (self->_isEnabled != a3)
+  if (self->_isEnabled != enabled)
   {
-    self->_isEnabled = a3;
+    self->_isEnabled = enabled;
     [(PUOneUpMergedVideoProvider *)self _updateRequest];
   }
 }
 
-- (PUOneUpMergedVideoProvider)initWithBrowsingViewModel:(id)a3
+- (PUOneUpMergedVideoProvider)initWithBrowsingViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = PUOneUpMergedVideoProvider;
   v6 = [(PUOneUpMergedVideoProvider *)&v12 init];
@@ -389,8 +389,8 @@ LABEL_3:
     v6->_dataCache = v9;
 
     v6->_state = 0;
-    objc_storeStrong(&v6->_browsingViewModel, a3);
-    [v5 registerChangeObserver:v6];
+    objc_storeStrong(&v6->_browsingViewModel, model);
+    [modelCopy registerChangeObserver:v6];
   }
 
   return v6;

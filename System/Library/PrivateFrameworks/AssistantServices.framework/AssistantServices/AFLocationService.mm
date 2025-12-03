@@ -1,16 +1,16 @@
 @interface AFLocationService
-- (AFLocationService)serviceWithErrorHandler:(id)a3;
+- (AFLocationService)serviceWithErrorHandler:(id)handler;
 - (NSXPCConnection)connection;
 - (id)service;
-- (void)currentAuthorizationStyle:(id)a3;
-- (void)currentLocationWithAccuracy:(double)a3 timeout:(double)a4 completion:(id)a5;
-- (void)currentLocationWithFetchRequest:(id)a3 completion:(id)a4;
+- (void)currentAuthorizationStyle:(id)style;
+- (void)currentLocationWithAccuracy:(double)accuracy timeout:(double)timeout completion:(id)completion;
+- (void)currentLocationWithFetchRequest:(id)request completion:(id)completion;
 - (void)dealloc;
-- (void)dismissTCCDialogIfNeeded:(id)a3;
-- (void)requestAuthorizationWithStyle:(unint64_t)a3 timeout:(double)a4 completion:(id)a5;
-- (void)requestTemporaryAccuracyAuthorizationWithStyle:(unint64_t)a3 timeout:(double)a4 completion:(id)a5;
-- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)a3 completion:(id)a4;
-- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)a3 timeout:(double)a4 completion:(id)a5;
+- (void)dismissTCCDialogIfNeeded:(id)needed;
+- (void)requestAuthorizationWithStyle:(unint64_t)style timeout:(double)timeout completion:(id)completion;
+- (void)requestTemporaryAccuracyAuthorizationWithStyle:(unint64_t)style timeout:(double)timeout completion:(id)completion;
+- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)selection completion:(id)completion;
+- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)selection timeout:(double)timeout completion:(id)completion;
 @end
 
 @implementation AFLocationService
@@ -48,14 +48,14 @@
   return connection;
 }
 
-- (void)dismissTCCDialogIfNeeded:(id)a3
+- (void)dismissTCCDialogIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__AFLocationService_dismissTCCDialogIfNeeded___block_invoke;
   v10[3] = &unk_1E7348AA8;
-  v5 = v4;
+  v5 = neededCopy;
   v11 = v5;
   v6 = [(AFLocationService *)self serviceWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -81,18 +81,18 @@ void __46__AFLocationService_dismissTCCDialogIfNeeded___block_invoke(uint64_t a1
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentLocationWithFetchRequest:(id)a3 completion:(id)a4
+- (void)currentLocationWithFetchRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__AFLocationService_currentLocationWithFetchRequest_completion___block_invoke;
   v10[3] = &unk_1E7348AA8;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  requestCopy = request;
   v9 = [(AFLocationService *)self serviceWithErrorHandler:v10];
-  [v9 currentLocationWithFetchRequest:v8 completion:v7];
+  [v9 currentLocationWithFetchRequest:requestCopy completion:v7];
 }
 
 void __64__AFLocationService_currentLocationWithFetchRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -109,17 +109,17 @@ void __64__AFLocationService_currentLocationWithFetchRequest_completion___block_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentLocationWithAccuracy:(double)a3 timeout:(double)a4 completion:(id)a5
+- (void)currentLocationWithAccuracy:(double)accuracy timeout:(double)timeout completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__AFLocationService_currentLocationWithAccuracy_timeout_completion___block_invoke;
   v11[3] = &unk_1E7348AA8;
-  v12 = v8;
-  v9 = v8;
+  v12 = completionCopy;
+  v9 = completionCopy;
   v10 = [(AFLocationService *)self serviceWithErrorHandler:v11];
-  [v10 currentLocationWithAccuracy:v9 timeout:a3 completion:a4];
+  [v10 currentLocationWithAccuracy:v9 timeout:accuracy completion:timeout];
 }
 
 void __68__AFLocationService_currentLocationWithAccuracy_timeout_completion___block_invoke(uint64_t a1, void *a2)
@@ -164,17 +164,17 @@ void __80__AFLocationService_updateTemporaryAuthorizationForAccurateLocation_com
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)a3 timeout:(double)a4 completion:(id)a5
+- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)selection timeout:(double)timeout completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __82__AFLocationService_updateAuthorizationStyleWithUserSelection_timeout_completion___block_invoke;
   v11[3] = &unk_1E7348AA8;
-  v12 = v8;
-  v9 = v8;
+  v12 = completionCopy;
+  v9 = completionCopy;
   v10 = [(AFLocationService *)self serviceWithErrorHandler:v11];
-  [v10 updateAuthorizationStyleWithUserSelection:a3 timeout:v9 completion:a4];
+  [v10 updateAuthorizationStyleWithUserSelection:selection timeout:v9 completion:timeout];
 }
 
 void __82__AFLocationService_updateAuthorizationStyleWithUserSelection_timeout_completion___block_invoke(uint64_t a1, void *a2)
@@ -191,14 +191,14 @@ void __82__AFLocationService_updateAuthorizationStyleWithUserSelection_timeout_c
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)a3 completion:(id)a4
+- (void)updateAuthorizationStyleWithUserSelection:(unint64_t)selection completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__AFLocationService_updateAuthorizationStyleWithUserSelection_completion___block_invoke;
   v12[3] = &unk_1E7348AA8;
-  v7 = v6;
+  v7 = completionCopy;
   v13 = v7;
   v8 = [(AFLocationService *)self serviceWithErrorHandler:v12];
   v10[0] = MEMORY[0x1E69E9820];
@@ -207,7 +207,7 @@ void __82__AFLocationService_updateAuthorizationStyleWithUserSelection_timeout_c
   v10[3] = &unk_1E73494D8;
   v11 = v7;
   v9 = v7;
-  [v8 updateAuthorizationStyleWithUserSelection:a3 completion:v10];
+  [v8 updateAuthorizationStyleWithUserSelection:selection completion:v10];
 }
 
 void __74__AFLocationService_updateAuthorizationStyleWithUserSelection_completion___block_invoke(uint64_t a1, void *a2)
@@ -224,17 +224,17 @@ void __74__AFLocationService_updateAuthorizationStyleWithUserSelection_completio
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestTemporaryAccuracyAuthorizationWithStyle:(unint64_t)a3 timeout:(double)a4 completion:(id)a5
+- (void)requestTemporaryAccuracyAuthorizationWithStyle:(unint64_t)style timeout:(double)timeout completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __87__AFLocationService_requestTemporaryAccuracyAuthorizationWithStyle_timeout_completion___block_invoke;
   v11[3] = &unk_1E7348AA8;
-  v12 = v8;
-  v9 = v8;
+  v12 = completionCopy;
+  v9 = completionCopy;
   v10 = [(AFLocationService *)self serviceWithErrorHandler:v11];
-  [v10 requestTemporaryAccuracyAuthorizationWithStyle:a3 timeout:v9 completion:a4];
+  [v10 requestTemporaryAccuracyAuthorizationWithStyle:style timeout:v9 completion:timeout];
 }
 
 void __87__AFLocationService_requestTemporaryAccuracyAuthorizationWithStyle_timeout_completion___block_invoke(uint64_t a1, void *a2)
@@ -251,17 +251,17 @@ void __87__AFLocationService_requestTemporaryAccuracyAuthorizationWithStyle_time
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestAuthorizationWithStyle:(unint64_t)a3 timeout:(double)a4 completion:(id)a5
+- (void)requestAuthorizationWithStyle:(unint64_t)style timeout:(double)timeout completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__AFLocationService_requestAuthorizationWithStyle_timeout_completion___block_invoke;
   v11[3] = &unk_1E7348AA8;
-  v12 = v8;
-  v9 = v8;
+  v12 = completionCopy;
+  v9 = completionCopy;
   v10 = [(AFLocationService *)self serviceWithErrorHandler:v11];
-  [v10 requestAuthorizationWithStyle:a3 timeout:v9 completion:a4];
+  [v10 requestAuthorizationWithStyle:style timeout:v9 completion:timeout];
 }
 
 void __70__AFLocationService_requestAuthorizationWithStyle_timeout_completion___block_invoke(uint64_t a1, void *a2)
@@ -278,14 +278,14 @@ void __70__AFLocationService_requestAuthorizationWithStyle_timeout_completion___
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentAuthorizationStyle:(id)a3
+- (void)currentAuthorizationStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__AFLocationService_currentAuthorizationStyle___block_invoke;
   v10[3] = &unk_1E7348AA8;
-  v5 = v4;
+  v5 = styleCopy;
   v11 = v5;
   v6 = [(AFLocationService *)self serviceWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -311,21 +311,21 @@ void __47__AFLocationService_currentAuthorizationStyle___block_invoke(uint64_t a
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (AFLocationService)serviceWithErrorHandler:(id)a3
+- (AFLocationService)serviceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AFLocationService *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(AFLocationService *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (id)service
 {
-  v2 = [(AFLocationService *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(AFLocationService *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 @end

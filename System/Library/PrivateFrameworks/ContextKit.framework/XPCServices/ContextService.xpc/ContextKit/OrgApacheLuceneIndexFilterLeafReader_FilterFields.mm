@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneIndexFilterLeafReader_FilterFields
 - (id)iterator;
-- (id)termsWithNSString:(id)a3;
+- (id)termsWithNSString:(id)string;
 - (int)size;
 - (void)dealloc;
 @end
@@ -18,7 +18,7 @@
   return [(OrgApacheLuceneIndexFields *)in iterator];
 }
 
-- (id)termsWithNSString:(id)a3
+- (id)termsWithNSString:(id)string
 {
   in = self->in_;
   if (!in)
@@ -26,7 +26,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneIndexFields *)in termsWithNSString:a3];
+  return [(OrgApacheLuceneIndexFields *)in termsWithNSString:string];
 }
 
 - (int)size

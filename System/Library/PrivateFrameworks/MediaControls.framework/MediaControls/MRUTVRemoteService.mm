@@ -1,15 +1,15 @@
 @interface MRUTVRemoteService
-+ (void)presentWithIdentifier:(id)a3 deviceType:(int64_t)a4;
++ (void)presentWithIdentifier:(id)identifier deviceType:(int64_t)type;
 @end
 
 @implementation MRUTVRemoteService
 
-+ (void)presentWithIdentifier:(id)a3 deviceType:(int64_t)a4
++ (void)presentWithIdentifier:(id)identifier deviceType:(int64_t)type
 {
   v5 = MEMORY[0x1E69D60F8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [v5 alloc];
-  if (a4)
+  if (type)
   {
     v8 = 2;
   }
@@ -19,10 +19,10 @@
     v8 = 1;
   }
 
-  v10 = [v7 initWithDeviceIdentifier:v6 identifierType:0 deviceType:v8 launchContext:5 launchMethod:1];
+  v10 = [v7 initWithDeviceIdentifier:identifierCopy identifierType:0 deviceType:v8 launchContext:5 launchMethod:1];
 
-  v9 = [MEMORY[0x1E69D6100] sharedInstance];
-  [v9 presentWithContext:v10];
+  mEMORY[0x1E69D6100] = [MEMORY[0x1E69D6100] sharedInstance];
+  [mEMORY[0x1E69D6100] presentWithContext:v10];
 }
 
 @end

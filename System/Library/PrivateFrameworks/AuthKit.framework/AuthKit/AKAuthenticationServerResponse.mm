@@ -1,62 +1,62 @@
 @interface AKAuthenticationServerResponse
-+ (id)decodedConfigurationInfo:(id)a3;
-- (AKAuthenticationServerResponse)initWithSRPContext:(id)a3;
-- (AKAuthenticationServerResponse)initWithServerResponse:(id)a3 forAppleID:(id)a4;
-- (AKAuthenticationServerResponse)initWithServerResponse:(id)a3 responseBody:(id)a4;
++ (id)decodedConfigurationInfo:(id)info;
+- (AKAuthenticationServerResponse)initWithSRPContext:(id)context;
+- (AKAuthenticationServerResponse)initWithServerResponse:(id)response forAppleID:(id)d;
+- (AKAuthenticationServerResponse)initWithServerResponse:(id)response responseBody:(id)body;
 - (BOOL)_shouldBackgroundiCloudSignIn;
-- (BOOL)shouldReportTokenGenerationMetricsWithTokenGenerationInfo:(id)a3;
-- (BOOL)updateWithSecondaryAuthenticationResponse:(id)a3;
-- (BOOL)updateWithSecondaryAuthenticationResponse:(id)a3 shouldUpdateDSID:(BOOL)a4;
-- (id)_decodeBase64String:(id)a3;
-- (id)_federatedPayloadFromInfo:(id)a3;
+- (BOOL)shouldReportTokenGenerationMetricsWithTokenGenerationInfo:(id)info;
+- (BOOL)updateWithSecondaryAuthenticationResponse:(id)response;
+- (BOOL)updateWithSecondaryAuthenticationResponse:(id)response shouldUpdateDSID:(BOOL)d;
+- (id)_decodeBase64String:(id)string;
+- (id)_federatedPayloadFromInfo:(id)info;
 - (id)_numberFormatter;
-- (void)_harvestCommonFieldsFromBody:(id)a3;
-- (void)_harvestCommonFieldsFromResponse:(id)a3;
-- (void)_harvestManagedAppleIDInfoFromDictionary:(id)a3;
-- (void)_setHeartbeatToken:(id)a3;
-- (void)_setIdmsDataToken:(id)a3;
-- (void)_setPasswordEquivalentToken:(id)a3;
-- (void)_setPasswordlessToken:(id)a3;
-- (void)_updateADPCohortWithRawValue:(id)a3;
-- (void)_updateAccountInformationWithResultsDictionary:(id)a3;
-- (void)_updateDSIDWithRawValue:(id)a3;
-- (void)reportCriticalAuthTokensTelemetryForFlow:(unint64_t)a3 withTokenGenerationInfo:(id)a4;
-- (void)updateWithSecondaryAuthenticationBody:(id)a3;
+- (void)_harvestCommonFieldsFromBody:(id)body;
+- (void)_harvestCommonFieldsFromResponse:(id)response;
+- (void)_harvestManagedAppleIDInfoFromDictionary:(id)dictionary;
+- (void)_setHeartbeatToken:(id)token;
+- (void)_setIdmsDataToken:(id)token;
+- (void)_setPasswordEquivalentToken:(id)token;
+- (void)_setPasswordlessToken:(id)token;
+- (void)_updateADPCohortWithRawValue:(id)value;
+- (void)_updateAccountInformationWithResultsDictionary:(id)dictionary;
+- (void)_updateDSIDWithRawValue:(id)value;
+- (void)reportCriticalAuthTokensTelemetryForFlow:(unint64_t)flow withTokenGenerationInfo:(id)info;
+- (void)updateWithSecondaryAuthenticationBody:(id)body;
 @end
 
 @implementation AKAuthenticationServerResponse
 
-+ (id)decodedConfigurationInfo:(id)a3
++ (id)decodedConfigurationInfo:(id)info
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v4 = [location[0] aaf_map:&stru_10031F7F0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (AKAuthenticationServerResponse)initWithSRPContext:(id)a3
+- (AKAuthenticationServerResponse)initWithSRPContext:(id)context
 {
-  v223 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v223;
-  v223 = 0;
+  objc_storeStrong(location, context);
+  v3 = selfCopy;
+  selfCopy = 0;
   v221.receiver = v3;
   v221.super_class = AKAuthenticationServerResponse;
-  v223 = [(AKAuthenticationServerResponse *)&v221 init];
-  objc_storeStrong(&v223, v223);
-  if (v223)
+  selfCopy = [(AKAuthenticationServerResponse *)&v221 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    v220 = [location[0] serverProvidedData];
-    v219 = [location[0] status];
-    v4 = [location[0] serverProvidedData];
-    serverProvidedData = v223->_serverProvidedData;
-    v223->_serverProvidedData = v4;
+    serverProvidedData = [location[0] serverProvidedData];
+    status = [location[0] status];
+    serverProvidedData2 = [location[0] serverProvidedData];
+    serverProvidedData = selfCopy->_serverProvidedData;
+    selfCopy->_serverProvidedData = serverProvidedData2;
     _objc_release(serverProvidedData);
     oslog = _AKLogSystem();
     type = OS_LOG_TYPE_DEFAULT;
@@ -64,44 +64,44 @@
     {
       log = oslog;
       v163 = type;
-      v164 = [v220 ak_redactedCopy];
-      v216 = _objc_retain(v164);
-      sub_10001B098(v228, v219, v216);
+      ak_redactedCopy = [serverProvidedData ak_redactedCopy];
+      v216 = _objc_retain(ak_redactedCopy);
+      sub_10001B098(v228, status, v216);
       _os_log_impl(&_mh_execute_header, log, v163, "Creating AKAuthenticationServerResponse with status: %@ contents: %@", v228, 0x16u);
-      _objc_release(v164);
+      _objc_release(ak_redactedCopy);
       objc_storeStrong(&v216, 0);
     }
 
     objc_storeStrong(&oslog, 0);
-    v6 = [v220 objectForKeyedSubscript:@"atxid"];
-    transactionId = v223->_transactionId;
-    v223->_transactionId = v6;
+    v6 = [serverProvidedData objectForKeyedSubscript:@"atxid"];
+    transactionId = selfCopy->_transactionId;
+    selfCopy->_transactionId = v6;
     _objc_release(transactionId);
-    v160 = [v220 objectForKeyedSubscript:@"apb"];
-    v8 = [v160 BOOLValue];
-    v223->_allowPiggybacking = v8;
+    v160 = [serverProvidedData objectForKeyedSubscript:@"apb"];
+    bOOLValue = [v160 BOOLValue];
+    selfCopy->_allowPiggybacking = bOOLValue;
     _objc_release(v160);
-    v161 = [v220 objectForKeyedSubscript:@"pbp"];
-    v9 = [v161 BOOLValue];
-    v223->_allowPiggybackingPresence = v9;
+    v161 = [serverProvidedData objectForKeyedSubscript:@"pbp"];
+    bOOLValue2 = [v161 BOOLValue];
+    selfCopy->_allowPiggybackingPresence = bOOLValue2;
     _objc_release(v161);
-    obj = [v220 objectForKeyedSubscript:@"alias"];
+    obj = [serverProvidedData objectForKeyedSubscript:@"alias"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v223->_aliases, obj);
+      objc_storeStrong(&selfCopy->_aliases, obj);
     }
 
-    [(AKAuthenticationServerResponse *)v223 _updateAccountInformationWithResultsDictionary:v220];
-    v10 = [location[0] masterToken];
-    masterToken = v223->_masterToken;
-    v223->_masterToken = v10;
+    [(AKAuthenticationServerResponse *)selfCopy _updateAccountInformationWithResultsDictionary:serverProvidedData];
+    masterToken = [location[0] masterToken];
+    masterToken = selfCopy->_masterToken;
+    selfCopy->_masterToken = masterToken;
     _objc_release(masterToken);
     v12 = objc_alloc_init(NSMutableDictionary);
-    serviceTokens = v223->_serviceTokens;
-    v223->_serviceTokens = v12;
+    serviceTokens = selfCopy->_serviceTokens;
+    selfCopy->_serviceTokens = v12;
     _objc_release(serviceTokens);
-    v214 = [v220 objectForKeyedSubscript:@"t"];
+    v214 = [serverProvidedData objectForKeyedSubscript:@"t"];
     memset(__b, 0, sizeof(__b));
     v158 = _objc_retain(v214);
     v159 = [v158 countByEnumeratingWithState:__b objects:v227 count:16];
@@ -123,7 +123,7 @@
         v210 = [AKToken tokenWithDictionary:v211];
         if (v210)
         {
-          [(NSMutableDictionary *)v223->_serviceTokens setObject:v210 forKeyedSubscript:v213];
+          [(NSMutableDictionary *)selfCopy->_serviceTokens setObject:v210 forKeyedSubscript:v213];
         }
 
         objc_storeStrong(&v210, 0);
@@ -142,51 +142,51 @@
     }
 
     _objc_release(v158);
-    v209 = [v220 objectForKeyedSubscript:@"mu"];
+    v209 = [serverProvidedData objectForKeyedSubscript:@"mu"];
     if (v209)
     {
-      v14 = [v209 BOOLValue];
-      v223->_isManagedAppleID = v14;
+      bOOLValue3 = [v209 BOOLValue];
+      selfCopy->_isManagedAppleID = bOOLValue3;
     }
 
-    v208 = [v220 objectForKeyedSubscript:@"demoAccount"];
+    v208 = [serverProvidedData objectForKeyedSubscript:@"demoAccount"];
     if (v208)
     {
-      v15 = [v208 BOOLValue];
-      v223->_isDemoAccount = v15;
+      bOOLValue4 = [v208 BOOLValue];
+      selfCopy->_isDemoAccount = bOOLValue4;
     }
 
-    v16 = [v219 objectForKeyedSubscript:@"fu"];
-    federatedAuthURL = v223->_federatedAuthURL;
-    v223->_federatedAuthURL = v16;
+    v16 = [status objectForKeyedSubscript:@"fu"];
+    federatedAuthURL = selfCopy->_federatedAuthURL;
+    selfCopy->_federatedAuthURL = v16;
     _objc_release(federatedAuthURL);
-    v18 = [v219 objectForKeyedSubscript:?];
-    federatedAuthSamlRequest = v223->_federatedAuthSamlRequest;
-    v223->_federatedAuthSamlRequest = v18;
+    v18 = [status objectForKeyedSubscript:?];
+    federatedAuthSamlRequest = selfCopy->_federatedAuthSamlRequest;
+    selfCopy->_federatedAuthSamlRequest = v18;
     _objc_release(federatedAuthSamlRequest);
-    v152 = v223;
-    v153 = [v219 objectForKeyedSubscript:@"params"];
+    v152 = selfCopy;
+    v153 = [status objectForKeyedSubscript:@"params"];
     v20 = [(AKAuthenticationServerResponse *)v152 _federatedPayloadFromInfo:?];
-    federatedAuthRequestPayload = v223->_federatedAuthRequestPayload;
-    v223->_federatedAuthRequestPayload = v20;
+    federatedAuthRequestPayload = selfCopy->_federatedAuthRequestPayload;
+    selfCopy->_federatedAuthRequestPayload = v20;
     _objc_release(federatedAuthRequestPayload);
     _objc_release(v153);
-    v22 = [v219 objectForKeyedSubscript:@"dm"];
-    federatedAuthURLWhiteList = v223->_federatedAuthURLWhiteList;
-    v223->_federatedAuthURLWhiteList = v22;
+    v22 = [status objectForKeyedSubscript:@"dm"];
+    federatedAuthURLWhiteList = selfCopy->_federatedAuthURLWhiteList;
+    selfCopy->_federatedAuthURLWhiteList = v22;
     _objc_release(federatedAuthURLWhiteList);
-    v207 = [v220 objectForKeyedSubscript:@"al"];
+    v207 = [serverProvidedData objectForKeyedSubscript:@"al"];
     if (v207)
     {
-      v24 = [v207 BOOLValue];
-      v223->_isAuditLogin = v24;
+      bOOLValue5 = [v207 BOOLValue];
+      selfCopy->_isAuditLogin = bOOLValue5;
     }
 
-    v25 = [v220 objectForKeyedSubscript:@"imu"];
-    imageURLString = v223->_imageURLString;
-    v223->_imageURLString = v25;
+    v25 = [serverProvidedData objectForKeyedSubscript:@"imu"];
+    imageURLString = selfCopy->_imageURLString;
+    selfCopy->_imageURLString = v25;
     _objc_release(imageURLString);
-    v206 = [v219 objectForKeyedSubscript:@"hsc"];
+    v206 = [status objectForKeyedSubscript:@"hsc"];
     if (v206)
     {
       objc_opt_class();
@@ -194,42 +194,42 @@
       {
         if ([v206 integerValue] == 409)
         {
-          v223->_isSecondaryActionRequired = 1;
+          selfCopy->_isSecondaryActionRequired = 1;
         }
 
         else if ([v206 integerValue] == 433)
         {
-          v223->_isAnisetteReprovisioningRequired = 1;
+          selfCopy->_isAnisetteReprovisioningRequired = 1;
         }
 
         else if ([v206 integerValue] == 434)
         {
-          v223->_isAnisetteResyncRequired = 1;
+          selfCopy->_isAnisetteResyncRequired = 1;
         }
 
         else if ([v206 integerValue] == 435)
         {
-          v223->_isURLSwitchingRequired = 1;
-          v27 = [v219 objectForKeyedSubscript:@"X-Apple-I-Data"];
-          urlSwitchingData = v223->_urlSwitchingData;
-          v223->_urlSwitchingData = v27;
+          selfCopy->_isURLSwitchingRequired = 1;
+          v27 = [status objectForKeyedSubscript:@"X-Apple-I-Data"];
+          urlSwitchingData = selfCopy->_urlSwitchingData;
+          selfCopy->_urlSwitchingData = v27;
           _objc_release(urlSwitchingData);
         }
 
         else if ([v206 integerValue] == 436)
         {
-          v223->_isRetryRequired = 1;
+          selfCopy->_isRetryRequired = 1;
         }
 
         else if ([v206 integerValue] == 443)
         {
-          v203 = [v219 objectForKeyedSubscript:@"st"];
+          v203 = [status objectForKeyedSubscript:@"st"];
           if ([v203 length])
           {
             v151 = +[AKBAATimeProvider sharedInstance];
             [(AKBAATimeProvider *)v151 addServerAdjustment:v203];
             _objc_release(v151);
-            v223->_isRetryRequired = 1;
+            selfCopy->_isRetryRequired = 1;
           }
 
           objc_storeStrong(&v203, 0);
@@ -247,7 +247,7 @@
           _objc_release(v149);
           if (v150)
           {
-            v223->_isServerBackoff = 1;
+            selfCopy->_isServerBackoff = 1;
           }
         }
       }
@@ -266,13 +266,13 @@
       }
     }
 
-    v202 = [v219 objectForKeyedSubscript:@"au"];
+    v202 = [status objectForKeyedSubscript:@"au"];
     if (v202)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v223->_secondaryActionURLKey, v202);
+        objc_storeStrong(&selfCopy->_secondaryActionURLKey, v202);
       }
 
       else
@@ -289,32 +289,32 @@
       }
     }
 
-    v199 = [v219 objectForKeyedSubscript:@"autype"];
+    v199 = [status objectForKeyedSubscript:@"autype"];
     if ([v199 intValue])
     {
       isSecondaryActionRequired = 0;
       if ([v199 intValue] == 1)
       {
-        isSecondaryActionRequired = v223->_isSecondaryActionRequired;
+        isSecondaryActionRequired = selfCopy->_isSecondaryActionRequired;
       }
 
-      v223->_secondaryActionURLGSEndpoint = isSecondaryActionRequired;
+      selfCopy->_secondaryActionURLGSEndpoint = isSecondaryActionRequired;
     }
 
-    v198 = [v220 objectForKeyedSubscript:@"fidoAuth"];
+    v198 = [serverProvidedData objectForKeyedSubscript:@"fidoAuth"];
     if ([v198 BOOLValue])
     {
-      v29 = [v198 BOOLValue];
-      v223->_fidoAuthRequired = v29;
+      bOOLValue6 = [v198 BOOLValue];
+      selfCopy->_fidoAuthRequired = bOOLValue6;
     }
 
-    v197 = [v219 objectForKeyedSubscript:@"naurl"];
+    v197 = [status objectForKeyedSubscript:@"naurl"];
     if (v197)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v223->_nativeActionURLKey, v197);
+        objc_storeStrong(&selfCopy->_nativeActionURLKey, v197);
       }
 
       else
@@ -331,82 +331,82 @@
       }
     }
 
-    v194 = [v220 objectForKeyedSubscript:@"sm"];
+    v194 = [serverProvidedData objectForKeyedSubscript:@"sm"];
     if (v194)
     {
-      objc_storeStrong(&v223->_secondaryActionMessage, v194);
+      objc_storeStrong(&selfCopy->_secondaryActionMessage, v194);
     }
 
-    v30 = [v219 objectForKeyedSubscript:@"em"];
-    errorMessage = v223->_errorMessage;
-    v223->_errorMessage = v30;
+    v30 = [status objectForKeyedSubscript:@"em"];
+    errorMessage = selfCopy->_errorMessage;
+    selfCopy->_errorMessage = v30;
     _objc_release(errorMessage);
-    v32 = [v219 objectForKeyedSubscript:@"tt"];
-    errorMessageTitle = v223->_errorMessageTitle;
-    v223->_errorMessageTitle = v32;
+    v32 = [status objectForKeyedSubscript:@"tt"];
+    errorMessageTitle = selfCopy->_errorMessageTitle;
+    selfCopy->_errorMessageTitle = v32;
     _objc_release(errorMessageTitle);
-    v146 = [v219 objectForKeyedSubscript:AKSubErrorStatusCodeKey];
+    v146 = [status objectForKeyedSubscript:AKSubErrorStatusCodeKey];
     v147 = objc_opt_respondsToSelector();
     _objc_release(v146);
     if (v147)
     {
-      v145 = [v219 objectForKeyedSubscript:AKSubErrorStatusCodeKey];
-      v34 = [v145 integerValue];
-      v223->_subErrorCode = v34;
+      v145 = [status objectForKeyedSubscript:AKSubErrorStatusCodeKey];
+      integerValue = [v145 integerValue];
+      selfCopy->_subErrorCode = integerValue;
       _objc_release(v145);
     }
 
-    v143 = [v219 objectForKeyedSubscript:@"ec"];
+    v143 = [status objectForKeyedSubscript:@"ec"];
     v144 = objc_opt_respondsToSelector();
     _objc_release(v143);
     if (v144)
     {
-      v142 = [v219 objectForKeyedSubscript:@"ec"];
-      v35 = [v142 integerValue];
-      v223->_errorCode = v35;
+      v142 = [status objectForKeyedSubscript:@"ec"];
+      integerValue2 = [v142 integerValue];
+      selfCopy->_errorCode = integerValue2;
       _objc_release(v142);
     }
 
-    v193 = [v219 objectForKeyedSubscript:@"X-Apple-I-MD-DATA"];
+    v193 = [status objectForKeyedSubscript:@"X-Apple-I-MD-DATA"];
     if (v193)
     {
       v36 = [[NSData alloc] initWithBase64EncodedString:v193 options:0];
-      anisetteResyncData = v223->_anisetteResyncData;
-      v223->_anisetteResyncData = v36;
+      anisetteResyncData = selfCopy->_anisetteResyncData;
+      selfCopy->_anisetteResyncData = v36;
       _objc_release(anisetteResyncData);
     }
 
-    v192 = [v219 objectForKeyedSubscript:@"X-Apple-I-MD-Cmd-Target"];
+    v192 = [status objectForKeyedSubscript:@"X-Apple-I-MD-Cmd-Target"];
     if ([v192 isEqual:@"paired"])
     {
-      v223->_shouldProxyAnisetteAction = 1;
+      selfCopy->_shouldProxyAnisetteAction = 1;
     }
 
     v140 = objc_opt_class();
-    v141 = [v220 objectForKeyedSubscript:@"continuationKey"];
+    v141 = [serverProvidedData objectForKeyedSubscript:@"continuationKey"];
     v191 = sub_10002AEB8(v140, v141);
     _objc_release(v141);
     if (v191)
     {
       v38 = [AKToken tokenWithDictionary:v191];
-      continuationToken = v223->_continuationToken;
-      v223->_continuationToken = v38;
+      continuationToken = selfCopy->_continuationToken;
+      selfCopy->_continuationToken = v38;
       _objc_release(continuationToken);
     }
 
     else
     {
-      v139 = [v220 objectForKeyedSubscript:@"ck"];
+      v139 = [serverProvidedData objectForKeyedSubscript:@"ck"];
       v40 = [AKToken tokenWithValue:"tokenWithValue:lifetime:" lifetime:?];
-      v41 = v223->_continuationToken;
-      v223->_continuationToken = v40;
+      v41 = selfCopy->_continuationToken;
+      selfCopy->_continuationToken = v40;
       _objc_release(v41);
       _objc_release(v139);
     }
 
-    v138 = [(AKToken *)v223->_continuationToken stringValue];
-    _objc_release(v138);
-    if (v138)
+    stringValue = [(AKToken *)selfCopy->_continuationToken stringValue];
+    _objc_release(stringValue);
+    if (stringValue)
     {
       v190 = _AKLogSystem();
       v189 = OS_LOG_TYPE_DEFAULT;
@@ -422,30 +422,30 @@
     }
 
     v134 = objc_opt_class();
-    v135 = [v220 objectForKeyedSubscript:@"passwordResetKey"];
+    v135 = [serverProvidedData objectForKeyedSubscript:@"passwordResetKey"];
     v187 = sub_10002AEB8(v134, v135);
     _objc_release(v135);
     if (v187)
     {
       v42 = [AKToken tokenWithDictionary:v187];
-      passwordResetToken = v223->_passwordResetToken;
-      v223->_passwordResetToken = v42;
+      passwordResetToken = selfCopy->_passwordResetToken;
+      selfCopy->_passwordResetToken = v42;
       _objc_release(passwordResetToken);
     }
 
     else
     {
-      v133 = [v220 objectForKeyedSubscript:@"prk"];
+      v133 = [serverProvidedData objectForKeyedSubscript:@"prk"];
       v44 = [AKToken tokenWithValue:"tokenWithValue:lifetime:" lifetime:?];
-      v45 = v223->_passwordResetToken;
-      v223->_passwordResetToken = v44;
+      v45 = selfCopy->_passwordResetToken;
+      selfCopy->_passwordResetToken = v44;
       _objc_release(v45);
       _objc_release(v133);
     }
 
-    v132 = [(AKToken *)v223->_passwordResetToken stringValue];
-    _objc_release(v132);
-    if (v132)
+    stringValue2 = [(AKToken *)selfCopy->_passwordResetToken stringValue];
+    _objc_release(stringValue2);
+    if (stringValue2)
     {
       v186 = _AKLogSystem();
       v185 = OS_LOG_TYPE_DEFAULT;
@@ -460,94 +460,94 @@
       objc_storeStrong(&v186, 0);
     }
 
-    v183 = [v220 objectForKeyedSubscript:@"appleIdSignInEnabled"];
+    v183 = [serverProvidedData objectForKeyedSubscript:@"appleIdSignInEnabled"];
     if ([v183 BOOLValue])
     {
-      v46 = [v183 BOOLValue];
-      v223->_authorizationUsed = v46;
+      bOOLValue7 = [v183 BOOLValue];
+      selfCopy->_authorizationUsed = bOOLValue7;
     }
 
-    v47 = [v220 objectForKeyedSubscript:@"privateAttestationEnabled"];
-    privateAttestationEnabled = v223->_privateAttestationEnabled;
-    v223->_privateAttestationEnabled = v47;
+    v47 = [serverProvidedData objectForKeyedSubscript:@"privateAttestationEnabled"];
+    privateAttestationEnabled = selfCopy->_privateAttestationEnabled;
+    selfCopy->_privateAttestationEnabled = v47;
     _objc_release(privateAttestationEnabled);
-    v182 = [v220 objectForKeyedSubscript:@"phoneAsAppleId"];
+    v182 = [serverProvidedData objectForKeyedSubscript:@"phoneAsAppleId"];
     if ([v182 BOOLValue])
     {
-      v49 = [v182 BOOLValue];
-      v223->_phoneAsAppleID = v49;
+      bOOLValue8 = [v182 BOOLValue];
+      selfCopy->_phoneAsAppleID = bOOLValue8;
     }
 
-    v181 = [v219 objectForKeyedSubscript:@"rsh"];
+    v181 = [status objectForKeyedSubscript:@"rsh"];
     if ([v181 BOOLValue])
     {
-      v50 = [v181 BOOLValue];
-      v223->_requireSigningHeaders = v50;
+      bOOLValue9 = [v181 BOOLValue];
+      selfCopy->_requireSigningHeaders = bOOLValue9;
     }
 
     v111 = objc_opt_class();
-    v112 = [v220 objectForKeyedSubscript:AKWebAccessEnabledKey];
+    v112 = [serverProvidedData objectForKeyedSubscript:AKWebAccessEnabledKey];
     v51 = sub_10002AEB8(v111, v112);
-    webAccessEnabled = v223->_webAccessEnabled;
-    v223->_webAccessEnabled = v51;
+    webAccessEnabled = selfCopy->_webAccessEnabled;
+    selfCopy->_webAccessEnabled = v51;
     _objc_release(webAccessEnabled);
     _objc_release(v112);
     v113 = objc_opt_class();
-    v114 = [v220 objectForKeyedSubscript:AKServerExperimentalFeaturesKey];
+    v114 = [serverProvidedData objectForKeyedSubscript:AKServerExperimentalFeaturesKey];
     v53 = sub_10002AEB8(v113, v114);
-    serverExperimentalFeatures = v223->_serverExperimentalFeatures;
-    v223->_serverExperimentalFeatures = v53;
+    serverExperimentalFeatures = selfCopy->_serverExperimentalFeatures;
+    selfCopy->_serverExperimentalFeatures = v53;
     _objc_release(serverExperimentalFeatures);
     _objc_release(v114);
     v115 = objc_opt_class();
-    v116 = [v220 objectForKeyedSubscript:AKPasskeyEligibleKey];
+    v116 = [serverProvidedData objectForKeyedSubscript:AKPasskeyEligibleKey];
     v55 = sub_10002AEB8(v115, v116);
-    passkeyEligible = v223->_passkeyEligible;
-    v223->_passkeyEligible = v55;
+    passkeyEligible = selfCopy->_passkeyEligible;
+    selfCopy->_passkeyEligible = v55;
     _objc_release(passkeyEligible);
     _objc_release(v116);
     v117 = objc_opt_class();
-    v118 = [v220 objectForKeyedSubscript:AKPasskeyPresentKey];
+    v118 = [serverProvidedData objectForKeyedSubscript:AKPasskeyPresentKey];
     v57 = sub_10002AEB8(v117, v118);
-    passkeyPresent = v223->_passkeyPresent;
-    v223->_passkeyPresent = v57;
+    passkeyPresent = selfCopy->_passkeyPresent;
+    selfCopy->_passkeyPresent = v57;
     _objc_release(passkeyPresent);
     _objc_release(v118);
     v119 = objc_opt_class();
-    v120 = [v220 objectForKeyedSubscript:AKProximityEligibleKey];
+    v120 = [serverProvidedData objectForKeyedSubscript:AKProximityEligibleKey];
     v180 = sub_10002AEB8(v119, v120);
     _objc_release(v120);
-    v59 = [v180 BOOLValue];
-    v223->_isProximityEligible = v59;
+    bOOLValue10 = [v180 BOOLValue];
+    selfCopy->_isProximityEligible = bOOLValue10;
     v121 = objc_opt_class();
-    v122 = [v220 objectForKeyedSubscript:AKPasscodeAuthEnabledKey];
+    v122 = [serverProvidedData objectForKeyedSubscript:AKPasscodeAuthEnabledKey];
     v60 = sub_10002AEB8(v121, v122);
-    passcodeAuthEnabled = v223->_passcodeAuthEnabled;
-    v223->_passcodeAuthEnabled = v60;
+    passcodeAuthEnabled = selfCopy->_passcodeAuthEnabled;
+    selfCopy->_passcodeAuthEnabled = v60;
     _objc_release(passcodeAuthEnabled);
     _objc_release(v122);
     v123 = objc_opt_class();
-    v124 = [v220 objectForKeyedSubscript:AKPasscodeAuthKey];
+    v124 = [serverProvidedData objectForKeyedSubscript:AKPasscodeAuthKey];
     v62 = sub_10002AEB8(v123, v124);
-    passcodeAuth = v223->_passcodeAuth;
-    v223->_passcodeAuth = v62;
+    passcodeAuth = selfCopy->_passcodeAuth;
+    selfCopy->_passcodeAuth = v62;
     _objc_release(passcodeAuth);
     _objc_release(v124);
     v125 = objc_opt_class();
-    v126 = [v220 objectForKeyedSubscript:AKAskToBuyKey];
+    v126 = [serverProvidedData objectForKeyedSubscript:AKAskToBuyKey];
     v64 = sub_10002AEB8(v125, v126);
-    askToBuy = v223->_askToBuy;
-    v223->_askToBuy = v64;
+    askToBuy = selfCopy->_askToBuy;
+    selfCopy->_askToBuy = v64;
     _objc_release(askToBuy);
     _objc_release(v126);
     v127 = objc_opt_class();
-    v128 = [v220 objectForKeyedSubscript:AKSOSNeededKey];
+    v128 = [serverProvidedData objectForKeyedSubscript:AKSOSNeededKey];
     v66 = sub_10002AEB8(v127, v128);
-    SOSNeeded = v223->_SOSNeeded;
-    v223->_SOSNeeded = v66;
+    SOSNeeded = selfCopy->_SOSNeeded;
+    selfCopy->_SOSNeeded = v66;
     _objc_release(SOSNeeded);
     _objc_release(v128);
-    v129 = [v220 objectForKeyedSubscript:AKSOSActiveDeviceKey];
+    v129 = [serverProvidedData objectForKeyedSubscript:AKSOSActiveDeviceKey];
     v178 = 0;
     v176 = 0;
     v174 = 0;
@@ -555,21 +555,21 @@
     if (v129)
     {
       v110 = objc_opt_class();
-      v179 = [v220 objectForKeyedSubscript:AKSOSActiveDeviceKey];
+      v179 = [serverProvidedData objectForKeyedSubscript:AKSOSActiveDeviceKey];
       v178 = 1;
       v177 = sub_10002AEB8(v110, v179);
       v176 = 1;
-      objc_storeStrong(&v223->_hasSOSActiveDevice, v177);
+      objc_storeStrong(&selfCopy->_hasSOSActiveDevice, v177);
     }
 
     else
     {
       v109 = objc_opt_class();
-      v175 = [v220 objectForKeyedSubscript:AKSOSActiveDeviceLegacyKey];
+      v175 = [serverProvidedData objectForKeyedSubscript:AKSOSActiveDeviceLegacyKey];
       v174 = 1;
       v173 = sub_10002AEB8(v109, v175);
       v172 = 1;
-      objc_storeStrong(&v223->_hasSOSActiveDevice, v173);
+      objc_storeStrong(&selfCopy->_hasSOSActiveDevice, v173);
     }
 
     if (v172)
@@ -593,63 +593,63 @@
     }
 
     _objc_release(v129);
-    v68 = [v219 objectForKeyedSubscript:AKConfigDataVersion];
-    configDataVersion = v223->_configDataVersion;
-    v223->_configDataVersion = v68;
+    v68 = [status objectForKeyedSubscript:AKConfigDataVersion];
+    configDataVersion = selfCopy->_configDataVersion;
+    selfCopy->_configDataVersion = v68;
     _objc_release(configDataVersion);
     v93 = objc_opt_class();
-    v94 = [v220 objectForKeyedSubscript:AKUserBirthYearKey];
+    v94 = [serverProvidedData objectForKeyedSubscript:AKUserBirthYearKey];
     v70 = sub_10002AEB8(v93, v94);
-    birthYear = v223->_birthYear;
-    v223->_birthYear = v70;
+    birthYear = selfCopy->_birthYear;
+    selfCopy->_birthYear = v70;
     _objc_release(birthYear);
     _objc_release(v94);
     v95 = objc_opt_class();
-    v96 = [v220 objectForKeyedSubscript:AKUserBirthDayKey];
+    v96 = [serverProvidedData objectForKeyedSubscript:AKUserBirthDayKey];
     v72 = sub_10002AEB8(v95, v96);
-    birthDay = v223->_birthDay;
-    v223->_birthDay = v72;
+    birthDay = selfCopy->_birthDay;
+    selfCopy->_birthDay = v72;
     _objc_release(birthDay);
     _objc_release(v96);
     v97 = objc_opt_class();
-    v98 = [v220 objectForKeyedSubscript:AKUserBirthMonthKey];
+    v98 = [serverProvidedData objectForKeyedSubscript:AKUserBirthMonthKey];
     v74 = sub_10002AEB8(v97, v98);
-    birthMonth = v223->_birthMonth;
-    v223->_birthMonth = v74;
+    birthMonth = selfCopy->_birthMonth;
+    selfCopy->_birthMonth = v74;
     _objc_release(birthMonth);
     _objc_release(v98);
     v99 = objc_opt_class();
-    v100 = [v220 objectForKeyedSubscript:AKHasModernRKKey];
+    v100 = [serverProvidedData objectForKeyedSubscript:AKHasModernRKKey];
     v76 = sub_10002AEB8(v99, v100);
-    hasModernRecoveryKey = v223->_hasModernRecoveryKey;
-    v223->_hasModernRecoveryKey = v76;
+    hasModernRecoveryKey = selfCopy->_hasModernRecoveryKey;
+    selfCopy->_hasModernRecoveryKey = v76;
     _objc_release(hasModernRecoveryKey);
     _objc_release(v100);
     v101 = objc_opt_class();
-    v102 = [v220 objectForKeyedSubscript:AK3PRegulatoryOverrideKey];
+    v102 = [serverProvidedData objectForKeyedSubscript:AK3PRegulatoryOverrideKey];
     v78 = sub_10002AEB8(v101, v102);
-    thirdPartyRegulatoryOverride = v223->_thirdPartyRegulatoryOverride;
-    v223->_thirdPartyRegulatoryOverride = v78;
+    thirdPartyRegulatoryOverride = selfCopy->_thirdPartyRegulatoryOverride;
+    selfCopy->_thirdPartyRegulatoryOverride = v78;
     _objc_release(thirdPartyRegulatoryOverride);
     _objc_release(v102);
     v103 = objc_opt_class();
-    v104 = [v220 objectForKeyedSubscript:AKADPCohortKey];
+    v104 = [serverProvidedData objectForKeyedSubscript:AKADPCohortKey];
     v80 = sub_10002AEB8(v103, v104);
-    adpCohort = v223->_adpCohort;
-    v223->_adpCohort = v80;
+    adpCohort = selfCopy->_adpCohort;
+    selfCopy->_adpCohort = v80;
     _objc_release(adpCohort);
     _objc_release(v104);
     v105 = objc_opt_class();
-    v106 = [v220 objectForKeyedSubscript:AKIdmsWalrusStatusKey];
+    v106 = [serverProvidedData objectForKeyedSubscript:AKIdmsWalrusStatusKey];
     v82 = sub_10002AEB8(v105, v106);
-    idmsWalrusStatus = v223->_idmsWalrusStatus;
-    v223->_idmsWalrusStatus = v82;
+    idmsWalrusStatus = selfCopy->_idmsWalrusStatus;
+    selfCopy->_idmsWalrusStatus = v82;
     _objc_release(idmsWalrusStatus);
     _objc_release(v106);
     v107 = +[AKFeatureManager sharedManager];
-    v108 = [v107 isBackgroundiCloudSignInEnabled];
+    isBackgroundiCloudSignInEnabled = [v107 isBackgroundiCloudSignInEnabled];
     _objc_release(v107);
-    if (v108)
+    if (isBackgroundiCloudSignInEnabled)
     {
       v92 = [v214 objectForKeyedSubscript:@"com.apple.gs.icloud.cloudkit.auth"];
       _objc_release(v92);
@@ -685,12 +685,12 @@
         objc_storeStrong(&v168, 0);
       }
 
-      v84 = [(AKAuthenticationServerResponse *)v223 _shouldBackgroundiCloudSignIn];
-      v223->_canBackgroundiCloudSignIn = v84;
+      _shouldBackgroundiCloudSignIn = [(AKAuthenticationServerResponse *)selfCopy _shouldBackgroundiCloudSignIn];
+      selfCopy->_canBackgroundiCloudSignIn = _shouldBackgroundiCloudSignIn;
     }
 
     v165 = objc_alloc_init(AKServerBackoffHelper);
-    [v165 configureFromHeaderFields:v219];
+    [v165 configureFromHeaderFields:status];
     objc_storeStrong(&v165, 0);
     objc_storeStrong(&v180, 0);
     objc_storeStrong(&v181, 0);
@@ -711,135 +711,135 @@
     objc_storeStrong(&v209, 0);
     objc_storeStrong(&v214, 0);
     objc_storeStrong(&obj, 0);
-    objc_storeStrong(&v219, 0);
-    objc_storeStrong(&v220, 0);
+    objc_storeStrong(&status, 0);
+    objc_storeStrong(&serverProvidedData, 0);
   }
 
-  v86 = _objc_retain(v223);
+  v86 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v223, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v86;
 }
 
-- (id)_federatedPayloadFromInfo:(id)a3
+- (id)_federatedPayloadFromInfo:(id)info
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] aaf_toUrlQueryString];
-  v3 = [v8 stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
-  v4 = v8;
-  v8 = v3;
+  objc_storeStrong(location, info);
+  aaf_toUrlQueryString = [location[0] aaf_toUrlQueryString];
+  v3 = [aaf_toUrlQueryString stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+  v4 = aaf_toUrlQueryString;
+  aaf_toUrlQueryString = v3;
   _objc_release(v4);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1000194D4(v10, v8);
+    sub_1000194D4(v10, aaf_toUrlQueryString);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Encoded payload for federated auth: %@", v10, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  v6 = [v8 dataUsingEncoding:4];
-  objc_storeStrong(&v8, 0);
+  v6 = [aaf_toUrlQueryString dataUsingEncoding:4];
+  objc_storeStrong(&aaf_toUrlQueryString, 0);
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (AKAuthenticationServerResponse)initWithServerResponse:(id)a3 forAppleID:(id)a4
+- (AKAuthenticationServerResponse)initWithServerResponse:(id)response forAppleID:(id)d
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v4 = v14;
-  v14 = 0;
+  objc_storeStrong(&v12, d);
+  v4 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v4;
   v11.super_class = AKAuthenticationServerResponse;
   v10 = [(AKAuthenticationServerResponse *)&v11 init];
-  v14 = v10;
-  objc_storeStrong(&v14, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
-    serviceTokens = v14->_serviceTokens;
-    v14->_serviceTokens = v5;
+    serviceTokens = selfCopy->_serviceTokens;
+    selfCopy->_serviceTokens = v5;
     _objc_release(serviceTokens);
-    objc_storeStrong(&v14->_appleID, v12);
-    [(AKAuthenticationServerResponse *)v14 updateWithSecondaryAuthenticationResponse:location[0]];
+    objc_storeStrong(&selfCopy->_appleID, v12);
+    [(AKAuthenticationServerResponse *)selfCopy updateWithSecondaryAuthenticationResponse:location[0]];
   }
 
-  v8 = _objc_retain(v14);
+  v8 = _objc_retain(selfCopy);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (AKAuthenticationServerResponse)initWithServerResponse:(id)a3 responseBody:(id)a4
+- (AKAuthenticationServerResponse)initWithServerResponse:(id)response responseBody:(id)body
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v4 = v14;
-  v14 = 0;
+  objc_storeStrong(&v12, body);
+  v4 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v4;
   v11.super_class = AKAuthenticationServerResponse;
   v10 = [(AKAuthenticationServerResponse *)&v11 init];
-  v14 = v10;
-  objc_storeStrong(&v14, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
-    serviceTokens = v14->_serviceTokens;
-    v14->_serviceTokens = v5;
+    serviceTokens = selfCopy->_serviceTokens;
+    selfCopy->_serviceTokens = v5;
     _objc_release(serviceTokens);
-    [(AKAuthenticationServerResponse *)v14 _updateAccountInformationWithResultsDictionary:v12];
-    [(AKAuthenticationServerResponse *)v14 updateWithSecondaryAuthenticationResponse:location[0]];
+    [(AKAuthenticationServerResponse *)selfCopy _updateAccountInformationWithResultsDictionary:v12];
+    [(AKAuthenticationServerResponse *)selfCopy updateWithSecondaryAuthenticationResponse:location[0]];
   }
 
-  v8 = _objc_retain(v14);
+  v8 = _objc_retain(selfCopy);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)_harvestCommonFieldsFromResponse:(id)a3
+- (void)_harvestCommonFieldsFromResponse:(id)response
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v30 = [location[0] allHeaderFields];
-  v29 = [v30 objectForKeyedSubscript:AKAccountNameHeaderKey];
+  objc_storeStrong(location, response);
+  allHeaderFields = [location[0] allHeaderFields];
+  v29 = [allHeaderFields objectForKeyedSubscript:AKAccountNameHeaderKey];
   if (v29)
   {
-    objc_storeStrong(&v32->_appleID, v29);
+    objc_storeStrong(&selfCopy->_appleID, v29);
   }
 
-  if (!v32->_altDSID)
+  if (!selfCopy->_altDSID)
   {
-    v3 = [v30 objectForKeyedSubscript:AKAltDSIDHeaderKey];
-    altDSID = v32->_altDSID;
-    v32->_altDSID = v3;
+    v3 = [allHeaderFields objectForKeyedSubscript:AKAltDSIDHeaderKey];
+    altDSID = selfCopy->_altDSID;
+    selfCopy->_altDSID = v3;
     _objc_release(altDSID);
   }
 
-  if (!v32->_dsid)
+  if (!selfCopy->_dsid)
   {
-    v28 = [v30 objectForKeyedSubscript:AKDSIDHeaderKey];
-    [(AKAuthenticationServerResponse *)v32 _updateDSIDWithRawValue:v28];
+    v28 = [allHeaderFields objectForKeyedSubscript:AKDSIDHeaderKey];
+    [(AKAuthenticationServerResponse *)selfCopy _updateDSIDWithRawValue:v28];
     objc_storeStrong(&v28, 0);
   }
 
-  if (!v32->_altDSID)
+  if (!selfCopy->_altDSID)
   {
     v27 = _AKLogSystem();
     v26 = 16;
@@ -854,7 +854,7 @@
     objc_storeStrong(&v27, 0);
   }
 
-  if (!v32->_dsid)
+  if (!selfCopy->_dsid)
   {
     v24 = _AKLogSystem();
     v23 = 16;
@@ -869,25 +869,25 @@
     objc_storeStrong(&v24, 0);
   }
 
-  if (v32->_appleID && v32->_altDSID)
+  if (selfCopy->_appleID && selfCopy->_altDSID)
   {
     v5 = [AKMasterToken alloc];
-    v6 = [v5 initWithAppleID:v32->_appleID altDSID:v32->_altDSID];
-    masterToken = v32->_masterToken;
-    v32->_masterToken = v6;
+    v6 = [v5 initWithAppleID:selfCopy->_appleID altDSID:selfCopy->_altDSID];
+    masterToken = selfCopy->_masterToken;
+    selfCopy->_masterToken = v6;
     _objc_release(masterToken);
   }
 
-  v8 = [location[0] ak_acceptedTermsInfo];
-  acceptedTermsInfo = v32->_acceptedTermsInfo;
-  v32->_acceptedTermsInfo = v8;
+  ak_acceptedTermsInfo = [location[0] ak_acceptedTermsInfo];
+  acceptedTermsInfo = selfCopy->_acceptedTermsInfo;
+  selfCopy->_acceptedTermsInfo = ak_acceptedTermsInfo;
   _objc_release(acceptedTermsInfo);
-  v10 = v32->_acceptedTermsInfo;
+  v10 = selfCopy->_acceptedTermsInfo;
   v20 = 0;
   v13 = 0;
   if (v10)
   {
-    v21 = [(NSDictionary *)v32->_acceptedTermsInfo objectForKeyedSubscript:@"alternateDsid"];
+    v21 = [(NSDictionary *)selfCopy->_acceptedTermsInfo objectForKeyedSubscript:@"alternateDsid"];
     v20 = 1;
     v13 = v21 == 0;
   }
@@ -899,40 +899,40 @@
 
   if (v13)
   {
-    v19 = [(NSDictionary *)v32->_acceptedTermsInfo mutableCopy];
-    [v19 setObject:v32->_altDSID forKeyedSubscript:@"alternateDsid"];
+    v19 = [(NSDictionary *)selfCopy->_acceptedTermsInfo mutableCopy];
+    [v19 setObject:selfCopy->_altDSID forKeyedSubscript:@"alternateDsid"];
     v11 = [v19 copy];
-    v12 = v32->_acceptedTermsInfo;
-    v32->_acceptedTermsInfo = v11;
+    v12 = selfCopy->_acceptedTermsInfo;
+    selfCopy->_acceptedTermsInfo = v11;
     _objc_release(v12);
     objc_storeStrong(&v19, 0);
   }
 
-  if (!v32->_adpCohort)
+  if (!selfCopy->_adpCohort)
   {
-    v18 = [v30 objectForKeyedSubscript:AKADPCohortHeaderKey];
-    [(AKAuthenticationServerResponse *)v32 _updateADPCohortWithRawValue:v18];
+    v18 = [allHeaderFields objectForKeyedSubscript:AKADPCohortHeaderKey];
+    [(AKAuthenticationServerResponse *)selfCopy _updateADPCohortWithRawValue:v18];
     objc_storeStrong(&v18, 0);
   }
 
   objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&allHeaderFields, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_harvestCommonFieldsFromBody:(id)a3
+- (void)_harvestCommonFieldsFromBody:(id)body
 {
-  v57 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (!v57->_appleID)
+  objc_storeStrong(location, body);
+  if (!selfCopy->_appleID)
   {
     v55 = [location[0] objectForKeyedSubscript:@"acname"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v57->_appleID, v55);
+      objc_storeStrong(&selfCopy->_appleID, v55);
     }
 
     else
@@ -951,37 +951,37 @@
     objc_storeStrong(&v55, 0);
   }
 
-  if (!v57->_lastName)
+  if (!selfCopy->_lastName)
   {
     v3 = [location[0] objectForKeyedSubscript:@"ln"];
-    lastName = v57->_lastName;
-    v57->_lastName = v3;
+    lastName = selfCopy->_lastName;
+    selfCopy->_lastName = v3;
     _objc_release(lastName);
   }
 
-  if (!v57->_firstName)
+  if (!selfCopy->_firstName)
   {
     v5 = [location[0] objectForKeyedSubscript:@"fn"];
-    firstName = v57->_firstName;
-    v57->_firstName = v5;
+    firstName = selfCopy->_firstName;
+    selfCopy->_firstName = v5;
     _objc_release(firstName);
   }
 
-  if (!v57->_dsid)
+  if (!selfCopy->_dsid)
   {
     v7 = [location[0] objectForKeyedSubscript:@"DsPrsId"];
-    dsid = v57->_dsid;
-    v57->_dsid = v7;
+    dsid = selfCopy->_dsid;
+    selfCopy->_dsid = v7;
     _objc_release(dsid);
   }
 
-  if (!v57->_appleIDSecurityLevel)
+  if (!selfCopy->_appleIDSecurityLevel)
   {
     v52 = [location[0] objectForKeyedSubscript:AKUserInfoSecurityLevelKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v57->_appleIDSecurityLevel = [v52 unsignedIntegerValue];
+      selfCopy->_appleIDSecurityLevel = [v52 unsignedIntegerValue];
     }
 
     else
@@ -1000,13 +1000,13 @@
     objc_storeStrong(&v52, 0);
   }
 
-  if (!v57->_authMode)
+  if (!selfCopy->_authMode)
   {
     v49 = [location[0] objectForKeyedSubscript:AKAuthenticationModeKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v57->_authMode = [v49 unsignedIntegerValue];
+      selfCopy->_authMode = [v49 unsignedIntegerValue];
     }
 
     else
@@ -1028,14 +1028,14 @@
   v35 = objc_opt_class();
   v37 = [location[0] objectForKeyedSubscript:AKMDMInfoRequiredKey];
   v36 = sub_10002AEB8(v35, v37);
-  v57->_isMdmInfoRequired = [v36 BOOLValue];
+  selfCopy->_isMdmInfoRequired = [v36 BOOLValue];
   _objc_release(v36);
   _objc_release(v37);
-  if (!v57->_altDSID)
+  if (!selfCopy->_altDSID)
   {
     v9 = [location[0] objectForKeyedSubscript:@"adsid"];
-    altDSID = v57->_altDSID;
-    v57->_altDSID = v9;
+    altDSID = selfCopy->_altDSID;
+    selfCopy->_altDSID = v9;
     _objc_release(altDSID);
   }
 
@@ -1045,7 +1045,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v57->_ageOfMajority, v46);
+      objc_storeStrong(&selfCopy->_ageOfMajority, v46);
     }
 
     else
@@ -1065,27 +1065,27 @@
   v24 = objc_opt_class();
   v25 = [location[0] objectForKeyedSubscript:AKUserCanAttestAgeKey];
   v11 = sub_10002AEB8(v24, v25);
-  canAttestAge = v57->_canAttestAge;
-  v57->_canAttestAge = v11;
+  canAttestAge = selfCopy->_canAttestAge;
+  selfCopy->_canAttestAge = v11;
   _objc_release(canAttestAge);
   _objc_release(v25);
   v26 = [location[0] objectForKeyedSubscript:@"underAge"];
-  v57->_isUnderAgeOfMajority = [v26 BOOLValue];
+  selfCopy->_isUnderAgeOfMajority = [v26 BOOLValue];
   _objc_release(v26);
   v27 = objc_opt_class();
   v29 = [location[0] objectForKeyedSubscript:AKUserInfoIsSiwaEnabledKey];
   v28 = sub_10002AEB8(v27, v29);
-  v57->_isSiwaForChildEnabled = [v28 BOOLValue];
+  selfCopy->_isSiwaForChildEnabled = [v28 BOOLValue];
   _objc_release(v28);
   _objc_release(v29);
   v30 = [location[0] objectForKeyedSubscript:@"isSenior"];
-  v57->_isSenior = [v30 BOOLValue];
+  selfCopy->_isSenior = [v30 BOOLValue];
   _objc_release(v30);
   v31 = objc_opt_class();
   v32 = [location[0] objectForKeyedSubscript:@"isEligibleForSafetyScreen"];
   v13 = sub_10002AEB8(v31, v32);
-  isEligibleForSafetyScreen = v57->_isEligibleForSafetyScreen;
-  v57->_isEligibleForSafetyScreen = v13;
+  isEligibleForSafetyScreen = selfCopy->_isEligibleForSafetyScreen;
+  selfCopy->_isEligibleForSafetyScreen = v13;
   _objc_release(isEligibleForSafetyScreen);
   _objc_release(v32);
   v33 = objc_opt_class();
@@ -1094,30 +1094,30 @@
   _objc_release(v34);
   if (v43)
   {
-    v57->_userAgeRange = [v43 unsignedIntegerValue];
+    selfCopy->_userAgeRange = [v43 unsignedIntegerValue];
   }
 
   else
   {
-    v57->_userAgeRange = 0;
+    selfCopy->_userAgeRange = 0;
   }
 
   v23 = [location[0] objectForKeyedSubscript:@"firstPartyApp"];
-  v57->_isFirstPartyApp = [v23 BOOLValue];
+  selfCopy->_isFirstPartyApp = [v23 BOOLValue];
   _objc_release(v23);
   v15 = [location[0] objectForKeyedSubscript:@"privateEmail"];
-  privateEmail = v57->_privateEmail;
-  v57->_privateEmail = v15;
+  privateEmail = selfCopy->_privateEmail;
+  selfCopy->_privateEmail = v15;
   _objc_release(privateEmail);
   v17 = [location[0] objectForKeyedSubscript:@"primaryEmail"];
-  primaryEmail = v57->_primaryEmail;
-  v57->_primaryEmail = v17;
+  primaryEmail = selfCopy->_primaryEmail;
+  selfCopy->_primaryEmail = v17;
   _objc_release(primaryEmail);
   v42 = [location[0] objectForKeyedSubscript:@"primaryEmailVetted"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v57->_primaryEmailVetted = [v42 BOOLValue];
+    selfCopy->_primaryEmailVetted = [v42 BOOLValue];
   }
 
   else
@@ -1139,7 +1139,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v57->_isProximityEligible = [v39 BOOLValue];
+      selfCopy->_isProximityEligible = [v39 BOOLValue];
     }
 
     else
@@ -1158,11 +1158,11 @@
   v21 = objc_opt_class();
   v22 = [location[0] objectForKeyedSubscript:@"groupId"];
   v19 = sub_10002AEB8(v21, v22);
-  signInWithAppleSharedAccountGroupID = v57->_signInWithAppleSharedAccountGroupID;
-  v57->_signInWithAppleSharedAccountGroupID = v19;
+  signInWithAppleSharedAccountGroupID = selfCopy->_signInWithAppleSharedAccountGroupID;
+  selfCopy->_signInWithAppleSharedAccountGroupID = v19;
   _objc_release(signInWithAppleSharedAccountGroupID);
   _objc_release(v22);
-  [(AKAuthenticationServerResponse *)v57 _harvestManagedAppleIDInfoFromDictionary:location[0]];
+  [(AKAuthenticationServerResponse *)selfCopy _harvestManagedAppleIDInfoFromDictionary:location[0]];
   objc_storeStrong(&v39, 0);
   objc_storeStrong(&v42, 0);
   objc_storeStrong(&v43, 0);
@@ -1170,12 +1170,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_harvestManagedAppleIDInfoFromDictionary:(id)a3
+- (void)_harvestManagedAppleIDInfoFromDictionary:(id)dictionary
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v36 = [location[0] objectForKeyedSubscript:@"orgType"];
   if (v36)
   {
@@ -1184,12 +1184,12 @@
     {
       if ([v36 isEqual:@"EDU"])
       {
-        v38->_managedOrganizationType = 1;
+        selfCopy->_managedOrganizationType = 1;
       }
 
       else if ([v36 isEqual:@"ENT"])
       {
-        v38->_managedOrganizationType = 2;
+        selfCopy->_managedOrganizationType = 2;
       }
 
       else
@@ -1203,7 +1203,7 @@
         }
 
         objc_storeStrong(&v32, 0);
-        v38->_managedOrganizationType = 0;
+        selfCopy->_managedOrganizationType = 0;
       }
     }
 
@@ -1225,7 +1225,7 @@
       }
 
       objc_storeStrong(&v35, 0);
-      v38->_managedOrganizationType = 0;
+      selfCopy->_managedOrganizationType = 0;
     }
   }
 
@@ -1235,7 +1235,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v38->_managedOrganizationName, v30);
+      objc_storeStrong(&selfCopy->_managedOrganizationName, v30);
     }
 
     else
@@ -1265,7 +1265,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v38->_isNotificationEmailAvailable, v26);
+      objc_storeStrong(&selfCopy->_isNotificationEmailAvailable, v26);
     }
 
     else
@@ -1295,7 +1295,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v38->_notificationEmail, obj);
+      objc_storeStrong(&selfCopy->_notificationEmail, obj);
     }
 
     else
@@ -1326,83 +1326,83 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_setPasswordEquivalentToken:(id)a3
+- (void)_setPasswordEquivalentToken:(id)token
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSMutableDictionary *)v4->_serviceTokens setObject:location[0] forKey:@"com.apple.gs.idms.pet"];
+  objc_storeStrong(location, token);
+  [(NSMutableDictionary *)selfCopy->_serviceTokens setObject:location[0] forKey:@"com.apple.gs.idms.pet"];
   objc_storeStrong(location, 0);
 }
 
-- (void)_setHeartbeatToken:(id)a3
+- (void)_setHeartbeatToken:(id)token
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSMutableDictionary *)v4->_serviceTokens setObject:location[0] forKey:@"com.apple.gs.idms.hb"];
+  objc_storeStrong(location, token);
+  [(NSMutableDictionary *)selfCopy->_serviceTokens setObject:location[0] forKey:@"com.apple.gs.idms.hb"];
   objc_storeStrong(location, 0);
 }
 
-- (void)_setPasswordlessToken:(id)a3
+- (void)_setPasswordlessToken:(id)token
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSMutableDictionary *)v4->_serviceTokens setObject:location[0] forKey:@"com.apple.gs.idms.plt"];
+  objc_storeStrong(location, token);
+  [(NSMutableDictionary *)selfCopy->_serviceTokens setObject:location[0] forKey:@"com.apple.gs.idms.plt"];
   objc_storeStrong(location, 0);
 }
 
-- (void)_setIdmsDataToken:(id)a3
+- (void)_setIdmsDataToken:(id)token
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSMutableDictionary *)v4->_serviceTokens setObject:location[0] forKey:@"com.apple.gs.idmsdata"];
+  objc_storeStrong(location, token);
+  [(NSMutableDictionary *)selfCopy->_serviceTokens setObject:location[0] forKey:@"com.apple.gs.idmsdata"];
   objc_storeStrong(location, 0);
 }
 
-- (void)updateWithSecondaryAuthenticationBody:(id)a3
+- (void)updateWithSecondaryAuthenticationBody:(id)body
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, body);
   v3 = [location[0] objectForKeyedSubscript:AKIdmsDataKey];
-  serverInfo = v8->_serverInfo;
-  v8->_serverInfo = v3;
+  serverInfo = selfCopy->_serverInfo;
+  selfCopy->_serverInfo = v3;
   _objc_release(serverInfo);
   v5 = [location[0] objectForKeyedSubscript:AKTransactionId];
-  transactionId = v8->_transactionId;
-  v8->_transactionId = v5;
+  transactionId = selfCopy->_transactionId;
+  selfCopy->_transactionId = v5;
   _objc_release(transactionId);
-  [(AKAuthenticationServerResponse *)v8 _updateAccountInformationWithResultsDictionary:location[0]];
+  [(AKAuthenticationServerResponse *)selfCopy _updateAccountInformationWithResultsDictionary:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateAccountInformationWithResultsDictionary:(id)a3
+- (void)_updateAccountInformationWithResultsDictionary:(id)dictionary
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKAuthenticationServerResponse *)v44 _harvestCommonFieldsFromBody:location[0]];
+  objc_storeStrong(location, dictionary);
+  [(AKAuthenticationServerResponse *)selfCopy _harvestCommonFieldsFromBody:location[0]];
   v42 = [location[0] objectForKeyedSubscript:@"uireq"];
   if (v42)
   {
-    v3 = [v42 BOOLValue];
-    v44->_isServerUIRequired = v3;
+    bOOLValue = [v42 BOOLValue];
+    selfCopy->_isServerUIRequired = bOOLValue;
   }
 
   v41 = [location[0] objectForKeyedSubscript:@"fpc"];
   if (v41)
   {
-    v4 = [v41 BOOLValue];
-    v44->_isPasscodeResetRequired = v4;
+    bOOLValue2 = [v41 BOOLValue];
+    selfCopy->_isPasscodeResetRequired = bOOLValue2;
   }
 
   v40 = [location[0] objectForKeyedSubscript:@"cd"];
@@ -1410,8 +1410,8 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = [AKAuthenticationServerResponse decodedConfigurationInfo:v40];
-    configurationInfo = v44->_configurationInfo;
-    v44->_configurationInfo = v5;
+    configurationInfo = selfCopy->_configurationInfo;
+    selfCopy->_configurationInfo = v5;
     _objc_release(configurationInfo);
   }
 
@@ -1419,104 +1419,104 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&v44->_additionalInfo, v39);
+    objc_storeStrong(&selfCopy->_additionalInfo, v39);
   }
 
   v38 = [location[0] objectForKeyedSubscript:@"hsa2Phones"];
   v7 = objc_opt_class();
   v8 = sub_10002AEB8(v7, v38);
-  trustedPhoneNumbers = v44->_trustedPhoneNumbers;
-  v44->_trustedPhoneNumbers = v8;
+  trustedPhoneNumbers = selfCopy->_trustedPhoneNumbers;
+  selfCopy->_trustedPhoneNumbers = v8;
   _objc_release(trustedPhoneNumbers);
   v37 = [location[0] objectForKeyedSubscript:@"securityKeys"];
   v10 = objc_opt_class();
   v11 = sub_10002AEB8(v10, v37);
-  securityKeys = v44->_securityKeys;
-  v44->_securityKeys = v11;
+  securityKeys = selfCopy->_securityKeys;
+  selfCopy->_securityKeys = v11;
   _objc_release(securityKeys);
   v36 = [location[0] objectForKeyedSubscript:@"loginHandles"];
   v13 = objc_opt_class();
   v14 = sub_10002AEB8(v13, v36);
-  loginHandles = v44->_loginHandles;
-  v44->_loginHandles = v14;
+  loginHandles = selfCopy->_loginHandles;
+  selfCopy->_loginHandles = v14;
   _objc_release(loginHandles);
   v35 = [location[0] objectForKeyedSubscript:@"canHaveCustodian"];
   if (v35)
   {
-    objc_storeStrong(&v44->_canHaveCustodian, v35);
+    objc_storeStrong(&selfCopy->_canHaveCustodian, v35);
   }
 
   v34 = [location[0] objectForKeyedSubscript:@"canBeCustodian"];
   if (v34)
   {
-    objc_storeStrong(&v44->_canBeCustodian, v34);
+    objc_storeStrong(&selfCopy->_canBeCustodian, v34);
   }
 
   v33 = [location[0] objectForKeyedSubscript:@"custodianEnabled"];
   if (v33)
   {
-    objc_storeStrong(&v44->_custodianEnabled, v33);
+    objc_storeStrong(&selfCopy->_custodianEnabled, v33);
   }
 
   obj = [location[0] objectForKeyedSubscript:@"custodianLastUpdateDate"];
   if (obj)
   {
-    objc_storeStrong(&v44->_custodianLastModified, obj);
+    objc_storeStrong(&selfCopy->_custodianLastModified, obj);
   }
 
   v31 = [location[0] objectForKeyedSubscript:AKInformationCustodianInfosKey];
   v16 = objc_opt_class();
   v17 = sub_10002AEB8(v16, v31);
-  custodianInfos = v44->_custodianInfos;
-  v44->_custodianInfos = v17;
+  custodianInfos = selfCopy->_custodianInfos;
+  selfCopy->_custodianInfos = v17;
   _objc_release(custodianInfos);
   v30 = [location[0] objectForKeyedSubscript:AKInformationBeneficiaryInfoKey];
   v19 = objc_opt_class();
   v20 = sub_10002AEB8(v19, v30);
-  beneficiaryInfo = v44->_beneficiaryInfo;
-  v44->_beneficiaryInfo = v20;
+  beneficiaryInfo = selfCopy->_beneficiaryInfo;
+  selfCopy->_beneficiaryInfo = v20;
   _objc_release(beneficiaryInfo);
   v29 = [location[0] objectForKeyedSubscript:@"buuid"];
   v28 = [[NSUUID alloc] initWithUUIDString:v29];
   if (v28)
   {
-    objc_storeStrong(&v44->_beneficiaryIdentifier, v29);
+    objc_storeStrong(&selfCopy->_beneficiaryIdentifier, v29);
   }
 
   v27 = [location[0] objectForKeyedSubscript:@"canHaveBeneficiary"];
   if (v27)
   {
-    objc_storeStrong(&v44->_canHaveBeneficiary, v27);
+    objc_storeStrong(&selfCopy->_canHaveBeneficiary, v27);
   }
 
   v26 = [location[0] objectForKeyedSubscript:@"canBeBeneficiary"];
   if (v26)
   {
-    objc_storeStrong(&v44->_canBeBeneficiary, v26);
+    objc_storeStrong(&selfCopy->_canBeBeneficiary, v26);
   }
 
   v25 = [location[0] objectForKeyedSubscript:@"beneficiaryWrappedKey"];
   if ([v25 length])
   {
-    objc_storeStrong(&v44->_beneficiaryWrappedKey, v25);
+    objc_storeStrong(&selfCopy->_beneficiaryWrappedKey, v25);
   }
 
   v24 = [location[0] objectForKeyedSubscript:@"beneficiaryLastUpdateDate"];
   if (v24)
   {
-    objc_storeStrong(&v44->_beneficiaryLastModified, v24);
+    objc_storeStrong(&selfCopy->_beneficiaryLastModified, v24);
   }
 
   v23 = [location[0] objectForKeyedSubscript:@"countryCode"];
   if (v23)
   {
-    objc_storeStrong(&v44->_appleIDCountryCode, v23);
+    objc_storeStrong(&selfCopy->_appleIDCountryCode, v23);
   }
 
   v22 = [location[0] objectForKeyedSubscript:@"appleManagedAccount"];
   if (v22)
   {
-    objc_storeStrong(&v44->_hasMDM, v22);
+    objc_storeStrong(&selfCopy->_hasMDM, v22);
   }
 
   objc_storeStrong(&v22, 0);
@@ -1543,24 +1543,24 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)updateWithSecondaryAuthenticationResponse:(id)a3
+- (BOOL)updateWithSecondaryAuthenticationResponse:(id)response
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAuthenticationServerResponse *)v6 updateWithSecondaryAuthenticationResponse:location[0] shouldUpdateDSID:0];
+  objc_storeStrong(location, response);
+  v4 = [(AKAuthenticationServerResponse *)selfCopy updateWithSecondaryAuthenticationResponse:location[0] shouldUpdateDSID:0];
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (BOOL)updateWithSecondaryAuthenticationResponse:(id)a3 shouldUpdateDSID:(BOOL)a4
+- (BOOL)updateWithSecondaryAuthenticationResponse:(id)response shouldUpdateDSID:(BOOL)d
 {
-  v135 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v133 = a4;
+  objc_storeStrong(location, response);
+  dCopy = d;
   v132 = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v132, OS_LOG_TYPE_DEBUG))
@@ -1570,10 +1570,10 @@
   }
 
   objc_storeStrong(&v132, 0);
-  [(AKAuthenticationServerResponse *)v135 _harvestCommonFieldsFromResponse:location[0]];
+  [(AKAuthenticationServerResponse *)selfCopy _harvestCommonFieldsFromResponse:location[0]];
   v130 = 1;
-  v129 = [location[0] allHeaderFields];
-  if (!v135->_masterToken)
+  allHeaderFields = [location[0] allHeaderFields];
+  if (!selfCopy->_masterToken)
   {
     v128 = _AKLogSystem();
     v127 = OS_LOG_TYPE_ERROR;
@@ -1588,7 +1588,7 @@
     objc_storeStrong(&v128, 0);
   }
 
-  v125 = [(AKMasterToken *)v135->_masterToken updateWithHTTPURLResponse:location[0]];
+  v125 = [(AKMasterToken *)selfCopy->_masterToken updateWithHTTPURLResponse:location[0]];
   if (v125)
   {
     v121 = _AKLogSystem();
@@ -1620,7 +1620,7 @@
     v130 = 0;
   }
 
-  v118 = [v129 objectForKeyedSubscript:AKPETHeaderKey];
+  v118 = [allHeaderFields objectForKeyedSubscript:AKPETHeaderKey];
   v117 = [AKToken tokenWithBase64String:v118];
   if (v117)
   {
@@ -1635,7 +1635,7 @@
     }
 
     objc_storeStrong(&v114, 0);
-    [(AKAuthenticationServerResponse *)v135 _setPasswordEquivalentToken:v117];
+    [(AKAuthenticationServerResponse *)selfCopy _setPasswordEquivalentToken:v117];
   }
 
   else
@@ -1652,7 +1652,7 @@
     v130 = 0;
   }
 
-  v111 = [v129 objectForKeyedSubscript:@"X-Apple-HB-Token"];
+  v111 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-HB-Token"];
   v110 = [AKToken tokenWithBase64String:v111];
   if (v110)
   {
@@ -1667,7 +1667,7 @@
     }
 
     objc_storeStrong(&v107, 0);
-    [(AKAuthenticationServerResponse *)v135 _setHeartbeatToken:v110];
+    [(AKAuthenticationServerResponse *)selfCopy _setHeartbeatToken:v110];
   }
 
   else
@@ -1683,7 +1683,7 @@
     objc_storeStrong(&v109, 0);
   }
 
-  v104 = [v129 objectForKeyedSubscript:@"X-Apple-GS-Token"];
+  v104 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-GS-Token"];
   v103 = [v104 componentsSeparatedByString:{@", "}];
   memset(__b, 0, sizeof(__b));
   obj = _objc_retain(v103);
@@ -1710,18 +1710,18 @@
         if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
         {
           v30 = v97;
-          v31 = [v100 name];
-          sub_1000194D4(v148, v31);
+          name = [v100 name];
+          sub_1000194D4(v148, name);
           _os_log_impl(&_mh_execute_header, v30, v96, "Updating token for service ID %@.", v148, 0xCu);
-          _objc_release(v31);
+          _objc_release(name);
         }
 
         objc_storeStrong(&v97, 0);
         v27 = v100;
-        serviceTokens = v135->_serviceTokens;
-        v29 = [v100 name];
+        serviceTokens = selfCopy->_serviceTokens;
+        name2 = [v100 name];
         [(NSMutableDictionary *)serviceTokens setObject:v27 forKeyedSubscript:?];
-        _objc_release(v29);
+        _objc_release(name2);
       }
 
       else
@@ -1754,7 +1754,7 @@
   }
 
   _objc_release(obj);
-  v95 = [v129 objectForKeyedSubscript:@"X-Apple-SL-Token"];
+  v95 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-SL-Token"];
   if (v95)
   {
     v92 = _AKLogSystem();
@@ -1769,8 +1769,8 @@
 
     objc_storeStrong(&v92, 0);
     v4 = [AKToken tokenWithBase64String:v95];
-    shortLivedToken = v135->_shortLivedToken;
-    v135->_shortLivedToken = v4;
+    shortLivedToken = selfCopy->_shortLivedToken;
+    selfCopy->_shortLivedToken = v4;
     _objc_release(shortLivedToken);
   }
 
@@ -1787,7 +1787,7 @@
     objc_storeStrong(&v94, 0);
   }
 
-  v89 = [v129 objectForKeyedSubscript:@"X-Apple-I-CK"];
+  v89 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-I-CK"];
   if (v89)
   {
     v86 = _AKLogSystem();
@@ -1802,8 +1802,8 @@
 
     objc_storeStrong(&v86, 0);
     v6 = [AKToken idmsTokenWithBase64String:v89];
-    continuationToken = v135->_continuationToken;
-    v135->_continuationToken = v6;
+    continuationToken = selfCopy->_continuationToken;
+    selfCopy->_continuationToken = v6;
     _objc_release(continuationToken);
   }
 
@@ -1820,7 +1820,7 @@
     objc_storeStrong(&v88, 0);
   }
 
-  v83 = [v129 objectForKeyedSubscript:@"X-Apple-I-PRK"];
+  v83 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-I-PRK"];
   if (v83)
   {
     v80 = _AKLogSystem();
@@ -1835,8 +1835,8 @@
 
     objc_storeStrong(&v80, 0);
     v8 = [AKToken idmsTokenWithBase64String:v83];
-    passwordResetToken = v135->_passwordResetToken;
-    v135->_passwordResetToken = v8;
+    passwordResetToken = selfCopy->_passwordResetToken;
+    selfCopy->_passwordResetToken = v8;
     _objc_release(passwordResetToken);
   }
 
@@ -1853,36 +1853,36 @@
     objc_storeStrong(&v82, 0);
   }
 
-  v77 = [v129 objectForKeyedSubscript:@"X-Apple-AK-Auth-Type"];
+  v77 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-AK-Auth-Type"];
   if ([v77 isEqual:AKSecurityHeaderTypeHSA2])
   {
-    v135->_appleIDSecurityLevel = 4;
+    selfCopy->_appleIDSecurityLevel = 4;
   }
 
   else if ([v77 isEqual:AKSecurityHeaderTypeHSA1])
   {
-    v135->_appleIDSecurityLevel = 3;
+    selfCopy->_appleIDSecurityLevel = 3;
   }
 
   else if ([v77 isEqual:AKSecurityHeaderTypeSA])
   {
-    v135->_appleIDSecurityLevel = 2;
+    selfCopy->_appleIDSecurityLevel = 2;
   }
 
   else if ([v77 isEqual:AKSecurityHeaderTypeManaged])
   {
-    v135->_appleIDSecurityLevel = 5;
+    selfCopy->_appleIDSecurityLevel = 5;
   }
 
-  v76 = [location[0] statusCode];
-  v135->_isSecondaryActionRequired = v76 == 409;
-  v75 = [v129 objectForKeyedSubscript:@"X-Apple-I-AURL"];
+  statusCode = [location[0] statusCode];
+  selfCopy->_isSecondaryActionRequired = statusCode == 409;
+  v75 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-I-AURL"];
   if (v75)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v135->_secondaryActionURLKey, v75);
+      objc_storeStrong(&selfCopy->_secondaryActionURLKey, v75);
     }
 
     else
@@ -1899,25 +1899,25 @@
     }
   }
 
-  v72 = [v129 objectForKeyedSubscript:@"X-Apple-I-AURL-Type"];
+  v72 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-I-AURL-Type"];
   if ([v72 intValue])
   {
     isSecondaryActionRequired = 0;
     if ([v72 intValue] == 1)
     {
-      isSecondaryActionRequired = v135->_isSecondaryActionRequired;
+      isSecondaryActionRequired = selfCopy->_isSecondaryActionRequired;
     }
 
-    v135->_secondaryActionURLGSEndpoint = isSecondaryActionRequired;
+    selfCopy->_secondaryActionURLGSEndpoint = isSecondaryActionRequired;
   }
 
-  v71 = [v129 objectForKeyedSubscript:@"X-Apple-I-NAURL"];
+  v71 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-I-NAURL"];
   if (v71)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v135->_nativeActionURLKey, v71);
+      objc_storeStrong(&selfCopy->_nativeActionURLKey, v71);
     }
 
     else
@@ -1934,21 +1934,21 @@
     }
   }
 
-  v68 = [v129 objectForKeyedSubscript:@"X-Apple-I-Device-Terms"];
+  v68 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-I-Device-Terms"];
   if (v68)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v68 integerValue]);
-      acceptedDeviceTermsVersion = v135->_acceptedDeviceTermsVersion;
-      v135->_acceptedDeviceTermsVersion = v10;
+      acceptedDeviceTermsVersion = selfCopy->_acceptedDeviceTermsVersion;
+      selfCopy->_acceptedDeviceTermsVersion = v10;
       _objc_release(acceptedDeviceTermsVersion);
       v63 = _AKLogSystem();
       v62 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
       {
-        sub_10001B098(v140, @"X-Apple-I-Device-Terms", v135->_acceptedDeviceTermsVersion);
+        sub_10001B098(v140, @"X-Apple-I-Device-Terms", selfCopy->_acceptedDeviceTermsVersion);
         _os_log_debug_impl(&_mh_execute_header, v63, v62, "Value for %@ is: %@", v140, 0x16u);
       }
 
@@ -1982,20 +1982,20 @@
     objc_storeStrong(&v67, 0);
   }
 
-  if (v133)
+  if (dCopy)
   {
-    v61 = [v129 objectForKeyedSubscript:AKDSIDHeaderKey];
-    [(AKAuthenticationServerResponse *)v135 _updateDSIDWithRawValue:v61];
+    v61 = [allHeaderFields objectForKeyedSubscript:AKDSIDHeaderKey];
+    [(AKAuthenticationServerResponse *)selfCopy _updateDSIDWithRawValue:v61];
     objc_storeStrong(&v61, 0);
   }
 
-  v60 = [v129 objectForKeyedSubscript:@"X-Apple-I-Recovery-Session-Id"];
+  v60 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-I-Recovery-Session-Id"];
   if (v60)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v135->_custodianSessionID, v60);
+      objc_storeStrong(&selfCopy->_custodianSessionID, v60);
     }
 
     else
@@ -2012,14 +2012,14 @@
     }
   }
 
-  v57 = [v129 objectForKeyedSubscript:AKADPCohortHeaderKey];
-  [(AKAuthenticationServerResponse *)v135 _updateADPCohortWithRawValue:v57];
+  v57 = [allHeaderFields objectForKeyedSubscript:AKADPCohortHeaderKey];
+  [(AKAuthenticationServerResponse *)selfCopy _updateADPCohortWithRawValue:v57];
   v18 = +[AKFeatureManager sharedManager];
-  v19 = [v18 isBackgroundiCloudSignInEnabled];
+  isBackgroundiCloudSignInEnabled = [v18 isBackgroundiCloudSignInEnabled];
   _objc_release(v18);
-  if (v19)
+  if (isBackgroundiCloudSignInEnabled)
   {
-    v17 = [(NSMutableDictionary *)v135->_serviceTokens objectForKeyedSubscript:@"com.apple.gs.icloud.cloudkit.auth"];
+    v17 = [(NSMutableDictionary *)selfCopy->_serviceTokens objectForKeyedSubscript:@"com.apple.gs.icloud.cloudkit.auth"];
     _objc_release(v17);
     if (!v17)
     {
@@ -2034,7 +2034,7 @@
       objc_storeStrong(&v56, 0);
     }
 
-    v16 = [(NSMutableDictionary *)v135->_serviceTokens objectForKeyedSubscript:@"com.apple.gs.icloud.escrow.auth"];
+    v16 = [(NSMutableDictionary *)selfCopy->_serviceTokens objectForKeyedSubscript:@"com.apple.gs.icloud.escrow.auth"];
     _objc_release(v16);
     if (!v16)
     {
@@ -2049,13 +2049,13 @@
       objc_storeStrong(&v54, 0);
     }
 
-    v135->_canBackgroundiCloudSignIn = [(AKAuthenticationServerResponse *)v135 _shouldBackgroundiCloudSignIn];
+    selfCopy->_canBackgroundiCloudSignIn = [(AKAuthenticationServerResponse *)selfCopy _shouldBackgroundiCloudSignIn];
   }
 
-  [(AKAuthenticationServerResponse *)v135 reportCriticalAuthTokensTelemetryForFlow:2 withTokenGenerationInfo:0];
+  [(AKAuthenticationServerResponse *)selfCopy reportCriticalAuthTokensTelemetryForFlow:2 withTokenGenerationInfo:0];
   objc_opt_class();
   v14 = objc_opt_class();
-  v15 = [v129 objectForKeyedSubscript:AKMDMInfoRequiredHeaderKey];
+  v15 = [allHeaderFields objectForKeyedSubscript:AKMDMInfoRequiredHeaderKey];
   v52 = sub_10002AEB8(v14, v15);
   _objc_release(v15);
   if (v52)
@@ -2068,7 +2068,7 @@
     }
 
     objc_storeStrong(&v51, 0);
-    v135->_isMdmInfoRequired = [v52 BOOLValue];
+    selfCopy->_isMdmInfoRequired = [v52 BOOLValue];
   }
 
   v13 = v130;
@@ -2089,21 +2089,21 @@
   objc_storeStrong(&v111, 0);
   objc_storeStrong(&v117, 0);
   objc_storeStrong(&v118, 0);
-  objc_storeStrong(&v129, 0);
+  objc_storeStrong(&allHeaderFields, 0);
   objc_storeStrong(location, 0);
   return v13 & 1;
 }
 
-- (void)_updateDSIDWithRawValue:(id)a3
+- (void)_updateDSIDWithRawValue:(id)value
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&v8->_dsid, location[0]);
+    objc_storeStrong(&selfCopy->_dsid, location[0]);
   }
 
   else
@@ -2111,12 +2111,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(AKAuthenticationServerResponse *)v8 _numberFormatter];
-      v3 = [v5 numberFromString:location[0]];
-      dsid = v8->_dsid;
-      v8->_dsid = v3;
+      _numberFormatter = [(AKAuthenticationServerResponse *)selfCopy _numberFormatter];
+      v3 = [_numberFormatter numberFromString:location[0]];
+      dsid = selfCopy->_dsid;
+      selfCopy->_dsid = v3;
       _objc_release(dsid);
-      _objc_release(v5);
+      _objc_release(_numberFormatter);
     }
 
     else
@@ -2135,12 +2135,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateADPCohortWithRawValue:(id)a3
+- (void)_updateADPCohortWithRawValue:(id)value
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2148,12 +2148,12 @@
     type = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      sub_10001B098(v9, AKADPCohortHeaderKey, v7->_adpCohort);
+      sub_10001B098(v9, AKADPCohortHeaderKey, selfCopy->_adpCohort);
       _os_log_debug_impl(&_mh_execute_header, oslog, type, "%@ = %@", v9, 0x16u);
     }
 
     objc_storeStrong(&oslog, 0);
-    objc_storeStrong(&v7->_adpCohort, location[0]);
+    objc_storeStrong(&selfCopy->_adpCohort, location[0]);
   }
 
   else
@@ -2171,12 +2171,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_decodeBase64String:(id)a3
+- (id)_decodeBase64String:(id)string
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v3 = [NSData alloc];
   v7 = [v3 initWithBase64EncodedString:location[0] options:0];
   v4 = [NSString alloc];
@@ -2205,23 +2205,23 @@
 
 - (BOOL)_shouldBackgroundiCloudSignIn
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v5 = [AKURLBag bagForAltDSID:0];
-  v6 = [v5 isBackgroundiCloudSignInEnabled];
+  isBackgroundiCloudSignInEnabled = [v5 isBackgroundiCloudSignInEnabled];
   _objc_release(v5);
-  v15 = v6;
+  v15 = isBackgroundiCloudSignInEnabled;
   v13 = 0;
   v11 = 0;
   v7 = 0;
-  if (v6)
+  if (isBackgroundiCloudSignInEnabled)
   {
-    v14 = [(NSMutableDictionary *)v17->_serviceTokens objectForKeyedSubscript:@"com.apple.gs.icloud.cloudkit.auth"];
+    v14 = [(NSMutableDictionary *)selfCopy->_serviceTokens objectForKeyedSubscript:@"com.apple.gs.icloud.cloudkit.auth"];
     v13 = 1;
     v7 = 0;
     if (v14)
     {
-      v12 = [(NSMutableDictionary *)v17->_serviceTokens objectForKeyedSubscript:@"com.apple.gs.icloud.escrow.auth"];
+      v12 = [(NSMutableDictionary *)selfCopy->_serviceTokens objectForKeyedSubscript:@"com.apple.gs.icloud.escrow.auth"];
       v11 = 1;
       v7 = v12 != 0;
     }
@@ -2256,41 +2256,41 @@
   return 1;
 }
 
-- (void)reportCriticalAuthTokensTelemetryForFlow:(unint64_t)a3 withTokenGenerationInfo:(id)a4
+- (void)reportCriticalAuthTokensTelemetryForFlow:(unint64_t)flow withTokenGenerationInfo:(id)info
 {
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
-  v29 = a3;
+  flowCopy = flow;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, info);
   v27 = +[AKAccountManager sharedInstance];
-  v26 = [v27 authKitAccountWithAltDSID:v31->_altDSID error:0];
-  if ([(AKAuthenticationServerResponse *)v31 shouldReportTokenGenerationMetricsWithTokenGenerationInfo:location])
+  v26 = [v27 authKitAccountWithAltDSID:selfCopy->_altDSID error:0];
+  if ([(AKAuthenticationServerResponse *)selfCopy shouldReportTokenGenerationMetricsWithTokenGenerationInfo:location])
   {
-    v24 = [(AKToken *)v31->_passwordResetToken stringValue];
-    v23 = [(AKToken *)v31->_continuationToken stringValue];
+    stringValue = [(AKToken *)selfCopy->_passwordResetToken stringValue];
+    stringValue2 = [(AKToken *)selfCopy->_continuationToken stringValue];
     v22 = 0;
     v21 = 0;
     v10 = objc_opt_class();
     v12 = [location objectForKeyedSubscript:@"ckgen"];
     v11 = sub_10002AEB8(v10, v12);
-    v13 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
     _objc_release(v11);
     _objc_release(v12);
-    v20 = v13;
+    v20 = bOOLValue;
     v14 = objc_opt_class();
     v16 = [location objectForKeyedSubscript:@"prkgen"];
     v15 = sub_10002AEB8(v14, v16);
-    v17 = [v15 BOOLValue];
+    bOOLValue2 = [v15 BOOLValue];
     _objc_release(v15);
     _objc_release(v16);
-    v19 = v17;
-    if (v29 == 1)
+    v19 = bOOLValue2;
+    if (flowCopy == 1)
     {
       v9 = 0;
       if (v20)
       {
-        v9 = v23 == 0;
+        v9 = stringValue2 == 0;
       }
 
       v22 = v9;
@@ -2298,7 +2298,7 @@
       if (v19)
       {
         v8 = 0;
-        if (!v24)
+        if (!stringValue)
         {
           v8 = v20;
         }
@@ -2309,8 +2309,8 @@
 
     else
     {
-      v22 = v23 == 0;
-      v21 = v24 == 0;
+      v22 = stringValue2 == 0;
+      v21 = stringValue == 0;
     }
 
     if (v22)
@@ -2327,19 +2327,19 @@
       _objc_release(v6);
     }
 
-    v5 = [(AKAuthenticationServerResponse *)v31 heartbeatToken];
-    v18 = [(AKToken *)v5 stringValue];
-    _objc_release(v5);
-    if (!v18)
+    heartbeatToken = [(AKAuthenticationServerResponse *)selfCopy heartbeatToken];
+    stringValue3 = [(AKToken *)heartbeatToken stringValue];
+    _objc_release(heartbeatToken);
+    if (!stringValue3)
     {
       v4 = [NSError ak_errorWithCode:-7118];
       [v27 _reportTokenWithTelemetryID:@"com.apple.authkit.token.hb.create" account:v26 telemetryFlowID:0 error:?];
       _objc_release(v4);
     }
 
-    objc_storeStrong(&v18, 0);
-    objc_storeStrong(&v23, 0);
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&stringValue3, 0);
+    objc_storeStrong(&stringValue2, 0);
+    objc_storeStrong(&stringValue, 0);
     v25 = 0;
   }
 
@@ -2353,19 +2353,19 @@
   objc_storeStrong(&location, 0);
 }
 
-- (BOOL)shouldReportTokenGenerationMetricsWithTokenGenerationInfo:(id)a3
+- (BOOL)shouldReportTokenGenerationMetricsWithTokenGenerationInfo:(id)info
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v43->_errorCode)
+  objc_storeStrong(location, info);
+  if (selfCopy->_errorCode)
   {
     v44 = 0;
     v41 = 1;
   }
 
-  else if (v43->_isSecondaryActionRequired)
+  else if (selfCopy->_isSecondaryActionRequired)
   {
     v40 = _AKLogSystem();
     v39 = 2;
@@ -2382,16 +2382,16 @@
     v41 = 1;
   }
 
-  else if (v43->_appleIDSecurityLevel == 4 || v43->_appleIDSecurityLevel == 5)
+  else if (selfCopy->_appleIDSecurityLevel == 4 || selfCopy->_appleIDSecurityLevel == 5)
   {
     v16 = objc_opt_class();
     v18 = [location[0] objectForKeyedSubscript:AKEphemeralAuthKey];
     v17 = sub_10002AEB8(v16, v18);
-    v19 = [v17 BOOLValue];
+    bOOLValue = [v17 BOOLValue];
     _objc_release(v17);
     _objc_release(v18);
-    v34 = v19;
-    if (v19)
+    v34 = bOOLValue;
+    if (bOOLValue)
     {
       v33 = _AKLogSystem();
       v32 = 2;
@@ -2413,11 +2413,11 @@
       v10 = objc_opt_class();
       v12 = [location[0] objectForKeyedSubscript:AKShortLivedTokenKey];
       v11 = sub_10002AEB8(v10, v12);
-      v13 = [v11 BOOLValue];
+      bOOLValue2 = [v11 BOOLValue];
       _objc_release(v11);
       _objc_release(v12);
-      v30 = v13;
-      if (v13)
+      v30 = bOOLValue2;
+      if (bOOLValue2)
       {
         v29 = _AKLogSystem();
         v28 = 2;

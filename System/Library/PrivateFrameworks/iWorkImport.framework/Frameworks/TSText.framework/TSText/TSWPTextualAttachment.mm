@@ -1,21 +1,21 @@
 @interface TSWPTextualAttachment
-+ (Class)classForUnarchiver:(id)a3;
-- (id)stringEquivalentWithLayoutParent:(id)a3;
-- (id)stringEquivalentWithNumberProvider:(id)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
++ (Class)classForUnarchiver:(id)unarchiver;
+- (id)stringEquivalentWithLayoutParent:(id)parent;
+- (id)stringEquivalentWithNumberProvider:(id)provider;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSWPTextualAttachment
 
-+ (Class)classForUnarchiver:(id)a3
++ (Class)classForUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  if (objc_opt_class() == a1)
+  unarchiverCopy = unarchiver;
+  if (objc_opt_class() == self)
   {
-    v5 = v4;
+    v5 = unarchiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v7 = objc_msgSend_messageWithDescriptor_(v5, v6, off_2812DC408[122]);
 
@@ -24,7 +24,7 @@
       if (*(v7 + 32) < 3u)
       {
 LABEL_9:
-        a1 = objc_opt_class();
+        self = objc_opt_class();
         goto LABEL_10;
       }
     }
@@ -38,30 +38,30 @@ LABEL_9:
       }
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_10:
-  v11 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[122]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[122]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v12 = a4;
-  if (objc_msgSend_shouldArchiveStringEquivalent(self, v6, v7) && (*(a3 + 16) & 1) != 0)
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_shouldArchiveStringEquivalent(self, v6, v7) && (*(archive + 16) & 1) != 0)
   {
-    v9 = *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL;
+    v9 = *(archive + 3) & 0xFFFFFFFFFFFFFFFELL;
     if (*(v9 + 23) < 0)
     {
       v9 = *v9;
@@ -72,9 +72,9 @@ LABEL_10:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v3 = a3;
+  archiverCopy = archiver;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSWPTextualAttachment saveToArchiver:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPTextualAttachment.mm");
@@ -94,30 +94,30 @@ LABEL_10:
   objc_exception_throw(v21);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  if (objc_msgSend_shouldArchiveStringEquivalent(self, a2, a3, a4))
+  if (objc_msgSend_shouldArchiveStringEquivalent(self, a2, archive, archiver))
   {
     v12 = objc_msgSend_stringEquivalent(self, v6, v7);
     if (v12)
     {
       v8 = v12;
       v11 = objc_msgSend_UTF8String(v8, v9, v10);
-      sub_276DD0794(a3, v11);
+      sub_276DD0794(archive, v11);
     }
   }
 }
 
-- (id)stringEquivalentWithNumberProvider:(id)a3
+- (id)stringEquivalentWithNumberProvider:(id)provider
 {
-  v3 = objc_msgSend_stringEquivalent(self, a2, a3);
+  v3 = objc_msgSend_stringEquivalent(self, a2, provider);
 
   return v3;
 }
 
-- (id)stringEquivalentWithLayoutParent:(id)a3
+- (id)stringEquivalentWithLayoutParent:(id)parent
 {
-  v3 = objc_msgSend_stringEquivalent(self, a2, a3);
+  v3 = objc_msgSend_stringEquivalent(self, a2, parent);
 
   return v3;
 }

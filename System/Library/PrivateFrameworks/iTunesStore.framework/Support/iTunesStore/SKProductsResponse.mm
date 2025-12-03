@@ -1,9 +1,9 @@
 @interface SKProductsResponse
 - (SKProductsResponse)init;
-- (SKProductsResponse)initWithXPCEncoding:(id)a3;
+- (SKProductsResponse)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (void)_setInvalidIdentifiers:(id)a3;
-- (void)_setProducts:(id)a3;
+- (void)_setInvalidIdentifiers:(id)identifiers;
+- (void)_setProducts:(id)products;
 @end
 
 @implementation SKProductsResponse
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (SKProductsResponse)initWithXPCEncoding:(id)a3
+- (SKProductsResponse)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && xpc_get_type(v4) == &_xpc_type_dictionary)
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && xpc_get_type(encodingCopy) == &_xpc_type_dictionary)
   {
     v8 = [(SKProductsResponse *)self init];
     v6 = v8;
@@ -92,10 +92,10 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyXPCEncoding];
-        if (v11)
+        copyXPCEncoding = [*(*(&v13 + 1) + 8 * v10) copyXPCEncoding];
+        if (copyXPCEncoding)
         {
-          xpc_array_append_value(v5, v11);
+          xpc_array_append_value(v5, copyXPCEncoding);
         }
 
         v10 = v10 + 1;
@@ -112,25 +112,25 @@
   return v3;
 }
 
-- (void)_setInvalidIdentifiers:(id)a3
+- (void)_setInvalidIdentifiers:(id)identifiers
 {
   internal = self->_internal;
-  if (internal[1] != a3)
+  if (internal[1] != identifiers)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifiers copy];
     v6 = internal[1];
     internal[1] = v5;
   }
 }
 
-- (void)_setProducts:(id)a3
+- (void)_setProducts:(id)products
 {
   internal = self->_internal;
-  if (internal[2] != a3)
+  if (internal[2] != products)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [products copy];
     v6 = internal[2];
     internal[2] = v5;
   }

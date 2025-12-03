@@ -1,14 +1,14 @@
 @interface WeatherMapOverlayAnimation
-- (void)tick:(id)a3;
+- (void)tick:(id)tick;
 @end
 
 @implementation WeatherMapOverlayAnimation
 
-- (void)tick:(id)a3
+- (void)tick:(id)tick
 {
-  v3 = a3;
+  tickCopy = tick;
 
-  sub_220EE9140(v3);
+  sub_220EE9140(tickCopy);
 }
 
 @end

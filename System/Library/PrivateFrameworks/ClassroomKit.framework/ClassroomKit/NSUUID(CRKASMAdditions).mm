@@ -9,7 +9,7 @@
 + (id)crk_UUIDWithOpaqueString:()CRKASMAdditions
 {
   v4 = [a3 dataUsingEncoding:4];
-  v5 = [a1 crk_UUIDWithOpaqueData:v4];
+  v5 = [self crk_UUIDWithOpaqueData:v4];
 
   return v5;
 }
@@ -19,12 +19,12 @@
   v12 = *MEMORY[0x277D85DE8];
   v5 = a3;
   v6 = a3;
-  v7 = [v6 bytes];
+  bytes = [v6 bytes];
   v8 = [v6 length];
 
-  CC_SHA256(v7, v8, md);
-  [a1 crk_condense32BytesIntoFirst16Bytes:md];
-  v9 = [[a1 alloc] initWithUUIDBytes:md];
+  CC_SHA256(bytes, v8, md);
+  [self crk_condense32BytesIntoFirst16Bytes:md];
+  v9 = [[self alloc] initWithUUIDBytes:md];
 
   return v9;
 }

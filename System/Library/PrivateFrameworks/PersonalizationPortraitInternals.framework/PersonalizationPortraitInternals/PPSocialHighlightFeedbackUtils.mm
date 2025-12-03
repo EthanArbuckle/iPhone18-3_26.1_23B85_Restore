@@ -1,88 +1,88 @@
 @interface PPSocialHighlightFeedbackUtils
-+ (id)biomeEventFromFeedback:(id)a3;
-+ (id)feedbackFromBiomeEvent:(id)a3;
-+ (id)stringifyBiomeFeedbackType:(unint64_t)a3;
++ (id)biomeEventFromFeedback:(id)feedback;
++ (id)feedbackFromBiomeEvent:(id)event;
++ (id)stringifyBiomeFeedbackType:(unint64_t)type;
 @end
 
 @implementation PPSocialHighlightFeedbackUtils
 
-+ (id)feedbackFromBiomeEvent:(id)a3
++ (id)feedbackFromBiomeEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_opt_new();
-  v5 = [v3 clientIdentifier];
-  [v4 setClientIdentifier:v5];
+  clientIdentifier = [eventCopy clientIdentifier];
+  [v4 setClientIdentifier:clientIdentifier];
 
-  v6 = [v3 feedbackType];
+  feedbackType = [eventCopy feedbackType];
   objc_opt_self();
-  if (v6 >= 0xB)
+  if (feedbackType >= 0xB)
   {
     v7 = 11;
   }
 
   else
   {
-    v7 = v6;
+    v7 = feedbackType;
   }
 
   [v4 setFeedbackType:v7];
-  v8 = [v3 feedbackCreationDate];
-  [v8 timeIntervalSinceReferenceDate];
+  feedbackCreationDate = [eventCopy feedbackCreationDate];
+  [feedbackCreationDate timeIntervalSinceReferenceDate];
   [v4 setFeedbackCreationSecondsSinceReferenceDate:?];
 
-  v9 = [v3 highlight];
+  highlight = [eventCopy highlight];
   objc_opt_self();
-  if (v9)
+  if (highlight)
   {
     v10 = objc_opt_new();
-    v11 = [v9 applicationIdentifiers];
-    v12 = [v11 mutableCopy];
+    applicationIdentifiers = [highlight applicationIdentifiers];
+    v12 = [applicationIdentifiers mutableCopy];
     [v10 setApplicationIdentifiers:v12];
 
-    v13 = [v9 attributionIdentifier];
-    [v10 setAttributionIdentifier:v13];
+    attributionIdentifier = [highlight attributionIdentifier];
+    [v10 setAttributionIdentifier:attributionIdentifier];
 
-    v14 = [v9 batchIdentifier];
-    [v10 setBatchIdentifier:v14];
+    batchIdentifier = [highlight batchIdentifier];
+    [v10 setBatchIdentifier:batchIdentifier];
 
-    v15 = [v9 calculatedFeatures];
+    calculatedFeatures = [highlight calculatedFeatures];
 
-    if (v15)
+    if (calculatedFeatures)
     {
-      v16 = [v9 calculatedFeatures];
-      [v10 setCalculatedFeaturesFromDictionary:v16];
+      calculatedFeatures2 = [highlight calculatedFeatures];
+      [v10 setCalculatedFeaturesFromDictionary:calculatedFeatures2];
     }
 
-    v17 = [v9 clientIdentifier];
-    [v10 setClientIdentifier:v17];
+    clientIdentifier2 = [highlight clientIdentifier];
+    [v10 setClientIdentifier:clientIdentifier2];
 
-    v18 = [v9 clientVariant];
-    [v10 setVariant:v18];
+    clientVariant = [highlight clientVariant];
+    [v10 setVariant:clientVariant];
 
-    v19 = [v9 contentCreationDate];
+    contentCreationDate = [highlight contentCreationDate];
 
-    if (v19)
+    if (contentCreationDate)
     {
-      v20 = [v9 contentCreationDate];
-      [v20 timeIntervalSinceReferenceDate];
+      contentCreationDate2 = [highlight contentCreationDate];
+      [contentCreationDate2 timeIntervalSinceReferenceDate];
       [v10 setContentCreationSecondsSinceReferenceDate:?];
     }
 
-    v21 = [v9 displayName];
-    [v10 setDisplayName:v21];
+    displayName = [highlight displayName];
+    [v10 setDisplayName:displayName];
 
-    v22 = [v9 domainIdentifier];
-    [v10 setDomainIdentifier:v22];
+    domainIdentifier = [highlight domainIdentifier];
+    [v10 setDomainIdentifier:domainIdentifier];
 
-    v23 = [v9 groupPhotoPathDigest];
-    [v10 setGroupPhotoPathDigest:v23];
+    groupPhotoPathDigest = [highlight groupPhotoPathDigest];
+    [v10 setGroupPhotoPathDigest:groupPhotoPathDigest];
 
-    v24 = [v9 highlightIdentifier];
-    [v10 setHighlightIdentifier:v24];
+    highlightIdentifier = [highlight highlightIdentifier];
+    [v10 setHighlightIdentifier:highlightIdentifier];
 
-    v25 = [v9 highlightType];
+    highlightType = [highlight highlightType];
     objc_opt_self();
-    if (v25 == 1)
+    if (highlightType == 1)
     {
       v26 = 1;
     }
@@ -92,7 +92,7 @@
       v26 = 2;
     }
 
-    if (v25)
+    if (highlightType)
     {
       v27 = v26;
     }
@@ -103,68 +103,68 @@
     }
 
     [v10 setHighlightType:v27];
-    v28 = [v9 isConversationAutoDonating];
+    isConversationAutoDonating = [highlight isConversationAutoDonating];
 
-    if (v28)
+    if (isConversationAutoDonating)
     {
-      v29 = [v9 isConversationAutoDonating];
-      [v10 setIsConversationAutoDonating:{objc_msgSend(v29, "BOOLValue")}];
+      isConversationAutoDonating2 = [highlight isConversationAutoDonating];
+      [v10 setIsConversationAutoDonating:{objc_msgSend(isConversationAutoDonating2, "BOOLValue")}];
     }
 
-    v30 = [v9 isPrimary];
+    isPrimary = [highlight isPrimary];
 
-    if (v30)
+    if (isPrimary)
     {
-      v31 = [v9 isPrimary];
-      [v10 setIsPrimary:{objc_msgSend(v31, "BOOLValue")}];
+      isPrimary2 = [highlight isPrimary];
+      [v10 setIsPrimary:{objc_msgSend(isPrimary2, "BOOLValue")}];
     }
 
-    v32 = [v9 originatingDeviceId];
-    [v10 setOriginatingDeviceId:v32];
+    originatingDeviceId = [highlight originatingDeviceId];
+    [v10 setOriginatingDeviceId:originatingDeviceId];
 
-    v33 = [v9 rank];
+    rank = [highlight rank];
 
-    if (v33)
+    if (rank)
     {
-      v34 = [v9 rank];
-      [v10 setRank:{objc_msgSend(v34, "unsignedIntValue")}];
+      rank2 = [highlight rank];
+      [v10 setRank:{objc_msgSend(rank2, "unsignedIntValue")}];
     }
 
-    v35 = [v9 rankingDate];
+    rankingDate = [highlight rankingDate];
 
-    if (v35)
+    if (rankingDate)
     {
-      v36 = [v9 rankingDate];
-      [v36 timeIntervalSinceReferenceDate];
+      rankingDate2 = [highlight rankingDate];
+      [rankingDate2 timeIntervalSinceReferenceDate];
       [v10 setRankingSecondsSinceReferenceDate:?];
     }
 
-    v37 = [v9 resolvedUrl];
-    [v10 setResolvedUrl:v37];
+    resolvedUrl = [highlight resolvedUrl];
+    [v10 setResolvedUrl:resolvedUrl];
 
-    v38 = [v9 resourceUrl];
-    v39 = [v38 absoluteString];
-    [v10 setResourceUrl:v39];
+    resourceUrl = [highlight resourceUrl];
+    absoluteString = [resourceUrl absoluteString];
+    [v10 setResourceUrl:absoluteString];
 
-    v40 = [v9 score];
+    score = [highlight score];
 
-    if (v40)
+    if (score)
     {
-      v41 = [v9 score];
-      [v41 doubleValue];
+      score2 = [highlight score];
+      [score2 doubleValue];
       [v10 setScore:?];
     }
 
-    v42 = [v9 sender];
+    sender = [highlight sender];
     objc_opt_self();
-    if (v42)
+    if (sender)
     {
       v43 = objc_opt_new();
-      v44 = [v42 handle];
-      [v43 setHandle:v44];
+      handle = [sender handle];
+      [v43 setHandle:handle];
 
-      [v43 setIsMe:{objc_msgSend(v42, "isMe")}];
-      [v43 setIsSignificant:{objc_msgSend(v42, "isSignificant")}];
+      [v43 setIsMe:{objc_msgSend(sender, "isMe")}];
+      [v43 setIsSignificant:{objc_msgSend(sender, "isSignificant")}];
     }
 
     else
@@ -173,15 +173,15 @@
     }
 
     [v10 setSender:v43];
-    v45 = [v9 sourceBundleId];
-    [v10 setSourceBundleId:v45];
+    sourceBundleId = [highlight sourceBundleId];
+    [v10 setSourceBundleId:sourceBundleId];
 
-    v46 = [v9 syndicationDate];
+    syndicationDate = [highlight syndicationDate];
 
-    if (v46)
+    if (syndicationDate)
     {
-      v47 = [v9 syndicationDate];
-      [v47 timeIntervalSinceReferenceDate];
+      syndicationDate2 = [highlight syndicationDate];
+      [syndicationDate2 timeIntervalSinceReferenceDate];
       [v10 setSyndicationSecondsSinceReferenceDate:?];
     }
   }
@@ -192,32 +192,32 @@
   }
 
   [v4 setHighlight:v10];
-  v48 = [v3 clientVariant];
+  clientVariant2 = [eventCopy clientVariant];
 
-  [v4 setVariant:v48];
+  [v4 setVariant:clientVariant2];
 
   return v4;
 }
 
-+ (id)biomeEventFromFeedback:(id)a3
++ (id)biomeEventFromFeedback:(id)feedback
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
+  feedbackCopy = feedback;
   v5 = [v3 alloc];
-  [v4 feedbackCreationSecondsSinceReferenceDate];
+  [feedbackCopy feedbackCreationSecondsSinceReferenceDate];
   v6 = [v5 initWithTimeIntervalSinceReferenceDate:?];
   v7 = objc_alloc(MEMORY[0x277CF1B10]);
-  v8 = [v4 clientIdentifier];
-  v9 = [v4 feedbackType];
+  clientIdentifier = [feedbackCopy clientIdentifier];
+  feedbackType = [feedbackCopy feedbackType];
   objc_opt_self();
-  v10 = [v4 highlight];
+  highlight = [feedbackCopy highlight];
   objc_opt_self();
-  if (v10 && (([v10 hasHighlightIdentifier] & 1) != 0 || objc_msgSend(v10, "hasAttributionIdentifier")))
+  if (highlight && (([highlight hasHighlightIdentifier] & 1) != 0 || objc_msgSend(highlight, "hasAttributionIdentifier")))
   {
-    if ([v10 hasSyndicationSecondsSinceReferenceDate])
+    if ([highlight hasSyndicationSecondsSinceReferenceDate])
     {
       v11 = objc_alloc(MEMORY[0x277CBEAA8]);
-      [v10 syndicationSecondsSinceReferenceDate];
+      [highlight syndicationSecondsSinceReferenceDate];
       v68 = [v11 initWithTimeIntervalSinceReferenceDate:?];
     }
 
@@ -226,10 +226,10 @@
       v68 = 0;
     }
 
-    if ([v10 hasContentCreationSecondsSinceReferenceDate])
+    if ([highlight hasContentCreationSecondsSinceReferenceDate])
     {
       v13 = objc_alloc(MEMORY[0x277CBEAA8]);
-      [v10 contentCreationSecondsSinceReferenceDate];
+      [highlight contentCreationSecondsSinceReferenceDate];
       v67 = [v13 initWithTimeIntervalSinceReferenceDate:?];
     }
 
@@ -238,10 +238,10 @@
       v67 = 0;
     }
 
-    if ([v10 hasRankingSecondsSinceReferenceDate])
+    if ([highlight hasRankingSecondsSinceReferenceDate])
     {
       v14 = objc_alloc(MEMORY[0x277CBEAA8]);
-      [v10 rankingSecondsSinceReferenceDate];
+      [highlight rankingSecondsSinceReferenceDate];
       v66 = [v14 initWithTimeIntervalSinceReferenceDate:?];
     }
 
@@ -251,31 +251,31 @@
     }
 
     v15 = objc_alloc(MEMORY[0x277CF1A60]);
-    v16 = [v10 highlightIdentifier];
+    highlightIdentifier = [highlight highlightIdentifier];
     v17 = &stru_284759D38;
-    v49 = v16;
-    if (v16)
+    v49 = highlightIdentifier;
+    if (highlightIdentifier)
     {
-      v17 = v16;
+      v17 = highlightIdentifier;
     }
 
     v46 = v17;
-    v18 = [v10 highlightType];
+    highlightType = [highlight highlightType];
     objc_opt_self();
-    v19 = v18 == 1;
-    if (v18 == 2)
+    v19 = highlightType == 1;
+    if (highlightType == 2)
     {
       v19 = 2;
     }
 
     v45 = v19;
-    v65 = [v10 sourceBundleId];
-    v64 = [v10 applicationIdentifiers];
-    v48 = [v10 hasResourceUrl];
-    if (v48)
+    sourceBundleId = [highlight sourceBundleId];
+    applicationIdentifiers = [highlight applicationIdentifiers];
+    hasResourceUrl = [highlight hasResourceUrl];
+    if (hasResourceUrl)
     {
       v20 = objc_alloc(MEMORY[0x277CBEBC0]);
-      v42 = [v10 resourceUrl];
+      resourceUrl = [highlight resourceUrl];
       v56 = [v20 initWithString:?];
     }
 
@@ -284,34 +284,34 @@
       v56 = 0;
     }
 
-    v21 = [v10 sender];
+    sender = [highlight sender];
     objc_opt_self();
-    v50 = v9;
-    if (v21 && [v21 hasHandle])
+    v50 = feedbackType;
+    if (sender && [sender hasHandle])
     {
       v22 = objc_alloc(MEMORY[0x277CF1B08]);
-      v23 = [v21 handle];
-      if ([v21 hasIsSignificant])
+      handle = [sender handle];
+      if ([sender hasIsSignificant])
       {
-        v24 = [v21 isSignificant];
+        isSignificant = [sender isSignificant];
       }
 
       else
       {
-        v24 = 0;
+        isSignificant = 0;
       }
 
-      if ([v21 hasIsMe])
+      if ([sender hasIsMe])
       {
-        v25 = [v21 isMe];
+        isMe = [sender isMe];
       }
 
       else
       {
-        v25 = 0;
+        isMe = 0;
       }
 
-      v63 = [v22 initWithHandle:v23 isSignificant:v24 isMe:v25];
+      v63 = [v22 initWithHandle:handle isSignificant:isSignificant isMe:isMe];
     }
 
     else
@@ -319,17 +319,17 @@
       v63 = 0;
     }
 
-    v47 = v21;
+    v47 = sender;
 
-    v62 = [v10 domainIdentifier];
-    v61 = [v10 batchIdentifier];
-    v60 = [v10 clientIdentifier];
-    v59 = [v10 groupPhotoPathDigest];
-    v58 = [v10 displayName];
-    v44 = [v10 hasIsPrimary];
-    if (v44)
+    domainIdentifier = [highlight domainIdentifier];
+    batchIdentifier = [highlight batchIdentifier];
+    clientIdentifier2 = [highlight clientIdentifier];
+    groupPhotoPathDigest = [highlight groupPhotoPathDigest];
+    displayName = [highlight displayName];
+    hasIsPrimary = [highlight hasIsPrimary];
+    if (hasIsPrimary)
     {
-      v55 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v10, "isPrimary")}];
+      v55 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(highlight, "isPrimary")}];
     }
 
     else
@@ -337,11 +337,11 @@
       v55 = 0;
     }
 
-    v57 = [v10 attributionIdentifier];
-    v43 = [v10 hasRank];
-    if (v43)
+    attributionIdentifier = [highlight attributionIdentifier];
+    hasRank = [highlight hasRank];
+    if (hasRank)
     {
-      v54 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "rank")}];
+      v54 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(highlight, "rank")}];
     }
 
     else
@@ -349,11 +349,11 @@
       v54 = 0;
     }
 
-    v26 = [v10 hasScore];
-    if (v26)
+    hasScore = [highlight hasScore];
+    if (hasScore)
     {
       v27 = MEMORY[0x277CCABB0];
-      [v10 score];
+      [highlight score];
       v53 = [v27 numberWithDouble:?];
     }
 
@@ -363,17 +363,17 @@
     }
 
     v51 = v7;
-    v28 = [v10 hasIsConversationAutoDonating];
-    v52 = v8;
+    hasIsConversationAutoDonating = [highlight hasIsConversationAutoDonating];
+    v52 = clientIdentifier;
     v29 = v6;
-    if (v28)
+    if (hasIsConversationAutoDonating)
     {
       v30 = v15;
       v31 = MEMORY[0x277CCABB0];
-      v32 = [v10 isConversationAutoDonating];
+      isConversationAutoDonating = [highlight isConversationAutoDonating];
       v33 = v31;
       v15 = v30;
-      v34 = [v33 numberWithBool:v32];
+      v34 = [v33 numberWithBool:isConversationAutoDonating];
     }
 
     else
@@ -381,32 +381,32 @@
       v34 = 0;
     }
 
-    v35 = [v10 originatingDeviceId];
-    v36 = [v10 resolvedUrl];
-    v37 = [v10 variant];
-    v12 = [v15 initWithHighlightIdentifier:v46 highlightType:v45 syndicationDate:v68 sourceBundleId:v65 applicationIdentifiers:v64 resourceUrl:v56 sender:v63 domainIdentifier:v62 batchIdentifier:v61 calculatedFeatures:0 clientIdentifier:v60 contentCreationDate:v67 groupPhotoPathDigest:v59 displayName:v58 isPrimary:v55 attributionIdentifier:v57 rank:v54 score:v53 isConversationAutoDonating:v34 originatingDeviceId:v35 rankingDate:v66 resolvedUrl:v36 clientVariant:v37];
+    originatingDeviceId = [highlight originatingDeviceId];
+    resolvedUrl = [highlight resolvedUrl];
+    variant = [highlight variant];
+    v12 = [v15 initWithHighlightIdentifier:v46 highlightType:v45 syndicationDate:v68 sourceBundleId:sourceBundleId applicationIdentifiers:applicationIdentifiers resourceUrl:v56 sender:v63 domainIdentifier:domainIdentifier batchIdentifier:batchIdentifier calculatedFeatures:0 clientIdentifier:clientIdentifier2 contentCreationDate:v67 groupPhotoPathDigest:groupPhotoPathDigest displayName:displayName isPrimary:v55 attributionIdentifier:attributionIdentifier rank:v54 score:v53 isConversationAutoDonating:v34 originatingDeviceId:originatingDeviceId rankingDate:v66 resolvedUrl:resolvedUrl clientVariant:variant];
 
-    if (v28)
+    if (hasIsConversationAutoDonating)
     {
     }
 
     v6 = v29;
-    v8 = v52;
-    if (v26)
+    clientIdentifier = v52;
+    if (hasScore)
     {
     }
 
     v7 = v51;
-    v9 = v50;
-    if (v43)
+    feedbackType = v50;
+    if (hasRank)
     {
     }
 
-    if (v44)
+    if (hasIsPrimary)
     {
     }
 
-    if (v48)
+    if (hasResourceUrl)
     {
     }
   }
@@ -416,33 +416,33 @@
     v12 = 0;
   }
 
-  if (v9 >= 0xB)
+  if (feedbackType >= 0xB)
   {
     v38 = 11;
   }
 
   else
   {
-    v38 = v9;
+    v38 = feedbackType;
   }
 
-  v39 = [v4 variant];
+  variant2 = [feedbackCopy variant];
 
-  v40 = [v7 initWithClientIdentifier:v8 feedbackType:v38 feedbackCreationDate:v6 highlight:v12 clientVariant:v39];
+  v40 = [v7 initWithClientIdentifier:clientIdentifier feedbackType:v38 feedbackCreationDate:v6 highlight:v12 clientVariant:variant2];
 
   return v40;
 }
 
-+ (id)stringifyBiomeFeedbackType:(unint64_t)a3
++ (id)stringifyBiomeFeedbackType:(unint64_t)type
 {
   objc_opt_self();
-  v4 = 11;
-  if (a3 < 0xB)
+  typeCopy = 11;
+  if (type < 0xB)
   {
-    v4 = a3;
+    typeCopy = type;
   }
 
-  return off_278972048[v4];
+  return off_278972048[typeCopy];
 }
 
 @end

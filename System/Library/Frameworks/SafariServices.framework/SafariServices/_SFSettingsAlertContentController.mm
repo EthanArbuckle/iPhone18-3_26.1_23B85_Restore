@@ -1,49 +1,49 @@
 @interface _SFSettingsAlertContentController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (NSArray)items;
-- (_SFSettingsAlertContentController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_SFSettingsAlertContentController)initWithNibName:(id)name bundle:(id)bundle;
 - (_SFSettingsAlertController)alertController;
-- (id)_createViewForItem:(id)a3;
-- (void)_addGroupSeparatorIfNeededBeforeItemAtIndex:(unint64_t)a3;
-- (void)_addViewForItem:(id)a3;
-- (void)_alignButtonImageView:(id)a3;
-- (void)_panRecognized:(id)a3;
+- (id)_createViewForItem:(id)item;
+- (void)_addGroupSeparatorIfNeededBeforeItemAtIndex:(unint64_t)index;
+- (void)_addViewForItem:(id)item;
+- (void)_alignButtonImageView:(id)view;
+- (void)_panRecognized:(id)recognized;
 - (void)_scrollToBottomIfNeeded;
-- (void)_stepperValueChanged:(id)a3;
-- (void)_tappedItemView:(id)a3;
+- (void)_stepperValueChanged:(id)changed;
+- (void)_tappedItemView:(id)view;
 - (void)_updateFocusedItemConstraints;
 - (void)_updatePreferredContentSize;
 - (void)_updateSeparators;
 - (void)addDivider;
-- (void)addItem:(id)a3;
-- (void)alertItemViewContentSizeDidChange:(id)a3;
+- (void)addItem:(id)item;
+- (void)alertItemViewContentSizeDidChange:(id)change;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeAllItems;
-- (void)setFocusedItem:(id)a3;
+- (void)setFocusedItem:(id)item;
 - (void)setNeedsUpdatePreferredContentSize;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _SFSettingsAlertContentController
 
-- (_SFSettingsAlertContentController)initWithNibName:(id)a3 bundle:(id)a4
+- (_SFSettingsAlertContentController)initWithNibName:(id)name bundle:(id)bundle
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = _SFSettingsAlertContentController;
-  v4 = [(_SFSettingsAlertContentController *)&v13 initWithNibName:a3 bundle:a4];
+  v4 = [(_SFSettingsAlertContentController *)&v13 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     items = v4->_items;
-    v4->_items = v5;
+    v4->_items = array;
 
-    v7 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     groupStartIndices = v4->_groupStartIndices;
-    v4->_groupStartIndices = v7;
+    v4->_groupStartIndices = indexSet;
 
     v14[0] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
@@ -78,8 +78,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v23 + 1) + 8 * v7) viewAsUIView];
-        [v8 removeObserver:self forKeyPath:@"highlighted" context:kvoContext_1];
+        viewAsUIView = [*(*(&v23 + 1) + 8 * v7) viewAsUIView];
+        [viewAsUIView removeObserver:self forKeyPath:@"highlighted" context:kvoContext_1];
 
         ++v7;
       }
@@ -91,23 +91,23 @@
     while (v5);
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   items = self->_items;
-  self->_items = v9;
+  self->_items = array;
 
   lastViewForAlignment = self->_lastViewForAlignment;
   self->_lastViewForAlignment = 0;
 
-  v12 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   groupStartIndices = self->_groupStartIndices;
-  self->_groupStartIndices = v12;
+  self->_groupStartIndices = indexSet;
 
-  v14 = [(UIStackView *)self->_stackView subviews];
+  subviews = [(UIStackView *)self->_stackView subviews];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = [v14 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  v15 = [subviews countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v15)
   {
     v16 = v15;
@@ -119,26 +119,26 @@
       {
         if (*v20 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v19 + 1) + 8 * v18++) removeFromSuperview];
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v16 = [subviews countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v16);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (kvoContext_1 == a6 && [v10 isEqualToString:@"highlighted"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (kvoContext_1 == context && [pathCopy isEqualToString:@"highlighted"])
   {
     [(_SFSettingsAlertContentController *)self _updateSeparators];
   }
@@ -147,7 +147,7 @@
   {
     v13.receiver = self;
     v13.super_class = _SFSettingsAlertContentController;
-    [(_SFSettingsAlertContentController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_SFSettingsAlertContentController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -172,14 +172,14 @@
   [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_stackView setAxis:1];
   [(UIScrollView *)v35 addSubview:self->_stackView];
-  v8 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v9 = [(UIStackView *)self->_stackView topAnchor];
-  v10 = [v8 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  contentLayoutGuide = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [contentLayoutGuide topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v12 = [(UIStackView *)self->_stackView bottomAnchor];
-  v13 = [v8 bottomAnchor];
-  v33 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [contentLayoutGuide bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
   v38[0] = v11;
   v38[1] = v33;
@@ -187,23 +187,23 @@
   stackViewTopBottomConstraints = self->_stackViewTopBottomConstraints;
   self->_stackViewTopBottomConstraints = v14;
 
-  v16 = [(UIStackView *)self->_stackView widthAnchor];
-  v17 = [(UIScrollView *)self->_scrollView safeAreaLayoutGuide];
-  v18 = [v17 widthAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  widthAnchor = [(UIStackView *)self->_stackView widthAnchor];
+  safeAreaLayoutGuide = [(UIScrollView *)self->_scrollView safeAreaLayoutGuide];
+  widthAnchor2 = [safeAreaLayoutGuide widthAnchor];
+  v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   stackViewWidthConstraint = self->_stackViewWidthConstraint;
   self->_stackViewWidthConstraint = v19;
 
   v21 = MEMORY[0x1E696ACD8];
-  v22 = [(UIStackView *)self->_stackView leadingAnchor];
-  v23 = v8;
-  v34 = v8;
-  v24 = [v8 leadingAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  v23 = contentLayoutGuide;
+  v34 = contentLayoutGuide;
+  leadingAnchor2 = [contentLayoutGuide leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v37[0] = v25;
-  v26 = [(UIStackView *)self->_stackView trailingAnchor];
-  v27 = [v23 trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+  trailingAnchor2 = [v23 trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v37[1] = v28;
   v37[2] = v11;
   v29 = self->_stackViewWidthConstraint;
@@ -227,8 +227,8 @@
 
 - (void)_updatePreferredContentSize
 {
-  v3 = [(_SFSettingsAlertContentController *)self popoverPresentationController];
-  [v3 popoverLayoutMargins];
+  popoverPresentationController = [(_SFSettingsAlertContentController *)self popoverPresentationController];
+  [popoverPresentationController popoverLayoutMargins];
   v41 = v5;
   v42 = v4;
   v37 = v7;
@@ -248,16 +248,16 @@
   }
 
   v14 = [(_SFSettingsAlertContentController *)self popoverPresentationController:v37];
-  v15 = [v14 containerView];
-  [v15 bounds];
+  containerView = [v14 containerView];
+  [containerView bounds];
   v45.origin.x = v40 + v16;
   v45.origin.y = v42 + v17;
   v45.size.width = v18 - (v38 + v40);
   v45.size.height = v19 - (v41 + v42);
   v20 = fmin(CGRectGetWidth(v45), 414.0);
 
-  v21 = [(UIStackView *)self->_stackView widthAnchor];
-  v43 = [v21 constraintLessThanOrEqualToConstant:v20];
+  widthAnchor = [(UIStackView *)self->_stackView widthAnchor];
+  v43 = [widthAnchor constraintLessThanOrEqualToConstant:v20];
 
   [v43 setActive:1];
   [(NSLayoutConstraint *)self->_stackViewWidthConstraint setActive:0];
@@ -269,14 +269,14 @@
   focusedItem = self->_focusedItem;
   if (focusedItem)
   {
-    v28 = [(_SFSettingsAlertItem *)focusedItem viewAsUIView];
-    [v28 systemLayoutSizeFittingSize:{v22, v23}];
+    viewAsUIView = [(_SFSettingsAlertItem *)focusedItem viewAsUIView];
+    [viewAsUIView systemLayoutSizeFittingSize:{v22, v23}];
     v30 = v29;
 
     v31 = self->_focusedItem;
-    v32 = [(NSMutableArray *)self->_items lastObject];
+    lastObject = [(NSMutableArray *)self->_items lastObject];
 
-    if (v31 != v32)
+    if (v31 != lastObject)
     {
       _SFOnePixel();
       v30 = v30 - v33;
@@ -291,18 +291,18 @@
 
   [v43 setActive:0];
   [(NSLayoutConstraint *)self->_stackViewWidthConstraint setActive:1];
-  v34 = [(_SFSettingsAlertContentController *)self alertController];
-  v35 = [v34 _rootContentController];
+  alertController = [(_SFSettingsAlertContentController *)self alertController];
+  _rootContentController = [alertController _rootContentController];
 
-  if (v35 != self)
+  if (_rootContentController != self)
   {
-    v36 = [v34 view];
-    [v36 bounds];
+    view = [alertController view];
+    [view bounds];
     v26 = fmax(v26, CGRectGetWidth(v46));
   }
 
   [(_SFSettingsAlertContentController *)self setPreferredContentSize:v26, v30];
-  [v34 setPreferredContentSize:{v26, v30}];
+  [alertController setPreferredContentSize:{v26, v30}];
 }
 
 - (void)_scrollToBottomIfNeeded
@@ -321,17 +321,17 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = _SFSettingsAlertContentController;
   [(_SFSettingsAlertContentController *)&v9 viewWillAppear:?];
-  v5 = [(_SFSettingsAlertContentController *)self navigationController];
-  v6 = [(_SFSettingsAlertContentController *)self navigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 firstObject];
-  [v5 setNavigationBarHidden:v8 == self animated:v3];
+  navigationController = [(_SFSettingsAlertContentController *)self navigationController];
+  navigationController2 = [(_SFSettingsAlertContentController *)self navigationController];
+  viewControllers = [navigationController2 viewControllers];
+  firstObject = [viewControllers firstObject];
+  [navigationController setNavigationBarHidden:firstObject == self animated:appearCopy];
 
   [(_SFSettingsAlertContentController *)self _updateSeparators];
   [(_SFSettingsAlertContentController *)self _updatePreferredContentSize];
@@ -341,11 +341,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = _SFSettingsAlertContentController;
-  [(_SFSettingsAlertContentController *)&v4 viewDidAppear:a3];
+  [(_SFSettingsAlertContentController *)&v4 viewDidAppear:appear];
   [(UIScrollView *)self->_scrollView flashScrollIndicators];
 }
 
@@ -369,8 +369,8 @@
 - (void)setNeedsUpdatePreferredContentSize
 {
   self->_updatePreferredContentSizeAfterLayout = 1;
-  v2 = [(_SFSettingsAlertContentController *)self view];
-  [v2 setNeedsLayout];
+  view = [(_SFSettingsAlertContentController *)self view];
+  [view setNeedsLayout];
 }
 
 - (NSArray)items
@@ -380,27 +380,27 @@
   return v2;
 }
 
-- (void)setFocusedItem:(id)a3
+- (void)setFocusedItem:(id)item
 {
-  v5 = a3;
-  if (self->_focusedItem != v5)
+  itemCopy = item;
+  if (self->_focusedItem != itemCopy)
   {
-    objc_storeStrong(&self->_focusedItem, a3);
-    [(UIScrollView *)self->_scrollView setScrollEnabled:v5 == 0];
-    v6 = [(_SFSettingsAlertItem *)self->_focusedItem viewAsUIView];
-    [v6 layoutIfNeeded];
+    objc_storeStrong(&self->_focusedItem, item);
+    [(UIScrollView *)self->_scrollView setScrollEnabled:itemCopy == 0];
+    viewAsUIView = [(_SFSettingsAlertItem *)self->_focusedItem viewAsUIView];
+    [viewAsUIView layoutIfNeeded];
 
     [(_SFSettingsAlertContentController *)self _updateFocusedItemConstraints];
-    v7 = [(_SFSettingsAlertContentController *)self view];
-    [v7 setNeedsLayout];
+    view = [(_SFSettingsAlertContentController *)self view];
+    [view setNeedsLayout];
     v8 = MEMORY[0x1E69DD250];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __52___SFSettingsAlertContentController_setFocusedItem___block_invoke;
     v10[3] = &unk_1E848F548;
-    v11 = v7;
-    v12 = self;
-    v9 = v7;
+    v11 = view;
+    selfCopy = self;
+    v9 = view;
     [v8 _animateUsingDefaultTimingWithOptions:2 animations:v10 completion:0];
   }
 }
@@ -418,12 +418,12 @@
   focusedItem = self->_focusedItem;
   if (focusedItem)
   {
-    v5 = [(_SFSettingsAlertItem *)focusedItem viewAsUIView];
-    v6 = [(_SFSettingsAlertContentController *)self view];
-    v7 = [v6 safeAreaLayoutGuide];
+    viewAsUIView = [(_SFSettingsAlertItem *)focusedItem viewAsUIView];
+    view = [(_SFSettingsAlertContentController *)self view];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
 
-    v8 = [v5 topAnchor];
-    v9 = [v7 topAnchor];
+    topAnchor = [viewAsUIView topAnchor];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
     v10 = 0.0;
     if (self->_usesReverseOrder)
     {
@@ -431,11 +431,11 @@
       v10 = -v11;
     }
 
-    v12 = [v8 constraintEqualToAnchor:v9 constant:v10];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v10];
     v19[0] = v12;
-    v13 = [(UIStackView *)self->_stackView heightAnchor];
+    heightAnchor = [(UIStackView *)self->_stackView heightAnchor];
     [(UIStackView *)self->_stackView bounds];
-    v14 = [v13 constraintEqualToConstant:CGRectGetHeight(v21)];
+    v14 = [heightAnchor constraintEqualToConstant:CGRectGetHeight(v21)];
     v19[1] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v16 = self->_focusedItemConstraints;
@@ -454,13 +454,13 @@
   }
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
   items = self->_items;
-  v5 = a3;
-  [(NSMutableArray *)items addObject:v5];
+  itemCopy = item;
+  [(NSMutableArray *)items addObject:itemCopy];
   [(_SFSettingsAlertContentController *)self _addGroupSeparatorIfNeededBeforeItemAtIndex:[(NSMutableArray *)self->_items count]- 1];
-  [(_SFSettingsAlertContentController *)self _addViewForItem:v5];
+  [(_SFSettingsAlertContentController *)self _addViewForItem:itemCopy];
 }
 
 - (void)addDivider
@@ -471,15 +471,15 @@
   [(NSMutableIndexSet *)groupStartIndices addIndex:v3];
 }
 
-- (void)_addGroupSeparatorIfNeededBeforeItemAtIndex:(unint64_t)a3
+- (void)_addGroupSeparatorIfNeededBeforeItemAtIndex:(unint64_t)index
 {
-  v5 = [(_SFSettingsAlertContentController *)self isViewLoaded];
-  if (a3 && v5 && [(NSMutableIndexSet *)self->_groupStartIndices containsIndex:a3])
+  isViewLoaded = [(_SFSettingsAlertContentController *)self isViewLoaded];
+  if (index && isViewLoaded && [(NSMutableIndexSet *)self->_groupStartIndices containsIndex:index])
   {
     v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [v10 heightAnchor];
-    v7 = [v6 constraintEqualToConstant:8.0];
+    heightAnchor = [v10 heightAnchor];
+    v7 = [heightAnchor constraintEqualToConstant:8.0];
     [v10 addConstraint:v7];
 
     v8 = [MEMORY[0x1E69DC888] sf_colorNamed:@"settingsAlertDividerBackground"];
@@ -498,22 +498,22 @@
   }
 }
 
-- (void)_addViewForItem:(id)a3
+- (void)_addViewForItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   if ([(_SFSettingsAlertContentController *)self isViewLoaded])
   {
-    v4 = [(_SFSettingsAlertContentController *)self _createViewForItem:v8];
+    v4 = [(_SFSettingsAlertContentController *)self _createViewForItem:itemCopy];
     [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v4 setItem:v8];
+    [v4 setItem:itemCopy];
     [v4 setDelegate:self];
-    [v8 setView:v4];
-    v5 = [v8 viewConfigurationBlock];
+    [itemCopy setView:v4];
+    viewConfigurationBlock = [itemCopy viewConfigurationBlock];
 
-    if (v5)
+    if (viewConfigurationBlock)
     {
-      v6 = [v8 viewConfigurationBlock];
-      (v6)[2](v6, v4);
+      viewConfigurationBlock2 = [itemCopy viewConfigurationBlock];
+      (viewConfigurationBlock2)[2](viewConfigurationBlock2, v4);
     }
 
     stackView = self->_stackView;
@@ -534,22 +534,22 @@
       [(_SFSettingsAlertContentController *)self _alignButtonImageView:v4];
     }
 
-    [v8 updateOptionsGroupDetailLabel];
+    [itemCopy updateOptionsGroupDetailLabel];
   }
 }
 
-- (void)_alignButtonImageView:(id)a3
+- (void)_alignButtonImageView:(id)view
 {
-  obj = [a3 trailingView];
-  v4 = [obj superview];
+  obj = [view trailingView];
+  superview = [obj superview];
 
-  if (v4)
+  if (superview)
   {
     if (self->_lastViewForAlignment)
     {
-      v5 = [obj centerXAnchor];
-      v6 = [(UIView *)self->_lastViewForAlignment centerXAnchor];
-      v7 = [v5 constraintEqualToAnchor:v6];
+      centerXAnchor = [obj centerXAnchor];
+      centerXAnchor2 = [(UIView *)self->_lastViewForAlignment centerXAnchor];
+      v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
       LODWORD(v8) = 1146388480;
       [v7 setPriority:v8];
@@ -560,13 +560,13 @@
   }
 }
 
-- (id)_createViewForItem:(id)a3
+- (id)_createViewForItem:(id)item
 {
-  v5 = a3;
-  v6 = [v5 type];
-  if (v6 <= 5)
+  itemCopy = item;
+  type = [itemCopy type];
+  if (type <= 5)
   {
-    if (((1 << v6) & 0x1B) != 0)
+    if (((1 << type) & 0x1B) != 0)
     {
       v7 = objc_alloc_init(_SFSettingsAlertButton);
       v3 = v7;
@@ -575,64 +575,64 @@
         [(_SFSettingsAlertControl *)v7 setDefaultBackgroundMode:2];
       }
 
-      v8 = [v5 attributedTitle];
+      attributedTitle = [itemCopy attributedTitle];
 
-      if (v8)
+      if (attributedTitle)
       {
-        v9 = [v5 attributedTitle];
-        [(_SFSettingsAlertCustomViewContainer *)v3 setAttributedText:v9];
+        attributedTitle2 = [itemCopy attributedTitle];
+        [(_SFSettingsAlertCustomViewContainer *)v3 setAttributedText:attributedTitle2];
       }
 
       else
       {
-        v9 = [v5 title];
-        [(_SFSettingsAlertCustomViewContainer *)v3 setText:v9];
+        attributedTitle2 = [itemCopy title];
+        [(_SFSettingsAlertCustomViewContainer *)v3 setText:attributedTitle2];
       }
 
-      v12 = [v5 attributedSubtitle];
+      attributedSubtitle = [itemCopy attributedSubtitle];
 
-      if (v12)
+      if (attributedSubtitle)
       {
-        v13 = [v5 attributedSubtitle];
-        [(_SFSettingsAlertCustomViewContainer *)v3 setAttributedDetailText:v13];
+        attributedSubtitle2 = [itemCopy attributedSubtitle];
+        [(_SFSettingsAlertCustomViewContainer *)v3 setAttributedDetailText:attributedSubtitle2];
       }
 
       else
       {
-        v13 = [v5 subtitle];
-        [(_SFSettingsAlertCustomViewContainer *)v3 setDetailText:v13];
+        attributedSubtitle2 = [itemCopy subtitle];
+        [(_SFSettingsAlertCustomViewContainer *)v3 setDetailText:attributedSubtitle2];
       }
 
-      v14 = [v5 tintColor];
-      [(_SFSettingsAlertCustomViewContainer *)v3 setTintColor:v14];
+      tintColor = [itemCopy tintColor];
+      [(_SFSettingsAlertCustomViewContainer *)v3 setTintColor:tintColor];
 
-      v15 = [v5 textStyle];
-      [(_SFSettingsAlertCustomViewContainer *)v3 setTextStyle:v15];
+      textStyle = [itemCopy textStyle];
+      [(_SFSettingsAlertCustomViewContainer *)v3 setTextStyle:textStyle];
 
-      v16 = [v5 icon];
-      [(_SFSettingsAlertCustomViewContainer *)v3 setImage:v16];
+      icon = [itemCopy icon];
+      [(_SFSettingsAlertCustomViewContainer *)v3 setImage:icon];
 
-      -[_SFSettingsAlertCustomViewContainer setEnabled:](v3, "setEnabled:", [v5 isEnabled]);
-      -[_SFSettingsAlertCustomViewContainer setSelected:](v3, "setSelected:", [v5 isSelected]);
-      v17 = [v5 componentsArrangement];
-      [(_SFSettingsAlertCustomViewContainer *)v3 setComponentsArrangement:v17];
+      -[_SFSettingsAlertCustomViewContainer setEnabled:](v3, "setEnabled:", [itemCopy isEnabled]);
+      -[_SFSettingsAlertCustomViewContainer setSelected:](v3, "setSelected:", [itemCopy isSelected]);
+      componentsArrangement = [itemCopy componentsArrangement];
+      [(_SFSettingsAlertCustomViewContainer *)v3 setComponentsArrangement:componentsArrangement];
 
-      -[_SFSettingsAlertCustomViewContainer setLimitToSingleLine:](v3, "setLimitToSingleLine:", [v5 type] == 1);
-      -[_SFSettingsAlertCustomViewContainer setShowsIndicatorDot:](v3, "setShowsIndicatorDot:", [v5 showsIndicatorDot]);
-      v18 = [v5 badgeView];
-      [(_SFSettingsAlertCustomViewContainer *)v3 setAccessoryView:v18];
+      -[_SFSettingsAlertCustomViewContainer setLimitToSingleLine:](v3, "setLimitToSingleLine:", [itemCopy type] == 1);
+      -[_SFSettingsAlertCustomViewContainer setShowsIndicatorDot:](v3, "setShowsIndicatorDot:", [itemCopy showsIndicatorDot]);
+      badgeView = [itemCopy badgeView];
+      [(_SFSettingsAlertCustomViewContainer *)v3 setAccessoryView:badgeView];
 
-      v19 = [v5 statusImageView];
-      [(_SFSettingsAlertCustomViewContainer *)v3 setStatusImageView:v19];
+      statusImageView = [itemCopy statusImageView];
+      [(_SFSettingsAlertCustomViewContainer *)v3 setStatusImageView:statusImageView];
 
       [(_SFSettingsAlertCustomViewContainer *)v3 addTarget:self action:sel__tappedItemView_ forControlEvents:0x2000];
     }
 
     else
     {
-      if (v6 == 2)
+      if (type == 2)
       {
-        v10 = [v5 controller];
+        controller = [itemCopy controller];
         v11 = [[_SFSettingsAlertStepper alloc] initUsingResetButton:objc_opt_respondsToSelector() & 1 usingTopSeparator:self->_usesReverseOrder];
         v3 = v11;
         if (self->_usesReverseOrder)
@@ -640,16 +640,16 @@
           [(_SFSettingsAlertCustomViewContainer *)v11 setDefaultBackgroundMode:2];
         }
 
-        [v10 prepareStepper:v3];
+        [controller prepareStepper:v3];
         [(_SFSettingsAlertCustomViewContainer *)v3 addTarget:self action:sel__stepperValueChanged_ forControlEvents:4096];
       }
 
       else
       {
-        v20 = [v5 controller];
-        v10 = [v20 customPaletteView];
+        controller2 = [itemCopy controller];
+        controller = [controller2 customPaletteView];
 
-        v3 = [[_SFSettingsAlertCustomViewContainer alloc] initWithContentView:v10];
+        v3 = [[_SFSettingsAlertCustomViewContainer alloc] initWithContentView:controller];
       }
     }
   }
@@ -657,47 +657,47 @@
   return v3;
 }
 
-- (void)_stepperValueChanged:(id)a3
+- (void)_stepperValueChanged:(id)changed
 {
-  v10 = a3;
-  v4 = [v10 item];
-  v5 = [v4 controller];
-  v6 = [v10 value];
-  switch(v6)
+  changedCopy = changed;
+  item = [changedCopy item];
+  controller = [item controller];
+  value = [changedCopy value];
+  switch(value)
   {
     case 2:
       if (objc_opt_respondsToSelector())
       {
-        [v5 resetValue:v10];
+        [controller resetValue:changedCopy];
       }
 
       break;
     case 1:
-      [v5 decrementValue:v10];
+      [controller decrementValue:changedCopy];
       break;
     case 0:
-      [v5 incrementValue:v10];
+      [controller incrementValue:changedCopy];
       break;
   }
 
-  v7 = [v4 handler];
-  v8 = [(_SFSettingsAlertContentController *)self alertController];
-  if (v7)
+  handler = [item handler];
+  alertController = [(_SFSettingsAlertContentController *)self alertController];
+  if (handler)
   {
-    (v7)[2](v7, v8, v4);
-    v9 = [MEMORY[0x1E69C8810] sharedLogger];
-    [v9 _sf_didPerformFormatMenuAction:objc_msgSend(v4 provenance:{"actionType"), objc_msgSend(v8, "provenance")}];
+    (handler)[2](handler, alertController, item);
+    mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+    [mEMORY[0x1E69C8810] _sf_didPerformFormatMenuAction:objc_msgSend(item provenance:{"actionType"), objc_msgSend(alertController, "provenance")}];
   }
 }
 
-- (void)_tappedItemView:(id)a3
+- (void)_tappedItemView:(id)view
 {
-  v7 = [a3 item];
-  v4 = [v7 handler];
-  v5 = [(_SFSettingsAlertContentController *)self alertController];
-  (v4)[2](v4, v5, v7);
-  v6 = [MEMORY[0x1E69C8810] sharedLogger];
-  [v6 _sf_didPerformFormatMenuAction:objc_msgSend(v7 provenance:{"actionType"), objc_msgSend(v5, "provenance")}];
+  item = [view item];
+  handler = [item handler];
+  alertController = [(_SFSettingsAlertContentController *)self alertController];
+  (handler)[2](handler, alertController, item);
+  mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+  [mEMORY[0x1E69C8810] _sf_didPerformFormatMenuAction:objc_msgSend(item provenance:{"actionType"), objc_msgSend(alertController, "provenance")}];
 
   [(_SFSettingsAlertContentController *)self _updateSeparators];
 }
@@ -714,7 +714,7 @@
   [(NSMutableArray *)items enumerateObjectsUsingBlock:v3];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   [(UIScrollView *)self->_scrollView adjustedContentInset];
   if (self->_focusedItem)
@@ -736,17 +736,17 @@
   return MEMORY[0x1EEE1E530](v12, v14, v15, v13);
 }
 
-- (void)_panRecognized:(id)a3
+- (void)_panRecognized:(id)recognized
 {
-  v20 = a3;
+  recognizedCopy = recognized;
   v4 = self->_controlHighlightedForPan;
-  v5 = [(_SFSettingsAlertContentController *)self view];
-  [v20 locationInView:v5];
+  view = [(_SFSettingsAlertContentController *)self view];
+  [recognizedCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_SFSettingsAlertContentController *)self view];
-  v11 = [v10 hitTest:0 withEvent:{v7, v9}];
+  view2 = [(_SFSettingsAlertContentController *)self view];
+  v11 = [view2 hitTest:0 withEvent:{v7, v9}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -762,8 +762,8 @@
   v13 = v12;
   if ([(UIControl *)v13 isEnabled])
   {
-    v14 = [v20 state];
-    if ((v14 - 1) < 2)
+    state = [recognizedCopy state];
+    if ((state - 1) < 2)
     {
       if (v13 != v4 && ![(UIControl *)v13 isHighlighted])
       {
@@ -786,7 +786,7 @@
       goto LABEL_18;
     }
 
-    if (v14 == 3)
+    if (state == 3)
     {
       [(UIControl *)v13 sendActionsForControlEvents:0x2000];
     }
@@ -811,12 +811,12 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)alertItemViewContentSizeDidChange:(id)a3
+- (void)alertItemViewContentSizeDidChange:(id)change
 {
-  v4 = [(_SFSettingsAlertContentController *)self viewIfLoaded];
-  v5 = [v4 window];
+  viewIfLoaded = [(_SFSettingsAlertContentController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v5)
+  if (window)
   {
 
     [(_SFSettingsAlertContentController *)self setNeedsUpdatePreferredContentSize];

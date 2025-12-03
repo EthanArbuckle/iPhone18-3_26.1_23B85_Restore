@@ -1,19 +1,19 @@
 @interface SBIconContentView
-- (SBIconContentView)initWithFrame:(CGRect)a3;
-- (SBIconContentView)initWithOrientation:(int64_t)a3;
+- (SBIconContentView)initWithFrame:(CGRect)frame;
+- (SBIconContentView)initWithOrientation:(int64_t)orientation;
 - (id)preferredFocusEnvironments;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
-- (void)setOrientation:(int64_t)a3;
+- (void)setContentView:(id)view;
+- (void)setOrientation:(int64_t)orientation;
 @end
 
 @implementation SBIconContentView
 
-- (SBIconContentView)initWithFrame:(CGRect)a3
+- (SBIconContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBIconContentView;
-  v3 = [(SBIconContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBIconContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,21 +23,21 @@
   return v4;
 }
 
-- (SBIconContentView)initWithOrientation:(int64_t)a3
+- (SBIconContentView)initWithOrientation:(int64_t)orientation
 {
   result = [(SBIconContentView *)self initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (result)
   {
-    result->_orientation = a3;
+    result->_orientation = orientation;
   }
 
   return result;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v5 = XBInterfaceOrientationsAreOrthogonal();
-  self->_orientation = a3;
+  self->_orientation = orientation;
   if (v5)
   {
     [(SBIconContentView *)self setNeedsLayout];
@@ -46,20 +46,20 @@
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_contentView, view);
+    viewCopy = v7;
     if (v7)
     {
       [(SBIconContentView *)self addSubview:v7];
-      v5 = v7;
+      viewCopy = v7;
     }
   }
 }
@@ -75,9 +75,9 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(SBIconContentView *)self contentView];
+  contentView = [(SBIconContentView *)self contentView];
   [(SBIconContentView *)self bounds];
-  [v3 sb_setBoundsAndPositionFromFrame:?];
+  [contentView sb_setBoundsAndPositionFromFrame:?];
 }
 
 @end

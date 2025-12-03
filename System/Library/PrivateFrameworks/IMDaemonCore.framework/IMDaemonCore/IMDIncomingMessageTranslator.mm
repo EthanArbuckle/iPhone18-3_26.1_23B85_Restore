@@ -1,24 +1,24 @@
 @interface IMDIncomingMessageTranslator
-- (IMDIncomingMessageTranslator)initWithChat:(id)a3;
-- (id)checkForSentTranslationForMessage:(id)a3;
-- (void)beginProcessingMessage:(id)a3;
-- (void)finishProcessingMessage:(id)a3 completion:(id)a4;
-- (void)processedAllMessagesWithCompletion:(id)a3;
+- (IMDIncomingMessageTranslator)initWithChat:(id)chat;
+- (id)checkForSentTranslationForMessage:(id)message;
+- (void)beginProcessingMessage:(id)message;
+- (void)finishProcessingMessage:(id)message completion:(id)completion;
+- (void)processedAllMessagesWithCompletion:(id)completion;
 @end
 
 @implementation IMDIncomingMessageTranslator
 
-- (IMDIncomingMessageTranslator)initWithChat:(id)a3
+- (IMDIncomingMessageTranslator)initWithChat:(id)chat
 {
-  v5 = a3;
+  chatCopy = chat;
   v12.receiver = self;
   v12.super_class = IMDIncomingMessageTranslator;
   v6 = [(IMDIncomingMessageTranslator *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_chat, a3);
-    v8 = [IMDMessageTranslator shouldTranslateMessagesForChat:v5];
+    objc_storeStrong(&v6->_chat, chat);
+    v8 = [IMDMessageTranslator shouldTranslateMessagesForChat:chatCopy];
     v7->_translating = v8;
     if (v8)
     {
@@ -31,112 +31,112 @@
   return v7;
 }
 
-- (void)beginProcessingMessage:(id)a3
+- (void)beginProcessingMessage:(id)message
 {
-  v4 = [(IMDIncomingMessageTranslator *)self group];
+  group = [(IMDIncomingMessageTranslator *)self group];
 
-  if (v4)
+  if (group)
   {
-    v5 = [(IMDIncomingMessageTranslator *)self group];
-    dispatch_group_enter(v5);
+    group2 = [(IMDIncomingMessageTranslator *)self group];
+    dispatch_group_enter(group2);
   }
 }
 
-- (void)finishProcessingMessage:(id)a3 completion:(id)a4
+- (void)finishProcessingMessage:(id)message completion:(id)completion
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   if ([(IMDIncomingMessageTranslator *)self translating])
   {
-    v17[0] = v6;
+    v17[0] = messageCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    v9 = [(IMDIncomingMessageTranslator *)self chat];
+    chat = [(IMDIncomingMessageTranslator *)self chat];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = sub_22B4E14A4;
     v15[3] = &unk_2787028B0;
     v15[4] = self;
-    v16 = v7;
-    [IMDMessageTranslator translateMessageItems:v8 forChat:v9 incoming:1 completion:v15];
+    v16 = completionCopy;
+    [IMDMessageTranslator translateMessageItems:v8 forChat:chat incoming:1 completion:v15];
   }
 
   else
   {
-    v10 = [(IMDIncomingMessageTranslator *)self checkForSentTranslationForMessage:v6];
+    v10 = [(IMDIncomingMessageTranslator *)self checkForSentTranslationForMessage:messageCopy];
     if ([v10 length])
     {
-      v11 = [(IMDIncomingMessageTranslator *)self chat];
-      [v11 setIncomingTranslatedMessageIdentifier:v10];
+      chat2 = [(IMDIncomingMessageTranslator *)self chat];
+      [chat2 setIncomingTranslatedMessageIdentifier:v10];
     }
 
-    v7[2](v7);
-    v12 = [(IMDIncomingMessageTranslator *)self group];
+    completionCopy[2](completionCopy);
+    group = [(IMDIncomingMessageTranslator *)self group];
 
-    if (v12)
+    if (group)
     {
-      v13 = [(IMDIncomingMessageTranslator *)self group];
-      dispatch_group_leave(v13);
+      group2 = [(IMDIncomingMessageTranslator *)self group];
+      dispatch_group_leave(group2);
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processedAllMessagesWithCompletion:(id)a3
+- (void)processedAllMessagesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IMDIncomingMessageTranslator *)self group];
+  completionCopy = completion;
+  group = [(IMDIncomingMessageTranslator *)self group];
 
-  if (v5)
+  if (group)
   {
-    v6 = [(IMDIncomingMessageTranslator *)self group];
+    group2 = [(IMDIncomingMessageTranslator *)self group];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_22B4E16A4;
     block[3] = &unk_2787028D8;
-    v8 = v4;
-    dispatch_group_notify(v6, MEMORY[0x277D85CD0], block);
+    v8 = completionCopy;
+    dispatch_group_notify(group2, MEMORY[0x277D85CD0], block);
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (id)checkForSentTranslationForMessage:(id)a3
+- (id)checkForSentTranslationForMessage:(id)message
 {
-  v3 = a3;
-  if ([v3 partCount])
+  messageCopy = message;
+  if ([messageCopy partCount])
   {
     v4 = 0;
     while (1)
     {
-      v5 = [v3 translationsForMessagePart:v4];
+      v5 = [messageCopy translationsForMessagePart:v4];
       if ([v5 count])
       {
         break;
       }
 
-      if (++v4 >= [v3 partCount])
+      if (++v4 >= [messageCopy partCount])
       {
         goto LABEL_5;
       }
     }
 
-    v7 = [v5 firstObject];
-    v8 = [objc_alloc(MEMORY[0x277D1ACB0]) initWithDictionaryRepresentation:v7];
-    v6 = [v8 sourceLanguage];
+    firstObject = [v5 firstObject];
+    v8 = [objc_alloc(MEMORY[0x277D1ACB0]) initWithDictionaryRepresentation:firstObject];
+    sourceLanguage = [v8 sourceLanguage];
   }
 
   else
   {
 LABEL_5:
-    v6 = 0;
+    sourceLanguage = 0;
   }
 
-  return v6;
+  return sourceLanguage;
 }
 
 @end

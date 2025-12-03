@@ -1,7 +1,7 @@
 @interface SIMStatusIndicator
 - (SIMStatusIndicator)init;
 - (void)createConnection;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (void)simStatusDidChange:(id)change status:(id)status;
 @end
 
 @implementation SIMStatusIndicator
@@ -31,33 +31,33 @@
   [(SIMStatusIndicator *)self setQueue:v3];
 
   v4 = objc_alloc(MEMORY[0x277CC37B0]);
-  v5 = [(SIMStatusIndicator *)self queue];
-  v6 = [v4 initWithQueue:v5];
+  queue = [(SIMStatusIndicator *)self queue];
+  v6 = [v4 initWithQueue:queue];
   [(SIMStatusIndicator *)self setCoreTelephonyClient:v6];
 
-  v7 = [(SIMStatusIndicator *)self coreTelephonyClient];
-  [v7 setDelegate:self];
+  coreTelephonyClient = [(SIMStatusIndicator *)self coreTelephonyClient];
+  [coreTelephonyClient setDelegate:self];
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  changeCopy = change;
+  statusCopy = status;
+  if (changeCopy)
   {
-    v7 = [v11 userDataPreferred];
-    if (v7)
+    userDataPreferred = [changeCopy userDataPreferred];
+    if (userDataPreferred)
     {
-      v8 = v7;
-      v9 = [v11 userDataPreferred];
-      v10 = [v9 BOOLValue];
+      v8 = userDataPreferred;
+      userDataPreferred2 = [changeCopy userDataPreferred];
+      bOOLValue = [userDataPreferred2 BOOLValue];
 
-      if (v10)
+      if (bOOLValue)
       {
-        if (([v6 isEqualToString:simStatusDidChange_status__lastStatus] & 1) == 0)
+        if (([statusCopy isEqualToString:simStatusDidChange_status__lastStatus] & 1) == 0)
         {
-          objc_storeStrong(&simStatusDidChange_status__lastStatus, a4);
-          ([(SIMStatusIndicator *)self callback])(self, v6, [(SIMStatusIndicator *)self applicationContext]);
+          objc_storeStrong(&simStatusDidChange_status__lastStatus, status);
+          ([(SIMStatusIndicator *)self callback])(self, statusCopy, [(SIMStatusIndicator *)self applicationContext]);
         }
       }
     }

@@ -1,34 +1,34 @@
 @interface AccessibilityUIServerRemoteAlertSceneDelegate
 - (_TtC21AccessibilityUIServer45AccessibilityUIServerRemoteAlertSceneDelegate)init;
-- (void)remoteAlertScene:(id)a3 handleButtonActions:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)remoteAlertScene:(id)scene handleButtonActions:(id)actions;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation AccessibilityUIServerRemoteAlertSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1000067E8(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1000067E8(sceneCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000069A0(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_1000069A0(disconnectCopy);
 }
 
-- (void)remoteAlertScene:(id)a3 handleButtonActions:(id)a4
+- (void)remoteAlertScene:(id)scene handleButtonActions:(id)actions
 {
   sub_100006538();
   sub_100006584();
   v5 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  scene = a3;
+  scene = scene;
   v6 = sub_1000062BC(v5);
 
   if (v6)

@@ -2,13 +2,13 @@
 - (APAssistedModeBrowser)init;
 - (int)setupBonjourBrowser;
 - (int)startBonjourBrowser;
-- (int)startTimerWithTimeout:(double)a3;
-- (void)callDeviceFoundHandlerOnce:(id)a3 error:(id)a4;
+- (int)startTimerWithTimeout:(double)timeout;
+- (void)callDeviceFoundHandlerOnce:(id)once error:(id)error;
 - (void)dealloc;
-- (void)setDispatchQueue:(id)a3;
-- (void)startBrowsingFor:(id)a3 withTimeout:(double)a4 deviceFoundHandler:(id)a5;
+- (void)setDispatchQueue:(id)queue;
+- (void)startBrowsingFor:(id)for withTimeout:(double)timeout deviceFoundHandler:(id)handler;
 - (void)stopBrowsing;
-- (void)stopBrowsingWithError:(int)a3;
+- (void)stopBrowsingWithError:(int)error;
 @end
 
 @implementation APAssistedModeBrowser
@@ -75,18 +75,18 @@
   [(APAssistedModeBrowser *)&v7 dealloc];
 }
 
-- (void)startBrowsingFor:(id)a3 withTimeout:(double)a4 deviceFoundHandler:(id)a5
+- (void)startBrowsingFor:(id)for withTimeout:(double)timeout deviceFoundHandler:(id)handler
 {
-  v9 = [(APAssistedModeBrowser *)self internalBrowserQueue];
+  internalBrowserQueue = [(APAssistedModeBrowser *)self internalBrowserQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__APAssistedModeBrowser_startBrowsingFor_withTimeout_deviceFoundHandler___block_invoke;
   v10[3] = &unk_278BC9570;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a5;
-  *&v10[7] = a4;
-  dispatch_async(v9, v10);
+  v10[5] = for;
+  v10[6] = handler;
+  *&v10[7] = timeout;
+  dispatch_async(internalBrowserQueue, v10);
 }
 
 uint64_t __73__APAssistedModeBrowser_startBrowsingFor_withTimeout_deviceFoundHandler___block_invoke(uint64_t a1)
@@ -147,25 +147,25 @@ LABEL_19:
 
 - (void)stopBrowsing
 {
-  v3 = [(APAssistedModeBrowser *)self internalBrowserQueue];
+  internalBrowserQueue = [(APAssistedModeBrowser *)self internalBrowserQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__APAssistedModeBrowser_stopBrowsing__block_invoke;
   block[3] = &unk_278BC6E38;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(internalBrowserQueue, block);
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v5 = [(APAssistedModeBrowser *)self internalBrowserQueue];
+  internalBrowserQueue = [(APAssistedModeBrowser *)self internalBrowserQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__APAssistedModeBrowser_setDispatchQueue___block_invoke;
   v6[3] = &unk_278BC71F8;
-  v6[4] = a3;
+  v6[4] = queue;
   v6[5] = self;
-  dispatch_sync(v5, v6);
+  dispatch_sync(internalBrowserQueue, v6);
 }
 
 void __42__APAssistedModeBrowser_setDispatchQueue___block_invoke(uint64_t a1)
@@ -194,10 +194,10 @@ void __42__APAssistedModeBrowser_setDispatchQueue___block_invoke(uint64_t a1)
 
 - (int)startBonjourBrowser
 {
-  v3 = [(APAssistedModeBrowser *)self setupBonjourBrowser];
-  if (v3)
+  setupBonjourBrowser = [(APAssistedModeBrowser *)self setupBonjourBrowser];
+  if (setupBonjourBrowser)
   {
-    v4 = v3;
+    v4 = setupBonjourBrowser;
     [APAssistedModeBrowser startBonjourBrowser];
   }
 
@@ -296,7 +296,7 @@ LABEL_6:
   return result;
 }
 
-- (int)startTimerWithTimeout:(double)a3
+- (int)startTimerWithTimeout:(double)timeout
 {
   if ([(APAssistedModeBrowser *)self isBrowsing])
   {
@@ -310,26 +310,26 @@ LABEL_6:
     return -6709;
   }
 
-  v5 = [(APAssistedModeBrowser *)self internalBrowserQueue];
-  [(APAssistedModeBrowser *)self setTimeoutTimer:dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v5)];
+  internalBrowserQueue = [(APAssistedModeBrowser *)self internalBrowserQueue];
+  [(APAssistedModeBrowser *)self setTimeoutTimer:dispatch_source_create(MEMORY[0x277D85D38], 0, 0, internalBrowserQueue)];
   if ([(APAssistedModeBrowser *)self timeoutTimer])
   {
-    v6 = [(APAssistedModeBrowser *)self timeoutTimer];
+    timeoutTimer = [(APAssistedModeBrowser *)self timeoutTimer];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __47__APAssistedModeBrowser_startTimerWithTimeout___block_invoke;
     handler[3] = &unk_278BC6E38;
     handler[4] = self;
-    dispatch_source_set_event_handler(v6, handler);
+    dispatch_source_set_event_handler(timeoutTimer, handler);
     if (gLogCategory_APAssistedModeBrowser <= 30 && (gLogCategory_APAssistedModeBrowser != -1 || _LogCategory_Initialize()))
     {
-      v11 = a3;
-      v10 = self;
+      timeoutCopy = timeout;
+      selfCopy = self;
       LogPrintF();
     }
 
-    v7 = [(APAssistedModeBrowser *)self timeoutTimer:v10];
-    v8 = dispatch_time(0, 1000000000 * a3);
+    v7 = [(APAssistedModeBrowser *)self timeoutTimer:selfCopy];
+    v8 = dispatch_time(0, 1000000000 * timeout);
     dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
     dispatch_resume([(APAssistedModeBrowser *)self timeoutTimer]);
     return 0;
@@ -361,7 +361,7 @@ uint64_t __47__APAssistedModeBrowser_startTimerWithTimeout___block_invoke(uint64
   return result;
 }
 
-- (void)stopBrowsingWithError:(int)a3
+- (void)stopBrowsingWithError:(int)error
 {
   if ([(APAssistedModeBrowser *)self timeoutTimer])
   {
@@ -390,9 +390,9 @@ uint64_t __47__APAssistedModeBrowser_startTimerWithTimeout___block_invoke(uint64
   self->_bonjourServiceName = 0;
 
   self->_bonjourProtocol = 0;
-  if (a3)
+  if (error)
   {
-    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:a3 userInfo:0];
+    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:error userInfo:0];
   }
 
   else
@@ -405,7 +405,7 @@ uint64_t __47__APAssistedModeBrowser_startTimerWithTimeout___block_invoke(uint64
   [(APAssistedModeBrowser *)self setIsBrowsing:0];
 }
 
-- (void)callDeviceFoundHandlerOnce:(id)a3 error:(id)a4
+- (void)callDeviceFoundHandlerOnce:(id)once error:(id)error
 {
   v14 = 0;
   v15 = &v14;
@@ -417,13 +417,13 @@ uint64_t __47__APAssistedModeBrowser_startTimerWithTimeout___block_invoke(uint64
   {
     if (gLogCategory_APAssistedModeBrowser <= 30 && (gLogCategory_APAssistedModeBrowser != -1 || _LogCategory_Initialize()))
     {
-      v11 = [(APAssistedModeBrowser *)self deviceFoundHandlerBlock];
-      v12 = a4;
-      v10 = self;
+      deviceFoundHandlerBlock = [(APAssistedModeBrowser *)self deviceFoundHandlerBlock];
+      errorCopy = error;
+      selfCopy = self;
       LogPrintF();
     }
 
-    v7 = _Block_copy([(APAssistedModeBrowser *)self deviceFoundHandlerBlock:v10]);
+    v7 = _Block_copy([(APAssistedModeBrowser *)self deviceFoundHandlerBlock:selfCopy]);
     v15[5] = v7;
     deviceFoundHandlerBlock = self->_deviceFoundHandlerBlock;
     if (deviceFoundHandlerBlock)
@@ -432,15 +432,15 @@ uint64_t __47__APAssistedModeBrowser_startTimerWithTimeout___block_invoke(uint64
       self->_deviceFoundHandlerBlock = 0;
     }
 
-    v9 = [(APAssistedModeBrowser *)self dispatchQueue];
+    dispatchQueue = [(APAssistedModeBrowser *)self dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__APAssistedModeBrowser_callDeviceFoundHandlerOnce_error___block_invoke;
     block[3] = &unk_278BC95C0;
-    block[5] = a4;
+    block[5] = error;
     block[6] = &v14;
-    block[4] = a3;
-    dispatch_async(v9, block);
+    block[4] = once;
+    dispatch_async(dispatchQueue, block);
   }
 
   _Block_object_dispose(&v14, 8);

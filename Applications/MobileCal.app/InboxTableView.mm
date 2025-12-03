@@ -1,17 +1,17 @@
 @interface InboxTableView
-- (InboxTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (InboxTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (InboxTableViewDelegate)listViewDelegate;
-- (void)setPreferredBackgroundColor:(id)a3;
-- (void)setShowNoContentString:(BOOL)a3;
+- (void)setPreferredBackgroundColor:(id)color;
+- (void)setShowNoContentString:(BOOL)string;
 @end
 
 @implementation InboxTableView
 
-- (InboxTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (InboxTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = InboxTableView;
-  v4 = [(InboxTableView *)&v7 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(InboxTableView *)&v7 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
@@ -24,16 +24,16 @@
   return v5;
 }
 
-- (void)setShowNoContentString:(BOOL)a3
+- (void)setShowNoContentString:(BOOL)string
 {
-  if (a3)
+  if (string)
   {
     [(InboxTableView *)self setSeparatorStyle:0];
     if (!self->_noContentView)
     {
       v4 = +[UIContentUnavailableConfiguration emptyConfiguration];
-      v5 = [(InboxTableView *)self listViewDelegate];
-      v6 = [v5 noContentStringForInboxTableView:self];
+      listViewDelegate = [(InboxTableView *)self listViewDelegate];
+      v6 = [listViewDelegate noContentStringForInboxTableView:self];
       v28 = v4;
       [v4 setText:v6];
 
@@ -43,25 +43,25 @@
 
       [(UIContentUnavailableView *)self->_noContentView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(InboxTableView *)self addSubview:self->_noContentView];
-      v27 = [(InboxTableView *)self safeAreaLayoutGuide];
-      v26 = [v27 leadingAnchor];
-      v25 = [(UIContentUnavailableView *)self->_noContentView leadingAnchor];
-      v24 = [v26 constraintEqualToAnchor:v25];
+      safeAreaLayoutGuide = [(InboxTableView *)self safeAreaLayoutGuide];
+      leadingAnchor = [safeAreaLayoutGuide leadingAnchor];
+      leadingAnchor2 = [(UIContentUnavailableView *)self->_noContentView leadingAnchor];
+      v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v29[0] = v24;
-      v23 = [(InboxTableView *)self safeAreaLayoutGuide];
-      v22 = [v23 trailingAnchor];
-      v21 = [(UIContentUnavailableView *)self->_noContentView trailingAnchor];
-      v9 = [v22 constraintEqualToAnchor:v21];
+      safeAreaLayoutGuide2 = [(InboxTableView *)self safeAreaLayoutGuide];
+      trailingAnchor = [safeAreaLayoutGuide2 trailingAnchor];
+      trailingAnchor2 = [(UIContentUnavailableView *)self->_noContentView trailingAnchor];
+      v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v29[1] = v9;
-      v10 = [(InboxTableView *)self safeAreaLayoutGuide];
-      v11 = [v10 topAnchor];
-      v12 = [(UIContentUnavailableView *)self->_noContentView topAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      safeAreaLayoutGuide3 = [(InboxTableView *)self safeAreaLayoutGuide];
+      topAnchor = [safeAreaLayoutGuide3 topAnchor];
+      topAnchor2 = [(UIContentUnavailableView *)self->_noContentView topAnchor];
+      v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v29[2] = v13;
-      v14 = [(InboxTableView *)self safeAreaLayoutGuide];
-      v15 = [v14 bottomAnchor];
-      v16 = [(UIContentUnavailableView *)self->_noContentView bottomAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16];
+      safeAreaLayoutGuide4 = [(InboxTableView *)self safeAreaLayoutGuide];
+      bottomAnchor = [safeAreaLayoutGuide4 bottomAnchor];
+      bottomAnchor2 = [(UIContentUnavailableView *)self->_noContentView bottomAnchor];
+      v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v29[3] = v17;
       v18 = [NSArray arrayWithObjects:v29 count:4];
       [NSLayoutConstraint activateConstraints:v18];
@@ -81,9 +81,9 @@
   }
 }
 
-- (void)setPreferredBackgroundColor:(id)a3
+- (void)setPreferredBackgroundColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   if (CalSplitViewEnabled())
   {
     [(InboxTableView *)self setBackgroundColor:0];
@@ -91,11 +91,11 @@
 
   else
   {
-    objc_storeStrong(&self->_preferredBackgroundColor, a3);
-    v5 = [(InboxTableView *)self preferredBackgroundColor];
-    if (v5)
+    objc_storeStrong(&self->_preferredBackgroundColor, color);
+    preferredBackgroundColor = [(InboxTableView *)self preferredBackgroundColor];
+    if (preferredBackgroundColor)
     {
-      [(InboxTableView *)self setBackgroundColor:v5];
+      [(InboxTableView *)self setBackgroundColor:preferredBackgroundColor];
     }
 
     else

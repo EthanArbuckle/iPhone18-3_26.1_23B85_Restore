@@ -11,35 +11,35 @@
 
 - (BOOL)_br_isInPersonaRoot:()BRPersonaAdditions
 {
-  v4 = [a3 absoluteString];
-  if (([v4 hasSuffix:@"/"] & 1) == 0)
+  absoluteString = [a3 absoluteString];
+  if (([absoluteString hasSuffix:@"/"] & 1) == 0)
   {
-    v5 = [v4 stringByAppendingString:@"/"];
+    v5 = [absoluteString stringByAppendingString:@"/"];
 
-    v4 = v5;
+    absoluteString = v5;
   }
 
-  if ([a1 isFileReferenceURL])
+  if ([self isFileReferenceURL])
   {
-    v6 = [a1 filePathURL];
-    v7 = [v6 absoluteString];
+    filePathURL = [self filePathURL];
+    absoluteString2 = [filePathURL absoluteString];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v7 = [a1 absoluteString];
-  if ([v7 hasPrefix:@"file:///var/"])
+  absoluteString2 = [self absoluteString];
+  if ([absoluteString2 hasPrefix:@"file:///var/"])
   {
-    v6 = [v7 substringFromIndex:{objc_msgSend(@"file:///var/", "length")}];
-    v8 = [@"file:///private/var/" stringByAppendingString:v6];
+    filePathURL = [absoluteString2 substringFromIndex:{objc_msgSend(@"file:///var/", "length")}];
+    v8 = [@"file:///private/var/" stringByAppendingString:filePathURL];
 
-    v7 = v8;
+    absoluteString2 = v8;
     goto LABEL_7;
   }
 
 LABEL_8:
-  v10 = v7 && (v9 = [v7 length], v9 >= objc_msgSend(v4, "length")) && objc_msgSend(v7, "compare:options:range:", v4, 1, 0, objc_msgSend(v4, "length")) == 0;
+  v10 = absoluteString2 && (v9 = [absoluteString2 length], v9 >= objc_msgSend(absoluteString, "length")) && objc_msgSend(absoluteString2, "compare:options:range:", absoluteString, 1, 0, objc_msgSend(absoluteString, "length")) == 0;
 
   return v10;
 }
@@ -50,14 +50,14 @@ LABEL_8:
   v7 = [BRDaemonConnection homeDirectoryURLForPersonaID:v6 needsPersonaSwitch:a4];
   v8 = [BRDaemonConnection mobileDocumentsURLForPersonaID:v6 needsPersonaSwitch:a4];
 
-  if ([a1 _br_isInPersonaRoot:v7])
+  if ([self _br_isInPersonaRoot:v7])
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [a1 _br_isInPersonaRoot:v8];
+    v9 = [self _br_isInPersonaRoot:v8];
   }
 
   return v9;
@@ -66,7 +66,7 @@ LABEL_8:
 - (uint64_t)_br_isInLocalHomeDirectoryUnderCurrentPersona
 {
   v2 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
-  v3 = [a1 _br_isInLocalHomeDirectoryUnderPersona:v2 needsPersonaSwitch:0];
+  v3 = [self _br_isInLocalHomeDirectoryUnderPersona:v2 needsPersonaSwitch:0];
 
   return v3;
 }
@@ -75,19 +75,19 @@ LABEL_8:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 isFileURL];
+  isFileURL = [self isFileURL];
   v9 = 0;
-  if (v6 && v8)
+  if (v6 && isFileURL)
   {
-    if ([a1 _br_isInLocalHomeDirectoryUnderPersona:v7 needsPersonaSwitch:0])
+    if ([self _br_isInLocalHomeDirectoryUnderPersona:v7 needsPersonaSwitch:0])
     {
-      v10 = [v6 path];
-      v11 = [a1 path];
-      v9 = [v11 br_pathRelativeToPath:v10];
+      path = [v6 path];
+      path2 = [self path];
+      v9 = [path2 br_pathRelativeToPath:path];
       if (![v9 length])
       {
-        v12 = [v11 br_realpathKeepingLastSymlink];
-        v13 = [v12 br_pathRelativeToPath:v10];
+        br_realpathKeepingLastSymlink = [path2 br_realpathKeepingLastSymlink];
+        v13 = [br_realpathKeepingLastSymlink br_pathRelativeToPath:path];
 
         v9 = v13;
       }
@@ -105,52 +105,52 @@ LABEL_8:
 - (id)br_containerIDWithCurrentPersonaID:()BRPersonaAdditions needsPersonaSwitch:
 {
   v6 = a3;
-  if ([a1 br_isInTrash])
+  if ([self br_isInTrash])
   {
-    v7 = 0;
+    appLibraryOrZoneName = 0;
   }
 
   else
   {
     v8 = [BRDaemonConnection mobileDocumentsURLForPersonaID:v6 needsPersonaSwitch:a4];
-    v9 = [a1 br_pathRelativeToSyncedRootURL:v8 currentPersonaID:v6];
+    v9 = [self br_pathRelativeToSyncedRootURL:v8 currentPersonaID:v6];
 
-    v10 = [v9 pathComponents];
-    if ([v10 count])
+    pathComponents = [v9 pathComponents];
+    if ([pathComponents count])
     {
       v11 = [BRMangledID alloc];
-      v12 = [v10 objectAtIndexedSubscript:0];
+      v12 = [pathComponents objectAtIndexedSubscript:0];
       v13 = [(BRMangledID *)v11 initWithMangledString:v12];
 
-      v7 = [(BRMangledID *)v13 appLibraryOrZoneName];
+      appLibraryOrZoneName = [(BRMangledID *)v13 appLibraryOrZoneName];
     }
 
     else
     {
-      v7 = 0;
+      appLibraryOrZoneName = 0;
     }
   }
 
-  return v7;
+  return appLibraryOrZoneName;
 }
 
 - (uint64_t)br_mightBeOnDataSeparatedVolume
 {
-  v1 = [a1 pathComponents];
-  if ([v1 count] < 5)
+  pathComponents = [self pathComponents];
+  if ([pathComponents count] < 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v2 = [v1 objectAtIndexedSubscript:0];
+    v2 = [pathComponents objectAtIndexedSubscript:0];
     if ([v2 isEqualToString:@"/"])
     {
-      v3 = [v1 objectAtIndexedSubscript:1];
+      v3 = [pathComponents objectAtIndexedSubscript:1];
       if ([v3 isEqualToString:@"private"])
       {
-        v4 = [v1 objectAtIndexedSubscript:3];
+        v4 = [pathComponents objectAtIndexedSubscript:3];
         v5 = [v4 isEqualToString:@"PersonaVolumes"];
       }
 

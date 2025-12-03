@@ -1,30 +1,30 @@
 @interface EMListUnsubscribeDetector
-+ (id)receivingAccountFromMessage:(id)a3;
-+ (id)validatedUnsubscribeTypeForHeader:(id)a3 dkimVerified:(unint64_t)a4;
-+ (int64_t)unsubscribeTypeForHeader:(id)a3;
-+ (uint64_t)_validateHeaders:(uint64_t)a3 dkimVerified:;
-- (BOOL)shouldIgnoreMessageWithHeaders:(id)a3;
++ (id)receivingAccountFromMessage:(id)message;
++ (id)validatedUnsubscribeTypeForHeader:(id)header dkimVerified:(unint64_t)verified;
++ (int64_t)unsubscribeTypeForHeader:(id)header;
++ (uint64_t)_validateHeaders:(uint64_t)headers dkimVerified:;
+- (BOOL)shouldIgnoreMessageWithHeaders:(id)headers;
 - (EMListUnsubscribeDetector)init;
-- (EMListUnsubscribeDetector)initWithMutableDictionary:(id)a3;
-- (id)_listIDString:(id)a3;
-- (id)_normalizedAddress:(id)a3;
-- (id)_persistentKeyForHeaders:(id)a3;
-- (id)_senderString:(id)a3;
-- (id)commandForMessage:(id)a3 dkimVerified:(unint64_t)a4;
-- (id)commandForMessage:(id)a3 mailToOnly:(BOOL)a4 dkimVerified:(unint64_t)a5;
-- (void)acceptCommand:(id)a3;
-- (void)ignoreCommand:(id)a3;
+- (EMListUnsubscribeDetector)initWithMutableDictionary:(id)dictionary;
+- (id)_listIDString:(id)string;
+- (id)_normalizedAddress:(id)address;
+- (id)_persistentKeyForHeaders:(id)headers;
+- (id)_senderString:(id)string;
+- (id)commandForMessage:(id)message dkimVerified:(unint64_t)verified;
+- (id)commandForMessage:(id)message mailToOnly:(BOOL)only dkimVerified:(unint64_t)verified;
+- (void)acceptCommand:(id)command;
+- (void)ignoreCommand:(id)command;
 @end
 
 @implementation EMListUnsubscribeDetector
 
-+ (uint64_t)_validateHeaders:(uint64_t)a3 dkimVerified:
++ (uint64_t)_validateHeaders:(uint64_t)headers dkimVerified:
 {
   v26 = *MEMORY[0x1E69E9840];
   v19 = a2;
   objc_opt_self();
-  v4 = [v19 encodedHeaders];
-  v5 = EMRecodeDataToNetwork(v4);
+  encodedHeaders = [v19 encodedHeaders];
+  v5 = EMRecodeDataToNetwork(encodedHeaders);
 
   if (v5)
   {
@@ -33,7 +33,7 @@
     v6 = [v17 verificationContextForMessageData:v5 error:&v24];
     v18 = v24;
     v7 = 2;
-    if (a3 != 1 && v6 && !v18)
+    if (headers != 1 && v6 && !v18)
     {
       [v6 dkimSignatureHeaders];
       v22 = 0u;
@@ -55,10 +55,10 @@ LABEL_7:
             objc_enumerationMutation(v8);
           }
 
-          v14 = [*(*(&v20 + 1) + 8 * v13) signedHeaderFields];
-          if ([v14 containsObject:v11])
+          signedHeaderFields = [*(*(&v20 + 1) + 8 * v13) signedHeaderFields];
+          if ([signedHeaderFields containsObject:v11])
           {
-            if ([v14 containsObject:v12])
+            if ([signedHeaderFields containsObject:v12])
             {
               break;
             }
@@ -76,9 +76,9 @@ LABEL_7:
           }
         }
 
-        if (a3)
+        if (headers)
         {
-          if (a3 != 2)
+          if (headers != 2)
           {
             goto LABEL_20;
           }
@@ -116,17 +116,17 @@ LABEL_20:
   return v7;
 }
 
-+ (int64_t)unsubscribeTypeForHeader:(id)a3
++ (int64_t)unsubscribeTypeForHeader:(id)header
 {
-  v3 = a3;
-  [(EMListUnsubscribeDetector *)[[_EMUnsubscribeInfo alloc] initWithHeaders:v3] unsubscribeTypeForHeader:v3, &v5];
+  headerCopy = header;
+  [(EMListUnsubscribeDetector *)[[_EMUnsubscribeInfo alloc] initWithHeaders:headerCopy] unsubscribeTypeForHeader:headerCopy, &v5];
   return v5;
 }
 
-+ (id)validatedUnsubscribeTypeForHeader:(id)a3 dkimVerified:(unint64_t)a4
++ (id)validatedUnsubscribeTypeForHeader:(id)header dkimVerified:(unint64_t)verified
 {
-  v5 = a3;
-  v6 = [[_EMUnsubscribeInfo alloc] initWithHeaders:v5];
+  headerCopy = header;
+  v6 = [[_EMUnsubscribeInfo alloc] initWithHeaders:headerCopy];
   v7 = v6;
   if (!v6)
   {
@@ -165,7 +165,7 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  v14 = [EMListUnsubscribeDetector _validateHeaders:v5 dkimVerified:a4];
+  v14 = [EMListUnsubscribeDetector _validateHeaders:headerCopy dkimVerified:verified];
   if (v14)
   {
     if (v14 != 2)
@@ -186,13 +186,13 @@ LABEL_19:
   return v15;
 }
 
-- (EMListUnsubscribeDetector)initWithMutableDictionary:(id)a3
+- (EMListUnsubscribeDetector)initWithMutableDictionary:(id)dictionary
 {
-  v6 = a3;
-  if (!v6)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"EMListUnsubscribeDetector.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"dictionary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMListUnsubscribeDetector.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"dictionary"}];
   }
 
   v11.receiver = self;
@@ -201,7 +201,7 @@ LABEL_19:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_persistentDictionary, a3);
+    objc_storeStrong(&v7->_persistentDictionary, dictionary);
   }
 
   return v8;
@@ -215,23 +215,23 @@ LABEL_19:
   return v4;
 }
 
-- (id)commandForMessage:(id)a3 mailToOnly:(BOOL)a4 dkimVerified:(unint64_t)a5
+- (id)commandForMessage:(id)message mailToOnly:(BOOL)only dkimVerified:(unint64_t)verified
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 headers];
-  if ([(EMListUnsubscribeDetector *)self shouldIgnoreMessageWithHeaders:v9])
+  messageCopy = message;
+  headers = [messageCopy headers];
+  if ([(EMListUnsubscribeDetector *)self shouldIgnoreMessageWithHeaders:headers])
   {
     v10 = 0;
     goto LABEL_50;
   }
 
-  v11 = [objc_opt_class() receivingAccountFromMessage:v8];
-  v12 = [v11 deliveryAccount];
+  v11 = [objc_opt_class() receivingAccountFromMessage:messageCopy];
+  deliveryAccount = [v11 deliveryAccount];
 
-  if (v12)
+  if (deliveryAccount)
   {
-    if (a4)
+    if (only)
     {
       v13 = 1;
     }
@@ -243,8 +243,8 @@ LABEL_19:
       v51[1] = 3221225472;
       v51[2] = __71__EMListUnsubscribeDetector_commandForMessage_mailToOnly_dkimVerified___block_invoke;
       v51[3] = &unk_1E826D648;
-      v52 = v9;
-      v53 = a5;
+      v52 = headers;
+      verifiedCopy = verified;
       v15 = [v14 futureWithBlock:v51];
       v16 = [v15 resultWithTimeout:0 error:3.0];
       v17 = v16;
@@ -260,15 +260,15 @@ LABEL_19:
         {
           v19 = objc_opt_class();
           v20 = NSStringFromClass(v19);
-          [(EMListUnsubscribeDetector *)v20 commandForMessage:v8 mailToOnly:buf dkimVerified:v18];
+          [(EMListUnsubscribeDetector *)v20 commandForMessage:messageCopy mailToOnly:buf dkimVerified:v18];
         }
 
         v13 = 1;
       }
     }
 
-    v50 = [v9 firstHeaderForKey:*MEMORY[0x1E699B110]];
-    v21 = [[_EMUnsubscribeInfo alloc] initWithHeaders:v9];
+    v50 = [headers firstHeaderForKey:*MEMORY[0x1E699B110]];
+    v21 = [[_EMUnsubscribeInfo alloc] initWithHeaders:headers];
     v22 = v21;
     if (v21)
     {
@@ -312,9 +312,9 @@ LABEL_19:
         v38 = 0;
       }
 
-      v27 = [EMMailToURLComponents componentsWithURL:v38];
-      v39 = [v27 toRecipients];
-      v40 = [v39 count] == 0;
+      firstSenderAddress2 = [EMMailToURLComponents componentsWithURL:v38];
+      toRecipients = [firstSenderAddress2 toRecipients];
+      v40 = [toRecipients count] == 0;
 
       if (v40)
       {
@@ -322,12 +322,12 @@ LABEL_19:
         goto LABEL_47;
       }
 
-      v28 = [v27 toRecipients];
-      v29 = [v28 objectAtIndexedSubscript:0];
-      v30 = [v9 firstSenderAddress];
-      v49 = [v9 senderForUnsubscribeMessage];
-      v48 = [v27 subject];
-      v41 = [v27 body];
+      toRecipients2 = [firstSenderAddress2 toRecipients];
+      v29 = [toRecipients2 objectAtIndexedSubscript:0];
+      firstSenderAddress = [headers firstSenderAddress];
+      senderForUnsubscribeMessage = [headers senderForUnsubscribeMessage];
+      subject = [firstSenderAddress2 subject];
+      body = [firstSenderAddress2 body];
       if (v22)
       {
         v42 = v22->_mailtoURL;
@@ -360,17 +360,17 @@ LABEL_19:
         v45 = 0;
       }
 
-      v10 = [EMListUnsubscribeCommand mailtoUnsubscribeCommandWithListID:v50 address:v29 sender:v30 senderForUnsubscribeMessage:v49 subject:v48 body:v41 account:v11 headerUnsubscribeTypes:v45];
+      v10 = [EMListUnsubscribeCommand mailtoUnsubscribeCommandWithListID:v50 address:v29 sender:firstSenderAddress senderForUnsubscribeMessage:senderForUnsubscribeMessage subject:subject body:body account:v11 headerUnsubscribeTypes:v45];
     }
 
     else
     {
-      v27 = [v9 firstSenderAddress];
-      v28 = [v9 senderForUnsubscribeMessage];
+      firstSenderAddress2 = [headers firstSenderAddress];
+      toRecipients2 = [headers senderForUnsubscribeMessage];
       if (v22)
       {
         v29 = v22->_postURL;
-        v30 = v22->_postContent;
+        firstSenderAddress = v22->_postContent;
         v31 = v22->_mailtoURL;
         v32 = v22->_postURL;
         v35 = v31 == 0;
@@ -410,12 +410,12 @@ LABEL_19:
 
       else
       {
-        v30 = 0;
+        firstSenderAddress = 0;
         v29 = 0;
         v37 = 0;
       }
 
-      v10 = [EMListUnsubscribeCommand oneClickUnsubscribeCommandWithListID:v50 sender:v27 senderForUnsubscribeMessage:v28 URL:v29 postContent:v30 headerUnsubscribeTypes:v37];
+      v10 = [EMListUnsubscribeCommand oneClickUnsubscribeCommandWithListID:v50 sender:firstSenderAddress2 senderForUnsubscribeMessage:toRecipients2 URL:v29 postContent:firstSenderAddress headerUnsubscribeTypes:v37];
     }
 
 LABEL_47:
@@ -441,61 +441,61 @@ uint64_t __71__EMListUnsubscribeDetector_commandForMessage_mailToOnly_dkimVerifi
   return [v1 numberWithInteger:v2];
 }
 
-- (id)commandForMessage:(id)a3 dkimVerified:(unint64_t)a4
+- (id)commandForMessage:(id)message dkimVerified:(unint64_t)verified
 {
-  v4 = [(EMListUnsubscribeDetector *)self commandForMessage:a3 mailToOnly:0 dkimVerified:a4];
+  v4 = [(EMListUnsubscribeDetector *)self commandForMessage:message mailToOnly:0 dkimVerified:verified];
 
   return v4;
 }
 
-- (void)acceptCommand:(id)a3
+- (void)acceptCommand:(id)command
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  commandCopy = command;
+  v8 = commandCopy;
+  if (!commandCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"EMListUnsubscribeDetector.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"command"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMListUnsubscribeDetector.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"command"}];
 
-    v5 = 0;
+    commandCopy = 0;
   }
 
-  v6 = [(EMListUnsubscribeDetector *)self _persistentKeyForHeaders:v5];
+  v6 = [(EMListUnsubscribeDetector *)self _persistentKeyForHeaders:commandCopy];
   if (v6)
   {
     [(EMMutableDictionaryProtocol *)self->_persistentDictionary setObject:@"accepted" forKey:v6];
   }
 }
 
-- (void)ignoreCommand:(id)a3
+- (void)ignoreCommand:(id)command
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  commandCopy = command;
+  v8 = commandCopy;
+  if (!commandCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"EMListUnsubscribeDetector.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"command"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMListUnsubscribeDetector.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"command"}];
 
-    v5 = 0;
+    commandCopy = 0;
   }
 
-  v6 = [(EMListUnsubscribeDetector *)self _persistentKeyForHeaders:v5];
+  v6 = [(EMListUnsubscribeDetector *)self _persistentKeyForHeaders:commandCopy];
   if (v6)
   {
     [(EMMutableDictionaryProtocol *)self->_persistentDictionary setObject:@"ignored" forKey:v6];
   }
 }
 
-- (id)_normalizedAddress:(id)a3
+- (id)_normalizedAddress:(id)address
 {
-  v3 = a3;
-  if (v3)
+  addressCopy = address;
+  if (addressCopy)
   {
     v4 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"^[^<>]*<([^>]+)>\\s*$|^(.+)$" options:8 error:0];
-    v5 = [v4 stringByReplacingMatchesInString:v3 options:0 range:0 withTemplate:{objc_msgSend(v3, "length"), @"$1$2"}];
-    v6 = [v5 lowercaseString];
+    v5 = [v4 stringByReplacingMatchesInString:addressCopy options:0 range:0 withTemplate:{objc_msgSend(addressCopy, "length"), @"$1$2"}];
+    lowercaseString = [v5 lowercaseString];
 
-    v7 = [MEMORY[0x1E699AFD0] idnaEncodedAddressForAddress:v6];
+    v7 = [MEMORY[0x1E699AFD0] idnaEncodedAddressForAddress:lowercaseString];
 
     if ([v7 length] > 0x3E)
     {
@@ -518,40 +518,40 @@ uint64_t __71__EMListUnsubscribeDetector_commandForMessage_mailToOnly_dkimVerifi
   return v9;
 }
 
-- (id)_listIDString:(id)a3
+- (id)_listIDString:(id)string
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(EMListUnsubscribeDetector *)self _normalizedAddress:a3];
+  v4 = [(EMListUnsubscribeDetector *)self _normalizedAddress:string];
   v5 = [v3 stringWithFormat:@"L:%@", v4];
 
   return v5;
 }
 
-- (id)_senderString:(id)a3
+- (id)_senderString:(id)string
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(EMListUnsubscribeDetector *)self _normalizedAddress:a3];
+  v4 = [(EMListUnsubscribeDetector *)self _normalizedAddress:string];
   v5 = [v3 stringWithFormat:@"S:%@", v4];
 
   return v5;
 }
 
-- (id)_persistentKeyForHeaders:(id)a3
+- (id)_persistentKeyForHeaders:(id)headers
 {
-  v4 = a3;
-  v5 = [v4 sender];
-  v6 = [v4 listID];
-  if ([v6 length])
+  headersCopy = headers;
+  sender = [headersCopy sender];
+  listID = [headersCopy listID];
+  if ([listID length])
   {
-    v7 = [(EMListUnsubscribeDetector *)self _listIDString:v6];
+    v7 = [(EMListUnsubscribeDetector *)self _listIDString:listID];
 LABEL_5:
     v8 = v7;
     goto LABEL_6;
   }
 
-  if ([v5 length])
+  if ([sender length])
   {
-    v7 = [(EMListUnsubscribeDetector *)self _senderString:v5];
+    v7 = [(EMListUnsubscribeDetector *)self _senderString:sender];
     goto LABEL_5;
   }
 
@@ -561,17 +561,17 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)shouldIgnoreMessageWithHeaders:(id)a3
+- (BOOL)shouldIgnoreMessageWithHeaders:(id)headers
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  headersCopy = headers;
+  v5 = headersCopy;
+  if (headersCopy)
   {
-    v6 = [v4 firstHeaderForKey:*MEMORY[0x1E699B110]];
+    v6 = [headersCopy firstHeaderForKey:*MEMORY[0x1E699B110]];
     v7 = [(EMListUnsubscribeDetector *)self _listIDString:v6];
 
-    v8 = [v5 firstSenderAddress];
-    v9 = [(EMListUnsubscribeDetector *)self _senderString:v8];
+    firstSenderAddress = [v5 firstSenderAddress];
+    v9 = [(EMListUnsubscribeDetector *)self _senderString:firstSenderAddress];
 
     v10 = [(EMMutableDictionaryProtocol *)self->_persistentDictionary objectForKey:v7];
     if (v10 || ([(EMMutableDictionaryProtocol *)self->_persistentDictionary objectForKey:v9], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -601,23 +601,23 @@ LABEL_6:
   return v11;
 }
 
-+ (id)receivingAccountFromMessage:(id)a3
++ (id)receivingAccountFromMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 account];
-  v5 = [v4 conformsToProtocol:&unk_1F46417C8];
+  messageCopy = message;
+  account = [messageCopy account];
+  v5 = [account conformsToProtocol:&unk_1F46417C8];
 
   if (v5)
   {
-    v6 = [v3 account];
+    account2 = [messageCopy account];
   }
 
   else
   {
-    v6 = 0;
+    account2 = 0;
   }
 
-  return v6;
+  return account2;
 }
 
 + (void)unsubscribeTypeForHeader:(uint64_t *)a3 .cold.1(void *a1, void *a2, uint64_t *a3)

@@ -1,10 +1,10 @@
 @interface ScreenSharingSpectatorViewModel
-- (void)screenSharingStateMonitorDidUpdateScreenInfoForParticipant:(id)a3;
+- (void)screenSharingStateMonitorDidUpdateScreenInfoForParticipant:(id)participant;
 @end
 
 @implementation ScreenSharingSpectatorViewModel
 
-- (void)screenSharingStateMonitorDidUpdateScreenInfoForParticipant:(id)a3
+- (void)screenSharingStateMonitorDidUpdateScreenInfoForParticipant:(id)participant
 {
   swift_unknownObjectRetain();
 

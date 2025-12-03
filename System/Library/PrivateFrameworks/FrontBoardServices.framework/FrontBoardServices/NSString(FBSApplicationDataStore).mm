@@ -6,17 +6,17 @@
 
 - (id)fbs_bundleIDFromAppID
 {
-  if ([a1 fbs_looksLikeAnIdentityString])
+  if ([self fbs_looksLikeAnIdentityString])
   {
-    v2 = [MEMORY[0x1E69635D8] bundleIdentifierForIdentityString:a1 error:0];
+    selfCopy = [MEMORY[0x1E69635D8] bundleIdentifierForIdentityString:self error:0];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

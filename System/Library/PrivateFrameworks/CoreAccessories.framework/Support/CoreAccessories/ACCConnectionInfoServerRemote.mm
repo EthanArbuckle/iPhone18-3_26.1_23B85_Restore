@@ -1,54 +1,54 @@
 @interface ACCConnectionInfoServerRemote
 - (ACCConnectionInfoClientInfo)clientInfo;
-- (ACCConnectionInfoServerRemote)initWithClientInfo:(id)a3;
-- (BOOL)_checkClientEntitlements:(unint64_t)a3;
-- (id)getFilterForClient:(id)a3;
-- (void)accessoryEndpointsForConnection:(id)a3 withReply:(id)a4;
-- (void)accessoryInfoForConnection:(id)a3 withReply:(id)a4;
-- (void)accessoryInfoForEndpoint:(id)a3 connection:(id)a4 withReply:(id)a5;
-- (void)accessoryProperty:(id)a3 forConnection:(id)a4 withReply:(id)a5;
-- (void)accessoryProperty:(id)a3 forEndpoint:(id)a4 connection:(id)a5 withReply:(id)a6;
-- (void)beginUserKeyErase:(id)a3 withReply:(id)a4;
-- (void)beginVendorKeyErase:(id)a3 withReply:(id)a4;
-- (void)cancelUserKeyErase:(id)a3 withReply:(id)a4;
-- (void)cancelVendorKeyErase:(id)a3 withReply:(id)a4;
-- (void)configStreamCategoriesRequest:(id)a3 connection:(id)a4;
-- (void)configStreamPropertySetValue:(id)a3 forProperty:(unsigned __int8)a4 forCategory:(unsigned __int16)a5 forEndpoint:(id)a6 connection:(id)a7;
-- (void)continueUserKeyErase:(id)a3 withSignature:(id)a4 andAccessoryNonce:(id)a5 forEndpoint:(id)a6 withReply:(id)a7;
-- (void)continueVendorKeyErase:(id)a3 withSignature:(id)a4 andAccessoryNonce:(id)a5 forEndpoint:(id)a6 withReply:(id)a7;
-- (void)copyLocalizedAccessoryName:(id)a3 withReply:(id)a4;
-- (void)copyUserPrivateKey:(id)a3 withReply:(id)a4;
-- (void)getAccessoryUserName:(id)a3 withReply:(id)a4;
-- (void)getInterceptCountForEndpoint:(id)a3 connection:(id)a4 withReply:(id)a5;
-- (void)getPairingStatus:(id)a3 withReply:(id)a4;
-- (void)getPrivateNVMKeyValues:(id)a3 forEndpoint:(id)a4 withReply:(id)a5;
-- (void)getPublicNVMKeyValues:(id)a3 forEndpoint:(id)a4 withReply:(id)a5;
-- (void)initConnection:(id)a3;
-- (void)interceptIncomingNTimes:(int)a3 forEndpoint:(id)a4 connection:(id)a5;
-- (void)notifyOfClient:(id)a3 bundleID:(id)a4 withFilter:(id)a5;
-- (void)notifyOfClient:(id)a3 bundleID:(id)a4 withFilter:(id)a5 forIdentifier:(id)a6;
-- (void)provisionAccessoryForFindMy:(id)a3 withReply:(id)a4;
-- (void)resetPairingInformation:(id)a3 withReply:(id)a4;
-- (void)sendData:(id)a3 forEndpoint:(id)a4 connection:(id)a5;
-- (void)setAccessoryUserName:(id)a3 forEndpoint:(id)a4 withReply:(id)a5;
-- (void)setPrivateNVMKeyValues:(id)a3 forEndpoint:(id)a4 withReply:(id)a5;
-- (void)setPublicNVMKeyValues:(id)a3 forEndpoint:(id)a4 withReply:(id)a5;
+- (ACCConnectionInfoServerRemote)initWithClientInfo:(id)info;
+- (BOOL)_checkClientEntitlements:(unint64_t)entitlements;
+- (id)getFilterForClient:(id)client;
+- (void)accessoryEndpointsForConnection:(id)connection withReply:(id)reply;
+- (void)accessoryInfoForConnection:(id)connection withReply:(id)reply;
+- (void)accessoryInfoForEndpoint:(id)endpoint connection:(id)connection withReply:(id)reply;
+- (void)accessoryProperty:(id)property forConnection:(id)connection withReply:(id)reply;
+- (void)accessoryProperty:(id)property forEndpoint:(id)endpoint connection:(id)connection withReply:(id)reply;
+- (void)beginUserKeyErase:(id)erase withReply:(id)reply;
+- (void)beginVendorKeyErase:(id)erase withReply:(id)reply;
+- (void)cancelUserKeyErase:(id)erase withReply:(id)reply;
+- (void)cancelVendorKeyErase:(id)erase withReply:(id)reply;
+- (void)configStreamCategoriesRequest:(id)request connection:(id)connection;
+- (void)configStreamPropertySetValue:(id)value forProperty:(unsigned __int8)property forCategory:(unsigned __int16)category forEndpoint:(id)endpoint connection:(id)connection;
+- (void)continueUserKeyErase:(id)erase withSignature:(id)signature andAccessoryNonce:(id)nonce forEndpoint:(id)endpoint withReply:(id)reply;
+- (void)continueVendorKeyErase:(id)erase withSignature:(id)signature andAccessoryNonce:(id)nonce forEndpoint:(id)endpoint withReply:(id)reply;
+- (void)copyLocalizedAccessoryName:(id)name withReply:(id)reply;
+- (void)copyUserPrivateKey:(id)key withReply:(id)reply;
+- (void)getAccessoryUserName:(id)name withReply:(id)reply;
+- (void)getInterceptCountForEndpoint:(id)endpoint connection:(id)connection withReply:(id)reply;
+- (void)getPairingStatus:(id)status withReply:(id)reply;
+- (void)getPrivateNVMKeyValues:(id)values forEndpoint:(id)endpoint withReply:(id)reply;
+- (void)getPublicNVMKeyValues:(id)values forEndpoint:(id)endpoint withReply:(id)reply;
+- (void)initConnection:(id)connection;
+- (void)interceptIncomingNTimes:(int)times forEndpoint:(id)endpoint connection:(id)connection;
+- (void)notifyOfClient:(id)client bundleID:(id)d withFilter:(id)filter;
+- (void)notifyOfClient:(id)client bundleID:(id)d withFilter:(id)filter forIdentifier:(id)identifier;
+- (void)provisionAccessoryForFindMy:(id)my withReply:(id)reply;
+- (void)resetPairingInformation:(id)information withReply:(id)reply;
+- (void)sendData:(id)data forEndpoint:(id)endpoint connection:(id)connection;
+- (void)setAccessoryUserName:(id)name forEndpoint:(id)endpoint withReply:(id)reply;
+- (void)setPrivateNVMKeyValues:(id)values forEndpoint:(id)endpoint withReply:(id)reply;
+- (void)setPublicNVMKeyValues:(id)values forEndpoint:(id)endpoint withReply:(id)reply;
 @end
 
 @implementation ACCConnectionInfoServerRemote
 
-- (ACCConnectionInfoServerRemote)initWithClientInfo:(id)a3
+- (ACCConnectionInfoServerRemote)initWithClientInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = ACCConnectionInfoServerRemote;
   v5 = [(ACCConnectionInfoServerRemote *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (infoCopy)
     {
-      objc_storeWeak(&v5->_clientInfo, v4);
+      objc_storeWeak(&v5->_clientInfo, infoCopy);
       v7 = objc_alloc_init(NSMutableSet);
       interceptEnabled = v6->_interceptEnabled;
       v6->_interceptEnabled = v7;
@@ -68,14 +68,14 @@
   return v6;
 }
 
-- (void)initConnection:(id)a3
+- (void)initConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[ACCConnectionInfoServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCConnectionInfoServerRemote *)self clientInfo];
-    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v6] != 0;
+    clientInfo = [(ACCConnectionInfoServerRemote *)self clientInfo];
+    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:clientInfo] != 0;
   }
 
   else
@@ -138,14 +138,14 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "shouldStayConnected: %d", v13, 8u);
   }
 
-  v4[2](v4, v7);
+  connectionCopy[2](connectionCopy, v7);
 }
 
-- (void)notifyOfClient:(id)a3 bundleID:(id)a4 withFilter:(id)a5
+- (void)notifyOfClient:(id)client bundleID:(id)d withFilter:(id)filter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  dCopy = d;
+  filterCopy = filter;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 9;
@@ -175,25 +175,25 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412802;
-    v17 = v8;
+    v17 = clientCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = dCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = filterCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "ConnectionInfo client %@ (%@) registering withFilter %@", &v16, 0x20u);
   }
 
   v14 = +[ACCConnectionInfoServer sharedServer];
   WeakRetained = objc_loadWeakRetained(&self->_clientInfo);
-  [v14 notifyOfClient:v8 bundleID:v9 forClient:WeakRetained withFilter:v10];
+  [v14 notifyOfClient:clientCopy bundleID:dCopy forClient:WeakRetained withFilter:filterCopy];
 }
 
-- (void)notifyOfClient:(id)a3 bundleID:(id)a4 withFilter:(id)a5 forIdentifier:(id)a6
+- (void)notifyOfClient:(id)client bundleID:(id)d withFilter:(id)filter forIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  clientCopy = client;
+  dCopy = d;
+  filterCopy = filter;
+  identifierCopy = identifier;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 9;
@@ -223,22 +223,22 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412802;
-    v20 = v10;
+    v20 = clientCopy;
     v21 = 2112;
-    v22 = v11;
+    v22 = dCopy;
     v23 = 2112;
-    v24 = v12;
+    v24 = filterCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "ConnectionInfo client %@ (%@) registering withFilter %@", &v19, 0x20u);
   }
 
   v17 = +[ACCConnectionInfoServer sharedServer];
   WeakRetained = objc_loadWeakRetained(&self->_clientInfo);
-  [v17 notifyOfClient:v10 bundleID:v11 forClient:WeakRetained withFilter:v12 forIdentifier:v13];
+  [v17 notifyOfClient:clientCopy bundleID:dCopy forClient:WeakRetained withFilter:filterCopy forIdentifier:identifierCopy];
 }
 
-- (id)getFilterForClient:(id)a3
+- (id)getFilterForClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 9;
@@ -273,11 +273,11 @@
   return 0;
 }
 
-- (void)accessoryEndpointsForConnection:(id)a3 withReply:(id)a4
+- (void)accessoryEndpointsForConnection:(id)connection withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = platform_connectionInfo_accessoryEndpoints(v5);
+  connectionCopy = connection;
+  replyCopy = reply;
+  v7 = platform_connectionInfo_accessoryEndpoints(connectionCopy);
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 9;
@@ -309,14 +309,14 @@
     [ACCConnectionInfoServerRemote accessoryEndpointsForConnection:withReply:];
   }
 
-  v6[2](v6, v5, v7);
+  replyCopy[2](replyCopy, connectionCopy, v7);
 }
 
-- (void)accessoryInfoForConnection:(id)a3 withReply:(id)a4
+- (void)accessoryInfoForConnection:(id)connection withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = platform_connectionInfo_accessoryInfoForConnection(v5);
+  connectionCopy = connection;
+  replyCopy = reply;
+  v7 = platform_connectionInfo_accessoryInfoForConnection(connectionCopy);
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 9;
@@ -348,15 +348,15 @@
     [ACCConnectionInfoServerRemote accessoryInfoForConnection:withReply:];
   }
 
-  v6[2](v6, v5, v7);
+  replyCopy[2](replyCopy, connectionCopy, v7);
 }
 
-- (void)accessoryInfoForEndpoint:(id)a3 connection:(id)a4 withReply:(id)a5
+- (void)accessoryInfoForEndpoint:(id)endpoint connection:(id)connection withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = platform_connectionInfo_accessoryInfoForEndpoint(v8, v7);
+  endpointCopy = endpoint;
+  connectionCopy = connection;
+  replyCopy = reply;
+  v10 = platform_connectionInfo_accessoryInfoForEndpoint(connectionCopy, endpointCopy);
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 9;
@@ -386,23 +386,23 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412802;
-    v15 = v8;
+    v15 = connectionCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = endpointCopy;
     v18 = 2112;
     v19 = v10;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "ConnectionInfo accessoryInfoForEndpoint: %@ - %@, send reply accInfo %@", &v14, 0x20u);
   }
 
-  v9[2](v9, v7, v8, v10);
+  replyCopy[2](replyCopy, endpointCopy, connectionCopy, v10);
 }
 
-- (void)accessoryProperty:(id)a3 forConnection:(id)a4 withReply:(id)a5
+- (void)accessoryProperty:(id)property forConnection:(id)connection withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = platform_connectionInfo_accessoryPropertyForConnection(v8, v7);
+  propertyCopy = property;
+  connectionCopy = connection;
+  replyCopy = reply;
+  v10 = platform_connectionInfo_accessoryPropertyForConnection(connectionCopy, propertyCopy);
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 9;
@@ -432,24 +432,24 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412802;
-    v15 = v7;
+    v15 = propertyCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = connectionCopy;
     v18 = 2112;
     v19 = v10;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "ConnectionInfo accessoryProperty: %@ forConnection: %@, send reply value %@", &v14, 0x20u);
   }
 
-  v9[2](v9, v8, v7, v10);
+  replyCopy[2](replyCopy, connectionCopy, propertyCopy, v10);
 }
 
-- (void)accessoryProperty:(id)a3 forEndpoint:(id)a4 connection:(id)a5 withReply:(id)a6
+- (void)accessoryProperty:(id)property forEndpoint:(id)endpoint connection:(id)connection withReply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = platform_connectionInfo_accessoryPropertyForEndpoint(v11, v10, v9);
+  propertyCopy = property;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
+  replyCopy = reply;
+  v13 = platform_connectionInfo_accessoryPropertyForEndpoint(connectionCopy, endpointCopy, propertyCopy);
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 9;
@@ -479,23 +479,23 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     v17 = 138413058;
-    v18 = v9;
+    v18 = propertyCopy;
     v19 = 2112;
-    v20 = v10;
+    v20 = endpointCopy;
     v21 = 2112;
-    v22 = v11;
+    v22 = connectionCopy;
     v23 = 2112;
     v24 = v13;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "ConnectionInfo accessoryProperty: %@ forEndpoint: %@ connection: %@, send reply value %@", &v17, 0x2Au);
   }
 
-  v12[2](v12, v10, v11, v9, v13);
+  replyCopy[2](replyCopy, endpointCopy, connectionCopy, propertyCopy, v13);
 }
 
-- (void)configStreamCategoriesRequest:(id)a3 connection:(id)a4
+- (void)configStreamCategoriesRequest:(id)request connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  connectionCopy = connection;
   v8 = +[ACCConnectionInfoServer sharedServer];
   WeakRetained = objc_loadWeakRetained(&self->_clientInfo);
   v10 = [v8 copyClientUID:WeakRetained];
@@ -529,24 +529,24 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138412802;
-    v15 = v6;
+    v15 = requestCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = connectionCopy;
     v18 = 2112;
     v19 = v10;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "ConnectionInfo configStreamCategoriesRequest: %@ connection: %@ client: %@", &v14, 0x20u);
   }
 
-  platform_connectionInfo_configStreamGetCategories(v10, v7, v6);
+  platform_connectionInfo_configStreamGetCategories(v10, connectionCopy, requestCopy);
 }
 
-- (void)configStreamPropertySetValue:(id)a3 forProperty:(unsigned __int8)a4 forCategory:(unsigned __int16)a5 forEndpoint:(id)a6 connection:(id)a7
+- (void)configStreamPropertySetValue:(id)value forProperty:(unsigned __int8)property forCategory:(unsigned __int16)category forEndpoint:(id)endpoint connection:(id)connection
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  categoryCopy = category;
+  propertyCopy = property;
+  valueCopy = value;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   v15 = +[ACCConnectionInfoServer sharedServer];
   WeakRetained = objc_loadWeakRetained(&self->_clientInfo);
   v17 = [v15 copyClientUID:WeakRetained];
@@ -570,64 +570,64 @@
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     v20 = 134219522;
-    v21 = [v12 length];
+    v21 = [valueCopy length];
     v22 = 1024;
-    v23 = v10;
+    v23 = propertyCopy;
     v24 = 1024;
-    v25 = v9;
+    v25 = categoryCopy;
     v26 = 2112;
-    v27 = v13;
+    v27 = endpointCopy;
     v28 = 2112;
-    v29 = v14;
+    v29 = connectionCopy;
     v30 = 2112;
     v31 = v17;
     v32 = 2112;
-    v33 = v12;
+    v33 = valueCopy;
     _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "ConnectionInfo configStreamPropertySetValue: (%lu bytes) forPropertyID:%u forCategory: 0x%x forEndpoint: %@ connection: %@ client: %@, propertyValue %@", &v20, 0x40u);
   }
 
-  platform_connectionInfo_configStreamPropertySetValue(v17, v14, v13, v9, v10, v12);
+  platform_connectionInfo_configStreamPropertySetValue(v17, connectionCopy, endpointCopy, categoryCopy, propertyCopy, valueCopy);
 }
 
-- (void)copyLocalizedAccessoryName:(id)a3 withReply:(id)a4
+- (void)copyLocalizedAccessoryName:(id)name withReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v4 = ACCConnectionInfoCopyLocalizedAccessoryNamePrivate();
-  if (v5)
+  if (replyCopy)
   {
-    v5[2](v5, v4);
+    replyCopy[2](replyCopy, v4);
   }
 }
 
-- (void)interceptIncomingNTimes:(int)a3 forEndpoint:(id)a4 connection:(id)a5
+- (void)interceptIncomingNTimes:(int)times forEndpoint:(id)endpoint connection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   v10 = +[ACCConnectionInfoServer sharedServer];
   WeakRetained = objc_loadWeakRetained(&self->_clientInfo);
   v12 = [v10 checkClient:WeakRetained hasEntitlement:@"com.apple.accessory.testing"];
 
   if (v12)
   {
-    if ((a3 != 0) != [(NSMutableSet *)self->_interceptEnabled containsObject:v8])
+    if ((times != 0) != [(NSMutableSet *)self->_interceptEnabled containsObject:endpointCopy])
     {
       interceptEnabled = self->_interceptEnabled;
-      if (a3)
+      if (times)
       {
-        [(NSMutableSet *)interceptEnabled addObject:v8];
+        [(NSMutableSet *)interceptEnabled addObject:endpointCopy];
       }
 
       else
       {
-        [(NSMutableSet *)interceptEnabled removeObject:v8];
+        [(NSMutableSet *)interceptEnabled removeObject:endpointCopy];
       }
 
       v16 = self->_interceptEnabled != 0;
       v17 = objc_loadWeakRetained(&self->_clientInfo);
-      [v10 setInterceptState:v16 forEndpoint:v8 connection:v9 clientInfo:v17];
+      [v10 setInterceptState:v16 forEndpoint:endpointCopy connection:connectionCopy clientInfo:v17];
     }
 
-    platform_connectionInfo_setupInterceptForEndpoint(v9, v8, a3);
+    platform_connectionInfo_setupInterceptForEndpoint(connectionCopy, endpointCopy, times);
   }
 
   else
@@ -656,18 +656,18 @@
   }
 }
 
-- (void)getInterceptCountForEndpoint:(id)a3 connection:(id)a4 withReply:(id)a5
+- (void)getInterceptCountForEndpoint:(id)endpoint connection:(id)connection withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
+  replyCopy = reply;
   v11 = +[ACCConnectionInfoServer sharedServer];
   WeakRetained = objc_loadWeakRetained(&self->_clientInfo);
   v13 = [v11 checkClient:WeakRetained hasEntitlement:@"com.apple.accessory.testing"];
 
   if (v13)
   {
-    InterceptCountForEndpoint = platform_connectionInfo_getInterceptCountForEndpoint(v9, v8);
+    InterceptCountForEndpoint = platform_connectionInfo_getInterceptCountForEndpoint(connectionCopy, endpointCopy);
   }
 
   else
@@ -716,29 +716,29 @@
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     v19 = 138412802;
-    v20 = v9;
+    v20 = connectionCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = endpointCopy;
     v23 = 1024;
     v24 = InterceptCountForEndpoint;
     _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "ConnectionInfo getInterceptCountForEndpoint: %@ - %@, result %d", &v19, 0x1Cu);
   }
 
-  v10[2](v10, v8, v9, InterceptCountForEndpoint);
+  replyCopy[2](replyCopy, endpointCopy, connectionCopy, InterceptCountForEndpoint);
 }
 
-- (void)sendData:(id)a3 forEndpoint:(id)a4 connection:(id)a5
+- (void)sendData:(id)data forEndpoint:(id)endpoint connection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   v11 = +[ACCConnectionInfoServer sharedServer];
   WeakRetained = objc_loadWeakRetained(&self->_clientInfo);
   v13 = [v11 checkClient:WeakRetained hasEntitlement:@"com.apple.accessory.testing"];
 
   if (v13)
   {
-    platform_connectionInfo_sendDataForEndpoint(v10, v9, v8);
+    platform_connectionInfo_sendDataForEndpoint(connectionCopy, endpointCopy, dataCopy);
   }
 
   else
@@ -767,15 +767,15 @@
   }
 }
 
-- (void)getAccessoryUserName:(id)a3 withReply:(id)a4
+- (void)getAccessoryUserName:(id)name withReply:(id)reply
 {
-  v6 = a3;
+  nameCopy = name;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __64__ACCConnectionInfoServerRemote_getAccessoryUserName_withReply___block_invoke;
   v13[3] = &unk_1002294D0;
-  v7 = a4;
-  v14 = v7;
+  replyCopy = reply;
+  v14 = replyCopy;
   v8 = objc_retainBlock(v13);
   if (![(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1])
   {
@@ -804,10 +804,10 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "ConnectionInfo getAccessoryUserName", v12, 2u);
   }
 
-  EndpointWithUUID = acc_manager_getEndpointWithUUID(v6);
+  EndpointWithUUID = acc_manager_getEndpointWithUUID(nameCopy);
   if (EndpointWithUUID && *EndpointWithUUID)
   {
-    platform_connectionInfo_getAccessoryUserName(EndpointWithUUID[1], v6, v8);
+    platform_connectionInfo_getAccessoryUserName(EndpointWithUUID[1], nameCopy, v8);
   }
 
   else
@@ -857,16 +857,16 @@ void __64__ACCConnectionInfoServerRemote_getAccessoryUserName_withReply___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setAccessoryUserName:(id)a3 forEndpoint:(id)a4 withReply:(id)a5
+- (void)setAccessoryUserName:(id)name forEndpoint:(id)endpoint withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  endpointCopy = endpoint;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __76__ACCConnectionInfoServerRemote_setAccessoryUserName_forEndpoint_withReply___block_invoke;
   v15[3] = &unk_1002294F8;
-  v10 = a5;
-  v16 = v10;
+  replyCopy = reply;
+  v16 = replyCopy;
   v11 = objc_retainBlock(v15);
   if (![(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1])
   {
@@ -894,10 +894,10 @@ void __64__ACCConnectionInfoServerRemote_getAccessoryUserName_withReply___block_
     [ACCConnectionInfoServerRemote setAccessoryUserName:forEndpoint:withReply:];
   }
 
-  EndpointWithUUID = acc_manager_getEndpointWithUUID(v9);
+  EndpointWithUUID = acc_manager_getEndpointWithUUID(endpointCopy);
   if (EndpointWithUUID && *EndpointWithUUID)
   {
-    platform_connectionInfo_setAccessoryUserName(v8, EndpointWithUUID[1], v9, v11);
+    platform_connectionInfo_setAccessoryUserName(nameCopy, EndpointWithUUID[1], endpointCopy, v11);
   }
 
   else
@@ -912,15 +912,15 @@ void __76__ACCConnectionInfoServerRemote_setAccessoryUserName_forEndpoint_withRe
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)provisionAccessoryForFindMy:(id)a3 withReply:(id)a4
+- (void)provisionAccessoryForFindMy:(id)my withReply:(id)reply
 {
-  v6 = a3;
+  myCopy = my;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __71__ACCConnectionInfoServerRemote_provisionAccessoryForFindMy_withReply___block_invoke;
   v13[3] = &unk_1002294F8;
-  v7 = a4;
-  v14 = v7;
+  replyCopy = reply;
+  v14 = replyCopy;
   v8 = objc_retainBlock(v13);
   if (![(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1])
   {
@@ -949,10 +949,10 @@ void __76__ACCConnectionInfoServerRemote_setAccessoryUserName_forEndpoint_withRe
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "ACCConnectionInfoServerRemote provisionAccessoryForFindMy", v12, 2u);
   }
 
-  EndpointWithUUID = acc_manager_getEndpointWithUUID(v6);
+  EndpointWithUUID = acc_manager_getEndpointWithUUID(myCopy);
   if (EndpointWithUUID && *EndpointWithUUID)
   {
-    platform_connectionInfo_provisionPairing(EndpointWithUUID[1], v6, v8);
+    platform_connectionInfo_provisionPairing(EndpointWithUUID[1], myCopy, v8);
   }
 
   else
@@ -967,16 +967,16 @@ void __71__ACCConnectionInfoServerRemote_provisionAccessoryForFindMy_withReply__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getPairingStatus:(id)a3 withReply:(id)a4
+- (void)getPairingStatus:(id)status withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  replyCopy = reply;
   if (![(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1])
   {
     goto LABEL_7;
   }
 
-  EndpointWithUUID = acc_manager_getEndpointWithUUID(v6);
+  EndpointWithUUID = acc_manager_getEndpointWithUUID(statusCopy);
   if (!EndpointWithUUID || !*EndpointWithUUID)
   {
     [ACCConnectionInfoServerRemote getPairingStatus:withReply:];
@@ -987,19 +987,19 @@ LABEL_7:
 
   v9 = EndpointWithUUID[1];
   PairingStatus = platform_connectionInfo_getPairingStatus();
-  (*(v7 + 2))(v7, PairingStatus, 0);
+  (*(replyCopy + 2))(replyCopy, PairingStatus, 0);
 LABEL_5:
 }
 
-- (void)resetPairingInformation:(id)a3 withReply:(id)a4
+- (void)resetPairingInformation:(id)information withReply:(id)reply
 {
-  v6 = a3;
+  informationCopy = information;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __67__ACCConnectionInfoServerRemote_resetPairingInformation_withReply___block_invoke;
   v13[3] = &unk_1002294F8;
-  v7 = a4;
-  v14 = v7;
+  replyCopy = reply;
+  v14 = replyCopy;
   v8 = objc_retainBlock(v13);
   if (![(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1])
   {
@@ -1028,10 +1028,10 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "ConnectionInfo resetPairingInformation", v12, 2u);
   }
 
-  EndpointWithUUID = acc_manager_getEndpointWithUUID(v6);
+  EndpointWithUUID = acc_manager_getEndpointWithUUID(informationCopy);
   if (EndpointWithUUID && *EndpointWithUUID)
   {
-    platform_connectionInfo_resetPairing(EndpointWithUUID[1], v6, v8);
+    platform_connectionInfo_resetPairing(EndpointWithUUID[1], informationCopy, v8);
   }
 
   else
@@ -1046,20 +1046,20 @@ void __67__ACCConnectionInfoServerRemote_resetPairingInformation_withReply___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getPrivateNVMKeyValues:(id)a3 forEndpoint:(id)a4 withReply:(id)a5
+- (void)getPrivateNVMKeyValues:(id)values forEndpoint:(id)endpoint withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
+  valuesCopy = values;
+  endpointCopy = endpoint;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __78__ACCConnectionInfoServerRemote_getPrivateNVMKeyValues_forEndpoint_withReply___block_invoke;
   v13[3] = &unk_100229520;
-  v10 = a5;
-  v14 = v10;
+  replyCopy = reply;
+  v14 = replyCopy;
   v11 = objc_retainBlock(v13);
-  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(v9)) != 0 && *EndpointWithUUID)
+  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(endpointCopy)) != 0 && *EndpointWithUUID)
   {
-    platform_connectionInfo_getPrivateNvmKeyValues(EndpointWithUUID[1], v9, v8, v11);
+    platform_connectionInfo_getPrivateNvmKeyValues(EndpointWithUUID[1], endpointCopy, valuesCopy, v11);
   }
 
   else
@@ -1125,20 +1125,20 @@ void __78__ACCConnectionInfoServerRemote_getPrivateNVMKeyValues_forEndpoint_with
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setPrivateNVMKeyValues:(id)a3 forEndpoint:(id)a4 withReply:(id)a5
+- (void)setPrivateNVMKeyValues:(id)values forEndpoint:(id)endpoint withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
+  valuesCopy = values;
+  endpointCopy = endpoint;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __78__ACCConnectionInfoServerRemote_setPrivateNVMKeyValues_forEndpoint_withReply___block_invoke;
   v13[3] = &unk_1002294F8;
-  v10 = a5;
-  v14 = v10;
+  replyCopy = reply;
+  v14 = replyCopy;
   v11 = objc_retainBlock(v13);
-  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(v9)) != 0 && *EndpointWithUUID)
+  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(endpointCopy)) != 0 && *EndpointWithUUID)
   {
-    platform_connectionInfo_setPrivateNvmKeyValues(EndpointWithUUID[1], v9, v8, v11);
+    platform_connectionInfo_setPrivateNvmKeyValues(EndpointWithUUID[1], endpointCopy, valuesCopy, v11);
   }
 
   else
@@ -1152,23 +1152,23 @@ void __78__ACCConnectionInfoServerRemote_setPrivateNVMKeyValues_forEndpoint_with
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getPublicNVMKeyValues:(id)a3 forEndpoint:(id)a4 withReply:(id)a5
+- (void)getPublicNVMKeyValues:(id)values forEndpoint:(id)endpoint withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
+  valuesCopy = values;
+  endpointCopy = endpoint;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __77__ACCConnectionInfoServerRemote_getPublicNVMKeyValues_forEndpoint_withReply___block_invoke;
   v13[3] = &unk_100229520;
-  v10 = a5;
-  v14 = v10;
+  replyCopy = reply;
+  v14 = replyCopy;
   v11 = objc_retainBlock(v13);
   if (![(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1])
   {
     goto LABEL_7;
   }
 
-  EndpointWithUUID = acc_manager_getEndpointWithUUID(v9);
+  EndpointWithUUID = acc_manager_getEndpointWithUUID(endpointCopy);
   if (!EndpointWithUUID || !*EndpointWithUUID)
   {
     [ACCConnectionInfoServerRemote getPublicNVMKeyValues:forEndpoint:withReply:];
@@ -1177,7 +1177,7 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  platform_connectionInfo_getPublicNvmKeyValues(EndpointWithUUID[1], v9, v8, v11);
+  platform_connectionInfo_getPublicNvmKeyValues(EndpointWithUUID[1], endpointCopy, valuesCopy, v11);
 LABEL_5:
 }
 
@@ -1238,20 +1238,20 @@ void __77__ACCConnectionInfoServerRemote_getPublicNVMKeyValues_forEndpoint_withR
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setPublicNVMKeyValues:(id)a3 forEndpoint:(id)a4 withReply:(id)a5
+- (void)setPublicNVMKeyValues:(id)values forEndpoint:(id)endpoint withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
+  valuesCopy = values;
+  endpointCopy = endpoint;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __77__ACCConnectionInfoServerRemote_setPublicNVMKeyValues_forEndpoint_withReply___block_invoke;
   v13[3] = &unk_1002294F8;
-  v10 = a5;
-  v14 = v10;
+  replyCopy = reply;
+  v14 = replyCopy;
   v11 = objc_retainBlock(v13);
-  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(v9)) != 0 && *EndpointWithUUID)
+  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(endpointCopy)) != 0 && *EndpointWithUUID)
   {
-    platform_connectionInfo_setPublicNvmKeyValues(EndpointWithUUID[1], v9, v8, v11);
+    platform_connectionInfo_setPublicNvmKeyValues(EndpointWithUUID[1], endpointCopy, valuesCopy, v11);
   }
 
   else
@@ -1265,19 +1265,19 @@ void __77__ACCConnectionInfoServerRemote_setPublicNVMKeyValues_forEndpoint_withR
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)beginVendorKeyErase:(id)a3 withReply:(id)a4
+- (void)beginVendorKeyErase:(id)erase withReply:(id)reply
 {
-  v6 = a3;
+  eraseCopy = erase;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __63__ACCConnectionInfoServerRemote_beginVendorKeyErase_withReply___block_invoke;
   v10[3] = &unk_100229548;
-  v7 = a4;
-  v11 = v7;
+  replyCopy = reply;
+  v11 = replyCopy;
   v8 = objc_retainBlock(v10);
-  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(v6)) != 0 && *EndpointWithUUID)
+  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(eraseCopy)) != 0 && *EndpointWithUUID)
   {
-    platform_connectionInfo_beginVendorKeyErase(EndpointWithUUID[1], v6, v8);
+    platform_connectionInfo_beginVendorKeyErase(EndpointWithUUID[1], eraseCopy, v8);
   }
 
   else
@@ -1291,22 +1291,22 @@ void __63__ACCConnectionInfoServerRemote_beginVendorKeyErase_withReply___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)continueVendorKeyErase:(id)a3 withSignature:(id)a4 andAccessoryNonce:(id)a5 forEndpoint:(id)a6 withReply:(id)a7
+- (void)continueVendorKeyErase:(id)erase withSignature:(id)signature andAccessoryNonce:(id)nonce forEndpoint:(id)endpoint withReply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  eraseCopy = erase;
+  signatureCopy = signature;
+  nonceCopy = nonce;
+  endpointCopy = endpoint;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = __110__ACCConnectionInfoServerRemote_continueVendorKeyErase_withSignature_andAccessoryNonce_forEndpoint_withReply___block_invoke;
   v19[3] = &unk_1002294F8;
-  v16 = a7;
-  v20 = v16;
+  replyCopy = reply;
+  v20 = replyCopy;
   v17 = objc_retainBlock(v19);
-  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(v15)) != 0 && *EndpointWithUUID)
+  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(endpointCopy)) != 0 && *EndpointWithUUID)
   {
-    platform_connectionInfo_continueVendorKeyErase(EndpointWithUUID[1], v15, v12, v13, v14, v17);
+    platform_connectionInfo_continueVendorKeyErase(EndpointWithUUID[1], endpointCopy, eraseCopy, signatureCopy, nonceCopy, v17);
   }
 
   else
@@ -1320,19 +1320,19 @@ void __110__ACCConnectionInfoServerRemote_continueVendorKeyErase_withSignature_a
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)cancelVendorKeyErase:(id)a3 withReply:(id)a4
+- (void)cancelVendorKeyErase:(id)erase withReply:(id)reply
 {
-  v6 = a3;
+  eraseCopy = erase;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __64__ACCConnectionInfoServerRemote_cancelVendorKeyErase_withReply___block_invoke;
   v10[3] = &unk_1002294F8;
-  v7 = a4;
-  v11 = v7;
+  replyCopy = reply;
+  v11 = replyCopy;
   v8 = objc_retainBlock(v10);
-  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(v6)) != 0 && *EndpointWithUUID)
+  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(eraseCopy)) != 0 && *EndpointWithUUID)
   {
-    platform_connectionInfo_cancelVendorKeyErase(EndpointWithUUID[1], v6, v8);
+    platform_connectionInfo_cancelVendorKeyErase(EndpointWithUUID[1], eraseCopy, v8);
   }
 
   else
@@ -1346,19 +1346,19 @@ void __64__ACCConnectionInfoServerRemote_cancelVendorKeyErase_withReply___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)beginUserKeyErase:(id)a3 withReply:(id)a4
+- (void)beginUserKeyErase:(id)erase withReply:(id)reply
 {
-  v6 = a3;
+  eraseCopy = erase;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __61__ACCConnectionInfoServerRemote_beginUserKeyErase_withReply___block_invoke;
   v10[3] = &unk_100229548;
-  v7 = a4;
-  v11 = v7;
+  replyCopy = reply;
+  v11 = replyCopy;
   v8 = objc_retainBlock(v10);
-  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(v6)) != 0 && *EndpointWithUUID)
+  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(eraseCopy)) != 0 && *EndpointWithUUID)
   {
-    platform_connectionInfo_beginUserKeyErase(EndpointWithUUID[1], v6, v8);
+    platform_connectionInfo_beginUserKeyErase(EndpointWithUUID[1], eraseCopy, v8);
   }
 
   else
@@ -1372,22 +1372,22 @@ void __61__ACCConnectionInfoServerRemote_beginUserKeyErase_withReply___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)continueUserKeyErase:(id)a3 withSignature:(id)a4 andAccessoryNonce:(id)a5 forEndpoint:(id)a6 withReply:(id)a7
+- (void)continueUserKeyErase:(id)erase withSignature:(id)signature andAccessoryNonce:(id)nonce forEndpoint:(id)endpoint withReply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  eraseCopy = erase;
+  signatureCopy = signature;
+  nonceCopy = nonce;
+  endpointCopy = endpoint;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = __108__ACCConnectionInfoServerRemote_continueUserKeyErase_withSignature_andAccessoryNonce_forEndpoint_withReply___block_invoke;
   v19[3] = &unk_1002294F8;
-  v16 = a7;
-  v20 = v16;
+  replyCopy = reply;
+  v20 = replyCopy;
   v17 = objc_retainBlock(v19);
-  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(v15)) != 0 && *EndpointWithUUID)
+  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(endpointCopy)) != 0 && *EndpointWithUUID)
   {
-    platform_connectionInfo_continueUserKeyErase(EndpointWithUUID[1], v15, v12, v13, v14, v17);
+    platform_connectionInfo_continueUserKeyErase(EndpointWithUUID[1], endpointCopy, eraseCopy, signatureCopy, nonceCopy, v17);
   }
 
   else
@@ -1401,19 +1401,19 @@ void __108__ACCConnectionInfoServerRemote_continueUserKeyErase_withSignature_and
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)cancelUserKeyErase:(id)a3 withReply:(id)a4
+- (void)cancelUserKeyErase:(id)erase withReply:(id)reply
 {
-  v6 = a3;
+  eraseCopy = erase;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __62__ACCConnectionInfoServerRemote_cancelUserKeyErase_withReply___block_invoke;
   v10[3] = &unk_1002294F8;
-  v7 = a4;
-  v11 = v7;
+  replyCopy = reply;
+  v11 = replyCopy;
   v8 = objc_retainBlock(v10);
-  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(v6)) != 0 && *EndpointWithUUID)
+  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(eraseCopy)) != 0 && *EndpointWithUUID)
   {
-    platform_connectionInfo_cancelUserKeyErase(EndpointWithUUID[1], v6, v8);
+    platform_connectionInfo_cancelUserKeyErase(EndpointWithUUID[1], eraseCopy, v8);
   }
 
   else
@@ -1427,19 +1427,19 @@ void __62__ACCConnectionInfoServerRemote_cancelUserKeyErase_withReply___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)copyUserPrivateKey:(id)a3 withReply:(id)a4
+- (void)copyUserPrivateKey:(id)key withReply:(id)reply
 {
-  v6 = a3;
+  keyCopy = key;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __62__ACCConnectionInfoServerRemote_copyUserPrivateKey_withReply___block_invoke;
   v10[3] = &unk_100229548;
-  v7 = a4;
-  v11 = v7;
+  replyCopy = reply;
+  v11 = replyCopy;
   v8 = objc_retainBlock(v10);
-  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(v6)) != 0 && *EndpointWithUUID)
+  if ([(ACCConnectionInfoServerRemote *)self _checkClientEntitlements:1]&& (EndpointWithUUID = acc_manager_getEndpointWithUUID(keyCopy)) != 0 && *EndpointWithUUID)
   {
-    platform_connectionInfo_copyUserPrivateKey(EndpointWithUUID[1], v6, v8);
+    platform_connectionInfo_copyUserPrivateKey(EndpointWithUUID[1], keyCopy, v8);
   }
 
   else
@@ -1488,15 +1488,15 @@ void __62__ACCConnectionInfoServerRemote_copyUserPrivateKey_withReply___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)_checkClientEntitlements:(unint64_t)a3
+- (BOOL)_checkClientEntitlements:(unint64_t)entitlements
 {
   v5 = +[ACCConnectionInfoServer sharedServer];
-  if (a3)
+  if (entitlements)
   {
     v6 = 1;
     while (1)
     {
-      if (v6 == 1 && (a3 & 1) != 0)
+      if (v6 == 1 && (entitlements & 1) != 0)
       {
         WeakRetained = objc_loadWeakRetained(&self->_clientInfo);
         v8 = [v5 checkClient:WeakRetained hasEntitlement:@"com.apple.coreaccessories.entitlement.MFi4.client.FindMy"];
@@ -1508,7 +1508,7 @@ void __62__ACCConnectionInfoServerRemote_copyUserPrivateKey_withReply___block_in
       }
 
       v6 *= 2;
-      if (v6 - 1 >= a3)
+      if (v6 - 1 >= entitlements)
       {
         goto LABEL_7;
       }

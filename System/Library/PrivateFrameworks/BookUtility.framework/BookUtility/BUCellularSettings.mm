@@ -1,45 +1,45 @@
 @interface BUCellularSettings
 + (BOOL)shouldShowCellularAutomaticDownloadsSwitch;
-+ (id)_copyValueForCarrierBundleKey:(id)a3;
-+ (id)settingsForIdentity:(id)a3;
-- (BUCellularSettings)initWithDefaultsKey:(id)a3;
++ (id)_copyValueForCarrierBundleKey:(id)key;
++ (id)settingsForIdentity:(id)identity;
+- (BUCellularSettings)initWithDefaultsKey:(id)key;
 - (id)_cellularSettings;
 - (int64_t)cellularDataPrompt;
-- (void)setAllowAutomaticDownloads:(BOOL)a3;
-- (void)setCellularDataPrompt:(int64_t)a3;
+- (void)setAllowAutomaticDownloads:(BOOL)downloads;
+- (void)setCellularDataPrompt:(int64_t)prompt;
 @end
 
 @implementation BUCellularSettings
 
-+ (id)settingsForIdentity:(id)a3
++ (id)settingsForIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v8 = objc_msgSend_defaultsKey(v4, v6, v7);
+  identityCopy = identity;
+  v5 = [self alloc];
+  v8 = objc_msgSend_defaultsKey(identityCopy, v6, v7);
 
   v10 = objc_msgSend_initWithDefaultsKey_(v5, v9, v8);
 
   return v10;
 }
 
-- (BUCellularSettings)initWithDefaultsKey:(id)a3
+- (BUCellularSettings)initWithDefaultsKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = BUCellularSettings;
   v6 = [(BUCellularSettings *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaultsKey, a3);
+    objc_storeStrong(&v6->_defaultsKey, key);
   }
 
   return v7;
 }
 
-- (void)setAllowAutomaticDownloads:(BOOL)a3
+- (void)setAllowAutomaticDownloads:(BOOL)downloads
 {
-  v3 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], a2, a3);
+  v3 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], a2, downloads);
   CFPreferencesSetAppValue(@"AllowAutoDownloadOnCellular", v3, @"com.apple.iBooks");
 }
 
@@ -71,18 +71,18 @@
   return v11;
 }
 
-- (void)setCellularDataPrompt:(int64_t)a3
+- (void)setCellularDataPrompt:(int64_t)prompt
 {
-  v15 = objc_msgSend__cellularSettings(self, a2, a3);
+  v15 = objc_msgSend__cellularSettings(self, a2, prompt);
   v6 = objc_msgSend_objectForKey_(v15, v5, self->_defaultsKey);
   v7 = objc_alloc(MEMORY[0x277CBEB38]);
   v9 = objc_msgSend_initWithDictionary_(v7, v8, v15);
   v10 = objc_alloc(MEMORY[0x277CBEB38]);
   v12 = objc_msgSend_initWithDictionary_(v10, v11, v6);
   objc_msgSend_setObject_forKey_(v9, v13, v12, self->_defaultsKey);
-  if (a3 <= 2)
+  if (prompt <= 2)
   {
-    objc_msgSend_setObject_forKey_(v12, v14, off_278D1D200[a3], @"CellularDataPrompt");
+    objc_msgSend_setObject_forKey_(v12, v14, off_278D1D200[prompt], @"CellularDataPrompt");
   }
 
   CFPreferencesSetAppValue(@"CellularSettings", v9, @"com.apple.iBooks");
@@ -120,9 +120,9 @@
   return v2;
 }
 
-+ (id)_copyValueForCarrierBundleKey:(id)a3
++ (id)_copyValueForCarrierBundleKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_alloc(MEMORY[0x277CC37B0]);
   v6 = objc_msgSend_initWithQueue_(v4, v5, 0);
   v20 = 0;
@@ -133,7 +133,7 @@
     v10 = objc_alloc(MEMORY[0x277CC3620]);
     v12 = objc_msgSend_initWithBundleType_(v10, v11, 1);
     v19 = v9;
-    v14 = objc_msgSend_copyCarrierBundleValue_key_bundleType_error_(v6, v13, v8, v3, v12, &v19);
+    v14 = objc_msgSend_copyCarrierBundleValue_key_bundleType_error_(v6, v13, v8, keyCopy, v12, &v19);
     v15 = v19;
 
     v9 = v15;

@@ -1,19 +1,19 @@
 @interface WBSAutoFillQuirksSnapshot
-- (WBSAutoFillQuirksSnapshot)initWithSnapshotData:(id)a3 error:(id *)a4;
-- (id)_appIDsToDomainsAssociationsFromAutoFillQuirks:(id)a3 error:(id *)a4;
-- (id)_changePasswordURLStringsByDomainFromAutoFillQuirks:(id)a3 error:(id *)a4;
-- (id)_domainsIneligibleForPasswordAuditingFromAutoFillQuirks:(id)a3 error:(id *)a4;
-- (id)_domainsSetFromAutoFillQuirks:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (id)_domainsToConsiderIdenticalFromAutoFillQuirls:(id)a3 error:(id *)a4;
-- (id)_domainsWithAssociatedCredentialsFromAutoFillQuirks:(id)a3 error:(id *)a4;
-- (id)_passwordRequirementsByDomainFromAutoFillQuirks:(id)a3 error:(id *)a4;
+- (WBSAutoFillQuirksSnapshot)initWithSnapshotData:(id)data error:(id *)error;
+- (id)_appIDsToDomainsAssociationsFromAutoFillQuirks:(id)quirks error:(id *)error;
+- (id)_changePasswordURLStringsByDomainFromAutoFillQuirks:(id)quirks error:(id *)error;
+- (id)_domainsIneligibleForPasswordAuditingFromAutoFillQuirks:(id)quirks error:(id *)error;
+- (id)_domainsSetFromAutoFillQuirks:(id)quirks forKey:(id)key error:(id *)error;
+- (id)_domainsToConsiderIdenticalFromAutoFillQuirls:(id)quirls error:(id *)error;
+- (id)_domainsWithAssociatedCredentialsFromAutoFillQuirks:(id)quirks error:(id *)error;
+- (id)_passwordRequirementsByDomainFromAutoFillQuirks:(id)quirks error:(id *)error;
 @end
 
 @implementation WBSAutoFillQuirksSnapshot
 
-- (WBSAutoFillQuirksSnapshot)initWithSnapshotData:(id)a3 error:(id *)a4
+- (WBSAutoFillQuirksSnapshot)initWithSnapshotData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v41.receiver = self;
   v41.super_class = WBSAutoFillQuirksSnapshot;
   v7 = [(WBSAutoFillQuirksSnapshot *)&v41 init];
@@ -22,17 +22,17 @@
     goto LABEL_6;
   }
 
-  v8 = [MEMORY[0x1E695DF20] safari_dictionaryWithPropertyListData:v6];
+  v8 = [MEMORY[0x1E695DF20] safari_dictionaryWithPropertyListData:dataCopy];
   autoFillQuirks = v7->_autoFillQuirks;
   v7->_autoFillQuirks = v8;
 
   v10 = v7->_autoFillQuirks;
   if (!v10)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-      *a4 = v39 = 0;
+      *error = v39 = 0;
       goto LABEL_7;
     }
 
@@ -41,51 +41,51 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [(WBSAutoFillQuirksSnapshot *)v7 _passwordRequirementsByDomainFromAutoFillQuirks:v10 error:a4];
+  v11 = [(WBSAutoFillQuirksSnapshot *)v7 _passwordRequirementsByDomainFromAutoFillQuirks:v10 error:error];
   passwordRequirementsByDomain = v7->_passwordRequirementsByDomain;
   v7->_passwordRequirementsByDomain = v11;
 
-  v13 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsWithAssociatedCredentialsFromAutoFillQuirks:v7->_autoFillQuirks error:a4];
+  v13 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsWithAssociatedCredentialsFromAutoFillQuirks:v7->_autoFillQuirks error:error];
   domainsWithAssociatedCredentials = v7->_domainsWithAssociatedCredentials;
   v7->_domainsWithAssociatedCredentials = v13;
 
-  v15 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsIneligibleForPasswordAuditingFromAutoFillQuirks:v7->_autoFillQuirks error:a4];
+  v15 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsIneligibleForPasswordAuditingFromAutoFillQuirks:v7->_autoFillQuirks error:error];
   domainsIneligibleForPasswordAuditing = v7->_domainsIneligibleForPasswordAuditing;
   v7->_domainsIneligibleForPasswordAuditing = v15;
 
-  v17 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsToConsiderIdenticalFromAutoFillQuirls:v7->_autoFillQuirks error:a4];
+  v17 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsToConsiderIdenticalFromAutoFillQuirls:v7->_autoFillQuirks error:error];
   domainsToConsiderIdentical = v7->_domainsToConsiderIdentical;
   v7->_domainsToConsiderIdentical = v17;
 
-  v19 = [(WBSAutoFillQuirksSnapshot *)v7 _changePasswordURLStringsByDomainFromAutoFillQuirks:v7->_autoFillQuirks error:a4];
+  v19 = [(WBSAutoFillQuirksSnapshot *)v7 _changePasswordURLStringsByDomainFromAutoFillQuirks:v7->_autoFillQuirks error:error];
   changePasswordURLsByDomain = v7->_changePasswordURLsByDomain;
   v7->_changePasswordURLsByDomain = v19;
 
-  v21 = [(WBSAutoFillQuirksSnapshot *)v7 _appIDsToDomainsAssociationsFromAutoFillQuirks:v7->_autoFillQuirks error:a4];
+  v21 = [(WBSAutoFillQuirksSnapshot *)v7 _appIDsToDomainsAssociationsFromAutoFillQuirks:v7->_autoFillQuirks error:error];
   appIDsToDomainsAssociations = v7->_appIDsToDomainsAssociations;
   v7->_appIDsToDomainsAssociations = v21;
 
-  v23 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsIneligibleForAutomaticLogin" error:a4];
+  v23 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsIneligibleForAutomaticLogin" error:error];
   domainsIneligibleForAutomaticLogin = v7->_domainsIneligibleForAutomaticLogin;
   v7->_domainsIneligibleForAutomaticLogin = v23;
 
-  v25 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsIneligibleForStreamlinedLogin" error:a4];
+  v25 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsIneligibleForStreamlinedLogin" error:error];
   domainsIneligibleForStreamlinedLogin = v7->_domainsIneligibleForStreamlinedLogin;
   v7->_domainsIneligibleForStreamlinedLogin = v25;
 
-  v27 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsIneligibleForPasskeys" error:a4];
+  v27 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsIneligibleForPasskeys" error:error];
   domainsIneligibleForPasskeys = v7->_domainsIneligibleForPasskeys;
   v7->_domainsIneligibleForPasskeys = v27;
 
-  v29 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsForPasskeyFallbackUI" error:a4];
+  v29 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsForPasskeyFallbackUI" error:error];
   domainsForPasskeyFallbackUI = v7->_domainsForPasskeyFallbackUI;
   v7->_domainsForPasskeyFallbackUI = v29;
 
-  v31 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices" error:a4];
+  v31 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices" error:error];
   domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices = v7->_domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices;
   v7->_domainsThatWhenEmbeddedAsThirdPartyAskForPasswordsForOtherServices = v31;
 
-  v33 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsKnownToDoSameDocumentNavigationInTextEditingCallback" error:a4];
+  v33 = [(WBSAutoFillQuirksSnapshot *)v7 _domainsSetFromAutoFillQuirks:v7->_autoFillQuirks forKey:@"DomainsKnownToDoSameDocumentNavigationInTextEditingCallback" error:error];
   domainsKnownToDoSameDocumentNavigationInTextEditingCallback = v7->_domainsKnownToDoSameDocumentNavigationInTextEditingCallback;
   v7->_domainsKnownToDoSameDocumentNavigationInTextEditingCallback = v33;
 
@@ -103,10 +103,10 @@ LABEL_7:
   return v39;
 }
 
-- (id)_passwordRequirementsByDomainFromAutoFillQuirks:(id)a3 error:(id *)a4
+- (id)_passwordRequirementsByDomainFromAutoFillQuirks:(id)quirks error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 safari_dictionaryForKey:@"PasswordGenerationRequirements"];
+  quirksCopy = quirks;
+  v6 = [quirksCopy safari_dictionaryForKey:@"PasswordGenerationRequirements"];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -123,10 +123,10 @@ LABEL_7:
     v9 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -161,10 +161,10 @@ id __83__WBSAutoFillQuirksSnapshot__passwordRequirementsByDomainFromAutoFillQuir
   return v10;
 }
 
-- (id)_domainsWithAssociatedCredentialsFromAutoFillQuirks:(id)a3 error:(id *)a4
+- (id)_domainsWithAssociatedCredentialsFromAutoFillQuirks:(id)quirks error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [a3 safari_arrayForKey:@"DomainsWithAssociatedCredentials"];
+  v5 = [quirks safari_arrayForKey:@"DomainsWithAssociatedCredentials"];
   v30 = 0u;
   v31 = 0u;
   v6 = v5 != 0;
@@ -175,7 +175,7 @@ id __83__WBSAutoFillQuirksSnapshot__passwordRequirementsByDomainFromAutoFillQuir
   if (v8)
   {
     v9 = v8;
-    v25 = a4;
+    errorCopy = error;
     v10 = *v31;
     v11 = 0x1E695D000uLL;
     v24 = *v31;
@@ -240,7 +240,7 @@ id __83__WBSAutoFillQuirksSnapshot__passwordRequirementsByDomainFromAutoFillQuir
         {
 LABEL_20:
 
-          a4 = v25;
+          error = errorCopy;
           goto LABEL_21;
         }
 
@@ -267,10 +267,10 @@ LABEL_24:
   }
 
 LABEL_21:
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-    *a4 = v21 = 0;
+    *error = v21 = 0;
   }
 
   else
@@ -285,10 +285,10 @@ LABEL_26:
   return v21;
 }
 
-- (id)_domainsIneligibleForPasswordAuditingFromAutoFillQuirks:(id)a3 error:(id *)a4
+- (id)_domainsIneligibleForPasswordAuditingFromAutoFillQuirks:(id)quirks error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  [a3 safari_arrayForKey:@"SharedDomains"];
+  [quirks safari_arrayForKey:@"SharedDomains"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -311,9 +311,9 @@ LABEL_26:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (a4)
+          if (error)
           {
-            *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:{0, v14}];
+            *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:{0, v14}];
           }
 
           v11 = 0;
@@ -339,10 +339,10 @@ LABEL_13:
   return v11;
 }
 
-- (id)_domainsToConsiderIdenticalFromAutoFillQuirls:(id)a3 error:(id *)a4
+- (id)_domainsToConsiderIdenticalFromAutoFillQuirls:(id)quirls error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  [a3 safari_arrayForKey:@"DomainsToConsiderIdentical"];
+  [quirls safari_arrayForKey:@"DomainsToConsiderIdentical"];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -353,7 +353,7 @@ LABEL_13:
     v7 = v6;
     v8 = *v27;
     v20 = *v27;
-    v21 = a4;
+    errorCopy = error;
     while (2)
     {
       for (i = 0; i != v7; ++i)
@@ -367,9 +367,9 @@ LABEL_13:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v21)
+          if (errorCopy)
           {
-            *v21 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
+            *errorCopy = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
           }
 
 LABEL_21:
@@ -401,9 +401,9 @@ LABEL_21:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (v21)
+                if (errorCopy)
                 {
-                  *v21 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
+                  *errorCopy = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
                 }
 
                 goto LABEL_21;
@@ -441,9 +441,9 @@ LABEL_22:
   return v17;
 }
 
-- (id)_domainsSetFromAutoFillQuirks:(id)a3 forKey:(id)a4 error:(id *)a5
+- (id)_domainsSetFromAutoFillQuirks:(id)quirks forKey:(id)key error:(id *)error
 {
-  v6 = [a3 safari_arrayForKey:a4];
+  v6 = [quirks safari_arrayForKey:key];
   if (!v6)
   {
     goto LABEL_6;
@@ -461,10 +461,10 @@ LABEL_22:
     goto LABEL_7;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-    *a5 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -478,10 +478,10 @@ LABEL_7:
   return v8;
 }
 
-- (id)_changePasswordURLStringsByDomainFromAutoFillQuirks:(id)a3 error:(id *)a4
+- (id)_changePasswordURLStringsByDomainFromAutoFillQuirks:(id)quirks error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 safari_dictionaryForKey:@"ChangePasswordURLs"];
+  quirksCopy = quirks;
+  v6 = [quirksCopy safari_dictionaryForKey:@"ChangePasswordURLs"];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -498,10 +498,10 @@ LABEL_7:
     v9 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -536,10 +536,10 @@ id __87__WBSAutoFillQuirksSnapshot__changePasswordURLStringsByDomainFromAutoFill
   return v10;
 }
 
-- (id)_appIDsToDomainsAssociationsFromAutoFillQuirks:(id)a3 error:(id *)a4
+- (id)_appIDsToDomainsAssociationsFromAutoFillQuirks:(id)quirks error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 safari_dictionaryForKey:@"AppIDsToDomainsAssociations"];
+  quirksCopy = quirks;
+  v6 = [quirksCopy safari_dictionaryForKey:@"AppIDsToDomainsAssociations"];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -556,10 +556,10 @@ id __87__WBSAutoFillQuirksSnapshot__changePasswordURLStringsByDomainFromAutoFill
     v9 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else

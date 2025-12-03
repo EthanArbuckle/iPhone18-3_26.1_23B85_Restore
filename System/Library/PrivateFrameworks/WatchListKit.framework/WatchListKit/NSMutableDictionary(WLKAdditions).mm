@@ -11,7 +11,7 @@
   v6 = a4;
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v7 count])
   {
-    [a1 setObject:v7 forKey:v6];
+    [self setObject:v7 forKey:v6];
   }
 }
 
@@ -19,10 +19,10 @@
 {
   if (a3)
   {
-    return [a1 setObject:? forKey:?];
+    return [self setObject:? forKey:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

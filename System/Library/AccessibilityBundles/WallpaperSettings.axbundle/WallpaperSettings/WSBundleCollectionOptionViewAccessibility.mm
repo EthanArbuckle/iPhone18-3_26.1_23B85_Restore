@@ -1,16 +1,16 @@
 @interface WSBundleCollectionOptionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 @end
 
 @implementation WSBundleCollectionOptionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WSBundleCollectionOptionView" hasInstanceMethod:@"bundleCollection" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WKWallpaperBundleCollection" hasInstanceMethod:@"wallpaperType" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WSBundleCollectionOptionView" hasInstanceMethod:@"bundleCollection" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WKWallpaperBundleCollection" hasInstanceMethod:@"wallpaperType" withFullSignature:{"Q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -81,18 +81,18 @@ LABEL_13:
     v6 = MEMORY[0x29EDB8D80];
     v7 = v13;
 LABEL_5:
-    v8 = [v6 arrayWithObjects:v7 count:1];
+    accessibilityUserInputLabels = [v6 arrayWithObjects:v7 count:1];
 
     goto LABEL_7;
   }
 
   v11.receiver = self;
   v11.super_class = WSBundleCollectionOptionViewAccessibility;
-  v8 = [(WSBundleCollectionOptionViewAccessibility *)&v11 accessibilityUserInputLabels];
+  accessibilityUserInputLabels = [(WSBundleCollectionOptionViewAccessibility *)&v11 accessibilityUserInputLabels];
 LABEL_7:
   v9 = *MEMORY[0x29EDCA608];
 
-  return v8;
+  return accessibilityUserInputLabels;
 }
 
 @end

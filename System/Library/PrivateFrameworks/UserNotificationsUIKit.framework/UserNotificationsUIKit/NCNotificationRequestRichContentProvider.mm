@@ -3,7 +3,7 @@
 - (BOOL)_shouldShowContent;
 - (BOOL)hasAttachmentImage;
 - (id)thumbnail;
-- (void)fetchRichAttachmentImageIsFeatured:(BOOL)a3 withCompletion:(id)a4;
+- (void)fetchRichAttachmentImageIsFeatured:(BOOL)featured withCompletion:(id)completion;
 @end
 
 @implementation NCNotificationRequestRichContentProvider
@@ -33,28 +33,28 @@ void __67__NCNotificationRequestRichContentProvider_featuredImageFetchQueue__blo
   cachedAttachmentImage = self->_cachedAttachmentImage;
   if (cachedAttachmentImage)
   {
-    v3 = cachedAttachmentImage;
+    thumbnail = cachedAttachmentImage;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = NCNotificationRequestRichContentProvider;
-    v3 = [(NCNotificationRequestCoalescingContentProvider *)&v5 thumbnail];
+    thumbnail = [(NCNotificationRequestCoalescingContentProvider *)&v5 thumbnail];
   }
 
-  return v3;
+  return thumbnail;
 }
 
 - (BOOL)hasAttachmentImage
 {
-  v2 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-  v3 = [v2 content];
-  v4 = [v3 attachmentImage];
+  notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+  content = [notificationRequest content];
+  attachmentImage = [content attachmentImage];
 
-  if (v4)
+  if (attachmentImage)
   {
-    v5 = [v4 isSymbolImage] ^ 1;
+    v5 = [attachmentImage isSymbolImage] ^ 1;
   }
 
   else
@@ -65,21 +65,21 @@ void __67__NCNotificationRequestRichContentProvider_featuredImageFetchQueue__blo
   return v5;
 }
 
-- (void)fetchRichAttachmentImageIsFeatured:(BOOL)a3 withCompletion:(id)a4
+- (void)fetchRichAttachmentImageIsFeatured:(BOOL)featured withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  featuredCopy = featured;
+  completionCopy = completion;
   if ([(NCNotificationRequestRichContentProvider *)self _shouldShowContent])
   {
-    if (self->_cachedAttachmentImage && [(NCNotificationRequestRichContentProvider *)self isCachedAttachmentedImageFeatured]== v4)
+    if (self->_cachedAttachmentImage && [(NCNotificationRequestRichContentProvider *)self isCachedAttachmentedImageFeatured]== featuredCopy)
     {
-      v6[2](v6, self->_cachedAttachmentImage, 1);
+      completionCopy[2](completionCopy, self->_cachedAttachmentImage, 1);
     }
 
     else
     {
       objc_initWeak(&location, self);
-      if (v4)
+      if (featuredCopy)
       {
         v7 = 300.0;
       }
@@ -89,7 +89,7 @@ void __67__NCNotificationRequestRichContentProvider_featuredImageFetchQueue__blo
         v7 = 200.0;
       }
 
-      v8 = [objc_opt_class() featuredImageFetchQueue];
+      featuredImageFetchQueue = [objc_opt_class() featuredImageFetchQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __94__NCNotificationRequestRichContentProvider_fetchRichAttachmentImageIsFeatured_withCompletion___block_invoke;
@@ -98,9 +98,9 @@ void __67__NCNotificationRequestRichContentProvider_featuredImageFetchQueue__blo
       v11[1] = *&v7;
       v11[2] = 0x4069000000000000;
       objc_copyWeak(v11, &location);
-      v12 = v4;
-      v10 = v6;
-      dispatch_async(v8, block);
+      v12 = featuredCopy;
+      v10 = completionCopy;
+      dispatch_async(featuredImageFetchQueue, block);
 
       objc_destroyWeak(v11);
       objc_destroyWeak(&location);
@@ -109,7 +109,7 @@ void __67__NCNotificationRequestRichContentProvider_featuredImageFetchQueue__blo
 
   else
   {
-    v6[2](v6, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
@@ -158,16 +158,16 @@ void __94__NCNotificationRequestRichContentProvider_fetchRichAttachmentImageIsFe
 
 - (BOOL)_shouldShowContent
 {
-  v3 = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
-  v4 = [v3 options];
-  v5 = [v4 contentPreviewSetting];
+  notificationRequest = [(NCNotificationRequestCoalescingContentProvider *)self notificationRequest];
+  options = [notificationRequest options];
+  contentPreviewSetting = [options contentPreviewSetting];
 
-  if (!v5)
+  if (!contentPreviewSetting)
   {
     return 1;
   }
 
-  if (v5 != 1)
+  if (contentPreviewSetting != 1)
   {
     return 0;
   }

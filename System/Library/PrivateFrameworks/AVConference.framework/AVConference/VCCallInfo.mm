@@ -1,11 +1,11 @@
 @interface VCCallInfo
-- (BOOL)updateWithLastDecodedFrameTime:(double)a3 time:(double)a4;
+- (BOOL)updateWithLastDecodedFrameTime:(double)time time:(double)a4;
 - (VCCallInfo)init;
-- (VoiceIOFarEndVersionInfo)audioVersionInfo:(SEL)a3;
+- (VoiceIOFarEndVersionInfo)audioVersionInfo:(SEL)info;
 - (void)dealloc;
-- (void)setAuNumber:(unsigned int)a3;
-- (void)setUserAgent:(id)a3;
-- (void)setVideoIsPaused:(BOOL)a3;
+- (void)setAuNumber:(unsigned int)number;
+- (void)setUserAgent:(id)agent;
+- (void)setVideoIsPaused:(BOOL)paused;
 @end
 
 @implementation VCCallInfo
@@ -70,11 +70,11 @@
   [(VCCallInfo *)&v3 dealloc];
 }
 
-- (void)setAuNumber:(unsigned int)a3
+- (void)setAuNumber:(unsigned int)number
 {
-  if (a3)
+  if (number)
   {
-    self->auNumber = a3;
+    self->auNumber = number;
   }
 
   else
@@ -89,7 +89,7 @@
   }
 }
 
-- (BOOL)updateWithLastDecodedFrameTime:(double)a3 time:(double)a4
+- (BOOL)updateWithLastDecodedFrameTime:(double)time time:(double)a4
 {
   v29 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -111,9 +111,9 @@
         v21 = 2048;
         v22 = a4;
         v23 = 2048;
-        v24 = a3;
+        timeCopy2 = time;
         v25 = 2048;
-        v26 = a4 - a3;
+        v26 = a4 - time;
         v27 = 1024;
         v28 = videoIsPaused;
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d microTime=%f lastDecodedFrameTime=%f currentFrameTimeDiff=%f videoIsPaused=%d", &v15, 0x40u);
@@ -132,9 +132,9 @@
       v21 = 2048;
       v22 = a4;
       v23 = 2048;
-      v24 = a3;
+      timeCopy2 = time;
       v25 = 2048;
-      v26 = a4 - a3;
+      v26 = a4 - time;
       v27 = 1024;
       v28 = v14;
       _os_log_debug_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEBUG, " [%s] %s:%d microTime=%f lastDecodedFrameTime=%f currentFrameTimeDiff=%f videoIsPaused=%d", &v15, 0x40u);
@@ -159,7 +159,7 @@
     return isVideoQualityDegraded;
   }
 
-  if (a4 - a3 > self->videoDegradedThreshold)
+  if (a4 - time > self->videoDegradedThreshold)
   {
     if (!self->isVideoQualityDegraded)
     {
@@ -180,22 +180,22 @@
   else
   {
     isVideoQualityDegraded = 0;
-    self->_isVideoQualityNearDegraded = a4 - a3 > self->_videoNearDegradedThreshold;
+    self->_isVideoQualityNearDegraded = a4 - time > self->_videoNearDegradedThreshold;
   }
 
   return isVideoQualityDegraded;
 }
 
-- (void)setVideoIsPaused:(BOOL)a3
+- (void)setVideoIsPaused:(BOOL)paused
 {
-  if (self->videoIsPaused != a3)
+  if (self->videoIsPaused != paused)
   {
-    self->videoIsPaused = a3;
+    self->videoIsPaused = paused;
     self->firstDegradedMeasure = 0.0;
   }
 }
 
-- (VoiceIOFarEndVersionInfo)audioVersionInfo:(SEL)a3
+- (VoiceIOFarEndVersionInfo)audioVersionInfo:(SEL)info
 {
   *&retstr->farEndOSVersion[32] = 0u;
   *&retstr->farEndOSVersion[48] = 0u;
@@ -219,14 +219,14 @@
   return result;
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
-  self->isIOS = [a3 rangeOfString:@"/GK"] != 0x7FFFFFFFFFFFFFFFLL;
-  if ([a3 rangeOfString:@"Viceroy 1.4.0"] == 0x7FFFFFFFFFFFFFFFLL)
+  self->isIOS = [agent rangeOfString:@"/GK"] != 0x7FFFFFFFFFFFFFFFLL;
+  if ([agent rangeOfString:@"Viceroy 1.4.0"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [a3 rangeOfString:@"Viceroy 1.4.1"];
+    v5 = [agent rangeOfString:@"Viceroy 1.4.1"];
     self->is4x = v5 != 0x7FFFFFFFFFFFFFFFLL;
-    v6 = v5 == 0x7FFFFFFFFFFFFFFFLL && [a3 rangeOfString:@"Viceroy 1.4.2"] == 0x7FFFFFFFFFFFFFFFLL;
+    v6 = v5 == 0x7FFFFFFFFFFFFFFFLL && [agent rangeOfString:@"Viceroy 1.4.2"] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -236,15 +236,15 @@
   }
 
   self->supportsSpecialAACBundle = v6;
-  self->usesInitialFECImplementation = [a3 rangeOfString:@"Viceroy 1.4"] != 0x7FFFFFFFFFFFFFFFLL;
+  self->usesInitialFECImplementation = [agent rangeOfString:@"Viceroy 1.4"] != 0x7FFFFFFFFFFFFFFFLL;
   if (self->isIOS)
   {
     goto LABEL_9;
   }
 
-  if ([a3 rangeOfString:@"Viceroy 1.4"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([agent rangeOfString:@"Viceroy 1.4"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a3 rangeOfString:@"Viceroy 1.5"];
+    [agent rangeOfString:@"Viceroy 1.5"];
 LABEL_9:
     v7 = 1;
     goto LABEL_11;
@@ -263,7 +263,7 @@ LABEL_11:
     v8 = @"Viceroy 1.7";
   }
 
-  self->useNewPLCalc = [a3 localizedCaseInsensitiveCompare:v8] != -1;
+  self->useNewPLCalc = [agent localizedCaseInsensitiveCompare:v8] != -1;
 }
 
 @end

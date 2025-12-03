@@ -1,47 +1,47 @@
 @interface SFProduct
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFProduct)initWithCoder:(id)a3;
-- (SFProduct)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFProduct)initWithCoder:(id)coder;
+- (SFProduct)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFProduct
 
 - (unint64_t)hash
 {
-  v3 = [(SFProduct *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(SFProduct *)self productIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFProduct *)self availabilityURL];
-  v8 = [v7 hash];
-  v9 = [(SFProduct *)self displayName];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(SFProduct *)self buyable];
+  identifier = [(SFProduct *)self identifier];
+  v4 = [identifier hash];
+  productIdentifier = [(SFProduct *)self productIdentifier];
+  v6 = [productIdentifier hash] ^ v4;
+  availabilityURL = [(SFProduct *)self availabilityURL];
+  v8 = [availabilityURL hash];
+  displayName = [(SFProduct *)self displayName];
+  v10 = v6 ^ v8 ^ [displayName hash];
+  buyable = [(SFProduct *)self buyable];
 
-  return v10 ^ v11;
+  return v10 ^ buyable;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v10) = 1;
   }
 
   else
   {
-    if ([(SFProduct *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(SFProduct *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(SFProduct *)self identifier];
-      v7 = [(SFProduct *)v5 identifier];
-      if ((v6 != 0) == (v7 == 0))
+      v5 = equalCopy;
+      identifier = [(SFProduct *)self identifier];
+      identifier2 = [(SFProduct *)v5 identifier];
+      if ((identifier != 0) == (identifier2 == 0))
       {
         LOBYTE(v10) = 0;
 LABEL_37:
@@ -49,32 +49,32 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      v8 = [(SFProduct *)self identifier];
-      if (v8)
+      identifier3 = [(SFProduct *)self identifier];
+      if (identifier3)
       {
-        v9 = [(SFProduct *)self identifier];
-        v40 = [(SFProduct *)v5 identifier];
-        if (![v9 isEqual:?])
+        identifier4 = [(SFProduct *)self identifier];
+        identifier5 = [(SFProduct *)v5 identifier];
+        if (![identifier4 isEqual:?])
         {
           LOBYTE(v10) = 0;
           goto LABEL_35;
         }
 
-        v39 = v9;
+        v39 = identifier4;
       }
 
-      v41 = [(SFProduct *)self productIdentifier];
-      v11 = [(SFProduct *)v5 productIdentifier];
-      if ((v41 != 0) != (v11 == 0))
+      productIdentifier = [(SFProduct *)self productIdentifier];
+      productIdentifier2 = [(SFProduct *)v5 productIdentifier];
+      if ((productIdentifier != 0) != (productIdentifier2 == 0))
       {
-        v12 = [(SFProduct *)self productIdentifier];
-        if (v12)
+        productIdentifier3 = [(SFProduct *)self productIdentifier];
+        if (productIdentifier3)
         {
-          v13 = v12;
-          v14 = [(SFProduct *)self productIdentifier];
+          v13 = productIdentifier3;
+          productIdentifier4 = [(SFProduct *)self productIdentifier];
           [(SFProduct *)v5 productIdentifier];
-          v38 = v36 = v14;
-          if (![v14 isEqual:?])
+          v38 = v36 = productIdentifier4;
+          if (![productIdentifier4 isEqual:?])
           {
             LOBYTE(v10) = 0;
             v19 = v38;
@@ -89,19 +89,19 @@ LABEL_37:
           v37 = 0;
         }
 
-        v15 = [(SFProduct *)self availabilityURL];
-        v16 = [(SFProduct *)v5 availabilityURL];
-        if ((v15 != 0) != (v16 == 0))
+        availabilityURL = [(SFProduct *)self availabilityURL];
+        availabilityURL2 = [(SFProduct *)v5 availabilityURL];
+        if ((availabilityURL != 0) != (availabilityURL2 == 0))
         {
-          v34 = v15;
-          v35 = v16;
-          v17 = [(SFProduct *)self availabilityURL];
-          if (v17)
+          v34 = availabilityURL;
+          v35 = availabilityURL2;
+          availabilityURL3 = [(SFProduct *)self availabilityURL];
+          if (availabilityURL3)
           {
-            v18 = [(SFProduct *)self availabilityURL];
-            v32 = [(SFProduct *)v5 availabilityURL];
-            v33 = v18;
-            if (![v18 isEqual:?])
+            availabilityURL4 = [(SFProduct *)self availabilityURL];
+            availabilityURL5 = [(SFProduct *)v5 availabilityURL];
+            v33 = availabilityURL4;
+            if (![availabilityURL4 isEqual:?])
             {
               LOBYTE(v10) = 0;
               v13 = v37;
@@ -110,16 +110,16 @@ LABEL_37:
             }
           }
 
-          v20 = [(SFProduct *)self displayName];
-          v21 = v20 != 0;
-          v22 = [(SFProduct *)v5 displayName];
-          if (v21 == (v22 == 0))
+          displayName = [(SFProduct *)self displayName];
+          v21 = displayName != 0;
+          displayName2 = [(SFProduct *)v5 displayName];
+          if (v21 == (displayName2 == 0))
           {
 
             LOBYTE(v10) = 0;
             v13 = v37;
             v19 = v38;
-            if (!v17)
+            if (!availabilityURL3)
             {
               goto LABEL_31;
             }
@@ -127,14 +127,14 @@ LABEL_37:
             goto LABEL_30;
           }
 
-          v29 = v22;
-          v30 = v20;
+          v29 = displayName2;
+          v30 = displayName;
           [(SFProduct *)self displayName];
           v31 = v19 = v38;
           if (!v31 || (-[SFProduct displayName](self, "displayName"), v23 = objc_claimAutoreleasedReturnValue(), -[SFProduct displayName](v5, "displayName"), v24 = objc_claimAutoreleasedReturnValue(), v28 = v23, v25 = v23, v21 = v24, [v25 isEqual:v24]))
           {
-            v27 = [(SFProduct *)self buyable];
-            v10 = v27 ^ [(SFProduct *)v5 buyable]^ 1;
+            buyable = [(SFProduct *)self buyable];
+            v10 = buyable ^ [(SFProduct *)v5 buyable]^ 1;
             if (!v31)
             {
               goto LABEL_41;
@@ -148,7 +148,7 @@ LABEL_37:
 
 LABEL_41:
           v13 = v37;
-          if (!v17)
+          if (!availabilityURL3)
           {
 LABEL_31:
 
@@ -157,8 +157,8 @@ LABEL_31:
 LABEL_33:
 
 LABEL_34:
-              v9 = v39;
-              if (!v8)
+              identifier4 = v39;
+              if (!identifier3)
               {
 LABEL_36:
 
@@ -197,23 +197,23 @@ LABEL_38:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFProduct *)self identifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  identifier = [(SFProduct *)self identifier];
+  v6 = [identifier copy];
   [v4 setIdentifier:v6];
 
-  v7 = [(SFProduct *)self productIdentifier];
-  v8 = [v7 copy];
+  productIdentifier = [(SFProduct *)self productIdentifier];
+  v8 = [productIdentifier copy];
   [v4 setProductIdentifier:v8];
 
-  v9 = [(SFProduct *)self availabilityURL];
-  v10 = [v9 copy];
+  availabilityURL = [(SFProduct *)self availabilityURL];
+  v10 = [availabilityURL copy];
   [v4 setAvailabilityURL:v10];
 
-  v11 = [(SFProduct *)self displayName];
-  v12 = [v11 copy];
+  displayName = [(SFProduct *)self displayName];
+  v12 = [displayName copy];
   [v4 setDisplayName:v12];
 
   [v4 setBuyable:{-[SFProduct buyable](self, "buyable")}];
@@ -223,31 +223,31 @@ LABEL_38:
 - (NSData)jsonData
 {
   v2 = [[_SFPBProduct alloc] initWithFacade:self];
-  v3 = [(_SFPBProduct *)v2 jsonData];
+  jsonData = [(_SFPBProduct *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBProduct alloc] initWithFacade:self];
-  v3 = [(_SFPBProduct *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBProduct *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBProduct alloc] initWithFacade:self];
-  v5 = [(_SFPBProduct *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBProduct *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFProduct)initWithCoder:(id)a3
+- (SFProduct)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBProduct alloc] initWithData:v5];
   v7 = [(SFProduct *)self initWithProtobuf:v6];
@@ -255,50 +255,50 @@ LABEL_38:
   return v7;
 }
 
-- (SFProduct)initWithProtobuf:(id)a3
+- (SFProduct)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v17.receiver = self;
   v17.super_class = SFProduct;
   v5 = [(SFProduct *)&v17 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [protobufCopy identifier];
 
-    if (v6)
+    if (identifier)
     {
-      v7 = [v4 identifier];
-      [(SFProduct *)v5 setIdentifier:v7];
+      identifier2 = [protobufCopy identifier];
+      [(SFProduct *)v5 setIdentifier:identifier2];
     }
 
-    v8 = [v4 productIdentifier];
+    productIdentifier = [protobufCopy productIdentifier];
 
-    if (v8)
+    if (productIdentifier)
     {
-      v9 = [v4 productIdentifier];
-      [(SFProduct *)v5 setProductIdentifier:v9];
+      productIdentifier2 = [protobufCopy productIdentifier];
+      [(SFProduct *)v5 setProductIdentifier:productIdentifier2];
     }
 
-    v10 = [v4 availabilityURL];
+    availabilityURL = [protobufCopy availabilityURL];
 
-    if (v10)
+    if (availabilityURL)
     {
-      v11 = [v4 availabilityURL];
-      v12 = _SFPBURLHandwrittenTranslator(v11);
+      availabilityURL2 = [protobufCopy availabilityURL];
+      v12 = _SFPBURLHandwrittenTranslator(availabilityURL2);
       [(SFProduct *)v5 setAvailabilityURL:v12];
     }
 
-    v13 = [v4 displayName];
+    displayName = [protobufCopy displayName];
 
-    if (v13)
+    if (displayName)
     {
-      v14 = [v4 displayName];
-      [(SFProduct *)v5 setDisplayName:v14];
+      displayName2 = [protobufCopy displayName];
+      [(SFProduct *)v5 setDisplayName:displayName2];
     }
 
-    if ([v4 buyable])
+    if ([protobufCopy buyable])
     {
-      -[SFProduct setBuyable:](v5, "setBuyable:", [v4 buyable]);
+      -[SFProduct setBuyable:](v5, "setBuyable:", [protobufCopy buyable]);
     }
 
     v15 = v5;

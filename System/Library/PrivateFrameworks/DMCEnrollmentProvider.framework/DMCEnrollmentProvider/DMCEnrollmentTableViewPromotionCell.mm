@@ -1,19 +1,19 @@
 @interface DMCEnrollmentTableViewPromotionCell
-- (DMCEnrollmentTableViewPromotionCell)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5;
+- (DMCEnrollmentTableViewPromotionCell)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon;
 - (id)_subtitleFont;
 - (id)_titleFont;
-- (void)_setupContentConfigurationWithIcon:(id)a3 title:(id)a4 subtitle:(id)a5;
+- (void)_setupContentConfigurationWithIcon:(id)icon title:(id)title subtitle:(id)subtitle;
 - (void)layoutSubviews;
 @end
 
 @implementation DMCEnrollmentTableViewPromotionCell
 
-- (DMCEnrollmentTableViewPromotionCell)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5
+- (DMCEnrollmentTableViewPromotionCell)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  iconCopy = icon;
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   v25.receiver = self;
@@ -24,16 +24,16 @@
   {
     [(DMCEnrollmentTableViewPromotionCell *)v13 setSelectionStyle:0];
     [(DMCEnrollmentTableViewPromotionCell *)v13 setUserInteractionEnabled:0];
-    v14 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    [(DMCEnrollmentTableViewPromotionCell *)v13 setBackgroundColor:v14];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    [(DMCEnrollmentTableViewPromotionCell *)v13 setBackgroundColor:secondarySystemBackgroundColor];
 
-    [(DMCEnrollmentTableViewPromotionCell *)v13 _setupContentConfigurationWithIcon:v10 title:v8 subtitle:v9];
-    objc_storeStrong(&v13->_icon, a5);
-    v15 = [v8 copy];
+    [(DMCEnrollmentTableViewPromotionCell *)v13 _setupContentConfigurationWithIcon:iconCopy title:titleCopy subtitle:subtitleCopy];
+    objc_storeStrong(&v13->_icon, icon);
+    v15 = [titleCopy copy];
     title = v13->_title;
     v13->_title = v15;
 
-    v17 = [v9 copy];
+    v17 = [subtitleCopy copy];
     subtitle = v13->_subtitle;
     v13->_subtitle = v17;
 
@@ -72,38 +72,38 @@ void __67__DMCEnrollmentTableViewPromotionCell_initWithTitle_subtitle_icon___blo
   [(DMCEnrollmentTableViewPromotionCell *)self setSeparatorInset:0.0, CGRectGetWidth(v4), 0.0, 0.0];
 }
 
-- (void)_setupContentConfigurationWithIcon:(id)a3 title:(id)a4 subtitle:(id)a5
+- (void)_setupContentConfigurationWithIcon:(id)icon title:(id)title subtitle:(id)subtitle
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  subtitleCopy = subtitle;
   v9 = MEMORY[0x277D756E0];
-  v10 = a4;
-  v31 = a3;
-  v11 = [v9 cellConfiguration];
+  titleCopy = title;
+  iconCopy = icon;
+  cellConfiguration = [v9 cellConfiguration];
   v12 = objc_alloc(MEMORY[0x277CCA898]);
   v13 = *MEMORY[0x277D740A8];
   v34[0] = *MEMORY[0x277D740A8];
-  v14 = self;
-  v15 = [(DMCEnrollmentTableViewPromotionCell *)self _titleFont];
-  v35[0] = v15;
+  selfCopy = self;
+  _titleFont = [(DMCEnrollmentTableViewPromotionCell *)self _titleFont];
+  v35[0] = _titleFont;
   v16 = *MEMORY[0x277D740C0];
   v34[1] = *MEMORY[0x277D740C0];
-  v17 = [MEMORY[0x277D75348] labelColor];
-  v35[1] = v17;
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v35[1] = labelColor;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
-  v19 = [v12 initWithString:v10 attributes:v18];
+  v19 = [v12 initWithString:titleCopy attributes:v18];
 
-  if (v8)
+  if (subtitleCopy)
   {
     v20 = objc_alloc(MEMORY[0x277CCA898]);
     v32[0] = v13;
-    v21 = [(DMCEnrollmentTableViewPromotionCell *)v14 _subtitleFont];
+    _subtitleFont = [(DMCEnrollmentTableViewPromotionCell *)selfCopy _subtitleFont];
     v32[1] = v16;
-    v33[0] = v21;
-    v22 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v33[1] = v22;
+    v33[0] = _subtitleFont;
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    v33[1] = secondaryLabelColor;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
-    v24 = [v20 initWithString:v8 attributes:v23];
+    v24 = [v20 initWithString:subtitleCopy attributes:v23];
   }
 
   else
@@ -111,19 +111,19 @@ void __67__DMCEnrollmentTableViewPromotionCell_initWithTitle_subtitle_icon___blo
     v24 = 0;
   }
 
-  v25 = v14;
-  [v11 directionalLayoutMargins];
+  v25 = selfCopy;
+  [cellConfiguration directionalLayoutMargins];
   v27 = v26;
   v29 = v28;
-  [v11 setImage:v31];
+  [cellConfiguration setImage:iconCopy];
 
-  v30 = [v11 imageProperties];
-  [v30 setMaximumSize:{32.0, 32.0}];
+  imageProperties = [cellConfiguration imageProperties];
+  [imageProperties setMaximumSize:{32.0, 32.0}];
 
-  [v11 setAttributedText:v19];
-  [v11 setSecondaryAttributedText:v24];
-  [v11 setDirectionalLayoutMargins:{13.0, v27, 13.0, v29}];
-  [(DMCEnrollmentTableViewPromotionCell *)v25 setContentConfiguration:v11];
+  [cellConfiguration setAttributedText:v19];
+  [cellConfiguration setSecondaryAttributedText:v24];
+  [cellConfiguration setDirectionalLayoutMargins:{13.0, v27, 13.0, v29}];
+  [(DMCEnrollmentTableViewPromotionCell *)v25 setContentConfiguration:cellConfiguration];
 }
 
 - (id)_titleFont

@@ -1,18 +1,18 @@
 @interface INIntentResponseDescription
-- (BOOL)isEqual:(id)a3;
-- (INIntentResponseDescription)initWithName:(id)a3 facadeClass:(Class)a4 dataClass:(Class)a5 type:(id)a6 isPrivate:(BOOL)a7 slotsByName:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (INIntentResponseDescription)initWithName:(id)name facadeClass:(Class)class dataClass:(Class)dataClass type:(id)type isPrivate:(BOOL)private slotsByName:(id)byName;
 - (unint64_t)hash;
 @end
 
 @implementation INIntentResponseDescription
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     name = self->_name;
     v7 = 0;
     if ((name == v5[2] || [(NSString *)name isEqualToString:?]) && self->_facadeClass == v5[3] && self->_dataClass == v5[4])
@@ -51,28 +51,28 @@
   return v8 ^ v10;
 }
 
-- (INIntentResponseDescription)initWithName:(id)a3 facadeClass:(Class)a4 dataClass:(Class)a5 type:(id)a6 isPrivate:(BOOL)a7 slotsByName:(id)a8
+- (INIntentResponseDescription)initWithName:(id)name facadeClass:(Class)class dataClass:(Class)dataClass type:(id)type isPrivate:(BOOL)private slotsByName:(id)byName
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
+  nameCopy = name;
+  typeCopy = type;
+  byNameCopy = byName;
   v25.receiver = self;
   v25.super_class = INIntentResponseDescription;
   v17 = [(INIntentResponseDescription *)&v25 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [nameCopy copy];
     name = v17->_name;
     v17->_name = v18;
 
-    v17->_facadeClass = a4;
-    v17->_dataClass = a5;
-    v20 = [v15 copy];
+    v17->_facadeClass = class;
+    v17->_dataClass = dataClass;
+    v20 = [typeCopy copy];
     type = v17->_type;
     v17->_type = v20;
 
-    v17->_isPrivate = a7;
-    v22 = [v16 copy];
+    v17->_isPrivate = private;
+    v22 = [byNameCopy copy];
     slotsByName = v17->_slotsByName;
     v17->_slotsByName = v22;
   }

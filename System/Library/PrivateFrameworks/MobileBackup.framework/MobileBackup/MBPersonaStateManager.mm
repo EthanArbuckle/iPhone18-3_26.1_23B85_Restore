@@ -1,35 +1,35 @@
 @interface MBPersonaStateManager
 - (NSArray)allPersonaStates;
 - (_TtC7backupd21MBPersonaStateManager)init;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)personaStateForPersonaID:(id)a3;
-- (id)restoreSessionForPersonaID:(id)a3;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)personaStateForPersonaID:(id)d;
+- (id)restoreSessionForPersonaID:(id)d;
 @end
 
 @implementation MBPersonaStateManager
 
-- (id)restoreSessionForPersonaID:(id)a3
+- (id)restoreSessionForPersonaID:(id)d
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_100030A98(v4, v6);
 
   return v8;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100030CDC(v4);
+  subscriptCopy = subscript;
+  selfCopy = self;
+  v6 = sub_100030CDC(subscriptCopy);
 
   return v6;
 }
 
 - (NSArray)allPersonaStates
 {
-  v2 = self;
+  selfCopy = self;
   sub_100030ED8();
 
   type metadata accessor for MBPersonaState();
@@ -38,11 +38,11 @@
   return v3.super.isa;
 }
 
-- (id)personaStateForPersonaID:(id)a3
+- (id)personaStateForPersonaID:(id)d
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_100030FE0(v4, v6);
 
   return v8;

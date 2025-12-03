@@ -1,7 +1,7 @@
 @interface DMDDeleteUserOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,21 +21,21 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v10.receiver = a1;
+  requestCopy = request;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___DMDDeleteUserOperation;
-  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 username];
+  username = [requestCopy username];
 
-  if (!v7)
+  if (!username)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -43,30 +43,30 @@
     v11 = DMFInvalidParameterErrorKey;
     v12 = @"request.message";
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_6:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_7;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[UMUserManager sharedManager];
-  v6 = [v5 allUsers];
-  if (v6)
+  allUsers = [v5 allUsers];
+  if (allUsers)
   {
-    v7 = [v4 username];
-    v8 = [v5 currentUser];
-    v9 = [v8 username];
-    v10 = [v9 isEqualToString:v7];
+    username = [requestCopy username];
+    currentUser = [v5 currentUser];
+    username2 = [currentUser username];
+    v10 = [username2 isEqualToString:username];
 
     if (v10)
     {
@@ -75,13 +75,13 @@ LABEL_7:
 
     else
     {
-      v20 = self;
-      v21 = v4;
+      selfCopy = self;
+      v21 = requestCopy;
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v11 = v6;
+      v11 = allUsers;
       v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v12)
       {
@@ -97,8 +97,8 @@ LABEL_7:
           }
 
           v16 = *(*(&v23 + 1) + 8 * v15);
-          v17 = [v16 username];
-          v18 = [v17 isEqualToString:v7];
+          username3 = [v16 username];
+          v18 = [username3 isEqualToString:username];
 
           if (v18)
           {
@@ -124,10 +124,10 @@ LABEL_7:
           goto LABEL_18;
         }
 
-        v4 = v21;
+        requestCopy = v21;
         if ([v19 hasDataToSync] && (objc_msgSend(v21, "forceDeletion") & 1) == 0)
         {
-          [(DMDTaskOperation *)v20 endOperationWithDMFErrorCode:1803];
+          [(DMDTaskOperation *)selfCopy endOperationWithDMFErrorCode:1803];
         }
 
         else
@@ -136,7 +136,7 @@ LABEL_7:
           v22[1] = 3221225472;
           v22[2] = sub_100035698;
           v22[3] = &unk_1000CEE68;
-          v22[4] = v20;
+          v22[4] = selfCopy;
           [v5 deleteUser:v19 completionHandler:v22];
         }
       }
@@ -146,8 +146,8 @@ LABEL_7:
 LABEL_13:
 
 LABEL_18:
-        [(DMDTaskOperation *)v20 endOperationWithDMFErrorCode:1802];
-        v4 = v21;
+        [(DMDTaskOperation *)selfCopy endOperationWithDMFErrorCode:1802];
+        requestCopy = v21;
       }
     }
   }

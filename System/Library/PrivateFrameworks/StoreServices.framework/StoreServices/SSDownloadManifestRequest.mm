@@ -2,22 +2,22 @@
 - (BOOL)shouldHideUserPrompts;
 - (BOOL)start;
 - (NSURLRequest)URLRequest;
-- (SSDownloadManifestRequest)initWithURLRequest:(id)a3;
-- (SSDownloadManifestRequest)initWithXPCEncoding:(id)a3;
+- (SSDownloadManifestRequest)initWithURLRequest:(id)request;
+- (SSDownloadManifestRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (int64_t)manifestFormat;
 - (void)dealloc;
-- (void)setManifestFormat:(int64_t)a3;
-- (void)setShouldHideUserPrompts:(BOOL)a3;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithManifestResponseBlock:(id)a3;
+- (void)setManifestFormat:(int64_t)format;
+- (void)setShouldHideUserPrompts:(BOOL)prompts;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithManifestResponseBlock:(id)block;
 @end
 
 @implementation SSDownloadManifestRequest
 
-- (SSDownloadManifestRequest)initWithURLRequest:(id)a3
+- (SSDownloadManifestRequest)initWithURLRequest:(id)request
 {
-  if (!a3)
+  if (!request)
   {
     [(SSDownloadManifestRequest *)a2 initWithURLRequest:?];
   }
@@ -27,7 +27,7 @@
   v5 = [(SSRequest *)&v7 init];
   if (v5)
   {
-    v5->_urlRequest = [a3 copy];
+    v5->_urlRequest = [request copy];
   }
 
   return v5;
@@ -40,7 +40,7 @@
   [(SSRequest *)&v3 dealloc];
 }
 
-- (void)setShouldHideUserPrompts:(BOOL)a3
+- (void)setShouldHideUserPrompts:(BOOL)prompts
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -48,7 +48,7 @@
   v4[2] = __54__SSDownloadManifestRequest_setShouldHideUserPrompts___block_invoke;
   v4[3] = &unk_1E84AD498;
   v4[4] = self;
-  v5 = a3;
+  promptsCopy = prompts;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -71,7 +71,7 @@
   return v3;
 }
 
-- (void)startWithManifestResponseBlock:(id)a3
+- (void)startWithManifestResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -82,15 +82,15 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -125,7 +125,7 @@
   v20[2] = __60__SSDownloadManifestRequest_startWithManifestResponseBlock___block_invoke;
   v20[3] = &unk_1E84AC760;
   v20[4] = self;
-  v20[5] = a3;
+  v20[5] = block;
   [(SSRequest *)self _startWithMessageID:56 messageBlock:v20, v18];
 }
 
@@ -191,7 +191,7 @@ uint64_t __60__SSDownloadManifestRequest_startWithManifestResponseBlock___block_
   return v3;
 }
 
-- (void)setManifestFormat:(int64_t)a3
+- (void)setManifestFormat:(int64_t)format
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -199,7 +199,7 @@ uint64_t __60__SSDownloadManifestRequest_startWithManifestResponseBlock___block_
   v4[2] = __47__SSDownloadManifestRequest_setManifestFormat___block_invoke;
   v4[3] = &unk_1E84AD4C0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = format;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -260,13 +260,13 @@ uint64_t __34__SSDownloadManifestRequest_start__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__SSDownloadManifestRequest_startWithCompletionBlock___block_invoke;
   v3[3] = &unk_1E84AD690;
-  v3[4] = a3;
+  v3[4] = block;
   [(SSDownloadManifestRequest *)self startWithManifestResponseBlock:v3];
 }
 
@@ -305,18 +305,18 @@ void __44__SSDownloadManifestRequest_copyXPCEncoding__block_invoke(uint64_t a1)
   SSXPCDictionarySetCFObject(v2, "52", v3);
 }
 
-- (SSDownloadManifestRequest)initWithXPCEncoding:(id)a3
+- (SSDownloadManifestRequest)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v7.receiver = self;
     v7.super_class = SSDownloadManifestRequest;
     v5 = [(SSRequest *)&v7 init];
     if (v5)
     {
-      v5->_shouldHideUserPrompts = xpc_dictionary_get_BOOL(a3, "50");
-      v5->_manifestFormat = xpc_dictionary_get_int64(a3, "51");
-      v5->_urlRequest = [objc_alloc(MEMORY[0x1E696AF68]) initWithXPCEncoding:{xpc_dictionary_get_value(a3, "52")}];
+      v5->_shouldHideUserPrompts = xpc_dictionary_get_BOOL(encoding, "50");
+      v5->_manifestFormat = xpc_dictionary_get_int64(encoding, "51");
+      v5->_urlRequest = [objc_alloc(MEMORY[0x1E696AF68]) initWithXPCEncoding:{xpc_dictionary_get_value(encoding, "52")}];
     }
   }
 

@@ -1,11 +1,11 @@
 @interface UIEventSessionTouchEventAnalyzer
 - (UIEventSessionTouchEventAnalyzer)init;
-- (id)checkifGestureComplete:(id)a3;
-- (id)completeGesture:(id)a3;
-- (id)didPointerClickWithTrackpadFingerDownCount:(int64_t)a3 withLocationInWindow:(CGPoint)a4 withWindowBounds:(CGRect)a5;
-- (id)didPointerHoverWithTrackpadFingerDownCount:(int64_t)a3 withLocationInWindow:(CGPoint)a4 withWindowBounds:(CGRect)a5;
-- (id)didTouchWithID:(id)a3 withPhase:(int64_t)a4 withType:(int64_t)a5 withLocationInWindow:(CGPoint)a6 withWindowBounds:(CGRect)a7 withTrackpadFingerDownCount:(int64_t)a8;
-- (int64_t)determineWindowSectionWithLocationInWindow:(CGPoint)a3 withWindowBounds:(CGRect)a4;
+- (id)checkifGestureComplete:(id)complete;
+- (id)completeGesture:(id)gesture;
+- (id)didPointerClickWithTrackpadFingerDownCount:(int64_t)count withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds;
+- (id)didPointerHoverWithTrackpadFingerDownCount:(int64_t)count withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds;
+- (id)didTouchWithID:(id)d withPhase:(int64_t)phase withType:(int64_t)type withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds withTrackpadFingerDownCount:(int64_t)count;
+- (int64_t)determineWindowSectionWithLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds;
 @end
 
 @implementation UIEventSessionTouchEventAnalyzer
@@ -32,17 +32,17 @@
   return v2;
 }
 
-- (id)completeGesture:(id)a3
+- (id)completeGesture:(id)gesture
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  gestureCopy = gesture;
   v4 = objc_alloc_init(_UIEventSessionTouchAction);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v3 touchStatus];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  touchStatus = [gestureCopy touchStatus];
+  v6 = [touchStatus countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -53,26 +53,26 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(touchStatus);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v3 touchStatus];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        v13 = [v12 windowSection];
+        touchStatus2 = [gestureCopy touchStatus];
+        v12 = [touchStatus2 objectForKeyedSubscript:v10];
+        windowSection = [v12 windowSection];
 
-        v14 = [v3 touchStatus];
-        v15 = [v14 objectForKeyedSubscript:v10];
+        touchStatus3 = [gestureCopy touchStatus];
+        v15 = [touchStatus3 objectForKeyedSubscript:v10];
 
-        v16 = [v15 tapDragState];
-        if (v16 == 2)
+        tapDragState = [v15 tapDragState];
+        if (tapDragState == 2)
         {
           v17 = 2;
           goto LABEL_13;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [touchStatus countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v7)
       {
         continue;
@@ -84,40 +84,40 @@
 
   else
   {
-    v13 = 0;
+    windowSection = 0;
   }
 
   v17 = 1;
 LABEL_13:
 
   [(_UIEventSessionTouchAction *)v4 setTapDragState:v17];
-  if ([v3 touchType] && objc_msgSend(v3, "trackpadFingerDownCount") >= 1)
+  if ([gestureCopy touchType] && objc_msgSend(gestureCopy, "trackpadFingerDownCount") >= 1)
   {
-    -[_UIEventSessionTouchAction setNumFingers:](v4, "setNumFingers:", [v3 trackpadFingerDownCount]);
+    -[_UIEventSessionTouchAction setNumFingers:](v4, "setNumFingers:", [gestureCopy trackpadFingerDownCount]);
   }
 
   else
   {
-    v18 = [v3 touchStatus];
-    -[_UIEventSessionTouchAction setNumFingers:](v4, "setNumFingers:", [v18 count]);
+    touchStatus4 = [gestureCopy touchStatus];
+    -[_UIEventSessionTouchAction setNumFingers:](v4, "setNumFingers:", [touchStatus4 count]);
   }
 
-  [(_UIEventSessionTouchAction *)v4 setWindowSection:v13];
-  -[_UIEventSessionAction setSource:](v4, "setSource:", +[_UIEventSessionAction getUIEventSourceForUITouchType:](_UIEventSessionAction, "getUIEventSourceForUITouchType:", [v3 touchType]));
+  [(_UIEventSessionTouchAction *)v4 setWindowSection:windowSection];
+  -[_UIEventSessionAction setSource:](v4, "setSource:", +[_UIEventSessionAction getUIEventSourceForUITouchType:](_UIEventSessionAction, "getUIEventSourceForUITouchType:", [gestureCopy touchType]));
 
   return v4;
 }
 
-- (id)checkifGestureComplete:(id)a3
+- (id)checkifGestureComplete:(id)complete
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completeCopy = complete;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 touchStatus];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  touchStatus = [completeCopy touchStatus];
+  v6 = [touchStatus countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -128,15 +128,15 @@ LABEL_13:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(touchStatus);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v4 touchStatus];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        v13 = [v12 upDownState];
+        touchStatus2 = [completeCopy touchStatus];
+        v12 = [touchStatus2 objectForKeyedSubscript:v10];
+        upDownState = [v12 upDownState];
 
-        if (v13 != 2)
+        if (upDownState != 2)
         {
 
           v14 = 0;
@@ -144,7 +144,7 @@ LABEL_13:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [touchStatus countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -154,18 +154,18 @@ LABEL_13:
     }
   }
 
-  v14 = [(UIEventSessionTouchEventAnalyzer *)self completeGesture:v4];
+  v14 = [(UIEventSessionTouchEventAnalyzer *)self completeGesture:completeCopy];
 LABEL_11:
 
   return v14;
 }
 
-- (int64_t)determineWindowSectionWithLocationInWindow:(CGPoint)a3 withWindowBounds:(CGRect)a4
+- (int64_t)determineWindowSectionWithLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  y = a3.y;
-  v6 = [objc_opt_self() mainScreen];
-  [v6 bounds];
+  height = bounds.size.height;
+  y = window.y;
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v8 = v7;
 
   if (height != v8)
@@ -191,26 +191,26 @@ LABEL_11:
   }
 }
 
-- (id)didTouchWithID:(id)a3 withPhase:(int64_t)a4 withType:(int64_t)a5 withLocationInWindow:(CGPoint)a6 withWindowBounds:(CGRect)a7 withTrackpadFingerDownCount:(int64_t)a8
+- (id)didTouchWithID:(id)d withPhase:(int64_t)phase withType:(int64_t)type withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds withTrackpadFingerDownCount:(int64_t)count
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v13 = a6.y;
-  v14 = a6.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v13 = window.y;
+  v14 = window.x;
   v85 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  dCopy = d;
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (a4 != 1)
+  if (phase != 1)
   {
-    if (!a4)
+    if (!phase)
     {
-      v20 = [_MergedGlobals_1180 objectForKeyedSubscript:v18];
+      v20 = [_MergedGlobals_1180 objectForKeyedSubscript:dCopy];
 
       if (!v20)
       {
-        if (qword_1ED49F1D0 && [qword_1ED49F1D0 touchType] != a5 && objc_msgSend(qword_1ED49F1D0, "trackpadFingerDownCount") != a8)
+        if (qword_1ED49F1D0 && [qword_1ED49F1D0 touchType] != type && objc_msgSend(qword_1ED49F1D0, "trackpadFingerDownCount") != count)
         {
           v21 = [(UIEventSessionTouchEventAnalyzer *)self checkifGestureComplete:qword_1ED49F1D0];
           if (v21)
@@ -221,8 +221,8 @@ LABEL_11:
             v81 = 0u;
             v78 = 0u;
             v79 = 0u;
-            v22 = [qword_1ED49F1D0 touchStatus];
-            v23 = [v22 countByEnumeratingWithState:&v78 objects:v84 count:16];
+            touchStatus = [qword_1ED49F1D0 touchStatus];
+            v23 = [touchStatus countByEnumeratingWithState:&v78 objects:v84 count:16];
             if (v23)
             {
               v24 = v23;
@@ -233,13 +233,13 @@ LABEL_11:
                 {
                   if (*v79 != v25)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(touchStatus);
                   }
 
                   [_MergedGlobals_1180 removeObjectForKey:*(*(&v78 + 1) + 8 * i)];
                 }
 
-                v24 = [v22 countByEnumeratingWithState:&v78 objects:v84 count:16];
+                v24 = [touchStatus countByEnumeratingWithState:&v78 objects:v84 count:16];
               }
 
               while (v24);
@@ -260,36 +260,36 @@ LABEL_11:
         v60 = qword_1ED49F1D0;
         if (!qword_1ED49F1D0)
         {
-          v61 = [[UIEventSessionTouchEvent alloc] initWithTouchType:a5 withTrackpadFingerDownCount:a8];
+          v61 = [[UIEventSessionTouchEvent alloc] initWithTouchType:type withTrackpadFingerDownCount:count];
           v62 = qword_1ED49F1D0;
           qword_1ED49F1D0 = v61;
 
           v60 = qword_1ED49F1D0;
         }
 
-        v63 = [v60 touchStatus];
-        [v63 setObject:v59 forKeyedSubscript:v18];
+        touchStatus2 = [v60 touchStatus];
+        [touchStatus2 setObject:v59 forKeyedSubscript:dCopy];
 
-        [_MergedGlobals_1180 setObject:qword_1ED49F1D0 forKeyedSubscript:v18];
+        [_MergedGlobals_1180 setObject:qword_1ED49F1D0 forKeyedSubscript:dCopy];
       }
 
       goto LABEL_60;
     }
 
-    if ((a4 - 3) > 1)
+    if ((phase - 3) > 1)
     {
       goto LABEL_60;
     }
 
-    v35 = [_MergedGlobals_1180 objectForKeyedSubscript:v18];
+    v35 = [_MergedGlobals_1180 objectForKeyedSubscript:dCopy];
     if (!v35)
     {
       goto LABEL_60;
     }
 
     v36 = v35;
-    v37 = [v35 touchStatus];
-    v38 = [v37 objectForKeyedSubscript:v18];
+    touchStatus3 = [v35 touchStatus];
+    v38 = [touchStatus3 objectForKeyedSubscript:dCopy];
 
     [v38 setUpDownState:2];
     [v38 setWindowSection:{-[UIEventSessionTouchEventAnalyzer determineWindowSectionWithLocationInWindow:withWindowBounds:](self, "determineWindowSectionWithLocationInWindow:withWindowBounds:", v14, v13, x, y, width, height)}];
@@ -315,7 +315,7 @@ LABEL_11:
     }
 
     [v38 setTapDragState:v44];
-    if ([qword_1ED49F1D0 containsTouchID:v18])
+    if ([qword_1ED49F1D0 containsTouchID:dCopy])
     {
       v45 = [(UIEventSessionTouchEventAnalyzer *)self checkifGestureComplete:qword_1ED49F1D0];
       if (v45)
@@ -326,8 +326,8 @@ LABEL_11:
         v77 = 0u;
         v74 = 0u;
         v75 = 0u;
-        v46 = [qword_1ED49F1D0 touchStatus];
-        v47 = [v46 countByEnumeratingWithState:&v74 objects:v83 count:16];
+        touchStatus4 = [qword_1ED49F1D0 touchStatus];
+        v47 = [touchStatus4 countByEnumeratingWithState:&v74 objects:v83 count:16];
         if (v47)
         {
           v48 = v47;
@@ -338,13 +338,13 @@ LABEL_11:
             {
               if (*v75 != v49)
               {
-                objc_enumerationMutation(v46);
+                objc_enumerationMutation(touchStatus4);
               }
 
               [_MergedGlobals_1180 removeObjectForKey:*(*(&v74 + 1) + 8 * j)];
             }
 
-            v48 = [v46 countByEnumeratingWithState:&v74 objects:v83 count:16];
+            v48 = [touchStatus4 countByEnumeratingWithState:&v74 objects:v83 count:16];
           }
 
           while (v48);
@@ -375,7 +375,7 @@ LABEL_46:
       while (1)
       {
         v45 = [qword_1ED49F1D8 objectAtIndexedSubscript:v51];
-        if ([v45 containsTouchID:v18])
+        if ([v45 containsTouchID:dCopy])
         {
           v52 = [(UIEventSessionTouchEventAnalyzer *)self checkifGestureComplete:v45];
           if (v52)
@@ -399,8 +399,8 @@ LABEL_46:
       v73 = 0u;
       v70 = 0u;
       v71 = 0u;
-      v54 = [v45 touchStatus];
-      v55 = [v54 countByEnumeratingWithState:&v70 objects:v82 count:16];
+      touchStatus5 = [v45 touchStatus];
+      v55 = [touchStatus5 countByEnumeratingWithState:&v70 objects:v82 count:16];
       if (v55)
       {
         v56 = v55;
@@ -411,13 +411,13 @@ LABEL_46:
           {
             if (*v71 != v57)
             {
-              objc_enumerationMutation(v54);
+              objc_enumerationMutation(touchStatus5);
             }
 
             [_MergedGlobals_1180 removeObjectForKey:*(*(&v70 + 1) + 8 * k)];
           }
 
-          v56 = [v54 countByEnumeratingWithState:&v70 objects:v82 count:16];
+          v56 = [touchStatus5 countByEnumeratingWithState:&v70 objects:v82 count:16];
         }
 
         while (v56);
@@ -432,12 +432,12 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  v27 = [_MergedGlobals_1180 objectForKeyedSubscript:v18];
+  v27 = [_MergedGlobals_1180 objectForKeyedSubscript:dCopy];
   if (v27)
   {
     v28 = v27;
-    v29 = [v27 touchStatus];
-    v30 = [v29 objectForKeyedSubscript:v18];
+    touchStatus6 = [v27 touchStatus];
+    v30 = [touchStatus6 objectForKeyedSubscript:dCopy];
 
     [v30 dragDistanceSquared];
     if (v31 <= 10.0)
@@ -456,12 +456,12 @@ LABEL_60:
   return v19;
 }
 
-- (id)didPointerHoverWithTrackpadFingerDownCount:(int64_t)a3 withLocationInWindow:(CGPoint)a4 withWindowBounds:(CGRect)a5
+- (id)didPointerHoverWithTrackpadFingerDownCount:(int64_t)count withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds
 {
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
   if (qword_1ED49F1E0 == 2)
   {
-    if (!a3)
+    if (!count)
     {
       qword_1ED49F1E0 = 0;
       qword_1ED49F1E8 = 0;
@@ -470,15 +470,15 @@ LABEL_60:
 
   else if (qword_1ED49F1E0 == 1)
   {
-    if (a3)
+    if (count)
     {
-      v7 = qword_1ED49F1E8;
-      if (qword_1ED49F1E8 <= a3)
+      countCopy = qword_1ED49F1E8;
+      if (qword_1ED49F1E8 <= count)
       {
-        v7 = a3;
+        countCopy = count;
       }
 
-      qword_1ED49F1E8 = v7;
+      qword_1ED49F1E8 = countCopy;
     }
 
     else
@@ -492,27 +492,27 @@ LABEL_60:
     }
   }
 
-  else if (a3 >= 1)
+  else if (count >= 1)
   {
     qword_1ED49F1E0 = 1;
-    qword_1ED49F1E8 = a3;
+    qword_1ED49F1E8 = count;
   }
 
   return v6;
 }
 
-- (id)didPointerClickWithTrackpadFingerDownCount:(int64_t)a3 withLocationInWindow:(CGPoint)a4 withWindowBounds:(CGRect)a5
+- (id)didPointerClickWithTrackpadFingerDownCount:(int64_t)count withLocationInWindow:(CGPoint)window withWindowBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = window.y;
+  v10 = window.x;
   v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
   v14 = objc_alloc_init(_UIEventSessionTouchAction);
   [(_UIEventSessionAction *)v14 setSource:4];
-  [(_UIEventSessionTouchAction *)v14 setNumFingers:a3];
+  [(_UIEventSessionTouchAction *)v14 setNumFingers:count];
   [(_UIEventSessionTouchAction *)v14 setWindowSection:[(UIEventSessionTouchEventAnalyzer *)self determineWindowSectionWithLocationInWindow:v10 withWindowBounds:v9, x, y, width, height]];
   [v13 addObject:v14];
   if (qword_1ED49F1E0 == 1)

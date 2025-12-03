@@ -1,8 +1,8 @@
 @interface NEDNSPacket
-+ (id)createDataWithQuery:(id)a3;
++ (id)createDataWithQuery:(id)query;
 - (NSString)responseCodeString;
 - (id)createResponse;
-- (id)initFromData:(id)a3;
+- (id)initFromData:(id)data;
 @end
 
 @implementation NEDNSPacket
@@ -21,7 +21,7 @@
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v44 = self;
+  selfCopy = self;
   v4 = self->_queries;
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v51 objects:v63 count:16];
   if (!v5)
@@ -43,9 +43,9 @@
       }
 
       v9 = *(*(&v51 + 1) + 8 * v8);
-      v10 = [v9 answerData];
+      answerData = [v9 answerData];
 
-      if (v10)
+      if (answerData)
       {
         if (v9)
         {
@@ -107,8 +107,8 @@
                   [v20 appendBytes:buf length:1];
                   if (buf[0])
                   {
-                    v28 = [v27 UTF8String];
-                    [v20 appendBytes:v28 length:strlen(v28)];
+                    uTF8String = [v27 UTF8String];
+                    [v20 appendBytes:uTF8String length:strlen(uTF8String)];
                   }
                 }
 
@@ -180,14 +180,14 @@ LABEL_36:
   while (v33);
 LABEL_43:
 
-  v34 = [objc_alloc(MEMORY[0x1E695DF88]) initWithBytes:-[NSData bytes](v44->_data length:{"bytes"), 6}];
-  v44->_flags = v44->_flags & 0x7BF0 | 0x8400;
+  v34 = [objc_alloc(MEMORY[0x1E695DF88]) initWithBytes:-[NSData bytes](selfCopy->_data length:{"bytes"), 6}];
+  selfCopy->_flags = selfCopy->_flags & 0x7BF0 | 0x8400;
   v35 = [v45 count];
-  flags = v44->_flags;
+  flags = selfCopy->_flags;
   if (!v35)
   {
     flags |= 3u;
-    v44->_flags = flags;
+    selfCopy->_flags = flags;
   }
 
   LOWORD(v58) = __rev16(flags);
@@ -196,9 +196,9 @@ LABEL_43:
   [v34 appendBytes:buf length:2];
   v64[0] = 0;
   [v34 appendBytes:v64 length:4];
-  if (v44->_endOfQueriesOffset >= 0xD)
+  if (selfCopy->_endOfQueriesOffset >= 0xD)
   {
-    [v34 appendBytes:-[NSData bytes](v44->_data length:{"bytes") + 12, v44->_endOfQueriesOffset - 12}];
+    [v34 appendBytes:-[NSData bytes](selfCopy->_data length:{"bytes") + 12, selfCopy->_endOfQueriesOffset - 12}];
   }
 
   v49 = 0u;
@@ -238,22 +238,22 @@ LABEL_55:
 
 - (NSString)responseCodeString
 {
-  v2 = [(NEDNSPacket *)self responseCode];
-  if (v2 > 6)
+  responseCode = [(NEDNSPacket *)self responseCode];
+  if (responseCode > 6)
   {
     return @"unknown";
   }
 
   else
   {
-    return &off_1E7F073C8[v2]->isa;
+    return &off_1E7F073C8[responseCode]->isa;
   }
 }
 
-- (id)initFromData:(id)a3
+- (id)initFromData:(id)data
 {
   v68 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   v65 = 1;
   v64.receiver = self;
   v64.super_class = NEDNSPacket;
@@ -273,8 +273,8 @@ LABEL_55:
   timestamp = v6->_timestamp;
   v6->_timestamp = v7;
 
-  objc_storeStrong(&v6->_data, a3);
-  v9 = [[NEByteParser alloc] initWithData:v5];
+  objc_storeStrong(&v6->_data, data);
+  v9 = [[NEByteParser alloc] initWithData:dataCopy];
   v6->_identifier = [(NEByteParser *)v9 parse16Bits:?];
   if ((v65 & 1) == 0)
   {
@@ -384,8 +384,8 @@ LABEL_46:
     v61 = v12;
     while (1)
     {
-      v21 = [(NEByteParser *)v9 parseDomainName];
-      if (!v21)
+      parseDomainName = [(NEByteParser *)v9 parseDomainName];
+      if (!parseDomainName)
       {
         v44 = ne_log_obj();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -399,7 +399,7 @@ LABEL_46:
         goto LABEL_73;
       }
 
-      v22 = v21;
+      v22 = parseDomainName;
       v23 = [(NEByteParser *)v9 parse16Bits:?];
       if ((v65 & 1) == 0)
       {
@@ -640,10 +640,10 @@ LABEL_51:
   return v38;
 }
 
-+ (id)createDataWithQuery:(id)a3
++ (id)createDataWithQuery:(id)query
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  queryCopy = query;
   v4 = objc_alloc_init(MEMORY[0x1E695DF88]);
   v28 = 2560;
   [v4 appendBytes:&v28 length:2];
@@ -657,8 +657,8 @@ LABEL_51:
   [v4 appendBytes:&v24 length:2];
   v23 = 0;
   [v4 appendBytes:&v23 length:2];
-  v5 = [v3 name];
-  v6 = [v5 componentsSeparatedByString:@"."];
+  name = [queryCopy name];
+  v6 = [name componentsSeparatedByString:@"."];
 
   v21 = 0u;
   v22 = 0u;
@@ -691,8 +691,8 @@ LABEL_51:
         [v4 appendBytes:&v18 length:1];
         if (v18)
         {
-          v13 = [v12 UTF8String];
-          [v4 appendBytes:v13 length:strlen(v13)];
+          uTF8String = [v12 UTF8String];
+          [v4 appendBytes:uTF8String length:strlen(uTF8String)];
         }
       }
 
@@ -706,9 +706,9 @@ LABEL_51:
     }
   }
 
-  v18 = bswap32([v3 recordType]) >> 16;
+  v18 = bswap32([queryCopy recordType]) >> 16;
   [v4 appendBytes:&v18 length:2];
-  v17 = bswap32([v3 recordClass]) >> 16;
+  v17 = bswap32([queryCopy recordClass]) >> 16;
   [v4 appendBytes:&v17 length:2];
   v14 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithData:v4];
 LABEL_13:

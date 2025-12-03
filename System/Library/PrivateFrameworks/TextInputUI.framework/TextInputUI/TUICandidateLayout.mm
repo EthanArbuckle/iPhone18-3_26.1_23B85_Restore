@@ -1,18 +1,18 @@
 @interface TUICandidateLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGPoint)gridLineOffset;
 - (CGSize)collectionViewContentSize;
 - (TUICandidateLayout)init;
 - (UIEdgeInsets)gridLinePadding;
 - (UIEdgeInsets)gridPadding;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyForDummyCandidateIndexPath:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyForDummyCandidateIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)clearLayoutAttributes;
 - (void)invalidateLayout;
-- (void)justify:(id)a3 rowStartX:(double)a4 maxWidth:(double)a5 remainingWidth:(double)a6 endOfSection:(BOOL)a7;
+- (void)justify:(id)justify rowStartX:(double)x maxWidth:(double)width remainingWidth:(double)remainingWidth endOfSection:(BOOL)section;
 - (void)layoutSlottedCandidates;
 - (void)prepareLayout;
 - (void)prepareLayoutForMultiRow;
@@ -57,28 +57,28 @@
   return result;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"Line"])
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:@"Line"])
   {
-    v8 = [v7 row];
+    v8 = [pathCopy row];
     v9 = 288;
     goto LABEL_5;
   }
 
-  if ([v6 isEqualToString:@"SlottedCellSeparator"])
+  if ([kindCopy isEqualToString:@"SlottedCellSeparator"])
   {
-    v8 = [v7 row];
+    v8 = [pathCopy row];
     v9 = 296;
 LABEL_5:
     if (v8 < [*(&self->super.super.isa + v9) count])
     {
       groupHeaderAttributes = *(&self->super.super.isa + v9);
-      v11 = [v7 row];
+      section2 = [pathCopy row];
 LABEL_7:
-      v12 = [(NSMutableArray *)groupHeaderAttributes objectAtIndexedSubscript:v11];
+      v12 = [(NSMutableArray *)groupHeaderAttributes objectAtIndexedSubscript:section2];
 LABEL_8:
       v13 = v12;
       goto LABEL_17;
@@ -87,28 +87,28 @@ LABEL_8:
     goto LABEL_16;
   }
 
-  if ([v6 isEqualToString:@"GroupHeader"])
+  if ([kindCopy isEqualToString:@"GroupHeader"])
   {
-    v14 = [v7 section];
-    if (v14 < [(NSMutableArray *)self->_groupHeaderAttributes count])
+    section = [pathCopy section];
+    if (section < [(NSMutableArray *)self->_groupHeaderAttributes count])
     {
       groupHeaderAttributes = self->_groupHeaderAttributes;
-      v11 = [v7 section];
+      section2 = [pathCopy section];
       goto LABEL_7;
     }
   }
 
   else
   {
-    if ([v6 isEqualToString:@"CustomHeader"])
+    if ([kindCopy isEqualToString:@"CustomHeader"])
     {
       v12 = self->_customHeaderAttributes;
       goto LABEL_8;
     }
 
-    if ([v6 isEqualToString:@"DummyCandidate"])
+    if ([kindCopy isEqualToString:@"DummyCandidate"])
     {
-      v15 = [(TUICandidateLayout *)self keyForDummyCandidateIndexPath:v7];
+      v15 = [(TUICandidateLayout *)self keyForDummyCandidateIndexPath:pathCopy];
       v13 = [(NSMutableDictionary *)self->_dummyCandidateAttributes objectForKey:v15];
 
       goto LABEL_17;
@@ -122,42 +122,42 @@ LABEL_17:
   return v13;
 }
 
-- (id)keyForDummyCandidateIndexPath:(id)a3
+- (id)keyForDummyCandidateIndexPath:(id)path
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
 
-  return [v3 stringWithFormat:@"%lld, %lld", v5, v6];
+  return [v3 stringWithFormat:@"%lld, %lld", section, v6];
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5 >= -[NSMutableArray count](self->_candidateAttributes, "count") || (v6 = [v4 row], -[NSMutableArray objectAtIndexedSubscript:](self->_candidateAttributes, "objectAtIndexedSubscript:", objc_msgSend(v4, "section")), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6 >= v8))
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= -[NSMutableArray count](self->_candidateAttributes, "count") || (v6 = [pathCopy row], -[NSMutableArray objectAtIndexedSubscript:](self->_candidateAttributes, "objectAtIndexedSubscript:", objc_msgSend(pathCopy, "section")), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6 >= v8))
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_candidateAttributes, "objectAtIndexedSubscript:", [v4 section]);
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_candidateAttributes, "objectAtIndexedSubscript:", [pathCopy section]);
+    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v10;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v35 = *MEMORY[0x1E69E9840];
-  CGRectGetMaxY(a3);
+  CGRectGetMaxY(rect);
   v8 = objc_opt_new();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -221,8 +221,8 @@ LABEL_17:
     }
   }
 
-  v21 = [(NSMutableDictionary *)self->_dummyCandidateAttributes allValues];
-  [v9 addObjectsFromArray:v21];
+  allValues = [(NSMutableDictionary *)self->_dummyCandidateAttributes allValues];
+  [v9 addObjectsFromArray:allValues];
 
   v22 = v9;
   return v9;
@@ -271,19 +271,19 @@ void __56__TUICandidateLayout_layoutAttributesForElementsInRect___block_invoke(u
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(NSMutableArray *)self->_candidateAttributes lastObject];
-  v4 = [v3 lastObject];
+  lastObject = [(NSMutableArray *)self->_candidateAttributes lastObject];
+  v3LastObject = [lastObject lastObject];
 
   if ([(TUICandidateLayout *)self rowType])
   {
     if ([(TUICandidateLayout *)self layoutOrientation]== 1)
     {
-      v5 = [(NSMutableArray *)self->_candidateAttributes firstObject];
-      v6 = [v5 firstObject];
-      [v6 frame];
+      firstObject = [(NSMutableArray *)self->_candidateAttributes firstObject];
+      v5FirstObject = [firstObject firstObject];
+      [v5FirstObject frame];
       MaxX = CGRectGetMaxX(v21);
-      v8 = [(TUICandidateLayout *)self collectionView];
-      [v8 frame];
+      collectionView = [(TUICandidateLayout *)self collectionView];
+      [collectionView frame];
       MaxY = v9;
     }
 
@@ -291,8 +291,8 @@ void __56__TUICandidateLayout_layoutAttributesForElementsInRect___block_invoke(u
     {
       if ([(TUICandidateLayout *)self transitionState])
       {
-        v12 = [(TUICandidateLayout *)self collectionView];
-        [v12 bounds];
+        collectionView2 = [(TUICandidateLayout *)self collectionView];
+        [collectionView2 bounds];
         Height = CGRectGetHeight(v23);
       }
 
@@ -301,10 +301,10 @@ void __56__TUICandidateLayout_layoutAttributesForElementsInRect___block_invoke(u
         Height = 0.0;
       }
 
-      v17 = [(TUICandidateLayout *)self collectionView];
-      [v17 bounds];
+      collectionView3 = [(TUICandidateLayout *)self collectionView];
+      [collectionView3 bounds];
       MaxX = CGRectGetWidth(v26);
-      [v4 frame];
+      [v3LastObject frame];
       MaxY = Height + CGRectGetMaxY(v27);
     }
   }
@@ -313,21 +313,21 @@ void __56__TUICandidateLayout_layoutAttributesForElementsInRect___block_invoke(u
   {
     if ([(NSMutableArray *)self->_slottedCellSeparatorAttributes count])
     {
-      v11 = [(TUICandidateLayout *)self collectionView];
-      [v11 bounds];
+      collectionView4 = [(TUICandidateLayout *)self collectionView];
+      [collectionView4 bounds];
       MaxX = CGRectGetWidth(v22);
     }
 
     else
     {
-      [v4 frame];
+      [v3LastObject frame];
       MaxX = CGRectGetMaxX(v24);
     }
 
-    [v4 frame];
+    [v3LastObject frame];
     MaxY = CGRectGetMaxY(v25);
-    v14 = [(TUICandidateLayout *)self collectionView];
-    [v14 frame];
+    collectionView5 = [(TUICandidateLayout *)self collectionView];
+    [collectionView5 frame];
     v16 = v15;
 
     if (MaxY >= v16)
@@ -343,41 +343,41 @@ void __56__TUICandidateLayout_layoutAttributesForElementsInRect___block_invoke(u
   return result;
 }
 
-- (void)justify:(id)a3 rowStartX:(double)a4 maxWidth:(double)a5 remainingWidth:(double)a6 endOfSection:(BOOL)a7
+- (void)justify:(id)justify rowStartX:(double)x maxWidth:(double)width remainingWidth:(double)remainingWidth endOfSection:(BOOL)section
 {
-  v7 = a7;
+  sectionCopy = section;
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  if ([v12 count])
+  justifyCopy = justify;
+  if ([justifyCopy count])
   {
-    v13 = a5 - a4;
-    v14 = [v12 count];
+    v13 = width - x;
+    v14 = [justifyCopy count];
     [(TUICandidateLayout *)self minimumInterItemSpacing];
     v16 = v15;
-    v17 = [v12 count];
-    v18 = [(TUICandidateLayout *)self columnsCount];
-    v19 = [v12 count];
-    if (v18 <= v19)
+    v17 = [justifyCopy count];
+    columnsCount = [(TUICandidateLayout *)self columnsCount];
+    v19 = [justifyCopy count];
+    if (columnsCount <= v19)
     {
-      v18 = v19;
+      columnsCount = v19;
     }
 
     if (v13 > 0.0)
     {
-      v20 = [v12 count];
-      if (a6 > 0.0)
+      v20 = [justifyCopy count];
+      if (remainingWidth > 0.0)
       {
         if (v20)
         {
           v21 = v13 - (v14 - 1) * v16;
           v22 = v21 / v17;
-          if (v7 && v21 * 0.5 < a6)
+          if (sectionCopy && v21 * 0.5 < remainingWidth)
           {
             [(TUICandidateLayout *)self minimumInterItemSpacing];
-            v22 = (v13 - (v18 + -1.0) * v23) / v18;
-            v24 = fmax(v18 - [v12 count], 0.0);
+            v22 = (v13 - (columnsCount + -1.0) * v23) / columnsCount;
+            v24 = fmax(columnsCount - [justifyCopy count], 0.0);
             [(TUICandidateLayout *)self minimumInterItemSpacing];
-            v26 = floor((a6 - v24 * v25) / v22);
+            v26 = floor((remainingWidth - v24 * v25) / v22);
             if (v26 > v24)
             {
               v26 = v24;
@@ -385,14 +385,14 @@ void __56__TUICandidateLayout_layoutAttributesForElementsInRect___block_invoke(u
 
             v27 = v26;
             [(TUICandidateLayout *)self minimumInterItemSpacing];
-            a6 = a6 - v22 * v27 - v27 * v28;
+            remainingWidth = remainingWidth - v22 * v27 - v27 * v28;
           }
 
           v59 = 0u;
           v60 = 0u;
           v57 = 0u;
           v58 = 0u;
-          v29 = v12;
+          v29 = justifyCopy;
           v30 = [v29 countByEnumeratingWithState:&v57 objects:v62 count:16];
           if (!v30)
           {
@@ -428,8 +428,8 @@ void __56__TUICandidateLayout_layoutAttributesForElementsInRect___block_invoke(u
 
           if (v33 > 0.0)
           {
-            v36 = [(TUICandidateLayout *)self collectionView];
-            v52 = TUIScreenScaleForView(v36);
+            collectionView = [(TUICandidateLayout *)self collectionView];
+            v52 = TUIScreenScaleForView(collectionView);
 
             v55 = 0u;
             v56 = 0u;
@@ -441,11 +441,11 @@ void __56__TUICandidateLayout_layoutAttributesForElementsInRect___block_invoke(u
             {
               v39 = v38;
               v40 = *v54;
-              v41 = a6 / v33;
+              v41 = remainingWidth / v33;
               do
               {
                 v42 = 0;
-                v43 = a4;
+                xCopy2 = x;
                 do
                 {
                   if (*v54 != v40)
@@ -465,16 +465,16 @@ void __56__TUICandidateLayout_layoutAttributesForElementsInRect___block_invoke(u
                   }
 
                   v49 = width + v41 * v48;
-                  v66.origin.x = v43;
+                  v66.origin.x = xCopy2;
                   v66.origin.y = y;
                   v66.size.width = v49;
                   v66.size.height = height;
                   MaxX = CGRectGetMaxX(v66);
                   [(TUICandidateLayout *)self minimumInterItemSpacing];
-                  a4 = MaxX + v51;
-                  [v44 setFrame:{TUIRectIntegralWithScale(v43, y, v49, height, v52)}];
+                  x = MaxX + v51;
+                  [v44 setFrame:{TUIRectIntegralWithScale(xCopy2, y, v49, height, v52)}];
                   ++v42;
-                  v43 = a4;
+                  xCopy2 = x;
                 }
 
                 while (v39 != v42);
@@ -496,13 +496,13 @@ LABEL_31:
 {
   v43 = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self->_lineAttributes removeAllObjects];
-  v3 = [(NSMutableArray *)self->_candidateAttributes lastObject];
-  v4 = [v3 lastObject];
-  [v4 frame];
+  lastObject = [(NSMutableArray *)self->_candidateAttributes lastObject];
+  v3LastObject = [lastObject lastObject];
+  [v3LastObject frame];
   MaxY = CGRectGetMaxY(v44);
 
-  v6 = [(TUICandidateLayout *)self collectionView];
-  [v6 bounds];
+  collectionView = [(TUICandidateLayout *)self collectionView];
+  [collectionView bounds];
   v8 = v7;
 
   if (MaxY >= v8)
@@ -605,13 +605,13 @@ LABEL_31:
 
 - (void)prepareLayoutForMultiRow
 {
-  v3 = [(TUICandidateLayout *)self collectionView];
-  v4 = [v3 dataSource];
+  collectionView = [(TUICandidateLayout *)self collectionView];
+  dataSource = [collectionView dataSource];
 
-  v5 = [(TUICandidateLayout *)self layoutOrientation];
-  v6 = [(TUICandidateLayout *)self collectionView];
-  [v6 bounds];
-  if (v5 == 1)
+  layoutOrientation = [(TUICandidateLayout *)self layoutOrientation];
+  collectionView2 = [(TUICandidateLayout *)self collectionView];
+  [collectionView2 bounds];
+  if (layoutOrientation == 1)
   {
     Height = CGRectGetHeight(*&v7);
   }
@@ -633,15 +633,15 @@ LABEL_31:
 
   [(TUICandidateLayout *)self gridLinePadding];
   v17 = v16;
-  v18 = [(TUICandidateLayout *)self collectionView];
-  v19 = [v4 numberOfSectionsInCollectionView:v18];
+  collectionView3 = [(TUICandidateLayout *)self collectionView];
+  v19 = [dataSource numberOfSectionsInCollectionView:collectionView3];
 
   if (v19)
   {
     for (i = 0; i != v19; ++i)
     {
-      v21 = [(TUICandidateLayout *)self collectionView];
-      [v4 collectionView:v21 layout:self widthForGroupHeaderInSection:i];
+      collectionView4 = [(TUICandidateLayout *)self collectionView];
+      [dataSource collectionView:collectionView4 layout:self widthForGroupHeaderInSection:i];
       v23 = v22;
 
       if (v13 < v23)
@@ -650,11 +650,11 @@ LABEL_31:
       }
     }
 
-    v24 = 0;
+    shouldJustifyRow = 0;
     v25 = v13 > 0.0;
     if (v19 == 1 && v13 <= 0.0)
     {
-      v24 = [(TUICandidateLayout *)self shouldJustifyRow];
+      shouldJustifyRow = [(TUICandidateLayout *)self shouldJustifyRow];
       v25 = 0;
     }
   }
@@ -662,18 +662,18 @@ LABEL_31:
   else
   {
     v25 = 0;
-    v24 = 0;
+    shouldJustifyRow = 0;
   }
 
   v26 = v12 - v14;
-  v96 = v24;
-  if (!v24 && v26 > 15.0 && [(TUICandidateLayout *)self showsIndex])
+  v96 = shouldJustifyRow;
+  if (!shouldJustifyRow && v26 > 15.0 && [(TUICandidateLayout *)self showsIndex])
   {
     v26 = v26 + -15.0;
   }
 
-  v27 = [(TUICandidateLayout *)self collectionView];
-  v28 = TUIScreenScaleForView(v27);
+  collectionView5 = [(TUICandidateLayout *)self collectionView];
+  v28 = TUIScreenScaleForView(collectionView5);
 
   if (v25)
   {
@@ -711,8 +711,8 @@ LABEL_31:
   v106 = 0;
   v107 = &v106;
   v108 = 0x2020000000;
-  v35 = [(TUICandidateLayout *)self oldFirstVisibleIndexPath];
-  if ([v35 row])
+  oldFirstVisibleIndexPath = [(TUICandidateLayout *)self oldFirstVisibleIndexPath];
+  if ([oldFirstVisibleIndexPath row])
   {
     v36 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -766,23 +766,23 @@ LABEL_31:
     v95 = v38;
     do
     {
-      v41 = [(TUICandidateLayout *)self collectionView];
-      v42 = v4;
-      v43 = [v4 collectionView:v41 numberOfItemsInSection:v39];
+      collectionView6 = [(TUICandidateLayout *)self collectionView];
+      v42 = dataSource;
+      v43 = [dataSource collectionView:collectionView6 numberOfItemsInSection:v39];
 
       *(v115 + 2) = v94;
       v44 = v120[3];
-      v45 = [MEMORY[0x1E695DF70] array];
-      [(NSMutableArray *)self->_candidateAttributes addObject:v45];
-      v46 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
+      [(NSMutableArray *)self->_candidateAttributes addObject:array];
+      array2 = [MEMORY[0x1E695DF70] array];
       if (v43 >= 1)
       {
         for (j = 0; j != v43; ++j)
         {
           v48 = [MEMORY[0x1E696AC88] indexPathForRow:j inSection:v39];
-          v49 = [(TUICandidateLayout *)self layoutOrientation];
-          v50 = [(TUICandidateLayout *)self collectionView];
-          if (v49)
+          layoutOrientation2 = [(TUICandidateLayout *)self layoutOrientation];
+          collectionView7 = [(TUICandidateLayout *)self collectionView];
+          if (layoutOrientation2)
           {
             v51 = 0;
           }
@@ -792,7 +792,7 @@ LABEL_31:
             v51 = v48;
           }
 
-          [v42 collectionView:v50 layout:self sizeForItemAtIndexPath:v51];
+          [v42 collectionView:collectionView7 layout:self sizeForItemAtIndexPath:v51];
           v52 = v115;
           v115[4] = v53;
           v52[5] = v54;
@@ -801,9 +801,9 @@ LABEL_31:
           [(TUICandidateLayout *)self minimumInterItemSpacing];
           if (v124[3] > v31)
           {
-            if (v55 + v56 + *(v115 + 4) > v26 || -[TUICandidateLayout columnsCount](self, "columnsCount") && (v57 = [v46 count], v57 >= -[TUICandidateLayout columnsCount](self, "columnsCount")))
+            if (v55 + v56 + *(v115 + 4) > v26 || -[TUICandidateLayout columnsCount](self, "columnsCount") && (v57 = [array2 count], v57 >= -[TUICandidateLayout columnsCount](self, "columnsCount")))
             {
-              (v95)[2](v95, v46, 0);
+              (v95)[2](v95, array2, 0);
             }
           }
 
@@ -834,8 +834,8 @@ LABEL_31:
 
           if ([(TUICandidateLayout *)self transitionState])
           {
-            v63 = [(TUICandidateLayout *)self oldFirstVisibleIndexPath];
-            v64 = [v48 isEqual:v63];
+            oldFirstVisibleIndexPath2 = [(TUICandidateLayout *)self oldFirstVisibleIndexPath];
+            v64 = [v48 isEqual:oldFirstVisibleIndexPath2];
 
             if (v64)
             {
@@ -857,7 +857,7 @@ LABEL_31:
           }
 
           v69 = [(UICollectionViewLayoutAttributes *)TUICandidateLayoutAttributes layoutAttributesForCellWithIndexPath:v48];
-          if ([v46 count])
+          if ([array2 count])
           {
             [(TUICandidateLayout *)self minimumInterItemSpacing];
             v71 = v70 + v124[3];
@@ -871,13 +871,13 @@ LABEL_31:
 
           [v69 setFrame:{v71, v120[3], *(v115 + 4), *(v115 + 5)}];
           [v69 setRow:v111[3]];
-          [v45 addObject:v69];
-          [v46 addObject:v69];
+          [array addObject:v69];
+          [array2 addObject:v69];
           v124[3] = *(v115 + 4) + v124[3];
         }
       }
 
-      (v95)[2](v95, v46, 1);
+      (v95)[2](v95, array2, 1);
       if (v92)
       {
         v72 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:v39];
@@ -889,14 +889,14 @@ LABEL_31:
       }
 
       ++v39;
-      v4 = v42;
+      dataSource = v42;
     }
 
     while (v39 != v93);
     if (*(v115 + 5) < 1.0)
     {
-      v75 = [(TUICandidateLayout *)self collectionView];
-      [v42 collectionView:v75 layout:self sizeForItemAtIndexPath:0];
+      collectionView8 = [(TUICandidateLayout *)self collectionView];
+      [v42 collectionView:collectionView8 layout:self sizeForItemAtIndexPath:0];
       v76 = v115;
       v115[4] = v77;
       v76[5] = v78;
@@ -910,8 +910,8 @@ LABEL_31:
         v87 = v120[3];
         for (k = v87 + v79; ; k = v120[3] + *(v115 + 5))
         {
-          v89 = [(TUICandidateLayout *)self collectionView];
-          [v89 bounds];
+          collectionView9 = [(TUICandidateLayout *)self collectionView];
+          [collectionView9 bounds];
           v91 = v87 + v90;
 
           if (k >= v91)
@@ -1206,22 +1206,22 @@ LABEL_49:
 - (void)layoutSlottedCandidates
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [(TUICandidateLayout *)self collectionView];
-  v4 = [v3 dataSource];
+  collectionView = [(TUICandidateLayout *)self collectionView];
+  dataSource = [collectionView dataSource];
 
-  v5 = [(TUICandidateLayout *)self collectionView];
-  v6 = [v4 numberOfSectionsInCollectionView:v5];
+  collectionView2 = [(TUICandidateLayout *)self collectionView];
+  v6 = [dataSource numberOfSectionsInCollectionView:collectionView2];
 
   if (v6 == 1)
   {
-    v7 = [v4 slottedCandidatesCount];
-    v8 = [v4 extraCandidatesCount];
-    v9 = [(TUICandidateLayout *)self collectionView];
-    [v4 collectionView:v9 numberOfItemsInSection:0];
+    slottedCandidatesCount = [dataSource slottedCandidatesCount];
+    extraCandidatesCount = [dataSource extraCandidatesCount];
+    collectionView3 = [(TUICandidateLayout *)self collectionView];
+    [dataSource collectionView:collectionView3 numberOfItemsInSection:0];
 
-    if (v7)
+    if (slottedCandidatesCount)
     {
-      v10 = v7;
+      v10 = slottedCandidatesCount;
     }
 
     else
@@ -1229,9 +1229,9 @@ LABEL_49:
       v10 = 1;
     }
 
-    if (v8)
+    if (extraCandidatesCount)
     {
-      v11 = v7 != 0;
+      v11 = slottedCandidatesCount != 0;
     }
 
     else
@@ -1239,17 +1239,17 @@ LABEL_49:
       v11 = 0;
     }
 
-    v12 = [(TUICandidateLayout *)self collectionView];
-    [v12 bounds];
+    collectionView4 = [(TUICandidateLayout *)self collectionView];
+    [collectionView4 bounds];
     Width = CGRectGetWidth(v50);
 
-    v14 = [(TUICandidateLayout *)self collectionView];
+    collectionView5 = [(TUICandidateLayout *)self collectionView];
     v15 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
-    [v4 collectionView:v14 layout:self sizeForItemAtIndexPath:v15];
+    [dataSource collectionView:collectionView5 layout:self sizeForItemAtIndexPath:v15];
     v17 = v16;
 
-    v18 = [(TUICandidateLayout *)self collectionView];
-    TUIScreenScaleForView(v18);
+    collectionView6 = [(TUICandidateLayout *)self collectionView];
+    TUIScreenScaleForView(collectionView6);
 
     if (v11 || v10 != 1)
     {
@@ -1291,8 +1291,8 @@ LABEL_49:
     [(TUICandidateLayout *)self slottedCandidatesIterItemSpacing];
     if ((Width - v20 - v22 - v24 * (v10 + v11 - 1)) / v10 > 0.0)
     {
-      v25 = [MEMORY[0x1E695DF70] array];
-      [(NSMutableArray *)self->_candidateAttributes addObject:v25];
+      array = [MEMORY[0x1E695DF70] array];
+      [(NSMutableArray *)self->_candidateAttributes addObject:array];
       for (i = 0; i != v10; ++i)
       {
         v27 = [MEMORY[0x1E696AC88] indexPathForRow:i inSection:0];
@@ -1301,17 +1301,17 @@ LABEL_49:
         [(TUICandidateLayout *)self slottedCandidatesIterItemSpacing];
         UIRectIntegralWithScale();
         [v28 setFrame:?];
-        [v25 addObject:v28];
+        [array addObject:v28];
       }
 
       if (v11)
       {
-        v29 = [MEMORY[0x1E696AC88] indexPathForRow:v7 inSection:0];
+        v29 = [MEMORY[0x1E696AC88] indexPathForRow:slottedCandidatesCount inSection:0];
         v30 = [(UICollectionViewLayoutAttributes *)TUICandidateLayoutAttributes layoutAttributesForCellWithIndexPath:v29];
 
         UIRectIntegralWithScale();
         [v30 setFrame:?];
-        [v25 addObject:v30];
+        [array addObject:v30];
       }
 
       if ([(NSMutableArray *)self->_candidateAttributes count]&& ![(TUICandidateLayout *)self hideSlottedCellSeparators])
@@ -1330,10 +1330,10 @@ LABEL_49:
         aBlock[4] = self;
         aBlock[5] = v47;
         v31 = _Block_copy(aBlock);
-        if ([v25 count])
+        if ([array count])
         {
-          v32 = [v25 firstObject];
-          [v32 frame];
+          firstObject = [array firstObject];
+          [firstObject frame];
           MinX = CGRectGetMinX(v51);
           v31[2](v31, MinX);
         }
@@ -1342,7 +1342,7 @@ LABEL_49:
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v34 = v25;
+        v34 = array;
         v35 = [v34 countByEnumeratingWithState:&v42 objects:v48 count:16];
         if (v35)
         {
@@ -1399,18 +1399,18 @@ void __45__TUICandidateLayout_layoutSlottedCandidates__block_invoke(uint64_t a1,
 
 - (void)prepareLayoutForSingleRow
 {
-  v3 = [(TUICandidateLayout *)self collectionView];
-  v23 = [v3 dataSource];
+  collectionView = [(TUICandidateLayout *)self collectionView];
+  dataSource = [collectionView dataSource];
 
-  v4 = [(TUICandidateLayout *)self collectionView];
-  v5 = [v23 numberOfSectionsInCollectionView:v4];
+  collectionView2 = [(TUICandidateLayout *)self collectionView];
+  v5 = [dataSource numberOfSectionsInCollectionView:collectionView2];
 
   if (v5)
   {
     [(TUICandidateLayout *)self gridPadding];
     v7 = v6;
-    v8 = [v23 slottedCandidatesCount];
-    if (v8 + [v23 extraCandidatesCount])
+    slottedCandidatesCount = [dataSource slottedCandidatesCount];
+    if (slottedCandidatesCount + [dataSource extraCandidatesCount])
     {
       [(TUICandidateLayout *)self layoutSlottedCandidates];
     }
@@ -1421,18 +1421,18 @@ void __45__TUICandidateLayout_layoutSlottedCandidates__block_invoke(uint64_t a1,
       v24 = 1;
       do
       {
-        v10 = [MEMORY[0x1E695DF70] array];
-        [(NSMutableArray *)self->_candidateAttributes addObject:v10];
-        v11 = [(TUICandidateLayout *)self collectionView];
-        v12 = [v23 collectionView:v11 numberOfItemsInSection:v9];
+        array = [MEMORY[0x1E695DF70] array];
+        [(NSMutableArray *)self->_candidateAttributes addObject:array];
+        collectionView3 = [(TUICandidateLayout *)self collectionView];
+        v12 = [dataSource collectionView:collectionView3 numberOfItemsInSection:v9];
 
         if (v12 >= 1)
         {
           for (i = 0; i != v12; ++i)
           {
             v14 = [MEMORY[0x1E696AC88] indexPathForRow:i inSection:v9];
-            v15 = [(TUICandidateLayout *)self collectionView];
-            [v23 collectionView:v15 layout:self sizeForItemAtIndexPath:v14];
+            collectionView4 = [(TUICandidateLayout *)self collectionView];
+            [dataSource collectionView:collectionView4 layout:self sizeForItemAtIndexPath:v14];
             v17 = v16;
             v19 = v18;
 
@@ -1440,7 +1440,7 @@ void __45__TUICandidateLayout_layoutSlottedCandidates__block_invoke(uint64_t a1,
             [v20 setFrame:{v7, 0.0, v17, v19}];
             [(TUICandidateLayout *)self minimumInterItemSpacing];
             v22 = v21;
-            [v10 addObject:v20];
+            [array addObject:v20];
             if ([(TUICandidateLayout *)self candidateNumberEnabled]&& v24 <= 9)
             {
               [v20 setCandidateNumber:?];
@@ -1481,14 +1481,14 @@ void __45__TUICandidateLayout_layoutSlottedCandidates__block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(TUICandidateLayout *)self collectionView];
-  [v7 bounds];
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  collectionView = [(TUICandidateLayout *)self collectionView];
+  [collectionView bounds];
   v8 = CGRectGetWidth(v11);
   v12.origin.x = x;
   v12.origin.y = y;
@@ -1519,7 +1519,7 @@ void __45__TUICandidateLayout_layoutSlottedCandidates__block_invoke(uint64_t a1,
   self->_customHeaderAttributes = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 41) = self->_rowType;

@@ -1,11 +1,11 @@
 @interface IMWeakObjectCache
 + (id)sharedInstance;
 - (IMWeakObjectCache)init;
-- (id)copyObjectForKey:(id)a3;
-- (id)copyOrSetObject:(id)a3 forKey:(id)a4;
-- (id)objectForKey:(id)a3;
+- (id)copyObjectForKey:(id)key;
+- (id)copyOrSetObject:(id)object forKey:(id)key;
+- (id)objectForKey:(id)key;
 - (void)dealloc;
-- (void)removeObject:(id)a3 key:(id)a4;
+- (void)removeObject:(id)object key:(id)key;
 @end
 
 @implementation IMWeakObjectCache
@@ -44,13 +44,13 @@
   [(IMWeakObjectCache *)&v3 dealloc];
 }
 
-- (id)copyOrSetObject:(id)a3 forKey:(id)a4
+- (id)copyOrSetObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  objectCopy = object;
+  keyCopy = key;
+  v8 = keyCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (objectCopy && keyCopy)
   {
     pthread_mutex_lock(&self->_tableLock);
     weakObjectCache = self->_weakObjectCache;
@@ -81,11 +81,11 @@ LABEL_10:
     }
 
     v20 = [IMWeakReference alloc];
-    inited = objc_msgSend_initRefWithObject_(v20, v21, v6);
+    inited = objc_msgSend_initRefWithObject_(v20, v21, objectCopy);
 
     objc_msgSend_setObject_forKey_(self->_weakObjectCache, v23, inited, v8);
     pthread_mutex_unlock(&self->_tableLock);
-    v9 = v6;
+    v9 = objectCopy;
     v17 = inited;
     goto LABEL_10;
   }
@@ -95,11 +95,11 @@ LABEL_11:
   return v9;
 }
 
-- (id)copyObjectForKey:(id)a3
+- (id)copyObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_tableLock);
-  v6 = objc_msgSend_objectForKey_(self->_weakObjectCache, v5, v4);
+  v6 = objc_msgSend_objectForKey_(self->_weakObjectCache, v5, keyCopy);
 
   v9 = objc_msgSend_copyObject(v6, v7, v8);
   pthread_mutex_unlock(&self->_tableLock);
@@ -107,11 +107,11 @@ LABEL_11:
   return v9;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   pthread_mutex_lock(&self->_tableLock);
-  v6 = objc_msgSend_objectForKey_(self->_weakObjectCache, v5, v4);
+  v6 = objc_msgSend_objectForKey_(self->_weakObjectCache, v5, keyCopy);
 
   v9 = objc_msgSend_object(v6, v7, v8);
   pthread_mutex_unlock(&self->_tableLock);
@@ -119,17 +119,17 @@ LABEL_11:
   return v9;
 }
 
-- (void)removeObject:(id)a3 key:(id)a4
+- (void)removeObject:(id)object key:(id)key
 {
-  v15 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   pthread_mutex_lock(&self->_tableLock);
-  v8 = objc_msgSend_objectForKey_(self->_weakObjectCache, v7, v6);
+  v8 = objc_msgSend_objectForKey_(self->_weakObjectCache, v7, keyCopy);
   v11 = objc_msgSend_hash(v8, v9, v10);
-  v13 = v15;
-  if (v11 == v15)
+  v13 = objectCopy;
+  if (v11 == objectCopy)
   {
-    objc_msgSend_removeObjectForKey_(self->_weakObjectCache, v15, v6);
+    objc_msgSend_removeObjectForKey_(self->_weakObjectCache, objectCopy, keyCopy);
   }
 
   if (!objc_msgSend_count(self->_weakObjectCache, v13, v12))

@@ -1,42 +1,42 @@
 @interface WiFiAnalyticsAWDWiFiNWActivityAggregateMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasKCtlTxRTS:(BOOL)a3;
-- (void)setHasKMACRxControlFrameMatchingRA:(BOOL)a3;
-- (void)setHasKMACRxControlFrameOtherRA:(BOOL)a3;
-- (void)setHasKMACRxDataFrameMatchingRA:(BOOL)a3;
-- (void)setHasKMACRxDataFrameOtherRA:(BOOL)a3;
-- (void)setHasKMACRxUnicastCTStoMAC:(BOOL)a3;
-- (void)setHasKMACRxUnicastCTStoOther:(BOOL)a3;
-- (void)setHasKMACRxUnicastRTStoMAC:(BOOL)a3;
-- (void)setHasKMACRxUnicastRTStoOther:(BOOL)a3;
-- (void)setHasKRxBadFCS:(BOOL)a3;
-- (void)setHasKRxBadOther:(BOOL)a3;
-- (void)setHasKRxBadPLCP:(BOOL)a3;
-- (void)setHasKRxCRCGlitch:(BOOL)a3;
-- (void)setHasKRxDataErrors:(BOOL)a3;
-- (void)setHasKRxFrames:(BOOL)a3;
-- (void)setHasKRxGoodPLCP:(BOOL)a3;
-- (void)setHasKRxRetryBitSet:(BOOL)a3;
-- (void)setHasKTxFrames:(BOOL)a3;
-- (void)setHasKTxRetransmission:(BOOL)a3;
-- (void)setHasKdot11MultipleRetryCount:(BOOL)a3;
-- (void)setHasKdot11RTSFailureCount:(BOOL)a3;
-- (void)setHasKdot11RTSSuccessCount:(BOOL)a3;
-- (void)setHasKdot11RetryCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasKCtlTxRTS:(BOOL)s;
+- (void)setHasKMACRxControlFrameMatchingRA:(BOOL)a;
+- (void)setHasKMACRxControlFrameOtherRA:(BOOL)a;
+- (void)setHasKMACRxDataFrameMatchingRA:(BOOL)a;
+- (void)setHasKMACRxDataFrameOtherRA:(BOOL)a;
+- (void)setHasKMACRxUnicastCTStoMAC:(BOOL)c;
+- (void)setHasKMACRxUnicastCTStoOther:(BOOL)other;
+- (void)setHasKMACRxUnicastRTStoMAC:(BOOL)c;
+- (void)setHasKMACRxUnicastRTStoOther:(BOOL)other;
+- (void)setHasKRxBadFCS:(BOOL)s;
+- (void)setHasKRxBadOther:(BOOL)other;
+- (void)setHasKRxBadPLCP:(BOOL)p;
+- (void)setHasKRxCRCGlitch:(BOOL)glitch;
+- (void)setHasKRxDataErrors:(BOOL)errors;
+- (void)setHasKRxFrames:(BOOL)frames;
+- (void)setHasKRxGoodPLCP:(BOOL)p;
+- (void)setHasKRxRetryBitSet:(BOOL)set;
+- (void)setHasKTxFrames:(BOOL)frames;
+- (void)setHasKTxRetransmission:(BOOL)retransmission;
+- (void)setHasKdot11MultipleRetryCount:(BOOL)count;
+- (void)setHasKdot11RTSFailureCount:(BOOL)count;
+- (void)setHasKdot11RTSSuccessCount:(BOOL)count;
+- (void)setHasKdot11RetryCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiNWActivityAggregateMetrics
 
-- (void)setHasKRxDataErrors:(BOOL)a3
+- (void)setHasKRxDataErrors:(BOOL)errors
 {
-  if (a3)
+  if (errors)
   {
     v3 = 4096;
   }
@@ -49,9 +49,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasKRxFrames:(BOOL)a3
+- (void)setHasKRxFrames:(BOOL)frames
 {
-  if (a3)
+  if (frames)
   {
     v3 = 0x2000;
   }
@@ -64,9 +64,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasKRxRetryBitSet:(BOOL)a3
+- (void)setHasKRxRetryBitSet:(BOOL)set
 {
-  if (a3)
+  if (set)
   {
     v3 = 0x8000;
   }
@@ -79,9 +79,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasKMACRxDataFrameMatchingRA:(BOOL)a3
+- (void)setHasKMACRxDataFrameMatchingRA:(BOOL)a
 {
-  if (a3)
+  if (a)
   {
     v3 = 4;
   }
@@ -94,9 +94,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasKMACRxDataFrameOtherRA:(BOOL)a3
+- (void)setHasKMACRxDataFrameOtherRA:(BOOL)a
 {
-  if (a3)
+  if (a)
   {
     v3 = 8;
   }
@@ -109,9 +109,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasKMACRxControlFrameMatchingRA:(BOOL)a3
+- (void)setHasKMACRxControlFrameMatchingRA:(BOOL)a
 {
-  if (a3)
+  if (a)
   {
     v3 = 0x400000;
   }
@@ -124,9 +124,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasKMACRxControlFrameOtherRA:(BOOL)a3
+- (void)setHasKMACRxControlFrameOtherRA:(BOOL)a
 {
-  if (a3)
+  if (a)
   {
     v3 = 0x800000;
   }
@@ -139,9 +139,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasKRxGoodPLCP:(BOOL)a3
+- (void)setHasKRxGoodPLCP:(BOOL)p
 {
-  if (a3)
+  if (p)
   {
     v3 = 0x4000;
   }
@@ -154,9 +154,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasKRxBadPLCP:(BOOL)a3
+- (void)setHasKRxBadPLCP:(BOOL)p
 {
-  if (a3)
+  if (p)
   {
     v3 = 1024;
   }
@@ -169,9 +169,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasKRxBadFCS:(BOOL)a3
+- (void)setHasKRxBadFCS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 256;
   }
@@ -184,9 +184,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasKTxFrames:(BOOL)a3
+- (void)setHasKTxFrames:(BOOL)frames
 {
-  if (a3)
+  if (frames)
   {
     v3 = 0x10000;
   }
@@ -199,9 +199,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasKTxRetransmission:(BOOL)a3
+- (void)setHasKTxRetransmission:(BOOL)retransmission
 {
-  if (a3)
+  if (retransmission)
   {
     v3 = 0x20000;
   }
@@ -214,9 +214,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasKdot11RetryCount:(BOOL)a3
+- (void)setHasKdot11RetryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x200000;
   }
@@ -229,9 +229,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasKdot11MultipleRetryCount:(BOOL)a3
+- (void)setHasKdot11MultipleRetryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x40000;
   }
@@ -244,9 +244,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasKdot11RTSSuccessCount:(BOOL)a3
+- (void)setHasKdot11RTSSuccessCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x100000;
   }
@@ -259,9 +259,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasKdot11RTSFailureCount:(BOOL)a3
+- (void)setHasKdot11RTSFailureCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x80000;
   }
@@ -274,9 +274,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasKCtlTxRTS:(BOOL)a3
+- (void)setHasKCtlTxRTS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 2;
   }
@@ -289,9 +289,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasKRxCRCGlitch:(BOOL)a3
+- (void)setHasKRxCRCGlitch:(BOOL)glitch
 {
-  if (a3)
+  if (glitch)
   {
     v3 = 2048;
   }
@@ -304,9 +304,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasKMACRxUnicastCTStoMAC:(BOOL)a3
+- (void)setHasKMACRxUnicastCTStoMAC:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 16;
   }
@@ -319,9 +319,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasKMACRxUnicastCTStoOther:(BOOL)a3
+- (void)setHasKMACRxUnicastCTStoOther:(BOOL)other
 {
-  if (a3)
+  if (other)
   {
     v3 = 32;
   }
@@ -334,9 +334,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasKMACRxUnicastRTStoMAC:(BOOL)a3
+- (void)setHasKMACRxUnicastRTStoMAC:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 64;
   }
@@ -349,9 +349,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasKMACRxUnicastRTStoOther:(BOOL)a3
+- (void)setHasKMACRxUnicastRTStoOther:(BOOL)other
 {
-  if (a3)
+  if (other)
   {
     v3 = 128;
   }
@@ -364,9 +364,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasKRxBadOther:(BOOL)a3
+- (void)setHasKRxBadOther:(BOOL)other
 {
-  if (a3)
+  if (other)
   {
     v3 = 512;
   }
@@ -385,20 +385,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiNWActivityAggregateMetrics;
   v4 = [(WiFiAnalyticsAWDWiFiNWActivityAggregateMetrics *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiNWActivityAggregateMetrics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiNWActivityAggregateMetrics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((*&has & 0x1000) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kRxDataErrors];
-    [v3 setObject:v7 forKey:@"kRxDataErrors"];
+    [dictionary setObject:v7 forKey:@"kRxDataErrors"];
 
     has = self->_has;
     if ((*&has & 0x2000) == 0)
@@ -419,7 +419,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kRxFrames];
-  [v3 setObject:v8 forKey:@"kRxFrames"];
+  [dictionary setObject:v8 forKey:@"kRxFrames"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -435,7 +435,7 @@ LABEL_4:
 
 LABEL_31:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kRxRetryBitSet];
-  [v3 setObject:v9 forKey:@"kRxRetryBitSet"];
+  [dictionary setObject:v9 forKey:@"kRxRetryBitSet"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -451,7 +451,7 @@ LABEL_5:
 
 LABEL_32:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kMACRxDataFrameMatchingRA];
-  [v3 setObject:v10 forKey:@"kMACRxDataFrameMatchingRA"];
+  [dictionary setObject:v10 forKey:@"kMACRxDataFrameMatchingRA"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -467,7 +467,7 @@ LABEL_6:
 
 LABEL_33:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kMACRxDataFrameOtherRA];
-  [v3 setObject:v11 forKey:@"kMACRxDataFrameOtherRA"];
+  [dictionary setObject:v11 forKey:@"kMACRxDataFrameOtherRA"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -483,7 +483,7 @@ LABEL_7:
 
 LABEL_34:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_kMACRxControlFrameMatchingRA];
-  [v3 setObject:v12 forKey:@"kMACRxControlFrameMatchingRA"];
+  [dictionary setObject:v12 forKey:@"kMACRxControlFrameMatchingRA"];
 
   has = self->_has;
   if ((*&has & 0x800000) == 0)
@@ -499,7 +499,7 @@ LABEL_8:
 
 LABEL_35:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_kMACRxControlFrameOtherRA];
-  [v3 setObject:v13 forKey:@"kMACRxControlFrameOtherRA"];
+  [dictionary setObject:v13 forKey:@"kMACRxControlFrameOtherRA"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -515,7 +515,7 @@ LABEL_9:
 
 LABEL_36:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kRxGoodPLCP];
-  [v3 setObject:v14 forKey:@"kRxGoodPLCP"];
+  [dictionary setObject:v14 forKey:@"kRxGoodPLCP"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -531,7 +531,7 @@ LABEL_10:
 
 LABEL_37:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kRxBadPLCP];
-  [v3 setObject:v15 forKey:@"kRxBadPLCP"];
+  [dictionary setObject:v15 forKey:@"kRxBadPLCP"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -547,7 +547,7 @@ LABEL_11:
 
 LABEL_38:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kRxBadFCS];
-  [v3 setObject:v16 forKey:@"kRxBadFCS"];
+  [dictionary setObject:v16 forKey:@"kRxBadFCS"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -563,7 +563,7 @@ LABEL_12:
 
 LABEL_39:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kTxFrames];
-  [v3 setObject:v17 forKey:@"kTxFrames"];
+  [dictionary setObject:v17 forKey:@"kTxFrames"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -579,7 +579,7 @@ LABEL_13:
 
 LABEL_40:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kTxRetransmission];
-  [v3 setObject:v18 forKey:@"kTxRetransmission"];
+  [dictionary setObject:v18 forKey:@"kTxRetransmission"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -595,7 +595,7 @@ LABEL_14:
 
 LABEL_41:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kdot11RetryCount];
-  [v3 setObject:v19 forKey:@"kdot11RetryCount"];
+  [dictionary setObject:v19 forKey:@"kdot11RetryCount"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -611,7 +611,7 @@ LABEL_15:
 
 LABEL_42:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kdot11MultipleRetryCount];
-  [v3 setObject:v20 forKey:@"kdot11MultipleRetryCount"];
+  [dictionary setObject:v20 forKey:@"kdot11MultipleRetryCount"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -627,7 +627,7 @@ LABEL_16:
 
 LABEL_43:
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kdot11RTSSuccessCount];
-  [v3 setObject:v21 forKey:@"kdot11RTSSuccessCount"];
+  [dictionary setObject:v21 forKey:@"kdot11RTSSuccessCount"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -643,7 +643,7 @@ LABEL_17:
 
 LABEL_44:
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kdot11RTSFailureCount];
-  [v3 setObject:v22 forKey:@"kdot11RTSFailureCount"];
+  [dictionary setObject:v22 forKey:@"kdot11RTSFailureCount"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -659,7 +659,7 @@ LABEL_18:
 
 LABEL_45:
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kCtlTxRTS];
-  [v3 setObject:v23 forKey:@"kCtlTxRTS"];
+  [dictionary setObject:v23 forKey:@"kCtlTxRTS"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -675,7 +675,7 @@ LABEL_19:
 
 LABEL_46:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kRxCRCGlitch];
-  [v3 setObject:v24 forKey:@"kRxCRCGlitch"];
+  [dictionary setObject:v24 forKey:@"kRxCRCGlitch"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -691,7 +691,7 @@ LABEL_20:
 
 LABEL_47:
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kMACRxUnicastCTStoMAC];
-  [v3 setObject:v25 forKey:@"kMACRxUnicastCTStoMAC"];
+  [dictionary setObject:v25 forKey:@"kMACRxUnicastCTStoMAC"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -707,7 +707,7 @@ LABEL_21:
 
 LABEL_48:
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kMACRxUnicastCTStoOther];
-  [v3 setObject:v26 forKey:@"kMACRxUnicastCTStoOther"];
+  [dictionary setObject:v26 forKey:@"kMACRxUnicastCTStoOther"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -723,7 +723,7 @@ LABEL_22:
 
 LABEL_49:
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kMACRxUnicastRTStoMAC];
-  [v3 setObject:v27 forKey:@"kMACRxUnicastRTStoMAC"];
+  [dictionary setObject:v27 forKey:@"kMACRxUnicastRTStoMAC"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -739,7 +739,7 @@ LABEL_23:
 
 LABEL_50:
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kMACRxUnicastRTStoOther];
-  [v3 setObject:v28 forKey:@"kMACRxUnicastRTStoOther"];
+  [dictionary setObject:v28 forKey:@"kMACRxUnicastRTStoOther"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -755,23 +755,23 @@ LABEL_24:
 
 LABEL_51:
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kCtlTxCTS];
-  [v3 setObject:v29 forKey:@"kCtlTxCTS"];
+  [dictionary setObject:v29 forKey:@"kCtlTxCTS"];
 
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_25:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_kRxBadOther];
-    [v3 setObject:v5 forKey:@"kRxBadOther"];
+    [dictionary setObject:v5 forKey:@"kRxBadOther"];
   }
 
 LABEL_26:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v29 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x1000) != 0)
   {
@@ -1122,14 +1122,14 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x1000) != 0)
   {
-    v4[13] = self->_kRxDataErrors;
-    *(v4 + 48) |= 0x1000u;
+    toCopy[13] = self->_kRxDataErrors;
+    *(toCopy + 48) |= 0x1000u;
     has = self->_has;
     if ((*&has & 0x2000) == 0)
     {
@@ -1148,8 +1148,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[14] = self->_kRxFrames;
-  *(v4 + 48) |= 0x2000u;
+  toCopy[14] = self->_kRxFrames;
+  *(toCopy + 48) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1163,8 +1163,8 @@ LABEL_4:
   }
 
 LABEL_31:
-  v4[16] = self->_kRxRetryBitSet;
-  *(v4 + 48) |= 0x8000u;
+  toCopy[16] = self->_kRxRetryBitSet;
+  *(toCopy + 48) |= 0x8000u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1178,8 +1178,8 @@ LABEL_5:
   }
 
 LABEL_32:
-  v4[3] = self->_kMACRxDataFrameMatchingRA;
-  *(v4 + 48) |= 4u;
+  toCopy[3] = self->_kMACRxDataFrameMatchingRA;
+  *(toCopy + 48) |= 4u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1193,8 +1193,8 @@ LABEL_6:
   }
 
 LABEL_33:
-  v4[4] = self->_kMACRxDataFrameOtherRA;
-  *(v4 + 48) |= 8u;
+  toCopy[4] = self->_kMACRxDataFrameOtherRA;
+  *(toCopy + 48) |= 8u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1208,8 +1208,8 @@ LABEL_7:
   }
 
 LABEL_34:
-  *(v4 + 46) = self->_kMACRxControlFrameMatchingRA;
-  *(v4 + 48) |= 0x400000u;
+  *(toCopy + 46) = self->_kMACRxControlFrameMatchingRA;
+  *(toCopy + 48) |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1223,8 +1223,8 @@ LABEL_8:
   }
 
 LABEL_35:
-  *(v4 + 47) = self->_kMACRxControlFrameOtherRA;
-  *(v4 + 48) |= 0x800000u;
+  *(toCopy + 47) = self->_kMACRxControlFrameOtherRA;
+  *(toCopy + 48) |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1238,8 +1238,8 @@ LABEL_9:
   }
 
 LABEL_36:
-  v4[15] = self->_kRxGoodPLCP;
-  *(v4 + 48) |= 0x4000u;
+  toCopy[15] = self->_kRxGoodPLCP;
+  *(toCopy + 48) |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1253,8 +1253,8 @@ LABEL_10:
   }
 
 LABEL_37:
-  v4[11] = self->_kRxBadPLCP;
-  *(v4 + 48) |= 0x400u;
+  toCopy[11] = self->_kRxBadPLCP;
+  *(toCopy + 48) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1268,8 +1268,8 @@ LABEL_11:
   }
 
 LABEL_38:
-  v4[9] = self->_kRxBadFCS;
-  *(v4 + 48) |= 0x100u;
+  toCopy[9] = self->_kRxBadFCS;
+  *(toCopy + 48) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1283,8 +1283,8 @@ LABEL_12:
   }
 
 LABEL_39:
-  v4[17] = self->_kTxFrames;
-  *(v4 + 48) |= 0x10000u;
+  toCopy[17] = self->_kTxFrames;
+  *(toCopy + 48) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1298,8 +1298,8 @@ LABEL_13:
   }
 
 LABEL_40:
-  v4[18] = self->_kTxRetransmission;
-  *(v4 + 48) |= 0x20000u;
+  toCopy[18] = self->_kTxRetransmission;
+  *(toCopy + 48) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1313,8 +1313,8 @@ LABEL_14:
   }
 
 LABEL_41:
-  v4[22] = self->_kdot11RetryCount;
-  *(v4 + 48) |= 0x200000u;
+  toCopy[22] = self->_kdot11RetryCount;
+  *(toCopy + 48) |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1328,8 +1328,8 @@ LABEL_15:
   }
 
 LABEL_42:
-  v4[19] = self->_kdot11MultipleRetryCount;
-  *(v4 + 48) |= 0x40000u;
+  toCopy[19] = self->_kdot11MultipleRetryCount;
+  *(toCopy + 48) |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1343,8 +1343,8 @@ LABEL_16:
   }
 
 LABEL_43:
-  v4[21] = self->_kdot11RTSSuccessCount;
-  *(v4 + 48) |= 0x100000u;
+  toCopy[21] = self->_kdot11RTSSuccessCount;
+  *(toCopy + 48) |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1358,8 +1358,8 @@ LABEL_17:
   }
 
 LABEL_44:
-  v4[20] = self->_kdot11RTSFailureCount;
-  *(v4 + 48) |= 0x80000u;
+  toCopy[20] = self->_kdot11RTSFailureCount;
+  *(toCopy + 48) |= 0x80000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1373,8 +1373,8 @@ LABEL_18:
   }
 
 LABEL_45:
-  v4[2] = self->_kCtlTxRTS;
-  *(v4 + 48) |= 2u;
+  toCopy[2] = self->_kCtlTxRTS;
+  *(toCopy + 48) |= 2u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1388,8 +1388,8 @@ LABEL_19:
   }
 
 LABEL_46:
-  v4[12] = self->_kRxCRCGlitch;
-  *(v4 + 48) |= 0x800u;
+  toCopy[12] = self->_kRxCRCGlitch;
+  *(toCopy + 48) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1403,8 +1403,8 @@ LABEL_20:
   }
 
 LABEL_47:
-  v4[5] = self->_kMACRxUnicastCTStoMAC;
-  *(v4 + 48) |= 0x10u;
+  toCopy[5] = self->_kMACRxUnicastCTStoMAC;
+  *(toCopy + 48) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1418,8 +1418,8 @@ LABEL_21:
   }
 
 LABEL_48:
-  v4[6] = self->_kMACRxUnicastCTStoOther;
-  *(v4 + 48) |= 0x20u;
+  toCopy[6] = self->_kMACRxUnicastCTStoOther;
+  *(toCopy + 48) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1433,8 +1433,8 @@ LABEL_22:
   }
 
 LABEL_49:
-  v4[7] = self->_kMACRxUnicastRTStoMAC;
-  *(v4 + 48) |= 0x40u;
+  toCopy[7] = self->_kMACRxUnicastRTStoMAC;
+  *(toCopy + 48) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1448,8 +1448,8 @@ LABEL_23:
   }
 
 LABEL_50:
-  v4[8] = self->_kMACRxUnicastRTStoOther;
-  *(v4 + 48) |= 0x80u;
+  toCopy[8] = self->_kMACRxUnicastRTStoOther;
+  *(toCopy + 48) |= 0x80u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1463,21 +1463,21 @@ LABEL_24:
   }
 
 LABEL_51:
-  v4[1] = self->_kCtlTxCTS;
-  *(v4 + 48) |= 1u;
+  toCopy[1] = self->_kCtlTxCTS;
+  *(toCopy + 48) |= 1u;
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_25:
-    v4[10] = self->_kRxBadOther;
-    *(v4 + 48) |= 0x200u;
+    toCopy[10] = self->_kRxBadOther;
+    *(toCopy + 48) |= 0x200u;
   }
 
 LABEL_26:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x1000) != 0)
   {
@@ -1829,19 +1829,19 @@ LABEL_25:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_122;
   }
 
   has = self->_has;
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_kRxDataErrors != *(v4 + 13))
+    if ((v6 & 0x1000) == 0 || self->_kRxDataErrors != *(equalCopy + 13))
     {
       goto LABEL_122;
     }
@@ -1856,7 +1856,7 @@ LABEL_122:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_kRxFrames != *(v4 + 14))
+    if ((v6 & 0x2000) == 0 || self->_kRxFrames != *(equalCopy + 14))
     {
       goto LABEL_122;
     }
@@ -1869,7 +1869,7 @@ LABEL_122:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_kRxRetryBitSet != *(v4 + 16))
+    if ((v6 & 0x8000) == 0 || self->_kRxRetryBitSet != *(equalCopy + 16))
     {
       goto LABEL_122;
     }
@@ -1882,7 +1882,7 @@ LABEL_122:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_kMACRxDataFrameMatchingRA != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_kMACRxDataFrameMatchingRA != *(equalCopy + 3))
     {
       goto LABEL_122;
     }
@@ -1895,7 +1895,7 @@ LABEL_122:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_kMACRxDataFrameOtherRA != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_kMACRxDataFrameOtherRA != *(equalCopy + 4))
     {
       goto LABEL_122;
     }
@@ -1908,7 +1908,7 @@ LABEL_122:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v6 & 0x400000) == 0 || self->_kMACRxControlFrameMatchingRA != *(v4 + 46))
+    if ((v6 & 0x400000) == 0 || self->_kMACRxControlFrameMatchingRA != *(equalCopy + 46))
     {
       goto LABEL_122;
     }
@@ -1921,7 +1921,7 @@ LABEL_122:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_kMACRxControlFrameOtherRA != *(v4 + 47))
+    if ((v6 & 0x800000) == 0 || self->_kMACRxControlFrameOtherRA != *(equalCopy + 47))
     {
       goto LABEL_122;
     }
@@ -1934,7 +1934,7 @@ LABEL_122:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_kRxGoodPLCP != *(v4 + 15))
+    if ((v6 & 0x4000) == 0 || self->_kRxGoodPLCP != *(equalCopy + 15))
     {
       goto LABEL_122;
     }
@@ -1947,7 +1947,7 @@ LABEL_122:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_kRxBadPLCP != *(v4 + 11))
+    if ((v6 & 0x400) == 0 || self->_kRxBadPLCP != *(equalCopy + 11))
     {
       goto LABEL_122;
     }
@@ -1960,7 +1960,7 @@ LABEL_122:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_kRxBadFCS != *(v4 + 9))
+    if ((v6 & 0x100) == 0 || self->_kRxBadFCS != *(equalCopy + 9))
     {
       goto LABEL_122;
     }
@@ -1973,7 +1973,7 @@ LABEL_122:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_kTxFrames != *(v4 + 17))
+    if ((v6 & 0x10000) == 0 || self->_kTxFrames != *(equalCopy + 17))
     {
       goto LABEL_122;
     }
@@ -1986,7 +1986,7 @@ LABEL_122:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_kTxRetransmission != *(v4 + 18))
+    if ((v6 & 0x20000) == 0 || self->_kTxRetransmission != *(equalCopy + 18))
     {
       goto LABEL_122;
     }
@@ -1999,7 +1999,7 @@ LABEL_122:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_kdot11RetryCount != *(v4 + 22))
+    if ((v6 & 0x200000) == 0 || self->_kdot11RetryCount != *(equalCopy + 22))
     {
       goto LABEL_122;
     }
@@ -2012,7 +2012,7 @@ LABEL_122:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_kdot11MultipleRetryCount != *(v4 + 19))
+    if ((v6 & 0x40000) == 0 || self->_kdot11MultipleRetryCount != *(equalCopy + 19))
     {
       goto LABEL_122;
     }
@@ -2025,7 +2025,7 @@ LABEL_122:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_kdot11RTSSuccessCount != *(v4 + 21))
+    if ((v6 & 0x100000) == 0 || self->_kdot11RTSSuccessCount != *(equalCopy + 21))
     {
       goto LABEL_122;
     }
@@ -2038,7 +2038,7 @@ LABEL_122:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_kdot11RTSFailureCount != *(v4 + 20))
+    if ((v6 & 0x80000) == 0 || self->_kdot11RTSFailureCount != *(equalCopy + 20))
     {
       goto LABEL_122;
     }
@@ -2051,7 +2051,7 @@ LABEL_122:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_kCtlTxRTS != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_kCtlTxRTS != *(equalCopy + 2))
     {
       goto LABEL_122;
     }
@@ -2064,7 +2064,7 @@ LABEL_122:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_kRxCRCGlitch != *(v4 + 12))
+    if ((v6 & 0x800) == 0 || self->_kRxCRCGlitch != *(equalCopy + 12))
     {
       goto LABEL_122;
     }
@@ -2077,7 +2077,7 @@ LABEL_122:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_kMACRxUnicastCTStoMAC != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_kMACRxUnicastCTStoMAC != *(equalCopy + 5))
     {
       goto LABEL_122;
     }
@@ -2090,7 +2090,7 @@ LABEL_122:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_kMACRxUnicastCTStoOther != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_kMACRxUnicastCTStoOther != *(equalCopy + 6))
     {
       goto LABEL_122;
     }
@@ -2103,7 +2103,7 @@ LABEL_122:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_kMACRxUnicastRTStoMAC != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_kMACRxUnicastRTStoMAC != *(equalCopy + 7))
     {
       goto LABEL_122;
     }
@@ -2116,7 +2116,7 @@ LABEL_122:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_kMACRxUnicastRTStoOther != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_kMACRxUnicastRTStoOther != *(equalCopy + 8))
     {
       goto LABEL_122;
     }
@@ -2129,7 +2129,7 @@ LABEL_122:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_kCtlTxCTS != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_kCtlTxCTS != *(equalCopy + 1))
     {
       goto LABEL_122;
     }
@@ -2142,7 +2142,7 @@ LABEL_122:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_kRxBadOther != *(v4 + 10))
+    if ((v6 & 0x200) == 0 || self->_kRxBadOther != *(equalCopy + 10))
     {
       goto LABEL_122;
     }
@@ -2152,7 +2152,7 @@ LABEL_122:
 
   else
   {
-    v7 = (*(v4 + 48) & 0x200) == 0;
+    v7 = (*(equalCopy + 48) & 0x200) == 0;
   }
 
 LABEL_123:
@@ -2489,15 +2489,15 @@ LABEL_41:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x1000) != 0)
   {
-    self->_kRxDataErrors = *(v4 + 13);
+    self->_kRxDataErrors = *(fromCopy + 13);
     *&self->_has |= 0x1000u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 0x2000) == 0)
     {
 LABEL_3:
@@ -2515,9 +2515,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_kRxFrames = *(v4 + 14);
+  self->_kRxFrames = *(fromCopy + 14);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_4:
@@ -2530,9 +2530,9 @@ LABEL_4:
   }
 
 LABEL_31:
-  self->_kRxRetryBitSet = *(v4 + 16);
+  self->_kRxRetryBitSet = *(fromCopy + 16);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -2545,9 +2545,9 @@ LABEL_5:
   }
 
 LABEL_32:
-  self->_kMACRxDataFrameMatchingRA = *(v4 + 3);
+  self->_kMACRxDataFrameMatchingRA = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -2560,9 +2560,9 @@ LABEL_6:
   }
 
 LABEL_33:
-  self->_kMACRxDataFrameOtherRA = *(v4 + 4);
+  self->_kMACRxDataFrameOtherRA = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_7:
@@ -2575,9 +2575,9 @@ LABEL_7:
   }
 
 LABEL_34:
-  self->_kMACRxControlFrameMatchingRA = *(v4 + 46);
+  self->_kMACRxControlFrameMatchingRA = *(fromCopy + 46);
   *&self->_has |= 0x400000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_8:
@@ -2590,9 +2590,9 @@ LABEL_8:
   }
 
 LABEL_35:
-  self->_kMACRxControlFrameOtherRA = *(v4 + 47);
+  self->_kMACRxControlFrameOtherRA = *(fromCopy + 47);
   *&self->_has |= 0x800000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_9:
@@ -2605,9 +2605,9 @@ LABEL_9:
   }
 
 LABEL_36:
-  self->_kRxGoodPLCP = *(v4 + 15);
+  self->_kRxGoodPLCP = *(fromCopy + 15);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x400) == 0)
   {
 LABEL_10:
@@ -2620,9 +2620,9 @@ LABEL_10:
   }
 
 LABEL_37:
-  self->_kRxBadPLCP = *(v4 + 11);
+  self->_kRxBadPLCP = *(fromCopy + 11);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x100) == 0)
   {
 LABEL_11:
@@ -2635,9 +2635,9 @@ LABEL_11:
   }
 
 LABEL_38:
-  self->_kRxBadFCS = *(v4 + 9);
+  self->_kRxBadFCS = *(fromCopy + 9);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_12:
@@ -2650,9 +2650,9 @@ LABEL_12:
   }
 
 LABEL_39:
-  self->_kTxFrames = *(v4 + 17);
+  self->_kTxFrames = *(fromCopy + 17);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_13:
@@ -2665,9 +2665,9 @@ LABEL_13:
   }
 
 LABEL_40:
-  self->_kTxRetransmission = *(v4 + 18);
+  self->_kTxRetransmission = *(fromCopy + 18);
   *&self->_has |= 0x20000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_14:
@@ -2680,9 +2680,9 @@ LABEL_14:
   }
 
 LABEL_41:
-  self->_kdot11RetryCount = *(v4 + 22);
+  self->_kdot11RetryCount = *(fromCopy + 22);
   *&self->_has |= 0x200000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_15:
@@ -2695,9 +2695,9 @@ LABEL_15:
   }
 
 LABEL_42:
-  self->_kdot11MultipleRetryCount = *(v4 + 19);
+  self->_kdot11MultipleRetryCount = *(fromCopy + 19);
   *&self->_has |= 0x40000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_16:
@@ -2710,9 +2710,9 @@ LABEL_16:
   }
 
 LABEL_43:
-  self->_kdot11RTSSuccessCount = *(v4 + 21);
+  self->_kdot11RTSSuccessCount = *(fromCopy + 21);
   *&self->_has |= 0x100000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_17:
@@ -2725,9 +2725,9 @@ LABEL_17:
   }
 
 LABEL_44:
-  self->_kdot11RTSFailureCount = *(v4 + 20);
+  self->_kdot11RTSFailureCount = *(fromCopy + 20);
   *&self->_has |= 0x80000u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) == 0)
   {
 LABEL_18:
@@ -2740,9 +2740,9 @@ LABEL_18:
   }
 
 LABEL_45:
-  self->_kCtlTxRTS = *(v4 + 2);
+  self->_kCtlTxRTS = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x800) == 0)
   {
 LABEL_19:
@@ -2755,9 +2755,9 @@ LABEL_19:
   }
 
 LABEL_46:
-  self->_kRxCRCGlitch = *(v4 + 12);
+  self->_kRxCRCGlitch = *(fromCopy + 12);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x10) == 0)
   {
 LABEL_20:
@@ -2770,9 +2770,9 @@ LABEL_20:
   }
 
 LABEL_47:
-  self->_kMACRxUnicastCTStoMAC = *(v4 + 5);
+  self->_kMACRxUnicastCTStoMAC = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x20) == 0)
   {
 LABEL_21:
@@ -2785,9 +2785,9 @@ LABEL_21:
   }
 
 LABEL_48:
-  self->_kMACRxUnicastCTStoOther = *(v4 + 6);
+  self->_kMACRxUnicastCTStoOther = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x40) == 0)
   {
 LABEL_22:
@@ -2800,9 +2800,9 @@ LABEL_22:
   }
 
 LABEL_49:
-  self->_kMACRxUnicastRTStoMAC = *(v4 + 7);
+  self->_kMACRxUnicastRTStoMAC = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x80) == 0)
   {
 LABEL_23:
@@ -2815,9 +2815,9 @@ LABEL_23:
   }
 
 LABEL_50:
-  self->_kMACRxUnicastRTStoOther = *(v4 + 8);
+  self->_kMACRxUnicastRTStoOther = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 1) == 0)
   {
 LABEL_24:
@@ -2830,12 +2830,12 @@ LABEL_24:
   }
 
 LABEL_51:
-  self->_kCtlTxCTS = *(v4 + 1);
+  self->_kCtlTxCTS = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 48) & 0x200) != 0)
+  if ((*(fromCopy + 48) & 0x200) != 0)
   {
 LABEL_25:
-    self->_kRxBadOther = *(v4 + 10);
+    self->_kRxBadOther = *(fromCopy + 10);
     *&self->_has |= 0x200u;
   }
 

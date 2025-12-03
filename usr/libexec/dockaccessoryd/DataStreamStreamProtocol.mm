@@ -1,24 +1,24 @@
 @interface DataStreamStreamProtocol
 - (BOOL)isActive;
 - (DataStreamProtocolDelegate)dataStream;
-- (DataStreamStreamProtocol)initWithDataStream:(id)a3;
-- (void)_closeAllSocketsWithError:(id)a3;
-- (void)_notifyActiveStatusChangedFromPreviousValue:(BOOL)a3;
+- (DataStreamStreamProtocol)initWithDataStream:(id)stream;
+- (void)_closeAllSocketsWithError:(id)error;
+- (void)_notifyActiveStatusChangedFromPreviousValue:(BOOL)value;
 - (void)_reevaluateTrafficClassForDataStream;
-- (void)dataStream:(id)a3 didReceiveEvent:(id)a4 header:(id)a5 payload:(id)a6;
-- (void)dataStream:(id)a3 didReceiveRequest:(id)a4 header:(id)a5 payload:(id)a6;
-- (void)dataStream:(id)a3 didReceiveResponse:(id)a4 header:(id)a5 payload:(id)a6;
-- (void)dataStreamInitiatedClose:(id)a3;
-- (void)registerSocket:(id)a3;
-- (void)sendData:(id)a3 socket:(id)a4 completion:(id)a5;
-- (void)unregisterSocket:(id)a3;
+- (void)dataStream:(id)stream didReceiveEvent:(id)event header:(id)header payload:(id)payload;
+- (void)dataStream:(id)stream didReceiveRequest:(id)request header:(id)header payload:(id)payload;
+- (void)dataStream:(id)stream didReceiveResponse:(id)response header:(id)header payload:(id)payload;
+- (void)dataStreamInitiatedClose:(id)close;
+- (void)registerSocket:(id)socket;
+- (void)sendData:(id)data socket:(id)socket completion:(id)completion;
+- (void)unregisterSocket:(id)socket;
 @end
 
 @implementation DataStreamStreamProtocol
 
-- (DataStreamStreamProtocol)initWithDataStream:(id)a3
+- (DataStreamStreamProtocol)initWithDataStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = DataStreamStreamProtocol;
   v5 = [(DataStreamStreamProtocol *)&v9 init];
@@ -28,45 +28,45 @@
     sockets = v5->_sockets;
     v5->_sockets = v6;
 
-    objc_storeWeak(&v5->_dataStream, v4);
+    objc_storeWeak(&v5->_dataStream, streamCopy);
   }
 
   return v5;
 }
 
-- (void)registerSocket:(id)a3
+- (void)registerSocket:(id)socket
 {
-  v4 = a3;
-  v5 = [(DataStreamStreamProtocol *)self isActive];
-  v6 = [(DataStreamStreamProtocol *)self sockets];
-  v7 = [v4 applicationProtocolName];
-  v11 = [v6 objectForKey:v7];
+  socketCopy = socket;
+  isActive = [(DataStreamStreamProtocol *)self isActive];
+  sockets = [(DataStreamStreamProtocol *)self sockets];
+  applicationProtocolName = [socketCopy applicationProtocolName];
+  v11 = [sockets objectForKey:applicationProtocolName];
 
   v8 = [NSError hmfErrorWithCode:12];
   [v11 closeWithError:v8];
 
-  v9 = [(DataStreamStreamProtocol *)self sockets];
-  v10 = [v4 applicationProtocolName];
-  [v9 setObject:v4 forKey:v10];
+  sockets2 = [(DataStreamStreamProtocol *)self sockets];
+  applicationProtocolName2 = [socketCopy applicationProtocolName];
+  [sockets2 setObject:socketCopy forKey:applicationProtocolName2];
 
-  [(DataStreamStreamProtocol *)self _notifyActiveStatusChangedFromPreviousValue:v5];
+  [(DataStreamStreamProtocol *)self _notifyActiveStatusChangedFromPreviousValue:isActive];
 }
 
-- (void)unregisterSocket:(id)a3
+- (void)unregisterSocket:(id)socket
 {
-  v10 = a3;
-  v4 = [(DataStreamStreamProtocol *)self isActive];
-  v5 = [(DataStreamStreamProtocol *)self sockets];
-  v6 = [v10 applicationProtocolName];
-  v7 = [v5 objectForKey:v6];
+  socketCopy = socket;
+  isActive = [(DataStreamStreamProtocol *)self isActive];
+  sockets = [(DataStreamStreamProtocol *)self sockets];
+  applicationProtocolName = [socketCopy applicationProtocolName];
+  v7 = [sockets objectForKey:applicationProtocolName];
 
-  if (v7 == v10)
+  if (v7 == socketCopy)
   {
-    v8 = [(DataStreamStreamProtocol *)self sockets];
-    v9 = [v10 applicationProtocolName];
-    [v8 removeObjectForKey:v9];
+    sockets2 = [(DataStreamStreamProtocol *)self sockets];
+    applicationProtocolName2 = [socketCopy applicationProtocolName];
+    [sockets2 removeObjectForKey:applicationProtocolName2];
 
-    [(DataStreamStreamProtocol *)self _notifyActiveStatusChangedFromPreviousValue:v4];
+    [(DataStreamStreamProtocol *)self _notifyActiveStatusChangedFromPreviousValue:isActive];
     [(DataStreamStreamProtocol *)self _reevaluateTrafficClassForDataStream];
   }
 }
@@ -77,8 +77,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(NSMapTable *)self->_sockets objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v30 count:16];
+  objectEnumerator = [(NSMapTable *)self->_sockets objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v4)
   {
     v5 = v4;
@@ -91,33 +91,33 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 trafficClass];
-        if (v11 > v7)
+        trafficClass = [v10 trafficClass];
+        if (trafficClass > v7)
         {
-          v12 = v11;
-          v13 = [v10 applicationProtocolName];
+          v12 = trafficClass;
+          applicationProtocolName = [v10 applicationProtocolName];
 
-          v6 = v13;
+          v6 = applicationProtocolName;
           v7 = v12;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v30 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v30 count:16];
     }
 
     while (v5);
 
     if (v6)
     {
-      v14 = self;
+      selfCopy = self;
       v15 = sub_10007FAA0();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = sub_10007FAFC(v14);
+        v16 = sub_10007FAFC(selfCopy);
         *buf = 138543874;
         v25 = v16;
         v26 = 2048;
@@ -137,11 +137,11 @@
     v7 = 0;
   }
 
-  v17 = self;
+  selfCopy2 = self;
   v15 = sub_10007FAA0();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v18 = sub_10007FAFC(v17);
+    v18 = sub_10007FAFC(selfCopy2);
     *buf = 138543618;
     v25 = v18;
     v26 = 2048;
@@ -152,20 +152,20 @@
   v6 = 0;
 LABEL_17:
 
-  v19 = [(DataStreamStreamProtocol *)self dataStream];
-  [v19 setTrafficClass:v7];
+  dataStream = [(DataStreamStreamProtocol *)self dataStream];
+  [dataStream setTrafficClass:v7];
 }
 
-- (void)_notifyActiveStatusChangedFromPreviousValue:(BOOL)a3
+- (void)_notifyActiveStatusChangedFromPreviousValue:(BOOL)value
 {
-  if ([(DataStreamStreamProtocol *)self isActive]!= a3)
+  if ([(DataStreamStreamProtocol *)self isActive]!= value)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_10007FAA0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = sub_10007FAFC(v4);
-      [(DataStreamStreamProtocol *)v4 isActive];
+      v6 = sub_10007FAFC(selfCopy);
+      [(DataStreamStreamProtocol *)selfCopy isActive];
       v7 = HMFBooleanToString();
       v9 = 138543618;
       v10 = v6;
@@ -174,49 +174,49 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}@Stream protocol changes active to %@", &v9, 0x16u);
     }
 
-    v8 = [(DataStreamStreamProtocol *)v4 dataStream];
-    [v8 protocolDidUpdateActiveStatus:v4];
+    dataStream = [(DataStreamStreamProtocol *)selfCopy dataStream];
+    [dataStream protocolDidUpdateActiveStatus:selfCopy];
   }
 }
 
-- (void)sendData:(id)a3 socket:(id)a4 completion:(id)a5
+- (void)sendData:(id)data socket:(id)socket completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DataStreamStreamProtocol *)self dataStream];
-  v12 = [v9 applicationProtocolName];
+  completionCopy = completion;
+  socketCopy = socket;
+  dataCopy = data;
+  dataStream = [(DataStreamStreamProtocol *)self dataStream];
+  applicationProtocolName = [socketCopy applicationProtocolName];
 
   v17 = @"data";
-  v18 = v10;
+  v18 = dataCopy;
   v13 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000300B0;
   v15[3] = &unk_100273790;
-  v16 = v8;
-  v14 = v8;
-  [v11 sendEventForProtocol:@"stream" topic:v12 payload:v13 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [dataStream sendEventForProtocol:@"stream" topic:applicationProtocolName payload:v13 completion:v15];
 }
 
 - (BOOL)isActive
 {
-  v2 = [(DataStreamStreamProtocol *)self sockets];
-  v3 = [v2 count] != 0;
+  sockets = [(DataStreamStreamProtocol *)self sockets];
+  v3 = [sockets count] != 0;
 
   return v3;
 }
 
-- (void)dataStreamInitiatedClose:(id)a3
+- (void)dataStreamInitiatedClose:(id)close
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(DataStreamStreamProtocol *)self sockets:a3];
-  v4 = [v3 objectEnumerator];
+  v3 = [(DataStreamStreamProtocol *)self sockets:close];
+  objectEnumerator = [v3 objectEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -228,7 +228,7 @@ LABEL_17:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * v8) closeInitiated];
@@ -236,33 +236,33 @@ LABEL_17:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)dataStream:(id)a3 didReceiveEvent:(id)a4 header:(id)a5 payload:(id)a6
+- (void)dataStream:(id)stream didReceiveEvent:(id)event header:(id)header payload:(id)payload
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [(DataStreamStreamProtocol *)self sockets];
-  v11 = [v10 objectForKey:v8];
+  eventCopy = event;
+  payloadCopy = payload;
+  sockets = [(DataStreamStreamProtocol *)self sockets];
+  v11 = [sockets objectForKey:eventCopy];
 
   if (!v11)
   {
-    v13 = self;
+    selfCopy2 = self;
     v14 = sub_10007FAA0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = sub_10007FAFC(v13);
+      v15 = sub_10007FAFC(selfCopy2);
       v19 = 138543874;
       v20 = v15;
       v21 = 2112;
-      v22 = v8;
+      v22 = eventCopy;
       v23 = 2112;
-      v24 = v9;
+      v24 = payloadCopy;
       v16 = "%{public}@No active socket, dropping packet with topic=%@ payload=%@";
       v17 = v14;
       v18 = OS_LOG_TYPE_DEBUG;
@@ -275,21 +275,21 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [v9 objectForKeyedSubscript:@"data"];
+  v12 = [payloadCopy objectForKeyedSubscript:@"data"];
 
   if (!v12)
   {
-    v13 = self;
+    selfCopy2 = self;
     v14 = sub_10007FAA0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = sub_10007FAFC(v13);
+      v15 = sub_10007FAFC(selfCopy2);
       v19 = 138543874;
       v20 = v15;
       v21 = 2112;
-      v22 = v8;
+      v22 = eventCopy;
       v23 = 2112;
-      v24 = v9;
+      v24 = payloadCopy;
       v16 = "%{public}@No data field in payload, dropping packet with topic=%@ payload=%@";
       v17 = v14;
       v18 = OS_LOG_TYPE_ERROR;
@@ -299,66 +299,66 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v13 = [v9 objectForKeyedSubscript:@"data"];
-  [v11 handleIncomingData:v13];
+  selfCopy2 = [payloadCopy objectForKeyedSubscript:@"data"];
+  [v11 handleIncomingData:selfCopy2];
 LABEL_10:
 }
 
-- (void)dataStream:(id)a3 didReceiveRequest:(id)a4 header:(id)a5 payload:(id)a6
+- (void)dataStream:(id)stream didReceiveRequest:(id)request header:(id)header payload:(id)payload
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = self;
+  requestCopy = request;
+  headerCopy = header;
+  payloadCopy = payload;
+  selfCopy = self;
   v13 = sub_10007FAA0();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = sub_10007FAFC(v12);
+    v14 = sub_10007FAFC(selfCopy);
     v15 = 138544130;
     v16 = v14;
     v17 = 2112;
-    v18 = v9;
+    v18 = requestCopy;
     v19 = 2112;
-    v20 = v10;
+    v20 = headerCopy;
     v21 = 2112;
-    v22 = v11;
+    v22 = payloadCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}@Stream protocol does not support request message with topic=%@, header=%@, payload=%@", &v15, 0x2Au);
   }
 }
 
-- (void)dataStream:(id)a3 didReceiveResponse:(id)a4 header:(id)a5 payload:(id)a6
+- (void)dataStream:(id)stream didReceiveResponse:(id)response header:(id)header payload:(id)payload
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = self;
+  responseCopy = response;
+  headerCopy = header;
+  payloadCopy = payload;
+  selfCopy = self;
   v13 = sub_10007FAA0();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = sub_10007FAFC(v12);
+    v14 = sub_10007FAFC(selfCopy);
     v15 = 138544130;
     v16 = v14;
     v17 = 2112;
-    v18 = v9;
+    v18 = responseCopy;
     v19 = 2112;
-    v20 = v10;
+    v20 = headerCopy;
     v21 = 2112;
-    v22 = v11;
+    v22 = payloadCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}@Stream protocol does not support response message with topic=%@, header=%@, payload=%@", &v15, 0x2Au);
   }
 }
 
-- (void)_closeAllSocketsWithError:(id)a3
+- (void)_closeAllSocketsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(DataStreamStreamProtocol *)self sockets];
-  v6 = [v5 objectEnumerator];
+  sockets = [(DataStreamStreamProtocol *)self sockets];
+  objectEnumerator = [sockets objectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -370,27 +370,27 @@ LABEL_10:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (v11)
         {
-          [v11 closeWithError:v4];
+          [v11 closeWithError:errorCopy];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(DataStreamStreamProtocol *)self sockets];
-  [v12 removeAllObjects];
+  sockets2 = [(DataStreamStreamProtocol *)self sockets];
+  [sockets2 removeAllObjects];
 }
 
 - (DataStreamProtocolDelegate)dataStream

@@ -1,23 +1,23 @@
 @interface PKPassTileValueText
-+ (id)createWithContent:(id)a3;
-- (BOOL)_isEqual:(id)a3;
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (PKPassTileValueText)initWithCoder:(id)a3;
-- (id)createResolvedValueWithBundle:(id)a3 privateBundle:(id)a4;
++ (id)createWithContent:(id)content;
+- (BOOL)_isEqual:(id)equal;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (PKPassTileValueText)initWithCoder:(id)coder;
+- (id)createResolvedValueWithBundle:(id)bundle privateBundle:(id)privateBundle;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileValueText
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKPassTileValueText;
-  if ([(PKPassTileValue *)&v9 _setUpWithDictionary:v4])
+  if ([(PKPassTileValue *)&v9 _setUpWithDictionary:dictionaryCopy])
   {
-    v5 = [v4 objectForKey:@"content"];
+    v5 = [dictionaryCopy objectForKey:@"content"];
     content = self->_content;
     self->_content = v5;
 
@@ -32,13 +32,13 @@
   return v7;
 }
 
-+ (id)createWithContent:(id)a3
++ (id)createWithContent:(id)content
 {
-  v4 = a3;
-  if (v4)
+  contentCopy = content;
+  if (contentCopy)
   {
     v5 = [PKPassTileValue _createForType:0 resolved:1];
-    objc_storeStrong(v5 + 3, a3);
+    objc_storeStrong(v5 + 3, content);
   }
 
   else
@@ -49,16 +49,16 @@
   return v5;
 }
 
-- (id)createResolvedValueWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedValueWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
   content = self->_content;
   v14.receiver = self;
   v14.super_class = PKPassTileValueText;
   v7 = content;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PKPassTileValue *)&v14 createResolvedValueWithBundle:v9 privateBundle:v8];
-  v11 = PKLocalizedPassStringForPassBundle(v7, v9, v8);
+  privateBundleCopy = privateBundle;
+  bundleCopy = bundle;
+  v10 = [(PKPassTileValue *)&v14 createResolvedValueWithBundle:bundleCopy privateBundle:privateBundleCopy];
+  v11 = PKLocalizedPassStringForPassBundle(v7, bundleCopy, privateBundleCopy);
 
   v12 = v10[3];
   v10[3] = v11;
@@ -66,15 +66,15 @@
   return v10;
 }
 
-- (PKPassTileValueText)initWithCoder:(id)a3
+- (PKPassTileValueText)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPassTileValueText;
-  v5 = [(PKPassTileValue *)&v9 initWithCoder:v4];
+  v5 = [(PKPassTileValue *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"content"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"content"];
     content = v5->_content;
     v5->_content = v6;
   }
@@ -82,13 +82,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassTileValueText;
-  v4 = a3;
-  [(PKPassTileValue *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_content forKey:{@"content", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKPassTileValue *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_content forKey:{@"content", v5.receiver, v5.super_class}];
 }
 
 - (unint64_t)hash
@@ -100,14 +100,14 @@
   return SipHash();
 }
 
-- (BOOL)_isEqual:(id)a3
+- (BOOL)_isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = PKPassTileValueText;
-  if ([(PKPassTileValue *)&v13 _isEqual:v4])
+  if ([(PKPassTileValue *)&v13 _isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     content = self->_content;
     v7 = v5[3];
     v8 = content;

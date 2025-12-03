@@ -1,62 +1,62 @@
 @interface PDPushProvisioningManager
-- (BOOL)_companionHasProvisionedPassForCredentialHash:(id)a3;
-- (BOOL)_hasProvisionedPassForCredentialHash:(id)a3;
-- (BOOL)_isPushProvisioningSupportedForCurrentDeviceRequiresSimultaneousRequestRouting:(BOOL)a3 checkPassCount:(BOOL)a4 passCount:(unint64_t)a5;
-- (PDPushProvisioningManager)initWithDataBaseManager:(id)a3 cardFileManager:(id)a4 userNotificationManager:(id)a5 paymentWebServiceCoordinator:(id)a6 familyCircleManager:(id)a7 secureElement:(id)a8 assertionManager:(id)a9 deviceRegistrationServiceCoordinator:(id)a10 notificationStreamManager:(id)a11 pendingProvisioningManager:(id)a12;
-- (id)_encryptProvisioningTarget:(id)a3 devSigned:(BOOL)a4 certificateChain:(id)a5 error:(id *)a6;
-- (void)_handleExpectedPassUpdateForEligibilityResponse:(id)a3 completion:(id)a4;
-- (void)_handleUnsupportedDeviceResponse:(id)a3 completion:(id)a4;
-- (void)_isPushProvisioningSupportedForConfiguration:(id)a3 completion:(id)a4;
-- (void)_prepareProvisioningTarget:(id)a3 checkFamilyCircle:(BOOL)a4 determineTargetDevice:(BOOL)a5 completion:(id)a6;
-- (void)_queue_checkAvailablePushProvisioningSharingIdentifiersAndProvisionWithCompletion:(id)a3;
-- (void)_queue_insertOrUpdatePushProvisioningSharingMetadata:(id)a3;
-- (void)_queue_performBackgroundPushProvisioningWithTransaction:(id)a3;
-- (void)_webServiceForTargetDevice:(unint64_t)a3 completion:(id)a4;
-- (void)configurePushProvisioningConfiguration:(id)a3 completion:(id)a4;
-- (void)encryptProvisioningTarget:(id)a3 completion:(id)a4;
-- (void)isPushProvisioningSupportedForConfiguration:(id)a3 completion:(id)a4;
-- (void)provideEncryptedPushProvisioningTarget:(id)a3 sharingInstanceIdentifier:(id)a4 withCompletion:(id)a5;
+- (BOOL)_companionHasProvisionedPassForCredentialHash:(id)hash;
+- (BOOL)_hasProvisionedPassForCredentialHash:(id)hash;
+- (BOOL)_isPushProvisioningSupportedForCurrentDeviceRequiresSimultaneousRequestRouting:(BOOL)routing checkPassCount:(BOOL)count passCount:(unint64_t)passCount;
+- (PDPushProvisioningManager)initWithDataBaseManager:(id)manager cardFileManager:(id)fileManager userNotificationManager:(id)notificationManager paymentWebServiceCoordinator:(id)coordinator familyCircleManager:(id)circleManager secureElement:(id)element assertionManager:(id)assertionManager deviceRegistrationServiceCoordinator:(id)self0 notificationStreamManager:(id)self1 pendingProvisioningManager:(id)self2;
+- (id)_encryptProvisioningTarget:(id)target devSigned:(BOOL)signed certificateChain:(id)chain error:(id *)error;
+- (void)_handleExpectedPassUpdateForEligibilityResponse:(id)response completion:(id)completion;
+- (void)_handleUnsupportedDeviceResponse:(id)response completion:(id)completion;
+- (void)_isPushProvisioningSupportedForConfiguration:(id)configuration completion:(id)completion;
+- (void)_prepareProvisioningTarget:(id)target checkFamilyCircle:(BOOL)circle determineTargetDevice:(BOOL)device completion:(id)completion;
+- (void)_queue_checkAvailablePushProvisioningSharingIdentifiersAndProvisionWithCompletion:(id)completion;
+- (void)_queue_insertOrUpdatePushProvisioningSharingMetadata:(id)metadata;
+- (void)_queue_performBackgroundPushProvisioningWithTransaction:(id)transaction;
+- (void)_webServiceForTargetDevice:(unint64_t)device completion:(id)completion;
+- (void)configurePushProvisioningConfiguration:(id)configuration completion:(id)completion;
+- (void)encryptProvisioningTarget:(id)target completion:(id)completion;
+- (void)isPushProvisioningSupportedForConfiguration:(id)configuration completion:(id)completion;
+- (void)provideEncryptedPushProvisioningTarget:(id)target sharingInstanceIdentifier:(id)identifier withCompletion:(id)completion;
 - (void)provisionAvailablePushProvisioningSharingIdentifiers;
-- (void)pushProvisioningNoncesWithCredentialCount:(unint64_t)a3 completion:(id)a4;
-- (void)pushProvisioningSharingIdentifiers:(id)a3;
-- (void)redeemPaymentShareableCredential:(id)a3 completion:(id)a4;
-- (void)redeemPaymentShareableCredential:(id)a3 provisioningRequestForEligibilityResponse:(id)a4 completion:(id)a5;
-- (void)redeemProvisioningMetadata:(id)a3 completion:(id)a4;
-- (void)redeemProvisioningSharingIdentifier:(id)a3 completion:(id)a4;
-- (void)statusForShareableCredentials:(id)a3 completion:(id)a4;
+- (void)pushProvisioningNoncesWithCredentialCount:(unint64_t)count completion:(id)completion;
+- (void)pushProvisioningSharingIdentifiers:(id)identifiers;
+- (void)redeemPaymentShareableCredential:(id)credential completion:(id)completion;
+- (void)redeemPaymentShareableCredential:(id)credential provisioningRequestForEligibilityResponse:(id)response completion:(id)completion;
+- (void)redeemProvisioningMetadata:(id)metadata completion:(id)completion;
+- (void)redeemProvisioningSharingIdentifier:(id)identifier completion:(id)completion;
+- (void)statusForShareableCredentials:(id)credentials completion:(id)completion;
 @end
 
 @implementation PDPushProvisioningManager
 
-- (PDPushProvisioningManager)initWithDataBaseManager:(id)a3 cardFileManager:(id)a4 userNotificationManager:(id)a5 paymentWebServiceCoordinator:(id)a6 familyCircleManager:(id)a7 secureElement:(id)a8 assertionManager:(id)a9 deviceRegistrationServiceCoordinator:(id)a10 notificationStreamManager:(id)a11 pendingProvisioningManager:(id)a12
+- (PDPushProvisioningManager)initWithDataBaseManager:(id)manager cardFileManager:(id)fileManager userNotificationManager:(id)notificationManager paymentWebServiceCoordinator:(id)coordinator familyCircleManager:(id)circleManager secureElement:(id)element assertionManager:(id)assertionManager deviceRegistrationServiceCoordinator:(id)self0 notificationStreamManager:(id)self1 pendingProvisioningManager:(id)self2
 {
-  v40 = a3;
-  obj = a4;
-  v39 = a4;
-  v38 = a5;
-  v37 = a6;
-  v36 = a7;
-  v35 = a8;
-  v34 = a9;
-  v33 = a10;
-  v32 = a11;
-  v31 = a12;
+  managerCopy = manager;
+  obj = fileManager;
+  fileManagerCopy = fileManager;
+  notificationManagerCopy = notificationManager;
+  coordinatorCopy = coordinator;
+  circleManagerCopy = circleManager;
+  elementCopy = element;
+  assertionManagerCopy = assertionManager;
+  serviceCoordinatorCopy = serviceCoordinator;
+  streamManagerCopy = streamManager;
+  provisioningManagerCopy = provisioningManager;
   v43.receiver = self;
   v43.super_class = PDPushProvisioningManager;
   v18 = [(PDPushProvisioningManager *)&v43 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_databaseManager, a3);
+    objc_storeStrong(&v18->_databaseManager, manager);
     objc_storeStrong(&v19->_cardFileManager, obj);
-    objc_storeStrong(&v19->_webServiceCoordinator, a6);
-    objc_storeStrong(&v19->_secureElement, a8);
-    objc_storeStrong(&v19->_userNotificationManager, a5);
-    objc_storeStrong(&v19->_familyCircleManager, a7);
-    objc_storeStrong(&v19->_deviceRegistrationServiceCoordinator, a10);
-    objc_storeStrong(&v19->_notificationStreamManager, a11);
-    objc_storeStrong(&v19->_pendingProvisioningManager, a12);
-    objc_storeStrong(&v19->_assertionManager, a9);
+    objc_storeStrong(&v19->_webServiceCoordinator, coordinator);
+    objc_storeStrong(&v19->_secureElement, element);
+    objc_storeStrong(&v19->_userNotificationManager, notificationManager);
+    objc_storeStrong(&v19->_familyCircleManager, circleManager);
+    objc_storeStrong(&v19->_deviceRegistrationServiceCoordinator, serviceCoordinator);
+    objc_storeStrong(&v19->_notificationStreamManager, streamManager);
+    objc_storeStrong(&v19->_pendingProvisioningManager, provisioningManager);
+    objc_storeStrong(&v19->_assertionManager, assertionManager);
     v19->_companionWebServiceLock._os_unfair_lock_opaque = 0;
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v21 = dispatch_queue_create("com.apple.passd.pushprovisioningmanager.work", v20);
@@ -81,31 +81,31 @@
   return v19;
 }
 
-- (void)isPushProvisioningSupportedForConfiguration:(id)a3 completion:(id)a4
+- (void)isPushProvisioningSupportedForConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1000FA86C;
     v8[3] = &unk_100845898;
     v8[4] = self;
-    v9 = v6;
-    [(PDPushProvisioningManager *)self _isPushProvisioningSupportedForConfiguration:a3 completion:v8];
+    v9 = completionCopy;
+    [(PDPushProvisioningManager *)self _isPushProvisioningSupportedForConfiguration:configuration completion:v8];
   }
 }
 
-- (void)_isPushProvisioningSupportedForConfiguration:(id)a3 completion:(id)a4
+- (void)_isPushProvisioningSupportedForConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 secureElementPassConfiguration];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  secureElementPassConfiguration = [configurationCopy secureElementPassConfiguration];
   v9 = objc_alloc_init(PKProvisioningRequirementOracle);
-  v10 = [v9 requirementsForAddSecureElementPassConfiguration:v8];
-  v11 = [v9 recoverableRequirements];
-  v12 = [v10 requirementsByRemovingRequirements:v11];
+  v10 = [v9 requirementsForAddSecureElementPassConfiguration:secureElementPassConfiguration];
+  recoverableRequirements = [v9 recoverableRequirements];
+  v12 = [v10 requirementsByRemovingRequirements:recoverableRequirements];
 
   v13 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v37[0] = 0;
@@ -135,13 +135,13 @@
   v25[1] = 3221225472;
   v25[2] = sub_1000FAF64;
   v25[3] = &unk_100845960;
-  v15 = v6;
+  v15 = configurationCopy;
   v26 = v15;
-  v27 = self;
+  selfCopy = self;
   v16 = v14;
   v28 = v16;
   v30 = v35;
-  v17 = v8;
+  v17 = secureElementPassConfiguration;
   v29 = v17;
   [v13 addOperation:v25];
   v18 = +[NSNull null];
@@ -151,7 +151,7 @@
   v21[3] = &unk_100845988;
   v23 = v37;
   v24 = v35;
-  v19 = v7;
+  v19 = completionCopy;
   v22 = v19;
   v20 = [v13 evaluateWithInput:v18 completion:v21];
 
@@ -159,10 +159,10 @@
   _Block_object_dispose(v37, 8);
 }
 
-- (BOOL)_isPushProvisioningSupportedForCurrentDeviceRequiresSimultaneousRequestRouting:(BOOL)a3 checkPassCount:(BOOL)a4 passCount:(unint64_t)a5
+- (BOOL)_isPushProvisioningSupportedForCurrentDeviceRequiresSimultaneousRequestRouting:(BOOL)routing checkPassCount:(BOOL)count passCount:(unint64_t)passCount
 {
-  v6 = a4;
-  v7 = a3;
+  countCopy = count;
+  routingCopy = routing;
   if (!PKSecureElementIsAvailable())
   {
     v9 = PKLogFacilityTypeGetObject();
@@ -209,7 +209,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v7 && (PKNearFieldSupportsSimultaneousRequestRouting() & 1) == 0)
+  if (routingCopy && (PKNearFieldSupportsSimultaneousRequestRouting() & 1) == 0)
   {
     v9 = PKLogFacilityTypeGetObject();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -223,15 +223,15 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (!v6 || !PKDisableDynamicSEAllocation())
+  if (!countCopy || !PKDisableDynamicSEAllocation())
   {
     return 1;
   }
 
-  v13 = [(PDDatabaseManager *)self->_databaseManager countActiveSecureElementPasses];
+  countActiveSecureElementPasses = [(PDDatabaseManager *)self->_databaseManager countActiveSecureElementPasses];
   v14 = PKMaxPaymentCards();
   result = 1;
-  if (v14 && v13 + a5 > v14)
+  if (v14 && countActiveSecureElementPasses + passCount > v14)
   {
     v9 = PKLogFacilityTypeGetObject();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -248,28 +248,28 @@ LABEL_10:
   return result;
 }
 
-- (void)pushProvisioningSharingIdentifiers:(id)a3
+- (void)pushProvisioningSharingIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   webServiceCoordinator = self->_webServiceCoordinator;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FB748;
   v7[3] = &unk_1008459D8;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   [(PDPaymentWebServiceCoordinator *)webServiceCoordinator performHandlerOnSharedWebServiceQueue:v7];
 }
 
-- (void)statusForShareableCredentials:(id)a3 completion:(id)a4
+- (void)statusForShareableCredentials:(id)credentials completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  credentialsCopy = credentials;
+  completionCopy = completion;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = credentialsCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -295,8 +295,8 @@ LABEL_10:
           v16[2] = sub_1000FBA80;
           v16[3] = &unk_100845A28;
           v17 = v8;
-          v18 = self;
-          v19 = v7;
+          selfCopy = self;
+          v19 = completionCopy;
           [(PDPaymentWebServiceCoordinator *)webServiceCoordinator performHandlerOnSharedWebServiceQueue:v16];
 
           goto LABEL_13;
@@ -324,48 +324,48 @@ LABEL_10:
   }
 
   v14 = PKAggregateSharingStatusForShareableCredentials();
-  (*(v7 + 2))(v7, v14, v8, 0);
+  (*(completionCopy + 2))(completionCopy, v14, v8, 0);
 LABEL_13:
 }
 
-- (void)provideEncryptedPushProvisioningTarget:(id)a3 sharingInstanceIdentifier:(id)a4 withCompletion:(id)a5
+- (void)provideEncryptedPushProvisioningTarget:(id)target sharingInstanceIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  targetCopy = target;
+  identifierCopy = identifier;
+  completionCopy = completion;
   webServiceCoordinator = self->_webServiceCoordinator;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000FC250;
   v15[3] = &unk_100845A28;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = targetCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = targetCopy;
   [(PDPaymentWebServiceCoordinator *)webServiceCoordinator performHandlerOnSharedWebServiceQueue:v15];
 }
 
-- (void)pushProvisioningNoncesWithCredentialCount:(unint64_t)a3 completion:(id)a4
+- (void)pushProvisioningNoncesWithCredentialCount:(unint64_t)count completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   webServiceCoordinator = self->_webServiceCoordinator;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000FC3CC;
   v9[3] = &unk_100845B18;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  countCopy = count;
   v9[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   [(PDPaymentWebServiceCoordinator *)webServiceCoordinator performHandlerOnSharedWebServiceQueue:v9];
 }
 
-- (void)configurePushProvisioningConfiguration:(id)a3 completion:(id)a4
+- (void)configurePushProvisioningConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v23 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v7 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v56[0] = 0;
   v56[1] = v56;
@@ -373,18 +373,18 @@ LABEL_13:
   v56[3] = sub_100005AB0;
   v56[4] = sub_10000B164;
   v57 = 0;
-  v8 = [v6 identityDocumentConfiguration];
-  v24 = self;
+  identityDocumentConfiguration = [configurationCopy identityDocumentConfiguration];
+  selfCopy = self;
   v25 = v7;
 
-  if (v8)
+  if (identityDocumentConfiguration)
   {
     v53[0] = _NSConcreteStackBlock;
     v53[1] = 3221225472;
     v53[2] = sub_1000FCCFC;
     v53[3] = &unk_10083E620;
     v53[4] = self;
-    v54 = v6;
+    v54 = configurationCopy;
     v55 = v56;
     [v7 addOperation:v53];
   }
@@ -409,17 +409,17 @@ LABEL_13:
   v43[2] = sub_1000FD008;
   v43[3] = &unk_10083F7B0;
   v43[4] = self;
-  v9 = v6;
+  v9 = configurationCopy;
   v44 = v9;
   v45 = v50;
   v46 = v48;
   v47 = v56;
   [v7 addOperation:v43];
-  v10 = [v9 shareablePassConfiguration];
-  v22 = v10;
-  if (v10)
+  shareablePassConfiguration = [v9 shareablePassConfiguration];
+  v22 = shareablePassConfiguration;
+  if (shareablePassConfiguration)
   {
-    v11 = [v10 primaryAction] == 1;
+    v11 = [shareablePassConfiguration primaryAction] == 1;
   }
 
   else
@@ -431,8 +431,8 @@ LABEL_13:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v12 = [v9 metadataProviders];
-  v13 = [v12 countByEnumeratingWithState:&v39 objects:v58 count:16];
+  metadataProviders = [v9 metadataProviders];
+  v13 = [metadataProviders countByEnumeratingWithState:&v39 objects:v58 count:16];
   if (v13)
   {
     v14 = *v40;
@@ -442,10 +442,10 @@ LABEL_13:
       {
         if (*v40 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(metadataProviders);
         }
 
-        v16 = [*(*(&v39 + 1) + 8 * i) provisioningTarget];
+        provisioningTarget = [*(*(&v39 + 1) + 8 * i) provisioningTarget];
         v31[0] = _NSConcreteStackBlock;
         v31[1] = 3221225472;
         v31[2] = sub_1000FD22C;
@@ -453,15 +453,15 @@ LABEL_13:
         v38 = v11;
         v35 = v50;
         v36 = v48;
-        v17 = v16;
+        v17 = provisioningTarget;
         v32 = v17;
-        v33 = v24;
+        v33 = selfCopy;
         v37 = v56;
         v34 = v9;
         [v25 addOperation:v31];
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v39 objects:v58 count:16];
+      v13 = [metadataProviders countByEnumeratingWithState:&v39 objects:v58 count:16];
     }
 
     while (v13);
@@ -475,8 +475,8 @@ LABEL_13:
   v19 = v9;
   v30 = v56;
   v27 = v19;
-  v28 = v24;
-  v20 = v23;
+  v28 = selfCopy;
+  v20 = completionCopy;
   v29 = v20;
   v21 = [v25 evaluateWithInput:v18 completion:v26];
 
@@ -485,14 +485,14 @@ LABEL_13:
   _Block_object_dispose(v56, 8);
 }
 
-- (void)_queue_insertOrUpdatePushProvisioningSharingMetadata:(id)a3
+- (void)_queue_insertOrUpdatePushProvisioningSharingMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [metadataCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -504,7 +504,7 @@ LABEL_13:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(metadataCopy);
         }
 
         v9 = [(PDDatabaseManager *)self->_databaseManager insertOrUpdatePushProvisioningSharingMetadata:*(*(&v10 + 1) + 8 * v8)];
@@ -512,7 +512,7 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [metadataCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -535,14 +535,14 @@ LABEL_13:
   v7[2] = sub_1000FDB48;
   v7[3] = &unk_10083C420;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
   dispatch_async(workQueue, v7);
 }
 
-- (void)_queue_performBackgroundPushProvisioningWithTransaction:(id)a3
+- (void)_queue_performBackgroundPushProvisioningWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   if (self->_isUpdatingPushProvisioningSharingIdentifier)
   {
     self->_didDeferUpdatingSharingIdentifiers = 1;
@@ -558,22 +558,22 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Push provisioning: Performing background push provisioning", buf, 2u);
     }
 
-    if (!v4)
+    if (!transactionCopy)
     {
-      v4 = PDOSTransactionCreate("PDPushProvisioningManager.updating_sharing_identifier");
+      transactionCopy = PDOSTransactionCreate("PDPushProvisioningManager.updating_sharing_identifier");
     }
 
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1000FDD00;
     v14 = &unk_100845C80;
-    v15 = self;
-    v4 = v4;
-    v16 = v4;
+    selfCopy = self;
+    transactionCopy = transactionCopy;
+    v16 = transactionCopy;
     v6 = objc_retainBlock(&v11);
     v7 = [NSMutableSet alloc];
-    v8 = [(PDDatabaseManager *)self->_databaseManager pushProvisioningSharingMetadataWithStatus:1, v11, v12, v13, v14, v15];
-    v9 = [v7 initWithSet:v8];
+    selfCopy = [(PDDatabaseManager *)self->_databaseManager pushProvisioningSharingMetadataWithStatus:1, v11, v12, v13, v14, selfCopy];
+    v9 = [v7 initWithSet:selfCopy];
     availableSharingMetaData = self->_availableSharingMetaData;
     self->_availableSharingMetaData = v9;
 
@@ -589,9 +589,9 @@ LABEL_13:
   }
 }
 
-- (void)_queue_checkAvailablePushProvisioningSharingIdentifiersAndProvisionWithCompletion:(id)a3
+- (void)_queue_checkAvailablePushProvisioningSharingIdentifiersAndProvisionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -630,7 +630,7 @@ LABEL_13:
     v10[3] = &unk_100845D70;
     v10[4] = self;
     v12 = buf;
-    v11 = v4;
+    v11 = completionCopy;
     v9 = [v7 evaluateWithInput:v8 completion:v10];
 
     _Block_object_dispose(buf, 8);
@@ -644,26 +644,26 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Push provisioning: skipping check because pending push provisioning credentials are handled by the pending provisioning manager", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (void)encryptProvisioningTarget:(id)a3 completion:(id)a4
+- (void)encryptProvisioningTarget:(id)target completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FE830;
   v7[3] = &unk_100845D98;
-  v8 = a4;
-  v6 = v8;
-  [(PDPushProvisioningManager *)self _prepareProvisioningTarget:a3 checkFamilyCircle:0 determineTargetDevice:0 completion:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(PDPushProvisioningManager *)self _prepareProvisioningTarget:target checkFamilyCircle:0 determineTargetDevice:0 completion:v7];
 }
 
-- (void)_prepareProvisioningTarget:(id)a3 checkFamilyCircle:(BOOL)a4 determineTargetDevice:(BOOL)a5 completion:(id)a6
+- (void)_prepareProvisioningTarget:(id)target checkFamilyCircle:(BOOL)circle determineTargetDevice:(BOOL)device completion:(id)completion
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 targetDevice];
+  targetCopy = target;
+  completionCopy = completion;
+  targetDevice = [targetCopy targetDevice];
   v12 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v48[0] = 0;
   v48[1] = v48;
@@ -685,9 +685,9 @@ LABEL_13:
   v41[1] = 3221225472;
   v41[2] = sub_1000FED8C;
   v41[3] = &unk_100845E10;
-  v44 = a4;
+  circleCopy = circle;
   v41[4] = self;
-  v13 = v9;
+  v13 = targetCopy;
   v42 = v13;
   v43 = v45;
   [v12 addOperation:v41];
@@ -702,7 +702,7 @@ LABEL_13:
   v38[2] = sub_1000FF3E0;
   v38[3] = &unk_100845E60;
   v38[5] = v39;
-  v38[6] = v11;
+  v38[6] = targetDevice;
   v38[4] = self;
   [v12 addOperation:v38];
   v34[0] = _NSConcreteStackBlock;
@@ -729,7 +729,7 @@ LABEL_13:
   v25[4] = self;
   v15 = v14;
   v26 = v15;
-  v31 = v11;
+  v31 = targetDevice;
   v29 = v48;
   v30 = v45;
   [v12 addOperation:v25];
@@ -738,9 +738,9 @@ LABEL_13:
   v19[1] = 3221225472;
   v19[2] = sub_1000FFAE0;
   v19[3] = &unk_100845F00;
-  v24 = v11;
+  v24 = targetDevice;
   v21 = v48;
-  v17 = v10;
+  v17 = completionCopy;
   v19[4] = self;
   v20 = v17;
   v22 = v32;
@@ -754,95 +754,95 @@ LABEL_13:
   _Block_object_dispose(v48, 8);
 }
 
-- (id)_encryptProvisioningTarget:(id)a3 devSigned:(BOOL)a4 certificateChain:(id)a5 error:(id *)a6
+- (id)_encryptProvisioningTarget:(id)target devSigned:(BOOL)signed certificateChain:(id)chain error:(id *)error
 {
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  chainCopy = chain;
   PKPaymentCreateAndValidateTrustWithCerts();
-  if (a6)
+  if (error)
   {
-    *a6 = [NSError errorWithDomain:PKEncryptionErrorDomain code:1 userInfo:0];
+    *error = [NSError errorWithDomain:PKEncryptionErrorDomain code:1 userInfo:0];
   }
 
   return 0;
 }
 
-- (void)redeemPaymentShareableCredential:(id)a3 completion:(id)a4
+- (void)redeemPaymentShareableCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 encryptedProvisioningTarget];
-  v9 = [v8 targetDevice];
+  credentialCopy = credential;
+  completionCopy = completion;
+  encryptedProvisioningTarget = [credentialCopy encryptedProvisioningTarget];
+  targetDevice = [encryptedProvisioningTarget targetDevice];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100100050;
   v12[3] = &unk_100845F50;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  [(PDPushProvisioningManager *)self _webServiceForTargetDevice:v9 completion:v12];
+  v13 = credentialCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = credentialCopy;
+  [(PDPushProvisioningManager *)self _webServiceForTargetDevice:targetDevice completion:v12];
 }
 
-- (void)redeemProvisioningSharingIdentifier:(id)a3 completion:(id)a4
+- (void)redeemProvisioningSharingIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Push provisioning starting redeem with sharingIdentifier: %@", buf, 0xCu);
   }
 
-  v9 = [[PKPaymentShareableCredential alloc] initWithProvisioningSharingIdentifier:v6 isBackgroundProvisioning:1];
+  v9 = [[PKPaymentShareableCredential alloc] initWithProvisioningSharingIdentifier:identifierCopy isBackgroundProvisioning:1];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100100504;
   v11[3] = &unk_100845F78;
-  v12 = v7;
-  v10 = v7;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(PDPushProvisioningManager *)self redeemPaymentShareableCredential:v9 completion:v11];
 }
 
-- (void)redeemProvisioningMetadata:(id)a3 completion:(id)a4
+- (void)redeemProvisioningMetadata:(id)metadata completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = metadataCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Push provisioning starting redeem with metadata: %@", buf, 0xCu);
   }
 
   v9 = [PKPaymentShareableCredential alloc];
-  v10 = [v6 sharingInstanceIdentifier];
-  v11 = [v9 initWithProvisioningSharingIdentifier:v10 isBackgroundProvisioning:1];
+  sharingInstanceIdentifier = [metadataCopy sharingInstanceIdentifier];
+  v11 = [v9 initWithProvisioningSharingIdentifier:sharingInstanceIdentifier isBackgroundProvisioning:1];
 
-  [v11 setSource:{objc_msgSend(v6, "source")}];
+  [v11 setSource:{objc_msgSend(metadataCopy, "source")}];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001006AC;
   v13[3] = &unk_100845F78;
-  v14 = v7;
-  v12 = v7;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [(PDPushProvisioningManager *)self redeemPaymentShareableCredential:v11 completion:v13];
 }
 
-- (void)redeemPaymentShareableCredential:(id)a3 provisioningRequestForEligibilityResponse:(id)a4 completion:(id)a5
+- (void)redeemPaymentShareableCredential:(id)credential provisioningRequestForEligibilityResponse:(id)response completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credentialCopy = credential;
+  responseCopy = response;
+  completionCopy = completion;
   v11 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = credentialCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Push provisioning starting redeeme with credential: %@", &buf, 0xCu);
   }
 
@@ -853,7 +853,7 @@ LABEL_13:
   v44 = sub_100005AB0;
   v45 = sub_10000B164;
   v12 = +[NSUUID UUID];
-  v46 = [v12 UUIDString];
+  uUIDString = [v12 UUIDString];
 
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
@@ -867,7 +867,7 @@ LABEL_13:
   v35[1] = 3221225472;
   v35[2] = sub_100100B10;
   v35[3] = &unk_100845FC8;
-  v15 = v10;
+  v15 = completionCopy;
   v37 = v15;
   v16 = v13;
   v38 = v16;
@@ -880,10 +880,10 @@ LABEL_13:
   v26[1] = 3221225472;
   v26[2] = sub_100100B60;
   v26[3] = &unk_100846068;
-  v21 = v8;
+  v21 = credentialCopy;
   p_buf = &buf;
   v27 = v21;
-  v28 = self;
+  selfCopy = self;
   v22 = v18;
   v29 = v22;
   objc_copyWeak(&v34, &location);
@@ -891,7 +891,7 @@ LABEL_13:
   v30 = v23;
   v24 = v16;
   v31 = v24;
-  v25 = v9;
+  v25 = responseCopy;
   v32 = v25;
   [(PDAssertionManager *)assertionManager acquireAssertionOfType:1 withIdentifier:v20 reason:@"Push provisioning request" handler:v26];
 
@@ -902,11 +902,11 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)_handleUnsupportedDeviceResponse:(id)a3 completion:(id)a4
+- (void)_handleUnsupportedDeviceResponse:(id)response completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 eligibilityStatus];
-  if (v7 == 4)
+  completionCopy = completion;
+  eligibilityStatus = [response eligibilityStatus];
+  if (eligibilityStatus == 4)
   {
     v22 = NSDebugDescriptionErrorKey;
     v23 = @"Newer OS version required";
@@ -916,8 +916,8 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  v8 = v7;
-  if (v7 == 5)
+  v8 = eligibilityStatus;
+  if (eligibilityStatus == 5)
   {
     v24 = NSDebugDescriptionErrorKey;
     v25 = @"Hardware not supported";
@@ -946,16 +946,16 @@ LABEL_9:
   v17[2] = sub_100101670;
   v17[3] = &unk_10083C820;
   v18 = v12;
-  v19 = v6;
+  v19 = completionCopy;
   v15 = v12;
-  v16 = v6;
+  v16 = completionCopy;
   dispatch_async(replyQueue, v17);
 }
 
-- (void)_handleExpectedPassUpdateForEligibilityResponse:(id)a3 completion:(id)a4
+- (void)_handleExpectedPassUpdateForEligibilityResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -968,12 +968,12 @@ LABEL_9:
   v18[2] = sub_1001018AC;
   v18[3] = &unk_100846090;
   v18[4] = self;
-  v9 = v7;
+  v9 = completionCopy;
   v19 = v9;
   v10 = objc_retainBlock(v18);
-  v11 = [v6 dpanIdentifier];
-  v12 = v11;
-  if (v11)
+  dpanIdentifier = [responseCopy dpanIdentifier];
+  v12 = dpanIdentifier;
+  if (dpanIdentifier)
   {
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
@@ -981,7 +981,7 @@ LABEL_9:
     block[2] = sub_100101A44;
     block[3] = &unk_10083D320;
     block[4] = self;
-    v16 = v11;
+    v16 = dpanIdentifier;
     v17 = v10;
     dispatch_async(workQueue, block);
   }
@@ -999,14 +999,14 @@ LABEL_9:
   }
 }
 
-- (BOOL)_hasProvisionedPassForCredentialHash:(id)a3
+- (BOOL)_hasProvisionedPassForCredentialHash:(id)hash
 {
-  v3 = [(PDDatabaseManager *)self->_databaseManager passWithProvisioningCredentialHash:a3];
-  v4 = [v3 secureElementPass];
+  v3 = [(PDDatabaseManager *)self->_databaseManager passWithProvisioningCredentialHash:hash];
+  secureElementPass = [v3 secureElementPass];
 
-  if (v4)
+  if (secureElementPass)
   {
-    v5 = [v4 passActivationState] != 4;
+    v5 = [secureElementPass passActivationState] != 4;
   }
 
   else
@@ -1017,29 +1017,29 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)_companionHasProvisionedPassForCredentialHash:(id)a3
+- (BOOL)_companionHasProvisionedPassForCredentialHash:(id)hash
 {
-  v3 = a3;
+  hashCopy = hash;
   v4 = +[PKPassLibrary sharedInstanceWithRemoteLibrary];
-  v5 = [v4 _remoteLibrary];
+  _remoteLibrary = [v4 _remoteLibrary];
 
-  v6 = [v5 passesOfType:1];
+  v6 = [_remoteLibrary passesOfType:1];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100101D18;
   v10[3] = &unk_1008460B8;
-  v11 = v3;
-  v7 = v3;
+  v11 = hashCopy;
+  v7 = hashCopy;
   v8 = [v6 pk_containsObjectPassingTest:v10];
 
   return v8;
 }
 
-- (void)_webServiceForTargetDevice:(unint64_t)a3 completion:(id)a4
+- (void)_webServiceForTargetDevice:(unint64_t)device completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 2)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (device == 2)
   {
     os_unfair_lock_lock(&self->_companionWebServiceLock);
     companionWebServiceProvider = self->_companionWebServiceProvider;
@@ -1054,14 +1054,14 @@ LABEL_9:
       ++self->_companionWebServiceUseCounter;
     }
 
-    v11 = [(NPKSharedWebServiceProvider *)companionWebServiceProvider webService];
+    webService = [(NPKSharedWebServiceProvider *)companionWebServiceProvider webService];
     os_unfair_lock_unlock(&self->_companionWebServiceLock);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100101F54;
     v15[3] = &unk_10083C470;
     v15[4] = self;
-    (v7)[2](v7, v11, v15);
+    (v7)[2](v7, webService, v15);
   }
 
   else
@@ -1071,9 +1071,9 @@ LABEL_9:
     v13[1] = 3221225472;
     v13[2] = sub_100101FC0;
     v13[3] = &unk_1008459D8;
-    v14 = v6;
+    v14 = completionCopy;
     [(PDPaymentWebServiceCoordinator *)webServiceCoordinator performHandlerOnSharedWebServiceQueue:v13];
-    v11 = v14;
+    webService = v14;
   }
 }
 

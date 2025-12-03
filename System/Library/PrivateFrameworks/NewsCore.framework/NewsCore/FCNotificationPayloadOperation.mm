@@ -1,7 +1,7 @@
 @interface FCNotificationPayloadOperation
 - (FCNotificationPayloadOperation)init;
-- (FCNotificationPayloadOperation)initWithContext:(id)a3 notificationItems:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCNotificationPayloadOperation)initWithContext:(id)context notificationItems:(id)items;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -33,18 +33,18 @@
   objc_exception_throw(v6);
 }
 
-- (FCNotificationPayloadOperation)initWithContext:(id)a3 notificationItems:(id)a4
+- (FCNotificationPayloadOperation)initWithContext:(id)context notificationItems:(id)items
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  itemsCopy = items;
   v12.receiver = self;
   v12.super_class = FCNotificationPayloadOperation;
   v9 = [(FCOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_notificationItems, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_notificationItems, items);
   }
 
   return v10;
@@ -157,15 +157,15 @@ uint64_t __50__FCNotificationPayloadOperation_performOperation__block_invoke_3(u
   return 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v9 = a3;
-  v4 = [(FCNotificationPayloadOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(FCNotificationPayloadOperation *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(FCNotificationPayloadOperation *)self completionHandler];
-    v6 = v5;
+    completionHandler2 = [(FCNotificationPayloadOperation *)self completionHandler];
+    v6 = completionHandler2;
     if (self)
     {
       resultNotificationPayloads = self->_resultNotificationPayloads;
@@ -186,7 +186,7 @@ uint64_t __50__FCNotificationPayloadOperation_performOperation__block_invoke_3(u
       v8 = MEMORY[0x1E695E0F0];
     }
 
-    (*(v5 + 16))(v5, v8, v9);
+    (*(completionHandler2 + 16))(completionHandler2, v8, errorCopy);
   }
 }
 

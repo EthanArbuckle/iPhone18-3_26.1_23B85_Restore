@@ -5,10 +5,10 @@
 - (DMDManagedMediaManager)init;
 - (NSArray)nonStoreBooks;
 - (NSArray)storeBooks;
-- (void)cancelNonStoreDownloadsWithDownloadIdentifiers:(id)a3 completionBlock:(id)a4;
-- (void)cleanUpWithAssertion:(id)a3 completionBlock:(id)a4;
-- (void)installNonStoreBook:(id)a3 fileExtension:(id)a4 URL:(id)a5 assertion:(id)a6 completionBlock:(id)a7;
-- (void)installStoreBookWithiTunesStoreID:(id)a3 originator:(id)a4 assertion:(id)a5 completionBlock:(id)a6;
+- (void)cancelNonStoreDownloadsWithDownloadIdentifiers:(id)identifiers completionBlock:(id)block;
+- (void)cleanUpWithAssertion:(id)assertion completionBlock:(id)block;
+- (void)installNonStoreBook:(id)book fileExtension:(id)extension URL:(id)l assertion:(id)assertion completionBlock:(id)block;
+- (void)installStoreBookWithiTunesStoreID:(id)d originator:(id)originator assertion:(id)assertion completionBlock:(id)block;
 - (void)memberQueueCleanUp;
 - (void)memberQueueCommitNonStoreBooksManifest;
 - (void)memberQueueCommitStoreBooksManifest;
@@ -16,17 +16,17 @@
 - (void)memberQueueRereadNonStoreBooksManifest;
 - (void)memberQueueRereadStoreBooksManifest;
 - (void)moveTransientStatesForward;
-- (void)refreshBookPurchaseHistoryCompletion:(id)a3;
-- (void)removeNonStoreBookWithPersistentID:(id)a3 assertion:(id)a4 completionBlock:(id)a5;
-- (void)removeStoreBookWithiTunesStoreID:(id)a3 assertion:(id)a4 completionBlock:(id)a5;
-- (void)rereadNonStoreBooksManifestCompletionBlock:(id)a3;
-- (void)rereadStoreBooksManifestCompletionBlock:(id)a3;
-- (void)searchBookPurchaseHistoryForiTunesStoreID:(id)a3 assertion:(id)a4 triesLeft:(int)a5 completionBlock:(id)a6;
-- (void)setNonStoreManagedBook:(id)a3;
-- (void)setState:(id)a3 forNonStoreBookWithPersistentID:(id)a4;
-- (void)setState:(id)a3 forStoreBookWithiTunesStoreID:(id)a4;
-- (void)setStoreManagedBook:(id)a3;
-- (void)uprootWithAssertion:(id)a3 completionBlock:(id)a4;
+- (void)refreshBookPurchaseHistoryCompletion:(id)completion;
+- (void)removeNonStoreBookWithPersistentID:(id)d assertion:(id)assertion completionBlock:(id)block;
+- (void)removeStoreBookWithiTunesStoreID:(id)d assertion:(id)assertion completionBlock:(id)block;
+- (void)rereadNonStoreBooksManifestCompletionBlock:(id)block;
+- (void)rereadStoreBooksManifestCompletionBlock:(id)block;
+- (void)searchBookPurchaseHistoryForiTunesStoreID:(id)d assertion:(id)assertion triesLeft:(int)left completionBlock:(id)block;
+- (void)setNonStoreManagedBook:(id)book;
+- (void)setState:(id)state forNonStoreBookWithPersistentID:(id)d;
+- (void)setState:(id)state forStoreBookWithiTunesStoreID:(id)d;
+- (void)setStoreManagedBook:(id)book;
+- (void)uprootWithAssertion:(id)assertion completionBlock:(id)block;
 @end
 
 @implementation DMDManagedMediaManager
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005009C;
   block[3] = &unk_1000CE018;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000FF138 != -1)
   {
     dispatch_once(&qword_1000FF138, block);
@@ -98,18 +98,18 @@
   return v3;
 }
 
-- (void)cleanUpWithAssertion:(id)a3 completionBlock:(id)a4
+- (void)cleanUpWithAssertion:(id)assertion completionBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(DMDManagedMediaManager *)self memberQueue];
+  blockCopy = block;
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100050374;
   v8[3] = &unk_1000CE8C0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_barrier_async(v6, v8);
+  v9 = blockCopy;
+  v7 = blockCopy;
+  dispatch_barrier_async(memberQueue, v8);
 }
 
 - (void)memberQueueCleanUp
@@ -123,8 +123,8 @@
   v69 = sub_100050ED0();
   [(DMDManagedMediaManager *)self memberQueueRereadNonStoreBooksManifest];
   v72 = objc_opt_new();
-  v2 = [v69 downloads];
-  v79 = [v2 mutableCopy];
+  downloads = [v69 downloads];
+  v79 = [downloads mutableCopy];
 
   v106 = 0u;
   v107 = 0u;
@@ -148,11 +148,11 @@
         }
 
         v6 = *(*(&v104 + 1) + 8 * i);
-        v7 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
-        v8 = [v7 objectForKeyedSubscript:v6];
+        memberQueuePersistentIDToNonStoreBook = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
+        v8 = [memberQueuePersistentIDToNonStoreBook objectForKeyedSubscript:v6];
 
-        v9 = [v8 downloadIdentifier];
-        v10 = v9 == 0;
+        downloadIdentifier = [v8 downloadIdentifier];
+        v10 = downloadIdentifier == 0;
 
         if (!v10)
         {
@@ -162,37 +162,37 @@
           v101 = sub_100050F14;
           v102 = sub_100050F24;
           v103 = 0;
-          v11 = [v8 downloadIdentifier];
-          v12 = [v11 longLongValue];
+          downloadIdentifier2 = [v8 downloadIdentifier];
+          longLongValue = [downloadIdentifier2 longLongValue];
 
           v97[0] = _NSConcreteStackBlock;
           v97[1] = 3221225472;
           v97[2] = sub_100050F2C;
           v97[3] = &unk_1000CF5A0;
           v97[4] = buf;
-          v97[5] = v12;
+          v97[5] = longLongValue;
           [v79 enumerateObjectsUsingBlock:v97];
           v13 = *(v99 + 5);
           if (v13)
           {
-            v14 = [v13 downloadPhaseIdentifier];
-            if ([v14 isEqualToString:v73])
+            downloadPhaseIdentifier = [v13 downloadPhaseIdentifier];
+            if ([downloadPhaseIdentifier isEqualToString:v73])
             {
               v15 = &_os_log_default;
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
               {
-                v70 = [v8 friendlyName];
-                v22 = [*(v99 + 5) failureError];
+                friendlyName = [v8 friendlyName];
+                failureError = [*(v99 + 5) failureError];
                 *v111 = 138543618;
-                v112 = v70;
+                v112 = friendlyName;
                 v113 = 2114;
-                v114 = v22;
+                v114 = failureError;
                 _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Book failed to download: %{public}@\nError: %{public}@", v111, 0x16u);
               }
 
               [v8 setDownloadIdentifier:0];
-              v16 = [v8 state];
-              v17 = v16 == @"Failed";
+              state = [v8 state];
+              v17 = state == @"Failed";
 
               if (!v17)
               {
@@ -203,20 +203,20 @@
               [v72 addObject:*(v99 + 5)];
             }
 
-            else if ([v14 isEqualToString:v71])
+            else if ([downloadPhaseIdentifier isEqualToString:v71])
             {
               v18 = &_os_log_default;
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
-                v19 = [v8 friendlyName];
+                friendlyName2 = [v8 friendlyName];
                 *v111 = 138543362;
-                v112 = v19;
+                v112 = friendlyName2;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Book completed downloading: %{public}@", v111, 0xCu);
               }
 
               [v8 setDownloadIdentifier:0];
-              v20 = [v8 state];
-              v21 = v20 == @"Managed";
+              state2 = [v8 state];
+              v21 = state2 == @"Managed";
 
               if (!v21)
               {
@@ -259,8 +259,8 @@
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v23 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
-  v24 = [v23 countByEnumeratingWithState:&v90 objects:v110 count:16];
+  memberQueuePersistentIDToNonStoreBook2 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
+  v24 = [memberQueuePersistentIDToNonStoreBook2 countByEnumeratingWithState:&v90 objects:v110 count:16];
   if (v24)
   {
     v25 = *v91;
@@ -270,28 +270,28 @@
       {
         if (*v91 != v25)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(memberQueuePersistentIDToNonStoreBook2);
         }
 
         v27 = *(*(&v90 + 1) + 8 * j);
-        v28 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
-        v29 = [v28 objectForKeyedSubscript:v27];
+        memberQueuePersistentIDToNonStoreBook3 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
+        v29 = [memberQueuePersistentIDToNonStoreBook3 objectForKeyedSubscript:v27];
 
-        v30 = [v29 fullPath];
-        if (!v30)
+        fullPath = [v29 fullPath];
+        if (!fullPath)
         {
           goto LABEL_38;
         }
 
         v31 = +[NSFileManager defaultManager];
-        v32 = [v29 fullPath];
-        v33 = [v31 fileExistsAtPath:v32];
+        fullPath2 = [v29 fullPath];
+        v33 = [v31 fileExistsAtPath:fullPath2];
 
         if (!v33)
         {
 LABEL_38:
-          v37 = [v29 state];
-          v38 = v37 == @"ManagedButUninstalled";
+          state3 = [v29 state];
+          v38 = state3 == @"ManagedButUninstalled";
 
           v36 = @"ManagedButUninstalled";
           if (v38)
@@ -305,8 +305,8 @@ LABEL_39:
           goto LABEL_40;
         }
 
-        v34 = [v29 state];
-        v35 = v34 == @"Managed";
+        state4 = [v29 state];
+        v35 = state4 == @"Managed";
 
         v36 = @"Managed";
         if (!v35)
@@ -317,7 +317,7 @@ LABEL_39:
 LABEL_40:
       }
 
-      v24 = [v23 countByEnumeratingWithState:&v90 objects:v110 count:16];
+      v24 = [memberQueuePersistentIDToNonStoreBook2 countByEnumeratingWithState:&v90 objects:v110 count:16];
     }
 
     while (v24);
@@ -385,8 +385,8 @@ LABEL_40:
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v52 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
-  v53 = [v52 countByEnumeratingWithState:&v82 objects:v108 count:16];
+  memberQueueiTunesStoreIDToStoreBook = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
+  v53 = [memberQueueiTunesStoreIDToStoreBook countByEnumeratingWithState:&v82 objects:v108 count:16];
   if (!v53)
   {
 
@@ -401,26 +401,26 @@ LABEL_40:
     {
       if (*v83 != v54)
       {
-        objc_enumerationMutation(v52);
+        objc_enumerationMutation(memberQueueiTunesStoreIDToStoreBook);
       }
 
       v56 = *(*(&v82 + 1) + 8 * m);
-      v57 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
-      v58 = [v57 objectForKeyedSubscript:v56];
+      memberQueueiTunesStoreIDToStoreBook2 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
+      v58 = [memberQueueiTunesStoreIDToStoreBook2 objectForKeyedSubscript:v56];
 
       v59 = sub_100050FB8();
-      v60 = [v58 state];
-      v61 = [v59 containsObject:v60];
+      state5 = [v58 state];
+      v61 = [v59 containsObject:state5];
 
       if ((v61 & 1) == 0)
       {
-        v62 = [v58 iTunesStoreID];
-        v63 = [v41 objectForKeyedSubscript:v62];
+        iTunesStoreID = [v58 iTunesStoreID];
+        v63 = [v41 objectForKeyedSubscript:iTunesStoreID];
 
         if (v63 && [v78 fileExistsAtPath:v63])
         {
-          v64 = [v58 state];
-          v65 = v64 == @"Installed";
+          state6 = [v58 state];
+          v65 = state6 == @"Installed";
 
           v66 = @"Installed";
           if (v65)
@@ -435,8 +435,8 @@ LABEL_67:
 
         else
         {
-          v67 = [v58 state];
-          v68 = v67 == @"Uninstalled";
+          state7 = [v58 state];
+          v68 = state7 == @"Uninstalled";
 
           v66 = @"Uninstalled";
           if (!v68)
@@ -449,7 +449,7 @@ LABEL_68:
       }
     }
 
-    v53 = [v52 countByEnumeratingWithState:&v82 objects:v108 count:16];
+    v53 = [memberQueueiTunesStoreIDToStoreBook countByEnumeratingWithState:&v82 objects:v108 count:16];
   }
 
   while (v53);
@@ -465,17 +465,17 @@ LABEL_74:
 - (void)memberQueueCommitNonStoreBooksManifest
 {
   v3 = objc_opt_new();
-  v4 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  memberQueuePersistentIDToNonStoreBook = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [memberQueuePersistentIDToNonStoreBook count]);
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
-  v7 = [v6 allValues];
+  memberQueuePersistentIDToNonStoreBook2 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
+  allValues = [memberQueuePersistentIDToNonStoreBook2 allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -487,17 +487,17 @@ LABEL_74:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
-        v12 = [*(*(&v19 + 1) + 8 * v11) manifestDictionary];
-        [v5 addObject:v12];
+        manifestDictionary = [*(*(&v19 + 1) + 8 * v11) manifestDictionary];
+        [v5 addObject:manifestDictionary];
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v9);
@@ -514,9 +514,9 @@ LABEL_74:
     [v13 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:v15 error:0];
 
     v16 = +[MCProfileConnection sharedConnection];
-    v17 = [v16 isEnterpriseBookBackupAllowed];
+    isEnterpriseBookBackupAllowed = [v16 isEnterpriseBookBackupAllowed];
 
-    if (![DMDMDMUtilities setSkipBackupAttribute:v17 ^ 1 toItemAtPath:v14]&& os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+    if (![DMDMDMUtilities setSkipBackupAttribute:isEnterpriseBookBackupAllowed ^ 1 toItemAtPath:v14]&& os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_100084E44();
     }
@@ -531,17 +531,17 @@ LABEL_74:
 - (void)memberQueueCommitStoreBooksManifest
 {
   v3 = objc_opt_new();
-  v4 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  memberQueueiTunesStoreIDToStoreBook = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [memberQueueiTunesStoreIDToStoreBook count]);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
-  v7 = [v6 allValues];
+  memberQueueiTunesStoreIDToStoreBook2 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
+  allValues = [memberQueueiTunesStoreIDToStoreBook2 allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -553,17 +553,17 @@ LABEL_74:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) manifestDictionary];
-        [v5 addObject:v12];
+        manifestDictionary = [*(*(&v14 + 1) + 8 * v11) manifestDictionary];
+        [v5 addObject:manifestDictionary];
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -608,12 +608,12 @@ LABEL_74:
             }
 
             v12 = [[MDMBook alloc] initWithManifestDictionary:*(*(&v15 + 1) + 8 * v11)];
-            v13 = [v12 persistentID];
+            persistentID = [v12 persistentID];
 
-            if (v13)
+            if (persistentID)
             {
-              v14 = [v12 persistentID];
-              [v3 setObject:v12 forKeyedSubscript:v14];
+              persistentID2 = [v12 persistentID];
+              [v3 setObject:v12 forKeyedSubscript:persistentID2];
             }
 
             v11 = v11 + 1;
@@ -663,12 +663,12 @@ LABEL_74:
             }
 
             v12 = [[MDMBook alloc] initWithManifestDictionary:*(*(&v15 + 1) + 8 * v11)];
-            v13 = [v12 iTunesStoreID];
+            iTunesStoreID = [v12 iTunesStoreID];
 
-            if (v13)
+            if (iTunesStoreID)
             {
-              v14 = [v12 iTunesStoreID];
-              [v3 setObject:v12 forKeyedSubscript:v14];
+              iTunesStoreID2 = [v12 iTunesStoreID];
+              [v3 setObject:v12 forKeyedSubscript:iTunesStoreID2];
             }
 
             v11 = v11 + 1;
@@ -686,49 +686,49 @@ LABEL_74:
   [(DMDManagedMediaManager *)self setMemberQueueiTunesStoreIDToStoreBook:v3];
 }
 
-- (void)rereadNonStoreBooksManifestCompletionBlock:(id)a3
+- (void)rereadNonStoreBooksManifestCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(DMDManagedMediaManager *)self memberQueue];
+  blockCopy = block;
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005188C;
   v7[3] = &unk_1000CE8C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_barrier_async(memberQueue, v7);
 }
 
-- (void)rereadStoreBooksManifestCompletionBlock:(id)a3
+- (void)rereadStoreBooksManifestCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(DMDManagedMediaManager *)self memberQueue];
+  blockCopy = block;
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000519B8;
   v7[3] = &unk_1000CE8C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_barrier_async(memberQueue, v7);
 }
 
-- (void)setNonStoreManagedBook:(id)a3
+- (void)setNonStoreManagedBook:(id)book
 {
-  v4 = a3;
-  v5 = [v4 persistentID];
+  bookCopy = book;
+  persistentID = [bookCopy persistentID];
 
-  if (v5)
+  if (persistentID)
   {
-    v6 = [(DMDManagedMediaManager *)self memberQueue];
+    memberQueue = [(DMDManagedMediaManager *)self memberQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100051B1C;
     v7[3] = &unk_1000CDC38;
     v7[4] = self;
-    v8 = v4;
-    dispatch_barrier_async(v6, v7);
+    v8 = bookCopy;
+    dispatch_barrier_async(memberQueue, v7);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -737,21 +737,21 @@ LABEL_74:
   }
 }
 
-- (void)setStoreManagedBook:(id)a3
+- (void)setStoreManagedBook:(id)book
 {
-  v4 = a3;
-  v5 = [v4 iTunesStoreID];
+  bookCopy = book;
+  iTunesStoreID = [bookCopy iTunesStoreID];
 
-  if (v5)
+  if (iTunesStoreID)
   {
-    v6 = [(DMDManagedMediaManager *)self memberQueue];
+    memberQueue = [(DMDManagedMediaManager *)self memberQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100051C7C;
     v7[3] = &unk_1000CDC38;
     v7[4] = self;
-    v8 = v4;
-    dispatch_barrier_async(v6, v7);
+    v8 = bookCopy;
+    dispatch_barrier_async(memberQueue, v7);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -760,56 +760,56 @@ LABEL_74:
   }
 }
 
-- (void)setState:(id)a3 forNonStoreBookWithPersistentID:(id)a4
+- (void)setState:(id)state forNonStoreBookWithPersistentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMDManagedMediaManager *)self memberQueue];
+  stateCopy = state;
+  dCopy = d;
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100051DC8;
   block[3] = &unk_1000CDC60;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_barrier_async(v8, block);
+  v12 = dCopy;
+  v13 = stateCopy;
+  v9 = stateCopy;
+  v10 = dCopy;
+  dispatch_barrier_async(memberQueue, block);
 }
 
-- (void)setState:(id)a3 forStoreBookWithiTunesStoreID:(id)a4
+- (void)setState:(id)state forStoreBookWithiTunesStoreID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMDManagedMediaManager *)self memberQueue];
+  stateCopy = state;
+  dCopy = d;
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100051F1C;
   block[3] = &unk_1000CDC60;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_barrier_async(v8, block);
+  v12 = dCopy;
+  v13 = stateCopy;
+  v9 = stateCopy;
+  v10 = dCopy;
+  dispatch_barrier_async(memberQueue, block);
 }
 
-- (void)cancelNonStoreDownloadsWithDownloadIdentifiers:(id)a3 completionBlock:(id)a4
+- (void)cancelNonStoreDownloadsWithDownloadIdentifiers:(id)identifiers completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  blockCopy = block;
   v7 = sub_100050ED0();
   v8 = objc_opt_new();
-  if ([v5 count])
+  if ([identifiersCopy count])
   {
     v19 = v7;
-    v20 = v6;
-    v9 = [v7 downloads];
+    v20 = blockCopy;
+    downloads = [v7 downloads];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v10 = [downloads countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v10)
     {
       v11 = v10;
@@ -820,12 +820,12 @@ LABEL_74:
         {
           if (*v26 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(downloads);
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
           v15 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v14 persistentIdentifier]);
-          v16 = [v5 containsObject:v15];
+          v16 = [identifiersCopy containsObject:v15];
 
           if (v16)
           {
@@ -833,14 +833,14 @@ LABEL_74:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v11 = [downloads countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v11);
     }
 
     v7 = v19;
-    v6 = v20;
+    blockCopy = v20;
   }
 
   if ([v8 count])
@@ -850,14 +850,14 @@ LABEL_74:
     v23[2] = sub_100052220;
     v23[3] = &unk_1000CE2E8;
     v17 = &v24;
-    v24 = v6;
+    v24 = blockCopy;
     [v7 cancelDownloads:v8 completionBlock:v23];
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  if (v6)
+  if (blockCopy)
   {
     v18 = dispatch_get_global_queue(0, 0);
     block[0] = _NSConcreteStackBlock;
@@ -865,7 +865,7 @@ LABEL_16:
     block[2] = sub_100052284;
     block[3] = &unk_1000CF578;
     v17 = &v22;
-    v22 = v6;
+    v22 = blockCopy;
     dispatch_async(v18, block);
 
     goto LABEL_16;
@@ -874,43 +874,43 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)installNonStoreBook:(id)a3 fileExtension:(id)a4 URL:(id)a5 assertion:(id)a6 completionBlock:(id)a7
+- (void)installNonStoreBook:(id)book fileExtension:(id)extension URL:(id)l assertion:(id)assertion completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  bookCopy = book;
+  extensionCopy = extension;
+  lCopy = l;
+  assertionCopy = assertion;
+  blockCopy = block;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v31 = v12;
+    v31 = bookCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Starting installation of book: %{public}@", buf, 0xCu);
   }
 
-  v17 = [v12 persistentID];
-  if (!v17)
+  persistentID = [bookCopy persistentID];
+  if (!persistentID)
   {
     sub_100084FF0();
   }
 
-  v18 = [(DMDManagedMediaManager *)self memberQueue];
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100052470;
   v24[3] = &unk_1000CF668;
   v24[4] = self;
-  v25 = v12;
-  v26 = v13;
-  v27 = v15;
-  v28 = v14;
-  v29 = v16;
-  v19 = v14;
-  v20 = v15;
-  v21 = v16;
-  v22 = v13;
-  v23 = v12;
-  dispatch_barrier_async(v18, v24);
+  v25 = bookCopy;
+  v26 = extensionCopy;
+  v27 = assertionCopy;
+  v28 = lCopy;
+  v29 = blockCopy;
+  v19 = lCopy;
+  v20 = assertionCopy;
+  v21 = blockCopy;
+  v22 = extensionCopy;
+  v23 = bookCopy;
+  dispatch_barrier_async(memberQueue, v24);
 }
 
 + (BOOL)shouldBypassVPPLicenseCheck
@@ -930,9 +930,9 @@ LABEL_17:
   return !v2;
 }
 
-- (void)refreshBookPurchaseHistoryCompletion:(id)a3
+- (void)refreshBookPurchaseHistoryCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
@@ -940,84 +940,84 @@ LABEL_17:
   }
 
   v4 = +[DMDManagedMediaManager homeSharingCloudClient];
-  [v4 updateJaliscoLibraryWithReason:8 completionHandler:v3];
+  [v4 updateJaliscoLibraryWithReason:8 completionHandler:completionCopy];
 }
 
-- (void)searchBookPurchaseHistoryForiTunesStoreID:(id)a3 assertion:(id)a4 triesLeft:(int)a5 completionBlock:(id)a6
+- (void)searchBookPurchaseHistoryForiTunesStoreID:(id)d assertion:(id)assertion triesLeft:(int)left completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  assertionCopy = assertion;
+  blockCopy = block;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v26 = v10;
+    v26 = dCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Searching book purchase history for iTunes Store ID %{public}@", buf, 0xCu);
   }
 
   v13 = +[DMDManagedMediaManager homeSharingCloudClient];
-  v24 = v10;
+  v24 = dCopy;
   v14 = [NSArray arrayWithObjects:&v24 count:1];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100053254;
   v18[3] = &unk_1000CF6B8;
-  v23 = a5;
-  v19 = v10;
-  v20 = self;
-  v21 = v11;
-  v22 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v12;
+  leftCopy = left;
+  v19 = dCopy;
+  selfCopy = self;
+  v21 = assertionCopy;
+  v22 = blockCopy;
+  v15 = assertionCopy;
+  v16 = dCopy;
+  v17 = blockCopy;
   [v13 loadBooksForStoreIDs:v14 withCompletionHandler:v18];
 }
 
-- (void)installStoreBookWithiTunesStoreID:(id)a3 originator:(id)a4 assertion:(id)a5 completionBlock:(id)a6
+- (void)installStoreBookWithiTunesStoreID:(id)d originator:(id)originator assertion:(id)assertion completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  originatorCopy = originator;
+  assertionCopy = assertion;
+  blockCopy = block;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = v10;
+    v29 = dCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Starting installation of book with iTunes Store ID %{public}@", buf, 0xCu);
   }
 
-  if (v10)
+  if (dCopy)
   {
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"Book Installation" value:&stru_1000D0428 table:@"DMFNotifications"];
 
     v16 = [NSBundle bundleForClass:objc_opt_class()];
     v17 = [v16 localizedStringForKey:@"Sign in to iTunes to allow %@ to manage and install books." value:&stru_1000D0428 table:@"DMFNotifications"];
-    v18 = [NSString stringWithFormat:v17, v11];
+    originatorCopy = [NSString stringWithFormat:v17, originatorCopy];
 
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100053960;
     v20[3] = &unk_1000CF730;
-    v24 = v13;
-    v21 = v12;
-    v22 = self;
-    v23 = v10;
-    [(DMDManagedAssetManager *)self promptUserToLoginToiTunesIfNeededTitle:v15 message:v18 assertion:v21 completionBlock:v20];
+    v24 = blockCopy;
+    v21 = assertionCopy;
+    selfCopy = self;
+    v23 = dCopy;
+    [(DMDManagedAssetManager *)self promptUserToLoginToiTunesIfNeededTitle:v15 message:originatorCopy assertion:v21 completionBlock:v20];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v13)
+  if (blockCopy)
   {
     v19 = dispatch_get_global_queue(0, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000538E8;
     block[3] = &unk_1000CF450;
-    v27 = v13;
-    v26 = v12;
+    v27 = blockCopy;
+    v26 = assertionCopy;
     dispatch_async(v19, block);
 
     v15 = v27;
@@ -1035,14 +1035,14 @@ LABEL_8:
   v10 = sub_100050F14;
   v11 = sub_100050F24;
   v12 = 0;
-  v3 = [(DMDManagedMediaManager *)self memberQueue];
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100053DD8;
   v6[3] = &unk_1000CE550;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_barrier_sync(v3, v6);
+  dispatch_barrier_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1058,14 +1058,14 @@ LABEL_8:
   v10 = sub_100050F14;
   v11 = sub_100050F24;
   v12 = 0;
-  v3 = [(DMDManagedMediaManager *)self memberQueue];
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100053F8C;
   v6[3] = &unk_1000CE550;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_barrier_sync(v3, v6);
+  dispatch_barrier_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1080,8 +1080,8 @@ LABEL_8:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v3 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
-  v4 = [v3 countByEnumeratingWithState:&v35 objects:v42 count:16];
+  memberQueuePersistentIDToNonStoreBook = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
+  v4 = [memberQueuePersistentIDToNonStoreBook countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1092,16 +1092,16 @@ LABEL_8:
       {
         if (*v36 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(memberQueuePersistentIDToNonStoreBook);
         }
 
         v8 = *(*(&v35 + 1) + 8 * i);
-        v9 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        memberQueuePersistentIDToNonStoreBook2 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
+        v10 = [memberQueuePersistentIDToNonStoreBook2 objectForKeyedSubscript:v8];
 
         v11 = sub_100050FB8();
-        v12 = [v10 state];
-        v13 = [v11 containsObject:v12];
+        state = [v10 state];
+        v13 = [v11 containsObject:state];
 
         if (v13)
         {
@@ -1109,7 +1109,7 @@ LABEL_8:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v35 objects:v42 count:16];
+      v5 = [memberQueuePersistentIDToNonStoreBook countByEnumeratingWithState:&v35 objects:v42 count:16];
     }
 
     while (v5);
@@ -1125,8 +1125,8 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Removing %u non-store books because we have reported their transient state.", buf, 8u);
     }
 
-    v15 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
-    [v15 removeObjectsForKeys:v29];
+    memberQueuePersistentIDToNonStoreBook3 = [(DMDManagedMediaManager *)self memberQueuePersistentIDToNonStoreBook];
+    [memberQueuePersistentIDToNonStoreBook3 removeObjectsForKeys:v29];
 
     [(DMDManagedMediaManager *)self memberQueueCommitNonStoreBooksManifest];
   }
@@ -1136,8 +1136,8 @@ LABEL_8:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v16 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
-  v17 = [v16 countByEnumeratingWithState:&v31 objects:v41 count:16];
+  memberQueueiTunesStoreIDToStoreBook = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
+  v17 = [memberQueueiTunesStoreIDToStoreBook countByEnumeratingWithState:&v31 objects:v41 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1148,16 +1148,16 @@ LABEL_8:
       {
         if (*v32 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(memberQueueiTunesStoreIDToStoreBook);
         }
 
         v21 = *(*(&v31 + 1) + 8 * j);
-        v22 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
-        v23 = [v22 objectForKeyedSubscript:v21];
+        memberQueueiTunesStoreIDToStoreBook2 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
+        v23 = [memberQueueiTunesStoreIDToStoreBook2 objectForKeyedSubscript:v21];
 
         v24 = sub_100050FB8();
-        v25 = [v23 state];
-        v26 = [v24 containsObject:v25];
+        state2 = [v23 state];
+        v26 = [v24 containsObject:state2];
 
         if (v26)
         {
@@ -1165,7 +1165,7 @@ LABEL_8:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v31 objects:v41 count:16];
+      v18 = [memberQueueiTunesStoreIDToStoreBook countByEnumeratingWithState:&v31 objects:v41 count:16];
     }
 
     while (v18);
@@ -1181,8 +1181,8 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Removing %lu store books because we have reported their transient state.", buf, 0xCu);
     }
 
-    v28 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
-    [v28 removeObjectsForKeys:v30];
+    memberQueueiTunesStoreIDToStoreBook3 = [(DMDManagedMediaManager *)self memberQueueiTunesStoreIDToStoreBook];
+    [memberQueueiTunesStoreIDToStoreBook3 removeObjectsForKeys:v30];
 
     [(DMDManagedMediaManager *)self memberQueueCommitStoreBooksManifest];
   }
@@ -1190,63 +1190,63 @@ LABEL_8:
 
 - (void)moveTransientStatesForward
 {
-  v3 = [(DMDManagedMediaManager *)self memberQueue];
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100054448;
   block[3] = &unk_1000CE5A0;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(memberQueue, block);
 }
 
-- (void)removeNonStoreBookWithPersistentID:(id)a3 assertion:(id)a4 completionBlock:(id)a5
+- (void)removeNonStoreBookWithPersistentID:(id)d assertion:(id)assertion completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DMDManagedMediaManager *)self memberQueue];
+  dCopy = d;
+  assertionCopy = assertion;
+  blockCopy = block;
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100054550;
   v15[3] = &unk_1000CE9D8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_barrier_async(v11, v15);
+  v16 = dCopy;
+  v17 = assertionCopy;
+  v18 = blockCopy;
+  v12 = assertionCopy;
+  v13 = blockCopy;
+  v14 = dCopy;
+  dispatch_barrier_async(memberQueue, v15);
 }
 
-- (void)removeStoreBookWithiTunesStoreID:(id)a3 assertion:(id)a4 completionBlock:(id)a5
+- (void)removeStoreBookWithiTunesStoreID:(id)d assertion:(id)assertion completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(DMDManagedMediaManager *)self memberQueue];
+  dCopy = d;
+  blockCopy = block;
+  memberQueue = [(DMDManagedMediaManager *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100054A60;
   block[3] = &unk_1000CDC38;
   block[4] = self;
-  v16 = v7;
-  v10 = v7;
-  dispatch_sync(v9, block);
+  v16 = dCopy;
+  v10 = dCopy;
+  dispatch_sync(memberQueue, block);
 
   v11 = dispatch_get_global_queue(0, 0);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100054AB0;
   v13[3] = &unk_1000CF578;
-  v14 = v8;
-  v12 = v8;
+  v14 = blockCopy;
+  v12 = blockCopy;
   dispatch_async(v11, v13);
 }
 
-- (void)uprootWithAssertion:(id)a3 completionBlock:(id)a4
+- (void)uprootWithAssertion:(id)assertion completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  blockCopy = block;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -1260,11 +1260,11 @@ LABEL_8:
   v13[2] = sub_100054C18;
   v13[3] = &unk_1000CF758;
   v15 = v14 = v8;
-  v17 = v6;
-  v18 = v7;
-  v16 = self;
-  v9 = v6;
-  v10 = v7;
+  v17 = assertionCopy;
+  v18 = blockCopy;
+  selfCopy = self;
+  v9 = assertionCopy;
+  v10 = blockCopy;
   v11 = v15;
   v12 = v8;
   [v12 cancelDownloads:v11 completionBlock:v13];

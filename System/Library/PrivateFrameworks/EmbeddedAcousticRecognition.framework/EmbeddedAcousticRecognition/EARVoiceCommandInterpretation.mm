@@ -1,10 +1,10 @@
 @interface EARVoiceCommandInterpretation
-- (BOOL)isEqual:(id)a3;
-- (EARVoiceCommandInterpretation)initWithCoder:(id)a3;
-- (EARVoiceCommandInterpretation)initWithCommandIdentifier:(id)a3 suiteIdentifiers:(id)a4 verbIndexes:(id)a5 arguments:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (EARVoiceCommandInterpretation)initWithCoder:(id)coder;
+- (EARVoiceCommandInterpretation)initWithCommandIdentifier:(id)identifier suiteIdentifiers:(id)identifiers verbIndexes:(id)indexes arguments:(id)arguments;
 - (_NSRange)range;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EARVoiceCommandInterpretation
@@ -12,15 +12,15 @@
 - (_NSRange)range
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(EARVoiceCommandInterpretation *)self verbIndexes];
-  v4 = [v3 mutableCopy];
+  verbIndexes = [(EARVoiceCommandInterpretation *)self verbIndexes];
+  v4 = [verbIndexes mutableCopy];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(EARVoiceCommandInterpretation *)self arguments];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  arguments = [(EARVoiceCommandInterpretation *)self arguments];
+  v6 = [arguments countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -31,18 +31,18 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arguments);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 indexes];
-        [v4 addIndexes:v11];
+        indexes = [v10 indexes];
+        [v4 addIndexes:indexes];
 
-        v12 = [v10 adpositionIndexes];
-        [v4 addIndexes:v12];
+        adpositionIndexes = [v10 adpositionIndexes];
+        [v4 addIndexes:adpositionIndexes];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [arguments countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -50,47 +50,47 @@
 
   if ([v4 count])
   {
-    v13 = [v4 firstIndex];
-    v14 = [v4 lastIndex] - v13 + 1;
+    firstIndex = [v4 firstIndex];
+    v14 = [v4 lastIndex] - firstIndex + 1;
   }
 
   else
   {
     v14 = 0;
-    v13 = 0x7FFFFFFFFFFFFFFFLL;
+    firstIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v15 = v13;
+  v15 = firstIndex;
   v16 = v14;
   result.length = v16;
   result.location = v15;
   return result;
 }
 
-- (EARVoiceCommandInterpretation)initWithCommandIdentifier:(id)a3 suiteIdentifiers:(id)a4 verbIndexes:(id)a5 arguments:(id)a6
+- (EARVoiceCommandInterpretation)initWithCommandIdentifier:(id)identifier suiteIdentifiers:(id)identifiers verbIndexes:(id)indexes arguments:(id)arguments
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  indexesCopy = indexes;
+  argumentsCopy = arguments;
   v24.receiver = self;
   v24.super_class = EARVoiceCommandInterpretation;
   v14 = [(EARVoiceCommandInterpretation *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     commandIdentifier = v14->_commandIdentifier;
     v14->_commandIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [identifiersCopy copy];
     suiteIdentifiers = v14->_suiteIdentifiers;
     v14->_suiteIdentifiers = v17;
 
-    v19 = [v12 copy];
+    v19 = [indexesCopy copy];
     verbIndexes = v14->_verbIndexes;
     v14->_verbIndexes = v19;
 
-    v21 = [v13 copy];
+    v21 = [argumentsCopy copy];
     arguments = v14->_arguments;
     v14->_arguments = v21;
   }
@@ -98,33 +98,33 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     commandIdentifier = self->_commandIdentifier;
-    v8 = [(EARVoiceCommandInterpretation *)v6 commandIdentifier];
-    if ([(NSString *)commandIdentifier isEqualToString:v8])
+    commandIdentifier = [(EARVoiceCommandInterpretation *)v6 commandIdentifier];
+    if ([(NSString *)commandIdentifier isEqualToString:commandIdentifier])
     {
       suiteIdentifiers = self->_suiteIdentifiers;
-      v10 = [(EARVoiceCommandInterpretation *)v6 suiteIdentifiers];
-      if ([(NSSet *)suiteIdentifiers isEqualToSet:v10])
+      suiteIdentifiers = [(EARVoiceCommandInterpretation *)v6 suiteIdentifiers];
+      if ([(NSSet *)suiteIdentifiers isEqualToSet:suiteIdentifiers])
       {
         verbIndexes = self->_verbIndexes;
-        v12 = [(EARVoiceCommandInterpretation *)v6 verbIndexes];
-        if ([(NSIndexSet *)verbIndexes isEqualToIndexSet:v12])
+        verbIndexes = [(EARVoiceCommandInterpretation *)v6 verbIndexes];
+        if ([(NSIndexSet *)verbIndexes isEqualToIndexSet:verbIndexes])
         {
           arguments = self->_arguments;
-          v14 = [(EARVoiceCommandInterpretation *)v6 arguments];
-          v15 = [(NSArray *)arguments isEqualToArray:v14];
+          arguments = [(EARVoiceCommandInterpretation *)v6 arguments];
+          v15 = [(NSArray *)arguments isEqualToArray:arguments];
         }
 
         else
@@ -161,40 +161,40 @@
   return [(NSArray *)self->_arguments hash]+ 1531 * v5 + 0x4FF350C4A71;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   commandIdentifier = self->_commandIdentifier;
-  v5 = a3;
-  [v5 encodeObject:commandIdentifier forKey:@"commandIdentifier"];
-  [v5 encodeObject:self->_suiteIdentifiers forKey:@"suiteIdentifiers"];
-  [v5 encodeObject:self->_verbIndexes forKey:@"verbIndexes"];
-  [v5 encodeObject:self->_arguments forKey:@"arguments"];
+  coderCopy = coder;
+  [coderCopy encodeObject:commandIdentifier forKey:@"commandIdentifier"];
+  [coderCopy encodeObject:self->_suiteIdentifiers forKey:@"suiteIdentifiers"];
+  [coderCopy encodeObject:self->_verbIndexes forKey:@"verbIndexes"];
+  [coderCopy encodeObject:self->_arguments forKey:@"arguments"];
 }
 
-- (EARVoiceCommandInterpretation)initWithCoder:(id)a3
+- (EARVoiceCommandInterpretation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = EARVoiceCommandInterpretation;
   v5 = [(EARVoiceCommandInterpretation *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"commandIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"commandIdentifier"];
     commandIdentifier = v5->_commandIdentifier;
     v5->_commandIdentifier = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"suiteIdentifiers"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"suiteIdentifiers"];
     suiteIdentifiers = v5->_suiteIdentifiers;
     v5->_suiteIdentifiers = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"verbIndexes"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"verbIndexes"];
     verbIndexes = v5->_verbIndexes;
     v5->_verbIndexes = v13;
 
-    v15 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"arguments"];
+    v15 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"arguments"];
     arguments = v5->_arguments;
     v5->_arguments = v15;
   }

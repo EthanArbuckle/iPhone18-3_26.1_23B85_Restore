@@ -1,47 +1,47 @@
 @interface MTSearchTimerIntentHandler
-- (void)handleSearchForTimers:(id)a3 completion:(id)a4;
+- (void)handleSearchForTimers:(id)timers completion:(id)completion;
 @end
 
 @implementation MTSearchTimerIntentHandler
 
-- (void)handleSearchForTimers:(id)a3 completion:(id)a4
+- (void)handleSearchForTimers:(id)timers completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  timersCopy = timers;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E696E6D8];
   if (os_log_type_enabled(*MEMORY[0x1E696E6D8], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v19 = "[MTSearchTimerIntentHandler handleSearchForTimers:completion:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = timersCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    if ([v6 type] == 2)
+    if ([timersCopy type] == 2)
     {
-      v9 = 0;
+      label = 0;
     }
 
     else
     {
-      v9 = [v6 label];
+      label = [timersCopy label];
     }
 
-    v10 = 2 * ([v6 type] == 2);
+    v10 = 2 * ([timersCopy type] == 2);
     v11 = objc_alloc(MEMORY[0x1E696EAC0]);
-    [v6 duration];
-    v13 = [v11 initWithLabel:v9 duration:0 remainingTime:objc_msgSend(v6 identifier:"state") state:v10 type:{v12, -1.0}];
+    [timersCopy duration];
+    v13 = [v11 initWithLabel:label duration:0 remainingTime:objc_msgSend(timersCopy identifier:"state") state:v10 type:{v12, -1.0}];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __63__MTSearchTimerIntentHandler_handleSearchForTimers_completion___block_invoke;
     v15[3] = &unk_1E7B0F810;
     v15[4] = self;
-    v16 = v6;
-    v17 = v7;
+    v16 = timersCopy;
+    v17 = completionCopy;
     [(MTTimerIntentHandler *)self _matchTimersFromIntentsTimer:v13 excludeStoppedTimers:1 completion:v15];
   }
 

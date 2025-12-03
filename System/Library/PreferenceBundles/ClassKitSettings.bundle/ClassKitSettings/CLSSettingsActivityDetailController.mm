@@ -1,71 +1,71 @@
 @interface CLSSettingsActivityDetailController
 - (NSMutableDictionary)activityItemsByID;
-- (double)progressValueWithActivity:(id)a3;
-- (id)activityWithID:(id)a3;
-- (id)allActivityItemsOfActivity:(id)a3;
-- (id)binaryValue:(id)a3;
-- (id)createSpecifiersWithActivityItem:(id)a3;
+- (double)progressValueWithActivity:(id)activity;
+- (id)activityWithID:(id)d;
+- (id)allActivityItemsOfActivity:(id)activity;
+- (id)binaryValue:(id)value;
+- (id)createSpecifiersWithActivityItem:(id)item;
 - (id)percentageNumberFormatter;
-- (id)percentageStringWithProgress:(double)a3;
-- (id)progressValueString:(id)a3;
-- (id)quantityValue:(id)a3;
-- (id)scoreValue:(id)a3;
+- (id)percentageStringWithProgress:(double)progress;
+- (id)progressValueString:(id)string;
+- (id)quantityValue:(id)value;
+- (id)scoreValue:(id)value;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)timeSpentFormatter;
-- (id)timeValue:(id)a3;
+- (id)timeValue:(id)value;
 @end
 
 @implementation CLSSettingsActivityDetailController
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = OBJC_IVAR___PSListController__specifiers;
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
-    v6 = [(CLSSettingsActivityDetailController *)v2 specifier];
-    v7 = [v6 propertyForKey:@"CLSSettingsSpecifierActivityID"];
+    specifier = [(CLSSettingsActivityDetailController *)selfCopy specifier];
+    v7 = [specifier propertyForKey:@"CLSSettingsSpecifierActivityID"];
 
-    v8 = [(CLSSettingsActivityDetailController *)v2 activityWithID:v7];
-    [(CLSSettingsActivityDetailController *)v2 setUserActivity:v8];
+    v8 = [(CLSSettingsActivityDetailController *)selfCopy activityWithID:v7];
+    [(CLSSettingsActivityDetailController *)selfCopy setUserActivity:v8];
 
-    v9 = [(CLSSettingsActivityDetailController *)v2 userActivity];
+    userActivity = [(CLSSettingsActivityDetailController *)selfCopy userActivity];
 
-    if (v9)
+    if (userActivity)
     {
-      v10 = [(CLSSettingsActivityDetailController *)v2 activityItemsByID];
-      [v10 removeAllObjects];
+      activityItemsByID = [(CLSSettingsActivityDetailController *)selfCopy activityItemsByID];
+      [activityItemsByID removeAllObjects];
 
       v51 = v7;
       v50 = [PSSpecifier groupSpecifierWithID:v7];
       [v5 addObject:?];
-      v11 = [(CLSSettingsActivityDetailController *)v2 userActivity];
-      [(CLSSettingsActivityDetailController *)v2 progressValueWithActivity:v11];
+      userActivity2 = [(CLSSettingsActivityDetailController *)selfCopy userActivity];
+      [(CLSSettingsActivityDetailController *)selfCopy progressValueWithActivity:userActivity2];
       v13 = v12;
 
       if (v13 > 0.00000011920929)
       {
         v14 = [NSBundle bundleForClass:objc_opt_class()];
         v15 = [v14 localizedStringForKey:@"Progress" value:&stru_C898 table:@"ClassKitSettings"];
-        v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:v2 set:0 get:"progressValueString:" detail:0 cell:4 edit:0];
+        v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:selfCopy set:0 get:"progressValueString:" detail:0 cell:4 edit:0];
 
         [v5 addObject:v16];
       }
 
       v17 = [NSBundle bundleForClass:objc_opt_class()];
       v18 = [v17 localizedStringForKey:@"Time" value:&stru_C898 table:@"ClassKitSettings"];
-      v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:v2 set:0 get:"timeValue:" detail:0 cell:4 edit:0];
+      v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:selfCopy set:0 get:"timeValue:" detail:0 cell:4 edit:0];
 
       v49 = v19;
       [v5 addObject:v19];
-      v20 = [(CLSSettingsActivityDetailController *)v2 userActivity];
-      v21 = [(CLSSettingsActivityDetailController *)v2 allActivityItemsOfActivity:v20];
+      userActivity3 = [(CLSSettingsActivityDetailController *)selfCopy userActivity];
+      v21 = [(CLSSettingsActivityDetailController *)selfCopy allActivityItemsOfActivity:userActivity3];
 
-      v22 = [(CLSSettingsActivityDetailController *)v2 userActivity];
-      v55 = [v22 primaryActivityItemIdentifier];
+      userActivity4 = [(CLSSettingsActivityDetailController *)selfCopy userActivity];
+      primaryActivityItemIdentifier = [userActivity4 primaryActivityItemIdentifier];
 
       v67 = 0u;
       v68 = 0u;
@@ -88,14 +88,14 @@
             }
 
             v27 = *(*(&v65 + 1) + 8 * i);
-            v28 = [(CLSSettingsActivityDetailController *)v2 activityItemsByID];
-            v29 = [v27 objectID];
-            [v28 setObject:v27 forKeyedSubscript:v29];
+            activityItemsByID2 = [(CLSSettingsActivityDetailController *)selfCopy activityItemsByID];
+            objectID = [v27 objectID];
+            [activityItemsByID2 setObject:v27 forKeyedSubscript:objectID];
 
-            v30 = [v27 identifier];
-            LODWORD(v29) = [v55 isEqualToString:v30];
+            identifier = [v27 identifier];
+            LODWORD(objectID) = [primaryActivityItemIdentifier isEqualToString:identifier];
 
-            if (v29)
+            if (objectID)
             {
               v31 = v27;
 
@@ -121,18 +121,18 @@
         [v5 addObject:?];
         if (v56)
         {
-          v32 = [(CLSSettingsActivityDetailController *)v2 createSpecifiersWithActivityItem:?];
+          v32 = [(CLSSettingsActivityDetailController *)selfCopy createSpecifiersWithActivityItem:?];
           [v5 addObjectsFromArray:v32];
         }
 
-        v33 = [(CLSSettingsActivityDetailController *)v2 userActivity];
-        v34 = [v33 additionalActivityItems];
+        userActivity5 = [(CLSSettingsActivityDetailController *)selfCopy userActivity];
+        additionalActivityItems = [userActivity5 additionalActivityItems];
 
         v63 = 0u;
         v64 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v52 = v34;
+        v52 = additionalActivityItems;
         v35 = [v52 countByEnumeratingWithState:&v61 objects:v70 count:16];
         if (v35)
         {
@@ -148,8 +148,8 @@
                 objc_enumerationMutation(v52);
               }
 
-              v39 = v2;
-              v40 = [(CLSSettingsActivityDetailController *)v2 createSpecifiersWithActivityItem:*(*(&v61 + 1) + 8 * j)];
+              v39 = selfCopy;
+              v40 = [(CLSSettingsActivityDetailController *)selfCopy createSpecifiersWithActivityItem:*(*(&v61 + 1) + 8 * j)];
               v57 = 0u;
               v58 = 0u;
               v59 = 0u;
@@ -179,7 +179,7 @@
 
               [v5 addObjectsFromArray:v40];
 
-              v2 = v39;
+              selfCopy = v39;
             }
 
             v36 = [v52 countByEnumeratingWithState:&v61 objects:v70 count:16];
@@ -194,18 +194,18 @@
       v7 = v51;
     }
 
-    v45 = *&v2->PSListController_opaque[v3];
-    *&v2->PSListController_opaque[v3] = v5;
+    v45 = *&selfCopy->PSListController_opaque[v3];
+    *&selfCopy->PSListController_opaque[v3] = v5;
 
-    v4 = *&v2->PSListController_opaque[v3];
+    v4 = *&selfCopy->PSListController_opaque[v3];
   }
 
   return v4;
 }
 
-- (id)createSpecifiersWithActivityItem:(id)a3
+- (id)createSpecifiersWithActivityItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(NSMutableArray);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -234,11 +234,11 @@
   }
 
   v7 = *v6;
-  v8 = [v4 title];
-  v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:0 get:v7 detail:0 cell:4 edit:0];
+  title = [itemCopy title];
+  v9 = [PSSpecifier preferenceSpecifierNamed:title target:self set:0 get:v7 detail:0 cell:4 edit:0];
 
-  v10 = [v4 objectID];
-  [v9 setProperty:v10 forKey:@"CLSSettingsActivityItemIDKey"];
+  objectID = [itemCopy objectID];
+  [v9 setProperty:objectID forKey:@"CLSSettingsActivityItemIDKey"];
 
   [v5 addObject:v9];
 LABEL_8:
@@ -261,10 +261,10 @@ LABEL_8:
   return activityItemsByID;
 }
 
-- (id)activityWithID:(id)a3
+- (id)activityWithID:(id)d
 {
-  v3 = a3;
-  if ([v3 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v12 = 0;
     v13 = &v12;
@@ -272,9 +272,9 @@ LABEL_8:
     v15 = sub_5658;
     v16 = sub_5668;
     v17 = 0;
-    v4 = [NSPredicate predicateWithFormat:@"objectID = %@", v3];
+    dCopy = [NSPredicate predicateWithFormat:@"objectID = %@", dCopy];
     v11 = 0;
-    v5 = [CLSQuery queryWithObjectType:objc_opt_class() predicate:v4 error:&v11];
+    v5 = [CLSQuery queryWithObjectType:objc_opt_class() predicate:dCopy error:&v11];
     v6 = v11;
     v7 = +[CLSDataStore shared];
     v10[0] = _NSConcreteStackBlock;
@@ -296,19 +296,19 @@ LABEL_8:
   return v8;
 }
 
-- (id)allActivityItemsOfActivity:(id)a3
+- (id)allActivityItemsOfActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = sub_5658;
   v31 = sub_5668;
   v32 = objc_alloc_init(NSMutableArray);
-  if (v3)
+  if (activityCopy)
   {
-    v4 = [v3 objectID];
-    v5 = [NSPredicate predicateWithFormat:@"parentObjectID = %@", v4];
+    objectID = [activityCopy objectID];
+    v5 = [NSPredicate predicateWithFormat:@"parentObjectID = %@", objectID];
 
     v6 = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:1];
     v26 = 0;
@@ -365,11 +365,11 @@ LABEL_8:
   return v19;
 }
 
-- (id)percentageStringWithProgress:(double)a3
+- (id)percentageStringWithProgress:(double)progress
 {
-  v4 = [(CLSSettingsActivityDetailController *)self percentageNumberFormatter];
-  v5 = [NSNumber numberWithDouble:a3];
-  v6 = [v4 stringFromNumber:v5];
+  percentageNumberFormatter = [(CLSSettingsActivityDetailController *)self percentageNumberFormatter];
+  v5 = [NSNumber numberWithDouble:progress];
+  v6 = [percentageNumberFormatter stringFromNumber:v5];
 
   return v6;
 }
@@ -398,14 +398,14 @@ LABEL_8:
   return v3;
 }
 
-- (double)progressValueWithActivity:(id)a3
+- (double)progressValueWithActivity:(id)activity
 {
-  if (!a3)
+  if (!activity)
   {
     return 0.0;
   }
 
-  [a3 progress];
+  [activity progress];
   if (result < 0.00000011920929)
   {
     return 0.0;
@@ -414,23 +414,23 @@ LABEL_8:
   return result;
 }
 
-- (id)progressValueString:(id)a3
+- (id)progressValueString:(id)string
 {
-  v4 = [(CLSSettingsActivityDetailController *)self userActivity];
-  [(CLSSettingsActivityDetailController *)self progressValueWithActivity:v4];
+  userActivity = [(CLSSettingsActivityDetailController *)self userActivity];
+  [(CLSSettingsActivityDetailController *)self progressValueWithActivity:userActivity];
   v6 = v5;
 
   return [(CLSSettingsActivityDetailController *)self percentageStringWithProgress:v6];
 }
 
-- (id)timeValue:(id)a3
+- (id)timeValue:(id)value
 {
-  v4 = [(CLSSettingsActivityDetailController *)self userActivity];
+  userActivity = [(CLSSettingsActivityDetailController *)self userActivity];
 
-  if (v4)
+  if (userActivity)
   {
-    v5 = [(CLSSettingsActivityDetailController *)self userActivity];
-    [v5 duration];
+    userActivity2 = [(CLSSettingsActivityDetailController *)self userActivity];
+    [userActivity2 duration];
     v7 = v6;
 
     if (v7 < 0.00000011920929)
@@ -438,8 +438,8 @@ LABEL_8:
       v7 = 0.0;
     }
 
-    v8 = [(CLSSettingsActivityDetailController *)self timeSpentFormatter];
-    v9 = [v8 stringFromTimeInterval:v7];
+    timeSpentFormatter = [(CLSSettingsActivityDetailController *)self timeSpentFormatter];
+    v9 = [timeSpentFormatter stringFromTimeInterval:v7];
   }
 
   else
@@ -450,18 +450,18 @@ LABEL_8:
   return v9;
 }
 
-- (id)scoreValue:(id)a3
+- (id)scoreValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CLSSettingsActivityDetailController *)self userActivity];
+  valueCopy = value;
+  userActivity = [(CLSSettingsActivityDetailController *)self userActivity];
 
-  if (v5)
+  if (userActivity)
   {
-    v6 = [v4 propertyForKey:@"CLSSettingsActivityItemIDKey"];
+    v6 = [valueCopy propertyForKey:@"CLSSettingsActivityItemIDKey"];
     if (v6)
     {
-      v7 = [(CLSSettingsActivityDetailController *)self activityItemsByID];
-      v8 = [v7 objectForKeyedSubscript:v6];
+      activityItemsByID = [(CLSSettingsActivityDetailController *)self activityItemsByID];
+      v8 = [activityItemsByID objectForKeyedSubscript:v6];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -473,94 +473,94 @@ LABEL_8:
           [v9 score];
           v14 = v13;
           [v9 maxScore];
-          v12 = [(CLSSettingsActivityDetailController *)self percentageStringWithProgress:v14 / v15];
+          stringValue = [(CLSSettingsActivityDetailController *)self percentageStringWithProgress:v14 / v15];
         }
 
         else
         {
           [v9 score];
           v11 = [NSNumber numberWithDouble:?];
-          v12 = [v11 stringValue];
+          stringValue = [v11 stringValue];
         }
       }
 
       else
       {
-        v12 = 0;
+        stringValue = 0;
       }
     }
 
     else
     {
-      v12 = 0;
+      stringValue = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    stringValue = 0;
   }
 
-  return v12;
+  return stringValue;
 }
 
-- (id)quantityValue:(id)a3
+- (id)quantityValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CLSSettingsActivityDetailController *)self userActivity];
+  valueCopy = value;
+  userActivity = [(CLSSettingsActivityDetailController *)self userActivity];
 
-  if (v5)
+  if (userActivity)
   {
-    v6 = [v4 propertyForKey:@"CLSSettingsActivityItemIDKey"];
+    v6 = [valueCopy propertyForKey:@"CLSSettingsActivityItemIDKey"];
     if (v6)
     {
-      v7 = [(CLSSettingsActivityDetailController *)self activityItemsByID];
-      v8 = [v7 objectForKeyedSubscript:v6];
+      activityItemsByID = [(CLSSettingsActivityDetailController *)self activityItemsByID];
+      v8 = [activityItemsByID objectForKeyedSubscript:v6];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         [v8 quantity];
         v9 = [NSNumber numberWithDouble:?];
-        v10 = [v9 stringValue];
+        stringValue = [v9 stringValue];
       }
 
       else
       {
-        v10 = 0;
+        stringValue = 0;
       }
     }
 
     else
     {
-      v10 = 0;
+      stringValue = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    stringValue = 0;
   }
 
-  return v10;
+  return stringValue;
 }
 
-- (id)binaryValue:(id)a3
+- (id)binaryValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CLSSettingsActivityDetailController *)self userActivity];
+  valueCopy = value;
+  userActivity = [(CLSSettingsActivityDetailController *)self userActivity];
 
-  if (!v5)
+  if (!userActivity)
   {
     v11 = 0;
     goto LABEL_28;
   }
 
-  v6 = [v4 propertyForKey:@"CLSSettingsActivityItemIDKey"];
+  v6 = [valueCopy propertyForKey:@"CLSSettingsActivityItemIDKey"];
   if (v6)
   {
-    v7 = [(CLSSettingsActivityDetailController *)self activityItemsByID];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    activityItemsByID = [(CLSSettingsActivityDetailController *)self activityItemsByID];
+    v8 = [activityItemsByID objectForKeyedSubscript:v6];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -572,15 +572,15 @@ LABEL_26:
     }
 
     v9 = v8;
-    v10 = [v9 valueType];
+    valueType = [v9 valueType];
     v11 = 0;
-    if (v10 > 1)
+    if (valueType > 1)
     {
-      if (v10 == &dword_0 + 3)
+      if (valueType == &dword_0 + 3)
       {
-        v17 = [v9 value];
+        value = [v9 value];
         v13 = [NSBundle bundleForClass:objc_opt_class()];
-        if (v17)
+        if (value)
         {
           v14 = @"Correct";
         }
@@ -593,11 +593,11 @@ LABEL_26:
         goto LABEL_24;
       }
 
-      if (v10 == &dword_0 + 2)
+      if (valueType == &dword_0 + 2)
       {
-        v15 = [v9 value];
+        value2 = [v9 value];
         v13 = [NSBundle bundleForClass:objc_opt_class()];
-        if (v15)
+        if (value2)
         {
           v14 = @"Yes";
         }
@@ -613,11 +613,11 @@ LABEL_26:
 
     else
     {
-      if (!v10)
+      if (!valueType)
       {
-        v16 = [v9 value];
+        value3 = [v9 value];
         v13 = [NSBundle bundleForClass:objc_opt_class()];
-        if (v16)
+        if (value3)
         {
           v14 = @"True";
         }
@@ -630,11 +630,11 @@ LABEL_26:
         goto LABEL_24;
       }
 
-      if (v10 == &dword_0 + 1)
+      if (valueType == &dword_0 + 1)
       {
-        v12 = [v9 value];
+        value4 = [v9 value];
         v13 = [NSBundle bundleForClass:objc_opt_class()];
-        if (v12)
+        if (value4)
         {
           v14 = @"Pass";
         }
@@ -660,13 +660,13 @@ LABEL_28:
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = CLSSettingsActivityDetailController;
-  v4 = [(CLSSettingsActivityDetailController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
-  [v5 setNumberOfLines:0];
+  v4 = [(CLSSettingsActivityDetailController *)&v7 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
   return v4;
 }

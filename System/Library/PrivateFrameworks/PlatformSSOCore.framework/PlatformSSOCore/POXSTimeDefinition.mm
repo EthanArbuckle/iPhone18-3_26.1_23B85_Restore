@@ -1,14 +1,14 @@
 @interface POXSTimeDefinition
-- (id)stringFromValue:(id)a3;
-- (id)valueFromString:(id)a3;
+- (id)stringFromValue:(id)value;
+- (id)valueFromString:(id)string;
 @end
 
 @implementation POXSTimeDefinition
 
-- (id)valueFromString:(id)a3
+- (id)valueFromString:(id)string
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   if (valueFromString__onceToken != -1)
   {
     [POXSTimeDefinition valueFromString:];
@@ -33,12 +33,12 @@
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 dateFromString:{v3, v14}];
+        v9 = [v8 dateFromString:{stringCopy, v14}];
         if (v9)
         {
           v10 = v9;
-          v11 = [v8 calendar];
-          v5 = [v11 components:3178720 fromDate:v10];
+          calendar = [v8 calendar];
+          v5 = [calendar components:3178720 fromDate:v10];
 
           goto LABEL_13;
         }
@@ -68,22 +68,22 @@ uint64_t __38__POXSTimeDefinition_valueFromString___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)stringFromValue:(id)a3
+- (id)stringFromValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 timeZone];
+  valueCopy = value;
+  timeZone = [valueCopy timeZone];
   v5 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithName:@"UTC"];
-  if ([v4 isEqualToTimeZone:v5])
+  if ([timeZone isEqualToTimeZone:v5])
   {
     v6 = 2;
   }
 
   else
   {
-    if (v4)
+    if (timeZone)
     {
       v7 = [POXSDateFormatterFactory newTimeFormatterWithTimeZoneStyle:1];
-      [v7 setTimeZone:v4];
+      [v7 setTimeZone:timeZone];
       goto LABEL_7;
     }
 
@@ -92,8 +92,8 @@ uint64_t __38__POXSTimeDefinition_valueFromString___block_invoke()
 
   v7 = [POXSDateFormatterFactory newTimeFormatterWithTimeZoneStyle:v6];
 LABEL_7:
-  v8 = [v7 calendar];
-  v9 = [v8 dateFromComponents:v3];
+  calendar = [v7 calendar];
+  v9 = [calendar dateFromComponents:valueCopy];
 
   v10 = [v7 stringFromDate:v9];
 

@@ -1,10 +1,10 @@
 @interface VNTorsoprintGeneratorHumanDetectorBased
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (id).cxx_construct;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)torsoprintForImageBuffer:(__CVBuffer *)a3 requestRevision:(unint64_t)a4 error:(id *)a5;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)torsoprintForImageBuffer:(__CVBuffer *)buffer requestRevision:(unint64_t)revision error:(id *)error;
 @end
 
 @implementation VNTorsoprintGeneratorHumanDetectorBased
@@ -16,27 +16,27 @@
   return self;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = [VNValidationUtilities originatingRequestSpecifierInOptions:v12 error:a8];
+  optionsCopy = options;
+  v13 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v13)
   {
     v19 = 0;
     goto LABEL_15;
   }
 
-  v14 = [VNValidationUtilities requiredDetectedObjectObservationInOptions:v12 withOptionName:@"VNTorsoprintGeneratorProcessOption_InputDetectedObjectObservation" forObservationClass:objc_opt_class() error:a8];
+  v14 = [VNValidationUtilities requiredDetectedObjectObservationInOptions:optionsCopy withOptionName:@"VNTorsoprintGeneratorProcessOption_InputDetectedObjectObservation" forObservationClass:objc_opt_class() error:error];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 vn_cloneObject];
-    if (v16)
+    vn_cloneObject = [v14 vn_cloneObject];
+    if (vn_cloneObject)
     {
-      v17 = v16;
+      v17 = vn_cloneObject;
 
-      v18 = -[VNTorsoprintGeneratorHumanDetectorBased torsoprintForImageBuffer:requestRevision:error:](self, "torsoprintForImageBuffer:requestRevision:error:", a4, [v13 requestRevision], a8);
+      v18 = -[VNTorsoprintGeneratorHumanDetectorBased torsoprintForImageBuffer:requestRevision:error:](self, "torsoprintForImageBuffer:requestRevision:error:", buffer, [v13 requestRevision], error);
       if (v18)
       {
         [v17 setTorsoprint:v18];
@@ -52,9 +52,9 @@
       goto LABEL_14;
     }
 
-    if (a8)
+    if (error)
     {
-      *a8 = +[VNError errorForMemoryAllocationFailure];
+      *error = +[VNError errorForMemoryAllocationFailure];
     }
   }
 
@@ -67,13 +67,13 @@ LABEL_15:
   return v19;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  v12 = a4;
-  v13 = [(VNDetector *)self validatedImageBufferFromOptions:v12 error:a8];
+  optionsCopy = options;
+  v13 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v13)
   {
-    v14 = [VNValidationUtilities requiredDetectedObjectObservationInOptions:v12 withOptionName:@"VNTorsoprintGeneratorProcessOption_InputDetectedObjectObservation" forObservationClass:objc_opt_class() error:a8];
+    v14 = [VNValidationUtilities requiredDetectedObjectObservationInOptions:optionsCopy withOptionName:@"VNTorsoprintGeneratorProcessOption_InputDetectedObjectObservation" forObservationClass:objc_opt_class() error:error];
     v15 = v14;
     if (v14)
     {
@@ -82,11 +82,11 @@ LABEL_15:
       v19 = v18;
       v21 = v20;
       v23 = v22;
-      v24 = [v13 width];
-      v25 = [v13 height];
-      [v12 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
-      v26 = [v13 croppedBufferWithWidth:-[VNEspressoModelFileBasedDetector networkRequiredInputImageWidth](self height:"networkRequiredInputImageWidth") format:-[VNEspressoModelFileBasedDetector networkRequiredInputImageHeight](self cropRect:"networkRequiredInputImageHeight") options:1111970369 error:{v12, a8, v17 * v24, v19 * v25, v21 * v24, v23 * v25}];
-      *a7 = v26;
+      width = [v13 width];
+      height = [v13 height];
+      [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+      v26 = [v13 croppedBufferWithWidth:-[VNEspressoModelFileBasedDetector networkRequiredInputImageWidth](self height:"networkRequiredInputImageWidth") format:-[VNEspressoModelFileBasedDetector networkRequiredInputImageHeight](self cropRect:"networkRequiredInputImageHeight") options:1111970369 error:{optionsCopy, error, v17 * width, v19 * height, v21 * width, v23 * height}];
+      *buffer = v26;
       v27 = v26 != 0;
     }
 
@@ -104,36 +104,36 @@ LABEL_15:
   return v27;
 }
 
-- (id)torsoprintForImageBuffer:(__CVBuffer *)a3 requestRevision:(unint64_t)a4 error:(id *)a5
+- (id)torsoprintForImageBuffer:(__CVBuffer *)buffer requestRevision:(unint64_t)revision error:(id *)error
 {
-  v7 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v7 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
   if (!v7)
   {
-    CVPixelBufferGetBaseAddress(a3);
-    CVPixelBufferGetHeight(a3);
-    CVPixelBufferGetWidth(a3);
-    CVPixelBufferGetBytesPerRow(a3);
+    CVPixelBufferGetBaseAddress(buffer);
+    CVPixelBufferGetHeight(buffer);
+    CVPixelBufferGetWidth(buffer);
+    CVPixelBufferGetBytesPerRow(buffer);
     operator new();
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [VNError errorForCVReturnCode:v7 localizedDescription:@"unable to lock base address of pixel buffer"];
+    *error = [VNError errorForCVReturnCode:v7 localizedDescription:@"unable to lock base address of pixel buffer"];
   }
 
   return 0;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = VNTorsoprintGeneratorHumanDetectorBased;
-  if ([(VNEspressoModelFileBasedDetector *)&v15 completeInitializationForSession:v6 error:a4])
+  if ([(VNEspressoModelFileBasedDetector *)&v15 completeInitializationForSession:sessionCopy error:error])
   {
-    v7 = [(VNEspressoModelFileBasedDetector *)self espressoResources];
-    v8 = [(VNDetector *)self configurationOptions];
-    v9 = [objc_opt_class() modelVersionForOptions:v8];
+    espressoResources = [(VNEspressoModelFileBasedDetector *)self espressoResources];
+    configurationOptions = [(VNDetector *)self configurationOptions];
+    v9 = [objc_opt_class() modelVersionForOptions:configurationOptions];
     v10 = *(v9 + 8);
     if (v10 < 0x7FFFFFFFFFFFFFF8)
     {
@@ -147,8 +147,8 @@ LABEL_15:
         }
 
         *(&__dst + v10) = 0;
-        [v7 network];
-        [v7 plan];
+        [espressoResources network];
+        [espressoResources plan];
         operator new();
       }
 
@@ -161,7 +161,7 @@ LABEL_15:
   return 0;
 }
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
   v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%s", "torso__0"];
 

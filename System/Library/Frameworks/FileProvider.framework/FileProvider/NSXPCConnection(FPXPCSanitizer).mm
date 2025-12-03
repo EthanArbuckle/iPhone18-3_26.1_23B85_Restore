@@ -7,8 +7,8 @@
 - (void)fp_annotateWithXPCSanitizer:()FPXPCSanitizer
 {
   v4 = a3;
-  v5 = [a1 fp_userInfo];
-  [v5 setObject:v4 forKey:@"FPXPCSanitizerKey"];
+  fp_userInfo = [self fp_userInfo];
+  [fp_userInfo setObject:v4 forKey:@"FPXPCSanitizerKey"];
 }
 
 @end

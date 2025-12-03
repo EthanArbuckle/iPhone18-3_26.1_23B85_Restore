@@ -7,10 +7,10 @@
 + (__CFString)tsu_currentThreadName
 {
   v33 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CCACC8] isMainThread];
-  v1 = v0;
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
+  v1 = isMainThread;
   v2 = @"MT";
-  if (v0)
+  if (isMainThread)
   {
     v3 = @"MT";
   }
@@ -76,11 +76,11 @@ LABEL_13:
   if (![(__CFString *)v2 length:v15])
   {
 LABEL_23:
-    v10 = [MEMORY[0x277CCACC8] currentThread];
-    v11 = [v10 name];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    name = [currentThread name];
 
-    v2 = v11;
-    if (!v11)
+    v2 = name;
+    if (!name)
     {
       goto LABEL_17;
     }
@@ -89,8 +89,8 @@ LABEL_23:
   if (![(__CFString *)v2 length])
   {
 LABEL_17:
-    v12 = [MEMORY[0x277CCACC8] currentThread];
-    v13 = [v12 description];
+    currentThread2 = [MEMORY[0x277CCACC8] currentThread];
+    v13 = [currentThread2 description];
 
     v2 = v13;
   }

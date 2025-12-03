@@ -1,23 +1,23 @@
 @interface SafariExtensionSettingsTableCell
-- (id)_settingsMenuForExtension:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (id)_settingsMenuForExtension:(id)extension;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation SafariExtensionSettingsTableCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v21.receiver = self;
   v21.super_class = SafariExtensionSettingsTableCell;
-  [(SafariExtensionSettingsTableCell *)&v21 refreshCellContentsWithSpecifier:v4];
-  v5 = [(SafariExtensionSettingsTableCell *)self contentView];
+  [(SafariExtensionSettingsTableCell *)&v21 refreshCellContentsWithSpecifier:specifierCopy];
+  contentView = [(SafariExtensionSettingsTableCell *)self contentView];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v5 subviews];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  subviews = [contentView subviews];
+  v7 = [subviews countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -29,7 +29,7 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v17 + 1) + 8 * v10) removeFromSuperview];
@@ -37,42 +37,42 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [v4 userInfo];
+  userInfo = [specifierCopy userInfo];
   v12 = +[UIButtonConfiguration plainButtonConfiguration];
   v13 = +[UIColor clearColor];
-  v14 = [v12 background];
-  [v14 setBackgroundColor:v13];
+  background = [v12 background];
+  [background setBackgroundColor:v13];
 
   [v12 setContentInsets:{NSDirectionalEdgeInsetsZero.top, NSDirectionalEdgeInsetsZero.leading, NSDirectionalEdgeInsetsZero.bottom, NSDirectionalEdgeInsetsZero.trailing}];
   v15 = [UIButton buttonWithConfiguration:v12 primaryAction:0];
-  v16 = [(SafariExtensionSettingsTableCell *)self _settingsMenuForExtension:v11];
+  v16 = [(SafariExtensionSettingsTableCell *)self _settingsMenuForExtension:userInfo];
   [v15 setMenu:v16];
 
   [v15 setShowsMenuAsPrimaryAction:1];
-  [v5 bounds];
+  [contentView bounds];
   [v15 setFrame:?];
   [v15 setAutoresizingMask:18];
-  [v5 addSubview:v15];
+  [contentView addSubview:v15];
 }
 
-- (id)_settingsMenuForExtension:(id)a3
+- (id)_settingsMenuForExtension:(id)extension
 {
-  v3 = a3;
+  extensionCopy = extension;
   v4 = +[SafariSettingsController tabGroupManager];
-  v5 = [v4 profiles];
+  profiles = [v4 profiles];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __62__SafariExtensionSettingsTableCell__settingsMenuForExtension___block_invoke;
   v10[3] = &unk_8AEF8;
-  v11 = v3;
-  v6 = v3;
-  v7 = [v5 safari_mapAndFilterObjectsUsingBlock:v10];
+  v11 = extensionCopy;
+  v6 = extensionCopy;
+  v7 = [profiles safari_mapAndFilterObjectsUsingBlock:v10];
 
   v8 = [UIMenu menuWithTitle:&stru_8BB60 children:v7];
 

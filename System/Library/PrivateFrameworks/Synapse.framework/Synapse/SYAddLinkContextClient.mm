@@ -3,11 +3,11 @@
 - (void)_configureConnectionAndResume;
 - (void)_createConnectionIfNeeded;
 - (void)_invalidateConnection;
-- (void)createConnectionWithEndpoint:(id)a3;
+- (void)createConnectionWithEndpoint:(id)endpoint;
 - (void)dealloc;
-- (void)userDidRemoveContentItems:(id)a3;
-- (void)userEditDidAddContentItems:(id)a3;
-- (void)userWillAddLinkWithActivity:(id)a3 completion:(id)a4;
+- (void)userDidRemoveContentItems:(id)items;
+- (void)userEditDidAddContentItems:(id)items;
+- (void)userWillAddLinkWithActivity:(id)activity completion:(id)completion;
 @end
 
 @implementation SYAddLinkContextClient
@@ -30,8 +30,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SYAddLinkContextClient *)self _connection];
-  [v3 invalidate];
+  _connection = [(SYAddLinkContextClient *)self _connection];
+  [_connection invalidate];
 
   [(SYAddLinkContextClient *)self set_connection:0];
   v4.receiver = self;
@@ -39,21 +39,21 @@
   [(SYAddLinkContextClient *)&v4 dealloc];
 }
 
-- (void)userWillAddLinkWithActivity:(id)a3 completion:(id)a4
+- (void)userWillAddLinkWithActivity:(id)activity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SYAddLinkContextClient *)self _clientQueue];
+  activityCopy = activity;
+  completionCopy = completion;
+  _clientQueue = [(SYAddLinkContextClient *)self _clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__SYAddLinkContextClient_userWillAddLinkWithActivity_completion___block_invoke;
   block[3] = &unk_27856B510;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = activityCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = activityCopy;
+  dispatch_async(_clientQueue, block);
 }
 
 void __65__SYAddLinkContextClient_userWillAddLinkWithActivity_completion___block_invoke(id *a1)
@@ -169,21 +169,21 @@ void __65__SYAddLinkContextClient_userWillAddLinkWithActivity_completion___block
   }
 }
 
-- (void)userDidRemoveContentItems:(id)a3
+- (void)userDidRemoveContentItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 indexesOfObjectsPassingTest:&__block_literal_global_0];
+  itemsCopy = items;
+  v5 = [itemsCopy indexesOfObjectsPassingTest:&__block_literal_global_0];
   if ([v5 count])
   {
-    v6 = [(SYAddLinkContextClient *)self _clientQueue];
+    _clientQueue = [(SYAddLinkContextClient *)self _clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __52__SYAddLinkContextClient_userDidRemoveContentItems___block_invoke_2;
     block[3] = &unk_27856B578;
     block[4] = self;
-    v8 = v4;
+    v8 = itemsCopy;
     v9 = v5;
-    dispatch_async(v6, block);
+    dispatch_async(_clientQueue, block);
   }
 }
 
@@ -287,21 +287,21 @@ void __52__SYAddLinkContextClient_userDidRemoveContentItems___block_invoke_11(ui
   }
 }
 
-- (void)userEditDidAddContentItems:(id)a3
+- (void)userEditDidAddContentItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 indexesOfObjectsPassingTest:&__block_literal_global_16];
+  itemsCopy = items;
+  v5 = [itemsCopy indexesOfObjectsPassingTest:&__block_literal_global_16];
   if ([v5 count])
   {
-    v6 = [(SYAddLinkContextClient *)self _clientQueue];
+    _clientQueue = [(SYAddLinkContextClient *)self _clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__SYAddLinkContextClient_userEditDidAddContentItems___block_invoke_2;
     block[3] = &unk_27856B578;
     block[4] = self;
-    v8 = v4;
+    v8 = itemsCopy;
     v9 = v5;
-    dispatch_async(v6, block);
+    dispatch_async(_clientQueue, block);
   }
 }
 
@@ -407,16 +407,16 @@ void __53__SYAddLinkContextClient_userEditDidAddContentItems___block_invoke_17(u
 
 - (void)_createConnectionIfNeeded
 {
-  v3 = [(SYAddLinkContextClient *)self _connection];
+  _connection = [(SYAddLinkContextClient *)self _connection];
 
-  if (!v3)
+  if (!_connection)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.synapse.add-link-context-service" options:0];
     [(SYAddLinkContextClient *)self set_connection:v4];
 
-    v5 = [(SYAddLinkContextClient *)self _connection];
-    v6 = [(SYAddLinkContextClient *)self _clientQueue];
-    [v5 _setQueue:v6];
+    _connection2 = [(SYAddLinkContextClient *)self _connection];
+    _clientQueue = [(SYAddLinkContextClient *)self _clientQueue];
+    [_connection2 _setQueue:_clientQueue];
 
     [(SYAddLinkContextClient *)self _configureConnectionAndResume];
   }
@@ -424,8 +424,8 @@ void __53__SYAddLinkContextClient_userEditDidAddContentItems___block_invoke_17(u
 
 - (void)_configureConnectionAndResume
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SYAddLinkContextClient.m" lineNumber:180 description:@"the XPC connection is unexpectedly nil"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SYAddLinkContextClient.m" lineNumber:180 description:@"the XPC connection is unexpectedly nil"];
 }
 
 void __55__SYAddLinkContextClient__configureConnectionAndResume__block_invoke(uint64_t a1)
@@ -456,12 +456,12 @@ void __55__SYAddLinkContextClient__configureConnectionAndResume__block_invoke_29
 
 - (void)_invalidateConnection
 {
-  v3 = [(SYAddLinkContextClient *)self _clientQueue];
-  dispatch_assert_queue_V2(v3);
+  _clientQueue = [(SYAddLinkContextClient *)self _clientQueue];
+  dispatch_assert_queue_V2(_clientQueue);
 
-  v4 = [(SYAddLinkContextClient *)self _connection];
+  _connection = [(SYAddLinkContextClient *)self _connection];
 
-  if (v4)
+  if (_connection)
   {
     v5 = os_log_create("com.apple.synapse", "AddLinkContext");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -470,24 +470,24 @@ void __55__SYAddLinkContextClient__configureConnectionAndResume__block_invoke_29
       _os_log_impl(&dword_225901000, v5, OS_LOG_TYPE_DEFAULT, "AddLinkContextClient: Invalidating connection.", v7, 2u);
     }
 
-    v6 = [(SYAddLinkContextClient *)self _connection];
+    _connection2 = [(SYAddLinkContextClient *)self _connection];
     [(SYAddLinkContextClient *)self set_connection:0];
-    [v6 invalidate];
+    [_connection2 invalidate];
   }
 }
 
-- (void)createConnectionWithEndpoint:(id)a3
+- (void)createConnectionWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(SYAddLinkContextClient *)self _clientQueue];
+  endpointCopy = endpoint;
+  _clientQueue = [(SYAddLinkContextClient *)self _clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SYAddLinkContextClient_createConnectionWithEndpoint___block_invoke;
   v7[3] = &unk_27856B5C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = endpointCopy;
+  v6 = endpointCopy;
+  dispatch_sync(_clientQueue, v7);
 }
 
 uint64_t __55__SYAddLinkContextClient_createConnectionWithEndpoint___block_invoke(uint64_t a1)

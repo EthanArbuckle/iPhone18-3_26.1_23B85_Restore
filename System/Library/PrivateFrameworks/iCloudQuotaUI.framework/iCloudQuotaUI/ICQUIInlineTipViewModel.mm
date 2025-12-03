@@ -1,22 +1,22 @@
 @interface ICQUIInlineTipViewModel
 - (AMSUIBubbleTipInlineAnchorInfo)tipArrow;
 - (AMSUIMessageRequest)request;
-- (ICQUIInlineTipViewModel)initWithInlineTip:(id)a3;
+- (ICQUIInlineTipViewModel)initWithInlineTip:(id)tip;
 - (id)_tipTintColorName;
 @end
 
 @implementation ICQUIInlineTipViewModel
 
-- (ICQUIInlineTipViewModel)initWithInlineTip:(id)a3
+- (ICQUIInlineTipViewModel)initWithInlineTip:(id)tip
 {
-  v5 = a3;
+  tipCopy = tip;
   v9.receiver = self;
   v9.super_class = ICQUIInlineTipViewModel;
   v6 = [(ICQUIInlineTipViewModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tip, a3);
+    objc_storeStrong(&v6->_tip, tip);
   }
 
   return v7;
@@ -33,37 +33,37 @@
   v28[0] = @"type";
   v28[1] = @"name";
   v29[0] = @"named";
-  v3 = [(ICQUIInlineTipViewModel *)self _tipTintColorName];
-  v29[1] = v3;
+  _tipTintColorName = [(ICQUIInlineTipViewModel *)self _tipTintColorName];
+  v29[1] = _tipTintColorName;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
   v31[2] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:3];
 
   v6 = objc_alloc(MEMORY[0x277CEE8F8]);
-  v7 = [(ICQInlineTip *)self->_tip title];
-  v8 = [(ICQInlineTip *)self->_tip subTitle];
-  v9 = [v6 initWithTitle:v7 message:v8 appearanceInfo:v5];
+  title = [(ICQInlineTip *)self->_tip title];
+  subTitle = [(ICQInlineTip *)self->_tip subTitle];
+  v9 = [v6 initWithTitle:title message:subTitle appearanceInfo:v5];
 
   v10 = [MEMORY[0x277CEE480] actionWithTitle:0 style:2];
   v11 = *MEMORY[0x277CEE180];
   [v10 setIdentifier:*MEMORY[0x277CEE180]];
-  v12 = [v10 userInfo];
-  [v12 setObject:v11 forKeyedSubscript:@"actionName"];
+  userInfo = [v10 userInfo];
+  [userInfo setObject:v11 forKeyedSubscript:@"actionName"];
 
   [v9 addButtonAction:v10];
-  v13 = [(ICQInlineTip *)self->_tip icon];
+  icon = [(ICQInlineTip *)self->_tip icon];
   objc_opt_class();
-  LOBYTE(v12) = objc_opt_isKindOfClass();
+  LOBYTE(userInfo) = objc_opt_isKindOfClass();
 
-  v14 = [(ICQInlineTip *)self->_tip icon];
-  v15 = v14;
-  if (v12)
+  icon2 = [(ICQInlineTip *)self->_tip icon];
+  icon3 = icon2;
+  if (userInfo)
   {
     v16 = MEMORY[0x277D755B8];
-    v17 = [v14 path];
-    v18 = [v16 systemImageNamed:v17];
+    path = [icon2 path];
+    imageURL = [v16 systemImageNamed:path];
 
-    [v9 setIconImage:v18];
+    [v9 setIconImage:imageURL];
 LABEL_5:
 
     goto LABEL_6;
@@ -74,16 +74,16 @@ LABEL_5:
 
   if (isKindOfClass)
   {
-    v15 = [(ICQInlineTip *)self->_tip icon];
-    v18 = [v15 imageURL];
-    v20 = [_ICQUIHelperFunctions scaledImageURL:v18];
+    icon3 = [(ICQInlineTip *)self->_tip icon];
+    imageURL = [icon3 imageURL];
+    v20 = [_ICQUIHelperFunctions scaledImageURL:imageURL];
     [v9 setIconURL:v20];
 
     goto LABEL_5;
   }
 
 LABEL_6:
-  v21 = [(ICQInlineTip *)self->_tip actions];
+  actions = [(ICQInlineTip *)self->_tip actions];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __34__ICQUIInlineTipViewModel_request__block_invoke;
@@ -91,7 +91,7 @@ LABEL_6:
   v26[4] = self;
   v22 = v9;
   v27 = v22;
-  [v21 enumerateObjectsUsingBlock:v26];
+  [actions enumerateObjectsUsingBlock:v26];
 
   v23 = v27;
   v24 = v22;
@@ -137,8 +137,8 @@ void __34__ICQUIInlineTipViewModel_request__block_invoke(uint64_t a1, void *a2)
 
 - (AMSUIBubbleTipInlineAnchorInfo)tipArrow
 {
-  v3 = [(ICQInlineTip *)self->_tip arrowConfiguration];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D7F2F0]];
+  arrowConfiguration = [(ICQInlineTip *)self->_tip arrowConfiguration];
+  v4 = [arrowConfiguration isEqualToString:*MEMORY[0x277D7F2F0]];
 
   if (v4)
   {
@@ -149,8 +149,8 @@ LABEL_3:
     goto LABEL_7;
   }
 
-  v8 = [(ICQInlineTip *)self->_tip arrowConfiguration];
-  v9 = [v8 isEqualToString:*MEMORY[0x277D7F2D8]];
+  arrowConfiguration2 = [(ICQInlineTip *)self->_tip arrowConfiguration];
+  v9 = [arrowConfiguration2 isEqualToString:*MEMORY[0x277D7F2D8]];
 
   if (v9)
   {
@@ -161,8 +161,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [(ICQInlineTip *)self->_tip arrowConfiguration];
-  v13 = [v12 isEqualToString:*MEMORY[0x277D7F2F8]];
+  arrowConfiguration3 = [(ICQInlineTip *)self->_tip arrowConfiguration];
+  v13 = [arrowConfiguration3 isEqualToString:*MEMORY[0x277D7F2F8]];
 
   if (v13)
   {
@@ -171,8 +171,8 @@ LABEL_6:
     goto LABEL_3;
   }
 
-  v14 = [(ICQInlineTip *)self->_tip arrowConfiguration];
-  v15 = [v14 isEqualToString:*MEMORY[0x277D7F300]];
+  arrowConfiguration4 = [(ICQInlineTip *)self->_tip arrowConfiguration];
+  v15 = [arrowConfiguration4 isEqualToString:*MEMORY[0x277D7F300]];
 
   if (v15)
   {
@@ -181,8 +181,8 @@ LABEL_6:
     goto LABEL_3;
   }
 
-  v16 = [(ICQInlineTip *)self->_tip arrowConfiguration];
-  v17 = [v16 isEqualToString:*MEMORY[0x277D7F2E0]];
+  arrowConfiguration5 = [(ICQInlineTip *)self->_tip arrowConfiguration];
+  v17 = [arrowConfiguration5 isEqualToString:*MEMORY[0x277D7F2E0]];
 
   if (v17)
   {
@@ -191,8 +191,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v18 = [(ICQInlineTip *)self->_tip arrowConfiguration];
-  v19 = [v18 isEqualToString:*MEMORY[0x277D7F2E8]];
+  arrowConfiguration6 = [(ICQInlineTip *)self->_tip arrowConfiguration];
+  v19 = [arrowConfiguration6 isEqualToString:*MEMORY[0x277D7F2E8]];
 
   v5 = objc_alloc(MEMORY[0x277CEE898]);
   if (v19)
@@ -211,32 +211,32 @@ LABEL_7:
 
 - (id)_tipTintColorName
 {
-  v3 = [(ICQInlineTip *)self->_tip icon];
+  icon = [(ICQInlineTip *)self->_tip icon];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(ICQInlineTip *)self->_tip icon];
-    v6 = [v5 systemColorName];
+    icon2 = [(ICQInlineTip *)self->_tip icon];
+    systemColorName = [icon2 systemColorName];
 
-    if (v6)
+    if (systemColorName)
     {
-      v7 = [v5 systemColorName];
+      systemColorName2 = [icon2 systemColorName];
     }
 
     else
     {
-      v7 = @"blue";
+      systemColorName2 = @"blue";
     }
   }
 
   else
   {
-    v7 = @"blue";
+    systemColorName2 = @"blue";
   }
 
-  return v7;
+  return systemColorName2;
 }
 
 @end

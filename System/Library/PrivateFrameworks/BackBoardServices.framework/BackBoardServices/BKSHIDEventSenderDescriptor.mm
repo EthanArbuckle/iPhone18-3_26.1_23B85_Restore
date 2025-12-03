@@ -1,39 +1,39 @@
 @interface BKSHIDEventSenderDescriptor
 + (id)anyBuiltinTouchscreenDigitizer;
 + (id)anyDigitizer;
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 + (id)protobufSchema;
 + (id)stylusOpaqueTouchDigitizer;
 + (id)wildcard;
 - (BKSHIDEventSenderDescriptor)init;
-- (BKSHIDEventSenderDescriptor)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesDescriptor:(id)a3 failureReason:(id *)a4;
-- (id)_initWithHardwareType:(int64_t)a3 associatedDisplay:(id)a4 authenticated:(BOOL)a5 primaryPage:(unsigned int)a6 primaryUsage:(unsigned int)a7 senderID:(unint64_t)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BKSHIDEventSenderDescriptor)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesDescriptor:(id)descriptor failureReason:(id *)reason;
+- (id)_initWithHardwareType:(int64_t)type associatedDisplay:(id)display authenticated:(BOOL)authenticated primaryPage:(unsigned int)page primaryUsage:(unsigned int)usage senderID:(unint64_t)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initForProtobufDecoding;
-- (id)initFromPropertyList:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)initFromPropertyList:(id)list;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)propertyListEncoded;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventSenderDescriptor
 
-- (BOOL)matchesDescriptor:(id)a3 failureReason:(id *)a4
+- (BOOL)matchesDescriptor:(id)descriptor failureReason:(id *)reason
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  descriptorCopy = descriptor;
+  v7 = descriptorCopy;
+  if (reason)
   {
-    *a4 = 0;
+    *reason = 0;
   }
 
-  v8 = [v6 senderID];
-  if (v8 && v8 != self->_senderID)
+  senderID = [descriptorCopy senderID];
+  if (senderID && senderID != self->_senderID)
   {
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_32;
     }
@@ -41,13 +41,13 @@
     v16 = 0;
     v17 = @"senderID does not match";
 LABEL_31:
-    *a4 = v17;
+    *reason = v17;
     goto LABEL_33;
   }
 
   if ([v7 isAuthenticated] && !self->_authenticated)
   {
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_32;
     }
@@ -57,10 +57,10 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v9 = [v7 hardwareType];
-  if (v9 && v9 != self->_hardwareType)
+  hardwareType = [v7 hardwareType];
+  if (hardwareType && hardwareType != self->_hardwareType)
   {
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_32;
     }
@@ -70,16 +70,16 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v10 = [v7 primaryPage];
-  v11 = [v7 primaryUsage];
-  if (!v10)
+  primaryPage = [v7 primaryPage];
+  primaryUsage = [v7 primaryUsage];
+  if (!primaryPage)
   {
     goto LABEL_13;
   }
 
-  if (v10 != self->_primaryPage)
+  if (primaryPage != self->_primaryPage)
   {
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_32;
     }
@@ -89,9 +89,9 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  if (v11 && v11 != self->_primaryUsage)
+  if (primaryUsage && primaryUsage != self->_primaryUsage)
   {
-    if (a4)
+    if (reason)
     {
       v16 = 0;
       v17 = @"usage does not match";
@@ -104,15 +104,15 @@ LABEL_32:
   }
 
 LABEL_13:
-  v12 = [v7 associatedDisplay];
-  if (v12)
+  associatedDisplay = [v7 associatedDisplay];
+  if (associatedDisplay)
   {
     v13 = self->_associatedDisplay;
-    v14 = [(BKSHIDEventDisplay *)v13 isEqual:v12];
+    v14 = [(BKSHIDEventDisplay *)v13 isEqual:associatedDisplay];
     v15 = v14;
-    if (a4 && !v14)
+    if (reason && !v14)
     {
-      *a4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"display does not match (%@ != %@)", v13, v12];
+      *reason = [MEMORY[0x1E696AEC0] stringWithFormat:@"display does not match (%@ != %@)", v13, associatedDisplay];
 
 LABEL_27:
       v16 = 0;
@@ -132,30 +132,30 @@ LABEL_33:
   return v16;
 }
 
-- (BKSHIDEventSenderDescriptor)initWithCoder:(id)a3
+- (BKSHIDEventSenderDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"hardwareType"];
-  v6 = [v4 decodeBoolForKey:@"authenticated"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"display"];
-  v8 = [v4 decodeIntegerForKey:@"primaryPage"];
-  v9 = [v4 decodeIntegerForKey:@"primaryUsage"];
-  v10 = [v4 decodeIntegerForKey:@"senderID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"hardwareType"];
+  v6 = [coderCopy decodeBoolForKey:@"authenticated"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"display"];
+  v8 = [coderCopy decodeIntegerForKey:@"primaryPage"];
+  v9 = [coderCopy decodeIntegerForKey:@"primaryUsage"];
+  v10 = [coderCopy decodeIntegerForKey:@"senderID"];
 
   v11 = [(BKSHIDEventSenderDescriptor *)self _initWithHardwareType:v5 associatedDisplay:v7 authenticated:v6 primaryPage:v8 primaryUsage:v9 senderID:v10];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hardwareType = self->_hardwareType;
-  v5 = a3;
-  [v5 encodeInteger:hardwareType forKey:@"hardwareType"];
-  [v5 encodeBool:self->_authenticated forKey:@"authenticated"];
-  [v5 encodeObject:self->_associatedDisplay forKey:@"display"];
-  [v5 encodeInteger:self->_primaryPage forKey:@"primaryPage"];
-  [v5 encodeInteger:self->_primaryUsage forKey:@"primaryUsage"];
-  [v5 encodeInt64:self->_senderID forKey:@"senderID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:hardwareType forKey:@"hardwareType"];
+  [coderCopy encodeBool:self->_authenticated forKey:@"authenticated"];
+  [coderCopy encodeObject:self->_associatedDisplay forKey:@"display"];
+  [coderCopy encodeInteger:self->_primaryPage forKey:@"primaryPage"];
+  [coderCopy encodeInteger:self->_primaryUsage forKey:@"primaryUsage"];
+  [coderCopy encodeInt64:self->_senderID forKey:@"senderID"];
 }
 
 - (id)initForProtobufDecoding
@@ -165,11 +165,11 @@ LABEL_33:
   return [(BKSHIDEventSenderDescriptor *)&v3 init];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   hardwareType = self->_hardwareType;
-  v16 = v4;
+  v16 = formatterCopy;
   if (hardwareType)
   {
     v6 = NSStringFromBKSHIDEventHardwareType(hardwareType);
@@ -201,13 +201,13 @@ LABEL_33:
   v15 = [v16 appendBool:self->_authenticated withName:@"authenticated" ifEqualTo:1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v9 = self->_hardwareType == v5[1] && self->_authenticated == *(v5 + 24) && (associatedDisplay = self->_associatedDisplay, v8 = v6[2], BSEqualObjects()) && self->_primaryPage == *(v6 + 7) && self->_primaryUsage == *(v6 + 8) && self->_senderID == v6[5];
   }
@@ -220,7 +220,7 @@ LABEL_33:
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableHIDEventSenderDescriptor alloc];
   hardwareType = self->_hardwareType;
@@ -239,7 +239,7 @@ LABEL_33:
   block[1] = 3221225472;
   block[2] = __45__BKSHIDEventSenderDescriptor_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_13121 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_13121, block);
@@ -352,18 +352,18 @@ uint64_t __39__BKSHIDEventSenderDescriptor_wildcard__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
+  buildCopy = build;
   v4 = objc_alloc_init(BKSMutableHIDEventSenderDescriptor);
-  v3[2](v3, v4);
+  buildCopy[2](buildCopy, v4);
 
   v5 = [(BKSMutableHIDEventSenderDescriptor *)v4 copy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSHIDEventSenderDescriptor alloc];
   hardwareType = self->_hardwareType;
@@ -376,15 +376,15 @@ uint64_t __39__BKSHIDEventSenderDescriptor_wildcard__block_invoke()
   return [(BKSHIDEventSenderDescriptor *)v4 _initWithHardwareType:hardwareType associatedDisplay:associatedDisplay authenticated:authenticated primaryPage:primaryPage primaryUsage:primaryUsage senderID:senderID];
 }
 
-- (id)initFromPropertyList:(id)a3
+- (id)initFromPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v44.receiver = self;
   v44.super_class = BKSHIDEventSenderDescriptor;
   v5 = [(BKSHIDEventSenderDescriptor *)&v44 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"hardwareType"];
+    v6 = [listCopy objectForKey:@"hardwareType"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v7)
@@ -407,9 +407,9 @@ uint64_t __39__BKSHIDEventSenderDescriptor_wildcard__block_invoke()
 
     v10 = v9;
 
-    v11 = [v10 integerValue];
-    v5->_hardwareType = v11;
-    v12 = [v4 objectForKey:@"auth"];
+    integerValue = [v10 integerValue];
+    v5->_hardwareType = integerValue;
+    v12 = [listCopy objectForKey:@"auth"];
     v13 = objc_opt_class();
     v14 = v12;
     if (v13)
@@ -432,9 +432,9 @@ uint64_t __39__BKSHIDEventSenderDescriptor_wildcard__block_invoke()
 
     v16 = v15;
 
-    v17 = [v16 BOOLValue];
-    v5->_authenticated = v17;
-    v18 = [v4 objectForKey:@"page"];
+    bOOLValue = [v16 BOOLValue];
+    v5->_authenticated = bOOLValue;
+    v18 = [listCopy objectForKey:@"page"];
     v19 = objc_opt_class();
     v20 = v18;
     if (v19)
@@ -457,9 +457,9 @@ uint64_t __39__BKSHIDEventSenderDescriptor_wildcard__block_invoke()
 
     v22 = v21;
 
-    v23 = [v22 unsignedIntValue];
-    v5->_primaryPage = v23;
-    v24 = [v4 objectForKey:@"usage"];
+    unsignedIntValue = [v22 unsignedIntValue];
+    v5->_primaryPage = unsignedIntValue;
+    v24 = [listCopy objectForKey:@"usage"];
     v25 = objc_opt_class();
     v26 = v24;
     if (v25)
@@ -482,9 +482,9 @@ uint64_t __39__BKSHIDEventSenderDescriptor_wildcard__block_invoke()
 
     v28 = v27;
 
-    v29 = [v28 unsignedIntValue];
-    v5->_primaryUsage = v29;
-    v30 = [v4 objectForKey:@"senderID"];
+    unsignedIntValue2 = [v28 unsignedIntValue];
+    v5->_primaryUsage = unsignedIntValue2;
+    v30 = [listCopy objectForKey:@"senderID"];
     v31 = objc_opt_class();
     v32 = v30;
     if (v31)
@@ -507,9 +507,9 @@ uint64_t __39__BKSHIDEventSenderDescriptor_wildcard__block_invoke()
 
     v34 = v33;
 
-    v35 = [v34 unsignedLongLongValue];
-    v5->_senderID = v35;
-    v36 = [v4 objectForKey:@"display"];
+    unsignedLongLongValue = [v34 unsignedLongLongValue];
+    v5->_senderID = unsignedLongLongValue;
+    v36 = [listCopy objectForKey:@"display"];
     v37 = objc_opt_class();
     v38 = v36;
     if (v37)
@@ -592,8 +592,8 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v7 = [(BKSHIDEventDisplay *)self->_associatedDisplay _hardwareIdentifier];
-    [v3 setObject:v7 forKey:@"display"];
+    _hardwareIdentifier = [(BKSHIDEventDisplay *)self->_associatedDisplay _hardwareIdentifier];
+    [v3 setObject:_hardwareIdentifier forKey:@"display"];
   }
 
 LABEL_12:
@@ -618,23 +618,23 @@ LABEL_12:
   return v3;
 }
 
-- (id)_initWithHardwareType:(int64_t)a3 associatedDisplay:(id)a4 authenticated:(BOOL)a5 primaryPage:(unsigned int)a6 primaryUsage:(unsigned int)a7 senderID:(unint64_t)a8
+- (id)_initWithHardwareType:(int64_t)type associatedDisplay:(id)display authenticated:(BOOL)authenticated primaryPage:(unsigned int)page primaryUsage:(unsigned int)usage senderID:(unint64_t)d
 {
   v46 = *MEMORY[0x1E69E9840];
-  v16 = a4;
-  if (v16)
+  displayCopy = display;
+  if (displayCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v23 = MEMORY[0x1E696AEC0];
-      v24 = [v16 classForCoder];
-      if (!v24)
+      classForCoder = [displayCopy classForCoder];
+      if (!classForCoder)
       {
-        v24 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v25 = NSStringFromClass(v24);
+      v25 = NSStringFromClass(classForCoder);
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
       v28 = [v23 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"display", v25, v27];
@@ -649,7 +649,7 @@ LABEL_12:
         v36 = 2114;
         v37 = v31;
         v38 = 2048;
-        v39 = self;
+        selfCopy = self;
         v40 = 2114;
         v41 = @"BKSHIDEventSenderDescriptor.m";
         v42 = 1024;
@@ -672,8 +672,8 @@ LABEL_12:
     v18 = objc_opt_class();
     if (v18 != objc_opt_class())
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v32 handleFailureInMethod:a2 object:self file:@"BKSHIDEventSenderDescriptor.m" lineNumber:86 description:@"BKSHIDEventSenderDescriptor cannot be subclassed"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"BKSHIDEventSenderDescriptor.m" lineNumber:86 description:@"BKSHIDEventSenderDescriptor cannot be subclassed"];
     }
   }
 
@@ -683,12 +683,12 @@ LABEL_12:
   v20 = v19;
   if (v19)
   {
-    v19->_hardwareType = a3;
-    objc_storeStrong(&v19->_associatedDisplay, a4);
-    v20->_authenticated = a5;
-    v20->_primaryPage = a6;
-    v20->_primaryUsage = a7;
-    v20->_senderID = a8;
+    v19->_hardwareType = type;
+    objc_storeStrong(&v19->_associatedDisplay, display);
+    v20->_authenticated = authenticated;
+    v20->_primaryPage = page;
+    v20->_primaryUsage = usage;
+    v20->_senderID = d;
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -697,8 +697,8 @@ LABEL_12:
 
 - (BKSHIDEventSenderDescriptor)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BKSHIDEventSenderDescriptor.m" lineNumber:80 description:@"-init is not allowed on BKSHIDEventSenderDescriptor"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BKSHIDEventSenderDescriptor.m" lineNumber:80 description:@"-init is not allowed on BKSHIDEventSenderDescriptor"];
 
   return 0;
 }

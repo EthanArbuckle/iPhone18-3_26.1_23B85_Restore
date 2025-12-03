@@ -1,28 +1,28 @@
 @interface CRLiOSEditAccessibilityDescriptionViewController
 - (NSString)accessibilityDescriptionToSubmit;
-- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithCoder:(id)a3;
-- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithInitialAccessibilityDescription:(id)a3 title:(id)a4 subtitle:(id)a5 submitButtonTitle:(id)a6 placeholder:(id)a7 delegate:(id)a8;
-- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithCoder:(id)coder;
+- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithInitialAccessibilityDescription:(id)description title:(id)title subtitle:(id)subtitle submitButtonTitle:(id)buttonTitle placeholder:(id)placeholder delegate:(id)delegate;
+- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (void)loadView;
-- (void)setIsCancelled:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setIsCancelled:(BOOL)cancelled;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CRLiOSEditAccessibilityDescriptionViewController
 
-- (void)setIsCancelled:(BOOL)a3
+- (void)setIsCancelled:(BOOL)cancelled
 {
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController_isCancelled) = a3;
-  if (a3)
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController_isCancelled) = cancelled;
+  if (cancelled)
   {
     [(CRLiOSEditAccessibilityDescriptionViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithInitialAccessibilityDescription:(id)a3 title:(id)a4 subtitle:(id)a5 submitButtonTitle:(id)a6 placeholder:(id)a7 delegate:(id)a8
+- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithInitialAccessibilityDescription:(id)description title:(id)title subtitle:(id)subtitle submitButtonTitle:(id)buttonTitle placeholder:(id)placeholder delegate:(id)delegate
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -38,7 +38,7 @@
   return sub_100D46894(v8, v10, v11, v13, v14, v16, v22, v18, v19, v21);
 }
 
-- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithCoder:(id)a3
+- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController_isCancelled) = 0;
   swift_unknownObjectWeakInit();
@@ -51,41 +51,41 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D46BD0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CRLiOSEditAccessibilityDescriptionViewController();
   v4 = v7.receiver;
-  [(CRLiOSEditAccessibilityDescriptionViewController *)&v7 viewWillAppear:v3];
-  v5 = [v4 navigationItem];
+  [(CRLiOSEditAccessibilityDescriptionViewController *)&v7 viewWillAppear:appearCopy];
+  navigationItem = [v4 navigationItem];
   v6 = String._bridgeToObjectiveC()();
-  [v5 setTitle:v6];
+  [navigationItem setTitle:v6];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for CRLiOSEditAccessibilityDescriptionViewController();
   v4 = v6.receiver;
-  [(CRLiOSEditAccessibilityDescriptionViewController *)&v6 viewDidAppear:v3];
-  LODWORD(v3) = UIAccessibilityLayoutChangedNotification;
-  v5 = [v4 view];
-  UIAccessibilityPostNotification(v3, v5);
+  [(CRLiOSEditAccessibilityDescriptionViewController *)&v6 viewDidAppear:appearCopy];
+  LODWORD(appearCopy) = UIAccessibilityLayoutChangedNotification;
+  view = [v4 view];
+  UIAccessibilityPostNotification(appearCopy, view);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100D4747C(a3);
+  selfCopy = self;
+  sub_100D4747C(disappear);
 }
 
-- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Freeform48CRLiOSEditAccessibilityDescriptionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -94,11 +94,11 @@
 
 - (NSString)accessibilityDescriptionToSubmit
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D4796C();
-  v4 = [v3 text];
+  text = [v3 text];
 
-  if (v4)
+  if (text)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -112,12 +112,12 @@
   return v5;
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100D47FB0(v7);
+  controllerCopy = controller;
+  collectionCopy = collection;
+  selfCopy = self;
+  v9 = sub_100D47FB0(collectionCopy);
 
   return v9;
 }

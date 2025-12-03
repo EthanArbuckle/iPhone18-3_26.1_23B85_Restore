@@ -6,7 +6,7 @@
 
 - (void)tapSegmentedControl
 {
-  v2 = self;
+  selfCopy = self;
   sub_10040632C();
 }
 

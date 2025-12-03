@@ -1,11 +1,11 @@
 @interface WAMessageSubmitter
-- (WAMessageSubmitter)initWithMessageGroupType:(int64_t)a3;
-- (id)submitMessage:(id)a3;
+- (WAMessageSubmitter)initWithMessageGroupType:(int64_t)type;
+- (id)submitMessage:(id)message;
 @end
 
 @implementation WAMessageSubmitter
 
-- (WAMessageSubmitter)initWithMessageGroupType:(int64_t)a3
+- (WAMessageSubmitter)initWithMessageGroupType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = WAMessageSubmitter;
@@ -30,7 +30,7 @@
       v11 = 1024;
       v12 = 32;
       v13 = 2048;
-      v14 = a3;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error configuring groupType: %ld", buf, 0x1Cu);
     }
   }
@@ -38,7 +38,7 @@
   return v4;
 }
 
-- (id)submitMessage:(id)a3
+- (id)submitMessage:(id)message
 {
   v3 = NSStringFromSelector(a2);
   [NSException raise:NSInternalInconsistencyException format:@"Never use %@ for WAMessage.", v3];

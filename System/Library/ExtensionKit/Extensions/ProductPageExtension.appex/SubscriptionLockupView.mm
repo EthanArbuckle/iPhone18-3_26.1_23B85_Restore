@@ -1,10 +1,10 @@
 @interface SubscriptionLockupView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)layoutMargins;
-- (_TtC20ProductPageExtension22SubscriptionLockupView)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension22SubscriptionLockupView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
 @end
 
 @implementation SubscriptionLockupView
@@ -21,30 +21,30 @@
   return result;
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   ObjectType = swift_getObjectType();
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v9 = self;
+  selfCopy = self;
   [(SubscriptionLockupView *)&v14 setLayoutMargins:top, left, bottom, right];
-  v10 = *(&v9->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension22SubscriptionLockupView_iapLockupView);
-  v13.receiver = v9;
+  v10 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension22SubscriptionLockupView_iapLockupView);
+  v13.receiver = selfCopy;
   v13.super_class = ObjectType;
   [(SubscriptionLockupView *)&v13 layoutMargins];
   [v10 setLayoutMargins:?];
-  v11 = *(&v9->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension22SubscriptionLockupView_appLockupView);
-  v12.receiver = v9;
+  v11 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension22SubscriptionLockupView_appLockupView);
+  v12.receiver = selfCopy;
   v12.super_class = ObjectType;
   [(SubscriptionLockupView *)&v12 layoutMargins];
   [v11 setLayoutMargins:?];
 }
 
-- (_TtC20ProductPageExtension22SubscriptionLockupView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension22SubscriptionLockupView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension22SubscriptionLockupView_lockupTapBlock);
   *v3 = 0;
@@ -55,13 +55,13 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   ObjectType = swift_getObjectType();
   v7 = qword_10093FD10;
-  v8 = self;
+  selfCopy = self;
   if (v7 != -1)
   {
     swift_once();
@@ -69,10 +69,10 @@
 
   v9 = sub_100763ADC();
   v10 = sub_10000A61C(v9, qword_10099E208);
-  v18.receiver = v8;
+  v18.receiver = selfCopy;
   v18.super_class = ObjectType;
   [(SubscriptionLockupView *)&v18 layoutMargins];
-  v13 = sub_1002630B4(v10, v8, width, height, v11, v12);
+  v13 = sub_1002630B4(v10, selfCopy, width, height, v11, v12);
   v15 = v14;
 
   v16 = v13;

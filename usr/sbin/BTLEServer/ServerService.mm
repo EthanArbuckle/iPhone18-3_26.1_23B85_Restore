@@ -1,10 +1,10 @@
 @interface ServerService
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)respondToRequest:(id)a3 withResult:(int64_t)a4;
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)respondToRequest:(id)request withResult:(int64_t)result;
 - (void)start;
 - (void)stop;
-- (void)updateValue:(id)a3 forCharacteristic:(id)a4 onSubscribedCentrals:(id)a5;
+- (void)updateValue:(id)value forCharacteristic:(id)characteristic onSubscribedCentrals:(id)centrals;
 @end
 
 @implementation ServerService
@@ -12,36 +12,36 @@
 - (void)start
 {
   v4 = +[ServerServiceManager instance];
-  v3 = [(ServerService *)self service];
-  [v4 addService:v3];
+  service = [(ServerService *)self service];
+  [v4 addService:service];
 }
 
 - (void)stop
 {
   v4 = +[ServerServiceManager instance];
-  v3 = [(ServerService *)self service];
-  [v4 removeService:v3];
+  service = [(ServerService *)self service];
+  [v4 removeService:service];
 }
 
-- (void)respondToRequest:(id)a3 withResult:(int64_t)a4
+- (void)respondToRequest:(id)request withResult:(int64_t)result
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = +[ServerServiceManager instance];
-  [v6 respondToRequest:v5 withResult:a4];
+  [v6 respondToRequest:requestCopy withResult:result];
 }
 
-- (void)updateValue:(id)a3 forCharacteristic:(id)a4 onSubscribedCentrals:(id)a5
+- (void)updateValue:(id)value forCharacteristic:(id)characteristic onSubscribedCentrals:(id)centrals
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  centralsCopy = centrals;
+  characteristicCopy = characteristic;
+  valueCopy = value;
   v10 = +[ServerServiceManager instance];
-  [v10 updateValue:v9 forCharacteristic:v8 onSubscribedCentrals:v7];
+  [v10 updateValue:valueCopy forCharacteristic:characteristicCopy onSubscribedCentrals:centralsCopy];
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
-  if ([a3 state] == 10)
+  if ([state state] == 10)
   {
     v4 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
@@ -60,26 +60,26 @@
   self->_restrictedMode = v5;
 }
 
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  serviceCopy = service;
+  errorCopy = error;
   v10 = qword_1000DDBC8;
-  if (v9)
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_100078CB8(v10, v8, v9);
+      sub_100078CB8(v10, serviceCopy, errorCopy);
     }
   }
 
   else if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v8 UUID];
+    uUID = [serviceCopy UUID];
     v13 = 138412290;
-    v14 = v12;
+    v14 = uUID;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Service %@ has been published", &v13, 0xCu);
   }
 }

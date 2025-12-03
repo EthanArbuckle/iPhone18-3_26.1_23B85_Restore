@@ -1,5 +1,5 @@
 @interface HDSPTestIDSMessage
-- (HDSPTestIDSMessage)initWithCoder:(id)a3;
+- (HDSPTestIDSMessage)initWithCoder:(id)coder;
 - (NSString)identifier;
 @end
 
@@ -12,7 +12,7 @@
   return NSStringFromClass(v2);
 }
 
-- (HDSPTestIDSMessage)initWithCoder:(id)a3
+- (HDSPTestIDSMessage)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HDSPTestIDSMessage;

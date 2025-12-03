@@ -1,54 +1,54 @@
 @interface NMRLinkAgentOriginController
-- (NMRLinkAgentOriginController)initWithOrigin:(id)a3 externalOriginIdentifier:(id)a4;
+- (NMRLinkAgentOriginController)initWithOrigin:(id)origin externalOriginIdentifier:(id)identifier;
 - (NMRLinkAgentOriginControllerDelegate)delegate;
-- (id)_currentFullPlaybackQueueIgnoringDigestMatches:(BOOL)a3 digest:(id)a4 digestMatched:(BOOL *)a5;
-- (id)_currentNowPlayingApplicationInfoIgnoringDigestMatches:(BOOL)a3 digest:(id)a4 digestMatched:(BOOL *)a5;
-- (id)_currentNowPlayingIgnoringDigestMatches:(BOOL)a3 digest:(id)a4 digestMatched:(BOOL *)a5;
-- (id)_currentSupportedCommandsIgnoringDigestMatches:(BOOL)a3 digest:(id)a4 digestMatches:(BOOL *)a5;
-- (void)_handleMRNotification:(id)a3;
-- (void)_performUpdateBlock:(id)a3 forCFNotificationWithName:(id)a4 userInfo:(id)a5;
-- (void)_refreshArtworkWithCompletion:(id)a3;
-- (void)_refreshCurrentNowPlayingApplicationInfoWithCompletion:(id)a3;
-- (void)_refreshCurrentNowPlayingInfoWithCompletion:(id)a3;
+- (id)_currentFullPlaybackQueueIgnoringDigestMatches:(BOOL)matches digest:(id)digest digestMatched:(BOOL *)matched;
+- (id)_currentNowPlayingApplicationInfoIgnoringDigestMatches:(BOOL)matches digest:(id)digest digestMatched:(BOOL *)matched;
+- (id)_currentNowPlayingIgnoringDigestMatches:(BOOL)matches digest:(id)digest digestMatched:(BOOL *)matched;
+- (id)_currentSupportedCommandsIgnoringDigestMatches:(BOOL)matches digest:(id)digest digestMatches:(BOOL *)digestMatches;
+- (void)_handleMRNotification:(id)notification;
+- (void)_performUpdateBlock:(id)block forCFNotificationWithName:(id)name userInfo:(id)info;
+- (void)_refreshArtworkWithCompletion:(id)completion;
+- (void)_refreshCurrentNowPlayingApplicationInfoWithCompletion:(id)completion;
+- (void)_refreshCurrentNowPlayingInfoWithCompletion:(id)completion;
 - (void)_refreshCurrentSupportedCommands;
 - (void)_registerForMediaRemoteNotifications;
-- (void)_scheduleEagerUpdate:(unsigned int)a3;
-- (void)_updateNowPlayingInfoWithContentItem:(void *)a3;
+- (void)_scheduleEagerUpdate:(unsigned int)update;
+- (void)_updateNowPlayingInfoWithContentItem:(void *)item;
 - (void)dealloc;
 - (void)eagerUpdateTimerFired;
-- (void)handleMediaRemoteGetArtworkRequest:(id)a3 completion:(id)a4;
-- (void)handleMediaRemoteGetStateRequest:(id)a3 completion:(id)a4;
-- (void)handleMediaRemoteSendCommandRequest:(id)a3 completion:(id)a4;
-- (void)handlePlaybackQueueRequest:(id)a3 completion:(id)a4;
-- (void)playbackQueue:(id)a3 contentItemsDidChange:(id)a4;
-- (void)updatePlaybackQueuePendingRecordsWithIdentifier:(id)a3 success:(BOOL)a4;
+- (void)handleMediaRemoteGetArtworkRequest:(id)request completion:(id)completion;
+- (void)handleMediaRemoteGetStateRequest:(id)request completion:(id)completion;
+- (void)handleMediaRemoteSendCommandRequest:(id)request completion:(id)completion;
+- (void)handlePlaybackQueueRequest:(id)request completion:(id)completion;
+- (void)playbackQueue:(id)queue contentItemsDidChange:(id)change;
+- (void)updatePlaybackQueuePendingRecordsWithIdentifier:(id)identifier success:(BOOL)success;
 @end
 
 @implementation NMRLinkAgentOriginController
 
-- (NMRLinkAgentOriginController)initWithOrigin:(id)a3 externalOriginIdentifier:(id)a4
+- (NMRLinkAgentOriginController)initWithOrigin:(id)origin externalOriginIdentifier:(id)identifier
 {
-  v47 = a3;
-  v46 = a4;
+  originCopy = origin;
+  identifierCopy = identifier;
   v59.receiver = self;
   v59.super_class = NMRLinkAgentOriginController;
   v7 = [(NMRLinkAgentOriginController *)&v59 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_origin, a3);
-    objc_storeStrong(&v8->_externalOriginIdentifier, a4);
+    objc_storeStrong(&v7->_origin, origin);
+    objc_storeStrong(&v8->_externalOriginIdentifier, identifier);
     v9 = sub_10002C180(2);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(NMROrigin *)v8->_origin displayName];
-      v11 = [(NMROrigin *)v8->_origin uniqueIdentifier];
+      displayName = [(NMROrigin *)v8->_origin displayName];
+      uniqueIdentifier = [(NMROrigin *)v8->_origin uniqueIdentifier];
       *buf = 138412802;
-      v61 = v10;
+      v61 = displayName;
       v62 = 2112;
-      v63 = v11;
+      v63 = uniqueIdentifier;
       v64 = 2112;
-      v65 = v47;
+      v65 = originCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[LinkAgent] (%@-%@) Creating origin controller for %@", buf, 0x20u);
     }
 
@@ -151,13 +151,13 @@
   v3 = sub_10002C180(2);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NMROrigin *)self->_origin displayName];
-    v5 = [(NMROrigin *)self->_origin uniqueIdentifier];
+    displayName = [(NMROrigin *)self->_origin displayName];
+    uniqueIdentifier = [(NMROrigin *)self->_origin uniqueIdentifier];
     origin = self->_origin;
     *buf = 138412802;
-    v9 = v4;
+    v9 = displayName;
     v10 = 2112;
-    v11 = v5;
+    v11 = uniqueIdentifier;
     v12 = 2112;
     v13 = origin;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[LinkAgent] (%@-%@) Destroying origin controller for %@", buf, 0x20u);
@@ -168,33 +168,33 @@
   [(NMRLinkAgentOriginController *)&v7 dealloc];
 }
 
-- (void)_scheduleEagerUpdate:(unsigned int)a3
+- (void)_scheduleEagerUpdate:(unsigned int)update
 {
-  if (a3 > 3)
+  if (update > 3)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = *(&off_100049180 + a3);
+    v5 = *(&off_100049180 + update);
   }
 
   v6 = sub_10002C180(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(NMROrigin *)self->_origin displayName];
-    v8 = [(NMROrigin *)self->_origin uniqueIdentifier];
+    displayName = [(NMROrigin *)self->_origin displayName];
+    uniqueIdentifier = [(NMROrigin *)self->_origin uniqueIdentifier];
     v11 = 138412802;
-    v12 = v7;
+    v12 = displayName;
     v13 = 2112;
-    v14 = v8;
+    v14 = uniqueIdentifier;
     v15 = 2112;
     v16 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[LinkAgent] (%@-%@) Scheduling eager update because of %@.", &v11, 0x20u);
   }
 
-  if (((0x80u >> (a3 & 7)) & atomic_fetch_or(&self->_eagerUpdateFlags + (a3 >> 3), 0x80u >> (a3 & 7))) == 0)
+  if (((0x80u >> (update & 7)) & atomic_fetch_or(&self->_eagerUpdateFlags + (update >> 3), 0x80u >> (update & 7))) == 0)
   {
     eagerUpdateTimer = self->_eagerUpdateTimer;
     v10 = dispatch_time(0, 100000000);
@@ -216,14 +216,14 @@
   v6 = sub_10002C180(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(NMROrigin *)self->_origin displayName];
-    v8 = [(NMROrigin *)self->_origin uniqueIdentifier];
+    displayName = [(NMROrigin *)self->_origin displayName];
+    uniqueIdentifier = [(NMROrigin *)self->_origin uniqueIdentifier];
     currentApplicationBundleIdentifier = self->_currentApplicationBundleIdentifier;
     v10 = [(NSArray *)self->_currentSupportedCommands count];
     *buf = 138414082;
-    v27 = v7;
+    v27 = displayName;
     v28 = 2112;
-    v29 = v8;
+    v29 = uniqueIdentifier;
     v30 = 2112;
     v31 = @"YES";
     v32 = 2112;
@@ -251,7 +251,7 @@
 
   if (v17 && v14)
   {
-    v18 = [(NMRPlaybackQueue *)self->_playbackQueue fullPlaybackQueueData];
+    fullPlaybackQueueData = [(NMRPlaybackQueue *)self->_playbackQueue fullPlaybackQueueData];
     objc_initWeak(buf, self);
     playbackQueueMessageQueue = self->_playbackQueueMessageQueue;
     block[0] = _NSConcreteStackBlock;
@@ -259,9 +259,9 @@
     block[2] = sub_1000150F0;
     block[3] = &unk_100048FA8;
     objc_copyWeak(&v24, buf);
-    v22 = v18;
+    v22 = fullPlaybackQueueData;
     v23 = v17;
-    v20 = v18;
+    v20 = fullPlaybackQueueData;
     dispatch_async(playbackQueueMessageQueue, block);
 
     objc_destroyWeak(&v24);
@@ -269,119 +269,119 @@
   }
 }
 
-- (void)handleMediaRemoteGetStateRequest:(id)a3 completion:(id)a4
+- (void)handleMediaRemoteGetStateRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015258;
   block[3] = &unk_100048FD0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)handleMediaRemoteGetArtworkRequest:(id)a3 completion:(id)a4
+- (void)handleMediaRemoteGetArtworkRequest:(id)request completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001548C;
   v8[3] = &unk_100048FF8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(serialQueue, v8);
 }
 
-- (void)handlePlaybackQueueRequest:(id)a3 completion:(id)a4
+- (void)handlePlaybackQueueRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000157CC;
   block[3] = &unk_100048FD0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)handleMediaRemoteSendCommandRequest:(id)a3 completion:(id)a4
+- (void)handleMediaRemoteSendCommandRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000158A4;
   block[3] = &unk_100048FD0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)updatePlaybackQueuePendingRecordsWithIdentifier:(id)a3 success:(BOOL)a4
+- (void)updatePlaybackQueuePendingRecordsWithIdentifier:(id)identifier success:(BOOL)success
 {
-  v6 = a3;
+  identifierCopy = identifier;
   playbackQueueMessageQueue = self->_playbackQueueMessageQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015D40;
   block[3] = &unk_100049048;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = identifierCopy;
+  successCopy = success;
+  v8 = identifierCopy;
   dispatch_async(playbackQueueMessageQueue, block);
 }
 
-- (void)playbackQueue:(id)a3 contentItemsDidChange:(id)a4
+- (void)playbackQueue:(id)queue contentItemsDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   serialQueue = self->_serialQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100015FC8;
   v8[3] = &unk_100048C80;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = changeCopy;
+  selfCopy = self;
+  v7 = changeCopy;
   dispatch_async(serialQueue, v8);
 }
 
-- (void)_updateNowPlayingInfoWithContentItem:(void *)a3
+- (void)_updateNowPlayingInfoWithContentItem:(void *)item
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   v5 = sub_10002C180(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NMROrigin *)self->_origin displayName];
-    v7 = [(NMROrigin *)self->_origin uniqueIdentifier];
+    displayName = [(NMROrigin *)self->_origin displayName];
+    uniqueIdentifier = [(NMROrigin *)self->_origin uniqueIdentifier];
     v8 = MRContentItemCopyMinimalReadableDescription();
     *buf = 138412802;
-    *&buf[4] = v6;
+    *&buf[4] = displayName;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = uniqueIdentifier;
     *&buf[22] = 2112;
     v75 = CFAutorelease(v8);
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[LinkAgent] (%@-%@) Updating now playing content item %@", buf, 0x20u);
   }
 
-  if (sub_10001615C(self->_nowPlayingContentItemRef, a3))
+  if (sub_10001615C(self->_nowPlayingContentItemRef, item))
   {
     nowPlayingContentItemRef = self->_nowPlayingContentItemRef;
     MRContentItemMerge();
@@ -390,9 +390,9 @@
 
   else
   {
-    if (a3)
+    if (item)
     {
-      CFRetain(a3);
+      CFRetain(item);
     }
 
     v11 = self->_nowPlayingContentItemRef;
@@ -401,7 +401,7 @@
       CFRelease(v11);
     }
 
-    self->_nowPlayingContentItemRef = a3;
+    self->_nowPlayingContentItemRef = item;
   }
 
   v12 = MRContentItemCopyNowPlayingInfo();
@@ -418,9 +418,9 @@
   }
 
   v18 = [(NSDictionary *)v13 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoIsMusicApp];
-  v19 = [v18 BOOLValue];
+  bOOLValue = [v18 BOOLValue];
 
-  if ((v19 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [(NSDictionary *)v13 removeObjectForKey:kMRMediaRemoteNowPlayingInfoUniqueIdentifier];
   }
@@ -563,12 +563,12 @@ LABEL_41:
   {
     if (v59)
     {
-      v60 = [(NMROrigin *)self->_origin displayName];
-      v61 = [(NMROrigin *)self->_origin uniqueIdentifier];
+      displayName2 = [(NMROrigin *)self->_origin displayName];
+      uniqueIdentifier2 = [(NMROrigin *)self->_origin uniqueIdentifier];
       *buf = 138412546;
-      *&buf[4] = v60;
+      *&buf[4] = displayName2;
       *&buf[12] = 2112;
-      *&buf[14] = v61;
+      *&buf[14] = uniqueIdentifier2;
       _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "[LinkAgent] (%@-%@) Allowing now-playing update with only elapsed time difference", buf, 0x16u);
     }
 
@@ -578,12 +578,12 @@ LABEL_41:
 
   if (v59)
   {
-    v65 = [(NMROrigin *)self->_origin displayName];
-    v66 = [(NMROrigin *)self->_origin uniqueIdentifier];
+    displayName3 = [(NMROrigin *)self->_origin displayName];
+    uniqueIdentifier3 = [(NMROrigin *)self->_origin uniqueIdentifier];
     *buf = 138412546;
-    *&buf[4] = v65;
+    *&buf[4] = displayName3;
     *&buf[12] = 2112;
-    *&buf[14] = v66;
+    *&buf[14] = uniqueIdentifier3;
     _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "[LinkAgent] (%@-%@) Suppressing now-playing update with only elapsed time difference", buf, 0x16u);
   }
 
@@ -596,19 +596,19 @@ LABEL_41:
 LABEL_42:
 }
 
-- (void)_refreshCurrentNowPlayingInfoWithCompletion:(id)a3
+- (void)_refreshCurrentNowPlayingInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_refreshingQueue);
   v5 = sub_10002C180(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NMROrigin *)self->_origin displayName];
-    v7 = [(NMROrigin *)self->_origin uniqueIdentifier];
+    displayName = [(NMROrigin *)self->_origin displayName];
+    uniqueIdentifier = [(NMROrigin *)self->_origin uniqueIdentifier];
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = displayName;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = uniqueIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[LinkAgent] (%@-%@) Fetching now playing info", buf, 0x16u);
   }
 
@@ -642,7 +642,7 @@ LABEL_42:
   MRPlaybackQueueRequestSetIncludeMetadata();
   MRPlaybackQueueRequestSetIncludeArtwork();
   v12 = self->_serialQueue;
-  v13 = v4;
+  v13 = completionCopy;
   MRMediaRemoteRequestNowPlayingPlaybackQueueForPlayerSync();
   if (v8)
   {
@@ -657,9 +657,9 @@ LABEL_42:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_refreshArtworkWithCompletion:(id)a3
+- (void)_refreshArtworkWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_refreshingQueue);
   v18 = 0;
   v19 = &v18;
@@ -680,13 +680,13 @@ LABEL_42:
     v6 = sub_10002C180(2);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(NMROrigin *)self->_origin displayName];
-      v8 = [(NMROrigin *)self->_origin uniqueIdentifier];
+      displayName = [(NMROrigin *)self->_origin displayName];
+      uniqueIdentifier = [(NMROrigin *)self->_origin uniqueIdentifier];
       v9 = v19[5];
       *buf = 138412802;
-      v26 = v7;
+      v26 = displayName;
       v27 = 2112;
-      v28 = v8;
+      v28 = uniqueIdentifier;
       v29 = 2112;
       v30 = v9;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[LinkAgent] (%@-%@) Fetching artwork for %@", buf, 0x20u);
@@ -699,7 +699,7 @@ LABEL_42:
     v11 = MRPlaybackQueueRequestCreateWithIdentifiers();
     MRPlaybackQueueRequestSetIncludeArtwork();
     v12 = self->_serialQueue;
-    v16 = v4;
+    v16 = completionCopy;
     MRMediaRemoteRequestNowPlayingPlaybackQueueForPlayerSync();
     if (v10)
     {
@@ -717,18 +717,18 @@ LABEL_42:
     v13 = sub_10002C180(2);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(NMROrigin *)self->_origin displayName];
-      v15 = [(NMROrigin *)self->_origin uniqueIdentifier];
+      displayName2 = [(NMROrigin *)self->_origin displayName];
+      uniqueIdentifier2 = [(NMROrigin *)self->_origin uniqueIdentifier];
       *buf = 138412546;
-      v26 = v14;
+      v26 = displayName2;
       v27 = 2112;
-      v28 = v15;
+      v28 = uniqueIdentifier2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[LinkAgent] (%@-%@) No contentItemIdentifier, not fetching artwork", buf, 0x16u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -742,18 +742,18 @@ LABEL_42:
   MRMediaRemoteGetSupportedCommandsForOrigin();
 }
 
-- (void)_refreshCurrentNowPlayingApplicationInfoWithCompletion:(id)a3
+- (void)_refreshCurrentNowPlayingApplicationInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_10002C180(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NMROrigin *)self->_origin displayName];
-    v7 = [(NMROrigin *)self->_origin uniqueIdentifier];
+    displayName = [(NMROrigin *)self->_origin displayName];
+    uniqueIdentifier = [(NMROrigin *)self->_origin uniqueIdentifier];
     *buf = 138412546;
-    v29 = v6;
+    v29 = displayName;
     v30 = 2112;
-    v31 = v7;
+    v31 = uniqueIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[LinkAgent] (%@-%@) Fetching now playing application info", buf, 0x16u);
   }
 
@@ -765,7 +765,7 @@ LABEL_42:
   v23 = 3221225472;
   v24 = sub_100017848;
   v25 = &unk_1000490C0;
-  v26 = self;
+  selfCopy = self;
   v27 = v8;
   MRMediaRemoteGetNowPlayingApplicationPlaybackStateForOrigin();
   dispatch_group_enter(v27);
@@ -775,7 +775,7 @@ LABEL_42:
   v17 = 3221225472;
   v18 = sub_100017968;
   v19 = &unk_1000490E8;
-  v20 = self;
+  selfCopy2 = self;
   v21 = v27;
   v11 = v27;
   MRMediaRemoteGetNowPlayingClientForOrigin();
@@ -785,25 +785,25 @@ LABEL_42:
   v14[2] = sub_100017B34;
   v14[3] = &unk_100048FF8;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = completionCopy;
+  v13 = completionCopy;
   dispatch_group_notify(v11, v12, v14);
 }
 
-- (id)_currentNowPlayingIgnoringDigestMatches:(BOOL)a3 digest:(id)a4 digestMatched:(BOOL *)a5
+- (id)_currentNowPlayingIgnoringDigestMatches:(BOOL)matches digest:(id)digest digestMatched:(BOOL *)matched
 {
   currentNowPlayingInfo = self->_currentNowPlayingInfo;
-  v8 = a4;
+  digestCopy = digest;
   v9 = sub_10000E670(currentNowPlayingInfo);
   v10 = sub_100008964(v9);
-  v11 = sub_100008A18(v10, v8);
+  v11 = sub_100008A18(v10, digestCopy);
 
-  if (a5)
+  if (matched)
   {
-    *a5 = v11;
+    *matched = v11;
   }
 
-  if (!a3 && ((v11 ^ 1) & 1) == 0)
+  if (!matches && ((v11 ^ 1) & 1) == 0)
   {
 
     v9 = 0;
@@ -812,46 +812,46 @@ LABEL_42:
   return v9;
 }
 
-- (id)_currentNowPlayingApplicationInfoIgnoringDigestMatches:(BOOL)a3 digest:(id)a4 digestMatched:(BOOL *)a5
+- (id)_currentNowPlayingApplicationInfoIgnoringDigestMatches:(BOOL)matches digest:(id)digest digestMatched:(BOOL *)matched
 {
-  v8 = a4;
+  digestCopy = digest;
   v9 = objc_opt_new();
   [v9 setCompanionBundleIdentifier:self->_currentApplicationBundleIdentifier];
   [v9 setLocalizedDisplayName:self->_currentApplicationLocalizedDisplayName];
   [v9 setPlaybackState:self->_currentApplicationPlaybackState];
   [v9 setProcessID:self->_currentApplicationProcessID];
-  v10 = [v9 protobufData];
-  v11 = sub_100008964(v10);
-  v12 = sub_100008A18(v11, v8);
+  protobufData = [v9 protobufData];
+  v11 = sub_100008964(protobufData);
+  v12 = sub_100008A18(v11, digestCopy);
 
-  if (a5)
+  if (matched)
   {
-    *a5 = v12;
+    *matched = v12;
   }
 
-  if (!a3 && ((v12 ^ 1) & 1) == 0)
+  if (!matches && ((v12 ^ 1) & 1) == 0)
   {
 
-    v10 = 0;
+    protobufData = 0;
   }
 
-  return v10;
+  return protobufData;
 }
 
-- (id)_currentSupportedCommandsIgnoringDigestMatches:(BOOL)a3 digest:(id)a4 digestMatches:(BOOL *)a5
+- (id)_currentSupportedCommandsIgnoringDigestMatches:(BOOL)matches digest:(id)digest digestMatches:(BOOL *)digestMatches
 {
   currentSupportedCommands = self->_currentSupportedCommands;
-  v8 = a4;
+  digestCopy = digest;
   v9 = sub_100007F68(currentSupportedCommands);
   v10 = sub_100008964(v9);
-  v11 = sub_100008A18(v10, v8);
+  v11 = sub_100008A18(v10, digestCopy);
 
-  if (a5)
+  if (digestMatches)
   {
-    *a5 = v11;
+    *digestMatches = v11;
   }
 
-  if (!a3 && ((v11 ^ 1) & 1) == 0)
+  if (!matches && ((v11 ^ 1) & 1) == 0)
   {
 
     v9 = 0;
@@ -860,26 +860,26 @@ LABEL_42:
   return v9;
 }
 
-- (id)_currentFullPlaybackQueueIgnoringDigestMatches:(BOOL)a3 digest:(id)a4 digestMatched:(BOOL *)a5
+- (id)_currentFullPlaybackQueueIgnoringDigestMatches:(BOOL)matches digest:(id)digest digestMatched:(BOOL *)matched
 {
   playbackQueue = self->_playbackQueue;
-  v8 = a4;
-  v9 = [(NMRPlaybackQueue *)playbackQueue fullPlaybackQueueData];
-  v10 = sub_100008964(v9);
-  v11 = sub_100008A18(v10, v8);
+  digestCopy = digest;
+  fullPlaybackQueueData = [(NMRPlaybackQueue *)playbackQueue fullPlaybackQueueData];
+  v10 = sub_100008964(fullPlaybackQueueData);
+  v11 = sub_100008A18(v10, digestCopy);
 
-  if (a5)
+  if (matched)
   {
-    *a5 = v11;
+    *matched = v11;
   }
 
-  if (!a3 && ((v11 ^ 1) & 1) == 0)
+  if (!matches && ((v11 ^ 1) & 1) == 0)
   {
 
-    v9 = 0;
+    fullPlaybackQueueData = 0;
   }
 
-  return v9;
+  return fullPlaybackQueueData;
 }
 
 - (void)_registerForMediaRemoteNotifications
@@ -901,45 +901,45 @@ LABEL_42:
   [(NMRPlaybackQueue *)self->_playbackQueue beginObservingMediaRemotePlaybackQueueForOrigin:self->_origin];
 }
 
-- (void)_handleMRNotification:(id)a3
+- (void)_handleMRNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v4 userInfo];
-  [v6 objectForKeyedSubscript:kMRMediaRemoteOriginUserInfoKey];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  userInfo2 = [notificationCopy userInfo];
+  [userInfo2 objectForKeyedSubscript:kMRMediaRemoteOriginUserInfoKey];
 
   [(NMROrigin *)self->_origin mediaRemoteOrigin];
   if (MROriginEqualToOrigin())
   {
-    v7 = [v4 name];
-    if ([v7 isEqualToString:kMRNowPlayingPlaybackQueueChangedNotification])
+    name = [notificationCopy name];
+    if ([name isEqualToString:kMRNowPlayingPlaybackQueueChangedNotification])
     {
       goto LABEL_3;
     }
 
-    if ([v7 isEqualToString:kMRPlaybackQueueContentItemsChangedNotification])
+    if ([name isEqualToString:kMRPlaybackQueueContentItemsChangedNotification])
     {
       v15 = _NSConcreteStackBlock;
       v16 = 3221225472;
       v17 = sub_1000181F4;
       v18 = &unk_100049110;
-      v19 = self;
+      selfCopy = self;
       v9 = &v15;
     }
 
     else
     {
-      if (![v7 isEqualToString:kMRPlaybackQueueContentItemArtworkChangedNotification])
+      if (![name isEqualToString:kMRPlaybackQueueContentItemArtworkChangedNotification])
       {
-        if ([v7 isEqualToString:kMRMediaRemoteSupportedCommandsDidChangeNotification])
+        if ([name isEqualToString:kMRMediaRemoteSupportedCommandsDidChangeNotification])
         {
           [(NMRLinkAgentOriginController *)self _refreshCurrentSupportedCommands];
           goto LABEL_10;
         }
 
-        if (![v7 isEqualToString:kMRMediaRemoteNowPlayingApplicationDidChangeNotification])
+        if (![name isEqualToString:kMRMediaRemoteNowPlayingApplicationDidChangeNotification])
         {
-          if (([v7 isEqualToString:kMRMediaRemoteNowPlayingApplicationPlaybackStateDidChangeNotification] & 1) == 0 && !objc_msgSend(v7, "isEqualToString:", kMRMediaRemoteNowPlayingApplicationIsPlayingDidChangeNotification))
+          if (([name isEqualToString:kMRMediaRemoteNowPlayingApplicationPlaybackStateDidChangeNotification] & 1) == 0 && !objc_msgSend(name, "isEqualToString:", kMRMediaRemoteNowPlayingApplicationIsPlayingDidChangeNotification))
           {
             goto LABEL_10;
           }
@@ -963,34 +963,34 @@ LABEL_10:
       v11 = 3221225472;
       v12 = sub_100018200;
       v13 = &unk_100049110;
-      v14 = self;
+      selfCopy2 = self;
       v9 = &v10;
     }
 
-    [(NMRLinkAgentOriginController *)self _performUpdateBlock:v9 forCFNotificationWithName:v7 userInfo:v5, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19];
+    [(NMRLinkAgentOriginController *)self _performUpdateBlock:v9 forCFNotificationWithName:name userInfo:userInfo, v10, v11, v12, v13, selfCopy2, v15, v16, v17, v18, selfCopy];
     goto LABEL_10;
   }
 
 LABEL_11:
 }
 
-- (void)_performUpdateBlock:(id)a3 forCFNotificationWithName:(id)a4 userInfo:(id)a5
+- (void)_performUpdateBlock:(id)block forCFNotificationWithName:(id)name userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  nameCopy = name;
+  infoCopy = info;
   serialQueue = self->_serialQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000182FC;
   v15[3] = &unk_100049138;
   v15[4] = self;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = infoCopy;
+  v17 = nameCopy;
+  v18 = blockCopy;
+  v12 = nameCopy;
+  v13 = blockCopy;
+  v14 = infoCopy;
   dispatch_async(serialQueue, v15);
 }
 

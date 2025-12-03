@@ -2,25 +2,25 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime;
 - (NSString)description;
 - (PXAudioSession)init;
-- (PXAudioSession)initWithAsset:(id)a3 volume:(float)a4 startTime:(id *)a5 queue:(id)a6 audioSessionDelegate:(id)a7;
+- (PXAudioSession)initWithAsset:(id)asset volume:(float)volume startTime:(id *)time queue:(id)queue audioSessionDelegate:(id)delegate;
 - (PXAudioSessionAVAudioSessionDelegate)audioSessionDelegate;
 - (void)_updateDesiredPlayerVolume;
 - (void)didPerformChanges;
 - (void)pause;
-- (void)performChanges:(id)a3;
-- (void)performInternalChanges:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)performInternalChanges:(id)changes;
 - (void)play;
-- (void)playFromTime:(id *)a3;
+- (void)playFromTime:(id *)time;
 - (void)prepareToPlay;
-- (void)setContentLoudnessInLKFS:(id)a3;
-- (void)setContentPeakDecibels:(id)a3;
-- (void)setDesiredPlayerVolume:(float)a3;
-- (void)setDuration:(id *)a3;
-- (void)setError:(id)a3;
-- (void)setIsReadyToPlay:(BOOL)a3;
-- (void)setStatus:(int64_t)a3;
-- (void)setTargetLoudnessInLKFS:(float)a3;
-- (void)setVolume:(float)a3;
+- (void)setContentLoudnessInLKFS:(id)s;
+- (void)setContentPeakDecibels:(id)decibels;
+- (void)setDesiredPlayerVolume:(float)volume;
+- (void)setDuration:(id *)duration;
+- (void)setError:(id)error;
+- (void)setIsReadyToPlay:(BOOL)play;
+- (void)setStatus:(int64_t)status;
+- (void)setTargetLoudnessInLKFS:(float)s;
+- (void)setVolume:(float)volume;
 @end
 
 @implementation PXAudioSession
@@ -40,33 +40,33 @@
   [(PXUpdater *)self->_updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXAudioSession;
-  [(PXAudioSession *)&v3 performChanges:a3];
+  [(PXAudioSession *)&v3 performChanges:changes];
 }
 
 - (void)_updateDesiredPlayerVolume
 {
   [(PXAudioSession *)self volume];
   v4 = v3;
-  v5 = [(PXAudioSession *)self contentPeakDecibels];
-  if (v5)
+  contentPeakDecibels = [(PXAudioSession *)self contentPeakDecibels];
+  if (contentPeakDecibels)
   {
-    v7 = v5;
-    v8 = [(PXAudioSession *)self contentLoudnessInLKFS];
+    v7 = contentPeakDecibels;
+    contentLoudnessInLKFS = [(PXAudioSession *)self contentLoudnessInLKFS];
 
-    if (v8)
+    if (contentLoudnessInLKFS)
     {
       [(PXAudioSession *)self targetLoudnessInLKFS];
       v10 = v9;
-      v11 = [(PXAudioSession *)self contentLoudnessInLKFS];
-      [v11 floatValue];
+      contentLoudnessInLKFS2 = [(PXAudioSession *)self contentLoudnessInLKFS];
+      [contentLoudnessInLKFS2 floatValue];
       v13 = v12;
 
-      v14 = [(PXAudioSession *)self contentPeakDecibels];
-      [v14 floatValue];
+      contentPeakDecibels2 = [(PXAudioSession *)self contentPeakDecibels];
+      [contentPeakDecibels2 floatValue];
 
       if (v10 != 0.0 && v13 != 0.0)
       {
@@ -81,167 +81,167 @@
   [(PXAudioSession *)self setDesiredPlayerVolume:v6];
 }
 
-- (void)setDesiredPlayerVolume:(float)a3
+- (void)setDesiredPlayerVolume:(float)volume
 {
-  if (self->_desiredPlayerVolume != a3)
+  if (self->_desiredPlayerVolume != volume)
   {
-    self->_desiredPlayerVolume = a3;
+    self->_desiredPlayerVolume = volume;
     [(PXAudioSession *)self desiredPlayerVolumeDidChange];
   }
 }
 
-- (void)setContentLoudnessInLKFS:(id)a3
+- (void)setContentLoudnessInLKFS:(id)s
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_contentLoudnessInLKFS != v5)
+  sCopy = s;
+  v6 = sCopy;
+  if (self->_contentLoudnessInLKFS != sCopy)
   {
-    v8 = v5;
-    v7 = [(NSNumber *)v5 isEqual:?];
+    v8 = sCopy;
+    v7 = [(NSNumber *)sCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_contentLoudnessInLKFS, a3);
+      objc_storeStrong(&self->_contentLoudnessInLKFS, s);
       [(PXAudioSession *)self _invalidateDesiredPlayerVolume];
       v6 = v8;
     }
   }
 }
 
-- (void)setContentPeakDecibels:(id)a3
+- (void)setContentPeakDecibels:(id)decibels
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_contentPeakDecibels != v5)
+  decibelsCopy = decibels;
+  v6 = decibelsCopy;
+  if (self->_contentPeakDecibels != decibelsCopy)
   {
-    v8 = v5;
-    v7 = [(NSNumber *)v5 isEqual:?];
+    v8 = decibelsCopy;
+    v7 = [(NSNumber *)decibelsCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_contentPeakDecibels, a3);
+      objc_storeStrong(&self->_contentPeakDecibels, decibels);
       [(PXAudioSession *)self _invalidateDesiredPlayerVolume];
       v6 = v8;
     }
   }
 }
 
-- (void)setIsReadyToPlay:(BOOL)a3
+- (void)setIsReadyToPlay:(BOOL)play
 {
-  if (self->_isReadyToPlay != a3)
+  if (self->_isReadyToPlay != play)
   {
-    self->_isReadyToPlay = a3;
+    self->_isReadyToPlay = play;
     [(PXAudioSession *)self signalChange:8];
   }
 }
 
-- (void)setDuration:(id *)a3
+- (void)setDuration:(id *)duration
 {
   p_duration = &self->_duration;
-  time1 = *a3;
+  time1 = *duration;
   duration = self->_duration;
   if (CMTimeCompare(&time1, &duration))
   {
-    v6 = *&a3->var0;
-    p_duration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_duration->epoch = duration->var3;
     *&p_duration->value = v6;
     [(PXAudioSession *)self signalChange:1];
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
-  if (self->_error != v5)
+  errorCopy = error;
+  if (self->_error != errorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_error, a3);
+    v6 = errorCopy;
+    objc_storeStrong(&self->_error, error);
     [(PXAudioSession *)self errorDidChange];
     [(PXAudioSession *)self signalChange:4];
-    v5 = v6;
+    errorCopy = v6;
   }
 }
 
-- (void)setStatus:(int64_t)a3
+- (void)setStatus:(int64_t)status
 {
-  if (self->_status != a3)
+  if (self->_status != status)
   {
-    self->_status = a3;
+    self->_status = status;
     [(PXAudioSession *)self signalChange:2];
   }
 }
 
-- (void)setTargetLoudnessInLKFS:(float)a3
+- (void)setTargetLoudnessInLKFS:(float)s
 {
-  if (self->_targetLoudnessInLKFS != a3)
+  if (self->_targetLoudnessInLKFS != s)
   {
-    self->_targetLoudnessInLKFS = a3;
+    self->_targetLoudnessInLKFS = s;
     [(PXAudioSession *)self _invalidateDesiredPlayerVolume];
   }
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    self->_volume = a3;
+    self->_volume = volume;
     [(PXAudioSession *)self _invalidateDesiredPlayerVolume];
   }
 }
 
-- (void)playFromTime:(id *)a3
+- (void)playFromTime:(id *)time
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXAudioSession.m" lineNumber:102 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioSession playFromTime:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioSession.m" lineNumber:102 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioSession playFromTime:]", v7}];
 
   abort();
 }
 
 - (void)play
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAudioSession.m" lineNumber:98 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioSession play]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioSession.m" lineNumber:98 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioSession play]", v6}];
 
   abort();
 }
 
 - (void)pause
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAudioSession.m" lineNumber:94 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioSession pause]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioSession.m" lineNumber:94 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioSession pause]", v6}];
 
   abort();
 }
 
 - (void)prepareToPlay
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAudioSession.m" lineNumber:90 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioSession prepareToPlay]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioSession.m" lineNumber:90 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioSession prepareToPlay]", v6}];
 
   abort();
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a3 object:self file:@"PXAudioSession.m" lineNumber:74 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioSession currentTime]", v7}];
+  [currentHandler handleFailureInMethod:a3 object:self file:@"PXAudioSession.m" lineNumber:74 description:{@"Method %s is a responsibility of subclass %@", "-[PXAudioSession currentTime]", v7}];
 
   abort();
 }
 
-- (void)performInternalChanges:(id)a3
+- (void)performInternalChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -249,8 +249,8 @@
   block[2] = __41__PXAudioSession_performInternalChanges___block_invoke;
   block[3] = &unk_1E774AA30;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = changesCopy;
+  v6 = changesCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -279,44 +279,44 @@ void __41__PXAudioSession_performInternalChanges___block_invoke(uint64_t a1)
     v7 = off_1E773F210[v6];
   }
 
-  v8 = [(PXAudioSession *)self asset];
-  v9 = [v3 initWithFormat:@"<%@: %p; status: %@; asset: %@>", v5, self, v7, v8];
+  asset = [(PXAudioSession *)self asset];
+  v9 = [v3 initWithFormat:@"<%@: %p; status: %@; asset: %@>", v5, self, v7, asset];
 
   return v9;
 }
 
 - (PXAudioSession)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAudioSession.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXAudioSession init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioSession.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXAudioSession init]"}];
 
   abort();
 }
 
-- (PXAudioSession)initWithAsset:(id)a3 volume:(float)a4 startTime:(id *)a5 queue:(id)a6 audioSessionDelegate:(id)a7
+- (PXAudioSession)initWithAsset:(id)asset volume:(float)volume startTime:(id *)time queue:(id)queue audioSessionDelegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  assetCopy = asset;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = PXAudioSession;
   v16 = [(PXAudioSession *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    var3 = a5->var3;
-    *(v16 + 200) = *&a5->var0;
+    var3 = time->var3;
+    *(v16 + 200) = *&time->var0;
     *(v16 + 27) = var3;
-    objc_storeStrong(v16 + 21, a3);
-    v17->_desiredPlayerVolume = a4;
-    v17->_volume = a4;
-    objc_storeStrong(&v17->_queue, a6);
+    objc_storeStrong(v16 + 21, asset);
+    v17->_desiredPlayerVolume = volume;
+    v17->_volume = volume;
+    objc_storeStrong(&v17->_queue, queue);
     v19 = [[off_1E7721940 alloc] initWithTarget:v17];
     updater = v17->_updater;
     v17->_updater = v19;
 
     [(PXUpdater *)v17->_updater addUpdateSelector:sel__updateDesiredPlayerVolume];
-    objc_storeWeak(&v17->_audioSessionDelegate, v15);
+    objc_storeWeak(&v17->_audioSessionDelegate, delegateCopy);
   }
 
   return v17;

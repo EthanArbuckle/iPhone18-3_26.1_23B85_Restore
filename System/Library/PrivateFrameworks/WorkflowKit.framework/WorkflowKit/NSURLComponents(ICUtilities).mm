@@ -9,11 +9,11 @@
 - (void)addValuesFromQueryDictionary:()ICUtilities
 {
   v4 = a3;
-  v5 = [a1 percentEncodedQuery];
-  if ([v5 length])
+  percentEncodedQuery = [self percentEncodedQuery];
+  if ([percentEncodedQuery length])
   {
-    v6 = [a1 percentEncodedQuery];
-    v9 = [v6 stringByAppendingString:@"&"];
+    percentEncodedQuery2 = [self percentEncodedQuery];
+    v9 = [percentEncodedQuery2 stringByAppendingString:@"&"];
   }
 
   else
@@ -24,21 +24,21 @@
   v7 = [MEMORY[0x1E695DFF8] dc_queryStringWithQueryDictionary:v4];
 
   v8 = [(__CFString *)v9 stringByAppendingString:v7];
-  [a1 setPercentEncodedQuery:v8];
+  [self setPercentEncodedQuery:v8];
 }
 
 - (void)setQueryDictionary:()ICUtilities
 {
   v2 = [MEMORY[0x1E695DFF8] dc_queryStringWithQueryDictionary:?];
-  [a1 setPercentEncodedQuery:v2];
+  [self setPercentEncodedQuery:v2];
 }
 
 - (id)queryDictionary
 {
-  v1 = [a1 URL];
-  v2 = [v1 dc_queryDictionary];
+  v1 = [self URL];
+  dc_queryDictionary = [v1 dc_queryDictionary];
 
-  return v2;
+  return dc_queryDictionary;
 }
 
 @end

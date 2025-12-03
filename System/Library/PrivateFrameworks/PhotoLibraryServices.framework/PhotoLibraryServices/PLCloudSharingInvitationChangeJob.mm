@@ -1,13 +1,13 @@
 @interface PLCloudSharingInvitationChangeJob
-+ (void)resendPendingInvitationWithGUID:(id)a3 albumGUID:(id)a4;
-+ (void)saveServerStateLocallyForSharingACLRelationships:(id)a3 changeType:(int64_t)a4 info:(id)a5;
-+ (void)saveServerStateLocallyForSharingInvitationRelationships:(id)a3 changeType:(int64_t)a4 info:(id)a5;
-+ (void)sendServerPendingInvitationsForAlbumWithGUID:(id)a3;
++ (void)resendPendingInvitationWithGUID:(id)d albumGUID:(id)iD;
++ (void)saveServerStateLocallyForSharingACLRelationships:(id)relationships changeType:(int64_t)type info:(id)info;
++ (void)saveServerStateLocallyForSharingInvitationRelationships:(id)relationships changeType:(int64_t)type info:(id)info;
++ (void)sendServerPendingInvitationsForAlbumWithGUID:(id)d;
 - (BOOL)shouldArchiveXPCToDisk;
 - (id)_operationQueueForJob;
 - (id)description;
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4;
-- (void)encodeToXPCObject:(id)a3;
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager;
+- (void)encodeToXPCObject:(id)object;
 - (void)executeSaveServerStateLocallyForSharingACLRelationships;
 - (void)executeSaveServerStateLocallyForSharingInvitationRelationships;
 - (void)executeSendServerPendingInvitationsForAlbumWithGUID;
@@ -22,12 +22,12 @@
   v3 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PLCloudSharingInvitationChangeJob *)self albumGUID];
-    v5 = [(PLCloudSharingInvitationChangeJob *)self resendInvitationGUID];
+    albumGUID = [(PLCloudSharingInvitationChangeJob *)self albumGUID];
+    resendInvitationGUID = [(PLCloudSharingInvitationChangeJob *)self resendInvitationGUID];
     *buf = 138412546;
-    *&buf[4] = v4;
+    *&buf[4] = albumGUID;
     *&buf[12] = 2112;
-    *&buf[14] = v5;
+    *&buf[14] = resendInvitationGUID;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "executeSendServerPendingInvitationsForAlbumWithGUID %@ resendInvitationGUID %@", buf, 0x16u);
   }
 
@@ -38,14 +38,14 @@
   v20 = __Block_byref_object_copy__76612;
   v21 = __Block_byref_object_dispose__76613;
   v22 = 0;
-  v7 = [(PLCloudSharingJob *)self transientPhotoLibrary];
+  transientPhotoLibrary = [(PLCloudSharingJob *)self transientPhotoLibrary];
   v8 = +[PLPhotoSharingHelper sharingPersonID];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __88__PLCloudSharingInvitationChangeJob_executeSendServerPendingInvitationsForAlbumWithGUID__block_invoke;
   v15[3] = &unk_1E7577898;
   v15[4] = self;
-  v9 = v7;
+  v9 = transientPhotoLibrary;
   v18 = v6;
   v16 = v9;
   v17 = buf;
@@ -302,20 +302,20 @@ void __88__PLCloudSharingInvitationChangeJob_executeSendServerPendingInvitations
   v3 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PLCloudSharingInvitationChangeJob *)self MSASSharingRelationships];
+    mSASSharingRelationships = [(PLCloudSharingInvitationChangeJob *)self MSASSharingRelationships];
     *buf = 138412290;
-    v10 = v4;
+    v10 = mSASSharingRelationships;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "executeSaveServerStateLocallyForSharingACLRelationships %@", buf, 0xCu);
   }
 
-  v5 = [(PLCloudSharingJob *)self transientPhotoLibrary];
+  transientPhotoLibrary = [(PLCloudSharingJob *)self transientPhotoLibrary];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __92__PLCloudSharingInvitationChangeJob_executeSaveServerStateLocallyForSharingACLRelationships__block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = transientPhotoLibrary;
+  v6 = transientPhotoLibrary;
   [v6 performTransactionAndWait:v7];
 }
 
@@ -552,27 +552,27 @@ LABEL_40:
   v3 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PLCloudSharingInvitationChangeJob *)self MSASSharingRelationships];
+    mSASSharingRelationships = [(PLCloudSharingInvitationChangeJob *)self MSASSharingRelationships];
     v5 = 138412290;
-    v6 = v4;
+    v6 = mSASSharingRelationships;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "executeSaveServerStateLocallyForSharingRelationships %@", &v5, 0xCu);
   }
 }
 
 - (id)_operationQueueForJob
 {
-  v2 = [(PLCloudSharingInvitationChangeJob *)self jobType];
-  if ((v2 - 3) < 2)
+  jobType = [(PLCloudSharingInvitationChangeJob *)self jobType];
+  if ((jobType - 3) < 2)
   {
-    v2 = [objc_opt_class() highPriorityOperationQueue];
+    jobType = [objc_opt_class() highPriorityOperationQueue];
   }
 
-  else if ((v2 - 1) <= 1)
+  else if ((jobType - 1) <= 1)
   {
-    v2 = [objc_opt_class() lowPriorityOperationQueue];
+    jobType = [objc_opt_class() lowPriorityOperationQueue];
   }
 
-  return v2;
+  return jobType;
 }
 
 - (void)runDaemonSide
@@ -584,13 +584,13 @@ LABEL_40:
     *buf = 138412546;
     v11 = objc_opt_class();
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v4 = v11;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%@ : runDaemonSide %@", buf, 0x16u);
   }
 
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudSharingInvitationChangeJob runDaemonSide]"];
-  v6 = [(PLCloudSharingInvitationChangeJob *)self _operationQueueForJob];
+  _operationQueueForJob = [(PLCloudSharingInvitationChangeJob *)self _operationQueueForJob];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__PLCloudSharingInvitationChangeJob_runDaemonSide__block_invoke;
@@ -598,7 +598,7 @@ LABEL_40:
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  [v6 addOperationWithBlock:v8];
+  [_operationQueueForJob addOperationWithBlock:v8];
 }
 
 void __50__PLCloudSharingInvitationChangeJob_runDaemonSide__block_invoke(uint64_t a1)
@@ -642,8 +642,8 @@ void __50__PLCloudSharingInvitationChangeJob_runDaemonSide__block_invoke(uint64_
 
 - (BOOL)shouldArchiveXPCToDisk
 {
-  v2 = [(PLCloudSharingInvitationChangeJob *)self mstreamdInfoDictionary];
-  v3 = v2 != 0;
+  mstreamdInfoDictionary = [(PLCloudSharingInvitationChangeJob *)self mstreamdInfoDictionary];
+  v3 = mstreamdInfoDictionary != 0;
 
   return v3;
 }
@@ -652,22 +652,22 @@ void __50__PLCloudSharingInvitationChangeJob_runDaemonSide__block_invoke(uint64_
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PLCloudSharingInvitationChangeJob *)self MSASSharingRelationships];
-  v6 = [(PLCloudSharingInvitationChangeJob *)self relationshipChangeType];
-  v7 = [(PLCloudSharingInvitationChangeJob *)self albumGUID];
-  v8 = [(PLCloudSharingInvitationChangeJob *)self resendInvitationGUID];
-  v9 = [(PLCloudSharingInvitationChangeJob *)self mstreamdInfoDictionary];
-  v10 = [v3 stringWithFormat:@"%@ (MSASSharingRelationships=%@ relationshipChangeType=%lld albumGUID=%@ resendInvitationGUID=%@ mstreamdInfo=%@) ", v4, v5, v6, v7, v8, v9];
+  mSASSharingRelationships = [(PLCloudSharingInvitationChangeJob *)self MSASSharingRelationships];
+  relationshipChangeType = [(PLCloudSharingInvitationChangeJob *)self relationshipChangeType];
+  albumGUID = [(PLCloudSharingInvitationChangeJob *)self albumGUID];
+  resendInvitationGUID = [(PLCloudSharingInvitationChangeJob *)self resendInvitationGUID];
+  mstreamdInfoDictionary = [(PLCloudSharingInvitationChangeJob *)self mstreamdInfoDictionary];
+  v10 = [v3 stringWithFormat:@"%@ (MSASSharingRelationships=%@ relationshipChangeType=%lld albumGUID=%@ resendInvitationGUID=%@ mstreamdInfo=%@) ", v4, mSASSharingRelationships, relationshipChangeType, albumGUID, resendInvitationGUID, mstreamdInfoDictionary];
 
   return v10;
 }
 
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager
 {
-  v6 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = PLCloudSharingInvitationChangeJob;
-  v7 = [(PLCloudSharingJob *)&v18 initFromXPCObject:v6 libraryServicesManager:a4];
+  v7 = [(PLCloudSharingJob *)&v18 initFromXPCObject:objectCopy libraryServicesManager:manager];
   if (v7)
   {
     v8 = PLDataFromXPCDictionary();
@@ -682,7 +682,7 @@ void __50__PLCloudSharingInvitationChangeJob_runDaemonSide__block_invoke(uint64_
       [v7 setMSASSharingRelationships:v13];
     }
 
-    [v7 setRelationshipChangeType:{xpc_dictionary_get_int64(v6, propertyKeyRelationshipChangeType)}];
+    [v7 setRelationshipChangeType:{xpc_dictionary_get_int64(objectCopy, propertyKeyRelationshipChangeType)}];
     v14 = PLStringFromXPCDictionary();
     [v7 setAlbumGUID:v14];
 
@@ -692,23 +692,23 @@ void __50__PLCloudSharingInvitationChangeJob_runDaemonSide__block_invoke(uint64_
     v16 = PLDictionaryFromXPCDictionary();
     [v7 setMstreamdInfoDictionary:v16];
 
-    [v7 setJobType:{xpc_dictionary_get_int64(v6, propertyKeyJobType)}];
+    [v7 setJobType:{xpc_dictionary_get_int64(objectCopy, propertyKeyJobType)}];
   }
 
   return v7;
 }
 
-- (void)encodeToXPCObject:(id)a3
+- (void)encodeToXPCObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = PLCloudSharingInvitationChangeJob;
-  v4 = a3;
-  [(PLDaemonJob *)&v14 encodeToXPCObject:v4];
+  objectCopy = object;
+  [(PLDaemonJob *)&v14 encodeToXPCObject:objectCopy];
   v5 = MEMORY[0x1E696ACC8];
-  v6 = [(PLCloudSharingInvitationChangeJob *)self MSASSharingRelationships];
+  mSASSharingRelationships = [(PLCloudSharingInvitationChangeJob *)self MSASSharingRelationships];
   v13 = 0;
-  v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v13];
+  v7 = [v5 archivedDataWithRootObject:mSASSharingRelationships requiringSecureCoding:1 error:&v13];
   v8 = v13;
 
   if (!v7)
@@ -723,26 +723,26 @@ void __50__PLCloudSharingInvitationChangeJob_runDaemonSide__block_invoke(uint64_
   }
 
   PLXPCDictionarySetData();
-  xpc_dictionary_set_int64(v4, propertyKeyRelationshipChangeType, [(PLCloudSharingInvitationChangeJob *)self relationshipChangeType]);
-  v10 = [(PLCloudSharingInvitationChangeJob *)self albumGUID];
+  xpc_dictionary_set_int64(objectCopy, propertyKeyRelationshipChangeType, [(PLCloudSharingInvitationChangeJob *)self relationshipChangeType]);
+  albumGUID = [(PLCloudSharingInvitationChangeJob *)self albumGUID];
   PLXPCDictionarySetString();
 
-  v11 = [(PLCloudSharingInvitationChangeJob *)self resendInvitationGUID];
+  resendInvitationGUID = [(PLCloudSharingInvitationChangeJob *)self resendInvitationGUID];
   PLXPCDictionarySetString();
 
-  v12 = [(PLCloudSharingInvitationChangeJob *)self mstreamdInfoDictionary];
+  mstreamdInfoDictionary = [(PLCloudSharingInvitationChangeJob *)self mstreamdInfoDictionary];
   PLXPCDictionarySetDictionary();
 
-  xpc_dictionary_set_int64(v4, propertyKeyJobType, [(PLCloudSharingInvitationChangeJob *)self jobType]);
+  xpc_dictionary_set_int64(objectCopy, propertyKeyJobType, [(PLCloudSharingInvitationChangeJob *)self jobType]);
 }
 
-+ (void)resendPendingInvitationWithGUID:(id)a3 albumGUID:(id)a4
++ (void)resendPendingInvitationWithGUID:(id)d albumGUID:(id)iD
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  dCopy = d;
+  iDCopy = iD;
+  v7 = iDCopy;
+  if (!dCopy)
   {
     v9 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -762,7 +762,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!iDCopy)
   {
     v9 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -770,7 +770,7 @@ LABEL_9:
       v14 = 138412546;
       v15 = objc_opt_class();
       v16 = 2112;
-      v17 = v5;
+      v17 = dCopy;
       v10 = v15;
       v11 = "%@ : cannot resend invitation %@ with nil album GUID";
       v12 = v9;
@@ -784,48 +784,48 @@ LABEL_9:
   v8 = objc_alloc_init(objc_opt_class());
   [v8 setJobType:4];
   [v8 setAlbumGUID:v7];
-  [v8 setResendInvitationGUID:v5];
+  [v8 setResendInvitationGUID:dCopy];
   [v8 setMstreamdInfoDictionary:0];
   [v8 run];
 
 LABEL_10:
 }
 
-+ (void)sendServerPendingInvitationsForAlbumWithGUID:(id)a3
++ (void)sendServerPendingInvitationsForAlbumWithGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setJobType:3];
-  [v4 setAlbumGUID:v3];
+  [v4 setAlbumGUID:dCopy];
 
   [v4 setMstreamdInfoDictionary:0];
   [v4 run];
 }
 
-+ (void)saveServerStateLocallyForSharingInvitationRelationships:(id)a3 changeType:(int64_t)a4 info:(id)a5
++ (void)saveServerStateLocallyForSharingInvitationRelationships:(id)relationships changeType:(int64_t)type info:(id)info
 {
-  v7 = a5;
-  v8 = a3;
+  infoCopy = info;
+  relationshipsCopy = relationships;
   v9 = objc_alloc_init(objc_opt_class());
   [v9 setJobType:2];
-  [v9 setMSASSharingRelationships:v8];
+  [v9 setMSASSharingRelationships:relationshipsCopy];
 
-  [v9 setRelationshipChangeType:a4];
-  [v9 setMstreamdInfoDictionary:v7];
+  [v9 setRelationshipChangeType:type];
+  [v9 setMstreamdInfoDictionary:infoCopy];
 
   [v9 runAndWaitForMessageToBeSent];
 }
 
-+ (void)saveServerStateLocallyForSharingACLRelationships:(id)a3 changeType:(int64_t)a4 info:(id)a5
++ (void)saveServerStateLocallyForSharingACLRelationships:(id)relationships changeType:(int64_t)type info:(id)info
 {
-  v7 = a5;
-  v8 = a3;
+  infoCopy = info;
+  relationshipsCopy = relationships;
   v9 = objc_alloc_init(objc_opt_class());
   [v9 setJobType:1];
-  [v9 setMSASSharingRelationships:v8];
+  [v9 setMSASSharingRelationships:relationshipsCopy];
 
-  [v9 setRelationshipChangeType:a4];
-  [v9 setMstreamdInfoDictionary:v7];
+  [v9 setRelationshipChangeType:type];
+  [v9 setMstreamdInfoDictionary:infoCopy];
 
   [v9 runAndWaitForMessageToBeSent];
 }

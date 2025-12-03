@@ -1,33 +1,33 @@
 @interface CSGroupSessionTokenResponse
 + (id)requiredParameters;
-- (CSGroupSessionTokenResponse)initWithMessage:(id)a3;
-- (CSGroupSessionTokenResponse)initWithURLString:(id)a3;
+- (CSGroupSessionTokenResponse)initWithMessage:(id)message;
+- (CSGroupSessionTokenResponse)initWithURLString:(id)string;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation CSGroupSessionTokenResponse
 
-- (CSGroupSessionTokenResponse)initWithURLString:(id)a3
+- (CSGroupSessionTokenResponse)initWithURLString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = CSGroupSessionTokenResponse;
   v6 = [(CSGroupSessionTokenResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_urlString, a3);
+    objc_storeStrong(&v6->_urlString, string);
   }
 
   return v7;
 }
 
-- (CSGroupSessionTokenResponse)initWithMessage:(id)a3
+- (CSGroupSessionTokenResponse)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = CSGroupSessionTokenResponse;
-  v5 = [(CSMessage *)&v9 initWithMessage:v4];
+  v5 = [(CSMessage *)&v9 initWithMessage:messageCopy];
   if (v5)
   {
     CFStringGetTypeID();
@@ -41,7 +41,7 @@
 
 + (id)requiredParameters
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CSGroupSessionTokenResponse;
   v2 = objc_msgSendSuper2(&v5, sel_requiredParameters);
   v3 = [v2 mutableCopy];
@@ -55,11 +55,11 @@
 {
   v7.receiver = self;
   v7.super_class = CSGroupSessionTokenResponse;
-  v3 = [(CSMessage *)&v7 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(CSMessage *)&v7 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(CSGroupSessionTokenResponse *)self urlString];
-  [v4 setObject:v5 forKey:@"CSGroupSessionURLStringKey"];
+  urlString = [(CSGroupSessionTokenResponse *)self urlString];
+  [v4 setObject:urlString forKey:@"CSGroupSessionURLStringKey"];
 
   return v4;
 }

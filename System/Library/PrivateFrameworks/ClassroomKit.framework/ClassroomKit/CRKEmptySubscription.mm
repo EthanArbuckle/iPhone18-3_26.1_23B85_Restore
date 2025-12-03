@@ -1,12 +1,12 @@
 @interface CRKEmptySubscription
-+ (id)errorSubscriptionWithReason:(id)a3;
++ (id)errorSubscriptionWithReason:(id)reason;
 @end
 
 @implementation CRKEmptySubscription
 
-+ (id)errorSubscriptionWithReason:(id)a3
++ (id)errorSubscriptionWithReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   if (_CRKLogGeneral_onceToken_13 != -1)
   {
     +[CRKEmptySubscription errorSubscriptionWithReason:];
@@ -15,7 +15,7 @@
   v4 = _CRKLogGeneral_logObj_13;
   if (os_log_type_enabled(_CRKLogGeneral_logObj_13, OS_LOG_TYPE_ERROR))
   {
-    [(CRKEmptySubscription *)v3 errorSubscriptionWithReason:v4];
+    [(CRKEmptySubscription *)reasonCopy errorSubscriptionWithReason:v4];
   }
 
   v5 = objc_opt_new();

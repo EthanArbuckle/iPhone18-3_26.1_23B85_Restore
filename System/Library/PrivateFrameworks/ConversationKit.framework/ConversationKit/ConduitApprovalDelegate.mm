@@ -1,23 +1,23 @@
 @interface ConduitApprovalDelegate
-- (void)approveSplitSessionForConversation:(id)a3 requestedFromDevice:(id)a4 pullContext:(int64_t)a5 completion:(id)a6;
+- (void)approveSplitSessionForConversation:(id)conversation requestedFromDevice:(id)device pullContext:(int64_t)context completion:(id)completion;
 - (void)cancelSplitSessionApproval;
 @end
 
 @implementation ConduitApprovalDelegate
 
-- (void)approveSplitSessionForConversation:(id)a3 requestedFromDevice:(id)a4 pullContext:(int64_t)a5 completion:(id)a6
+- (void)approveSplitSessionForConversation:(id)conversation requestedFromDevice:(id)device pullContext:(int64_t)context completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v9;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  conversationCopy = conversation;
+  deviceCopy = device;
+  selfCopy = self;
   ConduitApprovalDelegate.approveSplitSession(for:requestedFromDevice:pullContext:completion:)();
 }
 
 - (void)cancelSplitSessionApproval
 {
-  v2 = self;
+  selfCopy = self;
   ConduitApprovalDelegate.cancelSplitSessionApproval()();
 }
 

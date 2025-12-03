@@ -1,15 +1,15 @@
 @interface CADEmulatedURL
-- (CADEmulatedURL)initWithOriginalURL:(id)a3;
+- (CADEmulatedURL)initWithOriginalURL:(id)l;
 @end
 
 @implementation CADEmulatedURL
 
-- (CADEmulatedURL)initWithOriginalURL:(id)a3
+- (CADEmulatedURL)initWithOriginalURL:(id)l
 {
-  v4 = [a3 absoluteString];
+  absoluteString = [l absoluteString];
   v7.receiver = self;
   v7.super_class = CADEmulatedURL;
-  v5 = [(CADEmulatedURL *)&v7 initWithString:v4 relativeToURL:0];
+  v5 = [(CADEmulatedURL *)&v7 initWithString:absoluteString relativeToURL:0];
 
   return v5;
 }

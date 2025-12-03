@@ -1,29 +1,29 @@
 @interface AVLayoutView
-- (AVLayoutView)initWithFrame:(CGRect)a3;
+- (AVLayoutView)initWithFrame:(CGRect)frame;
 - (BOOL)hasVisibleArrangedSubview;
 - (BOOL)isCollapsedOrExcluded;
 - (CGSize)extrinsicContentSize;
 - (NSString)debugDescription;
-- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)a3;
-- (id)_includedItemsFromSubviews:(id)a3 inStackLayout:(id)a4 thatFitSize:(CGSize)a5;
+- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)row;
+- (id)_includedItemsFromSubviews:(id)subviews inStackLayout:(id)layout thatFitSize:(CGSize)size;
 - (id)backgroundColor;
-- (id)prioritizedSizeThatFitsSize:(CGSize)a3;
+- (id)prioritizedSizeThatFitsSize:(CGSize)size;
 - (void)_applyShapeStyle;
-- (void)_insertArrangedSubview:(id)a3 atIndex:(unint64_t)a4;
-- (void)_removeArrangedSubview:(id)a3;
+- (void)_insertArrangedSubview:(id)subview atIndex:(unint64_t)index;
+- (void)_removeArrangedSubview:(id)subview;
 - (void)_updateStackLayoutIfNeeded;
 - (void)layoutSubviews;
 - (void)reevaluateHiddenStateOfAllItems;
-- (void)setArrangedSubviews:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setContentLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setDebugIdentifier:(id)a3;
-- (void)setIncluded:(BOOL)a3;
+- (void)setArrangedSubviews:(id)subviews;
+- (void)setBackgroundColor:(id)color;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setContentLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setDebugIdentifier:(id)identifier;
+- (void)setIncluded:(BOOL)included;
 - (void)setNeedsLayout;
-- (void)setPrefersLowQualityEffects:(BOOL)a3;
-- (void)setRowSpacing:(double)a3 afterRow:(unint64_t)a4;
-- (void)setShapeStyle:(unint64_t)a3;
+- (void)setPrefersLowQualityEffects:(BOOL)effects;
+- (void)setRowSpacing:(double)spacing afterRow:(unint64_t)row;
+- (void)setShapeStyle:(unint64_t)style;
 @end
 
 @implementation AVLayoutView
@@ -37,20 +37,20 @@
   return result;
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
   }
 }
@@ -65,24 +65,24 @@
   return [(AVLayoutView *)self isRemoved];
 }
 
-- (id)_includedItemsFromSubviews:(id)a3 inStackLayout:(id)a4 thatFitSize:(CGSize)a5
+- (id)_includedItemsFromSubviews:(id)subviews inStackLayout:(id)layout thatFitSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v86 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 itemsThatFitSize:{width, height}];
+  subviewsCopy = subviews;
+  layoutCopy = layout;
+  v10 = [layoutCopy itemsThatFitSize:{width, height}];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v11 = v8;
+  v11 = subviewsCopy;
   v12 = [v11 countByEnumeratingWithState:&v76 objects:v85 count:16];
   if (v12)
   {
     v13 = v12;
-    v54 = v9;
+    v54 = layoutCopy;
     v14 = 0;
     v15 = *v77;
     while (2)
@@ -94,8 +94,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v17 = [*(*(&v76 + 1) + 8 * i) layoutAttributes];
-        if ([v17 canSubstituteOtherAttributes])
+        layoutAttributes = [*(*(&v76 + 1) + 8 * i) layoutAttributes];
+        if ([layoutAttributes canSubstituteOtherAttributes])
         {
 
           v73 = 0u;
@@ -128,8 +128,8 @@
 
           v51 = v14;
 
-          v23 = [MEMORY[0x1E695DF70] array];
-          v24 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v67 = 0u;
           v68 = 0u;
           v69 = 0u;
@@ -151,20 +151,20 @@
                   objc_enumerationMutation(v25);
                 }
 
-                v31 = [*(*(&v67 + 1) + 8 * j) layoutAttributes];
-                if (([v19 containsObject:v31] & 1) == 0 && objc_msgSend(v31, "isIncluded"))
+                layoutAttributes2 = [*(*(&v67 + 1) + 8 * j) layoutAttributes];
+                if (([v19 containsObject:layoutAttributes2] & 1) == 0 && objc_msgSend(layoutAttributes2, "isIncluded"))
                 {
-                  [v23 addObject:v31];
+                  [array addObject:layoutAttributes2];
                 }
 
-                if ([v19 containsObject:v31] && objc_msgSend(v31, "isIncluded") && objc_msgSend(v31, "canOverflowToAuxiliaryMenu"))
+                if ([v19 containsObject:layoutAttributes2] && objc_msgSend(layoutAttributes2, "isIncluded") && objc_msgSend(layoutAttributes2, "canOverflowToAuxiliaryMenu"))
                 {
-                  [v24 addObject:v31];
+                  [array2 addObject:layoutAttributes2];
                 }
 
-                if ([v31 canSubstituteOtherAttributes])
+                if ([layoutAttributes2 canSubstituteOtherAttributes])
                 {
-                  v32 = v31;
+                  v32 = layoutAttributes2;
 
                   v28 = v32;
                 }
@@ -181,12 +181,12 @@
             v28 = 0;
           }
 
-          v33 = [MEMORY[0x1E695DF70] array];
+          array3 = [MEMORY[0x1E695DF70] array];
           v63 = 0u;
           v64 = 0u;
           v65 = 0u;
           v66 = 0u;
-          v18 = v23;
+          v18 = array;
           v34 = [v18 countByEnumeratingWithState:&v63 objects:v82 count:16];
           if (v34)
           {
@@ -204,7 +204,7 @@
                 v38 = *(*(&v63 + 1) + 8 * k);
                 if ([v38 canOverflowToAuxiliaryMenu])
                 {
-                  [v33 addObject:v38];
+                  [array3 addObject:v38];
                 }
               }
 
@@ -218,7 +218,7 @@
           v62 = 0u;
           v59 = 0u;
           v60 = 0u;
-          v39 = v33;
+          v39 = array3;
           v40 = [v39 countByEnumeratingWithState:&v59 objects:v81 count:16];
           if (v40)
           {
@@ -250,7 +250,7 @@
             v58 = 0u;
             v55 = 0u;
             v56 = 0u;
-            v44 = v24;
+            v44 = array2;
             v45 = [v44 countByEnumeratingWithState:&v55 objects:v80 count:16];
             if (v45)
             {
@@ -282,16 +282,16 @@
           }
 
           [v28 setIncluded:v43 & 1];
-          v9 = v54;
+          layoutCopy = v54;
           v10 = [v54 itemsThatFitSize:{width, height}];
 
           v11 = v53;
           goto LABEL_66;
         }
 
-        if ([v17 canOnlyAppearInControlOverflowMenu])
+        if ([layoutAttributes canOnlyAppearInControlOverflowMenu])
         {
-          v14 |= [v17 isIncluded];
+          v14 |= [layoutAttributes isIncluded];
         }
       }
 
@@ -306,12 +306,12 @@
 
     if ((v14 & 1) == 0)
     {
-      v9 = v54;
+      layoutCopy = v54;
       goto LABEL_67;
     }
 
     v18 = _AVLog();
-    v9 = v54;
+    layoutCopy = v54;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -331,30 +331,30 @@ LABEL_67:
   return v10;
 }
 
-- (void)_removeArrangedSubview:(id)a3
+- (void)_removeArrangedSubview:(id)subview
 {
-  v7 = a3;
-  v4 = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-  v5 = [v4 indexOfObject:v7];
+  subviewCopy = subview;
+  flattenedArrangedSubviewsInLayoutOrder = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+  v5 = [flattenedArrangedSubviewsInLayoutOrder indexOfObject:subviewCopy];
 
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-    [v6 removeObjectAtIndex:v5];
+    flattenedArrangedSubviewsInLayoutOrder2 = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+    [flattenedArrangedSubviewsInLayoutOrder2 removeObjectAtIndex:v5];
 
-    [v7 removeFromSuperview];
+    [subviewCopy removeFromSuperview];
     [(AVLayoutView *)self setStackLayoutNeedsUpdate:1];
     [(AVLayoutView *)self setNeedsLayout];
   }
 }
 
-- (void)_insertArrangedSubview:(id)a3 atIndex:(unint64_t)a4
+- (void)_insertArrangedSubview:(id)subview atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-  [v7 insertObject:v6 atIndex:a4];
+  subviewCopy = subview;
+  flattenedArrangedSubviewsInLayoutOrder = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+  [flattenedArrangedSubviewsInLayoutOrder insertObject:subviewCopy atIndex:index];
 
-  [(AVLayoutView *)self insertSubview:v6 atIndex:a4 + 1];
+  [(AVLayoutView *)self insertSubview:subviewCopy atIndex:index + 1];
   [(AVLayoutView *)self setStackLayoutNeedsUpdate:1];
 
   [(AVLayoutView *)self setNeedsLayout];
@@ -362,12 +362,12 @@ LABEL_67:
 
 - (void)_applyShapeStyle
 {
-  v3 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  v4 = [v3 traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  traitCollection = [avkit_mainScreen traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v6 = [(AVLayoutView *)self shapeStyle];
-  if (v6 == 1)
+  shapeStyle = [(AVLayoutView *)self shapeStyle];
+  if (shapeStyle == 1)
   {
     [(AVLayoutView *)self bounds];
     Width = CGRectGetWidth(v34);
@@ -382,7 +382,7 @@ LABEL_67:
     v10 = Height * 0.5;
   }
 
-  else if (v6)
+  else if (shapeStyle)
   {
     v11 = 0;
     v10 = 0.0;
@@ -390,7 +390,7 @@ LABEL_67:
 
   else
   {
-    if (v5 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v7 = 0.77;
     }
@@ -412,24 +412,24 @@ LABEL_67:
     v11 = 1;
   }
 
-  v14 = [(AVLayoutView *)self backdropLayerView];
-  v15 = [v14 layer];
-  [v15 setCornerRadius:v10];
+  backdropLayerView = [(AVLayoutView *)self backdropLayerView];
+  layer = [backdropLayerView layer];
+  [layer setCornerRadius:v10];
 
-  v16 = [(AVLayoutView *)self backdropLayerView];
-  v17 = [v16 layer];
-  [v17 setMaskedCorners:15];
+  backdropLayerView2 = [(AVLayoutView *)self backdropLayerView];
+  layer2 = [backdropLayerView2 layer];
+  [layer2 setMaskedCorners:15];
 
-  v18 = [(AVLayoutView *)self backdropLayerView];
-  v19 = [v18 layer];
-  v20 = v19;
+  backdropLayerView3 = [(AVLayoutView *)self backdropLayerView];
+  layer3 = [backdropLayerView3 layer];
+  v20 = layer3;
   v21 = MEMORY[0x1E69796E8];
   if (!v11)
   {
     v21 = MEMORY[0x1E69796E0];
   }
 
-  [v19 setCornerCurve:*v21];
+  [layer3 setCornerCurve:*v21];
 
   if ([(AVLayoutView *)self effectiveUserInterfaceLayoutDirection])
   {
@@ -441,8 +441,8 @@ LABEL_67:
     v22 = 5;
   }
 
-  v23 = [(AVLayoutView *)self secondaryMaterialOverlayView];
-  [v23 frame];
+  secondaryMaterialOverlayView = [(AVLayoutView *)self secondaryMaterialOverlayView];
+  [secondaryMaterialOverlayView frame];
   v25 = v24;
   v27 = v26;
   [(AVLayoutView *)self frame];
@@ -451,8 +451,8 @@ LABEL_67:
     v22 = 15;
   }
 
-  v31 = [(AVLayoutView *)self secondaryMaterialOverlayView];
-  [v31 _setCornerRadius:v11 continuous:v22 maskedCorners:v10];
+  secondaryMaterialOverlayView2 = [(AVLayoutView *)self secondaryMaterialOverlayView];
+  [secondaryMaterialOverlayView2 _setCornerRadius:v11 continuous:v22 maskedCorners:v10];
 }
 
 - (void)_updateStackLayoutIfNeeded
@@ -461,8 +461,8 @@ LABEL_67:
   if ([(AVLayoutView *)self stackLayoutNeedsUpdate])
   {
     v3 = MEMORY[0x1E695DF70];
-    v4 = [(AVLayoutView *)self arrangedSubviews];
-    v26 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    arrangedSubviews = [(AVLayoutView *)self arrangedSubviews];
+    v26 = [v3 arrayWithCapacity:{objc_msgSend(arrangedSubviews, "count")}];
 
     v42 = 0u;
     v43 = 0u;
@@ -515,26 +515,26 @@ LABEL_67:
           [v7 enumerateObjectsWithOptions:v8 usingBlock:v27];
           [v29[5] setNextAttributesInLayoutOrder:0];
           v9 = [v7 sortedArrayUsingComparator:&__block_literal_global_33303];
-          v10 = [v9 firstObject];
-          v11 = [v10 layoutAttributes];
+          firstObject = [v9 firstObject];
+          layoutAttributes = [firstObject layoutAttributes];
 
           for (i = 1; i < [v7 count]; ++i)
           {
             v13 = [v9 objectAtIndexedSubscript:i];
-            v14 = [v13 layoutAttributes];
-            [v11 setNextAttributesInPriorityOrder:v14];
+            layoutAttributes2 = [v13 layoutAttributes];
+            [layoutAttributes setNextAttributesInPriorityOrder:layoutAttributes2];
 
-            v15 = [v13 layoutAttributes];
+            layoutAttributes3 = [v13 layoutAttributes];
 
-            v11 = v15;
+            layoutAttributes = layoutAttributes3;
           }
 
-          [v11 setNextAttributesInPriorityOrder:0];
+          [layoutAttributes setNextAttributesInPriorityOrder:0];
           v16 = [AVLayoutViewRowHead alloc];
           v17 = v35[5];
-          v18 = [v9 firstObject];
-          v19 = [v18 layoutAttributes];
-          v20 = [(AVLayoutViewRowHead *)v16 initWithFirstAttributesInLayoutOrder:v17 firstAttributesInPriorityOrder:v19];
+          firstObject2 = [v9 firstObject];
+          layoutAttributes4 = [firstObject2 layoutAttributes];
+          v20 = [(AVLayoutViewRowHead *)v16 initWithFirstAttributesInLayoutOrder:v17 firstAttributesInPriorityOrder:layoutAttributes4];
 
           [v26 addObject:v20];
           _Block_object_dispose(&v28, 8);
@@ -553,9 +553,9 @@ LABEL_67:
     v21 = [[AVCustomStackLayout alloc] initWithLayoutRowHeads:v26];
     [(AVLayoutView *)self setCurrentStackLayout:v21];
 
-    v22 = [(AVLayoutView *)self debugIdentifier];
-    v23 = [(AVLayoutView *)self currentStackLayout];
-    [v23 setDebugIdentifier:v22];
+    debugIdentifier = [(AVLayoutView *)self debugIdentifier];
+    currentStackLayout = [(AVLayoutView *)self currentStackLayout];
+    [currentStackLayout setDebugIdentifier:debugIdentifier];
 
     [(AVLayoutView *)self setStackLayoutNeedsUpdate:0];
   }
@@ -616,8 +616,8 @@ uint64_t __42__AVLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint64_t 
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AVLayoutView *)self debugIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p> - %@", v4, self, v5];
+  debugIdentifier = [(AVLayoutView *)self debugIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p> - %@", v4, self, debugIdentifier];
 
   return v6;
 }
@@ -629,8 +629,8 @@ uint64_t __42__AVLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint64_t 
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  flattenedArrangedSubviewsInLayoutOrder = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+  v3 = [flattenedArrangedSubviewsInLayoutOrder countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -642,7 +642,7 @@ uint64_t __42__AVLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint64_t 
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(flattenedArrangedSubviewsInLayoutOrder);
         }
 
         [*(*(&v7 + 1) + 8 * v6) avkit_reevaluateHiddenStateOfItem:*(*(&v7 + 1) + 8 * v6)];
@@ -650,28 +650,28 @@ uint64_t __42__AVLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint64_t 
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [flattenedArrangedSubviewsInLayoutOrder countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setDebugIdentifier:(id)a3
+- (void)setDebugIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_debugIdentifier isEqualToString:?])
   {
-    objc_storeStrong(&self->_debugIdentifier, a3);
-    v5 = [(AVLayoutView *)self currentStackLayout];
-    [v5 setDebugIdentifier:v6];
+    objc_storeStrong(&self->_debugIdentifier, identifier);
+    currentStackLayout = [(AVLayoutView *)self currentStackLayout];
+    [currentStackLayout setDebugIdentifier:identifierCopy];
   }
 }
 
-- (void)setRowSpacing:(double)a3 afterRow:(unint64_t)a4
+- (void)setRowSpacing:(double)spacing afterRow:(unint64_t)row
 {
-  v6 = [(AVLayoutView *)self currentStackLayout];
-  [v6 setRowSpacing:a4 afterRow:a3];
+  currentStackLayout = [(AVLayoutView *)self currentStackLayout];
+  [currentStackLayout setRowSpacing:row afterRow:spacing];
 }
 
 - (BOOL)hasVisibleArrangedSubview
@@ -681,8 +681,8 @@ uint64_t __42__AVLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint64_t 
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  flattenedArrangedSubviewsInLayoutOrder = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+  v3 = [flattenedArrangedSubviewsInLayoutOrder countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -692,7 +692,7 @@ uint64_t __42__AVLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint64_t 
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(flattenedArrangedSubviewsInLayoutOrder);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -703,7 +703,7 @@ uint64_t __42__AVLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint64_t 
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [flattenedArrangedSubviewsInLayoutOrder countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -718,47 +718,47 @@ LABEL_12:
   return v3;
 }
 
-- (void)setContentLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setContentLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  [(AVLayoutView *)self setDirectionalLayoutMargins:a3.top, a3.leading, a3.bottom, a3.trailing];
+  [(AVLayoutView *)self setDirectionalLayoutMargins:margins.top, margins.leading, margins.bottom, margins.trailing];
 
   [(AVLayoutView *)self setNeedsLayout];
 }
 
-- (void)setShapeStyle:(unint64_t)a3
+- (void)setShapeStyle:(unint64_t)style
 {
-  if (self->_shapeStyle != a3)
+  if (self->_shapeStyle != style)
   {
-    self->_shapeStyle = a3;
+    self->_shapeStyle = style;
     [(AVLayoutView *)self _applyShapeStyle];
   }
 }
 
-- (void)setPrefersLowQualityEffects:(BOOL)a3
+- (void)setPrefersLowQualityEffects:(BOOL)effects
 {
-  if (self->_prefersLowQualityEffects != a3)
+  if (self->_prefersLowQualityEffects != effects)
   {
-    v4 = a3;
-    self->_prefersLowQualityEffects = a3;
-    v6 = [(AVLayoutView *)self backdropLayerView];
-    [v6 setForceLowQualityEffect:v4];
+    effectsCopy = effects;
+    self->_prefersLowQualityEffects = effects;
+    backdropLayerView = [(AVLayoutView *)self backdropLayerView];
+    [backdropLayerView setForceLowQualityEffect:effectsCopy];
 
-    v7 = [(AVLayoutView *)self backdropLayerView];
-    [v7 updateActiveBackdropEffectIfGroupLeader];
+    backdropLayerView2 = [(AVLayoutView *)self backdropLayerView];
+    [backdropLayerView2 updateActiveBackdropEffectIfGroupLeader];
   }
 }
 
-- (void)setArrangedSubviews:(id)a3
+- (void)setArrangedSubviews:(id)subviews
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_arrangedSubviews, a3);
+  subviewsCopy = subviews;
+  objc_storeStrong(&self->_arrangedSubviews, subviews);
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-  v8 = [v6 setWithArray:v7];
+  flattenedArrangedSubviewsInLayoutOrder = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+  v8 = [v6 setWithArray:flattenedArrangedSubviewsInLayoutOrder];
 
   v25 = v8;
-  v27 = self;
+  selfCopy = self;
   if ([(AVLayoutView *)self effectiveUserInterfaceLayoutDirection]== 1)
   {
     v9 = 2 * ([(AVLayoutView *)self semanticContentAttribute]!= 1);
@@ -769,12 +769,12 @@ LABEL_12:
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v11 = v5;
+  v11 = subviewsCopy;
   v12 = [v11 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v12)
   {
@@ -794,7 +794,7 @@ LABEL_12:
         v35[1] = 3221225472;
         v35[2] = __36__AVLayoutView_setArrangedSubviews___block_invoke;
         v35[3] = &unk_1E7209EF8;
-        v36 = v10;
+        v36 = array;
         [v16 enumerateObjectsWithOptions:v9 usingBlock:v35];
       }
 
@@ -804,7 +804,7 @@ LABEL_12:
     while (v13);
   }
 
-  v17 = [MEMORY[0x1E695DFD8] setWithArray:v10];
+  v17 = [MEMORY[0x1E695DFD8] setWithArray:array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -827,7 +827,7 @@ LABEL_12:
         v23 = *(*(&v31 + 1) + 8 * j);
         if (([v17 containsObject:v23] & 1) == 0)
         {
-          [(AVLayoutView *)v27 _removeArrangedSubview:v23];
+          [(AVLayoutView *)selfCopy _removeArrangedSubview:v23];
         }
       }
 
@@ -842,9 +842,9 @@ LABEL_12:
   v28[2] = __36__AVLayoutView_setArrangedSubviews___block_invoke_2;
   v28[3] = &unk_1E7209F20;
   v29 = v18;
-  v30 = v27;
+  v30 = selfCopy;
   v24 = v18;
-  [v10 enumerateObjectsUsingBlock:v28];
+  [array enumerateObjectsUsingBlock:v28];
 }
 
 void __36__AVLayoutView_setArrangedSubviews___block_invoke_2(uint64_t a1, void *a2, uint64_t a3)
@@ -870,19 +870,19 @@ void __36__AVLayoutView_setArrangedSubviews___block_invoke_2(uint64_t a1, void *
 LABEL_5:
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(AVLayoutView *)self backdropLayerView];
-  [v5 setCustomBackgroundColor:v4];
+  colorCopy = color;
+  backdropLayerView = [(AVLayoutView *)self backdropLayerView];
+  [backdropLayerView setCustomBackgroundColor:colorCopy];
 }
 
 - (id)backgroundColor
 {
-  v2 = [(AVLayoutView *)self backdropLayerView];
-  v3 = [v2 backgroundColor];
+  backdropLayerView = [(AVLayoutView *)self backdropLayerView];
+  backgroundColor = [backdropLayerView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
 - (void)setNeedsLayout
@@ -893,10 +893,10 @@ LABEL_5:
   [(AVLayoutView *)self setLayoutDirty:1];
 }
 
-- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)a3
+- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)row
 {
-  v5 = [(AVLayoutView *)self currentStackLayout];
-  [v5 layoutHeightThatFitsRowsStartingWithRow:a3];
+  currentStackLayout = [(AVLayoutView *)self currentStackLayout];
+  [currentStackLayout layoutHeightThatFitsRowsStartingWithRow:row];
   v7 = v6;
   [(AVLayoutView *)self contentLayoutMargins];
   v9 = v7 + v8;
@@ -904,13 +904,13 @@ LABEL_5:
   return v9;
 }
 
-- (id)prioritizedSizeThatFitsSize:(CGSize)a3
+- (id)prioritizedSizeThatFitsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(AVLayoutView *)self _updateStackLayoutIfNeeded];
-  v6 = [(AVLayoutView *)self currentStackLayout];
-  v7 = [v6 prioritizedSizeThatFitsSize:{width, height}];
+  currentStackLayout = [(AVLayoutView *)self currentStackLayout];
+  v7 = [currentStackLayout prioritizedSizeThatFitsSize:{width, height}];
 
   return v7;
 }
@@ -921,9 +921,9 @@ LABEL_5:
   v49.receiver = self;
   v49.super_class = AVLayoutView;
   [(AVView *)&v49 layoutSubviews];
-  v3 = [(AVLayoutView *)self backdropLayerView];
+  backdropLayerView = [(AVLayoutView *)self backdropLayerView];
   [(AVLayoutView *)self bounds];
-  [v3 setFrame:?];
+  [backdropLayerView setFrame:?];
 
   if ([(AVLayoutView *)self isLayoutDirty])
   {
@@ -937,18 +937,18 @@ LABEL_5:
     v13 = v12;
     v15 = v14;
     [(AVLayoutView *)self effectiveUserInterfaceLayoutDirection];
-    v16 = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-    v17 = [(AVLayoutView *)self currentStackLayout];
+    flattenedArrangedSubviewsInLayoutOrder = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+    currentStackLayout = [(AVLayoutView *)self currentStackLayout];
     v18 = v5 - (v15 + v11);
     v19 = v7 - (v9 + v13);
-    v20 = [(AVLayoutView *)self _includedItemsFromSubviews:v16 inStackLayout:v17 thatFitSize:v18, v19];
+    v20 = [(AVLayoutView *)self _includedItemsFromSubviews:flattenedArrangedSubviewsInLayoutOrder inStackLayout:currentStackLayout thatFitSize:v18, v19];
 
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v21 = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-    v22 = [v21 countByEnumeratingWithState:&v45 objects:v50 count:16];
+    flattenedArrangedSubviewsInLayoutOrder2 = [(AVLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+    v22 = [flattenedArrangedSubviewsInLayoutOrder2 countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v22)
     {
       v23 = *v46;
@@ -958,16 +958,16 @@ LABEL_5:
         {
           if (*v46 != v23)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(flattenedArrangedSubviewsInLayoutOrder2);
           }
 
           v25 = *(*(&v45 + 1) + 8 * i);
-          v26 = [v25 layoutAttributes];
-          [v26 setCollapsed:{objc_msgSend(v20, "containsObject:", v26) ^ 1}];
+          layoutAttributes = [v25 layoutAttributes];
+          [layoutAttributes setCollapsed:{objc_msgSend(v20, "containsObject:", layoutAttributes) ^ 1}];
           [v25 layoutAttributesDidChange];
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v45 objects:v50 count:16];
+        v22 = [flattenedArrangedSubviewsInLayoutOrder2 countByEnumeratingWithState:&v45 objects:v50 count:16];
       }
 
       while (v22);
@@ -977,8 +977,8 @@ LABEL_5:
     v42 = &v41;
     v43 = 0x2020000000;
     v44 = 0;
-    v27 = [(AVLayoutView *)self currentStackLayout];
-    v28 = [v27 layoutFramesInBoundingSize:{v18, v19}];
+    currentStackLayout2 = [(AVLayoutView *)self currentStackLayout];
+    v28 = [currentStackLayout2 layoutFramesInBoundingSize:{v18, v19}];
 
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
@@ -989,17 +989,17 @@ LABEL_5:
     [v28 enumerateObjectsUsingBlock:v40];
     if ((v42[3] & 1) == 0)
     {
-      v29 = [v28 firstObject];
-      [v29 CGRectValue];
+      firstObject = [v28 firstObject];
+      [firstObject CGRectValue];
       v31 = v30;
       v33 = v32;
       v35 = v34;
       v37 = v36;
-      v38 = [(AVLayoutView *)self secondaryMaterialOverlayView];
-      [v38 setFrame:{v31, v33, v35, v37}];
+      secondaryMaterialOverlayView = [(AVLayoutView *)self secondaryMaterialOverlayView];
+      [secondaryMaterialOverlayView setFrame:{v31, v33, v35, v37}];
 
-      v39 = [(AVLayoutView *)self secondaryMaterialOverlayView];
-      [v39 setHidden:1];
+      secondaryMaterialOverlayView2 = [(AVLayoutView *)self secondaryMaterialOverlayView];
+      [secondaryMaterialOverlayView2 setHidden:1];
     }
 
     [(AVLayoutView *)self setLayoutDirty:0];
@@ -1101,20 +1101,20 @@ LABEL_8:
 LABEL_12:
 }
 
-- (AVLayoutView)initWithFrame:(CGRect)a3
+- (AVLayoutView)initWithFrame:(CGRect)frame
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = AVLayoutView;
-  v3 = [(AVView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_collapsed = 0;
     v3->_included = 1;
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     flattenedArrangedSubviewsInLayoutOrder = v4->_flattenedArrangedSubviewsInLayoutOrder;
-    v4->_flattenedArrangedSubviewsInLayoutOrder = v5;
+    v4->_flattenedArrangedSubviewsInLayoutOrder = array;
 
     v7 = objc_alloc_init(AVCustomStackLayout);
     currentStackLayout = v4->_currentStackLayout;
@@ -1127,15 +1127,15 @@ LABEL_12:
     backdropLayerView = v4->_backdropLayerView;
     v4->_backdropLayerView = v10;
 
-    v12 = [(AVCABackdropLayerView *)v4->_backdropLayerView layer];
-    [v12 setMasksToBounds:1];
+    layer = [(AVCABackdropLayerView *)v4->_backdropLayerView layer];
+    [layer setMasksToBounds:1];
 
     [(AVLayoutView *)v4 addSubview:v4->_backdropLayerView];
     v13 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:0];
     [(UIVisualEffectView *)v13 setUserInteractionEnabled:0];
     v14 = MEMORY[0x1E69DD290];
-    v15 = [MEMORY[0x1E69DC888] blackColor];
-    v16 = [v14 effectCompositingColor:v15 withMode:23 alpha:0.06];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v16 = [v14 effectCompositingColor:blackColor withMode:23 alpha:0.06];
     v23[0] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
     [(UIVisualEffectView *)v13 setBackgroundEffects:v17];
@@ -1145,8 +1145,8 @@ LABEL_12:
     v19 = v13;
 
     [(UIVisualEffectView *)v4->_secondaryMaterialOverlayView setHidden:1];
-    v20 = [(AVLayoutView *)v4 secondaryMaterialOverlayView];
-    [(AVLayoutView *)v4 addSubview:v20];
+    secondaryMaterialOverlayView = [(AVLayoutView *)v4 secondaryMaterialOverlayView];
+    [(AVLayoutView *)v4 addSubview:secondaryMaterialOverlayView];
 
     [(AVLayoutView *)v4 setInsetsLayoutMarginsFromSafeArea:0];
     [(AVLayoutView *)v4 setClipsToBounds:1];

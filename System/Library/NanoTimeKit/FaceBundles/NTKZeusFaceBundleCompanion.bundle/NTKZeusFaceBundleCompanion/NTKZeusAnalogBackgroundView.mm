@@ -1,25 +1,25 @@
 @interface NTKZeusAnalogBackgroundView
-- (NTKZeusAnalogBackgroundView)initWithDevice:(id)a3;
-- (id)_splitLayerForBleed:(unint64_t)a3;
-- (void)applyPalette:(id)a3;
-- (void)applyRotation:(double)a3;
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5;
+- (NTKZeusAnalogBackgroundView)initWithDevice:(id)device;
+- (id)_splitLayerForBleed:(unint64_t)bleed;
+- (void)applyPalette:(id)palette;
+- (void)applyRotation:(double)rotation;
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette;
 - (void)layoutSubviews;
 @end
 
 @implementation NTKZeusAnalogBackgroundView
 
-- (NTKZeusAnalogBackgroundView)initWithDevice:(id)a3
+- (NTKZeusAnalogBackgroundView)initWithDevice:(id)device
 {
-  v5 = a3;
-  [v5 screenBounds];
+  deviceCopy = device;
+  [deviceCopy screenBounds];
   v15.receiver = self;
   v15.super_class = NTKZeusAnalogBackgroundView;
   v6 = [(NTKZeusAnalogBackgroundView *)&v15 initWithFrame:?];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_opt_new();
     splits = v7->_splits;
     v7->_splits = v8;
@@ -28,11 +28,11 @@
     straightSplit = v7->_straightSplit;
     v7->_straightSplit = v10;
 
-    v12 = [(NTKZeusAnalogBackgroundView *)v7 layer];
-    [v12 addSublayer:v7->_straightSplit];
+    layer = [(NTKZeusAnalogBackgroundView *)v7 layer];
+    [layer addSublayer:v7->_straightSplit];
 
-    v13 = [(NTKZeusAnalogBackgroundView *)v7 layer];
-    [v13 setMasksToBounds:1];
+    layer2 = [(NTKZeusAnalogBackgroundView *)v7 layer];
+    [layer2 setMasksToBounds:1];
   }
 
   return v7;
@@ -52,9 +52,9 @@
   [(CALayer *)straightSplit setPosition:v4, v6];
 }
 
-- (id)_splitLayerForBleed:(unint64_t)a3
+- (id)_splitLayerForBleed:(unint64_t)bleed
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((bleed & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     splits = self->_splits;
     v6 = [NSNumber numberWithUnsignedInteger:?];
@@ -63,7 +63,7 @@
     if (v7)
     {
       v8 = self->_splits;
-      v9 = [NSNumber numberWithUnsignedInteger:a3];
+      v9 = [NSNumber numberWithUnsignedInteger:bleed];
       v10 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:v9];
     }
 
@@ -73,7 +73,7 @@
       [(NTKZeusAnalogBackgroundView *)self bounds];
       v12 = v11;
       [(NTKZeusAnalogBackgroundView *)self bounds];
-      if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 4)
+      if ((bleed & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
         v14 = v13 * 0.5;
         v15 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.0];
@@ -84,7 +84,7 @@
         [(CLKDevice *)self->_device screenScale];
         v21 = v20;
         v22 = +[UIColor whiteColor];
-        v23 = NTKZeusAnalogColorPaletteCreateGradientImage(a3, v22, v15, v17, v19, v21);
+        v23 = NTKZeusAnalogColorPaletteCreateGradientImage(bleed, v22, v15, v17, v19, v21);
 
         [v9 setContents:{objc_msgSend(v23, "CGImage")}];
         y = CGPointZero.y;
@@ -96,23 +96,23 @@
         v36 = v37;
         [v9 setAffineTransform:&v36];
         v27 = self->_splits;
-        v28 = [NSNumber numberWithUnsignedInteger:a3];
+        v28 = [NSNumber numberWithUnsignedInteger:bleed];
         [(NSMutableDictionary *)v27 setObject:v9 forKeyedSubscript:v28];
 
-        v29 = [(NTKZeusAnalogBackgroundView *)self layer];
-        [v29 addSublayer:v9];
+        layer = [(NTKZeusAnalogBackgroundView *)self layer];
+        [layer addSublayer:v9];
       }
 
       else
       {
         straightSplit = self->_straightSplit;
         v31 = self->_splits;
-        v32 = [NSNumber numberWithUnsignedInteger:a3];
+        v32 = [NSNumber numberWithUnsignedInteger:bleed];
         [(NSMutableDictionary *)v31 setObject:straightSplit forKeyedSubscript:v32];
       }
 
       v33 = self->_splits;
-      v34 = [NSNumber numberWithUnsignedInteger:a3];
+      v34 = [NSNumber numberWithUnsignedInteger:bleed];
       v10 = [(NSMutableDictionary *)v33 objectForKeyedSubscript:v34];
     }
   }
@@ -125,31 +125,31 @@
   return v10;
 }
 
-- (void)applyPalette:(id)a3
+- (void)applyPalette:(id)palette
 {
-  v4 = a3;
-  v5 = -[NTKZeusAnalogBackgroundView _splitLayerForBleed:](self, "_splitLayerForBleed:", [v4 bleed]);
+  paletteCopy = palette;
+  v5 = -[NTKZeusAnalogBackgroundView _splitLayerForBleed:](self, "_splitLayerForBleed:", [paletteCopy bleed]);
   objc_storeStrong(&self->_activeSplit, v5);
   [CATransaction setDisableActions:1];
   [(NSMutableDictionary *)self->_splits enumerateKeysAndObjectsUsingBlock:&stru_44F70];
   LODWORD(v6) = 1.0;
   [v5 setOpacity:v6];
-  v7 = [v4 isGradientStyle];
-  v8 = [v4 splitBackground];
-  v9 = [v8 CGColor];
-  if (v7)
+  isGradientStyle = [paletteCopy isGradientStyle];
+  splitBackground = [paletteCopy splitBackground];
+  cGColor = [splitBackground CGColor];
+  if (isGradientStyle)
   {
-    [v5 setContentsMultiplyColor:v9];
+    [v5 setContentsMultiplyColor:cGColor];
   }
 
   else
   {
-    [v5 setBackgroundColor:v9];
+    [v5 setBackgroundColor:cGColor];
   }
 
-  v10 = [(NTKZeusAnalogBackgroundView *)self layer];
-  v11 = [v4 background];
-  [v10 setBackgroundColor:{objc_msgSend(v11, "CGColor")}];
+  layer = [(NTKZeusAnalogBackgroundView *)self layer];
+  background = [paletteCopy background];
+  [layer setBackgroundColor:{objc_msgSend(background, "CGColor")}];
 
   CGAffineTransformMakeRotation(&v13, self->_rotation);
   v12 = v13;
@@ -157,20 +157,20 @@
   [CATransaction setDisableActions:0];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 splitBackground];
-  v11 = [v9 splitBackground];
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
+  splitBackground = [paletteCopy splitBackground];
+  splitBackground2 = [toPaletteCopy splitBackground];
   v12 = NTKInterpolateBetweenColors();
 
-  v13 = [v8 background];
-  v14 = [v9 background];
+  background = [paletteCopy background];
+  background2 = [toPaletteCopy background];
   v15 = NTKInterpolateBetweenColors();
 
-  v16 = -[NTKZeusAnalogBackgroundView _splitLayerForBleed:](self, "_splitLayerForBleed:", [v8 bleed]);
-  v17 = -[NTKZeusAnalogBackgroundView _splitLayerForBleed:](self, "_splitLayerForBleed:", [v9 bleed]);
+  v16 = -[NTKZeusAnalogBackgroundView _splitLayerForBleed:](self, "_splitLayerForBleed:", [paletteCopy bleed]);
+  v17 = -[NTKZeusAnalogBackgroundView _splitLayerForBleed:](self, "_splitLayerForBleed:", [toPaletteCopy bleed]);
   [CATransaction setDisableActions:1];
   if (v16 == v17)
   {
@@ -180,10 +180,10 @@
 
   else
   {
-    v19 = 1.0 - a3;
-    *&v19 = 1.0 - a3;
+    v19 = 1.0 - fraction;
+    *&v19 = 1.0 - fraction;
     [v16 setOpacity:v19];
-    *&v18 = a3;
+    *&v18 = fraction;
     v20 = v17;
   }
 
@@ -198,41 +198,41 @@
   v23 = v16;
   v33 = v23;
   [(NSMutableDictionary *)splits enumerateKeysAndObjectsUsingBlock:v31];
-  LODWORD(splits) = [v8 isGradientStyle];
-  v24 = [v12 CGColor];
+  LODWORD(splits) = [paletteCopy isGradientStyle];
+  cGColor = [v12 CGColor];
   if (splits)
   {
-    [v23 setContentsMultiplyColor:v24];
+    [v23 setContentsMultiplyColor:cGColor];
   }
 
   else
   {
-    [v23 setBackgroundColor:v24];
+    [v23 setBackgroundColor:cGColor];
   }
 
-  v25 = [v9 isGradientStyle];
-  v26 = [v12 CGColor];
-  if (v25)
+  isGradientStyle = [toPaletteCopy isGradientStyle];
+  cGColor2 = [v12 CGColor];
+  if (isGradientStyle)
   {
-    [v22 setContentsMultiplyColor:v26];
+    [v22 setContentsMultiplyColor:cGColor2];
   }
 
   else
   {
-    [v22 setBackgroundColor:v26];
+    [v22 setBackgroundColor:cGColor2];
   }
 
-  v27 = [(NTKZeusAnalogBackgroundView *)self layer];
-  [v27 setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
+  layer = [(NTKZeusAnalogBackgroundView *)self layer];
+  [layer setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
 
-  if ([v9 isCompositePalette])
+  if ([toPaletteCopy isCompositePalette])
   {
     CGAffineTransformMakeRotation(&v30, self->_rotation);
     v29 = v30;
     [v22 setAffineTransform:&v29];
   }
 
-  if ([v8 isCompositePalette])
+  if ([paletteCopy isCompositePalette])
   {
     CGAffineTransformMakeRotation(&v28, self->_rotation);
     v29 = v28;
@@ -242,16 +242,16 @@
   [CATransaction setDisableActions:0];
 }
 
-- (void)applyRotation:(double)a3
+- (void)applyRotation:(double)rotation
 {
-  self->_rotation = a3;
+  self->_rotation = rotation;
   [CATransaction setDisableActions:1];
   splits = self->_splits;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_FDEC;
   v6[3] = &unk_44FB8;
-  *&v6[4] = a3;
+  *&v6[4] = rotation;
   [(NSMutableDictionary *)splits enumerateKeysAndObjectsUsingBlock:v6];
   [CATransaction setDisableActions:0];
 }

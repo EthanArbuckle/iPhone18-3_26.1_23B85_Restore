@@ -1,9 +1,9 @@
 @interface CADDatabaseConnectionPoolManager
 - (CADDatabaseConnectionPoolManager)init;
-- (id)poolForClient:(id)a3 options:(id)a4;
+- (id)poolForClient:(id)client options:(id)options;
 - (void)_purgeAndReschedule;
-- (void)databaseChangedExternally:(id)a3;
-- (void)returnPool:(id)a3 forClient:(id)a4;
+- (void)databaseChangedExternally:(id)externally;
+- (void)returnPool:(id)pool forClient:(id)client;
 - (void)schedulePurge;
 @end
 
@@ -158,27 +158,27 @@
     v2->_pools = v6;
 
     v2->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel_databaseChangedExternally_ name:*MEMORY[0x277CF7560] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_databaseChangedExternally_ name:*MEMORY[0x277CF7560] object:0];
   }
 
   return v2;
 }
 
-- (id)poolForClient:(id)a3 options:(id)a4
+- (id)poolForClient:(id)client options:(id)options
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([(CADDatabasePoolKey *)v7 databaseInitOptions]& 0x20) != 0)
+  clientCopy = client;
+  optionsCopy = options;
+  if (([(CADDatabasePoolKey *)optionsCopy databaseInitOptions]& 0x20) != 0)
   {
-    v9 = [[CADDatabaseSingleConnectionProvider alloc] initWithConfiguration:v7];
-    v8 = v7;
+    v9 = [[CADDatabaseSingleConnectionProvider alloc] initWithConfiguration:optionsCopy];
+    v8 = optionsCopy;
   }
 
   else
   {
-    v8 = [[CADDatabasePoolKey alloc] initWithInitializationOptions:v7];
+    v8 = [[CADDatabasePoolKey alloc] initWithInitializationOptions:optionsCopy];
 
     os_unfair_lock_lock(&self->_lock);
     v9 = [(NSMutableDictionary *)self->_pools objectForKeyedSubscript:v8];
@@ -193,13 +193,13 @@
       }
 
       v11 = [CADDatabaseConnectionPool alloc];
-      v12 = [(CADDatabasePoolKey *)v8 options];
-      v9 = [(CADDatabaseConnectionPool *)v11 initWithOptions:v12 manager:self];
+      options = [(CADDatabasePoolKey *)v8 options];
+      v9 = [(CADDatabaseConnectionPool *)v11 initWithOptions:options manager:self];
 
       [(NSMutableDictionary *)self->_pools setObject:v9 forKeyedSubscript:v8];
     }
 
-    [(CADDatabaseSingleConnectionProvider *)v9 addClient:v6];
+    [(CADDatabaseSingleConnectionProvider *)v9 addClient:clientCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -208,13 +208,13 @@
   return v9;
 }
 
-- (void)databaseChangedExternally:(id)a3
+- (void)databaseChangedExternally:(id)externally
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"path"];
-  v6 = [v4 objectForKeyedSubscript:@"auxDBID"];
-  v7 = [v6 intValue];
+  userInfo = [externally userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"path"];
+  v6 = [userInfo objectForKeyedSubscript:@"auxDBID"];
+  intValue = [v6 intValue];
 
   if (([v5 hasSuffix:@"/"] & 1) == 0)
   {
@@ -224,13 +224,13 @@
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(NSMutableDictionary *)self->_pools allValues];
+  allValues = [(NSMutableDictionary *)self->_pools allValues];
   os_unfair_lock_unlock(&self->_lock);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v9;
+  v10 = allValues;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -246,7 +246,7 @@
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v16 + 1) + 8 * v14++) databaseChangedExternally:v5 auxDatabaseID:{v7, v16}];
+        [*(*(&v16 + 1) + 8 * v14++) databaseChangedExternally:v5 auxDatabaseID:{intValue, v16}];
       }
 
       while (v12 != v14);
@@ -259,16 +259,16 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)returnPool:(id)a3 forClient:(id)a4
+- (void)returnPool:(id)pool forClient:(id)client
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  poolCopy = pool;
+  clientCopy = client;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    [v8 removeClient:v7];
+    v8 = poolCopy;
+    [v8 removeClient:clientCopy];
     os_unfair_lock_lock(&self->_lock);
     if (![v8 numberOfClients])
     {

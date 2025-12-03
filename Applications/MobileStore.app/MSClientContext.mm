@@ -1,42 +1,42 @@
 @interface MSClientContext
-- (MSClientContext)initWithConfigurationDictionary:(id)a3;
-- (id)localizedAlertWithError:(id)a3;
-- (id)localizedStringForKey:(id)a3 inTable:(id)a4;
+- (MSClientContext)initWithConfigurationDictionary:(id)dictionary;
+- (id)localizedAlertWithError:(id)error;
+- (id)localizedStringForKey:(id)key inTable:(id)table;
 @end
 
 @implementation MSClientContext
 
-- (MSClientContext)initWithConfigurationDictionary:(id)a3
+- (MSClientContext)initWithConfigurationDictionary:(id)dictionary
 {
   v11.receiver = self;
   v11.super_class = MSClientContext;
-  v3 = [(MSClientContext *)&v11 initWithConfigurationDictionary:a3];
+  v3 = [(MSClientContext *)&v11 initWithConfigurationDictionary:dictionary];
   if (v3)
   {
     v4 = +[NSBundle mainBundle];
     bundle = v3->_bundle;
     v3->_bundle = v4;
 
-    v6 = [(MSClientContext *)v3 clientInterface];
-    [v6 setClientIdentifier:@"WiFi-Music"];
+    clientInterface = [(MSClientContext *)v3 clientInterface];
+    [clientInterface setClientIdentifier:@"WiFi-Music"];
     v7 = +[UIColor systemBlueColor];
-    [v6 setDarkKeyColor:v7];
+    [clientInterface setDarkKeyColor:v7];
 
     v8 = +[UIColor systemBlueColor];
-    [v6 setLightKeyColor:v8];
+    [clientInterface setLightKeyColor:v8];
 
-    [v6 setURLBagKey:@"p2-music-searchHints" forIdentifier:SUURLBagKeySearchHints];
-    [v6 setURLBagKey:@"p2-music-search" forIdentifier:SUURLBagKeySearch];
+    [clientInterface setURLBagKey:@"p2-music-searchHints" forIdentifier:SUURLBagKeySearchHints];
+    [clientInterface setURLBagKey:@"p2-music-search" forIdentifier:SUURLBagKeySearch];
     v9 = objc_alloc_init(MSViewControllerFactory);
-    [v6 setViewControllerFactory:v9];
+    [clientInterface setViewControllerFactory:v9];
   }
 
   return v3;
 }
 
-- (id)localizedAlertWithError:(id)a3
+- (id)localizedAlertWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     [(MSClientContext *)self localizedStringForKey:@"GENERIC_ERROR"];
@@ -74,10 +74,10 @@
   return v6;
 }
 
-- (id)localizedStringForKey:(id)a3 inTable:(id)a4
+- (id)localizedStringForKey:(id)key inTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  tableCopy = table;
   localizedStrings = self->_localizedStrings;
   if (!localizedStrings)
   {
@@ -98,7 +98,7 @@
     localizedStrings = self->_localizedStrings;
   }
 
-  v16 = [(SUUILocalizedStringDictionary *)localizedStrings localizedStringForKey:v6 inTable:v7];
+  v16 = [(SUUILocalizedStringDictionary *)localizedStrings localizedStringForKey:keyCopy inTable:tableCopy];
 
   return v16;
 }

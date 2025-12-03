@@ -8,11 +8,11 @@
 {
   v6.receiver = self;
   v6.super_class = UIMailConversationEntry;
-  v3 = [(UIConversationEntry *)&v6 inputContextEntryRepresentation];
-  v4 = [(UIMailConversationEntry *)self responseSecondaryRecipientIdentifiers];
-  [v3 setSecondaryRecipientIdentifiers:v4];
+  inputContextEntryRepresentation = [(UIConversationEntry *)&v6 inputContextEntryRepresentation];
+  responseSecondaryRecipientIdentifiers = [(UIMailConversationEntry *)self responseSecondaryRecipientIdentifiers];
+  [inputContextEntryRepresentation setSecondaryRecipientIdentifiers:responseSecondaryRecipientIdentifiers];
 
-  return v3;
+  return inputContextEntryRepresentation;
 }
 
 @end

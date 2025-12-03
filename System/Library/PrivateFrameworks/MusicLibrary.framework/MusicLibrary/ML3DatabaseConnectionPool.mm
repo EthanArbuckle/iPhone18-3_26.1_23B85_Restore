@@ -2,26 +2,26 @@
 - (BOOL)isClosed;
 - (BOOL)isClosedWithNoActiveOrBusyConnections;
 - (BOOL)isCurrentThreadConnectionInTransaction;
-- (BOOL)ownsConnection:(id)a3;
+- (BOOL)ownsConnection:(id)connection;
 - (ML3DatabaseConnectionPool)init;
-- (ML3DatabaseConnectionPool)initWithDatabasePath:(id)a3 maxReaders:(unint64_t)a4 maxWriters:(unint64_t)a5;
+- (ML3DatabaseConnectionPool)initWithDatabasePath:(id)path maxReaders:(unint64_t)readers maxWriters:(unint64_t)writers;
 - (ML3DatabaseConnectionPoolDelegate)delegate;
-- (id)_connectionForIdentifier:(id)a3;
-- (id)_connectionForWriting:(BOOL)a3 useThreadConnection:(BOOL)a4 storeThreadLocalConnection:(BOOL)a5;
+- (id)_connectionForIdentifier:(id)identifier;
+- (id)_connectionForWriting:(BOOL)writing useThreadConnection:(BOOL)connection storeThreadLocalConnection:(BOOL)localConnection;
 - (id)_generateDiagnostic;
-- (id)_localConnectionForThread:(id)a3;
+- (id)_localConnectionForThread:(id)thread;
 - (id)debugDescription;
-- (void)_closeConnectionsForOwningPoolClosed:(BOOL)a3 andWaitForBusyConnections:(BOOL)a4;
-- (void)_setConnection:(id)a3 forIdentifier:(id)a4;
-- (void)_setLocalConnection:(id)a3 forThread:(id)a4;
-- (void)checkInConnection:(id)a3;
+- (void)_closeConnectionsForOwningPoolClosed:(BOOL)closed andWaitForBusyConnections:(BOOL)connections;
+- (void)_setConnection:(id)connection forIdentifier:(id)identifier;
+- (void)_setLocalConnection:(id)connection forThread:(id)thread;
+- (void)checkInConnection:(id)connection;
 - (void)closeAllConnections;
 - (void)dealloc;
 - (void)lock;
 - (void)lockAndCloseAllConnectionsForTermination;
-- (void)setClosed:(BOOL)a3;
-- (void)setConnectionsJournalingMode:(unint64_t)a3;
-- (void)setUseDistantWriterConnections:(BOOL)a3;
+- (void)setClosed:(BOOL)closed;
+- (void)setConnectionsJournalingMode:(unint64_t)mode;
+- (void)setUseDistantWriterConnections:(BOOL)connections;
 - (void)unlock;
 @end
 
@@ -53,17 +53,17 @@
   return WeakRetained;
 }
 
-- (void)_setLocalConnection:(id)a3 forThread:(id)a4
+- (void)_setLocalConnection:(id)connection forThread:(id)thread
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 owningThread];
+  connectionCopy = connection;
+  threadCopy = thread;
+  owningThread = [connectionCopy owningThread];
 
-  if (v9)
+  if (owningThread)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    v14 = [v7 owningThread];
-    [v13 handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionPool.m" lineNumber:418 description:{@"Attempted to store local connection for thread %@ when it's already being marked as stored in thread %@", v8, v14}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    owningThread2 = [connectionCopy owningThread];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3DatabaseConnectionPool.m" lineNumber:418 description:{@"Attempted to store local connection for thread %@ when it's already being marked as stored in thread %@", threadCopy, owningThread2}];
   }
 
   serialQueue = self->_serialQueue;
@@ -71,11 +71,11 @@
   block[1] = 3221225472;
   block[2] = __59__ML3DatabaseConnectionPool__setLocalConnection_forThread___block_invoke;
   block[3] = &unk_278765C40;
-  v16 = v8;
-  v17 = v7;
-  v18 = self;
-  v11 = v7;
-  v12 = v8;
+  v16 = threadCopy;
+  v17 = connectionCopy;
+  selfCopy = self;
+  v11 = connectionCopy;
+  v12 = threadCopy;
   dispatch_sync(serialQueue, block);
 }
 
@@ -124,9 +124,9 @@ LABEL_8:
 LABEL_10:
 }
 
-- (id)_localConnectionForThread:(id)a3
+- (id)_localConnectionForThread:(id)thread
 {
-  v5 = a3;
+  threadCopy = thread;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -138,11 +138,11 @@ LABEL_10:
   v10[1] = 3221225472;
   v10[2] = __55__ML3DatabaseConnectionPool__localConnectionForThread___block_invoke;
   v10[3] = &unk_278765C68;
-  v11 = v5;
-  v12 = self;
+  v11 = threadCopy;
+  selfCopy = self;
   v13 = &v15;
   v14 = a2;
-  v7 = v5;
+  v7 = threadCopy;
   dispatch_sync(serialQueue, v10);
   v8 = v16[5];
 
@@ -189,20 +189,20 @@ void __55__ML3DatabaseConnectionPool__localConnectionForThread___block_invoke(ui
 LABEL_9:
 }
 
-- (void)_setConnection:(id)a3 forIdentifier:(id)a4
+- (void)_setConnection:(id)connection forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  identifierCopy = identifier;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__ML3DatabaseConnectionPool__setConnection_forIdentifier___block_invoke;
   block[3] = &unk_278765C40;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectionCopy;
+  selfCopy = self;
+  v14 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = connectionCopy;
   dispatch_sync(serialQueue, block);
 }
 
@@ -221,9 +221,9 @@ uint64_t __58__ML3DatabaseConnectionPool__setConnection_forIdentifier___block_in
   }
 }
 
-- (id)_connectionForIdentifier:(id)a3
+- (id)_connectionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -235,10 +235,10 @@ uint64_t __58__ML3DatabaseConnectionPool__setConnection_forIdentifier___block_in
   block[1] = 3221225472;
   block[2] = __54__ML3DatabaseConnectionPool__connectionForIdentifier___block_invoke;
   block[3] = &unk_278765F28;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(serialQueue, block);
   v7 = v13[5];
 
@@ -266,60 +266,60 @@ uint64_t __54__ML3DatabaseConnectionPool__connectionForIdentifier___block_invoke
   return v3;
 }
 
-- (void)_closeConnectionsForOwningPoolClosed:(BOOL)a3 andWaitForBusyConnections:(BOOL)a4
+- (void)_closeConnectionsForOwningPoolClosed:(BOOL)closed andWaitForBusyConnections:(BOOL)connections
 {
-  v4 = a4;
-  v5 = a3;
+  connectionsCopy = connections;
+  closedCopy = closed;
   v14 = *MEMORY[0x277D85DE8];
   v7 = os_log_create("com.apple.amp.medialibrary", "Default_Oversize");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543874;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = v4;
+    v11 = connectionsCopy;
     v12 = 1024;
-    v13 = v5;
+    v13 = closedCopy;
     _os_log_impl(&dword_22D2FA000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Closing all connections and wait for busy connection=%{BOOL}u, owningPoolClosed=%{BOOL}u", &v8, 0x18u);
   }
 
-  [(_ML3DatabaseConnectionSubPool *)self->_readersSubPool closeConnectionsForOwningPoolClosed:v5 andWaitForBusyConnections:v4];
-  [(_ML3DatabaseConnectionSubPool *)self->_writersSubPool closeConnectionsForOwningPoolClosed:v5 andWaitForBusyConnections:v4];
+  [(_ML3DatabaseConnectionSubPool *)self->_readersSubPool closeConnectionsForOwningPoolClosed:closedCopy andWaitForBusyConnections:connectionsCopy];
+  [(_ML3DatabaseConnectionSubPool *)self->_writersSubPool closeConnectionsForOwningPoolClosed:closedCopy andWaitForBusyConnections:connectionsCopy];
 }
 
 - (BOOL)isClosedWithNoActiveOrBusyConnections
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(ML3DatabaseConnectionPool *)self isClosed];
-  v4 = [(_ML3DatabaseConnectionSubPool *)self->_readersSubPool hasBusyConnections];
-  v5 = [(_ML3DatabaseConnectionSubPool *)self->_writersSubPool hasBusyConnections];
+  isClosed = [(ML3DatabaseConnectionPool *)self isClosed];
+  hasBusyConnections = [(_ML3DatabaseConnectionSubPool *)self->_readersSubPool hasBusyConnections];
+  hasBusyConnections2 = [(_ML3DatabaseConnectionSubPool *)self->_writersSubPool hasBusyConnections];
   v6 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138544130;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = v3;
+    v11 = isClosed;
     v12 = 1024;
-    v13 = v4;
+    v13 = hasBusyConnections;
     v14 = 1024;
-    v15 = v5;
+    v15 = hasBusyConnections2;
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "Connection pool %{public}@ isClosed=%{BOOL}u, readerSubPoolHasBusyConnections=%{BOOL}u, writerSubPoolHasBusyConnections=%{BOOL}u.", &v8, 0x1Eu);
   }
 
-  return v3 && !v4 && !v5;
+  return isClosed && !hasBusyConnections && !hasBusyConnections2;
 }
 
-- (BOOL)ownsConnection:(id)a3
+- (BOOL)ownsConnection:(id)connection
 {
-  v4 = [a3 uniqueIdentifier];
-  v5 = [(ML3DatabaseConnectionPool *)self _connectionForIdentifier:v4];
+  uniqueIdentifier = [connection uniqueIdentifier];
+  v5 = [(ML3DatabaseConnectionPool *)self _connectionForIdentifier:uniqueIdentifier];
   LOBYTE(self) = v5 != 0;
 
   return self;
 }
 
-- (void)setClosed:(BOOL)a3
+- (void)setClosed:(BOOL)closed
 {
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -372,7 +372,7 @@ uint64_t __39__ML3DatabaseConnectionPool_setClosed___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 138543362;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22D2FA000, v3, OS_LOG_TYPE_DEFAULT, "Database connection pool %{public}@ is closed. You may no longer use it.", &v4, 0xCu);
     }
   }
@@ -384,12 +384,12 @@ uint64_t __39__ML3DatabaseConnectionPool_setClosed___block_invoke(uint64_t a1)
   }
 }
 
-- (void)checkInConnection:(id)a3
+- (void)checkInConnection:(id)connection
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
-  v6 = [(ML3DatabaseConnectionPool *)self _connectionForIdentifier:v5];
+  connectionCopy = connection;
+  uniqueIdentifier = [connectionCopy uniqueIdentifier];
+  v6 = [(ML3DatabaseConnectionPool *)self _connectionForIdentifier:uniqueIdentifier];
 
   if (v6)
   {
@@ -398,7 +398,7 @@ uint64_t __39__ML3DatabaseConnectionPool_setClosed___block_invoke(uint64_t a1)
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
-      LOBYTE(v50) = 0;
+      LOBYTE(isClosed) = 0;
       serialQueue = self->_serialQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -416,20 +416,20 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      v15 = [v14 owningThread];
-      v16 = v15 == 0;
+      owningThread = [v14 owningThread];
+      v16 = owningThread == 0;
 
       if (!v16)
       {
-        v17 = [v14 owningThread];
-        [(ML3DatabaseConnectionPool *)self _setLocalConnection:0 forThread:v17];
+        owningThread2 = [v14 owningThread];
+        [(ML3DatabaseConnectionPool *)self _setLocalConnection:0 forThread:owningThread2];
 
         [v14 setOwningThread:0];
       }
 
-      v18 = [v14 connection];
-      v19 = [v18 uniqueIdentifier];
-      [(ML3DatabaseConnectionPool *)self _setConnection:0 forIdentifier:v19];
+      connection = [v14 connection];
+      uniqueIdentifier2 = [connection uniqueIdentifier];
+      [(ML3DatabaseConnectionPool *)self _setConnection:0 forIdentifier:uniqueIdentifier2];
 
       if ([(ML3DatabaseConnectionPool *)self isClosed])
       {
@@ -437,16 +437,16 @@ LABEL_37:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *v43 = 138543874;
-          v44 = self;
+          selfCopy = self;
           v45 = 2048;
-          v46 = v4;
+          v46 = connectionCopy;
           v47 = 2114;
           v48 = v14;
           _os_log_impl(&dword_22D2FA000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ closing connection=%p, wrapper=%{public}@", v43, 0x20u);
         }
 
-        v21 = [v14 connection];
-        [v21 isReadOnly];
+        connection2 = [v14 connection];
+        [connection2 isReadOnly];
 
         readersSubPool = self->_readersSubPool;
 LABEL_18:
@@ -454,18 +454,18 @@ LABEL_18:
         goto LABEL_37;
       }
 
-      v28 = [v14 connection];
-      v29 = [v28 isReadOnly];
+      connection3 = [v14 connection];
+      isReadOnly = [connection3 isReadOnly];
 
       v30 = os_log_create("com.apple.amp.medialibrary", "Default_Oversize");
       v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-      if (v29)
+      if (isReadOnly)
       {
         if (v31)
         {
           v32 = self->_readersSubPool;
           *v43 = 138543618;
-          v44 = v32;
+          selfCopy = v32;
           v45 = 2114;
           v46 = v14;
           _os_log_impl(&dword_22D2FA000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ checking in=%{public}@", v43, 0x16u);
@@ -480,17 +480,17 @@ LABEL_18:
         {
           writersSubPool = self->_writersSubPool;
           *v43 = 138543618;
-          v44 = writersSubPool;
+          selfCopy = writersSubPool;
           v45 = 2114;
           v46 = v14;
           _os_log_impl(&dword_22D2FA000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ checking in=%{public}@", v43, 0x16u);
         }
 
-        v38 = [v14 connection];
-        v39 = [v38 _closeConnectionWhenCheckingIn];
+        connection4 = [v14 connection];
+        _closeConnectionWhenCheckingIn = [connection4 _closeConnectionWhenCheckingIn];
 
         readersSubPool = self->_writersSubPool;
-        if (v39)
+        if (_closeConnectionWhenCheckingIn)
         {
           goto LABEL_18;
         }
@@ -506,17 +506,17 @@ LABEL_18:
       *buf = 138543874;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v4;
+      *&buf[14] = connectionCopy;
       *&buf[22] = 1024;
-      v50 = [(ML3DatabaseConnectionPool *)self isClosed];
+      isClosed = [(ML3DatabaseConnectionPool *)self isClosed];
       _os_log_impl(&dword_22D2FA000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ Cannot check in connection %{public}@. closed=%{BOOL}u", buf, 0x1Cu);
     }
 
     v24 = MEMORY[0x277D27EF0];
     v51[0] = @"ML3DatabaseConnection";
-    if (v4)
+    if (connectionCopy)
     {
-      v11 = [v4 debugDescription];
+      v11 = [connectionCopy debugDescription];
     }
 
     else
@@ -536,7 +536,7 @@ LABEL_18:
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v53 count:1];
     [v24 snapshotWithDomain:*MEMORY[0x277D27EC0] type:@"Bug" subType:@"NotCheckingInConnection" context:@"Connection not in busy pool" triggerThresholdValues:0 events:v36 completion:0];
 
-    if (v4)
+    if (connectionCopy)
     {
       goto LABEL_25;
     }
@@ -550,17 +550,17 @@ LABEL_18:
       *buf = 138543874;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v4;
+      *&buf[14] = connectionCopy;
       *&buf[22] = 1024;
-      v50 = [(ML3DatabaseConnectionPool *)self isClosed];
+      isClosed = [(ML3DatabaseConnectionPool *)self isClosed];
       _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Cannot check in connection %{public}@ as we don't have a valid connection wrapper. closed=%{BOOL}u", buf, 0x1Cu);
     }
 
     v10 = MEMORY[0x277D27EF0];
     v54[0] = @"ML3DatabaseConnection";
-    if (v4)
+    if (connectionCopy)
     {
-      v11 = [v4 debugDescription];
+      v11 = [connectionCopy debugDescription];
     }
 
     else
@@ -579,7 +579,7 @@ LABEL_18:
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:1];
     [v10 snapshotWithDomain:*MEMORY[0x277D27EC0] type:@"Bug" subType:@"NotCheckingInConnection" context:@"No connection wrapper" triggerThresholdValues:0 events:v27 completion:0];
 
-    if (v4)
+    if (connectionCopy)
     {
 LABEL_25:
     }
@@ -596,18 +596,18 @@ uint64_t __47__ML3DatabaseConnectionPool_checkInConnection___block_invoke(uint64
   return result;
 }
 
-- (id)_connectionForWriting:(BOOL)a3 useThreadConnection:(BOOL)a4 storeThreadLocalConnection:(BOOL)a5
+- (id)_connectionForWriting:(BOOL)writing useThreadConnection:(BOOL)connection storeThreadLocalConnection:(BOOL)localConnection
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  localConnectionCopy = localConnection;
+  connectionCopy = connection;
+  writingCopy = writing;
   v29 = *MEMORY[0x277D85DE8];
   if (![(ML3DatabaseConnectionPool *)self isClosed])
   {
-    v9 = [MEMORY[0x277CCACC8] currentThread];
-    if (v6)
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    if (connectionCopy)
     {
-      v11 = [(ML3DatabaseConnectionPool *)self _localConnectionForThread:v9];
+      v11 = [(ML3DatabaseConnectionPool *)self _localConnectionForThread:currentThread];
     }
 
     else
@@ -624,7 +624,7 @@ uint64_t __47__ML3DatabaseConnectionPool_checkInConnection___block_invoke(uint64
     pthread_mutex_unlock(&self->_poolLockMutex);
     if (v11)
     {
-      if (!v7 || ([v11 connection], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isReadOnly"), v12, !v13))
+      if (!writingCopy || ([v11 connection], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isReadOnly"), v12, !v13))
       {
         v14 = v11;
 LABEL_26:
@@ -636,7 +636,7 @@ LABEL_26:
         v26 = v14;
         v23 = v14;
         dispatch_sync(serialQueue, block);
-        v10 = [v23 connection];
+        connection = [v23 connection];
 
         goto LABEL_27;
       }
@@ -647,7 +647,7 @@ LABEL_26:
     else
     {
       buf[0] = 0;
-      if (!v7)
+      if (!writingCopy)
       {
         v15 = 8;
         if (!self->_maxReaders)
@@ -666,41 +666,41 @@ LABEL_19:
 
     if (buf[0] == 1)
     {
-      v17 = [v14 connection];
-      [v17 _setOwningPool:self];
+      connection2 = [v14 connection];
+      [connection2 _setOwningPool:self];
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (objc_opt_respondsToSelector())
       {
-        v19 = [v14 connection];
-        [WeakRetained connectionPool:self createdNewConnection:v19];
+        connection3 = [v14 connection];
+        [WeakRetained connectionPool:self createdNewConnection:connection3];
       }
     }
 
-    if (v5)
+    if (localConnectionCopy)
     {
-      [(ML3DatabaseConnectionPool *)self _setLocalConnection:v14 forThread:v9];
+      [(ML3DatabaseConnectionPool *)self _setLocalConnection:v14 forThread:currentThread];
     }
 
-    v20 = [v14 connection];
-    v21 = [v20 uniqueIdentifier];
-    [(ML3DatabaseConnectionPool *)self _setConnection:v14 forIdentifier:v21];
+    connection4 = [v14 connection];
+    uniqueIdentifier = [connection4 uniqueIdentifier];
+    [(ML3DatabaseConnectionPool *)self _setConnection:v14 forIdentifier:uniqueIdentifier];
 
     goto LABEL_26;
   }
 
-  v9 = os_log_create("com.apple.amp.medialibrary", "Default");
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  currentThread = os_log_create("com.apple.amp.medialibrary", "Default");
+  if (os_log_type_enabled(currentThread, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = self;
-    _os_log_impl(&dword_22D2FA000, v9, OS_LOG_TYPE_DEFAULT, "Database connection pool %{public}@ is closed. You may no longer use it.", buf, 0xCu);
+    selfCopy = self;
+    _os_log_impl(&dword_22D2FA000, currentThread, OS_LOG_TYPE_DEFAULT, "Database connection pool %{public}@ is closed. You may no longer use it.", buf, 0xCu);
   }
 
-  v10 = 0;
+  connection = 0;
 LABEL_27:
 
-  return v10;
+  return connection;
 }
 
 uint64_t __98__ML3DatabaseConnectionPool__connectionForWriting_useThreadConnection_storeThreadLocalConnection___block_invoke(uint64_t a1)
@@ -713,18 +713,18 @@ uint64_t __98__ML3DatabaseConnectionPool__connectionForWriting_useThreadConnecti
 
 - (BOOL)isCurrentThreadConnectionInTransaction
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [(ML3DatabaseConnectionPool *)self _localConnectionForThread:v3];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  v4 = [(ML3DatabaseConnectionPool *)self _localConnectionForThread:currentThread];
 
-  v5 = [v4 connection];
-  v6 = [v5 isInTransaction];
+  connection = [v4 connection];
+  isInTransaction = [connection isInTransaction];
 
-  return v6;
+  return isInTransaction;
 }
 
-- (void)setUseDistantWriterConnections:(BOOL)a3
+- (void)setUseDistantWriterConnections:(BOOL)connections
 {
-  self->_useDistantWriterConnections = a3;
+  self->_useDistantWriterConnections = connections;
   [(_ML3DatabaseConnectionSubPool *)self->_writersSubPool closeConnectionsAndWaitForBusyConnections:1];
   useDistantWriterConnections = self->_useDistantWriterConnections;
   writersSubPool = self->_writersSubPool;
@@ -732,9 +732,9 @@ uint64_t __98__ML3DatabaseConnectionPool__connectionForWriting_useThreadConnecti
   [(_ML3DatabaseConnectionSubPool *)writersSubPool setUseDistantConnections:useDistantWriterConnections];
 }
 
-- (void)setConnectionsJournalingMode:(unint64_t)a3
+- (void)setConnectionsJournalingMode:(unint64_t)mode
 {
-  self->_connectionsJournalingMode = a3;
+  self->_connectionsJournalingMode = mode;
   [(_ML3DatabaseConnectionSubPool *)self->_readersSubPool setConnectionsJournalingMode:?];
   connectionsJournalingMode = self->_connectionsJournalingMode;
   writersSubPool = self->_writersSubPool;
@@ -777,20 +777,20 @@ uint64_t __98__ML3DatabaseConnectionPool__connectionForWriting_useThreadConnecti
   return 0;
 }
 
-- (ML3DatabaseConnectionPool)initWithDatabasePath:(id)a3 maxReaders:(unint64_t)a4 maxWriters:(unint64_t)a5
+- (ML3DatabaseConnectionPool)initWithDatabasePath:(id)path maxReaders:(unint64_t)readers maxWriters:(unint64_t)writers
 {
-  v9 = a3;
+  pathCopy = path;
   v26.receiver = self;
   v26.super_class = ML3DatabaseConnectionPool;
   v10 = [(ML3DatabaseConnectionPool *)&v26 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [pathCopy copy];
     databasePath = v10->_databasePath;
     v10->_databasePath = v11;
 
-    v10->_maxReaders = a4;
-    v10->_maxWriters = a5;
+    v10->_maxReaders = readers;
+    v10->_maxWriters = writers;
     v10->_connectionsJournalingMode = 1;
     v10->_useDistantWriterConnections = __daemonProcessInfo == 0;
     v13 = [[_ML3DatabaseConnectionSubPool alloc] initWithDatabasePath:v10->_databasePath maxConcurrentConnections:v10->_maxReaders];
@@ -822,14 +822,14 @@ uint64_t __98__ML3DatabaseConnectionPool__connectionForWriting_useThreadConnecti
     v10->_closed = 0;
     if (pthread_cond_init(&v10->_poolLockCondition, 0))
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:v10 file:@"ML3DatabaseConnectionPool.m" lineNumber:86 description:@"Failed to initialize condition variable."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"ML3DatabaseConnectionPool.m" lineNumber:86 description:@"Failed to initialize condition variable."];
     }
 
     if (pthread_mutex_init(&v10->_poolLockMutex, 0))
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
-      [v25 handleFailureInMethod:a2 object:v10 file:@"ML3DatabaseConnectionPool.m" lineNumber:89 description:@"Failed to initialize mutex."];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v10 file:@"ML3DatabaseConnectionPool.m" lineNumber:89 description:@"Failed to initialize mutex."];
     }
   }
 

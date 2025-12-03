@@ -4,7 +4,7 @@
 - (CGSize)naturalSize;
 - (int64_t)pageAngle;
 - (void)dealloc;
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4;
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect;
 - (void)flush;
 - (void)p_loadIfNecessary;
 @end
@@ -46,36 +46,36 @@
 
 - (BOOL)isValid
 {
-  v2 = [(TSDPDFImageProvider *)self CGPDFDocument];
-  if (v2)
+  cGPDFDocument = [(TSDPDFImageProvider *)self CGPDFDocument];
+  if (cGPDFDocument)
   {
-    LOBYTE(v2) = CGPDFDocumentGetPage(v2, 1uLL) != 0;
+    LOBYTE(cGPDFDocument) = CGPDFDocumentGetPage(cGPDFDocument, 1uLL) != 0;
   }
 
-  return v2;
+  return cGPDFDocument;
 }
 
-- (void)drawImageInContext:(CGContext *)a3 rect:(CGRect)a4
+- (void)drawImageInContext:(CGContext *)context rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(TSDPDFImageProvider *)self isValid])
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDPDFImageProvider drawImageInContext:rect:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPDFImageProvider.m"), 71, @"shouldn't be drawing an invalid image provider"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPDFImageProvider.m"), 71, @"shouldn't be drawing an invalid image provider"}];
   }
 
-  v12 = [(TSDPDFImageProvider *)self CGPDFDocument];
-  if (v12)
+  cGPDFDocument = [(TSDPDFImageProvider *)self CGPDFDocument];
+  if (cGPDFDocument)
   {
-    Page = CGPDFDocumentGetPage(v12, 1uLL);
+    Page = CGPDFDocumentGetPage(cGPDFDocument, 1uLL);
     if (Page)
     {
       v14 = Page;
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       v31.origin.x = x;
       v31.origin.y = y;
       v31.size.width = width;
@@ -86,8 +86,8 @@
       v32.size.width = width;
       v32.size.height = height;
       MaxY = CGRectGetMaxY(v32);
-      CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-      CGContextScaleCTM(a3, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
       memset(&v30, 0, sizeof(v30));
       v28 = 0.0;
       v29 = 0.0;
@@ -103,14 +103,14 @@
       *&v24.a = v25;
       *&v24.c = v26;
       *&v24.tx = v27;
-      CGContextConcatCTM(a3, &v24);
+      CGContextConcatCTM(context, &v24);
       v33.origin.x = v17;
       v33.origin.y = v19;
       v33.size.width = v21;
       v33.size.height = v23;
-      CGContextClipToRect(a3, v33);
-      CGContextDrawPDFPage(a3, v14);
-      CGContextRestoreGState(a3);
+      CGContextClipToRect(context, v33);
+      CGContextDrawPDFPage(context, v14);
+      CGContextRestoreGState(context);
     }
   }
 }
@@ -132,10 +132,10 @@
     objc_sync_enter(self);
     if (!self->mPDFDocument && self->super.mLoadState != 2)
     {
-      v3 = [(TSDPDFImageProvider *)self p_load];
+      p_load = [(TSDPDFImageProvider *)self p_load];
       __dmb(0xBu);
-      self->mPDFDocument = v3;
-      if (v3)
+      self->mPDFDocument = p_load;
+      if (p_load)
       {
         v4 = 1;
       }

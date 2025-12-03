@@ -1,80 +1,80 @@
 @interface LACUIPackagedViewState
-- (BOOL)containsStateNamed:(id)a3;
-- (BOOL)finishesWithStateNamed:(id)a3;
-- (LACUIPackagedViewState)initWithName:(id)a3;
-- (LACUIPackagedViewState)initWithName:(id)a3 animationOptions:(id)a4;
+- (BOOL)containsStateNamed:(id)named;
+- (BOOL)finishesWithStateNamed:(id)named;
+- (LACUIPackagedViewState)initWithName:(id)name;
+- (LACUIPackagedViewState)initWithName:(id)name animationOptions:(id)options;
 - (id)description;
-- (void)addSubstate:(id)a3;
+- (void)addSubstate:(id)substate;
 @end
 
 @implementation LACUIPackagedViewState
 
-- (LACUIPackagedViewState)initWithName:(id)a3
+- (LACUIPackagedViewState)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(LACUIPackagedViewStateAnimationOptions);
-  v6 = [(LACUIPackagedViewState *)self initWithName:v4 animationOptions:v5];
+  v6 = [(LACUIPackagedViewState *)self initWithName:nameCopy animationOptions:v5];
 
   return v6;
 }
 
-- (LACUIPackagedViewState)initWithName:(id)a3 animationOptions:(id)a4
+- (LACUIPackagedViewState)initWithName:(id)name animationOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = LACUIPackagedViewState;
   v9 = [(LACUIPackagedViewState *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
+    objc_storeStrong(&v9->_name, name);
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     substates = v10->_substates;
     v10->_substates = v11;
 
-    objc_storeStrong(&v10->_animationOptions, a4);
+    objc_storeStrong(&v10->_animationOptions, options);
   }
 
   return v10;
 }
 
-- (void)addSubstate:(id)a3
+- (void)addSubstate:(id)substate
 {
-  v4 = a3;
-  v5 = [(LACUIPackagedViewState *)self substates];
-  [v5 addObject:v4];
+  substateCopy = substate;
+  substates = [(LACUIPackagedViewState *)self substates];
+  [substates addObject:substateCopy];
 }
 
-- (BOOL)finishesWithStateNamed:(id)a3
+- (BOOL)finishesWithStateNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(LACUIPackagedViewState *)self substates];
-  v6 = [v5 count];
+  namedCopy = named;
+  substates = [(LACUIPackagedViewState *)self substates];
+  v6 = [substates count];
 
   if (v6)
   {
-    v7 = [(LACUIPackagedViewState *)self substates];
-    v8 = [v7 lastObject];
-    v9 = [v8 finishesWithStateNamed:v4];
+    substates2 = [(LACUIPackagedViewState *)self substates];
+    lastObject = [substates2 lastObject];
+    v9 = [lastObject finishesWithStateNamed:namedCopy];
 
-    v4 = v8;
+    namedCopy = lastObject;
   }
 
   else
   {
-    v7 = [(LACUIPackagedViewState *)self name];
-    v9 = [v4 isEqualToString:v7];
+    substates2 = [(LACUIPackagedViewState *)self name];
+    v9 = [namedCopy isEqualToString:substates2];
   }
 
   return v9;
 }
 
-- (BOOL)containsStateNamed:(id)a3
+- (BOOL)containsStateNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(LACUIPackagedViewState *)self name];
-  v6 = [v5 isEqualToString:v4];
+  namedCopy = named;
+  name = [(LACUIPackagedViewState *)self name];
+  v6 = [name isEqualToString:namedCopy];
 
   if (v6)
   {
@@ -83,13 +83,13 @@
 
   else
   {
-    v8 = [(LACUIPackagedViewState *)self substates];
+    substates = [(LACUIPackagedViewState *)self substates];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __45__LACUIPackagedViewState_containsStateNamed___block_invoke;
     v10[3] = &unk_27981EA70;
-    v11 = v4;
-    v7 = [v8 indexOfObjectPassingTest:v10] != 0x7FFFFFFFFFFFFFFFLL;
+    v11 = namedCopy;
+    v7 = [substates indexOfObjectPassingTest:v10] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v7;
@@ -99,10 +99,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(LACUIPackagedViewState *)self name];
-  v6 = [(LACUIPackagedViewState *)self substates];
-  v7 = [(LACUIPackagedViewState *)self animationOptions];
-  v8 = [v3 stringWithFormat:@"<%@ %p; name:%@; substates:%@; animationOptons:%@>", v4, self, v5, v6, v7];;
+  name = [(LACUIPackagedViewState *)self name];
+  substates = [(LACUIPackagedViewState *)self substates];
+  animationOptions = [(LACUIPackagedViewState *)self animationOptions];
+  v8 = [v3 stringWithFormat:@"<%@ %p; name:%@; substates:%@; animationOptons:%@>", v4, self, name, substates, animationOptions];;
 
   return v8;
 }

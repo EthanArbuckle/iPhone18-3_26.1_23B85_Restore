@@ -1,16 +1,16 @@
 @interface HMDHAPAccessoryAdvertisement
-- (BOOL)isEqual:(id)a3;
-- (HMDHAPAccessoryAdvertisement)initWithIdentifier:(id)a3 name:(id)a4 categoryIdentifier:(id)a5 pairingPresent:(BOOL)a6 setupHash:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (HMDHAPAccessoryAdvertisement)initWithIdentifier:(id)identifier name:(id)name categoryIdentifier:(id)categoryIdentifier pairingPresent:(BOOL)present setupHash:(id)hash;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation HMDHAPAccessoryAdvertisement
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -20,7 +20,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -31,13 +31,13 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDAccessoryAdvertisement *)self identifier];
-      v8 = [(HMDAccessoryAdvertisement *)v6 identifier];
-      if ([v7 isEqual:v8])
+      identifier = [(HMDAccessoryAdvertisement *)self identifier];
+      identifier2 = [(HMDAccessoryAdvertisement *)v6 identifier];
+      if ([identifier isEqual:identifier2])
       {
-        v9 = [(HMDHAPAccessoryAdvertisement *)self setupHash];
-        v10 = [(HMDHAPAccessoryAdvertisement *)v6 setupHash];
-        v11 = [v9 isEqual:v10];
+        setupHash = [(HMDHAPAccessoryAdvertisement *)self setupHash];
+        setupHash2 = [(HMDHAPAccessoryAdvertisement *)v6 setupHash];
+        v11 = [setupHash isEqual:setupHash2];
       }
 
       else
@@ -57,10 +57,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMDAccessoryAdvertisement *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(HMDHAPAccessoryAdvertisement *)self setupHash];
-  v6 = [v5 hash];
+  identifier = [(HMDAccessoryAdvertisement *)self identifier];
+  v4 = [identifier hash];
+  setupHash = [(HMDHAPAccessoryAdvertisement *)self setupHash];
+  v6 = [setupHash hash];
 
   return v6 ^ v4;
 }
@@ -73,36 +73,36 @@
   v4 = [(HMDAccessoryAdvertisement *)&v9 description];
   [(HMDHAPAccessoryAdvertisement *)self pairingPresent];
   v5 = HMFBooleanToString();
-  v6 = [(HMDHAPAccessoryAdvertisement *)self setupHash];
-  v7 = [v3 stringWithFormat:@"[ %@, pairingPresent: %@, setupHash = %@]", v4, v5, v6];
+  setupHash = [(HMDHAPAccessoryAdvertisement *)self setupHash];
+  v7 = [v3 stringWithFormat:@"[ %@, pairingPresent: %@, setupHash = %@]", v4, v5, setupHash];
 
   return v7;
 }
 
-- (HMDHAPAccessoryAdvertisement)initWithIdentifier:(id)a3 name:(id)a4 categoryIdentifier:(id)a5 pairingPresent:(BOOL)a6 setupHash:(id)a7
+- (HMDHAPAccessoryAdvertisement)initWithIdentifier:(id)identifier name:(id)name categoryIdentifier:(id)categoryIdentifier pairingPresent:(BOOL)present setupHash:(id)hash
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  hashCopy = hash;
+  categoryIdentifierCopy = categoryIdentifier;
+  nameCopy = name;
+  identifierCopy = identifier;
   v15 = +[HMDHAPMetadata getSharedInstance];
-  v16 = [v15 categoryForIdentifier:v12];
+  categoryForOther = [v15 categoryForIdentifier:categoryIdentifierCopy];
 
-  if (!v16)
+  if (!categoryForOther)
   {
-    v16 = [v15 categoryForOther];
+    categoryForOther = [v15 categoryForOther];
   }
 
   v17 = objc_alloc(MEMORY[0x277CD1680]);
-  v18 = [v16 uuidStr];
-  v19 = [v16 catDescription];
-  v20 = [v17 initWithType:v18 name:v19];
+  uuidStr = [categoryForOther uuidStr];
+  catDescription = [categoryForOther catDescription];
+  v20 = [v17 initWithType:uuidStr name:catDescription];
 
   v21 = [MEMORY[0x277CD1A18] cachedInstanceForHMAccessoryCategory:v20];
 
   v24.receiver = self;
   v24.super_class = HMDHAPAccessoryAdvertisement;
-  v22 = [(HMDAccessoryAdvertisement *)&v24 initWithIdentifier:v14 name:v13 category:v21];
+  v22 = [(HMDAccessoryAdvertisement *)&v24 initWithIdentifier:identifierCopy name:nameCopy category:v21];
 
   return v22;
 }

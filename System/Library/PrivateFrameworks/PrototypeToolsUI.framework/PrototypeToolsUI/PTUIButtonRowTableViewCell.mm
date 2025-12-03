@@ -1,28 +1,28 @@
 @interface PTUIButtonRowTableViewCell
-- (PTUIButtonRowTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PTUIButtonRowTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation PTUIButtonRowTableViewCell
 
-- (PTUIButtonRowTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PTUIButtonRowTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = PTUIButtonRowTableViewCell;
-  v4 = [(PTUIButtonRowTableViewCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PTUIButtonRowTableViewCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PTUIButtonRowTableViewCell *)v4 textLabel];
-    v7 = [(PTUIButtonRowTableViewCell *)v5 _tableView];
-    v8 = [v7 tintColor];
-    [v6 setTextColor:v8];
+    textLabel = [(PTUIButtonRowTableViewCell *)v4 textLabel];
+    _tableView = [(PTUIButtonRowTableViewCell *)v5 _tableView];
+    tintColor = [_tableView tintColor];
+    [textLabel setTextColor:tintColor];
 
-    v9 = [(PTUIButtonRowTableViewCell *)v5 textLabel];
+    textLabel2 = [(PTUIButtonRowTableViewCell *)v5 textLabel];
     v10 = [MEMORY[0x277D74300] boldSystemFontOfSize:18.0];
-    [v9 setFont:v10];
+    [textLabel2 setFont:v10];
 
-    v11 = [(PTUIButtonRowTableViewCell *)v5 textLabel];
-    [v11 setTextAlignment:1];
+    textLabel3 = [(PTUIButtonRowTableViewCell *)v5 textLabel];
+    [textLabel3 setTextAlignment:1];
   }
 
   return v5;

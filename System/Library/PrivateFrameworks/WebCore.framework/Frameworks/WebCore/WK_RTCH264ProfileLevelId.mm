@@ -1,21 +1,21 @@
 @interface WK_RTCH264ProfileLevelId
-- (WK_RTCH264ProfileLevelId)initWithHexString:(id)a3;
-- (WK_RTCH264ProfileLevelId)initWithProfile:(unint64_t)a3 level:(unint64_t)a4;
+- (WK_RTCH264ProfileLevelId)initWithHexString:(id)string;
+- (WK_RTCH264ProfileLevelId)initWithProfile:(unint64_t)profile level:(unint64_t)level;
 @end
 
 @implementation WK_RTCH264ProfileLevelId
 
-- (WK_RTCH264ProfileLevelId)initWithHexString:(id)a3
+- (WK_RTCH264ProfileLevelId)initWithHexString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = WK_RTCH264ProfileLevelId;
   v5 = [(WK_RTCH264ProfileLevelId *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(WK_RTCH264ProfileLevelId *)v5 setHexString:v4];
-    v7 = [v4 cStringUsingEncoding:4];
+    [(WK_RTCH264ProfileLevelId *)v5 setHexString:stringCopy];
+    v7 = [stringCopy cStringUsingEncoding:4];
     v9 = webrtc::ParseH264ProfileLevelId(v7, v8);
     if (v10)
     {
@@ -28,7 +28,7 @@
   return v6;
 }
 
-- (WK_RTCH264ProfileLevelId)initWithProfile:(unint64_t)a3 level:(unint64_t)a4
+- (WK_RTCH264ProfileLevelId)initWithProfile:(unint64_t)profile level:(unint64_t)level
 {
   v16.receiver = self;
   v16.super_class = WK_RTCH264ProfileLevelId;
@@ -36,9 +36,9 @@
   v7 = v6;
   if (v6)
   {
-    [(WK_RTCH264ProfileLevelId *)v6 setProfile:a3];
-    [(WK_RTCH264ProfileLevelId *)v7 setLevel:a4];
-    __p.__r_.__value_.__r.__words[0] = __PAIR64__(a4, a3);
+    [(WK_RTCH264ProfileLevelId *)v6 setProfile:profile];
+    [(WK_RTCH264ProfileLevelId *)v7 setLevel:level];
+    __p.__r_.__value_.__r.__words[0] = __PAIR64__(level, profile);
     webrtc::H264ProfileLevelIdToString(&__p, &v14);
     v8 = MEMORY[0x277CCACA8];
     if (v15 == 1)

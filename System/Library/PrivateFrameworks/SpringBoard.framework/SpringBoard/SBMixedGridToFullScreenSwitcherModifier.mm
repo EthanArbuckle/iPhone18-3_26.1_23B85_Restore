@@ -1,48 +1,48 @@
 @interface SBMixedGridToFullScreenSwitcherModifier
 - (BOOL)_isEffectivelyFullScreen;
-- (BOOL)_isIndexActive:(unint64_t)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBMixedGridToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 fullScreenAppLayout:(id)a5 floatingAppLayout:(id)a6 floatingConfiguration:(int64_t)a7 gridModifier:(id)a8 fullScreenModifier:(id)a9;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (double)scaleForIndex:(unint64_t)a3;
+- (BOOL)_isIndexActive:(unint64_t)active;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBMixedGridToFullScreenSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction fullScreenAppLayout:(id)layout floatingAppLayout:(id)appLayout floatingConfiguration:(int64_t)configuration gridModifier:(id)modifier fullScreenModifier:(id)screenModifier;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (double)scaleForIndex:(unint64_t)index;
 - (id)_appLayoutToScrollTo;
-- (id)_firstFloatingAppLayout:(id)a3;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
+- (id)_firstFloatingAppLayout:(id)layout;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
 - (id)appLayoutToScrollToBeforeTransitioning;
 - (id)topMostLayoutElements;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
-- (void)_performBlockWhileSimulatingPostPresentationScrollViewContentOffset:(id)a3;
+- (void)_performBlockWhileSimulatingPostPresentationScrollViewContentOffset:(id)offset;
 @end
 
 @implementation SBMixedGridToFullScreenSwitcherModifier
 
-- (SBMixedGridToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 fullScreenAppLayout:(id)a5 floatingAppLayout:(id)a6 floatingConfiguration:(int64_t)a7 gridModifier:(id)a8 fullScreenModifier:(id)a9
+- (SBMixedGridToFullScreenSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction fullScreenAppLayout:(id)layout floatingAppLayout:(id)appLayout floatingConfiguration:(int64_t)configuration gridModifier:(id)modifier fullScreenModifier:(id)screenModifier
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v37 = a8;
-  v17 = a9;
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  modifierCopy = modifier;
+  screenModifierCopy = screenModifier;
   v38.receiver = self;
   v38.super_class = SBMixedGridToFullScreenSwitcherModifier;
-  v18 = [(SBTransitionSwitcherModifier *)&v38 initWithTransitionID:v14];
+  v18 = [(SBTransitionSwitcherModifier *)&v38 initWithTransitionID:dCopy];
   if (!v18)
   {
     goto LABEL_14;
   }
 
-  v35 = v15;
-  if (!v15)
+  v35 = layoutCopy;
+  if (!layoutCopy)
   {
     [SBMixedGridToFullScreenSwitcherModifier initWithTransitionID:a2 direction:v18 fullScreenAppLayout:? floatingAppLayout:? floatingConfiguration:? gridModifier:? fullScreenModifier:?];
   }
 
-  if (!v37)
+  if (!modifierCopy)
   {
     [SBMixedGridToFullScreenSwitcherModifier initWithTransitionID:a2 direction:v18 fullScreenAppLayout:? floatingAppLayout:? floatingConfiguration:? gridModifier:? fullScreenModifier:?];
-    if (v17)
+    if (screenModifierCopy)
     {
       goto LABEL_6;
     }
@@ -52,17 +52,17 @@ LABEL_16:
     goto LABEL_6;
   }
 
-  if (!v17)
+  if (!screenModifierCopy)
   {
     goto LABEL_16;
   }
 
 LABEL_6:
-  v18->_direction = a4;
-  objc_storeStrong(&v18->_fullScreenAppLayout, a5);
-  objc_storeStrong(&v18->_floatingAppLayout, a6);
-  objc_storeStrong(&v18->_mixedGridModifier, a8);
-  objc_storeStrong(&v18->_fullscreenModifier, a9);
+  v18->_direction = direction;
+  objc_storeStrong(&v18->_fullScreenAppLayout, layout);
+  objc_storeStrong(&v18->_floatingAppLayout, appLayout);
+  objc_storeStrong(&v18->_mixedGridModifier, modifier);
+  objc_storeStrong(&v18->_fullscreenModifier, screenModifier);
   v19 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v18->_fullScreenAppLayout, 0}];
   v20 = v19;
   floatingAppLayout = v18->_floatingAppLayout;
@@ -72,21 +72,21 @@ LABEL_6:
   }
 
   v22 = [SBGridToActiveAppLayoutsSwitcherModifier alloc];
-  v23 = [(SBMixedGridToFullScreenSwitcherModifier *)v18 _newMixedGridModifier];
-  v24 = [(SBGridToActiveAppLayoutsSwitcherModifier *)v22 initWithTransitionID:v14 direction:a4 activeAppLayouts:v20 gridModifier:v23];
+  _newMixedGridModifier = [(SBMixedGridToFullScreenSwitcherModifier *)v18 _newMixedGridModifier];
+  v24 = [(SBGridToActiveAppLayoutsSwitcherModifier *)v22 initWithTransitionID:dCopy direction:direction activeAppLayouts:v20 gridModifier:_newMixedGridModifier];
 
   [(SBChainableModifier *)v18 addChildModifier:v24];
   v25 = [SBRouteToMixedGridSwitcherModifier alloc];
-  v26 = [(SBMixedGridToFullScreenSwitcherModifier *)v18 _newMixedGridModifier];
-  v27 = [(SBRouteToMixedGridSwitcherModifier *)v25 initWithTransitionID:v14 mixedGridModifier:v26];
+  _newMixedGridModifier2 = [(SBMixedGridToFullScreenSwitcherModifier *)v18 _newMixedGridModifier];
+  v27 = [(SBRouteToMixedGridSwitcherModifier *)v25 initWithTransitionID:dCopy mixedGridModifier:_newMixedGridModifier2];
   routeToMixedGridModifier = v18->_routeToMixedGridModifier;
   v18->_routeToMixedGridModifier = v27;
 
   [(SBChainableModifier *)v18 addChildModifier:v18->_routeToMixedGridModifier];
-  if (v16)
+  if (appLayoutCopy)
   {
     v29 = [SBRelocateFloatingAppLayoutSwitcherModifier alloc];
-    if (a4)
+    if (direction)
     {
       v30 = 1;
     }
@@ -96,13 +96,13 @@ LABEL_6:
       v30 = 2;
     }
 
-    v31 = [(SBMixedGridToFullScreenSwitcherModifier *)v18 _newMixedGridModifier];
-    v32 = [(SBRelocateFloatingAppLayoutSwitcherModifier *)v29 initWithTransitionID:v14 floatingAppLayout:v16 floatingConfiguration:a7 direction:v30 mixedGridModifier:v31];
+    _newMixedGridModifier3 = [(SBMixedGridToFullScreenSwitcherModifier *)v18 _newMixedGridModifier];
+    v32 = [(SBRelocateFloatingAppLayoutSwitcherModifier *)v29 initWithTransitionID:dCopy floatingAppLayout:appLayoutCopy floatingConfiguration:configuration direction:v30 mixedGridModifier:_newMixedGridModifier3];
 
     [(SBChainableModifier *)v18 addChildModifier:v32];
   }
 
-  v15 = v35;
+  layoutCopy = v35;
 LABEL_14:
 
   return v18;
@@ -112,20 +112,20 @@ LABEL_14:
 {
   v12.receiver = self;
   v12.super_class = SBMixedGridToFullScreenSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
   v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v4];
+  v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:transitionWillBegin toResponse:v4];
 
-  v6 = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
+  appLayouts = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
   appLayoutsBeforeTransition = self->_appLayoutsBeforeTransition;
-  self->_appLayoutsBeforeTransition = v6;
+  self->_appLayoutsBeforeTransition = appLayouts;
 
   if (self->_direction == 1)
   {
-    v8 = [(SBMixedGridToFullScreenSwitcherModifier *)self _appLayoutToScrollTo];
-    if (v8)
+    _appLayoutToScrollTo = [(SBMixedGridToFullScreenSwitcherModifier *)self _appLayoutToScrollTo];
+    if (_appLayoutToScrollTo)
     {
-      v9 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v8 alignment:0 animated:0];
+      v9 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:_appLayoutToScrollTo alignment:0 animated:0];
       v10 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v9 toResponse:v5];
 
       v5 = v10;
@@ -139,29 +139,29 @@ LABEL_14:
 {
   v7.receiver = self;
   v7.super_class = SBMixedGridToFullScreenSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v7 transitionDidEnd];
   if (!self->_direction)
   {
     v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v4];
+    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:transitionDidEnd toResponse:v4];
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   routeToMixedGridModifier = self->_routeToMixedGridModifier;
-  v5 = a3;
-  v6 = [(SBRouteToMixedGridSwitcherModifier *)routeToMixedGridModifier reversesFloatingCardDirection];
+  layoutsCopy = layouts;
+  reversesFloatingCardDirection = [(SBRouteToMixedGridSwitcherModifier *)routeToMixedGridModifier reversesFloatingCardDirection];
   [(SBRouteToMixedGridSwitcherModifier *)self->_routeToMixedGridModifier setReversesFloatingCardDirection:self->_direction == 1];
   v10.receiver = self;
   v10.super_class = SBMixedGridToFullScreenSwitcherModifier;
-  v7 = [(SBTransitionSwitcherModifier *)&v10 adjustedAppLayoutsForAppLayouts:v5];
+  v7 = [(SBTransitionSwitcherModifier *)&v10 adjustedAppLayoutsForAppLayouts:layoutsCopy];
 
-  [(SBRouteToMixedGridSwitcherModifier *)self->_routeToMixedGridModifier setReversesFloatingCardDirection:v6];
+  [(SBRouteToMixedGridSwitcherModifier *)self->_routeToMixedGridModifier setReversesFloatingCardDirection:reversesFloatingCardDirection];
   if (self->_direction)
   {
     v8 = v7;
@@ -189,8 +189,8 @@ LABEL_14:
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
   v7.receiver = self;
   v7.super_class = SBMixedGridToFullScreenSwitcherModifier;
-  v4 = [(SBMixedGridToFullScreenSwitcherModifier *)&v7 visibleAppLayouts];
-  v5 = [v3 initWithSet:v4];
+  visibleAppLayouts = [(SBMixedGridToFullScreenSwitcherModifier *)&v7 visibleAppLayouts];
+  v5 = [v3 initWithSet:visibleAppLayouts];
 
   [v5 addObject:self->_fullScreenAppLayout];
   if (self->_floatingAppLayout)
@@ -224,10 +224,10 @@ LABEL_14:
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v32.receiver = self;
     v32.super_class = SBMixedGridToFullScreenSwitcherModifier;
-    v4 = [(SBMixedGridToFullScreenSwitcherModifier *)&v32 slideOverTongueLayoutElement];
-    if (v4)
+    slideOverTongueLayoutElement = [(SBMixedGridToFullScreenSwitcherModifier *)&v32 slideOverTongueLayoutElement];
+    if (slideOverTongueLayoutElement)
     {
-      [v3 addObject:v4];
+      [v3 addObject:slideOverTongueLayoutElement];
     }
 
     mixedGridModifier = self->_mixedGridModifier;
@@ -240,22 +240,22 @@ LABEL_14:
     v31 = v6;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v30];
     v7 = v31;
-    v8 = v6;
+    visibleAppLayouts = v6;
 
-    v9 = v8;
+    v9 = visibleAppLayouts;
     goto LABEL_32;
   }
 
-  v10 = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
-  v8 = [(SBMixedGridToFullScreenSwitcherModifier *)self visibleAppLayouts];
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [MEMORY[0x277CBEB18] array];
+  appLayouts = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
+  visibleAppLayouts = [(SBMixedGridToFullScreenSwitcherModifier *)self visibleAppLayouts];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = v10;
-  v13 = [v4 countByEnumeratingWithState:&v26 objects:v33 count:16];
+  slideOverTongueLayoutElement = appLayouts;
+  v13 = [slideOverTongueLayoutElement countByEnumeratingWithState:&v26 objects:v33 count:16];
   if (!v13)
   {
     goto LABEL_19;
@@ -270,15 +270,15 @@ LABEL_14:
     {
       if (*v27 != v15)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(slideOverTongueLayoutElement);
       }
 
       v17 = *(*(&v26 + 1) + 8 * v16);
-      if ([v8 containsObject:v17])
+      if ([visibleAppLayouts containsObject:v17])
       {
         if ([(SBAppLayout *)v17 environment]== 2)
         {
-          v18 = v11;
+          v18 = array;
           if (v17 == self->_floatingAppLayout)
           {
             goto LABEL_14;
@@ -290,7 +290,7 @@ LABEL_13:
         }
 
         v19 = [(SBAppLayout *)v17 isEqual:self->_fullScreenAppLayout];
-        v18 = v12;
+        v18 = array2;
         if (!v19)
         {
           goto LABEL_13;
@@ -302,7 +302,7 @@ LABEL_14:
     }
 
     while (v14 != v16);
-    v20 = [v4 countByEnumeratingWithState:&v26 objects:v33 count:16];
+    v20 = [slideOverTongueLayoutElement countByEnumeratingWithState:&v26 objects:v33 count:16];
     v14 = v20;
   }
 
@@ -312,10 +312,10 @@ LABEL_19:
   v9 = objc_opt_new();
   v25.receiver = self;
   v25.super_class = SBMixedGridToFullScreenSwitcherModifier;
-  v21 = [(SBMixedGridToFullScreenSwitcherModifier *)&v25 slideOverTongueLayoutElement];
-  if (v21)
+  slideOverTongueLayoutElement2 = [(SBMixedGridToFullScreenSwitcherModifier *)&v25 slideOverTongueLayoutElement];
+  if (slideOverTongueLayoutElement2)
   {
-    [v9 addObject:v21];
+    [v9 addObject:slideOverTongueLayoutElement2];
   }
 
   if (self->_floatingAppLayout)
@@ -323,17 +323,17 @@ LABEL_19:
     [v9 addObject:?];
   }
 
-  if ([v11 count])
+  if ([array count])
   {
-    [v9 addObjectsFromArray:v11];
+    [v9 addObjectsFromArray:array];
   }
 
   v24.receiver = self;
   v24.super_class = SBMixedGridToFullScreenSwitcherModifier;
-  v22 = [(SBMixedGridToFullScreenSwitcherModifier *)&v24 switcherDimmingViewLayoutElement];
-  if (v22)
+  switcherDimmingViewLayoutElement = [(SBMixedGridToFullScreenSwitcherModifier *)&v24 switcherDimmingViewLayoutElement];
+  if (switcherDimmingViewLayoutElement)
   {
-    [v9 addObject:v22];
+    [v9 addObject:switcherDimmingViewLayoutElement];
   }
 
   if (self->_fullScreenAppLayout)
@@ -341,9 +341,9 @@ LABEL_19:
     [v9 addObject:?];
   }
 
-  if ([v12 count])
+  if ([array2 count])
   {
-    [v9 addObjectsFromArray:v12];
+    [v9 addObjectsFromArray:array2];
   }
 
 LABEL_32:
@@ -360,9 +360,9 @@ void __64__SBMixedGridToFullScreenSwitcherModifier_topMostLayoutElements__block_
   [v3 addObjectsFromArray:v5];
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2810000000;
@@ -375,7 +375,7 @@ void __64__SBMixedGridToFullScreenSwitcherModifier_topMostLayoutElements__block_
   v8[3] = &unk_2783AB258;
   v10 = &v11;
   v8[4] = self;
-  v6 = v4;
+  v6 = layoutCopy;
   v9 = v6;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v8];
   LOWORD(self) = *(v12 + 16);
@@ -391,13 +391,13 @@ uint64_t __80__SBMixedGridToFullScreenSwitcherModifier_asyncRenderingAttributesF
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
   if ([(SBAppLayout *)v6 environment]!= 2 || self->_direction || (floatingAppLayout = self->_floatingAppLayout, v6 == floatingAppLayout))
   {
-    [(SBMixedGridToFullScreenSwitcherModifier *)&v26 frameForIndex:a3, self, SBMixedGridToFullScreenSwitcherModifier];
+    [(SBMixedGridToFullScreenSwitcherModifier *)&v26 frameForIndex:index, self, SBMixedGridToFullScreenSwitcherModifier];
 LABEL_4:
     v11 = v7;
     v12 = v8;
@@ -408,7 +408,7 @@ LABEL_4:
 
   if (floatingAppLayout)
   {
-    v20 = [v5 indexOfObject:?];
+    v20 = [appLayouts indexOfObject:?];
     if (v20 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v28.receiver = self;
@@ -420,7 +420,7 @@ LABEL_4:
 
   v27.receiver = self;
   v27.super_class = SBMixedGridToFullScreenSwitcherModifier;
-  [(SBMixedGridToFullScreenSwitcherModifier *)&v27 frameForIndex:a3];
+  [(SBMixedGridToFullScreenSwitcherModifier *)&v27 frameForIndex:index];
   v12 = v22;
   v13 = v23;
   v14 = v24;
@@ -453,10 +453,10 @@ LABEL_5:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 environment] == 2 && self->_direction == 1)
   {
@@ -471,7 +471,7 @@ LABEL_5:
     v12[3] = &unk_2783AA618;
     v12[4] = self;
     v12[5] = &v13;
-    v12[6] = a3;
+    v12[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v12];
     v8 = v14[3];
     _Block_object_dispose(&v13, 8);
@@ -481,7 +481,7 @@ LABEL_5:
   {
     v11.receiver = self;
     v11.super_class = SBMixedGridToFullScreenSwitcherModifier;
-    [(SBMixedGridToFullScreenSwitcherModifier *)&v11 scaleForIndex:a3];
+    [(SBMixedGridToFullScreenSwitcherModifier *)&v11 scaleForIndex:index];
     v8 = v9;
   }
 
@@ -520,10 +520,10 @@ uint64_t __57__SBMixedGridToFullScreenSwitcherModifier_scaleForIndex___block_inv
   return v3 || v4;
 }
 
-- (BOOL)_isIndexActive:(unint64_t)a3
+- (BOOL)_isIndexActive:(unint64_t)active
 {
-  v5 = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:active];
 
   if ([(SBAppLayout *)self->_fullScreenAppLayout isEqual:v6])
   {
@@ -549,22 +549,22 @@ uint64_t __57__SBMixedGridToFullScreenSwitcherModifier_scaleForIndex___block_inv
 
 - (id)_appLayoutToScrollTo
 {
-  v3 = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
-  v4 = [(SBMixedGridToFullScreenSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:v3];
+  appLayouts = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
+  v4 = [(SBMixedGridToFullScreenSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:appLayouts];
 
   v5 = [(SBMixedGridToFullScreenSwitcherModifier *)self _firstFloatingAppLayout:v4];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    firstObject = v5;
   }
 
   else
   {
-    v7 = [v4 firstObject];
+    firstObject = [v4 firstObject];
   }
 
-  v8 = v7;
+  v8 = firstObject;
   if (self->_fullScreenAppLayout)
   {
     v17 = 0;
@@ -593,7 +593,7 @@ uint64_t __57__SBMixedGridToFullScreenSwitcherModifier_scaleForIndex___block_inv
 
   else
   {
-    v11 = v7;
+    v11 = firstObject;
   }
 
   v12 = v11;
@@ -623,15 +623,15 @@ uint64_t __63__SBMixedGridToFullScreenSwitcherModifier__appLayoutToScrollTo__blo
   return result;
 }
 
-- (id)_firstFloatingAppLayout:(id)a3
+- (id)_firstFloatingAppLayout:(id)layout
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  layoutCopy = layout;
+  v4 = [layoutCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -645,7 +645,7 @@ uint64_t __63__SBMixedGridToFullScreenSwitcherModifier__appLayoutToScrollTo__blo
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(layoutCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v8);
@@ -662,7 +662,7 @@ uint64_t __63__SBMixedGridToFullScreenSwitcherModifier__appLayoutToScrollTo__blo
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [layoutCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -682,33 +682,33 @@ LABEL_12:
   return v6;
 }
 
-- (void)_performBlockWhileSimulatingPostPresentationScrollViewContentOffset:(id)a3
+- (void)_performBlockWhileSimulatingPostPresentationScrollViewContentOffset:(id)offset
 {
-  v4 = a3;
-  v5 = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
-  v6 = [(SBMixedGridToFullScreenSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:v5];
+  offsetCopy = offset;
+  appLayouts = [(SBMixedGridToFullScreenSwitcherModifier *)self appLayouts];
+  v6 = [(SBMixedGridToFullScreenSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:appLayouts];
 
   v7 = [(SBMixedGridToFullScreenSwitcherModifier *)self _firstFloatingAppLayout:v6];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    firstObject = v7;
   }
 
   else
   {
-    v9 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
-  v10 = v9;
-  -[SBMixedGridToFullScreenSwitcherModifier contentOffsetForIndex:alignment:](self, "contentOffsetForIndex:alignment:", [v6 indexOfObject:v9], 3);
+  v10 = firstObject;
+  -[SBMixedGridToFullScreenSwitcherModifier contentOffsetForIndex:alignment:](self, "contentOffsetForIndex:alignment:", [v6 indexOfObject:firstObject], 3);
   v13 = [[SBOverrideScrollViewContentOffsetSwitcherModifier alloc] initWithScrollViewContentOffset:v11, v12];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __111__SBMixedGridToFullScreenSwitcherModifier__performBlockWhileSimulatingPostPresentationScrollViewContentOffset___block_invoke;
   v15[3] = &unk_2783A9348;
-  v16 = v4;
-  v14 = v4;
+  v16 = offsetCopy;
+  v14 = offsetCopy;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v13 usingBlock:v15];
 }
 

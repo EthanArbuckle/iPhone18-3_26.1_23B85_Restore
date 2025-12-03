@@ -1,5 +1,5 @@
 @interface HintView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)dismissTapped;
 - (void)layoutSubviews;
 @end
@@ -8,20 +8,20 @@
 
 - (void)dismissTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EA3250();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EA238C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   sub_220EA3DB8(width);
   v6 = v5;
   v8 = v7;

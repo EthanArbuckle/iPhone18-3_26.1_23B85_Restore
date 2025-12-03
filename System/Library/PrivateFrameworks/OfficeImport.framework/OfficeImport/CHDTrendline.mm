@@ -1,11 +1,11 @@
 @interface CHDTrendline
 + (id)trendline;
 - (CHDTrendline)init;
-- (id)defaultNameWithSeriesName:(id)a3;
+- (id)defaultNameWithSeriesName:(id)name;
 - (id)description;
-- (void)setGraphicProperties:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setName:(id)a3;
+- (void)setGraphicProperties:(id)properties;
+- (void)setLabel:(id)label;
+- (void)setName:(id)name;
 @end
 
 @implementation CHDTrendline
@@ -45,48 +45,48 @@
   return v2;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   mLabel = self->mLabel;
   p_mLabel = &self->mLabel;
-  if (mLabel != v5)
+  if (mLabel != labelCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mLabel, a3);
-    v5 = v8;
+    v8 = labelCopy;
+    objc_storeStrong(p_mLabel, label);
+    labelCopy = v8;
   }
 }
 
-- (void)setGraphicProperties:(id)a3
+- (void)setGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mGraphicProperties = self->mGraphicProperties;
   p_mGraphicProperties = &self->mGraphicProperties;
-  if (mGraphicProperties != v5)
+  if (mGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mName = self->mName;
   p_mName = &self->mName;
-  if (mName != v5)
+  if (mName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mName, name);
+    nameCopy = v8;
   }
 }
 
-- (id)defaultNameWithSeriesName:(id)a3
+- (id)defaultNameWithSeriesName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   mType = self->mType;
   v6 = &stru_286EE1130;
   if (mType > 2)
@@ -134,8 +134,8 @@
 
 LABEL_14:
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v4 string];
-  v12 = [v10 stringWithFormat:@"%@(%@)", v9, v11];
+  string = [nameCopy string];
+  v12 = [v10 stringWithFormat:@"%@(%@)", v9, string];
   v13 = [EDString edStringWithString:v12];
 
   return v13;

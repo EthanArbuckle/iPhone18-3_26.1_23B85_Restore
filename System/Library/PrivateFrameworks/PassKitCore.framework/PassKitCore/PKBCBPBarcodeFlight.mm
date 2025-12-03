@@ -1,40 +1,40 @@
 @interface PKBCBPBarcodeFlight
-- (BOOL)_updateWithBarcodeMessage:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKBCBPBarcodeFlight)initWithBarcodeMessage:(id)a3;
-- (PKBCBPBarcodeFlight)initWithCoder:(id)a3;
-- (PKBCBPBarcodeFlight)initWithPassengerName:(id)a3 legs:(id)a4;
+- (BOOL)_updateWithBarcodeMessage:(id)message;
+- (BOOL)isEqual:(id)equal;
+- (PKBCBPBarcodeFlight)initWithBarcodeMessage:(id)message;
+- (PKBCBPBarcodeFlight)initWithCoder:(id)coder;
+- (PKBCBPBarcodeFlight)initWithPassengerName:(id)name legs:(id)legs;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKBCBPBarcodeFlight
 
-- (PKBCBPBarcodeFlight)initWithPassengerName:(id)a3 legs:(id)a4
+- (PKBCBPBarcodeFlight)initWithPassengerName:(id)name legs:(id)legs
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  legsCopy = legs;
   v12.receiver = self;
   v12.super_class = PKBCBPBarcodeFlight;
   v9 = [(PKBCBPBarcodeFlight *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_passengerName, a3);
-    objc_storeStrong(&v10->_legs, a4);
+    objc_storeStrong(&v9->_passengerName, name);
+    objc_storeStrong(&v10->_legs, legs);
   }
 
   return v10;
 }
 
-- (PKBCBPBarcodeFlight)initWithBarcodeMessage:(id)a3
+- (PKBCBPBarcodeFlight)initWithBarcodeMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = PKBCBPBarcodeFlight;
   v5 = [(PKBCBPBarcodeFlight *)&v9 init];
   v6 = v5;
-  if (v5 && ![(PKBCBPBarcodeFlight *)v5 _updateWithBarcodeMessage:v4])
+  if (v5 && ![(PKBCBPBarcodeFlight *)v5 _updateWithBarcodeMessage:messageCopy])
   {
     v7 = 0;
   }
@@ -47,10 +47,10 @@
   return v7;
 }
 
-- (BOOL)_updateWithBarcodeMessage:(id)a3
+- (BOOL)_updateWithBarcodeMessage:(id)message
 {
   v60 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messageCopy = message;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -67,7 +67,7 @@
   aBlock[3] = &unk_1E79D5D18;
   v49 = v51;
   v50 = &v52;
-  v42 = v3;
+  v42 = messageCopy;
   v48 = v42;
   v4 = _Block_copy(aBlock);
   v46[0] = MEMORY[0x1E69E9820];
@@ -83,19 +83,19 @@
     if (v5)
     {
       v41 = v5;
-      v6 = [v5 integerValue];
-      if (v6)
+      integerValue = [v5 integerValue];
+      if (integerValue)
       {
         log = v4[2](v4, 20);
         if (log)
         {
           v44[2](v44, 1);
-          v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:v6];
-          if (v6 >= 1)
+          v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:integerValue];
+          if (integerValue >= 1)
           {
             v34 = 0;
             v43 = 0;
-            v32 = v6;
+            v32 = integerValue;
             while (1)
             {
               v37 = v4[2](v4, 7);
@@ -311,18 +311,18 @@ id __49__PKBCBPBarcodeFlight__updateWithBarcodeMessage___block_invoke(uint64_t a
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -380,22 +380,22 @@ LABEL_19:
   return v12;
 }
 
-- (PKBCBPBarcodeFlight)initWithCoder:(id)a3
+- (PKBCBPBarcodeFlight)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKBCBPBarcodeFlight;
   v5 = [(PKBCBPBarcodeFlight *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passengerName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passengerName"];
     passengerName = v5->_passengerName;
     v5->_passengerName = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"legs"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"legs"];
     legs = v5->_legs;
     v5->_legs = v11;
   }
@@ -403,12 +403,12 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passengerName = self->_passengerName;
-  v5 = a3;
-  [v5 encodeObject:passengerName forKey:@"passengerName"];
-  [v5 encodeObject:self->_legs forKey:@"legs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passengerName forKey:@"passengerName"];
+  [coderCopy encodeObject:self->_legs forKey:@"legs"];
 }
 
 @end

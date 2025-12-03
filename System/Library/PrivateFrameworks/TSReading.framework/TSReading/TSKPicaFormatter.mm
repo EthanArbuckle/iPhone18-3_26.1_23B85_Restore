@@ -1,15 +1,15 @@
 @interface TSKPicaFormatter
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (TSKPicaFormatter)initWithPicaSeparator:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (BOOL)isEqual:(id)equal;
+- (TSKPicaFormatter)initWithPicaSeparator:(id)separator;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
 - (void)dealloc;
 @end
 
 @implementation TSKPicaFormatter
 
-- (TSKPicaFormatter)initWithPicaSeparator:(id)a3
+- (TSKPicaFormatter)initWithPicaSeparator:(id)separator
 {
   v7.receiver = self;
   v7.super_class = TSKPicaFormatter;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    [(TSKPicaFormatter *)v4 setPicaSeparator:a3];
+    [(TSKPicaFormatter *)v4 setPicaSeparator:separator];
   }
 
   return v5;
@@ -30,17 +30,17 @@
   [(TSKPicaFormatter *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithPicaSeparator:", -[TSKPicaFormatter picaSeparator](self, "picaSeparator")}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithPicaSeparator:", -[TSKPicaFormatter picaSeparator](self, "picaSeparator")}];
   [v4 setMinimum:{-[TSKPicaFormatter minimum](self, "minimum")}];
   [v4 setMaximum:{-[TSKPicaFormatter maximum](self, "maximum")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
@@ -50,16 +50,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = -[NSString isEqualToString:](-[TSKPicaFormatter picaSeparator](self, "picaSeparator"), "isEqualToString:", [a3 picaSeparator]);
+      v5 = -[NSString isEqualToString:](-[TSKPicaFormatter picaSeparator](self, "picaSeparator"), "isEqualToString:", [equal picaSeparator]);
       if (v5)
       {
-        v5 = -[NSNumber isEqualToNumber:](-[TSKPicaFormatter minimum](self, "minimum"), "isEqualToNumber:", [a3 minimum]);
+        v5 = -[NSNumber isEqualToNumber:](-[TSKPicaFormatter minimum](self, "minimum"), "isEqualToNumber:", [equal minimum]);
         if (v5)
         {
-          v6 = [(TSKPicaFormatter *)self maximum];
-          v7 = [a3 maximum];
+          maximum = [(TSKPicaFormatter *)self maximum];
+          maximum2 = [equal maximum];
 
-          LOBYTE(v5) = [(NSNumber *)v6 isEqualToNumber:v7];
+          LOBYTE(v5) = [(NSNumber *)maximum isEqualToNumber:maximum2];
         }
       }
     }
@@ -73,7 +73,7 @@
   return v5;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -81,7 +81,7 @@
     return 0;
   }
 
-  [a3 floatValue];
+  [value floatValue];
   v7 = floor(v6);
   v8 = ceil(v6);
   if (v6 < 0.0)
@@ -120,11 +120,11 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:v11, v9, -[TSKPicaFormatter picaSeparator](self, "picaSeparator"), v3];
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
-  if (a4 && [a4 length])
+  if (string && [string length])
   {
-    v9 = [MEMORY[0x277CCAC80] scannerWithString:a4];
+    v9 = [MEMORY[0x277CCAC80] scannerWithString:string];
     v10 = [v9 scanString:@"-" intoString:0];
     v21 = 0;
     if (([v9 scanFloat:&v21 + 4] & 1) == 0)
@@ -138,23 +138,23 @@
       LODWORD(v21) = 0;
     }
 
-    v11 = [v9 isAtEnd];
-    v12 = v11;
-    if (a5 && (v11 & 1) == 0)
+    isAtEnd = [v9 isAtEnd];
+    v12 = isAtEnd;
+    if (description && (isAtEnd & 1) == 0)
     {
-      *a5 = [TSKBundle() localizedStringForKey:@"Couldn\\U2019t convert to picas" value:&stru_287D36338 table:@"TSKit"];
+      *description = [TSKBundle() localizedStringForKey:@"Couldn\\U2019t convert to picas" value:&stru_287D36338 table:@"TSKit"];
     }
 
     v13 = !v12;
-    if (!a3)
+    if (!value)
     {
       v13 = 1;
     }
 
     if ((v13 & 1) == 0)
     {
-      v14 = [(TSKPicaFormatter *)self minimum];
-      v15 = [(TSKPicaFormatter *)self maximum];
+      minimum = [(TSKPicaFormatter *)self minimum];
+      maximum = [(TSKPicaFormatter *)self maximum];
       LODWORD(v21) = fabsf(*&v21);
       v16 = *&v21 / 12.0 + *(&v21 + 1);
       if ((v10 & (v16 > 0.0)) != 0)
@@ -164,15 +164,15 @@
 
       *&v16 = v16;
       v17 = [MEMORY[0x277CCABB0] numberWithFloat:v16];
-      *a3 = v17;
-      if (v14)
+      *value = v17;
+      if (minimum)
       {
-        v18 = [v17 compare:v14];
+        v18 = [v17 compare:minimum];
         v12 = v18 != -1;
-        if (a5 && v18 == -1)
+        if (description && v18 == -1)
         {
           v12 = 0;
-          *a5 = [TSKBundle() localizedStringForKey:@"Fell short of minimum" value:&stru_287D36338 table:@"TSKit"];
+          *description = [TSKBundle() localizedStringForKey:@"Fell short of minimum" value:&stru_287D36338 table:@"TSKit"];
         }
       }
 
@@ -181,18 +181,18 @@
         v12 = 1;
       }
 
-      if (v15)
+      if (maximum)
       {
-        v20 = [*a3 compare:v15];
+        v20 = [*value compare:maximum];
         if (v20 == 1)
         {
           v12 = 0;
         }
 
-        if (a5 && v20 == 1)
+        if (description && v20 == 1)
         {
           v12 = 0;
-          *a5 = [TSKBundle() localizedStringForKey:@"Maximum exceeded" value:&stru_287D36338 table:@"TSKit"];
+          *description = [TSKBundle() localizedStringForKey:@"Maximum exceeded" value:&stru_287D36338 table:@"TSKit"];
         }
       }
     }
@@ -200,9 +200,9 @@
 
   else
   {
-    if (a3)
+    if (value)
     {
-      *a3 = 0;
+      *value = 0;
     }
 
     return 1;

@@ -13,24 +13,24 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 autocorrection];
+    autocorrection = [self autocorrection];
 
-    if (v5)
+    if (autocorrection)
     {
-      v6 = [a1 autocorrection];
-      v7 = [v6 label];
-      v8 = [v4 smartPunctuationedStringForString:v7];
+      autocorrection2 = [self autocorrection];
+      label = [autocorrection2 label];
+      v8 = [v4 smartPunctuationedStringForString:label];
 
-      v9 = [a1 autocorrection];
-      [v9 setLabel:v8];
+      autocorrection3 = [self autocorrection];
+      [autocorrection3 setLabel:v8];
     }
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [a1 predictions];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    predictions = [self predictions];
+    v11 = [predictions countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -41,17 +41,17 @@
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(predictions);
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          v16 = [v15 label];
-          v17 = [v4 smartPunctuationedStringForString:v16];
+          label2 = [v15 label];
+          v17 = [v4 smartPunctuationedStringForString:label2];
 
           [v15 setLabel:v17];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [predictions countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);
@@ -61,10 +61,10 @@
 
 - (uint64_t)sourceForAutocorrection
 {
-  v1 = [a1 autocorrection];
-  v2 = [v1 isContinuousPathConversion];
+  autocorrection = [self autocorrection];
+  isContinuousPathConversion = [autocorrection isContinuousPathConversion];
 
-  if (v2)
+  if (isContinuousPathConversion)
   {
     return 6;
   }
@@ -82,8 +82,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v1 = [a1 predictions];
-  v2 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  predictions = [self predictions];
+  v2 = [predictions countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v2)
   {
     v3 = *v8;
@@ -93,12 +93,12 @@
       {
         if (*v8 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(predictions);
         }
 
-        v5 = [*(*(&v7 + 1) + 8 * i) textSuggestion];
+        textSuggestion = [*(*(&v7 + 1) + 8 * i) textSuggestion];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 action] == sel_captureTextFromCamera_)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [textSuggestion action] == sel_captureTextFromCamera_)
         {
 
           v2 = 1;
@@ -106,7 +106,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v2 = [predictions countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v2)
       {
         continue;
@@ -128,8 +128,8 @@ LABEL_12:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v1 = [a1 predictions];
-  v2 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  predictions = [self predictions];
+  v2 = [predictions countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v2)
   {
     v3 = *v8;
@@ -139,12 +139,12 @@ LABEL_12:
       {
         if (*v8 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(predictions);
         }
 
-        v5 = [*(*(&v7 + 1) + 8 * i) textSuggestion];
+        textSuggestion = [*(*(&v7 + 1) + 8 * i) textSuggestion];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 action] == sel_showWritingTools_)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [textSuggestion action] == sel_showWritingTools_)
         {
 
           v2 = 1;
@@ -152,7 +152,7 @@ LABEL_12:
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v2 = [predictions countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v2)
       {
         continue;

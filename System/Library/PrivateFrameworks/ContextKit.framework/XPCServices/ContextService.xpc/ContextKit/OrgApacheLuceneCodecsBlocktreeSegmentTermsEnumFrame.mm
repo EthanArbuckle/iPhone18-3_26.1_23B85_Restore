@@ -2,10 +2,10 @@
 + (void)initialize;
 - (BOOL)next;
 - (BOOL)nextNonLeaf;
-- (BOOL)prefixMatchesWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (BOOL)prefixMatchesWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)fillTerm;
-- (id)scanToTermLeafWithOrgApacheLuceneUtilBytesRef:(id)a3 withBoolean:(BOOL)a4;
-- (id)scanToTermNonLeafWithOrgApacheLuceneUtilBytesRef:(id)a3 withBoolean:(BOOL)a4;
+- (id)scanToTermLeafWithOrgApacheLuceneUtilBytesRef:(id)ref withBoolean:(BOOL)boolean;
+- (id)scanToTermNonLeafWithOrgApacheLuceneUtilBytesRef:(id)ref withBoolean:(BOOL)boolean;
 - (int)getTermBlockOrd;
 - (void)__javaClone;
 - (void)dealloc;
@@ -14,44 +14,44 @@
 - (void)loadNextFloorBlock;
 - (void)nextLeaf;
 - (void)rewind;
-- (void)scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (void)scanToSubBlockWithLong:(int64_t)a3;
-- (void)setFloorDataWithOrgApacheLuceneStoreByteArrayDataInput:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
+- (void)scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (void)scanToSubBlockWithLong:(int64_t)long;
+- (void)setFloorDataWithOrgApacheLuceneStoreByteArrayDataInput:(id)input withOrgApacheLuceneUtilBytesRef:(id)ref;
 @end
 
 @implementation OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame
 
-- (void)setFloorDataWithOrgApacheLuceneStoreByteArrayDataInput:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (void)setFloorDataWithOrgApacheLuceneStoreByteArrayDataInput:(id)input withOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a4)
+  if (!ref)
   {
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!input)
   {
     goto LABEL_8;
   }
 
-  v7 = *(a4 + 5);
-  v8 = [a3 getPosition];
+  v7 = *(ref + 5);
+  getPosition = [input getPosition];
   floorData = self->floorData_;
   if (!floorData)
   {
     goto LABEL_8;
   }
 
-  v16 = *(a4 + 4);
-  v17 = v16 - v8 + v7;
+  v16 = *(ref + 4);
+  v17 = v16 - getPosition + v7;
   if (v17 > floorData->super.size_)
   {
     v18 = OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v17, 1, v9, v10, v11, v12, v13, v14);
     v19 = [IOSByteArray newArrayWithLength:JavaLangMath_maxWithInt_withInt_(32, v18)];
     JreStrongAssignAndConsume(&self->floorData_, v19);
-    v16 = *(a4 + 4);
+    v16 = *(ref + 4);
   }
 
-  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a4 + 1), [a3 getPosition] + v16, self->floorData_, 0, v17);
+  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(ref + 1), [input getPosition] + v16, self->floorData_, 0, v17);
   floorDataReader = self->floorDataReader_;
   if (!floorDataReader)
   {
@@ -113,21 +113,21 @@ LABEL_8:
   }
 
   [v4 seekWithLong:self->fp_];
-  v5 = [*(objc_loadWeak(&self->ste_) + 2) readVInt];
-  self->entCount_ = v5 >> 1;
-  self->isLastInFloor_ = v5 & 1;
-  v6 = [*(objc_loadWeak(&self->ste_) + 2) readVInt];
+  readVInt = [*(objc_loadWeak(&self->ste_) + 2) readVInt];
+  self->entCount_ = readVInt >> 1;
+  self->isLastInFloor_ = readVInt & 1;
+  readVInt2 = [*(objc_loadWeak(&self->ste_) + 2) readVInt];
   suffixBytes = self->suffixBytes_;
-  self->isLeafBlock_ = v6 & 1;
+  self->isLeafBlock_ = readVInt2 & 1;
   if (!suffixBytes)
   {
     goto LABEL_19;
   }
 
-  v14 = v6 >> 1;
+  v14 = readVInt2 >> 1;
   if (suffixBytes->super.size_ < v14)
   {
-    v15 = OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v6 >> 1, 1, v7, v8, v9, v10, v11, v12);
+    v15 = OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(readVInt2 >> 1, 1, v7, v8, v9, v10, v11, v12);
     v16 = [IOSByteArray newArrayWithLength:JavaLangMath_maxWithInt_withInt_(128, v15)];
     JreStrongAssignAndConsume(&self->suffixBytes_, v16);
   }
@@ -140,17 +140,17 @@ LABEL_8:
   }
 
   [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader resetWithByteArray:self->suffixBytes_ withInt:0 withInt:v14];
-  v18 = [*(objc_loadWeak(&self->ste_) + 2) readVInt];
+  readVInt3 = [*(objc_loadWeak(&self->ste_) + 2) readVInt];
   statBytes = self->statBytes_;
   if (!statBytes)
   {
     goto LABEL_19;
   }
 
-  v26 = v18;
-  if (statBytes->super.size_ < v18)
+  v26 = readVInt3;
+  if (statBytes->super.size_ < readVInt3)
   {
-    v27 = OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v18, 1, v19, v20, v21, v22, v23, v24);
+    v27 = OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(readVInt3, 1, v19, v20, v21, v22, v23, v24);
     v28 = [IOSByteArray newArrayWithLength:JavaLangMath_maxWithInt_withInt_(64, v27)];
     JreStrongAssignAndConsume(&self->statBytes_, v28);
   }
@@ -173,17 +173,17 @@ LABEL_8:
   state->termBlockOrd_ = 0;
   self->nextEnt_ = 0;
   self->lastSubFP_ = -1;
-  v31 = [*(objc_loadWeak(&self->ste_) + 2) readVInt];
+  readVInt4 = [*(objc_loadWeak(&self->ste_) + 2) readVInt];
   bytes = self->bytes_;
   if (!bytes)
   {
     goto LABEL_19;
   }
 
-  v39 = v31;
-  if (bytes->super.size_ < v31)
+  v39 = readVInt4;
+  if (bytes->super.size_ < readVInt4)
   {
-    v40 = OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v31, 1, v32, v33, v34, v35, v36, v37);
+    v40 = OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(readVInt4, 1, v32, v33, v34, v35, v36, v37);
     v41 = [IOSByteArray newArrayWithLength:JavaLangMath_maxWithInt_withInt_(32, v40)];
     JreStrongAssignAndConsume(&self->bytes_, v41);
   }
@@ -277,11 +277,11 @@ LABEL_19:
       goto LABEL_21;
     }
 
-    v5 = [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader readVInt];
-    v6 = v5;
+    readVInt = [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader readVInt];
+    v6 = readVInt;
     if (!self->versionAutoPrefix_)
     {
-      self->suffix_ = v5 >> 1;
+      self->suffix_ = readVInt >> 1;
       self->startBytePos_ = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ getPosition];
       Weak = objc_loadWeak(&self->ste_);
       if (!Weak)
@@ -320,7 +320,7 @@ LABEL_21:
       JreThrowNullPointerException();
     }
 
-    self->suffix_ = v5 >> 2;
+    self->suffix_ = readVInt >> 2;
     self->startBytePos_ = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ getPosition];
     v7 = objc_loadWeak(&self->ste_);
     if (!v7)
@@ -363,28 +363,28 @@ LABEL_21:
   v15 = objc_loadWeak(p_ste);
 LABEL_17:
   v15[32] = 0;
-  v17 = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ readVLong];
-  self->subCode_ = v17;
-  self->lastSubFP_ = self->fp_ - v17;
+  readVLong = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ readVLong];
+  self->subCode_ = readVLong;
+  self->lastSubFP_ = self->fp_ - readVLong;
   return 1;
 }
 
-- (void)scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (void)scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   if (self->isFloor_)
   {
-    if (!a3)
+    if (!ref)
     {
       goto LABEL_16;
     }
 
     prefix = self->prefix_;
-    if (*(a3 + 5) <= prefix)
+    if (*(ref + 5) <= prefix)
     {
       return;
     }
 
-    v5 = *(a3 + 1);
+    v5 = *(ref + 1);
     if (!v5)
     {
 LABEL_16:
@@ -392,7 +392,7 @@ LABEL_16:
     }
 
     v6 = *(v5 + 8);
-    v7 = *(a3 + 4) + prefix;
+    v7 = *(ref + 4) + prefix;
     if (v7 < 0 || v7 >= v6)
     {
       IOSArray_throwOutOfBoundsWithMsg(v6, v7);
@@ -409,9 +409,9 @@ LABEL_16:
           goto LABEL_16;
         }
 
-        v10 = [(OrgApacheLuceneStoreByteArrayDataInput *)floorDataReader readVLong];
+        readVLong = [(OrgApacheLuceneStoreByteArrayDataInput *)floorDataReader readVLong];
         fpOrig = self->fpOrig_;
-        self->hasTerms_ = v10 & 1;
+        self->hasTerms_ = readVLong & 1;
         v12 = self->numFollowFloorBlocks_ - 1;
         self->isLastInFloor_ = self->numFollowFloorBlocks_ == 1;
         self->numFollowFloorBlocks_ = v12;
@@ -420,9 +420,9 @@ LABEL_16:
           break;
         }
 
-        v13 = [(OrgApacheLuceneStoreByteArrayDataInput *)self->floorDataReader_ readByte];
-        self->nextFloorLabel_ = v13;
-        if (v8 < v13)
+        readByte = [(OrgApacheLuceneStoreByteArrayDataInput *)self->floorDataReader_ readByte];
+        self->nextFloorLabel_ = readByte;
+        if (v8 < readByte)
         {
           goto LABEL_13;
         }
@@ -430,7 +430,7 @@ LABEL_16:
 
       self->nextFloorLabel_ = 256;
 LABEL_13:
-      v14 = fpOrig + (v10 >> 1);
+      v14 = fpOrig + (readVLong >> 1);
       if (v14 != self->fp_)
       {
         self->nextEnt_ = -1;
@@ -442,11 +442,11 @@ LABEL_13:
 
 - (void)decodeMetaData
 {
-  v3 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self getTermBlockOrd];
+  getTermBlockOrd = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self getTermBlockOrd];
   metaDataUpto = self->metaDataUpto_;
-  if (metaDataUpto < v3)
+  if (metaDataUpto < getTermBlockOrd)
   {
-    v5 = v3;
+    v5 = getTermBlockOrd;
     v6 = metaDataUpto == 0;
     while (1)
     {
@@ -456,14 +456,14 @@ LABEL_13:
         goto LABEL_25;
       }
 
-      v8 = [(OrgApacheLuceneStoreByteArrayDataInput *)statsReader readVInt];
+      readVInt = [(OrgApacheLuceneStoreByteArrayDataInput *)statsReader readVInt];
       state = self->state_;
       if (!state)
       {
         goto LABEL_25;
       }
 
-      state->docFreq_ = v8;
+      state->docFreq_ = readVInt;
       Weak = objc_loadWeak(&self->ste_);
       if (!Weak)
       {
@@ -482,13 +482,13 @@ LABEL_13:
         goto LABEL_25;
       }
 
-      v13 = [v12 getIndexOptions];
+      getIndexOptions = [v12 getIndexOptions];
       if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
       {
         sub_100015608();
       }
 
-      if (v13 != qword_100557378)
+      if (getIndexOptions != qword_100557378)
       {
         docFreq = self->state_->docFreq_;
         self->state_->totalTermFreq_ = [(OrgApacheLuceneStoreByteArrayDataInput *)self->statsReader_ readVLong]+ docFreq;
@@ -532,14 +532,14 @@ LABEL_20:
         break;
       }
 
-      v17 = [(OrgApacheLuceneStoreByteArrayDataInput *)bytesReader readVLong];
+      readVLong = [(OrgApacheLuceneStoreByteArrayDataInput *)bytesReader readVLong];
       longs = self->longs_;
       if (!longs)
       {
         break;
       }
 
-      v19 = v17;
+      v19 = readVLong;
       size = longs->super.size_;
       if (v15 >= size)
       {
@@ -567,23 +567,23 @@ LABEL_23:
   v24->termBlockOrd_ = metaDataUpto;
 }
 
-- (BOOL)prefixMatchesWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)prefixMatchesWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   if (self->prefix_ >= 1)
   {
-    if (a3)
+    if (ref)
     {
       v5 = 0;
       while (1)
       {
-        v6 = *(a3 + 1);
+        v6 = *(ref + 1);
         if (!v6)
         {
           break;
         }
 
         v7 = *(v6 + 8);
-        v8 = v5 + *(a3 + 4);
+        v8 = v5 + *(ref + 4);
         if (v8 < 0 || v8 >= v7)
         {
           IOSArray_throwOutOfBoundsWithMsg(v7, v8);
@@ -622,9 +622,9 @@ LABEL_23:
   return 1;
 }
 
-- (void)scanToSubBlockWithLong:(int64_t)a3
+- (void)scanToSubBlockWithLong:(int64_t)long
 {
-  if (self->lastSubFP_ != a3)
+  if (self->lastSubFP_ != long)
   {
     fp = self->fp_;
     ++self->nextEnt_;
@@ -635,15 +635,15 @@ LABEL_14:
       JreThrowNullPointerException();
     }
 
-    v7 = (fp - a3);
+    v7 = (fp - long);
     while (1)
     {
-      v8 = [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader readVInt];
-      v9 = v8;
+      readVInt = [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader readVInt];
+      v9 = readVInt;
       if (self->versionAutoPrefix_)
       {
-        v10 = v8 & 3;
-        [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ skipBytesWithLong:v8 >> 2];
+        v10 = readVInt & 3;
+        [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ skipBytesWithLong:readVInt >> 2];
         if (v10 != 1)
         {
           state = self->state_;
@@ -664,7 +664,7 @@ LABEL_14:
 
       else
       {
-        [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ skipBytesWithLong:v8 >> 1];
+        [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ skipBytesWithLong:readVInt >> 1];
         if ((v9 & 1) == 0)
         {
           v12 = self->state_;
@@ -680,7 +680,7 @@ LABEL_14:
 
       if (v7 == [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ readVLong])
       {
-        self->lastSubFP_ = a3;
+        self->lastSubFP_ = long;
         return;
       }
 
@@ -695,9 +695,9 @@ LABEL_13:
   }
 }
 
-- (id)scanToTermLeafWithOrgApacheLuceneUtilBytesRef:(id)a3 withBoolean:(BOOL)a4
+- (id)scanToTermLeafWithOrgApacheLuceneUtilBytesRef:(id)ref withBoolean:(BOOL)boolean
 {
-  v4 = a4;
+  booleanCopy = boolean;
   Weak = objc_loadWeak(&self->ste_);
   if (!Weak)
   {
@@ -710,7 +710,7 @@ LABEL_35:
   nextEnt = self->nextEnt_;
   if (nextEnt == self->entCount_)
   {
-    if (!v4)
+    if (!booleanCopy)
     {
       goto LABEL_5;
     }
@@ -718,7 +718,7 @@ LABEL_35:
     goto LABEL_4;
   }
 
-  v31 = v4;
+  v31 = booleanCopy;
   v11 = &OBJC_IVAR___IOSByteArray_buffer_;
 LABEL_8:
   self->nextEnt_ = nextEnt + 1;
@@ -729,22 +729,22 @@ LABEL_8:
   }
 
   v13 = v11;
-  v14 = [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader readVInt];
-  self->suffix_ = v14;
+  readVInt = [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader readVInt];
+  self->suffix_ = readVInt;
   prefix = self->prefix_;
   self->startBytePos_ = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ getPosition];
   [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ skipBytesWithLong:self->suffix_];
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_35;
   }
 
-  v16 = prefix + v14;
-  v17 = *(a3 + 4);
-  v18 = *(a3 + 5);
-  if (v18 >= prefix + v14)
+  v16 = prefix + readVInt;
+  v17 = *(ref + 4);
+  v18 = *(ref + 5);
+  if (v18 >= prefix + readVInt)
   {
-    v18 = prefix + v14;
+    v18 = prefix + readVInt;
   }
 
   v19 = v18 + v17;
@@ -755,7 +755,7 @@ LABEL_8:
   {
     if (v20 >= v19)
     {
-      v29 = v16 - *(a3 + 5);
+      v29 = v16 - *(ref + 5);
       v28 = v20;
       if (v29 < 0)
       {
@@ -777,7 +777,7 @@ LABEL_8:
         IOSArray_throwOutOfBoundsWithMsg(size, startBytePos);
       }
 
-      v24 = *(a3 + 1);
+      v24 = *(ref + 1);
       if (!v24)
       {
         goto LABEL_35;
@@ -852,33 +852,33 @@ LABEL_4:
 
 - (id)fillTerm
 {
-  v2 = *(a1 + 104);
-  v3 = *(a1 + 188);
-  Weak = objc_loadWeak((a1 + 176));
+  v2 = *(self + 104);
+  v3 = *(self + 188);
+  Weak = objc_loadWeak((self + 176));
   if (!Weak || (v5 = Weak[6]) == 0)
   {
     JreThrowNullPointerException();
   }
 
   [v5 setLengthWithInt:(v3 + v2)];
-  [*(objc_loadWeak((a1 + 176)) + 6) growWithInt:(v3 + v2)];
-  v6 = *(a1 + 56);
-  v7 = *(a1 + 184);
-  v8 = [*(objc_loadWeak((a1 + 176)) + 6) bytes];
-  v9 = *(a1 + 104);
-  v10 = *(a1 + 188);
+  [*(objc_loadWeak((self + 176)) + 6) growWithInt:(v3 + v2)];
+  v6 = *(self + 56);
+  v7 = *(self + 184);
+  bytes = [*(objc_loadWeak((self + 176)) + 6) bytes];
+  v9 = *(self + 104);
+  v10 = *(self + 188);
 
-  return JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v6, v7, v8, v9, v10);
+  return JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v6, v7, bytes, v9, v10);
 }
 
-- (id)scanToTermNonLeafWithOrgApacheLuceneUtilBytesRef:(id)a3 withBoolean:(BOOL)a4
+- (id)scanToTermNonLeafWithOrgApacheLuceneUtilBytesRef:(id)ref withBoolean:(BOOL)boolean
 {
-  v4 = a4;
+  booleanCopy = boolean;
   entCount = self->entCount_;
   nextEnt = self->nextEnt_;
   if (nextEnt == entCount)
   {
-    if (!a4)
+    if (!boolean)
     {
       goto LABEL_49;
     }
@@ -898,7 +898,7 @@ LABEL_4:
   if (nextEnt >= entCount)
   {
 LABEL_47:
-    if (v4)
+    if (booleanCopy)
     {
       [OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame fillTerm]_0(self);
     }
@@ -922,8 +922,8 @@ LABEL_49:
       goto LABEL_64;
     }
 
-    v12 = [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader readVInt];
-    v13 = v12;
+    readVInt = [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader readVInt];
+    v13 = readVInt;
     if (self->versionAutoPrefix_)
     {
       v14 = 2;
@@ -934,8 +934,8 @@ LABEL_49:
       v14 = 1;
     }
 
-    v15 = v12 >> v14;
-    self->suffix_ = v12 >> v14;
+    v15 = readVInt >> v14;
+    self->suffix_ = readVInt >> v14;
     prefix = self->prefix_;
     self->startBytePos_ = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ getPosition];
     [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ skipBytesWithLong:self->suffix_];
@@ -1017,18 +1017,18 @@ LABEL_15:
 
   v22[32] = 0;
 LABEL_24:
-  v23 = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ readVLong];
-  self->subCode_ = v23;
-  self->lastSubFP_ = self->fp_ - v23;
+  readVLong = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ readVLong];
+  self->subCode_ = readVLong;
+  self->lastSubFP_ = self->fp_ - readVLong;
 LABEL_28:
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_64;
   }
 
   v26 = v15 + prefix;
-  v27 = *(a3 + 4);
-  v28 = *(a3 + 5);
+  v27 = *(ref + 4);
+  v28 = *(ref + 5);
   if (v28 >= v26)
   {
     v28 = v15 + prefix;
@@ -1041,7 +1041,7 @@ LABEL_28:
   {
     if (v30 >= v29)
     {
-      v38 = v26 - *(a3 + 5);
+      v38 = v26 - *(ref + 5);
       v37 = v30;
       if (v38 < 0)
       {
@@ -1063,7 +1063,7 @@ LABEL_28:
         IOSArray_throwOutOfBoundsWithMsg(size, startBytePos);
       }
 
-      v34 = *(a3 + 1);
+      v34 = *(ref + 1);
       if (!v34)
       {
         goto LABEL_64;
@@ -1088,7 +1088,7 @@ LABEL_28:
     if (v38)
     {
       [OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame fillTerm]_0(self);
-      if (v4)
+      if (booleanCopy)
       {
         goto LABEL_60;
       }
@@ -1198,7 +1198,7 @@ LABEL_61:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100553E70, [IOSByteArray newArrayWithLength:0]);
     atomic_store(1u, &OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame__initialized);

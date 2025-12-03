@@ -1,9 +1,9 @@
 @interface SiriDirectActionSource
-- (SiriDirectActionSource)initWithDelegate:(id)a3;
+- (SiriDirectActionSource)initWithDelegate:(id)delegate;
 - (SiriDirectActionSourceDelegate)delegate;
-- (void)activateWithContext:(id)a3;
-- (void)activateWithContext:(id)a3 completion:(id)a4;
-- (void)canActivateChangedTo:(id)a3;
+- (void)activateWithContext:(id)context;
+- (void)activateWithContext:(id)context completion:(id)completion;
+- (void)canActivateChangedTo:(id)to;
 - (void)configureConnection;
 @end
 
@@ -13,10 +13,10 @@
 {
   v3 = MEMORY[0x1E698F498];
   v4 = +[SASBoardServicesConfiguration configuration];
-  v5 = [v4 machServiceIdentifier];
+  machServiceIdentifier = [v4 machServiceIdentifier];
   v6 = +[SASBoardServicesConfiguration configuration];
   v7 = [v6 identifierForService:1];
-  v8 = [v3 endpointForMachName:v5 service:v7 instance:0];
+  v8 = [v3 endpointForMachName:machServiceIdentifier service:v7 instance:0];
 
   v9 = [MEMORY[0x1E698F490] connectionWithEndpoint:v8];
   connection = self->super._connection;
@@ -106,56 +106,56 @@ void __45__SiriDirectActionSource_configureConnection__block_invoke_27(uint64_t 
   return WeakRetained;
 }
 
-- (SiriDirectActionSource)initWithDelegate:(id)a3
+- (SiriDirectActionSource)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = SiriDirectActionSource;
   v5 = [(SiriActivationSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SiriDirectActionSource *)v5 setDelegate:v4];
+    [(SiriDirectActionSource *)v5 setDelegate:delegateCopy];
     [(SiriDirectActionSource *)v6 configureConnection];
   }
 
   return v6;
 }
 
-- (void)activateWithContext:(id)a3
+- (void)activateWithContext:(id)context
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SiriDirectActionSource activateWithContext:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = contextCopy;
     _os_log_impl(&dword_1C8137000, v5, OS_LOG_TYPE_DEFAULT, "%s #activation %@", &v8, 0x16u);
   }
 
   os_unfair_lock_lock(&self->super._lock);
-  v6 = [(BSServiceConnection *)self->super._connection remoteTarget];
-  [v6 activationRequestFromDirectActionEventWithContext:v4];
+  remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
+  [remoteTarget activationRequestFromDirectActionEventWithContext:contextCopy];
 
   os_unfair_lock_unlock(&self->super._lock);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activateWithContext:(id)a3 completion:(id)a4
+- (void)activateWithContext:(id)context completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v16 = "[SiriDirectActionSource activateWithContext:completion:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = contextCopy;
     _os_log_impl(&dword_1C8137000, v8, OS_LOG_TYPE_DEFAULT, "%s #activation %@", buf, 0x16u);
   }
 
@@ -163,12 +163,12 @@ void __45__SiriDirectActionSource_configureConnection__block_invoke_27(uint64_t 
   aBlock[1] = 3221225472;
   aBlock[2] = __57__SiriDirectActionSource_activateWithContext_completion___block_invoke;
   aBlock[3] = &unk_1E82F47C0;
-  v14 = v7;
-  v9 = v7;
+  v14 = completionCopy;
+  v9 = completionCopy;
   v10 = _Block_copy(aBlock);
   os_unfair_lock_lock(&self->super._lock);
-  v11 = [(BSServiceConnection *)self->super._connection remoteTarget];
-  [v11 activationRequestFromDirectActionEventWithContext:v6 completion:v10];
+  remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
+  [remoteTarget activationRequestFromDirectActionEventWithContext:contextCopy completion:v10];
 
   os_unfair_lock_unlock(&self->super._lock);
   v12 = *MEMORY[0x1E69E9840];
@@ -220,22 +220,22 @@ void __45__SiriDirectActionSource_configureConnection__block_invoke_25(uint64_t 
   [v2 activate];
 }
 
-- (void)canActivateChangedTo:(id)a3
+- (void)canActivateChangedTo:(id)to
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SiriDirectActionSource canActivateChangedTo:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = toCopy;
     _os_log_impl(&dword_1C8137000, v5, OS_LOG_TYPE_DEFAULT, "%s #activation canActivateChangedTo: %@", &v8, 0x16u);
   }
 
-  v6 = [(SiriDirectActionSource *)self delegate];
-  [v6 canActivateChangedTo:{objc_msgSend(v4, "BOOLValue")}];
+  delegate = [(SiriDirectActionSource *)self delegate];
+  [delegate canActivateChangedTo:{objc_msgSend(toCopy, "BOOLValue")}];
 
   v7 = *MEMORY[0x1E69E9840];
 }

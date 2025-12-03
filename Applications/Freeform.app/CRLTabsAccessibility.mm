@@ -1,23 +1,23 @@
 @interface CRLTabsAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (unint64_t)crlaxCount;
 @end
 
 @implementation CRLTabsAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (unint64_t)crlaxCount
 {
-  v2 = [(CRLTabsAccessibility *)self crlaxTarget];
-  v3 = [v2 count];
+  crlaxTarget = [(CRLTabsAccessibility *)self crlaxTarget];
+  v3 = [crlaxTarget count];
 
   return v3;
 }

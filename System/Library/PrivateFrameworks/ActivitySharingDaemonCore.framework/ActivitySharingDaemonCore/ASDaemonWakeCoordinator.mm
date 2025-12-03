@@ -1,20 +1,20 @@
 @interface ASDaemonWakeCoordinator
-- (ASDaemonWakeCoordinator)initWithProfile:(id)a3;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateTodayActivitySummary:(id)a4 changedFields:(unint64_t)a5;
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateYesterdayActivitySummary:(id)a4 changedFields:(unint64_t)a5;
+- (ASDaemonWakeCoordinator)initWithProfile:(id)profile;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)currentActivitySummaryHelper:(id)helper didUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields;
+- (void)currentActivitySummaryHelper:(id)helper didUpdateYesterdayActivitySummary:(id)summary changedFields:(unint64_t)fields;
 - (void)dealloc;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 @end
 
 @implementation ASDaemonWakeCoordinator
 
-- (ASDaemonWakeCoordinator)initWithProfile:(id)a3
+- (ASDaemonWakeCoordinator)initWithProfile:(id)profile
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v33.receiver = self;
   v33.super_class = ASDaemonWakeCoordinator;
   v5 = [(ASDaemonWakeCoordinator *)&v33 init];
@@ -62,37 +62,37 @@
     _os_log_impl(&dword_23E5E3000, v15, OS_LOG_TYPE_DEFAULT, "ASDaemonWakeCoordinator couldn't create APS push connection", buf, 2u);
   }
 
-  v20 = [v4 daemon];
-  v21 = [v20 behavior];
-  if ([v21 isAppleWatch])
+  daemon = [profileCopy daemon];
+  behavior = [daemon behavior];
+  if ([behavior isAppleWatch])
   {
   }
 
   else
   {
-    v22 = [v4 daemon];
-    v23 = [v22 behavior];
-    v24 = [v23 isStandalonePhoneFitnessMode];
+    daemon2 = [profileCopy daemon];
+    behavior2 = [daemon2 behavior];
+    isStandalonePhoneFitnessMode = [behavior2 isStandalonePhoneFitnessMode];
 
-    if (!v24)
+    if (!isStandalonePhoneFitnessMode)
     {
       goto LABEL_12;
     }
   }
 
-  v25 = [v4 currentActivitySummaryHelper];
-  [v25 addObserver:v5];
+  currentActivitySummaryHelper = [profileCopy currentActivitySummaryHelper];
+  [currentActivitySummaryHelper addObserver:v5];
 
 LABEL_12:
-  v26 = [v4 daemon];
-  v27 = [v26 behavior];
-  v28 = [v27 isAppleWatch];
+  daemon3 = [profileCopy daemon];
+  behavior3 = [daemon3 behavior];
+  isAppleWatch = [behavior3 isAppleWatch];
 
-  if (v28)
+  if (isAppleWatch)
   {
-    v29 = [v4 dataManager];
-    v30 = [MEMORY[0x277CCD720] workoutType];
-    [v29 addObserver:v5 forDataType:v30];
+    dataManager = [profileCopy dataManager];
+    workoutType = [MEMORY[0x277CCD720] workoutType];
+    [dataManager addObserver:v5 forDataType:workoutType];
   }
 
 LABEL_14:
@@ -108,27 +108,27 @@ LABEL_14:
   apsConnection = self->_apsConnection;
   self->_apsConnection = 0;
 
-  v4 = [(HDProfile *)self->_profile daemon];
-  v5 = [v4 behavior];
-  if ([v5 isAppleWatch])
+  daemon = [(HDProfile *)self->_profile daemon];
+  behavior = [daemon behavior];
+  if ([behavior isAppleWatch])
   {
 
 LABEL_4:
-    v9 = [(HDProfile *)self->_profile currentActivitySummaryHelper];
-    [v9 removeObserver:self];
+    currentActivitySummaryHelper = [(HDProfile *)self->_profile currentActivitySummaryHelper];
+    [currentActivitySummaryHelper removeObserver:self];
 
-    v10 = [(HDProfile *)self->_profile dataManager];
-    v11 = [MEMORY[0x277CCD720] workoutType];
-    [v10 removeObserver:self forDataType:v11];
+    dataManager = [(HDProfile *)self->_profile dataManager];
+    workoutType = [MEMORY[0x277CCD720] workoutType];
+    [dataManager removeObserver:self forDataType:workoutType];
 
     goto LABEL_5;
   }
 
-  v6 = [(HDProfile *)self->_profile daemon];
-  v7 = [v6 behavior];
-  v8 = [v7 isStandalonePhoneFitnessMode];
+  daemon2 = [(HDProfile *)self->_profile daemon];
+  behavior2 = [daemon2 behavior];
+  isStandalonePhoneFitnessMode = [behavior2 isStandalonePhoneFitnessMode];
 
-  if (v8)
+  if (isStandalonePhoneFitnessMode)
   {
     goto LABEL_4;
   }
@@ -139,64 +139,64 @@ LABEL_5:
   [(ASDaemonWakeCoordinator *)&v12 dealloc];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   ASLoggingInitialize();
   v7 = *MEMORY[0x277CE8FE8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FE8], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = tokenCopy;
     v11 = 2048;
-    v12 = v5;
+    v12 = connectionCopy;
     _os_log_impl(&dword_23E5E3000, v7, OS_LOG_TYPE_DEFAULT, "ASDaemonWakeCoordinator received public token %@ on connection %p", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   ASLoggingInitialize();
   v13 = *MEMORY[0x277CE8FE8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FE8], OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138413058;
-    v16 = v10;
+    v16 = tokenCopy;
     v17 = 2114;
-    v18 = v11;
+    v18 = topicCopy;
     v19 = 2112;
-    v20 = v12;
+    v20 = identifierCopy;
     v21 = 2048;
-    v22 = v9;
+    v22 = connectionCopy;
     _os_log_impl(&dword_23E5E3000, v13, OS_LOG_TYPE_DEFAULT, "ASDaemonWakeCoordinator received per-topic push token %@ for topic %{public}@ identifier %@ on connection %p", &v15, 0x2Au);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 userInfo];
-  v7 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:v6];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
+  v7 = [MEMORY[0x277CBC4C0] notificationFromRemoteNotificationDictionary:userInfo];
   ASLoggingInitialize();
   v8 = *MEMORY[0x277CE8FE8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FE8], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v5 topic];
+    topic = [messageCopy topic];
     v12 = 138412546;
-    v13 = v10;
+    v13 = topic;
     v14 = 2112;
     v15 = v7;
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "ASDaemonWakeCoordinator APS push received: %@ %@", &v12, 0x16u);
@@ -207,9 +207,9 @@ LABEL_5:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateTodayActivitySummary:(id)a4 changedFields:(unint64_t)a5
+- (void)currentActivitySummaryHelper:(id)helper didUpdateTodayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
-  v6 = a4;
+  summaryCopy = summary;
   ASLoggingInitialize();
   v7 = MEMORY[0x277CE8FE8];
   v8 = *MEMORY[0x277CE8FE8];
@@ -219,11 +219,11 @@ LABEL_5:
     _os_log_impl(&dword_23E5E3000, v8, OS_LOG_TYPE_DEFAULT, "ASDaemonWakeCoordinator today summary changed", buf, 2u);
   }
 
-  v9 = [(HDProfile *)self->_profile daemon];
-  v10 = [v9 behavior];
-  if ([v10 isAppleWatch] && (lastTodayActivitySummary = self->_lastTodayActivitySummary) != 0 && !ASAllGoalsMetForSummary(lastTodayActivitySummary))
+  daemon = [(HDProfile *)self->_profile daemon];
+  behavior = [daemon behavior];
+  if ([behavior isAppleWatch] && (lastTodayActivitySummary = self->_lastTodayActivitySummary) != 0 && !ASAllGoalsMetForSummary(lastTodayActivitySummary))
   {
-    v13 = ASAllGoalsMetForSummary(v6);
+    v13 = ASAllGoalsMetForSummary(summaryCopy);
 
     if (v13)
     {
@@ -244,12 +244,12 @@ LABEL_5:
   }
 
   v12 = self->_lastTodayActivitySummary;
-  self->_lastTodayActivitySummary = v6;
+  self->_lastTodayActivitySummary = summaryCopy;
 }
 
-- (void)currentActivitySummaryHelper:(id)a3 didUpdateYesterdayActivitySummary:(id)a4 changedFields:(unint64_t)a5
+- (void)currentActivitySummaryHelper:(id)helper didUpdateYesterdayActivitySummary:(id)summary changedFields:(unint64_t)fields
 {
-  v6 = a4;
+  summaryCopy = summary;
   ASLoggingInitialize();
   v7 = MEMORY[0x277CE8FE8];
   v8 = *MEMORY[0x277CE8FE8];
@@ -259,11 +259,11 @@ LABEL_5:
     _os_log_impl(&dword_23E5E3000, v8, OS_LOG_TYPE_DEFAULT, "ASDaemonWakeCoordinator yesterday summary changed", buf, 2u);
   }
 
-  v9 = [(HDProfile *)self->_profile daemon];
-  v10 = [v9 behavior];
-  if ([v10 isAppleWatch] && (lastYesterdayActivitySummary = self->_lastYesterdayActivitySummary) != 0 && !ASAllGoalsMetForSummary(lastYesterdayActivitySummary))
+  daemon = [(HDProfile *)self->_profile daemon];
+  behavior = [daemon behavior];
+  if ([behavior isAppleWatch] && (lastYesterdayActivitySummary = self->_lastYesterdayActivitySummary) != 0 && !ASAllGoalsMetForSummary(lastYesterdayActivitySummary))
   {
-    v13 = ASAllGoalsMetForSummary(v6);
+    v13 = ASAllGoalsMetForSummary(summaryCopy);
 
     if (v13)
     {
@@ -284,14 +284,14 @@ LABEL_5:
   }
 
   v12 = self->_lastYesterdayActivitySummary;
-  self->_lastYesterdayActivitySummary = v6;
+  self->_lastYesterdayActivitySummary = summaryCopy;
 
   notify_post([*MEMORY[0x277CE9188] UTF8String]);
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  if ([a3 hk_containsObjectPassingTest:{&__block_literal_global_6, a4}])
+  if ([added hk_containsObjectPassingTest:{&__block_literal_global_6, anchor}])
   {
     ASLoggingInitialize();
     v5 = *MEMORY[0x277CE8FE8];

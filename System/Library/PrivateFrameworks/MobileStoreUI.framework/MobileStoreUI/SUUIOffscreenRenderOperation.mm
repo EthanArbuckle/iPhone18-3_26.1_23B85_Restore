@@ -4,7 +4,7 @@
 - (UIImage)outputImage;
 - (id)createLayerBlock;
 - (void)main;
-- (void)setCreateLayerBlock:(id)a3;
+- (void)setCreateLayerBlock:(id)block;
 @end
 
 @implementation SUUIOffscreenRenderOperation
@@ -26,9 +26,9 @@
 
 - (void)main
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getkIOSurfaceWidth(void)"];
-  [v0 handleFailureInFunction:v1 file:@"SUUIOffscreenRenderOperation.m" lineNumber:31 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"SUUIOffscreenRenderOperation.m" lineNumber:31 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
@@ -87,17 +87,17 @@ uint64_t __48__SUUIOffscreenRenderOperation_createLayerBlock__block_invoke(uint6
   return v3;
 }
 
-- (void)setCreateLayerBlock:(id)a3
+- (void)setCreateLayerBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SUUIOffscreenRenderOperation_setCreateLayerBlock___block_invoke;
   v7[3] = &unk_2798F6030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 

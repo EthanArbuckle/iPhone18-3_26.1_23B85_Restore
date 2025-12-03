@@ -1,30 +1,30 @@
 @interface PalettePresentationInteraction
-- (void)didMoveToView:(id)a3;
-- (void)setView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)setView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation PalettePresentationInteraction
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC9SeymourUI30PalettePresentationInteraction_view);
-  *(&self->super.isa + OBJC_IVAR____TtC9SeymourUI30PalettePresentationInteraction_view) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC9SeymourUI30PalettePresentationInteraction_view) = view;
+  viewCopy = view;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_20B607214(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_20B607214(view);
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_20B607390(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_20B607390(view);
 }
 
 @end

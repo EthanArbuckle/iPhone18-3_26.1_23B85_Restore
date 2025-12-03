@@ -1,12 +1,12 @@
 @interface AppPromotionOfferCollectionViewCell
-- (_TtC8AppStore35AppPromotionOfferCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore35AppPromotionOfferCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AppPromotionOfferCollectionViewCell
 
-- (_TtC8AppStore35AppPromotionOfferCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore35AppPromotionOfferCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore35AppPromotionOfferCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -42,7 +42,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B49A8();
 }
 

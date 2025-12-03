@@ -1,5 +1,5 @@
 @interface CDPPaneHeaderView
-- (CDPPaneHeaderView)initWithFrame:(CGRect)a3;
+- (CDPPaneHeaderView)initWithFrame:(CGRect)frame;
 - (double)innerHeaderMaxY;
 - (void)layoutSubviews;
 - (void)makeAllTheTextFits;
@@ -7,11 +7,11 @@
 
 @implementation CDPPaneHeaderView
 
-- (CDPPaneHeaderView)initWithFrame:(CGRect)a3
+- (CDPPaneHeaderView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CDPPaneHeaderView;
-  v3 = [(CDPPaneHeaderView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CDPPaneHeaderView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v12 = 0;
@@ -48,29 +48,29 @@
   v20.receiver = self;
   v20.super_class = CDPPaneHeaderView;
   [(CDPPaneHeaderView *)&v20 layoutSubviews];
-  v3 = [MEMORY[0x277CFD560] isNaturalUIEnabled];
+  isNaturalUIEnabled = [MEMORY[0x277CFD560] isNaturalUIEnabled];
   header = self->_header;
-  if (v3)
+  if (isNaturalUIEnabled)
   {
     [(BFFPaneHeaderView *)self->_header setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(BFFPaneHeaderView *)self->_header topAnchor];
-    v6 = [(CDPPaneHeaderView *)self topAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6];
+    topAnchor = [(BFFPaneHeaderView *)self->_header topAnchor];
+    topAnchor2 = [(CDPPaneHeaderView *)self topAnchor];
+    v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v7 setActive:1];
 
-    v8 = [(BFFPaneHeaderView *)self->_header leadingAnchor];
-    v9 = [(CDPPaneHeaderView *)self leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:18.0];
+    leadingAnchor = [(BFFPaneHeaderView *)self->_header leadingAnchor];
+    leadingAnchor2 = [(CDPPaneHeaderView *)self leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:18.0];
     [v10 setActive:1];
 
-    v11 = [(BFFPaneHeaderView *)self->_header trailingAnchor];
-    v12 = [(CDPPaneHeaderView *)self trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:-18.0];
+    trailingAnchor = [(BFFPaneHeaderView *)self->_header trailingAnchor];
+    trailingAnchor2 = [(CDPPaneHeaderView *)self trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-18.0];
     [v13 setActive:1];
 
-    v14 = [(BFFPaneHeaderView *)self->_header bottomAnchor];
-    v15 = [(CDPPaneHeaderView *)self bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor = [(BFFPaneHeaderView *)self->_header bottomAnchor];
+    bottomAnchor2 = [(CDPPaneHeaderView *)self bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v16 setActive:1];
 
     [(BFFPaneHeaderView *)self->_header sizeToFit];
@@ -90,15 +90,15 @@
 
 - (double)innerHeaderMaxY
 {
-  v3 = [(BFFPaneHeaderView *)self->_header subLabel];
-  v4 = [v3 text];
+  subLabel = [(BFFPaneHeaderView *)self->_header subLabel];
+  text = [subLabel text];
 
-  v5 = [(CDPPaneHeaderView *)self superview];
+  superview = [(CDPPaneHeaderView *)self superview];
   header = self->_header;
-  if (v4)
+  if (text)
   {
-    v7 = [(BFFPaneHeaderView *)header subLabel];
-    [v7 bounds];
+    subLabel2 = [(BFFPaneHeaderView *)header subLabel];
+    [subLabel2 bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -108,8 +108,8 @@
 
   else
   {
-    v7 = [(BFFPaneHeaderView *)header detailTextLabel];
-    [v7 bounds];
+    subLabel2 = [(BFFPaneHeaderView *)header detailTextLabel];
+    [subLabel2 bounds];
     v9 = v16;
     v11 = v17;
     v13 = v18;
@@ -117,7 +117,7 @@
     [(BFFPaneHeaderView *)self->_header detailTextLabel];
   }
   v20 = ;
-  [v5 convertRect:v20 fromView:{v9, v11, v13, v15}];
+  [superview convertRect:v20 fromView:{v9, v11, v13, v15}];
   MaxY = CGRectGetMaxY(v23);
 
   return MaxY;
@@ -125,13 +125,13 @@
 
 - (void)makeAllTheTextFits
 {
-  v3 = [(CDPPaneHeaderView *)self textLabel];
-  [v3 setNumberOfLines:2];
+  textLabel = [(CDPPaneHeaderView *)self textLabel];
+  [textLabel setNumberOfLines:2];
 
-  v4 = [(CDPPaneHeaderView *)self textLabel];
-  [v4 setAdjustsFontSizeToFitWidth:1];
+  textLabel2 = [(CDPPaneHeaderView *)self textLabel];
+  [textLabel2 setAdjustsFontSizeToFitWidth:1];
 
-  v5 = [(CDPPaneHeaderView *)self textLabel];
+  textLabel3 = [(CDPPaneHeaderView *)self textLabel];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2050000000;
@@ -150,44 +150,44 @@
 
   v7 = v6;
   _Block_object_dispose(&v31, 8);
-  v8 = [v6 sharedStyle];
-  v9 = [v8 headerTitleFont];
-  [v5 setFont:v9];
+  sharedStyle = [v6 sharedStyle];
+  headerTitleFont = [sharedStyle headerTitleFont];
+  [textLabel3 setFont:headerTitleFont];
 
-  v10 = [(CDPPaneHeaderView *)self detailTextLabel];
+  detailTextLabel = [(CDPPaneHeaderView *)self detailTextLabel];
   v11 = MEMORY[0x277D74300];
   v12 = *MEMORY[0x277D76918];
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  v14 = [v13 traitCollection];
-  v15 = [v11 preferredFontForTextStyle:v12 compatibleWithTraitCollection:v14];
-  [v10 setFont:v15];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v15 = [v11 preferredFontForTextStyle:v12 compatibleWithTraitCollection:traitCollection];
+  [detailTextLabel setFont:v15];
 
   if ([MEMORY[0x277CFD560] isNaturalUIEnabled])
   {
-    v16 = [(CDPPaneHeaderView *)self textLabel];
-    [v16 setTextAlignment:4];
+    textLabel4 = [(CDPPaneHeaderView *)self textLabel];
+    [textLabel4 setTextAlignment:4];
 
     v17 = MEMORY[0x277D74310];
     v18 = *MEMORY[0x277D76A20];
-    v19 = [(CDPPaneHeaderView *)self traitCollection];
-    v20 = [v17 preferredFontDescriptorWithTextStyle:v18 compatibleWithTraitCollection:v19];
+    traitCollection2 = [(CDPPaneHeaderView *)self traitCollection];
+    v20 = [v17 preferredFontDescriptorWithTextStyle:v18 compatibleWithTraitCollection:traitCollection2];
 
     v21 = MEMORY[0x277D74300];
     v22 = [v20 fontDescriptorWithSymbolicTraits:2];
     v23 = [v21 fontWithDescriptor:v22 size:0.0];
-    v24 = [(CDPPaneHeaderView *)self textLabel];
-    [v24 setFont:v23];
+    textLabel5 = [(CDPPaneHeaderView *)self textLabel];
+    [textLabel5 setFont:v23];
 
-    v25 = [(CDPPaneHeaderView *)self detailTextLabel];
-    [v25 setTextAlignment:4];
+    detailTextLabel2 = [(CDPPaneHeaderView *)self detailTextLabel];
+    [detailTextLabel2 setTextAlignment:4];
 
     v26 = [MEMORY[0x277D74300] fontWithDescriptor:v20 size:0.0];
-    v27 = [(CDPPaneHeaderView *)self detailTextLabel];
-    [v27 setFont:v26];
+    detailTextLabel3 = [(CDPPaneHeaderView *)self detailTextLabel];
+    [detailTextLabel3 setFont:v26];
 
-    v28 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v29 = [(CDPPaneHeaderView *)self detailTextLabel];
-    [v29 setTextColor:v28];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    detailTextLabel4 = [(CDPPaneHeaderView *)self detailTextLabel];
+    [detailTextLabel4 setTextColor:secondaryLabelColor];
   }
 }
 

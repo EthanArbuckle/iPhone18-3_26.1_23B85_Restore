@@ -1,18 +1,18 @@
 @interface CPLDuetTicketProvider
 + (CPLDuetTicketProvider)sharedDuetTicketProvider;
-- (BOOL)_BOOLValueForDuetKeyPath:(id)a3;
+- (BOOL)_BOOLValueForDuetKeyPath:(id)path;
 - (BOOL)hasSignificantWork;
 - (BOOL)isBlocked;
-- (CPLDuetTicketProvider)initWithClientBundlerIdentifier:(id)a3;
+- (CPLDuetTicketProvider)initWithClientBundlerIdentifier:(id)identifier;
 - (id)_unBlockedReasonStatus;
 - (id)duetStatuses;
 - (unint64_t)_unBlockedReason;
 - (void)_setupCallbacks;
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3;
-- (void)overrideHasSignificantWork:(BOOL)a3;
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler;
+- (void)overrideHasSignificantWork:(BOOL)work;
 - (void)popSignificantWorkIsPending;
 - (void)pushSignificantWorkIsPending;
-- (void)setShouldOverride:(BOOL)a3 forSystemBudgets:(unint64_t)a4;
+- (void)setShouldOverride:(BOOL)override forSystemBudgets:(unint64_t)budgets;
 @end
 
 @implementation CPLDuetTicketProvider
@@ -29,9 +29,9 @@
   return v3;
 }
 
-- (CPLDuetTicketProvider)initWithClientBundlerIdentifier:(id)a3
+- (CPLDuetTicketProvider)initWithClientBundlerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = CPLDuetTicketProvider;
   v5 = [(CPLDuetTicketProvider *)&v15 init];
@@ -41,7 +41,7 @@
     duetQueue = v5->_duetQueue;
     v5->_duetQueue = v6;
 
-    v8 = [v4 copy];
+    v8 = [identifierCopy copy];
     clientBundlerIdentifier = v5->_clientBundlerIdentifier;
     v5->_clientBundlerIdentifier = v8;
 
@@ -53,7 +53,7 @@
     duetOverrideContext = v5->_duetOverrideContext;
     v5->_duetOverrideContext = v12;
 
-    if ([v4 isEqualToString:@"com.apple.mobileslideshow"])
+    if ([identifierCopy isEqualToString:@"com.apple.mobileslideshow"])
     {
       [(CPLDuetTicketProvider *)v5 _setupCallbacks];
     }
@@ -100,16 +100,16 @@
   dispatch_async(v4, v5);
 }
 
-- (void)getSystemBudgetsWithCompletionHandler:(id)a3
+- (void)getSystemBudgetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   duetQueue = self->_duetQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10006D948;
   v10[3] = &unk_1002723C8;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -117,35 +117,35 @@
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = duetQueue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (BOOL)_BOOLValueForDuetKeyPath:(id)a3
+- (BOOL)_BOOLValueForDuetKeyPath:(id)path
 {
-  v3 = [(_CDClientContext *)self->_duetOverrideContext objectForKeyedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(_CDClientContext *)self->_duetOverrideContext objectForKeyedSubscript:path];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)_unBlockedReason
 {
   duetOverrideContext = self->_duetOverrideContext;
-  v3 = [(CPLDuetTicketProvider *)self _isUnBlockedKeyPath];
-  v4 = [(_CDClientContext *)duetOverrideContext objectForKeyedSubscript:v3];
-  v5 = [v4 integerValue];
+  _isUnBlockedKeyPath = [(CPLDuetTicketProvider *)self _isUnBlockedKeyPath];
+  v4 = [(_CDClientContext *)duetOverrideContext objectForKeyedSubscript:_isUnBlockedKeyPath];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (id)_unBlockedReasonStatus
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(CPLDuetTicketProvider *)self _unBlockedReason];
-  v5 = v4;
-  if (v4)
+  _unBlockedReason = [(CPLDuetTicketProvider *)self _unBlockedReason];
+  v5 = _unBlockedReason;
+  if (_unBlockedReason)
   {
     [v3 addObject:@"DAS"];
     if ((v5 & 2) == 0)
@@ -160,7 +160,7 @@ LABEL_3:
     }
   }
 
-  else if ((v4 & 2) == 0)
+  else if ((_unBlockedReason & 2) == 0)
   {
     goto LABEL_3;
   }
@@ -207,46 +207,46 @@ LABEL_6:
   if ([(NSString *)self->_clientBundlerIdentifier isEqualToString:@"com.apple.mobileslideshow"])
   {
     v5 = [NSString alloc];
-    v6 = [(CPLDuetTicketProvider *)self _significantWorkKeyPath];
-    v7 = [(CPLDuetTicketProvider *)self hasSignificantWork];
+    _significantWorkKeyPath = [(CPLDuetTicketProvider *)self _significantWorkKeyPath];
+    hasSignificantWork = [(CPLDuetTicketProvider *)self hasSignificantWork];
     v8 = @"NO";
     v9 = @"YES";
-    if (!v7)
+    if (!hasSignificantWork)
     {
       v9 = @"NO";
     }
 
-    v10 = [v5 initWithFormat:@"%@ = %@", v6, v9];
+    v10 = [v5 initWithFormat:@"%@ = %@", _significantWorkKeyPath, v9];
     [v4 addObject:v10];
 
     v11 = [NSString alloc];
-    v12 = [(CPLDuetTicketProvider *)self _isBlockedKeyPath];
-    v13 = [(CPLDuetTicketProvider *)self isBlocked];
-    if (v13)
+    _isBlockedKeyPath = [(CPLDuetTicketProvider *)self _isBlockedKeyPath];
+    isBlocked = [(CPLDuetTicketProvider *)self isBlocked];
+    if (isBlocked)
     {
-      v2 = [(CPLDuetTicketProvider *)self _blockedReasonStatus];
-      v8 = [NSString stringWithFormat:@"YES %@", v2];
+      _blockedReasonStatus = [(CPLDuetTicketProvider *)self _blockedReasonStatus];
+      v8 = [NSString stringWithFormat:@"YES %@", _blockedReasonStatus];
     }
 
-    v14 = [v11 initWithFormat:@"%@ = %@", v12, v8];
+    v14 = [v11 initWithFormat:@"%@ = %@", _isBlockedKeyPath, v8];
     [v4 addObject:v14];
 
-    if (v13)
+    if (isBlocked)
     {
     }
 
-    v15 = [(CPLDuetTicketProvider *)self _unBlockedReasonStatus];
-    if (v15)
+    _unBlockedReasonStatus = [(CPLDuetTicketProvider *)self _unBlockedReasonStatus];
+    if (_unBlockedReasonStatus)
     {
       v16 = [NSString alloc];
-      v17 = [(CPLDuetTicketProvider *)self _isUnBlockedKeyPath];
-      v18 = [v16 initWithFormat:@"%@ = %@", v17, v15];
+      _isUnBlockedKeyPath = [(CPLDuetTicketProvider *)self _isUnBlockedKeyPath];
+      v18 = [v16 initWithFormat:@"%@ = %@", _isUnBlockedKeyPath, _unBlockedReasonStatus];
       [v4 addObject:v18];
     }
 
     duetOverrideContext = self->_duetOverrideContext;
-    v20 = [(CPLDuetTicketProvider *)self _budgetOverrideKeyPath];
-    v21 = [(_CDClientContext *)duetOverrideContext objectForKeyedSubscript:v20];
+    _budgetOverrideKeyPath = [(CPLDuetTicketProvider *)self _budgetOverrideKeyPath];
+    v21 = [(_CDClientContext *)duetOverrideContext objectForKeyedSubscript:_budgetOverrideKeyPath];
 
     if (v21 && [v21 integerValue])
     {
@@ -261,8 +261,8 @@ LABEL_6:
     }
 
     v25 = [NSString alloc];
-    v26 = [(CPLDuetTicketProvider *)self _budgetOverrideKeyPath];
-    v27 = [v25 initWithFormat:@"%@ = %@", v26, v24];
+    _budgetOverrideKeyPath2 = [(CPLDuetTicketProvider *)self _budgetOverrideKeyPath];
+    v27 = [v25 initWithFormat:@"%@ = %@", _budgetOverrideKeyPath2, v24];
     [v4 addObject:v27];
   }
 
@@ -271,8 +271,8 @@ LABEL_6:
 
 - (void)_setupCallbacks
 {
-  v3 = [(CPLDuetTicketProvider *)self _isBlockedKeyPath];
-  v4 = [_CDContextualPredicate predicateForChangeAtKeyPath:v3];
+  _isBlockedKeyPath = [(CPLDuetTicketProvider *)self _isBlockedKeyPath];
+  v4 = [_CDContextualPredicate predicateForChangeAtKeyPath:_isBlockedKeyPath];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -286,32 +286,32 @@ LABEL_6:
 
 - (BOOL)isBlocked
 {
-  v2 = self;
-  v3 = [(CPLDuetTicketProvider *)self _isBlockedKeyPath];
-  LOBYTE(v2) = [(CPLDuetTicketProvider *)v2 _BOOLValueForDuetKeyPath:v3];
+  selfCopy = self;
+  _isBlockedKeyPath = [(CPLDuetTicketProvider *)self _isBlockedKeyPath];
+  LOBYTE(selfCopy) = [(CPLDuetTicketProvider *)selfCopy _BOOLValueForDuetKeyPath:_isBlockedKeyPath];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)hasSignificantWork
 {
-  v2 = self;
-  v3 = [(CPLDuetTicketProvider *)self _significantWorkKeyPath];
-  LOBYTE(v2) = [(CPLDuetTicketProvider *)v2 _BOOLValueForDuetKeyPath:v3];
+  selfCopy = self;
+  _significantWorkKeyPath = [(CPLDuetTicketProvider *)self _significantWorkKeyPath];
+  LOBYTE(selfCopy) = [(CPLDuetTicketProvider *)selfCopy _BOOLValueForDuetKeyPath:_significantWorkKeyPath];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)overrideHasSignificantWork:(BOOL)a3
+- (void)overrideHasSignificantWork:(BOOL)work
 {
   significantWorkRetainCount = self->_significantWorkRetainCount;
-  if (a3)
+  if (work)
   {
     if (!significantWorkRetainCount)
     {
       duetOverrideContext = self->_duetOverrideContext;
-      v6 = [(CPLDuetTicketProvider *)self _significantWorkKeyPath];
-      [(_CDClientContext *)duetOverrideContext setObject:&__kCFBooleanTrue forKeyedSubscript:v6];
+      _significantWorkKeyPath = [(CPLDuetTicketProvider *)self _significantWorkKeyPath];
+      [(_CDClientContext *)duetOverrideContext setObject:&__kCFBooleanTrue forKeyedSubscript:_significantWorkKeyPath];
 
       significantWorkRetainCount = self->_significantWorkRetainCount;
     }
@@ -326,38 +326,38 @@ LABEL_6:
     if (!v7)
     {
       v8 = self->_duetOverrideContext;
-      v9 = [(CPLDuetTicketProvider *)self _significantWorkKeyPath];
-      [(_CDClientContext *)v8 setObject:&__kCFBooleanFalse forKeyedSubscript:v9];
+      _significantWorkKeyPath2 = [(CPLDuetTicketProvider *)self _significantWorkKeyPath];
+      [(_CDClientContext *)v8 setObject:&__kCFBooleanFalse forKeyedSubscript:_significantWorkKeyPath2];
     }
   }
 }
 
-- (void)setShouldOverride:(BOOL)a3 forSystemBudgets:(unint64_t)a4
+- (void)setShouldOverride:(BOOL)override forSystemBudgets:(unint64_t)budgets
 {
-  v5 = a3;
+  overrideCopy = override;
   duetOverrideContext = self->_duetOverrideContext;
-  v8 = [(CPLDuetTicketProvider *)self _budgetOverrideKeyPath];
-  v9 = [(_CDClientContext *)duetOverrideContext objectForKeyedSubscript:v8];
-  v10 = [v9 unsignedIntegerValue];
+  _budgetOverrideKeyPath = [(CPLDuetTicketProvider *)self _budgetOverrideKeyPath];
+  v9 = [(_CDClientContext *)duetOverrideContext objectForKeyedSubscript:_budgetOverrideKeyPath];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  if (v5)
+  if (overrideCopy)
   {
-    v11 = v10 | a4;
+    v11 = unsignedIntegerValue | budgets;
   }
 
   else
   {
-    v11 = v10 & ~a4;
+    v11 = unsignedIntegerValue & ~budgets;
   }
 
-  if (v11 == v10)
+  if (v11 == unsignedIntegerValue)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v12 = sub_10006E74C();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [CPLEngineSystemMonitor descriptionForBudgets:v10];
+        v13 = [CPLEngineSystemMonitor descriptionForBudgets:unsignedIntegerValue];
         v20 = 138412290;
         v21 = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Overriding system budgets is kept at %@", &v20, 0xCu);
@@ -372,7 +372,7 @@ LABEL_6:
       v14 = sub_10006E74C();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [CPLEngineSystemMonitor descriptionForBudgets:v10];
+        v15 = [CPLEngineSystemMonitor descriptionForBudgets:unsignedIntegerValue];
         v16 = [CPLEngineSystemMonitor descriptionForBudgets:v11];
         v20 = 138412546;
         v21 = v15;
@@ -384,8 +384,8 @@ LABEL_6:
 
     v17 = [NSNumber numberWithUnsignedInteger:v11];
     v18 = self->_duetOverrideContext;
-    v19 = [(CPLDuetTicketProvider *)self _budgetOverrideKeyPath];
-    [(_CDClientContext *)v18 setObject:v17 forKeyedSubscript:v19];
+    _budgetOverrideKeyPath2 = [(CPLDuetTicketProvider *)self _budgetOverrideKeyPath];
+    [(_CDClientContext *)v18 setObject:v17 forKeyedSubscript:_budgetOverrideKeyPath2];
 
     [(NSMutableSet *)self->_budgetDelegates enumerateObjectsUsingBlock:&stru_100275560];
   }

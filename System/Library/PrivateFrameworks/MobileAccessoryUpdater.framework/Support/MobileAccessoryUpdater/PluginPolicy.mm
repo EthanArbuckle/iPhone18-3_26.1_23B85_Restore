@@ -1,16 +1,16 @@
 @interface PluginPolicy
-- (BOOL)doesPolicyContainGroup:(id)a3;
-- (PluginPolicy)initWithCoder:(id)a3;
-- (PluginPolicy)initWithPolicyDictionary:(id)a3 pluginName:(id)a4;
-- (id)getMatchingFilterWithName:(id)a3;
+- (BOOL)doesPolicyContainGroup:(id)group;
+- (PluginPolicy)initWithCoder:(id)coder;
+- (PluginPolicy)initWithPolicyDictionary:(id)dictionary pluginName:(id)name;
+- (id)getMatchingFilterWithName:(id)name;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)parsePolicyDict:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)parsePolicyDict:(id)dict;
 @end
 
 @implementation PluginPolicy
 
-- (PluginPolicy)initWithPolicyDictionary:(id)a3 pluginName:(id)a4
+- (PluginPolicy)initWithPolicyDictionary:(id)dictionary pluginName:(id)name
 {
   v12.receiver = self;
   v12.super_class = PluginPolicy;
@@ -19,10 +19,10 @@
   v6->remoteFirmwareCheckInterval = -1.0;
   v6->matchingFilters = 0;
   v6->pluginName = 0;
-  if (a3 && a4)
+  if (dictionary && name)
   {
-    v6->pluginName = a4;
-    if (![a4 isEqualToString:@"com.apple.MobileAccessoryUpdater.EAUpdaterService"] || !objc_msgSend(MGCopyAnswer(), "BOOLValue"))
+    v6->pluginName = name;
+    if (![name isEqualToString:@"com.apple.MobileAccessoryUpdater.EAUpdaterService"] || !objc_msgSend(MGCopyAnswer(), "BOOLValue"))
     {
       goto LABEL_19;
     }
@@ -30,7 +30,7 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = a4;
+      nameCopy3 = name;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Use Alternate Accessory List for %@", buf, 0xCu);
     }
 
@@ -44,25 +44,25 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = a4;
+      nameCopy3 = name;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Loaded Alternate Accessory List for %@", buf, 0xCu);
     }
 
-    v9 = [NSDictionary dictionaryWithContentsOfURL:v8];
-    if (!v9)
+    dictionaryCopy = [NSDictionary dictionaryWithContentsOfURL:v8];
+    if (!dictionaryCopy)
     {
 LABEL_19:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = a4;
+        nameCopy3 = name;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Loaded Native Accessory List for %@", buf, 0xCu);
       }
 
-      v9 = a3;
+      dictionaryCopy = dictionary;
     }
 
-    [(PluginPolicy *)v6 parsePolicyDict:v9];
+    [(PluginPolicy *)v6 parsePolicyDict:dictionaryCopy];
   }
 
   else
@@ -75,22 +75,22 @@ LABEL_19:
   return v6;
 }
 
-- (void)parsePolicyDict:(id)a3
+- (void)parsePolicyDict:(id)dict
 {
-  if (!a3)
+  if (!dict)
   {
 
     goto LABEL_73;
   }
 
-  if (![a3 objectForKey:@"MobileAccessoryUpdaterProperties"])
+  if (![dict objectForKey:@"MobileAccessoryUpdaterProperties"])
   {
 LABEL_73:
     FudLog();
     return;
   }
 
-  v5 = [a3 objectForKey:@"MobileAccessoryUpdaterProperties"];
+  v5 = [dict objectForKey:@"MobileAccessoryUpdaterProperties"];
   self->isValid = 0;
   v6 = [v5 objectForKey:@"RemoteFirmwareCheckInterval"];
   if (!v6)
@@ -426,13 +426,13 @@ LABEL_73:
       }
 
       [(MatchingFilter *)v19 setFilter:v45];
-      v46 = [v18 objectForKey:@"ExclusionGroup"];
-      if (!v46)
+      filterName = [v18 objectForKey:@"ExclusionGroup"];
+      if (!filterName)
       {
-        v46 = [(MatchingFilter *)v19 filterName];
+        filterName = [(MatchingFilter *)v19 filterName];
       }
 
-      [(MatchingFilter *)v19 setExclusionGroup:v46];
+      [(MatchingFilter *)v19 setExclusionGroup:filterName];
       v47 = [v18 objectForKey:@"SilentUpdateNoUI"];
       if (v47)
       {
@@ -444,15 +444,15 @@ LABEL_73:
           goto LABEL_97;
         }
 
-        v49 = [v48 BOOLValue];
+        bOOLValue = [v48 BOOLValue];
       }
 
       else
       {
-        v49 = 0;
+        bOOLValue = 0;
       }
 
-      [(MatchingFilter *)v19 setSilentUpdateNoUI:v49];
+      [(MatchingFilter *)v19 setSilentUpdateNoUI:bOOLValue];
       v50 = [v18 objectForKey:@"StopOnBootstrapFailure"];
       if (v50)
       {
@@ -460,7 +460,7 @@ LABEL_73:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v52 = [v51 BOOLValue];
+          bOOLValue2 = [v51 BOOLValue];
           goto LABEL_68;
         }
 
@@ -473,9 +473,9 @@ LABEL_97:
         return;
       }
 
-      v52 = 0;
+      bOOLValue2 = 0;
 LABEL_68:
-      [(MatchingFilter *)v19 setStopOnBootstrapFailure:v52];
+      [(MatchingFilter *)v19 setStopOnBootstrapFailure:bOOLValue2];
       [(NSMutableArray *)self->matchingFilters addObject:v19];
     }
 
@@ -492,7 +492,7 @@ LABEL_70:
   self->isValid = 1;
 }
 
-- (id)getMatchingFilterWithName:(id)a3
+- (id)getMatchingFilterWithName:(id)name
 {
   v11 = 0u;
   v12 = 0u;
@@ -535,7 +535,7 @@ LABEL_3:
   }
 }
 
-- (BOOL)doesPolicyContainGroup:(id)a3
+- (BOOL)doesPolicyContainGroup:(id)group
 {
   groups = self->groups;
   if (groups)
@@ -558,7 +558,7 @@ LABEL_3:
             objc_enumerationMutation(groups);
           }
 
-          if ([*(*(&v10 + 1) + 8 * i) isEqualToString:a3])
+          if ([*(*(&v10 + 1) + 8 * i) isEqualToString:group])
           {
             LOBYTE(v5) = 1;
             return v5;
@@ -608,36 +608,36 @@ LABEL_3:
   [(PluginPolicy *)&v6 dealloc];
 }
 
-- (PluginPolicy)initWithCoder:(id)a3
+- (PluginPolicy)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = PluginPolicy;
   v4 = [(PluginPolicy *)&v8 init];
   if (v4)
   {
-    v4->pluginName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"pluginName"];
-    v4->isValid = [a3 decodeBoolForKey:@"isValid"];
-    [a3 decodeDoubleForKey:@"remoteFirmwareCheckInterval"];
+    v4->pluginName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"pluginName"];
+    v4->isValid = [coder decodeBoolForKey:@"isValid"];
+    [coder decodeDoubleForKey:@"remoteFirmwareCheckInterval"];
     v4->remoteFirmwareCheckInterval = v5;
     v6 = objc_opt_class();
-    v4->matchingFilters = [a3 decodeObjectOfClasses:+[NSSet setWithObjects:](NSSet forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"matchingFilters"}];
+    v4->matchingFilters = [coder decodeObjectOfClasses:+[NSSet setWithObjects:](NSSet forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"matchingFilters"}];
     v9[0] = objc_opt_class();
     v9[1] = objc_opt_class();
-    v4->groups = [a3 decodeObjectOfClasses:+[NSSet setWithArray:](NSSet forKey:{"setWithArray:", +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v9, 2)), @"groups"}];
+    v4->groups = [coder decodeObjectOfClasses:+[NSSet setWithArray:](NSSet forKey:{"setWithArray:", +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v9, 2)), @"groups"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->pluginName forKey:@"pluginName"];
-  [a3 encodeBool:self->isValid forKey:@"isValid"];
-  [a3 encodeDouble:@"remoteFirmwareCheckInterval" forKey:self->remoteFirmwareCheckInterval];
-  [a3 encodeObject:self->matchingFilters forKey:@"matchingFilters"];
+  [coder encodeObject:self->pluginName forKey:@"pluginName"];
+  [coder encodeBool:self->isValid forKey:@"isValid"];
+  [coder encodeDouble:@"remoteFirmwareCheckInterval" forKey:self->remoteFirmwareCheckInterval];
+  [coder encodeObject:self->matchingFilters forKey:@"matchingFilters"];
   groups = self->groups;
 
-  [a3 encodeObject:groups forKey:@"groups"];
+  [coder encodeObject:groups forKey:@"groups"];
 }
 
 @end

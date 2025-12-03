@@ -1,22 +1,22 @@
 @interface URLBasedImage
 - (_TtC9MomentsUI13URLBasedImage)init;
-- (_TtC9MomentsUI13URLBasedImage)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9MomentsUI13URLBasedImage)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation URLBasedImage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  URLBasedImage.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  URLBasedImage.encode(with:)(coderCopy);
 }
 
-- (_TtC9MomentsUI13URLBasedImage)initWithCoder:(id)a3
+- (_TtC9MomentsUI13URLBasedImage)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized URLBasedImage.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized URLBasedImage.init(coder:)(coderCopy);
 
   return v4;
 }

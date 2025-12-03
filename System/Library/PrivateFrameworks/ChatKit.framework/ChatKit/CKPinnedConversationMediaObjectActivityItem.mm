@@ -1,27 +1,27 @@
 @interface CKPinnedConversationMediaObjectActivityItem
-+ (id)previewImageForMediaObject:(id)a3;
-+ (id)previewableMediaObjectFromMessage:(id)a3;
-- (CKPinnedConversationMediaObjectActivityItem)initWithMessage:(id)a3 mediaObject:(id)a4 contentScale:(double)a5 attachedContactItemIdentifier:(id)a6;
++ (id)previewImageForMediaObject:(id)object;
++ (id)previewableMediaObjectFromMessage:(id)message;
+- (CKPinnedConversationMediaObjectActivityItem)initWithMessage:(id)message mediaObject:(id)object contentScale:(double)scale attachedContactItemIdentifier:(id)identifier;
 - (id)activityItemView;
 @end
 
 @implementation CKPinnedConversationMediaObjectActivityItem
 
-- (CKPinnedConversationMediaObjectActivityItem)initWithMessage:(id)a3 mediaObject:(id)a4 contentScale:(double)a5 attachedContactItemIdentifier:(id)a6
+- (CKPinnedConversationMediaObjectActivityItem)initWithMessage:(id)message mediaObject:(id)object contentScale:(double)scale attachedContactItemIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  messageCopy = message;
+  objectCopy = object;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = CKPinnedConversationMediaObjectActivityItem;
   v14 = [(CKPinnedConversationMediaObjectActivityItem *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_message, a3);
-    objc_storeStrong(&v15->_mediaObject, a4);
-    v15->_activityItemContentScale = a5;
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_message, message);
+    objc_storeStrong(&v15->_mediaObject, object);
+    v15->_activityItemContentScale = scale;
+    v16 = [identifierCopy copy];
     attachedContactItemIdentifier = v15->_attachedContactItemIdentifier;
     v15->_attachedContactItemIdentifier = v16;
   }
@@ -36,10 +36,10 @@
   return v2;
 }
 
-+ (id)previewableMediaObjectFromMessage:(id)a3
++ (id)previewableMediaObjectFromMessage:(id)message
 {
   v25 = *MEMORY[0x1E69E9840];
-  [a3 __ck_mediaObjects];
+  [message __ck_mediaObjects];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -61,24 +61,24 @@
         v9 = *(*(&v20 + 1) + 8 * i);
         if ([v9 isPreviewable])
         {
-          v10 = [v9 transfer];
-          v11 = [v10 commSafetySensitive];
+          transfer = [v9 transfer];
+          commSafetySensitive = [transfer commSafetySensitive];
 
-          if ((v11 - 1) >= 2)
+          if ((commSafetySensitive - 1) >= 2)
           {
-            if ([a1 _mediaTypeSupportedForPinningPreview:{objc_msgSend(v9, "mediaType")}])
+            if ([self _mediaTypeSupportedForPinningPreview:{objc_msgSend(v9, "mediaType")}])
             {
-              v12 = [v9 transfer];
-              v13 = [v12 isFileDataReady];
+              transfer2 = [v9 transfer];
+              isFileDataReady = [transfer2 isFileDataReady];
 
-              if (v13)
+              if (isFileDataReady)
               {
-                v14 = [v9 transfer];
-                v15 = [v14 isAdaptiveImageGlyph];
+                transfer3 = [v9 transfer];
+                isAdaptiveImageGlyph = [transfer3 isAdaptiveImageGlyph];
 
-                if ((v15 & 1) == 0)
+                if ((isAdaptiveImageGlyph & 1) == 0)
                 {
-                  v16 = [a1 previewImageForMediaObject:v9];
+                  v16 = [self previewImageForMediaObject:v9];
                   if (v16)
                   {
                     v18 = v16;
@@ -109,28 +109,28 @@ LABEL_16:
   return v17;
 }
 
-+ (id)previewImageForMediaObject:(id)a3
++ (id)previewImageForMediaObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = +[CKUIBehavior sharedBehaviors];
   [v4 previewMaxWidth];
   v6 = v5;
 
-  v7 = [v3 previewForWidth:0 orientation:v6];
+  v7 = [objectCopy previewForWidth:0 orientation:v6];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    image = v7;
 LABEL_5:
-    v9 = v8;
+    v9 = image;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 image];
+    image = [v7 image];
     goto LABEL_5;
   }
 

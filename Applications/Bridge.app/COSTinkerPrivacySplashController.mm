@@ -1,9 +1,9 @@
 @interface COSTinkerPrivacySplashController
 - (COSTinkerPrivacySplashController)init;
-- (void)continueButtonPressed:(id)a3;
-- (void)learnMorePressed:(id)a3;
-- (void)miniFlowStepComplete:(id)a3;
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4;
+- (void)continueButtonPressed:(id)pressed;
+- (void)learnMorePressed:(id)pressed;
+- (void)miniFlowStepComplete:(id)complete;
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class;
 @end
 
 @implementation COSTinkerPrivacySplashController
@@ -30,8 +30,8 @@
     v9 = BPSPillSelectedColor();
     [v6 setTintColor:v9];
 
-    v10 = [(OBPrivacySplashController *)v2->_splashController buttonTray];
-    [v10 addButton:v6];
+    buttonTray = [(OBPrivacySplashController *)v2->_splashController buttonTray];
+    [buttonTray addButton:v6];
 
     v11 = +[OBLinkTrayButton linkButton];
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -40,40 +40,40 @@
     [v11 setTitle:v13 forState:0];
 
     [v11 addTarget:v2 action:"learnMorePressed:" forControlEvents:64];
-    v14 = [(OBPrivacySplashController *)v2->_splashController buttonTray];
-    [v14 addButton:v11];
+    buttonTray2 = [(OBPrivacySplashController *)v2->_splashController buttonTray];
+    [buttonTray2 addButton:v11];
   }
 
   return v2;
 }
 
-- (void)learnMorePressed:(id)a3
+- (void)learnMorePressed:(id)pressed
 {
   v6 = +[OBPrivacyPresenter presenterForPrivacyUnifiedAbout];
-  v4 = [(COSTinkerPrivacySplashController *)self viewController];
-  [v6 setPresentingViewController:v4];
+  viewController = [(COSTinkerPrivacySplashController *)self viewController];
+  [v6 setPresentingViewController:viewController];
 
-  v5 = [v6 combinedController];
-  [v5 setPresentedFromPrivacyPane:1];
+  combinedController = [v6 combinedController];
+  [combinedController setPresentedFromPrivacyPane:1];
 
   [v6 present];
 }
 
-- (void)continueButtonPressed:(id)a3
+- (void)continueButtonPressed:(id)pressed
 {
-  v4 = [(COSTinkerPrivacySplashController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSTinkerPrivacySplashController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)miniFlowStepComplete:(id)a3
+- (void)miniFlowStepComplete:(id)complete
 {
-  v4 = [(COSTinkerPrivacySplashController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(COSTinkerPrivacySplashController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class
 {
-  v5 = objc_alloc_init(a4);
+  v5 = objc_alloc_init(class);
   [v5 setMiniFlowDelegate:self];
   [(COSTinkerPrivacySplashController *)self pushController:v5 animated:1];
 }

@@ -1,22 +1,22 @@
 @interface TPPBPolicyCategoriesByView
-+ (id)TPPBPolicyCategoriesByViewWithView:(id)a3 categories:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)TPPBPolicyCategoriesByViewWithView:(id)view categories:(id)categories;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addCategories:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCategories:(id)categories;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TPPBPolicyCategoriesByView
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(TPPBPolicyCategoriesByView *)self setView:?];
   }
@@ -25,7 +25,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -52,13 +52,13 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((view = self->_view, !(view | v4[2])) || -[NSString isEqual:](view, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((view = self->_view, !(view | equalCopy[2])) || -[NSString isEqual:](view, "isEqual:")))
   {
     categories = self->_categories;
-    if (categories | v4[1])
+    if (categories | equalCopy[1])
     {
       v7 = [(NSMutableArray *)categories isEqual:?];
     }
@@ -77,11 +77,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_view copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_view copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -105,7 +105,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addCategories:v13];
 
         ++v12;
@@ -122,34 +122,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_view)
   {
-    [v8 setView:?];
+    [toCopy setView:?];
   }
 
   if ([(TPPBPolicyCategoriesByView *)self categoriesCount])
   {
-    [v8 clearCategories];
-    v4 = [(TPPBPolicyCategoriesByView *)self categoriesCount];
-    if (v4)
+    [toCopy clearCategories];
+    categoriesCount = [(TPPBPolicyCategoriesByView *)self categoriesCount];
+    if (categoriesCount)
     {
-      v5 = v4;
+      v5 = categoriesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(TPPBPolicyCategoriesByView *)self categoriesAtIndex:i];
-        [v8 addCategories:v7];
+        [toCopy addCategories:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_view)
   {
     PBDataWriterWriteStringField();
@@ -192,12 +192,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   view = self->_view;
   if (view)
   {
-    [v3 setObject:view forKey:@"view"];
+    [dictionary setObject:view forKey:@"view"];
   }
 
   categories = self->_categories;
@@ -215,38 +215,38 @@
   v8.receiver = self;
   v8.super_class = TPPBPolicyCategoriesByView;
   v4 = [(TPPBPolicyCategoriesByView *)&v8 description];
-  v5 = [(TPPBPolicyCategoriesByView *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(TPPBPolicyCategoriesByView *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addCategories:(id)a3
+- (void)addCategories:(id)categories
 {
-  v4 = a3;
+  categoriesCopy = categories;
   categories = self->_categories;
-  v8 = v4;
+  v8 = categoriesCopy;
   if (!categories)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_categories;
     self->_categories = v6;
 
-    v4 = v8;
+    categoriesCopy = v8;
     categories = self->_categories;
   }
 
-  [(NSMutableArray *)categories addObject:v4];
+  [(NSMutableArray *)categories addObject:categoriesCopy];
 }
 
-+ (id)TPPBPolicyCategoriesByViewWithView:(id)a3 categories:(id)a4
++ (id)TPPBPolicyCategoriesByViewWithView:(id)view categories:(id)categories
 {
-  v5 = a4;
-  v6 = a3;
+  categoriesCopy = categories;
+  viewCopy = view;
   v7 = objc_alloc_init(TPPBPolicyCategoriesByView);
-  [(TPPBPolicyCategoriesByView *)v7 setView:v6];
+  [(TPPBPolicyCategoriesByView *)v7 setView:viewCopy];
 
-  v8 = [v5 mutableCopy];
+  v8 = [categoriesCopy mutableCopy];
   [(TPPBPolicyCategoriesByView *)v7 setCategories:v8];
 
   return v7;

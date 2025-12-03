@@ -1,11 +1,11 @@
 @interface _GCDevicePhysicalInputTouchInputParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_GCDevicePhysicalInputTouchInputParameters)init;
 - (double)touchedThreshold;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)setTouchedThreshold:(uint64_t)result;
 - (uint64_t)sources;
-- (void)setSources:(void *)a1;
+- (void)setSources:(void *)sources;
 @end
 
 @implementation _GCDevicePhysicalInputTouchInputParameters
@@ -19,22 +19,22 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _GCDevicePhysicalInputTouchInputParameters;
-  v4 = [(_GCDevicePhysicalInputViewParameters *)&v6 copyWithZone:a3];
+  v4 = [(_GCDevicePhysicalInputViewParameters *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 2, self->_sources);
   *(v4 + 2) = LODWORD(self->_touchedThreshold);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = _GCDevicePhysicalInputTouchInputParameters;
-  v6 = [(_GCDevicePhysicalInputViewParameters *)&v8 isEqual:v4]&& ((sources = self->_sources, sources == v4[2]) || [(NSSet *)sources isEqual:?]) && self->_touchedThreshold == *(v4 + 2);
+  v6 = [(_GCDevicePhysicalInputViewParameters *)&v8 isEqual:equalCopy]&& ((sources = self->_sources, sources == equalCopy[2]) || [(NSSet *)sources isEqual:?]) && self->_touchedThreshold == *(equalCopy + 2);
 
   return v6;
 }
@@ -51,20 +51,20 @@
 
 - (double)touchedThreshold
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 8);
+  LODWORD(result) = *(self + 8);
   return result;
 }
 
-- (void)setSources:(void *)a1
+- (void)setSources:(void *)sources
 {
-  if (a1)
+  if (sources)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 16);
+    objc_setProperty_nonatomic_copy(sources, newValue, newValue, 16);
   }
 }
 

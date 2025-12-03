@@ -1,16 +1,16 @@
 @interface TSDContainerRep
 - (TSDContainerInfo)containerInfo;
-- (TSDContainerRep)initWithLayout:(id)a3 canvasView:(id)a4;
+- (TSDContainerRep)initWithLayout:(id)layout canvasView:(id)view;
 - (TSDMutableContainerInfo)mutableContainerInfo;
 @end
 
 @implementation TSDContainerRep
 
-- (TSDContainerRep)initWithLayout:(id)a3 canvasView:(id)a4
+- (TSDContainerRep)initWithLayout:(id)layout canvasView:(id)view
 {
   v19.receiver = self;
   v19.super_class = TSDContainerRep;
-  v4 = [(TSDRep *)&v19 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v19 initWithLayout:layout canvas:view];
   v7 = v4;
   if (v4)
   {

@@ -1,8 +1,8 @@
 @interface CNContactRelation
 + (CNContactRelation)contactRelationWithName:(NSString *)name;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValid:(id *)a3;
-- (CNContactRelation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValid:(id *)valid;
+- (CNContactRelation)initWithCoder:(id)coder;
 - (CNContactRelation)initWithName:(NSString *)name;
 - (NSString)description;
 - (unint64_t)hash;
@@ -24,18 +24,18 @@
 + (CNContactRelation)contactRelationWithName:(NSString *)name
 {
   v4 = name;
-  v5 = [[a1 alloc] initWithName:v4];
+  v5 = [[self alloc] initWithName:v4];
 
   return v5;
 }
 
-- (CNContactRelation)initWithCoder:(id)a3
+- (CNContactRelation)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = CNContactRelation;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(CNContactRelation *)&v9 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"_name", v9.receiver, v9.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"_name", v9.receiver, v9.super_class}];
 
   v6 = [v5 copy];
   name = v4->_name;
@@ -44,21 +44,21 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(CNContactRelation *)self name];
-    if (v7 || ([v6 name], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    name = [(CNContactRelation *)self name];
+    if (name || ([v6 name], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(CNContactRelation *)self name];
-      v9 = [v6 name];
-      v10 = [v8 isEqual:v9];
+      name2 = [(CNContactRelation *)self name];
+      name3 = [v6 name];
+      v10 = [name2 isEqual:name3];
 
-      if (v7)
+      if (name)
       {
 LABEL_9:
 
@@ -83,12 +83,12 @@ LABEL_10:
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNContactRelation *)self name];
-  v5 = [v3 appendNamesAndObjects:{@"name", v4, 0}];
+  name = [(CNContactRelation *)self name];
+  v5 = [v3 appendNamesAndObjects:{@"name", name, 0}];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (unint64_t)hash
@@ -110,7 +110,7 @@ uint64_t __25__CNContactRelation_hash__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)isValid:(id *)a3
+- (BOOL)isValid:(id *)valid
 {
   if (isValid__cn_once_token_0_1 != -1)
   {
@@ -130,7 +130,7 @@ uint64_t __25__CNContactRelation_hash__block_invoke(uint64_t a1)
     [CNContactRelation isValid:];
   }
 
-  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2_1 error:a3];
+  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2_1 error:valid];
 
   return v8;
 }

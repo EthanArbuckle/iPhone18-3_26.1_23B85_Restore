@@ -1,13 +1,13 @@
 @interface _UIButtonBarLayout
 - (_UIButtonBarLayout)init;
-- (_UIButtonBarLayout)initWithLayoutMetrics:(id)a3;
+- (_UIButtonBarLayout)initWithLayoutMetrics:(id)metrics;
 - (id)description;
-- (void)addConstraintsToActivate:(id)a3 toDeactivate:(id)a4;
-- (void)addLayoutGuides:(id)a3;
-- (void)addLayoutViews:(id)a3;
-- (void)addLayoutViews:(id)a3 layoutGuides:(id)a4 constraintsToActivate:(id)a5 constraintsToDeactivate:(id)a6;
+- (void)addConstraintsToActivate:(id)activate toDeactivate:(id)deactivate;
+- (void)addLayoutGuides:(id)guides;
+- (void)addLayoutViews:(id)views;
+- (void)addLayoutViews:(id)views layoutGuides:(id)guides constraintsToActivate:(id)activate constraintsToDeactivate:(id)deactivate;
 - (void)configure;
-- (void)setDirty:(BOOL)a3;
+- (void)setDirty:(BOOL)dirty;
 @end
 
 @implementation _UIButtonBarLayout
@@ -28,15 +28,15 @@
   return 0;
 }
 
-- (_UIButtonBarLayout)initWithLayoutMetrics:(id)a3
+- (_UIButtonBarLayout)initWithLayoutMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v9.receiver = self;
   v9.super_class = _UIButtonBarLayout;
   v5 = [(_UIButtonBarLayout *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [metricsCopy copy];
     layoutMetrics = v5->_layoutMetrics;
     v5->_layoutMetrics = v6;
 
@@ -46,51 +46,51 @@
   return v5;
 }
 
-- (void)setDirty:(BOOL)a3
+- (void)setDirty:(BOOL)dirty
 {
-  if (self->_dirty != a3)
+  if (self->_dirty != dirty)
   {
-    self->_dirty = a3;
-    if (!a3)
+    self->_dirty = dirty;
+    if (!dirty)
     {
       [(_UIButtonBarLayout *)self _configure];
     }
   }
 }
 
-- (void)addLayoutViews:(id)a3 layoutGuides:(id)a4 constraintsToActivate:(id)a5 constraintsToDeactivate:(id)a6
+- (void)addLayoutViews:(id)views layoutGuides:(id)guides constraintsToActivate:(id)activate constraintsToDeactivate:(id)deactivate
 {
-  v10 = a6;
-  v13 = a5;
-  v11 = a4;
-  v12 = a3;
+  deactivateCopy = deactivate;
+  activateCopy = activate;
+  guidesCopy = guides;
+  viewsCopy = views;
   [(_UIButtonBarLayout *)self configure];
-  [(_UIButtonBarLayout *)self _addLayoutViews:v12];
+  [(_UIButtonBarLayout *)self _addLayoutViews:viewsCopy];
 
-  [(_UIButtonBarLayout *)self _addLayoutGuides:v11];
-  [(_UIButtonBarLayout *)self _addConstraintsToActivate:v13 toDeactivate:v10];
+  [(_UIButtonBarLayout *)self _addLayoutGuides:guidesCopy];
+  [(_UIButtonBarLayout *)self _addConstraintsToActivate:activateCopy toDeactivate:deactivateCopy];
 }
 
-- (void)addLayoutViews:(id)a3
+- (void)addLayoutViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   [(_UIButtonBarLayout *)self configure];
-  [(_UIButtonBarLayout *)self _addLayoutViews:v4];
+  [(_UIButtonBarLayout *)self _addLayoutViews:viewsCopy];
 }
 
-- (void)addLayoutGuides:(id)a3
+- (void)addLayoutGuides:(id)guides
 {
-  v4 = a3;
+  guidesCopy = guides;
   [(_UIButtonBarLayout *)self configure];
-  [(_UIButtonBarLayout *)self _addLayoutGuides:v4];
+  [(_UIButtonBarLayout *)self _addLayoutGuides:guidesCopy];
 }
 
-- (void)addConstraintsToActivate:(id)a3 toDeactivate:(id)a4
+- (void)addConstraintsToActivate:(id)activate toDeactivate:(id)deactivate
 {
-  v6 = a4;
-  v7 = a3;
+  deactivateCopy = deactivate;
+  activateCopy = activate;
   [(_UIButtonBarLayout *)self configure];
-  [(_UIButtonBarLayout *)self _addConstraintsToActivate:v7 toDeactivate:v6];
+  [(_UIButtonBarLayout *)self _addConstraintsToActivate:activateCopy toDeactivate:deactivateCopy];
 }
 
 - (id)description

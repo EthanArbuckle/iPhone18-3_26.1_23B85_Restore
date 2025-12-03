@@ -1,31 +1,31 @@
 @interface TouchIdViewModel
-- (id)alertActionsFromOptions:(id)a3 event:(int64_t)a4;
-- (id)alertTintFromOptions:(id)a3;
-- (id)fallbackActionFromOptions:(id)a3;
+- (id)alertActionsFromOptions:(id)options event:(int64_t)event;
+- (id)alertTintFromOptions:(id)options;
+- (id)fallbackActionFromOptions:(id)options;
 @end
 
 @implementation TouchIdViewModel
 
-- (id)alertActionsFromOptions:(id)a3 event:(int64_t)a4
+- (id)alertActionsFromOptions:(id)options event:(int64_t)event
 {
-  v6 = a3;
+  optionsCopy = options;
   v7 = objc_alloc_init(NSMutableDictionary);
-  v8 = [v6 objectForKeyedSubscript:&off_10009AB60];
+  v8 = [optionsCopy objectForKeyedSubscript:&off_10009AB60];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v10 = 1;
+    bOOLValue = 1;
   }
 
-  v11 = [v6 objectForKeyedSubscript:&off_10009AB78];
-  v12 = [v11 BOOLValue];
-  v13 = v12 ^ 1 | v10;
-  if ([v11 intValue] == 2 || (v14 = a4 == 1, (v13 & 1) == 0))
+  v11 = [optionsCopy objectForKeyedSubscript:&off_10009AB78];
+  bOOLValue2 = [v11 BOOLValue];
+  v13 = bOOLValue2 ^ 1 | bOOLValue;
+  if ([v11 intValue] == 2 || (v14 = event == 1, (v13 & 1) == 0))
   {
     v14 = 1;
   }
@@ -34,24 +34,24 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138544130;
-    v25 = self;
+    selfCopy = self;
     v26 = 1024;
     v27 = v13 & 1;
     v28 = 1024;
-    v29 = v12;
+    v29 = bOOLValue2;
     v30 = 1024;
     v31 = v14;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ buttons - cancel:%d, fallback:%d, show fallback immediately:%d", &v24, 0x1Eu);
   }
 
-  if ((v12 & v14) == 1)
+  if ((bOOLValue2 & v14) == 1)
   {
-    v16 = [(TouchIdViewModel *)self fallbackActionFromOptions:v6];
+    v16 = [(TouchIdViewModel *)self fallbackActionFromOptions:optionsCopy];
     if (![v16 length])
     {
 
 LABEL_15:
-      v17 = [v6 objectForKeyedSubscript:&off_10009ABA8];
+      v17 = [optionsCopy objectForKeyedSubscript:&off_10009ABA8];
       v18 = [LACStringHelper truncateString:v17 maxLength:32];
 
       if (v18)
@@ -96,9 +96,9 @@ LABEL_22:
   return v7;
 }
 
-- (id)fallbackActionFromOptions:(id)a3
+- (id)fallbackActionFromOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:&off_10009AB90];
+  v3 = [options objectForKeyedSubscript:&off_10009AB90];
   v4 = [LACStringHelper truncateString:v3 maxLength:32];
 
   if (v4 && (+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet"), v5 = objc_claimAutoreleasedReturnValue(), [v4 stringByTrimmingCharactersInSet:v5], v6 = objc_claimAutoreleasedReturnValue(), v4, v5, v6))
@@ -125,9 +125,9 @@ LABEL_7:
   return v6;
 }
 
-- (id)alertTintFromOptions:(id)a3
+- (id)alertTintFromOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:&off_10009ABD8];
+  v3 = [options objectForKeyedSubscript:&off_10009ABD8];
   if (v3)
   {
     objc_opt_class();

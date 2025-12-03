@@ -1,5 +1,5 @@
 @interface _AFSetAudioSessionActiveContextMutation
-- (_AFSetAudioSessionActiveContextMutation)initWithBase:(id)a3;
+- (_AFSetAudioSessionActiveContextMutation)initWithBase:(id)base;
 - (id)getSpeechRequestOptions;
 - (int64_t)getReason;
 - (unint64_t)getOptions;
@@ -37,27 +37,27 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_speechRequestOptions;
+    speechRequestOptions = self->_speechRequestOptions;
   }
 
   else
   {
-    v2 = [(AFSetAudioSessionActiveContext *)self->_base speechRequestOptions];
+    speechRequestOptions = [(AFSetAudioSessionActiveContext *)self->_base speechRequestOptions];
   }
 
-  return v2;
+  return speechRequestOptions;
 }
 
-- (_AFSetAudioSessionActiveContextMutation)initWithBase:(id)a3
+- (_AFSetAudioSessionActiveContextMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFSetAudioSessionActiveContextMutation;
   v6 = [(_AFSetAudioSessionActiveContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

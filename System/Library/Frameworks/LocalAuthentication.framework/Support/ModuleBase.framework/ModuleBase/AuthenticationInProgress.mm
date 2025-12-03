@@ -1,45 +1,45 @@
 @interface AuthenticationInProgress
-- (AuthenticationInProgress)initWithMechanism:(id)a3 policy:(int64_t)a4 uiDelegate:(id)a5 originator:(id)a6 request:(id)a7 internalInfo:(id)a8 reply:(id)a9;
-- (BOOL)_isInteractiveEvaluationWithinProtectedAppsEvaluation:(id)a3;
-- (BOOL)shouldEnqueueAuthentication:(id)a3;
+- (AuthenticationInProgress)initWithMechanism:(id)mechanism policy:(int64_t)policy uiDelegate:(id)delegate originator:(id)originator request:(id)request internalInfo:(id)info reply:(id)reply;
+- (BOOL)_isInteractiveEvaluationWithinProtectedAppsEvaluation:(id)evaluation;
+- (BOOL)shouldEnqueueAuthentication:(id)authentication;
 - (LACClientInfo)clientInfo;
 - (id)description;
-- (id)shouldDequeueAndRunAfterAuthentication:(id)a3 result:(id)a4 error:(id)a5;
-- (void)_bypassPreflightCache:(BOOL)a3;
-- (void)cancelWithError:(id)a3;
-- (void)enqueueAuthentication:(id)a3;
-- (void)runWithCompletionHandler:(id)a3;
+- (id)shouldDequeueAndRunAfterAuthentication:(id)authentication result:(id)result error:(id)error;
+- (void)_bypassPreflightCache:(BOOL)cache;
+- (void)cancelWithError:(id)error;
+- (void)enqueueAuthentication:(id)authentication;
+- (void)runWithCompletionHandler:(id)handler;
 @end
 
 @implementation AuthenticationInProgress
 
-- (AuthenticationInProgress)initWithMechanism:(id)a3 policy:(int64_t)a4 uiDelegate:(id)a5 originator:(id)a6 request:(id)a7 internalInfo:(id)a8 reply:(id)a9
+- (AuthenticationInProgress)initWithMechanism:(id)mechanism policy:(int64_t)policy uiDelegate:(id)delegate originator:(id)originator request:(id)request internalInfo:(id)info reply:(id)reply
 {
-  v28 = a3;
-  v27 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  mechanismCopy = mechanism;
+  delegateCopy = delegate;
+  originatorCopy = originator;
+  requestCopy = request;
+  infoCopy = info;
+  replyCopy = reply;
   v29.receiver = self;
   v29.super_class = AuthenticationInProgress;
   v20 = [(AuthenticationInProgress *)&v29 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_mechanism, a3);
-    v21->_policy = a4;
-    objc_storeStrong(&v21->_uiDelegate, a5);
-    objc_storeStrong(&v21->_internalOptions, a8);
-    v22 = [v18 objectForKeyedSubscript:{@"Options", v27, v28}];
+    objc_storeStrong(&v20->_mechanism, mechanism);
+    v21->_policy = policy;
+    objc_storeStrong(&v21->_uiDelegate, delegate);
+    objc_storeStrong(&v21->_internalOptions, info);
+    v22 = [infoCopy objectForKeyedSubscript:{@"Options", delegateCopy, mechanismCopy}];
     options = v21->_options;
     v21->_options = v22;
 
-    v21->_originatorId = [v16 originatorId];
-    v21->_originatorPid = [v16 processId];
-    v21->_originatorUid = [v16 userId];
-    objc_storeStrong(&v21->_request, a7);
-    v24 = MEMORY[0x23EE740C0](v19);
+    v21->_originatorId = [originatorCopy originatorId];
+    v21->_originatorPid = [originatorCopy processId];
+    v21->_originatorUid = [originatorCopy userId];
+    objc_storeStrong(&v21->_request, request);
+    v24 = MEMORY[0x23EE740C0](replyCopy);
     reply = v21->_reply;
     v21->_reply = v24;
   }
@@ -65,20 +65,20 @@
     [v3 addObject:v8];
   }
 
-  v9 = [(AuthenticationInProgress *)self enqueuedAuthentication];
+  enqueuedAuthentication = [(AuthenticationInProgress *)self enqueuedAuthentication];
 
-  if (v9)
+  if (enqueuedAuthentication)
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(AuthenticationInProgress *)self enqueuedAuthentication];
-    v12 = [v10 stringWithFormat:@"enqueued: %@", v11];
+    enqueuedAuthentication2 = [(AuthenticationInProgress *)self enqueuedAuthentication];
+    v12 = [v10 stringWithFormat:@"enqueued: %@", enqueuedAuthentication2];
     [v3 addObject:v12];
   }
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(AuthenticationInProgress *)self policy];
-  v15 = [(AuthenticationInProgress *)self options];
-  AuthenticationPriorityForPolicy(v14, v15);
+  policy = [(AuthenticationInProgress *)self policy];
+  options = [(AuthenticationInProgress *)self options];
+  AuthenticationPriorityForPolicy(policy, options);
   v16 = NSStringFromLACAuthenticationPriority();
   v17 = [v13 stringWithFormat:@"priority: %@", v16];
 
@@ -91,38 +91,38 @@
   return v21;
 }
 
-- (void)runWithCompletionHandler:(id)a3
+- (void)runWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   self->_running = 1;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   started = self->_started;
-  self->_started = v5;
+  self->_started = date;
 
-  v7 = [(AuthenticationInProgress *)self options];
-  v8 = [v7 objectForKeyedSubscript:&unk_284B7A880];
+  options = [(AuthenticationInProgress *)self options];
+  v8 = [options objectForKeyedSubscript:&unk_284B7A880];
 
   if (v8)
   {
     [v8 doubleValue];
     v10 = dispatch_time(0, (v9 * 1000000000.0));
     objc_initWeak(&location, self);
-    v11 = [MEMORY[0x277CD47C8] sharedInstance];
-    v12 = [v11 serverQueue];
+    mEMORY[0x277CD47C8] = [MEMORY[0x277CD47C8] sharedInstance];
+    serverQueue = [mEMORY[0x277CD47C8] serverQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__AuthenticationInProgress_runWithCompletionHandler___block_invoke;
     block[3] = &unk_278A64600;
     objc_copyWeak(&v25, &location);
-    dispatch_after(v10, v12, block);
+    dispatch_after(v10, serverQueue, block);
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&location);
   }
 
-  v13 = [(AuthenticationInProgress *)self policy];
-  v14 = [(AuthenticationInProgress *)self options];
-  v15 = AuthenticationPriorityForPolicy(v13, v14) > 1;
+  policy = [(AuthenticationInProgress *)self policy];
+  options2 = [(AuthenticationInProgress *)self options];
+  v15 = AuthenticationPriorityForPolicy(policy, options2) > 1;
 
   [(AuthenticationInProgress *)self _bypassPreflightCache:v15];
   objc_initWeak(&location, self);
@@ -135,7 +135,7 @@
   v21[2] = __53__AuthenticationInProgress_runWithCompletionHandler___block_invoke_2;
   v21[3] = &unk_278A64628;
   objc_copyWeak(&v23, &location);
-  v20 = v4;
+  v20 = handlerCopy;
   v22 = v20;
   [(MechanismBase *)mechanism runWithHints:v18 eventsDelegate:uiDelegate reply:v21];
 
@@ -194,9 +194,9 @@ void __53__AuthenticationInProgress_runWithCompletionHandler___block_invoke_2(ui
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_bypassPreflightCache:(BOOL)a3
+- (void)_bypassPreflightCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   preflightCacheBypassAssertion = self->_preflightCacheBypassAssertion;
   if (preflightCacheBypassAssertion)
   {
@@ -205,23 +205,23 @@ void __53__AuthenticationInProgress_runWithCompletionHandler___block_invoke_2(ui
     self->_preflightCacheBypassAssertion = 0;
   }
 
-  if (v3)
+  if (cacheCopy)
   {
-    v10 = [MEMORY[0x277CD47D8] sharedInstance];
+    mEMORY[0x277CD47D8] = [MEMORY[0x277CD47D8] sharedInstance];
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"running high priority authentication: %@", self];
-    v8 = [v10 acquireBypassAssertionWithReason:v7];
+    v8 = [mEMORY[0x277CD47D8] acquireBypassAssertionWithReason:v7];
     v9 = self->_preflightCacheBypassAssertion;
     self->_preflightCacheBypassAssertion = v8;
   }
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if ([(AuthenticationInProgress *)self isRunning])
   {
-    v4 = [(AuthenticationInProgress *)self mechanism];
-    [v4 failAuthenticationWithError:v6];
+    mechanism = [(AuthenticationInProgress *)self mechanism];
+    [mechanism failAuthenticationWithError:errorCopy];
   }
 
   else
@@ -232,19 +232,19 @@ void __53__AuthenticationInProgress_runWithCompletionHandler___block_invoke_2(ui
       goto LABEL_6;
     }
 
-    reply[2](reply, 0, v6);
-    v4 = self->_reply;
+    reply[2](reply, 0, errorCopy);
+    mechanism = self->_reply;
     self->_reply = 0;
   }
 
 LABEL_6:
 }
 
-- (void)enqueueAuthentication:(id)a3
+- (void)enqueueAuthentication:(id)authentication
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([(AuthenticationInProgress *)self shouldEnqueueAuthentication:v5])
+  authenticationCopy = authentication;
+  if ([(AuthenticationInProgress *)self shouldEnqueueAuthentication:authenticationCopy])
   {
     enqueuedAuthentication = self->_enqueuedAuthentication;
     if (enqueuedAuthentication)
@@ -257,43 +257,43 @@ LABEL_6:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = v5;
+      v11 = authenticationCopy;
       v12 = 2112;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_238BBF000, v8, OS_LOG_TYPE_DEFAULT, "Enqueued %@ after %@", &v10, 0x16u);
     }
 
-    objc_storeStrong(&self->_enqueuedAuthentication, a3);
+    objc_storeStrong(&self->_enqueuedAuthentication, authentication);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldEnqueueAuthentication:(id)a3
+- (BOOL)shouldEnqueueAuthentication:(id)authentication
 {
-  v4 = a3;
-  v5 = [v4 mechanism];
-  v6 = [v5 request];
-  v7 = [v6 retryingForError];
+  authenticationCopy = authentication;
+  mechanism = [authenticationCopy mechanism];
+  request = [mechanism request];
+  retryingForError = [request retryingForError];
 
-  if (v7)
+  if (retryingForError)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [(AuthenticationInProgress *)self _isInteractiveEvaluationWithinProtectedAppsEvaluation:v4];
+    v8 = [(AuthenticationInProgress *)self _isInteractiveEvaluationWithinProtectedAppsEvaluation:authenticationCopy];
   }
 
   return v8;
 }
 
-- (BOOL)_isInteractiveEvaluationWithinProtectedAppsEvaluation:(id)a3
+- (BOOL)_isInteractiveEvaluationWithinProtectedAppsEvaluation:(id)evaluation
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AuthenticationInProgress *)self options];
+  evaluationCopy = evaluation;
+  options = [(AuthenticationInProgress *)self options];
   v6 = LACLightweightUIModeFromOptions();
   v7 = *MEMORY[0x277D23F18];
 
@@ -307,11 +307,11 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v8 = [v4 options];
-  v9 = [v8 objectForKeyedSubscript:&unk_284B7A898];
-  v10 = [v9 BOOLValue];
+  options2 = [evaluationCopy options];
+  v9 = [options2 objectForKeyedSubscript:&unk_284B7A898];
+  bOOLValue = [v9 BOOLValue];
 
-  if ((v10 & 1) != 0 || ([v4 options], v11 = objc_claimAutoreleasedReturnValue(), v12 = LACLightweightUIModeFromOptions(), v11, v12 != v7))
+  if ((bOOLValue & 1) != 0 || ([evaluationCopy options], v11 = objc_claimAutoreleasedReturnValue(), v12 = LACLightweightUIModeFromOptions(), v11, v12 != v7))
   {
 LABEL_10:
     v20 = 0;
@@ -319,21 +319,21 @@ LABEL_10:
 
   else
   {
-    v13 = [(AuthenticationInProgress *)self clientInfo];
-    v14 = [v13 bundleId];
+    clientInfo = [(AuthenticationInProgress *)self clientInfo];
+    bundleId = [clientInfo bundleId];
 
-    v15 = [v4 clientInfo];
-    v16 = [v15 bundleId];
+    clientInfo2 = [evaluationCopy clientInfo];
+    bundleId2 = [clientInfo2 bundleId];
 
-    if (v14 == v16 || ([v14 isEqualToString:v16] & 1) != 0)
+    if (bundleId == bundleId2 || ([bundleId isEqualToString:bundleId2] & 1) != 0)
     {
       v17 = LA_LOG();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v4 clientInfo];
-        v19 = [v18 bundleId];
+        clientInfo3 = [evaluationCopy clientInfo];
+        bundleId3 = [clientInfo3 bundleId];
         v27 = 138543362;
-        v28 = v19;
+        v28 = bundleId3;
         _os_log_impl(&dword_238BBF000, v17, OS_LOG_TYPE_DEFAULT, "Will enqueue authentication by '%{public}@'", &v27, 0xCu);
       }
 
@@ -345,14 +345,14 @@ LABEL_10:
       v17 = LA_LOG();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v4 clientInfo];
-        v24 = [v23 bundleId];
-        v25 = [(AuthenticationInProgress *)self clientInfo];
-        v26 = [v25 bundleId];
+        clientInfo4 = [evaluationCopy clientInfo];
+        bundleId4 = [clientInfo4 bundleId];
+        clientInfo5 = [(AuthenticationInProgress *)self clientInfo];
+        bundleId5 = [clientInfo5 bundleId];
         v27 = 138543618;
-        v28 = v24;
+        v28 = bundleId4;
         v29 = 2114;
-        v30 = v26;
+        v30 = bundleId5;
         _os_log_impl(&dword_238BBF000, v17, OS_LOG_TYPE_DEFAULT, "Will not enqueue '%{public}@', PA is '%{public}@'", &v27, 0x16u);
       }
 
@@ -364,18 +364,18 @@ LABEL_10:
   return v20;
 }
 
-- (id)shouldDequeueAndRunAfterAuthentication:(id)a3 result:(id)a4 error:(id)a5
+- (id)shouldDequeueAndRunAfterAuthentication:(id)authentication result:(id)result error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 enqueuedAuthentication];
+  authenticationCopy = authentication;
+  errorCopy = error;
+  enqueuedAuthentication = [authenticationCopy enqueuedAuthentication];
 
-  if (v10 == self)
+  if (enqueuedAuthentication == self)
   {
     v15 = LA_LOG();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    if (a4)
+    if (result)
     {
       if (v16)
       {
@@ -391,13 +391,13 @@ LABEL_10:
       if (v16)
       {
         *buf = 138543618;
-        v20 = v8;
+        v20 = authenticationCopy;
         v21 = 2114;
-        v22 = v9;
+        v22 = errorCopy;
         _os_log_impl(&dword_238BBF000, v15, OS_LOG_TYPE_DEFAULT, "The enqueued authentication will fail with the same error as %{public}@ -> %{public}@", buf, 0x16u);
       }
 
-      v14 = v9;
+      v14 = errorCopy;
     }
   }
 
@@ -405,8 +405,8 @@ LABEL_10:
   {
     v11 = MEMORY[0x277D24060];
     v12 = *MEMORY[0x277D23E88];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Inconsistent authentication binding, %@ is not enqueued after %@", self, v8];
-    v14 = [v11 errorWithCode:v12 debugDescription:v13];
+    authenticationCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Inconsistent authentication binding, %@ is not enqueued after %@", self, authenticationCopy];
+    v14 = [v11 errorWithCode:v12 debugDescription:authenticationCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -419,10 +419,10 @@ LABEL_10:
   clientInfo = self->_clientInfo;
   if (!clientInfo)
   {
-    v4 = [MEMORY[0x277D24020] sharedInstance];
-    v5 = [(LACEvaluationRequest *)self->_request client];
-    v6 = [(AuthenticationInProgress *)self options];
-    v7 = [v4 infoForXPCClient:v5 evaluationOptions:v6];
+    mEMORY[0x277D24020] = [MEMORY[0x277D24020] sharedInstance];
+    client = [(LACEvaluationRequest *)self->_request client];
+    options = [(AuthenticationInProgress *)self options];
+    v7 = [mEMORY[0x277D24020] infoForXPCClient:client evaluationOptions:options];
     v8 = self->_clientInfo;
     self->_clientInfo = v7;
 

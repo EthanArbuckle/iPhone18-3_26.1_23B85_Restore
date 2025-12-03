@@ -1,7 +1,7 @@
 @interface MFPImageAttributes
 - (MFPImageAttributes)init;
-- (id)colorAdjustWithType:(int)a3;
-- (id)ensureColorAdjustWithType:(int)a3;
+- (id)colorAdjustWithType:(int)type;
+- (id)ensureColorAdjustWithType:(int)type;
 @end
 
 @implementation MFPImageAttributes
@@ -21,17 +21,17 @@
   return v2;
 }
 
-- (id)colorAdjustWithType:(int)a3
+- (id)colorAdjustWithType:(int)type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:*&a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:*&type];
   v5 = [(NSMutableDictionary *)self->mColorAdjustMap objectForKey:v4];
 
   return v5;
 }
 
-- (id)ensureColorAdjustWithType:(int)a3
+- (id)ensureColorAdjustWithType:(int)type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:*&a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:*&type];
   v5 = [(NSMutableDictionary *)self->mColorAdjustMap objectForKey:v4];
   if (!v5)
   {

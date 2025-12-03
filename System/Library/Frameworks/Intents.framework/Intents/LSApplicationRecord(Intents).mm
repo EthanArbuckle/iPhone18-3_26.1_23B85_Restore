@@ -9,23 +9,23 @@
 - (id)in_supportedIntents
 {
   v35 = *MEMORY[0x1E69E9840];
-  v2 = [a1 applicationExtensionRecords];
-  v3 = [v2 allObjects];
-  v4 = [v3 if_objectsPassingTest:&__block_literal_global_104604];
+  applicationExtensionRecords = [self applicationExtensionRecords];
+  allObjects = [applicationExtensionRecords allObjects];
+  v4 = [allObjects if_objectsPassingTest:&__block_literal_global_104604];
   v5 = [v4 mutableCopy];
 
-  v6 = [a1 bundleIdentifier];
-  LOBYTE(v3) = [v6 hasPrefix:@"com.apple.shortcuts"];
+  bundleIdentifier = [self bundleIdentifier];
+  LOBYTE(allObjects) = [bundleIdentifier hasPrefix:@"com.apple.shortcuts"];
 
-  if (v3)
+  if (allObjects)
   {
     v7 = @"com.apple.WorkflowKit.ShortcutsIntents";
   }
 
   else
   {
-    v8 = [a1 bundleIdentifier];
-    v9 = [v8 isEqualToString:@"com.apple.mobiletimer"];
+    bundleIdentifier2 = [self bundleIdentifier];
+    v9 = [bundleIdentifier2 isEqualToString:@"com.apple.mobiletimer"];
 
     if (!v9)
     {
@@ -40,7 +40,7 @@
 
 LABEL_6:
   v29 = [MEMORY[0x1E695DFA8] set];
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -61,15 +61,15 @@ LABEL_6:
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [v17 if_extensionAttributesDictionary];
-        v19 = [v18 objectForKeyedSubscript:@"IntentsSupported"];
+        if_extensionAttributesDictionary = [v17 if_extensionAttributesDictionary];
+        v19 = [if_extensionAttributesDictionary objectForKeyedSubscript:@"IntentsSupported"];
         if ([v19 count])
         {
-          v20 = [v17 extensionPointRecord];
-          v21 = [v20 identifier];
+          extensionPointRecord = [v17 extensionPointRecord];
+          identifier = [extensionPointRecord identifier];
 
           v22 = [MEMORY[0x1E695DFD8] setWithArray:v19];
-          [v11 setObject:v22 forKeyedSubscript:v21];
+          [dictionary setObject:v22 forKeyedSubscript:identifier];
 
           [v29 addObjectsFromArray:v19];
         }
@@ -82,8 +82,8 @@ LABEL_6:
   }
 
   v23 = MEMORY[0x1E695DFA8];
-  v24 = [v28 supportedIntents];
-  v25 = [v23 setWithArray:v24];
+  supportedIntents = [v28 supportedIntents];
+  v25 = [v23 setWithArray:supportedIntents];
 
   [v25 unionSet:v29];
   v26 = *MEMORY[0x1E69E9840];
@@ -93,13 +93,13 @@ LABEL_6:
 
 - (id)in_counterpartIdentifiers
 {
-  v2 = [a1 counterpartIdentifiers];
+  counterpartIdentifiers = [self counterpartIdentifiers];
 
-  if (v2)
+  if (counterpartIdentifiers)
   {
     v3 = MEMORY[0x1E695DFD8];
-    v4 = [a1 counterpartIdentifiers];
-    v5 = [v3 setWithArray:v4];
+    counterpartIdentifiers2 = [self counterpartIdentifiers];
+    v5 = [v3 setWithArray:counterpartIdentifiers2];
   }
 
   else
@@ -119,8 +119,8 @@ LABEL_6:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a1 claimRecords];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  claimRecords = [self claimRecords];
+  v5 = [claimRecords countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -131,14 +131,14 @@ LABEL_6:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(claimRecords);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) typeIdentifiers];
-        [v2 addObjectsFromArray:v9];
+        typeIdentifiers = [*(*(&v12 + 1) + 8 * i) typeIdentifiers];
+        [v2 addObjectsFromArray:typeIdentifiers];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [claimRecords countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

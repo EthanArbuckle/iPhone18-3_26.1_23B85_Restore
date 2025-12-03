@@ -1,26 +1,26 @@
 @interface SKUIStackedImageView
-+ (SKUIStackedImageConfiguration)_configurationForSize:(SEL)a3;
-+ (double)maximumPerspectiveHeightForSize:(CGSize)a3;
++ (SKUIStackedImageConfiguration)_configurationForSize:(SEL)size;
++ (double)maximumPerspectiveHeightForSize:(CGSize)size;
 - (CGPoint)vanishingPoint;
-- (SKUIStackedImageView)initWithFrame:(CGRect)a3;
+- (SKUIStackedImageView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBorderDrawingCache:(id)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)setImageSize:(CGSize)a3;
-- (void)stackView:(id)a3 applyAttributesToItem:(id)a4 atIndex:(int64_t)a5;
+- (void)setBorderDrawingCache:(id)cache;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image;
+- (void)setImageSize:(CGSize)size;
+- (void)stackView:(id)view applyAttributesToItem:(id)item atIndex:(int64_t)index;
 @end
 
 @implementation SKUIStackedImageView
 
-- (SKUIStackedImageView)initWithFrame:(CGRect)a3
+- (SKUIStackedImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIStackedImageView initWithFrame:];
@@ -28,11 +28,11 @@
 
   v16.receiver = self;
   v16.super_class = SKUIStackedImageView;
-  v8 = [(SKUIStackedImageView *)&v16 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIStackedImageView *)&v16 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v8->_stackDepth = 3;
+    height->_stackDepth = 3;
     v10 = SKUIMPUFoundationFramework();
     v11 = SKUIWeakLinkedClassForString(&cfstr_Mpuborderedima.isa, v10);
     v12 = objc_alloc(SKUIWeakLinkedClassForString(&cfstr_Mpustackview.isa, v10));
@@ -57,10 +57,10 @@
   [(SKUIStackedImageView *)&v3 dealloc];
 }
 
-+ (double)maximumPerspectiveHeightForSize:(CGSize)a3
++ (double)maximumPerspectiveHeightForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_opt_class();
   if (v5)
   {
@@ -76,19 +76,19 @@
   return floorf(v6);
 }
 
-- (void)setBorderDrawingCache:(id)a3
+- (void)setBorderDrawingCache:(id)cache
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_borderDrawingCache != v5)
+  cacheCopy = cache;
+  if (self->_borderDrawingCache != cacheCopy)
   {
-    objc_storeStrong(&self->_borderDrawingCache, a3);
-    v6 = [(MPUStackView *)self->_stackView items];
+    objc_storeStrong(&self->_borderDrawingCache, cache);
+    items = [(MPUStackView *)self->_stackView items];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -100,14 +100,14 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(items);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setBorderDrawingCache:v5];
+          [*(*(&v11 + 1) + 8 * v10++) setBorderDrawingCache:cacheCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -115,23 +115,23 @@
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIStackedImageView *)self image];
+  imageCopy = image;
+  image = [(SKUIStackedImageView *)self image];
 
-  if (v5 != v4)
+  if (image != imageCopy)
   {
     v15.receiver = self;
     v15.super_class = SKUIStackedImageView;
-    [(SKUIImageView *)&v15 setImage:v4];
-    v6 = [(MPUStackView *)self->_stackView items];
+    [(SKUIImageView *)&v15 setImage:imageCopy];
+    items = [(MPUStackView *)self->_stackView items];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    v7 = [items countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -143,14 +143,14 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(items);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setImage:v4];
+          [*(*(&v11 + 1) + 8 * v10++) setImage:imageCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v8 = [items countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v8);
@@ -158,10 +158,10 @@
   }
 }
 
-- (void)setImageSize:(CGSize)a3
+- (void)setImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(MPUStackView *)self->_stackView setBaseSize:?];
   v12 = 0;
   v10 = 0u;
@@ -204,12 +204,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SKUIStackedImageView *)self frame];
   v14.origin.x = v8;
   v14.origin.y = v9;
@@ -228,10 +228,10 @@
   }
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [(SKUIStackedImageView *)self center];
   if (x != v7 || y != v6)
   {
@@ -247,8 +247,8 @@
   [(SKUIImageView *)self imageSize];
   if (v4 == *MEMORY[0x277CBF3A8] && v3 == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v6 = [(SKUIStackedImageView *)self image];
-    [v6 size];
+    image = [(SKUIStackedImageView *)self image];
+    [image size];
   }
 
   stackView = self->_stackView;
@@ -261,10 +261,10 @@
   [(SKUIImageView *)&v8 layoutSubviews];
 }
 
-- (void)stackView:(id)a3 applyAttributesToItem:(id)a4 atIndex:(int64_t)a5
+- (void)stackView:(id)view applyAttributesToItem:(id)item atIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  itemCopy = item;
   borderConfiguration = self->_borderConfiguration;
   if (!borderConfiguration)
   {
@@ -279,35 +279,35 @@
     }
 
     v14 = self->_borderConfiguration;
-    v15 = [MEMORY[0x277D75348] whiteColor];
-    [(MPUBorderConfiguration *)v14 setDropShadowColor:v15];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(MPUBorderConfiguration *)v14 setDropShadowColor:whiteColor];
 
     [(MPUBorderConfiguration *)self->_borderConfiguration setDropShadowEdges:11];
     [(MPUBorderConfiguration *)self->_borderConfiguration setDropShadowWidth:1.0 / *&stackView_applyAttributesToItem_atIndex__sScreenScale];
     v16 = self->_borderConfiguration;
-    v17 = [MEMORY[0x277D75348] whiteColor];
-    [(MPUBorderConfiguration *)v16 setBorderColor:v17];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(MPUBorderConfiguration *)v16 setBorderColor:whiteColor2];
 
     [(MPUBorderConfiguration *)self->_borderConfiguration setBorderWidth:1.0 / *&stackView_applyAttributesToItem_atIndex__sScreenScale];
     v18 = self->_borderConfiguration;
-    v19 = [MEMORY[0x277D75348] whiteColor];
-    [(MPUBorderConfiguration *)v18 setFillColor:v19];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [(MPUBorderConfiguration *)v18 setFillColor:whiteColor3];
 
     borderConfiguration = self->_borderConfiguration;
   }
 
-  if (a5 >= 5)
+  if (index >= 5)
   {
-    a5 = 5;
+    index = 5;
   }
 
-  [(MPUBorderConfiguration *)borderConfiguration setFillAlpha:stackView_applyAttributesToItem_atIndex__sItemOverlayCenterWhiteAlphas[a5]];
-  [(MPUBorderConfiguration *)self->_borderConfiguration setBorderAlpha:stackView_applyAttributesToItem_atIndex__sItemOverlayBorderWhiteAlphas[a5]];
-  [v9 setBorderConfiguration:self->_borderConfiguration];
-  [v9 setImageAlpha:stackView_applyAttributesToItem_atIndex__sItemImageAlphas[a5]];
-  [v9 setImageContentsRect:{stackView_applyAttributesToItem_atIndex__sItemImageContentRects[4 * a5], stackView_applyAttributesToItem_atIndex__sItemImageContentRects[4 * a5 + 1], stackView_applyAttributesToItem_atIndex__sItemImageContentRects[4 * a5 + 2], stackView_applyAttributesToItem_atIndex__sItemImageContentRects[4 * a5 + 3]}];
-  v20 = stackView_applyAttributesToItem_atIndex__sItemImageShouldFlipHorizontal[a5];
-  v21 = stackView_applyAttributesToItem_atIndex__sItemImageShouldFlipVertical[a5];
+  [(MPUBorderConfiguration *)borderConfiguration setFillAlpha:stackView_applyAttributesToItem_atIndex__sItemOverlayCenterWhiteAlphas[index]];
+  [(MPUBorderConfiguration *)self->_borderConfiguration setBorderAlpha:stackView_applyAttributesToItem_atIndex__sItemOverlayBorderWhiteAlphas[index]];
+  [itemCopy setBorderConfiguration:self->_borderConfiguration];
+  [itemCopy setImageAlpha:stackView_applyAttributesToItem_atIndex__sItemImageAlphas[index]];
+  [itemCopy setImageContentsRect:{stackView_applyAttributesToItem_atIndex__sItemImageContentRects[4 * index], stackView_applyAttributesToItem_atIndex__sItemImageContentRects[4 * index + 1], stackView_applyAttributesToItem_atIndex__sItemImageContentRects[4 * index + 2], stackView_applyAttributesToItem_atIndex__sItemImageContentRects[4 * index + 3]}];
+  v20 = stackView_applyAttributesToItem_atIndex__sItemImageShouldFlipHorizontal[index];
+  v21 = stackView_applyAttributesToItem_atIndex__sItemImageShouldFlipVertical[index];
   v22 = *MEMORY[0x277CBF2C0];
   v23 = *(MEMORY[0x277CBF2C0] + 16);
   *&v29.a = *MEMORY[0x277CBF2C0];
@@ -339,9 +339,9 @@
   }
 
   v28 = v29;
-  [v9 setImageTransform:&v28];
-  v27 = [(SKUIStackedImageView *)self image];
-  [v9 setImage:v27];
+  [itemCopy setImageTransform:&v28];
+  image = [(SKUIStackedImageView *)self image];
+  [itemCopy setImage:image];
 }
 
 void __64__SKUIStackedImageView_stackView_applyAttributesToItem_atIndex___block_invoke()
@@ -351,7 +351,7 @@ void __64__SKUIStackedImageView_stackView_applyAttributesToItem_atIndex___block_
   stackView_applyAttributesToItem_atIndex__sScreenScale = v0;
 }
 
-+ (SKUIStackedImageConfiguration)_configurationForSize:(SEL)a3
++ (SKUIStackedImageConfiguration)_configurationForSize:(SEL)size
 {
   height = a4.height;
   width = a4.width;

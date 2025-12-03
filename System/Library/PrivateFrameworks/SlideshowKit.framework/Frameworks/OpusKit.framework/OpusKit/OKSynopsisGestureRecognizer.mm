@@ -1,13 +1,13 @@
 @interface OKSynopsisGestureRecognizer
 - (BOOL)shouldCompleteGesture;
-- (OKSynopsisGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (OKSynopsisGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)progress;
-- (void)handle:(id)a3;
+- (void)handle:(id)handle;
 @end
 
 @implementation OKSynopsisGestureRecognizer
 
-- (OKSynopsisGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (OKSynopsisGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v9.receiver = self;
   v9.super_class = OKSynopsisGestureRecognizer;
@@ -15,7 +15,7 @@
   v7 = v6;
   if (v6)
   {
-    [(OKSynopsisGestureRecognizer *)v6 addTarget:a3 action:a4];
+    [(OKSynopsisGestureRecognizer *)v6 addTarget:target action:action];
   }
 
   return v7;
@@ -40,16 +40,16 @@
   return 0;
 }
 
-- (void)handle:(id)a3
+- (void)handle:(id)handle
 {
-  if ([a3 state] == 1 && (-[UIPinchGestureRecognizer scale](self, "scale"), v5 > 1.0))
+  if ([handle state] == 1 && (-[UIPinchGestureRecognizer scale](self, "scale"), v5 > 1.0))
   {
     v6 = 1;
   }
 
   else
   {
-    if ([a3 state] != 1)
+    if ([handle state] != 1)
     {
       return;
     }

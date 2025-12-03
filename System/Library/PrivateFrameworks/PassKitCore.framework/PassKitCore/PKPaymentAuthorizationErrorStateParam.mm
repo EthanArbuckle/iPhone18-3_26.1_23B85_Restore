@@ -1,33 +1,33 @@
 @interface PKPaymentAuthorizationErrorStateParam
-+ (id)paramWithError:(id)a3 clientFailure:(BOOL)a4;
-+ (id)paramWithError:(id)a3 paymentOffersError:(BOOL)a4;
++ (id)paramWithError:(id)error clientFailure:(BOOL)failure;
++ (id)paramWithError:(id)error paymentOffersError:(BOOL)offersError;
 - (id)description;
 @end
 
 @implementation PKPaymentAuthorizationErrorStateParam
 
-+ (id)paramWithError:(id)a3 clientFailure:(BOOL)a4
++ (id)paramWithError:(id)error clientFailure:(BOOL)failure
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 param];
-  [v7 setError:v6];
+  failureCopy = failure;
+  errorCopy = error;
+  param = [self param];
+  [param setError:errorCopy];
 
-  [v7 setClientFailure:v4];
+  [param setClientFailure:failureCopy];
 
-  return v7;
+  return param;
 }
 
-+ (id)paramWithError:(id)a3 paymentOffersError:(BOOL)a4
++ (id)paramWithError:(id)error paymentOffersError:(BOOL)offersError
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 param];
-  [v7 setError:v6];
+  offersErrorCopy = offersError;
+  errorCopy = error;
+  param = [self param];
+  [param setError:errorCopy];
 
-  [v7 setPaymentOffersError:v4];
+  [param setPaymentOffersError:offersErrorCopy];
 
-  return v7;
+  return param;
 }
 
 - (id)description

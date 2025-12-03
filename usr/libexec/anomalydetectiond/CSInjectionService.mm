@@ -1,20 +1,20 @@
 @interface CSInjectionService
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CSInjectionService)init;
-- (id)syncgetClassForName:(id)a3;
+- (id)syncgetClassForName:(id)name;
 - (void)beginService;
 @end
 
 @implementation CSInjectionService
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v6 = a3;
-  v5 = a4 + 1;
-  if (v5 < [v6 count])
+  blockedCopy = blocked;
+  v5 = index + 1;
+  if (v5 < [blockedCopy count])
   {
-    [objc_msgSend(v6 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", v6, v5}];
+    [objc_msgSend(blockedCopy objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blockedCopy, v5}];
   }
 }
 
@@ -52,11 +52,11 @@
   _objc_release_x1();
 }
 
-- (id)syncgetClassForName:(id)a3
+- (id)syncgetClassForName:(id)name
 {
-  v4 = a3;
-  v5 = [(CSInjectionService *)self classInjectionMap];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  classInjectionMap = [(CSInjectionService *)self classInjectionMap];
+  v6 = [classInjectionMap objectForKey:nameCopy];
 
   if (v6)
   {
@@ -66,14 +66,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(CSInjectionService *)self mapMissBehavior];
-  if (!v8)
+  mapMissBehavior = [(CSInjectionService *)self mapMissBehavior];
+  if (!mapMissBehavior)
   {
-    v7 = NSClassFromString(v4);
+    v7 = NSClassFromString(nameCopy);
     goto LABEL_7;
   }
 
-  if (v8 != 2)
+  if (mapMissBehavior != 2)
   {
     v9 = 0;
 LABEL_8:
@@ -89,7 +89,7 @@ LABEL_8:
     v16 = 2082;
     v17 = "";
     v18 = 2114;
-    v19 = v4;
+    v19 = nameCopy;
     v20 = 2082;
     v21 = "assert";
     v22 = 2081;
@@ -105,7 +105,7 @@ LABEL_8:
     v16 = 2082;
     v17 = "";
     v18 = 2114;
-    v19 = v4;
+    v19 = nameCopy;
     v20 = 2082;
     v21 = "assert";
     v22 = 2081;
@@ -121,7 +121,7 @@ LABEL_8:
     v16 = 2082;
     v17 = "";
     v18 = 2114;
-    v19 = v4;
+    v19 = nameCopy;
     v20 = 2082;
     v21 = "assert";
     v22 = 2081;

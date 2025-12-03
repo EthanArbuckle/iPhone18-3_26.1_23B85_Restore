@@ -1,32 +1,32 @@
 @interface CAFAppLink
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAppLink:(id)a3;
-- (CAFAppLink)initWithCoder:(id)a3;
-- (CAFAppLink)initWithIdentifier:(id)a3 title:(id)a4 contentURLAction:(id)a5 symbolNameAndColor:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAppLink:(id)link;
+- (CAFAppLink)initWithCoder:(id)coder;
+- (CAFAppLink)initWithIdentifier:(id)identifier title:(id)title contentURLAction:(id)action symbolNameAndColor:(id)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAFAppLink
 
-- (CAFAppLink)initWithIdentifier:(id)a3 title:(id)a4 contentURLAction:(id)a5 symbolNameAndColor:(id)a6
+- (CAFAppLink)initWithIdentifier:(id)identifier title:(id)title contentURLAction:(id)action symbolNameAndColor:(id)color
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  titleCopy = title;
+  actionCopy = action;
+  colorCopy = color;
   v18.receiver = self;
   v18.super_class = CAFAppLink;
   v15 = [(CAFAppLink *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_contentURLAction, a5);
-    objc_storeStrong(&v16->_title, a4);
-    objc_storeStrong(&v16->_symbolNameAndColor, a6);
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_contentURLAction, action);
+    objc_storeStrong(&v16->_title, title);
+    objc_storeStrong(&v16->_symbolNameAndColor, color);
   }
 
   return v16;
@@ -38,49 +38,49 @@
   v11.receiver = self;
   v11.super_class = CAFAppLink;
   v4 = [(CAFAppLink *)&v11 description];
-  v5 = [(CAFAppLink *)self identifier];
-  v6 = [(CAFAppLink *)self contentURLAction];
-  v7 = [(CAFAppLink *)self title];
-  v8 = [(CAFAppLink *)self symbolNameAndColor];
-  v9 = [v3 stringWithFormat:@"%@: identifier: %@, contentURLAction: %@, title: %@, symbolNameAndColor: %@", v4, v5, v6, v7, v8];
+  identifier = [(CAFAppLink *)self identifier];
+  contentURLAction = [(CAFAppLink *)self contentURLAction];
+  title = [(CAFAppLink *)self title];
+  symbolNameAndColor = [(CAFAppLink *)self symbolNameAndColor];
+  v9 = [v3 stringWithFormat:@"%@: identifier: %@, contentURLAction: %@, title: %@, symbolNameAndColor: %@", v4, identifier, contentURLAction, title, symbolNameAndColor];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CAFAppLink *)self identifier];
-  [v4 encodeObject:v5 forKey:@"kCAFAppLinksIdentifierKey"];
+  coderCopy = coder;
+  identifier = [(CAFAppLink *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCAFAppLinksIdentifierKey"];
 
-  v6 = [(CAFAppLink *)self contentURLAction];
-  [v4 encodeObject:v6 forKey:@"kCAFAppLinksContentURLKey"];
+  contentURLAction = [(CAFAppLink *)self contentURLAction];
+  [coderCopy encodeObject:contentURLAction forKey:@"kCAFAppLinksContentURLKey"];
 
-  v7 = [(CAFAppLink *)self title];
-  [v4 encodeObject:v7 forKey:@"kCAFAppLinksTitleKey"];
+  title = [(CAFAppLink *)self title];
+  [coderCopy encodeObject:title forKey:@"kCAFAppLinksTitleKey"];
 
-  v9 = [(CAFAppLink *)self symbolNameAndColor];
-  v8 = [v9 dictionaryRepresentation];
-  [v4 encodeObject:v8 forKey:@"kCAFAppLinksSymbolNameAndColorKey"];
+  symbolNameAndColor = [(CAFAppLink *)self symbolNameAndColor];
+  dictionaryRepresentation = [symbolNameAndColor dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"kCAFAppLinksSymbolNameAndColorKey"];
 }
 
-- (CAFAppLink)initWithCoder:(id)a3
+- (CAFAppLink)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CAFAppLink;
   v5 = [(CAFAppLink *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCAFAppLinksIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCAFAppLinksIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCAFAppLinksContentURLKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCAFAppLinksContentURLKey"];
     contentURLAction = v5->_contentURLAction;
     v5->_contentURLAction = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCAFAppLinksTitleKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCAFAppLinksTitleKey"];
     title = v5->_title;
     v5->_title = v10;
 
@@ -88,7 +88,7 @@
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"kCAFAppLinksSymbolNameAndColorKey"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"kCAFAppLinksSymbolNameAndColorKey"];
 
     if (v16)
     {
@@ -101,35 +101,35 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CAFAppLink *)self isEqualToAppLink:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CAFAppLink *)self isEqualToAppLink:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToAppLink:(id)a3
+- (BOOL)isEqualToAppLink:(id)link
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(CAFAppLink *)self identifier];
-  if ([v5 isEqualToString:v6])
+  linkCopy = link;
+  identifier = [linkCopy identifier];
+  identifier2 = [(CAFAppLink *)self identifier];
+  if ([identifier isEqualToString:identifier2])
   {
-    v7 = [v4 contentURLAction];
-    v8 = [(CAFAppLink *)self contentURLAction];
-    if ([v7 isEqualToString:v8])
+    contentURLAction = [linkCopy contentURLAction];
+    contentURLAction2 = [(CAFAppLink *)self contentURLAction];
+    if ([contentURLAction isEqualToString:contentURLAction2])
     {
-      v9 = [v4 title];
-      v10 = [(CAFAppLink *)self title];
-      if ([v9 isEqualToString:v10])
+      title = [linkCopy title];
+      title2 = [(CAFAppLink *)self title];
+      if ([title isEqualToString:title2])
       {
-        v16 = [(CAFAppLink *)self symbolNameAndColor];
-        v15 = [v16 dictionaryRepresentation];
-        v11 = [v4 symbolNameAndColor];
-        v12 = [v11 dictionaryRepresentation];
-        v13 = [v15 isEqualToDictionary:v12];
+        symbolNameAndColor = [(CAFAppLink *)self symbolNameAndColor];
+        dictionaryRepresentation = [symbolNameAndColor dictionaryRepresentation];
+        symbolNameAndColor2 = [linkCopy symbolNameAndColor];
+        dictionaryRepresentation2 = [symbolNameAndColor2 dictionaryRepresentation];
+        v13 = [dictionaryRepresentation isEqualToDictionary:dictionaryRepresentation2];
       }
 
       else
@@ -154,27 +154,27 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CAFAppLink *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(CAFAppLink *)self title];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CAFAppLink *)self contentURLAction];
-  v8 = v6 ^ [v7 hash];
-  v9 = [(CAFAppLink *)self symbolNameAndColor];
-  v10 = [v9 dictionaryRepresentation];
-  v11 = [v10 hash];
+  identifier = [(CAFAppLink *)self identifier];
+  v4 = [identifier hash];
+  title = [(CAFAppLink *)self title];
+  v6 = [title hash] ^ v4;
+  contentURLAction = [(CAFAppLink *)self contentURLAction];
+  v8 = v6 ^ [contentURLAction hash];
+  symbolNameAndColor = [(CAFAppLink *)self symbolNameAndColor];
+  dictionaryRepresentation = [symbolNameAndColor dictionaryRepresentation];
+  v11 = [dictionaryRepresentation hash];
 
   return v8 ^ v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CAFAppLink alloc];
-  v5 = [(CAFAppLink *)self identifier];
-  v6 = [(CAFAppLink *)self title];
-  v7 = [(CAFAppLink *)self contentURLAction];
-  v8 = [(CAFAppLink *)self symbolNameAndColor];
-  v9 = [(CAFAppLink *)v4 initWithIdentifier:v5 title:v6 contentURLAction:v7 symbolNameAndColor:v8];
+  identifier = [(CAFAppLink *)self identifier];
+  title = [(CAFAppLink *)self title];
+  contentURLAction = [(CAFAppLink *)self contentURLAction];
+  symbolNameAndColor = [(CAFAppLink *)self symbolNameAndColor];
+  v9 = [(CAFAppLink *)v4 initWithIdentifier:identifier title:title contentURLAction:contentURLAction symbolNameAndColor:symbolNameAndColor];
 
   return v9;
 }

@@ -1,26 +1,26 @@
 @interface JavaLangThrowable
-- (JavaLangThrowable)initWithJavaLangThrowable:(id)a3;
+- (JavaLangThrowable)initWithJavaLangThrowable:(id)throwable;
 - (NSString)description;
 - (id)fillInStackTrace;
 - (id)filterStackTrace;
 - (id)getSuppressed;
-- (id)initCauseWithJavaLangThrowable:(id)a3;
-- (void)addSuppressedWithJavaLangThrowable:(id)a3;
+- (id)initCauseWithJavaLangThrowable:(id)throwable;
+- (void)addSuppressedWithJavaLangThrowable:(id)throwable;
 - (void)dealloc;
 - (void)maybeFreeRawCallStack;
 - (void)printStackTrace;
-- (void)printStackTraceWithJavaIoPrintStream:(id)a3;
-- (void)printStackTraceWithJavaIoPrintWriter:(id)a3;
-- (void)setStackTraceWithJavaLangStackTraceElementArray:(id)a3;
+- (void)printStackTraceWithJavaIoPrintStream:(id)stream;
+- (void)printStackTraceWithJavaIoPrintWriter:(id)writer;
+- (void)setStackTraceWithJavaLangStackTraceElementArray:(id)array;
 @end
 
 @implementation JavaLangThrowable
 
-- (JavaLangThrowable)initWithJavaLangThrowable:(id)a3
+- (JavaLangThrowable)initWithJavaLangThrowable:(id)throwable
 {
-  if (a3)
+  if (throwable)
   {
-    v5 = [a3 description];
+    v5 = [throwable description];
   }
 
   else
@@ -28,7 +28,7 @@
     v5 = 0;
   }
 
-  JavaLangThrowable_initWithNSString_withJavaLangThrowable_withBoolean_withBoolean_(self, v5, a3, 1, 1);
+  JavaLangThrowable_initWithNSString_withJavaLangThrowable_withBoolean_withBoolean_(self, v5, throwable, 1, 1);
   return self;
 }
 
@@ -47,9 +47,9 @@
         do
         {
           v6 = [[JavaLangStackTraceElement alloc] initWithLong:self->rawCallStack[v5]];
-          v7 = [(JavaLangStackTraceElement *)v6 getClassName];
-          v8 = v7;
-          if (v7 && ([v7 isEqualToString:@"NSInvocation"] & 1) == 0 && (!objc_msgSend(v8, "isEqualToString:", @"java.lang.Throwable") || (objc_msgSend(-[JavaLangStackTraceElement getMethodName](v6, "getMethodName"), "isEqualToString:", @"<init>") & 1) == 0))
+          getClassName = [(JavaLangStackTraceElement *)v6 getClassName];
+          v8 = getClassName;
+          if (getClassName && ([getClassName isEqualToString:@"NSInvocation"] & 1) == 0 && (!objc_msgSend(v8, "isEqualToString:", @"java.lang.Throwable") || (objc_msgSend(-[JavaLangStackTraceElement getMethodName](v6, "getMethodName"), "isEqualToString:", @"<init>") & 1) == 0))
           {
             [v4 addObject:v6];
           }
@@ -60,8 +60,8 @@
         while (v5 < self->rawFrameCount);
       }
 
-      v9 = [v4 lastObject];
-      if ([objc_msgSend(v9 "getClassName")] && objc_msgSend(objc_msgSend(v9, "getMethodName"), "isEqualToString:", @"invoke"))
+      lastObject = [v4 lastObject];
+      if ([objc_msgSend(lastObject "getClassName")] && objc_msgSend(objc_msgSend(lastObject, "getMethodName"), "isEqualToString:", @"invoke"))
       {
         [v4 removeLastObject];
       }
@@ -87,7 +87,7 @@
   return self;
 }
 
-- (id)initCauseWithJavaLangThrowable:(id)a3
+- (id)initCauseWithJavaLangThrowable:(id)throwable
 {
   if (self->cause)
   {
@@ -96,7 +96,7 @@
     goto LABEL_6;
   }
 
-  if (a3 == self)
+  if (throwable == self)
   {
     v5 = [JavaLangIllegalArgumentException alloc];
     v6 = @"Self-causation not permitted";
@@ -106,7 +106,7 @@ LABEL_6:
     objc_exception_throw(v7);
   }
 
-  self->cause = a3;
+  self->cause = throwable;
   return self;
 }
 
@@ -122,19 +122,19 @@ LABEL_6:
   [(JavaLangThrowable *)self printStackTraceWithJavaIoPrintStream:v3];
 }
 
-- (void)printStackTraceWithJavaIoPrintWriter:(id)a3
+- (void)printStackTraceWithJavaIoPrintWriter:(id)writer
 {
-  [a3 printlnWithNSString:{-[JavaLangThrowable description](self, "description")}];
-  v5 = [(JavaLangThrowable *)self filterStackTrace];
-  if (v5[2] >= 1)
+  [writer printlnWithNSString:{-[JavaLangThrowable description](self, "description")}];
+  filterStackTrace = [(JavaLangThrowable *)self filterStackTrace];
+  if (filterStackTrace[2] >= 1)
   {
-    v6 = v5;
+    v6 = filterStackTrace;
     v7 = 0;
-    v8 = v5;
+    v8 = filterStackTrace;
     do
     {
-      [a3 printWithNSString:@"\tat "];
-      [a3 printlnWithId:*(v8 + 3)];
+      [writer printWithNSString:@"\tat "];
+      [writer printlnWithId:*(v8 + 3)];
       ++v7;
       v8 += 2;
     }
@@ -144,26 +144,26 @@ LABEL_6:
 
   if (self->cause)
   {
-    [a3 printWithNSString:@"Caused by: "];
+    [writer printWithNSString:@"Caused by: "];
     cause = self->cause;
 
-    [(JavaLangThrowable *)cause printStackTraceWithJavaIoPrintWriter:a3];
+    [(JavaLangThrowable *)cause printStackTraceWithJavaIoPrintWriter:writer];
   }
 }
 
-- (void)printStackTraceWithJavaIoPrintStream:(id)a3
+- (void)printStackTraceWithJavaIoPrintStream:(id)stream
 {
-  [a3 printlnWithNSString:{-[JavaLangThrowable description](self, "description")}];
-  v5 = [(JavaLangThrowable *)self filterStackTrace];
-  if (v5[2] >= 1)
+  [stream printlnWithNSString:{-[JavaLangThrowable description](self, "description")}];
+  filterStackTrace = [(JavaLangThrowable *)self filterStackTrace];
+  if (filterStackTrace[2] >= 1)
   {
-    v6 = v5;
+    v6 = filterStackTrace;
     v7 = 0;
-    v8 = v5;
+    v8 = filterStackTrace;
     do
     {
-      [a3 printWithNSString:@"\tat "];
-      [a3 printlnWithId:*(v8 + 3)];
+      [stream printWithNSString:@"\tat "];
+      [stream printlnWithId:*(v8 + 3)];
       ++v7;
       v8 += 2;
     }
@@ -173,24 +173,24 @@ LABEL_6:
 
   if (self->cause)
   {
-    [a3 printWithNSString:@"Caused by: "];
+    [stream printWithNSString:@"Caused by: "];
     cause = self->cause;
 
-    [(JavaLangThrowable *)cause printStackTraceWithJavaIoPrintStream:a3];
+    [(JavaLangThrowable *)cause printStackTraceWithJavaIoPrintStream:stream];
   }
 }
 
-- (void)setStackTraceWithJavaLangStackTraceElementArray:(id)a3
+- (void)setStackTraceWithJavaLangStackTraceElementArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     goto LABEL_12;
   }
 
-  v5 = *(a3 + 2);
+  v5 = *(array + 2);
   if (v5 >= 1)
   {
-    v6 = a3 + 24;
+    v6 = array + 24;
     while (*v6)
     {
       ++v6;
@@ -212,19 +212,19 @@ LABEL_6:
     v7 = self->stackTrace;
   }
 
-  self->stackTrace = a3;
+  self->stackTrace = array;
 
   objc_sync_exit(self);
 }
 
-- (void)addSuppressedWithJavaLangThrowable:(id)a3
+- (void)addSuppressedWithJavaLangThrowable:(id)throwable
 {
-  if (!a3)
+  if (!throwable)
   {
     JreThrowNullPointerException();
   }
 
-  if (a3 == self)
+  if (throwable == self)
   {
     objc_exception_throw(objc_alloc_init(JavaLangIllegalArgumentException));
   }
@@ -257,7 +257,7 @@ LABEL_6:
       }
     }
 
-    [(IOSObjectArray *)v7 replaceObjectAtIndex:size withObject:a3];
+    [(IOSObjectArray *)v7 replaceObjectAtIndex:size withObject:throwable];
 
     self->suppressedExceptions = v7;
 
@@ -289,10 +289,10 @@ LABEL_6:
 - (NSString)description
 {
   v3 = [-[JavaLangThrowable getClass](self "getClass")];
-  v4 = [(JavaLangThrowable *)self getMessage];
-  if (v4)
+  getMessage = [(JavaLangThrowable *)self getMessage];
+  if (getMessage)
   {
-    return [NSString stringWithFormat:@"%@: %@", v3, v4];
+    return [NSString stringWithFormat:@"%@: %@", v3, getMessage];
   }
 
   else

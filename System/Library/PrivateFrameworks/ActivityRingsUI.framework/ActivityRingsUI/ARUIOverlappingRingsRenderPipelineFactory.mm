@@ -1,33 +1,33 @@
 @interface ARUIOverlappingRingsRenderPipelineFactory
-- (ARUIOverlappingRingsRenderPipelineFactory)initWithDevice:(id)a3 library:(id)a4;
-- (ARUIOverlappingRingsRenderPipelineFactory)initWithDeviceSPI:(id)a3 librarySPI:(id)a4;
-- (id)pipelineForConfiguration:(id)a3;
+- (ARUIOverlappingRingsRenderPipelineFactory)initWithDevice:(id)device library:(id)library;
+- (ARUIOverlappingRingsRenderPipelineFactory)initWithDeviceSPI:(id)i librarySPI:(id)pI;
+- (id)pipelineForConfiguration:(id)configuration;
 @end
 
 @implementation ARUIOverlappingRingsRenderPipelineFactory
 
-- (ARUIOverlappingRingsRenderPipelineFactory)initWithDevice:(id)a3 library:(id)a4
+- (ARUIOverlappingRingsRenderPipelineFactory)initWithDevice:(id)device library:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  libraryCopy = library;
   v18.receiver = self;
   v18.super_class = ARUIOverlappingRingsRenderPipelineFactory;
-  v8 = [(ARUIPipelineFactory *)&v18 initWithDevice:v6 library:v7];
+  v8 = [(ARUIPipelineFactory *)&v18 initWithDevice:deviceCopy library:libraryCopy];
   if (v8)
   {
-    v9 = [(ARUIRingsRenderState *)[ARUIRingsEmptyState alloc] initWithDevice:v6 library:v7];
+    v9 = [(ARUIRingsRenderState *)[ARUIRingsEmptyState alloc] initWithDevice:deviceCopy library:libraryCopy];
     emptyState = v8->_emptyState;
     v8->_emptyState = v9;
 
-    v11 = [(ARUIRingsRenderState *)[ARUIRingsFillState alloc] initWithDevice:v6 library:v7];
+    v11 = [(ARUIRingsRenderState *)[ARUIRingsFillState alloc] initWithDevice:deviceCopy library:libraryCopy];
     fillState = v8->_fillState;
     v8->_fillState = v11;
 
-    v13 = [(ARUIRingsRenderState *)[ARUIRingsEndCapShadowState alloc] initWithDevice:v6 library:v7];
+    v13 = [(ARUIRingsRenderState *)[ARUIRingsEndCapShadowState alloc] initWithDevice:deviceCopy library:libraryCopy];
     endCapShadowState = v8->_endCapShadowState;
     v8->_endCapShadowState = v13;
 
-    v15 = [(ARUIRingsRenderState *)[ARUIRingsAlphaReductionState alloc] initWithDevice:v6 library:v7];
+    v15 = [(ARUIRingsRenderState *)[ARUIRingsAlphaReductionState alloc] initWithDevice:deviceCopy library:libraryCopy];
     alphaReductionState = v8->_alphaReductionState;
     v8->_alphaReductionState = v15;
   }
@@ -35,27 +35,27 @@
   return v8;
 }
 
-- (ARUIOverlappingRingsRenderPipelineFactory)initWithDeviceSPI:(id)a3 librarySPI:(id)a4
+- (ARUIOverlappingRingsRenderPipelineFactory)initWithDeviceSPI:(id)i librarySPI:(id)pI
 {
-  v6 = a4;
+  pICopy = pI;
   v17.receiver = self;
   v17.super_class = ARUIOverlappingRingsRenderPipelineFactory;
-  v7 = [(ARUIPipelineFactory *)&v17 initWithDeviceSPI:a3 librarySPI:v6];
+  v7 = [(ARUIPipelineFactory *)&v17 initWithDeviceSPI:i librarySPI:pICopy];
   if (v7)
   {
-    v8 = [(ARUIRingsRenderState *)[ARUIRingsEmptyState alloc] initWithPipelineLibrary:v6];
+    v8 = [(ARUIRingsRenderState *)[ARUIRingsEmptyState alloc] initWithPipelineLibrary:pICopy];
     emptyState = v7->_emptyState;
     v7->_emptyState = v8;
 
-    v10 = [(ARUIRingsRenderState *)[ARUIRingsFillState alloc] initWithPipelineLibrary:v6];
+    v10 = [(ARUIRingsRenderState *)[ARUIRingsFillState alloc] initWithPipelineLibrary:pICopy];
     fillState = v7->_fillState;
     v7->_fillState = v10;
 
-    v12 = [(ARUIRingsRenderState *)[ARUIRingsEndCapShadowState alloc] initWithPipelineLibrary:v6];
+    v12 = [(ARUIRingsRenderState *)[ARUIRingsEndCapShadowState alloc] initWithPipelineLibrary:pICopy];
     endCapShadowState = v7->_endCapShadowState;
     v7->_endCapShadowState = v12;
 
-    v14 = [(ARUIRingsRenderState *)[ARUIRingsAlphaReductionState alloc] initWithPipelineLibrary:v6];
+    v14 = [(ARUIRingsRenderState *)[ARUIRingsAlphaReductionState alloc] initWithPipelineLibrary:pICopy];
     alphaReductionState = v7->_alphaReductionState;
     v7->_alphaReductionState = v14;
   }
@@ -63,41 +63,41 @@
   return v7;
 }
 
-- (id)pipelineForConfiguration:(id)a3
+- (id)pipelineForConfiguration:(id)configuration
 {
-  v4 = a3;
-  if ([v4 hasVisibleRings])
+  configurationCopy = configuration;
+  if ([configurationCopy hasVisibleRings])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    if ([v4 hasVisibleRings])
+    array = [MEMORY[0x1E695DF70] array];
+    if ([configurationCopy hasVisibleRings])
     {
-      if ([v4 hasEmptyRing])
+      if ([configurationCopy hasEmptyRing])
       {
-        [v5 addObject:self->_emptyState];
+        [array addObject:self->_emptyState];
       }
 
-      if ([v4 hasFilledRing])
+      if ([configurationCopy hasFilledRing])
       {
-        [v5 addObject:self->_fillState];
-        if ([v4 hasOverlappingRing])
+        [array addObject:self->_fillState];
+        if ([configurationCopy hasOverlappingRing])
         {
-          [v5 addObject:self->_endCapShadowState];
+          [array addObject:self->_endCapShadowState];
         }
       }
 
-      if ([v4 needsAlphaReductionPass])
+      if ([configurationCopy needsAlphaReductionPass])
       {
-        [v5 addObject:self->_alphaReductionState];
+        [array addObject:self->_alphaReductionState];
       }
     }
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return array;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface CACTextMarker
-+ (BOOL)marker:(id)a3 precedesMarker:(id)a4;
-+ (BOOL)marker:(id)a3 precedesOrEqualsMarker:(id)a4;
-+ (id)markerWithData:(id)a3;
-+ (id)markerWithIndex:(unint64_t)a3;
-+ (unint64_t)lengthFromMarker:(id)a3 toMarker:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CACTextMarker)initWithData:(id)a3;
-- (CACTextMarker)initWithIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)marker:(id)marker precedesMarker:(id)precedesMarker;
++ (BOOL)marker:(id)marker precedesOrEqualsMarker:(id)equalsMarker;
++ (id)markerWithData:(id)data;
++ (id)markerWithIndex:(unint64_t)index;
++ (unint64_t)lengthFromMarker:(id)marker toMarker:(id)toMarker;
+- (BOOL)isEqual:(id)equal;
+- (CACTextMarker)initWithData:(id)data;
+- (CACTextMarker)initWithIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)setData:(id)a3;
+- (void)setData:(id)data;
 @end
 
 @implementation CACTextMarker
 
-+ (id)markerWithIndex:(unint64_t)a3
++ (id)markerWithIndex:(unint64_t)index
 {
-  v3 = [objc_allocWithZone(CACTextMarker) initWithIndex:a3];
+  v3 = [objc_allocWithZone(CACTextMarker) initWithIndex:index];
 
   return v3;
 }
 
-+ (id)markerWithData:(id)a3
++ (id)markerWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
-    v4 = [objc_allocWithZone(CACTextMarker) initWithData:v3];
+    dataCopy = data;
+    v4 = [objc_allocWithZone(CACTextMarker) initWithData:dataCopy];
   }
 
   else
@@ -38,11 +38,11 @@
   return v4;
 }
 
-+ (BOOL)marker:(id)a3 precedesOrEqualsMarker:(id)a4
++ (BOOL)marker:(id)marker precedesOrEqualsMarker:(id)equalsMarker
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 index] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v6, "index") == 0x7FFFFFFFFFFFFFFFLL)
+  markerCopy = marker;
+  equalsMarkerCopy = equalsMarker;
+  if ([markerCopy index] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(equalsMarkerCopy, "index") == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = CACLogGeneral();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -55,18 +55,18 @@
 
   else
   {
-    v9 = [v5 index];
-    v8 = v9 < [v6 index];
+    index = [markerCopy index];
+    v8 = index < [equalsMarkerCopy index];
   }
 
   return v8;
 }
 
-+ (unint64_t)lengthFromMarker:(id)a3 toMarker:(id)a4
++ (unint64_t)lengthFromMarker:(id)marker toMarker:(id)toMarker
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 index] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v6, "index") == 0x7FFFFFFFFFFFFFFFLL)
+  markerCopy = marker;
+  toMarkerCopy = toMarker;
+  if ([markerCopy index] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(toMarkerCopy, "index") == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = CACLogGeneral();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -79,25 +79,25 @@
 
   else
   {
-    v9 = [v6 index];
-    v8 = v9 - [v5 index];
+    index = [toMarkerCopy index];
+    v8 = index - [markerCopy index];
   }
 
   return v8;
 }
 
-+ (BOOL)marker:(id)a3 precedesMarker:(id)a4
++ (BOOL)marker:(id)marker precedesMarker:(id)precedesMarker
 {
-  v5 = a4;
-  v6 = [a3 index];
-  v7 = [v5 index];
+  precedesMarkerCopy = precedesMarker;
+  index = [marker index];
+  index2 = [precedesMarkerCopy index];
 
-  return v6 < v7;
+  return index < index2;
 }
 
-- (CACTextMarker)initWithData:(id)a3
+- (CACTextMarker)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = CACTextMarker;
   v6 = [(CACTextMarker *)&v9 init];
@@ -105,13 +105,13 @@
   if (v6)
   {
     v6->_index = 0;
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;
 }
 
-- (CACTextMarker)initWithIndex:(unint64_t)a3
+- (CACTextMarker)initWithIndex:(unint64_t)index
 {
   v8.receiver = self;
   v8.super_class = CACTextMarker;
@@ -120,30 +120,30 @@
   if (v4)
   {
     data = v4->_data;
-    v4->_index = a3;
+    v4->_index = index;
     v4->_data = 0;
   }
 
   return v5;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   data = self->_data;
   p_data = &self->_data;
-  if (data != v5)
+  if (data != dataCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_data, a3);
-    v5 = v8;
+    v8 = dataCopy;
+    objc_storeStrong(p_data, data);
+    dataCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   data = self->_data;
-  v5 = [CACTextMarker allocWithZone:a3];
+  v5 = [CACTextMarker allocWithZone:zone];
   if (data)
   {
     v6 = self->_data;
@@ -173,27 +173,27 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
-    v5 = [(CACTextMarker *)self data];
-    v6 = [v4 data];
-    v7 = v6;
-    if (v5 | v6)
+    data = [(CACTextMarker *)self data];
+    data2 = [equalCopy data];
+    v7 = data2;
+    if (data | data2)
     {
       v8 = 0;
-      if (v5 && v6)
+      if (data && data2)
       {
-        v8 = CFEqual(v5, v6) != 0;
+        v8 = CFEqual(data, data2) != 0;
       }
     }
 
     else
     {
-      v9 = [(CACTextMarker *)self index];
-      v8 = v9 == [v4 index];
+      index = [(CACTextMarker *)self index];
+      v8 = index == [equalCopy index];
     }
   }
 
@@ -207,9 +207,9 @@
 
 - (id)description
 {
-  v3 = [(CACTextMarker *)self data];
+  data = [(CACTextMarker *)self data];
 
-  if (v3)
+  if (data)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"TextMarker (data): %@", self->_data];
   }

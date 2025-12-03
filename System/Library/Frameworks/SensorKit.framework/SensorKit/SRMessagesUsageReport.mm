@@ -1,36 +1,36 @@
 @interface SRMessagesUsageReport
-+ (SRMessagesUsageReport)usageReportWithInterval:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (SRMessagesUsageReport)usageReportWithInterval:(id)interval;
+- (BOOL)isEqual:(id)equal;
 - (NSInteger)totalUniqueContacts;
 - (NSString)description;
-- (SRMessagesUsageReport)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRMessagesUsageReport)initWithCoder:(id)a3;
+- (SRMessagesUsageReport)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRMessagesUsageReport)initWithCoder:(id)coder;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRMessagesUsageReport
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeDouble:@"startTime" forKey:self->_startTime];
-  [a3 encodeInteger:self->_totalOutgoingMessages forKey:@"totalOutgoingMsg"];
-  [a3 encodeInteger:self->_totalIncomingMessages forKey:@"totalIncomingMsg"];
-  [a3 encodeInteger:-[SRMessagesUsageReport totalUniqueContacts](self forKey:{"totalUniqueContacts"), @"totalUniqueContacts"}];
+  [coder encodeDouble:@"startTime" forKey:self->_startTime];
+  [coder encodeInteger:self->_totalOutgoingMessages forKey:@"totalOutgoingMsg"];
+  [coder encodeInteger:self->_totalIncomingMessages forKey:@"totalIncomingMsg"];
+  [coder encodeInteger:-[SRMessagesUsageReport totalUniqueContacts](self forKey:{"totalUniqueContacts"), @"totalUniqueContacts"}];
   duration = self->_duration;
 
-  [a3 encodeDouble:@"duration" forKey:duration];
+  [coder encodeDouble:@"duration" forKey:duration];
 }
 
-- (SRMessagesUsageReport)initWithCoder:(id)a3
+- (SRMessagesUsageReport)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -40,13 +40,13 @@
   v6 = [(SRMessagesUsageReport *)&v10 init];
   if (v6)
   {
-    [a3 decodeDoubleForKey:@"startTime"];
+    [coder decodeDoubleForKey:@"startTime"];
     v6->_startTime = v7;
-    [a3 decodeDoubleForKey:@"duration"];
+    [coder decodeDoubleForKey:@"duration"];
     v6->_duration = v8;
-    v6->_totalOutgoingMessages = [a3 decodeIntegerForKey:@"totalOutgoingMsg"];
-    v6->_totalIncomingMessages = [a3 decodeIntegerForKey:@"totalIncomingMsg"];
-    v6->_totalUniqueContacts = [a3 decodeIntegerForKey:@"totalUniqueContacts"];
+    v6->_totalOutgoingMessages = [coder decodeIntegerForKey:@"totalOutgoingMsg"];
+    v6->_totalIncomingMessages = [coder decodeIntegerForKey:@"totalIncomingMsg"];
+    v6->_totalUniqueContacts = [coder decodeIntegerForKey:@"totalUniqueContacts"];
   }
 
   return v6;
@@ -60,16 +60,16 @@
   [(SRMessagesUsageReport *)&v3 dealloc];
 }
 
-- (SRMessagesUsageReport)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRMessagesUsageReport)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if ([a3 length])
+  if ([representation length])
   {
     v11.receiver = self;
     v11.super_class = SRMessagesUsageReport;
     v7 = [(SRMessagesUsageReport *)&v11 init];
     if (v7)
     {
-      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:0];
+      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:0];
       if (v8)
       {
         v9 = v8;
@@ -88,12 +88,12 @@
   return v7;
 }
 
-+ (SRMessagesUsageReport)usageReportWithInterval:(id)a3
++ (SRMessagesUsageReport)usageReportWithInterval:(id)interval
 {
   v4 = objc_alloc_init(SRMessagesUsageReport);
-  [objc_msgSend(a3 "startDate")];
+  [objc_msgSend(interval "startDate")];
   [(SRMessagesUsageReport *)v4 setStartTime:?];
-  [a3 duration];
+  [interval duration];
   [(SRMessagesUsageReport *)v4 setDuration:?];
   -[SRMessagesUsageReport setUniqueContacts:](v4, "setUniqueContacts:", [MEMORY[0x1E695DFA8] set]);
 
@@ -111,9 +111,9 @@
   return [v3 stringWithFormat:@"%@ {Start time: %f, duration: %f, totalUniqueContacts: %lu, totalIncomingMessages: %lu, totalOutgoingMessages: %lu}", v5, v7, v8, -[SRMessagesUsageReport totalUniqueContacts](self, "totalUniqueContacts"), -[SRMessagesUsageReport totalIncomingMessages](self, "totalIncomingMessages"), -[SRMessagesUsageReport totalOutgoingMessages](self, "totalOutgoingMessages")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -125,26 +125,26 @@
   }
 
   duration = self->_duration;
-  [a3 duration];
+  [equal duration];
   if (duration != v6)
   {
     return 0;
   }
 
   totalOutgoingMessages = self->_totalOutgoingMessages;
-  if (totalOutgoingMessages != [a3 totalOutgoingMessages])
+  if (totalOutgoingMessages != [equal totalOutgoingMessages])
   {
     return 0;
   }
 
   totalIncomingMessages = self->_totalIncomingMessages;
-  if (totalIncomingMessages != [a3 totalIncomingMessages])
+  if (totalIncomingMessages != [equal totalIncomingMessages])
   {
     return 0;
   }
 
-  v9 = [(SRMessagesUsageReport *)self totalUniqueContacts];
-  return v9 == [a3 totalUniqueContacts];
+  totalUniqueContacts = [(SRMessagesUsageReport *)self totalUniqueContacts];
+  return totalUniqueContacts == [equal totalUniqueContacts];
 }
 
 - (id)sr_dictionaryRepresentation

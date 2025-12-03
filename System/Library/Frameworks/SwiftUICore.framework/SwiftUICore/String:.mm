@@ -25,8 +25,8 @@
 - (uint64_t)CGFloat
 {
   type metadata accessor for (String, [String : CGFloat])();
-  (*(*(v2 - 8) + 8))(a1, v2);
-  return a1;
+  (*(*(v2 - 8) + 8))(self, v2);
+  return self;
 }
 
 - (void)CGFloat
@@ -88,7 +88,7 @@
   if (!*a2)
   {
     v6 = type metadata accessor for AccessibilityCustomAttributes.Value();
-    v7 = a3(a1, MEMORY[0x1E69E6158], v6, MEMORY[0x1E69E6168]);
+    v7 = a3(self, MEMORY[0x1E69E6158], v6, MEMORY[0x1E69E6168]);
     if (!v8)
     {
       atomic_store(v7, a2);
@@ -99,8 +99,8 @@
 - (uint64_t)Any
 {
   type metadata accessor for (CFStringRef, [String : Any])(0, a2, a3, a4, a5);
-  (*(*(v6 - 8) + 8))(a1, v6);
-  return a1;
+  (*(*(v6 - 8) + 8))(self, v6);
+  return self;
 }
 
 - (void)String

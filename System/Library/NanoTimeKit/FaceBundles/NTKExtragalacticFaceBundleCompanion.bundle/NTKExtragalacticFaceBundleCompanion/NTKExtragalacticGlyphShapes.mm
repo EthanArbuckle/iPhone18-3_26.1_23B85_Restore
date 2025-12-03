@@ -1,10 +1,10 @@
 @interface NTKExtragalacticGlyphShapes
 - (NTKExtragalacticGlyphShapes)init;
 - (void)removeAllPaths;
-- (void)setPath:(id)a3 forGlyphColor:(unint64_t)a4;
-- (void)setPosition:(CGPoint)a3;
-- (void)setShapeFrame:(CGRect)a3;
-- (void)setShapeLayer:(id)a3 atGlyphColor:(unint64_t)a4;
+- (void)setPath:(id)path forGlyphColor:(unint64_t)color;
+- (void)setPosition:(CGPoint)position;
+- (void)setShapeFrame:(CGRect)frame;
+- (void)setShapeLayer:(id)layer atGlyphColor:(unint64_t)color;
 @end
 
 @implementation NTKExtragalacticGlyphShapes
@@ -24,17 +24,17 @@
   return v2;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSMutableDictionary *)self->_glyphLayers allValues];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_glyphLayers allValues];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -46,14 +46,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v9++) setPosition:{x, y}];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -62,20 +62,20 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setShapeFrame:(CGRect)a3
+- (void)setShapeFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v18 = *MEMORY[0x277D85DE8];
-  self->_shapeFrame = a3;
+  self->_shapeFrame = frame;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(NSMutableDictionary *)self->_glyphLayers allValues];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_glyphLayers allValues];
+  v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -87,14 +87,14 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v13 + 1) + 8 * v11++) setFrame:{x, y, width, height}];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -103,25 +103,25 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setShapeLayer:(id)a3 atGlyphColor:(unint64_t)a4
+- (void)setShapeLayer:(id)layer atGlyphColor:(unint64_t)color
 {
   glyphLayers = self->_glyphLayers;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)glyphLayers setObject:v7 forKeyedSubscript:v8];
+  layerCopy = layer;
+  v8 = [v6 numberWithUnsignedInteger:color];
+  [(NSMutableDictionary *)glyphLayers setObject:layerCopy forKeyedSubscript:v8];
 }
 
-- (void)setPath:(id)a3 forGlyphColor:(unint64_t)a4
+- (void)setPath:(id)path forGlyphColor:(unint64_t)color
 {
   glyphLayers = self->_glyphLayers;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v10 = [v6 numberWithUnsignedInteger:a4];
+  pathCopy = path;
+  v10 = [v6 numberWithUnsignedInteger:color];
   v8 = [(NSMutableDictionary *)glyphLayers objectForKeyedSubscript:v10];
-  v9 = [v7 CGPath];
+  cGPath = [pathCopy CGPath];
 
-  [v8 setPath:v9];
+  [v8 setPath:cGPath];
 }
 
 - (void)removeAllPaths
@@ -131,8 +131,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMutableDictionary *)self->_glyphLayers allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_glyphLayers allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -144,14 +144,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) setPath:0];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

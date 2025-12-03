@@ -1,147 +1,147 @@
 @interface BKLibraryBookshelfCollectionViewController
 - (BKLibraryBookshelfCollectionViewController)init;
-- (BOOL)_isErrorFromUserCanceled:(id)a3;
+- (BOOL)_isErrorFromUserCanceled:(id)canceled;
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)canSelectItemAtIndexPath:(id)a3;
-- (BOOL)coverAnimationHostIsFullyVisible:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)canSelectItemAtIndexPath:(id)path;
+- (BOOL)coverAnimationHostIsFullyVisible:(id)visible;
 - (BOOL)coverEffectsNightMode;
 - (BOOL)editableCollection;
 - (BOOL)hasAnyDeletableBookSelected;
-- (BOOL)hasAnySeriesContainerInLibraryAssets:(id)a3;
+- (BOOL)hasAnySeriesContainerInLibraryAssets:(id)assets;
 - (BOOL)hasAnySeriesContainerSelected;
 - (BOOL)hasSelectedItems;
-- (BOOL)isAudiobookAtIndexpath:(id)a3;
+- (BOOL)isAudiobookAtIndexpath:(id)indexpath;
 - (BOOL)isSeriesCollection;
 - (BOOL)isSupplementalContentPDFPicker;
 - (BOOL)reorderableCollection;
 - (BOOL)shouldAllowCellSelection;
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4;
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (CGPoint)previousContentOffset;
 - (NSArray)keyCommands;
 - (NSArray)preferredFocusEnvironments;
 - (NSArray)selectedBooks;
 - (UIViewController)presentedReadingListPopover;
-- (id)_contentDataForContentID:(id)a3 tracker:(id)a4;
-- (id)_dci_collectionView:(id)a3 contextMenuConfigurationForSelectedItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)_libraryAssetWithContentID:(id)a3;
+- (id)_contentDataForContentID:(id)d tracker:(id)tracker;
+- (id)_dci_collectionView:(id)view contextMenuConfigurationForSelectedItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)_libraryAssetWithContentID:(id)d;
 - (id)_supplementalContentCount;
 - (id)_transactionForStorePresentingAction;
 - (id)bkaxLabel;
-- (id)booksAtIndexPaths:(id)a3;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)coverAnimationHostSourceForItem:(id)a3;
-- (id)indexPathForCell:(id)a3;
+- (id)booksAtIndexPaths:(id)paths;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)coverAnimationHostSourceForItem:(id)item;
+- (id)indexPathForCell:(id)cell;
 - (id)navigationItem;
-- (int64_t)_contentTypeForContentID:(id)a3 withLibraryAsset:(id)a4;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (int64_t)_contentTypeForContentID:(id)d withLibraryAsset:(id)asset;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_addSelectedBooksToReadingList:(id)a3 completion:(id)a4;
-- (void)_addToCollectionAttemptForItemsAtIndexPaths:(id)a3;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
+- (void)_addSelectedBooksToReadingList:(id)list completion:(id)completion;
+- (void)_addToCollectionAttemptForItemsAtIndexPaths:(id)paths;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
 - (void)_bkAccessibilityFocusCollectionView;
 - (void)_configureSupplementalContentPDFPicker;
-- (void)_didChangePreferredContentSize:(id)a3;
+- (void)_didChangePreferredContentSize:(id)size;
 - (void)_dismissIfSupplementContentPDFPicker;
-- (void)_dismissOverlayViewController:(id)a3;
-- (void)_downloadBook:(id)a3;
-- (void)_downloadSample:(id)a3 completion:(id)a4;
+- (void)_dismissOverlayViewController:(id)controller;
+- (void)_downloadBook:(id)book;
+- (void)_downloadSample:(id)sample completion:(id)completion;
 - (void)_emitAllInSeriesViewEventIfNeeded;
-- (void)_openBook:(id)a3 completion:(id)a4;
-- (void)_openStoreSample:(id)a3;
-- (void)_playPreview:(id)a3 completion:(id)a4;
-- (void)_presentUsingBlock:(id)a3;
-- (void)_refreshSeriesContainer:(id)a3;
-- (void)_removalAttemptForItemsAtIndexPaths:(id)a3 sourceBarButtonItem:(id)a4;
+- (void)_openBook:(id)book completion:(id)completion;
+- (void)_openStoreSample:(id)sample;
+- (void)_playPreview:(id)preview completion:(id)completion;
+- (void)_presentUsingBlock:(id)block;
+- (void)_refreshSeriesContainer:(id)container;
+- (void)_removalAttemptForItemsAtIndexPaths:(id)paths sourceBarButtonItem:(id)item;
 - (void)_setCollectionViewSelectionFollowsFocus;
-- (void)_showBooksInSectionAtIndexPath:(id)a3;
-- (void)_showInternetReachabilityErrorAlert:(id)a3;
-- (void)_showOverlayViewController:(id)a3;
-- (void)_showPopoverViewController:(id)a3 fromItem:(id)a4 completion:(id)a5;
-- (void)addDoneButton:(BOOL)a3 forPresentationController:(id)a4;
-- (void)addForSelectedItems:(id)a3;
+- (void)_showBooksInSectionAtIndexPath:(id)path;
+- (void)_showInternetReachabilityErrorAlert:(id)alert;
+- (void)_showOverlayViewController:(id)controller;
+- (void)_showPopoverViewController:(id)controller fromItem:(id)item completion:(id)completion;
+- (void)addDoneButton:(BOOL)button forPresentationController:(id)controller;
+- (void)addForSelectedItems:(id)items;
 - (void)bc_analyticsVisibilityDidAppear;
 - (void)bc_analyticsVisibilityWillDisappear;
 - (void)bc_environmentDidChangeFont;
-- (void)bc_tabBarControllerWillSelectViewController:(id)a3;
-- (void)bookTapped:(id)a3 completion:(id)a4;
-- (void)books_addSelectionToCollection:(id)a3;
-- (void)books_createCollection:(id)a3;
-- (void)books_createCollectionFromSelection:(id)a3;
-- (void)cancelButtonPressed:(id)a3;
-- (void)cancelDownloadBook:(id)a3;
-- (void)changeSortModeTo:(unint64_t)a3;
-- (void)changeViewModeTo:(unint64_t)a3;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5;
+- (void)bc_tabBarControllerWillSelectViewController:(id)controller;
+- (void)bookTapped:(id)tapped completion:(id)completion;
+- (void)books_addSelectionToCollection:(id)collection;
+- (void)books_createCollection:(id)collection;
+- (void)books_createCollectionFromSelection:(id)selection;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)cancelDownloadBook:(id)book;
+- (void)changeSortModeTo:(unint64_t)to;
+- (void)changeViewModeTo:(unint64_t)to;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator;
 - (void)configureForDragAndDropSession;
-- (void)coverAnimationHostScrollToMakeVisible:(id)a3;
-- (void)createSeriesViewControllerFromSeriesContainer:(BKLibraryAsset *)a3 withParentTracker:(_TtC13BookAnalytics9BATracker *)a4 completion:(id)a5;
+- (void)coverAnimationHostScrollToMakeVisible:(id)visible;
+- (void)createSeriesViewControllerFromSeriesContainer:(BKLibraryAsset *)container withParentTracker:(_TtC13BookAnalytics9BATracker *)tracker completion:(id)completion;
 - (void)dealloc;
-- (void)deleteBooks:(id)a3 sourceBarButtonItem:(id)a4 completion:(id)a5;
+- (void)deleteBooks:(id)books sourceBarButtonItem:(id)item completion:(id)completion;
 - (void)deselectAll;
-- (void)deselectItemAtIndexPath:(id)a3 animated:(BOOL)a4;
+- (void)deselectItemAtIndexPath:(id)path animated:(BOOL)animated;
 - (void)didBecomeVisibleContentScrollView;
-- (void)didUpdateLibraryBookshelfLayout:(id)a3;
-- (void)directBuyTapped:(id)a3 buyParameters:(id)a4 completion:(id)a5;
+- (void)didUpdateLibraryBookshelfLayout:(id)layout;
+- (void)directBuyTapped:(id)tapped buyParameters:(id)parameters completion:(id)completion;
 - (void)dismissPDFPicker;
 - (void)dismissReadingListPopover;
 - (void)dragAndDropSessionDidEnd;
 - (void)dragAndDropSessionDidStart;
-- (void)editButtonPressed:(id)a3;
+- (void)editButtonPressed:(id)pressed;
 - (void)explicitContentRestrictedChanged;
-- (void)largeTitleVisibilityDidChangeWithIsVisible:(BOOL)a3;
+- (void)largeTitleVisibilityDidChangeWithIsVisible:(BOOL)visible;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)openItemAtIndexPath:(id)a3 completion:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)openItemAtIndexPath:(id)path completion:(id)completion;
 - (void)openSelectedBooks;
-- (void)openSeriesContainer:(id)a3;
-- (void)preferredContentSizeChanged:(id)a3;
-- (void)presentReadingListsPopoverFromItem:(id)a3 completion:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)openSeriesContainer:(id)container;
+- (void)preferredContentSizeChanged:(id)changed;
+- (void)presentReadingListsPopoverFromItem:(id)item completion:(id)completion;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)reloadData;
 - (void)removeForSelectedItems;
-- (void)removeForSelectedItems:(id)a3;
-- (void)resumeDownloadBook:(id)a3;
-- (void)scrollToMakeLibraryAssetIDVisible:(id)a3;
+- (void)removeForSelectedItems:(id)items;
+- (void)resumeDownloadBook:(id)book;
+- (void)scrollToMakeLibraryAssetIDVisible:(id)visible;
 - (void)selectAll;
-- (void)selectAllButtonPressed:(id)a3;
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5;
-- (void)setCollection:(id)a3;
-- (void)setDataSourceAdaptor:(id)a3;
-- (void)setDragDelegate:(id)a3;
-- (void)setDropDelegate:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)shareSelectedItemFromBarButtonItem:(id)a3;
-- (void)showReadingListsForActionHandler:(id)a3;
+- (void)selectAllButtonPressed:(id)pressed;
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position;
+- (void)setCollection:(id)collection;
+- (void)setDataSourceAdaptor:(id)adaptor;
+- (void)setDragDelegate:(id)delegate;
+- (void)setDropDelegate:(id)delegate;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)shareSelectedItemFromBarButtonItem:(id)item;
+- (void)showReadingListsForActionHandler:(id)handler;
 - (void)sortModeChanged;
 - (void)toggleAccessibilityIfNeeded;
 - (void)updateActionBarForSelection;
 - (void)updateActionBarFromMetrics;
-- (void)updateBarButtonsAnimated:(BOOL)a3;
-- (void)updateTabBarControllerForEditing:(BOOL)a3;
+- (void)updateBarButtonsAnimated:(BOOL)animated;
+- (void)updateTabBarControllerForEditing:(BOOL)editing;
 - (void)updateTitleFromMetrics;
 - (void)updateViewModeIfNeeded;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewModeChanged;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKLibraryBookshelfCollectionViewController
@@ -199,8 +199,8 @@
   if (!bsuiNavigationItem)
   {
     v4 = [BSUINavigationItem alloc];
-    v5 = [(BKLibraryBookshelfCollectionViewController *)self title];
-    v6 = [v4 initWithTitle:v5];
+    title = [(BKLibraryBookshelfCollectionViewController *)self title];
+    v6 = [v4 initWithTitle:title];
     v7 = self->_bsuiNavigationItem;
     self->_bsuiNavigationItem = v6;
 
@@ -210,53 +210,53 @@
   return bsuiNavigationItem;
 }
 
-- (void)setCollection:(id)a3
+- (void)setCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   collection = self->_collection;
-  if (collection != v5)
+  if (collection != collectionCopy)
   {
-    v7 = v5;
+    v7 = collectionCopy;
     [(BKCollection *)collection removeObserver:self forKeyPath:@"sortMode" context:off_100ACD3B8];
     [(BKCollection *)self->_collection removeObserver:self forKeyPath:@"localizedTitle" context:off_100ACD3C0];
-    objc_storeStrong(&self->_collection, a3);
+    objc_storeStrong(&self->_collection, collection);
     [(BKCollection *)self->_collection addObserver:self forKeyPath:@"sortMode" options:0 context:off_100ACD3B8];
     [(BKCollection *)self->_collection addObserver:self forKeyPath:@"localizedTitle" options:0 context:off_100ACD3C0];
-    v5 = v7;
+    collectionCopy = v7;
   }
 }
 
-- (void)setDataSourceAdaptor:(id)a3
+- (void)setDataSourceAdaptor:(id)adaptor
 {
-  v5 = a3;
+  adaptorCopy = adaptor;
   dataSourceAdaptor = self->_dataSourceAdaptor;
-  if (dataSourceAdaptor != v5)
+  if (dataSourceAdaptor != adaptorCopy)
   {
-    v16 = v5;
+    v16 = adaptorCopy;
     [(BKLibraryDataSourceAdaptor *)dataSourceAdaptor removeObserver:self forKeyPath:@"currentStoreAccountID" context:off_100ACD3C8];
     [(BKCollection *)self->_allBooksCollection removeObserver:self forKeyPath:@"viewMode" context:off_100ACD3D0];
-    objc_storeStrong(&self->_dataSourceAdaptor, a3);
-    v7 = [(BKLibraryDataSourceAdaptor *)v16 supplementaryDataSource];
-    v8 = [v7 canChangeViewMode];
+    objc_storeStrong(&self->_dataSourceAdaptor, adaptor);
+    supplementaryDataSource = [(BKLibraryDataSourceAdaptor *)v16 supplementaryDataSource];
+    canChangeViewMode = [supplementaryDataSource canChangeViewMode];
 
     allBooksCollection = self->_allBooksCollection;
-    if (v8)
+    if (canChangeViewMode)
     {
       if (allBooksCollection)
       {
 LABEL_7:
         [(BKLibraryDataSourceAdaptor *)self->_dataSourceAdaptor addObserver:self forKeyPath:@"currentStoreAccountID" options:0 context:off_100ACD3C8];
         [(BKCollection *)self->_allBooksCollection addObserver:self forKeyPath:@"viewMode" options:0 context:off_100ACD3D0];
-        v5 = v16;
+        adaptorCopy = v16;
         goto LABEL_8;
       }
 
       allBooksCollection = +[BKLibraryManager defaultManager];
-      v10 = [allBooksCollection collectionController];
+      collectionController = [allBooksCollection collectionController];
       v11 = kBKCollectionDefaultAll;
       v12 = +[BKLibraryManager defaultManager];
-      v13 = [v12 uiChildContext];
-      v14 = [v10 mutableCollectionWithCollectionID:v11 inManagedObjectContext:v13 error:0];
+      uiChildContext = [v12 uiChildContext];
+      v14 = [collectionController mutableCollectionWithCollectionID:v11 inManagedObjectContext:uiChildContext error:0];
       v15 = self->_allBooksCollection;
       self->_allBooksCollection = v14;
     }
@@ -272,12 +272,12 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_100ACD3C8 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_100ACD3C8 == context)
   {
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
@@ -290,7 +290,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (off_100ACD3D0 == a6)
+  if (off_100ACD3D0 == context)
   {
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
@@ -301,7 +301,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (off_100ACD3B8 == a6)
+  if (off_100ACD3B8 == context)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -312,23 +312,23 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (off_100ACD3C0 == a6)
+  if (off_100ACD3C0 == context)
   {
-    v14 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-    v15 = [v14 isDefaultCollection];
+    collection = [(BKLibraryBookshelfCollectionViewController *)self collection];
+    isDefaultCollection = [collection isDefaultCollection];
 
-    if ((v15 & 1) == 0)
+    if ((isDefaultCollection & 1) == 0)
     {
-      v16 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-      v17 = [v16 localizedTitle];
+      collection2 = [(BKLibraryBookshelfCollectionViewController *)self collection];
+      localizedTitle = [collection2 localizedTitle];
 
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_1000B2420;
       v20[3] = &unk_100A03440;
       v20[4] = self;
-      v21 = v17;
-      v18 = v17;
+      v21 = localizedTitle;
+      v18 = localizedTitle;
       dispatch_async(&_dispatch_main_q, v20);
     }
   }
@@ -337,40 +337,40 @@ LABEL_9:
   {
     v19.receiver = self;
     v19.super_class = BKLibraryBookshelfCollectionViewController;
-    [(BKLibraryBookshelfCollectionViewController *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BKLibraryBookshelfCollectionViewController *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_10:
 }
 
-- (void)_didChangePreferredContentSize:(id)a3
+- (void)_didChangePreferredContentSize:(id)size
 {
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v3 = [v4 collectionViewLayout];
-  [v3 invalidateLayout];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (void)changeViewModeTo:(unint64_t)a3
+- (void)changeViewModeTo:(unint64_t)to
 {
-  v11 = [(BKLibraryBookshelfCollectionViewController *)self allBooksCollection];
-  if (v11)
+  allBooksCollection = [(BKLibraryBookshelfCollectionViewController *)self allBooksCollection];
+  if (allBooksCollection)
   {
-    v5 = [NSNumber numberWithUnsignedInteger:a3];
-    v6 = [v11 setDifferentNumber:v5 forKey:@"viewMode"];
+    v5 = [NSNumber numberWithUnsignedInteger:to];
+    v6 = [allBooksCollection setDifferentNumber:v5 forKey:@"viewMode"];
 
     if (v6)
     {
       v7 = +[BKLibraryManager defaultManager];
-      v8 = [v11 managedObjectContext];
-      [v7 saveManagedObjectContext:v8];
+      managedObjectContext = [allBooksCollection managedObjectContext];
+      [v7 saveManagedObjectContext:managedObjectContext];
     }
   }
 
   else
   {
-    v9 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v10 = [v9 supplementaryDataSource];
-    [v10 setViewMode:a3];
+    dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+    [supplementaryDataSource setViewMode:to];
 
     [(BKLibraryBookshelfCollectionViewController *)self viewModeChanged];
   }
@@ -381,59 +381,59 @@ LABEL_10:
   if (self->_needsUpdateViewMode)
   {
     self->_needsUpdateViewMode = 0;
-    v3 = [(BKLibraryBookshelfCollectionViewController *)self allBooksCollection];
-    v4 = [v3 resolvedViewMode];
+    allBooksCollection = [(BKLibraryBookshelfCollectionViewController *)self allBooksCollection];
+    resolvedViewMode = [allBooksCollection resolvedViewMode];
 
-    v5 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v6 = [v5 supplementaryDataSource];
-    v7 = [v6 viewMode];
+    dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+    viewMode = [supplementaryDataSource viewMode];
 
-    if (v7 != v4)
+    if (viewMode != resolvedViewMode)
     {
-      v8 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-      v9 = [v8 supplementaryDataSource];
-      [v9 setViewMode:v4];
+      dataSourceAdaptor2 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+      supplementaryDataSource2 = [dataSourceAdaptor2 supplementaryDataSource];
+      [supplementaryDataSource2 setViewMode:resolvedViewMode];
 
       [(BKLibraryBookshelfCollectionViewController *)self viewModeChanged];
     }
   }
 }
 
-- (void)changeSortModeTo:(unint64_t)a3
+- (void)changeSortModeTo:(unint64_t)to
 {
-  if (a3 - 11 < 0xFFFFFFFFFFFFFFF6)
+  if (to - 11 < 0xFFFFFFFFFFFFFFF6)
   {
-    v4 = 1;
+    toCopy = 1;
   }
 
   else
   {
-    v4 = a3;
+    toCopy = to;
   }
 
-  v11 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-  if (v11)
+  collection = [(BKLibraryBookshelfCollectionViewController *)self collection];
+  if (collection)
   {
-    v5 = [NSNumber numberWithUnsignedInteger:v4];
-    v6 = [v11 setDifferentNumber:v5 forKey:@"sortMode"];
+    v5 = [NSNumber numberWithUnsignedInteger:toCopy];
+    v6 = [collection setDifferentNumber:v5 forKey:@"sortMode"];
 
     if (v6)
     {
       v7 = +[BKLibraryManager defaultManager];
-      v8 = [v11 managedObjectContext];
-      [v7 saveManagedObjectContext:v8];
+      managedObjectContext = [collection managedObjectContext];
+      [v7 saveManagedObjectContext:managedObjectContext];
     }
   }
 
   else
   {
-    v9 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v10 = [v9 supplementaryDataSource];
-    [v10 setSortMode:v4];
+    dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+    [supplementaryDataSource setSortMode:toCopy];
 
     if ([(BKLibraryBookshelfCollectionViewController *)self isSeriesCollection])
     {
-      [BKCollection setSortModeForSeriesCollections:v4];
+      [BKCollection setSortModeForSeriesCollections:toCopy];
       [(BKLibraryBookshelfCollectionViewController *)self _emitAllInSeriesViewEventIfNeeded];
     }
 
@@ -443,21 +443,21 @@ LABEL_10:
 
 - (void)bc_environmentDidChangeFont
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v2 = [v3 collectionViewLayout];
-  [v2 invalidateLayout];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (BOOL)isSeriesCollection
 {
-  v2 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v3 = [v2 supplementaryDataSource];
-  v4 = [v3 collectionIsSeries];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+  collectionIsSeries = [supplementaryDataSource collectionIsSeries];
 
-  return v4;
+  return collectionIsSeries;
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   v4 = BKLibraryLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -467,11 +467,11 @@ LABEL_10:
   }
 
   v5 = +[BSUIStoreServices sharedInstance];
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
-  [v5 resumeRemovingFromMySamplesWithTracker:v6];
+  ba_effectiveAnalyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
+  [v5 resumeRemovingFromMySamplesWithTracker:ba_effectiveAnalyticsTracker];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   v3 = BKLibraryLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -487,32 +487,32 @@ LABEL_10:
 - (id)_supplementalContentCount
 {
   v3 = +[BKLibraryManager defaultManager];
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v5 = [v4 supplementaryDataSource];
-  v6 = [v5 supplementalContentStorePlaylistID];
-  v7 = [v3 uiChildContext];
-  v8 = [v3 libraryMutableAssetWithAssetID:v6 inManagedObjectContext:v7];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+  supplementalContentStorePlaylistID = [supplementaryDataSource supplementalContentStorePlaylistID];
+  uiChildContext = [v3 uiChildContext];
+  v8 = [v3 libraryMutableAssetWithAssetID:supplementalContentStorePlaylistID inManagedObjectContext:uiChildContext];
 
-  v9 = [v8 supplementalContentAssets];
-  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 count]);
+  supplementalContentAssets = [v8 supplementalContentAssets];
+  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [supplementalContentAssets count]);
 
   return v10;
 }
 
-- (void)setDragDelegate:(id)a3
+- (void)setDragDelegate:(id)delegate
 {
-  objc_storeStrong(&self->_dragDelegate, a3);
-  v5 = a3;
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v6 setDragDelegate:v5];
+  objc_storeStrong(&self->_dragDelegate, delegate);
+  delegateCopy = delegate;
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView setDragDelegate:delegateCopy];
 }
 
-- (void)setDropDelegate:(id)a3
+- (void)setDropDelegate:(id)delegate
 {
-  objc_storeStrong(&self->_dropDelegate, a3);
-  v5 = a3;
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v6 setDropDelegate:v5];
+  objc_storeStrong(&self->_dropDelegate, delegate);
+  delegateCopy = delegate;
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView setDropDelegate:delegateCopy];
 }
 
 - (void)loadView
@@ -523,111 +523,111 @@ LABEL_10:
   v4 = [[UIView alloc] initWithFrame:{0.0, 0.0, 500.0, 500.0}];
   [(BKLibraryBookshelfCollectionViewController *)self setWrapperView:v4];
 
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
-  [v5 setAutoresizingMask:18];
+  wrapperView = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
+  [wrapperView setAutoresizingMask:18];
 
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
-  [v6 setAutoresizesSubviews:1];
+  wrapperView2 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
+  [wrapperView2 setAutoresizesSubviews:1];
 
-  v7 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
-  [(BKLibraryBookshelfCollectionViewController *)self setView:v7];
+  wrapperView3 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
+  [(BKLibraryBookshelfCollectionViewController *)self setView:wrapperView3];
 
   v8 = [BKLibraryBookshelfCollectionView alloc];
-  v9 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-  v54 = [(BKLibraryBookshelfCollectionView *)v8 initWithFrame:v9 collectionViewLayout:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+  v54 = [(BKLibraryBookshelfCollectionView *)v8 initWithFrame:layout collectionViewLayout:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
 
   [(BKLibraryBookshelfCollectionView *)v54 setBkaxLabelProvider:self];
   [(BKLibraryBookshelfCollectionViewController *)self setCollectionView:v54];
-  v10 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v11 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v11 setDataSource:v10];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView setDataSource:dataSourceAdaptor];
 
-  v12 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v12 setDelegate:self];
+  collectionView2 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView2 setDelegate:self];
 
-  v13 = [(BKLibraryBookshelfCollectionViewController *)self dragDelegate];
-  v14 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v14 setDragDelegate:v13];
+  dragDelegate = [(BKLibraryBookshelfCollectionViewController *)self dragDelegate];
+  collectionView3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView3 setDragDelegate:dragDelegate];
 
-  v15 = [(BKLibraryBookshelfCollectionViewController *)self dropDelegate];
-  v16 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v16 setDropDelegate:v15];
+  dropDelegate = [(BKLibraryBookshelfCollectionViewController *)self dropDelegate];
+  collectionView4 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView4 setDropDelegate:dropDelegate];
 
-  v17 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v17 setAllowsSelection:1];
+  collectionView5 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView5 setAllowsSelection:1];
 
-  v18 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v18 setAllowsMultipleSelection:1];
+  collectionView6 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView6 setAllowsMultipleSelection:1];
 
-  v19 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v19 setAllowsMultipleSelectionDuringEditing:1];
+  collectionView7 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView7 setAllowsMultipleSelectionDuringEditing:1];
 
-  v20 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v20 setAutoresizingMask:18];
+  collectionView8 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView8 setAutoresizingMask:18];
 
-  v21 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v21 setReorderingCadence:1];
+  collectionView9 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView9 setReorderingCadence:1];
 
-  LODWORD(v21) = [(BKLibraryBookshelfCollectionViewController *)self isSupplementalContentPDFPicker];
-  v22 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v22 setDragInteractionEnabled:v21 ^ 1];
+  LODWORD(collectionView9) = [(BKLibraryBookshelfCollectionViewController *)self isSupplementalContentPDFPicker];
+  collectionView10 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView10 setDragInteractionEnabled:collectionView9 ^ 1];
 
-  v23 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v23 setAlwaysBounceVertical:1];
+  collectionView11 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView11 setAlwaysBounceVertical:1];
 
   [(BKLibraryBookshelfCollectionViewController *)self _setCollectionViewSelectionFollowsFocus];
-  v24 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v25 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  [v25 setCollectionView:v24];
+  collectionView12 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  dataSourceAdaptor2 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  [dataSourceAdaptor2 setCollectionView:collectionView12];
 
-  v26 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v27 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v28 = [v27 booksDataSource];
-  [v28 setDelegate:v26];
+  dataSourceAdaptor3 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  dataSourceAdaptor4 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  booksDataSource = [dataSourceAdaptor4 booksDataSource];
+  [booksDataSource setDelegate:dataSourceAdaptor3];
 
-  v29 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  [v29 reloadData];
+  dataSourceAdaptor5 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  [dataSourceAdaptor5 reloadData];
 
-  v30 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
-  v31 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v30 addSubview:v31];
+  wrapperView4 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
+  collectionView13 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [wrapperView4 addSubview:collectionView13];
 
-  v32 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
-  [v32 bounds];
+  wrapperView5 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
+  [wrapperView5 bounds];
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  v41 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v41 setFrame:{v34, v36, v38, v40}];
+  collectionView14 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView14 setFrame:{v34, v36, v38, v40}];
 
   v42 = objc_alloc_init(BKLibraryBookshelfSelectedActionBarViewController);
   [(BKLibraryBookshelfCollectionViewController *)self setActionBarViewController:v42];
 
-  v43 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-  [v43 setDelegate:self];
+  actionBarViewController = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+  [actionBarViewController setDelegate:self];
 
-  v44 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-  [(BKLibraryBookshelfCollectionViewController *)self addChildViewController:v44];
+  actionBarViewController2 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+  [(BKLibraryBookshelfCollectionViewController *)self addChildViewController:actionBarViewController2];
 
-  v45 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-  [v45 loadViewIfNeeded];
+  actionBarViewController3 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+  [actionBarViewController3 loadViewIfNeeded];
 
-  v46 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
-  v47 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-  v48 = [v47 view];
-  [v46 addSubview:v48];
+  wrapperView6 = [(BKLibraryBookshelfCollectionViewController *)self wrapperView];
+  actionBarViewController4 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+  view = [actionBarViewController4 view];
+  [wrapperView6 addSubview:view];
 
-  v49 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-  v50 = [v49 view];
-  [v50 setHidden:1];
+  actionBarViewController5 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+  view2 = [actionBarViewController5 view];
+  [view2 setHidden:1];
 
-  v51 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-  v52 = [v51 view];
-  [v52 setAlpha:0.0];
+  actionBarViewController6 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+  view3 = [actionBarViewController6 view];
+  [view3 setAlpha:0.0];
 
-  v53 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-  [v53 didMoveToParentViewController:self];
+  actionBarViewController7 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+  [actionBarViewController7 didMoveToParentViewController:self];
 }
 
 - (void)viewDidLoad
@@ -636,41 +636,41 @@ LABEL_10:
   v6.super_class = BKLibraryBookshelfCollectionViewController;
   [(BKLibraryBookshelfCollectionViewController *)&v6 viewDidLoad];
   [(BKLibraryBookshelfCollectionViewController *)self updateBarButtonsAnimated:0];
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
-  [v3 _setSupportsTwoLineLargeTitles:1];
+  navigationItem = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
+  [navigationItem _setSupportsTwoLineLargeTitles:1];
 
   if ((_UISolariumEnabled() & 1) == 0)
   {
     v4 = objc_alloc_init(BKLibraryCollectionTitleView);
     [(BKLibraryCollectionTitleView *)v4 setDelegate:self];
-    v5 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
-    [v5 setTitleView:v4];
+    navigationItem2 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
+    [navigationItem2 setTitleView:v4];
   }
 
   [(BKLibraryBookshelfCollectionViewController *)self _configureSupplementalContentPDFPicker];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v21.receiver = self;
   v21.super_class = BKLibraryBookshelfCollectionViewController;
-  [(BKLibraryBookshelfCollectionViewController *)&v21 viewIsAppearing:a3];
+  [(BKLibraryBookshelfCollectionViewController *)&v21 viewIsAppearing:appearing];
   if (self->_appearingForFirstTime)
   {
     self->_appearingForFirstTime = 0;
-    v4 = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
-    v5 = [v4 navigationBar];
-    v6 = [v5 _restingHeights];
+    navigationController = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    _restingHeights = [navigationBar _restingHeights];
 
-    v7 = [(BKLibraryBookshelfCollectionViewController *)self view];
-    [v7 safeAreaInsets];
+    view = [(BKLibraryBookshelfCollectionViewController *)self view];
+    [view safeAreaInsets];
     v9 = v8;
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v6;
+    v10 = _restingHeights;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
@@ -695,21 +695,21 @@ LABEL_10:
       while (v12);
     }
 
-    v16 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    [v16 _setShouldContentOffsetAlwaysIgnoreSafeAreaInsetsChange:1];
-    [v16 setContentOffset:{0.0, -(v9 + 1.0)}];
-    [v16 _setShouldContentOffsetAlwaysIgnoreSafeAreaInsetsChange:0];
+    collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    [collectionView _setShouldContentOffsetAlwaysIgnoreSafeAreaInsetsChange:1];
+    [collectionView setContentOffset:{0.0, -(v9 + 1.0)}];
+    [collectionView _setShouldContentOffsetAlwaysIgnoreSafeAreaInsetsChange:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v22.receiver = self;
   v22.super_class = BKLibraryBookshelfCollectionViewController;
-  [(BKLibraryBookshelfCollectionViewController *)&v22 viewWillAppear:a3];
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-  v5 = [v4 collectionID];
-  v6 = [v5 isEqualToString:kBKCollectionDefaultIDFinished];
+  [(BKLibraryBookshelfCollectionViewController *)&v22 viewWillAppear:appear];
+  collection = [(BKLibraryBookshelfCollectionViewController *)self collection];
+  collectionID = [collection collectionID];
+  v6 = [collectionID isEqualToString:kBKCollectionDefaultIDFinished];
 
   if (v6)
   {
@@ -717,9 +717,9 @@ LABEL_10:
     [v7 cleanupDateFinished];
   }
 
-  v8 = [(BKLibraryBookshelfCollectionViewController *)self ba_analyticsTracker];
+  ba_analyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_analyticsTracker];
 
-  if (!v8)
+  if (!ba_analyticsTracker)
   {
     v9 = [(BKLibraryBookshelfCollectionViewController *)self ba_setupNewAnalyticsTrackerWithName:@"Collection"];
   }
@@ -731,35 +731,35 @@ LABEL_10:
   [(BKLibraryBookshelfCollectionViewController *)self updateViewModeIfNeeded];
   [(BKLibraryBookshelfCollectionViewController *)self updateBarButtonsAnimated:0];
   [(BKLibraryBookshelfCollectionViewController *)self configureForDragAndDropSession];
-  v11 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v12 = [v11 supplementaryDataSource];
-  [v12 updateSettingsForMajorVisibilityChange];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+  [supplementaryDataSource updateSettingsForMajorVisibilityChange];
 
   v13 = +[BKLibraryManager defaultManager];
-  v14 = [v13 priceManager];
-  [v14 invalidate:0];
+  priceManager = [v13 priceManager];
+  [priceManager invalidate:0];
 
-  v15 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v16 = [v15 panGestureRecognizer];
-  v17 = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
-  v18 = [v17 interactivePopGestureRecognizer];
-  [v16 requireGestureRecognizerToFail:v18];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  navigationController = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [panGestureRecognizer requireGestureRecognizerToFail:interactivePopGestureRecognizer];
 
-  v19 = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
-  v20 = [v19 navigationBar];
+  navigationController2 = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
   v21 = +[UIColor bc_booksKeyColor];
-  [v20 setTintColor:v21];
+  [navigationBar setTintColor:v21];
 
   [(BKLibraryBookshelfCollectionViewController *)self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = BKLibraryBookshelfCollectionViewController;
-  [(BKLibraryBookshelfCollectionViewController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-  [v5 updateMetricsWithViewController:self];
+  [(BKLibraryBookshelfCollectionViewController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+  [layout updateMetricsWithViewController:self];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -767,8 +767,8 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = BKLibraryBookshelfCollectionViewController;
   [(BKLibraryBookshelfCollectionViewController *)&v4 viewSafeAreaInsetsDidChange];
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-  [v3 updateMetricsWithViewController:self];
+  layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+  [layout updateMetricsWithViewController:self];
 }
 
 - (void)viewWillLayoutSubviews
@@ -776,38 +776,38 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = BKLibraryBookshelfCollectionViewController;
   [(BKLibraryBookshelfCollectionViewController *)&v8 viewWillLayoutSubviews];
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-  [v3 updateMetricsWithViewController:self];
+  layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+  [layout updateMetricsWithViewController:self];
 
   [(BKLibraryBookshelfCollectionViewController *)self updateTitleFromMetrics];
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self bsui_hasLargeTitle];
-  [(BKLibraryBookshelfCollectionViewController *)self bsui_configureHideSmallTitleOnScroll:v4];
+  bsui_hasLargeTitle = [(BKLibraryBookshelfCollectionViewController *)self bsui_hasLargeTitle];
+  [(BKLibraryBookshelfCollectionViewController *)self bsui_configureHideSmallTitleOnScroll:bsui_hasLargeTitle];
   if (self->_isFirstLayout)
   {
     self->_isFirstLayout = 0;
-    if ((+[BSUIDefaults disableTabBarL2LargeTitleScrollOffsetWorkaround]& 1) == 0 && ((v4 ^ 1) & 1) == 0)
+    if ((+[BSUIDefaults disableTabBarL2LargeTitleScrollOffsetWorkaround]& 1) == 0 && ((bsui_hasLargeTitle ^ 1) & 1) == 0)
     {
-      v5 = [(BKLibraryBookshelfCollectionViewController *)self traitCollection];
-      v6 = [v5 horizontalSizeClass];
+      traitCollection = [(BKLibraryBookshelfCollectionViewController *)self traitCollection];
+      horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-      if (v6 != 1)
+      if (horizontalSizeClass != 1)
       {
-        v7 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-        [v7 _scrollToTopIfPossible:0];
+        collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+        [collectionView _scrollToTopIfPossible:0];
       }
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = BKLibraryBookshelfCollectionViewController;
-  [(BKLibraryBookshelfCollectionViewController *)&v11 viewDidAppear:a3];
+  [(BKLibraryBookshelfCollectionViewController *)&v11 viewDidAppear:appear];
   [(BKLibraryBookshelfCollectionViewController *)self bc_analyticsVisibilityUpdateSubtree];
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-  v5 = [v4 collectionID];
-  v6 = [v5 isEqualToString:kBKCollectionDefaultIDSamples];
+  collection = [(BKLibraryBookshelfCollectionViewController *)self collection];
+  collectionID = [collection collectionID];
+  v6 = [collectionID isEqualToString:kBKCollectionDefaultIDSamples];
 
   if (v6)
   {
@@ -832,23 +832,23 @@ LABEL_10:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BKLibraryBookshelfCollectionViewController;
-  [(BKLibraryBookshelfCollectionViewController *)&v4 viewWillDisappear:a3];
+  [(BKLibraryBookshelfCollectionViewController *)&v4 viewWillDisappear:disappear];
   [(BKLibraryBookshelfCollectionViewController *)self dismissReadingListPopover];
   [(BKLibraryBookshelfCollectionViewController *)self bc_analyticsVisibilitySubtreeWillDisappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v13.receiver = self;
   v13.super_class = BKLibraryBookshelfCollectionViewController;
-  [(BKLibraryBookshelfCollectionViewController *)&v13 viewDidDisappear:a3];
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-  v5 = [v4 collectionID];
-  v6 = [v5 isEqualToString:kBKCollectionDefaultIDSamples];
+  [(BKLibraryBookshelfCollectionViewController *)&v13 viewDidDisappear:disappear];
+  collection = [(BKLibraryBookshelfCollectionViewController *)self collection];
+  collectionID = [collection collectionID];
+  v6 = [collectionID isEqualToString:kBKCollectionDefaultIDSamples];
 
   if (v6)
   {
@@ -860,8 +860,8 @@ LABEL_10:
     }
 
     v8 = +[BSUIStoreServices sharedInstance];
-    v9 = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
-    [v8 resumeRemovingFromMySamplesWithTracker:v9];
+    ba_effectiveAnalyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
+    [v8 resumeRemovingFromMySamplesWithTracker:ba_effectiveAnalyticsTracker];
 
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:0];
@@ -877,23 +877,23 @@ LABEL_10:
 {
   if ([(BKLibraryBookshelfCollectionViewController *)self isSeriesCollection])
   {
-    v3 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v4 = [v3 supplementaryDataSource];
-    v5 = [v4 sortMode];
+    dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+    sortMode = [supplementaryDataSource sortMode];
 
-    if (v5 == 10)
+    if (sortMode == 10)
     {
-      v13 = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
-      v6 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-      v7 = [v6 supplementaryDataSource];
-      v8 = [v7 seriesID];
+      ba_effectiveAnalyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
+      dataSourceAdaptor2 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+      supplementaryDataSource2 = [dataSourceAdaptor2 supplementaryDataSource];
+      seriesID = [supplementaryDataSource2 seriesID];
 
-      v9 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-      v10 = [v9 booksDataSource];
-      v11 = [v10 totalNumberOfItems];
+      dataSourceAdaptor3 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+      booksDataSource = [dataSourceAdaptor3 booksDataSource];
+      totalNumberOfItems = [booksDataSource totalNumberOfItems];
 
       v12 = +[BAEventReporter sharedReporter];
-      [v12 emitAllInSeriesViewEventWithTracker:v13 collectionID:v8 collectionItemCount:v11];
+      [v12 emitAllInSeriesViewEventWithTracker:ba_effectiveAnalyticsTracker collectionID:seriesID collectionItemCount:totalNumberOfItems];
     }
   }
 }
@@ -903,19 +903,19 @@ LABEL_10:
   v14.receiver = self;
   v14.super_class = BKLibraryBookshelfCollectionViewController;
   [(BKLibraryBookshelfCollectionViewController *)&v14 bc_analyticsVisibilityDidAppear];
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v5 = [v4 supplementaryDataSource];
-  v6 = [v5 supplementalContentPDFPicker];
+  ba_effectiveAnalyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+  supplementalContentPDFPicker = [supplementaryDataSource supplementalContentPDFPicker];
 
-  if (v6)
+  if (supplementalContentPDFPicker)
   {
     v7 = +[BAEventReporter sharedReporter];
-    v8 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v9 = [v8 supplementaryDataSource];
-    v10 = [v9 supplementalContentStorePlaylistID];
-    v11 = [(BKLibraryBookshelfCollectionViewController *)self _supplementalContentCount];
-    [v7 emitPageViewEventForSupplementalContentPDFWithTracker:v3 contentID:v10 supplementalContentCount:v11];
+    dataSourceAdaptor2 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    supplementaryDataSource2 = [dataSourceAdaptor2 supplementaryDataSource];
+    supplementalContentStorePlaylistID = [supplementaryDataSource2 supplementalContentStorePlaylistID];
+    _supplementalContentCount = [(BKLibraryBookshelfCollectionViewController *)self _supplementalContentCount];
+    [v7 emitPageViewEventForSupplementalContentPDFWithTracker:ba_effectiveAnalyticsTracker contentID:supplementalContentStorePlaylistID supplementalContentCount:_supplementalContentCount];
   }
 
   else
@@ -933,27 +933,27 @@ LABEL_10:
   v57.receiver = self;
   v57.super_class = BKLibraryBookshelfCollectionViewController;
   [(BKLibraryBookshelfCollectionViewController *)&v57 bc_analyticsVisibilityWillDisappear];
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v4 = [v3 supplementaryDataSource];
-  v5 = [v4 supplementalContentPDFPicker];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+  supplementalContentPDFPicker = [supplementaryDataSource supplementalContentPDFPicker];
 
-  if ((v5 & 1) == 0)
+  if ((supplementalContentPDFPicker & 1) == 0)
   {
-    v6 = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
-    v7 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-    v8 = [v7 collectionID];
-    v9 = [v8 isEqualToString:kBKCollectionDefaultAll];
+    ba_effectiveAnalyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
+    collection = [(BKLibraryBookshelfCollectionViewController *)self collection];
+    collectionID = [collection collectionID];
+    v9 = [collectionID isEqualToString:kBKCollectionDefaultAll];
 
     if (v9)
     {
-      v50 = v6;
+      v50 = ba_effectiveAnalyticsTracker;
       v10 = objc_opt_new();
-      v47 = self;
-      v11 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-      v12 = [v11 booksDataSource];
+      selfCopy = self;
+      dataSourceAdaptor2 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+      booksDataSource = [dataSourceAdaptor2 booksDataSource];
 
-      v48 = v12;
-      if ([v12 numberOfSections])
+      v48 = booksDataSource;
+      if ([booksDataSource numberOfSections])
       {
         v13 = 0;
         do
@@ -963,7 +963,7 @@ LABEL_10:
           v53 = 0u;
           v54 = 0u;
           v49 = v13;
-          obj = [v12 representedObjectsInSection:v13];
+          obj = [booksDataSource representedObjectsInSection:v13];
           v14 = [obj countByEnumeratingWithState:&v53 objects:v58 count:16];
           if (v14)
           {
@@ -983,16 +983,16 @@ LABEL_10:
                 v18 = *(*(&v53 + 1) + 8 * v17);
                 if ([v18 isLocal])
                 {
-                  v19 = [v18 assetID];
-                  v20 = [v50 contentPrivateIDForContentID:v19];
-                  v21 = [v50 contentUserIDForContentID:v19];
+                  assetID = [v18 assetID];
+                  v20 = [v50 contentPrivateIDForContentID:assetID];
+                  v21 = [v50 contentUserIDForContentID:assetID];
                   v22 = v10;
                   v23 = +[BAUtilities contentTypeFromAssetType:](BAUtilities, "contentTypeFromAssetType:", [v18 contentType]);
                   v24 = [BALibraryItemTypeData alloc];
                   v25 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v18 isSample]);
                   v26 = v23;
                   v10 = v22;
-                  v27 = [v24 initWithContentPrivateID:v20 contentUserID:v21 contentType:v26 contentID:v19 isSample:v25];
+                  v27 = [v24 initWithContentPrivateID:v20 contentUserID:v21 contentType:v26 contentID:assetID isSample:v25];
 
                   [v22 addObject:v27];
                   v15 = v51;
@@ -1008,7 +1008,7 @@ LABEL_10:
             while (v15);
           }
 
-          v12 = v48;
+          booksDataSource = v48;
           v13 = v49 + 1;
         }
 
@@ -1016,23 +1016,23 @@ LABEL_10:
       }
 
       v28 = +[BAEventReporter sharedReporter];
-      analyticsStartDate = v47->_analyticsStartDate;
-      v30 = [(BKLibraryBookshelfCollectionViewController *)v47 dataSourceAdaptor];
-      v31 = [v30 supplementaryDataSource];
-      v32 = [v31 viewMode];
-      if (v32 == 1)
+      analyticsStartDate = selfCopy->_analyticsStartDate;
+      dataSourceAdaptor3 = [(BKLibraryBookshelfCollectionViewController *)selfCopy dataSourceAdaptor];
+      supplementaryDataSource2 = [dataSourceAdaptor3 supplementaryDataSource];
+      viewMode = [supplementaryDataSource2 viewMode];
+      if (viewMode == 1)
       {
         v33 = 1;
       }
 
       else
       {
-        v33 = 2 * (v32 == 2);
+        v33 = 2 * (viewMode == 2);
       }
 
-      v34 = [(BKLibraryBookshelfCollectionViewController *)v47 dataSourceAdaptor];
-      v35 = [v34 supplementaryDataSource];
-      v36 = [v35 sortMode] - 1;
+      dataSourceAdaptor4 = [(BKLibraryBookshelfCollectionViewController *)selfCopy dataSourceAdaptor];
+      supplementaryDataSource3 = [dataSourceAdaptor4 supplementaryDataSource];
+      v36 = [supplementaryDataSource3 sortMode] - 1;
       if (v36 > 5)
       {
         v37 = 0;
@@ -1043,7 +1043,7 @@ LABEL_10:
         v37 = qword_10080B2D0[v36];
       }
 
-      v6 = v50;
+      ba_effectiveAnalyticsTracker = v50;
       [v28 emitLibraryViewEventWithTracker:v50 startDate:analyticsStartDate librarySummary:v10 displayType:v33 sortType:v37];
 
       v44 = v48;
@@ -1053,30 +1053,30 @@ LABEL_10:
     {
       if ([(BKLibraryBookshelfCollectionViewController *)self isSeriesCollection])
       {
-        v38 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-        v39 = [v38 supplementaryDataSource];
-        v40 = [v39 seriesID];
+        dataSourceAdaptor5 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+        supplementaryDataSource4 = [dataSourceAdaptor5 supplementaryDataSource];
+        seriesID = [supplementaryDataSource4 seriesID];
 
-        v41 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-        v42 = [v41 booksDataSource];
-        v43 = [v42 totalNumberOfItems];
+        dataSourceAdaptor6 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+        booksDataSource2 = [dataSourceAdaptor6 booksDataSource];
+        totalNumberOfItems = [booksDataSource2 totalNumberOfItems];
       }
 
       else
       {
-        v45 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-        v40 = [v45 collectionID];
+        collection2 = [(BKLibraryBookshelfCollectionViewController *)self collection];
+        seriesID = [collection2 collectionID];
 
-        v41 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-        v42 = [v41 members];
-        v43 = [v42 count];
+        dataSourceAdaptor6 = [(BKLibraryBookshelfCollectionViewController *)self collection];
+        booksDataSource2 = [dataSourceAdaptor6 members];
+        totalNumberOfItems = [booksDataSource2 count];
       }
 
-      v46 = v43;
+      v46 = totalNumberOfItems;
 
       v44 = +[BAEventReporter sharedReporter];
-      [v44 emitCollectionScreenViewEventWithTracker:v6 startDate:self->_analyticsStartDate collectionID:v40 collectionItemCount:v46];
-      v10 = v40;
+      [v44 emitCollectionScreenViewEventWithTracker:ba_effectiveAnalyticsTracker startDate:self->_analyticsStartDate collectionID:seriesID collectionItemCount:v46];
+      v10 = seriesID;
     }
   }
 }
@@ -1094,31 +1094,31 @@ LABEL_10:
   }
 }
 
-- (void)bc_tabBarControllerWillSelectViewController:(id)a3
+- (void)bc_tabBarControllerWillSelectViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self tabBarController];
-  v12 = [v5 selectedViewController];
+  controllerCopy = controller;
+  tabBarController = [(BKLibraryBookshelfCollectionViewController *)self tabBarController];
+  selectedViewController = [tabBarController selectedViewController];
 
-  v6 = v12;
-  if (v12 != v4)
+  v6 = selectedViewController;
+  if (selectedViewController != controllerCopy)
   {
-    v7 = [v12 im_isAncestorOfChildViewController:self];
-    v6 = v12;
+    v7 = [selectedViewController im_isAncestorOfChildViewController:self];
+    v6 = selectedViewController;
     if (v7)
     {
-      v8 = [(BKLibraryBookshelfCollectionViewController *)self bc_descendentPresentedViewController];
-      [v8 dismissViewControllerAnimated:0 completion:0];
+      bc_descendentPresentedViewController = [(BKLibraryBookshelfCollectionViewController *)self bc_descendentPresentedViewController];
+      [bc_descendentPresentedViewController dismissViewControllerAnimated:0 completion:0];
 
-      v9 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-      v10 = [v9 view];
-      v11 = [v10 isHidden];
+      actionBarViewController = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+      view = [actionBarViewController view];
+      isHidden = [view isHidden];
 
-      v6 = v12;
-      if ((v11 & 1) == 0)
+      v6 = selectedViewController;
+      if ((isHidden & 1) == 0)
       {
         [(BKLibraryBookshelfCollectionViewController *)self setEditing:0 animated:0];
-        v6 = v12;
+        v6 = selectedViewController;
       }
     }
   }
@@ -1126,42 +1126,42 @@ LABEL_10:
 
 - (BOOL)editableCollection
 {
-  v2 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-  v3 = [v2 editableCollection];
+  layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+  editableCollection = [layout editableCollection];
 
-  return v3;
+  return editableCollection;
 }
 
 - (BOOL)reorderableCollection
 {
-  v2 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-  v3 = [v2 reorderableCollection];
+  layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+  reorderableCollection = [layout reorderableCollection];
 
-  return v3;
+  return reorderableCollection;
 }
 
-- (void)preferredContentSizeChanged:(id)a3
+- (void)preferredContentSizeChanged:(id)changed
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (BOOL)isSupplementalContentPDFPicker
 {
-  v2 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v3 = [v2 supplementaryDataSource];
-  v4 = [v3 supplementalContentPDFPicker];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+  supplementalContentPDFPicker = [supplementaryDataSource supplementalContentPDFPicker];
 
-  return v4;
+  return supplementalContentPDFPicker;
 }
 
 - (void)reloadData
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  [v3 reloadData];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  [dataSourceAdaptor reloadData];
 
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)explicitContentRestrictedChanged
@@ -1174,104 +1174,104 @@ LABEL_10:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)scrollToMakeLibraryAssetIDVisible:(id)a3
+- (void)scrollToMakeLibraryAssetIDVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   v11 = +[BKLibraryManager defaultManager];
-  v5 = [v11 uiChildContext];
-  v6 = [v11 libraryMutableAssetWithAssetID:v4 inManagedObjectContext:v5];
+  uiChildContext = [v11 uiChildContext];
+  v6 = [v11 libraryMutableAssetWithAssetID:visibleCopy inManagedObjectContext:uiChildContext];
 
   if (v6)
   {
-    v7 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v8 = [v7 booksDataSource];
-    v9 = [v8 indexPathForRepresentedObject:v6];
+    dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    booksDataSource = [dataSourceAdaptor booksDataSource];
+    v9 = [booksDataSource indexPathForRepresentedObject:v6];
 
     if (v9)
     {
-      v10 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-      [v10 scrollToItemAtIndexPath:v9 atScrollPosition:2 animated:0];
+      collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+      [collectionView scrollToItemAtIndexPath:v9 atScrollPosition:2 animated:0];
     }
   }
 }
 
-- (void)openSeriesContainer:(id)a3
+- (void)openSeriesContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
+  containerCopy = container;
+  ba_effectiveAnalyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B4658;
   v7[3] = &unk_100A06260;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [(BKLibraryBookshelfCollectionViewController *)self createSeriesViewControllerFromSeriesContainer:v6 withParentTracker:v5 completion:v7];
+  v8 = containerCopy;
+  v6 = containerCopy;
+  [(BKLibraryBookshelfCollectionViewController *)self createSeriesViewControllerFromSeriesContainer:v6 withParentTracker:ba_effectiveAnalyticsTracker completion:v7];
 }
 
-- (void)_refreshSeriesContainer:(id)a3
+- (void)_refreshSeriesContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = +[BUBag defaultBag];
-  v5 = [v4 seriesInfoLiveFetchesEnabled];
+  seriesInfoLiveFetchesEnabled = [v4 seriesInfoLiveFetchesEnabled];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B4A9C;
   v7[3] = &unk_100A06288;
-  v8 = v3;
-  v6 = v3;
-  [v5 valueWithCompletion:v7];
+  v8 = containerCopy;
+  v6 = containerCopy;
+  [seriesInfoLiveFetchesEnabled valueWithCompletion:v7];
 }
 
 - (void)_configureSupplementalContentPDFPicker
 {
   if ([(BKLibraryBookshelfCollectionViewController *)self isSupplementalContentPDFPicker])
   {
-    v3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    [(BKLibraryBookshelfCollectionViewController *)self setContentScrollView:v3 forEdge:1];
+    collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    [(BKLibraryBookshelfCollectionViewController *)self setContentScrollView:collectionView forEdge:1];
 
-    v4 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v5 = [v4 supplementaryDataSource];
-    v6 = [v5 supplementalContentPDFPickerTitle];
-    v7 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
-    [v7 setTitle:v6];
+    dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+    supplementalContentPDFPickerTitle = [supplementaryDataSource supplementalContentPDFPickerTitle];
+    navigationItem = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
+    [navigationItem setTitle:supplementalContentPDFPickerTitle];
 
-    v8 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
-    [v8 setLargeTitleDisplayMode:2];
+    navigationItem2 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
+    [navigationItem2 setLargeTitleDisplayMode:2];
 
-    v9 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:0];
+    navigationItem3 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:0];
 
     v11 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"cancelButtonPressed:"];
-    v10 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:v11 animated:0];
+    navigationItem4 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
+    [navigationItem4 setRightBarButtonItem:v11 animated:0];
   }
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
   v4 = +[BAEventReporter sharedReporter];
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v7 = [v6 supplementaryDataSource];
-  v8 = [v7 supplementalContentStorePlaylistID];
-  v9 = [(BKLibraryBookshelfCollectionViewController *)self _supplementalContentCount];
-  [v4 emitCloseSupplementalContentPDFPickerWithTracker:v5 contentID:v8 supplementalContentCount:v9];
+  ba_effectiveAnalyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+  supplementalContentStorePlaylistID = [supplementaryDataSource supplementalContentStorePlaylistID];
+  _supplementalContentCount = [(BKLibraryBookshelfCollectionViewController *)self _supplementalContentCount];
+  [v4 emitCloseSupplementalContentPDFPickerWithTracker:ba_effectiveAnalyticsTracker contentID:supplementalContentStorePlaylistID supplementalContentCount:_supplementalContentCount];
 
   [(BKLibraryBookshelfCollectionViewController *)self _dismissIfSupplementContentPDFPicker];
 }
 
-- (void)selectAllButtonPressed:(id)a3
+- (void)selectAllButtonPressed:(id)pressed
 {
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
-  v6 = [v5 count];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v6 = [indexPathsForSelectedItems count];
 
-  v7 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v8 = [v7 booksDataSource];
-  v9 = [v8 totalNumberOfItems];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  booksDataSource = [dataSourceAdaptor booksDataSource];
+  totalNumberOfItems = [booksDataSource totalNumberOfItems];
 
-  if (v6 == v9)
+  if (v6 == totalNumberOfItems)
   {
 
     [(BKLibraryBookshelfCollectionViewController *)self deselectAll];
@@ -1284,22 +1284,22 @@ LABEL_10:
   }
 }
 
-- (void)addDoneButton:(BOOL)a3 forPresentationController:(id)a4
+- (void)addDoneButton:(BOOL)button forPresentationController:(id)controller
 {
-  v4 = a3;
-  v6 = a4;
+  buttonCopy = button;
+  controllerCopy = controller;
   objc_opt_class();
-  v7 = [v6 presentedViewController];
+  presentedViewController = [controllerCopy presentedViewController];
 
   v13 = BUDynamicCast();
 
   v8 = v13;
   if (v13)
   {
-    v9 = [v13 topViewController];
-    v10 = [v9 navigationItem];
-    v11 = v10;
-    if (v4)
+    topViewController = [v13 topViewController];
+    navigationItem = [topViewController navigationItem];
+    v11 = navigationItem;
+    if (buttonCopy)
     {
       v12 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"doneButtonPressed:"];
       [v11 setRightBarButtonItem:v12 animated:0];
@@ -1307,36 +1307,36 @@ LABEL_10:
 
     else
     {
-      [v10 setRightBarButtonItem:0 animated:0];
+      [navigationItem setRightBarButtonItem:0 animated:0];
     }
 
     v8 = v13;
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self addSelectedBooksCompletion];
-  if (v4)
+  addSelectedBooksCompletion = [(BKLibraryBookshelfCollectionViewController *)self addSelectedBooksCompletion];
+  if (addSelectedBooksCompletion)
   {
-    v4[2](v4, 0);
+    addSelectedBooksCompletion[2](addSelectedBooksCompletion, 0);
   }
 
   [(BKLibraryBookshelfCollectionViewController *)self setAddSelectedBooksCompletion:0];
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  if (!a4)
+  if (!collection)
   {
     return 0;
   }
 
-  v4 = a4;
-  v5 = [v4 horizontalSizeClass];
-  v6 = [v4 verticalSizeClass];
+  collectionCopy = collection;
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  verticalSizeClass = [collectionCopy verticalSizeClass];
 
-  if (v6 == 1 || v5 == 1)
+  if (verticalSizeClass == 1 || horizontalSizeClass == 1)
   {
     return 0;
   }
@@ -1349,21 +1349,21 @@ LABEL_10:
 
 - (void)_setCollectionViewSelectionFollowsFocus
 {
-  v2 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v2 setSelectionFollowsFocus:1];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView setSelectionFollowsFocus:1];
 }
 
-- (id)coverAnimationHostSourceForItem:(id)a3
+- (id)coverAnimationHostSourceForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   v5 = BUDynamicCast();
 
   if (v5)
   {
     v6 = [BKLibraryBookOpenAnimatingSourceProxy alloc];
-    v7 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v8 = [(BKLibraryBookOpenAnimatingSourceProxy *)v6 initWithLibraryAsset:v5 coverHost:v7];
+    dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    v8 = [(BKLibraryBookOpenAnimatingSourceProxy *)v6 initWithLibraryAsset:v5 coverHost:dataSourceAdaptor];
   }
 
   else
@@ -1374,45 +1374,45 @@ LABEL_10:
   return v8;
 }
 
-- (void)coverAnimationHostScrollToMakeVisible:(id)a3
+- (void)coverAnimationHostScrollToMakeVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   objc_opt_class();
   v12 = BUDynamicCast();
 
-  v5 = [v12 libraryAsset];
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v7 = [v6 booksDataSource];
-  v8 = [v7 indexPathForRepresentedObject:v5];
+  libraryAsset = [v12 libraryAsset];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  booksDataSource = [dataSourceAdaptor booksDataSource];
+  v8 = [booksDataSource indexPathForRepresentedObject:libraryAsset];
 
   if (v8)
   {
-    v9 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-    [v9 setCoverAnimationRunningHack:1];
+    layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+    [layout setCoverAnimationRunningHack:1];
 
-    v10 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    [v10 scrollToItemAtIndexPath:v8 atScrollPosition:2 animated:0];
+    collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    [collectionView scrollToItemAtIndexPath:v8 atScrollPosition:2 animated:0];
 
-    v11 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    [v11 layoutIfNeeded];
+    collectionView2 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    [collectionView2 layoutIfNeeded];
   }
 }
 
-- (BOOL)coverAnimationHostIsFullyVisible:(id)a3
+- (BOOL)coverAnimationHostIsFullyVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   objc_opt_class();
   v5 = BUDynamicCast();
 
-  v6 = [v5 libraryAsset];
-  v7 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v8 = [v7 booksDataSource];
-  v9 = [v8 indexPathForRepresentedObject:v6];
+  libraryAsset = [v5 libraryAsset];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  booksDataSource = [dataSourceAdaptor booksDataSource];
+  v9 = [booksDataSource indexPathForRepresentedObject:libraryAsset];
 
   if (v9 && (-[BKLibraryBookshelfCollectionViewController collectionView](self, "collectionView"), v10 = objc_claimAutoreleasedReturnValue(), [v10 indexPathsForVisibleItems], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsObject:", v9), v11, v10, v12))
   {
-    v13 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    v14 = [v13 cellForItemAtIndexPath:v9];
+    collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    v14 = [collectionView cellForItemAtIndexPath:v9];
 
     if (v14)
     {
@@ -1421,14 +1421,14 @@ LABEL_10:
       v18 = v17;
       v20 = v19;
       v22 = v21;
-      v23 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-      [v23 contentOffset];
+      collectionView2 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+      [collectionView2 contentOffset];
       v25 = v24;
-      v26 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-      [v26 bounds];
+      collectionView3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+      [collectionView3 bounds];
       v28 = v27;
-      v29 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-      [v29 verticalScrollIndicatorInsets];
+      collectionView4 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+      [collectionView4 verticalScrollIndicatorInsets];
       v31 = v30;
 
       v37.origin.x = v16;
@@ -1436,8 +1436,8 @@ LABEL_10:
       v37.size.width = v20;
       v37.size.height = v22;
       MinY = CGRectGetMinY(v37);
-      v33 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-      [v33 contentOffset];
+      collectionView5 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+      [collectionView5 contentOffset];
       if (MinY >= v34)
       {
         v38.origin.x = v16;
@@ -1467,12 +1467,12 @@ LABEL_10:
   return v35;
 }
 
-- (void)_openBook:(id)a3 completion:(id)a4
+- (void)_openBook:(id)book completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  bookCopy = book;
+  completionCopy = completion;
   v8 = [(BKLibraryBookshelfCollectionViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKBookPresenting];
-  v9 = [v6 permanentOrTemporaryAssetID];
+  permanentOrTemporaryAssetID = [bookCopy permanentOrTemporaryAssetID];
   v10 = BKLibraryLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1481,69 +1481,69 @@ LABEL_10:
 
   v11 = objc_opt_new();
   v12 = [BKAppDelegate sceneControllerForViewController:self];
-  v13 = [v12 newShowAssetTransaction];
+  newShowAssetTransaction = [v12 newShowAssetTransaction];
 
-  if (v13)
+  if (newShowAssetTransaction)
   {
-    [v11 setObject:v13 forKeyedSubscript:BCTransactionOptionsTransactionKey];
+    [v11 setObject:newShowAssetTransaction forKeyedSubscript:BCTransactionOptionsTransactionKey];
   }
 
-  v14 = [v6 assetLogID];
-  [v11 setObject:v14 forKeyedSubscript:AEAssetLogID];
+  assetLogID = [bookCopy assetLogID];
+  [v11 setObject:assetLogID forKeyedSubscript:AEAssetLogID];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000B5870;
   v17[3] = &unk_100A062B0;
-  v19 = self;
-  v20 = v7;
-  v18 = v6;
-  v15 = v6;
-  v16 = v7;
-  [v8 showAssetWithTransaction:v13 assetID:v9 location:0 options:v11 completion:v17];
+  selfCopy = self;
+  v20 = completionCopy;
+  v18 = bookCopy;
+  v15 = bookCopy;
+  v16 = completionCopy;
+  [v8 showAssetWithTransaction:newShowAssetTransaction assetID:permanentOrTemporaryAssetID location:0 options:v11 completion:v17];
 }
 
-- (void)_playPreview:(id)a3 completion:(id)a4
+- (void)_playPreview:(id)preview completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  previewCopy = preview;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v9 = [v8 booksDataSource];
-  v10 = [v6 storeID];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  booksDataSource = [dataSourceAdaptor booksDataSource];
+  storeID = [previewCopy storeID];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000B5A58;
   v12[3] = &unk_100A062D8;
   objc_copyWeak(&v14, &location);
-  v11 = v7;
+  v11 = completionCopy;
   v13 = v11;
-  [v9 resourceForAssetID:v10 type:1 completion:v12];
+  [booksDataSource resourceForAssetID:storeID type:1 completion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)_downloadSample:(id)a3 completion:(id)a4
+- (void)_downloadSample:(id)sample completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 assetID];
-  v9 = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
-  v10 = [(BKLibraryBookshelfCollectionViewController *)self _contentDataForContentID:v8 tracker:v9];
+  completionCopy = completion;
+  sampleCopy = sample;
+  assetID = [sampleCopy assetID];
+  ba_effectiveAnalyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
+  v10 = [(BKLibraryBookshelfCollectionViewController *)self _contentDataForContentID:assetID tracker:ba_effectiveAnalyticsTracker];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000B5D0C;
   v19[3] = &unk_100A06328;
   v20 = v10;
-  v21 = self;
-  v22 = v6;
-  v11 = v6;
+  selfCopy = self;
+  v22 = completionCopy;
+  v11 = completionCopy;
   v12 = v10;
   v13 = objc_retainBlock(v19);
   v14 = +[BSUIItemDescriptionCache sharedInstance];
-  v15 = [v7 storeID];
+  storeID = [sampleCopy storeID];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -1551,35 +1551,35 @@ LABEL_10:
   v17[3] = &unk_100A06350;
   v18 = v13;
   v16 = v13;
-  [v14 sampleDownloadURLForAssetID:v15 completion:v17];
+  [v14 sampleDownloadURLForAssetID:storeID completion:v17];
 }
 
-- (int64_t)_contentTypeForContentID:(id)a3 withLibraryAsset:(id)a4
+- (int64_t)_contentTypeForContentID:(id)d withLibraryAsset:(id)asset
 {
-  if (!a4)
+  if (!asset)
   {
     return 0;
   }
 
-  v4 = [a4 contentType];
+  contentType = [asset contentType];
 
-  return [BAUtilities contentTypeFromAssetType:v4];
+  return [BAUtilities contentTypeFromAssetType:contentType];
 }
 
-- (id)_contentDataForContentID:(id)a3 tracker:(id)a4
+- (id)_contentDataForContentID:(id)d tracker:(id)tracker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKLibraryBookshelfCollectionViewController *)self _libraryAssetWithContentID:v6];
-  v9 = [v7 contentPrivateIDForContentID:v6];
-  v10 = [v7 contentUserIDForContentID:v6];
+  dCopy = d;
+  trackerCopy = tracker;
+  v8 = [(BKLibraryBookshelfCollectionViewController *)self _libraryAssetWithContentID:dCopy];
+  v9 = [trackerCopy contentPrivateIDForContentID:dCopy];
+  v10 = [trackerCopy contentUserIDForContentID:dCopy];
 
-  v26 = [(BKLibraryBookshelfCollectionViewController *)self _contentTypeForContentID:v6 withLibraryAsset:v8];
+  v26 = [(BKLibraryBookshelfCollectionViewController *)self _contentTypeForContentID:dCopy withLibraryAsset:v8];
   v27 = v10;
   if ([v8 isOwned])
   {
-    v11 = [v8 storeID];
-    v12 = [v11 length];
+    storeID = [v8 storeID];
+    v12 = [storeID length];
     v13 = 1;
     if (!v12)
     {
@@ -1596,12 +1596,12 @@ LABEL_10:
 
   v28 = v9;
   v14 = +[BAEventReporter sharedReporter];
-  v15 = [v14 seriesTypeForContentID:v6];
+  v15 = [v14 seriesTypeForContentID:dCopy];
 
   if ([v8 isAudiobook])
   {
-    v16 = [v8 hasRACSupport];
-    if ([v16 BOOLValue])
+    hasRACSupport = [v8 hasRACSupport];
+    if ([hasRACSupport BOOLValue])
     {
       v17 = 1;
     }
@@ -1618,8 +1618,8 @@ LABEL_10:
   }
 
   v18 = [BAContentData alloc];
-  v19 = [v8 contentType];
-  if (v19 == 3)
+  contentType = [v8 contentType];
+  if (contentType == 3)
   {
     v20 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v8 pageCount]);
   }
@@ -1629,62 +1629,62 @@ LABEL_10:
     v20 = 0;
   }
 
-  v21 = [v8 supplementalContentAssets];
-  v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v21 count]);
-  v23 = [v18 initWithContentID:v6 contentType:v26 contentPrivateID:v28 contentUserID:v27 contentAcquisitionType:v25 contentSubType:0 contentLength:v20 supplementalContentCount:v22 seriesType:v15 productionType:v17 isUnified:0 contentKind:0];
+  supplementalContentAssets = [v8 supplementalContentAssets];
+  v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [supplementalContentAssets count]);
+  v23 = [v18 initWithContentID:dCopy contentType:v26 contentPrivateID:v28 contentUserID:v27 contentAcquisitionType:v25 contentSubType:0 contentLength:v20 supplementalContentCount:v22 seriesType:v15 productionType:v17 isUnified:0 contentKind:0];
 
-  if (v19 == 3)
+  if (contentType == 3)
   {
   }
 
   return v23;
 }
 
-- (id)_libraryAssetWithContentID:(id)a3
+- (id)_libraryAssetWithContentID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[BKAppDelegate delegate];
-  v5 = [v4 libraryAssetProvider];
+  libraryAssetProvider = [v4 libraryAssetProvider];
 
-  v6 = [v5 libraryAssetOnMainQueueWithAssetID:v3];
+  v6 = [libraryAssetProvider libraryAssetOnMainQueueWithAssetID:dCopy];
 
   return v6;
 }
 
-- (void)_openStoreSample:(id)a3
+- (void)_openStoreSample:(id)sample
 {
-  v4 = a3;
-  v5 = [v4 storeID];
+  sampleCopy = sample;
+  storeID = [sampleCopy storeID];
   v6 = BKLibraryLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     sub_10078D864();
   }
 
-  if ([v5 length])
+  if ([storeID length])
   {
-    [(BKLibraryBookshelfCollectionViewController *)self _downloadSample:v4 completion:0];
+    [(BKLibraryBookshelfCollectionViewController *)self _downloadSample:sampleCopy completion:0];
     v7 = [(BKLibraryBookshelfCollectionViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKBookPresenting];
-    if (([v4 isAudiobook] & 1) != 0 || !+[BKSceneUtilities hasMultiWindowEnabled](BKSceneUtilities, "hasMultiWindowEnabled"))
+    if (([sampleCopy isAudiobook] & 1) != 0 || !+[BKSceneUtilities hasMultiWindowEnabled](BKSceneUtilities, "hasMultiWindowEnabled"))
     {
       v10 = [BKAppDelegate sceneControllerForViewController:self];
-      v12 = [v10 newShowAssetTransaction];
+      newShowAssetTransaction = [v10 newShowAssetTransaction];
     }
 
     else
     {
       v8 = +[BKAppDelegate sceneManager];
-      v9 = [v4 assetID];
-      v10 = [v8 newBookSceneControllerProviderWithRequestAssetID:v9];
+      assetID = [sampleCopy assetID];
+      v10 = [v8 newBookSceneControllerProviderWithRequestAssetID:assetID];
 
       v11 = +[BKAppDelegate currentSceneController];
-      v12 = [v11 newShowAssetTransactionWithTargetSceneDescriptor:v10];
+      newShowAssetTransaction = [v11 newShowAssetTransactionWithTargetSceneDescriptor:v10];
     }
 
-    if (v12)
+    if (newShowAssetTransaction)
     {
       v20 = BCTransactionOptionsTransactionKey;
-      v21 = v12;
+      v21 = newShowAssetTransaction;
       v13 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     }
 
@@ -1693,9 +1693,9 @@ LABEL_10:
       v13 = 0;
     }
 
-    if (+[BKSceneUtilities hasMultiWindowEnabled](BKSceneUtilities, "hasMultiWindowEnabled") && ([v4 isAudiobook] & 1) == 0)
+    if (+[BKSceneUtilities hasMultiWindowEnabled](BKSceneUtilities, "hasMultiWindowEnabled") && ([sampleCopy isAudiobook] & 1) == 0)
     {
-      [v7 showAssetWithTransaction:v12 storeID:v5 options:v13];
+      [v7 showAssetWithTransaction:newShowAssetTransaction storeID:storeID options:v13];
     }
 
     else
@@ -1706,8 +1706,8 @@ LABEL_10:
       v15[2] = sub_1000B6478;
       v15[3] = &unk_100A03C78;
       v16 = v7;
-      v17 = v12;
-      v18 = v5;
+      v17 = newShowAssetTransaction;
+      v18 = storeID;
       v19 = v13;
       [v14 forceTransaction:v17 ontoPrimarySceneWithContinuation:v15];
     }
@@ -1719,29 +1719,29 @@ LABEL_10:
   v3 = +[BKAppDelegate sceneManager];
   v4 = [v3 sceneControllerForViewController:self];
 
-  v5 = [v4 newShowURLTransaction];
+  newShowURLTransaction = [v4 newShowURLTransaction];
 
-  return v5;
+  return newShowURLTransaction;
 }
 
-- (void)_showBooksInSectionAtIndexPath:(id)a3
+- (void)_showBooksInSectionAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = BKLibraryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10078D8CC();
   }
 
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v7 = [v6 booksDataSource];
-  v8 = [v7 representedObjectsInSection:{objc_msgSend(v4, "section")}];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  booksDataSource = [dataSourceAdaptor booksDataSource];
+  v8 = [booksDataSource representedObjectsInSection:{objc_msgSend(pathCopy, "section")}];
 
-  v33 = v4;
-  v34 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
-  v9 = [v34 storeID];
+  v33 = pathCopy;
+  v34 = [v8 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+  storeID = [v34 storeID];
 
-  if (!v9)
+  if (!storeID)
   {
     v13 = 0;
     v31 = &__NSArray0__struct;
@@ -1770,7 +1770,7 @@ LABEL_22:
   do
   {
     v14 = [v8 objectAtIndexedSubscript:v12];
-    v15 = [v14 storeID];
+    storeID2 = [v14 storeID];
     if ([v14 isAudiobook])
     {
       v16 = 0;
@@ -1781,14 +1781,14 @@ LABEL_22:
       v16 = 3;
     }
 
-    if (v15)
+    if (storeID2)
     {
       if (v14 == v34)
       {
         v13 = [v10 count];
       }
 
-      [v10 addObject:v15];
+      [v10 addObject:storeID2];
       v17 = [NSNumber numberWithInteger:v16];
       [v11 addObject:v17];
     }
@@ -1822,51 +1822,51 @@ LABEL_21:
 LABEL_23:
 
 LABEL_24:
-  v19 = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
+  ba_effectiveAnalyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
   if ([(BKLibraryBookshelfCollectionViewController *)self isSeriesCollection])
   {
-    v20 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v21 = [v20 supplementaryDataSource];
-    v22 = [v21 seriesID];
+    dataSourceAdaptor2 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    supplementaryDataSource = [dataSourceAdaptor2 supplementaryDataSource];
+    seriesID = [supplementaryDataSource seriesID];
   }
 
   else
   {
-    v20 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-    v22 = [v20 collectionID];
+    dataSourceAdaptor2 = [(BKLibraryBookshelfCollectionViewController *)self collection];
+    seriesID = [dataSourceAdaptor2 collectionID];
   }
 
   v23 = [BALinkData alloc];
-  v24 = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
-  v25 = [v24 title];
+  navigationItem = [(BKLibraryBookshelfCollectionViewController *)self navigationItem];
+  title = [navigationItem title];
   [v34 storeID];
   v27 = v26 = self;
-  v28 = [v23 initWithPreviousSectionID:v22 previousSectionName:v25 previousContentID:v27 linkActionType:2 previousSeriesID:0 previousGenreID:0 previousCollectionID:0 previousAuthorID:0 previousFlowcaseID:0 previousBrickID:0];
+  v28 = [v23 initWithPreviousSectionID:seriesID previousSectionName:title previousContentID:v27 linkActionType:2 previousSeriesID:0 previousGenreID:0 previousCollectionID:0 previousAuthorID:0 previousFlowcaseID:0 previousBrickID:0];
 
-  [v19 pushLinkData:v28 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/AppSource/Classes/BKLibraryBookshelfCollectionViewController.m" line:1295];
+  [ba_effectiveAnalyticsTracker pushLinkData:v28 file:@"/Library/Caches/com.apple.xbs/Sources/Alder/ios/AppSource/Classes/BKLibraryBookshelfCollectionViewController.m" line:1295];
   v29 = [(BKLibraryBookshelfCollectionViewController *)v26 im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKStorePresenting];
-  v30 = [(BKLibraryBookshelfCollectionViewController *)v26 _transactionForStorePresentingAction];
-  [v29 storeShowBooksWithStoreIDs:v32 resourceTypes:v31 focusedIndex:v13 transaction:v30 needsAnalyticsLinkData:0];
+  _transactionForStorePresentingAction = [(BKLibraryBookshelfCollectionViewController *)v26 _transactionForStorePresentingAction];
+  [v29 storeShowBooksWithStoreIDs:v32 resourceTypes:v31 focusedIndex:v13 transaction:_transactionForStorePresentingAction needsAnalyticsLinkData:0];
 }
 
-- (BOOL)_isErrorFromUserCanceled:(id)a3
+- (BOOL)_isErrorFromUserCanceled:(id)canceled
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  canceledCopy = canceled;
+  v4 = canceledCopy;
+  if (canceledCopy)
   {
     v5 = AKAppleIDAuthenticationErrorDomain;
     v6 = AMSErrorDomain;
     v7 = AMSErrorUserInfoKeyStatusCode;
-    v8 = v3;
+    v8 = canceledCopy;
     while (1)
     {
-      v9 = [v8 domain];
-      if ([v9 isEqualToString:v5])
+      domain = [v8 domain];
+      if ([domain isEqualToString:v5])
       {
-        v10 = [v8 code];
+        code = [v8 code];
 
-        if (v10 == -7003)
+        if (code == -7003)
         {
           goto LABEL_15;
         }
@@ -1876,14 +1876,14 @@ LABEL_24:
       {
       }
 
-      v11 = [v8 domain];
-      v12 = [v11 isEqualToString:v6];
+      domain2 = [v8 domain];
+      v12 = [domain2 isEqualToString:v6];
 
-      v13 = [v8 userInfo];
-      v14 = [v13 objectForKeyedSubscript:v7];
+      userInfo = [v8 userInfo];
+      v14 = [userInfo objectForKeyedSubscript:v7];
 
-      v15 = [v8 userInfo];
-      v16 = v15;
+      userInfo2 = [v8 userInfo];
+      v16 = userInfo2;
       if (v12)
       {
         if (v14)
@@ -1892,7 +1892,7 @@ LABEL_24:
         }
       }
 
-      v17 = [v15 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      v17 = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
       v8 = v17;
       if (!v17)
@@ -1901,26 +1901,26 @@ LABEL_24:
       }
     }
 
-    v18 = [v15 objectForKeyedSubscript:v7];
-    v19 = [v18 intValue];
+    v18 = [userInfo2 objectForKeyedSubscript:v7];
+    intValue = [v18 intValue];
 
     v20 = BKLibraryLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      sub_10078D934(v19, v19 < 500, v20);
+      sub_10078D934(intValue, intValue < 500, v20);
     }
 
-    if (v19 < 500)
+    if (intValue < 500)
     {
 LABEL_15:
       v21 = BKLibraryLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v4 domain];
+        domain3 = [v4 domain];
         v25 = 138543874;
-        v26 = v22;
+        v26 = domain3;
         v27 = 2048;
-        v28 = [v4 code];
+        code2 = [v4 code];
         v29 = 2112;
         v30 = v4;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Treating error as being caused by user cancel: Error Domain=%{public}@ Code=%ld (%@)", &v25, 0x20u);
@@ -1951,10 +1951,10 @@ LABEL_21:
   return v23;
 }
 
-- (void)openItemAtIndexPath:(id)a3 completion:(id)a4
+- (void)openItemAtIndexPath:(id)path completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   v8 = +[AETestDriver shared];
   [v8 postEvent:kBETestDriverOpenAnimationStart sender:self];
 
@@ -1962,34 +1962,34 @@ LABEL_21:
   [v9 postEvent:kBETestDriverOpenAnimationSetupStart sender:self];
 
   kdebug_trace();
-  v10 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v11 = [v10 booksDataSource];
-  v12 = [v11 representedObjectForIndexPath:v6];
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  booksDataSource = [dataSourceAdaptor booksDataSource];
+  v12 = [booksDataSource representedObjectForIndexPath:pathCopy];
 
-  v13 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  LODWORD(v44) = [v13 isItemPlayingAtIndexPath:v6];
+  dataSourceAdaptor2 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  LODWORD(v44) = [dataSourceAdaptor2 isItemPlayingAtIndexPath:pathCopy];
 
   v14 = +[BURestrictionsProvider sharedInstance];
-  v15 = [v14 isBookStoreAllowed];
+  isBookStoreAllowed = [v14 isBookStoreAllowed];
 
   v47 = +[BKReachability isOffline];
-  v16 = [(BKLibraryBookshelfCollectionViewController *)self collectionID];
-  v17 = [v16 isEqualToString:kBKCollectionDefaultIDWantToRead];
+  collectionID = [(BKLibraryBookshelfCollectionViewController *)self collectionID];
+  v17 = [collectionID isEqualToString:kBKCollectionDefaultIDWantToRead];
 
   HIDWORD(v44) = [v12 isInSamples];
-  v18 = [v12 isContainer];
-  v19 = [(BKLibraryBookshelfCollectionViewController *)self isEditing];
+  isContainer = [v12 isContainer];
+  isEditing = [(BKLibraryBookshelfCollectionViewController *)self isEditing];
   v20 = BKLibraryLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     [v12 assetID];
-    v22 = v21 = v6;
+    v22 = v21 = pathCopy;
     *buf = 138414082;
     v50 = v22;
     v51 = 1024;
     v52 = v44;
     v53 = 1024;
-    v54 = v15;
+    v54 = isBookStoreAllowed;
     v55 = 1024;
     v56 = v47;
     v57 = 1024;
@@ -1997,27 +1997,27 @@ LABEL_21:
     v59 = 1024;
     v60 = HIDWORD(v44);
     v61 = 1024;
-    v62 = v18;
+    v62 = isContainer;
     v63 = 1024;
-    v64 = v19;
+    v64 = isEditing;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[Open] Attempting to open book %@: bookIsPlaying: %{BOOL}d, isStoreAllowed: %{BOOL}d, isOffline: %{BOOL}d, inWantToReadCollection: %{BOOL}d, isInSamples: %{BOOL}d, isContainer: %{BOOL}d, isEditing: %{BOOL}d", buf, 0x36u);
 
-    v6 = v21;
+    pathCopy = v21;
   }
 
-  if (!v18)
+  if (!isContainer)
   {
-    if ((v15 & 1) == 0 && [v12 isStoreOrSeriesItem])
+    if ((isBookStoreAllowed & 1) == 0 && [v12 isStoreOrSeriesItem])
     {
       v23 = [(BKLibraryBookshelfCollectionViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKStorePresenting];
-      v25 = [(BKLibraryBookshelfCollectionViewController *)self _transactionForStorePresentingAction];
+      _transactionForStorePresentingAction = [(BKLibraryBookshelfCollectionViewController *)self _transactionForStorePresentingAction];
       v26 = BKLibraryLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
         sub_10078D9C4();
       }
 
-      [v23 displayBookUnavailableInStorefrontErrorWithTransaction:v25];
+      [v23 displayBookUnavailableInStorefrontErrorWithTransaction:_transactionForStorePresentingAction];
       goto LABEL_46;
     }
 
@@ -2029,7 +2029,7 @@ LABEL_21:
         sub_10078D9F8();
       }
 
-      if (v19)
+      if (isEditing)
       {
         v23 = BKLibraryLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -2049,7 +2049,7 @@ LABEL_21:
       if ((([(BKLibraryBookshelfCollectionViewController *)self isSeriesCollection]| v17) & 1) == 0)
       {
         v39 = [(BKLibraryBookshelfCollectionViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKStorePresenting];
-        v40 = [(BKLibraryBookshelfCollectionViewController *)self _transactionForStorePresentingAction];
+        _transactionForStorePresentingAction2 = [(BKLibraryBookshelfCollectionViewController *)self _transactionForStorePresentingAction];
         if ([v12 isAudiobook])
         {
           v41 = 0;
@@ -2066,8 +2066,8 @@ LABEL_21:
           sub_10078DA2C(v12);
         }
 
-        v43 = [v12 storeID];
-        [v39 storeShowBookWithStoreID:v43 resourceType:v41 transaction:v40];
+        storeID = [v12 storeID];
+        [v39 storeShowBookWithStoreID:storeID resourceType:v41 transaction:_transactionForStorePresentingAction2];
 
         goto LABEL_47;
       }
@@ -2088,7 +2088,7 @@ LABEL_21:
         goto LABEL_46;
       }
 
-      if (v19)
+      if (isEditing)
       {
         v23 = BKLibraryLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -2105,21 +2105,21 @@ LABEL_21:
         {
           if ([v12 isSupplementalContent])
           {
-            v27 = [v12 supplementalContentParent];
-            v28 = [v27 storeID];
+            supplementalContentParent = [v12 supplementalContentParent];
+            storeID2 = [supplementalContentParent storeID];
 
             v29 = +[BAEventReporter sharedReporter];
             [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
-            v30 = v48 = v7;
+            v30 = v48 = completionCopy;
             [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-            v32 = v31 = v6;
-            v33 = [v32 supplementaryDataSource];
-            v34 = [v33 fromActionMenu];
-            v35 = [(BKLibraryBookshelfCollectionViewController *)self _supplementalContentCount];
-            [v29 emitViewSupplementalContentWithTracker:v30 contentID:v28 sourceIsAction:v34 supplementalContentCount:v35];
+            v32 = v31 = pathCopy;
+            supplementaryDataSource = [v32 supplementaryDataSource];
+            fromActionMenu = [supplementaryDataSource fromActionMenu];
+            _supplementalContentCount = [(BKLibraryBookshelfCollectionViewController *)self _supplementalContentCount];
+            [v29 emitViewSupplementalContentWithTracker:v30 contentID:storeID2 sourceIsAction:fromActionMenu supplementalContentCount:_supplementalContentCount];
 
-            v6 = v31;
-            v7 = v48;
+            pathCopy = v31;
+            completionCopy = v48;
           }
 
           if ([v12 isAudiobookPreview])
@@ -2147,13 +2147,13 @@ LABEL_21:
       }
     }
 
-    [(BKLibraryBookshelfCollectionViewController *)self _showBooksInSectionAtIndexPath:v6];
+    [(BKLibraryBookshelfCollectionViewController *)self _showBooksInSectionAtIndexPath:pathCopy];
     goto LABEL_47;
   }
 
   v23 = BKLibraryLog();
   v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG);
-  if (v19)
+  if (isEditing)
   {
     if (v24)
     {
@@ -2172,7 +2172,7 @@ LABEL_46:
 
   [(BKLibraryBookshelfCollectionViewController *)self openSeriesContainer:v12];
 LABEL_47:
-  v38 = objc_retainBlock(v7);
+  v38 = objc_retainBlock(completionCopy);
 
   if (v38)
   {
@@ -2180,20 +2180,20 @@ LABEL_47:
   }
 }
 
-- (void)_downloadBook:(id)a3
+- (void)_downloadBook:(id)book
 {
-  v4 = a3;
+  bookCopy = book;
   v5 = BKLibraryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_10078DBC0(v4);
+    sub_10078DBC0(bookCopy);
   }
 
-  if ([v4 isCloud])
+  if ([bookCopy isCloud])
   {
     objc_opt_class();
     v6 = +[UIApplication sharedApplication];
-    v7 = [v6 delegate];
+    delegate = [v6 delegate];
     v8 = BUDynamicCast();
 
     if ([v8 isConnectedToInternet])
@@ -2204,84 +2204,84 @@ LABEL_47:
       v10[2] = sub_1000B742C;
       v10[3] = &unk_100A06378;
       v10[4] = self;
-      v11 = v4;
+      v11 = bookCopy;
       [v9 resolveLibraryAsset:v11 completion:v10];
     }
 
     else
     {
-      [(BKLibraryBookshelfCollectionViewController *)self _showInternetReachabilityErrorAlert:v4];
+      [(BKLibraryBookshelfCollectionViewController *)self _showInternetReachabilityErrorAlert:bookCopy];
     }
   }
 }
 
-- (void)_showInternetReachabilityErrorAlert:(id)a3
+- (void)_showInternetReachabilityErrorAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = [(BKLibraryBookshelfCollectionViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKStorePresenting];
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self _transactionForStorePresentingAction];
+  _transactionForStorePresentingAction = [(BKLibraryBookshelfCollectionViewController *)self _transactionForStorePresentingAction];
   v7 = BKLibraryLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    sub_10078DC74(v4);
+    sub_10078DC74(alertCopy);
   }
 
-  [v5 displayOffineCannotDownloadErrorForContentType:objc_msgSend(v4 transaction:{"contentType"), v6}];
+  [v5 displayOffineCannotDownloadErrorForContentType:objc_msgSend(alertCopy transaction:{"contentType"), _transactionForStorePresentingAction}];
 }
 
-- (void)cancelDownloadBook:(id)a3
+- (void)cancelDownloadBook:(id)book
 {
-  v7 = a3;
+  bookCopy = book;
   v3 = +[BKLibraryAssetStatusController sharedController];
-  if ([v7 isValid] && objc_msgSend(v7, "state") == 2)
+  if ([bookCopy isValid] && objc_msgSend(bookCopy, "state") == 2)
   {
-    v4 = [v7 assetID];
-    v5 = [v3 statusForAssetID:v4];
+    assetID = [bookCopy assetID];
+    v5 = [v3 statusForAssetID:assetID];
 
     if ([v5 canPause])
     {
-      v6 = [v7 assetID];
-      [v3 cancelDownloadOfAsset:v6];
+      assetID2 = [bookCopy assetID];
+      [v3 cancelDownloadOfAsset:assetID2];
     }
   }
 }
 
-- (void)resumeDownloadBook:(id)a3
+- (void)resumeDownloadBook:(id)book
 {
-  v7 = a3;
+  bookCopy = book;
   v3 = +[BKLibraryAssetStatusController sharedController];
-  if ([v7 isValid] && objc_msgSend(v7, "state") == 2)
+  if ([bookCopy isValid] && objc_msgSend(bookCopy, "state") == 2)
   {
-    v4 = [v7 assetID];
-    v5 = [v3 statusForAssetID:v4];
+    assetID = [bookCopy assetID];
+    v5 = [v3 statusForAssetID:assetID];
 
     if ([v5 canResume])
     {
-      v6 = [v7 assetID];
-      [v3 resumeDownloadOfAsset:v6];
+      assetID2 = [bookCopy assetID];
+      [v3 resumeDownloadOfAsset:assetID2];
     }
   }
 }
 
 - (NSArray)selectedBooks
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self booksAtIndexPaths:v4];
+  v5 = [(BKLibraryBookshelfCollectionViewController *)self booksAtIndexPaths:indexPathsForSelectedItems];
 
   return v5;
 }
 
-- (id)booksAtIndexPaths:(id)a3
+- (id)booksAtIndexPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v5 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -2297,9 +2297,9 @@ LABEL_47:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-        v13 = [v12 booksDataSource];
-        v14 = [v13 representedObjectForIndexPath:v11];
+        dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+        booksDataSource = [dataSourceAdaptor booksDataSource];
+        v14 = [booksDataSource representedObjectForIndexPath:v11];
 
         [v5 addObject:v14];
       }
@@ -2313,14 +2313,14 @@ LABEL_47:
   return v5;
 }
 
-- (void)_addSelectedBooksToReadingList:(id)a3 completion:(id)a4
+- (void)_addSelectedBooksToReadingList:(id)list completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  listCopy = list;
+  completionCopy = completion;
+  v8 = listCopy;
   if ([v8 count])
   {
-    [(BKLibraryBookshelfCollectionViewController *)self setAddSelectedBooksCompletion:v7];
+    [(BKLibraryBookshelfCollectionViewController *)self setAddSelectedBooksCompletion:completionCopy];
     [(BKLibraryBookshelfCollectionViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BSUILibraryCollectionUIProvider];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
@@ -2338,9 +2338,9 @@ LABEL_47:
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v12)
     {
-      v22 = self;
+      selfCopy = self;
       v23 = v8;
-      v24 = v7;
+      v24 = completionCopy;
       v13 = *v27;
       while (2)
       {
@@ -2355,13 +2355,13 @@ LABEL_47:
           v16 = +[NSNumber numberWithShort:](NSNumber, "numberWithShort:", [v15 contentType]);
           [v9 addObject:v16];
 
-          v17 = [v15 storeID];
-          v18 = [v17 length];
+          storeID = [v15 storeID];
+          v18 = [storeID length];
 
           if (v18)
           {
-            v19 = [v15 assetID];
-            [v10 addObject:v19];
+            assetID = [v15 assetID];
+            [v10 addObject:assetID];
           }
 
           if ([v15 isContainer])
@@ -2382,8 +2382,8 @@ LABEL_47:
 
 LABEL_14:
       v8 = v23;
-      v7 = v24;
-      self = v22;
+      completionCopy = v24;
+      self = selfCopy;
     }
 
     v20 = [v11 valueForKey:@"assetID"];
@@ -2393,22 +2393,22 @@ LABEL_14:
   }
 }
 
-- (void)_showOverlayViewController:(id)a3
+- (void)_showOverlayViewController:(id)controller
 {
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1000B7EA8;
   v11 = &unk_100A03440;
-  v12 = a3;
-  v13 = self;
-  v4 = v12;
+  controllerCopy = controller;
+  selfCopy = self;
+  v4 = controllerCopy;
   v5 = objc_retainBlock(&v8);
   v6 = [(BKLibraryBookshelfCollectionViewController *)self bc_descendentPresentedViewController:v8];
 
   if (v6)
   {
-    v7 = [(BKLibraryBookshelfCollectionViewController *)self bc_descendentPresentedViewController];
-    [v7 dismissViewControllerAnimated:1 completion:v5];
+    bc_descendentPresentedViewController = [(BKLibraryBookshelfCollectionViewController *)self bc_descendentPresentedViewController];
+    [bc_descendentPresentedViewController dismissViewControllerAnimated:1 completion:v5];
   }
 
   else
@@ -2417,90 +2417,90 @@ LABEL_14:
   }
 }
 
-- (void)_dismissOverlayViewController:(id)a3
+- (void)_dismissOverlayViewController:(id)controller
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self presentedViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(BKLibraryBookshelfCollectionViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)updateActionBarForSelection
 {
   [(BKLibraryBookshelfCollectionViewController *)self updateBarButtonsAnimated:1];
-  v7 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self selectedBooks];
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self hasAnyDeletableBookSelected];
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self hasAnySeriesContainerSelected];
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-  [v7 updateForSelectedItems:v3 deletableItems:v4 seriesItems:v5 editable:{objc_msgSend(v6, "isDefaultCollection") ^ 1}];
+  actionBarViewController = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+  selectedBooks = [(BKLibraryBookshelfCollectionViewController *)self selectedBooks];
+  hasAnyDeletableBookSelected = [(BKLibraryBookshelfCollectionViewController *)self hasAnyDeletableBookSelected];
+  hasAnySeriesContainerSelected = [(BKLibraryBookshelfCollectionViewController *)self hasAnySeriesContainerSelected];
+  collection = [(BKLibraryBookshelfCollectionViewController *)self collection];
+  [actionBarViewController updateForSelectedItems:selectedBooks deletableItems:hasAnyDeletableBookSelected seriesItems:hasAnySeriesContainerSelected editable:{objc_msgSend(collection, "isDefaultCollection") ^ 1}];
 }
 
 - (void)updateActionBarFromMetrics
 {
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-  v4 = [v3 actionBarMetrics];
-  [v5 updateActionBarFromMetrics:v4];
+  actionBarViewController = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+  layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+  actionBarMetrics = [layout actionBarMetrics];
+  [actionBarViewController updateActionBarFromMetrics:actionBarMetrics];
 }
 
 - (void)updateTitleFromMetrics
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
-  v4 = [v3 topViewController];
+  navigationController = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v4 == self)
+  if (topViewController == self)
   {
-    v5 = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
-    v11 = [v5 navigationBar];
+    navigationController2 = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
+    navigationBar = [navigationController2 navigationBar];
 
-    v6 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-    v7 = [v6 columnMetrics];
+    layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+    columnMetrics = [layout columnMetrics];
 
-    [v7 margins];
+    [columnMetrics margins];
     v9 = v8;
-    [v7 margins];
-    [v11 setDirectionalLayoutMargins:{0.0, v9, 0.0, v10}];
+    [columnMetrics margins];
+    [navigationBar setDirectionalLayoutMargins:{0.0, v9, 0.0, v10}];
   }
 }
 
-- (void)updateTabBarControllerForEditing:(BOOL)a3
+- (void)updateTabBarControllerForEditing:(BOOL)editing
 {
-  v3 = a3;
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self tabBarController];
-  v6 = v5;
-  if (v3)
+  editingCopy = editing;
+  tabBarController = [(BKLibraryBookshelfCollectionViewController *)self tabBarController];
+  v6 = tabBarController;
+  if (editingCopy)
   {
-    [v5 hideBarWithTransition:6];
+    [tabBarController hideBarWithTransition:6];
   }
 
   else
   {
-    [v5 showBarWithTransition:6];
+    [tabBarController showBarWithTransition:6];
   }
 
-  v7 = [(BKLibraryBookshelfCollectionViewController *)self _collectionBackingButton];
-  [v7 setEnabled:!v3];
+  _collectionBackingButton = [(BKLibraryBookshelfCollectionViewController *)self _collectionBackingButton];
+  [_collectionBackingButton setEnabled:!editingCopy];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(BKLibraryBookshelfCollectionViewController *)self isEditing]!= a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if ([(BKLibraryBookshelfCollectionViewController *)self isEditing]!= editing)
   {
     v35.receiver = self;
     v35.super_class = BKLibraryBookshelfCollectionViewController;
-    [(BKLibraryBookshelfCollectionViewController *)&v35 setEditing:v5 animated:v4];
-    v7 = [(BKLibraryBookshelfCollectionViewController *)self bk_rootBarCoordinator];
-    [v7 setIsMiniPlayerHidden:v5];
+    [(BKLibraryBookshelfCollectionViewController *)&v35 setEditing:editingCopy animated:animatedCopy];
+    bk_rootBarCoordinator = [(BKLibraryBookshelfCollectionViewController *)self bk_rootBarCoordinator];
+    [bk_rootBarCoordinator setIsMiniPlayerHidden:editingCopy];
 
-    if (v5)
+    if (editingCopy)
     {
-      sub_10078DD6C(self, v4);
+      sub_10078DD6C(self, animatedCopy);
     }
 
     else
     {
-      sub_10078DCFC(self, v4);
+      sub_10078DCFC(self, animatedCopy);
     }
 
     v33[0] = _NSConcreteStackBlock;
@@ -2508,14 +2508,14 @@ LABEL_14:
     v33[2] = sub_1000B8704;
     v33[3] = &unk_100A044C8;
     v33[4] = self;
-    v34 = v5;
+    v34 = editingCopy;
     v8 = objc_retainBlock(v33);
     v9 = v8;
-    if (v4)
+    if (animatedCopy)
     {
-      v10 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-      v11 = [v10 view];
-      [v11 setHidden:0];
+      actionBarViewController = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+      view = [actionBarViewController view];
+      [view setHidden:0];
 
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
@@ -2527,75 +2527,75 @@ LABEL_14:
       v29[2] = sub_1000B8794;
       v29[3] = &unk_100A05D78;
       v29[4] = self;
-      v30 = v5;
+      v30 = editingCopy;
       [UIView animateWithDuration:v31 animations:v29 completion:0.3];
-      v12 = v32;
+      actionBarViewController2 = v32;
     }
 
     else
     {
       (v8[2])(v8);
-      v12 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
-      v13 = [v12 view];
-      [v13 setHidden:v5 ^ 1];
+      actionBarViewController2 = [(BKLibraryBookshelfCollectionViewController *)self actionBarViewController];
+      view2 = [actionBarViewController2 view];
+      [view2 setHidden:editingCopy ^ 1];
     }
 
     [(BKLibraryBookshelfCollectionViewController *)self setTransitioningToNewLayout:1];
-    v14 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    [v14 contentOffset];
+    collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    [collectionView contentOffset];
     [(BKLibraryBookshelfCollectionViewController *)self setPreviousContentOffset:?];
 
-    v15 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-    v16 = [v15 cellMetrics];
-    if ([v16 cellType] == 3)
+    layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+    cellMetrics = [layout cellMetrics];
+    if ([cellMetrics cellType] == 3)
     {
       [(BKLibraryBookshelfCollectionViewController *)self setPreserveContentOffsetInNewLayout:0];
     }
 
     else
     {
-      v17 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-      v18 = [v17 cellMetrics];
-      if ([v18 cellType] == 4)
+      layout2 = [(BKLibraryBookshelfCollectionViewController *)self layout];
+      cellMetrics2 = [layout2 cellMetrics];
+      if ([cellMetrics2 cellType] == 4)
       {
         [(BKLibraryBookshelfCollectionViewController *)self setPreserveContentOffsetInNewLayout:0];
       }
 
       else
       {
-        v19 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-        v20 = [v19 cellMetrics];
-        -[BKLibraryBookshelfCollectionViewController setPreserveContentOffsetInNewLayout:](self, "setPreserveContentOffsetInNewLayout:", [v20 cellType] != 0);
+        layout3 = [(BKLibraryBookshelfCollectionViewController *)self layout];
+        cellMetrics3 = [layout3 cellMetrics];
+        -[BKLibraryBookshelfCollectionViewController setPreserveContentOffsetInNewLayout:](self, "setPreserveContentOffsetInNewLayout:", [cellMetrics3 cellType] != 0);
       }
     }
 
-    v21 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-    v22 = [v21 copy];
+    layout4 = [(BKLibraryBookshelfCollectionViewController *)self layout];
+    v22 = [layout4 copy];
 
-    [v22 setEditMode:v5];
+    [v22 setEditMode:editingCopy];
     [(BKLibraryBookshelfCollectionViewController *)self setLayout:v22];
-    v23 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-    [v23 updateMetricsWithViewController:self];
+    layout5 = [(BKLibraryBookshelfCollectionViewController *)self layout];
+    [layout5 updateMetricsWithViewController:self];
 
     objc_initWeak(&location, self);
-    v24 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    collectionView2 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_1000B87FC;
     v25[3] = &unk_100A063A0;
     objc_copyWeak(&v26, &location);
-    v27 = v5;
-    [v24 setCollectionViewLayout:v22 animated:v4 completion:v25];
+    v27 = editingCopy;
+    [collectionView2 setCollectionViewLayout:v22 animated:animatedCopy completion:v25];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(&location);
   }
 }
 
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   if ([(BKLibraryBookshelfCollectionViewController *)self transitioningToNewLayout])
   {
     if ([(BKLibraryBookshelfCollectionViewController *)self preserveContentOffsetInNewLayout]|| ([(BKLibraryBookshelfCollectionViewController *)self previousContentOffset], v7 < 0.0))
@@ -2615,30 +2615,30 @@ LABEL_14:
 
 - (void)selectAll
 {
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  if ([v6 numberOfSections] >= 1)
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  if ([collectionView numberOfSections] >= 1)
   {
     v3 = 0;
     do
     {
-      if ([v6 numberOfItemsInSection:v3] >= 1)
+      if ([collectionView numberOfItemsInSection:v3] >= 1)
       {
         v4 = 0;
         do
         {
           v5 = [NSIndexPath indexPathForItem:v4 inSection:v3];
-          [v6 selectItemAtIndexPath:v5 animated:0 scrollPosition:0];
+          [collectionView selectItemAtIndexPath:v5 animated:0 scrollPosition:0];
 
           ++v4;
         }
 
-        while (v4 < [v6 numberOfItemsInSection:v3]);
+        while (v4 < [collectionView numberOfItemsInSection:v3]);
       }
 
       ++v3;
     }
 
-    while (v3 < [v6 numberOfSections]);
+    while (v3 < [collectionView numberOfSections]);
   }
 
   [(BKLibraryBookshelfCollectionViewController *)self updateActionBarForSelection];
@@ -2646,8 +2646,8 @@ LABEL_14:
 
 - (void)deselectAll
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v3 selectItemAtIndexPath:0 animated:1 scrollPosition:0];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [collectionView selectItemAtIndexPath:0 animated:1 scrollPosition:0];
 
   [(BKLibraryBookshelfCollectionViewController *)self updateActionBarForSelection];
 }
@@ -2663,17 +2663,17 @@ LABEL_14:
 
 - (void)openSelectedBooks
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  if (v4)
+  if (indexPathsForSelectedItems)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1000B8BE8;
     v5[3] = &unk_100A063C8;
     v5[4] = self;
-    [v4 enumerateObjectsUsingBlock:v5];
+    [indexPathsForSelectedItems enumerateObjectsUsingBlock:v5];
   }
 }
 
@@ -2682,9 +2682,9 @@ LABEL_14:
   if (UIAccessibilityIsVoiceOverRunning() && [(BKLibraryBookshelfCollectionViewController *)self isEditing])
   {
     v3 = objc_opt_new();
-    v4 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    v5 = [v4 indexPathsForSelectedItems];
-    v6 = [v5 count];
+    collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    v6 = [indexPathsForSelectedItems count];
 
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"%lu selected books" value:&stru_100A30A68 table:0];
@@ -2709,25 +2709,25 @@ LABEL_14:
   }
 }
 
-- (void)bookTapped:(id)a3 completion:(id)a4
+- (void)bookTapped:(id)tapped completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKLibraryBookshelfCollectionViewController *)self isEditing];
+  tappedCopy = tapped;
+  completionCopy = completion;
+  isEditing = [(BKLibraryBookshelfCollectionViewController *)self isEditing];
   v9 = BKLibraryLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = tappedCopy;
     v12 = 1024;
-    v13 = v8;
+    v13 = isEditing;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[Open] Processing book tapped at index: %@,  isEditing: %{BOOL}d", &v10, 0x12u);
   }
 
-  if ((v8 & 1) == 0)
+  if ((isEditing & 1) == 0)
   {
     [(BKLibraryBookshelfCollectionViewController *)self _dismissIfSupplementContentPDFPicker];
-    [(BKLibraryBookshelfCollectionViewController *)self openItemAtIndexPath:v6 completion:v7];
+    [(BKLibraryBookshelfCollectionViewController *)self openItemAtIndexPath:tappedCopy completion:completionCopy];
   }
 }
 
@@ -2740,26 +2740,26 @@ LABEL_14:
   }
 }
 
-- (void)directBuyTapped:(id)a3 buyParameters:(id)a4 completion:(id)a5
+- (void)directBuyTapped:(id)tapped buyParameters:(id)parameters completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v12 = [v11 booksDataSource];
-  v13 = [v12 representedObjectForIndexPath:v10];
+  completionCopy = completion;
+  parametersCopy = parameters;
+  tappedCopy = tapped;
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  booksDataSource = [dataSourceAdaptor booksDataSource];
+  v13 = [booksDataSource representedObjectForIndexPath:tappedCopy];
 
-  v14 = [v13 isAudiobook];
+  isAudiobook = [v13 isAudiobook];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000B90D0;
   v16[3] = &unk_100A063F0;
-  v17 = v8;
-  v15 = v8;
-  [BKBookPurchaseAction tryToPurchaseBook:v13 libraryAssetProvider:0 buyParameters:v9 allowPurchaseFromNonSampleBuyButton:1 suppressNetworkEvaluatorDialogs:v14 analyticsInfo:0 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [BKBookPurchaseAction tryToPurchaseBook:v13 libraryAssetProvider:0 buyParameters:parametersCopy allowPurchaseFromNonSampleBuyButton:1 suppressNetworkEvaluatorDialogs:isAudiobook analyticsInfo:0 completion:v16];
 }
 
-- (void)showReadingListsForActionHandler:(id)a3
+- (void)showReadingListsForActionHandler:(id)handler
 {
   v7 = [(BKLibraryBookshelfCollectionViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BSUILibraryCollectionUIProvider];
   objc_opt_class();
@@ -2767,14 +2767,14 @@ LABEL_14:
   v5 = BUDynamicCast();
 
   [v5 bsui_setPrefersExtraCompactNavBarMargin:1];
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
-  [v6 pushViewController:v5 animated:1];
+  navigationController = [(BKLibraryBookshelfCollectionViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
-- (void)presentReadingListsPopoverFromItem:(id)a3 completion:(id)a4
+- (void)presentReadingListsPopoverFromItem:(id)item completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  itemCopy = item;
   v8 = [(BKLibraryBookshelfCollectionViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BSUILibraryCollectionUIProvider];
   objc_opt_class();
   v9 = [v8 libraryCollectionListViewControllerWithAssetIDs:0 knownAssetTypes:0 knownStoreAssetIDs:0 containsSeriesContainer:0];
@@ -2786,38 +2786,38 @@ LABEL_14:
   v13[2] = sub_1000B9344;
   v13[3] = &unk_100A03A58;
   v14 = v10;
-  v15 = v6;
+  v15 = completionCopy;
   v11 = v10;
-  v12 = v6;
-  [(BKLibraryBookshelfCollectionViewController *)self _showPopoverViewController:v11 fromItem:v7 completion:v13];
+  v12 = completionCopy;
+  [(BKLibraryBookshelfCollectionViewController *)self _showPopoverViewController:v11 fromItem:itemCopy completion:v13];
 }
 
 - (void)dismissReadingListPopover
 {
-  v2 = [(BKLibraryBookshelfCollectionViewController *)self presentedReadingListPopover];
-  [v2 im_dismissAnimated:0];
+  presentedReadingListPopover = [(BKLibraryBookshelfCollectionViewController *)self presentedReadingListPopover];
+  [presentedReadingListPopover im_dismissAnimated:0];
 }
 
-- (void)_showPopoverViewController:(id)a3 fromItem:(id)a4 completion:(id)a5
+- (void)_showPopoverViewController:(id)controller fromItem:(id)item completion:(id)completion
 {
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_1000B951C;
   v17 = &unk_100A04FE8;
-  v18 = a3;
-  v19 = self;
-  v20 = a4;
-  v21 = a5;
-  v8 = v21;
-  v9 = v20;
-  v10 = v18;
+  controllerCopy = controller;
+  selfCopy = self;
+  itemCopy = item;
+  completionCopy = completion;
+  v8 = completionCopy;
+  v9 = itemCopy;
+  v10 = controllerCopy;
   v11 = objc_retainBlock(&v14);
   v12 = [(BKLibraryBookshelfCollectionViewController *)self bc_descendentPresentedViewController:v14];
 
   if (v12)
   {
-    v13 = [(BKLibraryBookshelfCollectionViewController *)self bc_descendentPresentedViewController];
-    [v13 dismissViewControllerAnimated:1 completion:v11];
+    bc_descendentPresentedViewController = [(BKLibraryBookshelfCollectionViewController *)self bc_descendentPresentedViewController];
+    [bc_descendentPresentedViewController dismissViewControllerAnimated:1 completion:v11];
   }
 
   else
@@ -2826,27 +2826,27 @@ LABEL_14:
   }
 }
 
-- (BOOL)canSelectItemAtIndexPath:(id)a3
+- (BOOL)canSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v6 = [v5 booksDataSource];
-  v7 = [v6 representedObjectForIndexPath:v4];
+  pathCopy = path;
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  booksDataSource = [dataSourceAdaptor booksDataSource];
+  v7 = [booksDataSource representedObjectForIndexPath:pathCopy];
 
   objc_opt_class();
   v8 = BUDynamicCast();
-  v9 = [v8 state];
+  state = [v8 state];
   if ([(BKLibraryBookshelfCollectionViewController *)self isEditing])
   {
-    v10 = [(BKLibraryBookshelfCollectionViewController *)self isEditing];
-    if (v9 == 2)
+    isEditing = [(BKLibraryBookshelfCollectionViewController *)self isEditing];
+    if (state == 2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v10;
+      v11 = isEditing;
     }
   }
 
@@ -2869,9 +2869,9 @@ LABEL_14:
   return v2;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  if ([(BKLibraryBookshelfCollectionViewController *)self isEditing:a3])
+  if ([(BKLibraryBookshelfCollectionViewController *)self isEditing:view])
   {
     [(BKLibraryBookshelfCollectionViewController *)self toggleAccessibilityIfNeeded];
 
@@ -2879,21 +2879,21 @@ LABEL_14:
   }
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
-  v7 = [v6 cellForItemAtIndexPath:v5];
+  v7 = [viewCopy cellForItemAtIndexPath:pathCopy];
   v8 = BUDynamicCast();
 
   [v8 handleTapIfPossible];
-  [v6 deselectItemAtIndexPath:v5 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  if ([(BKLibraryBookshelfCollectionViewController *)self isEditing:a3])
+  if ([(BKLibraryBookshelfCollectionViewController *)self isEditing:view])
   {
     [(BKLibraryBookshelfCollectionViewController *)self toggleAccessibilityIfNeeded];
 
@@ -2901,54 +2901,54 @@ LABEL_14:
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  [v11 collectionView:v10 willDisplayCell:v9 forItemAtIndexPath:v8];
+  pathCopy = path;
+  cellCopy = cell;
+  viewCopy = view;
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  [dataSourceAdaptor collectionView:viewCopy willDisplayCell:cellCopy forItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  [v14 collectionView:v13 willDisplaySupplementaryView:v12 forElementKind:v11 atIndexPath:v10];
+  pathCopy = path;
+  kindCopy = kind;
+  supplementaryViewCopy = supplementaryView;
+  viewCopy = view;
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  [dataSourceAdaptor collectionView:viewCopy willDisplaySupplementaryView:supplementaryViewCopy forElementKind:kindCopy atIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  [v11 collectionView:v10 didEndDisplayingCell:v9 forItemAtIndexPath:v8];
+  pathCopy = path;
+  cellCopy = cell;
+  viewCopy = view;
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  [dataSourceAdaptor collectionView:viewCopy didEndDisplayingCell:cellCopy forItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  [v14 collectionView:v13 didEndDisplayingSupplementaryView:v12 forElementOfKind:v11 atIndexPath:v10];
+  pathCopy = path;
+  kindCopy = kind;
+  supplementaryViewCopy = supplementaryView;
+  viewCopy = view;
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  [dataSourceAdaptor collectionView:viewCopy didEndDisplayingSupplementaryView:supplementaryViewCopy forElementOfKind:kindCopy atIndexPath:pathCopy];
 }
 
-- (void)collectionView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [NSDate date:a3];
+  v6 = [NSDate date:view];
   contextMenuAppearDate = self->_contextMenuAppearDate;
   self->_contextMenuAppearDate = v6;
 }
 
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [a4 identifier];
+  identifier = [configuration identifier];
   objc_opt_class();
   v7 = BUDynamicCast();
   v8 = v7;
@@ -2957,33 +2957,33 @@ LABEL_14:
     v21 = v7;
     v10 = [NSArray arrayWithObjects:&v21 count:1];
     v11 = [(BKLibraryBookshelfCollectionViewController *)self booksAtIndexPaths:v10];
-    v12 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-    v13 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    v14 = [v13 cellForItemAtIndexPath:v8];
-    v15 = sub_10078D1C8(self, v11, v12, v14, 0, 0);
+    collection = [(BKLibraryBookshelfCollectionViewController *)self collection];
+    collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    v14 = [collectionView cellForItemAtIndexPath:v8];
+    v15 = sub_10078D1C8(self, v11, collection, v14, 0, 0);
 
     v16 = +[BAEventReporter sharedReporter];
-    v17 = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
+    ba_effectiveAnalyticsTracker = [(BKLibraryBookshelfCollectionViewController *)self ba_effectiveAnalyticsTracker];
     contextMenuAppearDate = self->_contextMenuAppearDate;
     v19 = +[BKContextMenuProvider sharedProvider];
     v20 = [v19 analyticsAssetPropertyProviderForDataModel:v15];
-    [v16 emitContextualActionSheetExposureEventWithTracker:v17 startDate:contextMenuAppearDate propertyProvider:v20];
+    [v16 emitContextualActionSheetExposureEventWithTracker:ba_effectiveAnalyticsTracker startDate:contextMenuAppearDate propertyProvider:v20];
   }
 
   v9 = self->_contextMenuAppearDate;
   self->_contextMenuAppearDate = 0;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 contextMenuInteraction];
-  v12 = [v11 menuAppearance];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  pathCopy = path;
+  contextMenuInteraction = [viewCopy contextMenuInteraction];
+  menuAppearance = [contextMenuInteraction menuAppearance];
 
-  if (v12 == 2)
+  if (menuAppearance == 2)
   {
     objc_initWeak(&location, self);
     v15 = _NSConcreteStackBlock;
@@ -2991,8 +2991,8 @@ LABEL_14:
     v17 = sub_1000B9E6C;
     v18 = &unk_100A06418;
     objc_copyWeak(v21, &location);
-    v19 = v9;
-    v20 = v10;
+    v19 = viewCopy;
+    v20 = pathCopy;
     v21[1] = *&x;
     v21[2] = *&y;
     v13 = [UIContextMenuConfiguration configurationWithIdentifier:v20 previewProvider:0 actionProvider:&v15];
@@ -3010,14 +3010,14 @@ LABEL_14:
   return v13;
 }
 
-- (id)_dci_collectionView:(id)a3 contextMenuConfigurationForSelectedItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)_dci_collectionView:(id)view contextMenuConfigurationForSelectedItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 contextMenuInteraction];
-  v10 = [v9 menuAppearance];
+  viewCopy = view;
+  pathsCopy = paths;
+  contextMenuInteraction = [viewCopy contextMenuInteraction];
+  menuAppearance = [contextMenuInteraction menuAppearance];
 
-  if (v10 == 2)
+  if (menuAppearance == 2)
   {
     objc_initWeak(&location, self);
     v13[0] = _NSConcreteStackBlock;
@@ -3025,7 +3025,7 @@ LABEL_14:
     v13[2] = sub_1000BA348;
     v13[3] = &unk_100A06440;
     objc_copyWeak(&v15, &location);
-    v14 = v8;
+    v14 = pathsCopy;
     v11 = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:0 actionProvider:v13];
     [v11 setPreferredMenuElementOrder:2];
 
@@ -3044,30 +3044,30 @@ LABEL_14:
 - (BOOL)coverEffectsNightMode
 {
   objc_opt_class();
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
   v4 = BUDynamicCast();
 
-  LOBYTE(v3) = [v4 currentUserInterfaceStyle] == 2;
-  return v3;
+  LOBYTE(collectionView) = [v4 currentUserInterfaceStyle] == 2;
+  return collectionView;
 }
 
 - (BOOL)hasAnySeriesContainerSelected
 {
-  v2 = self;
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self selectedBooks];
-  LOBYTE(v2) = [(BKLibraryBookshelfCollectionViewController *)v2 hasAnySeriesContainerInLibraryAssets:v3];
+  selfCopy = self;
+  selectedBooks = [(BKLibraryBookshelfCollectionViewController *)self selectedBooks];
+  LOBYTE(selfCopy) = [(BKLibraryBookshelfCollectionViewController *)selfCopy hasAnySeriesContainerInLibraryAssets:selectedBooks];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)hasAnySeriesContainerInLibraryAssets:(id)a3
+- (BOOL)hasAnySeriesContainerInLibraryAssets:(id)assets
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  assetsCopy = assets;
+  v4 = [assetsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -3077,7 +3077,7 @@ LABEL_14:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -3088,7 +3088,7 @@ LABEL_14:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [assetsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -3105,10 +3105,10 @@ LABEL_12:
 
 - (BOOL)hasAnyDeletableBookSelected
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self selectedBooks];
-  if (v3)
+  selectedBooks = [(BKLibraryBookshelfCollectionViewController *)self selectedBooks];
+  if (selectedBooks)
   {
-    v4 = [NSSet setWithArray:v3];
+    v4 = [NSSet setWithArray:selectedBooks];
   }
 
   else
@@ -3118,51 +3118,51 @@ LABEL_12:
 
   if ([v4 count])
   {
-    v5 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v6 = [v5 supplementaryDataSource];
-    v7 = [v6 collection];
+    dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    supplementaryDataSource = [dataSourceAdaptor supplementaryDataSource];
+    collection = [supplementaryDataSource collection];
 
     v8 = [BKDeleteActionItemsProvider alloc];
-    v9 = [v7 collectionID];
-    v10 = [v8 initWithBooks:v4 currentCollectionId:v9];
+    collectionID = [collection collectionID];
+    v10 = [v8 initWithBooks:v4 currentCollectionId:collectionID];
 
-    v11 = [v10 actionItems];
+    actionItems = [v10 actionItems];
   }
 
   else
   {
-    v11 = 0;
+    actionItems = 0;
   }
 
-  v12 = [v11 count] != 0;
+  v12 = [actionItems count] != 0;
 
   return v12;
 }
 
-- (void)removeForSelectedItems:(id)a3
+- (void)removeForSelectedItems:(id)items
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v7 = [v5 indexPathsForSelectedItems];
+  itemsCopy = items;
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v6 = [v4 trashButton];
+  trashButton = [itemsCopy trashButton];
 
-  [(BKLibraryBookshelfCollectionViewController *)self _removalAttemptForItemsAtIndexPaths:v7 sourceBarButtonItem:v6];
+  [(BKLibraryBookshelfCollectionViewController *)self _removalAttemptForItemsAtIndexPaths:indexPathsForSelectedItems sourceBarButtonItem:trashButton];
 }
 
 - (void)removeForSelectedItems
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  [(BKLibraryBookshelfCollectionViewController *)self _removalAttemptForItemsAtIndexPaths:v4 sourceBarButtonItem:0];
+  [(BKLibraryBookshelfCollectionViewController *)self _removalAttemptForItemsAtIndexPaths:indexPathsForSelectedItems sourceBarButtonItem:0];
 }
 
-- (void)_removalAttemptForItemsAtIndexPaths:(id)a3 sourceBarButtonItem:(id)a4
+- (void)_removalAttemptForItemsAtIndexPaths:(id)paths sourceBarButtonItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKLibraryBookshelfCollectionViewController *)self booksAtIndexPaths:v6];
+  pathsCopy = paths;
+  itemCopy = item;
+  v8 = [(BKLibraryBookshelfCollectionViewController *)self booksAtIndexPaths:pathsCopy];
   v9 = objc_opt_new();
   if ([v8 count])
   {
@@ -3170,11 +3170,11 @@ LABEL_12:
     do
     {
       v11 = [v8 objectAtIndexedSubscript:v10];
-      v12 = [v11 assetID];
+      assetID = [v11 assetID];
 
-      if (v12)
+      if (assetID)
       {
-        [v9 addObject:v12];
+        [v9 addObject:assetID];
       }
 
       ++v10;
@@ -3185,10 +3185,10 @@ LABEL_12:
 
   if ([v8 count])
   {
-    v13 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-    v14 = [v13 booksDataSource];
-    v15 = [v14 totalNumberOfItems];
-    LOBYTE(v15) = v15 == [v8 count];
+    dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+    booksDataSource = [dataSourceAdaptor booksDataSource];
+    totalNumberOfItems = [booksDataSource totalNumberOfItems];
+    LOBYTE(totalNumberOfItems) = totalNumberOfItems == [v8 count];
 
     objc_initWeak(&location, self);
     v16[0] = _NSConcreteStackBlock;
@@ -3198,43 +3198,43 @@ LABEL_12:
     v16[4] = self;
     v17 = v9;
     objc_copyWeak(&v18, &location);
-    v19 = v15;
-    [(BKLibraryBookshelfCollectionViewController *)self deleteBooks:v8 sourceBarButtonItem:v7 completion:v16];
+    v19 = totalNumberOfItems;
+    [(BKLibraryBookshelfCollectionViewController *)self deleteBooks:v8 sourceBarButtonItem:itemCopy completion:v16];
     objc_destroyWeak(&v18);
 
     objc_destroyWeak(&location);
   }
 }
 
-- (void)shareSelectedItemFromBarButtonItem:(id)a3
+- (void)shareSelectedItemFromBarButtonItem:(id)item
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self selectedBooks];
-  if ([v5 count] == 1)
+  itemCopy = item;
+  selectedBooks = [(BKLibraryBookshelfCollectionViewController *)self selectedBooks];
+  if ([selectedBooks count] == 1)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10078D534;
     v6[3] = &unk_100A03A30;
     v6[4] = self;
-    v7 = v5;
-    v8 = v4;
+    v7 = selectedBooks;
+    v8 = itemCopy;
     [(BKLibraryBookshelfCollectionViewController *)self _presentUsingBlock:v6];
   }
 }
 
-- (void)addForSelectedItems:(id)a3
+- (void)addForSelectedItems:(id)items
 {
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  [(BKLibraryBookshelfCollectionViewController *)self _addToCollectionAttemptForItemsAtIndexPaths:v5];
+  [(BKLibraryBookshelfCollectionViewController *)self _addToCollectionAttemptForItemsAtIndexPaths:indexPathsForSelectedItems];
 }
 
-- (void)_addToCollectionAttemptForItemsAtIndexPaths:(id)a3
+- (void)_addToCollectionAttemptForItemsAtIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self booksAtIndexPaths:v4];
+  pathsCopy = paths;
+  v5 = [(BKLibraryBookshelfCollectionViewController *)self booksAtIndexPaths:pathsCopy];
   objc_initWeak(&location, self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -3249,66 +3249,66 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)_presentUsingBlock:(id)a3
+- (void)_presentUsingBlock:(id)block
 {
-  v8 = a3;
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self presentedViewController];
-  v5 = [v4 presentingViewController];
+  blockCopy = block;
+  presentedViewController = [(BKLibraryBookshelfCollectionViewController *)self presentedViewController];
+  presentingViewController = [presentedViewController presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
-    v6 = [(BKLibraryBookshelfCollectionViewController *)self presentedViewController];
-    v7 = [v6 presentingViewController];
-    [v7 dismissViewControllerAnimated:1 completion:v8];
+    presentedViewController2 = [(BKLibraryBookshelfCollectionViewController *)self presentedViewController];
+    presentingViewController2 = [presentedViewController2 presentingViewController];
+    [presentingViewController2 dismissViewControllerAnimated:1 completion:blockCopy];
   }
 
   else
   {
-    v8[2]();
+    blockCopy[2]();
   }
 }
 
-- (void)deleteBooks:(id)a3 sourceBarButtonItem:(id)a4 completion:(id)a5
+- (void)deleteBooks:(id)books sourceBarButtonItem:(id)item completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10078D5C8;
   v10[3] = &unk_100A04FE8;
-  v11 = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v7 = v14;
-  v8 = v13;
-  v9 = v12;
-  [(BKLibraryBookshelfCollectionViewController *)v11 _presentUsingBlock:v10];
+  selfCopy = self;
+  booksCopy = books;
+  itemCopy = item;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = itemCopy;
+  v9 = booksCopy;
+  [(BKLibraryBookshelfCollectionViewController *)selfCopy _presentUsingBlock:v10];
 }
 
-- (void)didUpdateLibraryBookshelfLayout:(id)a3
+- (void)didUpdateLibraryBookshelfLayout:(id)layout
 {
-  v4 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  if ([v4 isDragging])
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  if ([collectionView isDragging])
   {
   }
 
   else
   {
-    v5 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    v6 = [v5 isDecelerating];
+    collectionView2 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    isDecelerating = [collectionView2 isDecelerating];
 
-    if ((v6 & 1) == 0)
+    if ((isDecelerating & 1) == 0)
     {
       [(BKLibraryBookshelfCollectionViewController *)self updateActionBarFromMetrics];
       [(BKLibraryBookshelfCollectionViewController *)self updateTitleFromMetrics];
     }
   }
 
-  v7 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v8 = [v7 backgroundColor];
-  v9 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-  v10 = [v9 mainHeaderMetrics];
-  v11 = [v10 headerBackgroundColor];
-  v12 = [v8 isEqual:v11];
+  collectionView3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  backgroundColor = [collectionView3 backgroundColor];
+  layout = [(BKLibraryBookshelfCollectionViewController *)self layout];
+  mainHeaderMetrics = [layout mainHeaderMetrics];
+  headerBackgroundColor = [mainHeaderMetrics headerBackgroundColor];
+  v12 = [backgroundColor isEqual:headerBackgroundColor];
 
   if ((v12 & 1) == 0)
   {
@@ -3325,112 +3325,112 @@ LABEL_12:
     else
     {
       [(BKLibraryBookshelfCollectionViewController *)self setHasInitializedCollectionBackgroundColor:1];
-      v16 = [(BKLibraryBookshelfCollectionViewController *)self layout];
-      v13 = [v16 mainHeaderMetrics];
-      v14 = [v13 headerBackgroundColor];
-      v15 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-      [v15 setBackgroundColor:v14];
+      layout2 = [(BKLibraryBookshelfCollectionViewController *)self layout];
+      mainHeaderMetrics2 = [layout2 mainHeaderMetrics];
+      headerBackgroundColor2 = [mainHeaderMetrics2 headerBackgroundColor];
+      collectionView4 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+      [collectionView4 setBackgroundColor:headerBackgroundColor2];
     }
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
-  [v9 invalidateLayout];
+  coordinatorCopy = coordinator;
+  collectionCopy = collection;
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   v11.receiver = self;
   v11.super_class = BKLibraryBookshelfCollectionViewController;
-  [(BKLibraryBookshelfCollectionViewController *)&v11 willTransitionToTraitCollection:v7 withTransitionCoordinator:v6];
+  [(BKLibraryBookshelfCollectionViewController *)&v11 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000BB484;
   v10[3] = &unk_100A04410;
   v10[4] = self;
-  [v6 animateAlongsideTransition:v10 completion:&stru_100A064D0];
+  [coordinatorCopy animateAlongsideTransition:v10 completion:&stru_100A064D0];
 }
 
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position
 {
-  v6 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  pathCopy = path;
   if ([(BKLibraryBookshelfCollectionViewController *)self shouldAllowCellSelection])
   {
-    v8 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    [v8 selectItemAtIndexPath:v9 animated:v6 scrollPosition:a5];
+    collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    [collectionView selectItemAtIndexPath:pathCopy animated:animatedCopy scrollPosition:position];
   }
 }
 
-- (void)deselectItemAtIndexPath:(id)a3 animated:(BOOL)a4
+- (void)deselectItemAtIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  pathCopy = path;
   if ([(BKLibraryBookshelfCollectionViewController *)self shouldAllowCellSelection])
   {
-    v6 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-    [v6 deselectItemAtIndexPath:v7 animated:v4];
+    collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+    [collectionView deselectItemAtIndexPath:pathCopy animated:animatedCopy];
   }
 }
 
-- (id)indexPathForCell:(id)a3
+- (id)indexPathForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  v6 = [collectionView indexPathForCell:cellCopy];
 
   return v6;
 }
 
-- (BOOL)isAudiobookAtIndexpath:(id)a3
+- (BOOL)isAudiobookAtIndexpath:(id)indexpath
 {
-  v4 = a3;
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
-  v6 = [v5 booksDataSource];
-  v7 = [v6 representedObjectForIndexPath:v4];
+  indexpathCopy = indexpath;
+  dataSourceAdaptor = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor];
+  booksDataSource = [dataSourceAdaptor booksDataSource];
+  v7 = [booksDataSource representedObjectForIndexPath:indexpathCopy];
 
-  LOBYTE(v5) = [v7 isAudiobook];
-  return v5;
+  LOBYTE(dataSourceAdaptor) = [v7 isAudiobook];
+  return dataSourceAdaptor;
 }
 
 - (id)bkaxLabel
 {
-  v2 = [(BKLibraryBookshelfCollectionViewController *)self collection];
-  v3 = [v2 localizedTitle];
+  collection = [(BKLibraryBookshelfCollectionViewController *)self collection];
+  localizedTitle = [collection localizedTitle];
 
-  return v3;
+  return localizedTitle;
 }
 
 - (void)didBecomeVisibleContentScrollView
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self tabBarController];
-  [v3 bc_setPreferredTabBarScrollEdgeAppearance:0];
+  tabBarController = [(BKLibraryBookshelfCollectionViewController *)self tabBarController];
+  [tabBarController bc_setPreferredTabBarScrollEdgeAppearance:0];
 
-  v6 = [(BKLibraryBookshelfCollectionViewController *)self tabBarController];
-  v4 = [v6 selectedViewController];
-  v5 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  [v4 setContentScrollView:v5 forEdge:4];
+  tabBarController2 = [(BKLibraryBookshelfCollectionViewController *)self tabBarController];
+  selectedViewController = [tabBarController2 selectedViewController];
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  [selectedViewController setContentScrollView:collectionView forEdge:4];
 }
 
 - (void)_bkAccessibilityFocusCollectionView
 {
   v2 = UIAccessibilityLayoutChangedNotification;
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
-  UIAccessibilityPostNotification(v2, v3);
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)self collectionView];
+  UIAccessibilityPostNotification(v2, collectionView);
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(BKLibraryBookshelfCollectionViewController *)self isEditing];
-  if (v3)
+  isEditing = [(BKLibraryBookshelfCollectionViewController *)self isEditing];
+  if (isEditing)
   {
     [(BKLibraryBookshelfCollectionViewController *)self doneForSelectedItems:0];
   }
 
-  return v3;
+  return isEditing;
 }
 
 - (CGPoint)previousContentOffset
@@ -3451,21 +3451,21 @@ LABEL_12:
 
 - (BOOL)hasSelectedItems
 {
-  v2 = self;
-  v3 = [(BKLibraryBookshelfCollectionViewController *)v2 collectionView];
-  if (v3)
+  selfCopy = self;
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)selfCopy collectionView];
+  if (collectionView)
   {
-    v4 = v3;
-    v5 = [(UICollectionView *)v3 indexPathsForSelectedItems];
+    v4 = collectionView;
+    indexPathsForSelectedItems = [(UICollectionView *)collectionView indexPathsForSelectedItems];
 
-    if (v5)
+    if (indexPathsForSelectedItems)
     {
       sub_100796E74();
       sub_1007A25E4();
 
       sub_1001F1160(&qword_100ADA958);
       sub_1002CD1B4(&unk_100ADA960, &qword_100ADA958);
-      LOBYTE(v5) = sub_1007A28A4();
+      LOBYTE(indexPathsForSelectedItems) = sub_1007A28A4();
     }
 
     else
@@ -3476,19 +3476,19 @@ LABEL_12:
   else
   {
 
-    LOBYTE(v5) = 0;
+    LOBYTE(indexPathsForSelectedItems) = 0;
   }
 
-  return v5 & 1;
+  return indexPathsForSelectedItems & 1;
 }
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
-  v3 = [(BKLibraryBookshelfCollectionViewController *)v2 collectionView];
-  if (v3)
+  selfCopy = self;
+  collectionView = [(BKLibraryBookshelfCollectionViewController *)selfCopy collectionView];
+  if (collectionView)
   {
-    v4 = v3;
+    v4 = collectionView;
     sub_1001F1160(&unk_100AD8160);
     v5 = swift_allocObject();
     *(v5 + 16) = xmmword_100811390;
@@ -3503,7 +3503,7 @@ LABEL_12:
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BKLibraryBookshelfCollectionViewController.keyCommands.getter();
 
   if (v3)
@@ -3520,11 +3520,11 @@ LABEL_12:
   return v4.super.isa;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -3533,34 +3533,34 @@ LABEL_12:
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = BKLibraryBookshelfCollectionViewController.canPerformAction(_:withSender:)(a3, v10);
+  v8 = BKLibraryBookshelfCollectionViewController.canPerformAction(_:withSender:)(action, v10);
 
   sub_100007840(v10, &unk_100AD5B40);
   return v8 & 1;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  BKLibraryBookshelfCollectionViewController.validate(_:)(v4);
+  commandCopy = command;
+  selfCopy = self;
+  BKLibraryBookshelfCollectionViewController.validate(_:)(commandCopy);
 }
 
-- (void)updateBarButtonsAnimated:(BOOL)a3
+- (void)updateBarButtonsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = self;
-  if ([(BKLibraryBookshelfCollectionViewController *)v4 isEditing])
+  animatedCopy = animated;
+  selfCopy = self;
+  if ([(BKLibraryBookshelfCollectionViewController *)selfCopy isEditing])
   {
-    sub_1002DCF38(v3);
+    sub_1002DCF38(animatedCopy);
   }
 
   else
   {
-    sub_1002DD76C(v3);
+    sub_1002DD76C(animatedCopy);
   }
 
   sub_1002DE4E8();
@@ -3568,21 +3568,21 @@ LABEL_12:
 
 - (void)viewModeChanged
 {
-  v2 = self;
+  selfCopy = self;
   BKLibraryBookshelfCollectionViewController.viewModeChanged()();
 }
 
 - (void)sortModeChanged
 {
-  v2 = self;
+  selfCopy = self;
   BKLibraryBookshelfCollectionViewController.sortModeChanged()();
 }
 
-- (void)editButtonPressed:(id)a3
+- (void)editButtonPressed:(id)pressed
 {
-  if (a3)
+  if (pressed)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -3592,68 +3592,68 @@ LABEL_12:
   {
     v8 = 0u;
     v9 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = [(BKLibraryBookshelfCollectionViewController *)self dataSourceAdaptor:v8];
-  v7 = [(BKLibraryDataSourceAdaptor *)v6 actionHandler];
+  actionHandler = [(BKLibraryDataSourceAdaptor *)v6 actionHandler];
 
-  [(BKLibraryActionHandler *)v7 toggleEditMode];
+  [(BKLibraryActionHandler *)actionHandler toggleEditMode];
   sub_100007840(&v8, &unk_100AD5B40);
 }
 
-- (void)largeTitleVisibilityDidChangeWithIsVisible:(BOOL)a3
+- (void)largeTitleVisibilityDidChangeWithIsVisible:(BOOL)visible
 {
-  v3 = a3;
-  v8 = self;
+  visibleCopy = visible;
+  selfCopy = self;
   v4 = _UISolariumEnabled();
-  v5 = v8;
+  v5 = selfCopy;
   if ((v4 & 1) == 0)
   {
     v6 = sub_1002E1288();
-    v5 = v8;
+    v5 = selfCopy;
     if (v6)
     {
       v7 = v6;
-      if ([v6 isHidden] != v3)
+      if ([v6 isHidden] != visibleCopy)
       {
-        [v7 setHidden:v3];
+        [v7 setHidden:visibleCopy];
       }
 
-      v5 = v8;
+      v5 = selfCopy;
     }
   }
 }
 
 - (void)dragAndDropSessionDidStart
 {
-  v3 = self;
-  v2 = [(BKLibraryBookshelfCollectionViewController *)v3 dragAndDropSessionsActive];
-  if (__OFADD__(v2, 1))
+  selfCopy = self;
+  dragAndDropSessionsActive = [(BKLibraryBookshelfCollectionViewController *)selfCopy dragAndDropSessionsActive];
+  if (__OFADD__(dragAndDropSessionsActive, 1))
   {
     __break(1u);
   }
 
   else
   {
-    [(BKLibraryBookshelfCollectionViewController *)v3 setDragAndDropSessionsActive:v2 + 1];
-    [(BKLibraryBookshelfCollectionViewController *)v3 configureForDragAndDropSession];
+    [(BKLibraryBookshelfCollectionViewController *)selfCopy setDragAndDropSessionsActive:dragAndDropSessionsActive + 1];
+    [(BKLibraryBookshelfCollectionViewController *)selfCopy configureForDragAndDropSession];
   }
 }
 
 - (void)dragAndDropSessionDidEnd
 {
-  v3 = self;
-  v2 = [(BKLibraryBookshelfCollectionViewController *)v3 dragAndDropSessionsActive];
-  if (__OFSUB__(v2, 1))
+  selfCopy = self;
+  dragAndDropSessionsActive = [(BKLibraryBookshelfCollectionViewController *)selfCopy dragAndDropSessionsActive];
+  if (__OFSUB__(dragAndDropSessionsActive, 1))
   {
     __break(1u);
   }
 
   else
   {
-    [(BKLibraryBookshelfCollectionViewController *)v3 setDragAndDropSessionsActive:v2 - 1];
-    [(BKLibraryBookshelfCollectionViewController *)v3 configureForDragAndDropSession];
+    [(BKLibraryBookshelfCollectionViewController *)selfCopy setDragAndDropSessionsActive:dragAndDropSessionsActive - 1];
+    [(BKLibraryBookshelfCollectionViewController *)selfCopy configureForDragAndDropSession];
   }
 }
 
@@ -3662,17 +3662,17 @@ LABEL_12:
   sub_10000A7C4(0, &qword_100AD1E10);
   swift_allocObject();
   swift_unknownObjectWeakInit();
-  v3 = self;
+  selfCopy = self;
 
   sub_1007A2CD4();
 }
 
-- (void)books_createCollection:(id)a3
+- (void)books_createCollection:(id)collection
 {
-  if (!a3)
+  if (!collection)
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy = self;
     if (_UISolariumEnabled())
     {
       goto LABEL_3;
@@ -3683,7 +3683,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v4 = self;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   sub_1007A3504();
   swift_unknownObjectRelease();
@@ -3699,11 +3699,11 @@ LABEL_6:
   sub_100007840(v6, &unk_100AD5B40);
 }
 
-- (void)books_createCollectionFromSelection:(id)a3
+- (void)books_createCollectionFromSelection:(id)selection
 {
-  if (a3)
+  if (selection)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -3712,7 +3712,7 @@ LABEL_6:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1002E20DC();
@@ -3720,11 +3720,11 @@ LABEL_6:
   sub_100007840(v6, &unk_100AD5B40);
 }
 
-- (void)books_addSelectionToCollection:(id)a3
+- (void)books_addSelectionToCollection:(id)collection
 {
-  if (a3)
+  if (collection)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -3733,7 +3733,7 @@ LABEL_6:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1002E2760(v6);
@@ -3741,15 +3741,15 @@ LABEL_6:
   sub_100007840(v6, &unk_100AD5B40);
 }
 
-- (void)createSeriesViewControllerFromSeriesContainer:(BKLibraryAsset *)a3 withParentTracker:(_TtC13BookAnalytics9BATracker *)a4 completion:(id)a5
+- (void)createSeriesViewControllerFromSeriesContainer:(BKLibraryAsset *)container withParentTracker:(_TtC13BookAnalytics9BATracker *)tracker completion:(id)completion
 {
   v9 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = container;
+  v13[3] = tracker;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_1007A2744();
@@ -3764,9 +3764,9 @@ LABEL_6:
   v16[3] = 0;
   v16[4] = &unk_10081C0F0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  containerCopy = container;
+  trackerCopy = tracker;
+  selfCopy = self;
   sub_10069E794(0, 0, v11, &unk_1008344D0, v16);
 }
 

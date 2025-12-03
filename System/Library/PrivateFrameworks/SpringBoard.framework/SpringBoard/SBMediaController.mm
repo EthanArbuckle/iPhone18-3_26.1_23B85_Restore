@@ -1,41 +1,41 @@
 @interface SBMediaController
-+ (BOOL)applicationCanBeConsideredNowPlaying:(id)a3;
++ (BOOL)applicationCanBeConsideredNowPlaying:(id)playing;
 + (id)sharedInstance;
 + (void)sendResetPlaybackTimeoutCommand;
-- (BOOL)_sendMediaCommand:(unsigned int)a3 options:(id)a4;
-- (BOOL)addTrackToWishListForEventSource:(int64_t)a3;
-- (BOOL)banTrackForEventSource:(int64_t)a3;
-- (BOOL)beginSeek:(int)a3 eventSource:(int64_t)a4;
-- (BOOL)changeTrack:(int)a3 eventSource:(int64_t)a4;
-- (BOOL)endSeek:(int)a3 eventSource:(int64_t)a4;
+- (BOOL)_sendMediaCommand:(unsigned int)command options:(id)options;
+- (BOOL)addTrackToWishListForEventSource:(int64_t)source;
+- (BOOL)banTrackForEventSource:(int64_t)source;
+- (BOOL)beginSeek:(int)seek eventSource:(int64_t)source;
+- (BOOL)changeTrack:(int)track eventSource:(int64_t)source;
+- (BOOL)endSeek:(int)seek eventSource:(int64_t)source;
 - (BOOL)hasTrack;
 - (BOOL)isFirstTrack;
 - (BOOL)isLastTrack;
 - (BOOL)isPaused;
-- (BOOL)likeTrackForEventSource:(int64_t)a3;
-- (BOOL)pauseForEventSource:(int64_t)a3;
-- (BOOL)playForEventSource:(int64_t)a3;
-- (BOOL)setPlaybackSpeed:(int)a3 eventSource:(int64_t)a4;
-- (BOOL)stopForEventSource:(int64_t)a3;
-- (BOOL)togglePlayPauseForEventSource:(int64_t)a3;
-- (BOOL)toggleRepeatForEventSource:(int64_t)a3;
-- (BOOL)toggleShuffleForEventSource:(int64_t)a3;
+- (BOOL)likeTrackForEventSource:(int64_t)source;
+- (BOOL)pauseForEventSource:(int64_t)source;
+- (BOOL)playForEventSource:(int64_t)source;
+- (BOOL)setPlaybackSpeed:(int)speed eventSource:(int64_t)source;
+- (BOOL)stopForEventSource:(int64_t)source;
+- (BOOL)togglePlayPauseForEventSource:(int64_t)source;
+- (BOOL)toggleRepeatForEventSource:(int64_t)source;
+- (BOOL)toggleShuffleForEventSource:(int64_t)source;
 - (SBApplication)nowPlayingApplication;
 - (SBMediaController)init;
 - (id)_nowPlayingInfo;
 - (id)playingMediaType;
-- (void)_applicationActivityStatusDidChange:(id)a3;
-- (void)_mediaRemoteNowPlayingApplicationDidChange:(id)a3;
-- (void)_mediaRemoteNowPlayingApplicationIsPlayingDidChange:(id)a3;
-- (void)_nowPlayingAppDidExit:(id)a3;
+- (void)_applicationActivityStatusDidChange:(id)change;
+- (void)_mediaRemoteNowPlayingApplicationDidChange:(id)change;
+- (void)_mediaRemoteNowPlayingApplicationIsPlayingDidChange:(id)change;
+- (void)_nowPlayingAppDidExit:(id)exit;
 - (void)_registerForNotifications;
-- (void)_setNowPlayingApplication:(id)a3;
+- (void)_setNowPlayingApplication:(id)application;
 - (void)_unregisterForNotifications;
 - (void)_updateLastRecentActivityDate;
 - (void)cancelVolumeEvent;
 - (void)dealloc;
-- (void)setNowPlayingInfo:(id)a3;
-- (void)setSuppressHUD:(BOOL)a3;
+- (void)setNowPlayingInfo:(id)info;
+- (void)setSuppressHUD:(BOOL)d;
 @end
 
 @implementation SBMediaController
@@ -44,8 +44,8 @@
 {
   v2 = +[SBApplicationController sharedInstanceIfExists];
   v3 = [v2 applicationWithBundleIdentifier:@"com.apple.Music"];
-  v4 = [v3 processState];
-  v5 = [v4 pid];
+  processState = [v3 processState];
+  v5 = [processState pid];
 
   if (v5 >= 1)
   {
@@ -114,9 +114,9 @@ LABEL_7:
   if (v2)
   {
     [(SBMediaController *)v2 _registerForNotifications];
-    v4 = [SBApp volumeControl];
+    volumeControl = [SBApp volumeControl];
     volumeControl = v3->_volumeControl;
-    v3->_volumeControl = v4;
+    v3->_volumeControl = volumeControl;
   }
 
   return v3;
@@ -133,38 +133,38 @@ LABEL_7:
   [(SBMediaController *)&v4 dealloc];
 }
 
-+ (BOOL)applicationCanBeConsideredNowPlaying:(id)a3
++ (BOOL)applicationCanBeConsideredNowPlaying:(id)playing
 {
-  v3 = a3;
-  v4 = [v3 processState];
-  if ([v4 isRunning])
+  playingCopy = playing;
+  processState = [playingCopy processState];
+  if ([processState isRunning])
   {
-    v5 = [v4 isForeground];
+    isForeground = [processState isForeground];
   }
 
   else
   {
-    v5 = 0;
+    isForeground = 0;
   }
 
-  if ([v4 isRunning] && (objc_msgSend(v4, "isForeground") & 1) == 0)
+  if ([processState isRunning] && (objc_msgSend(processState, "isForeground") & 1) == 0)
   {
-    v7 = [v3 info];
-    v6 = [v7 supportsAudioBackgroundMode];
+    info = [playingCopy info];
+    supportsAudioBackgroundMode = [info supportsAudioBackgroundMode];
   }
 
   else
   {
-    v6 = 0;
+    supportsAudioBackgroundMode = 0;
   }
 
-  return (v5 | v6) & 1;
+  return (isForeground | supportsAudioBackgroundMode) & 1;
 }
 
 - (id)_nowPlayingInfo
 {
-  v3 = [SBApp nowPlayingProcessPID];
-  if (v3 == [(SBMediaController *)self nowPlayingProcessPID])
+  nowPlayingProcessPID = [SBApp nowPlayingProcessPID];
+  if (nowPlayingProcessPID == [(SBMediaController *)self nowPlayingProcessPID])
   {
     v4 = self->_nowPlayingInfo;
   }
@@ -177,67 +177,67 @@ LABEL_7:
   return v4;
 }
 
-- (void)setNowPlayingInfo:(id)a3
+- (void)setNowPlayingInfo:(id)info
 {
-  v6 = a3;
+  infoCopy = info;
   if (([(NSDictionary *)self->_nowPlayingInfo isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_nowPlayingInfo, a3);
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"SBMediaNowPlayingChangedNotification" object:self];
+    objc_storeStrong(&self->_nowPlayingInfo, info);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBMediaNowPlayingChangedNotification" object:self];
   }
 }
 
 - (BOOL)hasTrack
 {
-  v2 = [(SBMediaController *)self _nowPlayingInfo];
-  v3 = v2 != 0;
+  _nowPlayingInfo = [(SBMediaController *)self _nowPlayingInfo];
+  v3 = _nowPlayingInfo != 0;
 
   return v3;
 }
 
 - (BOOL)isFirstTrack
 {
-  v3 = [(SBMediaController *)self _nowPlayingInfo];
-  v4 = [v3 objectForKey:@"isFirstTrack"];
+  _nowPlayingInfo = [(SBMediaController *)self _nowPlayingInfo];
+  v4 = [_nowPlayingInfo objectForKey:@"isFirstTrack"];
   if (v4)
   {
-    v5 = [(SBMediaController *)self _nowPlayingInfo];
-    v6 = [v5 objectForKey:@"isFirstTrack"];
-    v7 = [v6 BOOLValue];
+    _nowPlayingInfo2 = [(SBMediaController *)self _nowPlayingInfo];
+    v6 = [_nowPlayingInfo2 objectForKey:@"isFirstTrack"];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)isLastTrack
 {
-  v3 = [(SBMediaController *)self _nowPlayingInfo];
-  v4 = [v3 objectForKey:@"isLastTrack"];
+  _nowPlayingInfo = [(SBMediaController *)self _nowPlayingInfo];
+  v4 = [_nowPlayingInfo objectForKey:@"isLastTrack"];
   if (v4)
   {
-    v5 = [(SBMediaController *)self _nowPlayingInfo];
-    v6 = [v5 objectForKey:@"isLastTrack"];
-    v7 = [v6 BOOLValue];
+    _nowPlayingInfo2 = [(SBMediaController *)self _nowPlayingInfo];
+    v6 = [_nowPlayingInfo2 objectForKey:@"isLastTrack"];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)playingMediaType
 {
-  v2 = [(SBMediaController *)self _nowPlayingInfo];
-  v3 = [v2 objectForKey:@"mediaType"];
+  _nowPlayingInfo = [(SBMediaController *)self _nowPlayingInfo];
+  v3 = [_nowPlayingInfo objectForKey:@"mediaType"];
 
   return v3;
 }
@@ -249,17 +249,17 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [(SBMediaController *)self _nowPlayingInfo];
-  v2 = v3 != 0;
+  _nowPlayingInfo = [(SBMediaController *)self _nowPlayingInfo];
+  v2 = _nowPlayingInfo != 0;
 
   return v2;
 }
 
-- (BOOL)banTrackForEventSource:(int64_t)a3
+- (BOOL)banTrackForEventSource:(int64_t)source
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277D27DC0];
-  v4 = NSStringFromSBMediaEventSource(a3);
+  v4 = NSStringFromSBMediaEventSource(source);
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -267,11 +267,11 @@ LABEL_7:
   return self;
 }
 
-- (BOOL)likeTrackForEventSource:(int64_t)a3
+- (BOOL)likeTrackForEventSource:(int64_t)source
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277D27DC0];
-  v4 = NSStringFromSBMediaEventSource(a3);
+  v4 = NSStringFromSBMediaEventSource(source);
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -279,11 +279,11 @@ LABEL_7:
   return self;
 }
 
-- (BOOL)addTrackToWishListForEventSource:(int64_t)a3
+- (BOOL)addTrackToWishListForEventSource:(int64_t)source
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277D27DC0];
-  v4 = NSStringFromSBMediaEventSource(a3);
+  v4 = NSStringFromSBMediaEventSource(source);
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -321,13 +321,13 @@ LABEL_7:
   return v4;
 }
 
-- (void)setSuppressHUD:(BOOL)a3
+- (void)setSuppressHUD:(BOOL)d
 {
-  if (self->_suppressHUD != a3)
+  if (self->_suppressHUD != d)
   {
-    self->_suppressHUD = a3;
+    self->_suppressHUD = d;
     volumeControl = self->_volumeControl;
-    if (a3)
+    if (d)
     {
       [(SBVolumeControl *)volumeControl addAlwaysHiddenCategory:@"Audio/Video"];
     }
@@ -339,13 +339,13 @@ LABEL_7:
   }
 }
 
-- (BOOL)_sendMediaCommand:(unsigned int)a3 options:(id)a4
+- (BOOL)_sendMediaCommand:(unsigned int)command options:(id)options
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  optionsCopy = options;
   v6 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v7 = [v6 policyAggregator];
-  v8 = [v7 allowsCapability:6];
+  policyAggregator = [v6 policyAggregator];
+  v8 = [policyAggregator allowsCapability:6];
 
   if ((v8 & 1) == 0)
   {
@@ -353,9 +353,9 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 67109378;
-      v15 = a3;
+      commandCopy2 = command;
       v16 = 2114;
-      v17 = v5;
+      v17 = optionsCopy;
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "_sendMediaCommand disallowed by policy; ignoring command:%d options:%{public}@", &v14, 0x12u);
     }
 
@@ -369,7 +369,7 @@ LABEL_7:
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(SBMediaController *)v5 _sendMediaCommand:a3 options:v11];
+      [(SBMediaController *)optionsCopy _sendMediaCommand:command options:v11];
     }
 
 LABEL_10:
@@ -380,9 +380,9 @@ LABEL_10:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 67109378;
-    v15 = a3;
+    commandCopy2 = command;
     v16 = 2114;
-    v17 = v5;
+    v17 = optionsCopy;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "MRMediaRemoteSendCommand succeeded for command:%d options:%{public}@", &v14, 0x12u);
   }
 
@@ -392,116 +392,116 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)changeTrack:(int)a3 eventSource:(int64_t)a4
+- (BOOL)changeTrack:(int)track eventSource:(int64_t)source
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  if (a3 < 1)
+  if (track < 1)
   {
-    if ((a3 & 0x80000000) == 0)
+    if ((track & 0x80000000) == 0)
     {
       return 0;
     }
 
     v12 = *MEMORY[0x277D27DC0];
-    v11 = NSStringFromSBMediaEventSource(a4);
+    v11 = NSStringFromSBMediaEventSource(source);
     v13[0] = v11;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 110;
   }
 
   else
   {
     v12 = *MEMORY[0x277D27DC0];
-    v5 = NSStringFromSBMediaEventSource(a4);
+    v5 = NSStringFromSBMediaEventSource(source);
     v13[0] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 109;
   }
 
-  v9 = [(SBMediaController *)v7 _sendMediaCommand:v8 options:v6];
+  v9 = [(SBMediaController *)selfCopy2 _sendMediaCommand:v8 options:v6];
 
   return v9;
 }
 
-- (BOOL)beginSeek:(int)a3 eventSource:(int64_t)a4
+- (BOOL)beginSeek:(int)seek eventSource:(int64_t)source
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  if (a3 < 1)
+  if (seek < 1)
   {
-    if ((a3 & 0x80000000) == 0)
+    if ((seek & 0x80000000) == 0)
     {
       return 0;
     }
 
     v12 = *MEMORY[0x277D27DC0];
-    v11 = NSStringFromSBMediaEventSource(a4);
+    v11 = NSStringFromSBMediaEventSource(source);
     v13[0] = v11;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 10;
   }
 
   else
   {
     v12 = *MEMORY[0x277D27DC0];
-    v5 = NSStringFromSBMediaEventSource(a4);
+    v5 = NSStringFromSBMediaEventSource(source);
     v13[0] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 8;
   }
 
-  v9 = [(SBMediaController *)v7 _sendMediaCommand:v8 options:v6];
+  v9 = [(SBMediaController *)selfCopy2 _sendMediaCommand:v8 options:v6];
 
   return v9;
 }
 
-- (BOOL)endSeek:(int)a3 eventSource:(int64_t)a4
+- (BOOL)endSeek:(int)seek eventSource:(int64_t)source
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  if (a3 < 1)
+  if (seek < 1)
   {
-    if ((a3 & 0x80000000) == 0)
+    if ((seek & 0x80000000) == 0)
     {
       return 0;
     }
 
     v12 = *MEMORY[0x277D27DC0];
-    v11 = NSStringFromSBMediaEventSource(a4);
+    v11 = NSStringFromSBMediaEventSource(source);
     v13[0] = v11;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 11;
   }
 
   else
   {
     v12 = *MEMORY[0x277D27DC0];
-    v5 = NSStringFromSBMediaEventSource(a4);
+    v5 = NSStringFromSBMediaEventSource(source);
     v13[0] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 9;
   }
 
-  v9 = [(SBMediaController *)v7 _sendMediaCommand:v8 options:v6];
+  v9 = [(SBMediaController *)selfCopy2 _sendMediaCommand:v8 options:v6];
 
   return v9;
 }
 
-- (BOOL)playForEventSource:(int64_t)a3
+- (BOOL)playForEventSource:(int64_t)source
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277D27DC0];
-  v4 = NSStringFromSBMediaEventSource(a3);
+  v4 = NSStringFromSBMediaEventSource(source);
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -509,11 +509,11 @@ LABEL_11:
   return self;
 }
 
-- (BOOL)pauseForEventSource:(int64_t)a3
+- (BOOL)pauseForEventSource:(int64_t)source
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277D27DC0];
-  v4 = NSStringFromSBMediaEventSource(a3);
+  v4 = NSStringFromSBMediaEventSource(source);
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -521,11 +521,11 @@ LABEL_11:
   return self;
 }
 
-- (BOOL)togglePlayPauseForEventSource:(int64_t)a3
+- (BOOL)togglePlayPauseForEventSource:(int64_t)source
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277D27DC0];
-  v4 = NSStringFromSBMediaEventSource(a3);
+  v4 = NSStringFromSBMediaEventSource(source);
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -533,11 +533,11 @@ LABEL_11:
   return self;
 }
 
-- (BOOL)stopForEventSource:(int64_t)a3
+- (BOOL)stopForEventSource:(int64_t)source
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277D27DC0];
-  v4 = NSStringFromSBMediaEventSource(a3);
+  v4 = NSStringFromSBMediaEventSource(source);
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -545,7 +545,7 @@ LABEL_11:
   return self;
 }
 
-- (BOOL)toggleRepeatForEventSource:(int64_t)a3
+- (BOOL)toggleRepeatForEventSource:(int64_t)source
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D27A98];
@@ -553,7 +553,7 @@ LABEL_11:
   v5 = *MEMORY[0x277D27DC0];
   v9[0] = v4;
   v9[1] = v5;
-  v6 = NSStringFromSBMediaEventSource(a3);
+  v6 = NSStringFromSBMediaEventSource(source);
   v10[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
@@ -561,7 +561,7 @@ LABEL_11:
   return self;
 }
 
-- (BOOL)toggleShuffleForEventSource:(int64_t)a3
+- (BOOL)toggleShuffleForEventSource:(int64_t)source
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D27AA0];
@@ -569,7 +569,7 @@ LABEL_11:
   v5 = *MEMORY[0x277D27DC0];
   v9[0] = v4;
   v9[1] = v5;
-  v6 = NSStringFromSBMediaEventSource(a3);
+  v6 = NSStringFromSBMediaEventSource(source);
   v10[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
@@ -577,13 +577,13 @@ LABEL_11:
   return self;
 }
 
-- (BOOL)setPlaybackSpeed:(int)a3 eventSource:(int64_t)a4
+- (BOOL)setPlaybackSpeed:(int)speed eventSource:(int64_t)source
 {
-  v5 = *&a3;
+  v5 = *&speed;
   v15[2] = *MEMORY[0x277D85DE8];
   v7 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v8 = [v7 policyAggregator];
-  v9 = [v8 allowsCapability:6];
+  policyAggregator = [v7 policyAggregator];
+  v9 = [policyAggregator allowsCapability:6];
 
   if (v9)
   {
@@ -591,7 +591,7 @@ LABEL_11:
     v10 = [MEMORY[0x277CCABB0] numberWithInt:v5];
     v15[0] = v10;
     v14[1] = *MEMORY[0x277D27DC0];
-    v11 = NSStringFromSBMediaEventSource(a4);
+    v11 = NSStringFromSBMediaEventSource(source);
     v15[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
@@ -752,28 +752,28 @@ void __57__SBMediaController__mediaRemoteNowPlayingInfoDidChange___block_invoke_
   }
 }
 
-- (void)_mediaRemoteNowPlayingApplicationDidChange:(id)a3
+- (void)_mediaRemoteNowPlayingApplicationDidChange:(id)change
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D27B48]];
-  v5 = [v4 integerValue];
+  v4 = [change objectForKeyedSubscript:*MEMORY[0x277D27B48]];
+  integerValue = [v4 integerValue];
 
   v6 = +[SBApplicationController sharedInstance];
-  v7 = [v6 applicationWithPid:v5];
+  v7 = [v6 applicationWithPid:integerValue];
 
   [(SBMediaController *)self _setNowPlayingApplication:v7];
 }
 
-- (void)_setNowPlayingApplication:(id)a3
+- (void)_setNowPlayingApplication:(id)application
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  applicationCopy = application;
   p_lastNowPlayingApplication = &self->_lastNowPlayingApplication;
-  if (self->_lastNowPlayingApplication != v5)
+  if (self->_lastNowPlayingApplication != applicationCopy)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 removeObserver:self name:@"SBApplicationDidExitNotification" object:self->_lastNowPlayingApplication];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"SBApplicationDidExitNotification" object:self->_lastNowPlayingApplication];
     [(SBApplication *)self->_lastNowPlayingApplication setPlayingAudio:0];
-    objc_storeStrong(&self->_lastNowPlayingApplication, a3);
+    objc_storeStrong(&self->_lastNowPlayingApplication, application);
     [(SBApplication *)self->_lastNowPlayingApplication setPlayingAudio:self->_lastNowPlayingAppIsPlaying];
     v8 = SBLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -786,34 +786,34 @@ void __57__SBMediaController__mediaRemoteNowPlayingInfoDidChange___block_invoke_
 
     if (*p_lastNowPlayingApplication)
     {
-      [v7 addObserver:self selector:sel__nowPlayingAppDidExit_ name:@"SBApplicationDidExitNotification" object:?];
+      [defaultCenter addObserver:self selector:sel__nowPlayingAppDidExit_ name:@"SBApplicationDidExitNotification" object:?];
     }
 
-    [v7 postNotificationName:@"SBMediaNowPlayingAppChangedNotification" object:self];
+    [defaultCenter postNotificationName:@"SBMediaNowPlayingAppChangedNotification" object:self];
   }
 }
 
-- (void)_mediaRemoteNowPlayingApplicationIsPlayingDidChange:(id)a3
+- (void)_mediaRemoteNowPlayingApplicationIsPlayingDidChange:(id)change
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D27B40]];
-  v5 = [v4 BOOLValue];
+  v4 = [change objectForKeyedSubscript:*MEMORY[0x277D27B40]];
+  bOOLValue = [v4 BOOLValue];
 
   [(SBMediaController *)self _updateLastRecentActivityDate];
-  if (self->_lastNowPlayingAppIsPlaying != v5)
+  if (self->_lastNowPlayingAppIsPlaying != bOOLValue)
   {
-    self->_lastNowPlayingAppIsPlaying = v5;
-    [(SBApplication *)self->_lastNowPlayingApplication setPlayingAudio:v5];
+    self->_lastNowPlayingAppIsPlaying = bOOLValue;
+    [(SBApplication *)self->_lastNowPlayingApplication setPlayingAudio:bOOLValue];
     v6 = +[SBIdleTimerGlobalCoordinator sharedInstance];
     [v6 resetIdleTimerForReason:@"MediaRemoteNowPlayingDidChange"];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"SBMediaNowPlayingChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBMediaNowPlayingChangedNotification" object:self];
   }
 }
 
-- (void)_applicationActivityStatusDidChange:(id)a3
+- (void)_applicationActivityStatusDidChange:(id)change
 {
-  if (![a3 objectForKey:*MEMORY[0x277D27A30]])
+  if (![change objectForKey:*MEMORY[0x277D27A30]])
   {
     self->_lastMediaRemoteAppActivityStatus = 0;
     return;
@@ -828,27 +828,27 @@ void __57__SBMediaController__mediaRemoteNowPlayingInfoDidChange___block_invoke_
       return;
     }
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v7 = v5;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v7 = defaultCenter;
     v6 = @"SBMediaApplicationActivityDidEndNotification";
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v7 = v5;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v7 = defaultCenter;
     v6 = @"SBMediaApplicationActivityDidBeginNotification";
   }
 
-  [v5 postNotificationName:v6 object:self];
+  [defaultCenter postNotificationName:v6 object:self];
 }
 
-- (void)_nowPlayingAppDidExit:(id)a3
+- (void)_nowPlayingAppDidExit:(id)exit
 {
   lastNowPlayingApplication = self->_lastNowPlayingApplication;
-  v5 = [a3 object];
+  object = [exit object];
 
-  if (lastNowPlayingApplication == v5)
+  if (lastNowPlayingApplication == object)
   {
     [(SBApplication *)self->_lastNowPlayingApplication setPlayingAudio:0];
 

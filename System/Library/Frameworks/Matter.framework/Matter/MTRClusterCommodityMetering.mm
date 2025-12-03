@@ -1,103 +1,103 @@
 @interface MTRClusterCommodityMetering
-- (id)readAttributeAcceptedCommandListWithParams:(id)a3;
-- (id)readAttributeAttributeListWithParams:(id)a3;
-- (id)readAttributeClusterRevisionWithParams:(id)a3;
-- (id)readAttributeFeatureMapWithParams:(id)a3;
-- (id)readAttributeGeneratedCommandListWithParams:(id)a3;
-- (id)readAttributeMaximumMeteredQuantitiesWithParams:(id)a3;
-- (id)readAttributeMeteredQuantityTimestampWithParams:(id)a3;
-- (id)readAttributeMeteredQuantityWithParams:(id)a3;
-- (id)readAttributeTariffUnitWithParams:(id)a3;
+- (id)readAttributeAcceptedCommandListWithParams:(id)params;
+- (id)readAttributeAttributeListWithParams:(id)params;
+- (id)readAttributeClusterRevisionWithParams:(id)params;
+- (id)readAttributeFeatureMapWithParams:(id)params;
+- (id)readAttributeGeneratedCommandListWithParams:(id)params;
+- (id)readAttributeMaximumMeteredQuantitiesWithParams:(id)params;
+- (id)readAttributeMeteredQuantityTimestampWithParams:(id)params;
+- (id)readAttributeMeteredQuantityWithParams:(id)params;
+- (id)readAttributeTariffUnitWithParams:(id)params;
 @end
 
 @implementation MTRClusterCommodityMetering
 
-- (id)readAttributeMeteredQuantityWithParams:(id)a3
+- (id)readAttributeMeteredQuantityWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C43610 attributeID:&unk_284C416A8 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C43610 attributeID:&unk_284C416A8 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeMeteredQuantityTimestampWithParams:(id)a3
+- (id)readAttributeMeteredQuantityTimestampWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C43610 attributeID:&unk_284C416C0 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C43610 attributeID:&unk_284C416C0 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeTariffUnitWithParams:(id)a3
+- (id)readAttributeTariffUnitWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C43610 attributeID:&unk_284C41930 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C43610 attributeID:&unk_284C41930 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeMaximumMeteredQuantitiesWithParams:(id)a3
+- (id)readAttributeMaximumMeteredQuantitiesWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C43610 attributeID:&unk_284C41690 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C43610 attributeID:&unk_284C41690 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeGeneratedCommandListWithParams:(id)a3
+- (id)readAttributeGeneratedCommandListWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C43610 attributeID:&unk_284C416D8 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C43610 attributeID:&unk_284C416D8 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeAcceptedCommandListWithParams:(id)a3
+- (id)readAttributeAcceptedCommandListWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C43610 attributeID:&unk_284C416F0 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C43610 attributeID:&unk_284C416F0 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeAttributeListWithParams:(id)a3
+- (id)readAttributeAttributeListWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C43610 attributeID:&unk_284C41708 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C43610 attributeID:&unk_284C41708 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeFeatureMapWithParams:(id)a3
+- (id)readAttributeFeatureMapWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C43610 attributeID:&unk_284C41720 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C43610 attributeID:&unk_284C41720 params:paramsCopy];
 
   return v7;
 }
 
-- (id)readAttributeClusterRevisionWithParams:(id)a3
+- (id)readAttributeClusterRevisionWithParams:(id)params
 {
-  v4 = a3;
-  v5 = [(MTRGenericCluster *)self device];
-  v6 = [(MTRCluster *)self endpointID];
-  v7 = [v5 readAttributeWithEndpointID:v6 clusterID:&unk_284C43610 attributeID:&unk_284C41738 params:v4];
+  paramsCopy = params;
+  device = [(MTRGenericCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  v7 = [device readAttributeWithEndpointID:endpointID clusterID:&unk_284C43610 attributeID:&unk_284C41738 params:paramsCopy];
 
   return v7;
 }

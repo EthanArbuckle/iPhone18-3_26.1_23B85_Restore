@@ -1,15 +1,15 @@
 @interface TCCCollectionFetcher
-- (id)fetchAssetsForTCCWithLimit:(int64_t)a3 seed:(id)a4;
+- (id)fetchAssetsForTCCWithLimit:(int64_t)limit seed:(id)seed;
 @end
 
 @implementation TCCCollectionFetcher
 
-- (id)fetchAssetsForTCCWithLimit:(int64_t)a3 seed:(id)a4
+- (id)fetchAssetsForTCCWithLimit:(int64_t)limit seed:(id)seed
 {
-  v6 = self;
-  v7 = a4;
-  v12.value.super.super.isa = a4;
-  v8 = TCCCollectionFetcher.fetchAssetsForTCC(limit:seed:)(a3, v12);
+  selfCopy = self;
+  seedCopy = seed;
+  v12.value.super.super.isa = seed;
+  v8 = TCCCollectionFetcher.fetchAssetsForTCC(limit:seed:)(limit, v12);
 
   if (v8)
   {

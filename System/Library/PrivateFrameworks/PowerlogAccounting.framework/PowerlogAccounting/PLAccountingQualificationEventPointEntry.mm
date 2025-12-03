@@ -1,14 +1,14 @@
 @interface PLAccountingQualificationEventPointEntry
 + (id)entryKey;
 + (void)load;
-- (PLAccountingQualificationEventPointEntry)initWithQualificationID:(id)a3 withChildNodeNames:(id)a4 withStartDate:(id)a5;
+- (PLAccountingQualificationEventPointEntry)initWithQualificationID:(id)d withChildNodeNames:(id)names withStartDate:(id)date;
 @end
 
 @implementation PLAccountingQualificationEventPointEntry
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingQualificationEventPointEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -32,23 +32,23 @@ uint64_t __52__PLAccountingQualificationEventPointEntry_entryKey__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (PLAccountingQualificationEventPointEntry)initWithQualificationID:(id)a3 withChildNodeNames:(id)a4 withStartDate:(id)a5
+- (PLAccountingQualificationEventPointEntry)initWithQualificationID:(id)d withChildNodeNames:(id)names withStartDate:(id)date
 {
-  v5 = a5;
-  if (a5)
+  selfCopy = date;
+  if (date)
   {
-    v8 = a4;
-    v9 = a3;
-    v10 = [PLAccountingRange rangeWithStartDate:v5 withEndDate:v5];
+    namesCopy = names;
+    dCopy = d;
+    v10 = [PLAccountingRange rangeWithStartDate:selfCopy withEndDate:selfCopy];
     v13.receiver = self;
     v13.super_class = PLAccountingQualificationEventPointEntry;
-    v11 = [(PLAccountingQualificationEventEntry *)&v13 initWithQualificationID:v9 withChildNodeNames:v8 withRange:v10];
+    v11 = [(PLAccountingQualificationEventEntry *)&v13 initWithQualificationID:dCopy withChildNodeNames:namesCopy withRange:v10];
 
     self = v11;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

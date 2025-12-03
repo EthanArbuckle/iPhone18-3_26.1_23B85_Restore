@@ -1,17 +1,17 @@
 @interface PTDisparityFilterExponentialMovingAverageLKT
-- (PTDisparityFilterExponentialMovingAverageLKT)initWithMetalContext:(id)a3;
-- (PTDisparityFilterExponentialMovingAverageLKT)initWithMetalContext:(id)a3 disparitySize:(id *)a4 disparityFilteredSize:(id *)a5 disparityPixelFormat:(unint64_t)a6 colorSize:(id *)a7 colorPixelFormat:(unint64_t)a8 sensorPort:(id)a9;
-- (int)copyDisparityWithBias:(id)a3 inDisparity:(id)a4 outDisparity:(id)a5 disparityBias:(float)a6;
-- (int)exponentialMovingAverageFilter:(PTDisparityFilterExponentialMovingAverageLKT *)self inDisplacement:(SEL)a2 inDisparityPrev:(id)a3 inDisparity:(id)a4 outDisparity:(id)a5 updateCoefficient:(id)a6 disparityBias:(id)a7;
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inDisparityPrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 disparityBias:(float)a8;
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inStatePrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 outState:(id)a8;
+- (PTDisparityFilterExponentialMovingAverageLKT)initWithMetalContext:(id)context;
+- (PTDisparityFilterExponentialMovingAverageLKT)initWithMetalContext:(id)context disparitySize:(id *)size disparityFilteredSize:(id *)filteredSize disparityPixelFormat:(unint64_t)format colorSize:(id *)colorSize colorPixelFormat:(unint64_t)pixelFormat sensorPort:(id)port;
+- (int)copyDisparityWithBias:(id)bias inDisparity:(id)disparity outDisparity:(id)outDisparity disparityBias:(float)disparityBias;
+- (int)exponentialMovingAverageFilter:(PTDisparityFilterExponentialMovingAverageLKT *)self inDisplacement:(SEL)displacement inDisparityPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity updateCoefficient:(id)coefficient disparityBias:(id)bias;
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inDisparityPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity disparityBias:(float)bias;
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inStatePrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity outState:(id)state;
 @end
 
 @implementation PTDisparityFilterExponentialMovingAverageLKT
 
-- (PTDisparityFilterExponentialMovingAverageLKT)initWithMetalContext:(id)a3
+- (PTDisparityFilterExponentialMovingAverageLKT)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v29.receiver = self;
   v29.super_class = PTDisparityFilterExponentialMovingAverageLKT;
   v6 = [(PTDisparityFilterExponentialMovingAverageLKT *)&v29 init];
@@ -21,9 +21,9 @@
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   *v7->_iirUpdateCoefficient = COERCE_UNSIGNED_INT(0.25);
-  v8 = [v5 computePipelineStateFor:@"temporalFilterExponentialMovingAverageLKT" withConstants:0];
+  v8 = [contextCopy computePipelineStateFor:@"temporalFilterExponentialMovingAverageLKT" withConstants:0];
   temporalFilterExponentialMovingAverageLKT = v7->_temporalFilterExponentialMovingAverageLKT;
   v7->_temporalFilterExponentialMovingAverageLKT = v8;
 
@@ -38,7 +38,7 @@
     goto LABEL_9;
   }
 
-  v10 = [v5 computePipelineStateFor:@"copyDisparityWithBias" withConstants:0];
+  v10 = [contextCopy computePipelineStateFor:@"copyDisparityWithBias" withConstants:0];
   copyDisparityWithBias = v7->_copyDisparityWithBias;
   v7->_copyDisparityWithBias = v10;
 
@@ -63,19 +63,19 @@ LABEL_11:
   return v12;
 }
 
-- (PTDisparityFilterExponentialMovingAverageLKT)initWithMetalContext:(id)a3 disparitySize:(id *)a4 disparityFilteredSize:(id *)a5 disparityPixelFormat:(unint64_t)a6 colorSize:(id *)a7 colorPixelFormat:(unint64_t)a8 sensorPort:(id)a9
+- (PTDisparityFilterExponentialMovingAverageLKT)initWithMetalContext:(id)context disparitySize:(id *)size disparityFilteredSize:(id *)filteredSize disparityPixelFormat:(unint64_t)format colorSize:(id *)colorSize colorPixelFormat:(unint64_t)pixelFormat sensorPort:(id)port
 {
-  v13 = a3;
-  v14 = [(PTDisparityFilterExponentialMovingAverageLKT *)self initWithMetalContext:v13];
+  contextCopy = context;
+  v14 = [(PTDisparityFilterExponentialMovingAverageLKT *)self initWithMetalContext:contextCopy];
   v15 = v14;
   if (v14)
   {
     v14->_frameCount = 0;
-    v16 = *&a4->var0;
-    v14->_disparitySize.depth = a4->var2;
+    v16 = *&size->var0;
+    v14->_disparitySize.depth = size->var2;
     *&v14->_disparitySize.width = v16;
-    v17 = *&a5->var0;
-    v14->_disparityFilteredSize.depth = a5->var2;
+    v17 = *&filteredSize->var0;
+    v14->_disparityFilteredSize.depth = filteredSize->var2;
     *&v14->_disparityFilteredSize.width = v17;
     v18 = PTDefaultsGetDictionary();
     v19 = [v18 objectForKeyedSubscript:@"PortraitDump"];
@@ -90,18 +90,18 @@ LABEL_11:
 
     if (v22)
     {
-      v23 = [v22 intValue];
+      intValue = [v22 intValue];
     }
 
     else
     {
-      v23 = 1;
+      intValue = 1;
     }
 
     v24 = [PTOpticalFlow alloc];
-    v29 = *&a7->var0;
-    var2 = a7->var2;
-    v25 = [(PTOpticalFlow *)v24 initWithMetalContext:v13 colorSize:&v29 lktPreset:v23];
+    v29 = *&colorSize->var0;
+    var2 = colorSize->var2;
+    v25 = [(PTOpticalFlow *)v24 initWithMetalContext:contextCopy colorSize:&v29 lktPreset:intValue];
     opticalFlow = v15->_opticalFlow;
     v15->_opticalFlow = v25;
 
@@ -111,26 +111,26 @@ LABEL_11:
   return v15;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inStatePrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 outState:(id)a8
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inStatePrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity outState:(id)state
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a3;
-  LODWORD(a6) = [(PTDisparityFilterExponentialMovingAverageLKT *)self temporalDisparityFilter:v16 inDisplacement:a4 inDisparityPrev:a5 inDisparity:a6 outDisparity:v15 disparityBias:0.0];
-  v17 = [(PTMetalContext *)self->_metalContext textureUtil];
-  LODWORD(a4) = [v17 copy:v16 inTex:v15 outTex:v14];
+  stateCopy = state;
+  outDisparityCopy = outDisparity;
+  filterCopy = filter;
+  LODWORD(disparity) = [(PTDisparityFilterExponentialMovingAverageLKT *)self temporalDisparityFilter:filterCopy inDisplacement:displacement inDisparityPrev:prev inDisparity:disparity outDisparity:outDisparityCopy disparityBias:0.0];
+  textureUtil = [(PTMetalContext *)self->_metalContext textureUtil];
+  LODWORD(displacement) = [textureUtil copy:filterCopy inTex:outDisparityCopy outTex:stateCopy];
 
-  return a4 | a6;
+  return displacement | disparity;
 }
 
-- (int)temporalDisparityFilter:(id)a3 inDisplacement:(id)a4 inDisparityPrev:(id)a5 inDisparity:(id)a6 outDisparity:(id)a7 disparityBias:(float)a8
+- (int)temporalDisparityFilter:(id)filter inDisplacement:(id)displacement inDisparityPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity disparityBias:(float)bias
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (v16 == v18)
+  filterCopy = filter;
+  displacementCopy = displacement;
+  prevCopy = prev;
+  disparityCopy = disparity;
+  outDisparityCopy = outDisparity;
+  if (prevCopy == outDisparityCopy)
   {
     v22 = _PTLogSystem();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -146,14 +146,14 @@ LABEL_11:
     if (self->_frameCount)
     {
       LOWORD(v19) = *self->_iirUpdateCoefficient;
-      *&v20 = a8;
-      v21 = [(PTDisparityFilterExponentialMovingAverageLKT *)self exponentialMovingAverageFilter:v14 inDisplacement:v15 inDisparityPrev:v16 inDisparity:v17 outDisparity:v18 updateCoefficient:v19 disparityBias:v20];
+      *&v20 = bias;
+      v21 = [(PTDisparityFilterExponentialMovingAverageLKT *)self exponentialMovingAverageFilter:filterCopy inDisplacement:displacementCopy inDisparityPrev:prevCopy inDisparity:disparityCopy outDisparity:outDisparityCopy updateCoefficient:v19 disparityBias:v20];
     }
 
     else
     {
-      *&v19 = a8;
-      [(PTDisparityFilterExponentialMovingAverageLKT *)self copyDisparityWithBias:v14 inDisparity:v17 outDisparity:v18 disparityBias:v19];
+      *&v19 = bias;
+      [(PTDisparityFilterExponentialMovingAverageLKT *)self copyDisparityWithBias:filterCopy inDisparity:disparityCopy outDisparity:outDisparityCopy disparityBias:v19];
       v21 = 0;
     }
 
@@ -163,16 +163,16 @@ LABEL_11:
   return v21;
 }
 
-- (int)exponentialMovingAverageFilter:(PTDisparityFilterExponentialMovingAverageLKT *)self inDisplacement:(SEL)a2 inDisparityPrev:(id)a3 inDisparity:(id)a4 outDisparity:(id)a5 updateCoefficient:(id)a6 disparityBias:(id)a7
+- (int)exponentialMovingAverageFilter:(PTDisparityFilterExponentialMovingAverageLKT *)self inDisplacement:(SEL)displacement inDisparityPrev:(id)prev inDisparity:(id)disparity outDisparity:(id)outDisparity updateCoefficient:(id)coefficient disparityBias:(id)bias
 {
   v34 = v7;
   v33 = v8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = [a3 computeCommandEncoder];
-  if (!v18)
+  biasCopy = bias;
+  coefficientCopy = coefficient;
+  outDisparityCopy = outDisparity;
+  disparityCopy = disparity;
+  computeCommandEncoder = [prev computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v19 = _PTLogSystem();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -181,36 +181,36 @@ LABEL_11:
     }
   }
 
-  [v18 setComputePipelineState:self->_temporalFilterExponentialMovingAverageLKT];
-  [v18 setTexture:v17 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_temporalFilterExponentialMovingAverageLKT];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
 
-  [v18 setTexture:v16 atIndex:1];
-  [v18 setTexture:v15 atIndex:2];
+  [computeCommandEncoder setTexture:outDisparityCopy atIndex:1];
+  [computeCommandEncoder setTexture:coefficientCopy atIndex:2];
 
-  [v18 setTexture:v14 atIndex:3];
-  [v18 setBytes:&v34 length:2 atIndex:0];
-  [v18 setBytes:&v33 length:4 atIndex:1];
-  v27 = [v14 width];
-  v28 = [v14 height];
+  [computeCommandEncoder setTexture:biasCopy atIndex:3];
+  [computeCommandEncoder setBytes:&v34 length:2 atIndex:0];
+  [computeCommandEncoder setBytes:&v33 length:4 atIndex:1];
+  width = [biasCopy width];
+  height = [biasCopy height];
 
-  v32[0] = v27;
-  v32[1] = v28;
+  v32[0] = width;
+  v32[1] = height;
   v32[2] = 1;
   v30 = xmmword_2244A5230;
   v31 = 1;
-  [v18 dispatchThreads:v32 threadsPerThreadgroup:&v30];
-  [v18 endEncoding];
+  [computeCommandEncoder dispatchThreads:v32 threadsPerThreadgroup:&v30];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)copyDisparityWithBias:(id)a3 inDisparity:(id)a4 outDisparity:(id)a5 disparityBias:(float)a6
+- (int)copyDisparityWithBias:(id)bias inDisparity:(id)disparity outDisparity:(id)outDisparity disparityBias:(float)disparityBias
 {
-  v26 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [a3 computeCommandEncoder];
-  if (!v11)
+  disparityBiasCopy = disparityBias;
+  outDisparityCopy = outDisparity;
+  disparityCopy = disparity;
+  computeCommandEncoder = [bias computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v12 = _PTLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -219,21 +219,21 @@ LABEL_11:
     }
   }
 
-  [v11 setComputePipelineState:self->_copyDisparityWithBias];
-  [v11 setTexture:v10 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:self->_copyDisparityWithBias];
+  [computeCommandEncoder setTexture:disparityCopy atIndex:0];
 
-  [v11 setTexture:v9 atIndex:1];
-  [v11 setBytes:&v26 length:4 atIndex:0];
-  v20 = [v9 width];
-  v21 = [v9 height];
+  [computeCommandEncoder setTexture:outDisparityCopy atIndex:1];
+  [computeCommandEncoder setBytes:&disparityBiasCopy length:4 atIndex:0];
+  width = [outDisparityCopy width];
+  height = [outDisparityCopy height];
 
-  v25[0] = v20;
-  v25[1] = v21;
+  v25[0] = width;
+  v25[1] = height;
   v25[2] = 1;
   v23 = xmmword_2244A5230;
   v24 = 1;
-  [v11 dispatchThreads:v25 threadsPerThreadgroup:&v23];
-  [v11 endEncoding];
+  [computeCommandEncoder dispatchThreads:v25 threadsPerThreadgroup:&v23];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }

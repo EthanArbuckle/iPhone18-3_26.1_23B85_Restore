@@ -1,17 +1,17 @@
 @interface TSWPPropertyConverter
-+ (id)mapCharacterPropertiesFromNS:(id)a3;
-+ (id)propertyMapToDictionary:(id)a3;
++ (id)mapCharacterPropertiesFromNS:(id)s;
++ (id)propertyMapToDictionary:(id)dictionary;
 + (void)initialize;
-+ (void)mapCharacterPropertiesFromNS:(id)a3 toWP:(id)a4;
-+ (void)mapCharacterPropertiesFromStyle:(id)a3 secondaryStyle:(id)a4 toNS:(id)a5 stickyFont:(id *)a6 scale:(double)a7;
-+ (void)mapCharacterPropertiesFromStyles:(id *)a3 styleCount:(unsigned int)a4 toNS:(id)a5 stickyFont:(id *)a6 scale:(double)a7;
++ (void)mapCharacterPropertiesFromNS:(id)s toWP:(id)p;
++ (void)mapCharacterPropertiesFromStyle:(id)style secondaryStyle:(id)secondaryStyle toNS:(id)s stickyFont:(id *)font scale:(double)scale;
++ (void)mapCharacterPropertiesFromStyles:(id *)styles styleCount:(unsigned int)count toNS:(id)s stickyFont:(id *)font scale:(double)scale;
 @end
 
 @implementation TSWPPropertyConverter
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = malloc_type_calloc(3uLL, 0x10uLL, 0x10800409227ACB4uLL);
     sMappedProperties = v2;
@@ -36,36 +36,36 @@
   }
 }
 
-+ (void)mapCharacterPropertiesFromNS:(id)a3 toWP:(id)a4
++ (void)mapCharacterPropertiesFromNS:(id)s toWP:(id)p
 {
-  v6 = [a3 keyEnumerator];
-  v7 = [v6 nextObject];
-  if (v7)
+  keyEnumerator = [s keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v8 = v7;
+    nextObject2 = nextObject;
     v9 = *MEMORY[0x277D741F0];
     v10 = *MEMORY[0x277D74150];
     v11 = *MEMORY[0x277D740A8];
     v28 = *MEMORY[0x277D740D0];
     v12 = 12.0;
-    while ([v9 compare:v8] && !objc_msgSend(v8, "isEqualToString:", v10))
+    while ([v9 compare:nextObject2] && !objc_msgSend(nextObject2, "isEqualToString:", v10))
     {
-      if ([v11 compare:v8])
+      if ([v11 compare:nextObject2])
       {
-        if ([v28 compare:v8])
+        if ([v28 compare:nextObject2])
         {
           v19 = v11;
           for (i = 0; i != 80; i += 16)
           {
-            if (![*(sMappedColorProperties + i) compare:v8])
+            if (![*(sMappedColorProperties + i) compare:nextObject2])
             {
               objc_opt_class();
-              [a3 objectForKeyedSubscript:v8];
+              [s objectForKeyedSubscript:nextObject2];
               v25 = TSUDynamicCast();
               if (v25)
               {
                 v26 = [MEMORY[0x277D6C2A8] colorWithUIColor:v25];
-                [a4 setObject:v26 forProperty:*(sMappedColorProperties + i + 8)];
+                [p setObject:v26 forProperty:*(sMappedColorProperties + i + 8)];
               }
 
               goto LABEL_41;
@@ -73,7 +73,7 @@
           }
 
           v21 = 0;
-          while ([*(sMappedProperties + v21) compare:v8])
+          while ([*(sMappedProperties + v21) compare:nextObject2])
           {
             v21 += 16;
             if (v21 == 48)
@@ -82,64 +82,64 @@
             }
           }
 
-          v27 = [a3 objectForKeyedSubscript:v8];
-          [a4 setBoxedObject:v27 forProperty:*(sMappedProperties + v21 + 8)];
+          v27 = [s objectForKeyedSubscript:nextObject2];
+          [p setBoxedObject:v27 forProperty:*(sMappedProperties + v21 + 8)];
 LABEL_41:
           v11 = v19;
         }
 
         else
         {
-          [objc_msgSend(a3 objectForKeyedSubscript:{v8), "tsu_CGFloatValue"}];
-          [a4 setCGFloatValue:35 forProperty:v24 / v12];
+          [objc_msgSend(s objectForKeyedSubscript:{nextObject2), "tsu_CGFloatValue"}];
+          [p setCGFloatValue:35 forProperty:v24 / v12];
         }
 
         goto LABEL_16;
       }
 
-      v22 = [MEMORY[0x277D6C2E8] fontWithPlatformFont:{objc_msgSend(a3, "objectForKeyedSubscript:", v8)}];
-      [a4 setObject:objc_msgSend(v22 forProperty:{"fontName"), 16}];
+      v22 = [MEMORY[0x277D6C2E8] fontWithPlatformFont:{objc_msgSend(s, "objectForKeyedSubscript:", nextObject2)}];
+      [p setObject:objc_msgSend(v22 forProperty:{"fontName"), 16}];
       [v22 pointSize];
       v12 = v23;
-      [a4 setCGFloatValue:17 forProperty:?];
-      if (([a4 containsProperty:19] & 1) == 0)
+      [p setCGFloatValue:17 forProperty:?];
+      if (([p containsProperty:19] & 1) == 0)
       {
-        [a4 setIntValue:0 forProperty:19];
+        [p setIntValue:0 forProperty:19];
       }
 
-      if (([a4 containsProperty:20] & 1) == 0)
+      if (([p containsProperty:20] & 1) == 0)
       {
-        [a4 setIntValue:0 forProperty:20];
+        [p setIntValue:0 forProperty:20];
       }
 
-      if (([a4 containsProperty:22] & 1) == 0)
+      if (([p containsProperty:22] & 1) == 0)
       {
-        [a4 setIntValue:0 forProperty:22];
+        [p setIntValue:0 forProperty:22];
       }
 
-      if (([a4 containsProperty:31] & 1) == 0)
+      if (([p containsProperty:31] & 1) == 0)
       {
-        [a4 setFloatValue:31 forProperty:0.0];
+        [p setFloatValue:31 forProperty:0.0];
       }
 
-      if (([a4 containsProperty:26] & 1) == 0)
+      if (([p containsProperty:26] & 1) == 0)
       {
-        v17 = a4;
+        pCopy2 = p;
         v18 = 0;
         v16 = 26;
 LABEL_15:
-        [v17 setIntValue:v18 forProperty:v16];
+        [pCopy2 setIntValue:v18 forProperty:v16];
       }
 
 LABEL_16:
-      v8 = [v6 nextObject];
-      if (!v8)
+      nextObject2 = [keyEnumerator nextObject];
+      if (!nextObject2)
       {
         return;
       }
     }
 
-    v13 = [objc_msgSend(a3 objectForKeyedSubscript:{v8), "intValue"}];
+    v13 = [objc_msgSend(s objectForKeyedSubscript:{nextObject2), "intValue"}];
     if (v13 == 9)
     {
       v14 = 2;
@@ -160,7 +160,7 @@ LABEL_16:
       v15 = 0;
     }
 
-    if ([v8 isEqualToString:v10])
+    if ([nextObject2 isEqualToString:v10])
     {
       v16 = 26;
     }
@@ -170,61 +170,61 @@ LABEL_16:
       v16 = 22;
     }
 
-    v17 = a4;
+    pCopy2 = p;
     v18 = v15;
     goto LABEL_15;
   }
 }
 
-+ (id)mapCharacterPropertiesFromNS:(id)a3
++ (id)mapCharacterPropertiesFromNS:(id)s
 {
   v4 = +[TSSPropertyMap propertyMap];
-  [TSWPPropertyConverter mapCharacterPropertiesFromNS:a3 toWP:v4];
+  [TSWPPropertyConverter mapCharacterPropertiesFromNS:s toWP:v4];
   return v4;
 }
 
-+ (void)mapCharacterPropertiesFromStyles:(id *)a3 styleCount:(unsigned int)a4 toNS:(id)a5 stickyFont:(id *)a6 scale:(double)a7
++ (void)mapCharacterPropertiesFromStyles:(id *)styles styleCount:(unsigned int)count toNS:(id)s stickyFont:(id *)font scale:(double)scale
 {
-  if (a4)
+  if (count)
   {
-    v13 = a4;
-    v14 = a4 - 1;
+    countCopy = count;
+    v14 = count - 1;
     do
     {
-      v15 = a3[v14];
+      v15 = styles[v14];
       if (v15)
       {
-        [a1 mapCharacterPropertiesFromStyle:v15 toNS:a5 stickyFont:a6 scale:a7];
+        [self mapCharacterPropertiesFromStyle:v15 toNS:s stickyFont:font scale:scale];
       }
 
       --v14;
     }
 
     while (v14 != -1);
-    if (a4 != 1)
+    if (count != 1)
     {
-      v16 = [objc_alloc(MEMORY[0x277D6C2E8]) initWithCTFont:{TSWPCreateFontForStylesWithScale(a3, v13, (a7 * 100.0))}];
+      v16 = [objc_alloc(MEMORY[0x277D6C2E8]) initWithCTFont:{TSWPCreateFontForStylesWithScale(styles, countCopy, (scale * 100.0))}];
       if (v16)
       {
         v18 = v16;
-        v17 = [v16 platformFont];
-        [a5 setObject:v17 forKeyedSubscript:*MEMORY[0x277D740A8]];
+        platformFont = [v16 platformFont];
+        [s setObject:platformFont forKeyedSubscript:*MEMORY[0x277D740A8]];
       }
     }
   }
 }
 
-+ (id)propertyMapToDictionary:(id)a3
++ (id)propertyMapToDictionary:(id)dictionary
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__TSWPPropertyConverter_propertyMapToDictionary___block_invoke;
   v6[3] = &unk_279D49FA0;
-  v6[4] = a3;
-  v6[5] = v4;
-  [a3 enumeratePropertiesAndObjectsUsingBlock:v6];
-  return v4;
+  v6[4] = dictionary;
+  v6[5] = dictionary;
+  [dictionary enumeratePropertiesAndObjectsUsingBlock:v6];
+  return dictionary;
 }
 
 id *__49__TSWPPropertyConverter_propertyMapToDictionary___block_invoke(id *result, int a2, uint64_t a3, void *a4)
@@ -329,30 +329,30 @@ LABEL_27:
   return result;
 }
 
-+ (void)mapCharacterPropertiesFromStyle:(id)a3 secondaryStyle:(id)a4 toNS:(id)a5 stickyFont:(id *)a6 scale:(double)a7
++ (void)mapCharacterPropertiesFromStyle:(id)style secondaryStyle:(id)secondaryStyle toNS:(id)s stickyFont:(id *)font scale:(double)scale
 {
   v43 = *MEMORY[0x277D85DE8];
-  if (!a3 || !a5)
+  if (!style || !s)
   {
     return;
   }
 
   v40 = 0;
-  if ([a3 valueForProperty:16] || objc_msgSend(a4, "valueForProperty:", 16))
+  if ([style valueForProperty:16] || objc_msgSend(secondaryStyle, "valueForProperty:", 16))
   {
-    v41 = a3;
-    v42 = a4;
-    v13 = a4 ? 2 : 1;
-    v14 = [objc_alloc(MEMORY[0x277D6C2E8]) initWithCTFont:{TSWPCreateFontForStylesWithScale(&v41, v13, (a7 * 100.0))}];
+    styleCopy2 = style;
+    secondaryStyleCopy2 = secondaryStyle;
+    v13 = secondaryStyle ? 2 : 1;
+    v14 = [objc_alloc(MEMORY[0x277D6C2E8]) initWithCTFont:{TSWPCreateFontForStylesWithScale(&styleCopy2, v13, (scale * 100.0))}];
     v40 = v14;
     if (v14)
     {
       v15 = v14;
-      v16 = [v14 platformFont];
-      [a5 setObject:v16 forKeyedSubscript:*MEMORY[0x277D740A8]];
-      if (a6)
+      platformFont = [v14 platformFont];
+      [s setObject:platformFont forKeyedSubscript:*MEMORY[0x277D740A8]];
+      if (font)
       {
-        *a6 = v15;
+        *font = v15;
       }
 
       v40 = 0;
@@ -361,22 +361,22 @@ LABEL_27:
 
   for (i = 0; i != 80; i += 16)
   {
-    if ([a3 definesProperty:{*(sMappedColorProperties + i + 8), v40, v41, v42, v43}])
+    if ([style definesProperty:{*(sMappedColorProperties + i + 8), v40, styleCopy2, secondaryStyleCopy2, v43}])
     {
       objc_opt_class();
-      [a3 valueForProperty:*(sMappedColorProperties + i + 8)];
+      [style valueForProperty:*(sMappedColorProperties + i + 8)];
       v18 = TSUDynamicCast();
       if (v18)
       {
-        v19 = [v18 platformColor];
-        [a5 setObject:v19 forKeyedSubscript:*(sMappedColorProperties + i)];
+        platformColor = [v18 platformColor];
+        [s setObject:platformColor forKeyedSubscript:*(sMappedColorProperties + i)];
       }
     }
   }
 
   for (j = 0; j != 48; j += 16)
   {
-    if (![a3 definesProperty:*(sMappedProperties + j + 8)])
+    if (![style definesProperty:*(sMappedProperties + j + 8)])
     {
       continue;
     }
@@ -385,23 +385,23 @@ LABEL_27:
     switch(v21)
     {
       case 2:
-        [a3 floatValueForProperty:*(sMappedProperties + j + 8)];
+        [style floatValueForProperty:*(sMappedProperties + j + 8)];
         v25 = [MEMORY[0x277CCABB0] numberWithFloat:?];
         goto LABEL_27;
       case 1:
-        v24 = [a3 intValueForProperty:*(sMappedProperties + j + 8)];
+        v24 = [style intValueForProperty:*(sMappedProperties + j + 8)];
         v25 = [MEMORY[0x277CCABB0] numberWithInt:v24];
 LABEL_27:
-        [a5 setValue:v25 forKey:*(sMappedProperties + j)];
+        [s setValue:v25 forKey:*(sMappedProperties + j)];
         continue;
       case 0:
-        v22 = [a3 valueForProperty:*(sMappedProperties + j + 8)];
+        v22 = [style valueForProperty:*(sMappedProperties + j + 8)];
         if (v22)
         {
           v23 = v22;
           if (v22 != [MEMORY[0x277CBEB68] null])
           {
-            [a5 setObject:v23 forKeyedSubscript:*(sMappedProperties + j)];
+            [s setObject:v23 forKeyedSubscript:*(sMappedProperties + j)];
           }
         }
 
@@ -409,9 +409,9 @@ LABEL_27:
     }
   }
 
-  if ([a3 definesProperty:22])
+  if ([style definesProperty:22])
   {
-    v26 = [a3 intValueForProperty:22];
+    v26 = [style intValueForProperty:22];
     if (v26 == 2)
     {
       v27 = 9;
@@ -433,12 +433,12 @@ LABEL_27:
     }
 
     v29 = [MEMORY[0x277CCABB0] numberWithInt:v28];
-    [a5 setObject:v29 forKeyedSubscript:*MEMORY[0x277D741F0]];
+    [s setObject:v29 forKeyedSubscript:*MEMORY[0x277D741F0]];
   }
 
-  if ([a3 definesProperty:26])
+  if ([style definesProperty:26])
   {
-    v30 = [a3 intValueForProperty:26];
+    v30 = [style intValueForProperty:26];
     if (v30 == 2)
     {
       v31 = 9;
@@ -460,40 +460,40 @@ LABEL_27:
     }
 
     v33 = [MEMORY[0x277CCABB0] numberWithInt:v32];
-    [a5 setObject:v33 forKeyedSubscript:*MEMORY[0x277D74150]];
+    [s setObject:v33 forKeyedSubscript:*MEMORY[0x277D74150]];
   }
 
-  if ([a3 definesProperty:35])
+  if ([style definesProperty:35])
   {
-    [a3 floatValueForProperty:35];
+    [style floatValueForProperty:35];
     v35 = v34;
     v36 = 12.0;
-    if (a6 && *a6)
+    if (font && *font)
     {
-      [*a6 pointSize];
+      [*font pointSize];
     }
 
     v37 = [MEMORY[0x277CCABB0] numberWithDouble:v36 * v35];
-    [a5 setObject:v37 forKeyedSubscript:*MEMORY[0x277D740D0]];
+    [s setObject:v37 forKeyedSubscript:*MEMORY[0x277D740D0]];
   }
 
-  v41 = a3;
-  v42 = a4;
-  v38 = TSWPResolvePropertyForStyles(&v41, 2uLL, 41, 0);
+  styleCopy2 = style;
+  secondaryStyleCopy2 = secondaryStyle;
+  v38 = TSWPResolvePropertyForStyles(&styleCopy2, 2uLL, 41, 0);
   if (v38)
   {
-    v39 = [v38 intValue];
+    intValue = [v38 intValue];
   }
 
   else
   {
-    v39 = 0;
+    intValue = 0;
   }
 
-  [a1 mapFontFeaturesFromStyle:a3 secondaryStyle:a4 toNS:a5 ioFont:&v40 ligatures:v39];
-  if (a6)
+  [self mapFontFeaturesFromStyle:style secondaryStyle:secondaryStyle toNS:s ioFont:&v40 ligatures:intValue];
+  if (font)
   {
-    *a6 = v40;
+    *font = v40;
   }
 }
 

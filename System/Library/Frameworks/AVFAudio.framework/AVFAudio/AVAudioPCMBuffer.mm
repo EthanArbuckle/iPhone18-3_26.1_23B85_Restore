@@ -1,16 +1,16 @@
 @interface AVAudioPCMBuffer
 - (AVAudioPCMBuffer)initWithPCMFormat:(AVAudioFormat *)format bufferListNoCopy:(const AudioBufferList *)bufferList deallocator:(void *)deallocator;
 - (AVAudioPCMBuffer)initWithPCMFormat:(AVAudioFormat *)format frameCapacity:(AVAudioFrameCount)frameCapacity;
-- (BOOL)appendDataFromBuffer:(id)a3 channel:(int64_t)a4;
-- (float)calculatePower:(unint64_t)a3 forFloatData:(float *)a4 stride:(int64_t)a5 frameLength:(unsigned int)a6;
+- (BOOL)appendDataFromBuffer:(id)buffer channel:(int64_t)channel;
+- (float)calculatePower:(unint64_t)power forFloatData:(float *)data stride:(int64_t)stride frameLength:(unsigned int)length;
 - (float)floatChannelData;
-- (id)calculatePower:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)calculatePower:(unint64_t)power;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)splitIntoSingleChannelBuffers;
 - (int16_t)int16ChannelData;
 - (int32_t)int32ChannelData;
 - (void)_initChannelPtrs;
-- (void)setByteLength:(unsigned int)a3;
+- (void)setByteLength:(unsigned int)length;
 - (void)setFrameLength:(AVAudioFrameCount)frameLength;
 @end
 
@@ -18,12 +18,12 @@
 
 - (void)_initChannelPtrs
 {
-  v3 = [*self->super._impl streamDescription];
-  v4 = *(v3 + 28);
+  streamDescription = [*self->super._impl streamDescription];
+  v4 = *(streamDescription + 28);
   if (v4)
   {
-    v5 = *(v3 + 12);
-    *(self->super._impl + 1) = malloc_type_calloc(*(v3 + 28), 8uLL, 0x80040B8603338uLL);
+    v5 = *(streamDescription + 12);
+    *(self->super._impl + 1) = malloc_type_calloc(*(streamDescription + 28), 8uLL, 0x80040B8603338uLL);
     if ((v5 & 0x20) != 0)
     {
       v8 = 0;
@@ -99,24 +99,24 @@
   return result;
 }
 
-- (float)calculatePower:(unint64_t)a3 forFloatData:(float *)a4 stride:(int64_t)a5 frameLength:(unsigned int)a6
+- (float)calculatePower:(unint64_t)power forFloatData:(float *)data stride:(int64_t)stride frameLength:(unsigned int)length
 {
-  if (a3 == 1)
+  if (power == 1)
   {
     v8 = 0.0;
-    vDSP_rmsqv(a4, a5, &v8, a6);
+    vDSP_rmsqv(data, stride, &v8, length);
     v7 = v8;
   }
 
   else
   {
-    if (a3)
+    if (power)
     {
       return result;
     }
 
     __C = 0.0;
-    vDSP_maxv(a4, a5, &__C, a6);
+    vDSP_maxv(data, stride, &__C, length);
     v7 = __C;
   }
 
@@ -128,7 +128,7 @@
   return log10f(v7) * 20.0;
 }
 
-- (id)calculatePower:(unint64_t)a3
+- (id)calculatePower:(unint64_t)power
 {
   v5 = objc_opt_new();
   if (![(AVAudioPCMBuffer *)self floatChannelData])
@@ -145,7 +145,7 @@
           __B = 32767.0;
           vDSP_vsdiv(v8, [(AVAudioPCMBuffer *)self stride], &__B, v8, [(AVAudioPCMBuffer *)self stride], [(AVAudioPCMBuffer *)self frameLength]);
           v10 = MEMORY[0x1E696AD98];
-          [(AVAudioPCMBuffer *)self calculatePower:a3 forFloatData:v8 stride:[(AVAudioPCMBuffer *)self stride] frameLength:[(AVAudioPCMBuffer *)self frameLength]];
+          [(AVAudioPCMBuffer *)self calculatePower:power forFloatData:v8 stride:[(AVAudioPCMBuffer *)self stride] frameLength:[(AVAudioPCMBuffer *)self frameLength]];
           [v5 addObject:{objc_msgSend(v10, "numberWithFloat:")}];
           ++v9;
         }
@@ -171,7 +171,7 @@
           v14 = 2147500000.0;
           vDSP_vsdiv(v8, [(AVAudioPCMBuffer *)self stride], &v14, v8, [(AVAudioPCMBuffer *)self stride], [(AVAudioPCMBuffer *)self frameLength]);
           v12 = MEMORY[0x1E696AD98];
-          [(AVAudioPCMBuffer *)self calculatePower:a3 forFloatData:v8 stride:[(AVAudioPCMBuffer *)self stride] frameLength:[(AVAudioPCMBuffer *)self frameLength]];
+          [(AVAudioPCMBuffer *)self calculatePower:power forFloatData:v8 stride:[(AVAudioPCMBuffer *)self stride] frameLength:[(AVAudioPCMBuffer *)self frameLength]];
           [v5 addObject:{objc_msgSend(v12, "numberWithFloat:")}];
           ++v11;
         }
@@ -190,7 +190,7 @@
     do
     {
       v7 = MEMORY[0x1E696AD98];
-      [(AVAudioPCMBuffer *)self calculatePower:a3 forFloatData:[(AVAudioPCMBuffer *)self floatChannelData][8 * v6] stride:[(AVAudioPCMBuffer *)self stride] frameLength:[(AVAudioPCMBuffer *)self frameLength]];
+      [(AVAudioPCMBuffer *)self calculatePower:power forFloatData:[(AVAudioPCMBuffer *)self floatChannelData][8 * v6] stride:[(AVAudioPCMBuffer *)self stride] frameLength:[(AVAudioPCMBuffer *)self frameLength]];
       [v5 addObject:{objc_msgSend(v7, "numberWithFloat:")}];
       ++v6;
     }
@@ -231,7 +231,7 @@
   return v3;
 }
 
-- (BOOL)appendDataFromBuffer:(id)a3 channel:(int64_t)a4
+- (BOOL)appendDataFromBuffer:(id)buffer channel:(int64_t)channel
 {
   impl = self->super._impl;
   if (*(impl + 56) == 1)
@@ -244,31 +244,31 @@
     v8 = impl[12];
   }
 
-  v9 = [a3 audioBufferList];
-  v10 = [(AVAudioPCMBuffer *)self frameLength];
+  audioBufferList = [buffer audioBufferList];
+  frameLength = [(AVAudioPCMBuffer *)self frameLength];
   v11 = *(self->super._impl + 6);
-  v12 = [(AVAudioPCMBuffer *)self frameCapacity];
-  v13 = v12 - [(AVAudioPCMBuffer *)self frameLength];
-  v14 = [(AVAudioPCMBuffer *)self frameLength];
-  v15 = [a3 frameLength] + v14;
-  v16 = v13;
+  frameCapacity = [(AVAudioPCMBuffer *)self frameCapacity];
+  v13 = frameCapacity - [(AVAudioPCMBuffer *)self frameLength];
+  frameLength2 = [(AVAudioPCMBuffer *)self frameLength];
+  v15 = [buffer frameLength] + frameLength2;
+  frameLength3 = v13;
   if (v15 <= [(AVAudioPCMBuffer *)self frameCapacity])
   {
-    v16 = [a3 frameLength];
+    frameLength3 = [buffer frameLength];
   }
 
-  v17 = v11 * v10;
-  if (-[AVAudioFormat isEqual:](-[AVAudioBuffer format](self, "format"), "isEqual:", [a3 format]) || (v27 = -[AVAudioFormat channelCount](-[AVAudioBuffer format](self, "format"), "channelCount"), v27 == objc_msgSend(objc_msgSend(a3, "format"), "channelCount")) && (-[AVAudioFormat sampleRate](-[AVAudioBuffer format](self, "format"), "sampleRate"), v29 = v28, objc_msgSend(objc_msgSend(a3, "format"), "sampleRate"), v29 == v30) && (v31 = -[AVAudioFormat streamDescription](-[AVAudioBuffer format](self, "format"), "streamDescription")[8], v31 == *(objc_msgSend(objc_msgSend(a3, "format"), "streamDescription") + 8)))
+  v17 = v11 * frameLength;
+  if (-[AVAudioFormat isEqual:](-[AVAudioBuffer format](self, "format"), "isEqual:", [buffer format]) || (v27 = -[AVAudioFormat channelCount](-[AVAudioBuffer format](self, "format"), "channelCount"), v27 == objc_msgSend(objc_msgSend(buffer, "format"), "channelCount")) && (-[AVAudioFormat sampleRate](-[AVAudioBuffer format](self, "format"), "sampleRate"), v29 = v28, objc_msgSend(objc_msgSend(buffer, "format"), "sampleRate"), v29 == v30) && (v31 = -[AVAudioFormat streamDescription](-[AVAudioBuffer format](self, "format"), "streamDescription")[8], v31 == *(objc_msgSend(objc_msgSend(buffer, "format"), "streamDescription") + 8)))
   {
-    if (*v9)
+    if (*audioBufferList)
     {
       v18 = 0;
-      v19 = (v9 + 4);
+      v19 = (audioBufferList + 4);
       v20 = (v8 + 16);
       do
       {
-        v21 = [(AVAudioPCMBuffer *)self frameLength];
-        v22 = [a3 frameLength] + v21;
+        frameLength4 = [(AVAudioPCMBuffer *)self frameLength];
+        v22 = [buffer frameLength] + frameLength4;
         if (v22 <= [(AVAudioPCMBuffer *)self frameCapacity])
         {
           v23 = *(v19 - 1);
@@ -288,20 +288,20 @@
         ++v18;
       }
 
-      while (v18 < *v9);
+      while (v18 < *audioBufferList);
     }
 
     goto LABEL_25;
   }
 
-  v32 = [(AVAudioFormat *)[(AVAudioBuffer *)self format] channelCount];
-  if ((a4 & 0x8000000000000000) == 0 && v32 == 1 && [objc_msgSend(a3 "format")] > a4)
+  channelCount = [(AVAudioFormat *)[(AVAudioBuffer *)self format] channelCount];
+  if ((channel & 0x8000000000000000) == 0 && channelCount == 1 && [objc_msgSend(buffer "format")] > channel)
   {
-    v33 = [(AVAudioPCMBuffer *)self frameLength];
-    v34 = [a3 frameLength] + v33;
-    v35 = [(AVAudioPCMBuffer *)self frameCapacity];
-    v36 = &v9[4 * a4];
-    if (v34 <= v35)
+    frameLength5 = [(AVAudioPCMBuffer *)self frameLength];
+    v34 = [buffer frameLength] + frameLength5;
+    frameCapacity2 = [(AVAudioPCMBuffer *)self frameCapacity];
+    v36 = &audioBufferList[4 * channel];
+    if (v34 <= frameCapacity2)
     {
       v37 = *(v36 + 3);
     }
@@ -313,19 +313,19 @@
 
     memcpy((*(v8 + 16) + v17), v36[2], v37);
 LABEL_25:
-    v38 = [(AVAudioPCMBuffer *)self frameLength]+ v16;
+    frameLength6 = [(AVAudioPCMBuffer *)self frameLength]+ frameLength3;
     v39 = 1;
     goto LABEL_26;
   }
 
-  v38 = [(AVAudioPCMBuffer *)self frameLength];
+  frameLength6 = [(AVAudioPCMBuffer *)self frameLength];
   v39 = 0;
 LABEL_26:
-  [(AVAudioPCMBuffer *)self setFrameLength:v38];
+  [(AVAudioPCMBuffer *)self setFrameLength:frameLength6];
   return v39;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[AVAudioPCMBuffer allocWithZone:?]frameCapacity:"initWithPCMFormat:frameCapacity:", *self->super._impl, *(self->super._impl + 10)];
   impl = v4->super._impl;
@@ -453,22 +453,22 @@ LABEL_26:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setByteLength:(unsigned int)a3
+- (void)setByteLength:(unsigned int)length
 {
   v5.receiver = self;
   v5.super_class = AVAudioPCMBuffer;
   [(AVAudioBuffer *)&v5 setByteLength:?];
-  *(self->super._impl + 4) = a3 / *(self->super._impl + 6);
+  *(self->super._impl + 4) = length / *(self->super._impl + 6);
 }
 
 - (AVAudioPCMBuffer)initWithPCMFormat:(AVAudioFormat *)format bufferListNoCopy:(const AudioBufferList *)bufferList deallocator:(void *)deallocator
 {
   v53 = *MEMORY[0x1E69E9840];
-  v9 = [(AVAudioFormat *)format streamDescription];
-  v10 = *&v9->mBytesPerPacket;
-  v40 = *&v9->mSampleRate;
+  streamDescription = [(AVAudioFormat *)format streamDescription];
+  v10 = *&streamDescription->mBytesPerPacket;
+  v40 = *&streamDescription->mSampleRate;
   v41 = v10;
-  v42 = *&v9->mBitsPerChannel;
+  v42 = *&streamDescription->mBitsPerChannel;
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -745,11 +745,11 @@ LABEL_49:
 - (AVAudioPCMBuffer)initWithPCMFormat:(AVAudioFormat *)format frameCapacity:(AVAudioFrameCount)frameCapacity
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = [(AVAudioFormat *)format streamDescription];
-  v8 = *&v7->mBytesPerPacket;
-  v20 = *&v7->mSampleRate;
+  streamDescription = [(AVAudioFormat *)format streamDescription];
+  v8 = *&streamDescription->mBytesPerPacket;
+  v20 = *&streamDescription->mSampleRate;
   v21 = v8;
-  v22 = *&v7->mBitsPerChannel;
+  v22 = *&streamDescription->mBitsPerChannel;
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -817,14 +817,14 @@ LABEL_13:
 
   v19.receiver = self;
   v19.super_class = AVAudioPCMBuffer;
-  v14 = [(AVAudioBuffer *)&v19 initWithFormat:format byteCapacity:DWORD2(v21) * frameCapacity];
-  v13 = v14;
-  if (v14)
+  frameCapacity = [(AVAudioBuffer *)&v19 initWithFormat:format byteCapacity:DWORD2(v21) * frameCapacity];
+  v13 = frameCapacity;
+  if (frameCapacity)
   {
-    *(v14->super._impl + 1) = 0;
-    *(v14->super._impl + 6) = v10;
-    *(v14->super._impl + 5) = frameCapacity;
-    *(v14->super._impl + 4) = 0;
+    *(frameCapacity->super._impl + 1) = 0;
+    *(frameCapacity->super._impl + 6) = v10;
+    *(frameCapacity->super._impl + 5) = frameCapacity;
+    *(frameCapacity->super._impl + 4) = 0;
     if ((BYTE12(v20) & 0x20) != 0)
     {
       v15 = 1;
@@ -835,7 +835,7 @@ LABEL_13:
       v15 = HIDWORD(v21);
     }
 
-    *(v14->super._impl + 7) = v15;
+    *(frameCapacity->super._impl + 7) = v15;
     impl = v13->super._impl;
     if (impl[56] != 1 || impl[120] == 1)
     {

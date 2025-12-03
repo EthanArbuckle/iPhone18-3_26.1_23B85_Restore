@@ -1,39 +1,39 @@
 @interface CMContinuityCaptureStateTransition
-- (CMContinuityCaptureStateTransition)initWithAttributes:(id)a3 dstState:(id)a4 event:(id)a5 guard:(id)a6 action:(id)a7;
-- (id)transactionFromStateOnEvent:(id)a3 event:(id)a4;
+- (CMContinuityCaptureStateTransition)initWithAttributes:(id)attributes dstState:(id)state event:(id)event guard:(id)guard action:(id)action;
+- (id)transactionFromStateOnEvent:(id)event event:(id)a4;
 @end
 
 @implementation CMContinuityCaptureStateTransition
 
-- (id)transactionFromStateOnEvent:(id)a3 event:(id)a4
+- (id)transactionFromStateOnEvent:(id)event event:(id)a4
 {
-  v6 = a3;
+  eventCopy = event;
   v7 = a4;
-  v8 = [v7 name];
-  v9 = [(CMContinuityCaptureStateTransition *)self event];
-  v10 = [v9 name];
-  if ([v8 isEqualToString:v10])
+  name = [v7 name];
+  event = [(CMContinuityCaptureStateTransition *)self event];
+  name2 = [event name];
+  if ([name isEqualToString:name2])
   {
-    v11 = [(CMContinuityCaptureStateTransition *)self srcState];
+    srcState = [(CMContinuityCaptureStateTransition *)self srcState];
 
-    if (v11 == v6)
+    if (srcState == eventCopy)
     {
-      v12 = [(CMContinuityCaptureStateTransition *)self guard];
+      guard = [(CMContinuityCaptureStateTransition *)self guard];
 
-      if (!v12)
+      if (!guard)
       {
         goto LABEL_5;
       }
 
-      v13 = [(CMContinuityCaptureStateTransition *)self guard];
-      v14 = [(CMContinuityCaptureStateTransition *)self srcState];
-      v15 = [(CMContinuityCaptureStateTransition *)self dstState];
-      v16 = (v13)[2](v13, v14, v15, v7);
+      guard2 = [(CMContinuityCaptureStateTransition *)self guard];
+      srcState2 = [(CMContinuityCaptureStateTransition *)self srcState];
+      dstState = [(CMContinuityCaptureStateTransition *)self dstState];
+      v16 = (guard2)[2](guard2, srcState2, dstState, v7);
 
       if (v16)
       {
 LABEL_5:
-        v17 = [(CMContinuityCaptureStateTransition *)self dstState];
+        dstState2 = [(CMContinuityCaptureStateTransition *)self dstState];
         goto LABEL_8;
       }
     }
@@ -43,30 +43,30 @@ LABEL_5:
   {
   }
 
-  v17 = 0;
+  dstState2 = 0;
 LABEL_8:
 
-  return v17;
+  return dstState2;
 }
 
-- (CMContinuityCaptureStateTransition)initWithAttributes:(id)a3 dstState:(id)a4 event:(id)a5 guard:(id)a6 action:(id)a7
+- (CMContinuityCaptureStateTransition)initWithAttributes:(id)attributes dstState:(id)state event:(id)event guard:(id)guard action:(id)action
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  attributesCopy = attributes;
+  stateCopy = state;
+  eventCopy = event;
+  guardCopy = guard;
+  actionCopy = action;
   v21.receiver = self;
   v21.super_class = CMContinuityCaptureStateTransition;
   v17 = [(CMContinuityCaptureStateTransition *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    [(CMContinuityCaptureStateTransition *)v17 setSrcState:v12];
-    [(CMContinuityCaptureStateTransition *)v18 setDstState:v13];
-    [(CMContinuityCaptureStateTransition *)v18 setEvent:v14];
-    [(CMContinuityCaptureStateTransition *)v18 setGuard:v15];
-    [(CMContinuityCaptureStateTransition *)v18 setAction:v16];
+    [(CMContinuityCaptureStateTransition *)v17 setSrcState:attributesCopy];
+    [(CMContinuityCaptureStateTransition *)v18 setDstState:stateCopy];
+    [(CMContinuityCaptureStateTransition *)v18 setEvent:eventCopy];
+    [(CMContinuityCaptureStateTransition *)v18 setGuard:guardCopy];
+    [(CMContinuityCaptureStateTransition *)v18 setAction:actionCopy];
     v19 = v18;
   }
 

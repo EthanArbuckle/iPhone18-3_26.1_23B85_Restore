@@ -1,18 +1,18 @@
 @interface BSDescriptionStyle
 + (BSDescriptionStyle)new;
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 + (id)debugStyle;
 + (id)keyValuePairSortedByKeyStyle;
-+ (id)styleForEndTruncatingCollectionsOverItemCount:(int64_t)a3;
++ (id)styleForEndTruncatingCollectionsOverItemCount:(int64_t)count;
 + (id)succinctStyle;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BSDescriptionStyle)init;
 - (id)_init;
-- (id)_initWithCopyOf:(void *)a1;
-- (id)_styleByOverlayingStyle:(id)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithCopyOf:(void *)of;
+- (id)_styleByOverlayingStyle:(id)style;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BSDescriptionStyle
@@ -128,29 +128,29 @@ void __50__BSDescriptionStyle_keyValuePairSortedByKeyStyle__block_invoke()
   *(qword_1ED450030 + 88) = 2;
 }
 
-+ (id)styleForEndTruncatingCollectionsOverItemCount:(int64_t)a3
++ (id)styleForEndTruncatingCollectionsOverItemCount:(int64_t)count
 {
-  v4 = [[BSDescriptionStyle alloc] _init];
-  v4[10] = 2;
-  v4[12] = a3;
+  _init = [[BSDescriptionStyle alloc] _init];
+  _init[10] = 2;
+  _init[12] = count;
 
-  return v4;
+  return _init;
 }
 
-- (id)_styleByOverlayingStyle:(id)a1
+- (id)_styleByOverlayingStyle:(id)style
 {
-  v2 = a1;
-  if (a1)
+  styleCopy = style;
+  if (style)
   {
-    if (a2 == a1 || (*(a1 + 1) ? (v4 = *(a2 + 8) == 0) : (v4 = 0), !v4 && (!*(a1 + 2) || *(a2 + 16)) && (!*(a1 + 3) || *(a2 + 24)) && (!*(a1 + 5) || *(a2 + 40)) && (!*(a1 + 4) || *(a2 + 32)) && (!*(a1 + 6) || *(a2 + 48)) && *(a1 + 7) == *(a2 + 56) && (!*(a1 + 8) || *(a2 + 64)) && *(a1 + 9) == *(a2 + 72) && (!*(a1 + 10) || *(a2 + 80)) && (!*(a1 + 11) || *(a2 + 88)) && (BSEqualSets(*(a1 + 13), *(a2 + 104)) & 1) != 0))
+    if (a2 == style || (*(style + 1) ? (v4 = *(a2 + 8) == 0) : (v4 = 0), !v4 && (!*(style + 2) || *(a2 + 16)) && (!*(style + 3) || *(a2 + 24)) && (!*(style + 5) || *(a2 + 40)) && (!*(style + 4) || *(a2 + 32)) && (!*(style + 6) || *(a2 + 48)) && *(style + 7) == *(a2 + 56) && (!*(style + 8) || *(a2 + 64)) && *(style + 9) == *(a2 + 72) && (!*(style + 10) || *(a2 + 80)) && (!*(style + 11) || *(a2 + 88)) && (BSEqualSets(*(style + 13), *(a2 + 104)) & 1) != 0))
     {
-      v2 = a2;
+      styleCopy = a2;
     }
 
     else
     {
-      v5 = [[BSDescriptionStyle alloc] _initWithCopyOf:v2];
-      v2 = v5;
+      v5 = [[BSDescriptionStyle alloc] _initWithCopyOf:styleCopy];
+      styleCopy = v5;
       if (v5)
       {
         v6 = *(a2 + 8);
@@ -226,51 +226,51 @@ void __50__BSDescriptionStyle_keyValuePairSortedByKeyStyle__block_invoke()
               v17 = [*(a2 + 104) copy];
             }
 
-            v18 = v2[13];
-            v2[13] = v17;
+            v18 = styleCopy[13];
+            styleCopy[13] = v17;
           }
         }
       }
     }
   }
 
-  return v2;
+  return styleCopy;
 }
 
-- (id)_initWithCopyOf:(void *)a1
+- (id)_initWithCopyOf:(void *)of
 {
-  if (!a1)
+  if (!of)
   {
     return 0;
   }
 
-  v3 = [(BSDescriptionStyle *)a1 _init];
-  v4 = v3;
-  if (v3)
+  _init = [(BSDescriptionStyle *)of _init];
+  v4 = _init;
+  if (_init)
   {
-    v3[1] = *(a2 + 8);
-    v3[2] = *(a2 + 16);
-    v3[3] = *(a2 + 24);
-    v3[4] = *(a2 + 32);
-    v3[5] = *(a2 + 40);
-    v3[10] = *(a2 + 80);
-    v3[6] = *(a2 + 48);
-    v3[7] = *(a2 + 56);
-    v3[8] = *(a2 + 64);
-    v3[9] = *(a2 + 72);
-    v3[12] = *(a2 + 96);
-    v3[11] = *(a2 + 88);
-    objc_storeStrong(v3 + 13, *(a2 + 104));
+    _init[1] = *(a2 + 8);
+    _init[2] = *(a2 + 16);
+    _init[3] = *(a2 + 24);
+    _init[4] = *(a2 + 32);
+    _init[5] = *(a2 + 40);
+    _init[10] = *(a2 + 80);
+    _init[6] = *(a2 + 48);
+    _init[7] = *(a2 + 56);
+    _init[8] = *(a2 + 64);
+    _init[9] = *(a2 + 72);
+    _init[12] = *(a2 + 96);
+    _init[11] = *(a2 + 88);
+    objc_storeStrong(_init + 13, *(a2 + 104));
   }
 
   return v4;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v4 = [(BSDescriptionStyle *)[BSMutableDescriptionStyle alloc] _init];
-  (*(a3 + 2))(a3, v4);
-  v5 = [v4 copy];
+  _init = [(BSDescriptionStyle *)[BSMutableDescriptionStyle alloc] _init];
+  (*(build + 2))(build, _init);
+  v5 = [_init copy];
 
   return v5;
 }
@@ -378,7 +378,7 @@ void __50__BSDescriptionStyle_keyValuePairSortedByKeyStyle__block_invoke()
   return v29 ^ (v29 >> 31);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -386,11 +386,11 @@ void __50__BSDescriptionStyle_keyValuePairSortedByKeyStyle__block_invoke()
     return 0;
   }
 
-  v5 = a3;
-  v6 = v5;
-  if (v5[1] == self->_verbosity && v5[2] == self->_debugging && v5[3] == self->_collectionLineBreak && v5[4] == self->_proemItemSeparator && v5[5] == self->_bodyItemSeparator && v5[10] == self->_collectionTruncationStyle && v5[12] == self->_maximumItemCountForTruncation && v5[11] == self->_keyValuePairSorting)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy[1] == self->_verbosity && equalCopy[2] == self->_debugging && equalCopy[3] == self->_collectionLineBreak && equalCopy[4] == self->_proemItemSeparator && equalCopy[5] == self->_bodyItemSeparator && equalCopy[10] == self->_collectionTruncationStyle && equalCopy[12] == self->_maximumItemCountForTruncation && equalCopy[11] == self->_keyValuePairSorting)
   {
-    v7 = BSEqualSets(v5[13], self->_clientInformation);
+    v7 = BSEqualSets(equalCopy[13], self->_clientInformation);
   }
 
   else
@@ -401,22 +401,22 @@ void __50__BSDescriptionStyle_keyValuePairSortedByKeyStyle__block_invoke()
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BSMutableDescriptionStyle alloc];
 
   return [(BSDescriptionStyle *)v4 _initWithCopyOf:?];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51__BSDescriptionStyle_appendDescriptionToFormatter___block_invoke;
   v3[3] = &unk_1E72CACC0;
-  v3[4] = a3;
+  v3[4] = formatter;
   v3[5] = self;
-  [a3 appendProem:0 block:v3];
+  [formatter appendProem:0 block:v3];
 }
 
 void __51__BSDescriptionStyle_appendDescriptionToFormatter___block_invoke(uint64_t a1)

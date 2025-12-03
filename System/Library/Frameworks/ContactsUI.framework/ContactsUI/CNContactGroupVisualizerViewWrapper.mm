@@ -1,14 +1,14 @@
 @interface CNContactGroupVisualizerViewWrapper
 - (_TtC10ContactsUI35CNContactGroupVisualizerViewWrapper)init;
-- (_TtC10ContactsUI35CNContactGroupVisualizerViewWrapper)initWithType:(int64_t)a3 contacts:(id)a4;
-- (_TtC10ContactsUI35CNContactGroupVisualizerViewWrapper)initWithType:(int64_t)a3 contacts:(id)a4 limitContactsCount:(int64_t)a5;
+- (_TtC10ContactsUI35CNContactGroupVisualizerViewWrapper)initWithType:(int64_t)type contacts:(id)contacts;
+- (_TtC10ContactsUI35CNContactGroupVisualizerViewWrapper)initWithType:(int64_t)type contacts:(id)contacts limitContactsCount:(int64_t)count;
 @end
 
 @implementation CNContactGroupVisualizerViewWrapper
 
-- (_TtC10ContactsUI35CNContactGroupVisualizerViewWrapper)initWithType:(int64_t)a3 contacts:(id)a4 limitContactsCount:(int64_t)a5
+- (_TtC10ContactsUI35CNContactGroupVisualizerViewWrapper)initWithType:(int64_t)type contacts:(id)contacts limitContactsCount:(int64_t)count
 {
-  if (a4)
+  if (contacts)
   {
     sub_199A7DDB0();
     v7 = sub_199DFA0CC();
@@ -19,25 +19,25 @@
     v7 = 0;
   }
 
-  return CNContactGroupVisualizerViewWrapper.init(type:contacts:limitContactsCount:)(a3, v7, a5);
+  return CNContactGroupVisualizerViewWrapper.init(type:contacts:limitContactsCount:)(type, v7, count);
 }
 
-- (_TtC10ContactsUI35CNContactGroupVisualizerViewWrapper)initWithType:(int64_t)a3 contacts:(id)a4
+- (_TtC10ContactsUI35CNContactGroupVisualizerViewWrapper)initWithType:(int64_t)type contacts:(id)contacts
 {
-  v4 = a4;
-  if (a4)
+  contactsCopy = contacts;
+  if (contacts)
   {
-    v5 = self;
-    v6 = a3;
+    selfCopy = self;
+    typeCopy = type;
     sub_199A7DDB0();
     sub_199DFA0CC();
-    v4 = sub_199DFA0BC();
+    contactsCopy = sub_199DFA0BC();
 
-    self = v5;
-    a3 = v6;
+    self = selfCopy;
+    type = typeCopy;
   }
 
-  v7 = [(CNContactGroupVisualizerViewWrapper *)self initWithType:a3 contacts:v4 limitContactsCount:-1];
+  v7 = [(CNContactGroupVisualizerViewWrapper *)self initWithType:type contacts:contactsCopy limitContactsCount:-1];
 
   return v7;
 }

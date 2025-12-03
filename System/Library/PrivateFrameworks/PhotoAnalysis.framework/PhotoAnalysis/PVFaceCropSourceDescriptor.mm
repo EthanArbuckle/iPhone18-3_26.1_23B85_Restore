@@ -1,6 +1,6 @@
 @interface PVFaceCropSourceDescriptor
-+ (id)descriptorForFace:(id)a3 image:(id)a4;
-- (PVFaceCropSourceDescriptor)initWithFace:(id)a3 image:(id)a4;
++ (id)descriptorForFace:(id)face image:(id)image;
+- (PVFaceCropSourceDescriptor)initWithFace:(id)face image:(id)image;
 - (id)description;
 @end
 
@@ -17,29 +17,29 @@
   return v5;
 }
 
-- (PVFaceCropSourceDescriptor)initWithFace:(id)a3 image:(id)a4
+- (PVFaceCropSourceDescriptor)initWithFace:(id)face image:(id)image
 {
-  v7 = a3;
-  v8 = a4;
+  faceCopy = face;
+  imageCopy = image;
   v13.receiver = self;
   v13.super_class = PVFaceCropSourceDescriptor;
   v9 = [(PVFaceCropSourceDescriptor *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_face, a3);
-    objc_storeStrong(&v10->_image, a4);
+    objc_storeStrong(&v9->_face, face);
+    objc_storeStrong(&v10->_image, image);
     v11 = v10;
   }
 
   return v10;
 }
 
-+ (id)descriptorForFace:(id)a3 image:(id)a4
++ (id)descriptorForFace:(id)face image:(id)image
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithFace:v7 image:v6];
+  imageCopy = image;
+  faceCopy = face;
+  v8 = [[self alloc] initWithFace:faceCopy image:imageCopy];
 
   return v8;
 }

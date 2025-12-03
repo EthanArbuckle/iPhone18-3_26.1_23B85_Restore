@@ -1,16 +1,16 @@
 @interface LSPlugInQuery
 + (id)pluginQuery;
-+ (id)pluginQueryWithIdentifier:(id)a3;
-+ (id)pluginQueryWithQueryDictionary:(id)a3 applyFilter:(id)a4;
-+ (id)pluginQueryWithURL:(id)a3;
-+ (id)pluginQueryWithUUID:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)pluginQueryWithIdentifier:(id)identifier;
++ (id)pluginQueryWithQueryDictionary:(id)dictionary applyFilter:(id)filter;
++ (id)pluginQueryWithURL:(id)l;
++ (id)pluginQueryWithUUID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
 - (unint64_t)hash;
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4;
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block;
 - (void)_init;
-- (void)encodeWithCoder:(id)a3;
-- (void)sort:(BOOL)a3 pluginIDs:(id)a4 andYield:(id)a5 context:(LSContext *)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)sort:(BOOL)sort pluginIDs:(id)ds andYield:(id)yield context:(LSContext *)context;
 @end
 
 @implementation LSPlugInQuery
@@ -19,74 +19,74 @@
 {
   v4.receiver = self;
   v4.super_class = LSPlugInQuery;
-  v2 = [(_LSQuery *)&v4 _init];
-  if (v2 && [v2 isMemberOfClass:objc_opt_class()])
+  _init = [(_LSQuery *)&v4 _init];
+  if (_init && [_init isMemberOfClass:objc_opt_class()])
   {
     [LSPlugInQuery _init];
   }
 
-  return v2;
+  return _init;
 }
 
 + (id)pluginQuery
 {
-  v2 = [[LSPlugInQueryAll alloc] _init];
+  _init = [[LSPlugInQueryAll alloc] _init];
 
-  return v2;
+  return _init;
 }
 
-+ (id)pluginQueryWithQueryDictionary:(id)a3 applyFilter:(id)a4
++ (id)pluginQueryWithQueryDictionary:(id)dictionary applyFilter:(id)filter
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[LSPlugInQueryWithQueryDictionary alloc] _initWithQueryDictionary:v6 applyFilter:v5];
+  filterCopy = filter;
+  dictionaryCopy = dictionary;
+  v7 = [[LSPlugInQueryWithQueryDictionary alloc] _initWithQueryDictionary:dictionaryCopy applyFilter:filterCopy];
 
   return v7;
 }
 
-+ (id)pluginQueryWithIdentifier:(id)a3
++ (id)pluginQueryWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[LSPlugInQueryWithIdentifier alloc] _initWithIdentifier:v3 inMap:9];
+  identifierCopy = identifier;
+  v4 = [[LSPlugInQueryWithIdentifier alloc] _initWithIdentifier:identifierCopy inMap:9];
 
   return v4;
 }
 
-+ (id)pluginQueryWithUUID:(id)a3
++ (id)pluginQueryWithUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [LSPlugInQueryWithIdentifier alloc];
-  v5 = [v3 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v6 = [(LSPlugInQueryWithIdentifier *)v4 _initWithIdentifier:v5 inMap:11];
+  v6 = [(LSPlugInQueryWithIdentifier *)v4 _initWithIdentifier:uUIDString inMap:11];
 
   return v6;
 }
 
-+ (id)pluginQueryWithURL:(id)a3
++ (id)pluginQueryWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [[LSPlugInQueryWithURL alloc] _initWithURL:v3];
+  lCopy = l;
+  v4 = [[LSPlugInQueryWithURL alloc] _initWithURL:lCopy];
 
   return v4;
 }
 
-- (void)sort:(BOOL)a3 pluginIDs:(id)a4 andYield:(id)a5 context:(LSContext *)a6
+- (void)sort:(BOOL)sort pluginIDs:(id)ds andYield:(id)yield context:(LSContext *)context
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  dsCopy = ds;
+  yieldCopy = yield;
+  v10 = yieldCopy;
+  if (dsCopy)
   {
-    if (v9)
+    if (yieldCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_22:
     [LSPlugInQuery sort:pluginIDs:andYield:context:];
-    if (a6)
+    if (context)
     {
       goto LABEL_4;
     }
@@ -101,7 +101,7 @@ LABEL_22:
   }
 
 LABEL_3:
-  if (a6)
+  if (context)
   {
     goto LABEL_4;
   }
@@ -113,14 +113,14 @@ LABEL_4:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v8;
+  obj = dsCopy;
   v11 = [obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v33;
     v14 = 0x1E6A18000uLL;
-    v30 = a6;
+    contextCopy = context;
     do
     {
       v15 = 0;
@@ -133,8 +133,8 @@ LABEL_4:
 
         v16 = *(*(&v32 + 1) + 8 * v15);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v16 unsignedLongLongValue];
-        v19 = [*(v14 + 616) plugInKitProxyForPlugin:v18 withContext:a6];
+        unsignedLongLongValue = [v16 unsignedLongLongValue];
+        v19 = [*(v14 + 616) plugInKitProxyForPlugin:unsignedLongLongValue withContext:context];
         if (v19)
         {
           if (((v10)[2](v10, v19, 0) & 1) == 0)
@@ -147,16 +147,16 @@ LABEL_4:
 
         else
         {
-          v20 = a6;
+          contextCopy2 = context;
           v21 = v12;
           v22 = v13;
           v23 = v10;
           v24 = v14;
-          v25 = _LSGetPlugin(v20->db, v18);
+          v25 = _LSGetPlugin(contextCopy2->db, unsignedLongLongValue);
           if (v25)
           {
             v26 = *(v25 + 172);
-            [(_LSDatabase *)v20->db store];
+            [(_LSDatabase *)contextCopy2->db store];
             v27 = _CSStringCopyCFString();
           }
 
@@ -171,7 +171,7 @@ LABEL_4:
             *buf = 138412546;
             v37 = v27;
             v38 = 2048;
-            v39 = v18;
+            v39 = unsignedLongLongValue;
             _os_log_error_impl(&dword_18162D000, v28, OS_LOG_TYPE_ERROR, "Failed to create LSPlugInKitProxy object (after sorting) for %@ (%llu)", buf, 0x16u);
           }
 
@@ -179,7 +179,7 @@ LABEL_4:
           v10 = v23;
           v13 = v22;
           v12 = v21;
-          a6 = v30;
+          context = contextCopy;
         }
 
         objc_autoreleasePoolPop(v17);
@@ -198,10 +198,10 @@ LABEL_20:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  blockCopy = block;
   v8 = &v14;
   v14 = 0;
   v15 = &v14;
@@ -210,7 +210,7 @@ LABEL_20:
   v18 = __Block_byref_object_dispose__39;
   v19 = 256;
   v20 = 0;
-  if (v6)
+  if (connectionCopy)
   {
     v9 = _LSDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -225,7 +225,7 @@ LABEL_20:
   if (v10)
   {
     v11 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], v10, 0, "[LSPlugInQuery _enumerateWithXPCConnection:block:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSPlugInQuery.m", 173);
-    v7[2](v7, 0, v11);
+    blockCopy[2](blockCopy, 0, v11);
   }
 
   else
@@ -235,7 +235,7 @@ LABEL_20:
     v13 = *([(_LSDatabase *)v15[6] schema]+ 1588);
     v11 = v12;
     _CSStoreEnumerateUnits();
-    [(LSPlugInQuery *)self sort:0 pluginIDs:v11 andYield:v7 context:v15 + 6];
+    [(LSPlugInQuery *)self sort:0 pluginIDs:v11 andYield:blockCopy context:v15 + 6];
     _LSContextDestroy(v15 + 6);
   }
 
@@ -252,12 +252,12 @@ void __51__LSPlugInQuery__enumerateWithXPCConnection_block___block_invoke(uint64
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = LSPlugInQuery;
-  if ([(_LSQuery *)&v7 isEqual:v4])
+  if ([(_LSQuery *)&v7 isEqual:equalCopy])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -278,7 +278,7 @@ void __51__LSPlugInQuery__enumerateWithXPCConnection_block___block_invoke(uint64
   return [(_LSQuery *)&v3 hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (([__LSDefaultsGetSharedInstance() isServer] & 1) == 0)
   {
@@ -315,7 +315,7 @@ void __51__LSPlugInQuery__enumerateWithXPCConnection_block___block_invoke(uint64
 - (void)_init
 {
   OUTLINED_FUNCTION_14();
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_13();
   [v1 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

@@ -1,24 +1,24 @@
 @interface PlayerMetricsRecorderObjC
-- (void)recordPageMetricsForPreRoll:(id)a3 promoInfo:(id)a4;
-- (void)setPlayerPreRollPageMetrics:(id)a3;
+- (void)recordPageMetricsForPreRoll:(id)roll promoInfo:(id)info;
+- (void)setPlayerPreRollPageMetrics:(id)metrics;
 @end
 
 @implementation PlayerMetricsRecorderObjC
 
-- (void)setPlayerPreRollPageMetrics:(id)a3
+- (void)setPlayerPreRollPageMetrics:(id)metrics
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1E401A868();
   swift_unknownObjectRelease();
 }
 
-- (void)recordPageMetricsForPreRoll:(id)a3 promoInfo:(id)a4
+- (void)recordPageMetricsForPreRoll:(id)roll promoInfo:(id)info
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  sub_1E401AA28(a3, v7);
+  infoCopy = info;
+  selfCopy = self;
+  sub_1E401AA28(roll, infoCopy);
   swift_unknownObjectRelease();
 }
 

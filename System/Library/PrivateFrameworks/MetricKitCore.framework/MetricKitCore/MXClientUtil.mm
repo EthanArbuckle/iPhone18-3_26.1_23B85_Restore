@@ -1,25 +1,25 @@
 @interface MXClientUtil
 - (BOOL)_hasClientInClientDictionary;
 - (BOOL)_isClientAvailableFromPersistence;
-- (BOOL)hasClientForBundleID:(id)a3;
-- (BOOL)isClientAvailableForBundleID:(id)a3;
+- (BOOL)hasClientForBundleID:(id)d;
+- (BOOL)isClientAvailableForBundleID:(id)d;
 - (MXClientUtil)init;
 - (id)_retrieveClientAvailablity;
 - (id)_retrieveClientDictionary;
 - (id)_retrieveTeamIDsDictionary;
 - (id)allClients;
-- (id)teamIDForBundleID:(id)a3;
+- (id)teamIDForBundleID:(id)d;
 - (void)_initClientCollection;
 - (void)_persistClientAvailability;
 - (void)_persistClientDictionary;
 - (void)_persistTeamIDsDictionary;
-- (void)_randomReportClientRegistrationForBundleID:(id)a3;
+- (void)_randomReportClientRegistrationForBundleID:(id)d;
 - (void)_updateClientAsAvailableFromPersistence;
-- (void)_updateClientDictionaryWithBundleID:(id)a3;
-- (void)_updateTeamIDsDictionaryWithTeamID:(id)a3 forBundleID:(id)a4;
-- (void)registerClientForBundleID:(id)a3;
-- (void)removeClientFromPersistenceForBundleID:(id)a3;
-- (void)reportMetricKitUsageForBundleID:(id)a3;
+- (void)_updateClientDictionaryWithBundleID:(id)d;
+- (void)_updateTeamIDsDictionaryWithTeamID:(id)d forBundleID:(id)iD;
+- (void)registerClientForBundleID:(id)d;
+- (void)removeClientFromPersistenceForBundleID:(id)d;
+- (void)reportMetricKitUsageForBundleID:(id)d;
 @end
 
 @implementation MXClientUtil
@@ -31,9 +31,9 @@
   v2 = [(MXClientUtil *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     userDefaults = v2->_userDefaults;
-    v2->_userDefaults = v3;
+    v2->_userDefaults = standardUserDefaults;
 
     v5 = os_log_create("com.apple.metrickit", "client.utility");
     logHandle = v2->_logHandle;
@@ -55,63 +55,63 @@
 - (void)_initClientCollection
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_258D6F000, a2, OS_LOG_TYPE_DEBUG, "Client Dict: %@", &v4, 0xCu);
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerClientForBundleID:(id)a3
+- (void)registerClientForBundleID:(id)d
 {
-  v4 = a3;
-  [(MXClientUtil *)self _randomReportClientRegistrationForBundleID:v4];
-  [(MXClientUtil *)self _updateClientDictionaryWithBundleID:v4];
+  dCopy = d;
+  [(MXClientUtil *)self _randomReportClientRegistrationForBundleID:dCopy];
+  [(MXClientUtil *)self _updateClientDictionaryWithBundleID:dCopy];
 }
 
-- (BOOL)isClientAvailableForBundleID:(id)a3
+- (BOOL)isClientAvailableForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MXClientUtil *)self clientDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  clientDictionary = [(MXClientUtil *)self clientDictionary];
+  v6 = [clientDictionary objectForKeyedSubscript:dCopy];
 
-  LOBYTE(v4) = [v6 BOOLValue];
-  return v4;
+  LOBYTE(dCopy) = [v6 BOOLValue];
+  return dCopy;
 }
 
 - (id)allClients
 {
-  v2 = [(MXClientUtil *)self clientDictionary];
-  v3 = [v2 allKeys];
+  clientDictionary = [(MXClientUtil *)self clientDictionary];
+  allKeys = [clientDictionary allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (id)teamIDForBundleID:(id)a3
+- (id)teamIDForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MXClientUtil *)self clientTeamIDs];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  clientTeamIDs = [(MXClientUtil *)self clientTeamIDs];
+  v6 = [clientTeamIDs objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (BOOL)hasClientForBundleID:(id)a3
+- (BOOL)hasClientForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MXClientUtil *)self clientDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  clientDictionary = [(MXClientUtil *)self clientDictionary];
+  v6 = [clientDictionary objectForKeyedSubscript:dCopy];
 
   return v6 != 0;
 }
 
-- (void)removeClientFromPersistenceForBundleID:(id)a3
+- (void)removeClientFromPersistenceForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MXClientUtil *)self clientDictionary];
-  v6 = [v5 mutableCopy];
+  dCopy = d;
+  clientDictionary = [(MXClientUtil *)self clientDictionary];
+  v6 = [clientDictionary mutableCopy];
 
-  [v6 removeObjectForKey:v4];
+  [v6 removeObjectForKey:dCopy];
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v6];
   [(MXClientUtil *)self setClientDictionary:v7];
 
@@ -119,14 +119,14 @@
   logHandle = self->_logHandle;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    [(MXClientUtil *)v4 removeClientFromPersistenceForBundleID:?];
+    [(MXClientUtil *)dCopy removeClientFromPersistenceForBundleID:?];
   }
 }
 
-- (void)reportMetricKitUsageForBundleID:(id)a3
+- (void)reportMetricKitUsageForBundleID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -210,8 +210,8 @@ id __63__MXClientUtil_reportPayloadDeliveriesSuccessWithSuccessCount___block_inv
 
 - (BOOL)_hasClientInClientDictionary
 {
-  v3 = [(MXClientUtil *)self clientDictionary];
-  v4 = [v3 count];
+  clientDictionary = [(MXClientUtil *)self clientDictionary];
+  v4 = [clientDictionary count];
 
   if (v4)
   {
@@ -227,20 +227,20 @@ id __63__MXClientUtil_reportPayloadDeliveriesSuccessWithSuccessCount___block_inv
 
 - (BOOL)_isClientAvailableFromPersistence
 {
-  v2 = [(MXClientUtil *)self _retrieveClientAvailablity];
-  v3 = [v2 BOOLValue];
+  _retrieveClientAvailablity = [(MXClientUtil *)self _retrieveClientAvailablity];
+  bOOLValue = [_retrieveClientAvailablity BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_updateClientDictionaryWithBundleID:(id)a3
+- (void)_updateClientDictionaryWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MXClientUtil *)self clientDictionary];
-  v8 = [v5 mutableCopy];
+  dCopy = d;
+  clientDictionary = [(MXClientUtil *)self clientDictionary];
+  v8 = [clientDictionary mutableCopy];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v8 setValue:v6 forKey:v4];
+  [v8 setValue:v6 forKey:dCopy];
 
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v8];
   [(MXClientUtil *)self setClientDictionary:v7];
@@ -248,14 +248,14 @@ id __63__MXClientUtil_reportPayloadDeliveriesSuccessWithSuccessCount___block_inv
   [(MXClientUtil *)self _persistClientDictionary];
 }
 
-- (void)_updateTeamIDsDictionaryWithTeamID:(id)a3 forBundleID:(id)a4
+- (void)_updateTeamIDsDictionaryWithTeamID:(id)d forBundleID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MXClientUtil *)self clientTeamIDs];
-  v10 = [v8 mutableCopy];
+  iDCopy = iD;
+  dCopy = d;
+  clientTeamIDs = [(MXClientUtil *)self clientTeamIDs];
+  v10 = [clientTeamIDs mutableCopy];
 
-  [v10 setValue:v7 forKey:v6];
+  [v10 setValue:dCopy forKey:iDCopy];
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v10];
   [(MXClientUtil *)self setClientTeamIDs:v9];
 
@@ -278,9 +278,9 @@ id __63__MXClientUtil_reportPayloadDeliveriesSuccessWithSuccessCount___block_inv
 
 - (void)_persistClientDictionary
 {
-  v2 = [(MXClientUtil *)self clientDictionary];
+  clientDictionary = [(MXClientUtil *)self clientDictionary];
   v3 = *MEMORY[0x277CBF030];
-  CFPreferencesSetValue(@"MXClientDataRetrieved", v2, @"com.apple.metrickitd", @"mobile", *MEMORY[0x277CBF030]);
+  CFPreferencesSetValue(@"MXClientDataRetrieved", clientDictionary, @"com.apple.metrickitd", @"mobile", *MEMORY[0x277CBF030]);
 
   CFPreferencesSynchronize(@"com.apple.metrickitd", @"mobile", v3);
   _CFPreferencesFlushCachesForIdentifier();
@@ -292,16 +292,16 @@ id __63__MXClientUtil_reportPayloadDeliveriesSuccessWithSuccessCount___block_inv
 - (void)_persistTeamIDsDictionary
 {
   userDefaults = self->_userDefaults;
-  v3 = [(MXClientUtil *)self clientTeamIDs];
-  [(NSUserDefaults *)userDefaults setObject:v3 forKey:@"MXClientTeamID"];
+  clientTeamIDs = [(MXClientUtil *)self clientTeamIDs];
+  [(NSUserDefaults *)userDefaults setObject:clientTeamIDs forKey:@"MXClientTeamID"];
 }
 
-- (void)_randomReportClientRegistrationForBundleID:(id)a3
+- (void)_randomReportClientRegistrationForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (arc4random_uniform(0x64u) <= 9)
   {
-    v4 = v3;
+    v4 = dCopy;
     AnalyticsSendEventLazy();
   }
 }

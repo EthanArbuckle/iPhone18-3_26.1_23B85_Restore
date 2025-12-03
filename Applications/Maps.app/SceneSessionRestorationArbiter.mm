@@ -1,22 +1,22 @@
 @interface SceneSessionRestorationArbiter
-+ (id)activityForSceneSession:(id)a3;
++ (id)activityForSceneSession:(id)session;
 @end
 
 @implementation SceneSessionRestorationArbiter
 
-+ (id)activityForSceneSession:(id)a3
++ (id)activityForSceneSession:(id)session
 {
-  v3 = a3;
-  v4 = [v3 stateRestorationActivity];
+  sessionCopy = session;
+  stateRestorationActivity = [sessionCopy stateRestorationActivity];
 
-  if (v4)
+  if (stateRestorationActivity)
   {
-    v5 = [v3 stateRestorationActivity];
+    stateRestorationActivity2 = [sessionCopy stateRestorationActivity];
     v6 = sub_100005610();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v26 = v3;
+      v26 = sessionCopy;
       v7 = "activityForSceneSession: %{private}@ using stateRestorationActivity";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, v7, buf, 0xCu);
@@ -26,24 +26,24 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [v3 role];
-  v9 = [v8 isEqualToString:UIWindowSceneSessionRoleApplication];
+  role = [sessionCopy role];
+  v9 = [role isEqualToString:UIWindowSceneSessionRoleApplication];
 
   if (v9)
   {
-    v5 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.Maps.Restore"];
+    stateRestorationActivity2 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.Maps.Restore"];
     v23 = @"MapsActivity";
     v10 = +[MapsActivity mapsActivityPerDefault];
-    v11 = [v10 data];
-    v24 = v11;
+    data = [v10 data];
+    v24 = data;
     v12 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    [v5 setUserInfo:v12];
+    [stateRestorationActivity2 setUserInfo:v12];
 
     v6 = sub_100005610();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v26 = v3;
+      v26 = sessionCopy;
       v7 = "activityForSceneSession: %{private}@ using default MapsActivity";
       goto LABEL_7;
     }
@@ -53,12 +53,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = [v3 role];
-  if ([v14 isEqualToString:_UIWindowSceneSessionRoleCarPlay])
+  role2 = [sessionCopy role];
+  if ([role2 isEqualToString:_UIWindowSceneSessionRoleCarPlay])
   {
-    v15 = [v3 scene];
+    scene = [sessionCopy scene];
 
-    if (!v15)
+    if (!scene)
     {
       v16 = +[NSUserDefaults standardUserDefaults];
       v17 = [v16 BOOLForKey:@"NavigationUserActivityPendingDeletion"];
@@ -70,17 +70,17 @@ LABEL_8:
 
         if (v6)
         {
-          v5 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.Maps.Restore"];
+          stateRestorationActivity2 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.Maps.Restore"];
           v21 = @"MapsActivity";
           v22 = v6;
           v19 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-          [v5 setUserInfo:v19];
+          [stateRestorationActivity2 setUserInfo:v19];
 
           v20 = sub_100005610();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
             *buf = 138477827;
-            v26 = v3;
+            v26 = sessionCopy;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "activityForSceneSession: %{private}@ restoring CarPlay nav session from user defaults", buf, 0xCu);
           }
 
@@ -94,10 +94,10 @@ LABEL_8:
   {
   }
 
-  v5 = 0;
+  stateRestorationActivity2 = 0;
 LABEL_9:
 
-  return v5;
+  return stateRestorationActivity2;
 }
 
 @end

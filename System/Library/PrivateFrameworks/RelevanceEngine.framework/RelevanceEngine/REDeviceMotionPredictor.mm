@@ -1,8 +1,8 @@
 @interface REDeviceMotionPredictor
 + (id)supportedFeatures;
 - (id)_init;
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6;
-- (void)_updateWithActivity:(id)a3;
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context;
+- (void)_updateWithActivity:(id)activity;
 - (void)pause;
 - (void)resume;
 @end
@@ -13,8 +13,8 @@
 {
   v7.receiver = self;
   v7.super_class = REDeviceMotionPredictor;
-  v2 = [(REPredictor *)&v7 _init];
-  if (v2)
+  _init = [(REPredictor *)&v7 _init];
+  if (_init)
   {
     if (!CoreMotionLibraryCore() || ![getCMMotionActivityManagerClass() isActivityAvailable])
     {
@@ -29,8 +29,8 @@
 
     getCMMotionActivityManagerClass();
     v3 = objc_opt_new();
-    v4 = v2[8];
-    v2[8] = v3;
+    v4 = _init[8];
+    _init[8] = v3;
 
     if ([getCMMotionActivityManagerClass() authorizationStatus] != 3)
     {
@@ -44,7 +44,7 @@ LABEL_9:
     }
   }
 
-  return v2;
+  return _init;
 }
 
 + (id)supportedFeatures
@@ -63,11 +63,11 @@ LABEL_9:
   return v6;
 }
 
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context
 {
-  v7 = a3;
+  featureCopy = feature;
   v8 = +[REFeature isStationaryFeature];
-  v9 = [v7 isEqual:v8];
+  v9 = [featureCopy isEqual:v8];
 
   if (v9)
   {
@@ -78,7 +78,7 @@ LABEL_5:
   }
 
   v11 = +[REFeature deviceMotionFeature];
-  v12 = [v7 isEqual:v11];
+  v12 = [featureCopy isEqual:v11];
 
   if (v12)
   {
@@ -95,17 +95,17 @@ LABEL_7:
 - (void)resume
 {
   v3 = objc_alloc_init(MEMORY[0x277CCABD8]);
-  v4 = [(REPredictor *)self queue];
-  [v3 setUnderlyingQueue:v4];
+  queue = [(REPredictor *)self queue];
+  [v3 setUnderlyingQueue:queue];
 
   objc_initWeak(&location, self);
-  v5 = [(REPredictor *)self queue];
+  queue2 = [(REPredictor *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __33__REDeviceMotionPredictor_resume__block_invoke;
   v11[3] = &unk_2785F9A90;
   objc_copyWeak(&v12, &location);
-  v6 = [REUpNextScheduler schedulerWithQueue:v5 delay:v11 updateBlock:300.0];
+  v6 = [REUpNextScheduler schedulerWithQueue:queue2 delay:v11 updateBlock:300.0];
   scheduler = self->_scheduler;
   self->_scheduler = v6;
 
@@ -151,40 +151,40 @@ void __33__REDeviceMotionPredictor_resume__block_invoke_2(uint64_t a1, void *a2)
   self->_scheduler = 0;
 }
 
-- (void)_updateWithActivity:(id)a3
+- (void)_updateWithActivity:(id)activity
 {
-  v7 = a3;
-  v4 = [(REDeviceMotionPredictor *)self isStationary];
-  -[REDeviceMotionPredictor setStationary:](self, "setStationary:", [v7 stationary]);
-  if ([v7 walking])
+  activityCopy = activity;
+  isStationary = [(REDeviceMotionPredictor *)self isStationary];
+  -[REDeviceMotionPredictor setStationary:](self, "setStationary:", [activityCopy stationary]);
+  if ([activityCopy walking])
   {
     v5 = 1;
   }
 
-  else if ([v7 running])
+  else if ([activityCopy running])
   {
     v5 = 2;
   }
 
-  else if ([v7 automotive])
+  else if ([activityCopy automotive])
   {
     v5 = 4;
   }
 
-  else if ([v7 cycling])
+  else if ([activityCopy cycling])
   {
     v5 = 8;
   }
 
   else
   {
-    [v7 unknown];
+    [activityCopy unknown];
     v5 = 0;
   }
 
-  v6 = [(REDeviceMotionPredictor *)self motionType];
+  motionType = [(REDeviceMotionPredictor *)self motionType];
   [(REDeviceMotionPredictor *)self setMotionType:v5];
-  if (v4 != [v7 stationary] || v6 != v5)
+  if (isStationary != [activityCopy stationary] || motionType != v5)
   {
     [(REPredictor *)self updateObservers];
   }

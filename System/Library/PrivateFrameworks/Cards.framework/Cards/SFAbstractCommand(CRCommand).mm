@@ -6,19 +6,19 @@
 
 - (id)referenceIdentifier
 {
-  if ([a1 type] == 1)
+  if ([self type] == 1)
   {
-    v2 = [a1 value];
-    v3 = [v2 referentialCommand];
-    v4 = [v3 referenceIdentifier];
+    value = [self value];
+    referentialCommand = [value referentialCommand];
+    referenceIdentifier = [referentialCommand referenceIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    referenceIdentifier = 0;
   }
 
-  return v4;
+  return referenceIdentifier;
 }
 
 @end

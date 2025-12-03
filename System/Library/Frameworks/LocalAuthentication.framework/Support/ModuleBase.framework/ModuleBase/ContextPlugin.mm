@@ -1,50 +1,50 @@
 @interface ContextPlugin
-+ (void)pluginWithExternalizedContext:(id)a3 reply:(id)a4;
-- (ContextPlugin)initWithContextOwner:(BOOL)a3 underlyingPtr:(void *)a4 flags:(int64_t)a5 moduleRef:(id)a6;
-- (id)createInternalInfo:(id)a3 skipCallerIdentification:(BOOL)a4 callerBundleId:(id)a5 request:(id)a6 originator:(id)a7;
-- (id)createInternalInfoWithPolicy:(int64_t)a3 policyOptions:(id)a4 request:(id)a5 originator:(id)a6;
-- (void)authMethodWithReply:(id)a3;
-- (void)checkCredentialSatisfied:(int64_t)a3 policy:(int64_t)a4 reply:(id)a5;
-- (void)credentialEncodingSeedWithReply:(id)a3;
-- (void)credentialOfType:(int64_t)a3 originator:(id)a4 reply:(id)a5;
-- (void)credentialsUUIDWithOriginator:(id)a3 reply:(id)a4;
-- (void)evaluateACL:(id)a3 operation:(id)a4 options:(id)a5 uiDelegate:(id)a6 originator:(id)a7 request:(id)a8 reply:(id)a9;
-- (void)evaluatePolicy:(int64_t)a3 options:(id)a4 uiDelegate:(id)a5 originator:(id)a6 request:(id)a7 reply:(id)a8;
-- (void)evaluateRequest:(id)a3 uiDelegate:(id)a4 originator:(id)a5 reply:(id)a6;
-- (void)externalizedContextWithReply:(id)a3;
-- (void)isCredentialSet:(int64_t)a3 originator:(id)a4 reply:(id)a5;
-- (void)optionsForInternalOperation:(int64_t)a3 originator:(id)a4 reply:(id)a5;
-- (void)pauseProcessedEvent:(int64_t)a3 pause:(BOOL)a4 reply:(id)a5;
-- (void)performOp:(id)a3 reply:(id)a4;
-- (void)resetEvent:(int64_t)a3 originator:(id)a4 reply:(id)a5;
-- (void)retryEvent:(int64_t)a3 originator:(id)a4 reply:(id)a5;
-- (void)setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 originator:(id)a6 reply:(id)a7;
-- (void)setCredentialsUUID:(id)a3 originator:(id)a4 reply:(id)a5;
-- (void)setOptions:(id)a3 forInternalOperation:(int64_t)a4 originator:(id)a5 reply:(id)a6;
-- (void)setShowingCoachingHint:(BOOL)a3 event:(int64_t)a4 originator:(id)a5 reply:(id)a6;
-- (void)verifyFileVaultUser:(id)a3 volumeUuid:(id)a4 options:(unint64_t)a5 reply:(id)a6;
++ (void)pluginWithExternalizedContext:(id)context reply:(id)reply;
+- (ContextPlugin)initWithContextOwner:(BOOL)owner underlyingPtr:(void *)ptr flags:(int64_t)flags moduleRef:(id)ref;
+- (id)createInternalInfo:(id)info skipCallerIdentification:(BOOL)identification callerBundleId:(id)id request:(id)request originator:(id)originator;
+- (id)createInternalInfoWithPolicy:(int64_t)policy policyOptions:(id)options request:(id)request originator:(id)originator;
+- (void)authMethodWithReply:(id)reply;
+- (void)checkCredentialSatisfied:(int64_t)satisfied policy:(int64_t)policy reply:(id)reply;
+- (void)credentialEncodingSeedWithReply:(id)reply;
+- (void)credentialOfType:(int64_t)type originator:(id)originator reply:(id)reply;
+- (void)credentialsUUIDWithOriginator:(id)originator reply:(id)reply;
+- (void)evaluateACL:(id)l operation:(id)operation options:(id)options uiDelegate:(id)delegate originator:(id)originator request:(id)request reply:(id)reply;
+- (void)evaluatePolicy:(int64_t)policy options:(id)options uiDelegate:(id)delegate originator:(id)originator request:(id)request reply:(id)reply;
+- (void)evaluateRequest:(id)request uiDelegate:(id)delegate originator:(id)originator reply:(id)reply;
+- (void)externalizedContextWithReply:(id)reply;
+- (void)isCredentialSet:(int64_t)set originator:(id)originator reply:(id)reply;
+- (void)optionsForInternalOperation:(int64_t)operation originator:(id)originator reply:(id)reply;
+- (void)pauseProcessedEvent:(int64_t)event pause:(BOOL)pause reply:(id)reply;
+- (void)performOp:(id)op reply:(id)reply;
+- (void)resetEvent:(int64_t)event originator:(id)originator reply:(id)reply;
+- (void)retryEvent:(int64_t)event originator:(id)originator reply:(id)reply;
+- (void)setCredential:(id)credential type:(int64_t)type options:(id)options originator:(id)originator reply:(id)reply;
+- (void)setCredentialsUUID:(id)d originator:(id)originator reply:(id)reply;
+- (void)setOptions:(id)options forInternalOperation:(int64_t)operation originator:(id)originator reply:(id)reply;
+- (void)setShowingCoachingHint:(BOOL)hint event:(int64_t)event originator:(id)originator reply:(id)reply;
+- (void)verifyFileVaultUser:(id)user volumeUuid:(id)uuid options:(unint64_t)options reply:(id)reply;
 @end
 
 @implementation ContextPlugin
 
-+ (void)pluginWithExternalizedContext:(id)a3 reply:(id)a4
++ (void)pluginWithExternalizedContext:(id)context reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = [Module missingSubclassErrorWithIdentifier:@"moduleWithExternalizedContext"];
-  (*(a4 + 2))(v5, 0, v6);
+  (*(reply + 2))(replyCopy, 0, v6);
 }
 
-- (ContextPlugin)initWithContextOwner:(BOOL)a3 underlyingPtr:(void *)a4 flags:(int64_t)a5 moduleRef:(id)a6
+- (ContextPlugin)initWithContextOwner:(BOOL)owner underlyingPtr:(void *)ptr flags:(int64_t)flags moduleRef:(id)ref
 {
-  v7 = a5;
-  v11 = a6;
+  flagsCopy = flags;
+  refCopy = ref;
   v22.receiver = self;
   v22.super_class = ContextPlugin;
   v12 = [(ContextPlugin *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    v12->_contextOwner = a3;
+    v12->_contextOwner = owner;
     v14 = [objc_alloc(MEMORY[0x277D24018]) initWithExternalizationDelegate:v12];
     cachedExternalizedContext = v13->_cachedExternalizedContext;
     v13->_cachedExternalizedContext = v14;
@@ -56,61 +56,61 @@
     internalOperationOptions = v13->_internalOperationOptions;
     v13->_internalOperationOptions = v17;
 
-    v13->_underlyingPtr = a4;
-    objc_storeStrong(&v13->_module, a6);
+    v13->_underlyingPtr = ptr;
+    objc_storeStrong(&v13->_module, ref);
     v19 = [MEMORY[0x277CBEAA8] now];
     creationTime = v13->_creationTime;
     v13->_creationTime = v19;
 
-    v13->_disposable = (v7 & 1) == 0;
+    v13->_disposable = (flagsCopy & 1) == 0;
   }
 
   return v13;
 }
 
-- (id)createInternalInfoWithPolicy:(int64_t)a3 policyOptions:(id)a4 request:(id)a5 originator:(id)a6
+- (id)createInternalInfoWithPolicy:(int64_t)policy policyOptions:(id)options request:(id)request originator:(id)originator
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = -[ContextPlugin createInternalInfo:skipCallerIdentification:callerBundleId:request:originator:](self, "createInternalInfo:skipCallerIdentification:callerBundleId:request:originator:", v12, [v11 isPurposeApplePay], 0, v11, v10);
+  originatorCopy = originator;
+  requestCopy = request;
+  optionsCopy = options;
+  v13 = -[ContextPlugin createInternalInfo:skipCallerIdentification:callerBundleId:request:originator:](self, "createInternalInfo:skipCallerIdentification:callerBundleId:request:originator:", optionsCopy, [requestCopy isPurposeApplePay], 0, requestCopy, originatorCopy);
 
-  if (a3)
+  if (policy)
   {
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:policy];
     [v13 setObject:v14 forKey:@"Policy"];
   }
 
   return v13;
 }
 
-- (id)createInternalInfo:(id)a3 skipCallerIdentification:(BOOL)a4 callerBundleId:(id)a5 request:(id)a6 originator:(id)a7
+- (id)createInternalInfo:(id)info skipCallerIdentification:(BOOL)identification callerBundleId:(id)id request:(id)request originator:(id)originator
 {
-  v11 = a3;
-  v12 = a5;
-  v56 = a6;
-  v13 = a7;
+  infoCopy = info;
+  idCopy = id;
+  requestCopy = request;
+  originatorCopy = originator;
   v14 = objc_opt_new();
-  v57 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v11];
-  v58 = [v13 processId];
-  v15 = [v11 objectForKeyedSubscript:&unk_284B7A808];
-  if (v15 && [v13 checkEntitlement:@"com.apple.private.LocalAuthentication.CallerPID"])
+  v57 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:infoCopy];
+  processId = [originatorCopy processId];
+  v15 = [infoCopy objectForKeyedSubscript:&unk_284B7A808];
+  if (v15 && [originatorCopy checkEntitlement:@"com.apple.private.LocalAuthentication.CallerPID"])
   {
-    v58 = [v15 intValue];
+    processId = [v15 intValue];
   }
 
   v55 = v15;
-  if (!a4)
+  if (!identification)
   {
-    v16 = [v11 objectForKey:&unk_284B7A820];
-    v17 = [v16 BOOLValue];
+    v16 = [infoCopy objectForKey:&unk_284B7A820];
+    bOOLValue = [v16 BOOLValue];
 
-    if ((v17 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v19 = MEMORY[0x277CD47C8];
-      if (v13)
+      if (originatorCopy)
       {
-        [v13 auditToken];
+        [originatorCopy auditToken];
       }
 
       else
@@ -119,12 +119,12 @@
         v66 = 0u;
       }
 
-      v64 = v12;
-      v20 = [v19 callerDisplayNameWithPid:v58 auditToken:&v65 bundleId:&v64];
+      v64 = idCopy;
+      v20 = [v19 callerDisplayNameWithPid:processId auditToken:&v65 bundleId:&v64];
       v18 = v64;
 
-      v21 = [v11 objectForKeyedSubscript:&unk_284B7A838];
-      if (v21 && [v13 checkEntitlement:@"com.apple.private.LocalAuthentication.CallerName"])
+      v21 = [infoCopy objectForKeyedSubscript:&unk_284B7A838];
+      if (v21 && [originatorCopy checkEntitlement:@"com.apple.private.LocalAuthentication.CallerName"])
       {
         v22 = v21;
 
@@ -168,25 +168,25 @@ LABEL_21:
       }
 
 LABEL_20:
-      v25 = [v56 analyticsData];
-      v26 = [v25 biomeDialogEvent];
-      [v26 setBundleID:v23];
+      analyticsData = [requestCopy analyticsData];
+      biomeDialogEvent = [analyticsData biomeDialogEvent];
+      [biomeDialogEvent setBundleID:v23];
 
       goto LABEL_21;
     }
   }
 
-  v18 = v12;
+  v18 = idCopy;
 LABEL_22:
   v27 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23F70]];
-  v28 = [v11 objectForKeyedSubscript:v27];
+  v28 = [infoCopy objectForKeyedSubscript:v27];
 
-  if (v28 && ([v13 checkEntitlement:@"com.apple.private.LocalAuthentication.CallerAuditToken"] & 1) != 0)
+  if (v28 && ([originatorCopy checkEntitlement:@"com.apple.private.LocalAuthentication.CallerAuditToken"] & 1) != 0)
   {
-    v29 = [v11 objectForKeyedSubscript:&unk_284B7A850];
-    v30 = [v29 integerValue];
+    v29 = [infoCopy objectForKeyedSubscript:&unk_284B7A850];
+    integerValue = [v29 integerValue];
 
-    if ((v30 & 2) != 0)
+    if ((integerValue & 2) != 0)
     {
       v37 = MEMORY[0x277CD47C8];
       v62[0] = MEMORY[0x277D85DD0];
@@ -197,7 +197,7 @@ LABEL_22:
       v63 = v28;
       __95__ContextPlugin_createInternalInfo_skipCallerIdentification_callerBundleId_request_originator___block_invoke(v62, &v65);
       v61 = 0;
-      v31 = [v37 callerDisplayNameWithPid:v58 auditToken:&v65 bundleId:&v61];
+      v31 = [v37 callerDisplayNameWithPid:processId auditToken:&v65 bundleId:&v61];
     }
 
     else
@@ -213,9 +213,9 @@ LABEL_32:
   }
 
   v32 = objc_alloc(MEMORY[0x277D23FF8]);
-  if (v13)
+  if (originatorCopy)
   {
-    [v13 auditToken];
+    [originatorCopy auditToken];
   }
 
   else
@@ -225,13 +225,13 @@ LABEL_32:
   }
 
   v33 = [v32 initWithRawValue:&v65];
-  v34 = [v33 data];
+  data = [v33 data];
 
   v31 = 0;
   v35 = 0;
   v36 = 0;
-  v28 = v34;
-  if (v34)
+  v28 = data;
+  if (data)
   {
     goto LABEL_32;
   }
@@ -243,21 +243,21 @@ LABEL_33:
     [v14 setObject:MEMORY[0x277CBEC38] forKey:@"SiriPlugin"];
   }
 
-  v38 = [v13 checkEntitlement:@"com.apple.private.CoreAuthentication.BackgroundUI"];
-  v39 = [v11 objectForKeyedSubscript:&unk_284B7A820];
-  v40 = [v39 BOOLValue];
+  v38 = [originatorCopy checkEntitlement:@"com.apple.private.CoreAuthentication.BackgroundUI"];
+  v39 = [infoCopy objectForKeyedSubscript:&unk_284B7A820];
+  bOOLValue2 = [v39 BOOLValue];
 
-  if (v40)
+  if (bOOLValue2)
   {
-    v41 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v41 = self;
+    selfCopy2 = self;
     if (v18 && (v38 & 1) == 0)
     {
-      if (([MEMORY[0x277CD4808] callerRunningOnForeground:v18 pid:v58] & 1) == 0)
+      if (([MEMORY[0x277CD4808] callerRunningOnForeground:v18 pid:processId] & 1) == 0)
       {
         if ([MEMORY[0x277CD47C8] callerIsAllowedNonUiExtension:v18])
         {
@@ -274,9 +274,9 @@ LABEL_33:
   }
 
 LABEL_46:
-  if ([(NSMutableDictionary *)v41->_internalOperationOptions count])
+  if ([(NSMutableDictionary *)selfCopy2->_internalOperationOptions count])
   {
-    [v14 setObject:v41->_internalOperationOptions forKey:@"InternalOperationOptions"];
+    [v14 setObject:selfCopy2->_internalOperationOptions forKey:@"InternalOperationOptions"];
   }
 
   [v14 setObject:v57 forKey:@"Options"];
@@ -285,7 +285,7 @@ LABEL_46:
     [v14 setObject:MEMORY[0x277CBEC38] forKey:@"BackgroundUi"];
   }
 
-  if ([v13 cApiOrigin])
+  if ([originatorCopy cApiOrigin])
   {
     [v14 setObject:MEMORY[0x277CBEC38] forKey:@"CApiOrigin"];
   }
@@ -294,12 +294,12 @@ LABEL_46:
   v59[1] = 3221225472;
   v59[2] = __95__ContextPlugin_createInternalInfo_skipCallerIdentification_callerBundleId_request_originator___block_invoke_2;
   v59[3] = &unk_278A645D8;
-  v42 = v56;
+  v42 = requestCopy;
   v60 = v42;
   v43 = __95__ContextPlugin_createInternalInfo_skipCallerIdentification_callerBundleId_request_originator___block_invoke_2(v59);
   [v14 setObject:v43 forKey:@"DTOOptions"];
 
-  v44 = [v11 objectForKeyedSubscript:&unk_284B7A868];
+  v44 = [infoCopy objectForKeyedSubscript:&unk_284B7A868];
   if (v44)
   {
     [v14 setObject:v44 forKey:@"UserId"];
@@ -307,15 +307,15 @@ LABEL_46:
 
   else
   {
-    v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v13, "userId")}];
+    v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(originatorCopy, "userId")}];
     [v14 setObject:v45 forKey:@"UserId"];
   }
 
-  v46 = [MEMORY[0x277CCABB0] numberWithInt:v58];
+  v46 = [MEMORY[0x277CCABB0] numberWithInt:processId];
   [v14 setObject:v46 forKey:@"ProcessId"];
 
-  v47 = [v42 payload];
-  v48 = [v47 mutableCopy];
+  payload = [v42 payload];
+  v48 = [payload mutableCopy];
   v49 = v48;
   if (v48)
   {
@@ -361,118 +361,118 @@ id __95__ContextPlugin_createInternalInfo_skipCallerIdentification_callerBundleI
   return v2;
 }
 
-- (void)evaluateRequest:(id)a3 uiDelegate:(id)a4 originator:(id)a5 reply:(id)a6
+- (void)evaluateRequest:(id)request uiDelegate:(id)delegate originator:(id)originator reply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 acl];
+  replyCopy = reply;
+  originatorCopy = originator;
+  delegateCopy = delegate;
+  requestCopy = request;
+  v14 = [requestCopy acl];
 
   if (v14)
   {
-    v18 = [v13 acl];
-    v15 = [v13 aclOperation];
-    v16 = [v13 options];
-    [(ContextPlugin *)self evaluateACL:v18 operation:v15 options:v16 uiDelegate:v12 originator:v11 request:v13 reply:v10];
+    options2 = [requestCopy acl];
+    aclOperation = [requestCopy aclOperation];
+    options = [requestCopy options];
+    [(ContextPlugin *)self evaluateACL:options2 operation:aclOperation options:options uiDelegate:delegateCopy originator:originatorCopy request:requestCopy reply:replyCopy];
 
-    v10 = v12;
-    v11 = v13;
-    v12 = v16;
-    v13 = v15;
+    replyCopy = delegateCopy;
+    originatorCopy = requestCopy;
+    delegateCopy = options;
+    requestCopy = aclOperation;
   }
 
   else
   {
-    v17 = [v13 policy];
-    v18 = [v13 options];
-    [ContextPlugin evaluatePolicy:"evaluatePolicy:options:uiDelegate:originator:request:reply:" options:v17 uiDelegate:? originator:? request:? reply:?];
+    policy = [requestCopy policy];
+    options2 = [requestCopy options];
+    [ContextPlugin evaluatePolicy:"evaluatePolicy:options:uiDelegate:originator:request:reply:" options:policy uiDelegate:? originator:? request:? reply:?];
   }
 }
 
-- (void)evaluatePolicy:(int64_t)a3 options:(id)a4 uiDelegate:(id)a5 originator:(id)a6 request:(id)a7 reply:(id)a8
+- (void)evaluatePolicy:(int64_t)policy options:(id)options uiDelegate:(id)delegate originator:(id)originator request:(id)request reply:(id)reply
 {
-  v9 = a8;
+  replyCopy = reply;
   v10 = [Module missingSubclassErrorWithIdentifier:@"evaluatePolicy:"];
-  (*(a8 + 2))(v9, 0, v10);
+  (*(reply + 2))(replyCopy, 0, v10);
 }
 
-- (void)evaluateACL:(id)a3 operation:(id)a4 options:(id)a5 uiDelegate:(id)a6 originator:(id)a7 request:(id)a8 reply:(id)a9
+- (void)evaluateACL:(id)l operation:(id)operation options:(id)options uiDelegate:(id)delegate originator:(id)originator request:(id)request reply:(id)reply
 {
-  v9 = a9;
+  replyCopy = reply;
   v10 = [Module missingSubclassErrorWithIdentifier:@"evaluateACL:"];
-  (*(a9 + 2))(v9, 0, v10);
+  (*(reply + 2))(replyCopy, 0, v10);
 }
 
-- (void)isCredentialSet:(int64_t)a3 originator:(id)a4 reply:(id)a5
+- (void)isCredentialSet:(int64_t)set originator:(id)originator reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   v7 = [Module missingSubclassErrorWithIdentifier:@"isCredentialSet:"];
-  (*(a5 + 2))(v6, 0, v7);
+  (*(reply + 2))(replyCopy, 0, v7);
 }
 
-- (void)setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 originator:(id)a6 reply:(id)a7
+- (void)setCredential:(id)credential type:(int64_t)type options:(id)options originator:(id)originator reply:(id)reply
 {
-  v8 = a7;
+  replyCopy = reply;
   v9 = [Module missingSubclassErrorWithIdentifier:@"setCredential:"];
-  (*(a7 + 2))(v8, 0, v9);
+  (*(reply + 2))(replyCopy, 0, v9);
 }
 
-- (void)credentialOfType:(int64_t)a3 originator:(id)a4 reply:(id)a5
+- (void)credentialOfType:(int64_t)type originator:(id)originator reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   v7 = [Module missingSubclassErrorWithIdentifier:@"credentialOfType:"];
-  (*(a5 + 2))(v6, 0, v7);
+  (*(reply + 2))(replyCopy, 0, v7);
 }
 
-- (void)checkCredentialSatisfied:(int64_t)a3 policy:(int64_t)a4 reply:(id)a5
+- (void)checkCredentialSatisfied:(int64_t)satisfied policy:(int64_t)policy reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   v7 = [Module missingSubclassErrorWithIdentifier:@"checkCredentialSatisfied:"];
-  (*(a5 + 2))(v6, 0, v7);
+  (*(reply + 2))(replyCopy, 0, v7);
 }
 
-- (void)credentialsUUIDWithOriginator:(id)a3 reply:(id)a4
+- (void)credentialsUUIDWithOriginator:(id)originator reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = [Module missingSubclassErrorWithIdentifier:@"credentialsUUID"];
-  (*(a4 + 2))(v5, 0, v6);
+  (*(reply + 2))(replyCopy, 0, v6);
 }
 
-- (void)setCredentialsUUID:(id)a3 originator:(id)a4 reply:(id)a5
+- (void)setCredentialsUUID:(id)d originator:(id)originator reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   v7 = [Module missingSubclassErrorWithIdentifier:@"setCredentialsUUID:originator:"];
-  (*(a5 + 2))(v6, 0, v7);
+  (*(reply + 2))(replyCopy, 0, v7);
 }
 
-- (void)credentialEncodingSeedWithReply:(id)a3
+- (void)credentialEncodingSeedWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = [Module missingSubclassErrorWithIdentifier:@"credentialEncodingSeedWithReply:"];
-  (*(a3 + 2))(v4, 0, v5);
+  (*(reply + 2))(replyCopy, 0, v5);
 }
 
-- (void)optionsForInternalOperation:(int64_t)a3 originator:(id)a4 reply:(id)a5
+- (void)optionsForInternalOperation:(int64_t)operation originator:(id)originator reply:(id)reply
 {
   internalOperationOptions = self->_internalOperationOptions;
   v8 = MEMORY[0x277CCABB0];
-  v9 = a5;
-  v11 = [v8 numberWithInteger:a3];
+  replyCopy = reply;
+  v11 = [v8 numberWithInteger:operation];
   v10 = [(NSMutableDictionary *)internalOperationOptions objectForKeyedSubscript:v11];
-  (*(a5 + 2))(v9, v10, 0);
+  (*(reply + 2))(replyCopy, v10, 0);
 }
 
-- (void)setOptions:(id)a3 forInternalOperation:(int64_t)a4 originator:(id)a5 reply:(id)a6
+- (void)setOptions:(id)options forInternalOperation:(int64_t)operation originator:(id)originator reply:(id)reply
 {
-  v13 = a3;
+  optionsCopy = options;
   internalOperationOptions = self->_internalOperationOptions;
   v10 = MEMORY[0x277CCABB0];
-  v11 = a6;
-  v12 = [v10 numberWithInteger:a4];
-  if (v13)
+  replyCopy = reply;
+  v12 = [v10 numberWithInteger:operation];
+  if (optionsCopy)
   {
-    [(NSMutableDictionary *)internalOperationOptions setObject:v13 forKey:v12];
+    [(NSMutableDictionary *)internalOperationOptions setObject:optionsCopy forKey:v12];
   }
 
   else
@@ -480,63 +480,63 @@ id __95__ContextPlugin_createInternalInfo_skipCallerIdentification_callerBundleI
     [(NSMutableDictionary *)internalOperationOptions removeObjectForKey:v12];
   }
 
-  v11[2](v11, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 }
 
-- (void)resetEvent:(int64_t)a3 originator:(id)a4 reply:(id)a5
+- (void)resetEvent:(int64_t)event originator:(id)originator reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   v7 = [Module missingSubclassErrorWithIdentifier:@"resetEvent:originator:"];
-  (*(a5 + 2))(v6, 0, v7);
+  (*(reply + 2))(replyCopy, 0, v7);
 }
 
-- (void)retryEvent:(int64_t)a3 originator:(id)a4 reply:(id)a5
+- (void)retryEvent:(int64_t)event originator:(id)originator reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   v7 = [Module missingSubclassErrorWithIdentifier:@"retryEvent:originator:"];
-  (*(a5 + 2))(v6, 0, v7);
+  (*(reply + 2))(replyCopy, 0, v7);
 }
 
-- (void)pauseProcessedEvent:(int64_t)a3 pause:(BOOL)a4 reply:(id)a5
+- (void)pauseProcessedEvent:(int64_t)event pause:(BOOL)pause reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   v7 = [Module missingSubclassErrorWithIdentifier:@"pauseProcessedEvent:"];
-  (*(a5 + 2))(v6, 0, v7);
+  (*(reply + 2))(replyCopy, 0, v7);
 }
 
-- (void)setShowingCoachingHint:(BOOL)a3 event:(int64_t)a4 originator:(id)a5 reply:(id)a6
+- (void)setShowingCoachingHint:(BOOL)hint event:(int64_t)event originator:(id)originator reply:(id)reply
 {
-  v7 = a6;
+  replyCopy = reply;
   v8 = [Module missingSubclassErrorWithIdentifier:@"setShowingCoachingHint"];
-  (*(a6 + 2))(v7, 0, v8);
+  (*(reply + 2))(replyCopy, 0, v8);
 }
 
-- (void)verifyFileVaultUser:(id)a3 volumeUuid:(id)a4 options:(unint64_t)a5 reply:(id)a6
+- (void)verifyFileVaultUser:(id)user volumeUuid:(id)uuid options:(unint64_t)options reply:(id)reply
 {
-  v7 = a6;
+  replyCopy = reply;
   v8 = [Module missingSubclassErrorWithIdentifier:@"verifyFileVaultUser"];
-  (*(a6 + 2))(v7, 0, v8);
+  (*(reply + 2))(replyCopy, 0, v8);
 }
 
-- (void)performOp:(id)a3 reply:(id)a4
+- (void)performOp:(id)op reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = [Module missingSubclassErrorWithIdentifier:@"performOp:"];
-  (*(a4 + 2))(v5, 0, v6);
+  (*(reply + 2))(replyCopy, 0, v6);
 }
 
-- (void)externalizedContextWithReply:(id)a3
+- (void)externalizedContextWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = [Module missingSubclassErrorWithIdentifier:@"externalizedContextWithReply:"];
-  (*(a3 + 2))(v4, 0, v5);
+  (*(reply + 2))(replyCopy, 0, v5);
 }
 
-- (void)authMethodWithReply:(id)a3
+- (void)authMethodWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = [Module missingSubclassErrorWithIdentifier:@"authMethodWithReply:"];
-  (*(a3 + 2))(v4, 0, v5);
+  (*(reply + 2))(replyCopy, 0, v5);
 }
 
 @end

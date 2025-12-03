@@ -1,32 +1,32 @@
 @interface BuddyMigrationSourceErrorController
-- (BuddyMigrationSourceErrorController)initWithError:(id)a3;
+- (BuddyMigrationSourceErrorController)initWithError:(id)error;
 - (id)initForInsufficientSpace;
-- (void)continueTapped:(id)a3;
+- (void)continueTapped:(id)tapped;
 - (void)loadView;
 @end
 
 @implementation BuddyMigrationSourceErrorController
 
-- (BuddyMigrationSourceErrorController)initWithError:(id)a3
+- (BuddyMigrationSourceErrorController)initWithError:(id)error
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, error);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = BuddyMigrationSourceErrorController;
-  v8 = [(BuddyMigrationBaseErrorController *)&v6 initWithError:location[0]];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(BuddyMigrationBaseErrorController *)&v6 initWithError:location[0]];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    *(v8 + 24) = 1;
+    *(selfCopy + 24) = 1;
   }
 
-  v4 = v8;
+  v4 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v4;
 }
 
@@ -50,42 +50,42 @@
 
 - (void)loadView
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11.receiver = self;
   v11.super_class = BuddyMigrationSourceErrorController;
   [(BuddyMigrationSourceErrorController *)&v11 loadView];
-  v2 = [(BuddyMigrationSourceErrorController *)v13 headerView];
-  v3 = [(BuddyMigrationBaseErrorController *)v13 error];
-  v4 = [BuddyMigrationError titleForError:v3];
-  [v2 setTitle:v4];
+  headerView = [(BuddyMigrationSourceErrorController *)selfCopy headerView];
+  error = [(BuddyMigrationBaseErrorController *)selfCopy error];
+  v4 = [BuddyMigrationError titleForError:error];
+  [headerView setTitle:v4];
 
-  v5 = [(BuddyMigrationSourceErrorController *)v13 headerView];
-  v6 = [(BuddyMigrationBaseErrorController *)v13 error];
-  v7 = [BuddyMigrationError detailTextForErrorOnSource:v6];
-  [v5 setDetailText:v7];
+  headerView2 = [(BuddyMigrationSourceErrorController *)selfCopy headerView];
+  error2 = [(BuddyMigrationBaseErrorController *)selfCopy error];
+  v7 = [BuddyMigrationError detailTextForErrorOnSource:error2];
+  [headerView2 setDetailText:v7];
 
-  if ([(BuddyMigrationSourceErrorController *)v13 allowInteraction])
+  if ([(BuddyMigrationSourceErrorController *)selfCopy allowInteraction])
   {
-    v8 = v13;
+    v8 = selfCopy;
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [(NSBundle *)v9 localizedStringForKey:@"CONTINUE" value:&stru_10032F900 table:@"Migration"];
     [(BuddyWelcomeController *)v8 addBoldButton:v10 action:"continueTapped:"];
   }
 }
 
-- (void)continueTapped:(id)a3
+- (void)continueTapped:(id)tapped
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMigrationSourceErrorController *)v7 miscState];
-  v4 = [(BuddyMiscState *)v3 migrationLockscreenController];
-  [(BuddyMigrationLockscreenController *)v4 deactivate];
+  objc_storeStrong(location, tapped);
+  miscState = [(BuddyMigrationSourceErrorController *)selfCopy miscState];
+  migrationLockscreenController = [(BuddyMiscState *)miscState migrationLockscreenController];
+  [(BuddyMigrationLockscreenController *)migrationLockscreenController deactivate];
 
-  v5 = [(BuddyWelcomeController *)v7 delegate];
-  [(BFFFlowItemDelegate *)v5 flowItemDone:v7];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }

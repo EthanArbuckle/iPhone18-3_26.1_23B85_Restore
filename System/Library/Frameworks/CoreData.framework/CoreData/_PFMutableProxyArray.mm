@@ -1,35 +1,35 @@
 @interface _PFMutableProxyArray
-- (_PFMutableProxyArray)initWithPFArray:(id)a3;
-- (_PFMutableProxyArray)initWithPFArray:(id)a3 inRange:(_NSRange)a4;
+- (_PFMutableProxyArray)initWithPFArray:(id)array;
+- (_PFMutableProxyArray)initWithPFArray:(id)array inRange:(_NSRange)range;
 - (id)arrayFromObjectIDs;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)managedObjectIDAtIndex:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)managedObjectIDAtIndex:(unint64_t)index;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newArrayFromObjectIDs;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)subarrayWithRange:(_NSRange)a3;
-- (id)valueForKey:(id)a3;
-- (unint64_t)indexOfManagedObjectForObjectID:(id)a3;
-- (unint64_t)indexOfObject:(id)a3;
-- (unint64_t)indexOfObject:(id)a3 inRange:(_NSRange)a4;
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3;
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3 inRange:(_NSRange)a4;
-- (void)addObject:(id)a3;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)subarrayWithRange:(_NSRange)range;
+- (id)valueForKey:(id)key;
+- (unint64_t)indexOfManagedObjectForObjectID:(id)d;
+- (unint64_t)indexOfObject:(id)object;
+- (unint64_t)indexOfObject:(id)object inRange:(_NSRange)range;
+- (unint64_t)indexOfObjectIdenticalTo:(id)to;
+- (unint64_t)indexOfObjectIdenticalTo:(id)to inRange:(_NSRange)range;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
 @end
 
 @implementation _PFMutableProxyArray
 
 - (id)arrayFromObjectIDs
 {
-  v2 = [(_PFMutableProxyArray *)self newArrayFromObjectIDs];
+  newArrayFromObjectIDs = [(_PFMutableProxyArray *)self newArrayFromObjectIDs];
 
-  return v2;
+  return newArrayFromObjectIDs;
 }
 
 - (id)newArrayFromObjectIDs
@@ -91,16 +91,16 @@ LABEL_13:
   return v9;
 }
 
-- (_PFMutableProxyArray)initWithPFArray:(id)a3 inRange:(_NSRange)a4
+- (_PFMutableProxyArray)initWithPFArray:(id)array inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v10.receiver = self;
   v10.super_class = _PFMutableProxyArray;
   v7 = [(_PFMutableProxyArray *)&v10 init];
   if (v7)
   {
-    v7->_originalArray = a3;
+    v7->_originalArray = array;
     v7->_offset = location;
     v7->_limit = location + length;
     v7->_updatedObjectsArray = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -118,18 +118,18 @@ LABEL_13:
   return v7;
 }
 
-- (_PFMutableProxyArray)initWithPFArray:(id)a3
+- (_PFMutableProxyArray)initWithPFArray:(id)array
 {
-  v5 = [a3 count];
+  v5 = [array count];
 
-  return [(_PFMutableProxyArray *)self initWithPFArray:a3 inRange:0, v5];
+  return [(_PFMutableProxyArray *)self initWithPFArray:array inRange:0, v5];
 }
 
-- (id)subarrayWithRange:(_NSRange)a3
+- (id)subarrayWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [[_PFMutableProxyArray alloc] initWithPFArray:self->_originalArray inRange:a3.location, a3.length];
+  length = range.length;
+  location = range.location;
+  v6 = [[_PFMutableProxyArray alloc] initWithPFArray:self->_originalArray inRange:range.location, range.length];
   v6->_offset = self->_offset;
   indicesVeneer = v6->_indicesVeneer;
   v14 = v6;
@@ -164,7 +164,7 @@ LABEL_13:
   [(_PFMutableProxyArray *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = [(_PFMutableProxyArray *)self count];
@@ -221,7 +221,7 @@ LABEL_13:
   return v10;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = [(_PFMutableProxyArray *)self count];
@@ -278,10 +278,10 @@ LABEL_13:
   return v10;
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v18[1] = *MEMORY[0x1E69E9840];
   v8 = [(_PFMutableProxyArray *)self count];
   if (v8 < location + length)
@@ -318,7 +318,7 @@ LABEL_13:
     {
       v14 = [(_PFMutableProxyArray *)self objectAtIndex:location + i];
       *&v12[8 * i] = v14;
-      a3[i] = v14;
+      objects[i] = v14;
     }
 
     v15 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:v12 count:length];
@@ -334,9 +334,9 @@ LABEL_13:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->_indicesVeneer, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->_indicesVeneer, index);
   if ((ValueAtIndex & 0x80000000) != 0)
   {
     updatedObjectsArray = self->_updatedObjectsArray;
@@ -352,14 +352,14 @@ LABEL_13:
   return [updatedObjectsArray objectAtIndex:v6];
 }
 
-- (id)managedObjectIDAtIndex:(unint64_t)a3
+- (id)managedObjectIDAtIndex:(unint64_t)index
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->_indicesVeneer, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->_indicesVeneer, index);
   if ((ValueAtIndex & 0x80000000) != 0)
   {
-    v8 = [(NSMutableArray *)self->_updatedObjectsArray objectAtIndex:ValueAtIndex & 0x7FFFFFFF];
+    0x7FFFFFFF = [(NSMutableArray *)self->_updatedObjectsArray objectAtIndex:ValueAtIndex & 0x7FFFFFFF];
 
-    return [v8 objectID];
+    return [0x7FFFFFFF objectID];
   }
 
   else
@@ -371,33 +371,33 @@ LABEL_13:
   }
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
   v5 = [(_PFMutableProxyArray *)self count];
 
-  return [(_PFMutableProxyArray *)self indexOfObjectIdenticalTo:a3 inRange:0, v5];
+  return [(_PFMutableProxyArray *)self indexOfObjectIdenticalTo:object inRange:0, v5];
 }
 
-- (unint64_t)indexOfObject:(id)a3 inRange:(_NSRange)a4
+- (unint64_t)indexOfObject:(id)object inRange:(_NSRange)range
 {
-  v6 = [(_PFMutableProxyArray *)self count:a3];
+  v6 = [(_PFMutableProxyArray *)self count:object];
 
-  return [(_PFMutableProxyArray *)self indexOfObjectIdenticalTo:a3 inRange:0, v6];
+  return [(_PFMutableProxyArray *)self indexOfObjectIdenticalTo:object inRange:0, v6];
 }
 
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3
+- (unint64_t)indexOfObjectIdenticalTo:(id)to
 {
   v5 = [(_PFMutableProxyArray *)self count];
 
-  return [(_PFMutableProxyArray *)self indexOfObjectIdenticalTo:a3 inRange:0, v5];
+  return [(_PFMutableProxyArray *)self indexOfObjectIdenticalTo:to inRange:0, v5];
 }
 
-- (unint64_t)indexOfObjectIdenticalTo:(id)a3 inRange:(_NSRange)a4
+- (unint64_t)indexOfObjectIdenticalTo:(id)to inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = [a3 objectID];
-  v8 = [v7 methodForSelector:sel_isEqual_];
+  length = range.length;
+  location = range.location;
+  objectID = [to objectID];
+  v8 = [objectID methodForSelector:sel_isEqual_];
   if (location >= location + length)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -407,7 +407,7 @@ LABEL_13:
   while (1)
   {
     v10 = [(_PFMutableProxyArray *)self managedObjectIDAtIndex:location];
-    if (v7 == v10 || (v9(v7, sel_isEqual_, v10) & 1) != 0)
+    if (objectID == v10 || (v9(objectID, sel_isEqual_, v10) & 1) != 0)
     {
       break;
     }
@@ -422,10 +422,10 @@ LABEL_13:
   return location;
 }
 
-- (unint64_t)indexOfManagedObjectForObjectID:(id)a3
+- (unint64_t)indexOfManagedObjectForObjectID:(id)d
 {
   v5 = [(_PFMutableProxyArray *)self count];
-  v6 = [a3 methodForSelector:sel_isEqual_];
+  v6 = [d methodForSelector:sel_isEqual_];
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -436,7 +436,7 @@ LABEL_13:
   while (1)
   {
     v9 = [(_PFMutableProxyArray *)self managedObjectIDAtIndex:v8];
-    if (v9 == a3 || (v7(a3, sel_isEqual_, v9) & 1) != 0)
+    if (v9 == d || (v7(d, sel_isEqual_, v9) & 1) != 0)
     {
       break;
     }
@@ -450,22 +450,22 @@ LABEL_13:
   return v8;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  if (![a3 isEqual:@"objectID"] || (v5 = -[_PFMutableProxyArray arrayFromObjectIDs](self, "arrayFromObjectIDs"), v6 = objc_msgSend(v5, "count"), v6 != -[_PFMutableProxyArray count](self, "count")))
+  if (![key isEqual:@"objectID"] || (v5 = -[_PFMutableProxyArray arrayFromObjectIDs](self, "arrayFromObjectIDs"), v6 = objc_msgSend(v5, "count"), v6 != -[_PFMutableProxyArray count](self, "count")))
   {
     v8.receiver = self;
     v8.super_class = _PFMutableProxyArray;
-    return [(_PFMutableProxyArray *)&v8 valueForKey:a3];
+    return [(_PFMutableProxyArray *)&v8 valueForKey:key];
   }
 
   return v5;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   v5 = [(NSMutableArray *)self->_updatedObjectsArray count];
-  [(NSMutableArray *)self->_updatedObjectsArray addObject:a3];
+  [(NSMutableArray *)self->_updatedObjectsArray addObject:object];
   indicesVeneer = self->_indicesVeneer;
 
   CFArrayAppendValue(indicesVeneer, (v5 & 0x7FFFFFFF | 0x80000000));
@@ -494,19 +494,19 @@ LABEL_13:
   }
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
   v7 = [(NSMutableArray *)self->_updatedObjectsArray count];
-  [(NSMutableArray *)self->_updatedObjectsArray addObject:a3];
+  [(NSMutableArray *)self->_updatedObjectsArray addObject:object];
   indicesVeneer = self->_indicesVeneer;
 
-  CFArrayInsertValueAtIndex(indicesVeneer, a4, (v7 & 0x7FFFFFFF | 0x80000000));
+  CFArrayInsertValueAtIndex(indicesVeneer, index, (v7 & 0x7FFFFFFF | 0x80000000));
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  ValueAtIndex = CFArrayGetValueAtIndex(self->_indicesVeneer, a3);
-  CFArrayRemoveValueAtIndex(self->_indicesVeneer, a3);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->_indicesVeneer, index);
+  CFArrayRemoveValueAtIndex(self->_indicesVeneer, index);
   if ((ValueAtIndex & 0x80000000) != 0)
   {
     [(NSMutableArray *)self->_updatedObjectsArray replaceObjectAtIndex:ValueAtIndex & 0x7FFFFFFF withObject:NSKeyValueCoding_NullValue];
@@ -518,13 +518,13 @@ LABEL_13:
   }
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
   v7 = [(NSMutableArray *)self->_updatedObjectsArray count];
-  [(NSMutableArray *)self->_updatedObjectsArray addObject:a4];
+  [(NSMutableArray *)self->_updatedObjectsArray addObject:object];
   indicesVeneer = self->_indicesVeneer;
 
-  CFArraySetValueAtIndex(indicesVeneer, a3, (v7 & 0x7FFFFFFF | 0x80000000));
+  CFArraySetValueAtIndex(indicesVeneer, index, (v7 & 0x7FFFFFFF | 0x80000000));
 }
 
 @end

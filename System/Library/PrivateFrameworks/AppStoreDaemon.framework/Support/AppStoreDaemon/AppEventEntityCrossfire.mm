@@ -6,7 +6,7 @@
 
 + (id)defaultProperties
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___AppEventEntityCrossfire;
   v2 = objc_msgSendSuper2(&v7, "defaultProperties");
   v3 = [NSMutableArray arrayWithArray:v2];

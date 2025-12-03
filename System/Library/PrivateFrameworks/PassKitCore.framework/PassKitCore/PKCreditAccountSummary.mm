@@ -1,43 +1,43 @@
 @interface PKCreditAccountSummary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)paymentDueDate;
 - (NSDecimalNumber)adjustedBalance;
-- (PKCreditAccountSummary)initWithCoder:(id)a3;
-- (PKCreditAccountSummary)initWithDictionary:(id)a3;
-- (id)accountUserActivityForAccountUserAltDSID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKCreditAccountSummary)initWithCoder:(id)coder;
+- (PKCreditAccountSummary)initWithDictionary:(id)dictionary;
+- (id)accountUserActivityForAccountUserAltDSID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)redeemableRewardsBalanceForUser:(id)a3;
+- (id)redeemableRewardsBalanceForUser:(id)user;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)ingestExtendedAccountDetails:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)ingestExtendedAccountDetails:(id)details;
 @end
 
 @implementation PKCreditAccountSummary
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_creditLimit];
-  [v3 safelyAddObject:self->_availableCredit];
-  [v3 safelyAddObject:self->_currentBalance];
-  [v3 safelyAddObject:self->_adjustedBalance];
-  [v3 safelyAddObject:self->_remainingMinimumPayment];
-  [v3 safelyAddObject:self->_remainingStatementBalance];
-  [v3 safelyAddObject:self->_remainingStatementBalanceForInterestCalculation];
-  [v3 safelyAddObject:self->_lastPaymentDate];
-  [v3 safelyAddObject:self->_balanceSummary];
-  [v3 safelyAddObject:self->_accountUserActivity];
-  [v3 safelyAddObject:self->_mergeSummary];
-  [v3 safelyAddObject:self->_currentStatement];
-  [v3 safelyAddObject:self->_unpostedInterest];
-  [v3 safelyAddObject:self->_unpostedInterestTimestamp];
-  [v3 safelyAddObject:self->_chargeOffPreventionAmount];
-  [v3 safelyAddObject:self->_pastDueAmount];
-  [v3 safelyAddObject:self->_paymentDueDate];
-  [v3 safelyAddObject:self->_remainingMinimumPaymentExcludedFromInterestCalculation];
-  [v3 safelyAddObject:self->_installmentBalance];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_creditLimit];
+  [array safelyAddObject:self->_availableCredit];
+  [array safelyAddObject:self->_currentBalance];
+  [array safelyAddObject:self->_adjustedBalance];
+  [array safelyAddObject:self->_remainingMinimumPayment];
+  [array safelyAddObject:self->_remainingStatementBalance];
+  [array safelyAddObject:self->_remainingStatementBalanceForInterestCalculation];
+  [array safelyAddObject:self->_lastPaymentDate];
+  [array safelyAddObject:self->_balanceSummary];
+  [array safelyAddObject:self->_accountUserActivity];
+  [array safelyAddObject:self->_mergeSummary];
+  [array safelyAddObject:self->_currentStatement];
+  [array safelyAddObject:self->_unpostedInterest];
+  [array safelyAddObject:self->_unpostedInterestTimestamp];
+  [array safelyAddObject:self->_chargeOffPreventionAmount];
+  [array safelyAddObject:self->_pastDueAmount];
+  [array safelyAddObject:self->_paymentDueDate];
+  [array safelyAddObject:self->_remainingMinimumPaymentExcludedFromInterestCalculation];
+  [array safelyAddObject:self->_installmentBalance];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_autoPayEnabled - v4 + 32 * v4;
   v6 = self->_requiresDebtCollectionNotices - v5 + 32 * v5;
   v7 = self->_balanceStatus - v6 + 32 * v6;
@@ -48,56 +48,56 @@
   return v10;
 }
 
-- (PKCreditAccountSummary)initWithDictionary:(id)a3
+- (PKCreditAccountSummary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v61.receiver = self;
   v61.super_class = PKCreditAccountSummary;
   v5 = [(PKCreditAccountSummary *)&v61 init];
   if (v5)
   {
-    v6 = [v4 PKDecimalNumberFromStringForKey:@"creditLimit"];
+    v6 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"creditLimit"];
     creditLimit = v5->_creditLimit;
     v5->_creditLimit = v6;
 
-    v8 = [v4 PKDecimalNumberFromStringForKey:@"availableCredit"];
+    v8 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"availableCredit"];
     availableCredit = v5->_availableCredit;
     v5->_availableCredit = v8;
 
-    v10 = [v4 PKDecimalNumberFromStringForKey:@"currentBalance"];
+    v10 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"currentBalance"];
     currentBalance = v5->_currentBalance;
     v5->_currentBalance = v10;
 
-    v12 = [v4 PKDecimalNumberFromStringForKey:@"adjustedBalance"];
+    v12 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"adjustedBalance"];
     adjustedBalance = v5->_adjustedBalance;
     v5->_adjustedBalance = v12;
 
-    v14 = [v4 PKDecimalNumberFromStringForKey:@"rewardsBalance"];
+    v14 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"rewardsBalance"];
     rewardsBalance = v5->_rewardsBalance;
     v5->_rewardsBalance = v14;
 
-    v16 = [v4 PKDecimalNumberFromStringForKey:@"remainingMinimumPayment"];
+    v16 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"remainingMinimumPayment"];
     remainingMinimumPayment = v5->_remainingMinimumPayment;
     v5->_remainingMinimumPayment = v16;
 
-    v18 = [v4 PKDecimalNumberFromStringForKey:@"remainingStatementBalance"];
+    v18 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"remainingStatementBalance"];
     remainingStatementBalance = v5->_remainingStatementBalance;
     v5->_remainingStatementBalance = v18;
 
-    v20 = [v4 PKDecimalNumberFromStringForKey:@"remainingStatementBalanceForInterestCalculation"];
+    v20 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"remainingStatementBalanceForInterestCalculation"];
     remainingStatementBalanceForInterestCalculation = v5->_remainingStatementBalanceForInterestCalculation;
     v5->_remainingStatementBalanceForInterestCalculation = v20;
 
-    v5->_autoPayEnabled = [v4 PKBoolForKey:@"autopayStatus"];
-    v5->_requiresDebtCollectionNotices = [v4 PKBoolForKey:@"requiresDebtCollectionNotices"];
-    v22 = [v4 PKStringForKey:@"balanceStatus"];
-    v23 = [v22 lowercaseString];
-    if ([v23 isEqualToString:@"current"])
+    v5->_autoPayEnabled = [dictionaryCopy PKBoolForKey:@"autopayStatus"];
+    v5->_requiresDebtCollectionNotices = [dictionaryCopy PKBoolForKey:@"requiresDebtCollectionNotices"];
+    v22 = [dictionaryCopy PKStringForKey:@"balanceStatus"];
+    lowercaseString = [v22 lowercaseString];
+    if ([lowercaseString isEqualToString:@"current"])
     {
       v24 = 1;
     }
 
-    else if ([v23 isEqualToString:@"pastdue"])
+    else if ([lowercaseString isEqualToString:@"pastdue"])
     {
       v24 = 2;
     }
@@ -108,42 +108,42 @@
     }
 
     v5->_balanceStatus = v24;
-    v5->_cyclesPastDue = [v4 PKIntegerForKey:@"cyclesPastDue"];
-    v25 = [v4 PKDecimalNumberFromStringForKey:@"pastDueAmount"];
+    v5->_cyclesPastDue = [dictionaryCopy PKIntegerForKey:@"cyclesPastDue"];
+    v25 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"pastDueAmount"];
     pastDueAmount = v5->_pastDueAmount;
     v5->_pastDueAmount = v25;
 
-    v27 = [v4 PKDateForKey:@"lastPaymentDate"];
+    v27 = [dictionaryCopy PKDateForKey:@"lastPaymentDate"];
     lastPaymentDate = v5->_lastPaymentDate;
     v5->_lastPaymentDate = v27;
 
-    v29 = [v4 PKDateForKey:@"paymentDueDate"];
+    v29 = [dictionaryCopy PKDateForKey:@"paymentDueDate"];
     paymentDueDate = v5->_paymentDueDate;
     v5->_paymentDueDate = v29;
 
-    v31 = [v4 PKDecimalNumberFromStringForKey:@"unpostedInterest"];
+    v31 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"unpostedInterest"];
     unpostedInterest = v5->_unpostedInterest;
     v5->_unpostedInterest = v31;
 
-    v33 = [v4 PKDateForKey:@"unpostedInterestTimestamp"];
+    v33 = [dictionaryCopy PKDateForKey:@"unpostedInterestTimestamp"];
     unpostedInterestTimestamp = v5->_unpostedInterestTimestamp;
     v5->_unpostedInterestTimestamp = v33;
 
-    v5->_inGrace = [v4 PKBoolForKey:@"inGrace"];
-    v35 = [v4 PKDecimalNumberFromStringForKey:@"remainingMinimumPaymentExcludedFromInterestCalculation"];
+    v5->_inGrace = [dictionaryCopy PKBoolForKey:@"inGrace"];
+    v35 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"remainingMinimumPaymentExcludedFromInterestCalculation"];
     remainingMinimumPaymentExcludedFromInterestCalculation = v5->_remainingMinimumPaymentExcludedFromInterestCalculation;
     v5->_remainingMinimumPaymentExcludedFromInterestCalculation = v35;
 
-    v37 = [v4 PKDecimalNumberFromStringForKey:@"installmentBalance"];
+    v37 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"installmentBalance"];
     installmentBalance = v5->_installmentBalance;
     v5->_installmentBalance = v37;
 
-    v5->_recoveryPaymentPlansSupported = [v4 PKBoolForKey:@"recoveryPaymentPlansSupported"];
-    v39 = [v4 objectForKey:@"inGrace"];
+    v5->_recoveryPaymentPlansSupported = [dictionaryCopy PKBoolForKey:@"recoveryPaymentPlansSupported"];
+    v39 = [dictionaryCopy objectForKey:@"inGrace"];
 
     if (v39)
     {
-      v5->_inGrace = [v4 PKBoolForKey:@"inGrace"];
+      v5->_inGrace = [dictionaryCopy PKBoolForKey:@"inGrace"];
     }
 
     else
@@ -151,8 +151,8 @@
       v40 = v5->_unpostedInterest;
       if (v40)
       {
-        v41 = [MEMORY[0x1E696AB90] zero];
-        v5->_inGrace = [(NSDecimalNumber *)v40 compare:v41]!= NSOrderedDescending;
+        zero = [MEMORY[0x1E696AB90] zero];
+        v5->_inGrace = [(NSDecimalNumber *)v40 compare:zero]!= NSOrderedDescending;
       }
 
       else
@@ -161,32 +161,32 @@
       }
     }
 
-    v42 = [v4 PKDecimalNumberFromStringForKey:@"chargeOffPreventionAmount"];
+    v42 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"chargeOffPreventionAmount"];
     chargeOffPreventionAmount = v5->_chargeOffPreventionAmount;
     v5->_chargeOffPreventionAmount = v42;
 
-    v44 = [v4 PKDecimalNumberFromStringForKey:@"pastDueAmount"];
+    v44 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"pastDueAmount"];
     v45 = v5->_pastDueAmount;
     v5->_pastDueAmount = v44;
 
     v46 = [PKCreditAccountBalanceSummary alloc];
-    v47 = [v4 PKDictionaryForKey:@"balanceSummary"];
+    v47 = [dictionaryCopy PKDictionaryForKey:@"balanceSummary"];
     v48 = [(PKCreditAccountBalanceSummary *)v46 initWithDictionary:v47];
     balanceSummary = v5->_balanceSummary;
     v5->_balanceSummary = v48;
 
     v50 = [PKCreditAccountStatement alloc];
-    v51 = [v4 PKDictionaryForKey:@"currentStatement"];
+    v51 = [dictionaryCopy PKDictionaryForKey:@"currentStatement"];
     v52 = [(PKCreditAccountStatement *)v50 initWithDictionary:v51];
     currentStatement = v5->_currentStatement;
     v5->_currentStatement = v52;
 
-    v54 = [v4 PKSetContaining:objc_opt_class() forKey:@"accountUserActivity"];
+    v54 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"accountUserActivity"];
     v55 = [v54 pk_setByApplyingBlock:&__block_literal_global_15];
     accountUserActivity = v5->_accountUserActivity;
     v5->_accountUserActivity = v55;
 
-    v57 = [v4 PKDictionaryForKey:@"mergeSummary"];
+    v57 = [dictionaryCopy PKDictionaryForKey:@"mergeSummary"];
     if (v57)
     {
       v58 = [[PKCreditAccountMergeSummary alloc] initWithDictionary:v57];
@@ -218,12 +218,12 @@ PKCreditAccountUserActivity *__45__PKCreditAccountSummary_initWithDictionary___b
   return v9;
 }
 
-- (void)ingestExtendedAccountDetails:(id)a3
+- (void)ingestExtendedAccountDetails:(id)details
 {
-  v4 = a3;
-  self->_autoPayEnabled = [v4 PKBoolForKey:@"autopayStatus"];
+  detailsCopy = details;
+  self->_autoPayEnabled = [detailsCopy PKBoolForKey:@"autopayStatus"];
   v5 = [PKCreditAccountStatement alloc];
-  v8 = [v4 PKDictionaryForKey:@"currentStatement"];
+  v8 = [detailsCopy PKDictionaryForKey:@"currentStatement"];
 
   v6 = [(PKCreditAccountStatement *)v5 initWithDictionary:v8];
   currentStatement = self->_currentStatement;
@@ -241,11 +241,11 @@ PKCreditAccountUserActivity *__45__PKCreditAccountSummary_initWithDictionary___b
   return adjustedBalance;
 }
 
-- (id)accountUserActivityForAccountUserAltDSID:(id)a3
+- (id)accountUserActivityForAccountUserAltDSID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v19 = 0u;
     v20 = 0u;
@@ -267,10 +267,10 @@ PKCreditAccountUserActivity *__45__PKCreditAccountSummary_initWithDictionary___b
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v10 accountUserAltDSID];
-          v12 = v4;
+          accountUserAltDSID = [v10 accountUserAltDSID];
+          v12 = dCopy;
           v13 = v12;
-          if (v11 == v12)
+          if (accountUserAltDSID == v12)
           {
 
 LABEL_17:
@@ -278,9 +278,9 @@ LABEL_17:
             goto LABEL_19;
           }
 
-          if (v11)
+          if (accountUserAltDSID)
           {
-            v14 = [v11 isEqualToString:v12];
+            v14 = [accountUserAltDSID isEqualToString:v12];
 
             if (v14)
             {
@@ -320,11 +320,11 @@ LABEL_19:
   return v15;
 }
 
-- (id)redeemableRewardsBalanceForUser:(id)a3
+- (id)redeemableRewardsBalanceForUser:(id)user
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 altDSID], v6 = objc_claimAutoreleasedReturnValue(), -[PKCreditAccountSummary accountUserActivityForAccountUserAltDSID:](self, "accountUserActivityForAccountUserAltDSID:", v6), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "rewardsBalance"), v8 = objc_claimAutoreleasedReturnValue(), v7, v6, !v8))
+  userCopy = user;
+  v5 = userCopy;
+  if (!userCopy || ([userCopy altDSID], v6 = objc_claimAutoreleasedReturnValue(), -[PKCreditAccountSummary accountUserActivityForAccountUserAltDSID:](self, "accountUserActivityForAccountUserAltDSID:", v6), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "rewardsBalance"), v8 = objc_claimAutoreleasedReturnValue(), v7, v6, !v8))
   {
     v8 = self->_rewardsBalance;
   }
@@ -332,148 +332,148 @@ LABEL_19:
   return v8;
 }
 
-- (PKCreditAccountSummary)initWithCoder:(id)a3
+- (PKCreditAccountSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v52.receiver = self;
   v52.super_class = PKCreditAccountSummary;
   v5 = [(PKCreditAccountSummary *)&v52 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creditLimit"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creditLimit"];
     creditLimit = v5->_creditLimit;
     v5->_creditLimit = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"availableCredit"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"availableCredit"];
     availableCredit = v5->_availableCredit;
     v5->_availableCredit = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentBalance"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentBalance"];
     currentBalance = v5->_currentBalance;
     v5->_currentBalance = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adjustedBalance"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adjustedBalance"];
     adjustedBalance = v5->_adjustedBalance;
     v5->_adjustedBalance = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsBalance"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsBalance"];
     rewardsBalance = v5->_rewardsBalance;
     v5->_rewardsBalance = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remainingMinimumPayment"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remainingMinimumPayment"];
     remainingMinimumPayment = v5->_remainingMinimumPayment;
     v5->_remainingMinimumPayment = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remainingStatementBalance"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remainingStatementBalance"];
     remainingStatementBalance = v5->_remainingStatementBalance;
     v5->_remainingStatementBalance = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remainingStatementBalanceForInterestCalculation"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remainingStatementBalanceForInterestCalculation"];
     remainingStatementBalanceForInterestCalculation = v5->_remainingStatementBalanceForInterestCalculation;
     v5->_remainingStatementBalanceForInterestCalculation = v20;
 
-    v5->_autoPayEnabled = [v4 decodeBoolForKey:@"autopayStatus"];
-    v5->_requiresDebtCollectionNotices = [v4 decodeBoolForKey:@"requiresDebtCollectionNotices"];
-    v5->_balanceStatus = [v4 decodeIntegerForKey:@"balanceStatus"];
-    v5->_cyclesPastDue = [v4 decodeIntegerForKey:@"cyclesPastDue"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pastDueAmount"];
+    v5->_autoPayEnabled = [coderCopy decodeBoolForKey:@"autopayStatus"];
+    v5->_requiresDebtCollectionNotices = [coderCopy decodeBoolForKey:@"requiresDebtCollectionNotices"];
+    v5->_balanceStatus = [coderCopy decodeIntegerForKey:@"balanceStatus"];
+    v5->_cyclesPastDue = [coderCopy decodeIntegerForKey:@"cyclesPastDue"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pastDueAmount"];
     pastDueAmount = v5->_pastDueAmount;
     v5->_pastDueAmount = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastPaymentDate"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastPaymentDate"];
     lastPaymentDate = v5->_lastPaymentDate;
     v5->_lastPaymentDate = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentDueDate"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentDueDate"];
     paymentDueDate = v5->_paymentDueDate;
     v5->_paymentDueDate = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balanceSummary"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balanceSummary"];
     balanceSummary = v5->_balanceSummary;
     v5->_balanceSummary = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentStatement"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentStatement"];
     currentStatement = v5->_currentStatement;
     v5->_currentStatement = v30;
 
     v32 = MEMORY[0x1E695DFD8];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"accountUserActivity"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"accountUserActivity"];
     accountUserActivity = v5->_accountUserActivity;
     v5->_accountUserActivity = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mergeSummary"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mergeSummary"];
     mergeSummary = v5->_mergeSummary;
     v5->_mergeSummary = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unpostedInterest"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unpostedInterest"];
     unpostedInterest = v5->_unpostedInterest;
     v5->_unpostedInterest = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unpostedInterestTimestamp"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unpostedInterestTimestamp"];
     unpostedInterestTimestamp = v5->_unpostedInterestTimestamp;
     v5->_unpostedInterestTimestamp = v41;
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"chargeOffPreventionAmount"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"chargeOffPreventionAmount"];
     chargeOffPreventionAmount = v5->_chargeOffPreventionAmount;
     v5->_chargeOffPreventionAmount = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pastDueAmount"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pastDueAmount"];
     v46 = v5->_pastDueAmount;
     v5->_pastDueAmount = v45;
 
-    v5->_inGrace = [v4 decodeBoolForKey:@"inGrace"];
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remainingMinimumPaymentExcludedFromInterestCalculation"];
+    v5->_inGrace = [coderCopy decodeBoolForKey:@"inGrace"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remainingMinimumPaymentExcludedFromInterestCalculation"];
     remainingMinimumPaymentExcludedFromInterestCalculation = v5->_remainingMinimumPaymentExcludedFromInterestCalculation;
     v5->_remainingMinimumPaymentExcludedFromInterestCalculation = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentBalance"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentBalance"];
     installmentBalance = v5->_installmentBalance;
     v5->_installmentBalance = v49;
 
-    v5->_recoveryPaymentPlansSupported = [v4 decodeBoolForKey:@"recoveryPaymentPlansSupported"];
+    v5->_recoveryPaymentPlansSupported = [coderCopy decodeBoolForKey:@"recoveryPaymentPlansSupported"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   creditLimit = self->_creditLimit;
-  v5 = a3;
-  [v5 encodeObject:creditLimit forKey:@"creditLimit"];
-  [v5 encodeObject:self->_availableCredit forKey:@"availableCredit"];
-  [v5 encodeObject:self->_currentBalance forKey:@"currentBalance"];
-  [v5 encodeObject:self->_adjustedBalance forKey:@"adjustedBalance"];
-  [v5 encodeObject:self->_rewardsBalance forKey:@"rewardsBalance"];
-  [v5 encodeObject:self->_remainingMinimumPayment forKey:@"remainingMinimumPayment"];
-  [v5 encodeObject:self->_remainingStatementBalance forKey:@"remainingStatementBalance"];
-  [v5 encodeObject:self->_remainingStatementBalanceForInterestCalculation forKey:@"remainingStatementBalanceForInterestCalculation"];
-  [v5 encodeBool:self->_autoPayEnabled forKey:@"autopayStatus"];
-  [v5 encodeBool:self->_requiresDebtCollectionNotices forKey:@"requiresDebtCollectionNotices"];
-  [v5 encodeInteger:self->_balanceStatus forKey:@"balanceStatus"];
-  [v5 encodeInteger:self->_cyclesPastDue forKey:@"cyclesPastDue"];
-  [v5 encodeObject:self->_pastDueAmount forKey:@"pastDueAmount"];
-  [v5 encodeObject:self->_lastPaymentDate forKey:@"lastPaymentDate"];
-  [v5 encodeObject:self->_paymentDueDate forKey:@"paymentDueDate"];
-  [v5 encodeObject:self->_balanceSummary forKey:@"balanceSummary"];
-  [v5 encodeObject:self->_accountUserActivity forKey:@"accountUserActivity"];
-  [v5 encodeObject:self->_mergeSummary forKey:@"mergeSummary"];
-  [v5 encodeObject:self->_currentStatement forKey:@"currentStatement"];
-  [v5 encodeObject:self->_unpostedInterest forKey:@"unpostedInterest"];
-  [v5 encodeObject:self->_unpostedInterestTimestamp forKey:@"unpostedInterestTimestamp"];
-  [v5 encodeObject:self->_chargeOffPreventionAmount forKey:@"chargeOffPreventionAmount"];
-  [v5 encodeObject:self->_pastDueAmount forKey:@"pastDueAmount"];
-  [v5 encodeBool:self->_inGrace forKey:@"inGrace"];
-  [v5 encodeObject:self->_remainingMinimumPaymentExcludedFromInterestCalculation forKey:@"remainingMinimumPaymentExcludedFromInterestCalculation"];
-  [v5 encodeObject:self->_installmentBalance forKey:@"installmentBalance"];
-  [v5 encodeBool:self->_recoveryPaymentPlansSupported forKey:@"recoveryPaymentPlansSupported"];
+  coderCopy = coder;
+  [coderCopy encodeObject:creditLimit forKey:@"creditLimit"];
+  [coderCopy encodeObject:self->_availableCredit forKey:@"availableCredit"];
+  [coderCopy encodeObject:self->_currentBalance forKey:@"currentBalance"];
+  [coderCopy encodeObject:self->_adjustedBalance forKey:@"adjustedBalance"];
+  [coderCopy encodeObject:self->_rewardsBalance forKey:@"rewardsBalance"];
+  [coderCopy encodeObject:self->_remainingMinimumPayment forKey:@"remainingMinimumPayment"];
+  [coderCopy encodeObject:self->_remainingStatementBalance forKey:@"remainingStatementBalance"];
+  [coderCopy encodeObject:self->_remainingStatementBalanceForInterestCalculation forKey:@"remainingStatementBalanceForInterestCalculation"];
+  [coderCopy encodeBool:self->_autoPayEnabled forKey:@"autopayStatus"];
+  [coderCopy encodeBool:self->_requiresDebtCollectionNotices forKey:@"requiresDebtCollectionNotices"];
+  [coderCopy encodeInteger:self->_balanceStatus forKey:@"balanceStatus"];
+  [coderCopy encodeInteger:self->_cyclesPastDue forKey:@"cyclesPastDue"];
+  [coderCopy encodeObject:self->_pastDueAmount forKey:@"pastDueAmount"];
+  [coderCopy encodeObject:self->_lastPaymentDate forKey:@"lastPaymentDate"];
+  [coderCopy encodeObject:self->_paymentDueDate forKey:@"paymentDueDate"];
+  [coderCopy encodeObject:self->_balanceSummary forKey:@"balanceSummary"];
+  [coderCopy encodeObject:self->_accountUserActivity forKey:@"accountUserActivity"];
+  [coderCopy encodeObject:self->_mergeSummary forKey:@"mergeSummary"];
+  [coderCopy encodeObject:self->_currentStatement forKey:@"currentStatement"];
+  [coderCopy encodeObject:self->_unpostedInterest forKey:@"unpostedInterest"];
+  [coderCopy encodeObject:self->_unpostedInterestTimestamp forKey:@"unpostedInterestTimestamp"];
+  [coderCopy encodeObject:self->_chargeOffPreventionAmount forKey:@"chargeOffPreventionAmount"];
+  [coderCopy encodeObject:self->_pastDueAmount forKey:@"pastDueAmount"];
+  [coderCopy encodeBool:self->_inGrace forKey:@"inGrace"];
+  [coderCopy encodeObject:self->_remainingMinimumPaymentExcludedFromInterestCalculation forKey:@"remainingMinimumPaymentExcludedFromInterestCalculation"];
+  [coderCopy encodeObject:self->_installmentBalance forKey:@"installmentBalance"];
+  [coderCopy encodeBool:self->_recoveryPaymentPlansSupported forKey:@"recoveryPaymentPlansSupported"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -481,7 +481,7 @@ LABEL_19:
   }
 
   creditLimit = self->_creditLimit;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (creditLimit && v6)
   {
     if (([(NSDecimalNumber *)creditLimit isEqual:?]& 1) == 0)
@@ -496,7 +496,7 @@ LABEL_19:
   }
 
   availableCredit = self->_availableCredit;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (availableCredit && v8)
   {
     if (([(NSDecimalNumber *)availableCredit isEqual:?]& 1) == 0)
@@ -511,7 +511,7 @@ LABEL_19:
   }
 
   currentBalance = self->_currentBalance;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (currentBalance && v10)
   {
     if (([(NSDecimalNumber *)currentBalance isEqual:?]& 1) == 0)
@@ -526,7 +526,7 @@ LABEL_19:
   }
 
   adjustedBalance = self->_adjustedBalance;
-  v12 = v4[5];
+  v12 = equalCopy[5];
   if (adjustedBalance && v12)
   {
     if (([(NSDecimalNumber *)adjustedBalance isEqual:?]& 1) == 0)
@@ -541,7 +541,7 @@ LABEL_19:
   }
 
   remainingMinimumPayment = self->_remainingMinimumPayment;
-  v14 = v4[9];
+  v14 = equalCopy[9];
   if (remainingMinimumPayment && v14)
   {
     if (([(NSDecimalNumber *)remainingMinimumPayment isEqual:?]& 1) == 0)
@@ -556,7 +556,7 @@ LABEL_19:
   }
 
   remainingStatementBalance = self->_remainingStatementBalance;
-  v16 = v4[7];
+  v16 = equalCopy[7];
   if (remainingStatementBalance && v16)
   {
     if (([(NSDecimalNumber *)remainingStatementBalance isEqual:?]& 1) == 0)
@@ -571,7 +571,7 @@ LABEL_19:
   }
 
   remainingStatementBalanceForInterestCalculation = self->_remainingStatementBalanceForInterestCalculation;
-  v18 = v4[8];
+  v18 = equalCopy[8];
   if (remainingStatementBalanceForInterestCalculation && v18)
   {
     if (([(NSDecimalNumber *)remainingStatementBalanceForInterestCalculation isEqual:?]& 1) == 0)
@@ -586,7 +586,7 @@ LABEL_19:
   }
 
   pastDueAmount = self->_pastDueAmount;
-  v20 = v4[22];
+  v20 = equalCopy[22];
   if (pastDueAmount && v20)
   {
     if (([(NSDecimalNumber *)pastDueAmount isEqual:?]& 1) == 0)
@@ -600,13 +600,13 @@ LABEL_19:
     goto LABEL_107;
   }
 
-  if (self->_autoPayEnabled != *(v4 + 10) || self->_requiresDebtCollectionNotices != *(v4 + 8) || self->_balanceStatus != v4[15] || self->_cyclesPastDue != v4[14] || self->_inGrace != *(v4 + 9))
+  if (self->_autoPayEnabled != *(equalCopy + 10) || self->_requiresDebtCollectionNotices != *(equalCopy + 8) || self->_balanceStatus != equalCopy[15] || self->_cyclesPastDue != equalCopy[14] || self->_inGrace != *(equalCopy + 9))
   {
     goto LABEL_107;
   }
 
   lastPaymentDate = self->_lastPaymentDate;
-  v22 = v4[13];
+  v22 = equalCopy[13];
   if (lastPaymentDate && v22)
   {
     if (([(NSDate *)lastPaymentDate isEqual:?]& 1) == 0)
@@ -621,7 +621,7 @@ LABEL_19:
   }
 
   balanceSummary = self->_balanceSummary;
-  v24 = v4[16];
+  v24 = equalCopy[16];
   if (balanceSummary && v24)
   {
     if (![(PKCreditAccountBalanceSummary *)balanceSummary isEqual:?])
@@ -636,7 +636,7 @@ LABEL_19:
   }
 
   accountUserActivity = self->_accountUserActivity;
-  v26 = v4[17];
+  v26 = equalCopy[17];
   if (accountUserActivity && v26)
   {
     if (([(NSSet *)accountUserActivity isEqual:?]& 1) == 0)
@@ -651,7 +651,7 @@ LABEL_19:
   }
 
   mergeSummary = self->_mergeSummary;
-  v28 = v4[18];
+  v28 = equalCopy[18];
   if (mergeSummary && v28)
   {
     if (![(PKCreditAccountMergeSummary *)mergeSummary isEqual:?])
@@ -666,7 +666,7 @@ LABEL_19:
   }
 
   currentStatement = self->_currentStatement;
-  v30 = v4[23];
+  v30 = equalCopy[23];
   if (currentStatement && v30)
   {
     if (![(PKCreditAccountStatement *)currentStatement isEqual:?])
@@ -681,7 +681,7 @@ LABEL_19:
   }
 
   unpostedInterest = self->_unpostedInterest;
-  v32 = v4[19];
+  v32 = equalCopy[19];
   if (unpostedInterest && v32)
   {
     if (([(NSDecimalNumber *)unpostedInterest isEqual:?]& 1) == 0)
@@ -696,7 +696,7 @@ LABEL_19:
   }
 
   unpostedInterestTimestamp = self->_unpostedInterestTimestamp;
-  v34 = v4[20];
+  v34 = equalCopy[20];
   if (unpostedInterestTimestamp && v34)
   {
     if (([(NSDate *)unpostedInterestTimestamp isEqual:?]& 1) == 0)
@@ -711,7 +711,7 @@ LABEL_19:
   }
 
   chargeOffPreventionAmount = self->_chargeOffPreventionAmount;
-  v36 = v4[21];
+  v36 = equalCopy[21];
   if (chargeOffPreventionAmount && v36)
   {
     if (([(NSDecimalNumber *)chargeOffPreventionAmount isEqual:?]& 1) == 0)
@@ -726,7 +726,7 @@ LABEL_19:
   }
 
   v37 = self->_pastDueAmount;
-  v38 = v4[22];
+  v38 = equalCopy[22];
   if (v37 && v38)
   {
     if (([(NSDecimalNumber *)v37 isEqual:?]& 1) == 0)
@@ -741,7 +741,7 @@ LABEL_19:
   }
 
   remainingMinimumPaymentExcludedFromInterestCalculation = self->_remainingMinimumPaymentExcludedFromInterestCalculation;
-  v40 = v4[10];
+  v40 = equalCopy[10];
   if (remainingMinimumPaymentExcludedFromInterestCalculation && v40)
   {
     if (([(NSDecimalNumber *)remainingMinimumPaymentExcludedFromInterestCalculation isEqual:?]& 1) == 0)
@@ -756,7 +756,7 @@ LABEL_19:
   }
 
   installmentBalance = self->_installmentBalance;
-  v42 = v4[11];
+  v42 = equalCopy[11];
   if (installmentBalance && v42)
   {
     if (([(NSDecimalNumber *)installmentBalance isEqual:?]& 1) == 0)
@@ -771,7 +771,7 @@ LABEL_19:
   }
 
   paymentDueDate = self->_paymentDueDate;
-  v44 = v4[12];
+  v44 = equalCopy[12];
   if (!paymentDueDate || !v44)
   {
     if (paymentDueDate == v44)
@@ -790,7 +790,7 @@ LABEL_107:
   }
 
 LABEL_105:
-  v45 = self->_recoveryPaymentPlansSupported == *(v4 + 11);
+  v45 = self->_recoveryPaymentPlansSupported == *(equalCopy + 11);
 LABEL_108:
 
   return v45;
@@ -799,29 +799,29 @@ LABEL_108:
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(NSDecimalNumber *)self->_creditLimit stringValue];
-  [v3 appendFormat:@"creditLimit: '%@'; ", v4];
+  stringValue = [(NSDecimalNumber *)self->_creditLimit stringValue];
+  [v3 appendFormat:@"creditLimit: '%@'; ", stringValue];
 
-  v5 = [(NSDecimalNumber *)self->_availableCredit stringValue];
-  [v3 appendFormat:@"availableCredit: '%@'; ", v5];
+  stringValue2 = [(NSDecimalNumber *)self->_availableCredit stringValue];
+  [v3 appendFormat:@"availableCredit: '%@'; ", stringValue2];
 
-  v6 = [(NSDecimalNumber *)self->_currentBalance stringValue];
-  [v3 appendFormat:@"currentBalance: '%@'; ", v6];
+  stringValue3 = [(NSDecimalNumber *)self->_currentBalance stringValue];
+  [v3 appendFormat:@"currentBalance: '%@'; ", stringValue3];
 
-  v7 = [(NSDecimalNumber *)self->_rewardsBalance stringValue];
-  [v3 appendFormat:@"rewardsBalance: '%@'; ", v7];
+  stringValue4 = [(NSDecimalNumber *)self->_rewardsBalance stringValue];
+  [v3 appendFormat:@"rewardsBalance: '%@'; ", stringValue4];
 
-  v8 = [(NSDecimalNumber *)self->_remainingMinimumPayment stringValue];
-  [v3 appendFormat:@"remainingMinimumPayment: '%@'; ", v8];
+  stringValue5 = [(NSDecimalNumber *)self->_remainingMinimumPayment stringValue];
+  [v3 appendFormat:@"remainingMinimumPayment: '%@'; ", stringValue5];
 
-  v9 = [(NSDecimalNumber *)self->_remainingStatementBalance stringValue];
-  [v3 appendFormat:@"remainingStatementBalance: '%@'; ", v9];
+  stringValue6 = [(NSDecimalNumber *)self->_remainingStatementBalance stringValue];
+  [v3 appendFormat:@"remainingStatementBalance: '%@'; ", stringValue6];
 
-  v10 = [(NSDecimalNumber *)self->_remainingStatementBalanceForInterestCalculation stringValue];
-  [v3 appendFormat:@"remainingStatementBalanceForInterestCalculation: '%@'; ", v10];
+  stringValue7 = [(NSDecimalNumber *)self->_remainingStatementBalanceForInterestCalculation stringValue];
+  [v3 appendFormat:@"remainingStatementBalanceForInterestCalculation: '%@'; ", stringValue7];
 
-  v11 = [(NSDecimalNumber *)self->_pastDueAmount stringValue];
-  [v3 appendFormat:@"pastDueAmount: '%@'; ", v11];
+  stringValue8 = [(NSDecimalNumber *)self->_pastDueAmount stringValue];
+  [v3 appendFormat:@"pastDueAmount: '%@'; ", stringValue8];
 
   if (self->_autoPayEnabled)
   {
@@ -864,17 +864,17 @@ LABEL_108:
   v17 = [(NSDate *)self->_paymentDueDate description];
   [v3 appendFormat:@"paymentDueDate: '%@'; ", v17];
 
-  v18 = [(NSDecimalNumber *)self->_unpostedInterest stringValue];
-  [v3 appendFormat:@"unpostedInterest: '%@'; ", v18];
+  stringValue9 = [(NSDecimalNumber *)self->_unpostedInterest stringValue];
+  [v3 appendFormat:@"unpostedInterest: '%@'; ", stringValue9];
 
   v19 = [(NSDate *)self->_unpostedInterestTimestamp description];
   [v3 appendFormat:@"unpostedInterestTimestamp: '%@'; ", v19];
 
-  v20 = [(NSDecimalNumber *)self->_chargeOffPreventionAmount stringValue];
-  [v3 appendFormat:@"chargeOffPreventionAmount: '%@'; ", v20];
+  stringValue10 = [(NSDecimalNumber *)self->_chargeOffPreventionAmount stringValue];
+  [v3 appendFormat:@"chargeOffPreventionAmount: '%@'; ", stringValue10];
 
-  v21 = [(NSDecimalNumber *)self->_pastDueAmount stringValue];
-  [v3 appendFormat:@"pastDueAmount: '%@'; ", v21];
+  stringValue11 = [(NSDecimalNumber *)self->_pastDueAmount stringValue];
+  [v3 appendFormat:@"pastDueAmount: '%@'; ", stringValue11];
 
   if (self->_inGrace)
   {
@@ -902,8 +902,8 @@ LABEL_108:
   v27 = [(NSDecimalNumber *)self->_installmentBalance description];
   [v3 appendFormat:@"installmentBalance: '%@'; ", v27];
 
-  v28 = [(PKCreditAccountSummary *)self adjustedBalance];
-  [v3 appendFormat:@"adjustedBalance: '%@'; ", v28];
+  adjustedBalance = [(PKCreditAccountSummary *)self adjustedBalance];
+  [v3 appendFormat:@"adjustedBalance: '%@'; ", adjustedBalance];
 
   if (self->_recoveryPaymentPlansSupported)
   {
@@ -921,38 +921,38 @@ LABEL_108:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKCreditAccountSummary allocWithZone:](PKCreditAccountSummary init];
-  v6 = [(NSDecimalNumber *)self->_creditLimit copyWithZone:a3];
+  v6 = [(NSDecimalNumber *)self->_creditLimit copyWithZone:zone];
   creditLimit = v5->_creditLimit;
   v5->_creditLimit = v6;
 
-  v8 = [(NSDecimalNumber *)self->_availableCredit copyWithZone:a3];
+  v8 = [(NSDecimalNumber *)self->_availableCredit copyWithZone:zone];
   availableCredit = v5->_availableCredit;
   v5->_availableCredit = v8;
 
-  v10 = [(NSDecimalNumber *)self->_currentBalance copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_currentBalance copyWithZone:zone];
   currentBalance = v5->_currentBalance;
   v5->_currentBalance = v10;
 
-  v12 = [(NSDecimalNumber *)self->_adjustedBalance copyWithZone:a3];
+  v12 = [(NSDecimalNumber *)self->_adjustedBalance copyWithZone:zone];
   adjustedBalance = v5->_adjustedBalance;
   v5->_adjustedBalance = v12;
 
-  v14 = [(NSDecimalNumber *)self->_rewardsBalance copyWithZone:a3];
+  v14 = [(NSDecimalNumber *)self->_rewardsBalance copyWithZone:zone];
   rewardsBalance = v5->_rewardsBalance;
   v5->_rewardsBalance = v14;
 
-  v16 = [(NSDecimalNumber *)self->_remainingMinimumPayment copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_remainingMinimumPayment copyWithZone:zone];
   remainingMinimumPayment = v5->_remainingMinimumPayment;
   v5->_remainingMinimumPayment = v16;
 
-  v18 = [(NSDecimalNumber *)self->_remainingStatementBalance copyWithZone:a3];
+  v18 = [(NSDecimalNumber *)self->_remainingStatementBalance copyWithZone:zone];
   remainingStatementBalance = v5->_remainingStatementBalance;
   v5->_remainingStatementBalance = v18;
 
-  v20 = [(NSDecimalNumber *)self->_remainingStatementBalanceForInterestCalculation copyWithZone:a3];
+  v20 = [(NSDecimalNumber *)self->_remainingStatementBalanceForInterestCalculation copyWithZone:zone];
   remainingStatementBalanceForInterestCalculation = v5->_remainingStatementBalanceForInterestCalculation;
   v5->_remainingStatementBalanceForInterestCalculation = v20;
 
@@ -961,52 +961,52 @@ LABEL_108:
   v5->_balanceStatus = self->_balanceStatus;
   v5->_cyclesPastDue = self->_cyclesPastDue;
   objc_storeStrong(&v5->_pastDueAmount, self->_pastDueAmount);
-  v22 = [(NSDate *)self->_lastPaymentDate copyWithZone:a3];
+  v22 = [(NSDate *)self->_lastPaymentDate copyWithZone:zone];
   lastPaymentDate = v5->_lastPaymentDate;
   v5->_lastPaymentDate = v22;
 
-  v24 = [(NSDate *)self->_paymentDueDate copyWithZone:a3];
+  v24 = [(NSDate *)self->_paymentDueDate copyWithZone:zone];
   paymentDueDate = v5->_paymentDueDate;
   v5->_paymentDueDate = v24;
 
-  v26 = [(PKCreditAccountBalanceSummary *)self->_balanceSummary copyWithZone:a3];
+  v26 = [(PKCreditAccountBalanceSummary *)self->_balanceSummary copyWithZone:zone];
   balanceSummary = v5->_balanceSummary;
   v5->_balanceSummary = v26;
 
-  v28 = [(NSSet *)self->_accountUserActivity copyWithZone:a3];
+  v28 = [(NSSet *)self->_accountUserActivity copyWithZone:zone];
   accountUserActivity = v5->_accountUserActivity;
   v5->_accountUserActivity = v28;
 
-  v30 = [(PKCreditAccountMergeSummary *)self->_mergeSummary copyWithZone:a3];
+  v30 = [(PKCreditAccountMergeSummary *)self->_mergeSummary copyWithZone:zone];
   mergeSummary = v5->_mergeSummary;
   v5->_mergeSummary = v30;
 
-  v32 = [(PKCreditAccountStatement *)self->_currentStatement copyWithZone:a3];
+  v32 = [(PKCreditAccountStatement *)self->_currentStatement copyWithZone:zone];
   currentStatement = v5->_currentStatement;
   v5->_currentStatement = v32;
 
-  v34 = [(NSDecimalNumber *)self->_unpostedInterest copyWithZone:a3];
+  v34 = [(NSDecimalNumber *)self->_unpostedInterest copyWithZone:zone];
   unpostedInterest = v5->_unpostedInterest;
   v5->_unpostedInterest = v34;
 
-  v36 = [(NSDate *)self->_unpostedInterestTimestamp copyWithZone:a3];
+  v36 = [(NSDate *)self->_unpostedInterestTimestamp copyWithZone:zone];
   unpostedInterestTimestamp = v5->_unpostedInterestTimestamp;
   v5->_unpostedInterestTimestamp = v36;
 
-  v38 = [(NSDecimalNumber *)self->_chargeOffPreventionAmount copyWithZone:a3];
+  v38 = [(NSDecimalNumber *)self->_chargeOffPreventionAmount copyWithZone:zone];
   chargeOffPreventionAmount = v5->_chargeOffPreventionAmount;
   v5->_chargeOffPreventionAmount = v38;
 
-  v40 = [(NSDecimalNumber *)self->_pastDueAmount copyWithZone:a3];
+  v40 = [(NSDecimalNumber *)self->_pastDueAmount copyWithZone:zone];
   pastDueAmount = v5->_pastDueAmount;
   v5->_pastDueAmount = v40;
 
   v5->_inGrace = self->_inGrace;
-  v42 = [(NSDecimalNumber *)self->_remainingMinimumPaymentExcludedFromInterestCalculation copyWithZone:a3];
+  v42 = [(NSDecimalNumber *)self->_remainingMinimumPaymentExcludedFromInterestCalculation copyWithZone:zone];
   remainingMinimumPaymentExcludedFromInterestCalculation = v5->_remainingMinimumPaymentExcludedFromInterestCalculation;
   v5->_remainingMinimumPaymentExcludedFromInterestCalculation = v42;
 
-  v44 = [(NSDecimalNumber *)self->_installmentBalance copyWithZone:a3];
+  v44 = [(NSDecimalNumber *)self->_installmentBalance copyWithZone:zone];
   installmentBalance = v5->_installmentBalance;
   v5->_installmentBalance = v44;
 

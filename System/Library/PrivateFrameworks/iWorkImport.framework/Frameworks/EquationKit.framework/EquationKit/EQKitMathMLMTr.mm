@@ -1,10 +1,10 @@
 @interface EQKitMathMLMTr
 - (BOOL)isBaseFontNameUsed;
 - (EQKitMathMLMTr)init;
-- (EQKitMathMLMTr)initWithChildren:(id)a3 node:(_xmlNode *)a4;
+- (EQKitMathMLMTr)initWithChildren:(id)children node:(_xmlNode *)node;
 - (NSString)description;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)layoutSchemata;
 - (void)dealloc;
 @end
@@ -15,7 +15,7 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 20;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;
@@ -28,21 +28,21 @@
   return objc_msgSend_initWithChildren_(self, v5, v6, v7);
 }
 
-- (EQKitMathMLMTr)initWithChildren:(id)a3 node:(_xmlNode *)a4
+- (EQKitMathMLMTr)initWithChildren:(id)children node:(_xmlNode *)node
 {
   v21 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = EQKitMathMLMTr;
-  v5 = [(EQKitMathMLMTr *)&v19 init:a3];
+  v5 = [(EQKitMathMLMTr *)&v19 init:children];
   if (v5)
   {
-    v6 = a3;
-    v5->mChildren = v6;
+    childrenCopy = children;
+    v5->mChildren = childrenCopy;
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v15, v20, 16);
+    v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(childrenCopy, v7, &v15, v20, 16);
     if (v8)
     {
       v11 = v8;
@@ -54,14 +54,14 @@
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(childrenCopy);
           }
 
           objc_msgSend_setParent_(*(*(&v15 + 1) + 8 * v13++), v9, v5, v10);
         }
 
         while (v11 != v13);
-        v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v9, &v15, v20, 16);
+        v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(childrenCopy, v9, &v15, v20, 16);
       }
 
       while (v11);
@@ -71,13 +71,13 @@
   return v5;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  objc_msgSend_pushState_(a4, a2, 3, a4);
-  v9 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(a4, v7, a3, v8);
-  objc_msgSend_popState(a4, v10, v11, v12);
+  objc_msgSend_pushState_(parser, a2, 3, parser);
+  v9 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(parser, v7, node, v8);
+  objc_msgSend_popState(parser, v10, v11, v12);
 
-  return MEMORY[0x2821F9670](self, sel_initWithChildren_node_, v9, a3);
+  return MEMORY[0x2821F9670](self, sel_initWithChildren_node_, v9, node);
 }
 
 - (const)mathMLAttributes

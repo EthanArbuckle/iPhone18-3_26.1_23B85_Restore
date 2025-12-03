@@ -1,13 +1,13 @@
 @interface ASViewControllerFactory
-- (id)newNetworkLockoutViewControllerWithSection:(id)a3;
+- (id)newNetworkLockoutViewControllerWithSection:(id)section;
 - (id)newPlaceholderViewController;
 @end
 
 @implementation ASViewControllerFactory
 
-- (id)newNetworkLockoutViewControllerWithSection:(id)a3
+- (id)newNetworkLockoutViewControllerWithSection:(id)section
 {
-  v3 = [objc_alloc(MEMORY[0x277D7FE38]) initWithSection:a3];
+  v3 = [objc_alloc(MEMORY[0x277D7FE38]) initWithSection:section];
   [v3 setLocalizationBundle:{objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class())}];
   return v3;
 }

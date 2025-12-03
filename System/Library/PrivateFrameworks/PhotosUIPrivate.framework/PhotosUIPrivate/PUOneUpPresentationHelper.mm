@@ -1,18 +1,18 @@
 @interface PUOneUpPresentationHelper
-- (BOOL)_enableSpatialPresentation:(id)a3;
-- (BOOL)_handleInteractivePresentationWithBlock:(id)a3;
-- (BOOL)_prepareDismissalForced:(BOOL)a3;
+- (BOOL)_enableSpatialPresentation:(id)presentation;
+- (BOOL)_handleInteractivePresentationWithBlock:(id)block;
+- (BOOL)_prepareDismissalForced:(BOOL)forced;
 - (BOOL)_shouldAutoplayOnNavigation;
-- (BOOL)canPresentOneUpViewControllerAnimated:(BOOL)a3;
-- (BOOL)dismissOneUpViewControllerForced:(BOOL)a3 animated:(BOOL)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)handlePresentingPanGestureRecognizer:(id)a3;
-- (BOOL)handlePresentingPinchGestureRecognizer:(id)a3;
-- (BOOL)isReadyToAdoptTilingView:(id)a3 fromEndPoint:(id)a4;
+- (BOOL)canPresentOneUpViewControllerAnimated:(BOOL)animated;
+- (BOOL)dismissOneUpViewControllerForced:(BOOL)forced animated:(BOOL)animated;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)handlePresentingPanGestureRecognizer:(id)recognizer;
+- (BOOL)handlePresentingPinchGestureRecognizer:(id)recognizer;
+- (BOOL)isReadyToAdoptTilingView:(id)view fromEndPoint:(id)point;
 - (BOOL)pausingPhotoLibraryChanges;
 - (CGAffineTransform)_tilingViewTransitionTransform;
-- (PUOneUpPresentationHelper)initWithBrowsingSessionCreationBlock:(id)a3;
-- (PUOneUpPresentationHelper)initWithPhotosDataSource:(id)a3;
+- (PUOneUpPresentationHelper)initWithBrowsingSessionCreationBlock:(id)block;
+- (PUOneUpPresentationHelper)initWithPhotosDataSource:(id)source;
 - (PUOneUpPresentationHelperAssetDisplayDelegate)assetDisplayDelegate;
 - (PUOneUpPresentationHelperDelegate)delegate;
 - (PUOneUpPresentationHelperTestingDelegate)testingDelegate;
@@ -20,67 +20,67 @@
 - (PXAssetReference)lastViewedAssetReference;
 - (UIViewController)presentingViewController;
 - (UIViewController)topmostPresentedViewController;
-- (double)pinchedTiledTracker:(id)a3 initialAspectRatioForTileWithLayoutInfo:(id)a4;
-- (id)_browsingSessionCreateIfNeeded:(BOOL)a3;
+- (double)pinchedTiledTracker:(id)tracker initialAspectRatioForTileWithLayoutInfo:(id)info;
+- (id)_browsingSessionCreateIfNeeded:(BOOL)needed;
 - (id)_createBrowsingSession;
-- (id)_createOneUpViewControllerWithBrowsingSession:(id)a3 options:(unint64_t)a4 activity:(unint64_t)a5 editActivityCompletion:(id)a6;
+- (id)_createOneUpViewControllerWithBrowsingSession:(id)session options:(unint64_t)options activity:(unint64_t)activity editActivityCompletion:(id)completion;
 - (id)_currentTilingViewControllerTransition;
 - (id)_newCollapsedLayout;
 - (id)_transitionHostingView;
-- (id)pinchedTiledTracker:(id)a3 finalLayoutInfoForTileWithLayoutInfo:(id)a4;
-- (id)previewPresentationTransitioningDelegateForPosition:(CGPoint)a3 inSourceView:(id)a4;
-- (id)previewViewControllerForItemAtIndexPath:(id)a3 allowingActions:(BOOL)a4;
-- (id)tilingView:(id)a3 tileControllerWithIndexPath:(id)a4 kind:(id)a5 dataSource:(id)a6;
-- (id)tilingView:(id)a3 tileTransitionCoordinatorForTransitionFromLayout:(id)a4 toLayout:(id)a5 withContext:(id)a6;
-- (id)tilingViewControllerTransition:(id)a3 tilingViewToTransferToEndPoint:(id)a4;
-- (id)tilingViewControllerTransitionTilingViewHostView:(id)a3;
+- (id)pinchedTiledTracker:(id)tracker finalLayoutInfoForTileWithLayoutInfo:(id)info;
+- (id)previewPresentationTransitioningDelegateForPosition:(CGPoint)position inSourceView:(id)view;
+- (id)previewViewControllerForItemAtIndexPath:(id)path allowingActions:(BOOL)actions;
+- (id)tilingView:(id)view tileControllerWithIndexPath:(id)path kind:(id)kind dataSource:(id)source;
+- (id)tilingView:(id)view tileTransitionCoordinatorForTransitionFromLayout:(id)layout toLayout:(id)toLayout withContext:(id)context;
+- (id)tilingViewControllerTransition:(id)transition tilingViewToTransferToEndPoint:(id)point;
+- (id)tilingViewControllerTransitionTilingViewHostView:(id)view;
 - (int64_t)_currentNavigationControllerOperation;
-- (int64_t)tilingViewControllerTransitionPreferredBarStyle:(id)a3;
-- (void)_cleanUpAfterTilingViewTransitionAnimated:(BOOL)a3 transitionAborted:(BOOL)a4;
+- (int64_t)tilingViewControllerTransitionPreferredBarStyle:(id)style;
+- (void)_cleanUpAfterTilingViewTransitionAnimated:(BOOL)animated transitionAborted:(BOOL)aborted;
 - (void)_cleanupOneUpViewControllerForDismissalIfNeeded;
-- (void)_configureNavigationController:(id)a3;
+- (void)_configureNavigationController:(id)controller;
 - (void)_didFinishTransitioningFromOneUp;
 - (void)_didFinishTransitioningToOneUp;
-- (void)_disappearingTilingView:(id)a3 animationCompleted:(BOOL)a4;
+- (void)_disappearingTilingView:(id)view animationCompleted:(BOOL)completed;
 - (void)_ensureRegistrationWithPresentingViewController;
-- (void)_handleTap:(id)a3;
+- (void)_handleTap:(id)tap;
 - (void)_handleTileControllerAnimationEnd;
 - (void)_invalidateAssetReferencesDisplayedInTilingView;
-- (void)_navigateToAssetAtIndexPath:(id)a3 inBrowsingSession:(id)a4 isNavigationSourceWidget:(BOOL)a5;
-- (void)_presentOneUpViewController:(id)a3 animated:(BOOL)a4 interactiveMode:(int64_t)a5 completion:(id)a6;
-- (void)_presentationEndDidTimeOut:(int64_t)a3;
-- (void)_setAssetReferencesDisplayedInTilingView:(id)a3;
-- (void)_setEndingPresentation:(BOOL)a3;
-- (void)_setOneUpViewController:(id)a3;
-- (void)_setShouldPauseLibraryChanges:(BOOL)a3;
-- (void)_setState:(int64_t)a3;
-- (void)_setTilingView:(id)a3;
-- (void)_setTransitioningTilingView:(id)a3;
-- (void)_throwOnSetStateFromIdleToTransitioningToOneUp:(int64_t)a3;
-- (void)_throwOnSetStateFromTransitionedToOneUpToPreparingTransitionToOneUp:(int64_t)a3;
+- (void)_navigateToAssetAtIndexPath:(id)path inBrowsingSession:(id)session isNavigationSourceWidget:(BOOL)widget;
+- (void)_presentOneUpViewController:(id)controller animated:(BOOL)animated interactiveMode:(int64_t)mode completion:(id)completion;
+- (void)_presentationEndDidTimeOut:(int64_t)out;
+- (void)_setAssetReferencesDisplayedInTilingView:(id)view;
+- (void)_setEndingPresentation:(BOOL)presentation;
+- (void)_setOneUpViewController:(id)controller;
+- (void)_setShouldPauseLibraryChanges:(BOOL)changes;
+- (void)_setState:(int64_t)state;
+- (void)_setTilingView:(id)view;
+- (void)_setTransitioningTilingView:(id)view;
+- (void)_throwOnSetStateFromIdleToTransitioningToOneUp:(int64_t)up;
+- (void)_throwOnSetStateFromTransitionedToOneUpToPreparingTransitionToOneUp:(int64_t)up;
 - (void)_updateAssetReferencesDisplayedInTilingView;
 - (void)_updateLayout;
-- (void)_updateLayout:(id)a3;
+- (void)_updateLayout:(id)layout;
 - (void)_updatePresentationInfoIfNeeded;
 - (void)_updateTapGestureRecognizer;
-- (void)commitPreviewViewController:(id)a3 completion:(id)a4;
+- (void)commitPreviewViewController:(id)controller completion:(id)completion;
 - (void)dealloc;
-- (void)didDismissPreviewViewController:(id)a3 committing:(BOOL)a4;
-- (void)interactiveTileTracker:(id)a3 didStopTrackingTileController:(id)a4;
-- (void)interactiveTileTracker:(id)a3 willStartTrackingTileController:(id)a4;
-- (void)photosPreviewPresentationController:(id)a3 willPresentPreviewViewController:(id)a4;
-- (void)presentOneUpViewControllerAnimated:(BOOL)a3 interactiveMode:(int64_t)a4 activity:(unint64_t)a5 editActivityCompletion:(id)a6;
-- (void)presentOneUpViewControllerFromAssetAtIndexPath:(id)a3 animated:(BOOL)a4 interactiveMode:(int64_t)a5 activity:(unint64_t)a6 isNavigationSourceWidget:(BOOL)a7 editActivityCompletion:(id)a8;
-- (void)presentingViewControllerViewDidDisappear:(BOOL)a3;
-- (void)presentingViewControllerViewWillAppear:(BOOL)a3;
-- (void)presentingViewControllerViewWillDisappear:(BOOL)a3;
-- (void)setAssetDisplayDelegate:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPhotosDataSource:(id)a3;
-- (void)tilingView:(id)a3 didStopUsingTileController:(id)a4;
-- (void)tilingViewControllerTransition:(id)a3 abandonTilingView:(id)a4 toEndPoint:(id)a5;
-- (void)tilingViewControllerTransition:(id)a3 adoptTilingView:(id)a4 fromEndPoint:(id)a5 isCancelingTransition:(BOOL)a6 animationSetupCompletionHandler:(id)a7;
-- (void)tilingViewDidEndAnimatingTileControllers:(id)a3;
+- (void)didDismissPreviewViewController:(id)controller committing:(BOOL)committing;
+- (void)interactiveTileTracker:(id)tracker didStopTrackingTileController:(id)controller;
+- (void)interactiveTileTracker:(id)tracker willStartTrackingTileController:(id)controller;
+- (void)photosPreviewPresentationController:(id)controller willPresentPreviewViewController:(id)viewController;
+- (void)presentOneUpViewControllerAnimated:(BOOL)animated interactiveMode:(int64_t)mode activity:(unint64_t)activity editActivityCompletion:(id)completion;
+- (void)presentOneUpViewControllerFromAssetAtIndexPath:(id)path animated:(BOOL)animated interactiveMode:(int64_t)mode activity:(unint64_t)activity isNavigationSourceWidget:(BOOL)widget editActivityCompletion:(id)completion;
+- (void)presentingViewControllerViewDidDisappear:(BOOL)disappear;
+- (void)presentingViewControllerViewWillAppear:(BOOL)appear;
+- (void)presentingViewControllerViewWillDisappear:(BOOL)disappear;
+- (void)setAssetDisplayDelegate:(id)delegate;
+- (void)setDelegate:(id)delegate;
+- (void)setPhotosDataSource:(id)source;
+- (void)tilingView:(id)view didStopUsingTileController:(id)controller;
+- (void)tilingViewControllerTransition:(id)transition abandonTilingView:(id)view toEndPoint:(id)point;
+- (void)tilingViewControllerTransition:(id)transition adoptTilingView:(id)view fromEndPoint:(id)point isCancelingTransition:(BOOL)cancelingTransition animationSetupCompletionHandler:(id)handler;
+- (void)tilingViewDidEndAnimatingTileControllers:(id)controllers;
 @end
 
 @implementation PUOneUpPresentationHelper
@@ -94,10 +94,10 @@
   }
 
   self->_needsUpdateFlags.presentationInfo = 0;
-  v3 = [(PUOneUpPresentationHelper *)self delegate];
-  v4 = [v3 oneUpPresentationHelperViewController:self];
-  v5 = [v4 navigationController];
-  if (!v5)
+  delegate = [(PUOneUpPresentationHelper *)self delegate];
+  v4 = [delegate oneUpPresentationHelperViewController:self];
+  navigationController = [v4 navigationController];
+  if (!navigationController)
   {
     goto LABEL_8;
   }
@@ -109,7 +109,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v5;
+      v13 = navigationController;
       v14 = 2112;
       v15 = v4;
       _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "1-up presentation currently requires the containing navigation controller (%@) to be a PUNavigationController subclass (in order to support custom navigation transitions). Falling back to modal presentation of 1-up from %@ to fail gracefully, but animations or presence of tabs might not work as expected. See <rdar://problem/41422833>.", &v12, 0x16u);
@@ -122,9 +122,9 @@ LABEL_8:
 
   v6 = 1;
 LABEL_9:
-  v8 = [v4 px_splitViewController];
+  px_splitViewController = [v4 px_splitViewController];
 
-  if (v8)
+  if (px_splitViewController)
   {
     v9 = 2;
   }
@@ -136,7 +136,7 @@ LABEL_9:
 
   if (self->_delegateFlags.respondsToTransitionTypeWithProposedTransitionType)
   {
-    v9 = [v3 oneUpPresentationHelper:self transitionTypeWithProposedTransitionType:v9];
+    v9 = [delegate oneUpPresentationHelper:self transitionTypeWithProposedTransitionType:v9];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
@@ -157,13 +157,13 @@ LABEL_9:
 
 - (void)_updateLayout
 {
-  v3 = [(PUOneUpPresentationHelper *)self _tilingView];
-  v4 = [v3 layout];
+  _tilingView = [(PUOneUpPresentationHelper *)self _tilingView];
+  layout = [_tilingView layout];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PUOneUpPresentationHelper *)self _updateLayout:v4];
+    [(PUOneUpPresentationHelper *)self _updateLayout:layout];
   }
 }
 
@@ -173,10 +173,10 @@ LABEL_9:
   if ([(PUOneUpPresentationHelper *)self _state]== 4)
   {
     [(PUOneUpPresentationHelper *)self _setState:5];
-    v3 = [(PUOneUpPresentationHelper *)self _tilingView];
-    v4 = [v3 isAnyTileControllerAnimating];
+    _tilingView = [(PUOneUpPresentationHelper *)self _tilingView];
+    isAnyTileControllerAnimating = [_tilingView isAnyTileControllerAnimating];
 
-    if ((v4 & 1) == 0)
+    if ((isAnyTileControllerAnimating & 1) == 0)
     {
       [(PUOneUpPresentationHelper *)self _handleTileControllerAnimationEnd];
     }
@@ -187,9 +187,9 @@ LABEL_9:
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PUOneUpPresentationHelper *)self presentingViewController];
+      presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
       v7 = 138412290;
-      v8 = v6;
+      v8 = presentingViewController;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "Presenting view controller did appear without the one-up presentation helper being cleaned up appropriately. Recovering from that state, but this should be avoided. (%@)", &v7, 0xCu);
     }
 
@@ -220,77 +220,77 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)tilingViewDidEndAnimatingTileControllers:(id)a3
+- (void)tilingViewDidEndAnimatingTileControllers:(id)controllers
 {
-  v4 = a3;
-  v5 = [(PUOneUpPresentationHelper *)self _tilingView];
+  controllersCopy = controllers;
+  _tilingView = [(PUOneUpPresentationHelper *)self _tilingView];
 
-  if (v5 == v4)
+  if (_tilingView == controllersCopy)
   {
 
     [(PUOneUpPresentationHelper *)self _handleTileControllerAnimationEnd];
   }
 }
 
-- (void)tilingView:(id)a3 didStopUsingTileController:(id)a4
+- (void)tilingView:(id)view didStopUsingTileController:(id)controller
 {
-  [(PUOneUpPresentationHelper *)self _invalidateAssetReferencesDisplayedInTilingView:a3];
+  [(PUOneUpPresentationHelper *)self _invalidateAssetReferencesDisplayedInTilingView:view];
 
   [(PUOneUpPresentationHelper *)self _updateAssetReferencesDisplayedInTilingView];
 }
 
-- (id)tilingView:(id)a3 tileTransitionCoordinatorForTransitionFromLayout:(id)a4 toLayout:(id)a5 withContext:(id)a6
+- (id)tilingView:(id)view tileTransitionCoordinatorForTransitionFromLayout:(id)layout toLayout:(id)toLayout withContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  layoutCopy = layout;
+  toLayoutCopy = toLayout;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v14 = [v10 fixedCoordinateSystem];
+    fixedCoordinateSystem = [viewCopy fixedCoordinateSystem];
     v15 = objc_alloc_init(PUSingleAssetLayoutTransitionCoordinator);
-    [(PUSingleAssetLayoutTransitionCoordinator *)v15 setFixedCoordinateSystem:v14];
+    [(PUSingleAssetLayoutTransitionCoordinator *)v15 setFixedCoordinateSystem:fixedCoordinateSystem];
   }
 
   else
   {
-    v16 = [(PUOneUpPresentationHelper *)self browsingSession];
-    v17 = [v16 viewModel];
-    v14 = [v17 currentAssetReference];
+    browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    fixedCoordinateSystem = [viewModel currentAssetReference];
 
-    v15 = [PUTileTransitionCoordinator defaultTileTransitionCoordinatorForTransitionFromLayout:v11 toLayout:v12 withTilingView:v10 anchorAssetReference:v14 context:v13];
+    v15 = [PUTileTransitionCoordinator defaultTileTransitionCoordinatorForTransitionFromLayout:layoutCopy toLayout:toLayoutCopy withTilingView:viewCopy anchorAssetReference:fixedCoordinateSystem context:contextCopy];
   }
 
   return v15;
 }
 
-- (id)tilingView:(id)a3 tileControllerWithIndexPath:(id)a4 kind:(id)a5 dataSource:(id)a6
+- (id)tilingView:(id)view tileControllerWithIndexPath:(id)path kind:(id)kind dataSource:(id)source
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (![a5 isEqualToString:@"PUTileKindItemContent"])
+  viewCopy = view;
+  pathCopy = path;
+  sourceCopy = source;
+  if (![kind isEqualToString:@"PUTileKindItemContent"])
   {
     goto LABEL_6;
   }
 
   v30 = a2;
-  v14 = [(PUOneUpPresentationHelper *)self browsingSession];
-  v15 = [v14 contentTileProvider];
+  browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+  contentTileProvider = [browsingSession contentTileProvider];
 
-  v16 = [v13 assetReferenceAtIndexPath:v12];
-  v17 = [(PUOneUpPresentationHelper *)self browsingSession];
-  v18 = [v17 viewModel];
-  v19 = [v18 assetViewModelForAssetReference:v16];
+  v16 = [sourceCopy assetReferenceAtIndexPath:pathCopy];
+  browsingSession2 = [(PUOneUpPresentationHelper *)self browsingSession];
+  viewModel = [browsingSession2 viewModel];
+  v19 = [viewModel assetViewModelForAssetReference:v16];
 
-  v20 = [v16 asset];
-  v21 = [v15 tileControllerForAsset:v20 viewModel:v19 tilingView:v11];
+  asset = [v16 asset];
+  v21 = [contentTileProvider tileControllerForAsset:asset viewModel:v19 tilingView:viewCopy];
 
   if (self->_assetDisplayDelegateFlags.respondsToCurrentImageForAssetReference)
   {
-    v22 = [(PUOneUpPresentationHelper *)self assetDisplayDelegate];
-    v23 = [v22 oneUpPresentationHelper:self currentImageForAssetReference:v16];
+    assetDisplayDelegate = [(PUOneUpPresentationHelper *)self assetDisplayDelegate];
+    v23 = [assetDisplayDelegate oneUpPresentationHelper:self currentImageForAssetReference:v16];
 
     if (v23)
     {
@@ -298,17 +298,17 @@ LABEL_9:
     }
   }
 
-  v24 = [(PUOneUpPresentationHelper *)self presentingViewController];
-  v25 = [v24 viewIfLoaded];
-  [v25 bounds];
+  presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+  viewIfLoaded = [presentingViewController viewIfLoaded];
+  [viewIfLoaded bounds];
   [v21 setExpectedPresentationSize:{v26, v27}];
 
   a2 = v30;
   if (!v21)
   {
 LABEL_6:
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2124 description:{@"Invalid parameter not satisfying: %@", @"tileController != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2124 description:{@"Invalid parameter not satisfying: %@", @"tileController != nil"}];
 
     v21 = 0;
   }
@@ -316,40 +316,40 @@ LABEL_6:
   return v21;
 }
 
-- (int64_t)tilingViewControllerTransitionPreferredBarStyle:(id)a3
+- (int64_t)tilingViewControllerTransitionPreferredBarStyle:(id)style
 {
   if (self->_delegateFlags.respondsToPreferredBarStyle)
   {
-    v4 = [(PUOneUpPresentationHelper *)self delegate];
-    v5 = [v4 oneUpPresentationHelperPreferredBarStyle:self];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    pu_preferredBarStyle = [delegate oneUpPresentationHelperPreferredBarStyle:self];
   }
 
   else
   {
-    v4 = [(PUOneUpPresentationHelper *)self presentingViewController];
-    v5 = [v4 pu_preferredBarStyle];
+    delegate = [(PUOneUpPresentationHelper *)self presentingViewController];
+    pu_preferredBarStyle = [delegate pu_preferredBarStyle];
   }
 
-  v6 = v5;
+  v6 = pu_preferredBarStyle;
 
   return v6;
 }
 
-- (void)tilingViewControllerTransition:(id)a3 adoptTilingView:(id)a4 fromEndPoint:(id)a5 isCancelingTransition:(BOOL)a6 animationSetupCompletionHandler:(id)a7
+- (void)tilingViewControllerTransition:(id)transition adoptTilingView:(id)view fromEndPoint:(id)point isCancelingTransition:(BOOL)cancelingTransition animationSetupCompletionHandler:(id)handler
 {
-  v8 = a6;
-  v29 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (!v13)
+  cancelingTransitionCopy = cancelingTransition;
+  transitionCopy = transition;
+  viewCopy = view;
+  pointCopy = point;
+  handlerCopy = handler;
+  if (!viewCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2048 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2048 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
   }
 
-  v16 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
-  if (v16)
+  _oneUpViewController = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+  if (_oneUpViewController)
   {
   }
 
@@ -358,19 +358,19 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v17 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
-  v18 = [v14 isEqual:v17];
+  _oneUpViewController2 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+  v18 = [pointCopy isEqual:_oneUpViewController2];
 
   if ((v18 & 1) == 0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    v28 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
-    [v27 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2054 description:{@"unexpected end point %@ with oneUpViewController %@", v14, v28}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    _oneUpViewController3 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2054 description:{@"unexpected end point %@ with oneUpViewController %@", pointCopy, _oneUpViewController3}];
   }
 
   if ([(PUOneUpPresentationHelper *)self _state]!= 5)
   {
-    if (v8)
+    if (cancelingTransitionCopy)
     {
       v19 = 1;
     }
@@ -380,54 +380,54 @@ LABEL_6:
       v19 = 2;
     }
 
-    v20 = [(PUOneUpPresentationHelper *)self _presentationOrigin];
-    [MEMORY[0x1E69C3338] transitionAnimationDidBegin:v19 fromOrigin:v20 transitionObject:self];
+    _presentationOrigin = [(PUOneUpPresentationHelper *)self _presentationOrigin];
+    [MEMORY[0x1E69C3338] transitionAnimationDidBegin:v19 fromOrigin:_presentationOrigin transitionObject:self];
     [(PUOneUpPresentationHelper *)self _setState:4];
   }
 
 LABEL_13:
-  v21 = [(PUOneUpPresentationHelper *)self _tilingView];
+  _tilingView = [(PUOneUpPresentationHelper *)self _tilingView];
 
-  if (v21)
+  if (_tilingView)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    v26 = [(PUOneUpPresentationHelper *)self _tilingView];
-    [v25 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2064 description:{@"adopting tiling %@ from %@ will override current tiling view %@", v13, v14, v26}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    _tilingView2 = [(PUOneUpPresentationHelper *)self _tilingView];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2064 description:{@"adopting tiling %@ from %@ will override current tiling view %@", viewCopy, pointCopy, _tilingView2}];
   }
 
-  [(PUOneUpPresentationHelper *)self _setTilingView:v13];
-  [(PUOneUpPresentationHelper *)self _setTransitioningTilingView:v13];
-  v22 = [(PUOneUpPresentationHelper *)self _newCollapsedLayout];
+  [(PUOneUpPresentationHelper *)self _setTilingView:viewCopy];
+  [(PUOneUpPresentationHelper *)self _setTransitioningTilingView:viewCopy];
+  _newCollapsedLayout = [(PUOneUpPresentationHelper *)self _newCollapsedLayout];
   v23 = objc_alloc_init(PUTilingLayoutTransitionContext);
   [(PUTilingLayoutTransitionContext *)v23 setIsViewControllerTransition:1];
-  [(PUTilingLayoutTransitionContext *)v23 setCancelingTransition:v8];
-  [v13 transitionToLayout:v22 withContext:v23 animationSetupCompletionHandler:v15];
-  [v13 layoutIfNeeded];
+  [(PUTilingLayoutTransitionContext *)v23 setCancelingTransition:cancelingTransitionCopy];
+  [viewCopy transitionToLayout:_newCollapsedLayout withContext:v23 animationSetupCompletionHandler:handlerCopy];
+  [viewCopy layoutIfNeeded];
   [(PUOneUpPresentationHelper *)self _invalidateAssetReferencesDisplayedInTilingView];
   [(PUOneUpPresentationHelper *)self _updateAssetReferencesDisplayedInTilingView];
 }
 
-- (BOOL)isReadyToAdoptTilingView:(id)a3 fromEndPoint:(id)a4
+- (BOOL)isReadyToAdoptTilingView:(id)view fromEndPoint:(id)point
 {
-  v4 = [(PUOneUpPresentationHelper *)self presentingViewController:a3];
-  v5 = [v4 viewIfLoaded];
-  v6 = [v5 window];
-  v7 = v6 != 0;
+  v4 = [(PUOneUpPresentationHelper *)self presentingViewController:view];
+  viewIfLoaded = [v4 viewIfLoaded];
+  window = [viewIfLoaded window];
+  v7 = window != 0;
 
   return v7;
 }
 
-- (void)tilingViewControllerTransition:(id)a3 abandonTilingView:(id)a4 toEndPoint:(id)a5
+- (void)tilingViewControllerTransition:(id)transition abandonTilingView:(id)view toEndPoint:(id)point
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PUOneUpPresentationHelper *)self _tilingView];
+  viewCopy = view;
+  pointCopy = point;
+  _tilingView = [(PUOneUpPresentationHelper *)self _tilingView];
 
-  if (v10 != v8)
+  if (_tilingView != viewCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    v13 = [(PUOneUpPresentationHelper *)self _tilingView];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2035 description:{@"tiling view %@ to abandon to %@ isn't the current tiling view %@", v8, v9, v13}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    _tilingView2 = [(PUOneUpPresentationHelper *)self _tilingView];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2035 description:{@"tiling view %@ to abandon to %@ isn't the current tiling view %@", viewCopy, pointCopy, _tilingView2}];
   }
 
   [(PUOneUpPresentationHelper *)self _setTilingView:0];
@@ -441,60 +441,60 @@ LABEL_13:
   [(PUOneUpPresentationHelper *)self _setState:2];
 }
 
-- (id)tilingViewControllerTransition:(id)a3 tilingViewToTransferToEndPoint:(id)a4
+- (id)tilingViewControllerTransition:(id)transition tilingViewToTransferToEndPoint:(id)point
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
-  v8 = [v6 isEqual:v7];
+  pointCopy = point;
+  _oneUpViewController = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+  v8 = [pointCopy isEqual:_oneUpViewController];
 
   if ((v8 & 1) == 0)
   {
     v9 = PXAssertGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+      _oneUpViewController2 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
       *buf = 138412546;
-      v15 = v6;
+      v15 = pointCopy;
       v16 = 2112;
-      v17 = v12;
+      v17 = _oneUpViewController2;
       _os_log_error_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_ERROR, "unexpected end point %@ with oneUpViewController %@", buf, 0x16u);
     }
   }
 
-  v10 = [(PUOneUpPresentationHelper *)self _tilingView];
-  if (!v10)
+  _tilingView = [(PUOneUpPresentationHelper *)self _tilingView];
+  if (!_tilingView)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2030 description:{@"no tiling view to transfer to %@ (state = %ti)", v6, -[PUOneUpPresentationHelper _state](self, "_state")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:2030 description:{@"no tiling view to transfer to %@ (state = %ti)", pointCopy, -[PUOneUpPresentationHelper _state](self, "_state")}];
   }
 
-  return v10;
+  return _tilingView;
 }
 
-- (id)tilingViewControllerTransitionTilingViewHostView:(id)a3
+- (id)tilingViewControllerTransitionTilingViewHostView:(id)view
 {
-  v4 = a3;
-  if (!self->_delegateFlags.respondsToViewHostingTilingView || (-[PUOneUpPresentationHelper delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 oneUpPresentationHelperViewHostingTilingView:self], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  viewCopy = view;
+  if (!self->_delegateFlags.respondsToViewHostingTilingView || (-[PUOneUpPresentationHelper delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 oneUpPresentationHelperViewHostingTilingView:self], view = objc_claimAutoreleasedReturnValue(), v5, !view))
   {
-    v7 = [(PUOneUpPresentationHelper *)self presentingViewController];
-    v6 = [v7 view];
+    presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+    view = [presentingViewController view];
   }
 
-  return v6;
+  return view;
 }
 
-- (id)pinchedTiledTracker:(id)a3 finalLayoutInfoForTileWithLayoutInfo:(id)a4
+- (id)pinchedTiledTracker:(id)tracker finalLayoutInfoForTileWithLayoutInfo:(id)info
 {
-  v5 = a4;
-  v6 = [(PUOneUpPresentationHelper *)self _currentTilingViewControllerTransition];
-  if ([v6 hasStarted])
+  infoCopy = info;
+  _currentTilingViewControllerTransition = [(PUOneUpPresentationHelper *)self _currentTilingViewControllerTransition];
+  if ([_currentTilingViewControllerTransition hasStarted])
   {
-    v7 = [(PUOneUpPresentationHelper *)self _transitioningTilingView];
-    v8 = [v7 layout];
-    v9 = [v5 indexPath];
-    v10 = [v5 tileKind];
-    v11 = [v8 layoutInfoForTileWithIndexPath:v9 kind:v10];
+    _transitioningTilingView = [(PUOneUpPresentationHelper *)self _transitioningTilingView];
+    layout = [_transitioningTilingView layout];
+    indexPath = [infoCopy indexPath];
+    tileKind = [infoCopy tileKind];
+    v11 = [layout layoutInfoForTileWithIndexPath:indexPath kind:tileKind];
   }
 
   else
@@ -505,21 +505,21 @@ LABEL_13:
   return v11;
 }
 
-- (double)pinchedTiledTracker:(id)a3 initialAspectRatioForTileWithLayoutInfo:(id)a4
+- (double)pinchedTiledTracker:(id)tracker initialAspectRatioForTileWithLayoutInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 dataSourceIdentifier];
-  v9 = [(PUOneUpPresentationHelper *)self browsingSession];
-  v10 = [v9 viewModel];
-  v11 = [v10 assetsDataSource];
+  trackerCopy = tracker;
+  infoCopy = info;
+  dataSourceIdentifier = [infoCopy dataSourceIdentifier];
+  browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
 
-  v12 = [v11 identifier];
-  LOBYTE(v10) = [v12 isEqualToString:v8];
+  identifier = [assetsDataSource identifier];
+  LOBYTE(viewModel) = [identifier isEqualToString:dataSourceIdentifier];
 
-  if (v10)
+  if (viewModel)
   {
-    if (v11)
+    if (assetsDataSource)
     {
       goto LABEL_8;
     }
@@ -529,9 +529,9 @@ LABEL_13:
   {
   }
 
-  v13 = [v6 tilingView];
-  v14 = [v13 layout];
-  v11 = [v14 dataSource];
+  tilingView = [trackerCopy tilingView];
+  layout = [tilingView layout];
+  assetsDataSource = [layout dataSource];
 
   objc_opt_class();
   v15 = 0.0;
@@ -540,19 +540,19 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  v16 = [v11 identifier];
-  v17 = [v16 isEqualToString:v8];
+  identifier2 = [assetsDataSource identifier];
+  v17 = [identifier2 isEqualToString:dataSourceIdentifier];
 
   if (!v17)
   {
     goto LABEL_9;
   }
 
-  if (v11)
+  if (assetsDataSource)
   {
 LABEL_8:
-    v18 = [v7 indexPath];
-    v19 = [v11 assetAtIndexPath:v18];
+    indexPath = [infoCopy indexPath];
+    v19 = [assetsDataSource assetAtIndexPath:indexPath];
 
     [v19 aspectRatio];
     v15 = v20;
@@ -563,50 +563,50 @@ LABEL_9:
   return v15;
 }
 
-- (void)interactiveTileTracker:(id)a3 didStopTrackingTileController:(id)a4
+- (void)interactiveTileTracker:(id)tracker didStopTrackingTileController:(id)controller
 {
   if (self->_assetDisplayDelegateFlags.respondsToShouldDisableScroll)
   {
-    v6 = [(PUOneUpPresentationHelper *)self assetDisplayDelegate:a3];
+    v6 = [(PUOneUpPresentationHelper *)self assetDisplayDelegate:tracker];
     [v6 oneUpPresentationHelper:self shouldDisableScroll:0];
   }
 }
 
-- (void)interactiveTileTracker:(id)a3 willStartTrackingTileController:(id)a4
+- (void)interactiveTileTracker:(id)tracker willStartTrackingTileController:(id)controller
 {
   if (self->_assetDisplayDelegateFlags.respondsToShouldDisableScroll)
   {
-    v6 = [(PUOneUpPresentationHelper *)self assetDisplayDelegate:a3];
+    v6 = [(PUOneUpPresentationHelper *)self assetDisplayDelegate:tracker];
     [v6 oneUpPresentationHelper:self shouldDisableScroll:1];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v5 = a3;
+  beginCopy = begin;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v6 = [(PUOneUpPresentationHelper *)self _tapGestureRecognizer];
+  _tapGestureRecognizer = [(PUOneUpPresentationHelper *)self _tapGestureRecognizer];
 
-  if (v6 == v5)
+  if (_tapGestureRecognizer == beginCopy)
   {
     *(v13 + 24) = 0;
-    v7 = [(PUOneUpPresentationHelper *)self _tilingView];
-    if (!v7)
+    _tilingView = [(PUOneUpPresentationHelper *)self _tilingView];
+    if (!_tilingView)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1947 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1947 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
     }
 
-    [v5 locationInView:v7];
+    [beginCopy locationInView:_tilingView];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __58__PUOneUpPresentationHelper_gestureRecognizerShouldBegin___block_invoke;
     v11[3] = &unk_1E7B79FF8;
     v11[4] = &v12;
-    [v7 enumeratePresentedTileControllersInRect:v11 usingBlock:?];
+    [_tilingView enumeratePresentedTileControllersInRect:v11 usingBlock:?];
   }
 
   v8 = *(v13 + 24);
@@ -627,16 +627,16 @@ void __58__PUOneUpPresentationHelper_gestureRecognizerShouldBegin___block_invoke
   }
 }
 
-- (void)photosPreviewPresentationController:(id)a3 willPresentPreviewViewController:(id)a4
+- (void)photosPreviewPresentationController:(id)controller willPresentPreviewViewController:(id)viewController
 {
-  v8 = a4;
-  v5 = [(PUOneUpPresentationHelper *)self delegate];
+  viewControllerCopy = viewController;
+  delegate = [(PUOneUpPresentationHelper *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PUOneUpPresentationHelper *)self delegate];
-    [v7 oneUpPresentationHelper:self willPresentOneUpPreviewViewController:v8];
+    delegate2 = [(PUOneUpPresentationHelper *)self delegate];
+    [delegate2 oneUpPresentationHelper:self willPresentOneUpPreviewViewController:viewControllerCopy];
   }
 }
 
@@ -647,20 +647,20 @@ void __58__PUOneUpPresentationHelper_gestureRecognizerShouldBegin___block_invoke
     return 0;
   }
 
-  v2 = self;
-  v3 = [(PUOneUpPresentationHelper *)self delegate];
-  LOBYTE(v2) = [v3 oneUpPresentationHelperShouldAutoPlay:v2];
+  selfCopy = self;
+  delegate = [(PUOneUpPresentationHelper *)self delegate];
+  LOBYTE(selfCopy) = [delegate oneUpPresentationHelperShouldAutoPlay:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)_enableSpatialPresentation:(id)a3
+- (BOOL)_enableSpatialPresentation:(id)presentation
 {
-  v3 = a3;
-  if (v3 && [MEMORY[0x1E69C1598] hasSpatial3DWidgetResourceForAsset:v3])
+  presentationCopy = presentation;
+  if (presentationCopy && [MEMORY[0x1E69C1598] hasSpatial3DWidgetResourceForAsset:presentationCopy])
   {
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    if ([v4 isLowPowerModeEnabled])
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    if ([processInfo isLowPowerModeEnabled])
     {
       LOBYTE(v5) = 0;
     }
@@ -679,23 +679,23 @@ void __58__PUOneUpPresentationHelper_gestureRecognizerShouldBegin___block_invoke
   return v5;
 }
 
-- (void)_navigateToAssetAtIndexPath:(id)a3 inBrowsingSession:(id)a4 isNavigationSourceWidget:(BOOL)a5
+- (void)_navigateToAssetAtIndexPath:(id)path inBrowsingSession:(id)session isNavigationSourceWidget:(BOOL)widget
 {
-  v8 = a3;
-  v9 = [a4 viewModel];
-  v10 = [v9 assetsDataSource];
-  v11 = [v10 assetReferenceAtIndexPath:v8];
+  pathCopy = path;
+  viewModel = [session viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
+  v11 = [assetsDataSource assetReferenceAtIndexPath:pathCopy];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __100__PUOneUpPresentationHelper__navigateToAssetAtIndexPath_inBrowsingSession_isNavigationSourceWidget___block_invoke;
   v14[3] = &unk_1E7B7DCD8;
-  v15 = v9;
+  v15 = viewModel;
   v16 = v11;
-  v17 = self;
-  v18 = a5;
+  selfCopy = self;
+  widgetCopy = widget;
   v12 = v11;
-  v13 = v9;
+  v13 = viewModel;
   [v13 performChanges:v14];
 }
 
@@ -746,7 +746,7 @@ void __100__PUOneUpPresentationHelper__navigateToAssetAtIndexPath_inBrowsingSess
   }
 }
 
-- (id)previewPresentationTransitioningDelegateForPosition:(CGPoint)a3 inSourceView:(id)a4
+- (id)previewPresentationTransitioningDelegateForPosition:(CGPoint)position inSourceView:(id)view
 {
   v5 = objc_alloc_init(PUPhotosPreviewTransitionDelegate);
   [(PUPhotosPreviewTransitionDelegate *)v5 setPhotosPreviewingDelegate:self];
@@ -754,14 +754,14 @@ void __100__PUOneUpPresentationHelper__navigateToAssetAtIndexPath_inBrowsingSess
   return v5;
 }
 
-- (void)commitPreviewViewController:(id)a3 completion:(id)a4
+- (void)commitPreviewViewController:(id)controller completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   if ([(PUOneUpPresentationHelper *)self canPresentOneUpViewControllerAnimated:0])
   {
-    v8 = v6;
+    v8 = controllerCopy;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v9 = v8;
@@ -777,7 +777,7 @@ void __100__PUOneUpPresentationHelper__navigateToAssetAtIndexPath_inBrowsingSess
         v12[4] = self;
         v11 = v9;
         v13 = v11;
-        v14 = v7;
+        v14 = completionCopy;
         [v10 _performWithoutDeferringTransitions:v12];
 
         goto LABEL_10;
@@ -855,11 +855,11 @@ uint64_t __68__PUOneUpPresentationHelper_commitPreviewViewController_completion_
   return result;
 }
 
-- (void)didDismissPreviewViewController:(id)a3 committing:(BOOL)a4
+- (void)didDismissPreviewViewController:(id)controller committing:(BOOL)committing
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  controllerCopy = controller;
+  v8 = controllerCopy;
+  if (committing)
   {
     if ([(PUOneUpPresentationHelper *)self _state]== 2)
     {
@@ -869,13 +869,13 @@ uint64_t __68__PUOneUpPresentationHelper_commitPreviewViewController_completion_
     goto LABEL_9;
   }
 
-  v9 = v7;
+  v9 = controllerCopy;
   if (!v9)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1794 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"viewController", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1794 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"viewController", v15}];
 LABEL_12:
 
     goto LABEL_6;
@@ -884,46 +884,46 @@ LABEL_12:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v15 = NSStringFromClass(v16);
-    v17 = [v9 px_descriptionForAssertionMessage];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1794 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"viewController", v15, v17}];
+    px_descriptionForAssertionMessage = [v9 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1794 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"viewController", v15, px_descriptionForAssertionMessage}];
 
     goto LABEL_12;
   }
 
 LABEL_6:
-  v10 = [v9 browsingSession];
-  v11 = [v10 viewModel];
-  v12 = [v11 videoPlayer];
+  browsingSession = [v9 browsingSession];
+  viewModel = [browsingSession viewModel];
+  videoPlayer = [viewModel videoPlayer];
 
-  if ([v12 isPlaybackDesired])
+  if ([videoPlayer isPlaybackDesired])
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __72__PUOneUpPresentationHelper_didDismissPreviewViewController_committing___block_invoke;
     v18[3] = &unk_1E7B80DD0;
-    v19 = v12;
+    v19 = videoPlayer;
     [v19 performChanges:v18];
   }
 
 LABEL_9:
 }
 
-- (id)previewViewControllerForItemAtIndexPath:(id)a3 allowingActions:(BOOL)a4
+- (id)previewViewControllerForItemAtIndexPath:(id)path allowingActions:(BOOL)actions
 {
-  if (a3)
+  if (path)
   {
-    v4 = a4;
-    v6 = a3;
-    v7 = [(PUOneUpPresentationHelper *)self _createBrowsingSession];
-    [(PUOneUpPresentationHelper *)self _navigateToAssetAtIndexPath:v6 inBrowsingSession:v7];
+    actionsCopy = actions;
+    pathCopy = path;
+    _createBrowsingSession = [(PUOneUpPresentationHelper *)self _createBrowsingSession];
+    [(PUOneUpPresentationHelper *)self _navigateToAssetAtIndexPath:pathCopy inBrowsingSession:_createBrowsingSession];
 
     if (self->_delegateFlags.respondsToAdditionalOptions)
     {
-      v8 = [(PUOneUpPresentationHelper *)self delegate];
-      v9 = [v8 oneUpPresentationHelperAdditionalOptions:self];
+      delegate = [(PUOneUpPresentationHelper *)self delegate];
+      v9 = [delegate oneUpPresentationHelperAdditionalOptions:self];
     }
 
     else
@@ -933,8 +933,8 @@ LABEL_9:
 
     if (self->_delegateFlags.respondsToShouldLeaveContentOnSecondScreen)
     {
-      v11 = [(PUOneUpPresentationHelper *)self delegate];
-      v12 = [v11 oneUpPresentationHelperShouldLeaveContentOnSecondScreen:self];
+      delegate2 = [(PUOneUpPresentationHelper *)self delegate];
+      v12 = [delegate2 oneUpPresentationHelperShouldLeaveContentOnSecondScreen:self];
 
       if (v12)
       {
@@ -944,8 +944,8 @@ LABEL_9:
 
     if (self->_delegateFlags.respondsToShouldDisableAutoPlayback)
     {
-      v13 = [(PUOneUpPresentationHelper *)self delegate];
-      v14 = [v13 oneUpPresentationHelperShouldDisableAutoPlayback:self];
+      delegate3 = [(PUOneUpPresentationHelper *)self delegate];
+      v14 = [delegate3 oneUpPresentationHelperShouldDisableAutoPlayback:self];
 
       if (v14)
       {
@@ -953,18 +953,18 @@ LABEL_9:
       }
     }
 
-    v10 = [(PUOneUpPresentationHelper *)self _createOneUpViewControllerWithBrowsingSession:v7 options:v9 activity:0 editActivityCompletion:0];
+    v10 = [(PUOneUpPresentationHelper *)self _createOneUpViewControllerWithBrowsingSession:_createBrowsingSession options:v9 activity:0 editActivityCompletion:0];
     [v10 setAppearanceTransitionAnimationsDisabled:1];
-    v15 = [v7 viewModel];
+    viewModel = [_createBrowsingSession viewModel];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __85__PUOneUpPresentationHelper_previewViewControllerForItemAtIndexPath_allowingActions___block_invoke;
     v18[3] = &unk_1E7B80DD0;
-    v19 = v7;
-    v16 = v7;
-    [v15 performChanges:v18];
+    v19 = _createBrowsingSession;
+    v16 = _createBrowsingSession;
+    [viewModel performChanges:v18];
 
-    [v10 setAllowsPreviewActions:v4];
+    [v10 setAllowsPreviewActions:actionsCopy];
   }
 
   else
@@ -981,89 +981,89 @@ void __85__PUOneUpPresentationHelper_previewViewControllerForItemAtIndexPath_all
   [v1 setIsPresentedForPreview:1];
 }
 
-- (id)_createOneUpViewControllerWithBrowsingSession:(id)a3 options:(unint64_t)a4 activity:(unint64_t)a5 editActivityCompletion:(id)a6
+- (id)_createOneUpViewControllerWithBrowsingSession:(id)session options:(unint64_t)options activity:(unint64_t)activity editActivityCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  sessionCopy = session;
+  completionCopy = completion;
   if (self->_delegateFlags.respondsToPreventRevealInMomentAction)
   {
-    v12 = [(PUOneUpPresentationHelper *)self delegate];
-    v13 = [v12 oneUpPresentationHelperPreventRevealInMomentAction:self];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    v13 = [delegate oneUpPresentationHelperPreventRevealInMomentAction:self];
 
     if (v13)
     {
-      a4 |= 0x10uLL;
+      options |= 0x10uLL;
     }
   }
 
   if (self->_delegateFlags.respondsToWantsShowInLibraryButton)
   {
-    v14 = [(PUOneUpPresentationHelper *)self delegate];
-    v15 = [v14 oneUpPresentationHelperWantsShowInLibraryButton:self];
+    delegate2 = [(PUOneUpPresentationHelper *)self delegate];
+    v15 = [delegate2 oneUpPresentationHelperWantsShowInLibraryButton:self];
 
     if (v15)
     {
-      a4 |= 0x8000uLL;
+      options |= 0x8000uLL;
     }
   }
 
   if (self->_delegateFlags.respondsToPreventHideAssetAction)
   {
-    v16 = [(PUOneUpPresentationHelper *)self delegate];
-    v17 = [v16 oneUpPresentationHelperPreventHideAssetAction:self];
+    delegate3 = [(PUOneUpPresentationHelper *)self delegate];
+    v17 = [delegate3 oneUpPresentationHelperPreventHideAssetAction:self];
 
     if (v17)
     {
-      a4 |= 0x200000uLL;
+      options |= 0x200000uLL;
     }
   }
 
   if (self->_delegateFlags.respondsToPreventPeopleOrnament)
   {
-    v18 = [(PUOneUpPresentationHelper *)self delegate];
-    v19 = [v18 oneUpPresentationHelperPreventPeopleOrnament:self];
+    delegate4 = [(PUOneUpPresentationHelper *)self delegate];
+    v19 = [delegate4 oneUpPresentationHelperPreventPeopleOrnament:self];
 
     if (v19)
     {
-      a4 |= 0x400000uLL;
+      options |= 0x400000uLL;
     }
   }
 
   if (self->_delegateFlags.respondsToPreventAlbumAttributionWidget)
   {
-    v20 = [(PUOneUpPresentationHelper *)self delegate];
-    v21 = [v20 oneUpPresentationHelperPreventAlbumAttributionWidget:self];
+    delegate5 = [(PUOneUpPresentationHelper *)self delegate];
+    v21 = [delegate5 oneUpPresentationHelperPreventAlbumAttributionWidget:self];
 
     if (v21)
     {
-      a4 |= 0x800000uLL;
+      options |= 0x800000uLL;
     }
   }
 
-  v22 = [[PUOneUpViewController alloc] initWithBrowsingSession:v10 options:a4 initialActivity:a5 presentationOrigin:[(PUOneUpPresentationHelper *)self _presentationOrigin]];
+  v22 = [[PUOneUpViewController alloc] initWithBrowsingSession:sessionCopy options:options initialActivity:activity presentationOrigin:[(PUOneUpPresentationHelper *)self _presentationOrigin]];
   if ([(PUOneUpPresentationHelper *)self xrOSNotificationModeEnabled])
   {
     PXVisionScaledSize();
     [(PUOneUpViewController *)v22 setPreferredContentSizeOverride:?];
   }
 
-  [(PUOneUpViewController *)v22 setEditActivityCompletion:v11];
-  v23 = [(PUOneUpPresentationHelper *)self unlockDeviceStatus];
-  [(PUOneUpViewController *)v22 setUnlockDeviceStatus:v23];
+  [(PUOneUpViewController *)v22 setEditActivityCompletion:completionCopy];
+  unlockDeviceStatus = [(PUOneUpPresentationHelper *)self unlockDeviceStatus];
+  [(PUOneUpViewController *)v22 setUnlockDeviceStatus:unlockDeviceStatus];
 
-  v24 = [(PUOneUpPresentationHelper *)self unlockDeviceHandlerWithActionType];
-  [(PUOneUpViewController *)v22 setUnlockDeviceHandlerWithActionType:v24];
+  unlockDeviceHandlerWithActionType = [(PUOneUpPresentationHelper *)self unlockDeviceHandlerWithActionType];
+  [(PUOneUpViewController *)v22 setUnlockDeviceHandlerWithActionType:unlockDeviceHandlerWithActionType];
 
   if (self->_delegateFlags.respondsToSearchContext)
   {
-    v25 = [(PUOneUpPresentationHelper *)self delegate];
-    v26 = [v25 oneUpPresentationHelperSearchQueryMatchInfo:self];
+    delegate6 = [(PUOneUpPresentationHelper *)self delegate];
+    delegate7 = [delegate6 oneUpPresentationHelperSearchQueryMatchInfo:self];
 
-    v27 = [v26 ocrTexts];
-    [(PUOneUpViewController *)v22 setTextsToHighlight:v27];
+    ocrTexts = [delegate7 ocrTexts];
+    [(PUOneUpViewController *)v22 setTextsToHighlight:ocrTexts];
 
-    v28 = [v26 ocrAssetUUIDs];
-    [(PUOneUpViewController *)v22 setAssetUUIDsAllowedToHighlightText:v28];
+    ocrAssetUUIDs = [delegate7 ocrAssetUUIDs];
+    [(PUOneUpViewController *)v22 setAssetUUIDsAllowedToHighlightText:ocrAssetUUIDs];
   }
 
   else
@@ -1073,16 +1073,16 @@ void __85__PUOneUpPresentationHelper_previewViewControllerForItemAtIndexPath_all
       goto LABEL_23;
     }
 
-    v26 = [(PUOneUpPresentationHelper *)self delegate];
-    v28 = [v26 oneUpPresentationHelperTextsToHighlight:self];
-    [(PUOneUpViewController *)v22 setTextsToHighlight:v28];
+    delegate7 = [(PUOneUpPresentationHelper *)self delegate];
+    ocrAssetUUIDs = [delegate7 oneUpPresentationHelperTextsToHighlight:self];
+    [(PUOneUpViewController *)v22 setTextsToHighlight:ocrAssetUUIDs];
   }
 
 LABEL_23:
   if (self->_delegateFlags.respondsToAssetUUIDsAllowedToHighlightText)
   {
-    v29 = [(PUOneUpPresentationHelper *)self delegate];
-    v30 = [v29 oneUpPresentationHelperAssetUUIDsAllowedToHighlightText:self];
+    delegate8 = [(PUOneUpPresentationHelper *)self delegate];
+    v30 = [delegate8 oneUpPresentationHelperAssetUUIDsAllowedToHighlightText:self];
     [(PUOneUpViewController *)v22 setAssetUUIDsAllowedToHighlightText:v30];
   }
 
@@ -1094,22 +1094,22 @@ LABEL_23:
   [(PUOneUpPresentationHelper *)self _setState:3];
   if (self->_delegateFlags.respondsToDidPresentOneUpViewController)
   {
-    v3 = [(PUOneUpPresentationHelper *)self delegate];
-    v4 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
-    [v3 oneUpPresentationHelper:self didPresentOneUpViewController:v4];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    _oneUpViewController = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+    [delegate oneUpPresentationHelper:self didPresentOneUpViewController:_oneUpViewController];
   }
 
-  v5 = [(PUOneUpPresentationHelper *)self _presentationOrigin];
-  [MEMORY[0x1E69C3338] transitionAnimationDidEnd:1 fromOrigin:v5 transitionObject:self];
-  v6 = [(PUOneUpPresentationHelper *)self browsingSession];
-  v7 = [v6 viewModel];
+  _presentationOrigin = [(PUOneUpPresentationHelper *)self _presentationOrigin];
+  [MEMORY[0x1E69C3338] transitionAnimationDidEnd:1 fromOrigin:_presentationOrigin transitionObject:self];
+  browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__PUOneUpPresentationHelper__didFinishTransitioningToOneUp__block_invoke;
   v9[3] = &unk_1E7B80DD0;
-  v10 = v7;
-  v8 = v7;
+  v10 = viewModel;
+  v8 = viewModel;
   [v8 performChanges:v9];
 }
 
@@ -1121,12 +1121,12 @@ uint64_t __59__PUOneUpPresentationHelper__didFinishTransitioningToOneUp__block_i
   return [v2 stopPreventingLivePhotoContentForReason:@"OneUpIsPresented"];
 }
 
-- (void)_disappearingTilingView:(id)a3 animationCompleted:(BOOL)a4
+- (void)_disappearingTilingView:(id)view animationCompleted:(BOOL)completed
 {
-  v5 = a3;
-  v6 = [(PUOneUpPresentationHelper *)self _disappearingTilingView];
+  viewCopy = view;
+  _disappearingTilingView = [(PUOneUpPresentationHelper *)self _disappearingTilingView];
 
-  if (v6 == v5)
+  if (_disappearingTilingView == viewCopy)
   {
     [(PUOneUpPresentationHelper *)self _setDisappearingTilingView:0];
 
@@ -1134,14 +1134,14 @@ uint64_t __59__PUOneUpPresentationHelper__didFinishTransitioningToOneUp__block_i
   }
 }
 
-- (void)_cleanUpAfterTilingViewTransitionAnimated:(BOOL)a3 transitionAborted:(BOOL)a4
+- (void)_cleanUpAfterTilingViewTransitionAnimated:(BOOL)animated transitionAborted:(BOOL)aborted
 {
-  v4 = a4;
-  v5 = a3;
+  abortedCopy = aborted;
+  animatedCopy = animated;
   v46 = *MEMORY[0x1E69E9840];
-  v7 = [(PUOneUpPresentationHelper *)self _presentationOrigin];
-  [MEMORY[0x1E69C3338] transitionAnimationDidEnd:2 fromOrigin:v7 transitionObject:self];
-  if (v4)
+  _presentationOrigin = [(PUOneUpPresentationHelper *)self _presentationOrigin];
+  [MEMORY[0x1E69C3338] transitionAnimationDidEnd:2 fromOrigin:_presentationOrigin transitionObject:self];
+  if (abortedCopy)
   {
     v8 = 7;
   }
@@ -1152,16 +1152,16 @@ uint64_t __59__PUOneUpPresentationHelper__didFinishTransitioningToOneUp__block_i
   }
 
   [(PUOneUpPresentationHelper *)self _setState:v8];
-  v9 = [(PUOneUpPresentationHelper *)self _tilingView];
-  v34 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+  _tilingView = [(PUOneUpPresentationHelper *)self _tilingView];
+  _oneUpViewController = [(PUOneUpPresentationHelper *)self _oneUpViewController];
   [(PUOneUpPresentationHelper *)self _setTilingView:0];
   [(PUOneUpPresentationHelper *)self _setTransitioningTilingView:0];
   [(PUOneUpPresentationHelper *)self _setAssetReferencesDisplayedInTilingView:0];
   [(PUOneUpPresentationHelper *)self _setOneUpViewController:0];
-  v10 = [v9 layout];
+  layout = [_tilingView layout];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v11 = v10;
+    v11 = layout;
   }
 
   else
@@ -1170,29 +1170,29 @@ uint64_t __59__PUOneUpPresentationHelper__didFinishTransitioningToOneUp__block_i
   }
 
   v33 = v11;
-  v12 = [v11 assetReference];
-  v13 = v12;
+  assetReference = [v11 assetReference];
+  v13 = assetReference;
   v14 = 0;
-  if (self->_delegateFlags.respondsToScrollView && v12)
+  if (self->_delegateFlags.respondsToScrollView && assetReference)
   {
-    v15 = [(PUOneUpPresentationHelper *)self delegate];
-    v14 = [v15 oneUpPresentationHelper:self presentingScrollViewForAssetReference:v13];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    v14 = [delegate oneUpPresentationHelper:self presentingScrollViewForAssetReference:v13];
   }
 
-  v16 = [(PUOneUpPresentationHelper *)self layoutRegionOfInterest];
-  v17 = v16;
-  if (v14 || ([v16 containingScrollViews], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "firstObject"), v14 = objc_claimAutoreleasedReturnValue(), v18, v14))
+  layoutRegionOfInterest = [(PUOneUpPresentationHelper *)self layoutRegionOfInterest];
+  v17 = layoutRegionOfInterest;
+  if (v14 || ([layoutRegionOfInterest containingScrollViews], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "firstObject"), v14 = objc_claimAutoreleasedReturnValue(), v18, v14))
   {
     [v14 _removeScrollViewScrollObserver:self];
-    [v9 px_transferToSuperview:v14];
+    [_tilingView px_transferToSuperview:v14];
   }
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v19 = [v17 containingScrollViews];
-  v20 = [v19 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  containingScrollViews = [v17 containingScrollViews];
+  v20 = [containingScrollViews countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v20)
   {
     v21 = *v42;
@@ -1202,26 +1202,26 @@ uint64_t __59__PUOneUpPresentationHelper__didFinishTransitioningToOneUp__block_i
       {
         if (*v42 != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(containingScrollViews);
         }
 
         [*(*(&v41 + 1) + 8 * i) _removeScrollViewScrollObserver:self];
       }
 
-      v20 = [v19 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v20 = [containingScrollViews countByEnumeratingWithState:&v41 objects:v45 count:16];
     }
 
     while (v20);
   }
 
-  [(PUOneUpPresentationHelper *)self _setDisappearingTilingView:v9];
-  [v9 setUserInteractionEnabled:0];
-  if (v5)
+  [(PUOneUpPresentationHelper *)self _setDisappearingTilingView:_tilingView];
+  [_tilingView setUserInteractionEnabled:0];
+  if (animatedCopy)
   {
     if (self->_delegateFlags.respondsToDisableFinalFadeoutAnimation)
     {
-      v23 = [(PUOneUpPresentationHelper *)self delegate];
-      v24 = [v23 oneUpPresentationHelperDisableFinalFadeoutAnimation:self];
+      delegate2 = [(PUOneUpPresentationHelper *)self delegate];
+      v24 = [delegate2 oneUpPresentationHelperDisableFinalFadeoutAnimation:self];
 
       v25 = v24 ^ 1;
     }
@@ -1242,7 +1242,7 @@ uint64_t __59__PUOneUpPresentationHelper__didFinishTransitioningToOneUp__block_i
   aBlock[1] = 3221225472;
   aBlock[2] = __89__PUOneUpPresentationHelper__cleanUpAfterTilingViewTransitionAnimated_transitionAborted___block_invoke;
   aBlock[3] = &unk_1E7B80DD0;
-  v26 = v9;
+  v26 = _tilingView;
   v39 = v26;
   v27 = _Block_copy(aBlock);
   v35[0] = MEMORY[0x1E69E9820];
@@ -1269,8 +1269,8 @@ uint64_t __59__PUOneUpPresentationHelper__didFinishTransitioningToOneUp__block_i
 
   if (self->_delegateFlags.respondsToDidDismissOneUpViewController)
   {
-    v32 = [(PUOneUpPresentationHelper *)self delegate];
-    [v32 oneUpPresentationHelper:self didDismissOneUpViewController:v34];
+    delegate3 = [(PUOneUpPresentationHelper *)self delegate];
+    [delegate3 oneUpPresentationHelper:self didDismissOneUpViewController:_oneUpViewController];
   }
 
   [(PUOneUpPresentationHelper *)self setLayoutRegionOfInterest:0];
@@ -1291,14 +1291,14 @@ void __89__PUOneUpPresentationHelper__cleanUpAfterTilingViewTransitionAnimated_t
   if ([(PUOneUpPresentationHelper *)self _needsUpdateAssetReferencesDisplayedInTilingView])
   {
     [(PUOneUpPresentationHelper *)self _setNeedsUpdateAssetReferencesDisplayedInTilingView:0];
-    v3 = [(PUOneUpPresentationHelper *)self browsingSession];
-    v4 = [v3 viewModel];
-    v5 = [v4 assetsDataSource];
+    browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    assetsDataSource = [viewModel assetsDataSource];
 
-    v6 = [v5 identifier];
+    identifier = [assetsDataSource identifier];
     v7 = [MEMORY[0x1E695DFA8] setWithCapacity:3];
-    v8 = [(PUOneUpPresentationHelper *)self _transitioningTilingView];
-    [v8 bounds];
+    _transitioningTilingView = [(PUOneUpPresentationHelper *)self _transitioningTilingView];
+    [_transitioningTilingView bounds];
     v21 = CGRectInset(v20, 1.0, 1.0);
     x = v21.origin.x;
     y = v21.origin.y;
@@ -1308,13 +1308,13 @@ void __89__PUOneUpPresentationHelper__cleanUpAfterTilingViewTransitionAnimated_t
     v16[1] = 3221225472;
     v16[2] = __72__PUOneUpPresentationHelper__updateAssetReferencesDisplayedInTilingView__block_invoke;
     v16[3] = &unk_1E7B79D00;
-    v17 = v6;
-    v18 = v5;
+    v17 = identifier;
+    v18 = assetsDataSource;
     v19 = v7;
     v13 = v7;
-    v14 = v5;
-    v15 = v6;
-    [v8 enumeratePresentedTileControllersInRect:v16 usingBlock:{x, y, width, height}];
+    v14 = assetsDataSource;
+    v15 = identifier;
+    [_transitioningTilingView enumeratePresentedTileControllersInRect:v16 usingBlock:{x, y, width, height}];
     [(PUOneUpPresentationHelper *)self _setAssetReferencesDisplayedInTilingView:v13];
   }
 }
@@ -1361,12 +1361,12 @@ LABEL_9:
   }
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  v5 = a3;
-  v6 = [(PUOneUpPresentationHelper *)self _tapGestureRecognizer];
+  tapCopy = tap;
+  _tapGestureRecognizer = [(PUOneUpPresentationHelper *)self _tapGestureRecognizer];
 
-  if (v6 == v5 && [v5 state] == 3)
+  if (_tapGestureRecognizer == tapCopy && [tapCopy state] == 3)
   {
     v11 = 0;
     v12 = &v11;
@@ -1374,20 +1374,20 @@ LABEL_9:
     v14 = __Block_byref_object_copy__44889;
     v15 = __Block_byref_object_dispose__44890;
     v16 = 0;
-    v7 = [(PUOneUpPresentationHelper *)self _tilingView];
-    if (!v7)
+    _tilingView = [(PUOneUpPresentationHelper *)self _tilingView];
+    if (!_tilingView)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1531 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1531 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
     }
 
-    [v5 locationInView:v7];
+    [tapCopy locationInView:_tilingView];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __40__PUOneUpPresentationHelper__handleTap___block_invoke;
     v10[3] = &unk_1E7B79FF8;
     v10[4] = &v11;
-    [v7 enumeratePresentedTileControllersInRect:v10 usingBlock:?];
+    [_tilingView enumeratePresentedTileControllersInRect:v10 usingBlock:?];
     v8 = v12[5];
     if (v8)
     {
@@ -1419,24 +1419,24 @@ void __40__PUOneUpPresentationHelper__handleTap___block_invoke(uint64_t a1, uint
 {
   if (self->_delegateFlags.respondsToViewHostingGestureRecognizers)
   {
-    v3 = [(PUOneUpPresentationHelper *)self delegate];
-    v4 = [v3 oneUpPresentationHelperViewHostingGestureRecognizers:self];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    view = [delegate oneUpPresentationHelperViewHostingGestureRecognizers:self];
   }
 
   else
   {
-    v3 = [(PUOneUpPresentationHelper *)self presentingViewController];
-    if (![v3 isViewLoaded])
+    delegate = [(PUOneUpPresentationHelper *)self presentingViewController];
+    if (![delegate isViewLoaded])
     {
       v5 = 0;
       v6 = 0;
       goto LABEL_9;
     }
 
-    v4 = [v3 view];
+    view = [delegate view];
   }
 
-  v5 = v4;
+  v5 = view;
 
   if (!v5)
   {
@@ -1444,8 +1444,8 @@ void __40__PUOneUpPresentationHelper__handleTap___block_invoke(uint64_t a1, uint
     goto LABEL_10;
   }
 
-  v3 = [(PUOneUpPresentationHelper *)self _tilingView];
-  v6 = v3 != 0;
+  delegate = [(PUOneUpPresentationHelper *)self _tilingView];
+  v6 = delegate != 0;
 LABEL_9:
 
 LABEL_10:
@@ -1454,22 +1454,22 @@ LABEL_10:
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__44889;
   v21 = __Block_byref_object_dispose__44890;
-  v22 = [(PUOneUpPresentationHelper *)self _tapGestureRecognizer];
+  _tapGestureRecognizer = [(PUOneUpPresentationHelper *)self _tapGestureRecognizer];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__PUOneUpPresentationHelper__updateTapGestureRecognizer__block_invoke;
   aBlock[3] = &unk_1E7B7FFC0;
   v7 = v5;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   v14 = v7;
   v8 = _Block_copy(aBlock);
   v9 = v8;
   if (v6)
   {
-    v10 = [v18[5] view];
+    view2 = [v18[5] view];
 
-    if (v10)
+    if (view2)
     {
       v9[2](v9);
     }
@@ -1509,13 +1509,13 @@ uint64_t __56__PUOneUpPresentationHelper__updateTapGestureRecognizer__block_invo
 
 - (id)_newCollapsedLayout
 {
-  v3 = [(PUOneUpPresentationHelper *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v5 = [v4 currentAssetReference];
-  v6 = [v4 assetsDataSource];
-  v7 = [v6 assetReferenceForAssetReference:v5];
-  v8 = [(PUTilingLayout *)[PUSingleAssetLayout alloc] initWithDataSource:v6];
+  currentAssetReference = [viewModel currentAssetReference];
+  assetsDataSource = [viewModel assetsDataSource];
+  v7 = [assetsDataSource assetReferenceForAssetReference:currentAssetReference];
+  v8 = [(PUTilingLayout *)[PUSingleAssetLayout alloc] initWithDataSource:assetsDataSource];
   [(PUSingleAssetLayout *)v8 setAssetReference:v7];
   [(PUOneUpPresentationHelper *)self _updateLayout:v8];
 
@@ -1524,56 +1524,56 @@ uint64_t __56__PUOneUpPresentationHelper__updateTapGestureRecognizer__block_invo
 
 - (int64_t)_currentNavigationControllerOperation
 {
-  v2 = [(PUOneUpPresentationHelper *)self _state];
-  if ((v2 - 1) > 3)
+  _state = [(PUOneUpPresentationHelper *)self _state];
+  if ((_state - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1B3D0D2C8[v2 - 1];
+    return qword_1B3D0D2C8[_state - 1];
   }
 }
 
 - (id)_currentTilingViewControllerTransition
 {
-  v3 = [(PUOneUpPresentationHelper *)self presentingViewController];
-  v4 = [v3 navigationController];
-  v5 = [v4 pu_currentInteractiveTransition];
+  presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+  navigationController = [presentingViewController navigationController];
+  pu_currentInteractiveTransition = [navigationController pu_currentInteractiveTransition];
 
-  if (!v5)
+  if (!pu_currentInteractiveTransition)
   {
-    v6 = [(PUOneUpPresentationHelper *)self presentingViewController];
-    v7 = [v6 presentedViewController];
-    v5 = [v7 pu_modalTransition];
+    presentingViewController2 = [(PUOneUpPresentationHelper *)self presentingViewController];
+    presentedViewController = [presentingViewController2 presentedViewController];
+    pu_currentInteractiveTransition = [presentedViewController pu_modalTransition];
 
-    if (!v5)
+    if (!pu_currentInteractiveTransition)
     {
-      v8 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
-      v9 = [v8 navigationController];
-      v5 = [v9 pu_modalTransition];
+      _oneUpViewController = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+      navigationController2 = [_oneUpViewController navigationController];
+      pu_currentInteractiveTransition = [navigationController2 pu_modalTransition];
     }
   }
 
-  if (([v5 conformsToProtocol:&unk_1F2C96DD8] & 1) == 0)
+  if (([pu_currentInteractiveTransition conformsToProtocol:&unk_1F2C96DD8] & 1) == 0)
   {
 
-    v5 = 0;
+    pu_currentInteractiveTransition = 0;
   }
 
-  return v5;
+  return pu_currentInteractiveTransition;
 }
 
-- (void)_updateLayout:(id)a3
+- (void)_updateLayout:(id)layout
 {
   v76 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  layoutCopy = layout;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v61 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v61 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1368 description:{@"Invalid parameter not satisfying: %@", @"[layout isKindOfClass:[PUSingleAssetLayout class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1368 description:{@"Invalid parameter not satisfying: %@", @"[layout isKindOfClass:[PUSingleAssetLayout class]]"}];
   }
 
   x = *MEMORY[0x1E695F050];
@@ -1588,12 +1588,12 @@ uint64_t __56__PUOneUpPresentationHelper__updateTapGestureRecognizer__block_invo
   __asm { FMOV            V0.2D, #1.0 }
 
   v72 = _Q0;
-  v16 = [v5 assetReference];
-  if (!v16)
+  assetReference = [layoutCopy assetReference];
+  if (!assetReference)
   {
     v20 = 0;
-    v33 = 0;
-    v34 = 0;
+    cornerMask = 0;
+    cornerCurve = 0;
     v35 = 0.0;
     v36 = 1.0;
     v37 = 1.0;
@@ -1602,27 +1602,27 @@ uint64_t __56__PUOneUpPresentationHelper__updateTapGestureRecognizer__block_invo
     goto LABEL_19;
   }
 
-  v17 = [(PUOneUpPresentationHelper *)self assetDisplayDelegate];
+  assetDisplayDelegate = [(PUOneUpPresentationHelper *)self assetDisplayDelegate];
   if ([(PUOneUpPresentationHelper *)self _state]== 4 && self->_assetDisplayDelegateFlags.respondsToScrollAssetReferenceToVisible)
   {
-    [v17 oneUpPresentationHelper:self scrollAssetReferenceToVisible:v16];
+    [assetDisplayDelegate oneUpPresentationHelper:self scrollAssetReferenceToVisible:assetReference];
   }
 
-  v18 = [(PUOneUpPresentationHelper *)self _transitionHostingView];
+  _transitionHostingView = [(PUOneUpPresentationHelper *)self _transitionHostingView];
   if (!self->_assetDisplayDelegateFlags.respondsToRegionOfInterestForAssetReference)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v17 oneUpPresentationHelper:self rectForAssetReference:v16 cropInsets:&v73 contentsRect:&v70];
+      [assetDisplayDelegate oneUpPresentationHelper:self rectForAssetReference:assetReference cropInsets:&v73 contentsRect:&v70];
       x = v40;
       y = v41;
       width = v42;
       height = v43;
     }
 
-    v44 = [(PUOneUpPresentationHelper *)self presentingViewController];
-    v45 = [v44 view];
-    [v18 convertRect:v45 fromCoordinateSpace:{x, y, width, height}];
+    presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+    view = [presentingViewController view];
+    [_transitionHostingView convertRect:view fromCoordinateSpace:{x, y, width, height}];
     v22 = v46;
     v24 = v47;
     v26 = v48;
@@ -1632,11 +1632,11 @@ uint64_t __56__PUOneUpPresentationHelper__updateTapGestureRecognizer__block_invo
     goto LABEL_17;
   }
 
-  v19 = [v17 oneUpPresentationHelper:self regionOfInterestForAssetReference:v16 cropInsets:&v73];
+  v19 = [assetDisplayDelegate oneUpPresentationHelper:self regionOfInterestForAssetReference:assetReference cropInsets:&v73];
   v20 = v19;
   if (v19)
   {
-    [v19 rectInCoordinateSpace:v18];
+    [v19 rectInCoordinateSpace:_transitionHostingView];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -1650,7 +1650,7 @@ uint64_t __56__PUOneUpPresentationHelper__updateTapGestureRecognizer__block_invo
 
   else
   {
-    [v18 bounds];
+    [_transitionHostingView bounds];
     PXPointDenormalize();
     PXRectWithCenterAndSize();
     v22 = v50;
@@ -1659,26 +1659,26 @@ uint64_t __56__PUOneUpPresentationHelper__updateTapGestureRecognizer__block_invo
     v28 = v53;
   }
 
-  v54 = [v20 imageViewSpec];
-  v44 = v54;
-  if (!v54)
+  imageViewSpec = [v20 imageViewSpec];
+  presentingViewController = imageViewSpec;
+  if (!imageViewSpec)
   {
 LABEL_17:
-    v33 = 0;
-    v34 = 0;
+    cornerMask = 0;
+    cornerCurve = 0;
     v39 = 0.0;
     goto LABEL_18;
   }
 
-  [v54 cornerRadius];
+  [imageViewSpec cornerRadius];
   v39 = v55;
-  v34 = [v44 cornerCurve];
-  v33 = [v44 cornerMask];
+  cornerCurve = [presentingViewController cornerCurve];
+  cornerMask = [presentingViewController cornerMask];
 LABEL_18:
 
   memset(&v69, 0, sizeof(v69));
   [(PUOneUpPresentationHelper *)self _tilingViewTransitionTransform];
-  [v18 bounds];
+  [_transitionHostingView bounds];
   v68 = v69;
   v78 = CGRectApplyAffineTransform(v77, &v68);
   CGAffineTransformMakeTranslation(&t2, -v78.origin.x, -v78.origin.y);
@@ -1700,19 +1700,19 @@ LABEL_18:
   v36 = *(&v72 + 1);
   v37 = *&v72;
 LABEL_19:
-  [v5 setContentsRect:{v38, v35, v37, v36}];
-  [v5 setAssetRect:{x, y, width, height}];
-  [v5 setCropInsets:{v73, v74}];
-  [v5 setCornerRadius:v39];
-  [v5 setCornerCurve:v34];
-  [v5 setCornerMask:v33];
+  [layoutCopy setContentsRect:{v38, v35, v37, v36}];
+  [layoutCopy setAssetRect:{x, y, width, height}];
+  [layoutCopy setCropInsets:{v73, v74}];
+  [layoutCopy setCornerRadius:v39];
+  [layoutCopy setCornerCurve:cornerCurve];
+  [layoutCopy setCornerMask:cornerMask];
   [(PUOneUpPresentationHelper *)self setLayoutRegionOfInterest:v20];
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v56 = [v20 containingScrollViews];
-  v57 = [v56 countByEnumeratingWithState:&v62 objects:v75 count:16];
+  containingScrollViews = [v20 containingScrollViews];
+  v57 = [containingScrollViews countByEnumeratingWithState:&v62 objects:v75 count:16];
   if (v57)
   {
     v58 = v57;
@@ -1723,147 +1723,147 @@ LABEL_19:
       {
         if (*v63 != v59)
         {
-          objc_enumerationMutation(v56);
+          objc_enumerationMutation(containingScrollViews);
         }
 
         [*(*(&v62 + 1) + 8 * i) _addScrollViewScrollObserver:self];
       }
 
-      v58 = [v56 countByEnumeratingWithState:&v62 objects:v75 count:16];
+      v58 = [containingScrollViews countByEnumeratingWithState:&v62 objects:v75 count:16];
     }
 
     while (v58);
   }
 }
 
-- (void)_setAssetReferencesDisplayedInTilingView:(id)a3
+- (void)_setAssetReferencesDisplayedInTilingView:(id)view
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->__assetReferencesDisplayedInTilingView != v5)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (self->__assetReferencesDisplayedInTilingView != viewCopy)
   {
-    v8 = v5;
-    v5 = [(NSSet *)v5 isEqualToSet:?];
+    v8 = viewCopy;
+    viewCopy = [(NSSet *)viewCopy isEqualToSet:?];
     v6 = v8;
-    if ((v5 & 1) == 0)
+    if ((viewCopy & 1) == 0)
     {
-      objc_storeStrong(&self->__assetReferencesDisplayedInTilingView, a3);
+      objc_storeStrong(&self->__assetReferencesDisplayedInTilingView, view);
       v6 = v8;
       if (self->_assetDisplayDelegateFlags.respondsToShouldHideAssetReferences)
       {
-        v7 = [(PUOneUpPresentationHelper *)self assetDisplayDelegate];
-        [v7 oneUpPresentationHelper:self shouldHideAssetReferences:v8];
+        assetDisplayDelegate = [(PUOneUpPresentationHelper *)self assetDisplayDelegate];
+        [assetDisplayDelegate oneUpPresentationHelper:self shouldHideAssetReferences:v8];
 
         v6 = v8;
       }
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](viewCopy, v6);
 }
 
-- (void)_setTransitioningTilingView:(id)a3
+- (void)_setTransitioningTilingView:(id)view
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   transitioningTilingView = self->__transitioningTilingView;
-  if (transitioningTilingView != v5)
+  if (transitioningTilingView != viewCopy)
   {
     if (transitioningTilingView)
     {
-      v7 = [(PUTilingView *)transitioningTilingView tileUseDelegate];
+      tileUseDelegate = [(PUTilingView *)transitioningTilingView tileUseDelegate];
 
-      if (v7 != self)
+      if (tileUseDelegate != self)
       {
         v8 = PXAssertGetLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          v9 = [(PUTilingView *)self->__transitioningTilingView tileUseDelegate];
+          tileUseDelegate2 = [(PUTilingView *)self->__transitioningTilingView tileUseDelegate];
           v10 = 138412546;
-          v11 = self;
+          selfCopy = self;
           v12 = 2112;
-          v13 = v9;
+          v13 = tileUseDelegate2;
           _os_log_error_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_ERROR, "currently, only PUOneUpPresentationHelper is expecting to be a tileUseDelegate. self: %@, tilingView's tileUseDelegate: %@", &v10, 0x16u);
         }
       }
     }
 
     [(PUTilingView *)self->__transitioningTilingView setTileUseDelegate:0];
-    objc_storeStrong(&self->__transitioningTilingView, a3);
+    objc_storeStrong(&self->__transitioningTilingView, view);
     [(PUTilingView *)self->__transitioningTilingView setTileUseDelegate:self];
     [(PUOneUpPresentationHelper *)self _updateAssetReferencesDisplayedInTilingView];
   }
 }
 
-- (void)_setOneUpViewController:(id)a3
+- (void)_setOneUpViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   p_oneUpViewController = &self->__oneUpViewController;
-  if (self->__oneUpViewController != v5)
+  if (self->__oneUpViewController != controllerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_oneUpViewController, a3);
-    v7 = [(PUOneUpViewController *)v8 browsingSession];
-    [(PUOneUpPresentationHelper *)self _setBrowsingSession:v7];
+    v8 = controllerCopy;
+    objc_storeStrong(p_oneUpViewController, controller);
+    browsingSession = [(PUOneUpViewController *)v8 browsingSession];
+    [(PUOneUpPresentationHelper *)self _setBrowsingSession:browsingSession];
 
-    v5 = v8;
+    controllerCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](p_oneUpViewController, v5);
+  MEMORY[0x1EEE66BB8](p_oneUpViewController, controllerCopy);
 }
 
-- (void)_setTilingView:(id)a3
+- (void)_setTilingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   tilingView = self->__tilingView;
-  if (tilingView != v5)
+  if (tilingView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PUTilingView *)tilingView setUserInteractionEnabled:1];
     [(PUTilingView *)self->__tilingView setTileSource:0];
     [(PUTilingView *)self->__tilingView setTileTransitionDelegate:0];
-    objc_storeStrong(&self->__tilingView, a3);
+    objc_storeStrong(&self->__tilingView, view);
     [(PUTilingView *)self->__tilingView setUserInteractionEnabled:0];
     [(PUTilingView *)self->__tilingView setTileSource:self];
     [(PUTilingView *)self->__tilingView setTileTransitionDelegate:self];
     tilingView = [(PUOneUpPresentationHelper *)self _updateTapGestureRecognizer];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](tilingView, v5);
+  MEMORY[0x1EEE66BB8](tilingView, viewCopy);
 }
 
 - (void)_ensureRegistrationWithPresentingViewController
 {
-  v3 = [(PUOneUpPresentationHelper *)self presentingViewController];
-  v5 = v3;
-  if (v3)
+  presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+  v5 = presentingViewController;
+  if (presentingViewController)
   {
-    [PUTilingViewTransitionHelper registerTransitionEndPoint:self forViewController:v3];
-    v3 = v5;
+    [PUTilingViewTransitionHelper registerTransitionEndPoint:self forViewController:presentingViewController];
+    presentingViewController = v5;
   }
 
-  v4 = [v3 splitViewController];
-  if (v4)
+  splitViewController = [presentingViewController splitViewController];
+  if (splitViewController)
   {
-    [PUTilingViewTransitionHelper registerTransitionEndPoint:self forViewController:v4];
+    [PUTilingViewTransitionHelper registerTransitionEndPoint:self forViewController:splitViewController];
   }
 }
 
 - (id)_transitionHostingView
 {
-  v3 = [(PUOneUpPresentationHelper *)self presentingViewController];
+  presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
   if ([(PUOneUpPresentationHelper *)self transitionType]== 2)
   {
 LABEL_2:
-    v4 = [v3 viewIfLoaded];
-    v5 = [v4 window];
+    viewIfLoaded = [presentingViewController viewIfLoaded];
+    window = [viewIfLoaded window];
 
     while (1)
     {
-      if ([v3 px_oneUpPresentationStyle] == 1)
+      if ([presentingViewController px_oneUpPresentationStyle] == 1)
       {
-        if (v5)
+        if (window)
         {
           goto LABEL_15;
         }
@@ -1876,40 +1876,40 @@ LABEL_2:
         }
       }
 
-      v7 = [v3 parentViewController];
-      if (!v7)
+      parentViewController = [presentingViewController parentViewController];
+      if (!parentViewController)
       {
-        if ([v3 modalPresentationStyle] != 3)
+        if ([presentingViewController modalPresentationStyle] != 3)
         {
           break;
         }
 
-        v7 = [v3 presentingViewController];
-        if (!v7)
+        parentViewController = [presentingViewController presentingViewController];
+        if (!parentViewController)
         {
           break;
         }
       }
 
-      v8 = v7;
+      v8 = parentViewController;
 
-      v3 = v8;
-      if (!v5)
+      presentingViewController = v8;
+      if (!window)
       {
         goto LABEL_2;
       }
     }
   }
 
-  v5 = [v3 view];
+  window = [presentingViewController view];
 LABEL_15:
 
-  return v5;
+  return window;
 }
 
-- (void)_presentationEndDidTimeOut:(int64_t)a3
+- (void)_presentationEndDidTimeOut:(int64_t)out
 {
-  if ([(PUOneUpPresentationHelper *)self _presentationEndTimeoutIdentifier]== a3)
+  if ([(PUOneUpPresentationHelper *)self _presentationEndTimeoutIdentifier]== out)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"One-up presentation took too long to end, this shouldn't happen. (state = %li)", -[PUOneUpPresentationHelper _state](self, "_state")];
     PLSimulateCrash();
@@ -1918,36 +1918,36 @@ LABEL_15:
   }
 }
 
-- (void)_setShouldPauseLibraryChanges:(BOOL)a3
+- (void)_setShouldPauseLibraryChanges:(BOOL)changes
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->__shouldPauseLibraryChanges != a3)
+  if (self->__shouldPauseLibraryChanges != changes)
   {
-    v3 = a3;
-    self->__shouldPauseLibraryChanges = a3;
-    v5 = [(PUOneUpPresentationHelper *)self libraryChangePauseToken];
+    changesCopy = changes;
+    self->__shouldPauseLibraryChanges = changes;
+    libraryChangePauseToken = [(PUOneUpPresentationHelper *)self libraryChangePauseToken];
 
-    if (v5)
+    if (libraryChangePauseToken)
     {
-      v6 = [(PUOneUpPresentationHelper *)self pausedPhotoLibrary];
-      v7 = [(PUOneUpPresentationHelper *)self libraryChangePauseToken];
-      [v6 px_endPausingChanges:v7];
+      pausedPhotoLibrary = [(PUOneUpPresentationHelper *)self pausedPhotoLibrary];
+      libraryChangePauseToken2 = [(PUOneUpPresentationHelper *)self libraryChangePauseToken];
+      [pausedPhotoLibrary px_endPausingChanges:libraryChangePauseToken2];
 
       [(PUOneUpPresentationHelper *)self setPausedPhotoLibrary:0];
       [(PUOneUpPresentationHelper *)self setLibraryChangePauseToken:0];
     }
 
-    if (v3)
+    if (changesCopy)
     {
-      v8 = [(PUOneUpPresentationHelper *)self browsingSession];
-      v9 = [v8 viewModel];
-      v10 = [v9 currentAssetReference];
-      v11 = [v10 asset];
+      browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+      viewModel = [browsingSession viewModel];
+      currentAssetReference = [viewModel currentAssetReference];
+      asset = [currentAssetReference asset];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v11;
+        v12 = asset;
       }
 
       else
@@ -1956,11 +1956,11 @@ LABEL_15:
       }
 
       v13 = v12;
-      v14 = [v13 photoLibrary];
-      v15 = v14;
-      if (v14)
+      photoLibrary = [v13 photoLibrary];
+      v15 = photoLibrary;
+      if (photoLibrary)
       {
-        v16 = [v14 px_beginPausingChangesWithTimeout:@"PUOneUpPresentationHelper" identifier:30.0];
+        v16 = [photoLibrary px_beginPausingChangesWithTimeout:@"PUOneUpPresentationHelper" identifier:30.0];
         [(PUOneUpPresentationHelper *)self setLibraryChangePauseToken:v16];
 
         [(PUOneUpPresentationHelper *)self setPausedPhotoLibrary:v15];
@@ -1972,7 +1972,7 @@ LABEL_15:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138412290;
-          v19 = v11;
+          v19 = asset;
           _os_log_impl(&dword_1B36F3000, v17, OS_LOG_TYPE_DEFAULT, "_setShouldPauseLibraryChanges:YES called, but no PhotoLibrary available for displayAsset: %@", &v18, 0xCu);
         }
       }
@@ -1980,17 +1980,17 @@ LABEL_15:
   }
 }
 
-- (void)_setEndingPresentation:(BOOL)a3
+- (void)_setEndingPresentation:(BOOL)presentation
 {
-  if (self->__isEndingPresentation != a3)
+  if (self->__isEndingPresentation != presentation)
   {
     v11[5] = v3;
     v11[6] = v4;
-    v5 = a3;
-    self->__isEndingPresentation = a3;
+    presentationCopy = presentation;
+    self->__isEndingPresentation = presentation;
     v7 = ([(PUOneUpPresentationHelper *)self _presentationEndTimeoutIdentifier]+ 1);
     [(PUOneUpPresentationHelper *)self _setPresentationEndTimeoutIdentifier:v7];
-    if (v5)
+    if (presentationCopy)
     {
       objc_initWeak(v11, self);
       v8 = dispatch_time(0, 5000000000);
@@ -2035,32 +2035,32 @@ void __52__PUOneUpPresentationHelper__setEndingPresentation___block_invoke_2(uin
   }
 }
 
-- (void)_throwOnSetStateFromIdleToTransitioningToOneUp:(int64_t)a3
+- (void)_throwOnSetStateFromIdleToTransitioningToOneUp:(int64_t)up
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->__state];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v8 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1185 description:{@"invalid one-up presentation helper state transition: %@ -> %@", v6, v7}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:up];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1185 description:{@"invalid one-up presentation helper state transition: %@ -> %@", v6, v7}];
 }
 
-- (void)_throwOnSetStateFromTransitionedToOneUpToPreparingTransitionToOneUp:(int64_t)a3
+- (void)_throwOnSetStateFromTransitionedToOneUpToPreparingTransitionToOneUp:(int64_t)up
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->__state];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v8 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1181 description:{@"invalid one-up presentation helper state transition: %@ -> %@", v6, v7}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:up];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1181 description:{@"invalid one-up presentation helper state transition: %@ -> %@", v6, v7}];
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
   v35 = *MEMORY[0x1E69E9840];
   state = self->__state;
-  if (state == a3)
+  if (state == state)
   {
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(&v5->super, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:state];
       *buf = 138412290;
       v32 = v6;
       _os_log_impl(&dword_1B36F3000, &v5->super, OS_LOG_TYPE_DEFAULT, "Attempting to set state with same value: %@", buf, 0xCu);
@@ -2069,7 +2069,7 @@ void __52__PUOneUpPresentationHelper__setEndingPresentation___block_invoke_2(uin
     goto LABEL_59;
   }
 
-  switch(a3)
+  switch(state)
   {
     case 1:
       v9 = PLOneUpGetLog();
@@ -2108,12 +2108,12 @@ LABEL_12:
     {
       if (state != 2)
       {
-        if (a3 == 4)
+        if (state == 4)
         {
           goto LABEL_42;
         }
 
-        if (a3 == 1)
+        if (state == 1)
         {
           [(PUOneUpPresentationHelper *)self _throwOnSetStateFromTransitionedToOneUpToPreparingTransitionToOneUp:1];
         }
@@ -2121,7 +2121,7 @@ LABEL_12:
         goto LABEL_41;
       }
 
-      if ((a3 - 3) < 2)
+      if ((state - 3) < 2)
       {
         goto LABEL_42;
       }
@@ -2131,7 +2131,7 @@ LABEL_12:
 
     if (state)
     {
-      if (state == 1 && (a3 & 0xFFFFFFFFFFFFFFFBLL) == 2)
+      if (state == 1 && (state & 0xFFFFFFFFFFFFFFFBLL) == 2)
       {
         goto LABEL_42;
       }
@@ -2139,16 +2139,16 @@ LABEL_12:
       goto LABEL_37;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
       goto LABEL_42;
     }
 
 LABEL_41:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:self->__state];
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1116 description:{@"invalid one-up presentation helper state transition: %@ -> %@", v13, v14}];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1116 description:{@"invalid one-up presentation helper state transition: %@ -> %@", v13, v14}];
 
     goto LABEL_42;
   }
@@ -2157,7 +2157,7 @@ LABEL_41:
   {
     if (state == 6)
     {
-      if (a3 < 2)
+      if (state < 2)
       {
         goto LABEL_42;
       }
@@ -2175,10 +2175,10 @@ LABEL_41:
 
   if (state == 4)
   {
-    if (a3 != 2 && a3 != 5)
+    if (state != 2 && state != 5)
     {
 LABEL_37:
-      if (!a3 && state == 2)
+      if (!state && state == 2)
       {
         [(PUOneUpPresentationHelper *)self _throwOnSetStateFromIdleToTransitioningToOneUp:0];
       }
@@ -2187,7 +2187,7 @@ LABEL_37:
     }
   }
 
-  else if (a3 > 6 || ((1 << a3) & 0x46) == 0)
+  else if (state > 6 || ((1 << state) & 0x46) == 0)
   {
     goto LABEL_41;
   }
@@ -2197,7 +2197,7 @@ LABEL_42:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = [MEMORY[0x1E696AD98] numberWithInteger:self->__state];
-    v17 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v17 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     *buf = 138412546;
     v32 = v16;
     v33 = 2112;
@@ -2206,20 +2206,20 @@ LABEL_42:
   }
 
   v18 = 0;
-  self->__state = a3;
-  if (a3 <= 4 && ((1 << a3) & 0x16) != 0)
+  self->__state = state;
+  if (state <= 4 && ((1 << state) & 0x16) != 0)
   {
     v18 = [(PUOneUpPresentationHelper *)self _isPerformingNonAnimatedPush]^ 1;
   }
 
   [(PUOneUpPresentationHelper *)self _setShouldPauseLibraryChanges:v18];
   v5 = self->_browsingSession;
-  v19 = [(PUBrowsingSession *)v5 viewModel];
+  viewModel = [(PUBrowsingSession *)v5 viewModel];
   if (![(PUOneUpPresentationHelper *)self isOneUpPresented])
   {
-    v21 = [(PUOneUpPresentationHelper *)self _state];
-    v22 = !self->_delegateFlags.respondsToShouldAllowVideoContentDuringTransitions && v21 == 5;
-    if (!self->_delegateFlags.respondsToShouldAllowVideoContentDuringTransitions || v21 != 5)
+    _state = [(PUOneUpPresentationHelper *)self _state];
+    v22 = !self->_delegateFlags.respondsToShouldAllowVideoContentDuringTransitions && _state == 5;
+    if (!self->_delegateFlags.respondsToShouldAllowVideoContentDuringTransitions || _state != 5)
     {
 LABEL_53:
       v24 = PFIsCamera();
@@ -2233,8 +2233,8 @@ LABEL_53:
     }
 
 LABEL_52:
-    v23 = [(PUOneUpPresentationHelper *)self delegate];
-    v22 = [v23 oneUpPresentationHelperShouldAllowVideoContentDuringTransitions:self];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    v22 = [delegate oneUpPresentationHelperShouldAllowVideoContentDuringTransitions:self];
 
     goto LABEL_53;
   }
@@ -2251,7 +2251,7 @@ LABEL_56:
   v27[1] = 3221225472;
   v27[2] = __39__PUOneUpPresentationHelper__setState___block_invoke;
   v27[3] = &unk_1E7B7DF20;
-  v25 = v19;
+  v25 = viewModel;
   v28 = v25;
   v29 = v20 & 1;
   v30 = v18;
@@ -2259,8 +2259,8 @@ LABEL_56:
   [(PUOneUpPresentationHelper *)self _setEndingPresentation:(self->__state - 5) < 3];
   if (self->_delegateFlags.respondsToStateDidChange)
   {
-    v26 = [(PUOneUpPresentationHelper *)self delegate];
-    [v26 oneUpPresentationHelperStateDidChange:self];
+    delegate2 = [(PUOneUpPresentationHelper *)self delegate];
+    [delegate2 oneUpPresentationHelperStateDidChange:self];
   }
 
 LABEL_59:
@@ -2276,18 +2276,18 @@ uint64_t __39__PUOneUpPresentationHelper__setState___block_invoke(uint64_t a1)
   return [v2 setAnimating:v3 transitionWithIdentifier:@"OneUp"];
 }
 
-- (BOOL)_handleInteractivePresentationWithBlock:(id)a3
+- (BOOL)_handleInteractivePresentationWithBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(PUOneUpPresentationHelper *)self _currentTilingViewControllerTransition];
-  v7 = v6;
-  if (v6 && [v6 isTransitionPaused])
+  blockCopy = block;
+  _currentTilingViewControllerTransition = [(PUOneUpPresentationHelper *)self _currentTilingViewControllerTransition];
+  v7 = _currentTilingViewControllerTransition;
+  if (_currentTilingViewControllerTransition && [_currentTilingViewControllerTransition isTransitionPaused])
   {
-    v8 = [(PUOneUpPresentationHelper *)self _transitioningTilingView];
-    if (!v8)
+    _transitioningTilingView = [(PUOneUpPresentationHelper *)self _transitioningTilingView];
+    if (!_transitioningTilingView)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1032 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:1032 description:{@"Invalid parameter not satisfying: %@", @"tilingView != nil"}];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -2304,7 +2304,7 @@ uint64_t __39__PUOneUpPresentationHelper__setState___block_invoke(uint64_t a1)
     v14[4] = self;
     v15 = v9;
     v11 = _Block_copy(v14);
-    v5[2](v5, v8, v10, v11);
+    blockCopy[2](blockCopy, _transitioningTilingView, v10, v11);
   }
 
   return v7 != 0;
@@ -2327,16 +2327,16 @@ uint64_t __69__PUOneUpPresentationHelper__handleInteractivePresentationWithBlock
   return [*(a1 + 40) resumeTransition:a2];
 }
 
-- (BOOL)handlePresentingPanGestureRecognizer:(id)a3
+- (BOOL)handlePresentingPanGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PUOneUpPresentationHelper_handlePresentingPanGestureRecognizer___block_invoke;
   v7[3] = &unk_1E7B79CD8;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = recognizerCopy;
+  v5 = recognizerCopy;
   LOBYTE(self) = [(PUOneUpPresentationHelper *)self _handleInteractivePresentationWithBlock:v7];
 
   return self;
@@ -2381,16 +2381,16 @@ void __66__PUOneUpPresentationHelper_handlePresentingPanGestureRecognizer___bloc
   }
 }
 
-- (BOOL)handlePresentingPinchGestureRecognizer:(id)a3
+- (BOOL)handlePresentingPinchGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__PUOneUpPresentationHelper_handlePresentingPinchGestureRecognizer___block_invoke;
   v7[3] = &unk_1E7B79CD8;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = recognizerCopy;
+  v5 = recognizerCopy;
   LOBYTE(self) = [(PUOneUpPresentationHelper *)self _handleInteractivePresentationWithBlock:v7];
 
   return self;
@@ -2423,7 +2423,7 @@ void __68__PUOneUpPresentationHelper_handlePresentingPinchGestureRecognizer___bl
   }
 }
 
-- (void)presentingViewControllerViewDidDisappear:(BOOL)a3
+- (void)presentingViewControllerViewDidDisappear:(BOOL)disappear
 {
   [(PUOneUpPresentationHelper *)self _setTransitioningTilingView:0];
   if ([(PUOneUpPresentationHelper *)self _state]== 2)
@@ -2434,7 +2434,7 @@ void __68__PUOneUpPresentationHelper_handlePresentingPinchGestureRecognizer___bl
   self->_isPresentingViewControllerAppearingWithIdleState = 0;
 }
 
-- (void)presentingViewControllerViewWillDisappear:(BOOL)a3
+- (void)presentingViewControllerViewWillDisappear:(BOOL)disappear
 {
   if ([(PUOneUpPresentationHelper *)self _isEndingPresentation])
   {
@@ -2444,36 +2444,36 @@ void __68__PUOneUpPresentationHelper_handlePresentingPinchGestureRecognizer___bl
   self->_isPresentingViewControllerAppearingWithIdleState = 0;
 }
 
-- (void)presentingViewControllerViewWillAppear:(BOOL)a3
+- (void)presentingViewControllerViewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(PUOneUpPresentationHelper *)self _state];
-  if (v3)
+  appearCopy = appear;
+  _state = [(PUOneUpPresentationHelper *)self _state];
+  if (appearCopy)
   {
-    v6 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
-    v7 = [v6 pu_navigationTransition];
-    v8 = [v6 navigationController];
-    v9 = [v8 pu_currentNavigationTransition];
+    _oneUpViewController = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+    pu_navigationTransition = [_oneUpViewController pu_navigationTransition];
+    navigationController = [_oneUpViewController navigationController];
+    pu_currentNavigationTransition = [navigationController pu_currentNavigationTransition];
 
-    if (v7 != v9)
+    if (pu_navigationTransition != pu_currentNavigationTransition)
     {
       [(PUOneUpPresentationHelper *)self _setAssetReferencesDisplayedInTilingView:0];
     }
 
-    if (v5 == 3)
+    if (_state == 3)
     {
-      v10 = [(PUOneUpPresentationHelper *)self _presentationOrigin];
-      [MEMORY[0x1E69C3338] transitionPreparationDidBegin:2 fromOrigin:v10 transitionObject:self];
+      _presentationOrigin = [(PUOneUpPresentationHelper *)self _presentationOrigin];
+      [MEMORY[0x1E69C3338] transitionPreparationDidBegin:2 fromOrigin:_presentationOrigin transitionObject:self];
     }
   }
 
-  self->_isPresentingViewControllerAppearingWithIdleState = v5 == 0;
+  self->_isPresentingViewControllerAppearingWithIdleState = _state == 0;
 }
 
 - (void)_cleanupOneUpViewControllerForDismissalIfNeeded
 {
-  v3 = [(PUOneUpPresentationHelper *)self _state];
-  if ((v3 - 2) < 3)
+  _state = [(PUOneUpPresentationHelper *)self _state];
+  if ((_state - 2) < 3)
   {
     [(PUOneUpPresentationHelper *)self _setState:4];
     [(PUOneUpPresentationHelper *)self _setState:5];
@@ -2482,12 +2482,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v3 == 5)
+  if (_state == 5)
   {
     goto LABEL_8;
   }
 
-  if (v3 == 1)
+  if (_state == 1)
   {
     v4 = PLOneUpGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2508,11 +2508,11 @@ LABEL_8:
   }
 
 LABEL_9:
-  v5 = [(PUOneUpPresentationHelper *)self _disappearingTilingView];
-  v6 = v5;
-  if (v5)
+  _disappearingTilingView = [(PUOneUpPresentationHelper *)self _disappearingTilingView];
+  v6 = _disappearingTilingView;
+  if (_disappearingTilingView)
   {
-    [v5 removeFromSuperview];
+    [_disappearingTilingView removeFromSuperview];
     [(PUOneUpPresentationHelper *)self _disappearingTilingView:v6 animationCompleted:1];
   }
 }
@@ -2523,28 +2523,28 @@ void __76__PUOneUpPresentationHelper__cleanupOneUpViewControllerForDismissalIfNe
   [WeakRetained _cleanupOneUpViewControllerForDismissalIfNeeded];
 }
 
-- (BOOL)dismissOneUpViewControllerForced:(BOOL)a3 animated:(BOOL)a4
+- (BOOL)dismissOneUpViewControllerForced:(BOOL)forced animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  forcedCopy = forced;
   v26 = *MEMORY[0x1E69E9840];
-  v8 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
-  if (!v8)
+  _oneUpViewController = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+  if (!_oneUpViewController)
   {
     goto LABEL_28;
   }
 
-  v9 = [(PUOneUpPresentationHelper *)self _prepareDismissalForced:v5];
-  if (v5 || v9)
+  v9 = [(PUOneUpPresentationHelper *)self _prepareDismissalForced:forcedCopy];
+  if (forcedCopy || v9)
   {
-    if (!v4)
+    if (!animatedCopy)
     {
       [(PUOneUpPresentationHelper *)self _cleanupOneUpViewControllerForDismissalIfNeeded];
     }
 
-    v11 = [(PUOneUpPresentationHelper *)self presentingViewController];
-    v12 = [v11 navigationController];
-    if (v12)
+    presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+    navigationController = [presentingViewController navigationController];
+    if (navigationController)
     {
       v13 = 1;
     }
@@ -2554,9 +2554,9 @@ void __76__PUOneUpPresentationHelper__cleanupOneUpViewControllerForDismissalIfNe
       v13 = 2;
     }
 
-    v14 = [v11 px_splitViewController];
+    px_splitViewController = [presentingViewController px_splitViewController];
 
-    if (v14)
+    if (px_splitViewController)
     {
       v15 = 2;
     }
@@ -2568,41 +2568,41 @@ void __76__PUOneUpPresentationHelper__cleanupOneUpViewControllerForDismissalIfNe
 
     if (self->_delegateFlags.respondsToTransitionTypeWithProposedTransitionType)
     {
-      v16 = [(PUOneUpPresentationHelper *)self delegate];
-      v15 = [v16 oneUpPresentationHelper:self transitionTypeWithProposedTransitionType:v15];
+      delegate = [(PUOneUpPresentationHelper *)self delegate];
+      v15 = [delegate oneUpPresentationHelper:self transitionTypeWithProposedTransitionType:v15];
     }
 
     if (v15 == 2)
     {
-      [v11 pu_dismissViewControllerAnimated:v4 interactive:0 completion:0];
+      [presentingViewController pu_dismissViewControllerAnimated:animatedCopy interactive:0 completion:0];
       goto LABEL_27;
     }
 
     if (v15 == 1)
     {
-      if (!v12)
+      if (!navigationController)
       {
-        v21 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v21 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:848 description:{@"Invalid parameter not satisfying: %@", @"navigationController != nil"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:848 description:{@"Invalid parameter not satisfying: %@", @"navigationController != nil"}];
       }
 
-      v18 = [v12 topViewController];
+      topViewController = [navigationController topViewController];
 
-      if (v18 == v8)
+      if (topViewController == _oneUpViewController)
       {
-        [v12 pu_popViewControllerAnimated:v4 interactive:0];
+        [navigationController pu_popViewControllerAnimated:animatedCopy interactive:0];
         goto LABEL_27;
       }
 
-      v17 = PLUIGetLog();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      currentHandler2 = PLUIGetLog();
+      if (os_log_type_enabled(currentHandler2, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v12 childViewControllers];
+        childViewControllers = [navigationController childViewControllers];
         *buf = 138412546;
-        v23 = v8;
+        v23 = _oneUpViewController;
         v24 = 2112;
-        v25 = v19;
-        _os_log_impl(&dword_1B36F3000, v17, OS_LOG_TYPE_DEFAULT, "attempting to pop oneUpViewController:%@ that isn't part of the navigation controller's children:%@", buf, 0x16u);
+        v25 = childViewControllers;
+        _os_log_impl(&dword_1B36F3000, currentHandler2, OS_LOG_TYPE_DEFAULT, "attempting to pop oneUpViewController:%@ that isn't part of the navigation controller's children:%@", buf, 0x16u);
       }
     }
 
@@ -2617,8 +2617,8 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:844 description:@"undefined transition type"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:844 description:@"undefined transition type"];
     }
 
     goto LABEL_27;
@@ -2630,19 +2630,19 @@ LABEL_29:
   return v10;
 }
 
-- (BOOL)_prepareDismissalForced:(BOOL)a3
+- (BOOL)_prepareDismissalForced:(BOOL)forced
 {
-  v3 = a3;
-  v4 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
-  v5 = v4;
-  if (v4)
+  forcedCopy = forced;
+  _oneUpViewController = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+  v5 = _oneUpViewController;
+  if (_oneUpViewController)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __53__PUOneUpPresentationHelper__prepareDismissalForced___block_invoke;
     v11[3] = &__block_descriptor_33_e26_B16__0__UIViewController_8l;
-    v12 = v3;
-    v6 = [v4 pl_visitControllerHierarchyWithBlock:v11];
+    v12 = forcedCopy;
+    v6 = [_oneUpViewController pl_visitControllerHierarchyWithBlock:v11];
     if ([v5 conformsToProtocol:&unk_1F2C4EA78])
     {
       v7 = [v5 overOneUpPresentationSessionCreateIfNeeded:0];
@@ -2650,7 +2650,7 @@ LABEL_29:
       v9 = (v7 == 0) & v6;
       if (v7 && ((v6 ^ 1) & 1) == 0)
       {
-        v9 = [v7 prepareForDismissingForced:v3];
+        v9 = [v7 prepareForDismissingForced:forcedCopy];
       }
 
       LOBYTE(v6) = v9;
@@ -2681,37 +2681,37 @@ uint64_t __53__PUOneUpPresentationHelper__prepareDismissalForced___block_invoke(
   return v4;
 }
 
-- (void)presentOneUpViewControllerFromAssetAtIndexPath:(id)a3 animated:(BOOL)a4 interactiveMode:(int64_t)a5 activity:(unint64_t)a6 isNavigationSourceWidget:(BOOL)a7 editActivityCompletion:(id)a8
+- (void)presentOneUpViewControllerFromAssetAtIndexPath:(id)path animated:(BOOL)animated interactiveMode:(int64_t)mode activity:(unint64_t)activity isNavigationSourceWidget:(BOOL)widget editActivityCompletion:(id)completion
 {
-  v9 = a7;
-  v12 = a4;
-  v14 = a3;
-  v15 = a8;
-  v16 = [(PUOneUpPresentationHelper *)self browsingSession];
-  v17 = [v16 viewModel];
+  widgetCopy = widget;
+  animatedCopy = animated;
+  pathCopy = path;
+  completionCopy = completion;
+  browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+  viewModel = [browsingSession viewModel];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __158__PUOneUpPresentationHelper_presentOneUpViewControllerFromAssetAtIndexPath_animated_interactiveMode_activity_isNavigationSourceWidget_editActivityCompletion___block_invoke;
   v19[3] = &unk_1E7B80DD0;
-  v20 = v17;
-  v18 = v17;
+  v20 = viewModel;
+  v18 = viewModel;
   [v18 performChanges:v19];
-  if (v14)
+  if (pathCopy)
   {
-    [(PUOneUpPresentationHelper *)self _navigateToAssetAtIndexPath:v14 inBrowsingSession:v16 isNavigationSourceWidget:v9];
+    [(PUOneUpPresentationHelper *)self _navigateToAssetAtIndexPath:pathCopy inBrowsingSession:browsingSession isNavigationSourceWidget:widgetCopy];
   }
 
-  [(PUOneUpPresentationHelper *)self presentOneUpViewControllerAnimated:v12 interactiveMode:a5 activity:a6 editActivityCompletion:v15];
+  [(PUOneUpPresentationHelper *)self presentOneUpViewControllerAnimated:animatedCopy interactiveMode:mode activity:activity editActivityCompletion:completionCopy];
 }
 
-- (void)presentOneUpViewControllerAnimated:(BOOL)a3 interactiveMode:(int64_t)a4 activity:(unint64_t)a5 editActivityCompletion:(id)a6
+- (void)presentOneUpViewControllerAnimated:(BOOL)animated interactiveMode:(int64_t)mode activity:(unint64_t)activity editActivityCompletion:(id)completion
 {
-  v8 = a3;
-  v10 = a6;
-  if ([(PUOneUpPresentationHelper *)self canPresentOneUpViewControllerAnimated:v8])
+  animatedCopy = animated;
+  completionCopy = completion;
+  if ([(PUOneUpPresentationHelper *)self canPresentOneUpViewControllerAnimated:animatedCopy])
   {
-    v11 = [(PUOneUpPresentationHelper *)self delegate];
-    v12 = [v11 oneUpPresentationOrigin:self];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    v12 = [delegate oneUpPresentationOrigin:self];
 
     [(PUOneUpPresentationHelper *)self set_presentationOrigin:v12];
     [MEMORY[0x1E69C3338] transitionPreparationDidBegin:1 fromOrigin:v12 transitionObject:self];
@@ -2723,18 +2723,18 @@ uint64_t __53__PUOneUpPresentationHelper__prepareDismissalForced___block_invoke(
     v66[4] = self;
     v66[5] = v12;
     [v13 installCACommitCompletionBlock:v66];
-    v14 = [(PUOneUpPresentationHelper *)self _disappearingTilingView];
+    _disappearingTilingView = [(PUOneUpPresentationHelper *)self _disappearingTilingView];
 
-    if (v14)
+    if (_disappearingTilingView)
     {
-      v15 = [(PUOneUpPresentationHelper *)self _disappearingTilingView];
-      [v15 removeFromSuperview];
+      _disappearingTilingView2 = [(PUOneUpPresentationHelper *)self _disappearingTilingView];
+      [_disappearingTilingView2 removeFromSuperview];
 
       [(PUOneUpPresentationHelper *)self _setDisappearingTilingView:0];
     }
 
-    v55 = a5;
-    v56 = a4;
+    activityCopy = activity;
+    modeCopy = mode;
     v16 = PLOneUpGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -2743,25 +2743,25 @@ uint64_t __53__PUOneUpPresentationHelper__prepareDismissalForced___block_invoke(
     }
 
     [(PUOneUpPresentationHelper *)self _setState:1];
-    v17 = [(PUOneUpPresentationHelper *)self browsingSession];
-    v18 = [(PUOneUpPresentationHelper *)self _oneUpViewController];
-    v19 = [(PUOneUpPresentationHelper *)self presentingViewController];
+    browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+    _oneUpViewController = [(PUOneUpPresentationHelper *)self _oneUpViewController];
+    presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
     [(PUOneUpPresentationHelper *)self _ensureRegistrationWithPresentingViewController];
-    v20 = [v17 viewModel];
+    viewModel = [browsingSession viewModel];
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
     v63[2] = __112__PUOneUpPresentationHelper_presentOneUpViewControllerAnimated_interactiveMode_activity_editActivityCompletion___block_invoke_322;
     v63[3] = &unk_1E7B80C38;
-    v21 = v20;
+    v21 = viewModel;
     v64 = v21;
-    v22 = v17;
+    v22 = browsingSession;
     v65 = v22;
     [v21 performChanges:v63];
-    v23 = [(PUOneUpPresentationHelper *)self _tilingView];
+    _tilingView = [(PUOneUpPresentationHelper *)self _tilingView];
     if (self->_delegateFlags.respondsToAdditionalOptions)
     {
-      v24 = [(PUOneUpPresentationHelper *)self delegate];
-      v25 = [v24 oneUpPresentationHelperAdditionalOptions:self];
+      delegate2 = [(PUOneUpPresentationHelper *)self delegate];
+      v25 = [delegate2 oneUpPresentationHelperAdditionalOptions:self];
     }
 
     else
@@ -2771,16 +2771,16 @@ uint64_t __53__PUOneUpPresentationHelper__prepareDismissalForced___block_invoke(
 
     if (self->_delegateFlags.respondsToShouldLeaveContentOnSecondScreen)
     {
-      v26 = [(PUOneUpPresentationHelper *)self delegate];
+      delegate3 = [(PUOneUpPresentationHelper *)self delegate];
       v52 = v21;
       v27 = v22;
-      v28 = v10;
-      v29 = v19;
-      v30 = [v26 oneUpPresentationHelperShouldLeaveContentOnSecondScreen:self];
+      v28 = completionCopy;
+      v29 = presentingViewController;
+      v30 = [delegate3 oneUpPresentationHelperShouldLeaveContentOnSecondScreen:self];
 
       v31 = v30 == 0;
-      v19 = v29;
-      v10 = v28;
+      presentingViewController = v29;
+      completionCopy = v28;
       v22 = v27;
       v21 = v52;
       if (!v31)
@@ -2789,28 +2789,28 @@ uint64_t __53__PUOneUpPresentationHelper__prepareDismissalForced___block_invoke(
       }
     }
 
-    if (v8 || v18)
+    if (animatedCopy || _oneUpViewController)
     {
-      v33 = [(PUOneUpPresentationHelper *)self _newCollapsedLayout];
-      v54 = v19;
-      if (v23)
+      _newCollapsedLayout = [(PUOneUpPresentationHelper *)self _newCollapsedLayout];
+      v54 = presentingViewController;
+      if (_tilingView)
       {
-        v34 = [(PUTilingView *)v23 tileTransitionDelegate];
-        if (!v8)
+        tileTransitionDelegate = [(PUTilingView *)_tilingView tileTransitionDelegate];
+        if (!animatedCopy)
         {
-          [(PUTilingView *)v23 setTileTransitionDelegate:0];
+          [(PUTilingView *)_tilingView setTileTransitionDelegate:0];
         }
 
-        [(PUTilingView *)v23 transitionToLayout:v33];
-        [(PUTilingView *)v23 layoutIfNeeded];
-        [(PUTilingView *)v23 setTileTransitionDelegate:v34];
+        [(PUTilingView *)_tilingView transitionToLayout:_newCollapsedLayout];
+        [(PUTilingView *)_tilingView layoutIfNeeded];
+        [(PUTilingView *)_tilingView setTileTransitionDelegate:tileTransitionDelegate];
       }
 
       else
       {
-        v34 = [v19 view];
-        v35 = [(PUOneUpPresentationHelper *)self _transitionHostingView];
-        [v35 bounds];
+        tileTransitionDelegate = [presentingViewController view];
+        _transitionHostingView = [(PUOneUpPresentationHelper *)self _transitionHostingView];
+        [_transitionHostingView bounds];
         v37 = v36;
         v39 = v38;
         v41 = v40;
@@ -2837,67 +2837,67 @@ uint64_t __53__PUOneUpPresentationHelper__prepareDismissalForced___block_invoke(
         v69.size.width = v41;
         v69.size.height = v43;
         v70 = CGRectApplyAffineTransform(v69, &v58);
-        [v34 convertRect:v35 fromCoordinateSpace:{v70.origin.x, v70.origin.y, v70.size.width, v70.size.height}];
-        v53 = v33;
-        v23 = [[PUTilingView alloc] initWithFrame:v33 layout:v44, v45, v46, v47];
+        [tileTransitionDelegate convertRect:_transitionHostingView fromCoordinateSpace:{v70.origin.x, v70.origin.y, v70.size.width, v70.size.height}];
+        v53 = _newCollapsedLayout;
+        _tilingView = [[PUTilingView alloc] initWithFrame:_newCollapsedLayout layout:v44, v45, v46, v47];
         v57 = buf;
         CGAffineTransformInvert(&v58, &v57);
-        [(PUTilingView *)v23 setTransform:&v58];
+        [(PUTilingView *)_tilingView setTransform:&v58];
         if ((v25 & 0x10000) != 0)
         {
           [(PUOneUpPresentationHelper *)self presentingViewController];
-          v48 = v51 = v35;
-          v49 = [v48 traitCollection];
-          -[PUTilingView setOverrideUserInterfaceStyle:](v23, "setOverrideUserInterfaceStyle:", [v49 userInterfaceStyle]);
+          v48 = v51 = _transitionHostingView;
+          traitCollection = [v48 traitCollection];
+          -[PUTilingView setOverrideUserInterfaceStyle:](_tilingView, "setOverrideUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
 
-          v35 = v51;
+          _transitionHostingView = v51;
         }
 
         if ((v25 & 2) == 0)
         {
-          [(PUTilingView *)v23 configureDynamicRangeProperties];
+          [(PUTilingView *)_tilingView configureDynamicRangeProperties];
         }
 
-        [v34 addSubview:v23];
-        v50 = [(PUOneUpPresentationHelper *)self browsingSession];
-        [v50 configureTilingView:v23];
-        [(PUOneUpPresentationHelper *)self _setTilingView:v23];
-        [(PUOneUpPresentationHelper *)self _setTransitioningTilingView:v23];
+        [tileTransitionDelegate addSubview:_tilingView];
+        browsingSession2 = [(PUOneUpPresentationHelper *)self browsingSession];
+        [browsingSession2 configureTilingView:_tilingView];
+        [(PUOneUpPresentationHelper *)self _setTilingView:_tilingView];
+        [(PUOneUpPresentationHelper *)self _setTransitioningTilingView:_tilingView];
 
-        v33 = v53;
+        _newCollapsedLayout = v53;
       }
 
-      if (!v18)
+      if (!_oneUpViewController)
       {
-        v18 = [(PUOneUpPresentationHelper *)self _createOneUpViewControllerWithBrowsingSession:v22 options:v25 | 1 activity:v55 editActivityCompletion:v10];
+        _oneUpViewController = [(PUOneUpPresentationHelper *)self _createOneUpViewControllerWithBrowsingSession:v22 options:v25 | 1 activity:activityCopy editActivityCompletion:completionCopy];
       }
 
-      [(PUOneUpPresentationHelper *)self _presentOneUpViewController:v18 animated:1 interactiveMode:v56 completion:0];
+      [(PUOneUpPresentationHelper *)self _presentOneUpViewController:_oneUpViewController animated:1 interactiveMode:modeCopy completion:0];
 
-      v19 = v54;
+      presentingViewController = v54;
     }
 
     else
     {
-      if (v23)
+      if (_tilingView)
       {
-        v18 = [(PUOneUpPresentationHelper *)self _createOneUpViewControllerWithBrowsingSession:v22 options:v25 | 1 activity:v55 editActivityCompletion:v10];
-        v32 = [v18 tilingViewControllerTransitionTilingViewHostView:0];
+        _oneUpViewController = [(PUOneUpPresentationHelper *)self _createOneUpViewControllerWithBrowsingSession:v22 options:v25 | 1 activity:activityCopy editActivityCompletion:completionCopy];
+        v32 = [_oneUpViewController tilingViewControllerTransitionTilingViewHostView:0];
         [v32 bounds];
-        [(PUTilingView *)v23 setFrame:?];
-        [(PUTilingView *)v23 setAutoresizingMask:18];
-        [v32 addSubview:v23];
+        [(PUTilingView *)_tilingView setFrame:?];
+        [(PUTilingView *)_tilingView setAutoresizingMask:18];
+        [v32 addSubview:_tilingView];
         [(PUOneUpPresentationHelper *)self _setTilingView:0];
-        [v18 tilingViewControllerTransition:0 adoptTilingView:v23 fromEndPoint:0 isCancelingTransition:0 animationSetupCompletionHandler:0];
+        [_oneUpViewController tilingViewControllerTransition:0 adoptTilingView:_tilingView fromEndPoint:0 isCancelingTransition:0 animationSetupCompletionHandler:0];
       }
 
       else
       {
-        v18 = [(PUOneUpPresentationHelper *)self _createOneUpViewControllerWithBrowsingSession:v22 options:v25 activity:v55 editActivityCompletion:v10];
-        [v18 setAppearanceTransitionAnimationsDisabled:1];
+        _oneUpViewController = [(PUOneUpPresentationHelper *)self _createOneUpViewControllerWithBrowsingSession:v22 options:v25 activity:activityCopy editActivityCompletion:completionCopy];
+        [_oneUpViewController setAppearanceTransitionAnimationsDisabled:1];
       }
 
-      [(PUOneUpPresentationHelper *)self _presentOneUpViewController:v18 animated:0 interactiveMode:v56 completion:0];
+      [(PUOneUpPresentationHelper *)self _presentOneUpViewController:_oneUpViewController animated:0 interactiveMode:modeCopy completion:0];
     }
   }
 }
@@ -2923,22 +2923,22 @@ uint64_t __112__PUOneUpPresentationHelper_presentOneUpViewControllerAnimated_int
 
 - (CGAffineTransform)_tilingViewTransitionTransform
 {
-  v5 = [(PUOneUpPresentationHelper *)self _transitionHostingView];
-  v6 = v5;
+  _transitionHostingView = [(PUOneUpPresentationHelper *)self _transitionHostingView];
+  v6 = _transitionHostingView;
   *&retstr->a = 0u;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
-  if (v5)
+  if (_transitionHostingView)
   {
-    [v5 transform];
+    [_transitionHostingView transform];
   }
 
-  v7 = [(PUOneUpPresentationHelper *)self presentingViewController];
+  presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
   respondsToPreferredPresentationOrientation = self->_delegateFlags.respondsToPreferredPresentationOrientation;
-  if ([v7 supportedInterfaceOrientations] == 2 && respondsToPreferredPresentationOrientation)
+  if ([presentingViewController supportedInterfaceOrientations] == 2 && respondsToPreferredPresentationOrientation)
   {
-    v9 = [(PUOneUpPresentationHelper *)self delegate];
-    v10 = [v9 oneUpPresentationHelperPreferredPresentationOrientation:self];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    v10 = [delegate oneUpPresentationHelperPreferredPresentationOrientation:self];
 
     if (v10 > 2)
     {
@@ -2993,15 +2993,15 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)canPresentOneUpViewControllerAnimated:(BOOL)a3
+- (BOOL)canPresentOneUpViewControllerAnimated:(BOOL)animated
 {
-  v4 = a3;
+  animatedCopy = animated;
   v26 = *MEMORY[0x1E69E9840];
-  v6 = [(PUOneUpPresentationHelper *)self _state];
-  if ((v6 - 1) >= 4)
+  _state = [(PUOneUpPresentationHelper *)self _state];
+  if ((_state - 1) >= 4)
   {
-    v3 = [(PUOneUpPresentationHelper *)self presentingViewController];
-    v7 = [v3 px_canPresentViewControllerAnimated:v4];
+    presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+    v7 = [presentingViewController px_canPresentViewControllerAnimated:animatedCopy];
   }
 
   else
@@ -3009,14 +3009,14 @@ LABEL_16:
     v7 = 0;
   }
 
-  if ((v6 - 1) >= 3)
+  if ((_state - 1) >= 3)
   {
-    if (v6 == 4)
+    if (_state == 4)
     {
       return v7;
     }
 
-    if ((v6 == 4) | v7 & 1)
+    if ((_state == 4) | v7 & 1)
     {
       return v7;
     }
@@ -3031,12 +3031,12 @@ LABEL_16:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PUOneUpPresentationHelper _state](self, "_state")}];
-    v11 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v11 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
     v12 = MEMORY[0x1E696AD98];
-    v13 = [(PUOneUpPresentationHelper *)self presentingViewController];
-    v14 = [v12 numberWithBool:{objc_msgSend(v13, "px_isVisible")}];
-    v15 = [(PUOneUpPresentationHelper *)self presentingViewController];
-    v16 = [v15 presentedViewController];
+    presentingViewController2 = [(PUOneUpPresentationHelper *)self presentingViewController];
+    v14 = [v12 numberWithBool:{objc_msgSend(presentingViewController2, "px_isVisible")}];
+    presentingViewController3 = [(PUOneUpPresentationHelper *)self presentingViewController];
+    presentedViewController = [presentingViewController3 presentedViewController];
     v18 = 138413058;
     v19 = v10;
     v20 = 2112;
@@ -3052,27 +3052,27 @@ LABEL_16:
   return v7;
 }
 
-- (void)_configureNavigationController:(id)a3
+- (void)_configureNavigationController:(id)controller
 {
-  v4 = a3;
-  v12 = v4;
+  controllerCopy = controller;
+  v12 = controllerCopy;
   if (self->_delegateFlags.respondsToEnableFreezeLayoutOnOrientationChange)
   {
-    v5 = [(PUOneUpPresentationHelper *)self delegate];
-    v6 = [v5 oneUpPresentationHelperEnableFreezeLayoutOnOrientationChange:self];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    v6 = [delegate oneUpPresentationHelperEnableFreezeLayoutOnOrientationChange:self];
 
     [v12 _setAllowsFreezeLayoutForOrientationChangeOnDismissal:v6];
-    v4 = v12;
+    controllerCopy = v12;
   }
 
-  [v4 setModalPresentationStyle:0];
-  v7 = [(PUOneUpPresentationHelper *)self delegate];
-  v8 = v7;
-  if (self->_delegateFlags.respondsToAdditionalOptions && ([v7 oneUpPresentationHelperAdditionalOptions:self] & 0x10000) != 0)
+  [controllerCopy setModalPresentationStyle:0];
+  delegate2 = [(PUOneUpPresentationHelper *)self delegate];
+  v8 = delegate2;
+  if (self->_delegateFlags.respondsToAdditionalOptions && ([delegate2 oneUpPresentationHelperAdditionalOptions:self] & 0x10000) != 0)
   {
-    v9 = [(PUOneUpPresentationHelper *)self presentingViewController];
-    v10 = [v9 traitCollection];
-    [v12 setOverrideUserInterfaceStyle:{objc_msgSend(v10, "userInterfaceStyle")}];
+    presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+    traitCollection = [presentingViewController traitCollection];
+    [v12 setOverrideUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
   }
 
   if (self->_delegateFlags.respondsToOriginalViewController)
@@ -3088,43 +3088,43 @@ LABEL_16:
   [v12 setViewControllerForStatusBarStyleWhenDisappearing:v11];
 }
 
-- (void)_presentOneUpViewController:(id)a3 animated:(BOOL)a4 interactiveMode:(int64_t)a5 completion:(id)a6
+- (void)_presentOneUpViewController:(id)controller animated:(BOOL)animated interactiveMode:(int64_t)mode completion:(id)completion
 {
-  v8 = a4;
+  animatedCopy = animated;
   v47 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  [(PUOneUpPresentationHelper *)self _setOneUpViewController:v11];
-  v13 = [(PUOneUpPresentationHelper *)self presentingViewController];
-  if (!v13)
+  controllerCopy = controller;
+  completionCopy = completion;
+  [(PUOneUpPresentationHelper *)self _setOneUpViewController:controllerCopy];
+  presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+  if (!presentingViewController)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:455 description:{@"presentingViewController is nil when presenting 1Up (state = %ti)", -[PUOneUpPresentationHelper _state](self, "_state")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:455 description:{@"presentingViewController is nil when presenting 1Up (state = %ti)", -[PUOneUpPresentationHelper _state](self, "_state")}];
   }
 
-  v14 = [v13 navigationController];
-  v15 = [(PUOneUpPresentationHelper *)self transitionType];
-  v16 = v15;
-  if (v15 == 2)
+  navigationController = [presentingViewController navigationController];
+  transitionType = [(PUOneUpPresentationHelper *)self transitionType];
+  v16 = transitionType;
+  if (transitionType == 2)
   {
     v17 = 2;
   }
 
   else
   {
-    v17 = v15 == 1;
+    v17 = transitionType == 1;
   }
 
-  [v11 setOriginTransitionType:v17];
+  [controllerCopy setOriginTransitionType:v17];
   if (self->_delegateFlags.respondsToWillPresentOneUpViewController)
   {
-    v18 = [(PUOneUpPresentationHelper *)self delegate];
-    [v18 oneUpPresentationHelper:self willPresentOneUpViewController:v11];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    [delegate oneUpPresentationHelper:self willPresentOneUpViewController:controllerCopy];
   }
 
-  if (!v8)
+  if (!animatedCopy)
   {
-    v19 = v14;
+    v19 = navigationController;
     v20 = PLOneUpGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -3133,12 +3133,12 @@ LABEL_16:
     }
 
     [(PUOneUpPresentationHelper *)self _setState:2];
-    v14 = v19;
+    navigationController = v19;
   }
 
-  if (a5)
+  if (mode)
   {
-    v21 = v8;
+    v21 = animatedCopy;
   }
 
   else
@@ -3150,10 +3150,10 @@ LABEL_16:
   {
     v23 = [[PUTilingViewModalTransition alloc] initWithEndPoint:self];
     v29 = v21;
-    v21 = [[PUNavigationController alloc] initWithRootViewController:v11];
+    v21 = [[PUNavigationController alloc] initWithRootViewController:controllerCopy];
     [(PUOneUpPresentationHelper *)self _configureNavigationController:v21];
-    [MEMORY[0x1E69C3730] viewController:v13 willPresentOneUpInViewController:v21];
-    [v13 pu_presentViewController:v21 transition:v23 animated:v8 interactive:v29 completion:v12];
+    [MEMORY[0x1E69C3730] viewController:presentingViewController willPresentOneUpInViewController:v21];
+    [presentingViewController pu_presentViewController:v21 transition:v23 animated:animatedCopy interactive:v29 completion:completionCopy];
 
     LODWORD(v21) = v29;
     goto LABEL_39;
@@ -3163,27 +3163,27 @@ LABEL_16:
   {
     v44 = a2;
     v23 = [[PUTilingViewNavigationTransition alloc] initWithEndPoint:self];
-    if (!v14)
+    if (!navigationController)
     {
       v41 = v21;
-      v42 = a5;
-      v43 = v12;
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"here is presentingViewController's hierarchy :\n - %@\n", v13];
-      v25 = [v13 parentViewController];
-      if (v25)
+      modeCopy = mode;
+      v43 = completionCopy;
+      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"here is presentingViewController's hierarchy :\n - %@\n", presentingViewController];
+      parentViewController = [presentingViewController parentViewController];
+      if (parentViewController)
       {
-        v26 = v25;
+        v26 = parentViewController;
         do
         {
           v27 = [v24 stringByAppendingFormat:@" - %@\n", v26];
 
-          v28 = [v26 parentViewController];
+          parentViewController2 = [v26 parentViewController];
 
           v24 = v27;
-          v26 = v28;
+          v26 = parentViewController2;
         }
 
-        while (v28);
+        while (parentViewController2);
       }
 
       else
@@ -3194,16 +3194,16 @@ LABEL_16:
       v30 = PLOneUpGetLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v31 = [MEMORY[0x1E69DC668] sharedApplication];
-        v32 = [v31 px_firstKeyWindow];
-        v33 = [v32 recursiveDescription];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+        recursiveDescription = [px_firstKeyWindow recursiveDescription];
         *buf = 138412290;
-        v46 = v33;
+        v46 = recursiveDescription;
         _os_log_impl(&dword_1B36F3000, v30, OS_LOG_TYPE_ERROR, "navigationController is nil when presenting 1Up, view hierarchy => %@", buf, 0xCu);
       }
 
       v34 = PLOneUpGetLog();
-      a5 = v42;
+      mode = modeCopy;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
@@ -3214,22 +3214,22 @@ LABEL_16:
       v35 = PLOneUpGetLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v36 = [MEMORY[0x1E69DD258] _printHierarchy];
+        _printHierarchy = [MEMORY[0x1E69DD258] _printHierarchy];
         *buf = 138412290;
-        v46 = v36;
+        v46 = _printHierarchy;
         _os_log_impl(&dword_1B36F3000, v35, OS_LOG_TYPE_ERROR, "navigationController is nil when presenting 1Up, main window hierarchy: %@", buf, 0xCu);
       }
 
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v37 handleFailureInMethod:v44 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:508 description:{@"navigationController is nil when presenting 1Up (state = %ti, presentingVC = %@)\n presentingViewController's VC hierarchy: %@", -[PUOneUpPresentationHelper _state](self, "_state"), v13, v27}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:v44 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:508 description:{@"navigationController is nil when presenting 1Up (state = %ti, presentingVC = %@)\n presentingViewController's VC hierarchy: %@", -[PUOneUpPresentationHelper _state](self, "_state"), presentingViewController, v27}];
 
-      v12 = v43;
-      v14 = 0;
+      completionCopy = v43;
+      navigationController = 0;
       v21 = v41;
     }
 
-    [v14 pu_pushViewController:v11 withTransition:v23 animated:v8 isInteractive:v21];
-    if (v12 && v8)
+    [navigationController pu_pushViewController:controllerCopy withTransition:v23 animated:animatedCopy isInteractive:v21];
+    if (completionCopy && animatedCopy)
     {
       [MEMORY[0x1E696AAA8] currentHandler];
       v21 = v40 = v21;
@@ -3238,14 +3238,14 @@ LABEL_16:
       LODWORD(v21) = v40;
     }
 
-    else if (!v12)
+    else if (!completionCopy)
     {
       goto LABEL_39;
     }
 
-    if (!v8)
+    if (!animatedCopy)
     {
-      v12[2](v12);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -3266,7 +3266,7 @@ LABEL_16:
 LABEL_39:
   if (v21)
   {
-    if (a5 == 2)
+    if (mode == 2)
     {
       v38 = 30;
     }
@@ -3282,17 +3282,17 @@ LABEL_39:
 
 - (UIViewController)topmostPresentedViewController
 {
-  v2 = [(PUOneUpPresentationHelper *)self presentingViewController];
-  v3 = [(UIViewController *)v2 px_topmostPresentedViewController];
-  v4 = v3;
-  if (v3)
+  presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+  px_topmostPresentedViewController = [(UIViewController *)presentingViewController px_topmostPresentedViewController];
+  v4 = px_topmostPresentedViewController;
+  if (px_topmostPresentedViewController)
   {
-    v5 = v3;
+    v5 = px_topmostPresentedViewController;
   }
 
   else
   {
-    v5 = v2;
+    v5 = presentingViewController;
   }
 
   v6 = v5;
@@ -3308,9 +3308,9 @@ LABEL_39:
   return WeakRetained;
 }
 
-- (void)setAssetDisplayDelegate:(id)a3
+- (void)setAssetDisplayDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_assetDisplayDelegate);
 
   if (WeakRetained != obj)
@@ -3324,9 +3324,9 @@ LABEL_39:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -3365,20 +3365,20 @@ LABEL_39:
 
 - (BOOL)pausingPhotoLibraryChanges
 {
-  v2 = [(PUOneUpPresentationHelper *)self pausedPhotoLibrary];
-  v3 = v2 != 0;
+  pausedPhotoLibrary = [(PUOneUpPresentationHelper *)self pausedPhotoLibrary];
+  v3 = pausedPhotoLibrary != 0;
 
   return v3;
 }
 
 - (PXAssetReference)lastViewedAssetReference
 {
-  v2 = [(PUOneUpPresentationHelper *)self browsingSession];
-  v3 = [v2 viewModel];
-  v4 = [v3 lastViewedAssetReference];
-  v5 = [v4 pxAssetReference];
+  browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  lastViewedAssetReference = [viewModel lastViewedAssetReference];
+  pxAssetReference = [lastViewedAssetReference pxAssetReference];
 
-  return v5;
+  return pxAssetReference;
 }
 
 - (id)_createBrowsingSession
@@ -3390,24 +3390,24 @@ LABEL_39:
 
   else
   {
-    v6 = [(PUOneUpPresentationHelper *)self _browsingSessionCreationBlock];
-    v5 = v6[2]();
+    _browsingSessionCreationBlock = [(PUOneUpPresentationHelper *)self _browsingSessionCreationBlock];
+    v5 = _browsingSessionCreationBlock[2]();
   }
 
   if (self->_delegateFlags.respondsToSearchContextualVideoThumbnail)
   {
-    v7 = [(PUOneUpPresentationHelper *)self delegate];
-    v8 = [v7 oneUpPresentationHelperContextualVideoThumbnailIdentifier:self];
-    v9 = [v5 viewModel];
-    [v9 setSearchContextualVideoThumbnailIdentifier:v8];
+    delegate = [(PUOneUpPresentationHelper *)self delegate];
+    v8 = [delegate oneUpPresentationHelperContextualVideoThumbnailIdentifier:self];
+    viewModel = [v5 viewModel];
+    [viewModel setSearchContextualVideoThumbnailIdentifier:v8];
   }
 
   if (self->_delegateFlags.respondsToSearchContext)
   {
-    v10 = [(PUOneUpPresentationHelper *)self delegate];
-    v11 = [v10 oneUpPresentationHelperSearchQueryMatchInfo:self];
-    v12 = [v5 viewModel];
-    [v12 setSearchQueryMatchInfo:v11];
+    delegate2 = [(PUOneUpPresentationHelper *)self delegate];
+    v11 = [delegate2 oneUpPresentationHelperSearchQueryMatchInfo:self];
+    viewModel2 = [v5 viewModel];
+    [viewModel2 setSearchQueryMatchInfo:v11];
   }
 
   else
@@ -3415,8 +3415,8 @@ LABEL_39:
     v13 = MEMORY[0x1E695E0F0];
     if (self->_delegateFlags.respondsToMatchedSceneIdentifiers)
     {
-      v14 = [(PUOneUpPresentationHelper *)self delegate];
-      v15 = [v14 oneUpPresentationHelperMatchedSceneIdentifiers:self];
+      delegate3 = [(PUOneUpPresentationHelper *)self delegate];
+      v15 = [delegate3 oneUpPresentationHelperMatchedSceneIdentifiers:self];
       v16 = v15;
       if (v15)
       {
@@ -3428,18 +3428,18 @@ LABEL_39:
         v17 = v13;
       }
 
-      v10 = v17;
+      delegate2 = v17;
     }
 
     else
     {
-      v10 = 0;
+      delegate2 = 0;
     }
 
     if (self->_delegateFlags.respondsToMatchedAudioIdentifiers)
     {
-      v18 = [(PUOneUpPresentationHelper *)self delegate];
-      v19 = [v18 oneUpPresentationHelperMatchedAudioIdentifiers:self];
+      delegate4 = [(PUOneUpPresentationHelper *)self delegate];
+      v19 = [delegate4 oneUpPresentationHelperMatchedAudioIdentifiers:self];
       v20 = v19;
       if (v19)
       {
@@ -3463,8 +3463,8 @@ LABEL_39:
 
     if (self->_delegateFlags.respondsToMatchedHumanActionIdentifiers)
     {
-      v23 = [(PUOneUpPresentationHelper *)self delegate];
-      v24 = [v23 oneUpPresentationHelperMatchedHumanActionIdentifiers:self];
+      delegate5 = [(PUOneUpPresentationHelper *)self delegate];
+      v24 = [delegate5 oneUpPresentationHelperMatchedHumanActionIdentifiers:self];
       v25 = v24;
       if (v24)
       {
@@ -3476,18 +3476,18 @@ LABEL_39:
         v26 = v13;
       }
 
-      v12 = v26;
+      viewModel2 = v26;
     }
 
     else
     {
-      v12 = 0;
+      viewModel2 = 0;
     }
 
     if (self->_delegateFlags.respondsToMatchedPersonLocalIdentifiers)
     {
-      v27 = [(PUOneUpPresentationHelper *)self delegate];
-      v28 = [v27 oneUpPresentationHelperMatchedPersonLocalIdentifiers:self];
+      delegate6 = [(PUOneUpPresentationHelper *)self delegate];
+      v28 = [delegate6 oneUpPresentationHelperMatchedPersonLocalIdentifiers:self];
       v29 = v28;
       if (v28)
       {
@@ -3509,8 +3509,8 @@ LABEL_39:
 
     if (self->_delegateFlags.respondsToTextsToHighlight)
     {
-      v32 = [(PUOneUpPresentationHelper *)self delegate];
-      v33 = [v32 oneUpPresentationHelperTextsToHighlight:self];
+      delegate7 = [(PUOneUpPresentationHelper *)self delegate];
+      v33 = [delegate7 oneUpPresentationHelperTextsToHighlight:self];
       v34 = v33;
       if (v33)
       {
@@ -3532,8 +3532,8 @@ LABEL_39:
 
     if (self->_delegateFlags.respondsToAssetUUIDsAllowedToHighlightText)
     {
-      v37 = [(PUOneUpPresentationHelper *)self delegate];
-      v38 = [v37 oneUpPresentationHelperAssetUUIDsAllowedToHighlightText:self];
+      delegate8 = [(PUOneUpPresentationHelper *)self delegate];
+      v38 = [delegate8 oneUpPresentationHelperAssetUUIDsAllowedToHighlightText:self];
       v39 = v38;
       if (v38)
       {
@@ -3553,54 +3553,54 @@ LABEL_39:
       v64 = 0;
     }
 
-    v41 = [v36 firstObject];
-    if (v41 || [v10 count] || objc_msgSend(v31, "count") || objc_msgSend(v11, "count") || objc_msgSend(v12, "count") || objc_msgSend(v36, "count") || objc_msgSend(v64, "count"))
+    firstObject = [v36 firstObject];
+    if (firstObject || [delegate2 count] || objc_msgSend(v31, "count") || objc_msgSend(v11, "count") || objc_msgSend(viewModel2, "count") || objc_msgSend(v36, "count") || objc_msgSend(v64, "count"))
     {
-      v62 = v41;
+      v62 = firstObject;
       v63 = v36;
       v60 = objc_alloc(MEMORY[0x1E69C39A8]);
-      v59 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v10];
+      v59 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:delegate2];
       v42 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v31];
       v43 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v11];
-      v44 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v12];
+      v44 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:viewModel2];
       v61 = v31;
-      v45 = v12;
+      v45 = viewModel2;
       v46 = v11;
-      v47 = v10;
+      v47 = delegate2;
       v48 = v5;
       v49 = v44;
-      v50 = [v60 initWithLocalizedQueryString:v41 matchedSceneIdentifiers:v59 personLocalIdentifiers:v42 audioIdentifiers:v43 humanActionIdentifiers:v44 ocrTexts:v36 ocrAssetUUIDS:v64 queryEmbedding:0 countOfQueryTerms:0];
-      v51 = [v48 viewModel];
-      [v51 setSearchQueryMatchInfo:v50];
+      v50 = [v60 initWithLocalizedQueryString:firstObject matchedSceneIdentifiers:v59 personLocalIdentifiers:v42 audioIdentifiers:v43 humanActionIdentifiers:v44 ocrTexts:v36 ocrAssetUUIDS:v64 queryEmbedding:0 countOfQueryTerms:0];
+      viewModel3 = [v48 viewModel];
+      [viewModel3 setSearchQueryMatchInfo:v50];
 
       v36 = v63;
-      v41 = v62;
+      firstObject = v62;
 
       v5 = v48;
-      v10 = v47;
+      delegate2 = v47;
       v11 = v46;
-      v12 = v45;
+      viewModel2 = v45;
       v31 = v61;
     }
   }
 
-  v52 = [(PUOneUpPresentationHelper *)self presentingViewController];
-  if (v52)
+  presentingViewController = [(PUOneUpPresentationHelper *)self presentingViewController];
+  if (presentingViewController)
   {
     while (1)
     {
-      v53 = [v52 viewIfLoaded];
-      v54 = [v53 window];
+      viewIfLoaded = [presentingViewController viewIfLoaded];
+      window = [viewIfLoaded window];
 
-      if (v54)
+      if (window)
       {
         break;
       }
 
-      v55 = [v52 parentViewController];
+      parentViewController = [presentingViewController parentViewController];
 
-      v52 = v55;
-      if (!v55)
+      presentingViewController = parentViewController;
+      if (!parentViewController)
       {
         goto LABEL_57;
       }
@@ -3610,20 +3610,20 @@ LABEL_39:
   else
   {
 LABEL_57:
-    v54 = 0;
+    window = 0;
   }
 
   PFProcessIsLaunchedToExecuteTests();
-  v56 = [v5 contentTileProvider];
-  [v56 setWindow:v54];
+  contentTileProvider = [v5 contentTileProvider];
+  [contentTileProvider setWindow:window];
 
-  v57 = [(PUOneUpPresentationHelper *)self testingDelegate];
-  [v57 oneUpPresentationHelperDidCreateBrowsingSession:self];
+  testingDelegate = [(PUOneUpPresentationHelper *)self testingDelegate];
+  [testingDelegate oneUpPresentationHelperDidCreateBrowsingSession:self];
 
   return v5;
 }
 
-- (id)_browsingSessionCreateIfNeeded:(BOOL)a3
+- (id)_browsingSessionCreateIfNeeded:(BOOL)needed
 {
   browsingSession = self->_browsingSession;
   if (browsingSession)
@@ -3633,14 +3633,14 @@ LABEL_57:
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
   {
-    v6 = [(PUOneUpPresentationHelper *)self _createBrowsingSession];
+    _createBrowsingSession = [(PUOneUpPresentationHelper *)self _createBrowsingSession];
     v7 = self->_browsingSession;
-    self->_browsingSession = v6;
+    self->_browsingSession = _createBrowsingSession;
 
     browsingSession = self->_browsingSession;
   }
@@ -3650,8 +3650,8 @@ LABEL_57:
 
 - (void)dealloc
 {
-  v3 = [(UITapGestureRecognizer *)self->__tapGestureRecognizer view];
-  [v3 removeGestureRecognizer:self->__tapGestureRecognizer];
+  view = [(UITapGestureRecognizer *)self->__tapGestureRecognizer view];
+  [view removeGestureRecognizer:self->__tapGestureRecognizer];
 
   [(UITapGestureRecognizer *)self->__tapGestureRecognizer setDelegate:0];
   v4 = self->_libraryChangePauseToken;
@@ -3673,32 +3673,32 @@ LABEL_57:
   [(PUOneUpPresentationHelper *)&v7 dealloc];
 }
 
-- (void)setPhotosDataSource:(id)a3
+- (void)setPhotosDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   p_photosDataSource = &self->_photosDataSource;
-  if (self->_photosDataSource != v5)
+  if (self->_photosDataSource != sourceCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_photosDataSource, a3);
-    v7 = [(PUOneUpPresentationHelper *)self browsingSession];
-    v8 = [v7 dataSourceManager];
+    v9 = sourceCopy;
+    objc_storeStrong(p_photosDataSource, source);
+    browsingSession = [(PUOneUpPresentationHelper *)self browsingSession];
+    dataSourceManager = [browsingSession dataSourceManager];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v8 setPhotosDataSource:v9];
+      [dataSourceManager setPhotosDataSource:v9];
     }
 
-    v5 = v9;
+    sourceCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](p_photosDataSource, v5);
+  MEMORY[0x1EEE66BB8](p_photosDataSource, sourceCopy);
 }
 
-- (PUOneUpPresentationHelper)initWithPhotosDataSource:(id)a3
+- (PUOneUpPresentationHelper)initWithPhotosDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -3709,7 +3709,7 @@ LABEL_57:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photosDataSource, a3);
+    objc_storeStrong(&v6->_photosDataSource, source);
   }
 
   objc_destroyWeak(&v10);
@@ -3733,13 +3733,13 @@ PUBrowsingSession *__54__PUOneUpPresentationHelper_initWithPhotosDataSource___bl
   return v8;
 }
 
-- (PUOneUpPresentationHelper)initWithBrowsingSessionCreationBlock:(id)a3
+- (PUOneUpPresentationHelper)initWithBrowsingSessionCreationBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"browsingSessionCreationBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpPresentationHelper.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"browsingSessionCreationBlock"}];
   }
 
   v12.receiver = self;
@@ -3749,7 +3749,7 @@ PUBrowsingSession *__54__PUOneUpPresentationHelper_initWithPhotosDataSource___bl
   if (v6)
   {
     v6->_needsUpdateFlags.presentationInfo = 1;
-    v8 = [v5 copy];
+    v8 = [blockCopy copy];
     browsingSessionCreationBlock = v7->__browsingSessionCreationBlock;
     v7->__browsingSessionCreationBlock = v8;
   }

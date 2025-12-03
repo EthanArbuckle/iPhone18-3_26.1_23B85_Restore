@@ -1,12 +1,12 @@
 @interface TSDTileStorage
 - (TSDTileStorage)init;
-- (id)contentsInRect:(CGRect)a3 contentsScale:(double)a4 forTileAtLocation:(id)a5 inBucket:(id)a6;
-- (id)p_cacheKeyForImageInRect:(CGRect)a3 contentsScale:(double)a4 tileLocation:(id)a5;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (id)contentsInRect:(CGRect)rect contentsScale:(double)scale forTileAtLocation:(id)location inBucket:(id)bucket;
+- (id)p_cacheKeyForImageInRect:(CGRect)rect contentsScale:(double)scale tileLocation:(id)location;
+- (void)cache:(id)cache willEvictObject:(id)object;
 - (void)dealloc;
 - (void)removeAllContents;
-- (void)removeImagesInBucket:(id)a3;
-- (void)storeContents:(id)a3 inRect:(CGRect)a4 contentsScale:(double)a5 forTileAtLocation:(id)a6 inBucket:(id)a7;
+- (void)removeImagesInBucket:(id)bucket;
+- (void)storeContents:(id)contents inRect:(CGRect)rect contentsScale:(double)scale forTileAtLocation:(id)location inBucket:(id)bucket;
 @end
 
 @implementation TSDTileStorage
@@ -40,27 +40,27 @@
   [(TSDTileStorage *)&v3 dealloc];
 }
 
-- (void)storeContents:(id)a3 inRect:(CGRect)a4 contentsScale:(double)a5 forTileAtLocation:(id)a6 inBucket:(id)a7
+- (void)storeContents:(id)contents inRect:(CGRect)rect contentsScale:(double)scale forTileAtLocation:(id)location inBucket:(id)bucket
 {
-  v10 = [(TSDTileStorage *)self p_cacheKeyForImageInRect:a6.var0 contentsScale:a6.var1 tileLocation:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, a5];
-  if (!v10)
+  scale = [(TSDTileStorage *)self p_cacheKeyForImageInRect:location.var0 contentsScale:location.var1 tileLocation:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, scale];
+  if (!scale)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTileStorage storeContents:inRect:contentsScale:forTileAtLocation:inBucket:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTileStorage.m"), 61, @"invalid nil value for '%s'", "imageKey"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTileStorage.m"), 61, @"invalid nil value for '%s'", "imageKey"}];
   }
 
-  v13 = [a7 stringByAppendingPathComponent:v10];
+  v13 = [bucket stringByAppendingPathComponent:scale];
   mCacheKeysQueue = self->mCacheKeysQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__TSDTileStorage_storeContents_inRect_contentsScale_forTileAtLocation_inBucket___block_invoke;
   block[3] = &unk_279D492F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = contents;
   block[6] = v13;
-  block[7] = a7;
-  block[8] = v10;
+  block[7] = bucket;
+  block[8] = scale;
   dispatch_async(mCacheKeysQueue, block);
 }
 
@@ -90,32 +90,32 @@ uint64_t __80__TSDTileStorage_storeContents_inRect_contentsScale_forTileAtLocati
   return [v3 addObject:v4];
 }
 
-- (id)contentsInRect:(CGRect)a3 contentsScale:(double)a4 forTileAtLocation:(id)a5 inBucket:(id)a6
+- (id)contentsInRect:(CGRect)rect contentsScale:(double)scale forTileAtLocation:(id)location inBucket:(id)bucket
 {
-  v8 = [(TSDTileStorage *)self p_cacheKeyForImageInRect:a5.var0 contentsScale:a5.var1 tileLocation:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4];
-  if (!v8)
+  scale = [(TSDTileStorage *)self p_cacheKeyForImageInRect:location.var0 contentsScale:location.var1 tileLocation:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, scale];
+  if (!scale)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTileStorage contentsInRect:contentsScale:forTileAtLocation:inBucket:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTileStorage.m"), 97, @"invalid nil value for '%s'", "imageFileName"}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTileStorage.m"), 97, @"invalid nil value for '%s'", "imageFileName"}];
   }
 
-  v11 = [a6 stringByAppendingPathComponent:v8];
+  v11 = [bucket stringByAppendingPathComponent:scale];
   mCache = self->mCache;
 
   return [(NSCache *)mCache objectForKey:v11];
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
   dispatch_semaphore_wait(self->mReverseCacheKeysLock, 0xFFFFFFFFFFFFFFFFLL);
-  [(TSUPointerKeyDictionary *)self->mReverseCacheKeys removeObjectForKey:a4];
+  [(TSUPointerKeyDictionary *)self->mReverseCacheKeys removeObjectForKey:object];
   mReverseCacheKeysLock = self->mReverseCacheKeysLock;
 
   dispatch_semaphore_signal(mReverseCacheKeysLock);
 }
 
-- (void)removeImagesInBucket:(id)a3
+- (void)removeImagesInBucket:(id)bucket
 {
   mCacheKeysQueue = self->mCacheKeysQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -123,7 +123,7 @@ uint64_t __80__TSDTileStorage_storeContents_inRect_contentsScale_forTileAtLocati
   v4[2] = __39__TSDTileStorage_removeImagesInBucket___block_invoke;
   v4[3] = &unk_279D47708;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = bucket;
   dispatch_sync(mCacheKeysQueue, v4);
 }
 
@@ -186,16 +186,16 @@ uint64_t __35__TSDTileStorage_removeAllContents__block_invoke(uint64_t a1)
   return [v2 removeAllObjects];
 }
 
-- (id)p_cacheKeyForImageInRect:(CGRect)a3 contentsScale:(double)a4 tileLocation:(id)a5
+- (id)p_cacheKeyForImageInRect:(CGRect)rect contentsScale:(double)scale tileLocation:(id)location
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu_%lu", a5.var0, a5.var1];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld_%ld_%ld_%ld", x, y, width, height];
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a4];
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@", v10, v11, v12];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu_%lu", location.var0, location.var1];
+  height = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld_%ld_%ld_%ld", x, y, width, height];
+  scale = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", scale];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@-%@", v10, height, scale];
 }
 
 @end

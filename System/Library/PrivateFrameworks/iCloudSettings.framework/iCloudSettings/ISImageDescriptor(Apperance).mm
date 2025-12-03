@@ -20,7 +20,7 @@
 
   else
   {
-    v7 = [a1 ics_imageApperanceForColorForTraitCollection:v4];
+    v7 = [self ics_imageApperanceForColorForTraitCollection:v4];
   }
 
   return v7;
@@ -32,13 +32,13 @@
   v4 = objc_opt_self();
   v5 = [v3 objectForTrait:v4];
 
-  v6 = [v5 variant];
-  if (v6 >= 2)
+  variant = [v5 variant];
+  if (variant >= 2)
   {
-    v6 = [v3 userInterfaceStyle] == 2;
+    variant = [v3 userInterfaceStyle] == 2;
   }
 
-  return v6;
+  return variant;
 }
 
 + (uint64_t)ics_appearanceVariantForTraitCollection:()Apperance
@@ -47,14 +47,14 @@
   v4 = objc_opt_self();
   v5 = [v3 objectForTrait:v4];
 
-  v6 = [v5 updatedConfigurationType];
+  updatedConfigurationType = [v5 updatedConfigurationType];
   v7 = 3;
-  if (v6 != 1)
+  if (updatedConfigurationType != 1)
   {
     v7 = 0;
   }
 
-  if (v6 == 2)
+  if (updatedConfigurationType == 2)
   {
     v8 = 2;
   }
@@ -75,16 +75,16 @@
 
   if ([v5 updatedConfigurationType] == 2)
   {
-    v6 = [v5 tintColor];
-    v7 = [v6 UIColor];
+    tintColor = [v5 tintColor];
+    uIColor = [tintColor UIColor];
   }
 
   else
   {
-    v7 = 0;
+    uIColor = 0;
   }
 
-  return v7;
+  return uIColor;
 }
 
 @end

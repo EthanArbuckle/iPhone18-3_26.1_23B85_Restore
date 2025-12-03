@@ -19,8 +19,8 @@
       {
         v7 = [NSString stringWithFormat:@"Part%li", v5];
         v8 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:0 edit:0];
-        v9 = [(WFShortcutsSettingsStringsController *)self stringsFileName];
-        v10 = WFShortcutsSettingsGetValueForKey(v7, v9);
+        stringsFileName = [(WFShortcutsSettingsStringsController *)self stringsFileName];
+        v10 = WFShortcutsSettingsGetValueForKey(v7, stringsFileName);
         [v8 setProperty:v10 forKey:v6];
 
         [v4 addObject:v8];

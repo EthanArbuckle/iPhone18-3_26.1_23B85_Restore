@@ -1,15 +1,15 @@
 @interface LayoutBundleDetails
 - (_TtC19ProximityReaderCore19LayoutBundleDetails)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LayoutBundleDetails
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  LayoutBundleDetails.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  LayoutBundleDetails.encode(with:)(coderCopy);
 }
 
 - (_TtC19ProximityReaderCore19LayoutBundleDetails)init

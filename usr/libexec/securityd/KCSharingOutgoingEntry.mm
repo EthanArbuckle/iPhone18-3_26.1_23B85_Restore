@@ -1,21 +1,21 @@
 @interface KCSharingOutgoingEntry
 - (KCSharingLocalFingerprint)internetPasswordFingerprint;
 - (KCSharingLocalFingerprint)privateKeyFingerprint;
-- (KCSharingOutgoingEntry)initWithAttributes:(id)a3 error:(id *)a4;
-- (KCSharingOutgoingEntry)initWithNewLocalItem:(id)a3 zoneID:(id)a4;
-- (KCSharingOutgoingEntry)initWithShare:(id)a3;
-- (KCSharingOutgoingEntry)initWithUpdatedLocalItem:(id)a3 forMirrorEntry:(id)a4 error:(id *)a5;
-- (id)attributesWithAccessGroups:(id)a3 error:(id *)a4;
-- (id)remoteItemWithAccessGroups:(id)a3 error:(id *)a4;
-- (id)shareWithAccessGroups:(id)a3 error:(id *)a4;
+- (KCSharingOutgoingEntry)initWithAttributes:(id)attributes error:(id *)error;
+- (KCSharingOutgoingEntry)initWithNewLocalItem:(id)item zoneID:(id)d;
+- (KCSharingOutgoingEntry)initWithShare:(id)share;
+- (KCSharingOutgoingEntry)initWithUpdatedLocalItem:(id)item forMirrorEntry:(id)entry error:(id *)error;
+- (id)attributesWithAccessGroups:(id)groups error:(id *)error;
+- (id)remoteItemWithAccessGroups:(id)groups error:(id *)error;
+- (id)shareWithAccessGroups:(id)groups error:(id *)error;
 @end
 
 @implementation KCSharingOutgoingEntry
 
-- (id)attributesWithAccessGroups:(id)a3 error:(id *)a4
+- (id)attributesWithAccessGroups:(id)groups error:(id *)error
 {
-  v6 = a3;
-  v7 = [NSKeyedArchiver archivedDataWithRootObject:self->_record requiringSecureCoding:1 error:a4];
+  groupsCopy = groups;
+  v7 = [NSKeyedArchiver archivedDataWithRootObject:self->_record requiringSecureCoding:1 error:error];
   if (!v7)
   {
     v23 = 0;
@@ -26,36 +26,36 @@
   v36 = v7;
   [v8 setCloudKitRecord:v7];
   v38[0] = kSecAttrUUID;
-  v34 = [(KCSharingOutgoingEntry *)self record];
-  v33 = [v34 recordID];
-  v32 = [v33 recordName];
-  v39[0] = v32;
+  record = [(KCSharingOutgoingEntry *)self record];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
+  v39[0] = recordName;
   v38[1] = @"zone";
-  v31 = [(KCSharingOutgoingEntry *)self record];
-  v30 = [v31 recordID];
-  v29 = [v30 zoneID];
-  v28 = [v29 zoneName];
-  v39[1] = v28;
+  record2 = [(KCSharingOutgoingEntry *)self record];
+  recordID2 = [record2 recordID];
+  zoneID = [recordID2 zoneID];
+  zoneName = [zoneID zoneName];
+  v39[1] = zoneName;
   v38[2] = @"ownr";
-  v9 = [(KCSharingOutgoingEntry *)self record];
-  v10 = [v9 recordID];
-  v11 = [v10 zoneID];
-  v12 = [v11 ownerName];
-  v39[2] = v12;
+  record3 = [(KCSharingOutgoingEntry *)self record];
+  recordID3 = [record3 recordID];
+  zoneID2 = [recordID3 zoneID];
+  ownerName = [zoneID2 ownerName];
+  v39[2] = ownerName;
   v39[3] = kSecAttrAccessibleWhenUnlockedThisDeviceOnly;
   v38[3] = kSecAttrAccessible;
   v38[4] = @"type";
   v13 = [NSNumber numberWithLongLong:self->_type];
   v39[4] = v13;
   v38[5] = kSecAttrAccessGroup;
-  v37 = v6;
-  v14 = [v6 entryAccessGroup];
-  v39[5] = v14;
+  v37 = groupsCopy;
+  entryAccessGroup = [groupsCopy entryAccessGroup];
+  v39[5] = entryAccessGroup;
   v38[6] = kSecValueData;
   v35 = v8;
-  v15 = [v8 data];
+  data = [v8 data];
   modificationDate = self->_modificationDate;
-  v39[6] = v15;
+  v39[6] = data;
   v39[7] = modificationDate;
   v38[7] = kSecAttrModificationDate;
   v38[8] = @"deln";
@@ -79,64 +79,64 @@
     v22 = &OBJC_IVAR___KCSharingOutgoingEntry__internetPasswordFingerprint;
 LABEL_7:
     v24 = *v22;
-    v25 = [*(&self->super.super.isa + v24) keyprint];
-    [v18 setObject:v25 forKeyedSubscript:*v21];
+    keyprint = [*(&self->super.super.isa + v24) keyprint];
+    [v18 setObject:keyprint forKeyedSubscript:*v21];
 
-    v26 = [*(&self->super.super.isa + v24) valueprint];
-    [v18 setObject:v26 forKeyedSubscript:*v20];
+    valueprint = [*(&self->super.super.isa + v24) valueprint];
+    [v18 setObject:valueprint forKeyedSubscript:*v20];
   }
 
   v23 = [v18 copy];
 
   v7 = v36;
-  v6 = v37;
+  groupsCopy = v37;
 LABEL_9:
 
   return v23;
 }
 
-- (id)shareWithAccessGroups:(id)a3 error:(id *)a4
+- (id)shareWithAccessGroups:(id)groups error:(id *)error
 {
-  v6 = a3;
-  v7 = [(KCSharingOutgoingEntry *)self type];
-  if ((v7 - 1) < 2)
+  groupsCopy = groups;
+  type = [(KCSharingOutgoingEntry *)self type];
+  if ((type - 1) < 2)
   {
-    v18 = a4;
+    errorCopy2 = error;
     v19 = 21;
     goto LABEL_7;
   }
 
-  if (v7)
+  if (type)
   {
-    if (v7 != 3)
+    if (type != 3)
     {
 LABEL_8:
       v17 = 0;
       goto LABEL_10;
     }
 
-    v8 = [(KCSharingOutgoingEntry *)self record];
-    v9 = [v8 recordID];
-    v10 = [v9 zoneID];
-    v11 = [v10 zoneName];
-    v12 = [v11 hasPrefix:@"group-"];
+    record = [(KCSharingOutgoingEntry *)self record];
+    recordID = [record recordID];
+    zoneID = [recordID zoneID];
+    zoneName = [zoneID zoneName];
+    v12 = [zoneName hasPrefix:@"group-"];
 
     if (v12)
     {
-      v13 = [(KCSharingOutgoingEntry *)self record];
-      v14 = [v6 recordIsFullyDecoded:v13];
+      record2 = [(KCSharingOutgoingEntry *)self record];
+      v14 = [groupsCopy recordIsFullyDecoded:record2];
 
       v15 = [KCSharingEntryContents alloc];
-      v16 = [(KCSharingOutgoingEntry *)self record];
-      v17 = [(KCSharingEntryContents *)v15 initWithContents:v16 fullyDecoded:v14];
+      record3 = [(KCSharingOutgoingEntry *)self record];
+      v17 = [(KCSharingEntryContents *)v15 initWithContents:record3 fullyDecoded:v14];
 
       goto LABEL_10;
     }
 
-    v18 = a4;
+    errorCopy2 = error;
     v19 = 7;
 LABEL_7:
-    sub_100061E2C(v18, v19, 0);
+    sub_100061E2C(errorCopy2, v19, 0);
     goto LABEL_8;
   }
 
@@ -146,9 +146,9 @@ LABEL_10:
   return v17;
 }
 
-- (id)remoteItemWithAccessGroups:(id)a3 error:(id *)a4
+- (id)remoteItemWithAccessGroups:(id)groups error:(id *)error
 {
-  v6 = a3;
+  groupsCopy = groups;
   v7 = 0;
   type = self->_type;
   if (type <= 1)
@@ -164,28 +164,28 @@ LABEL_10:
       goto LABEL_25;
     }
 
-    v9 = [(CKRecord *)self->_record recordID];
-    v10 = [v9 zoneID];
-    v11 = sub_100031160(v10);
+    recordID = [(CKRecord *)self->_record recordID];
+    zoneID = [recordID zoneID];
+    v11 = sub_100031160(zoneID);
 
     if (v11)
     {
       v12 = [KCSharingPBRemoteItem alloc];
-      v13 = [(CKRecord *)self->_record encryptedValues];
-      v14 = [v13 objectForKeyedSubscript:@"payload"];
+      encryptedValues = [(CKRecord *)self->_record encryptedValues];
+      v14 = [encryptedValues objectForKeyedSubscript:@"payload"];
       v15 = [(KCSharingPBRemoteItem *)v12 initWithData:v14];
 
       if (v15)
       {
-        v16 = [[KCSharingRemoteItem alloc] initPasskeyWithProto:v15 sharingGroup:v11 error:a4];
+        v16 = [[KCSharingRemoteItem alloc] initPasskeyWithProto:v15 sharingGroup:v11 error:error];
 LABEL_14:
         v22 = v16;
         if (v16)
         {
-          v23 = [(KCSharingOutgoingEntry *)self record];
-          if ([v6 recordIsFullyDecoded:v23])
+          record = [(KCSharingOutgoingEntry *)self record];
+          if ([groupsCopy recordIsFullyDecoded:record])
           {
-            v24 = [v6 remoteItemProtoIsFullyDecoded:v15];
+            v24 = [groupsCopy remoteItemProtoIsFullyDecoded:v15];
           }
 
           else
@@ -212,25 +212,25 @@ LABEL_14:
 
   if (type == 2)
   {
-    v17 = [(CKRecord *)self->_record recordID];
-    v18 = [v17 zoneID];
-    v11 = sub_100031160(v18);
+    recordID2 = [(CKRecord *)self->_record recordID];
+    zoneID2 = [recordID2 zoneID];
+    v11 = sub_100031160(zoneID2);
 
     if (v11)
     {
       v19 = [KCSharingPBRemoteItem alloc];
-      v20 = [(CKRecord *)self->_record encryptedValues];
-      v21 = [v20 objectForKeyedSubscript:@"payload"];
+      encryptedValues2 = [(CKRecord *)self->_record encryptedValues];
+      v21 = [encryptedValues2 objectForKeyedSubscript:@"payload"];
       v15 = [(KCSharingPBRemoteItem *)v19 initWithData:v21];
 
       if (v15)
       {
-        v16 = [[KCSharingRemoteItem alloc] initPasswordWithProto:v15 sharingGroup:v11 error:a4];
+        v16 = [[KCSharingRemoteItem alloc] initPasswordWithProto:v15 sharingGroup:v11 error:error];
         goto LABEL_14;
       }
 
 LABEL_18:
-      sub_100061E2C(a4, 4, 0);
+      sub_100061E2C(error, 4, 0);
       v7 = 0;
 LABEL_23:
 
@@ -238,7 +238,7 @@ LABEL_23:
     }
 
 LABEL_17:
-    sub_100061E2C(a4, 7, 0);
+    sub_100061E2C(error, 7, 0);
     v7 = 0;
 LABEL_24:
 
@@ -247,7 +247,7 @@ LABEL_24:
 
   if (type == 3)
   {
-    sub_100061E2C(a4, 13, 0);
+    sub_100061E2C(error, 13, 0);
     v7 = 0;
   }
 
@@ -282,9 +282,9 @@ LABEL_25:
   return privateKeyFingerprint;
 }
 
-- (KCSharingOutgoingEntry)initWithAttributes:(id)a3 error:(id *)a4
+- (KCSharingOutgoingEntry)initWithAttributes:(id)attributes error:(id *)error
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v43.receiver = self;
   v43.super_class = KCSharingOutgoingEntry;
   v7 = [(KCSharingOutgoingEntry *)&v43 init];
@@ -293,23 +293,23 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"deln"];
+  v8 = [attributesCopy objectForKeyedSubscript:@"deln"];
   if (!_NSIsNSNumber() || ![v8 BOOLValue])
   {
     v9 = [KCSharingPBLocalEntryData alloc];
-    v10 = [v6 objectForKeyedSubscript:kSecValueData];
+    v10 = [attributesCopy objectForKeyedSubscript:kSecValueData];
     v11 = [(KCSharingPBLocalEntryData *)v9 initWithData:v10];
 
     if (!v11)
     {
-      sub_100061E2C(a4, 3, 0);
+      sub_100061E2C(error, 3, 0);
       goto LABEL_12;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"type"];
+    v12 = [attributesCopy objectForKeyedSubscript:@"type"];
     v7->_type = [v12 longLongValue];
 
-    v13 = [v6 objectForKeyedSubscript:kSecAttrModificationDate];
+    v13 = [attributesCopy objectForKeyedSubscript:kSecAttrModificationDate];
     modificationDate = v7->_modificationDate;
     v7->_modificationDate = v13;
 
@@ -319,8 +319,8 @@ LABEL_25:
       if (type == 2)
       {
         v32 = objc_opt_class();
-        v33 = [(KCSharingPBLocalEntryData *)v11 cloudKitRecord];
-        v34 = [NSKeyedUnarchiver unarchivedObjectOfClass:v32 fromData:v33 error:a4];
+        cloudKitRecord = [(KCSharingPBLocalEntryData *)v11 cloudKitRecord];
+        v34 = [NSKeyedUnarchiver unarchivedObjectOfClass:v32 fromData:cloudKitRecord error:error];
         record = v7->_record;
         v7->_record = v34;
 
@@ -347,8 +347,8 @@ LABEL_24:
       }
 
       v24 = [NSSet setWithObject:objc_opt_class()];
-      v25 = [(KCSharingPBLocalEntryData *)v11 cloudKitRecord];
-      v26 = [NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:v24 fromData:v25 error:a4];
+      cloudKitRecord2 = [(KCSharingPBLocalEntryData *)v11 cloudKitRecord];
+      v26 = [NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:v24 fromData:cloudKitRecord2 error:error];
       v27 = v7->_record;
       v7->_record = v26;
     }
@@ -360,8 +360,8 @@ LABEL_24:
         if (type == 1)
         {
           v16 = objc_opt_class();
-          v17 = [(KCSharingPBLocalEntryData *)v11 cloudKitRecord];
-          v18 = [NSKeyedUnarchiver unarchivedObjectOfClass:v16 fromData:v17 error:a4];
+          cloudKitRecord3 = [(KCSharingPBLocalEntryData *)v11 cloudKitRecord];
+          v18 = [NSKeyedUnarchiver unarchivedObjectOfClass:v16 fromData:cloudKitRecord3 error:error];
           v19 = v7->_record;
           v7->_record = v18;
 
@@ -372,8 +372,8 @@ LABEL_24:
             v22 = &off_100334C70;
 LABEL_22:
             v36 = [KCSharingLocalFingerprint alloc];
-            v37 = [v6 objectForKeyedSubscript:*v22];
-            v38 = [v6 objectForKeyedSubscript:*v21];
+            v37 = [attributesCopy objectForKeyedSubscript:*v22];
+            v38 = [attributesCopy objectForKeyedSubscript:*v21];
             v39 = [(KCSharingLocalFingerprint *)v36 initWithKeyprint:v37 valueprint:v38];
             v40 = *v20;
             v41 = *(&v7->super.super.isa + v40);
@@ -389,8 +389,8 @@ LABEL_22:
       }
 
       v28 = objc_opt_class();
-      v29 = [(KCSharingPBLocalEntryData *)v11 cloudKitRecord];
-      v30 = [NSKeyedUnarchiver unarchivedObjectOfClass:v28 fromData:v29 error:a4];
+      cloudKitRecord4 = [(KCSharingPBLocalEntryData *)v11 cloudKitRecord];
+      v30 = [NSKeyedUnarchiver unarchivedObjectOfClass:v28 fromData:cloudKitRecord4 error:error];
       v31 = v7->_record;
       v7->_record = v30;
     }
@@ -403,7 +403,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  sub_100061E2C(a4, 8, 0);
+  sub_100061E2C(error, 8, 0);
 LABEL_13:
 
   v23 = 0;
@@ -412,25 +412,25 @@ LABEL_25:
   return v23;
 }
 
-- (KCSharingOutgoingEntry)initWithShare:(id)a3
+- (KCSharingOutgoingEntry)initWithShare:(id)share
 {
-  v5 = a3;
+  shareCopy = share;
   v11.receiver = self;
   v11.super_class = KCSharingOutgoingEntry;
   v6 = [(KCSharingOutgoingEntry *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_record, a3);
-    v8 = [v5 modificationDate];
-    v9 = v8;
-    if (!v8)
+    objc_storeStrong(&v6->_record, share);
+    modificationDate = [shareCopy modificationDate];
+    v9 = modificationDate;
+    if (!modificationDate)
     {
       v9 = +[NSDate date];
     }
 
     objc_storeStrong(&v7->_modificationDate, v9);
-    if (!v8)
+    if (!modificationDate)
     {
     }
 
@@ -440,10 +440,10 @@ LABEL_25:
   return v7;
 }
 
-- (KCSharingOutgoingEntry)initWithUpdatedLocalItem:(id)a3 forMirrorEntry:(id)a4 error:(id *)a5
+- (KCSharingOutgoingEntry)initWithUpdatedLocalItem:(id)item forMirrorEntry:(id)entry error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  entryCopy = entry;
   v31.receiver = self;
   v31.super_class = KCSharingOutgoingEntry;
   v10 = [(KCSharingOutgoingEntry *)&v31 init];
@@ -452,40 +452,40 @@ LABEL_25:
     goto LABEL_10;
   }
 
-  v11 = [[KCSharingRemoteItem alloc] initWithLocalItem:v8];
-  v12 = [v9 record];
-  v13 = [v12 copy];
+  v11 = [[KCSharingRemoteItem alloc] initWithLocalItem:itemCopy];
+  record = [entryCopy record];
+  v13 = [record copy];
   record = v10->_record;
   v10->_record = v13;
 
   v15 = [KCSharingPBRemoteItem alloc];
-  v16 = [(CKRecord *)v10->_record encryptedValues];
-  v17 = [v16 objectForKeyedSubscript:@"payload"];
+  encryptedValues = [(CKRecord *)v10->_record encryptedValues];
+  v17 = [encryptedValues objectForKeyedSubscript:@"payload"];
   v18 = [(KCSharingPBRemoteItem *)v15 initWithData:v17];
 
   if (v18)
   {
-    v19 = [(KCSharingRemoteItem *)v11 proto];
-    [(KCSharingPBRemoteItem *)v18 mergeFrom:v19];
-    v20 = [(KCSharingPBRemoteItem *)v18 data];
-    v21 = [(CKRecord *)v10->_record encryptedValues];
-    [v21 setObject:v20 forKeyedSubscript:@"payload"];
+    proto = [(KCSharingRemoteItem *)v11 proto];
+    [(KCSharingPBRemoteItem *)v18 mergeFrom:proto];
+    data = [(KCSharingPBRemoteItem *)v18 data];
+    encryptedValues2 = [(CKRecord *)v10->_record encryptedValues];
+    [encryptedValues2 setObject:data forKeyedSubscript:@"payload"];
 
-    v22 = [v8 modificationDate];
+    modificationDate = [itemCopy modificationDate];
     modificationDate = v10->_modificationDate;
-    v10->_modificationDate = v22;
+    v10->_modificationDate = modificationDate;
 
-    v24 = [v8 type];
-    if (v24 == 2)
+    type = [itemCopy type];
+    if (type == 2)
     {
       v10->_type = 2;
-      v25 = [v8 internetPasswordFingerprint];
+      internetPasswordFingerprint = [itemCopy internetPasswordFingerprint];
       v26 = &OBJC_IVAR___KCSharingOutgoingEntry__internetPasswordFingerprint;
     }
 
     else
     {
-      if (v24 != 1)
+      if (type != 1)
       {
 LABEL_9:
 
@@ -495,18 +495,18 @@ LABEL_10:
       }
 
       v10->_type = 1;
-      v25 = [v8 privateKeyFingerprint];
+      internetPasswordFingerprint = [itemCopy privateKeyFingerprint];
       v26 = &OBJC_IVAR___KCSharingOutgoingEntry__privateKeyFingerprint;
     }
 
     v28 = *v26;
     v29 = *(&v10->super.super.isa + v28);
-    *(&v10->super.super.isa + v28) = v25;
+    *(&v10->super.super.isa + v28) = internetPasswordFingerprint;
 
     goto LABEL_9;
   }
 
-  sub_100061E2C(a5, 4, 0);
+  sub_100061E2C(error, 4, 0);
 
   v27 = 0;
 LABEL_11:
@@ -514,49 +514,49 @@ LABEL_11:
   return v27;
 }
 
-- (KCSharingOutgoingEntry)initWithNewLocalItem:(id)a3 zoneID:(id)a4
+- (KCSharingOutgoingEntry)initWithNewLocalItem:(id)item zoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  dCopy = d;
   v30.receiver = self;
   v30.super_class = KCSharingOutgoingEntry;
   v8 = [(KCSharingOutgoingEntry *)&v30 init];
   if (v8)
   {
-    v9 = [[KCSharingRemoteItem alloc] initWithLocalItem:v6];
+    v9 = [[KCSharingRemoteItem alloc] initWithLocalItem:itemCopy];
     v10 = +[NSUUID UUID];
-    v11 = [v10 UUIDString];
-    v12 = [NSString stringWithFormat:@"%@-%@", @"item", v11];
+    uUIDString = [v10 UUIDString];
+    v12 = [NSString stringWithFormat:@"%@-%@", @"item", uUIDString];
 
     v13 = [CKRecord alloc];
-    v14 = [[CKRecordID alloc] initWithRecordName:v12 zoneID:v7];
+    v14 = [[CKRecordID alloc] initWithRecordName:v12 zoneID:dCopy];
     v15 = [v13 initWithRecordType:@"item" recordID:v14];
     record = v8->_record;
     v8->_record = v15;
 
-    v17 = [(KCSharingRemoteItem *)v9 proto];
-    v18 = [v17 data];
-    v19 = [(CKRecord *)v8->_record encryptedValues];
-    [v19 setObject:v18 forKeyedSubscript:@"payload"];
+    proto = [(KCSharingRemoteItem *)v9 proto];
+    data = [proto data];
+    encryptedValues = [(CKRecord *)v8->_record encryptedValues];
+    [encryptedValues setObject:data forKeyedSubscript:@"payload"];
 
-    v20 = [v6 modificationDate];
+    modificationDate = [itemCopy modificationDate];
     modificationDate = v8->_modificationDate;
-    v8->_modificationDate = v20;
+    v8->_modificationDate = modificationDate;
 
-    v22 = [v6 type];
-    if (v22 == 2)
+    type = [itemCopy type];
+    if (type == 2)
     {
       v8->_type = 2;
-      v26 = [(CKRecord *)v8->_record encryptedValues];
-      [v26 setObject:&off_100364000 forKeyedSubscript:@"type"];
+      encryptedValues2 = [(CKRecord *)v8->_record encryptedValues];
+      [encryptedValues2 setObject:&off_100364000 forKeyedSubscript:@"type"];
 
-      v24 = [v6 internetPasswordFingerprint];
+      internetPasswordFingerprint = [itemCopy internetPasswordFingerprint];
       v25 = &OBJC_IVAR___KCSharingOutgoingEntry__internetPasswordFingerprint;
     }
 
     else
     {
-      if (v22 != 1)
+      if (type != 1)
       {
 LABEL_7:
 
@@ -564,16 +564,16 @@ LABEL_7:
       }
 
       v8->_type = 1;
-      v23 = [(CKRecord *)v8->_record encryptedValues];
-      [v23 setObject:&off_100363FE8 forKeyedSubscript:@"type"];
+      encryptedValues3 = [(CKRecord *)v8->_record encryptedValues];
+      [encryptedValues3 setObject:&off_100363FE8 forKeyedSubscript:@"type"];
 
-      v24 = [v6 privateKeyFingerprint];
+      internetPasswordFingerprint = [itemCopy privateKeyFingerprint];
       v25 = &OBJC_IVAR___KCSharingOutgoingEntry__privateKeyFingerprint;
     }
 
     v27 = *v25;
     v28 = *(&v8->super.super.isa + v27);
-    *(&v8->super.super.isa + v27) = v24;
+    *(&v8->super.super.isa + v27) = internetPasswordFingerprint;
 
     goto LABEL_7;
   }

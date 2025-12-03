@@ -1,5 +1,5 @@
 @interface SBCameraViewfinderMonitorToken
-- (SBCameraViewfinderMonitorToken)initWithMonitor:(id)a3 observer:(id)a4;
+- (SBCameraViewfinderMonitorToken)initWithMonitor:(id)monitor observer:(id)observer;
 - (id)auditTokenForProcessWithActiveOrImminentViewfinderSession;
 - (void)auditTokenForProcessWithActiveOrImminentViewfinderSession;
 - (void)cancel;
@@ -26,14 +26,14 @@
   return [(SBCameraViewfinderMonitor *)monitor auditTokenForProcessWithActiveOrImminentViewfinderSession];
 }
 
-- (SBCameraViewfinderMonitorToken)initWithMonitor:(id)a3 observer:(id)a4
+- (SBCameraViewfinderMonitorToken)initWithMonitor:(id)monitor observer:(id)observer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  monitorCopy = monitor;
+  observerCopy = observer;
+  v10 = observerCopy;
+  if (monitorCopy)
   {
-    if (v9)
+    if (observerCopy)
     {
       goto LABEL_3;
     }
@@ -56,8 +56,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_monitor, a3);
-    objc_storeStrong(&v12->_observer, a4);
+    objc_storeStrong(&v11->_monitor, monitor);
+    objc_storeStrong(&v12->_observer, observer);
   }
 
   return v12;
@@ -68,8 +68,8 @@ LABEL_3:
   monitor = self->_monitor;
   if (!monitor || !self->_observer)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"SBCameraViewfinderMonitor.m" lineNumber:213 description:@"Already canceled?"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBCameraViewfinderMonitor.m" lineNumber:213 description:@"Already canceled?"];
 
     monitor = self->_monitor;
   }
@@ -96,8 +96,8 @@ LABEL_3:
 
 - (void)auditTokenForProcessWithActiveOrImminentViewfinderSession
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"SBCameraViewfinderMonitor.m" lineNumber:222 description:@"Already canceled?"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBCameraViewfinderMonitor.m" lineNumber:222 description:@"Already canceled?"];
 
   *a4 = *a3;
 }

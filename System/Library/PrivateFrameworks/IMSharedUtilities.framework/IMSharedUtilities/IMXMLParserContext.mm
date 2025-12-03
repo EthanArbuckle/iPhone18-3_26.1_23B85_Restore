@@ -1,27 +1,27 @@
 @interface IMXMLParserContext
-- (IMXMLParserContext)initWithContent:(id)a3;
-- (IMXMLParserContext)initWithContentAsData:(id)a3;
+- (IMXMLParserContext)initWithContent:(id)content;
+- (IMXMLParserContext)initWithContentAsData:(id)data;
 - (id)inContent;
 - (void)dealloc;
 @end
 
 @implementation IMXMLParserContext
 
-- (IMXMLParserContext)initWithContent:(id)a3
+- (IMXMLParserContext)initWithContent:(id)content
 {
-  [a3 dataUsingEncoding:4];
+  [content dataUsingEncoding:4];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithContentAsData_);
 }
 
-- (IMXMLParserContext)initWithContentAsData:(id)a3
+- (IMXMLParserContext)initWithContentAsData:(id)data
 {
   v6.receiver = self;
   v6.super_class = IMXMLParserContext;
   v4 = [(IMXMLParserContext *)&v6 init];
   if (v4)
   {
-    v4->_inContentAsData = a3;
+    v4->_inContentAsData = data;
     [(IMXMLParserContext *)v4 reset];
   }
 

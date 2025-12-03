@@ -1,14 +1,14 @@
 @interface TSCH3DLightUniformArrayShaderVariables
-- (id)variableAtIndex:(unint64_t)a3 name:(id)a4;
+- (id)variableAtIndex:(unint64_t)index name:(id)name;
 - (void)initializeArrayVariables;
-- (void)initializePrefix:(id)a3;
+- (void)initializePrefix:(id)prefix;
 @end
 
 @implementation TSCH3DLightUniformArrayShaderVariables
 
-- (void)initializePrefix:(id)a3
+- (void)initializePrefix:(id)prefix
 {
-  v34 = a3;
+  prefixCopy = prefix;
   if (self->_variables)
   {
     v8 = MEMORY[0x277D81150];
@@ -20,7 +20,7 @@
   }
 
   v23 = [TSCH3DUniformArrayShaderVariables alloc];
-  v28 = objc_msgSend_initWithPrefix_arraySize_(v23, v24, v25, v26, v27, v34, 8);
+  v28 = objc_msgSend_initWithPrefix_arraySize_(v23, v24, v25, v26, v27, prefixCopy, 8);
   variables = self->_variables;
   self->_variables = v28;
 
@@ -37,9 +37,9 @@
   objc_msgSend_addArrayName_type_(variables, v14, v15, v16, v17, @"SpecularColor", @"vec4");
 }
 
-- (id)variableAtIndex:(unint64_t)a3 name:(id)a4
+- (id)variableAtIndex:(unint64_t)index name:(id)name
 {
-  v7 = objc_msgSend_variableAtIndex_name_(self->_variables, a2, v4, v5, v6, a3, a4);
+  v7 = objc_msgSend_variableAtIndex_name_(self->_variables, a2, v4, v5, v6, index, name);
 
   return v7;
 }

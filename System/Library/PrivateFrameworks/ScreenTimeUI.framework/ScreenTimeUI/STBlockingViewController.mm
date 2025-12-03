@@ -2,11 +2,11 @@
 + (id)closeApplicationHandler;
 + (id)newTranslucentBlockingViewController;
 + (id)openParentAppHandler;
-+ (void)openAppWithBundleIdentifier:(id)a3;
-- (BOOL)isApplicationShieldedWithBundleIdentifier:(id)a3;
-- (BOOL)isCategoryShieldedWithIdentifier:(id)a3;
++ (void)openAppWithBundleIdentifier:(id)identifier;
+- (BOOL)isApplicationShieldedWithBundleIdentifier:(id)identifier;
+- (BOOL)isCategoryShieldedWithIdentifier:(id)identifier;
 - (BOOL)isShieldedThroughManagedSettings;
-- (BOOL)isWebDomainShieldedWithWebURL:(id)a3;
+- (BOOL)isWebDomainShieldedWithWebURL:(id)l;
 - (BOOL)shouldAllowOneMoreMinute;
 - (BOOL)shouldRequestMoreTime;
 - (CNContactStore)contactStore;
@@ -22,50 +22,50 @@
 - (id)_remindMeIn15MinutesAction;
 - (id)_secondaryButtonConfiguration;
 - (id)_sendRequestAction;
-- (int64_t)_dmfPolicyFromScreenTimeShieldPolicy:(id)a3;
-- (int64_t)_managedSettingsShieldPolicyForBundleIdentifier:(id)a3 category:(id)a4;
-- (int64_t)_managedSettingsShieldPolicyForCategoryIdentifier:(id)a3;
-- (int64_t)_managedSettingsShieldPolicyForWebURL:(id)a3 category:(id)a4;
+- (int64_t)_dmfPolicyFromScreenTimeShieldPolicy:(id)policy;
+- (int64_t)_managedSettingsShieldPolicyForBundleIdentifier:(id)identifier category:(id)category;
+- (int64_t)_managedSettingsShieldPolicyForCategoryIdentifier:(id)identifier;
+- (int64_t)_managedSettingsShieldPolicyForWebURL:(id)l category:(id)category;
 - (void)_addContact;
-- (void)_addContact:(id)a3;
+- (void)_addContact:(id)contact;
 - (void)_approveOneMoreMinuteWithPreemptiveHide;
-- (void)_customButtonPressed:(id)a3;
-- (void)_didFinishEnteringScreenTimePasscode:(id)a3;
-- (void)_enterScreenTimePasscode:(id)a3;
-- (void)_handleCustomButtonResponse:(id)a3 forAction:(int64_t)a4 error:(id)a5;
+- (void)_customButtonPressed:(id)pressed;
+- (void)_didFinishEnteringScreenTimePasscode:(id)passcode;
+- (void)_enterScreenTimePasscode:(id)passcode;
+- (void)_handleCustomButtonResponse:(id)response forAction:(int64_t)action error:(id)error;
 - (void)_hideCustomButtons;
-- (void)_ignoreLimitForAdditionalTime:(double)a3;
-- (void)_ignoreLimitWithPreemptiveHideForAdditionalTime:(double)a3;
-- (void)_ok:(id)a3;
-- (void)_oneMoreMinute:(id)a3;
-- (void)_sendRequest:(id)a3;
-- (void)_showAskForMoreTimeOptions:(id)a3;
+- (void)_ignoreLimitForAdditionalTime:(double)time;
+- (void)_ignoreLimitWithPreemptiveHideForAdditionalTime:(double)time;
+- (void)_ok:(id)_ok;
+- (void)_oneMoreMinute:(id)minute;
+- (void)_sendRequest:(id)request;
+- (void)_showAskForMoreTimeOptions:(id)options;
 - (void)_showDefaultHourglassView;
-- (void)_showIgnoreLimitOptions:(id)a3;
+- (void)_showIgnoreLimitOptions:(id)options;
 - (void)_showPasscodeApprovedOptions;
-- (void)_unlockDeviceIfNeededWithCompletionHandler:(id)a3;
+- (void)_unlockDeviceIfNeededWithCompletionHandler:(id)handler;
 - (void)_updateAddContactButton;
 - (void)_updateAppearanceForAskPending;
-- (void)_updateAppearanceForBlockedContent:(id)a3 messageFormatKey:(id)a4 messageKey:(id)a5;
-- (void)_updateAppearanceWithCustomConfiguration:(id)a3 defaultMessageFormatKey:(id)a4 defaultMessageArgument:(id)a5;
+- (void)_updateAppearanceForBlockedContent:(id)content messageFormatKey:(id)key messageKey:(id)messageKey;
+- (void)_updateAppearanceWithCustomConfiguration:(id)configuration defaultMessageFormatKey:(id)key defaultMessageArgument:(id)argument;
 - (void)_updateButtons;
 - (void)_updateWithNaturalBlockingUIStyling;
 - (void)dealloc;
-- (void)fetchAppResponsibleForShieldWithCompletionHandler:(id)a3;
+- (void)fetchAppResponsibleForShieldWithCompletionHandler:(id)handler;
 - (void)handleScreenTimeSettingsGroupChanges;
-- (void)hideWithAnimation:(BOOL)a3 completionHandler:(id)a4;
+- (void)hideWithAnimation:(BOOL)animation completionHandler:(id)handler;
 - (void)registerForManagedSettingsEffectiveChanges;
-- (void)setChangePolicyButtonHidden:(BOOL)a3;
-- (void)setOkButtonHandler:(id)a3;
-- (void)showWithAnimation:(BOOL)a3 completionHandler:(id)a4;
+- (void)setChangePolicyButtonHidden:(BOOL)hidden;
+- (void)setOkButtonHandler:(id)handler;
+- (void)showWithAnimation:(BOOL)animation completionHandler:(id)handler;
 - (void)unregisterFromManagedSettingsEffectiveChanges;
-- (void)updateAppearanceUsingBlockedContactHandles:(id)a3 contactNameByHandle:(id)a4 forBundleIdentifier:(id)a5 isApplicationCurrentlyLimited:(BOOL)a6 contactStore:(id)a7;
-- (void)updateAppearanceUsingPolicy:(int64_t)a3 forBundleIdentifier:(id)a4;
-- (void)updateAppearanceUsingPolicy:(int64_t)a3 forCategoryIdentifier:(id)a4;
-- (void)updateAppearanceUsingPolicy:(int64_t)a3 forWebpageURL:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateAppearanceUsingBlockedContactHandles:(id)handles contactNameByHandle:(id)handle forBundleIdentifier:(id)identifier isApplicationCurrentlyLimited:(BOOL)limited contactStore:(id)store;
+- (void)updateAppearanceUsingPolicy:(int64_t)policy forBundleIdentifier:(id)identifier;
+- (void)updateAppearanceUsingPolicy:(int64_t)policy forCategoryIdentifier:(id)identifier;
+- (void)updateAppearanceUsingPolicy:(int64_t)policy forWebpageURL:(id)l;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation STBlockingViewController
@@ -76,20 +76,20 @@
   v3 = +[STScreenTimeUIBundle bundle];
   v4 = [v2 storyboardWithName:@"BlockingUI-Translucent-iOS" bundle:v3];
 
-  v5 = [v4 instantiateInitialViewController];
+  instantiateInitialViewController = [v4 instantiateInitialViewController];
   v6 = objc_opt_new();
-  v7 = v5[140];
-  v5[140] = v6;
+  v7 = instantiateInitialViewController[140];
+  instantiateInitialViewController[140] = v6;
 
   v8 = objc_opt_new();
-  v9 = v5[144];
-  v5[144] = v8;
+  v9 = instantiateInitialViewController[144];
+  instantiateInitialViewController[144] = v8;
 
   v10 = objc_opt_new();
-  v11 = v5[148];
-  v5[148] = v10;
+  v11 = instantiateInitialViewController[148];
+  instantiateInitialViewController[148] = v10;
 
-  return v5;
+  return instantiateInitialViewController;
 }
 
 - (void)dealloc
@@ -109,8 +109,8 @@
   v4 = [v3 fontDescriptorWithSymbolicTraits:2];
 
   v5 = [MEMORY[0x277D74300] fontWithDescriptor:v4 size:0.0];
-  v6 = [(STBlockingViewController *)self titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [(STBlockingViewController *)self titleLabel];
+  [titleLabel setFont:v5];
 
   [(STBlockingViewController *)self _updateWithNaturalBlockingUIStyling];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -123,53 +123,53 @@
 - (void)_updateWithNaturalBlockingUIStyling
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v3 = [(STBlockingViewController *)self titleLabel];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyPrimaryLabelStyle:v3];
+  titleLabel = [(STBlockingViewController *)self titleLabel];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyPrimaryLabelStyle:titleLabel];
 
-  v4 = [(STBlockingViewController *)self messageLabel];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryLabelStyle:v4];
+  messageLabel = [(STBlockingViewController *)self messageLabel];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryLabelStyle:messageLabel];
 
-  v5 = [(STBlockingViewController *)self okButton];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyPrimaryButtonStyle:v5];
+  okButton = [(STBlockingViewController *)self okButton];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyPrimaryButtonStyle:okButton];
 
-  v6 = [(STBlockingViewController *)self ignoreLimitButton];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryButtonStyle:v6];
+  ignoreLimitButton = [(STBlockingViewController *)self ignoreLimitButton];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryButtonStyle:ignoreLimitButton];
 
-  v7 = [(STBlockingViewController *)self askForMoreTimeButton];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryButtonStyle:v7];
+  askForMoreTimeButton = [(STBlockingViewController *)self askForMoreTimeButton];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryButtonStyle:askForMoreTimeButton];
 
-  v8 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryButtonStyle:v8];
+  enterScreenTimePasscodeButton = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryButtonStyle:enterScreenTimePasscodeButton];
 
-  v9 = [(STBlockingViewController *)self addContactButton];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryButtonStyle:v9];
+  addContactButton = [(STBlockingViewController *)self addContactButton];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applySecondaryButtonStyle:addContactButton];
 
-  v10 = [(STBlockingViewController *)self buttonStackView];
-  [v10 setSpacing:10.0];
-  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyButtonGroupStyle:v10];
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  buttonStackView = [(STBlockingViewController *)self buttonStackView];
+  [buttonStackView setSpacing:10.0];
+  [_TtC12ScreenTimeUI24NaturalBlockingUIStyling applyButtonGroupStyle:buttonStackView];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v13 = MEMORY[0x277CCAAD0];
-  if (v12 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v14 = [v10 widthAnchor];
-    v15 = [v14 constraintGreaterThanOrEqualToConstant:326.0];
-    v26[0] = v15;
-    v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-    [v13 activateConstraints:v16];
+    widthAnchor = [buttonStackView widthAnchor];
+    view = [widthAnchor constraintGreaterThanOrEqualToConstant:326.0];
+    v26[0] = view;
+    leadingAnchor = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
+    [v13 activateConstraints:leadingAnchor];
   }
 
   else
   {
-    v14 = [v10 leadingAnchor];
-    v15 = [(STBlockingViewController *)self view];
-    v16 = [v15 leadingAnchor];
-    v17 = [v14 constraintEqualToSystemSpacingAfterAnchor:v16 multiplier:4.0];
-    v18 = [(STBlockingViewController *)self view];
-    v19 = [v18 trailingAnchor];
-    v20 = [v10 trailingAnchor];
-    v21 = [v19 constraintEqualToSystemSpacingAfterAnchor:v20 multiplier:4.0];
+    widthAnchor = [buttonStackView leadingAnchor];
+    view = [(STBlockingViewController *)self view];
+    leadingAnchor = [view leadingAnchor];
+    v17 = [widthAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor multiplier:4.0];
+    view2 = [(STBlockingViewController *)self view];
+    trailingAnchor = [view2 trailingAnchor];
+    trailingAnchor2 = [buttonStackView trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:4.0];
     v25[1] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
     v23 = v13;
@@ -178,35 +178,35 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = STBlockingViewController;
-  [(STBlockingViewController *)&v9 viewWillAppear:a3];
+  [(STBlockingViewController *)&v9 viewWillAppear:appear];
   [(STBlockingViewController *)self registerForManagedSettingsEffectiveChanges];
-  v4 = [(STBlockingViewController *)self okButton];
-  [v4 setAccessibilityIdentifier:@"ok-button"];
+  okButton = [(STBlockingViewController *)self okButton];
+  [okButton setAccessibilityIdentifier:@"ok-button"];
 
-  v5 = [(STBlockingViewController *)self ignoreLimitButton];
-  [v5 setAccessibilityIdentifier:@"ignore-limit-button"];
+  ignoreLimitButton = [(STBlockingViewController *)self ignoreLimitButton];
+  [ignoreLimitButton setAccessibilityIdentifier:@"ignore-limit-button"];
 
-  v6 = [(STBlockingViewController *)self askForMoreTimeButton];
-  [v6 setAccessibilityIdentifier:@"ask-for-more-time-button"];
+  askForMoreTimeButton = [(STBlockingViewController *)self askForMoreTimeButton];
+  [askForMoreTimeButton setAccessibilityIdentifier:@"ask-for-more-time-button"];
 
-  v7 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
-  [v7 setAccessibilityIdentifier:@"enter-passcode-button"];
+  enterScreenTimePasscodeButton = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
+  [enterScreenTimePasscodeButton setAccessibilityIdentifier:@"enter-passcode-button"];
 
-  v8 = [(STBlockingViewController *)self addContactButton];
-  [v8 setAccessibilityIdentifier:@"add-contact-button"];
+  addContactButton = [(STBlockingViewController *)self addContactButton];
+  [addContactButton setAccessibilityIdentifier:@"add-contact-button"];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(STBlockingViewController *)self unregisterFromManagedSettingsEffectiveChanges];
   v5.receiver = self;
   v5.super_class = STBlockingViewController;
-  [(STBlockingViewController *)&v5 viewDidDisappear:v3];
+  [(STBlockingViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
 - (CNContactStore)contactStore
@@ -226,15 +226,15 @@
 
 - (BOOL)shouldAllowOneMoreMinute
 {
-  v3 = [(STBlockingViewController *)self categoryIdentifier];
-  v4 = [(STBlockingViewController *)self bundleIdentifier];
-  v5 = [(STBlockingViewController *)self webDomain];
-  v6 = v5;
-  if (v3)
+  categoryIdentifier = [(STBlockingViewController *)self categoryIdentifier];
+  bundleIdentifier = [(STBlockingViewController *)self bundleIdentifier];
+  webDomain = [(STBlockingViewController *)self webDomain];
+  v6 = webDomain;
+  if (categoryIdentifier)
   {
-    v7 = [(STBlockingViewController *)self managementState];
+    managementState = [(STBlockingViewController *)self managementState];
     v17 = 0;
-    v8 = [v7 shouldAllowOneMoreMinuteForCategoryIdentifier:v3 error:&v17];
+    v8 = [managementState shouldAllowOneMoreMinuteForCategoryIdentifier:categoryIdentifier error:&v17];
     v9 = v17;
 
     if (!v8)
@@ -251,11 +251,11 @@ LABEL_16:
     }
   }
 
-  else if (v4)
+  else if (bundleIdentifier)
   {
-    v11 = [(STBlockingViewController *)self managementState];
+    managementState2 = [(STBlockingViewController *)self managementState];
     v16 = 0;
-    v8 = [v11 shouldAllowOneMoreMinuteForBundleIdentifier:v4 error:&v16];
+    v8 = [managementState2 shouldAllowOneMoreMinuteForBundleIdentifier:bundleIdentifier error:&v16];
     v9 = v16;
 
     if (!v8)
@@ -272,7 +272,7 @@ LABEL_16:
 
   else
   {
-    if (!v5)
+    if (!webDomain)
     {
       v10 = +[STBlockingUILog log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -284,9 +284,9 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v12 = [(STBlockingViewController *)self managementState];
+    managementState3 = [(STBlockingViewController *)self managementState];
     v15 = 0;
-    v8 = [v12 shouldAllowOneMoreMinuteForWebDomain:v6 error:&v15];
+    v8 = [managementState3 shouldAllowOneMoreMinuteForWebDomain:v6 error:&v15];
     v9 = v15;
 
     if (!v8)
@@ -301,17 +301,17 @@ LABEL_16:
     }
   }
 
-  v13 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  return v13;
+  return bOOLValue;
 }
 
 - (BOOL)shouldRequestMoreTime
 {
-  v2 = [(STBlockingViewController *)self managementState];
-  v3 = [v2 shouldRequestMoreTime];
+  managementState = [(STBlockingViewController *)self managementState];
+  shouldRequestMoreTime = [managementState shouldRequestMoreTime];
 
-  return v3;
+  return shouldRequestMoreTime;
 }
 
 - (void)registerForManagedSettingsEffectiveChanges
@@ -375,15 +375,15 @@ uint64_t __70__STBlockingViewController_registerForManagedSettingsEffectiveChang
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(STBlockingViewController *)self bundleIdentifier];
+    bundleIdentifier = [(STBlockingViewController *)self bundleIdentifier];
 
-    if (v3)
+    if (bundleIdentifier)
     {
-      v4 = [(STBlockingViewController *)self bundleIdentifier];
-      v5 = [v4 copy];
+      bundleIdentifier2 = [(STBlockingViewController *)self bundleIdentifier];
+      v5 = [bundleIdentifier2 copy];
 
       [(STBlockingViewController *)self setBundleIdentifier:0];
-      v6 = [MEMORY[0x277CCABD8] mainQueue];
+      mainQueue = [MEMORY[0x277CCABD8] mainQueue];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __64__STBlockingViewController_handleScreenTimeSettingsGroupChanges__block_invoke;
@@ -391,7 +391,7 @@ uint64_t __70__STBlockingViewController_registerForManagedSettingsEffectiveChang
       v23[4] = self;
       v24 = v5;
       v7 = v5;
-      [v6 addOperationWithBlock:v23];
+      [mainQueue addOperationWithBlock:v23];
 
       v8 = v24;
 LABEL_4:
@@ -400,18 +400,18 @@ LABEL_7:
       return;
     }
 
-    v9 = [(STBlockingViewController *)self webDomain];
+    webDomain = [(STBlockingViewController *)self webDomain];
 
-    if (v9)
+    if (webDomain)
     {
       v7 = objc_opt_new();
-      v10 = [(STBlockingViewController *)self webDomain];
-      v11 = [v10 copy];
+      webDomain2 = [(STBlockingViewController *)self webDomain];
+      v11 = [webDomain2 copy];
       [v7 setHost:v11];
 
       v12 = [v7 URL];
       [(STBlockingViewController *)self setWebDomain:0];
-      v13 = [MEMORY[0x277CCABD8] mainQueue];
+      mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __64__STBlockingViewController_handleScreenTimeSettingsGroupChanges__block_invoke_2;
@@ -419,20 +419,20 @@ LABEL_7:
       v21[4] = self;
       v22 = v12;
       v14 = v12;
-      [v13 addOperationWithBlock:v21];
+      [mainQueue2 addOperationWithBlock:v21];
 
       goto LABEL_7;
     }
 
-    v15 = [(STBlockingViewController *)self categoryIdentifier];
+    categoryIdentifier = [(STBlockingViewController *)self categoryIdentifier];
 
-    if (v15)
+    if (categoryIdentifier)
     {
-      v16 = [(STBlockingViewController *)self categoryIdentifier];
-      v17 = [v16 copy];
+      categoryIdentifier2 = [(STBlockingViewController *)self categoryIdentifier];
+      v17 = [categoryIdentifier2 copy];
 
       [(STBlockingViewController *)self setCategoryIdentifier:0];
-      v18 = [MEMORY[0x277CCABD8] mainQueue];
+      mainQueue3 = [MEMORY[0x277CCABD8] mainQueue];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __64__STBlockingViewController_handleScreenTimeSettingsGroupChanges__block_invoke_3;
@@ -440,7 +440,7 @@ LABEL_7:
       v19[4] = self;
       v20 = v17;
       v7 = v17;
-      [v18 addOperationWithBlock:v19];
+      [mainQueue3 addOperationWithBlock:v19];
 
       v8 = v20;
       goto LABEL_4;
@@ -450,40 +450,40 @@ LABEL_7:
 
 - (BOOL)isShieldedThroughManagedSettings
 {
-  v3 = [(STBlockingViewController *)self bundleIdentifier];
+  bundleIdentifier = [(STBlockingViewController *)self bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
-    v4 = [(STBlockingViewController *)self bundleIdentifier];
-    v5 = [(STBlockingViewController *)self isApplicationShieldedWithBundleIdentifier:v4];
+    bundleIdentifier2 = [(STBlockingViewController *)self bundleIdentifier];
+    v5 = [(STBlockingViewController *)self isApplicationShieldedWithBundleIdentifier:bundleIdentifier2];
   }
 
   else
   {
-    v7 = [(STBlockingViewController *)self webDomain];
+    webDomain = [(STBlockingViewController *)self webDomain];
 
-    if (v7)
+    if (webDomain)
     {
-      v4 = objc_opt_new();
-      v8 = [(STBlockingViewController *)self webDomain];
-      v9 = [v8 copy];
-      [v4 setHost:v9];
+      bundleIdentifier2 = objc_opt_new();
+      webDomain2 = [(STBlockingViewController *)self webDomain];
+      v9 = [webDomain2 copy];
+      [bundleIdentifier2 setHost:v9];
 
-      v10 = [v4 URL];
+      v10 = [bundleIdentifier2 URL];
       v6 = [(STBlockingViewController *)self isWebDomainShieldedWithWebURL:v10];
 
       goto LABEL_6;
     }
 
-    v12 = [(STBlockingViewController *)self categoryIdentifier];
+    categoryIdentifier = [(STBlockingViewController *)self categoryIdentifier];
 
-    if (!v12)
+    if (!categoryIdentifier)
     {
       return 0;
     }
 
-    v4 = [(STBlockingViewController *)self categoryIdentifier];
-    v5 = [(STBlockingViewController *)self isCategoryShieldedWithIdentifier:v4];
+    bundleIdentifier2 = [(STBlockingViewController *)self categoryIdentifier];
+    v5 = [(STBlockingViewController *)self isCategoryShieldedWithIdentifier:bundleIdentifier2];
   }
 
   v6 = v5;
@@ -492,33 +492,33 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isCategoryShieldedWithIdentifier:(id)a3
+- (BOOL)isCategoryShieldedWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D26560];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithIdentifier:v5];
+  identifierCopy = identifier;
+  v6 = [[v4 alloc] initWithIdentifier:identifierCopy];
 
-  v7 = [(STBlockingViewController *)self effectiveSettingsStore];
-  v8 = [v7 shield];
-  v9 = [v8 applicationCategories];
+  effectiveSettingsStore = [(STBlockingViewController *)self effectiveSettingsStore];
+  shield = [effectiveSettingsStore shield];
+  applicationCategories = [shield applicationCategories];
 
-  v10 = [v9 policy];
-  if (v10 == 2 || v10 == 1 && ([v9 specificCategories], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsObject:", v6), v11, (v12 & 1) != 0))
+  policy = [applicationCategories policy];
+  if (policy == 2 || policy == 1 && ([applicationCategories specificCategories], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsObject:", v6), v11, (v12 & 1) != 0))
   {
     v13 = 1;
   }
 
   else
   {
-    v14 = [(STBlockingViewController *)self effectiveSettingsStore];
-    v15 = [v14 shield];
-    v16 = [v15 webDomainCategories];
+    effectiveSettingsStore2 = [(STBlockingViewController *)self effectiveSettingsStore];
+    shield2 = [effectiveSettingsStore2 shield];
+    webDomainCategories = [shield2 webDomainCategories];
 
-    v17 = [v16 policy];
+    policy2 = [webDomainCategories policy];
     v13 = 1;
-    if (v17 != 2)
+    if (policy2 != 2)
     {
-      if (v17 != 1 || ([v16 specificCategories], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "containsObject:", v6), v18, (v19 & 1) == 0))
+      if (policy2 != 1 || ([webDomainCategories specificCategories], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "containsObject:", v6), v18, (v19 & 1) == 0))
       {
         v13 = 0;
       }
@@ -528,17 +528,17 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)isApplicationShieldedWithBundleIdentifier:(id)a3
+- (BOOL)isApplicationShieldedWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:v4];
-  v6 = [(STBlockingViewController *)self effectiveSettingsStore];
-  v7 = [v6 shield];
-  v8 = [v7 applications];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:identifierCopy];
+  effectiveSettingsStore = [(STBlockingViewController *)self effectiveSettingsStore];
+  shield = [effectiveSettingsStore shield];
+  applications = [shield applications];
 
-  if (([v8 containsObject:v5] & 1) == 0)
+  if (([applications containsObject:v5] & 1) == 0)
   {
-    v10 = v4;
+    v10 = identifierCopy;
     v56 = 0;
     v57 = &v56;
     v58 = 0x3032000000;
@@ -546,7 +546,7 @@ LABEL_6:
     v60 = __Block_byref_object_dispose_;
     v61 = 0;
     v11 = [objc_alloc(MEMORY[0x277CCA930]) initWithCondition:0];
-    v12 = [MEMORY[0x277CF9650] sharedCategories];
+    mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __categoryForBundleIdentifier_block_invoke;
@@ -557,7 +557,7 @@ LABEL_6:
     v14 = v11;
     v53 = v14;
     v55 = 1;
-    [v12 categoryForBundleID:v13 completionHandler:v51];
+    [mEMORY[0x277CF9650] categoryForBundleID:v13 completionHandler:v51];
 
     [v14 lockWhenCondition:1];
     [v14 unlock];
@@ -572,9 +572,9 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v16 = [v15 canonicalBundleIdentifier];
-    v17 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:v16];
-    if (v17 && ([v8 containsObject:v17] & 1) != 0)
+    canonicalBundleIdentifier = [v15 canonicalBundleIdentifier];
+    v17 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:canonicalBundleIdentifier];
+    if (v17 && ([applications containsObject:v17] & 1) != 0)
     {
       v9 = 1;
 LABEL_30:
@@ -583,25 +583,25 @@ LABEL_30:
     }
 
     v18 = objc_alloc(MEMORY[0x277D26560]);
-    v19 = [v15 identifier];
-    v50 = [v18 initWithIdentifier:v19];
+    identifier = [v15 identifier];
+    v50 = [v18 initWithIdentifier:identifier];
 
-    v20 = [(STBlockingViewController *)self effectiveSettingsStore];
-    v21 = [v20 shield];
-    v22 = [v21 applicationCategories];
+    effectiveSettingsStore2 = [(STBlockingViewController *)self effectiveSettingsStore];
+    shield2 = [effectiveSettingsStore2 shield];
+    applicationCategories = [shield2 applicationCategories];
 
-    v23 = [v22 policy];
-    if (v23 == 2 || v23 == 1 && ([v22 specificCategories], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "containsObject:", v50), v24, v25))
+    policy = [applicationCategories policy];
+    if (policy == 2 || policy == 1 && ([applicationCategories specificCategories], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "containsObject:", v50), v24, v25))
     {
-      v26 = [v22 excludedContent];
-      if ([v26 containsObject:v5])
+      excludedContent = [applicationCategories excludedContent];
+      if ([excludedContent containsObject:v5])
       {
       }
 
       else
       {
-        v27 = [v22 excludedContent];
-        v48 = [v27 containsObject:v17];
+        excludedContent2 = [applicationCategories excludedContent];
+        v48 = [excludedContent2 containsObject:v17];
 
         if ((v48 & 1) == 0)
         {
@@ -613,8 +613,8 @@ LABEL_29:
       }
     }
 
-    v28 = [v15 primaryWebDomain];
-    v29 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:v28];
+    primaryWebDomain = [v15 primaryWebDomain];
+    v29 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:primaryWebDomain];
     if (!v29)
     {
       v9 = 0;
@@ -623,44 +623,44 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v45 = v16;
-    v46 = v28;
-    v49 = v22;
-    v30 = [(STBlockingViewController *)self effectiveSettingsStore];
-    v31 = [v30 shield];
-    v32 = [v31 webDomains];
+    v45 = canonicalBundleIdentifier;
+    v46 = primaryWebDomain;
+    v49 = applicationCategories;
+    effectiveSettingsStore3 = [(STBlockingViewController *)self effectiveSettingsStore];
+    shield3 = [effectiveSettingsStore3 shield];
+    webDomains = [shield3 webDomains];
 
-    v47 = v32;
-    if ([v32 containsObject:v29])
+    v47 = webDomains;
+    if ([webDomains containsObject:v29])
     {
       v9 = 1;
-      v16 = v45;
-      v28 = v46;
-      v22 = v49;
+      canonicalBundleIdentifier = v45;
+      primaryWebDomain = v46;
+      applicationCategories = v49;
 LABEL_27:
 
       goto LABEL_28;
     }
 
-    v33 = [(STBlockingViewController *)self effectiveSettingsStore];
-    v34 = [v33 shield];
-    v35 = [v34 webDomainCategories];
+    effectiveSettingsStore4 = [(STBlockingViewController *)self effectiveSettingsStore];
+    shield4 = [effectiveSettingsStore4 shield];
+    webDomainCategories = [shield4 webDomainCategories];
 
-    v36 = [v35 policy];
-    v44 = v35;
-    if (v36 == 2)
+    policy2 = [webDomainCategories policy];
+    v44 = webDomainCategories;
+    if (policy2 == 2)
     {
-      v41 = [v35 excludedContent];
-      v42 = [v41 containsObject:v29];
+      excludedContent3 = [webDomainCategories excludedContent];
+      v42 = [excludedContent3 containsObject:v29];
 
-      v22 = v49;
-      v28 = v46;
+      applicationCategories = v49;
+      primaryWebDomain = v46;
       if ((v42 & 1) == 0)
       {
 LABEL_22:
         v9 = 1;
 LABEL_26:
-        v16 = v45;
+        canonicalBundleIdentifier = v45;
 
         goto LABEL_27;
       }
@@ -668,17 +668,17 @@ LABEL_26:
 
     else
     {
-      v22 = v49;
-      v28 = v46;
-      if (v36 == 1)
+      applicationCategories = v49;
+      primaryWebDomain = v46;
+      if (policy2 == 1)
       {
-        v37 = [v44 specificCategories];
-        v38 = [v37 containsObject:v50];
+        specificCategories = [v44 specificCategories];
+        v38 = [specificCategories containsObject:v50];
 
         if (v38)
         {
-          v39 = [v44 excludedContent];
-          v40 = [v39 containsObject:v29];
+          excludedContent4 = [v44 excludedContent];
+          v40 = [excludedContent4 containsObject:v29];
 
           if ((v40 & 1) == 0)
           {
@@ -698,18 +698,18 @@ LABEL_32:
   return v9;
 }
 
-- (BOOL)isWebDomainShieldedWithWebURL:(id)a3
+- (BOOL)isWebDomainShieldedWithWebURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 host];
-  v6 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:v5];
-  v7 = [(STBlockingViewController *)self effectiveSettingsStore];
-  v8 = [v7 shield];
-  v9 = [v8 webDomains];
+  lCopy = l;
+  host = [lCopy host];
+  v6 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:host];
+  effectiveSettingsStore = [(STBlockingViewController *)self effectiveSettingsStore];
+  shield = [effectiveSettingsStore shield];
+  webDomains = [shield webDomains];
 
-  if (([v9 containsObject:v6] & 1) == 0)
+  if (([webDomains containsObject:v6] & 1) == 0)
   {
-    v11 = v4;
+    v11 = lCopy;
     v64 = 0;
     v65 = &v64;
     v66 = 0x3032000000;
@@ -717,7 +717,7 @@ LABEL_32:
     v68 = __Block_byref_object_dispose_;
     v69 = 0;
     v12 = [objc_alloc(MEMORY[0x277CCA930]) initWithCondition:0];
-    v13 = [MEMORY[0x277CF9650] sharedCategories];
+    mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = __categoryForWebpageURL_block_invoke;
@@ -728,7 +728,7 @@ LABEL_32:
     v15 = v12;
     v61 = v15;
     v63 = 1;
-    [v13 categoryForDomainURL:v14 completionHandler:v59];
+    [mEMORY[0x277CF9650] categoryForDomainURL:v14 completionHandler:v59];
 
     [v15 lockWhenCondition:1];
     [v15 unlock];
@@ -743,9 +743,9 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v17 = [v16 primaryWebDomain];
-    v18 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:v17];
-    if (v18 && ([v9 containsObject:v18] & 1) != 0)
+    primaryWebDomain = [v16 primaryWebDomain];
+    v18 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:primaryWebDomain];
+    if (v18 && ([webDomains containsObject:v18] & 1) != 0)
     {
       v10 = 1;
 LABEL_34:
@@ -753,57 +753,57 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v55 = v17;
+    v55 = primaryWebDomain;
     v56 = v18;
     v19 = objc_alloc(MEMORY[0x277D26560]);
-    v20 = [v16 identifier];
-    v21 = [v19 initWithIdentifier:v20];
+    identifier = [v16 identifier];
+    v21 = [v19 initWithIdentifier:identifier];
 
-    v22 = [(STBlockingViewController *)self effectiveSettingsStore];
-    v23 = [v22 shield];
-    v24 = [v23 webDomainCategories];
+    effectiveSettingsStore2 = [(STBlockingViewController *)self effectiveSettingsStore];
+    shield2 = [effectiveSettingsStore2 shield];
+    webDomainCategories = [shield2 webDomainCategories];
 
-    v25 = v24;
-    v26 = [v24 policy];
-    v58 = v24;
-    if (v26 == 2)
+    v25 = webDomainCategories;
+    policy = [webDomainCategories policy];
+    v58 = webDomainCategories;
+    if (policy == 2)
     {
-      v30 = [v24 excludedContent];
+      excludedContent = [webDomainCategories excludedContent];
       v27 = v21;
-      if (([v30 containsObject:v6] & 1) == 0)
+      if (([excludedContent containsObject:v6] & 1) == 0)
       {
-        v31 = [v25 excludedContent];
-        v32 = v31;
+        excludedContent2 = [v25 excludedContent];
+        v32 = excludedContent2;
         v18 = v56;
 LABEL_17:
-        v53 = [v31 containsObject:v18];
+        v53 = [excludedContent2 containsObject:v18];
 
         if ((v53 & 1) == 0)
         {
           v10 = 1;
-          v17 = v55;
+          primaryWebDomain = v55;
 LABEL_33:
 
           goto LABEL_34;
         }
 
 LABEL_18:
-        v57 = [v16 canonicalBundleIdentifier];
-        v33 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:v57];
+        canonicalBundleIdentifier = [v16 canonicalBundleIdentifier];
+        v33 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:canonicalBundleIdentifier];
         if (!v33)
         {
           v10 = 0;
-          v17 = v55;
+          primaryWebDomain = v55;
 LABEL_32:
 
           goto LABEL_33;
         }
 
-        v51 = v5;
+        v51 = host;
         v54 = v27;
-        v34 = [(STBlockingViewController *)self effectiveSettingsStore];
-        v35 = [v34 shield];
-        [v35 applications];
+        effectiveSettingsStore3 = [(STBlockingViewController *)self effectiveSettingsStore];
+        shield3 = [effectiveSettingsStore3 shield];
+        [shield3 applications];
         v37 = v36 = v33;
 
         v52 = v37;
@@ -813,32 +813,32 @@ LABEL_32:
         {
           v10 = 1;
           v27 = v54;
-          v17 = v55;
-          v5 = v51;
+          primaryWebDomain = v55;
+          host = v51;
 LABEL_31:
 
           goto LABEL_32;
         }
 
-        v39 = [(STBlockingViewController *)self effectiveSettingsStore];
-        v40 = [v39 shield];
-        v41 = [v40 applicationCategories];
+        effectiveSettingsStore4 = [(STBlockingViewController *)self effectiveSettingsStore];
+        shield4 = [effectiveSettingsStore4 shield];
+        applicationCategories = [shield4 applicationCategories];
 
-        v42 = [v41 policy];
-        v50 = v41;
-        if (v42 == 2)
+        policy2 = [applicationCategories policy];
+        v50 = applicationCategories;
+        if (policy2 == 2)
         {
-          v47 = [v41 excludedContent];
-          v48 = [v47 containsObject:v33];
+          excludedContent3 = [applicationCategories excludedContent];
+          v48 = [excludedContent3 containsObject:v33];
 
           v27 = v54;
-          v5 = v51;
+          host = v51;
           if ((v48 & 1) == 0)
           {
 LABEL_26:
             v10 = 1;
 LABEL_30:
-            v17 = v55;
+            primaryWebDomain = v55;
 
             goto LABEL_31;
           }
@@ -847,16 +847,16 @@ LABEL_30:
         else
         {
           v27 = v54;
-          v5 = v51;
-          if (v42 == 1)
+          host = v51;
+          if (policy2 == 1)
           {
-            v43 = [v50 specificCategories];
-            v44 = [v43 containsObject:v54];
+            specificCategories = [v50 specificCategories];
+            v44 = [specificCategories containsObject:v54];
 
             if (v44)
             {
-              v45 = [v50 excludedContent];
-              v46 = [v45 containsObject:v33];
+              excludedContent4 = [v50 excludedContent];
+              v46 = [excludedContent4 containsObject:v33];
 
               if ((v46 & 1) == 0)
               {
@@ -877,24 +877,24 @@ LABEL_30:
     {
       v27 = v21;
       v18 = v56;
-      if (v26 != 1)
+      if (policy != 1)
       {
         goto LABEL_18;
       }
 
-      v28 = [v58 specificCategories];
-      v29 = [v28 containsObject:v27];
+      specificCategories2 = [v58 specificCategories];
+      v29 = [specificCategories2 containsObject:v27];
 
       if (!v29)
       {
         goto LABEL_18;
       }
 
-      v30 = [v58 excludedContent];
-      if (([v30 containsObject:v6] & 1) == 0)
+      excludedContent = [v58 excludedContent];
+      if (([excludedContent containsObject:v6] & 1) == 0)
       {
-        v31 = [v58 excludedContent];
-        v32 = v31;
+        excludedContent2 = [v58 excludedContent];
+        v32 = excludedContent2;
         goto LABEL_17;
       }
     }
@@ -908,17 +908,17 @@ LABEL_36:
   return v10;
 }
 
-- (void)setOkButtonHandler:(id)a3
+- (void)setOkButtonHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(STBlockingViewController *)self loadViewIfNeeded];
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   okButtonHandler = self->_okButtonHandler;
   self->_okButtonHandler = v5;
 
-  v7 = [(STBlockingViewController *)self okButton];
-  [v7 setHidden:v4 == 0];
+  okButton = [(STBlockingViewController *)self okButton];
+  [okButton setHidden:handlerCopy == 0];
 }
 
 + (id)closeApplicationHandler
@@ -927,7 +927,7 @@ LABEL_36:
   aBlock[1] = 3221225472;
   aBlock[2] = __51__STBlockingViewController_closeApplicationHandler__block_invoke;
   aBlock[3] = &__block_descriptor_40_e5_v8__0l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v2 = _Block_copy(aBlock);
 
   return v2;
@@ -946,7 +946,7 @@ uint64_t __51__STBlockingViewController_closeApplicationHandler__block_invoke()
   aBlock[1] = 3221225472;
   aBlock[2] = __48__STBlockingViewController_openParentAppHandler__block_invoke;
   aBlock[3] = &__block_descriptor_40_e18_v16__0__NSString_8l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v2 = _Block_copy(aBlock);
 
   return v2;
@@ -958,17 +958,17 @@ void __48__STBlockingViewController_openParentAppHandler__block_invoke(uint64_t 
   [objc_opt_class() openAppWithBundleIdentifier:v2];
 }
 
-+ (void)openAppWithBundleIdentifier:(id)a3
++ (void)openAppWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  identifierCopy = identifier;
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__STBlockingViewController_openAppWithBundleIdentifier___block_invoke;
   v6[3] = &unk_278338990;
-  v7 = v3;
-  v5 = v3;
-  [v4 openApplication:v5 withOptions:0 completion:v6];
+  v7 = identifierCopy;
+  v5 = identifierCopy;
+  [serviceWithDefaultShellEndpoint openApplication:v5 withOptions:0 completion:v6];
 }
 
 void __56__STBlockingViewController_openAppWithBundleIdentifier___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -984,23 +984,23 @@ void __56__STBlockingViewController_openAppWithBundleIdentifier___block_invoke(u
   }
 }
 
-- (void)fetchAppResponsibleForShieldWithCompletionHandler:(id)a3
+- (void)fetchAppResponsibleForShieldWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STBlockingViewController *)self bundleIdentifier];
-  v6 = [(STBlockingViewController *)self categoryIdentifier];
-  v7 = [(STBlockingViewController *)self webDomain];
-  v8 = v7;
-  if (v5)
+  handlerCopy = handler;
+  bundleIdentifier = [(STBlockingViewController *)self bundleIdentifier];
+  categoryIdentifier = [(STBlockingViewController *)self categoryIdentifier];
+  webDomain = [(STBlockingViewController *)self webDomain];
+  v8 = webDomain;
+  if (bundleIdentifier)
   {
-    v9 = [MEMORY[0x277CF9650] sharedCategories];
+    mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __78__STBlockingViewController_fetchAppResponsibleForShieldWithCompletionHandler___block_invoke;
     v20[3] = &unk_2783389E0;
-    v21 = v5;
-    v22 = v4;
-    [v9 categoryForBundleID:v21 completionHandler:v20];
+    v21 = bundleIdentifier;
+    v22 = handlerCopy;
+    [mEMORY[0x277CF9650] categoryForBundleID:v21 completionHandler:v20];
 
     v10 = v21;
 LABEL_7:
@@ -1008,31 +1008,31 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v6)
+  if (categoryIdentifier)
   {
     v11 = MEMORY[0x277D26570];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __78__STBlockingViewController_fetchAppResponsibleForShieldWithCompletionHandler___block_invoke_82;
     v17[3] = &unk_2783389B8;
-    v18 = v6;
-    v19 = v4;
+    v18 = categoryIdentifier;
+    v19 = handlerCopy;
     [v11 appResponsibleForShieldingCategoryIdentifier:v18 completionHandler:v17];
 
     v10 = v18;
     goto LABEL_7;
   }
 
-  if (v7)
+  if (webDomain)
   {
-    v12 = [MEMORY[0x277CF9650] sharedCategories];
+    mEMORY[0x277CF9650]2 = [MEMORY[0x277CF9650] sharedCategories];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __78__STBlockingViewController_fetchAppResponsibleForShieldWithCompletionHandler___block_invoke_83;
     v14[3] = &unk_2783389E0;
     v15 = v8;
-    v16 = v4;
-    [v12 categoryForDomainName:v15 completionHandler:v14];
+    v16 = handlerCopy;
+    [mEMORY[0x277CF9650]2 categoryForDomainName:v15 completionHandler:v14];
 
     v10 = v15;
     goto LABEL_7;
@@ -1044,7 +1044,7 @@ LABEL_7:
     [STBlockingViewController fetchAppResponsibleForShieldWithCompletionHandler:];
   }
 
-  (*(v4 + 2))(v4, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_8:
 }
 
@@ -1154,108 +1154,108 @@ void __78__STBlockingViewController_fetchAppResponsibleForShieldWithCompletionHa
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_ok:(id)a3
+- (void)_ok:(id)_ok
 {
-  v3 = [(STBlockingViewController *)self okButtonHandler];
-  v3[2]();
+  okButtonHandler = [(STBlockingViewController *)self okButtonHandler];
+  okButtonHandler[2]();
 }
 
-- (void)setChangePolicyButtonHidden:(BOOL)a3
+- (void)setChangePolicyButtonHidden:(BOOL)hidden
 {
-  if (self->_changePolicyButtonHidden != a3)
+  if (self->_changePolicyButtonHidden != hidden)
   {
-    self->_changePolicyButtonHidden = a3;
+    self->_changePolicyButtonHidden = hidden;
     [(STBlockingViewController *)self _updateButtons];
   }
 }
 
 - (void)_updateButtons
 {
-  v3 = [(STBlockingViewController *)self okButtonHandler];
-  v4 = [(STBlockingViewController *)self okButton];
-  [v4 setHidden:v3 == 0];
+  okButtonHandler = [(STBlockingViewController *)self okButtonHandler];
+  okButton = [(STBlockingViewController *)self okButton];
+  [okButton setHidden:okButtonHandler == 0];
 
   [(STBlockingViewController *)self _updateAddContactButton];
-  v5 = [(STBlockingViewController *)self policy];
-  if (v5 <= 2)
+  policy = [(STBlockingViewController *)self policy];
+  if (policy <= 2)
   {
-    switch(v5)
+    switch(policy)
     {
       case 0:
-        v16 = [(STBlockingViewController *)self ignoreLimitButton];
-        [v16 setHidden:1];
+        ignoreLimitButton = [(STBlockingViewController *)self ignoreLimitButton];
+        [ignoreLimitButton setHidden:1];
 
-        v17 = [(STBlockingViewController *)self askForMoreTimeButton];
-        [v17 setHidden:1];
+        askForMoreTimeButton = [(STBlockingViewController *)self askForMoreTimeButton];
+        [askForMoreTimeButton setHidden:1];
 
-        v18 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
-        [v18 setHidden:1];
+        enterScreenTimePasscodeButton = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
+        [enterScreenTimePasscodeButton setHidden:1];
 
 LABEL_13:
         [(STBlockingViewController *)self _hideCustomButtons];
         goto LABEL_14;
       case 1:
-        v19 = [(STBlockingViewController *)self askForMoreTimeButton];
-        [v19 setHidden:1];
+        askForMoreTimeButton2 = [(STBlockingViewController *)self askForMoreTimeButton];
+        [askForMoreTimeButton2 setHidden:1];
 
-        v20 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
-        [v20 setHidden:1];
+        enterScreenTimePasscodeButton2 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
+        [enterScreenTimePasscodeButton2 setHidden:1];
 
-        v8 = [(STBlockingViewController *)self isChangePolicyButtonHidden];
-        v9 = [(STBlockingViewController *)self ignoreLimitButton];
+        isChangePolicyButtonHidden = [(STBlockingViewController *)self isChangePolicyButtonHidden];
+        ignoreLimitButton2 = [(STBlockingViewController *)self ignoreLimitButton];
         break;
       case 2:
-        v6 = [(STBlockingViewController *)self ignoreLimitButton];
-        [v6 setHidden:1];
+        ignoreLimitButton3 = [(STBlockingViewController *)self ignoreLimitButton];
+        [ignoreLimitButton3 setHidden:1];
 
-        v7 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
-        [v7 setHidden:1];
+        enterScreenTimePasscodeButton3 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
+        [enterScreenTimePasscodeButton3 setHidden:1];
 
-        v8 = [(STBlockingViewController *)self isChangePolicyButtonHidden];
-        v9 = [(STBlockingViewController *)self askForMoreTimeButton];
+        isChangePolicyButtonHidden = [(STBlockingViewController *)self isChangePolicyButtonHidden];
+        ignoreLimitButton2 = [(STBlockingViewController *)self askForMoreTimeButton];
         break;
       default:
         goto LABEL_14;
     }
 
 LABEL_12:
-    v21 = v9;
-    [v9 setHidden:v8];
+    v21 = ignoreLimitButton2;
+    [ignoreLimitButton2 setHidden:isChangePolicyButtonHidden];
 
     goto LABEL_13;
   }
 
-  if ((v5 - 3) < 2)
+  if ((policy - 3) < 2)
   {
-    v10 = [(STBlockingViewController *)self ignoreLimitButton];
-    [v10 setHidden:1];
+    ignoreLimitButton4 = [(STBlockingViewController *)self ignoreLimitButton];
+    [ignoreLimitButton4 setHidden:1];
 
-    v11 = [(STBlockingViewController *)self askForMoreTimeButton];
-    [v11 setHidden:1];
+    askForMoreTimeButton3 = [(STBlockingViewController *)self askForMoreTimeButton];
+    [askForMoreTimeButton3 setHidden:1];
 
-    v8 = [(STBlockingViewController *)self isChangePolicyButtonHidden];
-    v9 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
+    isChangePolicyButtonHidden = [(STBlockingViewController *)self isChangePolicyButtonHidden];
+    ignoreLimitButton2 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
     goto LABEL_12;
   }
 
-  if (v5 == 5)
+  if (policy == 5)
   {
-    v12 = [(STBlockingViewController *)self okButton];
-    [v12 setHidden:1];
+    okButton2 = [(STBlockingViewController *)self okButton];
+    [okButton2 setHidden:1];
 
-    v13 = [(STBlockingViewController *)self ignoreLimitButton];
-    [v13 setHidden:1];
+    ignoreLimitButton5 = [(STBlockingViewController *)self ignoreLimitButton];
+    [ignoreLimitButton5 setHidden:1];
 
-    v14 = [(STBlockingViewController *)self askForMoreTimeButton];
-    [v14 setHidden:1];
+    askForMoreTimeButton4 = [(STBlockingViewController *)self askForMoreTimeButton];
+    [askForMoreTimeButton4 setHidden:1];
 
-    v15 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
-    [v15 setHidden:1];
+    enterScreenTimePasscodeButton4 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
+    [enterScreenTimePasscodeButton4 setHidden:1];
   }
 
 LABEL_14:
-  v22 = [(STBlockingViewController *)self okButton];
-  if ([v22 isHidden])
+  okButton3 = [(STBlockingViewController *)self okButton];
+  if ([okButton3 isHidden])
   {
     *&v23 = 250.0;
   }
@@ -1265,10 +1265,10 @@ LABEL_14:
     *&v23 = 750.0;
   }
 
-  [v22 setContentCompressionResistancePriority:0 forAxis:v23];
+  [okButton3 setContentCompressionResistancePriority:0 forAxis:v23];
 
-  v24 = [(STBlockingViewController *)self ignoreLimitButton];
-  if ([v24 isHidden])
+  ignoreLimitButton6 = [(STBlockingViewController *)self ignoreLimitButton];
+  if ([ignoreLimitButton6 isHidden])
   {
     *&v25 = 250.0;
   }
@@ -1278,10 +1278,10 @@ LABEL_14:
     *&v25 = 750.0;
   }
 
-  [v24 setContentCompressionResistancePriority:0 forAxis:v25];
+  [ignoreLimitButton6 setContentCompressionResistancePriority:0 forAxis:v25];
 
-  v26 = [(STBlockingViewController *)self askForMoreTimeButton];
-  if ([v26 isHidden])
+  askForMoreTimeButton5 = [(STBlockingViewController *)self askForMoreTimeButton];
+  if ([askForMoreTimeButton5 isHidden])
   {
     *&v27 = 250.0;
   }
@@ -1291,10 +1291,10 @@ LABEL_14:
     *&v27 = 750.0;
   }
 
-  [v26 setContentCompressionResistancePriority:0 forAxis:v27];
+  [askForMoreTimeButton5 setContentCompressionResistancePriority:0 forAxis:v27];
 
-  v28 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
-  if ([v28 isHidden])
+  enterScreenTimePasscodeButton5 = [(STBlockingViewController *)self enterScreenTimePasscodeButton];
+  if ([enterScreenTimePasscodeButton5 isHidden])
   {
     *&v29 = 250.0;
   }
@@ -1304,10 +1304,10 @@ LABEL_14:
     *&v29 = 750.0;
   }
 
-  [v28 setContentCompressionResistancePriority:0 forAxis:v29];
+  [enterScreenTimePasscodeButton5 setContentCompressionResistancePriority:0 forAxis:v29];
 
-  v30 = [(STBlockingViewController *)self addContactButton];
-  if ([v30 isHidden])
+  addContactButton = [(STBlockingViewController *)self addContactButton];
+  if ([addContactButton isHidden])
   {
     *&v31 = 250.0;
   }
@@ -1317,10 +1317,10 @@ LABEL_14:
     *&v31 = 750.0;
   }
 
-  [v30 setContentCompressionResistancePriority:0 forAxis:v31];
+  [addContactButton setContentCompressionResistancePriority:0 forAxis:v31];
 
-  v32 = [(STBlockingViewController *)self customPrimaryButton];
-  if ([v32 isHidden])
+  customPrimaryButton = [(STBlockingViewController *)self customPrimaryButton];
+  if ([customPrimaryButton isHidden])
   {
     *&v33 = 250.0;
   }
@@ -1330,10 +1330,10 @@ LABEL_14:
     *&v33 = 750.0;
   }
 
-  [v32 setContentCompressionResistancePriority:0 forAxis:v33];
+  [customPrimaryButton setContentCompressionResistancePriority:0 forAxis:v33];
 
-  v34 = [(STBlockingViewController *)self customSecondaryButton];
-  if ([v34 isHidden])
+  customSecondaryButton = [(STBlockingViewController *)self customSecondaryButton];
+  if ([customSecondaryButton isHidden])
   {
     *&v35 = 250.0;
   }
@@ -1343,7 +1343,7 @@ LABEL_14:
     *&v35 = 750.0;
   }
 
-  [v34 setContentCompressionResistancePriority:0 forAxis:v35];
+  [customSecondaryButton setContentCompressionResistancePriority:0 forAxis:v35];
 
   if ([(STBlockingViewController *)self isShowingPolicyOptions])
   {
@@ -1355,23 +1355,23 @@ LABEL_14:
 
 - (void)_updateAddContactButton
 {
-  v13 = [(STBlockingViewController *)self formattedContactHandle];
-  v3 = [(STBlockingViewController *)self formattedContactHandle];
-  if (v3)
+  formattedContactHandle = [(STBlockingViewController *)self formattedContactHandle];
+  formattedContactHandle2 = [(STBlockingViewController *)self formattedContactHandle];
+  if (formattedContactHandle2)
   {
-    v4 = [(STBlockingViewController *)self isChangePolicyButtonHidden];
+    isChangePolicyButtonHidden = [(STBlockingViewController *)self isChangePolicyButtonHidden];
   }
 
   else
   {
-    v4 = 1;
+    isChangePolicyButtonHidden = 1;
   }
 
-  v5 = [(STBlockingViewController *)self addContactButton];
-  v6 = v5;
-  if (v4)
+  addContactButton = [(STBlockingViewController *)self addContactButton];
+  v6 = addContactButton;
+  if (isChangePolicyButtonHidden)
   {
-    [v5 setHidden:1];
+    [addContactButton setHidden:1];
   }
 
   else
@@ -1380,34 +1380,34 @@ LABEL_14:
     v8 = [v7 localizedStringForKey:@"AddContactButtonFormat" value:&stru_282F1E250 table:0];
 
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [MEMORY[0x277CBEAF8] currentLocale];
-    v11 = [v9 initWithFormat:v8 locale:v10, v13];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v11 = [v9 initWithFormat:v8 locale:currentLocale, formattedContactHandle];
 
-    v12 = [MEMORY[0x277D75230] plainButtonConfiguration];
-    [v12 setTitle:v11];
-    [v6 setConfiguration:v12];
+    plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+    [plainButtonConfiguration setTitle:v11];
+    [v6 setConfiguration:plainButtonConfiguration];
     [v6 setHidden:0];
   }
 }
 
 - (void)_hideCustomButtons
 {
-  v3 = [(STBlockingViewController *)self customPrimaryButton];
-  [v3 setHidden:1];
+  customPrimaryButton = [(STBlockingViewController *)self customPrimaryButton];
+  [customPrimaryButton setHidden:1];
 
-  v4 = [(STBlockingViewController *)self customSecondaryButton];
-  [v4 setHidden:1];
+  customSecondaryButton = [(STBlockingViewController *)self customSecondaryButton];
+  [customSecondaryButton setHidden:1];
 }
 
-- (void)updateAppearanceUsingPolicy:(int64_t)a3 forCategoryIdentifier:(id)a4
+- (void)updateAppearanceUsingPolicy:(int64_t)policy forCategoryIdentifier:(id)identifier
 {
-  v7 = a4;
-  if (a3)
+  identifierCopy = identifier;
+  if (policy)
   {
     v8 = _os_feature_enabled_impl();
-    if (a3 == 5 && v8)
+    if (policy == 5 && v8)
     {
-      a3 = [(STBlockingViewController *)self _managedSettingsShieldPolicyForCategoryIdentifier:v7];
+      policy = [(STBlockingViewController *)self _managedSettingsShieldPolicyForCategoryIdentifier:identifierCopy];
     }
   }
 
@@ -1416,33 +1416,33 @@ LABEL_14:
     [STBlockingViewController updateAppearanceUsingPolicy:forCategoryIdentifier:];
   }
 
-  if (-[STBlockingViewController policy](self, "policy") != a3 || (-[STBlockingViewController categoryIdentifier](self, "categoryIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEqualToString:v7], v9, !v10))
+  if (-[STBlockingViewController policy](self, "policy") != policy || (-[STBlockingViewController categoryIdentifier](self, "categoryIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEqualToString:identifierCopy], v9, !v10))
   {
-    [(STBlockingViewController *)self setPolicy:a3];
+    [(STBlockingViewController *)self setPolicy:policy];
     [(STBlockingViewController *)self setFormattedContactHandle:0];
     [(STBlockingViewController *)self setContactStore:0];
-    [(STBlockingViewController *)self setCategoryIdentifier:v7];
+    [(STBlockingViewController *)self setCategoryIdentifier:identifierCopy];
     [(STBlockingViewController *)self setBundleIdentifier:0];
     [(STBlockingViewController *)self setWebDomain:0];
-    if (a3 > 2)
+    if (policy > 2)
     {
-      if (a3 == 3)
+      if (policy == 3)
       {
         [(STBlockingViewController *)self _updateAppearanceForAskPending];
         goto LABEL_25;
       }
 
-      if (a3 != 4)
+      if (policy != 4)
       {
-        if (a3 != 5)
+        if (policy != 5)
         {
           goto LABEL_25;
         }
 
-        v13 = [MEMORY[0x277CF9658] localizedNameForIdentifier:v7];
+        v13 = [MEMORY[0x277CF9658] localizedNameForIdentifier:identifierCopy];
         v17 = 0;
-        v14 = [MEMORY[0x277D26570] configurationForCategoryIdentifier:v7 categoryName:v13 error:&v17];
-        v12 = v17;
+        v14 = [MEMORY[0x277D26570] configurationForCategoryIdentifier:identifierCopy categoryName:v13 error:&v17];
+        currentHandler = v17;
         if (!v14)
         {
           v15 = +[STBlockingUILog log];
@@ -1458,21 +1458,21 @@ LABEL_14:
       }
     }
 
-    else if ((a3 - 1) >= 2)
+    else if ((policy - 1) >= 2)
     {
-      if (a3)
+      if (policy)
       {
         goto LABEL_25;
       }
 
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"STBlockingViewController.m" lineNumber:1061 description:@"Do not pass DMFPolicyOK to an -updateAppearance method."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"STBlockingViewController.m" lineNumber:1061 description:@"Do not pass DMFPolicyOK to an -updateAppearance method."];
 LABEL_22:
 
       goto LABEL_25;
     }
 
-    v16 = [MEMORY[0x277CF9658] localizedNameForIdentifier:v7];
+    v16 = [MEMORY[0x277CF9658] localizedNameForIdentifier:identifierCopy];
     [(STBlockingViewController *)self _updateAppearanceForBlockedContent:v16 messageFormatKey:@"ReachedCategoryLimitMessageFormat" messageKey:@"ReachedCategoryLimitMessage"];
 
     goto LABEL_25;
@@ -1487,15 +1487,15 @@ LABEL_22:
 LABEL_25:
 }
 
-- (void)updateAppearanceUsingPolicy:(int64_t)a3 forBundleIdentifier:(id)a4
+- (void)updateAppearanceUsingPolicy:(int64_t)policy forBundleIdentifier:(id)identifier
 {
-  v7 = a4;
-  if (!a3)
+  identifierCopy = identifier;
+  if (!policy)
   {
     [STBlockingViewController updateAppearanceUsingPolicy:forBundleIdentifier:];
   }
 
-  v8 = v7;
+  v8 = identifierCopy;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -1503,7 +1503,7 @@ LABEL_25:
   v51 = __Block_byref_object_dispose_;
   v52 = 0;
   v9 = [objc_alloc(MEMORY[0x277CCA930]) initWithCondition:0];
-  v10 = [MEMORY[0x277CF9650] sharedCategories];
+  mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __categoryForBundleIdentifier_block_invoke;
@@ -1514,7 +1514,7 @@ LABEL_25:
   v12 = v9;
   v44 = v12;
   v46 = 1;
-  [v10 categoryForBundleID:v11 completionHandler:v42];
+  [mEMORY[0x277CF9650] categoryForBundleID:v11 completionHandler:v42];
 
   [v12 lockWhenCondition:1];
   [v12 unlock];
@@ -1522,15 +1522,15 @@ LABEL_25:
 
   _Block_object_dispose(&v47, 8);
   v14 = _os_feature_enabled_impl();
-  if (a3 == 5 && v14)
+  if (policy == 5 && v14)
   {
-    a3 = [(STBlockingViewController *)self _managedSettingsShieldPolicyForBundleIdentifier:v11 category:v13];
+    policy = [(STBlockingViewController *)self _managedSettingsShieldPolicyForBundleIdentifier:v11 category:v13];
   }
 
-  if ([(STBlockingViewController *)self policy]== a3)
+  if ([(STBlockingViewController *)self policy]== policy)
   {
-    v15 = [(STBlockingViewController *)self bundleIdentifier];
-    v16 = [v15 isEqualToString:v11];
+    bundleIdentifier = [(STBlockingViewController *)self bundleIdentifier];
+    v16 = [bundleIdentifier isEqualToString:v11];
 
     if (v16)
     {
@@ -1544,20 +1544,20 @@ LABEL_25:
     }
   }
 
-  [(STBlockingViewController *)self setPolicy:a3];
+  [(STBlockingViewController *)self setPolicy:policy];
   [(STBlockingViewController *)self setFormattedContactHandle:0];
   [(STBlockingViewController *)self setContactStore:0];
   [(STBlockingViewController *)self setCategoryIdentifier:0];
   [(STBlockingViewController *)self setBundleIdentifier:v11];
   [(STBlockingViewController *)self setWebDomain:0];
-  if (a3 <= 2)
+  if (policy <= 2)
   {
-    if ((a3 - 1) >= 2)
+    if ((policy - 1) >= 2)
     {
-      if (!a3)
+      if (!policy)
       {
-        v18 = [MEMORY[0x277CCA890] currentHandler];
-        [v18 handleFailureInMethod:a2 object:self file:@"STBlockingViewController.m" lineNumber:1135 description:@"Do not pass DMFPolicyOK to an -updateAppearance method."];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"STBlockingViewController.m" lineNumber:1135 description:@"Do not pass DMFPolicyOK to an -updateAppearance method."];
       }
 
       goto LABEL_36;
@@ -1566,7 +1566,7 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  switch(a3)
+  switch(policy)
   {
     case 3:
       [(STBlockingViewController *)self _updateAppearanceForAskPending];
@@ -1578,10 +1578,10 @@ LABEL_24:
       v42[0] = 0;
       v27 = [v26 initWithBundleIdentifier:v25 allowPlaceholder:1 error:v42];
       v28 = v42[0];
-      v29 = [v27 localizedName];
+      localizedName = [v27 localizedName];
 
-      v30 = v29;
-      if (!v29)
+      v30 = localizedName;
+      if (!localizedName)
       {
         v31 = +[STBlockingUILog log];
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1600,10 +1600,10 @@ LABEL_24:
       if (v13)
       {
         v19 = MEMORY[0x277D26570];
-        v20 = [v13 identifier];
-        v21 = [v13 localizedName];
+        identifier = [v13 identifier];
+        localizedName2 = [v13 localizedName];
         v41 = 0;
-        v22 = [v19 configurationForBundleIdentifier:v11 categoryIdentifier:v20 categoryName:v21 error:&v41];
+        v22 = [v19 configurationForBundleIdentifier:v11 categoryIdentifier:identifier categoryName:localizedName2 error:&v41];
         v23 = v41;
 
         if (!v22)
@@ -1626,10 +1626,10 @@ LABEL_24:
       v42[0] = 0;
       v35 = [v34 initWithBundleIdentifier:v33 allowPlaceholder:1 error:v42];
       v36 = v42[0];
-      v37 = [v35 localizedName];
+      localizedName3 = [v35 localizedName];
 
-      v38 = v37;
-      if (!v37)
+      v38 = localizedName3;
+      if (!localizedName3)
       {
         v39 = +[STBlockingUILog log];
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -1649,18 +1649,18 @@ LABEL_24:
 LABEL_36:
 }
 
-- (void)updateAppearanceUsingPolicy:(int64_t)a3 forWebpageURL:(id)a4
+- (void)updateAppearanceUsingPolicy:(int64_t)policy forWebpageURL:(id)l
 {
-  v7 = a4;
-  if (v7)
+  lCopy = l;
+  if (lCopy)
   {
-    if (!a3)
+    if (!policy)
     {
       [STBlockingViewController updateAppearanceUsingPolicy:forWebpageURL:];
     }
 
-    v8 = [v7 host];
-    v9 = v7;
+    host = [lCopy host];
+    v9 = lCopy;
     v51 = 0;
     v52 = &v51;
     v53 = 0x3032000000;
@@ -1668,7 +1668,7 @@ LABEL_36:
     v55 = __Block_byref_object_dispose_;
     v56 = 0;
     v10 = [objc_alloc(MEMORY[0x277CCA930]) initWithCondition:0];
-    v11 = [MEMORY[0x277CF9650] sharedCategories];
+    mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
     v43 = MEMORY[0x277D85DD0];
     v44 = 3221225472;
     v45 = __categoryForWebpageURL_block_invoke;
@@ -1679,7 +1679,7 @@ LABEL_36:
     v13 = v10;
     v48 = v13;
     v50 = 1;
-    [v11 categoryForDomainURL:v12 completionHandler:&v43];
+    [mEMORY[0x277CF9650] categoryForDomainURL:v12 completionHandler:&v43];
 
     [v13 lockWhenCondition:1];
     [v13 unlock];
@@ -1687,13 +1687,13 @@ LABEL_36:
 
     _Block_object_dispose(&v51, 8);
     v15 = _os_feature_enabled_impl();
-    if (a3 == 5 && v15)
+    if (policy == 5 && v15)
     {
-      a3 = [(STBlockingViewController *)self _managedSettingsShieldPolicyForWebURL:v12 category:v14];
+      policy = [(STBlockingViewController *)self _managedSettingsShieldPolicyForWebURL:v12 category:v14];
     }
 
-    v16 = [(STBlockingViewController *)self webDomain];
-    if ([(STBlockingViewController *)self policy]== a3 && (v16 == v8 || [v16 isEqualToString:v8]))
+    webDomain = [(STBlockingViewController *)self webDomain];
+    if ([(STBlockingViewController *)self policy]== policy && (webDomain == host || [webDomain isEqualToString:host]))
     {
       v17 = +[STBlockingUILog log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1704,15 +1704,15 @@ LABEL_36:
       goto LABEL_41;
     }
 
-    [(STBlockingViewController *)self setPolicy:a3];
+    [(STBlockingViewController *)self setPolicy:policy];
     [(STBlockingViewController *)self setFormattedContactHandle:0];
     [(STBlockingViewController *)self setContactStore:0];
     [(STBlockingViewController *)self setCategoryIdentifier:0];
     [(STBlockingViewController *)self setBundleIdentifier:0];
-    [(STBlockingViewController *)self setWebDomain:v8];
-    if (a3 > 2)
+    [(STBlockingViewController *)self setWebDomain:host];
+    if (policy > 2)
     {
-      if (a3 == 3)
+      if (policy == 3)
       {
         [(STBlockingViewController *)self _updateAppearanceForAskPending];
 LABEL_41:
@@ -1720,18 +1720,18 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      if (a3 != 4)
+      if (policy != 4)
       {
-        if (a3 == 5)
+        if (policy == 5)
         {
           v19 = 0;
-          if ([v8 length]&& v14)
+          if ([host length]&& v14)
           {
             v20 = MEMORY[0x277D26570];
-            v21 = [v14 identifier];
-            v22 = [v14 localizedName];
+            identifier = [v14 identifier];
+            localizedName = [v14 localizedName];
             v42 = 0;
-            v19 = [v20 configurationForWebDomain:v8 categoryIdentifier:v21 categoryName:v22 error:&v42];
+            v19 = [v20 configurationForWebDomain:host categoryIdentifier:identifier categoryName:localizedName error:&v42];
             v23 = v42;
 
             if (!v19)
@@ -1744,30 +1744,30 @@ LABEL_41:
             }
           }
 
-          v25 = [v8 _lp_userVisibleHost];
-          [(STBlockingViewController *)self _updateAppearanceWithCustomConfiguration:v19 defaultMessageFormatKey:@"RestrictedWebDomainMessageFormat" defaultMessageArgument:v25];
+          _lp_userVisibleHost = [host _lp_userVisibleHost];
+          [(STBlockingViewController *)self _updateAppearanceWithCustomConfiguration:v19 defaultMessageFormatKey:@"RestrictedWebDomainMessageFormat" defaultMessageArgument:_lp_userVisibleHost];
         }
 
         goto LABEL_41;
       }
     }
 
-    else if ((a3 - 1) >= 2)
+    else if ((policy - 1) >= 2)
     {
-      if (!a3)
+      if (!policy)
       {
-        v18 = [MEMORY[0x277CCA890] currentHandler];
-        [v18 handleFailureInMethod:a2 object:self file:@"STBlockingViewController.m" lineNumber:1247 description:@"Do not pass DMFPolicyOK to an -updateAppearance method."];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"STBlockingViewController.m" lineNumber:1247 description:@"Do not pass DMFPolicyOK to an -updateAppearance method."];
       }
 
       goto LABEL_41;
     }
 
     v26 = v12;
-    v27 = [v26 host];
-    if ([v27 length])
+    host2 = [v26 host];
+    if ([host2 length])
     {
-      v28 = v27;
+      v28 = host2;
       v40 = v26;
       v29 = v26;
       v51 = 0;
@@ -1777,7 +1777,7 @@ LABEL_41:
       v55 = __Block_byref_object_dispose_;
       v56 = 0;
       v30 = [objc_alloc(MEMORY[0x277CCA930]) initWithCondition:0];
-      v31 = [MEMORY[0x277CF9650] sharedCategories];
+      mEMORY[0x277CF9650]2 = [MEMORY[0x277CF9650] sharedCategories];
       v43 = MEMORY[0x277D85DD0];
       v44 = 3221225472;
       v45 = __categoryForWebpageURL_block_invoke;
@@ -1788,26 +1788,26 @@ LABEL_41:
       v33 = v30;
       v48 = v33;
       v50 = 1;
-      [v31 categoryForDomainURL:v32 completionHandler:&v43];
+      [mEMORY[0x277CF9650]2 categoryForDomainURL:v32 completionHandler:&v43];
 
       [v33 lockWhenCondition:1];
       [v33 unlock];
       v34 = v52[5];
 
       _Block_object_dispose(&v51, 8);
-      v35 = [v34 canonicalBundleIdentifier];
-      if (!v35 || (v36 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v35 allowPlaceholder:1 error:0], objc_msgSend(v36, "localizedName"), v37 = objc_claimAutoreleasedReturnValue(), v36, !v37))
+      canonicalBundleIdentifier = [v34 canonicalBundleIdentifier];
+      if (!canonicalBundleIdentifier || (v36 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:canonicalBundleIdentifier allowPlaceholder:1 error:0], objc_msgSend(v36, "localizedName"), _lp_userVisibleHost2 = objc_claimAutoreleasedReturnValue(), v36, !_lp_userVisibleHost2))
       {
-        v38 = [v34 primaryWebDomain];
-        v37 = [v38 _lp_userVisibleHost];
+        primaryWebDomain = [v34 primaryWebDomain];
+        _lp_userVisibleHost2 = [primaryWebDomain _lp_userVisibleHost];
       }
 
-      v27 = v28;
-      if (![v37 length])
+      host2 = v28;
+      if (![_lp_userVisibleHost2 length])
       {
-        v39 = [v28 _lp_userVisibleHost];
+        _lp_userVisibleHost3 = [v28 _lp_userVisibleHost];
 
-        v37 = v39;
+        _lp_userVisibleHost2 = _lp_userVisibleHost3;
       }
 
       v26 = v41;
@@ -1815,15 +1815,15 @@ LABEL_41:
 
     else
     {
-      v37 = 0;
+      _lp_userVisibleHost2 = 0;
     }
 
-    [(STBlockingViewController *)self _updateAppearanceForBlockedContent:v37 messageFormatKey:@"ReachedWebsiteLimitMessageFormat" messageKey:@"ReachedWebsiteLimitMessage"];
+    [(STBlockingViewController *)self _updateAppearanceForBlockedContent:_lp_userVisibleHost2 messageFormatKey:@"ReachedWebsiteLimitMessageFormat" messageKey:@"ReachedWebsiteLimitMessage"];
     goto LABEL_41;
   }
 
-  v8 = +[STBlockingUILog log];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  host = +[STBlockingUILog log];
+  if (os_log_type_enabled(host, OS_LOG_TYPE_ERROR))
   {
     [STBlockingViewController updateAppearanceUsingPolicy:forWebpageURL:];
   }
@@ -1831,15 +1831,15 @@ LABEL_41:
 LABEL_42:
 }
 
-- (int64_t)_managedSettingsShieldPolicyForCategoryIdentifier:(id)a3
+- (int64_t)_managedSettingsShieldPolicyForCategoryIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D26560]) initWithIdentifier:v4];
-  v6 = [(STBlockingViewController *)self effectiveSettingsStore];
-  v7 = [v6 screenTime];
-  v8 = [v7 categoryShieldPolicies];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(MEMORY[0x277D26560]) initWithIdentifier:identifierCopy];
+  effectiveSettingsStore = [(STBlockingViewController *)self effectiveSettingsStore];
+  screenTime = [effectiveSettingsStore screenTime];
+  categoryShieldPolicies = [screenTime categoryShieldPolicies];
 
-  v9 = [v8 objectForKeyedSubscript:v5];
+  v9 = [categoryShieldPolicies objectForKeyedSubscript:v5];
   v10 = v9;
   if (v9)
   {
@@ -1860,7 +1860,7 @@ LABEL_42:
     }
 
     v13 = [MEMORY[0x277D26560] all];
-    v14 = [v8 objectForKeyedSubscript:v13];
+    v14 = [categoryShieldPolicies objectForKeyedSubscript:v13];
 
     v10 = v14;
   }
@@ -1875,16 +1875,16 @@ LABEL_42:
   return v16;
 }
 
-- (int64_t)_managedSettingsShieldPolicyForBundleIdentifier:(id)a3 category:(id)a4
+- (int64_t)_managedSettingsShieldPolicyForBundleIdentifier:(id)identifier category:(id)category
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:v6];
-  v9 = [(STBlockingViewController *)self effectiveSettingsStore];
-  v10 = [v9 screenTime];
-  v11 = [v10 applicationShieldPolicies];
+  identifierCopy = identifier;
+  categoryCopy = category;
+  v8 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:identifierCopy];
+  effectiveSettingsStore = [(STBlockingViewController *)self effectiveSettingsStore];
+  screenTime = [effectiveSettingsStore screenTime];
+  applicationShieldPolicies = [screenTime applicationShieldPolicies];
 
-  v12 = [v11 objectForKeyedSubscript:v8];
+  v12 = [applicationShieldPolicies objectForKeyedSubscript:v8];
   v13 = v12;
   v14 = *MEMORY[0x277D26508];
   if (v12)
@@ -1899,10 +1899,10 @@ LABEL_42:
 
   v16 = !v15;
   v17 = 0x28177B000uLL;
-  if (v7 && (v16 & 1) == 0)
+  if (categoryCopy && (v16 & 1) == 0)
   {
-    v44 = [v7 canonicalBundleIdentifier];
-    if (v44)
+    canonicalBundleIdentifier = [categoryCopy canonicalBundleIdentifier];
+    if (canonicalBundleIdentifier)
     {
       v18 = +[STBlockingUILog log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1910,8 +1910,8 @@ LABEL_42:
         [STBlockingViewController _managedSettingsShieldPolicyForBundleIdentifier:category:];
       }
 
-      v19 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:v44];
-      v20 = [v11 objectForKeyedSubscript:v19];
+      v19 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:canonicalBundleIdentifier];
+      v20 = [applicationShieldPolicies objectForKeyedSubscript:v19];
 
       if (v20 && v20 != v14)
       {
@@ -1924,8 +1924,8 @@ LABEL_42:
       v20 = v13;
     }
 
-    v43 = [v7 primaryWebDomain];
-    if (v43)
+    primaryWebDomain = [categoryCopy primaryWebDomain];
+    if (primaryWebDomain)
     {
       v21 = +[STBlockingUILog log];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1933,18 +1933,18 @@ LABEL_42:
         [STBlockingViewController _managedSettingsShieldPolicyForBundleIdentifier:category:];
       }
 
-      v22 = v6;
+      v22 = identifierCopy;
 
-      v23 = [(STBlockingViewController *)self effectiveSettingsStore];
-      v24 = [v23 screenTime];
-      v25 = [v24 webDomainShieldPolicies];
+      effectiveSettingsStore2 = [(STBlockingViewController *)self effectiveSettingsStore];
+      screenTime2 = [effectiveSettingsStore2 screenTime];
+      webDomainShieldPolicies = [screenTime2 webDomainShieldPolicies];
 
-      v26 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:v43];
-      v27 = [v25 objectForKeyedSubscript:v26];
+      v26 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:primaryWebDomain];
+      v27 = [webDomainShieldPolicies objectForKeyedSubscript:v26];
 
       if (v27)
       {
-        v6 = v22;
+        identifierCopy = v22;
         v17 = 0x28177B000;
         if (v27 != v14)
         {
@@ -1960,7 +1960,7 @@ LABEL_33:
 
       else
       {
-        v6 = v22;
+        identifierCopy = v22;
         v17 = 0x28177B000uLL;
       }
     }
@@ -1970,22 +1970,22 @@ LABEL_33:
       v27 = v20;
     }
 
-    v28 = [v7 identifier];
+    identifier = [categoryCopy identifier];
     v29 = [v17 + 3048 log];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
       [STBlockingViewController _managedSettingsShieldPolicyForBundleIdentifier:category:];
     }
 
-    v41 = v6;
+    v41 = identifierCopy;
 
-    v42 = v28;
-    v30 = [objc_alloc(MEMORY[0x277D26560]) initWithIdentifier:v28];
-    v31 = [(STBlockingViewController *)self effectiveSettingsStore];
-    v32 = [v31 screenTime];
-    v33 = [v32 categoryShieldPolicies];
+    v42 = identifier;
+    v30 = [objc_alloc(MEMORY[0x277D26560]) initWithIdentifier:identifier];
+    effectiveSettingsStore3 = [(STBlockingViewController *)self effectiveSettingsStore];
+    screenTime3 = [effectiveSettingsStore3 screenTime];
+    categoryShieldPolicies = [screenTime3 categoryShieldPolicies];
 
-    v34 = [v33 objectForKeyedSubscript:v30];
+    v34 = [categoryShieldPolicies objectForKeyedSubscript:v30];
 
     if (!v34 || v34 == v14)
     {
@@ -1996,7 +1996,7 @@ LABEL_33:
       }
 
       v36 = [MEMORY[0x277D26560] all];
-      v37 = [v33 objectForKeyedSubscript:v36];
+      v37 = [categoryShieldPolicies objectForKeyedSubscript:v36];
 
       v34 = v37;
     }
@@ -2004,7 +2004,7 @@ LABEL_33:
     v17 = 0x28177B000uLL;
 
     v27 = v34;
-    v6 = v41;
+    identifierCopy = v41;
     goto LABEL_32;
   }
 
@@ -2020,16 +2020,16 @@ LABEL_34:
   return v39;
 }
 
-- (int64_t)_managedSettingsShieldPolicyForWebURL:(id)a3 category:(id)a4
+- (int64_t)_managedSettingsShieldPolicyForWebURL:(id)l category:(id)category
 {
-  v6 = a4;
-  v7 = [a3 host];
-  v8 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:v7];
-  v9 = [(STBlockingViewController *)self effectiveSettingsStore];
-  v10 = [v9 screenTime];
-  v11 = [v10 webDomainShieldPolicies];
+  categoryCopy = category;
+  host = [l host];
+  v8 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:host];
+  effectiveSettingsStore = [(STBlockingViewController *)self effectiveSettingsStore];
+  screenTime = [effectiveSettingsStore screenTime];
+  webDomainShieldPolicies = [screenTime webDomainShieldPolicies];
 
-  v12 = [v11 objectForKeyedSubscript:v8];
+  v12 = [webDomainShieldPolicies objectForKeyedSubscript:v8];
   v13 = v12;
   v14 = *MEMORY[0x277D26508];
   if (v12)
@@ -2043,10 +2043,10 @@ LABEL_34:
   }
 
   v16 = !v15;
-  if (v6 && (v16 & 1) == 0)
+  if (categoryCopy && (v16 & 1) == 0)
   {
-    v43 = [v6 primaryWebDomain];
-    if (v43)
+    primaryWebDomain = [categoryCopy primaryWebDomain];
+    if (primaryWebDomain)
     {
       v17 = +[STBlockingUILog log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -2054,16 +2054,16 @@ LABEL_34:
         [STBlockingViewController _managedSettingsShieldPolicyForWebURL:category:];
       }
 
-      v18 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:v43];
-      v19 = [v11 objectForKeyedSubscript:v18];
+      v18 = [objc_alloc(MEMORY[0x277D265A0]) initWithDomain:primaryWebDomain];
+      v19 = [webDomainShieldPolicies objectForKeyedSubscript:v18];
 
       v13 = v19;
     }
 
     if (!v13 || v13 == v14)
     {
-      v42 = [v6 canonicalBundleIdentifier];
-      if (v42)
+      canonicalBundleIdentifier = [categoryCopy canonicalBundleIdentifier];
+      if (canonicalBundleIdentifier)
       {
         v20 = +[STBlockingUILog log];
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -2071,34 +2071,34 @@ LABEL_34:
           [STBlockingViewController _managedSettingsShieldPolicyForWebURL:category:];
         }
 
-        v21 = [(STBlockingViewController *)self effectiveSettingsStore];
-        v22 = [v21 screenTime];
-        v23 = [v22 applicationShieldPolicies];
+        effectiveSettingsStore2 = [(STBlockingViewController *)self effectiveSettingsStore];
+        screenTime2 = [effectiveSettingsStore2 screenTime];
+        applicationShieldPolicies = [screenTime2 applicationShieldPolicies];
 
-        v24 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:v42];
-        v25 = [v23 objectForKeyedSubscript:v24];
+        v24 = [objc_alloc(MEMORY[0x277D26550]) initWithBundleIdentifier:canonicalBundleIdentifier];
+        v25 = [applicationShieldPolicies objectForKeyedSubscript:v24];
 
         v13 = v25;
       }
 
       if (!v13 || v13 == v14)
       {
-        v26 = [v6 identifier];
+        identifier = [categoryCopy identifier];
         v27 = +[STBlockingUILog log];
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
           [STBlockingViewController _managedSettingsShieldPolicyForWebURL:category:];
         }
 
-        v40 = v7;
+        v40 = host;
 
-        v41 = v26;
-        v28 = [objc_alloc(MEMORY[0x277D26560]) initWithIdentifier:v26];
-        v29 = [(STBlockingViewController *)self effectiveSettingsStore];
-        v30 = [v29 screenTime];
-        v31 = [v30 categoryShieldPolicies];
+        v41 = identifier;
+        v28 = [objc_alloc(MEMORY[0x277D26560]) initWithIdentifier:identifier];
+        effectiveSettingsStore3 = [(STBlockingViewController *)self effectiveSettingsStore];
+        screenTime3 = [effectiveSettingsStore3 screenTime];
+        categoryShieldPolicies = [screenTime3 categoryShieldPolicies];
 
-        v32 = [v31 objectForKeyedSubscript:v28];
+        v32 = [categoryShieldPolicies objectForKeyedSubscript:v28];
 
         if (!v32 || v32 == v14)
         {
@@ -2109,18 +2109,18 @@ LABEL_34:
           }
 
           v35 = [MEMORY[0x277D26560] all];
-          v33 = v31;
-          v36 = [v31 objectForKeyedSubscript:v35];
+          v33 = categoryShieldPolicies;
+          v36 = [categoryShieldPolicies objectForKeyedSubscript:v35];
 
           v32 = v36;
         }
 
         else
         {
-          v33 = v31;
+          v33 = categoryShieldPolicies;
         }
 
-        v7 = v40;
+        host = v40;
 
         v13 = v32;
       }
@@ -2137,27 +2137,27 @@ LABEL_34:
   return v38;
 }
 
-- (int64_t)_dmfPolicyFromScreenTimeShieldPolicy:(id)a3
+- (int64_t)_dmfPolicyFromScreenTimeShieldPolicy:(id)policy
 {
-  v3 = a3;
-  if (v3)
+  policyCopy = policy;
+  if (policyCopy)
   {
-    if ([*MEMORY[0x277D26510] isEqualToString:v3])
+    if ([*MEMORY[0x277D26510] isEqualToString:policyCopy])
     {
       v4 = 1;
     }
 
-    else if ([*MEMORY[0x277D264F0] isEqualToString:v3])
+    else if ([*MEMORY[0x277D264F0] isEqualToString:policyCopy])
     {
       v4 = 2;
     }
 
-    else if ([*MEMORY[0x277D264F8] isEqualToString:v3])
+    else if ([*MEMORY[0x277D264F8] isEqualToString:policyCopy])
     {
       v4 = 3;
     }
 
-    else if ([*MEMORY[0x277D26500] isEqualToString:v3])
+    else if ([*MEMORY[0x277D26500] isEqualToString:policyCopy])
     {
       v4 = 4;
     }
@@ -2179,31 +2179,31 @@ LABEL_34:
 - (void)_updateAppearanceForAskPending
 {
   [(STBlockingViewController *)self loadViewIfNeeded];
-  v3 = [(STBlockingViewController *)self communicationLimitView];
-  [v3 setHidden:1];
+  communicationLimitView = [(STBlockingViewController *)self communicationLimitView];
+  [communicationLimitView setHidden:1];
 
-  v4 = [(STBlockingViewController *)self hourglassView];
-  [v4 setHidden:0];
+  hourglassView = [(STBlockingViewController *)self hourglassView];
+  [hourglassView setHidden:0];
 
   v9 = +[STScreenTimeUIBundle bundle];
   v5 = [v9 localizedStringForKey:@"RequestSentTitle" value:&stru_282F1E250 table:0];
-  v6 = [(STBlockingViewController *)self titleLabel];
-  [v6 setText:v5];
+  titleLabel = [(STBlockingViewController *)self titleLabel];
+  [titleLabel setText:v5];
 
   v7 = [v9 localizedStringForKey:@"RequestSentMessage" value:&stru_282F1E250 table:0];
-  v8 = [(STBlockingViewController *)self messageLabel];
-  [v8 setText:v7];
+  messageLabel = [(STBlockingViewController *)self messageLabel];
+  [messageLabel setText:v7];
 
   [(STBlockingViewController *)self _updateButtons];
 }
 
-- (void)updateAppearanceUsingBlockedContactHandles:(id)a3 contactNameByHandle:(id)a4 forBundleIdentifier:(id)a5 isApplicationCurrentlyLimited:(BOOL)a6 contactStore:(id)a7
+- (void)updateAppearanceUsingBlockedContactHandles:(id)handles contactNameByHandle:(id)handle forBundleIdentifier:(id)identifier isApplicationCurrentlyLimited:(BOOL)limited contactStore:(id)store
 {
-  v7 = a6;
-  v11 = a7;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 count];
+  limitedCopy = limited;
+  storeCopy = store;
+  handleCopy = handle;
+  handlesCopy = handles;
+  v14 = [handlesCopy count];
   if (!v14)
   {
     [STBlockingViewController updateAppearanceUsingBlockedContactHandles:contactNameByHandle:forBundleIdentifier:isApplicationCurrentlyLimited:contactStore:];
@@ -2213,17 +2213,17 @@ LABEL_34:
   [(STBlockingViewController *)self setCategoryIdentifier:0];
   [(STBlockingViewController *)self setBundleIdentifier:0];
   [(STBlockingViewController *)self setWebDomain:0];
-  [(STBlockingViewController *)self setContactStore:v11];
+  [(STBlockingViewController *)self setContactStore:storeCopy];
 
   [(STBlockingViewController *)self loadViewIfNeeded];
   v33 = +[STScreenTimeUIBundle bundle];
-  v15 = [v13 objectAtIndexedSubscript:0];
+  v15 = [handlesCopy objectAtIndexedSubscript:0];
 
-  v16 = [v12 objectForKeyedSubscript:v15];
+  v16 = [handleCopy objectForKeyedSubscript:v15];
 
   if (v16)
   {
-    if (v7)
+    if (limitedCopy)
     {
       v17 = @"BlockedContactNameDowntimeMessageFormat";
     }
@@ -2241,7 +2241,7 @@ LABEL_34:
 
   else if ([v15 destinationIdIsPhoneNumber])
   {
-    if (v7)
+    if (limitedCopy)
     {
       v20 = @"BlockedPhoneNumberDowntimeMessageFormat";
     }
@@ -2282,7 +2282,7 @@ LABEL_34:
       v25 = @"BlockedContactNameDowntimeMessageFormat";
     }
 
-    if (v7)
+    if (limitedCopy)
     {
       v26 = v25;
     }
@@ -2295,63 +2295,63 @@ LABEL_34:
     v18 = [v33 localizedStringForKey:v26 value:&stru_282F1E250 table:0];
   }
 
-  v27 = [(STBlockingViewController *)self hourglassView];
-  [v27 setHidden:v7 ^ 1];
+  hourglassView = [(STBlockingViewController *)self hourglassView];
+  [hourglassView setHidden:limitedCopy ^ 1];
 
-  v28 = [(STBlockingViewController *)self communicationLimitView];
-  [v28 setHidden:v7];
+  communicationLimitView = [(STBlockingViewController *)self communicationLimitView];
+  [communicationLimitView setHidden:limitedCopy];
 
   v29 = [v33 localizedStringForKey:@"RestrictedContactTitle" value:&stru_282F1E250 table:0];
-  v30 = [(STBlockingViewController *)self titleLabel];
-  [v30 setText:v29];
+  titleLabel = [(STBlockingViewController *)self titleLabel];
+  [titleLabel setText:v29];
 
   v31 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v18 validFormatSpecifiers:@"%lu %@" error:0, v14 - 1, v15];
-  v32 = [(STBlockingViewController *)self messageLabel];
-  [v32 setText:v31];
+  messageLabel = [(STBlockingViewController *)self messageLabel];
+  [messageLabel setText:v31];
 
   [(STBlockingViewController *)self setFormattedContactHandle:v15];
   [(STBlockingViewController *)self _updateButtons];
 }
 
-- (void)_updateAppearanceForBlockedContent:(id)a3 messageFormatKey:(id)a4 messageKey:(id)a5
+- (void)_updateAppearanceForBlockedContent:(id)content messageFormatKey:(id)key messageKey:(id)messageKey
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
+  contentCopy = content;
+  keyCopy = key;
+  messageKeyCopy = messageKey;
   [(STBlockingViewController *)self loadViewIfNeeded];
   v10 = +[STScreenTimeUIBundle bundle];
-  if ([v23 length])
+  if ([contentCopy length])
   {
-    v11 = [v10 localizedStringForKey:v8 value:&stru_282F1E250 table:0];
-    v12 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v11 validFormatSpecifiers:@"%@" error:0, v23];
+    v11 = [v10 localizedStringForKey:keyCopy value:&stru_282F1E250 table:0];
+    contentCopy = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v11 validFormatSpecifiers:@"%@" error:0, contentCopy];
   }
 
   else
   {
-    v12 = [v10 localizedStringForKey:v9 value:&stru_282F1E250 table:0];
+    contentCopy = [v10 localizedStringForKey:messageKeyCopy value:&stru_282F1E250 table:0];
   }
 
-  v13 = [(STBlockingViewController *)self communicationLimitView];
-  [v13 setHidden:1];
+  communicationLimitView = [(STBlockingViewController *)self communicationLimitView];
+  [communicationLimitView setHidden:1];
 
-  v14 = [(STBlockingViewController *)self hourglassView];
-  [v14 setHidden:0];
+  hourglassView = [(STBlockingViewController *)self hourglassView];
+  [hourglassView setHidden:0];
 
-  v15 = [(STBlockingViewController *)self titleLabel];
+  titleLabel = [(STBlockingViewController *)self titleLabel];
   v16 = [v10 localizedStringForKey:@"TimeLimitTitle" value:&stru_282F1E250 table:0];
-  [v15 setText:v16];
+  [titleLabel setText:v16];
 
-  v17 = [(STBlockingViewController *)self messageLabel];
-  [v17 setText:v12];
-  v18 = [(STBlockingViewController *)self customImageView];
-  [v18 setHidden:1];
+  messageLabel = [(STBlockingViewController *)self messageLabel];
+  [messageLabel setText:contentCopy];
+  customImageView = [(STBlockingViewController *)self customImageView];
+  [customImageView setHidden:1];
 
   v19 = [MEMORY[0x277D75210] effectWithStyle:9];
-  v20 = [(STBlockingViewController *)self view];
-  [v20 setEffect:v19];
+  view = [(STBlockingViewController *)self view];
+  [view setEffect:v19];
 
-  v21 = [MEMORY[0x277D75348] labelColor];
-  [v15 setTextColor:v21];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [titleLabel setTextColor:labelColor];
   if (_os_feature_enabled_impl())
   {
     [MEMORY[0x277D75348] secondaryLabelColor];
@@ -2362,17 +2362,17 @@ LABEL_34:
     [MEMORY[0x277D75348] labelColor];
   }
   v22 = ;
-  [v17 setTextColor:v22];
+  [messageLabel setTextColor:v22];
 
   [(STBlockingViewController *)self _updateButtons];
 }
 
-- (void)showWithAnimation:(BOOL)a3 completionHandler:(id)a4
+- (void)showWithAnimation:(BOOL)animation completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v4)
+  animationCopy = animation;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (animationCopy)
   {
     v8 = MEMORY[0x277D75D18];
     v12[0] = MEMORY[0x277D85DD0];
@@ -2384,14 +2384,14 @@ LABEL_34:
     v10[1] = 3221225472;
     v10[2] = __64__STBlockingViewController_showWithAnimation_completionHandler___block_invoke_2;
     v10[3] = &unk_278338A30;
-    v11 = v6;
+    v11 = handlerCopy;
     [v8 animateWithDuration:v12 animations:v10 completion:0.2];
   }
 
   else
   {
-    v9 = [(STBlockingViewController *)self view];
-    [v9 setAlpha:1.0];
+    view = [(STBlockingViewController *)self view];
+    [view setAlpha:1.0];
 
     if (v7)
     {
@@ -2417,15 +2417,15 @@ uint64_t __64__STBlockingViewController_showWithAnimation_completionHandler___bl
   return result;
 }
 
-- (void)hideWithAnimation:(BOOL)a3 completionHandler:(id)a4
+- (void)hideWithAnimation:(BOOL)animation completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(STBlockingViewController *)self view];
-  v8 = v7;
-  if (v4)
+  animationCopy = animation;
+  handlerCopy = handler;
+  view = [(STBlockingViewController *)self view];
+  v8 = view;
+  if (animationCopy)
   {
-    [v7 setUserInteractionEnabled:0];
+    [view setUserInteractionEnabled:0];
     v9 = MEMORY[0x277D75D18];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -2437,18 +2437,18 @@ uint64_t __64__STBlockingViewController_showWithAnimation_completionHandler___bl
     v11[2] = __64__STBlockingViewController_hideWithAnimation_completionHandler___block_invoke_2;
     v11[3] = &unk_278338A58;
     v12 = v8;
-    v13 = v6;
+    v13 = handlerCopy;
     v10 = v8;
     [v9 animateWithDuration:v14 animations:v11 completion:0.25];
   }
 
   else
   {
-    [v7 setAlpha:0.0];
+    [view setAlpha:0.0];
 
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
@@ -2473,7 +2473,7 @@ uint64_t __64__STBlockingViewController_hideWithAnimation_completionHandler___bl
   return result;
 }
 
-- (void)_showIgnoreLimitOptions:(id)a3
+- (void)_showIgnoreLimitOptions:(id)options
 {
   v4 = +[STScreenTimeUIBundle bundle];
   v5 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
@@ -2624,23 +2624,23 @@ id __52__STBlockingViewController__ignoreLimitMenuProvider__block_invoke(uint64_
   return v7;
 }
 
-- (void)_ignoreLimitForAdditionalTime:(double)a3
+- (void)_ignoreLimitForAdditionalTime:(double)time
 {
   if (_os_feature_enabled_impl())
   {
-    v5 = [(STBlockingViewController *)self _askForTimeResource];
+    _askForTimeResource = [(STBlockingViewController *)self _askForTimeResource];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __58__STBlockingViewController__ignoreLimitForAdditionalTime___block_invoke;
     v6[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-    *&v6[4] = a3;
-    [v5 approveAdditionalTime:v6 completionHandler:a3];
+    *&v6[4] = time;
+    [_askForTimeResource approveAdditionalTime:v6 completionHandler:time];
   }
 
   else
   {
 
-    [(STBlockingViewController *)self _ignoreLimitWithPreemptiveHideForAdditionalTime:a3];
+    [(STBlockingViewController *)self _ignoreLimitWithPreemptiveHideForAdditionalTime:time];
   }
 }
 
@@ -2657,14 +2657,14 @@ void __58__STBlockingViewController__ignoreLimitForAdditionalTime___block_invoke
   }
 }
 
-- (void)_ignoreLimitWithPreemptiveHideForAdditionalTime:(double)a3
+- (void)_ignoreLimitWithPreemptiveHideForAdditionalTime:(double)time
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __76__STBlockingViewController__ignoreLimitWithPreemptiveHideForAdditionalTime___block_invoke;
   v5[3] = &unk_278338B68;
   v5[4] = self;
-  *&v5[5] = a3;
+  *&v5[5] = time;
   v4 = _Block_copy(v5);
   [(STBlockingViewController *)self hideWithAnimation:1 completionHandler:v4];
 }
@@ -2719,7 +2719,7 @@ void __76__STBlockingViewController__ignoreLimitWithPreemptiveHideForAdditionalT
   }
 }
 
-- (void)_showAskForMoreTimeOptions:(id)a3
+- (void)_showAskForMoreTimeOptions:(id)options
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -2844,12 +2844,12 @@ id __55__STBlockingViewController__askForMoreTimeMenuProvider__block_invoke(uint
   return v5;
 }
 
-- (void)_oneMoreMinute:(id)a3
+- (void)_oneMoreMinute:(id)minute
 {
   if (_os_feature_enabled_impl())
   {
-    v4 = [(STBlockingViewController *)self _askForTimeResource];
-    [v4 approveOneMoreMinuteWithCompletionHandler:&__block_literal_global_0];
+    _askForTimeResource = [(STBlockingViewController *)self _askForTimeResource];
+    [_askForTimeResource approveOneMoreMinuteWithCompletionHandler:&__block_literal_global_0];
   }
 
   else
@@ -2929,16 +2929,16 @@ void __67__STBlockingViewController__approveOneMoreMinuteWithPreemptiveHide__blo
   }
 }
 
-- (void)_sendRequest:(id)a3
+- (void)_sendRequest:(id)request
 {
-  v4 = [(STBlockingViewController *)self _askForTimeResource];
+  _askForTimeResource = [(STBlockingViewController *)self _askForTimeResource];
   v5 = *MEMORY[0x277D4BB78];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__STBlockingViewController__sendRequest___block_invoke;
   v6[3] = &unk_278338BB0;
   v6[4] = self;
-  [v4 requestAdditionalTime:v6 completionHandler:v5];
+  [_askForTimeResource requestAdditionalTime:v6 completionHandler:v5];
 }
 
 void __41__STBlockingViewController__sendRequest___block_invoke(uint64_t a1, void *a2)
@@ -2966,7 +2966,7 @@ void __41__STBlockingViewController__sendRequest___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)_enterScreenTimePasscode:(id)a3
+- (void)_enterScreenTimePasscode:(id)passcode
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -3028,31 +3028,31 @@ void __53__STBlockingViewController__enterScreenTimePasscode___block_invoke_2(ui
   [v8 postNotificationName:@"BlockingViewDidHidePasscodeUI" object:0];
 }
 
-- (void)_didFinishEnteringScreenTimePasscode:(id)a3
+- (void)_didFinishEnteringScreenTimePasscode:(id)passcode
 {
   v4 = MEMORY[0x277CCA9A0];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:self name:@"com.apple.screentime.restrictions.did-finish" object:0];
+  passcodeCopy = passcode;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.screentime.restrictions.did-finish" object:0];
 
-  v7 = [v5 userInfo];
+  userInfo = [passcodeCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"success"];
-  v9 = [v8 BOOLValue];
+  v8 = [userInfo objectForKeyedSubscript:@"success"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v10 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __65__STBlockingViewController__didFinishEnteringScreenTimePasscode___block_invoke;
     v12[3] = &unk_278338A08;
     v12[4] = self;
-    [v10 addOperationWithBlock:v12];
+    [mainQueue addOperationWithBlock:v12];
   }
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 postNotificationName:@"BlockingViewDidHidePasscodeUI" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 postNotificationName:@"BlockingViewDidHidePasscodeUI" object:0];
 }
 
 - (void)_showPasscodeApprovedOptions
@@ -3101,27 +3101,27 @@ void __53__STBlockingViewController__enterScreenTimePasscode___block_invoke_2(ui
 
 - (id)_askForTimeResource
 {
-  v3 = [(STBlockingViewController *)self categoryIdentifier];
-  v4 = [(STBlockingViewController *)self bundleIdentifier];
-  v5 = [(STBlockingViewController *)self webDomain];
-  v6 = v5;
-  if (v3)
+  categoryIdentifier = [(STBlockingViewController *)self categoryIdentifier];
+  bundleIdentifier = [(STBlockingViewController *)self bundleIdentifier];
+  webDomain = [(STBlockingViewController *)self webDomain];
+  v6 = webDomain;
+  if (categoryIdentifier)
   {
-    v7 = [objc_alloc(MEMORY[0x277D4B8F0]) initWithCategoryIdentifier:v3 changeHandler:&__block_literal_global_236];
+    v7 = [objc_alloc(MEMORY[0x277D4B8F0]) initWithCategoryIdentifier:categoryIdentifier changeHandler:&__block_literal_global_236];
 LABEL_7:
     v8 = v7;
     goto LABEL_8;
   }
 
-  if (v4)
+  if (bundleIdentifier)
   {
-    v7 = [objc_alloc(MEMORY[0x277D4B8E0]) initWithBundleIdentifier:v4 changeHandler:&__block_literal_global_236];
+    v7 = [objc_alloc(MEMORY[0x277D4B8E0]) initWithBundleIdentifier:bundleIdentifier changeHandler:&__block_literal_global_236];
     goto LABEL_7;
   }
 
-  if (v5)
+  if (webDomain)
   {
-    v7 = [objc_alloc(MEMORY[0x277D4B918]) initWithWebsiteDomain:v5 changeHandler:&__block_literal_global_236];
+    v7 = [objc_alloc(MEMORY[0x277D4B918]) initWithWebsiteDomain:webDomain changeHandler:&__block_literal_global_236];
     goto LABEL_7;
   }
 
@@ -3162,7 +3162,7 @@ void __47__STBlockingViewController__askForTimeResource__block_invoke(uint64_t a
   }
 }
 
-- (void)_addContact:(id)a3
+- (void)_addContact:(id)contact
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -3174,27 +3174,27 @@ void __47__STBlockingViewController__askForTimeResource__block_invoke(uint64_t a
 
 - (void)_addContact
 {
-  v9 = [(STBlockingViewController *)self addContactHandler];
-  if (v9)
+  addContactHandler = [(STBlockingViewController *)self addContactHandler];
+  if (addContactHandler)
   {
-    v3 = [(STBlockingViewController *)self addContactButton];
-    v9[2](v9, v3);
+    addContactButton = [(STBlockingViewController *)self addContactButton];
+    addContactHandler[2](addContactHandler, addContactButton);
   }
 
   else
   {
     v4 = MEMORY[0x277CBDC48];
-    v5 = [(STBlockingViewController *)self _newContact];
-    v3 = [v4 viewControllerForNewContact:v5];
+    _newContact = [(STBlockingViewController *)self _newContact];
+    addContactButton = [v4 viewControllerForNewContact:_newContact];
 
-    [v3 setDelegate:self];
-    v6 = [(STBlockingViewController *)self contactStore];
-    [v3 setContactStore:v6];
+    [addContactButton setDelegate:self];
+    contactStore = [(STBlockingViewController *)self contactStore];
+    [addContactButton setContactStore:contactStore];
 
-    v7 = [(STBlockingViewController *)self _iCloudContainer];
-    [v3 setParentContainer:v7];
+    _iCloudContainer = [(STBlockingViewController *)self _iCloudContainer];
+    [addContactButton setParentContainer:_iCloudContainer];
 
-    v8 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v3];
+    v8 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:addContactButton];
     [(STBlockingViewController *)self presentViewController:v8 animated:1 completion:0];
   }
 }
@@ -3203,10 +3203,10 @@ void __47__STBlockingViewController__askForTimeResource__block_invoke(uint64_t a
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(STBlockingViewController *)self formattedContactHandle];
-  if ([v4 destinationIdIsPhoneNumber])
+  formattedContactHandle = [(STBlockingViewController *)self formattedContactHandle];
+  if ([formattedContactHandle destinationIdIsPhoneNumber])
   {
-    v5 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:v4];
+    v5 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:formattedContactHandle];
     v6 = objc_alloc(MEMORY[0x277CBDB20]);
     v7 = [v6 initWithLabel:*MEMORY[0x277CBD900] value:v5];
     v14[0] = v7;
@@ -3217,10 +3217,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v4 destinationIdIsEmailAddress])
+  if ([formattedContactHandle destinationIdIsEmailAddress])
   {
     v9 = objc_alloc(MEMORY[0x277CBDB20]);
-    v5 = [v9 initWithLabel:*MEMORY[0x277CBD8E8] value:v4];
+    v5 = [v9 initWithLabel:*MEMORY[0x277CBD8E8] value:formattedContactHandle];
     v13 = v5;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
     [v3 setEmailAddresses:v7];
@@ -3231,7 +3231,7 @@ LABEL_5:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = formattedContactHandle;
     _os_log_impl(&dword_21DD93000, v5, OS_LOG_TYPE_DEFAULT, "Failed to identify handle type for: %{public}@", &v11, 0xCu);
   }
 
@@ -3242,17 +3242,17 @@ LABEL_6:
 
 - (id)_iCloudContainer
 {
-  v3 = [(STBlockingViewController *)self managementState];
+  managementState = [(STBlockingViewController *)self managementState];
   v16 = 0;
-  v4 = [v3 primaryiCloudCardDAVAccountIdentifierWithError:&v16];
+  v4 = [managementState primaryiCloudCardDAVAccountIdentifierWithError:&v16];
   v5 = v16;
 
   if (v4)
   {
     v6 = [MEMORY[0x277CBDAD8] predicateForContainersInAccountWithExternalIdentifier:v4];
-    v7 = [(STBlockingViewController *)self contactStore];
+    contactStore = [(STBlockingViewController *)self contactStore];
     v15 = v5;
-    v8 = [v7 containersMatchingPredicate:v6 error:&v15];
+    v8 = [contactStore containersMatchingPredicate:v6 error:&v15];
     v9 = v15;
 
     if ([v8 count])
@@ -3297,17 +3297,17 @@ LABEL_6:
   return v10;
 }
 
-- (void)_unlockDeviceIfNeededWithCompletionHandler:(id)a3
+- (void)_unlockDeviceIfNeededWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STBlockingViewController *)self lockScreenService];
+  handlerCopy = handler;
+  lockScreenService = [(STBlockingViewController *)self lockScreenService];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler___block_invoke;
   v7[3] = &unk_278338A30;
-  v8 = v4;
-  v6 = v4;
-  [v5 requestPasscodeUnlockUIWithOptions:0 withCompletion:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [lockScreenService requestPasscodeUnlockUIWithOptions:0 withCompletion:v7];
 }
 
 void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler___block_invoke(uint64_t a1, int a2)
@@ -3319,16 +3319,16 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
   }
 }
 
-- (void)_updateAppearanceWithCustomConfiguration:(id)a3 defaultMessageFormatKey:(id)a4 defaultMessageArgument:(id)a5
+- (void)_updateAppearanceWithCustomConfiguration:(id)configuration defaultMessageFormatKey:(id)key defaultMessageArgument:(id)argument
 {
-  v8 = a3;
-  v9 = a5;
-  v132 = a4;
+  configurationCopy = configuration;
+  argumentCopy = argument;
+  keyCopy = key;
   [(STBlockingViewController *)self loadViewIfNeeded];
-  v10 = [(STBlockingViewController *)self view];
-  v11 = [v8 backgroundColorData];
-  v12 = v10;
-  v13 = v11;
+  view = [(STBlockingViewController *)self view];
+  backgroundColorData = [configurationCopy backgroundColorData];
+  v12 = view;
+  v13 = backgroundColorData;
   v14 = 0x277CCA000uLL;
   if (v13)
   {
@@ -3353,14 +3353,14 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
   }
 
   [v12 setBackgroundColor:v16];
-  v19 = [v8 backgroundEffectData];
+  backgroundEffectData = [configurationCopy backgroundEffectData];
   v20 = v12;
-  if (v19)
+  if (backgroundEffectData)
   {
     v21 = MEMORY[0x277CCAAC8];
     v22 = objc_opt_class();
     v136 = 0;
-    v23 = [v21 unarchivedObjectOfClass:v22 fromData:v19 error:&v136];
+    v23 = [v21 unarchivedObjectOfClass:v22 fromData:backgroundEffectData error:&v136];
     v24 = v136;
     if (v23)
     {
@@ -3386,23 +3386,23 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
     [v20 setEffect:v24];
   }
 
-  v27 = [v8 iconData];
-  v127 = v27;
+  iconData = [configurationCopy iconData];
+  v127 = iconData;
   v128 = v20;
-  if (v27)
+  if (iconData)
   {
-    v28 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v27];
+    v28 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:iconData];
     if (v28)
     {
-      v29 = [(STBlockingViewController *)self hourglassView];
-      [v29 setHidden:1];
+      hourglassView = [(STBlockingViewController *)self hourglassView];
+      [hourglassView setHidden:1];
 
-      v30 = [(STBlockingViewController *)self communicationLimitView];
-      [v30 setHidden:1];
+      communicationLimitView = [(STBlockingViewController *)self communicationLimitView];
+      [communicationLimitView setHidden:1];
 
-      v31 = [(STBlockingViewController *)self customImageView];
-      [v31 setImage:v28];
-      [v31 setHidden:0];
+      customImageView = [(STBlockingViewController *)self customImageView];
+      [customImageView setImage:v28];
+      [customImageView setHidden:0];
     }
 
     else
@@ -3424,22 +3424,22 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
 
   v135 = +[STScreenTimeUIBundle bundle];
   v33 = [v135 localizedStringForKey:@"RestrictedTitle" value:&stru_282F1E250 table:0];
-  v34 = [(STBlockingViewController *)self titleLabel];
-  v35 = [v8 title];
-  v36 = [MEMORY[0x277D75348] labelColor];
-  v37 = v34;
-  v38 = v35;
+  titleLabel = [(STBlockingViewController *)self titleLabel];
+  title = [configurationCopy title];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v37 = titleLabel;
+  v38 = title;
   v39 = v33;
-  v40 = v36;
-  v134 = v8;
+  v40 = labelColor;
+  v134 = configurationCopy;
   if (v38)
   {
-    v130 = v9;
-    v41 = [v38 text];
-    v123 = self;
-    if (v41)
+    v130 = argumentCopy;
+    text = [v38 text];
+    selfCopy = self;
+    if (text)
     {
-      v42 = v41;
+      v42 = text;
     }
 
     else
@@ -3449,14 +3449,14 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
 
     [v37 setText:v42];
     v43 = v39;
-    v44 = [v38 colorData];
+    colorData = [v38 colorData];
     v45 = v40;
-    if (v44)
+    if (colorData)
     {
       v46 = MEMORY[0x277CCAAC8];
       v47 = objc_opt_class();
       v136 = 0;
-      v48 = [v46 unarchivedObjectOfClass:v47 fromData:v44 error:&v136];
+      v48 = [v46 unarchivedObjectOfClass:v47 fromData:colorData error:&v136];
       v49 = v136;
       if (!v48)
       {
@@ -3488,10 +3488,10 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
     v52 = v51;
 
     [v37 setTextColor:v52];
-    v8 = v134;
+    configurationCopy = v134;
     v39 = v43;
-    self = v123;
-    v9 = v130;
+    self = selfCopy;
+    argumentCopy = v130;
   }
 
   else
@@ -3501,13 +3501,13 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
   }
 
   v126 = v39;
-  v53 = [v135 localizedStringForKey:v132 value:&stru_282F1E250 table:0];
+  v53 = [v135 localizedStringForKey:keyCopy value:&stru_282F1E250 table:0];
 
   v125 = v53;
-  v54 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v53 validFormatSpecifiers:@"%@" error:0, v9];
+  argumentCopy = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v53 validFormatSpecifiers:@"%@" error:0, argumentCopy];
 
-  v55 = [(STBlockingViewController *)self messageLabel];
-  v56 = [v8 subtitle];
+  messageLabel = [(STBlockingViewController *)self messageLabel];
+  subtitle = [configurationCopy subtitle];
   if (_os_feature_enabled_impl())
   {
     [MEMORY[0x277D75348] secondaryLabelColor];
@@ -3518,17 +3518,17 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
     [MEMORY[0x277D75348] labelColor];
   }
   v57 = ;
-  v58 = v55;
-  v59 = v56;
-  v60 = v54;
+  v58 = messageLabel;
+  v59 = subtitle;
+  v60 = argumentCopy;
   v61 = v57;
   v133 = v60;
   if (v59)
   {
-    v62 = [v59 text];
-    if (v62)
+    text2 = [v59 text];
+    if (text2)
     {
-      v63 = v62;
+      v63 = text2;
     }
 
     else
@@ -3537,14 +3537,14 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
     }
 
     [v58 setText:v63];
-    v64 = [v59 colorData];
+    colorData2 = [v59 colorData];
     v65 = v61;
-    if (v64)
+    if (colorData2)
     {
       v66 = *(v14 + 2760);
       v67 = objc_opt_class();
       v136 = 0;
-      v68 = [v66 unarchivedObjectOfClass:v67 fromData:v64 error:&v136];
+      v68 = [v66 unarchivedObjectOfClass:v67 fromData:colorData2 error:&v136];
       v69 = v136;
       if (!v68)
       {
@@ -3554,7 +3554,7 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
           [STBlockingViewController _updateAppearanceWithCustomConfiguration:defaultMessageFormatKey:defaultMessageArgument:];
         }
 
-        v8 = v134;
+        configurationCopy = v134;
       }
     }
 
@@ -3587,12 +3587,12 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
   }
 
   [(STBlockingViewController *)self _updateButtons];
-  v73 = [(STBlockingViewController *)self customPrimaryButton];
+  customPrimaryButton = [(STBlockingViewController *)self customPrimaryButton];
   v74 = [v135 localizedStringForKey:@"OKButtonTitle" value:&stru_282F1E250 table:0];
-  v75 = [(STBlockingViewController *)self _primaryButtonConfiguration];
-  v76 = [v8 primaryButtonColorData];
-  v77 = [MEMORY[0x277D75348] systemBlueColor];
-  v78 = v76;
+  _primaryButtonConfiguration = [(STBlockingViewController *)self _primaryButtonConfiguration];
+  primaryButtonColorData = [configurationCopy primaryButtonColorData];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v78 = primaryButtonColorData;
   if (v78)
   {
     v79 = *(v14 + 2760);
@@ -3624,31 +3624,31 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
 
   else
   {
-    v84 = v77;
+    v84 = systemBlueColor;
   }
 
   v85 = v84;
 
-  v86 = [v75 background];
-  [v86 setBackgroundColor:v85];
+  background = [_primaryButtonConfiguration background];
+  [background setBackgroundColor:v85];
 
-  v87 = [v8 primaryButtonLabel];
-  v88 = [MEMORY[0x277D75348] whiteColor];
-  v89 = v73;
-  v90 = v87;
+  primaryButtonLabel = [configurationCopy primaryButtonLabel];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v89 = customPrimaryButton;
+  v90 = primaryButtonLabel;
   v91 = v74;
-  v92 = v88;
-  v93 = v75;
+  v92 = whiteColor;
+  v93 = _primaryButtonConfiguration;
   v129 = v89;
   v131 = v91;
   if (v90)
   {
     [v89 setHidden:0];
-    v94 = [v90 text];
-    v95 = v94;
-    if (v94)
+    text3 = [v90 text];
+    v95 = text3;
+    if (text3)
     {
-      v96 = v94;
+      v96 = text3;
     }
 
     else
@@ -3657,14 +3657,14 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
     }
 
     [v93 setTitle:v96];
-    v97 = [v90 colorData];
+    colorData3 = [v90 colorData];
     v98 = v92;
-    if (v97)
+    if (colorData3)
     {
       v99 = *(v14 + 2760);
       v100 = objc_opt_class();
       v136 = 0;
-      v101 = [v99 unarchivedObjectOfClass:v100 fromData:v97 error:&v136];
+      v101 = [v99 unarchivedObjectOfClass:v100 fromData:colorData3 error:&v136];
       v102 = v136;
       if (!v101)
       {
@@ -3675,7 +3675,7 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
         }
       }
 
-      v8 = v134;
+      configurationCopy = v134;
     }
 
     else
@@ -3711,27 +3711,27 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
     [v89 setConfiguration:v93];
   }
 
-  v106 = [(STBlockingViewController *)self customSecondaryButton];
-  v107 = [(STBlockingViewController *)self _secondaryButtonConfiguration];
-  v108 = [v8 secondaryButtonLabel];
-  v109 = [MEMORY[0x277D75348] systemBlueColor];
-  v110 = v106;
-  v111 = v108;
-  v112 = v109;
-  v113 = v107;
+  customSecondaryButton = [(STBlockingViewController *)self customSecondaryButton];
+  _secondaryButtonConfiguration = [(STBlockingViewController *)self _secondaryButtonConfiguration];
+  secondaryButtonLabel = [configurationCopy secondaryButtonLabel];
+  systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+  v110 = customSecondaryButton;
+  v111 = secondaryButtonLabel;
+  v112 = systemBlueColor2;
+  v113 = _secondaryButtonConfiguration;
   if (v111)
   {
     [v110 setHidden:0];
-    v114 = [v111 text];
-    [v113 setTitle:v114];
-    v115 = [v111 colorData];
+    text4 = [v111 text];
+    [v113 setTitle:text4];
+    colorData4 = [v111 colorData];
     v116 = v112;
-    if (v115)
+    if (colorData4)
     {
       v117 = *(v14 + 2760);
       v118 = objc_opt_class();
       v136 = 0;
-      v119 = [v117 unarchivedObjectOfClass:v118 fromData:v115 error:&v136];
+      v119 = [v117 unarchivedObjectOfClass:v118 fromData:colorData4 error:&v136];
       v120 = v136;
       if (!v119)
       {
@@ -3763,7 +3763,7 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
     [v113 setBaseForegroundColor:v122];
     [v110 setConfiguration:v113];
 
-    v8 = v134;
+    configurationCopy = v134;
     v89 = v129;
   }
 
@@ -3785,28 +3785,28 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = +[_TtC12ScreenTimeUI24NaturalBlockingUIStyling primaryButtonConfiguration];
+    filledButtonConfiguration = +[_TtC12ScreenTimeUI24NaturalBlockingUIStyling primaryButtonConfiguration];
   }
 
   else
   {
-    v4 = [(STBlockingViewController *)self customPrimaryButton];
-    v3 = [MEMORY[0x277D75230] filledButtonConfiguration];
-    v5 = [MEMORY[0x277D751C0] clearConfiguration];
-    v6 = [v4 configuration];
-    v7 = [v6 background];
-    [v7 cornerRadius];
-    [v5 setCornerRadius:?];
+    customPrimaryButton = [(STBlockingViewController *)self customPrimaryButton];
+    filledButtonConfiguration = [MEMORY[0x277D75230] filledButtonConfiguration];
+    clearConfiguration = [MEMORY[0x277D751C0] clearConfiguration];
+    configuration = [customPrimaryButton configuration];
+    background = [configuration background];
+    [background cornerRadius];
+    [clearConfiguration setCornerRadius:?];
 
-    v8 = [v4 configuration];
-    v9 = [v8 background];
-    v10 = [v9 backgroundColor];
-    [v5 setBackgroundColor:v10];
+    configuration2 = [customPrimaryButton configuration];
+    background2 = [configuration2 background];
+    backgroundColor = [background2 backgroundColor];
+    [clearConfiguration setBackgroundColor:backgroundColor];
 
-    [v3 setBackground:v5];
+    [filledButtonConfiguration setBackground:clearConfiguration];
   }
 
-  return v3;
+  return filledButtonConfiguration;
 }
 
 - (id)_secondaryButtonConfiguration
@@ -3827,34 +3827,34 @@ void __71__STBlockingViewController__unlockDeviceIfNeededWithCompletionHandler__
 
 - (void)_showDefaultHourglassView
 {
-  v3 = [(STBlockingViewController *)self hourglassView];
-  [v3 setHidden:0];
+  hourglassView = [(STBlockingViewController *)self hourglassView];
+  [hourglassView setHidden:0];
 
-  v4 = [(STBlockingViewController *)self communicationLimitView];
-  [v4 setHidden:1];
+  communicationLimitView = [(STBlockingViewController *)self communicationLimitView];
+  [communicationLimitView setHidden:1];
 
-  v5 = [(STBlockingViewController *)self customImageView];
-  [v5 setHidden:1];
+  customImageView = [(STBlockingViewController *)self customImageView];
+  [customImageView setHidden:1];
 }
 
-- (void)_customButtonPressed:(id)a3
+- (void)_customButtonPressed:(id)pressed
 {
-  v4 = [a3 tag];
-  v5 = [(STBlockingViewController *)self bundleIdentifier];
-  v6 = [(STBlockingViewController *)self categoryIdentifier];
-  v7 = [(STBlockingViewController *)self webDomain];
-  v8 = v7;
-  if (v5)
+  v4 = [pressed tag];
+  bundleIdentifier = [(STBlockingViewController *)self bundleIdentifier];
+  categoryIdentifier = [(STBlockingViewController *)self categoryIdentifier];
+  webDomain = [(STBlockingViewController *)self webDomain];
+  v8 = webDomain;
+  if (bundleIdentifier)
   {
-    v9 = [MEMORY[0x277CF9650] sharedCategories];
+    mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __49__STBlockingViewController__customButtonPressed___block_invoke;
     v18[3] = &unk_278338C48;
     v21 = v4;
-    v19 = v5;
-    v20 = self;
-    [v9 categoryForBundleID:v19 completionHandler:v18];
+    v19 = bundleIdentifier;
+    selfCopy = self;
+    [mEMORY[0x277CF9650] categoryForBundleID:v19 completionHandler:v18];
 
     v10 = v19;
 LABEL_3:
@@ -3862,7 +3862,7 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  if (v6)
+  if (categoryIdentifier)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -3870,21 +3870,21 @@ LABEL_3:
     v17[3] = &unk_278338C20;
     v17[4] = self;
     v17[5] = v4;
-    [MEMORY[0x277D26570] handleAction:v4 categoryIdentifier:v6 completionHandler:v17];
+    [MEMORY[0x277D26570] handleAction:v4 categoryIdentifier:categoryIdentifier completionHandler:v17];
     goto LABEL_6;
   }
 
-  if (v7)
+  if (webDomain)
   {
-    v11 = [MEMORY[0x277CF9650] sharedCategories];
+    mEMORY[0x277CF9650]2 = [MEMORY[0x277CF9650] sharedCategories];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __49__STBlockingViewController__customButtonPressed___block_invoke_2_257;
     v13[3] = &unk_278338C48;
     v16 = v4;
     v14 = v8;
-    v15 = self;
-    [v11 categoryForDomainName:v14 completionHandler:v13];
+    selfCopy2 = self;
+    [mEMORY[0x277CF9650]2 categoryForDomainName:v14 completionHandler:v13];
 
     v10 = v14;
     goto LABEL_3;
@@ -3957,13 +3957,13 @@ void __49__STBlockingViewController__customButtonPressed___block_invoke_2_257(vo
   }
 }
 
-- (void)_handleCustomButtonResponse:(id)a3 forAction:(int64_t)a4 error:(id)a5
+- (void)_handleCustomButtonResponse:(id)response forAction:(int64_t)action error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  responseCopy = response;
+  errorCopy = error;
+  if (responseCopy)
   {
-    v10 = [v8 integerValue];
+    integerValue = [responseCopy integerValue];
   }
 
   else
@@ -3971,17 +3971,17 @@ void __49__STBlockingViewController__customButtonPressed___block_invoke_2_257(vo
     v11 = +[STBlockingUILog log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [STBlockingViewController _handleCustomButtonResponse:v9 forAction:a4 error:v11];
+      [STBlockingViewController _handleCustomButtonResponse:errorCopy forAction:action error:v11];
     }
 
-    v10 = a4 == 1;
+    integerValue = action == 1;
   }
 
-  if (v10 > 1)
+  if (integerValue > 1)
   {
-    if (v10 != 2)
+    if (integerValue != 2)
     {
-      if (v10 == 3)
+      if (integerValue == 3)
       {
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
@@ -4002,33 +4002,33 @@ void __49__STBlockingViewController__customButtonPressed___block_invoke_2_257(vo
     }
 
     [(STBlockingViewController *)self setPolicy:0];
-    v13 = [(STBlockingViewController *)self bundleIdentifier];
-    v16 = [(STBlockingViewController *)self categoryIdentifier];
-    v17 = [(STBlockingViewController *)self webDomain];
-    v18 = v17;
-    if (v13)
+    bundleIdentifier = [(STBlockingViewController *)self bundleIdentifier];
+    categoryIdentifier = [(STBlockingViewController *)self categoryIdentifier];
+    webDomain = [(STBlockingViewController *)self webDomain];
+    v18 = webDomain;
+    if (bundleIdentifier)
     {
-      v19 = [MEMORY[0x277CCABD8] mainQueue];
+      mainQueue = [MEMORY[0x277CCABD8] mainQueue];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __72__STBlockingViewController__handleCustomButtonResponse_forAction_error___block_invoke_258;
       v30[3] = &unk_278338928;
       v30[4] = self;
-      v31 = v13;
-      [v19 addOperationWithBlock:v30];
+      v31 = bundleIdentifier;
+      [mainQueue addOperationWithBlock:v30];
 
       v20 = v31;
     }
 
     else
     {
-      if (!v16)
+      if (!categoryIdentifier)
       {
-        if (v17)
+        if (webDomain)
         {
           v22 = objc_opt_new();
           [v22 setHost:v18];
-          v23 = [MEMORY[0x277CCABD8] mainQueue];
+          mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
           v26[0] = MEMORY[0x277D85DD0];
           v26[1] = 3221225472;
           v26[2] = __72__STBlockingViewController__handleCustomButtonResponse_forAction_error___block_invoke_3;
@@ -4036,7 +4036,7 @@ void __49__STBlockingViewController__customButtonPressed___block_invoke_2_257(vo
           v26[4] = self;
           v27 = v22;
           v24 = v22;
-          [v23 addOperationWithBlock:v26];
+          [mainQueue2 addOperationWithBlock:v26];
         }
 
         else
@@ -4051,14 +4051,14 @@ void __49__STBlockingViewController__customButtonPressed___block_invoke_2_257(vo
         goto LABEL_25;
       }
 
-      v21 = [MEMORY[0x277CCABD8] mainQueue];
+      mainQueue3 = [MEMORY[0x277CCABD8] mainQueue];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __72__STBlockingViewController__handleCustomButtonResponse_forAction_error___block_invoke_2;
       v28[3] = &unk_278338928;
       v28[4] = self;
-      v29 = v16;
-      [v21 addOperationWithBlock:v28];
+      v29 = categoryIdentifier;
+      [mainQueue3 addOperationWithBlock:v28];
 
       v20 = v29;
     }
@@ -4069,9 +4069,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (v10)
+  if (integerValue)
   {
-    if (v10 == 1)
+    if (integerValue == 1)
     {
       v12 = +[STBlockingUILog log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -4080,13 +4080,13 @@ LABEL_26:
         _os_log_impl(&dword_21DD93000, v12, OS_LOG_TYPE_DEFAULT, "Closing current application.", buf, 2u);
       }
 
-      v13 = [MEMORY[0x277CCABD8] mainQueue];
+      bundleIdentifier = [MEMORY[0x277CCABD8] mainQueue];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __72__STBlockingViewController__handleCustomButtonResponse_forAction_error___block_invoke;
       v32[3] = &unk_278338A08;
       v32[4] = self;
-      [v13 addOperationWithBlock:v32];
+      [bundleIdentifier addOperationWithBlock:v32];
       goto LABEL_26;
     }
   }

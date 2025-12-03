@@ -1,19 +1,19 @@
 @interface CIPortraitToothMaskProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
 @end
 
 @implementation CIPortraitToothMaskProcessor
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"inputImageExtent", "CGRectValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"inputImageExtent", "CGRectValue"}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [objc_msgSend(a4 objectForKeyedSubscript:{@"useMetal", "BOOLValue"}];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"teethROI", "CGRectValue"}];
+  v17 = [objc_msgSend(arguments objectForKeyedSubscript:{@"useMetal", "BOOLValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"teethROI", "CGRectValue"}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -26,15 +26,15 @@
   v68 = v21;
   v69 = v19;
   v70 = v23;
-  v26 = [a4 objectForKeyedSubscript:@"faceLandmarks"];
+  v26 = [arguments objectForKeyedSubscript:@"faceLandmarks"];
   v27 = objc_opt_self();
   v28 = sub_3C354(v27, v26);
   v82 = 0u;
   memset(&v83, 0, sizeof(v83));
   v80 = 0u;
   v81 = 0u;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"inputImageTransformN1", "getBytes:length:", &v83, 48}];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"inputImageTransform1N", "getBytes:length:", &v80, 48}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"inputImageTransformN1", "getBytes:length:", &v83, 48}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"inputImageTransform1N", "getBytes:length:", &v80, 48}];
   v84 = v83;
   v100.origin.x = v10;
   v100.origin.y = v12;
@@ -45,13 +45,13 @@
   y = v101.origin.y;
   height = v101.size.height;
   width = v101.size.width;
-  v31 = [a3 objectAtIndexedSubscript:0];
+  v31 = [inputs objectAtIndexedSubscript:0];
   [v31 region];
   v76 = v32;
   v77 = v33;
   v35 = v34;
   v37 = v36;
-  [a5 region];
+  [output region];
   v67 = v38;
   v40 = v39;
   v71 = v41;
@@ -135,22 +135,22 @@
   v63 = v103.size.height;
   if (v17)
   {
-    v64 = -[MetalFaceMask initForDevice:]([MetalFaceMask alloc], "initForDevice:", [objc_msgSend(a5 "metalTexture")]);
-    -[CPUFaceMask clearOutputTexture:CommandBuffer:](v64, "clearOutputTexture:CommandBuffer:", [a5 metalTexture], objc_msgSend(a5, "metalCommandBuffer"));
+    v64 = -[MetalFaceMask initForDevice:]([MetalFaceMask alloc], "initForDevice:", [objc_msgSend(output "metalTexture")]);
+    -[CPUFaceMask clearOutputTexture:CommandBuffer:](v64, "clearOutputTexture:CommandBuffer:", [output metalTexture], objc_msgSend(output, "metalCommandBuffer"));
     v104.origin.x = v60;
     v104.origin.y = v61;
     v104.size.width = v62;
     v104.size.height = v63;
     if (!CGRectIsNull(v104))
     {
-      -[CPUFaceMask findToothMaskUsingInputTexture:InputRegion:OutputMaskTexture:OutputRegion:TeethBounds:SeedPoints:NumberOfSeedPoints:FillValue:CommandBuffer:](v64, "findToothMaskUsingInputTexture:InputRegion:OutputMaskTexture:OutputRegion:TeethBounds:SeedPoints:NumberOfSeedPoints:FillValue:CommandBuffer:", [v31 metalTexture], objc_msgSend(a5, "metalTexture"), &v84, 7, 255, objc_msgSend(a5, "metalCommandBuffer"), v76, v73, v77, v75, v67, v49, v71, v43, *&v60, *&v61, *&v62, *&v63);
+      -[CPUFaceMask findToothMaskUsingInputTexture:InputRegion:OutputMaskTexture:OutputRegion:TeethBounds:SeedPoints:NumberOfSeedPoints:FillValue:CommandBuffer:](v64, "findToothMaskUsingInputTexture:InputRegion:OutputMaskTexture:OutputRegion:TeethBounds:SeedPoints:NumberOfSeedPoints:FillValue:CommandBuffer:", [v31 metalTexture], objc_msgSend(output, "metalTexture"), &v84, 7, 255, objc_msgSend(output, "metalCommandBuffer"), v76, v73, v77, v75, v67, v49, v71, v43, *&v60, *&v61, *&v62, *&v63);
     }
   }
 
   else
   {
     v64 = objc_alloc_init(CPUFaceMask);
-    -[CPUFaceMask clearOutputMask:WithBytesPerRow:OutputRegion:](v64, "clearOutputMask:WithBytesPerRow:OutputRegion:", [a5 baseAddress], objc_msgSend(a5, "bytesPerRow"), v67, v49, v71, v43);
+    -[CPUFaceMask clearOutputMask:WithBytesPerRow:OutputRegion:](v64, "clearOutputMask:WithBytesPerRow:OutputRegion:", [output baseAddress], objc_msgSend(output, "bytesPerRow"), v67, v49, v71, v43);
     v105.origin.x = v60;
     v105.origin.y = v61;
     v105.size.width = v62;
@@ -158,21 +158,21 @@
     if (!CGRectIsNull(v105))
     {
       LOBYTE(v66) = -1;
-      -[CPUFaceMask findToothMaskUsingInputImage:InputBytesPerRow:InputRegion:OutputMask:OutputBytesPerRow:OutputRegion:TeethBounds:SeedPoints:NumberOfSeedPoints:FillValue:](v64, "findToothMaskUsingInputImage:InputBytesPerRow:InputRegion:OutputMask:OutputBytesPerRow:OutputRegion:TeethBounds:SeedPoints:NumberOfSeedPoints:FillValue:", [v31 baseAddress], objc_msgSend(v31, "bytesPerRow"), objc_msgSend(a5, "baseAddress"), objc_msgSend(a5, "bytesPerRow"), &v84, 7, v76, v73, v77, v75, v67, v49, v71, v43, *&v60, *&v61, *&v62, *&v63, v66);
+      -[CPUFaceMask findToothMaskUsingInputImage:InputBytesPerRow:InputRegion:OutputMask:OutputBytesPerRow:OutputRegion:TeethBounds:SeedPoints:NumberOfSeedPoints:FillValue:](v64, "findToothMaskUsingInputImage:InputBytesPerRow:InputRegion:OutputMask:OutputBytesPerRow:OutputRegion:TeethBounds:SeedPoints:NumberOfSeedPoints:FillValue:", [v31 baseAddress], objc_msgSend(v31, "bytesPerRow"), objc_msgSend(output, "baseAddress"), objc_msgSend(output, "bytesPerRow"), &v84, 7, v76, v73, v77, v75, v67, v49, v71, v43, *&v60, *&v61, *&v62, *&v63, v66);
     }
   }
 
   return 1;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  if (a3)
+  if (input)
   {
     sub_4AB2C();
   }
 
-  v5 = [a4 objectForKeyedSubscript:{@"teethROI", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v5 = [arguments objectForKeyedSubscript:{@"teethROI", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   [v5 CGRectValue];
   result.size.height = v9;

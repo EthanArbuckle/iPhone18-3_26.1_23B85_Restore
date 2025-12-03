@@ -4,11 +4,11 @@
 - (AVAirMessageDispatcherClientDelegate)delegate;
 - (BOOL)haveAirPlayService;
 - (NSString)description;
-- (void)airTransport:(id)a3 didReceiveObject:(id)a4;
-- (void)airTransportInputDidClose:(id)a3;
-- (void)airTransportOutputDidOpen:(id)a3;
-- (void)didConnectToBonjourService:(id)a3 channel:(id)a4;
-- (void)sendMessage:(id)a3 completion:(id)a4;
+- (void)airTransport:(id)transport didReceiveObject:(id)object;
+- (void)airTransportInputDidClose:(id)close;
+- (void)airTransportOutputDidOpen:(id)open;
+- (void)didConnectToBonjourService:(id)service channel:(id)channel;
+- (void)sendMessage:(id)message completion:(id)completion;
 @end
 
 @implementation AVAirMessageDispatcher
@@ -20,7 +20,7 @@
   return WeakRetained;
 }
 
-- (void)airTransport:(id)a3 didReceiveObject:(id)a4
+- (void)airTransport:(id)transport didReceiveObject:(id)object
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = _avairlog();
@@ -32,7 +32,7 @@
   }
 }
 
-- (void)airTransportInputDidClose:(id)a3
+- (void)airTransportInputDidClose:(id)close
 {
   v6 = *MEMORY[0x1E69E9840];
   v3 = _avairlog();
@@ -44,7 +44,7 @@
   }
 }
 
-- (void)airTransportOutputDidOpen:(id)a3
+- (void)airTransportOutputDidOpen:(id)open
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = _avairlog();
@@ -55,38 +55,38 @@
     _os_log_impl(&dword_18B49C000, v4, OS_LOG_TYPE_DEFAULT, "%s ", &v7, 0xCu);
   }
 
-  v5 = [(AVAirMessageDispatcher *)self delegate];
-  [v5 didChangeTargetForAirMessageDispatcher:self];
+  delegate = [(AVAirMessageDispatcher *)self delegate];
+  [delegate didChangeTargetForAirMessageDispatcher:self];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"AVAirMessageDispatcherDidChangeTargetNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AVAirMessageDispatcherDidChangeTargetNotification" object:self];
 }
 
-- (void)didConnectToBonjourService:(id)a3 channel:(id)a4
+- (void)didConnectToBonjourService:(id)service channel:(id)channel
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  channelCopy = channel;
+  serviceCopy = service;
   v8 = _avairlog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(AVAirMessageDispatcher *)self delegate];
+    delegate = [(AVAirMessageDispatcher *)self delegate];
     v13 = 136315650;
     v14 = "[AVAirMessageDispatcher didConnectToBonjourService:channel:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = channelCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = delegate;
     _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, "%s channel = %@; delegate = %@", &v13, 0x20u);
   }
 
-  [(AVAirMessageDispatcher *)self setCurrentNetService:v7];
+  [(AVAirMessageDispatcher *)self setCurrentNetService:serviceCopy];
   v10 = [AVDataValueTransformer messageTransformerWithClass:objc_opt_class()];
-  [v6 setStreamDataTransformer:v10];
+  [channelCopy setStreamDataTransformer:v10];
 
-  v11 = [v6 delegate];
+  delegate2 = [channelCopy delegate];
 
-  if (v11)
+  if (delegate2)
   {
     v12 = _avairlog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -97,43 +97,43 @@
     }
   }
 
-  [v6 setDelegate:self];
-  [(AVAirMessageDispatcher *)self setChannel:v6];
-  [v6 open];
+  [channelCopy setDelegate:self];
+  [(AVAirMessageDispatcher *)self setChannel:channelCopy];
+  [channelCopy open];
 }
 
-- (void)sendMessage:(id)a3 completion:(id)a4
+- (void)sendMessage:(id)message completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 copy];
-  v8 = [(AVAirMessageDispatcher *)self channel];
+  messageCopy = message;
+  v7 = [completion copy];
+  channel = [(AVAirMessageDispatcher *)self channel];
 
-  if (v8)
+  if (channel)
   {
-    v9 = [(AVAirMessageDispatcher *)self channel];
-    v10 = [v9 isReadyToSend];
+    channel2 = [(AVAirMessageDispatcher *)self channel];
+    isReadyToSend = [channel2 isReadyToSend];
 
-    if (v10)
+    if (isReadyToSend)
     {
-      v11 = [v6 dictionaryRepresentation];
+      dictionaryRepresentation = [messageCopy dictionaryRepresentation];
       v12 = _avairlog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315394;
         v19 = "[AVAirMessageDispatcher sendMessage:completion:]";
         v20 = 2112;
-        v21 = v11;
+        v21 = dictionaryRepresentation;
         _os_log_impl(&dword_18B49C000, v12, OS_LOG_TYPE_DEFAULT, "%s telling channel to sendObject (%@)", buf, 0x16u);
       }
 
-      v13 = [(AVAirMessageDispatcher *)self channel];
+      channel3 = [(AVAirMessageDispatcher *)self channel];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __49__AVAirMessageDispatcher_sendMessage_completion___block_invoke;
       v16[3] = &unk_1E7207C00;
       v17 = v7;
-      [v13 sendObject:v6 receiveResponse:v16];
+      [channel3 sendObject:messageCopy receiveResponse:v16];
     }
 
     else
@@ -212,8 +212,8 @@ void __49__AVAirMessageDispatcher_sendMessage_completion___block_invoke(uint64_t
 
 - (BOOL)haveAirPlayService
 {
-  v2 = [(AVAirMessageDispatcher *)self channel];
-  v3 = v2 != 0;
+  channel = [(AVAirMessageDispatcher *)self channel];
+  v3 = channel != 0;
 
   return v3;
 }
@@ -239,9 +239,9 @@ void __49__AVAirMessageDispatcher_sendMessage_completion___block_invoke(uint64_t
   v10 = MEMORY[0x1E696AEC0];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [(AVAirMessageDispatcher *)self bonjourServiceClient];
-  v14 = [(AVAirMessageDispatcher *)self channel];
-  v15 = [v10 stringWithFormat:@"<%@ %p: serviceClient=%@, channel=%@ delegate=%@>", v12, self, v13, v14, v9];;
+  bonjourServiceClient = [(AVAirMessageDispatcher *)self bonjourServiceClient];
+  channel = [(AVAirMessageDispatcher *)self channel];
+  v15 = [v10 stringWithFormat:@"<%@ %p: serviceClient=%@, channel=%@ delegate=%@>", v12, self, bonjourServiceClient, channel, v9];;
 
   return v15;
 }
@@ -264,15 +264,15 @@ void __49__AVAirMessageDispatcher_sendMessage_completion___block_invoke(uint64_t
     }
 
     self = v3;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 + (id)shared

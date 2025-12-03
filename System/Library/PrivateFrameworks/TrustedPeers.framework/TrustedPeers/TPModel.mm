@@ -1,100 +1,100 @@
 @interface TPModel
-+ (BOOL)ignoreTDLForModel:(id)a3;
-+ (BOOL)isFullPeer:(id)a3;
-+ (id)pickClock:(id)a3;
-+ (id)preapprovalsFromKeys:(id)a3;
-- (BOOL)anyTrustedPeerDistrustsOtherPeer:(id)a3 error:(id *)a4;
-- (BOOL)canIntroduceCandidate:(id)a3 withSponsor:(id)a4 toEpoch:(unint64_t)a5 underPolicy:(id)a6 disposition:(id)a7;
-- (BOOL)checkIntroductionForCandidate:(id)a3 stableInfo:(id)a4 withSponsorID:(id)a5 error:(id *)a6;
-- (BOOL)considerPolicyFromPeerID:(id)a3 stableInfo:(id)a4 secrets:(id)a5 newestPolicyDoc:(id *)a6 error:(id *)a7;
-- (BOOL)currentStatePossiblyMissingDataWithError:(id *)a3;
-- (BOOL)doAnyTrustedPeersMatchMachineID:(id)a3 error:(id *)a4;
-- (BOOL)doesOctagonContainDistrustedRecoveryKeysWithError:(id *)a3;
-- (BOOL)enumeratePeersUsingBlock:(id)a3 error:(id *)a4;
-- (BOOL)enumerateVouchersUsingBlock:(id)a3 error:(id *)a4;
-- (BOOL)hasPeerWithID:(id)a3 error:(id *)a4;
-- (BOOL)hasPotentiallyTrustedPeerPreapprovingKey:(id)a3 error:(id *)a4;
-- (BOOL)hasPotentiallyTrustedPeerTestingOnlyWithError:(id *)a3;
-- (BOOL)hasPotentiallyTrustedPeerWithSigningKey:(id)a3 error:(id *)a4;
-- (BOOL)isCustodianRecoveryKeyTrusted:(id)a3 error:(id *)a4;
-- (BOOL)isRecoveryKeyEnrolledWithError:(id *)a3;
-- (BOOL)isRecoveryKeyExcluded:(id)a3 error:(id *)a4;
-- (BOOL)validatePeerWithPreApproval:(id)a3 sponsor:(id)a4;
-- (BOOL)validateVoucherForPeer:(id)a3 sponsor:(id)a4;
-- (BOOL)verifyVoucherSignature:(id)a3;
-- (TPModel)initWithDecrypter:(id)a3 dbAdapter:(id)a4;
-- (id)_iterateOverPeersWithBlock:(id)a3 error:(id *)a4;
-- (id)actualPeerWithID:(id)a3 error:(id *)a4;
++ (BOOL)ignoreTDLForModel:(id)model;
++ (BOOL)isFullPeer:(id)peer;
++ (id)pickClock:(id)clock;
++ (id)preapprovalsFromKeys:(id)keys;
+- (BOOL)anyTrustedPeerDistrustsOtherPeer:(id)peer error:(id *)error;
+- (BOOL)canIntroduceCandidate:(id)candidate withSponsor:(id)sponsor toEpoch:(unint64_t)epoch underPolicy:(id)policy disposition:(id)disposition;
+- (BOOL)checkIntroductionForCandidate:(id)candidate stableInfo:(id)info withSponsorID:(id)d error:(id *)error;
+- (BOOL)considerPolicyFromPeerID:(id)d stableInfo:(id)info secrets:(id)secrets newestPolicyDoc:(id *)doc error:(id *)error;
+- (BOOL)currentStatePossiblyMissingDataWithError:(id *)error;
+- (BOOL)doAnyTrustedPeersMatchMachineID:(id)d error:(id *)error;
+- (BOOL)doesOctagonContainDistrustedRecoveryKeysWithError:(id *)error;
+- (BOOL)enumeratePeersUsingBlock:(id)block error:(id *)error;
+- (BOOL)enumerateVouchersUsingBlock:(id)block error:(id *)error;
+- (BOOL)hasPeerWithID:(id)d error:(id *)error;
+- (BOOL)hasPotentiallyTrustedPeerPreapprovingKey:(id)key error:(id *)error;
+- (BOOL)hasPotentiallyTrustedPeerTestingOnlyWithError:(id *)error;
+- (BOOL)hasPotentiallyTrustedPeerWithSigningKey:(id)key error:(id *)error;
+- (BOOL)isCustodianRecoveryKeyTrusted:(id)trusted error:(id *)error;
+- (BOOL)isRecoveryKeyEnrolledWithError:(id *)error;
+- (BOOL)isRecoveryKeyExcluded:(id)excluded error:(id *)error;
+- (BOOL)validatePeerWithPreApproval:(id)approval sponsor:(id)sponsor;
+- (BOOL)validateVoucherForPeer:(id)peer sponsor:(id)sponsor;
+- (BOOL)verifyVoucherSignature:(id)signature;
+- (TPModel)initWithDecrypter:(id)decrypter dbAdapter:(id)adapter;
+- (id)_iterateOverPeersWithBlock:(id)block error:(id *)error;
+- (id)actualPeerWithID:(id)d error:(id *)error;
 - (id)allCustodianRecoveryKeyPeerIDs;
 - (id)allCustodianRecoveryKeys;
-- (id)allMachineIDsWithError:(id *)a3;
+- (id)allMachineIDsWithError:(id *)error;
 - (id)allPeerIDs;
-- (id)allPolicyVersionsWithError:(id *)a3;
-- (id)allRegisteredPolicyVersionsWithError:(id *)a3;
-- (id)allTrustedPeersWithCurrentRecoveryKeyWithError:(id *)a3;
-- (id)bestRecoveryKeyForStableInfo:(id)a3 vouchers:(id)a4 error:(id *)a5;
-- (id)bestWalrusAcrossTrustedPeersWithError:(id *)a3;
-- (id)bestWalrusForStableInfo:(id)a3 walrusStableChanges:(id)a4 error:(id *)a5;
-- (id)bestWebAccessAcrossTrustedPeersWithError:(id *)a3;
-- (id)bestWebAccessForStableInfo:(id)a3 webAccessStableChanges:(id)a4 error:(id *)a5;
-- (id)calculateDynamicInfoForPeerWithID:(id)a3 addingPeerIDs:(id)a4 removingPeerIDs:(id)a5 preapprovedKeys:(id)a6 signingKeyPair:(id)a7 currentMachineIDs:(id)a8 error:(id *)a9;
-- (id)calculateDynamicInfoFromModel:(id)a3 peer:(id)a4 peerPermanentInfo:(id)a5 peerStableInfo:(id)a6 startingDynamicInfo:(id)a7 addingPeerIDs:(id)a8 removingPeerIDs:(id)a9 preapprovedKeys:(id)a10 signingKeyPair:(id)a11 currentMachineIDs:(id)a12 sponsorPeerID:(id)a13 error:(id *)a14;
-- (id)considerCandidateID:(id)a3 withSponsorID:(id)a4 sponsorPermanentInfo:(id)a5 toExpandIncludedPeerIDs:(id)a6 andExcludedPeerIDs:(id)a7 dispositions:(id)a8 currentMachineIDs:(id)a9 forEpoch:(unint64_t)a10;
-- (id)considerPreapprovalsSponsoredByPeer:(id)a3 toRecursivelyExpandIncludedPeerIDs:(id)a4 andExcludedPeerIDs:(id)a5 dispositions:(id)a6 currentMachineIDs:(id)a7 forEpoch:(unint64_t)a8;
-- (id)copyPeerWithNewDynamicInfo:(id)a3 forPeerWithID:(id)a4 error:(id *)a5;
-- (id)copyPeerWithNewStableInfo:(id)a3 forPeerWithID:(id)a4 error:(id *)a5;
-- (id)createDynamicInfoWithIncludedPeerIDs:(id)a3 excludedPeerIDs:(id)a4 dispositions:(id)a5 preapprovals:(id)a6 signingKeyPair:(id)a7 error:(id *)a8;
-- (id)createStableInfoWithFrozenPolicyVersion:(id)a3 flexiblePolicyVersion:(id)a4 policySecrets:(id)a5 syncUserControllableViews:(int)a6 secureElementIdentity:(id)a7 walrusSetting:(id)a8 webAccess:(id)a9 deviceName:(id)a10 serialNumber:(id)a11 osVersion:(id)a12 signingKeyPair:(id)a13 recoverySigningPubKey:(id)a14 recoveryEncryptionPubKey:(id)a15 isInheritedAccount:(BOOL)a16 error:(id *)a17;
-- (id)createVoucherForCandidate:(id)a3 stableInfo:(id)a4 withSponsorID:(id)a5 reason:(unint64_t)a6 signingKeyPair:(id)a7 error:(id *)a8;
-- (id)custodianPeerWithID:(id)a3;
-- (id)dynamicInfoForJoiningPeerID:(id)a3 peerPermanentInfo:(id)a4 peerStableInfo:(id)a5 sponsorID:(id)a6 preapprovedKeys:(id)a7 signingKeyPair:(id)a8 currentMachineIDs:(id)a9 error:(id *)a10;
-- (id)filterPeerList:(id)a3 byMachineIDs:(id)a4 sponsorPeerID:(id)a5 dispositions:(id)a6;
-- (id)filterPreapprovals:(id)a3 forExistingPeers:(id)a4;
-- (id)findCustodianRecoveryKeyWithUUID:(id)a3;
-- (id)getDynamicInfoForPeerWithID:(id)a3 error:(id *)a4;
-- (id)getPeerIDsTrustedByPeerWithDynamicInfo:(id)a3 toAccessView:(id)a4 error:(id *)a5;
-- (id)getPeerIDsTrustedByPeerWithID:(id)a3 toAccessView:(id)a4 error:(id *)a5;
-- (id)getStableInfoForPeerWithID:(id)a3 error:(id *)a4;
-- (id)getViewsForCRK:(id)a3 donorPermanentInfo:(id)a4 donorStableInfo:(id)a5 error:(id *)a6;
-- (id)getViewsForPeer:(id)a3 stableInfo:(id)a4 error:(id *)a5;
-- (id)peerCountsByMachineIDWithError:(id *)a3;
-- (id)peerIDThatTrustsCustodianRecoveryKeys:(id)a3 canIntroducePeer:(id)a4 stableInfo:(id)a5 error:(id *)a6;
-- (id)peerIDThatTrustsRecoveryKeys:(id)a3 canIntroducePeer:(id)a4 stableInfo:(id)a5 error:(id *)a6;
-- (id)peerWithID:(id)a3 error:(id *)a4;
-- (id)peersWithMachineID:(id)a3 error:(id *)a4;
-- (id)policyForPeerIDs:(id)a3 candidatePeerID:(id)a4 candidateStableInfo:(id)a5 error:(id *)a6;
-- (id)policyWithVersion:(unint64_t)a3 error:(id *)a4;
-- (id)possibleSponsorsForCustodianRecoveryKey:(id)a3 block:(id)a4 error:(id *)a5;
-- (id)possibleSponsorsForRecoveryKey:(id)a3 block:(id)a4 error:(id *)a5;
-- (id)recoveryKeyPeerID:(id)a3;
-- (id)recursivelyExpandIncludedPeerIDs:(id)a3 andExcludedPeerIDs:(id)a4 dispositions:(id)a5 withPeersTrustedBySponsorID:(id)a6 currentMachineIDs:(id)a7 forEpoch:(unint64_t)a8;
-- (id)trustedPeers:(id *)a3;
-- (id)untrustedPeerIDsWithError:(id *)a3;
-- (id)vectorClockWithError:(id *)a3;
-- (id)viablePeerCountsByModelIDWithError:(id *)a3;
-- (int)userViewSyncabilityConsensusAmongTrustedPeers:(id)a3 error:(id *)a4;
+- (id)allPolicyVersionsWithError:(id *)error;
+- (id)allRegisteredPolicyVersionsWithError:(id *)error;
+- (id)allTrustedPeersWithCurrentRecoveryKeyWithError:(id *)error;
+- (id)bestRecoveryKeyForStableInfo:(id)info vouchers:(id)vouchers error:(id *)error;
+- (id)bestWalrusAcrossTrustedPeersWithError:(id *)error;
+- (id)bestWalrusForStableInfo:(id)info walrusStableChanges:(id)changes error:(id *)error;
+- (id)bestWebAccessAcrossTrustedPeersWithError:(id *)error;
+- (id)bestWebAccessForStableInfo:(id)info webAccessStableChanges:(id)changes error:(id *)error;
+- (id)calculateDynamicInfoForPeerWithID:(id)d addingPeerIDs:(id)ds removingPeerIDs:(id)iDs preapprovedKeys:(id)keys signingKeyPair:(id)pair currentMachineIDs:(id)machineIDs error:(id *)error;
+- (id)calculateDynamicInfoFromModel:(id)model peer:(id)peer peerPermanentInfo:(id)info peerStableInfo:(id)stableInfo startingDynamicInfo:(id)dynamicInfo addingPeerIDs:(id)ds removingPeerIDs:(id)iDs preapprovedKeys:(id)self0 signingKeyPair:(id)self1 currentMachineIDs:(id)self2 sponsorPeerID:(id)self3 error:(id *)self4;
+- (id)considerCandidateID:(id)d withSponsorID:(id)iD sponsorPermanentInfo:(id)info toExpandIncludedPeerIDs:(id)ds andExcludedPeerIDs:(id)iDs dispositions:(id)dispositions currentMachineIDs:(id)machineIDs forEpoch:(unint64_t)self0;
+- (id)considerPreapprovalsSponsoredByPeer:(id)peer toRecursivelyExpandIncludedPeerIDs:(id)ds andExcludedPeerIDs:(id)iDs dispositions:(id)dispositions currentMachineIDs:(id)machineIDs forEpoch:(unint64_t)epoch;
+- (id)copyPeerWithNewDynamicInfo:(id)info forPeerWithID:(id)d error:(id *)error;
+- (id)copyPeerWithNewStableInfo:(id)info forPeerWithID:(id)d error:(id *)error;
+- (id)createDynamicInfoWithIncludedPeerIDs:(id)ds excludedPeerIDs:(id)iDs dispositions:(id)dispositions preapprovals:(id)preapprovals signingKeyPair:(id)pair error:(id *)error;
+- (id)createStableInfoWithFrozenPolicyVersion:(id)version flexiblePolicyVersion:(id)policyVersion policySecrets:(id)secrets syncUserControllableViews:(int)views secureElementIdentity:(id)identity walrusSetting:(id)setting webAccess:(id)access deviceName:(id)self0 serialNumber:(id)self1 osVersion:(id)self2 signingKeyPair:(id)self3 recoverySigningPubKey:(id)self4 recoveryEncryptionPubKey:(id)self5 isInheritedAccount:(BOOL)self6 error:(id *)self7;
+- (id)createVoucherForCandidate:(id)candidate stableInfo:(id)info withSponsorID:(id)d reason:(unint64_t)reason signingKeyPair:(id)pair error:(id *)error;
+- (id)custodianPeerWithID:(id)d;
+- (id)dynamicInfoForJoiningPeerID:(id)d peerPermanentInfo:(id)info peerStableInfo:(id)stableInfo sponsorID:(id)iD preapprovedKeys:(id)keys signingKeyPair:(id)pair currentMachineIDs:(id)ds error:(id *)self0;
+- (id)filterPeerList:(id)list byMachineIDs:(id)ds sponsorPeerID:(id)d dispositions:(id)dispositions;
+- (id)filterPreapprovals:(id)preapprovals forExistingPeers:(id)peers;
+- (id)findCustodianRecoveryKeyWithUUID:(id)d;
+- (id)getDynamicInfoForPeerWithID:(id)d error:(id *)error;
+- (id)getPeerIDsTrustedByPeerWithDynamicInfo:(id)info toAccessView:(id)view error:(id *)error;
+- (id)getPeerIDsTrustedByPeerWithID:(id)d toAccessView:(id)view error:(id *)error;
+- (id)getStableInfoForPeerWithID:(id)d error:(id *)error;
+- (id)getViewsForCRK:(id)k donorPermanentInfo:(id)info donorStableInfo:(id)stableInfo error:(id *)error;
+- (id)getViewsForPeer:(id)peer stableInfo:(id)info error:(id *)error;
+- (id)peerCountsByMachineIDWithError:(id *)error;
+- (id)peerIDThatTrustsCustodianRecoveryKeys:(id)keys canIntroducePeer:(id)peer stableInfo:(id)info error:(id *)error;
+- (id)peerIDThatTrustsRecoveryKeys:(id)keys canIntroducePeer:(id)peer stableInfo:(id)info error:(id *)error;
+- (id)peerWithID:(id)d error:(id *)error;
+- (id)peersWithMachineID:(id)d error:(id *)error;
+- (id)policyForPeerIDs:(id)ds candidatePeerID:(id)d candidateStableInfo:(id)info error:(id *)error;
+- (id)policyWithVersion:(unint64_t)version error:(id *)error;
+- (id)possibleSponsorsForCustodianRecoveryKey:(id)key block:(id)block error:(id *)error;
+- (id)possibleSponsorsForRecoveryKey:(id)key block:(id)block error:(id *)error;
+- (id)recoveryKeyPeerID:(id)d;
+- (id)recursivelyExpandIncludedPeerIDs:(id)ds andExcludedPeerIDs:(id)iDs dispositions:(id)dispositions withPeersTrustedBySponsorID:(id)d currentMachineIDs:(id)machineIDs forEpoch:(unint64_t)epoch;
+- (id)trustedPeers:(id *)peers;
+- (id)untrustedPeerIDsWithError:(id *)error;
+- (id)vectorClockWithError:(id *)error;
+- (id)viablePeerCountsByModelIDWithError:(id *)error;
+- (int)userViewSyncabilityConsensusAmongTrustedPeers:(id)peers error:(id *)error;
 - (unint64_t)countOfDistrustedRecoveryKeys;
 - (unint64_t)countTotalNumberOfRecoveryKeys;
 - (unint64_t)countTotalTrustedCustodians;
-- (unint64_t)latestEpochAmongPeerIDs:(id)a3 error:(id *)a4;
-- (unint64_t)maxClockWithError:(id *)a3;
-- (unint64_t)peerCountWithError:(id *)a3;
-- (unint64_t)statusOfPeerWithID:(id)a3 error:(id *)a4;
-- (unint64_t)trustedFullPeerCountWithError:(id *)a3;
-- (unint64_t)trustedPeerCountWithError:(id *)a3;
-- (unint64_t)voucherCountWithError:(id *)a3;
-- (void)considerVouchersSponsoredByPeerID:(id)a3 sponsorPermanentInfo:(id)a4 toRecursivelyExpandIncludedPeerIDs:(id)a5 andExcludedPeerIDs:(id)a6 dispositions:(id)a7 currentMachineIDs:(id)a8 forEpoch:(unint64_t)a9;
-- (void)registerCustodianRecoveryKey:(id)a3;
-- (void)removeCustodianRecoveryKey:(id)a3;
+- (unint64_t)latestEpochAmongPeerIDs:(id)ds error:(id *)error;
+- (unint64_t)maxClockWithError:(id *)error;
+- (unint64_t)peerCountWithError:(id *)error;
+- (unint64_t)statusOfPeerWithID:(id)d error:(id *)error;
+- (unint64_t)trustedFullPeerCountWithError:(id *)error;
+- (unint64_t)trustedPeerCountWithError:(id *)error;
+- (unint64_t)voucherCountWithError:(id *)error;
+- (void)considerVouchersSponsoredByPeerID:(id)d sponsorPermanentInfo:(id)info toRecursivelyExpandIncludedPeerIDs:(id)ds andExcludedPeerIDs:(id)iDs dispositions:(id)dispositions currentMachineIDs:(id)machineIDs forEpoch:(unint64_t)epoch;
+- (void)registerCustodianRecoveryKey:(id)key;
+- (void)removeCustodianRecoveryKey:(id)key;
 - (void)removeRecoveryKey;
-- (void)setRecoveryKeys:(id)a3;
+- (void)setRecoveryKeys:(id)keys;
 @end
 
 @implementation TPModel
 
-- (BOOL)currentStatePossiblyMissingDataWithError:(id *)a3
+- (BOOL)currentStatePossiblyMissingDataWithError:(id *)error
 {
-  v21 = a3;
+  errorCopy = error;
   v47 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
   v36 = 0;
@@ -110,9 +110,9 @@
   v34[4] = __Block_byref_object_dispose_;
   v35 = [MEMORY[0x277CBEB58] set];
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(TPModel *)self custodianRecoveryKeys];
-  v6 = [v5 allKeys];
-  v7 = [v4 setWithArray:v6];
+  custodianRecoveryKeys = [(TPModel *)self custodianRecoveryKeys];
+  allKeys = [custodianRecoveryKeys allKeys];
+  v7 = [v4 setWithArray:allKeys];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -152,7 +152,7 @@
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
-          v15 = [v37[5] objectForKeyedSubscript:{v14, v21, v22, context}];
+          v15 = [v37[5] objectForKeyedSubscript:{v14, errorCopy, v22, context}];
           v16 = TPModelLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
@@ -199,10 +199,10 @@ LABEL_18:
   _Block_object_dispose(&v36, 8);
 
   objc_autoreleasePoolPop(context);
-  if (v9 && v21 && v24)
+  if (v9 && errorCopy && v24)
   {
     v18 = v24;
-    *v21 = v24;
+    *errorCopy = v24;
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -258,24 +258,24 @@ void __52__TPModel_currentStatePossiblyMissingDataWithError___block_invoke(void 
 
 - (id)allCustodianRecoveryKeyPeerIDs
 {
-  v2 = [(TPModel *)self custodianRecoveryKeys];
-  v3 = [v2 allKeys];
+  custodianRecoveryKeys = [(TPModel *)self custodianRecoveryKeys];
+  allKeys = [custodianRecoveryKeys allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)allCustodianRecoveryKeys
 {
-  v2 = [(TPModel *)self custodianRecoveryKeys];
-  v3 = [v2 allValues];
+  custodianRecoveryKeys = [(TPModel *)self custodianRecoveryKeys];
+  allValues = [custodianRecoveryKeys allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)findCustodianRecoveryKeyWithUUID:(id)a3
+- (id)findCustodianRecoveryKeyWithUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -296,15 +296,15 @@ void __52__TPModel_currentStatePossiblyMissingDataWithError___block_invoke(void 
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [(TPModel *)self custodianRecoveryKeys];
-        v11 = [v10 objectForKeyedSubscript:v9];
-        v12 = [v11 uuid];
-        v13 = [v12 isEqual:v4];
+        custodianRecoveryKeys = [(TPModel *)self custodianRecoveryKeys];
+        v11 = [custodianRecoveryKeys objectForKeyedSubscript:v9];
+        uuid = [v11 uuid];
+        v13 = [uuid isEqual:dCopy];
 
         if (v13)
         {
-          v15 = [(TPModel *)self custodianRecoveryKeys];
-          v14 = [v15 objectForKeyedSubscript:v9];
+          custodianRecoveryKeys2 = [(TPModel *)self custodianRecoveryKeys];
+          v14 = [custodianRecoveryKeys2 objectForKeyedSubscript:v9];
 
           goto LABEL_11;
         }
@@ -328,62 +328,62 @@ LABEL_11:
   return v14;
 }
 
-- (void)removeCustodianRecoveryKey:(id)a3
+- (void)removeCustodianRecoveryKey:(id)key
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = TPModelLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = keyCopy;
     _os_log_impl(&dword_26F78B000, v4, OS_LOG_TYPE_DEFAULT, "removeCustodianRecoveryKey: %{public}@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerCustodianRecoveryKey:(id)a3
+- (void)registerCustodianRecoveryKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TPModel.m" lineNumber:2847 description:@"custodianRecoveryKey"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TPModel.m" lineNumber:2847 description:@"custodianRecoveryKey"];
   }
 
-  v6 = [(TPModel *)self custodianRecoveryKeys];
-  v7 = [v5 peerID];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  custodianRecoveryKeys = [(TPModel *)self custodianRecoveryKeys];
+  peerID = [keyCopy peerID];
+  v8 = [custodianRecoveryKeys objectForKeyedSubscript:peerID];
 
   if (!v8)
   {
-    v9 = [(TPModel *)self custodianRecoveryKeys];
-    v10 = [v5 peerID];
-    [v9 setObject:v5 forKeyedSubscript:v10];
+    custodianRecoveryKeys2 = [(TPModel *)self custodianRecoveryKeys];
+    peerID2 = [keyCopy peerID];
+    [custodianRecoveryKeys2 setObject:keyCopy forKeyedSubscript:peerID2];
   }
 
   v11 = TPModelLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v5 peerID];
-    v13 = [(TPModel *)self custodianRecoveryKeys];
+    peerID3 = [keyCopy peerID];
+    custodianRecoveryKeys3 = [(TPModel *)self custodianRecoveryKeys];
     v16 = 138543618;
-    v17 = v12;
+    v17 = peerID3;
     v18 = 2048;
-    v19 = [v13 count];
+    v19 = [custodianRecoveryKeys3 count];
     _os_log_impl(&dword_26F78B000, v11, OS_LOG_TYPE_DEFAULT, "registerCustodianRecoveryKey %{public}@ -- size now %lu", &v16, 0x16u);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isCustodianRecoveryKeyTrusted:(id)a3 error:(id *)a4
+- (BOOL)isCustodianRecoveryKeyTrusted:(id)trusted error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
   v12 = 0;
-  v5 = [(TPModel *)self possibleSponsorsForCustodianRecoveryKey:a3 block:&__block_literal_global_156 error:&v12];
+  v5 = [(TPModel *)self possibleSponsorsForCustodianRecoveryKey:trusted block:&__block_literal_global_156 error:&v12];
   v6 = v12;
   if (v6)
   {
@@ -395,11 +395,11 @@ LABEL_11:
       _os_log_impl(&dword_26F78B000, v7, OS_LOG_TYPE_DEFAULT, "Error determining possible sponsors: %{public}@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v8 = v6;
       v9 = 0;
-      *a4 = v6;
+      *error = v6;
     }
 
     else
@@ -417,44 +417,44 @@ LABEL_11:
   return v9;
 }
 
-- (id)peerIDThatTrustsCustodianRecoveryKeys:(id)a3 canIntroducePeer:(id)a4 stableInfo:(id)a5 error:(id *)a6
+- (id)peerIDThatTrustsCustodianRecoveryKeys:(id)keys canIntroducePeer:(id)peer stableInfo:(id)info error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  peerCopy = peer;
+  infoCopy = info;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __83__TPModel_peerIDThatTrustsCustodianRecoveryKeys_canIntroducePeer_stableInfo_error___block_invoke;
   v21[3] = &unk_279DEDB90;
   v21[4] = self;
-  v12 = v10;
+  v12 = peerCopy;
   v22 = v12;
-  v13 = v11;
+  v13 = infoCopy;
   v23 = v13;
   v20 = 0;
-  v14 = [(TPModel *)self possibleSponsorsForCustodianRecoveryKey:a3 block:v21 error:&v20];
+  v14 = [(TPModel *)self possibleSponsorsForCustodianRecoveryKey:keys block:v21 error:&v20];
   v15 = v20;
   v16 = v15;
   if (v15)
   {
-    if (a6)
+    if (error)
     {
       v17 = v15;
-      v18 = 0;
-      *a6 = v16;
+      anyObject = 0;
+      *error = v16;
     }
 
     else
     {
-      v18 = 0;
+      anyObject = 0;
     }
   }
 
   else
   {
-    v18 = [v14 anyObject];
+    anyObject = [v14 anyObject];
   }
 
-  return v18;
+  return anyObject;
 }
 
 uint64_t __83__TPModel_peerIDThatTrustsCustodianRecoveryKeys_canIntroducePeer_stableInfo_error___block_invoke(void *a1, void *a2)
@@ -487,11 +487,11 @@ uint64_t __83__TPModel_peerIDThatTrustsCustodianRecoveryKeys_canIntroducePeer_st
   return v7;
 }
 
-- (id)possibleSponsorsForCustodianRecoveryKey:(id)a3 block:(id)a4 error:(id *)a5
+- (id)possibleSponsorsForCustodianRecoveryKey:(id)key block:(id)block error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  keyCopy = key;
+  blockCopy = block;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -502,12 +502,12 @@ uint64_t __83__TPModel_peerIDThatTrustsCustodianRecoveryKeys_canIntroducePeer_st
   v12 = TPModelLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v9 uuid];
-    v13 = [v9 peerID];
+    uuid = [keyCopy uuid];
+    peerID = [keyCopy peerID];
     *buf = 138543618;
-    *&buf[4] = v5;
+    *&buf[4] = uuid;
     *&buf[12] = 2114;
-    *&buf[14] = v13;
+    *&buf[14] = peerID;
     _os_log_impl(&dword_26F78B000, v12, OS_LOG_TYPE_DEFAULT, "possibleSponsorsForCustodianRecoveryKey: %{public}@/%{public}@", buf, 0x16u);
   }
 
@@ -521,10 +521,10 @@ uint64_t __83__TPModel_peerIDThatTrustsCustodianRecoveryKeys_canIntroducePeer_st
   v30[1] = 3221225472;
   v30[2] = __63__TPModel_possibleSponsorsForCustodianRecoveryKey_block_error___block_invoke;
   v30[3] = &unk_279DEDBD8;
-  v14 = v9;
+  v14 = keyCopy;
   v31 = v14;
   v33 = buf;
-  v15 = v10;
+  v15 = blockCopy;
   v32 = v15;
   v34 = &v35;
   v29 = 0;
@@ -538,18 +538,18 @@ uint64_t __83__TPModel_peerIDThatTrustsCustodianRecoveryKeys_canIntroducePeer_st
       v18 = TPModelLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v14 uuid];
-        v20 = [v14 peerID];
+        uuid2 = [v14 uuid];
+        peerID2 = [v14 peerID];
         *v41 = 138543618;
-        v42 = v19;
+        v42 = uuid2;
         v43 = 2114;
-        v44 = v20;
+        v44 = peerID2;
         _os_log_impl(&dword_26F78B000, v18, OS_LOG_TYPE_DEFAULT, "possibleSponsorsForCustodianRecoveryKey: CRK %{public}@/%{public}@ is not trusted", v41, 0x16u);
       }
 
 LABEL_7:
 
-      v5 = 0;
+      uuid = 0;
       goto LABEL_12;
     }
 
@@ -570,19 +570,19 @@ LABEL_7:
 
     if (v22)
     {
-      v23 = [v14 uuid];
-      v24 = [v14 peerID];
+      uuid3 = [v14 uuid];
+      peerID3 = [v14 peerID];
       v25 = v36[5];
       *v41 = 138543874;
-      v42 = v23;
+      v42 = uuid3;
       v43 = 2114;
-      v44 = v24;
+      v44 = peerID3;
       v45 = 2114;
       v46 = v25;
       _os_log_impl(&dword_26F78B000, v18, OS_LOG_TYPE_DEFAULT, "possibleSponsorsForCustodianRecoveryKey: CRK %{public}@/%{public}@ returning %{public}@", v41, 0x20u);
     }
 
-    v5 = v36[5];
+    uuid = v36[5];
   }
 
 LABEL_12:
@@ -591,16 +591,16 @@ LABEL_12:
   objc_autoreleasePoolPop(v11);
   if (v17)
   {
-    if (a5)
+    if (error)
     {
       v26 = v17;
-      v5 = 0;
-      *a5 = v17;
+      uuid = 0;
+      *error = v17;
     }
 
     else
     {
-      v5 = 0;
+      uuid = 0;
     }
   }
 
@@ -608,7 +608,7 @@ LABEL_12:
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return uuid;
 }
 
 void __63__TPModel_possibleSponsorsForCustodianRecoveryKey_block_error___block_invoke(uint64_t a1, void *a2)
@@ -649,17 +649,17 @@ LABEL_3:
 LABEL_8:
 }
 
-- (void)setRecoveryKeys:(id)a3
+- (void)setRecoveryKeys:(id)keys
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPModel *)self recoverySigningPubKey];
-  v6 = [v4 signingKeyData];
-  if ([v5 isEqualToData:v6])
+  keysCopy = keys;
+  recoverySigningPubKey = [(TPModel *)self recoverySigningPubKey];
+  signingKeyData = [keysCopy signingKeyData];
+  if ([recoverySigningPubKey isEqualToData:signingKeyData])
   {
-    v7 = [(TPModel *)self recoveryEncryptionPubKey];
-    v8 = [v4 encryptionKeyData];
-    v9 = [v7 isEqualToData:v8];
+    recoveryEncryptionPubKey = [(TPModel *)self recoveryEncryptionPubKey];
+    encryptionKeyData = [keysCopy encryptionKeyData];
+    v9 = [recoveryEncryptionPubKey isEqualToData:encryptionKeyData];
 
     if (v9)
     {
@@ -674,27 +674,27 @@ LABEL_8:
   v10 = TPModelLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(TPModel *)self recoverySigningPubKey];
-    v12 = [(TPModel *)self recoveryEncryptionPubKey];
-    v13 = [v4 signingKeyData];
-    v14 = [v4 encryptionKeyData];
+    recoverySigningPubKey2 = [(TPModel *)self recoverySigningPubKey];
+    recoveryEncryptionPubKey2 = [(TPModel *)self recoveryEncryptionPubKey];
+    signingKeyData2 = [keysCopy signingKeyData];
+    encryptionKeyData2 = [keysCopy encryptionKeyData];
     v18 = 138544130;
-    v19 = v11;
+    v19 = recoverySigningPubKey2;
     v20 = 2114;
-    v21 = v12;
+    v21 = recoveryEncryptionPubKey2;
     v22 = 2114;
-    v23 = v13;
+    v23 = signingKeyData2;
     v24 = 2114;
-    v25 = v14;
+    v25 = encryptionKeyData2;
     _os_log_impl(&dword_26F78B000, v10, OS_LOG_TYPE_DEFAULT, "Recovery Keys changed! currently set signingKey: %{public}@, currently set encryptionKey: %{public}@, new signingKey: %{public}@, new encryption Key: %{public}@", &v18, 0x2Au);
   }
 
 LABEL_8:
-  v15 = [v4 encryptionKeyData];
-  [(TPModel *)self setRecoveryEncryptionPubKey:v15];
+  encryptionKeyData3 = [keysCopy encryptionKeyData];
+  [(TPModel *)self setRecoveryEncryptionPubKey:encryptionKeyData3];
 
-  v16 = [v4 signingKeyData];
-  [(TPModel *)self setRecoverySigningPubKey:v16];
+  signingKeyData3 = [keysCopy signingKeyData];
+  [(TPModel *)self setRecoverySigningPubKey:signingKeyData3];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -706,16 +706,16 @@ LABEL_8:
   [(TPModel *)self setRecoveryEncryptionPubKey:0];
 }
 
-- (BOOL)isRecoveryKeyEnrolledWithError:(id *)a3
+- (BOOL)isRecoveryKeyEnrolledWithError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [(TPModel *)self recoverySigningPubKey];
-  if (v5 && (v6 = v5, [(TPModel *)self recoveryEncryptionPubKey], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  recoverySigningPubKey = [(TPModel *)self recoverySigningPubKey];
+  if (recoverySigningPubKey && (v6 = recoverySigningPubKey, [(TPModel *)self recoveryEncryptionPubKey], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     v8 = [TPRecoveryKeyPair alloc];
-    v9 = [(TPModel *)self recoverySigningPubKey];
-    v10 = [(TPModel *)self recoveryEncryptionPubKey];
-    v11 = [(TPRecoveryKeyPair *)v8 initWithSigningKeyData:v9 encryptionKeyData:v10];
+    recoverySigningPubKey2 = [(TPModel *)self recoverySigningPubKey];
+    recoveryEncryptionPubKey = [(TPModel *)self recoveryEncryptionPubKey];
+    v11 = [(TPRecoveryKeyPair *)v8 initWithSigningKeyData:recoverySigningPubKey2 encryptionKeyData:recoveryEncryptionPubKey];
 
     v19 = 0;
     v12 = [(TPModel *)self possibleSponsorsForRecoveryKey:v11 block:&__block_literal_global_154 error:&v19];
@@ -730,11 +730,11 @@ LABEL_8:
         _os_log_impl(&dword_26F78B000, v14, OS_LOG_TYPE_DEFAULT, "Error determining possible sponsors: %{public}@", buf, 0xCu);
       }
 
-      if (a3)
+      if (error)
       {
         v15 = v13;
         v16 = 0;
-        *a3 = v13;
+        *error = v13;
       }
 
       else
@@ -758,32 +758,32 @@ LABEL_8:
   return v16;
 }
 
-- (id)peerIDThatTrustsRecoveryKeys:(id)a3 canIntroducePeer:(id)a4 stableInfo:(id)a5 error:(id *)a6
+- (id)peerIDThatTrustsRecoveryKeys:(id)keys canIntroducePeer:(id)peer stableInfo:(id)info error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  peerCopy = peer;
+  infoCopy = info;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __74__TPModel_peerIDThatTrustsRecoveryKeys_canIntroducePeer_stableInfo_error___block_invoke;
   v18[3] = &unk_279DEDB90;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = [(TPModel *)self possibleSponsorsForRecoveryKey:a3 block:v18 error:a6];
+  v19 = peerCopy;
+  v20 = infoCopy;
+  v12 = infoCopy;
+  v13 = peerCopy;
+  v14 = [(TPModel *)self possibleSponsorsForRecoveryKey:keys block:v18 error:error];
   v15 = v14;
-  if (*a6)
+  if (*error)
   {
-    v16 = 0;
+    anyObject = 0;
   }
 
   else
   {
-    v16 = [v14 anyObject];
+    anyObject = [v14 anyObject];
   }
 
-  return v16;
+  return anyObject;
 }
 
 uint64_t __74__TPModel_peerIDThatTrustsRecoveryKeys_canIntroducePeer_stableInfo_error___block_invoke(void *a1, void *a2)
@@ -816,11 +816,11 @@ uint64_t __74__TPModel_peerIDThatTrustsRecoveryKeys_canIntroducePeer_stableInfo_
   return v7;
 }
 
-- (id)possibleSponsorsForRecoveryKey:(id)a3 block:(id)a4 error:(id *)a5
+- (id)possibleSponsorsForRecoveryKey:(id)key block:(id)block error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  keyCopy = key;
+  blockCopy = block;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -831,17 +831,17 @@ uint64_t __74__TPModel_peerIDThatTrustsRecoveryKeys_canIntroducePeer_stableInfo_
   v12 = TPModelLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 signingKeyData];
-    v5 = [v9 encryptionKeyData];
+    signingKeyData = [keyCopy signingKeyData];
+    encryptionKeyData = [keyCopy encryptionKeyData];
     *buf = 138543618;
-    *&buf[4] = v13;
+    *&buf[4] = signingKeyData;
     *&buf[12] = 2114;
-    *&buf[14] = v5;
+    *&buf[14] = encryptionKeyData;
     _os_log_impl(&dword_26F78B000, v12, OS_LOG_TYPE_DEFAULT, "possibleSponsorsForRecoveryKey: sign %{public}@, enc %{public}@", buf, 0x16u);
   }
 
-  v14 = [v9 signingKeyData];
-  v15 = [(TPModel *)self recoveryKeyPeerID:v14];
+  signingKeyData2 = [keyCopy signingKeyData];
+  v15 = [(TPModel *)self recoveryKeyPeerID:signingKeyData2];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -856,9 +856,9 @@ uint64_t __74__TPModel_peerIDThatTrustsRecoveryKeys_canIntroducePeer_stableInfo_
   v16 = v15;
   v30 = v16;
   v33 = buf;
-  v17 = v9;
+  v17 = keyCopy;
   v31 = v17;
-  v18 = v10;
+  v18 = blockCopy;
   v32 = v18;
   v34 = &v35;
   v28 = 0;
@@ -878,7 +878,7 @@ uint64_t __74__TPModel_peerIDThatTrustsRecoveryKeys_canIntroducePeer_stableInfo_
 
 LABEL_7:
 
-      v5 = 0;
+      encryptionKeyData = 0;
       goto LABEL_12;
     }
 
@@ -905,7 +905,7 @@ LABEL_7:
       _os_log_impl(&dword_26F78B000, v21, OS_LOG_TYPE_DEFAULT, "possibleSponsorsForRecoveryKey: returning %{public}@", v41, 0xCu);
     }
 
-    v5 = v36[5];
+    encryptionKeyData = v36[5];
   }
 
 LABEL_12:
@@ -914,16 +914,16 @@ LABEL_12:
   objc_autoreleasePoolPop(v11);
   if (v20)
   {
-    if (a5)
+    if (error)
     {
       v25 = v20;
-      v5 = 0;
-      *a5 = v20;
+      encryptionKeyData = 0;
+      *error = v20;
     }
 
     else
     {
-      v5 = 0;
+      encryptionKeyData = 0;
     }
   }
 
@@ -931,7 +931,7 @@ LABEL_12:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return encryptionKeyData;
 }
 
 void __54__TPModel_possibleSponsorsForRecoveryKey_block_error___block_invoke(uint64_t a1, void *a2)
@@ -999,7 +999,7 @@ LABEL_3:
 LABEL_13:
 }
 
-- (id)untrustedPeerIDsWithError:(id *)a3
+- (id)untrustedPeerIDsWithError:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -1018,11 +1018,11 @@ LABEL_13:
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
       v8 = 0;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -1058,44 +1058,44 @@ void __37__TPModel_untrustedPeerIDsWithError___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (id)bestWebAccessForStableInfo:(id)a3 webAccessStableChanges:(id)a4 error:(id *)a5
+- (id)bestWebAccessForStableInfo:(id)info webAccessStableChanges:(id)changes error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  changesCopy = changes;
   v22 = 0;
-  v10 = [(TPModel *)self bestWebAccessAcrossTrustedPeersWithError:&v22];
+  webAccess4 = [(TPModel *)self bestWebAccessAcrossTrustedPeersWithError:&v22];
   v11 = v22;
   v12 = v11;
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v13 = v11;
-      v14 = 0;
-      *a5 = v12;
+      webAccess3 = 0;
+      *error = v12;
     }
 
     else
     {
-      v14 = 0;
+      webAccess3 = 0;
     }
   }
 
   else
   {
-    if (v9 && v10)
+    if (changesCopy && webAccess4)
     {
-      v15 = [v10 clock];
-      v16 = [v8 webAccess];
-      if (v15 == [v16 clock])
+      clock = [webAccess4 clock];
+      webAccess = [infoCopy webAccess];
+      if (clock == [webAccess clock])
       {
-        v17 = [v8 webAccess];
-        v18 = [v17 value];
-        v19 = [v9 value];
+        webAccess2 = [infoCopy webAccess];
+        value = [webAccess2 value];
+        value2 = [changesCopy value];
 
-        if (v18 == v19)
+        if (value == value2)
         {
-          v14 = [v8 webAccess];
+          webAccess3 = [infoCopy webAccess];
           goto LABEL_19;
         }
       }
@@ -1104,42 +1104,42 @@ void __37__TPModel_untrustedPeerIDsWithError___block_invoke(uint64_t a1, void *a
       {
       }
 
-      [v10 setClock:{objc_msgSend(v10, "clock") + 1}];
-      [v10 setValue:{objc_msgSend(v9, "value")}];
+      [webAccess4 setClock:{objc_msgSend(webAccess4, "clock") + 1}];
+      [webAccess4 setValue:{objc_msgSend(changesCopy, "value")}];
     }
 
     else
     {
-      if (v9 && !v10)
+      if (changesCopy && !webAccess4)
       {
-        v10 = [v9 copy];
-        [v10 setClock:0];
+        webAccess4 = [changesCopy copy];
+        [webAccess4 setClock:0];
       }
 
-      if (!v10)
+      if (!webAccess4)
       {
-        v10 = [v8 webAccess];
+        webAccess4 = [infoCopy webAccess];
 
-        if (v10)
+        if (webAccess4)
         {
-          v20 = [v8 webAccess];
-          v10 = [v20 copy];
+          webAccess5 = [infoCopy webAccess];
+          webAccess4 = [webAccess5 copy];
 
-          [v10 setClock:0];
+          [webAccess4 setClock:0];
         }
       }
     }
 
-    v14 = v10;
-    v10 = v14;
+    webAccess3 = webAccess4;
+    webAccess4 = webAccess3;
   }
 
 LABEL_19:
 
-  return v14;
+  return webAccess3;
 }
 
-- (id)bestWebAccessAcrossTrustedPeersWithError:(id *)a3
+- (id)bestWebAccessAcrossTrustedPeersWithError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   v6 = objc_autoreleasePoolPush();
@@ -1148,7 +1148,7 @@ LABEL_19:
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
-  v30 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v23 = 0;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -1159,7 +1159,7 @@ LABEL_19:
   v8 = v23;
   if (!v8)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -1182,7 +1182,7 @@ LABEL_19:
           if ([v7 containsObject:{v14, v19}])
           {
             v15 = [v26[5] objectForKeyedSubscript:v14];
-            [v9 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -1192,18 +1192,18 @@ LABEL_19:
       while (v11);
     }
 
-    v3 = [TPModel pickClock:v9];
+    v3 = [TPModel pickClock:array];
   }
 
   _Block_object_dispose(&v25, 8);
   objc_autoreleasePoolPop(v6);
   if (v8)
   {
-    if (a3)
+    if (error)
     {
       v16 = v8;
       v3 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -1227,7 +1227,7 @@ void __52__TPModel_bestWebAccessAcrossTrustedPeersWithError___block_invoke(uint6
   [*(*(*(a1 + 32) + 8) + 40) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (id)bestWalrusAcrossTrustedPeersWithError:(id *)a3
+- (id)bestWalrusAcrossTrustedPeersWithError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   v6 = objc_autoreleasePoolPush();
@@ -1236,7 +1236,7 @@ void __52__TPModel_bestWebAccessAcrossTrustedPeersWithError___block_invoke(uint6
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
-  v30 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v23 = 0;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -1247,7 +1247,7 @@ void __52__TPModel_bestWebAccessAcrossTrustedPeersWithError___block_invoke(uint6
   v8 = v23;
   if (!v8)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -1270,7 +1270,7 @@ void __52__TPModel_bestWebAccessAcrossTrustedPeersWithError___block_invoke(uint6
           if ([v7 containsObject:{v14, v19}])
           {
             v15 = [v26[5] objectForKeyedSubscript:v14];
-            [v9 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -1280,18 +1280,18 @@ void __52__TPModel_bestWebAccessAcrossTrustedPeersWithError___block_invoke(uint6
       while (v11);
     }
 
-    v3 = [TPModel pickClock:v9];
+    v3 = [TPModel pickClock:array];
   }
 
   _Block_object_dispose(&v25, 8);
   objc_autoreleasePoolPop(v6);
   if (v8)
   {
-    if (a3)
+    if (error)
     {
       v16 = v8;
       v3 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -1315,7 +1315,7 @@ void __49__TPModel_bestWalrusAcrossTrustedPeersWithError___block_invoke(uint64_t
   [*(*(*(a1 + 32) + 8) + 40) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (unint64_t)trustedFullPeerCountWithError:(id *)a3
+- (unint64_t)trustedFullPeerCountWithError:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
@@ -1326,11 +1326,11 @@ void __49__TPModel_bestWalrusAcrossTrustedPeersWithError___block_invoke(uint64_t
   {
 
     objc_autoreleasePoolPop(v5);
-    if (a3)
+    if (error)
     {
       v8 = v7;
       v9 = 0;
-      *a3 = v7;
+      *error = v7;
       goto LABEL_16;
     }
 
@@ -1371,9 +1371,9 @@ LABEL_15:
       v17 = v16;
       if (v16)
       {
-        v18 = [v16 permanentInfo];
-        v19 = [v18 modelID];
-        v20 = [TPModel isFullPeer:v19];
+        permanentInfo = [v16 permanentInfo];
+        modelID = [permanentInfo modelID];
+        v20 = [TPModel isFullPeer:modelID];
 
         v9 += v20;
       }
@@ -1392,7 +1392,7 @@ LABEL_16:
   return v9;
 }
 
-- (unint64_t)trustedPeerCountWithError:(id *)a3
+- (unint64_t)trustedPeerCountWithError:(id *)error
 {
   v5 = objc_autoreleasePoolPush();
   v11 = 0;
@@ -1402,11 +1402,11 @@ LABEL_16:
   {
 
     objc_autoreleasePoolPop(v5);
-    if (a3)
+    if (error)
     {
       v8 = v7;
       v9 = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -1425,7 +1425,7 @@ LABEL_16:
   return v9;
 }
 
-- (id)trustedPeers:(id *)a3
+- (id)trustedPeers:(id *)peers
 {
   v5 = objc_autoreleasePoolPush();
   v11 = 0;
@@ -1438,53 +1438,53 @@ LABEL_16:
   }
 
   objc_autoreleasePoolPop(v5);
-  if (a3)
+  if (peers)
   {
     v9 = v7;
-    *a3 = v7;
+    *peers = v7;
   }
 
   return v8;
 }
 
-- (id)bestWalrusForStableInfo:(id)a3 walrusStableChanges:(id)a4 error:(id *)a5
+- (id)bestWalrusForStableInfo:(id)info walrusStableChanges:(id)changes error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  changesCopy = changes;
   v22 = 0;
-  v10 = [(TPModel *)self bestWalrusAcrossTrustedPeersWithError:&v22];
+  walrusSetting4 = [(TPModel *)self bestWalrusAcrossTrustedPeersWithError:&v22];
   v11 = v22;
   v12 = v11;
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v13 = v11;
-      v14 = 0;
-      *a5 = v12;
+      walrusSetting3 = 0;
+      *error = v12;
     }
 
     else
     {
-      v14 = 0;
+      walrusSetting3 = 0;
     }
   }
 
   else
   {
-    if (v9 && v10)
+    if (changesCopy && walrusSetting4)
     {
-      v15 = [v10 clock];
-      v16 = [v8 walrusSetting];
-      if (v15 == [v16 clock])
+      clock = [walrusSetting4 clock];
+      walrusSetting = [infoCopy walrusSetting];
+      if (clock == [walrusSetting clock])
       {
-        v17 = [v8 walrusSetting];
-        v18 = [v17 value];
-        v19 = [v9 value];
+        walrusSetting2 = [infoCopy walrusSetting];
+        value = [walrusSetting2 value];
+        value2 = [changesCopy value];
 
-        if (v18 == v19)
+        if (value == value2)
         {
-          v14 = [v8 walrusSetting];
+          walrusSetting3 = [infoCopy walrusSetting];
           goto LABEL_19;
         }
       }
@@ -1493,49 +1493,49 @@ LABEL_16:
       {
       }
 
-      [v10 setClock:{objc_msgSend(v10, "clock") + 1}];
-      [v10 setValue:{objc_msgSend(v9, "value")}];
+      [walrusSetting4 setClock:{objc_msgSend(walrusSetting4, "clock") + 1}];
+      [walrusSetting4 setValue:{objc_msgSend(changesCopy, "value")}];
     }
 
     else
     {
-      if (v9 && !v10)
+      if (changesCopy && !walrusSetting4)
       {
-        v10 = [v9 copy];
-        [v10 setClock:0];
+        walrusSetting4 = [changesCopy copy];
+        [walrusSetting4 setClock:0];
       }
 
-      if (!v10)
+      if (!walrusSetting4)
       {
-        v10 = [v8 walrusSetting];
+        walrusSetting4 = [infoCopy walrusSetting];
 
-        if (v10)
+        if (walrusSetting4)
         {
-          v20 = [v8 walrusSetting];
-          v10 = [v20 copy];
+          walrusSetting5 = [infoCopy walrusSetting];
+          walrusSetting4 = [walrusSetting5 copy];
 
-          [v10 setClock:0];
+          [walrusSetting4 setClock:0];
         }
       }
     }
 
-    v14 = v10;
-    v10 = v14;
+    walrusSetting3 = walrusSetting4;
+    walrusSetting4 = walrusSetting3;
   }
 
 LABEL_19:
 
-  return v14;
+  return walrusSetting3;
 }
 
-- (id)bestRecoveryKeyForStableInfo:(id)a3 vouchers:(id)a4 error:(id *)a5
+- (id)bestRecoveryKeyForStableInfo:(id)info vouchers:(id)vouchers error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [[TPRecoveryKeyPair alloc] initWithStableInfo:v8];
-  v11 = [(TPRecoveryKeyPair *)v10 signingKeyData];
-  v12 = [(TPModel *)self recoveryKeyPeerID:v11];
+  infoCopy = info;
+  vouchersCopy = vouchers;
+  v10 = [[TPRecoveryKeyPair alloc] initWithStableInfo:infoCopy];
+  signingKeyData = [(TPRecoveryKeyPair *)v10 signingKeyData];
+  v12 = [(TPModel *)self recoveryKeyPeerID:signingKeyData];
 
   v13 = objc_autoreleasePoolPush();
   v46 = 0;
@@ -1557,9 +1557,9 @@ LABEL_19:
   v14 = v12;
   v35 = v14;
   v38 = &v40;
-  v15 = v9;
+  v15 = vouchersCopy;
   v36 = v15;
-  v37 = self;
+  selfCopy = self;
   v39 = &v46;
   v33 = 0;
   v16 = [(TPModel *)self _iterateOverPeersWithBlock:v34 error:&v33];
@@ -1569,7 +1569,7 @@ LABEL_19:
     v18 = v17;
     v19 = 0;
 LABEL_3:
-    LODWORD(v20) = 1;
+    LODWORD(anyObject) = 1;
     goto LABEL_7;
   }
 
@@ -1577,37 +1577,37 @@ LABEL_3:
   if (![v41[5] count])
   {
     [v47[5] intersectSet:v16];
-    v20 = [v47[5] anyObject];
-    if (!v20)
+    anyObject = [v47[5] anyObject];
+    if (!anyObject)
     {
       goto LABEL_6;
     }
 
     v32 = 0;
-    v31 = [(TPModel *)self peerWithID:v20 error:&v32];
+    v31 = [(TPModel *)self peerWithID:anyObject error:&v32];
     v18 = v32;
     if (v31)
     {
       v25 = [TPRecoveryKeyPair alloc];
-      v26 = [v31 stableInfo];
-      v19 = [(TPRecoveryKeyPair *)v25 initWithStableInfo:v26];
+      stableInfo = [v31 stableInfo];
+      v19 = [(TPRecoveryKeyPair *)v25 initWithStableInfo:stableInfo];
 LABEL_25:
 
       goto LABEL_3;
     }
 
-    v26 = TPModelLog();
-    v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
+    stableInfo = TPModelLog();
+    v27 = os_log_type_enabled(stableInfo, OS_LOG_TYPE_DEFAULT);
     if (v18)
     {
       if (v27)
       {
         *buf = 138543618;
-        v53 = v20;
+        v53 = anyObject;
         v54 = 2114;
         v55 = v18;
         v28 = "Error finding peer %{public}@: %{public}@";
-        v29 = v26;
+        v29 = stableInfo;
         v30 = 22;
 LABEL_23:
         _os_log_impl(&dword_26F78B000, v29, OS_LOG_TYPE_DEFAULT, v28, buf, v30);
@@ -1617,9 +1617,9 @@ LABEL_23:
     else if (v27)
     {
       *buf = 138543362;
-      v53 = v20;
+      v53 = anyObject;
       v28 = "Peer not in DB %{public}@";
-      v29 = v26;
+      v29 = stableInfo;
       v30 = 12;
       goto LABEL_23;
     }
@@ -1629,7 +1629,7 @@ LABEL_23:
   }
 
   [(TPModel *)self removeRecoveryKey];
-  LODWORD(v20) = 0;
+  LODWORD(anyObject) = 0;
 LABEL_6:
   v18 = 0;
   v19 = 0;
@@ -1639,12 +1639,12 @@ LABEL_7:
   _Block_object_dispose(&v46, 8);
 
   objc_autoreleasePoolPop(v13);
-  if (v20)
+  if (anyObject)
   {
-    if (a5)
+    if (error)
     {
       v21 = v18;
-      *a5 = v18;
+      *error = v18;
     }
 
     v22 = v19;
@@ -1801,7 +1801,7 @@ LABEL_18:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)doesOctagonContainDistrustedRecoveryKeysWithError:(id *)a3
+- (BOOL)doesOctagonContainDistrustedRecoveryKeysWithError:(id *)error
 {
   v6 = objc_autoreleasePoolPush();
   v13 = 0;
@@ -1828,11 +1828,11 @@ LABEL_18:
   objc_autoreleasePoolPop(v6);
   if (v8)
   {
-    if (a3)
+    if (error)
     {
       v9 = v8;
       v3 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -1894,13 +1894,13 @@ LABEL_11:
 
 - (unint64_t)countOfDistrustedRecoveryKeys
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = objc_autoreleasePoolPush();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__TPModel_countOfDistrustedRecoveryKeys__block_invoke;
   v10[3] = &unk_279DED920;
-  v5 = v3;
+  v5 = dictionary;
   v11 = v5;
   v9 = 0;
   [(TPModel *)self enumeratePeersUsingBlock:v10 error:&v9];
@@ -1952,14 +1952,14 @@ void __40__TPModel_countOfDistrustedRecoveryKeys__block_invoke(uint64_t a1, void
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)vectorClockWithError:(id *)a3
+- (id)vectorClockWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __32__TPModel_vectorClockWithError___block_invoke;
   v13[3] = &unk_279DED920;
-  v6 = v5;
+  v6 = dictionary;
   v14 = v6;
   v12 = 0;
   [(TPModel *)self enumeratePeersUsingBlock:v13 error:&v12];
@@ -1967,11 +1967,11 @@ void __40__TPModel_countOfDistrustedRecoveryKeys__block_invoke(uint64_t a1, void
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -2030,26 +2030,26 @@ LABEL_4:
 LABEL_8:
 }
 
-- (id)getPeerIDsTrustedByPeerWithDynamicInfo:(id)a3 toAccessView:(id)a4 error:(id *)a5
+- (id)getPeerIDsTrustedByPeerWithDynamicInfo:(id)info toAccessView:(id)view error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v33 = a4;
-  v9 = [v8 includedPeerIDs];
+  infoCopy = info;
+  viewCopy = view;
+  includedPeerIDs = [infoCopy includedPeerIDs];
   v10 = [MEMORY[0x277CBEB58] set];
   v41 = 0;
-  v32 = [(TPModel *)self policyForPeerIDs:v9 candidatePeerID:0 candidateStableInfo:0 error:&v41];
+  v32 = [(TPModel *)self policyForPeerIDs:includedPeerIDs candidatePeerID:0 candidateStableInfo:0 error:&v41];
   v11 = v41;
   if (!v11)
   {
     v30 = v10;
-    v28 = v9;
-    v29 = v8;
+    v28 = includedPeerIDs;
+    v29 = infoCopy;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = v9;
+    obj = includedPeerIDs;
     v35 = [obj countByEnumeratingWithState:&v37 objects:v46 count:16];
     v12 = 0;
     if (!v35)
@@ -2076,11 +2076,11 @@ LABEL_8:
 
         if (v19)
         {
-          v20 = [v19 permanentInfo];
-          v21 = [v20 modelID];
-          v22 = [v32 categoryForModel:v21];
+          permanentInfo = [v19 permanentInfo];
+          modelID = [permanentInfo modelID];
+          v22 = [v32 categoryForModel:modelID];
 
-          if ([v32 peerInCategory:v22 canAccessView:v33])
+          if ([v32 peerInCategory:v22 canAccessView:viewCopy])
           {
             [v30 addObject:v17];
           }
@@ -2135,19 +2135,19 @@ LABEL_20:
 
         v10 = v30;
         v14 = v30;
-        v9 = v28;
-        v8 = v29;
+        includedPeerIDs = v28;
+        infoCopy = v29;
         goto LABEL_22;
       }
     }
   }
 
   v12 = v11;
-  if (a5)
+  if (error)
   {
     v13 = v11;
     v14 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -2162,15 +2162,15 @@ LABEL_22:
   return v14;
 }
 
-- (id)getPeerIDsTrustedByPeerWithID:(id)a3 toAccessView:(id)a4 error:(id *)a5
+- (id)getPeerIDsTrustedByPeerWithID:(id)d toAccessView:(id)view error:(id *)error
 {
-  v8 = a4;
-  v9 = [(TPModel *)self actualPeerWithID:a3 error:a5];
+  viewCopy = view;
+  v9 = [(TPModel *)self actualPeerWithID:d error:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 dynamicInfo];
-    v12 = [(TPModel *)self getPeerIDsTrustedByPeerWithDynamicInfo:v11 toAccessView:v8 error:a5];
+    dynamicInfo = [v9 dynamicInfo];
+    v12 = [(TPModel *)self getPeerIDsTrustedByPeerWithDynamicInfo:dynamicInfo toAccessView:viewCopy error:error];
   }
 
   else
@@ -2181,17 +2181,17 @@ LABEL_22:
   return v12;
 }
 
-- (id)getViewsForCRK:(id)a3 donorPermanentInfo:(id)a4 donorStableInfo:(id)a5 error:(id *)a6
+- (id)getViewsForCRK:(id)k donorPermanentInfo:(id)info donorStableInfo:(id)stableInfo error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(TPModel *)self getViewsForPeer:v11 stableInfo:v12 error:a6];
+  kCopy = k;
+  infoCopy = info;
+  stableInfoCopy = stableInfo;
+  v13 = [(TPModel *)self getViewsForPeer:infoCopy stableInfo:stableInfoCopy error:error];
   v14 = [v13 mutableCopy];
 
   if (v14)
   {
-    if ([v10 kind] != 2)
+    if ([kCopy kind] != 2)
     {
 LABEL_9:
       v19 = v14;
@@ -2199,32 +2199,32 @@ LABEL_9:
     }
 
     v15 = MEMORY[0x277CBEB98];
-    v16 = [v11 peerID];
-    v17 = [v15 setWithObject:v16];
-    v18 = [v11 peerID];
-    v19 = [(TPModel *)self policyForPeerIDs:v17 candidatePeerID:v18 candidateStableInfo:v12 error:a6];
+    peerID = [infoCopy peerID];
+    v17 = [v15 setWithObject:peerID];
+    peerID2 = [infoCopy peerID];
+    v19 = [(TPModel *)self policyForPeerIDs:v17 candidatePeerID:peerID2 candidateStableInfo:stableInfoCopy error:error];
 
     if (!v19)
     {
       goto LABEL_11;
     }
 
-    v20 = [v19 inheritedExcludedViews];
-    v21 = [v19 version];
-    if ([v21 versionNumber] <= 0xB)
+    inheritedExcludedViews = [v19 inheritedExcludedViews];
+    version = [v19 version];
+    if ([version versionNumber] <= 0xB)
     {
-      v22 = [v20 count];
+      v22 = [inheritedExcludedViews count];
 
       if (v22)
       {
 LABEL_8:
-        [v14 minusSet:v20];
+        [v14 minusSet:inheritedExcludedViews];
 
         goto LABEL_9;
       }
 
       [MEMORY[0x277CBEB98] setWithArray:&unk_287FD1A28];
-      v20 = v21 = v20;
+      inheritedExcludedViews = version = inheritedExcludedViews;
     }
 
     goto LABEL_8;
@@ -2236,20 +2236,20 @@ LABEL_11:
   return v19;
 }
 
-- (id)getViewsForPeer:(id)a3 stableInfo:(id)a4 error:(id *)a5
+- (id)getViewsForPeer:(id)peer stableInfo:(id)info error:(id *)error
 {
-  v8 = a3;
+  peerCopy = peer;
   v9 = MEMORY[0x277CBEB98];
-  v10 = a4;
-  v11 = [v8 peerID];
-  v12 = [v9 setWithObject:v11];
-  v13 = [v8 peerID];
-  v14 = [(TPModel *)self policyForPeerIDs:v12 candidatePeerID:v13 candidateStableInfo:v10 error:a5];
+  infoCopy = info;
+  peerID = [peerCopy peerID];
+  v12 = [v9 setWithObject:peerID];
+  peerID2 = [peerCopy peerID];
+  v14 = [(TPModel *)self policyForPeerIDs:v12 candidatePeerID:peerID2 candidateStableInfo:infoCopy error:error];
 
   if (v14)
   {
-    v15 = [v8 modelID];
-    v16 = [v14 viewsForModel:v15 error:a5];
+    modelID = [peerCopy modelID];
+    v16 = [v14 viewsForModel:modelID error:error];
   }
 
   else
@@ -2260,27 +2260,27 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)considerPolicyFromPeerID:(id)a3 stableInfo:(id)a4 secrets:(id)a5 newestPolicyDoc:(id *)a6 error:(id *)a7
+- (BOOL)considerPolicyFromPeerID:(id)d stableInfo:(id)info secrets:(id)secrets newestPolicyDoc:(id *)doc error:(id *)error
 {
   v71 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v13)
+  dCopy = d;
+  infoCopy = info;
+  secretsCopy = secrets;
+  if (!infoCopy)
   {
     v27 = 1;
     goto LABEL_25;
   }
 
-  v58 = v12;
-  v59 = a6;
-  v57 = a7;
+  v58 = dCopy;
+  docCopy = doc;
+  errorCopy = error;
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v15 = [v13 policySecrets];
-  v16 = [v15 countByEnumeratingWithState:&v62 objects:v70 count:16];
+  policySecrets = [infoCopy policySecrets];
+  v16 = [policySecrets countByEnumeratingWithState:&v62 objects:v70 count:16];
   if (v16)
   {
     v17 = v16;
@@ -2291,48 +2291,48 @@ LABEL_11:
       {
         if (*v63 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(policySecrets);
         }
 
         v20 = *(*(&v62 + 1) + 8 * i);
-        v21 = [v13 policySecrets];
-        v22 = [v21 objectForKeyedSubscript:v20];
-        [v14 setObject:v22 forKeyedSubscript:v20];
+        policySecrets2 = [infoCopy policySecrets];
+        v22 = [policySecrets2 objectForKeyedSubscript:v20];
+        [secretsCopy setObject:v22 forKeyedSubscript:v20];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v62 objects:v70 count:16];
+      v17 = [policySecrets countByEnumeratingWithState:&v62 objects:v70 count:16];
     }
 
     while (v17);
   }
 
-  if (!*v59)
+  if (!*docCopy)
   {
     goto LABEL_12;
   }
 
-  v23 = [*v59 version];
-  v24 = [v23 versionNumber];
-  v25 = [v13 bestPolicyVersion];
-  v26 = [v25 versionNumber];
+  version = [*docCopy version];
+  versionNumber = [version versionNumber];
+  bestPolicyVersion = [infoCopy bestPolicyVersion];
+  versionNumber2 = [bestPolicyVersion versionNumber];
 
-  if (v24 <= v26)
+  if (versionNumber <= versionNumber2)
   {
 LABEL_12:
-    v28 = [(TPModel *)self dbAdapter];
-    v29 = [v13 bestPolicyVersion];
+    dbAdapter = [(TPModel *)self dbAdapter];
+    bestPolicyVersion2 = [infoCopy bestPolicyVersion];
     v61 = 0;
-    v30 = [v28 policyWithVersion:objc_msgSend(v29 error:{"versionNumber"), &v61}];
+    v30 = [dbAdapter policyWithVersion:objc_msgSend(bestPolicyVersion2 error:{"versionNumber"), &v61}];
     v31 = v61;
 
-    v12 = v58;
+    dCopy = v58;
     if (v31)
     {
-      if (v57)
+      if (errorCopy)
       {
         v32 = v31;
         v27 = 0;
-        *v57 = v31;
+        *errorCopy = v31;
 LABEL_24:
 
         goto LABEL_25;
@@ -2341,21 +2341,21 @@ LABEL_24:
 
     else if (v30)
     {
-      v33 = [v30 version];
-      v34 = [v33 policyHash];
-      v35 = [v13 bestPolicyVersion];
-      v36 = [v35 policyHash];
-      v37 = [v34 isEqualToString:v36];
+      version2 = [v30 version];
+      policyHash = [version2 policyHash];
+      bestPolicyVersion3 = [infoCopy bestPolicyVersion];
+      policyHash2 = [bestPolicyVersion3 policyHash];
+      v37 = [policyHash isEqualToString:policyHash2];
 
       if (v37)
       {
         v38 = v30;
-        *v59 = v30;
+        *docCopy = v30;
         v27 = 1;
         goto LABEL_24;
       }
 
-      if (v57)
+      if (errorCopy)
       {
         v54 = TPErrorDomain;
         v55 = MEMORY[0x277CCA9B8];
@@ -2363,26 +2363,26 @@ LABEL_24:
         v66[0] = @"peerID";
         v66[1] = @"policyVersion";
         v45 = MEMORY[0x277CCABB0];
-        v60 = [v13 bestPolicyVersion];
-        v56 = [v45 numberWithUnsignedLongLong:{objc_msgSend(v60, "versionNumber")}];
+        bestPolicyVersion4 = [infoCopy bestPolicyVersion];
+        v56 = [v45 numberWithUnsignedLongLong:{objc_msgSend(bestPolicyVersion4, "versionNumber")}];
         v67[1] = v56;
         v66[2] = @"policyDocHash";
         v46 = v30;
-        v47 = [v30 version];
-        v48 = [v47 policyHash];
-        v67[2] = v48;
+        version3 = [v30 version];
+        policyHash3 = [version3 policyHash];
+        v67[2] = policyHash3;
         v66[3] = @"peerExpectsHash";
-        v49 = [v13 bestPolicyVersion];
-        v50 = [v49 policyHash];
-        v67[3] = v50;
+        bestPolicyVersion5 = [infoCopy bestPolicyVersion];
+        policyHash4 = [bestPolicyVersion5 policyHash];
+        v67[3] = policyHash4;
         v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:v66 count:4];
-        *v57 = [v55 errorWithDomain:v54 code:2 userInfo:v51];
+        *errorCopy = [v55 errorWithDomain:v54 code:2 userInfo:v51];
 
         v30 = v46;
       }
     }
 
-    else if (v57)
+    else if (errorCopy)
     {
       v39 = MEMORY[0x277CCA9B8];
       v40 = TPErrorDomain;
@@ -2390,11 +2390,11 @@ LABEL_24:
       v68[1] = @"policyVersion";
       v69[0] = v58;
       v41 = MEMORY[0x277CCABB0];
-      v42 = [v13 bestPolicyVersion];
-      v43 = [v41 numberWithUnsignedLongLong:{objc_msgSend(v42, "versionNumber")}];
+      bestPolicyVersion6 = [infoCopy bestPolicyVersion];
+      v43 = [v41 numberWithUnsignedLongLong:{objc_msgSend(bestPolicyVersion6, "versionNumber")}];
       v69[1] = v43;
       v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v69 forKeys:v68 count:2];
-      *v57 = [v39 errorWithDomain:v40 code:1 userInfo:v44];
+      *errorCopy = [v39 errorWithDomain:v40 code:1 userInfo:v44];
     }
 
     v27 = 0;
@@ -2402,25 +2402,25 @@ LABEL_24:
   }
 
   v27 = 1;
-  v12 = v58;
+  dCopy = v58;
 LABEL_25:
 
   v52 = *MEMORY[0x277D85DE8];
   return v27;
 }
 
-- (id)policyForPeerIDs:(id)a3 candidatePeerID:(id)a4 candidateStableInfo:(id)a5 error:(id *)a6
+- (id)policyForPeerIDs:(id)ds candidatePeerID:(id)d candidateStableInfo:(id)info error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (![v10 count])
+  dsCopy = ds;
+  dCopy = d;
+  infoCopy = info;
+  if (![dsCopy count])
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:TPErrorDomain code:8 userInfo:0];
-      *a6 = v30 = 0;
+      *error = v30 = 0;
     }
 
     else
@@ -2431,16 +2431,16 @@ LABEL_25:
     goto LABEL_35;
   }
 
-  v36 = a6;
-  v37 = v12;
-  v38 = v11;
-  v42 = [MEMORY[0x277CBEB38] dictionary];
+  errorCopy = error;
+  v37 = infoCopy;
+  v38 = dCopy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v39 = v10;
-  obj = v10;
+  v39 = dsCopy;
+  obj = dsCopy;
   v13 = [obj countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (!v13)
   {
@@ -2498,26 +2498,26 @@ LABEL_13:
         }
       }
 
-      v26 = [v20 stableInfo];
+      stableInfo = [v20 stableInfo];
       v44 = 0;
       v45 = v17;
-      v27 = [(TPModel *)self considerPolicyFromPeerID:v18 stableInfo:v26 secrets:v42 newestPolicyDoc:&v45 error:&v44];
+      v27 = [(TPModel *)self considerPolicyFromPeerID:v18 stableInfo:stableInfo secrets:dictionary newestPolicyDoc:&v45 error:&v44];
       v15 = v45;
 
       v28 = v44;
       objc_autoreleasePoolPop(v19);
       if (!v27)
       {
-        if (v36)
+        if (errorCopy)
         {
           v29 = v28;
-          *v36 = v28;
+          *errorCopy = v28;
         }
 
         v30 = 0;
-        v11 = v38;
-        v10 = v39;
-        v12 = v37;
+        dCopy = v38;
+        dsCopy = v39;
+        infoCopy = v37;
         goto LABEL_34;
       }
 
@@ -2539,9 +2539,9 @@ LABEL_25:
   v31 = v15;
 
   v43 = v15;
-  v12 = v37;
-  v11 = v38;
-  v32 = [(TPModel *)self considerPolicyFromPeerID:v38 stableInfo:v37 secrets:v42 newestPolicyDoc:&v43 error:v36];
+  infoCopy = v37;
+  dCopy = v38;
+  v32 = [(TPModel *)self considerPolicyFromPeerID:v38 stableInfo:v37 secrets:dictionary newestPolicyDoc:&v43 error:errorCopy];
   v15 = v43;
 
   if (!v32)
@@ -2551,11 +2551,11 @@ LABEL_25:
 
   if (!v15)
   {
-    if (v36)
+    if (errorCopy)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:TPErrorDomain code:3 userInfo:0];
       v15 = 0;
-      *v36 = v30 = 0;
+      *errorCopy = v30 = 0;
       goto LABEL_33;
     }
 
@@ -2565,11 +2565,11 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v33 = [(TPModel *)self decrypter];
-  v30 = [v15 policyWithSecrets:v42 decrypter:v33 error:v36];
+  decrypter = [(TPModel *)self decrypter];
+  v30 = [v15 policyWithSecrets:dictionary decrypter:decrypter error:errorCopy];
 
 LABEL_33:
-  v10 = v39;
+  dsCopy = v39;
 LABEL_34:
 
 LABEL_35:
@@ -2578,36 +2578,36 @@ LABEL_35:
   return v30;
 }
 
-- (id)dynamicInfoForJoiningPeerID:(id)a3 peerPermanentInfo:(id)a4 peerStableInfo:(id)a5 sponsorID:(id)a6 preapprovedKeys:(id)a7 signingKeyPair:(id)a8 currentMachineIDs:(id)a9 error:(id *)a10
+- (id)dynamicInfoForJoiningPeerID:(id)d peerPermanentInfo:(id)info peerStableInfo:(id)stableInfo sponsorID:(id)iD preapprovedKeys:(id)keys signingKeyPair:(id)pair currentMachineIDs:(id)ds error:(id *)self0
 {
   v71 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v47 = a4;
-  v48 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v49 = a9;
+  dCopy = d;
+  infoCopy = info;
+  stableInfoCopy = stableInfo;
+  iDCopy = iD;
+  keysCopy = keys;
+  pairCopy = pair;
+  dsCopy = ds;
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
   v62 = __Block_byref_object_copy_;
   v63 = __Block_byref_object_dispose_;
-  v50 = v16;
-  v64 = [MEMORY[0x277CBEB58] setWithObject:v16];
+  v50 = dCopy;
+  v64 = [MEMORY[0x277CBEB58] setWithObject:dCopy];
   v20 = [MEMORY[0x277CBEB98] set];
-  if (!v17)
+  if (!iDCopy)
   {
     goto LABEL_13;
   }
 
   v58 = 0;
-  v21 = [(TPModel *)self peerWithID:v17 error:&v58];
+  v21 = [(TPModel *)self peerWithID:iDCopy error:&v58];
   v22 = v58;
   if (!v21)
   {
-    v26 = TPModelLog();
-    v28 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
+    dynamicInfo2 = TPModelLog();
+    v28 = os_log_type_enabled(dynamicInfo2, OS_LOG_TYPE_DEFAULT);
     if (v22)
     {
       if (!v28)
@@ -2616,7 +2616,7 @@ LABEL_35:
       }
 
       *buf = 138543618;
-      v66 = v17;
+      v66 = iDCopy;
       v67 = 2114;
       v68 = v22;
       v29 = "Error finding peer %{public}@: %{public}@";
@@ -2630,25 +2630,25 @@ LABEL_35:
       }
 
       *buf = 138543618;
-      v66 = v17;
+      v66 = iDCopy;
       v67 = 2114;
       v68 = 0;
       v29 = "Peer not in DB %{public}@: %{public}@";
     }
 
-    _os_log_impl(&dword_26F78B000, v26, OS_LOG_TYPE_DEFAULT, v29, buf, 0x16u);
+    _os_log_impl(&dword_26F78B000, dynamicInfo2, OS_LOG_TYPE_DEFAULT, v29, buf, 0x16u);
     goto LABEL_10;
   }
 
   v23 = v60[5];
-  v24 = [v21 dynamicInfo];
-  v25 = [v24 includedPeerIDs];
-  [v23 unionSet:v25];
+  dynamicInfo = [v21 dynamicInfo];
+  includedPeerIDs = [dynamicInfo includedPeerIDs];
+  [v23 unionSet:includedPeerIDs];
 
-  v26 = [v21 dynamicInfo];
-  v27 = [v26 excludedPeerIDs];
+  dynamicInfo2 = [v21 dynamicInfo];
+  excludedPeerIDs = [dynamicInfo2 excludedPeerIDs];
 
-  v20 = v27;
+  v20 = excludedPeerIDs;
 LABEL_10:
 
   v30 = TPModelLog();
@@ -2656,7 +2656,7 @@ LABEL_10:
   {
     v31 = v60[5];
     *buf = 138543874;
-    v66 = v17;
+    v66 = iDCopy;
     v67 = 2114;
     v68 = v31;
     v69 = 2114;
@@ -2665,27 +2665,27 @@ LABEL_10:
   }
 
 LABEL_13:
-  if (v18)
+  if (keysCopy)
   {
-    v32 = [v19 publicKey];
-    v33 = [v32 spki];
+    publicKey = [pairCopy publicKey];
+    spki = [publicKey spki];
 
     v34 = MEMORY[0x277CCAC30];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __137__TPModel_dynamicInfoForJoiningPeerID_peerPermanentInfo_peerStableInfo_sponsorID_preapprovedKeys_signingKeyPair_currentMachineIDs_error___block_invoke;
     v56[3] = &unk_279DEDAB0;
-    v35 = v33;
+    v35 = spki;
     v57 = v35;
     v36 = [v34 predicateWithBlock:v56];
-    v37 = [v18 filteredArrayUsingPredicate:v36];
+    v37 = [keysCopy filteredArrayUsingPredicate:v36];
 
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __137__TPModel_dynamicInfoForJoiningPeerID_peerPermanentInfo_peerStableInfo_sponsorID_preapprovedKeys_signingKeyPair_currentMachineIDs_error___block_invoke_2;
     v52[3] = &unk_279DEDAD8;
-    v18 = v37;
-    v53 = v18;
+    keysCopy = v37;
+    v53 = keysCopy;
     v54 = v20;
     v55 = &v59;
     v51 = 0;
@@ -2702,10 +2702,10 @@ LABEL_13:
         _os_log_impl(&dword_26F78B000, v40, OS_LOG_TYPE_DEFAULT, "Error enumerating peers: %{public}@", buf, 0xCu);
       }
 
-      if (a10)
+      if (error)
       {
         v41 = v39;
-        *a10 = v39;
+        *error = v39;
       }
 
       v42 = 0;
@@ -2714,11 +2714,11 @@ LABEL_13:
     }
   }
 
-  v35 = [TPModel preapprovalsFromKeys:v18];
-  v43 = [(TPModel *)self createDynamicInfoWithIncludedPeerIDs:v60[5] excludedPeerIDs:v20 dispositions:MEMORY[0x277CBEC10] preapprovals:v35 signingKeyPair:v19 error:a10];
+  v35 = [TPModel preapprovalsFromKeys:keysCopy];
+  v43 = [(TPModel *)self createDynamicInfoWithIncludedPeerIDs:v60[5] excludedPeerIDs:v20 dispositions:MEMORY[0x277CBEC10] preapprovals:v35 signingKeyPair:pairCopy error:error];
   if (v43)
   {
-    v42 = [(TPModel *)self calculateDynamicInfoFromModel:v50 peer:0 peerPermanentInfo:v47 peerStableInfo:v48 startingDynamicInfo:v43 addingPeerIDs:MEMORY[0x277CBEBF8] removingPeerIDs:v18 preapprovedKeys:v19 signingKeyPair:v49 currentMachineIDs:v17 sponsorPeerID:a10 error:?];
+    v42 = [(TPModel *)self calculateDynamicInfoFromModel:v50 peer:0 peerPermanentInfo:infoCopy peerStableInfo:stableInfoCopy startingDynamicInfo:v43 addingPeerIDs:MEMORY[0x277CBEBF8] removingPeerIDs:keysCopy preapprovedKeys:pairCopy signingKeyPair:dsCopy currentMachineIDs:iDCopy sponsorPeerID:error error:?];
   }
 
   else
@@ -2824,17 +2824,17 @@ LABEL_12:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)filterPreapprovals:(id)a3 forExistingPeers:(id)a4
+- (id)filterPreapprovals:(id)preapprovals forExistingPeers:(id)peers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  preapprovalsCopy = preapprovals;
+  peersCopy = peers;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [v6 allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  allObjects = [preapprovalsCopy allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2845,7 +2845,7 @@ LABEL_12:
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
@@ -2858,8 +2858,8 @@ LABEL_12:
           v21[3] = &unk_279DEDA88;
           v24 = v14;
           v21[4] = v13;
-          v22 = v7;
-          v23 = v6;
+          v22 = peersCopy;
+          v23 = preapprovalsCopy;
           v20 = 0;
           [(TPModel *)self enumeratePeersUsingBlock:v21 error:&v20];
           v15 = v20;
@@ -2873,7 +2873,7 @@ LABEL_12:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v10)
       {
         continue;
@@ -2909,11 +2909,11 @@ void __47__TPModel_filterPreapprovals_forExistingPeers___block_invoke(uint64_t a
   }
 }
 
-- (id)peersWithMachineID:(id)a3 error:(id *)a4
+- (id)peersWithMachineID:(id)d error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  dCopy = d;
+  if (error)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -2921,15 +2921,15 @@ void __47__TPModel_filterPreapprovals_forExistingPeers___block_invoke(uint64_t a
     v17 = __Block_byref_object_copy_;
     v18 = __Block_byref_object_dispose_;
     v19 = [MEMORY[0x277CBEB58] set];
-    *a4 = 0;
+    *error = 0;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __36__TPModel_peersWithMachineID_error___block_invoke;
     v12[3] = &unk_279DEDA60;
-    v13 = v6;
+    v13 = dCopy;
     p_buf = &buf;
-    [(TPModel *)self enumeratePeersUsingBlock:v12 error:a4];
-    if (*a4)
+    [(TPModel *)self enumeratePeersUsingBlock:v12 error:error];
+    if (*error)
     {
       v7 = 0;
     }
@@ -2950,7 +2950,7 @@ void __47__TPModel_filterPreapprovals_forExistingPeers___block_invoke(uint64_t a
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = dCopy;
       _os_log_error_impl(&dword_26F78B000, v8, OS_LOG_TYPE_ERROR, "Unexpected nil error in peersWithMachineID:%{public}@", &buf, 0xCu);
     }
 
@@ -2977,23 +2977,23 @@ void __36__TPModel_peersWithMachineID_error___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)filterPeerList:(id)a3 byMachineIDs:(id)a4 sponsorPeerID:(id)a5 dispositions:(id)a6
+- (id)filterPeerList:(id)list byMachineIDs:(id)ds sponsorPeerID:(id)d dispositions:(id)dispositions
 {
   v75 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v63 = a6;
-  v60 = v11;
-  if (v11)
+  listCopy = list;
+  dsCopy = ds;
+  dCopy = d;
+  dispositionsCopy = dispositions;
+  v60 = dsCopy;
+  if (dsCopy)
   {
     [MEMORY[0x277CBEB58] set];
-    v57 = v56 = v10;
+    v57 = v56 = listCopy;
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    obj = v10;
+    obj = listCopy;
     v13 = [obj countByEnumeratingWithState:&v66 objects:v74 count:16];
     if (!v13)
     {
@@ -3002,8 +3002,8 @@ void __36__TPModel_peersWithMachineID_error___block_invoke(uint64_t a1, void *a2
 
     v14 = v13;
     v64 = *v67;
-    v58 = self;
-    v59 = v12;
+    selfCopy = self;
+    v59 = dCopy;
     while (1)
     {
       v15 = 0;
@@ -3023,27 +3023,27 @@ void __36__TPModel_peersWithMachineID_error___block_invoke(uint64_t a1, void *a2
         v20 = v19;
         if (v18)
         {
-          if ([v16 isEqualToString:v12])
+          if ([v16 isEqualToString:dCopy])
           {
             goto LABEL_46;
           }
 
-          v21 = [v18 permanentInfo];
-          v22 = [v21 machineID];
-          v23 = [v60 entryFor:v22];
+          permanentInfo = [v18 permanentInfo];
+          machineID = [permanentInfo machineID];
+          v23 = [v60 entryFor:machineID];
 
           if (v23)
           {
-            v24 = [v23 status];
+            status = [v23 status];
           }
 
           else
           {
-            v24 = 0;
+            status = 0;
           }
 
-          v25 = [v18 peerID];
-          v26 = [v63 objectForKeyedSubscript:v25];
+          peerID = [v18 peerID];
+          v26 = [dispositionsCopy objectForKeyedSubscript:peerID];
           v27 = v26;
           if (v26)
           {
@@ -3057,10 +3057,10 @@ void __36__TPModel_peersWithMachineID_error___block_invoke(uint64_t a1, void *a2
 
           v29 = v28;
 
-          if (v24 > 2)
+          if (status > 2)
           {
             v14 = v61;
-            switch(v24)
+            switch(status)
             {
               case 3:
                 [(TPPBDisposition *)v29 setUnknownMachineID:0];
@@ -3069,8 +3069,8 @@ void __36__TPModel_peersWithMachineID_error___block_invoke(uint64_t a1, void *a2
                 v48 = objc_alloc_init(TPPBDispositionEvictedMachineID);
                 [(TPPBDisposition *)v29 setEvictedMachineID:v48];
 
-                v49 = [v18 peerID];
-                [v63 setObject:v29 forKeyedSubscript:v49];
+                peerID2 = [v18 peerID];
+                [dispositionsCopy setObject:v29 forKeyedSubscript:peerID2];
 
                 v43 = TPModelLog();
                 if (!os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
@@ -3078,12 +3078,12 @@ void __36__TPModel_peersWithMachineID_error___block_invoke(uint64_t a1, void *a2
                   goto LABEL_43;
                 }
 
-                v44 = [v18 permanentInfo];
-                v45 = [v44 machineID];
+                permanentInfo2 = [v18 permanentInfo];
+                machineID2 = [permanentInfo2 machineID];
                 *buf = 138543618;
                 v71 = v16;
                 v72 = 2114;
-                v73 = v45;
+                v73 = machineID2;
                 v46 = v43;
                 v47 = "Peer (%{public}@) has an evicted machine ID (%{public}@)";
                 break;
@@ -3094,8 +3094,8 @@ void __36__TPModel_peersWithMachineID_error___block_invoke(uint64_t a1, void *a2
                 v50 = objc_alloc_init(TPPBDispositionUnknownReasonRemovalMachineID);
                 [(TPPBDisposition *)v29 setUnknownReasonRemovalMachineID:v50];
 
-                v51 = [v18 peerID];
-                [v63 setObject:v29 forKeyedSubscript:v51];
+                peerID3 = [v18 peerID];
+                [dispositionsCopy setObject:v29 forKeyedSubscript:peerID3];
 
                 v43 = TPModelLog();
                 if (!os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
@@ -3103,12 +3103,12 @@ void __36__TPModel_peersWithMachineID_error___block_invoke(uint64_t a1, void *a2
                   goto LABEL_43;
                 }
 
-                v44 = [v18 permanentInfo];
-                v45 = [v44 machineID];
+                permanentInfo2 = [v18 permanentInfo];
+                machineID2 = [permanentInfo2 machineID];
                 *buf = 138543618;
                 v71 = v16;
                 v72 = 2114;
-                v73 = v45;
+                v73 = machineID2;
                 v46 = v43;
                 v47 = "Peer (%{public}@) with machine ID (%{public}@) has been removed with an unknown reason";
                 break;
@@ -3116,12 +3116,12 @@ void __36__TPModel_peersWithMachineID_error___block_invoke(uint64_t a1, void *a2
                 v35 = TPModelLog();
                 if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
                 {
-                  v36 = [v18 permanentInfo];
-                  v37 = [v36 machineID];
+                  permanentInfo3 = [v18 permanentInfo];
+                  machineID3 = [permanentInfo3 machineID];
                   *buf = 138543618;
                   v71 = v16;
                   v72 = 2114;
-                  v73 = v37;
+                  v73 = machineID3;
                   _os_log_impl(&dword_26F78B000, v35, OS_LOG_TYPE_DEFAULT, "Peer (%{public}@) with machine ID (%{public}@) has ghosted the TDL", buf, 0x16u);
 
                   v14 = v61;
@@ -3130,15 +3130,15 @@ void __36__TPModel_peersWithMachineID_error___block_invoke(uint64_t a1, void *a2
                 v38 = objc_alloc_init(TPPBDispositionGhostedMachineID);
                 [(TPPBDisposition *)v29 setGhostedMachineID:v38];
 
-                v39 = [v18 peerID];
-                v40 = v63;
+                peerID4 = [v18 peerID];
+                v40 = dispositionsCopy;
                 v41 = v29;
                 goto LABEL_37;
               default:
 LABEL_44:
 
-                self = v58;
-                v12 = v59;
+                self = selfCopy;
+                dCopy = v59;
                 goto LABEL_45;
             }
           }
@@ -3146,27 +3146,27 @@ LABEL_44:
           else
           {
             v14 = v61;
-            if (v24)
+            if (status)
             {
-              if (v24 != 1)
+              if (status != 1)
               {
-                if (v24 == 2)
+                if (status == 2)
                 {
                   v30 = objc_alloc_init(TPPBDispositionDisallowedMachineID);
                   [(TPPBDisposition *)v29 setDisallowedMachineID:v30];
 
-                  v31 = [v18 peerID];
-                  [v63 setObject:v29 forKeyedSubscript:v31];
+                  peerID5 = [v18 peerID];
+                  [dispositionsCopy setObject:v29 forKeyedSubscript:peerID5];
 
                   v32 = TPModelLog();
                   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
                   {
-                    v33 = [v18 permanentInfo];
-                    v34 = [v33 machineID];
+                    permanentInfo4 = [v18 permanentInfo];
+                    machineID4 = [permanentInfo4 machineID];
                     *buf = 138543618;
                     v71 = v16;
                     v72 = 2114;
-                    v73 = v34;
+                    v73 = machineID4;
                     _os_log_impl(&dword_26F78B000, v32, OS_LOG_TYPE_DEFAULT, "Peer (%{public}@) has a disallowed machine ID (%{public}@)", buf, 0x16u);
 
                     v14 = v61;
@@ -3178,28 +3178,28 @@ LABEL_44:
                 goto LABEL_44;
               }
 
-              v39 = [v18 peerID];
-              v40 = v63;
+              peerID4 = [v18 peerID];
+              v40 = dispositionsCopy;
               v41 = 0;
 LABEL_37:
-              [v40 setObject:v41 forKeyedSubscript:v39];
+              [v40 setObject:v41 forKeyedSubscript:peerID4];
 
               goto LABEL_44;
             }
 
-            v42 = [(TPPBDisposition *)v29 disallowedMachineID];
+            disallowedMachineID = [(TPPBDisposition *)v29 disallowedMachineID];
 
-            if (v42)
+            if (disallowedMachineID)
             {
               v43 = TPModelLog();
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
               {
-                v44 = [v18 permanentInfo];
-                v45 = [v44 machineID];
+                permanentInfo2 = [v18 permanentInfo];
+                machineID2 = [permanentInfo2 machineID];
                 *buf = 138543618;
                 v71 = v16;
                 v72 = 2114;
-                v73 = v45;
+                v73 = machineID2;
                 v46 = v43;
                 v47 = "Peer (%{public}@) has an unknown machine ID (%{public}@), but leaving disposition as 'disallowed'";
                 goto LABEL_42;
@@ -3213,8 +3213,8 @@ LABEL_43:
             v52 = objc_alloc_init(TPPBUnknownMachineID);
             [(TPPBDisposition *)v29 setUnknownMachineID:v52];
 
-            v53 = [v18 peerID];
-            [v63 setObject:v29 forKeyedSubscript:v53];
+            peerID6 = [v18 peerID];
+            [dispositionsCopy setObject:v29 forKeyedSubscript:peerID6];
 
             v43 = TPModelLog();
             if (!os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
@@ -3222,12 +3222,12 @@ LABEL_43:
               goto LABEL_43;
             }
 
-            v44 = [v18 permanentInfo];
-            v45 = [v44 machineID];
+            permanentInfo2 = [v18 permanentInfo];
+            machineID2 = [permanentInfo2 machineID];
             *buf = 138543618;
             v71 = v16;
             v72 = 2114;
-            v73 = v45;
+            v73 = machineID2;
             v46 = v43;
             v47 = "Peer (%{public}@) has an unknown machine ID (%{public}@)";
           }
@@ -3267,7 +3267,7 @@ LABEL_46:
       {
 LABEL_48:
 
-        v10 = v56;
+        listCopy = v56;
         goto LABEL_50;
       }
     }
@@ -3281,61 +3281,61 @@ LABEL_50:
   return v57;
 }
 
-- (id)calculateDynamicInfoFromModel:(id)a3 peer:(id)a4 peerPermanentInfo:(id)a5 peerStableInfo:(id)a6 startingDynamicInfo:(id)a7 addingPeerIDs:(id)a8 removingPeerIDs:(id)a9 preapprovedKeys:(id)a10 signingKeyPair:(id)a11 currentMachineIDs:(id)a12 sponsorPeerID:(id)a13 error:(id *)a14
+- (id)calculateDynamicInfoFromModel:(id)model peer:(id)peer peerPermanentInfo:(id)info peerStableInfo:(id)stableInfo startingDynamicInfo:(id)dynamicInfo addingPeerIDs:(id)ds removingPeerIDs:(id)iDs preapprovedKeys:(id)self0 signingKeyPair:(id)self1 currentMachineIDs:(id)self2 sponsorPeerID:(id)self3 error:(id *)self4
 {
   v304 = *MEMORY[0x277D85DE8];
-  v223 = a3;
-  v216 = a4;
-  v20 = a5;
-  v217 = a6;
-  v224 = a7;
-  v221 = a8;
-  v222 = a9;
-  v215 = a10;
-  v212 = a11;
-  v228 = a12;
-  v213 = v20;
-  v214 = a13;
-  v225 = [v20 epoch];
+  modelCopy = model;
+  peerCopy = peer;
+  infoCopy = info;
+  stableInfoCopy = stableInfo;
+  dynamicInfoCopy = dynamicInfo;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  keysCopy = keys;
+  pairCopy = pair;
+  machineIDsCopy = machineIDs;
+  v213 = infoCopy;
+  dCopy = d;
+  epoch = [infoCopy epoch];
   v21 = MEMORY[0x277CBEB98];
-  v229 = self;
-  v22 = [(TPModel *)self allPeerIDs];
-  v218 = [v21 setWithArray:v22];
+  selfCopy = self;
+  allPeerIDs = [(TPModel *)self allPeerIDs];
+  v218 = [v21 setWithArray:allPeerIDs];
 
   v23 = TPModelLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v223;
+    *&buf[4] = modelCopy;
     *&buf[12] = 2114;
     *&buf[14] = v218;
     _os_log_impl(&dword_26F78B000, v23, OS_LOG_TYPE_DEFAULT, "Calculating dynamic info for peer %{public}@ with peer set %{public}@", buf, 0x16u);
   }
 
-  if ([v221 count])
+  if ([dsCopy count])
   {
     v24 = TPModelLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v221;
+      *&buf[4] = dsCopy;
       _os_log_impl(&dword_26F78B000, v24, OS_LOG_TYPE_DEFAULT, "Adding peer IDs: %{public}@", buf, 0xCu);
     }
   }
 
-  if ([v222 count])
+  if ([iDsCopy count])
   {
     v25 = TPModelLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v222;
+      *&buf[4] = iDsCopy;
       _os_log_impl(&dword_26F78B000, v25, OS_LOG_TYPE_DEFAULT, "Removing peer IDs: %{public}@", buf, 0xCu);
     }
   }
 
-  v26 = [v224 excludedPeerIDs];
-  v27 = [v26 containsObject:v223];
+  excludedPeerIDs = [dynamicInfoCopy excludedPeerIDs];
+  v27 = [excludedPeerIDs containsObject:modelCopy];
 
   if (v27)
   {
@@ -3343,21 +3343,21 @@ LABEL_50:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v223;
+      *&buf[4] = modelCopy;
       _os_log_impl(&dword_26F78B000, v28, OS_LOG_TYPE_DEFAULT, "Peer (%{public}@) excludes itself", buf, 0xCu);
     }
 
-    v29 = v224;
+    v29 = dynamicInfoCopy;
     goto LABEL_260;
   }
 
   v30 = MEMORY[0x277CBEB58];
-  v31 = [v224 includedPeerIDs];
-  v230 = [v30 setWithSet:v31];
+  includedPeerIDs = [dynamicInfoCopy includedPeerIDs];
+  v230 = [v30 setWithSet:includedPeerIDs];
 
   v32 = MEMORY[0x277CBEB58];
-  v33 = [v224 excludedPeerIDs];
-  v227 = [v32 setWithSet:v33];
+  excludedPeerIDs2 = [dynamicInfoCopy excludedPeerIDs];
+  v227 = [v32 setWithSet:excludedPeerIDs2];
 
   v34 = TPModelLog();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -3370,27 +3370,27 @@ LABEL_50:
   }
 
   v35 = MEMORY[0x277CBEB38];
-  v36 = [v224 dispositions];
-  v235 = [v35 dictionaryWithDictionary:v36];
+  dispositions = [dynamicInfoCopy dispositions];
+  v235 = [v35 dictionaryWithDictionary:dispositions];
 
-  [v230 addObject:v223];
-  v210 = [[TPRecoveryKeyPair alloc] initWithStableInfo:v217];
-  v37 = [(TPRecoveryKeyPair *)v210 signingKeyData];
-  v38 = [TPHashBuilder hashWithAlgo:2 ofData:v37];
+  [v230 addObject:modelCopy];
+  v210 = [[TPRecoveryKeyPair alloc] initWithStableInfo:stableInfoCopy];
+  signingKeyData = [(TPRecoveryKeyPair *)v210 signingKeyData];
+  v38 = [TPHashBuilder hashWithAlgo:2 ofData:signingKeyData];
 
   v209 = [v38 stringByReplacingOccurrencesOfString:@"SHA384:" withString:&stru_287FCB740];
 
-  v208 = [MEMORY[0x277CCACA8] stringWithFormat:@"RK-%@", v209];
+  v209 = [MEMORY[0x277CCACA8] stringWithFormat:@"RK-%@", v209];
   v232 = [MEMORY[0x277CBEB58] setWithSet:v218];
-  [v232 addObject:v208];
-  v39 = [(TPModel *)self allCustodianRecoveryKeyPeerIDs];
-  [v232 addObjectsFromArray:v39];
+  [v232 addObject:v209];
+  allCustodianRecoveryKeyPeerIDs = [(TPModel *)self allCustodianRecoveryKeyPeerIDs];
+  [v232 addObjectsFromArray:allCustodianRecoveryKeyPeerIDs];
 
   v287 = 0u;
   v288 = 0u;
   v285 = 0u;
   v286 = 0u;
-  obj = v222;
+  obj = iDsCopy;
   v40 = [obj countByEnumeratingWithState:&v285 objects:v303 count:16];
   if (v40)
   {
@@ -3415,7 +3415,7 @@ LABEL_50:
             _os_log_impl(&dword_26F78B000, v59, OS_LOG_TYPE_DEFAULT, "No peer for given peer id: %{public}@", buf, 0xCu);
           }
 
-          failWithNoPeerWithIDError(a14);
+          failWithNoPeerWithIDError(error);
           v29 = 0;
           goto LABEL_259;
         }
@@ -3427,7 +3427,7 @@ LABEL_50:
     while (v40);
   }
 
-  [v230 addObjectsFromArray:v221];
+  [v230 addObjectsFromArray:dsCopy];
   [v227 addObjectsFromArray:obj];
   [v230 minusSet:v227];
   v44 = TPModelLog();
@@ -3444,7 +3444,7 @@ LABEL_50:
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v228;
+    *&buf[4] = machineIDsCopy;
     _os_log_impl(&dword_26F78B000, v45, OS_LOG_TYPE_DEFAULT, "Beginning sponsor checking; machine ID list: %{public}@", buf, 0xCu);
   }
 
@@ -3468,7 +3468,7 @@ LABEL_50:
 
         v49 = *(*(&v281 + 1) + 8 * j);
         v50 = objc_autoreleasePoolPush();
-        v51 = [(TPModel *)v229 recursivelyExpandIncludedPeerIDs:v230 andExcludedPeerIDs:v227 dispositions:v235 withPeersTrustedBySponsorID:v49 currentMachineIDs:v228 forEpoch:v225];
+        v51 = [(TPModel *)selfCopy recursivelyExpandIncludedPeerIDs:v230 andExcludedPeerIDs:v227 dispositions:v235 withPeersTrustedBySponsorID:v49 currentMachineIDs:machineIDsCopy forEpoch:epoch];
         objc_autoreleasePoolPop(v50);
         if (v51)
         {
@@ -3481,11 +3481,11 @@ LABEL_50:
             _os_log_impl(&dword_26F78B000, v60, OS_LOG_TYPE_DEFAULT, "Error sponsor checking: %{public}@", buf, 0xCu);
           }
 
-          if (a14)
+          if (error)
           {
             v61 = v51;
             v29 = 0;
-            *a14 = v51;
+            *error = v51;
           }
 
           else
@@ -3513,11 +3513,11 @@ LABEL_50:
     _os_log_impl(&dword_26F78B000, v52, OS_LOG_TYPE_DEFAULT, "After sponsor checking: included:%{public}@ excluded:%{public}@", buf, 0x16u);
   }
 
-  if (v216)
+  if (peerCopy)
   {
-    v53 = [v216 peerID];
-    v54 = [v216 permanentInfo];
-    [(TPModel *)v229 considerVouchersSponsoredByPeerID:v53 sponsorPermanentInfo:v54 toRecursivelyExpandIncludedPeerIDs:v230 andExcludedPeerIDs:v227 dispositions:v235 currentMachineIDs:v228 forEpoch:v225];
+    peerID = [peerCopy peerID];
+    permanentInfo = [peerCopy permanentInfo];
+    [(TPModel *)selfCopy considerVouchersSponsoredByPeerID:peerID sponsorPermanentInfo:permanentInfo toRecursivelyExpandIncludedPeerIDs:v230 andExcludedPeerIDs:v227 dispositions:v235 currentMachineIDs:machineIDsCopy forEpoch:epoch];
   }
 
   v55 = TPModelLog();
@@ -3530,17 +3530,17 @@ LABEL_50:
     _os_log_impl(&dword_26F78B000, v55, OS_LOG_TYPE_DEFAULT, "After voucher checking: included:%{public}@ excluded:%{public}@", buf, 0x16u);
   }
 
-  if (v215)
+  if (keysCopy)
   {
     v56 = TPModelLog();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v215;
+      *&buf[4] = keysCopy;
       _os_log_impl(&dword_26F78B000, v56, OS_LOG_TYPE_DEFAULT, "Preapproved keys: %{public}@", buf, 0xCu);
     }
 
-    v207 = [TPModel preapprovalsFromKeys:v215];
+    v207 = [TPModel preapprovalsFromKeys:keysCopy];
     v57 = TPModelLog();
     if (!os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
     {
@@ -3554,8 +3554,8 @@ LABEL_50:
   }
 
   v62 = MEMORY[0x277CBEB58];
-  v63 = [v224 preapprovals];
-  v207 = [v62 setWithSet:v63];
+  preapprovals = [dynamicInfoCopy preapprovals];
+  v207 = [v62 setWithSet:preapprovals];
 
   v57 = TPModelLog();
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
@@ -3570,7 +3570,7 @@ LABEL_58:
 LABEL_59:
 
   v206 = [v230 setByAddingObjectsFromSet:v227];
-  v211 = [(TPModel *)v229 filterPreapprovals:v207 forExistingPeers:v206];
+  v211 = [(TPModel *)selfCopy filterPreapprovals:v207 forExistingPeers:v206];
   v64 = TPModelLog();
   v65 = os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT);
   if (v211)
@@ -3582,11 +3582,11 @@ LABEL_59:
       _os_log_impl(&dword_26F78B000, v64, OS_LOG_TYPE_DEFAULT, "Error filtering preapprovals: %{public}@", buf, 0xCu);
     }
 
-    if (a14)
+    if (error)
     {
       v66 = v211;
       v29 = 0;
-      *a14 = v211;
+      *error = v211;
       goto LABEL_257;
     }
 
@@ -3604,8 +3604,8 @@ LABEL_59:
   v280 = 0u;
   v277 = 0u;
   v278 = 0u;
-  v67 = [v207 allObjects];
-  v68 = [v67 countByEnumeratingWithState:&v277 objects:v301 count:16];
+  allObjects = [v207 allObjects];
+  v68 = [allObjects countByEnumeratingWithState:&v277 objects:v301 count:16];
   if (!v68)
   {
     v211 = 0;
@@ -3620,7 +3620,7 @@ LABEL_59:
     {
       if (*v278 != v69)
       {
-        objc_enumerationMutation(v67);
+        objc_enumerationMutation(allObjects);
       }
 
       v71 = *(*(&v277 + 1) + 8 * k);
@@ -3641,17 +3641,17 @@ LABEL_59:
       v268[2] = __198__TPModel_calculateDynamicInfoFromModel_peer_peerPermanentInfo_peerStableInfo_startingDynamicInfo_addingPeerIDs_removingPeerIDs_preapprovedKeys_signingKeyPair_currentMachineIDs_sponsorPeerID_error___block_invoke;
       v268[3] = &unk_279DED9E8;
       v268[4] = v71;
-      v268[5] = v229;
+      v268[5] = selfCopy;
       v275 = v72;
-      v276 = v225;
+      v276 = epoch;
       v269 = v230;
       v274 = buf;
       v270 = v227;
       v271 = v235;
-      v272 = v228;
+      v272 = machineIDsCopy;
       v273 = v207;
       v267 = 0;
-      [(TPModel *)v229 enumeratePeersUsingBlock:v268 error:&v267];
+      [(TPModel *)selfCopy enumeratePeersUsingBlock:v268 error:&v267];
       v73 = v267;
       v211 = v73;
       if (v73)
@@ -3665,13 +3665,13 @@ LABEL_59:
           _os_log_impl(&dword_26F78B000, v75, OS_LOG_TYPE_DEFAULT, "Error enumerating peers: %{public}@", v296, 0xCu);
         }
 
-        if (a14)
+        if (error)
         {
           v76 = v211;
           v77 = v211;
 LABEL_82:
           v80 = 0;
-          *a14 = v77;
+          *error = v77;
           goto LABEL_85;
         }
 
@@ -3691,7 +3691,7 @@ LABEL_83:
           _os_log_impl(&dword_26F78B000, v78, OS_LOG_TYPE_DEFAULT, "Error recursively expanding peers: %{public}@", v296, 0xCu);
         }
 
-        if (a14)
+        if (error)
         {
           v77 = 0;
           goto LABEL_82;
@@ -3713,15 +3713,15 @@ LABEL_90:
       }
     }
 
-    v68 = [v67 countByEnumeratingWithState:&v277 objects:v301 count:16];
+    v68 = [allObjects countByEnumeratingWithState:&v277 objects:v301 count:16];
   }
 
   while (v68);
 LABEL_92:
 
   [v230 minusSet:v227];
-  v81 = [(TPModel *)v229 dbAdapter];
-  v82 = [v81 distrustedEgoSponsoredBeneficiaryIDs:v223];
+  dbAdapter = [(TPModel *)selfCopy dbAdapter];
+  v82 = [dbAdapter distrustedEgoSponsoredBeneficiaryIDs:modelCopy];
   [v230 minusSet:v82];
 
   v83 = TPModelLog();
@@ -3734,10 +3734,10 @@ LABEL_92:
     _os_log_impl(&dword_26F78B000, v83, OS_LOG_TYPE_DEFAULT, "After preapproval checking: included:%{public}@ excluded:%{public}@", buf, 0x16u);
   }
 
-  v84 = [v216 permanentInfo];
-  v203 = [v84 modelID];
+  permanentInfo2 = [peerCopy permanentInfo];
+  modelID = [permanentInfo2 modelID];
 
-  if ([TPModel ignoreTDLForModel:v203])
+  if ([TPModel ignoreTDLForModel:modelID])
   {
     v85 = TPModelLog();
     if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
@@ -3751,20 +3751,20 @@ LABEL_92:
 
   else
   {
-    v86 = [(TPModel *)v229 filterPeerList:v230 byMachineIDs:v228 sponsorPeerID:v214 dispositions:v235];
+    v86 = [(TPModel *)selfCopy filterPeerList:v230 byMachineIDs:machineIDsCopy sponsorPeerID:dCopy dispositions:v235];
   }
 
   v204 = v86;
 
-  v202 = [(TPModel *)v229 filterPeerList:v227 byMachineIDs:v228 sponsorPeerID:v214 dispositions:v235];
-  if ([v230 count] != 1 || (objc_msgSend(v230, "containsObject:", v223) & 1) == 0)
+  v202 = [(TPModel *)selfCopy filterPeerList:v227 byMachineIDs:machineIDsCopy sponsorPeerID:dCopy dispositions:v235];
+  if ([v230 count] != 1 || (objc_msgSend(v230, "containsObject:", modelCopy) & 1) == 0)
   {
     [v230 minusSet:v204];
     [v227 unionSet:v204];
     [v227 unionSet:v202];
   }
 
-  if (v214)
+  if (dCopy)
   {
     v87 = TPModelLog();
     if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
@@ -3776,8 +3776,8 @@ LABEL_92:
     goto LABEL_105;
   }
 
-  v107 = [v213 machineID];
-  v108 = [v107 length] == 0;
+  machineID = [v213 machineID];
+  v108 = [machineID length] == 0;
 
   if (v108)
   {
@@ -3829,8 +3829,8 @@ LABEL_106:
             {
               v95 = objc_alloc_init(TPPBDisposition);
 
-              v96 = [v94 unknownMachineID];
-              [(TPPBDisposition *)v95 setUnknownMachineID:v96];
+              unknownMachineID = [v94 unknownMachineID];
+              [(TPPBDisposition *)v95 setUnknownMachineID:unknownMachineID];
 
               if ([v94 hasEvictedMachineID])
               {
@@ -3845,8 +3845,8 @@ LABEL_119:
 LABEL_120:
                 v95 = v97;
 
-                v98 = [v94 evictedMachineID];
-                [(TPPBDisposition *)v95 setEvictedMachineID:v98];
+                evictedMachineID = [v94 evictedMachineID];
+                [(TPPBDisposition *)v95 setEvictedMachineID:evictedMachineID];
               }
 
               if ([v94 hasUnknownReasonRemovalMachineID])
@@ -3862,8 +3862,8 @@ LABEL_125:
 LABEL_126:
                 v95 = v99;
 
-                v100 = [v94 unknownReasonRemovalMachineID];
-                [(TPPBDisposition *)v95 setUnknownReasonRemovalMachineID:v100];
+                unknownReasonRemovalMachineID = [v94 unknownReasonRemovalMachineID];
+                [(TPPBDisposition *)v95 setUnknownReasonRemovalMachineID:unknownReasonRemovalMachineID];
               }
 
               if ([v94 hasGhostedMachineID])
@@ -3879,8 +3879,8 @@ LABEL_131:
 LABEL_132:
                 v95 = v101;
 
-                v102 = [v94 ghostedMachineID];
-                [(TPPBDisposition *)v95 setGhostedMachineID:v102];
+                ghostedMachineID = [v94 ghostedMachineID];
+                [(TPPBDisposition *)v95 setGhostedMachineID:ghostedMachineID];
               }
             }
 
@@ -3919,7 +3919,7 @@ LABEL_132:
     }
 
     v257 = 0;
-    v233 = [(TPModel *)v229 policyForPeerIDs:context candidatePeerID:v223 candidateStableInfo:v217 error:&v257];
+    v233 = [(TPModel *)selfCopy policyForPeerIDs:context candidatePeerID:modelCopy candidateStableInfo:stableInfoCopy error:&v257];
     v104 = v257;
     if (v104)
     {
@@ -3934,12 +3934,12 @@ LABEL_132:
 
     if (v233 && ([v233 unknownRedactions] & 1) == 0)
     {
-      if (v217)
+      if (stableInfoCopy)
       {
-        v111 = [v233 version];
-        v112 = [v111 versionNumber];
-        v113 = [v217 flexiblePolicyVersion];
-        v106 = v112 == [v113 versionNumber];
+        version = [v233 version];
+        versionNumber = [version versionNumber];
+        flexiblePolicyVersion = [stableInfoCopy flexiblePolicyVersion];
+        v106 = versionNumber == [flexiblePolicyVersion versionNumber];
       }
 
       else
@@ -3958,7 +3958,7 @@ LABEL_132:
     v253 = 0u;
     v254 = 0u;
     v252 = 0;
-    v114 = [(TPModel *)v229 allPolicyVersionsWithError:&v252];
+    v114 = [(TPModel *)selfCopy allPolicyVersionsWithError:&v252];
     v205 = v252;
     v115 = [v114 countByEnumeratingWithState:&v253 objects:v293 count:16];
     if (v115)
@@ -3974,22 +3974,22 @@ LABEL_132:
           }
 
           v118 = *(*(&v253 + 1) + 8 * m);
-          v119 = [v118 versionNumber];
-          v120 = [v233 version];
-          v121 = v119 <= [v120 versionNumber];
+          versionNumber2 = [v118 versionNumber];
+          version2 = [v233 version];
+          v121 = versionNumber2 <= [version2 versionNumber];
 
-          v122 = [v118 versionNumber];
-          v123 = [v233 version];
+          versionNumber3 = [v118 versionNumber];
+          version3 = [v233 version];
           v106 &= v121;
-          if (v122 == [v123 versionNumber])
+          if (versionNumber3 == [version3 versionNumber])
           {
-            v124 = [v118 policyHash];
-            v125 = [v233 version];
-            v126 = [v125 policyHash];
-            v127 = v126;
-            if (v126)
+            policyHash = [v118 policyHash];
+            version4 = [v233 version];
+            policyHash2 = [version4 policyHash];
+            v127 = policyHash2;
+            if (policyHash2)
             {
-              v128 = v126;
+              v128 = policyHash2;
             }
 
             else
@@ -3997,7 +3997,7 @@ LABEL_132:
               v128 = &stru_287FCB740;
             }
 
-            v129 = [v124 isEqualToString:v128];
+            v129 = [policyHash isEqualToString:v128];
 
             v106 &= v129;
           }
@@ -4015,11 +4015,11 @@ LABEL_132:
 
     if (v205)
     {
-      if (a14)
+      if (error)
       {
         v130 = v205;
         v29 = 0;
-        *a14 = v205;
+        *error = v205;
       }
 
       else
@@ -4051,12 +4051,12 @@ LABEL_132:
       v131 = TPModelLog();
       if (os_log_type_enabled(v131, OS_LOG_TYPE_DEFAULT))
       {
-        v133 = [v217 bestPolicyVersion];
-        v134 = [v133 versionNumber];
+        bestPolicyVersion = [stableInfoCopy bestPolicyVersion];
+        versionNumber4 = [bestPolicyVersion versionNumber];
         *buf = 138544130;
-        *&buf[4] = v223;
+        *&buf[4] = modelCopy;
         *&buf[12] = 2048;
-        *&buf[14] = v134;
+        *&buf[14] = versionNumber4;
         *&buf[22] = 2114;
         v299 = v233;
         LOWORD(v300) = 2114;
@@ -4065,7 +4065,7 @@ LABEL_132:
       }
     }
 
-    if ([v227 containsObject:v223])
+    if ([v227 containsObject:modelCopy])
     {
       v135 = TPModelLog();
       if (os_log_type_enabled(v135, OS_LOG_TYPE_DEFAULT))
@@ -4075,16 +4075,16 @@ LABEL_132:
       }
 
       v251 = 0;
-      v136 = [(TPModel *)v229 untrustedPeerIDsWithError:&v251];
+      v136 = [(TPModel *)selfCopy untrustedPeerIDsWithError:&v251];
       v137 = v251;
       v138 = v137;
       if (v137)
       {
-        if (a14)
+        if (error)
         {
           v139 = v137;
           v29 = 0;
-          *a14 = v138;
+          *error = v138;
         }
 
         else
@@ -4105,7 +4105,7 @@ LABEL_132:
           _os_log_impl(&dword_26F78B000, v161, OS_LOG_TYPE_DEFAULT, "Update would result in zero trusted peers; failing", buf, 2u);
         }
 
-        if (!a14)
+        if (!error)
         {
           v29 = 0;
           goto LABEL_253;
@@ -4117,19 +4117,19 @@ LABEL_132:
         v292 = @"Update would result in no trusted peers";
         v164 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v292 forKeys:&v291 count:1];
         [v162 errorWithDomain:v163 code:11 userInfo:v164];
-        *a14 = v29 = 0;
+        *error = v29 = 0;
       }
 
       else
       {
         v164 = [MEMORY[0x277CBEB58] setWithSet:v160];
-        v193 = [(TPModel *)v229 dbAdapter];
-        v194 = [v193 egoSponsoredBeneficiaryIDs:v223];
+        dbAdapter2 = [(TPModel *)selfCopy dbAdapter];
+        v194 = [dbAdapter2 egoSponsoredBeneficiaryIDs:modelCopy];
         [v164 intersectSet:v194];
 
-        [v164 addObject:v223];
-        v195 = [MEMORY[0x277CBEB98] setWithArray:v221];
-        v29 = [(TPModel *)v229 createDynamicInfoWithIncludedPeerIDs:v195 excludedPeerIDs:v164 dispositions:v235 preapprovals:v207 signingKeyPair:v212 error:a14];
+        [v164 addObject:modelCopy];
+        v195 = [MEMORY[0x277CBEB98] setWithArray:dsCopy];
+        v29 = [(TPModel *)selfCopy createDynamicInfoWithIncludedPeerIDs:v195 excludedPeerIDs:v164 dispositions:v235 preapprovals:v207 signingKeyPair:pairCopy error:error];
       }
 
 LABEL_253:
@@ -4142,8 +4142,8 @@ LABEL_254:
     v250[1] = 3221225472;
     v250[2] = __198__TPModel_calculateDynamicInfoFromModel_peer_peerPermanentInfo_peerStableInfo_startingDynamicInfo_addingPeerIDs_removingPeerIDs_preapprovedKeys_signingKeyPair_currentMachineIDs_sponsorPeerID_error___block_invoke_104;
     v250[3] = &unk_279DEDA10;
-    v250[4] = v229;
-    v250[5] = v225;
+    v250[4] = selfCopy;
+    v250[5] = epoch;
     v140 = [v227 objectsPassingTest:v250];
     v226 = [v140 mutableCopy];
 
@@ -4154,7 +4154,7 @@ LABEL_254:
     v246[1] = 3221225472;
     v246[2] = __198__TPModel_calculateDynamicInfoFromModel_peer_peerPermanentInfo_peerStableInfo_startingDynamicInfo_addingPeerIDs_removingPeerIDs_preapprovedKeys_signingKeyPair_currentMachineIDs_sponsorPeerID_error___block_invoke_106;
     v246[3] = &unk_279DEDA38;
-    v246[4] = v229;
+    v246[4] = selfCopy;
     v201 = context;
     v247 = v201;
     v144 = v142;
@@ -4162,7 +4162,7 @@ LABEL_254:
     v145 = v143;
     v249 = v145;
     v245 = 0;
-    v146 = [(TPModel *)v229 _iterateOverPeersWithBlock:v246 error:&v245];
+    v146 = [(TPModel *)selfCopy _iterateOverPeersWithBlock:v246 error:&v245];
     v147 = v245;
     if (v147)
     {
@@ -4236,14 +4236,14 @@ LABEL_254:
           }
 
           v174 = *(*(&v237 + 1) + 8 * v173);
-          if ([v174 containsString:@"RK-"] & 1) != 0 || (-[TPModel allCustodianRecoveryKeyPeerIDs](v229, "allCustodianRecoveryKeyPeerIDs"), v175 = objc_claimAutoreleasedReturnValue(), v176 = objc_msgSend(v175, "containsObject:", v174), v175, (v176))
+          if ([v174 containsString:@"RK-"] & 1) != 0 || (-[TPModel allCustodianRecoveryKeyPeerIDs](selfCopy, "allCustodianRecoveryKeyPeerIDs"), v175 = objc_claimAutoreleasedReturnValue(), v176 = objc_msgSend(v175, "containsObject:", v174), v175, (v176))
           {
             v177 = 0;
             goto LABEL_223;
           }
 
           v236 = 0;
-          v178 = [(TPModel *)v229 peerWithID:v174 error:&v236];
+          v178 = [(TPModel *)selfCopy peerWithID:v174 error:&v236];
           v177 = v236;
 
           if (!v178)
@@ -4292,8 +4292,8 @@ LABEL_223:
       while (v184);
     }
 
-    v185 = [(TPModel *)v229 dbAdapter];
-    v186 = [v185 distrustedEgoSponsoredBeneficiaryIDs:v223];
+    dbAdapter3 = [(TPModel *)selfCopy dbAdapter];
+    v186 = [dbAdapter3 distrustedEgoSponsoredBeneficiaryIDs:modelCopy];
     [v226 unionSet:v186];
 
     v187 = TPModelLog();
@@ -4304,16 +4304,16 @@ LABEL_223:
       _os_log_impl(&dword_26F78B000, v187, OS_LOG_TYPE_DEFAULT, "After retaining sponsored beneficiary IDs in excluded list: excluded:%{public}@", buf, 0xCu);
     }
 
-    v188 = [v224 includedPeerIDs];
-    if ([v201 isEqualToSet:v188])
+    includedPeerIDs2 = [dynamicInfoCopy includedPeerIDs];
+    if ([v201 isEqualToSet:includedPeerIDs2])
     {
-      v189 = [v224 excludedPeerIDs];
-      if ([v226 isEqualToSet:v189])
+      excludedPeerIDs3 = [dynamicInfoCopy excludedPeerIDs];
+      if ([v226 isEqualToSet:excludedPeerIDs3])
       {
-        if (!v207 || ([v224 preapprovals], v171 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v207, "isEqual:", v171) & 1) != 0))
+        if (!v207 || ([dynamicInfoCopy preapprovals], v171 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v207, "isEqual:", v171) & 1) != 0))
         {
-          v198 = [v224 dispositions];
-          v199 = [v235 isEqualToDictionary:v198];
+          dispositions2 = [dynamicInfoCopy dispositions];
+          v199 = [v235 isEqualToDictionary:dispositions2];
 
           if (v207)
           {
@@ -4340,7 +4340,7 @@ LABEL_223:
             _os_log_impl(&dword_26F78B000, v200, OS_LOG_TYPE_DEFAULT, "Analysis didn't actually change anything, returning old dynamicInfo", buf, 2u);
           }
 
-          v29 = v224;
+          v29 = dynamicInfoCopy;
           goto LABEL_248;
         }
       }
@@ -4357,7 +4357,7 @@ LABEL_243:
       _os_log_impl(&dword_26F78B000, v190, OS_LOG_TYPE_DEFAULT, "After exclusion filtering: included:%{public}@ excluded:%{public}@", buf, 0x16u);
     }
 
-    v191 = [(TPModel *)v229 createDynamicInfoWithIncludedPeerIDs:v201 excludedPeerIDs:v226 dispositions:v235 preapprovals:v207 signingKeyPair:v212 error:a14];
+    v191 = [(TPModel *)selfCopy createDynamicInfoWithIncludedPeerIDs:v201 excludedPeerIDs:v226 dispositions:v235 preapprovals:v207 signingKeyPair:pairCopy error:error];
     v192 = TPModelLog();
     if (os_log_type_enabled(v192, OS_LOG_TYPE_DEFAULT))
     {
@@ -4374,15 +4374,15 @@ LABEL_255:
   }
 
   contexta = objc_autoreleasePoolPush();
-  v109 = [v213 machineID];
+  machineID2 = [v213 machineID];
   v266 = 0;
-  v234 = [(TPModel *)v229 peersWithMachineID:v109 error:&v266];
+  v234 = [(TPModel *)selfCopy peersWithMachineID:machineID2 error:&v266];
   v205 = v266;
 
   if (!v205)
   {
     v149 = [v234 mutableCopy];
-    [v149 removeObject:v223];
+    [v149 removeObject:modelCopy];
     v150 = TPModelLog();
     if (os_log_type_enabled(v150, OS_LOG_TYPE_DEFAULT))
     {
@@ -4441,11 +4441,11 @@ LABEL_255:
   }
 
   objc_autoreleasePoolPop(contexta);
-  if (a14)
+  if (error)
   {
     v110 = v205;
     v29 = 0;
-    *a14 = v205;
+    *error = v205;
   }
 
   else
@@ -4582,49 +4582,49 @@ void __198__TPModel_calculateDynamicInfoFromModel_peer_peerPermanentInfo_peerSta
   }
 }
 
-- (id)calculateDynamicInfoForPeerWithID:(id)a3 addingPeerIDs:(id)a4 removingPeerIDs:(id)a5 preapprovedKeys:(id)a6 signingKeyPair:(id)a7 currentMachineIDs:(id)a8 error:(id *)a9
+- (id)calculateDynamicInfoForPeerWithID:(id)d addingPeerIDs:(id)ds removingPeerIDs:(id)iDs preapprovedKeys:(id)keys signingKeyPair:(id)pair currentMachineIDs:(id)machineIDs error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v36 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(TPModel *)self actualPeerWithID:v15 error:a9];
+  dCopy = d;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  keysCopy = keys;
+  pairCopy = pair;
+  machineIDsCopy = machineIDs;
+  v20 = [(TPModel *)self actualPeerWithID:dCopy error:error];
   v21 = v20;
   if (v20)
   {
-    v33 = [v20 peerID];
-    v34 = v15;
-    v22 = [v21 permanentInfo];
+    peerID = [v20 peerID];
+    v34 = dCopy;
+    permanentInfo = [v21 permanentInfo];
     [v21 stableInfo];
-    v23 = v18;
-    v25 = v24 = v17;
-    v26 = [v21 dynamicInfo];
-    v27 = self;
-    v28 = v36;
-    v35 = [(TPModel *)v27 calculateDynamicInfoFromModel:v33 peer:v21 peerPermanentInfo:v22 peerStableInfo:v25 startingDynamicInfo:v26 addingPeerIDs:v36 removingPeerIDs:v16 preapprovedKeys:v24 signingKeyPair:v23 currentMachineIDs:v19 sponsorPeerID:0 error:a9];
+    v23 = pairCopy;
+    v25 = v24 = keysCopy;
+    dynamicInfo = [v21 dynamicInfo];
+    selfCopy = self;
+    v28 = dsCopy;
+    v35 = [(TPModel *)selfCopy calculateDynamicInfoFromModel:peerID peer:v21 peerPermanentInfo:permanentInfo peerStableInfo:v25 startingDynamicInfo:dynamicInfo addingPeerIDs:dsCopy removingPeerIDs:iDsCopy preapprovedKeys:v24 signingKeyPair:v23 currentMachineIDs:machineIDsCopy sponsorPeerID:0 error:error];
 
-    v15 = v34;
-    v17 = v24;
+    dCopy = v34;
+    keysCopy = v24;
   }
 
   else
   {
-    v29 = v19;
-    v23 = v18;
-    v28 = v36;
+    v29 = machineIDsCopy;
+    v23 = pairCopy;
+    v28 = dsCopy;
     v30 = TPModelLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v38 = v15;
+      v38 = dCopy;
       _os_log_impl(&dword_26F78B000, v30, OS_LOG_TYPE_DEFAULT, "No peer for ID %{public}@", buf, 0xCu);
     }
 
     v35 = 0;
-    v19 = v29;
+    machineIDsCopy = v29;
   }
 
   v31 = *MEMORY[0x277D85DE8];
@@ -4632,57 +4632,57 @@ void __198__TPModel_calculateDynamicInfoFromModel_peer_peerPermanentInfo_peerSta
   return v35;
 }
 
-- (id)recursivelyExpandIncludedPeerIDs:(id)a3 andExcludedPeerIDs:(id)a4 dispositions:(id)a5 withPeersTrustedBySponsorID:(id)a6 currentMachineIDs:(id)a7 forEpoch:(unint64_t)a8
+- (id)recursivelyExpandIncludedPeerIDs:(id)ds andExcludedPeerIDs:(id)iDs dispositions:(id)dispositions withPeersTrustedBySponsorID:(id)d currentMachineIDs:(id)machineIDs forEpoch:(unint64_t)epoch
 {
   v66 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dispositionsCopy = dispositions;
+  dCopy = d;
+  machineIDsCopy = machineIDs;
   v58 = 0;
-  v52 = self;
-  v18 = [(TPModel *)self peerWithID:v16 error:&v58];
+  selfCopy = self;
+  v18 = [(TPModel *)self peerWithID:dCopy error:&v58];
   v19 = v58;
   v20 = v19;
   if (v18)
   {
     v47 = v19;
-    v49 = v17;
-    v50 = v15;
-    v51 = v13;
+    v49 = machineIDsCopy;
+    v50 = dispositionsCopy;
+    v51 = dsCopy;
     v21 = TPModelLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v18 peerID];
-      v23 = [v18 dynamicInfo];
-      v24 = [v23 includedPeerIDs];
-      v25 = [v18 dynamicInfo];
-      v26 = [v25 excludedPeerIDs];
+      peerID = [v18 peerID];
+      dynamicInfo = [v18 dynamicInfo];
+      includedPeerIDs = [dynamicInfo includedPeerIDs];
+      dynamicInfo2 = [v18 dynamicInfo];
+      excludedPeerIDs = [dynamicInfo2 excludedPeerIDs];
       *buf = 138543874;
-      v61 = v22;
+      v61 = peerID;
       v62 = 2114;
-      v63 = v24;
+      v63 = includedPeerIDs;
       v64 = 2114;
-      v65 = v26;
+      v65 = excludedPeerIDs;
       _os_log_impl(&dword_26F78B000, v21, OS_LOG_TYPE_INFO, "Including information from sponsor (%{public}@): included: %{public}@ excluded: %{public}@", buf, 0x20u);
     }
 
-    v48 = v16;
+    v48 = dCopy;
 
-    v27 = [v18 dynamicInfo];
-    v28 = [v27 excludedPeerIDs];
-    v29 = v14;
-    [v14 unionSet:v28];
+    dynamicInfo3 = [v18 dynamicInfo];
+    excludedPeerIDs2 = [dynamicInfo3 excludedPeerIDs];
+    v29 = iDsCopy;
+    [iDsCopy unionSet:excludedPeerIDs2];
 
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v30 = [v18 dynamicInfo];
-    v31 = [v30 includedPeerIDs];
+    dynamicInfo4 = [v18 dynamicInfo];
+    includedPeerIDs2 = [dynamicInfo4 includedPeerIDs];
 
-    v32 = [v31 countByEnumeratingWithState:&v54 objects:v59 count:16];
+    v32 = [includedPeerIDs2 countByEnumeratingWithState:&v54 objects:v59 count:16];
     if (v32)
     {
       v33 = v32;
@@ -4693,35 +4693,35 @@ void __198__TPModel_calculateDynamicInfoFromModel_peer_peerPermanentInfo_peerSta
         {
           if (*v55 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(includedPeerIDs2);
           }
 
           v36 = *(*(&v54 + 1) + 8 * i);
           v37 = objc_autoreleasePoolPush();
-          v38 = [v18 peerID];
-          v39 = [v18 permanentInfo];
-          v40 = [(TPModel *)v52 considerCandidateID:v36 withSponsorID:v38 sponsorPermanentInfo:v39 toExpandIncludedPeerIDs:v51 andExcludedPeerIDs:v29 dispositions:v50 currentMachineIDs:v49 forEpoch:a8];
+          peerID2 = [v18 peerID];
+          permanentInfo = [v18 permanentInfo];
+          v40 = [(TPModel *)selfCopy considerCandidateID:v36 withSponsorID:peerID2 sponsorPermanentInfo:permanentInfo toExpandIncludedPeerIDs:v51 andExcludedPeerIDs:v29 dispositions:v50 currentMachineIDs:v49 forEpoch:epoch];
 
           objc_autoreleasePoolPop(v37);
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v54 objects:v59 count:16];
+        v33 = [includedPeerIDs2 countByEnumeratingWithState:&v54 objects:v59 count:16];
       }
 
       while (v33);
     }
 
-    v41 = [v18 peerID];
-    v42 = [v18 permanentInfo];
-    v15 = v50;
-    v13 = v51;
-    v14 = v29;
-    v17 = v49;
-    [(TPModel *)v52 considerVouchersSponsoredByPeerID:v41 sponsorPermanentInfo:v42 toRecursivelyExpandIncludedPeerIDs:v51 andExcludedPeerIDs:v29 dispositions:v50 currentMachineIDs:v49 forEpoch:a8];
+    peerID3 = [v18 peerID];
+    permanentInfo2 = [v18 permanentInfo];
+    dispositionsCopy = v50;
+    dsCopy = v51;
+    iDsCopy = v29;
+    machineIDsCopy = v49;
+    [(TPModel *)selfCopy considerVouchersSponsoredByPeerID:peerID3 sponsorPermanentInfo:permanentInfo2 toRecursivelyExpandIncludedPeerIDs:v51 andExcludedPeerIDs:v29 dispositions:v50 currentMachineIDs:v49 forEpoch:epoch];
 
-    v43 = [(TPModel *)v52 considerPreapprovalsSponsoredByPeer:v18 toRecursivelyExpandIncludedPeerIDs:v51 andExcludedPeerIDs:v29 dispositions:v50 currentMachineIDs:v49 forEpoch:a8];
+    v43 = [(TPModel *)selfCopy considerPreapprovalsSponsoredByPeer:v18 toRecursivelyExpandIncludedPeerIDs:v51 andExcludedPeerIDs:v29 dispositions:v50 currentMachineIDs:v49 forEpoch:epoch];
     v20 = v47;
-    v16 = v48;
+    dCopy = v48;
   }
 
   else if (v19)
@@ -4730,7 +4730,7 @@ void __198__TPModel_calculateDynamicInfoFromModel_peer_peerPermanentInfo_peerSta
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v61 = v16;
+      v61 = dCopy;
       v62 = 2114;
       v63 = v20;
       _os_log_impl(&dword_26F78B000, v44, OS_LOG_TYPE_DEFAULT, "Could not find peer %{public}@: %{public}@", buf, 0x16u);
@@ -4749,22 +4749,22 @@ void __198__TPModel_calculateDynamicInfoFromModel_peer_peerPermanentInfo_peerSta
   return v43;
 }
 
-- (id)considerPreapprovalsSponsoredByPeer:(id)a3 toRecursivelyExpandIncludedPeerIDs:(id)a4 andExcludedPeerIDs:(id)a5 dispositions:(id)a6 currentMachineIDs:(id)a7 forEpoch:(unint64_t)a8
+- (id)considerPreapprovalsSponsoredByPeer:(id)peer toRecursivelyExpandIncludedPeerIDs:(id)ds andExcludedPeerIDs:(id)iDs dispositions:(id)dispositions currentMachineIDs:(id)machineIDs forEpoch:(unint64_t)epoch
 {
   v51 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v33 = a4;
-  v32 = a5;
-  v31 = a6;
-  v14 = a7;
+  peerCopy = peer;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dispositionsCopy = dispositions;
+  machineIDsCopy = machineIDs;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v15 = [v13 dynamicInfo];
-  v16 = [v15 preapprovals];
+  dynamicInfo = [peerCopy dynamicInfo];
+  preapprovals = [dynamicInfo preapprovals];
 
-  v17 = [v16 countByEnumeratingWithState:&v44 objects:v50 count:16];
+  v17 = [preapprovals countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v17)
   {
     v19 = v17;
@@ -4777,7 +4777,7 @@ LABEL_3:
     {
       if (*v45 != v20)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(preapprovals);
       }
 
       v22 = *(*(&v44 + 1) + 8 * v21);
@@ -4790,13 +4790,13 @@ LABEL_3:
         v35[3] = &unk_279DED9C0;
         v42 = v23;
         v35[4] = v22;
-        v36 = v13;
-        v37 = self;
-        v38 = v33;
-        v39 = v32;
-        v40 = v31;
-        v41 = v14;
-        v43 = a8;
+        v36 = peerCopy;
+        selfCopy = self;
+        v38 = dsCopy;
+        v39 = iDsCopy;
+        v40 = dispositionsCopy;
+        v41 = machineIDsCopy;
+        epochCopy = epoch;
         v34 = 0;
         [(TPModel *)self enumeratePeersUsingBlock:v35 error:&v34];
         v24 = v34;
@@ -4821,7 +4821,7 @@ LABEL_3:
 
       if (v19 == ++v21)
       {
-        v19 = [v16 countByEnumeratingWithState:&v44 objects:v50 count:16];
+        v19 = [preapprovals countByEnumeratingWithState:&v44 objects:v50 count:16];
         if (v19)
         {
           goto LABEL_3;
@@ -4878,42 +4878,42 @@ void __141__TPModel_considerPreapprovalsSponsoredByPeer_toRecursivelyExpandInclu
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)considerVouchersSponsoredByPeerID:(id)a3 sponsorPermanentInfo:(id)a4 toRecursivelyExpandIncludedPeerIDs:(id)a5 andExcludedPeerIDs:(id)a6 dispositions:(id)a7 currentMachineIDs:(id)a8 forEpoch:(unint64_t)a9
+- (void)considerVouchersSponsoredByPeerID:(id)d sponsorPermanentInfo:(id)info toRecursivelyExpandIncludedPeerIDs:(id)ds andExcludedPeerIDs:(id)iDs dispositions:(id)dispositions currentMachineIDs:(id)machineIDs forEpoch:(unint64_t)epoch
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  dCopy = d;
+  infoCopy = info;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dispositionsCopy = dispositions;
+  machineIDsCopy = machineIDs;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
   v44 = __Block_byref_object_copy_;
   v45 = __Block_byref_object_dispose_;
   v46 = 0;
-  v21 = [(TPModel *)self dbAdapter];
+  dbAdapter = [(TPModel *)self dbAdapter];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __160__TPModel_considerVouchersSponsoredByPeerID_sponsorPermanentInfo_toRecursivelyExpandIncludedPeerIDs_andExcludedPeerIDs_dispositions_currentMachineIDs_forEpoch___block_invoke;
   v31[3] = &unk_279DED998;
-  v22 = v15;
+  v22 = dCopy;
   v32 = v22;
-  v23 = v17;
+  v23 = dsCopy;
   v33 = v23;
-  v24 = v18;
+  v24 = iDsCopy;
   v39 = &v41;
   v34 = v24;
-  v35 = self;
-  v25 = v16;
+  selfCopy = self;
+  v25 = infoCopy;
   v36 = v25;
-  v26 = v19;
+  v26 = dispositionsCopy;
   v37 = v26;
-  v27 = v20;
+  v27 = machineIDsCopy;
   v38 = v27;
-  v40 = a9;
+  epochCopy = epoch;
   v30 = 0;
-  [v21 enumerateVouchersUsingBlock:v31 error:&v30];
+  [dbAdapter enumerateVouchersUsingBlock:v31 error:&v30];
   v28 = v30;
 
   if (!v28)
@@ -5051,47 +5051,47 @@ LABEL_9:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)considerCandidateID:(id)a3 withSponsorID:(id)a4 sponsorPermanentInfo:(id)a5 toExpandIncludedPeerIDs:(id)a6 andExcludedPeerIDs:(id)a7 dispositions:(id)a8 currentMachineIDs:(id)a9 forEpoch:(unint64_t)a10
+- (id)considerCandidateID:(id)d withSponsorID:(id)iD sponsorPermanentInfo:(id)info toExpandIncludedPeerIDs:(id)ds andExcludedPeerIDs:(id)iDs dispositions:(id)dispositions currentMachineIDs:(id)machineIDs forEpoch:(unint64_t)self0
 {
   v80 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if ([v19 containsObject:v16])
+  dCopy = d;
+  iDCopy = iD;
+  infoCopy = info;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dispositionsCopy = dispositions;
+  machineIDsCopy = machineIDs;
+  if ([dsCopy containsObject:dCopy])
   {
     goto LABEL_8;
   }
 
-  if ([v20 containsObject:v16])
+  if ([iDsCopy containsObject:dCopy])
   {
     v23 = TPModelLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v77 = v16;
+      v77 = dCopy;
       _os_log_impl(&dword_26F78B000, v23, OS_LOG_TYPE_DEFAULT, "voucher: peer (%{public}@) already excluded", buf, 0xCu);
     }
 
     goto LABEL_8;
   }
 
-  v24 = [(TPModel *)self allCustodianRecoveryKeyPeerIDs];
-  v25 = [v24 containsObject:v16];
+  allCustodianRecoveryKeyPeerIDs = [(TPModel *)self allCustodianRecoveryKeyPeerIDs];
+  v25 = [allCustodianRecoveryKeyPeerIDs containsObject:dCopy];
 
   if (v25)
   {
-    [v19 addObject:v16];
+    [dsCopy addObject:dCopy];
 LABEL_8:
     v26 = 0;
     goto LABEL_9;
   }
 
   v75 = 0;
-  v29 = [(TPModel *)self peerWithID:v16 error:&v75];
+  v29 = [(TPModel *)self peerWithID:dCopy error:&v75];
   v30 = v75;
   v31 = v30;
   if (!v29)
@@ -5101,7 +5101,7 @@ LABEL_8:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v77 = v16;
+      v77 = dCopy;
       v78 = 2114;
       v79 = v31;
       _os_log_impl(&dword_26F78B000, v37, OS_LOG_TYPE_DEFAULT, "voucher: no peer for id %{public}@: %{public}@", buf, 0x16u);
@@ -5113,24 +5113,24 @@ LABEL_8:
   }
 
   v68 = v30;
-  v69 = v17;
+  v69 = iDCopy;
   v72 = v29;
-  v32 = [v29 permanentInfo];
-  v33 = [v32 machineID];
-  v34 = [v22 entryFor:v33];
+  permanentInfo = [v29 permanentInfo];
+  machineID = [permanentInfo machineID];
+  v34 = [machineIDsCopy entryFor:machineID];
 
   v71 = v34;
   if (v34)
   {
-    v35 = [v34 status];
+    status = [v34 status];
   }
 
   else
   {
-    v35 = 0;
+    status = 0;
   }
 
-  v39 = [v21 objectForKeyedSubscript:v16];
+  v39 = [dispositionsCopy objectForKeyedSubscript:dCopy];
   v40 = v39;
   if (v39)
   {
@@ -5144,10 +5144,10 @@ LABEL_8:
 
   v73 = v41;
 
-  if (v35 > 2)
+  if (status > 2)
   {
     v42 = v73;
-    switch(v35)
+    switch(status)
     {
       case 3:
         v49 = TPModelLog();
@@ -5201,16 +5201,16 @@ LABEL_8:
         goto LABEL_49;
     }
 
-    v50 = v21;
+    v50 = dispositionsCopy;
     v51 = v73;
     goto LABEL_48;
   }
 
   v42 = v73;
-  switch(v35)
+  switch(status)
   {
     case 0:
-      if (v22)
+      if (machineIDsCopy)
       {
         v47 = objc_alloc_init(TPPBUnknownMachineID);
         [(TPPBDisposition *)v73 setUnknownMachineID:v47];
@@ -5219,7 +5219,7 @@ LABEL_8:
       [(TPPBDisposition *)v73 setDisallowedMachineID:0];
       [(TPPBDisposition *)v73 setEvictedMachineID:0];
       [(TPPBDisposition *)v73 setUnknownReasonRemovalMachineID:0];
-      [v21 setObject:v73 forKeyedSubscript:v16];
+      [dispositionsCopy setObject:v73 forKeyedSubscript:dCopy];
       v48 = TPModelLog();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
@@ -5232,16 +5232,16 @@ LABEL_8:
 
       break;
     case 1:
-      v50 = v21;
+      v50 = dispositionsCopy;
       v51 = 0;
 LABEL_48:
-      [v50 setObject:v51 forKeyedSubscript:v16];
+      [v50 setObject:v51 forKeyedSubscript:dCopy];
       break;
     case 2:
       v43 = objc_alloc_init(TPPBDispositionDisallowedMachineID);
       [(TPPBDisposition *)v73 setDisallowedMachineID:v43];
 
-      [v21 setObject:v73 forKeyedSubscript:v16];
+      [dispositionsCopy setObject:v73 forKeyedSubscript:dCopy];
       v44 = TPModelLog();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
@@ -5258,12 +5258,12 @@ LABEL_48:
   }
 
 LABEL_49:
-  v66 = v18;
-  v53 = [MEMORY[0x277CBEB58] setWithSet:v19];
-  [v53 minusSet:v20];
-  [v53 addObject:v16];
+  v66 = infoCopy;
+  v53 = [MEMORY[0x277CBEB58] setWithSet:dsCopy];
+  [v53 minusSet:iDsCopy];
+  [v53 addObject:dCopy];
   v74 = 0;
-  v54 = [(TPModel *)self policyForPeerIDs:v53 candidatePeerID:v16 candidateStableInfo:0 error:&v74];
+  v54 = [(TPModel *)self policyForPeerIDs:v53 candidatePeerID:dCopy candidateStableInfo:0 error:&v74];
   v55 = v74;
   v70 = v54;
   v67 = v53;
@@ -5279,79 +5279,79 @@ LABEL_49:
     }
 
     v26 = v55;
-    v18 = v66;
+    infoCopy = v66;
     goto LABEL_64;
   }
 
-  v56 = [(TPPBDisposition *)v42 unknownMachineID];
-  if (v56)
+  unknownMachineID = [(TPPBDisposition *)v42 unknownMachineID];
+  if (unknownMachineID)
   {
     v57 = v55;
 LABEL_56:
-    v18 = v66;
+    infoCopy = v66;
 LABEL_57:
 
 LABEL_58:
-    [v21 setObject:v42 forKeyedSubscript:v16];
+    [dispositionsCopy setObject:v42 forKeyedSubscript:dCopy];
     goto LABEL_59;
   }
 
-  v56 = [(TPPBDisposition *)v42 evictedMachineID];
+  unknownMachineID = [(TPPBDisposition *)v42 evictedMachineID];
   v57 = v55;
-  if (v56)
+  if (unknownMachineID)
   {
     goto LABEL_56;
   }
 
-  v56 = [(TPPBDisposition *)v42 unknownReasonRemovalMachineID];
-  v18 = v66;
-  if (v56)
+  unknownMachineID = [(TPPBDisposition *)v42 unknownReasonRemovalMachineID];
+  infoCopy = v66;
+  if (unknownMachineID)
   {
     goto LABEL_57;
   }
 
-  v56 = [(TPPBDisposition *)v42 unknownMachineID];
-  if (v56)
+  unknownMachineID = [(TPPBDisposition *)v42 unknownMachineID];
+  if (unknownMachineID)
   {
     goto LABEL_57;
   }
 
-  v56 = [(TPPBDisposition *)v42 disallowedMachineID];
-  if (v56)
+  unknownMachineID = [(TPPBDisposition *)v42 disallowedMachineID];
+  if (unknownMachineID)
   {
     goto LABEL_57;
   }
 
-  v65 = [(TPPBDisposition *)v42 ghostedMachineID];
+  ghostedMachineID = [(TPPBDisposition *)v42 ghostedMachineID];
 
-  if (v65)
+  if (ghostedMachineID)
   {
     goto LABEL_58;
   }
 
 LABEL_59:
-  v59 = [v72 permanentInfo];
-  v60 = [(TPModel *)self canIntroduceCandidate:v59 withSponsor:v18 toEpoch:a10 underPolicy:v70 disposition:v42];
+  permanentInfo2 = [v72 permanentInfo];
+  v60 = [(TPModel *)self canIntroduceCandidate:permanentInfo2 withSponsor:infoCopy toEpoch:epoch underPolicy:v70 disposition:v42];
 
   if (v60)
   {
     v61 = TPModelLog();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
     {
-      v62 = [v72 peerID];
+      peerID = [v72 peerID];
       *buf = 138543618;
-      v77 = v62;
+      v77 = peerID;
       v78 = 2114;
       v79 = v69;
       _os_log_impl(&dword_26F78B000, v61, OS_LOG_TYPE_DEFAULT, "voucher: %{public}@ presented valid voucher from %{public}@", buf, 0x16u);
     }
 
-    [v19 addObject:v16];
-    v63 = [v72 dynamicInfo];
-    v64 = [v63 excludedPeerIDs];
-    [v20 unionSet:v64];
+    [dsCopy addObject:dCopy];
+    dynamicInfo = [v72 dynamicInfo];
+    excludedPeerIDs = [dynamicInfo excludedPeerIDs];
+    [iDsCopy unionSet:excludedPeerIDs];
 
-    v26 = [(TPModel *)self recursivelyExpandIncludedPeerIDs:v19 andExcludedPeerIDs:v20 dispositions:v21 withPeersTrustedBySponsorID:v16 currentMachineIDs:v22 forEpoch:a10];
+    v26 = [(TPModel *)self recursivelyExpandIncludedPeerIDs:dsCopy andExcludedPeerIDs:iDsCopy dispositions:dispositionsCopy withPeersTrustedBySponsorID:dCopy currentMachineIDs:machineIDsCopy forEpoch:epoch];
   }
 
   else
@@ -5367,7 +5367,7 @@ LABEL_64:
 LABEL_65:
 
   v38 = v68;
-  v17 = v69;
+  iDCopy = v69;
 LABEL_66:
 
 LABEL_9:
@@ -5376,33 +5376,33 @@ LABEL_9:
   return v26;
 }
 
-- (BOOL)validateVoucherForPeer:(id)a3 sponsor:(id)a4
+- (BOOL)validateVoucherForPeer:(id)peer sponsor:(id)sponsor
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  sponsorCopy = sponsor;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v8 = [(TPModel *)self dbAdapter];
+  dbAdapter = [(TPModel *)self dbAdapter];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __42__TPModel_validateVoucherForPeer_sponsor___block_invoke;
   v14[3] = &unk_279DED970;
-  v9 = v6;
+  v9 = peerCopy;
   v15 = v9;
-  v10 = v7;
+  v10 = sponsorCopy;
   v16 = v10;
-  v17 = self;
+  selfCopy = self;
   v18 = &v19;
   v13 = 0;
-  [v8 enumerateVouchersUsingBlock:v14 error:&v13];
+  [dbAdapter enumerateVouchersUsingBlock:v14 error:&v13];
   v11 = v13;
 
-  LOBYTE(v8) = *(v20 + 24);
+  LOBYTE(dbAdapter) = *(v20 + 24);
   _Block_object_dispose(&v19, 8);
 
-  return v8;
+  return dbAdapter;
 }
 
 void __42__TPModel_validateVoucherForPeer_sponsor___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -5435,13 +5435,13 @@ LABEL_6:
 LABEL_7:
 }
 
-- (BOOL)verifyVoucherSignature:(id)a3
+- (BOOL)verifyVoucherSignature:(id)signature
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sponsorID];
+  signatureCopy = signature;
+  sponsorID = [signatureCopy sponsorID];
   v37 = 0;
-  v6 = [(TPModel *)self peerWithID:v5 error:&v37];
+  v6 = [(TPModel *)self peerWithID:sponsorID error:&v37];
   v7 = v37;
 
   if (v6 && !v7)
@@ -5452,9 +5452,9 @@ LABEL_7:
   v8 = TPModelLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 sponsorID];
+    sponsorID2 = [signatureCopy sponsorID];
     *buf = 138543618;
-    v40 = v9;
+    v40 = sponsorID2;
     v41 = 2114;
     v42 = v7;
     _os_log_impl(&dword_26F78B000, v8, OS_LOG_TYPE_DEFAULT, "Can't find peer %{public}@: %{public}@", buf, 0x16u);
@@ -5463,9 +5463,9 @@ LABEL_7:
   if (v6)
   {
 LABEL_26:
-    v10 = [v6 permanentInfo];
-    v11 = [v10 signingPubKey];
-    v12 = [v4 checkSignatureWithKey:v11];
+    permanentInfo = [v6 permanentInfo];
+    signingPubKey = [permanentInfo signingPubKey];
+    v12 = [signatureCopy checkSignatureWithKey:signingPubKey];
 
     if (v12)
     {
@@ -5473,18 +5473,18 @@ LABEL_26:
     }
   }
 
-  v13 = [v6 stableInfo];
-  v14 = [v13 recoverySigningPublicKey];
+  stableInfo = [v6 stableInfo];
+  recoverySigningPublicKey = [stableInfo recoverySigningPublicKey];
 
-  if (!v14)
+  if (!recoverySigningPublicKey)
   {
     goto LABEL_10;
   }
 
-  v15 = [v6 stableInfo];
-  v16 = [v15 recoverySigningPublicKey];
-  v17 = [v4 createRecoveryECPublicKey:v16];
-  v18 = [v4 checkSignatureWithKey:v17];
+  stableInfo2 = [v6 stableInfo];
+  recoverySigningPublicKey2 = [stableInfo2 recoverySigningPublicKey];
+  v17 = [signatureCopy createRecoveryECPublicKey:recoverySigningPublicKey2];
+  v18 = [signatureCopy checkSignatureWithKey:v17];
 
   if (v18)
   {
@@ -5499,8 +5499,8 @@ LABEL_10:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v20 = [(TPModel *)self custodianRecoveryKeys];
-    v21 = [v20 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    custodianRecoveryKeys = [(TPModel *)self custodianRecoveryKeys];
+    v21 = [custodianRecoveryKeys countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v21)
     {
       v22 = v21;
@@ -5512,15 +5512,15 @@ LABEL_10:
         {
           if (*v34 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(custodianRecoveryKeys);
           }
 
           v25 = *(*(&v33 + 1) + 8 * i);
-          v26 = [(TPModel *)self custodianRecoveryKeys];
-          v27 = [v26 objectForKeyedSubscript:v25];
+          custodianRecoveryKeys2 = [(TPModel *)self custodianRecoveryKeys];
+          v27 = [custodianRecoveryKeys2 objectForKeyedSubscript:v25];
 
-          v28 = [v27 signingPublicKey];
-          v29 = [v4 checkSignatureWithKey:v28];
+          signingPublicKey = [v27 signingPublicKey];
+          v29 = [signatureCopy checkSignatureWithKey:signingPublicKey];
 
           if (v29)
           {
@@ -5529,7 +5529,7 @@ LABEL_10:
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v22 = [custodianRecoveryKeys countByEnumeratingWithState:&v33 objects:v38 count:16];
         if (v22)
         {
           continue;
@@ -5553,15 +5553,15 @@ LABEL_20:
   return v19;
 }
 
-- (id)createVoucherForCandidate:(id)a3 stableInfo:(id)a4 withSponsorID:(id)a5 reason:(unint64_t)a6 signingKeyPair:(id)a7 error:(id *)a8
+- (id)createVoucherForCandidate:(id)candidate stableInfo:(id)info withSponsorID:(id)d reason:(unint64_t)reason signingKeyPair:(id)pair error:(id *)error
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  if ([(TPModel *)self checkIntroductionForCandidate:v14 stableInfo:a4 withSponsorID:v15 error:a8])
+  candidateCopy = candidate;
+  dCopy = d;
+  pairCopy = pair;
+  if ([(TPModel *)self checkIntroductionForCandidate:candidateCopy stableInfo:info withSponsorID:dCopy error:error])
   {
-    v17 = [v14 peerID];
-    v18 = [TPVoucher voucherWithReason:a6 beneficiaryID:v17 sponsorID:v15 signingKeyPair:v16 error:a8];
+    peerID = [candidateCopy peerID];
+    v18 = [TPVoucher voucherWithReason:reason beneficiaryID:peerID sponsorID:dCopy signingKeyPair:pairCopy error:error];
   }
 
   else
@@ -5572,18 +5572,18 @@ LABEL_20:
   return v18;
 }
 
-- (BOOL)checkIntroductionForCandidate:(id)a3 stableInfo:(id)a4 withSponsorID:(id)a5 error:(id *)a6
+- (BOOL)checkIntroductionForCandidate:(id)candidate stableInfo:(id)info withSponsorID:(id)d error:(id *)error
 {
   v49[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [(TPModel *)self actualPeerWithID:a5 error:a6];
+  candidateCopy = candidate;
+  infoCopy = info;
+  v12 = [(TPModel *)self actualPeerWithID:d error:error];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 trustedPeerIDs];
-    v15 = [v10 peerID];
-    v16 = [(TPModel *)self policyForPeerIDs:v14 candidatePeerID:v15 candidateStableInfo:v11 error:a6];
+    trustedPeerIDs = [v12 trustedPeerIDs];
+    peerID = [candidateCopy peerID];
+    v16 = [(TPModel *)self policyForPeerIDs:trustedPeerIDs candidatePeerID:peerID candidateStableInfo:infoCopy error:error];
 
     if (!v16)
     {
@@ -5593,17 +5593,17 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v17 = [v10 modelID];
-    v18 = [v16 categoryForModel:v17];
+    modelID = [candidateCopy modelID];
+    v18 = [v16 categoryForModel:modelID];
 
     if (v18)
     {
-      v19 = objc_alloc_init(TPPBDisposition);
-      v20 = [v13 permanentInfo];
-      v21 = [v13 permanentInfo];
-      v22 = -[TPModel canIntroduceCandidate:withSponsor:toEpoch:underPolicy:disposition:](self, "canIntroduceCandidate:withSponsor:toEpoch:underPolicy:disposition:", v10, v20, [v21 epoch], v16, v19);
+      modelID2 = objc_alloc_init(TPPBDisposition);
+      permanentInfo = [v13 permanentInfo];
+      permanentInfo2 = [v13 permanentInfo];
+      v22 = -[TPModel canIntroduceCandidate:withSponsor:toEpoch:underPolicy:disposition:](self, "canIntroduceCandidate:withSponsor:toEpoch:underPolicy:disposition:", candidateCopy, permanentInfo, [permanentInfo2 epoch], v16, modelID2);
 
-      if (!a6 || v22)
+      if (!error || v22)
       {
         goto LABEL_18;
       }
@@ -5614,17 +5614,17 @@ LABEL_20:
       v47[0] = @"Policy prohibits introducing candidate";
       v46[0] = v23;
       v46[1] = @"sponsorID";
-      v43 = [(TPPBDisposition *)v19 policyProhibits];
-      v44 = [v43 sponsorId];
-      v47[1] = v44;
+      policyProhibits = [(TPPBDisposition *)modelID2 policyProhibits];
+      sponsorId = [policyProhibits sponsorId];
+      v47[1] = sponsorId;
       v46[2] = @"sponsorCategory";
-      v42 = [(TPPBDisposition *)v19 policyProhibits];
-      v24 = [v42 sponsorCategory];
-      v39 = v24;
+      policyProhibits2 = [(TPPBDisposition *)modelID2 policyProhibits];
+      sponsorCategory = [policyProhibits2 sponsorCategory];
+      v39 = sponsorCategory;
       v45 = v18;
-      if (v24)
+      if (sponsorCategory)
       {
-        v25 = v24;
+        v25 = sponsorCategory;
       }
 
       else
@@ -5634,12 +5634,12 @@ LABEL_20:
 
       v47[2] = v25;
       v46[3] = @"candidateCategory";
-      v38 = [(TPPBDisposition *)v19 policyProhibits];
-      v26 = [v38 candidateCategory];
-      v27 = v26;
-      if (v26)
+      policyProhibits3 = [(TPPBDisposition *)modelID2 policyProhibits];
+      candidateCategory = [policyProhibits3 candidateCategory];
+      v27 = candidateCategory;
+      if (candidateCategory)
       {
-        v28 = v26;
+        v28 = candidateCategory;
       }
 
       else
@@ -5650,19 +5650,19 @@ LABEL_20:
       v47[3] = v28;
       v46[4] = @"policyVersion";
       v29 = MEMORY[0x277CCABB0];
-      v30 = [(TPPBDisposition *)v19 policyProhibits];
-      v31 = [v29 numberWithUnsignedLongLong:{objc_msgSend(v30, "policyVersion")}];
+      policyProhibits4 = [(TPPBDisposition *)modelID2 policyProhibits];
+      v31 = [v29 numberWithUnsignedLongLong:{objc_msgSend(policyProhibits4, "policyVersion")}];
       v47[4] = v31;
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:5];
-      *a6 = [v41 errorWithDomain:v40 code:6 userInfo:v32];
+      *error = [v41 errorWithDomain:v40 code:6 userInfo:v32];
 
       v18 = v45;
-      v33 = v43;
+      v33 = policyProhibits;
     }
 
     else
     {
-      if (!a6)
+      if (!error)
       {
         v22 = 0;
         goto LABEL_19;
@@ -5673,10 +5673,10 @@ LABEL_20:
       v48[0] = *MEMORY[0x277CCA450];
       v48[1] = @"model";
       v49[0] = @"Unrecognized modelID for candidate";
-      v19 = [v10 modelID];
-      v49[1] = v19;
+      modelID2 = [candidateCopy modelID];
+      v49[1] = modelID2;
       v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:2];
-      *a6 = [v34 errorWithDomain:v35 code:9 userInfo:v33];
+      *error = [v34 errorWithDomain:v35 code:9 userInfo:v33];
     }
 
     v22 = 0;
@@ -5693,40 +5693,40 @@ LABEL_21:
   return v22;
 }
 
-- (BOOL)canIntroduceCandidate:(id)a3 withSponsor:(id)a4 toEpoch:(unint64_t)a5 underPolicy:(id)a6 disposition:(id)a7
+- (BOOL)canIntroduceCandidate:(id)candidate withSponsor:(id)sponsor toEpoch:(unint64_t)epoch underPolicy:(id)policy disposition:(id)disposition
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if ([(TPModel *)self canTrustCandidate:v12 inEpoch:a5])
+  candidateCopy = candidate;
+  sponsorCopy = sponsor;
+  policyCopy = policy;
+  dispositionCopy = disposition;
+  if ([(TPModel *)self canTrustCandidate:candidateCopy inEpoch:epoch])
   {
-    v16 = [v13 modelID];
-    v17 = [v14 categoryForModel:v16];
+    modelID = [sponsorCopy modelID];
+    ancientEpoch2 = [policyCopy categoryForModel:modelID];
 
-    v18 = [v12 modelID];
-    v19 = [v14 categoryForModel:v18];
+    modelID2 = [candidateCopy modelID];
+    v19 = [policyCopy categoryForModel:modelID2];
 
-    v20 = [v14 trustedPeerInCategory:v17 canIntroduceCategory:v19];
+    v20 = [policyCopy trustedPeerInCategory:ancientEpoch2 canIntroduceCategory:v19];
     if ((v20 & 1) == 0)
     {
       v21 = objc_alloc_init(TPPBPolicyProhibits);
-      [v15 setPolicyProhibits:v21];
+      [dispositionCopy setPolicyProhibits:v21];
 
-      v22 = [v14 version];
-      v23 = [v22 versionNumber];
-      v24 = [v15 policyProhibits];
-      [v24 setPolicyVersion:v23];
+      version = [policyCopy version];
+      versionNumber = [version versionNumber];
+      policyProhibits = [dispositionCopy policyProhibits];
+      [policyProhibits setPolicyVersion:versionNumber];
 
-      v25 = [v13 peerID];
-      v26 = [v15 policyProhibits];
-      [v26 setSponsorId:v25];
+      peerID = [sponsorCopy peerID];
+      policyProhibits2 = [dispositionCopy policyProhibits];
+      [policyProhibits2 setSponsorId:peerID];
 
-      v27 = [v15 policyProhibits];
-      [v27 setSponsorCategory:v17];
+      policyProhibits3 = [dispositionCopy policyProhibits];
+      [policyProhibits3 setSponsorCategory:ancientEpoch2];
 
-      v28 = [v15 policyProhibits];
-      [v28 setCandidateCategory:v19];
+      policyProhibits4 = [dispositionCopy policyProhibits];
+      [policyProhibits4 setCandidateCategory:v19];
 
       if (v19)
       {
@@ -5736,12 +5736,12 @@ LABEL_21:
       else
       {
         v33 = MEMORY[0x277CCACA8];
-        v28 = [v12 modelID];
-        v29 = [v33 stringWithFormat:@"unrecognized modelID: %@", v28];
+        policyProhibits4 = [candidateCopy modelID];
+        v29 = [v33 stringWithFormat:@"unrecognized modelID: %@", policyProhibits4];
       }
 
-      v34 = [v15 policyProhibits];
-      [v34 setExplanation:v29];
+      policyProhibits5 = [dispositionCopy policyProhibits];
+      [policyProhibits5 setExplanation:v29];
 
       if (!v19)
       {
@@ -5752,38 +5752,38 @@ LABEL_21:
   else
   {
     v30 = objc_alloc_init(TPPBAncientEpoch);
-    [v15 setAncientEpoch:v30];
+    [dispositionCopy setAncientEpoch:v30];
 
-    v31 = [v12 epoch];
-    v32 = [v15 ancientEpoch];
-    [v32 setCandidateEpoch:v31];
+    epoch = [candidateCopy epoch];
+    ancientEpoch = [dispositionCopy ancientEpoch];
+    [ancientEpoch setCandidateEpoch:epoch];
 
-    v17 = [v15 ancientEpoch];
-    [v17 setMyEpoch:a5];
+    ancientEpoch2 = [dispositionCopy ancientEpoch];
+    [ancientEpoch2 setMyEpoch:epoch];
     v20 = 0;
   }
 
   return v20;
 }
 
-- (id)createDynamicInfoWithIncludedPeerIDs:(id)a3 excludedPeerIDs:(id)a4 dispositions:(id)a5 preapprovals:(id)a6 signingKeyPair:(id)a7 error:(id *)a8
+- (id)createDynamicInfoWithIncludedPeerIDs:(id)ds excludedPeerIDs:(id)iDs dispositions:(id)dispositions preapprovals:(id)preapprovals signingKeyPair:(id)pair error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dispositionsCopy = dispositions;
+  preapprovalsCopy = preapprovals;
+  pairCopy = pair;
   v25 = 0;
   v19 = [(TPModel *)self maxClockWithError:&v25];
   v20 = v25;
   v21 = v20;
   if (v20)
   {
-    if (a8)
+    if (error)
     {
       v22 = v20;
       v23 = 0;
-      *a8 = v21;
+      *error = v21;
     }
 
     else
@@ -5794,13 +5794,13 @@ LABEL_21:
 
   else
   {
-    v23 = [TPPeerDynamicInfo dynamicInfoWithClock:v19 + 1 includedPeerIDs:v14 excludedPeerIDs:v15 dispositions:v16 preapprovals:v17 signingKeyPair:v18 error:a8];
+    v23 = [TPPeerDynamicInfo dynamicInfoWithClock:v19 + 1 includedPeerIDs:dsCopy excludedPeerIDs:iDsCopy dispositions:dispositionsCopy preapprovals:preapprovalsCopy signingKeyPair:pairCopy error:error];
   }
 
   return v23;
 }
 
-- (unint64_t)maxClockWithError:(id *)a3
+- (unint64_t)maxClockWithError:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
   v12 = 0;
@@ -5825,11 +5825,11 @@ LABEL_21:
       _os_log_impl(&dword_26F78B000, v5, OS_LOG_TYPE_DEFAULT, "maxClock error enumerating peers: %{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v6 = v4;
       v7 = 0;
-      *a3 = v4;
+      *error = v4;
     }
 
     else
@@ -5894,33 +5894,33 @@ void __29__TPModel_maxClockWithError___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)createStableInfoWithFrozenPolicyVersion:(id)a3 flexiblePolicyVersion:(id)a4 policySecrets:(id)a5 syncUserControllableViews:(int)a6 secureElementIdentity:(id)a7 walrusSetting:(id)a8 webAccess:(id)a9 deviceName:(id)a10 serialNumber:(id)a11 osVersion:(id)a12 signingKeyPair:(id)a13 recoverySigningPubKey:(id)a14 recoveryEncryptionPubKey:(id)a15 isInheritedAccount:(BOOL)a16 error:(id *)a17
+- (id)createStableInfoWithFrozenPolicyVersion:(id)version flexiblePolicyVersion:(id)policyVersion policySecrets:(id)secrets syncUserControllableViews:(int)views secureElementIdentity:(id)identity walrusSetting:(id)setting webAccess:(id)access deviceName:(id)self0 serialNumber:(id)self1 osVersion:(id)self2 signingKeyPair:(id)self3 recoverySigningPubKey:(id)self4 recoveryEncryptionPubKey:(id)self5 isInheritedAccount:(BOOL)self6 error:(id *)self7
 {
-  v46 = a3;
-  v21 = a4;
-  v43 = a5;
-  v47 = a7;
-  v45 = a8;
-  v44 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
-  v27 = a15;
+  versionCopy = version;
+  policyVersionCopy = policyVersion;
+  secretsCopy = secrets;
+  identityCopy = identity;
+  settingCopy = setting;
+  accessCopy = access;
+  nameCopy = name;
+  numberCopy = number;
+  osVersionCopy = osVersion;
+  pairCopy = pair;
+  keyCopy = key;
+  pubKeyCopy = pubKey;
   v48[0] = 0;
   v28 = [(TPModel *)self maxClockWithError:v48];
   v29 = v48[0];
   v30 = v29;
   if (v29)
   {
-    v42 = v26;
-    v31 = v43;
-    if (a17)
+    v42 = keyCopy;
+    v31 = secretsCopy;
+    if (error)
     {
       v32 = v29;
       v33 = 0;
-      *a17 = v30;
+      *error = v30;
     }
 
     else
@@ -5934,41 +5934,41 @@ void __29__TPModel_maxClockWithError___block_invoke(uint64_t a1, void *a2)
   else
   {
     v34 = [TPPeerStableInfo alloc];
-    LOBYTE(v39) = a16;
-    v38 = v26;
+    LOBYTE(v39) = account;
+    v38 = keyCopy;
     v35 = v28 + 1;
-    v36 = v26;
-    v31 = v43;
-    v33 = [(TPPeerStableInfo *)v34 initWithClock:v35 frozenPolicyVersion:v46 flexiblePolicyVersion:v21 policySecrets:v43 syncUserControllableViews:a6 secureElementIdentity:v47 walrusSetting:v45 webAccess:v44 deviceName:v22 serialNumber:v23 osVersion:v24 signingKeyPair:v25 recoverySigningPubKey:v38 recoveryEncryptionPubKey:v27 isInheritedAccount:v39 error:a17];
+    v36 = keyCopy;
+    v31 = secretsCopy;
+    v33 = [(TPPeerStableInfo *)v34 initWithClock:v35 frozenPolicyVersion:versionCopy flexiblePolicyVersion:policyVersionCopy policySecrets:secretsCopy syncUserControllableViews:views secureElementIdentity:identityCopy walrusSetting:settingCopy webAccess:accessCopy deviceName:nameCopy serialNumber:numberCopy osVersion:osVersionCopy signingKeyPair:pairCopy recoverySigningPubKey:v38 recoveryEncryptionPubKey:pubKeyCopy isInheritedAccount:v39 error:error];
   }
 
   return v33;
 }
 
-- (int)userViewSyncabilityConsensusAmongTrustedPeers:(id)a3 error:(id *)a4
+- (int)userViewSyncabilityConsensusAmongTrustedPeers:(id)peers error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  peersCopy = peers;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = [v6 includedPeerIDs];
-  v8 = [v7 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  includedPeerIDs = [peersCopy includedPeerIDs];
+  v8 = [includedPeerIDs countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v8)
   {
     v9 = v8;
-    v30 = a4;
+    errorCopy = error;
     v10 = *v34;
     v11 = 1;
-    v31 = v6;
+    v31 = peersCopy;
 LABEL_3:
     v12 = 0;
     while (1)
     {
       if (*v34 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(includedPeerIDs);
       }
 
       v13 = *(*(&v33 + 1) + 8 * v12);
@@ -5981,17 +5981,17 @@ LABEL_3:
         break;
       }
 
-      v17 = [v15 stableInfo];
-      v18 = [v17 syncUserControllableViews];
+      stableInfo = [v15 stableInfo];
+      syncUserControllableViews = [stableInfo syncUserControllableViews];
 
-      if (v18 == 1)
+      if (syncUserControllableViews == 1)
       {
         v26 = TPModelLog();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v15 peerID];
+          peerID = [v15 peerID];
           *buf = 138543362;
-          v38 = v27;
+          v38 = peerID;
           _os_log_impl(&dword_26F78B000, v26, OS_LOG_TYPE_DEFAULT, "Peer %{public}@ has disabled user view syncing", buf, 0xCu);
         }
 
@@ -5999,21 +5999,21 @@ LABEL_3:
         v23 = 0;
 LABEL_24:
         v11 = 1;
-        v6 = v31;
+        peersCopy = v31;
         goto LABEL_25;
       }
 
-      v19 = [v15 stableInfo];
-      v20 = [v19 syncUserControllableViews];
+      stableInfo2 = [v15 stableInfo];
+      syncUserControllableViews2 = [stableInfo2 syncUserControllableViews];
 
-      if (v20 == 2)
+      if (syncUserControllableViews2 == 2)
       {
         v21 = TPModelLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v15 peerID];
+          peerID2 = [v15 peerID];
           *buf = 138543362;
-          v38 = v22;
+          v38 = peerID2;
           _os_log_impl(&dword_26F78B000, v21, OS_LOG_TYPE_DEFAULT, "Peer %{public}@ has enabled user view syncing", buf, 0xCu);
         }
 
@@ -6023,8 +6023,8 @@ LABEL_24:
       objc_autoreleasePoolPop(v14);
       if (v9 == ++v12)
       {
-        v9 = [v7 countByEnumeratingWithState:&v33 objects:v41 count:16];
-        v6 = v31;
+        v9 = [includedPeerIDs countByEnumeratingWithState:&v33 objects:v41 count:16];
+        peersCopy = v31;
         if (v9)
         {
           goto LABEL_3;
@@ -6046,10 +6046,10 @@ LABEL_24:
     }
 
     objc_autoreleasePoolPop(v14);
-    if (v30)
+    if (errorCopy)
     {
       v25 = v23;
-      *v30 = v23;
+      *errorCopy = v23;
     }
 
     goto LABEL_24;
@@ -6065,32 +6065,32 @@ LABEL_25:
   return v11;
 }
 
-- (id)getDynamicInfoForPeerWithID:(id)a3 error:(id *)a4
+- (id)getDynamicInfoForPeerWithID:(id)d error:(id *)error
 {
-  v4 = [(TPModel *)self peerWithID:a3 error:a4];
-  v5 = [v4 dynamicInfo];
+  v4 = [(TPModel *)self peerWithID:d error:error];
+  dynamicInfo = [v4 dynamicInfo];
 
-  return v5;
+  return dynamicInfo;
 }
 
-- (id)getStableInfoForPeerWithID:(id)a3 error:(id *)a4
+- (id)getStableInfoForPeerWithID:(id)d error:(id *)error
 {
-  v4 = [(TPModel *)self peerWithID:a3 error:a4];
-  v5 = [v4 stableInfo];
+  v4 = [(TPModel *)self peerWithID:d error:error];
+  stableInfo = [v4 stableInfo];
 
-  return v5;
+  return stableInfo;
 }
 
-- (unint64_t)statusOfPeerWithID:(id)a3 error:(id *)a4
+- (unint64_t)statusOfPeerWithID:(id)d error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
   v30 = 0;
-  v7 = [(TPModel *)self peerWithID:v6 error:&v30];
+  v7 = [(TPModel *)self peerWithID:dCopy error:&v30];
   v8 = v30;
   v9 = v8;
   if (v7)
@@ -6102,9 +6102,9 @@ LABEL_25:
   {
     v32[3] |= 0x20uLL;
 LABEL_2:
-    v10 = [v7 dynamicInfo];
-    v11 = [v10 includedPeerIDs];
-    v12 = [v11 count] == 0;
+    dynamicInfo = [v7 dynamicInfo];
+    includedPeerIDs = [dynamicInfo includedPeerIDs];
+    v12 = [includedPeerIDs count] == 0;
 
     if (v12)
     {
@@ -6112,7 +6112,7 @@ LABEL_2:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v36 = v6;
+        v36 = dCopy;
         _os_log_impl(&dword_26F78B000, v16, OS_LOG_TYPE_DEFAULT, "status: peerID %{public}@ has no included peer IDs?", buf, 0xCu);
       }
     }
@@ -6126,11 +6126,11 @@ LABEL_2:
     v25[1] = 3221225472;
     v25[2] = __36__TPModel_statusOfPeerWithID_error___block_invoke;
     v25[3] = &unk_279DED948;
-    v17 = v6;
+    v17 = dCopy;
     v26 = v17;
     v29 = &v31;
     v27 = v7;
-    v28 = self;
+    selfCopy = self;
     v24 = 0;
     [(TPModel *)self enumeratePeersUsingBlock:v25 error:&v24];
     v9 = v24;
@@ -6145,11 +6145,11 @@ LABEL_2:
         _os_log_impl(&dword_26F78B000, v18, OS_LOG_TYPE_DEFAULT, "status: error enumerating peers: %{public}@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v20 = v9;
         v15 = 0;
-        *a4 = v9;
+        *error = v9;
       }
 
       else
@@ -6180,17 +6180,17 @@ LABEL_2:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v36 = v6;
+    v36 = dCopy;
     v37 = 2114;
     v38 = v9;
     _os_log_impl(&dword_26F78B000, v13, OS_LOG_TYPE_DEFAULT, "can't find peer for status %{public}@: %{public}@", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     v14 = v9;
     v15 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -6368,24 +6368,24 @@ LABEL_32:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)validatePeerWithPreApproval:(id)a3 sponsor:(id)a4
+- (BOOL)validatePeerWithPreApproval:(id)approval sponsor:(id)sponsor
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 dynamicInfo];
-  v8 = [v7 preapprovals];
-  v9 = [v8 count];
+  approvalCopy = approval;
+  sponsorCopy = sponsor;
+  dynamicInfo = [sponsorCopy dynamicInfo];
+  preapprovals = [dynamicInfo preapprovals];
+  v9 = [preapprovals count];
 
   if (v9)
   {
-    v10 = [v5 permanentInfo];
-    v11 = [v10 signingPubKey];
-    v12 = [v11 spki];
-    v13 = [TPHashBuilder hashWithAlgo:1 ofData:v12];
+    permanentInfo = [approvalCopy permanentInfo];
+    signingPubKey = [permanentInfo signingPubKey];
+    spki = [signingPubKey spki];
+    v13 = [TPHashBuilder hashWithAlgo:1 ofData:spki];
 
-    v14 = [v6 dynamicInfo];
-    v15 = [v14 preapprovals];
-    v16 = [v15 containsObject:v13];
+    dynamicInfo2 = [sponsorCopy dynamicInfo];
+    preapprovals2 = [dynamicInfo2 preapprovals];
+    v16 = [preapprovals2 containsObject:v13];
   }
 
   else
@@ -6396,9 +6396,9 @@ LABEL_32:
   return v16;
 }
 
-- (BOOL)hasPotentiallyTrustedPeerWithSigningKey:(id)a3 error:(id *)a4
+- (BOOL)hasPotentiallyTrustedPeerWithSigningKey:(id)key error:(id *)error
 {
-  v7 = a3;
+  keyCopy = key;
   v8 = objc_autoreleasePoolPush();
   v18 = 0;
   v19 = &v18;
@@ -6410,7 +6410,7 @@ LABEL_32:
   v15[1] = 3221225472;
   v15[2] = __57__TPModel_hasPotentiallyTrustedPeerWithSigningKey_error___block_invoke;
   v15[3] = &unk_279DED8F8;
-  v9 = v7;
+  v9 = keyCopy;
   v16 = v9;
   v17 = &v18;
   v14 = 0;
@@ -6426,11 +6426,11 @@ LABEL_32:
   objc_autoreleasePoolPop(v8);
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v12 = v11;
       v4 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -6458,9 +6458,9 @@ void __57__TPModel_hasPotentiallyTrustedPeerWithSigningKey_error___block_invoke(
   }
 }
 
-- (BOOL)anyTrustedPeerDistrustsOtherPeer:(id)a3 error:(id *)a4
+- (BOOL)anyTrustedPeerDistrustsOtherPeer:(id)peer error:(id *)error
 {
-  v7 = a3;
+  peerCopy = peer;
   v8 = objc_autoreleasePoolPush();
   v18 = 0;
   v19 = &v18;
@@ -6472,7 +6472,7 @@ void __57__TPModel_hasPotentiallyTrustedPeerWithSigningKey_error___block_invoke(
   v15[1] = 3221225472;
   v15[2] = __50__TPModel_anyTrustedPeerDistrustsOtherPeer_error___block_invoke;
   v15[3] = &unk_279DED8F8;
-  v9 = v7;
+  v9 = peerCopy;
   v16 = v9;
   v17 = &v18;
   v14 = 0;
@@ -6488,11 +6488,11 @@ void __57__TPModel_hasPotentiallyTrustedPeerWithSigningKey_error___block_invoke(
   objc_autoreleasePoolPop(v8);
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v12 = v11;
       v4 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -6519,11 +6519,11 @@ void __50__TPModel_anyTrustedPeerDistrustsOtherPeer_error___block_invoke(uint64_
   }
 }
 
-- (BOOL)hasPotentiallyTrustedPeerPreapprovingKey:(id)a3 error:(id *)a4
+- (BOOL)hasPotentiallyTrustedPeerPreapprovingKey:(id)key error:(id *)error
 {
-  v7 = a3;
+  keyCopy = key;
   v8 = objc_autoreleasePoolPush();
-  v9 = [TPHashBuilder hashWithAlgo:1 ofData:v7];
+  v9 = [TPHashBuilder hashWithAlgo:1 ofData:keyCopy];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -6550,11 +6550,11 @@ void __50__TPModel_anyTrustedPeerDistrustsOtherPeer_error___block_invoke(uint64_
   objc_autoreleasePoolPop(v8);
   if (v12)
   {
-    if (a4)
+    if (error)
     {
       v13 = v12;
       v4 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -6584,7 +6584,7 @@ void __58__TPModel_hasPotentiallyTrustedPeerPreapprovingKey_error___block_invoke
 - (unint64_t)countTotalTrustedCustodians
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -6614,24 +6614,24 @@ void __58__TPModel_hasPotentiallyTrustedPeerPreapprovingKey_error___block_invoke
 
         if (v11)
         {
-          v12 = [v10 peerID];
-          v13 = [v3 objectForKeyedSubscript:v12];
+          peerID = [v10 peerID];
+          v13 = [dictionary objectForKeyedSubscript:peerID];
 
           v14 = MEMORY[0x277CCABB0];
           if (v13)
           {
-            v15 = [v10 peerID];
-            v16 = [v3 objectForKeyedSubscript:v15];
-            v17 = [v14 numberWithInt:{objc_msgSend(v16, "intValue") + 1}];
-            v18 = [v10 peerID];
-            [v3 setObject:v17 forKeyedSubscript:v18];
+            peerID2 = [v10 peerID];
+            peerID4 = [dictionary objectForKeyedSubscript:peerID2];
+            v17 = [v14 numberWithInt:{objc_msgSend(peerID4, "intValue") + 1}];
+            peerID3 = [v10 peerID];
+            [dictionary setObject:v17 forKeyedSubscript:peerID3];
           }
 
           else
           {
-            v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:1];
-            v16 = [v10 peerID];
-            [v3 setObject:v15 forKeyedSubscript:v16];
+            peerID2 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:1];
+            peerID4 = [v10 peerID];
+            [dictionary setObject:peerID2 forKeyedSubscript:peerID4];
           }
         }
 
@@ -6646,20 +6646,20 @@ void __58__TPModel_hasPotentiallyTrustedPeerPreapprovingKey_error___block_invoke
     while (v5);
   }
 
-  v19 = [v3 count];
+  v19 = [dictionary count];
   v20 = *MEMORY[0x277D85DE8];
   return v19;
 }
 
 - (unint64_t)countTotalNumberOfRecoveryKeys
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = objc_autoreleasePoolPush();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __41__TPModel_countTotalNumberOfRecoveryKeys__block_invoke;
   v10[3] = &unk_279DED920;
-  v5 = v3;
+  v5 = dictionary;
   v11 = v5;
   v9 = 0;
   [(TPModel *)self enumeratePeersUsingBlock:v10 error:&v9];
@@ -6709,7 +6709,7 @@ void __41__TPModel_countTotalNumberOfRecoveryKeys__block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)allTrustedPeersWithCurrentRecoveryKeyWithError:(id *)a3
+- (id)allTrustedPeersWithCurrentRecoveryKeyWithError:(id *)error
 {
   v5 = &v13;
   v13 = 0;
@@ -6737,11 +6737,11 @@ void __41__TPModel_countTotalNumberOfRecoveryKeys__block_invoke(uint64_t a1, voi
   objc_autoreleasePoolPop(v6);
   if (v8)
   {
-    if (a3)
+    if (error)
     {
       v9 = v8;
       v5 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -6803,9 +6803,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)isRecoveryKeyExcluded:(id)a3 error:(id *)a4
+- (BOOL)isRecoveryKeyExcluded:(id)excluded error:(id *)error
 {
-  v7 = a3;
+  excludedCopy = excluded;
   v8 = objc_autoreleasePoolPush();
   v19 = 0;
   v20 = &v19;
@@ -6813,7 +6813,7 @@ LABEL_9:
   v22 = __Block_byref_object_copy_;
   v23 = __Block_byref_object_dispose_;
   v24 = [MEMORY[0x277CBEB58] set];
-  v9 = [(TPModel *)self recoveryKeyPeerID:v7];
+  v9 = [(TPModel *)self recoveryKeyPeerID:excludedCopy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __39__TPModel_isRecoveryKeyExcluded_error___block_invoke;
@@ -6834,11 +6834,11 @@ LABEL_9:
   objc_autoreleasePoolPop(v8);
   if (v12)
   {
-    if (a4)
+    if (error)
     {
       v13 = v12;
       v4 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -6865,14 +6865,14 @@ void __39__TPModel_isRecoveryKeyExcluded_error___block_invoke(uint64_t a1, void 
   }
 }
 
-- (id)peerCountsByMachineIDWithError:(id *)a3
+- (id)peerCountsByMachineIDWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __42__TPModel_peerCountsByMachineIDWithError___block_invoke;
   v13[3] = &unk_279DED920;
-  v6 = v5;
+  v6 = dictionary;
   v14 = v6;
   v12 = 0;
   [(TPModel *)self enumeratePeersUsingBlock:v13 error:&v12];
@@ -6880,11 +6880,11 @@ void __39__TPModel_isRecoveryKeyExcluded_error___block_invoke(uint64_t a1, void 
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -6920,10 +6920,10 @@ void __42__TPModel_peerCountsByMachineIDWithError___block_invoke(uint64_t a1, vo
   }
 }
 
-- (BOOL)doAnyTrustedPeersMatchMachineID:(id)a3 error:(id *)a4
+- (BOOL)doAnyTrustedPeersMatchMachineID:(id)d error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -6935,7 +6935,7 @@ void __42__TPModel_peerCountsByMachineIDWithError___block_invoke(uint64_t a1, vo
   v17[1] = 3221225472;
   v17[2] = __49__TPModel_doAnyTrustedPeersMatchMachineID_error___block_invoke;
   v17[3] = &unk_279DED8F8;
-  v9 = v7;
+  v9 = dCopy;
   v18 = v9;
   p_buf = &buf;
   v16 = 0;
@@ -6959,11 +6959,11 @@ void __42__TPModel_peerCountsByMachineIDWithError___block_invoke(uint64_t a1, vo
       _os_log_impl(&dword_26F78B000, v12, OS_LOG_TYPE_DEFAULT, "doAnyTrustedPeersMatchMachineID error: %{public}@", &buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = v11;
       v4 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -6990,10 +6990,10 @@ void __49__TPModel_doAnyTrustedPeersMatchMachineID_error___block_invoke(uint64_t
   }
 }
 
-- (id)viablePeerCountsByModelIDWithError:(id *)a3
+- (id)viablePeerCountsByModelIDWithError:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   context = objc_autoreleasePoolPush();
   v28 = 0;
   v29 = &v28;
@@ -7014,11 +7014,11 @@ void __49__TPModel_doAnyTrustedPeersMatchMachineID_error___block_invoke(uint64_t
 
     _Block_object_dispose(&v28, 8);
     objc_autoreleasePoolPop(context);
-    if (a3)
+    if (error)
     {
       v8 = v21;
       v9 = 0;
-      *a3 = v21;
+      *error = v21;
     }
 
     else
@@ -7048,7 +7048,7 @@ void __49__TPModel_doAnyTrustedPeersMatchMachineID_error___block_invoke(uint64_t
           }
 
           v14 = [v29[5] objectForKeyedSubscript:{*(*(&v22 + 1) + 8 * i), context}];
-          v15 = [v6 objectForKeyedSubscript:v14];
+          v15 = [dictionary objectForKeyedSubscript:v14];
           v16 = v15;
           if (v15)
           {
@@ -7061,7 +7061,7 @@ void __49__TPModel_doAnyTrustedPeersMatchMachineID_error___block_invoke(uint64_t
             v17 = &unk_287FD1A58;
           }
 
-          [v6 setObject:v17 forKeyedSubscript:v14];
+          [dictionary setObject:v17 forKeyedSubscript:v14];
           if (v16)
           {
           }
@@ -7075,7 +7075,7 @@ void __49__TPModel_doAnyTrustedPeersMatchMachineID_error___block_invoke(uint64_t
 
     _Block_object_dispose(&v28, 8);
     objc_autoreleasePoolPop(context);
-    v9 = v6;
+    v9 = dictionary;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -7094,7 +7094,7 @@ void __46__TPModel_viablePeerCountsByModelIDWithError___block_invoke(uint64_t a1
   [*(*(*(a1 + 32) + 8) + 40) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (id)allMachineIDsWithError:(id *)a3
+- (id)allMachineIDsWithError:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -7113,11 +7113,11 @@ void __46__TPModel_viablePeerCountsByModelIDWithError___block_invoke(uint64_t a1
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
       v8 = 0;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -7144,54 +7144,54 @@ void __34__TPModel_allMachineIDsWithError___block_invoke(uint64_t a1, void *a2)
   [v2 addObject:v3];
 }
 
-- (id)actualPeerWithID:(id)a3 error:(id *)a4
+- (id)actualPeerWithID:(id)d error:(id *)error
 {
   v10 = 0;
-  v5 = [(TPModel *)self peerWithID:a3 error:&v10];
+  v5 = [(TPModel *)self peerWithID:d error:&v10];
   v6 = v10;
   v7 = v6;
   if (!v5)
   {
     if (v6)
     {
-      if (a4)
+      if (error)
       {
         v9 = v6;
-        *a4 = v7;
+        *error = v7;
       }
     }
 
     else
     {
-      failWithNoPeerWithIDError(a4);
+      failWithNoPeerWithIDError(error);
     }
   }
 
   return v5;
 }
 
-- (id)custodianPeerWithID:(id)a3
+- (id)custodianPeerWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(TPModel *)self custodianRecoveryKeys];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  custodianRecoveryKeys = [(TPModel *)self custodianRecoveryKeys];
+  v6 = [custodianRecoveryKeys objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (id)copyPeerWithNewDynamicInfo:(id)a3 forPeerWithID:(id)a4 error:(id *)a5
+- (id)copyPeerWithNewDynamicInfo:(id)info forPeerWithID:(id)d error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  dCopy = d;
   v30 = 0;
-  v10 = [(TPModel *)self peerWithID:v9 error:&v30];
+  v10 = [(TPModel *)self peerWithID:dCopy error:&v30];
   v11 = v30;
   v12 = v11;
   if (v10)
   {
     v29 = 0;
-    v13 = [v10 peerWithUpdatedDynamicInfo:v8 error:&v29];
+    v13 = [v10 peerWithUpdatedDynamicInfo:infoCopy error:&v29];
     v14 = v29;
     if (!v13)
     {
@@ -7199,16 +7199,16 @@ void __34__TPModel_allMachineIDsWithError___block_invoke(uint64_t a1, void *a2)
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v32 = v9;
+        v32 = dCopy;
         v33 = 2114;
         v34 = v14;
         _os_log_impl(&dword_26F78B000, v24, OS_LOG_TYPE_DEFAULT, "failed to update dynamic info for peerID %{public}@: %{public}@", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v25 = v14;
-        *a5 = v14;
+        *error = v14;
       }
 
       goto LABEL_26;
@@ -7223,25 +7223,25 @@ void __34__TPModel_allMachineIDsWithError___block_invoke(uint64_t a1, void *a2)
       }
 
       *buf = 138543362;
-      v32 = v9;
+      v32 = dCopy;
       v20 = "peer(%{public}@) initially loaded dynamic info";
     }
 
     else
     {
-      v16 = [v10 dynamicInfo];
-      v17 = [v13 dynamicInfo];
+      dynamicInfo = [v10 dynamicInfo];
+      dynamicInfo2 = [v13 dynamicInfo];
 
       v18 = TPModelLog();
       v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-      if (v16 != v17)
+      if (dynamicInfo != dynamicInfo2)
       {
         if (v19)
         {
           *buf = 138543618;
-          v32 = v9;
+          v32 = dCopy;
           v33 = 2114;
-          v34 = v8;
+          v34 = infoCopy;
           v20 = "peer(%{public}@) dynamic info is now: %{public}@";
           v21 = v18;
           v22 = 22;
@@ -7263,7 +7263,7 @@ LABEL_26:
       }
 
       *buf = 138543362;
-      v32 = v9;
+      v32 = dCopy;
       v20 = "peer(%{public}@) dynamic info didn't actually change";
     }
 
@@ -7274,23 +7274,23 @@ LABEL_26:
 
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v23 = v11;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
   else
   {
-    failWithNoPeerWithIDError(a5);
+    failWithNoPeerWithIDError(error);
   }
 
   v14 = TPModelLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v32 = v9;
+    v32 = dCopy;
     v33 = 2114;
     v34 = v12;
     _os_log_impl(&dword_26F78B000, v14, OS_LOG_TYPE_DEFAULT, "can't update dynamic info for peerID %{public}@: %{public}@", buf, 0x16u);
@@ -7303,19 +7303,19 @@ LABEL_27:
   return v13;
 }
 
-- (id)copyPeerWithNewStableInfo:(id)a3 forPeerWithID:(id)a4 error:(id *)a5
+- (id)copyPeerWithNewStableInfo:(id)info forPeerWithID:(id)d error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  dCopy = d;
   v30 = 0;
-  v10 = [(TPModel *)self peerWithID:v9 error:&v30];
+  v10 = [(TPModel *)self peerWithID:dCopy error:&v30];
   v11 = v30;
   v12 = v11;
   if (v10)
   {
     v29 = 0;
-    v13 = [v10 peerWithUpdatedStableInfo:v8 error:&v29];
+    v13 = [v10 peerWithUpdatedStableInfo:infoCopy error:&v29];
     v14 = v29;
     if (!v13)
     {
@@ -7323,16 +7323,16 @@ LABEL_27:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v32 = v9;
+        v32 = dCopy;
         v33 = 2114;
         v34 = v14;
         _os_log_impl(&dword_26F78B000, v24, OS_LOG_TYPE_DEFAULT, "failed to update stable info for peerID %{public}@: %{public}@", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v25 = v14;
-        *a5 = v14;
+        *error = v14;
       }
 
       goto LABEL_26;
@@ -7347,25 +7347,25 @@ LABEL_27:
       }
 
       *buf = 138543362;
-      v32 = v9;
+      v32 = dCopy;
       v20 = "peer(%{public}@) initially loaded stable info";
     }
 
     else
     {
-      v16 = [v10 stableInfo];
-      v17 = [v13 stableInfo];
+      stableInfo = [v10 stableInfo];
+      stableInfo2 = [v13 stableInfo];
 
       v18 = TPModelLog();
       v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-      if (v16 != v17)
+      if (stableInfo != stableInfo2)
       {
         if (v19)
         {
           *buf = 138543618;
-          v32 = v9;
+          v32 = dCopy;
           v33 = 2114;
-          v34 = v8;
+          v34 = infoCopy;
           v20 = "peer(%{public}@) stable info is now: %{public}@";
           v21 = v18;
           v22 = 22;
@@ -7387,7 +7387,7 @@ LABEL_26:
       }
 
       *buf = 138543362;
-      v32 = v9;
+      v32 = dCopy;
       v20 = "peer(%{public}@) stable info didn't actually change";
     }
 
@@ -7398,23 +7398,23 @@ LABEL_26:
 
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v23 = v11;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
   else
   {
-    failWithNoPeerWithIDError(a5);
+    failWithNoPeerWithIDError(error);
   }
 
   v14 = TPModelLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v32 = v9;
+    v32 = dCopy;
     v33 = 2114;
     v34 = v12;
     _os_log_impl(&dword_26F78B000, v14, OS_LOG_TYPE_DEFAULT, "can't update stable info for peerID %{public}@: %{public}@", buf, 0x16u);
@@ -7427,32 +7427,32 @@ LABEL_27:
   return v13;
 }
 
-- (id)peerWithID:(id)a3 error:(id *)a4
+- (id)peerWithID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TPModel *)self dbAdapter];
-  v8 = [v7 peerWithID:v6 error:a4];
+  dCopy = d;
+  dbAdapter = [(TPModel *)self dbAdapter];
+  v8 = [dbAdapter peerWithID:dCopy error:error];
 
   return v8;
 }
 
-- (BOOL)hasPeerWithID:(id)a3 error:(id *)a4
+- (BOOL)hasPeerWithID:(id)d error:(id *)error
 {
-  v4 = [(TPModel *)self peerWithID:a3 error:a4];
+  v4 = [(TPModel *)self peerWithID:d error:error];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (id)allRegisteredPolicyVersionsWithError:(id *)a3
+- (id)allRegisteredPolicyVersionsWithError:(id *)error
 {
-  v4 = [(TPModel *)self dbAdapter];
-  v5 = [v4 allRegisteredPolicyVersions:a3];
+  dbAdapter = [(TPModel *)self dbAdapter];
+  v5 = [dbAdapter allRegisteredPolicyVersions:error];
 
   return v5;
 }
 
-- (id)allPolicyVersionsWithError:(id *)a3
+- (id)allPolicyVersionsWithError:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -7471,11 +7471,11 @@ LABEL_27:
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
       v8 = 0;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -7520,13 +7520,13 @@ void __38__TPModel_allPolicyVersionsWithError___block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)recoveryKeyPeerID:(id)a3
+- (id)recoveryKeyPeerID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   ccsha384_di();
   v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:*ccsha384_di()];
-  [v3 length];
-  [v3 bytes];
+  [dCopy length];
+  [dCopy bytes];
 
   [v4 mutableBytes];
   ccdigest();
@@ -7536,7 +7536,7 @@ void __38__TPModel_allPolicyVersionsWithError___block_invoke(uint64_t a1, void *
   return v6;
 }
 
-- (BOOL)hasPotentiallyTrustedPeerTestingOnlyWithError:(id *)a3
+- (BOOL)hasPotentiallyTrustedPeerTestingOnlyWithError:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = objc_autoreleasePoolPush();
@@ -7572,11 +7572,11 @@ void __38__TPModel_allPolicyVersionsWithError___block_invoke(uint64_t a1, void *
       _os_log_impl(&dword_26F78B000, v9, OS_LOG_TYPE_DEFAULT, "hasPotentiallyTrustedPeer error: %{public}@", &buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v10 = v8;
       v3 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -7604,9 +7604,9 @@ void __57__TPModel_hasPotentiallyTrustedPeerTestingOnlyWithError___block_invoke(
   }
 }
 
-- (id)_iterateOverPeersWithBlock:(id)a3 error:(id *)a4
+- (id)_iterateOverPeersWithBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = &v24;
   v24 = 0;
   v25 = &v24;
@@ -7627,7 +7627,7 @@ void __57__TPModel_hasPotentiallyTrustedPeerTestingOnlyWithError___block_invoke(
   v14[3] = &unk_279DED880;
   v16 = &v24;
   v17 = &v18;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
   v13 = 0;
   [(TPModel *)self enumeratePeersUsingBlock:v14 error:&v13];
@@ -7642,11 +7642,11 @@ void __57__TPModel_hasPotentiallyTrustedPeerTestingOnlyWithError___block_invoke(
   objc_autoreleasePoolPop(v8);
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v11 = v10;
       v7 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -7682,34 +7682,34 @@ void __44__TPModel__iterateOverPeersWithBlock_error___block_invoke(void *a1, voi
   (*(a1[4] + 16))();
 }
 
-- (unint64_t)voucherCountWithError:(id *)a3
+- (unint64_t)voucherCountWithError:(id *)error
 {
-  v4 = [(TPModel *)self dbAdapter];
-  v5 = [v4 voucherCount:a3];
+  dbAdapter = [(TPModel *)self dbAdapter];
+  v5 = [dbAdapter voucherCount:error];
 
   return v5;
 }
 
-- (BOOL)enumerateVouchersUsingBlock:(id)a3 error:(id *)a4
+- (BOOL)enumerateVouchersUsingBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(TPModel *)self dbAdapter];
+  dbAdapter = [(TPModel *)self dbAdapter];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __45__TPModel_enumerateVouchersUsingBlock_error___block_invoke;
   v14[3] = &unk_279DED858;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
   v13 = 0;
-  [v8 enumerateVouchersUsingBlock:v14 error:&v13];
+  [dbAdapter enumerateVouchersUsingBlock:v14 error:&v13];
   v10 = v13;
 
   objc_autoreleasePoolPop(v7);
-  if (a4 && v10)
+  if (error && v10)
   {
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v10 == 0;
@@ -7723,26 +7723,26 @@ void __45__TPModel_enumerateVouchersUsingBlock_error___block_invoke(uint64_t a1,
   objc_autoreleasePoolPop(v3);
 }
 
-- (BOOL)enumeratePeersUsingBlock:(id)a3 error:(id *)a4
+- (BOOL)enumeratePeersUsingBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(TPModel *)self dbAdapter];
+  dbAdapter = [(TPModel *)self dbAdapter];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __42__TPModel_enumeratePeersUsingBlock_error___block_invoke;
   v14[3] = &unk_279DED830;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
   v13 = 0;
-  [v8 enumeratePeersUsingBlock:v14 error:&v13];
+  [dbAdapter enumeratePeersUsingBlock:v14 error:&v13];
   v10 = v13;
 
   objc_autoreleasePoolPop(v7);
-  if (a4 && v10)
+  if (error && v10)
   {
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v10 == 0;
@@ -7756,44 +7756,44 @@ void __42__TPModel_enumeratePeersUsingBlock_error___block_invoke(uint64_t a1, vo
   objc_autoreleasePoolPop(v3);
 }
 
-- (unint64_t)peerCountWithError:(id *)a3
+- (unint64_t)peerCountWithError:(id *)error
 {
-  v4 = [(TPModel *)self dbAdapter];
-  v5 = [v4 peerCount:a3];
+  dbAdapter = [(TPModel *)self dbAdapter];
+  v5 = [dbAdapter peerCount:error];
 
   return v5;
 }
 
 - (id)allPeerIDs
 {
-  v2 = [(TPModel *)self dbAdapter];
+  dbAdapter = [(TPModel *)self dbAdapter];
   v5 = 0;
-  v3 = [v2 allPeerIDs:&v5];
+  v3 = [dbAdapter allPeerIDs:&v5];
 
   return v3;
 }
 
-- (id)policyWithVersion:(unint64_t)a3 error:(id *)a4
+- (id)policyWithVersion:(unint64_t)version error:(id *)error
 {
-  v6 = [(TPModel *)self dbAdapter];
-  v7 = [v6 policyWithVersion:a3 error:a4];
+  dbAdapter = [(TPModel *)self dbAdapter];
+  v7 = [dbAdapter policyWithVersion:version error:error];
 
   return v7;
 }
 
-- (unint64_t)latestEpochAmongPeerIDs:(id)a3 error:(id *)a4
+- (unint64_t)latestEpochAmongPeerIDs:(id)ds error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  dsCopy = ds;
+  v7 = [dsCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v7)
   {
     v8 = v7;
-    v23 = a4;
+    errorCopy = error;
     v9 = 0;
     v10 = *v26;
     while (2)
@@ -7802,7 +7802,7 @@ void __42__TPModel_enumeratePeersUsingBlock_error___block_invoke(uint64_t a1, vo
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dsCopy);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
@@ -7824,11 +7824,11 @@ void __42__TPModel_enumeratePeersUsingBlock_error___block_invoke(uint64_t a1, vo
           }
 
           objc_autoreleasePoolPop(v13);
-          if (v23)
+          if (errorCopy)
           {
             v20 = v18;
             v9 = 0;
-            *v23 = v18;
+            *errorCopy = v18;
           }
 
           else
@@ -7841,19 +7841,19 @@ void __42__TPModel_enumeratePeersUsingBlock_error___block_invoke(uint64_t a1, vo
 
         if (v14)
         {
-          v16 = [v14 permanentInfo];
-          v17 = [v16 epoch];
+          permanentInfo = [v14 permanentInfo];
+          epoch = [permanentInfo epoch];
 
-          if (v9 <= v17)
+          if (v9 <= epoch)
           {
-            v9 = v17;
+            v9 = epoch;
           }
         }
 
         objc_autoreleasePoolPop(v13);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v8 = [dsCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v8)
       {
         continue;
@@ -7875,10 +7875,10 @@ LABEL_20:
   return v9;
 }
 
-- (TPModel)initWithDecrypter:(id)a3 dbAdapter:(id)a4
+- (TPModel)initWithDecrypter:(id)decrypter dbAdapter:(id)adapter
 {
-  v7 = a3;
-  v8 = a4;
+  decrypterCopy = decrypter;
+  adapterCopy = adapter;
   v14.receiver = self;
   v14.super_class = TPModel;
   v9 = [(TPModel *)&v14 init];
@@ -7886,8 +7886,8 @@ LABEL_20:
   if (v9)
   {
     v9->_suppressInitialInfoLogging = 0;
-    objc_storeStrong(&v9->_dbAdapter, a4);
-    objc_storeStrong(&v10->_decrypter, a3);
+    objc_storeStrong(&v9->_dbAdapter, adapter);
+    objc_storeStrong(&v10->_decrypter, decrypter);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     custodianRecoveryKeys = v10->_custodianRecoveryKeys;
     v10->_custodianRecoveryKeys = v11;
@@ -7896,37 +7896,37 @@ LABEL_20:
   return v10;
 }
 
-+ (id)pickClock:(id)a3
++ (id)pickClock:(id)clock
 {
-  v3 = a3;
-  [v3 sortUsingComparator:&__block_literal_global_150];
-  v4 = [v3 firstObject];
-  v5 = [v4 copy];
+  clockCopy = clock;
+  [clockCopy sortUsingComparator:&__block_literal_global_150];
+  firstObject = [clockCopy firstObject];
+  v5 = [firstObject copy];
 
-  if ([v3 count] >= 2)
+  if ([clockCopy count] >= 2)
   {
     v6 = 1;
     while (1)
     {
-      v7 = [v3 objectAtIndexedSubscript:v6];
-      v8 = [v7 clock];
-      if (v8 < [v5 clock])
+      v7 = [clockCopy objectAtIndexedSubscript:v6];
+      clock = [v7 clock];
+      if (clock < [v5 clock])
       {
         break;
       }
 
-      v9 = [v7 clock];
-      if (v9 == [v5 clock])
+      clock2 = [v7 clock];
+      if (clock2 == [v5 clock])
       {
-        v10 = [v7 value];
-        if (v10 != [v5 value])
+        value = [v7 value];
+        if (value != [v5 value])
         {
           [v5 setValue:1];
           break;
         }
       }
 
-      if (++v6 >= [v3 count])
+      if (++v6 >= [clockCopy count])
       {
         goto LABEL_10;
       }
@@ -7957,10 +7957,10 @@ uint64_t __21__TPModel_pickClock___block_invoke(uint64_t a1, void *a2, void *a3)
   return v7;
 }
 
-+ (BOOL)isFullPeer:(id)a3
++ (BOOL)isFullPeer:(id)peer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  peerCopy = peer;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -7979,7 +7979,7 @@ uint64_t __21__TPModel_pickClock___block_invoke(uint64_t a1, void *a2, void *a3)
           objc_enumerationMutation(&unk_287FD1A40);
         }
 
-        if ([v3 containsString:*(*(&v11 + 1) + 8 * i)])
+        if ([peerCopy containsString:*(*(&v11 + 1) + 8 * i)])
         {
           v8 = 1;
           goto LABEL_11;
@@ -8003,32 +8003,32 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)ignoreTDLForModel:(id)a3
++ (BOOL)ignoreTDLForModel:(id)model
 {
-  v3 = a3;
-  if ([v3 containsString:@"AppleTV"])
+  modelCopy = model;
+  if ([modelCopy containsString:@"AppleTV"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 containsString:@"AudioAccessory"];
+    v4 = [modelCopy containsString:@"AudioAccessory"];
   }
 
   return v4;
 }
 
-+ (id)preapprovalsFromKeys:(id)a3
++ (id)preapprovalsFromKeys:(id)keys
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v3, "count")}];
+  keysCopy = keys;
+  v4 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = keysCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

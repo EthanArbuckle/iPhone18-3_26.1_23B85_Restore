@@ -33,10 +33,10 @@
       }
     }
 
-    v8 = [+[VCDefaults sharedInstance](VCDefaults enableHEIFAndHEVCForMoments];
+    enableHEIFAndHEVCForMoments = [+[VCDefaults sharedInstance](VCDefaults enableHEIFAndHEVCForMoments];
     if (v3)
     {
-      v9 = v8;
+      v9 = enableHEIFAndHEVCForMoments;
     }
 
     else

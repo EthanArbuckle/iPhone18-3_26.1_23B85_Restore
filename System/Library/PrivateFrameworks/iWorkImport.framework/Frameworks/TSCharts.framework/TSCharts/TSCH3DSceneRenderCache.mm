@@ -1,24 +1,24 @@
 @interface TSCH3DSceneRenderCache
 + (id)cache;
-+ (id)cacheFromScene:(id)a3;
++ (id)cacheFromScene:(id)scene;
 - (TSCH3DSceneRenderCache)init;
-- (id)cacheObjectForKey:(id)a3 cacheID:(id)a4 created:(BOOL *)a5 ifAbsent:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)cacheObjectForKey:(id)key cacheID:(id)d created:(BOOL *)created ifAbsent:(id)absent;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)enableCache:(BOOL)a3 forKey:(id)a4;
-- (void)setCacheObject:(id)a3 forKey:(id)a4 cacheID:(id)a5;
+- (void)enableCache:(BOOL)cache forKey:(id)key;
+- (void)setCacheObject:(id)object forKey:(id)key cacheID:(id)d;
 @end
 
 @implementation TSCH3DSceneRenderCache
 
-+ (id)cacheFromScene:(id)a3
++ (id)cacheFromScene:(id)scene
 {
-  v4 = a3;
-  v10 = objc_msgSend_mutablePropertiesForType_(v4, v5, v6, v7, v8, a1);
+  sceneCopy = scene;
+  v10 = objc_msgSend_mutablePropertiesForType_(sceneCopy, v5, v6, v7, v8, self);
   if (!v10)
   {
-    v10 = objc_msgSend_cache(a1, v9, v11, v12, v13);
-    objc_msgSend_setProperties_forType_(v4, v14, v15, v16, v17, v10, a1);
+    v10 = objc_msgSend_cache(self, v9, v11, v12, v13);
+    objc_msgSend_setProperties_forType_(sceneCopy, v14, v15, v16, v17, v10, self);
   }
 
   return v10;
@@ -26,7 +26,7 @@
 
 + (id)cache
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -50,10 +50,10 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v15 = objc_msgSend_init(v10, v11, v12, v13, v14);
   v20 = v15;
   if (v15)
@@ -76,35 +76,35 @@
   return v9;
 }
 
-- (void)enableCache:(BOOL)a3 forKey:(id)a4
+- (void)enableCache:(BOOL)cache forKey:(id)key
 {
-  v4 = a3;
-  v6 = a4;
+  cacheCopy = cache;
+  keyCopy = key;
   enabledKeys = self->_enabledKeys;
-  v11 = v6;
-  if (v4)
+  v11 = keyCopy;
+  if (cacheCopy)
   {
-    objc_msgSend_addObject_(enabledKeys, v6, v7, v8, v9, v6);
+    objc_msgSend_addObject_(enabledKeys, keyCopy, v7, v8, v9, keyCopy);
   }
 
   else
   {
-    objc_msgSend_removeObject_(enabledKeys, v6, v7, v8, v9, v6);
+    objc_msgSend_removeObject_(enabledKeys, keyCopy, v7, v8, v9, keyCopy);
   }
 }
 
-- (id)cacheObjectForKey:(id)a3 cacheID:(id)a4 created:(BOOL *)a5 ifAbsent:(id)a6
+- (id)cacheObjectForKey:(id)key cacheID:(id)d created:(BOOL *)created ifAbsent:(id)absent
 {
-  v10 = a3;
-  v11 = a4;
-  v13 = a6;
-  if (a5)
+  keyCopy = key;
+  dCopy = d;
+  absentCopy = absent;
+  if (created)
   {
-    *a5 = 0;
+    *created = 0;
   }
 
-  v17 = objc_msgSend_cacheEnabledForKey_(self, v12, v14, v15, v16, v10);
-  v22 = objc_msgSend_objectForFirstLevelKey_secondLevelKey_(self->_cache, v18, v19, v20, v21, v10, v11);
+  v17 = objc_msgSend_cacheEnabledForKey_(self, v12, v14, v15, v16, keyCopy);
+  v22 = objc_msgSend_objectForFirstLevelKey_secondLevelKey_(self->_cache, v18, v19, v20, v21, keyCopy, dCopy);
   v27 = v22;
   if (v22)
   {
@@ -124,12 +124,12 @@ LABEL_15:
       goto LABEL_19;
     }
 
-    if (v13)
+    if (absentCopy)
     {
-      objc_msgSend_removeObjectForFirstLevelKey_secondLevelKey_(self->_cache, v28, v29, v30, v31, v10, v11);
-      if (a5)
+      objc_msgSend_removeObjectForFirstLevelKey_secondLevelKey_(self->_cache, v28, v29, v30, v31, keyCopy, dCopy);
+      if (created)
       {
-        *a5 = 1;
+        *created = 1;
       }
 
       if ((v17 & 1) == 0)
@@ -146,16 +146,16 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v13)
+  if (!absentCopy)
   {
     goto LABEL_18;
   }
 
-  v27 = v13[2](v13);
+  v27 = absentCopy[2](absentCopy);
   objc_msgSend_setCachingEnabled_(v27, v36, v37, v38, v39, v17);
-  if (a5)
+  if (created)
   {
-    *a5 = 1;
+    *created = 1;
   }
 
   if (v27)
@@ -168,28 +168,28 @@ LABEL_19:
   return v27;
 }
 
-- (void)setCacheObject:(id)a3 forKey:(id)a4 cacheID:(id)a5
+- (void)setCacheObject:(id)object forKey:(id)key cacheID:(id)d
 {
-  v44 = a3;
-  v8 = a4;
-  v9 = a5;
-  v14 = objc_msgSend_cacheEnabledForKey_(self, v10, v11, v12, v13, v8);
-  v19 = objc_msgSend_cacheObjectForKey_cacheID_created_ifAbsent_(self, v15, v16, v17, v18, v8, v9, 0, 0);
+  objectCopy = object;
+  keyCopy = key;
+  dCopy = d;
+  v14 = objc_msgSend_cacheEnabledForKey_(self, v10, v11, v12, v13, keyCopy);
+  v19 = objc_msgSend_cacheObjectForKey_cacheID_created_ifAbsent_(self, v15, v16, v17, v18, keyCopy, dCopy, 0, 0);
   v24 = v19;
   if (v19 && v14 != objc_msgSend_cachingEnabled(v19, v20, v21, v22, v23))
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, v21, v22, v23, "[TSCH3DSceneRenderCache setCacheObject:forKey:cacheID:]");
     v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, v28, v29, v30, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DSceneRenderCache.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v32, v33, v34, v35, v26, v31, 178, 0, "enabled flag must always match between cache %@ and object %@", self, v44);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v32, v33, v34, v35, v26, v31, 178, 0, "enabled flag must always match between cache %@ and object %@", self, objectCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39);
   }
 
-  if (v24 != v44)
+  if (v24 != objectCopy)
   {
-    objc_msgSend_setCachingEnabled_(v44, v20, v21, v22, v23, v14);
-    objc_msgSend_setObject_forFirstLevelKey_secondLevelKey_(self->_cache, v40, v41, v42, v43, v44, v8, v9);
+    objc_msgSend_setCachingEnabled_(objectCopy, v20, v21, v22, v23, v14);
+    objc_msgSend_setObject_forFirstLevelKey_secondLevelKey_(self->_cache, v40, v41, v42, v43, objectCopy, keyCopy, dCopy);
   }
 }
 

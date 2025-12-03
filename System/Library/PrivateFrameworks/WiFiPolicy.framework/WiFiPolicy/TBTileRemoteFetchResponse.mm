@@ -1,24 +1,24 @@
 @interface TBTileRemoteFetchResponse
-+ (id)responseWithTileItems:(id)a3;
-- (TBTileRemoteFetchResponse)initWithTileItems:(id)a3;
++ (id)responseWithTileItems:(id)items;
+- (TBTileRemoteFetchResponse)initWithTileItems:(id)items;
 @end
 
 @implementation TBTileRemoteFetchResponse
 
-+ (id)responseWithTileItems:(id)a3
++ (id)responseWithTileItems:(id)items
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTileItems:v4];
+  itemsCopy = items;
+  v5 = [[self alloc] initWithTileItems:itemsCopy];
 
   return v5;
 }
 
-- (TBTileRemoteFetchResponse)initWithTileItems:(id)a3
+- (TBTileRemoteFetchResponse)initWithTileItems:(id)items
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  itemsCopy = items;
+  v5 = itemsCopy;
+  if (itemsCopy && [itemsCopy count])
   {
     v6 = 0;
   }

@@ -3,28 +3,28 @@
 + (void)enableZoom;
 + (void)initialize;
 - (ZOTWorkspace)init;
-- (void)_conflictAlert:(id)a3;
+- (void)_conflictAlert:(id)alert;
 - (void)_delayedHandleApplicationActivated;
 - (void)_handleApplicationActivated;
 - (void)_initializeZoom;
 - (void)_registerForZoomConflict;
 - (void)_runThread;
-- (void)_setCaptureEvents:(BOOL)a3;
-- (void)_setZoomEnabled:(BOOL)a3;
+- (void)_setCaptureEvents:(BOOL)events;
+- (void)_setZoomEnabled:(BOOL)enabled;
 - (void)_showAppConflictAlertIfNecessary;
 - (void)_voiceOverEnabled;
-- (void)_zoomConflictRegistered:(id)a3;
-- (void)conflictAlertDidDismissWithButtonIndex:(int64_t)a3;
+- (void)_zoomConflictRegistered:(id)registered;
+- (void)conflictAlertDidDismissWithButtonIndex:(int64_t)index;
 - (void)dealloc;
-- (void)tripleClickAlertDidDismissWithButtonIndex:(int64_t)a3;
-- (void)zoomConflictRegistered:(id)a3;
+- (void)tripleClickAlertDidDismissWithButtonIndex:(int64_t)index;
+- (void)zoomConflictRegistered:(id)registered;
 @end
 
 @implementation ZOTWorkspace
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     ZOTInitializeUtilities();
@@ -66,14 +66,14 @@
     v2 = ZOTSharedWorkspace;
   }
 
-  v5 = [v2 zoomServices];
-  [v5 showZoomLens];
+  zoomServices = [v2 zoomServices];
+  [zoomServices showZoomLens];
 }
 
 + (void)disableZoom
 {
-  v2 = [ZOTSharedWorkspace zoomServices];
-  [v2 hideZoomLens];
+  zoomServices = [ZOTSharedWorkspace zoomServices];
+  [zoomServices hideZoomLens];
 }
 
 - (ZOTWorkspace)init
@@ -122,26 +122,26 @@
   [v3 addObserver:self selector:"zoomConflictRegistered:" name:UIAXZoomRegisterConflict object:0];
 }
 
-- (void)zoomConflictRegistered:(id)a3
+- (void)zoomConflictRegistered:(id)registered
 {
-  v4 = a3;
+  registeredCopy = registered;
   workspaceThread = self->_workspaceThread;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __39__ZOTWorkspace_zoomConflictRegistered___block_invoke;
   v7[3] = &unk_8380;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = registeredCopy;
+  v6 = registeredCopy;
   ZOTDispatchEventThread(workspaceThread, v7);
 }
 
-- (void)_conflictAlert:(id)a3
+- (void)_conflictAlert:(id)alert
 {
-  v5 = a3;
-  objc_storeStrong(&self->_conflictAlertData, a3);
+  alertCopy = alert;
+  objc_storeStrong(&self->_conflictAlertData, alert);
   self->_conflictAlertVisible = 1;
-  v6 = [v5 objectForKey:@"AppName"];
+  v6 = [alertCopy objectForKey:@"AppName"];
   objc_initWeak(&location, self);
   v7 = +[AXSpringBoardServer server];
   v8[0] = _NSConcreteStackBlock;
@@ -161,9 +161,9 @@ void __31__ZOTWorkspace__conflictAlert___block_invoke(uint64_t a1, uint64_t a2)
   [WeakRetained conflictAlertDidDismissWithButtonIndex:a2];
 }
 
-- (void)tripleClickAlertDidDismissWithButtonIndex:(int64_t)a3
+- (void)tripleClickAlertDidDismissWithButtonIndex:(int64_t)index
 {
-  if (a3 == 1)
+  if (index == 1)
   {
     v5 = [NSNumber numberWithInt:4];
     v3 = [NSArray arrayWithObject:v5];
@@ -176,7 +176,7 @@ void __31__ZOTWorkspace__conflictAlert___block_invoke(uint64_t a1, uint64_t a2)
 
   else
   {
-    if (a3)
+    if (index)
     {
       goto LABEL_6;
     }
@@ -191,7 +191,7 @@ LABEL_6:
   _AXSZoomTouchSetEnabled();
 }
 
-- (void)conflictAlertDidDismissWithButtonIndex:(int64_t)a3
+- (void)conflictAlertDidDismissWithButtonIndex:(int64_t)index
 {
   self->_conflictAlertVisible = 0;
   v5 = self->_conflictAlertData;
@@ -224,9 +224,9 @@ LABEL_6:
   }
 
   [v9 setObject:v11 forKey:v6];
-  if (a3)
+  if (index)
   {
-    if (a3 != 1)
+    if (index != 1)
     {
       [v11 setObject:v5 forKey:@"AskAgainData"];
       goto LABEL_13;
@@ -250,7 +250,7 @@ LABEL_13:
   v15 = +[ZOTConfiguration configurationManager];
   [v15 setValue:v9 forKey:@"AppConflicts"];
 
-  if (!a3)
+  if (!index)
   {
     v16 = _AXSTripleClickCopyOptions();
     if ([v16 count] || (+[ZOTConfiguration configurationManager](ZOTConfiguration, "configurationManager"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "valueForKey:", @"AskedAboutTripleClick"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, v17, (v19 & 1) != 0))
@@ -287,13 +287,13 @@ void __55__ZOTWorkspace_conflictAlertDidDismissWithButtonIndex___block_invoke(ui
   [WeakRetained tripleClickAlertDidDismissWithButtonIndex:a2];
 }
 
-- (void)_zoomConflictRegistered:(id)a3
+- (void)_zoomConflictRegistered:(id)registered
 {
-  v9 = [a3 userInfo];
+  userInfo = [registered userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v9 objectForKey:@"BundleID"];
+    v4 = [userInfo objectForKey:@"BundleID"];
     if (v4)
     {
       objc_opt_class();
@@ -307,7 +307,7 @@ void __55__ZOTWorkspace_conflictAlertDidDismissWithButtonIndex___block_invoke(ui
 
         if (!v8)
         {
-          [(ZOTWorkspace *)self performSelectorOnMainThread:"_conflictAlert:" withObject:v9 waitUntilDone:0];
+          [(ZOTWorkspace *)self performSelectorOnMainThread:"_conflictAlert:" withObject:userInfo waitUntilDone:0];
         }
       }
     }
@@ -358,9 +358,9 @@ void __55__ZOTWorkspace_conflictAlertDidDismissWithButtonIndex___block_invoke(ui
   [(ZOTWorkspace *)&v4 dealloc];
 }
 
-- (void)_setCaptureEvents:(BOOL)a3
+- (void)_setCaptureEvents:(BOOL)events
 {
-  if (a3)
+  if (events)
   {
     if (self->_eventTapIdentifier)
     {
@@ -436,16 +436,16 @@ BOOL __34__ZOTWorkspace__setCaptureEvents___block_invoke(id a1, AXEventRepresent
 
 - (void)_delayedHandleApplicationActivated
 {
-  v3 = [(ZOTWorkspace *)self threadKey];
-  [(ZOTWorkspace *)self performSelector:"_handleApplicationActivated" withThreadKey:v3 count:0 objects:0];
+  threadKey = [(ZOTWorkspace *)self threadKey];
+  [(ZOTWorkspace *)self performSelector:"_handleApplicationActivated" withThreadKey:threadKey count:0 objects:0];
 }
 
-- (void)_setZoomEnabled:(BOOL)a3
+- (void)_setZoomEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  operator|| = a3;
+  enabledCopy = enabled;
+  operator|| = enabled;
   [(ZOTWorkspace *)self _setCaptureEvents:?];
-  if (v3)
+  if (enabledCopy)
   {
     [(ZOTWorkspace *)self performSelector:"_delayedHandleApplicationActivated" withObject:0 afterDelay:0.0];
     AXPerformBlockOnMainThreadAfterDelay();
@@ -454,8 +454,8 @@ BOOL __34__ZOTWorkspace__setCaptureEvents___block_invoke(id a1, AXEventRepresent
   else
   {
     v5 = +[AXSpringBoardServer server];
-    v6 = [(ZOTWorkspace *)self springboardActionHandlerIdentifer];
-    [v5 removeActionHandler:v6];
+    springboardActionHandlerIdentifer = [(ZOTWorkspace *)self springboardActionHandlerIdentifer];
+    [v5 removeActionHandler:springboardActionHandlerIdentifer];
 
     [(ZOTWorkspace *)self setSpringboardActionHandlerIdentifer:0];
   }
@@ -517,11 +517,11 @@ void __32__ZOTWorkspace__setZoomEnabled___block_invoke_3(uint64_t a1, void *a2)
 
   v5 = +[ZOTSystemInterface topApplicationBundleId];
   v6 = +[AXSpringBoardServer server];
-  v7 = [v6 isMakingEmergencyCall];
+  isMakingEmergencyCall = [v6 isMakingEmergencyCall];
 
   if ([(__CFString *)v5 isEqual:@"com.apple.mobilephone"])
   {
-    v8 = v7 == 0;
+    v8 = isMakingEmergencyCall == 0;
   }
 
   else

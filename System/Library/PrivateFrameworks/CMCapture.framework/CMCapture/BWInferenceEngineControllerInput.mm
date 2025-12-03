@@ -1,21 +1,21 @@
 @interface BWInferenceEngineControllerInput
-- (BWInferenceEngineControllerInput)initWithSettings:(id)a3 portType:(id)a4 inferenceInputBufferType:(unint64_t)a5;
+- (BWInferenceEngineControllerInput)initWithSettings:(id)settings portType:(id)type inferenceInputBufferType:(unint64_t)bufferType;
 - (id)description;
-- (void)addInferenceImage:(opaqueCMSampleBuffer *)a3 propagationImage:(opaqueCMSampleBuffer *)a4;
+- (void)addInferenceImage:(opaqueCMSampleBuffer *)image propagationImage:(opaqueCMSampleBuffer *)propagationImage;
 - (void)dealloc;
 @end
 
 @implementation BWInferenceEngineControllerInput
 
-- (BWInferenceEngineControllerInput)initWithSettings:(id)a3 portType:(id)a4 inferenceInputBufferType:(unint64_t)a5
+- (BWInferenceEngineControllerInput)initWithSettings:(id)settings portType:(id)type inferenceInputBufferType:(unint64_t)bufferType
 {
   v7.receiver = self;
   v7.super_class = BWInferenceEngineControllerInput;
-  result = [(BWStillImageProcessorControllerInput *)&v7 initWithSettings:a3 portType:a4];
+  result = [(BWStillImageProcessorControllerInput *)&v7 initWithSettings:settings portType:type];
   if (result)
   {
     result->_expectsMoreData = 1;
-    result->_inferenceInputBufferType = a5;
+    result->_inferenceInputBufferType = bufferType;
   }
 
   return result;
@@ -40,9 +40,9 @@
   [(BWStillImageProcessorControllerInput *)&v5 dealloc];
 }
 
-- (void)addInferenceImage:(opaqueCMSampleBuffer *)a3 propagationImage:(opaqueCMSampleBuffer *)a4
+- (void)addInferenceImage:(opaqueCMSampleBuffer *)image propagationImage:(opaqueCMSampleBuffer *)propagationImage
 {
-  if (!a3)
+  if (!image)
   {
     FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -55,7 +55,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!propagationImage)
   {
     v10 = FigCaptureGetFrameworkRadarComponent();
     v11 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -67,10 +67,10 @@ LABEL_12:
   }
 
   inferenceImage = self->_inferenceImage;
-  if (inferenceImage != a3)
+  if (inferenceImage != image)
   {
-    self->_inferenceImage = a3;
-    CFRetain(a3);
+    self->_inferenceImage = image;
+    CFRetain(image);
     if (inferenceImage)
     {
       CFRelease(inferenceImage);
@@ -78,10 +78,10 @@ LABEL_12:
   }
 
   propagationImage = self->_propagationImage;
-  if (propagationImage != a4)
+  if (propagationImage != propagationImage)
   {
-    self->_propagationImage = a4;
-    CFRetain(a4);
+    self->_propagationImage = propagationImage;
+    CFRetain(propagationImage);
     if (propagationImage)
     {
       CFRelease(propagationImage);
@@ -97,13 +97,13 @@ LABEL_9:
 {
   v11 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
-  v4 = [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] settingsID];
+  settingsID = [(BWStillImageCaptureSettings *)[(BWStillImageProcessorControllerInput *)self captureSettings] settingsID];
   v5 = BWPhotoEncoderStringFromEncodingScheme([(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] captureType]);
-  v6 = [(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] portType];
+  portType = [(BWStillImageCaptureStreamSettings *)[(BWStillImageProcessorControllerInput *)self captureStreamSettings] portType];
   inferenceImage = self->_inferenceImage;
   propagationImage = self->_propagationImage;
   v9 = [(NSArray *)self->_enabledInferenceMasks componentsJoinedByString:@", "];
-  return [v11 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType=%@, %@ : infImg:%p propImg:%p masks:%@ smartCam:%d vision:%@ delegate:%p", v3, self, v4, v5, v6, inferenceImage, propagationImage, v9, self->_smartCameraClassificationsEnabled, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%llu", self->_enabledVisionInferences), -[BWStillImageProcessorControllerInput delegate](self, "delegate")];
+  return [v11 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType=%@, %@ : infImg:%p propImg:%p masks:%@ smartCam:%d vision:%@ delegate:%p", v3, self, settingsID, v5, portType, inferenceImage, propagationImage, v9, self->_smartCameraClassificationsEnabled, objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%llu", self->_enabledVisionInferences), -[BWStillImageProcessorControllerInput delegate](self, "delegate")];
 }
 
 @end

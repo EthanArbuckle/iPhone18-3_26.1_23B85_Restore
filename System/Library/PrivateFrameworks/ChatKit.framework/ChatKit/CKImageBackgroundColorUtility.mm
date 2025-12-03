@@ -1,20 +1,20 @@
 @interface CKImageBackgroundColorUtility
-- (CKImageBackgroundColorUtility)initWithImage:(id)a3;
+- (CKImageBackgroundColorUtility)initWithImage:(id)image;
 - (void)analyze;
 @end
 
 @implementation CKImageBackgroundColorUtility
 
-- (CKImageBackgroundColorUtility)initWithImage:(id)a3
+- (CKImageBackgroundColorUtility)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = CKImageBackgroundColorUtility;
   v6 = [(CKImageBackgroundColorUtility *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_image, a3);
+    objc_storeStrong(&v6->_image, image);
   }
 
   return v7;
@@ -24,7 +24,7 @@
 {
   components[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696AB50]);
-  v66 = self;
+  selfCopy = self;
   space = CGColorSpaceCreateDeviceRGB();
   CopyWithColorSpace = CGImageCreateCopyWithColorSpace([(UIImage *)self->_image CGImage], space);
   DataProvider = CGImageGetDataProvider(CopyWithColorSpace);
@@ -124,15 +124,15 @@
   v63 = v21;
 
   v29 = [v75 keysSortedByValueUsingSelector:?];
-  v30 = [v29 reverseObjectEnumerator];
-  v31 = [v30 allObjects];
+  reverseObjectEnumerator = [v29 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v31;
+  obj = allObjects;
   v33 = [obj countByEnumeratingWithState:&v84 objects:v94 count:16];
   if (v33)
   {
@@ -158,10 +158,10 @@
           v80 = 0u;
           v81 = 0u;
           v38 = [v32 keysSortedByValueUsingSelector:sel_compare_];
-          v39 = [v38 reverseObjectEnumerator];
-          v40 = [v39 allObjects];
+          reverseObjectEnumerator2 = [v38 reverseObjectEnumerator];
+          allObjects2 = [reverseObjectEnumerator2 allObjects];
 
-          v41 = [v40 countByEnumeratingWithState:&v80 objects:v93 count:16];
+          v41 = [allObjects2 countByEnumeratingWithState:&v80 objects:v93 count:16];
           if (v41)
           {
             v42 = v41;
@@ -173,16 +173,16 @@
               {
                 if (*v81 != v43)
                 {
-                  objc_enumerationMutation(v40);
+                  objc_enumerationMutation(allObjects2);
                 }
 
                 if ([*(*(&v80 + 1) + 8 * j) ck_isCloseToColor:v37])
                 {
                   v45 = MEMORY[0x1E696AD98];
                   v46 = [v32 objectForKeyedSubscript:v37];
-                  v47 = [v46 unsignedIntValue];
+                  unsignedIntValue = [v46 unsignedIntValue];
                   v48 = [v75 objectForKeyedSubscript:v37];
-                  v49 = [v45 numberWithUnsignedInt:{objc_msgSend(v48, "unsignedIntValue") + v47}];
+                  v49 = [v45 numberWithUnsignedInt:{objc_msgSend(v48, "unsignedIntValue") + unsignedIntValue}];
                   [v32 setObject:v49 forKeyedSubscript:v37];
                 }
 
@@ -193,7 +193,7 @@
                 }
               }
 
-              v42 = [v40 countByEnumeratingWithState:&v80 objects:v93 count:16];
+              v42 = [allObjects2 countByEnumeratingWithState:&v80 objects:v93 count:16];
             }
 
             while (v42);
@@ -205,8 +205,8 @@
 
         else
         {
-          v40 = [v75 objectForKeyedSubscript:v37];
-          [v32 setObject:v40 forKeyedSubscript:v37];
+          allObjects2 = [v75 objectForKeyedSubscript:v37];
+          [v32 setObject:allObjects2 forKeyedSubscript:v37];
         }
 
         ++v36;
@@ -219,15 +219,15 @@
     while (v34);
   }
 
-  v50 = [v32 allKeys];
-  v51 = [v50 firstObject];
+  allKeys = [v32 allKeys];
+  firstObject = [allKeys firstObject];
 
   v78 = 0u;
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v52 = [v32 allKeys];
-  v53 = [v52 countByEnumeratingWithState:&v76 objects:v92 count:16];
+  allKeys2 = [v32 allKeys];
+  v53 = [allKeys2 countByEnumeratingWithState:&v76 objects:v92 count:16];
   if (v53)
   {
     v54 = v53;
@@ -238,25 +238,25 @@
       {
         if (*v77 != v55)
         {
-          objc_enumerationMutation(v52);
+          objc_enumerationMutation(allKeys2);
         }
 
         v57 = *(*(&v76 + 1) + 8 * k);
-        v58 = [v32 objectForKeyedSubscript:v51];
-        v59 = [v58 unsignedIntValue];
+        v58 = [v32 objectForKeyedSubscript:firstObject];
+        unsignedIntValue2 = [v58 unsignedIntValue];
 
         v60 = [v32 objectForKeyedSubscript:v57];
-        v61 = [v60 unsignedIntValue];
+        unsignedIntValue3 = [v60 unsignedIntValue];
 
-        if (v59 <= v61)
+        if (unsignedIntValue2 <= unsignedIntValue3)
         {
           v62 = v57;
 
-          v51 = v62;
+          firstObject = v62;
         }
       }
 
-      v54 = [v52 countByEnumeratingWithState:&v76 objects:v92 count:16];
+      v54 = [allKeys2 countByEnumeratingWithState:&v76 objects:v92 count:16];
     }
 
     while (v54);
@@ -277,7 +277,7 @@
     CFRelease(space);
   }
 
-  [(CKImageBackgroundColorUtility *)v66 setBackgroundColor:v51];
+  [(CKImageBackgroundColorUtility *)selfCopy setBackgroundColor:firstObject];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface MFNanoServerMessageContentParser
-- (BOOL)_parseMimeParts:(id)a3 messageBody:(id)a4 attributedString:(id)a5 maxLength:(unint64_t)a6 maxImageWidth:(double)a7 maxImageAttachments:(unint64_t)a8 shouldTryAlternatives:(BOOL)a9 urlsForValidation:(id)a10 nanoAttachmentsList:(id)a11 attachmentURLsToLoad:(id)a12 usingAlternativePart:(BOOL *)a13 partiallyLoaded:(BOOL *)a14;
+- (BOOL)_parseMimeParts:(id)parts messageBody:(id)body attributedString:(id)string maxLength:(unint64_t)length maxImageWidth:(double)width maxImageAttachments:(unint64_t)attachments shouldTryAlternatives:(BOOL)alternatives urlsForValidation:(id)self0 nanoAttachmentsList:(id)self1 attachmentURLsToLoad:(id)self2 usingAlternativePart:(BOOL *)self3 partiallyLoaded:(BOOL *)self4;
 - (MFNanoServerMessageContentParser)init;
-- (id)_attachmentForURL:(id)a3 mimePart:(id)a4;
-- (id)_nanoAttachmentForURL:(id)a3 mimePart:(id)a4;
-- (id)_parseStringMimePart:(id)a3 maxLength:(unint64_t)a4;
-- (id)_parseTextAttachmentMimePart:(id)a3 messageBody:(id)a4 maxImageAttachments:(unint64_t)a5 nanoAttachmentsList:(id)a6 attachmentURLsToLoad:(id)a7;
-- (id)_parseWebMessageDocumentMimePart:(id)a3 messageBody:(id)a4 maxLength:(unint64_t)a5 maxImageWidth:(double)a6 maxImageAttachments:(unint64_t)a7 shouldTryAlternatives:(BOOL)a8 urlsForValidation:(id)a9 finalNanoAttachmentsList:(id)a10 finalAttachmentsURLsToLoad:(id)a11 usingAlternativePart:(BOOL *)a12 partiallyLoaded:(BOOL *)a13;
-- (id)parseMessageWithLoadingContextEvent:(id)a3 maxImageWidth:(double)a4 messageBody:(id *)a5 attachmentURLsToLoad:(id *)a6;
-- (void)_parseAttachmentsFromMimePart:(id)a3 messageBody:(id)a4 maxImageAttachments:(unint64_t)a5 nanoAttachmentsList:(id)a6 attachmentURLsToLoad:(id)a7;
+- (id)_attachmentForURL:(id)l mimePart:(id)part;
+- (id)_nanoAttachmentForURL:(id)l mimePart:(id)part;
+- (id)_parseStringMimePart:(id)part maxLength:(unint64_t)length;
+- (id)_parseTextAttachmentMimePart:(id)part messageBody:(id)body maxImageAttachments:(unint64_t)attachments nanoAttachmentsList:(id)list attachmentURLsToLoad:(id)load;
+- (id)_parseWebMessageDocumentMimePart:(id)part messageBody:(id)body maxLength:(unint64_t)length maxImageWidth:(double)width maxImageAttachments:(unint64_t)attachments shouldTryAlternatives:(BOOL)alternatives urlsForValidation:(id)validation finalNanoAttachmentsList:(id)self0 finalAttachmentsURLsToLoad:(id)self1 usingAlternativePart:(BOOL *)self2 partiallyLoaded:(BOOL *)self3;
+- (id)parseMessageWithLoadingContextEvent:(id)event maxImageWidth:(double)width messageBody:(id *)body attachmentURLsToLoad:(id *)load;
+- (void)_parseAttachmentsFromMimePart:(id)part messageBody:(id)body maxImageAttachments:(unint64_t)attachments nanoAttachmentsList:(id)list attachmentURLsToLoad:(id)load;
 - (void)dealloc;
-- (void)parseMessage:(id)a3 maxImageWidth:(double)a4 completionBlock:(id)a5;
+- (void)parseMessage:(id)message maxImageWidth:(double)width completionBlock:(id)block;
 @end
 
 @implementation MFNanoServerMessageContentParser
@@ -37,18 +37,18 @@
   return v2;
 }
 
-- (void)parseMessage:(id)a3 maxImageWidth:(double)a4 completionBlock:(id)a5
+- (void)parseMessage:(id)message maxImageWidth:(double)width completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  blockCopy = block;
   [(EFCancelable *)self->_cancelable cancel];
   cancelable = self->_cancelable;
   self->_cancelable = 0;
 
   v11 = [MFMessageLoadingContext alloc];
   v12 = sub_100027C70();
-  v13 = [v12 defaultAttachmentManager];
-  v14 = [v11 initWithMessage:v8 attachmentManager:v13];
+  defaultAttachmentManager = [v12 defaultAttachmentManager];
+  v14 = [v11 initWithMessage:messageCopy attachmentManager:defaultAttachmentManager];
   loadingContext = self->_loadingContext;
   self->_loadingContext = v14;
 
@@ -56,7 +56,7 @@
   v17 = self->_loadingContext;
   if (!v17)
   {
-    (*(v9 + 2))(v9, 0, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0, 0);
     v17 = self->_loadingContext;
   }
 
@@ -68,10 +68,10 @@
   v23[2] = sub_10008FA88;
   v23[3] = &unk_100159A58;
   objc_copyWeak(v26, &location);
-  v26[1] = *&a4;
+  v26[1] = *&width;
   v19 = v16;
   v24 = v19;
-  v20 = v9;
+  v20 = blockCopy;
   v25 = v20;
   v21 = [(MFMessageLoadingContext *)v18 addLoadObserver:v23];
   v22 = self->_cancelable;
@@ -81,38 +81,38 @@
   objc_destroyWeak(&location);
 }
 
-- (id)parseMessageWithLoadingContextEvent:(id)a3 maxImageWidth:(double)a4 messageBody:(id *)a5 attachmentURLsToLoad:(id *)a6
+- (id)parseMessageWithLoadingContextEvent:(id)event maxImageWidth:(double)width messageBody:(id *)body attachmentURLsToLoad:(id *)load
 {
-  v10 = a3;
-  v11 = [v10 context];
-  v12 = [v11 message];
-  v26 = [v12 messageSize];
-  if ([v10 hasLoadedCompleteBody])
+  eventCopy = event;
+  context = [eventCopy context];
+  message = [context message];
+  messageSize = [message messageSize];
+  if ([eventCopy hasLoadedCompleteBody])
   {
-    v25 = [v10 content];
-    *a5 = [v11 messageBody];
+    content = [eventCopy content];
+    *body = [context messageBody];
     v28 = 0;
     v13 = objc_alloc_init(NSMutableAttributedString);
     v27 = objc_alloc_init(NSMutableArray);
     v14 = objc_alloc_init(NSMutableSet);
-    *a6 = 0;
-    v15 = [(MFNanoServerMessageContentParser *)self _parseMimeParts:v25 messageBody:*a5 attributedString:v13 maxLength:NNMKHTMLParserMaxContentTextLength maxImageWidth:NNMKHTMLParserMaxImageAttachmentsToSync maxImageAttachments:1 shouldTryAlternatives:a4 urlsForValidation:0 nanoAttachmentsList:v27 attachmentURLsToLoad:v14 usingAlternativePart:&v28 + 1 partiallyLoaded:&v28];
+    *load = 0;
+    v15 = [(MFNanoServerMessageContentParser *)self _parseMimeParts:content messageBody:*body attributedString:v13 maxLength:NNMKHTMLParserMaxContentTextLength maxImageWidth:NNMKHTMLParserMaxImageAttachmentsToSync maxImageAttachments:1 shouldTryAlternatives:width urlsForValidation:0 nanoAttachmentsList:v27 attachmentURLsToLoad:v14 usingAlternativePart:&v28 + 1 partiallyLoaded:&v28];
     v16 = objc_alloc_init(NNMKMessageContent);
-    v17 = [v12 mf_externalReference];
-    v18 = [v17 absoluteString];
-    [v16 setMessageId:v18];
+    mf_externalReference = [message mf_externalReference];
+    absoluteString = [mf_externalReference absoluteString];
+    [v16 setMessageId:absoluteString];
 
-    v19 = [v16 messageId];
-    LODWORD(v18) = v19 == 0;
+    messageId = [v16 messageId];
+    LODWORD(absoluteString) = messageId == 0;
 
-    if (v18)
+    if (absoluteString)
     {
       v20 = MFLogGeneral();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
-        [v12 messageID];
+        [message messageID];
         objc_claimAutoreleasedReturnValue();
-        [v12 externalID];
+        [message externalID];
         objc_claimAutoreleasedReturnValue();
         sub_1000D5060();
       }
@@ -133,7 +133,7 @@
       [v16 setAttachments:v27];
       [v16 setPartiallyLoaded:v28];
       v23 = v14;
-      *a6 = v14;
+      *load = v14;
     }
   }
 
@@ -144,26 +144,26 @@
 
   if (objc_opt_respondsToSelector())
   {
-    [v16 setOriginalContentSize:v26];
+    [v16 setOriginalContentSize:messageSize];
   }
 
   return v16;
 }
 
-- (BOOL)_parseMimeParts:(id)a3 messageBody:(id)a4 attributedString:(id)a5 maxLength:(unint64_t)a6 maxImageWidth:(double)a7 maxImageAttachments:(unint64_t)a8 shouldTryAlternatives:(BOOL)a9 urlsForValidation:(id)a10 nanoAttachmentsList:(id)a11 attachmentURLsToLoad:(id)a12 usingAlternativePart:(BOOL *)a13 partiallyLoaded:(BOOL *)a14
+- (BOOL)_parseMimeParts:(id)parts messageBody:(id)body attributedString:(id)string maxLength:(unint64_t)length maxImageWidth:(double)width maxImageAttachments:(unint64_t)attachments shouldTryAlternatives:(BOOL)alternatives urlsForValidation:(id)self0 nanoAttachmentsList:(id)self1 attachmentURLsToLoad:(id)self2 usingAlternativePart:(BOOL *)self3 partiallyLoaded:(BOOL *)self4
 {
-  v34 = a9;
-  v17 = a3;
-  v39 = a4;
-  v18 = a5;
-  v35 = a10;
-  v38 = a11;
-  v19 = a12;
+  alternativesCopy = alternatives;
+  partsCopy = parts;
+  bodyCopy = body;
+  stringCopy = string;
+  validationCopy = validation;
+  listCopy = list;
+  loadCopy = load;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v17;
+  obj = partsCopy;
   v20 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (!v20)
   {
@@ -183,26 +183,26 @@
       }
 
       v23 = *(*(&v42 + 1) + 8 * v22);
-      v24 = [v18 length];
-      v25 = [v19 count];
+      v24 = [stringCopy length];
+      v25 = [loadCopy count];
       v26 = objc_autoreleasePoolPush();
       objc_opt_class();
-      v27 = a8 - v25;
+      v27 = attachments - v25;
       if (objc_opt_isKindOfClass())
       {
-        v28 = [(MFNanoServerMessageContentParser *)self _parseTextAttachmentMimePart:v23 messageBody:v39 maxImageAttachments:v27 nanoAttachmentsList:v38 attachmentURLsToLoad:v19];
-        [v18 appendAttributedString:v28];
+        v28 = [(MFNanoServerMessageContentParser *)self _parseTextAttachmentMimePart:v23 messageBody:bodyCopy maxImageAttachments:v27 nanoAttachmentsList:listCopy attachmentURLsToLoad:loadCopy];
+        [stringCopy appendAttributedString:v28];
 LABEL_13:
         v30 = 1;
         goto LABEL_14;
       }
 
       objc_opt_class();
-      v29 = a6 - v24;
+      v29 = length - v24;
       if (objc_opt_isKindOfClass())
       {
         v28 = [(MFNanoServerMessageContentParser *)self _parseStringMimePart:v23 maxLength:v29];
-        [v18 appendAttributedString:v28];
+        [stringCopy appendAttributedString:v28];
         goto LABEL_13;
       }
 
@@ -213,11 +213,11 @@ LABEL_13:
         goto LABEL_15;
       }
 
-      v28 = [(MFNanoServerMessageContentParser *)self _parseWebMessageDocumentMimePart:v23 messageBody:v39 maxLength:v29 maxImageWidth:v27 maxImageAttachments:v34 shouldTryAlternatives:v35 urlsForValidation:a7 finalNanoAttachmentsList:v38 finalAttachmentsURLsToLoad:v19 usingAlternativePart:a13 partiallyLoaded:a14];
+      v28 = [(MFNanoServerMessageContentParser *)self _parseWebMessageDocumentMimePart:v23 messageBody:bodyCopy maxLength:v29 maxImageWidth:v27 maxImageAttachments:alternativesCopy shouldTryAlternatives:validationCopy urlsForValidation:width finalNanoAttachmentsList:listCopy finalAttachmentsURLsToLoad:loadCopy usingAlternativePart:part partiallyLoaded:loaded];
       v30 = v28 != 0;
       if (v28)
       {
-        [v18 appendAttributedString:v28];
+        [stringCopy appendAttributedString:v28];
         goto LABEL_13;
       }
 
@@ -225,7 +225,7 @@ LABEL_14:
 
 LABEL_15:
       objc_autoreleasePoolPop(v26);
-      if (!v30 || *a14)
+      if (!v30 || *loaded)
       {
         goto LABEL_23;
       }
@@ -242,40 +242,40 @@ LABEL_15:
   while (v31);
 LABEL_23:
 
-  v32 = [v39 topLevelPart];
-  -[MFNanoServerMessageContentParser _parseAttachmentsFromMimePart:messageBody:maxImageAttachments:nanoAttachmentsList:attachmentURLsToLoad:](self, "_parseAttachmentsFromMimePart:messageBody:maxImageAttachments:nanoAttachmentsList:attachmentURLsToLoad:", v32, v39, a8 - [v19 count], v38, v19);
+  topLevelPart = [bodyCopy topLevelPart];
+  -[MFNanoServerMessageContentParser _parseAttachmentsFromMimePart:messageBody:maxImageAttachments:nanoAttachmentsList:attachmentURLsToLoad:](self, "_parseAttachmentsFromMimePart:messageBody:maxImageAttachments:nanoAttachmentsList:attachmentURLsToLoad:", topLevelPart, bodyCopy, attachments - [loadCopy count], listCopy, loadCopy);
 
   return v30;
 }
 
-- (id)_parseTextAttachmentMimePart:(id)a3 messageBody:(id)a4 maxImageAttachments:(unint64_t)a5 nanoAttachmentsList:(id)a6 attachmentURLsToLoad:(id)a7
+- (id)_parseTextAttachmentMimePart:(id)part messageBody:(id)body maxImageAttachments:(unint64_t)attachments nanoAttachmentsList:(id)list attachmentURLsToLoad:(id)load
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 mimePart];
-  [v16 setMimeBody:v13];
+  partCopy = part;
+  bodyCopy = body;
+  listCopy = list;
+  loadCopy = load;
+  mimePart = [partCopy mimePart];
+  [mimePart setMimeBody:bodyCopy];
 
   v17 = sub_100027C70();
-  v18 = [v17 defaultAttachmentManager];
-  v19 = [v18 attachmentForTextAttachment:v12 error:0];
+  defaultAttachmentManager = [v17 defaultAttachmentManager];
+  v19 = [defaultAttachmentManager attachmentForTextAttachment:partCopy error:0];
 
-  v20 = [v19 contentID];
-  if (v20)
+  contentID = [v19 contentID];
+  if (contentID)
   {
     if ([v19 nanoAttachmentType] == 5)
     {
-      [NNMKContentAttributedStringHTMLParser imageAttachmentAttributedStringWithContentId:v20 imageSize:0 mergingAttributes:CGSizeZero.width, CGSizeZero.height];
+      [NNMKContentAttributedStringHTMLParser imageAttachmentAttributedStringWithContentId:contentID imageSize:0 mergingAttributes:CGSizeZero.width, CGSizeZero.height];
     }
 
     else
     {
-      [NNMKContentAttributedStringHTMLParser attachmentAttributedStringWithContentId:v20 mergingAttributes:0];
+      [NNMKContentAttributedStringHTMLParser attachmentAttributedStringWithContentId:contentID mergingAttributes:0];
     }
     v21 = ;
-    v22 = [v12 mimePart];
-    [(MFNanoServerMessageContentParser *)self _parseAttachmentsFromMimePart:v22 messageBody:v13 maxImageAttachments:a5 nanoAttachmentsList:v14 attachmentURLsToLoad:v15];
+    mimePart2 = [partCopy mimePart];
+    [(MFNanoServerMessageContentParser *)self _parseAttachmentsFromMimePart:mimePart2 messageBody:bodyCopy maxImageAttachments:attachments nanoAttachmentsList:listCopy attachmentURLsToLoad:loadCopy];
   }
 
   else
@@ -286,17 +286,17 @@ LABEL_23:
   return v21;
 }
 
-- (id)_parseStringMimePart:(id)a3 maxLength:(unint64_t)a4
+- (id)_parseStringMimePart:(id)part maxLength:(unint64_t)length
 {
-  v5 = a3;
-  if ([v5 length] <= a4)
+  partCopy = part;
+  if ([partCopy length] <= length)
   {
-    v6 = v5;
+    v6 = partCopy;
   }
 
   else
   {
-    v6 = [v5 substringToIndex:a4];
+    v6 = [partCopy substringToIndex:length];
   }
 
   v7 = v6;
@@ -305,19 +305,19 @@ LABEL_23:
   return v8;
 }
 
-- (id)_parseWebMessageDocumentMimePart:(id)a3 messageBody:(id)a4 maxLength:(unint64_t)a5 maxImageWidth:(double)a6 maxImageAttachments:(unint64_t)a7 shouldTryAlternatives:(BOOL)a8 urlsForValidation:(id)a9 finalNanoAttachmentsList:(id)a10 finalAttachmentsURLsToLoad:(id)a11 usingAlternativePart:(BOOL *)a12 partiallyLoaded:(BOOL *)a13
+- (id)_parseWebMessageDocumentMimePart:(id)part messageBody:(id)body maxLength:(unint64_t)length maxImageWidth:(double)width maxImageAttachments:(unint64_t)attachments shouldTryAlternatives:(BOOL)alternatives urlsForValidation:(id)validation finalNanoAttachmentsList:(id)self0 finalAttachmentsURLsToLoad:(id)self1 usingAlternativePart:(BOOL *)self2 partiallyLoaded:(BOOL *)self3
 {
-  v14 = a8;
-  v17 = a3;
-  v53 = a4;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
-  v48 = [v17 htmlData];
-  v21 = [v17 preferredCharacterSet];
-  LODWORD(a4) = MFEncodingForCharset();
+  alternativesCopy = alternatives;
+  partCopy = part;
+  bodyCopy = body;
+  validationCopy = validation;
+  listCopy = list;
+  loadCopy = load;
+  htmlData = [partCopy htmlData];
+  preferredCharacterSet = [partCopy preferredCharacterSet];
+  LODWORD(body) = MFEncodingForCharset();
 
-  v22 = CFStringConvertEncodingToNSStringEncoding(a4);
+  v22 = CFStringConvertEncodingToNSStringEncoding(body);
   v47 = MFCreateStringWithData();
   if (!self->_htmlParser)
   {
@@ -327,14 +327,14 @@ LABEL_23:
   }
 
   v25 = self->_htmlParser;
-  if (v18)
+  if (validationCopy)
   {
-    v26 = [(NNMKContentAttributedStringHTMLParser *)v25 parseHTMLBody:v47 encoding:v22 maxLength:a5 maxImageWidth:a13 partiallyParsed:0 imageAttachmentsLoaded:v18 urlsForValidation:a6];
+    v26 = [(NNMKContentAttributedStringHTMLParser *)v25 parseHTMLBody:v47 encoding:v22 maxLength:length maxImageWidth:loaded partiallyParsed:0 imageAttachmentsLoaded:validationCopy urlsForValidation:width];
     if (v26)
     {
 LABEL_5:
-      v27 = [v17 mimePart];
-      [(MFNanoServerMessageContentParser *)self _parseAttachmentsFromMimePart:v27 messageBody:v53 maxImageAttachments:a7 nanoAttachmentsList:v19 attachmentURLsToLoad:v20];
+      mimePart = [partCopy mimePart];
+      [(MFNanoServerMessageContentParser *)self _parseAttachmentsFromMimePart:mimePart messageBody:bodyCopy maxImageAttachments:attachments nanoAttachmentsList:listCopy attachmentURLsToLoad:loadCopy];
 
       goto LABEL_25;
     }
@@ -343,8 +343,8 @@ LABEL_5:
   else
   {
     v57[0] = 0;
-    v28 = [(NNMKContentAttributedStringHTMLParser *)v25 parseHTMLBody:v47 encoding:v22 maxLength:a5 maxImageWidth:a13 partiallyParsed:0 imageAttachmentsLoaded:v57 urlsFound:a6];
-    v18 = v57[0];
+    v28 = [(NNMKContentAttributedStringHTMLParser *)v25 parseHTMLBody:v47 encoding:v22 maxLength:length maxImageWidth:loaded partiallyParsed:0 imageAttachmentsLoaded:v57 urlsFound:width];
+    validationCopy = v57[0];
     v26 = v28;
     if (v28)
     {
@@ -352,29 +352,29 @@ LABEL_5:
     }
   }
 
-  if (v14)
+  if (alternativesCopy)
   {
-    v44 = v17;
-    v45 = v20;
-    v46 = v19;
-    v49 = v18;
-    v29 = [v17 mimePart];
+    v44 = partCopy;
+    v45 = loadCopy;
+    v46 = listCopy;
+    v49 = validationCopy;
+    mimePart2 = [partCopy mimePart];
     while (1)
     {
-      v30 = [v29 parentPart];
+      parentPart = [mimePart2 parentPart];
 
-      if (!v30)
+      if (!parentPart)
       {
         break;
       }
 
-      v31 = [v30 type];
-      if ([v31 isEqualToString:@"multipart"])
+      type = [parentPart type];
+      if ([type isEqualToString:@"multipart"])
       {
-        v32 = [v30 subtype];
-        v33 = [v32 isEqualToString:@"alternative"];
+        subtype = [parentPart subtype];
+        v33 = [subtype isEqualToString:@"alternative"];
 
-        v29 = v30;
+        mimePart2 = parentPart;
         if (v33)
         {
           break;
@@ -384,42 +384,42 @@ LABEL_5:
       else
       {
 
-        v29 = v30;
+        mimePart2 = parentPart;
       }
     }
 
     v54 = 0;
-    v34 = [v30 numberOfAlternatives] - 2;
+    v34 = [parentPart numberOfAlternatives] - 2;
     while (1)
     {
       if ((v34 + 1) <= 1)
       {
-        *a12 = 1;
+        *alternativePart = 1;
         if (v34)
         {
           break;
         }
       }
 
-      v35 = [v30 alternativeAtIndex:v34];
+      v35 = [parentPart alternativeAtIndex:v34];
       v36 = [v35 contentToOffset:0x7FFFFFFFFFFFFFFFLL resultOffset:0 asHTML:1];
       v37 = objc_alloc_init(NSMutableAttributedString);
       v38 = objc_alloc_init(NSMutableArray);
       v39 = objc_alloc_init(NSMutableSet);
-      v56 = *a12;
+      v56 = *alternativePart;
       v55 = 0;
-      v40 = [(MFNanoServerMessageContentParser *)self _parseMimeParts:v36 messageBody:v53 attributedString:v37 maxLength:a5 maxImageWidth:a7 maxImageAttachments:0 shouldTryAlternatives:a6 urlsForValidation:v49 nanoAttachmentsList:v38 attachmentURLsToLoad:v39 usingAlternativePart:&v56 partiallyLoaded:&v55];
+      v40 = [(MFNanoServerMessageContentParser *)self _parseMimeParts:v36 messageBody:bodyCopy attributedString:v37 maxLength:length maxImageWidth:attachments maxImageAttachments:0 shouldTryAlternatives:width urlsForValidation:v49 nanoAttachmentsList:v38 attachmentURLsToLoad:v39 usingAlternativePart:&v56 partiallyLoaded:&v55];
       v41 = v40;
       if (v40)
       {
         v26 = v37;
 
         [v46 addObjectsFromArray:v38];
-        v42 = [v39 allObjects];
-        [v45 addObjectsFromArray:v42];
+        allObjects = [v39 allObjects];
+        [v45 addObjectsFromArray:allObjects];
 
-        *a13 = v55;
-        *a12 = 1;
+        *loaded = v55;
+        *alternativePart = 1;
         v54 = v26;
       }
 
@@ -438,16 +438,16 @@ LABEL_5:
     v26 = v54;
 LABEL_24:
 
-    v17 = v44;
-    v20 = v45;
-    v19 = v46;
-    v18 = v49;
+    partCopy = v44;
+    loadCopy = v45;
+    listCopy = v46;
+    validationCopy = v49;
   }
 
   else
   {
     v26 = 0;
-    *a12 = 1;
+    *alternativePart = 1;
   }
 
 LABEL_25:
@@ -455,12 +455,12 @@ LABEL_25:
   return v26;
 }
 
-- (void)_parseAttachmentsFromMimePart:(id)a3 messageBody:(id)a4 maxImageAttachments:(unint64_t)a5 nanoAttachmentsList:(id)a6 attachmentURLsToLoad:(id)a7
+- (void)_parseAttachmentsFromMimePart:(id)part messageBody:(id)body maxImageAttachments:(unint64_t)attachments nanoAttachmentsList:(id)list attachmentURLsToLoad:(id)load
 {
-  v29 = a4;
-  v30 = a6;
-  v23 = a7;
-  [a3 attachmentURLs];
+  bodyCopy = body;
+  listCopy = list;
+  loadCopy = load;
+  [part attachmentURLs];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
@@ -481,15 +481,15 @@ LABEL_25:
         }
 
         v32 = *(*(&v38 + 1) + 8 * i);
-        v12 = [v32 mf_lastPartNumber];
-        v33 = [v29 partWithNumber:v12];
+        mf_lastPartNumber = [v32 mf_lastPartNumber];
+        v33 = [bodyCopy partWithNumber:mf_lastPartNumber];
 
         v13 = [(MFNanoServerMessageContentParser *)self _nanoAttachmentForURL:v32 mimePart:v33];
         v36 = 0u;
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v14 = v30;
+        v14 = listCopy;
         v15 = [v14 countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (!v15)
         {
@@ -501,18 +501,18 @@ LABEL_16:
             if (objc_opt_isKindOfClass())
             {
               v22 = v13;
-              if (++v25 <= a5)
+              if (++v25 <= attachments)
               {
-                [v23 addObject:v32];
+                [loadCopy addObject:v32];
               }
 
-              [v22 setRenderOnClient:v25 <= a5];
+              [v22 setRenderOnClient:v25 <= attachments];
             }
           }
 
           else if ([v13 isActionable])
           {
-            [v23 addObject:v32];
+            [loadCopy addObject:v32];
           }
 
           [v14 addObject:v13];
@@ -530,9 +530,9 @@ LABEL_16:
               objc_enumerationMutation(v14);
             }
 
-            v19 = [*(*(&v34 + 1) + 8 * j) contentId];
-            v20 = [v13 contentId];
-            v21 = [v19 isEqualToString:v20];
+            contentId = [*(*(&v34 + 1) + 8 * j) contentId];
+            contentId2 = [v13 contentId];
+            v21 = [contentId isEqualToString:contentId2];
 
             v16 |= v21;
           }
@@ -557,62 +557,62 @@ LABEL_24:
   }
 }
 
-- (id)_nanoAttachmentForURL:(id)a3 mimePart:(id)a4
+- (id)_nanoAttachmentForURL:(id)l mimePart:(id)part
 {
-  v6 = a4;
-  v7 = [(MFNanoServerMessageContentParser *)self _attachmentForURL:a3 mimePart:v6];
-  v8 = [v7 isImageFile];
+  partCopy = part;
+  v7 = [(MFNanoServerMessageContentParser *)self _attachmentForURL:l mimePart:partCopy];
+  isImageFile = [v7 isImageFile];
   v9 = NNMKImageAttachment_ptr;
-  if (!v8)
+  if (!isImageFile)
   {
     v9 = NNMKAttachment_ptr;
   }
 
   v10 = objc_alloc_init(*v9);
-  v11 = [v7 contentID];
-  [v10 setContentId:v11];
+  contentID = [v7 contentID];
+  [v10 setContentId:contentID];
 
-  v12 = [v7 fileName];
-  [v10 setFileName:v12];
+  fileName = [v7 fileName];
+  [v10 setFileName:fileName];
 
   [v10 setFileSize:{3 * (objc_msgSend(v7, "encodedFileSize") >> 2)}];
-  v13 = [v6 partNumber];
-  [v10 setMimePartNumber:v13];
+  partNumber = [partCopy partNumber];
+  [v10 setMimePartNumber:partNumber];
 
   [v10 setType:{objc_msgSend(v7, "nanoAttachmentType")}];
 
   return v10;
 }
 
-- (id)_attachmentForURL:(id)a3 mimePart:(id)a4
+- (id)_attachmentForURL:(id)l mimePart:(id)part
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  partCopy = part;
   v7 = sub_100027C70();
-  v8 = [v7 defaultAttachmentManager];
-  v9 = [v6 mimeBody];
-  v10 = [v8 attachmentForURL:v5 withMimeBody:v9 error:0];
+  defaultAttachmentManager = [v7 defaultAttachmentManager];
+  mimeBody = [partCopy mimeBody];
+  v10 = [defaultAttachmentManager attachmentForURL:lCopy withMimeBody:mimeBody error:0];
 
-  [v10 setPart:v6];
-  v11 = [v6 contentID];
+  [v10 setPart:partCopy];
+  contentID = [partCopy contentID];
 
-  if (v11)
+  if (contentID)
   {
-    v12 = [v6 contentID];
-    [v10 setContentID:v12];
+    contentID2 = [partCopy contentID];
+    [v10 setContentID:contentID2];
   }
 
-  v13 = [v6 type];
-  v14 = [v6 subtype];
-  v15 = [NSString stringWithFormat:@"%@/%@", v13, v14];
+  type = [partCopy type];
+  subtype = [partCopy subtype];
+  v15 = [NSString stringWithFormat:@"%@/%@", type, subtype];
   [v10 setMimeType:v15];
 
-  v16 = [v6 attachmentFilename];
-  [v10 setFileName:v16];
+  attachmentFilename = [partCopy attachmentFilename];
+  [v10 setFileName:attachmentFilename];
 
-  [v10 setEncodedFileSize:{objc_msgSend(v6, "approximateRawSize")}];
-  v17 = [v6 disposition];
-  [v10 setDisposition:v17];
+  [v10 setEncodedFileSize:{objc_msgSend(partCopy, "approximateRawSize")}];
+  disposition = [partCopy disposition];
+  [v10 setDisposition:disposition];
 
   return v10;
 }

@@ -7,8 +7,8 @@
 - (id)ic_shortLoggingOperationName
 {
   v2 = ICCKOperationShortClassNameNSBlockOperation;
-  v3 = [(NSBlockOperation *)self name];
-  v4 = blockOperationShortNameFromOperationName(v3);
+  name = [(NSBlockOperation *)self name];
+  v4 = blockOperationShortNameFromOperationName(name);
   v5 = [NSString stringWithFormat:@"%@-%@", v2, v4];
 
   return v5;

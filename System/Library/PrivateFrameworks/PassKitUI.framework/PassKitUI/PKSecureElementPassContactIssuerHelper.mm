@@ -1,28 +1,28 @@
 @interface PKSecureElementPassContactIssuerHelper
 - (PKSecureElementPassContactIssuerHelperDelegate)delegate;
-- (void)callIssuerWithSourceItem:(id)a3;
+- (void)callIssuerWithSourceItem:(id)item;
 - (void)emailIssuer;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
 - (void)openIssuerWebsite;
-- (void)presentContactViewController:(unint64_t)a3 sourceItem:(id)a4;
-- (void)setPass:(id)a3;
+- (void)presentContactViewController:(unint64_t)controller sourceItem:(id)item;
+- (void)setPass:(id)pass;
 @end
 
 @implementation PKSecureElementPassContactIssuerHelper
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
   v30 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  objc_storeStrong(&self->_pass, a3);
-  v5 = [(PKSecureElementPass *)self->_pass devicePaymentApplications];
-  v6 = [v5 allObjects];
+  passCopy = pass;
+  objc_storeStrong(&self->_pass, pass);
+  devicePaymentApplications = [(PKSecureElementPass *)self->_pass devicePaymentApplications];
+  allObjects = [devicePaymentApplications allObjects];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v6;
+  obj = allObjects;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
@@ -42,8 +42,8 @@ LABEL_3:
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v12 = [v11 automaticSelectionCriteria];
-      v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      automaticSelectionCriteria = [v11 automaticSelectionCriteria];
+      v13 = [automaticSelectionCriteria countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v13)
       {
         v14 = v13;
@@ -54,10 +54,10 @@ LABEL_8:
         {
           if (*v21 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(automaticSelectionCriteria);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * v16) type];
+          type = [*(*(&v20 + 1) + 8 * v16) type];
           self->_isAppleAccess = PKEqualObjects();
 
           if (self->_isAppleAccess)
@@ -67,7 +67,7 @@ LABEL_8:
 
           if (v14 == ++v16)
           {
-            v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v14 = [automaticSelectionCriteria countByEnumeratingWithState:&v20 objects:v28 count:16];
             if (v14)
             {
               goto LABEL_8;
@@ -97,15 +97,15 @@ LABEL_8:
   }
 }
 
-- (void)presentContactViewController:(unint64_t)a3 sourceItem:(id)a4
+- (void)presentContactViewController:(unint64_t)controller sourceItem:(id)item
 {
-  v46 = a4;
+  itemCopy = item;
   v6 = PKUserInterfaceIdiom() & 0xFFFFFFFFFFFFFFFBLL;
   v7 = [(PKSecureElementPass *)self->_pass localizedValueForFieldKey:*MEMORY[0x1E69BC0F0]];
   v8 = [(PKSecureElementPass *)self->_pass localizedValueForFieldKey:*MEMORY[0x1E69BC100]];
   v9 = [(PKSecureElementPass *)self->_pass localizedValueForFieldKey:*MEMORY[0x1E69BC108]];
-  v47 = [(PKSecureElementPass *)self->_pass businessChatIdentifier];
-  v10 = [(PKSecureElementPass *)self->_pass organizationName];
+  businessChatIdentifier = [(PKSecureElementPass *)self->_pass businessChatIdentifier];
+  organizationName = [(PKSecureElementPass *)self->_pass organizationName];
   v11 = [v8 length] != 0;
   v45 = v9;
   if ([(PKSecureElementPass *)self->_pass hasAssociatedPeerPaymentAccount])
@@ -115,7 +115,7 @@ LABEL_5:
     v13 = v12;
 LABEL_6:
 
-    v10 = v13;
+    organizationName = v13;
     goto LABEL_7;
   }
 
@@ -128,40 +128,40 @@ LABEL_6:
   if (self->_isAppleAccess && [(PKSecureElementPass *)self->_pass isAccessPass])
   {
     v39 = [(PKSecureElementPass *)self->_pass fieldForKey:*MEMORY[0x1E69BC0F8]];
-    v40 = [v39 value];
-    v41 = v40;
-    if (v40)
+    value = [v39 value];
+    v41 = value;
+    if (value)
     {
-      v42 = v40;
+      v42 = value;
     }
 
     else
     {
-      v42 = v10;
+      v42 = organizationName;
     }
 
     v13 = v42;
 
-    v10 = v39;
+    organizationName = v39;
     v9 = v45;
     goto LABEL_6;
   }
 
 LABEL_7:
-  v14 = a3 & v11;
-  v48 = PKLocalizedPaymentString(&cfstr_ContactIssuer.isa, &stru_1F3BD5BF0.isa, v10);
+  v14 = controller & v11;
+  v48 = PKLocalizedPaymentString(&cfstr_ContactIssuer.isa, &stru_1F3BD5BF0.isa, organizationName);
   v15 = 0;
   if (v6 && ((v14 ^ 1) & 1) == 0)
   {
-    v16 = [(PKSecureElementPass *)self->_pass organizationName];
-    v15 = PKLocalizedPaymentString(&cfstr_ContactIssuerB.isa, &cfstr_12.isa, v16, v8);
+    organizationName2 = [(PKSecureElementPass *)self->_pass organizationName];
+    v15 = PKLocalizedPaymentString(&cfstr_ContactIssuerB.isa, &cfstr_12.isa, organizationName2, v8);
   }
 
   v17 = v6 == 0;
   v43 = v8;
   if (v7 && [v7 length])
   {
-    v18 = (a3 >> 1) & 1;
+    v18 = (controller >> 1) & 1;
     if (!v9)
     {
       goto LABEL_18;
@@ -179,7 +179,7 @@ LABEL_7:
 
   if ([v9 length])
   {
-    v9 = ((a3 >> 2) & 1);
+    v9 = ((controller >> 2) & 1);
   }
 
   else
@@ -190,7 +190,7 @@ LABEL_7:
 LABEL_18:
   v19 = 0;
   v20 = v17 & v14;
-  if ((a3 & 8) != 0 && v47)
+  if ((controller & 8) != 0 && businessChatIdentifier)
   {
     v19 = +[PKBusinessChatController deviceSupportsBusinessChat];
   }
@@ -206,7 +206,7 @@ LABEL_18:
     v52[2] = __82__PKSecureElementPassContactIssuerHelper_presentContactViewController_sourceItem___block_invoke;
     v52[3] = &unk_1E8011310;
     v52[4] = self;
-    v53 = v46;
+    v53 = itemCopy;
     v24 = [v22 actionWithTitle:v23 style:0 handler:v52];
     [v21 addAction:v24];
   }
@@ -255,8 +255,8 @@ LABEL_18:
   v36 = [v34 actionWithTitle:v35 style:1 handler:0];
   [v21 addAction:v36];
 
-  v37 = [v21 popoverPresentationController];
-  [v37 setSourceItem:v46];
+  popoverPresentationController = [v21 popoverPresentationController];
+  [popoverPresentationController setSourceItem:itemCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained contactIssuerHelper:self didRequestPresentViewController:v21 animated:1 completion:0];
@@ -273,15 +273,15 @@ uint64_t __82__PKSecureElementPassContactIssuerHelper_presentContactViewControll
   return result;
 }
 
-- (void)callIssuerWithSourceItem:(id)a3
+- (void)callIssuerWithSourceItem:(id)item
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   if (PKStoreDemoModeEnabled())
   {
-    v5 = PKUIStoreDemoGatewayViewController();
+    organizationName = PKUIStoreDemoGatewayViewController();
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained contactIssuerHelper:self didRequestPresentViewController:v5 animated:1 completion:0];
+    [WeakRetained contactIssuerHelper:self didRequestPresentViewController:organizationName animated:1 completion:0];
 
 LABEL_33:
     goto LABEL_34;
@@ -289,8 +289,8 @@ LABEL_33:
 
   if (!PKUserInterfaceIdiomSupportsLargeLayouts())
   {
-    v5 = [(PKSecureElementPass *)self->_pass organizationName];
-    v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v5 message:0 preferredStyle:0];
+    organizationName = [(PKSecureElementPass *)self->_pass organizationName];
+    v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:organizationName message:0 preferredStyle:0];
     v8 = MEMORY[0x1E69DCC10];
     v52[0] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:1];
@@ -311,7 +311,7 @@ LABEL_33:
       [v7 addAction:v14];
     }
 
-    v33 = self;
+    selfCopy = self;
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -326,11 +326,11 @@ LABEL_32:
       v30 = [MEMORY[0x1E69DC648] actionWithTitle:v29 style:1 handler:0];
       [v7 addAction:v30];
 
-      v31 = [v7 popoverPresentationController];
-      [v31 setSourceItem:v4];
+      popoverPresentationController = [v7 popoverPresentationController];
+      [popoverPresentationController setSourceItem:itemCopy];
 
-      v32 = objc_loadWeakRetained(&v33->_delegate);
-      [v32 contactIssuerHelper:v33 didRequestPresentViewController:v7 animated:1 completion:0];
+      v32 = objc_loadWeakRetained(&selfCopy->_delegate);
+      [v32 contactIssuerHelper:selfCopy didRequestPresentViewController:v7 animated:1 completion:0];
 
       goto LABEL_33;
     }
@@ -390,13 +390,13 @@ LABEL_14:
         goto LABEL_28;
       }
 
-      v23 = [v22 label];
+      label = [v22 label];
 
-      v24 = [v22 value];
+      value = [v22 value];
 
-      if (v23)
+      if (label)
       {
-        v25 = v24 == 0;
+        v25 = value == 0;
       }
 
       else
@@ -406,7 +406,7 @@ LABEL_14:
 
       if (v25)
       {
-        if (v23 || (v23 = v24) != 0)
+        if (label || (label = value) != 0)
         {
 LABEL_27:
           v27 = MEMORY[0x1E69DC648];
@@ -414,29 +414,29 @@ LABEL_27:
           v38[1] = 3221225472;
           v38[2] = __67__PKSecureElementPassContactIssuerHelper_callIssuerWithSourceItem___block_invoke_2;
           v38[3] = &unk_1E80112E8;
-          v12 = v24;
+          v12 = value;
           v39 = v12;
-          v28 = [v27 actionWithTitle:v23 style:0 handler:v38];
+          v28 = [v27 actionWithTitle:label style:0 handler:v38];
           [v7 addAction:v28];
 
-          v5 = v23;
+          organizationName = label;
           goto LABEL_28;
         }
       }
 
       else
       {
-        v26 = [v23 stringByAppendingFormat:@"\n%@", v24];
+        v26 = [label stringByAppendingFormat:@"\n%@", value];
 
-        v23 = v26;
+        label = v26;
         if (v26)
         {
           goto LABEL_27;
         }
       }
 
-      v5 = 0;
-      v12 = v24;
+      organizationName = 0;
+      v12 = value;
 LABEL_28:
       if (v19 == ++v21)
       {
@@ -528,10 +528,10 @@ void __67__PKSecureElementPassContactIssuerHelper_callIssuerWithSourceItem___blo
   }
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
-  v5 = [a3 presentingViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [controller presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (PKSecureElementPassContactIssuerHelperDelegate)delegate

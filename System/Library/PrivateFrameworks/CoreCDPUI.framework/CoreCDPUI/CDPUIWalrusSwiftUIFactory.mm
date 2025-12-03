@@ -1,35 +1,35 @@
 @interface CDPUIWalrusSwiftUIFactory
 - (CDPUIWalrusSwiftUIFactory)init;
-- (id)makeSwiftUIViewWithCdpContext:(id)a3 advancedDataProtectionViewModelDelegate:(id)a4 presentingViewController:(id)a5;
-- (void)makeSwiftUIUpsellViewWithCDPContext:(id)a3 urlBag:(id)a4 networkObserver:(id)a5 viewModelDelegate:(id)a6 completion:(id)a7;
+- (id)makeSwiftUIViewWithCdpContext:(id)context advancedDataProtectionViewModelDelegate:(id)delegate presentingViewController:(id)controller;
+- (void)makeSwiftUIUpsellViewWithCDPContext:(id)context urlBag:(id)bag networkObserver:(id)observer viewModelDelegate:(id)delegate completion:(id)completion;
 @end
 
 @implementation CDPUIWalrusSwiftUIFactory
 
-- (id)makeSwiftUIViewWithCdpContext:(id)a3 advancedDataProtectionViewModelDelegate:(id)a4 presentingViewController:(id)a5
+- (id)makeSwiftUIViewWithCdpContext:(id)context advancedDataProtectionViewModelDelegate:(id)delegate presentingViewController:(id)controller
 {
-  v8 = a3;
+  contextCopy = context;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  v11 = sub_245217664(v8, a4, v9);
+  controllerCopy = controller;
+  selfCopy = self;
+  v11 = sub_245217664(contextCopy, delegate, controllerCopy);
 
   swift_unknownObjectRelease();
 
   return v11;
 }
 
-- (void)makeSwiftUIUpsellViewWithCDPContext:(id)a3 urlBag:(id)a4 networkObserver:(id)a5 viewModelDelegate:(id)a6 completion:(id)a7
+- (void)makeSwiftUIUpsellViewWithCDPContext:(id)context urlBag:(id)bag networkObserver:(id)observer viewModelDelegate:(id)delegate completion:(id)completion
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  contextCopy = context;
+  bagCopy = bag;
+  observerCopy = observer;
   swift_unknownObjectRetain();
-  v17 = self;
-  sub_245217A10(v14, v15, v16, a6, sub_245217368, v13);
+  selfCopy = self;
+  sub_245217A10(contextCopy, bagCopy, observerCopy, delegate, sub_245217368, v13);
 
   swift_unknownObjectRelease();
 }

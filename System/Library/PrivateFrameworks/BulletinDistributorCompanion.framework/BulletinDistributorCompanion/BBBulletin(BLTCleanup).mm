@@ -6,14 +6,14 @@
 
 - (void)bltContext
 {
-  v1 = [a1 context];
-  v2 = [v1 objectForKeyedSubscript:@"BLTWatchLegacyMap"];
+  context = [self context];
+  v2 = [context objectForKeyedSubscript:@"BLTWatchLegacyMap"];
   if (v2)
   {
-    v3 = [v1 mutableCopy];
+    v3 = [context mutableCopy];
 
     [v3 removeObjectForKey:@"BLTWatchLegacyMap"];
-    v1 = v3;
+    context = v3;
   }
 
   else
@@ -21,9 +21,9 @@
     v3 = 0;
   }
 
-  v4 = v1;
+  v4 = context;
 
-  return v1;
+  return context;
 }
 
 @end

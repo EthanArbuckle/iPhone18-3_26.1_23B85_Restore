@@ -1,11 +1,11 @@
 @interface CCSetDistribution
 - (CCSetDistribution)init;
-- (CCSetDistribution)initWithSet:(id)a3 sharedItemCount:(unint64_t)a4 localInstanceCount:(unint64_t)a5;
+- (CCSetDistribution)initWithSet:(id)set sharedItemCount:(unint64_t)count localInstanceCount:(unint64_t)instanceCount;
 - (id).cxx_construct;
 - (id)_sanitizedEncodedDescriptors;
 - (id)compute;
 - (void)_sanitizedEncodedDescriptors;
-- (void)addSetChange:(id)a3;
+- (void)addSetChange:(id)change;
 @end
 
 @implementation CCSetDistribution
@@ -16,16 +16,16 @@
   objc_exception_throw(v2);
 }
 
-- (CCSetDistribution)initWithSet:(id)a3 sharedItemCount:(unint64_t)a4 localInstanceCount:(unint64_t)a5
+- (CCSetDistribution)initWithSet:(id)set sharedItemCount:(unint64_t)count localInstanceCount:(unint64_t)instanceCount
 {
-  v7 = a3;
+  setCopy = set;
   v13.receiver = self;
   v13.super_class = CCSetDistribution;
   v8 = [(CCSetDistribution *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_set, a3);
+    objc_storeStrong(&v8->_set, set);
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     devices = v9->_devices;
     v9->_devices = v10;
@@ -36,14 +36,14 @@
   return 0;
 }
 
-- (void)addSetChange:(id)a3
+- (void)addSetChange:(id)change
 {
   v50 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v4 = [v43 sharedItem];
-  v5 = [v4 content];
-  v6 = [v5 data];
-  v7 = [v6 length];
+  changeCopy = change;
+  sharedItem = [changeCopy sharedItem];
+  content = [sharedItem content];
+  data = [content data];
+  v7 = [data length];
 
   ptr = self->_contentLengths.__ptr_;
   v10 = ptr[1];
@@ -104,19 +104,19 @@
 
   ptr[1] = v11;
   self->_sumContentLength += v7;
-  v22 = [v43 allLocalInstances];
-  if ([v22 count])
+  allLocalInstances = [changeCopy allLocalInstances];
+  if ([allLocalInstances count])
   {
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = v22;
+    obj = allLocalInstances;
     v23 = [obj countByEnumeratingWithState:&v45 objects:v49 count:16];
     if (v23)
     {
       v24 = *v46;
-      v25 = v22;
+      v25 = allLocalInstances;
       do
       {
         for (i = 0; i != v23; ++i)
@@ -126,9 +126,9 @@
             objc_enumerationMutation(obj);
           }
 
-          v27 = [*(*(&v45 + 1) + 8 * i) metaContent];
-          v28 = [v27 data];
-          v29 = [v28 length];
+          metaContent = [*(*(&v45 + 1) + 8 * i) metaContent];
+          data2 = [metaContent data];
+          v29 = [data2 length];
 
           v30 = self->_metaContentLengths.__ptr_;
           v32 = v30[1];
@@ -178,7 +178,7 @@
               operator delete(v40);
             }
 
-            v22 = v25;
+            allLocalInstances = v25;
           }
 
           else
@@ -200,9 +200,9 @@
     ++self->_localContentCount;
   }
 
-  v41 = [v43 allDevices];
-  [(NSMutableSet *)self->_devices addObjectsFromArray:v41];
-  self->_deviceContentCount += [v41 count];
+  allDevices = [changeCopy allDevices];
+  [(NSMutableSet *)self->_devices addObjectsFromArray:allDevices];
+  self->_deviceContentCount += [allDevices count];
 
   v42 = *MEMORY[0x1E69E9840];
 }
@@ -264,12 +264,12 @@
     std::__shared_weak_count::__release_shared[abi:ne200100](v32);
   }
 
-  v15 = [(CCSet *)self->_set itemType];
-  v30 = [(CCSetDistribution *)self _sanitizedEncodedDescriptors];
+  itemType = [(CCSet *)self->_set itemType];
+  _sanitizedEncodedDescriptors = [(CCSetDistribution *)self _sanitizedEncodedDescriptors];
   v35[0] = @"itemType";
-  v29 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v15];
+  v29 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:itemType];
   v36[0] = v29;
-  v36[1] = v30;
+  v36[1] = _sanitizedEncodedDescriptors;
   v35[1] = @"encodedDescriptors";
   v35[2] = @"contentCount";
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v4];
@@ -312,13 +312,13 @@
 {
   v29 = *MEMORY[0x1E69E9840];
   p_set = &self->_set;
-  v18 = [(CCSet *)self->_set descriptors];
-  v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v18, "count")}];
+  descriptors = [(CCSet *)self->_set descriptors];
+  v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(descriptors, "count")}];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v18;
+  v4 = descriptors;
   v5 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v5)
   {
@@ -391,7 +391,7 @@
 - (void)_sanitizedEncodedDescriptors
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v5 = 138412546;
   v6 = v3;
   v7 = 2112;

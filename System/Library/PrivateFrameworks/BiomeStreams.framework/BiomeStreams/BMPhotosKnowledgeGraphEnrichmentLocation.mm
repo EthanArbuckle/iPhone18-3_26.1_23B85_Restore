@@ -1,32 +1,32 @@
 @interface BMPhotosKnowledgeGraphEnrichmentLocation
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithCoder:(id)a3;
-- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithProto:(id)a3;
-- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithProtoData:(id)a3;
-- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithStreet:(id)a3 city:(id)a4 state:(id)a5 country:(id)a6 encodedLocation:(id)a7;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithCoder:(id)coder;
+- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithProto:(id)proto;
+- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithProtoData:(id)data;
+- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithStreet:(id)street city:(id)city state:(id)state country:(id)country encodedLocation:(id)location;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMPhotosKnowledgeGraphEnrichmentLocation
 
-- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithStreet:(id)a3 city:(id)a4 state:(id)a5 country:(id)a6 encodedLocation:(id)a7
+- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithStreet:(id)street city:(id)city state:(id)state country:(id)country encodedLocation:(id)location
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  obj = a7;
-  v17 = a7;
-  if (v13)
+  streetCopy = street;
+  cityCopy = city;
+  stateCopy = state;
+  countryCopy = country;
+  obj = location;
+  locationCopy = location;
+  if (streetCopy)
   {
-    if (v14)
+    if (cityCopy)
     {
       goto LABEL_3;
     }
@@ -35,10 +35,10 @@
   else
   {
     [BMPhotosKnowledgeGraphEnrichmentLocation initWithStreet:city:state:country:encodedLocation:];
-    if (v14)
+    if (cityCopy)
     {
 LABEL_3:
-      if (v15)
+      if (stateCopy)
       {
         goto LABEL_4;
       }
@@ -48,17 +48,17 @@ LABEL_3:
   }
 
   [BMPhotosKnowledgeGraphEnrichmentLocation initWithStreet:city:state:country:encodedLocation:];
-  if (v15)
+  if (stateCopy)
   {
 LABEL_4:
-    if (v16)
+    if (countryCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
     [BMPhotosKnowledgeGraphEnrichmentLocation initWithStreet:city:state:country:encodedLocation:];
-    if (v17)
+    if (locationCopy)
     {
       goto LABEL_6;
     }
@@ -68,13 +68,13 @@ LABEL_12:
 
 LABEL_11:
   [BMPhotosKnowledgeGraphEnrichmentLocation initWithStreet:city:state:country:encodedLocation:];
-  if (!v16)
+  if (!countryCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (v17)
+  if (locationCopy)
   {
     goto LABEL_6;
   }
@@ -88,22 +88,22 @@ LABEL_6:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_street, a3);
-    objc_storeStrong(&v19->_city, a4);
-    objc_storeStrong(&v19->_state, a5);
-    objc_storeStrong(&v19->_country, a6);
+    objc_storeStrong(&v18->_street, street);
+    objc_storeStrong(&v19->_city, city);
+    objc_storeStrong(&v19->_state, state);
+    objc_storeStrong(&v19->_country, country);
     objc_storeStrong(&v19->_encodedLocation, obj);
   }
 
   return v19;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -146,9 +146,9 @@ LABEL_6:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self jsonDict];
+  jsonDict = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -163,60 +163,60 @@ LABEL_6:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithCoder:(id)a3
+- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self proto];
-  v3 = [v2 data];
+  proto = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithProto:(id)a3
+- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasStreet]&& [v5 hasCity]&& [v5 hasState]&& ([v5 hasCountry]& 1) != 0)
       {
-        v6 = [v5 street];
-        v7 = [v5 city];
-        v8 = [v5 state];
-        v9 = [v5 country];
-        v10 = [v5 encodedLocation];
-        self = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self initWithStreet:v6 city:v7 state:v8 country:v9 encodedLocation:v10];
+        street = [v5 street];
+        city = [v5 city];
+        state = [v5 state];
+        country = [v5 country];
+        encodedLocation = [v5 encodedLocation];
+        self = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self initWithStreet:street city:city state:state country:country encodedLocation:encodedLocation];
 
-        v11 = self;
+        selfCopy = self;
 LABEL_15:
 
         goto LABEL_16;
@@ -238,52 +238,52 @@ LABEL_15:
       }
     }
 
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v11;
+  return selfCopy;
 }
 
-- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithProtoData:(id)a3
+- (BMPhotosKnowledgeGraphEnrichmentLocation)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBPhotosKnowledgeGraphEnrichmentLocation alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBPhotosKnowledgeGraphEnrichmentLocation alloc] initWithData:dataCopy];
 
     self = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self street];
-  [v3 setStreet:v4];
+  street = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self street];
+  [v3 setStreet:street];
 
-  v5 = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self city];
-  [v3 setCity:v5];
+  city = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self city];
+  [v3 setCity:city];
 
-  v6 = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self state];
-  [v3 setState:v6];
+  state = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self state];
+  [v3 setState:state];
 
-  v7 = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self country];
-  [v3 setCountry:v7];
+  country = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self country];
+  [v3 setCountry:country];
 
-  v8 = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self encodedLocation];
-  [v3 setEncodedLocation:v8];
+  encodedLocation = [(BMPhotosKnowledgeGraphEnrichmentLocation *)self encodedLocation];
+  [v3 setEncodedLocation:encodedLocation];
 
   return v3;
 }
@@ -295,32 +295,32 @@ LABEL_16:
   return v4 ^ [(NSString *)self->_state hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     street = self->_street;
-    v7 = [v5 street];
-    if ([(NSString *)street isEqualToString:v7])
+    street = [v5 street];
+    if ([(NSString *)street isEqualToString:street])
     {
       city = self->_city;
-      v9 = [v5 city];
-      if ([(NSString *)city isEqualToString:v9])
+      city = [v5 city];
+      if ([(NSString *)city isEqualToString:city])
       {
         state = self->_state;
-        v11 = [v5 state];
-        if ([(NSString *)state isEqualToString:v11])
+        state = [v5 state];
+        if ([(NSString *)state isEqualToString:state])
         {
           country = self->_country;
-          v13 = [v5 country];
-          if ([(NSString *)country isEqualToString:v13])
+          country = [v5 country];
+          if ([(NSString *)country isEqualToString:country])
           {
             encodedLocation = self->_encodedLocation;
-            v15 = [v5 encodedLocation];
-            v16 = [(NSData *)encodedLocation isEqual:v15];
+            encodedLocation = [v5 encodedLocation];
+            v16 = [(NSData *)encodedLocation isEqual:encodedLocation];
           }
 
           else
@@ -355,18 +355,18 @@ LABEL_16:
   return v16;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   if (self->_street && self->_city && self->_state && self->_country && self->_encodedLocation)
   {
     v7 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

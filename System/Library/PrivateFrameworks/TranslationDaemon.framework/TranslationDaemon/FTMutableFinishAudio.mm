@@ -1,11 +1,11 @@
 @interface FTMutableFinishAudio
 - (FTMutableFinishAudio)init;
 - (float)total_audio_recorded_seconds;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)packet_count;
-- (void)setFeatures_at_endpoint:(id)a3;
-- (void)setServer_feature_latency_distribution:(id)a3;
-- (void)setTotal_audio_recorded_seconds:(float)a3;
+- (void)setFeatures_at_endpoint:(id)features_at_endpoint;
+- (void)setServer_feature_latency_distribution:(id)server_feature_latency_distribution;
+- (void)setTotal_audio_recorded_seconds:(float)total_audio_recorded_seconds;
 @end
 
 @implementation FTMutableFinishAudio
@@ -17,17 +17,17 @@
   v2 = [(FTMutableFinishAudio *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -38,9 +38,9 @@
 - (int)packet_count
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"packet_count"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (float)total_audio_recorded_seconds
@@ -52,23 +52,23 @@
   return v4;
 }
 
-- (void)setTotal_audio_recorded_seconds:(float)a3
+- (void)setTotal_audio_recorded_seconds:(float)total_audio_recorded_seconds
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = total_audio_recorded_seconds;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setFeatures_at_endpoint:(id)a3
+- (void)setFeatures_at_endpoint:(id)features_at_endpoint
 {
-  v4 = [a3 copy];
+  v4 = [features_at_endpoint copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setServer_feature_latency_distribution:(id)a3
+- (void)setServer_feature_latency_distribution:(id)server_feature_latency_distribution
 {
-  v4 = [a3 copy];
+  v4 = [server_feature_latency_distribution copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 

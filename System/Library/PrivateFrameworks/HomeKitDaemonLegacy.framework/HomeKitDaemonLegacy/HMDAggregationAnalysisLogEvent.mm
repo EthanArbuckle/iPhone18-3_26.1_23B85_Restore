@@ -10,65 +10,65 @@
   v66 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v65 = NSStringFromClass(v3);
-  v64 = [(HMDAggregationAnalysisLogEvent *)self dataSyncState];
-  v63 = [(HMDAggregationAnalysisLogEvent *)self processLaunchCount];
-  v62 = [(HMDAggregationAnalysisLogEvent *)self jetsamReasonHighwaterCount];
-  v61 = [(HMDAggregationAnalysisLogEvent *)self jetsamReasonProcessLimitCount];
-  v60 = [(HMDAggregationAnalysisLogEvent *)self jetsamReasonOtherCount];
-  v59 = [(HMDAggregationAnalysisLogEvent *)self processCrashCount];
-  v58 = [(HMDAggregationAnalysisLogEvent *)self processWatchdogCount];
-  v57 = [(HMDAggregationAnalysisLogEvent *)self processMemoryPressureStateWarningCount];
-  v56 = [(HMDAggregationAnalysisLogEvent *)self processMemoryPressureStateCriticalCount];
-  v55 = [(HMDAggregationAnalysisLogEvent *)self sampledAverageProcessMemoryUsageMB];
-  v54 = [(HMDAggregationAnalysisLogEvent *)self sampledPeakProcessMemoryUsageMB];
-  v53 = [(HMDAggregationAnalysisLogEvent *)self remoteMessagesSentCount];
-  v52 = [(HMDAggregationAnalysisLogEvent *)self remoteMessagesReceivedCount];
-  v51 = [(HMDAggregationAnalysisLogEvent *)self txIDSMessagesCount];
-  v50 = [(HMDAggregationAnalysisLogEvent *)self rxIDSMessagesCount];
-  v49 = [(HMDAggregationAnalysisLogEvent *)self txIDSProxyMessagesCount];
-  v48 = [(HMDAggregationAnalysisLogEvent *)self rxIDSProxyMessagesCount];
-  v47 = [(HMDAggregationAnalysisLogEvent *)self txLoxyMessagesCount];
-  v46 = [(HMDAggregationAnalysisLogEvent *)self rxLoxyMessagesCount];
-  v45 = [(HMDAggregationAnalysisLogEvent *)self txRapportMessagesCount];
-  v44 = [(HMDAggregationAnalysisLogEvent *)self rxRapportMessagesCount];
-  v43 = [(HMDAggregationAnalysisLogEvent *)self txRapportOverBLEMessagesCount];
-  v42 = [(HMDAggregationAnalysisLogEvent *)self rxRapportOverBLEMessagesCount];
-  v41 = [(HMDAggregationAnalysisLogEvent *)self txSecureMessagesCount];
-  v40 = [(HMDAggregationAnalysisLogEvent *)self rxSecureMessagesCount];
-  v39 = [(HMDAggregationAnalysisLogEvent *)self cloudSyncPushCount];
-  v38 = [(HMDAggregationAnalysisLogEvent *)self cloudSyncFetchCount];
-  v37 = [(HMDAggregationAnalysisLogEvent *)self cloudSyncUploadCount];
-  v36 = [(HMDAggregationAnalysisLogEvent *)self cloudSyncUploadErrorCount];
-  v35 = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesFetched];
-  v34 = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesPushed];
-  v33 = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesFetched];
-  v32 = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesPushed];
-  v31 = [(HMDAggregationAnalysisLogEvent *)self numReadSiri];
-  v30 = [(HMDAggregationAnalysisLogEvent *)self numWriteSiri];
-  v29 = [(HMDAggregationAnalysisLogEvent *)self numReadFirstPartyApp];
-  v28 = [(HMDAggregationAnalysisLogEvent *)self numWriteFirstPartyApp];
-  v27 = [(HMDAggregationAnalysisLogEvent *)self numReadThirdPartyApp];
-  v26 = [(HMDAggregationAnalysisLogEvent *)self numWriteThirdPartyApp];
-  v25 = [(HMDAggregationAnalysisLogEvent *)self averageLatencyIP];
-  v24 = [(HMDAggregationAnalysisLogEvent *)self averageLatencyBT];
-  v23 = [(HMDAggregationAnalysisLogEvent *)self averageLatencyIDS];
-  v22 = [(HMDAggregationAnalysisLogEvent *)self numAccessoriesAdded];
-  v21 = [(HMDAggregationAnalysisLogEvent *)self numScenesAdded];
-  v20 = [(HMDAggregationAnalysisLogEvent *)self numTriggersAdded];
-  v19 = [(HMDAggregationAnalysisLogEvent *)self numShortcutsAdded];
-  v18 = [(HMDAggregationAnalysisLogEvent *)self numScenesUserRun];
-  v17 = [(HMDAggregationAnalysisLogEvent *)self numShortcutsRun];
-  v16 = [(HMDAggregationAnalysisLogEvent *)self numTriggersFired];
-  v15 = [(HMDAggregationAnalysisLogEvent *)self hapIPInvalidationCount];
-  v14 = [(HMDAggregationAnalysisLogEvent *)self hapIPSentHTTPRequestsCount];
-  v13 = [(HMDAggregationAnalysisLogEvent *)self hapIPReceivedHTTPResponsesCount];
-  v12 = [(HMDAggregationAnalysisLogEvent *)self hapIPReceivedHTTPEventCount];
-  v11 = [(HMDAggregationAnalysisLogEvent *)self hapBTLEConnectionsCount];
-  v10 = [(HMDAggregationAnalysisLogEvent *)self hapBTLEConnectionPerReasonsCount];
-  v9 = [(HMDAggregationAnalysisLogEvent *)self hapBTLEDiscoveriesCount];
-  v8 = [(HMDAggregationAnalysisLogEvent *)self cameraStreamStartSuccessCount];
-  v7 = [(HMDAggregationAnalysisLogEvent *)self cameraStreamStartFailureCount];
-  v6 = [(HMDAggregationAnalysisLogEvent *)self fetchCameraClipVideoSegmentAssetCount];
+  dataSyncState = [(HMDAggregationAnalysisLogEvent *)self dataSyncState];
+  processLaunchCount = [(HMDAggregationAnalysisLogEvent *)self processLaunchCount];
+  jetsamReasonHighwaterCount = [(HMDAggregationAnalysisLogEvent *)self jetsamReasonHighwaterCount];
+  jetsamReasonProcessLimitCount = [(HMDAggregationAnalysisLogEvent *)self jetsamReasonProcessLimitCount];
+  jetsamReasonOtherCount = [(HMDAggregationAnalysisLogEvent *)self jetsamReasonOtherCount];
+  processCrashCount = [(HMDAggregationAnalysisLogEvent *)self processCrashCount];
+  processWatchdogCount = [(HMDAggregationAnalysisLogEvent *)self processWatchdogCount];
+  processMemoryPressureStateWarningCount = [(HMDAggregationAnalysisLogEvent *)self processMemoryPressureStateWarningCount];
+  processMemoryPressureStateCriticalCount = [(HMDAggregationAnalysisLogEvent *)self processMemoryPressureStateCriticalCount];
+  sampledAverageProcessMemoryUsageMB = [(HMDAggregationAnalysisLogEvent *)self sampledAverageProcessMemoryUsageMB];
+  sampledPeakProcessMemoryUsageMB = [(HMDAggregationAnalysisLogEvent *)self sampledPeakProcessMemoryUsageMB];
+  remoteMessagesSentCount = [(HMDAggregationAnalysisLogEvent *)self remoteMessagesSentCount];
+  remoteMessagesReceivedCount = [(HMDAggregationAnalysisLogEvent *)self remoteMessagesReceivedCount];
+  txIDSMessagesCount = [(HMDAggregationAnalysisLogEvent *)self txIDSMessagesCount];
+  rxIDSMessagesCount = [(HMDAggregationAnalysisLogEvent *)self rxIDSMessagesCount];
+  txIDSProxyMessagesCount = [(HMDAggregationAnalysisLogEvent *)self txIDSProxyMessagesCount];
+  rxIDSProxyMessagesCount = [(HMDAggregationAnalysisLogEvent *)self rxIDSProxyMessagesCount];
+  txLoxyMessagesCount = [(HMDAggregationAnalysisLogEvent *)self txLoxyMessagesCount];
+  rxLoxyMessagesCount = [(HMDAggregationAnalysisLogEvent *)self rxLoxyMessagesCount];
+  txRapportMessagesCount = [(HMDAggregationAnalysisLogEvent *)self txRapportMessagesCount];
+  rxRapportMessagesCount = [(HMDAggregationAnalysisLogEvent *)self rxRapportMessagesCount];
+  txRapportOverBLEMessagesCount = [(HMDAggregationAnalysisLogEvent *)self txRapportOverBLEMessagesCount];
+  rxRapportOverBLEMessagesCount = [(HMDAggregationAnalysisLogEvent *)self rxRapportOverBLEMessagesCount];
+  txSecureMessagesCount = [(HMDAggregationAnalysisLogEvent *)self txSecureMessagesCount];
+  rxSecureMessagesCount = [(HMDAggregationAnalysisLogEvent *)self rxSecureMessagesCount];
+  cloudSyncPushCount = [(HMDAggregationAnalysisLogEvent *)self cloudSyncPushCount];
+  cloudSyncFetchCount = [(HMDAggregationAnalysisLogEvent *)self cloudSyncFetchCount];
+  cloudSyncUploadCount = [(HMDAggregationAnalysisLogEvent *)self cloudSyncUploadCount];
+  cloudSyncUploadErrorCount = [(HMDAggregationAnalysisLogEvent *)self cloudSyncUploadErrorCount];
+  homeDataBytesFetched = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesFetched];
+  homeDataBytesPushed = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesPushed];
+  legacyHomeDataBytesFetched = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesFetched];
+  legacyHomeDataBytesPushed = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesPushed];
+  numReadSiri = [(HMDAggregationAnalysisLogEvent *)self numReadSiri];
+  numWriteSiri = [(HMDAggregationAnalysisLogEvent *)self numWriteSiri];
+  numReadFirstPartyApp = [(HMDAggregationAnalysisLogEvent *)self numReadFirstPartyApp];
+  numWriteFirstPartyApp = [(HMDAggregationAnalysisLogEvent *)self numWriteFirstPartyApp];
+  numReadThirdPartyApp = [(HMDAggregationAnalysisLogEvent *)self numReadThirdPartyApp];
+  numWriteThirdPartyApp = [(HMDAggregationAnalysisLogEvent *)self numWriteThirdPartyApp];
+  averageLatencyIP = [(HMDAggregationAnalysisLogEvent *)self averageLatencyIP];
+  averageLatencyBT = [(HMDAggregationAnalysisLogEvent *)self averageLatencyBT];
+  averageLatencyIDS = [(HMDAggregationAnalysisLogEvent *)self averageLatencyIDS];
+  numAccessoriesAdded = [(HMDAggregationAnalysisLogEvent *)self numAccessoriesAdded];
+  numScenesAdded = [(HMDAggregationAnalysisLogEvent *)self numScenesAdded];
+  numTriggersAdded = [(HMDAggregationAnalysisLogEvent *)self numTriggersAdded];
+  numShortcutsAdded = [(HMDAggregationAnalysisLogEvent *)self numShortcutsAdded];
+  numScenesUserRun = [(HMDAggregationAnalysisLogEvent *)self numScenesUserRun];
+  numShortcutsRun = [(HMDAggregationAnalysisLogEvent *)self numShortcutsRun];
+  numTriggersFired = [(HMDAggregationAnalysisLogEvent *)self numTriggersFired];
+  hapIPInvalidationCount = [(HMDAggregationAnalysisLogEvent *)self hapIPInvalidationCount];
+  hapIPSentHTTPRequestsCount = [(HMDAggregationAnalysisLogEvent *)self hapIPSentHTTPRequestsCount];
+  hapIPReceivedHTTPResponsesCount = [(HMDAggregationAnalysisLogEvent *)self hapIPReceivedHTTPResponsesCount];
+  hapIPReceivedHTTPEventCount = [(HMDAggregationAnalysisLogEvent *)self hapIPReceivedHTTPEventCount];
+  hapBTLEConnectionsCount = [(HMDAggregationAnalysisLogEvent *)self hapBTLEConnectionsCount];
+  hapBTLEConnectionPerReasonsCount = [(HMDAggregationAnalysisLogEvent *)self hapBTLEConnectionPerReasonsCount];
+  hapBTLEDiscoveriesCount = [(HMDAggregationAnalysisLogEvent *)self hapBTLEDiscoveriesCount];
+  cameraStreamStartSuccessCount = [(HMDAggregationAnalysisLogEvent *)self cameraStreamStartSuccessCount];
+  cameraStreamStartFailureCount = [(HMDAggregationAnalysisLogEvent *)self cameraStreamStartFailureCount];
+  fetchCameraClipVideoSegmentAssetCount = [(HMDAggregationAnalysisLogEvent *)self fetchCameraClipVideoSegmentAssetCount];
   [(HMDAggregationAnalysisLogEvent *)self acceptedXPCRequestsCount];
   [(HMDAggregationAnalysisLogEvent *)self erroredXPCRequestsCount];
   [(HMDAggregationAnalysisLogEvent *)self sentXPCNotificationsCount];
@@ -102,7 +102,7 @@
   [(HMDAggregationAnalysisLogEvent *)self countOfDaysSinceLastActive];
   [(HMDAggregationAnalysisLogEvent *)self activeDaysPerMonthCount];
   [(HMDAggregationAnalysisLogEvent *)self widgetMaxRefreshCountForKind];
-  v4 = [v66 stringWithFormat:@"%@: \ndataSyncState: %@ \nprocessLaunchCount: %lu \njetsamReasonHighwaterCount: %lu \njetsamReasonProcessLimitCount: %lu \njetsamReasonOtherCount: %lu \nprocessCrashCount: %lu \nprocessWatchdogCount: %lu \nprocessMemoryPressureStateWarningCount: %lu \nprocessMemoryPressureStateCriticalCount: %lu \nsampledAverageProcessMemoryUsageMB: %lu \nsampledPeakProcessMemoryUsageMB: %lu \nremoteMessagesSentCount: %lu \nremoteMessagesReceivedCount: %lu \ntxIDSMessagesCount: %lu \nrxIDSMessagesCount: %lu \ntxIDSProxyMessagesCount: %lu \ntxIDSProxyMessagesCount: %lu \ntxLoxyMessagesCount: %lu \nrxLoxyMessagesCount: %lu \ntxRapportMessagesCount: %lu \nrxRapportMessagesCount: %lu \ntxRapportOverBLEMessagesCount: %lu \nrxRapportOverBLEMessagesCount: %lu \ntxSecureMessagesCount: %lu \nrxSecureMessagesCount: %lu \ncloudSyncPushCount: %lu \ncloudSyncFetchCount: %lu \ncloudSyncUploadCount: %lu \ncloudSyncUploadErrorCount: %lu \nhomeDataBytesFetched: %lu \nhomeDataBytesPushed: %lu \nlegacyHomeDataBytesFetched: %lu \nlegacyHomeDataBytesPushed: %lu \nnumReadSiri: %lu \nnumWriteSiri: %lu \nnumReadFirstPartyApp: %lu \nnumWriteFirstPartyApp: %lu \nnumReadThirdPartyApp: %lu \nnumWriteThirdPartyApp: %lu \naverageLatencyIP: %lu \naverageLatencyBT: %lu \naverageLatencyIDS: %lu \nnumAccessoriesAdded: %lu \nnumScenesAdded: %lu \nnumTriggersAdded: %lu \nnumShortcutsAdded: %lu \nnumScenesUserRun: %lu \nnumShortcutsRun: %lu \nnumTriggersFired: %lu \nhapIPInvalidationCount: %lu \nhapIPSentHTTPRequestsCount: %lu \nhapIPReceivedHTTPResponsesCount: %lu \nhapIPReceivedHTTPEventCount: %lu \nhapBTLEConnectionsCount: %lu \nhapBTLEConnectionPerReasonsCount: %lu \nhapBTLEDiscoveriesCount: %lu \ncameraStreamStartSuccessCount: %lu \ncameraStreamStartFailureCount: %lu \nfetchCameraClipVideoSegmentAssetCount: %lu \nacceptedXPCRequestsCount: %lu \nerroredXPCRequestsCount: %lu \nsentXPCNotificationsCount: %lu \nfilteredXPCNotificationsCount: %lu \ncameraRecordingReachabilityChangedCount: %lu \ncameraRecordingReachabilityOfflineDuration: %lu \nhomeHubReachabilityChangedCount: %lu \ncurrentDeviceStartedLegacyElectionCount: %lu \nv2ElectionCoordinationDeviceInSecondaryMesh: %d \nv2ElectionCoordinationMeshUpdateCount: %lu \nv2ElectionCoordinationMeshLeaderElectedCount: %lu \nv2ElectionCoordinationMeshLeaderChangedCount: %lu \nv2ElectionPrimaryResidentElectionRunCount: %lu \nv2ElectionPrimaryResidentChangedCount: %lu \nworkingStoreCoreDataTransactionCount: %lu \ncloudStoreCoreDataTransactionCount %lu \ncoreDataCloudKitImportCount %lu \ncoreDataCloudKitExportCount %lu \nresidentSyncFetchHomeDataRequestCount %lu \nresidentSyncHomeDataChangedNotificationCount %lu \ngenerationCounterIncrementCount %lu \nnotifyXPCClientsHomeDataChangedCount %lu \ncoreDataRootSizeKB %ld \ncoreDataLocalStoreSizeKB %ld \ncoreDataCloudStoreSizeKB %ld \ncoreDataSharedCloudStoreSizeKB %ld \nlegacyV1DatabaseSizeKB %ld \nlegacyV3DatabaseSizeKB %ld \neventStoreHH2SizeKB: %ld \nactiveDay: %d \ncountOfDaysSinceLastActive %ld \nactiveDaysPerMonthCount: %lu \nwidgetMaxRefreshCountForKind: %lu", v65, v64, v63, v62, v61, v60, v59, v58, v57, v56, v55, v54, v53, v52, v51, v50, v49, v48, v47, v46, v45, v44, v43, v42, v41, v40, v39, v38, v37, v36, v35, v34, v33, v32, v31, v30, v29, v28, v27, v26, v25, v24, v23, v22, v21, v20, v19, v18, v17, v16, v15, v14, v13, v12, v11, v10, v9, v8, v7, v6];
+  v4 = [v66 stringWithFormat:@"%@: \ndataSyncState: %@ \nprocessLaunchCount: %lu \njetsamReasonHighwaterCount: %lu \njetsamReasonProcessLimitCount: %lu \njetsamReasonOtherCount: %lu \nprocessCrashCount: %lu \nprocessWatchdogCount: %lu \nprocessMemoryPressureStateWarningCount: %lu \nprocessMemoryPressureStateCriticalCount: %lu \nsampledAverageProcessMemoryUsageMB: %lu \nsampledPeakProcessMemoryUsageMB: %lu \nremoteMessagesSentCount: %lu \nremoteMessagesReceivedCount: %lu \ntxIDSMessagesCount: %lu \nrxIDSMessagesCount: %lu \ntxIDSProxyMessagesCount: %lu \ntxIDSProxyMessagesCount: %lu \ntxLoxyMessagesCount: %lu \nrxLoxyMessagesCount: %lu \ntxRapportMessagesCount: %lu \nrxRapportMessagesCount: %lu \ntxRapportOverBLEMessagesCount: %lu \nrxRapportOverBLEMessagesCount: %lu \ntxSecureMessagesCount: %lu \nrxSecureMessagesCount: %lu \ncloudSyncPushCount: %lu \ncloudSyncFetchCount: %lu \ncloudSyncUploadCount: %lu \ncloudSyncUploadErrorCount: %lu \nhomeDataBytesFetched: %lu \nhomeDataBytesPushed: %lu \nlegacyHomeDataBytesFetched: %lu \nlegacyHomeDataBytesPushed: %lu \nnumReadSiri: %lu \nnumWriteSiri: %lu \nnumReadFirstPartyApp: %lu \nnumWriteFirstPartyApp: %lu \nnumReadThirdPartyApp: %lu \nnumWriteThirdPartyApp: %lu \naverageLatencyIP: %lu \naverageLatencyBT: %lu \naverageLatencyIDS: %lu \nnumAccessoriesAdded: %lu \nnumScenesAdded: %lu \nnumTriggersAdded: %lu \nnumShortcutsAdded: %lu \nnumScenesUserRun: %lu \nnumShortcutsRun: %lu \nnumTriggersFired: %lu \nhapIPInvalidationCount: %lu \nhapIPSentHTTPRequestsCount: %lu \nhapIPReceivedHTTPResponsesCount: %lu \nhapIPReceivedHTTPEventCount: %lu \nhapBTLEConnectionsCount: %lu \nhapBTLEConnectionPerReasonsCount: %lu \nhapBTLEDiscoveriesCount: %lu \ncameraStreamStartSuccessCount: %lu \ncameraStreamStartFailureCount: %lu \nfetchCameraClipVideoSegmentAssetCount: %lu \nacceptedXPCRequestsCount: %lu \nerroredXPCRequestsCount: %lu \nsentXPCNotificationsCount: %lu \nfilteredXPCNotificationsCount: %lu \ncameraRecordingReachabilityChangedCount: %lu \ncameraRecordingReachabilityOfflineDuration: %lu \nhomeHubReachabilityChangedCount: %lu \ncurrentDeviceStartedLegacyElectionCount: %lu \nv2ElectionCoordinationDeviceInSecondaryMesh: %d \nv2ElectionCoordinationMeshUpdateCount: %lu \nv2ElectionCoordinationMeshLeaderElectedCount: %lu \nv2ElectionCoordinationMeshLeaderChangedCount: %lu \nv2ElectionPrimaryResidentElectionRunCount: %lu \nv2ElectionPrimaryResidentChangedCount: %lu \nworkingStoreCoreDataTransactionCount: %lu \ncloudStoreCoreDataTransactionCount %lu \ncoreDataCloudKitImportCount %lu \ncoreDataCloudKitExportCount %lu \nresidentSyncFetchHomeDataRequestCount %lu \nresidentSyncHomeDataChangedNotificationCount %lu \ngenerationCounterIncrementCount %lu \nnotifyXPCClientsHomeDataChangedCount %lu \ncoreDataRootSizeKB %ld \ncoreDataLocalStoreSizeKB %ld \ncoreDataCloudStoreSizeKB %ld \ncoreDataSharedCloudStoreSizeKB %ld \nlegacyV1DatabaseSizeKB %ld \nlegacyV3DatabaseSizeKB %ld \neventStoreHH2SizeKB: %ld \nactiveDay: %d \ncountOfDaysSinceLastActive %ld \nactiveDaysPerMonthCount: %lu \nwidgetMaxRefreshCountForKind: %lu", v65, dataSyncState, processLaunchCount, jetsamReasonHighwaterCount, jetsamReasonProcessLimitCount, jetsamReasonOtherCount, processCrashCount, processWatchdogCount, processMemoryPressureStateWarningCount, processMemoryPressureStateCriticalCount, sampledAverageProcessMemoryUsageMB, sampledPeakProcessMemoryUsageMB, remoteMessagesSentCount, remoteMessagesReceivedCount, txIDSMessagesCount, rxIDSMessagesCount, txIDSProxyMessagesCount, rxIDSProxyMessagesCount, txLoxyMessagesCount, rxLoxyMessagesCount, txRapportMessagesCount, rxRapportMessagesCount, txRapportOverBLEMessagesCount, rxRapportOverBLEMessagesCount, txSecureMessagesCount, rxSecureMessagesCount, cloudSyncPushCount, cloudSyncFetchCount, cloudSyncUploadCount, cloudSyncUploadErrorCount, homeDataBytesFetched, homeDataBytesPushed, legacyHomeDataBytesFetched, legacyHomeDataBytesPushed, numReadSiri, numWriteSiri, numReadFirstPartyApp, numWriteFirstPartyApp, numReadThirdPartyApp, numWriteThirdPartyApp, averageLatencyIP, averageLatencyBT, averageLatencyIDS, numAccessoriesAdded, numScenesAdded, numTriggersAdded, numShortcutsAdded, numScenesUserRun, numShortcutsRun, numTriggersFired, hapIPInvalidationCount, hapIPSentHTTPRequestsCount, hapIPReceivedHTTPResponsesCount, hapIPReceivedHTTPEventCount, hapBTLEConnectionsCount, hapBTLEConnectionPerReasonsCount, hapBTLEDiscoveriesCount, cameraStreamStartSuccessCount, cameraStreamStartFailureCount, fetchCameraClipVideoSegmentAssetCount];
 
   return v4;
 }
@@ -491,65 +491,65 @@
   v58 = [v59 intervalIndexForValue:{-[HMDAggregationAnalysisLogEvent notifyXPCClientsHomeDataChangedCount](self, "notifyXPCClientsHomeDataChangedCount")}];
   v247[95] = v58;
   v246[96] = @"homeDataMBFetched";
-  v3 = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesFetched];
+  homeDataBytesFetched = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesFetched];
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesFetched];
-  if (v3 >> 21 <= 2)
+  homeDataBytesFetched2 = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesFetched];
+  if (homeDataBytesFetched >> 21 <= 2)
   {
-    v6 = v5 >> 20;
+    v6 = homeDataBytesFetched2 >> 20;
   }
 
   else
   {
-    v6 = v5 / 0x500000 + 5;
+    v6 = homeDataBytesFetched2 / 0x500000 + 5;
   }
 
   v57 = [v4 numberWithUnsignedInteger:v6];
   v247[96] = v57;
   v246[97] = @"homeDataMBPushed";
-  v7 = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesPushed];
+  homeDataBytesPushed = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesPushed];
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesPushed];
-  if (v7 <= 0x5FFFFF)
+  homeDataBytesPushed2 = [(HMDAggregationAnalysisLogEvent *)self homeDataBytesPushed];
+  if (homeDataBytesPushed <= 0x5FFFFF)
   {
-    v10 = v9 >> 20;
+    v10 = homeDataBytesPushed2 >> 20;
   }
 
   else
   {
-    v10 = v9 / 0x500000 + 5;
+    v10 = homeDataBytesPushed2 / 0x500000 + 5;
   }
 
   v56 = [v8 numberWithUnsignedInteger:v10];
   v247[97] = v56;
   v246[98] = @"legacyHomeDataMBFetched";
-  v11 = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesFetched];
+  legacyHomeDataBytesFetched = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesFetched];
   v12 = MEMORY[0x277CCABB0];
-  v13 = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesFetched];
-  if (v11 <= 0x5FFFFF)
+  legacyHomeDataBytesFetched2 = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesFetched];
+  if (legacyHomeDataBytesFetched <= 0x5FFFFF)
   {
-    v14 = v13 >> 20;
+    v14 = legacyHomeDataBytesFetched2 >> 20;
   }
 
   else
   {
-    v14 = v13 / 0x500000 + 5;
+    v14 = legacyHomeDataBytesFetched2 / 0x500000 + 5;
   }
 
   v55 = [v12 numberWithUnsignedInteger:v14];
   v247[98] = v55;
   v246[99] = @"legacyHomeDataMBPushed";
-  v15 = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesPushed];
+  legacyHomeDataBytesPushed = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesPushed];
   v16 = MEMORY[0x277CCABB0];
-  v17 = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesPushed];
-  if (v15 <= 0x5FFFFF)
+  legacyHomeDataBytesPushed2 = [(HMDAggregationAnalysisLogEvent *)self legacyHomeDataBytesPushed];
+  if (legacyHomeDataBytesPushed <= 0x5FFFFF)
   {
-    v18 = v17 >> 20;
+    v18 = legacyHomeDataBytesPushed2 >> 20;
   }
 
   else
   {
-    v18 = v17 / 0x500000 + 5;
+    v18 = legacyHomeDataBytesPushed2 / 0x500000 + 5;
   }
 
   v54 = [v16 numberWithUnsignedInteger:v18];

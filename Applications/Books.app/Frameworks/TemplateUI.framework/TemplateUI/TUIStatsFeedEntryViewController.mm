@@ -1,36 +1,36 @@
 @interface TUIStatsFeedEntryViewController
-- (TUIStatsFeedEntryViewController)initWithFeedEntry:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_dismiss:(id)a3;
+- (TUIStatsFeedEntryViewController)initWithFeedEntry:(id)entry;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_dismiss:(id)_dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation TUIStatsFeedEntryViewController
 
-- (TUIStatsFeedEntryViewController)initWithFeedEntry:(id)a3
+- (TUIStatsFeedEntryViewController)initWithFeedEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v11.receiver = self;
   v11.super_class = TUIStatsFeedEntryViewController;
   v6 = [(TUIStatsFeedEntryViewController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_feedEntry, a3);
+    objc_storeStrong(&v6->_feedEntry, entry);
     v8 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:2 target:v7 action:"_dismiss:"];
-    v9 = [(TUIStatsFeedEntryViewController *)v7 navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [(TUIStatsFeedEntryViewController *)v7 navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
   }
 
   return v7;
 }
 
-- (void)_dismiss:(id)a3
+- (void)_dismiss:(id)_dismiss
 {
-  v3 = [(TUIStatsFeedEntryViewController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(TUIStatsFeedEntryViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)viewDidLoad
@@ -38,41 +38,41 @@
   v8.receiver = self;
   v8.super_class = TUIStatsFeedEntryViewController;
   [(TUIStatsFeedEntryViewController *)&v8 viewDidLoad];
-  v3 = [(TUIStatsFeedEntryViewController *)self tableView];
+  tableView = [(TUIStatsFeedEntryViewController *)self tableView];
   v4 = +[TUIStatsCell nib];
-  [v3 registerNib:v4 forCellReuseIdentifier:@"cell"];
+  [tableView registerNib:v4 forCellReuseIdentifier:@"cell"];
 
-  v5 = [(TUIStatsFeedEntryViewController *)self tableView];
-  [v5 setRowHeight:UITableViewAutomaticDimension];
+  tableView2 = [(TUIStatsFeedEntryViewController *)self tableView];
+  [tableView2 setRowHeight:UITableViewAutomaticDimension];
 
-  v6 = [(TUIStatsFeedEntryViewController *)self tableView];
-  [v6 setEstimatedRowHeight:100.0];
+  tableView3 = [(TUIStatsFeedEntryViewController *)self tableView];
+  [tableView3 setEstimatedRowHeight:100.0];
 
-  v7 = [(TUIStatsFeedEntryViewController *)self tableView];
-  [v7 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"header"];
+  tableView4 = [(TUIStatsFeedEntryViewController *)self tableView];
+  [tableView4 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"header"];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 1;
   }
 
-  v4 = [(TUIStatsFeedEntry *)self->_feedEntry passes];
-  v5 = [v4 count];
+  passes = [(TUIStatsFeedEntry *)self->_feedEntry passes];
+  v5 = [passes count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [(TUIStatsFeedEntryViewController *)self tableView];
-  v6 = [v5 dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
+  tableView = [(TUIStatsFeedEntryViewController *)self tableView];
+  v6 = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
 
-  if (a4)
+  if (section)
   {
-    if (a4 != 1)
+    if (section != 1)
     {
       goto LABEL_6;
     }
@@ -85,33 +85,33 @@
     v7 = @"Summary";
   }
 
-  v8 = [v6 textLabel];
-  [v8 setText:v7];
+  textLabel = [v6 textLabel];
+  [textLabel setText:v7];
 
 LABEL_6:
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"cell" forIndexPath:v6];
-  if ([v6 section])
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"cell" forIndexPath:pathCopy];
+  if ([pathCopy section])
   {
-    if ([v6 section] == &dword_0 + 1)
+    if ([pathCopy section] == &dword_0 + 1)
     {
-      v8 = [(TUIStatsFeedEntry *)self->_feedEntry passes];
-      v9 = [v8 count];
-      v10 = ~[v6 row];
+      passes = [(TUIStatsFeedEntry *)self->_feedEntry passes];
+      v9 = [passes count];
+      v10 = ~[pathCopy row];
 
-      v11 = [(TUIStatsFeedEntry *)self->_feedEntry passes];
-      v12 = [v11 objectAtIndexedSubscript:&v9[v10]];
+      passes2 = [(TUIStatsFeedEntry *)self->_feedEntry passes];
+      v12 = [passes2 objectAtIndexedSubscript:&v9[v10]];
 
       v13 = [v12 url];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = TUIStatsReasonToString([v12 reason]);
-      v16 = [NSString stringWithFormat:@"%@ - %@\n\n", v14, v15];
+      v16 = [NSString stringWithFormat:@"%@ - %@\n\n", lastPathComponent, v15];
       [v7 setHeader:v16];
 
       [v7 setTimingProvider:v12];

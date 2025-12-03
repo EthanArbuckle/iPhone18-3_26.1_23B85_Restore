@@ -3,7 +3,7 @@
 - (_UIEventBus)init;
 - (uint64_t)addEvents:(uint64_t)result;
 - (uint64_t)drainEvents:(uint64_t)result;
-- (void)inputForEvent:(void *)a1;
+- (void)inputForEvent:(void *)event;
 @end
 
 @implementation _UIEventBus
@@ -44,11 +44,11 @@
   return v3;
 }
 
-- (void)inputForEvent:(void *)a1
+- (void)inputForEvent:(void *)event
 {
-  if (a1)
+  if (event)
   {
-    v4 = a1;
+    eventCopy = event;
     if (!IOHIDEventGetIntegerValue() && IOHIDEventGetType() == 11 && IOHIDEventGetIntegerValue())
     {
       v5 = _UIEventHIDGetChildStylusEvent(a2);
@@ -64,17 +64,17 @@
       v6 = 0;
     }
 
-    v7 = v4[v6 + 2];
+    v7 = eventCopy[v6 + 2];
     if (!v7)
     {
-      v7 = v4[2];
+      v7 = eventCopy[2];
     }
 
-    a1 = v7;
+    event = v7;
     v2 = vars8;
   }
 
-  return a1;
+  return event;
 }
 
 - (uint64_t)addEvents:(uint64_t)result

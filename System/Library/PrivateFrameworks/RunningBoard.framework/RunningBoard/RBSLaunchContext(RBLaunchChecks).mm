@@ -18,12 +18,12 @@
 - (uint64_t)_requiresPreflightCheck
 {
   v40 = *MEMORY[0x277D85DE8];
-  v2 = [a1 _sharedPreflightManager];
-  if (v2)
+  _sharedPreflightManager = [self _sharedPreflightManager];
+  if (_sharedPreflightManager)
   {
-    v3 = [a1 identity];
-    v4 = [a1 appID];
-    if (!(v4 | v3))
+    identity = [self identity];
+    appID = [self appID];
+    if (!(appID | identity))
     {
       v5 = rbs_process_log();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -34,13 +34,13 @@
       goto LABEL_41;
     }
 
-    v5 = v4;
-    if ([v3 isApplication])
+    v5 = appID;
+    if ([identity isApplication])
     {
       if (v5)
       {
 LABEL_5:
-        v6 = [v2 requiresPreflightForApplication:v5];
+        v6 = [_sharedPreflightManager requiresPreflightForApplication:v5];
         v7 = rbs_process_log();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
@@ -51,7 +51,7 @@ LABEL_5:
           }
 
           *buf = 138543618;
-          v36 = a1;
+          selfCopy2 = self;
           v37 = 2114;
           v38 = v8;
           _os_log_impl(&dword_262485000, v7, OS_LOG_TYPE_DEFAULT, "preflightManager for %{public}@ -> %{public}@", buf, 0x16u);
@@ -60,10 +60,10 @@ LABEL_5:
         goto LABEL_42;
       }
 
-      v10 = [a1 bundleIdentifier];
-      if (!v10)
+      bundleIdentifier = [self bundleIdentifier];
+      if (!bundleIdentifier)
       {
-        if (![v3 isExtension] || (objc_msgSend(v3, "xpcServiceIdentifier"), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (![identity isExtension] || (objc_msgSend(identity, "xpcServiceIdentifier"), (bundleIdentifier = objc_claimAutoreleasedReturnValue()) == 0))
         {
           v5 = rbs_process_log();
           if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -75,15 +75,15 @@ LABEL_5:
         }
       }
 
-      v9 = v10;
+      v9 = bundleIdentifier;
       v34 = 0;
-      v11 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v10 allowPlaceholder:0 error:&v34];
+      v11 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v34];
       v5 = v34;
       if (v11)
       {
         v26 = v11;
         v27 = v9;
-        v29 = v3;
+        v29 = identity;
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
@@ -104,9 +104,9 @@ LABEL_19:
             }
 
             v16 = *(*(&v30 + 1) + 8 * v15);
-            v17 = [v16 personaUniqueString];
-            v18 = [v29 personaString];
-            v19 = [v17 isEqualToString:v18];
+            personaUniqueString = [v16 personaUniqueString];
+            personaString = [v29 personaString];
+            v19 = [personaUniqueString isEqualToString:personaString];
 
             if (v19)
             {
@@ -125,14 +125,14 @@ LABEL_19:
             }
           }
 
-          v20 = v16;
+          firstObject = v16;
 
-          if (!v20)
+          if (!firstObject)
           {
             goto LABEL_32;
           }
 
-          v3 = v29;
+          identity = v29;
           v11 = v26;
           v21 = v27;
           goto LABEL_34;
@@ -142,16 +142,16 @@ LABEL_25:
 
 LABEL_32:
         v11 = v26;
-        v22 = [v26 identities];
-        v20 = [v22 firstObject];
+        identities = [v26 identities];
+        firstObject = [identities firstObject];
 
-        v3 = v29;
-        if (v20)
+        identity = v29;
+        if (firstObject)
         {
           v21 = v27;
 LABEL_34:
 
-          v5 = v20;
+          v5 = firstObject;
           goto LABEL_5;
         }
 
@@ -179,7 +179,7 @@ LABEL_34:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v36 = a1;
+        selfCopy2 = self;
         _os_log_impl(&dword_262485000, v9, OS_LOG_TYPE_DEFAULT, "Skipping preflight as %{public}@ is not an app", buf, 0xCu);
       }
     }
@@ -212,18 +212,18 @@ LABEL_43:
 
 - (uint64_t)_passesEligibilityCheck
 {
-  if (![a1 _needsEligibilityCheck])
+  if (![self _needsEligibilityCheck])
   {
     return 1;
   }
 
-  v2 = [a1 identity];
-  if ([v2 isApplication])
+  identity = [self identity];
+  if ([identity isApplication])
   {
-    v3 = [a1 _applicationRecordForLaunchCheck];
-    if (v3)
+    _applicationRecordForLaunchCheck = [self _applicationRecordForLaunchCheck];
+    if (_applicationRecordForLaunchCheck)
     {
-      v4 = [a1 _recordPassesEligibilityChecks:v3];
+      v4 = [self _recordPassesEligibilityChecks:_applicationRecordForLaunchCheck];
     }
 
     else
@@ -248,15 +248,15 @@ LABEL_43:
 
 - (id)_applicationRecordForLaunchCheck
 {
-  v2 = [a1 appID];
-  v3 = v2;
-  if (!v2)
+  appID = [self appID];
+  v3 = appID;
+  if (!appID)
   {
-    v6 = [a1 bundleIdentifier];
-    if (v6)
+    bundleIdentifier = [self bundleIdentifier];
+    if (bundleIdentifier)
     {
       v9 = 0;
-      v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v9];
+      v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v9];
       v5 = v9;
       if (v4)
       {
@@ -286,15 +286,15 @@ LABEL_43:
   }
 
   v10 = 0;
-  v4 = [v2 findApplicationRecordWithError:&v10];
+  v4 = [appID findApplicationRecordWithError:&v10];
   v5 = v10;
   if (v4)
   {
     goto LABEL_14;
   }
 
-  v6 = rbs_process_log();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  bundleIdentifier = rbs_process_log();
+  if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
   {
     [RBSLaunchContext(RBLaunchChecks) _applicationRecordForLaunchCheck];
   }
@@ -314,8 +314,8 @@ LABEL_14:
   }
 
   v2 = _needsEligibilityCheck_allowed;
-  v3 = [a1 bundleIdentifier];
-  LODWORD(v2) = [v2 containsObject:v3];
+  bundleIdentifier = [self bundleIdentifier];
+  LODWORD(v2) = [v2 containsObject:bundleIdentifier];
 
   return v2 ^ 1;
 }
@@ -326,27 +326,27 @@ LABEL_14:
   v6 = a4;
   if (v6)
   {
-    v7 = [a3 unsignedLongLongValue];
-    v8 = [a1 identity];
-    v9 = [v8 personaString];
+    unsignedLongLongValue = [a3 unsignedLongLongValue];
+    identity = [self identity];
+    personaString = [identity personaString];
 
     v10 = rbs_process_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v22 = v7;
+      v22 = unsignedLongLongValue;
       v23 = 2112;
       v24 = v6;
       v25 = 2112;
-      v26 = v9;
+      v26 = personaString;
       _os_log_impl(&dword_262485000, v10, OS_LOG_TYPE_DEFAULT, "Making eligibility query with domain: %llu, bundle ID: %@, persona: %@", buf, 0x20u);
     }
 
     v11 = objc_alloc(MEMORY[0x277D36CB0]);
-    v12 = [a1 identity];
-    v13 = [v12 personaString];
+    identity2 = [self identity];
+    personaString2 = [identity2 personaString];
     v20 = 0;
-    v14 = [v11 initWithDomain:v7 bundleID:v6 persona:v13 error:&v20];
+    v14 = [v11 initWithDomain:unsignedLongLongValue bundleID:v6 persona:personaString2 error:&v20];
     v15 = v20;
 
     if (v14)
@@ -359,7 +359,7 @@ LABEL_14:
       v17 = rbs_process_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        [(RBSLaunchContext(RBLaunchChecks) *)v15 _deviceIsEligibleForDomain:v7 bundleID:v17];
+        [(RBSLaunchContext(RBLaunchChecks) *)v15 _deviceIsEligibleForDomain:unsignedLongLongValue bundleID:v17];
       }
 
       v16 = 0;
@@ -388,16 +388,16 @@ LABEL_14:
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
-  v5 = [v4 entitlements];
-  v6 = [v4 bundleIdentifier];
+  entitlements = [v4 entitlements];
+  bundleIdentifier = [v4 bundleIdentifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__RBSLaunchContext_RBLaunchChecks___recordPassesEligibilityChecks___block_invoke;
   v11[3] = &unk_279B33B78;
-  v7 = v5;
+  v7 = entitlements;
   v12 = v7;
-  v13 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = bundleIdentifier;
   v14 = v8;
   v15 = &v16;
   [&unk_28751B298 enumerateKeysAndObjectsUsingBlock:v11];
@@ -409,7 +409,7 @@ LABEL_14:
 
 - (uint64_t)_passesRegulatoryChecksWithError:()RBLaunchChecks
 {
-  if ([a1 _requiresPreflightCheck])
+  if ([self _requiresPreflightCheck])
   {
     if (a3)
     {
@@ -430,7 +430,7 @@ LABEL_8:
 
   else
   {
-    if ([a1 _passesEligibilityCheck])
+    if ([self _passesEligibilityCheck])
     {
       return 1;
     }
@@ -450,36 +450,36 @@ LABEL_8:
 {
   v46 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [v6 preventLaunch];
-  v8 = [v6 preventLaunchPredicates];
-  v9 = [v6 allowLaunchPredicates];
-  v10 = [objc_alloc(MEMORY[0x277D46F48]) initWithLaunchContext:a1];
+  preventLaunch = [v6 preventLaunch];
+  preventLaunchPredicates = [v6 preventLaunchPredicates];
+  allowLaunchPredicates = [v6 allowLaunchPredicates];
+  v10 = [objc_alloc(MEMORY[0x277D46F48]) initWithLaunchContext:self];
   v11 = rbs_process_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 executablePath];
+    executablePath = [v10 executablePath];
     *buf = 67109890;
-    *v41 = v7;
+    *v41 = preventLaunch;
     *&v41[4] = 2114;
-    *&v41[6] = v12;
+    *&v41[6] = executablePath;
     v42 = 2114;
-    v43 = v8;
+    v43 = preventLaunchPredicates;
     v44 = 2114;
-    v45 = v9;
+    v45 = allowLaunchPredicates;
     _os_log_impl(&dword_262485000, v11, OS_LOG_TYPE_DEFAULT, "Checking PreventLaunch: global:%d exPath:%{public}@ predicates:%{public}@ allow:%{public}@", buf, 0x26u);
   }
 
-  if (v7)
+  if (preventLaunch)
   {
 LABEL_16:
-    if ([v9 count])
+    if ([allowLaunchPredicates count])
     {
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v19 = [v6 allowLaunchPredicates];
-      v18 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      allowLaunchPredicates2 = [v6 allowLaunchPredicates];
+      v18 = [allowLaunchPredicates2 countByEnumeratingWithState:&v30 objects:v38 count:16];
       if (v18)
       {
         v20 = *v31;
@@ -489,7 +489,7 @@ LABEL_16:
           {
             if (*v31 != v20)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(allowLaunchPredicates2);
             }
 
             v22 = *(*(&v30 + 1) + 8 * i);
@@ -508,7 +508,7 @@ LABEL_16:
             }
           }
 
-          v18 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
+          v18 = [allowLaunchPredicates2 countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v18)
           {
             continue;
@@ -550,14 +550,14 @@ LABEL_29:
     goto LABEL_34;
   }
 
-  if ([v8 count])
+  if ([preventLaunchPredicates count])
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = [v6 preventLaunchPredicates];
-    v14 = [v13 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    preventLaunchPredicates2 = [v6 preventLaunchPredicates];
+    v14 = [preventLaunchPredicates2 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v14)
     {
       v15 = v14;
@@ -568,7 +568,7 @@ LABEL_29:
         {
           if (*v35 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(preventLaunchPredicates2);
           }
 
           if ([*(*(&v34 + 1) + 8 * j) matchesProcess:v10])
@@ -578,7 +578,7 @@ LABEL_29:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v15 = [preventLaunchPredicates2 countByEnumeratingWithState:&v34 objects:v39 count:16];
         if (v15)
         {
           continue;

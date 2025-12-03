@@ -1,11 +1,11 @@
 @interface AKGlobalConfigService
 + (id)sharedInstance;
 - (AKGlobalConfigService)init;
-- (id)_configURLRequestWithContext:(id)a3;
-- (id)_unsafe_updateCacheWithData:(id)a3;
-- (void)_getConfigsFromCache:(BOOL)a3 context:(id)a4 completion:(id)a5;
+- (id)_configURLRequestWithContext:(id)context;
+- (id)_unsafe_updateCacheWithData:(id)data;
+- (void)_getConfigsFromCache:(BOOL)cache context:(id)context completion:(id)completion;
 - (void)checkForLocaleChange;
-- (void)fetchGlobalConfigUsingCachePolicy:(unint64_t)a3 context:(id)a4 completion:(id)a5;
+- (void)fetchGlobalConfigUsingCachePolicy:(unint64_t)policy context:(id)context completion:(id)completion;
 @end
 
 @implementation AKGlobalConfigService
@@ -62,17 +62,17 @@
 
 - (void)checkForLocaleChange
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v7 = +[AKDevice currentDevice];
-  v6 = [v7 locale];
-  v19[0] = [v6 localeIdentifier];
-  _objc_release(v6);
+  locale = [v7 locale];
+  v19[0] = [locale localeIdentifier];
+  _objc_release(locale);
   _objc_release(v7);
   v8 = +[AKConfiguration sharedConfiguration];
-  v18 = [v8 lastKnownLocale];
+  lastKnownLocale = [v8 lastKnownLocale];
   _objc_release(v8);
-  if (![v19[0] isEqualToString:v18])
+  if (![v19[0] isEqualToString:lastKnownLocale])
   {
     location = _AKLogSystem();
     v16 = OS_LOG_TYPE_DEFAULT;
@@ -85,7 +85,7 @@
     }
 
     objc_storeStrong(&location, 0);
-    v3 = v20;
+    v3 = selfCopy;
     v2 = AKRequestContextLocaleChange;
     v9 = _NSConcreteStackBlock;
     v10 = -1073741824;
@@ -97,53 +97,53 @@
     objc_storeStrong(&v14, 0);
   }
 
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&lastKnownLocale, 0);
   objc_storeStrong(v19, 0);
 }
 
-- (void)fetchGlobalConfigUsingCachePolicy:(unint64_t)a3 context:(id)a4 completion:(id)a5
+- (void)fetchGlobalConfigUsingCachePolicy:(unint64_t)policy context:(id)context completion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  policyCopy = policy;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, context);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
+  objc_storeStrong(&v7, completion);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100036FE8(v12, v9);
+    sub_100036FE8(v12, policyCopy);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Fetching global config with cache policy %lu", v12, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v9)
+  if (policyCopy)
   {
-    if (v9 == 1)
+    if (policyCopy == 1)
     {
-      [(AKGlobalConfigService *)v11 _getConfigsFromCache:0 context:location completion:v7];
+      [(AKGlobalConfigService *)selfCopy _getConfigsFromCache:0 context:location completion:v7];
     }
   }
 
   else
   {
-    [(AKGlobalConfigService *)v11 _getConfigsFromCache:1 context:location completion:v7];
+    [(AKGlobalConfigService *)selfCopy _getConfigsFromCache:1 context:location completion:v7];
   }
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&location, 0);
 }
 
-- (void)_getConfigsFromCache:(BOOL)a3 context:(id)a4 completion:(id)a5
+- (void)_getConfigsFromCache:(BOOL)cache context:(id)context completion:(id)completion
 {
-  v73 = self;
+  selfCopy = self;
   v72 = a2;
-  v71 = a3;
+  cacheCopy = cache;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, context);
   v69 = 0;
-  objc_storeStrong(&v69, a5);
+  objc_storeStrong(&v69, completion);
   v68 = 0uLL;
   v24 = _AKSignpostLogSystem();
   *&v67 = _AKSignpostCreate();
@@ -180,9 +180,9 @@
   v59 = v67;
   v58 = _objc_retain(v69);
   v60 = objc_retainBlock(&v53);
-  v52 = [(AKGlobalConfigService *)v73 _configURLRequestWithContext:location];
+  v52 = [(AKGlobalConfigService *)selfCopy _configURLRequestWithContext:location];
   v51 = 0;
-  if (v71)
+  if (cacheCopy)
   {
     oslog = _AKLogSystem();
     v49 = OS_LOG_TYPE_DEFAULT;
@@ -234,8 +234,8 @@
   v38 = _objc_retain(v44);
   v39 = _objc_retain(v51);
   v41 = _objc_retain(v60);
-  v40 = _objc_retain(v73);
-  v42 = v71;
+  v40 = _objc_retain(selfCopy);
+  v42 = cacheCopy;
   v43 = [v14 beginDataTaskWithRequest:v13 completionHandler:&v33];
   source = v44;
   v11 = dispatch_time(0, 60000000000);
@@ -266,44 +266,44 @@
   objc_storeStrong(&location, 0);
 }
 
-- (id)_configURLRequestWithContext:(id)a3
+- (id)_configURLRequestWithContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = +[AKURLBag sharedBag];
-  v21 = [v15 fetchGlobalConfigURL];
+  fetchGlobalConfigURL = [v15 fetchGlobalConfigURL];
   _objc_release(v15);
-  if (!v21)
+  if (!fetchGlobalConfigURL)
   {
     v20 = _objc_retain(@"https://gsas.apple.com/grandslam/GsService2/fetchGlobalConfigs");
     v3 = [NSURL URLWithString:v20];
-    v4 = v21;
-    v21 = v3;
+    v4 = fetchGlobalConfigURL;
+    fetchGlobalConfigURL = v3;
     _objc_release(v4);
     objc_storeStrong(&v20, 0);
   }
 
   v11 = +[AKDevice currentDevice];
-  v10 = [v11 locale];
-  v19 = [v10 localeIdentifier];
-  _objc_release(v10);
+  locale = [v11 locale];
+  localeIdentifier = [locale localeIdentifier];
+  _objc_release(locale);
   _objc_release(v11);
-  v18 = [NSURLComponents componentsWithURL:v21 resolvingAgainstBaseURL:0];
+  v18 = [NSURLComponents componentsWithURL:fetchGlobalConfigURL resolvingAgainstBaseURL:0];
   v5 = [NSURLQueryItem alloc];
-  v17 = [v5 initWithName:@"locale" value:v19];
+  v17 = [v5 initWithName:@"locale" value:localeIdentifier];
   v12 = v18;
   v23 = v17;
   v13 = [NSArray arrayWithObjects:&v23 count:1];
   [(NSURLComponents *)v12 setQueryItems:?];
   _objc_release(v13);
   v6 = [(NSURLComponents *)v18 URL];
-  v7 = v21;
-  v21 = v6;
+  v7 = fetchGlobalConfigURL;
+  fetchGlobalConfigURL = v6;
   _objc_release(v7);
   v8 = [NSMutableURLRequest alloc];
-  v16 = [v8 initWithURL:v21];
+  v16 = [v8 initWithURL:fetchGlobalConfigURL];
   [v16 ak_addClientInfoHeader];
   [v16 ak_addCountryHeader];
   [v16 ak_addDeviceUDIDHeader];
@@ -319,19 +319,19 @@
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
-  objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&localeIdentifier, 0);
+  objc_storeStrong(&fetchGlobalConfigURL, 0);
   objc_storeStrong(location, 0);
 
   return v14;
 }
 
-- (id)_unsafe_updateCacheWithData:(id)a3
+- (id)_unsafe_updateCacheWithData:(id)data
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v17 = 0;
   v15 = 0;
   v7 = [NSJSONSerialization JSONObjectWithData:location[0] options:0 error:&v15];

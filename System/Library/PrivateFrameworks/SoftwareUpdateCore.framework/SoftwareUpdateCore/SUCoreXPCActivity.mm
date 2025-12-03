@@ -1,38 +1,38 @@
 @interface SUCoreXPCActivity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)init:(id)a3 options:(id)a4 handler:(id)a5;
+- (id)init:(id)init options:(id)options handler:(id)handler;
 @end
 
 @implementation SUCoreXPCActivity
 
-- (id)init:(id)a3 options:(id)a4 handler:(id)a5
+- (id)init:(id)init options:(id)options handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  initCopy = init;
+  optionsCopy = options;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = SUCoreXPCActivity;
   v12 = [(SUCoreXPCActivity *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_activityName, a3);
-    v14 = MEMORY[0x2383746D0](v11);
+    objc_storeStrong(&v12->_activityName, init);
+    v14 = MEMORY[0x2383746D0](handlerCopy);
     handler = v13->_handler;
     v13->_handler = v14;
 
-    objc_storeStrong(&v13->_activityOptions, a4);
+    objc_storeStrong(&v13->_activityOptions, options);
     v13->_isRegisteredWithXPC = 0;
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -42,8 +42,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SUCoreXPCActivity *)v4 activityName];
-      v6 = [v5 isEqualToString:self->_activityName];
+      activityName = [(SUCoreXPCActivity *)equalCopy activityName];
+      v6 = [activityName isEqualToString:self->_activityName];
     }
 
     else

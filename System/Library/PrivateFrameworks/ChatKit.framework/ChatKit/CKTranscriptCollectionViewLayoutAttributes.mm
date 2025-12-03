@@ -1,10 +1,10 @@
 @interface CKTranscriptCollectionViewLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CATransform3D)contentTransform3D;
 - (CGSize)parentChatItemSize;
 - (CKTranscriptCollectionViewLayoutAttributes)init;
-- (CKTranscriptCollectionViewLayoutAttributes)initWithLayoutAttributes:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKTranscriptCollectionViewLayoutAttributes)initWithLayoutAttributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CKTranscriptCollectionViewLayoutAttributes
@@ -35,21 +35,21 @@
   return result;
 }
 
-- (CKTranscriptCollectionViewLayoutAttributes)initWithLayoutAttributes:(id)a3
+- (CKTranscriptCollectionViewLayoutAttributes)initWithLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = [(CKTranscriptCollectionViewLayoutAttributes *)self init];
   if (v5)
   {
-    [v4 frame];
+    [attributesCopy frame];
     [(UICollectionViewLayoutAttributes *)v5 setFrame:?];
-    [v4 center];
+    [attributesCopy center];
     [(UICollectionViewLayoutAttributes *)v5 setCenter:?];
-    [v4 size];
+    [attributesCopy size];
     [(UICollectionViewLayoutAttributes *)v5 setSize:?];
-    if (v4)
+    if (attributesCopy)
     {
-      [v4 transform3D];
+      [attributesCopy transform3D];
     }
 
     else
@@ -73,11 +73,11 @@
     v13 = v21;
     v14 = v22;
     [(UICollectionViewLayoutAttributes *)v5 setTransform3D:&v11];
-    [v4 bounds];
+    [attributesCopy bounds];
     [(UICollectionViewLayoutAttributes *)v5 setBounds:?];
-    if (v4)
+    if (attributesCopy)
     {
-      [v4 transform];
+      [attributesCopy transform];
     }
 
     else
@@ -91,17 +91,17 @@
     v12 = v9;
     v13 = v10;
     [(UICollectionViewLayoutAttributes *)v5 setTransform:&v11, v8, v9, v10];
-    [v4 alpha];
+    [attributesCopy alpha];
     [(UICollectionViewLayoutAttributes *)v5 setAlpha:?];
-    -[UICollectionViewLayoutAttributes setZIndex:](v5, "setZIndex:", [v4 zIndex]);
-    v6 = [v4 indexPath];
-    [(UICollectionViewLayoutAttributes *)v5 setIndexPath:v6];
+    -[UICollectionViewLayoutAttributes setZIndex:](v5, "setZIndex:", [attributesCopy zIndex]);
+    indexPath = [attributesCopy indexPath];
+    [(UICollectionViewLayoutAttributes *)v5 setIndexPath:indexPath];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20.receiver = self;
   v20.super_class = CKTranscriptCollectionViewLayoutAttributes;
@@ -127,7 +127,7 @@
   *(v5 + 680) = self->_parentChatItemSize;
   *(v5 + 84) = *&self->_parentRotationOffset;
   *(v5 + 78) = *&self->_associatedVerticalShift;
-  v13 = [(NSMutableArray *)self->_associatedLayoutAttributes mutableCopyWithZone:a3];
+  v13 = [(NSMutableArray *)self->_associatedLayoutAttributes mutableCopyWithZone:zone];
   v14 = *(v5 + 79);
   *(v5 + 79) = v13;
 
@@ -145,10 +145,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -158,7 +158,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = *&v5->_contentTransform3D.m11;
       v7 = *&v5->_contentTransform3D.m13;
       v8 = *&v5->_contentTransform3D.m23;

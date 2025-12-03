@@ -8,13 +8,13 @@
 {
   v10.receiver = self;
   v10.super_class = ATXUserEducationSuggestionFeedbackMetricCustomizeFocus;
-  v3 = [(ATXUserEducationSuggestionFeedbackMetric *)&v10 coreAnalyticsDictionary];
-  v4 = [v3 mutableCopy];
+  coreAnalyticsDictionary = [(ATXUserEducationSuggestionFeedbackMetric *)&v10 coreAnalyticsDictionary];
+  v4 = [coreAnalyticsDictionary mutableCopy];
 
-  v5 = [(ATXUserEducationSuggestionFeedbackMetric *)self feedback];
-  v6 = [v5 suggestion];
+  feedback = [(ATXUserEducationSuggestionFeedbackMetric *)self feedback];
+  suggestion = [feedback suggestion];
 
-  [v6 modeSemanticType];
+  [suggestion modeSemanticType];
   v7 = DNDModeSemanticTypeToString();
   if (v7)
   {
@@ -23,8 +23,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277CBEB68] null];
-    [v4 setObject:v8 forKey:@"modeSemanticType"];
+    null = [MEMORY[0x277CBEB68] null];
+    [v4 setObject:null forKey:@"modeSemanticType"];
   }
 
   return v4;

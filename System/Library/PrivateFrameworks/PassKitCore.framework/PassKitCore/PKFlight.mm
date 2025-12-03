@@ -1,55 +1,55 @@
 @interface PKFlight
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (PKFlight)initWithAirlineCode:(id)a3 airlineName:(id)a4 flightNumber:(unint64_t)a5 operatorAirlineCode:(id)a6 operatorFlightNumber:(unint64_t)a7 departure:(id)a8 arrival:(id)a9 state:(unint64_t)a10 publishedDate:(id)a11 staleDate:(id)a12 isEstimated:(BOOL)a13 dataSource:(unint64_t)a14;
-- (PKFlight)initWithCoder:(id)a3;
-- (PKFlight)initWithMockFlightDictionary:(id)a3;
+- (PKFlight)initWithAirlineCode:(id)code airlineName:(id)name flightNumber:(unint64_t)number operatorAirlineCode:(id)airlineCode operatorFlightNumber:(unint64_t)flightNumber departure:(id)departure arrival:(id)arrival state:(unint64_t)self0 publishedDate:(id)self1 staleDate:(id)self2 isEstimated:(BOOL)self3 dataSource:(unint64_t)self4;
+- (PKFlight)initWithCoder:(id)coder;
+- (PKFlight)initWithMockFlightDictionary:(id)dictionary;
 - (id)asDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFlight
 
-- (PKFlight)initWithAirlineCode:(id)a3 airlineName:(id)a4 flightNumber:(unint64_t)a5 operatorAirlineCode:(id)a6 operatorFlightNumber:(unint64_t)a7 departure:(id)a8 arrival:(id)a9 state:(unint64_t)a10 publishedDate:(id)a11 staleDate:(id)a12 isEstimated:(BOOL)a13 dataSource:(unint64_t)a14
+- (PKFlight)initWithAirlineCode:(id)code airlineName:(id)name flightNumber:(unint64_t)number operatorAirlineCode:(id)airlineCode operatorFlightNumber:(unint64_t)flightNumber departure:(id)departure arrival:(id)arrival state:(unint64_t)self0 publishedDate:(id)self1 staleDate:(id)self2 isEstimated:(BOOL)self3 dataSource:(unint64_t)self4
 {
-  v36 = a3;
-  v19 = a4;
-  v20 = a6;
-  v33 = a8;
-  v21 = a8;
-  v35 = a9;
-  v34 = a11;
-  v22 = a12;
+  codeCopy = code;
+  nameCopy = name;
+  airlineCodeCopy = airlineCode;
+  departureCopy = departure;
+  departureCopy2 = departure;
+  arrivalCopy = arrival;
+  dateCopy = date;
+  staleDateCopy = staleDate;
   v37.receiver = self;
   v37.super_class = PKFlight;
   v23 = [(PKFlight *)&v37 init];
   if (v23)
   {
-    [v21 scheduledGateTime];
-    v24 = v20;
-    v26 = v25 = v19;
-    obj = a9;
-    v27 = PKGenerateFlightIdentifier(v36, a5, v26);
+    [departureCopy2 scheduledGateTime];
+    v24 = airlineCodeCopy;
+    v26 = v25 = nameCopy;
+    obj = arrival;
+    v27 = PKGenerateFlightIdentifier(codeCopy, number, v26);
     identifier = v23->_identifier;
     v23->_identifier = v27;
 
-    v19 = v25;
-    v20 = v24;
-    objc_storeStrong(&v23->_airlineCode, a3);
-    objc_storeStrong(&v23->_airlineName, a4);
-    v23->_flightNumber = a5;
-    objc_storeStrong(&v23->_operatorAirlineCode, a6);
-    v23->_operatorFlightNumber = a7;
-    objc_storeStrong(&v23->_departure, v33);
-    objc_storeStrong(&v23->_arrival, a9);
-    v23->_state = a10;
-    objc_storeStrong(&v23->_staleDate, a12);
-    objc_storeStrong(&v23->_publishedDate, a11);
-    v23->_estimated = a13;
-    v23->_dataSource = a14;
+    nameCopy = v25;
+    airlineCodeCopy = v24;
+    objc_storeStrong(&v23->_airlineCode, code);
+    objc_storeStrong(&v23->_airlineName, name);
+    v23->_flightNumber = number;
+    objc_storeStrong(&v23->_operatorAirlineCode, airlineCode);
+    v23->_operatorFlightNumber = flightNumber;
+    objc_storeStrong(&v23->_departure, departureCopy);
+    objc_storeStrong(&v23->_arrival, arrival);
+    v23->_state = state;
+    objc_storeStrong(&v23->_staleDate, staleDate);
+    objc_storeStrong(&v23->_publishedDate, date);
+    v23->_estimated = estimated;
+    v23->_dataSource = source;
   }
 
   if (![(PKFlight *)v23 isValid])
@@ -61,33 +61,33 @@
   return v23;
 }
 
-- (PKFlight)initWithMockFlightDictionary:(id)a3
+- (PKFlight)initWithMockFlightDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = PKFlight;
   v5 = [(PKFlight *)&v30 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"airlineCode"];
+    v6 = [dictionaryCopy PKStringForKey:@"airlineCode"];
     airlineCode = v5->_airlineCode;
     v5->_airlineCode = v6;
 
-    v8 = [v4 PKStringForKey:@"airlineName"];
+    v8 = [dictionaryCopy PKStringForKey:@"airlineName"];
     airlineName = v5->_airlineName;
     v5->_airlineName = v8;
 
-    v10 = [v4 PKNumberForKey:@"flightNumber"];
+    v10 = [dictionaryCopy PKNumberForKey:@"flightNumber"];
     v5->_flightNumber = [v10 unsignedIntegerValue];
 
-    v11 = [v4 PKStringForKey:@"operatorAirlineCode"];
+    v11 = [dictionaryCopy PKStringForKey:@"operatorAirlineCode"];
     operatorAirlineCode = v5->_operatorAirlineCode;
     v5->_operatorAirlineCode = v11;
 
-    v13 = [v4 PKNumberForKey:@"operatorFlightNumber"];
+    v13 = [dictionaryCopy PKNumberForKey:@"operatorFlightNumber"];
     v5->_operatorFlightNumber = [v13 unsignedIntegerValue];
 
-    v14 = [v4 objectForKey:@"departure"];
+    v14 = [dictionaryCopy objectForKey:@"departure"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
       v5->_departure = v15;
     }
 
-    v17 = [v4 objectForKey:@"arrival"];
+    v17 = [dictionaryCopy objectForKey:@"arrival"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,21 +105,21 @@
       v5->_arrival = v18;
     }
 
-    v20 = [v4 PKStringForKey:@"state"];
+    v20 = [dictionaryCopy PKStringForKey:@"state"];
     v5->_state = PKFlightStateFromString(v20);
 
-    v21 = [v4 PKDateForKey:@"staleDate"];
+    v21 = [dictionaryCopy PKDateForKey:@"staleDate"];
     staleDate = v5->_staleDate;
     v5->_staleDate = v21;
 
-    v5->_estimated = [v4 PKBoolForKey:@"estimated"];
-    v23 = [v4 PKStringForKey:@"dataSource"];
+    v5->_estimated = [dictionaryCopy PKBoolForKey:@"estimated"];
+    v23 = [dictionaryCopy PKStringForKey:@"dataSource"];
     v5->_dataSource = PKFlightDataSourceFromString(v23);
 
     v24 = v5->_airlineCode;
     flightNumber = v5->_flightNumber;
-    v26 = [(PKFlightStep *)v5->_departure scheduledGateTime];
-    v27 = PKGenerateFlightIdentifier(v24, flightNumber, v26);
+    scheduledGateTime = [(PKFlightStep *)v5->_departure scheduledGateTime];
+    v27 = PKGenerateFlightIdentifier(v24, flightNumber, scheduledGateTime);
     identifier = v5->_identifier;
     v5->_identifier = v27;
   }
@@ -149,11 +149,11 @@
   v6 = PKFlightStateToString(self->_state);
   [v3 setObject:v6 forKeyedSubscript:@"state"];
 
-  v7 = [(PKFlightStep *)self->_departure asDictionary];
-  [v3 setObject:v7 forKeyedSubscript:@"departure"];
+  asDictionary = [(PKFlightStep *)self->_departure asDictionary];
+  [v3 setObject:asDictionary forKeyedSubscript:@"departure"];
 
-  v8 = [(PKFlightStep *)self->_arrival asDictionary];
-  [v3 setObject:v8 forKeyedSubscript:@"arrival"];
+  asDictionary2 = [(PKFlightStep *)self->_arrival asDictionary];
+  [v3 setObject:asDictionary2 forKeyedSubscript:@"arrival"];
 
   v9 = PKW3CDateStringFromDate(self->_publishedDate);
   [v3 setObject:v9 forKeyedSubscript:@"publishedDate"];
@@ -184,92 +184,92 @@
   return [(PKFlightStep *)arrival isValid];
 }
 
-- (PKFlight)initWithCoder:(id)a3
+- (PKFlight)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = PKFlight;
   v5 = [(PKFlight *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"airlineCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"airlineCode"];
     airlineCode = v5->_airlineCode;
     v5->_airlineCode = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"airlineName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"airlineName"];
     airlineName = v5->_airlineName;
     v5->_airlineName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flightNumber"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flightNumber"];
     v5->_flightNumber = [v12 unsignedIntegerValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operatorAirlineCode"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operatorAirlineCode"];
     operatorAirlineCode = v5->_operatorAirlineCode;
     v5->_operatorAirlineCode = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operatorFlightNumber"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operatorFlightNumber"];
     v5->_operatorFlightNumber = [v15 unsignedIntegerValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"departure"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"departure"];
     departure = v5->_departure;
     v5->_departure = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"arrival"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"arrival"];
     arrival = v5->_arrival;
     v5->_arrival = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     v5->_state = [v20 unsignedIntegerValue];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"staleDate"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"staleDate"];
     staleDate = v5->_staleDate;
     v5->_staleDate = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
     lastUpdatedDate = v5->_lastUpdatedDate;
     v5->_lastUpdatedDate = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publishedDate"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publishedDate"];
     publishedDate = v5->_publishedDate;
     v5->_publishedDate = v25;
 
-    v5->_estimated = [v4 decodeBoolForKey:@"estimated"];
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataSource"];
+    v5->_estimated = [coderCopy decodeBoolForKey:@"estimated"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataSource"];
     v5->_dataSource = [v27 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_airlineCode forKey:@"airlineCode"];
-  [v5 encodeObject:self->_airlineName forKey:@"airlineName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_airlineCode forKey:@"airlineCode"];
+  [coderCopy encodeObject:self->_airlineName forKey:@"airlineName"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_flightNumber];
-  [v5 encodeObject:v6 forKey:@"flightNumber"];
+  [coderCopy encodeObject:v6 forKey:@"flightNumber"];
 
-  [v5 encodeObject:self->_operatorAirlineCode forKey:@"operatorAirlineCode"];
+  [coderCopy encodeObject:self->_operatorAirlineCode forKey:@"operatorAirlineCode"];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_operatorFlightNumber];
-  [v5 encodeObject:v7 forKey:@"operatorFlightNumber"];
+  [coderCopy encodeObject:v7 forKey:@"operatorFlightNumber"];
 
-  [v5 encodeObject:self->_departure forKey:@"departure"];
-  [v5 encodeObject:self->_arrival forKey:@"arrival"];
+  [coderCopy encodeObject:self->_departure forKey:@"departure"];
+  [coderCopy encodeObject:self->_arrival forKey:@"arrival"];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_state];
-  [v5 encodeObject:v8 forKey:@"state"];
+  [coderCopy encodeObject:v8 forKey:@"state"];
 
-  [v5 encodeObject:self->_staleDate forKey:@"staleDate"];
-  [v5 encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
-  [v5 encodeObject:self->_publishedDate forKey:@"publishedDate"];
-  [v5 encodeBool:self->_estimated forKey:@"estimated"];
+  [coderCopy encodeObject:self->_staleDate forKey:@"staleDate"];
+  [coderCopy encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
+  [coderCopy encodeObject:self->_publishedDate forKey:@"publishedDate"];
+  [coderCopy encodeBool:self->_estimated forKey:@"estimated"];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_dataSource];
-  [v5 encodeObject:v9 forKey:@"dataSource"];
+  [coderCopy encodeObject:v9 forKey:@"dataSource"];
 }
 
 - (id)description
@@ -296,18 +296,18 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -510,45 +510,45 @@ LABEL_27:
   return self->_estimated - v7 + 32 * v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKFlight allocWithZone:](PKFlight init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSString *)self->_airlineCode copyWithZone:a3];
+  v8 = [(NSString *)self->_airlineCode copyWithZone:zone];
   airlineCode = v5->_airlineCode;
   v5->_airlineCode = v8;
 
-  v10 = [(NSString *)self->_airlineName copyWithZone:a3];
+  v10 = [(NSString *)self->_airlineName copyWithZone:zone];
   airlineName = v5->_airlineName;
   v5->_airlineName = v10;
 
   v5->_flightNumber = self->_flightNumber;
-  v12 = [(NSString *)self->_operatorAirlineCode copyWithZone:a3];
+  v12 = [(NSString *)self->_operatorAirlineCode copyWithZone:zone];
   operatorAirlineCode = v5->_operatorAirlineCode;
   v5->_operatorAirlineCode = v12;
 
   v5->_operatorFlightNumber = self->_operatorFlightNumber;
-  v14 = [(PKFlightStep *)self->_departure copyWithZone:a3];
+  v14 = [(PKFlightStep *)self->_departure copyWithZone:zone];
   departure = v5->_departure;
   v5->_departure = v14;
 
-  v16 = [(PKFlightStep *)self->_arrival copyWithZone:a3];
+  v16 = [(PKFlightStep *)self->_arrival copyWithZone:zone];
   arrival = v5->_arrival;
   v5->_arrival = v16;
 
   v5->_state = self->_state;
-  v18 = [(NSDate *)self->_staleDate copyWithZone:a3];
+  v18 = [(NSDate *)self->_staleDate copyWithZone:zone];
   staleDate = v5->_staleDate;
   v5->_staleDate = v18;
 
-  v20 = [(NSDate *)self->_lastUpdatedDate copyWithZone:a3];
+  v20 = [(NSDate *)self->_lastUpdatedDate copyWithZone:zone];
   lastUpdatedDate = v5->_lastUpdatedDate;
   v5->_lastUpdatedDate = v20;
 
-  v22 = [(NSDate *)self->_publishedDate copyWithZone:a3];
+  v22 = [(NSDate *)self->_publishedDate copyWithZone:zone];
   publishedDate = v5->_publishedDate;
   v5->_publishedDate = v22;
 

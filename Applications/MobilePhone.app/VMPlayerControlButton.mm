@@ -1,16 +1,16 @@
 @interface VMPlayerControlButton
-+ (VMPlayerControlButton)buttonWithState:(unint64_t)a3;
-- (void)setPlayerState:(unint64_t)a3 enabled:(BOOL)a4;
++ (VMPlayerControlButton)buttonWithState:(unint64_t)state;
+- (void)setPlayerState:(unint64_t)state enabled:(BOOL)enabled;
 - (void)updateButtonGlyphImage;
 @end
 
 @implementation VMPlayerControlButton
 
-+ (VMPlayerControlButton)buttonWithState:(unint64_t)a3
++ (VMPlayerControlButton)buttonWithState:(unint64_t)state
 {
   v4 = [VMPlayerControlButton buttonWithType:1];
   [v4 setBounds:{0.0, 0.0, 40.0, 40.0}];
-  [v4 setPlayerState:a3];
+  [v4 setPlayerState:state];
   [v4 setClipsToBounds:1];
   v5 = +[UIColor clearColor];
   [v4 setBackgroundColor:v5];
@@ -21,13 +21,13 @@
   return v4;
 }
 
-- (void)setPlayerState:(unint64_t)a3 enabled:(BOOL)a4
+- (void)setPlayerState:(unint64_t)state enabled:(BOOL)enabled
 {
-  v4 = a4;
-  if ([(VMPlayerControlButton *)self playerState]!= a3 || [(VMPlayerControlButton *)self isEnabled]!= v4)
+  enabledCopy = enabled;
+  if ([(VMPlayerControlButton *)self playerState]!= state || [(VMPlayerControlButton *)self isEnabled]!= enabledCopy)
   {
-    [(VMPlayerControlButton *)self setPlayerState:a3];
-    [(VMPlayerControlButton *)self setEnabled:v4];
+    [(VMPlayerControlButton *)self setPlayerState:state];
+    [(VMPlayerControlButton *)self setEnabled:enabledCopy];
 
     [(VMPlayerControlButton *)self updateButtonGlyphImage];
   }
@@ -35,14 +35,14 @@
 
 - (void)updateButtonGlyphImage
 {
-  v3 = [(VMPlayerControlButton *)self playerState];
-  if (v3 == 1)
+  playerState = [(VMPlayerControlButton *)self playerState];
+  if (playerState == 1)
   {
     v4 = +[UIImage voicemailPauseGlyphImage];
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!playerState)
   {
     v4 = +[UIImage voicemailPlayGlyphImage];
 LABEL_5:

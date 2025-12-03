@@ -1,20 +1,20 @@
 @interface CPLEngineScope
-+ (id)separatorForStatusKey:(id)a3;
-+ (void)formatStatusDictionary:(id)a3 forScopeWithIdentifier:(id)a4 appendString:(id)a5 appendTopLevelStatus:(id)a6 appendLineStatus:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (CPLEngineScope)initWithCoder:(id)a3;
-- (CPLEngineScope)initWithScopeIdentifier:(id)a3 scopeType:(int64_t)a4;
-- (id)copyWithScopeType:(int64_t)a3;
++ (id)separatorForStatusKey:(id)key;
++ (void)formatStatusDictionary:(id)dictionary forScopeWithIdentifier:(id)identifier appendString:(id)string appendTopLevelStatus:(id)status appendLineStatus:(id)lineStatus;
+- (BOOL)isEqual:(id)equal;
+- (CPLEngineScope)initWithCoder:(id)coder;
+- (CPLEngineScope)initWithScopeIdentifier:(id)identifier scopeType:(int64_t)type;
+- (id)copyWithScopeType:(int64_t)type;
 - (id)description;
 - (id)statusDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLEngineScope
 
-- (id)copyWithScopeType:(int64_t)a3
+- (id)copyWithScopeType:(int64_t)type
 {
-  v4 = [[CPLEngineScope alloc] initWithScopeIdentifier:self->_scopeIdentifier scopeType:a3];
+  v4 = [[CPLEngineScope alloc] initWithScopeIdentifier:self->_scopeIdentifier scopeType:type];
   [(CPLEngineScope *)v4 setLocalIndex:self->_localIndex];
   [(CPLEngineScope *)v4 setCloudIndex:self->_cloudIndex];
   [(CPLEngineScope *)v4 setStableIndex:self->_stableIndex];
@@ -22,10 +22,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -36,9 +36,9 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = self->_scopeIdentifier;
-      v6 = [(CPLEngineScope *)v4 scopeIdentifier];
-      v7 = v6;
-      v8 = v5 && v6 && ([v5 isEqual:v6] & 1) != 0 || (v5 | v7) == 0;
+      scopeIdentifier = [(CPLEngineScope *)equalCopy scopeIdentifier];
+      v7 = scopeIdentifier;
+      v8 = v5 && scopeIdentifier && ([v5 isEqual:scopeIdentifier] & 1) != 0 || (v5 | v7) == 0;
     }
 
     else
@@ -71,72 +71,72 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scopeIdentifier = self->_scopeIdentifier;
-  v5 = a3;
-  [v5 encodeObject:scopeIdentifier forKey:@"scopeIdentifier"];
-  [v5 encodeInteger:self->_scopeType forKey:@"scopeType"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeInteger:self->_localIndex forKey:@"localIndex"];
-  [v5 encodeInteger:self->_cloudIndex forKey:@"cloudIndex"];
-  [v5 encodeInteger:self->_stableIndex forKey:@"stableIndex"];
+  coderCopy = coder;
+  [coderCopy encodeObject:scopeIdentifier forKey:@"scopeIdentifier"];
+  [coderCopy encodeInteger:self->_scopeType forKey:@"scopeType"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeInteger:self->_localIndex forKey:@"localIndex"];
+  [coderCopy encodeInteger:self->_cloudIndex forKey:@"cloudIndex"];
+  [coderCopy encodeInteger:self->_stableIndex forKey:@"stableIndex"];
 }
 
-- (CPLEngineScope)initWithCoder:(id)a3
+- (CPLEngineScope)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scopeIdentifier"];
-  v6 = -[CPLEngineScope initWithScopeIdentifier:scopeType:](self, "initWithScopeIdentifier:scopeType:", v5, [v4 decodeIntegerForKey:@"scopeType"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scopeIdentifier"];
+  v6 = -[CPLEngineScope initWithScopeIdentifier:scopeType:](self, "initWithScopeIdentifier:scopeType:", v5, [coderCopy decodeIntegerForKey:@"scopeType"]);
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v6->_creationDate;
     v6->_creationDate = v7;
 
-    v6->_localIndex = [v4 decodeIntegerForKey:@"localIndex"];
-    v6->_cloudIndex = [v4 decodeIntegerForKey:@"cloudIndex"];
-    v6->_stableIndex = [v4 decodeIntegerForKey:@"stableIndex"];
+    v6->_localIndex = [coderCopy decodeIntegerForKey:@"localIndex"];
+    v6->_cloudIndex = [coderCopy decodeIntegerForKey:@"cloudIndex"];
+    v6->_stableIndex = [coderCopy decodeIntegerForKey:@"stableIndex"];
   }
 
   return v6;
 }
 
-- (CPLEngineScope)initWithScopeIdentifier:(id)a3 scopeType:(int64_t)a4
+- (CPLEngineScope)initWithScopeIdentifier:(id)identifier scopeType:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = CPLEngineScope;
   v7 = [(CPLEngineScope *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     scopeIdentifier = v7->_scopeIdentifier;
     v7->_scopeIdentifier = v8;
 
-    v7->_scopeType = a4;
-    v10 = [MEMORY[0x1E695DF00] date];
+    v7->_scopeType = type;
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v7->_creationDate;
-    v7->_creationDate = v10;
+    v7->_creationDate = date;
   }
 
   return v7;
 }
 
-+ (void)formatStatusDictionary:(id)a3 forScopeWithIdentifier:(id)a4 appendString:(id)a5 appendTopLevelStatus:(id)a6 appendLineStatus:(id)a7
++ (void)formatStatusDictionary:(id)dictionary forScopeWithIdentifier:(id)identifier appendString:(id)string appendTopLevelStatus:(id)status appendLineStatus:(id)lineStatus
 {
   v89 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = (v13 + 16);
-  (*(v13 + 2))(v13, v12);
-  (*(v13 + 2))(v13, @" (");
-  v17 = [v11 objectForKeyedSubscript:@"scope type"];
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  stringCopy = string;
+  statusCopy = status;
+  lineStatusCopy = lineStatus;
+  v16 = (stringCopy + 16);
+  (*(stringCopy + 2))(stringCopy, identifierCopy);
+  (*(stringCopy + 2))(stringCopy, @" (");
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"scope type"];
   v18 = v17;
-  v19 = (v14 + 16);
+  v19 = (statusCopy + 16);
   if (v17)
   {
     v20 = v17;
@@ -147,10 +147,10 @@
     v20 = @"invalid";
   }
 
-  (*(v14 + 2))(v14, @"scope type", v20);
+  (*(statusCopy + 2))(statusCopy, @"scope type", v20);
 
-  (*v16)(v13, @" "));
-  v21 = [v11 objectForKeyedSubscript:@"indexes"];
+  (*v16)(stringCopy, @" "));
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"indexes"];
   v22 = v21;
   if (v21)
   {
@@ -162,10 +162,10 @@
     v23 = &unk_1F57EF890;
   }
 
-  (*v19)(v14, @"indexes", v23);
+  (*v19)(statusCopy, @"indexes", v23);
 
-  (*v16)(v13, @" - creat: ");
-  v24 = [v11 objectForKeyedSubscript:@"creation date"];
+  (*v16)(stringCopy, @" - creat: ");
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"creation date"];
   v25 = v24;
   if (v24)
   {
@@ -177,35 +177,35 @@
     v26 = @"???";
   }
 
-  (*v19)(v14, @"creation date", v26);
+  (*v19)(statusCopy, @"creation date", v26);
 
-  v27 = [v11 objectForKeyedSubscript:@"flags"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"flags"];
   if (v27)
   {
-    (*(v13 + 2))(v13, @" (");
-    (*(v14 + 2))(v14, @"flags", v27);
-    (*(v13 + 2))(v13, @""));
+    (*(stringCopy + 2))(stringCopy, @" (");
+    (*(statusCopy + 2))(statusCopy, @"flags", v27);
+    (*(stringCopy + 2))(stringCopy, @""));
   }
 
   v78 = v27;
-  v28 = [v11 objectForKeyedSubscript:@"busyState"];
-  v29 = [v28 integerValue];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"busyState"];
+  integerValue = [v28 integerValue];
 
-  if (v29)
+  if (integerValue)
   {
-    (*(v13 + 2))(v13, @" [");
-    v30 = [CPLScopeChange descriptionForBusyState:v29];
-    (*(v14 + 2))(v14, @"busyState", v30);
+    (*(stringCopy + 2))(stringCopy, @" [");
+    v30 = [CPLScopeChange descriptionForBusyState:integerValue];
+    (*(statusCopy + 2))(statusCopy, @"busyState", v30);
 
-    (*(v13 + 2))(v13, @"]");
+    (*(stringCopy + 2))(stringCopy, @"]");
   }
 
-  v79 = v14;
-  v31 = [v11 objectForKeyedSubscript:@"zone"];
+  v79 = statusCopy;
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"zone"];
   v32 = v31;
-  if (v31 && ([v31 isEqualToString:v12] & 1) == 0)
+  if (v31 && ([v31 isEqualToString:identifierCopy] & 1) == 0)
   {
-    (v15)[2](v15, @"zone", v32);
+    (lineStatusCopy)[2](lineStatusCopy, @"zone", v32);
   }
 
   v77 = v32;
@@ -213,8 +213,8 @@
   v84[1] = 3221225472;
   v84[2] = __146__CPLEngineScope_CPLEngineScopeStatusFormatter__formatStatusDictionary_forScopeWithIdentifier_appendString_appendTopLevelStatus_appendLineStatus___block_invoke;
   v84[3] = &unk_1E861C5E8;
-  v85 = v11;
-  v33 = v15;
+  v85 = dictionaryCopy;
+  v33 = lineStatusCopy;
   v34 = v85;
   v35 = v33;
   v86 = v33;
@@ -280,10 +280,10 @@
       }
     }
 
-    v63 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v64 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScope.m"];
     v65 = @"missing proposed key";
-    v66 = v63;
+    v66 = currentHandler;
     v67 = v37;
     v68 = v64;
     v69 = 427;
@@ -305,10 +305,10 @@ LABEL_53:
       }
     }
 
-    v63 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v64 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScope.m"];
     v65 = @"missing last date";
-    v66 = v63;
+    v66 = currentHandler;
     v67 = v37;
     v68 = v64;
     v69 = 428;
@@ -327,10 +327,10 @@ LABEL_53:
       }
     }
 
-    v63 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v64 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineScope.m"];
     v65 = @"missing now";
-    v66 = v63;
+    v66 = currentHandler;
     v67 = v37;
     v68 = v64;
     v69 = 429;
@@ -361,8 +361,8 @@ LABEL_26:
   {
     v72 = v34;
     v73 = v37;
-    v74 = v13;
-    v75 = v12;
+    v74 = stringCopy;
+    v75 = identifierCopy;
     v52 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v80 = 0u;
     v81 = 0u;
@@ -399,8 +399,8 @@ LABEL_26:
     }
 
     (v35)[2](v35, @"storages", v52);
-    v13 = v74;
-    v12 = v75;
+    stringCopy = v74;
+    identifierCopy = v75;
     v34 = v72;
     v37 = v73;
   }
@@ -418,9 +418,9 @@ void __146__CPLEngineScope_CPLEngineScopeStatusFormatter__formatStatusDictionary
   }
 }
 
-+ (id)separatorForStatusKey:(id)a3
++ (id)separatorForStatusKey:(id)key
 {
-  if ([a3 isEqualToString:@"indexes"])
+  if ([key isEqualToString:@"indexes"])
   {
     v3 = @"/";
   }

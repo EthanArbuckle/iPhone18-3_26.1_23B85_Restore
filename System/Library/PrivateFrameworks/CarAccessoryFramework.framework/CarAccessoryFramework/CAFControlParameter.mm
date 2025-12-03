@@ -1,22 +1,22 @@
 @interface CAFControlParameter
-+ (id)parseParameters:(id)a3;
-- (CAFControlParameter)initWithConfig:(id)a3;
++ (id)parseParameters:(id)parameters;
+- (CAFControlParameter)initWithConfig:(id)config;
 - (NSString)formatString;
-- (id)currentDescriptionForCache:(id)a3;
+- (id)currentDescriptionForCache:(id)cache;
 @end
 
 @implementation CAFControlParameter
 
 - (NSString)formatString
 {
-  v2 = [(CAFControlParameter *)self format];
+  format = [(CAFControlParameter *)self format];
 
-  return NSStringFromCharacteristicMetadataFormat(v2);
+  return NSStringFromCharacteristicMetadataFormat(format);
 }
 
-- (CAFControlParameter)initWithConfig:(id)a3
+- (CAFControlParameter)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v24.receiver = self;
   v24.super_class = CAFControlParameter;
   v5 = [(CAFControlParameter *)&v24 init];
@@ -26,7 +26,7 @@
   }
 
   objc_opt_class();
-  v6 = [v4 objectForKeyedSubscript:@"name"];
+  v6 = [configCopy objectForKeyedSubscript:@"name"];
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -52,7 +52,7 @@
   }
 
   objc_opt_class();
-  v9 = [v4 objectForKeyedSubscript:@"format"];
+  v9 = [configCopy objectForKeyedSubscript:@"format"];
   if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v10 = v9;
@@ -77,7 +77,7 @@ LABEL_20:
   }
 
   *(v5 + 3) = [v10 unsignedIntegerValue];
-  *(v5 + 8) = [CAFCarConfiguration getBoolean:v4 key:@"supportsInvalid"];
+  *(v5 + 8) = [CAFCarConfiguration getBoolean:configCopy key:@"supportsInvalid"];
   v11 = [[CAFCachedDescription alloc] initWithCacheable:v5];
   v12 = *(v5 + 4);
   *(v5 + 4) = v11;
@@ -89,10 +89,10 @@ LABEL_21:
   return v13;
 }
 
-+ (id)parseParameters:(id)a3
++ (id)parseParameters:(id)parameters
 {
-  v3 = a3;
-  if (v3)
+  parametersCopy = parameters;
+  if (parametersCopy)
   {
     v7 = 0;
     v8 = &v7;
@@ -105,7 +105,7 @@ LABEL_21:
     v6[2] = __39__CAFControlParameter_parseParameters___block_invoke;
     v6[3] = &unk_27890EFD0;
     v6[4] = &v7;
-    [v3 enumerateObjectsUsingBlock:v6];
+    [parametersCopy enumerateObjectsUsingBlock:v6];
     v4 = v8[5];
     _Block_object_dispose(&v7, 8);
   }
@@ -164,20 +164,20 @@ void __39__CAFControlParameter_parseParameters___block_invoke(uint64_t a1, void 
   }
 }
 
-- (id)currentDescriptionForCache:(id)a3
+- (id)currentDescriptionForCache:(id)cache
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  v6 = [(CAFControlParameter *)self name];
-  v7 = [(CAFControlParameter *)self formatString];
-  v8 = [(CAFControlParameter *)self supportsInvalid];
+  name = [(CAFControlParameter *)self name];
+  formatString = [(CAFControlParameter *)self formatString];
+  supportsInvalid = [(CAFControlParameter *)self supportsInvalid];
   v9 = &stru_284626CA8;
-  if (v8)
+  if (supportsInvalid)
   {
     v9 = @"?";
   }
 
-  v10 = [v4 stringWithFormat:@"<%@: %p %@ %@%@>", v5, self, v6, v7, v9];
+  v10 = [v4 stringWithFormat:@"<%@: %p %@ %@%@>", v5, self, name, formatString, v9];
 
   return v10;
 }

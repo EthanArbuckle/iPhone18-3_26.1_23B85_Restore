@@ -8,10 +8,10 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 presentableContext];
+    presentableContext = [self presentableContext];
     if (objc_opt_respondsToSelector())
     {
-      v3 = v2;
+      v3 = presentableContext;
     }
 
     else

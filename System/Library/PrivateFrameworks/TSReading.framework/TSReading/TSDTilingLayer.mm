@@ -2,7 +2,7 @@
 + (CGImage)p_newCheckerboardImage;
 + (CGImage)p_newGeneratedCheckerboardImage;
 + (CGSize)defaultTileSize;
-- (BOOL)p_updateTileSizeWithLayerSize:(CGSize)a3;
+- (BOOL)p_updateTileSizeWithLayerSize:(CGSize)size;
 - (BOOL)tilingSafeHasContents;
 - (TSDTilingLayer)init;
 - (id)p_nonTileAndContentLayers;
@@ -12,24 +12,24 @@
 - (unint64_t)p_tilesWide;
 - (void)dealloc;
 - (void)display;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)i_drawRect:(CGRect)a3 inContext:(CGContext *)a4 inBackground:(BOOL)a5;
-- (void)i_drawTile:(id)a3 inContext:(CGContext *)a4;
-- (void)i_drawTileInBackground:(id)a3 inRect:(CGRect)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)i_drawRect:(CGRect)rect inContext:(CGContext *)context inBackground:(BOOL)background;
+- (void)i_drawTile:(id)tile inContext:(CGContext *)context;
+- (void)i_drawTileInBackground:(id)background inRect:(CGRect)rect;
 - (void)layoutSublayers;
-- (void)p_updateTileIndexes:(id)a3 visibleBounds:(CGRect)a4;
-- (void)setContents:(id)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setDrawsInBackground:(BOOL)a3;
-- (void)setEnableContext:(BOOL)a3;
-- (void)setForceTiling:(BOOL)a3;
-- (void)setNeedsDisplayForDirtyTiles:(id)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
+- (void)p_updateTileIndexes:(id)indexes visibleBounds:(CGRect)bounds;
+- (void)setContents:(id)contents;
+- (void)setContentsScale:(double)scale;
+- (void)setDrawsInBackground:(BOOL)background;
+- (void)setEnableContext:(BOOL)context;
+- (void)setForceTiling:(BOOL)tiling;
+- (void)setNeedsDisplayForDirtyTiles:(id)tiles;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
 - (void)setNeedsLayout;
 - (void)setNeedsLayoutForTilingLayers;
-- (void)setTileContents:(id)a3;
-- (void)setTilingMode:(int)a3;
-- (void)tilingSafeSetSublayers:(id)a3;
+- (void)setTileContents:(id)contents;
+- (void)setTilingMode:(int)mode;
+- (void)tilingSafeSetSublayers:(id)sublayers;
 @end
 
 @implementation TSDTilingLayer
@@ -65,15 +65,15 @@
   [(TSDTilingLayer *)&v3 dealloc];
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v19 = *MEMORY[0x277D85DE8];
   [(TSDTilingLayer *)self contentsScale];
-  if (v5 != a3)
+  if (v5 != scale)
   {
     [+[TSDCapabilities currentCapabilities](TSDCapabilities "currentCapabilities")];
     *&v6 = v6 * 0.25;
-    v7 = fmaxf(*&v6, 640.0) / a3;
+    v7 = fmaxf(*&v6, 640.0) / scale;
     self->mTileSize.width = v7;
     self->mTileSize.height = v7;
     [(TSDTilingLayer *)self setNeedsLayout];
@@ -81,8 +81,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(TSDTilingLayer *)self p_tileLayers];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    p_tileLayers = [(TSDTilingLayer *)self p_tileLayers];
+    v9 = [p_tileLayers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -94,14 +94,14 @@
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(p_tileLayers);
           }
 
-          [*(*(&v14 + 1) + 8 * v12++) setContentsScale:a3];
+          [*(*(&v14 + 1) + 8 * v12++) setContentsScale:scale];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [p_tileLayers countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -110,16 +110,16 @@
 
   v13.receiver = self;
   v13.super_class = TSDTilingLayer;
-  [(TSDTilingLayer *)&v13 setContentsScale:a3];
+  [(TSDTilingLayer *)&v13 setContentsScale:scale];
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v5 = [(TSDTilingLayer *)self contents];
+  contents = [(TSDTilingLayer *)self contents];
   v7.receiver = self;
   v7.super_class = TSDTilingLayer;
-  [(TSDTilingLayer *)&v7 setContents:a3];
-  if (v5 != a3)
+  [(TSDTilingLayer *)&v7 setContents:contents];
+  if (contents != contents)
   {
     mFlags = self->mFlags;
     *&self->mFlags = mFlags & 0x9D | 2;
@@ -130,15 +130,15 @@
   }
 }
 
-- (void)setTileContents:(id)a3
+- (void)setTileContents:(id)contents
 {
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (!a3 || (isKindOfClass & 1) != 0)
+  if (!contents || (isKindOfClass & 1) != 0)
   {
-    if (a3)
+    if (contents)
     {
-      [a3 setZPosition:-10000.0];
+      [contents setZPosition:-10000.0];
     }
 
     [(TSDTilingLayer *)&v7 setContents:0, v6.receiver, v6.super_class, self, TSDTilingLayer];
@@ -146,7 +146,7 @@
 
   else
   {
-    [(TSDTilingLayer *)&v6 setContents:a3, self, TSDTilingLayer, v7.receiver, v7.super_class];
+    [(TSDTilingLayer *)&v6 setContents:contents, self, TSDTilingLayer, v7.receiver, v7.super_class];
   }
 }
 
@@ -170,12 +170,12 @@
   }
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v25 = *MEMORY[0x277D85DE8];
   [(TSDTilingLayer *)self delegate];
   if (objc_opt_respondsToSelector())
@@ -200,8 +200,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(TSDTilingLayer *)self p_tileLayers];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  p_tileLayers = [(TSDTilingLayer *)self p_tileLayers];
+  v10 = [p_tileLayers countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -212,7 +212,7 @@
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(p_tileLayers);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
@@ -232,7 +232,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v11 = [p_tileLayers countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v11);
@@ -287,22 +287,22 @@
   }
 }
 
-- (void)p_updateTileIndexes:(id)a3 visibleBounds:(CGRect)a4
+- (void)p_updateTileIndexes:(id)indexes visibleBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   geometryProvider = self->_geometryProvider;
   if (geometryProvider)
   {
 
-    [(TSDTileGeometryProviding *)geometryProvider tileGeometryAddVisibileIndices:a3 withLayer:self visibleBounds:?];
+    [(TSDTileGeometryProviding *)geometryProvider tileGeometryAddVisibileIndices:indexes withLayer:self visibleBounds:?];
   }
 
   else
   {
-    v11 = [(TSDTilingLayer *)self p_tilesWide];
+    p_tilesWide = [(TSDTilingLayer *)self p_tilesWide];
     [(TSDTilingLayer *)self bounds];
     v13 = v12;
     v15 = v14;
@@ -312,9 +312,9 @@
     v28.size.height = p_mTileSize->height;
     *&v16 = v16 / p_mTileSize->width;
     *&v18 = v18 / v28.size.height;
-    v19 = (floorf(*&v16) + (floorf(*&v18) * v11));
-    v28.origin.x = v13 + p_mTileSize->width * (v19 % v11);
-    v28.origin.y = v15 + v28.size.height * (v19 / v11);
+    v19 = (floorf(*&v16) + (floorf(*&v18) * p_tilesWide));
+    v28.origin.x = v13 + p_mTileSize->width * (v19 % p_tilesWide);
+    v28.origin.y = v15 + v28.size.height * (v19 / p_tilesWide);
     v26.origin.x = x;
     v26.origin.y = y;
     v26.size.width = width;
@@ -333,7 +333,7 @@
           v24 = v22;
           do
           {
-            [a3 addIndex:v23++];
+            [indexes addIndex:v23++];
             --v24;
           }
 
@@ -341,7 +341,7 @@
         }
 
         ++v21;
-        v19 += v11;
+        v19 += p_tilesWide;
       }
 
       while (v21 != v20);
@@ -349,11 +349,11 @@
   }
 }
 
-- (void)setEnableContext:(BOOL)a3
+- (void)setEnableContext:(BOOL)context
 {
-  if (self->_enableContext != a3)
+  if (self->_enableContext != context)
   {
-    self->_enableContext = a3;
+    self->_enableContext = context;
     v5 = [MEMORY[0x277CCABB0] numberWithBool:?];
 
     [(TSDTilingLayer *)self setValue:v5 forKeyPath:@"separatedOptions.enableContext"];
@@ -362,7 +362,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   v87 = *MEMORY[0x277D85DE8];
   v3 = 72;
   if ((*&self->mFlags & 0x10) == 0)
@@ -371,36 +371,36 @@
   }
 
   [(TSDTilingLayer *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![-[TSDTilingLayer delegate](v2 "delegate")])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![-[TSDTilingLayer delegate](selfCopy "delegate")])
   {
     goto LABEL_65;
   }
 
-  v84.receiver = v2;
+  v84.receiver = selfCopy;
   v84.super_class = TSDTilingLayer;
   [(TSDTilingLayer *)&v84 layoutSublayers];
-  v2->mHasEverHadTileLayout = 1;
-  [(TSDTilingLayer *)v2 bounds];
+  selfCopy->mHasEverHadTileLayout = 1;
+  [(TSDTilingLayer *)selfCopy bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  if ([(TSDTilingLayer *)v2 superlayer])
+  if ([(TSDTilingLayer *)selfCopy superlayer])
   {
-    [(TSDTilingLayer *)v2 delegate];
+    [(TSDTilingLayer *)selfCopy delegate];
     if (objc_opt_respondsToSelector())
     {
-      [-[TSDTilingLayer delegate](v2 "delegate")];
+      [-[TSDTilingLayer delegate](selfCopy "delegate")];
     }
 
     else
     {
-      v20 = [(TSDTilingLayer *)v2 superlayer];
+      superlayer = [(TSDTilingLayer *)selfCopy superlayer];
       v21 = v11 > 0.0;
       v22 = v9 > 0.0;
-      if (v20 && v11 > 0.0)
+      if (superlayer && v11 > 0.0)
       {
-        v23 = v2;
+        v23 = selfCopy;
         height = v11;
         width = v9;
         y = v7;
@@ -411,11 +411,11 @@
           y = v7;
           width = v9;
           height = v11;
-          v24 = v2;
+          v24 = selfCopy;
           do
           {
-            v23 = v20;
-            [(TSDTilingLayer *)v20 convertRect:v24 fromLayer:x, y, width, height];
+            v23 = superlayer;
+            [(TSDTilingLayer *)superlayer convertRect:v24 fromLayer:x, y, width, height];
             x = v25;
             y = v26;
             width = v27;
@@ -438,10 +438,10 @@
               height = v89.size.height;
             }
 
-            v20 = [(TSDTilingLayer *)v23 superlayer];
+            superlayer = [(TSDTilingLayer *)v23 superlayer];
             v21 = height > 0.0;
             v22 = width > 0.0;
-            if (!v20)
+            if (!superlayer)
             {
               break;
             }
@@ -460,7 +460,7 @@
 
       else
       {
-        v23 = v2;
+        v23 = selfCopy;
         height = v11;
         width = v9;
         y = v7;
@@ -472,7 +472,7 @@
         goto LABEL_25;
       }
 
-      [(TSDTilingLayer *)v2 convertRect:v23 fromLayer:x, y, width, height];
+      [(TSDTilingLayer *)selfCopy convertRect:v23 fromLayer:x, y, width, height];
     }
 
     x = v12;
@@ -503,62 +503,62 @@ LABEL_25:
   v35 = v91.origin.y;
   v36 = v91.size.width;
   v37 = v91.size.height;
-  v38 = [(TSDTilingLayer *)v2 p_updateTileSizeWithLayerSize:v9, v11];
-  v39 = [(TSDTilingLayer *)v2 p_tilesWide];
-  v40 = [(TSDTilingLayer *)v2 p_tilesHigh];
-  v41 = v40;
-  mFlags = v2->mFlags;
+  v38 = [(TSDTilingLayer *)selfCopy p_updateTileSizeWithLayerSize:v9, v11];
+  p_tilesWide = [(TSDTilingLayer *)selfCopy p_tilesWide];
+  p_tilesHigh = [(TSDTilingLayer *)selfCopy p_tilesHigh];
+  v41 = p_tilesHigh;
+  mFlags = selfCopy->mFlags;
   v43 = 1;
-  if (v39 <= 1 && v40 <= 1)
+  if (p_tilesWide <= 1 && p_tilesHigh <= 1)
   {
-    v43 = [(TSDTilingLayer *)v2 drawsInBackground]|| [(TSDTilingLayer *)v2 forceTiling]|| v2->_geometryProvider != 0;
+    v43 = [(TSDTilingLayer *)selfCopy drawsInBackground]|| [(TSDTilingLayer *)selfCopy forceTiling]|| selfCopy->_geometryProvider != 0;
   }
 
-  v44 = v2->mFlags;
-  *&v2->mFlags = v44 & 0xEE | v43;
-  v45 = (v44 & 2) != 0 && [-[TSDTilingLayer p_tileLayers](v2 "p_tileLayers")] != 0;
-  geometryProvider = v2->_geometryProvider;
+  v44 = selfCopy->mFlags;
+  *&selfCopy->mFlags = v44 & 0xEE | v43;
+  v45 = (v44 & 2) != 0 && [-[TSDTilingLayer p_tileLayers](selfCopy "p_tileLayers")] != 0;
+  geometryProvider = selfCopy->_geometryProvider;
   if (geometryProvider)
   {
-    v72 = [(TSDTileGeometryProviding *)geometryProvider tileGeometryDirty];
+    tileGeometryDirty = [(TSDTileGeometryProviding *)geometryProvider tileGeometryDirty];
   }
 
   else
   {
-    v72 = 0;
+    tileGeometryDirty = 0;
   }
 
   v47 = mFlags & 1;
-  p_x = &v2->mLastVisibleBounds.origin.x;
-  if (!TSDNearlyEqualRects(v34, v35, v36, v37, v2->mLastVisibleBounds.origin.x, v2->mLastVisibleBounds.origin.y, v2->mLastVisibleBounds.size.width, v2->mLastVisibleBounds.size.height) || v47 != (*&v2->mFlags & 1) || v45 | !TSDNearlyEqualSizes(v2->mLastBoundsSize.width, v2->mLastBoundsSize.height, v9, v11) | v72 & 1)
+  p_x = &selfCopy->mLastVisibleBounds.origin.x;
+  if (!TSDNearlyEqualRects(v34, v35, v36, v37, selfCopy->mLastVisibleBounds.origin.x, selfCopy->mLastVisibleBounds.origin.y, selfCopy->mLastVisibleBounds.size.width, selfCopy->mLastVisibleBounds.size.height) || v47 != (*&selfCopy->mFlags & 1) || v45 | !TSDNearlyEqualSizes(selfCopy->mLastBoundsSize.width, selfCopy->mLastBoundsSize.height, v9, v11) | tileGeometryDirty & 1)
   {
-    [(TSDTileGeometryProviding *)v2->_geometryProvider setTileGeometryDirty:0];
-    v49 = v2->mFlags;
-    if (v47 != (v49 & 1) && (*&v2->mFlags & 2) == 0)
+    [(TSDTileGeometryProviding *)selfCopy->_geometryProvider setTileGeometryDirty:0];
+    v49 = selfCopy->mFlags;
+    if (v47 != (v49 & 1) && (*&selfCopy->mFlags & 2) == 0)
     {
-      if (*&v2->mFlags)
+      if (*&selfCopy->mFlags)
       {
-        [(TSDTilingLayer *)v2 setTileContents:0];
+        [(TSDTilingLayer *)selfCopy setTileContents:0];
       }
 
-      else if ((*&v2->mFlags & 0x20) == 0)
+      else if ((*&selfCopy->mFlags & 0x20) == 0)
       {
-        *&v2->mFlags = v49 | 0x20;
+        *&selfCopy->mFlags = v49 | 0x20;
       }
     }
 
     v73 = v41;
     v92.origin.x = *p_x;
-    v92.origin.y = v2->mLastVisibleBounds.origin.y;
-    v92.size.width = v2->mLastVisibleBounds.size.width;
-    v92.size.height = v2->mLastVisibleBounds.size.height;
+    v92.origin.y = selfCopy->mLastVisibleBounds.origin.y;
+    v92.size.width = selfCopy->mLastVisibleBounds.size.width;
+    v92.size.height = selfCopy->mLastVisibleBounds.size.height;
     IsNull = CGRectIsNull(v92);
     *p_x = v34;
-    v2->mLastVisibleBounds.origin.y = v35;
-    v2->mLastVisibleBounds.size.width = v36;
-    v2->mLastVisibleBounds.size.height = v37;
-    v2->mLastBoundsSize.width = v9;
-    v2->mLastBoundsSize.height = v11;
+    selfCopy->mLastVisibleBounds.origin.y = v35;
+    selfCopy->mLastVisibleBounds.size.width = v36;
+    selfCopy->mLastVisibleBounds.size.height = v37;
+    selfCopy->mLastBoundsSize.width = v9;
+    selfCopy->mLastBoundsSize.height = v11;
     v51 = objc_alloc_init(MEMORY[0x277CCAB58]);
     v93.origin.x = v34;
     v93.origin.y = v35;
@@ -566,9 +566,9 @@ LABEL_25:
     v93.size.height = v37;
     v52 = CGRectIsNull(v93);
     v70 = 72;
-    if ((*&v2->mFlags & 3) == 1 && !v52 && v37 > 0.0 && v36 > 0.0)
+    if ((*&selfCopy->mFlags & 3) == 1 && !v52 && v37 > 0.0 && v36 > 0.0)
     {
-      [(TSDTilingLayer *)v2 p_updateTileIndexes:v51 visibleBounds:v34, v35, v36, v37];
+      [(TSDTilingLayer *)selfCopy p_updateTileIndexes:v51 visibleBounds:v34, v35, v36, v37];
     }
 
     v53 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -576,9 +576,9 @@ LABEL_25:
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v74 = v2;
-    v54 = [(TSDTilingLayer *)v2 p_tileLayers];
-    v55 = [v54 countByEnumeratingWithState:&v80 objects:v86 count:16];
+    v74 = selfCopy;
+    p_tileLayers = [(TSDTilingLayer *)selfCopy p_tileLayers];
+    v55 = [p_tileLayers countByEnumeratingWithState:&v80 objects:v86 count:16];
     if (v55)
     {
       v56 = v55;
@@ -590,12 +590,12 @@ LABEL_25:
         {
           if (*v81 != v57)
           {
-            objc_enumerationMutation(v54);
+            objc_enumerationMutation(p_tileLayers);
           }
 
           v60 = *(*(&v80 + 1) + 8 * i);
-          v61 = [v60 index];
-          if (v58 || (v62 = v61, ([v51 containsIndex:v61] & 1) == 0))
+          index = [v60 index];
+          if (v58 || (v62 = index, ([v51 containsIndex:index] & 1) == 0))
           {
             [v53 addObject:v60];
           }
@@ -603,17 +603,17 @@ LABEL_25:
           else
           {
             [v51 removeIndex:v62];
-            if (v72)
+            if (tileGeometryDirty)
             {
               [(TSDTileGeometryProviding *)v74->_geometryProvider tileGeometryConfigureWithLayer:v74 tileLayer:v60 atIndex:v62];
             }
 
-            [v60 updateFrameWithTileSize:v39 tilesWide:v73 tilesHigh:v74->_geometryProvider geometryProvider:{v74->mTileSize.width, v74->mTileSize.height}];
-            [v60 setLocation:v62 % v39];
+            [v60 updateFrameWithTileSize:p_tilesWide tilesWide:v73 tilesHigh:v74->_geometryProvider geometryProvider:{v74->mTileSize.width, v74->mTileSize.height}];
+            [v60 setLocation:v62 % p_tilesWide];
           }
         }
 
-        v56 = [v54 countByEnumeratingWithState:&v80 objects:v86 count:16];
+        v56 = [p_tileLayers countByEnumeratingWithState:&v80 objects:v86 count:16];
       }
 
       while (v56);
@@ -623,13 +623,13 @@ LABEL_25:
     v79[1] = 3221225472;
     v79[2] = __33__TSDTilingLayer_layoutSublayers__block_invoke;
     v79[3] = &unk_279D48D58;
-    v79[6] = v39;
+    v79[6] = p_tilesWide;
     v79[7] = v73;
     *&v79[8] = v5;
     *&v79[9] = v7;
     *&v79[10] = v9;
     *&v79[11] = v11;
-    v2 = v74;
+    selfCopy = v74;
     v79[4] = v74;
     v79[5] = v53;
     [v51 enumerateIndexesUsingBlock:{v79, v70}];
@@ -639,16 +639,16 @@ LABEL_25:
   }
 
 LABEL_65:
-  if ((*(&v2->super.super.isa + v3) & 0x20) != 0 && v2->mHasEverHadTileLayout)
+  if ((*(&selfCopy->super.super.isa + v3) & 0x20) != 0 && selfCopy->mHasEverHadTileLayout)
   {
-    if (*(&v2->super.super.isa + v3))
+    if (*(&selfCopy->super.super.isa + v3))
     {
       v77 = 0u;
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v63 = [(TSDTilingLayer *)v2 p_tileLayers];
-      v64 = [v63 countByEnumeratingWithState:&v75 objects:v85 count:16];
+      p_tileLayers2 = [(TSDTilingLayer *)selfCopy p_tileLayers];
+      v64 = [p_tileLayers2 countByEnumeratingWithState:&v75 objects:v85 count:16];
       if (!v64)
       {
         goto LABEL_80;
@@ -663,18 +663,18 @@ LABEL_65:
         {
           if (*v76 != v67)
           {
-            objc_enumerationMutation(v63);
+            objc_enumerationMutation(p_tileLayers2);
           }
 
           v69 = *(*(&v75 + 1) + 8 * j);
           if ([v69 needsTileDisplay])
           {
-            [(NSMutableArray *)v2->mDirtyTiles addObject:v69];
+            [(NSMutableArray *)selfCopy->mDirtyTiles addObject:v69];
             v66 = 1;
           }
         }
 
-        v65 = [v63 countByEnumeratingWithState:&v75 objects:v85 count:16];
+        v65 = [p_tileLayers2 countByEnumeratingWithState:&v75 objects:v85 count:16];
       }
 
       while (v65);
@@ -686,12 +686,12 @@ LABEL_65:
 
     else
     {
-      *(&v2->super.super.isa + v3) |= 0x40u;
+      *(&selfCopy->super.super.isa + v3) |= 0x40u;
     }
 
-    [(TSDTilingLayer *)v2 setNeedsDisplayForDirtyTiles:v2];
+    [(TSDTilingLayer *)selfCopy setNeedsDisplayForDirtyTiles:selfCopy];
 LABEL_80:
-    *(&v2->super.super.isa + v3) &= ~0x20u;
+    *(&selfCopy->super.super.isa + v3) &= ~0x20u;
   }
 }
 
@@ -793,7 +793,7 @@ LABEL_19:
   return result;
 }
 
-- (void)setNeedsDisplayForDirtyTiles:(id)a3
+- (void)setNeedsDisplayForDirtyTiles:(id)tiles
 {
   [(TSDTilingLayer *)self delegate];
   if (objc_opt_respondsToSelector())
@@ -803,47 +803,47 @@ LABEL_19:
 
   v5.receiver = self;
   v5.super_class = TSDTilingLayer;
-  [(CALayer *)&v5 setNeedsDisplayForDirtyTiles:a3];
+  [(CALayer *)&v5 setNeedsDisplayForDirtyTiles:tiles];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  [a3 superlayer];
+  [layer superlayer];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
-  v8 = [a3 superlayer];
+  superlayer = [layer superlayer];
   if (v6 == v7)
   {
-    if ([(TSDTilingLayer *)v8 superlayer]!= self)
+    if ([(TSDTilingLayer *)superlayer superlayer]!= self)
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTilingLayer drawLayer:inContext:]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 620, @"This tiling layer is not responsible for the layer asking to be drawn"}];
+      [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 620, @"This tiling layer is not responsible for the layer asking to be drawn"}];
     }
 
-    [objc_msgSend(a3 "superlayer")];
+    [objc_msgSend(layer "superlayer")];
 
     [(TSDTilingLayer *)self setNeedsDisplayInRect:?];
   }
 
   else
   {
-    if (v8 != self)
+    if (superlayer != self)
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTilingLayer drawLayer:inContext:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 623, @"This tiling layer is not responsible for the layer asking to be drawn"}];
+      [currentHandler2 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 623, @"This tiling layer is not responsible for the layer asking to be drawn"}];
     }
 
     [(TSDTilingLayer *)self setNeedsDisplay];
   }
 }
 
-- (void)setTilingMode:(int)a3
+- (void)setTilingMode:(int)mode
 {
-  if (self->mTilingMode != a3)
+  if (self->mTilingMode != mode)
   {
-    self->mTilingMode = a3;
+    self->mTilingMode = mode;
     if ((*&self->mFlags & 2) == 0)
     {
       v4 = *(MEMORY[0x277CBF398] + 16);
@@ -857,9 +857,9 @@ LABEL_19:
   }
 }
 
-- (void)setDrawsInBackground:(BOOL)a3
+- (void)setDrawsInBackground:(BOOL)background
 {
-  if (a3)
+  if (background)
   {
     v3 = 4;
   }
@@ -872,9 +872,9 @@ LABEL_19:
   *&self->mFlags = *&self->mFlags & 0xFB | v3;
 }
 
-- (void)setForceTiling:(BOOL)a3
+- (void)setForceTiling:(BOOL)tiling
 {
-  if (a3)
+  if (tiling)
   {
     v3 = 8;
   }
@@ -887,9 +887,9 @@ LABEL_19:
   *&self->mFlags = *&self->mFlags & 0xF7 | v3;
 }
 
-- (void)tilingSafeSetSublayers:(id)a3
+- (void)tilingSafeSetSublayers:(id)sublayers
 {
-  if (([a3 isEqualToArray:{-[TSDTilingLayer p_nonTileAndContentLayers](self, "p_nonTileAndContentLayers")}] & 1) == 0)
+  if (([sublayers isEqualToArray:{-[TSDTilingLayer p_nonTileAndContentLayers](self, "p_nonTileAndContentLayers")}] & 1) == 0)
   {
     v5 = [-[TSDTilingLayer p_tileAndContentLayers](self "p_tileAndContentLayers")];
 
@@ -909,45 +909,45 @@ LABEL_19:
   return [(CALayer *)&v3 tilingSafeHasContents];
 }
 
-- (void)i_drawTile:(id)a3 inContext:(CGContext *)a4
+- (void)i_drawTile:(id)tile inContext:(CGContext *)context
 {
   if (CGRectIsNull(self->mLastVisibleBounds))
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTilingLayer i_drawTile:inContext:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 696, @"Shouldn't be drawing tiles for an hidden layer %p, tile %p index %ld", self, a3, objc_msgSend(a3, "index")}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTilingLayer.m"), 696, @"Shouldn't be drawing tiles for an hidden layer %p, tile %p index %ld", self, tile, objc_msgSend(tile, "index")}];
   }
 
-  [a3 frame];
+  [tile frame];
 
-  [(TSDTilingLayer *)self i_drawRect:a4 inContext:0 inBackground:?];
+  [(TSDTilingLayer *)self i_drawRect:context inContext:0 inBackground:?];
 }
 
-- (void)i_drawRect:(CGRect)a3 inContext:(CGContext *)a4 inBackground:(BOOL)a5
+- (void)i_drawRect:(CGRect)rect inContext:(CGContext *)context inBackground:(BOOL)background
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGContextSaveGState(a4);
-  CGContextTranslateCTM(a4, -x, -y);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, -x, -y);
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  CGContextClipToRect(a4, v12);
-  [(TSDTilingLayer *)self drawInContext:a4];
+  CGContextClipToRect(context, v12);
+  [(TSDTilingLayer *)self drawInContext:context];
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)i_drawTileInBackground:(id)a3 inRect:(CGRect)a4
+- (void)i_drawTileInBackground:(id)background inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = [a3 index];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  index = [background index];
   v19 = 0;
   v20 = 0;
   [(TSDTilingLayer *)self delegate];
@@ -967,7 +967,7 @@ LABEL_19:
   v14[1] = 3221225472;
   v15 = __48__TSDTilingLayer_i_drawTileInBackground_inRect___block_invoke;
   v16 = &unk_279D47708;
-  v17 = self;
+  selfCopy = self;
   v18 = v12;
   if (v11)
   {
@@ -982,14 +982,14 @@ LABEL_19:
       v13[1] = 3221225472;
       v13[2] = __48__TSDTilingLayer_i_drawTileInBackground_inRect___block_invoke_2;
       v13[3] = &unk_279D48D80;
-      v13[4] = a3;
+      v13[4] = background;
       v13[5] = v19;
       *&v13[8] = x;
       *&v13[9] = y;
       *&v13[10] = width;
       *&v13[11] = height;
       v13[6] = v14;
-      v13[7] = v10;
+      v13[7] = index;
       [v19 performAsync:v13];
     }
   }
@@ -1026,10 +1026,10 @@ uint64_t __48__TSDTilingLayer_i_drawTileInBackground_inRect___block_invoke_2(uin
   return v2();
 }
 
-- (BOOL)p_updateTileSizeWithLayerSize:(CGSize)a3
+- (BOOL)p_updateTileSizeWithLayerSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(TSDTilingLayer *)self contentsScale];
   v7 = v6;
   [+[TSDCapabilities currentCapabilities](TSDCapabilities "currentCapabilities")];
@@ -1169,14 +1169,14 @@ LABEL_34:
 - (id)p_tileLayers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_opt_class();
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TSDTilingLayer *)self sublayers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sublayers = [(TSDTilingLayer *)self sublayers];
+  v5 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1188,39 +1188,39 @@ LABEL_34:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         if (objc_opt_isKindOfClass())
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)p_tileAndContentLayers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_opt_class();
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TSDTilingLayer *)self sublayers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sublayers = [(TSDTilingLayer *)self sublayers];
+  v5 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1232,39 +1232,39 @@ LABEL_34:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         if (objc_opt_isKindOfClass())
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)p_nonTileAndContentLayers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_opt_class();
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TSDTilingLayer *)self sublayers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sublayers = [(TSDTilingLayer *)self sublayers];
+  v5 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1276,31 +1276,31 @@ LABEL_34:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v3)
+          if (!array)
           {
-            v3 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 + (CGImage)p_newCheckerboardImage
@@ -1309,7 +1309,7 @@ LABEL_34:
   block[1] = 3221225472;
   block[2] = __40__TSDTilingLayer_p_newCheckerboardImage__block_invoke;
   block[3] = &unk_279D46770;
-  block[4] = a1;
+  block[4] = self;
   if (p_newCheckerboardImage_s_checkerboardImageOnce != -1)
   {
     dispatch_once(&p_newCheckerboardImage_s_checkerboardImageOnce, block);

@@ -1,28 +1,28 @@
 @interface HDWristTemperatureMeasurementsProfileExtension
-- (HDWristTemperatureMeasurementsProfileExtension)initWithProfile:(id)a3;
-- (HDWristTemperatureMeasurementsProfileExtension)initWithProfile:(id)a3 featureIdentifier:(id)a4 isBackgroundDeliveryEnabled:(BOOL)a5 loggingCategory:(id)a6;
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3;
+- (HDWristTemperatureMeasurementsProfileExtension)initWithProfile:(id)profile;
+- (HDWristTemperatureMeasurementsProfileExtension)initWithProfile:(id)profile featureIdentifier:(id)identifier isBackgroundDeliveryEnabled:(BOOL)enabled loggingCategory:(id)category;
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier;
 @end
 
 @implementation HDWristTemperatureMeasurementsProfileExtension
 
-- (HDWristTemperatureMeasurementsProfileExtension)initWithProfile:(id)a3
+- (HDWristTemperatureMeasurementsProfileExtension)initWithProfile:(id)profile
 {
   v4 = *MEMORY[0x277CCC0F8];
-  v5 = a3;
+  profileCopy = profile;
   v6 = HKLogInfrastructure();
-  v7 = [(HDRespiratoryRateMeasurementsProfileExtension *)self _initWithProfile:v5 featureIdentifier:v4 loggingCategory:v6];
+  v7 = [(HDRespiratoryRateMeasurementsProfileExtension *)self _initWithProfile:profileCopy featureIdentifier:v4 loggingCategory:v6];
 
   return v7;
 }
 
-- (HDWristTemperatureMeasurementsProfileExtension)initWithProfile:(id)a3 featureIdentifier:(id)a4 isBackgroundDeliveryEnabled:(BOOL)a5 loggingCategory:(id)a6
+- (HDWristTemperatureMeasurementsProfileExtension)initWithProfile:(id)profile featureIdentifier:(id)identifier isBackgroundDeliveryEnabled:(BOOL)enabled loggingCategory:(id)category
 {
-  v7 = a5;
+  enabledCopy = enabled;
   v98[8] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  profileCopy = profile;
+  identifierCopy = identifier;
+  categoryCopy = category;
   v87.receiver = self;
   v87.super_class = HDWristTemperatureMeasurementsProfileExtension;
   v13 = [(HDWristTemperatureMeasurementsProfileExtension *)&v87 init];
@@ -30,10 +30,10 @@
   if (v13)
   {
     v84 = v13;
-    objc_storeStrong(&v13->_featureIdentifier, a4);
-    v15 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v83 = v7;
-    if ([v15 isAppleWatch])
+    objc_storeStrong(&v13->_featureIdentifier, identifier);
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    v83 = enabledCopy;
+    if ([mEMORY[0x277CCDD30] isAppleWatch])
     {
       v16 = 0;
     }
@@ -43,28 +43,28 @@
       v16 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"CBC78224-8F5E-4D43-8666-69ADBE2A6277"];
     }
 
-    v17 = [MEMORY[0x277CCD260] localAvailabilityForWristTemperatureMeasurements];
+    localAvailabilityForWristTemperatureMeasurements = [MEMORY[0x277CCD260] localAvailabilityForWristTemperatureMeasurements];
     v18 = objc_alloc(MEMORY[0x277D10728]);
-    v19 = [v10 daemon];
-    v82 = v17;
-    v20 = [v18 initWithFeatureIdentifier:v11 defaultCountrySet:v17 healthDaemon:v19];
+    daemon = [profileCopy daemon];
+    v82 = localAvailabilityForWristTemperatureMeasurements;
+    v20 = [v18 initWithFeatureIdentifier:identifierCopy defaultCountrySet:localAvailabilityForWristTemperatureMeasurements healthDaemon:daemon];
 
     v21 = objc_alloc(MEMORY[0x277D107D8]);
     v22 = [MEMORY[0x277CCD3D8] featureAttributesDerivedFromOSBuildAndFeatureVersion:@"1"];
     v81 = v20;
-    v23 = [v21 initWithFeatureIdentifier:v11 localFeatureAttributes:v22 localCountrySetAvailabilityProvider:v20];
+    v23 = [v21 initWithFeatureIdentifier:identifierCopy localFeatureAttributes:v22 localCountrySetAvailabilityProvider:v20];
 
     [v23 synchronizeLocalProperties];
     v80 = v23;
-    v75 = [objc_alloc(MEMORY[0x277D10968]) initWithAllowedCountriesDataSource:v23 profile:v10 featureCapability:v16 loggingCategory:v12];
+    v75 = [objc_alloc(MEMORY[0x277D10968]) initWithAllowedCountriesDataSource:v23 profile:profileCopy featureCapability:v16 loggingCategory:categoryCopy];
     v24 = objc_alloc(MEMORY[0x277D107C0]);
-    v25 = [v10 daemon];
-    v71 = [v24 initWithDaemon:v25 featureIdentifier:v11];
+    daemon2 = [profileCopy daemon];
+    v71 = [v24 initWithDaemon:daemon2 featureIdentifier:identifierCopy];
 
     v79 = objc_alloc(MEMORY[0x277D106D8]);
     v26 = MEMORY[0x277CCD420];
-    v85 = v11;
-    v27 = v11;
+    v85 = identifierCopy;
+    v27 = identifierCopy;
     v28 = v16;
     v66 = [v26 alloc];
     v97[0] = *MEMORY[0x277CCBE00];
@@ -94,8 +94,8 @@
     v93[1] = v65;
     v64 = [MEMORY[0x277CCD428] notAgeGatedForUserDefaultsKey:v29];
     v93[2] = v64;
-    v63 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-    v93[3] = v63;
+    profileIsNotFamilySetupPairingProfile = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+    v93[3] = profileIsNotFamilySetupPairingProfile;
     v62 = [MEMORY[0x277CBEA60] arrayWithObjects:v93 count:4];
     v98[3] = v62;
     v97[4] = *MEMORY[0x277CCBE68];
@@ -124,8 +124,8 @@
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v90 count:2];
     v98[6] = v52;
     v97[7] = *MEMORY[0x277CCBEA0];
-    v51 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
-    v89[0] = v51;
+    profileIsNotFamilySetupPairingProfile2 = [MEMORY[0x277CCD428] profileIsNotFamilySetupPairingProfile];
+    v89[0] = profileIsNotFamilySetupPairingProfile2;
     v50 = [MEMORY[0x277CCD428] onboardingRecordIsPresentForFeatureWithIdentifier:v27];
     v89[1] = v50;
     v48 = [MEMORY[0x277CCD428] capabilityIsSupportedOnActiveWatchForFeatureWithIdentifier:v27 supportedOnLocalDevice:HKLocalDeviceHardwareSupportsWristTemperatureMeasurements()];
@@ -141,22 +141,22 @@
     v32 = MEMORY[0x277CCD428];
     v88 = *MEMORY[0x277CCC0E8];
     [MEMORY[0x277CBEA60] arrayWithObjects:&v88 count:1];
-    v33 = v86 = v10;
+    v33 = v86 = profileCopy;
     [v32 onboardingRecordsArePresentForPrerequisiteFeaturesWithIdentifiers:v33];
-    v35 = v34 = v12;
+    v35 = v34 = categoryCopy;
     v89[7] = v35;
     v36 = [MEMORY[0x277CCD428] featureIsOnWithIdentifier:v27 isOnIfSettingIsAbsent:1];
 
     v89[8] = v36;
-    v37 = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
-    v89[9] = v37;
+    wristDetectionIsEnabledForActiveWatch = [MEMORY[0x277CCD428] wristDetectionIsEnabledForActiveWatch];
+    v89[9] = wristDetectionIsEnabledForActiveWatch;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v89 count:10];
     v98[7] = v38;
     v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v98 forKeys:v97 count:8];
     v67 = [v66 initWithRequirementsByContext:v39];
 
-    v12 = v34;
-    v10 = v86;
+    categoryCopy = v34;
+    profileCopy = v86;
 
     v40 = [v79 initWithProfile:v86 featureIdentifier:v27 availabilityRequirements:v67 currentOnboardingVersion:1 pairedDeviceCapability:v49 regionAvailabilityProvider:v75 disableAndExpiryProvider:v71 loggingCategory:v34];
     v14 = v84;
@@ -170,16 +170,16 @@
       v84->_featureDeliveryManager = v42;
     }
 
-    v11 = v85;
+    identifierCopy = v85;
   }
 
   v44 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier
 {
-  if ([a3 isEqualToString:self->_featureIdentifier])
+  if ([identifier isEqualToString:self->_featureIdentifier])
   {
     v4 = self->_featureAvailabilityManager;
   }

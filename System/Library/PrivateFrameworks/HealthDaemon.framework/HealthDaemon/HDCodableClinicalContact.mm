@@ -1,12 +1,12 @@
 @interface HDCodableClinicalContact
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableClinicalContact
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableClinicalContact;
   v4 = [(HDCodableClinicalContact *)&v8 description];
-  v5 = [(HDCodableClinicalContact *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableClinicalContact *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   nameContactIdentifier = self->_nameContactIdentifier;
@@ -66,125 +66,125 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nameContactIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneNumber)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneNumberContactIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneNumberLabel)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_relationship)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v5;
+    [toCopy setName:?];
+    toCopy = v5;
   }
 
   if (self->_nameContactIdentifier)
   {
     [v5 setNameContactIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneNumber)
   {
     [v5 setPhoneNumber:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneNumberContactIdentifier)
   {
     [v5 setPhoneNumberContactIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_phoneNumberLabel)
   {
     [v5 setPhoneNumberLabel:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_relationship)
   {
     [v5 setRelationship:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_nameContactIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_nameContactIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_phoneNumber copyWithZone:a3];
+  v10 = [(NSString *)self->_phoneNumber copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_phoneNumberContactIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_phoneNumberContactIdentifier copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSString *)self->_phoneNumberLabel copyWithZone:a3];
+  v14 = [(NSString *)self->_phoneNumberLabel copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
-  v16 = [(NSString *)self->_relationship copyWithZone:a3];
+  v16 = [(NSString *)self->_relationship copyWithZone:zone];
   v17 = v5[6];
   v5[6] = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | v4[1])) || -[NSString isEqual:](name, "isEqual:")) && ((nameContactIdentifier = self->_nameContactIdentifier, !(nameContactIdentifier | v4[2])) || -[NSString isEqual:](nameContactIdentifier, "isEqual:")) && ((phoneNumber = self->_phoneNumber, !(phoneNumber | v4[3])) || -[NSString isEqual:](phoneNumber, "isEqual:")) && ((phoneNumberContactIdentifier = self->_phoneNumberContactIdentifier, !(phoneNumberContactIdentifier | v4[4])) || -[NSString isEqual:](phoneNumberContactIdentifier, "isEqual:")) && ((phoneNumberLabel = self->_phoneNumberLabel, !(phoneNumberLabel | v4[5])) || -[NSString isEqual:](phoneNumberLabel, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | equalCopy[1])) || -[NSString isEqual:](name, "isEqual:")) && ((nameContactIdentifier = self->_nameContactIdentifier, !(nameContactIdentifier | equalCopy[2])) || -[NSString isEqual:](nameContactIdentifier, "isEqual:")) && ((phoneNumber = self->_phoneNumber, !(phoneNumber | equalCopy[3])) || -[NSString isEqual:](phoneNumber, "isEqual:")) && ((phoneNumberContactIdentifier = self->_phoneNumberContactIdentifier, !(phoneNumberContactIdentifier | equalCopy[4])) || -[NSString isEqual:](phoneNumberContactIdentifier, "isEqual:")) && ((phoneNumberLabel = self->_phoneNumberLabel, !(phoneNumberLabel | equalCopy[5])) || -[NSString isEqual:](phoneNumberLabel, "isEqual:")))
   {
     relationship = self->_relationship;
-    if (relationship | v4[6])
+    if (relationship | equalCopy[6])
     {
       v11 = [(NSString *)relationship isEqual:?];
     }
@@ -213,35 +213,35 @@
   return v6 ^ v7 ^ [(NSString *)self->_relationship hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(HDCodableClinicalContact *)self setName:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(HDCodableClinicalContact *)self setNameContactIdentifier:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(HDCodableClinicalContact *)self setPhoneNumber:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(HDCodableClinicalContact *)self setPhoneNumberContactIdentifier:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(HDCodableClinicalContact *)self setPhoneNumberLabel:?];
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(HDCodableClinicalContact *)self setRelationship:?];
   }

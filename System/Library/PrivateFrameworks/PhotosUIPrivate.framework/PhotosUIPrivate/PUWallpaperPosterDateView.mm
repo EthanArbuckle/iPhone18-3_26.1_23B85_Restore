@@ -1,12 +1,12 @@
 @interface PUWallpaperPosterDateView
-- (PUWallpaperPosterDateView)initWithFrame:(CGRect)a3;
+- (PUWallpaperPosterDateView)initWithFrame:(CGRect)frame;
 - (void)_initViews;
 - (void)_updateTimeLabel;
-- (void)layoutWithLayout:(id)a3 inContainerFrame:(CGRect)a4;
-- (void)setTimeColor:(id)a3;
-- (void)setTimeFont:(id)a3;
-- (void)setUseThinnerFontWeightForTime:(BOOL)a3;
-- (void)setUseVibrantAppearance:(BOOL)a3;
+- (void)layoutWithLayout:(id)layout inContainerFrame:(CGRect)frame;
+- (void)setTimeColor:(id)color;
+- (void)setTimeFont:(id)font;
+- (void)setUseThinnerFontWeightForTime:(BOOL)time;
+- (void)setUseVibrantAppearance:(BOOL)appearance;
 @end
 
 @implementation PUWallpaperPosterDateView
@@ -14,12 +14,12 @@
 - (void)_updateTimeLabel
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUWallpaperPosterDateView *)self timeLabel];
-  v4 = [(PUWallpaperPosterDateView *)self timeFont];
-  v5 = v4;
-  if (v4)
+  timeLabel = [(PUWallpaperPosterDateView *)self timeLabel];
+  timeFont = [(PUWallpaperPosterDateView *)self timeFont];
+  v5 = timeFont;
+  if (timeFont)
   {
-    v6 = v4;
+    v6 = timeFont;
   }
 
   else
@@ -29,18 +29,18 @@
 
   v7 = v6;
 
-  v8 = [v7 fontDescriptor];
+  fontDescriptor = [v7 fontDescriptor];
   v9 = *MEMORY[0x1E69DB8F0];
-  v10 = [v8 objectForKey:*MEMORY[0x1E69DB8F0]];
+  v10 = [fontDescriptor objectForKey:*MEMORY[0x1E69DB8F0]];
 
   v11 = *MEMORY[0x1E69DB990];
   v12 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69DB990]];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [(PUWallpaperPosterDateView *)self useThinnerFontWeightForTime];
+  useThinnerFontWeightForTime = [(PUWallpaperPosterDateView *)self useThinnerFontWeightForTime];
   v16 = fmax(v14 + -0.2, 0.0);
-  if (v15)
+  if (useThinnerFontWeightForTime)
   {
     v14 = v16;
   }
@@ -49,55 +49,55 @@
   v18 = [MEMORY[0x1E696AD98] numberWithDouble:v14];
   [v17 setObject:v18 forKey:v11];
 
-  v19 = [v7 fontDescriptor];
+  fontDescriptor2 = [v7 fontDescriptor];
   v31 = v9;
   v32[0] = v17;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-  v21 = [v19 fontDescriptorByAddingAttributes:v20];
+  v21 = [fontDescriptor2 fontDescriptorByAddingAttributes:v20];
 
   v22 = [MEMORY[0x1E69DB878] fontWithDescriptor:v21 size:100.0];
-  [v3 setFont:v22];
-  v23 = [(PUWallpaperPosterDateView *)self timeColor];
-  v24 = v23;
-  if (v23)
+  [timeLabel setFont:v22];
+  timeColor = [(PUWallpaperPosterDateView *)self timeColor];
+  v24 = timeColor;
+  if (timeColor)
   {
-    v25 = v23;
+    whiteColor = timeColor;
   }
 
   else
   {
-    v25 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v26 = v25;
+  v26 = whiteColor;
 
   if ([(PUWallpaperPosterDateView *)self useVibrantAppearance])
   {
-    v27 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
 
-    [v3 setTextColor:v27];
-    v28 = [MEMORY[0x1E69DC730] effectWithStyle:4];
-    v29 = [MEMORY[0x1E69DD248] effectForBlurEffect:v28];
-    v30 = [(PUWallpaperPosterDateView *)self visualEffectView];
-    [v30 setEffect:v29];
+    [timeLabel setTextColor:whiteColor2];
+    visualEffectView2 = [MEMORY[0x1E69DC730] effectWithStyle:4];
+    v29 = [MEMORY[0x1E69DD248] effectForBlurEffect:visualEffectView2];
+    visualEffectView = [(PUWallpaperPosterDateView *)self visualEffectView];
+    [visualEffectView setEffect:v29];
 
-    v26 = v27;
+    v26 = whiteColor2;
   }
 
   else
   {
-    [v3 setTextColor:v26];
-    v28 = [(PUWallpaperPosterDateView *)self visualEffectView];
-    [v28 setEffect:0];
+    [timeLabel setTextColor:v26];
+    visualEffectView2 = [(PUWallpaperPosterDateView *)self visualEffectView];
+    [visualEffectView2 setEffect:0];
   }
 }
 
-- (void)setTimeColor:(id)a3
+- (void)setTimeColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   v5 = self->_timeColor;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == colorCopy)
   {
   }
 
@@ -107,18 +107,18 @@
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_timeColor, a3);
+      objc_storeStrong(&self->_timeColor, color);
       [(PUWallpaperPosterDateView *)self _updateTimeLabel];
     }
   }
 }
 
-- (void)setTimeFont:(id)a3
+- (void)setTimeFont:(id)font
 {
-  v8 = a3;
+  fontCopy = font;
   v5 = self->_timeFont;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == fontCopy)
   {
   }
 
@@ -128,43 +128,43 @@
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_timeFont, a3);
+      objc_storeStrong(&self->_timeFont, font);
       [(PUWallpaperPosterDateView *)self _updateTimeLabel];
     }
   }
 }
 
-- (void)setUseVibrantAppearance:(BOOL)a3
+- (void)setUseVibrantAppearance:(BOOL)appearance
 {
-  if (self->_useVibrantAppearance != a3)
+  if (self->_useVibrantAppearance != appearance)
   {
-    self->_useVibrantAppearance = a3;
+    self->_useVibrantAppearance = appearance;
     [(PUWallpaperPosterDateView *)self _updateTimeLabel];
   }
 }
 
-- (void)setUseThinnerFontWeightForTime:(BOOL)a3
+- (void)setUseThinnerFontWeightForTime:(BOOL)time
 {
-  if (self->_useThinnerFontWeightForTime != a3)
+  if (self->_useThinnerFontWeightForTime != time)
   {
-    self->_useThinnerFontWeightForTime = a3;
+    self->_useThinnerFontWeightForTime = time;
     [(PUWallpaperPosterDateView *)self _updateTimeLabel];
   }
 }
 
-- (void)layoutWithLayout:(id)a3 inContainerFrame:(CGRect)a4
+- (void)layoutWithLayout:(id)layout inContainerFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v6 = a3;
-  [v6 visibleFrame];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  [layoutCopy visibleFrame];
   v8 = v7;
   v36 = v9;
   v11 = v10;
   v13 = v12;
-  [v6 timeFrame];
+  [layoutCopy timeFrame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -210,8 +210,8 @@
   v33 = v45.origin.y;
   v34 = v45.size.width;
   v35 = v45.size.height;
-  v40 = [(PUWallpaperPosterDateView *)self timeLabel];
-  [v40 setFrame:{v32, v33, v34, v35}];
+  timeLabel = [(PUWallpaperPosterDateView *)self timeLabel];
+  [timeLabel setFrame:{v32, v33, v34, v35}];
 }
 
 - (void)_initViews
@@ -238,20 +238,20 @@
   [(UILabel *)v8 setTextAlignment:1];
   [(UILabel *)v8 setFont:v6];
   [(UILabel *)v8 setText:v4];
-  v10 = [(UIVisualEffectView *)v5 contentView];
-  [v10 addSubview:v8];
+  contentView = [(UIVisualEffectView *)v5 contentView];
+  [contentView addSubview:v8];
 
-  v11 = [(UILabel *)v8 layer];
-  [v11 setShadowRadius:2.0];
+  layer = [(UILabel *)v8 layer];
+  [layer setShadowRadius:2.0];
 
-  v12 = [(UILabel *)v8 layer];
+  layer2 = [(UILabel *)v8 layer];
   LODWORD(v13) = 0.125;
-  [v12 setShadowOpacity:v13];
+  [layer2 setShadowOpacity:v13];
 
   v14 = *MEMORY[0x1E695F060];
   v15 = *(MEMORY[0x1E695F060] + 8);
-  v16 = [(UILabel *)v8 layer];
-  [v16 setShadowOffset:{v14, v15}];
+  layer3 = [(UILabel *)v8 layer];
+  [layer3 setShadowOffset:{v14, v15}];
 
   timeLabel = self->_timeLabel;
   self->_timeLabel = v8;
@@ -262,11 +262,11 @@
   v20 = v5;
 }
 
-- (PUWallpaperPosterDateView)initWithFrame:(CGRect)a3
+- (PUWallpaperPosterDateView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PUWallpaperPosterDateView;
-  v3 = [(PUWallpaperPosterDateView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUWallpaperPosterDateView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DB878] systemFontOfSize:100.0 weight:*MEMORY[0x1E69DB980]];

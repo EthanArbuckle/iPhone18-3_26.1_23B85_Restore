@@ -8,14 +8,14 @@
 {
   v34 = *MEMORY[0x1E69E9840];
   v5 = a3;
-  v22 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+  v22 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [a1 allKeys];
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  allKeys = [self allKeys];
+  obj = allKeys;
+  v7 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v7)
   {
     v9 = *v26;
@@ -45,7 +45,7 @@
           goto LABEL_23;
         }
 
-        v13 = [a1 objectForKey:v11];
+        v13 = [self objectForKey:v11];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -114,7 +114,7 @@ LABEL_23:
 LABEL_24:
       }
 
-      v6 = obj;
+      allKeys = obj;
       v7 = [obj countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 

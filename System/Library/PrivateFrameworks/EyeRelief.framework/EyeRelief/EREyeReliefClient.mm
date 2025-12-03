@@ -1,11 +1,11 @@
 @interface EREyeReliefClient
-- (BOOL)isDistanceSamplingEnabledWithError:(id *)a3;
-- (BOOL)toggleDistanceSampling:(id *)a3;
+- (BOOL)isDistanceSamplingEnabledWithError:(id *)error;
+- (BOOL)toggleDistanceSampling:(id *)sampling;
 @end
 
 @implementation EREyeReliefClient
 
-- (BOOL)toggleDistanceSampling:(id *)a3
+- (BOOL)toggleDistanceSampling:(id *)sampling
 {
   v4 = +[EREyeReliefConnection sharedConnection];
   v15 = 0;
@@ -25,12 +25,12 @@
   v8[4] = &v15;
   v8[5] = &v9;
   [v4 toggleDistanceSampling:v8];
-  if (a3)
+  if (sampling)
   {
     v5 = v10[5];
     if (v5)
     {
-      *a3 = v5;
+      *sampling = v5;
     }
   }
 
@@ -41,7 +41,7 @@
   return v6;
 }
 
-- (BOOL)isDistanceSamplingEnabledWithError:(id *)a3
+- (BOOL)isDistanceSamplingEnabledWithError:(id *)error
 {
   v4 = +[EREyeReliefConnection sharedConnection];
   v15 = 0;
@@ -61,12 +61,12 @@
   v8[4] = &v15;
   v8[5] = &v9;
   [v4 isDistanceSamplingEnabled:v8];
-  if (a3)
+  if (error)
   {
     v5 = v10[5];
     if (v5)
     {
-      *a3 = v5;
+      *error = v5;
     }
   }
 

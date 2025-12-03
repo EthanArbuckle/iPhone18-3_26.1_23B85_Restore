@@ -1,12 +1,12 @@
 @interface AWDFlagstoneCoexMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDFlagstoneCoexMetrics
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = AWDFlagstoneCoexMetrics;
   v3 = [(AWDFlagstoneCoexMetrics *)&v7 description];
-  v4 = [(AWDFlagstoneCoexMetrics *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDFlagstoneCoexMetrics *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -34,89 +34,89 @@
   header = self->_header;
   if (header)
   {
-    v6 = [(AWDHeaderInfoS *)header dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"header"];
+    dictionaryRepresentation = [(AWDHeaderInfoS *)header dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   sCntrsCoex = self->_sCntrsCoex;
   if (sCntrsCoex)
   {
-    v8 = [(AWDCountersCoexS *)sCntrsCoex dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"s_cntrs_coex"];
+    dictionaryRepresentation2 = [(AWDCountersCoexS *)sCntrsCoex dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"s_cntrs_coex"];
   }
 
   sHistCoex = self->_sHistCoex;
   if (sHistCoex)
   {
-    v10 = [(AWDHistogramsCoexS *)sHistCoex dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"s_hist_coex"];
+    dictionaryRepresentation3 = [(AWDHistogramsCoexS *)sHistCoex dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"s_hist_coex"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sCntrsCoex)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sHistCoex)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 40) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_header)
   {
-    [v4 setHeader:?];
-    v4 = v5;
+    [toCopy setHeader:?];
+    toCopy = v5;
   }
 
   if (self->_sCntrsCoex)
   {
     [v5 setSCntrsCoex:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sHistCoex)
   {
     [v5 setSHistCoex:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -124,39 +124,39 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(AWDHeaderInfoS *)self->_header copyWithZone:a3];
+  v7 = [(AWDHeaderInfoS *)self->_header copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(AWDCountersCoexS *)self->_sCntrsCoex copyWithZone:a3];
+  v9 = [(AWDCountersCoexS *)self->_sCntrsCoex copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
-  v11 = [(AWDHistogramsCoexS *)self->_sHistCoex copyWithZone:a3];
+  v11 = [(AWDHistogramsCoexS *)self->_sHistCoex copyWithZone:zone];
   v12 = v6[4];
   v6[4] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
 
@@ -164,13 +164,13 @@ LABEL_13:
   }
 
   header = self->_header;
-  if (header | *(v4 + 2) && ![(AWDHeaderInfoS *)header isEqual:?])
+  if (header | *(equalCopy + 2) && ![(AWDHeaderInfoS *)header isEqual:?])
   {
     goto LABEL_13;
   }
 
   sCntrsCoex = self->_sCntrsCoex;
-  if (sCntrsCoex | *(v4 + 3))
+  if (sCntrsCoex | *(equalCopy + 3))
   {
     if (![(AWDCountersCoexS *)sCntrsCoex isEqual:?])
     {
@@ -179,7 +179,7 @@ LABEL_13:
   }
 
   sHistCoex = self->_sHistCoex;
-  if (sHistCoex | *(v4 + 4))
+  if (sHistCoex | *(equalCopy + 4))
   {
     v10 = [(AWDHistogramsCoexS *)sHistCoex isEqual:?];
 
@@ -210,13 +210,13 @@ LABEL_13:
   return v4 ^ v5 ^ [(AWDHistogramsCoexS *)self->_sHistCoex hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 

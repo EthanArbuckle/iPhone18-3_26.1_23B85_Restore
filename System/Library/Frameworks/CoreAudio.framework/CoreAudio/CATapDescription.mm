@@ -1,27 +1,27 @@
 @interface CATapDescription
 - (CATapDescription)init;
-- (CATapDescription)initWithDictionary:(id)a3;
-- (CATapDescription)initWithProcesses:(id)a3 andDeviceUID:(id)a4 withStream:(int64_t)a5;
-- (id)initExcludingProcesses:(id)a3 andDeviceUID:(id)a4 withStream:(int64_t)a5;
-- (id)initMonoGlobalTapButExcludeProcesses:(id)a3;
-- (id)initMonoMixdownOfProcesses:(id)a3;
-- (id)initStereoGlobalTapButExcludeProcesses:(id)a3;
-- (id)initStereoMixdownOfProcesses:(id)a3;
+- (CATapDescription)initWithDictionary:(id)dictionary;
+- (CATapDescription)initWithProcesses:(id)processes andDeviceUID:(id)d withStream:(int64_t)stream;
+- (id)initExcludingProcesses:(id)processes andDeviceUID:(id)d withStream:(int64_t)stream;
+- (id)initMonoGlobalTapButExcludeProcesses:(id)processes;
+- (id)initMonoMixdownOfProcesses:(id)processes;
+- (id)initStereoGlobalTapButExcludeProcesses:(id)processes;
+- (id)initStereoMixdownOfProcesses:(id)processes;
 @end
 
 @implementation CATapDescription
 
-- (id)initExcludingProcesses:(id)a3 andDeviceUID:(id)a4 withStream:(int64_t)a5
+- (id)initExcludingProcesses:(id)processes andDeviceUID:(id)d withStream:(int64_t)stream
 {
-  v9 = a3;
-  v10 = a4;
+  processesCopy = processes;
+  dCopy = d;
   v11 = objc_alloc_init(CATapDescription);
 
   if (v11)
   {
-    objc_storeStrong(&v11->_processes, a3);
-    objc_storeStrong(&v11->_deviceUID, a4);
-    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a5];
+    objc_storeStrong(&v11->_processes, processes);
+    objc_storeStrong(&v11->_deviceUID, d);
+    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:stream];
     stream = v11->_stream;
     v11->_stream = v12;
 
@@ -31,17 +31,17 @@
   return v11;
 }
 
-- (CATapDescription)initWithProcesses:(id)a3 andDeviceUID:(id)a4 withStream:(int64_t)a5
+- (CATapDescription)initWithProcesses:(id)processes andDeviceUID:(id)d withStream:(int64_t)stream
 {
-  v9 = a3;
-  v10 = a4;
+  processesCopy = processes;
+  dCopy = d;
   v11 = objc_alloc_init(CATapDescription);
 
   if (v11)
   {
-    objc_storeStrong(&v11->_processes, a3);
-    objc_storeStrong(&v11->_deviceUID, a4);
-    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a5];
+    objc_storeStrong(&v11->_processes, processes);
+    objc_storeStrong(&v11->_deviceUID, d);
+    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:stream];
     stream = v11->_stream;
     v11->_stream = v12;
   }
@@ -49,14 +49,14 @@
   return v11;
 }
 
-- (id)initMonoGlobalTapButExcludeProcesses:(id)a3
+- (id)initMonoGlobalTapButExcludeProcesses:(id)processes
 {
-  v5 = a3;
+  processesCopy = processes;
   v6 = objc_alloc_init(CATapDescription);
 
   if (v6)
   {
-    objc_storeStrong(&v6->_processes, a3);
+    objc_storeStrong(&v6->_processes, processes);
     *&v6->_mono = 257;
     v6->_mixdown = 1;
   }
@@ -64,14 +64,14 @@
   return v6;
 }
 
-- (id)initMonoMixdownOfProcesses:(id)a3
+- (id)initMonoMixdownOfProcesses:(id)processes
 {
-  v5 = a3;
+  processesCopy = processes;
   v6 = objc_alloc_init(CATapDescription);
 
   if (v6)
   {
-    objc_storeStrong(&v6->_processes, a3);
+    objc_storeStrong(&v6->_processes, processes);
     v6->_mono = 1;
     v6->_mixdown = 1;
   }
@@ -79,28 +79,28 @@
   return v6;
 }
 
-- (id)initStereoGlobalTapButExcludeProcesses:(id)a3
+- (id)initStereoGlobalTapButExcludeProcesses:(id)processes
 {
-  v5 = a3;
+  processesCopy = processes;
   v6 = objc_alloc_init(CATapDescription);
 
   if (v6)
   {
-    objc_storeStrong(&v6->_processes, a3);
+    objc_storeStrong(&v6->_processes, processes);
     *&v6->_exclusive = 257;
   }
 
   return v6;
 }
 
-- (id)initStereoMixdownOfProcesses:(id)a3
+- (id)initStereoMixdownOfProcesses:(id)processes
 {
-  v5 = a3;
+  processesCopy = processes;
   v6 = objc_alloc_init(CATapDescription);
 
   if (v6)
   {
-    objc_storeStrong(&v6->_processes, a3);
+    objc_storeStrong(&v6->_processes, processes);
     v6->_mixdown = 1;
   }
 
@@ -141,66 +141,66 @@
   return v4;
 }
 
-- (CATapDescription)initWithDictionary:(id)a3
+- (CATapDescription)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = objc_alloc_init(CATapDescription);
   v7 = v6;
 
   if (v6)
   {
-    v8 = [v5 objectForKey:@"TapUUID"];
+    v8 = [dictionaryCopy objectForKey:@"TapUUID"];
 
     if (!v8)
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:v6 file:@"CATapDescription.mm" lineNumber:143 description:@"Tap dictionary is missing UUID"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"CATapDescription.mm" lineNumber:143 description:@"Tap dictionary is missing UUID"];
     }
 
-    v9 = [v5 objectForKey:@"Processes"];
+    v9 = [dictionaryCopy objectForKey:@"Processes"];
 
     if (!v9)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:v6 file:@"CATapDescription.mm" lineNumber:144 description:@"Tap dictionary is missing process list"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v6 file:@"CATapDescription.mm" lineNumber:144 description:@"Tap dictionary is missing process list"];
     }
 
-    v10 = [v5 objectForKey:@"TapName"];
+    v10 = [dictionaryCopy objectForKey:@"TapName"];
     objc_storeStrong(&v6->_name, v10);
-    v11 = [v5 objectForKey:@"TapUUID"];
+    v11 = [dictionaryCopy objectForKey:@"TapUUID"];
     v12 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v11];
     objc_storeStrong(&v6->_UUID, v12);
-    v13 = [v5 objectForKey:@"Processes"];
+    v13 = [dictionaryCopy objectForKey:@"Processes"];
     objc_storeStrong(&v6->_processes, v13);
-    v14 = [v5 objectForKey:@"BundleIDs"];
+    v14 = [dictionaryCopy objectForKey:@"BundleIDs"];
     objc_storeStrong(&v6->_bundleIDs, v14);
-    v15 = [v5 objectForKeyedSubscript:@"IsMono"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"IsMono"];
     v7->_mono = [v15 BOOLValue];
 
-    v16 = [v5 objectForKeyedSubscript:@"IsExclusive"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"IsExclusive"];
     v7->_exclusive = [v16 BOOLValue];
 
-    v17 = [v5 objectForKeyedSubscript:@"IsMixdown"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"IsMixdown"];
     v7->_mixdown = [v17 BOOLValue];
 
-    v18 = [v5 objectForKeyedSubscript:@"IsPrivate"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"IsPrivate"];
     v7->_privateTap = [v18 BOOLValue];
 
-    v19 = [v5 objectForKeyedSubscript:@"ProcessRestoreEnabled"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"ProcessRestoreEnabled"];
     v7->_processRestoreEnabled = [v19 BOOLValue];
 
-    v20 = [v5 objectForKeyedSubscript:@"MuteBehavior"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"MuteBehavior"];
     v7->_muteBehavior = [v20 intValue];
 
-    v21 = [v5 objectForKey:@"DeviceUID"];
+    v21 = [dictionaryCopy objectForKey:@"DeviceUID"];
     deviceUID = v7->_deviceUID;
     v7->_deviceUID = v21;
 
-    v23 = [v5 objectForKey:@"Stream"];
+    v23 = [dictionaryCopy objectForKey:@"Stream"];
 
     if (v23)
     {
-      v24 = [v5 objectForKeyedSubscript:@"Stream"];
+      v24 = [dictionaryCopy objectForKeyedSubscript:@"Stream"];
       stream = v7->_stream;
       v7->_stream = v24;
     }

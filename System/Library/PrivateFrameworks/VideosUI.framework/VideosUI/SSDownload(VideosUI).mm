@@ -11,7 +11,7 @@
   v5 = v4;
   if (v4)
   {
-    if (a1 == v4)
+    if (self == v4)
     {
       v17 = 1;
     }
@@ -23,7 +23,7 @@
       v6 = v19[0];
       v19[1] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-      v9 = [a1 vui_valuesForProperties:v8];
+      v9 = [self vui_valuesForProperties:v8];
       v10 = [v9 objectForKey:v6];
       v11 = [v9 objectForKey:v7];
       v12 = [v5 vui_valuesForProperties:v8];

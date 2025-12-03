@@ -1,27 +1,27 @@
 @interface IDSQuickRelaySessionInfo
-- (int64_t)parseSessionInfo:(id)a3;
+- (int64_t)parseSessionInfo:(id)info;
 @end
 
 @implementation IDSQuickRelaySessionInfo
 
-- (int64_t)parseSessionInfo:(id)a3
+- (int64_t)parseSessionInfo:(id)info
 {
   v124 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   Value = 0;
-  if (v4 && @"qat")
+  if (infoCopy && @"qat")
   {
-    Value = CFDictionaryGetValue(v4, @"qat");
+    Value = CFDictionaryGetValue(infoCopy, @"qat");
   }
 
-  v6 = [Value unsignedIntValue];
-  self->_allocateType = v6;
-  if (v6 - 5 > 0xFFFFFFFB)
+  unsignedIntValue = [Value unsignedIntValue];
+  self->_allocateType = unsignedIntValue;
+  if (unsignedIntValue - 5 > 0xFFFFFFFB)
   {
     v9 = 0;
-    if (v4 && @"qsat")
+    if (infoCopy && @"qsat")
     {
-      v9 = CFDictionaryGetValue(v4, @"qsat");
+      v9 = CFDictionaryGetValue(infoCopy, @"qsat");
     }
 
     [v9 doubleValue];
@@ -50,28 +50,28 @@
       v8 = 28;
     }
 
-    else if (v4 && @"U" && (v11 = CFDictionaryGetValue(v4, @"U"), (v115 = v11) != 0))
+    else if (infoCopy && @"U" && (v11 = CFDictionaryGetValue(infoCopy, @"U"), (v115 = v11) != 0))
     {
       objc_storeStrong(&self->_allocateRequestID, v11);
-      if (@"qrsi" && (v12 = CFDictionaryGetValue(v4, @"qrsi"), (v13 = v12) != 0))
+      if (@"qrsi" && (v12 = CFDictionaryGetValue(infoCopy, @"qrsi"), (v13 = v12) != 0))
       {
         v113 = v13;
         objc_storeStrong(&self->_relaySessionID, v12);
-        if (@"qrst" && (v14 = CFDictionaryGetValue(v4, @"qrst"), (v15 = v14) != 0))
+        if (@"qrst" && (v14 = CFDictionaryGetValue(infoCopy, @"qrst"), (v15 = v14) != 0))
         {
           v110 = v15;
           objc_storeStrong(&self->_relaySessionToken, v14);
-          if (@"qrsk" && (v16 = CFDictionaryGetValue(v4, @"qrsk"), (v17 = v16) != 0))
+          if (@"qrsk" && (v16 = CFDictionaryGetValue(infoCopy, @"qrsk"), (v17 = v16) != 0))
           {
             v109 = v17;
             objc_storeStrong(&self->_relaySessionKey, v16);
-            if (@"qr-software-id" && (v18 = CFDictionaryGetValue(v4, @"qr-software-id"), (v19 = v18) != 0))
+            if (@"qr-software-id" && (v18 = CFDictionaryGetValue(infoCopy, @"qr-software-id"), (v19 = v18) != 0))
             {
               v108 = v19;
               objc_storeStrong(&self->_softwareData, v18);
               if (@"qrp")
               {
-                v20 = CFDictionaryGetValue(v4, @"qrp");
+                v20 = CFDictionaryGetValue(infoCopy, @"qrp");
               }
 
               else
@@ -79,11 +79,11 @@
                 v20 = 0;
               }
 
-              v28 = [v20 unsignedShortValue];
-              if (v28)
+              unsignedShortValue = [v20 unsignedShortValue];
+              if (unsignedShortValue)
               {
                 v120 = -1431655766;
-                if (@"qrip" && (v29 = v28, (v30 = CFDictionaryGetValue(v4, @"qrip")) != 0))
+                if (@"qrip" && (v29 = unsignedShortValue, (v30 = CFDictionaryGetValue(infoCopy, @"qrip")) != 0))
                 {
                   v106 = v30;
                   [v30 getBytes:&v120 length:4];
@@ -93,7 +93,7 @@
                   *self->_serverAddress.__ss_pad1 = v31;
                   if (@"qipp")
                   {
-                    v32 = CFDictionaryGetValue(v4, @"qipp");
+                    v32 = CFDictionaryGetValue(infoCopy, @"qipp");
                   }
 
                   else
@@ -104,7 +104,7 @@
                   self->_ipPreference = [v32 unsignedCharValue];
                   if (@"qrhpp")
                   {
-                    v35 = CFDictionaryGetValue(v4, @"qrhpp");
+                    v35 = CFDictionaryGetValue(infoCopy, @"qrhpp");
                   }
 
                   else
@@ -112,17 +112,17 @@
                     v35 = 0;
                   }
 
-                  v36 = [v35 unsignedShortValue];
-                  v37 = v36;
+                  unsignedShortValue2 = [v35 unsignedShortValue];
+                  v37 = unsignedShortValue2;
                   *&self->_highPriorityServerAddressIPv6.__ss_pad2[8] = 0;
                   *self->_highPriorityServerAddressIPv6.__ss_pad2 = 0;
                   *&self->_highPriorityServerAddressIPv6.ss_len = 0u;
                   *&self->_highPriorityServerAddress.ss_len = 0u;
-                  if (v36)
+                  if (unsignedShortValue2)
                   {
                     *&self->_highPriorityServerAddress.ss_len = 528;
                     *&self->_highPriorityServerAddress.__ss_pad1[2] = v120;
-                    *self->_highPriorityServerAddress.__ss_pad1 = __rev16(v36);
+                    *self->_highPriorityServerAddress.__ss_pad1 = __rev16(unsignedShortValue2);
                   }
 
                   else
@@ -147,7 +147,7 @@
                     }
                   }
 
-                  if (@"qrip6" && (v39 = CFDictionaryGetValue(v4, @"qrip6")) != 0)
+                  if (@"qrip6" && (v39 = CFDictionaryGetValue(infoCopy, @"qrip6")) != 0)
                   {
                     v107 = v39;
                     if ([v39 length] == 16)
@@ -245,7 +245,7 @@
 
                   if (@"qv")
                   {
-                    v45 = CFDictionaryGetValue(v4, @"qv");
+                    v45 = CFDictionaryGetValue(infoCopy, @"qv");
                   }
 
                   else
@@ -253,16 +253,16 @@
                     v45 = 0;
                   }
 
-                  v46 = [v45 unsignedCharValue];
-                  if (v46)
+                  unsignedCharValue = [v45 unsignedCharValue];
+                  if (unsignedCharValue)
                   {
-                    self->_protocolVersion = v46;
-                    if (@"qids" && (v47 = CFDictionaryGetValue(v4, @"qids"), (v104 = v47) != 0))
+                    self->_protocolVersion = unsignedCharValue;
+                    if (@"qids" && (v47 = CFDictionaryGetValue(infoCopy, @"qids"), (v104 = v47) != 0))
                     {
                       objc_storeStrong(&self->_idsSessionID, v47);
                       if (@"qrpr")
                       {
-                        v48 = CFDictionaryGetValue(v4, @"qrpr");
+                        v48 = CFDictionaryGetValue(infoCopy, @"qrpr");
                       }
 
                       else
@@ -274,13 +274,13 @@
                       v53 = @"qrep";
                       if (@"qrep")
                       {
-                        v53 = CFDictionaryGetValue(v4, @"qrep");
+                        v53 = CFDictionaryGetValue(infoCopy, @"qrep");
                       }
 
                       objc_storeStrong(&self->_reportingDataBlob, v53);
                       if (@"qri")
                       {
-                        v54 = CFDictionaryGetValue(v4, @"qri");
+                        v54 = CFDictionaryGetValue(infoCopy, @"qri");
                       }
 
                       else
@@ -291,7 +291,7 @@
                       self->_participantID = [v54 unsignedLongLongValue];
                       if (@"IsInitiator")
                       {
-                        v55 = CFDictionaryGetValue(v4, @"IsInitiator");
+                        v55 = CFDictionaryGetValue(infoCopy, @"IsInitiator");
                       }
 
                       else
@@ -302,7 +302,7 @@
                       self->_isInitiator = [v55 BOOLValue];
                       if (@"link-protocol")
                       {
-                        v56 = CFDictionaryGetValue(v4, @"link-protocol");
+                        v56 = CFDictionaryGetValue(infoCopy, @"link-protocol");
                       }
 
                       else
@@ -313,7 +313,7 @@
                       self->_linkProtocol = [v56 intValue];
                       if (@"ls")
                       {
-                        v57 = CFDictionaryGetValue(v4, @"ls");
+                        v57 = CFDictionaryGetValue(infoCopy, @"ls");
                       }
 
                       else
@@ -324,7 +324,7 @@
                       self->_linkSuggestion = [v57 unsignedCharValue];
                       if (@"lc")
                       {
-                        v58 = CFDictionaryGetValue(v4, @"lc");
+                        v58 = CFDictionaryGetValue(infoCopy, @"lc");
                       }
 
                       else
@@ -335,7 +335,7 @@
                       self->_linkScore = [v58 unsignedCharValue];
                       if (@"und2")
                       {
-                        v59 = CFDictionaryGetValue(v4, @"und2");
+                        v59 = CFDictionaryGetValue(infoCopy, @"und2");
                       }
 
                       else
@@ -346,7 +346,7 @@
                       self->_uplinkNackDisabled = [v59 BOOLValue];
                       if (@"h2fdv2")
                       {
-                        v60 = CFDictionaryGetValue(v4, @"h2fdv2");
+                        v60 = CFDictionaryGetValue(infoCopy, @"h2fdv2");
                       }
 
                       else
@@ -357,7 +357,7 @@
                       self->_h2FallbackDisabled = [v60 BOOLValue];
                       if (@"tled")
                       {
-                        v61 = CFDictionaryGetValue(v4, @"tled");
+                        v61 = CFDictionaryGetValue(infoCopy, @"tled");
                       }
 
                       else
@@ -368,7 +368,7 @@
                       self->_transportLayerEncryptionDisabled = [v61 BOOLValue];
                       if (@"ipdd")
                       {
-                        v62 = CFDictionaryGetValue(v4, @"ipdd");
+                        v62 = CFDictionaryGetValue(infoCopy, @"ipdd");
                       }
 
                       else
@@ -380,27 +380,27 @@
                       v63 = @"qrexp";
                       if (@"qrexp")
                       {
-                        v63 = CFDictionaryGetValue(v4, @"qrexp");
+                        v63 = CFDictionaryGetValue(infoCopy, @"qrexp");
                       }
 
                       objc_storeStrong(&self->_qrSessionExperiments, v63);
                       v64 = @"qptp";
                       if (@"qptp")
                       {
-                        v64 = CFDictionaryGetValue(v4, @"qptp");
+                        v64 = CFDictionaryGetValue(infoCopy, @"qptp");
                       }
 
                       objc_storeStrong(&self->_pskTransportParameters, v64);
                       v65 = @"qph3";
                       if (@"qph3")
                       {
-                        v65 = CFDictionaryGetValue(v4, @"qph3");
+                        v65 = CFDictionaryGetValue(infoCopy, @"qph3");
                       }
 
                       objc_storeStrong(&self->_pskH3Settings, v65);
                       if (@"x-internal")
                       {
-                        v66 = CFDictionaryGetValue(v4, @"x-internal");
+                        v66 = CFDictionaryGetValue(infoCopy, @"x-internal");
                       }
 
                       else
@@ -411,7 +411,7 @@
                       self->_isInternal = [v66 BOOLValue];
                       if (@"idscel")
                       {
-                        v67 = CFDictionaryGetValue(v4, @"idscel");
+                        v67 = CFDictionaryGetValue(infoCopy, @"idscel");
                       }
 
                       else
@@ -422,7 +422,7 @@
                       self->_ftPowerOptimizationEnabled = [v67 BOOLValue];
                       if (@"qal")
                       {
-                        v68 = CFDictionaryGetValue(v4, @"qal");
+                        v68 = CFDictionaryGetValue(infoCopy, @"qal");
                       }
 
                       else
@@ -433,7 +433,7 @@
                       v105 = v68;
                       v69 = objc_alloc_init(MEMORY[0x1E695DF70]);
                       [v69 addObjectsFromArray:v105];
-                      v112 = [MEMORY[0x1E695DF70] array];
+                      array = [MEMORY[0x1E695DF70] array];
                       v118 = 0u;
                       v119 = 0u;
                       v116 = 0u;
@@ -488,7 +488,7 @@
                             if (v79)
                             {
                               v80 = [IDSPushToken pushTokenWithData:v79];
-                              [v112 addObject:v80];
+                              [array addObject:v80];
                             }
                           }
 
@@ -498,7 +498,7 @@
                         while (v71);
                       }
 
-                      objc_storeStrong(&self->_allocatedPushTokens, v112);
+                      objc_storeStrong(&self->_allocatedPushTokens, array);
                       if (v70 || self->_allocateType != 3)
                       {
                         objc_storeStrong(&self->_allParticipantIDs, v70);
@@ -506,7 +506,7 @@
                         cut_dispatch_log_queue();
                         if (@"default-local-device-cbuuid")
                         {
-                          v83 = CFDictionaryGetValue(v4, @"default-local-device-cbuuid");
+                          v83 = CFDictionaryGetValue(infoCopy, @"default-local-device-cbuuid");
                         }
 
                         else
@@ -521,7 +521,7 @@
 
                         if (@"default-remote-device-cbuuid")
                         {
-                          v87 = CFDictionaryGetValue(v4, @"default-remote-device-cbuuid");
+                          v87 = CFDictionaryGetValue(infoCopy, @"default-remote-device-cbuuid");
                         }
 
                         else
@@ -537,34 +537,34 @@
                         v91 = @"qgid";
                         if (@"qgid")
                         {
-                          v91 = CFDictionaryGetValue(v4, @"qgid");
+                          v91 = CFDictionaryGetValue(infoCopy, @"qgid");
                         }
 
                         objc_storeStrong(&self->_groupID, v91);
                         v92 = @"qsgid";
                         if (@"qsgid")
                         {
-                          v92 = CFDictionaryGetValue(v4, @"qsgid");
+                          v92 = CFDictionaryGetValue(infoCopy, @"qsgid");
                         }
 
                         objc_storeStrong(&self->_stableGroupID, v92);
                         v93 = @"stream-info-published-streams";
                         if (@"stream-info-published-streams")
                         {
-                          v93 = CFDictionaryGetValue(v4, @"stream-info-published-streams");
+                          v93 = CFDictionaryGetValue(infoCopy, @"stream-info-published-streams");
                         }
 
                         objc_storeStrong(&self->_publishedStreams, v93);
                         v94 = @"stream-info-subscribed-streams";
                         if (@"stream-info-subscribed-streams")
                         {
-                          v94 = CFDictionaryGetValue(v4, @"stream-info-subscribed-streams");
+                          v94 = CFDictionaryGetValue(infoCopy, @"stream-info-subscribed-streams");
                         }
 
                         objc_storeStrong(&self->_subscribedStreams, v94);
                         if (@"stream-info-generation-counter")
                         {
-                          v95 = CFDictionaryGetValue(v4, @"stream-info-generation-counter");
+                          v95 = CFDictionaryGetValue(infoCopy, @"stream-info-generation-counter");
                         }
 
                         else
@@ -575,7 +575,7 @@
                         self->_generationCounter = [v95 unsignedIntValue];
                         if (@"stream-info-max-concurrent-streams")
                         {
-                          v96 = CFDictionaryGetValue(v4, @"stream-info-max-concurrent-streams");
+                          v96 = CFDictionaryGetValue(infoCopy, @"stream-info-max-concurrent-streams");
                         }
 
                         else
@@ -587,20 +587,20 @@
                         v97 = @"participant-data-key";
                         if (@"participant-data-key")
                         {
-                          v97 = CFDictionaryGetValue(v4, @"participant-data-key");
+                          v97 = CFDictionaryGetValue(infoCopy, @"participant-data-key");
                         }
 
                         objc_storeStrong(&self->_avcDataBlob, v97);
                         v98 = @"quic-exchange-provider-key";
                         if (@"quic-exchange-provider-key")
                         {
-                          v98 = CFDictionaryGetValue(v4, @"quic-exchange-provider-key");
+                          v98 = CFDictionaryGetValue(infoCopy, @"quic-exchange-provider-key");
                         }
 
                         objc_storeStrong(&self->_quicMaterialExchangeProvider, v98);
                         if (@"gl-option-session-is-user-participant-initiated")
                         {
-                          v99 = CFDictionaryGetValue(v4, @"gl-option-session-is-user-participant-initiated");
+                          v99 = CFDictionaryGetValue(infoCopy, @"gl-option-session-is-user-participant-initiated");
                         }
 
                         else
@@ -611,7 +611,7 @@
                         self->_sessionIsNonUserParticipantInitiated = [v99 unsignedIntValue] != 0;
                         if (@"gl-option-session-hand-off-over-qr-enabled")
                         {
-                          v100 = CFDictionaryGetValue(v4, @"gl-option-session-hand-off-over-qr-enabled");
+                          v100 = CFDictionaryGetValue(infoCopy, @"gl-option-session-hand-off-over-qr-enabled");
                         }
 
                         else
@@ -622,7 +622,7 @@
                         self->_handOffOverQREnabled = [v100 BOOLValue];
                         if (@"gl-option-call-type")
                         {
-                          v101 = CFDictionaryGetValue(v4, @"gl-option-call-type");
+                          v101 = CFDictionaryGetValue(infoCopy, @"gl-option-call-type");
                         }
 
                         else

@@ -6,7 +6,7 @@
 
 - (id)diffableIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000855B0();
 
   v3 = String._bridgeToObjectiveC()();

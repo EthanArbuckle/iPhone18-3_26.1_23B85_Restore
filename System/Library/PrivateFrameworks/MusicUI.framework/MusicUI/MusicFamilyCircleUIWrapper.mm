@@ -1,14 +1,14 @@
 @interface MusicFamilyCircleUIWrapper
-+ (void)presentFamilyCircleSheet:(id)a3 withParameters:(id)a4 completionHandler:(id)a5;
++ (void)presentFamilyCircleSheet:(id)sheet withParameters:(id)parameters completionHandler:(id)handler;
 @end
 
 @implementation MusicFamilyCircleUIWrapper
 
-+ (void)presentFamilyCircleSheet:(id)a3 withParameters:(id)a4 completionHandler:(id)a5
++ (void)presentFamilyCircleSheet:(id)sheet withParameters:(id)parameters completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sheetCopy = sheet;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -32,7 +32,7 @@
 
   v11 = v10;
   _Block_object_dispose(&v38, 8);
-  v32 = [[v10 alloc] initWithPresenter:v7];
+  v32 = [[v10 alloc] initWithPresenter:sheetCopy];
   [v28[5] setPresentationType:2];
   v38 = 0;
   v39 = &v38;
@@ -79,18 +79,18 @@
     v19 = [v14 initWithEventType:v18];
 
     [v19 setClientName:@"AppleMusic"];
-    v20 = [MEMORY[0x277CCA8D8] mainBundle];
-    v21 = [v20 bundleIdentifier];
-    [v19 setClientBundleID:v21];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [v19 setClientBundleID:bundleIdentifier];
 
-    [v19 setAdditionalParameters:v8];
+    [v19 setAdditionalParameters:parametersCopy];
     [v19 setActivityIndicatorStyle:0];
     v22 = v28[5];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __88__MusicFamilyCircleUIWrapper_presentFamilyCircleSheet_withParameters_completionHandler___block_invoke;
     v24[3] = &unk_2782259E0;
-    v23 = v9;
+    v23 = handlerCopy;
     v25 = v23;
     v26 = &v27;
     [v22 performWithContext:v19 completion:v24];

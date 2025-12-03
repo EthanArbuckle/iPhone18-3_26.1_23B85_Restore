@@ -1,15 +1,15 @@
 @interface CustomARRecordingStreamingMetadata
 - (_TtC6Tamale34CustomARRecordingStreamingMetadata)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CustomARRecordingStreamingMetadata
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_10008FD9C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_10008FD9C(coderCopy);
 }
 
 - (_TtC6Tamale34CustomARRecordingStreamingMetadata)init

@@ -1,7 +1,7 @@
 @interface REUpNextSiriClient
 - (REUpNextSiriClient)init;
-- (void)_performOnRemoteObject:(id)a3;
-- (void)completedRequestWithDomain:(id)a3;
+- (void)_performOnRemoteObject:(id)object;
+- (void)completedRequestWithDomain:(id)domain;
 - (void)dealloc;
 @end
 
@@ -65,29 +65,29 @@ void __26__REUpNextSiriClient_init__block_invoke_2()
   [(REUpNextSiriClient *)&v3 dealloc];
 }
 
-- (void)completedRequestWithDomain:(id)a3
+- (void)completedRequestWithDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__REUpNextSiriClient_completedRequestWithDomain___block_invoke;
   v6[3] = &unk_2785FA380;
-  v7 = v4;
-  v5 = v4;
+  v7 = domainCopy;
+  v5 = domainCopy;
   [(REUpNextSiriClient *)self _performOnRemoteObject:v6];
 }
 
-- (void)_performOnRemoteObject:(id)a3
+- (void)_performOnRemoteObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__REUpNextSiriClient__performOnRemoteObject___block_invoke;
   v7[3] = &unk_2785F9A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_async(queue, v7);
 }
 

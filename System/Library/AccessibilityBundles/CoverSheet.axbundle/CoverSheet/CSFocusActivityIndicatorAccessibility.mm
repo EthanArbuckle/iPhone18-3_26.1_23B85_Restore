@@ -1,19 +1,19 @@
 @interface CSFocusActivityIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 @end
 
 @implementation CSFocusActivityIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSFocusActivityIndicator" hasInstanceMethod:@"activity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSFocusActivityIndicator" hasInstanceVariable:@"_previousActivity" withType:"<FCActivityDescribing>"];
-  [v3 validateClass:@"CSFocusActivityView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"FCActivityDescribing" hasMethod:@"activityDisplayName" isInstanceMethod:1 isRequired:1];
-  [v3 validateProtocol:@"CSFocusActivityViewDelegate" hasMethod:@"focusActivityViewIndicatorPressed:" isInstanceMethod:1 isRequired:1];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSFocusActivityIndicator" hasInstanceMethod:@"activity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSFocusActivityIndicator" hasInstanceVariable:@"_previousActivity" withType:"<FCActivityDescribing>"];
+  [validationsCopy validateClass:@"CSFocusActivityView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"FCActivityDescribing" hasMethod:@"activityDisplayName" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateProtocol:@"CSFocusActivityViewDelegate" hasMethod:@"focusActivityViewIndicatorPressed:" isInstanceMethod:1 isRequired:1];
 }
 
 - (id)accessibilityLabel

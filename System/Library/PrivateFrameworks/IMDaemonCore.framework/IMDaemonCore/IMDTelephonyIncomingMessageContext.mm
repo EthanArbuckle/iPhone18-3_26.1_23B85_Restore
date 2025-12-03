@@ -2,67 +2,67 @@
 - (BOOL)isGroupChat;
 - (BOOL)isGroupMessagingEnabled;
 - (NSString)destinationCallerID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)replaceCountryCodes:(id)a3;
-- (void)replaceParticipants:(id)a3;
-- (void)replaceUnformattedIDs:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)replaceCountryCodes:(id)codes;
+- (void)replaceParticipants:(id)participants;
+- (void)replaceUnformattedIDs:(id)ds;
 @end
 
 @implementation IMDTelephonyIncomingMessageContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(IMDTelephonyIncomingMessageContext);
   [(IMDTelephonyIncomingMessageContext *)v4 setCategory:[(IMDTelephonyIncomingMessageContext *)self category]];
   [(IMDTelephonyIncomingMessageContext *)v4 setSubCategory:[(IMDTelephonyIncomingMessageContext *)self subCategory]];
-  v5 = [(IMDTelephonyIncomingMessageContext *)self spamExtensionName];
-  [(IMDTelephonyIncomingMessageContext *)v4 setSpamExtensionName:v5];
+  spamExtensionName = [(IMDTelephonyIncomingMessageContext *)self spamExtensionName];
+  [(IMDTelephonyIncomingMessageContext *)v4 setSpamExtensionName:spamExtensionName];
 
   [(IMDTelephonyIncomingMessageContext *)v4 setIsSendEnabled:[(IMDTelephonyIncomingMessageContext *)self isSendEnabled]];
   [(IMDTelephonyIncomingMessageContext *)v4 setCapability:[(IMDTelephonyIncomingMessageContext *)self capability]];
-  v6 = [(IMDTelephonyIncomingMessageContext *)self chatIdentifier];
-  [(IMDTelephonyIncomingMessageContext *)v4 setChatIdentifier:v6];
+  chatIdentifier = [(IMDTelephonyIncomingMessageContext *)self chatIdentifier];
+  [(IMDTelephonyIncomingMessageContext *)v4 setChatIdentifier:chatIdentifier];
 
-  v7 = [(IMDTelephonyIncomingMessageContext *)self mySIMIDString];
-  [(IMDTelephonyIncomingMessageContext *)v4 setMySIMIDString:v7];
+  mySIMIDString = [(IMDTelephonyIncomingMessageContext *)self mySIMIDString];
+  [(IMDTelephonyIncomingMessageContext *)v4 setMySIMIDString:mySIMIDString];
 
-  v8 = [(IMDTelephonyIncomingMessageContext *)self myNumberString];
-  [(IMDTelephonyIncomingMessageContext *)v4 setMyNumberString:v8];
+  myNumberString = [(IMDTelephonyIncomingMessageContext *)self myNumberString];
+  [(IMDTelephonyIncomingMessageContext *)v4 setMyNumberString:myNumberString];
 
-  v9 = [(IMDTelephonyIncomingMessageContext *)self sender];
-  [(IMDTelephonyIncomingMessageContext *)v4 setSender:v9];
+  sender = [(IMDTelephonyIncomingMessageContext *)self sender];
+  [(IMDTelephonyIncomingMessageContext *)v4 setSender:sender];
 
-  v10 = [(IMDTelephonyIncomingMessageContext *)self senderUnformatted];
-  [(IMDTelephonyIncomingMessageContext *)v4 setSenderUnformatted:v10];
+  senderUnformatted = [(IMDTelephonyIncomingMessageContext *)self senderUnformatted];
+  [(IMDTelephonyIncomingMessageContext *)v4 setSenderUnformatted:senderUnformatted];
 
-  v11 = [(IMDTelephonyIncomingMessageContext *)self countryCode];
-  [(IMDTelephonyIncomingMessageContext *)v4 setCountryCode:v11];
+  countryCode = [(IMDTelephonyIncomingMessageContext *)self countryCode];
+  [(IMDTelephonyIncomingMessageContext *)v4 setCountryCode:countryCode];
 
-  v12 = [(IMDTelephonyIncomingMessageContext *)self participants];
-  v13 = [v12 mutableCopy];
+  participants = [(IMDTelephonyIncomingMessageContext *)self participants];
+  v13 = [participants mutableCopy];
   [(IMDTelephonyIncomingMessageContext *)v4 setParticipants:v13];
 
-  v14 = [(IMDTelephonyIncomingMessageContext *)self unformattedIDs];
-  v15 = [v14 mutableCopy];
+  unformattedIDs = [(IMDTelephonyIncomingMessageContext *)self unformattedIDs];
+  v15 = [unformattedIDs mutableCopy];
   [(IMDTelephonyIncomingMessageContext *)v4 setUnformattedIDs:v15];
 
-  v16 = [(IMDTelephonyIncomingMessageContext *)self countryCodes];
-  v17 = [v16 mutableCopy];
+  countryCodes = [(IMDTelephonyIncomingMessageContext *)self countryCodes];
+  v17 = [countryCodes mutableCopy];
   [(IMDTelephonyIncomingMessageContext *)v4 setCountryCodes:v17];
 
   [(IMDTelephonyIncomingMessageContext *)v4 setStyle:[(IMDTelephonyIncomingMessageContext *)self style]];
   [(IMDTelephonyIncomingMessageContext *)v4 setWasRelayed:[(IMDTelephonyIncomingMessageContext *)self wasRelayed]];
-  v18 = [(IMDTelephonyIncomingMessageContext *)self groupID];
-  [(IMDTelephonyIncomingMessageContext *)v4 setGroupID:v18];
+  groupID = [(IMDTelephonyIncomingMessageContext *)self groupID];
+  [(IMDTelephonyIncomingMessageContext *)v4 setGroupID:groupID];
 
-  v19 = [(IMDTelephonyIncomingMessageContext *)self originalGroupID];
-  [(IMDTelephonyIncomingMessageContext *)v4 setOriginalGroupID:v19];
+  originalGroupID = [(IMDTelephonyIncomingMessageContext *)self originalGroupID];
+  [(IMDTelephonyIncomingMessageContext *)v4 setOriginalGroupID:originalGroupID];
 
-  v20 = [(IMDTelephonyIncomingMessageContext *)self displayName];
-  [(IMDTelephonyIncomingMessageContext *)v4 setDisplayName:v20];
+  displayName = [(IMDTelephonyIncomingMessageContext *)self displayName];
+  [(IMDTelephonyIncomingMessageContext *)v4 setDisplayName:displayName];
 
-  v21 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  LODWORD(v17) = [v21 isMergeBusinessSenderIndiaEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  LODWORD(v17) = [mEMORY[0x277D1A9B8] isMergeBusinessSenderIndiaEnabled];
 
   if (v17)
   {
@@ -80,55 +80,55 @@
   }
 
   v4 = MEMORY[0x277D1A8F8];
-  v5 = [(IMDTelephonyIncomingMessageContext *)self myNumberString];
-  v6 = [(IMDTelephonyIncomingMessageContext *)self mySIMIDString];
-  LOBYTE(v4) = [v4 IMMMSGroupTextOnlyMessagesSendAsMMSForPhoneNumber:v5 simID:v6];
+  myNumberString = [(IMDTelephonyIncomingMessageContext *)self myNumberString];
+  mySIMIDString = [(IMDTelephonyIncomingMessageContext *)self mySIMIDString];
+  LOBYTE(v4) = [v4 IMMMSGroupTextOnlyMessagesSendAsMMSForPhoneNumber:myNumberString simID:mySIMIDString];
 
   return v4;
 }
 
 - (BOOL)isGroupChat
 {
-  v3 = [(IMDTelephonyIncomingMessageContext *)self participants];
-  v4 = [v3 count] >= 2 && -[IMDTelephonyIncomingMessageContext isGroupMessagingEnabled](self, "isGroupMessagingEnabled");
+  participants = [(IMDTelephonyIncomingMessageContext *)self participants];
+  v4 = [participants count] >= 2 && -[IMDTelephonyIncomingMessageContext isGroupMessagingEnabled](self, "isGroupMessagingEnabled");
 
   return v4;
 }
 
 - (NSString)destinationCallerID
 {
-  v3 = [(IMDTelephonyIncomingMessageContext *)self myNumberString];
-  v4 = v3;
-  if (v3)
+  myNumberString = [(IMDTelephonyIncomingMessageContext *)self myNumberString];
+  v4 = myNumberString;
+  if (myNumberString)
   {
-    v5 = v3;
+    mySIMIDString = myNumberString;
   }
 
   else
   {
-    v5 = [(IMDTelephonyIncomingMessageContext *)self mySIMIDString];
+    mySIMIDString = [(IMDTelephonyIncomingMessageContext *)self mySIMIDString];
   }
 
-  v6 = v5;
+  v6 = mySIMIDString;
 
   return v6;
 }
 
-- (void)replaceParticipants:(id)a3
+- (void)replaceParticipants:(id)participants
 {
-  v4 = [a3 mutableCopy];
+  v4 = [participants mutableCopy];
   [(IMDTelephonyIncomingMessageContext *)self setParticipants:v4];
 }
 
-- (void)replaceUnformattedIDs:(id)a3
+- (void)replaceUnformattedIDs:(id)ds
 {
-  v4 = [a3 mutableCopy];
+  v4 = [ds mutableCopy];
   [(IMDTelephonyIncomingMessageContext *)self setUnformattedIDs:v4];
 }
 
-- (void)replaceCountryCodes:(id)a3
+- (void)replaceCountryCodes:(id)codes
 {
-  v4 = [a3 mutableCopy];
+  v4 = [codes mutableCopy];
   [(IMDTelephonyIncomingMessageContext *)self setCountryCodes:v4];
 }
 

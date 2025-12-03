@@ -1,8 +1,8 @@
 @interface PKPassViewGestureCollector
 - (PKPassViewGestureCollector)init;
-- (void)_groupStackViewPanned:(id)a3;
-- (void)registerGroupView:(id)a3 withPressGestureRecognizer:(id)a4 longPressGestureRecognizer:(id)a5 panGestureRecognizer:(id)a6 delegate:(id)a7;
-- (void)unregisterGroupView:(id)a3;
+- (void)_groupStackViewPanned:(id)panned;
+- (void)registerGroupView:(id)view withPressGestureRecognizer:(id)recognizer longPressGestureRecognizer:(id)gestureRecognizer panGestureRecognizer:(id)panGestureRecognizer delegate:(id)delegate;
+- (void)unregisterGroupView:(id)view;
 @end
 
 @implementation PKPassViewGestureCollector
@@ -14,31 +14,31 @@
   return result;
 }
 
-- (void)registerGroupView:(id)a3 withPressGestureRecognizer:(id)a4 longPressGestureRecognizer:(id)a5 panGestureRecognizer:(id)a6 delegate:(id)a7
+- (void)registerGroupView:(id)view withPressGestureRecognizer:(id)recognizer longPressGestureRecognizer:(id)gestureRecognizer panGestureRecognizer:(id)panGestureRecognizer delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  viewCopy = view;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  panGestureRecognizerCopy = panGestureRecognizer;
   swift_unknownObjectRetain();
-  v15 = self;
-  sub_1BD9A9814(v11, v12, v13, v14);
+  selfCopy = self;
+  sub_1BD9A9814(viewCopy, recognizerCopy, gestureRecognizerCopy, panGestureRecognizerCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)unregisterGroupView:(id)a3
+- (void)unregisterGroupView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BD9A9FCC(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1BD9A9FCC(viewCopy);
 }
 
-- (void)_groupStackViewPanned:(id)a3
+- (void)_groupStackViewPanned:(id)panned
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 isEnabled] && objc_msgSend(v4, sel_state) <= 2)
+  pannedCopy = panned;
+  selfCopy = self;
+  if ([pannedCopy isEnabled] && objc_msgSend(pannedCopy, sel_state) <= 2)
   {
     sub_1BD9AA200();
   }

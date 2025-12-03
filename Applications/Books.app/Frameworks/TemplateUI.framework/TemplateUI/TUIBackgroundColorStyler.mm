@@ -1,24 +1,24 @@
 @interface TUIBackgroundColorStyler
-- (BOOL)isEqualToStyle:(id)a3;
-- (void)applyStylingToLayer:(id)a3;
+- (BOOL)isEqualToStyle:(id)style;
+- (void)applyStylingToLayer:(id)layer;
 @end
 
 @implementation TUIBackgroundColorStyler
 
-- (void)applyStylingToLayer:(id)a3
+- (void)applyStylingToLayer:(id)layer
 {
   backgroundColor = self->_backgroundColor;
-  v4 = a3;
-  [v4 setBackgroundColor:{-[UIColor CGColor](backgroundColor, "CGColor")}];
+  layerCopy = layer;
+  [layerCopy setBackgroundColor:{-[UIColor CGColor](backgroundColor, "CGColor")}];
 }
 
-- (BOOL)isEqualToStyle:(id)a3
+- (BOOL)isEqualToStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = v4;
+    v6 = styleCopy;
   }
 
   else

@@ -1,11 +1,11 @@
 @interface NWRemotePacketProxy
-- (BOOL)receiveRemotePacket:(id)a3;
-- (NWRemotePacketProxy)initWithDelegate:(id)a3;
+- (BOOL)receiveRemotePacket:(id)packet;
+- (NWRemotePacketProxy)initWithDelegate:(id)delegate;
 - (NWRemotePacketProxyDelegate)delegate;
-- (nw_protocol)outputHandlerForPacket:(id)a3 inbound:(BOOL)a4;
+- (nw_protocol)outputHandlerForPacket:(id)packet inbound:(BOOL)inbound;
 - (void)dealloc;
-- (void)setOutputProtocolHandler:(nw_protocol *)a3 local:(id)a4 remote:(id)a5 ipProtocol:(unsigned __int8)a6;
-- (void)setReceiveWindowPacketCount:(unsigned int)a3;
+- (void)setOutputProtocolHandler:(nw_protocol *)handler local:(id)local remote:(id)remote ipProtocol:(unsigned __int8)protocol;
+- (void)setReceiveWindowPacketCount:(unsigned int)count;
 @end
 
 @implementation NWRemotePacketProxy
@@ -17,11 +17,11 @@
   return WeakRetained;
 }
 
-- (BOOL)receiveRemotePacket:(id)a3
+- (BOOL)receiveRemotePacket:(id)packet
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  packetCopy = packet;
+  if (!packetCopy)
   {
     v15 = __nwlog_obj();
     *buf = 136446210;
@@ -95,83 +95,83 @@ LABEL_28:
     goto LABEL_11;
   }
 
-  v5 = [(NWRemotePacketProxy *)self outputHandlerForPacket:v4 inbound:1];
-  v6 = [(NWRemotePacketProxy *)self writeRequests];
-  objc_sync_enter(v6);
+  v5 = [(NWRemotePacketProxy *)self outputHandlerForPacket:packetCopy inbound:1];
+  writeRequests = [(NWRemotePacketProxy *)self writeRequests];
+  objc_sync_enter(writeRequests);
   while (1)
   {
-    v7 = [(NWRemotePacketProxy *)self writeRequests];
-    v8 = [v7 count];
+    writeRequests2 = [(NWRemotePacketProxy *)self writeRequests];
+    v8 = [writeRequests2 count];
 
     if (!v8)
     {
       break;
     }
 
-    v9 = [(NWRemotePacketProxy *)self writeRequests];
-    v10 = [v9 firstObject];
+    writeRequests3 = [(NWRemotePacketProxy *)self writeRequests];
+    firstObject = [writeRequests3 firstObject];
 
-    if (!nw_remote_director_write_request([(NWRemotePacketProxy *)self packetProtocol], v5, v10))
+    if (!nw_remote_director_write_request([(NWRemotePacketProxy *)self packetProtocol], v5, firstObject))
     {
 
       break;
     }
 
-    v11 = [(NWRemotePacketProxy *)self writeRequests];
-    [v11 removeObjectAtIndex:0];
+    writeRequests4 = [(NWRemotePacketProxy *)self writeRequests];
+    [writeRequests4 removeObjectAtIndex:0];
   }
 
-  v12 = [[NWRemoteConnectionWriteRequest alloc] initWithData:v4 clientID:0];
+  v12 = [[NWRemoteConnectionWriteRequest alloc] initWithData:packetCopy clientID:0];
   if (v8 || !nw_remote_director_write_request([(NWRemotePacketProxy *)self packetProtocol], v5, v12))
   {
-    v13 = [(NWRemotePacketProxy *)self writeRequests];
-    [v13 addObject:v12];
+    writeRequests5 = [(NWRemotePacketProxy *)self writeRequests];
+    [writeRequests5 addObject:v12];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(writeRequests);
 LABEL_11:
 
-  return v4 != 0;
+  return packetCopy != 0;
 }
 
-- (void)setOutputProtocolHandler:(nw_protocol *)a3 local:(id)a4 remote:(id)a5 ipProtocol:(unsigned __int8)a6
+- (void)setOutputProtocolHandler:(nw_protocol *)handler local:(id)local remote:(id)remote ipProtocol:(unsigned __int8)protocol
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
+  localCopy = local;
+  remoteCopy = remote;
   v12 = malloc_type_calloc(1uLL, 0x3CuLL, 0x1000040C2DCA394uLL);
   if (v12)
   {
     v13 = v12;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 address])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [localCopy address])
     {
       __memcpy_chk();
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 address])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [remoteCopy address])
     {
       __memcpy_chk();
     }
 
-    v13[56] = a6;
-    v14 = [(NWRemotePacketProxy *)self packetHashTable];
-    node = nw_hash_table_get_node(v14, v13, 60);
+    v13[56] = protocol;
+    packetHashTable = [(NWRemotePacketProxy *)self packetHashTable];
+    node = nw_hash_table_get_node(packetHashTable, v13, 60);
     v16 = node;
-    if (!a3)
+    if (!handler)
     {
       if (node)
       {
-        nw_hash_table_remove_node(v14, node);
+        nw_hash_table_remove_node(packetHashTable, node);
       }
 
       goto LABEL_30;
     }
 
-    if (node || (v16 = nw_hash_table_add_object(v14, v13, 0)) != 0)
+    if (node || (v16 = nw_hash_table_add_object(packetHashTable, v13, 0)) != 0)
     {
-      *(v16 + 32) = a3;
+      *(v16 + 32) = handler;
 LABEL_30:
       free(v13);
       goto LABEL_31;
@@ -373,25 +373,25 @@ LABEL_29:
 LABEL_31:
 }
 
-- (nw_protocol)outputHandlerForPacket:(id)a3 inbound:(BOOL)a4
+- (nw_protocol)outputHandlerForPacket:(id)packet inbound:(BOOL)inbound
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NWRemotePacketProxy *)self packetHashTable];
-  if (!nw_hash_table_count(v7, v8))
+  inboundCopy = inbound;
+  packetCopy = packet;
+  packetHashTable = [(NWRemotePacketProxy *)self packetHashTable];
+  if (!nw_hash_table_count(packetHashTable, v8))
   {
     goto LABEL_37;
   }
 
   *&v25[8] = 0u;
-  v9 = [v6 length];
-  v10 = [v6 bytes];
-  if (!v10 || !v9)
+  v9 = [packetCopy length];
+  bytes = [packetCopy bytes];
+  if (!bytes || !v9)
   {
     goto LABEL_37;
   }
 
-  v11 = *v10 & 0xF0;
+  v11 = *bytes & 0xF0;
   if (v11 == 96)
   {
     v22 = 7708;
@@ -402,7 +402,7 @@ LABEL_31:
     }
 
     v16 = 8;
-    if (v4)
+    if (inboundCopy)
     {
       v17 = 24;
     }
@@ -412,14 +412,14 @@ LABEL_31:
       v17 = 8;
     }
 
-    if (!v4)
+    if (!inboundCopy)
     {
       v16 = 24;
     }
 
-    *&v21[8] = *(v10 + v17);
-    *v25 = *(v10 + v16);
-    v25[20] = *(v10 + 6);
+    *&v21[8] = *(bytes + v17);
+    *v25 = *(bytes + v16);
+    v25[20] = *(bytes + 6);
     if (v25[20] == 17)
     {
       if (v9 <= 0x2F)
@@ -427,7 +427,7 @@ LABEL_31:
         goto LABEL_37;
       }
 
-      if (v4)
+      if (inboundCopy)
       {
         goto LABEL_27;
       }
@@ -445,17 +445,17 @@ LABEL_31:
         goto LABEL_37;
       }
 
-      if (v4)
+      if (inboundCopy)
       {
 LABEL_27:
-        *&v21[2] = *(v10 + 42);
-        v15 = *(v10 + 40);
+        *&v21[2] = *(bytes + 42);
+        v15 = *(bytes + 40);
         goto LABEL_34;
       }
     }
 
-    *&v21[2] = *(v10 + 40);
-    v15 = *(v10 + 42);
+    *&v21[2] = *(bytes + 40);
+    v15 = *(bytes + 42);
     goto LABEL_34;
   }
 
@@ -472,7 +472,7 @@ LABEL_27:
   }
 
   v12 = 12;
-  if (v4)
+  if (inboundCopy)
   {
     v13 = 16;
   }
@@ -482,32 +482,32 @@ LABEL_27:
     v13 = 12;
   }
 
-  if (!v4)
+  if (!inboundCopy)
   {
     v12 = 16;
   }
 
-  v14 = *(v10 + v12);
-  *&v21[4] = *(v10 + v13);
+  v14 = *(bytes + v12);
+  *&v21[4] = *(bytes + v13);
   v24 = v14;
-  v25[20] = *(v10 + 9);
+  v25[20] = *(bytes + 9);
   if (v25[20] == 17)
   {
     if (v9 > 0x1B)
     {
-      if (v4)
+      if (inboundCopy)
       {
         goto LABEL_16;
       }
 
 LABEL_30:
-      *&v21[2] = *(v10 + 20);
-      v15 = *(v10 + 22);
+      *&v21[2] = *(bytes + 20);
+      v15 = *(bytes + 22);
       goto LABEL_34;
     }
 
 LABEL_37:
-    v19 = [(NWRemotePacketProxy *)self defaultOutputHandler];
+    defaultOutputHandler = [(NWRemotePacketProxy *)self defaultOutputHandler];
     goto LABEL_38;
   }
 
@@ -521,14 +521,14 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v4)
+  if (!inboundCopy)
   {
     goto LABEL_30;
   }
 
 LABEL_16:
-  *&v21[2] = *(v10 + 22);
-  v15 = *(v10 + 20);
+  *&v21[2] = *(bytes + 22);
+  v15 = *(bytes + 20);
 LABEL_34:
   v23 = v15;
 LABEL_35:
@@ -538,32 +538,32 @@ LABEL_35:
     goto LABEL_37;
   }
 
-  v19 = *(node + 32);
+  defaultOutputHandler = *(node + 32);
 LABEL_38:
 
-  return v19;
+  return defaultOutputHandler;
 }
 
-- (void)setReceiveWindowPacketCount:(unsigned int)a3
+- (void)setReceiveWindowPacketCount:(unsigned int)count
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  receiveWindowPacketCount = v4->_receiveWindowPacketCount;
-  v4->_receiveWindowPacketCount = a3;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  receiveWindowPacketCount = selfCopy->_receiveWindowPacketCount;
+  selfCopy->_receiveWindowPacketCount = count;
+  objc_sync_exit(selfCopy);
 
-  if (a3)
+  if (count)
   {
     if (!receiveWindowPacketCount)
     {
-      nw_remote_packet_input_available([(NWRemotePacketProxy *)v4 packetProtocol], [(NWRemotePacketProxy *)v4 defaultOutputHandler]);
-      v6 = [(NWRemotePacketProxy *)v4 packetHashTable];
+      nw_remote_packet_input_available([(NWRemotePacketProxy *)selfCopy packetProtocol], [(NWRemotePacketProxy *)selfCopy defaultOutputHandler]);
+      packetHashTable = [(NWRemotePacketProxy *)selfCopy packetHashTable];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __51__NWRemotePacketProxy_setReceiveWindowPacketCount___block_invoke;
       v7[3] = &unk_1E6A3CDF8;
-      v7[4] = v4;
-      nw_hash_table_apply(v6, v7);
+      v7[4] = selfCopy;
+      nw_hash_table_apply(packetHashTable, v7);
     }
   }
 }
@@ -585,8 +585,8 @@ uint64_t __51__NWRemotePacketProxy_setReceiveWindowPacketCount___block_invoke(ui
 
   if ([(NWRemotePacketProxy *)self packetHashTable]&& [(NWRemotePacketProxy *)self packetHashTable])
   {
-    v3 = [(NWRemotePacketProxy *)self packetHashTable];
-    _nw_hash_table_release(v3, v4);
+    packetHashTable = [(NWRemotePacketProxy *)self packetHashTable];
+    _nw_hash_table_release(packetHashTable, v4);
     [(NWRemotePacketProxy *)self setPacketHashTable:0];
   }
 
@@ -595,11 +595,11 @@ uint64_t __51__NWRemotePacketProxy_setReceiveWindowPacketCount___block_invoke(ui
   [(NWRemotePacketProxy *)&v5 dealloc];
 }
 
-- (NWRemotePacketProxy)initWithDelegate:(id)a3
+- (NWRemotePacketProxy)initWithDelegate:(id)delegate
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     v28 = __nwlog_obj();
     *buf = 136446210;
@@ -769,10 +769,10 @@ LABEL_75:
 
   self = v5;
   v5->_receiveWindowPacketCount = 16;
-  objc_storeWeak(&v5->_delegate, v4);
-  v6 = [MEMORY[0x1E695DF70] array];
+  objc_storeWeak(&v5->_delegate, delegateCopy);
+  array = [MEMORY[0x1E695DF70] array];
   writeRequests = self->_writeRequests;
-  self->_writeRequests = v6;
+  self->_writeRequests = array;
 
   v8 = malloc_type_calloc(1uLL, 0x40uLL, 0x10A0040C9AB51B7uLL);
   self->_packetProtocol = v8;

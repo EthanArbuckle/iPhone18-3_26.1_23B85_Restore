@@ -1,9 +1,9 @@
 @interface RPNWConnection
-+ (void)addConnection:(id)a3;
++ (void)addConnection:(id)connection;
 + (void)initialize;
-+ (void)listConnections:(id)a3;
-+ (void)removeConnection:(id)a3;
-+ (void)stopAllOutgoingConnectionsNotForPeer:(id)a3;
++ (void)listConnections:(id)connections;
++ (void)removeConnection:(id)connection;
++ (void)stopAllOutgoingConnectionsNotForPeer:(id)peer;
 - (RPNWConnection)init;
 - (id)description;
 - (void)dealloc;
@@ -16,7 +16,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = [[NSMapTable alloc] initWithKeyOptions:5 valueOptions:5 capacity:10];
     v5 = qword_1001D6190;
@@ -51,15 +51,15 @@
     v8 = "no";
   }
 
-  v9 = [(RPNWPeer *)self->_peer destinationDevice];
-  v10 = [v9 name];
+  destinationDevice = [(RPNWPeer *)self->_peer destinationDevice];
+  name = [destinationDevice name];
   token = self->_token;
   endpointUUID = self->_endpointUUID;
   v13 = self->_framer;
   v14 = objc_alloc_init(NSMutableString);
   [v14 appendFormat:@"%p", v13];
 
-  [v3 appendFormat:@"CONN[%@] (%s): version=%.2f appSvc=%@ connected=%s EP={%@:%@} flowToken=%@ framer=%@", connectionUUID, v4, v6, applicationService, v8, v10, endpointUUID, token, v14];
+  [v3 appendFormat:@"CONN[%@] (%s): version=%.2f appSvc=%@ connected=%s EP={%@:%@} flowToken=%@ framer=%@", connectionUUID, v4, v6, applicationService, v8, name, endpointUUID, token, v14];
 
   return v3;
 }
@@ -81,9 +81,9 @@
 - (void)dealloc
 {
   [RPNWConnection removeConnection:self];
-  v3 = [(RPNWConnection *)self endpointUUID];
+  endpointUUID = [(RPNWConnection *)self endpointUUID];
   v4 = +[RPNWEndpoint globalEndpointsKey];
-  [RPNWEndpoint ageOutEndpointMapping:v3 discoverySessionID:v4];
+  [RPNWEndpoint ageOutEndpointMapping:endpointUUID discoverySessionID:v4];
 
   v5.receiver = self;
   v5.super_class = RPNWConnection;
@@ -105,18 +105,18 @@
   }
 }
 
-+ (void)addConnection:(id)a3
++ (void)addConnection:(id)connection
 {
-  v7 = a3;
-  if ([v7 inbound])
+  connectionCopy = connection;
+  if ([connectionCopy inbound])
   {
     if (dword_1001D3A88 > 30 || dword_1001D3A88 == -1 && !_LogCategory_Initialize())
     {
       goto LABEL_11;
     }
 
-    v3 = [v7 connectionUUID];
-    v6 = v3;
+    connectionUUID = [connectionCopy connectionUUID];
+    v6 = connectionUUID;
     LogPrintF();
 LABEL_5:
 
@@ -125,41 +125,41 @@ LABEL_5:
 
   if (dword_1001D3A88 <= 30 && (dword_1001D3A88 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001182F0(v7, &v8);
-    v3 = v8;
+    sub_1001182F0(connectionCopy, &v8);
+    connectionUUID = v8;
     goto LABEL_5;
   }
 
 LABEL_11:
   v4 = qword_1001D6190;
-  v5 = [v7 connectionUUID];
-  [v4 setObject:v7 forKey:v5];
+  connectionUUID2 = [connectionCopy connectionUUID];
+  [v4 setObject:connectionCopy forKey:connectionUUID2];
 }
 
-+ (void)removeConnection:(id)a3
++ (void)removeConnection:(id)connection
 {
-  v3 = a3;
-  v7 = v3;
+  connectionCopy = connection;
+  v7 = connectionCopy;
   if (dword_1001D3A88 <= 30)
   {
-    if (dword_1001D3A88 != -1 || (v4 = _LogCategory_Initialize(), v3 = v7, v4))
+    if (dword_1001D3A88 != -1 || (v4 = _LogCategory_Initialize(), connectionCopy = v7, v4))
     {
-      sub_10011837C(v3);
-      v3 = v7;
+      sub_10011837C(connectionCopy);
+      connectionCopy = v7;
     }
   }
 
   v5 = qword_1001D6190;
-  v6 = [v3 connectionUUID];
-  [v5 removeObjectForKey:v6];
+  connectionUUID = [connectionCopy connectionUUID];
+  [v5 removeObjectForKey:connectionUUID];
 }
 
-+ (void)stopAllOutgoingConnectionsNotForPeer:(id)a3
++ (void)stopAllOutgoingConnectionsNotForPeer:(id)peer
 {
-  v3 = a3;
+  peerCopy = peer;
   if (dword_1001D3A88 <= 40 && (dword_1001D3A88 != -1 || _LogCategory_Initialize()))
   {
-    sub_100118404(v3);
+    sub_100118404(peerCopy);
   }
 
   v19 = 0u;
@@ -190,9 +190,9 @@ LABEL_11:
           {
             if (([v10 inbound] & 1) == 0 && (objc_msgSend(v10, "internal") & 1) == 0)
             {
-              v11 = [v10 peer];
-              v12 = [v11 destinationDevice];
-              v13 = [v12 isEqualToDevice:v3];
+              peer = [v10 peer];
+              destinationDevice = [peer destinationDevice];
+              v13 = [destinationDevice isEqualToDevice:peerCopy];
 
               if ((v13 & 1) == 0)
               {
@@ -201,9 +201,9 @@ LABEL_11:
                   sub_100118460(v10);
                 }
 
-                v14 = [v10 framer];
-                v15 = [v10 token];
-                [RPNWFramer writeErrorOnFramer:v14 token:v15 error:50];
+                framer = [v10 framer];
+                token = [v10 token];
+                [RPNWFramer writeErrorOnFramer:framer token:token error:50];
               }
             }
           }
@@ -221,10 +221,10 @@ LABEL_11:
   }
 }
 
-+ (void)listConnections:(id)a3
++ (void)listConnections:(id)connections
 {
-  v3 = a3;
-  [v3 appendString:@"Connections\n"];
+  connectionsCopy = connections;
+  [connectionsCopy appendString:@"Connections\n"];
   if ([qword_1001D6190 count])
   {
     v14 = 0u;
@@ -252,7 +252,7 @@ LABEL_11:
           if (v9)
           {
             v11 = [v9 description];
-            [v3 appendFormat:@"  %@\n", v11];
+            [connectionsCopy appendFormat:@"  %@\n", v11];
           }
 
           v8 = v8 + 1;
@@ -268,7 +268,7 @@ LABEL_11:
 
   else
   {
-    [v3 appendString:@"  <empty>\n"];
+    [connectionsCopy appendString:@"  <empty>\n"];
   }
 }
 

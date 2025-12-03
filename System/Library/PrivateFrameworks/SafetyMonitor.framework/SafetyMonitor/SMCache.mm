@@ -1,18 +1,18 @@
 @interface SMCache
-+ (void)logNoCacheDataForSessionID:(id)a3 role:(id)a4 deviceType:(id)a5 transaction:(id)a6;
-- (BOOL)shiftRequiredForLocation:(id)a3;
++ (void)logNoCacheDataForSessionID:(id)d role:(id)role deviceType:(id)type transaction:(id)transaction;
+- (BOOL)shiftRequiredForLocation:(id)location;
 - (SMCache)init;
-- (SMCache)initWithCoder:(id)a3;
-- (SMCache)initWithDictionary:(id)a3;
-- (SMCache)initWithIdentifier:(id)a3 deviceStatus:(id)a4 locationsDuringSession:(id)a5 unlockLocation:(id)a6 lockLocation:(id)a7 mostRecentLocation:(id)a8 startingLocation:(id)a9 offWristLocation:(id)a10 parkedCarLocation:(id)a11 destinationMapItem:(id)a12 workoutEvents:(id)a13;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SMCache)initWithCoder:(id)coder;
+- (SMCache)initWithDictionary:(id)dictionary;
+- (SMCache)initWithIdentifier:(id)identifier deviceStatus:(id)status locationsDuringSession:(id)session unlockLocation:(id)location lockLocation:(id)lockLocation mostRecentLocation:(id)recentLocation startingLocation:(id)startingLocation offWristLocation:(id)self0 parkedCarLocation:(id)self1 destinationMapItem:(id)self2 workoutEvents:(id)self3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)outputToDictionary;
 - (unint64_t)identifierHash;
-- (void)encodeWithCoder:(id)a3;
-- (void)logCacheForSessionID:(id)a3 role:(id)a4 deviceType:(id)a5 transaction:(id)a6 hashString:(id)a7;
-- (void)shiftLocation:(id)a3 queue:(id)a4 withHandler:(id)a5;
-- (void)shiftLocationsOnQueue:(id)a3 handler:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)logCacheForSessionID:(id)d role:(id)role deviceType:(id)type transaction:(id)transaction hashString:(id)string;
+- (void)shiftLocation:(id)location queue:(id)queue withHandler:(id)handler;
+- (void)shiftLocationsOnQueue:(id)queue handler:(id)handler;
 @end
 
 @implementation SMCache
@@ -28,21 +28,21 @@
   return v7;
 }
 
-- (SMCache)initWithIdentifier:(id)a3 deviceStatus:(id)a4 locationsDuringSession:(id)a5 unlockLocation:(id)a6 lockLocation:(id)a7 mostRecentLocation:(id)a8 startingLocation:(id)a9 offWristLocation:(id)a10 parkedCarLocation:(id)a11 destinationMapItem:(id)a12 workoutEvents:(id)a13
+- (SMCache)initWithIdentifier:(id)identifier deviceStatus:(id)status locationsDuringSession:(id)session unlockLocation:(id)location lockLocation:(id)lockLocation mostRecentLocation:(id)recentLocation startingLocation:(id)startingLocation offWristLocation:(id)self0 parkedCarLocation:(id)self1 destinationMapItem:(id)self2 workoutEvents:(id)self3
 {
-  v18 = a3;
-  v39 = a4;
-  v28 = a5;
-  v38 = a5;
-  v37 = a6;
-  v36 = a7;
-  v35 = a8;
-  v34 = a9;
-  v33 = a10;
-  v32 = a11;
-  v31 = a12;
-  v30 = a13;
-  if (v18)
+  identifierCopy = identifier;
+  statusCopy = status;
+  sessionCopy = session;
+  sessionCopy2 = session;
+  locationCopy = location;
+  lockLocationCopy = lockLocation;
+  recentLocationCopy = recentLocation;
+  startingLocationCopy = startingLocation;
+  wristLocationCopy = wristLocation;
+  carLocationCopy = carLocation;
+  itemCopy = item;
+  eventsCopy = events;
+  if (identifierCopy)
   {
     v40.receiver = self;
     v40.super_class = SMCache;
@@ -50,29 +50,29 @@
     v20 = v19;
     if (v19)
     {
-      objc_storeStrong(&v19->_identifier, a3);
-      objc_storeStrong(&v20->_deviceStatus, a4);
-      objc_storeStrong(&v20->_locationsDuringSession, v28);
-      objc_storeStrong(&v20->_unlockLocation, a6);
-      objc_storeStrong(&v20->_lockLocation, a7);
-      objc_storeStrong(&v20->_mostRecentLocation, a8);
-      objc_storeStrong(&v20->_startingLocation, a9);
-      objc_storeStrong(&v20->_offWristLocation, a10);
-      objc_storeStrong(&v20->_parkedCarLocation, a11);
-      objc_storeStrong(&v20->_destinationMapItem, a12);
-      objc_storeStrong(&v20->_workoutEvents, a13);
+      objc_storeStrong(&v19->_identifier, identifier);
+      objc_storeStrong(&v20->_deviceStatus, status);
+      objc_storeStrong(&v20->_locationsDuringSession, sessionCopy);
+      objc_storeStrong(&v20->_unlockLocation, location);
+      objc_storeStrong(&v20->_lockLocation, lockLocation);
+      objc_storeStrong(&v20->_mostRecentLocation, recentLocation);
+      objc_storeStrong(&v20->_startingLocation, startingLocation);
+      objc_storeStrong(&v20->_offWristLocation, wristLocation);
+      objc_storeStrong(&v20->_parkedCarLocation, carLocation);
+      objc_storeStrong(&v20->_destinationMapItem, item);
+      objc_storeStrong(&v20->_workoutEvents, events);
       v21 = objc_alloc_init(MEMORY[0x277D0EB88]);
       shifter = v20->_shifter;
       v20->_shifter = v21;
     }
 
-    v23 = v20;
-    v24 = v23;
+    selfCopy = v20;
+    v24 = selfCopy;
   }
 
   else
   {
-    v23 = self;
+    selfCopy = self;
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -86,20 +86,20 @@
   return v24;
 }
 
-- (SMCache)initWithDictionary:(id)a3
+- (SMCache)initWithDictionary:(id)dictionary
 {
   v59 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v3 valueForKey:@"identifier"];
-  v48 = [v4 initWithUUIDString:v5];
+  dictionaryCopy = dictionary;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v5 = [dictionaryCopy valueForKey:@"identifier"];
+  v48 = [uUID initWithUUIDString:v5];
 
   v6 = objc_opt_new();
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v7 = [v3 valueForKey:@"locationsDuringSession"];
+  v7 = [dictionaryCopy valueForKey:@"locationsDuringSession"];
   v8 = [v7 countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v8)
   {
@@ -125,39 +125,39 @@
   }
 
   v13 = [SMLocation alloc];
-  v14 = [v3 valueForKey:@"unlockLocation"];
+  v14 = [dictionaryCopy valueForKey:@"unlockLocation"];
   v45 = [(SMLocation *)v13 initWithDictionary:v14];
 
   v15 = [SMLocation alloc];
-  v16 = [v3 valueForKey:@"lockLocation"];
+  v16 = [dictionaryCopy valueForKey:@"lockLocation"];
   v44 = [(SMLocation *)v15 initWithDictionary:v16];
 
   v17 = [SMLocation alloc];
-  v18 = [v3 valueForKey:@"mostRecentLocation"];
+  v18 = [dictionaryCopy valueForKey:@"mostRecentLocation"];
   v43 = [(SMLocation *)v17 initWithDictionary:v18];
 
   v19 = [SMDeviceStatus alloc];
-  v20 = [v3 valueForKey:@"deviceStatus"];
+  v20 = [dictionaryCopy valueForKey:@"deviceStatus"];
   v42 = [(SMDeviceStatus *)v19 initWithDictionary:v20];
 
   v21 = [SMLocation alloc];
-  v22 = [v3 valueForKey:@"startingLocation"];
+  v22 = [dictionaryCopy valueForKey:@"startingLocation"];
   v41 = [(SMLocation *)v21 initWithDictionary:v22];
 
   v23 = [SMLocation alloc];
-  v24 = [v3 valueForKey:@"offWristLocation"];
+  v24 = [dictionaryCopy valueForKey:@"offWristLocation"];
   v40 = [(SMLocation *)v23 initWithDictionary:v24];
 
   v25 = [SMLocation alloc];
-  v26 = [v3 valueForKey:@"parkedCar"];
+  v26 = [dictionaryCopy valueForKey:@"parkedCar"];
   v39 = [(SMLocation *)v25 initWithDictionary:v26];
 
-  v27 = [v3 valueForKey:@"destinationMapItem"];
+  v27 = [dictionaryCopy valueForKey:@"destinationMapItem"];
 
   if (v27)
   {
     v28 = objc_alloc(MEMORY[0x277CBEA90]);
-    v29 = [v3 valueForKey:@"destinationMapItem"];
+    v29 = [dictionaryCopy valueForKey:@"destinationMapItem"];
     v27 = [v28 initWithBase64EncodedString:v29 options:0];
   }
 
@@ -166,7 +166,7 @@
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v31 = [v3 valueForKey:@"workoutEvents"];
+  v31 = [dictionaryCopy valueForKey:@"workoutEvents"];
   v32 = [v31 countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (v32)
   {
@@ -200,17 +200,17 @@
 {
   v56 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(SMCache *)self identifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKey:@"identifier"];
+  identifier = [(SMCache *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [v3 setObject:uUIDString forKey:@"identifier"];
 
   v6 = objc_opt_new();
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v7 = [(SMCache *)self locationsDuringSession];
-  v8 = [v7 countByEnumeratingWithState:&v50 objects:v55 count:16];
+  locationsDuringSession = [(SMCache *)self locationsDuringSession];
+  v8 = [locationsDuringSession countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v8)
   {
     v9 = v8;
@@ -221,90 +221,90 @@
       {
         if (*v51 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(locationsDuringSession);
         }
 
-        v12 = [*(*(&v50 + 1) + 8 * i) outputToDictionary];
-        [v6 addObject:v12];
+        outputToDictionary = [*(*(&v50 + 1) + 8 * i) outputToDictionary];
+        [v6 addObject:outputToDictionary];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v50 objects:v55 count:16];
+      v9 = [locationsDuringSession countByEnumeratingWithState:&v50 objects:v55 count:16];
     }
 
     while (v9);
   }
 
   [v3 setObject:v6 forKey:@"locationsDuringSession"];
-  v13 = [(SMCache *)self unlockLocation];
+  unlockLocation = [(SMCache *)self unlockLocation];
 
-  if (v13)
+  if (unlockLocation)
   {
-    v14 = [(SMCache *)self unlockLocation];
-    v15 = [v14 outputToDictionary];
-    [v3 setObject:v15 forKey:@"unlockLocation"];
+    unlockLocation2 = [(SMCache *)self unlockLocation];
+    outputToDictionary2 = [unlockLocation2 outputToDictionary];
+    [v3 setObject:outputToDictionary2 forKey:@"unlockLocation"];
   }
 
-  v16 = [(SMCache *)self lockLocation];
+  lockLocation = [(SMCache *)self lockLocation];
 
-  if (v16)
+  if (lockLocation)
   {
-    v17 = [(SMCache *)self lockLocation];
-    v18 = [v17 outputToDictionary];
-    [v3 setObject:v18 forKey:@"lockLocation"];
+    lockLocation2 = [(SMCache *)self lockLocation];
+    outputToDictionary3 = [lockLocation2 outputToDictionary];
+    [v3 setObject:outputToDictionary3 forKey:@"lockLocation"];
   }
 
-  v19 = [(SMCache *)self mostRecentLocation];
+  mostRecentLocation = [(SMCache *)self mostRecentLocation];
 
-  if (v19)
+  if (mostRecentLocation)
   {
-    v20 = [(SMCache *)self mostRecentLocation];
-    v21 = [v20 outputToDictionary];
-    [v3 setObject:v21 forKey:@"mostRecentLocation"];
+    mostRecentLocation2 = [(SMCache *)self mostRecentLocation];
+    outputToDictionary4 = [mostRecentLocation2 outputToDictionary];
+    [v3 setObject:outputToDictionary4 forKey:@"mostRecentLocation"];
   }
 
-  v22 = [(SMCache *)self startingLocation];
+  startingLocation = [(SMCache *)self startingLocation];
 
-  if (v22)
+  if (startingLocation)
   {
-    v23 = [(SMCache *)self startingLocation];
-    v24 = [v23 outputToDictionary];
-    [v3 setObject:v24 forKey:@"startingLocation"];
+    startingLocation2 = [(SMCache *)self startingLocation];
+    outputToDictionary5 = [startingLocation2 outputToDictionary];
+    [v3 setObject:outputToDictionary5 forKey:@"startingLocation"];
   }
 
-  v25 = [(SMCache *)self offWristLocation];
+  offWristLocation = [(SMCache *)self offWristLocation];
 
-  if (v25)
+  if (offWristLocation)
   {
-    v26 = [(SMCache *)self offWristLocation];
-    v27 = [v26 outputToDictionary];
-    [v3 setObject:v27 forKey:@"offWristLocation"];
+    offWristLocation2 = [(SMCache *)self offWristLocation];
+    outputToDictionary6 = [offWristLocation2 outputToDictionary];
+    [v3 setObject:outputToDictionary6 forKey:@"offWristLocation"];
   }
 
-  v28 = [(SMCache *)self parkedCarLocation];
+  parkedCarLocation = [(SMCache *)self parkedCarLocation];
 
-  if (v28)
+  if (parkedCarLocation)
   {
-    v29 = [(SMCache *)self parkedCarLocation];
-    v30 = [v29 outputToDictionary];
-    [v3 setObject:v30 forKey:@"parkedCar"];
+    parkedCarLocation2 = [(SMCache *)self parkedCarLocation];
+    outputToDictionary7 = [parkedCarLocation2 outputToDictionary];
+    [v3 setObject:outputToDictionary7 forKey:@"parkedCar"];
   }
 
-  v31 = [(SMCache *)self destinationMapItem];
+  destinationMapItem = [(SMCache *)self destinationMapItem];
 
-  if (v31)
+  if (destinationMapItem)
   {
-    v32 = [(SMCache *)self destinationMapItem];
-    v33 = [v32 base64EncodedStringWithOptions:0];
+    destinationMapItem2 = [(SMCache *)self destinationMapItem];
+    v33 = [destinationMapItem2 base64EncodedStringWithOptions:0];
     [v3 setObject:v33 forKey:@"destinationMapItem"];
   }
 
-  v34 = [(SMCache *)self deviceStatus];
+  deviceStatus = [(SMCache *)self deviceStatus];
 
-  if (v34)
+  if (deviceStatus)
   {
-    v35 = [(SMCache *)self deviceStatus];
-    v36 = [v35 outputToDictionary];
-    [v3 setObject:v36 forKey:@"deviceStatus"];
+    deviceStatus2 = [(SMCache *)self deviceStatus];
+    outputToDictionary8 = [deviceStatus2 outputToDictionary];
+    [v3 setObject:outputToDictionary8 forKey:@"deviceStatus"];
   }
 
   v37 = objc_opt_new();
@@ -312,8 +312,8 @@
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v38 = [(SMCache *)self workoutEvents];
-  v39 = [v38 countByEnumeratingWithState:&v46 objects:v54 count:16];
+  workoutEvents = [(SMCache *)self workoutEvents];
+  v39 = [workoutEvents countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v39)
   {
     v40 = v39;
@@ -324,14 +324,14 @@
       {
         if (*v47 != v41)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(workoutEvents);
         }
 
-        v43 = [*(*(&v46 + 1) + 8 * j) outputToDictionary];
-        [v37 addObject:v43];
+        outputToDictionary9 = [*(*(&v46 + 1) + 8 * j) outputToDictionary];
+        [v37 addObject:outputToDictionary9];
       }
 
-      v40 = [v38 countByEnumeratingWithState:&v46 objects:v54 count:16];
+      v40 = [workoutEvents countByEnumeratingWithState:&v46 objects:v54 count:16];
     }
 
     while (v40);
@@ -346,15 +346,15 @@
 - (unint64_t)identifierHash
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [(SMCache *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(SMCache *)self identifier];
+  v4 = [identifier hash];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = [(SMCache *)self locationsDuringSession];
-  v6 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  locationsDuringSession = [(SMCache *)self locationsDuringSession];
+  v6 = [locationsDuringSession countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v6)
   {
     v7 = v6;
@@ -366,59 +366,59 @@
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(locationsDuringSession);
         }
 
-        v10 = [*(*(&v35 + 1) + 8 * v9) identifier];
-        v4 ^= [v10 hash];
+        identifier2 = [*(*(&v35 + 1) + 8 * v9) identifier];
+        v4 ^= [identifier2 hash];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v7 = [locationsDuringSession countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(SMCache *)self unlockLocation];
+  unlockLocation = [(SMCache *)self unlockLocation];
 
-  if (v11)
+  if (unlockLocation)
   {
-    v12 = [(SMCache *)self unlockLocation];
-    v13 = [v12 identifier];
-    v4 ^= [v13 hash];
+    unlockLocation2 = [(SMCache *)self unlockLocation];
+    identifier3 = [unlockLocation2 identifier];
+    v4 ^= [identifier3 hash];
   }
 
-  v14 = [(SMCache *)self lockLocation];
+  lockLocation = [(SMCache *)self lockLocation];
 
-  if (v14)
+  if (lockLocation)
   {
-    v15 = [(SMCache *)self lockLocation];
-    v16 = [v15 identifier];
-    v4 ^= [v16 hash];
+    lockLocation2 = [(SMCache *)self lockLocation];
+    identifier4 = [lockLocation2 identifier];
+    v4 ^= [identifier4 hash];
   }
 
-  v17 = [(SMCache *)self mostRecentLocation];
+  mostRecentLocation = [(SMCache *)self mostRecentLocation];
 
-  if (v17)
+  if (mostRecentLocation)
   {
-    v18 = [(SMCache *)self mostRecentLocation];
-    v19 = [v18 identifier];
-    v4 ^= [v19 hash];
+    mostRecentLocation2 = [(SMCache *)self mostRecentLocation];
+    identifier5 = [mostRecentLocation2 identifier];
+    v4 ^= [identifier5 hash];
   }
 
-  v20 = [(SMCache *)self deviceStatus];
-  v21 = [v20 identifier];
-  v22 = [v21 hash] ^ v4;
+  deviceStatus = [(SMCache *)self deviceStatus];
+  identifier6 = [deviceStatus identifier];
+  v22 = [identifier6 hash] ^ v4;
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v23 = [(SMCache *)self workoutEvents];
-  v24 = [v23 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  workoutEvents = [(SMCache *)self workoutEvents];
+  v24 = [workoutEvents countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v24)
   {
     v25 = v24;
@@ -430,17 +430,17 @@
       {
         if (*v32 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(workoutEvents);
         }
 
-        v28 = [*(*(&v31 + 1) + 8 * v27) location];
-        v22 ^= [v28 hash];
+        location = [*(*(&v31 + 1) + 8 * v27) location];
+        v22 ^= [location hash];
 
         ++v27;
       }
 
       while (v25 != v27);
-      v25 = [v23 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v25 = [workoutEvents countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v25);
@@ -450,49 +450,49 @@
   return v22;
 }
 
-- (void)logCacheForSessionID:(id)a3 role:(id)a4 deviceType:(id)a5 transaction:(id)a6 hashString:(id)a7
+- (void)logCacheForSessionID:(id)d role:(id)role deviceType:(id)type transaction:(id)transaction hashString:(id)string
 {
   v87 = *MEMORY[0x277D85DE8];
-  v56 = a3;
-  v55 = a4;
-  v54 = a5;
-  v53 = a6;
-  v12 = a7;
-  v52 = self;
+  dCopy = d;
+  roleCopy = role;
+  typeCopy = type;
+  transactionCopy = transaction;
+  stringCopy = string;
+  selfCopy = self;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(SMCache *)self identifier];
-      v15 = [(SMCache *)self locationsDuringSession];
-      v16 = [v15 count];
-      v17 = [(SMCache *)self destinationMapItem];
-      v18 = [(SMCache *)self deviceStatus];
-      v19 = [(SMCache *)self workoutEvents];
+      identifier = [(SMCache *)self identifier];
+      locationsDuringSession = [(SMCache *)self locationsDuringSession];
+      v16 = [locationsDuringSession count];
+      destinationMapItem = [(SMCache *)self destinationMapItem];
+      deviceStatus = [(SMCache *)self deviceStatus];
+      workoutEvents = [(SMCache *)self workoutEvents];
       *buf = 138414594;
-      v68 = v55;
+      v68 = roleCopy;
       v69 = 2112;
-      v70 = v56;
+      v70 = dCopy;
       v71 = 2112;
-      v72 = v53;
+      v72 = transactionCopy;
       v73 = 2112;
-      v74 = v54;
+      v74 = typeCopy;
       v75 = 2112;
-      v76 = v12;
+      v76 = stringCopy;
       v77 = 2112;
-      v78 = v14;
+      v78 = identifier;
       v79 = 2048;
       v80 = v16;
       v81 = 2112;
-      v82 = v17;
+      v82 = destinationMapItem;
       v83 = 2112;
-      v84 = v18;
+      v84 = deviceStatus;
       v85 = 2048;
-      v86 = [v19 count];
+      v86 = [workoutEvents count];
       _os_log_impl(&dword_26455D000, v13, OS_LOG_TYPE_INFO, "#SafetyCache,%@,sessionID:%@,logCache,transactionID:%@,%@,hash,%@,identifier,%@,locationsDuringSessionCount,%lu,destinationMapItem,%@,deviceStatus,%@,workoutEventsCount,%lu", buf, 0x66u);
 
-      self = v52;
+      self = selfCopy;
     }
   }
 
@@ -501,17 +501,17 @@
     v20 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [(SMCache *)self mostRecentLocation];
+      mostRecentLocation = [(SMCache *)self mostRecentLocation];
       *buf = 138413315;
-      v68 = v55;
+      v68 = roleCopy;
       v69 = 2112;
-      v70 = v56;
+      v70 = dCopy;
       v71 = 2112;
-      v72 = v53;
+      v72 = transactionCopy;
       v73 = 2112;
-      v74 = v54;
+      v74 = typeCopy;
       v75 = 2117;
-      v76 = v21;
+      v76 = mostRecentLocation;
       _os_log_impl(&dword_26455D000, v20, OS_LOG_TYPE_INFO, "#SafetyCache,%@,sessionID:%@,logCache,transactionID:%@,%@,mostRecentLocation,%{sensitive}@", buf, 0x34u);
     }
   }
@@ -521,17 +521,17 @@
     v22 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [(SMCache *)self startingLocation];
+      startingLocation = [(SMCache *)self startingLocation];
       *buf = 138413315;
-      v68 = v55;
+      v68 = roleCopy;
       v69 = 2112;
-      v70 = v56;
+      v70 = dCopy;
       v71 = 2112;
-      v72 = v53;
+      v72 = transactionCopy;
       v73 = 2112;
-      v74 = v54;
+      v74 = typeCopy;
       v75 = 2117;
-      v76 = v23;
+      v76 = startingLocation;
       _os_log_impl(&dword_26455D000, v22, OS_LOG_TYPE_INFO, "#SafetyCache,%@,sessionID:%@,logCache,transactionID:%@,%@,startingLocation,%{sensitive}@", buf, 0x34u);
     }
   }
@@ -541,17 +541,17 @@
     v24 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [(SMCache *)self unlockLocation];
+      unlockLocation = [(SMCache *)self unlockLocation];
       *buf = 138413315;
-      v68 = v55;
+      v68 = roleCopy;
       v69 = 2112;
-      v70 = v56;
+      v70 = dCopy;
       v71 = 2112;
-      v72 = v53;
+      v72 = transactionCopy;
       v73 = 2112;
-      v74 = v54;
+      v74 = typeCopy;
       v75 = 2117;
-      v76 = v25;
+      v76 = unlockLocation;
       _os_log_impl(&dword_26455D000, v24, OS_LOG_TYPE_INFO, "#SafetyCache,%@,sessionID:%@,logCache,transactionID:%@,%@,unlockLocation,%{sensitive}@", buf, 0x34u);
     }
   }
@@ -561,17 +561,17 @@
     v26 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [(SMCache *)self lockLocation];
+      lockLocation = [(SMCache *)self lockLocation];
       *buf = 138413315;
-      v68 = v55;
+      v68 = roleCopy;
       v69 = 2112;
-      v70 = v56;
+      v70 = dCopy;
       v71 = 2112;
-      v72 = v53;
+      v72 = transactionCopy;
       v73 = 2112;
-      v74 = v54;
+      v74 = typeCopy;
       v75 = 2117;
-      v76 = v27;
+      v76 = lockLocation;
       _os_log_impl(&dword_26455D000, v26, OS_LOG_TYPE_INFO, "#SafetyCache,%@,sessionID:%@,logCache,transactionID:%@,%@,lockLocation,%{sensitive}@", buf, 0x34u);
     }
   }
@@ -581,17 +581,17 @@
     v28 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
-      v29 = [(SMCache *)self parkedCarLocation];
+      parkedCarLocation = [(SMCache *)self parkedCarLocation];
       *buf = 138413315;
-      v68 = v55;
+      v68 = roleCopy;
       v69 = 2112;
-      v70 = v56;
+      v70 = dCopy;
       v71 = 2112;
-      v72 = v53;
+      v72 = transactionCopy;
       v73 = 2112;
-      v74 = v54;
+      v74 = typeCopy;
       v75 = 2117;
-      v76 = v29;
+      v76 = parkedCarLocation;
       _os_log_impl(&dword_26455D000, v28, OS_LOG_TYPE_INFO, "#SafetyCache,%@,sessionID:%@,logCache,transactionID:%@,%@,parkedCarLocation,%{sensitive}@", buf, 0x34u);
     }
   }
@@ -601,17 +601,17 @@
     v30 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
-      v31 = [(SMCache *)self offWristLocation];
+      offWristLocation = [(SMCache *)self offWristLocation];
       *buf = 138413315;
-      v68 = v55;
+      v68 = roleCopy;
       v69 = 2112;
-      v70 = v56;
+      v70 = dCopy;
       v71 = 2112;
-      v72 = v53;
+      v72 = transactionCopy;
       v73 = 2112;
-      v74 = v54;
+      v74 = typeCopy;
       v75 = 2117;
-      v76 = v31;
+      v76 = offWristLocation;
       _os_log_impl(&dword_26455D000, v30, OS_LOG_TYPE_INFO, "#SafetyCache,%@,sessionID:%@,logCache,transactionID:%@,%@,offWristLocation,%{sensitive}@", buf, 0x34u);
     }
   }
@@ -620,8 +620,8 @@
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v32 = [(SMCache *)self locationsDuringSession];
-  v33 = [v32 countByEnumeratingWithState:&v61 objects:v66 count:16];
+  locationsDuringSession2 = [(SMCache *)self locationsDuringSession];
+  v33 = [locationsDuringSession2 countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v33)
   {
     v34 = v33;
@@ -634,7 +634,7 @@
       {
         if (*v62 != v37)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(locationsDuringSession2);
         }
 
         v39 = *(*(&v61 + 1) + 8 * i);
@@ -644,13 +644,13 @@
           if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
           {
             *buf = 138413571;
-            v68 = v55;
+            v68 = roleCopy;
             v69 = 2112;
-            v70 = v56;
+            v70 = dCopy;
             v71 = 2112;
-            v72 = v53;
+            v72 = transactionCopy;
             v73 = 2112;
-            v74 = v54;
+            v74 = typeCopy;
             v75 = 2048;
             v76 = v35;
             v77 = 2117;
@@ -662,7 +662,7 @@
         ++v35;
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v61 objects:v66 count:16];
+      v34 = [locationsDuringSession2 countByEnumeratingWithState:&v61 objects:v66 count:16];
     }
 
     while (v34);
@@ -672,8 +672,8 @@
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v41 = [(SMCache *)v52 workoutEvents];
-  v42 = [v41 countByEnumeratingWithState:&v57 objects:v65 count:16];
+  workoutEvents2 = [(SMCache *)selfCopy workoutEvents];
+  v42 = [workoutEvents2 countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v42)
   {
     v43 = v42;
@@ -686,7 +686,7 @@
       {
         if (*v58 != v45)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(workoutEvents2);
         }
 
         v48 = *(*(&v57 + 1) + 8 * j);
@@ -696,13 +696,13 @@
           if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
           {
             *buf = 138413570;
-            v68 = v55;
+            v68 = roleCopy;
             v69 = 2112;
-            v70 = v56;
+            v70 = dCopy;
             v71 = 2112;
-            v72 = v53;
+            v72 = transactionCopy;
             v73 = 2112;
-            v74 = v54;
+            v74 = typeCopy;
             v75 = 2048;
             v76 = v44;
             v77 = 2112;
@@ -714,7 +714,7 @@
         ++v44;
       }
 
-      v43 = [v41 countByEnumeratingWithState:&v57 objects:v65 count:16];
+      v43 = [workoutEvents2 countByEnumeratingWithState:&v57 objects:v65 count:16];
     }
 
     while (v43);
@@ -723,26 +723,26 @@
   v50 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logNoCacheDataForSessionID:(id)a3 role:(id)a4 deviceType:(id)a5 transaction:(id)a6
++ (void)logNoCacheDataForSessionID:(id)d role:(id)role deviceType:(id)type transaction:(id)transaction
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  roleCopy = role;
+  typeCopy = type;
+  transactionCopy = transaction;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v15 = 138413058;
-      v16 = v10;
+      v16 = roleCopy;
       v17 = 2112;
-      v18 = v9;
+      v18 = dCopy;
       v19 = 2112;
-      v20 = v12;
+      v20 = transactionCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = typeCopy;
       _os_log_impl(&dword_26455D000, v13, OS_LOG_TYPE_INFO, "#SafetyCache,%@,sessionID:%@,logCache,transactionID:%@,%@,no cache data", &v15, 0x2Au);
     }
   }
@@ -750,11 +750,11 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shiftRequiredForLocation:(id)a3
+- (BOOL)shiftRequiredForLocation:(id)location
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 referenceFrame] != 2)
+  locationCopy = location;
+  v4 = locationCopy;
+  if (locationCopy && [locationCopy referenceFrame] != 2)
   {
     [v4 latitude];
     v7 = v6;
@@ -770,22 +770,22 @@
   return v5;
 }
 
-- (void)shiftLocation:(id)a3 queue:(id)a4 withHandler:(id)a5
+- (void)shiftLocation:(id)location queue:(id)queue withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 latitude];
+  locationCopy = location;
+  queueCopy = queue;
+  handlerCopy = handler;
+  [locationCopy latitude];
   v12 = v11;
-  [v8 longitude];
+  [locationCopy longitude];
   v14 = v13;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __43__SMCache_shiftLocation_queue_withHandler___block_invoke;
   aBlock[3] = &unk_279B65510;
-  v15 = v8;
+  v15 = locationCopy;
   v25 = v15;
-  v16 = v10;
+  v16 = handlerCopy;
   v26 = v16;
   v17 = _Block_copy(aBlock);
   if ([(SMCache *)self shiftRequiredForLocation:v15])
@@ -799,7 +799,7 @@
     v21[3] = &unk_279B65538;
     v23 = v16;
     v22 = v15;
-    [(GEOLocationShifter *)shifter shiftCoordinate:v17 accuracy:&__block_literal_global_2 withCompletionHandler:v21 mustGoToNetworkCallback:v9 errorHandler:v12 callbackQueue:v14, v20];
+    [(GEOLocationShifter *)shifter shiftCoordinate:v17 accuracy:&__block_literal_global_2 withCompletionHandler:v21 mustGoToNetworkCallback:queueCopy errorHandler:v12 callbackQueue:v14, v20];
   }
 
   else
@@ -854,128 +854,128 @@ void __43__SMCache_shiftLocation_queue_withHandler___block_invoke_58(uint64_t a1
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)shiftLocationsOnQueue:(id)a3 handler:(id)a4
+- (void)shiftLocationsOnQueue:(id)queue handler:(id)handler
 {
   v88 = *MEMORY[0x277D85DE8];
-  queue = a3;
-  v50 = a4;
+  queue = queue;
+  handlerCopy = handler;
   v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SMCache *)self identifier];
+    identifier = [(SMCache *)self identifier];
     *buf = 138412290;
-    v87 = v7;
+    v87 = identifier;
     _os_log_impl(&dword_26455D000, v6, OS_LOG_TYPE_DEFAULT, "shifting locations for cache %@", buf, 0xCu);
   }
 
   group = dispatch_group_create();
   dispatch_group_enter(group);
-  v8 = [(SMCache *)self unlockLocation];
-  v9 = [(SMCache *)self shiftRequiredForLocation:v8];
+  unlockLocation = [(SMCache *)self unlockLocation];
+  v9 = [(SMCache *)self shiftRequiredForLocation:unlockLocation];
 
   if (v9)
   {
     dispatch_group_enter(group);
-    v10 = [(SMCache *)self unlockLocation];
+    unlockLocation2 = [(SMCache *)self unlockLocation];
     v82[0] = MEMORY[0x277D85DD0];
     v82[1] = 3221225472;
     v82[2] = __41__SMCache_shiftLocationsOnQueue_handler___block_invoke;
     v82[3] = &unk_279B65560;
     v82[4] = self;
     v83 = group;
-    [(SMCache *)self shiftLocation:v10 queue:queue withHandler:v82];
+    [(SMCache *)self shiftLocation:unlockLocation2 queue:queue withHandler:v82];
   }
 
-  v11 = [(SMCache *)self lockLocation];
-  v12 = [(SMCache *)self shiftRequiredForLocation:v11];
+  lockLocation = [(SMCache *)self lockLocation];
+  v12 = [(SMCache *)self shiftRequiredForLocation:lockLocation];
 
   if (v12)
   {
     dispatch_group_enter(group);
-    v13 = [(SMCache *)self lockLocation];
+    lockLocation2 = [(SMCache *)self lockLocation];
     v80[0] = MEMORY[0x277D85DD0];
     v80[1] = 3221225472;
     v80[2] = __41__SMCache_shiftLocationsOnQueue_handler___block_invoke_61;
     v80[3] = &unk_279B65560;
     v80[4] = self;
     v81 = group;
-    [(SMCache *)self shiftLocation:v13 queue:queue withHandler:v80];
+    [(SMCache *)self shiftLocation:lockLocation2 queue:queue withHandler:v80];
   }
 
-  v14 = [(SMCache *)self mostRecentLocation];
-  v15 = [(SMCache *)self shiftRequiredForLocation:v14];
+  mostRecentLocation = [(SMCache *)self mostRecentLocation];
+  v15 = [(SMCache *)self shiftRequiredForLocation:mostRecentLocation];
 
   if (v15)
   {
     dispatch_group_enter(group);
-    v16 = [(SMCache *)self mostRecentLocation];
+    mostRecentLocation2 = [(SMCache *)self mostRecentLocation];
     v78[0] = MEMORY[0x277D85DD0];
     v78[1] = 3221225472;
     v78[2] = __41__SMCache_shiftLocationsOnQueue_handler___block_invoke_62;
     v78[3] = &unk_279B65560;
     v78[4] = self;
     v79 = group;
-    [(SMCache *)self shiftLocation:v16 queue:queue withHandler:v78];
+    [(SMCache *)self shiftLocation:mostRecentLocation2 queue:queue withHandler:v78];
   }
 
-  v17 = [(SMCache *)self startingLocation];
-  v18 = [(SMCache *)self shiftRequiredForLocation:v17];
+  startingLocation = [(SMCache *)self startingLocation];
+  v18 = [(SMCache *)self shiftRequiredForLocation:startingLocation];
 
   if (v18)
   {
     dispatch_group_enter(group);
-    v19 = [(SMCache *)self startingLocation];
+    startingLocation2 = [(SMCache *)self startingLocation];
     v76[0] = MEMORY[0x277D85DD0];
     v76[1] = 3221225472;
     v76[2] = __41__SMCache_shiftLocationsOnQueue_handler___block_invoke_63;
     v76[3] = &unk_279B65560;
     v76[4] = self;
     v77 = group;
-    [(SMCache *)self shiftLocation:v19 queue:queue withHandler:v76];
+    [(SMCache *)self shiftLocation:startingLocation2 queue:queue withHandler:v76];
   }
 
-  v20 = [(SMCache *)self offWristLocation];
-  v21 = [(SMCache *)self shiftRequiredForLocation:v20];
+  offWristLocation = [(SMCache *)self offWristLocation];
+  v21 = [(SMCache *)self shiftRequiredForLocation:offWristLocation];
 
   if (v21)
   {
     dispatch_group_enter(group);
-    v22 = [(SMCache *)self offWristLocation];
+    offWristLocation2 = [(SMCache *)self offWristLocation];
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
     v74[2] = __41__SMCache_shiftLocationsOnQueue_handler___block_invoke_64;
     v74[3] = &unk_279B65560;
     v74[4] = self;
     v75 = group;
-    [(SMCache *)self shiftLocation:v22 queue:queue withHandler:v74];
+    [(SMCache *)self shiftLocation:offWristLocation2 queue:queue withHandler:v74];
   }
 
-  v23 = [(SMCache *)self parkedCarLocation];
-  v24 = [(SMCache *)self shiftRequiredForLocation:v23];
+  parkedCarLocation = [(SMCache *)self parkedCarLocation];
+  v24 = [(SMCache *)self shiftRequiredForLocation:parkedCarLocation];
 
   if (v24)
   {
     dispatch_group_enter(group);
-    v25 = [(SMCache *)self parkedCarLocation];
+    parkedCarLocation2 = [(SMCache *)self parkedCarLocation];
     v72[0] = MEMORY[0x277D85DD0];
     v72[1] = 3221225472;
     v72[2] = __41__SMCache_shiftLocationsOnQueue_handler___block_invoke_65;
     v72[3] = &unk_279B65560;
     v72[4] = self;
     v73 = group;
-    [(SMCache *)self shiftLocation:v25 queue:queue withHandler:v72];
+    [(SMCache *)self shiftLocation:parkedCarLocation2 queue:queue withHandler:v72];
   }
 
   v26 = objc_alloc(MEMORY[0x277CBEB58]);
-  v27 = [(SMCache *)self locationsDuringSession];
-  v51 = [v26 initWithCapacity:{objc_msgSend(v27, "count")}];
+  locationsDuringSession = [(SMCache *)self locationsDuringSession];
+  v51 = [v26 initWithCapacity:{objc_msgSend(locationsDuringSession, "count")}];
 
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v28 = [(SMCache *)self locationsDuringSession];
-  v29 = [v28 countByEnumeratingWithState:&v68 objects:v85 count:16];
+  locationsDuringSession2 = [(SMCache *)self locationsDuringSession];
+  v29 = [locationsDuringSession2 countByEnumeratingWithState:&v68 objects:v85 count:16];
   if (v29)
   {
     v30 = v29;
@@ -986,7 +986,7 @@ void __43__SMCache_shiftLocation_queue_withHandler___block_invoke_58(uint64_t a1
       {
         if (*v69 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(locationsDuringSession2);
         }
 
         v33 = *(*(&v68 + 1) + 8 * i);
@@ -1008,22 +1008,22 @@ void __43__SMCache_shiftLocation_queue_withHandler___block_invoke_58(uint64_t a1
         }
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v68 objects:v85 count:16];
+      v30 = [locationsDuringSession2 countByEnumeratingWithState:&v68 objects:v85 count:16];
     }
 
     while (v30);
   }
 
   v34 = objc_alloc(MEMORY[0x277CBEB18]);
-  v35 = [(SMCache *)self workoutEvents];
-  v36 = [v34 initWithCapacity:{objc_msgSend(v35, "count")}];
+  workoutEvents = [(SMCache *)self workoutEvents];
+  v36 = [v34 initWithCapacity:{objc_msgSend(workoutEvents, "count")}];
 
   v63 = 0u;
   v64 = 0u;
   v62 = 0u;
   v61 = 0u;
-  v37 = [(SMCache *)self workoutEvents];
-  v38 = [v37 countByEnumeratingWithState:&v61 objects:v84 count:16];
+  workoutEvents2 = [(SMCache *)self workoutEvents];
+  v38 = [workoutEvents2 countByEnumeratingWithState:&v61 objects:v84 count:16];
   if (v38)
   {
     v39 = v38;
@@ -1034,17 +1034,17 @@ void __43__SMCache_shiftLocation_queue_withHandler___block_invoke_58(uint64_t a1
       {
         if (*v62 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(workoutEvents2);
         }
 
         v42 = *(*(&v61 + 1) + 8 * j);
-        v43 = [v42 location];
-        v44 = [(SMCache *)self shiftRequiredForLocation:v43];
+        location = [v42 location];
+        v44 = [(SMCache *)self shiftRequiredForLocation:location];
 
         if (v44)
         {
           dispatch_group_enter(group);
-          v45 = [v42 location];
+          location2 = [v42 location];
           v58[0] = MEMORY[0x277D85DD0];
           v58[1] = 3221225472;
           v58[2] = __41__SMCache_shiftLocationsOnQueue_handler___block_invoke_67;
@@ -1052,7 +1052,7 @@ void __43__SMCache_shiftLocation_queue_withHandler___block_invoke_58(uint64_t a1
           v58[4] = v42;
           v59 = v36;
           v60 = group;
-          [(SMCache *)self shiftLocation:v45 queue:queue withHandler:v58];
+          [(SMCache *)self shiftLocation:location2 queue:queue withHandler:v58];
         }
 
         else
@@ -1061,7 +1061,7 @@ void __43__SMCache_shiftLocation_queue_withHandler___block_invoke_58(uint64_t a1
         }
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v61 objects:v84 count:16];
+      v39 = [workoutEvents2 countByEnumeratingWithState:&v61 objects:v84 count:16];
     }
 
     while (v39);
@@ -1075,8 +1075,8 @@ void __43__SMCache_shiftLocation_queue_withHandler___block_invoke_58(uint64_t a1
   block[4] = self;
   v55 = v51;
   v56 = v36;
-  v57 = v50;
-  v46 = v50;
+  v57 = handlerCopy;
+  v46 = handlerCopy;
   v47 = v36;
   v48 = v51;
   dispatch_group_notify(group, queue, block);
@@ -1315,73 +1315,73 @@ uint64_t __41__SMCache_shiftLocationsOnQueue_handler___block_invoke_68(uint64_t 
   return v3();
 }
 
-- (SMCache)initWithCoder:(id)a3
+- (SMCache)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"deviceStatus"];
+  coderCopy = coder;
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceStatus"];
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v22 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v7 = [v3 decodeObjectOfClasses:v22 forKey:@"locationsDuringSession"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"unlockLocation"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"lockLocation"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentLocation"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"startingLocation"];
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"offWristLocation"];
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"parkedCar"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"destinationMapItem"];
+  v7 = [coderCopy decodeObjectOfClasses:v22 forKey:@"locationsDuringSession"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unlockLocation"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lockLocation"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentLocation"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startingLocation"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offWristLocation"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parkedCar"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationMapItem"];
   v12 = MEMORY[0x277CBEB98];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  v15 = [v3 decodeObjectOfClasses:v14 forKey:@"workoutEvents"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"workoutEvents"];
 
   v20 = [(SMCache *)self initWithIdentifier:v23 deviceStatus:v4 locationsDuringSession:v7 unlockLocation:v8 lockLocation:v21 mostRecentLocation:v18 startingLocation:v9 offWristLocation:v17 parkedCarLocation:v10 destinationMapItem:v11 workoutEvents:v15];
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SMCache *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(SMCache *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(SMCache *)self deviceStatus];
-  [v4 encodeObject:v6 forKey:@"deviceStatus"];
+  deviceStatus = [(SMCache *)self deviceStatus];
+  [coderCopy encodeObject:deviceStatus forKey:@"deviceStatus"];
 
-  v7 = [(SMCache *)self locationsDuringSession];
-  [v4 encodeObject:v7 forKey:@"locationsDuringSession"];
+  locationsDuringSession = [(SMCache *)self locationsDuringSession];
+  [coderCopy encodeObject:locationsDuringSession forKey:@"locationsDuringSession"];
 
-  v8 = [(SMCache *)self unlockLocation];
-  [v4 encodeObject:v8 forKey:@"unlockLocation"];
+  unlockLocation = [(SMCache *)self unlockLocation];
+  [coderCopy encodeObject:unlockLocation forKey:@"unlockLocation"];
 
-  v9 = [(SMCache *)self lockLocation];
-  [v4 encodeObject:v9 forKey:@"lockLocation"];
+  lockLocation = [(SMCache *)self lockLocation];
+  [coderCopy encodeObject:lockLocation forKey:@"lockLocation"];
 
-  v10 = [(SMCache *)self mostRecentLocation];
-  [v4 encodeObject:v10 forKey:@"mostRecentLocation"];
+  mostRecentLocation = [(SMCache *)self mostRecentLocation];
+  [coderCopy encodeObject:mostRecentLocation forKey:@"mostRecentLocation"];
 
-  v11 = [(SMCache *)self startingLocation];
-  [v4 encodeObject:v11 forKey:@"startingLocation"];
+  startingLocation = [(SMCache *)self startingLocation];
+  [coderCopy encodeObject:startingLocation forKey:@"startingLocation"];
 
-  v12 = [(SMCache *)self offWristLocation];
-  [v4 encodeObject:v12 forKey:@"offWristLocation"];
+  offWristLocation = [(SMCache *)self offWristLocation];
+  [coderCopy encodeObject:offWristLocation forKey:@"offWristLocation"];
 
-  v13 = [(SMCache *)self parkedCarLocation];
-  [v4 encodeObject:v13 forKey:@"parkedCar"];
+  parkedCarLocation = [(SMCache *)self parkedCarLocation];
+  [coderCopy encodeObject:parkedCarLocation forKey:@"parkedCar"];
 
-  v14 = [(SMCache *)self destinationMapItem];
-  [v4 encodeObject:v14 forKey:@"destinationMapItem"];
+  destinationMapItem = [(SMCache *)self destinationMapItem];
+  [coderCopy encodeObject:destinationMapItem forKey:@"destinationMapItem"];
 
-  v15 = [(SMCache *)self workoutEvents];
-  [v4 encodeObject:v15 forKey:@"workoutEvents"];
+  workoutEvents = [(SMCache *)self workoutEvents];
+  [coderCopy encodeObject:workoutEvents forKey:@"workoutEvents"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v17 = [objc_opt_class() allocWithZone:a3];
+  v17 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
-  v6 = [(SMDeviceStatus *)self->_deviceStatus copyWithZone:a3];
+  v6 = [(SMDeviceStatus *)self->_deviceStatus copyWithZone:zone];
   locationsDuringSession = self->_locationsDuringSession;
   unlockLocation = self->_unlockLocation;
   lockLocation = self->_lockLocation;
@@ -1389,7 +1389,7 @@ uint64_t __41__SMCache_shiftLocationsOnQueue_handler___block_invoke_68(uint64_t 
   v16 = *&self->_startingLocation;
   parkedCarLocation = self->_parkedCarLocation;
   destinationMapItem = self->_destinationMapItem;
-  v13 = [(NSArray *)self->_workoutEvents copyWithZone:a3];
+  v13 = [(NSArray *)self->_workoutEvents copyWithZone:zone];
   v14 = [v17 initWithIdentifier:identifier deviceStatus:v6 locationsDuringSession:locationsDuringSession unlockLocation:unlockLocation lockLocation:lockLocation mostRecentLocation:mostRecentLocation startingLocation:v16 offWristLocation:parkedCarLocation parkedCarLocation:destinationMapItem destinationMapItem:v13 workoutEvents:?];
 
   return v14;
@@ -1398,19 +1398,19 @@ uint64_t __41__SMCache_shiftLocationsOnQueue_handler___block_invoke_68(uint64_t 
 - (id)description
 {
   v15 = MEMORY[0x277CCACA8];
-  v14 = [(SMCache *)self identifier];
-  v3 = [(SMCache *)self deviceStatus];
-  v17 = [(SMCache *)self locationsDuringSession];
-  v4 = [v17 count];
-  v5 = [(SMCache *)self unlockLocation];
-  v6 = [(SMCache *)self lockLocation];
-  v7 = [(SMCache *)self mostRecentLocation];
-  v8 = [(SMCache *)self startingLocation];
-  v9 = [(SMCache *)self offWristLocation];
-  v10 = [(SMCache *)self parkedCarLocation];
-  v11 = [(SMCache *)self destinationMapItem];
-  v12 = [(SMCache *)self workoutEvents];
-  v16 = [v15 stringWithFormat:@"identifier, %@, deviceStatus, %@, locationsDuringSession, %lu, unlockLocation %@, lockLocation %@, mostRecentLocation %@, startingLocation %@, offWristLocation %@, parkedCarLocation, %@, destinationMapItem, %@, workoutEvents, %lu", v14, v3, v4, v5, v6, v7, v8, v9, v10, v11, objc_msgSend(v12, "count")];
+  identifier = [(SMCache *)self identifier];
+  deviceStatus = [(SMCache *)self deviceStatus];
+  locationsDuringSession = [(SMCache *)self locationsDuringSession];
+  v4 = [locationsDuringSession count];
+  unlockLocation = [(SMCache *)self unlockLocation];
+  lockLocation = [(SMCache *)self lockLocation];
+  mostRecentLocation = [(SMCache *)self mostRecentLocation];
+  startingLocation = [(SMCache *)self startingLocation];
+  offWristLocation = [(SMCache *)self offWristLocation];
+  parkedCarLocation = [(SMCache *)self parkedCarLocation];
+  destinationMapItem = [(SMCache *)self destinationMapItem];
+  workoutEvents = [(SMCache *)self workoutEvents];
+  v16 = [v15 stringWithFormat:@"identifier, %@, deviceStatus, %@, locationsDuringSession, %lu, unlockLocation %@, lockLocation %@, mostRecentLocation %@, startingLocation %@, offWristLocation %@, parkedCarLocation, %@, destinationMapItem, %@, workoutEvents, %lu", identifier, deviceStatus, v4, unlockLocation, lockLocation, mostRecentLocation, startingLocation, offWristLocation, parkedCarLocation, destinationMapItem, objc_msgSend(workoutEvents, "count")];
 
   return v16;
 }

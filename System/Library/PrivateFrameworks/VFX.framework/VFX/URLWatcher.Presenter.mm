@@ -22,14 +22,14 @@
 
 - (NSOperationQueue)presentedItemOperationQueue
 {
-  v2 = [objc_opt_self() mainQueue];
+  mainQueue = [objc_opt_self() mainQueue];
 
-  return v2;
+  return mainQueue;
 }
 
 - (void)presentedItemDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AF75114C();
 }
 

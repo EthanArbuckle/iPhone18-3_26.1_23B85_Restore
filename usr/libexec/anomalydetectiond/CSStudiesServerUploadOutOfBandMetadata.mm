@@ -1,44 +1,44 @@
 @interface CSStudiesServerUploadOutOfBandMetadata
-- (CSStudiesServerUploadOutOfBandMetadata)initWithCoder:(id)a3;
-- (CSStudiesServerUploadOutOfBandMetadata)initWithLookingBack:(double)a3 keyValuePairs:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CSStudiesServerUploadOutOfBandMetadata)initWithCoder:(id)coder;
+- (CSStudiesServerUploadOutOfBandMetadata)initWithLookingBack:(double)back keyValuePairs:(id)pairs;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSStudiesServerUploadOutOfBandMetadata
 
-- (CSStudiesServerUploadOutOfBandMetadata)initWithLookingBack:(double)a3 keyValuePairs:(id)a4
+- (CSStudiesServerUploadOutOfBandMetadata)initWithLookingBack:(double)back keyValuePairs:(id)pairs
 {
-  v7 = a4;
+  pairsCopy = pairs;
   v11.receiver = self;
   v11.super_class = CSStudiesServerUploadOutOfBandMetadata;
   v8 = [(CSStudiesServerUploadOutOfBandMetadata *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_lookBack = a3;
-    objc_storeStrong(&v8->_keyValuePairs, a4);
+    v8->_lookBack = back;
+    objc_storeStrong(&v8->_keyValuePairs, pairs);
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(CSStudiesServerUploadOutOfBandMetadata *)self lookBack];
-  [v5 encodeDouble:@"kCSStudiesServerUploadOOBMetadataLookBackKey" forKey:?];
-  v4 = [(CSStudiesServerUploadOutOfBandMetadata *)self keyValuePairs];
-  [v5 encodeObject:v4 forKey:@"kCSStudiesServerUploadOOBMetadataKeyValuePairsEncoderKey"];
+  [coderCopy encodeDouble:@"kCSStudiesServerUploadOOBMetadataLookBackKey" forKey:?];
+  keyValuePairs = [(CSStudiesServerUploadOutOfBandMetadata *)self keyValuePairs];
+  [coderCopy encodeObject:keyValuePairs forKey:@"kCSStudiesServerUploadOOBMetadataKeyValuePairsEncoderKey"];
 }
 
-- (CSStudiesServerUploadOutOfBandMetadata)initWithCoder:(id)a3
+- (CSStudiesServerUploadOutOfBandMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"kCSStudiesServerUploadOOBMetadataLookBackKey"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"kCSStudiesServerUploadOOBMetadataLookBackKey"];
   v6 = v5;
   v7 = objc_opt_class();
   v8 = [NSSet setWithObjects:v7, objc_opt_class(), 0];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kCSStudiesServerUploadOOBMetadataKeyValuePairsEncoderKey"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kCSStudiesServerUploadOOBMetadataKeyValuePairsEncoderKey"];
   v10 = [(CSStudiesServerUploadOutOfBandMetadata *)self initWithLookingBack:v9 keyValuePairs:v6];
 
   return v10;

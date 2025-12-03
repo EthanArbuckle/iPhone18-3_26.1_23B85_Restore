@@ -1,20 +1,20 @@
 @interface AXOnboardingObjC
-+ (id)viewControllerForType:(unint64_t)a3 onDismiss:(id)a4;
++ (id)viewControllerForType:(unint64_t)type onDismiss:(id)dismiss;
 @end
 
 @implementation AXOnboardingObjC
 
-+ (id)viewControllerForType:(unint64_t)a3 onDismiss:(id)a4
++ (id)viewControllerForType:(unint64_t)type onDismiss:(id)dismiss
 {
-  v5 = a4;
-  if (a3 > 1)
+  dismissCopy = dismiss;
+  if (type > 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [_TtC28AccessibilitySharedUISupport23AXOnboardingSwiftBridge viewControllerForType:a3 dismiss:v5];
+    v6 = [_TtC28AccessibilitySharedUISupport23AXOnboardingSwiftBridge viewControllerForType:type dismiss:dismissCopy];
   }
 
   return v6;

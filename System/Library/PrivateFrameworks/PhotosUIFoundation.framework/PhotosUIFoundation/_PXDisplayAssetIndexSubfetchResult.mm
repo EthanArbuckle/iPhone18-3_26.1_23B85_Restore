@@ -1,37 +1,37 @@
 @interface _PXDisplayAssetIndexSubfetchResult
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (NSString)description;
 - (PXDisplayAsset)firstObject;
 - (PXDisplayAsset)lastObject;
-- (_PXDisplayAssetIndexSubfetchResult)initWithFetchResult:(id)a3 indexSet:(id)a4;
-- (id)objectsAtIndexes:(id)a3;
-- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)a3;
-- (unint64_t)countOfAssetsWithMediaType:(int64_t)a3;
-- (unint64_t)indexOfObject:(id)a3;
+- (_PXDisplayAssetIndexSubfetchResult)initWithFetchResult:(id)result indexSet:(id)set;
+- (id)objectsAtIndexes:(id)indexes;
+- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)type;
+- (unint64_t)countOfAssetsWithMediaType:(int64_t)type;
+- (unint64_t)indexOfObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation _PXDisplayAssetIndexSubfetchResult
 
-- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)a3
+- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)type
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetFetchResult.m" lineNumber:574 description:@"not implemented yet"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetFetchResult.m" lineNumber:574 description:@"not implemented yet"];
 
   abort();
 }
 
-- (unint64_t)countOfAssetsWithMediaType:(int64_t)a3
+- (unint64_t)countOfAssetsWithMediaType:(int64_t)type
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetFetchResult.m" lineNumber:570 description:@"not implemented yet"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetFetchResult.m" lineNumber:570 description:@"not implemented yet"];
 
   abort();
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = [(PXDisplayAssetFetchResult *)self->_originalFetchResult indexOfObject:a3];
+  v4 = [(PXDisplayAssetFetchResult *)self->_originalFetchResult indexOfObject:object];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -43,10 +43,10 @@
   return [(NSIndexSet *)indexSet containsIndex:v6];
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  v4 = a3;
-  v5 = [(PXDisplayAssetFetchResult *)self->_originalFetchResult indexOfObject:v4];
+  objectCopy = object;
+  v5 = [(PXDisplayAssetFetchResult *)self->_originalFetchResult indexOfObject:objectCopy];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -106,19 +106,19 @@
   return v3;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
   v4 = MEMORY[0x1E696AD50];
-  v5 = a3;
+  indexesCopy = indexes;
   v6 = objc_alloc_init(v4);
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __55___PXDisplayAssetIndexSubfetchResult_objectsAtIndexes___block_invoke;
   v13 = &unk_1E7BB85E0;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v7 = v6;
-  [v5 enumerateIndexesUsingBlock:&v10];
+  [indexesCopy enumerateIndexesUsingBlock:&v10];
 
   v8 = [(PXDisplayAssetFetchResult *)self->_originalFetchResult objectsAtIndexes:v7, v10, v11, v12, v13];
 
@@ -145,21 +145,21 @@
   [(_PXDisplayAssetIndexSubfetchResult *)&v3 dealloc];
 }
 
-- (_PXDisplayAssetIndexSubfetchResult)initWithFetchResult:(id)a3 indexSet:(id)a4
+- (_PXDisplayAssetIndexSubfetchResult)initWithFetchResult:(id)result indexSet:(id)set
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v9 count])
+  resultCopy = result;
+  setCopy = set;
+  if (![setCopy count])
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetFetchResult.m" lineNumber:499 description:{@"Invalid parameter not satisfying: %@", @"indexSet.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetFetchResult.m" lineNumber:499 description:{@"Invalid parameter not satisfying: %@", @"indexSet.count > 0"}];
   }
 
-  v10 = [v9 lastIndex];
-  if (v10 >= [v8 count])
+  lastIndex = [setCopy lastIndex];
+  if (lastIndex >= [resultCopy count])
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetFetchResult.m" lineNumber:500 description:{@"Invalid parameter not satisfying: %@", @"indexSet.lastIndex < fetchResult.count"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetFetchResult.m" lineNumber:500 description:{@"Invalid parameter not satisfying: %@", @"indexSet.lastIndex < fetchResult.count"}];
   }
 
   v19.receiver = self;
@@ -168,9 +168,9 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_originalFetchResult, a3);
-    v12->_count = [v9 count];
-    objc_storeStrong(&v12->_indexSet, a4);
+    objc_storeStrong(&v11->_originalFetchResult, result);
+    v12->_count = [setCopy count];
+    objc_storeStrong(&v12->_indexSet, set);
     v13 = malloc_type_malloc(8 * v12->_count, 0x100004000313F17uLL);
     v12->_indexMap = v13;
     v18[0] = 0;
@@ -182,7 +182,7 @@
     v17[2] = __67___PXDisplayAssetIndexSubfetchResult_initWithFetchResult_indexSet___block_invoke;
     v17[3] = &unk_1E7BB5DE0;
     v17[4] = v18;
-    [v9 enumerateIndexesUsingBlock:v17];
+    [setCopy enumerateIndexesUsingBlock:v17];
     _Block_object_dispose(v18, 8);
   }
 

@@ -1,6 +1,6 @@
 @interface MRUSliderAccessibility
 - (BOOL)isAccessibilityElement;
-- (double)_accessibilityIncreaseAmount:(BOOL)a3;
+- (double)_accessibilityIncreaseAmount:(BOOL)amount;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
@@ -9,22 +9,22 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(MRUSliderAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(MRUSliderAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (v3)
+  if (isAccessibilityUserDefinedElement)
   {
-    v4 = [(MRUSliderAccessibility *)self isAccessibilityUserDefinedElement];
-    v5 = [v4 BOOLValue];
+    isAccessibilityUserDefinedElement2 = [(MRUSliderAccessibility *)self isAccessibilityUserDefinedElement];
+    bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
   }
 
   else
   {
     objc_opt_class();
-    v4 = __UIAccessibilityCastAsClass();
-    v5 = [v4 _accessibilityViewIsVisible];
+    isAccessibilityUserDefinedElement2 = __UIAccessibilityCastAsClass();
+    bOOLValue = [isAccessibilityUserDefinedElement2 _accessibilityViewIsVisible];
   }
 
-  v6 = v5;
+  v6 = bOOLValue;
 
   return v6;
 }
@@ -56,9 +56,9 @@ void __50__MRUSliderAccessibility__accessibilityBumpValue___block_invoke(uint64_
   [v4 sendActionsForControlEvents:4096];
 }
 
-- (double)_accessibilityIncreaseAmount:(BOOL)a3
+- (double)_accessibilityIncreaseAmount:(BOOL)amount
 {
-  v3 = a3;
+  amountCopy = amount;
   [(MRUSliderAccessibility *)self safeFloatForKey:@"minimumValue"];
   v6 = v5;
   [(MRUSliderAccessibility *)self safeFloatForKey:@"maximumValue"];
@@ -66,7 +66,7 @@ void __50__MRUSliderAccessibility__accessibilityBumpValue___block_invoke(uint64_
   [(MRUSliderAccessibility *)self safeFloatForKey:@"value"];
   v10 = v9;
   v11 = (v8 - v6) / 10.0;
-  if (!v3)
+  if (!amountCopy)
   {
     v11 = -v11;
   }

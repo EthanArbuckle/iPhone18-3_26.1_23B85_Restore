@@ -1,104 +1,104 @@
 @interface IDSService
-+ (BOOL)checkMessageSize:(unint64_t)a3 priority:(int64_t)a4;
-+ (IDSService)serviceWithIdentifier:(id)a3 commands:(id)a4 manuallyAckMessages:(BOOL)a5 completion:(id)a6;
++ (BOOL)checkMessageSize:(unint64_t)size priority:(int64_t)priority;
++ (IDSService)serviceWithIdentifier:(id)identifier commands:(id)commands manuallyAckMessages:(BOOL)messages completion:(id)completion;
 - (BOOL)canSend;
-- (BOOL)cancelIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)cancelMessageWithOptions:(id)a3 destination:(id)a4 identifier:(id *)a5 error:(id *)a6;
-- (BOOL)cancelMessageWithOptions:(id)a3 destinations:(id)a4 identifier:(id *)a5 error:(id *)a6;
-- (BOOL)cancelMessageWithOptions:(id)a3 identifier:(id *)a4 error:(id *)a5;
-- (BOOL)cancelOpportunisticDataWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)getProgressUpdateForIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)cancelIdentifier:(id)identifier error:(id *)error;
+- (BOOL)cancelMessageWithOptions:(id)options destination:(id)destination identifier:(id *)identifier error:(id *)error;
+- (BOOL)cancelMessageWithOptions:(id)options destinations:(id)destinations identifier:(id *)identifier error:(id *)error;
+- (BOOL)cancelMessageWithOptions:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)cancelOpportunisticDataWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)getProgressUpdateForIdentifier:(id)identifier error:(id *)error;
 - (BOOL)isPretendingToBeFull;
 - (BOOL)needsLaunchOnNearbyDevicesChanged;
-- (BOOL)noteMetricOfType:(int64_t)a3 context:(id)a4;
-- (BOOL)reportSpamMessage:(id)a3;
-- (BOOL)sendAccessoryData:(id)a3 toAccessoryID:(id)a4 accessToken:(id)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendAheadGroup:(id)a3 priority:(int64_t)a4 options:(id)a5 identifier:(id *)a6 error:(id *)a7;
-- (BOOL)sendBatchMessageProcessedContext:(id)a3;
-- (BOOL)sendCertifiedDeliveryReceipt:(id)a3;
-- (BOOL)sendData:(id)a3 fromAccount:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9;
-- (BOOL)sendData:(id)a3 priority:(int64_t)a4 options:(id)a5 identifier:(id *)a6 error:(id *)a7;
-- (BOOL)sendData:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendInvitation:(id)a3 toDestination:(id)a4 options:(id)a5 identifier:(id *)a6 error:(id *)a7;
-- (BOOL)sendInvitationUpdate:(id)a3 toDestination:(id)a4 options:(id)a5 identifier:(id *)a6 error:(id *)a7;
-- (BOOL)sendMessage:(id)a3 fromAccount:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9;
-- (BOOL)sendMessage:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendOpportunisticData:(id)a3 options:(id)a4 identifier:(id)a5 error:(id *)a6;
-- (BOOL)sendProtobuf:(id)a3 fromAccount:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9;
-- (BOOL)sendProtobuf:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendResourceAtURL:(id)a3 metadata:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9;
-- (BOOL)sendServerMessage:(id)a3 command:(id)a4 fromAccount:(id)a5;
-- (BOOL)setWakingPushPriority:(int64_t)a3 error:(id *)a4;
-- (BOOL)updateSubServices:(id)a3 forDevice:(id)a4;
-- (IDSService)initWithService:(id)a3 commands:(id)a4 manuallyAckMessages:(BOOL)a5;
-- (IDSService)initWithService:(id)a3 serviceDomain:(id)a4;
+- (BOOL)noteMetricOfType:(int64_t)type context:(id)context;
+- (BOOL)reportSpamMessage:(id)message;
+- (BOOL)sendAccessoryData:(id)data toAccessoryID:(id)d accessToken:(id)token options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendAheadGroup:(id)group priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendBatchMessageProcessedContext:(id)context;
+- (BOOL)sendCertifiedDeliveryReceipt:(id)receipt;
+- (BOOL)sendData:(id)data fromAccount:(id)account toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendData:(id)data priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendData:(id)data toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendInvitation:(id)invitation toDestination:(id)destination options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendInvitationUpdate:(id)update toDestination:(id)destination options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendMessage:(id)message fromAccount:(id)account toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendMessage:(id)message toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendOpportunisticData:(id)data options:(id)options identifier:(id)identifier error:(id *)error;
+- (BOOL)sendProtobuf:(id)protobuf fromAccount:(id)account toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendProtobuf:(id)protobuf toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendResourceAtURL:(id)l metadata:(id)metadata toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendServerMessage:(id)message command:(id)command fromAccount:(id)account;
+- (BOOL)setWakingPushPriority:(int64_t)priority error:(id *)error;
+- (BOOL)updateSubServices:(id)services forDevice:(id)device;
+- (IDSService)initWithService:(id)service commands:(id)commands manuallyAckMessages:(BOOL)messages;
+- (IDSService)initWithService:(id)service serviceDomain:(id)domain;
 - (NSArray)URIs;
 - (NSArray)devices;
 - (NSDictionary)pseudonymURIMap;
 - (NSSet)accounts;
 - (NSSet)internalAccounts;
 - (NSString)serviceIdentifier;
-- (SEL)protobufActionForIncomingRequestsOfType:(unsigned __int16)a3;
-- (SEL)protobufActionForIncomingResponsesOfType:(unsigned __int16)a3;
+- (SEL)protobufActionForIncomingRequestsOfType:(unsigned __int16)type;
+- (SEL)protobufActionForIncomingResponsesOfType:(unsigned __int16)type;
 - (_IDSService)_internal;
-- (id)_accountWithAlias:(id)a3;
-- (id)accountMatchingSim:(id)a3;
-- (id)accountMatchingSimIdentifier:(id)a3;
+- (id)_accountWithAlias:(id)alias;
+- (id)accountMatchingSim:(id)sim;
+- (id)accountMatchingSimIdentifier:(id)identifier;
 - (id)aliases;
-- (id)datagramChannelForSessionDestination:(id)a3 error:(id *)a4;
-- (id)datagramChannelForSessionDestination:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)datagramChannelForSocketDescriptor:(int)a3 error:(id *)a4;
-- (id)datagramConnectionForSessionDestination:(id)a3 error:(id *)a4;
-- (id)datagramConnectionForSessionDestination:(id)a3 uid:(unsigned int)a4 error:(id *)a5;
-- (id)datagramConnectionForSocketDescriptor:(int)a3 error:(id *)a4;
-- (id)deviceForFromID:(id)a3;
-- (id)deviceForUniqueID:(id)a3;
-- (id)devicesForBTUUID:(id)a3;
+- (id)datagramChannelForSessionDestination:(id)destination error:(id *)error;
+- (id)datagramChannelForSessionDestination:(id)destination options:(id)options error:(id *)error;
+- (id)datagramChannelForSocketDescriptor:(int)descriptor error:(id *)error;
+- (id)datagramConnectionForSessionDestination:(id)destination error:(id *)error;
+- (id)datagramConnectionForSessionDestination:(id)destination uid:(unsigned int)uid error:(id *)error;
+- (id)datagramConnectionForSocketDescriptor:(int)descriptor error:(id *)error;
+- (id)deviceForFromID:(id)d;
+- (id)deviceForUniqueID:(id)d;
+- (id)devicesForBTUUID:(id)d;
 - (id)firstRoutableInternetDestinationForSelf;
 - (id)iCloudAccount;
-- (id)linkedDeviceForFromID:(id)a3 withRelationship:(int64_t)a4;
-- (id)linkedDevicesWithRelationship:(int64_t)a3;
-- (id)pseudonymForPseudonymURI:(id)a3;
-- (id)pseudonymPropertiesWithFeatureID:(id)a3 scopeID:(id)a4 expiryDurationInSeconds:(double)a5;
-- (id)pseudonymsForMaskedURI:(id)a3;
-- (id)pseudonymsForMaskedURI:(id)a3 matchingProperties:(id)a4;
+- (id)linkedDeviceForFromID:(id)d withRelationship:(int64_t)relationship;
+- (id)linkedDevicesWithRelationship:(int64_t)relationship;
+- (id)pseudonymForPseudonymURI:(id)i;
+- (id)pseudonymPropertiesWithFeatureID:(id)d scopeID:(id)iD expiryDurationInSeconds:(double)seconds;
+- (id)pseudonymsForMaskedURI:(id)i;
+- (id)pseudonymsForMaskedURI:(id)i matchingProperties:(id)properties;
 - (id)serviceDomain;
-- (id)streamConnectionForSessionDestination:(id)a3 error:(id *)a4;
-- (id)streamConnectionForSocketDescriptor:(int)a3 error:(id *)a4;
-- (id)uriForFromID:(id)a3;
+- (id)streamConnectionForSessionDestination:(id)destination error:(id *)error;
+- (id)streamConnectionForSocketDescriptor:(int)descriptor error:(id *)error;
+- (id)uriForFromID:(id)d;
 - (int64_t)maxEffectivePayloadSize;
 - (unint64_t)registrationRestrictionReason;
-- (void)activateAlias:(id)a3;
-- (void)activateAliases:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)addDelegate:(id)a3 withDelegateProperties:(id)a4 queue:(id)a5;
-- (void)deactivateAlias:(id)a3;
-- (void)deactivateAliases:(id)a3;
+- (void)activateAlias:(id)alias;
+- (void)activateAliases:(id)aliases;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)addDelegate:(id)delegate withDelegateProperties:(id)properties queue:(id)queue;
+- (void)deactivateAlias:(id)alias;
+- (void)deactivateAliases:(id)aliases;
 - (void)dealloc;
-- (void)performGroupTask:(id)a3;
-- (void)provisionPseudonymForURI:(id)a3 withProperties:(id)a4 completion:(id)a5;
-- (void)provisionPseudonymForURI:(id)a3 withProperties:(id)a4 requestProperties:(id)a5 completion:(id)a6;
-- (void)provisionPseudonymWithProperties:(id)a3 completion:(id)a4;
-- (void)provisionPseudonymWithProperties:(id)a3 requestProperties:(id)a4 completion:(id)a5;
-- (void)removeDelegate:(id)a3;
-- (void)renewPseudonym:(id)a3 forUpdatedDuration:(double)a4 completion:(id)a5;
-- (void)renewPseudonym:(id)a3 forUpdatedExpiryEpoch:(double)a4 completion:(id)a5;
-- (void)reportAction:(int64_t)a3 ofTempURI:(id)a4 fromURI:(id)a5 withCompletion:(id)a6;
-- (void)retrieveFirewallWithQueue:(id)a3 completion:(id)a4;
-- (void)revokePseudonym:(id)a3 completion:(id)a4;
-- (void)scheduleTransactionLogTask:(id)a3;
-- (void)sendAckForMessageWithContext:(id)a3;
-- (void)setLinkPreferences:(id)a3;
-- (void)setNeedsLaunchOnNearbyDevicesChanged:(BOOL)a3;
-- (void)setPreferInfraWiFi:(BOOL)a3;
-- (void)setPretendingToBeFull:(BOOL)a3;
-- (void)setProtobufAction:(SEL)a3 forIncomingRequestsOfType:(unsigned __int16)a4;
-- (void)setProtobufAction:(SEL)a3 forIncomingResponsesOfType:(unsigned __int16)a4;
-- (void)signData:(id)a3 withAlgorithm:(int64_t)a4 options:(id)a5 completion:(id)a6;
-- (void)startOTRTest:(int64_t)a3;
+- (void)performGroupTask:(id)task;
+- (void)provisionPseudonymForURI:(id)i withProperties:(id)properties completion:(id)completion;
+- (void)provisionPseudonymForURI:(id)i withProperties:(id)properties requestProperties:(id)requestProperties completion:(id)completion;
+- (void)provisionPseudonymWithProperties:(id)properties completion:(id)completion;
+- (void)provisionPseudonymWithProperties:(id)properties requestProperties:(id)requestProperties completion:(id)completion;
+- (void)removeDelegate:(id)delegate;
+- (void)renewPseudonym:(id)pseudonym forUpdatedDuration:(double)duration completion:(id)completion;
+- (void)renewPseudonym:(id)pseudonym forUpdatedExpiryEpoch:(double)epoch completion:(id)completion;
+- (void)reportAction:(int64_t)action ofTempURI:(id)i fromURI:(id)rI withCompletion:(id)completion;
+- (void)retrieveFirewallWithQueue:(id)queue completion:(id)completion;
+- (void)revokePseudonym:(id)pseudonym completion:(id)completion;
+- (void)scheduleTransactionLogTask:(id)task;
+- (void)sendAckForMessageWithContext:(id)context;
+- (void)setLinkPreferences:(id)preferences;
+- (void)setNeedsLaunchOnNearbyDevicesChanged:(BOOL)changed;
+- (void)setPreferInfraWiFi:(BOOL)fi;
+- (void)setPretendingToBeFull:(BOOL)full;
+- (void)setProtobufAction:(SEL)action forIncomingRequestsOfType:(unsigned __int16)type;
+- (void)setProtobufAction:(SEL)action forIncomingResponsesOfType:(unsigned __int16)type;
+- (void)signData:(id)data withAlgorithm:(int64_t)algorithm options:(id)options completion:(id)completion;
+- (void)startOTRTest:(int64_t)test;
 - (void)testCloudQRConnection;
-- (void)verifySignedData:(id)a3 matchesExpectedData:(id)a4 withTokenURI:(id)a5 forAlgorithm:(int64_t)a6 options:(id)a7 completion:(id)a8;
-- (void)verifySignedPayloads:(id)a3 forAlgorithm:(int64_t)a4 options:(id)a5 completion:(id)a6;
+- (void)verifySignedData:(id)data matchesExpectedData:(id)expectedData withTokenURI:(id)i forAlgorithm:(int64_t)algorithm options:(id)options completion:(id)completion;
+- (void)verifySignedPayloads:(id)payloads forAlgorithm:(int64_t)algorithm options:(id)options completion:(id)completion;
 @end
 
 @implementation IDSService
@@ -229,26 +229,26 @@
   return v5;
 }
 
-- (id)accountMatchingSim:(id)a3
+- (id)accountMatchingSim:(id)sim
 {
-  v4 = [a3 SIMIdentifier];
-  v5 = [(IDSService *)self accountMatchingSimIdentifier:v4];
+  sIMIdentifier = [sim SIMIdentifier];
+  v5 = [(IDSService *)self accountMatchingSimIdentifier:sIMIdentifier];
 
   return v5;
 }
 
-- (id)accountMatchingSimIdentifier:(id)a3
+- (id)accountMatchingSimIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(IDSService *)self accounts];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    accounts = [(IDSService *)self accounts];
+    v6 = [accounts countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -258,12 +258,12 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(accounts);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 userUniqueIdentifier];
-          v11 = [v10 isEqual:v4];
+          userUniqueIdentifier = [v9 userUniqueIdentifier];
+          v11 = [userUniqueIdentifier isEqual:identifierCopy];
 
           if (v11)
           {
@@ -272,7 +272,7 @@
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [accounts countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;
@@ -295,46 +295,46 @@ LABEL_12:
   return v6;
 }
 
-+ (BOOL)checkMessageSize:(unint64_t)a3 priority:(int64_t)a4
++ (BOOL)checkMessageSize:(unint64_t)size priority:(int64_t)priority
 {
   v4 = 1048577;
-  if (a4 != 300)
+  if (priority != 300)
   {
     v4 = 5242881;
   }
 
-  return v4 > a3;
+  return v4 > size;
 }
 
-+ (IDSService)serviceWithIdentifier:(id)a3 commands:(id)a4 manuallyAckMessages:(BOOL)a5 completion:(id)a6
++ (IDSService)serviceWithIdentifier:(id)identifier commands:(id)commands manuallyAckMessages:(BOOL)messages completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  commandsCopy = commands;
+  completionCopy = completion;
   v12 = +[IDSInternalQueueController sharedInstance];
-  v13 = [v12 assertQueueIsNotCurrent];
+  assertQueueIsNotCurrent = [v12 assertQueueIsNotCurrent];
 
-  if (v13)
+  if (assertQueueIsNotCurrent)
   {
-    v14 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B376E8();
     }
   }
 
-  if (v11)
+  if (completionCopy)
   {
     v15 = +[IDSInternalQueueController sharedInstance];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = sub_195AA8C90;
     v22 = &unk_1E7441988;
-    v16 = v9;
+    v16 = identifierCopy;
     v23 = v16;
-    v24 = v10;
-    v26 = a5;
-    v25 = v11;
+    v24 = commandsCopy;
+    messagesCopy = messages;
+    v25 = completionCopy;
     [v15 performBlock:&v19];
 
     v17 = [_IDSXPCCheckinManager sharedInstance:v19];
@@ -344,10 +344,10 @@ LABEL_12:
   return result;
 }
 
-- (IDSService)initWithService:(id)a3 commands:(id)a4 manuallyAckMessages:(BOOL)a5
+- (IDSService)initWithService:(id)service commands:(id)commands manuallyAckMessages:(BOOL)messages
 {
-  v8 = a3;
-  v9 = a4;
+  serviceCopy = service;
+  commandsCopy = commands;
   if (_IDSRunningInDaemon())
   {
     v10 = +[IDSLogging IDSService];
@@ -356,18 +356,18 @@ LABEL_12:
       sub_195B26A7C();
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v12 = +[IDSInternalQueueController sharedInstance];
-    v13 = [v12 assertQueueIsNotCurrent];
+    assertQueueIsNotCurrent = [v12 assertQueueIsNotCurrent];
 
-    if (v13)
+    if (assertQueueIsNotCurrent)
     {
-      v14 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B37788();
       }
@@ -384,10 +384,10 @@ LABEL_12:
       v22 = sub_195AA9004;
       v23 = &unk_1E743EFD8;
       v24 = v15;
-      v17 = v8;
+      v17 = serviceCopy;
       v25 = v17;
-      v26 = v9;
-      v27 = a5;
+      v26 = commandsCopy;
+      messagesCopy = messages;
       [v16 performBlock:&v20];
 
       v18 = [_IDSXPCCheckinManager sharedInstance:v20];
@@ -395,22 +395,22 @@ LABEL_12:
     }
 
     self = v15;
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (IDSService)initWithService:(id)a3 serviceDomain:(id)a4
+- (IDSService)initWithService:(id)service serviceDomain:(id)domain
 {
-  v5 = a4;
+  domainCopy = domain;
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B37828();
     }
@@ -419,7 +419,7 @@ LABEL_12:
   v9 = +[IDSLogging IDSService];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    sub_195B378C8(v5, v9);
+    sub_195B378C8(domainCopy, v9);
   }
 
   return 0;
@@ -428,12 +428,12 @@ LABEL_12:
 - (_IDSService)_internal
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B37940();
     }
@@ -444,68 +444,68 @@ LABEL_12:
   return internal;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195AA92B0;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
   [v8 performBlock:v11 waitUntilDone:0];
 }
 
-- (void)addDelegate:(id)a3 withDelegateProperties:(id)a4 queue:(id)a5
+- (void)addDelegate:(id)delegate withDelegateProperties:(id)properties queue:(id)queue
 {
-  v7 = a3;
-  v8 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v9 = +[IDSInternalQueueController sharedInstance];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_195AA93A4;
   v12[3] = &unk_1E743E620;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = delegateCopy;
+  v14 = queueCopy;
+  v10 = queueCopy;
+  v11 = delegateCopy;
   [v9 performBlock:v12 waitUntilDone:0];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_195AA9464;
   v6[3] = &unk_1E743F468;
   v6[4] = self;
-  v6[5] = v4;
+  v6[5] = delegateCopy;
   [v5 performBlock:v6 waitUntilDone:1];
 }
 
-- (void)performGroupTask:(id)a3
+- (void)performGroupTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195AA952C;
   v7[3] = &unk_1E743EAA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = taskCopy;
+  v6 = taskCopy;
   [v5 performBlock:v7 waitUntilDone:0];
 }
 
-- (void)setProtobufAction:(SEL)a3 forIncomingRequestsOfType:(unsigned __int16)a4
+- (void)setProtobufAction:(SEL)action forIncomingRequestsOfType:(unsigned __int16)type
 {
   v7 = +[IDSInternalQueueController sharedInstance];
   v8[0] = MEMORY[0x1E69E9820];
@@ -513,12 +513,12 @@ LABEL_12:
   v8[2] = sub_195AA95DC;
   v8[3] = &unk_1E74419B0;
   v8[4] = self;
-  v8[5] = a3;
-  v9 = a4;
+  v8[5] = action;
+  typeCopy = type;
   [v7 performBlock:v8];
 }
 
-- (void)setProtobufAction:(SEL)a3 forIncomingResponsesOfType:(unsigned __int16)a4
+- (void)setProtobufAction:(SEL)action forIncomingResponsesOfType:(unsigned __int16)type
 {
   v7 = +[IDSInternalQueueController sharedInstance];
   v8[0] = MEMORY[0x1E69E9820];
@@ -526,12 +526,12 @@ LABEL_12:
   v8[2] = sub_195AA9698;
   v8[3] = &unk_1E74419B0;
   v8[4] = self;
-  v8[5] = a3;
-  v9 = a4;
+  v8[5] = action;
+  typeCopy = type;
   [v7 performBlock:v8];
 }
 
-- (SEL)protobufActionForIncomingRequestsOfType:(unsigned __int16)a3
+- (SEL)protobufActionForIncomingRequestsOfType:(unsigned __int16)type
 {
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
@@ -547,7 +547,7 @@ LABEL_12:
   v9[3] = &unk_1E74419D8;
   v9[4] = self;
   v9[5] = &v11;
-  v10 = a3;
+  typeCopy = type;
   [v6 performBlock:v9 waitUntilDone:1];
 
   v7 = v12[3];
@@ -555,7 +555,7 @@ LABEL_12:
   return v7;
 }
 
-- (SEL)protobufActionForIncomingResponsesOfType:(unsigned __int16)a3
+- (SEL)protobufActionForIncomingResponsesOfType:(unsigned __int16)type
 {
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
@@ -571,7 +571,7 @@ LABEL_12:
   v9[3] = &unk_1E74419D8;
   v9[4] = self;
   v9[5] = &v11;
-  v10 = a3;
+  typeCopy = type;
   [v6 performBlock:v9 waitUntilDone:1];
 
   v7 = v12[3];
@@ -579,12 +579,12 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)sendProtobuf:(id)a3 fromAccount:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9
+- (BOOL)sendProtobuf:(id)protobuf fromAccount:(id)account toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  protobufCopy = protobuf;
+  accountCopy = account;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v19 = +[IDSDaemonController sharedInstance];
   [v19 blockUntilConnected];
 
@@ -599,30 +599,30 @@ LABEL_12:
   v26[3] = &unk_1E7441A00;
   v31 = &v35;
   v26[4] = self;
-  v21 = v15;
+  v21 = protobufCopy;
   v27 = v21;
-  v22 = v16;
+  v22 = accountCopy;
   v28 = v22;
-  v23 = v17;
+  v23 = destinationsCopy;
   v29 = v23;
-  v32 = a6;
-  v24 = v18;
+  priorityCopy = priority;
+  v24 = optionsCopy;
   v30 = v24;
-  v33 = a8;
-  v34 = a9;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v20 performBlock:v26 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v36 + 24);
+  LOBYTE(identifier) = *(v36 + 24);
   _Block_object_dispose(&v35, 8);
 
-  return a8;
+  return identifier;
 }
 
-- (BOOL)sendProtobuf:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendProtobuf:(id)protobuf toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  protobufCopy = protobuf;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   kdebug_trace();
   v17 = +[IDSDaemonController sharedInstance];
   [v17 blockUntilConnected];
@@ -638,28 +638,28 @@ LABEL_12:
   v23[3] = &unk_1E7440218;
   v27 = &v31;
   v23[4] = self;
-  v19 = v14;
+  v19 = protobufCopy;
   v24 = v19;
-  v20 = v15;
+  v20 = destinationsCopy;
   v25 = v20;
-  v28 = a5;
-  v21 = v16;
+  priorityCopy = priority;
+  v21 = optionsCopy;
   v26 = v21;
-  v29 = a7;
-  v30 = a8;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v18 performBlock:v23 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v32 + 24);
+  LOBYTE(error) = *(v32 + 24);
   _Block_object_dispose(&v31, 8);
 
-  return a8;
+  return error;
 }
 
-- (BOOL)sendOpportunisticData:(id)a3 options:(id)a4 identifier:(id)a5 error:(id *)a6
+- (BOOL)sendOpportunisticData:(id)data options:(id)options identifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  optionsCopy = options;
+  identifierCopy = identifier;
   v13 = +[IDSDaemonController sharedInstance];
   [v13 blockUntilConnected];
 
@@ -674,24 +674,24 @@ LABEL_12:
   v19[3] = &unk_1E7441A28;
   v23 = &v25;
   v19[4] = self;
-  v15 = v10;
+  v15 = dataCopy;
   v20 = v15;
-  v16 = v11;
+  v16 = optionsCopy;
   v21 = v16;
-  v17 = v12;
+  v17 = identifierCopy;
   v22 = v17;
-  v24 = a6;
+  errorCopy = error;
   [v14 performBlock:v19 waitUntilDone:1];
 
-  LOBYTE(a6) = *(v26 + 24);
+  LOBYTE(error) = *(v26 + 24);
   _Block_object_dispose(&v25, 8);
 
-  return a6;
+  return error;
 }
 
-- (BOOL)cancelOpportunisticDataWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)cancelOpportunisticDataWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
 
@@ -706,23 +706,23 @@ LABEL_12:
   v11[3] = &unk_1E743FCF8;
   v13 = &v15;
   v11[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v12 = v9;
-  v14 = a4;
+  errorCopy = error;
   [v8 performBlock:v11 waitUntilDone:1];
 
-  LOBYTE(a4) = *(v16 + 24);
+  LOBYTE(error) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return a4;
+  return error;
 }
 
-- (BOOL)sendMessage:(id)a3 fromAccount:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9
+- (BOOL)sendMessage:(id)message fromAccount:(id)account toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  messageCopy = message;
+  accountCopy = account;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v19 = +[IDSDaemonController sharedInstance];
   [v19 blockUntilConnected];
 
@@ -737,30 +737,30 @@ LABEL_12:
   v26[3] = &unk_1E7441A00;
   v31 = &v35;
   v26[4] = self;
-  v21 = v15;
+  v21 = messageCopy;
   v27 = v21;
-  v22 = v16;
+  v22 = accountCopy;
   v28 = v22;
-  v23 = v17;
+  v23 = destinationsCopy;
   v29 = v23;
-  v32 = a6;
-  v24 = v18;
+  priorityCopy = priority;
+  v24 = optionsCopy;
   v30 = v24;
-  v33 = a8;
-  v34 = a9;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v20 performBlock:v26 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v36 + 24);
+  LOBYTE(identifier) = *(v36 + 24);
   _Block_object_dispose(&v35, 8);
 
-  return a8;
+  return identifier;
 }
 
-- (BOOL)sendMessage:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendMessage:(id)message toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  messageCopy = message;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v17 = +[IDSDaemonController sharedInstance];
   [v17 blockUntilConnected];
 
@@ -775,26 +775,26 @@ LABEL_12:
   v23[3] = &unk_1E7440218;
   v27 = &v31;
   v23[4] = self;
-  v19 = v14;
+  v19 = messageCopy;
   v24 = v19;
-  v20 = v15;
+  v20 = destinationsCopy;
   v25 = v20;
-  v28 = a5;
-  v21 = v16;
+  priorityCopy = priority;
+  v21 = optionsCopy;
   v26 = v21;
-  v29 = a7;
-  v30 = a8;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v18 performBlock:v23 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v32 + 24);
+  LOBYTE(error) = *(v32 + 24);
   _Block_object_dispose(&v31, 8);
 
-  return a8;
+  return error;
 }
 
-- (BOOL)cancelMessageWithOptions:(id)a3 identifier:(id *)a4 error:(id *)a5
+- (BOOL)cancelMessageWithOptions:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v8 = a3;
+  optionsCopy = options;
   v9 = +[IDSDaemonController sharedInstance];
   [v9 blockUntilConnected];
 
@@ -809,22 +809,22 @@ LABEL_12:
   v13[3] = &unk_1E7441A50;
   v15 = &v18;
   v13[4] = self;
-  v11 = v8;
+  v11 = optionsCopy;
   v14 = v11;
-  v16 = a4;
-  v17 = a5;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v10 performBlock:v13 waitUntilDone:1];
 
-  LOBYTE(a5) = *(v19 + 24);
+  LOBYTE(error) = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
 
-  return a5;
+  return error;
 }
 
-- (BOOL)cancelMessageWithOptions:(id)a3 destination:(id)a4 identifier:(id *)a5 error:(id *)a6
+- (BOOL)cancelMessageWithOptions:(id)options destination:(id)destination identifier:(id *)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  optionsCopy = options;
+  destinationCopy = destination;
   v12 = +[IDSDaemonController sharedInstance];
   [v12 blockUntilConnected];
 
@@ -839,24 +839,24 @@ LABEL_12:
   v17[3] = &unk_1E7441A78;
   v20 = &v23;
   v17[4] = self;
-  v14 = v10;
+  v14 = optionsCopy;
   v18 = v14;
-  v15 = v11;
+  v15 = destinationCopy;
   v19 = v15;
-  v21 = a5;
-  v22 = a6;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v13 performBlock:v17 waitUntilDone:1];
 
-  LOBYTE(a6) = *(v24 + 24);
+  LOBYTE(error) = *(v24 + 24);
   _Block_object_dispose(&v23, 8);
 
-  return a6;
+  return error;
 }
 
-- (BOOL)cancelMessageWithOptions:(id)a3 destinations:(id)a4 identifier:(id *)a5 error:(id *)a6
+- (BOOL)cancelMessageWithOptions:(id)options destinations:(id)destinations identifier:(id *)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  optionsCopy = options;
+  destinationsCopy = destinations;
   v12 = +[IDSDaemonController sharedInstance];
   [v12 blockUntilConnected];
 
@@ -871,26 +871,26 @@ LABEL_12:
   v17[3] = &unk_1E7441A78;
   v20 = &v23;
   v17[4] = self;
-  v14 = v10;
+  v14 = optionsCopy;
   v18 = v14;
-  v15 = v11;
+  v15 = destinationsCopy;
   v19 = v15;
-  v21 = a5;
-  v22 = a6;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v13 performBlock:v17 waitUntilDone:1];
 
-  LOBYTE(a6) = *(v24 + 24);
+  LOBYTE(error) = *(v24 + 24);
   _Block_object_dispose(&v23, 8);
 
-  return a6;
+  return error;
 }
 
-- (BOOL)sendData:(id)a3 fromAccount:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9
+- (BOOL)sendData:(id)data fromAccount:(id)account toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  dataCopy = data;
+  accountCopy = account;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v19 = +[IDSDaemonController sharedInstance];
   [v19 blockUntilConnected];
 
@@ -905,30 +905,30 @@ LABEL_12:
   v26[3] = &unk_1E7441A00;
   v31 = &v35;
   v26[4] = self;
-  v21 = v15;
+  v21 = dataCopy;
   v27 = v21;
-  v22 = v16;
+  v22 = accountCopy;
   v28 = v22;
-  v23 = v17;
+  v23 = destinationsCopy;
   v29 = v23;
-  v32 = a6;
-  v24 = v18;
+  priorityCopy = priority;
+  v24 = optionsCopy;
   v30 = v24;
-  v33 = a8;
-  v34 = a9;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v20 performBlock:v26 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v36 + 24);
+  LOBYTE(identifier) = *(v36 + 24);
   _Block_object_dispose(&v35, 8);
 
-  return a8;
+  return identifier;
 }
 
-- (BOOL)sendData:(id)a3 toDestinations:(id)a4 priority:(int64_t)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendData:(id)data toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  dataCopy = data;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v17 = +[IDSDaemonController sharedInstance];
   [v17 blockUntilConnected];
 
@@ -943,29 +943,29 @@ LABEL_12:
   v23[3] = &unk_1E7440218;
   v27 = &v31;
   v23[4] = self;
-  v19 = v14;
+  v19 = dataCopy;
   v24 = v19;
-  v20 = v15;
+  v20 = destinationsCopy;
   v25 = v20;
-  v28 = a5;
-  v21 = v16;
+  priorityCopy = priority;
+  v21 = optionsCopy;
   v26 = v21;
-  v29 = a7;
-  v30 = a8;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v18 performBlock:v23 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v32 + 24);
+  LOBYTE(error) = *(v32 + 24);
   _Block_object_dispose(&v31, 8);
 
-  return a8;
+  return error;
 }
 
-- (BOOL)sendAccessoryData:(id)a3 toAccessoryID:(id)a4 accessToken:(id)a5 options:(id)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendAccessoryData:(id)data toAccessoryID:(id)d accessToken:(id)token options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  dataCopy = data;
+  dCopy = d;
+  tokenCopy = token;
+  optionsCopy = options;
   v18 = +[IDSDaemonController sharedInstance];
   [v18 blockUntilConnected];
 
@@ -980,29 +980,29 @@ LABEL_12:
   v25[3] = &unk_1E7441AA0;
   v30 = &v33;
   v25[4] = self;
-  v20 = v14;
+  v20 = dataCopy;
   v26 = v20;
-  v21 = v15;
+  v21 = dCopy;
   v27 = v21;
-  v22 = v16;
+  v22 = tokenCopy;
   v28 = v22;
-  v23 = v17;
+  v23 = optionsCopy;
   v29 = v23;
-  v31 = a7;
-  v32 = a8;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v19 performBlock:v25 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v34 + 24);
+  LOBYTE(error) = *(v34 + 24);
   _Block_object_dispose(&v33, 8);
 
-  return a8;
+  return error;
 }
 
-- (BOOL)sendInvitation:(id)a3 toDestination:(id)a4 options:(id)a5 identifier:(id *)a6 error:(id *)a7
+- (BOOL)sendInvitation:(id)invitation toDestination:(id)destination options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  invitationCopy = invitation;
+  destinationCopy = destination;
+  optionsCopy = options;
   v15 = +[IDSDaemonController sharedInstance];
   [v15 blockUntilConnected];
 
@@ -1017,27 +1017,27 @@ LABEL_12:
   v21[3] = &unk_1E7441AC8;
   v25 = &v28;
   v21[4] = self;
-  v17 = v12;
+  v17 = invitationCopy;
   v22 = v17;
-  v18 = v13;
+  v18 = destinationCopy;
   v23 = v18;
-  v19 = v14;
+  v19 = optionsCopy;
   v24 = v19;
-  v26 = a6;
-  v27 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v16 performBlock:v21 waitUntilDone:1];
 
-  LOBYTE(a7) = *(v29 + 24);
+  LOBYTE(error) = *(v29 + 24);
   _Block_object_dispose(&v28, 8);
 
-  return a7;
+  return error;
 }
 
-- (BOOL)sendInvitationUpdate:(id)a3 toDestination:(id)a4 options:(id)a5 identifier:(id *)a6 error:(id *)a7
+- (BOOL)sendInvitationUpdate:(id)update toDestination:(id)destination options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  updateCopy = update;
+  destinationCopy = destination;
+  optionsCopy = options;
   v15 = +[IDSDaemonController sharedInstance];
   [v15 blockUntilConnected];
 
@@ -1052,23 +1052,23 @@ LABEL_12:
   v21[3] = &unk_1E7441AC8;
   v25 = &v28;
   v21[4] = self;
-  v17 = v12;
+  v17 = updateCopy;
   v22 = v17;
-  v18 = v13;
+  v18 = destinationCopy;
   v23 = v18;
-  v19 = v14;
+  v19 = optionsCopy;
   v24 = v19;
-  v26 = a6;
-  v27 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v16 performBlock:v21 waitUntilDone:1];
 
-  LOBYTE(a7) = *(v29 + 24);
+  LOBYTE(error) = *(v29 + 24);
   _Block_object_dispose(&v28, 8);
 
-  return a7;
+  return error;
 }
 
-- (BOOL)setWakingPushPriority:(int64_t)a3 error:(id *)a4
+- (BOOL)setWakingPushPriority:(int64_t)priority error:(id *)error
 {
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
@@ -1084,19 +1084,19 @@ LABEL_12:
   v10[3] = &unk_1E7441AF0;
   v10[4] = self;
   v10[5] = &v11;
-  v10[6] = a3;
-  v10[7] = a4;
+  v10[6] = priority;
+  v10[7] = error;
   [v8 performBlock:v10 waitUntilDone:1];
 
-  LOBYTE(a4) = *(v12 + 24);
+  LOBYTE(error) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return a4;
+  return error;
 }
 
-- (BOOL)sendData:(id)a3 priority:(int64_t)a4 options:(id)a5 identifier:(id *)a6 error:(id *)a7
+- (BOOL)sendData:(id)data priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
+  dataCopy = data;
+  optionsCopy = options;
   v14 = +[IDSDaemonController sharedInstance];
   [v14 blockUntilConnected];
 
@@ -1111,27 +1111,27 @@ LABEL_12:
   v19[3] = &unk_1E7441B18;
   v22 = &v26;
   v19[4] = self;
-  v16 = v12;
+  v16 = dataCopy;
   v20 = v16;
-  v23 = a4;
-  v17 = v13;
+  priorityCopy = priority;
+  v17 = optionsCopy;
   v21 = v17;
-  v24 = a6;
-  v25 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v15 performBlock:v19 waitUntilDone:1];
 
-  LOBYTE(a7) = *(v27 + 24);
+  LOBYTE(error) = *(v27 + 24);
   _Block_object_dispose(&v26, 8);
 
-  return a7;
+  return error;
 }
 
-- (BOOL)sendResourceAtURL:(id)a3 metadata:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9
+- (BOOL)sendResourceAtURL:(id)l metadata:(id)metadata toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  lCopy = l;
+  metadataCopy = metadata;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v19 = +[IDSDaemonController sharedInstance];
   [v19 blockUntilConnected];
 
@@ -1146,28 +1146,28 @@ LABEL_12:
   v26[3] = &unk_1E7441A00;
   v31 = &v35;
   v26[4] = self;
-  v21 = v15;
+  v21 = lCopy;
   v27 = v21;
-  v22 = v16;
+  v22 = metadataCopy;
   v28 = v22;
-  v23 = v17;
+  v23 = destinationsCopy;
   v29 = v23;
-  v32 = a6;
-  v24 = v18;
+  priorityCopy = priority;
+  v24 = optionsCopy;
   v30 = v24;
-  v33 = a8;
-  v34 = a9;
+  identifierCopy = identifier;
+  errorCopy = error;
   [v20 performBlock:v26 waitUntilDone:1];
 
-  LOBYTE(a8) = *(v36 + 24);
+  LOBYTE(identifier) = *(v36 + 24);
   _Block_object_dispose(&v35, 8);
 
-  return a8;
+  return identifier;
 }
 
-- (BOOL)getProgressUpdateForIdentifier:(id)a3 error:(id *)a4
+- (BOOL)getProgressUpdateForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
 
@@ -1182,21 +1182,21 @@ LABEL_12:
   v11[3] = &unk_1E743FCF8;
   v13 = &v15;
   v11[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v12 = v9;
-  v14 = a4;
+  errorCopy = error;
   [v8 performBlock:v11 waitUntilDone:1];
 
-  LOBYTE(a4) = *(v16 + 24);
+  LOBYTE(error) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return a4;
+  return error;
 }
 
-- (BOOL)sendAheadGroup:(id)a3 priority:(int64_t)a4 options:(id)a5 identifier:(id *)a6 error:(id *)a7
+- (BOOL)sendAheadGroup:(id)group priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
+  groupCopy = group;
+  optionsCopy = options;
   v13 = +[IDSDaemonController sharedInstance];
   [v13 blockUntilConnected];
 
@@ -1211,23 +1211,23 @@ LABEL_12:
   v18[3] = &unk_1E7441A78;
   v21 = &v24;
   v18[4] = self;
-  v15 = v11;
+  v15 = groupCopy;
   v19 = v15;
-  v22 = a4;
-  v16 = v12;
+  priorityCopy = priority;
+  v16 = optionsCopy;
   v20 = v16;
-  v23 = a6;
+  identifierCopy = identifier;
   [v14 performBlock:v18 waitUntilDone:1];
 
-  LOBYTE(a6) = *(v25 + 24);
+  LOBYTE(identifier) = *(v25 + 24);
   _Block_object_dispose(&v24, 8);
 
-  return a6;
+  return identifier;
 }
 
-- (BOOL)reportSpamMessage:(id)a3
+- (BOOL)reportSpamMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -1242,19 +1242,19 @@ LABEL_12:
   v9[3] = &unk_1E743EA08;
   v11 = &v12;
   v9[4] = self;
-  v7 = v4;
+  v7 = messageCopy;
   v10 = v7;
   [v6 performBlock:v9 waitUntilDone:1];
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(messageCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
 
-  return v4;
+  return messageCopy;
 }
 
-- (void)sendAckForMessageWithContext:(id)a3
+- (void)sendAckForMessageWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -1264,14 +1264,14 @@ LABEL_12:
   v8[2] = sub_195AABE10;
   v8[3] = &unk_1E743EA30;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = contextCopy;
+  v7 = contextCopy;
   [v6 performBlock:v8];
 }
 
-- (BOOL)sendCertifiedDeliveryReceipt:(id)a3
+- (BOOL)sendCertifiedDeliveryReceipt:(id)receipt
 {
-  v4 = a3;
+  receiptCopy = receipt;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -1286,19 +1286,19 @@ LABEL_12:
   v9[3] = &unk_1E743EA08;
   v11 = &v12;
   v9[4] = self;
-  v7 = v4;
+  v7 = receiptCopy;
   v10 = v7;
   [v6 performBlock:v9 waitUntilDone:1];
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(receiptCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
 
-  return v4;
+  return receiptCopy;
 }
 
-- (BOOL)sendBatchMessageProcessedContext:(id)a3
+- (BOOL)sendBatchMessageProcessedContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -1313,19 +1313,19 @@ LABEL_12:
   v9[3] = &unk_1E743EA08;
   v11 = &v12;
   v9[4] = self;
-  v7 = v4;
+  v7 = contextCopy;
   v10 = v7;
   [v6 performBlock:v9 waitUntilDone:1];
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(contextCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
 
-  return v4;
+  return contextCopy;
 }
 
-- (BOOL)noteMetricOfType:(int64_t)a3 context:(id)a4
+- (BOOL)noteMetricOfType:(int64_t)type context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
 
@@ -1339,9 +1339,9 @@ LABEL_12:
   v11[2] = sub_195AAC21C;
   v11[3] = &unk_1E743FCF8;
   v13 = &v15;
-  v14 = a3;
+  typeCopy = type;
   v11[4] = self;
-  v9 = v6;
+  v9 = contextCopy;
   v12 = v9;
   [v8 performBlock:v11 waitUntilDone:1];
 
@@ -1351,9 +1351,9 @@ LABEL_12:
   return self;
 }
 
-- (BOOL)cancelIdentifier:(id)a3 error:(id *)a4
+- (BOOL)cancelIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
 
@@ -1368,22 +1368,22 @@ LABEL_12:
   v11[3] = &unk_1E743FCF8;
   v13 = &v15;
   v11[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v12 = v9;
-  v14 = a4;
+  errorCopy = error;
   [v8 performBlock:v11 waitUntilDone:1];
 
-  LOBYTE(a4) = *(v16 + 24);
+  LOBYTE(error) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return a4;
+  return error;
 }
 
-- (BOOL)sendServerMessage:(id)a3 command:(id)a4 fromAccount:(id)a5
+- (BOOL)sendServerMessage:(id)message command:(id)command fromAccount:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  commandCopy = command;
+  accountCopy = account;
   v11 = +[IDSDaemonController sharedInstance];
   [v11 blockUntilConnected];
 
@@ -1398,18 +1398,18 @@ LABEL_12:
   v17[3] = &unk_1E7441B40;
   v21 = &v22;
   v17[4] = self;
-  v13 = v8;
+  v13 = messageCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = commandCopy;
   v19 = v14;
-  v15 = v10;
+  v15 = accountCopy;
   v20 = v15;
   [v12 performBlock:v17 waitUntilDone:1];
 
-  LOBYTE(v8) = *(v23 + 24);
+  LOBYTE(messageCopy) = *(v23 + 24);
   _Block_object_dispose(&v22, 8);
 
-  return v8;
+  return messageCopy;
 }
 
 - (unint64_t)registrationRestrictionReason
@@ -1435,7 +1435,7 @@ LABEL_12:
   return v5;
 }
 
-- (id)linkedDevicesWithRelationship:(int64_t)a3
+- (id)linkedDevicesWithRelationship:(int64_t)relationship
 {
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
@@ -1453,7 +1453,7 @@ LABEL_12:
   v9[3] = &unk_1E743F670;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
+  v9[6] = relationship;
   [v6 performBlock:v9 waitUntilDone:1];
 
   v7 = v11[5];
@@ -1537,9 +1537,9 @@ LABEL_12:
   return self;
 }
 
-- (id)deviceForFromID:(id)a3
+- (id)deviceForFromID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -1556,7 +1556,7 @@ LABEL_12:
   v10[3] = &unk_1E743EA08;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   [v6 performBlock:v10 waitUntilDone:1];
 
@@ -1566,9 +1566,9 @@ LABEL_12:
   return v8;
 }
 
-- (id)linkedDeviceForFromID:(id)a3 withRelationship:(int64_t)a4
+- (id)linkedDeviceForFromID:(id)d withRelationship:(int64_t)relationship
 {
-  v6 = a3;
+  dCopy = d;
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
 
@@ -1585,9 +1585,9 @@ LABEL_12:
   v12[3] = &unk_1E743FCF8;
   v14 = &v16;
   v12[4] = self;
-  v9 = v6;
+  v9 = dCopy;
   v13 = v9;
-  v15 = a4;
+  relationshipCopy = relationship;
   [v8 performBlock:v12 waitUntilDone:1];
 
   v10 = v17[5];
@@ -1622,9 +1622,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)deviceForUniqueID:(id)a3
+- (id)deviceForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -1641,7 +1641,7 @@ LABEL_12:
   v10[3] = &unk_1E743EA08;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   [v6 performBlock:v10 waitUntilDone:1];
 
@@ -1651,9 +1651,9 @@ LABEL_12:
   return v8;
 }
 
-- (id)devicesForBTUUID:(id)a3
+- (id)devicesForBTUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -1670,7 +1670,7 @@ LABEL_12:
   v10[3] = &unk_1E743EA08;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   [v6 performBlock:v10 waitUntilDone:1];
 
@@ -1680,9 +1680,9 @@ LABEL_12:
   return v8;
 }
 
-- (id)uriForFromID:(id)a3
+- (id)uriForFromID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -1699,7 +1699,7 @@ LABEL_12:
   v10[3] = &unk_1E743EA08;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   [v6 performBlock:v10 waitUntilDone:1];
 
@@ -1709,7 +1709,7 @@ LABEL_12:
   return v8;
 }
 
-- (void)setPreferInfraWiFi:(BOOL)a3
+- (void)setPreferInfraWiFi:(BOOL)fi
 {
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
@@ -1720,11 +1720,11 @@ LABEL_12:
   v7[2] = sub_195AAD7D8;
   v7[3] = &unk_1E743E8C8;
   v7[4] = self;
-  v8 = a3;
+  fiCopy = fi;
   [v6 performBlock:v7];
 }
 
-- (void)setNeedsLaunchOnNearbyDevicesChanged:(BOOL)a3
+- (void)setNeedsLaunchOnNearbyDevicesChanged:(BOOL)changed
 {
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
@@ -1732,7 +1732,7 @@ LABEL_12:
   v6[2] = sub_195AAD88C;
   v6[3] = &unk_1E743E8C8;
   v6[4] = self;
-  v7 = a3;
+  changedCopy = changed;
   [v5 performBlock:v6];
 }
 
@@ -1759,9 +1759,9 @@ LABEL_12:
   return self;
 }
 
-- (void)setLinkPreferences:(id)a3
+- (void)setLinkPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -1771,12 +1771,12 @@ LABEL_12:
   v8[2] = sub_195AADB14;
   v8[3] = &unk_1E743EA30;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = preferencesCopy;
+  v7 = preferencesCopy;
   [v6 performBlock:v8];
 }
 
-- (void)startOTRTest:(int64_t)a3
+- (void)startOTRTest:(int64_t)test
 {
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
@@ -1787,11 +1787,11 @@ LABEL_12:
   v7[2] = sub_195AADBD8;
   v7[3] = &unk_1E743E6C0;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = test;
   [v6 performBlock:v7];
 }
 
-- (void)setPretendingToBeFull:(BOOL)a3
+- (void)setPretendingToBeFull:(BOOL)full
 {
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
@@ -1802,7 +1802,7 @@ LABEL_12:
   v7[2] = sub_195AADCA0;
   v7[3] = &unk_1E743E8C8;
   v7[4] = self;
-  v8 = a3;
+  fullCopy = full;
   [v6 performBlock:v7];
 }
 
@@ -1843,10 +1843,10 @@ LABEL_12:
   [v4 performBlock:v5];
 }
 
-- (BOOL)updateSubServices:(id)a3 forDevice:(id)a4
+- (BOOL)updateSubServices:(id)services forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  deviceCopy = device;
   v8 = +[IDSDaemonController sharedInstance];
   [v8 blockUntilConnected];
 
@@ -1861,21 +1861,21 @@ LABEL_12:
   v13[3] = &unk_1E743F648;
   v16 = &v17;
   v13[4] = self;
-  v10 = v6;
+  v10 = servicesCopy;
   v14 = v10;
-  v11 = v7;
+  v11 = deviceCopy;
   v15 = v11;
   [v9 performBlock:v13 waitUntilDone:1];
 
-  LOBYTE(v6) = *(v18 + 24);
+  LOBYTE(servicesCopy) = *(v18 + 24);
   _Block_object_dispose(&v17, 8);
 
-  return v6;
+  return servicesCopy;
 }
 
-- (id)datagramConnectionForSessionDestination:(id)a3 error:(id *)a4
+- (id)datagramConnectionForSessionDestination:(id)destination error:(id *)error
 {
-  v6 = a3;
+  destinationCopy = destination;
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
 
@@ -1892,9 +1892,9 @@ LABEL_12:
   v12[3] = &unk_1E743FCF8;
   v14 = &v16;
   v12[4] = self;
-  v9 = v6;
+  v9 = destinationCopy;
   v13 = v9;
-  v15 = a4;
+  errorCopy = error;
   [v8 performBlock:v12 waitUntilDone:1];
 
   v10 = v17[5];
@@ -1903,9 +1903,9 @@ LABEL_12:
   return v10;
 }
 
-- (id)datagramConnectionForSessionDestination:(id)a3 uid:(unsigned int)a4 error:(id *)a5
+- (id)datagramConnectionForSessionDestination:(id)destination uid:(unsigned int)uid error:(id *)error
 {
-  v8 = a3;
+  destinationCopy = destination;
   v9 = +[IDSDaemonController sharedInstance];
   [v9 blockUntilConnected];
 
@@ -1922,10 +1922,10 @@ LABEL_12:
   v14[3] = &unk_1E7441B68;
   v16 = &v19;
   v14[4] = self;
-  v11 = v8;
-  v18 = a4;
+  v11 = destinationCopy;
+  uidCopy = uid;
   v15 = v11;
-  v17 = a5;
+  errorCopy = error;
   [v10 performBlock:v14 waitUntilDone:1];
 
   v12 = v20[5];
@@ -1934,7 +1934,7 @@ LABEL_12:
   return v12;
 }
 
-- (id)datagramConnectionForSocketDescriptor:(int)a3 error:(id *)a4
+- (id)datagramConnectionForSocketDescriptor:(int)descriptor error:(id *)error
 {
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
@@ -1952,8 +1952,8 @@ LABEL_12:
   v11[3] = &unk_1E7441B90;
   v11[4] = self;
   v11[5] = &v13;
-  v12 = a3;
-  v11[6] = a4;
+  descriptorCopy = descriptor;
+  v11[6] = error;
   [v8 performBlock:v11 waitUntilDone:1];
 
   v9 = v14[5];
@@ -1962,9 +1962,9 @@ LABEL_12:
   return v9;
 }
 
-- (id)streamConnectionForSessionDestination:(id)a3 error:(id *)a4
+- (id)streamConnectionForSessionDestination:(id)destination error:(id *)error
 {
-  v6 = a3;
+  destinationCopy = destination;
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
 
@@ -1981,9 +1981,9 @@ LABEL_12:
   v12[3] = &unk_1E743FCF8;
   v14 = &v16;
   v12[4] = self;
-  v9 = v6;
+  v9 = destinationCopy;
   v13 = v9;
-  v15 = a4;
+  errorCopy = error;
   [v8 performBlock:v12 waitUntilDone:1];
 
   v10 = v17[5];
@@ -1992,7 +1992,7 @@ LABEL_12:
   return v10;
 }
 
-- (id)streamConnectionForSocketDescriptor:(int)a3 error:(id *)a4
+- (id)streamConnectionForSocketDescriptor:(int)descriptor error:(id *)error
 {
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
@@ -2010,8 +2010,8 @@ LABEL_12:
   v11[3] = &unk_1E7441B90;
   v11[4] = self;
   v11[5] = &v13;
-  v12 = a3;
-  v11[6] = a4;
+  descriptorCopy = descriptor;
+  v11[6] = error;
   [v8 performBlock:v11 waitUntilDone:1];
 
   v9 = v14[5];
@@ -2020,7 +2020,7 @@ LABEL_12:
   return v9;
 }
 
-- (id)datagramChannelForSessionDestination:(id)a3 error:(id *)a4
+- (id)datagramChannelForSessionDestination:(id)destination error:(id *)error
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E69A4B48];
@@ -2029,19 +2029,19 @@ LABEL_12:
   v14[0] = &unk_1F0A299C0;
   v14[1] = &unk_1F0A299C0;
   v7 = MEMORY[0x1E695DF20];
-  v8 = a3;
+  destinationCopy = destination;
   v9 = [v7 dictionaryWithObjects:v14 forKeys:v13 count:2];
-  v10 = [(IDSService *)self datagramChannelForSessionDestination:v8 options:v9 error:a4];
+  v10 = [(IDSService *)self datagramChannelForSessionDestination:destinationCopy options:v9 error:error];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (id)datagramChannelForSessionDestination:(id)a3 options:(id)a4 error:(id *)a5
+- (id)datagramChannelForSessionDestination:(id)destination options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  destinationCopy = destination;
+  optionsCopy = options;
   v10 = +[IDSDaemonController sharedInstance];
   [v10 blockUntilConnected];
 
@@ -2058,11 +2058,11 @@ LABEL_12:
   v16[3] = &unk_1E7441BB8;
   v19 = &v21;
   v16[4] = self;
-  v12 = v8;
+  v12 = destinationCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = optionsCopy;
   v18 = v13;
-  v20 = a5;
+  errorCopy = error;
   [v11 performBlock:v16 waitUntilDone:1];
 
   v14 = v22[5];
@@ -2071,7 +2071,7 @@ LABEL_12:
   return v14;
 }
 
-- (id)datagramChannelForSocketDescriptor:(int)a3 error:(id *)a4
+- (id)datagramChannelForSocketDescriptor:(int)descriptor error:(id *)error
 {
   v7 = +[IDSDaemonController sharedInstance];
   [v7 blockUntilConnected];
@@ -2089,8 +2089,8 @@ LABEL_12:
   v11[3] = &unk_1E7441B90;
   v11[4] = self;
   v11[5] = &v13;
-  v12 = a3;
-  v11[6] = a4;
+  descriptorCopy = descriptor;
+  v11[6] = error;
   [v8 performBlock:v11 waitUntilDone:1];
 
   v9 = v14[5];
@@ -2107,8 +2107,8 @@ LABEL_12:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IDSService *)self accounts];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  accounts = [(IDSService *)self accounts];
+  v5 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2119,14 +2119,14 @@ LABEL_12:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accounts);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) aliasStrings];
-        [v3 addObjectsFromArray:v9];
+        aliasStrings = [*(*(&v13 + 1) + 8 * i) aliasStrings];
+        [v3 addObjectsFromArray:aliasStrings];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -2139,56 +2139,56 @@ LABEL_12:
   return v10;
 }
 
-- (void)activateAlias:(id)a3
+- (void)activateAlias:(id)alias
 {
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
   {
-    sub_195B379E0(v3, v4, v5, v6, v7, v8, v9, v10);
+    sub_195B379E0(registration, v4, v5, v6, v7, v8, v9, v10);
   }
 }
 
-- (void)activateAliases:(id)a3
+- (void)activateAliases:(id)aliases
 {
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
   {
-    sub_195B37A58(v3, v4, v5, v6, v7, v8, v9, v10);
+    sub_195B37A58(registration, v4, v5, v6, v7, v8, v9, v10);
   }
 }
 
-- (void)deactivateAlias:(id)a3
+- (void)deactivateAlias:(id)alias
 {
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
   {
-    sub_195B37AD0(v3, v4, v5, v6, v7, v8, v9, v10);
+    sub_195B37AD0(registration, v4, v5, v6, v7, v8, v9, v10);
   }
 }
 
-- (void)deactivateAliases:(id)a3
+- (void)deactivateAliases:(id)aliases
 {
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
   {
-    sub_195B37B48(v3, v4, v5, v6, v7, v8, v9, v10);
+    sub_195B37B48(registration, v4, v5, v6, v7, v8, v9, v10);
   }
 }
 
-- (id)_accountWithAlias:(id)a3
+- (id)_accountWithAlias:(id)alias
 {
-  v4 = a3;
-  v5 = [(IDSService *)self accounts];
+  aliasCopy = alias;
+  accounts = [(IDSService *)self accounts];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195AAF130;
   v10[3] = &unk_1E7441BE0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 objectsPassingTest:v10];
-  v8 = [v7 anyObject];
+  v11 = aliasCopy;
+  v6 = aliasCopy;
+  v7 = [accounts objectsPassingTest:v10];
+  anyObject = [v7 anyObject];
 
-  return v8;
+  return anyObject;
 }
 
 - (int64_t)maxEffectivePayloadSize
@@ -2266,9 +2266,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)pseudonymForPseudonymURI:(id)a3
+- (id)pseudonymForPseudonymURI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -2285,7 +2285,7 @@ LABEL_12:
   v10[3] = &unk_1E743EA08;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = iCopy;
   v11 = v7;
   [v6 performBlock:v10 waitUntilDone:1];
 
@@ -2295,9 +2295,9 @@ LABEL_12:
   return v8;
 }
 
-- (id)pseudonymsForMaskedURI:(id)a3
+- (id)pseudonymsForMaskedURI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v5 = +[IDSDaemonController sharedInstance];
   [v5 blockUntilConnected];
 
@@ -2314,7 +2314,7 @@ LABEL_12:
   v10[3] = &unk_1E743EA08;
   v12 = &v13;
   v10[4] = self;
-  v7 = v4;
+  v7 = iCopy;
   v11 = v7;
   [v6 performBlock:v10 waitUntilDone:1];
 
@@ -2324,10 +2324,10 @@ LABEL_12:
   return v8;
 }
 
-- (id)pseudonymsForMaskedURI:(id)a3 matchingProperties:(id)a4
+- (id)pseudonymsForMaskedURI:(id)i matchingProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  propertiesCopy = properties;
   v8 = +[IDSDaemonController sharedInstance];
   [v8 blockUntilConnected];
 
@@ -2344,9 +2344,9 @@ LABEL_12:
   v14[3] = &unk_1E743F648;
   v17 = &v18;
   v14[4] = self;
-  v10 = v6;
+  v10 = iCopy;
   v15 = v10;
-  v11 = v7;
+  v11 = propertiesCopy;
   v16 = v11;
   [v9 performBlock:v14 waitUntilDone:1];
 
@@ -2356,26 +2356,26 @@ LABEL_12:
   return v12;
 }
 
-- (void)provisionPseudonymWithProperties:(id)a3 completion:(id)a4
+- (void)provisionPseudonymWithProperties:(id)properties completion:(id)completion
 {
   v6 = MEMORY[0x1E69A53A0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultProperties];
-  [(IDSService *)self provisionPseudonymWithProperties:v8 requestProperties:v9 completion:v7];
+  completionCopy = completion;
+  propertiesCopy = properties;
+  defaultProperties = [v6 defaultProperties];
+  [(IDSService *)self provisionPseudonymWithProperties:propertiesCopy requestProperties:defaultProperties completion:completionCopy];
 }
 
-- (void)provisionPseudonymWithProperties:(id)a3 requestProperties:(id)a4 completion:(id)a5
+- (void)provisionPseudonymWithProperties:(id)properties requestProperties:(id)requestProperties completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  propertiesCopy = properties;
+  requestPropertiesCopy = requestProperties;
+  completionCopy = completion;
+  if (!requestPropertiesCopy)
   {
     sub_195B37BC0();
   }
 
-  v11 = [v9 copy];
+  v11 = [requestPropertiesCopy copy];
 
   v12 = +[IDSDaemonController sharedInstance];
   [v12 blockUntilConnected];
@@ -2386,27 +2386,27 @@ LABEL_12:
   v17[2] = sub_195AAFD80;
   v17[3] = &unk_1E743F318;
   v17[4] = self;
-  v18 = v8;
+  v18 = propertiesCopy;
   v19 = v11;
-  v20 = v10;
-  v14 = v10;
+  v20 = completionCopy;
+  v14 = completionCopy;
   v15 = v11;
-  v16 = v8;
+  v16 = propertiesCopy;
   [v13 performBlock:v17];
 }
 
-- (void)provisionPseudonymForURI:(id)a3 withProperties:(id)a4 requestProperties:(id)a5 completion:(id)a6
+- (void)provisionPseudonymForURI:(id)i withProperties:(id)properties requestProperties:(id)requestProperties completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  iCopy = i;
+  propertiesCopy = properties;
+  requestPropertiesCopy = requestProperties;
+  completionCopy = completion;
+  if (!requestPropertiesCopy)
   {
     sub_195B37C34();
   }
 
-  v14 = [v12 copy];
+  v14 = [requestPropertiesCopy copy];
 
   v15 = +[IDSDaemonController sharedInstance];
   [v15 blockUntilConnected];
@@ -2417,41 +2417,41 @@ LABEL_12:
   v21[2] = sub_195AAFF98;
   v21[3] = &unk_1E74408C8;
   v21[4] = self;
-  v22 = v10;
-  v23 = v11;
+  v22 = iCopy;
+  v23 = propertiesCopy;
   v24 = v14;
-  v25 = v13;
-  v17 = v13;
+  v25 = completionCopy;
+  v17 = completionCopy;
   v18 = v14;
-  v19 = v11;
-  v20 = v10;
+  v19 = propertiesCopy;
+  v20 = iCopy;
   [v16 performBlock:v21];
 }
 
-- (void)provisionPseudonymForURI:(id)a3 withProperties:(id)a4 completion:(id)a5
+- (void)provisionPseudonymForURI:(id)i withProperties:(id)properties completion:(id)completion
 {
   v8 = MEMORY[0x1E69A53A0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 defaultProperties];
-  [(IDSService *)self provisionPseudonymForURI:v11 withProperties:v10 requestProperties:v12 completion:v9];
+  completionCopy = completion;
+  propertiesCopy = properties;
+  iCopy = i;
+  defaultProperties = [v8 defaultProperties];
+  [(IDSService *)self provisionPseudonymForURI:iCopy withProperties:propertiesCopy requestProperties:defaultProperties completion:completionCopy];
 }
 
-- (void)renewPseudonym:(id)a3 forUpdatedDuration:(double)a4 completion:(id)a5
+- (void)renewPseudonym:(id)pseudonym forUpdatedDuration:(double)duration completion:(id)completion
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a5;
-  v10 = a3;
-  v12 = [v8 date];
-  [v12 timeIntervalSince1970];
-  [(IDSService *)self renewPseudonym:v10 forUpdatedExpiryEpoch:v9 completion:v11 + a4];
+  completionCopy = completion;
+  pseudonymCopy = pseudonym;
+  date = [v8 date];
+  [date timeIntervalSince1970];
+  [(IDSService *)self renewPseudonym:pseudonymCopy forUpdatedExpiryEpoch:completionCopy completion:v11 + duration];
 }
 
-- (void)renewPseudonym:(id)a3 forUpdatedExpiryEpoch:(double)a4 completion:(id)a5
+- (void)renewPseudonym:(id)pseudonym forUpdatedExpiryEpoch:(double)epoch completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  pseudonymCopy = pseudonym;
+  completionCopy = completion;
   v10 = +[IDSDaemonController sharedInstance];
   [v10 blockUntilConnected];
 
@@ -2461,18 +2461,18 @@ LABEL_12:
   v14[2] = sub_195AB0298;
   v14[3] = &unk_1E743E828;
   v14[4] = self;
-  v15 = v8;
-  v17 = a4;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
+  v15 = pseudonymCopy;
+  epochCopy = epoch;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = pseudonymCopy;
   [v11 performBlock:v14];
 }
 
-- (void)revokePseudonym:(id)a3 completion:(id)a4
+- (void)revokePseudonym:(id)pseudonym completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pseudonymCopy = pseudonym;
+  completionCopy = completion;
   v8 = +[IDSDaemonController sharedInstance];
   [v8 blockUntilConnected];
 
@@ -2482,17 +2482,17 @@ LABEL_12:
   v12[2] = sub_195AB0414;
   v12[3] = &unk_1E743E9B8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = pseudonymCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = pseudonymCopy;
   [v9 performBlock:v12];
 }
 
-- (id)pseudonymPropertiesWithFeatureID:(id)a3 scopeID:(id)a4 expiryDurationInSeconds:(double)a5
+- (id)pseudonymPropertiesWithFeatureID:(id)d scopeID:(id)iD expiryDurationInSeconds:(double)seconds
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v10 = +[IDSDaemonController sharedInstance];
   [v10 blockUntilConnected];
 
@@ -2509,11 +2509,11 @@ LABEL_12:
   v16[3] = &unk_1E7441BB8;
   v19 = &v21;
   v16[4] = self;
-  v12 = v8;
+  v12 = dCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = iDCopy;
   v18 = v13;
-  v20 = a5;
+  secondsCopy = seconds;
   [v11 performBlock:v16 waitUntilDone:1];
 
   v14 = v22[5];
@@ -2522,14 +2522,14 @@ LABEL_12:
   return v14;
 }
 
-- (void)retrieveFirewallWithQueue:(id)a3 completion:(id)a4
+- (void)retrieveFirewallWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  queueCopy = queue;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (queueCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -2546,10 +2546,10 @@ LABEL_12:
 
   sub_195B37D1C();
 LABEL_3:
-  v9 = [(IDSService *)self serviceIdentifier];
-  if (v9)
+  serviceIdentifier = [(IDSService *)self serviceIdentifier];
+  if (serviceIdentifier)
   {
-    v10 = [[IDSFirewall alloc] initWithService:v9 queue:v6];
+    v10 = [[IDSFirewall alloc] initWithService:serviceIdentifier queue:queueCopy];
     [(IDSFirewall *)v10 populateImpactedServices:v8];
   }
 
@@ -2566,11 +2566,11 @@ LABEL_3:
   }
 }
 
-- (void)signData:(id)a3 withAlgorithm:(int64_t)a4 options:(id)a5 completion:(id)a6
+- (void)signData:(id)data withAlgorithm:(int64_t)algorithm options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  optionsCopy = options;
+  completionCopy = completion;
   v13 = +[IDSDaemonController sharedInstance];
   [v13 blockUntilConnected];
 
@@ -2580,23 +2580,23 @@ LABEL_3:
   v18[2] = sub_195AB08F4;
   v18[3] = &unk_1E7441C08;
   v18[4] = self;
-  v19 = v10;
-  v21 = v12;
-  v22 = a4;
-  v20 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = dataCopy;
+  v21 = completionCopy;
+  algorithmCopy = algorithm;
+  v20 = optionsCopy;
+  v15 = completionCopy;
+  v16 = optionsCopy;
+  v17 = dataCopy;
   [v14 performBlock:v18];
 }
 
-- (void)verifySignedData:(id)a3 matchesExpectedData:(id)a4 withTokenURI:(id)a5 forAlgorithm:(int64_t)a6 options:(id)a7 completion:(id)a8
+- (void)verifySignedData:(id)data matchesExpectedData:(id)expectedData withTokenURI:(id)i forAlgorithm:(int64_t)algorithm options:(id)options completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  dataCopy = data;
+  expectedDataCopy = expectedData;
+  iCopy = i;
+  optionsCopy = options;
+  completionCopy = completion;
   v19 = +[IDSDaemonController sharedInstance];
   [v19 blockUntilConnected];
 
@@ -2606,25 +2606,25 @@ LABEL_3:
   v26[2] = sub_195AB0A8C;
   v26[3] = &unk_1E7441C30;
   v26[4] = self;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
-  v31 = v18;
-  v32 = a6;
-  v30 = v17;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
+  v27 = dataCopy;
+  v28 = expectedDataCopy;
+  v29 = iCopy;
+  v31 = completionCopy;
+  algorithmCopy = algorithm;
+  v30 = optionsCopy;
+  v21 = completionCopy;
+  v22 = optionsCopy;
+  v23 = iCopy;
+  v24 = expectedDataCopy;
+  v25 = dataCopy;
   [v20 performBlock:v26];
 }
 
-- (void)verifySignedPayloads:(id)a3 forAlgorithm:(int64_t)a4 options:(id)a5 completion:(id)a6
+- (void)verifySignedPayloads:(id)payloads forAlgorithm:(int64_t)algorithm options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  payloadsCopy = payloads;
+  optionsCopy = options;
+  completionCopy = completion;
   v13 = +[IDSDaemonController sharedInstance];
   [v13 blockUntilConnected];
 
@@ -2634,21 +2634,21 @@ LABEL_3:
   v18[2] = sub_195AB0BDC;
   v18[3] = &unk_1E7441C08;
   v18[4] = self;
-  v19 = v10;
-  v21 = v12;
-  v22 = a4;
-  v20 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = payloadsCopy;
+  v21 = completionCopy;
+  algorithmCopy = algorithm;
+  v20 = optionsCopy;
+  v15 = completionCopy;
+  v16 = optionsCopy;
+  v17 = payloadsCopy;
   [v14 performBlock:v18];
 }
 
-- (void)reportAction:(int64_t)a3 ofTempURI:(id)a4 fromURI:(id)a5 withCompletion:(id)a6
+- (void)reportAction:(int64_t)action ofTempURI:(id)i fromURI:(id)rI withCompletion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  iCopy = i;
+  rICopy = rI;
+  completionCopy = completion;
   v13 = +[IDSDaemonController sharedInstance];
   [v13 blockUntilConnected];
 
@@ -2657,28 +2657,28 @@ LABEL_3:
   v18[1] = 3221225472;
   v18[2] = sub_195AB0D1C;
   v18[3] = &unk_1E7441C08;
-  v21 = v12;
-  v22 = a3;
+  v21 = completionCopy;
+  actionCopy = action;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = iCopy;
+  v20 = rICopy;
+  v15 = completionCopy;
+  v16 = rICopy;
+  v17 = iCopy;
   [v14 performBlock:v18];
 }
 
-- (void)scheduleTransactionLogTask:(id)a3
+- (void)scheduleTransactionLogTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195AB0DEC;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = taskCopy;
+  v6 = taskCopy;
   [v5 performBlock:v7];
 }
 

@@ -1,20 +1,20 @@
 @interface SearchBarSearchResultSet
-- (SearchBarSearchResultSet)initWithResults:(id)a3 maxCount:(unint64_t)a4;
+- (SearchBarSearchResultSet)initWithResults:(id)results maxCount:(unint64_t)count;
 @end
 
 @implementation SearchBarSearchResultSet
 
-- (SearchBarSearchResultSet)initWithResults:(id)a3 maxCount:(unint64_t)a4
+- (SearchBarSearchResultSet)initWithResults:(id)results maxCount:(unint64_t)count
 {
-  v6 = a3;
+  resultsCopy = results;
   v7 = [(SearchBarSearchResultSet *)self init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [resultsCopy copy];
     results = v7->_results;
     v7->_results = v8;
 
-    v7->_count = a4;
+    v7->_count = count;
   }
 
   return v7;

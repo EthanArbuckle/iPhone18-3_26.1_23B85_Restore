@@ -1,35 +1,35 @@
 @interface CDPADPRegionAvailabilityProvider
-- (CDPADPRegionAvailabilityProvider)initWithWalrusConfigProvider:(id)a3;
-- (void)isWalrusEnabledForPrimaryAccountWithCompletionHandler:(id)a3;
+- (CDPADPRegionAvailabilityProvider)initWithWalrusConfigProvider:(id)provider;
+- (void)isWalrusEnabledForPrimaryAccountWithCompletionHandler:(id)handler;
 @end
 
 @implementation CDPADPRegionAvailabilityProvider
 
-- (CDPADPRegionAvailabilityProvider)initWithWalrusConfigProvider:(id)a3
+- (CDPADPRegionAvailabilityProvider)initWithWalrusConfigProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = CDPADPRegionAvailabilityProvider;
   v6 = [(CDPADPRegionAvailabilityProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configProvider, a3);
+    objc_storeStrong(&v6->_configProvider, provider);
   }
 
   return v7;
 }
 
-- (void)isWalrusEnabledForPrimaryAccountWithCompletionHandler:(id)a3
+- (void)isWalrusEnabledForPrimaryAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   configProvider = self->_configProvider;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__CDPADPRegionAvailabilityProvider_isWalrusEnabledForPrimaryAccountWithCompletionHandler___block_invoke;
   v7[3] = &unk_278E25208;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(AKWalrusConfigProvider *)configProvider getWalrusConfigWithCompletion:v7];
 }
 

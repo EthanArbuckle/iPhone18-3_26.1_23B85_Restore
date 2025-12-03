@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __47__AXAuditPreferenceController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_once != -1)
   {
     dispatch_once(&sharedController_once, block);
@@ -38,9 +38,9 @@ uint64_t __47__AXAuditPreferenceController_sharedController__block_invoke(uint64
   v2 = [(AXAuditPreferenceController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     preferenceDictionary = v2->_preferenceDictionary;
-    v2->_preferenceDictionary = v3;
+    v2->_preferenceDictionary = dictionary;
   }
 
   return v2;
@@ -58,21 +58,21 @@ uint64_t __47__AXAuditPreferenceController_sharedController__block_invoke(uint64
 
 - (BOOL)spinRunloop
 {
-  v3 = [(AXAuditPreferenceController *)self preferenceDictionary];
-  v4 = [v3 objectForKey:@"spinRunloop"];
+  preferenceDictionary = [(AXAuditPreferenceController *)self preferenceDictionary];
+  v4 = [preferenceDictionary objectForKey:@"spinRunloop"];
   if (v4)
   {
-    v5 = [(AXAuditPreferenceController *)self preferenceDictionary];
-    v6 = [v5 objectForKeyedSubscript:@"spinRunloop"];
-    v7 = [v6 BOOLValue];
+    preferenceDictionary2 = [(AXAuditPreferenceController *)self preferenceDictionary];
+    v6 = [preferenceDictionary2 objectForKeyedSubscript:@"spinRunloop"];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 @end

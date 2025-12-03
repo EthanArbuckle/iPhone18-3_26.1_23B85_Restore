@@ -1,30 +1,30 @@
 @interface VCStringUtils
-+ (BOOL)convertString:(id)a3 toFourcc:(unsigned int *)a4;
-+ (const)cStringFromOperatingMode:(int)a3;
-+ (const)cStringFromTierPickerMode:(unsigned __int8)a3;
++ (BOOL)convertString:(id)string toFourcc:(unsigned int *)fourcc;
++ (const)cStringFromOperatingMode:(int)mode;
++ (const)cStringFromTierPickerMode:(unsigned __int8)mode;
 @end
 
 @implementation VCStringUtils
 
-+ (BOOL)convertString:(id)a3 toFourcc:(unsigned int *)a4
++ (BOOL)convertString:(id)string toFourcc:(unsigned int *)fourcc
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (fourcc)
   {
-    if (a3)
+    if (string)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([a3 length] == 4)
+        if ([string length] == 4)
         {
-          *a4 = CStrToFourcc([a3 UTF8String]);
+          *fourcc = CStrToFourcc([string UTF8String]);
           return 1;
         }
 
         else
         {
-          [VCStringUtils convertString:a3 toFourcc:&v8];
+          [VCStringUtils convertString:string toFourcc:&v8];
           return v8;
         }
       }
@@ -50,29 +50,29 @@
   }
 }
 
-+ (const)cStringFromOperatingMode:(int)a3
++ (const)cStringFromOperatingMode:(int)mode
 {
-  if ((a3 - 1) > 0xB)
+  if ((mode - 1) > 0xB)
   {
     return "Invalid";
   }
 
   else
   {
-    return off_1E85F8698[a3 - 1];
+    return off_1E85F8698[mode - 1];
   }
 }
 
-+ (const)cStringFromTierPickerMode:(unsigned __int8)a3
++ (const)cStringFromTierPickerMode:(unsigned __int8)mode
 {
-  if ((a3 - 1) > 8)
+  if ((mode - 1) > 8)
   {
     return "Invalid";
   }
 
   else
   {
-    return off_1E85F86F8[(a3 - 1)];
+    return off_1E85F86F8[(mode - 1)];
   }
 }
 

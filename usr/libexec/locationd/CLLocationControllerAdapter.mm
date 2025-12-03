@@ -1,23 +1,23 @@
 @interface CLLocationControllerAdapter
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)syncgetMetric:(void *)a3;
-- (BOOL)syncgetZaxisStats:(void *)a3;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)syncgetMetric:(void *)metric;
+- (BOOL)syncgetZaxisStats:(void *)stats;
 - (CLLocationControllerAdapter)init;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
-- (void)emergencyStateChange:(id)a3;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
+- (void)emergencyStateChange:(id)change;
 - (void)endService;
-- (void)getRecentLocationsBufferInternalState:(BOOL)a3 withReply:(id)a4;
-- (void)onOutdoorUpdate:(id)a3;
-- (void)requestRouteReconstruction:(int64_t)a3;
-- (void)setGpsAssistantHasClients:(BOOL)a3 forNotification:(int)a4;
-- (void)setRealTimeHarvestTriggered:(double)a3;
-- (void)setTrackRunHint:(id)a3;
-- (void)triggerRecentLocationsRevisedFromMachContinuousTime:(double)a3 toMachContinuousTime:(double)a4;
-- (void)zipperedRouteReconstructionCallback:(int)a3;
+- (void)getRecentLocationsBufferInternalState:(BOOL)state withReply:(id)reply;
+- (void)onOutdoorUpdate:(id)update;
+- (void)requestRouteReconstruction:(int64_t)reconstruction;
+- (void)setGpsAssistantHasClients:(BOOL)clients forNotification:(int)notification;
+- (void)setRealTimeHarvestTriggered:(double)triggered;
+- (void)setTrackRunHint:(id)hint;
+- (void)triggerRecentLocationsRevisedFromMachContinuousTime:(double)time toMachContinuousTime:(double)continuousTime;
+- (void)zipperedRouteReconstructionCallback:(int)callback;
 @end
 
 @implementation CLLocationControllerAdapter
@@ -32,12 +32,12 @@
   return result;
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -74,43 +74,43 @@
   v2();
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLLocationControllerAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLLocationControllerAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLLocationControllerAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLLocationControllerAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (BOOL)syncgetMetric:(void *)a3
+- (BOOL)syncgetMetric:(void *)metric
 {
   v4 = *([(CLLocationControllerAdapter *)self adaptee]+ 35);
   if (v4)
   {
-    (*(*v4 + 248))(v4, a3);
+    (*(*v4 + 248))(v4, metric);
   }
 
   return 1;
 }
 
-- (BOOL)syncgetZaxisStats:(void *)a3
+- (BOOL)syncgetZaxisStats:(void *)stats
 {
-  v4 = [(CLLocationControllerAdapter *)self adaptee];
+  adaptee = [(CLLocationControllerAdapter *)self adaptee];
 
-  return sub_100F28474(v4, a3);
+  return sub_100F28474(adaptee, stats);
 }
 
-- (void)setTrackRunHint:(id)a3
+- (void)setTrackRunHint:(id)hint
 {
-  v4 = [a3 bytes];
+  bytes = [hint bytes];
   if (qword_1025D41D0 != -1)
   {
     sub_1018F80E4();
@@ -119,9 +119,9 @@
   v5 = qword_1025D41D8;
   if (os_log_type_enabled(qword_1025D41D8, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = *v4;
-    v7 = v4[2];
-    v8 = v4[3];
+    v6 = *bytes;
+    v7 = bytes[2];
+    v8 = bytes[3];
     v10 = 134349569;
     v11 = v6;
     v12 = 1025;
@@ -139,24 +139,24 @@
   v9 = *([(CLLocationControllerAdapter *)self adaptee]+ 35);
   if (v9)
   {
-    (*(*v9 + 464))(v9, v4);
+    (*(*v9 + 464))(v9, bytes);
   }
 }
 
-- (void)setGpsAssistantHasClients:(BOOL)a3 forNotification:(int)a4
+- (void)setGpsAssistantHasClients:(BOOL)clients forNotification:(int)notification
 {
-  v4 = a3;
-  v6 = a4;
+  clientsCopy = clients;
+  notificationCopy = notification;
   v5 = *([(CLLocationControllerAdapter *)self adaptee]+ 35);
   if (v5)
   {
-    (*(*v5 + 344))(v5, &v6, v4);
+    (*(*v5 + 344))(v5, &notificationCopy, clientsCopy);
   }
 }
 
-- (void)emergencyStateChange:(id)a3
+- (void)emergencyStateChange:(id)change
 {
-  (*(a3 + 2))(&v8, a3, a2);
+  (*(change + 2))(&v8, change, a2);
   if (qword_1025D4600 != -1)
   {
     sub_1018F7C0C();
@@ -181,25 +181,25 @@
     sub_1018F8204(&v8);
   }
 
-  v6 = [(CLLocationControllerAdapter *)self adaptee];
+  adaptee = [(CLLocationControllerAdapter *)self adaptee];
   *&__p.__r_.__value_.__l.__data_ = v8;
   LODWORD(__p.__r_.__value_.__r.__words[2]) = v9;
-  sub_10066C84C(v6, &__p);
+  sub_10066C84C(adaptee, &__p);
 }
 
-- (void)onOutdoorUpdate:(id)a3
+- (void)onOutdoorUpdate:(id)update
 {
-  v4 = [(CLLocationControllerAdapter *)self adaptee];
-  (*(a3 + 2))(v5, a3);
-  sub_1000C7110(v4, v5);
+  adaptee = [(CLLocationControllerAdapter *)self adaptee];
+  (*(update + 2))(v5, update);
+  sub_1000C7110(adaptee, v5);
 }
 
-- (void)setRealTimeHarvestTriggered:(double)a3
+- (void)setRealTimeHarvestTriggered:(double)triggered
 {
   v4 = *([(CLLocationControllerAdapter *)self adaptee]+ 35);
   if (v4)
   {
-    (*(*v4 + 304))(v4, a3);
+    (*(*v4 + 304))(v4, triggered);
   }
 
   if (qword_1025D4600 != -1)
@@ -211,29 +211,29 @@
   if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_INFO))
   {
     v6 = 134349056;
-    v7 = a3;
+    triggeredCopy = triggered;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_INFO, "BaroAlt,Realtime harvest,received,%{public}.3f", &v6, 0xCu);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018F8430(a3);
+    sub_1018F8430(triggered);
   }
 }
 
-- (void)zipperedRouteReconstructionCallback:(int)a3
+- (void)zipperedRouteReconstructionCallback:(int)callback
 {
-  v4 = [(CLLocationControllerAdapter *)self adaptee];
+  adaptee = [(CLLocationControllerAdapter *)self adaptee];
 
-  sub_10066CB88(v4, a3);
+  sub_10066CB88(adaptee, callback);
 }
 
-- (void)getRecentLocationsBufferInternalState:(BOOL)a3 withReply:(id)a4
+- (void)getRecentLocationsBufferInternalState:(BOOL)state withReply:(id)reply
 {
   [(CLLocationControllerAdapter *)self silo];
-  if (!a3)
+  if (!state)
   {
-    (*(a4 + 2))(a4, 0xFFFFFFFFLL, 0, -1.0, -1.0);
+    (*(reply + 2))(reply, 0xFFFFFFFFLL, 0, -1.0, -1.0);
   }
 
   if (![(CLLocationControllerAdapter *)self adaptee])
@@ -295,7 +295,7 @@ LABEL_21:
     v15 = [v10 initWithDomain:v11 code:5 userInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v12, v13, 1)}];
     v16.n128_u64[0] = -1.0;
     v17.n128_u64[0] = -1.0;
-    (*(a4 + 2))(a4, 0xFFFFFFFFLL, v15, v16, v17);
+    (*(reply + 2))(reply, 0xFFFFFFFFLL, v15, v16, v17);
     return;
   }
 
@@ -361,10 +361,10 @@ LABEL_21:
 
   v19.n128_u64[0] = v21;
   v20.n128_u64[0] = v22;
-  (*(a4 + 2))(a4, v8, 0, v19, v20);
+  (*(reply + 2))(reply, v8, 0, v19, v20);
 }
 
-- (void)triggerRecentLocationsRevisedFromMachContinuousTime:(double)a3 toMachContinuousTime:(double)a4
+- (void)triggerRecentLocationsRevisedFromMachContinuousTime:(double)time toMachContinuousTime:(double)continuousTime
 {
   if (qword_1025D4600 != -1)
   {
@@ -375,25 +375,25 @@ LABEL_21:
   if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEBUG))
   {
     v11 = 134349312;
-    v12 = a3;
+    timeCopy = time;
     v13 = 2050;
-    v14 = a4;
+    continuousTimeCopy = continuousTime;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEBUG, "LocationController,#ADL,triggerRecentLocationsRevised internal notification,start_mct_sec,%{public}.3f,end_mct_sec,%{public}.3f", &v11, 0x16u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018F8978(a3, a4);
+    sub_1018F8978(time, continuousTime);
   }
 
-  v8 = [(CLLocationControllerAdapter *)self adaptee];
+  adaptee = [(CLLocationControllerAdapter *)self adaptee];
   v9 = sub_10000B1F8();
   v11 = 1;
   v10 = sub_10001A6B0(v9, &v11);
-  sub_100E6F1C0(v8, v10, a3, a4);
+  sub_100E6F1C0(adaptee, v10, time, continuousTime);
 }
 
-- (void)requestRouteReconstruction:(int64_t)a3
+- (void)requestRouteReconstruction:(int64_t)reconstruction
 {
   if (qword_1025D4600 != -1)
   {
@@ -404,13 +404,13 @@ LABEL_21:
   if (os_log_type_enabled(qword_1025D4608, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67240192;
-    v6[1] = a3;
+    v6[1] = reconstruction;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "LocationController,#ADL,requestRouteReconstruction,type,%{public}d", v6, 8u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018F8A84(a3);
+    sub_1018F8A84(reconstruction);
   }
 
   sub_10066D6BC([(CLLocationControllerAdapter *)self adaptee]);

@@ -1,15 +1,15 @@
 @interface PHAMetricReportingTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
 - (double)period;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAMetricReportingTask
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAMetricReportingTask timeoutFatal:]", "PHAMetricReportingTask.m", 110, "NO");
   }
@@ -21,22 +21,22 @@
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v30 = a4;
+  managerCopy = manager;
+  reporterCopy = reporter;
   v48 = 0;
   v49 = &v48;
   v50 = 0x2020000000;
   v51 = 0;
-  v7 = [v6 availableMetricEvents];
-  v8 = [v7 count];
+  availableMetricEvents = [managerCopy availableMetricEvents];
+  v8 = [availableMetricEvents count];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v7;
+  obj = availableMetricEvents;
   v9 = [obj countByEnumeratingWithState:&v44 objects:v56 count:16];
   if (v9)
   {
@@ -63,7 +63,7 @@
           v42 = v11;
           v43 = v10;
           v41 = &v48;
-          v32 = v30;
+          v32 = reporterCopy;
           v40 = v32;
           [v13 gatherMetricsWithProgressBlock:v39];
           if (*(v49 + 24) == 1)
@@ -77,9 +77,9 @@
               _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
             }
 
-            if (a5 && !*a5)
+            if (error && !*error)
             {
-              *a5 = [MEMORY[0x277D22C28] errorForCode:-4];
+              *error = [MEMORY[0x277D22C28] errorForCode:-4];
             }
 
             goto LABEL_39;
@@ -87,14 +87,14 @@
 
           if ([v13 conformsToProtocol:&unk_2844EBBC8])
           {
-            v14 = v13;
-            [v14 payloads];
+            payload = v13;
+            [payload payloads];
           }
 
           else
           {
-            v14 = [v13 payload];
-            v53 = v14;
+            payload = [v13 payload];
+            v53 = payload;
             [MEMORY[0x277CBEA60] arrayWithObjects:&v53 count:1];
           }
           v18 = ;
@@ -118,9 +118,9 @@
                 }
 
                 v23 = *(*(&v35 + 1) + 8 * j);
-                v24 = [v6 analytics];
-                v25 = [v13 identifier];
-                [v24 sendEvent:v25 withPayload:v23];
+                analytics = [managerCopy analytics];
+                identifier = [v13 identifier];
+                [analytics sendEvent:identifier withPayload:v23];
               }
 
               v20 = [v19 countByEnumeratingWithState:&v35 objects:v52 count:16];
@@ -154,9 +154,9 @@ LABEL_33:
           v16 = MEMORY[0x277D86220];
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
-            v17 = [v13 identifier];
+            identifier2 = [v13 identifier];
             *buf = 138412290;
-            *v55 = v17;
+            *v55 = identifier2;
             _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[PHAMetricReportingTask] Skipping metrics reporting for event %@.", buf, 0xCu);
 
             v15 = MEMORY[0x277D86220];
@@ -187,10 +187,10 @@ LABEL_34:
       _os_log_impl(&dword_22FA28000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
     }
 
-    if (a5 && !*a5)
+    if (error && !*error)
     {
       [MEMORY[0x277D22C28] errorForCode:-4];
-      *a5 = v27 = 0;
+      *error = v27 = 0;
     }
 
     else

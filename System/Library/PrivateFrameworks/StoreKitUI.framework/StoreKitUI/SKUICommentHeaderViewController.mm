@@ -1,14 +1,14 @@
 @interface SKUICommentHeaderViewController
-- (SKUICommentHeaderViewController)initWithTitle:(id)a3;
+- (SKUICommentHeaderViewController)initWithTitle:(id)title;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SKUICommentHeaderViewController
 
-- (SKUICommentHeaderViewController)initWithTitle:(id)a3
+- (SKUICommentHeaderViewController)initWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -27,7 +27,7 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_title, a3);
+    objc_storeStrong(&v14->_title, title);
   }
 
   return v15;
@@ -52,8 +52,8 @@
   v9 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
   [(UILabel *)v8 setFont:v9];
 
-  v10 = [(SKUICommentHeaderViewController *)self view];
-  [v10 addSubview:self->_titleLabel];
+  view = [(SKUICommentHeaderViewController *)self view];
+  [view addSubview:self->_titleLabel];
 }
 
 - (void)viewWillLayoutSubviews
@@ -61,8 +61,8 @@
   v15.receiver = self;
   v15.super_class = SKUICommentHeaderViewController;
   [(SKUICommentHeaderViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [(SKUICommentHeaderViewController *)self view];
-  [v3 bounds];
+  view = [(SKUICommentHeaderViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

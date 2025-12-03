@@ -1,26 +1,26 @@
 @interface PGRelationshipTripAnalyzer
-- (PGRelationshipTripAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipTripAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipTripAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v132 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  blockCopy = block;
+  v5 = _Block_copy(blockCopy);
   v6 = 0.0;
   if (!v5 || (v7 = CFAbsoluteTimeGetCurrent(), v7 < 0.01))
   {
 LABEL_7:
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v9 = [WeakRetained graph];
-    v10 = [v9 trips];
-    v11 = [v9 weekends];
+    graph = [WeakRetained graph];
+    trips = [graph trips];
+    weekends = [graph weekends];
     v12 = 0x277CBE000uLL;
     v13 = MEMORY[0x277CBEB58];
-    v14 = [v10 arrayByAddingObjectsFromArray:v11];
+    v14 = [trips arrayByAddingObjectsFromArray:weekends];
     v15 = [v13 setWithArray:v14];
 
     v74 = v15;
@@ -31,21 +31,21 @@ LABEL_67:
       goto LABEL_68;
     }
 
-    v69 = v11;
+    v69 = weekends;
     v72 = WeakRetained;
     v73 = v5;
-    v71 = v4;
-    v88 = [MEMORY[0x277CBEB38] dictionary];
+    v71 = blockCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v89 = [MEMORY[0x277CBEB58] set];
-    v94 = [v9 meNode];
+    meNode = [graph meNode];
     v118 = 0u;
     v119 = 0u;
     v120 = 0u;
     v121 = 0u;
-    v70 = v10;
-    obj = v10;
+    v70 = trips;
+    obj = trips;
     v80 = [obj countByEnumeratingWithState:&v118 objects:v127 count:16];
-    v82 = v9;
+    v82 = graph;
     if (v80)
     {
       v78 = *v119;
@@ -86,13 +86,13 @@ LABEL_67:
 
                 v25 = *(*(&v114 + 1) + 8 * i);
                 v26 = objc_autoreleasePoolPush();
-                v27 = [v25 personNodes];
-                v28 = [v27 count];
-                v29 = [v27 containsObject:v94];
+                personNodes = [v25 personNodes];
+                v28 = [personNodes count];
+                v29 = [personNodes containsObject:meNode];
                 if (!((v28 != 1) | v29 & 1) || ((v28 == 2) & v29) != 0)
                 {
-                  v31 = [v27 allObjects];
-                  [v92 addObjectsFromArray:v31];
+                  allObjects = [personNodes allObjects];
+                  [v92 addObjectsFromArray:allObjects];
 
                   [v18 addObject:v25];
                   v30 = 1;
@@ -145,11 +145,11 @@ LABEL_67:
                 v39 = *(*(&v110 + 1) + 8 * j);
                 if (([v39 isMeNode] & 1) == 0 && objc_msgSend(v34, "countForObject:", v39) / v32 >= 0.75)
                 {
-                  v40 = [v39 localIdentifier];
-                  v41 = [v88 objectForKeyedSubscript:v40];
+                  localIdentifier = [v39 localIdentifier];
+                  v41 = [dictionary objectForKeyedSubscript:localIdentifier];
                   v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v41, "unsignedIntegerValue") + 1}];
 
-                  [v88 setObject:v42 forKeyedSubscript:v40];
+                  [dictionary setObject:v42 forKeyedSubscript:localIdentifier];
                   [v89 addObject:v19];
                 }
               }
@@ -194,10 +194,10 @@ LABEL_67:
             _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
           }
 
-          v10 = v70;
-          v4 = v71;
-          v11 = v69;
-          v9 = v82;
+          trips = v70;
+          blockCopy = v71;
+          weekends = v69;
+          graph = v82;
 LABEL_66:
 
           goto LABEL_67;
@@ -219,16 +219,16 @@ LABEL_66:
     v79 = WeakRetained;
     v108 = v79;
     v109 = v43;
-    [v88 enumerateKeysAndObjectsUsingBlock:v107];
-    v93 = [MEMORY[0x277CBEB38] dictionary];
-    v91 = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v107];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     v68 = [v74 count];
     v103 = 0u;
     v104 = 0u;
     v105 = 0u;
     v106 = 0u;
     v75 = v74;
-    v9 = v82;
+    graph = v82;
     v81 = [v75 countByEnumeratingWithState:&v103 objects:v124 count:16];
     if (v81)
     {
@@ -247,9 +247,9 @@ LABEL_66:
           v46 = *(*(&v103 + 1) + 8 * v45);
           v85 = objc_autoreleasePoolPush();
           v47 = [v46 count];
-          v48 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithArray:v46 graph:v9];
-          v49 = [v79 personNodes];
-          v50 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v48 amongPersonNodes:v49];
+          v48 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithArray:v46 graph:graph];
+          personNodes2 = [v79 personNodes];
+          v50 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v48 amongPersonNodes:personNodes2];
 
           v101 = 0u;
           v102 = 0u;
@@ -273,16 +273,16 @@ LABEL_66:
 
                 v57 = *(*(&v99 + 1) + 8 * k);
                 v58 = [v51 countForObject:v57];
-                v59 = [v57 localIdentifier];
-                v60 = [v91 objectForKeyedSubscript:v59];
+                localIdentifier2 = [v57 localIdentifier];
+                v60 = [dictionary3 objectForKeyedSubscript:localIdentifier2];
                 v61 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v60, "unsignedIntegerValue") + 1}];
-                [v91 setObject:v61 forKeyedSubscript:v59];
+                [dictionary3 setObject:v61 forKeyedSubscript:localIdentifier2];
 
-                v62 = [v93 objectForKeyedSubscript:v59];
+                v62 = [dictionary2 objectForKeyedSubscript:localIdentifier2];
                 v63 = MEMORY[0x277CCABB0];
                 [v62 doubleValue];
                 v65 = [v63 numberWithDouble:v58 / v55 + v64];
-                [v93 setObject:v65 forKeyedSubscript:v59];
+                [dictionary2 setObject:v65 forKeyedSubscript:localIdentifier2];
               }
 
               v53 = [v51 countByEnumeratingWithState:&v99 objects:v123 count:16];
@@ -293,7 +293,7 @@ LABEL_66:
 
           objc_autoreleasePoolPop(v85);
           v45 = contexta + 1;
-          v9 = v82;
+          graph = v82;
         }
 
         while (contexta + 1 != v81);
@@ -308,15 +308,15 @@ LABEL_66:
     v95[2] = __59__PGRelationshipTripAnalyzer_runAnalysisWithProgressBlock___block_invoke_2;
     v95[3] = &unk_278881EB0;
     v96 = v79;
-    v97 = v91;
+    v97 = dictionary3;
     v98 = v68;
-    v66 = v91;
-    [v93 enumerateKeysAndObjectsUsingBlock:v95];
-    v4 = v71;
+    v66 = dictionary3;
+    [dictionary2 enumerateKeysAndObjectsUsingBlock:v95];
+    blockCopy = v71;
     WeakRetained = v72;
     v5 = v73;
-    v11 = v69;
-    v10 = v70;
+    weekends = v69;
+    trips = v70;
     if (v73)
     {
       if (CFAbsoluteTimeGetCurrent() - v6 >= 0.01)
@@ -386,16 +386,16 @@ void __59__PGRelationshipTripAnalyzer_runAnalysisWithProgressBlock___block_invok
   }
 }
 
-- (PGRelationshipTripAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipTripAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipTripAnalyzer;
   v5 = [(PGRelationshipTripAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

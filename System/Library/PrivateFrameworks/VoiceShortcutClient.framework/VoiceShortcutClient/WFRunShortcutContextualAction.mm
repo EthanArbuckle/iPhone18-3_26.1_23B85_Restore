@@ -1,5 +1,5 @@
 @interface WFRunShortcutContextualAction
-- (WFRunShortcutContextualAction)initWithDescriptor:(id)a3 serializedRepresentation:(id)a4 namedQueryInfo:(id)a5;
+- (WFRunShortcutContextualAction)initWithDescriptor:(id)descriptor serializedRepresentation:(id)representation namedQueryInfo:(id)info;
 - (id)_staticDisplayStringForDecoding;
 - (id)spotlightItem;
 - (id)uniqueIdentifier;
@@ -11,46 +11,46 @@
 {
   v9.receiver = self;
   v9.super_class = WFRunShortcutContextualAction;
-  v2 = [(WFContextualAction *)&v9 spotlightItem];
-  v3 = [v2 attributeSet];
-  v4 = [v3 uniqueIdentifier];
-  v5 = [v4 rangeOfString:@":"];
+  spotlightItem = [(WFContextualAction *)&v9 spotlightItem];
+  attributeSet = [spotlightItem attributeSet];
+  uniqueIdentifier = [attributeSet uniqueIdentifier];
+  v5 = [uniqueIdentifier rangeOfString:@":"];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v4 substringFromIndex:v5 + v6];
+    v7 = [uniqueIdentifier substringFromIndex:v5 + v6];
 
-    [v3 setUniqueIdentifier:v7];
-    v4 = v7;
+    [attributeSet setUniqueIdentifier:v7];
+    uniqueIdentifier = v7;
   }
 
-  return v2;
+  return spotlightItem;
 }
 
-- (WFRunShortcutContextualAction)initWithDescriptor:(id)a3 serializedRepresentation:(id)a4 namedQueryInfo:(id)a5
+- (WFRunShortcutContextualAction)initWithDescriptor:(id)descriptor serializedRepresentation:(id)representation namedQueryInfo:(id)info
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v43 = a5;
-  if (!v9)
+  descriptorCopy = descriptor;
+  representationCopy = representation;
+  infoCopy = info;
+  if (!descriptorCopy)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"WFRunShortcutContextualAction.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"descriptor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRunShortcutContextualAction.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"descriptor"}];
   }
 
   v11 = [WFContextualActionParameter alloc];
-  v12 = [v9 name];
-  v13 = [(WFContextualActionParameter *)v11 initWithType:@"WFWorkflowContentItem" displayString:v12 wfParameterKey:@"WFWorkflow" wfSerializedRepresentation:v10];
+  name = [descriptorCopy name];
+  v13 = [(WFContextualActionParameter *)v11 initWithType:@"WFWorkflowContentItem" displayString:name wfParameterKey:@"WFWorkflow" wfSerializedRepresentation:representationCopy];
 
-  v14 = [v9 associatedAppBundleIdentifier];
+  associatedAppBundleIdentifier = [descriptorCopy associatedAppBundleIdentifier];
 
-  v44 = v10;
-  v42 = self;
-  if (v14)
+  v44 = representationCopy;
+  selfCopy = self;
+  if (associatedAppBundleIdentifier)
   {
     v15 = [WFContextualActionIcon alloc];
-    v16 = [v9 associatedAppBundleIdentifier];
-    v40 = [(WFContextualActionIcon *)v15 initWithApplicationBundleIdentifier:v16];
+    associatedAppBundleIdentifier2 = [descriptorCopy associatedAppBundleIdentifier];
+    v40 = [(WFContextualActionIcon *)v15 initWithApplicationBundleIdentifier:associatedAppBundleIdentifier2];
   }
 
   else
@@ -63,12 +63,12 @@
   v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:1];
   v17 = MEMORY[0x1E696AEC0];
   v18 = WFLocalizedString(@"Run %@");
-  v19 = [v9 name];
+  name2 = [descriptorCopy name];
   v38 = v18;
-  v20 = [v17 localizedStringWithFormat:v18, v19];
+  v20 = [v17 localizedStringWithFormat:v18, name2];
   v21 = WFLocalizedString(@"Run Shortcut");
-  v22 = [v9 name];
-  v23 = v9;
+  name3 = [descriptorCopy name];
+  v23 = descriptorCopy;
   v24 = objc_autoreleasePoolPush();
   v25 = [WFWorkflowIconDrawer alloc];
   v26 = objc_opt_new();
@@ -85,26 +85,26 @@
   v30 = v29;
   if (v29)
   {
-    v31 = [v29 PNGRepresentation];
+    pNGRepresentation = [v29 PNGRepresentation];
 
-    if (v31)
+    if (pNGRepresentation)
     {
       v32 = [WFContextualActionIcon alloc];
-      v33 = [v30 PNGRepresentation];
+      pNGRepresentation2 = [v30 PNGRepresentation];
       [v30 scale];
-      v31 = [(WFContextualActionIcon *)v32 initWithImageData:v33 scale:1 displayStyle:?];
+      pNGRepresentation = [(WFContextualActionIcon *)v32 initWithImageData:pNGRepresentation2 scale:1 displayStyle:?];
     }
   }
 
   else
   {
-    v31 = 0;
+    pNGRepresentation = 0;
   }
 
   objc_autoreleasePoolPop(v24);
-  v45.receiver = v42;
+  v45.receiver = selfCopy;
   v45.super_class = WFRunShortcutContextualAction;
-  v34 = [(WFTopHitItemContextualAction *)&v45 initWithItem:v23 identifier:@"is.workflow.actions.runworkflow" wfActionIdentifier:@"is.workflow.actions.runworkflow" associatedAppBundleIdentifier:@"com.apple.shortcuts" parameters:v39 displayString:v20 title:v21 subtitle:v22 primaryColor:9 icon:v31 accessoryIcon:v40 namedQueryInfo:v43];
+  v34 = [(WFTopHitItemContextualAction *)&v45 initWithItem:v23 identifier:@"is.workflow.actions.runworkflow" wfActionIdentifier:@"is.workflow.actions.runworkflow" associatedAppBundleIdentifier:@"com.apple.shortcuts" parameters:v39 displayString:v20 title:v21 subtitle:name3 primaryColor:9 icon:pNGRepresentation accessoryIcon:v40 namedQueryInfo:infoCopy];
 
   v35 = *MEMORY[0x1E69E9840];
   return v34;
@@ -114,19 +114,19 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedString(@"Run %@");
-  v5 = [(WFRunShortcutContextualAction *)self workflow];
-  v6 = [v5 name];
-  v7 = [v3 localizedStringWithFormat:v4, v6];
+  workflow = [(WFRunShortcutContextualAction *)self workflow];
+  name = [workflow name];
+  v7 = [v3 localizedStringWithFormat:v4, name];
 
   return v7;
 }
 
 - (id)uniqueIdentifier
 {
-  v3 = [(WFContextualAction *)self identifier];
-  v4 = [(WFRunShortcutContextualAction *)self workflow];
-  v5 = [v4 identifier];
-  v6 = [v3 stringByAppendingFormat:@":%@", v5];
+  identifier = [(WFContextualAction *)self identifier];
+  workflow = [(WFRunShortcutContextualAction *)self workflow];
+  identifier2 = [workflow identifier];
+  v6 = [identifier stringByAppendingFormat:@":%@", identifier2];
 
   return v6;
 }

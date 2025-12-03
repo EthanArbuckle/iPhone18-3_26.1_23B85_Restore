@@ -1,24 +1,24 @@
 @interface SCICUNumberFormatter
-- (id)formattedCount:(int64_t)a3;
-- (id)formattedCount:(int64_t)a3 withLocale:(id)a4 longform:(BOOL)a5 compactDisplay:(BOOL)a6;
+- (id)formattedCount:(int64_t)count;
+- (id)formattedCount:(int64_t)count withLocale:(id)locale longform:(BOOL)longform compactDisplay:(BOOL)display;
 @end
 
 @implementation SCICUNumberFormatter
 
-- (id)formattedCount:(int64_t)a3
+- (id)formattedCount:(int64_t)count
 {
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [(SCICUNumberFormatter *)self formattedCount:a3 withLocale:v5];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v6 = [(SCICUNumberFormatter *)self formattedCount:count withLocale:currentLocale];
 
   return v6;
 }
 
-- (id)formattedCount:(int64_t)a3 withLocale:(id)a4 longform:(BOOL)a5 compactDisplay:(BOOL)a6
+- (id)formattedCount:(int64_t)count withLocale:(id)locale longform:(BOOL)longform compactDisplay:(BOOL)display
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = [a4 localeIdentifier];
-  v10 = formattedCountWithLocale(a3, [v9 UTF8String], v7, v6);
+  displayCopy = display;
+  longformCopy = longform;
+  localeIdentifier = [locale localeIdentifier];
+  v10 = formattedCountWithLocale(count, [localeIdentifier UTF8String], longformCopy, displayCopy);
 
   if (v10)
   {

@@ -1,5 +1,5 @@
 @interface MUVendorLinkViewModel
-- (MUVendorLinkViewModel)initWithPartnerId:(id)a3 linkType:(int)a4 artworkURL:(id)a5 providerName:(id)a6 appAdamId:(id)a7 appShortName:(id)a8 actionName:(id)a9 fallbackSymbolName:(id)a10;
+- (MUVendorLinkViewModel)initWithPartnerId:(id)id linkType:(int)type artworkURL:(id)l providerName:(id)name appAdamId:(id)adamId appShortName:(id)shortName actionName:(id)actionName fallbackSymbolName:(id)self0;
 - (NSString)linkTypeString;
 - (NSString)uniqueIdentifier;
 - (id)description;
@@ -24,8 +24,8 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(MUVendorLinkViewModel *)self uniqueIdentifier];
-  v4 = [v2 stringWithFormat:@"Unique Identifier: %@", v3];
+  uniqueIdentifier = [(MUVendorLinkViewModel *)self uniqueIdentifier];
+  v4 = [v2 stringWithFormat:@"Unique Identifier: %@", uniqueIdentifier];
 
   return v4;
 }
@@ -33,43 +33,43 @@
 - (NSString)uniqueIdentifier
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(MUVendorLinkViewModel *)self linkType];
-  if (v4 > 4)
+  linkType = [(MUVendorLinkViewModel *)self linkType];
+  if (linkType > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_1E821A470[v4];
+    v5 = off_1E821A470[linkType];
   }
 
   [v3 addObject:v5];
-  v6 = [(MUVendorLinkViewModel *)self providerName];
-  v7 = [v6 length];
+  providerName = [(MUVendorLinkViewModel *)self providerName];
+  v7 = [providerName length];
 
   if (v7)
   {
-    v8 = [(MUVendorLinkViewModel *)self providerName];
-    [v3 addObject:v8];
+    providerName2 = [(MUVendorLinkViewModel *)self providerName];
+    [v3 addObject:providerName2];
   }
 
-  v9 = [(MUVendorLinkViewModel *)self appAdamId];
-  v10 = [v9 length];
+  appAdamId = [(MUVendorLinkViewModel *)self appAdamId];
+  v10 = [appAdamId length];
 
   if (v10)
   {
-    v11 = [(MUVendorLinkViewModel *)self appAdamId];
-    [v3 addObject:v11];
+    appAdamId2 = [(MUVendorLinkViewModel *)self appAdamId];
+    [v3 addObject:appAdamId2];
   }
 
-  v12 = [(MUVendorLinkViewModel *)self actionName];
-  v13 = [v12 length];
+  actionName = [(MUVendorLinkViewModel *)self actionName];
+  v13 = [actionName length];
 
   if (v13)
   {
-    v14 = [(MUVendorLinkViewModel *)self actionName];
-    [v3 addObject:v14];
+    actionName2 = [(MUVendorLinkViewModel *)self actionName];
+    [v3 addObject:actionName2];
   }
 
   v15 = [v3 componentsJoinedByString:@"-"];
@@ -77,29 +77,29 @@
   return v15;
 }
 
-- (MUVendorLinkViewModel)initWithPartnerId:(id)a3 linkType:(int)a4 artworkURL:(id)a5 providerName:(id)a6 appAdamId:(id)a7 appShortName:(id)a8 actionName:(id)a9 fallbackSymbolName:(id)a10
+- (MUVendorLinkViewModel)initWithPartnerId:(id)id linkType:(int)type artworkURL:(id)l providerName:(id)name appAdamId:(id)adamId appShortName:(id)shortName actionName:(id)actionName fallbackSymbolName:(id)self0
 {
-  v26 = a3;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v16 = a9;
-  v17 = a10;
+  idCopy = id;
+  lCopy = l;
+  nameCopy = name;
+  adamIdCopy = adamId;
+  shortNameCopy = shortName;
+  actionNameCopy = actionName;
+  symbolNameCopy = symbolName;
   v27.receiver = self;
   v27.super_class = MUVendorLinkViewModel;
   v18 = [(MUVendorLinkViewModel *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_partnerId, a3);
-    objc_storeStrong(&v19->_artworkURL, a5);
-    objc_storeStrong(&v19->_providerName, a6);
-    v19->_linkType = a4;
-    objc_storeStrong(&v19->_appAdamId, a7);
-    objc_storeStrong(&v19->_appShortName, a8);
-    objc_storeStrong(&v19->_actionName, a9);
-    objc_storeStrong(&v19->_fallbackSymbolName, a10);
+    objc_storeStrong(&v18->_partnerId, id);
+    objc_storeStrong(&v19->_artworkURL, l);
+    objc_storeStrong(&v19->_providerName, name);
+    v19->_linkType = type;
+    objc_storeStrong(&v19->_appAdamId, adamId);
+    objc_storeStrong(&v19->_appShortName, shortName);
+    objc_storeStrong(&v19->_actionName, actionName);
+    objc_storeStrong(&v19->_fallbackSymbolName, symbolName);
   }
 
   return v19;

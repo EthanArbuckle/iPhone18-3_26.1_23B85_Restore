@@ -1,10 +1,10 @@
 @interface PXStoryDiagnosticHUDLayout
 - (PXStoryDiagnosticHUDLayout)init;
-- (PXStoryDiagnosticHUDLayout)initWithDataSource:(id)a3;
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (PXStoryDiagnosticHUDLayout)initWithDataSource:(id)source;
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (id)axSpriteIndexes;
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (void)_enumerateDiagnosticHUDContentProvidersUsingBlock:(id)a3;
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout;
+- (void)_enumerateDiagnosticHUDContentProvidersUsingBlock:(id)block;
 - (void)_invalidateContent;
 - (void)_invalidateControllers;
 - (void)_invalidateModel;
@@ -13,13 +13,13 @@
 - (void)_updateHUDText;
 - (void)_updateModel;
 - (void)dealloc;
-- (void)entityManager:(id)a3 componentDidChange:(id)a4;
+- (void)entityManager:(id)manager componentDidChange:(id)change;
 - (void)entityManagerDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)safeAreaInsetsDidChange;
-- (void)setAnimationController:(id)a3;
-- (void)setModel:(id)a3;
-- (void)setRelatedController:(id)a3;
+- (void)setAnimationController:(id)controller;
+- (void)setModel:(id)model;
+- (void)setRelatedController:(id)controller;
 - (void)update;
 @end
 
@@ -32,19 +32,19 @@
   return v2;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  v15 = v9;
-  if (DataSourceObservationContext == a5)
+  observableCopy = observable;
+  v15 = observableCopy;
+  if (DataSourceObservationContext == context)
   {
-    v11 = [(PXStoryDiagnosticHUDLayout *)self dataSource];
-    if (([v11 HUDStoryModelChangeDescriptor] & a4) != 0)
+    dataSource = [(PXStoryDiagnosticHUDLayout *)self dataSource];
+    if (([dataSource HUDStoryModelChangeDescriptor] & change) != 0)
     {
       [(PXStoryDiagnosticHUDLayout *)self _invalidateModel];
     }
 
-    if (([v11 HUDContentChangeDescriptor] & a4) != 0)
+    if (([dataSource HUDContentChangeDescriptor] & change) != 0)
     {
       [(PXStoryDiagnosticHUDLayout *)self _invalidateContent];
     }
@@ -52,12 +52,12 @@
     goto LABEL_14;
   }
 
-  if (ModelObservationContext_13722 != a5)
+  if (ModelObservationContext_13722 != context)
   {
-    if (RelatedControllerObservationContext != a5 && AnimationControllerObservationContext != a5)
+    if (RelatedControllerObservationContext != context && AnimationControllerObservationContext != context)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:358 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:358 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -65,37 +65,37 @@
     goto LABEL_8;
   }
 
-  if ((a4 & 0x1E01) != 0)
+  if ((change & 0x1E01) != 0)
   {
-    v12 = [(PXStoryDiagnosticHUDLayout *)self dataSource];
-    v13 = [v12 isHUDVisible];
+    dataSource2 = [(PXStoryDiagnosticHUDLayout *)self dataSource];
+    isHUDVisible = [dataSource2 isHUDVisible];
 
-    v9 = v15;
-    if (v13)
+    observableCopy = v15;
+    if (isHUDVisible)
     {
 LABEL_8:
       [(PXStoryDiagnosticHUDLayout *)self _invalidateContent];
 LABEL_14:
-      v9 = v15;
+      observableCopy = v15;
     }
   }
 }
 
-- (void)entityManager:(id)a3 componentDidChange:(id)a4
+- (void)entityManager:(id)manager componentDidChange:(id)change
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 loadingStatus];
+  managerCopy = manager;
+  changeCopy = change;
+  loadingStatus = [managerCopy loadingStatus];
 
-  if (v7 == v6)
+  if (loadingStatus == changeCopy)
   {
     hasPendingContentUpdate = self->_hasPendingContentUpdate;
 
     if (hasPendingContentUpdate)
     {
       v9 = [(PXStoryDiagnosticHUDLayout *)self entityForSpriteAtIndex:self->_HUDTextSpriteIndex];
-      v10 = [v11 loadingStatus];
-      LOBYTE(v9) = [v10 stateForEntity:v9];
+      loadingStatus2 = [managerCopy loadingStatus];
+      LOBYTE(v9) = [loadingStatus2 stateForEntity:v9];
 
       if ((v9 - 2) <= 2u)
       {
@@ -110,74 +110,74 @@ LABEL_14:
   }
 }
 
-- (id)attributedStringForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)attributedStringForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_HUDTextSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_HUDTextSpriteIndex == index)
   {
-    v8 = [(PXStoryDiagnosticHUDLayout *)self HUDText];
+    hUDText = [(PXStoryDiagnosticHUDLayout *)self HUDText];
   }
 
   else
   {
-    if (self->_badgeSpriteIndex != a3)
+    if (self->_badgeSpriteIndex != index)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:321 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:321 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v8 = [(PXStoryDiagnosticHUDLayout *)self badgeText];
+    hUDText = [(PXStoryDiagnosticHUDLayout *)self badgeText];
   }
 
-  v9 = v8;
+  v9 = hUDText;
 
   return v9;
 }
 
-- (id)stringAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)stringAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_HUDTextSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_HUDTextSpriteIndex == index)
   {
-    v8 = [(PXStoryDiagnosticHUDLayout *)self HUDText];
+    hUDText = [(PXStoryDiagnosticHUDLayout *)self HUDText];
   }
 
   else
   {
-    if (self->_badgeSpriteIndex != a3)
+    if (self->_badgeSpriteIndex != index)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:304 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:304 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    v8 = [(PXStoryDiagnosticHUDLayout *)self badgeText];
+    hUDText = [(PXStoryDiagnosticHUDLayout *)self badgeText];
   }
 
-  v9 = v8;
-  v10 = [v8 string];
+  v9 = hUDText;
+  string = [hUDText string];
 
-  return v10;
+  return string;
 }
 
 - (void)_updateHUDText
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryDiagnosticHUDLayout *)self dataSource];
-  v4 = [v3 diagnosticHUDType];
-  v5 = v4 - 1;
-  if ((v4 - 1) > 0x10 || (v6 = v4, [v3 diagnosticHUDContentProviderForType:v4], v7 = objc_claimAutoreleasedReturnValue(), -[PXStoryDiagnosticHUDLayout contentSize](self, "contentSize"), objc_msgSend(v7, "diagnosticTextForHUDType:displaySize:", v6), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  dataSource = [(PXStoryDiagnosticHUDLayout *)self dataSource];
+  diagnosticHUDType = [dataSource diagnosticHUDType];
+  v5 = diagnosticHUDType - 1;
+  if ((diagnosticHUDType - 1) > 0x10 || (v6 = diagnosticHUDType, [dataSource diagnosticHUDContentProviderForType:diagnosticHUDType], v7 = objc_claimAutoreleasedReturnValue(), -[PXStoryDiagnosticHUDLayout contentSize](self, "contentSize"), objc_msgSend(v7, "diagnosticTextForHUDType:displaySize:", v6), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
     v8 = &stru_1F1741150;
   }
 
   v27 = *MEMORY[0x1E69DB650];
   v9 = v27;
-  v10 = [MEMORY[0x1E69DC888] yellowColor];
-  v29[0] = v10;
+  yellowColor = [MEMORY[0x1E69DC888] yellowColor];
+  v29[0] = yellowColor;
   v28 = *MEMORY[0x1E69DB648];
   v11 = v28;
   v12 = [MEMORY[0x1E69DB878] monospacedSystemFontOfSize:14.0 weight:*MEMORY[0x1E69DB950]];
@@ -185,9 +185,9 @@ LABEL_14:
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v27 count:2];
 
   v25[0] = v9;
-  v14 = [MEMORY[0x1E69DC888] yellowColor];
+  yellowColor2 = [MEMORY[0x1E69DC888] yellowColor];
   v25[1] = v11;
-  v26[0] = v14;
+  v26[0] = yellowColor2;
   v15 = [MEMORY[0x1E69DB878] monospacedSystemFontOfSize:12.0 weight:*MEMORY[0x1E69DB958]];
   v26[1] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
@@ -219,14 +219,14 @@ LABEL_14:
   [(PXStoryDiagnosticHUDLayout *)self _updateHUDText];
   [(PXStoryDiagnosticHUDLayout *)self referenceSize];
   [(PXStoryDiagnosticHUDLayout *)self setContentSize:?];
-  v3 = [(PXStoryDiagnosticHUDLayout *)self dataSource];
-  v4 = [v3 isHUDVisible];
-  if (v4)
+  dataSource = [(PXStoryDiagnosticHUDLayout *)self dataSource];
+  isHUDVisible = [dataSource isHUDVisible];
+  if (isHUDVisible)
   {
-    LOBYTE(v4) = -[PXStoryDiagnosticHUDLayout _shouldDisplayContentForHUDType:](self, "_shouldDisplayContentForHUDType:", [v3 diagnosticHUDType]);
+    LOBYTE(isHUDVisible) = -[PXStoryDiagnosticHUDLayout _shouldDisplayContentForHUDType:](self, "_shouldDisplayContentForHUDType:", [dataSource diagnosticHUDType]);
   }
 
-  self->_wantsHUDContentVisible = v4;
+  self->_wantsHUDContentVisible = isHUDVisible;
   PXRectWithOriginAndSize();
 }
 
@@ -253,9 +253,9 @@ LABEL_8:
 LABEL_7:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryDiagnosticHUDLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:230 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:230 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -279,13 +279,13 @@ LABEL_7:
 
 - (void)_updateControllers
 {
-  v6 = [(PXStoryDiagnosticHUDLayout *)self dataSource];
-  v3 = [(PXStoryDiagnosticHUDLayout *)self model];
-  v4 = [v6 HUDRelatedController];
-  [(PXStoryDiagnosticHUDLayout *)self setRelatedController:v4];
+  dataSource = [(PXStoryDiagnosticHUDLayout *)self dataSource];
+  model = [(PXStoryDiagnosticHUDLayout *)self model];
+  hUDRelatedController = [dataSource HUDRelatedController];
+  [(PXStoryDiagnosticHUDLayout *)self setRelatedController:hUDRelatedController];
 
-  v5 = [v3 animationController];
-  [(PXStoryDiagnosticHUDLayout *)self setAnimationController:v5];
+  animationController = [model animationController];
+  [(PXStoryDiagnosticHUDLayout *)self setAnimationController:animationController];
 }
 
 - (void)_invalidateControllers
@@ -304,9 +304,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryDiagnosticHUDLayout _invalidateControllers]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:212 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:212 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -330,9 +330,9 @@ LABEL_5:
 
 - (void)_updateModel
 {
-  v4 = [(PXStoryDiagnosticHUDLayout *)self dataSource];
-  v3 = [v4 HUDStoryModel];
-  [(PXStoryDiagnosticHUDLayout *)self setModel:v3];
+  dataSource = [(PXStoryDiagnosticHUDLayout *)self dataSource];
+  hUDStoryModel = [dataSource HUDStoryModel];
+  [(PXStoryDiagnosticHUDLayout *)self setModel:hUDStoryModel];
 }
 
 - (void)_invalidateModel
@@ -351,9 +351,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryDiagnosticHUDLayout _invalidateModel]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:204 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:204 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -384,9 +384,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryDiagnosticHUDLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v8 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -399,9 +399,9 @@ LABEL_5:
       [(PXStoryDiagnosticHUDLayout *)self _updateModel];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryDiagnosticHUDLayout update]"];
-        [v9 handleFailureInFunction:v10 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v10 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -415,9 +415,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryDiagnosticHUDLayout update]"];
-      [v11 handleFailureInFunction:v12 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v12 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -432,9 +432,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v6)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryDiagnosticHUDLayout update]"];
-      [v13 handleFailureInFunction:v14 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:199 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler4 handleFailureInFunction:v14 file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:199 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -457,31 +457,31 @@ LABEL_5:
   v10.receiver = self;
   v10.super_class = PXStoryDiagnosticHUDLayout;
   [(PXStoryDiagnosticHUDLayout *)&v10 entityManagerDidChange];
-  v3 = [(PXStoryDiagnosticHUDLayout *)self entityManager];
-  v4 = [v3 loadingStatus];
+  entityManager = [(PXStoryDiagnosticHUDLayout *)self entityManager];
+  loadingStatus = [entityManager loadingStatus];
   loadingStatusComponent = self->_loadingStatusComponent;
-  self->_loadingStatusComponent = v4;
+  self->_loadingStatusComponent = loadingStatus;
 
-  v6 = [(PXStoryDiagnosticHUDLayout *)self entityManager];
-  v7 = [(PXStoryDiagnosticHUDLayout *)self entityManager];
-  v8 = [v7 loadingStatus];
-  v11[0] = v8;
+  entityManager2 = [(PXStoryDiagnosticHUDLayout *)self entityManager];
+  entityManager3 = [(PXStoryDiagnosticHUDLayout *)self entityManager];
+  loadingStatus2 = [entityManager3 loadingStatus];
+  v11[0] = loadingStatus2;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  [v6 registerObserver:self forComponents:v9];
+  [entityManager2 registerObserver:self forComponents:v9];
 }
 
-- (void)_enumerateDiagnosticHUDContentProvidersUsingBlock:(id)a3
+- (void)_enumerateDiagnosticHUDContentProvidersUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXStoryDiagnosticHUDLayout *)self dataSource];
+  blockCopy = block;
+  dataSource = [(PXStoryDiagnosticHUDLayout *)self dataSource];
   v6 = 0;
   v8 = 0;
   do
   {
-    v7 = [v5 diagnosticHUDContentProviderForType:v6];
+    v7 = [dataSource diagnosticHUDContentProviderForType:v6];
     if (v7)
     {
-      v4[2](v4, v7, v6, &v8);
+      blockCopy[2](blockCopy, v7, v6, &v8);
     }
 
     if (v6 > 0x12)
@@ -495,46 +495,46 @@ LABEL_5:
   while ((v8 & 1) == 0);
 }
 
-- (void)setAnimationController:(id)a3
+- (void)setAnimationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   animationController = self->_animationController;
-  if (animationController != v5)
+  if (animationController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXStoryAnimationController *)animationController unregisterChangeObserver:self context:AnimationControllerObservationContext];
-    objc_storeStrong(&self->_animationController, a3);
+    objc_storeStrong(&self->_animationController, controller);
     [(PXStoryAnimationController *)self->_animationController registerChangeObserver:self context:AnimationControllerObservationContext];
     [(PXStoryDiagnosticHUDLayout *)self _invalidateContent];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setRelatedController:(id)a3
+- (void)setRelatedController:(id)controller
 {
-  v5 = a3;
-  if (self->_relatedController != v5)
+  controllerCopy = controller;
+  if (self->_relatedController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_relatedController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_relatedController, controller);
     [(PXStoryRelatedController *)self->_relatedController registerChangeObserver:self context:RelatedControllerObservationContext];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   model = self->_model;
-  if (model != v5)
+  if (model != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PXStoryModel *)model unregisterChangeObserver:self context:ModelObservationContext_13722];
-    objc_storeStrong(&self->_model, a3);
+    objc_storeStrong(&self->_model, model);
     [(PXStoryModel *)self->_model registerChangeObserver:self context:ModelObservationContext_13722];
     [(PXStoryDiagnosticHUDLayout *)self _invalidateControllers];
     [(PXStoryDiagnosticHUDLayout *)self _invalidateContent];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
@@ -546,19 +546,19 @@ LABEL_5:
   [(PXStoryDiagnosticHUDLayout *)&v3 dealloc];
 }
 
-- (PXStoryDiagnosticHUDLayout)initWithDataSource:(id)a3
+- (PXStoryDiagnosticHUDLayout)initWithDataSource:(id)source
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = PXStoryDiagnosticHUDLayout;
   v6 = [(PXStoryDiagnosticHUDLayout *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
-    v8 = [(PXStoryDiagnosticHUDDataSource *)v7->_dataSource HUDObservable];
-    [v8 registerChangeObserver:v7 context:DataSourceObservationContext];
+    objc_storeStrong(&v6->_dataSource, source);
+    hUDObservable = [(PXStoryDiagnosticHUDDataSource *)v7->_dataSource HUDObservable];
+    [hUDObservable registerChangeObserver:v7 context:DataSourceObservationContext];
 
     v9 = [MEMORY[0x1E695DFF0] px_scheduledTimerWithTimeInterval:v7 weakTarget:sel__invalidateContent selector:0 userInfo:1 repeats:1.0];
     timer = v7->_timer;
@@ -571,8 +571,8 @@ LABEL_5:
       v7->_badgeSpriteIndex = [(PXStoryDiagnosticHUDLayout *)v7 addSpriteWithInitialState:&__block_literal_global_10];
       v12 = objc_alloc(MEMORY[0x1E696AAB0]);
       v20[0] = *MEMORY[0x1E69DB650];
-      v13 = [MEMORY[0x1E69DC888] redColor];
-      v21[0] = v13;
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      v21[0] = redColor;
       v20[1] = *MEMORY[0x1E69DB648];
       v14 = [MEMORY[0x1E69DB878] monospacedSystemFontOfSize:26.0 weight:*MEMORY[0x1E69DB950]];
       v21[1] = v14;
@@ -647,8 +647,8 @@ __n128 __49__PXStoryDiagnosticHUDLayout_initWithDataSource___block_invoke(uint64
 
 - (PXStoryDiagnosticHUDLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:59 description:{@"%s is not available as initializer", "-[PXStoryDiagnosticHUDLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDiagnosticHUDLayout.m" lineNumber:59 description:{@"%s is not available as initializer", "-[PXStoryDiagnosticHUDLayout init]"}];
 
   abort();
 }

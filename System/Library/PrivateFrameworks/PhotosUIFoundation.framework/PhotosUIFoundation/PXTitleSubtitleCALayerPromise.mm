@@ -5,16 +5,16 @@
 + (BOOL)_simulateSlowTextTypesetting;
 - (CGRect)layerContentBounds;
 - (PXTitleSubtitleCALayerPromise)init;
-- (id)_attributedStringForLabelWithText:(id)a3 spec:(id)a4;
-- (id)_linesToRenderWithContext:(CGContext *)a3;
-- (id)_stringByReplacingNonbreakableWhitespaceToAllowLineWrapping:(id)a3 maxWidth:(double)a4;
+- (id)_attributedStringForLabelWithText:(id)text spec:(id)spec;
+- (id)_linesToRenderWithContext:(CGContext *)context;
+- (id)_stringByReplacingNonbreakableWhitespaceToAllowLineWrapping:(id)wrapping maxWidth:(double)width;
 - (id)createCustomLayer;
-- (void)drawLayerContentInContext:(CGContext *)a3;
-- (void)performChanges:(id)a3;
-- (void)setSpec:(id)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setTypesettingMode:(int64_t)a3;
+- (void)drawLayerContentInContext:(CGContext *)context;
+- (void)performChanges:(id)changes;
+- (void)setSpec:(id)spec;
+- (void)setSubtitleText:(id)text;
+- (void)setTitleText:(id)text;
+- (void)setTypesettingMode:(int64_t)mode;
 @end
 
 @implementation PXTitleSubtitleCALayerPromise
@@ -32,84 +32,84 @@
   return result;
 }
 
-- (void)setTypesettingMode:(int64_t)a3
+- (void)setTypesettingMode:(int64_t)mode
 {
-  if (self->_typesettingMode != a3)
+  if (self->_typesettingMode != mode)
   {
-    self->_typesettingMode = a3;
+    self->_typesettingMode = mode;
     [(PXCALayerPromise *)self invalidateLayer];
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXCALayerPromise *)self invalidateLayer];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_subtitleText != v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (self->_subtitleText != textCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqualToString:?];
+    v8 = textCopy;
+    textCopy = [textCopy isEqualToString:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((textCopy & 1) == 0)
     {
       v6 = [v8 copy];
       subtitleText = self->_subtitleText;
       self->_subtitleText = v6;
 
-      v4 = [(PXCALayerPromise *)self invalidateLayer];
+      textCopy = [(PXCALayerPromise *)self invalidateLayer];
       v5 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](textCopy, v5);
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_titleText != v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (self->_titleText != textCopy)
   {
-    v8 = v4;
-    v4 = [v4 isEqualToString:?];
+    v8 = textCopy;
+    textCopy = [textCopy isEqualToString:?];
     v5 = v8;
-    if ((v4 & 1) == 0)
+    if ((textCopy & 1) == 0)
     {
       v6 = [v8 copy];
       titleText = self->_titleText;
       self->_titleText = v6;
 
-      v4 = [(PXCALayerPromise *)self invalidateLayer];
+      textCopy = [(PXCALayerPromise *)self invalidateLayer];
       v5 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](textCopy, v5);
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXTitleSubtitleCALayerPromise;
-  [(PXCALayerPromise *)&v3 performChanges:a3];
+  [(PXCALayerPromise *)&v3 performChanges:changes];
 }
 
-- (id)_stringByReplacingNonbreakableWhitespaceToAllowLineWrapping:(id)a3 maxWidth:(double)a4
+- (id)_stringByReplacingNonbreakableWhitespaceToAllowLineWrapping:(id)wrapping maxWidth:(double)width
 {
-  v5 = a3;
-  v6 = [v5 mutableCopy];
+  wrappingCopy = wrapping;
+  v6 = [wrappingCopy mutableCopy];
   if (PXBreakableWhitespaceCharacterSet_onceToken != -1)
   {
     dispatch_once(&PXBreakableWhitespaceCharacterSet_onceToken, &__block_literal_global_4774);
@@ -117,11 +117,11 @@
 
   v7 = PXBreakableWhitespaceCharacterSet_breakableWhitespaceCharacterSet;
   v8 = objc_alloc(MEMORY[0x1E696AE88]);
-  v9 = [v5 string];
-  v10 = [v8 initWithString:v9];
+  string = [wrappingCopy string];
+  v10 = [v8 initWithString:string];
 
   [v10 setCharactersToBeSkipped:0];
-  v11 = [v10 scanLocation];
+  scanLocation = [v10 scanLocation];
   v23 = 0;
   v12 = [v10 scanUpToCharactersFromSet:v7 intoString:&v23];
   v13 = v23;
@@ -131,28 +131,28 @@
     do
     {
       v15 = [v14 length];
-      v16 = [v5 attributedSubstringFromRange:{v11, v15}];
+      v16 = [wrappingCopy attributedSubstringFromRange:{scanLocation, v15}];
       [v16 size];
-      if (v17 > a4)
+      if (v17 > width)
       {
         v18 = PXAttributedStringByReplacingOccurences(v16, @" ", @" ");
 
-        [v6 replaceCharactersInRange:v11 withAttributedString:{v15, v18}];
+        [v6 replaceCharactersInRange:scanLocation withAttributedString:{v15, v18}];
         v16 = v18;
       }
 
-      v19 = [v7 invertedSet];
-      [v10 scanUpToCharactersFromSet:v19 intoString:0];
+      invertedSet = [v7 invertedSet];
+      [v10 scanUpToCharactersFromSet:invertedSet intoString:0];
 
-      v11 = [v10 scanLocation];
+      scanLocation = [v10 scanLocation];
       v23 = v14;
-      LOBYTE(v19) = [v10 scanUpToCharactersFromSet:v7 intoString:&v23];
+      LOBYTE(invertedSet) = [v10 scanUpToCharactersFromSet:v7 intoString:&v23];
       v20 = v23;
 
       v14 = v20;
     }
 
-    while ((v19 & 1) != 0);
+    while ((invertedSet & 1) != 0);
   }
 
   else
@@ -165,49 +165,49 @@
   return v21;
 }
 
-- (id)_attributedStringForLabelWithText:(id)a3 spec:(id)a4
+- (id)_attributedStringForLabelWithText:(id)text spec:(id)spec
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && (objc_msgSend(v7, "isHidden") & 1) == 0)
+  textCopy = text;
+  specCopy = spec;
+  if ([textCopy length] && (objc_msgSend(specCopy, "isHidden") & 1) == 0)
   {
-    v9 = [v7 textAttributes];
-    v10 = [v7 capitalization];
+    textAttributes = [specCopy textAttributes];
+    capitalization = [specCopy capitalization];
     if (!+[PXTitleSubtitleCALayerPromise _preventFontFallback])
     {
-      v11 = [v7 fallbackTextAttributes];
-      if (v11)
+      fallbackTextAttributes = [specCopy fallbackTextAttributes];
+      if (fallbackTextAttributes)
       {
-        v12 = v11;
-        v13 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
-        CanEncodeString = PXFontCanEncodeString(v13, v6);
+        v12 = fallbackTextAttributes;
+        v13 = [textAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+        CanEncodeString = PXFontCanEncodeString(v13, textCopy);
 
         if (!CanEncodeString)
         {
-          v15 = [v7 fallbackTextAttributes];
+          fallbackTextAttributes2 = [specCopy fallbackTextAttributes];
 
-          v10 = [v7 fallbackCapitalization];
-          v9 = v15;
+          capitalization = [specCopy fallbackCapitalization];
+          textAttributes = fallbackTextAttributes2;
         }
       }
     }
 
-    v16 = [v6 px_stringByApplyingCapitalization:v10];
-    v17 = [MEMORY[0x1E695DF90] dictionary];
-    v18 = v17;
-    if (v9)
+    v16 = [textCopy px_stringByApplyingCapitalization:capitalization];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v18 = dictionary;
+    if (textAttributes)
     {
-      [v17 addEntriesFromDictionary:v9];
+      [dictionary addEntriesFromDictionary:textAttributes];
     }
 
     else
     {
-      v19 = [v7 font];
-      [v18 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69DB648]];
+      font = [specCopy font];
+      [v18 setObject:font forKeyedSubscript:*MEMORY[0x1E69DB648]];
     }
 
-    v20 = [v7 textColor];
-    [v18 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+    textColor = [specCopy textColor];
+    [v18 setObject:textColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
     v21 = *MEMORY[0x1E69DB688];
     v22 = [v18 objectForKeyedSubscript:*MEMORY[0x1E69DB688]];
@@ -225,7 +225,7 @@
 
     v26 = v25;
 
-    [v26 setAlignment:{objc_msgSend(v7, "textAlignment")}];
+    [v26 setAlignment:{objc_msgSend(specCopy, "textAlignment")}];
     [v18 setObject:v26 forKeyedSubscript:v21];
     v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v16 attributes:v18];
   }
@@ -249,7 +249,7 @@
   return v8;
 }
 
-- (id)_linesToRenderWithContext:(CGContext *)a3
+- (id)_linesToRenderWithContext:(CGContext *)context
 {
   v248 = *MEMORY[0x1E69E9840];
   [(PXCALayerPromise *)self bounds];
@@ -257,14 +257,14 @@
   v8 = v7;
   v175 = v9;
   v177 = v10;
-  v11 = [(PXTitleSubtitleCALayerPromise *)self spec];
-  v171 = self;
-  v12 = [(PXTitleSubtitleCALayerPromise *)self typesettingMode];
+  spec = [(PXTitleSubtitleCALayerPromise *)self spec];
+  selfCopy = self;
+  typesettingMode = [(PXTitleSubtitleCALayerPromise *)self typesettingMode];
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v14 = [[PXLabelTypesetter alloc] initWithContext:a3];
+  v14 = [[PXLabelTypesetter alloc] initWithContext:context];
   v15.f64[0] = v175;
   v15.f64[1] = v177;
-  if (v12 == 2)
+  if (typesettingMode == 2)
   {
     v172 = vmulq_f64(v15, vdupq_n_s64(0x4059000000000000uLL));
   }
@@ -272,10 +272,10 @@
   else
   {
     v172 = v15;
-    if (!v12)
+    if (!typesettingMode)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:v171 file:@"PXTitleSubtitleCALayerPromise.m" lineNumber:165 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXTitleSubtitleCALayerPromise.m" lineNumber:165 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -285,25 +285,25 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __59__PXTitleSubtitleCALayerPromise__linesToRenderWithContext___block_invoke;
   aBlock[3] = &unk_1E7BB7BB0;
-  aBlock[4] = v171;
+  aBlock[4] = selfCopy;
   v17 = v14;
   v233 = v17;
   v235 = v6;
   v236 = v8;
   v237 = v172;
-  v238 = v12;
+  v238 = typesettingMode;
   v18 = v13;
   v234 = v18;
   v19 = _Block_copy(aBlock);
-  v20 = [(PXTitleSubtitleCALayerPromise *)v171 titleText];
-  v21 = [v11 titleLabelSpec];
-  v22 = v19[2](v19, v20, v21, 0.0);
+  titleText = [(PXTitleSubtitleCALayerPromise *)selfCopy titleText];
+  titleLabelSpec = [spec titleLabelSpec];
+  v22 = v19[2](v19, titleText, titleLabelSpec, 0.0);
 
-  v23 = [(PXTitleSubtitleCALayerPromise *)v171 subtitleText];
-  v24 = [v11 subtitleLabelSpec];
-  [v11 distanceBetweenTitleBaselineAndSubtitleBaseline];
+  subtitleText = [(PXTitleSubtitleCALayerPromise *)selfCopy subtitleText];
+  subtitleLabelSpec = [spec subtitleLabelSpec];
+  [spec distanceBetweenTitleBaselineAndSubtitleBaseline];
   v167 = v19;
-  v169 = (v19[2])(v19, v23, v24);
+  v169 = (v19[2])(v19, subtitleText, subtitleLabelSpec);
 
   v249.origin.x = v6;
   v249.origin.y = v8;
@@ -317,15 +317,15 @@
   v29 = 1.0;
   if (![v18 count])
   {
-    v30 = 0;
-    v31 = v171;
+    array = 0;
+    v31 = selfCopy;
     goto LABEL_9;
   }
 
-  if ([(PXCALayerPromise *)v171 shouldCancel])
+  if ([(PXCALayerPromise *)selfCopy shouldCancel])
   {
-    v30 = 0;
-    v31 = v171;
+    array = 0;
+    v31 = selfCopy;
 LABEL_9:
     v32 = v167;
     v33 = v168;
@@ -335,7 +335,7 @@ LABEL_9:
   v163 = v18;
   v161 = v17;
   v162 = v26;
-  if (v12 == 2)
+  if (typesettingMode == 2)
   {
     v173 = v28;
     v231[0] = MEMORY[0x1E69E9820];
@@ -364,14 +364,14 @@ LABEL_9:
     v40 = v37;
     v230 = a2;
     v228 = v40;
-    v229 = v171;
+    v229 = selfCopy;
     v41 = _Block_copy(v225);
-    v42 = [v11 titleLabelSpec];
-    v43 = v41[2](v41, [v42 textAlignment]);
+    titleLabelSpec2 = [spec titleLabelSpec];
+    v43 = v41[2](v41, [titleLabelSpec2 textAlignment]);
     [v43 addObjectsFromArray:v22];
 
-    v44 = [v11 subtitleLabelSpec];
-    v45 = v41[2](v41, [v44 textAlignment]);
+    subtitleLabelSpec2 = [spec subtitleLabelSpec];
+    v45 = v41[2](v41, [subtitleLabelSpec2 textAlignment]);
     [v45 addObjectsFromArray:v169];
 
     v223 = 0u;
@@ -606,21 +606,21 @@ LABEL_9:
   v99 = v96;
   v201 = v99;
   v100 = _Block_copy(v198);
-  v101 = [v11 titleLabelSpec];
-  v102 = v100[2](v100, [v101 verticalAlignment]);
+  titleLabelSpec3 = [spec titleLabelSpec];
+  v102 = v100[2](v100, [titleLabelSpec3 verticalAlignment]);
   [v102 addObjectsFromArray:v22];
 
-  v103 = [v11 subtitleLabelSpec];
+  subtitleLabelSpec3 = [spec subtitleLabelSpec];
   v166 = v100;
-  v104 = v100[2](v100, [v103 verticalAlignment]);
+  v104 = v100[2](v100, [subtitleLabelSpec3 verticalAlignment]);
   [v104 addObjectsFromArray:v169];
 
-  v105 = [v98 firstObject];
-  [v105 ascentPosition];
+  firstObject = [v98 firstObject];
+  [firstObject ascentPosition];
   v107 = v106;
 
-  v108 = [v98 lastObject];
-  [v108 descentPosition];
+  lastObject = [v98 lastObject];
+  [lastObject descentPosition];
   v110 = v109;
 
   v259.origin.x = v6;
@@ -634,7 +634,7 @@ LABEL_9:
   v197 = 0u;
   v112 = v98;
   v113 = [v112 countByEnumeratingWithState:&v194 objects:v242 count:16];
-  v31 = v171;
+  v31 = selfCopy;
   if (v113)
   {
     v114 = v113;
@@ -658,8 +658,8 @@ LABEL_9:
     while (v114);
   }
 
-  v118 = [v97 firstObject];
-  [v118 ascentPosition];
+  firstObject2 = [v97 firstObject];
+  [firstObject2 ascentPosition];
   v120 = v119;
 
   v260.origin.x = v6;
@@ -696,8 +696,8 @@ LABEL_9:
     while (v124);
   }
 
-  v128 = [v99 lastObject];
-  [v128 descentPosition];
+  lastObject2 = [v99 lastObject];
+  [lastObject2 descentPosition];
   v130 = v129;
 
   v261.origin.x = v6;
@@ -754,7 +754,7 @@ LABEL_9:
 
         if (v141)
         {
-          [v11 distanceBetweenTitleBaselineAndSubtitleBaseline];
+          [spec distanceBetweenTitleBaselineAndSubtitleBaseline];
           v140 = v140 + (1.0 - v139) * v142;
         }
 
@@ -767,7 +767,7 @@ LABEL_9:
     while (v134);
   }
 
-  v176 = [(PXTitleSubtitleCALayerPromise *)v171 diagnosticsEnabled];
+  diagnosticsEnabled = [(PXTitleSubtitleCALayerPromise *)selfCopy diagnosticsEnabled];
   v179 = 0u;
   v180 = 0u;
   v181 = 0u;
@@ -777,7 +777,7 @@ LABEL_9:
   if (v143)
   {
     v144 = v143;
-    v30 = 0;
+    array = 0;
     v174 = *v180;
     v145 = 0.0;
     v26 = v162;
@@ -819,17 +819,17 @@ LABEL_82:
       v26 = v263.origin.y;
       v28 = v263.size.width;
       v27 = v263.size.height;
-      if (v176)
+      if (diagnosticsEnabled)
       {
-        if (!v30)
+        if (!array)
         {
-          v30 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        v153 = [v147 string];
-        [(NSArray *)v30 addObject:v153];
+        string = [v147 string];
+        [(NSArray *)array addObject:string];
 
-        v31 = v171;
+        v31 = selfCopy;
       }
 
       v145 = v145 + v148;
@@ -855,7 +855,7 @@ LABEL_82:
 
   else
   {
-    v30 = 0;
+    array = 0;
     v145 = 0.0;
     v26 = v162;
   }
@@ -873,8 +873,8 @@ LABEL_82:
   v32 = v167;
 LABEL_100:
   diagnosticsRenderedLines = v31->_diagnosticsRenderedLines;
-  v31->_diagnosticsRenderedLines = v30;
-  v157 = v30;
+  v31->_diagnosticsRenderedLines = array;
+  v157 = array;
 
   v31->_layerContentBounds.origin.x = v33;
   v31->_layerContentBounds.origin.y = v26;
@@ -1137,9 +1137,9 @@ void __59__PXTitleSubtitleCALayerPromise__linesToRenderWithContext___block_invok
   [v4 setMinimumTruncatedScaleFactor:?];
 }
 
-- (void)drawLayerContentInContext:(CGContext *)a3
+- (void)drawLayerContentInContext:(CGContext *)context
 {
-  v4 = self;
+  selfCopy = self;
   v58 = *MEMORY[0x1E69E9840];
   v5 = [(PXTitleSubtitleCALayerPromise *)self _linesToRenderWithContext:?];
   v6 = +[PXTitleSubtitleCALayerPromise _drawTypographicalGuidelines];
@@ -1156,7 +1156,7 @@ void __59__PXTitleSubtitleCALayerPromise__linesToRenderWithContext___block_invok
     v45 = v50;
     v46 = v52;
     v47 = *v54;
-    v44 = v4;
+    v44 = selfCopy;
 LABEL_3:
     v10 = 0;
     while (1)
@@ -1167,7 +1167,7 @@ LABEL_3:
       }
 
       v11 = *(*(&v53 + 1) + 8 * v10);
-      if ([(PXCALayerPromise *)v4 shouldCancel:v44])
+      if ([(PXCALayerPromise *)selfCopy shouldCancel:v44])
       {
         break;
       }
@@ -1182,27 +1182,27 @@ LABEL_3:
         v19 = v18;
         [MEMORY[0x1E69DC888] redColor];
         v21 = v20 = v6;
-        CGContextSetStrokeColorWithColor(a3, [v21 CGColor]);
+        CGContextSetStrokeColorWithColor(context, [v21 CGColor]);
 
         v59.origin.x = v13;
         v59.origin.y = v15;
         v59.size.width = v17;
         v59.size.height = v19;
-        CGContextStrokeRect(a3, v59);
-        v22 = [MEMORY[0x1E69DC888] redColor];
-        CGContextSetFillColorWithColor(a3, [v22 CGColor]);
+        CGContextStrokeRect(context, v59);
+        redColor = [MEMORY[0x1E69DC888] redColor];
+        CGContextSetFillColorWithColor(context, [redColor CGColor]);
 
         [v11 textPosition];
         v60.origin.x = v23 + -1.5;
         v60.origin.y = v24 + -1.5;
         v60.size.width = 3.0;
         v60.size.height = 3.0;
-        CGContextFillEllipseInRect(a3, v60);
+        CGContextFillEllipseInRect(context, v60);
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         v52[0] = __59__PXTitleSubtitleCALayerPromise_drawLayerContentInContext___block_invoke;
         v52[1] = &__block_descriptor_72_e20_v24__0d8__UIColor_16l;
-        v52[2] = a3;
+        v52[2] = context;
         *&v52[3] = v13;
         *&v52[4] = v15;
         *&v52[5] = v17;
@@ -1213,38 +1213,38 @@ LABEL_3:
         v50[0] = __59__PXTitleSubtitleCALayerPromise_drawLayerContentInContext___block_invoke_2;
         v50[1] = &unk_1E7BB7B60;
         v50[2] = v11;
-        v50[3] = a3;
+        v50[3] = context;
         v26 = _Block_copy(v49);
         [v11 baselinePosition];
         v28 = v27;
-        v29 = [MEMORY[0x1E69DC888] redColor];
-        v25[2](v25, v29, v28);
+        redColor2 = [MEMORY[0x1E69DC888] redColor];
+        v25[2](v25, redColor2, v28);
 
         [v11 ascentPosition];
         v31 = v30;
-        v32 = [MEMORY[0x1E69DC888] greenColor];
-        v25[2](v25, v32, v31);
+        greenColor = [MEMORY[0x1E69DC888] greenColor];
+        v25[2](v25, greenColor, v31);
 
         [v11 descentPosition];
         v34 = v33;
-        v35 = [MEMORY[0x1E69DC888] yellowColor];
-        v25[2](v25, v35, v34);
+        yellowColor = [MEMORY[0x1E69DC888] yellowColor];
+        v25[2](v25, yellowColor, v34);
 
         [v11 textPosition];
         v37 = v36;
-        v38 = [MEMORY[0x1E69DC888] blueColor];
-        v26[2](v26, v38, v37);
+        blueColor = [MEMORY[0x1E69DC888] blueColor];
+        v26[2](v26, blueColor, v37);
 
         [v11 textPosition];
         v40 = v39;
         [v11 width];
         v42 = v40 + v41;
-        v43 = [MEMORY[0x1E69DC888] cyanColor];
-        v26[2](v26, v43, v42);
+        cyanColor = [MEMORY[0x1E69DC888] cyanColor];
+        v26[2](v26, cyanColor, v42);
         v6 = v20;
         v9 = v47;
 
-        v4 = v44;
+        selfCopy = v44;
       }
 
       if (v8 == ++v10)
@@ -1300,7 +1300,7 @@ void __59__PXTitleSubtitleCALayerPromise_drawLayerContentInContext___block_invok
   v32 = *MEMORY[0x1E69E9840];
   if (+[PXTitleSubtitleCALayerPromise _defaultSkipShapeLayer])
   {
-    v3 = 0;
+    layer = 0;
   }
 
   else
@@ -1331,9 +1331,9 @@ LABEL_5:
           break;
         }
 
-        v11 = [v10 createPath];
-        CGPathAddPath(Mutable, 0, v11);
-        CGPathRelease(v11);
+        createPath = [v10 createPath];
+        CGPathAddPath(Mutable, 0, createPath);
+        CGPathRelease(createPath);
         if (v7 == ++v9)
         {
           v7 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -1347,16 +1347,16 @@ LABEL_5:
       }
     }
 
-    v12 = [(PXTitleSubtitleCALayerPromise *)self spec];
-    v13 = [v12 titleLabelSpec];
+    spec = [(PXTitleSubtitleCALayerPromise *)self spec];
+    titleLabelSpec = [spec titleLabelSpec];
 
-    v14 = [v13 textColor];
-    v15 = [v13 textAttributes];
-    v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E69DB6A8]];
+    textColor = [titleLabelSpec textColor];
+    textAttributes = [titleLabelSpec textAttributes];
+    v16 = [textAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB6A8]];
 
     if ([(PXCALayerPromise *)self shouldCancel])
     {
-      v3 = 0;
+      layer = 0;
     }
 
     else
@@ -1367,28 +1367,28 @@ LABEL_5:
         [MEMORY[0x1E6979518] activateBackground:1];
       }
 
-      v3 = [MEMORY[0x1E69794A0] layer];
-      [v3 setDelegate:self];
-      [v3 setPath:Mutable];
-      [v3 setFillColor:{objc_msgSend(v14, "CGColor")}];
+      layer = [MEMORY[0x1E69794A0] layer];
+      [layer setDelegate:self];
+      [layer setPath:Mutable];
+      [layer setFillColor:{objc_msgSend(textColor, "CGColor")}];
       [(PXCALayerPromise *)self bounds];
-      [v3 setBounds:?];
+      [layer setBounds:?];
       if (v16)
       {
         [(PXTitleSubtitleCALayerPromise *)self _textScaleFactor];
         v18 = v17;
         [(PXCALayerPromise *)self contentsScale];
         v20 = v18 / v19;
-        v21 = [v16 shadowColor];
-        [v3 setShadowColor:{objc_msgSend(v21, "CGColor")}];
+        shadowColor = [v16 shadowColor];
+        [layer setShadowColor:{objc_msgSend(shadowColor, "CGColor")}];
 
         LODWORD(v22) = 1.0;
-        [v3 setShadowOpacity:v22];
+        [layer setShadowOpacity:v22];
         [v16 shadowOffset];
-        [v3 setShadowOffset:{v23 * v20, v24 * v20}];
+        [layer setShadowOffset:{v23 * v20, v24 * v20}];
         [v16 shadowBlurRadius];
-        [v3 setShadowRadius:v20 * v25];
-        [v3 setShadowPath:Mutable];
+        [layer setShadowRadius:v20 * v25];
+        [layer setShadowPath:Mutable];
       }
 
       [MEMORY[0x1E6979518] commit];
@@ -1398,7 +1398,7 @@ LABEL_5:
     CGPathRelease(Mutable);
   }
 
-  return v3;
+  return layer;
 }
 
 - (PXTitleSubtitleCALayerPromise)init
@@ -1418,32 +1418,32 @@ LABEL_5:
 
 + (BOOL)_preventFontFallback
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PXTitleSubtitleCALayerPromisePreventFontFallback"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PXTitleSubtitleCALayerPromisePreventFontFallback"];
 
   return v3;
 }
 
 + (BOOL)_drawTypographicalGuidelines
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PXTitleSubtitleCALayerPromiseDrawTypographicalGuidelines"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PXTitleSubtitleCALayerPromiseDrawTypographicalGuidelines"];
 
   return v3;
 }
 
 + (BOOL)_simulateSlowTextTypesetting
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PXTitleSubtitleCALayerPromiseSimulateSlowTypesetting"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PXTitleSubtitleCALayerPromiseSimulateSlowTypesetting"];
 
   return v3;
 }
 
 + (BOOL)_defaultSkipShapeLayer
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PXTitleSubtitleCALayerPromiseSkipShapeLayer"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PXTitleSubtitleCALayerPromiseSkipShapeLayer"];
 
   return v3;
 }

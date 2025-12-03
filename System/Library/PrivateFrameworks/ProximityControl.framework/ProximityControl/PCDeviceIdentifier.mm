@@ -1,54 +1,54 @@
 @interface PCDeviceIdentifier
-- (PCDeviceIdentifier)initWithCoder:(id)a3;
-- (PCDeviceIdentifier)initWithDeviceName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PCDeviceIdentifier)initWithCoder:(id)coder;
+- (PCDeviceIdentifier)initWithDeviceName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PCDeviceIdentifier
 
-- (PCDeviceIdentifier)initWithDeviceName:(id)a3
+- (PCDeviceIdentifier)initWithDeviceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = PCDeviceIdentifier;
   v6 = [(PCDeviceIdentifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deviceName, a3);
+    objc_storeStrong(&v6->_deviceName, name);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   assetType = self->_assetType;
-  v7 = v4;
+  v7 = coderCopy;
   if (assetType)
   {
-    [v4 encodeInteger:assetType forKey:@"at"];
-    v4 = v7;
+    [coderCopy encodeInteger:assetType forKey:@"at"];
+    coderCopy = v7;
   }
 
   deviceName = self->_deviceName;
   if (deviceName)
   {
     [v7 encodeObject:deviceName forKey:@"dname"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (PCDeviceIdentifier)initWithCoder:(id)a3
+- (PCDeviceIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PCDeviceIdentifier;
   v5 = [(PCDeviceIdentifier *)&v9 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"at"])
     {
       v5->_assetType = [v6 decodeIntegerForKey:@"at"];

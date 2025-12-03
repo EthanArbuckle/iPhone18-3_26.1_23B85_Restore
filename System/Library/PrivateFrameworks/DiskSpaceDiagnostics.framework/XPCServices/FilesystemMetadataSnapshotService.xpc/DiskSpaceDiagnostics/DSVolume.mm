@@ -1,33 +1,33 @@
 @interface DSVolume
-+ (BOOL)__checkAttributionTagsCapabilityForVolume:(id)a3;
-+ (BOOL)__checkCloneGroupCapabilityForVolume:(id)a3;
-+ (BOOL)__checkCloneMappingCapabilityForVolume:(id)a3;
-+ (BOOL)__checkPurgeableFilesCapabilityForVolume:(id)a3;
-+ (BOOL)_isDirectoryPartOfSAFHierarchy:(id)a3;
-+ (id)_safeFilenameForListingVolume:(id)a3 pathExtension:(id)a4;
-+ (id)_safeStringFromStatFSCString:(const char *)a3;
-+ (id)_volumeInfoFromStatFS:(statfs *)a3 count:(int)a4 usedBytesProvider:(id)a5 volumeManager:(id)a6;
-+ (void)_getAttributionTagPathsInDirectory:(id)a3 reply:(id)a4;
-+ (void)_getDirStatsType:(id)a3 reply:(id)a4;
-+ (void)_getPurgeableRecordsInfo:(id)a3 reply:(id)a4;
-+ (void)_getSharedExtensInfo:(id)a3 reply:(id)a4;
-+ (void)_writeCloneGroupsRecordsForVolume:(id)a3 toFile:(__sFILE *)a4 error:(id *)a5;
-- (BOOL)listContentsWithEntryCount:(unint64_t *)a3 andError:(id *)a4;
++ (BOOL)__checkAttributionTagsCapabilityForVolume:(id)volume;
++ (BOOL)__checkCloneGroupCapabilityForVolume:(id)volume;
++ (BOOL)__checkCloneMappingCapabilityForVolume:(id)volume;
++ (BOOL)__checkPurgeableFilesCapabilityForVolume:(id)volume;
++ (BOOL)_isDirectoryPartOfSAFHierarchy:(id)hierarchy;
++ (id)_safeFilenameForListingVolume:(id)volume pathExtension:(id)extension;
++ (id)_safeStringFromStatFSCString:(const char *)string;
++ (id)_volumeInfoFromStatFS:(statfs *)s count:(int)count usedBytesProvider:(id)provider volumeManager:(id)manager;
++ (void)_getAttributionTagPathsInDirectory:(id)directory reply:(id)reply;
++ (void)_getDirStatsType:(id)type reply:(id)reply;
++ (void)_getPurgeableRecordsInfo:(id)info reply:(id)reply;
++ (void)_getSharedExtensInfo:(id)info reply:(id)reply;
++ (void)_writeCloneGroupsRecordsForVolume:(id)volume toFile:(__sFILE *)file error:(id *)error;
+- (BOOL)listContentsWithEntryCount:(unint64_t *)count andError:(id *)error;
 - (BOOL)shouldListContents;
 - (DSVolumeManager)_volumeManager;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_initWithStatFS:(statfs *)a3 usedBytesProvider:(id)a4 volumeManager:(id)a5;
-- (id)_pathRepresentationForListing:(char *)a3 isDirectory:(BOOL)a4;
+- (id)_initWithStatFS:(statfs *)s usedBytesProvider:(id)provider volumeManager:(id)manager;
+- (id)_pathRepresentationForListing:(char *)listing isDirectory:(BOOL)directory;
 @end
 
 @implementation DSVolume
 
-+ (BOOL)__checkPurgeableFilesCapabilityForVolume:(id)a3
++ (BOOL)__checkPurgeableFilesCapabilityForVolume:(id)volume
 {
   v8 = 0;
-  v3 = [a3 mountPoint];
-  v4 = fsctl([v3 UTF8String], 0x40084A47uLL, &v8, 0);
+  mountPoint = [volume mountPoint];
+  v4 = fsctl([mountPoint UTF8String], 0x40084A47uLL, &v8, 0);
 
   if (v4)
   {
@@ -47,12 +47,12 @@
   return v6 & 1;
 }
 
-+ (BOOL)__checkAttributionTagsCapabilityForVolume:(id)a3
++ (BOOL)__checkAttributionTagsCapabilityForVolume:(id)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   v13 = 0;
-  v4 = [v3 mountPoint];
-  v5 = fsctl([v4 UTF8String], 0xC0044A75uLL, &v13, 0);
+  mountPoint = [volumeCopy mountPoint];
+  v5 = fsctl([mountPoint UTF8String], 0xC0044A75uLL, &v13, 0);
 
   if (v5)
   {
@@ -61,12 +61,12 @@
     {
       v7 = __error();
       v8 = strerror(*v7);
-      v9 = [v3 mountPoint];
-      v10 = [v9 UTF8String];
+      mountPoint2 = [volumeCopy mountPoint];
+      uTF8String = [mountPoint2 UTF8String];
       *buf = 136315394;
       v15 = v8;
       v16 = 2080;
-      v17 = v10;
+      v17 = uTF8String;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Failed to get attribution tags flags with error (%s) (%s)", buf, 0x16u);
     }
 
@@ -81,13 +81,13 @@
   return v11;
 }
 
-+ (BOOL)__checkCloneMappingCapabilityForVolume:(id)a3
++ (BOOL)__checkCloneMappingCapabilityForVolume:(id)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   v14 = 0;
   memset(v13, 0, sizeof(v13));
-  v4 = [v3 mountPoint];
-  v5 = getattrlist([v4 UTF8String], &v12, v13, 0x24uLL, 0);
+  mountPoint = [volumeCopy mountPoint];
+  v5 = getattrlist([mountPoint UTF8String], &v12, v13, 0x24uLL, 0);
 
   if (v5)
   {
@@ -96,12 +96,12 @@
     {
       v7 = __error();
       v8 = strerror(*v7);
-      v9 = [v3 mountPoint];
-      v10 = [v9 UTF8String];
+      mountPoint2 = [volumeCopy mountPoint];
+      uTF8String = [mountPoint2 UTF8String];
       *buf = 136315394;
       v16 = v8;
       v17 = 2080;
-      v18 = v10;
+      v18 = uTF8String;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Attrlist failed with error (%s) (%s)", buf, 0x16u);
     }
 
@@ -116,10 +116,10 @@
   return v6;
 }
 
-+ (BOOL)__checkCloneGroupCapabilityForVolume:(id)a3
++ (BOOL)__checkCloneGroupCapabilityForVolume:(id)volume
 {
-  v4 = a3;
-  if (![a1 __checkCloneMappingCapabilityForVolume:v4])
+  volumeCopy = volume;
+  if (![self __checkCloneMappingCapabilityForVolume:volumeCopy])
   {
 LABEL_11:
     v9 = 0;
@@ -141,8 +141,8 @@ LABEL_11:
   v6 = v5;
   v14 = 0u;
   DWORD2(v14) = 1;
-  v7 = [v4 mountPoint];
-  v8 = fsctl([v7 fileSystemRepresentation], 0xC0684A87uLL, &v13, 0);
+  mountPoint = [volumeCopy mountPoint];
+  v8 = fsctl([mountPoint fileSystemRepresentation], 0xC0684A87uLL, &v13, 0);
 
   v9 = v8 == 0;
   if (v8)
@@ -150,7 +150,7 @@ LABEL_11:
     v10 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_100030948(v4, v10);
+      sub_100030948(volumeCopy, v10);
     }
   }
 
@@ -160,32 +160,32 @@ LABEL_12:
   return v9;
 }
 
-+ (id)_volumeInfoFromStatFS:(statfs *)a3 count:(int)a4 usedBytesProvider:(id)a5 volumeManager:(id)a6
++ (id)_volumeInfoFromStatFS:(statfs *)s count:(int)count usedBytesProvider:(id)provider volumeManager:(id)manager
 {
-  v9 = a5;
-  v10 = a6;
+  providerCopy = provider;
+  managerCopy = manager;
   v11 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v17[0] = 67109120;
-    v17[1] = a4;
+    v17[1] = count;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Creating DSVolumes for %d statfs entries", v17, 8u);
   }
 
   v12 = +[NSMutableArray array];
-  if (a3 && a4 >= 1)
+  if (s && count >= 1)
   {
-    v13 = a4;
+    countCopy = count;
     do
     {
-      v14 = [[DSVolume alloc] _initWithStatFS:a3 usedBytesProvider:v9 volumeManager:v10];
+      v14 = [[DSVolume alloc] _initWithStatFS:s usedBytesProvider:providerCopy volumeManager:managerCopy];
       [v12 addObject:v14];
 
-      ++a3;
-      --v13;
+      ++s;
+      --countCopy;
     }
 
-    while (v13);
+    while (countCopy);
   }
 
   v15 = [v12 copy];
@@ -193,28 +193,28 @@ LABEL_12:
   return v15;
 }
 
-+ (id)_safeFilenameForListingVolume:(id)a3 pathExtension:(id)a4
++ (id)_safeFilenameForListingVolume:(id)volume pathExtension:(id)extension
 {
-  v5 = a3;
-  v6 = a4;
+  volumeCopy = volume;
+  extensionCopy = extension;
   if (qword_10006E590 != -1)
   {
     sub_100030A58();
   }
 
-  if ([v5 isRootVolume])
+  if ([volumeCopy isRootVolume])
   {
     v7 = @"RootVolume";
   }
 
   else
   {
-    v8 = [v5 mountPoint];
-    v7 = [v8 stringByTrimmingCharactersInSet:qword_10006E588];
+    mountPoint = [volumeCopy mountPoint];
+    v7 = [mountPoint stringByTrimmingCharactersInSet:qword_10006E588];
   }
 
-  v9 = [v5 mountedFrom];
-  v10 = [v9 stringByTrimmingCharactersInSet:qword_10006E588];
+  mountedFrom = [volumeCopy mountedFrom];
+  v10 = [mountedFrom stringByTrimmingCharactersInSet:qword_10006E588];
   v11 = [NSString stringWithFormat:@"%@-%@", v7, v10];
 
   v12 = [v11 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
@@ -226,14 +226,14 @@ LABEL_12:
     v12 = v13;
   }
 
-  v14 = [NSString stringWithFormat:@"%@.%@", v12, v6];
+  extensionCopy = [NSString stringWithFormat:@"%@.%@", v12, extensionCopy];
 
-  return v14;
+  return extensionCopy;
 }
 
-+ (id)_safeStringFromStatFSCString:(const char *)a3
++ (id)_safeStringFromStatFSCString:(const char *)string
 {
-  v4 = [NSString stringWithCString:a3 encoding:4];
+  v4 = [NSString stringWithCString:string encoding:4];
   if (v4)
   {
     v5 = v4;
@@ -246,7 +246,7 @@ LABEL_12:
     sub_100030A6C();
   }
 
-  v5 = [NSString stringWithCString:a3 encoding:4];
+  v5 = [NSString stringWithCString:string encoding:4];
   if (v5)
   {
 LABEL_6:
@@ -273,10 +273,10 @@ LABEL_10:
   return v5;
 }
 
-+ (void)_getAttributionTagPathsInDirectory:(id)a3 reply:(id)a4
++ (void)_getAttributionTagPathsInDirectory:(id)directory reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  directoryCopy = directory;
+  replyCopy = reply;
   v37[1] = 0;
   v37[2] = 0x80000000000;
   v37[0] = 0xA000000900000005;
@@ -284,13 +284,13 @@ LABEL_10:
   if (v7)
   {
     v8 = v7;
-    v9 = open([v5 fileSystemRepresentation], 1048832);
+    v9 = open([directoryCopy fileSystemRepresentation], 1048832);
     if (v9 < 0)
     {
       v29 = shared_filesystem_metadata_snapshot_service_log_handle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        sub_100030C4C(v5);
+        sub_100030C4C(directoryCopy);
       }
 
       free(v8);
@@ -300,9 +300,9 @@ LABEL_10:
     {
       v33 = v9;
       v35 = 0;
-      v36 = v5;
+      v36 = directoryCopy;
       v11 = 0;
-      v34 = v6;
+      v34 = replyCopy;
       v32 = v8;
       *&v10 = 136315394;
       v31 = v10;
@@ -340,9 +340,9 @@ LABEL_4:
               v27 = shared_filesystem_metadata_snapshot_service_log_handle();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
               {
-                v16 = [v36 fileSystemRepresentation];
+                fileSystemRepresentation = [v36 fileSystemRepresentation];
                 *buf = v31;
-                *&buf[4] = v16;
+                *&buf[4] = fileSystemRepresentation;
                 *&buf[12] = 1024;
                 *&buf[14] = v26;
                 _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Error while processing directory %s for attribution tags: %d", buf, 0x12u);
@@ -412,8 +412,8 @@ LABEL_37:
       free(v32);
       close(v33);
 
-      v5 = v36;
-      v6 = v34;
+      directoryCopy = v36;
+      replyCopy = v34;
     }
   }
 
@@ -422,21 +422,21 @@ LABEL_37:
     v28 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      sub_100030CE0(v5);
+      sub_100030CE0(directoryCopy);
     }
   }
 }
 
-+ (BOOL)_isDirectoryPartOfSAFHierarchy:(id)a3
++ (BOOL)_isDirectoryPartOfSAFHierarchy:(id)hierarchy
 {
-  v3 = a3;
+  hierarchyCopy = hierarchy;
   v6 = 0;
-  if (fsctl([v3 fileSystemRepresentation], 0x40084A25uLL, &v6, 0))
+  if (fsctl([hierarchyCopy fileSystemRepresentation], 0x40084A25uLL, &v6, 0))
   {
     v4 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      sub_100030D74(v3);
+      sub_100030D74(hierarchyCopy);
     }
 
     LOBYTE(v4) = 0;
@@ -450,10 +450,10 @@ LABEL_37:
   return v4;
 }
 
-+ (void)_getDirStatsType:(id)a3 reply:(id)a4
++ (void)_getDirStatsType:(id)type reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  replyCopy = reply;
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -472,30 +472,30 @@ LABEL_37:
   v11 = 0u;
   v8 = 0;
   v9 = 1;
-  if (fsctl([v5 fileSystemRepresentation], 0xC1104A71uLL, &v8, 0))
+  if (fsctl([typeCopy fileSystemRepresentation], 0xC1104A71uLL, &v8, 0))
   {
     if (*__error() != 45)
     {
       v7 = shared_filesystem_metadata_snapshot_service_log_handle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        sub_100030DF8(v5);
+        sub_100030DF8(typeCopy);
       }
     }
 
-    (*(v6 + 2))(v6, v5, 0, 0);
+    (*(replyCopy + 2))(replyCopy, typeCopy, 0, 0);
   }
 
   else
   {
-    (*(v6 + 2))(v6, v5, 1, (v9 >> 2) & 1);
+    (*(replyCopy + 2))(replyCopy, typeCopy, 1, (v9 >> 2) & 1);
   }
 }
 
-+ (void)_getSharedExtensInfo:(id)a3 reply:(id)a4
++ (void)_getSharedExtensInfo:(id)info reply:(id)reply
 {
-  v5 = a4;
-  v6 = [a3 fileSystemRepresentation];
+  replyCopy = reply;
+  fileSystemRepresentation = [info fileSystemRepresentation];
   v7 = malloc_type_malloc(0x27100uLL, 0x1000040F6D918ACuLL);
   if (v7)
   {
@@ -505,7 +505,7 @@ LABEL_37:
     v26 = v7;
     LODWORD(v25) = 160000;
     v9 = v7 + 16;
-    while (!fsctl(v6, 0xC0284A7DuLL, &v24, 0))
+    while (!fsctl(fileSystemRepresentation, 0xC0284A7DuLL, &v24, 0))
     {
       if (DWORD1(v25))
       {
@@ -516,7 +516,7 @@ LABEL_37:
         {
           v13 = *(v12 - 2);
           v14 = *v12;
-          (*(v5 + 2))(v5, v13 * v11, *(v12 - 1), *v12 * v11, *(v12 + 2));
+          (*(replyCopy + 2))(replyCopy, v13 * v11, *(v12 - 1), *v12 * v11, *(v12 + 2));
           *&v24 = v14 + v13;
           ++v10;
           v12 += 32;
@@ -552,14 +552,14 @@ LABEL_15:
   }
 }
 
-+ (void)_writeCloneGroupsRecordsForVolume:(id)a3 toFile:(__sFILE *)a4 error:(id *)a5
++ (void)_writeCloneGroupsRecordsForVolume:(id)volume toFile:(__sFILE *)file error:(id *)error
 {
-  v23 = a3;
+  volumeCopy = volume;
   v7 = malloc_type_malloc(0x40000uLL, 0x5868BCDFuLL);
   if (v7)
   {
     v8 = v7;
-    v22 = a5;
+    errorCopy = error;
     v9 = 0;
     v10 = 0;
     v11 = 0;
@@ -575,7 +575,7 @@ LABEL_15:
     while (1)
     {
       *(&v25 + 1) = 0x40000;
-      if (fsctl([v23 fileSystemRepresentation], 0xC0684A87uLL, v24, 0))
+      if (fsctl([volumeCopy fileSystemRepresentation], 0xC0684A87uLL, v24, 0))
       {
         break;
       }
@@ -624,7 +624,7 @@ LABEL_15:
             {
               if (v17 == 255)
               {
-                if (fprintf(a4, "%llu\t%llu\t%llu\t%d\t%llu\t%llu\t%llu\n", v9, v10, v11, v12, v15, v13, v14) == -1)
+                if (fprintf(file, "%llu\t%llu\t%llu\t%d\t%llu\t%llu\t%llu\n", v9, v10, v11, v12, v15, v13, v14) == -1)
                 {
                   v19 = __error();
                   if ((byte_10006E598 & 1) == 0)
@@ -688,26 +688,26 @@ LABEL_31:
       }
     }
 
-    if (v22)
+    if (errorCopy)
     {
-      *v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+      *errorCopy = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     }
 
     free(v8);
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+    *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
   }
 
 LABEL_38:
 }
 
-+ (void)_getPurgeableRecordsInfo:(id)a3 reply:(id)a4
++ (void)_getPurgeableRecordsInfo:(id)info reply:(id)reply
 {
-  v5 = a4;
-  v6 = [a3 fileSystemRepresentation];
+  replyCopy = reply;
+  fileSystemRepresentation = [info fileSystemRepresentation];
   v7 = malloc_type_malloc(0x8000uLL, 0x1000040FA0F61DDuLL);
   if (v7)
   {
@@ -719,7 +719,7 @@ LABEL_38:
     v17 = v7;
     v14[0] = 6;
     v9 = v7 + 24;
-    while (!fsctl(v6, 0xC0404A83uLL, v14, 0))
+    while (!fsctl(fileSystemRepresentation, 0xC0404A83uLL, v14, 0))
     {
       if (*(&v16 + 1))
       {
@@ -727,7 +727,7 @@ LABEL_38:
         v11 = v9;
         do
         {
-          (*(v5 + 2))(v5, *(v11 - 3), *(v11 - 2), *v11, v11[3]);
+          (*(replyCopy + 2))(replyCopy, *(v11 - 3), *(v11 - 2), *v11, v11[3]);
           ++v10;
           v11 += 8;
         }
@@ -770,17 +770,17 @@ LABEL_15:
 
   else
   {
-    v4 = [(DSVolume *)self _flags];
-    LODWORD(v3) = (v4 >> 12) & 1;
-    if ((v4 & 0x1000) == 0)
+    _flags = [(DSVolume *)self _flags];
+    LODWORD(v3) = (_flags >> 12) & 1;
+    if ((_flags & 0x1000) == 0)
     {
       v5 = shared_filesystem_metadata_snapshot_service_log_handle();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138543618;
-        v9 = self;
+        selfCopy2 = self;
         v10 = 1024;
-        v11 = [(DSVolume *)self _flags];
+        _flags2 = [(DSVolume *)self _flags];
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Skipping non-local volume %{public}@ (flags: %u)", &v8, 0x12u);
       }
     }
@@ -790,11 +790,11 @@ LABEL_15:
       v3 = shared_filesystem_metadata_snapshot_service_log_handle();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(DSVolume *)self _flags];
+        _flags3 = [(DSVolume *)self _flags];
         v8 = 138543618;
-        v9 = self;
+        selfCopy2 = self;
         v10 = 1024;
-        v11 = v6;
+        _flags2 = _flags3;
         _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Skipping snapshot volume %{public}@ (flags: %u)", &v8, 0x12u);
       }
 
@@ -805,15 +805,15 @@ LABEL_15:
   return v3;
 }
 
-- (id)_pathRepresentationForListing:(char *)a3 isDirectory:(BOOL)a4
+- (id)_pathRepresentationForListing:(char *)listing isDirectory:(BOOL)directory
 {
-  if (!a3)
+  if (!listing)
   {
     goto LABEL_7;
   }
 
-  v4 = a4;
-  v7 = strlen(a3);
+  directoryCopy = directory;
+  v7 = strlen(listing);
   if (!v7)
   {
     goto LABEL_7;
@@ -821,7 +821,7 @@ LABEL_15:
 
   if (v7 != 1)
   {
-    if (a3[v7 - 1] != 47)
+    if (listing[v7 - 1] != 47)
     {
       goto LABEL_8;
     }
@@ -831,59 +831,59 @@ LABEL_7:
     goto LABEL_29;
   }
 
-  if (*a3 != 47)
+  if (*listing != 47)
   {
 LABEL_8:
     v8 = 1;
     goto LABEL_9;
   }
 
-  v8 = a3[1] != 0;
+  v8 = listing[1] != 0;
 LABEL_9:
-  v10 = [(DSVolume *)self _volumeManager];
-  v11 = [v10 _snapshotRequest];
-  v12 = [v11 snapshotFileManager];
+  _volumeManager = [(DSVolume *)self _volumeManager];
+  _snapshotRequest = [_volumeManager _snapshotRequest];
+  snapshotFileManager = [_snapshotRequest snapshotFileManager];
 
-  if ([v12 shouldHashVolumeListings])
+  if ([snapshotFileManager shouldHashVolumeListings])
   {
-    v13 = [NSURL fileURLWithFileSystemRepresentation:a3 isDirectory:0 relativeToURL:0];
+    v13 = [NSURL fileURLWithFileSystemRepresentation:listing isDirectory:0 relativeToURL:0];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 path];
-      if (v4)
+      path = [v13 path];
+      if (directoryCopy)
       {
-        v16 = &stru_100069618;
+        lastPathComponent = &stru_100069618;
       }
 
       else
       {
-        v16 = [v14 lastPathComponent];
-        v18 = [v14 URLByDeletingLastPathComponent];
-        v19 = [v18 path];
+        lastPathComponent = [v14 lastPathComponent];
+        uRLByDeletingLastPathComponent = [v14 URLByDeletingLastPathComponent];
+        path2 = [uRLByDeletingLastPathComponent path];
 
-        v15 = v19;
+        path = path2;
       }
 
-      v20 = [v15 hash];
+      v20 = [path hash];
       v21 = [NSNumber numberWithUnsignedInteger:v20];
-      v22 = [(DSVolume *)self __hashes];
-      v23 = [v22 containsObject:v21];
+      __hashes = [(DSVolume *)self __hashes];
+      v23 = [__hashes containsObject:v21];
 
       if ((v23 & 1) == 0)
       {
-        v24 = [(DSVolume *)self __hashes];
-        [v24 addObject:v21];
+        __hashes2 = [(DSVolume *)self __hashes];
+        [__hashes2 addObject:v21];
 
-        v25 = [v12 sharedDirectoriesMapFile];
-        v26 = [v15 UTF8String];
+        sharedDirectoriesMapFile = [snapshotFileManager sharedDirectoriesMapFile];
+        uTF8String = [path UTF8String];
         v27 = "";
         if (v8)
         {
           v27 = "/";
         }
 
-        if (fprintf(v25, "%lu\t%s%s\n", v20, v26, v27) == -1)
+        if (fprintf(sharedDirectoriesMapFile, "%lu\t%s%s\n", v20, uTF8String, v27) == -1)
         {
           v28 = __error();
           if ((byte_10006E599 & 1) == 0)
@@ -899,7 +899,7 @@ LABEL_9:
         }
       }
 
-      v9 = [NSString stringWithFormat:@"<%lu>%@", v20, v16];
+      v9 = [NSString stringWithFormat:@"<%lu>%@", v20, lastPathComponent];
     }
 
     else
@@ -911,12 +911,12 @@ LABEL_9:
   else
   {
     v17 = "";
-    if (v8 && v4)
+    if (v8 && directoryCopy)
     {
       v17 = "/";
     }
 
-    v9 = [NSString stringWithFormat:@"%s%s", a3, v17];
+    v9 = [NSString stringWithFormat:@"%s%s", listing, v17];
   }
 
 LABEL_29:
@@ -924,40 +924,40 @@ LABEL_29:
   return v9;
 }
 
-- (BOOL)listContentsWithEntryCount:(unint64_t *)a3 andError:(id *)a4
+- (BOOL)listContentsWithEntryCount:(unint64_t *)count andError:(id *)error
 {
-  v4 = a4;
-  if (a4)
+  errorCopy = error;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v6 = self;
-  if (![(DSVolume *)v6 shouldListContents])
+  selfCopy = self;
+  if (![(DSVolume *)selfCopy shouldListContents])
   {
-    v9 = shared_filesystem_metadata_snapshot_service_log_handle();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    snapshotFileManager = shared_filesystem_metadata_snapshot_service_log_handle();
+    if (os_log_type_enabled(snapshotFileManager, OS_LOG_TYPE_DEFAULT))
     {
       buf.st_dev = 138412290;
-      *&buf.st_mode = v6;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Skipping listing files for volume %@", &buf, 0xCu);
+      *&buf.st_mode = selfCopy;
+      _os_log_impl(&_mh_execute_header, snapshotFileManager, OS_LOG_TYPE_DEFAULT, "Skipping listing files for volume %@", &buf, 0xCu);
     }
 
     goto LABEL_14;
   }
 
-  v246 = a3;
-  v252 = [(DSVolume *)v6 hasPurgeableFilesCapability];
-  v7 = [(DSVolume *)v6 _volumeManager];
-  v8 = [v7 _snapshotRequest];
-  v9 = [v8 snapshotFileManager];
+  countCopy = count;
+  hasPurgeableFilesCapability = [(DSVolume *)selfCopy hasPurgeableFilesCapability];
+  _volumeManager = [(DSVolume *)selfCopy _volumeManager];
+  _snapshotRequest = [_volumeManager _snapshotRequest];
+  snapshotFileManager = [_snapshotRequest snapshotFileManager];
 
-  v10 = [v9 sharedLogFile];
+  sharedLogFile = [snapshotFileManager sharedLogFile];
   v11 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     buf.st_dev = 138412290;
-    *&buf.st_mode = v6;
+    *&buf.st_mode = selfCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Listing files for volume %@", &buf, 0xCu);
   }
 
@@ -967,18 +967,18 @@ LABEL_29:
   }
 
   v12 = *&qword_10006E578;
-  v13 = [(DSVolume *)v6 safeFilenameForListing];
-  v14 = [v9 createFileForWritingWithName:v13 error:v4];
+  safeFilenameForListing = [(DSVolume *)selfCopy safeFilenameForListing];
+  v14 = [snapshotFileManager createFileForWritingWithName:safeFilenameForListing error:errorCopy];
 
   if (!v14)
   {
     goto LABEL_314;
   }
 
-  if (v6->_supportsAttributionTags)
+  if (selfCopy->_supportsAttributionTags)
   {
-    v15 = [(DSVolume *)v6 safeFilenameForAttributionTagsListing];
-    v16 = [v9 createFileForWritingWithName:v15 error:v4];
+    safeFilenameForAttributionTagsListing = [(DSVolume *)selfCopy safeFilenameForAttributionTagsListing];
+    v16 = [snapshotFileManager createFileForWritingWithName:safeFilenameForAttributionTagsListing error:errorCopy];
 
     v247 = v16;
     if (!v16)
@@ -994,20 +994,20 @@ LABEL_314:
     v18 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(DSVolume *)v6 mountPoint];
-      v20 = [v19 UTF8String];
+      mountPoint = [(DSVolume *)selfCopy mountPoint];
+      uTF8String = [mountPoint UTF8String];
       buf.st_dev = 136315138;
-      *&buf.st_mode = v20;
+      *&buf.st_mode = uTF8String;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Attribution tags is not supported/enabled on volume %s", &buf, 0xCu);
     }
 
     v247 = 0;
   }
 
-  if (v6->_shouldCollectDirStatsData)
+  if (selfCopy->_shouldCollectDirStatsData)
   {
-    v21 = [(DSVolume *)v6 safeFilenameForDirStatsDataListing];
-    v22 = [v9 createFileForWritingWithName:v21 error:v4];
+    safeFilenameForDirStatsDataListing = [(DSVolume *)selfCopy safeFilenameForDirStatsDataListing];
+    v22 = [snapshotFileManager createFileForWritingWithName:safeFilenameForDirStatsDataListing error:errorCopy];
 
     if (!v22)
     {
@@ -1020,20 +1020,20 @@ LABEL_314:
     v22 = 0;
   }
 
-  v271 = 0;
+  fileSystemRepresentation = 0;
   v272 = 0;
-  v23 = [(DSVolume *)v6 mountPoint];
-  v271 = [v23 fileSystemRepresentation];
+  mountPoint2 = [(DSVolume *)selfCopy mountPoint];
+  fileSystemRepresentation = [mountPoint2 fileSystemRepresentation];
   v272 = 0;
 
-  v255 = fts_open(&v271, 80, 0);
+  v255 = fts_open(&fileSystemRepresentation, 80, 0);
   if (!v255)
   {
     v84 = *__error();
-    v85 = [(DSVolume *)v6 mountPoint];
-    v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Error opening volume at %s: %d (%s)", [v85 fileSystemRepresentation], v84, strerror(v84));
+    mountPoint3 = [(DSVolume *)selfCopy mountPoint];
+    v17 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Error opening volume at %s: %d (%s)", [mountPoint3 fileSystemRepresentation], v84, strerror(v84));
 
-    if (fprintf(v10, "%s\n", [(FILE *)v17 UTF8String]) == -1)
+    if (fprintf(sharedLogFile, "%s\n", [(FILE *)v17 UTF8String]) == -1)
     {
       v86 = __error();
       if ((byte_10006E59A & 1) == 0)
@@ -1048,14 +1048,14 @@ LABEL_314:
       }
     }
 
-    v89 = v9;
+    v89 = snapshotFileManager;
     v90 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
     {
       sub_100031308(v17);
     }
 
-    if (v4)
+    if (errorCopy)
     {
       v91 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v84 userInfo:0];
       v269[0] = NSUnderlyingErrorKey;
@@ -1063,11 +1063,11 @@ LABEL_314:
       v270[0] = v91;
       v270[1] = v17;
       v92 = [NSDictionary dictionaryWithObjects:v270 forKeys:v269 count:2];
-      *v4 = [NSError errorWithDomain:@"com.apple.FilesystemMetadataSnapshot" code:65544 userInfo:v92];
+      *errorCopy = [NSError errorWithDomain:@"com.apple.FilesystemMetadataSnapshot" code:65544 userInfo:v92];
     }
 
     LOBYTE(v17) = 0;
-    v9 = v89;
+    snapshotFileManager = v89;
     goto LABEL_315;
   }
 
@@ -1086,9 +1086,9 @@ LABEL_314:
     }
   }
 
-  v27 = [v9 shouldHashVolumeListings];
+  shouldHashVolumeListings = [snapshotFileManager shouldHashVolumeListings];
   v28 = "NO";
-  if (v27)
+  if (shouldHashVolumeListings)
   {
     v28 = "YES";
   }
@@ -1108,7 +1108,7 @@ LABEL_314:
     }
   }
 
-  if (fprintf(v14, "%s\t%lld\n", "Total:", [(DSVolume *)v6 capacityBytes]) == -1)
+  if (fprintf(v14, "%s\t%lld\n", "Total:", [(DSVolume *)selfCopy capacityBytes]) == -1)
   {
     v32 = __error();
     if ((byte_10006E59D & 1) == 0)
@@ -1123,7 +1123,7 @@ LABEL_314:
     }
   }
 
-  if (fprintf(v14, "%s\t%lld\n", "Used:", [(DSVolume *)v6 usedBytes]) == -1)
+  if (fprintf(v14, "%s\t%lld\n", "Used:", [(DSVolume *)selfCopy usedBytes]) == -1)
   {
     v35 = __error();
     if ((byte_10006E59E & 1) == 0)
@@ -1138,7 +1138,7 @@ LABEL_314:
     }
   }
 
-  if (fprintf(v14, "%s\t%lld\n", "Free:", [(DSVolume *)v6 freeBytes]) == -1)
+  if (fprintf(v14, "%s\t%lld\n", "Free:", [(DSVolume *)selfCopy freeBytes]) == -1)
   {
     v38 = __error();
     if ((byte_10006E59F & 1) == 0)
@@ -1169,7 +1169,7 @@ LABEL_314:
   }
 
   v243 = v22;
-  v253 = v10;
+  v253 = sharedLogFile;
   if (fprintf(v14, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", "Size-On-Disk", "File-Size", "Compression", "FS-Purgeable-Flags", "mtime", "Mode", "UID", "GID", "Path") == -1)
   {
     v44 = __error();
@@ -1215,7 +1215,7 @@ LABEL_314:
     }
   }
 
-  if (v6->_supportsAttributionTags)
+  if (selfCopy->_supportsAttributionTags)
   {
     if (fprintf(v247, "------------------------------------------------------------------------------------------------\n") == -1)
     {
@@ -1278,7 +1278,7 @@ LABEL_314:
     }
   }
 
-  if (v6->_shouldCollectDirStatsData)
+  if (selfCopy->_shouldCollectDirStatsData)
   {
     if (fprintf(v22, "------------------------------------------------------------------------------------------------\n") == -1)
     {
@@ -1342,9 +1342,9 @@ LABEL_314:
   }
 
   memset(&buf, 0, sizeof(buf));
-  if (!fstatat(-2, v271, &buf, 544))
+  if (!fstatat(-2, fileSystemRepresentation, &buf, 544))
   {
-    v242 = v9;
+    v242 = snapshotFileManager;
     v93 = fts_read(v255);
     if (v93)
     {
@@ -1354,7 +1354,7 @@ LABEL_314:
       v244 = 0;
       v95 = 1000.0 / v12;
       v248 = v14;
-      v245 = v4;
+      v245 = errorCopy;
       while (1)
       {
         v96 = objc_autoreleasePoolPush();
@@ -1414,25 +1414,25 @@ LABEL_314:
             {
               context = v96;
               v107 = [NSString stringWithUTF8String:v94->fts_path];
-              if (v6->_supportsAttributionTags && ![DSVolume _isDirectoryPartOfSAFHierarchy:v107])
+              if (selfCopy->_supportsAttributionTags && ![DSVolume _isDirectoryPartOfSAFHierarchy:v107])
               {
                 v261[0] = _NSConcreteStackBlock;
                 v261[1] = 3221225472;
                 v261[2] = sub_10000F664;
                 v261[3] = &unk_100068970;
-                v261[4] = v6;
+                v261[4] = selfCopy;
                 v261[5] = v253;
                 v261[6] = v247;
                 [DSVolume _getAttributionTagPathsInDirectory:v107 reply:v261];
               }
 
-              if (v6->_shouldCollectDirStatsData)
+              if (selfCopy->_shouldCollectDirStatsData)
               {
                 v260[0] = _NSConcreteStackBlock;
                 v260[1] = 3221225472;
                 v260[2] = sub_10000F8CC;
                 v260[3] = &unk_100068998;
-                v260[4] = v6;
+                v260[4] = selfCopy;
                 v260[5] = v94;
                 v260[6] = v253;
                 v260[7] = v243;
@@ -1501,7 +1501,7 @@ LABEL_165:
               }
 
               v259 = 0;
-              if (v252 && v94->fts_info == 8 && fsctl(v94->fts_path, 0x40084A47uLL, &v259, 0))
+              if (hasPurgeableFilesCapability && v94->fts_info == 8 && fsctl(v94->fts_path, 0x40084A47uLL, &v259, 0))
               {
                 v120 = *__error();
                 v121 = v94->fts_path;
@@ -1546,7 +1546,7 @@ LABEL_165:
               st_mode = v128->st_mode;
               st_uid = v128->st_uid;
               st_gid = v128->st_gid;
-              v133 = [(DSVolume *)v6 _pathRepresentationForListing:v94->fts_path isDirectory:v98];
+              v133 = [(DSVolume *)selfCopy _pathRepresentationForListing:v94->fts_path isDirectory:v98];
               v134 = v133;
               if (v133)
               {
@@ -1607,34 +1607,34 @@ LABEL_165:
               }
 
               v143 = v127 + v135;
-              v144 = [(DSVolume *)v6 progress];
-              [v144 fractionCompleted];
+              progress = [(DSVolume *)selfCopy progress];
+              [progress fractionCompleted];
               v146 = v145;
 
               v254 = v143;
               if (v146 >= 1.0)
               {
-                v4 = v245;
+                errorCopy = v245;
               }
 
               else
               {
-                v4 = v245;
+                errorCopy = v245;
                 if (v143 >= 10485760)
                 {
                   v147 = mach_absolute_time();
                   if (v95 <= (v147 - v244))
                   {
                     v148 = v147;
-                    v149 = [(DSVolume *)v6 progress];
-                    v150 = [v149 completedUnitCount] + v254;
+                    progress2 = [(DSVolume *)selfCopy progress];
+                    v150 = [progress2 completedUnitCount] + v254;
 
-                    v151 = [(DSVolume *)v6 progress];
-                    v152 = [v151 totalUnitCount];
+                    progress3 = [(DSVolume *)selfCopy progress];
+                    totalUnitCount = [progress3 totalUnitCount];
 
-                    if (v150 >= v152)
+                    if (v150 >= totalUnitCount)
                     {
-                      v153 = v152;
+                      v153 = totalUnitCount;
                     }
 
                     else
@@ -1642,13 +1642,13 @@ LABEL_165:
                       v153 = v150;
                     }
 
-                    v154 = [(DSVolume *)v6 progress];
-                    [v154 setCompletedUnitCount:v153];
+                    progress4 = [(DSVolume *)selfCopy progress];
+                    [progress4 setCompletedUnitCount:v153];
 
                     v155 = shared_filesystem_metadata_snapshot_service_log_handle();
                     if (os_log_type_enabled(v155, OS_LOG_TYPE_DEBUG))
                     {
-                      sub_100031168(v262, v6, &v263, v155);
+                      sub_100031168(v262, selfCopy, &v263, v155);
                     }
 
                     v254 = 0;
@@ -1675,7 +1675,7 @@ LABEL_165:
     v249 = 0;
 LABEL_210:
     fts_close(v255);
-    v9 = v242;
+    snapshotFileManager = v242;
     if (fprintf(v14, "<END>\n") == -1)
     {
       v161 = __error();
@@ -1691,7 +1691,7 @@ LABEL_210:
       }
     }
 
-    if (v6->_supportsAttributionTags && fprintf(v247, "<END>\n") == -1)
+    if (selfCopy->_supportsAttributionTags && fprintf(v247, "<END>\n") == -1)
     {
       v164 = __error();
       if ((byte_10006E5B8 & 1) == 0)
@@ -1706,7 +1706,7 @@ LABEL_210:
       }
     }
 
-    if (v6->_shouldCollectDirStatsData && fprintf(v243, "<END>\n") == -1)
+    if (selfCopy->_shouldCollectDirStatsData && fprintf(v243, "<END>\n") == -1)
     {
       v167 = __error();
       if ((byte_10006E5B9 & 1) == 0)
@@ -1721,10 +1721,10 @@ LABEL_210:
       }
     }
 
-    if (v6->_supportsSharedExtents)
+    if (selfCopy->_supportsSharedExtents)
     {
-      v170 = [(DSVolume *)v6 safeFilenameForSharedExtentsListing];
-      v17 = [v242 createFileForWritingWithName:v170 error:v4];
+      safeFilenameForSharedExtentsListing = [(DSVolume *)selfCopy safeFilenameForSharedExtentsListing];
+      v17 = [v242 createFileForWritingWithName:safeFilenameForSharedExtentsListing error:errorCopy];
 
       if (!v17)
       {
@@ -1791,13 +1791,13 @@ LABEL_210:
         }
       }
 
-      v183 = [(DSVolume *)v6 mountPoint];
+      mountPoint4 = [(DSVolume *)selfCopy mountPoint];
       v258[0] = _NSConcreteStackBlock;
       v258[1] = 3221225472;
       v258[2] = sub_10000FA44;
       v258[3] = &unk_1000689B8;
       v258[4] = v17;
-      [DSVolume _getSharedExtensInfo:v183 reply:v258];
+      [DSVolume _getSharedExtensInfo:mountPoint4 reply:v258];
 
       if (fprintf(v17, "<END>\n") == -1)
       {
@@ -1815,10 +1815,10 @@ LABEL_210:
       }
     }
 
-    if (v6->_supportsPurgeableRecords)
+    if (selfCopy->_supportsPurgeableRecords)
     {
-      v187 = [(DSVolume *)v6 safeFilenameForPurgeableRecordsListing];
-      v17 = [v242 createFileForWritingWithName:v187 error:v4];
+      safeFilenameForPurgeableRecordsListing = [(DSVolume *)selfCopy safeFilenameForPurgeableRecordsListing];
+      v17 = [v242 createFileForWritingWithName:safeFilenameForPurgeableRecordsListing error:errorCopy];
 
       if (!v17)
       {
@@ -1885,13 +1885,13 @@ LABEL_210:
         }
       }
 
-      v200 = [(DSVolume *)v6 mountPoint];
+      mountPoint5 = [(DSVolume *)selfCopy mountPoint];
       v257[0] = _NSConcreteStackBlock;
       v257[1] = 3221225472;
       v257[2] = sub_10000FAD0;
       v257[3] = &unk_1000689D8;
       v257[4] = v17;
-      [DSVolume _getPurgeableRecordsInfo:v200 reply:v257];
+      [DSVolume _getPurgeableRecordsInfo:mountPoint5 reply:v257];
 
       if (fprintf(v17, "<END>\n") == -1)
       {
@@ -1909,10 +1909,10 @@ LABEL_210:
       }
     }
 
-    if (v6->_supportsCloneGroups)
+    if (selfCopy->_supportsCloneGroups)
     {
-      v204 = [(DSVolume *)v6 safeFilenameForCloneGroupsListing];
-      v17 = [v242 createFileForWritingWithName:v204 error:v4];
+      safeFilenameForCloneGroupsListing = [(DSVolume *)selfCopy safeFilenameForCloneGroupsListing];
+      v17 = [v242 createFileForWritingWithName:safeFilenameForCloneGroupsListing error:errorCopy];
 
       if (!v17)
       {
@@ -1979,18 +1979,18 @@ LABEL_210:
         }
       }
 
-      v217 = [(DSVolume *)v6 mountPoint];
+      mountPoint6 = [(DSVolume *)selfCopy mountPoint];
       v256 = 0;
-      [DSVolume _writeCloneGroupsRecordsForVolume:v217 toFile:v17 error:&v256];
+      [DSVolume _writeCloneGroupsRecordsForVolume:mountPoint6 toFile:v17 error:&v256];
       v218 = v256;
 
       if (v218)
       {
-        v9 = v242;
-        if (v4)
+        snapshotFileManager = v242;
+        if (errorCopy)
         {
           v219 = v218;
-          *v4 = v218;
+          *errorCopy = v218;
         }
 
         v220 = [v218 description];
@@ -2020,7 +2020,7 @@ LABEL_210:
         goto LABEL_314;
       }
 
-      v9 = v242;
+      snapshotFileManager = v242;
       if (fprintf(v17, "<END>\n") == -1)
       {
         v227 = __error();
@@ -2038,18 +2038,18 @@ LABEL_210:
     }
 
     fflush(v14);
-    v230 = [(DSVolume *)v6 progress];
-    v231 = [v230 totalUnitCount];
-    v232 = [(DSVolume *)v6 progress];
-    [v232 setCompletedUnitCount:v231];
+    progress5 = [(DSVolume *)selfCopy progress];
+    totalUnitCount2 = [progress5 totalUnitCount];
+    progress6 = [(DSVolume *)selfCopy progress];
+    [progress6 setCompletedUnitCount:totalUnitCount2];
 
     v233 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v233, OS_LOG_TYPE_DEBUG))
     {
-      sub_100031274(v6, v233);
+      sub_100031274(selfCopy, v233);
     }
 
-    v234 = [(DSVolume *)v6 description];
+    v234 = [(DSVolume *)selfCopy description];
     v235 = fprintf(v253, "Done listing contents (%llu entries) for %s\n", v249, [v234 UTF8String]);
 
     if (v235 == -1)
@@ -2070,18 +2070,18 @@ LABEL_210:
     v239 = shared_filesystem_metadata_snapshot_service_log_handle();
     if (os_log_type_enabled(v239, OS_LOG_TYPE_DEFAULT))
     {
-      v240 = [(DSVolume *)v6 description];
-      v241 = [v240 UTF8String];
+      v240 = [(DSVolume *)selfCopy description];
+      uTF8String2 = [v240 UTF8String];
       *v264 = 134218242;
       v265 = v249;
       v266 = 2080;
-      *v267 = v241;
+      *v267 = uTF8String2;
       _os_log_impl(&_mh_execute_header, v239, OS_LOG_TYPE_DEFAULT, "Done listing contents (%llu entries) for %s", v264, 0x16u);
     }
 
-    if (v246)
+    if (countCopy)
     {
-      *v246 = v249;
+      *countCopy = v249;
     }
 
 LABEL_14:
@@ -2091,7 +2091,7 @@ LABEL_14:
 
   v77 = __error();
   v17 = *v77;
-  v78 = v271;
+  v78 = fileSystemRepresentation;
   v79 = strerror(*v77);
   if (fprintf(v253, "fstatat() failed for [parent] file at %s/..: %d (%s)\n", v78, v17, v79) == -1)
   {
@@ -2111,16 +2111,16 @@ LABEL_14:
   v83 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
   {
-    sub_1000310C4(&v271, v17);
+    sub_1000310C4(&fileSystemRepresentation, v17);
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     goto LABEL_314;
   }
 
   [NSError errorWithDomain:NSPOSIXErrorDomain code:v17 userInfo:0];
-  *v4 = LOBYTE(v17) = 0;
+  *errorCopy = LOBYTE(v17) = 0;
 LABEL_315:
 
   return v17;
@@ -2166,11 +2166,11 @@ LABEL_315:
   return v7;
 }
 
-- (id)_initWithStatFS:(statfs *)a3 usedBytesProvider:(id)a4 volumeManager:(id)a5
+- (id)_initWithStatFS:(statfs *)s usedBytesProvider:(id)provider volumeManager:(id)manager
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  providerCopy = provider;
+  managerCopy = manager;
+  if (managerCopy)
   {
     v38.receiver = self;
     v38.super_class = DSVolume;
@@ -2181,30 +2181,30 @@ LABEL_315:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 136446466;
-        f_mntonname = a3->f_mntonname;
+        f_mntonname = s->f_mntonname;
         v41 = 2082;
-        f_mntfromname = a3->f_mntfromname;
+        f_mntfromname = s->f_mntfromname;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Creating DSVolume for %{public}s (%{public}s)", buf, 0x16u);
       }
 
-      objc_storeWeak(&v10->__volumeManager, v9);
-      v12 = [objc_opt_class() _safeStringFromStatFSCString:a3->f_mntonname];
+      objc_storeWeak(&v10->__volumeManager, managerCopy);
+      v12 = [objc_opt_class() _safeStringFromStatFSCString:s->f_mntonname];
       mountPoint = v10->_mountPoint;
       v10->_mountPoint = v12;
 
-      v14 = [objc_opt_class() _safeStringFromStatFSCString:a3->f_mntfromname];
+      v14 = [objc_opt_class() _safeStringFromStatFSCString:s->f_mntfromname];
       mountedFrom = v10->_mountedFrom;
       v10->_mountedFrom = v14;
 
-      v16 = [objc_opt_class() _safeStringFromStatFSCString:a3->f_fstypename];
+      v16 = [objc_opt_class() _safeStringFromStatFSCString:s->f_fstypename];
       filesystemTypeName = v10->__filesystemTypeName;
       v10->__filesystemTypeName = v16;
 
-      f_bsize = a3->f_bsize;
-      v10->_capacityBytes = a3->f_blocks * f_bsize;
-      v10->_freeBytes = a3->f_bavail * f_bsize;
-      v10->_usedBytes = v8[2](v8, a3);
-      f_flags = a3->f_flags;
+      f_bsize = s->f_bsize;
+      v10->_capacityBytes = s->f_blocks * f_bsize;
+      v10->_freeBytes = s->f_bavail * f_bsize;
+      v10->_usedBytes = providerCopy[2](providerCopy, s);
+      f_flags = s->f_flags;
       v10->__flags = f_flags;
       if ((f_flags & 0x4000) != 0)
       {
@@ -2252,15 +2252,15 @@ LABEL_315:
     }
 
     self = v10;
-    v36 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v36 = 0;
+    selfCopy = 0;
   }
 
-  return v36;
+  return selfCopy;
 }
 
 - (DSVolumeManager)_volumeManager

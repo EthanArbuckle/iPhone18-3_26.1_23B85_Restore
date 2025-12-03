@@ -1,7 +1,7 @@
 @interface PFObjCCachingImageContentProviderBridge
 + (id)extensionBridge;
 - (PFObjCCachingImageContentProviderBridge)init;
-- (void)artworkForPodcast:(MTPodcast *)a3 size:(CGSize)a4 completionHandler:(id)a5;
+- (void)artworkForPodcast:(MTPodcast *)podcast size:(CGSize)size completionHandler:(id)handler;
 @end
 
 @implementation PFObjCCachingImageContentProviderBridge
@@ -32,17 +32,17 @@
   return v10;
 }
 
-- (void)artworkForPodcast:(MTPodcast *)a3 size:(CGSize)a4 completionHandler:(id)a5
+- (void)artworkForPodcast:(MTPodcast *)podcast size:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECABB890, &qword_1D918B960);
   v11 = *(*(v10 - 8) + 64);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v13 = &v21 - v12;
-  v14 = _Block_copy(a5);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  *(v15 + 2) = a3;
+  *(v15 + 2) = podcast;
   v15[3] = width;
   v15[4] = height;
   *(v15 + 5) = v14;
@@ -59,8 +59,8 @@
   v18[3] = 0;
   v18[4] = &unk_1D918B978;
   v18[5] = v17;
-  v19 = a3;
-  v20 = self;
+  podcastCopy = podcast;
+  selfCopy = self;
   sub_1D901312C(0, 0, v13, &unk_1D918B980, v18);
 }
 

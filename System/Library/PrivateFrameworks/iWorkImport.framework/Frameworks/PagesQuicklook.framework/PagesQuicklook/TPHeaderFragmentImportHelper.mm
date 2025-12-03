@@ -1,27 +1,27 @@
 @interface TPHeaderFragmentImportHelper
-- (BOOL)p_storageIsEffectivelyEmpty:(id)a3;
-- (TPHeaderFragmentImportHelper)initWithFragments:(id *)a3 storageContext:(id)a4 objectsContext:(id)a5;
-- (unint64_t)countOfWhitespaceRunsInString:(id)a3 ranges:(_NSRange)a4[2];
-- (void)p_splitStorageInThree:(int64_t)a3 withRanges:(_NSRange)a4[2];
-- (void)p_splitStorageInTwo:(int64_t)a3 withRanges:(_NSRange)a4[2] firstTarget:(int64_t)a5 secondTarget:(int64_t)a6;
+- (BOOL)p_storageIsEffectivelyEmpty:(id)empty;
+- (TPHeaderFragmentImportHelper)initWithFragments:(id *)fragments storageContext:(id)context objectsContext:(id)objectsContext;
+- (unint64_t)countOfWhitespaceRunsInString:(id)string ranges:(_NSRange)ranges[2];
+- (void)p_splitStorageInThree:(int64_t)three withRanges:(_NSRange)ranges[2];
+- (void)p_splitStorageInTwo:(int64_t)two withRanges:(_NSRange)ranges[2] firstTarget:(int64_t)target secondTarget:(int64_t)secondTarget;
 - (void)processFragmentsForSpaceFormatting;
 @end
 
 @implementation TPHeaderFragmentImportHelper
 
-- (TPHeaderFragmentImportHelper)initWithFragments:(id *)a3 storageContext:(id)a4 objectsContext:(id)a5
+- (TPHeaderFragmentImportHelper)initWithFragments:(id *)fragments storageContext:(id)context objectsContext:(id)objectsContext
 {
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  objectsContextCopy = objectsContext;
   v28.receiver = self;
   v28.super_class = TPHeaderFragmentImportHelper;
   v11 = [(TPHeaderFragmentImportHelper *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    v11->_fragments = a3;
-    objc_storeStrong(&v11->_storageContext, a4);
-    objc_storeStrong(&v12->_objectsContext, a5);
+    v11->_fragments = fragments;
+    objc_storeStrong(&v11->_storageContext, context);
+    objc_storeStrong(&v12->_objectsContext, objectsContext);
     v18 = objc_msgSend_whitespaceCharacterSet(MEMORY[0x277CCA900], v13, v14, v15, v16, v17);
     whitespaceCharacterSet = v12->_whitespaceCharacterSet;
     v12->_whitespaceCharacterSet = v18;
@@ -34,13 +34,13 @@
   return v12;
 }
 
-- (BOOL)p_storageIsEffectivelyEmpty:(id)a3
+- (BOOL)p_storageIsEffectivelyEmpty:(id)empty
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  emptyCopy = empty;
+  v10 = emptyCopy;
+  if (emptyCopy)
   {
-    v11 = objc_msgSend_string(v4, v5, v6, v7, v8, v9);
+    v11 = objc_msgSend_string(emptyCopy, v5, v6, v7, v8, v9);
     nonWhitespaceCharacterSet = self->_nonWhitespaceCharacterSet;
     v18 = objc_msgSend_range(v10, v13, v14, v15, v16, v17);
     v24 = objc_msgSend_rangeOfCharacterFromSet_options_range_(v11, v19, v20, v21, v22, v23, nonWhitespaceCharacterSet, 2, v18, v19);
@@ -56,13 +56,13 @@
   return v25;
 }
 
-- (unint64_t)countOfWhitespaceRunsInString:(id)a3 ranges:(_NSRange)a4[2]
+- (unint64_t)countOfWhitespaceRunsInString:(id)string ranges:(_NSRange)ranges[2]
 {
-  v6 = a3;
-  *a4 = xmmword_27605FD20;
-  a4[1] = xmmword_27605FD20;
-  v7 = a4 + 1;
-  v12 = objc_msgSend_scannerWithString_(MEMORY[0x277CCAC80], v8, xmmword_27605FD20, v9, v10, v11, v6);
+  stringCopy = string;
+  *ranges = xmmword_27605FD20;
+  ranges[1] = xmmword_27605FD20;
+  v7 = ranges + 1;
+  v12 = objc_msgSend_scannerWithString_(MEMORY[0x277CCAC80], v8, xmmword_27605FD20, v9, v10, v11, stringCopy);
   objc_msgSend_setCharactersToBeSkipped_(v12, v13, v14, v15, v16, v17, 0);
   v23 = 0;
   while ((objc_msgSend_isAtEnd(v12, v18, v19, v20, v21, v22) & 1) == 0)
@@ -83,7 +83,7 @@
       if (objc_msgSend_length(v39, v47, v48, v49, v50, v51) >= 5)
       {
         v57 = objc_msgSend_length(v39, v52, v53, v54, v55, v56);
-        v58 = &a4[a4->length > a4[1].length];
+        v58 = &ranges[ranges->length > ranges[1].length];
         if (v57 > v58->length)
         {
           if (v23 != 2)
@@ -93,10 +93,10 @@
 
           v58->location = v40;
           v58->length = v57;
-          if (a4->location > a4[1].location)
+          if (ranges->location > ranges[1].location)
           {
-            v59 = *a4;
-            *a4 = *v7;
+            v59 = *ranges;
+            *ranges = *v7;
             *v7 = v59;
           }
         }
@@ -107,10 +107,10 @@
   return v23;
 }
 
-- (void)p_splitStorageInTwo:(int64_t)a3 withRanges:(_NSRange)a4[2] firstTarget:(int64_t)a5 secondTarget:(int64_t)a6
+- (void)p_splitStorageInTwo:(int64_t)two withRanges:(_NSRange)ranges[2] firstTarget:(int64_t)target secondTarget:(int64_t)secondTarget
 {
-  v10 = self->_fragments[a3];
-  v11 = &a4[a4->length <= a4[1].length];
+  v10 = self->_fragments[two];
+  v11 = &ranges[ranges->length <= ranges[1].length];
   location = v11->location;
   length = v11->length;
   v37 = v10;
@@ -118,26 +118,26 @@
   v25 = objc_msgSend_newSubstorageWithRange_storageContext_objectsContext_flags_(v37, v20, v21, v22, v23, v24, 0, location, self->_storageContext, self->_objectsContext, 1);
   v31 = objc_msgSend_newSubstorageWithRange_storageContext_objectsContext_flags_(v37, v26, v27, v28, v29, v30, length + location, v19 - (length + location), self->_storageContext, self->_objectsContext, 1);
   fragments = self->_fragments;
-  v33 = fragments[a5];
-  fragments[a5] = v25;
+  v33 = fragments[target];
+  fragments[target] = v25;
   v34 = v25;
 
   v35 = self->_fragments;
-  v36 = v35[a6];
-  v35[a6] = v31;
+  v36 = v35[secondTarget];
+  v35[secondTarget] = v31;
 }
 
-- (void)p_splitStorageInThree:(int64_t)a3 withRanges:(_NSRange)a4[2]
+- (void)p_splitStorageInThree:(int64_t)three withRanges:(_NSRange)ranges[2]
 {
-  v6 = self->_fragments[a3];
-  location = a4->location;
-  length = a4->length;
-  v9 = a4[1].location;
-  v10 = a4[1].length;
+  v6 = self->_fragments[three];
+  location = ranges->location;
+  length = ranges->length;
+  v9 = ranges[1].location;
+  v10 = ranges[1].length;
   v45 = v6;
   v16 = objc_msgSend_length(v6, v11, v12, v13, v14, v15);
-  v17 = a4[1].location;
-  v18 = a4[1].length;
+  v17 = ranges[1].location;
+  v18 = ranges[1].length;
   v24 = objc_msgSend_newSubstorageWithRange_storageContext_objectsContext_flags_(v45, v19, v20, v21, v22, v23, 0, location, self->_storageContext, self->_objectsContext, 1);
   v30 = objc_msgSend_newSubstorageWithRange_storageContext_objectsContext_flags_(v45, v25, v26, v27, v28, v29, length + location, v9 - (length + location), self->_storageContext, self->_objectsContext, 1);
   v36 = objc_msgSend_newSubstorageWithRange_storageContext_objectsContext_flags_(v45, v31, v32, v33, v34, v35, v10 + v9, v16 - (v17 + v18), self->_storageContext, self->_objectsContext, 1);

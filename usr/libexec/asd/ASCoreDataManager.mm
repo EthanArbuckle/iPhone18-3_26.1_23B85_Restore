@@ -1,19 +1,19 @@
 @interface ASCoreDataManager
 + (ASCoreDataManager)sharedInstance;
 + (id)fjcJHNNiQ83H10La;
-+ (id)getCoreDataDirectoryURL:(id)a3 error:(id *)a4;
-+ (id)getModelURL:(id)a3;
-+ (id)storeNameWithExtensionForStoreWithName:(id)a3;
-- (ASCoreDataManager)initWithStore:(id)a3 options:(id)a4;
-- (ASCoreDataManager)initWithStores:(id)a3 options:(id)a4;
-- (BOOL)removeStoreWithURL:(id)a3 error:(id)a4;
-- (id)createDescriptionForStoreName:(id)a3 config:(id)a4 derivedKey:(id)a5;
++ (id)getCoreDataDirectoryURL:(id)l error:(id *)error;
++ (id)getModelURL:(id)l;
++ (id)storeNameWithExtensionForStoreWithName:(id)name;
+- (ASCoreDataManager)initWithStore:(id)store options:(id)options;
+- (ASCoreDataManager)initWithStores:(id)stores options:(id)options;
+- (BOOL)removeStoreWithURL:(id)l error:(id)error;
+- (id)createDescriptionForStoreName:(id)name config:(id)config derivedKey:(id)key;
 - (id)gFJw2BGPtEQWyLz5;
-- (id)getStoreURL:(id)a3;
+- (id)getStoreURL:(id)l;
 - (id)migrateCoreDataManager;
-- (id)retrieveLegacyRavioliWithCoreDataManager:(id)a3;
-- (int64_t)j2Xe3JZjJDN8Y8xD:(id)a3;
-- (void)mILKmibfRWMwFVWD:(id)a3 iZGmRj7VI4MJ9lO1:(id)a4 AndError:(id *)a5;
+- (id)retrieveLegacyRavioliWithCoreDataManager:(id)manager;
+- (int64_t)j2Xe3JZjJDN8Y8xD:(id)d;
+- (void)mILKmibfRWMwFVWD:(id)d iZGmRj7VI4MJ9lO1:(id)o1 AndError:(id *)error;
 - (void)npsTCqegVwa7yuzs;
 @end
 
@@ -31,68 +31,68 @@
   return v3;
 }
 
-- (id)createDescriptionForStoreName:(id)a3 config:(id)a4 derivedKey:(id)a5
+- (id)createDescriptionForStoreName:(id)name config:(id)config derivedKey:(id)key
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ASCoreDataManager *)self getStoreURL:a3];
+  configCopy = config;
+  keyCopy = key;
+  v10 = [(ASCoreDataManager *)self getStoreURL:name];
   v11 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:v10];
-  v12 = [NSString stringWithString:v8];
+  v12 = [NSString stringWithString:configCopy];
   [v11 setConfiguration:v12];
 
-  if (v9)
+  if (keyCopy)
   {
-    [v11 setOption:v9 forKey:NSSQLiteSEEKeychainItemOption];
+    [v11 setOption:keyCopy forKey:NSSQLiteSEEKeychainItemOption];
     [v11 setOption:NSFileProtectionCompleteUntilFirstUserAuthentication forKey:NSPersistentStoreFileProtectionKey];
   }
 
   return v11;
 }
 
-+ (id)getModelURL:(id)a3
++ (id)getModelURL:(id)l
 {
-  v3 = [a3 URLsForDirectory:5 inDomains:8];
-  v4 = [v3 firstObject];
+  v3 = [l URLsForDirectory:5 inDomains:8];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 URLByAppendingPathComponent:@"CoreAS" isDirectory:1];
+  v5 = [firstObject URLByAppendingPathComponent:@"CoreAS" isDirectory:1];
   v6 = [@"Model56902430" stringByAppendingString:@".momd"];
   v7 = [v5 URLByAppendingPathComponent:v6];
 
   return v7;
 }
 
-+ (id)getCoreDataDirectoryURL:(id)a3 error:(id *)a4
++ (id)getCoreDataDirectoryURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 URLsForDirectory:5 inDomains:1];
-  v7 = [v6 firstObject];
+  lCopy = l;
+  v6 = [lCopy URLsForDirectory:5 inDomains:1];
+  firstObject = [v6 firstObject];
 
-  v8 = [v7 URLByAppendingPathComponent:@"CoreAS" isDirectory:1];
+  v8 = [firstObject URLByAppendingPathComponent:@"CoreAS" isDirectory:1];
   if (!v8 && os_log_type_enabled(qword_1006DF770, OS_LOG_TYPE_ERROR))
   {
     sub_1005945C8();
   }
 
-  [v5 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:a4];
-  if (*a4 && os_log_type_enabled(qword_1006DF770, OS_LOG_TYPE_ERROR))
+  [lCopy createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:error];
+  if (*error && os_log_type_enabled(qword_1006DF770, OS_LOG_TYPE_ERROR))
   {
-    sub_100594638(a4);
+    sub_100594638(error);
   }
 
   return v8;
 }
 
-- (id)getStoreURL:(id)a3
+- (id)getStoreURL:(id)l
 {
-  v4 = [ASCoreDataManager storeNameWithExtensionForStoreWithName:a3];
+  v4 = [ASCoreDataManager storeNameWithExtensionForStoreWithName:l];
   v5 = [(NSURL *)self->_coreDataDirectoryURL URLByAppendingPathComponent:v4];
 
   return v5;
 }
 
-- (ASCoreDataManager)initWithStores:(id)a3 options:(id)a4
+- (ASCoreDataManager)initWithStores:(id)stores options:(id)options
 {
-  v5 = a3;
+  storesCopy = stores;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -106,10 +106,10 @@
     goto LABEL_47;
   }
 
-  v35 = v5;
+  v35 = storesCopy;
   v38 = objc_alloc_init(NSFileManager);
   v39 = v6;
-  v40 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  v40 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [storesCopy count]);
   v50 = 0;
   v7 = [ASCoreDataManager getCoreDataDirectoryURL:v38 error:&v50];
   v8 = v50;
@@ -145,8 +145,8 @@
   v11 = [[NSManagedObjectModel alloc] initWithContentsOfURL:v37];
   [(ASCoreDataManager *)v6 setGgQex4P6Prvm5Zac:v11];
 
-  v12 = [(ASCoreDataManager *)v6 ggQex4P6Prvm5Zac];
-  v13 = v12 == 0;
+  ggQex4P6Prvm5Zac = [(ASCoreDataManager *)v6 ggQex4P6Prvm5Zac];
+  v13 = ggQex4P6Prvm5Zac == 0;
 
   if (v13)
   {
@@ -158,15 +158,15 @@
     *(v53 + 24) = 0;
   }
 
-  v36 = [(ASCoreDataManager *)v6 ggQex4P6Prvm5Zac];
-  v14 = [[NSPersistentContainer alloc] initWithName:@"Model56902430" managedObjectModel:v36];
+  ggQex4P6Prvm5Zac2 = [(ASCoreDataManager *)v6 ggQex4P6Prvm5Zac];
+  v14 = [[NSPersistentContainer alloc] initWithName:@"Model56902430" managedObjectModel:ggQex4P6Prvm5Zac2];
   [(ASCoreDataManager *)v6 setXc4PEFTuh2u6xE7M:v14];
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v15 = v5;
+  v15 = storesCopy;
   v16 = [v15 countByEnumeratingWithState:&v46 objects:v59 count:16];
   if (!v16)
   {
@@ -263,10 +263,10 @@ LABEL_34:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   buf[24] = 0;
-  v29 = [(ASCoreDataManager *)v6 xc4PEFTuh2u6xE7M];
-  [v29 setPersistentStoreDescriptions:v40];
+  xc4PEFTuh2u6xE7M = [(ASCoreDataManager *)v6 xc4PEFTuh2u6xE7M];
+  [xc4PEFTuh2u6xE7M setPersistentStoreDescriptions:v40];
 
-  v30 = [(ASCoreDataManager *)v6 xc4PEFTuh2u6xE7M];
+  xc4PEFTuh2u6xE7M2 = [(ASCoreDataManager *)v6 xc4PEFTuh2u6xE7M];
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_100037CB8;
@@ -275,7 +275,7 @@ LABEL_34:
   v6 = v6;
   v42 = v6;
   v44 = &v52;
-  [v30 loadPersistentStoresWithCompletionHandler:v41];
+  [xc4PEFTuh2u6xE7M2 loadPersistentStoresWithCompletionHandler:v41];
 
   if (*(*&buf[8] + 24) == 1)
   {
@@ -298,17 +298,17 @@ LABEL_43:
   _Block_object_dispose(buf, 8);
 LABEL_46:
 
-  v5 = v35;
+  storesCopy = v35;
 LABEL_47:
   _Block_object_dispose(&v52, 8);
 
   return v31;
 }
 
-- (ASCoreDataManager)initWithStore:(id)a3 options:(id)a4
+- (ASCoreDataManager)initWithStore:(id)store options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  optionsCopy = options;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -328,15 +328,15 @@ LABEL_47:
       *(v51 + 24) = 0;
     }
 
-    v42 = [(ASCoreDataManager *)v8 getStoreURL:v6];
+    v42 = [(ASCoreDataManager *)v8 getStoreURL:storeCopy];
     objc_storeStrong(&v8->_coreDataDirectoryURL, v10);
-    v11 = [v7 objectForKeyedSubscript:@"2BC2E664-199A-4A80-910A-CD19B11354F2"];
-    v12 = [v11 integerValue];
-    v13 = v12;
+    v11 = [optionsCopy objectForKeyedSubscript:@"2BC2E664-199A-4A80-910A-CD19B11354F2"];
+    integerValue = [v11 integerValue];
+    v13 = integerValue;
     v14 = 1;
-    if (v12 > 3)
+    if (integerValue > 3)
     {
-      if (v12 == 4)
+      if (integerValue == 4)
       {
         if ([(ASCoreDataManager *)v8 removeStoreWithURL:v42 error:0])
         {
@@ -345,26 +345,26 @@ LABEL_47:
             sub_100594814();
           }
 
-          v15 = [(ASCoreDataManager *)v8 initWithStore:v6];
-          v8 = v15;
+          migrateCoreDataManager = [(ASCoreDataManager *)v8 initWithStore:storeCopy];
+          v8 = migrateCoreDataManager;
           goto LABEL_17;
         }
       }
 
       else
       {
-        v14 = v12 != 6;
+        v14 = integerValue != 6;
       }
     }
 
     else
     {
-      if (v12 == 1)
+      if (integerValue == 1)
       {
         v67 = @"2BC2E664-199A-4A80-910A-CD19B11354F2";
         v68 = &off_1006BA940;
         v17 = [NSDictionary dictionaryWithObjects:&v68 forKeys:&v67 count:1];
-        v8 = [(ASCoreDataManager *)v8 initWithStore:v6 options:v17];
+        v8 = [(ASCoreDataManager *)v8 initWithStore:storeCopy options:v17];
 
         v16 = v8;
 LABEL_49:
@@ -372,11 +372,11 @@ LABEL_49:
         goto LABEL_50;
       }
 
-      if (v12 == 3)
+      if (integerValue == 3)
       {
-        v15 = [(ASCoreDataManager *)v8 migrateCoreDataManager];
+        migrateCoreDataManager = [(ASCoreDataManager *)v8 migrateCoreDataManager];
 LABEL_17:
-        v16 = v15;
+        v16 = migrateCoreDataManager;
         goto LABEL_49;
       }
     }
@@ -384,8 +384,8 @@ LABEL_17:
     v18 = [[NSManagedObjectModel alloc] initWithContentsOfURL:v43];
     [(ASCoreDataManager *)v8 setGgQex4P6Prvm5Zac:v18];
 
-    v19 = [(ASCoreDataManager *)v8 ggQex4P6Prvm5Zac];
-    LODWORD(v18) = v19 == 0;
+    ggQex4P6Prvm5Zac = [(ASCoreDataManager *)v8 ggQex4P6Prvm5Zac];
+    LODWORD(v18) = ggQex4P6Prvm5Zac == 0;
 
     if (v18)
     {
@@ -397,8 +397,8 @@ LABEL_17:
       *(v51 + 24) = 0;
     }
 
-    v41 = [(ASCoreDataManager *)v8 ggQex4P6Prvm5Zac];
-    v20 = [[NSPersistentContainer alloc] initWithName:@"Model56902430" managedObjectModel:v41];
+    ggQex4P6Prvm5Zac2 = [(ASCoreDataManager *)v8 ggQex4P6Prvm5Zac];
+    v20 = [[NSPersistentContainer alloc] initWithName:@"Model56902430" managedObjectModel:ggQex4P6Prvm5Zac2];
     [(ASCoreDataManager *)v8 setXc4PEFTuh2u6xE7M:v20];
 
     v21 = v13 != 6 || v14;
@@ -410,7 +410,7 @@ LABEL_17:
         v65 = @"2BC2E664-199A-4A80-910A-CD19B11354F2";
         v66 = &off_1006BA958;
         v30 = [NSDictionary dictionaryWithObjects:&v66 forKeys:&v65 count:1];
-        v8 = [(ASCoreDataManager *)v8 initWithStore:v6 options:v30];
+        v8 = [(ASCoreDataManager *)v8 initWithStore:storeCopy options:v30];
 
         goto LABEL_37;
       }
@@ -420,7 +420,7 @@ LABEL_17:
         v63 = @"2BC2E664-199A-4A80-910A-CD19B11354F2";
         v64 = &off_1006BA970;
         v23 = [NSDictionary dictionaryWithObjects:&v64 forKeys:&v63 count:1];
-        v8 = [(ASCoreDataManager *)v8 initWithStore:v6 options:v23];
+        v8 = [(ASCoreDataManager *)v8 initWithStore:storeCopy options:v23];
 
 LABEL_37:
         v16 = v8;
@@ -479,7 +479,7 @@ LABEL_48:
     }
 
     v40 = v29;
-    v32 = [(ASCoreDataManager *)v8 createDescriptionForStoreName:v6 config:@"Default" derivedKey:v39];
+    v32 = [(ASCoreDataManager *)v8 createDescriptionForStoreName:storeCopy config:@"Default" derivedKey:v39];
     v61 = @"cache_spill";
     v62 = @"1000";
     v33 = [NSDictionary dictionaryWithObjects:&v62 forKeys:&v61 count:1];
@@ -491,24 +491,24 @@ LABEL_48:
     v60 = 0;
     v56 = v32;
     v34 = [NSArray arrayWithObjects:&v56 count:1];
-    v35 = [(ASCoreDataManager *)v8 xc4PEFTuh2u6xE7M];
-    [v35 setPersistentStoreDescriptions:v34];
+    xc4PEFTuh2u6xE7M = [(ASCoreDataManager *)v8 xc4PEFTuh2u6xE7M];
+    [xc4PEFTuh2u6xE7M setPersistentStoreDescriptions:v34];
 
-    v36 = [(ASCoreDataManager *)v8 xc4PEFTuh2u6xE7M];
+    xc4PEFTuh2u6xE7M2 = [(ASCoreDataManager *)v8 xc4PEFTuh2u6xE7M];
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_10003868C;
     v45[3] = &unk_100690A30;
     v45[4] = buf;
     v45[5] = &v50;
-    [v36 loadPersistentStoresWithCompletionHandler:v45];
+    [xc4PEFTuh2u6xE7M2 loadPersistentStoresWithCompletionHandler:v45];
 
     if (v58[24] == 1)
     {
       v54 = @"2BC2E664-199A-4A80-910A-CD19B11354F2";
       v55 = &off_1006BA940;
       v37 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-      v8 = [(ASCoreDataManager *)v8 initWithStore:v6 options:v37];
+      v8 = [(ASCoreDataManager *)v8 initWithStore:storeCopy options:v37];
 
       v16 = v8;
     }
@@ -536,20 +536,20 @@ LABEL_50:
   return v16;
 }
 
-- (BOOL)removeStoreWithURL:(id)a3 error:(id)a4
+- (BOOL)removeStoreWithURL:(id)l error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  errorCopy = error;
   v7 = +[NSFileManager defaultManager];
-  v21 = v6;
-  [v7 removeItemAtURL:v5 error:&v21];
+  v21 = errorCopy;
+  [v7 removeItemAtURL:lCopy error:&v21];
   v8 = v21;
 
   v9 = v8;
   if (!v8)
   {
-    v10 = [v5 path];
-    v11 = [NSString stringWithFormat:@"%@-wal", v10];
+    path = [lCopy path];
+    v11 = [NSString stringWithFormat:@"%@-wal", path];
     v20 = 0;
     [v7 removeItemAtPath:v11 error:&v20];
     v12 = v20;
@@ -558,14 +558,14 @@ LABEL_50:
       v13 = qword_1006DF770;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v12 localizedDescription];
+        localizedDescription = [v12 localizedDescription];
         *buf = 138412290;
-        v23 = v14;
+        v23 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Failed to remove -wal file with error %@", buf, 0xCu);
       }
     }
 
-    v15 = [NSString stringWithFormat:@"%@-shm", v10];
+    v15 = [NSString stringWithFormat:@"%@-shm", path];
     v19 = v12;
     [v7 removeItemAtPath:v15 error:&v19];
     v9 = v19;
@@ -575,9 +575,9 @@ LABEL_50:
       v16 = qword_1006DF770;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [v9 localizedDescription];
+        localizedDescription2 = [v9 localizedDescription];
         *buf = 138412290;
-        v23 = v17;
+        v23 = localizedDescription2;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Failed to remove -shm file with error %@", buf, 0xCu);
       }
     }
@@ -586,7 +586,7 @@ LABEL_50:
   return v8 == 0;
 }
 
-- (int64_t)j2Xe3JZjJDN8Y8xD:(id)a3
+- (int64_t)j2Xe3JZjJDN8Y8xD:(id)d
 {
   v18 = +[NSFileManager defaultManager];
   v22 = 0u;
@@ -609,10 +609,10 @@ LABEL_50:
 
         v7 = *(*(&v20 + 1) + 8 * i);
         v8 = [(ASCoreDataManager *)self getStoreURL:v7];
-        v9 = [v8 relativePath];
-        if ([v18 fileExistsAtPath:v9])
+        relativePath = [v8 relativePath];
+        if ([v18 fileExistsAtPath:relativePath])
         {
-          v10 = [NSFileHandle fileHandleForReadingAtPath:v9];
+          v10 = [NSFileHandle fileHandleForReadingAtPath:relativePath];
           v19 = 0;
           v11 = [v10 readDataUpToLength:16 error:&v19];
           v12 = v19;
@@ -621,8 +621,8 @@ LABEL_50:
             v14 = qword_1006DF770;
             if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
             {
-              v15 = [v12 localizedDescription];
-              sub_100594850(v15, buf, v14);
+              localizedDescription = [v12 localizedDescription];
+              sub_100594850(localizedDescription, buf, v14);
             }
 
             goto LABEL_20;
@@ -731,22 +731,22 @@ LABEL_20:
 
 - (id)gFJw2BGPtEQWyLz5
 {
-  v3 = [(ASCoreDataManager *)self xc4PEFTuh2u6xE7M];
+  xc4PEFTuh2u6xE7M = [(ASCoreDataManager *)self xc4PEFTuh2u6xE7M];
 
-  if (v3)
+  if (xc4PEFTuh2u6xE7M)
   {
-    v4 = [(ASCoreDataManager *)self xc4PEFTuh2u6xE7M];
-    v5 = [v4 newBackgroundContext];
+    xc4PEFTuh2u6xE7M2 = [(ASCoreDataManager *)self xc4PEFTuh2u6xE7M];
+    newBackgroundContext = [xc4PEFTuh2u6xE7M2 newBackgroundContext];
 
-    [v5 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+    [newBackgroundContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   }
 
   else
   {
-    v5 = 0;
+    newBackgroundContext = 0;
   }
 
-  return v5;
+  return newBackgroundContext;
 }
 
 - (void)npsTCqegVwa7yuzs
@@ -769,48 +769,48 @@ LABEL_20:
   }
 }
 
-- (void)mILKmibfRWMwFVWD:(id)a3 iZGmRj7VI4MJ9lO1:(id)a4 AndError:(id *)a5
+- (void)mILKmibfRWMwFVWD:(id)d iZGmRj7VI4MJ9lO1:(id)o1 AndError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  o1Copy = o1;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = sub_1000397F4;
   v22 = sub_100039804;
   v23 = 0;
-  v10 = [(ASCoreDataManager *)self gFJw2BGPtEQWyLz5];
+  gFJw2BGPtEQWyLz5 = [(ASCoreDataManager *)self gFJw2BGPtEQWyLz5];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10003980C;
   v13[3] = &unk_100690A80;
-  v14 = v8;
-  v15 = v9;
-  v16 = v10;
+  v14 = dCopy;
+  v15 = o1Copy;
+  v16 = gFJw2BGPtEQWyLz5;
   v17 = &v18;
-  v11 = v10;
+  v11 = gFJw2BGPtEQWyLz5;
   [v11 performBlockAndWait:v13];
 
   v12 = v19[5];
   if (v12)
   {
-    *a5 = v12;
+    *error = v12;
   }
 
   _Block_object_dispose(&v18, 8);
 }
 
-+ (id)storeNameWithExtensionForStoreWithName:(id)a3
++ (id)storeNameWithExtensionForStoreWithName:(id)name
 {
-  v3 = [a3 stringByAppendingString:@".sqlite"];
+  v3 = [name stringByAppendingString:@".sqlite"];
 
   return v3;
 }
 
-- (id)retrieveLegacyRavioliWithCoreDataManager:(id)a3
+- (id)retrieveLegacyRavioliWithCoreDataManager:(id)manager
 {
-  v3 = a3;
-  v4 = [v3 gFJw2BGPtEQWyLz5];
+  managerCopy = manager;
+  gFJw2BGPtEQWyLz5 = [managerCopy gFJw2BGPtEQWyLz5];
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"DB_R09283478"];
   [v5 setFetchLimit:1];
   v24[0] = 0;
@@ -836,7 +836,7 @@ LABEL_20:
   v10[2] = sub_100039F34;
   v10[3] = &unk_100690AA8;
   v13 = v22;
-  v6 = v4;
+  v6 = gFJw2BGPtEQWyLz5;
   v11 = v6;
   v7 = v5;
   v12 = v7;
@@ -856,8 +856,8 @@ LABEL_20:
 + (id)fjcJHNNiQ83H10La
 {
   v14 = MGCopyAnswer();
-  v16 = [v14 longValue];
-  v13 = [NSData dataWithBytes:&v16 length:8];
+  longValue = [v14 longValue];
+  v13 = [NSData dataWithBytes:&longValue length:8];
   v20[0] = kSecClass;
   v20[1] = kSecAttrAccount;
   v21[0] = kSecClassGenericPassword;

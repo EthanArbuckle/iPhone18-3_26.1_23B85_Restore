@@ -1,8 +1,8 @@
 @interface PKDashboardCenteredTextItemPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path;
 @end
 
 @implementation PKDashboardCenteredTextItemPresenter
@@ -17,18 +17,18 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"CenteredTextCellReuseIdentifier" forIndexPath:v8];
-  [(PKDashboardCenteredTextItemPresenter *)self _configureCell:v11 forItem:v10 inCollectionView:v9 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"CenteredTextCellReuseIdentifier" forIndexPath:pathCopy];
+  [(PKDashboardCenteredTextItemPresenter *)self _configureCell:v11 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   return v11;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
   v6 = *MEMORY[0x1E695F060];
   v7 = *(MEMORY[0x1E695F060] + 8);
@@ -37,23 +37,23 @@
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path
 {
   v7 = MEMORY[0x1E69DCC28];
-  v8 = a4;
-  v9 = a3;
-  v13 = [v7 cellConfiguration];
-  v10 = [v8 title];
+  itemCopy = item;
+  cellCopy = cell;
+  cellConfiguration = [v7 cellConfiguration];
+  title = [itemCopy title];
 
-  [v13 setText:v10];
-  v11 = [v13 textProperties];
-  v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v11 setColor:v12];
+  [cellConfiguration setText:title];
+  textProperties = [cellConfiguration textProperties];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [textProperties setColor:secondaryLabelColor];
 
-  [v11 setAlignment:1];
-  [v13 directionalLayoutMargins];
-  [v13 setDirectionalLayoutMargins:26.0];
-  [v9 setContentConfiguration:v13];
+  [textProperties setAlignment:1];
+  [cellConfiguration directionalLayoutMargins];
+  [cellConfiguration setDirectionalLayoutMargins:26.0];
+  [cellCopy setContentConfiguration:cellConfiguration];
 }
 
 @end

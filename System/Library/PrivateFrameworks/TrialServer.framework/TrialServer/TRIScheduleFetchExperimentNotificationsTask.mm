@@ -1,41 +1,41 @@
 @interface TRIScheduleFetchExperimentNotificationsTask
-+ (id)parseFromData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TRIScheduleFetchExperimentNotificationsTask)initWithCoder:(id)a3;
-- (TRIScheduleFetchExperimentNotificationsTask)initWithRollbacksOnly:(BOOL)a3 downloadOptions:(id)a4;
++ (id)parseFromData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (TRIScheduleFetchExperimentNotificationsTask)initWithCoder:(id)coder;
+- (TRIScheduleFetchExperimentNotificationsTask)initWithRollbacksOnly:(BOOL)only downloadOptions:(id)options;
 - (id)_asPersistedTask;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIScheduleFetchExperimentNotificationsTask
 
-- (TRIScheduleFetchExperimentNotificationsTask)initWithRollbacksOnly:(BOOL)a3 downloadOptions:(id)a4
+- (TRIScheduleFetchExperimentNotificationsTask)initWithRollbacksOnly:(BOOL)only downloadOptions:(id)options
 {
-  v7 = a4;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = TRIScheduleFetchExperimentNotificationsTask;
   v8 = [(TRIScheduleFetchExperimentNotificationsTask *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_rollbacksOnly = a3;
-    objc_storeStrong(&v8->_options, a4);
+    v8->_rollbacksOnly = only;
+    objc_storeStrong(&v8->_options, options);
   }
 
   return v9;
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277D737A8] callerBundleId];
-  v8 = [[TRITaskAttributionInternalInsecure alloc] initWithTeamIdentifier:0 triCloudKitContainer:1 applicationBundleIdentifier:v7 networkOptions:self->_options];
-  v49 = v6;
-  if ([TRIUserAdjustableSettings getExperimentOptOut:v6])
+  contextCopy = context;
+  callerBundleId = [MEMORY[0x277D737A8] callerBundleId];
+  v8 = [[TRITaskAttributionInternalInsecure alloc] initWithTeamIdentifier:0 triCloudKitContainer:1 applicationBundleIdentifier:callerBundleId networkOptions:self->_options];
+  v49 = contextCopy;
+  if ([TRIUserAdjustableSettings getExperimentOptOut:contextCopy])
   {
     v9 = TRILogCategory_Server();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -82,10 +82,10 @@
     v54[3] = &unk_279DE4D88;
     v22 = v21;
     v55 = v22;
-    v56 = self;
+    selfCopy = self;
     v23 = MEMORY[0x2743948D0](v54);
-    v24 = [v49 namespaceDatabase];
-    v25 = [v24 enumerateAppContainerIdsForContainer:2 block:v23];
+    namespaceDatabase = [v49 namespaceDatabase];
+    v25 = [namespaceDatabase enumerateAppContainerIdsForContainer:2 block:v23];
 
     if (v25)
     {
@@ -102,7 +102,7 @@
         v43 = a2;
         v44 = v22;
         v45 = v8;
-        v46 = v7;
+        v46 = callerBundleId;
         v28 = *v51;
         do
         {
@@ -114,30 +114,30 @@
             }
 
             v30 = *(*(&v50 + 1) + 8 * i);
-            v31 = [v49 namespaceDatabase];
-            v32 = [v30 teamIdentifier];
-            if (!v32)
+            namespaceDatabase2 = [v49 namespaceDatabase];
+            teamIdentifier = [v30 teamIdentifier];
+            if (!teamIdentifier)
             {
-              v38 = [MEMORY[0x277CCA890] currentHandler];
-              [v38 handleFailureInMethod:v43 object:self file:@"TRIScheduleFetchExperimentNotificationsTask.m" lineNumber:104 description:{@"Expression was unexpectedly nil/false: %@", @"taskAttributing.teamIdentifier"}];
+              currentHandler = [MEMORY[0x277CCA890] currentHandler];
+              [currentHandler handleFailureInMethod:v43 object:self file:@"TRIScheduleFetchExperimentNotificationsTask.m" lineNumber:104 description:{@"Expression was unexpectedly nil/false: %@", @"taskAttributing.teamIdentifier"}];
             }
 
-            v33 = [v31 hasUnfetchedNamespaceForTeamId:v32];
+            v33 = [namespaceDatabase2 hasUnfetchedNamespaceForTeamId:teamIdentifier];
 
             rollbacksOnly = self->_rollbacksOnly;
             if (rollbacksOnly || v33)
             {
-              v35 = [MEMORY[0x277CBEAA8] distantPast];
+              distantPast = [MEMORY[0x277CBEAA8] distantPast];
               rollbacksOnly = self->_rollbacksOnly;
             }
 
             else
             {
-              v35 = 0;
+              distantPast = 0;
             }
 
             v36 = self->_nextTasks;
-            v37 = [TRIFetchMultipleExperimentNotificationsTask taskWithStartingFetchDateOverride:v35 namespaceNames:0 taskAttributing:v30 rollbacksOnly:rollbacksOnly limitedCarryOnly:0];
+            v37 = [TRIFetchMultipleExperimentNotificationsTask taskWithStartingFetchDateOverride:distantPast namespaceNames:0 taskAttributing:v30 rollbacksOnly:rollbacksOnly limitedCarryOnly:0];
             [(NSMutableArray *)v36 addObject:v37];
           }
 
@@ -147,7 +147,7 @@
         while (v27);
         v39 = 2;
         v8 = v45;
-        v7 = v46;
+        callerBundleId = v46;
         v22 = v44;
       }
 
@@ -193,14 +193,14 @@ void __77__TRIScheduleFetchExperimentNotificationsTask_runUsingContext_withTaskQ
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = TRIScheduleFetchExperimentNotificationsTask;
-  if ([(TRIBaseTask *)&v7 isEqual:v4]&& self->_rollbacksOnly == *(v4 + 24))
+  if ([(TRIBaseTask *)&v7 isEqual:equalCopy]&& self->_rollbacksOnly == *(equalCopy + 24))
   {
-    v5 = [(TRIDownloadOptions *)self->_options isEqual:v4[5]];
+    v5 = [(TRIDownloadOptions *)self->_options isEqual:equalCopy[5]];
   }
 
   else
@@ -222,42 +222,42 @@ void __77__TRIScheduleFetchExperimentNotificationsTask_runUsingContext_withTaskQ
 {
   v3 = objc_opt_new();
   [v3 setRollbacksOnly:self->_rollbacksOnly];
-  v4 = [(TRIDownloadOptions *)self->_options serializeToPersistedBehavior];
-  [v3 setNetworkBehavior:v4];
+  serializeToPersistedBehavior = [(TRIDownloadOptions *)self->_options serializeToPersistedBehavior];
+  [v3 setNetworkBehavior:serializeToPersistedBehavior];
 
   return v3;
 }
 
 - (id)serialize
 {
-  v4 = [(TRIScheduleFetchExperimentNotificationsTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIScheduleFetchExperimentNotificationsTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIScheduleFetchExperimentNotificationsTask.m" lineNumber:160 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIScheduleFetchExperimentNotificationsTask.m" lineNumber:160 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v15 = *MEMORY[0x277D85DE8];
   v12 = 0;
-  v3 = [(TRIPBMessage *)TRIScheduleFetchExperimentNotificationsPersistedTask parseFromData:a3 error:&v12];
+  v3 = [(TRIPBMessage *)TRIScheduleFetchExperimentNotificationsPersistedTask parseFromData:data error:&v12];
   v4 = v12;
   if (!v3)
   {
-    v5 = TRILogCategory_Server();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    networkBehavior = TRILogCategory_Server();
+    if (os_log_type_enabled(networkBehavior, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v14 = v4;
-      _os_log_error_impl(&dword_26F567000, v5, OS_LOG_TYPE_ERROR, "Unable to parse buffer as TRIScheduleFetchExperimentNotificationsPersistedTask: %{public}@", buf, 0xCu);
+      _os_log_error_impl(&dword_26F567000, networkBehavior, OS_LOG_TYPE_ERROR, "Unable to parse buffer as TRIScheduleFetchExperimentNotificationsPersistedTask: %{public}@", buf, 0xCu);
     }
 
     goto LABEL_11;
@@ -265,14 +265,14 @@ void __77__TRIScheduleFetchExperimentNotificationsTask_runUsingContext_withTaskQ
 
   if (([v3 hasRollbacksOnly] & 1) == 0)
   {
-    v5 = TRILogCategory_Server();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    networkBehavior = TRILogCategory_Server();
+    if (os_log_type_enabled(networkBehavior, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       *buf = 138412290;
       v14 = v11;
-      _os_log_error_impl(&dword_26F567000, v5, OS_LOG_TYPE_ERROR, "Cannot decode message of type %@ with missing field: rollbacksOnly", buf, 0xCu);
+      _os_log_error_impl(&dword_26F567000, networkBehavior, OS_LOG_TYPE_ERROR, "Cannot decode message of type %@ with missing field: rollbacksOnly", buf, 0xCu);
     }
 
 LABEL_11:
@@ -282,11 +282,11 @@ LABEL_11:
 
   if ([v3 hasNetworkBehavior])
   {
-    v5 = [v3 networkBehavior];
-    if (v5)
+    networkBehavior = [v3 networkBehavior];
+    if (networkBehavior)
     {
-      v6 = [objc_alloc(MEMORY[0x277D736A0]) initFromPersistedBehavior:v5];
-      if (v6)
+      inexpensiveOptions = [objc_alloc(MEMORY[0x277D736A0]) initFromPersistedBehavior:networkBehavior];
+      if (inexpensiveOptions)
       {
         goto LABEL_14;
       }
@@ -295,12 +295,12 @@ LABEL_11:
 
   else
   {
-    v5 = 0;
+    networkBehavior = 0;
   }
 
-  v6 = [MEMORY[0x277D736A0] inexpensiveOptions];
+  inexpensiveOptions = [MEMORY[0x277D736A0] inexpensiveOptions];
 LABEL_14:
-  v7 = +[TRIScheduleFetchExperimentNotificationsTask taskWithRollbacksOnly:downloadOptions:](TRIScheduleFetchExperimentNotificationsTask, "taskWithRollbacksOnly:downloadOptions:", [v3 rollbacksOnly], v6);
+  v7 = +[TRIScheduleFetchExperimentNotificationsTask taskWithRollbacksOnly:downloadOptions:](TRIScheduleFetchExperimentNotificationsTask, "taskWithRollbacksOnly:downloadOptions:", [v3 rollbacksOnly], inexpensiveOptions);
 
 LABEL_15:
   v8 = *MEMORY[0x277D85DE8];
@@ -308,15 +308,15 @@ LABEL_15:
   return v7;
 }
 
-- (TRIScheduleFetchExperimentNotificationsTask)initWithCoder:(id)a3
+- (TRIScheduleFetchExperimentNotificationsTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIScheduleFetchExperimentNotificationsTask;
   v5 = [(TRIScheduleFetchExperimentNotificationsTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -336,18 +336,18 @@ LABEL_15:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIScheduleFetchExperimentNotificationsTask.m" lineNumber:185 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIScheduleFetchExperimentNotificationsTask.m" lineNumber:185 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIScheduleFetchExperimentNotificationsTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIScheduleFetchExperimentNotificationsTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

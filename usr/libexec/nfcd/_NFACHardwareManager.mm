@@ -1,81 +1,81 @@
 @interface _NFACHardwareManager
 + (id)sharedHardwareManager;
 - (BOOL)_loadHWInfo;
-- (BOOL)_queueNewSession:(id)a3 onConnection:(id)a4;
+- (BOOL)_queueNewSession:(id)session onConnection:(id)connection;
 - (BOOL)isWalletAttached;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_NFACHardwareManager)init;
-- (id)_executeWithDriverSessionSync:(id)a3 block:(id)a4;
+- (id)_executeWithDriverSessionSync:(id)sync block:(id)block;
 - (id)_getInfo;
 - (id)_readDriverSettings;
 - (os_state_data_s)dumpState;
 - (unint64_t)_loadHW;
-- (unint64_t)openSession:(id)a3;
-- (void)_dequeueSession:(id)a3 startNextSession:(BOOL)a4;
+- (unint64_t)openSession:(id)session;
+- (void)_dequeueSession:(id)session startNextSession:(BOOL)nextSession;
 - (void)_loadService;
 - (void)_probeHW;
-- (void)_sync_pushSignedRF:(id)a3 callback:(id)a4;
+- (void)_sync_pushSignedRF:(id)f callback:(id)callback;
 - (void)_unloadService;
-- (void)basebandStateChanged:(BOOL)a3;
-- (void)canResume:(unint64_t)a3 status:(id)a4;
-- (void)clearMultiTagState:(id)a3;
-- (void)dequeueSession:(id)a3;
-- (void)didCloseXPCConnection:(id)a3;
-- (void)enableLPCD:(BOOL)a3 callback:(id)a4;
-- (void)enableMultiTag:(BOOL)a3 callback:(id)a4;
-- (void)getDieId:(id)a3;
-- (void)getInfo:(id)a3;
-- (void)getLastDetectedTags:(id)a3;
-- (void)getMultiTagState:(id)a3;
-- (void)getPowerCounters:(id)a3;
-- (void)getRfSettings:(id)a3;
-- (void)handleHardwareReset:(const char *)a3;
-- (void)handleMultiTagStateChanged:(id)a3 rfError:(BOOL)a4;
+- (void)basebandStateChanged:(BOOL)changed;
+- (void)canResume:(unint64_t)resume status:(id)status;
+- (void)clearMultiTagState:(id)state;
+- (void)dequeueSession:(id)session;
+- (void)didCloseXPCConnection:(id)connection;
+- (void)enableLPCD:(BOOL)d callback:(id)callback;
+- (void)enableMultiTag:(BOOL)tag callback:(id)callback;
+- (void)getDieId:(id)id;
+- (void)getInfo:(id)info;
+- (void)getLastDetectedTags:(id)tags;
+- (void)getMultiTagState:(id)state;
+- (void)getPowerCounters:(id)counters;
+- (void)getRfSettings:(id)settings;
+- (void)handleHardwareReset:(const char *)reset;
+- (void)handleMultiTagStateChanged:(id)changed rfError:(BOOL)error;
 - (void)handlePLLUnlock;
 - (void)handleReaderBurnoutCleared;
 - (void)handleReaderBurnoutTimer;
-- (void)handleRemoteTagsDetected:(id)a3;
+- (void)handleRemoteTagsDetected:(id)detected;
 - (void)handleRestartDiscovery;
 - (void)handleStackLoad;
 - (void)handleStackUnload;
-- (void)isHWSupported:(id)a3;
+- (void)isHWSupported:(id)supported;
 - (void)maybeStartNextSession;
-- (void)mustStop:(unint64_t)a3;
-- (void)powerObserverSystemHasPoweredOn:(id)a3;
-- (void)powerObserverSystemWillSleep:(id)a3;
+- (void)mustStop:(unint64_t)stop;
+- (void)powerObserverSystemHasPoweredOn:(id)on;
+- (void)powerObserverSystemWillSleep:(id)sleep;
 - (void)preferencesDidChange;
-- (void)pushSignedRF:(id)a3 callback:(id)a4;
-- (void)queueReaderSession:(id)a3 callback:(id)a4;
-- (void)setClientName:(id)a3;
-- (void)shutdownAndLeaveHWEnabled:(BOOL)a3 callback:(id)a4;
+- (void)pushSignedRF:(id)f callback:(id)callback;
+- (void)queueReaderSession:(id)session callback:(id)callback;
+- (void)setClientName:(id)name;
+- (void)shutdownAndLeaveHWEnabled:(BOOL)enabled callback:(id)callback;
 - (void)start;
 - (void)stop;
-- (void)triggerDelayedWake:(unsigned __int8)a3 callback:(id)a4;
+- (void)triggerDelayedWake:(unsigned __int8)wake callback:(id)callback;
 @end
 
 @implementation _NFACHardwareManager
 
 - (void)maybeStartNextSession
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  isRunning = v3->_isRunning;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isRunning = selfCopy->_isRunning;
+  objc_sync_exit(selfCopy);
 
   if (isRunning)
   {
-    v5 = v3->_sessions;
+    v5 = selfCopy->_sessions;
     objc_sync_enter(v5);
-    if (v3->_systemWillSleep)
+    if (selfCopy->_systemWillSleep)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       Logger = NFLogGetLogger();
       if (Logger)
       {
         v7 = Logger;
-        Class = object_getClass(v3);
+        Class = object_getClass(selfCopy);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(v3);
+        ClassName = object_getClassName(selfCopy);
         Name = sel_getName(a2);
         v11 = 45;
         if (isMetaClass)
@@ -90,7 +90,7 @@
       v12 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = object_getClass(v3);
+        v13 = object_getClass(selfCopy);
         if (class_isMetaClass(v13))
         {
           v14 = 43;
@@ -104,7 +104,7 @@
         *buf = 67109890;
         v102 = v14;
         v103 = 2082;
-        v104 = object_getClassName(v3);
+        v104 = object_getClassName(selfCopy);
         v105 = 2082;
         v106 = sel_getName(a2);
         v107 = 1024;
@@ -116,33 +116,33 @@
       goto LABEL_83;
     }
 
-    if (!v3->_currentSession && [(NSMutableArray *)v3->_sessions count])
+    if (!selfCopy->_currentSession && [(NSMutableArray *)selfCopy->_sessions count])
     {
-      v17 = [(NSMutableArray *)v3->_sessions objectAtIndex:0];
-      currentSession = v3->_currentSession;
-      v3->_currentSession = v17;
+      v17 = [(NSMutableArray *)selfCopy->_sessions objectAtIndex:0];
+      currentSession = selfCopy->_currentSession;
+      selfCopy->_currentSession = v17;
 
-      v19 = v3->_currentSession;
+      v19 = selfCopy->_currentSession;
       v20 = objc_opt_class();
-      if (v20 != objc_opt_class() || ![(NFACDriverWrapper *)v3->_driverWrapper readerModeProtectionActive])
+      if (v20 != objc_opt_class() || ![(NFACDriverWrapper *)selfCopy->_driverWrapper readerModeProtectionActive])
       {
-        [(NSMutableArray *)v3->_sessions removeObjectAtIndex:0];
+        [(NSMutableArray *)selfCopy->_sessions removeObjectAtIndex:0];
         objc_sync_exit(v5);
 
-        v31 = [(_NFACSession *)v3->_currentSession willStartSession];
-        v5 = v31;
-        if (v31)
+        willStartSession = [(_NFACSession *)selfCopy->_currentSession willStartSession];
+        v5 = willStartSession;
+        if (willStartSession)
         {
-          if ([v31 code]== 72)
+          if ([willStartSession code]== 72)
           {
             dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
             v32 = NFLogGetLogger();
             if (v32)
             {
               v33 = v32;
-              v34 = object_getClass(v3);
+              v34 = object_getClass(selfCopy);
               v35 = class_isMetaClass(v34);
-              v36 = object_getClassName(v3);
+              v36 = object_getClassName(selfCopy);
               v96 = sel_getName(a2);
               v37 = 45;
               if (v35)
@@ -157,7 +157,7 @@
             v38 = NFSharedLogGetLogger();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
             {
-              v39 = object_getClass(v3);
+              v39 = object_getClass(selfCopy);
               if (class_isMetaClass(v39))
               {
                 v40 = 43;
@@ -171,7 +171,7 @@
               *buf = 67109890;
               v102 = v40;
               v103 = 2082;
-              v104 = object_getClassName(v3);
+              v104 = object_getClassName(selfCopy);
               v105 = 2082;
               v106 = sel_getName(a2);
               v107 = 1024;
@@ -179,52 +179,52 @@
               _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i System will sleep, session will get dequeued later.", buf, 0x22u);
             }
 
-            [(NSMutableArray *)v3->_sessions insertObject:v3->_currentSession atIndex:0];
-            v41 = v3->_currentSession;
-            v3->_currentSession = 0;
+            [(NSMutableArray *)selfCopy->_sessions insertObject:selfCopy->_currentSession atIndex:0];
+            v41 = selfCopy->_currentSession;
+            selfCopy->_currentSession = 0;
 
             goto LABEL_83;
           }
 
-          [(_NFACSession *)v3->_currentSession didStartSession:v5];
-          [(_NFACSession *)v3->_currentSession didEndSession:v5];
+          [(_NFACSession *)selfCopy->_currentSession didStartSession:v5];
+          [(_NFACSession *)selfCopy->_currentSession didEndSession:v5];
         }
 
         else
         {
-          [(_NFACSession *)v3->_currentSession didStartSession:0];
+          [(_NFACSession *)selfCopy->_currentSession didStartSession:0];
         }
 
 LABEL_15:
 
-        if (v3->_currentSession)
+        if (selfCopy->_currentSession)
         {
           return;
         }
 
-        if (v3->_runLPCD)
+        if (selfCopy->_runLPCD)
         {
-          driverWrapper = v3->_driverWrapper;
+          driverWrapper = selfCopy->_driverWrapper;
           v16 = sub_10004C6A8();
         }
 
         else
         {
-          if (v3->_runMultiTagDetection)
+          if (selfCopy->_runMultiTagDetection)
           {
-            basebandMonitor = v3->_basebandMonitor;
+            basebandMonitor = selfCopy->_basebandMonitor;
             if (basebandMonitor && (sub_10000976C(basebandMonitor) & 1) != 0)
             {
-              if (v3->_needsMultiTagRestart)
+              if (selfCopy->_needsMultiTagRestart)
               {
                 dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
                 v43 = NFLogGetLogger();
                 if (v43)
                 {
                   v44 = v43;
-                  v45 = object_getClass(v3);
+                  v45 = object_getClass(selfCopy);
                   v46 = class_isMetaClass(v45);
-                  v47 = object_getClassName(v3);
+                  v47 = object_getClassName(selfCopy);
                   v97 = sel_getName(a2);
                   v48 = 45;
                   if (v46)
@@ -239,7 +239,7 @@ LABEL_15:
                 v49 = NFSharedLogGetLogger();
                 if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
                 {
-                  v50 = object_getClass(v3);
+                  v50 = object_getClass(selfCopy);
                   if (class_isMetaClass(v50))
                   {
                     v51 = 43;
@@ -250,7 +250,7 @@ LABEL_15:
                     v51 = 45;
                   }
 
-                  v52 = object_getClassName(v3);
+                  v52 = object_getClassName(selfCopy);
                   v53 = sel_getName(a2);
                   *buf = 67109890;
                   v102 = v51;
@@ -263,23 +263,23 @@ LABEL_15:
                   _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Restarting multitag detection", buf, 0x22u);
                 }
 
-                v54 = v3->_driverWrapper;
+                v54 = selfCopy->_driverWrapper;
                 v55 = sub_10004C268();
                 v56 = [(NFACDriverWrapper *)v54 setRouting:v55];
 
-                v3->_needsMultiTagRestart = 0;
+                selfCopy->_needsMultiTagRestart = 0;
               }
 
-              if (NFProductIsDevBoard() && (-[_NFACHardwareManager _getDefaults](v3, "_getDefaults"), v57 = objc_claimAutoreleasedReturnValue(), v58 = [v57 BOOLForKey:@"forceMultiTagEnabled"], v57, (v58 & 1) == 0))
+              if (NFProductIsDevBoard() && (-[_NFACHardwareManager _getDefaults](selfCopy, "_getDefaults"), v57 = objc_claimAutoreleasedReturnValue(), v58 = [v57 BOOLForKey:@"forceMultiTagEnabled"], v57, (v58 & 1) == 0))
               {
                 dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
                 v84 = NFLogGetLogger();
                 if (v84)
                 {
                   v85 = v84;
-                  v86 = object_getClass(v3);
+                  v86 = object_getClass(selfCopy);
                   v87 = class_isMetaClass(v86);
-                  v88 = object_getClassName(v3);
+                  v88 = object_getClassName(selfCopy);
                   v100 = sel_getName(a2);
                   v89 = 45;
                   if (v87)
@@ -297,7 +297,7 @@ LABEL_15:
                   goto LABEL_83;
                 }
 
-                v90 = object_getClass(v3);
+                v90 = object_getClass(selfCopy);
                 if (class_isMetaClass(v90))
                 {
                   v91 = 43;
@@ -308,7 +308,7 @@ LABEL_15:
                   v91 = 45;
                 }
 
-                v92 = object_getClassName(v3);
+                v92 = object_getClassName(selfCopy);
                 v93 = sel_getName(a2);
                 *buf = 67109890;
                 v102 = v91;
@@ -323,12 +323,12 @@ LABEL_15:
 
               else
               {
-                v59 = [(_NFACHardwareManager *)v3 _getDefaults];
-                v60 = [v59 BOOLForKey:@"DisableMultiTag"];
+                _getDefaults = [(_NFACHardwareManager *)selfCopy _getDefaults];
+                v60 = [_getDefaults BOOLForKey:@"DisableMultiTag"];
 
                 if (!v60)
                 {
-                  driverWrapper = v3->_driverWrapper;
+                  driverWrapper = selfCopy->_driverWrapper;
                   v16 = sub_1000097C0();
                   goto LABEL_82;
                 }
@@ -338,9 +338,9 @@ LABEL_15:
                 if (v61)
                 {
                   v62 = v61;
-                  v63 = object_getClass(v3);
+                  v63 = object_getClass(selfCopy);
                   v64 = class_isMetaClass(v63);
-                  v65 = object_getClassName(v3);
+                  v65 = object_getClassName(selfCopy);
                   v98 = sel_getName(a2);
                   v66 = 45;
                   if (v64)
@@ -358,7 +358,7 @@ LABEL_15:
                   goto LABEL_83;
                 }
 
-                v67 = object_getClass(v3);
+                v67 = object_getClass(selfCopy);
                 if (class_isMetaClass(v67))
                 {
                   v68 = 43;
@@ -369,7 +369,7 @@ LABEL_15:
                   v68 = 45;
                 }
 
-                v69 = object_getClassName(v3);
+                v69 = object_getClassName(selfCopy);
                 v70 = sel_getName(a2);
                 *buf = 67109890;
                 v102 = v68;
@@ -391,9 +391,9 @@ LABEL_15:
             if (v72)
             {
               v73 = v72;
-              v74 = object_getClass(v3);
+              v74 = object_getClass(selfCopy);
               v75 = class_isMetaClass(v74);
-              v76 = object_getClassName(v3);
+              v76 = object_getClassName(selfCopy);
               v99 = sel_getName(a2);
               v77 = 45;
               if (v75)
@@ -408,7 +408,7 @@ LABEL_15:
             v78 = NFSharedLogGetLogger();
             if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
             {
-              v79 = object_getClass(v3);
+              v79 = object_getClass(selfCopy);
               if (class_isMetaClass(v79))
               {
                 v80 = 43;
@@ -419,7 +419,7 @@ LABEL_15:
                 v80 = 45;
               }
 
-              v81 = object_getClassName(v3);
+              v81 = object_getClassName(selfCopy);
               v82 = sel_getName(a2);
               *buf = 67109890;
               v102 = v80;
@@ -433,7 +433,7 @@ LABEL_15:
             }
           }
 
-          driverWrapper = v3->_driverWrapper;
+          driverWrapper = selfCopy->_driverWrapper;
           v16 = sub_10004C268();
         }
 
@@ -445,17 +445,17 @@ LABEL_83:
         return;
       }
 
-      v21 = v3->_currentSession;
-      v3->_currentSession = 0;
+      v21 = selfCopy->_currentSession;
+      selfCopy->_currentSession = 0;
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v22 = NFLogGetLogger();
       if (v22)
       {
         v23 = v22;
-        v24 = object_getClass(v3);
+        v24 = object_getClass(selfCopy);
         v25 = class_isMetaClass(v24);
-        v26 = object_getClassName(v3);
+        v26 = object_getClassName(selfCopy);
         v95 = sel_getName(a2);
         v27 = 45;
         if (v25)
@@ -470,7 +470,7 @@ LABEL_83:
       v28 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = object_getClass(v3);
+        v29 = object_getClass(selfCopy);
         if (class_isMetaClass(v29))
         {
           v30 = 43;
@@ -484,7 +484,7 @@ LABEL_83:
         *buf = 67109890;
         v102 = v30;
         v103 = 2082;
-        v104 = object_getClassName(v3);
+        v104 = object_getClassName(selfCopy);
         v105 = 2082;
         v106 = sel_getName(a2);
         v107 = 1024;
@@ -570,9 +570,9 @@ LABEL_83:
   return v3;
 }
 
-- (unint64_t)openSession:(id)a3
+- (unint64_t)openSession:(id)session
 {
-  v3 = [(NFACDriverWrapper *)self->_driverWrapper openSession:a3];
+  v3 = [(NFACDriverWrapper *)self->_driverWrapper openSession:session];
   if (v3 != 1)
   {
     v4 = sub_100210FEC();
@@ -699,8 +699,8 @@ LABEL_83:
 
 - (void)start
 {
-  v4 = [(_NFACHardwareManager *)self _getDefaults];
-  v5 = [v4 BOOLForKey:@"DisableFury"];
+  _getDefaults = [(_NFACHardwareManager *)self _getDefaults];
+  v5 = [_getDefaults BOOLForKey:@"DisableFury"];
 
   if (v5)
   {
@@ -784,42 +784,42 @@ LABEL_83:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v20, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "NFCACD_STARTED", &unk_1002E8B7A, buf, 2u);
     }
 
-    v21 = self;
-    objc_sync_enter(v21);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (NFProductSupportsAC())
     {
       v22 = sub_100210FEC();
-      sub_100212EFC(v22, v21, 2, v21->_workQueue);
+      sub_100212EFC(v22, selfCopy, 2, selfCopy->_workQueue);
 
       handler[6] = _NSConcreteStackBlock;
       handler[7] = 3221225472;
       handler[8] = sub_100270FC4;
       handler[9] = &unk_100318408;
-      handler[10] = v21;
-      v21->_stateCaptureHandle = os_state_add_handler();
+      handler[10] = selfCopy;
+      selfCopy->_stateCaptureHandle = os_state_add_handler();
       v23 = dispatch_get_global_queue(0, 0);
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = sub_1002710A4;
       handler[3] = &unk_10031D518;
-      handler[4] = v21;
+      handler[4] = selfCopy;
       handler[5] = a2;
       xpc_set_event_stream_handler("com.apple.iokit.matching", v23, handler);
 
-      objc_sync_exit(v21);
+      objc_sync_exit(selfCopy);
       v24 = sub_100233748();
-      schedulingDailyUpdating = v21->_schedulingDailyUpdating;
-      v21->_schedulingDailyUpdating = v24;
+      schedulingDailyUpdating = selfCopy->_schedulingDailyUpdating;
+      selfCopy->_schedulingDailyUpdating = v24;
 
-      v26 = v21->_schedulingDailyUpdating;
+      v26 = selfCopy->_schedulingDailyUpdating;
       v43[0] = _NSConcreteStackBlock;
       v43[1] = 3221225472;
       v43[2] = sub_100271518;
       v43[3] = &unk_1003162B8;
-      v43[4] = v21;
+      v43[4] = selfCopy;
       v43[5] = a2;
       sub_100233938(v26, @"com.apple.nfcd.coreanalytics.event", v43);
-      v27 = v21;
+      v27 = selfCopy;
       objc_sync_enter(v27);
       if (v27->_isRunning)
       {
@@ -832,7 +832,7 @@ LABEL_83:
       v27->_isRunning = 1;
       objc_sync_exit(v27);
 
-      workQueue = v21->_workQueue;
+      workQueue = selfCopy->_workQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1002716B0;
@@ -858,8 +858,8 @@ LABEL_83:
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-      v21 = NFSharedLogGetLogger();
-      if (os_log_type_enabled(&v21->super, OS_LOG_TYPE_DEFAULT))
+      selfCopy = NFSharedLogGetLogger();
+      if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_DEFAULT))
       {
         v36 = object_getClass(v27);
         if (class_isMetaClass(v36))
@@ -882,17 +882,17 @@ LABEL_83:
         v47 = v39;
         v48 = 1024;
         v49 = 233;
-        _os_log_impl(&_mh_execute_header, &v21->super, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i started", buf, 0x22u);
+        _os_log_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i started", buf, 0x22u);
       }
     }
 
     else
     {
-      v21->_hardwareState = 2;
+      selfCopy->_hardwareState = 2;
       v28 = dispatch_get_global_queue(0, 0);
       xpc_set_event_stream_handler("com.apple.iokit.matching", v28, &stru_10031D4F0);
 
-      objc_sync_exit(v21);
+      objc_sync_exit(selfCopy);
     }
   }
 }
@@ -958,32 +958,32 @@ LABEL_83:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "NFCACD_STOPPING", &unk_1002E8B7A, state, 2u);
   }
 
-  v17 = self;
-  objc_sync_enter(v17);
-  if (v17->_isRunning)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isRunning)
   {
-    [(NFPowerObserver *)v17->_powerObserver unregisterForEvents];
-    powerObserver = v17->_powerObserver;
-    v17->_powerObserver = 0;
+    [(NFPowerObserver *)selfCopy->_powerObserver unregisterForEvents];
+    powerObserver = selfCopy->_powerObserver;
+    selfCopy->_powerObserver = 0;
 
-    [(NFPreferenceObserver *)v17->_preferenceObserver stop];
-    preferenceObserver = v17->_preferenceObserver;
-    v17->_preferenceObserver = 0;
+    [(NFPreferenceObserver *)selfCopy->_preferenceObserver stop];
+    preferenceObserver = selfCopy->_preferenceObserver;
+    selfCopy->_preferenceObserver = 0;
 
-    [(_NFACHardwareManager *)v17 _unloadService];
-    v17->_isRunning = 0;
-    [(NFACDriverWrapper *)v17->_driverWrapper stopNowAndLeveHWEnabled:0];
-    [(NSMutableArray *)v17->_sessions removeAllObjects];
-    objc_sync_exit(v17);
+    [(_NFACHardwareManager *)selfCopy _unloadService];
+    selfCopy->_isRunning = 0;
+    [(NFACDriverWrapper *)selfCopy->_driverWrapper stopNowAndLeveHWEnabled:0];
+    [(NSMutableArray *)selfCopy->_sessions removeAllObjects];
+    objc_sync_exit(selfCopy);
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v20 = NFLogGetLogger();
     if (v20)
     {
       v21 = v20;
-      v22 = object_getClass(v17);
+      v22 = object_getClass(selfCopy);
       v23 = class_isMetaClass(v22);
-      v24 = object_getClassName(v17);
+      v24 = object_getClassName(selfCopy);
       v32 = sel_getName(a2);
       v25 = 45;
       if (v23)
@@ -998,7 +998,7 @@ LABEL_83:
     p_super = NFSharedLogGetLogger();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = object_getClass(v17);
+      v27 = object_getClass(selfCopy);
       if (class_isMetaClass(v27))
       {
         v28 = 43;
@@ -1009,7 +1009,7 @@ LABEL_83:
         v28 = 45;
       }
 
-      v29 = object_getClassName(v17);
+      v29 = object_getClassName(selfCopy);
       v30 = sel_getName(a2);
       *state = 67109890;
       *&state[4] = v28;
@@ -1025,8 +1025,8 @@ LABEL_83:
 
   else
   {
-    objc_sync_exit(v17);
-    p_super = &v17->super;
+    objc_sync_exit(selfCopy);
+    p_super = &selfCopy->super;
   }
 }
 
@@ -1185,7 +1185,7 @@ LABEL_83:
   qword_10035DB68 = 0;
 }
 
-- (void)mustStop:(unint64_t)a3
+- (void)mustStop:(unint64_t)stop
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1244,7 +1244,7 @@ LABEL_83:
   sub_100214310(v16, 2);
 }
 
-- (void)canResume:(unint64_t)a3 status:(id)a4
+- (void)canResume:(unint64_t)resume status:(id)status
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1290,31 +1290,31 @@ LABEL_83:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
   }
 
-  v15 = self;
-  objc_sync_enter(v15);
-  v15->_stoppedForFailForward = 0;
-  if (v15->_isRunning)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_stoppedForFailForward = 0;
+  if (selfCopy->_isRunning)
   {
-    objc_sync_exit(v15);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    [(_NFACHardwareManager *)v15 _loadService];
-    v15->_isRunning = 1;
-    objc_sync_exit(v15);
+    [(_NFACHardwareManager *)selfCopy _loadService];
+    selfCopy->_isRunning = 1;
+    objc_sync_exit(selfCopy);
 
-    [(_NFACHardwareManager *)v15 _probeHW];
-    if (v15->_resumeMultiTagAfterFF)
+    [(_NFACHardwareManager *)selfCopy _probeHW];
+    if (selfCopy->_resumeMultiTagAfterFF)
     {
-      v16 = [(_NFACHardwareManager *)v15 enableMultiTag:1];
+      v16 = [(_NFACHardwareManager *)selfCopy enableMultiTag:1];
     }
   }
 }
 
-- (void)powerObserverSystemWillSleep:(id)a3
+- (void)powerObserverSystemWillSleep:(id)sleep
 {
-  v5 = a3;
+  sleepCopy = sleep;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1376,14 +1376,14 @@ LABEL_83:
   block[1] = 3221225472;
   block[2] = sub_1002724C8;
   block[3] = &unk_100315F80;
-  v21 = v5;
+  v21 = sleepCopy;
   v22 = a2;
   block[4] = self;
-  v18 = v5;
+  v18 = sleepCopy;
   dispatch_sync(workQueue, block);
 }
 
-- (void)powerObserverSystemHasPoweredOn:(id)a3
+- (void)powerObserverSystemHasPoweredOn:(id)on
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1451,12 +1451,12 @@ LABEL_83:
   controllerInfo = self->_controllerInfo;
   if (controllerInfo)
   {
-    v5 = [(NFHardwareControllerInfo *)controllerInfo asDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"Controller"];
+    asDictionary = [(NFHardwareControllerInfo *)controllerInfo asDictionary];
+    [v3 setObject:asDictionary forKeyedSubscript:@"Controller"];
   }
 
-  v6 = [(_NFACHardwareManager *)self _getDefaults];
-  [v6 synchronize];
+  _getDefaults = [(_NFACHardwareManager *)self _getDefaults];
+  [_getDefaults synchronize];
   v7 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
@@ -1477,11 +1477,11 @@ LABEL_83:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v6 objectForKey:v12];
+        v13 = [_getDefaults objectForKey:v12];
 
         if (v13)
         {
-          v14 = [v6 objectForKey:v12];
+          v14 = [_getDefaults objectForKey:v12];
           [v7 setObject:v14 forKey:v12];
         }
       }
@@ -1494,11 +1494,11 @@ LABEL_83:
 
   [v3 setObject:v7 forKeyedSubscript:@"Preferences"];
   v15 = +[NFPowerAssertion sharedPowerAssertion];
-  v16 = [v15 assertionHolders];
-  [v3 setObject:v16 forKeyedSubscript:@"PowerAssertions"];
+  assertionHolders = [v15 assertionHolders];
+  [v3 setObject:assertionHolders forKeyedSubscript:@"PowerAssertions"];
 
-  v17 = [(NFACDriverWrapper *)self->_driverWrapper owners];
-  [v3 setObject:v17 forKeyedSubscript:@"DriverOwners"];
+  owners = [(NFACDriverWrapper *)self->_driverWrapper owners];
+  [v3 setObject:owners forKeyedSubscript:@"DriverOwners"];
 
   v18 = [NSNumber numberWithBool:self->_stoppedForFailForward];
   [v3 setObject:v18 forKeyedSubscript:@"stoppedForFailForward"];
@@ -1506,15 +1506,15 @@ LABEL_83:
   return v3;
 }
 
-- (id)_executeWithDriverSessionSync:(id)a3 block:(id)a4
+- (id)_executeWithDriverSessionSync:(id)sync block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NFACDriverWrapper *)self->_driverWrapper openSession:v7];
+  syncCopy = sync;
+  blockCopy = block;
+  v9 = [(NFACDriverWrapper *)self->_driverWrapper openSession:syncCopy];
   if (v9 == 1)
   {
-    v10 = v8[2](v8);
-    [(NFACDriverWrapper *)self->_driverWrapper closeSession:v7];
+    v10 = blockCopy[2](blockCopy);
+    [(NFACDriverWrapper *)self->_driverWrapper closeSession:syncCopy];
   }
 
   else
@@ -1535,7 +1535,7 @@ LABEL_83:
         v17 = 43;
       }
 
-      v13(4, "%c[%{public}s %{public}s]:%i Failed to open session; %@ hwState=%lu", v17, ClassName, Name, 413, v7, v11);
+      v13(4, "%c[%{public}s %{public}s]:%i Failed to open session; %@ hwState=%lu", v17, ClassName, Name, 413, syncCopy, v11);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1562,7 +1562,7 @@ LABEL_83:
       v35 = 1024;
       v36 = 413;
       v37 = 2112;
-      v38 = v7;
+      v38 = syncCopy;
       v39 = 2048;
       v40 = v11;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to open session; %@ hwState=%lu", buf, 0x36u);
@@ -1580,128 +1580,128 @@ LABEL_83:
   return v10;
 }
 
-- (void)getInfo:(id)a3
+- (void)getInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100273044;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)getDieId:(id)a3
+- (void)getDieId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002731DC;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)getPowerCounters:(id)a3
+- (void)getPowerCounters:(id)counters
 {
-  v4 = a3;
+  countersCopy = counters;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10027356C;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = countersCopy;
+  v6 = countersCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)getRfSettings:(id)a3
+- (void)getRfSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100273814;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = settingsCopy;
+  v6 = settingsCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)enableMultiTag:(BOOL)a3 callback:(id)a4
+- (void)enableMultiTag:(BOOL)tag callback:(id)callback
 {
-  v6 = a4;
+  callbackCopy = callback;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100273BBC;
   block[3] = &unk_10031D568;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = callbackCopy;
+  tagCopy = tag;
+  v8 = callbackCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)enableLPCD:(BOOL)a3 callback:(id)a4
+- (void)enableLPCD:(BOOL)d callback:(id)callback
 {
-  v7 = a4;
+  callbackCopy = callback;
   workQueue = self->_workQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100274974;
   v10[3] = &unk_100316FA0;
-  v13 = a3;
-  v11 = v7;
+  dCopy = d;
+  v11 = callbackCopy;
   v12 = a2;
   v10[4] = self;
-  v9 = v7;
+  v9 = callbackCopy;
   dispatch_async(workQueue, v10);
 }
 
-- (void)getLastDetectedTags:(id)a3
+- (void)getLastDetectedTags:(id)tags
 {
-  v5 = a3;
+  tagsCopy = tags;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100275068;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = tagsCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = tagsCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)getMultiTagState:(id)a3
+- (void)getMultiTagState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10027564C;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = stateCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = stateCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)setClientName:(id)a3
+- (void)setClientName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = +[NSXPCConnection currentConnection];
-  v7 = [[NFXPCConnectionUserInfoDictionary alloc] initWithServiceWhitelist:0 clientName:v5];
+  v7 = [[NFXPCConnectionUserInfoDictionary alloc] initWithServiceWhitelist:0 clientName:nameCopy];
   v8 = objc_opt_new();
   [v7 setObject:v8 forKeyedSubscript:@"ProxyObjects"];
 
@@ -1715,14 +1715,14 @@ LABEL_83:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v19 = [v6 processIdentifier];
+    processIdentifier = [v6 processIdentifier];
     v15 = 45;
     if (isMetaClass)
     {
       v15 = 43;
     }
 
-    v10(6, "%c[%{public}s %{public}s]:%i new XPC connection from pid=%d, name=%{public}@", v15, ClassName, Name, 674, v19, v5);
+    v10(6, "%c[%{public}s %{public}s]:%i new XPC connection from pid=%d, name=%{public}@", v15, ClassName, Name, 674, processIdentifier, nameCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1749,44 +1749,44 @@ LABEL_83:
     v26 = 1024;
     v27 = 674;
     v28 = 1024;
-    v29 = [v6 processIdentifier];
+    processIdentifier2 = [v6 processIdentifier];
     v30 = 2114;
-    v31 = v5;
+    v31 = nameCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i new XPC connection from pid=%d, name=%{public}@", buf, 0x32u);
   }
 }
 
-- (void)clearMultiTagState:(id)a3
+- (void)clearMultiTagState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100275B24;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (BOOL)_queueNewSession:(id)a3 onConnection:(id)a4
+- (BOOL)_queueNewSession:(id)session onConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_NFACHardwareManager *)self _validateSessionRequest:v7 withConnection:v8];
+  sessionCopy = session;
+  connectionCopy = connection;
+  v9 = [(_NFACHardwareManager *)self _validateSessionRequest:sessionCopy withConnection:connectionCopy];
   if (v9)
   {
-    [v7 setConnection:v8];
-    [v7 setQueue:self];
-    [v7 setDriverWrapper:self->_driverWrapper];
+    [sessionCopy setConnection:connectionCopy];
+    [sessionCopy setQueue:self];
+    [sessionCopy setDriverWrapper:self->_driverWrapper];
     ++self->_sessionCounter;
-    [v7 setSessionID:?];
+    [sessionCopy setSessionID:?];
     v10 = self->_sessions;
     objc_sync_enter(v10);
-    v11 = [v8 NF_userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"ProxyObjects"];
-    [v12 addObject:v7];
+    nF_userInfo = [connectionCopy NF_userInfo];
+    v12 = [nF_userInfo objectForKeyedSubscript:@"ProxyObjects"];
+    [v12 addObject:sessionCopy];
 
     if (![(NSMutableArray *)self->_sessions count])
     {
@@ -1841,7 +1841,7 @@ LABEL_83:
       }
     }
 
-    [(NSMutableArray *)self->_sessions addObject:v7];
+    [(NSMutableArray *)self->_sessions addObject:sessionCopy];
     objc_sync_exit(v10);
   }
 
@@ -1895,10 +1895,10 @@ LABEL_83:
   return v9;
 }
 
-- (void)queueReaderSession:(id)a3 callback:(id)a4
+- (void)queueReaderSession:(id)session callback:(id)callback
 {
-  v7 = a4;
-  v8 = a3;
+  callbackCopy = callback;
+  sessionCopy = session;
   v9 = +[NSXPCConnection currentConnection];
   v10 = NFSharedSignpostLog();
   if (os_signpost_enabled(v10))
@@ -1907,13 +1907,13 @@ LABEL_83:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "NFCACD_QUEUE_READER_SESSION", &unk_1002E8B7A, buf, 2u);
   }
 
-  v11 = [[_NFACReaderSession alloc] initWithRemoteObject:v8 workQueue:self->_workQueue];
+  v11 = [[_NFACReaderSession alloc] initWithRemoteObject:sessionCopy workQueue:self->_workQueue];
   if ([(_NFACHardwareManager *)self _queueNewSession:v11 onConnection:v9])
   {
     v12 = sub_1001AE468();
     [(_NFACReaderSession *)v11 setPowerConsumptionReporter:v12];
 
-    v7[2](v7, v11, 0);
+    callbackCopy[2](callbackCopy, v11, 0);
     workQueue = self->_workQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1978,13 +1978,13 @@ LABEL_83:
     v33 = v27;
     v28 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v29 = [v25 initWithDomain:v26 code:8 userInfo:v28];
-    (v7)[2](v7, 0, v29);
+    (callbackCopy)[2](callbackCopy, 0, v29);
   }
 }
 
-- (void)shutdownAndLeaveHWEnabled:(BOOL)a3 callback:(id)a4
+- (void)shutdownAndLeaveHWEnabled:(BOOL)enabled callback:(id)callback
 {
-  v7 = a4;
+  callbackCopy = callback;
   v8 = NFSharedSignpostLog();
   if (os_signpost_enabled(v8))
   {
@@ -2047,8 +2047,8 @@ LABEL_83:
     block[3] = &unk_100316FA0;
     block[4] = self;
     v29 = a2;
-    v28 = v7;
-    v30 = a3;
+    v28 = callbackCopy;
+    enabledCopy = enabled;
     dispatch_async(workQueue, block);
   }
 
@@ -2061,28 +2061,28 @@ LABEL_83:
     v40 = v23;
     v24 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     v25 = [v21 initWithDomain:v22 code:14 userInfo:v24];
-    (*(v7 + 2))(v7, v25);
+    (*(callbackCopy + 2))(callbackCopy, v25);
   }
 }
 
-- (void)dequeueSession:(id)a3
+- (void)dequeueSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100276DFC;
   v7[3] = &unk_100315FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)_dequeueSession:(id)a3 startNextSession:(BOOL)a4
+- (void)_dequeueSession:(id)session startNextSession:(BOOL)nextSession
 {
-  v4 = a4;
-  v7 = a3;
+  nextSessionCopy = nextSession;
+  sessionCopy = session;
   v8 = NFSharedSignpostLog();
   if (os_signpost_enabled(v8))
   {
@@ -2090,16 +2090,16 @@ LABEL_83:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "NFCACD_DEQUEUE_SESSION", &unk_1002E8B7A, buf, 2u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  isRunning = v9->_isRunning;
-  objc_sync_exit(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isRunning = selfCopy->_isRunning;
+  objc_sync_exit(selfCopy);
 
   if (isRunning)
   {
-    v11 = v9->_sessions;
+    v11 = selfCopy->_sessions;
     objc_sync_enter(v11);
-    if (v9->_currentSession == v7)
+    if (selfCopy->_currentSession == sessionCopy)
     {
       v17 = [NSError alloc];
       v18 = [NSString stringWithUTF8String:"nfcd"];
@@ -2108,12 +2108,12 @@ LABEL_83:
       v57 = v19;
       v20 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
       v21 = [v17 initWithDomain:v18 code:3 userInfo:v20];
-      [(_NFACSession *)v7 didEndSession:v21];
+      [(_NFACSession *)sessionCopy didEndSession:v21];
 
-      currentSession = v9->_currentSession;
-      v9->_currentSession = 0;
+      currentSession = selfCopy->_currentSession;
+      selfCopy->_currentSession = 0;
 
-      if (v9->_systemWillSleep)
+      if (selfCopy->_systemWillSleep)
       {
         v23 = NFSharedSignpostLog();
         if (os_signpost_enabled(v23))
@@ -2122,22 +2122,22 @@ LABEL_83:
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "_dequeueSession: allowing to sleep", &unk_1002E8B7A, buf, 2u);
         }
 
-        [(NFPowerObserver *)v9->_powerObserver allowSleep];
+        [(NFPowerObserver *)selfCopy->_powerObserver allowSleep];
       }
     }
 
     else
     {
-      if (![(NSMutableArray *)v9->_sessions containsObject:v7])
+      if (![(NSMutableArray *)selfCopy->_sessions containsObject:sessionCopy])
       {
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         Logger = NFLogGetLogger();
         if (Logger)
         {
           v29 = Logger;
-          Class = object_getClass(v9);
+          Class = object_getClass(selfCopy);
           isMetaClass = class_isMetaClass(Class);
-          ClassName = object_getClassName(v9);
+          ClassName = object_getClassName(selfCopy);
           Name = sel_getName(a2);
           v32 = 45;
           if (isMetaClass)
@@ -2145,14 +2145,14 @@ LABEL_83:
             v32 = 43;
           }
 
-          v29(5, "%c[%{public}s %{public}s]:%i Session not found in queue %@", v32, ClassName, Name, 920, v7);
+          v29(5, "%c[%{public}s %{public}s]:%i Session not found in queue %@", v32, ClassName, Name, 920, sessionCopy);
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v33 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = object_getClass(v9);
+          v34 = object_getClass(selfCopy);
           if (class_isMetaClass(v34))
           {
             v35 = 43;
@@ -2163,7 +2163,7 @@ LABEL_83:
             v35 = 45;
           }
 
-          v36 = object_getClassName(v9);
+          v36 = object_getClassName(selfCopy);
           v37 = sel_getName(a2);
           *buf = 67110146;
           v45 = v35;
@@ -2174,20 +2174,20 @@ LABEL_83:
           v50 = 1024;
           v51 = 920;
           v52 = 2112;
-          v53 = v7;
+          v53 = sessionCopy;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Session not found in queue %@", buf, 0x2Cu);
         }
 
-        [(_NFACSession *)v7 releaseRemoteObject];
-        v27 = [(_NFACSession *)v7 connection];
-        v38 = [v27 NF_userInfo];
-        v39 = [v38 objectForKeyedSubscript:@"ProxyObjects"];
-        [v39 removeObject:v7];
+        [(_NFACSession *)sessionCopy releaseRemoteObject];
+        connection = [(_NFACSession *)sessionCopy connection];
+        nF_userInfo = [connection NF_userInfo];
+        v39 = [nF_userInfo objectForKeyedSubscript:@"ProxyObjects"];
+        [v39 removeObject:sessionCopy];
 
         goto LABEL_22;
       }
 
-      [(NSMutableArray *)v9->_sessions removeObject:v7];
+      [(NSMutableArray *)selfCopy->_sessions removeObject:sessionCopy];
       v12 = [NSError alloc];
       v13 = [NSString stringWithUTF8String:"nfcd"];
       v54 = NSLocalizedDescriptionKey;
@@ -2195,28 +2195,28 @@ LABEL_83:
       v55 = v14;
       v15 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
       v16 = [v12 initWithDomain:v13 code:3 userInfo:v15];
-      [(_NFACSession *)v7 didEndSession:v16];
+      [(_NFACSession *)sessionCopy didEndSession:v16];
     }
 
-    [(_NFACSession *)v7 releaseRemoteObject];
-    v24 = [(_NFACSession *)v7 connection];
-    v25 = [v24 NF_userInfo];
-    v26 = [v25 objectForKeyedSubscript:@"ProxyObjects"];
-    [v26 removeObject:v7];
+    [(_NFACSession *)sessionCopy releaseRemoteObject];
+    connection2 = [(_NFACSession *)sessionCopy connection];
+    nF_userInfo2 = [connection2 NF_userInfo];
+    v26 = [nF_userInfo2 objectForKeyedSubscript:@"ProxyObjects"];
+    [v26 removeObject:sessionCopy];
 
-    v27 = +[NFPowerAssertion sharedPowerAssertion];
-    [v27 releasePowerAssertion:@"NfcacdSessions"];
+    connection = +[NFPowerAssertion sharedPowerAssertion];
+    [connection releasePowerAssertion:@"NfcacdSessions"];
 LABEL_22:
 
     objc_sync_exit(v11);
-    if (v4)
+    if (nextSessionCopy)
     {
-      workQueue = v9->_workQueue;
+      workQueue = selfCopy->_workQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10027735C;
       block[3] = &unk_100315F30;
-      block[4] = v9;
+      block[4] = selfCopy;
       dispatch_async(workQueue, block);
     }
   }
@@ -2295,8 +2295,8 @@ LABEL_22:
   }
 
   driverWrapper = self->_driverWrapper;
-  v6 = [(_NFACHardwareManager *)self _readDriverSettings];
-  [(NFACDriverWrapper *)driverWrapper configureDriverSettings:v6];
+  _readDriverSettings = [(_NFACHardwareManager *)self _readDriverSettings];
+  [(NFACDriverWrapper *)driverWrapper configureDriverSettings:_readDriverSettings];
 
   if (([(NFPowerObserver *)self->_powerObserver registerForEvents]& 1) == 0)
   {
@@ -2517,9 +2517,9 @@ LABEL_48:
   return 2;
 }
 
-- (void)didCloseXPCConnection:(id)a3
+- (void)didCloseXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -2529,14 +2529,14 @@ LABEL_48:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v12 = [v5 NF_clientName];
+    nF_clientName = [connectionCopy NF_clientName];
     v13 = 45;
     if (isMetaClass)
     {
       v13 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i Removing XPC connection for %{public}@ - %{public}@", v13, ClassName, Name, 1041, v12, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i Removing XPC connection for %{public}@ - %{public}@", v13, ClassName, Name, 1041, nF_clientName, connectionCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2556,7 +2556,7 @@ LABEL_48:
 
     v17 = object_getClassName(self);
     v18 = sel_getName(a2);
-    v19 = [v5 NF_clientName];
+    nF_clientName2 = [connectionCopy NF_clientName];
     *buf = 67110402;
     v27 = v16;
     v28 = 2082;
@@ -2566,9 +2566,9 @@ LABEL_48:
     v32 = 1024;
     v33 = 1041;
     v34 = 2114;
-    v35 = v19;
+    v35 = nF_clientName2;
     v36 = 2114;
-    v37 = v5;
+    v37 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Removing XPC connection for %{public}@ - %{public}@", buf, 0x36u);
   }
 
@@ -2584,16 +2584,16 @@ LABEL_48:
   block[1] = 3221225472;
   block[2] = sub_1002780F8;
   block[3] = &unk_100315F80;
-  v24 = v5;
+  v24 = connectionCopy;
   v25 = a2;
   block[4] = self;
-  v22 = v5;
+  v22 = connectionCopy;
   dispatch_async(workQueue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -2647,26 +2647,26 @@ LABEL_48:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "NFCACD_XPC_CONNECT", &unk_1002E8B7A, &buf, 2u);
   }
 
-  v19 = [v6 valueForEntitlement:@"com.apple.nfcacd.hwmanager"];
+  v19 = [connectionCopy valueForEntitlement:@"com.apple.nfcacd.hwmanager"];
   if (v19)
   {
     v60 = 0;
     v61 = &v60;
     v62 = 0x2020000000;
     v63 = 0;
-    v20 = self;
-    objc_sync_enter(v20);
-    v61[3] = v20->_hardwareState;
-    objc_sync_exit(v20);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v61[3] = selfCopy->_hardwareState;
+    objc_sync_exit(selfCopy);
 
     if ((v61[3] | 2) == 2)
     {
-      workQueue = v20->_workQueue;
+      workQueue = selfCopy->_workQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100278B88;
       block[3] = &unk_1003157C0;
-      block[4] = v20;
+      block[4] = selfCopy;
       block[5] = &v60;
       dispatch_sync(workQueue, block);
       if (v61[3] != 1)
@@ -2676,9 +2676,9 @@ LABEL_48:
         if (v22)
         {
           v23 = v22;
-          v24 = object_getClass(v20);
+          v24 = object_getClass(selfCopy);
           v25 = class_isMetaClass(v24);
-          v26 = object_getClassName(v20);
+          v26 = object_getClassName(selfCopy);
           v27 = sel_getName(a2);
           v28 = 45;
           if (v25)
@@ -2686,14 +2686,14 @@ LABEL_48:
             v28 = 43;
           }
 
-          v23(4, "%c[%{public}s %{public}s]:%i Hardware not available : %lu", v28, v26, v27, 1090, v20->_hardwareState);
+          v23(4, "%c[%{public}s %{public}s]:%i Hardware not available : %lu", v28, v26, v27, 1090, selfCopy->_hardwareState);
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v29 = NFSharedLogGetLogger();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
-          v30 = object_getClass(v20);
+          v30 = object_getClass(selfCopy);
           if (class_isMetaClass(v30))
           {
             v31 = 43;
@@ -2704,9 +2704,9 @@ LABEL_48:
             v31 = 45;
           }
 
-          v32 = object_getClassName(v20);
+          v32 = object_getClassName(selfCopy);
           v33 = sel_getName(a2);
-          hardwareState = v20->_hardwareState;
+          hardwareState = selfCopy->_hardwareState;
           LODWORD(buf) = 67110146;
           HIDWORD(buf) = v31;
           v65 = 2082;
@@ -2721,41 +2721,41 @@ LABEL_48:
         }
       }
 
-      v35 = v20;
+      v35 = selfCopy;
       objc_sync_enter(v35);
-      v20->_hardwareState = v61[3];
+      selfCopy->_hardwareState = v61[3];
       objc_sync_exit(v35);
     }
 
     v36 = sub_1001869E4();
-    [v6 setRemoteObjectInterface:v36];
+    [connectionCopy setRemoteObjectInterface:v36];
 
     v37 = sub_10018683C();
-    [v6 setExportedInterface:v37];
+    [connectionCopy setExportedInterface:v37];
 
-    [v6 setExportedObject:v20];
-    objc_initWeak(&buf, v6);
+    [connectionCopy setExportedObject:selfCopy];
+    objc_initWeak(&buf, connectionCopy);
     v57[0] = _NSConcreteStackBlock;
     v57[1] = 3221225472;
     v57[2] = sub_100278C80;
     v57[3] = &unk_10031D608;
-    v57[4] = v20;
+    v57[4] = selfCopy;
     objc_copyWeak(&v58, &buf);
-    [v6 setInvalidationHandler:v57];
+    [connectionCopy setInvalidationHandler:v57];
     v55[0] = _NSConcreteStackBlock;
     v55[1] = 3221225472;
     v55[2] = sub_100278CD4;
     v55[3] = &unk_10031D608;
-    v55[4] = v20;
+    v55[4] = selfCopy;
     objc_copyWeak(&v56, &buf);
-    [v6 setInterruptionHandler:v55];
-    [v6 _setQueue:v20->_xpcConnectionQueue];
-    v38 = v20->_xpcConnections;
+    [connectionCopy setInterruptionHandler:v55];
+    [connectionCopy _setQueue:selfCopy->_xpcConnectionQueue];
+    v38 = selfCopy->_xpcConnections;
     objc_sync_enter(v38);
-    [(NSMutableArray *)v20->_xpcConnections addObject:v6];
+    [(NSMutableArray *)selfCopy->_xpcConnections addObject:connectionCopy];
     objc_sync_exit(v38);
 
-    [v6 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&v56);
     objc_destroyWeak(&v58);
     objc_destroyWeak(&buf);
@@ -2773,14 +2773,14 @@ LABEL_48:
       v42 = class_isMetaClass(v41);
       v43 = object_getClassName(self);
       v44 = sel_getName(a2);
-      v54 = [v6 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v45 = 45;
       if (v42)
       {
         v45 = 43;
       }
 
-      v40(3, "%c[%{public}s %{public}s]:%i client; pid=%d is missing entitlement :%{public}@", v45, v43, v44, 1069, v54, @"com.apple.nfcacd.hwmanager");
+      v40(3, "%c[%{public}s %{public}s]:%i client; pid=%d is missing entitlement :%{public}@", v45, v43, v44, 1069, processIdentifier, @"com.apple.nfcacd.hwmanager");
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -2800,7 +2800,7 @@ LABEL_48:
 
       v49 = object_getClassName(self);
       v50 = sel_getName(a2);
-      v51 = [v6 processIdentifier];
+      processIdentifier2 = [connectionCopy processIdentifier];
       LODWORD(buf) = 67110402;
       HIDWORD(buf) = v48;
       v65 = 2082;
@@ -2810,7 +2810,7 @@ LABEL_48:
       v69 = 1024;
       v70 = 1069;
       v71 = 1024;
-      *v72 = v51;
+      *v72 = processIdentifier2;
       *&v72[4] = 2114;
       *&v72[6] = @"com.apple.nfcacd.hwmanager";
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i client; pid=%d is missing entitlement :%{public}@", &buf, 0x32u);
@@ -2905,7 +2905,7 @@ LABEL_48:
   }
 }
 
-- (void)handleHardwareReset:(const char *)a3
+- (void)handleHardwareReset:(const char *)reset
 {
   v5 = NFSharedSignpostLog();
   if (os_signpost_enabled(v5))
@@ -2914,7 +2914,7 @@ LABEL_48:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "NFCACD_HW_RESET", &unk_1002E8B7A, v6, 2u);
   }
 
-  [(NFACDriverWrapper *)self->_driverWrapper simulateCrash:57005 reason:a3];
+  [(NFACDriverWrapper *)self->_driverWrapper simulateCrash:57005 reason:reset];
 }
 
 - (void)handlePLLUnlock
@@ -3048,34 +3048,34 @@ LABEL_48:
   }
 }
 
-- (void)handleRemoteTagsDetected:(id)a3
+- (void)handleRemoteTagsDetected:(id)detected
 {
-  v5 = a3;
+  detectedCopy = detected;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100279DFC;
   block[3] = &unk_100315F80;
-  v9 = v5;
+  v9 = detectedCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = detectedCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)handleMultiTagStateChanged:(id)a3 rfError:(BOOL)a4
+- (void)handleMultiTagStateChanged:(id)changed rfError:(BOOL)error
 {
-  v7 = a3;
+  changedCopy = changed;
   workQueue = self->_workQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10027A664;
   v10[3] = &unk_100318D38;
-  v11 = v7;
+  v11 = changedCopy;
   v12 = a2;
   v10[4] = self;
-  v13 = a4;
-  v9 = v7;
+  errorCopy = error;
+  v9 = changedCopy;
   dispatch_async(workQueue, v10);
 }
 
@@ -3093,11 +3093,11 @@ LABEL_48:
 - (id)_readDriverSettings
 {
   v4 = objc_opt_new();
-  v5 = [(_NFACHardwareManager *)self _getDefaults];
-  [v5 synchronize];
-  self->_runLPCD = [v5 BOOLForKey:@"LpcdAlwaysOn"];
-  self->_runMultiTagDetection = [v5 BOOLForKey:@"MultiTagDetectionOn"];
-  if ([v5 BOOLForKey:@"LogNCI"])
+  _getDefaults = [(_NFACHardwareManager *)self _getDefaults];
+  [_getDefaults synchronize];
+  self->_runLPCD = [_getDefaults BOOLForKey:@"LpcdAlwaysOn"];
+  self->_runMultiTagDetection = [_getDefaults BOOLForKey:@"MultiTagDetectionOn"];
+  if ([_getDefaults BOOLForKey:@"LogNCI"])
   {
     v6 = 4;
   }
@@ -3107,27 +3107,27 @@ LABEL_48:
     v6 = 0;
   }
 
-  if ([v5 BOOLForKey:@"LogAPI"])
+  if ([_getDefaults BOOLForKey:@"LogAPI"])
   {
     v6 |= 8uLL;
   }
 
-  if ([v5 BOOLForKey:@"LogAPDU"])
+  if ([_getDefaults BOOLForKey:@"LogAPDU"])
   {
     v6 |= 0x10uLL;
   }
 
-  if ([v5 BOOLForKey:@"LogLPCD"])
+  if ([_getDefaults BOOLForKey:@"LogLPCD"])
   {
     v6 |= 0x2000uLL;
   }
 
-  if ([v5 BOOLForKey:@"MultiTagDebug"])
+  if ([_getDefaults BOOLForKey:@"MultiTagDebug"])
   {
     v6 |= 0x800000uLL;
   }
 
-  v7 = [v5 integerForKey:@"LogRF"];
+  v7 = [_getDefaults integerForKey:@"LogRF"];
   v8 = v6 | 1;
   v9 = v6 | 2;
   if (v7 != 1)
@@ -3205,7 +3205,7 @@ LABEL_48:
     if (v23)
     {
       v24 = [v13 objectForKey:@"LpcdAlwaysOn"];
-      v25 = [v24 BOOLValue];
+      bOOLValue = [v24 BOOLValue];
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v26 = NFLogGetLogger();
@@ -3222,7 +3222,7 @@ LABEL_48:
           v30 = 43;
         }
 
-        v27(5, "%c[%{public}s %{public}s]:%i Overriding pref settings for LpcdAlwaysOn with managed profile: %d", v30, v107, v113, 1348, v25);
+        v27(5, "%c[%{public}s %{public}s]:%i Overriding pref settings for LpcdAlwaysOn with managed profile: %d", v30, v107, v113, 1348, bOOLValue);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3251,11 +3251,11 @@ LABEL_48:
         v124 = 1024;
         v125 = 1348;
         v126 = 1024;
-        v127 = v25;
+        v127 = bOOLValue;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Overriding pref settings for LpcdAlwaysOn with managed profile: %d", buf, 0x28u);
       }
 
-      self->_runLPCD = v25;
+      self->_runLPCD = bOOLValue;
     }
 
     v36 = [v13 objectForKey:@"LogAPDU"];
@@ -3263,7 +3263,7 @@ LABEL_48:
     if (v36)
     {
       v37 = [v13 objectForKey:@"LogAPDU"];
-      v38 = [v37 BOOLValue];
+      bOOLValue2 = [v37 BOOLValue];
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v39 = NFLogGetLogger();
@@ -3280,7 +3280,7 @@ LABEL_48:
           v43 = 43;
         }
 
-        v40(5, "%c[%{public}s %{public}s]:%i Overriding pref settings for LogAPDU with managed profile: %d", v43, v108, v114, 1353, v38);
+        v40(5, "%c[%{public}s %{public}s]:%i Overriding pref settings for LogAPDU with managed profile: %d", v43, v108, v114, 1353, bOOLValue2);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3309,12 +3309,12 @@ LABEL_48:
         v124 = 1024;
         v125 = 1353;
         v126 = 1024;
-        v127 = v38;
+        v127 = bOOLValue2;
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Overriding pref settings for LogAPDU with managed profile: %d", buf, 0x28u);
       }
 
       v49 = 16;
-      if (!v38)
+      if (!bOOLValue2)
       {
         v49 = 0;
       }
@@ -3327,7 +3327,7 @@ LABEL_48:
     if (v50)
     {
       v51 = [v13 objectForKey:@"LogAPI"];
-      v52 = [v51 BOOLValue];
+      bOOLValue3 = [v51 BOOLValue];
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v53 = NFLogGetLogger();
@@ -3344,7 +3344,7 @@ LABEL_48:
           v57 = 43;
         }
 
-        v54(5, "%c[%{public}s %{public}s]:%i Overriding pref settings for LogAPI with managed profile: %d", v57, v109, v115, 1359, v52);
+        v54(5, "%c[%{public}s %{public}s]:%i Overriding pref settings for LogAPI with managed profile: %d", v57, v109, v115, 1359, bOOLValue3);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3373,12 +3373,12 @@ LABEL_48:
         v124 = 1024;
         v125 = 1359;
         v126 = 1024;
-        v127 = v52;
+        v127 = bOOLValue3;
         _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Overriding pref settings for LogAPI with managed profile: %d", buf, 0x28u);
       }
 
       v63 = 8;
-      if (!v52)
+      if (!bOOLValue3)
       {
         v63 = 0;
       }
@@ -3391,7 +3391,7 @@ LABEL_48:
     if (v64)
     {
       v65 = [v13 objectForKey:@"LogNCI"];
-      v66 = [v65 BOOLValue];
+      bOOLValue4 = [v65 BOOLValue];
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v67 = NFLogGetLogger();
@@ -3408,7 +3408,7 @@ LABEL_48:
           v71 = 43;
         }
 
-        v68(5, "%c[%{public}s %{public}s]:%i Overriding pref settings with LogNCI managed profile: %d", v71, v110, v116, 1365, v66);
+        v68(5, "%c[%{public}s %{public}s]:%i Overriding pref settings with LogNCI managed profile: %d", v71, v110, v116, 1365, bOOLValue4);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3437,12 +3437,12 @@ LABEL_48:
         v124 = 1024;
         v125 = 1365;
         v126 = 1024;
-        v127 = v66;
+        v127 = bOOLValue4;
         _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Overriding pref settings with LogNCI managed profile: %d", buf, 0x28u);
       }
 
       v77 = 4;
-      if (!v66)
+      if (!bOOLValue4)
       {
         v77 = 0;
       }
@@ -3455,7 +3455,7 @@ LABEL_48:
     if (v78)
     {
       v79 = [v13 objectForKey:@"LogRF"];
-      v80 = [v79 intValue];
+      intValue = [v79 intValue];
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v81 = NFLogGetLogger();
@@ -3472,7 +3472,7 @@ LABEL_48:
           v85 = 43;
         }
 
-        v82(5, "%c[%{public}s %{public}s]:%i Overriding pref settings with LogRF managed profile: 0x%04x", v85, v111, v117, 1371, v80);
+        v82(5, "%c[%{public}s %{public}s]:%i Overriding pref settings with LogRF managed profile: 0x%04x", v85, v111, v117, 1371, intValue);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -3501,22 +3501,22 @@ LABEL_48:
         v124 = 1024;
         v125 = 1371;
         v126 = 1024;
-        v127 = v80;
+        v127 = intValue;
         _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Overriding pref settings with LogRF managed profile: 0x%04x", buf, 0x28u);
       }
 
       v91 = v10 & 0xFFFFFFFFFFFFFFFCLL;
-      if (v80 == 1)
+      if (intValue == 1)
       {
         v91 = v10 & 0xFFFFFFFFFFFFFFFCLL | 2;
       }
 
-      if (v80 == 2)
+      if (intValue == 2)
       {
         v91 = v10 & 0xFFFFFFFFFFFFFFFCLL | 1;
       }
 
-      if (v80 == 4)
+      if (intValue == 4)
       {
         v10 |= 3uLL;
       }
@@ -3528,7 +3528,7 @@ LABEL_48:
     }
   }
 
-  v92 = [v5 integerForKey:@"PollingPeriod"];
+  v92 = [_getDefaults integerForKey:@"PollingPeriod"];
   v93 = v92 & ~(v92 >> 63);
   v94 = [NSNumber numberWithUnsignedLongLong:v10];
   [v4 setObject:v94 forKeyedSubscript:@"flags"];
@@ -3536,30 +3536,30 @@ LABEL_48:
   v95 = [NSNumber numberWithInteger:v93];
   [v4 setObject:v95 forKeyedSubscript:@"pollPeriod"];
 
-  v96 = [v5 integerForKey:@"MultiTagPollingPeriod"];
+  v96 = [_getDefaults integerForKey:@"MultiTagPollingPeriod"];
   v97 = [NSNumber numberWithInteger:v96 & ~(v96 >> 63)];
   [v4 setObject:v97 forKeyedSubscript:@"multiTagPollPeriod"];
 
-  v98 = [v5 integerForKey:@"MultiTagPollingRetries"];
+  v98 = [_getDefaults integerForKey:@"MultiTagPollingRetries"];
   v99 = [NSNumber numberWithInteger:v98 & ~(v98 >> 63)];
   [v4 setObject:v99 forKeyedSubscript:@"multiTagPollRetries"];
 
-  v100 = [v5 integerForKey:@"NTAG5DataRate"];
+  v100 = [_getDefaults integerForKey:@"NTAG5DataRate"];
   v101 = [NSNumber numberWithInteger:v100 & ~(v100 >> 63)];
   [v4 setObject:v101 forKeyedSubscript:@"ntag5DataRate"];
 
-  v102 = [v5 integerForKey:@"TypeATagDataRate"];
+  v102 = [_getDefaults integerForKey:@"TypeATagDataRate"];
   v103 = [NSNumber numberWithInteger:v102 & ~(v102 >> 63)];
   [v4 setObject:v103 forKeyedSubscript:@"typeATagDataRate"];
 
-  v104 = [v5 integerForKey:@"NTAG5T1"];
+  v104 = [_getDefaults integerForKey:@"NTAG5T1"];
   v105 = [NSNumber numberWithInteger:v104 & ~(v104 >> 63)];
   [v4 setObject:v105 forKeyedSubscript:@"ntag5T1"];
 
   return v4;
 }
 
-- (void)isHWSupported:(id)a3
+- (void)isHWSupported:(id)supported
 {
   hardwareState = self->_hardwareState;
   if (hardwareState < 4)
@@ -3572,58 +3572,58 @@ LABEL_48:
     v4 = 0;
   }
 
-  (*(a3 + 2))(a3, v4);
+  (*(supported + 2))(supported, v4);
 }
 
-- (void)triggerDelayedWake:(unsigned __int8)a3 callback:(id)a4
+- (void)triggerDelayedWake:(unsigned __int8)wake callback:(id)callback
 {
-  v7 = a4;
+  callbackCopy = callback;
   workQueue = self->_workQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10027B8F8;
   v10[3] = &unk_100316FA0;
-  v11 = v7;
+  v11 = callbackCopy;
   v12 = a2;
   v10[4] = self;
-  v13 = a3;
-  v9 = v7;
+  wakeCopy = wake;
+  v9 = callbackCopy;
   dispatch_async(workQueue, v10);
 }
 
-- (void)pushSignedRF:(id)a3 callback:(id)a4
+- (void)pushSignedRF:(id)f callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  fCopy = f;
+  callbackCopy = callback;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10027BED4;
   block[3] = &unk_1003188A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = fCopy;
+  v13 = callbackCopy;
+  v9 = callbackCopy;
+  v10 = fCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)_sync_pushSignedRF:(id)a3 callback:(id)a4
+- (void)_sync_pushSignedRF:(id)f callback:(id)callback
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10027BFC0;
   v10[3] = &unk_10031D630;
-  v11 = a3;
+  fCopy = f;
   v12 = a2;
   v10[4] = self;
-  v7 = v11;
-  v8 = a4;
+  v7 = fCopy;
+  callbackCopy = callback;
   v9 = [(_NFACHardwareManager *)self _executeWithDriverSessionSync:@"Push RF" block:v10];
-  v8[2](v8, v9);
+  callbackCopy[2](callbackCopy, v9);
 }
 
-- (void)basebandStateChanged:(BOOL)a3
+- (void)basebandStateChanged:(BOOL)changed
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -3632,18 +3632,18 @@ LABEL_48:
   block[3] = &unk_10031D658;
   block[4] = self;
   block[5] = a2;
-  v5 = a3;
+  changedCopy = changed;
   dispatch_async(workQueue, block);
 }
 
 - (os_state_data_s)dumpState
 {
   v4 = [NSMutableDictionary alloc];
-  v5 = [(_NFACHardwareManager *)self _getInfo];
-  v6 = [v4 initWithDictionary:v5];
+  _getInfo = [(_NFACHardwareManager *)self _getInfo];
+  v6 = [v4 initWithDictionary:_getInfo];
 
-  v7 = [(NFACDriverWrapper *)self->_driverWrapper state];
-  [v6 setObject:v7 forKeyedSubscript:@"driverwrapperState"];
+  state = [(NFACDriverWrapper *)self->_driverWrapper state];
+  [v6 setObject:state forKeyedSubscript:@"driverwrapperState"];
 
   v25 = 0;
   v8 = [NSPropertyListSerialization dataWithPropertyList:v6 format:200 options:0 error:&v25];
@@ -3732,12 +3732,12 @@ LABEL_48:
         v6 = *(*(&v10 + 1) + 8 * i);
         if ([v6 silentType] == 3)
         {
-          v7 = [v6 tagID];
-          v8 = [v7 bytes];
+          tagID = [v6 tagID];
+          bytes = [tagID bytes];
 
-          if (v8)
+          if (bytes)
           {
-            if (*v8 - 87 < 2)
+            if (*bytes - 87 < 2)
             {
               LOBYTE(v3) = 1;
               goto LABEL_13;

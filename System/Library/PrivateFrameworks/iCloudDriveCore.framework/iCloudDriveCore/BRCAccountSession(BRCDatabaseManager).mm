@@ -273,7 +273,7 @@
 
 - (void)_loadClientStateFromClientDB
 {
-  OUTLINED_FUNCTION_21(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_21(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_9();
   OUTLINED_FUNCTION_20(v1, v2, v3, v4, v5);
@@ -407,7 +407,7 @@
   v5 = brc_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
-    *a1 = 138412290;
+    *self = 138412290;
     *a2 = v2;
     OUTLINED_FUNCTION_22(&dword_223E7A000, v6, v7, "[CRIT] Assertion failed: db.serialQueue%@");
   }

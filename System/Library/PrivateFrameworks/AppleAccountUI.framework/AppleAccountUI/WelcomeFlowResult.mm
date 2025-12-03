@@ -3,10 +3,10 @@
 - (NSError)error;
 - (NSString)stage;
 - (int64_t)outcome;
-- (void)setError:(id)a3;
-- (void)setInfo:(id)a3;
-- (void)setOutcome:(int64_t)a3;
-- (void)setStage:(id)a3;
+- (void)setError:(id)error;
+- (void)setInfo:(id)info;
+- (void)setOutcome:(int64_t)outcome;
+- (void)setStage:(id)stage;
 @end
 
 @implementation WelcomeFlowResult
@@ -19,10 +19,10 @@
   return v4;
 }
 
-- (void)setOutcome:(int64_t)a3
+- (void)setOutcome:(int64_t)outcome
 {
   MEMORY[0x1E69E5928](self);
-  sub_1C550F3C8(a3);
+  sub_1C550F3C8(outcome);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -35,11 +35,11 @@
   return v4;
 }
 
-- (void)setStage:(id)a3
+- (void)setStage:(id)stage
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](stage);
   MEMORY[0x1E69E5928](self);
-  sub_1C550F720(a3);
+  sub_1C550F720(stage);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -63,14 +63,14 @@
   return v4;
 }
 
-- (void)setInfo:(id)a3
+- (void)setInfo:(id)info
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](info);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (info)
   {
     v3 = sub_1C5596444();
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](info);
     v4 = v3;
   }
 
@@ -103,21 +103,21 @@
   return v4;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](error);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (error)
   {
-    v3 = a3;
+    errorCopy = error;
   }
 
   else
   {
-    v3 = 0;
+    errorCopy = 0;
   }
 
-  sub_1C550FF78(v3);
+  sub_1C550FF78(errorCopy);
   MEMORY[0x1E69E5920](self);
 }
 

@@ -1,9 +1,9 @@
 @interface PXGCornerRadiusMask
 + (id)_loadQueue;
-+ (id)cornerRadiusMaskForDevice:(id)a3 maxCornerRadius:(double)a4 screenScale:(double)a5;
++ (id)cornerRadiusMaskForDevice:(id)device maxCornerRadius:(double)radius screenScale:(double)scale;
 - (MTLTexture)texture;
 - (PXGCornerRadiusMask)init;
-- (PXGCornerRadiusMask)initWithDevice:(id)a3 maxCornerRadius:(double)a4 screenScale:(double)a5;
+- (PXGCornerRadiusMask)initWithDevice:(id)device maxCornerRadius:(double)radius screenScale:(double)scale;
 - (void)_loadCornerRadiusTexture;
 @end
 
@@ -11,16 +11,16 @@
 
 - (MTLTexture)texture
 {
-  v3 = [(PXGCornerRadiusMask *)self atomicTexture];
-  if (!v3)
+  atomicTexture = [(PXGCornerRadiusMask *)self atomicTexture];
+  if (!atomicTexture)
   {
     v4 = +[PXGCornerRadiusMask _loadQueue];
     dispatch_sync(v4, &__block_literal_global_17);
 
-    v3 = [(PXGCornerRadiusMask *)self atomicTexture];
+    atomicTexture = [(PXGCornerRadiusMask *)self atomicTexture];
   }
 
-  return v3;
+  return atomicTexture;
 }
 
 - (void)_loadCornerRadiusTexture
@@ -103,34 +103,34 @@ void __47__PXGCornerRadiusMask__loadCornerRadiusTexture__block_invoke(uint64_t a
 
 - (PXGCornerRadiusMask)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGCornerRadiusMask.m" lineNumber:62 description:{@"%s is not available as initializer", "-[PXGCornerRadiusMask init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGCornerRadiusMask.m" lineNumber:62 description:{@"%s is not available as initializer", "-[PXGCornerRadiusMask init]"}];
 
   abort();
 }
 
-- (PXGCornerRadiusMask)initWithDevice:(id)a3 maxCornerRadius:(double)a4 screenScale:(double)a5
+- (PXGCornerRadiusMask)initWithDevice:(id)device maxCornerRadius:(double)radius screenScale:(double)scale
 {
-  v9 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = PXGCornerRadiusMask;
   v10 = [(PXGCornerRadiusMask *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a3);
-    v11->_screenScale = a5;
-    v11->_maxCornerRadius = a4;
+    objc_storeStrong(&v10->_device, device);
+    v11->_screenScale = scale;
+    v11->_maxCornerRadius = radius;
     [(PXGCornerRadiusMask *)v11 _loadCornerRadiusTexture];
   }
 
   return v11;
 }
 
-+ (id)cornerRadiusMaskForDevice:(id)a3 maxCornerRadius:(double)a4 screenScale:(double)a5
++ (id)cornerRadiusMaskForDevice:(id)device maxCornerRadius:(double)radius screenScale:(double)scale
 {
-  v7 = a3;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"device:%p maxCornerRadius:%.5f screenScale:%.5f", v7, *&a4, *&a5];
+  deviceCopy = device;
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"device:%p maxCornerRadius:%.5f screenScale:%.5f", deviceCopy, *&radius, *&scale];
   if (cornerRadiusMaskForDevice_maxCornerRadius_screenScale__onceToken[0] != -1)
   {
     dispatch_once(cornerRadiusMaskForDevice_maxCornerRadius_screenScale__onceToken, &__block_literal_global_4);
@@ -139,7 +139,7 @@ void __47__PXGCornerRadiusMask__loadCornerRadiusTexture__block_invoke(uint64_t a
   v9 = [cornerRadiusMaskForDevice_maxCornerRadius_screenScale__cache objectForKey:v8];
   if (!v9)
   {
-    v9 = [[PXGCornerRadiusMask alloc] initWithDevice:v7 maxCornerRadius:a4 screenScale:a5];
+    v9 = [[PXGCornerRadiusMask alloc] initWithDevice:deviceCopy maxCornerRadius:radius screenScale:scale];
     [cornerRadiusMaskForDevice_maxCornerRadius_screenScale__cache setObject:v9 forKey:v8];
   }
 

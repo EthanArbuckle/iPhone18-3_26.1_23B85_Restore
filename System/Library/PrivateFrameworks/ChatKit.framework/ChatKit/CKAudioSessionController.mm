@@ -2,21 +2,21 @@
 + (id)queue;
 + (id)shareInstance;
 - (CKAudioSessionController)init;
-- (void)audioSessionInterruption:(id)a3;
-- (void)audioSessionMediaServicesWereLost:(id)a3;
-- (void)audioSessionMediaServicesWereReset:(id)a3;
-- (void)audioSessionRouteChange:(id)a3;
-- (void)configureAudioSessionWithOptions:(unint64_t)a3;
+- (void)audioSessionInterruption:(id)interruption;
+- (void)audioSessionMediaServicesWereLost:(id)lost;
+- (void)audioSessionMediaServicesWereReset:(id)reset;
+- (void)audioSessionRouteChange:(id)change;
+- (void)configureAudioSessionWithOptions:(unint64_t)options;
 - (void)dealloc;
-- (void)setActive:(BOOL)a3 options:(unint64_t)a4 completion:(id)a5;
+- (void)setActive:(BOOL)active options:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation CKAudioSessionController
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKAudioSessionController;
@@ -30,11 +30,11 @@
   v2 = [(CKAudioSessionController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_audioSessionInterruption_ name:*MEMORY[0x1E69580D8] object:0];
-    [v3 addObserver:v2 selector:sel_audioSessionRouteChange_ name:*MEMORY[0x1E6958228] object:0];
-    [v3 addObserver:v2 selector:sel_audioSessionMediaServicesWereLost_ name:*MEMORY[0x1E6958110] object:0];
-    [v3 addObserver:v2 selector:sel_audioSessionMediaServicesWereReset_ name:*MEMORY[0x1E6958128] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_audioSessionInterruption_ name:*MEMORY[0x1E69580D8] object:0];
+    [defaultCenter addObserver:v2 selector:sel_audioSessionRouteChange_ name:*MEMORY[0x1E6958228] object:0];
+    [defaultCenter addObserver:v2 selector:sel_audioSessionMediaServicesWereLost_ name:*MEMORY[0x1E6958110] object:0];
+    [defaultCenter addObserver:v2 selector:sel_audioSessionMediaServicesWereReset_ name:*MEMORY[0x1E6958128] object:0];
   }
 
   return v2;
@@ -79,21 +79,21 @@ void __33__CKAudioSessionController_queue__block_invoke()
   queue_sQueue = v0;
 }
 
-- (void)setActive:(BOOL)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)setActive:(BOOL)active options:(unint64_t)options completion:(id)completion
 {
-  v6 = a3;
+  activeCopy = active;
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = _Block_copy(v8);
+      v10 = _Block_copy(completionCopy);
       *buf = 67109632;
-      v19 = v6;
+      v19 = activeCopy;
       v20 = 1024;
-      v21 = a4 & 1;
+      v21 = options & 1;
       v22 = 2048;
       v23 = v10;
       _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "setActive:%d shouldUseSpeaker:%d completion:%p", buf, 0x18u);
@@ -105,12 +105,12 @@ void __33__CKAudioSessionController_queue__block_invoke()
   v13[1] = 3221225472;
   v13[2] = __57__CKAudioSessionController_setActive_options_completion___block_invoke;
   v13[3] = &unk_1E72F7AE0;
-  v16 = v6;
-  v17 = a4 & 1;
+  v16 = activeCopy;
+  v17 = options & 1;
   v13[4] = self;
-  v14 = v8;
-  v15 = a4;
-  v12 = v8;
+  v14 = completionCopy;
+  optionsCopy = options;
+  v12 = completionCopy;
   dispatch_async(v11, v13);
 }
 
@@ -192,20 +192,20 @@ void __57__CKAudioSessionController_setActive_options_completion___block_invoke(
   }
 }
 
-- (void)configureAudioSessionWithOptions:(unint64_t)a3
+- (void)configureAudioSessionWithOptions:(unint64_t)options
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v31 = @"CKAudioSessionControllerSessionNotificationOptionsKey";
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
   v32[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-  [v5 postNotificationName:@"CKAudioSessionControllerSessionOptionsWillChangeNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"CKAudioSessionControllerSessionOptionsWillChangeNotification" object:self userInfo:v7];
 
-  v8 = [MEMORY[0x1E6958460] sharedInstance];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
   v9 = *MEMORY[0x1E6958130];
   v28 = 0;
-  LOBYTE(self) = [v8 setMode:v9 error:&v28];
+  LOBYTE(self) = [mEMORY[0x1E6958460] setMode:v9 error:&v28];
   v10 = v28;
   if ((self & 1) == 0 && IMOSLoggingEnabled())
   {
@@ -218,14 +218,14 @@ void __57__CKAudioSessionController_setActive_options_completion___block_invoke(
     }
   }
 
-  v12 = a3 & 1;
+  v12 = options & 1;
   v13 = 44;
-  if ((a3 & 1) == 0)
+  if ((options & 1) == 0)
   {
     v13 = 36;
   }
 
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
     v14 = 0;
   }
@@ -236,13 +236,13 @@ void __57__CKAudioSessionController_setActive_options_completion___block_invoke(
   }
 
   v15 = MEMORY[0x1E6958038];
-  if ((a3 & 2) == 0)
+  if ((options & 2) == 0)
   {
     v15 = MEMORY[0x1E6958060];
   }
 
   v16 = *v15;
-  if ((a3 & 8) != 0)
+  if ((options & 8) != 0)
   {
     v17 = *MEMORY[0x1E6958068];
 
@@ -250,7 +250,7 @@ void __57__CKAudioSessionController_setActive_options_completion___block_invoke(
   }
 
   v27 = 0;
-  v18 = [v8 setCategory:v16 withOptions:v14 | (a3 >> 1) & 2 error:&v27];
+  v18 = [mEMORY[0x1E6958460] setCategory:v16 withOptions:v14 | (options >> 1) & 2 error:&v27];
   v19 = v27;
   if ((v18 & 1) == 0 && IMOSLoggingEnabled())
   {
@@ -264,7 +264,7 @@ void __57__CKAudioSessionController_setActive_options_completion___block_invoke(
   }
 
   v26 = 0;
-  v21 = [v8 setActivationContext:MEMORY[0x1E695E0F8] error:&v26];
+  v21 = [mEMORY[0x1E6958460] setActivationContext:MEMORY[0x1E695E0F8] error:&v26];
   v22 = v26;
   if ((v21 & 1) == 0 && IMOSLoggingEnabled())
   {
@@ -282,27 +282,27 @@ void __57__CKAudioSessionController_setActive_options_completion___block_invoke(
     v24 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [v8 outputDataSources];
+      outputDataSources = [mEMORY[0x1E6958460] outputDataSources];
       *buf = 67109378;
       LODWORD(v30[0]) = v12;
       WORD2(v30[0]) = 2112;
-      *(v30 + 6) = v25;
+      *(v30 + 6) = outputDataSources;
       _os_log_impl(&dword_19020E000, v24, OS_LOG_TYPE_INFO, "AudioSessionController: configureAudioSession using speaker = %d, %@", buf, 0x12u);
     }
   }
 }
 
-- (void)audioSessionRouteChange:(id)a3
+- (void)audioSessionRouteChange:(id)change
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 userInfo];
-      v7 = [v6 objectForKey:*MEMORY[0x1E6958230]];
+      userInfo = [changeCopy userInfo];
+      v7 = [userInfo objectForKey:*MEMORY[0x1E6958230]];
       v12 = 138412290;
       v13 = v7;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "audioSessionRouteChange: %@", &v12, 0xCu);
@@ -312,11 +312,11 @@ void __57__CKAudioSessionController_setActive_options_completion___block_invoke(
   [(CKAudioSessionController *)self setDirty:1];
   if ([(CKAudioSessionController *)self isActive])
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKey:*MEMORY[0x1E6958238]];
-    v10 = [v9 unsignedIntegerValue];
+    userInfo2 = [changeCopy userInfo];
+    v9 = [userInfo2 objectForKey:*MEMORY[0x1E6958238]];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    if ((v10 - 1) <= 1)
+    if ((unsignedIntegerValue - 1) <= 1)
     {
       if (IMOSLoggingEnabled())
       {
@@ -333,17 +333,17 @@ void __57__CKAudioSessionController_setActive_options_completion___block_invoke(
   }
 }
 
-- (void)audioSessionInterruption:(id)a3
+- (void)audioSessionInterruption:(id)interruption
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interruptionCopy = interruption;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = interruptionCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "audioSessionInterruption: %@", &v6, 0xCu);
     }
   }
@@ -351,17 +351,17 @@ void __57__CKAudioSessionController_setActive_options_completion___block_invoke(
   [(CKAudioSessionController *)self setDirty:1];
 }
 
-- (void)audioSessionMediaServicesWereLost:(id)a3
+- (void)audioSessionMediaServicesWereLost:(id)lost
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lostCopy = lost;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = lostCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "audioSessionMediaServicesWereLost: %@", &v6, 0xCu);
     }
   }
@@ -369,17 +369,17 @@ void __57__CKAudioSessionController_setActive_options_completion___block_invoke(
   [(CKAudioSessionController *)self setDirty:1];
 }
 
-- (void)audioSessionMediaServicesWereReset:(id)a3
+- (void)audioSessionMediaServicesWereReset:(id)reset
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resetCopy = reset;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = resetCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "audioSessionMediaServicesWereReset: %@", &v6, 0xCu);
     }
   }

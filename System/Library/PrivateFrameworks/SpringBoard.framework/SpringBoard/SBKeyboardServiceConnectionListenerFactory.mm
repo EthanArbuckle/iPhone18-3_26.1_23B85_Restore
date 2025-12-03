@@ -1,16 +1,16 @@
 @interface SBKeyboardServiceConnectionListenerFactory
-- (id)newKeyboardServiceListenerForDelegate:(id)a3 serviceQueue:(id)a4;
+- (id)newKeyboardServiceListenerForDelegate:(id)delegate serviceQueue:(id)queue;
 @end
 
 @implementation SBKeyboardServiceConnectionListenerFactory
 
-- (id)newKeyboardServiceListenerForDelegate:(id)a3 serviceQueue:(id)a4
+- (id)newKeyboardServiceListenerForDelegate:(id)delegate serviceQueue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_SBKeyboardServiceConnectionListener alloc] initWithServiceQueue:v5];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  v7 = [[_SBKeyboardServiceConnectionListener alloc] initWithServiceQueue:queueCopy];
 
-  [(_SBKeyboardServiceConnectionListener *)v7 setDelegate:v6];
+  [(_SBKeyboardServiceConnectionListener *)v7 setDelegate:delegateCopy];
   return v7;
 }
 

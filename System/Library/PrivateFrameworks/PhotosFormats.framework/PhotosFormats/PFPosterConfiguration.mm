@@ -1,14 +1,14 @@
 @interface PFPosterConfiguration
-+ (id)loadFromURL:(id)a3 error:(id *)a4;
-- (BOOL)saveToURL:(id)a3 error:(id *)a4;
++ (id)loadFromURL:(id)l error:(id *)error;
+- (BOOL)saveToURL:(id)l error:(id *)error;
 - (NSString)description;
-- (PFPosterConfiguration)initWithCoder:(id)a3;
-- (PFPosterConfiguration)initWithConfigurationType:(int64_t)a3 photoLibraryPath:(id)a4;
+- (PFPosterConfiguration)initWithCoder:(id)coder;
+- (PFPosterConfiguration)initWithConfigurationType:(int64_t)type photoLibraryPath:(id)path;
 - (id)analyticsPayload;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)mediaAnalyticsPayload;
 - (int64_t)posterType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFPosterConfiguration
@@ -18,27 +18,27 @@
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(PFPosterConfiguration *)self identifier];
-  v6 = [(PFPosterConfiguration *)self options];
-  v7 = [(PFPosterConfiguration *)self media];
-  v8 = [(PFPosterConfiguration *)self editConfiguration];
-  v9 = [(PFPosterConfiguration *)self shuffleConfiguration];
-  v10 = [(PFPosterConfiguration *)self layoutConfiguration];
-  v11 = [(PFPosterConfiguration *)self userInfo];
-  v12 = [(PFPosterConfiguration *)self photoLibraryPath];
-  v13 = [v15 initWithFormat:@"<%@ %p; identifier: %@; options: %ld; media: %@; edit configuration: %@; shuffle configuration: %@ layout configuration: %@ user info: %@> photoLibraryPath: %@", v4, self, v5, v6, v7, v8, v9, v10, v11, v12];
+  identifier = [(PFPosterConfiguration *)self identifier];
+  options = [(PFPosterConfiguration *)self options];
+  media = [(PFPosterConfiguration *)self media];
+  editConfiguration = [(PFPosterConfiguration *)self editConfiguration];
+  shuffleConfiguration = [(PFPosterConfiguration *)self shuffleConfiguration];
+  layoutConfiguration = [(PFPosterConfiguration *)self layoutConfiguration];
+  userInfo = [(PFPosterConfiguration *)self userInfo];
+  photoLibraryPath = [(PFPosterConfiguration *)self photoLibraryPath];
+  v13 = [v15 initWithFormat:@"<%@ %p; identifier: %@; options: %ld; media: %@; edit configuration: %@; shuffle configuration: %@ layout configuration: %@ user info: %@> photoLibraryPath: %@", v4, self, identifier, options, media, editConfiguration, shuffleConfiguration, layoutConfiguration, userInfo, photoLibraryPath];
 
   return v13;
 }
 
-- (PFPosterConfiguration)initWithCoder:(id)a3
+- (PFPosterConfiguration)initWithCoder:(id)coder
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"configurationType"];
-  if ([v4 containsValueForKey:@"photoLibraryPath"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"configurationType"];
+  if ([coderCopy containsValueForKey:@"photoLibraryPath"])
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photoLibraryPath"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photoLibraryPath"];
     photoLibraryPath = self->_photoLibraryPath;
     self->_photoLibraryPath = v6;
   }
@@ -46,14 +46,14 @@
   v8 = [(PFPosterConfiguration *)self initWithConfigurationType:v5 photoLibraryPath:self->_photoLibraryPath];
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v8->_options = [v4 decodeIntegerForKey:@"options"];
-    if ([v4 containsValueForKey:@"allowedLayoutStrategies"])
+    v8->_options = [coderCopy decodeIntegerForKey:@"options"];
+    if ([coderCopy containsValueForKey:@"allowedLayoutStrategies"])
     {
-      v11 = [v4 decodeIntegerForKey:@"allowedLayoutStrategies"];
+      v11 = [coderCopy decodeIntegerForKey:@"allowedLayoutStrategies"];
     }
 
     else
@@ -67,17 +67,17 @@
     v34[1] = objc_opt_class();
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
     v14 = [v12 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"media"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"media"];
     media = v8->_media;
     v8->_media = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"editConfiguration"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"editConfiguration"];
     editConfiguration = v8->_editConfiguration;
     v8->_editConfiguration = v17;
 
     if (v5 == 1)
     {
-      v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shuffleConfiguration"];
+      v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shuffleConfiguration"];
       shuffleConfiguration = v8->_shuffleConfiguration;
       v8->_shuffleConfiguration = v19;
 
@@ -87,9 +87,9 @@
       }
     }
 
-    if ([v4 decodeIntegerForKey:@"version"])
+    if ([coderCopy decodeIntegerForKey:@"version"])
     {
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutConfiguration"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutConfiguration"];
       layoutConfiguration = v8->_layoutConfiguration;
       v8->_layoutConfiguration = v21;
     }
@@ -97,7 +97,7 @@
     else
     {
       [MEMORY[0x1E696ACD0] setClass:objc_opt_class() forClassName:@"PFParallaxLayoutConcreteConfiguration"];
-      v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutConfiguration"];
+      v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutConfiguration"];
       if (v23)
       {
         layoutConfiguration = v23;
@@ -125,7 +125,7 @@
     v33[3] = objc_opt_class();
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
     v28 = [v26 setWithArray:v27];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"userInfo"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"userInfo"];
     userInfo = v8->_userInfo;
     v8->_userInfo = v29;
   }
@@ -133,76 +133,76 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v20 = a3;
-  [v20 encodeInteger:1 forKey:@"version"];
-  [v20 encodeInteger:-[PFPosterConfiguration configurationType](self forKey:{"configurationType"), @"configurationType"}];
-  [v20 encodeInteger:-[PFPosterConfiguration options](self forKey:{"options"), @"options"}];
-  [v20 encodeInteger:-[PFPosterConfiguration allowedLayoutStrategies](self forKey:{"allowedLayoutStrategies"), @"allowedLayoutStrategies"}];
-  v4 = [(PFPosterConfiguration *)self identifier];
-  [v20 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"version"];
+  [coderCopy encodeInteger:-[PFPosterConfiguration configurationType](self forKey:{"configurationType"), @"configurationType"}];
+  [coderCopy encodeInteger:-[PFPosterConfiguration options](self forKey:{"options"), @"options"}];
+  [coderCopy encodeInteger:-[PFPosterConfiguration allowedLayoutStrategies](self forKey:{"allowedLayoutStrategies"), @"allowedLayoutStrategies"}];
+  identifier = [(PFPosterConfiguration *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(PFPosterConfiguration *)self media];
-  [v20 encodeObject:v5 forKey:@"media"];
+  media = [(PFPosterConfiguration *)self media];
+  [coderCopy encodeObject:media forKey:@"media"];
 
-  v6 = [(PFPosterConfiguration *)self editConfiguration];
-  [v20 encodeObject:v6 forKey:@"editConfiguration"];
+  editConfiguration = [(PFPosterConfiguration *)self editConfiguration];
+  [coderCopy encodeObject:editConfiguration forKey:@"editConfiguration"];
 
   if ([(PFPosterConfiguration *)self configurationType]== 1)
   {
-    v7 = [(PFPosterConfiguration *)self shuffleConfiguration];
+    shuffleConfiguration = [(PFPosterConfiguration *)self shuffleConfiguration];
 
-    if (!v7)
+    if (!shuffleConfiguration)
     {
       v16 = _PFAssertFailHandler();
       [(PFPosterConfiguration *)v16 saveToURL:v17 error:v18, v19];
       return;
     }
 
-    v8 = [(PFPosterConfiguration *)self shuffleConfiguration];
-    [v20 encodeObject:v8 forKey:@"shuffleConfiguration"];
+    shuffleConfiguration2 = [(PFPosterConfiguration *)self shuffleConfiguration];
+    [coderCopy encodeObject:shuffleConfiguration2 forKey:@"shuffleConfiguration"];
   }
 
-  v9 = [(PFPosterConfiguration *)self layoutConfiguration];
+  layoutConfiguration = [(PFPosterConfiguration *)self layoutConfiguration];
 
-  if (v9)
+  if (layoutConfiguration)
   {
-    v10 = [(PFPosterConfiguration *)self layoutConfiguration];
-    [v20 encodeObject:v10 forKey:@"layoutConfiguration"];
+    layoutConfiguration2 = [(PFPosterConfiguration *)self layoutConfiguration];
+    [coderCopy encodeObject:layoutConfiguration2 forKey:@"layoutConfiguration"];
   }
 
-  v11 = [(PFPosterConfiguration *)self userInfo];
+  userInfo = [(PFPosterConfiguration *)self userInfo];
 
-  if (v11)
+  if (userInfo)
   {
-    v12 = [(PFPosterConfiguration *)self userInfo];
-    [v20 encodeObject:v12 forKey:@"userInfo"];
+    userInfo2 = [(PFPosterConfiguration *)self userInfo];
+    [coderCopy encodeObject:userInfo2 forKey:@"userInfo"];
   }
 
-  v13 = [(PFPosterConfiguration *)self photoLibraryPath];
+  photoLibraryPath = [(PFPosterConfiguration *)self photoLibraryPath];
 
-  v14 = v20;
-  if (v13)
+  v14 = coderCopy;
+  if (photoLibraryPath)
   {
-    v15 = [(PFPosterConfiguration *)self photoLibraryPath];
-    [v20 encodeObject:v15 forKey:@"photoLibraryPath"];
+    photoLibraryPath2 = [(PFPosterConfiguration *)self photoLibraryPath];
+    [coderCopy encodeObject:photoLibraryPath2 forKey:@"photoLibraryPath"];
 
-    v14 = v20;
+    v14 = coderCopy;
   }
 }
 
-- (BOOL)saveToURL:(id)a3 error:(id *)a4
+- (BOOL)saveToURL:(id)l error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __41__PFPosterConfiguration_saveToURL_error___block_invoke;
   v17[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v17[4] = a4;
-  v5 = a3;
+  v17[4] = error;
+  lCopy = l;
   v6 = MEMORY[0x1B8C64C40](v17);
-  v7 = [v5 URLByAppendingPathComponent:@"ConfigurationModel.plist"];
+  v7 = [lCopy URLByAppendingPathComponent:@"ConfigurationModel.plist"];
 
   v16 = 0;
   v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v16];
@@ -263,7 +263,7 @@ void **__41__PFPosterConfiguration_saveToURL_error___block_invoke(void **result,
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PFPosterConfiguration allocWithZone:?];
   v5->_configurationType = self->_configurationType;
@@ -280,7 +280,7 @@ void **__41__PFPosterConfiguration_saveToURL_error___block_invoke(void **result,
   v5->_shuffleConfiguration = v8;
 
   objc_storeStrong(&v5->_layoutConfiguration, self->_layoutConfiguration);
-  v10 = [(NSDictionary *)self->_userInfo copyWithZone:a3];
+  v10 = [(NSDictionary *)self->_userInfo copyWithZone:zone];
   userInfo = v5->_userInfo;
   v5->_userInfo = v10;
 
@@ -291,8 +291,8 @@ void **__41__PFPosterConfiguration_saveToURL_error___block_invoke(void **result,
 - (id)mediaAnalyticsPayload
 {
   v33 = *MEMORY[0x1E69E9840];
-  v2 = [(PFPosterConfiguration *)self media];
-  v3 = [v2 copy];
+  media = [(PFPosterConfiguration *)self media];
+  v3 = [media copy];
 
   v28 = 0u;
   v29 = 0u;
@@ -315,12 +315,12 @@ void **__41__PFPosterConfiguration_saveToURL_error___block_invoke(void **result,
           objc_enumerationMutation(v4);
         }
 
-        v11 = [*(*(&v26 + 1) + 8 * i) editConfiguration];
-        v12 = v11;
-        if (v11)
+        editConfiguration = [*(*(&v26 + 1) + 8 * i) editConfiguration];
+        v12 = editConfiguration;
+        if (editConfiguration)
         {
           v8 = (v8 + 1);
-          v7 = v7 + [v11 isDepthEnabled];
+          v7 = v7 + [editConfiguration isDepthEnabled];
         }
       }
 
@@ -349,12 +349,12 @@ void **__41__PFPosterConfiguration_saveToURL_error___block_invoke(void **result,
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:3];
   v18 = [v13 initWithDictionary:v17];
 
-  v19 = [v4 firstObject];
-  v20 = v19;
-  if (v19)
+  firstObject = [v4 firstObject];
+  v20 = firstObject;
+  if (firstObject)
   {
-    v21 = [v19 mediaType];
-    v22 = v21 > 4 ? @"??" : off_1E7B64660[v21];
+    mediaType = [firstObject mediaType];
+    v22 = mediaType > 4 ? @"??" : off_1E7B64660[mediaType];
     v23 = v22;
     [v18 setObject:v23 forKeyedSubscript:@"first_media_type"];
 
@@ -372,14 +372,14 @@ void **__41__PFPosterConfiguration_saveToURL_error___block_invoke(void **result,
 - (id)analyticsPayload
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PFPosterConfiguration *)self configurationType];
+  configurationType = [(PFPosterConfiguration *)self configurationType];
   v5 = @"??";
-  if (v4 == 1)
+  if (configurationType == 1)
   {
     v5 = @"Shuffle";
   }
 
-  if (v4)
+  if (configurationType)
   {
     v6 = v5;
   }
@@ -393,44 +393,44 @@ void **__41__PFPosterConfiguration_saveToURL_error___block_invoke(void **result,
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PFPosterConfiguration options](self, "options")}];
   [v3 setObject:v7 forKeyedSubscript:@"configuration_options"];
 
-  v8 = [(PFPosterConfiguration *)self mediaAnalyticsPayload];
-  [v3 addEntriesFromDictionary:v8];
+  mediaAnalyticsPayload = [(PFPosterConfiguration *)self mediaAnalyticsPayload];
+  [v3 addEntriesFromDictionary:mediaAnalyticsPayload];
 
-  v9 = [(PFPosterConfiguration *)self editConfiguration];
+  editConfiguration = [(PFPosterConfiguration *)self editConfiguration];
 
-  if (v9)
+  if (editConfiguration)
   {
-    v10 = [(PFPosterConfiguration *)self editConfiguration];
-    v11 = [v10 analyticsPayload];
-    [v3 addEntriesFromDictionary:v11];
+    editConfiguration2 = [(PFPosterConfiguration *)self editConfiguration];
+    analyticsPayload = [editConfiguration2 analyticsPayload];
+    [v3 addEntriesFromDictionary:analyticsPayload];
   }
 
-  v12 = [(PFPosterConfiguration *)self shuffleConfiguration];
+  shuffleConfiguration = [(PFPosterConfiguration *)self shuffleConfiguration];
 
-  if (v12)
+  if (shuffleConfiguration)
   {
-    v13 = [(PFPosterConfiguration *)self shuffleConfiguration];
-    v14 = [v13 analyticsPayload];
-    [v3 addEntriesFromDictionary:v14];
+    shuffleConfiguration2 = [(PFPosterConfiguration *)self shuffleConfiguration];
+    analyticsPayload2 = [shuffleConfiguration2 analyticsPayload];
+    [v3 addEntriesFromDictionary:analyticsPayload2];
   }
 
   return v3;
 }
 
-- (PFPosterConfiguration)initWithConfigurationType:(int64_t)a3 photoLibraryPath:(id)a4
+- (PFPosterConfiguration)initWithConfigurationType:(int64_t)type photoLibraryPath:(id)path
 {
-  v7 = a4;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = PFPosterConfiguration;
   v8 = [(PFPosterConfiguration *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    v8->_configurationType = a3;
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
+    v8->_configurationType = type;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v9->_identifier;
-    v9->_identifier = v11;
+    v9->_identifier = uUIDString;
 
     IsAdaptiveLayoutEnabled = PFPosterIsAdaptiveLayoutEnabled();
     v14 = 3;
@@ -440,16 +440,16 @@ void **__41__PFPosterConfiguration_saveToURL_error___block_invoke(void **result,
     }
 
     v9->_allowedLayoutStrategies = v14;
-    objc_storeStrong(&v9->_photoLibraryPath, a4);
+    objc_storeStrong(&v9->_photoLibraryPath, path);
   }
 
   return v9;
 }
 
-+ (id)loadFromURL:(id)a3 error:(id *)a4
++ (id)loadFromURL:(id)l error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [a3 URLByAppendingPathComponent:@"ConfigurationModel.plist"];
+  v5 = [l URLByAppendingPathComponent:@"ConfigurationModel.plist"];
   v15 = 0;
   v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5 options:1 error:&v15];
   v7 = v15;
@@ -472,19 +472,19 @@ LABEL_10:
       *buf = 138412290;
       v17 = v9;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to unarchive poster configuraton data error:%@", buf, 0xCu);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_10;
     }
 
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
     goto LABEL_10;
   }
 
@@ -495,7 +495,7 @@ LABEL_10:
     v18 = 2112;
     v19 = v7;
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to read configuration data at path:%@ error:%@", buf, 0x16u);
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -505,7 +505,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -513,7 +513,7 @@ LABEL_12:
 LABEL_6:
   v11 = v7;
   v8 = 0;
-  *a4 = v7;
+  *error = v7;
 LABEL_13:
   v9 = v7;
 LABEL_14:

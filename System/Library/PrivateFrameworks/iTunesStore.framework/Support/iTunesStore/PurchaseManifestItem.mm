@@ -1,7 +1,7 @@
 @interface PurchaseManifestItem
 - (PurchaseManifestItem)init;
-- (PurchaseManifestItem)initWithManifestItemDictionary:(id)a3;
-- (void)_setValue:(id)a3 forKey:(id)a4;
+- (PurchaseManifestItem)initWithManifestItemDictionary:(id)dictionary;
+- (void)_setValue:(id)value forKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -20,14 +20,14 @@
   return v2;
 }
 
-- (PurchaseManifestItem)initWithManifestItemDictionary:(id)a3
+- (PurchaseManifestItem)initWithManifestItemDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = PurchaseManifestItem;
   v4 = [(PurchaseManifestItem *)&v6 init];
   if (v4)
   {
-    v4->_dictionary = [a3 mutableCopy];
+    v4->_dictionary = [dictionary mutableCopy];
   }
 
   return v4;
@@ -40,17 +40,17 @@
   [(PurchaseManifestItem *)&v3 dealloc];
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4
+- (void)_setValue:(id)value forKey:(id)key
 {
   dictionary = self->_dictionary;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)dictionary setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)dictionary setObject:value forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)dictionary removeObjectForKey:a4];
+    [(NSMutableDictionary *)dictionary removeObjectForKey:key];
   }
 }
 

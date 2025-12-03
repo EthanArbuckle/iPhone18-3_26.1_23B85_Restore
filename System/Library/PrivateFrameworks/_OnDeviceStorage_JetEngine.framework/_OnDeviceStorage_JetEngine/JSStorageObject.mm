@@ -1,7 +1,7 @@
 @interface JSStorageObject
 - (_TtC26_OnDeviceStorage_JetEngine15JSStorageObject)init;
-- (id)createConnectionWithRequestId:(id)a3 :(id)a4;
-- (id)createConnectionWithToken:(id)a3 :(id)a4;
+- (id)createConnectionWithRequestId:(id)id :(id)a4;
+- (id)createConnectionWithToken:(id)token :(id)a4;
 @end
 
 @implementation JSStorageObject
@@ -17,22 +17,22 @@
   return [(JSStorageObject *)&v6 init];
 }
 
-- (id)createConnectionWithToken:(id)a3 :(id)a4
+- (id)createConnectionWithToken:(id)token :(id)a4
 {
-  v6 = a3;
+  tokenCopy = token;
   v7 = a4;
-  v8 = self;
-  v9 = sub_29EC40510(v6, v7, sub_29EC3FD1C);
+  selfCopy = self;
+  v9 = sub_29EC40510(tokenCopy, v7, sub_29EC3FD1C);
 
   return v9;
 }
 
-- (id)createConnectionWithRequestId:(id)a3 :(id)a4
+- (id)createConnectionWithRequestId:(id)id :(id)a4
 {
-  v6 = a3;
+  idCopy = id;
   v7 = a4;
-  v8 = self;
-  v9 = sub_29EC40510(v6, v7, sub_29EC40694);
+  selfCopy = self;
+  v9 = sub_29EC40510(idCopy, v7, sub_29EC40694);
 
   return v9;
 }

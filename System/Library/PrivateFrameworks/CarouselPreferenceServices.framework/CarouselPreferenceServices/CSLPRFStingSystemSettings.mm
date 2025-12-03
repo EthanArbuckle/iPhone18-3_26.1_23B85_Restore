@@ -2,8 +2,8 @@
 - (CSLPRFStingSystemSettings)init;
 - (CSLPRFTwoWaySyncSettingDelegate)delegate;
 - (id)read;
-- (void)twoWaySyncSettingDidUpdate:(id)a3;
-- (void)write:(id)a3;
+- (void)twoWaySyncSettingDidUpdate:(id)update;
+- (void)write:(id)write;
 @end
 
 @implementation CSLPRFStingSystemSettings
@@ -15,10 +15,10 @@
   return WeakRetained;
 }
 
-- (void)twoWaySyncSettingDidUpdate:(id)a3
+- (void)twoWaySyncSettingDidUpdate:(id)update
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = cslprf_sting_settings_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -28,22 +28,22 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained twoWaySyncSettingDidUpdate:v4];
+  [WeakRetained twoWaySyncSettingDidUpdate:updateCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
   stingSystemSettings = self->_stingSystemSettings;
-  v4 = [a3 toExportData];
-  [(CSLPRFTwoWaySyncSetting *)stingSystemSettings setValue:v4];
+  toExportData = [write toExportData];
+  [(CSLPRFTwoWaySyncSetting *)stingSystemSettings setValue:toExportData];
 }
 
 - (id)read
 {
-  v2 = [(CSLPRFTwoWaySyncSetting *)self->_stingSystemSettings value];
-  v3 = [CSLPRFStingSettingsModelData fromExportData:v2];
+  value = [(CSLPRFTwoWaySyncSetting *)self->_stingSystemSettings value];
+  v3 = [CSLPRFStingSettingsModelData fromExportData:value];
 
   return v3;
 }

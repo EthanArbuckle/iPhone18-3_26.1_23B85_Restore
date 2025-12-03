@@ -1,11 +1,11 @@
 @interface RBSResistTerminationGrant
-+ (id)grantWithResistance:(unsigned __int8)a3;
-- (BOOL)isEqual:(id)a3;
-- (RBSResistTerminationGrant)initWithRBSXPCCoder:(id)a3;
++ (id)grantWithResistance:(unsigned __int8)resistance;
+- (BOOL)isEqual:(id)equal;
+- (RBSResistTerminationGrant)initWithRBSXPCCoder:(id)coder;
 - (id)_initWithResistance:(id)result;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSResistTerminationGrant
@@ -28,42 +28,42 @@
   return v6;
 }
 
-+ (id)grantWithResistance:(unsigned __int8)a3
++ (id)grantWithResistance:(unsigned __int8)resistance
 {
-  v3 = [[RBSResistTerminationGrant alloc] _initWithResistance:a3];
+  v3 = [[RBSResistTerminationGrant alloc] _initWithResistance:resistance];
 
   return v3;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSResistTerminationGrant;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeInt64:self->_resistance forKey:{@"_resistance", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:self->_resistance forKey:{@"_resistance", v5.receiver, v5.super_class}];
 }
 
-- (RBSResistTerminationGrant)initWithRBSXPCCoder:(id)a3
+- (RBSResistTerminationGrant)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSResistTerminationGrant;
-  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_resistance = [v4 decodeInt64ForKey:@"_resistance"];
+    v5->_resistance = [coderCopy decodeInt64ForKey:@"_resistance"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RBSResistTerminationGrant;
-  v5 = [(RBSAttribute *)&v7 isEqual:v4]&& self->_resistance == v4[8];
+  v5 = [(RBSAttribute *)&v7 isEqual:equalCopy]&& self->_resistance == equalCopy[8];
 
   return v5;
 }
@@ -76,8 +76,8 @@
     v3 = result;
     if ((a2 - 51) <= 0xFFFFFFCD)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel__initWithResistance_ object:v3 file:@"RBSResistTerminationGrant.m" lineNumber:65 description:@"initialized with invalid resistance"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithResistance_ object:v3 file:@"RBSResistTerminationGrant.m" lineNumber:65 description:@"initialized with invalid resistance"];
     }
 
     v5.receiver = v3;

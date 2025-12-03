@@ -1,25 +1,25 @@
 @interface INRelevantShortcut
 - (INImage)_keyImage;
 - (INRelevantShortcut)init;
-- (INRelevantShortcut)initWithCoder:(id)a3;
+- (INRelevantShortcut)initWithCoder:(id)coder;
 - (INRelevantShortcut)initWithShortcut:(INShortcut *)shortcut;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)_compareSubProducerOne:(id)a3 subProducerTwo:(id)a4;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)_compareSubProducerOne:(id)one subProducerTwo:(id)two;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 - (void)setRelevanceProviders:(NSArray *)relevanceProviders;
 @end
 
 @implementation INRelevantShortcut
 
-- (int64_t)_compareSubProducerOne:(id)a3 subProducerTwo:(id)a4
+- (int64_t)_compareSubProducerOne:(id)one subProducerTwo:(id)two
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _keyImage];
-  v8 = [v6 _keyImage];
+  oneCopy = one;
+  twoCopy = two;
+  _keyImage = [oneCopy _keyImage];
+  _keyImage2 = [twoCopy _keyImage];
 
-  if (v7 && v8)
+  if (_keyImage && _keyImage2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -35,7 +35,7 @@
 
   else
   {
-    if (v8)
+    if (_keyImage2)
     {
       v10 = -1;
     }
@@ -45,7 +45,7 @@
       v10 = 0;
     }
 
-    if (v7)
+    if (_keyImage)
     {
       v9 = 1;
     }
@@ -61,62 +61,62 @@
 
 - (INImage)_keyImage
 {
-  v3 = [(INRelevantShortcut *)self watchTemplate];
-  v4 = [v3 _keyImage];
-  v5 = v4;
-  if (v4)
+  watchTemplate = [(INRelevantShortcut *)self watchTemplate];
+  _keyImage = [watchTemplate _keyImage];
+  v5 = _keyImage;
+  if (_keyImage)
   {
-    v6 = v4;
+    _keyImage2 = _keyImage;
   }
 
   else
   {
-    v7 = [(INRelevantShortcut *)self shortcut];
-    v6 = [v7 _keyImage];
+    shortcut = [(INRelevantShortcut *)self shortcut];
+    _keyImage2 = [shortcut _keyImage];
   }
 
-  return v6;
+  return _keyImage2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   shortcut = self->_shortcut;
-  v5 = a3;
-  [v5 encodeObject:shortcut forKey:@"shortcut"];
-  [v5 encodeObject:self->_relevanceProviders forKey:@"relevanceProviders"];
-  [v5 encodeObject:self->_watchTemplate forKey:@"watchTemplate"];
-  [v5 encodeObject:self->_widgetKind forKey:@"widgetKind"];
-  [v5 encodeInteger:self->_shortcutRole forKey:@"shortcutRole"];
+  coderCopy = coder;
+  [coderCopy encodeObject:shortcut forKey:@"shortcut"];
+  [coderCopy encodeObject:self->_relevanceProviders forKey:@"relevanceProviders"];
+  [coderCopy encodeObject:self->_watchTemplate forKey:@"watchTemplate"];
+  [coderCopy encodeObject:self->_widgetKind forKey:@"widgetKind"];
+  [coderCopy encodeInteger:self->_shortcutRole forKey:@"shortcutRole"];
 }
 
-- (INRelevantShortcut)initWithCoder:(id)a3
+- (INRelevantShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = INRelevantShortcut;
   v5 = [(INRelevantShortcut *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcut"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcut"];
     shortcut = v5->_shortcut;
     v5->_shortcut = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"relevanceProviders"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"relevanceProviders"];
     relevanceProviders = v5->_relevanceProviders;
     v5->_relevanceProviders = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchTemplate"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchTemplate"];
     watchTemplate = v5->_watchTemplate;
     v5->_watchTemplate = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widgetKind"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetKind"];
     widgetKind = v5->_widgetKind;
     v5->_widgetKind = v15;
 
-    v5->_shortcutRole = [v4 decodeIntegerForKey:@"shortcutRole"];
+    v5->_shortcutRole = [coderCopy decodeIntegerForKey:@"shortcutRole"];
     v17 = v5;
   }
 
@@ -245,30 +245,30 @@ LABEL_8:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(INRelevantShortcut *)self relevanceProviders];
-  [v4 setRelevanceProviders:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  relevanceProviders = [(INRelevantShortcut *)self relevanceProviders];
+  [v4 setRelevanceProviders:relevanceProviders];
 
-  v6 = [(INRelevantShortcut *)self watchTemplate];
-  [v4 setWatchTemplate:v6];
+  watchTemplate = [(INRelevantShortcut *)self watchTemplate];
+  [v4 setWatchTemplate:watchTemplate];
 
-  v7 = [(INRelevantShortcut *)self widgetKind];
-  [v4 setWidgetKind:v7];
+  widgetKind = [(INRelevantShortcut *)self widgetKind];
+  [v4 setWidgetKind:widgetKind];
 
-  v8 = [(INRelevantShortcut *)self shortcut];
-  [v4 setShortcut:v8];
+  shortcut = [(INRelevantShortcut *)self shortcut];
+  [v4 setShortcut:shortcut];
 
   [v4 setShortcutRole:{-[INRelevantShortcut shortcutRole](self, "shortcutRole")}];
   return v4;
 }
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  imagesCopy = images;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = [(INRelevantShortcut *)self copy];
     v9 = objc_alloc_init(MEMORY[0x1E696ADC8]);
@@ -283,14 +283,14 @@ LABEL_8:
     v19[2] = __80__INRelevantShortcut_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke;
     v19[3] = &unk_1E7287140;
     v19[4] = v8;
-    v20 = v7;
+    v20 = completionCopy;
     v12 = [v11 blockOperationWithBlock:v19];
-    v13 = [(INRelevantShortcut *)self shortcut];
-    if (v13)
+    shortcut = [(INRelevantShortcut *)self shortcut];
+    if (shortcut)
     {
       v14 = objc_alloc_init(INImageProxyInjectionOperation);
-      [(INImageProxyInjectionOperation *)v14 setInjector:v13];
-      [(INImageProxyInjectionOperation *)v14 setImageProxyRequestBlock:v6];
+      [(INImageProxyInjectionOperation *)v14 setInjector:shortcut];
+      [(INImageProxyInjectionOperation *)v14 setImageProxyRequestBlock:imagesCopy];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __80__INRelevantShortcut_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke_2;
@@ -301,12 +301,12 @@ LABEL_8:
       [v9 addOperation:v14];
     }
 
-    v15 = [(INRelevantShortcut *)self watchTemplate];
-    if (v15)
+    watchTemplate = [(INRelevantShortcut *)self watchTemplate];
+    if (watchTemplate)
     {
       v16 = objc_alloc_init(INImageProxyInjectionOperation);
-      [(INImageProxyInjectionOperation *)v16 setInjector:v15];
-      [(INImageProxyInjectionOperation *)v16 setImageProxyRequestBlock:v6];
+      [(INImageProxyInjectionOperation *)v16 setInjector:watchTemplate];
+      [(INImageProxyInjectionOperation *)v16 setImageProxyRequestBlock:imagesCopy];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __80__INRelevantShortcut_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke_3;

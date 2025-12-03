@@ -1,22 +1,22 @@
 @interface MarkupContainerViewControllerAnalysisDelegate
-- (id)presentingViewControllerForContext:(id)a3;
-- (void)contextDidCompleteSubjectAnalysis:(id)a3;
+- (id)presentingViewControllerForContext:(id)context;
+- (void)contextDidCompleteSubjectAnalysis:(id)analysis;
 @end
 
 @implementation MarkupContainerViewControllerAnalysisDelegate
 
-- (id)presentingViewControllerForContext:(id)a3
+- (id)presentingViewControllerForContext:(id)context
 {
   Strong = swift_unknownObjectWeakLoadStrong();
 
   return Strong;
 }
 
-- (void)contextDidCompleteSubjectAnalysis:(id)a3
+- (void)contextDidCompleteSubjectAnalysis:(id)analysis
 {
   swift_unknownObjectRetain();
 
-  MarkupContainerViewControllerAnalysisDelegate.contextDidCompleteSubjectAnalysis(_:)(a3);
+  MarkupContainerViewControllerAnalysisDelegate.contextDidCompleteSubjectAnalysis(_:)(analysis);
   swift_unknownObjectRelease();
 }
 

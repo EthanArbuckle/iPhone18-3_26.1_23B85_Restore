@@ -1,23 +1,23 @@
 @interface OKProducerContent
 - (BOOL)isLoaded;
-- (OKProducerContent)initWithURL:(id)a3;
+- (OKProducerContent)initWithURL:(id)l;
 - (void)dealloc;
 @end
 
 @implementation OKProducerContent
 
-- (OKProducerContent)initWithURL:(id)a3
+- (OKProducerContent)initWithURL:(id)l
 {
-  if ([objc_msgSend(a3 "pathExtension")])
+  if ([objc_msgSend(l "pathExtension")])
   {
     v7.receiver = self;
     v7.super_class = OKProducerContent;
-    return [(OKProducerBundle *)&v7 initWithURL:a3 bundleType:3];
+    return [(OKProducerBundle *)&v7 initWithURL:l bundleType:3];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
     return 0;
   }
 }
@@ -33,9 +33,9 @@
 - (BOOL)isLoaded
 {
   objc_sync_enter(self);
-  v3 = [(OKProducerPlugin *)self->_plugin isLoaded];
+  isLoaded = [(OKProducerPlugin *)self->_plugin isLoaded];
   objc_sync_exit(self);
-  return v3;
+  return isLoaded;
 }
 
 @end

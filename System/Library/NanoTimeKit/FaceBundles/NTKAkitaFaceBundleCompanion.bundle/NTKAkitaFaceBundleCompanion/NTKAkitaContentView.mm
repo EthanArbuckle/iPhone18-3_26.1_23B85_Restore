@@ -1,67 +1,67 @@
 @interface NTKAkitaContentView
 - (BOOL)updateDate;
-- (CGPath)_hairPathForIndex:(unint64_t)a3;
-- (CGPath)_headPathForIndex:(unint64_t)a3;
-- (CGPath)_lipsInnerPathForIndex:(unint64_t)a3;
-- (CGPath)_lipsOuterPathForIndex:(unint64_t)a3 fullness:(unint64_t)a4;
-- (CGPath)_neckPathForIndex:(unint64_t)a3;
-- (CGPath)_nosePathForIndex:(unint64_t)a3;
-- (CGPath)_shirtPathForIndex:(unint64_t)a3;
-- (NTKAkitaContentView)initWithFrame:(CGRect)a3 role:(unint64_t)a4 morph:(id)a5 dateProvider:(id)a6 is24HourMode:(BOOL)a7 device:(id)a8;
-- (id)_createFillShapeLayerOfSize:(CGSize)a3 parent:(id)a4;
-- (id)_createLayerOfSize:(CGSize)a3 parent:(id)a4;
-- (id)_createStrokeShapeLayerOfSize:(CGSize)a3 parent:(id)a4;
-- (id)_createTextLayerOfSize:(CGSize)a3 x:(double)a4 alignment:(id)a5 parent:(id)a6;
-- (void)_animateFromMorph:(id)a3 toMorph:(id)a4;
-- (void)_handleSignificantTimeChange:(id)a3;
-- (void)_setMorph:(id)a3;
-- (void)_setupSceneForLayer:(id)a3 size:(CGSize)a4;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (CGPath)_hairPathForIndex:(unint64_t)index;
+- (CGPath)_headPathForIndex:(unint64_t)index;
+- (CGPath)_lipsInnerPathForIndex:(unint64_t)index;
+- (CGPath)_lipsOuterPathForIndex:(unint64_t)index fullness:(unint64_t)fullness;
+- (CGPath)_neckPathForIndex:(unint64_t)index;
+- (CGPath)_nosePathForIndex:(unint64_t)index;
+- (CGPath)_shirtPathForIndex:(unint64_t)index;
+- (NTKAkitaContentView)initWithFrame:(CGRect)frame role:(unint64_t)role morph:(id)morph dateProvider:(id)provider is24HourMode:(BOOL)mode device:(id)device;
+- (id)_createFillShapeLayerOfSize:(CGSize)size parent:(id)parent;
+- (id)_createLayerOfSize:(CGSize)size parent:(id)parent;
+- (id)_createStrokeShapeLayerOfSize:(CGSize)size parent:(id)parent;
+- (id)_createTextLayerOfSize:(CGSize)size x:(double)x alignment:(id)alignment parent:(id)parent;
+- (void)_animateFromMorph:(id)morph toMorph:(id)toMorph;
+- (void)_handleSignificantTimeChange:(id)change;
+- (void)_setMorph:(id)morph;
+- (void)_setupSceneForLayer:(id)layer size:(CGSize)size;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)interpolateFromMorph:(id)a3 toMorph:(id)a4 fraction:(double)a5;
-- (void)set24HourMode:(BOOL)a3;
-- (void)setAdjustsForStatusBarIcon:(BOOL)a3 animated:(BOOL)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setMorph:(id)a3 animate:(BOOL)a4;
+- (void)interpolateFromMorph:(id)morph toMorph:(id)toMorph fraction:(double)fraction;
+- (void)set24HourMode:(BOOL)mode;
+- (void)setAdjustsForStatusBarIcon:(BOOL)icon animated:(BOOL)animated;
+- (void)setBackgroundColor:(id)color;
+- (void)setMorph:(id)morph animate:(BOOL)animate;
 - (void)timerFired;
-- (void)waitForAnimationsWithCompletion:(id)a3;
+- (void)waitForAnimationsWithCompletion:(id)completion;
 @end
 
 @implementation NTKAkitaContentView
 
-- (NTKAkitaContentView)initWithFrame:(CGRect)a3 role:(unint64_t)a4 morph:(id)a5 dateProvider:(id)a6 is24HourMode:(BOOL)a7 device:(id)a8
+- (NTKAkitaContentView)initWithFrame:(CGRect)frame role:(unint64_t)role morph:(id)morph dateProvider:(id)provider is24HourMode:(BOOL)mode device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  morphCopy = morph;
+  providerCopy = provider;
+  deviceCopy = device;
   v28.receiver = self;
   v28.super_class = NTKAkitaContentView;
-  v20 = [(NTKAkitaContentView *)&v28 initWithFrame:x, y, width, height];
-  v21 = v20;
-  if (v20)
+  height = [(NTKAkitaContentView *)&v28 initWithFrame:x, y, width, height];
+  v21 = height;
+  if (height)
   {
-    objc_storeStrong(&v20->_device, a8);
-    v21->_role = a4;
+    objc_storeStrong(&height->_device, device);
+    v21->_role = role;
     v21->_lineWidth = width * 0.0138888889;
-    v22 = objc_retainBlock(v18);
+    v22 = objc_retainBlock(providerCopy);
     dateProvider = v21->_dateProvider;
     v21->_dateProvider = v22;
 
     v21->_currentHour = -1;
     v21->_currentMinute = -1;
-    v21->_is24HourMode = a7;
-    v21->_isLuxo = [v19 deviceCategory] != &dword_0 + 1;
-    v24 = [(NTKAkitaContentView *)v21 layer];
-    [v24 setMasksToBounds:1];
+    v21->_is24HourMode = mode;
+    v21->_isLuxo = [deviceCopy deviceCategory] != &dword_0 + 1;
+    layer = [(NTKAkitaContentView *)v21 layer];
+    [layer setMasksToBounds:1];
     v25 = sub_30F4();
-    [v24 setActions:v25];
+    [layer setActions:v25];
 
-    [(NTKAkitaContentView *)v21 _setupSceneForLayer:v24 size:width, height];
-    [(NTKAkitaContentView *)v21 setMorph:v17 animate:0];
+    [(NTKAkitaContentView *)v21 _setupSceneForLayer:layer size:width, height];
+    [(NTKAkitaContentView *)v21 setMorph:morphCopy animate:0];
     v26 = +[NSNotificationCenter defaultCenter];
     [v26 addObserver:v21 selector:"_handleSignificantTimeChange:" name:UIApplicationSignificantTimeChangeNotification object:0];
   }
@@ -105,7 +105,7 @@
   [(NTKAkitaContentView *)&v9 dealloc];
 }
 
-- (void)_handleSignificantTimeChange:(id)a3
+- (void)_handleSignificantTimeChange:(id)change
 {
   calendar = self->_calendar;
   v5 = +[NSTimeZone systemTimeZone];
@@ -114,106 +114,106 @@
   [(NTKAkitaContentView *)self updateDate];
 }
 
-- (CGPath)_hairPathForIndex:(unint64_t)a3
+- (CGPath)_hairPathForIndex:(unint64_t)index
 {
   hairPaths = self->_hairPaths;
-  v4 = self->_hairPaths[a3];
+  v4 = self->_hairPaths[index];
   if (!v4)
   {
-    v6 = &NTKAkitaHairPathData + 16 * a3;
+    v6 = &NTKAkitaHairPathData + 16 * index;
     [(NTKAkitaContentView *)self frame];
     v4 = sub_3360(v6, 1, v7, v8);
-    hairPaths[a3] = v4;
+    hairPaths[index] = v4;
   }
 
   return v4;
 }
 
-- (CGPath)_neckPathForIndex:(unint64_t)a3
+- (CGPath)_neckPathForIndex:(unint64_t)index
 {
   neckPaths = self->_neckPaths;
-  v4 = self->_neckPaths[a3];
+  v4 = self->_neckPaths[index];
   if (!v4)
   {
-    v6 = &NTKAkitaNeckPathData + 16 * a3;
+    v6 = &NTKAkitaNeckPathData + 16 * index;
     [(NTKAkitaContentView *)self frame];
     v4 = sub_3360(v6, 1, v7, v8);
-    neckPaths[a3] = v4;
+    neckPaths[index] = v4;
   }
 
   return v4;
 }
 
-- (CGPath)_headPathForIndex:(unint64_t)a3
+- (CGPath)_headPathForIndex:(unint64_t)index
 {
   headPaths = self->_headPaths;
-  v4 = self->_headPaths[a3];
+  v4 = self->_headPaths[index];
   if (!v4)
   {
-    v6 = &NTKAkitaHeadPathData + 16 * a3;
+    v6 = &NTKAkitaHeadPathData + 16 * index;
     [(NTKAkitaContentView *)self frame];
     v4 = sub_3360(v6, 1, v7, v8);
-    headPaths[a3] = v4;
+    headPaths[index] = v4;
   }
 
   return v4;
 }
 
-- (CGPath)_shirtPathForIndex:(unint64_t)a3
+- (CGPath)_shirtPathForIndex:(unint64_t)index
 {
   shirtPaths = self->_shirtPaths;
-  v4 = self->_shirtPaths[a3];
+  v4 = self->_shirtPaths[index];
   if (!v4)
   {
-    v6 = &NTKAkitaShirtPathData + 16 * a3;
+    v6 = &NTKAkitaShirtPathData + 16 * index;
     [(NTKAkitaContentView *)self frame];
     v4 = sub_3360(v6, 1, v7, v8);
-    shirtPaths[a3] = v4;
+    shirtPaths[index] = v4;
   }
 
   return v4;
 }
 
-- (CGPath)_nosePathForIndex:(unint64_t)a3
+- (CGPath)_nosePathForIndex:(unint64_t)index
 {
   nosePaths = self->_nosePaths;
-  v4 = self->_nosePaths[a3];
+  v4 = self->_nosePaths[index];
   if (!v4)
   {
-    v6 = &NTKAkitaNosePathData + 16 * a3;
+    v6 = &NTKAkitaNosePathData + 16 * index;
     [(NTKAkitaContentView *)self frame];
     v4 = sub_3360(v6, 0, v7, v8);
-    nosePaths[a3] = v4;
+    nosePaths[index] = v4;
   }
 
   return v4;
 }
 
-- (CGPath)_lipsInnerPathForIndex:(unint64_t)a3
+- (CGPath)_lipsInnerPathForIndex:(unint64_t)index
 {
   lipsInnerPaths = self->_lipsInnerPaths;
-  v4 = self->_lipsInnerPaths[a3];
+  v4 = self->_lipsInnerPaths[index];
   if (!v4)
   {
-    v6 = &NTKAkitaLipsInnerPathData + 16 * a3;
+    v6 = &NTKAkitaLipsInnerPathData + 16 * index;
     [(NTKAkitaContentView *)self frame];
     v4 = sub_3360(v6, 0, v7, v8);
-    lipsInnerPaths[a3] = v4;
+    lipsInnerPaths[index] = v4;
   }
 
   return v4;
 }
 
-- (CGPath)_lipsOuterPathForIndex:(unint64_t)a3 fullness:(unint64_t)a4
+- (CGPath)_lipsOuterPathForIndex:(unint64_t)index fullness:(unint64_t)fullness
 {
-  v4 = 9 * a4 + a3;
+  v4 = 9 * fullness + index;
   lipsOuterPaths = self->_lipsOuterPaths;
   Mutable = self->_lipsOuterPaths[v4];
   if (!Mutable)
   {
     [(NTKAkitaContentView *)self frame];
-    v11 = &NTKAkitaLipsOuterPathData + 16 * a3;
-    if (a4)
+    v11 = &NTKAkitaLipsOuterPathData + 16 * index;
+    if (fullness)
     {
       v12 = *(v11 + 1);
       if (v12 < 1)
@@ -289,7 +289,7 @@
   return Mutable;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   v5 = objc_retainBlock(self->_animationCompletion);
   if (v5)
@@ -303,10 +303,10 @@
   }
 }
 
-- (void)_setMorph:(id)a3
+- (void)_setMorph:(id)morph
 {
-  v5 = a3;
-  objc_storeStrong(&self->_currentMorph, a3);
+  morphCopy = morph;
+  objc_storeStrong(&self->_currentMorph, morph);
   animatingMorph = self->_animatingMorph;
   self->_animatingMorph = 0;
 
@@ -344,9 +344,9 @@
     while (v11);
   }
 
-  if (v5)
+  if (morphCopy)
   {
-    [v5 config];
+    [morphCopy config];
   }
 
   CGColor = NTKAkitaColorGetCGColor(0, 0);
@@ -423,19 +423,19 @@
   [(CALayer *)self->_backgroundLayer setBackgroundColor:v24];
 }
 
-- (void)interpolateFromMorph:(id)a3 toMorph:(id)a4 fraction:(double)a5
+- (void)interpolateFromMorph:(id)morph toMorph:(id)toMorph fraction:(double)fraction
 {
-  v9 = a3;
-  v10 = a4;
+  morphCopy = morph;
+  toMorphCopy = toMorph;
   currentMorph = self->_currentMorph;
   self->_currentMorph = 0;
 
   animatingMorph = self->_animatingMorph;
   self->_animatingMorph = 0;
 
-  if (![(NTKAkitaMorph *)self->_interpolateFromMorph isEqualToMorph:v9]|| ![(NTKAkitaMorph *)self->_interpolateToMorph isEqualToMorph:v10])
+  if (![(NTKAkitaMorph *)self->_interpolateFromMorph isEqualToMorph:morphCopy]|| ![(NTKAkitaMorph *)self->_interpolateToMorph isEqualToMorph:toMorphCopy])
   {
-    v23 = v10;
+    v23 = toMorphCopy;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -467,11 +467,11 @@
       while (v15);
     }
 
-    [(NTKAkitaContentView *)self _setMorph:v9];
-    objc_storeStrong(&self->_interpolateFromMorph, a3);
-    objc_storeStrong(&self->_interpolateToMorph, a4);
-    v10 = v23;
-    [(NTKAkitaContentView *)self _animateFromMorph:v9 toMorph:v23];
+    [(NTKAkitaContentView *)self _setMorph:morphCopy];
+    objc_storeStrong(&self->_interpolateFromMorph, morph);
+    objc_storeStrong(&self->_interpolateToMorph, toMorph);
+    toMorphCopy = v23;
+    [(NTKAkitaContentView *)self _animateFromMorph:morphCopy toMorph:v23];
   }
 
   v26 = 0u;
@@ -494,7 +494,7 @@
           objc_enumerationMutation(v18);
         }
 
-        [*(*(&v24 + 1) + 8 * v22) setTimeOffset:a5];
+        [*(*(&v24 + 1) + 8 * v22) setTimeOffset:fraction];
         v22 = v22 + 1;
       }
 
@@ -506,15 +506,15 @@
   }
 }
 
-- (void)_animateFromMorph:(id)a3 toMorph:(id)a4
+- (void)_animateFromMorph:(id)morph toMorph:(id)toMorph
 {
-  v6 = a3;
-  v7 = a4;
+  morphCopy = morph;
+  toMorphCopy = toMorph;
   v8 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
   v9 = 0uLL;
-  if (v6)
+  if (morphCopy)
   {
-    [v6 config];
+    [morphCopy config];
     v9 = 0uLL;
   }
 
@@ -522,11 +522,11 @@
   v71 = v9;
   v68 = v9;
   v69 = v9;
-  v66 = v7;
-  v67 = v6;
-  if (v7)
+  v66 = toMorphCopy;
+  v67 = morphCopy;
+  if (toMorphCopy)
   {
-    [v7 config];
+    [toMorphCopy config];
     v63 = *(&v71 + 1);
     v10 = *(&v70 + 1);
     v11 = v69;
@@ -652,13 +652,13 @@
   }
 }
 
-- (void)setMorph:(id)a3 animate:(BOOL)a4
+- (void)setMorph:(id)morph animate:(BOOL)animate
 {
-  v4 = a4;
-  v7 = a3;
-  if (![(NTKAkitaMorph *)self->_currentMorph isEqualToMorph:v7])
+  animateCopy = animate;
+  morphCopy = morph;
+  if (![(NTKAkitaMorph *)self->_currentMorph isEqualToMorph:morphCopy])
   {
-    if (v4)
+    if (animateCopy)
     {
       if (self->_animatingMorph)
       {
@@ -666,7 +666,7 @@
       }
 
       v8 = self->_currentMorph;
-      objc_storeStrong(&self->_animatingMorph, a3);
+      objc_storeStrong(&self->_animatingMorph, morph);
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
@@ -704,31 +704,31 @@
 
     else
     {
-      [(NTKAkitaContentView *)self _setMorph:v7];
+      [(NTKAkitaContentView *)self _setMorph:morphCopy];
     }
   }
 }
 
-- (void)set24HourMode:(BOOL)a3
+- (void)set24HourMode:(BOOL)mode
 {
-  if (self->_is24HourMode != a3)
+  if (self->_is24HourMode != mode)
   {
-    self->_is24HourMode = a3;
+    self->_is24HourMode = mode;
     [(NTKAkitaContentView *)self updateDate];
   }
 }
 
-- (void)setAdjustsForStatusBarIcon:(BOOL)a3 animated:(BOOL)a4
+- (void)setAdjustsForStatusBarIcon:(BOOL)icon animated:(BOOL)animated
 {
-  if (self->_isStatusVisisble != a3)
+  if (self->_isStatusVisisble != icon)
   {
     v39 = v7;
     v40 = v6;
     v41 = v4;
     v42 = v5;
-    v8 = a4;
-    v9 = a3;
-    self->_isStatusVisisble = a3;
+    animatedCopy = animated;
+    iconCopy = icon;
+    self->_isStatusVisisble = icon;
     [(CALayer *)self->_foregroundLayer removeAllAnimations];
     [(NTKAkitaContentView *)self bounds];
     v12 = v11;
@@ -739,9 +739,9 @@
     v36 = v37;
     CATransform3DTranslate(&v37, &v36, 0.0, v12 * -0.5, 0.0);
     v38 = v37;
-    if (v8)
+    if (animatedCopy)
     {
-      if (v9)
+      if (iconCopy)
       {
         v13 = *&CATransform3DIdentity.m33;
         *&v37.m31 = *&CATransform3DIdentity.m31;
@@ -806,7 +806,7 @@
     else
     {
       foregroundLayer = self->_foregroundLayer;
-      if (v9)
+      if (iconCopy)
       {
         *&v37.m31 = *&v38.m31;
         *&v37.m33 = *&v38.m33;
@@ -844,13 +844,13 @@
 {
   v3 = (*(self->_dateProvider + 2))();
   v4 = [(NSCalendar *)self->_calendar components:224 fromDate:v3];
-  v5 = [v4 minute];
-  v6 = [v4 hour];
-  v7 = v6;
+  minute = [v4 minute];
+  hour = [v4 hour];
+  v7 = hour;
   if (!self->_is24HourMode)
   {
-    LODWORD(v7) = v6 % 12;
-    if (v6 % 12)
+    LODWORD(v7) = hour % 12;
+    if (hour % 12)
     {
       v7 = v7;
     }
@@ -861,7 +861,7 @@
     }
   }
 
-  if (self->_currentHour == v7 && self->_currentMinute == v5)
+  if (self->_currentHour == v7 && self->_currentMinute == minute)
   {
     v8 = 0;
   }
@@ -869,9 +869,9 @@
   else
   {
     self->_currentHour = v7;
-    self->_currentMinute = v5;
+    self->_currentMinute = minute;
     v9 = [NSString stringWithFormat:@"%d", v7];
-    v10 = [NSString stringWithFormat:@"%02d", v5];
+    v10 = [NSString stringWithFormat:@"%02d", minute];
     [(CATextLayer *)self->_leftTextLayer setString:v9];
     [(CATextLayer *)self->_rightTextLayer setString:v10];
 
@@ -897,12 +897,12 @@
   }
 }
 
-- (void)waitForAnimationsWithCompletion:(id)a3
+- (void)waitForAnimationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v4;
+    v8 = completionCopy;
     v5 = [(CATextLayer *)self->_leftTextLayer animationForKey:@"blink"];
 
     if (v5)
@@ -917,17 +917,17 @@
       v8[2]();
     }
 
-    v4 = v8;
+    completionCopy = v8;
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  colorCopy = color;
+  v8 = colorCopy;
+  if (colorCopy)
   {
-    v5 = v4;
+    v5 = colorCopy;
   }
 
   else
@@ -936,15 +936,15 @@
   }
 
   v6 = v5;
-  v7 = [(NTKAkitaContentView *)self layer];
-  [v7 setBackgroundColor:{objc_msgSend(v6, "CGColor")}];
+  layer = [(NTKAkitaContentView *)self layer];
+  [layer setBackgroundColor:{objc_msgSend(v6, "CGColor")}];
 }
 
-- (void)_setupSceneForLayer:(id)a3 size:(CGSize)a4
+- (void)_setupSceneForLayer:(id)layer size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  layerCopy = layer;
   v8 = +[NSCalendar autoupdatingCurrentCalendar];
   calendar = self->_calendar;
   self->_calendar = v8;
@@ -953,42 +953,42 @@
   v11 = +[NSTimeZone systemTimeZone];
   [(NSCalendar *)v10 setTimeZone:v11];
 
-  v12 = [(NTKAkitaContentView *)self _createLayerOfSize:v7 parent:width, height];
+  height = [(NTKAkitaContentView *)self _createLayerOfSize:layerCopy parent:width, height];
   backgroundLayer = self->_backgroundLayer;
-  self->_backgroundLayer = v12;
+  self->_backgroundLayer = height;
 
-  v14 = [(NTKAkitaContentView *)self _createLayerOfSize:v7 parent:width, height];
+  height2 = [(NTKAkitaContentView *)self _createLayerOfSize:layerCopy parent:width, height];
 
   foregroundLayer = self->_foregroundLayer;
-  self->_foregroundLayer = v14;
+  self->_foregroundLayer = height2;
 
-  v16 = [(NTKAkitaContentView *)self _createFillShapeLayerOfSize:self->_foregroundLayer parent:width, height];
+  height3 = [(NTKAkitaContentView *)self _createFillShapeLayerOfSize:self->_foregroundLayer parent:width, height];
   neckLayer = self->_neckLayer;
-  self->_neckLayer = v16;
+  self->_neckLayer = height3;
 
-  v18 = [(NTKAkitaContentView *)self _createFillShapeLayerOfSize:self->_foregroundLayer parent:width, height];
+  height4 = [(NTKAkitaContentView *)self _createFillShapeLayerOfSize:self->_foregroundLayer parent:width, height];
   shirtLayer = self->_shirtLayer;
-  self->_shirtLayer = v18;
+  self->_shirtLayer = height4;
 
-  v20 = [(NTKAkitaContentView *)self _createFillShapeLayerOfSize:self->_foregroundLayer parent:width, height];
+  height5 = [(NTKAkitaContentView *)self _createFillShapeLayerOfSize:self->_foregroundLayer parent:width, height];
   headLayer = self->_headLayer;
-  self->_headLayer = v20;
+  self->_headLayer = height5;
 
-  v22 = [(NTKAkitaContentView *)self _createFillShapeLayerOfSize:self->_foregroundLayer parent:width, height];
+  height6 = [(NTKAkitaContentView *)self _createFillShapeLayerOfSize:self->_foregroundLayer parent:width, height];
   hairLayer = self->_hairLayer;
-  self->_hairLayer = v22;
+  self->_hairLayer = height6;
 
-  v24 = [(NTKAkitaContentView *)self _createStrokeShapeLayerOfSize:self->_foregroundLayer parent:width, height];
+  height7 = [(NTKAkitaContentView *)self _createStrokeShapeLayerOfSize:self->_foregroundLayer parent:width, height];
   noseLayer = self->_noseLayer;
-  self->_noseLayer = v24;
+  self->_noseLayer = height7;
 
-  v26 = [(NTKAkitaContentView *)self _createStrokeShapeLayerOfSize:self->_foregroundLayer parent:width, height];
+  height8 = [(NTKAkitaContentView *)self _createStrokeShapeLayerOfSize:self->_foregroundLayer parent:width, height];
   lipsInnerLayer = self->_lipsInnerLayer;
-  self->_lipsInnerLayer = v26;
+  self->_lipsInnerLayer = height8;
 
-  v28 = [(NTKAkitaContentView *)self _createStrokeShapeLayerOfSize:self->_foregroundLayer parent:width, height];
+  height9 = [(NTKAkitaContentView *)self _createStrokeShapeLayerOfSize:self->_foregroundLayer parent:width, height];
   lipsOuterLayer = self->_lipsOuterLayer;
-  self->_lipsOuterLayer = v28;
+  self->_lipsOuterLayer = height9;
 
   v30 = self->_neckLayer;
   v42[0] = self->_backgroundLayer;
@@ -1010,22 +1010,22 @@
   font = self->_font;
   self->_font = v36;
 
-  v38 = [(NTKAkitaContentView *)self _createLeftEyeLayerOfSize:self->_foregroundLayer parent:width, height];
+  height10 = [(NTKAkitaContentView *)self _createLeftEyeLayerOfSize:self->_foregroundLayer parent:width, height];
   leftTextLayer = self->_leftTextLayer;
-  self->_leftTextLayer = v38;
+  self->_leftTextLayer = height10;
 
-  v40 = [(NTKAkitaContentView *)self _createRightEyeLayerOfSize:self->_foregroundLayer parent:width, height];
+  height11 = [(NTKAkitaContentView *)self _createRightEyeLayerOfSize:self->_foregroundLayer parent:width, height];
   rightTextLayer = self->_rightTextLayer;
-  self->_rightTextLayer = v40;
+  self->_rightTextLayer = height11;
 
   [(NTKAkitaContentView *)self updateDate];
 }
 
-- (id)_createTextLayerOfSize:(CGSize)a3 x:(double)a4 alignment:(id)a5 parent:(id)a6
+- (id)_createTextLayerOfSize:(CGSize)size x:(double)x alignment:(id)alignment parent:(id)parent
 {
-  height = a3.height;
-  v10 = a6;
-  v11 = a5;
+  height = size.height;
+  parentCopy = parent;
+  alignmentCopy = alignment;
   v12 = objc_opt_new();
   [v12 setFont:self->_font];
   [(UIFont *)self->_font pointSize];
@@ -1046,10 +1046,10 @@
   v16 = v15;
   v18 = v17;
   [(UIFont *)self->_font descender];
-  v20 = round(a4);
+  v20 = round(x);
   v21 = round(height * 0.510736041 - v18 - v19);
   v22 = v20 - v16;
-  if (kCAAlignmentRight != v11)
+  if (kCAAlignmentRight != alignmentCopy)
   {
     v22 = v20;
   }
@@ -1057,21 +1057,21 @@
   [v12 setFrame:{v22, v21, v16 + v16, v18}];
   [(CLKDevice *)self->_device screenScale];
   [v12 setContentsScale:?];
-  [v12 setAlignmentMode:v11];
+  [v12 setAlignmentMode:alignmentCopy];
 
   v23 = sub_30F4();
   [v12 setActions:v23];
 
-  [v10 addSublayer:v12];
+  [parentCopy addSublayer:v12];
 
   return v12;
 }
 
-- (id)_createFillShapeLayerOfSize:(CGSize)a3 parent:(id)a4
+- (id)_createFillShapeLayerOfSize:(CGSize)size parent:(id)parent
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  parentCopy = parent;
   v8 = objc_opt_new();
   [v8 setPosition:{width * 0.5, height * 0.5}];
   [v8 setBounds:{0.0, 0.0, width, height}];
@@ -1092,16 +1092,16 @@
   v10 = sub_30F4();
   [v8 setActions:v10];
 
-  [v7 addSublayer:v8];
+  [parentCopy addSublayer:v8];
 
   return v8;
 }
 
-- (id)_createStrokeShapeLayerOfSize:(CGSize)a3 parent:(id)a4
+- (id)_createStrokeShapeLayerOfSize:(CGSize)size parent:(id)parent
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  parentCopy = parent;
   v8 = objc_opt_new();
   [v8 setPosition:{width * 0.5, height * 0.5}];
   [v8 setBounds:{0.0, 0.0, width, height}];
@@ -1113,23 +1113,23 @@
   v9 = sub_30F4();
   [v8 setActions:v9];
 
-  [v7 addSublayer:v8];
+  [parentCopy addSublayer:v8];
 
   return v8;
 }
 
-- (id)_createLayerOfSize:(CGSize)a3 parent:(id)a4
+- (id)_createLayerOfSize:(CGSize)size parent:(id)parent
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
+  height = size.height;
+  width = size.width;
+  parentCopy = parent;
   v7 = objc_opt_new();
   [v7 setPosition:{width * 0.5, height * 0.5}];
   [v7 setBounds:{0.0, 0.0, width, height}];
   v8 = sub_30F4();
   [v7 setActions:v8];
 
-  [v6 addSublayer:v7];
+  [parentCopy addSublayer:v7];
 
   return v7;
 }

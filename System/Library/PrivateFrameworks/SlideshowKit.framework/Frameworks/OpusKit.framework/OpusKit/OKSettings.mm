@@ -1,26 +1,26 @@
 @interface OKSettings
-+ (BOOL)exportClassSettings:(Class)a3 toJavaScriptContext:(id)a4;
++ (BOOL)exportClassSettings:(Class)settings toJavaScriptContext:(id)context;
 + (BOOL)isApplyingSettings;
-+ (id)_newSettingGetterBlockForKey:(id)a3 ofType:(unint64_t)a4 optionalSubType:(unint64_t)a5 optionalClass:(Class)a6 optionalMapping:(id)a7;
-+ (id)_newSettingSetterBlockForKey:(id)a3 ofType:(unint64_t)a4 optionalSubType:(unint64_t)a5 optionalClass:(Class)a6 optionalMapping:(id)a7;
-+ (id)objectFromClass:(Class)a3 withSettings:(id)a4 andResolution:(id)a5;
++ (id)_newSettingGetterBlockForKey:(id)key ofType:(unint64_t)type optionalSubType:(unint64_t)subType optionalClass:(Class)class optionalMapping:(id)mapping;
++ (id)_newSettingSetterBlockForKey:(id)key ofType:(unint64_t)type optionalSubType:(unint64_t)subType optionalClass:(Class)class optionalMapping:(id)mapping;
++ (id)objectFromClass:(Class)class withSettings:(id)settings andResolution:(id)resolution;
 + (id)transactionsManager;
-+ (void)applySettings:(id)a3 toObject:(id)a4 withResolution:(id)a5;
-+ (void)applyUpdateBlockOnce:(id)a3 forKey:(id)a4;
-+ (void)applyValue:(id)a3 forKey:(id)a4 ofType:(unint64_t)a5 toObject:(id)a6;
++ (void)applySettings:(id)settings toObject:(id)object withResolution:(id)resolution;
++ (void)applyUpdateBlockOnce:(id)once forKey:(id)key;
++ (void)applyValue:(id)value forKey:(id)key ofType:(unint64_t)type toObject:(id)object;
 + (void)beginApplyingSettings;
 + (void)commitApplyingSettings;
-+ (void)registerApplyingSettingsUpdateBlock:(id)a3 forKey:(id)a4;
-+ (void)resetAndApplySettings:(id)a3 toObject:(id)a4 withResolution:(id)a5;
-+ (void)resetObject:(id)a3 notRespondingToSettingsKeys:(id)a4 withResolution:(id)a5;
-+ (void)resetObject:(id)a3 respondingToSettingsKeys:(id)a4 withResolution:(id)a5;
++ (void)registerApplyingSettingsUpdateBlock:(id)block forKey:(id)key;
++ (void)resetAndApplySettings:(id)settings toObject:(id)object withResolution:(id)resolution;
++ (void)resetObject:(id)object notRespondingToSettingsKeys:(id)keys withResolution:(id)resolution;
++ (void)resetObject:(id)object respondingToSettingsKeys:(id)keys withResolution:(id)resolution;
 - (BOOL)hasPendingTransaction;
 - (OKSettings)init;
 - (id)pendingTransaction;
 - (void)beginTransaction;
 - (void)commitTransaction;
 - (void)dealloc;
-- (void)registerUpdateBlock:(id)a3 forKey:(id)a4;
+- (void)registerUpdateBlock:(id)block forKey:(id)key;
 @end
 
 @implementation OKSettings
@@ -80,24 +80,24 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
 
 - (BOOL)hasPendingTransaction
 {
-  v2 = self;
+  selfCopy = self;
   transactions = self->_transactions;
   objc_sync_enter(transactions);
-  LOBYTE(v2) = [(NSMutableArray *)v2->_transactions count]!= 0;
+  LOBYTE(selfCopy) = [(NSMutableArray *)selfCopy->_transactions count]!= 0;
   objc_sync_exit(transactions);
-  return v2;
+  return selfCopy;
 }
 
 - (id)pendingTransaction
 {
   transactions = self->_transactions;
   objc_sync_enter(transactions);
-  v4 = [(NSMutableArray *)self->_transactions lastObject];
+  lastObject = [(NSMutableArray *)self->_transactions lastObject];
   objc_sync_exit(transactions);
-  return v4;
+  return lastObject;
 }
 
-- (void)registerUpdateBlock:(id)a3 forKey:(id)a4
+- (void)registerUpdateBlock:(id)block forKey:(id)key
 {
   transactions = self->_transactions;
   objc_sync_enter(transactions);
@@ -111,15 +111,15 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
   v15 = *MEMORY[0x277D85DE8];
   transactions = self->_transactions;
   objc_sync_enter(transactions);
-  v4 = [(OKSettings *)self pendingTransaction];
+  pendingTransaction = [(OKSettings *)self pendingTransaction];
   if ([(NSMutableArray *)self->_transactions count]< 2)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [v4 items];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    items = [pendingTransaction items];
+    v6 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = *v11;
@@ -129,7 +129,7 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(items);
           }
 
           v9 = *(*(&v10 + 1) + 8 * i);
@@ -139,7 +139,7 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [items countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -148,31 +148,31 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
 
   else
   {
-    [-[NSMutableArray objectAtIndex:](self->_transactions objectAtIndex:{-[NSMutableArray count](self->_transactions, "count") - 2), "mergeWithTransaction:", v4}];
+    [-[NSMutableArray objectAtIndex:](self->_transactions objectAtIndex:{-[NSMutableArray count](self->_transactions, "count") - 2), "mergeWithTransaction:", pendingTransaction}];
   }
 
   [(NSMutableArray *)self->_transactions removeLastObject];
   objc_sync_exit(transactions);
 }
 
-+ (void)resetAndApplySettings:(id)a3 toObject:(id)a4 withResolution:(id)a5
++ (void)resetAndApplySettings:(id)settings toObject:(id)object withResolution:(id)resolution
 {
   +[OKSettings beginApplyingSettings];
-  +[OKSettings resetObject:notRespondingToSettingsKeys:withResolution:](OKSettings, "resetObject:notRespondingToSettingsKeys:withResolution:", a4, [a3 allKeys], a5);
-  [OKSettings applySettings:a3 toObject:a4 withResolution:a5];
+  +[OKSettings resetObject:notRespondingToSettingsKeys:withResolution:](OKSettings, "resetObject:notRespondingToSettingsKeys:withResolution:", object, [settings allKeys], resolution);
+  [OKSettings applySettings:settings toObject:object withResolution:resolution];
 
   +[OKSettings commitApplyingSettings];
 }
 
-+ (void)resetObject:(id)a3 notRespondingToSettingsKeys:(id)a4 withResolution:(id)a5
++ (void)resetObject:(id)object notRespondingToSettingsKeys:(id)keys withResolution:(id)resolution
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v7 = [a4 countByEnumeratingWithState:&v45 objects:v50 count:16];
+  v7 = [keys countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v7)
   {
     v8 = v7;
@@ -183,7 +183,7 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
       {
         if (*v46 != v9)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(keys);
         }
 
         v11 = *(*(&v45 + 1) + 8 * i);
@@ -194,25 +194,25 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
             v11 = [v11 substringFromIndex:1];
           }
 
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [a4 countByEnumeratingWithState:&v45 objects:v50 count:16];
+      v8 = [keys countByEnumeratingWithState:&v45 objects:v50 count:16];
     }
 
     while (v8);
   }
 
-  v12 = a3;
-  v13 = [objc_opt_class() supportedSettings];
-  v14 = [v13 allKeys];
+  objectCopy2 = object;
+  supportedSettings = [objc_opt_class() supportedSettings];
+  allKeys = [supportedSettings allKeys];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __69__OKSettings_resetObject_notRespondingToSettingsKeys_withResolution___block_invoke;
   v44[3] = &unk_279C8EE58;
-  v44[4] = v13;
-  v15 = [v14 sortedArrayUsingComparator:v44];
+  v44[4] = supportedSettings;
+  v15 = [allKeys sortedArrayUsingComparator:v44];
   +[OKSettings beginApplyingSettings];
   v42 = 0u;
   v43 = 0u;
@@ -224,7 +224,7 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
     v17 = v16;
     v18 = *v41;
     v38 = *v41;
-    v39 = v6;
+    v39 = array;
     do
     {
       for (j = 0; j != v17; ++j)
@@ -235,9 +235,9 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
         }
 
         v20 = *(*(&v40 + 1) + 8 * j);
-        if (([v6 containsObject:v20] & 1) == 0)
+        if (([array containsObject:v20] & 1) == 0)
         {
-          v21 = [v13 objectForKey:v20];
+          v21 = [supportedSettings objectForKey:v20];
           v22 = [v21 objectForKey:@"enabled"];
           if (!v22 || [v22 BOOLValue])
           {
@@ -248,7 +248,7 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
               v25 = v24;
               if ((v23 - 301) <= 0x12A && [v24 isEqual:{objc_msgSend(MEMORY[0x277CBEB68], "null")}])
               {
-                v26 = [MEMORY[0x277CBEB68] null];
+                null = [MEMORY[0x277CBEB68] null];
               }
 
               else
@@ -256,26 +256,26 @@ OKSettings *__33__OKSettings_transactionsManager__block_invoke()
                 v27 = [objc_msgSend(v21 objectForKey:{@"subType", "unsignedIntegerValue"}];
                 v28 = v17;
                 v29 = v15;
-                v30 = v13;
+                v30 = supportedSettings;
                 v31 = [v21 objectForKey:@"class"];
                 v32 = [v21 objectForKey:@"mapping"];
                 v33 = v31;
-                v13 = v30;
+                supportedSettings = v30;
                 v15 = v29;
                 v17 = v28;
-                v12 = a3;
-                v26 = [OKSettingsUtility valueForObject:v25 ofType:v23 optionalSubType:v27 optionalClass:v33 optionalMapping:v32 resolution:a5];
+                objectCopy2 = object;
+                null = [OKSettingsUtility valueForObject:v25 ofType:v23 optionalSubType:v27 optionalClass:v33 optionalMapping:v32 resolution:resolution];
               }
 
-              [a1 applyValue:v26 forKey:v20 ofType:v23 toObject:v12];
+              [self applyValue:null forKey:v20 ofType:v23 toObject:objectCopy2];
             }
 
             v34 = [v21 objectForKey:@"defaultBlock"];
             v18 = v38;
-            v6 = v39;
+            array = v39;
             if (v34)
             {
-              (*(v34 + 16))(v34, v12);
+              (*(v34 + 16))(v34, objectCopy2);
             }
           }
         }
@@ -312,21 +312,21 @@ uint64_t __69__OKSettings_resetObject_notRespondingToSettingsKeys_withResolution
   return -1;
 }
 
-+ (void)resetObject:(id)a3 respondingToSettingsKeys:(id)a4 withResolution:(id)a5
++ (void)resetObject:(id)object respondingToSettingsKeys:(id)keys withResolution:(id)resolution
 {
   v61 = *MEMORY[0x277D85DE8];
-  v7 = [a4 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithBlock:", &__block_literal_global_89)}];
-  v8 = [MEMORY[0x277CBEB18] arrayWithArray:a4];
+  v7 = [keys filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithBlock:", &__block_literal_global_89)}];
+  v8 = [MEMORY[0x277CBEB18] arrayWithArray:keys];
   v42 = v7;
   [v8 removeObjectsInArray:v7];
-  v48 = a3;
-  v9 = [objc_opt_class() supportedSettings];
+  objectCopy = object;
+  supportedSettings = [objc_opt_class() supportedSettings];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __66__OKSettings_resetObject_respondingToSettingsKeys_withResolution___block_invoke_2;
   v57[3] = &unk_279C8EE58;
-  v43 = v9;
-  v57[4] = v9;
+  v43 = supportedSettings;
+  v57[4] = supportedSettings;
   v47 = v8;
   v10 = [v8 sortedArrayUsingComparator:v57];
   +[OKSettings beginApplyingSettings];
@@ -365,7 +365,7 @@ uint64_t __69__OKSettings_resetObject_notRespondingToSettingsKeys_withResolution
               v22 = v21;
               if ((v20 - 301) <= 0x12A && [v21 isEqual:{objc_msgSend(MEMORY[0x277CBEB68], "null")}])
               {
-                v23 = [MEMORY[0x277CBEB68] null];
+                null = [MEMORY[0x277CBEB68] null];
               }
 
               else
@@ -382,16 +382,16 @@ uint64_t __69__OKSettings_resetObject_notRespondingToSettingsKeys_withResolution
                 v13 = v26;
                 v14 = v25;
                 v15 = v24;
-                v23 = [OKSettingsUtility valueForObject:v22 ofType:v20 optionalSubType:v41 optionalClass:v30 optionalMapping:v29 resolution:a5];
+                null = [OKSettingsUtility valueForObject:v22 ofType:v20 optionalSubType:v41 optionalClass:v30 optionalMapping:v29 resolution:resolution];
               }
 
-              [a1 applyValue:v23 forKey:v17 ofType:v20 toObject:v48];
+              [self applyValue:null forKey:v17 ofType:v20 toObject:objectCopy];
             }
 
             v31 = [v18 objectForKey:@"defaultBlock"];
             if (v31)
             {
-              (*(v31 + 16))(v31, v48);
+              (*(v31 + 16))(v31, objectCopy);
             }
           }
         }
@@ -426,12 +426,12 @@ uint64_t __69__OKSettings_resetObject_notRespondingToSettingsKeys_withResolution
 
           v37 = *(*(&v49 + 1) + 8 * j);
           v38 = [objc_msgSend(v37 componentsSeparatedByString:{@".", "firstObject"}];
-          v39 = [v48 settingObjectForKey:v38];
+          v39 = [objectCopy settingObjectForKey:v38];
           if (v39)
           {
             v40 = v39;
             v58 = [v37 substringFromIndex:{objc_msgSend(v37, "rangeOfString:", @"."}];
-            [a1 resetObject:v40 respondingToSettingsKeys:objc_msgSend(MEMORY[0x277CBEA60] withResolution:{"arrayWithObjects:count:", &v58, 1), a5}];
+            [self resetObject:v40 respondingToSettingsKeys:objc_msgSend(MEMORY[0x277CBEA60] withResolution:{"arrayWithObjects:count:", &v58, 1), resolution}];
           }
 
           else if (*v35 >= 4)
@@ -474,35 +474,35 @@ uint64_t __66__OKSettings_resetObject_respondingToSettingsKeys_withResolution___
   return -1;
 }
 
-+ (void)applyValue:(id)a3 forKey:(id)a4 ofType:(unint64_t)a5 toObject:(id)a6
++ (void)applyValue:(id)value forKey:(id)key ofType:(unint64_t)type toObject:(id)object
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"setSetting%@:", objc_msgSend(a4, "stringByCapitalizingFirstCharacter")];
+  valueCopy = value;
+  objectCopy = object;
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"setSetting%@:", objc_msgSend(key, "stringByCapitalizingFirstCharacter")];
   v13 = NSSelectorFromString(v12);
   if (objc_opt_respondsToSelector())
   {
-    if (a3)
+    if (value)
     {
-      if (a5 - 101 <= 0xC6)
+      if (type - 101 <= 0xC6)
       {
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v33 = __48__OKSettings_applyValue_forKey_ofType_toObject___block_invoke;
         v34 = &unk_279C8EEA0;
-        v35 = a6;
+        objectCopy2 = object;
         v36 = v13;
-        if (a5 > 107)
+        if (type > 107)
         {
-          if (a5 <= 203)
+          if (type <= 203)
           {
-            if (a5 <= 201)
+            if (type <= 201)
             {
-              if (a5 != 108)
+              if (type != 108)
               {
-                if (a5 == 201)
+                if (type == 201)
                 {
-                  [a3 CGRectValue];
+                  [value CGRectValue];
 LABEL_44:
                   v28 = v14;
                   v29 = v15;
@@ -517,14 +517,14 @@ LABEL_44:
               goto LABEL_32;
             }
 
-            if (a5 == 202)
+            if (type == 202)
             {
-              [a3 CGPointValue];
+              [value CGPointValue];
             }
 
             else
             {
-              [a3 CGSizeValue];
+              [value CGSizeValue];
             }
 
 LABEL_42:
@@ -533,55 +533,55 @@ LABEL_42:
             goto LABEL_48;
           }
 
-          if (a5 <= 205)
+          if (type <= 205)
           {
-            if (a5 == 204)
+            if (type == 204)
             {
-              [a3 UIEdgeInsetsValue];
+              [value UIEdgeInsetsValue];
               goto LABEL_44;
             }
 
-            [a3 CLLocationCoordinate2DValue];
+            [value CLLocationCoordinate2DValue];
             goto LABEL_42;
           }
 
-          if (a5 == 206)
+          if (type == 206)
           {
-            [a3 MKCoordinateRegionValue];
+            [value MKCoordinateRegionValue];
             goto LABEL_44;
           }
 
-          if (a5 == 207)
+          if (type == 207)
           {
-            [a3 UIOffsetValue];
+            [value UIOffsetValue];
             goto LABEL_42;
           }
 
 LABEL_45:
           if (*MEMORY[0x277D62808] >= 4)
           {
-            [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:691 andFormat:@"Unsupported value type %@", a5, v26, v27];
+            [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:691 andFormat:@"Unsupported value type %@", type, v26, v27];
           }
 
           goto LABEL_49;
         }
 
-        if (a5 <= 103)
+        if (type <= 103)
         {
-          if (a5 == 101)
+          if (type == 101)
           {
-            LOBYTE(v28) = [a3 BOOLValue];
+            LOBYTE(v28) = [value BOOLValue];
             goto LABEL_48;
           }
 
-          if (a5 == 102)
+          if (type == 102)
           {
-            [a3 floatValue];
+            [value floatValue];
             LODWORD(v28) = v25;
             goto LABEL_48;
           }
 
-          if (a5 != 103)
+          if (type != 103)
           {
             goto LABEL_45;
           }
@@ -589,66 +589,66 @@ LABEL_45:
 
         else
         {
-          if (a5 > 105)
+          if (type > 105)
           {
 LABEL_32:
-            v21 = [a3 unsignedIntegerValue];
+            unsignedIntegerValue = [value unsignedIntegerValue];
             goto LABEL_33;
           }
 
-          if (a5 != 104)
+          if (type != 104)
           {
-            v21 = [a3 integerValue];
+            unsignedIntegerValue = [value integerValue];
 LABEL_33:
-            v28 = v21;
+            v28 = unsignedIntegerValue;
             goto LABEL_48;
           }
         }
 
-        [a3 doubleValue];
+        [value doubleValue];
         v28 = v24;
 LABEL_48:
         v33(v32, &v28);
         goto LABEL_49;
       }
 
-      if (a5 - 301 > 0x12A)
+      if (type - 301 > 0x12A)
       {
         if (*MEMORY[0x277D62808] >= 4)
         {
-          [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:711 andFormat:@"An error ocurred applying value to %@: %@ of type %ld is out of range", objc_opt_class(), a5, a4];
+          [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:711 andFormat:@"An error ocurred applying value to %@: %@ of type %ld is out of range", objc_opt_class(), type, key];
         }
       }
 
       else
       {
-        if ([a3 isEqual:{objc_msgSend(MEMORY[0x277CBEB68], "null")}])
+        if ([value isEqual:{objc_msgSend(MEMORY[0x277CBEB68], "null")}])
         {
-          v18 = a6;
+          objectCopy4 = object;
           v19 = v13;
-          v20 = 0;
+          valueCopy2 = 0;
         }
 
         else
         {
-          v18 = a6;
+          objectCopy4 = object;
           v19 = v13;
-          v20 = a3;
+          valueCopy2 = value;
         }
 
-        [v18 performSelector:v19 withObject:v20];
+        [objectCopy4 performSelector:v19 withObject:valueCopy2];
       }
     }
 
     else if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:716 andFormat:@"An error ocurred applying value to %@: %@ of type %ld cannot be converted", objc_opt_class(), a4, a5];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:716 andFormat:@"An error ocurred applying value to %@: %@ of type %ld cannot be converted", objc_opt_class(), key, type];
     }
   }
 
   else if (*MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:721 andFormat:@"An error ocurred applying value to %@: Cannot find selector @%@ for property %@", objc_opt_class(), v12, a4];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:721 andFormat:@"An error ocurred applying value to %@: Cannot find selector @%@ for property %@", objc_opt_class(), v12, key];
   }
 
 LABEL_49:
@@ -664,22 +664,22 @@ uint64_t __48__OKSettings_applyValue_forKey_ofType_toObject___block_invoke(uint6
   return [v4 invoke];
 }
 
-+ (void)applySettings:(id)a3 toObject:(id)a4 withResolution:(id)a5
++ (void)applySettings:(id)settings toObject:(id)object withResolution:(id)resolution
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = [a3 allKeys];
-  v8 = [v7 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithBlock:", &__block_literal_global_118)}];
-  v40 = a3;
-  v9 = [MEMORY[0x277CBEB18] arrayWithArray:{objc_msgSend(a3, "allKeys")}];
+  allKeys = [settings allKeys];
+  v8 = [allKeys filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithBlock:", &__block_literal_global_118)}];
+  settingsCopy = settings;
+  v9 = [MEMORY[0x277CBEB18] arrayWithArray:{objc_msgSend(settings, "allKeys")}];
   v36 = v8;
   [v9 removeObjectsInArray:v8];
-  v42 = a4;
-  v10 = [objc_opt_class() supportedSettings];
+  objectCopy = object;
+  supportedSettings = [objc_opt_class() supportedSettings];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2;
   v51[3] = &unk_279C8EE58;
-  v51[4] = v10;
+  v51[4] = supportedSettings;
   v11 = [v9 sortedArrayUsingComparator:v51];
   +[OKSettings beginApplyingSettings];
   v49 = 0u;
@@ -693,7 +693,7 @@ uint64_t __48__OKSettings_applyValue_forKey_ofType_toObject___block_invoke(uint6
     v13 = v12;
     v14 = @"@";
     v15 = *v48;
-    v37 = v10;
+    v37 = supportedSettings;
     do
     {
       for (i = 0; i != v13; ++i)
@@ -710,7 +710,7 @@ uint64_t __48__OKSettings_applyValue_forKey_ofType_toObject___block_invoke(uint6
           v18 = [v17 substringFromIndex:1];
         }
 
-        v19 = [v10 objectForKey:v18];
+        v19 = [supportedSettings objectForKey:v18];
         if (v19)
         {
           v20 = v19;
@@ -722,10 +722,10 @@ uint64_t __48__OKSettings_applyValue_forKey_ofType_toObject___block_invoke(uint6
             v24 = [objc_msgSend(v20 objectForKey:{@"subType", "unsignedIntegerValue"}];
             v25 = [v20 objectForKey:@"class"];
             v26 = [v20 objectForKey:@"mapping"];
-            v10 = v37;
+            supportedSettings = v37;
             v27 = v24;
             v14 = v23;
-            [a1 applyValue:+[OKSettingsUtility valueForKey:ofType:settings:optionalSubType:optionalClass:optionalMapping:resolution:](OKSettingsUtility forKey:"valueForKey:ofType:settings:optionalSubType:optionalClass:optionalMapping:resolution:" ofType:v18 toObject:{v22, v40, v27, v25, v26, a5), v18, v22, v42}];
+            [self applyValue:+[OKSettingsUtility valueForKey:ofType:settings:optionalSubType:optionalClass:optionalMapping:resolution:](OKSettingsUtility forKey:"valueForKey:ofType:settings:optionalSubType:optionalClass:optionalMapping:resolution:" ofType:v18 toObject:{v22, settingsCopy, v27, v25, v26, resolution), v18, v22, objectCopy}];
           }
         }
 
@@ -763,13 +763,13 @@ uint64_t __48__OKSettings_applyValue_forKey_ofType_toObject___block_invoke(uint6
 
           v32 = *(*(&v43 + 1) + 8 * j);
           v33 = [objc_msgSend(v32 componentsSeparatedByString:{@".", "firstObject"}];
-          v34 = [v42 settingObjectForKey:v33];
+          v34 = [objectCopy settingObjectForKey:v33];
           if (v34)
           {
             v35 = v34;
             v52 = [v32 substringFromIndex:{objc_msgSend(v32, "rangeOfString:", @"."}];
-            v53 = [v40 objectForKey:v32];
-            [a1 applySettings:objc_msgSend(MEMORY[0x277CBEAC0] toObject:"dictionaryWithObjects:forKeys:count:" withResolution:{&v53, &v52, 1), v35, a5}];
+            v53 = [settingsCopy objectForKey:v32];
+            [self applySettings:objc_msgSend(MEMORY[0x277CBEAC0] toObject:"dictionaryWithObjects:forKeys:count:" withResolution:{&v53, &v52, 1), v35, resolution}];
           }
 
           else if (*MEMORY[0x277D62808] >= 4)
@@ -812,18 +812,18 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
   return -1;
 }
 
-+ (id)_newSettingGetterBlockForKey:(id)a3 ofType:(unint64_t)a4 optionalSubType:(unint64_t)a5 optionalClass:(Class)a6 optionalMapping:(id)a7
++ (id)_newSettingGetterBlockForKey:(id)key ofType:(unint64_t)type optionalSubType:(unint64_t)subType optionalClass:(Class)class optionalMapping:(id)mapping
 {
-  v9 = NSSelectorFromString([MEMORY[0x277CCACA8] stringWithFormat:@"setting%@", objc_msgSend(a3, "stringByCapitalizingFirstCharacter")]);
-  if (a4 <= 303)
+  v9 = NSSelectorFromString([MEMORY[0x277CCACA8] stringWithFormat:@"setting%@", objc_msgSend(key, "stringByCapitalizingFirstCharacter")]);
+  if (type <= 303)
   {
-    if (a4 > 201)
+    if (type > 201)
     {
-      if (a4 <= 205)
+      if (type <= 205)
       {
-        if (a4 > 203)
+        if (type > 203)
         {
-          if (a4 == 204)
+          if (type == 204)
           {
             v26[0] = MEMORY[0x277D85DD0];
             v26[1] = 3221225472;
@@ -844,7 +844,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
           }
         }
 
-        else if (a4 == 202)
+        else if (type == 202)
         {
           v28[0] = MEMORY[0x277D85DD0];
           v28[1] = 3221225472;
@@ -867,9 +867,9 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
         return [v10 copy];
       }
 
-      if (a4 > 300)
+      if (type > 300)
       {
-        if (a4 == 301)
+        if (type == 301)
         {
           v22[0] = MEMORY[0x277D85DD0];
           v22[1] = 3221225472;
@@ -879,7 +879,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
           v10 = v22;
         }
 
-        else if (a4 == 302)
+        else if (type == 302)
         {
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
@@ -902,7 +902,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
         return [v10 copy];
       }
 
-      if (a4 == 206)
+      if (type == 206)
       {
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
@@ -913,7 +913,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
         return [v10 copy];
       }
 
-      if (a4 == 207)
+      if (type == 207)
       {
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
@@ -925,11 +925,11 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
       }
     }
 
-    else if (a4 <= 104)
+    else if (type <= 104)
     {
-      if (a4 > 102)
+      if (type > 102)
       {
-        if (a4 == 103)
+        if (type == 103)
         {
           v35[0] = MEMORY[0x277D85DD0];
           v35[1] = 3221225472;
@@ -952,7 +952,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
         return [v10 copy];
       }
 
-      if (a4 == 101)
+      if (type == 101)
       {
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
@@ -963,7 +963,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
         return [v10 copy];
       }
 
-      if (a4 == 102)
+      if (type == 102)
       {
         v36[0] = MEMORY[0x277D85DD0];
         v36[1] = 3221225472;
@@ -977,9 +977,9 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
 
     else
     {
-      if (a4 <= 106)
+      if (type <= 106)
       {
-        if (a4 == 105)
+        if (type == 105)
         {
           v33[0] = MEMORY[0x277D85DD0];
           v33[1] = 3221225472;
@@ -1002,7 +1002,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
         return [v10 copy];
       }
 
-      switch(a4)
+      switch(type)
       {
         case 0x6BuLL:
           v31[0] = MEMORY[0x277D85DD0];
@@ -1010,7 +1010,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
           v31[2] = __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_7;
           v31[3] = &unk_279C8EF68;
           v31[5] = v9;
-          v31[4] = a7;
+          v31[4] = mapping;
           v10 = v31;
           return [v10 copy];
         case 0x6CuLL:
@@ -1019,7 +1019,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
           v30[2] = __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_8;
           v30[3] = &unk_279C8EF90;
           v30[5] = v9;
-          v30[4] = a7;
+          v30[4] = mapping;
           v10 = v30;
           return [v10 copy];
         case 0xC9uLL:
@@ -1036,11 +1036,11 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
     goto LABEL_48;
   }
 
-  if (a4 <= 401)
+  if (type <= 401)
   {
-    if (a4 <= 306)
+    if (type <= 306)
     {
-      if (a4 == 304)
+      if (type == 304)
       {
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
@@ -1050,7 +1050,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
         v10 = v18;
       }
 
-      else if (a4 == 305)
+      else if (type == 305)
       {
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
@@ -1073,7 +1073,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
       return [v10 copy];
     }
 
-    if (a4 - 307 < 2)
+    if (type - 307 < 2)
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -1084,7 +1084,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
       return [v10 copy];
     }
 
-    if (a4 == 309)
+    if (type == 309)
     {
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -1095,7 +1095,7 @@ uint64_t __52__OKSettings_applySettings_toObject_withResolution___block_invoke_2
       return [v10 copy];
     }
 
-    if (a4 != 401)
+    if (type != 401)
     {
       goto LABEL_48;
     }
@@ -1110,12 +1110,12 @@ LABEL_22:
     return [v10 copy];
   }
 
-  if (a4 - 403 < 5)
+  if (type - 403 < 5)
   {
     goto LABEL_22;
   }
 
-  if (a4 - 501 < 5)
+  if (type - 501 < 5)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -1126,7 +1126,7 @@ LABEL_22:
     return [v10 copy];
   }
 
-  if (a4 == 402)
+  if (type == 402)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -1140,7 +1140,7 @@ LABEL_22:
 LABEL_48:
   if (*MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:1373 andFormat:@"Not supported type %d", a4];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:1373 andFormat:@"Not supported type %d", type];
   }
 
   return 0;
@@ -1521,54 +1521,54 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
   return [v2 performSelector:v3];
 }
 
-+ (id)_newSettingSetterBlockForKey:(id)a3 ofType:(unint64_t)a4 optionalSubType:(unint64_t)a5 optionalClass:(Class)a6 optionalMapping:(id)a7
++ (id)_newSettingSetterBlockForKey:(id)key ofType:(unint64_t)type optionalSubType:(unint64_t)subType optionalClass:(Class)class optionalMapping:(id)mapping
 {
-  if (a4 > 303)
+  if (type > 303)
   {
-    if (a4 <= 308)
+    if (type <= 308)
     {
-      if (a4 > 306)
+      if (type > 306)
       {
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_23;
         v11[3] = &unk_279C8F4B0;
-        v11[8] = a4;
-        v11[9] = a5;
-        v11[4] = a6;
-        v11[5] = a7;
-        v11[6] = a3;
-        v11[7] = a1;
+        v11[8] = type;
+        v11[9] = subType;
+        v11[4] = class;
+        v11[5] = mapping;
+        v11[6] = key;
+        v11[7] = self;
         v7 = v11;
       }
 
-      else if (a4 == 304)
+      else if (type == 304)
       {
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_20;
         v14[3] = &unk_279C8F438;
         v14[8] = 304;
-        v14[9] = a5;
-        v14[4] = a6;
-        v14[5] = a7;
-        v14[6] = a3;
-        v14[7] = a1;
+        v14[9] = subType;
+        v14[4] = class;
+        v14[5] = mapping;
+        v14[6] = key;
+        v14[7] = self;
         v7 = v14;
       }
 
-      else if (a4 == 305)
+      else if (type == 305)
       {
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_21;
         v13[3] = &unk_279C8F460;
         v13[8] = 305;
-        v13[9] = a5;
-        v13[4] = a6;
-        v13[5] = a7;
-        v13[6] = a3;
-        v13[7] = a1;
+        v13[9] = subType;
+        v13[4] = class;
+        v13[5] = mapping;
+        v13[6] = key;
+        v13[7] = self;
         v7 = v13;
       }
 
@@ -1579,80 +1579,80 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
         v12[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_22;
         v12[3] = &unk_279C8F488;
         v12[8] = 306;
-        v12[9] = a5;
-        v12[4] = a6;
-        v12[5] = a7;
-        v12[6] = a3;
-        v12[7] = a1;
+        v12[9] = subType;
+        v12[4] = class;
+        v12[5] = mapping;
+        v12[6] = key;
+        v12[7] = self;
         v7 = v12;
       }
 
       return [v7 copy];
     }
 
-    if (a4 - 401 < 7)
+    if (type - 401 < 7)
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_24;
       v10[3] = &unk_279C8F2A8;
-      v10[8] = a4;
-      v10[9] = a5;
-      v10[4] = a6;
-      v10[5] = a7;
-      v10[6] = a3;
-      v10[7] = a1;
+      v10[8] = type;
+      v10[9] = subType;
+      v10[4] = class;
+      v10[5] = mapping;
+      v10[6] = key;
+      v10[7] = self;
       v7 = v10;
       return [v7 copy];
     }
 
-    if (a4 - 501 < 5)
+    if (type - 501 < 5)
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_25;
       v9[3] = &unk_279C8F4D8;
-      v9[8] = a4;
-      v9[9] = a5;
-      v9[4] = a6;
-      v9[5] = a7;
-      v9[6] = a3;
-      v9[7] = a1;
+      v9[8] = type;
+      v9[9] = subType;
+      v9[4] = class;
+      v9[5] = mapping;
+      v9[6] = key;
+      v9[7] = self;
       v7 = v9;
       return [v7 copy];
     }
 
-    if (a4 == 309)
+    if (type == 309)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_18;
       v16[3] = &unk_279C8F410;
       v16[8] = 309;
-      v16[9] = a5;
-      v16[4] = a6;
-      v16[5] = a7;
-      v16[6] = a3;
-      v16[7] = a1;
+      v16[9] = subType;
+      v16[4] = class;
+      v16[5] = mapping;
+      v16[6] = key;
+      v16[7] = self;
       v7 = v16;
       return [v7 copy];
     }
   }
 
-  else if (a4 > 201)
+  else if (type > 201)
   {
-    if (a4 <= 205)
+    if (type <= 205)
     {
-      if (a4 > 203)
+      if (type > 203)
       {
-        if (a4 == 204)
+        if (type == 204)
         {
           v22[0] = MEMORY[0x277D85DD0];
           v22[1] = 3221225472;
           v22[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_12;
           v22[3] = &unk_279C8F348;
-          v22[4] = a3;
-          v22[5] = a1;
+          v22[4] = key;
+          v22[5] = self;
           v22[6] = 204;
           v7 = v22;
         }
@@ -1663,21 +1663,21 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
           v21[1] = 3221225472;
           v21[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_13;
           v21[3] = &unk_279C8F370;
-          v21[4] = a3;
-          v21[5] = a1;
+          v21[4] = key;
+          v21[5] = self;
           v21[6] = 205;
           v7 = v21;
         }
       }
 
-      else if (a4 == 202)
+      else if (type == 202)
       {
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_10;
         v24[3] = &unk_279C8F2F8;
-        v24[4] = a3;
-        v24[5] = a1;
+        v24[4] = key;
+        v24[5] = self;
         v24[6] = 202;
         v7 = v24;
       }
@@ -1688,8 +1688,8 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
         v23[1] = 3221225472;
         v23[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_11;
         v23[3] = &unk_279C8F320;
-        v23[4] = a3;
-        v23[5] = a1;
+        v23[4] = key;
+        v23[5] = self;
         v23[6] = 203;
         v7 = v23;
       }
@@ -1697,35 +1697,35 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
       return [v7 copy];
     }
 
-    if (a4 > 300)
+    if (type > 300)
     {
-      if (a4 == 301)
+      if (type == 301)
       {
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_16;
         v18[3] = &unk_279C8F3E8;
         v18[8] = 301;
-        v18[9] = a5;
-        v18[4] = a6;
-        v18[5] = a7;
-        v18[6] = a3;
-        v18[7] = a1;
+        v18[9] = subType;
+        v18[4] = class;
+        v18[5] = mapping;
+        v18[6] = key;
+        v18[7] = self;
         v7 = v18;
       }
 
-      else if (a4 == 302)
+      else if (type == 302)
       {
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_17;
         v17[3] = &unk_279C8F280;
         v17[8] = 302;
-        v17[9] = a5;
-        v17[4] = a6;
-        v17[5] = a7;
-        v17[6] = a3;
-        v17[7] = a1;
+        v17[9] = subType;
+        v17[4] = class;
+        v17[5] = mapping;
+        v17[6] = key;
+        v17[7] = self;
         v7 = v17;
       }
 
@@ -1736,56 +1736,56 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
         v15[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_19;
         v15[3] = &unk_279C8F280;
         v15[8] = 303;
-        v15[9] = a5;
-        v15[4] = a6;
-        v15[5] = a7;
-        v15[6] = a3;
-        v15[7] = a1;
+        v15[9] = subType;
+        v15[4] = class;
+        v15[5] = mapping;
+        v15[6] = key;
+        v15[7] = self;
         v7 = v15;
       }
 
       return [v7 copy];
     }
 
-    if (a4 == 206)
+    if (type == 206)
     {
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_14;
       v20[3] = &unk_279C8F398;
-      v20[4] = a3;
-      v20[5] = a1;
+      v20[4] = key;
+      v20[5] = self;
       v20[6] = 206;
       v7 = v20;
       return [v7 copy];
     }
 
-    if (a4 == 207)
+    if (type == 207)
     {
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_15;
       v19[3] = &unk_279C8F3C0;
-      v19[4] = a3;
-      v19[5] = a1;
+      v19[4] = key;
+      v19[5] = self;
       v19[6] = 207;
       v7 = v19;
       return [v7 copy];
     }
   }
 
-  else if (a4 <= 104)
+  else if (type <= 104)
   {
-    if (a4 > 102)
+    if (type > 102)
     {
-      if (a4 == 103)
+      if (type == 103)
       {
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_3;
         v31[3] = &unk_279C8F208;
-        v31[4] = a3;
-        v31[5] = a1;
+        v31[4] = key;
+        v31[5] = self;
         v31[6] = 103;
         v7 = v31;
       }
@@ -1796,8 +1796,8 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
         v30[1] = 3221225472;
         v30[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_4;
         v30[3] = &unk_279C8F208;
-        v30[4] = a3;
-        v30[5] = a1;
+        v30[4] = key;
+        v30[5] = self;
         v30[6] = 104;
         v7 = v30;
       }
@@ -1805,27 +1805,27 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
       return [v7 copy];
     }
 
-    if (a4 == 101)
+    if (type == 101)
     {
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke;
       v33[3] = &unk_279C8F1B8;
-      v33[4] = a3;
-      v33[5] = a1;
+      v33[4] = key;
+      v33[5] = self;
       v33[6] = 101;
       v7 = v33;
       return [v7 copy];
     }
 
-    if (a4 == 102)
+    if (type == 102)
     {
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_2;
       v32[3] = &unk_279C8F1E0;
-      v32[4] = a3;
-      v32[5] = a1;
+      v32[4] = key;
+      v32[5] = self;
       v32[6] = 102;
       v7 = v32;
       return [v7 copy];
@@ -1834,16 +1834,16 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
 
   else
   {
-    if (a4 <= 106)
+    if (type <= 106)
     {
-      if (a4 == 105)
+      if (type == 105)
       {
         v29[0] = MEMORY[0x277D85DD0];
         v29[1] = 3221225472;
         v29[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_5;
         v29[3] = &unk_279C8F230;
-        v29[4] = a3;
-        v29[5] = a1;
+        v29[4] = key;
+        v29[5] = self;
         v29[6] = 105;
         v7 = v29;
       }
@@ -1854,8 +1854,8 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
         v28[1] = 3221225472;
         v28[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_6;
         v28[3] = &unk_279C8F258;
-        v28[4] = a3;
-        v28[5] = a1;
+        v28[4] = key;
+        v28[5] = self;
         v28[6] = 106;
         v7 = v28;
       }
@@ -1863,7 +1863,7 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
       return [v7 copy];
     }
 
-    switch(a4)
+    switch(type)
     {
       case 0x6BuLL:
         v27[0] = MEMORY[0x277D85DD0];
@@ -1871,11 +1871,11 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
         v27[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_7;
         v27[3] = &unk_279C8F280;
         v27[8] = 107;
-        v27[9] = a5;
-        v27[4] = a6;
-        v27[5] = a7;
-        v27[6] = a3;
-        v27[7] = a1;
+        v27[9] = subType;
+        v27[4] = class;
+        v27[5] = mapping;
+        v27[6] = key;
+        v27[7] = self;
         v7 = v27;
         return [v7 copy];
       case 0x6CuLL:
@@ -1884,11 +1884,11 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
         v26[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_8;
         v26[3] = &unk_279C8F2A8;
         v26[8] = 108;
-        v26[9] = a5;
-        v26[4] = a6;
-        v26[5] = a7;
-        v26[6] = a3;
-        v26[7] = a1;
+        v26[9] = subType;
+        v26[4] = class;
+        v26[5] = mapping;
+        v26[6] = key;
+        v26[7] = self;
         v7 = v26;
         return [v7 copy];
       case 0xC9uLL:
@@ -1896,8 +1896,8 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
         v25[1] = 3221225472;
         v25[2] = __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_optionalClass_optionalMapping___block_invoke_9;
         v25[3] = &unk_279C8F2D0;
-        v25[4] = a3;
-        v25[5] = a1;
+        v25[4] = key;
+        v25[5] = self;
         v25[6] = 201;
         v7 = v25;
         return [v7 copy];
@@ -1906,7 +1906,7 @@ uint64_t __96__OKSettings__newSettingGetterBlockForKey_ofType_optionalSubType_op
 
   if (*MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:1790 andFormat:@"Not supported type %d", a7, a4];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:1790 andFormat:@"Not supported type %d", mapping, type];
   }
 
   return 0;
@@ -2213,19 +2213,19 @@ uint64_t __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_op
   return [v6 applyValue:v5 forKey:v7 ofType:v8 toObject:v4];
 }
 
-+ (BOOL)exportClassSettings:(Class)a3 toJavaScriptContext:(id)a4
++ (BOOL)exportClassSettings:(Class)settings toJavaScriptContext:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = [(objc_class *)a3 supportedSettings];
-  v28 = NSStringFromClass(a3);
-  v29 = a4;
-  cls = a3;
-  [a4 setObject:a3 forKeyedSubscript:?];
+  supportedSettings = [(objc_class *)settings supportedSettings];
+  v28 = NSStringFromClass(settings);
+  contextCopy = context;
+  cls = settings;
+  [context setObject:settings forKeyedSubscript:?];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v33 = [v6 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  v33 = [supportedSettings countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (!v33)
   {
     return 1;
@@ -2243,11 +2243,11 @@ uint64_t __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_op
     {
       if (*v37 != v32)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(supportedSettings);
       }
 
       v8 = *(*(&v36 + 1) + 8 * v7);
-      v9 = [v6 objectForKey:v8];
+      v9 = [supportedSettings objectForKey:v8];
       v10 = [v9 objectForKey:@"enabled"];
       if (!v10 || [v10 BOOLValue])
       {
@@ -2256,7 +2256,7 @@ uint64_t __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_op
         v13 = [v9 objectForKey:@"class"];
         v14 = [v9 objectForKey:@"mapping"];
         v15 = [v9 objectForKey:@"jsExport"];
-        v16 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         if (([v15 isEqualToString:@"readonly"] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"readwrite"))
         {
           v17 = NSSelectorFromString([MEMORY[0x277CCACA8] stringWithFormat:@"setting%@", objc_msgSend(v8, "stringByCapitalizingFirstCharacter")]);
@@ -2270,7 +2270,7 @@ uint64_t __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_op
             return 0;
           }
 
-          v18 = [a1 _newSettingGetterBlockForKey:v8 ofType:v11 optionalSubType:v12 optionalClass:v13 optionalMapping:v14];
+          v18 = [self _newSettingGetterBlockForKey:v8 ofType:v11 optionalSubType:v12 optionalClass:v13 optionalMapping:v14];
           if (!v18)
           {
             if (*MEMORY[0x277D62808] >= 4)
@@ -2282,7 +2282,7 @@ uint64_t __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_op
           }
 
           v19 = v18;
-          [v16 setObject:v18 forKey:v31];
+          [dictionary setObject:v18 forKey:v31];
         }
 
         if (([v15 isEqualToString:@"writeonly"] & 1) == 0 && !objc_msgSend(v15, "isEqualToString:", @"readwrite"))
@@ -2293,21 +2293,21 @@ uint64_t __96__OKSettings__newSettingSetterBlockForKey_ofType_optionalSubType_op
         v20 = NSSelectorFromString([MEMORY[0x277CCACA8] stringWithFormat:@"setSetting%@:", objc_msgSend(v8, "stringByCapitalizingFirstCharacter")]);
         if (class_respondsToSelector(cls, v20))
         {
-          v21 = [a1 _newSettingSetterBlockForKey:v8 ofType:v11 optionalSubType:v12 optionalClass:v13 optionalMapping:v14];
+          v21 = [self _newSettingSetterBlockForKey:v8 ofType:v11 optionalSubType:v12 optionalClass:v13 optionalMapping:v14];
           if (v21)
           {
             v22 = v21;
-            [v16 setObject:v21 forKey:v30];
+            [dictionary setObject:v21 forKey:v30];
 
 LABEL_18:
-            if ([v16 count])
+            if ([dictionary count])
             {
               v40[0] = v27;
               v40[1] = v26;
               v41[0] = MEMORY[0x277CBEC28];
               v41[1] = MEMORY[0x277CBEC38];
-              [v16 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v41, v40, 2)}];
-              [objc_msgSend(objc_msgSend(v29 objectForKeyedSubscript:{v28), "objectForKeyedSubscript:", @"prototype", "defineProperty:descriptor:", v8, v16}];
+              [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v41, v40, 2)}];
+              [objc_msgSend(objc_msgSend(contextCopy objectForKeyedSubscript:{v28), "objectForKeyedSubscript:", @"prototype", "defineProperty:descriptor:", v8, dictionary}];
             }
 
             goto LABEL_20;
@@ -2332,7 +2332,7 @@ LABEL_20:
     }
 
     while (v33 != v7);
-    v23 = [v6 countByEnumeratingWithState:&v36 objects:v42 count:16];
+    v23 = [supportedSettings countByEnumeratingWithState:&v36 objects:v42 count:16];
     result = 1;
     v33 = v23;
     if (v23)
@@ -2344,23 +2344,23 @@ LABEL_20:
   }
 }
 
-+ (id)objectFromClass:(Class)a3 withSettings:(id)a4 andResolution:(id)a5
++ (id)objectFromClass:(Class)class withSettings:(id)settings andResolution:(id)resolution
 {
   v42 = *MEMORY[0x277D85DE8];
-  if (([(objc_class *)a3 conformsToProtocol:&unk_287AFD5D0]& 1) != 0 || [(objc_class *)a3 instancesRespondToSelector:sel_initWithSettings_])
+  if (([(objc_class *)class conformsToProtocol:&unk_287AFD5D0]& 1) != 0 || [(objc_class *)class instancesRespondToSelector:sel_initWithSettings_])
   {
-    v32 = a3;
-    v6 = [(objc_class *)a3 supportedSettings];
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    classCopy = class;
+    supportedSettings = [(objc_class *)class supportedSettings];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v8 = [a4 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    allKeys = [settings allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (!v9)
     {
-      return [[v32 alloc] initWithSettings:v7];
+      return [[classCopy alloc] initWithSettings:dictionary];
     }
 
     v10 = v9;
@@ -2373,14 +2373,14 @@ LABEL_20:
       {
         if (*v38 != v36)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v37 + 1) + 8 * v12);
         if ([v13 rangeOfString:v11] != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v27 = [a4 objectForKey:v13];
-          v28 = v7;
+          v27 = [settings objectForKey:v13];
+          v28 = dictionary;
           v29 = v13;
           goto LABEL_16;
         }
@@ -2391,7 +2391,7 @@ LABEL_20:
           v14 = [v13 substringFromIndex:1];
         }
 
-        v15 = [v6 objectForKey:v14];
+        v15 = [supportedSettings objectForKey:v14];
         if (v15)
         {
           v16 = v15;
@@ -2402,19 +2402,19 @@ LABEL_20:
             v18 = [objc_msgSend(v16 objectForKey:{@"subType", "unsignedIntegerValue"}];
             v19 = v10;
             v20 = v11;
-            v21 = v7;
-            v22 = v8;
-            v23 = v6;
+            v21 = dictionary;
+            v22 = allKeys;
+            v23 = supportedSettings;
             v24 = [v16 objectForKey:@"class"];
             v25 = [v16 objectForKey:@"mapping"];
             v26 = v24;
-            v6 = v23;
-            v8 = v22;
-            v7 = v21;
+            supportedSettings = v23;
+            allKeys = v22;
+            dictionary = v21;
             v11 = v20;
             v10 = v19;
-            v27 = [OKSettingsUtility valueForKey:v14 ofType:v34 settings:a4 optionalSubType:v18 optionalClass:v26 optionalMapping:v25 resolution:a5];
-            v28 = v7;
+            v27 = [OKSettingsUtility valueForKey:v14 ofType:v34 settings:settings optionalSubType:v18 optionalClass:v26 optionalMapping:v25 resolution:resolution];
+            v28 = dictionary;
             v29 = v14;
 LABEL_16:
             [v28 setObject:v27 forKey:v29];
@@ -2430,18 +2430,18 @@ LABEL_16:
       }
 
       while (v10 != v12);
-      v30 = [v8 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v30 = [allKeys countByEnumeratingWithState:&v37 objects:v41 count:16];
       v10 = v30;
       if (!v30)
       {
-        return [[v32 alloc] initWithSettings:v7];
+        return [[classCopy alloc] initWithSettings:dictionary];
       }
     }
   }
 
   if (*MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:1942 andFormat:@"An error ocurred creating an object from settings: Class %@ does not respond to initializer", a3];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Settings/OKSettings.m" line:1942 andFormat:@"An error ocurred creating an object from settings: Class %@ does not respond to initializer", class];
   }
 
   return 0;
@@ -2461,26 +2461,26 @@ LABEL_16:
   return [v2 hasPendingTransaction];
 }
 
-+ (void)registerApplyingSettingsUpdateBlock:(id)a3 forKey:(id)a4
++ (void)registerApplyingSettingsUpdateBlock:(id)block forKey:(id)key
 {
   v6 = +[OKSettings transactionsManager];
 
-  [v6 registerUpdateBlock:a3 forKey:a4];
+  [v6 registerUpdateBlock:block forKey:key];
 }
 
-+ (void)applyUpdateBlockOnce:(id)a3 forKey:(id)a4
++ (void)applyUpdateBlockOnce:(id)once forKey:(id)key
 {
-  if ([a1 isApplyingSettings])
+  if ([self isApplyingSettings])
   {
 
-    [a1 registerApplyingSettingsUpdateBlock:a3 forKey:a4];
+    [self registerApplyingSettingsUpdateBlock:once forKey:key];
   }
 
   else
   {
-    v7 = *(a3 + 2);
+    v7 = *(once + 2);
 
-    v7(a3);
+    v7(once);
   }
 }
 

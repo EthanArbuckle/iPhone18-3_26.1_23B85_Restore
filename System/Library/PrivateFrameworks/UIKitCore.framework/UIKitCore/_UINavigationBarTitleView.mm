@@ -4,35 +4,35 @@
 - (NSString)description;
 - (UIMenu)backButtonMenu;
 - (UINavigationItem)navigationItem;
-- (_UINavigationBarTitleView)initWithCoder:(id)a3;
-- (_UINavigationBarTitleView)initWithFrame:(CGRect)a3;
+- (_UINavigationBarTitleView)initWithCoder:(id)coder;
+- (_UINavigationBarTitleView)initWithFrame:(CGRect)frame;
 - (_UINavigationBarTitleViewOverlayRects)overlays;
 - (double)contentBaseHeight;
 - (double)contentBaselineOffsetFromTop;
 - (double)floatingTabBarHeight;
 - (double)largeTitleHeight;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)leadingOverlayCount;
 - (int64_t)trailingOverlayCount;
-- (void)_setDataSource:(id)a3 navigationItem:(id)a4 titleLocation:(int64_t)a5;
-- (void)performTransition:(int64_t)a3 willBeDisplayed:(BOOL)a4;
+- (void)_setDataSource:(id)source navigationItem:(id)item titleLocation:(int64_t)location;
+- (void)performTransition:(int64_t)transition willBeDisplayed:(BOOL)displayed;
 - (void)preferredContentSizeDidChange;
-- (void)setBackButtonAlpha:(double)a3;
-- (void)setBackButtonMaximumWidth:(double)a3;
-- (void)setDisallowNavigationBarMinimumTopPadding:(BOOL)a3;
-- (void)setDisplayLayer:(int64_t)a3;
-- (void)setHeight:(double)a3;
-- (void)setHeightExtension:(double)a3;
-- (void)setHeightShouldBeIncreasedByTabBarHeight:(BOOL)a3;
-- (void)setHideBackButton:(BOOL)a3;
-- (void)setHideCenterBarButtons:(BOOL)a3;
-- (void)setHideLeadingBarButtons:(BOOL)a3;
-- (void)setHideStandardTitle:(BOOL)a3;
-- (void)setHideTrailingBarButtons:(BOOL)a3;
-- (void)setLeadingBarAlpha:(double)a3;
-- (void)setPreferredContentAlignment:(int64_t)a3;
-- (void)setTrailingBarAlpha:(double)a3;
-- (void)transitionWillBegin:(int64_t)a3 willBeDisplayed:(BOOL)a4;
+- (void)setBackButtonAlpha:(double)alpha;
+- (void)setBackButtonMaximumWidth:(double)width;
+- (void)setDisallowNavigationBarMinimumTopPadding:(BOOL)padding;
+- (void)setDisplayLayer:(int64_t)layer;
+- (void)setHeight:(double)height;
+- (void)setHeightExtension:(double)extension;
+- (void)setHeightShouldBeIncreasedByTabBarHeight:(BOOL)height;
+- (void)setHideBackButton:(BOOL)button;
+- (void)setHideCenterBarButtons:(BOOL)buttons;
+- (void)setHideLeadingBarButtons:(BOOL)buttons;
+- (void)setHideStandardTitle:(BOOL)title;
+- (void)setHideTrailingBarButtons:(BOOL)buttons;
+- (void)setLeadingBarAlpha:(double)alpha;
+- (void)setPreferredContentAlignment:(int64_t)alignment;
+- (void)setTrailingBarAlpha:(double)alpha;
+- (void)transitionWillBegin:(int64_t)begin willBeDisplayed:(BOOL)displayed;
 @end
 
 @implementation _UINavigationBarTitleView
@@ -66,12 +66,12 @@
 
 - (NSArray)contentOverlayRects
 {
-  v2 = [(_UINavigationBarTitleView *)self overlays];
-  v3 = [v2 asArray];
-  v4 = v3;
-  if (v3)
+  overlays = [(_UINavigationBarTitleView *)self overlays];
+  asArray = [overlays asArray];
+  v4 = asArray;
+  if (asArray)
   {
-    v5 = v3;
+    v5 = asArray;
   }
 
   else
@@ -84,11 +84,11 @@
   return v5;
 }
 
-- (_UINavigationBarTitleView)initWithFrame:(CGRect)a3
+- (_UINavigationBarTitleView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UINavigationBarTitleView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -101,11 +101,11 @@
   return v4;
 }
 
-- (_UINavigationBarTitleView)initWithCoder:(id)a3
+- (_UINavigationBarTitleView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UINavigationBarTitleView;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -118,11 +118,11 @@
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = _UINavigationBarTitleView;
-  v5 = [(UIView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5 == self && (_UISMCBarsEnabled() & 1) != 0)
   {
     v6 = 0;
@@ -136,20 +136,20 @@
   return v6;
 }
 
-- (void)_setDataSource:(id)a3 navigationItem:(id)a4 titleLocation:(int64_t)a5
+- (void)_setDataSource:(id)source navigationItem:(id)item titleLocation:(int64_t)location
 {
-  v8 = a4;
-  objc_storeWeak(&self->_dataSource, a3);
-  objc_storeWeak(&self->_navigationItem, v8);
+  itemCopy = item;
+  objc_storeWeak(&self->_dataSource, source);
+  objc_storeWeak(&self->_navigationItem, itemCopy);
 
-  self->_titleLocation = a5;
+  self->_titleLocation = location;
 }
 
-- (void)setPreferredContentAlignment:(int64_t)a3
+- (void)setPreferredContentAlignment:(int64_t)alignment
 {
-  if (self->_preferredContentAlignment != a3)
+  if (self->_preferredContentAlignment != alignment)
   {
-    self->_preferredContentAlignment = a3;
+    self->_preferredContentAlignment = alignment;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedLayout:self];
   }
@@ -163,146 +163,146 @@
   return v4;
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
-  if (a3 < 0.0)
+  if (height < 0.0)
   {
-    a3 = 0.0;
+    height = 0.0;
   }
 
-  if (self->_height != a3)
+  if (self->_height != height)
   {
-    self->_height = a3;
+    self->_height = height;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedHeight:self];
   }
 }
 
-- (void)setHeightExtension:(double)a3
+- (void)setHeightExtension:(double)extension
 {
-  if (a3 < 0.0)
+  if (extension < 0.0)
   {
-    a3 = 0.0;
+    extension = 0.0;
   }
 
-  if (self->_heightExtension != a3)
+  if (self->_heightExtension != extension)
   {
-    self->_heightExtension = a3;
+    self->_heightExtension = extension;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedHeight:self];
   }
 }
 
-- (void)setBackButtonMaximumWidth:(double)a3
+- (void)setBackButtonMaximumWidth:(double)width
 {
-  if (a3 < 0.0)
+  if (width < 0.0)
   {
-    a3 = 0.0;
+    width = 0.0;
   }
 
-  if (self->_backButtonMaximumWidth != a3)
+  if (self->_backButtonMaximumWidth != width)
   {
-    self->_backButtonMaximumWidth = a3;
+    self->_backButtonMaximumWidth = width;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedMaximumBackButtonWidth:self];
   }
 }
 
-- (void)setHideBackButton:(BOOL)a3
+- (void)setHideBackButton:(BOOL)button
 {
-  if (self->_hideBackButton != a3)
+  if (self->_hideBackButton != button)
   {
-    self->_hideBackButton = a3;
+    self->_hideBackButton = button;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedStandardDisplayItems:self];
   }
 }
 
-- (void)setHideLeadingBarButtons:(BOOL)a3
+- (void)setHideLeadingBarButtons:(BOOL)buttons
 {
-  if (self->_hideLeadingBarButtons != a3)
+  if (self->_hideLeadingBarButtons != buttons)
   {
-    self->_hideLeadingBarButtons = a3;
+    self->_hideLeadingBarButtons = buttons;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedStandardDisplayItems:self];
   }
 }
 
-- (void)setHideStandardTitle:(BOOL)a3
+- (void)setHideStandardTitle:(BOOL)title
 {
-  if (self->_hideStandardTitle != a3)
+  if (self->_hideStandardTitle != title)
   {
-    self->_hideStandardTitle = a3;
+    self->_hideStandardTitle = title;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedStandardDisplayItems:self];
   }
 }
 
-- (void)setHideCenterBarButtons:(BOOL)a3
+- (void)setHideCenterBarButtons:(BOOL)buttons
 {
-  if (self->_hideCenterBarButtons != a3)
+  if (self->_hideCenterBarButtons != buttons)
   {
-    self->_hideCenterBarButtons = a3;
+    self->_hideCenterBarButtons = buttons;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedStandardDisplayItems:self];
   }
 }
 
-- (void)setHideTrailingBarButtons:(BOOL)a3
+- (void)setHideTrailingBarButtons:(BOOL)buttons
 {
-  if (self->_hideTrailingBarButtons != a3)
+  if (self->_hideTrailingBarButtons != buttons)
   {
-    self->_hideTrailingBarButtons = a3;
+    self->_hideTrailingBarButtons = buttons;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedStandardDisplayItems:self];
   }
 }
 
-- (void)setBackButtonAlpha:(double)a3
+- (void)setBackButtonAlpha:(double)alpha
 {
-  if (self->_backButtonAlpha != a3)
+  if (self->_backButtonAlpha != alpha)
   {
-    self->_backButtonAlpha = a3;
+    self->_backButtonAlpha = alpha;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedDisplayItemAlpha:self];
   }
 }
 
-- (void)setLeadingBarAlpha:(double)a3
+- (void)setLeadingBarAlpha:(double)alpha
 {
-  if (self->_leadingBarAlpha != a3)
+  if (self->_leadingBarAlpha != alpha)
   {
-    self->_leadingBarAlpha = a3;
+    self->_leadingBarAlpha = alpha;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedDisplayItemAlpha:self];
   }
 }
 
-- (void)setTrailingBarAlpha:(double)a3
+- (void)setTrailingBarAlpha:(double)alpha
 {
-  if (self->_trailingBarAlpha != a3)
+  if (self->_trailingBarAlpha != alpha)
   {
-    self->_trailingBarAlpha = a3;
+    self->_trailingBarAlpha = alpha;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedDisplayItemAlpha:self];
   }
 }
 
-- (void)setDisplayLayer:(int64_t)a3
+- (void)setDisplayLayer:(int64_t)layer
 {
-  if (self->_displayLayer != a3)
+  if (self->_displayLayer != layer)
   {
-    self->_displayLayer = a3;
+    self->_displayLayer = layer;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedDisplayLayer:self];
   }
 }
 
-- (void)setDisallowNavigationBarMinimumTopPadding:(BOOL)a3
+- (void)setDisallowNavigationBarMinimumTopPadding:(BOOL)padding
 {
-  if (self->_disallowNavigationBarMinimumTopPadding != a3)
+  if (self->_disallowNavigationBarMinimumTopPadding != padding)
   {
-    self->_disallowNavigationBarMinimumTopPadding = a3;
+    self->_disallowNavigationBarMinimumTopPadding = padding;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedLayout:self];
   }
@@ -358,11 +358,11 @@
   return v5;
 }
 
-- (void)setHeightShouldBeIncreasedByTabBarHeight:(BOOL)a3
+- (void)setHeightShouldBeIncreasedByTabBarHeight:(BOOL)height
 {
-  if (self->_heightShouldBeIncreasedByTabBarHeight != a3)
+  if (self->_heightShouldBeIncreasedByTabBarHeight != height)
   {
-    self->_heightShouldBeIncreasedByTabBarHeight = a3;
+    self->_heightShouldBeIncreasedByTabBarHeight = height;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     [WeakRetained titleViewChangedTabBarSizingDisposition:self];
   }
@@ -392,26 +392,26 @@
   [WeakRetained titleViewChangedPreferredDisplaySize:self];
 }
 
-- (void)transitionWillBegin:(int64_t)a3 willBeDisplayed:(BOOL)a4
+- (void)transitionWillBegin:(int64_t)begin willBeDisplayed:(BOOL)displayed
 {
   v4 = 1.0;
-  if (a4)
+  if (displayed)
   {
     v4 = 0.0;
   }
 
-  [(UIView *)self setAlpha:a3, v4];
+  [(UIView *)self setAlpha:begin, v4];
 }
 
-- (void)performTransition:(int64_t)a3 willBeDisplayed:(BOOL)a4
+- (void)performTransition:(int64_t)transition willBeDisplayed:(BOOL)displayed
 {
   v4 = 0.0;
-  if (a4)
+  if (displayed)
   {
     v4 = 1.0;
   }
 
-  [(UIView *)self setAlpha:a3, v4];
+  [(UIView *)self setAlpha:transition, v4];
 }
 
 - (NSString)description

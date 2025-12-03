@@ -2,35 +2,35 @@
 - (FBSDisplayConfiguration)targetDisplayConfiguration;
 - (SBSystemUISceneBindingProviding)bindingProvider;
 - (SBSystemUISceneDefaultPresenter)init;
-- (SBSystemUISceneDefaultPresenter)initWithWindowHostingPresentationOnWindowScene:(id)a3;
+- (SBSystemUISceneDefaultPresenter)initWithWindowHostingPresentationOnWindowScene:(id)scene;
 - (UIWindowScene)targetWindowScene;
-- (id)_initWithPresentationBinderProvider:(id)a3 targetDisplayConfiguration:(id)a4;
-- (id)_presentationBinderForDisplayConfiguration:(id)a3;
-- (id)_serviceBundleIdentifierForScene:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)dismissScene:(id)a3;
-- (id)hostingBinderForScene:(id)a3;
-- (id)hostingWindowForScene:(id)a3;
-- (id)presentScene:(id)a3 viewControllerBuilderBlock:(id)a4;
-- (id)statusBarForDisplayConfiguration:(id)a3 statusBarSceneHostComponent:(id)a4;
+- (id)_initWithPresentationBinderProvider:(id)provider targetDisplayConfiguration:(id)configuration;
+- (id)_presentationBinderForDisplayConfiguration:(id)configuration;
+- (id)_serviceBundleIdentifierForScene:(id)scene;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)dismissScene:(id)scene;
+- (id)hostingBinderForScene:(id)scene;
+- (id)hostingWindowForScene:(id)scene;
+- (id)presentScene:(id)scene viewControllerBuilderBlock:(id)block;
+- (id)statusBarForDisplayConfiguration:(id)configuration statusBarSceneHostComponent:(id)component;
 - (id)succinctDescription;
-- (void)_addSceneToPresentationBinder:(id)a3;
-- (void)_disableIdleTimer:(BOOL)a3 sceneIdentityToken:(id)a4;
-- (void)_invalidatePresentationBinderForDisplayConfiguration:(id)a3;
-- (void)_removeSceneFromPresentationBinder:(id)a3;
-- (void)_setDisplayLayoutElementActive:(BOOL)a3 scene:(id)a4;
-- (void)_updateDisplayLayoutElementWindowLevelForScene:(id)a3;
+- (void)_addSceneToPresentationBinder:(id)binder;
+- (void)_disableIdleTimer:(BOOL)timer sceneIdentityToken:(id)token;
+- (void)_invalidatePresentationBinderForDisplayConfiguration:(id)configuration;
+- (void)_removeSceneFromPresentationBinder:(id)binder;
+- (void)_setDisplayLayoutElementActive:(BOOL)active scene:(id)scene;
+- (void)_updateDisplayLayoutElementWindowLevelForScene:(id)scene;
 - (void)dealloc;
 - (void)dismissAllScenes;
-- (void)featurePolicyHostComponentDidChangeAllowsMenuButtonDismissal:(id)a3;
-- (void)featurePolicyHostComponentDidChangeShouldDisableReachability:(id)a3;
-- (void)idleTimerSceneHostComponentDidChangeShouldDisableIdleTimer:(id)a3;
-- (void)scene:(id)a3 didChangeTraitsParticipantDelegate:(id)a4;
-- (void)scene:(id)a3 hasVisibleContent:(BOOL)a4;
-- (void)sceneDidChangeDisplayIdentity:(id)a3;
-- (void)setPreferredWindowLevel:(id)a3;
-- (void)statusBarSceneHostComponent:(id)a3 didChangePreferredStatusBarVisibilityWithAnimationSettings:(id)a4;
+- (void)featurePolicyHostComponentDidChangeAllowsMenuButtonDismissal:(id)dismissal;
+- (void)featurePolicyHostComponentDidChangeShouldDisableReachability:(id)reachability;
+- (void)idleTimerSceneHostComponentDidChangeShouldDisableIdleTimer:(id)timer;
+- (void)scene:(id)scene didChangeTraitsParticipantDelegate:(id)delegate;
+- (void)scene:(id)scene hasVisibleContent:(BOOL)content;
+- (void)sceneDidChangeDisplayIdentity:(id)identity;
+- (void)setPreferredWindowLevel:(id)level;
+- (void)statusBarSceneHostComponent:(id)component didChangePreferredStatusBarVisibilityWithAnimationSettings:(id)settings;
 @end
 
 @implementation SBSystemUISceneDefaultPresenter
@@ -72,7 +72,7 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -84,184 +84,184 @@
   v2 = [(SBSystemUISceneDefaultPresenter *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     presentedScenes = v2->_presentedScenes;
-    v2->_presentedScenes = v3;
+    v2->_presentedScenes = array;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sceneToWindowMap = v2->_sceneToWindowMap;
-    v2->_sceneToWindowMap = v5;
+    v2->_sceneToWindowMap = dictionary;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     sceneToDisplayLayoutAssertionMap = v2->_sceneToDisplayLayoutAssertionMap;
-    v2->_sceneToDisplayLayoutAssertionMap = v7;
+    v2->_sceneToDisplayLayoutAssertionMap = dictionary2;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     sceneToPresentationBinderMap = v2->_sceneToPresentationBinderMap;
-    v2->_sceneToPresentationBinderMap = v9;
+    v2->_sceneToPresentationBinderMap = dictionary3;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     displayConfigurationToPresentationBinderMap = v2->_displayConfigurationToPresentationBinderMap;
-    v2->_displayConfigurationToPresentationBinderMap = v11;
+    v2->_displayConfigurationToPresentationBinderMap = dictionary4;
   }
 
   return v2;
 }
 
-- (SBSystemUISceneDefaultPresenter)initWithWindowHostingPresentationOnWindowScene:(id)a3
+- (SBSystemUISceneDefaultPresenter)initWithWindowHostingPresentationOnWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = [(SBSystemUISceneDefaultPresenter *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_targetWindowScene, v4);
+    objc_storeWeak(&v5->_targetWindowScene, sceneCopy);
   }
 
   return v6;
 }
 
-- (id)_initWithPresentationBinderProvider:(id)a3 targetDisplayConfiguration:(id)a4
+- (id)_initWithPresentationBinderProvider:(id)provider targetDisplayConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  configurationCopy = configuration;
   v8 = [(SBSystemUISceneDefaultPresenter *)self init];
   p_isa = &v8->super.isa;
   if (v8)
   {
-    objc_storeWeak(&v8->_bindingProvider, v6);
-    objc_storeWeak(p_isa + 13, v7);
+    objc_storeWeak(&v8->_bindingProvider, providerCopy);
+    objc_storeWeak(p_isa + 13, configurationCopy);
   }
 
   return p_isa;
 }
 
-- (id)hostingWindowForScene:(id)a3
+- (id)hostingWindowForScene:(id)scene
 {
-  v4 = a3;
-  if (!v4)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [SBSystemUISceneDefaultPresenter hostingWindowForScene:];
   }
 
   sceneToWindowMap = self->_sceneToWindowMap;
-  v6 = [v4 identityToken];
-  v7 = [(NSMutableDictionary *)sceneToWindowMap objectForKey:v6];
+  identityToken = [sceneCopy identityToken];
+  v7 = [(NSMutableDictionary *)sceneToWindowMap objectForKey:identityToken];
 
   return v7;
 }
 
-- (id)hostingBinderForScene:(id)a3
+- (id)hostingBinderForScene:(id)scene
 {
-  v4 = a3;
-  if (!v4)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [SBSystemUISceneDefaultPresenter hostingBinderForScene:];
   }
 
   sceneToPresentationBinderMap = self->_sceneToPresentationBinderMap;
-  v6 = [v4 identityToken];
-  v7 = [(NSMutableDictionary *)sceneToPresentationBinderMap objectForKey:v6];
+  identityToken = [sceneCopy identityToken];
+  v7 = [(NSMutableDictionary *)sceneToPresentationBinderMap objectForKey:identityToken];
 
   return v7;
 }
 
-- (void)setPreferredWindowLevel:(id)a3
+- (void)setPreferredWindowLevel:(id)level
 {
-  v8 = a3;
+  levelCopy = level;
   if (![(NSNumber *)self->_preferredWindowLevel isEqualToNumber:?])
   {
-    v4 = [v8 copy];
+    v4 = [levelCopy copy];
     preferredWindowLevel = self->_preferredWindowLevel;
     self->_preferredWindowLevel = v4;
 
     WeakRetained = objc_loadWeakRetained(&self->_currentParticipantDelegate);
-    [WeakRetained setPreferredSceneLevel:v8];
-    v7 = [WeakRetained participant];
-    [v7 setNeedsUpdatePreferencesWithReason:@"level changed"];
+    [WeakRetained setPreferredSceneLevel:levelCopy];
+    participant = [WeakRetained participant];
+    [participant setNeedsUpdatePreferencesWithReason:@"level changed"];
   }
 }
 
-- (void)_addSceneToPresentationBinder:(id)a3
+- (void)_addSceneToPresentationBinder:(id)binder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  binderCopy = binder;
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [binderCopy identifier];
     v15 = 138543362;
-    v16 = v6;
+    v16 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Scene[%{public}@] was added to the presentation binder.", &v15, 0xCu);
   }
 
-  v7 = [v4 identityToken];
+  identityToken = [binderCopy identityToken];
   WeakRetained = objc_loadWeakRetained(&self->_targetDisplayConfiguration);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    v10 = WeakRetained;
+    sb_displayConfigurationForSceneManagers = WeakRetained;
   }
 
   else
   {
-    v11 = [v4 settings];
-    v10 = [v11 sb_displayConfigurationForSceneManagers];
+    settings = [binderCopy settings];
+    sb_displayConfigurationForSceneManagers = [settings sb_displayConfigurationForSceneManagers];
   }
 
-  v12 = [(SBSystemUISceneDefaultPresenter *)self _presentationBinderForDisplayConfiguration:v10];
-  [v12 addScene:v4];
+  v12 = [(SBSystemUISceneDefaultPresenter *)self _presentationBinderForDisplayConfiguration:sb_displayConfigurationForSceneManagers];
+  [v12 addScene:binderCopy];
   sceneToWindowMap = self->_sceneToWindowMap;
-  v14 = [v12 rootWindow];
-  [(NSMutableDictionary *)sceneToWindowMap setObject:v14 forKey:v7];
+  rootWindow = [v12 rootWindow];
+  [(NSMutableDictionary *)sceneToWindowMap setObject:rootWindow forKey:identityToken];
 
-  [(NSMutableDictionary *)self->_sceneToPresentationBinderMap setObject:v12 forKey:v7];
+  [(NSMutableDictionary *)self->_sceneToPresentationBinderMap setObject:v12 forKey:identityToken];
 }
 
-- (void)_removeSceneFromPresentationBinder:(id)a3
+- (void)_removeSceneFromPresentationBinder:(id)binder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  binderCopy = binder;
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [binderCopy identifier];
     v15 = 138543362;
-    v16 = v6;
+    v16 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Scene[%{public}@] was removed from the presentation binder.", &v15, 0xCu);
   }
 
-  v7 = [v4 identityToken];
+  identityToken = [binderCopy identityToken];
   WeakRetained = objc_loadWeakRetained(&self->_targetDisplayConfiguration);
   v9 = WeakRetained;
   if (WeakRetained)
   {
-    v10 = WeakRetained;
+    sb_displayConfigurationForSceneManagers = WeakRetained;
   }
 
   else
   {
-    v11 = [v4 settings];
-    v10 = [v11 sb_displayConfigurationForSceneManagers];
+    settings = [binderCopy settings];
+    sb_displayConfigurationForSceneManagers = [settings sb_displayConfigurationForSceneManagers];
   }
 
-  v12 = [(SBSystemUISceneDefaultPresenter *)self _presentationBinderForDisplayConfiguration:v10];
-  [(NSMutableDictionary *)self->_sceneToPresentationBinderMap removeObjectForKey:v7];
-  [(NSMutableDictionary *)self->_sceneToWindowMap removeObjectForKey:v7];
-  [v12 removeScene:v4];
-  v13 = [v12 scenes];
-  v14 = [v13 count];
+  v12 = [(SBSystemUISceneDefaultPresenter *)self _presentationBinderForDisplayConfiguration:sb_displayConfigurationForSceneManagers];
+  [(NSMutableDictionary *)self->_sceneToPresentationBinderMap removeObjectForKey:identityToken];
+  [(NSMutableDictionary *)self->_sceneToWindowMap removeObjectForKey:identityToken];
+  [v12 removeScene:binderCopy];
+  scenes = [v12 scenes];
+  v14 = [scenes count];
 
   if (!v14)
   {
-    [(SBSystemUISceneDefaultPresenter *)self _invalidatePresentationBinderForDisplayConfiguration:v10];
+    [(SBSystemUISceneDefaultPresenter *)self _invalidatePresentationBinderForDisplayConfiguration:sb_displayConfigurationForSceneManagers];
   }
 }
 
-- (id)_presentationBinderForDisplayConfiguration:(id)a3
+- (id)_presentationBinderForDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_displayConfigurationToPresentationBinderMap objectForKey:v4];
+  configurationCopy = configuration;
+  v5 = [(NSMutableDictionary *)self->_displayConfigurationToPresentationBinderMap objectForKey:configurationCopy];
   if (!v5)
   {
     v6 = MEMORY[0x277CCACA8];
@@ -269,34 +269,34 @@
     v8 = NSStringFromClass(v7);
     v9 = [v6 stringWithFormat:@"UIRootSceneWindow-%@-%p", v8, self];
 
-    v10 = [objc_alloc(MEMORY[0x277D75928]) initWithDisplayConfiguration:v4];
+    v10 = [objc_alloc(MEMORY[0x277D75928]) initWithDisplayConfiguration:configurationCopy];
     [v10 setBackgroundColor:0];
     v5 = [[SBRootWindowScenePresentationBinder alloc] initWithIdentifier:v9 priority:0 appearanceStyle:0 rootWindow:v10];
-    [(NSMutableDictionary *)self->_displayConfigurationToPresentationBinderMap setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_displayConfigurationToPresentationBinderMap setObject:v5 forKey:configurationCopy];
   }
 
   return v5;
 }
 
-- (void)_invalidatePresentationBinderForDisplayConfiguration:(id)a3
+- (void)_invalidatePresentationBinderForDisplayConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v4 = [(NSMutableDictionary *)self->_displayConfigurationToPresentationBinderMap objectForKey:?];
   v5 = v4;
   if (v4)
   {
     [v4 invalidate];
-    [(NSMutableDictionary *)self->_displayConfigurationToPresentationBinderMap removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_displayConfigurationToPresentationBinderMap removeObjectForKey:configurationCopy];
   }
 }
 
-- (void)_disableIdleTimer:(BOOL)a3 sceneIdentityToken:(id)a4
+- (void)_disableIdleTimer:(BOOL)timer sceneIdentityToken:(id)token
 {
-  v4 = a3;
+  timerCopy = timer;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  tokenCopy = token;
   scenesDisablingIdleTimer = self->_scenesDisablingIdleTimer;
-  if (v4)
+  if (timerCopy)
   {
     if (!scenesDisablingIdleTimer)
     {
@@ -307,12 +307,12 @@
       scenesDisablingIdleTimer = self->_scenesDisablingIdleTimer;
     }
 
-    [(NSMutableSet *)scenesDisablingIdleTimer addObject:v6];
+    [(NSMutableSet *)scenesDisablingIdleTimer addObject:tokenCopy];
   }
 
-  else if ([(NSMutableSet *)scenesDisablingIdleTimer containsObject:v6])
+  else if ([(NSMutableSet *)scenesDisablingIdleTimer containsObject:tokenCopy])
   {
-    [(NSMutableSet *)self->_scenesDisablingIdleTimer removeObject:v6];
+    [(NSMutableSet *)self->_scenesDisablingIdleTimer removeObject:tokenCopy];
   }
 
   v10 = [(NSMutableSet *)self->_scenesDisablingIdleTimer count];
@@ -359,13 +359,13 @@ LABEL_14:
   }
 }
 
-- (id)presentScene:(id)a3 viewControllerBuilderBlock:(id)a4
+- (id)presentScene:(id)scene viewControllerBuilderBlock:(id)block
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  sceneCopy = scene;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (!sceneCopy)
   {
     [SBSystemUISceneDefaultPresenter presentScene:viewControllerBuilderBlock:];
     if (v9)
@@ -378,36 +378,36 @@ LABEL_39:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!blockCopy)
   {
     goto LABEL_39;
   }
 
 LABEL_3:
-  v10 = [v7 identityToken];
+  identityToken = [sceneCopy identityToken];
   presentedScenes = self->_presentedScenes;
-  if (presentedScenes && [(NSMutableArray *)presentedScenes containsObject:v10])
+  if (presentedScenes && [(NSMutableArray *)presentedScenes containsObject:identityToken])
   {
-    [(SBSystemUISceneDefaultPresenter *)a2 presentScene:v7 viewControllerBuilderBlock:?];
+    [(SBSystemUISceneDefaultPresenter *)a2 presentScene:sceneCopy viewControllerBuilderBlock:?];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_targetWindowScene);
   if (!WeakRetained)
   {
     v17 = objc_loadWeakRetained(&self->_targetDisplayConfiguration);
-    v18 = [v17 identity];
-    if (v18)
+    identity = [v17 identity];
+    if (identity)
     {
-      v19 = v18;
+      identity2 = identity;
     }
 
     else
     {
-      v28 = [v7 settings];
-      v29 = [v28 sb_displayConfigurationForSceneManagers];
-      v19 = [v29 identity];
+      settings = [sceneCopy settings];
+      sb_displayConfigurationForSceneManagers = [settings sb_displayConfigurationForSceneManagers];
+      identity2 = [sb_displayConfigurationForSceneManagers identity];
 
-      if (v19)
+      if (identity2)
       {
         goto LABEL_23;
       }
@@ -421,22 +421,22 @@ LABEL_23:
     v31 = v30;
     if (v30)
     {
-      [v30 addSystemUISceneToPresentationBinder:v7 forDisplayIdentity:v19];
+      [v30 addSystemUISceneToPresentationBinder:sceneCopy forDisplayIdentity:identity2];
     }
 
     else
     {
-      [(SBSystemUISceneDefaultPresenter *)self _addSceneToPresentationBinder:v7];
+      [(SBSystemUISceneDefaultPresenter *)self _addSceneToPresentationBinder:sceneCopy];
     }
 
     v32 = +[SBSceneManagerCoordinator sharedInstance];
-    v33 = [v32 sceneManagerForDisplayIdentity:v19];
+    v33 = [v32 sceneManagerForDisplayIdentity:identity2];
 
-    [v33 startTrackingSystemUISceneForInterfaceStyleUpdatePurposes:v7];
+    [v33 startTrackingSystemUISceneForInterfaceStyleUpdatePurposes:sceneCopy];
     goto LABEL_35;
   }
 
-  v13 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v10];
+  v13 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
   v14 = objc_opt_class();
   v15 = v13;
   if (v14)
@@ -462,19 +462,19 @@ LABEL_23:
   if (!v20)
   {
     v20 = [[SBTraitsSingleSceneWindow alloc] initWithWindowScene:WeakRetained];
-    [(NSMutableDictionary *)self->_sceneToWindowMap setObject:v20 forKey:v10];
+    [(NSMutableDictionary *)self->_sceneToWindowMap setObject:v20 forKey:identityToken];
   }
 
-  v21 = [(SBTraitsSingleSceneWindow *)v20 rootViewController];
+  rootViewController = [(SBTraitsSingleSceneWindow *)v20 rootViewController];
 
-  if (!v21)
+  if (!rootViewController)
   {
     v22 = v9[2](v9);
-    v23 = [v22 traitsOrientedViewController];
+    traitsOrientedViewController = [v22 traitsOrientedViewController];
 
-    v24 = [v7 clientSettings];
+    clientSettings = [sceneCopy clientSettings];
     v25 = objc_opt_class();
-    v26 = v24;
+    v26 = clientSettings;
     if (v25)
     {
       if (objc_opt_isKindOfClass())
@@ -507,71 +507,71 @@ LABEL_23:
 
         v38 = [[SBWallpaperEffectView alloc] initWithWallpaperVariant:v45];
         [(PBUIWallpaperEffectViewBase *)v38 setWallpaperStyle:v36];
-        v39 = [v23 view];
-        [v39 setBackgroundView:v38];
+        view = [traitsOrientedViewController view];
+        [view setBackgroundView:v38];
       }
     }
 
-    [(SBTraitsSingleSceneWindow *)v20 setRootViewController:v23];
-    v40 = [v23 view];
+    [(SBTraitsSingleSceneWindow *)v20 setRootViewController:traitsOrientedViewController];
+    view2 = [traitsOrientedViewController view];
     [(SBTraitsSingleSceneWindow *)v20 bounds];
-    [v40 setFrame:?];
+    [view2 setFrame:?];
 
     [(SBTraitsSingleSceneWindow *)v20 _legacySetRotatableViewOrientation:1 updateStatusBar:1 duration:0 force:0.0];
   }
 
   [(SBFWindow *)v20 setHidden:0];
-  [(SBSystemUISceneDefaultPresenter *)self _setDisplayLayoutElementActive:1 scene:v7];
+  [(SBSystemUISceneDefaultPresenter *)self _setDisplayLayoutElementActive:1 scene:sceneCopy];
   v41 = SBLogCommon();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
   {
-    v42 = [v7 identifier];
+    identifier = [sceneCopy identifier];
     *buf = 138543618;
-    *&buf[4] = v42;
+    *&buf[4] = identifier;
     v47 = 2112;
     v48 = WeakRetained;
     _os_log_impl(&dword_21ED4E000, v41, OS_LOG_TYPE_DEFAULT, "Scene[%{public}@] window was shown on windowScene: %@.", buf, 0x16u);
   }
 
 LABEL_35:
-  [(NSMutableArray *)self->_presentedScenes addObject:v10];
+  [(NSMutableArray *)self->_presentedScenes addObject:identityToken];
   v43 = objc_loadWeakRetained(&self->_presentingDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [v43 scenePresenter:self didPresentScene:v7];
+    [v43 scenePresenter:self didPresentScene:sceneCopy];
   }
 
   return 0;
 }
 
-- (id)dismissScene:(id)a3
+- (id)dismissScene:(id)scene
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [SBSystemUISceneDefaultPresenter dismissScene:];
   }
 
-  v5 = [v4 identityToken];
-  if ([(NSMutableArray *)self->_presentedScenes containsObject:v5])
+  identityToken = [sceneCopy identityToken];
+  if ([(NSMutableArray *)self->_presentedScenes containsObject:identityToken])
   {
     WeakRetained = objc_loadWeakRetained(&self->_presentingDelegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained scenePresenter:self willDismissScene:v4];
+      [WeakRetained scenePresenter:self willDismissScene:sceneCopy];
     }
 
     v7 = objc_loadWeakRetained(&self->_targetWindowScene);
     if (v7)
     {
-      [(SBSystemUISceneDefaultPresenter *)self _disableIdleTimer:0 sceneIdentityToken:v5];
-      v8 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v5];
+      [(SBSystemUISceneDefaultPresenter *)self _disableIdleTimer:0 sceneIdentityToken:identityToken];
+      v8 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
       [v8 setHidden:1];
-      [(SBSystemUISceneDefaultPresenter *)self _setDisplayLayoutElementActive:0 scene:v4];
-      v9 = [v8 rootViewController];
+      [(SBSystemUISceneDefaultPresenter *)self _setDisplayLayoutElementActive:0 scene:sceneCopy];
+      rootViewController = [v8 rootViewController];
       v10 = objc_opt_class();
-      v11 = v9;
+      v11 = rootViewController;
       if (v10)
       {
         if (objc_opt_isKindOfClass())
@@ -594,23 +594,23 @@ LABEL_35:
 
       if (v16)
       {
-        v17 = [v16 view];
-        [v17 setBackgroundView:0];
+        view = [v16 view];
+        [view setBackgroundView:0];
 
         if (objc_opt_respondsToSelector())
         {
-          [WeakRetained scenePresenter:self updateHomeAffordance:0 forScene:v4];
+          [WeakRetained scenePresenter:self updateHomeAffordance:0 forScene:sceneCopy];
         }
       }
 
       [v8 setRootViewController:0];
-      [(NSMutableDictionary *)self->_sceneToWindowMap removeObjectForKey:v5];
+      [(NSMutableDictionary *)self->_sceneToWindowMap removeObjectForKey:identityToken];
       v18 = SBLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v4 identifier];
+        identifier = [sceneCopy identifier];
         *v27 = 138543618;
-        *&v27[4] = v19;
+        *&v27[4] = identifier;
         v28 = 2112;
         v29 = v7;
         _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "Scene[%{public}@] window was hidden on windowScene: %@.", v27, 0x16u);
@@ -620,19 +620,19 @@ LABEL_35:
     }
 
     v13 = objc_loadWeakRetained(&self->_targetDisplayConfiguration);
-    v14 = [v13 identity];
-    if (v14)
+    identity = [v13 identity];
+    if (identity)
     {
-      v15 = v14;
+      identity2 = identity;
     }
 
     else
     {
-      v20 = [v4 settings];
-      v21 = [v20 sb_displayConfigurationForSceneManagers];
-      v15 = [v21 identity];
+      settings = [sceneCopy settings];
+      sb_displayConfigurationForSceneManagers = [settings sb_displayConfigurationForSceneManagers];
+      identity2 = [sb_displayConfigurationForSceneManagers identity];
 
-      if (v15)
+      if (identity2)
       {
         goto LABEL_22;
       }
@@ -646,36 +646,36 @@ LABEL_22:
     v23 = v22;
     if (v22)
     {
-      [v22 removeSystemUISceneFromPresentationBinder:v4 forDisplayIdentity:v15];
+      [v22 removeSystemUISceneFromPresentationBinder:sceneCopy forDisplayIdentity:identity2];
     }
 
     else
     {
-      [(SBSystemUISceneDefaultPresenter *)self _removeSceneFromPresentationBinder:v4];
+      [(SBSystemUISceneDefaultPresenter *)self _removeSceneFromPresentationBinder:sceneCopy];
     }
 
     v24 = +[SBSceneManagerCoordinator sharedInstance];
-    v25 = [v24 sceneManagerForDisplayIdentity:v15];
+    v25 = [v24 sceneManagerForDisplayIdentity:identity2];
 
-    [v25 stopTrackingSystemUISceneForInterfaceStyleUpdatePurposes:v4];
+    [v25 stopTrackingSystemUISceneForInterfaceStyleUpdatePurposes:sceneCopy];
 LABEL_26:
-    [(NSMutableArray *)self->_presentedScenes removeObject:v5];
+    [(NSMutableArray *)self->_presentedScenes removeObject:identityToken];
   }
 
   return 0;
 }
 
-- (void)sceneDidChangeDisplayIdentity:(id)a3
+- (void)sceneDidChangeDisplayIdentity:(id)identity
 {
-  v4 = a3;
-  v15 = v4;
-  if (!v4)
+  identityCopy = identity;
+  v15 = identityCopy;
+  if (!identityCopy)
   {
     [SBSystemUISceneDefaultPresenter sceneDidChangeDisplayIdentity:];
-    v4 = 0;
+    identityCopy = 0;
   }
 
-  v5 = [v4 identityToken];
+  identityToken = [identityCopy identityToken];
   WeakRetained = objc_loadWeakRetained(&self->_targetWindowScene);
   if (WeakRetained)
   {
@@ -684,26 +684,26 @@ LABEL_26:
 
   v7 = objc_loadWeakRetained(&self->_targetDisplayConfiguration);
 
-  if (!v7 && [(NSMutableArray *)self->_presentedScenes containsObject:v5])
+  if (!v7 && [(NSMutableArray *)self->_presentedScenes containsObject:identityToken])
   {
-    WeakRetained = [(NSMutableDictionary *)self->_sceneToPresentationBinderMap objectForKey:v5];
-    v8 = [WeakRetained displayConfiguration];
-    v9 = [v15 settings];
-    v10 = [v9 sb_displayConfigurationForSceneManagers];
-    v11 = [v8 isEqual:v10];
+    WeakRetained = [(NSMutableDictionary *)self->_sceneToPresentationBinderMap objectForKey:identityToken];
+    displayConfiguration = [WeakRetained displayConfiguration];
+    settings = [v15 settings];
+    sb_displayConfigurationForSceneManagers = [settings sb_displayConfigurationForSceneManagers];
+    v11 = [displayConfiguration isEqual:sb_displayConfigurationForSceneManagers];
 
     if ((v11 & 1) == 0)
     {
-      [(NSMutableDictionary *)self->_sceneToPresentationBinderMap removeObjectForKey:v5];
-      [(NSMutableDictionary *)self->_sceneToWindowMap removeObjectForKey:v5];
+      [(NSMutableDictionary *)self->_sceneToPresentationBinderMap removeObjectForKey:identityToken];
+      [(NSMutableDictionary *)self->_sceneToWindowMap removeObjectForKey:identityToken];
       [WeakRetained removeScene:v15];
-      v12 = [WeakRetained scenes];
-      v13 = [v12 count];
+      scenes = [WeakRetained scenes];
+      v13 = [scenes count];
 
       if (!v13)
       {
-        v14 = [WeakRetained displayConfiguration];
-        [(SBSystemUISceneDefaultPresenter *)self _invalidatePresentationBinderForDisplayConfiguration:v14];
+        displayConfiguration2 = [WeakRetained displayConfiguration];
+        [(SBSystemUISceneDefaultPresenter *)self _invalidatePresentationBinderForDisplayConfiguration:displayConfiguration2];
       }
 
       [(SBSystemUISceneDefaultPresenter *)self _addSceneToPresentationBinder:v15];
@@ -713,27 +713,27 @@ LABEL_4:
   }
 }
 
-- (void)scene:(id)a3 hasVisibleContent:(BOOL)a4
+- (void)scene:(id)scene hasVisibleContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
-  v16 = v6;
-  if (!v6)
+  contentCopy = content;
+  sceneCopy = scene;
+  v16 = sceneCopy;
+  if (!sceneCopy)
   {
     [SBSystemUISceneDefaultPresenter scene:hasVisibleContent:];
-    v6 = 0;
+    sceneCopy = 0;
   }
 
-  v7 = [v6 identityToken];
+  identityToken = [sceneCopy identityToken];
   WeakRetained = objc_loadWeakRetained(&self->_targetWindowScene);
   if (WeakRetained)
   {
     v9 = WeakRetained;
-    v10 = [(NSMutableArray *)self->_presentedScenes containsObject:v7];
+    v10 = [(NSMutableArray *)self->_presentedScenes containsObject:identityToken];
 
     if (v10)
     {
-      v11 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v7];
+      v11 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
       v12 = objc_opt_class();
       v13 = v11;
       if (v12)
@@ -756,32 +756,32 @@ LABEL_4:
 
       v15 = v14;
 
-      [v15 setSceneContentVisible:v4];
+      [v15 setSceneContentVisible:contentCopy];
     }
   }
 }
 
-- (void)scene:(id)a3 didChangeTraitsParticipantDelegate:(id)a4
+- (void)scene:(id)scene didChangeTraitsParticipantDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  sceneCopy = scene;
+  delegateCopy = delegate;
+  if (!sceneCopy)
   {
     [SBSystemUISceneDefaultPresenter scene:didChangeTraitsParticipantDelegate:];
   }
 
-  v8 = [v6 identityToken];
-  objc_storeWeak(&self->_currentParticipantDelegate, v7);
-  v9 = [v7 participant];
+  identityToken = [sceneCopy identityToken];
+  objc_storeWeak(&self->_currentParticipantDelegate, delegateCopy);
+  participant = [delegateCopy participant];
   WeakRetained = objc_loadWeakRetained(&self->_targetWindowScene);
   if (WeakRetained)
   {
     v11 = WeakRetained;
-    v12 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v8];
+    v12 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
     if (v12)
     {
       v13 = v12;
-      v14 = [(NSMutableArray *)self->_presentedScenes containsObject:v8];
+      v14 = [(NSMutableArray *)self->_presentedScenes containsObject:identityToken];
 
       if (v14)
       {
@@ -791,13 +791,13 @@ LABEL_4:
         v23[2] = __76__SBSystemUISceneDefaultPresenter_scene_didChangeTraitsParticipantDelegate___block_invoke;
         v23[3] = &unk_2783B2118;
         objc_copyWeak(&v25, &location);
-        v15 = v8;
+        v15 = identityToken;
         v24 = v15;
-        [v7 setActuateZOrderAlongsideBlock:v23];
+        [delegateCopy setActuateZOrderAlongsideBlock:v23];
         v16 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v15];
-        [v9 currentZOrderLevel];
+        [participant currentZOrderLevel];
         [v16 setWindowLevel:?];
-        [(SBSystemUISceneDefaultPresenter *)self _updateDisplayLayoutElementWindowLevelForScene:v6];
+        [(SBSystemUISceneDefaultPresenter *)self _updateDisplayLayoutElementWindowLevelForScene:sceneCopy];
         v17 = objc_opt_class();
         v18 = v16;
         if (v17)
@@ -820,11 +820,11 @@ LABEL_4:
 
         v20 = v19;
 
-        v21 = [v20 rootViewController];
-        [v21 setContainerParticipant:0];
+        rootViewController = [v20 rootViewController];
+        [rootViewController setContainerParticipant:0];
 
-        v22 = [v20 rootViewController];
-        [v22 updateOrientationIfNeeded];
+        rootViewController2 = [v20 rootViewController];
+        [rootViewController2 updateOrientationIfNeeded];
 
         objc_destroyWeak(&v25);
         objc_destroyWeak(&location);
@@ -838,9 +838,9 @@ LABEL_4:
 
   if (self->_preferredWindowLevel)
   {
-    [v7 setPreferredSceneLevel:?];
-    [v9 setNeedsUpdatePreferencesWithReason:@"level"];
-    [v9 updatePreferencesIfNeeded];
+    [delegateCopy setPreferredSceneLevel:?];
+    [participant setNeedsUpdatePreferencesWithReason:@"level"];
+    [participant updatePreferencesIfNeeded];
   }
 }
 
@@ -859,32 +859,32 @@ void __76__SBSystemUISceneDefaultPresenter_scene_didChangeTraitsParticipantDeleg
 
 - (id)succinctDescription
 {
-  v2 = [(SBSystemUISceneDefaultPresenter *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSystemUISceneDefaultPresenter *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSystemUISceneDefaultPresenter *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSystemUISceneDefaultPresenter *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSystemUISceneDefaultPresenter *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSystemUISceneDefaultPresenter *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __73__SBSystemUISceneDefaultPresenter_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -991,47 +991,47 @@ void __73__SBSystemUISceneDefaultPresenter_descriptionBuilderWithMultilinePrefix
   v42 = [*(v14 + 32) appendObject:v44 withName:@"displayConfigurationToPresentationBinderMap"];
 }
 
-- (id)statusBarForDisplayConfiguration:(id)a3 statusBarSceneHostComponent:(id)a4
+- (id)statusBarForDisplayConfiguration:(id)configuration statusBarSceneHostComponent:(id)component
 {
   v4 = SBApp;
-  v5 = a3;
-  v6 = [v4 windowSceneManager];
-  v7 = [v5 identity];
+  configurationCopy = configuration;
+  windowSceneManager = [v4 windowSceneManager];
+  identity = [configurationCopy identity];
 
-  v8 = [v6 windowSceneForDisplayIdentity:v7];
+  v8 = [windowSceneManager windowSceneForDisplayIdentity:identity];
 
-  v9 = [v8 statusBarManager];
-  v10 = [v9 statusBar];
+  statusBarManager = [v8 statusBarManager];
+  statusBar = [statusBarManager statusBar];
 
-  return v10;
+  return statusBar;
 }
 
-- (void)statusBarSceneHostComponent:(id)a3 didChangePreferredStatusBarVisibilityWithAnimationSettings:(id)a4
+- (void)statusBarSceneHostComponent:(id)component didChangePreferredStatusBarVisibilityWithAnimationSettings:(id)settings
 {
-  v5 = a3;
-  v6 = [v5 hostScene];
-  v35 = [v6 identityToken];
+  componentCopy = component;
+  hostScene = [componentCopy hostScene];
+  identityToken = [hostScene identityToken];
 
-  v7 = [v5 hostScene];
+  hostScene2 = [componentCopy hostScene];
 
-  v8 = [v7 clientSettings];
+  clientSettings = [hostScene2 clientSettings];
 
   WeakRetained = objc_loadWeakRetained(&self->_targetWindowScene);
   if (WeakRetained)
   {
     v10 = WeakRetained;
-    v11 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v35];
+    v11 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
     if (v11)
     {
       v12 = v11;
-      v13 = [(NSMutableArray *)self->_presentedScenes containsObject:v35];
+      v13 = [(NSMutableArray *)self->_presentedScenes containsObject:identityToken];
 
       if (!v13)
       {
         goto LABEL_27;
       }
 
-      v14 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v35];
+      v14 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
       v15 = objc_opt_class();
       v10 = v14;
       if (v15)
@@ -1054,9 +1054,9 @@ void __73__SBSystemUISceneDefaultPresenter_descriptionBuilderWithMultilinePrefix
 
       v17 = v16;
 
-      v18 = [v17 _sbWindowScene];
+      _sbWindowScene = [v17 _sbWindowScene];
       v19 = objc_opt_class();
-      v20 = v18;
+      v20 = _sbWindowScene;
       if (v19)
       {
         if (objc_opt_isKindOfClass())
@@ -1077,13 +1077,13 @@ void __73__SBSystemUISceneDefaultPresenter_descriptionBuilderWithMultilinePrefix
 
       v22 = v21;
 
-      v23 = [v22 statusBarManager];
+      statusBarManager = [v22 statusBarManager];
 
-      v24 = [v23 reusePool];
+      reusePool = [statusBarManager reusePool];
 
-      v25 = [v17 rootViewController];
+      rootViewController = [v17 rootViewController];
       v26 = objc_opt_class();
-      v27 = v25;
+      v27 = rootViewController;
       if (v26)
       {
         if (objc_opt_isKindOfClass())
@@ -1104,14 +1104,14 @@ void __73__SBSystemUISceneDefaultPresenter_descriptionBuilderWithMultilinePrefix
 
       v29 = v28;
 
-      v30 = [v8 statusBarHidden];
+      statusBarHidden = [clientSettings statusBarHidden];
       statusBar = self->_statusBar;
-      if (v30)
+      if (statusBarHidden)
       {
         if (statusBar)
         {
           [(UIStatusBar *)statusBar removeFromSuperview];
-          [v24 recycleStatusBar:self->_statusBar];
+          [reusePool recycleStatusBar:self->_statusBar];
         }
       }
 
@@ -1119,13 +1119,13 @@ void __73__SBSystemUISceneDefaultPresenter_descriptionBuilderWithMultilinePrefix
       {
         if (!statusBar)
         {
-          v32 = [v24 getReusableStatusBarWithReason:@"SystemUI Scene Presentation"];
+          v32 = [reusePool getReusableStatusBarWithReason:@"SystemUI Scene Presentation"];
           v33 = self->_statusBar;
           self->_statusBar = v32;
         }
 
-        v34 = [v29 view];
-        [v34 addOverlayView:self->_statusBar];
+        view = [v29 view];
+        [view addOverlayView:self->_statusBar];
       }
     }
   }
@@ -1133,40 +1133,40 @@ void __73__SBSystemUISceneDefaultPresenter_descriptionBuilderWithMultilinePrefix
 LABEL_27:
 }
 
-- (void)featurePolicyHostComponentDidChangeShouldDisableReachability:(id)a3
+- (void)featurePolicyHostComponentDidChangeShouldDisableReachability:(id)reachability
 {
-  v8 = a3;
-  v4 = [v8 hostScene];
-  v5 = [v4 identityToken];
-  v6 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v5];
-  if (v6 && [v8 shouldDisableReachability])
+  reachabilityCopy = reachability;
+  hostScene = [reachabilityCopy hostScene];
+  identityToken = [hostScene identityToken];
+  v6 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
+  if (v6 && [reachabilityCopy shouldDisableReachability])
   {
     v7 = +[SBReachabilityManager sharedInstance];
     [v7 ignoreWindowForReachability:v6];
   }
 }
 
-- (void)featurePolicyHostComponentDidChangeAllowsMenuButtonDismissal:(id)a3
+- (void)featurePolicyHostComponentDidChangeAllowsMenuButtonDismissal:(id)dismissal
 {
-  v12 = [a3 hostScene];
-  v4 = [v12 identityToken];
+  hostScene = [dismissal hostScene];
+  identityToken = [hostScene identityToken];
   WeakRetained = objc_loadWeakRetained(&self->_targetWindowScene);
   if (WeakRetained)
   {
-    v6 = WeakRetained;
-    v7 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v4];
+    clientSettings = WeakRetained;
+    v7 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
     if (v7)
     {
       v8 = v7;
-      v9 = [(NSMutableArray *)self->_presentedScenes containsObject:v4];
+      v9 = [(NSMutableArray *)self->_presentedScenes containsObject:identityToken];
 
       if (!v9)
       {
         goto LABEL_11;
       }
 
-      v6 = [v12 clientSettings];
-      if ([v6 allowsMenuButtonDismissal])
+      clientSettings = [hostScene clientSettings];
+      if ([clientSettings allowsMenuButtonDismissal])
       {
         v10 = SBHomeGestureEnabled();
       }
@@ -1179,7 +1179,7 @@ LABEL_27:
       v11 = objc_loadWeakRetained(&self->_presentingDelegate);
       if (objc_opt_respondsToSelector())
       {
-        [v11 scenePresenter:self updateHomeAffordance:v10 forScene:v12];
+        [v11 scenePresenter:self updateHomeAffordance:v10 forScene:hostScene];
       }
     }
   }
@@ -1187,29 +1187,29 @@ LABEL_27:
 LABEL_11:
 }
 
-- (void)idleTimerSceneHostComponentDidChangeShouldDisableIdleTimer:(id)a3
+- (void)idleTimerSceneHostComponentDidChangeShouldDisableIdleTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [v4 hostScene];
-  v13 = [v5 identityToken];
+  timerCopy = timer;
+  hostScene = [timerCopy hostScene];
+  identityToken = [hostScene identityToken];
 
-  v6 = [v4 hostScene];
+  hostScene2 = [timerCopy hostScene];
 
-  v7 = [v6 clientSettings];
+  clientSettings = [hostScene2 clientSettings];
 
   WeakRetained = objc_loadWeakRetained(&self->_targetWindowScene);
   if (WeakRetained)
   {
     v9 = WeakRetained;
-    v10 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v13];
+    v10 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
     if (v10)
     {
       v11 = v10;
-      v12 = [(NSMutableArray *)self->_presentedScenes containsObject:v13];
+      v12 = [(NSMutableArray *)self->_presentedScenes containsObject:identityToken];
 
       if (v12)
       {
-        -[SBSystemUISceneDefaultPresenter _disableIdleTimer:sceneIdentityToken:](self, "_disableIdleTimer:sceneIdentityToken:", [v7 idleTimerDisabled], v13);
+        -[SBSystemUISceneDefaultPresenter _disableIdleTimer:sceneIdentityToken:](self, "_disableIdleTimer:sceneIdentityToken:", [clientSettings idleTimerDisabled], identityToken);
       }
     }
 
@@ -1219,68 +1219,68 @@ LABEL_11:
   }
 }
 
-- (id)_serviceBundleIdentifierForScene:(id)a3
+- (id)_serviceBundleIdentifierForScene:(id)scene
 {
-  v3 = [a3 clientHandle];
-  v4 = [v3 processHandle];
+  clientHandle = [scene clientHandle];
+  processHandle = [clientHandle processHandle];
 
-  if ([v4 hasConsistentLaunchdJob])
+  if ([processHandle hasConsistentLaunchdJob])
   {
-    v5 = [v4 consistentJobLabel];
+    consistentJobLabel = [processHandle consistentJobLabel];
 LABEL_5:
-    v6 = v5;
+    identifier = consistentJobLabel;
     goto LABEL_6;
   }
 
-  if ([v4 isDaemon])
+  if ([processHandle isDaemon])
   {
-    v5 = [v4 daemonJobLabel];
+    consistentJobLabel = [processHandle daemonJobLabel];
     goto LABEL_5;
   }
 
-  if ([v4 isApplication])
+  if ([processHandle isApplication])
   {
-    v8 = [v4 bundle];
-    v6 = [v8 identifier];
+    bundle = [processHandle bundle];
+    identifier = [bundle identifier];
   }
 
   else
   {
-    v6 = 0;
+    identifier = 0;
   }
 
 LABEL_6:
 
-  return v6;
+  return identifier;
 }
 
-- (void)_setDisplayLayoutElementActive:(BOOL)a3 scene:(id)a4
+- (void)_setDisplayLayoutElementActive:(BOOL)active scene:(id)scene
 {
-  v4 = a3;
-  v6 = a4;
-  if (!v6)
+  activeCopy = active;
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [SBSystemUISceneDefaultPresenter _setDisplayLayoutElementActive:scene:];
-    v6 = 0;
+    sceneCopy = 0;
   }
 
   if (self->_shouldPublishAsDisplayLayoutElement)
   {
-    v18 = v6;
-    v7 = [v6 identityToken];
-    v8 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v7];
+    v18 = sceneCopy;
+    identityToken = [sceneCopy identityToken];
+    v8 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
     if (!v8)
     {
 LABEL_14:
 
-      v6 = v18;
+      sceneCopy = v18;
       goto LABEL_15;
     }
 
-    v9 = [(NSMutableDictionary *)self->_sceneToDisplayLayoutAssertionMap objectForKey:v7];
+    v9 = [(NSMutableDictionary *)self->_sceneToDisplayLayoutAssertionMap objectForKey:identityToken];
     v10 = v9;
-    v11 = !v4;
-    if (!v4 || v9)
+    v11 = !activeCopy;
+    if (!activeCopy || v9)
     {
       if (!v9)
       {
@@ -1292,7 +1292,7 @@ LABEL_14:
         goto LABEL_13;
       }
 
-      [(NSMutableDictionary *)self->_sceneToDisplayLayoutAssertionMap removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->_sceneToDisplayLayoutAssertionMap removeObjectForKey:identityToken];
       [v10 invalidate];
       v17 = 0;
     }
@@ -1300,18 +1300,18 @@ LABEL_14:
     else
     {
       v12 = objc_alloc(MEMORY[0x277D66A50]);
-      v13 = [v18 identifier];
-      v10 = [v12 initWithIdentifier:v13];
+      identifier = [v18 identifier];
+      v10 = [v12 initWithIdentifier:identifier];
 
       [v8 level];
       [v10 setLevel:v14];
       [v10 setFillsDisplayBounds:1];
       [v10 setLayoutRole:3];
-      v15 = [v8 _sbWindowScene];
-      v16 = [v15 displayLayoutPublisher];
-      v17 = [v16 addElement:v10];
+      _sbWindowScene = [v8 _sbWindowScene];
+      displayLayoutPublisher = [_sbWindowScene displayLayoutPublisher];
+      v17 = [displayLayoutPublisher addElement:v10];
 
-      [(NSMutableDictionary *)self->_sceneToDisplayLayoutAssertionMap setObject:v17 forKey:v7];
+      [(NSMutableDictionary *)self->_sceneToDisplayLayoutAssertionMap setObject:v17 forKey:identityToken];
     }
 
     v10 = v17;
@@ -1323,28 +1323,28 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)_updateDisplayLayoutElementWindowLevelForScene:(id)a3
+- (void)_updateDisplayLayoutElementWindowLevelForScene:(id)scene
 {
-  v4 = a3;
-  if (!v4)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [SBSystemUISceneDefaultPresenter _updateDisplayLayoutElementWindowLevelForScene:];
-    v4 = 0;
+    sceneCopy = 0;
   }
 
   if (self->_shouldPublishAsDisplayLayoutElement)
   {
-    v11 = v4;
-    v5 = [v4 identityToken];
-    v6 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:v5];
+    v11 = sceneCopy;
+    identityToken = [sceneCopy identityToken];
+    v6 = [(NSMutableDictionary *)self->_sceneToWindowMap objectForKey:identityToken];
     if (v6)
     {
-      v7 = [(NSMutableDictionary *)self->_sceneToDisplayLayoutAssertionMap objectForKey:v5];
+      v7 = [(NSMutableDictionary *)self->_sceneToDisplayLayoutAssertionMap objectForKey:identityToken];
       if (v7)
       {
-        v8 = [v6 _sbWindowScene];
-        v9 = [v8 displayLayoutPublisher];
-        v10 = [v9 transitionAssertionWithReason:0];
+        _sbWindowScene = [v6 _sbWindowScene];
+        displayLayoutPublisher = [_sbWindowScene displayLayoutPublisher];
+        v10 = [displayLayoutPublisher transitionAssertionWithReason:0];
 
         [(SBSystemUISceneDefaultPresenter *)self _setDisplayLayoutElementActive:0 scene:v11];
         [(SBSystemUISceneDefaultPresenter *)self _setDisplayLayoutElementActive:1 scene:v11];
@@ -1352,7 +1352,7 @@ LABEL_15:
       }
     }
 
-    v4 = v11;
+    sceneCopy = v11;
   }
 }
 

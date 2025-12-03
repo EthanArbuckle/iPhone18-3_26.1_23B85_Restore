@@ -1,21 +1,21 @@
 @interface TLKDetailsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation TLKDetailsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TLKTitleContainerView"];
-  [v3 validateClass:@"TLKDetailsView" hasInstanceMethod:@"titleContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKTitleContainerView" hasInstanceMethod:@"titleLabelString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKTitleContainerView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TLKDetailsView" hasProperty:@"contentView" withType:"@"];
-  [v3 validateClass:@"TLKTextAreaView" hasProperty:@"detailsFields" withType:"@"];
-  [v3 validateClass:@"TLKDetailsView" hasInstanceMethod:@"footnoteLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TLKTitleContainerView"];
+  [validationsCopy validateClass:@"TLKDetailsView" hasInstanceMethod:@"titleContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKTitleContainerView" hasInstanceMethod:@"titleLabelString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKTitleContainerView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TLKDetailsView" hasProperty:@"contentView" withType:"@"];
+  [validationsCopy validateClass:@"TLKTextAreaView" hasProperty:@"detailsFields" withType:"@"];
+  [validationsCopy validateClass:@"TLKDetailsView" hasInstanceMethod:@"footnoteLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -25,7 +25,7 @@
   v4 = [v2 safeUIViewForKey:@"secondaryLabel"];
   if ([v4 _accessibilityViewIsVisible])
   {
-    v7 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
     v5 = __UIAXStringForVariables();
   }
 

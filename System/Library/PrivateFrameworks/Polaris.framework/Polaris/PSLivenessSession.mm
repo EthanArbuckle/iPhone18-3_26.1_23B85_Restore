@@ -1,10 +1,10 @@
 @interface PSLivenessSession
-- (PSLivenessSession)initWithDelegate:(id)a3 queue:(id)a4;
+- (PSLivenessSession)initWithDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation PSLivenessSession
 
-- (PSLivenessSession)initWithDelegate:(id)a3 queue:(id)a4
+- (PSLivenessSession)initWithDelegate:(id)delegate queue:(id)queue
 {
   v10.receiver = self;
   v10.super_class = PSLivenessSession;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_delegate = a3;
-    v6->_queue = a4;
+    v6->_delegate = delegate;
+    v6->_queue = queue;
     v8 = v6;
   }
 

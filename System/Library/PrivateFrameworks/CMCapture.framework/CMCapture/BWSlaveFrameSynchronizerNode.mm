@@ -1,23 +1,23 @@
 @interface BWSlaveFrameSynchronizerNode
-- (BWSlaveFrameSynchronizerNode)initWithDepthEnabled:(BOOL)a3 numberOfInputs:(int)a4 syncSlaveForMasterPortTypes:(id)a5 separateDepthComponentsEnabled:(BOOL)a6 preLTMThumbnailEnabled:(BOOL)a7 postColorProcessingThumbnailEnabled:(BOOL)a8 weightSegmentMapEnabled:(BOOL)a9 numberOfSecondaryFramesToSkip:(int)a10;
-- (BWSlaveFrameSynchronizerNode)initWithDepthEnabled:(BOOL)a3 numberOfInputs:(int)a4 syncSlaveForMasterPortTypes:(id)a5 separateDepthComponentsEnabled:(BOOL)a6 preLTMThumbnailEnabledInputs:(id)a7 postColorProcessingThumbnailEnabledInputs:(id)a8 weightSegmentMapEnabledInputs:(id)a9 differentInputFormatsSupported:(BOOL)a10 bufferSize:(int)a11 numberOfSlaveFramesToSkip:(int)a12 startEmittingMasterFramesBeforeSlaveStreamStarts:(BOOL)a13;
-- (uint64_t)_setupAttachedMediaConfigurationForInput:(uint64_t)a3 attachedMediaKey:;
-- (uint64_t)_setupAttachedMediaConfigurationForOutput:(uint64_t)a3 attachedMediaKey:(uint64_t)a4 inputIndexesDrivingAttachedMediaOutput:;
+- (BWSlaveFrameSynchronizerNode)initWithDepthEnabled:(BOOL)enabled numberOfInputs:(int)inputs syncSlaveForMasterPortTypes:(id)types separateDepthComponentsEnabled:(BOOL)componentsEnabled preLTMThumbnailEnabled:(BOOL)thumbnailEnabled postColorProcessingThumbnailEnabled:(BOOL)processingThumbnailEnabled weightSegmentMapEnabled:(BOOL)mapEnabled numberOfSecondaryFramesToSkip:(int)self0;
+- (BWSlaveFrameSynchronizerNode)initWithDepthEnabled:(BOOL)enabled numberOfInputs:(int)inputs syncSlaveForMasterPortTypes:(id)types separateDepthComponentsEnabled:(BOOL)componentsEnabled preLTMThumbnailEnabledInputs:(id)enabledInputs postColorProcessingThumbnailEnabledInputs:(id)thumbnailEnabledInputs weightSegmentMapEnabledInputs:(id)mapEnabledInputs differentInputFormatsSupported:(BOOL)self0 bufferSize:(int)self1 numberOfSlaveFramesToSkip:(int)self2 startEmittingMasterFramesBeforeSlaveStreamStarts:(BOOL)self3;
+- (uint64_t)_setupAttachedMediaConfigurationForInput:(uint64_t)input attachedMediaKey:;
+- (uint64_t)_setupAttachedMediaConfigurationForOutput:(uint64_t)output attachedMediaKey:(uint64_t)key inputIndexesDrivingAttachedMediaOutput:;
 - (unint64_t)_printState;
-- (void)_emitDroppedFrame:(uint64_t)a1 captureID:inputIndex:;
-- (void)_emitDroppedFrames:(uint64_t)a1 captureID:(CMTime *)a2 inputIndex:(int)a3;
+- (void)_emitDroppedFrame:(uint64_t)frame captureID:inputIndex:;
+- (void)_emitDroppedFrames:(uint64_t)frames captureID:(CMTime *)d inputIndex:(int)index;
 - (void)_purgeAllBuffers;
 - (void)_purgeAllPurgeableBuffers;
-- (void)_tryToEmitBuffersWithSynchronizationEnabled:(uint64_t)a1;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_tryToEmitBuffersWithSynchronizationEnabled:(uint64_t)enabled;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWSlaveFrameSynchronizerNode
@@ -28,8 +28,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BWNode *)self inputs];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  inputs = [(BWNode *)self inputs];
+  v4 = [(NSArray *)inputs countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v4)
   {
     v5 = v4;
@@ -40,7 +40,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inputs);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -50,7 +50,7 @@
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v5 = [(NSArray *)inputs countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v5);
@@ -173,22 +173,22 @@ LABEL_19:
   return result;
 }
 
-- (BWSlaveFrameSynchronizerNode)initWithDepthEnabled:(BOOL)a3 numberOfInputs:(int)a4 syncSlaveForMasterPortTypes:(id)a5 separateDepthComponentsEnabled:(BOOL)a6 preLTMThumbnailEnabled:(BOOL)a7 postColorProcessingThumbnailEnabled:(BOOL)a8 weightSegmentMapEnabled:(BOOL)a9 numberOfSecondaryFramesToSkip:(int)a10
+- (BWSlaveFrameSynchronizerNode)initWithDepthEnabled:(BOOL)enabled numberOfInputs:(int)inputs syncSlaveForMasterPortTypes:(id)types separateDepthComponentsEnabled:(BOOL)componentsEnabled preLTMThumbnailEnabled:(BOOL)thumbnailEnabled postColorProcessingThumbnailEnabled:(BOOL)processingThumbnailEnabled weightSegmentMapEnabled:(BOOL)mapEnabled numberOfSecondaryFramesToSkip:(int)self0
 {
-  v10 = a8;
-  v11 = a6;
-  v13 = *&a4;
-  v14 = a3;
+  processingThumbnailEnabledCopy = processingThumbnailEnabled;
+  componentsEnabledCopy = componentsEnabled;
+  v13 = *&inputs;
+  enabledCopy = enabled;
   v16 = 0x1E695D000uLL;
-  if (a7)
+  if (thumbnailEnabled)
   {
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (v13 >= 1)
     {
       v18 = 0;
       do
       {
-        [v17 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v18)}];
+        [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v18)}];
         v18 = (v18 + 1);
       }
 
@@ -199,18 +199,18 @@ LABEL_19:
 
   else
   {
-    v17 = 0;
+    array = 0;
   }
 
-  if (v10)
+  if (processingThumbnailEnabledCopy)
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     if (v13 >= 1)
     {
       v20 = 0;
       do
       {
-        [v19 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v20)}];
+        [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v20)}];
         v20 = (v20 + 1);
       }
 
@@ -221,18 +221,18 @@ LABEL_19:
 
   else
   {
-    v19 = 0;
+    array2 = 0;
   }
 
-  if (a9)
+  if (mapEnabled)
   {
-    v21 = [*(v16 + 3952) array];
+    array3 = [*(v16 + 3952) array];
     if (v13 >= 1)
     {
       v22 = 0;
       do
       {
-        [v21 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v22)}];
+        [array3 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v22)}];
         v22 = (v22 + 1);
       }
 
@@ -242,34 +242,34 @@ LABEL_19:
 
   else
   {
-    v21 = 0;
+    array3 = 0;
   }
 
   BYTE4(v25) = 1;
   HIDWORD(v24) = 1;
-  LODWORD(v25) = a10;
+  LODWORD(v25) = skip;
   LOBYTE(v24) = 0;
-  return [BWSlaveFrameSynchronizerNode initWithDepthEnabled:"initWithDepthEnabled:numberOfInputs:syncSlaveForMasterPortTypes:separateDepthComponentsEnabled:preLTMThumbnailEnabledInputs:postColorProcessingThumbnailEnabledInputs:weightSegmentMapEnabledInputs:differentInputFormatsSupported:bufferSize:numberOfSlaveFramesToSkip:startEmittingMasterFramesBeforeSlaveStreamStarts:" numberOfInputs:v14 syncSlaveForMasterPortTypes:v13 separateDepthComponentsEnabled:a5 preLTMThumbnailEnabledInputs:v11 postColorProcessingThumbnailEnabledInputs:v17 weightSegmentMapEnabledInputs:v19 differentInputFormatsSupported:v21 bufferSize:v24 numberOfSlaveFramesToSkip:v25 startEmittingMasterFramesBeforeSlaveStreamStarts:?];
+  return [BWSlaveFrameSynchronizerNode initWithDepthEnabled:"initWithDepthEnabled:numberOfInputs:syncSlaveForMasterPortTypes:separateDepthComponentsEnabled:preLTMThumbnailEnabledInputs:postColorProcessingThumbnailEnabledInputs:weightSegmentMapEnabledInputs:differentInputFormatsSupported:bufferSize:numberOfSlaveFramesToSkip:startEmittingMasterFramesBeforeSlaveStreamStarts:" numberOfInputs:enabledCopy syncSlaveForMasterPortTypes:v13 separateDepthComponentsEnabled:types preLTMThumbnailEnabledInputs:componentsEnabledCopy postColorProcessingThumbnailEnabledInputs:array weightSegmentMapEnabledInputs:array2 differentInputFormatsSupported:array3 bufferSize:v24 numberOfSlaveFramesToSkip:v25 startEmittingMasterFramesBeforeSlaveStreamStarts:?];
 }
 
-- (BWSlaveFrameSynchronizerNode)initWithDepthEnabled:(BOOL)a3 numberOfInputs:(int)a4 syncSlaveForMasterPortTypes:(id)a5 separateDepthComponentsEnabled:(BOOL)a6 preLTMThumbnailEnabledInputs:(id)a7 postColorProcessingThumbnailEnabledInputs:(id)a8 weightSegmentMapEnabledInputs:(id)a9 differentInputFormatsSupported:(BOOL)a10 bufferSize:(int)a11 numberOfSlaveFramesToSkip:(int)a12 startEmittingMasterFramesBeforeSlaveStreamStarts:(BOOL)a13
+- (BWSlaveFrameSynchronizerNode)initWithDepthEnabled:(BOOL)enabled numberOfInputs:(int)inputs syncSlaveForMasterPortTypes:(id)types separateDepthComponentsEnabled:(BOOL)componentsEnabled preLTMThumbnailEnabledInputs:(id)enabledInputs postColorProcessingThumbnailEnabledInputs:(id)thumbnailEnabledInputs weightSegmentMapEnabledInputs:(id)mapEnabledInputs differentInputFormatsSupported:(BOOL)self0 bufferSize:(int)self1 numberOfSlaveFramesToSkip:(int)self2 startEmittingMasterFramesBeforeSlaveStreamStarts:(BOOL)self3
 {
-  v36 = a6;
-  v38 = a3;
+  componentsEnabledCopy = componentsEnabled;
+  enabledCopy = enabled;
   v39.receiver = self;
   v39.super_class = BWSlaveFrameSynchronizerNode;
   v17 = [(BWNode *)&v39 init];
   v18 = v17;
   if (v17)
   {
-    v35 = a5;
+    typesCopy = types;
     [(BWNode *)v17 setSupportsConcurrentLiveInputCallbacks:1];
-    v18->_numBufferedFrames = a11;
-    v18->_differentInputFormatsSupported = a10;
+    v18->_numBufferedFrames = size;
+    v18->_differentInputFormatsSupported = supported;
     v32 = FigCapturePlatformIdentifier();
-    v37 = [MEMORY[0x1E695DF70] array];
-    v33 = [MEMORY[0x1E695DF70] array];
-    if (a4 >= 1)
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    if (inputs >= 1)
     {
       v19 = 0;
       if (v32 <= 11)
@@ -294,31 +294,31 @@ LABEL_19:
           v22 = objc_alloc_init(BWNodeInputMediaConfiguration);
           [(BWNodeInputMediaConfiguration *)v22 setPassthroughMode:0];
           [(BWNodeInput *)v21 setUnspecifiedAttachedMediaConfiguration:v22];
-          if (v38)
+          if (enabledCopy)
           {
             v23 = @"Depth";
-            if (v36)
+            if (componentsEnabledCopy)
             {
               [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForInput:v21 attachedMediaKey:@"DepthData_DX"];
               v23 = @"DepthData_DY";
             }
 
             [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForInput:v21 attachedMediaKey:v23];
-            [v33 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}];
+            [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}];
           }
         }
 
-        if ([a7 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}])
+        if ([enabledInputs containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}])
         {
           [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForInput:v21 attachedMediaKey:v34];
         }
 
-        if ([a8 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}])
+        if ([thumbnailEnabledInputs containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}])
         {
           [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForInput:v21 attachedMediaKey:0x1F21AB1D0];
         }
 
-        if ([a9 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}])
+        if ([mapEnabledInputs containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}])
         {
           [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForInput:v21 attachedMediaKey:0x1F21AB1F0];
         }
@@ -327,44 +327,44 @@ LABEL_19:
 
         if (v19 || !v18->_differentInputFormatsSupported)
         {
-          [v37 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}];
+          [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v19)}];
         }
 
         ++v19;
       }
 
-      while (a4 != v19);
+      while (inputs != v19);
     }
 
     v24 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v18];
     [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v24 primaryMediaConfiguration] setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v24 primaryMediaConfiguration] setPassthroughMode:1];
-    [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v24 primaryMediaConfiguration] setIndexesOfInputsWhichDrivesThisOutput:v37];
+    [(BWNodeOutputMediaConfiguration *)[(BWNodeOutput *)v24 primaryMediaConfiguration] setIndexesOfInputsWhichDrivesThisOutput:array];
     v25 = objc_alloc_init(BWNodeOutputMediaConfiguration);
     [(BWNodeOutputMediaConfiguration *)v25 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeOutputMediaConfiguration *)v25 setPassthroughMode:1];
-    [(BWNodeOutputMediaConfiguration *)v25 setIndexesOfInputsWhichDrivesThisOutput:v37];
+    [(BWNodeOutputMediaConfiguration *)v25 setIndexesOfInputsWhichDrivesThisOutput:array];
     [(BWNodeOutputMediaConfiguration *)v25 setAttachedMediaKeyOfInputWhichDrivesThisOutput:@"PrimaryFormat"];
     [(BWNodeOutput *)v24 setMediaConfiguration:v25 forAttachedMediaKey:@"SynchronizedSlaveFrame"];
-    if (v38)
+    if (enabledCopy)
     {
-      if (v36)
+      if (componentsEnabledCopy)
       {
-        v29 = v33;
-        [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForOutput:v24 attachedMediaKey:@"DepthData_DX" inputIndexesDrivingAttachedMediaOutput:v33];
+        v29 = array2;
+        [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForOutput:v24 attachedMediaKey:@"DepthData_DX" inputIndexesDrivingAttachedMediaOutput:array2];
         v30 = BWAttachedMediaKey_DepthData_DY;
       }
 
       else
       {
         v30 = BWAttachedMediaKey_Depth;
-        v29 = v33;
+        v29 = array2;
       }
 
       [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForOutput:v24 attachedMediaKey:*v30 inputIndexesDrivingAttachedMediaOutput:v29];
     }
 
-    if ([a7 count])
+    if ([enabledInputs count])
     {
       v31 = BWAttachedMediaKey_LTMThumbnail;
       if (v32 <= 11)
@@ -372,24 +372,24 @@ LABEL_19:
         v31 = BWAttachedMediaKey_PreLTMThumbnail;
       }
 
-      [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForOutput:v24 attachedMediaKey:*v31 inputIndexesDrivingAttachedMediaOutput:a7];
+      [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForOutput:v24 attachedMediaKey:*v31 inputIndexesDrivingAttachedMediaOutput:enabledInputs];
     }
 
-    if ([a8 count])
+    if ([thumbnailEnabledInputs count])
     {
-      [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForOutput:v24 attachedMediaKey:0x1F21AB1D0 inputIndexesDrivingAttachedMediaOutput:a8];
+      [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForOutput:v24 attachedMediaKey:0x1F21AB1D0 inputIndexesDrivingAttachedMediaOutput:thumbnailEnabledInputs];
     }
 
-    if ([a9 count])
+    if ([mapEnabledInputs count])
     {
-      [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForOutput:v24 attachedMediaKey:0x1F21AB1F0 inputIndexesDrivingAttachedMediaOutput:a9];
+      [(BWSlaveFrameSynchronizerNode *)v18 _setupAttachedMediaConfigurationForOutput:v24 attachedMediaKey:0x1F21AB1F0 inputIndexesDrivingAttachedMediaOutput:mapEnabledInputs];
     }
 
     [(BWNode *)v18 addOutput:v24];
 
     v18->_bufferServicingLock._os_unfair_lock_opaque = 0;
-    v18->_inputSampleBufferQueues = malloc_type_calloc(a4, 8uLL, 0x2004093837F09uLL);
-    if (a4 >= 1)
+    v18->_inputSampleBufferQueues = malloc_type_calloc(inputs, 8uLL, 0x2004093837F09uLL);
+    if (inputs >= 1)
     {
       v26 = 0;
       v27 = *MEMORY[0x1E695E480];
@@ -404,14 +404,14 @@ LABEL_19:
         ++v26;
       }
 
-      while (a4 != v26);
+      while (inputs != v26);
     }
 
-    v18->_startEmittingMasterFramesBeforeSlaveStreamStarts = a13;
-    v18->_numSlaveFramesToSkip = a12;
+    v18->_startEmittingMasterFramesBeforeSlaveStreamStarts = starts;
+    v18->_numSlaveFramesToSkip = skip;
     v18->_droppedFramePTSs = objc_alloc_init(MEMORY[0x1E695DF70]);
     v18->_mostRecentMasterInputIndex = -1;
-    v18->_syncSlaveForMasterPortTypes = [v35 copy];
+    v18->_syncSlaveForMasterPortTypes = [typesCopy copy];
   }
 
   return v18;
@@ -439,13 +439,13 @@ LABEL_19:
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  v9 = [(BWNode *)self output];
-  v21 = self;
-  if (![a5 isEqualToString:@"PrimaryFormat"])
+  output = [(BWNode *)self output];
+  selfCopy = self;
+  if (![key isEqualToString:@"PrimaryFormat"])
   {
-    v27 = -[BWNodeOutput attachedMediaKeyDrivenByInputAttachedMediaKey:inputIndex:](v9, "attachedMediaKeyDrivenByInputAttachedMediaKey:inputIndex:", a5, [a4 index]);
+    v27 = -[BWNodeOutput attachedMediaKeyDrivenByInputAttachedMediaKey:inputIndex:](output, "attachedMediaKeyDrivenByInputAttachedMediaKey:inputIndex:", key, [input index]);
     v10 = MEMORY[0x1E695DEC8];
     v11 = &v27;
 LABEL_6:
@@ -455,7 +455,7 @@ LABEL_6:
 
   if (self->_differentInputFormatsSupported)
   {
-    if ([a4 index] == 1)
+    if ([input index] == 1)
     {
       v30 = @"PrimaryFormat";
       v10 = MEMORY[0x1E695DEC8];
@@ -498,20 +498,20 @@ LABEL_8:
         }
 
         v18 = *(*(&v23 + 1) + 8 * i);
-        v19 = [(BWNodeOutput *)v9 mediaPropertiesForAttachedMediaKey:v18];
+        v19 = [(BWNodeOutput *)output mediaPropertiesForAttachedMediaKey:v18];
         if (!v19)
         {
           if ([v18 isEqualToString:@"PrimaryFormat"])
           {
-            v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", v21, v9, a5];
+            v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ output %@ has no media properties for the primary format (provided media key is %@)", selfCopy, output, key];
             objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v20 userInfo:0]);
           }
 
           v19 = objc_alloc_init(BWNodeOutputMediaProperties);
-          [(BWNodeOutput *)v9 _setMediaProperties:v19 forAttachedMediaKey:v18];
+          [(BWNodeOutput *)output _setMediaProperties:v19 forAttachedMediaKey:v18];
         }
 
-        [(BWNodeOutputMediaProperties *)v19 setResolvedFormat:a3];
+        [(BWNodeOutputMediaProperties *)v19 setResolvedFormat:format];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v23 objects:v22 count:16];
@@ -521,7 +521,7 @@ LABEL_8:
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
   if (![(BWNodeOutput *)self->super._output liveFormat])
@@ -532,7 +532,7 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   p_numEODMessagesReceived = &self->_numEODMessagesReceived;
   v5 = atomic_fetch_add_explicit(&self->_numEODMessagesReceived, 1u, memory_order_relaxed) + 1;
@@ -542,27 +542,27 @@ LABEL_8:
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
     goto LABEL_3;
   }
 
   inputSampleBufferQueues = self->_inputSampleBufferQueues;
-  queue = inputSampleBufferQueues[[a4 index]];
+  queue = inputSampleBufferQueues[[input index]];
   v8 = *off_1E798A3C8;
-  v9 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v9 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v10 = *off_1E798B708;
   [objc_msgSend(v9 objectForKeyedSubscript:{*off_1E798B708), "intValue"}];
   v11 = *off_1E798B710;
   if ([objc_msgSend(v9 objectForKeyedSubscript:{*off_1E798B710), "BOOLValue"}])
   {
-    v12 = [a4 index];
+    index = [input index];
     mostRecentMasterInputIndex = self->_mostRecentMasterInputIndex;
-    self->_mostRecentMasterInputIndex = v12;
+    self->_mostRecentMasterInputIndex = index;
     isSlaveFrameProcessingEnabledForMaster = sfsn_isSlaveFrameProcessingEnabledForMaster(v9);
     p_slaveStreamHasStarted = &self->_slaveStreamHasStarted;
     if (self->_slaveStreamHasStarted)
@@ -570,7 +570,7 @@ LABEL_8:
       goto LABEL_16;
     }
 
-    v16 = mostRecentMasterInputIndex == -1 || mostRecentMasterInputIndex == v12;
+    v16 = mostRecentMasterInputIndex == -1 || mostRecentMasterInputIndex == index;
     v17 = v16 ? 0 : isSlaveFrameProcessingEnabledForMaster;
     if (v17 != 1)
     {
@@ -598,9 +598,9 @@ LABEL_16:
     memset(&v26, 0, sizeof(v26));
     CMSampleBufferGetPresentationTimeStamp(&v26, v18);
     memset(&v25, 0, sizeof(v25));
-    CMSampleBufferGetPresentationTimeStamp(&v25, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v25, buffer);
     [(BWSlaveFrameSynchronizerNode *)self _printState];
-    [a4 index];
+    [input index];
     v24 = v26;
     [BWSlaveFrameSynchronizerNode _emitDroppedFrames:&v24 captureID:v20 inputIndex:?];
     if (v18)
@@ -609,9 +609,9 @@ LABEL_16:
     }
   }
 
-  if (a3)
+  if (buffer)
   {
-    v21 = CFRetain(a3);
+    v21 = CFRetain(buffer);
   }
 
   else
@@ -622,7 +622,7 @@ LABEL_16:
   v22 = CMSimpleQueueEnqueue(queue, v21);
   if (v22)
   {
-    [(BWSlaveFrameSynchronizerNode *)v22 renderSampleBuffer:a3 forInput:?];
+    [(BWSlaveFrameSynchronizerNode *)v22 renderSampleBuffer:buffer forInput:?];
   }
 
   else
@@ -634,26 +634,26 @@ LABEL_3:
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  [(BWNodeOutput *)self->super._output emitNodeError:a3];
+  [(BWNodeOutput *)self->super._output emitNodeError:error];
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  [a4 index];
+  [input index];
   memset(&v11[1], 0, sizeof(CMTime));
-  if (a3)
+  if (sample)
   {
-    [a3 pts];
+    [sample pts];
   }
 
   os_unfair_lock_lock(&self->_bufferServicingLock);
   mostRecentMasterInputIndex = self->_mostRecentMasterInputIndex;
-  if ([a4 index] == mostRecentMasterInputIndex)
+  if ([input index] == mostRecentMasterInputIndex)
   {
     v8 = *MEMORY[0x1E695E480];
     v11[0] = v11[1];
@@ -669,39 +669,39 @@ LABEL_3:
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input
 {
-  v4 = *&a3;
+  v4 = *&number;
   os_unfair_lock_lock(&self->_bufferServicingLock);
   [(BWNodeOutput *)self->super._output emitStillImageReferenceFrameBracketedCaptureSequenceNumberMessageWithSequenceNumber:v4];
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (uint64_t)_setupAttachedMediaConfigurationForInput:(uint64_t)a3 attachedMediaKey:
+- (uint64_t)_setupAttachedMediaConfigurationForInput:(uint64_t)input attachedMediaKey:
 {
   if (result)
   {
     v5 = objc_alloc_init(BWNodeInputMediaConfiguration);
     [(BWNodeInputMediaConfiguration *)v5 setPassthroughMode:1];
 
-    return [a2 setMediaConfiguration:v5 forAttachedMediaKey:a3];
+    return [a2 setMediaConfiguration:v5 forAttachedMediaKey:input];
   }
 
   return result;
 }
 
-- (uint64_t)_setupAttachedMediaConfigurationForOutput:(uint64_t)a3 attachedMediaKey:(uint64_t)a4 inputIndexesDrivingAttachedMediaOutput:
+- (uint64_t)_setupAttachedMediaConfigurationForOutput:(uint64_t)output attachedMediaKey:(uint64_t)key inputIndexesDrivingAttachedMediaOutput:
 {
   if (result)
   {
     v7 = objc_alloc_init(BWNodeOutputMediaConfiguration);
     [(BWNodeOutputMediaConfiguration *)v7 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeOutputMediaConfiguration *)v7 setPassthroughMode:1];
-    [(BWNodeOutputMediaConfiguration *)v7 setIndexesOfInputsWhichDrivesThisOutput:a4];
-    [(BWNodeOutputMediaConfiguration *)v7 setAttachedMediaKeyOfInputWhichDrivesThisOutput:a3];
+    [(BWNodeOutputMediaConfiguration *)v7 setIndexesOfInputsWhichDrivesThisOutput:key];
+    [(BWNodeOutputMediaConfiguration *)v7 setAttachedMediaKeyOfInputWhichDrivesThisOutput:output];
 
-    return [a2 setMediaConfiguration:v7 forAttachedMediaKey:a3];
+    return [a2 setMediaConfiguration:v7 forAttachedMediaKey:output];
   }
 
   return result;
@@ -736,9 +736,9 @@ LABEL_3:
   return result;
 }
 
-- (void)_tryToEmitBuffersWithSynchronizationEnabled:(uint64_t)a1
+- (void)_tryToEmitBuffersWithSynchronizationEnabled:(uint64_t)enabled
 {
-  if (a1 && [objc_msgSend(a1 "inputs")])
+  if (enabled && [objc_msgSend(enabled "inputs")])
   {
     v4 = 0;
     v41 = 0;
@@ -776,7 +776,7 @@ LABEL_3:
       ++v4;
     }
 
-    while ([objc_msgSend(a1 "inputs")] > v4);
+    while ([objc_msgSend(enabled "inputs")] > v4);
     v14 = v6;
     if (v6 != -1)
     {
@@ -786,7 +786,7 @@ LABEL_3:
         v16 = *(v15 + 8 * v6);
         v17 = CMSimpleQueueGetHead(v16);
         v18 = v17;
-        if ((*(a1 + 148) & 1) == 0 && *(a1 + 160) == 1)
+        if ((*(enabled + 148) & 1) == 0 && *(enabled + 160) == 1)
         {
           sfsn_setOverCaptureSlaveStreamStatusOnSampleBuffer(v17, 1);
         }
@@ -800,7 +800,7 @@ LABEL_3:
         v20 = [CMGetAttachment(v19 @"OverCaptureSlaveStreamStatus"];
         if (v20 > 4 || ((1 << v20) & 0x1A) == 0)
         {
-          v22 = *(a1 + 184);
+          v22 = *(enabled + 184);
           if (!v22)
           {
             if (a2)
@@ -814,7 +814,7 @@ LABEL_3:
 
         else
         {
-          v22 = *(a1 + 184);
+          v22 = *(enabled + 184);
           if (!v22)
           {
             goto LABEL_33;
@@ -824,7 +824,7 @@ LABEL_3:
         if ([v22 containsObject:v42] && sfsn_isSlaveFrameProcessingEnabledForMaster(v40) && (a2 & 1) != 0)
         {
 LABEL_24:
-          if (![objc_msgSend(a1 "inputs")])
+          if (![objc_msgSend(enabled "inputs")])
           {
             return;
           }
@@ -845,7 +845,7 @@ LABEL_24:
               }
             }
 
-            if ([objc_msgSend(a1 "inputs")] <= ++v23)
+            if ([objc_msgSend(enabled "inputs")] <= ++v23)
             {
               return;
             }
@@ -877,7 +877,7 @@ LABEL_24:
           v28 = CMSimpleQueueGetHead(v27);
           v36 = CMSimpleQueueGetHead(v30);
           v37 = v36;
-          if (!v36 || (++*(a1 + 152), *(a1 + 152) > *(a1 + 156)) || *(a1 + 184))
+          if (!v36 || (++*(enabled + 152), *(enabled + 152) > *(enabled + 156)) || *(enabled + 184))
           {
             BWSampleBufferSetAttachedMedia(v28, @"SynchronizedSlaveFrame", v36);
             v29 = 1;
@@ -885,7 +885,7 @@ LABEL_24:
 
           else
           {
-            if (*(a1 + 160) != 1)
+            if (*(enabled + 160) != 1)
             {
               return;
             }
@@ -912,8 +912,8 @@ LABEL_34:
         memset(&v45, 0, sizeof(v45));
         CMSampleBufferGetPresentationTimeStamp(&v45, v28);
         v44 = v45;
-        [BWSlaveFrameSynchronizerNode _emitDroppedFrames:a1 captureID:&v44 inputIndex:-1];
-        [*(a1 + 16) emitSampleBuffer:v28];
+        [BWSlaveFrameSynchronizerNode _emitDroppedFrames:enabled captureID:&v44 inputIndex:-1];
+        [*(enabled + 16) emitSampleBuffer:v28];
         v31 = CMSimpleQueueDequeue(v27);
         if (v31)
         {
@@ -938,7 +938,7 @@ LABEL_34:
   if (result)
   {
     v1 = result;
-    v2 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     result = [objc_msgSend(v1 "inputs")];
     if (result)
     {
@@ -951,7 +951,7 @@ LABEL_34:
         Head = CMSimpleQueueGetHead(*(*(v1 + 136) + 8 * v3));
         Count = CMSimpleQueueGetCount(*(*(v1 + 136) + 8 * v3));
         v8 = *(v1 + 144);
-        [v2 appendFormat:@" [%d] = {", v3];
+        [string appendFormat:@" [%d] = {", v3];
         if (Head)
         {
           v9 = CMGetAttachment(Head, key, 0);
@@ -963,10 +963,10 @@ LABEL_34:
             v12 = "m";
           }
 
-          [v2 appendFormat:@" %d/%d head:%d(%s) ", Count, v8, v11, v12];
+          [string appendFormat:@" %d/%d head:%d(%s) ", Count, v8, v11, v12];
         }
 
-        [v2 appendFormat:@"}"];
+        [string appendFormat:@"}"];
         ++v3;
         result = [objc_msgSend(v1 "inputs")];
       }
@@ -978,39 +978,39 @@ LABEL_34:
   return result;
 }
 
-- (void)_emitDroppedFrames:(uint64_t)a1 captureID:(CMTime *)a2 inputIndex:(int)a3
+- (void)_emitDroppedFrames:(uint64_t)frames captureID:(CMTime *)d inputIndex:(int)index
 {
-  if (a1)
+  if (frames)
   {
-    while ([*(a1 + 168) count])
+    while ([*(frames + 168) count])
     {
-      v6 = [*(a1 + 168) objectAtIndexedSubscript:0];
+      v6 = [*(frames + 168) objectAtIndexedSubscript:0];
       memset(&v26, 0, sizeof(v26));
       v7 = CMTimeMakeFromDictionary(&v26, v6);
       OUTLINED_FUNCTION_16_4(v7, v8, v9, v10, v11, v12, v13, v14, v22.value, *&v22.timescale, v22.epoch, v23, time1.value, *&time1.timescale, time1.epoch, v25, *&v26.value);
-      v22 = *a2;
+      v22 = *d;
       v15 = CMTimeCompare(&time1, &v22);
       if (v15 >= 1)
       {
         break;
       }
 
-      OUTLINED_FUNCTION_16_4(v15, v16, v17, *(a1 + 176), v18, v19, v20, v21, v22.value, *&v22.timescale, v22.epoch, v23, time1.value, *&time1.timescale, time1.epoch, v25, *&v26.value);
-      [BWSlaveFrameSynchronizerNode _emitDroppedFrame:a1 captureID:? inputIndex:?];
-      [*(a1 + 168) removeObject:v6];
+      OUTLINED_FUNCTION_16_4(v15, v16, v17, *(frames + 176), v18, v19, v20, v21, v22.value, *&v22.timescale, v22.epoch, v23, time1.value, *&time1.timescale, time1.epoch, v25, *&v26.value);
+      [BWSlaveFrameSynchronizerNode _emitDroppedFrame:frames captureID:? inputIndex:?];
+      [*(frames + 168) removeObject:v6];
     }
 
-    if (a3 != -1)
+    if (index != -1)
     {
-      v26 = *a2;
-      [BWSlaveFrameSynchronizerNode _emitDroppedFrame:a1 captureID:? inputIndex:?];
+      v26 = *d;
+      [BWSlaveFrameSynchronizerNode _emitDroppedFrame:frames captureID:? inputIndex:?];
     }
   }
 }
 
-- (void)_emitDroppedFrame:(uint64_t)a1 captureID:inputIndex:
+- (void)_emitDroppedFrame:(uint64_t)frame captureID:inputIndex:
 {
-  if (a1)
+  if (frame)
   {
     if (*MEMORY[0x1E695FF58] == 1)
     {
@@ -1021,7 +1021,7 @@ LABEL_34:
 
     *&v2 = OUTLINED_FUNCTION_2_10().n128_u64[0];
     v4 = [v3 newDroppedSampleWithReason:v2 pts:?];
-    [*(a1 + 16) emitDroppedSample:v4];
+    [*(frame + 16) emitDroppedSample:v4];
   }
 }
 

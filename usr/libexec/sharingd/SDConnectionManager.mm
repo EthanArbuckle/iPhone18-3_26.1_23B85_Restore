@@ -1,16 +1,16 @@
 @interface SDConnectionManager
 + (id)sharedManager;
-- (SDConnectionManager)initWithXPCConnection:(id)a3;
+- (SDConnectionManager)initWithXPCConnection:(id)connection;
 - (SDConnectionManagerDelegate)delegate;
 - (void)appleAccountSignedIn;
 - (void)appleAccountSignedOut;
 - (void)cleanUpConnections;
-- (void)createCompanionServiceManagerWithIdentifier:(id)a3 clientProxy:(id)a4 reply:(id)a5;
-- (void)createHotspotSessionForClientProxy:(id)a3 reply:(id)a4;
-- (void)createStreamsForMessage:(id)a3 reply:(id)a4;
-- (void)createUnlockManagerWithReply:(id)a3;
+- (void)createCompanionServiceManagerWithIdentifier:(id)identifier clientProxy:(id)proxy reply:(id)reply;
+- (void)createHotspotSessionForClientProxy:(id)proxy reply:(id)reply;
+- (void)createStreamsForMessage:(id)message reply:(id)reply;
+- (void)createUnlockManagerWithReply:(id)reply;
 - (void)start;
-- (void)unlockSessionDidFinish:(id)a3;
+- (void)unlockSessionDidFinish:(id)finish;
 @end
 
 @implementation SDConnectionManager
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (SDConnectionManager)initWithXPCConnection:(id)a3
+- (SDConnectionManager)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v22.receiver = self;
   v22.super_class = SDConnectionManager;
   v6 = [(SDConnectionManager *)&v22 init];
@@ -39,8 +39,8 @@
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
-    v9 = [v5 _xpcConnection];
-    v10 = sub_10000C344(v9);
+    _xpcConnection = [connectionCopy _xpcConnection];
+    v10 = sub_10000C344(_xpcConnection);
     bundleID = v6->_bundleID;
     v6->_bundleID = v10;
 
@@ -51,7 +51,7 @@
     unlockSessions = v6->_unlockSessions;
     v6->_unlockSessions = v13;
 
-    objc_storeStrong(&v6->_xpcConnection, a3);
+    objc_storeStrong(&v6->_xpcConnection, connection);
     v15 = objc_opt_new();
     companionStreams = v6->_companionStreams;
     v6->_companionStreams = v15;
@@ -114,9 +114,9 @@
   v3 = tethering_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NSUUID *)self->_identifier UUIDString];
+    uUIDString = [(NSUUID *)self->_identifier UUIDString];
     *buf = 138412290;
-    v8 = v4;
+    v8 = uUIDString;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Client invalidated (%@)", buf, 0xCu);
   }
 
@@ -126,12 +126,12 @@
   self->_hotspotAgent = 0;
 }
 
-- (void)createCompanionServiceManagerWithIdentifier:(id)a3 clientProxy:(id)a4 reply:(id)a5
+- (void)createCompanionServiceManagerWithIdentifier:(id)identifier clientProxy:(id)proxy reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  identifierCopy = identifier;
+  proxyCopy = proxy;
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v17 = streams_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -142,7 +142,7 @@
     goto LABEL_17;
   }
 
-  if (!v9)
+  if (!proxyCopy)
   {
     v18 = streams_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -158,7 +158,7 @@
     goto LABEL_16;
   }
 
-  if (!v8)
+  if (!identifierCopy)
   {
     v22 = streams_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -175,7 +175,7 @@ LABEL_16:
     v23 = [NSDictionary dictionaryWithObjects:v20 forKeys:v21 count:1];
     v17 = [NSError errorWithDomain:v19 code:22 userInfo:v23];
 
-    (*(v10 + 2))(v10, 0, 0, 0, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0, v17);
 LABEL_17:
 
     goto LABEL_20;
@@ -183,7 +183,7 @@ LABEL_17:
 
   if (!self->_serviceManager)
   {
-    v11 = [[SDServiceManager alloc] initWithClientProxy:v9 withIdentifier:v8];
+    v11 = [[SDServiceManager alloc] initWithClientProxy:proxyCopy withIdentifier:identifierCopy];
     serviceManager = self->_serviceManager;
     self->_serviceManager = v11;
 
@@ -192,7 +192,7 @@ LABEL_17:
   }
 
   v13 = +[SDStatusMonitor sharedMonitor];
-  v14 = [v13 someComputerName];
+  someComputerName = [v13 someComputerName];
 
   v15 = sub_1001F28C0();
   if (sub_100117FF0())
@@ -205,20 +205,20 @@ LABEL_17:
     v16 = 0;
   }
 
-  (*(v10 + 2))(v10, self->_serviceManager, v14, v15, v16, 0);
+  (*(replyCopy + 2))(replyCopy, self->_serviceManager, someComputerName, v15, v16, 0);
 
 LABEL_20:
 }
 
-- (void)createStreamsForMessage:(id)a3 reply:(id)a4
+- (void)createStreamsForMessage:(id)message reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  replyCopy = reply;
   v8 = streams_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = messageCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Streams are being requested from service = %@", buf, 0xCu);
   }
 
@@ -226,29 +226,29 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = sub_10014CC90;
   block[3] = &unk_1008CE730;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = messageCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)createUnlockManagerWithReply:(id)a3
+- (void)createUnlockManagerWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = objc_alloc_init(SDUnlockXPCSession);
   [(SDUnlockXPCSession *)v5 setDelegate:self];
-  v4[2](v4, v5, 0);
+  replyCopy[2](replyCopy, v5, 0);
 
   v6 = v5;
   sf_dispatch_on_main_queue();
 }
 
-- (void)createHotspotSessionForClientProxy:(id)a3 reply:(id)a4
+- (void)createHotspotSessionForClientProxy:(id)proxy reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  replyCopy = reply;
   if ((SFIsDeviceAppleTV() & 1) != 0 || (+[SDHotspotAgent sharedAgent], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v12 = NSLocalizedDescriptionKey;
@@ -256,7 +256,7 @@ LABEL_20:
     v11 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:v11];
 
-    v7[2](v7, 0, v10);
+    replyCopy[2](replyCopy, 0, v10);
   }
 
   else
@@ -265,8 +265,8 @@ LABEL_20:
     self->_hotspotAgent = v8;
     v10 = v8;
 
-    [(SDHotspotAgent *)v10 addClientID:self->_identifier proxy:v6];
-    (v7)[2](v7, v10, 0);
+    [(SDHotspotAgent *)v10 addClientID:self->_identifier proxy:proxyCopy];
+    (replyCopy)[2](replyCopy, v10, 0);
   }
 }
 
@@ -282,10 +282,10 @@ LABEL_20:
   dispatch_async(v2, &stru_1008D1858);
 }
 
-- (void)unlockSessionDidFinish:(id)a3
+- (void)unlockSessionDidFinish:(id)finish
 {
-  v4 = a3;
-  v3 = v4;
+  finishCopy = finish;
+  v3 = finishCopy;
   sf_dispatch_on_main_queue();
 }
 

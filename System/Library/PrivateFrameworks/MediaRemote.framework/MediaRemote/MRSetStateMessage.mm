@@ -1,40 +1,40 @@
 @interface MRSetStateMessage
-- (MRSetStateMessage)initWithNowPlayingState:(id)a3 encoding:(int64_t)a4;
-- (MRSetStateMessage)initWithUnderlyingCodableMessage:(id)a3 error:(id)a4;
+- (MRSetStateMessage)initWithNowPlayingState:(id)state encoding:(int64_t)encoding;
+- (MRSetStateMessage)initWithUnderlyingCodableMessage:(id)message error:(id)error;
 @end
 
 @implementation MRSetStateMessage
 
-- (MRSetStateMessage)initWithNowPlayingState:(id)a3 encoding:(int64_t)a4
+- (MRSetStateMessage)initWithNowPlayingState:(id)state encoding:(int64_t)encoding
 {
-  v6 = a3;
+  stateCopy = state;
   v7 = [(MRProtocolMessage *)self init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [stateCopy copy];
     state = v7->_state;
     v7->_state = v8;
 
-    v10 = [v6 playerPath];
-    v11 = [v10 skeleton];
-    [(MRNowPlayingState *)v7->_state setPlayerPath:v11];
+    playerPath = [stateCopy playerPath];
+    skeleton = [playerPath skeleton];
+    [(MRNowPlayingState *)v7->_state setPlayerPath:skeleton];
 
-    v12 = [(MRNowPlayingState *)v7->_state protobufWithEncoding:a4];
+    v12 = [(MRNowPlayingState *)v7->_state protobufWithEncoding:encoding];
     [(MRProtocolMessage *)v7 setUnderlyingCodableMessage:v12];
   }
 
   return v7;
 }
 
-- (MRSetStateMessage)initWithUnderlyingCodableMessage:(id)a3 error:(id)a4
+- (MRSetStateMessage)initWithUnderlyingCodableMessage:(id)message error:(id)error
 {
-  v6 = a3;
+  messageCopy = message;
   v11.receiver = self;
   v11.super_class = MRSetStateMessage;
-  v7 = [(MRProtocolMessage *)&v11 initWithUnderlyingCodableMessage:v6 error:a4];
+  v7 = [(MRProtocolMessage *)&v11 initWithUnderlyingCodableMessage:messageCopy error:error];
   if (v7)
   {
-    v8 = [[MRNowPlayingState alloc] initWithProtobuf:v6];
+    v8 = [[MRNowPlayingState alloc] initWithProtobuf:messageCopy];
     state = v7->_state;
     v7->_state = v8;
   }

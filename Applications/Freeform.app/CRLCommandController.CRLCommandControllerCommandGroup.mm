@@ -1,14 +1,14 @@
 @interface CRLCommandController.CRLCommandControllerCommandGroup
 - (NSString)actionString;
 - (_TtCC8Freeform20CRLCommandControllerP33_F675CB786BBB78E2B0BD13D7028A0B2032CRLCommandControllerCommandGroup)init;
-- (void)setActionString:(id)a3;
+- (void)setActionString:(id)string;
 @end
 
 @implementation CRLCommandController.CRLCommandControllerCommandGroup
 
 - (NSString)actionString
 {
-  v2 = self;
+  selfCopy = self;
   sub_100887218();
   if (!v3)
   {
@@ -20,7 +20,7 @@
   return v4;
 }
 
-- (void)setActionString:(id)a3
+- (void)setActionString:(id)string
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = &self->_TtC8Freeform15CRLCommandGroup_opaque[OBJC_IVAR____TtCC8Freeform20CRLCommandControllerP33_F675CB786BBB78E2B0BD13D7028A0B2032CRLCommandControllerCommandGroup__currentGroupActionString];

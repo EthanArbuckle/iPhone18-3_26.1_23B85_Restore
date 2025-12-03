@@ -1,29 +1,29 @@
 @interface PKTransactionReceiptLineItemTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKTransactionReceiptLineItemTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKTransactionReceiptLineItemTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAmountText:(id)a3;
-- (void)setHasTrailingLineSeparator:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setSeparatorStyle:(int64_t)a3;
-- (void)setSuppressImage:(BOOL)a3;
-- (void)setTertiaryText:(id)a3;
+- (void)setAmountText:(id)text;
+- (void)setHasTrailingLineSeparator:(BOOL)separator;
+- (void)setImage:(id)image;
+- (void)setPrimaryText:(id)text;
+- (void)setSecondaryText:(id)text;
+- (void)setSeparatorStyle:(int64_t)style;
+- (void)setSuppressImage:(BOOL)image;
+- (void)setTertiaryText:(id)text;
 @end
 
 @implementation PKTransactionReceiptLineItemTableViewCell
 
-- (PKTransactionReceiptLineItemTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKTransactionReceiptLineItemTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v43.receiver = self;
   v43.super_class = PKTransactionReceiptLineItemTableViewCell;
-  v4 = [(PKTransactionReceiptLineItemTableViewCell *)&v43 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(PKTransactionReceiptLineItemTableViewCell *)&v43 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PKTransactionReceiptLineItemTableViewCell *)v4 contentView];
+    contentView = [(PKTransactionReceiptLineItemTableViewCell *)v4 contentView];
     v7 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v8 = *MEMORY[0x1E695F058];
     v9 = *(MEMORY[0x1E695F058] + 8);
@@ -34,15 +34,15 @@
     v5->_imageView = v12;
 
     [(UIImageView *)v5->_imageView setContentMode:1];
-    v14 = [(UIImageView *)v5->_imageView layer];
-    [v14 setCornerCurve:*MEMORY[0x1E69796E8]];
-    [v14 setCornerRadius:6.0];
-    [v14 setMasksToBounds:1];
-    v15 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [v14 setBorderColor:{objc_msgSend(v15, "CGColor")}];
+    layer = [(UIImageView *)v5->_imageView layer];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer setCornerRadius:6.0];
+    [layer setMasksToBounds:1];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [layer setBorderColor:{objc_msgSend(tertiaryLabelColor, "CGColor")}];
 
-    [v14 setBorderWidth:PKUIPixelLength()];
-    [v6 addSubview:v5->_imageView];
+    [layer setBorderWidth:PKUIPixelLength()];
+    [contentView addSubview:v5->_imageView];
     v16 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v8, v9, v10, v11}];
     amountLabel = v5->_amountLabel;
     v5->_amountLabel = v16;
@@ -53,11 +53,11 @@
     [(UILabel *)v18 setFont:v20];
 
     v21 = v5->_amountLabel;
-    v22 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v21 setTextColor:v22];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v21 setTextColor:labelColor];
 
     [(UILabel *)v5->_amountLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9448]];
-    [v6 addSubview:v5->_amountLabel];
+    [contentView addSubview:v5->_amountLabel];
     v23 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v8, v9, v10, v11}];
     primaryLabel = v5->_primaryLabel;
     v5->_primaryLabel = v23;
@@ -67,12 +67,12 @@
     [(UILabel *)v25 setFont:v26];
 
     v27 = v5->_primaryLabel;
-    v28 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v27 setTextColor:v28];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v27 setTextColor:labelColor2];
 
     [(UILabel *)v5->_primaryLabel setNumberOfLines:0];
     [(UILabel *)v5->_primaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-    [v6 addSubview:v5->_primaryLabel];
+    [contentView addSubview:v5->_primaryLabel];
     v29 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v8, v9, v10, v11}];
     secondaryLabel = v5->_secondaryLabel;
     v5->_secondaryLabel = v29;
@@ -83,12 +83,12 @@
     [(UILabel *)v31 setFont:v33];
 
     v34 = v5->_secondaryLabel;
-    v35 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v34 setTextColor:v35];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v34 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v5->_secondaryLabel setNumberOfLines:0];
     [(UILabel *)v5->_secondaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
-    [v6 addSubview:v5->_secondaryLabel];
+    [contentView addSubview:v5->_secondaryLabel];
     v36 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v8, v9, v10, v11}];
     tertiaryLabel = v5->_tertiaryLabel;
     v5->_tertiaryLabel = v36;
@@ -98,12 +98,12 @@
     [(UILabel *)v38 setFont:v39];
 
     v40 = v5->_tertiaryLabel;
-    v41 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v40 setTextColor:v41];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v40 setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v5->_tertiaryLabel setNumberOfLines:0];
     [(UILabel *)v5->_tertiaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D10]];
-    [v6 addSubview:v5->_tertiaryLabel];
+    [contentView addSubview:v5->_tertiaryLabel];
     [(PKTransactionReceiptLineItemTableViewCell *)v5 setAccessibilityIdentifier:*MEMORY[0x1E69B98F0]];
   }
 
@@ -122,10 +122,10 @@
   [(PKTransactionReceiptLineItemTableViewCell *)self setAmountText:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UITableViewCell *)self pkui_effectiveLayoutMargins:a3.width];
+  width = fits.width;
+  [(UITableViewCell *)self pkui_effectiveLayoutMargins:fits.width];
   v6 = v5;
   v8 = v7;
   image = self->_image;
@@ -214,8 +214,8 @@
   [(UITableViewCell *)self pkui_effectiveLayoutMargins];
   v4 = v3;
   v6 = v5;
-  v7 = [(PKTransactionReceiptLineItemTableViewCell *)self contentView];
-  [v7 bounds];
+  contentView = [(PKTransactionReceiptLineItemTableViewCell *)self contentView];
+  [contentView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -297,22 +297,22 @@
   [(UILabel *)self->_tertiaryLabel setFrame:*&v30.origin, *&v30.size];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     [(UIImageView *)self->_imageView setImage:self->_image];
     [(PKTransactionReceiptLineItemTableViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_primaryText;
-  v6 = v4;
+  v6 = textCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -342,11 +342,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_secondaryText;
-  v6 = v4;
+  v6 = textCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -376,11 +376,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTertiaryText:(id)a3
+- (void)setTertiaryText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_tertiaryText;
-  v6 = v4;
+  v6 = textCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -410,11 +410,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setAmountText:(id)a3
+- (void)setAmountText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_amountText;
-  v6 = v4;
+  v6 = textCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -444,32 +444,32 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setHasTrailingLineSeparator:(BOOL)a3
+- (void)setHasTrailingLineSeparator:(BOOL)separator
 {
-  if (self->_hasTrailingLineSeparator == !a3)
+  if (self->_hasTrailingLineSeparator == !separator)
   {
-    self->_hasTrailingLineSeparator = a3;
+    self->_hasTrailingLineSeparator = separator;
     [(PKTransactionReceiptLineItemTableViewCell *)self setSeparatorStyle:[(PKTransactionReceiptLineItemTableViewCell *)self separatorStyleForTrailingLineSeparator]];
 
     [(PKTransactionReceiptLineItemTableViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
-  if ([(PKTransactionReceiptLineItemTableViewCell *)self separatorStyleForTrailingLineSeparator]== a3)
+  if ([(PKTransactionReceiptLineItemTableViewCell *)self separatorStyleForTrailingLineSeparator]== style)
   {
     v5.receiver = self;
     v5.super_class = PKTransactionReceiptLineItemTableViewCell;
-    [(PKTransactionReceiptLineItemTableViewCell *)&v5 setSeparatorStyle:a3];
+    [(PKTransactionReceiptLineItemTableViewCell *)&v5 setSeparatorStyle:style];
   }
 }
 
-- (void)setSuppressImage:(BOOL)a3
+- (void)setSuppressImage:(BOOL)image
 {
-  if (self->_suppressImage == !a3)
+  if (self->_suppressImage == !image)
   {
-    self->_suppressImage = a3;
+    self->_suppressImage = image;
     [(PKTransactionReceiptLineItemTableViewCell *)self setNeedsLayout];
   }
 }

@@ -1,18 +1,18 @@
 @interface XPCServer
 - (BOOL)_hasClientAccessEntitlement;
-- (id)_errorForCode:(int)a3 message:(id)a4;
-- (id)substituteStandardURLPlaceholders:(id)a3 withAccount:(id)a4 withServiceIdentifier:(id)a5;
-- (void)didChangeFMFAccountInfo:(id)a3 usingCallback:(id)a4;
-- (void)refreshMyLocationWithCallback:(id)a3;
-- (void)willDeleteiCloudAccountUsingCallback:(id)a3;
+- (id)_errorForCode:(int)code message:(id)message;
+- (id)substituteStandardURLPlaceholders:(id)placeholders withAccount:(id)account withServiceIdentifier:(id)identifier;
+- (void)didChangeFMFAccountInfo:(id)info usingCallback:(id)callback;
+- (void)refreshMyLocationWithCallback:(id)callback;
+- (void)willDeleteiCloudAccountUsingCallback:(id)callback;
 @end
 
 @implementation XPCServer
 
-- (void)didChangeFMFAccountInfo:(id)a3 usingCallback:(id)a4
+- (void)didChangeFMFAccountInfo:(id)info usingCallback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  callbackCopy = callback;
   v9 = sub_100002830();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -20,7 +20,7 @@
     *buf = 138412546;
     v17 = v10;
     v18 = 2112;
-    v19 = v7;
+    v19 = infoCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "FRAMEWORK API: %@ with changeDesc %@", buf, 0x16u);
   }
 
@@ -29,7 +29,7 @@
     v11 = +[AppleAccountManager sharedInstance];
     [v11 syncFMFAccountInfo];
 
-    v8[2](v8, 0);
+    callbackCopy[2](callbackCopy, 0);
   }
 
   else
@@ -44,13 +44,13 @@
     }
 
     v15 = [(XPCServer *)self _errorForCode:103 message:v13];
-    (v8)[2](v8, v15);
+    (callbackCopy)[2](callbackCopy, v15);
   }
 }
 
-- (void)willDeleteiCloudAccountUsingCallback:(id)a3
+- (void)willDeleteiCloudAccountUsingCallback:(id)callback
 {
-  v5 = a3;
+  callbackCopy = callback;
   v6 = sub_100002830();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -62,7 +62,7 @@
 
   if ([(XPCServer *)self _hasClientAccessEntitlement])
   {
-    v5[2](v5, 0);
+    callbackCopy[2](callbackCopy, 0);
   }
 
   else
@@ -77,13 +77,13 @@
     }
 
     v11 = [(XPCServer *)self _errorForCode:103 message:v9];
-    (v5)[2](v5, v11);
+    (callbackCopy)[2](callbackCopy, v11);
   }
 }
 
-- (void)refreshMyLocationWithCallback:(id)a3
+- (void)refreshMyLocationWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [NSString stringWithFormat:@"%@-%X", v6, self];
@@ -92,7 +92,7 @@
   [v8 beginTransaction:v7];
 
   v9 = +[AccountManager sharedInstance];
-  v10 = [v9 accounts];
+  accounts = [v9 accounts];
 
   v17 = 0;
   v18 = &v17;
@@ -104,9 +104,9 @@
   v14[3] = &unk_10005E578;
   v16 = &v17;
   v14[4] = self;
-  v11 = v4;
+  v11 = callbackCopy;
   v15 = v11;
-  [v10 enumerateObjectsUsingBlock:v14];
+  [accounts enumerateObjectsUsingBlock:v14];
   if ((v18[3] & 1) == 0)
   {
     v12 = +[NSError fm_genericError];
@@ -119,89 +119,89 @@
   _Block_object_dispose(&v17, 8);
 }
 
-- (id)substituteStandardURLPlaceholders:(id)a3 withAccount:(id)a4 withServiceIdentifier:(id)a5
+- (id)substituteStandardURLPlaceholders:(id)placeholders withAccount:(id)account withServiceIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  placeholdersCopy = placeholders;
+  accountCopy = account;
+  identifierCopy = identifier;
   v10 = +[PreferencesMgr sharedInstance];
-  v11 = [v10 hostportOverride];
+  hostportOverride = [v10 hostportOverride];
 
-  if ([v11 length])
+  if ([hostportOverride length])
   {
-    v12 = [v7 stringByReplacingOccurrencesOfString:@"${hostname}" withString:v11];
+    v12 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${hostname}" withString:hostportOverride];
   }
 
   else
   {
-    v13 = [v8 serverHost];
+    serverHost = [accountCopy serverHost];
 
-    if (!v13)
+    if (!serverHost)
     {
       goto LABEL_6;
     }
 
-    v14 = [v8 serverHost];
-    v12 = [v7 stringByReplacingOccurrencesOfString:@"${hostname}" withString:v14];
+    serverHost2 = [accountCopy serverHost];
+    v12 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${hostname}" withString:serverHost2];
 
-    v7 = v14;
+    placeholdersCopy = serverHost2;
   }
 
-  v7 = v12;
+  placeholdersCopy = v12;
 LABEL_6:
   v15 = +[PreferencesMgr sharedInstance];
-  v16 = [v15 protocolSchemeOverride];
+  protocolSchemeOverride = [v15 protocolSchemeOverride];
 
-  if ([v16 length])
+  if ([protocolSchemeOverride length])
   {
-    v17 = [v7 stringByReplacingOccurrencesOfString:@"${scheme}" withString:v16];
+    v17 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${scheme}" withString:protocolSchemeOverride];
   }
 
   else
   {
-    v18 = [v8 serverProtocolScheme];
+    serverProtocolScheme = [accountCopy serverProtocolScheme];
 
-    if (!v18)
+    if (!serverProtocolScheme)
     {
       goto LABEL_11;
     }
 
-    v19 = [v8 serverProtocolScheme];
-    v17 = [v7 stringByReplacingOccurrencesOfString:@"${scheme}" withString:v19];
+    serverProtocolScheme2 = [accountCopy serverProtocolScheme];
+    v17 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${scheme}" withString:serverProtocolScheme2];
 
-    v7 = v19;
+    placeholdersCopy = serverProtocolScheme2;
   }
 
-  v7 = v17;
+  placeholdersCopy = v17;
 LABEL_11:
-  if (v9)
+  if (identifierCopy)
   {
-    v20 = [v7 stringByReplacingOccurrencesOfString:@"${service}" withString:v9];
+    v20 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${service}" withString:identifierCopy];
 
-    v7 = v20;
+    placeholdersCopy = v20;
   }
 
-  v21 = [v8 authId];
+  authId = [accountCopy authId];
 
-  if (v21)
+  if (authId)
   {
-    v22 = [v8 authId];
-    v23 = [v7 stringByReplacingOccurrencesOfString:@"${dsid}" withString:v22];
+    authId2 = [accountCopy authId];
+    v23 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${dsid}" withString:authId2];
 
-    v7 = v23;
+    placeholdersCopy = v23;
   }
 
   v24 = +[SystemConfig sharedInstance];
-  v25 = [v24 deviceUDID];
+  deviceUDID = [v24 deviceUDID];
 
-  if (v25)
+  if (deviceUDID)
   {
-    v26 = [v7 stringByReplacingOccurrencesOfString:@"${udid}" withString:v25];
+    v26 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${udid}" withString:deviceUDID];
 
-    v7 = v26;
+    placeholdersCopy = v26;
   }
 
-  return v7;
+  return placeholdersCopy;
 }
 
 - (BOOL)_hasClientAccessEntitlement
@@ -230,13 +230,13 @@ LABEL_11:
   return v6;
 }
 
-- (id)_errorForCode:(int)a3 message:(id)a4
+- (id)_errorForCode:(int)code message:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   v6 = [NSError alloc];
-  if (v5)
+  if (messageCopy)
   {
-    v7 = v5;
+    v7 = messageCopy;
   }
 
   else
@@ -248,7 +248,7 @@ LABEL_11:
   v12 = v7;
   v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
-  v9 = [v6 initWithDomain:@"com.apple.icloud.fmflocatord" code:a3 userInfo:v8];
+  v9 = [v6 initWithDomain:@"com.apple.icloud.fmflocatord" code:code userInfo:v8];
 
   return v9;
 }

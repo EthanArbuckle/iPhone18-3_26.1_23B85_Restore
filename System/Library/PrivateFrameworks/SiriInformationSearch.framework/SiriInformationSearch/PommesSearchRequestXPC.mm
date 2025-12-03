@@ -1,15 +1,15 @@
 @interface PommesSearchRequestXPC
 - (_TtC21SiriInformationSearch22PommesSearchRequestXPC)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PommesSearchRequestXPC
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PommesSearchRequestXPC.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PommesSearchRequestXPC.encode(with:)(coderCopy);
 }
 
 - (_TtC21SiriInformationSearch22PommesSearchRequestXPC)init

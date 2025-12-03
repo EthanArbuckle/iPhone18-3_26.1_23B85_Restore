@@ -1,12 +1,12 @@
 @interface SiriAnalyticsInternalTelemetry
-- (SiriAnalyticsInternalTelemetry)initWithPreferences:(id)a3;
-- (void)_trackLogicalClock:(id)a3 isDerivativeClock:(BOOL)a4;
-- (void)trackAnyEventEmitted:(id)a3;
-- (void)trackEmittedEvents:(id)a3;
-- (void)trackEventEmitted:(id)a3;
-- (void)trackFBFError:(int)a3 forEventData:(id)a4;
-- (void)trackLogicalClock:(id)a3;
-- (void)trackMessageStreamProcessed:(int64_t)a3 timeToFirstMessage:(int64_t)a4 messageCount:(unint64_t)a5 processingReason:(id)a6 failureReason:(id)a7;
+- (SiriAnalyticsInternalTelemetry)initWithPreferences:(id)preferences;
+- (void)_trackLogicalClock:(id)clock isDerivativeClock:(BOOL)derivativeClock;
+- (void)trackAnyEventEmitted:(id)emitted;
+- (void)trackEmittedEvents:(id)events;
+- (void)trackEventEmitted:(id)emitted;
+- (void)trackFBFError:(int)error forEventData:(id)data;
+- (void)trackLogicalClock:(id)clock;
+- (void)trackMessageStreamProcessed:(int64_t)processed timeToFirstMessage:(int64_t)message messageCount:(unint64_t)count processingReason:(id)reason failureReason:(id)failureReason;
 @end
 
 @implementation SiriAnalyticsInternalTelemetry
@@ -68,10 +68,10 @@ id __64__SiriAnalyticsInternalTelemetry_trackMessageStagedWithSuccess___block_in
   return v2;
 }
 
-- (void)trackFBFError:(int)a3 forEventData:(id)a4
+- (void)trackFBFError:(int)error forEventData:(id)data
 {
-  v5 = a4;
-  v4 = v5;
+  dataCopy = data;
+  v4 = dataCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -91,12 +91,12 @@ id __61__SiriAnalyticsInternalTelemetry_trackFBFError_forEventData___block_invok
   return v4;
 }
 
-- (void)trackMessageStreamProcessed:(int64_t)a3 timeToFirstMessage:(int64_t)a4 messageCount:(unint64_t)a5 processingReason:(id)a6 failureReason:(id)a7
+- (void)trackMessageStreamProcessed:(int64_t)processed timeToFirstMessage:(int64_t)message messageCount:(unint64_t)count processingReason:(id)reason failureReason:(id)failureReason
 {
-  v8 = a6;
-  v11 = a7;
-  v9 = v11;
-  v10 = v8;
+  reasonCopy = reason;
+  failureReasonCopy = failureReason;
+  v9 = failureReasonCopy;
+  v10 = reasonCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -130,10 +130,10 @@ id __125__SiriAnalyticsInternalTelemetry_trackMessageStreamProcessed_timeToFirst
   return v8;
 }
 
-- (void)_trackLogicalClock:(id)a3 isDerivativeClock:(BOOL)a4
+- (void)_trackLogicalClock:(id)clock isDerivativeClock:(BOOL)derivativeClock
 {
-  v5 = a3;
-  v4 = v5;
+  clockCopy = clock;
+  v4 = clockCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -165,25 +165,25 @@ id __71__SiriAnalyticsInternalTelemetry__trackLogicalClock_isDerivativeClock___b
   return v12;
 }
 
-- (void)trackLogicalClock:(id)a3
+- (void)trackLogicalClock:(id)clock
 {
-  v4 = a3;
-  [(SiriAnalyticsInternalTelemetry *)self _trackLogicalClock:v4 isDerivativeClock:0];
-  v5 = [v4 derivativeClocks];
+  clockCopy = clock;
+  [(SiriAnalyticsInternalTelemetry *)self _trackLogicalClock:clockCopy isDerivativeClock:0];
+  derivativeClocks = [clockCopy derivativeClocks];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__SiriAnalyticsInternalTelemetry_trackLogicalClock___block_invoke;
   v6[3] = &unk_1E8586C68;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [derivativeClocks enumerateObjectsUsingBlock:v6];
 }
 
-- (void)trackAnyEventEmitted:(id)a3
+- (void)trackAnyEventEmitted:(id)emitted
 {
-  v5 = a3;
+  emittedCopy = emitted;
   isInternal = self->_isInternal;
-  v4 = v5;
+  v4 = emittedCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -247,11 +247,11 @@ id __55__SiriAnalyticsInternalTelemetry_trackAnyEventEmitted___block_invoke(uint
   return v12;
 }
 
-- (void)trackEventEmitted:(id)a3
+- (void)trackEventEmitted:(id)emitted
 {
-  v5 = a3;
+  emittedCopy = emitted;
   isInternal = self->_isInternal;
-  v4 = v5;
+  v4 = emittedCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -288,15 +288,15 @@ id __52__SiriAnalyticsInternalTelemetry_trackEventEmitted___block_invoke(uint64_
   return v11;
 }
 
-- (void)trackEmittedEvents:(id)a3
+- (void)trackEmittedEvents:(id)events
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventsCopy = events;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -308,14 +308,14 @@ id __52__SiriAnalyticsInternalTelemetry_trackEventEmitted___block_invoke(uint64_
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         [(SiriAnalyticsInternalTelemetry *)self trackEventEmitted:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [eventsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -324,9 +324,9 @@ id __52__SiriAnalyticsInternalTelemetry_trackEventEmitted___block_invoke(uint64_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (SiriAnalyticsInternalTelemetry)initWithPreferences:(id)a3
+- (SiriAnalyticsInternalTelemetry)initWithPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v8.receiver = self;
   v8.super_class = SiriAnalyticsInternalTelemetry;
   v5 = [(SiriAnalyticsInternalTelemetry *)&v8 init];
@@ -339,7 +339,7 @@ id __52__SiriAnalyticsInternalTelemetry_trackEventEmitted___block_invoke(uint64_
 
     v6 = SiriAnalyticsIsInternalInstall_isInternal;
     v5->_isInternal = SiriAnalyticsIsInternalInstall_isInternal;
-    if (v6 == 1 && [v4 simulateCustomerImage])
+    if (v6 == 1 && [preferencesCopy simulateCustomerImage])
     {
       v5->_isInternal = 0;
     }

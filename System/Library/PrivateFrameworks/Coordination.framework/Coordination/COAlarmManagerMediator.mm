@@ -1,33 +1,33 @@
 @interface COAlarmManagerMediator
 - (COAlarmManager)manager;
-- (COAlarmManagerMediator)initWithAlarmManager:(id)a3;
-- (void)postNotificationName:(id)a3 withUserInfo:(id)a4 callback:(id)a5;
+- (COAlarmManagerMediator)initWithAlarmManager:(id)manager;
+- (void)postNotificationName:(id)name withUserInfo:(id)info callback:(id)callback;
 @end
 
 @implementation COAlarmManagerMediator
 
-- (COAlarmManagerMediator)initWithAlarmManager:(id)a3
+- (COAlarmManagerMediator)initWithAlarmManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = COAlarmManagerMediator;
   v5 = [(COAlarmManagerMediator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_manager, v4);
+    objc_storeWeak(&v5->_manager, managerCopy);
   }
 
   return v6;
 }
 
-- (void)postNotificationName:(id)a3 withUserInfo:(id)a4 callback:(id)a5
+- (void)postNotificationName:(id)name withUserInfo:(id)info callback:(id)callback
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(COAlarmManagerMediator *)self manager];
-  [v11 postNotificationName:v10 withUserInfo:v9 callback:v8];
+  callbackCopy = callback;
+  infoCopy = info;
+  nameCopy = name;
+  manager = [(COAlarmManagerMediator *)self manager];
+  [manager postNotificationName:nameCopy withUserInfo:infoCopy callback:callbackCopy];
 }
 
 - (COAlarmManager)manager

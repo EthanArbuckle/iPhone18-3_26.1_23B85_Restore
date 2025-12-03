@@ -10,7 +10,7 @@
 - (void)prepareBuiltinSpec
 {
   v51 = *MEMORY[0x1E69E9840];
-  v24 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
@@ -23,8 +23,8 @@
   v39 = &v38;
   v40 = 0x2020000000;
   v41 = 0;
-  v2 = [MEMORY[0x1E696AAE8] px_bundle];
-  v23 = [v2 URLForResource:@"PXCompositeEditorialLayoutTemplate" withExtension:@"json"];
+  px_bundle = [MEMORY[0x1E696AAE8] px_bundle];
+  v23 = [px_bundle URLForResource:@"PXCompositeEditorialLayoutTemplate" withExtension:@"json"];
 
   [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v23];
   v19 = v37 = 0;
@@ -32,18 +32,18 @@
   v20 = 0;
   if (v20)
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = [v21 objectForKeyedSubscript:@"templates"];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __52__PXCompositeEditorialLayoutSpec_prepareBuiltinSpec__block_invoke;
     v32[3] = &unk_1E7745F48;
-    v6 = v4;
+    v6 = dictionary;
     v33 = v6;
     v34 = &v46;
     v35 = &v42;
@@ -68,7 +68,7 @@
           }
 
           v11 = *(*(&v28 + 1) + 8 * i);
-          v12 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v13 = [v7 objectForKeyedSubscript:v11];
           v25[0] = MEMORY[0x1E69E9820];
           v25[1] = 3221225472;
@@ -76,12 +76,12 @@
           v25[3] = &unk_1E7745F70;
           v14 = v6;
           v26 = v14;
-          v15 = v12;
+          v15 = array;
           v27 = v15;
           [v13 enumerateObjectsUsingBlock:v25];
 
           v16 = [v14 objectForKeyedSubscript:v11];
-          [v24 setObject:v15 forKey:v16];
+          [strongToStrongObjectsMapTable setObject:v15 forKey:v16];
         }
 
         v8 = [v7 countByEnumeratingWithState:&v28 objects:v50 count:16];
@@ -90,12 +90,12 @@
       while (v8);
     }
 
-    v3 = [v6 allValues];
+    allValues = [v6 allValues];
   }
 
   templates = self->_templates;
-  self->_templates = v3;
-  v18 = v3;
+  self->_templates = allValues;
+  v18 = allValues;
 
   self->_minNumberOfColumns = v47[3];
   self->_minNumberOfRects = v43[3];
@@ -175,8 +175,8 @@ void __52__PXCompositeEditorialLayoutSpec_prepareBuiltinSpec__block_invoke_2(uin
   if (result)
   {
     v4 = result;
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:v4 file:@"PXCompositeEditorialLayoutSpec.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXCompositeEditorialLayoutSpec init]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v4 file:@"PXCompositeEditorialLayoutSpec.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXCompositeEditorialLayoutSpec init]"}];
 
     abort();
   }
@@ -190,7 +190,7 @@ void __52__PXCompositeEditorialLayoutSpec_prepareBuiltinSpec__block_invoke_2(uin
   block[1] = 3221225472;
   block[2] = __45__PXCompositeEditorialLayoutSpec_defaultSpec__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultSpec_onceToken != -1)
   {
     dispatch_once(&defaultSpec_onceToken, block);

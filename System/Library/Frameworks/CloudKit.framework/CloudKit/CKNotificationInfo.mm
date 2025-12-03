@@ -1,16 +1,16 @@
 @interface CKNotificationInfo
 + (id)notificationInfo;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (CKNotificationInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKNotificationInfo)initWithCoder:(id)coder;
 - (NSArray)alertLocalizationArgs;
 - (NSArray)desiredKeys;
 - (NSArray)subtitleLocalizationArgs;
 - (NSArray)titleLocalizationArgs;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAlertLocalizationArgs:(NSArray *)alertLocalizationArgs;
 - (void)setDesiredKeys:(NSArray *)desiredKeys;
 - (void)setSubtitleLocalizationArgs:(NSArray *)subtitleLocalizationArgs;
@@ -36,10 +36,10 @@
 
 - (NSArray)alertLocalizationArgs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_alertLocalizationArgs;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_alertLocalizationArgs;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -47,21 +47,21 @@
 - (void)setAlertLocalizationArgs:(NSArray *)alertLocalizationArgs
 {
   v9 = alertLocalizationArgs;
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = objc_msgSend_CKDeepCopy(v9, v5, v6);
-  v8 = v4->_alertLocalizationArgs;
-  v4->_alertLocalizationArgs = v7;
+  v8 = selfCopy->_alertLocalizationArgs;
+  selfCopy->_alertLocalizationArgs = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)titleLocalizationArgs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_titleLocalizationArgs;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_titleLocalizationArgs;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -69,21 +69,21 @@
 - (void)setTitleLocalizationArgs:(NSArray *)titleLocalizationArgs
 {
   v9 = titleLocalizationArgs;
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = objc_msgSend_CKDeepCopy(v9, v5, v6);
-  v8 = v4->_titleLocalizationArgs;
-  v4->_titleLocalizationArgs = v7;
+  v8 = selfCopy->_titleLocalizationArgs;
+  selfCopy->_titleLocalizationArgs = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)subtitleLocalizationArgs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_subtitleLocalizationArgs;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_subtitleLocalizationArgs;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -91,21 +91,21 @@
 - (void)setSubtitleLocalizationArgs:(NSArray *)subtitleLocalizationArgs
 {
   v9 = subtitleLocalizationArgs;
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = objc_msgSend_CKDeepCopy(v9, v5, v6);
-  v8 = v4->_subtitleLocalizationArgs;
-  v4->_subtitleLocalizationArgs = v7;
+  v8 = selfCopy->_subtitleLocalizationArgs;
+  selfCopy->_subtitleLocalizationArgs = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)desiredKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_desiredKeys;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_desiredKeys;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -113,19 +113,19 @@
 - (void)setDesiredKeys:(NSArray *)desiredKeys
 {
   v9 = desiredKeys;
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = objc_msgSend_CKDeepCopy(v9, v5, v6);
-  v8 = v4->_desiredKeys;
-  v4->_desiredKeys = v7;
+  v8 = selfCopy->_desiredKeys;
+  selfCopy->_desiredKeys = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v125 = 1;
   }
@@ -135,7 +135,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_alertBody(self, v6, v7);
       v11 = objc_msgSend_alertBody(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual(v8, v11);
@@ -306,7 +306,7 @@ LABEL_23:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CKNotificationInfo);
   v7 = objc_msgSend_alertBody(self, v5, v6);
@@ -390,68 +390,68 @@ LABEL_23:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v77 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_alertBody(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v77, v8, v7, @"alertString");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"alertString");
 
   v11 = objc_msgSend_alertLocalizationKey(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v77, v12, v11, @"localizedAlert");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"localizedAlert");
 
   v15 = objc_msgSend_alertLocalizationArgs(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v77, v16, v15, @"localizedAlertArguments");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"localizedAlertArguments");
 
   v19 = objc_msgSend_title(self, v17, v18);
-  objc_msgSend_encodeObject_forKey_(v77, v20, v19, @"title");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v19, @"title");
 
   v23 = objc_msgSend_titleLocalizationKey(self, v21, v22);
-  objc_msgSend_encodeObject_forKey_(v77, v24, v23, @"localizedTitle");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, v23, @"localizedTitle");
 
   v27 = objc_msgSend_titleLocalizationArgs(self, v25, v26);
-  objc_msgSend_encodeObject_forKey_(v77, v28, v27, @"localizedTitleArguments");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, v27, @"localizedTitleArguments");
 
   v31 = objc_msgSend_subtitle(self, v29, v30);
-  objc_msgSend_encodeObject_forKey_(v77, v32, v31, @"subtitle");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, v31, @"subtitle");
 
   v35 = objc_msgSend_subtitleLocalizationKey(self, v33, v34);
-  objc_msgSend_encodeObject_forKey_(v77, v36, v35, @"localizedSubtitle");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v36, v35, @"localizedSubtitle");
 
   v39 = objc_msgSend_subtitleLocalizationArgs(self, v37, v38);
-  objc_msgSend_encodeObject_forKey_(v77, v40, v39, @"localizedSubtitleArguments");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v40, v39, @"localizedSubtitleArguments");
 
   v43 = objc_msgSend_alertActionLocalizationKey(self, v41, v42);
-  objc_msgSend_encodeObject_forKey_(v77, v44, v43, @"localizedAlertAction");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v44, v43, @"localizedAlertAction");
 
   v47 = objc_msgSend_alertLaunchImage(self, v45, v46);
-  objc_msgSend_encodeObject_forKey_(v77, v48, v47, @"launchImage");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v48, v47, @"launchImage");
 
   v51 = objc_msgSend_soundName(self, v49, v50);
-  objc_msgSend_encodeObject_forKey_(v77, v52, v51, @"soundName");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v52, v51, @"soundName");
 
   v55 = objc_msgSend_desiredKeys(self, v53, v54);
-  objc_msgSend_encodeObject_forKey_(v77, v56, v55, @"desiredKeys");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v56, v55, @"desiredKeys");
 
   shouldBadge = objc_msgSend_shouldBadge(self, v57, v58);
-  objc_msgSend_encodeBool_forKey_(v77, v60, shouldBadge, @"shouldBadge");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v60, shouldBadge, @"shouldBadge");
   shouldSendContentAvailable = objc_msgSend_shouldSendContentAvailable(self, v61, v62);
-  objc_msgSend_encodeBool_forKey_(v77, v64, shouldSendContentAvailable, @"shouldSendContentAvailable");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v64, shouldSendContentAvailable, @"shouldSendContentAvailable");
   shouldSendMutableContent = objc_msgSend_shouldSendMutableContent(self, v65, v66);
-  objc_msgSend_encodeBool_forKey_(v77, v68, shouldSendMutableContent, @"shouldSendMutableContent");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v68, shouldSendMutableContent, @"shouldSendMutableContent");
   v71 = objc_msgSend_category(self, v69, v70);
-  objc_msgSend_encodeObject_forKey_(v77, v72, v71, @"category");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v72, v71, @"category");
 
   v75 = objc_msgSend_collapseIDKey(self, v73, v74);
-  objc_msgSend_encodeObject_forKey_(v77, v76, v75, @"collapseID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v76, v75, @"collapseID");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKNotificationInfo)initWithCoder:(id)a3
+- (CKNotificationInfo)initWithCoder:(id)coder
 {
   v92[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v88.receiver = self;
   v88.super_class = CKNotificationInfo;
   v5 = [(CKNotificationInfo *)&v88 init];
@@ -459,12 +459,12 @@ LABEL_23:
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"alertString");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"alertString");
     alertBody = v5->_alertBody;
     v5->_alertBody = v9;
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"localizedAlert");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"localizedAlert");
     alertLocalizationKey = v5->_alertLocalizationKey;
     v5->_alertLocalizationKey = v13;
 
@@ -473,17 +473,17 @@ LABEL_23:
     v92[1] = objc_opt_class();
     v17 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v16, v92, 2);
     v19 = objc_msgSend_setWithArray_(v15, v18, v17);
-    v21 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v20, v19, @"localizedAlertArguments");
+    v21 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v20, v19, @"localizedAlertArguments");
     alertLocalizationArgs = v5->_alertLocalizationArgs;
     v5->_alertLocalizationArgs = v21;
 
     v23 = objc_opt_class();
-    v25 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v24, v23, @"title");
+    v25 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v24, v23, @"title");
     title = v5->_title;
     v5->_title = v25;
 
     v27 = objc_opt_class();
-    v29 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v28, v27, @"localizedTitle");
+    v29 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v28, v27, @"localizedTitle");
     titleLocalizationKey = v5->_titleLocalizationKey;
     v5->_titleLocalizationKey = v29;
 
@@ -492,17 +492,17 @@ LABEL_23:
     v91[1] = objc_opt_class();
     v33 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v32, v91, 2);
     v35 = objc_msgSend_setWithArray_(v31, v34, v33);
-    v37 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v36, v35, @"localizedTitleArguments");
+    v37 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v36, v35, @"localizedTitleArguments");
     titleLocalizationArgs = v5->_titleLocalizationArgs;
     v5->_titleLocalizationArgs = v37;
 
     v39 = objc_opt_class();
-    v41 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v40, v39, @"subtitle");
+    v41 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v40, v39, @"subtitle");
     subtitle = v5->_subtitle;
     v5->_subtitle = v41;
 
     v43 = objc_opt_class();
-    v45 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v44, v43, @"localizedSubtitle");
+    v45 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v44, v43, @"localizedSubtitle");
     subtitleLocalizationKey = v5->_subtitleLocalizationKey;
     v5->_subtitleLocalizationKey = v45;
 
@@ -511,22 +511,22 @@ LABEL_23:
     v90[1] = objc_opt_class();
     v49 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v48, v90, 2);
     v51 = objc_msgSend_setWithArray_(v47, v50, v49);
-    v53 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v52, v51, @"localizedSubtitleArguments");
+    v53 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v52, v51, @"localizedSubtitleArguments");
     subtitleLocalizationArgs = v5->_subtitleLocalizationArgs;
     v5->_subtitleLocalizationArgs = v53;
 
     v55 = objc_opt_class();
-    v57 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v56, v55, @"localizedAlertAction");
+    v57 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v56, v55, @"localizedAlertAction");
     alertActionLocalizationKey = v5->_alertActionLocalizationKey;
     v5->_alertActionLocalizationKey = v57;
 
     v59 = objc_opt_class();
-    v61 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v60, v59, @"launchImage");
+    v61 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v60, v59, @"launchImage");
     alertLaunchImage = v5->_alertLaunchImage;
     v5->_alertLaunchImage = v61;
 
     v63 = objc_opt_class();
-    v65 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v64, v63, @"soundName");
+    v65 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v64, v63, @"soundName");
     soundName = v5->_soundName;
     v5->_soundName = v65;
 
@@ -535,20 +535,20 @@ LABEL_23:
     v89[1] = objc_opt_class();
     v69 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v68, v89, 2);
     v71 = objc_msgSend_setWithArray_(v67, v70, v69);
-    v73 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v72, v71, @"desiredKeys");
+    v73 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v72, v71, @"desiredKeys");
     desiredKeys = v5->_desiredKeys;
     v5->_desiredKeys = v73;
 
-    v5->_shouldBadge = objc_msgSend_decodeBoolForKey_(v4, v75, @"shouldBadge");
-    v5->_shouldSendContentAvailable = objc_msgSend_decodeBoolForKey_(v4, v76, @"shouldSendContentAvailable");
-    v5->_shouldSendMutableContent = objc_msgSend_decodeBoolForKey_(v4, v77, @"shouldSendMutableContent");
+    v5->_shouldBadge = objc_msgSend_decodeBoolForKey_(coderCopy, v75, @"shouldBadge");
+    v5->_shouldSendContentAvailable = objc_msgSend_decodeBoolForKey_(coderCopy, v76, @"shouldSendContentAvailable");
+    v5->_shouldSendMutableContent = objc_msgSend_decodeBoolForKey_(coderCopy, v77, @"shouldSendMutableContent");
     v78 = objc_opt_class();
-    v80 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v79, v78, @"category");
+    v80 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v79, v78, @"category");
     category = v5->_category;
     v5->_category = v80;
 
     v82 = objc_opt_class();
-    v84 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v83, v82, @"collapseID");
+    v84 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v83, v82, @"collapseID");
     collapseIDKey = v5->_collapseIDKey;
     v5->_collapseIDKey = v84;
 

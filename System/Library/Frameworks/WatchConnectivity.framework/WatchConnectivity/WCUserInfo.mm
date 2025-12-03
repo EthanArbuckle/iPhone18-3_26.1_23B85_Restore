@@ -1,9 +1,9 @@
 @interface WCUserInfo
-- (BOOL)updateUserInfo:(id)a3 error:(id *)a4;
-- (BOOL)updateUserInfoData:(id)a3 error:(id *)a4;
+- (BOOL)updateUserInfo:(id)info error:(id *)error;
+- (BOOL)updateUserInfoData:(id)data error:(id *)error;
 - (BOOL)verifyUserInfo;
 - (NSDictionary)userInfo;
-- (WCUserInfo)initWithCoder:(id)a3;
+- (WCUserInfo)initWithCoder:(id)coder;
 - (id)description;
 - (void)userInfo;
 @end
@@ -15,26 +15,26 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WCUserInfo *)self userInfo];
-  v7 = [(WCUserInfo *)self userInfoData];
-  v8 = [(WCUserInfo *)self clientUserInfo];
-  v9 = [v3 stringWithFormat:@"<%@: %p, userInfo: %@, userInfoData: %@, client user info: %@>", v5, self, v6, v7, v8];
+  userInfo = [(WCUserInfo *)self userInfo];
+  userInfoData = [(WCUserInfo *)self userInfoData];
+  clientUserInfo = [(WCUserInfo *)self clientUserInfo];
+  v9 = [v3 stringWithFormat:@"<%@: %p, userInfo: %@, userInfoData: %@, client user info: %@>", v5, self, userInfo, userInfoData, clientUserInfo];
 
   return v9;
 }
 
 - (NSDictionary)userInfo
 {
-  v3 = self->_userInfo;
+  clientUserInfo = self->_userInfo;
   if (!self->_userInfo)
   {
-    v4 = [(WCUserInfo *)self userInfoData];
+    userInfoData = [(WCUserInfo *)self userInfoData];
 
-    if (v4)
+    if (userInfoData)
     {
-      v5 = [(WCUserInfo *)self userInfoData];
+      userInfoData2 = [(WCUserInfo *)self userInfoData];
       v12 = 0;
-      v6 = WCDeserializePayloadData(v5, &v12);
+      v6 = WCDeserializePayloadData(userInfoData2, &v12);
       v7 = v12;
 
       if (v6)
@@ -56,38 +56,38 @@
 
     else
     {
-      v6 = v3;
+      v6 = clientUserInfo;
     }
 
     if (self->_userInfo || ([(WCUserInfo *)self clientUserInfo], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
     {
-      v3 = v6;
+      clientUserInfo = v6;
     }
 
     else
     {
-      v3 = [(WCUserInfo *)self clientUserInfo];
+      clientUserInfo = [(WCUserInfo *)self clientUserInfo];
     }
   }
 
-  return v3;
+  return clientUserInfo;
 }
 
-- (BOOL)updateUserInfo:(id)a3 error:(id *)a4
+- (BOOL)updateUserInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  [(WCUserInfo *)self setClientUserInfo:v6];
-  v7 = WCSerializePayloadDictionary(v6, a4);
+  infoCopy = info;
+  [(WCUserInfo *)self setClientUserInfo:infoCopy];
+  v7 = WCSerializePayloadDictionary(infoCopy, error);
 
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = MEMORY[0x277CCA9B8];
       v10 = 7010;
 LABEL_8:
       [v9 wcErrorWithCode:v10];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_10;
     }
 
@@ -98,7 +98,7 @@ LABEL_9:
 
   if (!WCIsDataAcceptableSizeForType(2, v7))
   {
-    if (a4)
+    if (error)
     {
       v9 = MEMORY[0x277CCA9B8];
       v10 = 7009;
@@ -117,16 +117,16 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)updateUserInfoData:(id)a3 error:(id *)a4
+- (BOOL)updateUserInfoData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WCUserInfo *)self userInfoData];
+  dataCopy = data;
+  userInfoData = [(WCUserInfo *)self userInfoData];
 
-  if (!v7)
+  if (!userInfoData)
   {
-    [(WCUserInfo *)self setUserInfoData:v6];
+    [(WCUserInfo *)self setUserInfoData:dataCopy];
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -135,30 +135,30 @@ LABEL_10:
   }
 
   v8 = [MEMORY[0x277CCA9B8] wcInternalErrorWithCode:7501];
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_4:
 
-  return v7 == 0;
+  return userInfoData == 0;
 }
 
 - (BOOL)verifyUserInfo
 {
-  v3 = [(WCUserInfo *)self userInfoData];
+  userInfoData = [(WCUserInfo *)self userInfoData];
 
-  if (!v3)
+  if (!userInfoData)
   {
     return 0;
   }
 
-  v4 = [(WCUserInfo *)self userInfoData];
+  userInfoData2 = [(WCUserInfo *)self userInfoData];
   v11 = 0;
-  v5 = WCDeserializePayloadData(v4, &v11);
+  v5 = WCDeserializePayloadData(userInfoData2, &v11);
   v6 = v11;
 
   v7 = v5 != 0;
@@ -172,15 +172,15 @@ LABEL_4:
   return v7;
 }
 
-- (WCUserInfo)initWithCoder:(id)a3
+- (WCUserInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WCUserInfo;
   v5 = [(WCUserInfo *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userInfoData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userInfoData"];
     v7 = [v6 copy];
     userInfoData = v5->_userInfoData;
     v5->_userInfoData = v7;

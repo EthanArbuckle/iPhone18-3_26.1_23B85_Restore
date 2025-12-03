@@ -1,7 +1,7 @@
 @interface MSRHDRProcessingT5
 - (MSRHDRProcessingT5)init;
-- (void)getDegammaLutInput:(float *)a3;
-- (void)populateMSRColorConfigStageDownSampleFilter:(id *)a3 Enabled:(BOOL)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 MSRHDRContext:(MSRHDRContext *)a10;
+- (void)getDegammaLutInput:(float *)input;
+- (void)populateMSRColorConfigStageDownSampleFilter:(id *)filter Enabled:(BOOL)enabled Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl MSRHDRContext:(MSRHDRContext *)self0;
 - (void)setupHardwareConfigUnit;
 @end
 
@@ -26,7 +26,7 @@
   *msrCU = vadd_s32(*msrCU, 0x800000001);
 }
 
-- (void)getDegammaLutInput:(float *)a3
+- (void)getDegammaLutInput:(float *)input
 {
   v3 = 0;
   v4 = -0.00097656;
@@ -42,7 +42,7 @@
     do
     {
       v4 = v5 + v4;
-      *a3++ = v4;
+      *input++ = v4;
       --v6;
     }
 
@@ -64,10 +64,10 @@
   while (v3 != 8);
 }
 
-- (void)populateMSRColorConfigStageDownSampleFilter:(id *)a3 Enabled:(BOOL)a4 Prefix:(char *)a5 DMConfig:(id *)a6 DMData:(id *)a7 tcControl:(ToneCurve_Control *)a8 hdrControl:(id *)a9 MSRHDRContext:(MSRHDRContext *)a10
+- (void)populateMSRColorConfigStageDownSampleFilter:(id *)filter Enabled:(BOOL)enabled Prefix:(char *)prefix DMConfig:(id *)config DMData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl MSRHDRContext:(MSRHDRContext *)self0
 {
   msrCU = self->super.super.super.super.super._msrCU;
-  if (a4)
+  if (enabled)
   {
     if (GetConfig() && (v11 = GetConfig(), *(v11 + 1523)) && (v11[3044] & 0x80) != 0)
     {
@@ -85,7 +85,7 @@
 
     else
     {
-      v12 = 2 * (a9->var0 == 1);
+      v12 = 2 * (hdrControl->var0 == 1);
     }
 
     v13 = v12 | msrCU->var12.var0.var1 & 0xFFFFFFFFFFFFFFFCLL | 1;

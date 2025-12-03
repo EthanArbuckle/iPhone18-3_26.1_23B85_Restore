@@ -1,8 +1,8 @@
 @interface InCallControlsBaseCell
 - (UILabel)titleLabel;
 - (_TtC15ConversationKit19InCallControlButton)button;
-- (void)didTapButton:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)didTapButton:(id)button;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation InCallControlsBaseCell
@@ -21,20 +21,20 @@
   return v2;
 }
 
-- (void)didTapButton:(id)a3
+- (void)didTapButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   InCallControlsBaseCell.didTapButton(_:)();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   InCallControlsBaseCell.traitCollectionDidChange(_:)(v9);
 }
 

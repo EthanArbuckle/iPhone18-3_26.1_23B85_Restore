@@ -1,5 +1,5 @@
 @interface CNMeCardSharingHeaderViewController
-- (CNMeCardSharingHeaderViewController)initWithAvatarViewController:(id)a3 name:(id)a4 layoutAttributes:(id)a5;
+- (CNMeCardSharingHeaderViewController)initWithAvatarViewController:(id)controller name:(id)name layoutAttributes:(id)attributes;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -13,19 +13,19 @@
   [(CNMeCardSharingHeaderViewController *)&v14 viewWillLayoutSubviews];
   [(CNMeCardSharingPickerLayoutAttributes *)self->_layoutAttributes topToAvatarPadding];
   v4 = v3;
-  v5 = [(CNMeCardSharingHeaderViewController *)self view];
-  [v5 bounds];
+  view = [(CNMeCardSharingHeaderViewController *)self view];
+  [view bounds];
   v7 = v6;
-  v8 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
-  [v8 setFrame:{0.0, v4, v7, 100.0}];
+  view2 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
+  [view2 setFrame:{0.0, v4, v7, 100.0}];
 
-  v9 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
-  [v9 frame];
+  view3 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
+  [view3 frame];
   MaxY = CGRectGetMaxY(v15);
   [(CNMeCardSharingPickerLayoutAttributes *)self->_layoutAttributes avatarViewToNamePadding];
   v12 = MaxY + v11;
-  v13 = [(CNMeCardSharingHeaderViewController *)self view];
-  [v13 bounds];
+  view4 = [(CNMeCardSharingHeaderViewController *)self view];
+  [view4 bounds];
   [(UILabel *)self->_nameLabel setFrame:0.0, v12];
 }
 
@@ -34,9 +34,9 @@
   v10.receiver = self;
   v10.super_class = CNMeCardSharingHeaderViewController;
   [(CNMeCardSharingHeaderViewController *)&v10 viewDidLoad];
-  v3 = [(CNMeCardSharingHeaderViewController *)self view];
-  v4 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
-  [v3 addSubview:v4];
+  view = [(CNMeCardSharingHeaderViewController *)self view];
+  view2 = [(CNMeCardSharingAvatarViewController *)self->_avatarViewController view];
+  [view addSubview:view2];
 
   [(CNMeCardSharingHeaderViewController *)self addChildViewController:self->_avatarViewController];
   [(CNMeCardSharingAvatarViewController *)self->_avatarViewController didMoveToParentViewController:self];
@@ -46,29 +46,29 @@
   self->_nameLabel = v6;
 
   [(UILabel *)self->_nameLabel setTextAlignment:1];
-  v8 = [(CNMeCardSharingPickerLayoutAttributes *)self->_layoutAttributes headerFont];
-  [(UILabel *)self->_nameLabel setFont:v8];
+  headerFont = [(CNMeCardSharingPickerLayoutAttributes *)self->_layoutAttributes headerFont];
+  [(UILabel *)self->_nameLabel setFont:headerFont];
 
   [(UILabel *)self->_nameLabel setAutoresizingMask:2];
   [(UILabel *)self->_nameLabel setText:self->_name];
-  v9 = [(CNMeCardSharingHeaderViewController *)self view];
-  [v9 addSubview:self->_nameLabel];
+  view3 = [(CNMeCardSharingHeaderViewController *)self view];
+  [view3 addSubview:self->_nameLabel];
 }
 
-- (CNMeCardSharingHeaderViewController)initWithAvatarViewController:(id)a3 name:(id)a4 layoutAttributes:(id)a5
+- (CNMeCardSharingHeaderViewController)initWithAvatarViewController:(id)controller name:(id)name layoutAttributes:(id)attributes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  nameCopy = name;
+  attributesCopy = attributes;
   v16.receiver = self;
   v16.super_class = CNMeCardSharingHeaderViewController;
   v12 = [(CNMeCardSharingHeaderViewController *)&v16 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_avatarViewController, a3);
-    objc_storeStrong(&v13->_name, a4);
-    objc_storeStrong(&v13->_layoutAttributes, a5);
+    objc_storeStrong(&v12->_avatarViewController, controller);
+    objc_storeStrong(&v13->_name, name);
+    objc_storeStrong(&v13->_layoutAttributes, attributes);
     v14 = v13;
   }
 

@@ -1,140 +1,140 @@
 @interface NTKFoghornTimeView
-+ (BOOL)_stuffForLayoutStyle:(unint64_t)a3 inset:(BOOL)a4 shouldHideSeconds:(BOOL)a5 layoutConstants:(id *)a6 renderRect:(CGRect *)a7 oversizedRect:(CGRect *)a8 showSeconds:(BOOL *)a9;
-+ (CGSize)_frameSetterSizeForAttributedString:(id)a3;
-+ (CGSize)_getSizesForHoursString:(id)a3 blinkerString:(id)a4 minutesString:(id)a5 secondsString:(id)a6 font:(id)a7 showSeconds:(BOOL)a8 metricsRect:(CGRect)a9 hoursSize:(CGSize *)a10 minutesSeparatorSize:(CGSize *)a11 minutesSize:(CGSize *)a12 secondsSize:(CGSize *)a13;
-+ (__CTFrame)_CTFrameForFrame:(CGRect)a3 text:(id)a4 textColor:(id)a5 font:(id)a6 forDevice:(id)a7;
-+ (id)_hoursMinutesStringFromTimeFormatter:(id)a3;
-+ (id)_minutesSeparatorImageWithSize:(CGSize)a3 scale:(double)a4 frame:(CGRect)a5 text:(id)a6 textColor:(id)a7 font:(id)a8 outlineWidth:(double)a9 forDevice:(id)a10;
-+ (id)_secondsStringFromTimeFormatter:(id)a3;
-+ (void)_configureWithMetricBounds:(CGRect)a3 hoursSize:(CGSize)a4 minutesSeparatorSize:(CGSize)a5 minutesSize:(CGSize)a6 secondsSize:(CGSize)a7 textInset:(double)a8 outlineWidth:(double)a9 hScale:(double)a10 snappingPolicy:(unint64_t)a11 forDevice:(id)a12 frameStates:(id *)a13;
-+ (void)_stringsFromTimeFormatter:(id)a3 showSeconds:(BOOL)a4 hoursString:(id *)a5 blinkerString:(id *)a6 minutesString:(id *)a7 secondsString:(id *)a8;
-+ (void)drawSnapshotInContext:(CGContext *)a3 layoutStyle:(unint64_t)a4 inset:(BOOL)a5 minutesColor:(id)a6 secondsColor:(id)a7 forDevice:(id)a8;
-- (BOOL)_stuffForLayoutStyle:(unint64_t)a3 inset:(BOOL)a4 tritiumOn:(BOOL)a5 renderRect:(CGRect *)a6 oversizedRect:(CGRect *)a7 showSeconds:(BOOL *)a8;
++ (BOOL)_stuffForLayoutStyle:(unint64_t)style inset:(BOOL)inset shouldHideSeconds:(BOOL)seconds layoutConstants:(id *)constants renderRect:(CGRect *)rect oversizedRect:(CGRect *)oversizedRect showSeconds:(BOOL *)showSeconds;
++ (CGSize)_frameSetterSizeForAttributedString:(id)string;
++ (CGSize)_getSizesForHoursString:(id)string blinkerString:(id)blinkerString minutesString:(id)minutesString secondsString:(id)secondsString font:(id)font showSeconds:(BOOL)seconds metricsRect:(CGRect)rect hoursSize:(CGSize *)self0 minutesSeparatorSize:(CGSize *)self1 minutesSize:(CGSize *)self2 secondsSize:(CGSize *)self3;
++ (__CTFrame)_CTFrameForFrame:(CGRect)frame text:(id)text textColor:(id)color font:(id)font forDevice:(id)device;
++ (id)_hoursMinutesStringFromTimeFormatter:(id)formatter;
++ (id)_minutesSeparatorImageWithSize:(CGSize)size scale:(double)scale frame:(CGRect)frame text:(id)text textColor:(id)color font:(id)font outlineWidth:(double)width forDevice:(id)self0;
++ (id)_secondsStringFromTimeFormatter:(id)formatter;
++ (void)_configureWithMetricBounds:(CGRect)bounds hoursSize:(CGSize)size minutesSeparatorSize:(CGSize)separatorSize minutesSize:(CGSize)minutesSize secondsSize:(CGSize)secondsSize textInset:(double)inset outlineWidth:(double)width hScale:(double)self0 snappingPolicy:(unint64_t)self1 forDevice:(id)self2 frameStates:(id *)self3;
++ (void)_stringsFromTimeFormatter:(id)formatter showSeconds:(BOOL)seconds hoursString:(id *)string blinkerString:(id *)blinkerString minutesString:(id *)minutesString secondsString:(id *)secondsString;
++ (void)drawSnapshotInContext:(CGContext *)context layoutStyle:(unint64_t)style inset:(BOOL)inset minutesColor:(id)color secondsColor:(id)secondsColor forDevice:(id)device;
+- (BOOL)_stuffForLayoutStyle:(unint64_t)style inset:(BOOL)inset tritiumOn:(BOOL)on renderRect:(CGRect *)rect oversizedRect:(CGRect *)oversizedRect showSeconds:(BOOL *)seconds;
 - (CGRect)contentBounds;
-- (CGSize)_getLayoutForHoursString:(id)a3 blinkerString:(id)a4 minutesString:(id)a5 secondsString:(id)a6 showSeconds:(BOOL)a7 numberOfThinCharacters:(unint64_t)a8 layoutStyle:(unint64_t)a9 inset:(BOOL)a10 metricsRect:(CGRect)a11;
-- (CGSize)_layoutForHoursString:(id)a3 blinkerString:(id)a4 minutesString:(id)a5 secondsString:(id)a6 showSeconds:(BOOL)a7 transitoryFontSize:(CGSize)a8 transitoryFontWeight:(double)a9 transitoryOutlineWidth:(double)a10 metricsRect:(CGRect)a11 snapToPixel:(BOOL)a12 toLayoutStyle:(unint64_t)a13 font:(id *)a14 frameStates:(id *)a15;
-- (CGSize)_scaleSizeForLayoutStyle:(unint64_t)a3 inset:(BOOL)a4 shouldHideSeconds:(BOOL)a5 numberOfThinCharacters:(unint64_t)a6;
-- (CGSize)_scaleSizeForTimeFormatter:(id)a3 layoutStyle:(unint64_t)a4 inset:(BOOL)a5 shouldHideSeconds:(BOOL)a6;
-- (NTKFoghornTimeView)initWithFrame:(CGRect)a3 forDevice:(id)a4 clockTimer:(id)a5 layout:(unint64_t)a6;
-- (NTKFoghornTimeView)initWithFrame:(CGRect)a3 forDevice:(id)a4 layout:(unint64_t)a5;
-- (double)_scaleWeightForLayoutStyle:(unint64_t)a3 inset:(BOOL)a4 shouldHideSeconds:(BOOL)a5;
-- (id)_getSecondsColorWithAlpha:(double)a3;
-- (unint64_t)_numberOfThinCharactersForTimeFormatter:(id)a3;
+- (CGSize)_getLayoutForHoursString:(id)string blinkerString:(id)blinkerString minutesString:(id)minutesString secondsString:(id)secondsString showSeconds:(BOOL)seconds numberOfThinCharacters:(unint64_t)characters layoutStyle:(unint64_t)style inset:(BOOL)self0 metricsRect:(CGRect)self1;
+- (CGSize)_layoutForHoursString:(id)string blinkerString:(id)blinkerString minutesString:(id)minutesString secondsString:(id)secondsString showSeconds:(BOOL)seconds transitoryFontSize:(CGSize)size transitoryFontWeight:(double)weight transitoryOutlineWidth:(double)self0 metricsRect:(CGRect)self1 snapToPixel:(BOOL)self2 toLayoutStyle:(unint64_t)self3 font:(id *)self4 frameStates:(id *)self5;
+- (CGSize)_scaleSizeForLayoutStyle:(unint64_t)style inset:(BOOL)inset shouldHideSeconds:(BOOL)seconds numberOfThinCharacters:(unint64_t)characters;
+- (CGSize)_scaleSizeForTimeFormatter:(id)formatter layoutStyle:(unint64_t)style inset:(BOOL)inset shouldHideSeconds:(BOOL)seconds;
+- (NTKFoghornTimeView)initWithFrame:(CGRect)frame forDevice:(id)device clockTimer:(id)timer layout:(unint64_t)layout;
+- (NTKFoghornTimeView)initWithFrame:(CGRect)frame forDevice:(id)device layout:(unint64_t)layout;
+- (double)_scaleWeightForLayoutStyle:(unint64_t)style inset:(BOOL)inset shouldHideSeconds:(BOOL)seconds;
+- (id)_getSecondsColorWithAlpha:(double)alpha;
+- (unint64_t)_numberOfThinCharactersForTimeFormatter:(id)formatter;
 - (void)_cleanupElementFrameStates;
-- (void)_drawInContext:(CGContext *)a3 needsDisplayElementMask:(unint64_t)a4;
-- (void)_ensureCTFramesForElementMask:(unint64_t)a3 withFont:(id)a4;
-- (void)_layoutAndUpdateForTimeFormatter:(double)a3 transitoryFontSize:(double)a4 transitoryFontWeight:(double)a5 metricsRect:(double)a6 snapToPixel:(double)a7 fromLayoutStyle:(double)a8 toLayoutStyle:(uint64_t)a9 fromInset:(void *)a10 toInset:(unsigned int)a11 fromShowSeconds:(uint64_t)a12 toShowSeconds:(uint64_t)a13 progress:(int)a14 secondsSize:(int)a15 secondsWeight:(double)a16 secondsRenderRect:(unsigned __int8)a17 blinkAlpha:(unsigned __int8)a18 secondsAlpha:(double)a19;
-- (void)_layoutAndUpdateForTimeFormatter:(id)a3 showSeconds:(BOOL)a4 layoutStyle:(unint64_t)a5 inset:(BOOL)a6 metricsRect:(CGRect)a7 blinkAlpha:(double)a8 secondsAlpha:(double)a9;
-- (void)_setLayoutFromStyle:(unint64_t)a3 toStyle:(unint64_t)a4 fromTritiumOn:(BOOL)a5 toTritiumOn:(BOOL)a6 fromInset:(BOOL)a7 toInset:(BOOL)a8 progress:(double)a9;
-- (void)_setNeedsDisplayForElementMask:(unint64_t)a3;
-- (void)_setNeedsDisplayInRect:(CGRect)a3;
+- (void)_drawInContext:(CGContext *)context needsDisplayElementMask:(unint64_t)mask;
+- (void)_ensureCTFramesForElementMask:(unint64_t)mask withFont:(id)font;
+- (void)_layoutAndUpdateForTimeFormatter:(double)formatter transitoryFontSize:(double)size transitoryFontWeight:(double)weight metricsRect:(double)rect snapToPixel:(double)pixel fromLayoutStyle:(double)style toLayoutStyle:(uint64_t)layoutStyle fromInset:(void *)self0 toInset:(unsigned int)self1 fromShowSeconds:(uint64_t)self2 toShowSeconds:(uint64_t)self3 progress:(int)self4 secondsSize:(int)self5 secondsWeight:(double)self6 secondsRenderRect:(unsigned __int8)self7 blinkAlpha:(unsigned __int8)self8 secondsAlpha:(double)self9;
+- (void)_layoutAndUpdateForTimeFormatter:(id)formatter showSeconds:(BOOL)seconds layoutStyle:(unint64_t)style inset:(BOOL)inset metricsRect:(CGRect)rect blinkAlpha:(double)alpha secondsAlpha:(double)secondsAlpha;
+- (void)_setLayoutFromStyle:(unint64_t)style toStyle:(unint64_t)toStyle fromTritiumOn:(BOOL)on toTritiumOn:(BOOL)tritiumOn fromInset:(BOOL)inset toInset:(BOOL)toInset progress:(double)progress;
+- (void)_setNeedsDisplayForElementMask:(unint64_t)mask;
+- (void)_setNeedsDisplayInRect:(CGRect)rect;
 - (void)_startBlinking;
 - (void)_stopBlinking;
-- (void)_updateBlinkWithAlpha:(double)a3;
-- (void)_updateBlinkerAlphaForSecondFraction:(double)a3;
+- (void)_updateBlinkWithAlpha:(double)alpha;
+- (void)_updateBlinkerAlphaForSecondFraction:(double)fraction;
 - (void)_updateBlinking;
-- (void)_updateColorsForElementMask:(unint64_t)a3 blinkAlpha:(double)a4 secondsAlpha:(double)a5;
-- (void)_updateFrameElement:(unint64_t)a3 frame:(CGRect)a4 text:(id)a5 textColor:(id)a6;
-- (void)_updateFrameElementsForHoursString:(id)a3 blinkerString:(id)a4 minutesString:(id)a5 secondsString:(id)a6 blinkAlpha:(double)a7 secondsAlpha:(double)a8;
-- (void)_updateHoursMinutesSecondsForTimeFormatter:(id)a3 layoutStyle:(unint64_t)a4 tritiumOn:(BOOL)a5 blinkAlpha:(double)a6;
-- (void)_updateMinutesSeparatorLayerForTimeFormatter:(id)a3;
-- (void)_updateSecondsForTimeFormatter:(id)a3 showSeconds:(BOOL)a4 secondsAlpha:(double)a5;
+- (void)_updateColorsForElementMask:(unint64_t)mask blinkAlpha:(double)alpha secondsAlpha:(double)secondsAlpha;
+- (void)_updateFrameElement:(unint64_t)element frame:(CGRect)frame text:(id)text textColor:(id)color;
+- (void)_updateFrameElementsForHoursString:(id)string blinkerString:(id)blinkerString minutesString:(id)minutesString secondsString:(id)secondsString blinkAlpha:(double)alpha secondsAlpha:(double)secondsAlpha;
+- (void)_updateHoursMinutesSecondsForTimeFormatter:(id)formatter layoutStyle:(unint64_t)style tritiumOn:(BOOL)on blinkAlpha:(double)alpha;
+- (void)_updateMinutesSeparatorLayerForTimeFormatter:(id)formatter;
+- (void)_updateSecondsForTimeFormatter:(id)formatter showSeconds:(BOOL)seconds secondsAlpha:(double)alpha;
 - (void)_updateShowSeconds;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setFromInset:(BOOL)a3 toInset:(BOOL)a4 progress:(double)a5;
-- (void)setFrozen:(BOOL)a3;
-- (void)setInset:(BOOL)a3;
-- (void)setLayoutFromStyle:(unint64_t)a3 toStyle:(unint64_t)a4 progress:(double)a5;
-- (void)setLayoutStyle:(unint64_t)a3;
-- (void)setMinutesColor:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setFromInset:(BOOL)inset toInset:(BOOL)toInset progress:(double)progress;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setInset:(BOOL)inset;
+- (void)setLayoutFromStyle:(unint64_t)style toStyle:(unint64_t)toStyle progress:(double)progress;
+- (void)setLayoutStyle:(unint64_t)style;
+- (void)setMinutesColor:(id)color;
 - (void)setNeedsDisplay;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setSecondsColor:(id)a3;
-- (void)timeFormatterReportingLiveTimeDidChange:(id)a3;
-- (void)timeFormatterTextDidChange:(id)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setSecondsColor:(id)color;
+- (void)timeFormatterReportingLiveTimeDidChange:(id)change;
+- (void)timeFormatterTextDidChange:(id)change;
 @end
 
 @implementation NTKFoghornTimeView
 
-- (NTKFoghornTimeView)initWithFrame:(CGRect)a3 forDevice:(id)a4 clockTimer:(id)a5 layout:(unint64_t)a6
+- (NTKFoghornTimeView)initWithFrame:(CGRect)frame forDevice:(id)device clockTimer:(id)timer layout:(unint64_t)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
-  v15 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
+  timerCopy = timer;
   v81.receiver = self;
   v81.super_class = NTKFoghornTimeView;
-  v19 = [(NTKFoghornTimeView *)&v81 initWithFrame:x, y, width, height];
-  if (v19)
+  height = [(NTKFoghornTimeView *)&v81 initWithFrame:x, y, width, height];
+  if (height)
   {
     v20 = objc_msgSend_clearColor(MEMORY[0x277D75348], v16, v17, v18);
-    objc_msgSend_setBackgroundColor_(v19, v21, v20, v22);
+    objc_msgSend_setBackgroundColor_(height, v21, v20, v22);
 
-    objc_storeStrong(&v19->_device, a4);
-    sub_23BE711DC(v14, __src);
-    memcpy(&v19->_layoutConstants, __src, sizeof(v19->_layoutConstants));
-    v23 = v19->_layoutConstants.fontSizes[a6];
+    objc_storeStrong(&height->_device, device);
+    sub_23BE711DC(deviceCopy, __src);
+    memcpy(&height->_layoutConstants, __src, sizeof(height->_layoutConstants));
+    v23 = height->_layoutConstants.fontSizes[layout];
     v24 = [NTKFoghornFaceFontLoader alloc];
     v28 = objc_msgSend_initWithFontSize_(v24, v25, v26, v27, v23);
-    timeDisplayFontLoader = v19->_timeDisplayFontLoader;
-    v19->_timeDisplayFontLoader = v28;
+    timeDisplayFontLoader = height->_timeDisplayFontLoader;
+    height->_timeDisplayFontLoader = v28;
 
     v33 = objc_msgSend_whiteColor(MEMORY[0x277D75348], v30, v31, v32);
-    minutesColor = v19->_minutesColor;
-    v19->_minutesColor = v33;
+    minutesColor = height->_minutesColor;
+    height->_minutesColor = v33;
 
     v38 = objc_msgSend_colorWithRed_green_blue_alpha_(MEMORY[0x277D75348], v35, v36, v37, 0.247058824, 0.435294122, 0.580392182, 1.0);
-    secondsColor = v19->_secondsColor;
-    v19->_secondsColor = v38;
+    secondsColor = height->_secondsColor;
+    height->_secondsColor = v38;
 
     v40 = objc_alloc(MEMORY[0x277CBBBA8]);
-    v42 = objc_msgSend_initWithForcesLatinNumbers_clockTimer_(v40, v41, 1, v15);
-    timeFormatter = v19->_timeFormatter;
-    v19->_timeFormatter = v42;
+    v42 = objc_msgSend_initWithForcesLatinNumbers_clockTimer_(v40, v41, 1, timerCopy);
+    timeFormatter = height->_timeFormatter;
+    height->_timeFormatter = v42;
 
-    objc_msgSend_setShowSeconds_(v19->_timeFormatter, v44, 1, v45);
-    objc_msgSend_addObserver_(v19->_timeFormatter, v46, v19, v47);
+    objc_msgSend_setShowSeconds_(height->_timeFormatter, v44, 1, v45);
+    objc_msgSend_addObserver_(height->_timeFormatter, v46, height, v47);
     v50 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x277CCA900], v48, @"1", v49);
-    thinCharacterSet = v19->_thinCharacterSet;
-    v19->_thinCharacterSet = v50;
+    thinCharacterSet = height->_thinCharacterSet;
+    height->_thinCharacterSet = v50;
 
     v52 = [NTKFoghornTimeViewLayer alloc];
-    v55 = objc_msgSend_initWithTimeView_(v52, v53, v19, v54);
-    objc_msgSend_screenScale(v14, v56, v57, v58);
+    v55 = objc_msgSend_initWithTimeView_(v52, v53, height, v54);
+    objc_msgSend_screenScale(deviceCopy, v56, v57, v58);
     objc_msgSend_setContentsScale_(v55, v59, v60, v61);
-    v65 = objc_msgSend_layer(v19, v62, v63, v64);
+    v65 = objc_msgSend_layer(height, v62, v63, v64);
     objc_msgSend_addSublayer_(v65, v66, v55, v67);
 
-    minutesSeparatorLayer = v19->_minutesSeparatorLayer;
-    v19->_minutesSeparatorLayer = v55;
+    minutesSeparatorLayer = height->_minutesSeparatorLayer;
+    height->_minutesSeparatorLayer = v55;
     v69 = v55;
 
-    objc_msgSend_setOpacity_(v19->_minutesSeparatorLayer, v70, v71, v72, 0.0);
-    v19->_animationStyle = 0;
-    v19->_animationSnapStyle = 1;
-    objc_msgSend_setClearsContextBeforeDrawing_(v19, v73, 0, v74);
-    objc_msgSend_setOpaque_(v19, v75, 0, v76);
-    v19->_secondsLayoutVisibility = 1.0;
-    v19->_layoutStyle = -1;
-    objc_msgSend_setLayoutStyle_(v19, v77, a6, v78);
+    objc_msgSend_setOpacity_(height->_minutesSeparatorLayer, v70, v71, v72, 0.0);
+    height->_animationStyle = 0;
+    height->_animationSnapStyle = 1;
+    objc_msgSend_setClearsContextBeforeDrawing_(height, v73, 0, v74);
+    objc_msgSend_setOpaque_(height, v75, 0, v76);
+    height->_secondsLayoutVisibility = 1.0;
+    height->_layoutStyle = -1;
+    objc_msgSend_setLayoutStyle_(height, v77, layout, v78);
   }
 
-  return v19;
+  return height;
 }
 
-- (NTKFoghornTimeView)initWithFrame:(CGRect)a3 forDevice:(id)a4 layout:(unint64_t)a5
+- (NTKFoghornTimeView)initWithFrame:(CGRect)frame forDevice:(id)device layout:(unint64_t)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11 = MEMORY[0x277CBB700];
-  v12 = a4;
+  deviceCopy = device;
   v16 = objc_msgSend_sharedInstance(v11, v13, v14, v15);
-  v18 = objc_msgSend_initWithFrame_forDevice_clockTimer_layout_(self, v17, v12, v16, a5, x, y, width, height);
+  v18 = objc_msgSend_initWithFrame_forDevice_clockTimer_layout_(self, v17, deviceCopy, v16, layout, x, y, width, height);
 
   return v18;
 }
@@ -147,27 +147,27 @@
   [(NTKFoghornTimeView *)&v5 dealloc];
 }
 
-+ (id)_hoursMinutesStringFromTimeFormatter:(id)a3
++ (id)_hoursMinutesStringFromTimeFormatter:(id)formatter
 {
-  v3 = a3;
-  v7 = objc_msgSend_timeText(v3, v4, v5, v6);
+  formatterCopy = formatter;
+  v7 = objc_msgSend_timeText(formatterCopy, v4, v5, v6);
   v14 = v7;
-  if (objc_msgSend_showSeconds(v3, v8, v9, v10))
+  if (objc_msgSend_showSeconds(formatterCopy, v8, v9, v10))
   {
-    v15 = objc_msgSend_rangeInTimeSubstringFromSecondsSeparatorText(v3, v11, v12, v13);
+    v15 = objc_msgSend_rangeInTimeSubstringFromSecondsSeparatorText(formatterCopy, v11, v12, v13);
     v14 = objc_msgSend_substringToIndex_(v7, v16, v15 - 1, v17);
   }
 
   return v14;
 }
 
-+ (id)_secondsStringFromTimeFormatter:(id)a3
++ (id)_secondsStringFromTimeFormatter:(id)formatter
 {
-  v3 = a3;
-  if (objc_msgSend_showSeconds(v3, v4, v5, v6))
+  formatterCopy = formatter;
+  if (objc_msgSend_showSeconds(formatterCopy, v4, v5, v6))
   {
-    v10 = objc_msgSend_timeText(v3, v7, v8, v9);
-    v14 = objc_msgSend_rangeInTimeSubstringFromSecondsSeparatorText(v3, v11, v12, v13);
+    v10 = objc_msgSend_timeText(formatterCopy, v7, v8, v9);
+    v14 = objc_msgSend_rangeInTimeSubstringFromSecondsSeparatorText(formatterCopy, v11, v12, v13);
     v16 = objc_msgSend_substringWithRange_(v10, v15, v14 - 1, (v15 + 1));
   }
 
@@ -179,15 +179,15 @@
   return v16;
 }
 
-+ (void)_stringsFromTimeFormatter:(id)a3 showSeconds:(BOOL)a4 hoursString:(id *)a5 blinkerString:(id *)a6 minutesString:(id *)a7 secondsString:(id *)a8
++ (void)_stringsFromTimeFormatter:(id)formatter showSeconds:(BOOL)seconds hoursString:(id *)string blinkerString:(id *)blinkerString minutesString:(id *)minutesString secondsString:(id *)secondsString
 {
-  v12 = a4;
-  v42 = a3;
-  v16 = objc_msgSend_timeText(v42, v13, v14, v15);
-  if (objc_msgSend_showSeconds(v42, v17, v18, v19))
+  secondsCopy = seconds;
+  formatterCopy = formatter;
+  v16 = objc_msgSend_timeText(formatterCopy, v13, v14, v15);
+  if (objc_msgSend_showSeconds(formatterCopy, v17, v18, v19))
   {
-    v25 = objc_msgSend_rangeInTimeSubstringFromSecondsSeparatorText(v42, v20, v21, v22) - 1;
-    if (v12)
+    v25 = objc_msgSend_rangeInTimeSubstringFromSecondsSeparatorText(formatterCopy, v20, v21, v22) - 1;
+    if (secondsCopy)
     {
       v26 = objc_msgSend_substringWithRange_(v16, v23, v25, (v23 + 1));
     }
@@ -207,26 +207,26 @@
     v26 = 0;
   }
 
-  v28 = objc_msgSend_blinkerRangeInTimeText(v42, v20, v21, v22);
+  v28 = objc_msgSend_blinkerRangeInTimeText(formatterCopy, v20, v21, v22);
   v30 = v29;
   v32 = objc_msgSend_substringToIndex_(v16, v29, v28, v31);
   v34 = objc_msgSend_substringWithRange_(v16, v33, v28, v30);
   v37 = objc_msgSend_substringFromIndex_(v16, v35, v28 + v30, v36);
   v38 = v32;
-  *a5 = v32;
+  *string = v32;
   v39 = v34;
-  *a6 = v34;
+  *blinkerString = v34;
   v40 = v37;
-  *a7 = v37;
+  *minutesString = v37;
   v41 = v26;
-  *a8 = v26;
+  *secondsString = v26;
 }
 
-+ (CGSize)_frameSetterSizeForAttributedString:(id)a3
++ (CGSize)_frameSetterSizeForAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = CTFramesetterCreateWithAttributedString(v3);
-  v8 = objc_msgSend_length(v3, v5, v6, v7);
+  stringCopy = string;
+  v4 = CTFramesetterCreateWithAttributedString(stringCopy);
+  v8 = objc_msgSend_length(stringCopy, v5, v6, v7);
 
   v13.width = 1.79769313e308;
   v12.location = 0;
@@ -241,36 +241,36 @@
   return result;
 }
 
-+ (CGSize)_getSizesForHoursString:(id)a3 blinkerString:(id)a4 minutesString:(id)a5 secondsString:(id)a6 font:(id)a7 showSeconds:(BOOL)a8 metricsRect:(CGRect)a9 hoursSize:(CGSize *)a10 minutesSeparatorSize:(CGSize *)a11 minutesSize:(CGSize *)a12 secondsSize:(CGSize *)a13
++ (CGSize)_getSizesForHoursString:(id)string blinkerString:(id)blinkerString minutesString:(id)minutesString secondsString:(id)secondsString font:(id)font showSeconds:(BOOL)seconds metricsRect:(CGRect)rect hoursSize:(CGSize *)self0 minutesSeparatorSize:(CGSize *)self1 minutesSize:(CGSize *)self2 secondsSize:(CGSize *)self3
 {
-  v88 = a8;
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
+  secondsCopy = seconds;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v93[3] = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v91 = a4;
-  v90 = a5;
-  v23 = a6;
-  v27 = a7;
-  if (v23)
+  stringCopy = string;
+  blinkerStringCopy = blinkerString;
+  minutesStringCopy = minutesString;
+  secondsStringCopy = secondsString;
+  fontCopy = font;
+  if (secondsStringCopy)
   {
     v28 = objc_msgSend_punctuationCharacterSet(MEMORY[0x277CCA900], v24, v25, v26);
-    v30 = objc_msgSend_rangeOfCharacterFromSet_options_(v23, v29, v28, 4);
+    v30 = objc_msgSend_rangeOfCharacterFromSet_options_(secondsStringCopy, v29, v28, 4);
     if (v30 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v34 = &v31[v30];
-      v35 = objc_msgSend_length(v23, v31, v32, v33);
-      v37 = objc_msgSend_stringByReplacingCharactersInRange_withString_(v23, v36, v34, v35 - v34, @"88");
+      v35 = objc_msgSend_length(secondsStringCopy, v31, v32, v33);
+      v37 = objc_msgSend_stringByReplacingCharactersInRange_withString_(secondsStringCopy, v36, v34, v35 - v34, @"88");
 
-      v23 = v37;
+      secondsStringCopy = v37;
     }
   }
 
   else
   {
-    v23 = @":88";
+    secondsStringCopy = @":88";
   }
 
   v38 = objc_alloc_init(MEMORY[0x277D74240]);
@@ -280,19 +280,19 @@
   v92[0] = *MEMORY[0x277D740C0];
   v92[1] = v45;
   v93[0] = v44;
-  v93[1] = v27;
-  v89 = v27;
+  v93[1] = fontCopy;
+  v89 = fontCopy;
   v92[2] = *MEMORY[0x277D74118];
   v93[2] = v38;
   v47 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v46, v93, v92, 3);
   v48 = objc_alloc(MEMORY[0x277CCA898]);
-  v49 = v22;
-  v51 = objc_msgSend_initWithString_attributes_(v48, v50, v22, v47);
+  v49 = stringCopy;
+  v51 = objc_msgSend_initWithString_attributes_(v48, v50, stringCopy, v47);
   v52 = objc_alloc(MEMORY[0x277CCA898]);
-  v54 = objc_msgSend_initWithString_attributes_(v52, v53, v91, v47);
+  v54 = objc_msgSend_initWithString_attributes_(v52, v53, blinkerStringCopy, v47);
   v55 = objc_alloc(MEMORY[0x277CCA898]);
-  v57 = objc_msgSend_initWithString_attributes_(v55, v56, v90, v47);
-  objc_msgSend__frameSetterSizeForAttributedString_(a1, v58, v51, v59);
+  v57 = objc_msgSend_initWithString_attributes_(v55, v56, minutesStringCopy, v47);
+  objc_msgSend__frameSetterSizeForAttributedString_(self, v58, v51, v59);
   v61 = v60;
   v63 = v62;
   v95.origin.x = x;
@@ -300,17 +300,17 @@
   v95.size.width = width;
   v95.size.height = height;
   v87 = CGRectGetHeight(v95);
-  objc_msgSend__frameSetterSizeForAttributedString_(a1, v64, v54, v65);
+  objc_msgSend__frameSetterSizeForAttributedString_(self, v64, v54, v65);
   v67 = v66;
   v69 = v68;
-  objc_msgSend__frameSetterSizeForAttributedString_(a1, v70, v57, v71);
+  objc_msgSend__frameSetterSizeForAttributedString_(self, v70, v57, v71);
   v73 = v72;
   v75 = v74;
-  if (v88)
+  if (secondsCopy)
   {
     v76 = objc_alloc(MEMORY[0x277CCA898]);
-    v78 = objc_msgSend_initWithString_attributes_(v76, v77, v23, v47);
-    objc_msgSend__frameSetterSizeForAttributedString_(a1, v79, v78, v80);
+    v78 = objc_msgSend_initWithString_attributes_(v76, v77, secondsStringCopy, v47);
+    objc_msgSend__frameSetterSizeForAttributedString_(self, v79, v78, v80);
     v82 = v81;
     v84 = v83;
   }
@@ -321,14 +321,14 @@
     v84 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  a10->width = v61;
-  a10->height = v63;
-  a11->width = v67;
-  a11->height = v69;
-  a12->width = v73;
-  a12->height = v75;
-  a13->width = v82;
-  a13->height = v84;
+  size->width = v61;
+  size->height = v63;
+  separatorSize->width = v67;
+  separatorSize->height = v69;
+  minutesSize->width = v73;
+  minutesSize->height = v75;
+  secondsSize->width = v82;
+  secondsSize->height = v84;
 
   v85 = v61 + 0.0 + v67 + v73 + v82;
   v86 = v87;
@@ -337,17 +337,17 @@
   return result;
 }
 
-+ (void)_configureWithMetricBounds:(CGRect)a3 hoursSize:(CGSize)a4 minutesSeparatorSize:(CGSize)a5 minutesSize:(CGSize)a6 secondsSize:(CGSize)a7 textInset:(double)a8 outlineWidth:(double)a9 hScale:(double)a10 snappingPolicy:(unint64_t)a11 forDevice:(id)a12 frameStates:(id *)a13
++ (void)_configureWithMetricBounds:(CGRect)bounds hoursSize:(CGSize)size minutesSeparatorSize:(CGSize)separatorSize minutesSize:(CGSize)minutesSize secondsSize:(CGSize)secondsSize textInset:(double)inset outlineWidth:(double)width hScale:(double)self0 snappingPolicy:(unint64_t)self1 forDevice:(id)self2 frameStates:(id *)self3
 {
-  width = a7.width;
-  v14 = *&a6.width;
-  v28 = a5.width;
-  v15 = a4.width;
-  height = a3.size.height;
-  v17 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v29 = *&a6.height;
+  width = secondsSize.width;
+  v14 = *&minutesSize.width;
+  v28 = separatorSize.width;
+  v15 = size.width;
+  height = bounds.size.height;
+  v17 = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v29 = *&minutesSize.height;
   v34.origin.x = x;
   v34.origin.y = y;
   v34.size.width = v17;
@@ -395,15 +395,15 @@
   *(*&width + 136) = v32;
   *(*&width + 144) = sub_23BE6D2E0(v14, v29, v28 + v26);
   *(*&width + 152) = MinY;
-  *(*&width + 160) = a8;
+  *(*&width + 160) = inset;
   *(*&width + 168) = v21;
   *(*&width + 208) = v32;
-  *(*&width + 216) = sub_23BE6D2E0(v14, v29, a8 + v28 + v26);
+  *(*&width + 216) = sub_23BE6D2E0(v14, v29, inset + v28 + v26);
   *(*&width + 224) = MinY;
-  *(*&width + 232) = a10;
+  *(*&width + 232) = scale;
   *(*&width + 240) = v21;
   v27 = 0.0;
-  if (a10 > 0.0)
+  if (scale > 0.0)
   {
     v27 = v32;
   }
@@ -411,13 +411,13 @@
   *(*&width + 280) = v27;
 }
 
-- (id)_getSecondsColorWithAlpha:(double)a3
+- (id)_getSecondsColorWithAlpha:(double)alpha
 {
   v4 = self->_secondsColor;
   v8 = v4;
-  if (a3 >= 0.0 && a3 < 1.0)
+  if (alpha >= 0.0 && alpha < 1.0)
   {
-    v10 = objc_msgSend_colorWithAlphaComponent_(v4, v5, v6, v7, a3);
+    v10 = objc_msgSend_colorWithAlphaComponent_(v4, v5, v6, v7, alpha);
 
     v8 = v10;
   }
@@ -459,9 +459,9 @@
   [(NTKFoghornTimeView *)&v4 setNeedsDisplay];
 }
 
-- (void)_setNeedsDisplayInRect:(CGRect)a3
+- (void)_setNeedsDisplayInRect:(CGRect)rect
 {
-  if (!CGRectIsEmpty(a3))
+  if (!CGRectIsEmpty(rect))
   {
     objc_msgSend_screenScale(self->_device, v4, v5, v6);
     UIRectIntegralWithScale();
@@ -508,14 +508,14 @@
   }
 }
 
-- (void)_setNeedsDisplayForElementMask:(unint64_t)a3
+- (void)_setNeedsDisplayForElementMask:(unint64_t)mask
 {
-  v3 = a3;
+  maskCopy = mask;
   v6 = *MEMORY[0x277CBF3A0];
   v5 = *(MEMORY[0x277CBF3A0] + 8);
   v8 = *(MEMORY[0x277CBF3A0] + 16);
   v7 = *(MEMORY[0x277CBF3A0] + 24);
-  if ((a3 & 8) != 0)
+  if ((mask & 8) != 0)
   {
     x = self->_frameStates[3].frame.origin.x;
     y = self->_frameStates[3].frame.origin.y;
@@ -542,10 +542,10 @@
       v8 = width;
       v5 = y;
       v6 = x;
-      if ((v3 & 2) == 0)
+      if ((maskCopy & 2) == 0)
       {
 LABEL_14:
-        if ((v3 & 1) == 0)
+        if ((maskCopy & 1) == 0)
         {
           goto LABEL_15;
         }
@@ -570,7 +570,7 @@ LABEL_14:
       v8 = v36.size.width;
       v7 = v36.size.height;
       v9 = 8;
-      if ((v3 & 2) == 0)
+      if ((maskCopy & 2) == 0)
       {
         goto LABEL_14;
       }
@@ -580,7 +580,7 @@ LABEL_14:
   else
   {
     v9 = 0;
-    if ((a3 & 2) == 0)
+    if ((mask & 2) == 0)
     {
       goto LABEL_14;
     }
@@ -627,10 +627,10 @@ LABEL_14:
   v5 = v42.origin.y;
   v8 = v42.size.width;
   v7 = v42.size.height;
-  if ((v3 & 1) == 0)
+  if ((maskCopy & 1) == 0)
   {
 LABEL_15:
-    if ((v3 & 4) == 0)
+    if ((maskCopy & 4) == 0)
     {
       goto LABEL_28;
     }
@@ -664,7 +664,7 @@ LABEL_21:
     v8 = v27;
     v5 = v26;
     v6 = v25;
-    if ((v3 & 4) == 0)
+    if ((maskCopy & 4) == 0)
     {
       goto LABEL_28;
     }
@@ -685,7 +685,7 @@ LABEL_21:
     v5 = v48.origin.y;
     v8 = v48.size.width;
     v7 = v48.size.height;
-    if ((v3 & 4) == 0)
+    if ((maskCopy & 4) == 0)
     {
       goto LABEL_28;
     }
@@ -749,21 +749,21 @@ LABEL_28:
   }
 }
 
-- (void)_updateFrameElement:(unint64_t)a3 frame:(CGRect)a4 text:(id)a5 textColor:(id)a6
+- (void)_updateFrameElement:(unint64_t)element frame:(CGRect)frame text:(id)text textColor:(id)color
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = a5;
-  v14 = a6;
-  v15 = &self->_frameStates[a3];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  textCopy = text;
+  colorCopy = color;
+  v15 = &self->_frameStates[element];
   v15->frame.origin.x = x;
   v15->frame.origin.y = y;
   v15->frame.size.width = width;
   v15->frame.size.height = height;
-  objc_storeStrong(&v15->text, a5);
-  objc_storeStrong(&v15->textColor, a6);
+  objc_storeStrong(&v15->text, text);
+  objc_storeStrong(&v15->textColor, color);
   ctFrame = v15->ctFrame;
   if (ctFrame)
   {
@@ -779,13 +779,13 @@ LABEL_28:
   }
 }
 
-- (void)_updateSecondsForTimeFormatter:(id)a3 showSeconds:(BOOL)a4 secondsAlpha:(double)a5
+- (void)_updateSecondsForTimeFormatter:(id)formatter showSeconds:(BOOL)seconds secondsAlpha:(double)alpha
 {
-  if (a4)
+  if (seconds)
   {
-    v7 = a3;
+    formatterCopy = formatter;
     v8 = objc_opt_class();
-    v15 = objc_msgSend__secondsStringFromTimeFormatter_(v8, v9, v7, v10);
+    v15 = objc_msgSend__secondsStringFromTimeFormatter_(v8, v9, formatterCopy, v10);
   }
 
   else
@@ -793,31 +793,31 @@ LABEL_28:
     v15 = &stru_284E9D198;
   }
 
-  v11 = objc_msgSend__getSecondsColorWithAlpha_(self, a2, a3, a4, a5);
+  v11 = objc_msgSend__getSecondsColorWithAlpha_(self, a2, formatter, seconds, alpha);
   objc_msgSend__updateFrameElement_frame_text_textColor_(self, v12, 3, v15, v11, self->_frameStates[3].frame.origin.x, self->_frameStates[3].frame.origin.y, self->_frameStates[3].frame.size.width, self->_frameStates[3].frame.size.height);
   objc_msgSend__setNeedsDisplayForElementMask_(self, v13, 8, v14);
 }
 
-- (void)_updateColorsForElementMask:(unint64_t)a3 blinkAlpha:(double)a4 secondsAlpha:(double)a5
+- (void)_updateColorsForElementMask:(unint64_t)mask blinkAlpha:(double)alpha secondsAlpha:(double)secondsAlpha
 {
   v9 = 0;
   v10 = 0;
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  if (a4 >= 1.0 || a4 < 0.0)
+  if (alpha >= 1.0 || alpha < 0.0)
   {
-    v15 = 1.0;
+    alphaCopy = 1.0;
   }
 
   else
   {
-    v15 = a4;
+    alphaCopy = alpha;
   }
 
   do
   {
-    if (((1 << v12) & a3) == 0)
+    if (((1 << v12) & mask) == 0)
     {
       goto LABEL_19;
     }
@@ -829,7 +829,7 @@ LABEL_28:
 LABEL_15:
         if (!v10)
         {
-          v10 = objc_msgSend__getMinutesColor(self, a2, a3, v5);
+          v10 = objc_msgSend__getMinutesColor(self, a2, mask, v5);
         }
 
         v18 = v10;
@@ -844,7 +844,7 @@ LABEL_15:
 
       else
       {
-        v10 = objc_msgSend__getSecondsColorWithAlpha_(self, a2, a3, v5, a5);
+        v10 = objc_msgSend__getSecondsColorWithAlpha_(self, a2, mask, v5, secondsAlpha);
         v11 = v10;
       }
     }
@@ -866,11 +866,11 @@ LABEL_15:
       {
         if (!v10)
         {
-          v10 = objc_msgSend__getMinutesColor(self, a2, a3, v5);
+          v10 = objc_msgSend__getMinutesColor(self, a2, mask, v5);
         }
 
         v18 = v10;
-        v10 = objc_msgSend_colorWithAlphaComponent_(v10, a2, a3, v5, v15);
+        v10 = objc_msgSend_colorWithAlphaComponent_(v10, a2, mask, v5, alphaCopy);
         v13 = v10;
       }
     }
@@ -887,53 +887,53 @@ LABEL_19:
 
   while (v12 != 4);
   v19 = v10;
-  objc_msgSend__setNeedsDisplayForElementMask_(self, a2, a3, v5);
+  objc_msgSend__setNeedsDisplayForElementMask_(self, a2, mask, v5);
 }
 
-- (void)_updateBlinkWithAlpha:(double)a3
+- (void)_updateBlinkWithAlpha:(double)alpha
 {
   v7 = objc_msgSend__getMinutesColor(self, a2, v3, v4);
   v17 = v7;
-  v11 = 1.0;
-  if (a3 < 1.0 && a3 >= 0.0)
+  alphaCopy = 1.0;
+  if (alpha < 1.0 && alpha >= 0.0)
   {
-    v11 = a3;
+    alphaCopy = alpha;
   }
 
-  v13 = objc_msgSend_colorWithAlphaComponent_(v7, v8, v9, v10, v11);
+  v13 = objc_msgSend_colorWithAlphaComponent_(v7, v8, v9, v10, alphaCopy);
   objc_msgSend__updateFrameElement_frame_text_textColor_(self, v14, 1, self->_frameStates[1].text, v13, self->_frameStates[1].frame.origin.x, self->_frameStates[1].frame.origin.y, self->_frameStates[1].frame.size.width, self->_frameStates[1].frame.size.height);
   objc_msgSend__setNeedsDisplayForElementMask_(self, v15, 2, v16);
 }
 
-- (void)_updateFrameElementsForHoursString:(id)a3 blinkerString:(id)a4 minutesString:(id)a5 secondsString:(id)a6 blinkAlpha:(double)a7 secondsAlpha:(double)a8
+- (void)_updateFrameElementsForHoursString:(id)string blinkerString:(id)blinkerString minutesString:(id)minutesString secondsString:(id)secondsString blinkAlpha:(double)alpha secondsAlpha:(double)secondsAlpha
 {
-  v50 = a3;
-  v48 = a4;
-  v14 = a5;
-  v15 = a6;
+  stringCopy = string;
+  blinkerStringCopy = blinkerString;
+  minutesStringCopy = minutesString;
+  secondsStringCopy = secondsString;
   objc_msgSend__cleanupElementFrameStates(self, v16, v17, v18);
-  objc_msgSend__updateColorsWithBlinkAlpha_secondsAlpha_(self, v19, v20, v21, a7, a8);
+  objc_msgSend__updateColorsWithBlinkAlpha_secondsAlpha_(self, v19, v20, v21, alpha, secondsAlpha);
   v25 = objc_msgSend__getMinutesColor(self, v22, v23, v24);
-  v32 = objc_msgSend__getSecondsColorWithAlpha_(self, v26, v27, v28, a8);
-  v33 = 1.0;
-  if (a7 < 1.0 && a7 >= 0.0)
+  v32 = objc_msgSend__getSecondsColorWithAlpha_(self, v26, v27, v28, secondsAlpha);
+  alphaCopy = 1.0;
+  if (alpha < 1.0 && alpha >= 0.0)
   {
-    v33 = a7;
+    alphaCopy = alpha;
   }
 
-  v35 = objc_msgSend_colorWithAlphaComponent_(v25, v29, v30, v31, v33, v48);
+  v35 = objc_msgSend_colorWithAlphaComponent_(v25, v29, v30, v31, alphaCopy, blinkerStringCopy);
   v36 = 0;
-  v37 = self;
+  selfCopy = self;
   do
   {
     if (v36 == 3)
     {
-      v38 = v15;
+      v38 = secondsStringCopy;
     }
 
     else
     {
-      v38 = v14;
+      v38 = minutesStringCopy;
     }
 
     if (v36 == 3)
@@ -954,7 +954,7 @@ LABEL_19:
 
     else
     {
-      v40 = v50;
+      v40 = stringCopy;
       v41 = v25;
     }
 
@@ -971,44 +971,44 @@ LABEL_19:
 
     v43 = v38;
     v44 = v42;
-    objc_msgSend__updateFrameElement_frame_text_textColor_(self, v45, v36, v43, v44, v37->_frameStates[0].frame.origin.x, v37->_frameStates[0].frame.origin.y, v37->_frameStates[0].frame.size.width, v37->_frameStates[0].frame.size.height);
+    objc_msgSend__updateFrameElement_frame_text_textColor_(self, v45, v36, v43, v44, selfCopy->_frameStates[0].frame.origin.x, selfCopy->_frameStates[0].frame.origin.y, selfCopy->_frameStates[0].frame.size.width, selfCopy->_frameStates[0].frame.size.height);
 
     ++v36;
-    v37 = (v37 + 72);
+    selfCopy = (selfCopy + 72);
   }
 
   while (v36 != 4);
   objc_msgSend__setNeedsDisplayForElementMask_(self, v46, -1, v47);
 }
 
-+ (__CTFrame)_CTFrameForFrame:(CGRect)a3 text:(id)a4 textColor:(id)a5 font:(id)a6 forDevice:(id)a7
++ (__CTFrame)_CTFrameForFrame:(CGRect)frame text:(id)text textColor:(id)color font:(id)font forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v49[3] = *MEMORY[0x277D85DE8];
   v14 = MEMORY[0x277D74240];
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
+  deviceCopy = device;
+  fontCopy = font;
+  colorCopy = color;
+  textCopy = text;
   v19 = objc_alloc_init(v14);
   objc_msgSend_setAlignment_(v19, v20, 4, v21);
   v22 = *MEMORY[0x277D740A8];
   v48[0] = *MEMORY[0x277D740C0];
   v48[1] = v22;
-  v49[0] = v17;
-  v49[1] = v16;
+  v49[0] = colorCopy;
+  v49[1] = fontCopy;
   v48[2] = *MEMORY[0x277D74118];
   v49[2] = v19;
   v24 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v23, v49, v48, 3);
   v25 = objc_alloc(MEMORY[0x277CCA898]);
 
-  v27 = objc_msgSend_initWithString_attributes_(v25, v26, v18, v24);
-  objc_msgSend_leading(v16, v28, v29, v30);
-  objc_msgSend_ascender(v16, v31, v32, v33);
-  objc_msgSend_descender(v16, v34, v35, v36);
+  v27 = objc_msgSend_initWithString_attributes_(v25, v26, textCopy, v24);
+  objc_msgSend_leading(fontCopy, v28, v29, v30);
+  objc_msgSend_ascender(fontCopy, v31, v32, v33);
+  objc_msgSend_descender(fontCopy, v34, v35, v36);
 
   v51.origin.x = x;
   v51.origin.y = y;
@@ -1047,18 +1047,18 @@ LABEL_19:
   return Frame;
 }
 
-- (void)_ensureCTFramesForElementMask:(unint64_t)a3 withFont:(id)a4
+- (void)_ensureCTFramesForElementMask:(unint64_t)mask withFont:(id)font
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6)
+  maskCopy = mask;
+  fontCopy = font;
+  if (fontCopy)
   {
     v7 = 0;
     v8 = 0;
-    v20 = v6;
+    v20 = fontCopy;
     do
     {
-      if (((1 << v7) & v4) != 0 && !self->_frameStates[v8].ctFrame)
+      if (((1 << v7) & maskCopy) != 0 && !self->_frameStates[v8].ctFrame)
       {
         v9 = &self->_frameStates[v8];
         v10 = v9->textColor;
@@ -1094,7 +1094,7 @@ LABEL_19:
           self->_frameStates[v8].glyphOutlinePaths = v19;
         }
 
-        v6 = v20;
+        fontCopy = v20;
       }
 
       ++v8;
@@ -1105,12 +1105,12 @@ LABEL_19:
   }
 }
 
-- (unint64_t)_numberOfThinCharactersForTimeFormatter:(id)a3
+- (unint64_t)_numberOfThinCharactersForTimeFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v5 = self->_thinCharacterSet;
   v6 = objc_opt_class();
-  v9 = objc_msgSend__hoursMinutesStringFromTimeFormatter_(v6, v7, v4, v8);
+  v9 = objc_msgSend__hoursMinutesStringFromTimeFormatter_(v6, v7, formatterCopy, v8);
   v13 = objc_msgSend_length(v9, v10, v11, v12);
   if (v13)
   {
@@ -1131,21 +1131,21 @@ LABEL_19:
   return v17;
 }
 
-- (CGSize)_scaleSizeForLayoutStyle:(unint64_t)a3 inset:(BOOL)a4 shouldHideSeconds:(BOOL)a5 numberOfThinCharacters:(unint64_t)a6
+- (CGSize)_scaleSizeForLayoutStyle:(unint64_t)style inset:(BOOL)inset shouldHideSeconds:(BOOL)seconds numberOfThinCharacters:(unint64_t)characters
 {
-  v6 = a6 != 0;
-  if (a6 > 3)
+  v6 = characters != 0;
+  if (characters > 3)
   {
     v6 = 2;
   }
 
-  v7 = a3 & 0xFFFFFFFFFFFFFFELL;
-  if (!a5)
+  styleCopy = style & 0xFFFFFFFFFFFFFFELL;
+  if (!seconds)
   {
-    v7 = a3;
+    styleCopy = style;
   }
 
-  p_width = &self->_layoutConstants.timeFontScaleSize[a4][v7][v6].width;
+  p_width = &self->_layoutConstants.timeFontScaleSize[inset][styleCopy][v6].width;
   v9 = *p_width;
   v10 = p_width[1];
   result.height = v10;
@@ -1153,45 +1153,45 @@ LABEL_19:
   return result;
 }
 
-- (double)_scaleWeightForLayoutStyle:(unint64_t)a3 inset:(BOOL)a4 shouldHideSeconds:(BOOL)a5
+- (double)_scaleWeightForLayoutStyle:(unint64_t)style inset:(BOOL)inset shouldHideSeconds:(BOOL)seconds
 {
-  v5 = a3 & 0x1FFFFFFFFFFFFFFELL;
-  if (!a5)
+  styleCopy = style & 0x1FFFFFFFFFFFFFFELL;
+  if (!seconds)
   {
-    v5 = a3;
+    styleCopy = style;
   }
 
-  return self->_layoutConstants.timeFontScaleWeight[a4][v5];
+  return self->_layoutConstants.timeFontScaleWeight[inset][styleCopy];
 }
 
-- (CGSize)_scaleSizeForTimeFormatter:(id)a3 layoutStyle:(unint64_t)a4 inset:(BOOL)a5 shouldHideSeconds:(BOOL)a6
+- (CGSize)_scaleSizeForTimeFormatter:(id)formatter layoutStyle:(unint64_t)style inset:(BOOL)inset shouldHideSeconds:(BOOL)seconds
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = objc_msgSend__numberOfThinCharactersForTimeFormatter_(self, a2, a3, a4);
+  secondsCopy = seconds;
+  insetCopy = inset;
+  v11 = objc_msgSend__numberOfThinCharactersForTimeFormatter_(self, a2, formatter, style);
 
-  objc_msgSend__scaleSizeForLayoutStyle_inset_shouldHideSeconds_numberOfThinCharacters_(self, v10, a4, v7, v6, v11);
+  objc_msgSend__scaleSizeForLayoutStyle_inset_shouldHideSeconds_numberOfThinCharacters_(self, v10, style, insetCopy, secondsCopy, v11);
   result.height = v13;
   result.width = v12;
   return result;
 }
 
-- (CGSize)_layoutForHoursString:(id)a3 blinkerString:(id)a4 minutesString:(id)a5 secondsString:(id)a6 showSeconds:(BOOL)a7 transitoryFontSize:(CGSize)a8 transitoryFontWeight:(double)a9 transitoryOutlineWidth:(double)a10 metricsRect:(CGRect)a11 snapToPixel:(BOOL)a12 toLayoutStyle:(unint64_t)a13 font:(id *)a14 frameStates:(id *)a15
+- (CGSize)_layoutForHoursString:(id)string blinkerString:(id)blinkerString minutesString:(id)minutesString secondsString:(id)secondsString showSeconds:(BOOL)seconds transitoryFontSize:(CGSize)size transitoryFontWeight:(double)weight transitoryOutlineWidth:(double)self0 metricsRect:(CGRect)self1 snapToPixel:(BOOL)self2 toLayoutStyle:(unint64_t)self3 font:(id *)self4 frameStates:(id *)self5
 {
-  v15 = a12;
-  v16 = a7;
-  height = a11.size.height;
-  width = a11.size.width;
-  y = a11.origin.y;
-  x = a11.origin.x;
-  v25 = a8.height;
-  v26 = a8.width;
+  pixelCopy = pixel;
+  secondsCopy = seconds;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v25 = size.height;
+  v26 = size.width;
   timeDisplayFontLoader = self->_timeDisplayFontLoader;
-  v30 = a6;
-  v31 = a5;
-  v32 = a4;
-  v33 = a3;
-  v36 = objc_msgSend_foregroundFontWithTypographicSize_weight_horizontalScale_stylisticSet_(timeDisplayFontLoader, v34, 0, v35, v26, v25, a9, 1.0);
+  secondsStringCopy = secondsString;
+  minutesStringCopy = minutesString;
+  blinkerStringCopy = blinkerString;
+  stringCopy = string;
+  v36 = objc_msgSend_foregroundFontWithTypographicSize_weight_horizontalScale_stylisticSet_(timeDisplayFontLoader, v34, 0, v35, v26, v25, weight, 1.0);
   v56 = 0.0;
   v57 = 0.0;
   v54 = 0.0;
@@ -1201,17 +1201,17 @@ LABEL_19:
   v50 = 0;
   v51 = 0;
   v37 = objc_opt_class();
-  objc_msgSend__getSizesForHoursString_blinkerString_minutesString_secondsString_font_showSeconds_metricsRect_hoursSize_minutesSeparatorSize_minutesSize_secondsSize_(v37, v38, v33, v32, v31, v30, v36, v16, x, y, width, height, &v56, &v54, &v52, &v50);
+  objc_msgSend__getSizesForHoursString_blinkerString_minutesString_secondsString_font_showSeconds_metricsRect_hoursSize_minutesSeparatorSize_minutesSize_secondsSize_(v37, v38, stringCopy, blinkerStringCopy, minutesStringCopy, secondsStringCopy, v36, secondsCopy, x, y, width, height, &v56, &v54, &v52, &v50);
   v40 = v39;
   v42 = v41;
 
   v43 = 3;
-  if (a13)
+  if (style)
   {
     v43 = 1;
   }
 
-  if (v15)
+  if (pixelCopy)
   {
     v44 = v43;
   }
@@ -1222,9 +1222,9 @@ LABEL_19:
   }
 
   v45 = objc_opt_class();
-  objc_msgSend__configureWithMetricBounds_hoursSize_minutesSeparatorSize_minutesSize_secondsSize_textInset_outlineWidth_hScale_snappingPolicy_forDevice_frameStates_(v45, v46, v44, self->_device, a15, x, y, width, height, v56, v57, v54, v55, v52, v53, v50, v51, 0, *&a10, 0x3FF0000000000000);
+  objc_msgSend__configureWithMetricBounds_hoursSize_minutesSeparatorSize_minutesSize_secondsSize_textInset_outlineWidth_hScale_snappingPolicy_forDevice_frameStates_(v45, v46, v44, self->_device, states, x, y, width, height, v56, v57, v54, v55, v52, v53, v50, v51, 0, *&width, 0x3FF0000000000000);
   v47 = v36;
-  *a14 = v36;
+  *font = v36;
 
   v48 = v40;
   v49 = v42;
@@ -1233,13 +1233,13 @@ LABEL_19:
   return result;
 }
 
-- (CGSize)_getLayoutForHoursString:(id)a3 blinkerString:(id)a4 minutesString:(id)a5 secondsString:(id)a6 showSeconds:(BOOL)a7 numberOfThinCharacters:(unint64_t)a8 layoutStyle:(unint64_t)a9 inset:(BOOL)a10 metricsRect:(CGRect)a11
+- (CGSize)_getLayoutForHoursString:(id)string blinkerString:(id)blinkerString minutesString:(id)minutesString secondsString:(id)secondsString showSeconds:(BOOL)seconds numberOfThinCharacters:(unint64_t)characters layoutStyle:(unint64_t)style inset:(BOOL)self0 metricsRect:(CGRect)self1
 {
-  v12 = a7;
-  height = a11.size.height;
-  width = a11.size.width;
-  y = a11.origin.y;
-  x = a11.origin.x;
+  secondsCopy = seconds;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v46[0] = 0;
   v46[1] = 0;
   v45[0] = 0;
@@ -1248,17 +1248,17 @@ LABEL_19:
   v44[1] = 0;
   v43[0] = 0;
   v43[1] = 0;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
-  objc_msgSend__scaleSizeForLayoutStyle_inset_shouldHideSeconds_numberOfThinCharacters_(self, v25, a9, a10, v12 ^ 1, a8);
+  secondsStringCopy = secondsString;
+  minutesStringCopy = minutesString;
+  blinkerStringCopy = blinkerString;
+  stringCopy = string;
+  objc_msgSend__scaleSizeForLayoutStyle_inset_shouldHideSeconds_numberOfThinCharacters_(self, v25, style, inset, secondsCopy ^ 1, characters);
   v27 = v26;
   v29 = v28;
-  objc_msgSend__scaleWeightForLayoutStyle_inset_shouldHideSeconds_(self, v30, a9, a10, v12 ^ 1);
+  objc_msgSend__scaleWeightForLayoutStyle_inset_shouldHideSeconds_(self, v30, style, inset, secondsCopy ^ 1);
   v34 = objc_msgSend_foregroundFontWithTypographicSize_weight_horizontalScale_stylisticSet_(self->_timeDisplayFontLoader, v31, 0, v32, v27, v29, v33, 1.0);
   v35 = objc_opt_class();
-  objc_msgSend__getSizesForHoursString_blinkerString_minutesString_secondsString_font_showSeconds_metricsRect_hoursSize_minutesSeparatorSize_minutesSize_secondsSize_(v35, v36, v24, v23, v22, v21, v34, v12, x, y, width, height, v46, v45, v44, v43);
+  objc_msgSend__getSizesForHoursString_blinkerString_minutesString_secondsString_font_showSeconds_metricsRect_hoursSize_minutesSeparatorSize_minutesSize_secondsSize_(v35, v36, stringCopy, blinkerStringCopy, minutesStringCopy, secondsStringCopy, v34, secondsCopy, x, y, width, height, v46, v45, v44, v43);
   v38 = v37;
   v40 = v39;
 
@@ -1269,18 +1269,18 @@ LABEL_19:
   return result;
 }
 
-- (void)_layoutAndUpdateForTimeFormatter:(double)a3 transitoryFontSize:(double)a4 transitoryFontWeight:(double)a5 metricsRect:(double)a6 snapToPixel:(double)a7 fromLayoutStyle:(double)a8 toLayoutStyle:(uint64_t)a9 fromInset:(void *)a10 toInset:(unsigned int)a11 fromShowSeconds:(uint64_t)a12 toShowSeconds:(uint64_t)a13 progress:(int)a14 secondsSize:(int)a15 secondsWeight:(double)a16 secondsRenderRect:(unsigned __int8)a17 blinkAlpha:(unsigned __int8)a18 secondsAlpha:(double)a19
+- (void)_layoutAndUpdateForTimeFormatter:(double)formatter transitoryFontSize:(double)size transitoryFontWeight:(double)weight metricsRect:(double)rect snapToPixel:(double)pixel fromLayoutStyle:(double)style toLayoutStyle:(uint64_t)layoutStyle fromInset:(void *)self0 toInset:(unsigned int)self1 fromShowSeconds:(uint64_t)self2 toShowSeconds:(uint64_t)self3 progress:(int)self4 secondsSize:(int)self5 secondsWeight:(double)self6 secondsRenderRect:(unsigned __int8)self7 blinkAlpha:(unsigned __int8)self8 secondsAlpha:(double)self9
 {
   v85 = *MEMORY[0x277D85DE8];
-  v33 = a10;
-  objc_msgSend__setNeedsDisplayForElementMask_(a1, v34, -1, v35);
+  insetCopy = inset;
+  objc_msgSend__setNeedsDisplayForElementMask_(self, v34, -1, v35);
   v36 = objc_opt_class();
   v72 = 0;
   v73 = 0;
   v70 = 0;
   v71 = 0;
-  v64 = v33;
-  objc_msgSend__stringsFromTimeFormatter_showSeconds_hoursString_blinkerString_minutesString_secondsString_(v36, v37, v33, a17 | a18, &v73, &v72, &v71, &v70);
+  v64 = insetCopy;
+  objc_msgSend__stringsFromTimeFormatter_showSeconds_hoursString_blinkerString_minutesString_secondsString_(v36, v37, insetCopy, renderRect | alpha, &v73, &v72, &v71, &v70);
   v38 = v73;
   v39 = v72;
   v40 = v71;
@@ -1288,12 +1288,12 @@ LABEL_19:
   CLKInterpolateBetweenFloatsClipped();
   v43 = v42;
   v69 = 0;
-  objc_msgSend__layoutForHoursString_blinkerString_minutesString_secondsString_showSeconds_transitoryFontSize_transitoryFontWeight_transitoryOutlineWidth_metricsRect_snapToPixel_toLayoutStyle_font_frameStates_(a1, v44, v38, v39, v40, v41, a17 | a18, a11, a2, a3, a4, v42, a5, a6, a7, a8, a13, &v69, a1 + 1624);
+  objc_msgSend__layoutForHoursString_blinkerString_minutesString_secondsString_showSeconds_transitoryFontSize_transitoryFontWeight_transitoryOutlineWidth_metricsRect_snapToPixel_toLayoutStyle_font_frameStates_(self, v44, v38, v39, v40, v41, renderRect | alpha, toInset, a2, formatter, size, v42, weight, rect, pixel, style, showSeconds, &v69, self + 1624);
   v46 = v45;
   v47 = v69;
   v48 = v69;
-  objc_storeStrong((a1 + 1608), v47);
-  objc_storeStrong((a1 + 1616), v47);
+  objc_storeStrong((self + 1608), v47);
+  objc_storeStrong((self + 1616), v47);
   v86.origin.x = a22;
   v86.origin.y = a23;
   v86.size.width = a24;
@@ -1314,13 +1314,13 @@ LABEL_19:
     v83 = 0;
     v84 = 0;
     v68 = v48;
-    objc_msgSend__layoutForHoursString_blinkerString_minutesString_secondsString_showSeconds_transitoryFontSize_transitoryFontWeight_transitoryOutlineWidth_metricsRect_snapToPixel_toLayoutStyle_font_frameStates_(a1, v49, v38, v39, v40, v41, 1, a11, a19, a20, a21, v43, a22, a23, a24, a25, a13, &v68, v74);
+    objc_msgSend__layoutForHoursString_blinkerString_minutesString_secondsString_showSeconds_transitoryFontSize_transitoryFontWeight_transitoryOutlineWidth_metricsRect_snapToPixel_toLayoutStyle_font_frameStates_(self, v49, v38, v39, v40, v41, 1, toInset, secondsAlpha, a20, a21, v43, a22, a23, a24, a25, showSeconds, &v68, v74);
     v51 = v68;
     v63 = v68;
 
-    objc_storeStrong((a1 + 1616), v51);
-    *(a1 + 1840) = v81;
-    *(a1 + 1856) = v82;
+    objc_storeStrong((self + 1616), v51);
+    *(self + 1840) = v81;
+    *(self + 1856) = v82;
     v52 = 288;
     do
     {
@@ -1331,43 +1331,43 @@ LABEL_19:
     while (v52);
   }
 
-  v54 = objc_msgSend__numberOfThinCharactersForTimeFormatter_(a1, v49, v64, v50);
-  if (a14 != a15 || a12 != a13 || a17 != a18)
+  v54 = objc_msgSend__numberOfThinCharactersForTimeFormatter_(self, v49, v64, v50);
+  if (progress != secondsSize || seconds != showSeconds || renderRect != alpha)
   {
-    LOBYTE(v58) = a14;
-    objc_msgSend__getLayoutForHoursString_blinkerString_minutesString_secondsString_showSeconds_numberOfThinCharacters_layoutStyle_inset_metricsRect_(a1, v53, v38, v39, v40, v41, a17, v54, a5, a6, a7, a8, a12, v58);
-    LOBYTE(v59) = a15;
-    objc_msgSend__getLayoutForHoursString_blinkerString_minutesString_secondsString_showSeconds_numberOfThinCharacters_layoutStyle_inset_metricsRect_(a1, v55, v38, v39, v40, v41, a18, v54, a5, a6, a7, a8, a13, v59);
+    LOBYTE(v58) = progress;
+    objc_msgSend__getLayoutForHoursString_blinkerString_minutesString_secondsString_showSeconds_numberOfThinCharacters_layoutStyle_inset_metricsRect_(self, v53, v38, v39, v40, v41, renderRect, v54, weight, rect, pixel, style, seconds, v58);
+    LOBYTE(v59) = secondsSize;
+    objc_msgSend__getLayoutForHoursString_blinkerString_minutesString_secondsString_showSeconds_numberOfThinCharacters_layoutStyle_inset_metricsRect_(self, v55, v38, v39, v40, v41, alpha, v54, weight, rect, pixel, style, showSeconds, v59);
     CLKInterpolateBetweenFloatsClipped();
     v46 = v56;
   }
 
-  if (v46 < a7)
+  if (v46 < pixel)
   {
     UICeilToViewScale();
-    *(a1 + 1624) = v57 + *(a1 + 1624);
-    *(a1 + 1696) = v57 + *(a1 + 1696);
-    *(a1 + 1768) = v57 + *(a1 + 1768);
-    *(a1 + 1840) = v57 + *(a1 + 1840);
+    *(self + 1624) = v57 + *(self + 1624);
+    *(self + 1696) = v57 + *(self + 1696);
+    *(self + 1768) = v57 + *(self + 1768);
+    *(self + 1840) = v57 + *(self + 1840);
   }
 
-  objc_msgSend__updateFrameElementsForHoursString_blinkerString_minutesString_secondsString_blinkAlpha_secondsAlpha_(a1, v53, v38, v39, v40, v41, a26, a27);
+  objc_msgSend__updateFrameElementsForHoursString_blinkerString_minutesString_secondsString_blinkAlpha_secondsAlpha_(self, v53, v38, v39, v40, v41, a26, a27);
 }
 
-- (void)_layoutAndUpdateForTimeFormatter:(id)a3 showSeconds:(BOOL)a4 layoutStyle:(unint64_t)a5 inset:(BOOL)a6 metricsRect:(CGRect)a7 blinkAlpha:(double)a8 secondsAlpha:(double)a9
+- (void)_layoutAndUpdateForTimeFormatter:(id)formatter showSeconds:(BOOL)seconds layoutStyle:(unint64_t)style inset:(BOOL)inset metricsRect:(CGRect)rect blinkAlpha:(double)alpha secondsAlpha:(double)secondsAlpha
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v14 = a6;
-  v16 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  insetCopy = inset;
+  secondsCopy = seconds;
   v39 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  objc_msgSend__scaleSizeForTimeFormatter_layoutStyle_inset_shouldHideSeconds_(self, v19, v18, a5, v14, !v16);
+  formatterCopy = formatter;
+  objc_msgSend__scaleSizeForTimeFormatter_layoutStyle_inset_shouldHideSeconds_(self, v19, formatterCopy, style, insetCopy, !secondsCopy);
   v21 = v20;
   v23 = v22;
-  objc_msgSend__scaleWeightForLayoutStyle_inset_shouldHideSeconds_(self, v24, a5, v14, !v16);
+  objc_msgSend__scaleWeightForLayoutStyle_inset_shouldHideSeconds_(self, v24, style, insetCopy, !secondsCopy);
   v26 = v25;
   v27 = NTKFoghornFaceBundleLogObject();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -1383,25 +1383,25 @@ LABEL_19:
     _os_log_debug_impl(&dword_23BE5B000, v27, OS_LOG_TYPE_DEBUG, "%s: size = { %f, %f }, weight = %f ", buf, 0x2Au);
   }
 
-  HIBYTE(v29) = v16;
-  LOBYTE(v29) = v16;
-  objc_msgSend__layoutAndUpdateForTimeFormatter_transitoryFontSize_transitoryFontWeight_metricsRect_snapToPixel_fromLayoutStyle_toLayoutStyle_fromInset_toInset_fromShowSeconds_toShowSeconds_progress_secondsSize_secondsWeight_secondsRenderRect_blinkAlpha_secondsAlpha_(self, v28, v18, self->_animationSnapStyle != 0, a5, a5, v14, v14, v21, v23, v26, x, y, width, height, 1.0, v29, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8), 0, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), *&a8, *&a9);
+  HIBYTE(v29) = secondsCopy;
+  LOBYTE(v29) = secondsCopy;
+  objc_msgSend__layoutAndUpdateForTimeFormatter_transitoryFontSize_transitoryFontWeight_metricsRect_snapToPixel_fromLayoutStyle_toLayoutStyle_fromInset_toInset_fromShowSeconds_toShowSeconds_progress_secondsSize_secondsWeight_secondsRenderRect_blinkAlpha_secondsAlpha_(self, v28, formatterCopy, self->_animationSnapStyle != 0, style, style, insetCopy, insetCopy, v21, v23, v26, x, y, width, height, 1.0, v29, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8), 0, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), *&alpha, *&secondsAlpha);
 }
 
-+ (id)_minutesSeparatorImageWithSize:(CGSize)a3 scale:(double)a4 frame:(CGRect)a5 text:(id)a6 textColor:(id)a7 font:(id)a8 outlineWidth:(double)a9 forDevice:(id)a10
++ (id)_minutesSeparatorImageWithSize:(CGSize)size scale:(double)scale frame:(CGRect)frame text:(id)text textColor:(id)color font:(id)font outlineWidth:(double)width forDevice:(id)self0
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v19 = a3.height;
-  v20 = a3.width;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a10;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v19 = size.height;
+  v20 = size.width;
+  textCopy = text;
+  colorCopy = color;
+  fontCopy = font;
+  deviceCopy = device;
   v26 = objc_opt_new();
-  objc_msgSend_setScale_(v26, v27, v28, v29, a4);
+  objc_msgSend_setScale_(v26, v27, v28, v29, scale);
   v30 = objc_alloc(MEMORY[0x277D75560]);
   v33 = objc_msgSend_initWithSize_format_(v30, v31, v26, v32, v20, v19);
   v42[0] = MEMORY[0x277D85DD0];
@@ -1410,34 +1410,34 @@ LABEL_19:
   v42[3] = &unk_278B9C998;
   v47 = x;
   v48 = y;
-  v49 = width;
+  widthCopy = width;
   v50 = height;
-  v51 = a1;
-  v43 = v22;
-  v44 = v23;
-  v45 = v24;
-  v46 = v25;
-  v52 = a9;
-  v34 = v25;
-  v35 = v24;
-  v36 = v23;
-  v37 = v22;
+  selfCopy = self;
+  v43 = textCopy;
+  v44 = colorCopy;
+  v45 = fontCopy;
+  v46 = deviceCopy;
+  widthCopy2 = width;
+  v34 = deviceCopy;
+  v35 = fontCopy;
+  v36 = colorCopy;
+  v37 = textCopy;
   v40 = objc_msgSend_imageWithActions_(v33, v38, v42, v39);
 
   return v40;
 }
 
-- (void)_updateMinutesSeparatorLayerForTimeFormatter:(id)a3
+- (void)_updateMinutesSeparatorLayerForTimeFormatter:(id)formatter
 {
   v5 = self->_font;
-  v6 = a3;
+  formatterCopy = formatter;
   v10 = objc_msgSend__getMinutesColor(self, v7, v8, v9);
   v11 = objc_opt_class();
   v53 = 0;
   v54 = 0;
   v51 = 0;
   v52 = 0;
-  objc_msgSend__stringsFromTimeFormatter_showSeconds_hoursString_blinkerString_minutesString_secondsString_(v11, v12, v6, 0, &v54, &v53, &v52, &v51);
+  objc_msgSend__stringsFromTimeFormatter_showSeconds_hoursString_blinkerString_minutesString_secondsString_(v11, v12, formatterCopy, 0, &v54, &v53, &v52, &v51);
 
   v13 = v54;
   v14 = v53;
@@ -1463,22 +1463,22 @@ LABEL_19:
   objc_msgSend_commit(MEMORY[0x277CD9FF0], v48, v49, v50);
 }
 
-- (void)_updateHoursMinutesSecondsForTimeFormatter:(id)a3 layoutStyle:(unint64_t)a4 tritiumOn:(BOOL)a5 blinkAlpha:(double)a6
+- (void)_updateHoursMinutesSecondsForTimeFormatter:(id)formatter layoutStyle:(unint64_t)style tritiumOn:(BOOL)on blinkAlpha:(double)alpha
 {
-  v7 = a5;
+  onCopy = on;
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  formatterCopy = formatter;
   v20 = 0u;
   v21 = 0u;
   memset(v19, 0, sizeof(v19));
   v18 = 0;
   inset = self->_inset;
-  if (objc_msgSend__stuffForLayoutStyle_inset_tritiumOn_renderRect_oversizedRect_showSeconds_(self, v12, a4, inset, v7, &v20, v19, &v18))
+  if (objc_msgSend__stuffForLayoutStyle_inset_tritiumOn_renderRect_oversizedRect_showSeconds_(self, v12, style, inset, onCopy, &v20, v19, &v18))
   {
-    objc_msgSend__layoutAndUpdateForTimeFormatter_showSeconds_layoutStyle_inset_metricsRect_blinkAlpha_secondsAlpha_(self, v13, v10, v18, a4, inset, v20, v21, a6, self->_secondsLayoutVisibility);
+    objc_msgSend__layoutAndUpdateForTimeFormatter_showSeconds_layoutStyle_inset_metricsRect_blinkAlpha_secondsAlpha_(self, v13, formatterCopy, v18, style, inset, v20, v21, alpha, self->_secondsLayoutVisibility);
     if (self->_blinkTimerToken)
     {
-      objc_msgSend__updateMinutesSeparatorLayerForTimeFormatter_(self, v14, v10, v16);
+      objc_msgSend__updateMinutesSeparatorLayerForTimeFormatter_(self, v14, formatterCopy, v16);
     }
 
     objc_msgSend__updateBlinking(self, v14, v15, v16);
@@ -1492,88 +1492,88 @@ LABEL_19:
       *buf = 136315394;
       v23 = "[NTKFoghornTimeView _updateHoursMinutesSecondsForTimeFormatter:layoutStyle:tritiumOn:blinkAlpha:]";
       v24 = 1024;
-      v25 = a4;
+      styleCopy = style;
       _os_log_impl(&dword_23BE5B000, v17, OS_LOG_TYPE_DEFAULT, "%s: encountered unexpected layoutStyle: 0x%02X", buf, 0x12u);
     }
   }
 }
 
-+ (void)drawSnapshotInContext:(CGContext *)a3 layoutStyle:(unint64_t)a4 inset:(BOOL)a5 minutesColor:(id)a6 secondsColor:(id)a7 forDevice:(id)a8
++ (void)drawSnapshotInContext:(CGContext *)context layoutStyle:(unint64_t)style inset:(BOOL)inset minutesColor:(id)color secondsColor:(id)secondsColor forDevice:(id)device
 {
-  v10 = a5;
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
+  insetCopy = inset;
+  deviceCopy = device;
+  secondsColorCopy = secondsColor;
+  colorCopy = color;
   v16 = [NTKFoghornTimeView alloc];
-  objc_msgSend_screenBounds(v13, v17, v18, v19);
-  v41 = objc_msgSend_initWithFrame_forDevice_(v16, v20, v13, v21);
+  objc_msgSend_screenBounds(deviceCopy, v17, v18, v19);
+  v41 = objc_msgSend_initWithFrame_forDevice_(v16, v20, deviceCopy, v21);
 
-  objc_msgSend_setLayoutStyle_(v41, v22, a4, v23);
-  objc_msgSend_setMinutesColor_(v41, v24, v15, v25);
+  objc_msgSend_setLayoutStyle_(v41, v22, style, v23);
+  objc_msgSend_setMinutesColor_(v41, v24, colorCopy, v25);
 
-  objc_msgSend_setSecondsColor_(v41, v26, v14, v27);
-  objc_msgSend_setInset_(v41, v28, v10, v29);
+  objc_msgSend_setSecondsColor_(v41, v26, secondsColorCopy, v27);
+  objc_msgSend_setInset_(v41, v28, insetCopy, v29);
   objc_msgSend_setFrozen_(v41, v30, 1, v31);
   v32 = NTKIdealizedDate();
   objc_msgSend_setOverrideDate_duration_(v41, v33, v32, v34, 0.0);
 
   v38 = objc_msgSend_layer(v41, v35, v36, v37);
-  objc_msgSend_renderInContext_(v38, v39, a3, v40);
+  objc_msgSend_renderInContext_(v38, v39, context, v40);
 }
 
-- (void)_drawInContext:(CGContext *)a3 needsDisplayElementMask:(unint64_t)a4
+- (void)_drawInContext:(CGContext *)context needsDisplayElementMask:(unint64_t)mask
 {
-  v4 = a4;
+  maskCopy = mask;
   MinX = 0.0;
   if (self->_inset)
   {
     MinX = CGRectGetMinX(self->_layoutConstants.timeRect[0]);
   }
 
-  objc_msgSend_bounds(self, a2, a3, a4);
+  objc_msgSend_bounds(self, a2, context, mask);
   v8 = CGRectGetWidth(v28) - MinX;
   objc_msgSend_bounds(self, v9, v10, v11);
   v30.size.height = CGRectGetHeight(v29);
   v30.origin.x = 0.0;
   v30.origin.y = 0.0;
   v30.size.width = v8;
-  CGContextClipToRect(a3, v30);
+  CGContextClipToRect(context, v30);
   objc_msgSend_activate(MEMORY[0x277CD9FF0], v12, v13, v14);
   objc_msgSend_begin(MEMORY[0x277CD9FF0], v15, v16, v17);
   objc_msgSend_setDisableActions_(MEMORY[0x277CD9FF0], v18, 1, v19);
-  if ((v4 & 8) != 0 && self->_frameStates[3].frame.size.width > 0.0)
+  if ((maskCopy & 8) != 0 && self->_frameStates[3].frame.size.width > 0.0)
   {
     objc_msgSend__ensureCTFramesForElementMask_withFont_(self, v20, 8, self->_secondsFont);
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     MaxY = CGRectGetMaxY(self->_frameStates[3].frame);
-    CGContextTranslateCTM(a3, 0.0, MaxY);
-    CGContextScaleCTM(a3, 1.0, -1.0);
-    _drawCTFrameAndOutlineForFrameState(a3, &self->_frameStates[3]);
-    CGContextRestoreGState(a3);
+    CGContextTranslateCTM(context, 0.0, MaxY);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    _drawCTFrameAndOutlineForFrameState(context, &self->_frameStates[3]);
+    CGContextRestoreGState(context);
   }
 
   v22 = CGRectGetMaxY(self->_frameStates[0].frame);
-  CGContextTranslateCTM(a3, 0.0, v22);
-  CGContextScaleCTM(a3, 1.0, -1.0);
+  CGContextTranslateCTM(context, 0.0, v22);
+  CGContextScaleCTM(context, 1.0, -1.0);
   if (self->_animationSnapStyle != 2)
   {
-    CGContextSetShouldSubpixelPositionFonts(a3, 1);
-    CGContextSetShouldSubpixelQuantizeFonts(a3, 0);
-    CGContextSetShouldAntialias(a3, 1);
-    CGContextSetShouldSmoothFonts(a3, 1);
+    CGContextSetShouldSubpixelPositionFonts(context, 1);
+    CGContextSetShouldSubpixelQuantizeFonts(context, 0);
+    CGContextSetShouldAntialias(context, 1);
+    CGContextSetShouldSmoothFonts(context, 1);
   }
 
-  if ((v4 & 2) != 0)
+  if ((maskCopy & 2) != 0)
   {
     objc_msgSend__ensureCTFramesForElementMask_withFont_(self, v23, 2, self->_font);
-    _drawCTFrameAndOutlineForFrameState(a3, &self->_frameStates[1]);
+    _drawCTFrameAndOutlineForFrameState(context, &self->_frameStates[1]);
   }
 
-  if ((v4 & 5) != 0)
+  if ((maskCopy & 5) != 0)
   {
     objc_msgSend__ensureCTFramesForElementMask_withFont_(self, v23, 5, self->_font);
-    _drawCTFrameAndOutlineForFrameState(a3, self->_frameStates);
-    _drawCTFrameAndOutlineForFrameState(a3, &self->_frameStates[2]);
+    _drawCTFrameAndOutlineForFrameState(context, self->_frameStates);
+    _drawCTFrameAndOutlineForFrameState(context, &self->_frameStates[2]);
   }
 
   v26 = MEMORY[0x277CD9FF0];
@@ -1581,7 +1581,7 @@ LABEL_19:
   objc_msgSend_commit(v26, v23, v24, v25);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   v8 = objc_msgSend_backgroundColor(self, v5, v6, v7);
@@ -1613,9 +1613,9 @@ LABEL_19:
   self->_dirtyRect.size = v20;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  objc_msgSend_setOverrideDate_(self->_timeFormatter, a2, a3, v4, a4);
+  objc_msgSend_setOverrideDate_(self->_timeFormatter, a2, date, v4, duration);
 
   MEMORY[0x2821F9670](self, sel__updateShowSeconds, v6, v7);
 }
@@ -1659,25 +1659,25 @@ LABEL_19:
   }
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  if (self->_frozen != a3)
+  if (self->_frozen != frozen)
   {
-    self->_frozen = a3;
-    objc_msgSend__updateBlinking(self, a2, a3, v3);
+    self->_frozen = frozen;
+    objc_msgSend__updateBlinking(self, a2, frozen, v3);
   }
 }
 
-- (void)timeFormatterTextDidChange:(id)a3
+- (void)timeFormatterTextDidChange:(id)change
 {
-  v20 = a3;
+  changeCopy = change;
   v4 = objc_opt_class();
-  v7 = objc_msgSend__hoursMinutesStringFromTimeFormatter_(v4, v5, v20, v6);
+  v7 = objc_msgSend__hoursMinutesStringFromTimeFormatter_(v4, v5, changeCopy, v6);
   if (objc_msgSend_isEqualToString_(self->_lastHoursMinutesString, v8, v7, v9))
   {
-    if (objc_msgSend_showSeconds(v20, v10, v11, v12))
+    if (objc_msgSend_showSeconds(changeCopy, v10, v11, v12))
     {
-      objc_msgSend__updateSecondsForTimeFormatter_showSeconds_secondsAlpha_(self, v13, v20, 1, self->_secondsLayoutVisibility);
+      objc_msgSend__updateSecondsForTimeFormatter_showSeconds_secondsAlpha_(self, v13, changeCopy, 1, self->_secondsLayoutVisibility);
     }
   }
 
@@ -1697,17 +1697,17 @@ LABEL_19:
       v17 = v18;
     }
 
-    objc_msgSend__updateHoursMinutesSecondsForTimeFormatter_layoutStyle_tritiumOn_blinkAlpha_(self, v14, v20, layoutStyle, v15, v17);
+    objc_msgSend__updateHoursMinutesSecondsForTimeFormatter_layoutStyle_tritiumOn_blinkAlpha_(self, v14, changeCopy, layoutStyle, v15, v17);
   }
 
   lastHoursMinutesString = self->_lastHoursMinutesString;
   self->_lastHoursMinutesString = v7;
 }
 
-- (void)timeFormatterReportingLiveTimeDidChange:(id)a3
+- (void)timeFormatterReportingLiveTimeDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_reportingLiveTime(a3, a2, a3, v3);
+  v5 = objc_msgSend_reportingLiveTime(change, a2, change, v3);
   v6 = NTKFoghornFaceBundleLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1730,7 +1730,7 @@ LABEL_19:
   }
 }
 
-- (void)_updateBlinkerAlphaForSecondFraction:(double)a3
+- (void)_updateBlinkerAlphaForSecondFraction:(double)fraction
 {
   CLKCompressFraction();
   CLKInterpolateBetweenFloatsClipped();
@@ -1848,47 +1848,47 @@ LABEL_19:
   }
 }
 
-+ (BOOL)_stuffForLayoutStyle:(unint64_t)a3 inset:(BOOL)a4 shouldHideSeconds:(BOOL)a5 layoutConstants:(id *)a6 renderRect:(CGRect *)a7 oversizedRect:(CGRect *)a8 showSeconds:(BOOL *)a9
++ (BOOL)_stuffForLayoutStyle:(unint64_t)style inset:(BOOL)inset shouldHideSeconds:(BOOL)seconds layoutConstants:(id *)constants renderRect:(CGRect *)rect oversizedRect:(CGRect *)oversizedRect showSeconds:(BOOL *)showSeconds
 {
-  if (a3 > 6)
+  if (style > 6)
   {
     v13 = 0;
     result = 0;
     v23 = *MEMORY[0x277CBF3A0];
     v24 = *(MEMORY[0x277CBF3A0] + 16);
-    a7->origin = *MEMORY[0x277CBF3A0];
-    a7->size = v24;
-    a8->origin = v23;
-    a8->size = v24;
+    rect->origin = *MEMORY[0x277CBF3A0];
+    rect->size = v24;
+    oversizedRect->origin = v23;
+    oversizedRect->size = v24;
   }
 
   else
   {
-    v11 = 1 << a3;
-    v12 = a3 & 0xFFFFFFFFFFFFFFFELL;
-    if (!a5)
+    v11 = 1 << style;
+    styleCopy = style & 0xFFFFFFFFFFFFFFFELL;
+    if (!seconds)
     {
-      v12 = a3;
+      styleCopy = style;
     }
 
-    v13 = (v11 & 0x55) == 0 && !a5;
+    v13 = (v11 & 0x55) == 0 && !seconds;
     if ((v11 & 0x55) != 0)
     {
-      v14 = a3;
+      styleCopy2 = style;
     }
 
     else
     {
-      v14 = v12;
+      styleCopy2 = styleCopy;
     }
 
-    v15 = a6 + 32 * v14;
+    v15 = constants + 32 * styleCopy2;
     x = *(v15 + 98);
     y = *(v15 + 99);
     width = *(v15 + 100);
     height = *(v15 + 101);
-    v20 = a6->var3[v14];
-    if (!a4)
+    v20 = constants->var3[styleCopy2];
+    if (!inset)
     {
       v21 = -CGRectGetMinX(*(v15 + 784));
       v25.origin.x = x;
@@ -1902,28 +1902,28 @@ LABEL_19:
       height = v26.size.height;
     }
 
-    a7->origin.x = x;
-    a7->origin.y = y;
-    a7->size.width = width;
-    a7->size.height = height;
-    a8->origin.x = x;
-    a8->origin.y = y;
-    a8->size.width = v20 * width;
-    a8->size.height = height;
+    rect->origin.x = x;
+    rect->origin.y = y;
+    rect->size.width = width;
+    rect->size.height = height;
+    oversizedRect->origin.x = x;
+    oversizedRect->origin.y = y;
+    oversizedRect->size.width = v20 * width;
+    oversizedRect->size.height = height;
     result = 1;
   }
 
-  *a9 = v13;
+  *showSeconds = v13;
   return result;
 }
 
-- (BOOL)_stuffForLayoutStyle:(unint64_t)a3 inset:(BOOL)a4 tritiumOn:(BOOL)a5 renderRect:(CGRect *)a6 oversizedRect:(CGRect *)a7 showSeconds:(BOOL *)a8
+- (BOOL)_stuffForLayoutStyle:(unint64_t)style inset:(BOOL)inset tritiumOn:(BOOL)on renderRect:(CGRect *)rect oversizedRect:(CGRect *)oversizedRect showSeconds:(BOOL *)seconds
 {
-  v11 = a4;
+  insetCopy = inset;
   memcpy(__dst, &self->_layoutConstants, sizeof(__dst));
   v13 = objc_opt_class();
   memcpy(v16, __dst, sizeof(v16));
-  return objc_msgSend__stuffForLayoutStyle_inset_shouldHideSeconds_layoutConstants_renderRect_oversizedRect_showSeconds_(v13, v14, a3, v11, 0, v16, a6, a7, a8);
+  return objc_msgSend__stuffForLayoutStyle_inset_shouldHideSeconds_layoutConstants_renderRect_oversizedRect_showSeconds_(v13, v14, style, insetCopy, 0, v16, rect, oversizedRect, seconds);
 }
 
 - (CGRect)contentBounds
@@ -1955,9 +1955,9 @@ LABEL_19:
   return result;
 }
 
-- (void)_setLayoutFromStyle:(unint64_t)a3 toStyle:(unint64_t)a4 fromTritiumOn:(BOOL)a5 toTritiumOn:(BOOL)a6 fromInset:(BOOL)a7 toInset:(BOOL)a8 progress:(double)a9
+- (void)_setLayoutFromStyle:(unint64_t)style toStyle:(unint64_t)toStyle fromTritiumOn:(BOOL)on toTritiumOn:(BOOL)tritiumOn fromInset:(BOOL)inset toInset:(BOOL)toInset progress:(double)progress
 {
-  v9 = a7;
+  insetCopy = inset;
   v84 = 0u;
   memset(&v85, 0, sizeof(v85));
   v83 = 0u;
@@ -1965,42 +1965,42 @@ LABEL_19:
   memset(&v81, 0, sizeof(v81));
   memset(v80, 0, sizeof(v80));
   v79 = 0;
-  v13 = a5 ^ a6;
-  if (a3 != a4)
+  v13 = on ^ tritiumOn;
+  if (style != toStyle)
   {
     v13 = 1;
   }
 
-  if ((v13 | a7 ^ a8) != 1 || fabs(a9) < 0.00000011920929)
+  if ((v13 | inset ^ toInset) != 1 || fabs(progress) < 0.00000011920929)
   {
-    objc_msgSend__stuffForLayoutStyle_inset_tritiumOn_renderRect_oversizedRect_showSeconds_(self, a2, a3, a7);
-    v20 = 0.0;
-    objc_msgSend__layoutAndUpdateForTimeFormatter_showSeconds_layoutStyle_inset_metricsRect_blinkAlpha_secondsAlpha_(self, v21, self->_timeFormatter, 0, a3, v9, *&v85.origin, *&v85.size, 1.0, 0.0);
+    objc_msgSend__stuffForLayoutStyle_inset_tritiumOn_renderRect_oversizedRect_showSeconds_(self, a2, style, inset);
+    progressCopy = 0.0;
+    objc_msgSend__layoutAndUpdateForTimeFormatter_showSeconds_layoutStyle_inset_metricsRect_blinkAlpha_secondsAlpha_(self, v21, self->_timeFormatter, 0, style, insetCopy, *&v85.origin, *&v85.size, 1.0, 0.0);
     goto LABEL_24;
   }
 
-  v14 = a8;
-  v15 = a6;
-  v17 = fabs(a9 + -1.0);
-  if (a9 > 1.0 || v17 < 0.00000011920929)
+  toInsetCopy = toInset;
+  tritiumOnCopy = tritiumOn;
+  v17 = fabs(progress + -1.0);
+  if (progress > 1.0 || v17 < 0.00000011920929)
   {
-    objc_msgSend__stuffForLayoutStyle_inset_tritiumOn_renderRect_oversizedRect_showSeconds_(self, a2, a4, a8, a6, &v81, v80, &v79, v17);
+    objc_msgSend__stuffForLayoutStyle_inset_tritiumOn_renderRect_oversizedRect_showSeconds_(self, a2, toStyle, toInset, tritiumOn, &v81, v80, &v79, v17);
     if (v79)
     {
-      v20 = 1.0;
+      progressCopy = 1.0;
     }
 
     else
     {
-      v20 = 0.0;
+      progressCopy = 0.0;
     }
 
-    objc_msgSend__layoutAndUpdateForTimeFormatter_showSeconds_layoutStyle_inset_metricsRect_blinkAlpha_secondsAlpha_(self, v19, self->_timeFormatter, v79, a4, v14, *&v81.origin, *&v81.size, 1.0, v20);
+    objc_msgSend__layoutAndUpdateForTimeFormatter_showSeconds_layoutStyle_inset_metricsRect_blinkAlpha_secondsAlpha_(self, v19, self->_timeFormatter, v79, toStyle, toInsetCopy, *&v81.origin, *&v81.size, 1.0, progressCopy);
     goto LABEL_24;
   }
 
-  objc_msgSend__stuffForLayoutStyle_inset_tritiumOn_renderRect_oversizedRect_showSeconds_(self, a2, a3, a7, v17);
-  objc_msgSend__stuffForLayoutStyle_inset_tritiumOn_renderRect_oversizedRect_showSeconds_(self, v22, a4, v14, v15, &v81, v80, &v79);
+  objc_msgSend__stuffForLayoutStyle_inset_tritiumOn_renderRect_oversizedRect_showSeconds_(self, a2, style, inset, v17);
+  objc_msgSend__stuffForLayoutStyle_inset_tritiumOn_renderRect_oversizedRect_showSeconds_(self, v22, toStyle, toInsetCopy, tritiumOnCopy, &v81, v80, &v79);
   CGRectGetMinX(v85);
   CGRectGetMinX(v81);
   CLKInterpolateBetweenFloatsClipped();
@@ -2021,7 +2021,7 @@ LABEL_19:
     v32 = 1.0;
     if ((v79 & 1) == 0)
     {
-      v20 = 1.0 - a9;
+      progressCopy = 1.0 - progress;
       goto LABEL_20;
     }
   }
@@ -2029,33 +2029,33 @@ LABEL_19:
   else
   {
     v32 = 0.0;
-    v20 = a9;
+    progressCopy = progress;
     if (v79)
     {
       goto LABEL_20;
     }
   }
 
-  v20 = v32;
+  progressCopy = v32;
 LABEL_20:
   v77 = v26;
   v78 = v24;
   v75 = v28 - v24;
   v76 = v31 - v26;
   v33 = objc_msgSend__numberOfThinCharactersForTimeFormatter_(self, v29, self->_timeFormatter, v30);
-  objc_msgSend__scaleSizeForLayoutStyle_inset_shouldHideSeconds_numberOfThinCharacters_(self, v34, a3, v9, (v82 & 1) == 0, v33);
+  objc_msgSend__scaleSizeForLayoutStyle_inset_shouldHideSeconds_numberOfThinCharacters_(self, v34, style, insetCopy, (v82 & 1) == 0, v33);
   v36 = v35;
   v38 = v37;
-  objc_msgSend__scaleSizeForLayoutStyle_inset_shouldHideSeconds_numberOfThinCharacters_(self, v39, a4, v14, (v79 & 1) == 0, v33);
+  objc_msgSend__scaleSizeForLayoutStyle_inset_shouldHideSeconds_numberOfThinCharacters_(self, v39, toStyle, toInsetCopy, (v79 & 1) == 0, v33);
   v41 = v40;
   v43 = v42;
   CLKInterpolateBetweenFloatsClipped();
   v74 = v44;
   CLKInterpolateBetweenFloatsClipped();
   v73 = v45;
-  objc_msgSend__scaleWeightForLayoutStyle_inset_shouldHideSeconds_(self, v46, a3, v9, (v82 & 1) == 0);
+  objc_msgSend__scaleWeightForLayoutStyle_inset_shouldHideSeconds_(self, v46, style, insetCopy, (v82 & 1) == 0);
   v48 = v47;
-  objc_msgSend__scaleWeightForLayoutStyle_inset_shouldHideSeconds_(self, v49, a4, v14, (v79 & 1) == 0);
+  objc_msgSend__scaleWeightForLayoutStyle_inset_shouldHideSeconds_(self, v49, toStyle, toInsetCopy, (v79 & 1) == 0);
   v51 = v50;
   CLKInterpolateBetweenFloatsClipped();
   v54 = v53;
@@ -2066,7 +2066,7 @@ LABEL_20:
     timeFormatter = self->_timeFormatter;
     v58 = *MEMORY[0x277CBF3A8];
     v59 = *(MEMORY[0x277CBF3A8] + 8);
-    v72 = v20;
+    v72 = progressCopy;
     v71 = *(MEMORY[0x277CBF3A0] + 24);
     v70 = *(MEMORY[0x277CBF3A0] + 8);
     x = *MEMORY[0x277CBF3A0];
@@ -2129,7 +2129,7 @@ LABEL_20:
     }
 
     timeFormatter = self->_timeFormatter;
-    v72 = v20;
+    v72 = progressCopy;
     *(&v70 + 1) = width;
     v71 = *p_height;
     x = v61->origin.x;
@@ -2139,19 +2139,19 @@ LABEL_20:
 
   HIBYTE(v67) = v79;
   LOBYTE(v67) = v82;
-  objc_msgSend__layoutAndUpdateForTimeFormatter_transitoryFontSize_transitoryFontWeight_metricsRect_snapToPixel_fromLayoutStyle_toLayoutStyle_fromInset_toInset_fromShowSeconds_toShowSeconds_progress_secondsSize_secondsWeight_secondsRenderRect_blinkAlpha_secondsAlpha_(self, v52, timeFormatter, v56, a3, a4, v9, v14, v74, v73, v54, v78, v77, v75, v76, a9, v67, *&v58, *&v59, v68, *&x, v70, v71, 0x3FF0000000000000, *&v72);
+  objc_msgSend__layoutAndUpdateForTimeFormatter_transitoryFontSize_transitoryFontWeight_metricsRect_snapToPixel_fromLayoutStyle_toLayoutStyle_fromInset_toInset_fromShowSeconds_toShowSeconds_progress_secondsSize_secondsWeight_secondsRenderRect_blinkAlpha_secondsAlpha_(self, v52, timeFormatter, v56, style, toStyle, insetCopy, toInsetCopy, v74, v73, v54, v78, v77, v75, v76, progress, v67, *&v58, *&v59, v68, *&x, v70, v71, 0x3FF0000000000000, *&v72);
 LABEL_24:
-  self->_secondsLayoutVisibility = v20;
+  self->_secondsLayoutVisibility = progressCopy;
 }
 
-- (void)setLayoutFromStyle:(unint64_t)a3 toStyle:(unint64_t)a4 progress:(double)a5
+- (void)setLayoutFromStyle:(unint64_t)style toStyle:(unint64_t)toStyle progress:(double)progress
 {
-  v9 = objc_msgSend__tritiumOn(self, a2, a3, a4);
-  objc_msgSend__setLayoutFromStyle_toStyle_fromTritiumOn_toTritiumOn_fromInset_toInset_progress_(self, v10, a3, a4, v9, v9, self->_inset, self->_inset, a5);
-  v14 = fabs(a5 + -1.0);
-  if (a5 > 1.0 || v14 < 0.00000011920929)
+  v9 = objc_msgSend__tritiumOn(self, a2, style, toStyle);
+  objc_msgSend__setLayoutFromStyle_toStyle_fromTritiumOn_toTritiumOn_fromInset_toInset_progress_(self, v10, style, toStyle, v9, v9, self->_inset, self->_inset, progress);
+  v14 = fabs(progress + -1.0);
+  if (progress > 1.0 || v14 < 0.00000011920929)
   {
-    self->_layoutStyle = a4;
+    self->_layoutStyle = toStyle;
     objc_msgSend__stopBlinking(self, v11, v12, v13, v14);
     objc_msgSend__updateBlinking(self, v16, v17, v18);
 
@@ -2159,44 +2159,44 @@ LABEL_24:
   }
 }
 
-- (void)setFromInset:(BOOL)a3 toInset:(BOOL)a4 progress:(double)a5
+- (void)setFromInset:(BOOL)inset toInset:(BOOL)toInset progress:(double)progress
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = objc_msgSend__tritiumOn(self, a2, a3, a4);
-  objc_msgSend__setLayoutFromStyle_toStyle_fromTritiumOn_toTritiumOn_fromInset_toInset_progress_(self, v10, self->_layoutStyle, self->_layoutStyle, v9, v9, v7, v6, a5);
-  v14 = fabs(a5 + -1.0);
-  if (a5 > 1.0 || v14 < 0.00000011920929)
+  toInsetCopy = toInset;
+  insetCopy = inset;
+  v9 = objc_msgSend__tritiumOn(self, a2, inset, toInset);
+  objc_msgSend__setLayoutFromStyle_toStyle_fromTritiumOn_toTritiumOn_fromInset_toInset_progress_(self, v10, self->_layoutStyle, self->_layoutStyle, v9, v9, insetCopy, toInsetCopy, progress);
+  v14 = fabs(progress + -1.0);
+  if (progress > 1.0 || v14 < 0.00000011920929)
   {
-    self->_inset = v6;
+    self->_inset = toInsetCopy;
     objc_msgSend__stopBlinking(self, v11, v12, v13, v14);
 
     objc_msgSend__updateBlinking(self, v16, v17, v18);
   }
 }
 
-- (void)setLayoutStyle:(unint64_t)a3
+- (void)setLayoutStyle:(unint64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    objc_msgSend_setLayoutFromStyle_toStyle_progress_(self, a2, a3, a3, 1.0);
+    objc_msgSend_setLayoutFromStyle_toStyle_progress_(self, a2, style, style, 1.0);
   }
 }
 
-- (void)setInset:(BOOL)a3
+- (void)setInset:(BOOL)inset
 {
-  if (self->_inset != a3)
+  if (self->_inset != inset)
   {
-    objc_msgSend_setFromInset_toInset_progress_(self, a2, a3, a3, 1.0);
+    objc_msgSend_setFromInset_toInset_progress_(self, a2, inset, inset, 1.0);
   }
 }
 
-- (void)setMinutesColor:(id)a3
+- (void)setMinutesColor:(id)color
 {
-  v14 = a3;
-  if ((objc_msgSend_isEqual_(v14, v5, self->_minutesColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_minutesColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_minutesColor, a3);
+    objc_storeStrong(&self->_minutesColor, color);
     if (self->_frozen || !objc_msgSend__tritiumOff(self, v7, v8, v9))
     {
       objc_msgSend__updateColorsForElementMask_blinkAlpha_secondsAlpha_(self, v7, 7, v9, 1.0, self->_secondsLayoutVisibility);
@@ -2220,12 +2220,12 @@ LABEL_24:
   }
 }
 
-- (void)setSecondsColor:(id)a3
+- (void)setSecondsColor:(id)color
 {
-  v9 = a3;
-  if ((objc_msgSend_isEqual_(v9, v5, self->_secondsColor, v6) & 1) == 0)
+  colorCopy = color;
+  if ((objc_msgSend_isEqual_(colorCopy, v5, self->_secondsColor, v6) & 1) == 0)
   {
-    objc_storeStrong(&self->_secondsColor, a3);
+    objc_storeStrong(&self->_secondsColor, color);
     objc_msgSend__updateColorsForElementMask_blinkAlpha_secondsAlpha_(self, v7, 8, v8, 1.0, self->_secondsLayoutVisibility);
   }
 }

@@ -1,21 +1,21 @@
 @interface FigCapturePointCloudDataSinkConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FigCapturePointCloudDataSinkConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigCapturePointCloudDataSinkConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)description;
 @end
 
 @implementation FigCapturePointCloudDataSinkConfiguration
 
-- (FigCapturePointCloudDataSinkConfiguration)initWithXPCEncoding:(id)a3
+- (FigCapturePointCloudDataSinkConfiguration)initWithXPCEncoding:(id)encoding
 {
   v6.receiver = self;
   v6.super_class = FigCapturePointCloudDataSinkConfiguration;
   v4 = [(FigCaptureSinkConfiguration *)&v6 initWithXPCEncoding:?];
   if (v4)
   {
-    *(&v4->super._deferredStartEnabled + 1) = xpc_dictionary_get_BOOL(a3, "discardsLatePointCloudData");
+    *(&v4->super._deferredStartEnabled + 1) = xpc_dictionary_get_BOOL(encoding, "discardsLatePointCloudData");
   }
 
   return v4;
@@ -25,9 +25,9 @@
 {
   v5.receiver = self;
   v5.super_class = FigCapturePointCloudDataSinkConfiguration;
-  v3 = [(FigCaptureSinkConfiguration *)&v5 copyXPCEncoding];
-  xpc_dictionary_set_BOOL(v3, "discardsLatePointCloudData", [(FigCapturePointCloudDataSinkConfiguration *)self discardsLatePointCloudData]);
-  return v3;
+  copyXPCEncoding = [(FigCaptureSinkConfiguration *)&v5 copyXPCEncoding];
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "discardsLatePointCloudData", [(FigCapturePointCloudDataSinkConfiguration *)self discardsLatePointCloudData]);
+  return copyXPCEncoding;
 }
 
 - (id)description
@@ -37,16 +37,16 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ discards:%d", -[FigCaptureSinkConfiguration description](&v3, sel_description), -[FigCapturePointCloudDataSinkConfiguration discardsLatePointCloudData](self, "discardsLatePointCloudData")];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigCapturePointCloudDataSinkConfiguration;
-  v4 = [(FigCaptureSinkConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(FigCaptureSinkConfiguration *)&v6 copyWithZone:zone];
   [v4 setDiscardsLatePointCloudData:{-[FigCapturePointCloudDataSinkConfiguration discardsLatePointCloudData](self, "discardsLatePointCloudData")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8.receiver = self;
   v8.super_class = FigCapturePointCloudDataSinkConfiguration;
@@ -56,8 +56,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FigCapturePointCloudDataSinkConfiguration *)self discardsLatePointCloudData];
-      LOBYTE(v5) = v6 ^ [a3 discardsLatePointCloudData] ^ 1;
+      discardsLatePointCloudData = [(FigCapturePointCloudDataSinkConfiguration *)self discardsLatePointCloudData];
+      LOBYTE(v5) = discardsLatePointCloudData ^ [equal discardsLatePointCloudData] ^ 1;
     }
 
     else

@@ -1,21 +1,21 @@
 @interface _RPTTestRunnerResultsDelegate
-- (void)testRunner:(id)a3 didFailRunningParameters:(id)a4 withError:(id)a5;
-- (void)testRunner:(id)a3 didFinishRunningParameters:(id)a4;
+- (void)testRunner:(id)runner didFailRunningParameters:(id)parameters withError:(id)error;
+- (void)testRunner:(id)runner didFinishRunningParameters:(id)parameters;
 @end
 
 @implementation _RPTTestRunnerResultsDelegate
 
-- (void)testRunner:(id)a3 didFinishRunningParameters:(id)a4
+- (void)testRunner:(id)runner didFinishRunningParameters:(id)parameters
 {
-  v4 = [(_RPTTestRunnerResultsDelegate *)self resultsHandler:a3];
+  v4 = [(_RPTTestRunnerResultsDelegate *)self resultsHandler:runner];
   (*(v4 + 2))(v4, 0, 0);
 }
 
-- (void)testRunner:(id)a3 didFailRunningParameters:(id)a4 withError:(id)a5
+- (void)testRunner:(id)runner didFailRunningParameters:(id)parameters withError:(id)error
 {
-  v6 = a5;
-  v7 = [(_RPTTestRunnerResultsDelegate *)self resultsHandler];
-  v7[2](v7, 1, v6);
+  errorCopy = error;
+  resultsHandler = [(_RPTTestRunnerResultsDelegate *)self resultsHandler];
+  resultsHandler[2](resultsHandler, 1, errorCopy);
 }
 
 @end

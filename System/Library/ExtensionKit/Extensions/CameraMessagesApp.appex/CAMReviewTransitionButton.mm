@@ -1,21 +1,21 @@
 @interface CAMReviewTransitionButton
-- (CAMReviewTransitionButton)initWithFrame:(CGRect)a3;
-- (void)configureWithShutterButtonSpec:(CAMShutterButtonSpec *)a3;
+- (CAMReviewTransitionButton)initWithFrame:(CGRect)frame;
+- (void)configureWithShutterButtonSpec:(CAMShutterButtonSpec *)spec;
 @end
 
 @implementation CAMReviewTransitionButton
 
-- (CAMReviewTransitionButton)initWithFrame:(CGRect)a3
+- (CAMReviewTransitionButton)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CAMReviewTransitionButton;
-  v3 = [(CAMReviewTransitionButton *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMReviewTransitionButton *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor whiteColor];
-    v5 = [v4 CGColor];
-    v6 = [(CAMReviewTransitionButton *)v3 layer];
-    [v6 setBorderColor:v5];
+    cGColor = [v4 CGColor];
+    layer = [(CAMReviewTransitionButton *)v3 layer];
+    [layer setBorderColor:cGColor];
 
     v7 = objc_alloc_init(UIView);
     innerCircle = v3->_innerCircle;
@@ -32,31 +32,31 @@
   return v3;
 }
 
-- (void)configureWithShutterButtonSpec:(CAMShutterButtonSpec *)a3
+- (void)configureWithShutterButtonSpec:(CAMShutterButtonSpec *)spec
 {
-  var0 = a3->var0;
-  var1 = a3->var1;
-  v6 = a3->var0 + var1 * -2.0 + a3->var4 * -2.0;
-  [(CAMReviewTransitionButton *)self setBounds:0.0, 0.0, a3->var0, a3->var0];
-  v7 = [(CAMReviewTransitionButton *)self layer];
-  [v7 setCornerRadius:var0 * 0.5];
+  var0 = spec->var0;
+  var1 = spec->var1;
+  v6 = spec->var0 + var1 * -2.0 + spec->var4 * -2.0;
+  [(CAMReviewTransitionButton *)self setBounds:0.0, 0.0, spec->var0, spec->var0];
+  layer = [(CAMReviewTransitionButton *)self layer];
+  [layer setCornerRadius:var0 * 0.5];
 
-  v8 = [(CAMReviewTransitionButton *)self layer];
-  [v8 setBorderWidth:var1];
+  layer2 = [(CAMReviewTransitionButton *)self layer];
+  [layer2 setBorderWidth:var1];
 
-  v11 = [(CAMReviewTransitionButton *)self innerCircle];
+  innerCircle = [(CAMReviewTransitionButton *)self innerCircle];
   [(CAMReviewTransitionButton *)self bounds];
   UIRectGetCenter();
-  [v11 setCenter:?];
-  [v11 setBounds:{0.0, 0.0, v6, v6}];
-  v9 = [v11 layer];
-  [v9 setCornerRadius:v6 * 0.5];
+  [innerCircle setCenter:?];
+  [innerCircle setBounds:{0.0, 0.0, v6, v6}];
+  layer3 = [innerCircle layer];
+  [layer3 setCornerRadius:v6 * 0.5];
 
-  v10 = [(CAMReviewTransitionButton *)self imageView];
-  [v11 center];
-  [v10 setCenter:?];
-  [v11 bounds];
-  [v10 setBounds:?];
+  imageView = [(CAMReviewTransitionButton *)self imageView];
+  [innerCircle center];
+  [imageView setCenter:?];
+  [innerCircle bounds];
+  [imageView setBounds:?];
 }
 
 @end

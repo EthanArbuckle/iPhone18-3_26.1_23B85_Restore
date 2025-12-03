@@ -1,6 +1,6 @@
 @interface PaymentSetupProductDevicePickerFlowItem
 - (_TtC9PassKitUI39PaymentSetupProductDevicePickerFlowItem)init;
-- (void)devicePickerViewController:(id)a3 didSelectProvisioningController:(id)a4 product:(id)a5;
+- (void)devicePickerViewController:(id)controller didSelectProvisioningController:(id)provisioningController product:(id)product;
 @end
 
 @implementation PaymentSetupProductDevicePickerFlowItem
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)devicePickerViewController:(id)a3 didSelectProvisioningController:(id)a4 product:(id)a5
+- (void)devicePickerViewController:(id)controller didSelectProvisioningController:(id)provisioningController product:(id)product
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1BD5B9594(v9, v10);
+  controllerCopy = controller;
+  provisioningControllerCopy = provisioningController;
+  productCopy = product;
+  selfCopy = self;
+  sub_1BD5B9594(provisioningControllerCopy, productCopy);
 }
 
 @end

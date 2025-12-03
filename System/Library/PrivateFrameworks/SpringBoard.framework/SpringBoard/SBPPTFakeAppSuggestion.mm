@@ -1,25 +1,25 @@
 @interface SBPPTFakeAppSuggestion
-- (BOOL)isEqual:(id)a3;
-- (SBPPTFakeAppSuggestion)initWithBundleIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBPPTFakeAppSuggestion)initWithBundleIdentifier:(id)identifier;
 - (id)bundleIdentifier;
 - (unint64_t)hash;
 @end
 
 @implementation SBPPTFakeAppSuggestion
 
-- (SBPPTFakeAppSuggestion)initWithBundleIdentifier:(id)a3
+- (SBPPTFakeAppSuggestion)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = SBPPTFakeAppSuggestion;
   v6 = [(SBPPTFakeAppSuggestion *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v6->_uuid;
-    v6->_uuid = v7;
+    v6->_uuid = uUID;
 
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
   }
 
   return v6;
@@ -32,15 +32,15 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 uniqueIdentifier];
-    v6 = [(SBPPTFakeAppSuggestion *)self uniqueIdentifier];
-    v7 = [v5 isEqual:v6];
+    uniqueIdentifier = [equalCopy uniqueIdentifier];
+    uniqueIdentifier2 = [(SBPPTFakeAppSuggestion *)self uniqueIdentifier];
+    v7 = [uniqueIdentifier isEqual:uniqueIdentifier2];
   }
 
   else
@@ -53,8 +53,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SBPPTFakeAppSuggestion *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(SBPPTFakeAppSuggestion *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }

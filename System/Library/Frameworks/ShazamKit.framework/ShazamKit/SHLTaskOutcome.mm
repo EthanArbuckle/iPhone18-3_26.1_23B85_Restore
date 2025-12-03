@@ -1,8 +1,8 @@
 @interface SHLTaskOutcome
 + (id)outcomeWithPendingZoneBatchChanges;
-+ (id)outcomeWithPendingZoneBatchChangesProducedError:(id)a3;
++ (id)outcomeWithPendingZoneBatchChangesProducedError:(id)error;
 - (NSArray)failedItemIdentifiers;
-- (id)_initWithTasksToRetry:(id)a3 hasPendingZoneBatchChanges:(BOOL)a4 error:(id)a5;
+- (id)_initWithTasksToRetry:(id)retry hasPendingZoneBatchChanges:(BOOL)changes error:(id)error;
 @end
 
 @implementation SHLTaskOutcome
@@ -14,27 +14,27 @@
   return v2;
 }
 
-+ (id)outcomeWithPendingZoneBatchChangesProducedError:(id)a3
++ (id)outcomeWithPendingZoneBatchChangesProducedError:(id)error
 {
-  v3 = a3;
-  v4 = [[SHLTaskOutcome alloc] _initWithTasksToRetry:0 hasPendingZoneBatchChanges:1 error:v3];
+  errorCopy = error;
+  v4 = [[SHLTaskOutcome alloc] _initWithTasksToRetry:0 hasPendingZoneBatchChanges:1 error:errorCopy];
 
   return v4;
 }
 
-- (id)_initWithTasksToRetry:(id)a3 hasPendingZoneBatchChanges:(BOOL)a4 error:(id)a5
+- (id)_initWithTasksToRetry:(id)retry hasPendingZoneBatchChanges:(BOOL)changes error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  retryCopy = retry;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = SHLTaskOutcome;
   v10 = [(SHLTaskOutcome *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    if (v8)
+    if (retryCopy)
     {
-      v12 = v8;
+      v12 = retryCopy;
     }
 
     else
@@ -43,8 +43,8 @@
     }
 
     objc_storeStrong(&v10->_tasksToRetry, v12);
-    objc_storeStrong(&v11->_error, a5);
-    v11->_hasPendingZoneBatchChanges = a4;
+    objc_storeStrong(&v11->_error, error);
+    v11->_hasPendingZoneBatchChanges = changes;
   }
 
   return v11;
@@ -57,8 +57,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SHLTaskOutcome *)self tasksToRetry];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tasksToRetry = [(SHLTaskOutcome *)self tasksToRetry];
+  v5 = [tasksToRetry countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -69,18 +69,18 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tasksToRetry);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if (![v9 type])
         {
-          v10 = [v9 allItemIdentifiers];
-          [v3 addObjectsFromArray:v10];
+          allItemIdentifiers = [v9 allItemIdentifiers];
+          [v3 addObjectsFromArray:allItemIdentifiers];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [tasksToRetry countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

@@ -1,8 +1,8 @@
 @interface AKNoteEditorViewController
 - (AKNoteEditorViewControllerDelegate)delegate;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AKNoteEditorViewController
@@ -12,42 +12,42 @@
   v9.receiver = self;
   v9.super_class = AKNoteEditorViewController;
   [(AKNoteEditorViewController *)&v9 viewDidLoad];
-  v3 = [(AKNoteEditorViewController *)self annotation];
+  annotation = [(AKNoteEditorViewController *)self annotation];
 
-  if (v3)
+  if (annotation)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    v5 = [(AKNoteEditorViewController *)self textView];
-    [v5 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    textView = [(AKNoteEditorViewController *)self textView];
+    [textView setBackgroundColor:clearColor];
 
-    v6 = [(AKNoteEditorViewController *)self annotation];
-    v7 = [v6 contents];
-    v8 = [(AKNoteEditorViewController *)self textView];
-    [v8 setText:v7];
+    annotation2 = [(AKNoteEditorViewController *)self annotation];
+    contents = [annotation2 contents];
+    textView2 = [(AKNoteEditorViewController *)self textView];
+    [textView2 setText:contents];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = AKNoteEditorViewController;
-  [(AKNoteEditorViewController *)&v6 viewDidAppear:a3];
-  v4 = [(AKNoteEditorViewController *)self textView];
-  [v4 becomeFirstResponder];
+  [(AKNoteEditorViewController *)&v6 viewDidAppear:appear];
+  textView = [(AKNoteEditorViewController *)self textView];
+  [textView becomeFirstResponder];
 
-  v5 = [(AKNoteEditorViewController *)self delegate];
-  [v5 noteEditorViewControllerDidBeginEditing:self];
+  delegate = [(AKNoteEditorViewController *)self delegate];
+  [delegate noteEditorViewControllerDidBeginEditing:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(AKNoteEditorViewController *)self delegate];
-  [v5 noteEditorViewControllerDidEndEditing:self];
+  disappearCopy = disappear;
+  delegate = [(AKNoteEditorViewController *)self delegate];
+  [delegate noteEditorViewControllerDidEndEditing:self];
 
   v6.receiver = self;
   v6.super_class = AKNoteEditorViewController;
-  [(AKNoteEditorViewController *)&v6 viewWillDisappear:v3];
+  [(AKNoteEditorViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (AKNoteEditorViewControllerDelegate)delegate

@@ -1,6 +1,6 @@
 @interface PSPowerManager
-- (PSPowerManager)initWithgsm:(ps_gsm_s *)a3;
-- (id)descriptionForActivity:(unint64_t)a3;
+- (PSPowerManager)initWithgsm:(ps_gsm_s *)withgsm;
+- (id)descriptionForActivity:(unint64_t)activity;
 - (id)userActivityStatusDescription;
 - (unint64_t)resolvedUserActivity;
 - (void)deregisterForUserActivityNotifications;
@@ -8,13 +8,13 @@
 - (void)handleUserActivityStateChange;
 - (void)overrideUserActivityToUserActive;
 - (void)overrideUserActivityToUserInactive;
-- (void)registerForUserActivityNotifications:(void *)a3;
+- (void)registerForUserActivityNotifications:(void *)notifications;
 - (void)stop;
 @end
 
 @implementation PSPowerManager
 
-- (PSPowerManager)initWithgsm:(ps_gsm_s *)a3
+- (PSPowerManager)initWithgsm:(ps_gsm_s *)withgsm
 {
   v12.receiver = self;
   v12.super_class = PSPowerManager;
@@ -39,7 +39,7 @@
       }
     }
 
-    v5->_gsm = a3;
+    v5->_gsm = withgsm;
     *&v5->_iopm_notification_handle = 0u;
     *&v5->_user_activity.iopm = 0u;
   }
@@ -87,18 +87,18 @@
   return result;
 }
 
-- (id)descriptionForActivity:(unint64_t)a3
+- (id)descriptionForActivity:(unint64_t)activity
 {
-  if (a3 < 3)
+  if (activity < 3)
   {
-    return *(&off_100028F38 + a3);
+    return *(&off_100028F38 + activity);
   }
 
   v5 = sub_100013BF4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 134217984;
-    v7 = a3;
+    activityCopy = activity;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Unexpected activity level: %lu", &v6, 0xCu);
   }
 
@@ -107,11 +107,11 @@
 
 - (void)handleUserActivityStateChange
 {
-  v3 = [(PSPowerManager *)self resolvedUserActivity];
-  if (v3 != self->_user_activity.previous)
+  resolvedUserActivity = [(PSPowerManager *)self resolvedUserActivity];
+  if (resolvedUserActivity != self->_user_activity.previous)
   {
-    v4 = v3;
-    switch(v3)
+    v4 = resolvedUserActivity;
+    switch(resolvedUserActivity)
     {
       case 0uLL:
 LABEL_7:
@@ -139,14 +139,14 @@ LABEL_7:
   }
 }
 
-- (void)registerForUserActivityNotifications:(void *)a3
+- (void)registerForUserActivityNotifications:(void *)notifications
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100014294;
   v3[3] = &unk_100028EC8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = notifications;
   if (qword_100032120 != -1)
   {
     dispatch_once(&qword_100032120, v3);

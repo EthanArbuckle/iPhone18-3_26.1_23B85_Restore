@@ -2,7 +2,7 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (void)dealloc;
-- (void)startFilterWithOptions:(id)a3 completionHandler:(id)a4;
+- (void)startFilterWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation NEFilterPacketExtensionProviderContext
@@ -14,7 +14,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEBUG, "%@: dealloc", buf, 0xCu);
   }
 
@@ -24,21 +24,21 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startFilterWithOptions:(id)a3 completionHandler:(id)a4
+- (void)startFilterWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NEExtensionProviderContext *)self _principalObject];
+  handlerCopy = handler;
+  optionsCopy = options;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
   v10.receiver = self;
   v10.super_class = NEFilterPacketExtensionProviderContext;
-  [(NEFilterExtensionProviderContext *)&v10 startFilterWithOptions:v7 completionHandler:v6];
+  [(NEFilterExtensionProviderContext *)&v10 startFilterWithOptions:optionsCopy completionHandler:handlerCopy];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __83__NEFilterPacketExtensionProviderContext_startFilterWithOptions_completionHandler___block_invoke;
   v9[3] = &unk_1E7F0B4A8;
   v9[4] = self;
-  [v8 startFilterWithCompletionHandler:v9];
+  [_principalObject startFilterWithCompletionHandler:v9];
 }
 
 void __83__NEFilterPacketExtensionProviderContext_startFilterWithOptions_completionHandler___block_invoke(uint64_t a1, uint64_t a2)

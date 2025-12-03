@@ -1,15 +1,15 @@
 @interface AppPromotionView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension16AppPromotionView)initWithCoder:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension16AppPromotionView)initWithCoder:(id)coder;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)stateChangedFor:(id)a3;
+- (void)stateChangedFor:(id)for;
 @end
 
 @implementation AppPromotionView
 
-- (_TtC20ProductPageExtension16AppPromotionView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension16AppPromotionView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension16AppPromotionView_clickAction;
   v5 = sub_10000A5D4(&qword_100955BD0);
@@ -27,36 +27,36 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension16AppPromotionView_longPressGestureRecognizer);
-  v5 = self;
-  [v4 removeTarget:v5 action:0];
-  v6.receiver = v5;
+  selfCopy = self;
+  [v4 removeTarget:selfCopy action:0];
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(AppPromotionView *)&v6 dealloc];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D8154();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = type metadata accessor for AppPromotionCardLayout(0);
   __chkstk_darwin(v6 - 8);
   v8 = (&v19 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0));
   v9 = qword_100940640;
-  v10 = self;
+  selfCopy = self;
   if (v9 != -1)
   {
     swift_once();
   }
 
-  sub_100244030(&unk_10099FD58, v10, width, height);
+  sub_100244030(&unk_10099FD58, selfCopy, width, height);
   v12 = v11;
-  v13 = *(&v10->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension16AppPromotionView_appPromotionCardView);
+  v13 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension16AppPromotionView_appPromotionCardView);
   sub_1000BC5FC(v8);
   v14 = sub_1001D984C(v13, v8);
   v16 = v15;
@@ -69,19 +69,19 @@
   return result;
 }
 
-- (void)stateChangedFor:(id)a3
+- (void)stateChangedFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001D84FC(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_1001D84FC(forCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1001D8F54(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_1001D8F54(recognizerCopy, touchCopy);
 
   return v9 & 1;
 }

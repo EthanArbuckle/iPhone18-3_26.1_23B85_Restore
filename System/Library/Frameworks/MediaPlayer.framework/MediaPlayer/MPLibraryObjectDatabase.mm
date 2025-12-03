@@ -1,28 +1,28 @@
 @interface MPLibraryObjectDatabase
-- (MPLibraryObjectDatabase)initWithLibrary:(id)a3;
-- (id)identifiersMatchingIdentifierSet:(id)a3 propertySet:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (id)modelObjectForResult:(id)a3 inContext:(id)a4 error:(id *)a5;
-- (id)objectBuildingContextForResults:(id)a3 propertySet:(id)a4;
-- (uint64_t)updateIdentifiersForResults:(uint64_t)a1 options:;
-- (uint64_t)updateIdentifiersForResults:(void *)a1 options:(unsigned __int8 *)a2;
-- (uint64_t)updateTokensForResults:(uint64_t)a1;
-- (void)_enumerateEntityRevisionsFromRevision:(int64_t)a3 block:(id)a4;
+- (MPLibraryObjectDatabase)initWithLibrary:(id)library;
+- (id)identifiersMatchingIdentifierSet:(id)set propertySet:(id)propertySet options:(unint64_t)options error:(id *)error;
+- (id)modelObjectForResult:(id)result inContext:(id)context error:(id *)error;
+- (id)objectBuildingContextForResults:(id)results propertySet:(id)set;
+- (uint64_t)updateIdentifiersForResults:(uint64_t)results options:;
+- (uint64_t)updateIdentifiersForResults:(void *)results options:(unsigned __int8 *)options;
+- (uint64_t)updateTokensForResults:(uint64_t)results;
+- (void)_enumerateEntityRevisionsFromRevision:(int64_t)revision block:(id)block;
 - (void)dealloc;
-- (void)enumerateRelatedTokensForResult:(id)a3 childKey:(id)a4 block:(id)a5;
-- (void)updateIdentifiersForResults:(id)a3 options:(unint64_t)a4;
-- (void)updateIdentifiersForResults:(uint64_t)a1 options:;
-- (void)updateTokensForResults:(id)a3;
-- (void)updateTokensForResults:(uint64_t *)a1;
-- (void)updateTokensForResults:(uint64_t)a1;
-- (void)updateTokensForResults:(void *)a1;
+- (void)enumerateRelatedTokensForResult:(id)result childKey:(id)key block:(id)block;
+- (void)updateIdentifiersForResults:(id)results options:(unint64_t)options;
+- (void)updateIdentifiersForResults:(uint64_t)results options:;
+- (void)updateTokensForResults:(id)results;
+- (void)updateTokensForResults:(uint64_t *)results;
+- (void)updateTokensForResults:(uint64_t)results;
+- (void)updateTokensForResults:(void *)results;
 @end
 
 @implementation MPLibraryObjectDatabase
 
-- (void)_enumerateEntityRevisionsFromRevision:(int64_t)a3 block:(id)a4
+- (void)_enumerateEntityRevisionsFromRevision:(int64_t)revision block:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   os_unfair_lock_lock_with_options();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -30,7 +30,7 @@
   aBlock[3] = &unk_1E7682518;
   aBlock[4] = self;
   v11 = _Block_copy(aBlock);
-  [(MSVSQLStatement *)self->_entityRevisionEnumeration bindInt64Value:a3 toParameterNamed:@"@revision"];
+  [(MSVSQLStatement *)self->_entityRevisionEnumeration bindInt64Value:revision toParameterNamed:@"@revision"];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __71__MPLibraryObjectDatabase__enumerateEntityRevisionsFromRevision_block___block_invoke_2;
@@ -56,7 +56,7 @@ LABEL_3:
         objc_enumerationMutation(v7);
       }
 
-      v6[2](v6, [*(*(&v13 + 1) + 8 * v10) int64ValueAtColumnIndex:0], objc_msgSend(*(*(&v13 + 1) + 8 * v10), "int64ValueAtColumnIndex:", 1), objc_msgSend(*(*(&v13 + 1) + 8 * v10), "int64ValueAtColumnIndex:", 4), objc_msgSend(*(*(&v13 + 1) + 8 * v10), "int64ValueAtColumnIndex:", 2), &v17);
+      blockCopy[2](blockCopy, [*(*(&v13 + 1) + 8 * v10) int64ValueAtColumnIndex:0], objc_msgSend(*(*(&v13 + 1) + 8 * v10), "int64ValueAtColumnIndex:", 1), objc_msgSend(*(*(&v13 + 1) + 8 * v10), "int64ValueAtColumnIndex:", 4), objc_msgSend(*(*(&v13 + 1) + 8 * v10), "int64ValueAtColumnIndex:", 2), &v17);
       if (v17)
       {
         break;
@@ -79,12 +79,12 @@ LABEL_3:
   v11[2](v11);
 }
 
-- (id)modelObjectForResult:(id)a3 inContext:(id)a4 error:(id *)a5
+- (id)modelObjectForResult:(id)result inContext:(id)context error:(id *)error
 {
   v81 = *MEMORY[0x1E69E9840];
-  v72 = a3;
-  v8 = a4;
-  v9 = [(MPMediaLibrary *)self->_library currentEntityRevision];
+  resultCopy = result;
+  contextCopy = context;
+  currentEntityRevision = [(MPMediaLibrary *)self->_library currentEntityRevision];
   v10 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -92,15 +92,15 @@ LABEL_3:
     *buf = 67109890;
     *&buf[4] = id;
     *v77 = 2112;
-    *&v77[2] = v72;
+    *&v77[2] = resultCopy;
     *&v77[10] = 2048;
-    *&v77[12] = v8;
+    *&v77[12] = contextCopy;
     *&v77[20] = 2048;
-    *&v77[22] = v9;
+    *&v77[22] = currentEntityRevision;
     _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] modelObjectForResult:inContext: | begin [] result=%@ context=%p entityRevision=%lld", buf, 0x26u);
   }
 
-  v12 = [v72 tokenForDatabase:self];
+  v12 = [resultCopy tokenForDatabase:self];
   v14 = v13;
   v15 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -109,9 +109,9 @@ LABEL_3:
     *buf = 67110402;
     *&buf[4] = v16;
     *v77 = 2112;
-    *&v77[2] = v72;
+    *&v77[2] = resultCopy;
     *&v77[10] = 2048;
-    *&v77[12] = v8;
+    *&v77[12] = contextCopy;
     *&v77[20] = 2048;
     *&v77[22] = v12;
     *&v77[30] = 1024;
@@ -151,9 +151,9 @@ LABEL_3:
         *buf = 67109634;
         *&buf[4] = v59;
         *v77 = 2112;
-        *&v77[2] = v72;
+        *&v77[2] = resultCopy;
         *&v77[10] = 2048;
-        *&v77[12] = v8;
+        *&v77[12] = contextCopy;
         v26 = "[LOD:%{sonic:fourCC}u] modelObjectForResult:inContext: | skipping [no token] result=%@ context=%p";
         goto LABEL_64;
       }
@@ -165,9 +165,9 @@ LABEL_3:
       *buf = 67109634;
       *&buf[4] = v25;
       *v77 = 2112;
-      *&v77[2] = v72;
+      *&v77[2] = resultCopy;
       *&v77[10] = 2048;
-      *&v77[12] = v8;
+      *&v77[12] = contextCopy;
       v26 = "[LOD:%{sonic:fourCC}u] modelObjectForResult:inContext: | skipping [tombstone] result=%@ context=%p";
 LABEL_64:
       _os_log_impl(&dword_1A238D000, v23, OS_LOG_TYPE_DEBUG, v26, buf, 0x1Cu);
@@ -177,39 +177,39 @@ LABEL_64:
     goto LABEL_77;
   }
 
-  if (!v8 || !std::__hash_table<std::__hash_value_type<long long,unsigned long>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,unsigned long>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,unsigned long>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,unsigned long>>>::find<long long>(v8 + 2, v12) && !std::__hash_table<std::__hash_value_type<long long,unsigned long>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,unsigned long>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,unsigned long>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,unsigned long>>>::find<long long>(v8 + 12, v12))
+  if (!contextCopy || !std::__hash_table<std::__hash_value_type<long long,unsigned long>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,unsigned long>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,unsigned long>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,unsigned long>>>::find<long long>(contextCopy + 2, v12) && !std::__hash_table<std::__hash_value_type<long long,unsigned long>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,unsigned long>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,unsigned long>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,unsigned long>>>::find<long long>(contextCopy + 12, v12))
   {
-    v64 = [MEMORY[0x1E696AAA8] currentHandler];
-    *buf = bswap32([v8 tag]);
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    *buf = bswap32([contextCopy tag]);
     buf[4] = 0;
     v65 = [MEMORY[0x1E696AEC0] stringWithCString:buf encoding:1];
-    [v64 handleFailureInMethod:a2 object:self file:@"MPLibraryObjectDatabase.mm" lineNumber:904 description:{@"ObjectBuildingContext[%@] does not contain %@", v65, v72}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPLibraryObjectDatabase.mm" lineNumber:904 description:{@"ObjectBuildingContext[%@] does not contain %@", v65, resultCopy}];
   }
 
   if ((HIBYTE(v14) - 1) > 8u)
   {
-    v22 = 0;
+    identityKind = 0;
   }
 
   else
   {
-    v22 = [(__objc2_class *)*off_1E767C208[(HIBYTE(v14) - 1)] identityKind];
+    identityKind = [(__objc2_class *)*off_1E767C208[(HIBYTE(v14) - 1)] identityKind];
   }
 
-  v71 = v22;
-  v27 = [v22 modelClass];
-  if (v27)
+  v71 = identityKind;
+  modelClass = [identityKind modelClass];
+  if (modelClass)
   {
-    if (v8)
+    if (contextCopy)
     {
-      v29 = v8[24];
-      v28 = v8[25];
+      v29 = contextCopy[24];
+      v28 = contextCopy[25];
       if (v28)
       {
         atomic_fetch_add_explicit(&v28->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      v30 = v8[3];
+      v30 = contextCopy[3];
       if (!*&v30)
       {
         goto LABEL_41;
@@ -231,7 +231,7 @@ LABEL_64:
         v32 = (*&v30 - 1) & v12;
       }
 
-      v36 = *(v8[2] + 8 * v32);
+      v36 = *(contextCopy[2] + 8 * v32);
       if (!v36 || (v37 = *v36) == 0)
       {
 LABEL_41:
@@ -292,9 +292,9 @@ LABEL_42:
         *buf = 67109634;
         *&buf[4] = v58;
         *v77 = 2112;
-        *&v77[2] = v72;
+        *&v77[2] = resultCopy;
         *&v77[10] = 2048;
-        *&v77[12] = v8;
+        *&v77[12] = contextCopy;
         _os_log_impl(&dword_1A238D000, v57, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] modelObjectForResult:inContext: | skipping [index out of bounds] result=%@ context=%p", buf, 0x1Cu);
       }
 
@@ -306,10 +306,10 @@ LABEL_42:
       mlcore::EntityQueryResult::entityAtIndex(v29);
       if (v73)
       {
-        v68 = +[MPModelGenericObject relationshipKeyForGenericObjectType:](MPModelGenericObject, "relationshipKeyForGenericObjectType:", [v27 genericObjectType]);
-        if (v8)
+        v68 = +[MPModelGenericObject relationshipKeyForGenericObjectType:](MPModelGenericObject, "relationshipKeyForGenericObjectType:", [modelClass genericObjectType]);
+        if (contextCopy)
         {
-          v40 = v8[23];
+          v40 = contextCopy[23];
         }
 
         else
@@ -318,8 +318,8 @@ LABEL_42:
         }
 
         v41 = v40;
-        v42 = [v41 relationships];
-        v69 = [v42 objectForKeyedSubscript:v68];
+        relationships = [v41 relationships];
+        v69 = [relationships objectForKeyedSubscript:v68];
 
         if (!v69 || (+[MPPropertySet emptyPropertySet], v43 = objc_claimAutoreleasedReturnValue(), v44 = v69 == v43, v43, v44))
         {
@@ -330,9 +330,9 @@ LABEL_42:
             *buf = 67109890;
             *&buf[4] = v60;
             *v77 = 2112;
-            *&v77[2] = v72;
+            *&v77[2] = resultCopy;
             *&v77[10] = 2048;
-            *&v77[12] = v8;
+            *&v77[12] = contextCopy;
             *&v77[20] = 2112;
             *&v77[22] = v68;
             _os_log_impl(&dword_1A238D000, p_super, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] modelObjectForResult:inContext: | skipping [empty properties] result=%@ context=%p key=%@", buf, 0x26u);
@@ -345,9 +345,9 @@ LABEL_42:
         {
           v67 = objc_alloc_init(MPMediaLibraryEntityTranslationContext);
           [(MPMediaLibraryEntityTranslationContext *)v67 setMediaLibrary:self->_library];
-          v45 = [(MPMediaLibrary *)self->_library userIdentity];
-          v46 = [v45 accountDSID];
-          [(MPMediaLibraryEntityTranslationContext *)v67 setPersonID:v46];
+          userIdentity = [(MPMediaLibrary *)self->_library userIdentity];
+          accountDSID = [userIdentity accountDSID];
+          [(MPMediaLibraryEntityTranslationContext *)v67 setPersonID:accountDSID];
 
           [(MPMediaLibraryEntityTranslationContext *)v67 setModelKind:v71];
           [(MPMediaLibraryEntityTranslationContext *)v67 setIdentifierSourcePrefix:@"LOD::"];
@@ -359,7 +359,7 @@ LABEL_42:
             _os_signpost_emit_with_name_impl(&dword_1A238D000, v48, OS_SIGNPOST_INTERVAL_BEGIN, v18, "modelObject:build", &unk_1A2797D62, buf, 2u);
           }
 
-          v66 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:v27];
+          v66 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:modelClass];
           v49 = (*(*v73 + 48))();
           v50 = [v66 objectForPropertySet:v69 entityClass:v49 propertyCache:mlcore::Entity::propertyCache(v73) context:v67];
           v51 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
@@ -372,16 +372,16 @@ LABEL_42:
 
           aBlock[5] = v12;
           aBlock[6] = v14;
-          if (v8)
+          if (contextCopy)
           {
             os_unfair_lock_lock_with_options();
             *buf = MEMORY[0x1E69E9820];
             *v77 = 3221225472;
             *&v77[8] = __70___MPLibraryObjectDatabaseProgressiveContext__didBuildObjectForToken___block_invoke;
             *&v77[16] = &unk_1E7682518;
-            *&v77[24] = v8;
+            *&v77[24] = contextCopy;
             v53 = _Block_copy(buf);
-            std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(v8 + 7, v12);
+            std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(contextCopy + 7, v12);
             v53[2](v53);
           }
 
@@ -393,9 +393,9 @@ LABEL_42:
             *buf = 67109890;
             *&buf[4] = v55;
             *v77 = 2112;
-            *&v77[2] = v72;
+            *&v77[2] = resultCopy;
             *&v77[10] = 2048;
-            *&v77[12] = v8;
+            *&v77[12] = contextCopy;
             *&v77[20] = 2112;
             *&v77[22] = v35;
             _os_log_impl(&dword_1A238D000, v54, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] modelObjectForResult:inContext: | done [] result=%@ context=%p object=%@", buf, 0x26u);
@@ -416,9 +416,9 @@ LABEL_42:
           *buf = 67109634;
           *&buf[4] = v62;
           *v77 = 2112;
-          *&v77[2] = v72;
+          *&v77[2] = resultCopy;
           *&v77[10] = 2048;
-          *&v77[12] = v8;
+          *&v77[12] = contextCopy;
           _os_log_impl(&dword_1A238D000, v61, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] modelObjectForResult:inContext: | skipping [null entity] result=%@ context=%p", buf, 0x1Cu);
         }
 
@@ -447,9 +447,9 @@ LABEL_42:
       *buf = 67109890;
       *&buf[4] = v34;
       *v77 = 2112;
-      *&v77[2] = v72;
+      *&v77[2] = resultCopy;
       *&v77[10] = 2048;
-      *&v77[12] = v8;
+      *&v77[12] = contextCopy;
       *&v77[20] = 256;
       v77[22] = HIBYTE(v14);
       _os_log_impl(&dword_1A238D000, v33, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] modelObjectForResult:inContext: | skipping [unknown entity type] result=%@ context=%p entityType=%d", buf, 0x1Fu);
@@ -478,21 +478,21 @@ void __64__MPLibraryObjectDatabase_modelObjectForResult_inContext_error___block_
   }
 }
 
-- (id)objectBuildingContextForResults:(id)a3 propertySet:(id)a4
+- (id)objectBuildingContextForResults:(id)results propertySet:(id)set
 {
   v23 = *MEMORY[0x1E69E9840];
-  a3;
-  v18 = a4;
-  v6 = [v18 properties];
-  v7 = [v6 count];
+  results;
+  setCopy = set;
+  properties = [setCopy properties];
+  v7 = [properties count];
 
   if (v7)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPLibraryObjectDatabase.mm" lineNumber:797 description:{@"Property Set must be a generic-object property set which does not allow properties at the top-level:", v18}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPLibraryObjectDatabase.mm" lineNumber:797 description:{@"Property Set must be a generic-object property set which does not allow properties at the top-level:", setCopy}];
   }
 
-  v17 = [(MPMediaLibrary *)self->_library currentEntityRevision];
+  currentEntityRevision = [(MPMediaLibrary *)self->_library currentEntityRevision];
   v8 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -500,9 +500,9 @@ void __64__MPLibraryObjectDatabase_modelObjectForResult_inContext_error___block_
     *buf = 67109634;
     *&buf[4] = id;
     v21[0] = 2112;
-    *&v21[1] = v18;
+    *&v21[1] = setCopy;
     v21[5] = 2048;
-    v22 = v17;
+    v22 = currentEntityRevision;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] objectBuildingContextForResults:propertySet: | begin [] propertySet=%@ entityRevision=%lld", buf, 0x1Cu);
   }
 
@@ -556,14 +556,14 @@ void __71__MPLibraryObjectDatabase_objectBuildingContextForResults_propertySet__
   }
 }
 
-- (void)enumerateRelatedTokensForResult:(id)a3 childKey:(id)a4 block:(id)a5
+- (void)enumerateRelatedTokensForResult:(id)result childKey:(id)key block:(id)block
 {
   v92 = *MEMORY[0x1E69E9840];
-  v71 = a3;
-  v67 = a4;
-  v74 = a5;
-  v70 = self;
-  v8 = [(MPMediaLibrary *)self->_library currentEntityRevision];
+  resultCopy = result;
+  keyCopy = key;
+  blockCopy = block;
+  selfCopy = self;
+  currentEntityRevision = [(MPMediaLibrary *)self->_library currentEntityRevision];
   v9 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -571,23 +571,23 @@ void __71__MPLibraryObjectDatabase_objectBuildingContextForResults_propertySet__
     *buf = 67109634;
     *v85 = id;
     *&v85[4] = 2112;
-    *&v85[6] = v71;
+    *&v85[6] = resultCopy;
     v86 = 2048;
-    v87 = v8;
+    v87 = currentEntityRevision;
     _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] enumerateRelatedTokensForResult:childKey: | begin [] result=%@ entityRevision=%lld", buf, 0x1Cu);
   }
 
-  v11 = [v71 tokenForDatabase:self];
+  v11 = [resultCopy tokenForDatabase:self];
   v13 = v12;
   v14 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   v15 = HIBYTE(v13);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v16 = v70->_id;
+    v16 = selfCopy->_id;
     *buf = 67110146;
     *v85 = v16;
     *&v85[4] = 2112;
-    *&v85[6] = v71;
+    *&v85[6] = resultCopy;
     v86 = 2048;
     v87 = v11;
     v88 = 1024;
@@ -606,7 +606,7 @@ void __71__MPLibraryObjectDatabase_objectBuildingContextForResults_propertySet__
   if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
   {
     *buf = 138543362;
-    *v85 = v67;
+    *v85 = keyCopy;
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v19, OS_SIGNPOST_INTERVAL_BEGIN, spid, "relatedTokens", "childKey=%{public}@", buf, 0xCu);
   }
 
@@ -627,11 +627,11 @@ void __71__MPLibraryObjectDatabase_objectBuildingContextForResults_propertySet__
         goto LABEL_59;
       }
 
-      v40 = v70->_id;
+      v40 = selfCopy->_id;
       *buf = 67109378;
       *v85 = v40;
       *&v85[4] = 2112;
-      *&v85[6] = v71;
+      *&v85[6] = resultCopy;
       v31 = "[LOD:%{sonic:fourCC}u] enumerateRelatedTokensForResult:childKey: | skipping result [no token] result=%@";
     }
 
@@ -642,11 +642,11 @@ void __71__MPLibraryObjectDatabase_objectBuildingContextForResults_propertySet__
         goto LABEL_59;
       }
 
-      v30 = v70->_id;
+      v30 = selfCopy->_id;
       *buf = 67109378;
       *v85 = v30;
       *&v85[4] = 2112;
-      *&v85[6] = v71;
+      *&v85[6] = resultCopy;
       v31 = "[LOD:%{sonic:fourCC}u] enumerateRelatedTokensForResult:childKey: | skipping result [tombstone] result=%@";
     }
 
@@ -659,7 +659,7 @@ void __71__MPLibraryObjectDatabase_objectBuildingContextForResults_propertySet__
   {
     if (v15 == 6)
     {
-      v20 = v67;
+      v20 = keyCopy;
       v21 = @"MPModelChildPlaylistEntries";
       v22 = @"MPModelChildPlaylistEntries";
       v23 = v20;
@@ -696,11 +696,11 @@ void __71__MPLibraryObjectDatabase_objectBuildingContextForResults_propertySet__
       goto LABEL_59;
     }
 
-    v37 = v70->_id;
+    v37 = selfCopy->_id;
     *buf = 67109634;
     *v85 = v37;
     *&v85[4] = 2112;
-    *&v85[6] = v71;
+    *&v85[6] = resultCopy;
     v86 = 1024;
     LODWORD(v87) = HIBYTE(v13);
     v31 = "[LOD:%{sonic:fourCC}u] enumerateRelatedTokensForResult:childKey: | skipping result [not supported entity] result=%@ entityType=%d";
@@ -711,7 +711,7 @@ LABEL_58:
     goto LABEL_59;
   }
 
-  v32 = v67;
+  v32 = keyCopy;
   v21 = @"MPModelChildAlbumSongs";
   v33 = @"MPModelChildAlbumSongs";
   v34 = v32;
@@ -737,11 +737,11 @@ LABEL_27:
     }
 
 LABEL_57:
-    v59 = v70->_id;
+    v59 = selfCopy->_id;
     *buf = 67109634;
     *v85 = v59;
     *&v85[4] = 2112;
-    *&v85[6] = v71;
+    *&v85[6] = resultCopy;
     v86 = 2112;
     v87 = v63;
     v31 = "[LOD:%{sonic:fourCC}u] enumerateRelatedTokensForResult:childKey: | skipping result [not supported key] result=%@ childKey=%@";
@@ -753,13 +753,13 @@ LABEL_57:
   v26 = 0x100000000000000;
   v27 = 48;
 LABEL_28:
-  v64 = *(&v70->super.isa + v27);
+  v64 = *(&selfCopy->super.isa + v27);
   os_unfair_lock_lock_with_options();
   v81[0] = MEMORY[0x1E69E9820];
   v81[1] = 3221225472;
   v81[2] = __74__MPLibraryObjectDatabase_enumerateRelatedTokensForResult_childKey_block___block_invoke_57;
   v81[3] = &unk_1E7682518;
-  v81[4] = v70;
+  v81[4] = selfCopy;
   v60 = _Block_copy(v81);
   v41 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   v42 = v41;
@@ -777,7 +777,7 @@ LABEL_28:
   v62 = v64;
   v80 = v62;
   v61 = _Block_copy(v79);
-  [(MSVSQLDatabase *)v70->_msvDatabase resultsForStatement:v62];
+  [(MSVSQLDatabase *)selfCopy->_msvDatabase resultsForStatement:v62];
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
@@ -786,7 +786,7 @@ LABEL_28:
   if (v43)
   {
     v69 = 0;
-    v44 = v8 | v26;
+    v44 = currentEntityRevision | v26;
     v73 = *v76;
     do
     {
@@ -803,11 +803,11 @@ LABEL_28:
         v47 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
         {
-          v48 = v70->_id;
+          v48 = selfCopy->_id;
           *buf = 67110146;
           *v85 = v48;
           *&v85[4] = 2112;
-          *&v85[6] = v71;
+          *&v85[6] = resultCopy;
           v86 = 2048;
           v87 = v46;
           v88 = 1024;
@@ -828,7 +828,7 @@ LABEL_28:
           _os_signpost_emit_with_name_impl(&dword_1A238D000, v52, OS_SIGNPOST_INTERVAL_BEGIN, v50, "relatedTokens:callout", &unk_1A2797D62, buf, 2u);
         }
 
-        v74[2](v74, v46, v44);
+        blockCopy[2](blockCopy, v46, v44);
         v53 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
         v54 = v53;
         if (v50 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v53))
@@ -856,11 +856,11 @@ LABEL_28:
   v55 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
   {
-    v56 = v70->_id;
+    v56 = selfCopy->_id;
     *buf = 67109634;
     *v85 = v56;
     *&v85[4] = 2112;
-    *&v85[6] = v71;
+    *&v85[6] = resultCopy;
     v86 = 2048;
     v87 = v69;
     _os_log_impl(&dword_1A238D000, v55, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] enumerateRelatedTokensForResult:childKey: | done [] result=%@ count=%zu", buf, 0x1Cu);
@@ -894,10 +894,10 @@ void __74__MPLibraryObjectDatabase_enumerateRelatedTokensForResult_childKey_bloc
   }
 }
 
-- (void)updateIdentifiersForResults:(id)a3 options:(unint64_t)a4
+- (void)updateIdentifiersForResults:(id)results options:(unint64_t)options
 {
   v80 = *MEMORY[0x1E69E9840];
-  v56 = a3;
+  resultsCopy = results;
   v57 = [[MPMediaLibraryView alloc] initWithLibrary:self->_library filteringOptions:4];
   v5 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -910,7 +910,7 @@ void __74__MPLibraryObjectDatabase_enumerateRelatedTokensForResult_childKey_bloc
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateIdentifiersForResults: | begin [] libraryView=%@", buf, 0x12u);
   }
 
-  v62 = self;
+  selfCopy = self;
 
   v7 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   spid = os_signpost_id_generate(v7);
@@ -940,7 +940,7 @@ void __74__MPLibraryObjectDatabase_enumerateRelatedTokensForResult_childKey_bloc
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v56;
+  obj = resultsCopy;
   v10 = [obj countByEnumeratingWithState:&v64 objects:v79 count:16];
   if (!v10)
   {
@@ -949,7 +949,7 @@ LABEL_55:
     v50 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
     {
-      v51 = v62->_id;
+      v51 = selfCopy->_id;
       *buf = 67109376;
       *&buf[4] = v51;
       *&buf[8] = 2048;
@@ -991,12 +991,12 @@ LABEL_8:
 
     v12 = *(*(&v64 + 1) + 8 * v11);
     v63 = 0uLL;
-    *&v63 = [v12 tokenForDatabase:v62];
+    *&v63 = [v12 tokenForDatabase:selfCopy];
     *(&v63 + 1) = v13;
     v14 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v15 = v62->_id;
+      v15 = selfCopy->_id;
       *buf = 67110146;
       *&buf[4] = v15;
       *&buf[8] = 2048;
@@ -1021,17 +1021,17 @@ LABEL_8:
         {
           if ((v17 - 1) > 8u)
           {
-            v22 = 0;
+            identityKind = 0;
           }
 
           else
           {
-            v22 = [(__objc2_class *)*off_1E767C208[(v17 - 1)] identityKind];
+            identityKind = [(__objc2_class *)*off_1E767C208[(v17 - 1)] identityKind];
           }
 
           v24 = std::unordered_map<mlcore::ModelEntityType,[MPLibraryObjectDatabase updateIdentifiersForResults:options:]::Node>::operator[](&v71, v75);
-          objc_storeStrong(v24, v22);
-          v25 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [v22 modelClass]);
+          objc_storeStrong(v24, identityKind);
+          v25 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [identityKind modelClass]);
           v26 = std::unordered_map<mlcore::ModelEntityType,[MPLibraryObjectDatabase updateIdentifiersForResults:options:]::Node>::operator[](&v71, v75);
           v27 = v26[1];
           v26[1] = v25;
@@ -1039,13 +1039,13 @@ LABEL_8:
           v28 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
           {
-            v29 = v62->_id;
+            v29 = selfCopy->_id;
             *buf = 67109634;
             *&buf[4] = v29;
             *&buf[8] = 256;
             buf[10] = v17;
             *&buf[11] = 2112;
-            *&buf[13] = v22;
+            *&buf[13] = identityKind;
             _os_log_impl(&dword_1A238D000, v28, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateIdentifiersForResults: | setup node [found new kind] entityType=%d modelKind=%@", buf, 0x15u);
           }
         }
@@ -1053,7 +1053,7 @@ LABEL_8:
         v30 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
         {
-          v31 = v62->_id;
+          v31 = selfCopy->_id;
           *buf = 67109634;
           *&buf[4] = v31;
           *&buf[8] = 2112;
@@ -1149,7 +1149,7 @@ LABEL_8:
       v18 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v19 = v62->_id;
+        v19 = selfCopy->_id;
         *buf = 67109378;
         *&buf[4] = v19;
         *&buf[8] = 2112;
@@ -1166,7 +1166,7 @@ LABEL_8:
       {
         if (v20)
         {
-          v23 = v62->_id;
+          v23 = selfCopy->_id;
           *buf = 67109378;
           *&buf[4] = v23;
           *&buf[8] = 2112;
@@ -1177,7 +1177,7 @@ LABEL_8:
 
       else if (v20)
       {
-        v21 = v62->_id;
+        v21 = selfCopy->_id;
         *buf = 67109378;
         *&buf[4] = v21;
         *&buf[8] = 2112;
@@ -1212,10 +1212,10 @@ void __63__MPLibraryObjectDatabase_updateIdentifiersForResults_options___block_i
   }
 }
 
-- (uint64_t)updateIdentifiersForResults:(void *)a1 options:(unsigned __int8 *)a2
+- (uint64_t)updateIdentifiersForResults:(void *)results options:(unsigned __int8 *)options
 {
-  v2 = *a2;
-  v3 = a1[1];
+  v2 = *options;
+  v3 = results[1];
   if (!*&v3)
   {
     goto LABEL_18;
@@ -1225,10 +1225,10 @@ void __63__MPLibraryObjectDatabase_updateIdentifiersForResults_options___block_i
   v4.i16[0] = vaddlv_u8(v4);
   if (v4.u32[0] > 1uLL)
   {
-    v5 = *a2;
+    v5 = *options;
     if (*&v3 <= v2)
     {
-      v5 = v2 % a1[1];
+      v5 = v2 % results[1];
     }
   }
 
@@ -1237,7 +1237,7 @@ void __63__MPLibraryObjectDatabase_updateIdentifiersForResults_options___block_i
     v5 = (v3.i32[0] - 1) & v2;
   }
 
-  v6 = *(*a1 + 8 * v5);
+  v6 = *(*results + 8 * v5);
   if (!v6 || (v7 = *v6) == 0)
   {
 LABEL_18:
@@ -1286,13 +1286,13 @@ LABEL_17:
   return (v7 + 3);
 }
 
-- (uint64_t)updateIdentifiersForResults:(uint64_t)a1 options:
+- (uint64_t)updateIdentifiersForResults:(uint64_t)results options:
 {
-  v2 = *a1;
-  *a1 = 0;
+  v2 = *results;
+  *results = 0;
   if (v2)
   {
-    if (*(a1 + 16) == 1)
+    if (*(results + 16) == 1)
     {
       std::allocator_traits<std::allocator<std::__hash_node<std::__hash_value_type<mlcore::ModelEntityType,-[MPLibraryObjectDatabase updateIdentifiersForResults:options:]::Node>,void *>>>::destroy[abi:ne200100]<std::pair<mlcore::ModelEntityType const,-[MPLibraryObjectDatabase updateIdentifiersForResults:options:]::Node>,void,0>(v2 + 16);
     }
@@ -1300,28 +1300,28 @@ LABEL_17:
     operator delete(v2);
   }
 
-  return a1;
+  return results;
 }
 
-- (void)updateIdentifiersForResults:(uint64_t)a1 options:
+- (void)updateIdentifiersForResults:(uint64_t)results options:
 {
-  v2 = *(a1 + 24);
+  v2 = *(results + 24);
   if (v2)
   {
-    *(a1 + 32) = v2;
+    *(results + 32) = v2;
     operator delete(v2);
   }
 
-  v3 = *(a1 + 8);
+  v3 = *(results + 8);
 }
 
-- (void)updateTokensForResults:(id)a3
+- (void)updateTokensForResults:(id)results
 {
   v284 = *MEMORY[0x1E69E9840];
-  v192 = a3;
-  v195 = [(MPMediaLibrary *)self->_library uniqueIdentifier];
-  v219 = [(MPMediaLibrary *)self->_library currentEntityRevision];
-  v220 = self;
+  resultsCopy = results;
+  uniqueIdentifier = [(MPMediaLibrary *)self->_library uniqueIdentifier];
+  currentEntityRevision = [(MPMediaLibrary *)self->_library currentEntityRevision];
+  selfCopy = self;
   v4 = os_log_create("com.apple.amp.mediaplayer", "Library");
   v5 = os_signpost_id_generate(v4);
 
@@ -1350,13 +1350,13 @@ LABEL_17:
   v8 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    id = v220->_id;
+    id = selfCopy->_id;
     *buf = 67109634;
     *&buf[4] = id;
     *&buf[8] = 2114;
-    *&buf[10] = v195;
+    *&buf[10] = uniqueIdentifier;
     *&buf[18] = 1024;
-    *&buf[20] = v219;
+    *&buf[20] = currentEntityRevision;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | begin [] libraryID=%{public}@ entityRevision=%d", buf, 0x18u);
   }
 
@@ -1364,9 +1364,9 @@ LABEL_17:
   v254 = 0u;
   v251 = 0u;
   v252 = 0u;
-  obj = v192;
+  obj = resultsCopy;
   v10 = [obj countByEnumeratingWithState:&v251 objects:v279 count:16];
-  v11 = v220;
+  v11 = selfCopy;
   if (v10)
   {
     v205 = *v252;
@@ -1400,12 +1400,12 @@ LABEL_17:
           _os_log_impl(&dword_1A238D000, v17, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | inspect [token] token={ .tokenID=%lld, .tokenRevision=%d, .databaseStorage={ .entityType=%d } } result=%@", buf, 0x28u);
         }
 
-        if (v16 == v219)
+        if (v16 == currentEntityRevision)
         {
           v19 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v20 = v220->_id;
+            v20 = selfCopy->_id;
             *buf = 67109378;
             *&buf[4] = v20;
             *&buf[8] = 2112;
@@ -1418,7 +1418,7 @@ LABEL_17:
         {
           if (v14)
           {
-            v21 = v16 < v219;
+            v21 = v16 < currentEntityRevision;
           }
 
           else
@@ -1428,31 +1428,31 @@ LABEL_17:
 
           if (!v21 || v16 == 0)
           {
-            v23 = [v13 inputIdentifiers];
+            inputIdentifiers = [v13 inputIdentifiers];
             v24 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
             {
-              v25 = v220->_id;
+              v25 = selfCopy->_id;
               *buf = 67109634;
               *&buf[4] = v25;
               *&buf[8] = 2112;
               *&buf[10] = v13;
               *&buf[18] = 2114;
-              *&buf[20] = v23;
+              *&buf[20] = inputIdentifiers;
               _os_log_impl(&dword_1A238D000, v24, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | inspect [idSet] result=%@ identifiers=%{public}@", buf, 0x1Cu);
             }
 
-            v216 = v23;
+            v216 = inputIdentifiers;
 
             v26 = +[MPIdentifierSet emptyIdentifierSet];
-            v27 = v23 == v26;
+            v27 = inputIdentifiers == v26;
 
             if (v27)
             {
               v29 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
               if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
               {
-                v54 = v220->_id;
+                v54 = selfCopy->_id;
                 *buf = 67109378;
                 *&buf[4] = v54;
                 *&buf[8] = 2112;
@@ -1463,16 +1463,16 @@ LABEL_17:
               goto LABEL_93;
             }
 
-            v28 = [v23 library];
-            v29 = v28;
-            if (!v28)
+            library = [inputIdentifiers library];
+            v29 = library;
+            if (!library)
             {
               goto LABEL_34;
             }
 
-            v30 = [v28 databaseID];
-            v31 = v195;
-            v32 = v30;
+            databaseID = [library databaseID];
+            v31 = uniqueIdentifier;
+            v32 = databaseID;
             v33 = v31;
             v34 = v33;
             if (v32 == v33)
@@ -1488,7 +1488,7 @@ LABEL_17:
                 v36 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
                 if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
                 {
-                  v37 = v220->_id;
+                  v37 = selfCopy->_id;
                   *buf = 67109634;
                   *&buf[4] = v37;
                   *&buf[8] = 2112;
@@ -1499,35 +1499,35 @@ LABEL_17:
                 }
 
 LABEL_34:
-                v212 = v23;
+                v212 = inputIdentifiers;
                 v196 = v29;
-                v38 = [v212 universalStore];
-                v39 = [v38 subscriptionAdamID];
+                universalStore = [v212 universalStore];
+                subscriptionAdamID = [universalStore subscriptionAdamID];
 
-                v40 = [v212 universalStore];
-                v41 = [v40 purchasedAdamID];
+                universalStore2 = [v212 universalStore];
+                purchasedAdamID = [universalStore2 purchasedAdamID];
 
-                v42 = [v212 universalStore];
-                v43 = [v42 adamID];
+                universalStore3 = [v212 universalStore];
+                adamID = [universalStore3 adamID];
 
-                if (v41 == v39)
+                if (purchasedAdamID == subscriptionAdamID)
                 {
                   v44 = 0;
                 }
 
                 else
                 {
-                  v44 = v41;
+                  v44 = purchasedAdamID;
                 }
 
-                if (v43 == v39)
+                if (adamID == subscriptionAdamID)
                 {
                   v45 = 0;
                 }
 
                 else
                 {
-                  v45 = v43;
+                  v45 = adamID;
                 }
 
                 if (v45 == v44)
@@ -1540,47 +1540,47 @@ LABEL_34:
                   v46 = v45;
                 }
 
-                v47 = [v212 modelKind];
-                v48 = [v47 identityKind];
+                modelKind = [v212 modelKind];
+                identityKind = [modelKind identityKind];
                 v49 = +[MPModelAlbumKind identityKind];
-                v50 = v48 == v49;
+                v50 = identityKind == v49;
 
                 if (v50)
                 {
-                  v58 = [v212 personalizedStore];
-                  v200 = [v58 cloudAlbumID];
+                  personalizedStore = [v212 personalizedStore];
+                  cloudAlbumID = [personalizedStore cloudAlbumID];
                 }
 
                 else
                 {
-                  v200 = 0;
+                  cloudAlbumID = 0;
                 }
 
-                v59 = [v212 universalStore];
-                *v269 = [v59 universalCloudLibraryID];
-                v201 = v200;
+                universalStore4 = [v212 universalStore];
+                *v269 = [universalStore4 universalCloudLibraryID];
+                v201 = cloudAlbumID;
                 *&v270 = v201;
-                v197 = [v212 universalStore];
-                *(&v270 + 1) = [v197 globalPlaylistID];
-                v60 = [v212 opaqueID];
+                universalStore5 = [v212 universalStore];
+                *(&v270 + 1) = [universalStore5 globalPlaylistID];
+                opaqueID = [v212 opaqueID];
                 v273 = 0;
                 v274 = 0;
                 v272 = 0;
-                v271 = v60;
-                v275 = v39;
+                v271 = opaqueID;
+                v275 = subscriptionAdamID;
                 v276 = v44;
                 v277 = v46;
-                v61 = [v212 library];
-                v278 = [v61 containedPersistentID];
+                library2 = [v212 library];
+                containedPersistentID = [library2 containedPersistentID];
 
                 v265 = 0u;
                 v266 = 0u;
                 v263 = 0u;
                 v264 = 0u;
-                v62 = [v212 universalStore];
-                v63 = [v62 formerAdamIDs];
+                universalStore6 = [v212 universalStore];
+                formerAdamIDs = [universalStore6 formerAdamIDs];
 
-                v64 = [v63 countByEnumeratingWithState:&v263 objects:buf count:16];
+                v64 = [formerAdamIDs countByEnumeratingWithState:&v263 objects:buf count:16];
                 if (v64)
                 {
                   v65 = *v264;
@@ -1590,17 +1590,17 @@ LABEL_34:
                     {
                       if (*v264 != v65)
                       {
-                        objc_enumerationMutation(v63);
+                        objc_enumerationMutation(formerAdamIDs);
                       }
 
-                      v262 = [*(*(&v263 + 1) + 8 * j) longLongValue];
-                      if (v262)
+                      longLongValue = [*(*(&v263 + 1) + 8 * j) longLongValue];
+                      if (longLongValue)
                       {
-                        std::vector<long long>::push_back[abi:ne200100](&v272, &v262);
+                        std::vector<long long>::push_back[abi:ne200100](&v272, &longLongValue);
                       }
                     }
 
-                    v64 = [v63 countByEnumeratingWithState:&v263 objects:buf count:16];
+                    v64 = [formerAdamIDs countByEnumeratingWithState:&v263 objects:buf count:16];
                   }
 
                   while (v64);
@@ -1609,12 +1609,12 @@ LABEL_34:
                 v67 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
                 if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
                 {
-                  v68 = v220->_id;
+                  v68 = selfCopy->_id;
                   SearchIDs::SearchIDs(&v242, v269);
-                  v69 = [MEMORY[0x1E695DF90] dictionary];
-                  [v69 setObject:v242 forKeyedSubscript:@"ulid"];
-                  [v69 setObject:v243 forKeyedSubscript:@"cloudAlbumID"];
-                  [v69 setObject:v244 forKeyedSubscript:@"globalID"];
+                  dictionary = [MEMORY[0x1E695DF90] dictionary];
+                  [dictionary setObject:v242 forKeyedSubscript:@"ulid"];
+                  [dictionary setObject:v243 forKeyedSubscript:@"cloudAlbumID"];
+                  [dictionary setObject:v244 forKeyedSubscript:@"globalID"];
                   v70 = v248;
                   if (v248)
                   {
@@ -1626,7 +1626,7 @@ LABEL_34:
                     v71 = 0;
                   }
 
-                  [v69 setObject:v71 forKeyedSubscript:@"subscriptionAdamID"];
+                  [dictionary setObject:v71 forKeyedSubscript:@"subscriptionAdamID"];
                   if (v70)
                   {
                   }
@@ -1642,7 +1642,7 @@ LABEL_34:
                     v73 = 0;
                   }
 
-                  [v69 setObject:v73 forKeyedSubscript:@"purchasedAdamID"];
+                  [dictionary setObject:v73 forKeyedSubscript:@"purchasedAdamID"];
                   if (v72)
                   {
                   }
@@ -1658,12 +1658,12 @@ LABEL_34:
                     v75 = 0;
                   }
 
-                  [v69 setObject:v75 forKeyedSubscript:@"adamID"];
+                  [dictionary setObject:v75 forKeyedSubscript:@"adamID"];
                   if (v74)
                   {
                   }
 
-                  [v69 setObject:v245 forKeyedSubscript:@"opaqueID"];
+                  [dictionary setObject:v245 forKeyedSubscript:@"opaqueID"];
                   if (v247 != __p)
                   {
                     v76 = [MEMORY[0x1E695DF70] arrayWithCapacity:(v247 - __p) >> 3];
@@ -1677,18 +1677,18 @@ LABEL_34:
                       ++v77;
                     }
 
-                    [v69 setObject:v76 forKeyedSubscript:@"formerIDs"];
+                    [dictionary setObject:v76 forKeyedSubscript:@"formerIDs"];
                   }
 
-                  v80 = v69;
+                  v80 = dictionary;
 
-                  v81 = [v80 msv_compactDescription];
+                  msv_compactDescription = [v80 msv_compactDescription];
                   *buf = 67109634;
                   *&buf[4] = v68;
                   *&buf[8] = 2112;
                   *&buf[10] = v13;
                   *&buf[18] = 2112;
-                  *&buf[20] = v81;
+                  *&buf[20] = msv_compactDescription;
                   _os_log_impl(&dword_1A238D000, v67, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | moving result to slow-path [] result=%@ searchIDs=[%@]", buf, 0x1Cu);
 
                   if (__p)
@@ -1720,22 +1720,22 @@ LABEL_93:
               }
             }
 
-            v55 = [v29 persistentID];
+            persistentID = [v29 persistentID];
             v56 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
             if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
             {
-              v57 = v220->_id;
+              v57 = selfCopy->_id;
               *buf = 67109634;
               *&buf[4] = v57;
               *&buf[8] = 2112;
               *&buf[10] = v13;
               *&buf[18] = 2048;
-              *&buf[20] = v55;
+              *&buf[20] = persistentID;
               _os_log_impl(&dword_1A238D000, v56, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | moving result to fast-path [same libraryID] result=%@ pid=%lld", buf, 0x1Cu);
             }
 
             *buf = v13;
-            *&buf[8] = v55;
+            *&buf[8] = persistentID;
             std::vector<-[MPLibraryObjectDatabase updateTokensForResults:]::FastPathNode>::push_back[abi:ne200100](&v258, buf);
 
             goto LABEL_93;
@@ -1744,7 +1744,7 @@ LABEL_93:
           v51 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
           {
-            v53 = v220->_id;
+            v53 = selfCopy->_id;
             *buf = 67109634;
             *&buf[4] = v53;
             *&buf[8] = 2112;
@@ -1760,7 +1760,7 @@ LABEL_93:
         }
 
 LABEL_94:
-        v11 = v220;
+        v11 = selfCopy;
       }
 
       v10 = [obj countByEnumeratingWithState:&v251 objects:v279 count:16];
@@ -1783,7 +1783,7 @@ LABEL_94:
   v84 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
   {
-    v85 = v220->_id;
+    v85 = selfCopy->_id;
     *buf = 67109376;
     *&buf[4] = v85;
     *&buf[8] = 2048;
@@ -1805,7 +1805,7 @@ LABEL_94:
   v241[1] = 3221225472;
   v241[2] = __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke_38;
   v241[3] = &unk_1E7682518;
-  v241[4] = v220;
+  v241[4] = selfCopy;
   v202 = _Block_copy(v241);
   v270 = 0uLL;
   *v269 = 0;
@@ -1825,9 +1825,9 @@ LABEL_94:
   v240[1] = 3221225472;
   v240[2] = __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke_2;
   v240[3] = &unk_1E7682518;
-  v240[4] = v220;
+  v240[4] = selfCopy;
   v206 = _Block_copy(v240);
-  [(MSVSQLDatabase *)v220->_msvDatabase resultsForStatement:v220->_fastTokenLookup];
+  [(MSVSQLDatabase *)selfCopy->_msvDatabase resultsForStatement:selfCopy->_fastTokenLookup];
   v238 = 0u;
   v239 = 0u;
   v236 = 0u;
@@ -1861,13 +1861,13 @@ LABEL_94:
         v100 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
         if (os_log_type_enabled(v100, OS_LOG_TYPE_DEBUG))
         {
-          v101 = v220->_id;
+          v101 = selfCopy->_id;
           *buf = 67110146;
           *&buf[4] = v101;
           *&buf[8] = 2048;
           *&buf[10] = v98;
           *&buf[18] = 1024;
-          *&buf[20] = v219;
+          *&buf[20] = currentEntityRevision;
           *&buf[24] = 1024;
           *&buf[26] = v93;
           *&buf[30] = 2112;
@@ -1875,7 +1875,7 @@ LABEL_94:
           _os_log_impl(&dword_1A238D000, v100, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | found [fast-path] token={ .tokenID=%lld, .tokenRevision=%d, .databaseStorage={ .entityType=%d } } result=%@", buf, 0x28u);
         }
 
-        [v99 setToken:v98 forDatabase:{v219 | (v93 << 56), v220}];
+        [v99 setToken:v98 forDatabase:{currentEntityRevision | (v93 << 56), selfCopy}];
         [v217 removeIndex:v95];
       }
 
@@ -1916,7 +1916,7 @@ LABEL_94:
     v107 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
     if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
     {
-      v108 = v220->_id;
+      v108 = selfCopy->_id;
       v109 = [v217 count];
       *buf = 67109376;
       *&buf[4] = v108;
@@ -1934,34 +1934,34 @@ LABEL_94:
 
       v203 = m;
       v210 = v258[2 * m];
-      v214 = [v210 inputIdentifiers];
-      v111 = [v214 universalStore];
-      v112 = [v111 subscriptionAdamID];
+      inputIdentifiers2 = [v210 inputIdentifiers];
+      universalStore7 = [inputIdentifiers2 universalStore];
+      subscriptionAdamID2 = [universalStore7 subscriptionAdamID];
 
-      v113 = [v214 universalStore];
-      v114 = [v113 purchasedAdamID];
+      universalStore8 = [inputIdentifiers2 universalStore];
+      purchasedAdamID2 = [universalStore8 purchasedAdamID];
 
-      v115 = [v214 universalStore];
-      v116 = [v115 adamID];
+      universalStore9 = [inputIdentifiers2 universalStore];
+      adamID2 = [universalStore9 adamID];
 
-      if (v114 == v112)
+      if (purchasedAdamID2 == subscriptionAdamID2)
       {
         v117 = 0;
       }
 
       else
       {
-        v117 = v114;
+        v117 = purchasedAdamID2;
       }
 
-      if (v116 == v112)
+      if (adamID2 == subscriptionAdamID2)
       {
         v118 = 0;
       }
 
       else
       {
-        v118 = v116;
+        v118 = adamID2;
       }
 
       if (v118 == v117)
@@ -1974,47 +1974,47 @@ LABEL_94:
         v119 = v118;
       }
 
-      v120 = [v214 modelKind];
-      v121 = [v120 identityKind];
+      modelKind2 = [inputIdentifiers2 modelKind];
+      identityKind2 = [modelKind2 identityKind];
       v122 = +[MPModelAlbumKind identityKind];
-      v123 = v121 == v122;
+      v123 = identityKind2 == v122;
 
       if (v123)
       {
-        v125 = [v214 personalizedStore];
-        v124 = [v125 cloudAlbumID];
+        personalizedStore2 = [inputIdentifiers2 personalizedStore];
+        cloudAlbumID2 = [personalizedStore2 cloudAlbumID];
       }
 
       else
       {
-        v124 = 0;
+        cloudAlbumID2 = 0;
       }
 
-      v207 = [v214 universalStore];
-      *v269 = [v207 universalCloudLibraryID];
-      v126 = v124;
+      universalStore10 = [inputIdentifiers2 universalStore];
+      *v269 = [universalStore10 universalCloudLibraryID];
+      v126 = cloudAlbumID2;
       *&v270 = v126;
-      v127 = [v214 universalStore];
-      *(&v270 + 1) = [v127 globalPlaylistID];
-      v128 = [v214 opaqueID];
+      universalStore11 = [inputIdentifiers2 universalStore];
+      *(&v270 + 1) = [universalStore11 globalPlaylistID];
+      opaqueID2 = [inputIdentifiers2 opaqueID];
       v273 = 0;
       v274 = 0;
       v272 = 0;
-      v271 = v128;
-      v275 = v112;
+      v271 = opaqueID2;
+      v275 = subscriptionAdamID2;
       v276 = v117;
       v277 = v119;
-      v129 = [v214 library];
-      v278 = [v129 containedPersistentID];
+      library3 = [inputIdentifiers2 library];
+      containedPersistentID = [library3 containedPersistentID];
 
       v265 = 0u;
       v266 = 0u;
       v263 = 0u;
       v264 = 0u;
-      v130 = [v214 universalStore];
-      v131 = [v130 formerAdamIDs];
+      universalStore12 = [inputIdentifiers2 universalStore];
+      formerAdamIDs2 = [universalStore12 formerAdamIDs];
 
-      v132 = [v131 countByEnumeratingWithState:&v263 objects:buf count:16];
+      v132 = [formerAdamIDs2 countByEnumeratingWithState:&v263 objects:buf count:16];
       if (v132)
       {
         v133 = *v264;
@@ -2024,17 +2024,17 @@ LABEL_94:
           {
             if (*v264 != v133)
             {
-              objc_enumerationMutation(v131);
+              objc_enumerationMutation(formerAdamIDs2);
             }
 
-            v262 = [*(*(&v263 + 1) + 8 * n) longLongValue];
-            if (v262)
+            longLongValue = [*(*(&v263 + 1) + 8 * n) longLongValue];
+            if (longLongValue)
             {
-              std::vector<long long>::push_back[abi:ne200100](&v272, &v262);
+              std::vector<long long>::push_back[abi:ne200100](&v272, &longLongValue);
             }
           }
 
-          v132 = [v131 countByEnumeratingWithState:&v263 objects:buf count:16];
+          v132 = [formerAdamIDs2 countByEnumeratingWithState:&v263 objects:buf count:16];
         }
 
         while (v132);
@@ -2043,12 +2043,12 @@ LABEL_94:
       v135 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
       if (os_log_type_enabled(v135, OS_LOG_TYPE_DEBUG))
       {
-        v136 = v220->_id;
+        v136 = selfCopy->_id;
         SearchIDs::SearchIDs(&v227, v269);
-        v137 = [MEMORY[0x1E695DF90] dictionary];
-        [v137 setObject:v227 forKeyedSubscript:@"ulid"];
-        [v137 setObject:v228 forKeyedSubscript:@"cloudAlbumID"];
-        [v137 setObject:v229 forKeyedSubscript:@"globalID"];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary2 setObject:v227 forKeyedSubscript:@"ulid"];
+        [dictionary2 setObject:v228 forKeyedSubscript:@"cloudAlbumID"];
+        [dictionary2 setObject:v229 forKeyedSubscript:@"globalID"];
         v138 = v233;
         if (v233)
         {
@@ -2060,7 +2060,7 @@ LABEL_94:
           v139 = 0;
         }
 
-        [v137 setObject:v139 forKeyedSubscript:@"subscriptionAdamID"];
+        [dictionary2 setObject:v139 forKeyedSubscript:@"subscriptionAdamID"];
         if (v138)
         {
         }
@@ -2076,7 +2076,7 @@ LABEL_94:
           v141 = 0;
         }
 
-        [v137 setObject:v141 forKeyedSubscript:@"purchasedAdamID"];
+        [dictionary2 setObject:v141 forKeyedSubscript:@"purchasedAdamID"];
         if (v140)
         {
         }
@@ -2092,12 +2092,12 @@ LABEL_94:
           v143 = 0;
         }
 
-        [v137 setObject:v143 forKeyedSubscript:@"adamID"];
+        [dictionary2 setObject:v143 forKeyedSubscript:@"adamID"];
         if (v142)
         {
         }
 
-        [v137 setObject:v230 forKeyedSubscript:@"opaqueID"];
+        [dictionary2 setObject:v230 forKeyedSubscript:@"opaqueID"];
         if (v232 != v231)
         {
           v144 = [MEMORY[0x1E695DF70] arrayWithCapacity:(v232 - v231) >> 3];
@@ -2111,18 +2111,18 @@ LABEL_94:
             ++v145;
           }
 
-          [v137 setObject:v144 forKeyedSubscript:@"formerIDs"];
+          [dictionary2 setObject:v144 forKeyedSubscript:@"formerIDs"];
         }
 
-        v148 = v137;
+        v148 = dictionary2;
 
-        v149 = [v148 msv_compactDescription];
+        msv_compactDescription2 = [v148 msv_compactDescription];
         *buf = 67109634;
         *&buf[4] = v136;
         *&buf[8] = 2112;
         *&buf[10] = v210;
         *&buf[18] = 2112;
-        *&buf[20] = v149;
+        *&buf[20] = msv_compactDescription2;
         _os_log_impl(&dword_1A238D000, v135, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | moving result to slow-path [missed fast-path] result=%@ searchIDs=[%@]", buf, 0x1Cu);
 
         if (v231)
@@ -2169,7 +2169,7 @@ LABEL_94:
   v154 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v154, OS_LOG_TYPE_DEBUG))
   {
-    v155 = v220->_id;
+    v155 = selfCopy->_id;
     *buf = 67109376;
     *&buf[4] = v155;
     *&buf[8] = 2048;
@@ -2204,7 +2204,7 @@ LABEL_94:
   v226[1] = 3221225472;
   v226[2] = __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke_42;
   v226[3] = &unk_1E7682518;
-  v226[4] = v220;
+  v226[4] = selfCopy;
   v204 = _Block_copy(v226);
   v198 = v263;
   [MSVSQLStatement _bindVariantArray:"_bindVariantArray:length:toParameterNamed:" length:? toParameterNamed:?];
@@ -2212,9 +2212,9 @@ LABEL_94:
   v225[1] = 3221225472;
   v225[2] = __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke_2_46;
   v225[3] = &unk_1E7682518;
-  v225[4] = v220;
+  v225[4] = selfCopy;
   v208 = _Block_copy(v225);
-  [(MSVSQLDatabase *)v220->_msvDatabase resultsForStatement:v220->_slowTokenLookup];
+  [(MSVSQLDatabase *)selfCopy->_msvDatabase resultsForStatement:selfCopy->_slowTokenLookup];
   v223 = 0u;
   v224 = 0u;
   v221 = 0u;
@@ -2249,13 +2249,13 @@ LABEL_94:
         v169 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
         if (os_log_type_enabled(v169, OS_LOG_TYPE_DEBUG))
         {
-          v170 = v220->_id;
+          v170 = selfCopy->_id;
           *v269 = 67110146;
           *&v269[4] = v170;
           LOWORD(v270) = 2048;
           *(&v270 + 2) = v164;
           WORD5(v270) = 1024;
-          HIDWORD(v270) = v219;
+          HIDWORD(v270) = currentEntityRevision;
           LOWORD(v271) = 1024;
           *(&v271 + 2) = v163;
           HIWORD(v271) = 2112;
@@ -2263,7 +2263,7 @@ LABEL_94:
           _os_log_impl(&dword_1A238D000, v169, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | found [slow-path] token={ .tokenID=%lld, .tokenRevision=%d, .databaseStorage={ .entityType=%d } } result=%@", v269, 0x28u);
         }
 
-        [v168 setToken:v164 forDatabase:{v219 | (v163 << 56), v220}];
+        [v168 setToken:v164 forDatabase:{currentEntityRevision | (v163 << 56), selfCopy}];
         [v218 removeIndex:v166];
 
         if (v282)
@@ -2305,14 +2305,14 @@ LABEL_94:
     v176 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
     if (os_log_type_enabled(v176, OS_LOG_TYPE_DEBUG))
     {
-      v177 = v220->_id;
+      v177 = selfCopy->_id;
       v178 = [v218 count];
       *buf = 67109632;
       *&buf[4] = v177;
       *&buf[8] = 2048;
       *&buf[10] = v178;
       *&buf[18] = 1024;
-      *&buf[20] = v219;
+      *&buf[20] = currentEntityRevision;
       _os_log_impl(&dword_1A238D000, v176, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | tombstone result tokens [not found] count=%lld entityRevision=%d", buf, 0x18u);
     }
 
@@ -2330,18 +2330,18 @@ LABEL_94:
       v182 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
       if (os_log_type_enabled(v182, OS_LOG_TYPE_DEBUG))
       {
-        v183 = v220->_id;
+        v183 = selfCopy->_id;
         *v269 = 67109634;
         *&v269[4] = v183;
         LOWORD(v270) = 2112;
         *(&v270 + 2) = v181;
         WORD5(v270) = 1024;
-        HIDWORD(v270) = v219;
+        HIDWORD(v270) = currentEntityRevision;
         _os_log_impl(&dword_1A238D000, v182, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | tombstone result token [not found] result=%@ entityRevision=%d", v269, 0x18u);
       }
 
-      [v181 setToken:0 forDatabase:{v219, v220}];
-      [v181 setIdentifiers:0 forDatabase:v220];
+      [v181 setToken:0 forDatabase:{currentEntityRevision, selfCopy}];
+      [v181 setIdentifiers:0 forDatabase:selfCopy];
 
       if (v282)
       {
@@ -2375,11 +2375,11 @@ LABEL_94:
   v188 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v188, OS_LOG_TYPE_DEBUG))
   {
-    v189 = v220->_id;
+    v189 = selfCopy->_id;
     *buf = 67109376;
     *&buf[4] = v189;
     *&buf[8] = 1024;
-    *&buf[10] = v219;
+    *&buf[10] = currentEntityRevision;
     _os_log_impl(&dword_1A238D000, v188, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] updateTokensForResults: | done [] entityRevision=%d", buf, 0xEu);
   }
 
@@ -2400,32 +2400,32 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
   }
 }
 
-- (void)updateTokensForResults:(uint64_t)a1
+- (void)updateTokensForResults:(uint64_t)results
 {
-  v2 = *(a1 + 40);
+  v2 = *(results + 40);
   if (v2)
   {
-    *(a1 + 48) = v2;
+    *(results + 48) = v2;
     operator delete(v2);
   }
 
-  v3 = *a1;
+  v3 = *results;
 }
 
-- (void)updateTokensForResults:(uint64_t *)a1
+- (void)updateTokensForResults:(uint64_t *)results
 {
-  v3 = a1[1];
-  v4 = a1[2];
+  v3 = results[1];
+  v4 = results[2];
   if (v3 >= v4)
   {
-    v10 = 0xAAAAAAAAAAAAAAABLL * ((v3 - *a1) >> 5);
+    v10 = 0xAAAAAAAAAAAAAAABLL * ((v3 - *results) >> 5);
     v11 = v10 + 1;
     if (v10 + 1 > 0x2AAAAAAAAAAAAAALL)
     {
       std::vector<std::string>::__throw_length_error[abi:ne200100]();
     }
 
-    v12 = 0xAAAAAAAAAAAAAAABLL * ((v4 - *a1) >> 5);
+    v12 = 0xAAAAAAAAAAAAAAABLL * ((v4 - *results) >> 5);
     if (2 * v12 > v11)
     {
       v11 = 2 * v12;
@@ -2468,13 +2468,13 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
     v18 = a2[5];
     *(v16 + 64) = a2[4];
     *(v16 + 80) = v18;
-    v19 = *a1;
-    v20 = a1[1];
-    v21 = v16 + *a1 - v20;
-    if (*a1 != v20)
+    v19 = *results;
+    v20 = results[1];
+    v21 = v16 + *results - v20;
+    if (*results != v20)
     {
-      v22 = *a1;
-      v23 = v16 + *a1 - v20;
+      v22 = *results;
+      v23 = v16 + *results - v20;
       do
       {
         v24 = *v22;
@@ -2507,13 +2507,13 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
       }
 
       while (v19 != v20);
-      v19 = *a1;
+      v19 = *results;
     }
 
     v9 = v16 + 96;
-    *a1 = v21;
-    a1[1] = v9;
-    a1[2] = 0;
+    *results = v21;
+    results[1] = v9;
+    results[2] = 0;
     if (v19)
     {
       operator delete(v19);
@@ -2543,28 +2543,28 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
     v9 = v3 + 96;
   }
 
-  a1[1] = v9;
+  results[1] = v9;
 }
 
-- (uint64_t)updateTokensForResults:(uint64_t)a1
+- (uint64_t)updateTokensForResults:(uint64_t)results
 {
-  v2 = *(a1 + 40);
+  v2 = *(results + 40);
   if (v2)
   {
-    *(a1 + 48) = v2;
+    *(results + 48) = v2;
     operator delete(v2);
   }
 
-  return a1;
+  return results;
 }
 
-- (void)updateTokensForResults:(void *)a1
+- (void)updateTokensForResults:(void *)results
 {
-  v2 = *a1;
-  if (*a1)
+  v2 = *results;
+  if (*results)
   {
-    v3 = a1[1];
-    v4 = *a1;
+    v3 = results[1];
+    v4 = *results;
     if (v3 != v2)
     {
       do
@@ -2574,22 +2574,22 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
       }
 
       while (v3 != v2);
-      v4 = *a1;
+      v4 = *results;
     }
 
-    a1[1] = v2;
+    results[1] = v2;
     operator delete(v4);
   }
 
-  return a1;
+  return results;
 }
 
-- (id)identifiersMatchingIdentifierSet:(id)a3 propertySet:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (id)identifiersMatchingIdentifierSet:(id)set propertySet:(id)propertySet options:(unint64_t)options error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  setCopy = set;
   v10 = [_MPLibraryObjectDatabaseProgressiveResult alloc];
-  v11 = v9;
+  v11 = setCopy;
   if (v10)
   {
     v21.receiver = v10;
@@ -2598,24 +2598,24 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
     v10 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_fastTokenLookup, a3);
+      objc_storeStrong(&v12->_fastTokenLookup, set);
     }
   }
 
   v22[0] = v10;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
 
-  v14 = [v13 objectEnumerator];
-  [(MPLibraryObjectDatabase *)self updateTokensForResults:v14];
+  objectEnumerator = [v13 objectEnumerator];
+  [(MPLibraryObjectDatabase *)self updateTokensForResults:objectEnumerator];
 
-  v15 = [v13 objectEnumerator];
-  [(MPLibraryObjectDatabase *)self updateIdentifiersForResults:v15 options:a5];
+  objectEnumerator2 = [v13 objectEnumerator];
+  [(MPLibraryObjectDatabase *)self updateIdentifiersForResults:objectEnumerator2 options:options];
 
-  v16 = [v13 firstObject];
-  v17 = v16;
-  if (v16)
+  firstObject = [v13 firstObject];
+  v17 = firstObject;
+  if (firstObject)
   {
-    v18 = *(v16 + 32);
+    v18 = *(firstObject + 32);
   }
 
   else
@@ -2649,19 +2649,19 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
   [(MPLibraryObjectDatabase *)&v4 dealloc];
 }
 
-- (MPLibraryObjectDatabase)initWithLibrary:(id)a3
+- (MPLibraryObjectDatabase)initWithLibrary:(id)library
 {
-  v6 = a3;
+  libraryCopy = library;
   v41.receiver = self;
   v41.super_class = MPLibraryObjectDatabase;
   v7 = [(MPLibraryObjectDatabase *)&v41 init];
   if (v7)
   {
     v7->_id = MSVNanoIDCreateFourChar();
-    objc_storeStrong(&v7->_library, a3);
-    v8 = [v6 msvDatabase];
+    objc_storeStrong(&v7->_library, library);
+    msvDatabase = [libraryCopy msvDatabase];
     msvDatabase = v7->_msvDatabase;
-    v7->_msvDatabase = v8;
+    v7->_msvDatabase = msvDatabase;
 
     [(MSVSQLDatabase *)v7->_msvDatabase _installArraySupport];
     v7->_lock._os_unfair_lock_opaque = 0;
@@ -2674,8 +2674,8 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
 
     if (v12)
     {
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v31 handleFailureInMethod:a2 object:v7 file:@"MPLibraryObjectDatabase.mm" lineNumber:215 description:{@"Failed to make SQL statement for _fastTokenLookup: %@ %@", @"WITH input AS (SELECT value, idx FROM msv_carray(@pids)) SELECT     CASE         WHEN container_item.container_item_pid IS NOT NULL THEN 7         WHEN entity_revision.entity_pid IS NOT NULL THEN             CASE entity_revision.class                 WHEN 0 THEN                     CASE media_type                         WHEN 0x0008 THEN 1                         WHEN 0x0408 THEN 1                         WHEN 0x0200 THEN 2                         WHEN 0x0800 THEN 3                         ELSE 0                     END                 WHEN 1 THEN 6                 WHEN 2 THEN 0                 WHEN 3 THEN 8                 WHEN 4 THEN 4                 WHEN 5 THEN 9                 WHEN 7 THEN 5                 WHEN 9 THEN 7                 ELSE 0             END         ELSE 0     END AS class, input.idx FROM input LEFT JOIN entity_revision ON     (entity_revision.entity_pid = input.value AND entity_revision.deleted = 0) LEFT JOIN item ON     entity_revision.entity_pid = item.item_pid LEFT JOIN container_item ON     container_item.container_item_pid = input.value WHERE     entity_revision.entity_pid IS NOT NULL OR container_item.container_item_pid IS NOT NULL", v12}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"MPLibraryObjectDatabase.mm" lineNumber:215 description:{@"Failed to make SQL statement for _fastTokenLookup: %@ %@", @"WITH input AS (SELECT value, idx FROM msv_carray(@pids)) SELECT     CASE         WHEN container_item.container_item_pid IS NOT NULL THEN 7         WHEN entity_revision.entity_pid IS NOT NULL THEN             CASE entity_revision.class                 WHEN 0 THEN                     CASE media_type                         WHEN 0x0008 THEN 1                         WHEN 0x0408 THEN 1                         WHEN 0x0200 THEN 2                         WHEN 0x0800 THEN 3                         ELSE 0                     END                 WHEN 1 THEN 6                 WHEN 2 THEN 0                 WHEN 3 THEN 8                 WHEN 4 THEN 4                 WHEN 5 THEN 9                 WHEN 7 THEN 5                 WHEN 9 THEN 7                 ELSE 0             END         ELSE 0     END AS class, input.idx FROM input LEFT JOIN entity_revision ON     (entity_revision.entity_pid = input.value AND entity_revision.deleted = 0) LEFT JOIN item ON     entity_revision.entity_pid = item.item_pid LEFT JOIN container_item ON     container_item.container_item_pid = input.value WHERE     entity_revision.entity_pid IS NOT NULL OR container_item.container_item_pid IS NOT NULL", v12}];
     }
 
     v14 = v7->_msvDatabase;
@@ -2688,8 +2688,8 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
 
     if (v16)
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v32 handleFailureInMethod:a2 object:v7 file:@"MPLibraryObjectDatabase.mm" lineNumber:256 description:{@"Failed to make SQL statement for _slowTokenLookup: %@ %@", @"WITH input AS (SELECT value, tag FROM msv_carray(@ids)) SELECT     CASE         WHEN item.item_pid IS NOT NULL THEN             CASE media_type                 WHEN 0x0008 THEN 1                 WHEN 0x0408 THEN 1                 WHEN 0x0200 THEN 2                 WHEN 0x0800 THEN 3                 ELSE 1             END         WHEN album.album_pid IS NOT NULL THEN 4         WHEN container.container_pid IS NOT NULL THEN 6         WHEN album_artist.album_artist_pid IS NOT NULL THEN 5     END AS class, COALESCE(item.item_pid, album.album_pid, container.container_pid, album_artist.album_artist_pid) AS pid, input.tag FROM input LEFT JOIN item_store ON     (item_store.cloud_universal_library_id = input.value OR     item_store.subscription_store_item_id IS NULLIF(CAST(input.value as INT), 0) OR     item_store.store_item_id IS NULLIF(CAST(input.value as INT), 0)) LEFT JOIN item USING (item_pid) LEFT JOIN album ON     (album.cloud_library_id = input.value OR      album.store_id IS NULLIF(CAST(input.value as INT), 0)) LEFT JOIN container ON     (container.cloud_universal_library_id = input.value OR      container.cloud_global_id = input.value) LEFT JOIN album_artist ON     (album_artist.cloud_universal_library_id = input.value OR      album_artist.store_id IS NULLIF(CAST(input.value as INT), 0)) WHERE     (item.item_pid IS NOT NULL AND (item_store.cloud_status > 0 OR item.base_location_id > 0)) OR      album.album_pid IS NOT NULL OR      container.container_pid IS NOT NULL OR      album_artist.album_artist_pid IS NOT NULL", v16}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v7 file:@"MPLibraryObjectDatabase.mm" lineNumber:256 description:{@"Failed to make SQL statement for _slowTokenLookup: %@ %@", @"WITH input AS (SELECT value, tag FROM msv_carray(@ids)) SELECT     CASE         WHEN item.item_pid IS NOT NULL THEN             CASE media_type                 WHEN 0x0008 THEN 1                 WHEN 0x0408 THEN 1                 WHEN 0x0200 THEN 2                 WHEN 0x0800 THEN 3                 ELSE 1             END         WHEN album.album_pid IS NOT NULL THEN 4         WHEN container.container_pid IS NOT NULL THEN 6         WHEN album_artist.album_artist_pid IS NOT NULL THEN 5     END AS class, COALESCE(item.item_pid, album.album_pid, container.container_pid, album_artist.album_artist_pid) AS pid, input.tag FROM input LEFT JOIN item_store ON     (item_store.cloud_universal_library_id = input.value OR     item_store.subscription_store_item_id IS NULLIF(CAST(input.value as INT), 0) OR     item_store.store_item_id IS NULLIF(CAST(input.value as INT), 0)) LEFT JOIN item USING (item_pid) LEFT JOIN album ON     (album.cloud_library_id = input.value OR      album.store_id IS NULLIF(CAST(input.value as INT), 0)) LEFT JOIN container ON     (container.cloud_universal_library_id = input.value OR      container.cloud_global_id = input.value) LEFT JOIN album_artist ON     (album_artist.cloud_universal_library_id = input.value OR      album_artist.store_id IS NULLIF(CAST(input.value as INT), 0)) WHERE     (item.item_pid IS NOT NULL AND (item_store.cloud_status > 0 OR item.base_location_id > 0)) OR      album.album_pid IS NOT NULL OR      container.container_pid IS NOT NULL OR      album_artist.album_artist_pid IS NOT NULL", v16}];
     }
 
     v18 = v7->_msvDatabase;
@@ -2702,8 +2702,8 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
 
     if (v20)
     {
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v33 handleFailureInMethod:a2 object:v7 file:@"MPLibraryObjectDatabase.mm" lineNumber:261 description:{@"Failed to make SQL statement for _containerItemsLookup: %@ %@", @"SELECT container_item_pid FROM container_item WHERE container_pid = @pid ORDER BY position", v20}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v7 file:@"MPLibraryObjectDatabase.mm" lineNumber:261 description:{@"Failed to make SQL statement for _containerItemsLookup: %@ %@", @"SELECT container_item_pid FROM container_item WHERE container_pid = @pid ORDER BY position", v20}];
     }
 
     v22 = v7->_msvDatabase;
@@ -2716,8 +2716,8 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
 
     if (v24)
     {
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v34 handleFailureInMethod:a2 object:v7 file:@"MPLibraryObjectDatabase.mm" lineNumber:267 description:{@"Failed to make SQL statement for _albumSongsLookup: %@ %@", @" SELECT item_pid FROM item WHERE album_pid = @pid and in_my_library = 1 ORDER BY (disc_number = 0), disc_number, (track_number = 0), track_number, title_order", v24}];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:v7 file:@"MPLibraryObjectDatabase.mm" lineNumber:267 description:{@"Failed to make SQL statement for _albumSongsLookup: %@ %@", @" SELECT item_pid FROM item WHERE album_pid = @pid and in_my_library = 1 ORDER BY (disc_number = 0), disc_number, (track_number = 0), track_number, title_order", v24}];
     }
 
     v26 = v7->_msvDatabase;
@@ -2730,8 +2730,8 @@ void __50__MPLibraryObjectDatabase_updateTokensForResults___block_invoke(uint64_
 
     if (v28)
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a2 object:v7 file:@"MPLibraryObjectDatabase.mm" lineNumber:274 description:{@"Failed to make SQL statement for _entityRevisionEnumeration: %@ %@", @" SELECT revision, entity_pid, deleted, class, revision_type FROM entity_revision WHERE revision > @revision ORDER BY revision", v28}];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler5 handleFailureInMethod:a2 object:v7 file:@"MPLibraryObjectDatabase.mm" lineNumber:274 description:{@"Failed to make SQL statement for _entityRevisionEnumeration: %@ %@", @" SELECT revision, entity_pid, deleted, class, revision_type FROM entity_revision WHERE revision > @revision ORDER BY revision", v28}];
     }
   }
 

@@ -1,58 +1,58 @@
 @interface SUCorePolicyMacUpdateBrain
-- (BOOL)isEqual:(id)a3;
-- (SUCorePolicyMacUpdateBrain)initWithAssetType:(id)a3 majorTargetBuild:(id)a4 minorTargetBuild:(id)a5 usingPolicies:(int64_t)a6 usingExtensions:(id)a7;
-- (SUCorePolicyMacUpdateBrain)initWithCoder:(id)a3;
-- (id)constructMASoftwareUpdateCatalogDownloadOptionsWithUUID:(id)a3 assetAudience:(id)a4;
-- (id)constructSoftwareUpdateMAAssetQueryWithPurpose:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SUCorePolicyMacUpdateBrain)initWithAssetType:(id)type majorTargetBuild:(id)build minorTargetBuild:(id)targetBuild usingPolicies:(int64_t)policies usingExtensions:(id)extensions;
+- (SUCorePolicyMacUpdateBrain)initWithCoder:(id)coder;
+- (id)constructMASoftwareUpdateCatalogDownloadOptionsWithUUID:(id)d assetAudience:(id)audience;
+- (id)constructSoftwareUpdateMAAssetQueryWithPurpose:(id)purpose;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
-- (void)selectSoftwareUpdateMajorPrimaryAsset:(id *)a3 majorSecondaryAsset:(id *)a4 minorPrimaryAsset:(id *)a5 minorSecondaryAsset:(id *)a6 fromAssetQuery:(id)a7;
+- (void)encodeWithCoder:(id)coder;
+- (void)selectSoftwareUpdateMajorPrimaryAsset:(id *)asset majorSecondaryAsset:(id *)secondaryAsset minorPrimaryAsset:(id *)primaryAsset minorSecondaryAsset:(id *)minorSecondaryAsset fromAssetQuery:(id)query;
 @end
 
 @implementation SUCorePolicyMacUpdateBrain
 
-- (SUCorePolicyMacUpdateBrain)initWithAssetType:(id)a3 majorTargetBuild:(id)a4 minorTargetBuild:(id)a5 usingPolicies:(int64_t)a6 usingExtensions:(id)a7
+- (SUCorePolicyMacUpdateBrain)initWithAssetType:(id)type majorTargetBuild:(id)build minorTargetBuild:(id)targetBuild usingPolicies:(int64_t)policies usingExtensions:(id)extensions
 {
-  v13 = a4;
-  v14 = a5;
+  buildCopy = build;
+  targetBuildCopy = targetBuild;
   v19.receiver = self;
   v19.super_class = SUCorePolicyMacUpdateBrain;
-  v15 = [(SUCorePolicy *)&v19 initWithSoftwareUpdateAssetType:a3 documentationAssetType:0 usingPolicies:a6 usingExtensions:a7];
+  v15 = [(SUCorePolicy *)&v19 initWithSoftwareUpdateAssetType:type documentationAssetType:0 usingPolicies:policies usingExtensions:extensions];
   if (v15)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithInt:20];
     compatibilityVersion = v15->_compatibilityVersion;
     v15->_compatibilityVersion = v16;
 
-    objc_storeStrong(&v15->_majorTargetBuildVersion, a4);
-    objc_storeStrong(&v15->_minorTargetBuildVersion, a5);
+    objc_storeStrong(&v15->_majorTargetBuildVersion, build);
+    objc_storeStrong(&v15->_minorTargetBuildVersion, targetBuild);
   }
 
   return v15;
 }
 
-- (id)constructMASoftwareUpdateCatalogDownloadOptionsWithUUID:(id)a3 assetAudience:(id)a4
+- (id)constructMASoftwareUpdateCatalogDownloadOptionsWithUUID:(id)d assetAudience:(id)audience
 {
   v73 = *MEMORY[0x277D85DE8];
-  v54 = a3;
-  v5 = [MEMORY[0x277D64460] sharedLogger];
-  v6 = [v5 oslog];
+  dCopy = d;
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = [(SUCorePolicyMacUpdateBrain *)self description];
     *buf = 138543362;
     v72 = v7;
-    _os_log_impl(&dword_23193C000, v6, OS_LOG_TYPE_DEFAULT, "[POLICY] constructMASoftwareUpdateCatalogDownloadOptionsWithUUID for MacUpdateBrainPolicy: %{public}@", buf, 0xCu);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[POLICY] constructMASoftwareUpdateCatalogDownloadOptionsWithUUID for MacUpdateBrainPolicy: %{public}@", buf, 0xCu);
   }
 
   v69.receiver = self;
   v69.super_class = SUCorePolicyMacUpdateBrain;
-  v8 = [(SUCorePolicy *)&v69 softwareUpdateScanPolicy];
-  v9 = [v8 additionalServerParams];
-  v10 = [v9 mutableCopy];
+  softwareUpdateScanPolicy = [(SUCorePolicy *)&v69 softwareUpdateScanPolicy];
+  additionalServerParams = [softwareUpdateScanPolicy additionalServerParams];
+  v10 = [additionalServerParams mutableCopy];
 
   if (!v10)
   {
@@ -60,132 +60,132 @@
   }
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v12 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+  majorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
 
-  if (v12)
+  if (majorTargetBuildVersion)
   {
-    v13 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
-    [v11 addObject:v13];
+    majorTargetBuildVersion2 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+    [v11 addObject:majorTargetBuildVersion2];
   }
 
-  v14 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+  minorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
 
-  if (v14)
+  if (minorTargetBuildVersion)
   {
-    v15 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
-    [v11 addObject:v15];
+    minorTargetBuildVersion2 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+    [v11 addObject:minorTargetBuildVersion2];
   }
 
   v53 = v11;
   [v10 setSafeObject:v11 forKey:@"TargetBuildVersionArray"];
   v68.receiver = self;
   v68.super_class = SUCorePolicyMacUpdateBrain;
-  v16 = [(SUCorePolicy *)&v68 productType];
-  [v10 setSafeObject:v16 forKey:@"ProductType"];
+  productType = [(SUCorePolicy *)&v68 productType];
+  [v10 setSafeObject:productType forKey:@"ProductType"];
 
   v67.receiver = self;
   v67.super_class = SUCorePolicyMacUpdateBrain;
-  v17 = [(SUCorePolicy *)&v67 hwModelStr];
-  [v10 setSafeObject:v17 forKey:@"HWModelStr"];
+  hwModelStr = [(SUCorePolicy *)&v67 hwModelStr];
+  [v10 setSafeObject:hwModelStr forKey:@"HWModelStr"];
 
   v66.receiver = self;
   v66.super_class = SUCorePolicyMacUpdateBrain;
-  v18 = [(SUCorePolicy *)&v66 deviceClass];
-  [v10 setSafeObject:v18 forKey:@"DeviceName"];
+  deviceClass = [(SUCorePolicy *)&v66 deviceClass];
+  [v10 setSafeObject:deviceClass forKey:@"DeviceName"];
 
   v65.receiver = self;
   v65.super_class = SUCorePolicyMacUpdateBrain;
-  v19 = [(SUCorePolicy *)&v65 prerequisiteBuildVersion];
-  [v10 setSafeObject:v19 forKey:@"BuildVersion"];
+  prerequisiteBuildVersion = [(SUCorePolicy *)&v65 prerequisiteBuildVersion];
+  [v10 setSafeObject:prerequisiteBuildVersion forKey:@"BuildVersion"];
 
-  v20 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
-  [v10 setSafeObject:v20 forKey:@"CompatibilityVersion"];
+  compatibilityVersion = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
+  [v10 setSafeObject:compatibilityVersion forKey:@"CompatibilityVersion"];
 
   v21 = objc_alloc_init(MEMORY[0x277D28A18]);
   [v21 setDiscretionary:0];
-  [v21 setSessionId:v54];
+  [v21 setSessionId:dCopy];
   [v21 setAdditionalServerParams:v10];
-  v22 = [(SUCorePolicy *)self downloadAuthorizationHeader];
+  downloadAuthorizationHeader = [(SUCorePolicy *)self downloadAuthorizationHeader];
 
-  if (v22)
+  if (downloadAuthorizationHeader)
   {
     v64.receiver = self;
     v64.super_class = SUCorePolicyMacUpdateBrain;
-    v23 = [(SUCorePolicy *)&v64 downloadAuthorizationHeader];
-    [v21 setDownloadAuthorizationHeader:v23];
+    downloadAuthorizationHeader2 = [(SUCorePolicy *)&v64 downloadAuthorizationHeader];
+    [v21 setDownloadAuthorizationHeader:downloadAuthorizationHeader2];
   }
 
   v24 = [MEMORY[0x277CCAB68] stringWithString:@"|"];
-  v25 = [v21 sessionId];
-  [v24 appendFormat:@"scanUUID:%@|", v25];
+  sessionId = [v21 sessionId];
+  [v24 appendFormat:@"scanUUID:%@|", sessionId];
 
-  v26 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
-  [v24 appendFormat:@"CompatibilityVersion:%@|", v26];
+  compatibilityVersion2 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
+  [v24 appendFormat:@"CompatibilityVersion:%@|", compatibilityVersion2];
 
   v27 = [v11 componentsJoinedByString:{@", "}];
   [v24 appendFormat:@"TargetBuildVersionArray:%@|", v27];
 
   v63.receiver = self;
   v63.super_class = SUCorePolicyMacUpdateBrain;
-  v28 = [(SUCorePolicy *)&v63 productType];
+  productType2 = [(SUCorePolicy *)&v63 productType];
 
-  if (v28)
+  if (productType2)
   {
-    v29 = [(SUCorePolicy *)self productType];
-    [v24 appendFormat:@"ProductType:%@|", v29];
+    productType3 = [(SUCorePolicy *)self productType];
+    [v24 appendFormat:@"ProductType:%@|", productType3];
   }
 
   v62.receiver = self;
   v62.super_class = SUCorePolicyMacUpdateBrain;
-  v30 = [(SUCorePolicy *)&v62 hwModelStr];
+  hwModelStr2 = [(SUCorePolicy *)&v62 hwModelStr];
 
-  if (v30)
+  if (hwModelStr2)
   {
-    v31 = [(SUCorePolicy *)self hwModelStr];
-    [v24 appendFormat:@"HWModelStr:%@|", v31];
+    hwModelStr3 = [(SUCorePolicy *)self hwModelStr];
+    [v24 appendFormat:@"HWModelStr:%@|", hwModelStr3];
   }
 
   v61.receiver = self;
   v61.super_class = SUCorePolicyMacUpdateBrain;
-  v32 = [(SUCorePolicy *)&v61 deviceClass];
+  deviceClass2 = [(SUCorePolicy *)&v61 deviceClass];
 
-  if (v32)
+  if (deviceClass2)
   {
-    v33 = [(SUCorePolicy *)self deviceClass];
-    [v24 appendFormat:@"DeviceClass:%@|", v33];
+    deviceClass3 = [(SUCorePolicy *)self deviceClass];
+    [v24 appendFormat:@"DeviceClass:%@|", deviceClass3];
   }
 
   v60.receiver = self;
   v60.super_class = SUCorePolicyMacUpdateBrain;
-  v34 = [(SUCorePolicy *)&v60 prerequisiteBuildVersion];
+  prerequisiteBuildVersion2 = [(SUCorePolicy *)&v60 prerequisiteBuildVersion];
 
-  if (v34)
+  if (prerequisiteBuildVersion2)
   {
-    v35 = [(SUCorePolicy *)self prerequisiteBuildVersion];
-    [v24 appendFormat:@"BuildVersion:%@|", v35];
+    prerequisiteBuildVersion3 = [(SUCorePolicy *)self prerequisiteBuildVersion];
+    [v24 appendFormat:@"BuildVersion:%@|", prerequisiteBuildVersion3];
   }
 
   v52 = v10;
-  v36 = [MEMORY[0x277D64460] sharedLogger];
-  v37 = [v36 oslog];
+  mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+  oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-  if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v72 = v24;
-    _os_log_impl(&dword_23193C000, v37, OS_LOG_TYPE_DEFAULT, "[POLICY] MacUpdateBrain catalog download options summary: %{public}@", buf, 0xCu);
+    _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[POLICY] MacUpdateBrain catalog download options summary: %{public}@", buf, 0xCu);
   }
 
   v51 = v24;
 
-  v38 = [MEMORY[0x277D64460] sharedLogger];
-  v39 = [v38 oslog];
+  mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+  oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-  if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v72 = v21;
-    _os_log_impl(&dword_23193C000, v39, OS_LOG_TYPE_DEFAULT, "[POLICY] MacUpdateBrain catalog downloadOptions: %{public}@", buf, 0xCu);
+    _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[POLICY] MacUpdateBrain catalog downloadOptions: %{public}@", buf, 0xCu);
   }
 
   v58 = 0u;
@@ -194,8 +194,8 @@
   v57 = 0u;
   v55.receiver = self;
   v55.super_class = SUCorePolicyMacUpdateBrain;
-  v40 = [(SUCorePolicy *)&v55 policyExtensions];
-  v41 = [v40 countByEnumeratingWithState:&v56 objects:v70 count:16];
+  policyExtensions = [(SUCorePolicy *)&v55 policyExtensions];
+  v41 = [policyExtensions countByEnumeratingWithState:&v56 objects:v70 count:16];
   if (v41)
   {
     v42 = v41;
@@ -206,25 +206,25 @@
       {
         if (*v57 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(policyExtensions);
         }
 
         v45 = *(*(&v56 + 1) + 8 * i);
-        v46 = [MEMORY[0x277D64460] sharedLogger];
-        v47 = [v46 oslog];
+        mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+        oslog4 = [mEMORY[0x277D64460]4 oslog];
 
-        if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
         {
-          v48 = [v45 extensionName];
+          extensionName = [v45 extensionName];
           *buf = 138543362;
-          v72 = v48;
-          _os_log_impl(&dword_23193C000, v47, OS_LOG_TYPE_DEFAULT, "[POLICY] extending MacUpdateBrain catalog download options for extension %{public}@", buf, 0xCu);
+          v72 = extensionName;
+          _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "[POLICY] extending MacUpdateBrain catalog download options for extension %{public}@", buf, 0xCu);
         }
 
         [v45 extendMASoftwareUpdateCatalogDownloadOptions:v21];
       }
 
-      v42 = [v40 countByEnumeratingWithState:&v56 objects:v70 count:16];
+      v42 = [policyExtensions countByEnumeratingWithState:&v56 objects:v70 count:16];
     }
 
     while (v42);
@@ -235,99 +235,99 @@
   return v21;
 }
 
-- (id)constructSoftwareUpdateMAAssetQueryWithPurpose:(id)a3
+- (id)constructSoftwareUpdateMAAssetQueryWithPurpose:(id)purpose
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  purposeCopy = purpose;
   v5 = [MEMORY[0x277CCAB68] stringWithString:@"|"];
-  v6 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v7 = objc_alloc(MEMORY[0x277D289D8]);
   v56.receiver = self;
   v56.super_class = SUCorePolicyMacUpdateBrain;
-  v8 = [(SUCorePolicy *)&v56 softwareUpdateAssetType];
-  v47 = v4;
-  v9 = [v7 initWithType:v8 andPurpose:v4];
+  softwareUpdateAssetType = [(SUCorePolicy *)&v56 softwareUpdateAssetType];
+  v47 = purposeCopy;
+  v9 = [v7 initWithType:softwareUpdateAssetType andPurpose:purposeCopy];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
-  v12 = [v10 stringWithFormat:@"%d", objc_msgSend(v11, "intValue")];
+  compatibilityVersion = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
+  v12 = [v10 stringWithFormat:@"%d", objc_msgSend(compatibilityVersion, "intValue")];
 
   [v9 addKeyValuePair:@"_CompatibilityVersion" with:v12];
   v45 = v12;
   [v5 appendFormat:@"CompatibilityVersion:%@", v12];
   v55.receiver = self;
   v55.super_class = SUCorePolicyMacUpdateBrain;
-  v13 = [(SUCorePolicy *)&v55 hwModelStr];
+  hwModelStr = [(SUCorePolicy *)&v55 hwModelStr];
 
   v14 = objc_alloc(MEMORY[0x277CBEB18]);
   v15 = v14;
-  if (v13)
+  if (hwModelStr)
   {
     v54.receiver = self;
     v54.super_class = SUCorePolicyMacUpdateBrain;
-    v16 = [(SUCorePolicy *)&v54 hwModelStr];
-    v17 = [v15 initWithObjects:{v6, v16, 0}];
+    hwModelStr2 = [(SUCorePolicy *)&v54 hwModelStr];
+    v17 = [v15 initWithObjects:{null, hwModelStr2, 0}];
     [v9 addKeyValueArray:@"SupportedDeviceModels" with:v17];
   }
 
   else
   {
-    v16 = [v14 initWithObjects:{v6, 0}];
-    [v9 addKeyValueArray:@"SupportedDeviceModels" with:v16];
+    hwModelStr2 = [v14 initWithObjects:{null, 0}];
+    [v9 addKeyValueArray:@"SupportedDeviceModels" with:hwModelStr2];
   }
 
-  v18 = [(SUCorePolicy *)self hwModelStr];
-  [v5 appendFormat:@"hwModelStr:%@|", v18];
+  hwModelStr3 = [(SUCorePolicy *)self hwModelStr];
+  [v5 appendFormat:@"hwModelStr:%@|", hwModelStr3];
 
   v53.receiver = self;
   v53.super_class = SUCorePolicyMacUpdateBrain;
-  v19 = [(SUCorePolicy *)&v53 productType];
+  productType = [(SUCorePolicy *)&v53 productType];
 
-  if (v19)
+  if (productType)
   {
     v20 = objc_alloc(MEMORY[0x277CBEB18]);
     v52.receiver = self;
     v52.super_class = SUCorePolicyMacUpdateBrain;
-    v21 = [(SUCorePolicy *)&v52 productType];
-    v22 = [v20 initWithObjects:{v6, v21, 0}];
+    productType2 = [(SUCorePolicy *)&v52 productType];
+    v22 = [v20 initWithObjects:{null, productType2, 0}];
     [v9 addKeyValueArray:@"SupportedDevices" with:v22];
   }
 
-  v23 = [(SUCorePolicy *)self productType];
-  [v5 appendFormat:@"productType:%@|", v23];
+  productType3 = [(SUCorePolicy *)self productType];
+  [v5 appendFormat:@"productType:%@|", productType3];
 
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v25 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+  majorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
 
-  if (v25)
+  if (majorTargetBuildVersion)
   {
-    v26 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
-    [v24 addObject:v26];
+    majorTargetBuildVersion2 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+    [v24 addObject:majorTargetBuildVersion2];
   }
 
-  v27 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+  minorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
 
-  if (v27)
+  if (minorTargetBuildVersion)
   {
-    v28 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
-    [v24 addObject:v28];
+    minorTargetBuildVersion2 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+    [v24 addObject:minorTargetBuildVersion2];
   }
 
-  [v24 addObject:v6];
+  [v24 addObject:null];
   v29 = v9;
   [v9 addKeyValueArray:@"Build" with:v24];
   v44 = v24;
   v30 = [v24 componentsJoinedByString:{@", "}];
   [v5 appendFormat:@"Builds:%@|", v30];
 
-  v31 = [MEMORY[0x277D64460] sharedLogger];
-  v32 = [v31 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v59 = v5;
-    _os_log_impl(&dword_23193C000, v32, OS_LOG_TYPE_DEFAULT, "[POLICY] querying MacUpdateBrain metadata: %{public}@", buf, 0xCu);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[POLICY] querying MacUpdateBrain metadata: %{public}@", buf, 0xCu);
   }
 
   v46 = v5;
@@ -336,8 +336,8 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v33 = [(SUCorePolicy *)self policyExtensions];
-  v34 = [v33 countByEnumeratingWithState:&v48 objects:v57 count:16];
+  policyExtensions = [(SUCorePolicy *)self policyExtensions];
+  v34 = [policyExtensions countByEnumeratingWithState:&v48 objects:v57 count:16];
   if (v34)
   {
     v35 = v34;
@@ -348,25 +348,25 @@
       {
         if (*v49 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(policyExtensions);
         }
 
         v38 = *(*(&v48 + 1) + 8 * i);
-        v39 = [MEMORY[0x277D64460] sharedLogger];
-        v40 = [v39 oslog];
+        mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+        oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-        if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
-          v41 = [v38 extensionName];
+          extensionName = [v38 extensionName];
           *buf = 138543362;
-          v59 = v41;
-          _os_log_impl(&dword_23193C000, v40, OS_LOG_TYPE_DEFAULT, "[POLICY] extending query for extension %{public}@", buf, 0xCu);
+          v59 = extensionName;
+          _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[POLICY] extending query for extension %{public}@", buf, 0xCu);
         }
 
         [v38 extendSoftwareUpdateMAAssetQuery:v29];
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v48 objects:v57 count:16];
+      v35 = [policyExtensions countByEnumeratingWithState:&v48 objects:v57 count:16];
     }
 
     while (v35);
@@ -377,66 +377,66 @@
   return v29;
 }
 
-- (void)selectSoftwareUpdateMajorPrimaryAsset:(id *)a3 majorSecondaryAsset:(id *)a4 minorPrimaryAsset:(id *)a5 minorSecondaryAsset:(id *)a6 fromAssetQuery:(id)a7
+- (void)selectSoftwareUpdateMajorPrimaryAsset:(id *)asset majorSecondaryAsset:(id *)secondaryAsset minorPrimaryAsset:(id *)primaryAsset minorSecondaryAsset:(id *)minorSecondaryAsset fromAssetQuery:(id)query
 {
   v71 = *MEMORY[0x277D85DE8];
-  v12 = a7;
-  v13 = [MEMORY[0x277D64460] sharedLogger];
-  v14 = [v13 oslog];
+  queryCopy = query;
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v67 = self;
-    _os_log_impl(&dword_23193C000, v14, OS_LOG_TYPE_DEFAULT, "[POLICY] Select major/minor MacUpdateBrain for policy: %{public}@", buf, 0xCu);
+    selfCopy = self;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[POLICY] Select major/minor MacUpdateBrain for policy: %{public}@", buf, 0xCu);
   }
 
-  if (a3)
+  if (asset)
   {
-    *a3 = 0;
+    *asset = 0;
   }
 
-  if (a4)
+  if (secondaryAsset)
   {
-    *a4 = 0;
+    *secondaryAsset = 0;
   }
 
-  if (a5)
+  if (primaryAsset)
   {
-    *a5 = 0;
+    *primaryAsset = 0;
   }
 
-  if (a6)
+  if (minorSecondaryAsset)
   {
-    *a6 = 0;
+    *minorSecondaryAsset = 0;
   }
 
-  v15 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+  majorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
 
-  if (a3 || !v15)
+  if (asset || !majorTargetBuildVersion)
   {
-    v19 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+    minorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
 
-    if (!a5 && v19)
+    if (!primaryAsset && minorTargetBuildVersion)
     {
-      v16 = [MEMORY[0x277D64428] sharedDiag];
-      v17 = v16;
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+      sUCoreBorder_results = mEMORY[0x277D64428];
       v18 = @"Select major/minor MacUpdateBrain called with unexpected nil minorPrimaryAsset param";
       goto LABEL_17;
     }
 
-    v17 = [v12 SUCoreBorder_results];
-    v20 = [v17 count];
-    v21 = [MEMORY[0x277D64460] sharedLogger];
-    v22 = [v21 oslog];
+    sUCoreBorder_results = [queryCopy SUCoreBorder_results];
+    v20 = [sUCoreBorder_results count];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-    v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
+    v23 = os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT);
     if (!v20)
     {
       if (v23)
       {
         *buf = 0;
-        _os_log_impl(&dword_23193C000, v22, OS_LOG_TYPE_DEFAULT, "[POLICY] 0 MacUpdateBrain query results (before filtering)", buf, 2u);
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[POLICY] 0 MacUpdateBrain query results (before filtering)", buf, 2u);
       }
 
       goto LABEL_57;
@@ -444,21 +444,21 @@
 
     if (v23)
     {
-      v24 = [v17 count];
+      v24 = [sUCoreBorder_results count];
       *buf = 134217984;
-      v67 = v24;
-      _os_log_impl(&dword_23193C000, v22, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu MacUpdateBrain query results (before filtering)", buf, 0xCu);
+      selfCopy = v24;
+      _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu MacUpdateBrain query results (before filtering)", buf, 0xCu);
     }
 
-    v57 = a5;
-    v59 = v12;
+    primaryAssetCopy = primaryAsset;
+    v59 = queryCopy;
 
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v22 = [(SUCorePolicy *)self policyExtensions];
-    v25 = [v22 countByEnumeratingWithState:&v62 objects:v70 count:16];
+    oslog2 = [(SUCorePolicy *)self policyExtensions];
+    v25 = [oslog2 countByEnumeratingWithState:&v62 objects:v70 count:16];
     if (v25)
     {
       v26 = v25;
@@ -466,52 +466,52 @@
       while (2)
       {
         v28 = 0;
-        v29 = v17;
+        v29 = sUCoreBorder_results;
         do
         {
           if (*v63 != v27)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(oslog2);
           }
 
           v30 = *(*(&v62 + 1) + 8 * v28);
-          v17 = [v30 filterSoftwareUpdateAssetArray:{v29, v57}];
+          sUCoreBorder_results = [v30 filterSoftwareUpdateAssetArray:{v29, primaryAssetCopy}];
 
-          v31 = [MEMORY[0x277D64460] sharedLogger];
-          v32 = [v31 oslog];
+          mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+          oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-          if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [v17 count];
-            v34 = [v30 extensionName];
+            v33 = [sUCoreBorder_results count];
+            extensionName = [v30 extensionName];
             *buf = 134218242;
-            v67 = v33;
+            selfCopy = v33;
             v68 = 2114;
-            v69 = v34;
-            _os_log_impl(&dword_23193C000, v32, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu assets left after filtering from SUCorePolicyExtension %{public}@", buf, 0x16u);
+            v69 = extensionName;
+            _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu assets left after filtering from SUCorePolicyExtension %{public}@", buf, 0x16u);
           }
 
-          if (![v17 count])
+          if (![sUCoreBorder_results count])
           {
-            v43 = [MEMORY[0x277D64460] sharedLogger];
-            v44 = [v43 oslog];
+            mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+            oslog4 = [mEMORY[0x277D64460]4 oslog];
 
-            if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&dword_23193C000, v44, OS_LOG_TYPE_DEFAULT, "[POLICY] 0 assets found, stopping filtering early", buf, 2u);
+              _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "[POLICY] 0 assets found, stopping filtering early", buf, 2u);
             }
 
-            v12 = v59;
+            queryCopy = v59;
             goto LABEL_57;
           }
 
           ++v28;
-          v29 = v17;
+          v29 = sUCoreBorder_results;
         }
 
         while (v26 != v28);
-        v26 = [v22 countByEnumeratingWithState:&v62 objects:v70 count:16];
+        v26 = [oslog2 countByEnumeratingWithState:&v62 objects:v70 count:16];
         if (v26)
         {
           continue;
@@ -521,9 +521,9 @@
       }
     }
 
-    v35 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+    majorTargetBuildVersion2 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
 
-    if (v35)
+    if (majorTargetBuildVersion2)
     {
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
@@ -531,41 +531,41 @@
       v61[3] = &unk_27892C8F8;
       v61[4] = self;
       v36 = [MEMORY[0x277CCAC30] predicateWithBlock:v61];
-      v37 = [v17 filteredArrayUsingPredicate:v36];
+      v37 = [sUCoreBorder_results filteredArrayUsingPredicate:v36];
 
-      v38 = [MEMORY[0x277D64460] sharedLogger];
-      v39 = [v38 oslog];
+      mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+      oslog5 = [mEMORY[0x277D64460]5 oslog];
 
-      if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
       {
         v40 = [v37 count];
         *buf = 134217984;
-        v67 = v40;
-        _os_log_impl(&dword_23193C000, v39, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu assets left after filtering for major assets in SUCorePolicyMacUpdateBrain", buf, 0xCu);
+        selfCopy = v40;
+        _os_log_impl(&dword_23193C000, oslog5, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu assets left after filtering for major assets in SUCorePolicyMacUpdateBrain", buf, 0xCu);
       }
 
       if ([v37 count] >= 2)
       {
-        v41 = [MEMORY[0x277D64460] sharedLogger];
-        v42 = [v41 oslog];
+        mEMORY[0x277D64460]6 = [MEMORY[0x277D64460] sharedLogger];
+        oslog6 = [mEMORY[0x277D64460]6 oslog];
 
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog6, OS_LOG_TYPE_ERROR))
         {
-          [SUCorePolicyMacUpdateBrain selectSoftwareUpdateMajorPrimaryAsset:v42 majorSecondaryAsset:? minorPrimaryAsset:? minorSecondaryAsset:? fromAssetQuery:?];
+          [SUCorePolicyMacUpdateBrain selectSoftwareUpdateMajorPrimaryAsset:oslog6 majorSecondaryAsset:? minorPrimaryAsset:? minorSecondaryAsset:? fromAssetQuery:?];
         }
       }
 
-      v22 = [v37 firstObject];
+      oslog2 = [v37 firstObject];
     }
 
     else
     {
-      v22 = 0;
+      oslog2 = 0;
     }
 
-    v45 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+    minorTargetBuildVersion2 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
 
-    if (v45)
+    if (minorTargetBuildVersion2)
     {
       v60[0] = MEMORY[0x277D85DD0];
       v60[1] = 3221225472;
@@ -573,35 +573,35 @@
       v60[3] = &unk_27892C8F8;
       v60[4] = self;
       v46 = [MEMORY[0x277CCAC30] predicateWithBlock:v60];
-      v47 = [v17 filteredArrayUsingPredicate:v46];
+      v47 = [sUCoreBorder_results filteredArrayUsingPredicate:v46];
 
-      v48 = [MEMORY[0x277D64460] sharedLogger];
-      v49 = [v48 oslog];
+      mEMORY[0x277D64460]7 = [MEMORY[0x277D64460] sharedLogger];
+      oslog7 = [mEMORY[0x277D64460]7 oslog];
 
-      if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog7, OS_LOG_TYPE_DEFAULT))
       {
         v50 = [v47 count];
         *buf = 134217984;
-        v67 = v50;
-        _os_log_impl(&dword_23193C000, v49, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu assets left after filtering for minor assets in SUCorePolicyMacUpdateBrain", buf, 0xCu);
+        selfCopy = v50;
+        _os_log_impl(&dword_23193C000, oslog7, OS_LOG_TYPE_DEFAULT, "[POLICY] %lu assets left after filtering for minor assets in SUCorePolicyMacUpdateBrain", buf, 0xCu);
       }
 
       v51 = v58;
-      v12 = v59;
+      queryCopy = v59;
       if ([v47 count] >= 2)
       {
-        v52 = [MEMORY[0x277D64460] sharedLogger];
-        v53 = [v52 oslog];
+        mEMORY[0x277D64460]8 = [MEMORY[0x277D64460] sharedLogger];
+        oslog8 = [mEMORY[0x277D64460]8 oslog];
 
-        if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog8, OS_LOG_TYPE_ERROR))
         {
-          [SUCorePolicyMacUpdateBrain selectSoftwareUpdateMajorPrimaryAsset:v53 majorSecondaryAsset:? minorPrimaryAsset:? minorSecondaryAsset:? fromAssetQuery:?];
+          [SUCorePolicyMacUpdateBrain selectSoftwareUpdateMajorPrimaryAsset:oslog8 majorSecondaryAsset:? minorPrimaryAsset:? minorSecondaryAsset:? fromAssetQuery:?];
         }
       }
 
-      v45 = [v47 firstObject];
+      minorTargetBuildVersion2 = [v47 firstObject];
 
-      if (!a3)
+      if (!asset)
       {
         goto LABEL_54;
       }
@@ -610,31 +610,31 @@
     else
     {
       v51 = v58;
-      v12 = v59;
-      if (!a3)
+      queryCopy = v59;
+      if (!asset)
       {
         goto LABEL_54;
       }
     }
 
-    v54 = v22;
-    *a3 = v22;
+    v54 = oslog2;
+    *asset = oslog2;
 LABEL_54:
     if (v51)
     {
-      v55 = v45;
-      *v51 = v45;
+      v55 = minorTargetBuildVersion2;
+      *v51 = minorTargetBuildVersion2;
     }
 
 LABEL_57:
     goto LABEL_58;
   }
 
-  v16 = [MEMORY[0x277D64428] sharedDiag];
-  v17 = v16;
+  mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+  sUCoreBorder_results = mEMORY[0x277D64428];
   v18 = @"Select major/minor MacUpdateBrain called with unexpected nil majorPrimaryAsset param";
 LABEL_17:
-  [v16 trackError:@"[POLICY] SELECT_UPDATE_ASSET" forReason:v18 withResult:8102 withError:0];
+  [mEMORY[0x277D64428] trackError:@"[POLICY] SELECT_UPDATE_ASSET" forReason:v18 withResult:8102 withError:0];
 LABEL_58:
 
   v56 = *MEMORY[0x277D85DE8];
@@ -712,23 +712,23 @@ uint64_t __141__SUCorePolicyMacUpdateBrain_selectSoftwareUpdateMajorPrimaryAsset
   return v7;
 }
 
-- (SUCorePolicyMacUpdateBrain)initWithCoder:(id)a3
+- (SUCorePolicyMacUpdateBrain)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SUCorePolicyMacUpdateBrain;
-  v5 = [(SUCorePolicy *)&v13 initWithCoder:v4];
+  v5 = [(SUCorePolicy *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CompatibilityVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CompatibilityVersion"];
     compatibilityVersion = v5->_compatibilityVersion;
     v5->_compatibilityVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MajorTargetBuildVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MajorTargetBuildVersion"];
     majorTargetBuildVersion = v5->_majorTargetBuildVersion;
     v5->_majorTargetBuildVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MinorTargetBuildVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MinorTargetBuildVersion"];
     minorTargetBuildVersion = v5->_minorTargetBuildVersion;
     v5->_minorTargetBuildVersion = v10;
   }
@@ -736,26 +736,26 @@ uint64_t __141__SUCorePolicyMacUpdateBrain_selectSoftwareUpdateMajorPrimaryAsset
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = SUCorePolicyMacUpdateBrain;
-  v4 = a3;
-  [(SUCorePolicy *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(SUCorePolicy *)&v8 encodeWithCoder:coderCopy];
   v5 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"CompatibilityVersion"];
+  [coderCopy encodeObject:v5 forKey:@"CompatibilityVersion"];
 
-  v6 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
-  [v4 encodeObject:v6 forKey:@"MajorTargetBuildVersion"];
+  majorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+  [coderCopy encodeObject:majorTargetBuildVersion forKey:@"MajorTargetBuildVersion"];
 
-  v7 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
-  [v4 encodeObject:v7 forKey:@"MinorTargetBuildVersion"];
+  minorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+  [coderCopy encodeObject:minorTargetBuildVersion forKey:@"MinorTargetBuildVersion"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -765,25 +765,25 @@ uint64_t __141__SUCorePolicyMacUpdateBrain_selectSoftwareUpdateMajorPrimaryAsset
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v17.receiver = self;
       v17.super_class = SUCorePolicyMacUpdateBrain;
       if ([(SUCorePolicy *)&v17 isEqual:v5])
       {
         v6 = MEMORY[0x277D643F8];
-        v7 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
-        v8 = [(SUCorePolicyMacUpdateBrain *)v5 compatibilityVersion];
-        if ([v6 numberIsEqual:v7 to:v8])
+        compatibilityVersion = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
+        compatibilityVersion2 = [(SUCorePolicyMacUpdateBrain *)v5 compatibilityVersion];
+        if ([v6 numberIsEqual:compatibilityVersion to:compatibilityVersion2])
         {
           v9 = MEMORY[0x277D643F8];
-          v10 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
-          v11 = [(SUCorePolicyMacUpdateBrain *)v5 majorTargetBuildVersion];
-          if ([v9 stringIsEqual:v10 to:v11])
+          majorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+          majorTargetBuildVersion2 = [(SUCorePolicyMacUpdateBrain *)v5 majorTargetBuildVersion];
+          if ([v9 stringIsEqual:majorTargetBuildVersion to:majorTargetBuildVersion2])
           {
             v12 = MEMORY[0x277D643F8];
-            v13 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
-            v14 = [(SUCorePolicyMacUpdateBrain *)v5 minorTargetBuildVersion];
-            v15 = [v12 stringIsEqual:v13 to:v14];
+            minorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+            minorTargetBuildVersion2 = [(SUCorePolicyMacUpdateBrain *)v5 minorTargetBuildVersion];
+            v15 = [v12 stringIsEqual:minorTargetBuildVersion to:minorTargetBuildVersion2];
           }
 
           else
@@ -813,21 +813,21 @@ uint64_t __141__SUCorePolicyMacUpdateBrain_selectSoftwareUpdateMajorPrimaryAsset
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SUCorePolicyMacUpdateBrain;
-  v4 = [(SUCorePolicy *)&v12 copyWithZone:a3];
-  v5 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
-  v6 = [v5 copy];
+  v4 = [(SUCorePolicy *)&v12 copyWithZone:zone];
+  compatibilityVersion = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
+  v6 = [compatibilityVersion copy];
   [v4 setCompatibilityVersion:v6];
 
-  v7 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
-  v8 = [v7 copy];
+  majorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+  v8 = [majorTargetBuildVersion copy];
   [v4 setMajorTargetBuildVersion:v8];
 
-  v9 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
-  v10 = [v9 copy];
+  minorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+  v10 = [minorTargetBuildVersion copy];
   [v4 setMinorTargetBuildVersion:v10];
 
   return v4;
@@ -836,13 +836,13 @@ uint64_t __141__SUCorePolicyMacUpdateBrain_selectSoftwareUpdateMajorPrimaryAsset
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
-  v5 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
-  v6 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+  compatibilityVersion = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
+  majorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+  minorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
   v10.receiver = self;
   v10.super_class = SUCorePolicyMacUpdateBrain;
   v7 = [(SUCorePolicy *)&v10 description];
-  v8 = [v3 stringWithFormat:@"SUCorePolicyMacUpdateBrain(compatibilityVersion:%@|majorTargetBuildVersion:%@|minorTargetBuildVersion:%@|super:%@)", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"SUCorePolicyMacUpdateBrain(compatibilityVersion:%@|majorTargetBuildVersion:%@|minorTargetBuildVersion:%@|super:%@)", compatibilityVersion, majorTargetBuildVersion, minorTargetBuildVersion, v7];
 
   return v8;
 }
@@ -851,45 +851,45 @@ uint64_t __141__SUCorePolicyMacUpdateBrain_selectSoftwareUpdateMajorPrimaryAsset
 {
   v15.receiver = self;
   v15.super_class = SUCorePolicyMacUpdateBrain;
-  v3 = [(SUCorePolicy *)&v15 summary];
-  v4 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
+  summary = [(SUCorePolicy *)&v15 summary];
+  compatibilityVersion = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
 
-  if (v4)
+  if (compatibilityVersion)
   {
-    v5 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
-    v6 = [v3 stringByAppendingFormat:@"|compatibilityVersion=%@", v5];
+    compatibilityVersion2 = [(SUCorePolicyMacUpdateBrain *)self compatibilityVersion];
+    v6 = [summary stringByAppendingFormat:@"|compatibilityVersion=%@", compatibilityVersion2];
 
-    v3 = v6;
+    summary = v6;
   }
 
-  v7 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+  majorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
 
-  if (v7)
+  if (majorTargetBuildVersion)
   {
-    v8 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
-    v9 = [v3 stringByAppendingFormat:@"|majorTargetBuildVersion=%@", v8];
+    majorTargetBuildVersion2 = [(SUCorePolicyMacUpdateBrain *)self majorTargetBuildVersion];
+    v9 = [summary stringByAppendingFormat:@"|majorTargetBuildVersion=%@", majorTargetBuildVersion2];
 
-    v3 = v9;
+    summary = v9;
   }
 
-  v10 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+  minorTargetBuildVersion = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
 
-  if (v10)
+  if (minorTargetBuildVersion)
   {
-    v11 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
-    v12 = [v3 stringByAppendingFormat:@"|minorTargetBuildVersion=%@", v11];
+    minorTargetBuildVersion2 = [(SUCorePolicyMacUpdateBrain *)self minorTargetBuildVersion];
+    v12 = [summary stringByAppendingFormat:@"|minorTargetBuildVersion=%@", minorTargetBuildVersion2];
 
-    v3 = v12;
+    summary = v12;
   }
 
-  if (([v3 isEqualToString:&stru_28469CC48] & 1) == 0)
+  if (([summary isEqualToString:&stru_28469CC48] & 1) == 0)
   {
-    v13 = [v3 stringByAppendingString:@"|"];
+    v13 = [summary stringByAppendingString:@"|"];
 
-    v3 = v13;
+    summary = v13;
   }
 
-  return v3;
+  return summary;
 }
 
 @end

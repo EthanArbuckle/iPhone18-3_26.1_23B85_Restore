@@ -1,9 +1,9 @@
 @interface TTSAudioBuffer
 - (AVAudioPCMBuffer)avBuffer;
 - (TTSAudioBuffer)init;
-- (TTSAudioBuffer)initWithFormat:(id)a3 frameCapacity:(unsigned int)a4;
+- (TTSAudioBuffer)initWithFormat:(id)format frameCapacity:(unsigned int)capacity;
 - (unsigned)frameLength;
-- (void)setFrameLength:(unsigned int)a3;
+- (void)setFrameLength:(unsigned int)length;
 @end
 
 @implementation TTSAudioBuffer
@@ -15,24 +15,24 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setFrameLength:(unsigned int)a3
+- (void)setFrameLength:(unsigned int)length
 {
   v5 = OBJC_IVAR___TTSAudioBuffer_frameLength;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = length;
 }
 
-- (TTSAudioBuffer)initWithFormat:(id)a3 frameCapacity:(unsigned int)a4
+- (TTSAudioBuffer)initWithFormat:(id)format frameCapacity:(unsigned int)capacity
 {
-  v5 = a3;
-  v6 = sub_1A938451C(v5, a4);
+  formatCopy = format;
+  v6 = sub_1A938451C(formatCopy, capacity);
 
   return v6;
 }
 
 - (AVAudioPCMBuffer)avBuffer
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A9383E18();
   v4 = v3;
 

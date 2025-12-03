@@ -1,32 +1,32 @@
 @interface MADPhotosBackupProcessingTask
-+ (id)taskWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6;
-- (BOOL)_shouldPerformBackup:(id)a3;
-- (BOOL)_shouldPerformBackupForCoreData:(id)a3;
++ (id)taskWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block;
+- (BOOL)_shouldPerformBackup:(id)backup;
+- (BOOL)_shouldPerformBackupForCoreData:(id)data;
 - (BOOL)isCancelled;
-- (MADPhotosBackupProcessingTask)initWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6;
-- (id)_legacyBackupFilepathForTask:(unint64_t)a3 withPhotoLibrary:(id)a4;
-- (int)_backupFullAnalysisForCoreDataDBWithPhotoLibrary:(id)a3 currentTimestamp:(int64_t)a4 encryptionManager:(id)a5;
-- (int)_backupFullAnalysisForPhotoLibrary:(id)a3 currentTimestamp:(int64_t)a4 encryptionManager:(id)a5;
-- (int)_changeLocalIdentifierToCloudIdentifierForPhotoLibrary:(id)a3 managedAssetBatch:(id)a4 managedObjectContext:(id)a5;
-- (int)_createBackupAtFilepath:(id)a3 forPhotoLibrary:(id)a4;
-- (int)_createBackupForCoreDataDBAtFilepath:(id)a3 forPhotoLibrary:(id)a4 persistentStoreCoordinator:(id)a5;
-- (int)_removePersistentStoresForCoordinator:(id)a3;
+- (MADPhotosBackupProcessingTask)initWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block;
+- (id)_legacyBackupFilepathForTask:(unint64_t)task withPhotoLibrary:(id)library;
+- (int)_backupFullAnalysisForCoreDataDBWithPhotoLibrary:(id)library currentTimestamp:(int64_t)timestamp encryptionManager:(id)manager;
+- (int)_backupFullAnalysisForPhotoLibrary:(id)library currentTimestamp:(int64_t)timestamp encryptionManager:(id)manager;
+- (int)_changeLocalIdentifierToCloudIdentifierForPhotoLibrary:(id)library managedAssetBatch:(id)batch managedObjectContext:(id)context;
+- (int)_createBackupAtFilepath:(id)filepath forPhotoLibrary:(id)library;
+- (int)_createBackupForCoreDataDBAtFilepath:(id)filepath forPhotoLibrary:(id)library persistentStoreCoordinator:(id)coordinator;
+- (int)_removePersistentStoresForCoordinator:(id)coordinator;
 - (int)_run;
-- (int)changeLocalIdentifierToCloudIdentifierForPhotoLibrary:(id)a3 managedObjectContext:(id)a4;
+- (int)changeLocalIdentifierToCloudIdentifierForPhotoLibrary:(id)library managedObjectContext:(id)context;
 - (int)run;
-- (void)_deleteIntermediateBackupDirectory:(id)a3;
-- (void)_removeLegacyBackupForTask:(unint64_t)a3 withPhotoLibrary:(id)a4;
-- (void)_sanitizeCoreDataDBWithManagedObjectContext:(id)a3;
+- (void)_deleteIntermediateBackupDirectory:(id)directory;
+- (void)_removeLegacyBackupForTask:(unint64_t)task withPhotoLibrary:(id)library;
+- (void)_sanitizeCoreDataDBWithManagedObjectContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation MADPhotosBackupProcessingTask
 
-- (MADPhotosBackupProcessingTask)initWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6
+- (MADPhotosBackupProcessingTask)initWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = MADPhotosBackupProcessingTask;
   v12 = [(MADPhotosBackupProcessingTask *)&v24 init];
@@ -36,13 +36,13 @@
     logPrefix = v12->_logPrefix;
     v12->_logPrefix = @"  [Photos][Backup][MACD][MediaAnalysis]";
 
-    v15 = objc_retainBlock(v9);
+    v15 = objc_retainBlock(handlerCopy);
     progressHandler = v13->_progressHandler;
     v13->_progressHandler = v15;
 
-    if (v10)
+    if (completionHandlerCopy)
     {
-      v17 = v10;
+      v17 = completionHandlerCopy;
     }
 
     else
@@ -54,9 +54,9 @@
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v18;
 
-    if (v11)
+    if (blockCopy)
     {
-      v20 = v11;
+      v20 = blockCopy;
     }
 
     else
@@ -72,13 +72,13 @@
   return v13;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 andProgressHandler:(id)a4 andCompletionHandler:(id)a5 andCancelBlock:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler andCancelBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:v9 andProgressHandler:v10 andCompletionHandler:v11 andCancelBlock:v12];
+  librariesCopy = libraries;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
+  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:librariesCopy andProgressHandler:handlerCopy andCompletionHandler:completionHandlerCopy andCancelBlock:blockCopy];
 
   return v13;
 }
@@ -111,12 +111,12 @@
   return v3 & 1;
 }
 
-- (BOOL)_shouldPerformBackup:(id)a3
+- (BOOL)_shouldPerformBackup:(id)backup
 {
-  v3 = a3;
+  backupCopy = backup;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 vcp_mediaAnalysisDatabaseFilepath];
-  if ([v4 fileExistsAtPath:v5])
+  vcp_mediaAnalysisDatabaseFilepath = [backupCopy vcp_mediaAnalysisDatabaseFilepath];
+  if ([v4 fileExistsAtPath:vcp_mediaAnalysisDatabaseFilepath])
   {
     v6 = MADLastAnalysisBackupTimestampKeyForTask(1);
     if (!v6)
@@ -135,7 +135,7 @@
       goto LABEL_52;
     }
 
-    v7 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v3];
+    v7 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:backupCopy];
     v8 = [v7 backup_valueForKey:v6];
     if (!v8)
     {
@@ -360,11 +360,11 @@ LABEL_53:
   return v19;
 }
 
-- (BOOL)_shouldPerformBackupForCoreData:(id)a3
+- (BOOL)_shouldPerformBackupForCoreData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[NSFileManager defaultManager];
-  v6 = [MADPhotosDataStoreClient defaultDatabasePathForPhotoLibrary:v4];
+  v6 = [MADPhotosDataStoreClient defaultDatabasePathForPhotoLibrary:dataCopy];
   if ([v5 fileExistsAtPath:v6])
   {
     v7 = MADLastAnalysisBackupTimestampKeyForTask(1);
@@ -386,7 +386,7 @@ LABEL_53:
       goto LABEL_47;
     }
 
-    if (!+[MADManagedKeyValueStore isMACDReadEnabled](MADManagedKeyValueStore, "isMACDReadEnabled") || ([v4 mad_fetchRequest], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "dataStoreValueForKey:", v7), v8, !v9))
+    if (!+[MADManagedKeyValueStore isMACDReadEnabled](MADManagedKeyValueStore, "isMACDReadEnabled") || ([dataCopy mad_fetchRequest], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "dataStoreValueForKey:", v7), v8, !v9))
     {
       if (MediaAnalysisLogLevel() >= 6)
       {
@@ -408,8 +408,8 @@ LABEL_53:
     v50 = +[NSDate now];
     if (+[MADManagedPhotosAsset isMACDReadEnabled])
     {
-      v11 = [v4 mad_fetchRequest];
-      v12 = [v11 fetchModifiedAssetCountSinceDate:v10];
+      mad_fetchRequest = [dataCopy mad_fetchRequest];
+      v12 = [mad_fetchRequest fetchModifiedAssetCountSinceDate:v10];
     }
 
     else
@@ -419,8 +419,8 @@ LABEL_53:
 
     if (+[MADManagedKeyValueStore isMACDReadEnabled])
     {
-      v20 = [v4 mad_fetchRequest];
-      v21 = [v20 dataStoreValueForKey:@"HasDeletedAssetsSinceLastBackup"] != 0;
+      mad_fetchRequest2 = [dataCopy mad_fetchRequest];
+      v21 = [mad_fetchRequest2 dataStoreValueForKey:@"HasDeletedAssetsSinceLastBackup"] != 0;
     }
 
     else
@@ -458,7 +458,7 @@ LABEL_53:
         v51[3] = &unk_100285478;
         v53 = v26;
         v52 = v7;
-        [v4 mad_performAnalysisDataStoreChanges:v51 error:0];
+        [dataCopy mad_performAnalysisDataStoreChanges:v51 error:0];
 
         goto LABEL_29;
       }
@@ -659,16 +659,16 @@ LABEL_48:
   return v15;
 }
 
-- (int)_createBackupAtFilepath:(id)a3 forPhotoLibrary:(id)a4
+- (int)_createBackupAtFilepath:(id)filepath forPhotoLibrary:(id)library
 {
-  v59 = a3;
-  v60 = a4;
+  filepathCopy = filepath;
+  libraryCopy = library;
   context = objc_autoreleasePoolPush();
   v68 = NSFileProtectionKey;
   v69 = NSFileProtectionCompleteUntilFirstUserAuthentication;
   v56 = [NSDictionary dictionaryWithObjects:&v69 forKeys:&v68 count:1];
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 createFileAtPath:v59 contents:0 attributes:v56];
+  v6 = [v5 createFileAtPath:filepathCopy contents:0 attributes:v56];
 
   if ((v6 & 1) == 0)
   {
@@ -686,7 +686,7 @@ LABEL_48:
     goto LABEL_86;
   }
 
-  v50 = [NSOutputStream outputStreamToFileAtPath:v59 append:0];
+  v50 = [NSOutputStream outputStreamToFileAtPath:filepathCopy append:0];
   [v50 open];
   v49 = [VCPBackupFileHeader headerForTask:1];
   v58 = [v49 writeToStream:v50];
@@ -705,8 +705,8 @@ LABEL_48:
     goto LABEL_85;
   }
 
-  v52 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v60];
-  v48 = [PHAsset vcp_fetchOptionsForLibrary:v60 forTaskID:1];
+  v52 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+  v48 = [PHAsset vcp_fetchOptionsForLibrary:libraryCopy forTaskID:1];
   v9 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:1];
   v67 = v9;
   v10 = [NSArray arrayWithObjects:&v67 count:1];
@@ -737,11 +737,11 @@ LABEL_48:
       [v16 pet];
 
 LABEL_17:
-      v17 = [v14 localIdentifier];
+      localIdentifier = [v14 localIdentifier];
       if (+[MADManagedPhotosAsset isMACDReadEnabled])
       {
-        v18 = [v60 mad_fetchRequest];
-        v19 = [v18 fetchAnalysisWithLocalIdentifier:v17 predicate:0];
+        mad_fetchRequest = [libraryCopy mad_fetchRequest];
+        v19 = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0];
 
         if (v19)
         {
@@ -752,7 +752,7 @@ LABEL_24:
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v45))
         {
           *buf = 138412290;
-          v64 = v17;
+          v64 = localIdentifier;
           v21 = v45;
           v22 = "  [%@] No analysis available; skipping";
           v23 = 12;
@@ -764,7 +764,7 @@ LABEL_27:
       }
 
       v62 = 0;
-      [v52 analysisForAsset:v17 analysis:&v62];
+      [v52 analysisForAsset:localIdentifier analysis:&v62];
       v19 = v62;
       if (!v19)
       {
@@ -776,11 +776,11 @@ LABEL_19:
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
         {
-          v20 = [v19 vcp_version];
+          vcp_version = [v19 vcp_version];
           *buf = 138412546;
-          v64 = v17;
+          v64 = localIdentifier;
           v65 = 1024;
-          *v66 = v20;
+          *v66 = vcp_version;
           v21 = type;
           v22 = "  [%@] Deprecated analysis version (%d); skipping";
           v23 = 18;
@@ -795,7 +795,7 @@ LABEL_75:
       }
 
       v61 = 0;
-      v24 = [v60 mad_cloudIdentifierForLocalIdentifier:v17 error:&v61];
+      v24 = [libraryCopy mad_cloudIdentifierForLocalIdentifier:localIdentifier error:&v61];
       v51 = v61;
       if (v24)
       {
@@ -812,24 +812,24 @@ LABEL_37:
           v29 = v25;
           if (v25)
           {
-            [v25 setAssetIdentifier:v17];
-            v30 = [v14 mediaAnalysisProperties];
-            [v29 setVideoEmbeddingVersion:{objc_msgSend(v30, "videoEmbeddingVersion")}];
+            [v25 setAssetIdentifier:localIdentifier];
+            mediaAnalysisProperties = [v14 mediaAnalysisProperties];
+            [v29 setVideoEmbeddingVersion:{objc_msgSend(mediaAnalysisProperties, "videoEmbeddingVersion")}];
 
-            v46 = [v29 data];
-            if (v46)
+            data = [v29 data];
+            if (data)
             {
               v43 = +[VCPBackupEntryHeader header];
-              if ([v46 length] <= 0x200000)
+              if ([data length] <= 0x200000)
               {
-                [v43 setDataLength:{objc_msgSend(v46, "length")}];
+                [v43 setDataLength:{objc_msgSend(data, "length")}];
                 v33 = [v43 writeToStream:v50];
                 if (v33)
                 {
                   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v44))
                   {
                     *buf = 138412290;
-                    v64 = v17;
+                    v64 = localIdentifier;
                     _os_log_impl(&_mh_execute_header, &_os_log_default, v44, " [%@] Failed to write backup entry header", buf, 0xCu);
                   }
 
@@ -839,8 +839,8 @@ LABEL_37:
 
                 else
                 {
-                  v34 = v46;
-                  v35 = [v50 vcp_writeBuffer:objc_msgSend(v46 ofLength:{"bytes"), objc_msgSend(v46, "length")}];
+                  v34 = data;
+                  v35 = [v50 vcp_writeBuffer:objc_msgSend(data ofLength:{"bytes"), objc_msgSend(data, "length")}];
                   if (v35)
                   {
                     if (MediaAnalysisLogLevel() < 3)
@@ -853,7 +853,7 @@ LABEL_37:
                       if (os_log_type_enabled(&_os_log_default, v44))
                       {
                         *buf = 138412290;
-                        v64 = v17;
+                        v64 = localIdentifier;
                         _os_log_impl(&_mh_execute_header, &_os_log_default, v44, " [%@] Failed to write backup entry data", buf, 0xCu);
                       }
 
@@ -883,7 +883,7 @@ LABEL_37:
                 if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v42[0]))
                 {
                   *buf = 138412290;
-                  v64 = v17;
+                  v64 = localIdentifier;
                   _os_log_impl(&_mh_execute_header, &_os_log_default, v42[0], "  [%@] Serialized analysis exceeds per-entry limit; skipping", buf, 0xCu);
                 }
 
@@ -896,7 +896,7 @@ LABEL_37:
               if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v44))
               {
                 *buf = 138412290;
-                v64 = v17;
+                v64 = localIdentifier;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v44, "  [%@] Failed to serialize asset analysis; skipping", buf, 0xCu);
               }
 
@@ -909,7 +909,7 @@ LABEL_37:
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v44))
           {
             *buf = 138412290;
-            v64 = v17;
+            v64 = localIdentifier;
             v26 = v44;
             v27 = "  [%@] Failed to convert asset analysis; skipping";
             v28 = 12;
@@ -919,14 +919,14 @@ LABEL_37:
 
         else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v44))
         {
-          v31 = [v14 mediaType];
-          v32 = [v14 mediaSubtypes];
+          mediaType = [v14 mediaType];
+          mediaSubtypes = [v14 mediaSubtypes];
           *buf = 138412802;
-          v64 = v17;
+          v64 = localIdentifier;
           v65 = 1024;
-          *v66 = v31;
+          *v66 = mediaType;
           *&v66[4] = 1024;
-          *&v66[6] = v32;
+          *&v66[6] = mediaSubtypes;
           v26 = v44;
           v27 = "  [%@] Invalid asset (media type %d, subtype %d) for backup; skipping";
           v28 = 24;
@@ -938,7 +938,7 @@ LABEL_50:
       else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v44))
       {
         *buf = 138412546;
-        v64 = v17;
+        v64 = localIdentifier;
         v65 = 2112;
         *v66 = v51;
         v26 = v44;
@@ -991,9 +991,9 @@ LABEL_86:
   v39 = v38;
   if (v58)
   {
-    if ([v38 fileExistsAtPath:v59])
+    if ([v38 fileExistsAtPath:filepathCopy])
     {
-      if (([v39 removeItemAtPath:v59 error:0] & 1) == 0 && MediaAnalysisLogLevel() >= 4)
+      if (([v39 removeItemAtPath:filepathCopy error:0] & 1) == 0 && MediaAnalysisLogLevel() >= 4)
       {
         v40 = VCPLogToOSLogType[4];
         if (os_log_type_enabled(&_os_log_default, v40))
@@ -1008,34 +1008,34 @@ LABEL_86:
   return v58;
 }
 
-- (int)_backupFullAnalysisForPhotoLibrary:(id)a3 currentTimestamp:(int64_t)a4 encryptionManager:(id)a5
+- (int)_backupFullAnalysisForPhotoLibrary:(id)library currentTimestamp:(int64_t)timestamp encryptionManager:(id)manager
 {
-  v8 = a3;
-  v53 = a5;
+  libraryCopy = library;
+  managerCopy = manager;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v9 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v9))
     {
-      v10 = [v8 photoLibraryURL];
-      v11 = [v10 absoluteString];
+      photoLibraryURL = [libraryCopy photoLibraryURL];
+      absoluteString = [photoLibraryURL absoluteString];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v11;
+      *(&buf + 4) = absoluteString;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "Checking full analysis backup for PHPhotoLibrary (%@) ... ", &buf, 0xCu);
     }
   }
 
   v12 = +[NSFileManager defaultManager];
-  v13 = [v8 vcp_mediaAnalysisBackupDirectory];
-  if ([v12 fileExistsAtPath:v13])
+  vcp_mediaAnalysisBackupDirectory = [libraryCopy vcp_mediaAnalysisBackupDirectory];
+  if ([v12 fileExistsAtPath:vcp_mediaAnalysisBackupDirectory])
   {
     v14 = 0;
 LABEL_8:
-    v18 = [v8 vcp_mediaAnalysisIntermediateBackupDirectory];
-    v54 = [v8 mad_intermediateUnencryptedBackupFilepathForTask:1];
-    v19 = [v8 mad_intermediateEncryptedBackupFilepathForTask:1];
+    vcp_mediaAnalysisIntermediateBackupDirectory = [libraryCopy vcp_mediaAnalysisIntermediateBackupDirectory];
+    v54 = [libraryCopy mad_intermediateUnencryptedBackupFilepathForTask:1];
+    v19 = [libraryCopy mad_intermediateEncryptedBackupFilepathForTask:1];
     v20 = v19;
-    if (!v18 || !v54 || !v19)
+    if (!vcp_mediaAnalysisIntermediateBackupDirectory || !v54 || !v19)
     {
       v17 = v14;
 LABEL_60:
@@ -1044,7 +1044,7 @@ LABEL_60:
     }
 
     v52 = v19;
-    if ([v12 fileExistsAtPath:v18])
+    if ([v12 fileExistsAtPath:vcp_mediaAnalysisIntermediateBackupDirectory])
     {
       if ([v12 fileExistsAtPath:v54])
       {
@@ -1094,7 +1094,7 @@ LABEL_32:
       v78 = &off_100294A88;
       v24 = [NSDictionary dictionaryWithObjects:&v78 forKeys:&v77 count:1];
       v68 = v14;
-      v25 = [v12 createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:v24 error:&v68];
+      v25 = [v12 createDirectoryAtPath:vcp_mediaAnalysisIntermediateBackupDirectory withIntermediateDirectories:1 attributes:v24 error:&v68];
       v17 = v68;
 
       if ((v25 & 1) == 0)
@@ -1117,11 +1117,11 @@ LABEL_32:
       v14 = v17;
     }
 
-    v51 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v8];
+    v51 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
     v50 = MADLastAnalysisBackupTimestampKeyForTask(1);
-    [v51 setValue:a4 forKey:?];
+    [v51 setValue:timestamp forKey:?];
     [v51 commit];
-    v28 = [(MADPhotosBackupProcessingTask *)self _createBackupAtFilepath:v54 forPhotoLibrary:v8];
+    v28 = [(MADPhotosBackupProcessingTask *)self _createBackupAtFilepath:v54 forPhotoLibrary:libraryCopy];
     if (v28)
     {
       if (MediaAnalysisLogLevel() >= 3)
@@ -1155,7 +1155,7 @@ LABEL_32:
     v74 = sub_10010E0A0;
     v75 = sub_10010E0B0;
     v76 = dispatch_semaphore_create(0);
-    v33 = [NSURL fileURLWithPath:v18];
+    v33 = [NSURL fileURLWithPath:vcp_mediaAnalysisIntermediateBackupDirectory];
     v34 = [NSURL fileURLWithPath:v52];
     v59[0] = _NSConcreteStackBlock;
     v59[1] = 3221225472;
@@ -1163,7 +1163,7 @@ LABEL_32:
     v59[3] = &unk_1002866F8;
     v59[4] = &v62;
     v59[5] = &buf;
-    [v53 archiveDirectoryAtURL:v33 toOutputURL:v34 dataType:1 options:0 entryPredicate:v49 completionHandler:v59];
+    [managerCopy archiveDirectoryAtURL:v33 toOutputURL:v34 dataType:1 options:0 entryPredicate:v49 completionHandler:v59];
 
     dispatch_semaphore_wait(*(*(&buf + 1) + 40), 0xFFFFFFFFFFFFFFFFLL);
     v58 = 0;
@@ -1194,10 +1194,10 @@ LABEL_59:
       goto LABEL_60;
     }
 
-    v48 = [v8 vcp_mediaAnalysisBackupFilepath];
+    vcp_mediaAnalysisBackupFilepath = [libraryCopy vcp_mediaAnalysisBackupFilepath];
     if ([v12 fileExistsAtPath:?])
     {
-      v37 = [NSURL fileURLWithPath:v48];
+      v37 = [NSURL fileURLWithPath:vcp_mediaAnalysisBackupFilepath];
       v38 = [NSURL fileURLWithPath:v52];
       v57 = 0;
       v39 = v37;
@@ -1213,7 +1213,7 @@ LABEL_59:
     else
     {
       v56 = 0;
-      v45 = [v12 moveItemAtPath:v52 toPath:v48 error:&v56];
+      v45 = [v12 moveItemAtPath:v52 toPath:vcp_mediaAnalysisBackupFilepath error:&v56];
       v40 = v56;
       if (!v45)
       {
@@ -1270,7 +1270,7 @@ LABEL_56:
   v80 = &off_100294A88;
   v15 = [NSDictionary dictionaryWithObjects:&v80 forKeys:&v79 count:1];
   v69 = 0;
-  v16 = [v12 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:v15 error:&v69];
+  v16 = [v12 createDirectoryAtPath:vcp_mediaAnalysisBackupDirectory withIntermediateDirectories:1 attributes:v15 error:&v69];
   v17 = v69;
 
   if (v16)
@@ -1295,17 +1295,17 @@ LABEL_61:
   return 0;
 }
 
-- (int)_changeLocalIdentifierToCloudIdentifierForPhotoLibrary:(id)a3 managedAssetBatch:(id)a4 managedObjectContext:(id)a5
+- (int)_changeLocalIdentifierToCloudIdentifierForPhotoLibrary:(id)library managedAssetBatch:(id)batch managedObjectContext:(id)context
 {
-  v30 = a3;
-  v8 = a4;
-  v31 = a5;
+  libraryCopy = library;
+  batchCopy = batch;
+  contextCopy = context;
   v9 = +[NSMutableArray array];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = v8;
+  v10 = batchCopy;
   v11 = [v10 countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v11)
   {
@@ -1321,10 +1321,10 @@ LABEL_61:
         }
 
         v15 = *(*(&v43 + 1) + 8 * i);
-        v16 = [v15 localIdentifier];
-        v5 = v16 == 0;
+        localIdentifier = [v15 localIdentifier];
+        code = localIdentifier == 0;
 
-        if (v5)
+        if (code)
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v13))
           {
@@ -1339,8 +1339,8 @@ LABEL_61:
 
         else
         {
-          v17 = [v15 localIdentifier];
-          [v9 addObject:v17];
+          localIdentifier2 = [v15 localIdentifier];
+          [v9 addObject:localIdentifier2];
         }
       }
 
@@ -1350,7 +1350,7 @@ LABEL_61:
     while (v11);
   }
 
-  v19 = [v30 cloudIdentifierMappingsForLocalIdentifiers:v9];
+  v19 = [libraryCopy cloudIdentifierMappingsForLocalIdentifiers:v9];
   v20 = +[NSMutableArray array];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
@@ -1360,10 +1360,10 @@ LABEL_61:
   v39 = v21;
   v22 = v19;
   v40 = v22;
-  v41 = self;
+  selfCopy = self;
   v23 = v20;
   v42 = v23;
-  [v31 mad_performAndSaveChanges:v38 error:0];
+  [contextCopy mad_performAndSaveChanges:v38 error:0];
   if (![v23 count])
   {
     goto LABEL_19;
@@ -1373,16 +1373,16 @@ LABEL_61:
   v34[1] = 3221225472;
   v34[2] = sub_10010EAF0;
   v34[3] = &unk_100286748;
-  v35 = v31;
+  v35 = contextCopy;
   v36 = v23;
-  v37 = self;
+  selfCopy2 = self;
   v33 = 0;
   v24 = [v35 mad_performAndSaveChanges:v34 error:&v33];
   v25 = v33;
   v26 = v25;
   if ((v24 & 1) == 0)
   {
-    v5 = [v25 code];
+    code = [v25 code];
     if (MediaAnalysisLogLevel() >= 3)
     {
       v27 = VCPLogToOSLogType[3];
@@ -1401,16 +1401,16 @@ LABEL_61:
   if (v24)
   {
 LABEL_19:
-    v5 = 0;
+    code = 0;
   }
 
-  return v5;
+  return code;
 }
 
-- (int)changeLocalIdentifierToCloudIdentifierForPhotoLibrary:(id)a3 managedObjectContext:(id)a4
+- (int)changeLocalIdentifierToCloudIdentifierForPhotoLibrary:(id)library managedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  contextCopy = context;
   v8 = +[MADManagedPhotosAsset fetchRequest];
   v9 = [NSSortDescriptor sortDescriptorWithKey:@"SELF" ascending:1];
   v28 = v9;
@@ -1421,7 +1421,7 @@ LABEL_19:
   v24[1] = v24;
   v24[2] = 0x2020000000;
   v24[3] = 0;
-  v11 = [MADPhotosDataStoreBatchIterator iteratorForFetchRequest:v8 mangedObjectContext:v7 batchSize:256];
+  v11 = [MADPhotosDataStoreBatchIterator iteratorForFetchRequest:v8 mangedObjectContext:contextCopy batchSize:256];
   v12 = v11;
   if (v11)
   {
@@ -1434,11 +1434,11 @@ LABEL_19:
     v17[2] = sub_10010EF34;
     v17[3] = &unk_100286770;
     v18 = v11;
-    v19 = self;
+    selfCopy = self;
     v22 = v24;
     p_buf = &buf;
-    v20 = v6;
-    v21 = v7;
+    v20 = libraryCopy;
+    v21 = contextCopy;
     [v21 performBlockAndWait:v17];
     v13 = *(*(&buf + 1) + 24);
 
@@ -1466,26 +1466,26 @@ LABEL_19:
   return v13;
 }
 
-- (void)_sanitizeCoreDataDBWithManagedObjectContext:(id)a3
+- (void)_sanitizeCoreDataDBWithManagedObjectContext:(id)context
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10010F2EC;
   v5[3] = &unk_100286798;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  contextCopy = context;
+  selfCopy = self;
+  v4 = contextCopy;
   [v4 mad_performAndSaveChanges:v5 error:0];
 }
 
-- (int)_removePersistentStoresForCoordinator:(id)a3
+- (int)_removePersistentStoresForCoordinator:(id)coordinator
 {
-  v3 = a3;
+  coordinatorCopy = coordinator;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [v3 persistentStores];
+  obj = [coordinatorCopy persistentStores];
   v4 = [obj countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v4)
   {
@@ -1505,7 +1505,7 @@ LABEL_19:
 
         v9 = *(*(&v22 + 1) + 8 * i);
         v10 = [v9 URL];
-        v11 = [v10 path];
+        path = [v10 path];
 
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v7))
         {
@@ -1513,12 +1513,12 @@ LABEL_19:
           *buf = 138412546;
           v27 = logPrefix;
           v28 = 2112;
-          v29 = v11;
+          v29 = path;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "%@ Removing persistent store at %@", buf, 0x16u);
         }
 
         v21 = 0;
-        v13 = [v3 removePersistentStore:v9 error:&v21];
+        v13 = [coordinatorCopy removePersistentStore:v9 error:&v21];
         v14 = v21;
         if ((v13 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
         {
@@ -1526,7 +1526,7 @@ LABEL_19:
           *buf = v17;
           v27 = v15;
           v28 = 2112;
-          v29 = v11;
+          v29 = path;
           v30 = 2112;
           v31 = v14;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Failed to remove persistent store at %@ with error %@", buf, 0x20u);
@@ -1542,9 +1542,9 @@ LABEL_19:
   return 0;
 }
 
-- (void)_deleteIntermediateBackupDirectory:(id)a3
+- (void)_deleteIntermediateBackupDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v5 = +[NSFileManager defaultManager];
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -1555,15 +1555,15 @@ LABEL_19:
       *buf = 138412546;
       v14 = logPrefix;
       v15 = 2112;
-      v16 = v4;
+      v16 = directoryCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "%@ Deleting intermediate backup directory at %@", buf, 0x16u);
     }
   }
 
-  if ([v5 fileExistsAtPath:v4])
+  if ([v5 fileExistsAtPath:directoryCopy])
   {
     v12 = 0;
-    v8 = [v5 removeItemAtPath:v4 error:&v12];
+    v8 = [v5 removeItemAtPath:directoryCopy error:&v12];
     v9 = v12;
     if ((v8 & 1) == 0 && MediaAnalysisLogLevel() >= 4)
     {
@@ -1574,7 +1574,7 @@ LABEL_19:
         *buf = 138412802;
         v14 = v11;
         v15 = 2112;
-        v16 = v4;
+        v16 = directoryCopy;
         v17 = 2112;
         v18 = v9;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "%@ Failed to delete intermediate backup directory at %@ with error %@", buf, 0x20u);
@@ -1588,11 +1588,11 @@ LABEL_19:
   }
 }
 
-- (int)_createBackupForCoreDataDBAtFilepath:(id)a3 forPhotoLibrary:(id)a4 persistentStoreCoordinator:(id)a5
+- (int)_createBackupForCoreDataDBAtFilepath:(id)filepath forPhotoLibrary:(id)library persistentStoreCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  filepathCopy = filepath;
+  libraryCopy = library;
+  coordinatorCopy = coordinator;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v11 = VCPLogToOSLogType[7];
@@ -1605,9 +1605,9 @@ LABEL_19:
     }
   }
 
-  v13 = [v10 persistentStores];
-  v14 = [v13 firstObject];
-  v15 = v14 == 0;
+  persistentStores = [coordinatorCopy persistentStores];
+  firstObject = [persistentStores firstObject];
+  v15 = firstObject == 0;
 
   if (v15)
   {
@@ -1629,7 +1629,7 @@ LABEL_19:
   else
   {
     v16 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-    [v16 setPersistentStoreCoordinator:v10];
+    [v16 setPersistentStoreCoordinator:coordinatorCopy];
     [v16 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     [(MADPhotosBackupProcessingTask *)self _sanitizeCoreDataDBWithManagedObjectContext:v16];
     if (MediaAnalysisLogLevel() >= 7)
@@ -1644,7 +1644,7 @@ LABEL_19:
       }
     }
 
-    v19 = [(MADPhotosBackupProcessingTask *)self changeLocalIdentifierToCloudIdentifierForPhotoLibrary:v9 managedObjectContext:v16];
+    v19 = [(MADPhotosBackupProcessingTask *)self changeLocalIdentifierToCloudIdentifierForPhotoLibrary:libraryCopy managedObjectContext:v16];
     if (v19)
     {
       if (MediaAnalysisLogLevel() >= 3)
@@ -1663,8 +1663,8 @@ LABEL_19:
     else
     {
       v24 = +[MADPhotosDataStoreClient sharedClient];
-      v25 = [NSURL fileURLWithPath:v8];
-      v26 = [v24 flushWALCheckpointForPersistentStoreAtURL:v25 persistentStoreCoordinator:v10];
+      v25 = [NSURL fileURLWithPath:filepathCopy];
+      v26 = [v24 flushWALCheckpointForPersistentStoreAtURL:v25 persistentStoreCoordinator:coordinatorCopy];
 
       if (v26)
       {
@@ -1682,7 +1682,7 @@ LABEL_19:
             v30 = 138412546;
             v31 = v28;
             v32 = 2112;
-            v33 = v8;
+            v33 = filepathCopy;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v27, "%@ Failed to flush WAL checkpoint for persistent store at %@", &v30, 0x16u);
           }
         }
@@ -1695,30 +1695,30 @@ LABEL_19:
   return v19;
 }
 
-- (int)_backupFullAnalysisForCoreDataDBWithPhotoLibrary:(id)a3 currentTimestamp:(int64_t)a4 encryptionManager:(id)a5
+- (int)_backupFullAnalysisForCoreDataDBWithPhotoLibrary:(id)library currentTimestamp:(int64_t)timestamp encryptionManager:(id)manager
 {
-  v8 = a3;
-  v61 = a5;
+  libraryCopy = library;
+  managerCopy = manager;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v9 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v9))
     {
       logPrefix = self->_logPrefix;
-      v11 = [v8 photoLibraryURL];
-      v12 = [v11 absoluteString];
+      photoLibraryURL = [libraryCopy photoLibraryURL];
+      absoluteString = [photoLibraryURL absoluteString];
       *buf = 138412546;
       *&buf[4] = logPrefix;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = absoluteString;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "%@ Backing up CoreData DB for full analysis with PHPhotoLibrary (%@) ... ", buf, 0x16u);
     }
   }
 
-  v13 = [v8 vcp_mediaAnalysisIntermediateBackupDirectory];
-  v14 = [MADPhotosDataStoreClient defaultDatabasePathForPhotoLibrary:v8];
-  v15 = [v14 lastPathComponent];
-  v16 = [v13 stringByAppendingPathComponent:v15];
+  vcp_mediaAnalysisIntermediateBackupDirectory = [libraryCopy vcp_mediaAnalysisIntermediateBackupDirectory];
+  v14 = [MADPhotosDataStoreClient defaultDatabasePathForPhotoLibrary:libraryCopy];
+  lastPathComponent = [v14 lastPathComponent];
+  v16 = [vcp_mediaAnalysisIntermediateBackupDirectory stringByAppendingPathComponent:lastPathComponent];
 
   v62 = MADLastAnalysisBackupTimestampKeyForTask(1);
   if (+[MADManagedKeyValueStore isMACDPersistEnabled])
@@ -1727,14 +1727,14 @@ LABEL_19:
     v78[1] = 3221225472;
     v78[2] = sub_100110D44;
     v78[3] = &unk_100285478;
-    v80 = a4;
+    timestampCopy = timestamp;
     v79 = v62;
-    [v8 mad_performAnalysisDataStoreChanges:v78 error:0];
+    [libraryCopy mad_performAnalysisDataStoreChanges:v78 error:0];
   }
 
   v17 = +[MADPhotosDataStoreClient sharedClient];
   v18 = [NSURL fileURLWithPath:v16];
-  v19 = [v17 copyPersistentStoreForPhotoLibrary:v8 toURL:v18];
+  v19 = [v17 copyPersistentStoreForPhotoLibrary:libraryCopy toURL:v18];
 
   if (!v19)
   {
@@ -1753,12 +1753,12 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  v20 = [(MADPhotosBackupProcessingTask *)self _createBackupForCoreDataDBAtFilepath:v16 forPhotoLibrary:v8 persistentStoreCoordinator:v19];
+  v20 = [(MADPhotosBackupProcessingTask *)self _createBackupForCoreDataDBAtFilepath:v16 forPhotoLibrary:libraryCopy persistentStoreCoordinator:v19];
   [(MADPhotosBackupProcessingTask *)self _removePersistentStoresForCoordinator:v19];
   if (!v20)
   {
     v60 = +[NSFileManager defaultManager];
-    v59 = [v8 vcp_mediaAnalysisBackupDirectory];
+    vcp_mediaAnalysisBackupDirectory = [libraryCopy vcp_mediaAnalysisBackupDirectory];
     if ([v60 fileExistsAtPath:?])
     {
       if (MediaAnalysisLogLevel() >= 6)
@@ -1770,7 +1770,7 @@ LABEL_19:
           *buf = 138412546;
           *&buf[4] = v27;
           *&buf[12] = 2112;
-          *&buf[14] = v59;
+          *&buf[14] = vcp_mediaAnalysisBackupDirectory;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v26, "%@ Backup directory already exists at %@", buf, 0x16u);
         }
       }
@@ -1784,7 +1784,7 @@ LABEL_19:
       v92 = &off_100294A88;
       v28 = [NSDictionary dictionaryWithObjects:&v92 forKeys:&v91 count:1];
       v77 = 0;
-      v29 = [v60 createDirectoryAtPath:v59 withIntermediateDirectories:1 attributes:v28 error:&v77];
+      v29 = [v60 createDirectoryAtPath:vcp_mediaAnalysisBackupDirectory withIntermediateDirectories:1 attributes:v28 error:&v77];
       v30 = v77;
 
       if ((v29 & 1) == 0)
@@ -1798,7 +1798,7 @@ LABEL_19:
             *buf = 138412802;
             *&buf[4] = v47;
             *&buf[12] = 2112;
-            *&buf[14] = v59;
+            *&buf[14] = vcp_mediaAnalysisBackupDirectory;
             *&buf[22] = 2112;
             v88 = v30;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v46, "%@ Failed to create backup directory at %@ with error %@; backup failed", buf, 0x20u);
@@ -1815,7 +1815,7 @@ LABEL_19:
     v74 = &v73;
     v75 = 0x2020000000;
     v76 = 0;
-    v56 = [v8 mad_intermediateEncryptedBackupFilepathForTask:1];
+    v56 = [libraryCopy mad_intermediateEncryptedBackupFilepathForTask:1];
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
     v71[2] = sub_100110D50;
@@ -1829,7 +1829,7 @@ LABEL_19:
     v88 = sub_10010E0A0;
     v89 = sub_10010E0B0;
     v90 = dispatch_semaphore_create(0);
-    v32 = [NSURL fileURLWithPath:v13];
+    v32 = [NSURL fileURLWithPath:vcp_mediaAnalysisIntermediateBackupDirectory];
     v33 = [NSURL fileURLWithPath:v56];
     v66[0] = _NSConcreteStackBlock;
     v66[1] = 3221225472;
@@ -1841,12 +1841,12 @@ LABEL_19:
     v57 = v56;
     v68 = v57;
     v70 = buf;
-    [v61 archiveDirectoryAtURL:v32 toOutputURL:v33 dataType:1 options:0 entryPredicate:v58 completionHandler:v66];
+    [managerCopy archiveDirectoryAtURL:v32 toOutputURL:v33 dataType:1 options:0 entryPredicate:v58 completionHandler:v66];
 
     dispatch_semaphore_wait(*(*&buf[8] + 40), 0xFFFFFFFFFFFFFFFFLL);
     if ((v74[3] & 1) == 0)
     {
-      [(MADPhotosBackupProcessingTask *)self _deleteIntermediateBackupDirectory:v13];
+      [(MADPhotosBackupProcessingTask *)self _deleteIntermediateBackupDirectory:vcp_mediaAnalysisIntermediateBackupDirectory];
 LABEL_51:
 
       _Block_object_dispose(buf, 8);
@@ -1858,7 +1858,7 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    v54 = [v8 vcp_mediaAnalysisCoreDataBackupFilepath];
+    vcp_mediaAnalysisCoreDataBackupFilepath = [libraryCopy vcp_mediaAnalysisCoreDataBackupFilepath];
     if ([v60 fileExistsAtPath:?])
     {
       if (MediaAnalysisLogLevel() >= 6)
@@ -1870,14 +1870,14 @@ LABEL_52:
           *v81 = 138412802;
           v82 = v35;
           v83 = 2112;
-          v84 = v54;
+          v84 = vcp_mediaAnalysisCoreDataBackupFilepath;
           v85 = 2112;
           v86 = v57;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v34, "%@ Previous backup exists. Replacing the backup at %@ with %@", v81, 0x20u);
         }
       }
 
-      v36 = [NSURL fileURLWithPath:v54];
+      v36 = [NSURL fileURLWithPath:vcp_mediaAnalysisCoreDataBackupFilepath];
       v37 = [NSURL fileURLWithPath:v57];
       v65 = 0;
       v38 = v36;
@@ -1919,7 +1919,7 @@ LABEL_29:
         }
 
 LABEL_50:
-        [(MADPhotosBackupProcessingTask *)self _deleteIntermediateBackupDirectory:v13];
+        [(MADPhotosBackupProcessingTask *)self _deleteIntermediateBackupDirectory:vcp_mediaAnalysisIntermediateBackupDirectory];
 
         goto LABEL_51;
       }
@@ -1938,13 +1938,13 @@ LABEL_50:
           v83 = 2112;
           v84 = v57;
           v85 = 2112;
-          v86 = v54;
+          v86 = vcp_mediaAnalysisCoreDataBackupFilepath;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v48, "%@ Previous backup does not exist. Move intermediate backup from %@ to %@", v81, 0x20u);
         }
       }
 
       v64 = 0;
-      v50 = [v60 moveItemAtPath:v57 toPath:v54 error:&v64];
+      v50 = [v60 moveItemAtPath:v57 toPath:vcp_mediaAnalysisCoreDataBackupFilepath error:&v64];
       v39 = v64;
       if (!v50)
       {
@@ -1966,7 +1966,7 @@ LABEL_50:
 
     if (+[MADManagedKeyValueStore isMACDPersistEnabled])
     {
-      [v8 mad_performAnalysisDataStoreChanges:&stru_1002867E0 error:0];
+      [libraryCopy mad_performAnalysisDataStoreChanges:&stru_1002867E0 error:0];
     }
 
     goto LABEL_50;
@@ -1986,7 +1986,7 @@ LABEL_50:
     }
   }
 
-  [(MADPhotosBackupProcessingTask *)self _deleteIntermediateBackupDirectory:v13];
+  [(MADPhotosBackupProcessingTask *)self _deleteIntermediateBackupDirectory:vcp_mediaAnalysisIntermediateBackupDirectory];
 LABEL_15:
   v25 = -18;
 LABEL_53:
@@ -1994,13 +1994,13 @@ LABEL_53:
   return v25;
 }
 
-- (id)_legacyBackupFilepathForTask:(unint64_t)a3 withPhotoLibrary:(id)a4
+- (id)_legacyBackupFilepathForTask:(unint64_t)task withPhotoLibrary:(id)library
 {
-  v5 = [a4 vcp_mediaAnalysisBackupDirectory];
-  v6 = v5;
-  if (v5)
+  vcp_mediaAnalysisBackupDirectory = [library vcp_mediaAnalysisBackupDirectory];
+  v6 = vcp_mediaAnalysisBackupDirectory;
+  if (vcp_mediaAnalysisBackupDirectory)
   {
-    switch(a3)
+    switch(task)
     {
       case 1uLL:
         v7 = @"mediaanalysis.backup";
@@ -2011,7 +2011,7 @@ LABEL_53:
       case 2uLL:
         v7 = @"sceneanalysis.backup";
 LABEL_8:
-        v8 = [v5 stringByAppendingPathComponent:v7];
+        v8 = [vcp_mediaAnalysisBackupDirectory stringByAppendingPathComponent:v7];
         goto LABEL_13;
     }
 
@@ -2021,7 +2021,7 @@ LABEL_8:
       if (os_log_type_enabled(&_os_log_default, v9))
       {
         v11[0] = 67109120;
-        v11[1] = a3;
+        v11[1] = task;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "Unexpected taskID %d", v11, 8u);
       }
     }
@@ -2033,7 +2033,7 @@ LABEL_13:
   return v8;
 }
 
-- (void)_removeLegacyBackupForTask:(unint64_t)a3 withPhotoLibrary:(id)a4
+- (void)_removeLegacyBackupForTask:(unint64_t)task withPhotoLibrary:(id)library
 {
   v4 = [MADPhotosBackupProcessingTask _legacyBackupFilepathForTask:"_legacyBackupFilepathForTask:withPhotoLibrary:" withPhotoLibrary:?];
   if (v4)
@@ -2222,7 +2222,7 @@ LABEL_26:
 
         v20 = *(*(&v61 + 1) + 8 * v19);
         v21 = objc_autoreleasePoolPush();
-        v22 = [v20 unsignedIntegerValue];
+        unsignedIntegerValue = [v20 unsignedIntegerValue];
         v23 = VCPTaskIDDescription();
         v24 = VCPSignPostLog();
         v25 = os_signpost_id_generate(v24);
@@ -2236,7 +2236,7 @@ LABEL_26:
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v27, OS_SIGNPOST_INTERVAL_BEGIN, v25, "VCPMADLibraryBackup", "_%@", buf, 0xCu);
         }
 
-        v28 = [MADPhotosBackupAnalysisTask taskWithPhotoLibrary:v5 forTaskID:v22 encryptionManager:v60 progressHandler:self->_progressHandler completionHandler:self->_completionHandler andCancelBlock:self->_cancelBlock];
+        v28 = [MADPhotosBackupAnalysisTask taskWithPhotoLibrary:v5 forTaskID:unsignedIntegerValue encryptionManager:v60 progressHandler:self->_progressHandler completionHandler:self->_completionHandler andCancelBlock:self->_cancelBlock];
         v6 = [v28 run];
         if (!v6)
         {
@@ -2334,11 +2334,11 @@ LABEL_80:
       }
 
       v44 = self->_logPrefix;
-      v45 = [v5 photoLibraryURL];
+      photoLibraryURL = [v5 photoLibraryURL];
       *buf = 138412546;
       v70 = v44;
       v71 = 2112;
-      v72 = v45;
+      v72 = photoLibraryURL;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v43, "%@ Failed to remove legacy database files for photo library %@", buf, 0x16u);
     }
 
@@ -2399,11 +2399,11 @@ LABEL_81:
 - (int)run
 {
   atomic_store(1u, &self->_started);
-  v3 = [(MADPhotosBackupProcessingTask *)self _run];
-  v4 = v3;
-  if (v3 != -128)
+  _run = [(MADPhotosBackupProcessingTask *)self _run];
+  v4 = _run;
+  if (_run != -128)
   {
-    if (v3)
+    if (_run)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {

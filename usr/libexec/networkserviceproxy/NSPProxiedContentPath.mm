@@ -1,67 +1,67 @@
 @interface NSPProxiedContentPath
 - (BOOL)allowFallback;
-- (BOOL)matchEgress:(id)a3;
-- (BOOL)matchIngress:(id)a3;
-- (BOOL)matchesMap:(id)a3 proxyArray:(id)a4;
+- (BOOL)matchEgress:(id)egress;
+- (BOOL)matchIngress:(id)ingress;
+- (BOOL)matchesMap:(id)map proxyArray:(id)array;
 - (BOOL)pathReady;
-- (BOOL)shouldUsePQTLSWithProxyInfo:(id)a3;
+- (BOOL)shouldUsePQTLSWithProxyInfo:(id)info;
 - (BOOL)unregisterResolverAgent;
-- (NSPProxiedContentPath)initWithCoder:(id)a3;
-- (NSPProxiedContentPath)initWithDelegate:(id)a3 initialMap:(id)a4 ingressProxy:(id)a5 egressProxy:(id)a6 resolver:(id)a7;
+- (NSPProxiedContentPath)initWithCoder:(id)coder;
+- (NSPProxiedContentPath)initWithDelegate:(id)delegate initialMap:(id)map ingressProxy:(id)proxy egressProxy:(id)egressProxy resolver:(id)resolver;
 - (NSPProxiedContentPathDelegate)delegate;
 - (id)aggregateMaps;
 - (id)bootstrapAddresses;
-- (id)copyAddressesFromDoHAnswer:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createDoHMessageForQuery:(id)a3 name:(const char *)a4;
-- (id)createDoHQueryForName:(const char *)a3 type:(unsigned __int16)a4;
-- (id)createPvDRequestForName:(const char *)a3;
-- (id)descriptionWithIndent:(int)a3 options:(unint64_t)a4;
-- (id)discoveredMapsFromPvDConfiguration:(id)a3 proxyIdentifier:(id)a4;
-- (id)objectFromDictionary:(id)a3 key:(id)a4 oldKey:(id)a5;
-- (id)proxyIdentifierFromPvDConfiguration:(id)a3 discoveredAlgorithm:(int *)a4;
+- (id)copyAddressesFromDoHAnswer:(id)answer;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createDoHMessageForQuery:(id)query name:(const char *)name;
+- (id)createDoHQueryForName:(const char *)name type:(unsigned __int16)type;
+- (id)createPvDRequestForName:(const char *)name;
+- (id)descriptionWithIndent:(int)indent options:(unint64_t)options;
+- (id)discoveredMapsFromPvDConfiguration:(id)configuration proxyIdentifier:(id)identifier;
+- (id)objectFromDictionary:(id)dictionary key:(id)key oldKey:(id)oldKey;
+- (id)proxyIdentifierFromPvDConfiguration:(id)configuration discoveredAlgorithm:(int *)algorithm;
 - (id)shortName;
-- (void)addMap:(id)a3;
+- (void)addMap:(id)map;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)fetchResumableSessionTickets;
 - (void)removeProxyAgents;
-- (void)reportErrorForDNSAgent:(id)a3 error:(int)a4 withOptions:(id)a5;
+- (void)reportErrorForDNSAgent:(id)agent error:(int)error withOptions:(id)options;
 - (void)resetFallbackProxyAgent;
-- (void)resetQUICProxyAgentForceUpdateDelegate:(BOOL)a3;
-- (void)resetResolverAgentForceUpdateDelegate:(BOOL)a3;
+- (void)resetQUICProxyAgentForceUpdateDelegate:(BOOL)delegate;
+- (void)resetResolverAgentForceUpdateDelegate:(BOOL)delegate;
 - (void)resetResumableSessionTickets;
-- (void)startPvDConnectionForSessionTicketsWithEndpoint:(id)a3 parameters:(id)a4 completionHandler:(id)a5;
+- (void)startPvDConnectionForSessionTicketsWithEndpoint:(id)endpoint parameters:(id)parameters completionHandler:(id)handler;
 @end
 
 @implementation NSPProxiedContentPath
 
-- (NSPProxiedContentPath)initWithDelegate:(id)a3 initialMap:(id)a4 ingressProxy:(id)a5 egressProxy:(id)a6 resolver:(id)a7
+- (NSPProxiedContentPath)initWithDelegate:(id)delegate initialMap:(id)map ingressProxy:(id)proxy egressProxy:(id)egressProxy resolver:(id)resolver
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  delegateCopy = delegate;
+  mapCopy = map;
+  proxyCopy = proxy;
+  egressProxyCopy = egressProxy;
+  resolverCopy = resolver;
   v27.receiver = self;
   v27.super_class = NSPProxiedContentPath;
   v17 = [(NSPProxiedContentPath *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_delegate, v12);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
     v19 = objc_alloc_init(NSMutableArray);
     associatedMaps = v18->_associatedMaps;
     v18->_associatedMaps = v19;
 
-    [(NSMutableArray *)v18->_associatedMaps addObject:v13];
+    [(NSMutableArray *)v18->_associatedMaps addObject:mapCopy];
     v21 = objc_alloc_init(NSMutableArray);
     discoveredMaps = v18->_discoveredMaps;
     v18->_discoveredMaps = v21;
 
-    objc_storeStrong(&v18->_ingressProxy, a5);
-    objc_storeStrong(&v18->_egressProxy, a6);
-    objc_storeStrong(&v18->_resolver, a7);
+    objc_storeStrong(&v18->_ingressProxy, proxy);
+    objc_storeStrong(&v18->_egressProxy, egressProxy);
+    objc_storeStrong(&v18->_resolver, resolver);
     v23 = v18;
   }
 
@@ -78,68 +78,68 @@
   return v18;
 }
 
-- (id)descriptionWithIndent:(int)a3 options:(unint64_t)a4
+- (id)descriptionWithIndent:(int)indent options:(unint64_t)options
 {
   v7 = [[NSMutableString alloc] initWithCapacity:0];
-  v8 = [(NSPProxiedContentPath *)self ingressProxy];
-  sub_1000417D0(v7, v8, @"Ingress proxy", a3, a4);
+  ingressProxy = [(NSPProxiedContentPath *)self ingressProxy];
+  sub_1000417D0(v7, ingressProxy, @"Ingress proxy", indent, options);
 
-  v9 = [(NSPProxiedContentPath *)self egressProxy];
-  sub_1000417D0(v7, v9, @"Egress proxy", a3, a4);
+  egressProxy = [(NSPProxiedContentPath *)self egressProxy];
+  sub_1000417D0(v7, egressProxy, @"Egress proxy", indent, options);
 
-  v10 = [(NSPProxiedContentPath *)self quicAgentUUID];
-  sub_1000417D0(v7, v10, @"QUIC Agent UUID", a3, a4);
+  quicAgentUUID = [(NSPProxiedContentPath *)self quicAgentUUID];
+  sub_1000417D0(v7, quicAgentUUID, @"QUIC Agent UUID", indent, options);
 
-  v11 = [(NSPProxiedContentPath *)self fallbackAgentUUID];
-  sub_1000417D0(v7, v11, @"Fallback Agent UUID", a3, a4);
+  fallbackAgentUUID = [(NSPProxiedContentPath *)self fallbackAgentUUID];
+  sub_1000417D0(v7, fallbackAgentUUID, @"Fallback Agent UUID", indent, options);
 
-  v12 = [(NSPProxiedContentPath *)self resolverAgentUUID];
-  sub_1000417D0(v7, v12, @"Resolver Agent UUID", a3, a4);
+  resolverAgentUUID = [(NSPProxiedContentPath *)self resolverAgentUUID];
+  sub_1000417D0(v7, resolverAgentUUID, @"Resolver Agent UUID", indent, options);
 
   return v7;
 }
 
-- (NSPProxiedContentPath)initWithCoder:(id)a3
+- (NSPProxiedContentPath)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = NSPProxiedContentPath;
   v5 = [(NSPProxiedContentPath *)&v33 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathIngressProxy"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathIngressProxy"];
     ingressProxy = v5->_ingressProxy;
     v5->_ingressProxy = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathEgressProxy"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathEgressProxy"];
     egressProxy = v5->_egressProxy;
     v5->_egressProxy = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathResolver"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathResolver"];
     resolver = v5->_resolver;
     v5->_resolver = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathQUICAgentUUID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathQUICAgentUUID"];
     quicAgentUUID = v5->_quicAgentUUID;
     v5->_quicAgentUUID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathFallbackAgentUUID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathFallbackAgentUUID"];
     fallbackAgentUUID = v5->_fallbackAgentUUID;
     v5->_fallbackAgentUUID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathResolverAgentUUID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyPathResolverAgentUUID"];
     resolverAgentUUID = v5->_resolverAgentUUID;
     v5->_resolverAgentUUID = v16;
 
     v18 = objc_opt_class();
     v19 = [NSSet setWithObjects:v18, objc_opt_class(), 0];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"proxyPathResolvedAddresses"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"proxyPathResolvedAddresses"];
     resolvedAddresses = v5->_resolvedAddresses;
     v5->_resolvedAddresses = v20;
 
     v22 = objc_opt_class();
     v23 = [NSSet setWithObjects:v22, objc_opt_class(), 0];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"proxyPathAssociatedMaps"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"proxyPathAssociatedMaps"];
 
     if (v24)
     {
@@ -150,7 +150,7 @@
 
     v27 = objc_opt_class();
     v28 = [NSSet setWithObjects:v27, objc_opt_class(), 0];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"proxyPathDiscoveredMaps"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"proxyPathDiscoveredMaps"];
 
     if (v29)
     {
@@ -168,75 +168,75 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NSPProxiedContentPath *)self ingressProxy];
-  [v4 encodeObject:v5 forKey:@"proxyPathIngressProxy"];
+  coderCopy = coder;
+  ingressProxy = [(NSPProxiedContentPath *)self ingressProxy];
+  [coderCopy encodeObject:ingressProxy forKey:@"proxyPathIngressProxy"];
 
-  v6 = [(NSPProxiedContentPath *)self egressProxy];
-  [v4 encodeObject:v6 forKey:@"proxyPathEgressProxy"];
+  egressProxy = [(NSPProxiedContentPath *)self egressProxy];
+  [coderCopy encodeObject:egressProxy forKey:@"proxyPathEgressProxy"];
 
-  v7 = [(NSPProxiedContentPath *)self resolver];
-  [v4 encodeObject:v7 forKey:@"proxyPathResolver"];
+  resolver = [(NSPProxiedContentPath *)self resolver];
+  [coderCopy encodeObject:resolver forKey:@"proxyPathResolver"];
 
-  v8 = [(NSPProxiedContentPath *)self quicAgentUUID];
-  [v4 encodeObject:v8 forKey:@"proxyPathQUICAgentUUID"];
+  quicAgentUUID = [(NSPProxiedContentPath *)self quicAgentUUID];
+  [coderCopy encodeObject:quicAgentUUID forKey:@"proxyPathQUICAgentUUID"];
 
-  v9 = [(NSPProxiedContentPath *)self fallbackAgentUUID];
-  [v4 encodeObject:v9 forKey:@"proxyPathFallbackAgentUUID"];
+  fallbackAgentUUID = [(NSPProxiedContentPath *)self fallbackAgentUUID];
+  [coderCopy encodeObject:fallbackAgentUUID forKey:@"proxyPathFallbackAgentUUID"];
 
-  v10 = [(NSPProxiedContentPath *)self resolverAgentUUID];
-  [v4 encodeObject:v10 forKey:@"proxyPathResolverAgentUUID"];
+  resolverAgentUUID = [(NSPProxiedContentPath *)self resolverAgentUUID];
+  [coderCopy encodeObject:resolverAgentUUID forKey:@"proxyPathResolverAgentUUID"];
 
-  v11 = [(NSPProxiedContentPath *)self resolvedAddresses];
-  [v4 encodeObject:v11 forKey:@"proxyPathResolvedAddresses"];
+  resolvedAddresses = [(NSPProxiedContentPath *)self resolvedAddresses];
+  [coderCopy encodeObject:resolvedAddresses forKey:@"proxyPathResolvedAddresses"];
 
-  v12 = [(NSPProxiedContentPath *)self associatedMaps];
-  [v4 encodeObject:v12 forKey:@"proxyPathAssociatedMaps"];
+  associatedMaps = [(NSPProxiedContentPath *)self associatedMaps];
+  [coderCopy encodeObject:associatedMaps forKey:@"proxyPathAssociatedMaps"];
 
-  v13 = [(NSPProxiedContentPath *)self discoveredMaps];
-  [v4 encodeObject:v13 forKey:@"proxyPathDiscoveredMaps"];
+  discoveredMaps = [(NSPProxiedContentPath *)self discoveredMaps];
+  [coderCopy encodeObject:discoveredMaps forKey:@"proxyPathDiscoveredMaps"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPProxiedContentPath allocWithZone:?]];
-  v5 = [(NSPProxiedContentPath *)self associatedMaps];
-  [(NSPProxiedContentPath *)v4 setAssociatedMaps:v5];
+  associatedMaps = [(NSPProxiedContentPath *)self associatedMaps];
+  [(NSPProxiedContentPath *)v4 setAssociatedMaps:associatedMaps];
 
-  v6 = [(NSPProxiedContentPath *)self discoveredMaps];
-  [(NSPProxiedContentPath *)v4 setDiscoveredMaps:v6];
+  discoveredMaps = [(NSPProxiedContentPath *)self discoveredMaps];
+  [(NSPProxiedContentPath *)v4 setDiscoveredMaps:discoveredMaps];
 
-  v7 = [(NSPProxiedContentPath *)self ingressProxy];
-  [(NSPProxiedContentPath *)v4 setIngressProxy:v7];
+  ingressProxy = [(NSPProxiedContentPath *)self ingressProxy];
+  [(NSPProxiedContentPath *)v4 setIngressProxy:ingressProxy];
 
-  v8 = [(NSPProxiedContentPath *)self egressProxy];
-  [(NSPProxiedContentPath *)v4 setEgressProxy:v8];
+  egressProxy = [(NSPProxiedContentPath *)self egressProxy];
+  [(NSPProxiedContentPath *)v4 setEgressProxy:egressProxy];
 
-  v9 = [(NSPProxiedContentPath *)self resolver];
-  [(NSPProxiedContentPath *)v4 setResolver:v9];
+  resolver = [(NSPProxiedContentPath *)self resolver];
+  [(NSPProxiedContentPath *)v4 setResolver:resolver];
 
-  v10 = [(NSPProxiedContentPath *)self quicAgentUUID];
-  [(NSPProxiedContentPath *)v4 setQuicAgentUUID:v10];
+  quicAgentUUID = [(NSPProxiedContentPath *)self quicAgentUUID];
+  [(NSPProxiedContentPath *)v4 setQuicAgentUUID:quicAgentUUID];
 
-  v11 = [(NSPProxiedContentPath *)self fallbackAgentUUID];
-  [(NSPProxiedContentPath *)v4 setFallbackAgentUUID:v11];
+  fallbackAgentUUID = [(NSPProxiedContentPath *)self fallbackAgentUUID];
+  [(NSPProxiedContentPath *)v4 setFallbackAgentUUID:fallbackAgentUUID];
 
-  v12 = [(NSPProxiedContentPath *)self resolverAgentUUID];
-  [(NSPProxiedContentPath *)v4 setResolverAgentUUID:v12];
+  resolverAgentUUID = [(NSPProxiedContentPath *)self resolverAgentUUID];
+  [(NSPProxiedContentPath *)v4 setResolverAgentUUID:resolverAgentUUID];
 
-  v13 = [(NSPProxiedContentPath *)self quicRegistration];
-  [(NSPProxiedContentPath *)v4 setQuicRegistration:v13];
+  quicRegistration = [(NSPProxiedContentPath *)self quicRegistration];
+  [(NSPProxiedContentPath *)v4 setQuicRegistration:quicRegistration];
 
-  v14 = [(NSPProxiedContentPath *)self fallbackRegistration];
-  [(NSPProxiedContentPath *)v4 setFallbackRegistration:v14];
+  fallbackRegistration = [(NSPProxiedContentPath *)self fallbackRegistration];
+  [(NSPProxiedContentPath *)v4 setFallbackRegistration:fallbackRegistration];
 
-  v15 = [(NSPProxiedContentPath *)self resolverRegistration];
-  [(NSPProxiedContentPath *)v4 setResolverRegistration:v15];
+  resolverRegistration = [(NSPProxiedContentPath *)self resolverRegistration];
+  [(NSPProxiedContentPath *)v4 setResolverRegistration:resolverRegistration];
 
-  v16 = [(NSPProxiedContentPath *)self resolvedAddresses];
-  [(NSPProxiedContentPath *)v4 setResolvedAddresses:v16];
+  resolvedAddresses = [(NSPProxiedContentPath *)self resolvedAddresses];
+  [(NSPProxiedContentPath *)v4 setResolvedAddresses:resolvedAddresses];
 
   [(NSPProxiedContentPath *)v4 setProxiedContentAgentRegistered:[(NSPProxiedContentPath *)self proxiedContentAgentRegistered]];
   return v4;
@@ -244,42 +244,42 @@
 
 - (id)shortName
 {
-  v3 = [(NSPProxiedContentPath *)self resolver];
+  resolver = [(NSPProxiedContentPath *)self resolver];
 
-  if (v3)
+  if (resolver)
   {
-    v4 = [(NSPProxiedContentPath *)self resolver];
-    v5 = [v4 dohURL];
+    resolver2 = [(NSPProxiedContentPath *)self resolver];
+    dohURL = [resolver2 dohURL];
   }
 
   else
   {
-    v6 = [(NSPProxiedContentPath *)self egressProxy];
-    v4 = v6;
-    if (v6)
+    egressProxy = [(NSPProxiedContentPath *)self egressProxy];
+    resolver2 = egressProxy;
+    if (egressProxy)
     {
-      v6 = v6[3];
+      egressProxy = egressProxy[3];
     }
 
-    v5 = [v6 vendor];
+    dohURL = [egressProxy vendor];
   }
 
-  v7 = v5;
+  v7 = dohURL;
 
   return v7;
 }
 
-- (BOOL)matchesMap:(id)a3 proxyArray:(id)a4
+- (BOOL)matchesMap:(id)map proxyArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  arrayCopy = array;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v35 = self;
-  v8 = [(NSPProxiedContentPath *)self associatedMaps];
-  v9 = [v8 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  selfCopy = self;
+  associatedMaps = [(NSPProxiedContentPath *)self associatedMaps];
+  v9 = [associatedMaps countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v9)
   {
     v10 = v9;
@@ -290,21 +290,21 @@ LABEL_3:
     {
       if (*v37 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(associatedMaps);
       }
 
       v13 = *(*(&v36 + 1) + 8 * v12);
-      v14 = [v6 proxiesCount];
-      if (v14 == [v13 proxiesCount])
+      proxiesCount = [mapCopy proxiesCount];
+      if (proxiesCount == [v13 proxiesCount])
       {
-        v15 = [v6 hasResolver];
-        if (v15 == [v13 hasResolver])
+        hasResolver = [mapCopy hasResolver];
+        if (hasResolver == [v13 hasResolver])
         {
-          v16 = [v6 isPrivacyProxy];
-          if (v16 == [v13 isPrivacyProxy])
+          isPrivacyProxy = [mapCopy isPrivacyProxy];
+          if (isPrivacyProxy == [v13 isPrivacyProxy])
           {
-            v17 = [v6 resolver];
-            if (v17 == [v13 resolver])
+            resolver = [mapCopy resolver];
+            if (resolver == [v13 resolver])
             {
               break;
             }
@@ -314,7 +314,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v10 = [associatedMaps countByEnumeratingWithState:&v36 objects:v40 count:16];
         if (!v10)
         {
           goto LABEL_12;
@@ -324,50 +324,50 @@ LABEL_3:
       }
     }
 
-    if ([v6 proxiesCount])
+    if ([mapCopy proxiesCount])
     {
       v19 = 0;
       while (1)
       {
-        v20 = *([v6 proxies] + v19);
+        v20 = *([mapCopy proxies] + v19);
         if (v20 != *([v13 proxies] + v19))
         {
           goto LABEL_12;
         }
 
-        if ([v6 proxiesCount] == 1)
+        if ([mapCopy proxiesCount] == 1)
         {
           break;
         }
 
-        if ([v6 proxiesCount] != 2)
+        if ([mapCopy proxiesCount] != 2)
         {
           goto LABEL_29;
         }
 
-        v28 = *([v6 proxies] + v19);
-        if ([v7 count] <= v28)
+        v28 = *([mapCopy proxies] + v19);
+        if ([arrayCopy count] <= v28)
         {
           goto LABEL_12;
         }
 
-        v22 = [v7 objectAtIndex:v28];
+        v22 = [arrayCopy objectAtIndex:v28];
         if (!v19)
         {
-          v23 = [(NSPProxiedContentPath *)v35 ingressProxy];
+          ingressProxy = [(NSPProxiedContentPath *)selfCopy ingressProxy];
           goto LABEL_19;
         }
 
-        v29 = [(NSPProxiedContentPath *)v35 egressProxy];
-        v30 = v29;
-        if (v29)
+        egressProxy = [(NSPProxiedContentPath *)selfCopy egressProxy];
+        v30 = egressProxy;
+        if (egressProxy)
         {
-          v29 = v29[3];
+          egressProxy = egressProxy[3];
         }
 
-        v31 = [v29 proxyURL];
-        v32 = [v22 proxyURL];
-        v33 = [v31 isEqualToString:v32];
+        proxyURL = [egressProxy proxyURL];
+        proxyURL2 = [v22 proxyURL];
+        v33 = [proxyURL isEqualToString:proxyURL2];
 
         if (!v33)
         {
@@ -375,30 +375,30 @@ LABEL_3:
         }
 
 LABEL_29:
-        if (++v19 >= [v6 proxiesCount])
+        if (++v19 >= [mapCopy proxiesCount])
         {
           goto LABEL_32;
         }
       }
 
-      v21 = *([v6 proxies] + v19);
-      if ([v7 count] <= v21)
+      v21 = *([mapCopy proxies] + v19);
+      if ([arrayCopy count] <= v21)
       {
         goto LABEL_12;
       }
 
-      v22 = [v7 objectAtIndex:v21];
-      v23 = [(NSPProxiedContentPath *)v35 egressProxy];
+      v22 = [arrayCopy objectAtIndex:v21];
+      ingressProxy = [(NSPProxiedContentPath *)selfCopy egressProxy];
 LABEL_19:
-      v24 = v23;
-      if (v23)
+      v24 = ingressProxy;
+      if (ingressProxy)
       {
-        v23 = v23[3];
+        ingressProxy = ingressProxy[3];
       }
 
-      v25 = [v23 proxyURL];
-      v26 = [v22 proxyURL];
-      v27 = [v25 isEqualToString:v26];
+      proxyURL3 = [ingressProxy proxyURL];
+      proxyURL4 = [v22 proxyURL];
+      v27 = [proxyURL3 isEqualToString:proxyURL4];
 
       if ((v27 & 1) == 0)
       {
@@ -421,35 +421,35 @@ LABEL_12:
   return v18;
 }
 
-- (void)addMap:(id)a3
+- (void)addMap:(id)map
 {
-  v4 = a3;
-  v5 = [(NSPProxiedContentPath *)self associatedMaps];
-  [v5 addObject:v4];
+  mapCopy = map;
+  associatedMaps = [(NSPProxiedContentPath *)self associatedMaps];
+  [associatedMaps addObject:mapCopy];
 }
 
 - (id)aggregateMaps
 {
-  v2 = self;
-  v3 = [(NSPProxiedContentPath *)self discoveredMaps];
-  v4 = [v3 count];
+  selfCopy = self;
+  discoveredMaps = [(NSPProxiedContentPath *)self discoveredMaps];
+  v4 = [discoveredMaps count];
 
-  v5 = [(NSPProxiedContentPath *)v2 associatedMaps];
-  v6 = v5;
+  associatedMaps = [(NSPProxiedContentPath *)selfCopy associatedMaps];
+  v6 = associatedMaps;
   if (v4)
   {
-    v7 = [v5 mutableCopy];
+    v7 = [associatedMaps mutableCopy];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = [(NSPProxiedContentPath *)v2 discoveredMaps];
+    obj = [(NSPProxiedContentPath *)selfCopy discoveredMaps];
     v27 = [obj countByEnumeratingWithState:&v33 objects:v40 count:16];
     if (v27)
     {
       v25 = *v34;
-      v26 = v2;
+      v26 = selfCopy;
       do
       {
         v8 = 0;
@@ -466,8 +466,8 @@ LABEL_12:
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v10 = [(NSPProxiedContentPath *)v2 associatedMaps];
-          v11 = [v10 countByEnumeratingWithState:&v29 objects:v39 count:16];
+          associatedMaps2 = [(NSPProxiedContentPath *)selfCopy associatedMaps];
+          v11 = [associatedMaps2 countByEnumeratingWithState:&v29 objects:v39 count:16];
           if (v11)
           {
             v12 = v11;
@@ -478,19 +478,19 @@ LABEL_12:
               {
                 if (*v30 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(associatedMaps2);
                 }
 
                 v15 = *(*(&v29 + 1) + 8 * i);
-                v16 = [v15 processes];
-                v17 = [v9 processes];
-                v18 = [v16 isEqualToArray:v17];
+                processes = [v15 processes];
+                processes2 = [v9 processes];
+                v18 = [processes isEqualToArray:processes2];
 
                 if ((v18 & 1) == 0)
                 {
-                  v19 = [v15 hostnames];
-                  v20 = [v9 hostnames];
-                  v21 = [v19 isEqualToArray:v20];
+                  hostnames = [v15 hostnames];
+                  hostnames2 = [v9 hostnames];
+                  v21 = [hostnames isEqualToArray:hostnames2];
 
                   if (!v21)
                   {
@@ -501,7 +501,7 @@ LABEL_12:
                 [v7 removeObject:v15];
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v29 objects:v39 count:16];
+              v12 = [associatedMaps2 countByEnumeratingWithState:&v29 objects:v39 count:16];
             }
 
             while (v12);
@@ -509,7 +509,7 @@ LABEL_12:
 
           [v7 addObject:v9];
           v8 = v28 + 1;
-          v2 = v26;
+          selfCopy = v26;
         }
 
         while ((v28 + 1) != v27);
@@ -530,26 +530,26 @@ LABEL_12:
 
   else
   {
-    v7 = v5;
+    v7 = associatedMaps;
   }
 
   return v7;
 }
 
-- (BOOL)matchIngress:(id)a3
+- (BOOL)matchIngress:(id)ingress
 {
-  v4 = a3;
-  if (v4)
+  ingressCopy = ingress;
+  if (ingressCopy)
   {
-    v5 = [(NSPProxiedContentPath *)self ingressProxy];
+    ingressProxy = [(NSPProxiedContentPath *)self ingressProxy];
 
-    if (v5)
+    if (ingressProxy)
     {
-      v6 = [(NSPProxiedContentPath *)self ingressProxy];
-      v7 = v6;
-      if (v6)
+      ingressProxy2 = [(NSPProxiedContentPath *)self ingressProxy];
+      v7 = ingressProxy2;
+      if (ingressProxy2)
       {
-        v8 = *(v6 + 24);
+        v8 = *(ingressProxy2 + 24);
       }
 
       else
@@ -558,9 +558,9 @@ LABEL_12:
       }
 
       v9 = v8;
-      v10 = [v9 proxyURL];
-      v11 = [v4[3] proxyURL];
-      LOBYTE(v5) = [v10 isEqualToString:v11];
+      proxyURL = [v9 proxyURL];
+      proxyURL2 = [ingressCopy[3] proxyURL];
+      LOBYTE(ingressProxy) = [proxyURL isEqualToString:proxyURL2];
     }
   }
 
@@ -574,26 +574,26 @@ LABEL_12:
       _os_log_fault_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "%s called with null proxyTokenInfo", &v14, 0xCu);
     }
 
-    LOBYTE(v5) = 0;
+    LOBYTE(ingressProxy) = 0;
   }
 
-  return v5;
+  return ingressProxy;
 }
 
-- (BOOL)matchEgress:(id)a3
+- (BOOL)matchEgress:(id)egress
 {
-  v4 = a3;
-  if (v4)
+  egressCopy = egress;
+  if (egressCopy)
   {
-    v5 = [(NSPProxiedContentPath *)self egressProxy];
+    egressProxy = [(NSPProxiedContentPath *)self egressProxy];
 
-    if (v5)
+    if (egressProxy)
     {
-      v6 = [(NSPProxiedContentPath *)self egressProxy];
-      v7 = v6;
-      if (v6)
+      egressProxy2 = [(NSPProxiedContentPath *)self egressProxy];
+      v7 = egressProxy2;
+      if (egressProxy2)
       {
-        v8 = *(v6 + 24);
+        v8 = *(egressProxy2 + 24);
       }
 
       else
@@ -602,9 +602,9 @@ LABEL_12:
       }
 
       v9 = v8;
-      v10 = [v9 proxyURL];
-      v11 = [v4[3] proxyURL];
-      LOBYTE(v5) = [v10 isEqualToString:v11];
+      proxyURL = [v9 proxyURL];
+      proxyURL2 = [egressCopy[3] proxyURL];
+      LOBYTE(egressProxy) = [proxyURL isEqualToString:proxyURL2];
     }
   }
 
@@ -618,18 +618,18 @@ LABEL_12:
       _os_log_fault_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "%s called with null proxyTokenInfo", &v14, 0xCu);
     }
 
-    LOBYTE(v5) = 0;
+    LOBYTE(egressProxy) = 0;
   }
 
-  return v5;
+  return egressProxy;
 }
 
-- (void)reportErrorForDNSAgent:(id)a3 error:(int)a4 withOptions:(id)a5
+- (void)reportErrorForDNSAgent:(id)agent error:(int)error withOptions:(id)options
 {
-  v7 = a3;
+  agentCopy = agent;
   buffer = 0u;
   memset(v30, 0, sizeof(v30));
-  v8 = [a5 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  v8 = [options objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   if (!v8)
   {
     v10 = 0;
@@ -642,13 +642,13 @@ LABEL_12:
   {
 LABEL_7:
     v15 = 0;
-    v11 = 0;
+    interface = 0;
     goto LABEL_13;
   }
 
-  v11 = [v9 interface];
-  v12 = [v10 parameters];
-  v13 = [v12 pid];
+  interface = [v9 interface];
+  parameters = [v10 parameters];
+  v13 = [parameters pid];
   if (!v13)
   {
 LABEL_11:
@@ -676,7 +676,7 @@ LABEL_12:
 LABEL_13:
   v17 = nplog_obj();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-  if (a4)
+  if (error)
   {
     if (v18)
     {
@@ -690,17 +690,17 @@ LABEL_13:
         v19 = "none";
       }
 
-      v20 = [v7 resolver];
-      v21 = [v20 dohURL];
-      v22 = [v11 interfaceName];
+      resolver = [agentCopy resolver];
+      dohURL = [resolver dohURL];
+      interfaceName = [interface interfaceName];
       v27 = 67109890;
-      *v28 = a4;
+      *v28 = error;
       *&v28[4] = 2080;
       *&v28[6] = v19;
       *&v28[14] = 2112;
-      *&v28[16] = v21;
+      *&v28[16] = dohURL;
       *&v28[24] = 2112;
-      *&v28[26] = v22;
+      *&v28[26] = interfaceName;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Received error (%d) from %s for content-specific %@ resolver agent on interface %@", &v27, 0x26u);
     }
   }
@@ -717,44 +717,44 @@ LABEL_13:
       v23 = "none";
     }
 
-    v24 = [v7 resolver];
-    v25 = [v24 dohURL];
-    v26 = [v11 interfaceName];
+    resolver2 = [agentCopy resolver];
+    dohURL2 = [resolver2 dohURL];
+    interfaceName2 = [interface interfaceName];
     v27 = 136315650;
     *v28 = v23;
     *&v28[8] = 2112;
-    *&v28[10] = v25;
+    *&v28[10] = dohURL2;
     *&v28[18] = 2112;
-    *&v28[20] = v26;
+    *&v28[20] = interfaceName2;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Received success indication from %s for content-specific %@ resolver agent on interface %@", &v27, 0x20u);
   }
 }
 
 - (BOOL)pathReady
 {
-  v3 = [(NSPProxiedContentPath *)self ingressProxy];
-  if (sub_100004F70(v3))
+  ingressProxy = [(NSPProxiedContentPath *)self ingressProxy];
+  if (sub_100004F70(ingressProxy))
   {
-    v4 = [(NSPProxiedContentPath *)self ingressProxy];
-    v5 = sub_1000071A0(v4);
-    v6 = [(NSPProxiedContentPath *)self ingressProxy];
-    v7 = sub_100006674(v6);
+    ingressProxy2 = [(NSPProxiedContentPath *)self ingressProxy];
+    v5 = sub_1000071A0(ingressProxy2);
+    ingressProxy3 = [(NSPProxiedContentPath *)self ingressProxy];
+    v7 = sub_100006674(ingressProxy3);
 
     if (v5 <= v7)
     {
       v8 = nplog_obj();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [(NSPProxiedContentPath *)self ingressProxy];
-        v10 = sub_1000071A0(v9);
-        v11 = [(NSPProxiedContentPath *)self shortName];
-        v12 = [(NSPProxiedContentPath *)self ingressProxy];
+        ingressProxy4 = [(NSPProxiedContentPath *)self ingressProxy];
+        v10 = sub_1000071A0(ingressProxy4);
+        shortName = [(NSPProxiedContentPath *)self shortName];
+        ingressProxy5 = [(NSPProxiedContentPath *)self ingressProxy];
         v23 = 134218498;
         v24 = v10;
         v25 = 2112;
-        v26 = v11;
+        v26 = shortName;
         v27 = 2048;
-        v28 = sub_100006674(v12);
+        v28 = sub_100006674(ingressProxy5);
         v13 = "proxied content path is not ready due to insufficient ingress proxy tokens (cache+agent: %lu) for [%@], (ingress proxy low-water mark: %lu)";
 LABEL_10:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, v13, &v23, 0x20u);
@@ -770,29 +770,29 @@ LABEL_10:
   {
   }
 
-  v14 = [(NSPProxiedContentPath *)self egressProxy];
-  if (sub_100004F70(v14))
+  egressProxy = [(NSPProxiedContentPath *)self egressProxy];
+  if (sub_100004F70(egressProxy))
   {
-    v15 = [(NSPProxiedContentPath *)self egressProxy];
-    v16 = sub_1000071A0(v15);
-    v17 = [(NSPProxiedContentPath *)self egressProxy];
-    v18 = sub_100006674(v17);
+    egressProxy2 = [(NSPProxiedContentPath *)self egressProxy];
+    v16 = sub_1000071A0(egressProxy2);
+    egressProxy3 = [(NSPProxiedContentPath *)self egressProxy];
+    v18 = sub_100006674(egressProxy3);
 
     if (v16 <= v18)
     {
       v8 = nplog_obj();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [(NSPProxiedContentPath *)self egressProxy];
-        v19 = sub_1000071A0(v9);
-        v11 = [(NSPProxiedContentPath *)self shortName];
-        v12 = [(NSPProxiedContentPath *)self egressProxy];
+        ingressProxy4 = [(NSPProxiedContentPath *)self egressProxy];
+        v19 = sub_1000071A0(ingressProxy4);
+        shortName = [(NSPProxiedContentPath *)self shortName];
+        ingressProxy5 = [(NSPProxiedContentPath *)self egressProxy];
         v23 = 134218498;
         v24 = v19;
         v25 = 2112;
-        v26 = v11;
+        v26 = shortName;
         v27 = 2048;
-        v28 = sub_100006674(v12);
+        v28 = sub_100006674(ingressProxy5);
         v13 = "proxied content path is not ready due to insufficient egress proxy tokens (cache+agent: %lu) for [%@], (egress proxy low-water mark: %lu)";
         goto LABEL_10;
       }
@@ -811,9 +811,9 @@ LABEL_11:
   v20 = 1;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v21 = [(NSPProxiedContentPath *)self shortName];
+    shortName2 = [(NSPProxiedContentPath *)self shortName];
     v23 = 138412290;
-    v24 = v21;
+    v24 = shortName2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "proxied content path [%@] is ready", &v23, 0xCu);
   }
 
@@ -824,11 +824,11 @@ LABEL_15:
 
 - (BOOL)allowFallback
 {
-  v3 = [(NSPProxiedContentPath *)self egressProxy];
-  v4 = v3;
-  if (v3)
+  egressProxy = [(NSPProxiedContentPath *)self egressProxy];
+  v4 = egressProxy;
+  if (egressProxy)
   {
-    v5 = *(v3 + 24);
+    v5 = *(egressProxy + 24);
   }
 
   else
@@ -839,55 +839,55 @@ LABEL_15:
   v6 = v5;
   if ([v6 supportsFallback])
   {
-    v7 = [(NSPProxiedContentPath *)self ingressProxy];
-    if (v7)
+    ingressProxy = [(NSPProxiedContentPath *)self ingressProxy];
+    if (ingressProxy)
     {
-      v8 = [(NSPProxiedContentPath *)self ingressProxy];
-      v9 = v8;
-      if (v8)
+      ingressProxy2 = [(NSPProxiedContentPath *)self ingressProxy];
+      v9 = ingressProxy2;
+      if (ingressProxy2)
       {
-        v8 = v8[3];
+        ingressProxy2 = ingressProxy2[3];
       }
 
-      v10 = [v8 supportsFallback];
+      supportsFallback = [ingressProxy2 supportsFallback];
     }
 
     else
     {
-      v10 = 1;
+      supportsFallback = 1;
     }
   }
 
   else
   {
-    v10 = 0;
+    supportsFallback = 0;
   }
 
-  return v10;
+  return supportsFallback;
 }
 
 - (void)resetResumableSessionTickets
 {
-  v3 = [(NSPProxiedContentPath *)self quicRegistration];
-  if (v3)
+  quicRegistration = [(NSPProxiedContentPath *)self quicRegistration];
+  if (quicRegistration)
   {
     v4 = nplog_obj();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NSPProxiedContentPath *)self shortName];
+      shortName = [(NSPProxiedContentPath *)self shortName];
       v6 = 138412290;
-      v7 = v5;
+      v7 = shortName;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Flushing session tickets for proxied content path [%@]", &v6, 0xCu);
     }
 
-    [v3[3] flushTokens];
+    [quicRegistration[3] flushTokens];
     [(NSPProxiedContentPath *)self fetchResumableSessionTickets];
   }
 }
 
-- (id)createDoHQueryForName:(const char *)a3 type:(unsigned __int16)a4
+- (id)createDoHQueryForName:(const char *)name type:(unsigned __int16)type
 {
-  if (a3)
+  if (name)
   {
     memset(&buffer[17], 0, 256);
     if (!DomainNameFromString())
@@ -911,20 +911,20 @@ LABEL_15:
   return 0;
 }
 
-- (id)createDoHMessageForQuery:(id)a3 name:(const char *)a4
+- (id)createDoHMessageForQuery:(id)query name:(const char *)name
 {
-  v5 = a3;
+  queryCopy = query;
   v6 = nw_content_context_create("DoH Message");
   metadata = nw_http_create_metadata();
   nw_http_metadata_set_method();
   nw_http_metadata_set_path();
-  v8 = [NSString stringWithFormat:@"https://%s/dns-query", a4];
-  url = nw_endpoint_create_url([v8 UTF8String]);
+  name = [NSString stringWithFormat:@"https://%s/dns-query", name];
+  url = nw_endpoint_create_url([name UTF8String]);
   nw_http_metadata_set_endpoint();
 
   nw_http_metadata_add_header();
   nw_http_metadata_add_header();
-  size = dispatch_data_get_size(v5);
+  size = dispatch_data_get_size(queryCopy);
 
   *__str = 0;
   v13 = 0;
@@ -936,14 +936,14 @@ LABEL_15:
   return v6;
 }
 
-- (id)createPvDRequestForName:(const char *)a3
+- (id)createPvDRequestForName:(const char *)name
 {
   v4 = nw_content_context_create("PvD Request");
   metadata = nw_http_create_metadata();
   nw_http_metadata_set_method();
   nw_http_metadata_set_path();
-  v6 = [NSString stringWithFormat:@"https://%s/.well-known/pvd", a3];
-  url = nw_endpoint_create_url([v6 UTF8String]);
+  name = [NSString stringWithFormat:@"https://%s/.well-known/pvd", name];
+  url = nw_endpoint_create_url([name UTF8String]);
   nw_http_metadata_set_endpoint();
 
   nw_http_metadata_add_header();
@@ -953,16 +953,16 @@ LABEL_15:
   return v4;
 }
 
-- (id)copyAddressesFromDoHAnswer:(id)a3
+- (id)copyAddressesFromDoHAnswer:(id)answer
 {
-  v3 = a3;
+  answerCopy = answer;
   v4 = objc_alloc_init(NSMutableArray);
-  if (v3)
+  if (answerCopy)
   {
     v8 = 0;
     v7 = 0;
-    [v3 bytes];
-    [v3 length];
+    [answerCopy bytes];
+    [answerCopy length];
     v5 = DNSMessageCollapse();
     if (v5)
     {
@@ -973,12 +973,12 @@ LABEL_15:
   return v4;
 }
 
-- (void)startPvDConnectionForSessionTicketsWithEndpoint:(id)a3 parameters:(id)a4 completionHandler:(id)a5
+- (void)startPvDConnectionForSessionTicketsWithEndpoint:(id)endpoint parameters:(id)parameters completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = nw_parameters_copy(v9);
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  v11 = nw_parameters_copy(parametersCopy);
   v12 = nw_parameters_copy_default_protocol_stack(v11);
   v36 = 0;
   v37 = &v36;
@@ -1002,7 +1002,7 @@ LABEL_15:
   v31 = 0x3032000000;
   v32 = sub_100001F14;
   v33 = sub_100005818;
-  v34 = nw_connection_create(v8, v11);
+  v34 = nw_connection_create(endpointCopy, v11);
   v13 = v30[5];
   v14 = NPGetInternalQueue();
   nw_connection_set_queue(v13, v14);
@@ -1014,7 +1014,7 @@ LABEL_15:
   v27 = &unk_100109678;
   v28 = &v29;
   nw_connection_set_event_handler();
-  v16 = [(NSPProxiedContentPath *)self createPvDRequestForName:nw_endpoint_get_hostname(v8)];
+  v16 = [(NSPProxiedContentPath *)self createPvDRequestForName:nw_endpoint_get_hostname(endpointCopy)];
   nw_connection_send(v30[5], &_dispatch_data_empty, v16, 1, _nw_connection_send_idempotent_content);
   nw_connection_start(v30[5]);
   v17 = v30[5];
@@ -1022,9 +1022,9 @@ LABEL_15:
   completion[1] = 3221225472;
   completion[2] = sub_100010044;
   completion[3] = &unk_100109718;
-  v18 = v8;
+  v18 = endpointCopy;
   v21 = v18;
-  v19 = v10;
+  v19 = handlerCopy;
   v22 = v19;
   v23 = &v29;
   nw_connection_receive_message(v17, completion);
@@ -1035,8 +1035,8 @@ LABEL_15:
 
 - (id)bootstrapAddresses
 {
-  v3 = [(NSPProxiedContentPath *)self ingressProxy];
-  if (v3)
+  ingressProxy = [(NSPProxiedContentPath *)self ingressProxy];
+  if (ingressProxy)
   {
     [(NSPProxiedContentPath *)self ingressProxy];
   }
@@ -1057,10 +1057,10 @@ LABEL_15:
     v5 = 0;
   }
 
-  v6 = [v5 bootstrapAddresses];
-  if ([v6 count])
+  bootstrapAddresses = [v5 bootstrapAddresses];
+  if ([bootstrapAddresses count])
   {
-    v7 = [v6 sortedArrayUsingComparator:&stru_100109758];
+    v7 = [bootstrapAddresses sortedArrayUsingComparator:&stru_100109758];
   }
 
   else
@@ -1071,11 +1071,11 @@ LABEL_15:
   return v7;
 }
 
-- (id)objectFromDictionary:(id)a3 key:(id)a4 oldKey:(id)a5
+- (id)objectFromDictionary:(id)dictionary key:(id)key oldKey:(id)oldKey
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 objectForKeyedSubscript:a4];
+  dictionaryCopy = dictionary;
+  oldKeyCopy = oldKey;
+  v9 = [dictionaryCopy objectForKeyedSubscript:key];
   v10 = v9;
   if (v9)
   {
@@ -1084,7 +1084,7 @@ LABEL_15:
 
   else
   {
-    v11 = [v7 objectForKeyedSubscript:v8];
+    v11 = [dictionaryCopy objectForKeyedSubscript:oldKeyCopy];
   }
 
   v12 = v11;
@@ -1092,13 +1092,13 @@ LABEL_15:
   return v12;
 }
 
-- (id)proxyIdentifierFromPvDConfiguration:(id)a3 discoveredAlgorithm:(int *)a4
+- (id)proxyIdentifierFromPvDConfiguration:(id)configuration discoveredAlgorithm:(int *)algorithm
 {
-  v5 = a3;
-  if (v5)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v6 = [(NSPProxiedContentPath *)self ingressProxy];
-    if (v6)
+    ingressProxy = [(NSPProxiedContentPath *)self ingressProxy];
+    if (ingressProxy)
     {
       [(NSPProxiedContentPath *)self ingressProxy];
     }
@@ -1119,12 +1119,12 @@ LABEL_15:
       isa = 0;
     }
 
-    v10 = [(objc_class *)isa proxyURL];
-    v11 = [NSURL URLWithString:v10];
+    proxyURL = [(objc_class *)isa proxyURL];
+    v11 = [NSURL URLWithString:proxyURL];
 
     if (v11 && ([v11 host], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
-      v13 = [v5 objectForKeyedSubscript:@"proxies"];
+      v13 = [configurationCopy objectForKeyedSubscript:@"proxies"];
       objc_opt_class();
       if (v13)
       {
@@ -1132,9 +1132,9 @@ LABEL_15:
 
         if (isKindOfClass)
         {
-          v60 = self;
+          selfCopy = self;
           v57 = v7;
-          v58 = v5;
+          v58 = configurationCopy;
           v72 = 0u;
           v73 = 0u;
           v70 = 0u;
@@ -1182,30 +1182,30 @@ LABEL_15:
                     if (v26 && (v27 = objc_opt_isKindOfClass(), v26, (v27 & 1) != 0))
                     {
                       v28 = [NSURL URLWithString:v26];
-                      v29 = [v28 host];
+                      host = [v28 host];
 
                       v64 = v28;
-                      if (v29)
+                      if (host)
                       {
-                        v30 = [v28 host];
-                        v31 = [v11 host];
-                        v32 = [v30 isEqualToString:v31];
+                        host2 = [v28 host];
+                        host3 = [v11 host];
+                        v32 = [host2 isEqualToString:host3];
 
                         if ((v32 & 1) == 0)
                         {
                           v33 = nplog_obj();
                           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
                           {
-                            v34 = [v28 host];
-                            v35 = [v11 host];
+                            host4 = [v28 host];
+                            host5 = [v11 host];
                             *buf = 138413058;
                             v76 = v26;
                             v77 = 2112;
                             v78 = v28;
                             v79 = 2112;
-                            v80 = v34;
+                            v80 = host4;
                             v81 = 2112;
-                            v82 = v35;
+                            v82 = host5;
                             _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "Unable to match proxy URL %@ proxyURL %@ proxyURL.host %@ in PvD to %@", buf, 0x2Au);
                           }
 
@@ -1230,9 +1230,9 @@ LABEL_38:
                           v61 = v24;
                         }
 
-                        if (a4)
+                        if (algorithm)
                         {
-                          v33 = [(NSPProxiedContentPath *)v60 objectFromDictionary:v21 key:@"apple_algorithm" oldKey:@"appleTLSCurve"];
+                          v33 = [(NSPProxiedContentPath *)selfCopy objectFromDictionary:v21 key:@"apple_algorithm" oldKey:@"appleTLSCurve"];
                           objc_opt_class();
                           if (v33)
                           {
@@ -1303,9 +1303,9 @@ LABEL_38:
                                           v50 = 0;
                                         }
 
-                                        if (!*a4 || v50 == 3)
+                                        if (!*algorithm || v50 == 3)
                                         {
-                                          *a4 = v50;
+                                          *algorithm = v50;
                                         }
                                       }
                                     }
@@ -1333,9 +1333,9 @@ LABEL_69:
                         v33 = [v26 componentsSeparatedByString:@":"];
                         if ([v33 count]== 2)
                         {
-                          v37 = [v33 firstObject];
-                          v38 = [v11 host];
-                          v39 = [v37 isEqual:v38];
+                          firstObject = [v33 firstObject];
+                          host6 = [v11 host];
+                          v39 = [firstObject isEqual:host6];
 
                           v15 = v62;
                           v18 = v63;
@@ -1349,11 +1349,11 @@ LABEL_69:
                         v51 = nplog_obj();
                         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
                         {
-                          v52 = [v11 host];
+                          host7 = [v11 host];
                           *buf = 138412546;
                           v76 = v26;
                           v77 = 2112;
-                          v78 = v52;
+                          v78 = host7;
                           _os_log_debug_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEBUG, "Unable to match proxy %@ in PvD to %@", buf, 0x16u);
 
                           v18 = v63;
@@ -1408,7 +1408,7 @@ LABEL_87:
 
               v53 = v61;
               v7 = v57;
-              v5 = v58;
+              configurationCopy = v58;
               v13 = v56;
               goto LABEL_88;
             }
@@ -1457,14 +1457,14 @@ LABEL_88:
   return v8;
 }
 
-- (id)discoveredMapsFromPvDConfiguration:(id)a3 proxyIdentifier:(id)a4
+- (id)discoveredMapsFromPvDConfiguration:(id)configuration proxyIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (configurationCopy && identifierCopy)
   {
-    v9 = [v6 objectForKeyedSubscript:@"proxy-match"];
+    v9 = [configurationCopy objectForKeyedSubscript:@"proxy-match"];
     objc_opt_class();
     if (v9)
     {
@@ -1485,10 +1485,10 @@ LABEL_88:
         }
 
         v13 = v12;
-        v96 = self;
+        selfCopy = self;
         v14 = 0;
         v91 = *v114;
-        v89 = v6;
+        v89 = configurationCopy;
         v95 = v8;
         v93 = v11;
         while (1)
@@ -1563,7 +1563,7 @@ LABEL_88:
                         goto LABEL_112;
                       }
 
-                      if (![(NSPProxiedContentPath *)v96 isKnownProxyMatchKey:v30])
+                      if (![(NSPProxiedContentPath *)selfCopy isKnownProxyMatchKey:v30])
                       {
                         v75 = nplog_obj();
                         if (os_log_type_enabled(v75, OS_LOG_TYPE_DEBUG))
@@ -1577,7 +1577,7 @@ LABEL_112:
 LABEL_113:
 
                         v73 = 0;
-                        v6 = v89;
+                        configurationCopy = v89;
                         v74 = v90;
                         v8 = v95;
                         goto LABEL_114;
@@ -1676,7 +1676,7 @@ LABEL_36:
                     if ([v45 isEqualToString:v95])
                     {
 
-                      v48 = [(NSPProxiedContentPath *)v96 objectFromDictionary:v19 key:@"apple_bundleIDs" oldKey:@"appleBundleIDs"];
+                      v48 = [(NSPProxiedContentPath *)selfCopy objectFromDictionary:v19 key:@"apple_bundleIDs" oldKey:@"appleBundleIDs"];
                       v49 = [v19 objectForKeyedSubscript:@"domains"];
                       v50 = v48;
                       v16 = NEPolicySession_ptr;
@@ -1784,9 +1784,9 @@ LABEL_95:
                         v66 = v86;
                         if ([v86 count]|| (v66 = v78, [v78 count]))
                         {
-                          v67 = [v66 firstObject];
+                          firstObject = [v66 firstObject];
 
-                          v68 = v67;
+                          v68 = firstObject;
                           v17 = v91;
                         }
 
@@ -1800,10 +1800,10 @@ LABEL_95:
                         [v65 setIdentifier:v77];
                         [v65 setProcesses:v86];
                         [v65 setHostnames:v78];
-                        v87 = [(NSPProxiedContentPath *)v96 objectFromDictionary:v19 key:@"apple_matchExactHostnames" oldKey:@"appleMatchExactHostnames"];
-                        v81 = [(NSPProxiedContentPath *)v96 objectFromDictionary:v19 key:@"apple_systemProcessesOnly" oldKey:@"appleSystemProcessesOnly"];
-                        v79 = [(NSPProxiedContentPath *)v96 objectFromDictionary:v19 key:@"apple_supportsReverse" oldKey:@"appleSupportsReverse"];
-                        v69 = [(NSPProxiedContentPath *)v96 objectFromDictionary:v19 key:@"apple_percentEnabled" oldKey:@"applePercentEnabled"];
+                        v87 = [(NSPProxiedContentPath *)selfCopy objectFromDictionary:v19 key:@"apple_matchExactHostnames" oldKey:@"appleMatchExactHostnames"];
+                        v81 = [(NSPProxiedContentPath *)selfCopy objectFromDictionary:v19 key:@"apple_systemProcessesOnly" oldKey:@"appleSystemProcessesOnly"];
+                        v79 = [(NSPProxiedContentPath *)selfCopy objectFromDictionary:v19 key:@"apple_supportsReverse" oldKey:@"appleSupportsReverse"];
+                        v69 = [(NSPProxiedContentPath *)selfCopy objectFromDictionary:v19 key:@"apple_percentEnabled" oldKey:@"applePercentEnabled"];
                         v18 = NEPolicySession_ptr;
                         if (v87)
                         {
@@ -1892,7 +1892,7 @@ LABEL_53:
           while (v15 != v13);
           v72 = [v11 countByEnumeratingWithState:&v113 objects:v123 count:16];
           v13 = v72;
-          v6 = v89;
+          configurationCopy = v89;
           v14 = v90;
           v8 = v95;
           if (!v72)
@@ -1938,11 +1938,11 @@ LABEL_114:
   if (![(NSPProxiedContentPath *)self fetchingSessionTickets])
   {
     [(NSPProxiedContentPath *)self setResolvedAddresses:0];
-    v3 = [(NSPProxiedContentPath *)self quicRegistration];
-    selfa = v3;
-    if (v3)
+    quicRegistration = [(NSPProxiedContentPath *)self quicRegistration];
+    selfa = quicRegistration;
+    if (quicRegistration)
     {
-      v5 = objc_getProperty(v3, v4, 48, 1);
+      v5 = objc_getProperty(quicRegistration, v4, 48, 1);
       if (v5)
       {
         v60 = 4;
@@ -1962,13 +1962,13 @@ LABEL_114:
               stack = nw_parameters_copy_default_protocol_stack(v7);
               if (stack)
               {
-                v9 = [(NSPProxiedContentPath *)self delegate];
-                v29 = [v9 disableDoHBootstrapResults];
+                delegate = [(NSPProxiedContentPath *)self delegate];
+                disableDoHBootstrapResults = [delegate disableDoHBootstrapResults];
 
-                if ((v29 & 1) == 0)
+                if ((disableDoHBootstrapResults & 1) == 0)
                 {
-                  v28 = [(NSPProxiedContentPath *)self bootstrapAddresses];
-                  if ([v28 count] && (nw_endpoint_get_type(endpoint) == nw_endpoint_type_host || nw_endpoint_get_type(endpoint) == nw_endpoint_type_url))
+                  bootstrapAddresses = [(NSPProxiedContentPath *)self bootstrapAddresses];
+                  if ([bootstrapAddresses count] && (nw_endpoint_get_type(endpoint) == nw_endpoint_type_host || nw_endpoint_get_type(endpoint) == nw_endpoint_type_url))
                   {
                     nw_endpoint_get_port(endpoint);
                     direct = nw_proxy_config_create_direct();
@@ -1977,7 +1977,7 @@ LABEL_114:
                     v59 = 0u;
                     v56 = 0u;
                     v57 = 0u;
-                    v11 = v28;
+                    v11 = bootstrapAddresses;
                     v12 = [v11 countByEnumeratingWithState:&v56 objects:v66 count:16];
                     if (v12)
                     {
@@ -2020,11 +2020,11 @@ LABEL_114:
                 }
 
                 nw_parameters_set_fast_open_enabled(v8, 1);
-                v18 = [(NSPProxiedContentPath *)self egressProxy];
-                v19 = v18;
-                if (v18)
+                egressProxy = [(NSPProxiedContentPath *)self egressProxy];
+                v19 = egressProxy;
+                if (egressProxy)
                 {
-                  v20 = *(v18 + 24);
+                  v20 = *(egressProxy + 24);
                 }
 
                 else
@@ -2032,9 +2032,9 @@ LABEL_114:
                   v20 = 0;
                 }
 
-                v21 = [v20 proxyURL];
+                proxyURL = [v20 proxyURL];
 
-                url = nw_endpoint_create_url([v21 UTF8String]);
+                url = nw_endpoint_create_url([proxyURL UTF8String]);
                 nw_parameters_set_url_endpoint();
 
                 objc_initWeak(&location, self);
@@ -2107,7 +2107,7 @@ LABEL_114:
                 block[5] = v47;
                 block[6] = v49;
                 block[7] = v51;
-                v37 = v29;
+                v37 = disableDoHBootstrapResults;
                 dispatch_group_notify(v26, v27, block);
 
                 objc_destroyWeak(&v36);
@@ -2123,12 +2123,12 @@ LABEL_114:
 
               else
               {
-                v21 = nplog_obj();
-                if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
+                proxyURL = nplog_obj();
+                if (os_log_type_enabled(proxyURL, OS_LOG_TYPE_FAULT))
                 {
                   LODWORD(buf) = 136315138;
                   *(&buf + 4) = "[NSPProxiedContentPath fetchResumableSessionTickets]";
-                  _os_log_fault_impl(&_mh_execute_header, v21, OS_LOG_TYPE_FAULT, "%s called with null proxyStack", &buf, 0xCu);
+                  _os_log_fault_impl(&_mh_execute_header, proxyURL, OS_LOG_TYPE_FAULT, "%s called with null proxyStack", &buf, 0xCu);
                 }
               }
             }
@@ -2171,95 +2171,95 @@ LABEL_114:
         v5 = v32;
       }
 
-      v3 = selfa;
+      quicRegistration = selfa;
     }
   }
 }
 
-- (BOOL)shouldUsePQTLSWithProxyInfo:(id)a3
+- (BOOL)shouldUsePQTLSWithProxyInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (+[NSPPrivacyProxyProxyInfo allowPQTLS])
   {
     if ([(NSPProxiedContentPath *)self discoveredAlgorithm])
     {
-      v5 = [(NSPProxiedContentPath *)self discoveredAlgorithm]== 3;
+      usesPQTLS = [(NSPProxiedContentPath *)self discoveredAlgorithm]== 3;
     }
 
     else
     {
-      v5 = [v4 usesPQTLS];
+      usesPQTLS = [infoCopy usesPQTLS];
     }
   }
 
   else
   {
-    v5 = 0;
+    usesPQTLS = 0;
   }
 
-  return v5;
+  return usesPQTLS;
 }
 
-- (void)resetQUICProxyAgentForceUpdateDelegate:(BOOL)a3
+- (void)resetQUICProxyAgentForceUpdateDelegate:(BOOL)delegate
 {
-  v4 = [(NSPProxiedContentPath *)self egressProxy];
+  egressProxy = [(NSPProxiedContentPath *)self egressProxy];
 
-  if (v4)
+  if (egressProxy)
   {
-    v5 = [(NSPProxiedContentPath *)self quicAgentUUID];
+    quicAgentUUID = [(NSPProxiedContentPath *)self quicAgentUUID];
 
-    if (!v5)
+    if (!quicAgentUUID)
     {
       v6 = +[NSUUID UUID];
       [(NSPProxiedContentPath *)self setQuicAgentUUID:v6];
     }
 
-    v7 = [(NSPProxiedContentPath *)self quicRegistration];
+    quicRegistration = [(NSPProxiedContentPath *)self quicRegistration];
 
-    if (!v7)
+    if (!quicRegistration)
     {
       v8 = [NSPPrivacyProxyProxiedContentNetworkRegistration alloc];
-      v9 = [(NSPProxiedContentPath *)self quicAgentUUID];
-      v10 = [(NSPProxiedContentPath *)self shortName];
-      v11 = sub_1000463D8(&v8->super.super, v9, v10, self);
+      quicAgentUUID2 = [(NSPProxiedContentPath *)self quicAgentUUID];
+      shortName = [(NSPProxiedContentPath *)self shortName];
+      v11 = sub_1000463D8(&v8->super.super, quicAgentUUID2, shortName, self);
       [(NSPProxiedContentPath *)self setQuicRegistration:v11];
 
-      v12 = [(NSPProxiedContentPath *)self quicRegistration];
+      quicRegistration2 = [(NSPProxiedContentPath *)self quicRegistration];
 
-      if (!v12)
+      if (!quicRegistration2)
       {
-        v103 = nplog_obj();
-        if (os_log_type_enabled(v103, OS_LOG_TYPE_FAULT))
+        fallbackAgentUUID2 = nplog_obj();
+        if (os_log_type_enabled(fallbackAgentUUID2, OS_LOG_TYPE_FAULT))
         {
           *buf = 136315138;
           v105 = "[NSPProxiedContentPath resetQUICProxyAgentForceUpdateDelegate:]";
-          _os_log_fault_impl(&_mh_execute_header, v103, OS_LOG_TYPE_FAULT, "%s called with null self.quicRegistration", buf, 0xCu);
+          _os_log_fault_impl(&_mh_execute_header, fallbackAgentUUID2, OS_LOG_TYPE_FAULT, "%s called with null self.quicRegistration", buf, 0xCu);
         }
 
         goto LABEL_89;
       }
     }
 
-    v13 = [(NSPProxiedContentPath *)self fallbackAgentUUID];
-    if (v13)
+    fallbackAgentUUID = [(NSPProxiedContentPath *)self fallbackAgentUUID];
+    if (fallbackAgentUUID)
     {
-      v14 = v13;
-      v15 = [(NSPProxiedContentPath *)self fallbackRegistration];
-      if (!v15)
+      fallbackRegistration2 = fallbackAgentUUID;
+      fallbackRegistration = [(NSPProxiedContentPath *)self fallbackRegistration];
+      if (!fallbackRegistration)
       {
         v102 = 0;
-        v103 = 0;
+        fallbackAgentUUID2 = 0;
         goto LABEL_10;
       }
 
-      v16 = v15;
-      v17 = [*(v15 + 24) isRegistered];
+      v16 = fallbackRegistration;
+      isRegistered = [*(fallbackRegistration + 24) isRegistered];
 
-      if (v17)
+      if (isRegistered)
       {
-        v103 = [(NSPProxiedContentPath *)self fallbackAgentUUID];
-        v14 = [(NSPProxiedContentPath *)self fallbackRegistration];
-        v102 = sub_100042F70(v14);
+        fallbackAgentUUID2 = [(NSPProxiedContentPath *)self fallbackAgentUUID];
+        fallbackRegistration2 = [(NSPProxiedContentPath *)self fallbackRegistration];
+        v102 = sub_100042F70(fallbackRegistration2);
 LABEL_10:
 
         goto LABEL_12;
@@ -2267,29 +2267,29 @@ LABEL_10:
     }
 
     v102 = 0;
-    v103 = 0;
+    fallbackAgentUUID2 = 0;
 LABEL_12:
-    v18 = [(NSPProxiedContentPath *)self delegate];
-    v19 = [v18 disableDoHBootstrapResults];
+    delegate = [(NSPProxiedContentPath *)self delegate];
+    disableDoHBootstrapResults = [delegate disableDoHBootstrapResults];
 
-    if (v19)
+    if (disableDoHBootstrapResults)
     {
       [(NSPProxiedContentPath *)self setResolvedAddresses:0];
     }
 
     else
     {
-      v20 = [(NSPProxiedContentPath *)self resolvedAddresses];
+      resolvedAddresses = [(NSPProxiedContentPath *)self resolvedAddresses];
 
-      if (!v20)
+      if (!resolvedAddresses)
       {
-        v21 = [(NSPProxiedContentPath *)self bootstrapAddresses];
-        [(NSPProxiedContentPath *)self setResolvedAddresses:v21];
+        bootstrapAddresses = [(NSPProxiedContentPath *)self bootstrapAddresses];
+        [(NSPProxiedContentPath *)self setResolvedAddresses:bootstrapAddresses];
       }
     }
 
-    v22 = [(NSPProxiedContentPath *)self ingressProxy];
-    if (v22)
+    ingressProxy = [(NSPProxiedContentPath *)self ingressProxy];
+    if (ingressProxy)
     {
       [(NSPProxiedContentPath *)self ingressProxy];
     }
@@ -2300,20 +2300,20 @@ LABEL_12:
     }
     v23 = ;
 
-    v24 = [(NSPProxiedContentPath *)self ingressProxy];
-    if (v24)
+    ingressProxy2 = [(NSPProxiedContentPath *)self ingressProxy];
+    if (ingressProxy2)
     {
-      v25 = [(NSPProxiedContentPath *)self egressProxy];
+      egressProxy2 = [(NSPProxiedContentPath *)self egressProxy];
     }
 
     else
     {
-      v25 = 0;
+      egressProxy2 = 0;
     }
 
-    v26 = [(NSPProxiedContentPath *)self quicRegistration];
-    v27 = sub_100042F70(v26);
-    sub_1000424D0(v26, 4);
+    quicRegistration3 = [(NSPProxiedContentPath *)self quicRegistration];
+    v27 = sub_100042F70(quicRegistration3);
+    sub_1000424D0(quicRegistration3, 4);
     if (v23)
     {
       v28 = *(v23 + 24);
@@ -2325,10 +2325,10 @@ LABEL_12:
     }
 
     v29 = v28;
-    v91 = [v29 proxyURL];
-    if (v25)
+    proxyURL = [v29 proxyURL];
+    if (egressProxy2)
     {
-      v30 = *(v25 + 24);
+      v30 = *(egressProxy2 + 24);
     }
 
     else
@@ -2337,7 +2337,7 @@ LABEL_12:
     }
 
     v31 = v30;
-    v101 = [v31 proxyURL];
+    proxyURL2 = [v31 proxyURL];
     if (v23)
     {
       v32 = *(v23 + 24);
@@ -2349,10 +2349,10 @@ LABEL_12:
     }
 
     v33 = v32;
-    v100 = [v33 proxyKeyInfos];
-    if (v25)
+    proxyKeyInfos = [v33 proxyKeyInfos];
+    if (egressProxy2)
     {
-      v34 = *(v25 + 24);
+      v34 = *(egressProxy2 + 24);
     }
 
     else
@@ -2361,7 +2361,7 @@ LABEL_12:
     }
 
     v35 = v34;
-    v99 = [v35 proxyKeyInfos];
+    proxyKeyInfos2 = [v35 proxyKeyInfos];
     if (v23)
     {
       v36 = *(v23 + 24);
@@ -2373,10 +2373,10 @@ LABEL_12:
     }
 
     v37 = v36;
-    v98 = [v37 proxyVersion];
-    if (v25)
+    proxyVersion = [v37 proxyVersion];
+    if (egressProxy2)
     {
-      v38 = *(v25 + 24);
+      v38 = *(egressProxy2 + 24);
     }
 
     else
@@ -2385,7 +2385,7 @@ LABEL_12:
     }
 
     v86 = v38;
-    v97 = [v86 proxyVersion];
+    proxyVersion2 = [v86 proxyVersion];
     if (v23)
     {
       v39 = *(v23 + 24);
@@ -2397,10 +2397,10 @@ LABEL_12:
     }
 
     v85 = v39;
-    v82 = [v85 supportsResumption];
-    if (v25)
+    supportsResumption = [v85 supportsResumption];
+    if (egressProxy2)
     {
-      v40 = *(v25 + 24);
+      v40 = *(egressProxy2 + 24);
     }
 
     else
@@ -2409,7 +2409,7 @@ LABEL_12:
     }
 
     v84 = v40;
-    v79 = [v84 supportsResumption];
+    supportsResumption2 = [v84 supportsResumption];
     if (v23)
     {
       v41 = *(v23 + 24);
@@ -2422,9 +2422,9 @@ LABEL_12:
 
     v83 = v41;
     v78 = [(NSPProxiedContentPath *)self shouldUsePQTLSWithProxyInfo:?];
-    if (v25)
+    if (egressProxy2)
     {
-      v42 = *(v25 + 24);
+      v42 = *(egressProxy2 + 24);
     }
 
     else
@@ -2433,7 +2433,7 @@ LABEL_12:
     }
 
     v81 = v42;
-    v77 = [v81 usesPQTLS];
+    usesPQTLS = [v81 usesPQTLS];
     v80 = sub_100004F70(v23);
     if (v80)
     {
@@ -2455,12 +2455,12 @@ LABEL_12:
       v96 = 0;
     }
 
-    v76 = sub_100004F70(v25);
+    v76 = sub_100004F70(egressProxy2);
     if (v76)
     {
-      if (v25)
+      if (egressProxy2)
       {
-        v44 = *(v25 + 48);
+        v44 = *(egressProxy2 + 48);
       }
 
       else
@@ -2489,17 +2489,17 @@ LABEL_12:
     }
 
     v46 = v45;
-    v47 = [v46 tokenChallenge];
-    v48 = v47;
+    tokenChallenge = [v46 tokenChallenge];
+    v48 = tokenChallenge;
     v95 = v23;
-    v94 = v25;
+    v94 = egressProxy2;
     v92 = v27;
     v90 = v31;
     v88 = v35;
-    v49 = v26;
-    if (v25)
+    v49 = quicRegistration3;
+    if (egressProxy2)
     {
-      v50 = *(v25 + 24);
+      v50 = *(egressProxy2 + 24);
     }
 
     else
@@ -2507,16 +2507,16 @@ LABEL_12:
       v50 = 0;
     }
 
-    v51 = v47 != 0;
+    v51 = tokenChallenge != 0;
     v52 = v50;
-    v53 = [v52 tokenChallenge];
-    v54 = [(NSPProxiedContentPath *)self resolvedAddresses];
-    v93 = self;
-    v55 = [(NSPProxiedContentPath *)self associatedMaps];
-    v56 = [v55 firstObject];
-    BYTE1(v73) = v53 != 0;
+    tokenChallenge2 = [v52 tokenChallenge];
+    resolvedAddresses2 = [(NSPProxiedContentPath *)self resolvedAddresses];
+    selfCopy = self;
+    associatedMaps = [(NSPProxiedContentPath *)self associatedMaps];
+    firstObject = [associatedMaps firstObject];
+    BYTE1(v73) = tokenChallenge2 != 0;
     LOBYTE(v73) = v51;
-    sub_10004648C(v49, v91, v101, v100, v99, v98, v97, v82, v79, v78, v77, v96, v75, v73, v54, v103, v102, [v56 isPrivacyProxy]);
+    sub_10004648C(v49, proxyURL, proxyURL2, proxyKeyInfos, proxyKeyInfos2, proxyVersion, proxyVersion2, supportsResumption, supportsResumption2, v78, usesPQTLS, v96, v75, v73, resolvedAddresses2, fallbackAgentUUID2, v102, [firstObject isPrivacyProxy]);
 
     if (v76)
     {
@@ -2527,15 +2527,15 @@ LABEL_12:
     }
 
     v57 = sub_100042F70(v49);
-    v58 = [(NSPProxiedContentPath *)v93 resolver];
-    if (v58)
+    resolver = [(NSPProxiedContentPath *)selfCopy resolver];
+    if (resolver)
     {
-      v59 = v58;
+      v59 = resolver;
       v60 = [v57 isEqualToData:v92];
 
       if ((v60 & 1) == 0)
       {
-        [(NSPProxiedContentPath *)v93 unregisterResolverAgent];
+        [(NSPProxiedContentPath *)selfCopy unregisterResolverAgent];
       }
     }
 
@@ -2550,31 +2550,31 @@ LABEL_12:
     }
 
     v62 = v61;
-    v63 = [v62 supportsResumption];
+    supportsResumption3 = [v62 supportsResumption];
 
-    if (v63)
+    if (supportsResumption3)
     {
       if (v49)
       {
-        v64 = [v49[3] tokenCount];
+        tokenCount = [v49[3] tokenCount];
       }
 
       else
       {
-        v64 = 0;
+        tokenCount = 0;
       }
 
       v65 = nplog_obj();
       v66 = v65;
-      if (v64 > 3)
+      if (tokenCount > 3)
       {
         if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
         {
-          v72 = [(NSPProxiedContentPath *)v93 shortName];
+          shortName2 = [(NSPProxiedContentPath *)selfCopy shortName];
           *buf = 138412546;
-          v105 = v72;
+          v105 = shortName2;
           v106 = 1024;
-          v107 = v64;
+          v107 = tokenCount;
           _os_log_debug_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEBUG, "proxied content path [%@] has %u tickets, not fetching more", buf, 0x12u);
         }
       }
@@ -2583,15 +2583,15 @@ LABEL_12:
       {
         if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
         {
-          v67 = [(NSPProxiedContentPath *)v93 shortName];
+          shortName3 = [(NSPProxiedContentPath *)selfCopy shortName];
           *buf = 138412546;
-          v105 = v67;
+          v105 = shortName3;
           v106 = 1024;
-          v107 = v64;
+          v107 = tokenCount;
           _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_INFO, "proxied content path [%@] has %u tickets, fetching more", buf, 0x12u);
         }
 
-        [(NSPProxiedContentPath *)v93 fetchResumableSessionTickets];
+        [(NSPProxiedContentPath *)selfCopy fetchResumableSessionTickets];
       }
     }
 
@@ -2600,12 +2600,12 @@ LABEL_12:
       goto LABEL_88;
     }
 
-    v68 = [(NSPProxiedContentPath *)v93 resolver];
-    if (v68)
+    resolver2 = [(NSPProxiedContentPath *)selfCopy resolver];
+    if (resolver2)
     {
-      v69 = v68;
-      v70 = [(NSPProxiedContentPath *)v93 resolverRegistration];
-      if (([v70 isRegistered] & 1) == 0)
+      delegate2 = resolver2;
+      resolverRegistration = [(NSPProxiedContentPath *)selfCopy resolverRegistration];
+      if (([resolverRegistration isRegistered] & 1) == 0)
       {
 
 LABEL_87:
@@ -2618,9 +2618,9 @@ LABEL_87:
 
       else
       {
-        v71 = [(NSPProxiedContentPath *)v93 proxiedContentAgentRegistered];
+        proxiedContentAgentRegistered = [(NSPProxiedContentPath *)selfCopy proxiedContentAgentRegistered];
 
-        if (v71)
+        if (proxiedContentAgentRegistered)
         {
 LABEL_88:
 
@@ -2630,52 +2630,52 @@ LABEL_89:
       }
     }
 
-    else if ((v74 & 1) == 0 && [(NSPProxiedContentPath *)v93 proxiedContentAgentRegistered])
+    else if ((v74 & 1) == 0 && [(NSPProxiedContentPath *)selfCopy proxiedContentAgentRegistered])
     {
       goto LABEL_88;
     }
 
-    [(NSPProxiedContentPath *)v93 setProxiedContentAgentRegistered:1];
-    v69 = [(NSPProxiedContentPath *)v93 delegate];
-    [v69 proxiedContentAgentRegistered:v93];
+    [(NSPProxiedContentPath *)selfCopy setProxiedContentAgentRegistered:1];
+    delegate2 = [(NSPProxiedContentPath *)selfCopy delegate];
+    [delegate2 proxiedContentAgentRegistered:selfCopy];
     goto LABEL_87;
   }
 }
 
 - (void)resetFallbackProxyAgent
 {
-  v3 = [(NSPProxiedContentPath *)self egressProxy];
+  egressProxy = [(NSPProxiedContentPath *)self egressProxy];
 
-  if (v3 && [(NSPProxiedContentPath *)self allowFallback])
+  if (egressProxy && [(NSPProxiedContentPath *)self allowFallback])
   {
-    v4 = [(NSPProxiedContentPath *)self fallbackAgentUUID];
+    fallbackAgentUUID = [(NSPProxiedContentPath *)self fallbackAgentUUID];
 
-    if (!v4)
+    if (!fallbackAgentUUID)
     {
       v5 = +[NSUUID UUID];
       [(NSPProxiedContentPath *)self setFallbackAgentUUID:v5];
     }
 
-    v6 = [(NSPProxiedContentPath *)self fallbackRegistration];
+    fallbackRegistration = [(NSPProxiedContentPath *)self fallbackRegistration];
 
-    if (v6)
+    if (fallbackRegistration)
     {
       goto LABEL_7;
     }
 
     v7 = [NSPPrivacyProxyProxiedContentFallbackNetworkRegistration alloc];
-    v8 = [(NSPProxiedContentPath *)self fallbackAgentUUID];
-    v9 = [(NSPProxiedContentPath *)self shortName];
-    v10 = sub_100046F60(&v7->super.super, v8, v9, self);
+    fallbackAgentUUID2 = [(NSPProxiedContentPath *)self fallbackAgentUUID];
+    shortName = [(NSPProxiedContentPath *)self shortName];
+    v10 = sub_100046F60(&v7->super.super, fallbackAgentUUID2, shortName, self);
     [(NSPProxiedContentPath *)self setFallbackRegistration:v10];
 
-    v11 = [(NSPProxiedContentPath *)self fallbackRegistration];
+    fallbackRegistration2 = [(NSPProxiedContentPath *)self fallbackRegistration];
 
-    if (v11)
+    if (fallbackRegistration2)
     {
 LABEL_7:
-      v12 = [(NSPProxiedContentPath *)self ingressProxy];
-      if (v12)
+      ingressProxy = [(NSPProxiedContentPath *)self ingressProxy];
+      if (ingressProxy)
       {
         [(NSPProxiedContentPath *)self ingressProxy];
       }
@@ -2686,18 +2686,18 @@ LABEL_7:
       }
       v66 = ;
 
-      v13 = [(NSPProxiedContentPath *)self ingressProxy];
-      if (v13)
+      ingressProxy2 = [(NSPProxiedContentPath *)self ingressProxy];
+      if (ingressProxy2)
       {
-        v14 = [(NSPProxiedContentPath *)self egressProxy];
+        egressProxy2 = [(NSPProxiedContentPath *)self egressProxy];
       }
 
       else
       {
-        v14 = 0;
+        egressProxy2 = 0;
       }
 
-      v15 = [(NSPProxiedContentPath *)self fallbackRegistration];
+      fallbackRegistration3 = [(NSPProxiedContentPath *)self fallbackRegistration];
       if (v66)
       {
         v16 = v66[3];
@@ -2709,10 +2709,10 @@ LABEL_7:
       }
 
       v17 = v16;
-      v18 = [v17 tcpProxyFqdn];
-      if (v14)
+      tcpProxyFqdn = [v17 tcpProxyFqdn];
+      if (egressProxy2)
       {
-        v19 = v14[3];
+        v19 = egressProxy2[3];
       }
 
       else
@@ -2721,7 +2721,7 @@ LABEL_7:
       }
 
       v20 = v19;
-      v21 = [v20 tcpProxyFqdn];
+      tcpProxyFqdn2 = [v20 tcpProxyFqdn];
       if (v66)
       {
         v22 = v66[3];
@@ -2733,10 +2733,10 @@ LABEL_7:
       }
 
       v23 = v22;
-      v24 = [v23 proxyKeyInfos];
-      if (v14)
+      proxyKeyInfos = [v23 proxyKeyInfos];
+      if (egressProxy2)
       {
-        v25 = v14[3];
+        v25 = egressProxy2[3];
       }
 
       else
@@ -2745,7 +2745,7 @@ LABEL_7:
       }
 
       v26 = v25;
-      v65 = [v26 proxyKeyInfos];
+      proxyKeyInfos2 = [v26 proxyKeyInfos];
       if (v66)
       {
         v27 = v66[3];
@@ -2757,10 +2757,10 @@ LABEL_7:
       }
 
       v56 = v27;
-      v64 = [v56 proxyVersion];
-      if (v14)
+      proxyVersion = [v56 proxyVersion];
+      if (egressProxy2)
       {
-        v28 = v14[3];
+        v28 = egressProxy2[3];
       }
 
       else
@@ -2769,7 +2769,7 @@ LABEL_7:
       }
 
       v55 = v28;
-      v63 = [v55 proxyVersion];
+      proxyVersion2 = [v55 proxyVersion];
       if (v66)
       {
         v29 = v66[3];
@@ -2781,10 +2781,10 @@ LABEL_7:
       }
 
       v54 = v29;
-      v51 = [v54 supportsResumption];
-      if (v14)
+      supportsResumption = [v54 supportsResumption];
+      if (egressProxy2)
       {
-        v30 = v14[3];
+        v30 = egressProxy2[3];
       }
 
       else
@@ -2793,7 +2793,7 @@ LABEL_7:
       }
 
       v53 = v30;
-      v50 = [v53 supportsResumption];
+      supportsResumption2 = [v53 supportsResumption];
       v52 = sub_100004F70(v66);
       if (v52)
       {
@@ -2815,12 +2815,12 @@ LABEL_7:
         v62 = 0;
       }
 
-      v49 = sub_100004F70(v14);
+      v49 = sub_100004F70(egressProxy2);
       if (v49)
       {
-        if (v14)
+        if (egressProxy2)
         {
-          v32 = v14[6];
+          v32 = egressProxy2[6];
         }
 
         else
@@ -2849,17 +2849,17 @@ LABEL_7:
       }
 
       v47 = v34;
-      v35 = [v47 tokenChallenge];
-      v36 = v35;
+      tokenChallenge = [v47 tokenChallenge];
+      v36 = tokenChallenge;
       v61 = v17;
-      v60 = v21;
+      v60 = tcpProxyFqdn2;
       v57 = v26;
-      v58 = v24;
-      v37 = v18;
-      v38 = v15;
-      if (v14)
+      v58 = proxyKeyInfos;
+      v37 = tcpProxyFqdn;
+      v38 = fallbackRegistration3;
+      if (egressProxy2)
       {
-        v39 = v14[3];
+        v39 = egressProxy2[3];
       }
 
       else
@@ -2867,14 +2867,14 @@ LABEL_7:
         v39 = 0;
       }
 
-      v40 = v35 != 0;
+      v40 = tokenChallenge != 0;
       v41 = v39;
-      v42 = [v41 tokenChallenge];
-      v43 = [(NSPProxiedContentPath *)self associatedMaps];
-      v44 = [v43 firstObject];
-      HIBYTE(v46) = v42 != 0;
+      tokenChallenge2 = [v41 tokenChallenge];
+      associatedMaps = [(NSPProxiedContentPath *)self associatedMaps];
+      firstObject = [associatedMaps firstObject];
+      HIBYTE(v46) = tokenChallenge2 != 0;
       LOBYTE(v46) = v40;
-      sub_100047014(v38, v37, v60, v58, v65, v64, v63, v51, v50, v62, v48, v46, [v44 isPrivacyProxy]);
+      sub_100047014(v38, v37, v60, v58, proxyKeyInfos2, proxyVersion, proxyVersion2, supportsResumption, supportsResumption2, v62, v48, v46, [firstObject isPrivacyProxy]);
 
       if (v49)
       {
@@ -2898,39 +2898,39 @@ LABEL_7:
   }
 }
 
-- (void)resetResolverAgentForceUpdateDelegate:(BOOL)a3
+- (void)resetResolverAgentForceUpdateDelegate:(BOOL)delegate
 {
-  v5 = [(NSPProxiedContentPath *)self resolver];
+  resolver = [(NSPProxiedContentPath *)self resolver];
 
-  if (v5)
+  if (resolver)
   {
     v6 = sub_100053E68();
     v8 = sub_100074784(v6, v7);
 
-    v9 = [(NSPProxiedContentPath *)self resolverAgentUUID];
+    resolverAgentUUID = [(NSPProxiedContentPath *)self resolverAgentUUID];
 
-    if (!v9)
+    if (!resolverAgentUUID)
     {
       v10 = +[NSUUID UUID];
       [(NSPProxiedContentPath *)self setResolverAgentUUID:v10];
     }
 
-    v11 = [(NSPProxiedContentPath *)self resolverRegistration];
+    resolverRegistration = [(NSPProxiedContentPath *)self resolverRegistration];
 
-    if (!v11)
+    if (!resolverRegistration)
     {
       v12 = [[NWNetworkAgentRegistration alloc] initWithNetworkAgentClass:objc_opt_class() session:v8];
       [(NSPProxiedContentPath *)self setResolverRegistration:v12];
 
-      v13 = [(NSPProxiedContentPath *)self resolverRegistration];
+      resolverRegistration2 = [(NSPProxiedContentPath *)self resolverRegistration];
 
-      if (!v13)
+      if (!resolverRegistration2)
       {
         v14 = nplog_obj();
         if (os_log_type_enabled(&v14->super, OS_LOG_TYPE_FAULT))
         {
           v47 = 136315138;
-          v48 = "[NSPProxiedContentPath resetResolverAgentForceUpdateDelegate:]";
+          selfCopy5 = "[NSPProxiedContentPath resetResolverAgentForceUpdateDelegate:]";
           _os_log_fault_impl(&_mh_execute_header, &v14->super, OS_LOG_TYPE_FAULT, "%s called with null self.resolverRegistration", &v47, 0xCu);
         }
 
@@ -2939,146 +2939,146 @@ LABEL_7:
     }
 
     v14 = [[NSPPrivacyProxyDNSAgent alloc] initWithDelegate:self];
-    v15 = [(NSPProxiedContentPath *)self resolver];
-    [(NSPPrivacyProxyDNSAgent *)v14 setResolver:v15];
+    resolver2 = [(NSPProxiedContentPath *)self resolver];
+    [(NSPPrivacyProxyDNSAgent *)v14 setResolver:resolver2];
 
-    v16 = [(NSPProxiedContentPath *)self resolverAgentUUID];
-    [(NSPPrivacyProxyDNSAgent *)v14 setAgentUUID:v16];
+    resolverAgentUUID2 = [(NSPProxiedContentPath *)self resolverAgentUUID];
+    [(NSPPrivacyProxyDNSAgent *)v14 setAgentUUID:resolverAgentUUID2];
 
-    v17 = [(NSPProxiedContentPath *)self resolver];
-    v18 = [v17 dohURL];
-    v19 = [NSURL URLWithString:v18];
+    resolver3 = [(NSPProxiedContentPath *)self resolver];
+    dohURL = [resolver3 dohURL];
+    v19 = [NSURL URLWithString:dohURL];
 
-    v20 = [v19 host];
-    if (v20)
+    host = [v19 host];
+    if (host)
     {
-      v21 = [v19 host];
-      [(NSPPrivacyProxyDNSAgent *)v14 setAgentDescription:v21];
+      host2 = [v19 host];
+      [(NSPPrivacyProxyDNSAgent *)v14 setAgentDescription:host2];
     }
 
     else
     {
-      v21 = [(NSPProxiedContentPath *)self resolver];
-      v22 = [v21 dohURL];
-      [(NSPPrivacyProxyDNSAgent *)v14 setAgentDescription:v22];
+      host2 = [(NSPProxiedContentPath *)self resolver];
+      dohURL2 = [host2 dohURL];
+      [(NSPPrivacyProxyDNSAgent *)v14 setAgentDescription:dohURL2];
     }
 
-    v23 = [(NSPProxiedContentPath *)self quicAgentUUID];
-    [(NSPPrivacyProxyDNSAgent *)v14 setProxyAgentUUID:v23];
+    quicAgentUUID = [(NSPProxiedContentPath *)self quicAgentUUID];
+    [(NSPPrivacyProxyDNSAgent *)v14 setProxyAgentUUID:quicAgentUUID];
 
     v24 = nplog_obj();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [(NSPPrivacyProxyDNSAgent *)v14 resolver];
-      v26 = [v25 dohURL];
+      resolver4 = [(NSPPrivacyProxyDNSAgent *)v14 resolver];
+      dohURL3 = [resolver4 dohURL];
       v47 = 138412546;
-      v48 = self;
+      selfCopy5 = self;
       v49 = 2114;
-      v50 = v26;
+      v50 = dohURL3;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%@ setting up resolver agent to %{public}@", &v47, 0x16u);
     }
 
-    v27 = [(NSPProxiedContentPath *)self resolverRegistration];
-    v28 = [v27 isRegistered];
+    resolverRegistration3 = [(NSPProxiedContentPath *)self resolverRegistration];
+    isRegistered = [resolverRegistration3 isRegistered];
 
-    if (v28)
+    if (isRegistered)
     {
       v29 = nplog_obj();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
-        v30 = [(NSPProxiedContentPath *)self resolverAgentUUID];
+        resolverAgentUUID3 = [(NSPProxiedContentPath *)self resolverAgentUUID];
         v47 = 138412546;
-        v48 = self;
+        selfCopy5 = self;
         v49 = 2112;
-        v50 = v30;
+        v50 = resolverAgentUUID3;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "%@ updating resolver agent with UUID %@", &v47, 0x16u);
       }
 
-      v31 = [(NSPProxiedContentPath *)self resolverRegistration];
-      v32 = [v31 updateNetworkAgent:v14];
+      resolverRegistration4 = [(NSPProxiedContentPath *)self resolverRegistration];
+      v32 = [resolverRegistration4 updateNetworkAgent:v14];
 
       if (v32)
       {
         goto LABEL_37;
       }
 
-      v33 = nplog_obj();
-      if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+      resolverRegistration8 = nplog_obj();
+      if (!os_log_type_enabled(resolverRegistration8, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_36;
       }
 
-      v34 = [(NSPProxiedContentPath *)self resolverAgentUUID];
+      resolverAgentUUID4 = [(NSPProxiedContentPath *)self resolverAgentUUID];
       v47 = 138412546;
-      v48 = self;
+      selfCopy5 = self;
       v49 = 2112;
-      v50 = v34;
+      v50 = resolverAgentUUID4;
       v35 = "%@: failed to update the registered resolver agent [%@]";
       goto LABEL_28;
     }
 
-    v36 = [(NSPProxiedContentPath *)self resolverRegistration];
-    [v36 setRegisteredNetworkAgent:v14 fileDescriptor:0xFFFFFFFFLL];
+    resolverRegistration5 = [(NSPProxiedContentPath *)self resolverRegistration];
+    [resolverRegistration5 setRegisteredNetworkAgent:v14 fileDescriptor:0xFFFFFFFFLL];
 
-    v37 = [(NSPProxiedContentPath *)self resolverRegistration];
-    [v37 unregisterNetworkAgent];
+    resolverRegistration6 = [(NSPProxiedContentPath *)self resolverRegistration];
+    [resolverRegistration6 unregisterNetworkAgent];
 
     v38 = nplog_obj();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
-      v39 = [(NSPProxiedContentPath *)self resolverAgentUUID];
+      resolverAgentUUID5 = [(NSPProxiedContentPath *)self resolverAgentUUID];
       v47 = 138412546;
-      v48 = self;
+      selfCopy5 = self;
       v49 = 2112;
-      v50 = v39;
+      v50 = resolverAgentUUID5;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "%@ registering DNS network agent [%@]", &v47, 0x16u);
     }
 
-    v40 = [(NSPProxiedContentPath *)self resolverRegistration];
-    v41 = [v40 registerNetworkAgent:v14];
+    resolverRegistration7 = [(NSPProxiedContentPath *)self resolverRegistration];
+    v41 = [resolverRegistration7 registerNetworkAgent:v14];
 
     if (v41)
     {
-      v33 = [(NSPProxiedContentPath *)self resolverRegistration];
-      if ([v33 isRegistered])
+      resolverRegistration8 = [(NSPProxiedContentPath *)self resolverRegistration];
+      if ([resolverRegistration8 isRegistered])
       {
-        v42 = [(NSPProxiedContentPath *)self quicRegistration];
-        if (v42)
+        quicRegistration = [(NSPProxiedContentPath *)self quicRegistration];
+        if (quicRegistration)
         {
-          v43 = v42;
-          v44 = [(NSPProxiedContentPath *)self quicRegistration];
-          v45 = v44;
-          if (!v44 || ([*(v44 + 24) isRegistered] & 1) == 0)
+          v43 = quicRegistration;
+          quicRegistration2 = [(NSPProxiedContentPath *)self quicRegistration];
+          v45 = quicRegistration2;
+          if (!quicRegistration2 || ([*(quicRegistration2 + 24) isRegistered] & 1) == 0)
           {
 
             goto LABEL_36;
           }
 
-          if (a3)
+          if (delegate)
           {
 
 LABEL_30:
 LABEL_35:
             [(NSPProxiedContentPath *)self setProxiedContentAgentRegistered:1];
-            v33 = [(NSPProxiedContentPath *)self delegate];
-            [v33 proxiedContentAgentRegistered:self];
+            resolverRegistration8 = [(NSPProxiedContentPath *)self delegate];
+            [resolverRegistration8 proxiedContentAgentRegistered:self];
             goto LABEL_36;
           }
 
-          v46 = [(NSPProxiedContentPath *)self proxiedContentAgentRegistered];
+          proxiedContentAgentRegistered = [(NSPProxiedContentPath *)self proxiedContentAgentRegistered];
         }
 
         else
         {
-          if (a3)
+          if (delegate)
           {
             goto LABEL_30;
           }
 
-          v46 = [(NSPProxiedContentPath *)self proxiedContentAgentRegistered];
+          proxiedContentAgentRegistered = [(NSPProxiedContentPath *)self proxiedContentAgentRegistered];
         }
 
-        if (v46)
+        if (proxiedContentAgentRegistered)
         {
 LABEL_37:
 
@@ -3092,17 +3092,17 @@ LABEL_38:
 
     else
     {
-      v33 = nplog_obj();
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+      resolverRegistration8 = nplog_obj();
+      if (os_log_type_enabled(resolverRegistration8, OS_LOG_TYPE_ERROR))
       {
-        v34 = [(NSPProxiedContentPath *)self resolverAgentUUID];
+        resolverAgentUUID4 = [(NSPProxiedContentPath *)self resolverAgentUUID];
         v47 = 138412546;
-        v48 = self;
+        selfCopy5 = self;
         v49 = 2112;
-        v50 = v34;
+        v50 = resolverAgentUUID4;
         v35 = "%@: failed to register DNS network agent [%@]";
 LABEL_28:
-        _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, v35, &v47, 0x16u);
+        _os_log_error_impl(&_mh_execute_header, resolverRegistration8, OS_LOG_TYPE_ERROR, v35, &v47, 0x16u);
       }
     }
 
@@ -3114,24 +3114,24 @@ LABEL_36:
 
 - (BOOL)unregisterResolverAgent
 {
-  v3 = [(NSPProxiedContentPath *)self resolverAgentUUID];
-  if (!v3)
+  resolverAgentUUID = [(NSPProxiedContentPath *)self resolverAgentUUID];
+  if (!resolverAgentUUID)
   {
     return 1;
   }
 
-  v4 = v3;
-  v5 = [(NSPProxiedContentPath *)self resolverRegistration];
+  v4 = resolverAgentUUID;
+  resolverRegistration = [(NSPProxiedContentPath *)self resolverRegistration];
 
-  if (!v5)
+  if (!resolverRegistration)
   {
     return 1;
   }
 
-  v6 = [(NSPProxiedContentPath *)self resolverRegistration];
-  v7 = [v6 isRegistered];
+  resolverRegistration2 = [(NSPProxiedContentPath *)self resolverRegistration];
+  isRegistered = [resolverRegistration2 isRegistered];
 
-  if (!v7)
+  if (!isRegistered)
   {
     return 1;
   }
@@ -3139,34 +3139,34 @@ LABEL_36:
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(NSPProxiedContentPath *)self resolverAgentUUID];
+    resolverAgentUUID2 = [(NSPProxiedContentPath *)self resolverAgentUUID];
     v13 = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v9;
+    v16 = resolverAgentUUID2;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ un-registering resolver agent with UUID %@", &v13, 0x16u);
   }
 
-  v10 = [(NSPProxiedContentPath *)self resolverRegistration];
-  v11 = [v10 unregisterNetworkAgent];
+  resolverRegistration3 = [(NSPProxiedContentPath *)self resolverRegistration];
+  unregisterNetworkAgent = [resolverRegistration3 unregisterNetworkAgent];
 
-  return v11;
+  return unregisterNetworkAgent;
 }
 
 - (void)removeProxyAgents
 {
-  v3 = [(NSPProxiedContentPath *)self quicRegistration];
-  sub_100042E8C(v3);
+  quicRegistration = [(NSPProxiedContentPath *)self quicRegistration];
+  sub_100042E8C(quicRegistration);
 
-  v4 = [(NSPProxiedContentPath *)self fallbackRegistration];
-  sub_100042E8C(v4);
+  fallbackRegistration = [(NSPProxiedContentPath *)self fallbackRegistration];
+  sub_100042E8C(fallbackRegistration);
 
   [(NSPProxiedContentPath *)self unregisterResolverAgent];
   if ([(NSPProxiedContentPath *)self proxiedContentAgentRegistered])
   {
     [(NSPProxiedContentPath *)self setProxiedContentAgentRegistered:0];
-    v5 = [(NSPProxiedContentPath *)self delegate];
-    [v5 proxiedContentAgentUnregistered:self];
+    delegate = [(NSPProxiedContentPath *)self delegate];
+    [delegate proxiedContentAgentUnregistered:self];
   }
 
   [(NSPProxiedContentPath *)self setQuicAgentUUID:0];

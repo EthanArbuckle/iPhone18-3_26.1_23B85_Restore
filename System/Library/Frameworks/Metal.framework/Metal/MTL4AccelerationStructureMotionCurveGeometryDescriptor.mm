@@ -1,11 +1,11 @@
 @interface MTL4AccelerationStructureMotionCurveGeometryDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4AccelerationStructureMotionCurveGeometryDescriptor)init;
 - (MTL4BufferRange)controlPointBuffers;
 - (MTL4BufferRange)indexBuffer;
 - (MTL4BufferRange)radiusBuffers;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -37,11 +37,11 @@
   [(MTL4AccelerationStructureGeometryDescriptor *)&v2 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTL4AccelerationStructureMotionCurveGeometryDescriptor;
-  v4 = [(MTL4AccelerationStructureGeometryDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MTL4AccelerationStructureGeometryDescriptor *)&v6 copyWithZone:zone];
   [v4 setControlPointBuffers:{self->_controlPointBuffers.bufferAddress, self->_controlPointBuffers.length}];
   [v4 setControlPointCount:self->_controlPointCount];
   [v4 setControlPointStride:self->_controlPointStride];
@@ -59,9 +59,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
     return v8;
@@ -70,59 +70,59 @@
   v37 = v3;
   v38 = v4;
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     goto LABEL_3;
   }
 
   v36.receiver = self;
   v36.super_class = MTL4AccelerationStructureMotionCurveGeometryDescriptor;
-  v8 = [(MTL4AccelerationStructureGeometryDescriptor *)&v36 isEqual:a3];
+  v8 = [(MTL4AccelerationStructureGeometryDescriptor *)&v36 isEqual:equal];
   if (v8)
   {
-    v9 = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self controlPointBuffers];
+    controlPointBuffers = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self controlPointBuffers];
     v11 = v10;
-    v13 = [a3 controlPointBuffers];
+    controlPointBuffers2 = [equal controlPointBuffers];
     LOBYTE(v8) = 0;
-    if (v9 == v13 && v11 == v12)
+    if (controlPointBuffers == controlPointBuffers2 && v11 == v12)
     {
-      v14 = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self radiusBuffers];
+      radiusBuffers = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self radiusBuffers];
       v16 = v15;
-      v18 = [a3 radiusBuffers];
+      radiusBuffers2 = [equal radiusBuffers];
       LOBYTE(v8) = 0;
-      if (v14 == v18 && v16 == v17)
+      if (radiusBuffers == radiusBuffers2 && v16 == v17)
       {
-        v19 = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self controlPointCount];
-        if (v19 != [a3 controlPointCount] || (v20 = -[MTL4AccelerationStructureMotionCurveGeometryDescriptor controlPointStride](self, "controlPointStride"), v20 != objc_msgSend(a3, "controlPointStride")) || (v21 = -[MTL4AccelerationStructureMotionCurveGeometryDescriptor controlPointFormat](self, "controlPointFormat"), v21 != objc_msgSend(a3, "controlPointFormat")) || (v22 = -[MTL4AccelerationStructureMotionCurveGeometryDescriptor radiusFormat](self, "radiusFormat"), v22 != objc_msgSend(a3, "radiusFormat")) || (v23 = -[MTL4AccelerationStructureMotionCurveGeometryDescriptor radiusStride](self, "radiusStride"), v23 != objc_msgSend(a3, "radiusStride")))
+        controlPointCount = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self controlPointCount];
+        if (controlPointCount != [equal controlPointCount] || (v20 = -[MTL4AccelerationStructureMotionCurveGeometryDescriptor controlPointStride](self, "controlPointStride"), v20 != objc_msgSend(equal, "controlPointStride")) || (v21 = -[MTL4AccelerationStructureMotionCurveGeometryDescriptor controlPointFormat](self, "controlPointFormat"), v21 != objc_msgSend(equal, "controlPointFormat")) || (v22 = -[MTL4AccelerationStructureMotionCurveGeometryDescriptor radiusFormat](self, "radiusFormat"), v22 != objc_msgSend(equal, "radiusFormat")) || (v23 = -[MTL4AccelerationStructureMotionCurveGeometryDescriptor radiusStride](self, "radiusStride"), v23 != objc_msgSend(equal, "radiusStride")))
         {
 LABEL_3:
           LOBYTE(v8) = 0;
           return v8;
         }
 
-        v24 = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self indexBuffer];
+        indexBuffer = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self indexBuffer];
         v26 = v25;
-        v28 = [a3 indexBuffer];
+        indexBuffer2 = [equal indexBuffer];
         LOBYTE(v8) = 0;
-        if (v24 == v28 && v26 == v27)
+        if (indexBuffer == indexBuffer2 && v26 == v27)
         {
-          v29 = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self indexType];
-          if (v29 == [a3 indexType])
+          indexType = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self indexType];
+          if (indexType == [equal indexType])
           {
-            v30 = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self segmentCount];
-            if (v30 == [a3 segmentCount])
+            segmentCount = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self segmentCount];
+            if (segmentCount == [equal segmentCount])
             {
-              v31 = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self segmentControlPointCount];
-              if (v31 == [a3 segmentControlPointCount])
+              segmentControlPointCount = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self segmentControlPointCount];
+              if (segmentControlPointCount == [equal segmentControlPointCount])
               {
-                v32 = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self curveType];
-                if (v32 == [a3 curveType])
+                curveType = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self curveType];
+                if (curveType == [equal curveType])
                 {
-                  v33 = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self curveBasis];
-                  if (v33 == [a3 curveBasis])
+                  curveBasis = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self curveBasis];
+                  if (curveBasis == [equal curveBasis])
                   {
-                    v34 = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self curveEndCaps];
-                    LOBYTE(v8) = v34 == [a3 curveEndCaps];
+                    curveEndCaps = [(MTL4AccelerationStructureMotionCurveGeometryDescriptor *)self curveEndCaps];
+                    LOBYTE(v8) = curveEndCaps == [equal curveEndCaps];
                     return v8;
                   }
                 }

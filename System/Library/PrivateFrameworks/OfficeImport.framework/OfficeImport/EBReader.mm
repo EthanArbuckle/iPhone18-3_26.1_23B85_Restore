@@ -1,6 +1,6 @@
 @interface EBReader
 - (BOOL)start;
-- (EBReader)initWithCancelDelegate:(id)a3;
+- (EBReader)initWithCancelDelegate:(id)delegate;
 - (OCCEncryptionInfoReader)encryptionInfoReader;
 - (id)read;
 - (void)dealloc;
@@ -10,46 +10,46 @@
 
 - (BOOL)start
 {
-  v3 = [(OCDReader *)self data];
-  v4 = [v3 length];
+  data = [(OCDReader *)self data];
+  v4 = [data length];
 
   if (!HIDWORD(v4))
   {
-    v5 = [(EBReader *)self xlReader];
-    if (!v5)
+    xlReader = [(EBReader *)self xlReader];
+    if (!xlReader)
     {
-      return v5;
+      return xlReader;
     }
 
-    v6 = v5;
-    v7 = [(OCDReader *)self fileName];
+    v6 = xlReader;
+    fileName = [(OCDReader *)self fileName];
 
-    if (v7)
+    if (fileName)
     {
-      v8 = [(OCDReader *)self fileName];
-      v9 = fopen([v8 UTF8String], "rb");
+      fileName2 = [(OCDReader *)self fileName];
+      v9 = fopen([fileName2 UTF8String], "rb");
 
       if (v9)
       {
         [(OCBReader *)self setFile:v9];
         (*(*v6 + 16))(v6, [(OCBReader *)self file]);
-        LOBYTE(v5) = 1;
-        return v5;
+        LOBYTE(xlReader) = 1;
+        return xlReader;
       }
 
       v12 = TCUnknownProblemMessage;
-      v13 = [(OCDReader *)self fileName];
-      [TCMessageException raise:v12, v13];
+      fileName3 = [(OCDReader *)self fileName];
+      [TCMessageException raise:v12, fileName3];
     }
 
     else
     {
-      v10 = [(OCDReader *)self data];
+      data2 = [(OCDReader *)self data];
 
-      if (v10)
+      if (data2)
       {
-        v11 = [(OCDReader *)self data];
-        self->mBuffer = [v11 bytes];
+        data3 = [(OCDReader *)self data];
+        self->mBuffer = [data3 bytes];
 
         [(OCDReader *)self data];
         [objc_claimAutoreleasedReturnValue() length];
@@ -58,16 +58,16 @@
     }
   }
 
-  LOBYTE(v5) = 0;
-  return v5;
+  LOBYTE(xlReader) = 0;
+  return xlReader;
 }
 
 - (OCCEncryptionInfoReader)encryptionInfoReader
 {
-  v2 = [(EBReader *)self xlReader];
-  if (v2)
+  xlReader = [(EBReader *)self xlReader];
+  if (xlReader)
   {
-    return v2 + 1;
+    return xlReader + 1;
   }
 
   else
@@ -80,11 +80,11 @@
 {
   v3 = objc_autoreleasePoolPush();
   [(OCDEncryptedReader *)self useUnencryptedDocument];
-  v4 = [(OCBReader *)self binaryReader];
-  (*(v4->var0 + 80))(v4);
+  binaryReader = [(OCBReader *)self binaryReader];
+  (*(binaryReader->var0 + 80))(binaryReader);
   v5 = [EBReaderState alloc];
-  v6 = [(OCDReader *)self cancelDelegate];
-  v7 = [(EBReaderState *)v5 initWithXlReader:v4 cancelDelegate:v6];
+  cancelDelegate = [(OCDReader *)self cancelDelegate];
+  v7 = [(EBReaderState *)v5 initWithXlReader:binaryReader cancelDelegate:cancelDelegate];
 
   v9 = [EBWorkbook readWithState:v7 reader:self];
 
@@ -107,12 +107,12 @@
   [(OCBReader *)&v4 dealloc];
 }
 
-- (EBReader)initWithCancelDelegate:(id)a3
+- (EBReader)initWithCancelDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6.receiver = self;
   v6.super_class = EBReader;
-  if ([(OCBReader *)&v6 initWithCancelDelegate:v4])
+  if ([(OCBReader *)&v6 initWithCancelDelegate:delegateCopy])
   {
     operator new();
   }

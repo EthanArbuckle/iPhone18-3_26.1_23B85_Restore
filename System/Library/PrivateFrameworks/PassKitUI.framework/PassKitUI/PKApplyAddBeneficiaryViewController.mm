@@ -1,30 +1,30 @@
 @interface PKApplyAddBeneficiaryViewController
-- (PKApplyAddBeneficiaryViewController)initWithController:(id)a3 setupDelegate:(id)a4 pageContent:(id)a5;
-- (PKApplyAddBeneficiaryViewController)initWithSetupDelegate:(id)a3 context:(int64_t)a4 pageContent:(id)a5 account:(id)a6;
-- (id)_alertControllerForError:(id)a3;
-- (id)nextResponderCellForCurrentIdentifier:(id)a3;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)_setNavigationBarEnabled:(BOOL)a3;
+- (PKApplyAddBeneficiaryViewController)initWithController:(id)controller setupDelegate:(id)delegate pageContent:(id)content;
+- (PKApplyAddBeneficiaryViewController)initWithSetupDelegate:(id)delegate context:(int64_t)context pageContent:(id)content account:(id)account;
+- (id)_alertControllerForError:(id)error;
+- (id)nextResponderCellForCurrentIdentifier:(id)identifier;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)_setNavigationBarEnabled:(BOOL)enabled;
 - (void)_submit;
 - (void)_terminateFlow;
-- (void)showSpinner:(BOOL)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)showSpinner:(BOOL)spinner;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation PKApplyAddBeneficiaryViewController
 
-- (PKApplyAddBeneficiaryViewController)initWithSetupDelegate:(id)a3 context:(int64_t)a4 pageContent:(id)a5 account:(id)a6
+- (PKApplyAddBeneficiaryViewController)initWithSetupDelegate:(id)delegate context:(int64_t)context pageContent:(id)content account:(id)account
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v47 = a3;
-  v40 = a5;
-  v8 = a5;
-  v41 = a6;
-  v45 = a6;
-  v46 = v8;
-  v9 = [v8 fieldModel];
-  v10 = [v9 visiblePaymentSetupFields];
+  delegateCopy = delegate;
+  contentCopy = content;
+  contentCopy2 = content;
+  accountCopy = account;
+  accountCopy2 = account;
+  v46 = contentCopy2;
+  fieldModel = [contentCopy2 fieldModel];
+  visiblePaymentSetupFields = [fieldModel visiblePaymentSetupFields];
 
   v49 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -38,8 +38,8 @@
   v57 = v14;
   v15 = v12;
   v58 = v15;
-  v48 = v10;
-  [v10 enumerateObjectsUsingBlock:v56];
+  v48 = visiblePaymentSetupFields;
+  [visiblePaymentSetupFields enumerateObjectsUsingBlock:v56];
   v16 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"self" ascending:1];
   v60[0] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:1];
@@ -66,14 +66,14 @@
         }
 
         v23 = [v15 objectForKeyedSubscript:*(*(&v52 + 1) + 8 * i)];
-        v24 = [v23 lastObject];
-        if ([v24 isFieldTypeLabel])
+        lastObject = [v23 lastObject];
+        if ([lastObject isFieldTypeLabel])
         {
-          v25 = [v23 firstObject];
-          v26 = [v25 identifier];
+          firstObject = [v23 firstObject];
+          identifier = [firstObject identifier];
 
-          v27 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v24, 0, v40, v41}];
-          [v49 setObject:v27 forKeyedSubscript:v26];
+          v27 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{lastObject, 0, contentCopy, accountCopy}];
+          [v49 setObject:v27 forKeyedSubscript:identifier];
 
           [v23 removeLastObject];
         }
@@ -95,16 +95,16 @@
 
   v51.receiver = self;
   v51.super_class = PKApplyAddBeneficiaryViewController;
-  v33 = [(PKPaymentSetupFieldsViewController *)&v51 initWithWebService:0 context:a4 setupDelegate:v47 setupFieldsModel:v32];
+  v33 = [(PKPaymentSetupFieldsViewController *)&v51 initWithWebService:0 context:context setupDelegate:delegateCopy setupFieldsModel:v32];
   v34 = v33;
   if (v33)
   {
     [(PKPaymentSetupFieldsViewController *)v33 setSectionIdentifiers:v11];
-    objc_storeStrong(&v34->_pageContent, v40);
-    objc_storeStrong(&v34->_account, v41);
-    v35 = [(PKDynamicProvisioningFieldsPageContent *)v34->_pageContent fieldModel];
-    v36 = [v35 paymentSetupFields];
-    v37 = [v36 count];
+    objc_storeStrong(&v34->_pageContent, contentCopy);
+    objc_storeStrong(&v34->_account, accountCopy);
+    fieldModel2 = [(PKDynamicProvisioningFieldsPageContent *)v34->_pageContent fieldModel];
+    paymentSetupFields = [fieldModel2 paymentSetupFields];
+    v37 = [paymentSetupFields count];
 
     if (v37)
     {
@@ -157,18 +157,18 @@ void __89__PKApplyAddBeneficiaryViewController_initWithSetupDelegate_context_pag
   }
 }
 
-- (PKApplyAddBeneficiaryViewController)initWithController:(id)a3 setupDelegate:(id)a4 pageContent:(id)a5
+- (PKApplyAddBeneficiaryViewController)initWithController:(id)controller setupDelegate:(id)delegate pageContent:(id)content
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 context];
-  v13 = [v9 account];
-  v14 = [(PKApplyAddBeneficiaryViewController *)self initWithSetupDelegate:v11 context:v12 pageContent:v10 account:v13];
+  controllerCopy = controller;
+  contentCopy = content;
+  delegateCopy = delegate;
+  context = [controllerCopy context];
+  account = [controllerCopy account];
+  v14 = [(PKApplyAddBeneficiaryViewController *)self initWithSetupDelegate:delegateCopy context:context pageContent:contentCopy account:account];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_controller, a3);
+    objc_storeStrong(&v14->_controller, controller);
   }
 
   return v14;
@@ -190,40 +190,40 @@ void __89__PKApplyAddBeneficiaryViewController_initWithSetupDelegate_context_pag
   [(PKPaymentSetupFieldsViewController *)self _setLeftBarButtonItems:v5 animated:0];
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  if (self->_isLoading != a3)
+  if (self->_isLoading != spinner)
   {
-    v3 = a3;
-    self->_isLoading = a3;
-    v5 = [(PKApplyAddBeneficiaryViewController *)self navigationController];
-    v6 = [v5 view];
-    v7 = v6;
-    if (v6)
+    spinnerCopy = spinner;
+    self->_isLoading = spinner;
+    navigationController = [(PKApplyAddBeneficiaryViewController *)self navigationController];
+    view = [navigationController view];
+    v7 = view;
+    if (view)
     {
-      v8 = v6;
+      view2 = view;
     }
 
     else
     {
-      v8 = [(PKApplyAddBeneficiaryViewController *)self view];
+      view2 = [(PKApplyAddBeneficiaryViewController *)self view];
     }
 
-    v18 = v8;
+    v18 = view2;
 
-    [v18 setUserInteractionEnabled:!v3];
-    v9 = [(PKPaymentSetupTableViewController *)self dockView];
-    [v9 setButtonsEnabled:!v3];
+    [v18 setUserInteractionEnabled:!spinnerCopy];
+    dockView = [(PKPaymentSetupTableViewController *)self dockView];
+    [dockView setButtonsEnabled:!spinnerCopy];
 
-    [(PKApplyAddBeneficiaryViewController *)self _setNavigationBarEnabled:!v3];
-    v10 = [(PKApplyAddBeneficiaryViewController *)self navigationItem];
-    v11 = v10;
+    [(PKApplyAddBeneficiaryViewController *)self _setNavigationBarEnabled:!spinnerCopy];
+    navigationItem = [(PKApplyAddBeneficiaryViewController *)self navigationItem];
+    v11 = navigationItem;
     if (self->_isLoading)
     {
-      self->_backHidden = [v10 hidesBackButton];
-      v12 = [v11 rightBarButtonItem];
+      self->_backHidden = [navigationItem hidesBackButton];
+      rightBarButtonItem = [v11 rightBarButtonItem];
       hiddenRightBarButtonItem = self->_hiddenRightBarButtonItem;
-      self->_hiddenRightBarButtonItem = v12;
+      self->_hiddenRightBarButtonItem = rightBarButtonItem;
 
       if (!self->_spinningNavBarItem)
       {
@@ -253,36 +253,36 @@ void __89__PKApplyAddBeneficiaryViewController_initWithSetupDelegate_context_pag
   }
 }
 
-- (void)_setNavigationBarEnabled:(BOOL)a3
+- (void)_setNavigationBarEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v10 = [(PKApplyAddBeneficiaryViewController *)self navigationController];
-  v5 = [v10 navigationBar];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  navigationController = [(PKApplyAddBeneficiaryViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:enabledCopy];
 
-  v6 = [v10 interactivePopGestureRecognizer];
-  [v6 setEnabled:v3];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:enabledCopy];
 
-  v7 = [(PKApplyAddBeneficiaryViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(PKApplyAddBeneficiaryViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:enabledCopy];
 
-  v9 = [v7 rightBarButtonItem];
-  [v9 setEnabled:v3];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   v21.receiver = self;
   v21.super_class = PKApplyAddBeneficiaryViewController;
-  [(PKPaymentSetupFieldsViewController *)&v21 tableView:a3 willDisplayCell:v8 forRowAtIndexPath:a5];
-  v9 = [v8 textLabel];
-  v10 = [v9 font];
-  v11 = v10;
-  if (v10)
+  [(PKPaymentSetupFieldsViewController *)&v21 tableView:view willDisplayCell:cellCopy forRowAtIndexPath:path];
+  textLabel = [cellCopy textLabel];
+  font = [textLabel font];
+  v11 = font;
+  if (font)
   {
-    v12 = v10;
+    v12 = font;
   }
 
   else
@@ -292,22 +292,22 @@ void __89__PKApplyAddBeneficiaryViewController_initWithSetupDelegate_context_pag
 
   v13 = v12;
 
-  v14 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-  v15 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-  v16 = [v15 visibleSetupFieldIdentifiers];
-  [v14 minimumRequiredWidthForFieldIdentifiers:v16 withFont:v13];
+  fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+  fieldsModel2 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+  visibleSetupFieldIdentifiers = [fieldsModel2 visibleSetupFieldIdentifiers];
+  [fieldsModel minimumRequiredWidthForFieldIdentifiers:visibleSetupFieldIdentifiers withFont:v13];
   v18 = v17;
 
   v19.n128_u64[0] = v18;
   PKFloatCeilToPixel(v19, v20);
-  [v8 setMinimumTextLabelWidth:?];
-  [v8 setHidePrediction:1];
+  [cellCopy setMinimumTextLabelWidth:?];
+  [cellCopy setHidePrediction:1];
 }
 
-- (id)nextResponderCellForCurrentIdentifier:(id)a3
+- (id)nextResponderCellForCurrentIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
-  v20 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v28 = 0u;
   v29 = 0u;
@@ -348,8 +348,8 @@ void __89__PKApplyAddBeneficiaryViewController_initWithSetupDelegate_context_pag
               }
 
               v12 = *(*(&v24 + 1) + 8 * j);
-              v13 = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
-              v14 = [v13 paymentSetupFieldWithIdentifier:v12];
+              fieldsModel = [(PKPaymentSetupFieldsViewController *)self fieldsModel];
+              v14 = [fieldsModel paymentSetupFieldWithIdentifier:v12];
 
               if (v14 && ([v14 isReadonly] & 1) == 0 && (objc_msgSend(v14, "isHidden") & 1) == 0)
               {
@@ -370,7 +370,7 @@ void __89__PKApplyAddBeneficiaryViewController_initWithSetupDelegate_context_pag
     while (v23);
   }
 
-  v15 = [v4 indexOfObject:v20];
+  v15 = [v4 indexOfObject:identifierCopy];
   if (v15 == 0x7FFFFFFFFFFFFFFFLL || (v16 = v15 + 1, v15 + 1 >= [v4 count]))
   {
     v18 = 0;
@@ -385,22 +385,22 @@ void __89__PKApplyAddBeneficiaryViewController_initWithSetupDelegate_context_pag
   return v18;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(PKPaymentSetupFieldsViewController *)self sectionIdentifiers];
+  sectionIdentifiers = [(PKPaymentSetupFieldsViewController *)self sectionIdentifiers];
 
-  if (!v6)
+  if (!sectionIdentifiers)
   {
     v14 = 0;
     goto LABEL_13;
   }
 
-  v7 = [(PKPaymentSetupFieldsViewController *)self sectionIdentifiers];
-  v8 = [v7 objectAtIndexedSubscript:a4];
-  v9 = [v8 firstObject];
+  sectionIdentifiers2 = [(PKPaymentSetupFieldsViewController *)self sectionIdentifiers];
+  v8 = [sectionIdentifiers2 objectAtIndexedSubscript:section];
+  firstObject = [v8 firstObject];
 
   v10 = *MEMORY[0x1E69BC238];
-  v11 = v9;
+  v11 = firstObject;
   v12 = v11;
   if (v11 == v10)
   {
@@ -435,17 +435,17 @@ LABEL_13:
 - (void)_terminateFlow
 {
   [(PKApplyController *)self->_controller endApplyFlow];
-  v3 = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
-  v5 = v3;
-  if (v3)
+  setupDelegate = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
+  v5 = setupDelegate;
+  if (setupDelegate)
   {
-    [v3 viewControllerDidTerminateSetupFlow:self];
+    [setupDelegate viewControllerDidTerminateSetupFlow:self];
   }
 
   else
   {
-    v4 = [(PKApplyAddBeneficiaryViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKApplyAddBeneficiaryViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
@@ -570,31 +570,31 @@ void __46__PKApplyAddBeneficiaryViewController__submit__block_invoke_3(uint64_t 
   }
 }
 
-- (id)_alertControllerForError:(id)a3
+- (id)_alertControllerForError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     v16 = 0;
     goto LABEL_38;
   }
 
-  v5 = v3;
-  v6 = [v5 domain];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E69BB840]];
+  v5 = errorCopy;
+  domain = [v5 domain];
+  v7 = [domain isEqualToString:*MEMORY[0x1E69BB840]];
 
   v8 = MEMORY[0x1E696AA08];
   v9 = v5;
   if (v7)
   {
-    v10 = [v5 userInfo];
-    v9 = [v10 objectForKeyedSubscript:*v8];
+    userInfo = [v5 userInfo];
+    v9 = [userInfo objectForKeyedSubscript:*v8];
   }
 
-  v11 = [v9 domain];
+  domain2 = [v9 domain];
   v12 = *MEMORY[0x1E69BC300];
-  v13 = v11;
+  v13 = domain2;
   v14 = v13;
   if (v13 == v12)
   {
@@ -612,12 +612,12 @@ void __46__PKApplyAddBeneficiaryViewController__submit__block_invoke_3(uint64_t 
     }
 
 LABEL_11:
-    v17 = [v9 userInfo];
-    v18 = [v17 objectForKeyedSubscript:*v8];
+    userInfo2 = [v9 userInfo];
+    v18 = [userInfo2 objectForKeyedSubscript:*v8];
 
-    v19 = [v18 domain];
+    domain3 = [v18 domain];
     v20 = *MEMORY[0x1E69BC6F0];
-    v21 = v19;
+    v21 = domain3;
     v22 = v21;
     if (v21 == v20)
     {
@@ -629,8 +629,8 @@ LABEL_11:
       {
 
 LABEL_21:
-        v24 = 0;
-        v25 = 0;
+        localizedFailureReason = 0;
+        localizedRecoverySuggestion = 0;
         goto LABEL_22;
       }
 
@@ -642,52 +642,52 @@ LABEL_21:
       }
     }
 
-    v24 = [v18 localizedFailureReason];
-    v25 = [v18 localizedRecoverySuggestion];
+    localizedFailureReason = [v18 localizedFailureReason];
+    localizedRecoverySuggestion = [v18 localizedRecoverySuggestion];
 LABEL_22:
     if ([v9 code] == 60049)
     {
-      if (!(v24 | v25))
+      if (!(localizedFailureReason | localizedRecoverySuggestion))
       {
-        v24 = PKLocalizedFeatureString();
-        v25 = PKLocalizedFeatureString();
+        localizedFailureReason = PKLocalizedFeatureString();
+        localizedRecoverySuggestion = PKLocalizedFeatureString();
       }
     }
 
-    else if (!(v24 | v25))
+    else if (!(localizedFailureReason | localizedRecoverySuggestion))
     {
-      v26 = [v9 localizedFailureReason];
-      v27 = v26;
-      if (v26)
+      localizedFailureReason2 = [v9 localizedFailureReason];
+      v27 = localizedFailureReason2;
+      if (localizedFailureReason2)
       {
-        v28 = v26;
+        localizedFailureReason3 = localizedFailureReason2;
       }
 
       else
       {
-        v28 = [v5 localizedFailureReason];
+        localizedFailureReason3 = [v5 localizedFailureReason];
       }
 
-      v24 = v28;
+      localizedFailureReason = localizedFailureReason3;
 
-      v29 = [v9 localizedRecoverySuggestion];
-      v30 = v29;
-      if (v29)
+      localizedRecoverySuggestion2 = [v9 localizedRecoverySuggestion];
+      v30 = localizedRecoverySuggestion2;
+      if (localizedRecoverySuggestion2)
       {
-        v31 = v29;
+        localizedRecoverySuggestion3 = localizedRecoverySuggestion2;
       }
 
       else
       {
-        v31 = [v5 localizedRecoverySuggestion];
+        localizedRecoverySuggestion3 = [v5 localizedRecoverySuggestion];
       }
 
-      v25 = v31;
+      localizedRecoverySuggestion = localizedRecoverySuggestion3;
     }
 
-    if (v24 | v25)
+    if (localizedFailureReason | localizedRecoverySuggestion)
     {
-      v16 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v24 message:v25 preferredStyle:1];
+      v16 = [MEMORY[0x1E69DC650] alertControllerWithTitle:localizedFailureReason message:localizedRecoverySuggestion preferredStyle:1];
       v32 = MEMORY[0x1E69DC648];
       v33 = PKLocalizedString(&cfstr_OkButtonTitle.isa);
       v34 = [v32 actionWithTitle:v33 style:1 handler:0];

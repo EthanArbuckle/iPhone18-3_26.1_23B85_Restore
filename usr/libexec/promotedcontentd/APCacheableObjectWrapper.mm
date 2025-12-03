@@ -1,31 +1,31 @@
 @interface APCacheableObjectWrapper
-- (APCacheableObjectWrapper)initWithCoder:(id)a3;
-- (APCacheableObjectWrapper)initWithObject:(id)a3 identifier:(id)a4;
+- (APCacheableObjectWrapper)initWithCoder:(id)coder;
+- (APCacheableObjectWrapper)initWithObject:(id)object identifier:(id)identifier;
 - (int64_t)garbageCollect;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APCacheableObjectWrapper
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = APCacheableObjectWrapper;
-  v4 = a3;
-  [(APCacheableBaseObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(APCacheableBaseObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(APCacheableObjectWrapper *)self object:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"object"];
+  [coderCopy encodeObject:v5 forKey:@"object"];
 }
 
-- (APCacheableObjectWrapper)initWithCoder:(id)a3
+- (APCacheableObjectWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = APCacheableObjectWrapper;
-  v5 = [(APCacheableBaseObject *)&v9 initWithCoder:v4];
+  v5 = [(APCacheableBaseObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_msgSend(objc_opt_class() forKey:{"objectClass"), @"object"}];
+    v6 = [coderCopy decodeObjectOfClass:objc_msgSend(objc_opt_class() forKey:{"objectClass"), @"object"}];
     object = v5->_object;
     v5->_object = v6;
   }
@@ -33,14 +33,14 @@
   return v5;
 }
 
-- (APCacheableObjectWrapper)initWithObject:(id)a3 identifier:(id)a4
+- (APCacheableObjectWrapper)initWithObject:(id)object identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = [(APCacheableBaseObject *)self initWithIdentifier:a4];
+  objectCopy = object;
+  v8 = [(APCacheableBaseObject *)self initWithIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_object, a3);
+    objc_storeStrong(&v8->_object, object);
   }
 
   return v9;
@@ -63,11 +63,11 @@
   {
     [objc_opt_class() objectClass];
     v5 = objc_opt_class();
-    v6 = [(APCacheableBaseObject *)self identifier];
+    identifier = [(APCacheableBaseObject *)self identifier];
     v7 = 138478083;
     v8 = v5;
     v9 = 2114;
-    v10 = v6;
+    v10 = identifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "Unable to remove '%{private}@' '%{public}@'.", &v7, 0x16u);
   }
 

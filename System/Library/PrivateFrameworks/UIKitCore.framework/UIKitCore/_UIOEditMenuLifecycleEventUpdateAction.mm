@@ -1,19 +1,19 @@
 @interface _UIOEditMenuLifecycleEventUpdateAction
-- (_UIOEditMenuLifecycleEventUpdateAction)initWithMenuIdentifier:(id)a3 event:(int64_t)a4;
+- (_UIOEditMenuLifecycleEventUpdateAction)initWithMenuIdentifier:(id)identifier event:(int64_t)event;
 - (id)identifier;
 - (int64_t)lifecycleEvent;
-- (void)handleClientActionToOverlayService:(id)a3;
+- (void)handleClientActionToOverlayService:(id)service;
 @end
 
 @implementation _UIOEditMenuLifecycleEventUpdateAction
 
-- (_UIOEditMenuLifecycleEventUpdateAction)initWithMenuIdentifier:(id)a3 event:(int64_t)a4
+- (_UIOEditMenuLifecycleEventUpdateAction)initWithMenuIdentifier:(id)identifier event:(int64_t)event
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
-  [v7 setObject:v6 forSetting:0];
+  [v7 setObject:identifierCopy forSetting:0];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:event];
   [v7 setObject:v8 forSetting:1];
 
   v11.receiver = self;
@@ -25,35 +25,35 @@
 
 - (id)identifier
 {
-  v2 = [(_UIOEditMenuLifecycleEventUpdateAction *)self info];
-  v3 = [v2 objectForSetting:0];
+  info = [(_UIOEditMenuLifecycleEventUpdateAction *)self info];
+  v3 = [info objectForSetting:0];
 
   return v3;
 }
 
 - (int64_t)lifecycleEvent
 {
-  v2 = [(_UIOEditMenuLifecycleEventUpdateAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(_UIOEditMenuLifecycleEventUpdateAction *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)handleClientActionToOverlayService:(id)a3
+- (void)handleClientActionToOverlayService:(id)service
 {
-  v7 = a3;
-  v5 = [v7 delegate];
+  serviceCopy = service;
+  delegate = [serviceCopy delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 handleLifecycleEvent:{-[_UIOEditMenuLifecycleEventUpdateAction lifecycleEvent](self, "lifecycleEvent")}];
+    [delegate handleLifecycleEvent:{-[_UIOEditMenuLifecycleEventUpdateAction lifecycleEvent](self, "lifecycleEvent")}];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIOEditMenuLifecycleEventUpdateAction.m" lineNumber:47 description:{@"Cannot handle response to unknown overlay service: %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIOEditMenuLifecycleEventUpdateAction.m" lineNumber:47 description:{@"Cannot handle response to unknown overlay service: %@", serviceCopy}];
   }
 }
 

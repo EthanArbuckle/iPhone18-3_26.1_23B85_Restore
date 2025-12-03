@@ -1,18 +1,18 @@
 @interface TSCEFunction_TRANSPOSE
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_TRANSPOSE
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v60 = 0;
-  v9 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, v8, a3, a4, 0, 1, &v60);
+  v9 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, v8, context, spec, 0, 1, &v60);
   v14 = v60;
   if (v14)
   {
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v10, v14, v12, v13);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v10, v14, v12, v13);
     goto LABEL_14;
   }
 
@@ -20,8 +20,8 @@
   v17 = v16;
   v18 = HIDWORD(v16);
   memset(v59, 0, sizeof(v59));
-  v53[0] = a3;
-  v53[1] = a4;
+  v53[0] = context;
+  v53[1] = spec;
   v54 = 0;
   v55[0] = 0;
   *(v55 + 7) = 0;
@@ -84,7 +84,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v44 = objc_msgSend_functionName(a4, v34, v35, v36, v37);
+  v44 = objc_msgSend_functionName(spec, v34, v35, v36, v37);
   v47 = objc_msgSend_cannotAcceptLambdaError_argIndex_(TSCEError, v45, v44, 1, v46);
   v15 = objc_msgSend_errorValue_(TSCEErrorValue, v48, v47, v49, v50);
 

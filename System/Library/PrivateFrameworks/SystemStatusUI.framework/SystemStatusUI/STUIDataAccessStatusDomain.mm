@@ -1,8 +1,8 @@
 @interface STUIDataAccessStatusDomain
-+ (id)_dataForBaseData:(id)a3;
++ (id)_dataForBaseData:(id)data;
 - (STUIDataAccessStatusDomainData)data;
-- (void)observeData:(id)a3;
-- (void)observeDataWithBlock:(id)a3;
+- (void)observeData:(id)data;
+- (void)observeDataWithBlock:(id)block;
 @end
 
 @implementation STUIDataAccessStatusDomain
@@ -12,24 +12,24 @@
   v3 = objc_opt_class();
   v7.receiver = self;
   v7.super_class = STUIDataAccessStatusDomain;
-  v4 = [(STStatusDomain *)&v7 data];
-  v5 = [v3 _dataForBaseData:v4];
+  data = [(STStatusDomain *)&v7 data];
+  v5 = [v3 _dataForBaseData:data];
 
   return v5;
 }
 
-- (void)observeData:(id)a3
+- (void)observeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__STUIDataAccessStatusDomain_observeData___block_invoke;
   v7[3] = &unk_279D389B8;
   v7[4] = self;
-  v8 = v4;
+  v8 = dataCopy;
   v6.receiver = self;
   v6.super_class = STUIDataAccessStatusDomain;
-  v5 = v4;
+  v5 = dataCopy;
   [(STStatusDomain *)&v6 observeData:v7];
 }
 
@@ -43,18 +43,18 @@ void __42__STUIDataAccessStatusDomain_observeData___block_invoke(uint64_t a1, vo
   (*(v4 + 16))(v4, v7, v5);
 }
 
-- (void)observeDataWithBlock:(id)a3
+- (void)observeDataWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__STUIDataAccessStatusDomain_observeDataWithBlock___block_invoke;
   v7[3] = &unk_279D389E0;
   v7[4] = self;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = STUIDataAccessStatusDomain;
-  v5 = v4;
+  v5 = blockCopy;
   [(STStatusDomain *)&v6 observeDataWithBlock:v7];
 }
 
@@ -67,12 +67,12 @@ void __51__STUIDataAccessStatusDomain_observeDataWithBlock___block_invoke(uint64
   (*(v2 + 16))(v2, v4);
 }
 
-+ (id)_dataForBaseData:(id)a3
++ (id)_dataForBaseData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
-    v4 = [(STDataAccessStatusDomainData *)[STUIDataAccessStatusDomainData alloc] initWithData:v3];
+    dataCopy = data;
+    v4 = [(STDataAccessStatusDomainData *)[STUIDataAccessStatusDomainData alloc] initWithData:dataCopy];
   }
 
   else

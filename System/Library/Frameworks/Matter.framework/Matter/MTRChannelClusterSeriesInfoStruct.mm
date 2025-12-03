@@ -1,6 +1,6 @@
 @interface MTRChannelClusterSeriesInfoStruct
 - (MTRChannelClusterSeriesInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterSeriesInfoStruct);
-  v5 = [(MTRChannelClusterSeriesInfoStruct *)self season];
-  [(MTRChannelClusterSeriesInfoStruct *)v4 setSeason:v5];
+  season = [(MTRChannelClusterSeriesInfoStruct *)self season];
+  [(MTRChannelClusterSeriesInfoStruct *)v4 setSeason:season];
 
-  v6 = [(MTRChannelClusterSeriesInfoStruct *)self episode];
-  [(MTRChannelClusterSeriesInfoStruct *)v4 setEpisode:v6];
+  episode = [(MTRChannelClusterSeriesInfoStruct *)self episode];
+  [(MTRChannelClusterSeriesInfoStruct *)v4 setEpisode:episode];
 
   return v4;
 }

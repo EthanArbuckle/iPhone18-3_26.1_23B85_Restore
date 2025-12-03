@@ -1,13 +1,13 @@
 @interface PXPhotosViewModel
-- (BOOL)attemptSetInSelectMode:(BOOL)a3;
+- (BOOL)attemptSetInSelectMode:(BOOL)mode;
 - (BOOL)canEnterSelectMode;
 - (BOOL)canFilterContent;
 - (BOOL)canSwipeSelect;
 - (BOOL)contentStartsAtEnd;
-- (BOOL)handlePrimaryAction:(id)a3;
-- (BOOL)initializePreviewHeaderVisibilityWithChangeHandler:(id)a3;
-- (BOOL)isScrollDisabledForAxis:(int64_t)a3;
-- (BOOL)selectionManagerShouldAvoidEmptySelection:(id)a3;
+- (BOOL)handlePrimaryAction:(id)action;
+- (BOOL)initializePreviewHeaderVisibilityWithChangeHandler:(id)handler;
+- (BOOL)isScrollDisabledForAxis:(int64_t)axis;
+- (BOOL)selectionManagerShouldAvoidEmptySelection:(id)selection;
 - (BOOL)shouldAspectFitContentByDefault;
 - (BOOL)supportsTogglingSortOrder;
 - (BOOL)supportsZooming;
@@ -22,14 +22,14 @@
 - (PXPhotosPreferredColumnCountsDelegate)preferredColumnCountsDelegate;
 - (PXPhotosViewDelegate)viewDelegate;
 - (PXPhotosViewModel)init;
-- (PXPhotosViewModel)initWithConfiguration:(id)a3 specManager:(id)a4 inlinePlaybackController:(id)a5;
+- (PXPhotosViewModel)initWithConfiguration:(id)configuration specManager:(id)manager inlinePlaybackController:(id)controller;
 - (UIEdgeInsets)additionalAspectFitEdgeMargins;
 - (UIEdgeInsets)contentBackgroundInsets;
 - (_NSRange)yearsMonthsZoomStepRange;
-- (id)_indexPathsForAssetCollectionReference:(id)a3;
+- (id)_indexPathsForAssetCollectionReference:(id)reference;
 - (id)customExcludedActionTypesProvider;
 - (id)objc_customExcludedActionTypesProvider;
-- (id)selectionManager:(id)a3 validateSnapshot:(id)a4;
+- (id)selectionManager:(id)manager validateSnapshot:(id)snapshot;
 - (int64_t)selectionContext;
 - (void)_invalidateAspectFitContent;
 - (void)_invalidateAssetsDataSourceManager;
@@ -66,143 +66,143 @@
 - (void)_updateUserWantsAspectFitContent;
 - (void)_updateWantsContentUnavailableUnlockButtonVisible;
 - (void)_updateWantsLensControlVisible;
-- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)a3;
-- (void)assetsDataSourceManagerDidFinishLoadingInitialDataSource:(id)a3;
-- (void)clickSelectAssetReference:(id)a3 updateCursorIndexPath:(BOOL)a4;
-- (void)clickSelectIndexPath:(PXSimpleIndexPath *)a3 updateCursorIndexPath:(BOOL)a4;
+- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)fetching;
+- (void)assetsDataSourceManagerDidFinishLoadingInitialDataSource:(id)source;
+- (void)clickSelectAssetReference:(id)reference updateCursorIndexPath:(BOOL)path;
+- (void)clickSelectIndexPath:(PXSimpleIndexPath *)path updateCursorIndexPath:(BOOL)indexPath;
 - (void)deselectAll;
 - (void)didPerformChanges;
 - (void)markContentAsViewed;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)previewHeaderVisibilityChanged:(BOOL)a3;
-- (void)requestCloseFromPresentationEnvironment:(id)a3 handler:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)previewHeaderVisibilityChanged:(BOOL)changed;
+- (void)requestCloseFromPresentationEnvironment:(id)environment handler:(id)handler;
 - (void)resetToInitialSelectionAndFilteringState;
 - (void)selectAll;
-- (void)setAdditionalAspectFitEdgeMargins:(UIEdgeInsets)a3;
-- (void)setAllowedChromeItems:(unint64_t)a3;
-- (void)setAllowsEmptyPlaceholderBehavior:(BOOL)a3;
-- (void)setAllowsPreviewHeader:(BOOL)a3;
-- (void)setAllowsSearch:(BOOL)a3;
-- (void)setAllowsShareAllAction:(BOOL)a3;
-- (void)setAllowsSortAndFilterMenu:(BOOL)a3;
-- (void)setAlwaysRequiresLightChrome:(BOOL)a3;
-- (void)setAppearState:(int64_t)a3;
-- (void)setAspectFitContent:(BOOL)a3;
-- (void)setAspectRatioToggleAllowed:(BOOL)a3 forReason:(id)a4;
-- (void)setAvailableLenses:(id)a3;
-- (void)setCaptionsVisible:(BOOL)a3;
-- (void)setChromeItemsToBeConsideredVisibleForLayoutPurpose:(unint64_t)a3;
-- (void)setChromeOpacity:(double)a3;
-- (void)setChromeTitleFloatingFraction:(double)a3;
-- (void)setContainerFallbackTitle:(id)a3;
-- (void)setContainerTitle:(id)a3;
-- (void)setContentBackgroundInsets:(UIEdgeInsets)a3;
-- (void)setContentBackgroundOpacity:(double)a3;
-- (void)setContentBelowTitle:(BOOL)a3;
-- (void)setContentPrivacyState:(int64_t)a3;
-- (void)setCplActionManagerClass:(Class)a3;
-- (void)setCurrentDataSource:(id)a3;
-- (void)setCurrentLens:(id)a3;
-- (void)setCustomBannerView:(id)a3;
-- (void)setCustomExcludedActionTypesProvider:(id)a3;
-- (void)setCustomLeadingAccessoryBarButtonItems:(id)a3;
-- (void)setCustomLeadingAccessoryView:(id)a3;
-- (void)setCustomTrailingAccessoryBarButtonItems:(id)a3;
-- (void)setCustomTrailingAccessoryView:(id)a3;
-- (void)setDesiredCurationLength:(int64_t)a3;
-- (void)setDismissRequested:(BOOL)a3;
-- (void)setDraggedAssetReferences:(id)a3;
-- (void)setDropTargetAssetReference:(id)a3;
-- (void)setEffectProvider:(id)a3;
-- (void)setEmptyPlaceholderState:(int64_t)a3;
-- (void)setEnterSelectModeAllowed:(BOOL)a3 forReason:(id)a4;
-- (void)setFaceModeEnabled:(BOOL)a3;
-- (void)setFilterState:(id)a3;
-- (void)setFloatingTitleOpacity:(double)a3;
-- (void)setFooterHasImportantInformation:(BOOL)a3;
-- (void)setFooterVisibilityStyle:(int64_t)a3;
-- (void)setHasScrollableContent:(BOOL)a3;
-- (void)setHeaderFloatingThresholdOffset:(double)a3;
-- (void)setHeaderSubtitle:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setHeaderTitleTopInset:(double)a3;
-- (void)setHideSurroundingContent:(BOOL)a3 forReason:(id)a4;
-- (void)setHidesDurationLabelBadge:(BOOL)a3;
-- (void)setHidesNavbar:(BOOL)a3;
-- (void)setHidesToolbar:(BOOL)a3;
-- (void)setIsAppearing:(BOOL)a3;
-- (void)setIsInCompactMode:(BOOL)a3;
-- (void)setIsInSelectMode:(BOOL)a3;
-- (void)setIsInteractiveZooming:(BOOL)a3;
-- (void)setLastPreferredScrollDetent:(id)a3;
-- (void)setLastTargetPreferredScrollDetent:(id)a3;
-- (void)setModalInPresentation:(BOOL)a3 forReason:(id)a4;
-- (void)setNavigationBarBottomPaletteContentView:(id)a3;
-- (void)setNavigationBarBottomPaletteDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setNoContentPlaceholderFallbackMessage:(id)a3;
-- (void)setNoContentPlaceholderFallbackTitle:(id)a3;
-- (void)setNumberOfZoomSteps:(int64_t)a3;
-- (void)setOneUpPresentationAllowed:(BOOL)a3 forReason:(id)a4;
-- (void)setRequiresLightTopBars:(BOOL)a3;
-- (void)setReverseSortOrder:(BOOL)a3;
-- (void)setScrollDisabled:(BOOL)a3 axis:(int64_t)a4 forReason:(id)a5;
-- (void)setScrolledToBottom:(BOOL)a3;
-- (void)setScrolledToTop:(BOOL)a3;
-- (void)setSearch_overriddenAllAssetsCount:(id)a3;
-- (void)setSelectionSnapshot:(id)a3;
-- (void)setShouldAlwaysRespectToolbarActionPlacementPreference:(BOOL)a3;
-- (void)setShouldAnimateZooming:(BOOL)a3;
-- (void)setShowLoadingPlaceholderWhenEmpty:(BOOL)a3;
-- (void)setShowingAlternateContent:(BOOL)a3;
-- (void)setSupportsAspectRatioToggle:(BOOL)a3;
-- (void)setSystemAuthenticationType:(int64_t)a3;
-- (void)setTapbackStatusManager:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleBackgroundOpacity:(double)a3;
-- (void)setTopDismissAreaHeight:(id)a3;
-- (void)setUserWantsAspectFitContent:(id)a3;
-- (void)setViewBasedDecorationsEnabled:(BOOL)a3;
-- (void)setViewDelegate:(id)a3;
-- (void)setWantsContentFilterVisible:(BOOL)a3;
-- (void)setWantsContentUnavailableUnlockButtonVisible:(BOOL)a3;
-- (void)setWantsFooterVisible:(BOOL)a3;
-- (void)setWantsImmediateBarsUpdate:(BOOL)a3;
-- (void)setWantsLensControlVisible:(BOOL)a3;
-- (void)setWantsManualNavigationBottomBarPaletteControl:(BOOL)a3;
-- (void)setWantsNavbarVisible:(BOOL)a3;
-- (void)setWantsPinchEffect:(BOOL)a3;
-- (void)setWantsTabBarVisible:(BOOL)a3;
-- (void)setWantsToolbarVisible:(BOOL)a3;
-- (void)setYearsMonthsZoomStepRange:(_NSRange)a3;
-- (void)setZoomAnchorAssetReference:(id)a3;
-- (void)setZoomStep:(double)a3;
-- (void)setZoomStep:(double)a3 isInteractive:(BOOL)a4 shouldAnimate:(BOOL)a5 anchorAssetReference:(id)a6;
-- (void)swift_actionMenuVisibilityChangedToVisible:(BOOL)a3;
+- (void)setAdditionalAspectFitEdgeMargins:(UIEdgeInsets)margins;
+- (void)setAllowedChromeItems:(unint64_t)items;
+- (void)setAllowsEmptyPlaceholderBehavior:(BOOL)behavior;
+- (void)setAllowsPreviewHeader:(BOOL)header;
+- (void)setAllowsSearch:(BOOL)search;
+- (void)setAllowsShareAllAction:(BOOL)action;
+- (void)setAllowsSortAndFilterMenu:(BOOL)menu;
+- (void)setAlwaysRequiresLightChrome:(BOOL)chrome;
+- (void)setAppearState:(int64_t)state;
+- (void)setAspectFitContent:(BOOL)content;
+- (void)setAspectRatioToggleAllowed:(BOOL)allowed forReason:(id)reason;
+- (void)setAvailableLenses:(id)lenses;
+- (void)setCaptionsVisible:(BOOL)visible;
+- (void)setChromeItemsToBeConsideredVisibleForLayoutPurpose:(unint64_t)purpose;
+- (void)setChromeOpacity:(double)opacity;
+- (void)setChromeTitleFloatingFraction:(double)fraction;
+- (void)setContainerFallbackTitle:(id)title;
+- (void)setContainerTitle:(id)title;
+- (void)setContentBackgroundInsets:(UIEdgeInsets)insets;
+- (void)setContentBackgroundOpacity:(double)opacity;
+- (void)setContentBelowTitle:(BOOL)title;
+- (void)setContentPrivacyState:(int64_t)state;
+- (void)setCplActionManagerClass:(Class)class;
+- (void)setCurrentDataSource:(id)source;
+- (void)setCurrentLens:(id)lens;
+- (void)setCustomBannerView:(id)view;
+- (void)setCustomExcludedActionTypesProvider:(id)provider;
+- (void)setCustomLeadingAccessoryBarButtonItems:(id)items;
+- (void)setCustomLeadingAccessoryView:(id)view;
+- (void)setCustomTrailingAccessoryBarButtonItems:(id)items;
+- (void)setCustomTrailingAccessoryView:(id)view;
+- (void)setDesiredCurationLength:(int64_t)length;
+- (void)setDismissRequested:(BOOL)requested;
+- (void)setDraggedAssetReferences:(id)references;
+- (void)setDropTargetAssetReference:(id)reference;
+- (void)setEffectProvider:(id)provider;
+- (void)setEmptyPlaceholderState:(int64_t)state;
+- (void)setEnterSelectModeAllowed:(BOOL)allowed forReason:(id)reason;
+- (void)setFaceModeEnabled:(BOOL)enabled;
+- (void)setFilterState:(id)state;
+- (void)setFloatingTitleOpacity:(double)opacity;
+- (void)setFooterHasImportantInformation:(BOOL)information;
+- (void)setFooterVisibilityStyle:(int64_t)style;
+- (void)setHasScrollableContent:(BOOL)content;
+- (void)setHeaderFloatingThresholdOffset:(double)offset;
+- (void)setHeaderSubtitle:(id)subtitle;
+- (void)setHeaderTitle:(id)title;
+- (void)setHeaderTitleTopInset:(double)inset;
+- (void)setHideSurroundingContent:(BOOL)content forReason:(id)reason;
+- (void)setHidesDurationLabelBadge:(BOOL)badge;
+- (void)setHidesNavbar:(BOOL)navbar;
+- (void)setHidesToolbar:(BOOL)toolbar;
+- (void)setIsAppearing:(BOOL)appearing;
+- (void)setIsInCompactMode:(BOOL)mode;
+- (void)setIsInSelectMode:(BOOL)mode;
+- (void)setIsInteractiveZooming:(BOOL)zooming;
+- (void)setLastPreferredScrollDetent:(id)detent;
+- (void)setLastTargetPreferredScrollDetent:(id)detent;
+- (void)setModalInPresentation:(BOOL)presentation forReason:(id)reason;
+- (void)setNavigationBarBottomPaletteContentView:(id)view;
+- (void)setNavigationBarBottomPaletteDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setNoContentPlaceholderFallbackMessage:(id)message;
+- (void)setNoContentPlaceholderFallbackTitle:(id)title;
+- (void)setNumberOfZoomSteps:(int64_t)steps;
+- (void)setOneUpPresentationAllowed:(BOOL)allowed forReason:(id)reason;
+- (void)setRequiresLightTopBars:(BOOL)bars;
+- (void)setReverseSortOrder:(BOOL)order;
+- (void)setScrollDisabled:(BOOL)disabled axis:(int64_t)axis forReason:(id)reason;
+- (void)setScrolledToBottom:(BOOL)bottom;
+- (void)setScrolledToTop:(BOOL)top;
+- (void)setSearch_overriddenAllAssetsCount:(id)count;
+- (void)setSelectionSnapshot:(id)snapshot;
+- (void)setShouldAlwaysRespectToolbarActionPlacementPreference:(BOOL)preference;
+- (void)setShouldAnimateZooming:(BOOL)zooming;
+- (void)setShowLoadingPlaceholderWhenEmpty:(BOOL)empty;
+- (void)setShowingAlternateContent:(BOOL)content;
+- (void)setSupportsAspectRatioToggle:(BOOL)toggle;
+- (void)setSystemAuthenticationType:(int64_t)type;
+- (void)setTapbackStatusManager:(id)manager;
+- (void)setTitle:(id)title;
+- (void)setTitleBackgroundOpacity:(double)opacity;
+- (void)setTopDismissAreaHeight:(id)height;
+- (void)setUserWantsAspectFitContent:(id)content;
+- (void)setViewBasedDecorationsEnabled:(BOOL)enabled;
+- (void)setViewDelegate:(id)delegate;
+- (void)setWantsContentFilterVisible:(BOOL)visible;
+- (void)setWantsContentUnavailableUnlockButtonVisible:(BOOL)visible;
+- (void)setWantsFooterVisible:(BOOL)visible;
+- (void)setWantsImmediateBarsUpdate:(BOOL)update;
+- (void)setWantsLensControlVisible:(BOOL)visible;
+- (void)setWantsManualNavigationBottomBarPaletteControl:(BOOL)control;
+- (void)setWantsNavbarVisible:(BOOL)visible;
+- (void)setWantsPinchEffect:(BOOL)effect;
+- (void)setWantsTabBarVisible:(BOOL)visible;
+- (void)setWantsToolbarVisible:(BOOL)visible;
+- (void)setYearsMonthsZoomStepRange:(_NSRange)range;
+- (void)setZoomAnchorAssetReference:(id)reference;
+- (void)setZoomStep:(double)step;
+- (void)setZoomStep:(double)step isInteractive:(BOOL)interactive shouldAnimate:(BOOL)animate anchorAssetReference:(id)reference;
+- (void)swift_actionMenuVisibilityChangedToVisible:(BOOL)visible;
 - (void)swift_didPerformChanges;
-- (void)swift_initWithConfiguration:(id)a3;
-- (void)toggleSelectionForAssetCollectionReference:(id)a3;
-- (void)toggleSelectionForAssetReference:(id)a3 updateCursorIndexPath:(BOOL)a4;
-- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)a3;
-- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)a3 updateCursorIndexPath:(BOOL)a4;
+- (void)swift_initWithConfiguration:(id)configuration;
+- (void)toggleSelectionForAssetCollectionReference:(id)reference;
+- (void)toggleSelectionForAssetReference:(id)reference updateCursorIndexPath:(BOOL)path;
+- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)path;
+- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)path updateCursorIndexPath:(BOOL)indexPath;
 @end
 
 @implementation PXPhotosViewModel
 
-- (void)swift_initWithConfiguration:(id)a3
+- (void)swift_initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_21AC0690C(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_21AC0690C(configurationCopy);
 }
 
 - (void)swift_didPerformChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_21AC070EC();
 }
 
-- (BOOL)initializePreviewHeaderVisibilityWithChangeHandler:(id)a3
+- (BOOL)initializePreviewHeaderVisibilityWithChangeHandler:(id)handler
 {
   sub_21AC6F094();
   sub_21AC6F084();
@@ -212,9 +212,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v5;
-  v6 = self;
+  selfCopy = self;
   v7 = sub_21AC07138();
 
   return v7 & 1;
@@ -222,7 +222,7 @@
 
 - (BOOL)supportsTogglingSortOrder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21AC07464();
 
   return v3 & 1;
@@ -230,7 +230,7 @@
 
 - (BOOL)supportsZooming
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21AC074D4();
 
   return v3;
@@ -238,7 +238,7 @@
 
 - (id)objc_customExcludedActionTypesProvider
 {
-  v2 = self;
+  selfCopy = self;
   sub_21AC07620();
   v4 = v3;
 
@@ -253,28 +253,28 @@
   return v5;
 }
 
-- (void)previewHeaderVisibilityChanged:(BOOL)a3
+- (void)previewHeaderVisibilityChanged:(BOOL)changed
 {
-  v4 = self;
-  sub_21AC07768(a3);
+  selfCopy = self;
+  sub_21AC07768(changed);
 }
 
-- (void)swift_actionMenuVisibilityChangedToVisible:(BOOL)a3
+- (void)swift_actionMenuVisibilityChangedToVisible:(BOOL)visible
 {
-  v4 = self;
-  sub_21AC07B08(a3);
+  selfCopy = self;
+  sub_21AC07B08(visible);
 }
 
-- (BOOL)handlePrimaryAction:(id)a3
+- (BOOL)handlePrimaryAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_21AC07C1C(v4);
+  actionCopy = action;
+  selfCopy = self;
+  LOBYTE(self) = sub_21AC07C1C(actionCopy);
 
   return self & 1;
 }
 
-- (void)requestCloseFromPresentationEnvironment:(id)a3 handler:(id)a4
+- (void)requestCloseFromPresentationEnvironment:(id)environment handler:(id)handler
 {
   sub_21AC6F094();
   sub_21AC6F084();
@@ -284,11 +284,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = _Block_copy(a4);
+  v7 = _Block_copy(handler);
   _Block_copy(v7);
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_21AC081E0(a3, v8, v7);
+  selfCopy = self;
+  sub_21AC081E0(environment, selfCopy, v7);
   _Block_release(v7);
 
   swift_unknownObjectRelease();
@@ -296,7 +296,7 @@
 
 - (id)customExcludedActionTypesProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PXPhotosViewModel.customExcludedActionTypesProvider.getter();
   v5 = v4;
 
@@ -311,11 +311,11 @@
   return v6;
 }
 
-- (void)setCustomExcludedActionTypesProvider:(id)a3
+- (void)setCustomExcludedActionTypesProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   sub_21AC092C0();
 }
 
@@ -396,7 +396,7 @@
   return result;
 }
 
-- (BOOL)selectionManagerShouldAvoidEmptySelection:(id)a3
+- (BOOL)selectionManagerShouldAvoidEmptySelection:(id)selection
 {
   if ([(PXPhotosViewModel *)self isInSelectMode])
   {
@@ -409,20 +409,20 @@
   }
 }
 
-- (id)selectionManager:(id)a3 validateSnapshot:(id)a4
+- (id)selectionManager:(id)manager validateSnapshot:(id)snapshot
 {
-  v5 = a4;
-  v6 = v5;
+  snapshotCopy = snapshot;
+  v6 = snapshotCopy;
   if ([(PXPhotosViewModel *)self viewDelegateRespondsTo:0x100000])
   {
-    v7 = [(PXPhotosViewModel *)self viewDelegate];
-    v6 = [v7 photosViewController:0 validateSelectionSnapshot:v5];
+    viewDelegate = [(PXPhotosViewModel *)self viewDelegate];
+    v6 = [viewDelegate photosViewController:0 validateSelectionSnapshot:snapshotCopy];
   }
 
   return v6;
 }
 
-- (void)assetsDataSourceManagerDidFinishLoadingInitialDataSource:(id)a3
+- (void)assetsDataSourceManagerDidFinishLoadingInitialDataSource:(id)source
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -432,7 +432,7 @@
   [(PXPhotosViewModel *)self performChanges:v3];
 }
 
-- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)a3
+- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)fetching
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -442,42 +442,42 @@
   [(PXPhotosViewModel *)self performChanges:v3];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (DataSourceManagerObservationContext == a5 || SelectionManagerObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (DataSourceManagerObservationContext == context || SelectionManagerObservationContext == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_14;
     }
 
-    v11 = v9;
+    v11 = observableCopy;
     [(PXPhotosViewModel *)self _updateDataSourceDependentProperties];
     goto LABEL_13;
   }
 
-  if (ViewModelHelperObservationContext != a5)
+  if (ViewModelHelperObservationContext != context)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXPhotosViewModel.m" lineNumber:1950 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewModel.m" lineNumber:1950 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v11 = v9;
-  if ((v6 & 1) == 0)
+  v11 = observableCopy;
+  if ((changeCopy & 1) == 0)
   {
-    if ((v6 & 2) == 0)
+    if ((changeCopy & 2) == 0)
     {
       goto LABEL_6;
     }
 
 LABEL_11:
     [(PXPhotosViewModel *)self performChanges:&__block_literal_global_147];
-    v9 = v11;
-    if ((v6 & 4) == 0)
+    observableCopy = v11;
+    if ((changeCopy & 4) == 0)
     {
       goto LABEL_14;
     }
@@ -486,19 +486,19 @@ LABEL_11:
   }
 
   [(PXPhotosViewModel *)self performChanges:&__block_literal_global_145];
-  v9 = v11;
-  if ((v6 & 2) != 0)
+  observableCopy = v11;
+  if ((changeCopy & 2) != 0)
   {
     goto LABEL_11;
   }
 
 LABEL_6:
-  if ((v6 & 4) != 0)
+  if ((changeCopy & 4) != 0)
   {
 LABEL_12:
     [(PXPhotosViewModel *)self performChanges:&__block_literal_global_149];
 LABEL_13:
-    v9 = v11;
+    observableCopy = v11;
   }
 
 LABEL_14:
@@ -520,10 +520,10 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
   [v2 _invalidateWantsLensControlVisible];
 }
 
-- (void)setViewDelegate:(id)a3
+- (void)setViewDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_viewDelegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_viewDelegate, delegateCopy);
   self->_viewDelegateRespondsTo = 0;
   self->_viewDelegateRespondsTo |= objc_opt_respondsToSelector() & 1;
   v5 = objc_opt_respondsToSelector();
@@ -702,10 +702,10 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
     return 0;
   }
 
-  v3 = [(PXPhotosViewModel *)self currentDataSource];
-  v4 = [v3 startsAtEnd];
+  currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+  startsAtEnd = [currentDataSource startsAtEnd];
 
-  return v4;
+  return startsAtEnd;
 }
 
 - (void)resetToInitialSelectionAndFilteringState
@@ -715,38 +715,38 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
     [(PXPhotosViewModel *)self attemptSetInSelectMode:[(PXPhotosViewModel *)self startsInSelectMode]];
   }
 
-  v4 = [(PXPhotosViewModel *)self viewModelHelper];
-  v3 = [v4 initialFilterStateForViewModel:self];
+  viewModelHelper = [(PXPhotosViewModel *)self viewModelHelper];
+  v3 = [viewModelHelper initialFilterStateForViewModel:self];
   [(PXPhotosViewModel *)self setFilterState:v3];
 }
 
-- (void)setNoContentPlaceholderFallbackMessage:(id)a3
+- (void)setNoContentPlaceholderFallbackMessage:(id)message
 {
-  v5 = a3;
-  if (self->_noContentPlaceholderFallbackMessage != v5)
+  messageCopy = message;
+  if (self->_noContentPlaceholderFallbackMessage != messageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_noContentPlaceholderFallbackMessage, a3);
+    v6 = messageCopy;
+    objc_storeStrong(&self->_noContentPlaceholderFallbackMessage, message);
     [(PXPhotosViewModel *)self signalChange:0x8000000000000];
-    v5 = v6;
+    messageCopy = v6;
   }
 }
 
-- (void)setNoContentPlaceholderFallbackTitle:(id)a3
+- (void)setNoContentPlaceholderFallbackTitle:(id)title
 {
-  v5 = a3;
-  if (self->_noContentPlaceholderFallbackTitle != v5)
+  titleCopy = title;
+  if (self->_noContentPlaceholderFallbackTitle != titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_noContentPlaceholderFallbackTitle, a3);
+    v6 = titleCopy;
+    objc_storeStrong(&self->_noContentPlaceholderFallbackTitle, title);
     [(PXPhotosViewModel *)self signalChange:0x8000000000000];
-    v5 = v6;
+    titleCopy = v6;
   }
 }
 
-- (void)setEffectProvider:(id)a3
+- (void)setEffectProvider:(id)provider
 {
-  aBlock = a3;
+  aBlock = provider;
   v4 = _Block_copy(self->_effectProvider);
   v5 = _Block_copy(aBlock);
   v6 = v5;
@@ -769,12 +769,12 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
   }
 }
 
-- (void)setContentBackgroundInsets:(UIEdgeInsets)a3
+- (void)setContentBackgroundInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_contentBackgroundInsets = &self->_contentBackgroundInsets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -787,84 +787,84 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
   }
 }
 
-- (void)setContentBackgroundOpacity:(double)a3
+- (void)setContentBackgroundOpacity:(double)opacity
 {
-  if (self->_contentBackgroundOpacity != a3)
+  if (self->_contentBackgroundOpacity != opacity)
   {
-    self->_contentBackgroundOpacity = a3;
+    self->_contentBackgroundOpacity = opacity;
     [(PXPhotosViewModel *)self signalChange:0x20000000000000];
   }
 }
 
-- (void)setTitleBackgroundOpacity:(double)a3
+- (void)setTitleBackgroundOpacity:(double)opacity
 {
-  if (self->_titleBackgroundOpacity != a3)
+  if (self->_titleBackgroundOpacity != opacity)
   {
-    self->_titleBackgroundOpacity = a3;
+    self->_titleBackgroundOpacity = opacity;
     [(PXPhotosViewModel *)self signalChange:0x800000000];
   }
 }
 
-- (void)setFloatingTitleOpacity:(double)a3
+- (void)setFloatingTitleOpacity:(double)opacity
 {
-  if (self->_floatingTitleOpacity != a3)
+  if (self->_floatingTitleOpacity != opacity)
   {
-    self->_floatingTitleOpacity = a3;
+    self->_floatingTitleOpacity = opacity;
     self->_wantsFloatingTitle = PXFloatEqualToFloatWithTolerance() ^ 1;
 
     [(PXPhotosViewModel *)self signalChange:0x100000000];
   }
 }
 
-- (void)setHeaderFloatingThresholdOffset:(double)a3
+- (void)setHeaderFloatingThresholdOffset:(double)offset
 {
-  if (self->_headerFloatingThresholdOffset != a3)
+  if (self->_headerFloatingThresholdOffset != offset)
   {
-    self->_headerFloatingThresholdOffset = a3;
+    self->_headerFloatingThresholdOffset = offset;
     [(PXPhotosViewModel *)self signalChange:0x100000000];
   }
 }
 
-- (void)setWantsPinchEffect:(BOOL)a3
+- (void)setWantsPinchEffect:(BOOL)effect
 {
-  if (self->_wantsPinchEffect != a3)
+  if (self->_wantsPinchEffect != effect)
   {
-    self->_wantsPinchEffect = a3;
+    self->_wantsPinchEffect = effect;
     [(PXPhotosViewModel *)self signalChange:0x8000];
   }
 }
 
-- (void)setReverseSortOrder:(BOOL)a3
+- (void)setReverseSortOrder:(BOOL)order
 {
-  v3 = a3;
+  orderCopy = order;
   if (![(PXPhotosViewModel *)self supportsTogglingSortOrder])
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXPhotosViewModel.m" lineNumber:1764 description:@"Toggling sort order is not supported"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewModel.m" lineNumber:1764 description:@"Toggling sort order is not supported"];
   }
 
-  if (self->_reverseSortOrder != v3)
+  if (self->_reverseSortOrder != orderCopy)
   {
-    self->_reverseSortOrder = v3;
-    v6 = [(PXPhotosViewModel *)self dataSourceManager];
+    self->_reverseSortOrder = orderCopy;
+    dataSourceManager = [(PXPhotosViewModel *)self dataSourceManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __41__PXPhotosViewModel_setReverseSortOrder___block_invoke;
     v8[3] = &__block_descriptor_33_e69_v16__0__PXAssetsDataSourceManager_PXMutableAssetsDataSourceManager__8l;
-    v9 = v3;
-    [v6 performChanges:v8];
+    v9 = orderCopy;
+    [dataSourceManager performChanges:v8];
 
     [(PXPhotosViewModel *)self signalChange:0x8000000];
   }
 }
 
-- (void)setFilterState:(id)a3
+- (void)setFilterState:(id)state
 {
-  v4 = a3;
-  if (self->_filterState != v4)
+  stateCopy = state;
+  if (self->_filterState != stateCopy)
   {
-    v7 = v4;
-    if (([(PXFilterState *)v4 isEqual:?]& 1) == 0)
+    v7 = stateCopy;
+    if (([(PXFilterState *)stateCopy isEqual:?]& 1) == 0)
     {
       v5 = [(PXFilterState *)v7 copyWithZone:0];
       filterState = self->_filterState;
@@ -879,92 +879,92 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCaptionsVisible:(BOOL)a3
+- (void)setCaptionsVisible:(BOOL)visible
 {
-  if (self->_captionsVisible != a3)
+  if (self->_captionsVisible != visible)
   {
-    self->_captionsVisible = a3;
+    self->_captionsVisible = visible;
     [(PXPhotosViewModel *)self signalChange:2048];
   }
 }
 
-- (void)setWantsImmediateBarsUpdate:(BOOL)a3
+- (void)setWantsImmediateBarsUpdate:(BOOL)update
 {
-  if (self->_wantsImmediateBarsUpdate != a3)
+  if (self->_wantsImmediateBarsUpdate != update)
   {
-    self->_wantsImmediateBarsUpdate = a3;
+    self->_wantsImmediateBarsUpdate = update;
   }
 }
 
-- (void)setHidesDurationLabelBadge:(BOOL)a3
+- (void)setHidesDurationLabelBadge:(BOOL)badge
 {
-  if (self->_hidesDurationLabelBadge != a3)
+  if (self->_hidesDurationLabelBadge != badge)
   {
-    self->_hidesDurationLabelBadge = a3;
+    self->_hidesDurationLabelBadge = badge;
     [(PXPhotosViewModel *)self signalChange:1024];
   }
 }
 
-- (void)setViewBasedDecorationsEnabled:(BOOL)a3
+- (void)setViewBasedDecorationsEnabled:(BOOL)enabled
 {
-  if (self->_viewBasedDecorationsEnabled != a3)
+  if (self->_viewBasedDecorationsEnabled != enabled)
   {
-    self->_viewBasedDecorationsEnabled = a3;
+    self->_viewBasedDecorationsEnabled = enabled;
     [(PXPhotosViewModel *)self signalChange:1024];
   }
 }
 
-- (void)setEmptyPlaceholderState:(int64_t)a3
+- (void)setEmptyPlaceholderState:(int64_t)state
 {
-  if (self->_emptyPlaceholderState != a3)
+  if (self->_emptyPlaceholderState != state)
   {
-    self->_emptyPlaceholderState = a3;
+    self->_emptyPlaceholderState = state;
     [(PXPhotosViewModel *)self signalChange:0x200000000];
   }
 }
 
-- (void)setFooterVisibilityStyle:(int64_t)a3
+- (void)setFooterVisibilityStyle:(int64_t)style
 {
-  if (self->_footerVisibilityStyle != a3)
+  if (self->_footerVisibilityStyle != style)
   {
-    self->_footerVisibilityStyle = a3;
+    self->_footerVisibilityStyle = style;
     [(PXPhotosViewModel *)self _updateFooterVisibility];
   }
 }
 
-- (void)setFooterHasImportantInformation:(BOOL)a3
+- (void)setFooterHasImportantInformation:(BOOL)information
 {
-  if (self->_footerHasImportantInformation != a3)
+  if (self->_footerHasImportantInformation != information)
   {
-    self->_footerHasImportantInformation = a3;
+    self->_footerHasImportantInformation = information;
     [(PXPhotosViewModel *)self signalChange:128];
   }
 }
 
-- (void)setWantsFooterVisible:(BOOL)a3
+- (void)setWantsFooterVisible:(BOOL)visible
 {
-  if (self->_wantsFooterVisible != a3)
+  if (self->_wantsFooterVisible != visible)
   {
-    self->_wantsFooterVisible = a3;
+    self->_wantsFooterVisible = visible;
     [(PXPhotosViewModel *)self signalChange:64];
   }
 }
 
-- (void)setWantsContentFilterVisible:(BOOL)a3
+- (void)setWantsContentFilterVisible:(BOOL)visible
 {
-  if (self->_wantsContentFilterVisible != a3)
+  if (self->_wantsContentFilterVisible != visible)
   {
-    self->_wantsContentFilterVisible = a3;
+    self->_wantsContentFilterVisible = visible;
     [(PXPhotosViewModel *)self signalChange:16];
   }
 }
 
-- (void)setLastTargetPreferredScrollDetent:(id)a3
+- (void)setLastTargetPreferredScrollDetent:(id)detent
 {
-  v8 = a3;
+  detentCopy = detent;
   v5 = self->_lastTargetPreferredScrollDetent;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == detentCopy)
   {
   }
 
@@ -974,18 +974,18 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_lastTargetPreferredScrollDetent, a3);
+      objc_storeStrong(&self->_lastTargetPreferredScrollDetent, detent);
       [(PXPhotosViewModel *)self signalChange:0x800000000000000];
     }
   }
 }
 
-- (void)setLastPreferredScrollDetent:(id)a3
+- (void)setLastPreferredScrollDetent:(id)detent
 {
-  v8 = a3;
+  detentCopy = detent;
   v5 = self->_lastPreferredScrollDetent;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == detentCopy)
   {
   }
 
@@ -995,42 +995,42 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_lastPreferredScrollDetent, a3);
+      objc_storeStrong(&self->_lastPreferredScrollDetent, detent);
       [(PXPhotosViewModel *)self signalChange:0x800000000000000];
     }
   }
 }
 
-- (void)setDesiredCurationLength:(int64_t)a3
+- (void)setDesiredCurationLength:(int64_t)length
 {
-  if (self->_desiredCurationLength != a3)
+  if (self->_desiredCurationLength != length)
   {
-    self->_desiredCurationLength = a3;
+    self->_desiredCurationLength = length;
     [(PXPhotosViewModel *)self _invalidateAssetsDataSourceManager];
 
     [(PXPhotosViewModel *)self signalChange:0x200000000000];
   }
 }
 
-- (void)setWantsLensControlVisible:(BOOL)a3
+- (void)setWantsLensControlVisible:(BOOL)visible
 {
-  if (self->_wantsLensControlVisible != a3)
+  if (self->_wantsLensControlVisible != visible)
   {
-    self->_wantsLensControlVisible = a3;
+    self->_wantsLensControlVisible = visible;
     [(PXPhotosViewModel *)self _invalidateFooterVisibility];
 
     [(PXPhotosViewModel *)self signalChange:0x80000000000];
   }
 }
 
-- (void)setAvailableLenses:(id)a3
+- (void)setAvailableLenses:(id)lenses
 {
-  v4 = a3;
+  lensesCopy = lenses;
   availableLenses = self->_availableLenses;
-  if (availableLenses != v4)
+  if (availableLenses != lensesCopy)
   {
-    v8 = v4;
-    if (([(NSArray *)availableLenses isEqual:v4]& 1) == 0)
+    v8 = lensesCopy;
+    if (([(NSArray *)availableLenses isEqual:lensesCopy]& 1) == 0)
     {
       v6 = [(NSArray *)v8 copy];
       v7 = self->_availableLenses;
@@ -1044,12 +1044,12 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCurrentLens:(id)a3
+- (void)setCurrentLens:(id)lens
 {
-  v8 = a3;
+  lensCopy = lens;
   v5 = self->_currentLens;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == lensCopy)
   {
   }
 
@@ -1059,7 +1059,7 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
 
     if (!v7)
     {
-      objc_storeStrong(&self->_currentLens, a3);
+      objc_storeStrong(&self->_currentLens, lens);
       [(PXPhotosViewModel *)self signalChange:0x100000000000];
       [(PXPhotosViewModel *)self _invalidateAssetsDataSourceManager];
       [(PXPhotosViewModel *)self _invalidateFooterVisibility];
@@ -1068,221 +1068,221 @@ void __50__PXPhotosViewModel_observable_didChange_context___block_invoke(uint64_
   }
 }
 
-- (void)setWantsContentUnavailableUnlockButtonVisible:(BOOL)a3
+- (void)setWantsContentUnavailableUnlockButtonVisible:(BOOL)visible
 {
-  if (self->_wantsContentUnavailableUnlockButtonVisible != a3)
+  if (self->_wantsContentUnavailableUnlockButtonVisible != visible)
   {
-    self->_wantsContentUnavailableUnlockButtonVisible = a3;
+    self->_wantsContentUnavailableUnlockButtonVisible = visible;
     [(PXPhotosViewModel *)self signalChange:0x20000000000];
   }
 }
 
-- (void)setSystemAuthenticationType:(int64_t)a3
+- (void)setSystemAuthenticationType:(int64_t)type
 {
-  if (self->_systemAuthenticationType != a3)
+  if (self->_systemAuthenticationType != type)
   {
-    self->_systemAuthenticationType = a3;
+    self->_systemAuthenticationType = type;
     [(PXPhotosViewModel *)self signalChange:0x10000000000];
   }
 }
 
-- (void)setContentPrivacyState:(int64_t)a3
+- (void)setContentPrivacyState:(int64_t)state
 {
-  if (self->_contentPrivacyState != a3)
+  if (self->_contentPrivacyState != state)
   {
-    self->_contentPrivacyState = a3;
+    self->_contentPrivacyState = state;
     [(PXPhotosViewModel *)self signalChange:0x400000000];
   }
 }
 
-- (void)setRequiresLightTopBars:(BOOL)a3
+- (void)setRequiresLightTopBars:(BOOL)bars
 {
-  if (self->_requiresLightTopBars != a3)
+  if (self->_requiresLightTopBars != bars)
   {
-    self->_requiresLightTopBars = a3;
+    self->_requiresLightTopBars = bars;
     [(PXPhotosViewModel *)self signalChange:0x1000000];
   }
 }
 
-- (void)setShowingAlternateContent:(BOOL)a3
+- (void)setShowingAlternateContent:(BOOL)content
 {
-  if (self->_showingAlternateContent != a3)
+  if (self->_showingAlternateContent != content)
   {
-    self->_showingAlternateContent = a3;
+    self->_showingAlternateContent = content;
     [(PXPhotosViewModel *)self signalChange:0x800000];
 
     [(PXPhotosViewModel *)self _invalidateTopBarsStyles];
   }
 }
 
-- (void)setContentBelowTitle:(BOOL)a3
+- (void)setContentBelowTitle:(BOOL)title
 {
-  if (self->_contentBelowTitle != a3)
+  if (self->_contentBelowTitle != title)
   {
-    self->_contentBelowTitle = a3;
+    self->_contentBelowTitle = title;
     [(PXPhotosViewModel *)self signalChange:0x400000];
 
     [(PXPhotosViewModel *)self _invalidateTopBarsStyles];
   }
 }
 
-- (void)setContainerFallbackTitle:(id)a3
+- (void)setContainerFallbackTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_containerFallbackTitle isEqualToString:?])
   {
-    objc_storeStrong(&self->_containerFallbackTitle, a3);
+    objc_storeStrong(&self->_containerFallbackTitle, title);
     [(PXPhotosViewModel *)self signalChange:0x80000000000000];
   }
 }
 
-- (void)setContainerTitle:(id)a3
+- (void)setContainerTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_containerTitle isEqualToString:?])
   {
-    objc_storeStrong(&self->_containerTitle, a3);
+    objc_storeStrong(&self->_containerTitle, title);
     [(PXPhotosViewModel *)self signalChange:0x80000000000000];
   }
 }
 
-- (void)setWantsToolbarVisible:(BOOL)a3
+- (void)setWantsToolbarVisible:(BOOL)visible
 {
-  if (self->_wantsToolbarVisible != a3)
+  if (self->_wantsToolbarVisible != visible)
   {
-    self->_wantsToolbarVisible = a3;
+    self->_wantsToolbarVisible = visible;
     [(PXPhotosViewModel *)self signalChange:32];
   }
 }
 
-- (void)setWantsNavbarVisible:(BOOL)a3
+- (void)setWantsNavbarVisible:(BOOL)visible
 {
-  if (self->_wantsNavbarVisible != a3)
+  if (self->_wantsNavbarVisible != visible)
   {
-    self->_wantsNavbarVisible = a3;
+    self->_wantsNavbarVisible = visible;
     [(PXPhotosViewModel *)self signalChange:32];
   }
 }
 
-- (void)setWantsTabBarVisible:(BOOL)a3
+- (void)setWantsTabBarVisible:(BOOL)visible
 {
-  if (self->_wantsTabBarVisible != a3)
+  if (self->_wantsTabBarVisible != visible)
   {
-    self->_wantsTabBarVisible = a3;
+    self->_wantsTabBarVisible = visible;
     [(PXPhotosViewModel *)self signalChange:32];
   }
 }
 
-- (void)setFaceModeEnabled:(BOOL)a3
+- (void)setFaceModeEnabled:(BOOL)enabled
 {
-  if (self->_faceModeEnabled != a3)
+  if (self->_faceModeEnabled != enabled)
   {
-    self->_faceModeEnabled = a3;
+    self->_faceModeEnabled = enabled;
     [(PXPhotosViewModel *)self signalChange:0x40000000000];
   }
 }
 
-- (void)setSupportsAspectRatioToggle:(BOOL)a3
+- (void)setSupportsAspectRatioToggle:(BOOL)toggle
 {
-  if (self->_supportsAspectRatioToggle != a3)
+  if (self->_supportsAspectRatioToggle != toggle)
   {
-    self->_supportsAspectRatioToggle = a3;
+    self->_supportsAspectRatioToggle = toggle;
     [(PXPhotosViewModel *)self signalChange:0x80000];
   }
 }
 
-- (void)setZoomStep:(double)a3 isInteractive:(BOOL)a4 shouldAnimate:(BOOL)a5 anchorAssetReference:(id)a6
+- (void)setZoomStep:(double)step isInteractive:(BOOL)interactive shouldAnimate:(BOOL)animate anchorAssetReference:(id)reference
 {
-  v6 = a5;
-  v7 = a4;
-  v10 = a6;
-  [(PXPhotosViewModel *)self setZoomStep:a3];
-  [(PXPhotosViewModel *)self setIsInteractiveZooming:v7];
-  [(PXPhotosViewModel *)self setShouldAnimateZooming:v6];
-  [(PXPhotosViewModel *)self setZoomAnchorAssetReference:v10];
+  animateCopy = animate;
+  interactiveCopy = interactive;
+  referenceCopy = reference;
+  [(PXPhotosViewModel *)self setZoomStep:step];
+  [(PXPhotosViewModel *)self setIsInteractiveZooming:interactiveCopy];
+  [(PXPhotosViewModel *)self setShouldAnimateZooming:animateCopy];
+  [(PXPhotosViewModel *)self setZoomAnchorAssetReference:referenceCopy];
 }
 
-- (void)setZoomAnchorAssetReference:(id)a3
+- (void)setZoomAnchorAssetReference:(id)reference
 {
-  v5 = a3;
-  if (self->_zoomAnchorAssetReference != v5)
+  referenceCopy = reference;
+  if (self->_zoomAnchorAssetReference != referenceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_zoomAnchorAssetReference, a3);
+    v6 = referenceCopy;
+    objc_storeStrong(&self->_zoomAnchorAssetReference, reference);
     [(PXPhotosViewModel *)self signalChange:0x20000];
-    v5 = v6;
+    referenceCopy = v6;
   }
 }
 
-- (void)setShouldAnimateZooming:(BOOL)a3
+- (void)setShouldAnimateZooming:(BOOL)zooming
 {
-  if (self->_shouldAnimateZooming != a3)
+  if (self->_shouldAnimateZooming != zooming)
   {
-    self->_shouldAnimateZooming = a3;
+    self->_shouldAnimateZooming = zooming;
   }
 }
 
-- (void)setIsInteractiveZooming:(BOOL)a3
+- (void)setIsInteractiveZooming:(BOOL)zooming
 {
-  if (self->_isInteractiveZooming != a3)
+  if (self->_isInteractiveZooming != zooming)
   {
-    self->_isInteractiveZooming = a3;
+    self->_isInteractiveZooming = zooming;
     [(PXPhotosViewModel *)self signalChange:0x40000];
   }
 }
 
-- (void)setYearsMonthsZoomStepRange:(_NSRange)a3
+- (void)setYearsMonthsZoomStepRange:(_NSRange)range
 {
-  if (self->_yearsMonthsZoomStepRange.location != a3.location || self->_yearsMonthsZoomStepRange.length != a3.length)
+  if (self->_yearsMonthsZoomStepRange.location != range.location || self->_yearsMonthsZoomStepRange.length != range.length)
   {
-    self->_yearsMonthsZoomStepRange = a3;
+    self->_yearsMonthsZoomStepRange = range;
     [(PXPhotosViewModel *)self signalChange:0x8000];
   }
 }
 
-- (void)setNumberOfZoomSteps:(int64_t)a3
+- (void)setNumberOfZoomSteps:(int64_t)steps
 {
-  if (self->_numberOfZoomSteps != a3)
+  if (self->_numberOfZoomSteps != steps)
   {
-    self->_numberOfZoomSteps = a3;
+    self->_numberOfZoomSteps = steps;
     [(PXPhotosViewModel *)self signalChange:0x8000];
   }
 }
 
-- (void)setZoomStep:(double)a3
+- (void)setZoomStep:(double)step
 {
-  if (self->_zoomStep != a3)
+  if (self->_zoomStep != step)
   {
-    self->_zoomStep = a3;
+    self->_zoomStep = step;
     [(PXPhotosViewModel *)self signalChange:0x10000];
 
     [(PXPhotosViewModel *)self _invalidateGridAppearance];
   }
 }
 
-- (void)setUserWantsAspectFitContent:(id)a3
+- (void)setUserWantsAspectFitContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   userWantsAspectFitContent = self->_userWantsAspectFitContent;
-  if (userWantsAspectFitContent != v4)
+  if (userWantsAspectFitContent != contentCopy)
   {
-    v12 = v4;
-    if (([(NSNumber *)userWantsAspectFitContent isEqual:v4]& 1) == 0)
+    v12 = contentCopy;
+    if (([(NSNumber *)userWantsAspectFitContent isEqual:contentCopy]& 1) == 0)
     {
       v6 = [(NSNumber *)v12 copy];
       v7 = self->_userWantsAspectFitContent;
       self->_userWantsAspectFitContent = v6;
 
-      v8 = [(PXPhotosViewModel *)self specManager];
-      v9 = [v8 spec];
-      if ([v9 userInterfaceIdiom] == 2)
+      specManager = [(PXPhotosViewModel *)self specManager];
+      spec = [specManager spec];
+      if ([spec userInterfaceIdiom] == 2)
       {
-        v10 = [(PXPhotosViewModel *)self isInCompactMode];
+        isInCompactMode = [(PXPhotosViewModel *)self isInCompactMode];
 
-        if (v10)
+        if (isInCompactMode)
         {
-          v11 = [MEMORY[0x277D3CE30] standardUserDefaults];
-          [v11 setPhotosGridAspectFitInCompact:v12];
+          standardUserDefaults = [MEMORY[0x277D3CE30] standardUserDefaults];
+          [standardUserDefaults setPhotosGridAspectFitInCompact:v12];
 LABEL_8:
 
           [(PXPhotosViewModel *)self signalChange:0x4000000];
@@ -1295,8 +1295,8 @@ LABEL_8:
       {
       }
 
-      v11 = [MEMORY[0x277D3CE30] standardUserDefaults];
-      [v11 setPhotosGridAspectFit:v12];
+      standardUserDefaults = [MEMORY[0x277D3CE30] standardUserDefaults];
+      [standardUserDefaults setPhotosGridAspectFit:v12];
       goto LABEL_8;
     }
   }
@@ -1314,26 +1314,26 @@ LABEL_9:
     return contentMode == 2;
   }
 
-  v5 = [(PXPhotosViewModel *)self specManager];
-  v6 = [v5 spec];
-  if ([v6 userInterfaceIdiom] != 4 && -[PXPhotosViewModel isInCompactMode](self, "isInCompactMode") || -[PXPhotosViewModel gridStyle](self, "gridStyle") == 1 || (-[PXPhotosViewModel itemAspectRatio](self, "itemAspectRatio"), v7 != 1.0))
+  specManager = [(PXPhotosViewModel *)self specManager];
+  spec = [specManager spec];
+  if ([spec userInterfaceIdiom] != 4 && -[PXPhotosViewModel isInCompactMode](self, "isInCompactMode") || -[PXPhotosViewModel gridStyle](self, "gridStyle") == 1 || (-[PXPhotosViewModel itemAspectRatio](self, "itemAspectRatio"), v7 != 1.0))
   {
     v3 = 0;
   }
 
   else
   {
-    v8 = [(PXPhotosViewModel *)self specManager];
-    v9 = [v8 spec];
-    v3 = [v9 userInterfaceIdiom] != 5;
+    specManager2 = [(PXPhotosViewModel *)self specManager];
+    spec2 = [specManager2 spec];
+    v3 = [spec2 userInterfaceIdiom] != 5;
   }
 
   return v3;
 }
 
-- (void)setTopDismissAreaHeight:(id)a3
+- (void)setTopDismissAreaHeight:(id)height
 {
-  self->_topDismissAreaHeight = [a3 copy];
+  self->_topDismissAreaHeight = [height copy];
 
   MEMORY[0x2821F96F8]();
 }
@@ -1349,57 +1349,57 @@ LABEL_9:
   return v3;
 }
 
-- (void)setChromeTitleFloatingFraction:(double)a3
+- (void)setChromeTitleFloatingFraction:(double)fraction
 {
-  if (self->_chromeTitleFloatingFraction != a3)
+  if (self->_chromeTitleFloatingFraction != fraction)
   {
-    self->_chromeTitleFloatingFraction = a3;
+    self->_chromeTitleFloatingFraction = fraction;
     [(PXPhotosViewModel *)self signalChange:0x2000000000000000];
   }
 }
 
-- (void)setChromeItemsToBeConsideredVisibleForLayoutPurpose:(unint64_t)a3
+- (void)setChromeItemsToBeConsideredVisibleForLayoutPurpose:(unint64_t)purpose
 {
-  if (self->_chromeItemsToBeConsideredVisibleForLayoutPurpose != a3)
+  if (self->_chromeItemsToBeConsideredVisibleForLayoutPurpose != purpose)
   {
-    self->_chromeItemsToBeConsideredVisibleForLayoutPurpose = a3;
+    self->_chromeItemsToBeConsideredVisibleForLayoutPurpose = purpose;
     [(PXPhotosViewModel *)self signalChange:0x2000000000000000];
   }
 }
 
-- (void)setAllowedChromeItems:(unint64_t)a3
+- (void)setAllowedChromeItems:(unint64_t)items
 {
-  if (self->_allowedChromeItems != a3)
+  if (self->_allowedChromeItems != items)
   {
-    self->_allowedChromeItems = a3;
+    self->_allowedChromeItems = items;
     [(PXPhotosViewModel *)self signalChange:32];
   }
 }
 
-- (void)setAlwaysRequiresLightChrome:(BOOL)a3
+- (void)setAlwaysRequiresLightChrome:(BOOL)chrome
 {
-  if (self->_alwaysRequiresLightChrome != a3)
+  if (self->_alwaysRequiresLightChrome != chrome)
   {
-    self->_alwaysRequiresLightChrome = a3;
+    self->_alwaysRequiresLightChrome = chrome;
     [(PXPhotosViewModel *)self _invalidateTopBarsStyles];
   }
 }
 
-- (void)setChromeOpacity:(double)a3
+- (void)setChromeOpacity:(double)opacity
 {
-  if (self->_chromeOpacity != a3)
+  if (self->_chromeOpacity != opacity)
   {
-    self->_chromeOpacity = a3;
+    self->_chromeOpacity = opacity;
     [(PXPhotosViewModel *)self signalChange:0x2000000000000000];
   }
 }
 
-- (void)setAdditionalAspectFitEdgeMargins:(UIEdgeInsets)a3
+- (void)setAdditionalAspectFitEdgeMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   p_additionalAspectFitEdgeMargins = &self->_additionalAspectFitEdgeMargins;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -1412,28 +1412,28 @@ LABEL_9:
   }
 }
 
-- (void)setAspectFitContent:(BOOL)a3
+- (void)setAspectFitContent:(BOOL)content
 {
-  if (self->_aspectFitContent != a3)
+  if (self->_aspectFitContent != content)
   {
-    self->_aspectFitContent = a3;
+    self->_aspectFitContent = content;
     [(PXPhotosViewModel *)self signalChange:0x4000];
   }
 }
 
 - (PXAssetReference)firstSelectedAssetReference
 {
-  v3 = [(PXPhotosViewModel *)self selectionManager];
-  v4 = [v3 selectionSnapshot];
+  selectionManager = [(PXPhotosViewModel *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
   v11 = 0u;
   v12 = 0u;
-  if (v4 && (([v4 firstSelectedIndexPath], v11 != *MEMORY[0x277D3CF78]) ? (v5 = v12 == 0x7FFFFFFFFFFFFFFFLL) : (v5 = 1), !v5 ? (v6 = *(&v12 + 1) == 0x7FFFFFFFFFFFFFFFLL) : (v6 = 0), v6))
+  if (selectionSnapshot && (([selectionSnapshot firstSelectedIndexPath], v11 != *MEMORY[0x277D3CF78]) ? (v5 = v12 == 0x7FFFFFFFFFFFFFFFLL) : (v5 = 1), !v5 ? (v6 = *(&v12 + 1) == 0x7FFFFFFFFFFFFFFFLL) : (v6 = 0), v6))
   {
-    v8 = [(PXPhotosViewModel *)self currentDataSource];
+    currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
     v10[0] = v11;
     v10[1] = v12;
-    v7 = [v8 assetReferenceAtItemIndexPath:v10];
+    v7 = [currentDataSource assetReferenceAtItemIndexPath:v10];
   }
 
   else
@@ -1446,40 +1446,40 @@ LABEL_9:
 
 - (PXAssetReference)singleSelectedAssetReference
 {
-  v3 = [(PXPhotosViewModel *)self selectionManager];
-  v4 = [v3 selectionSnapshot];
-  v5 = [v4 selectedIndexPaths];
-  if ([v5 count] == 1)
+  selectionManager = [(PXPhotosViewModel *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  if ([selectedIndexPaths count] == 1)
   {
-    v6 = [(PXPhotosViewModel *)self firstSelectedAssetReference];
+    firstSelectedAssetReference = [(PXPhotosViewModel *)self firstSelectedAssetReference];
   }
 
   else
   {
-    v6 = 0;
+    firstSelectedAssetReference = 0;
   }
 
-  return v6;
+  return firstSelectedAssetReference;
 }
 
-- (void)setTapbackStatusManager:(id)a3
+- (void)setTapbackStatusManager:(id)manager
 {
-  v5 = a3;
-  if (self->_tapbackStatusManager != v5)
+  managerCopy = manager;
+  if (self->_tapbackStatusManager != managerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_tapbackStatusManager, a3);
+    v6 = managerCopy;
+    objc_storeStrong(&self->_tapbackStatusManager, manager);
     [(PXPhotosViewModel *)self signalChange:0x4000000000];
-    v5 = v6;
+    managerCopy = v6;
   }
 }
 
-- (void)setDropTargetAssetReference:(id)a3
+- (void)setDropTargetAssetReference:(id)reference
 {
-  v8 = a3;
+  referenceCopy = reference;
   v5 = self->_dropTargetAssetReference;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == referenceCopy)
   {
   }
 
@@ -1489,18 +1489,18 @@ LABEL_9:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_dropTargetAssetReference, a3);
+      objc_storeStrong(&self->_dropTargetAssetReference, reference);
       [(PXPhotosViewModel *)self signalChange:512];
     }
   }
 }
 
-- (void)setDraggedAssetReferences:(id)a3
+- (void)setDraggedAssetReferences:(id)references
 {
-  v8 = a3;
+  referencesCopy = references;
   v5 = self->_draggedAssetReferences;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == referencesCopy)
   {
   }
 
@@ -1510,156 +1510,156 @@ LABEL_9:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_draggedAssetReferences, a3);
+      objc_storeStrong(&self->_draggedAssetReferences, references);
       [(PXPhotosViewModel *)self signalChange:256];
     }
   }
 }
 
-- (void)setCplActionManagerClass:(Class)a3
+- (void)setCplActionManagerClass:(Class)class
 {
-  if (self->_cplActionManagerClass != a3)
+  if (self->_cplActionManagerClass != class)
   {
-    objc_storeStrong(&self->_cplActionManagerClass, a3);
+    objc_storeStrong(&self->_cplActionManagerClass, class);
 
     [(PXPhotosViewModel *)self signalChange:0x8000000000];
   }
 }
 
-- (void)setSearch_overriddenAllAssetsCount:(id)a3
+- (void)setSearch_overriddenAllAssetsCount:(id)count
 {
-  v5 = a3;
-  if (self->_search_overriddenAllAssetsCount != v5)
+  countCopy = count;
+  if (self->_search_overriddenAllAssetsCount != countCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_search_overriddenAllAssetsCount, a3);
+    v6 = countCopy;
+    objc_storeStrong(&self->_search_overriddenAllAssetsCount, count);
     [(PXPhotosViewModel *)self signalChange:32];
-    v5 = v6;
+    countCopy = v6;
   }
 }
 
-- (void)setNavigationBarBottomPaletteDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setNavigationBarBottomPaletteDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = margins.top;
+  v3.f64[1] = margins.leading;
+  v4.f64[0] = margins.bottom;
+  v4.f64[1] = margins.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_navigationBarBottomPaletteDirectionalLayoutMargins.top), vceqq_f64(v4, *&self->_navigationBarBottomPaletteDirectionalLayoutMargins.bottom)))) & 1) == 0)
   {
-    self->_navigationBarBottomPaletteDirectionalLayoutMargins = a3;
+    self->_navigationBarBottomPaletteDirectionalLayoutMargins = margins;
     [(PXPhotosViewModel *)self signalChange:32];
   }
 }
 
-- (void)setWantsManualNavigationBottomBarPaletteControl:(BOOL)a3
+- (void)setWantsManualNavigationBottomBarPaletteControl:(BOOL)control
 {
-  if (self->_wantsManualNavigationBottomBarPaletteControl != a3)
+  if (self->_wantsManualNavigationBottomBarPaletteControl != control)
   {
-    self->_wantsManualNavigationBottomBarPaletteControl = a3;
+    self->_wantsManualNavigationBottomBarPaletteControl = control;
   }
 }
 
-- (void)setNavigationBarBottomPaletteContentView:(id)a3
+- (void)setNavigationBarBottomPaletteContentView:(id)view
 {
-  v5 = a3;
-  if (self->_navigationBarBottomPaletteContentView != v5 && ([(UIView *)v5 isEqual:?]& 1) == 0)
+  viewCopy = view;
+  if (self->_navigationBarBottomPaletteContentView != viewCopy && ([(UIView *)viewCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_navigationBarBottomPaletteContentView, a3);
-    [(PXPhotosViewModel *)self signalChange:32];
-  }
-
-  MEMORY[0x2821F96F8]();
-}
-
-- (void)setCustomTrailingAccessoryBarButtonItems:(id)a3
-{
-  v5 = a3;
-  if (self->_customTrailingAccessoryBarButtonItems != v5 && ([(NSArray *)v5 isEqual:?]& 1) == 0)
-  {
-    objc_storeStrong(&self->_customTrailingAccessoryBarButtonItems, a3);
+    objc_storeStrong(&self->_navigationBarBottomPaletteContentView, view);
     [(PXPhotosViewModel *)self signalChange:32];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCustomLeadingAccessoryBarButtonItems:(id)a3
+- (void)setCustomTrailingAccessoryBarButtonItems:(id)items
 {
-  v5 = a3;
-  if (self->_customLeadingAccessoryBarButtonItems != v5 && ([(NSArray *)v5 isEqual:?]& 1) == 0)
+  itemsCopy = items;
+  if (self->_customTrailingAccessoryBarButtonItems != itemsCopy && ([(NSArray *)itemsCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_customLeadingAccessoryBarButtonItems, a3);
+    objc_storeStrong(&self->_customTrailingAccessoryBarButtonItems, items);
     [(PXPhotosViewModel *)self signalChange:32];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setCustomBannerView:(id)a3
+- (void)setCustomLeadingAccessoryBarButtonItems:(id)items
 {
-  v5 = a3;
-  if (self->_customBannerView != v5)
+  itemsCopy = items;
+  if (self->_customLeadingAccessoryBarButtonItems != itemsCopy && ([(NSArray *)itemsCopy isEqual:?]& 1) == 0)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customBannerView, a3);
+    objc_storeStrong(&self->_customLeadingAccessoryBarButtonItems, items);
     [(PXPhotosViewModel *)self signalChange:32];
-    v5 = v6;
+  }
+
+  MEMORY[0x2821F96F8]();
+}
+
+- (void)setCustomBannerView:(id)view
+{
+  viewCopy = view;
+  if (self->_customBannerView != viewCopy)
+  {
+    v6 = viewCopy;
+    objc_storeStrong(&self->_customBannerView, view);
+    [(PXPhotosViewModel *)self signalChange:32];
+    viewCopy = v6;
   }
 }
 
-- (void)setCustomTrailingAccessoryView:(id)a3
+- (void)setCustomTrailingAccessoryView:(id)view
 {
-  v5 = a3;
-  if (self->_customTrailingAccessoryView != v5)
+  viewCopy = view;
+  if (self->_customTrailingAccessoryView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customTrailingAccessoryView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_customTrailingAccessoryView, view);
     [(PXPhotosViewModel *)self signalChange:32];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setCustomLeadingAccessoryView:(id)a3
+- (void)setCustomLeadingAccessoryView:(id)view
 {
-  v5 = a3;
-  if (self->_customLeadingAccessoryView != v5)
+  viewCopy = view;
+  if (self->_customLeadingAccessoryView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customLeadingAccessoryView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_customLeadingAccessoryView, view);
     [(PXPhotosViewModel *)self signalChange:32];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setAllowsPreviewHeader:(BOOL)a3
+- (void)setAllowsPreviewHeader:(BOOL)header
 {
-  if (self->_allowsPreviewHeader != a3)
+  if (self->_allowsPreviewHeader != header)
   {
-    v4 = a3;
-    self->_allowsPreviewHeader = a3;
+    headerCopy = header;
+    self->_allowsPreviewHeader = header;
     [(PXPhotosViewModel *)self signalChange:0x800000000000];
 
-    [(PXPhotosViewModel *)self previewHeaderVisibilityChanged:v4];
+    [(PXPhotosViewModel *)self previewHeaderVisibilityChanged:headerCopy];
   }
 }
 
-- (void)setHeaderTitleTopInset:(double)a3
+- (void)setHeaderTitleTopInset:(double)inset
 {
-  if (self->_headerTitleTopInset != a3)
+  if (self->_headerTitleTopInset != inset)
   {
-    self->_headerTitleTopInset = a3;
+    self->_headerTitleTopInset = inset;
     [(PXPhotosViewModel *)self signalChange:0x10000000];
   }
 }
 
-- (void)setHeaderSubtitle:(id)a3
+- (void)setHeaderSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   headerSubtitle = self->_headerSubtitle;
-  if (headerSubtitle != v4)
+  if (headerSubtitle != subtitleCopy)
   {
-    v8 = v4;
-    if (([(NSAttributedString *)headerSubtitle isEqual:v4]& 1) == 0)
+    v8 = subtitleCopy;
+    if (([(NSAttributedString *)headerSubtitle isEqual:subtitleCopy]& 1) == 0)
     {
       v6 = [(NSAttributedString *)v8 copy];
       v7 = self->_headerSubtitle;
@@ -1672,14 +1672,14 @@ LABEL_9:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   headerTitle = self->_headerTitle;
-  if (headerTitle != v4)
+  if (headerTitle != titleCopy)
   {
-    v8 = v4;
-    if (([(NSAttributedString *)headerTitle isEqual:v4]& 1) == 0)
+    v8 = titleCopy;
+    if (([(NSAttributedString *)headerTitle isEqual:titleCopy]& 1) == 0)
     {
       v6 = [(NSAttributedString *)v8 copy];
       v7 = self->_headerTitle;
@@ -1692,69 +1692,69 @@ LABEL_9:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setScrolledToBottom:(BOOL)a3
+- (void)setScrolledToBottom:(BOOL)bottom
 {
-  if (self->_scrolledToBottom != a3)
+  if (self->_scrolledToBottom != bottom)
   {
-    self->_scrolledToBottom = a3;
+    self->_scrolledToBottom = bottom;
     [(PXPhotosViewModel *)self signalChange:0x100000000000000];
   }
 }
 
-- (void)setScrolledToTop:(BOOL)a3
+- (void)setScrolledToTop:(BOOL)top
 {
-  if (self->_scrolledToTop != a3)
+  if (self->_scrolledToTop != top)
   {
-    self->_scrolledToTop = a3;
+    self->_scrolledToTop = top;
     [(PXPhotosViewModel *)self signalChange:0x80000000];
   }
 }
 
-- (void)setHasScrollableContent:(BOOL)a3
+- (void)setHasScrollableContent:(BOOL)content
 {
-  if (self->_hasScrollableContent != a3)
+  if (self->_hasScrollableContent != content)
   {
-    self->_hasScrollableContent = a3;
+    self->_hasScrollableContent = content;
     [(PXPhotosViewModel *)self signalChange:0x100000];
 
     [(PXPhotosViewModel *)self _invalidateFooterVisibility];
   }
 }
 
-- (void)setDismissRequested:(BOOL)a3
+- (void)setDismissRequested:(BOOL)requested
 {
-  if (self->_dismissRequested != a3)
+  if (self->_dismissRequested != requested)
   {
-    self->_dismissRequested = a3;
+    self->_dismissRequested = requested;
     [(PXPhotosViewModel *)self signalChange:0x40000000];
   }
 }
 
-- (void)setIsAppearing:(BOOL)a3
+- (void)setIsAppearing:(BOOL)appearing
 {
-  if (self->_isAppearing != a3)
+  if (self->_isAppearing != appearing)
   {
-    self->_isAppearing = a3;
+    self->_isAppearing = appearing;
     [(PXPhotosViewModel *)self signalChange:4096];
   }
 }
 
-- (void)setAppearState:(int64_t)a3
+- (void)setAppearState:(int64_t)state
 {
-  if (self->_appearState != a3)
+  if (self->_appearState != state)
   {
-    self->_appearState = a3;
+    self->_appearState = state;
     [(PXPhotosViewModel *)self signalChange:4096];
 
-    [(PXPhotosViewModel *)self setIsAppearing:a3 == 1];
+    [(PXPhotosViewModel *)self setIsAppearing:state == 1];
   }
 }
 
-- (void)setIsInCompactMode:(BOOL)a3
+- (void)setIsInCompactMode:(BOOL)mode
 {
-  if (self->_isInCompactMode != a3)
+  if (self->_isInCompactMode != mode)
   {
-    self->_isInCompactMode = a3;
+    self->_isInCompactMode = mode;
     [(PXPhotosViewModel *)self signalChange:0x2000];
     [(PXPhotosViewModel *)self _invalidateChromeVisibility];
     [(PXPhotosViewModel *)self _invalidateUserWantsAspectFitContent];
@@ -1763,11 +1763,11 @@ LABEL_9:
   }
 }
 
-- (void)setModalInPresentation:(BOOL)a3 forReason:(id)a4
+- (void)setModalInPresentation:(BOOL)presentation forReason:(id)reason
 {
-  v4 = a3;
-  v11 = a4;
-  v6 = [(PXPhotosViewModel *)self isModalInPresentation];
+  presentationCopy = presentation;
+  reasonCopy = reason;
+  isModalInPresentation = [(PXPhotosViewModel *)self isModalInPresentation];
   modalInPresentationReasons = self->_modalInPresentationReasons;
   if (modalInPresentationReasons)
   {
@@ -1776,7 +1776,7 @@ LABEL_9:
 
   else
   {
-    v8 = !v4;
+    v8 = !presentationCopy;
   }
 
   if (!v8)
@@ -1788,39 +1788,39 @@ LABEL_9:
     modalInPresentationReasons = self->_modalInPresentationReasons;
   }
 
-  if (v4)
+  if (presentationCopy)
   {
-    [(NSMutableSet *)modalInPresentationReasons addObject:v11];
+    [(NSMutableSet *)modalInPresentationReasons addObject:reasonCopy];
   }
 
   else
   {
-    [(NSMutableSet *)modalInPresentationReasons removeObject:v11];
+    [(NSMutableSet *)modalInPresentationReasons removeObject:reasonCopy];
   }
 
-  if (v6 != [(PXPhotosViewModel *)self isModalInPresentation])
+  if (isModalInPresentation != [(PXPhotosViewModel *)self isModalInPresentation])
   {
     [(PXPhotosViewModel *)self signalChange:0x1000000000000000];
   }
 }
 
-- (BOOL)isScrollDisabledForAxis:(int64_t)a3
+- (BOOL)isScrollDisabledForAxis:(int64_t)axis
 {
   scrollDisabledReasonsByAxis = self->_scrollDisabledReasonsByAxis;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:axis];
   v5 = [(NSMutableDictionary *)scrollDisabledReasonsByAxis objectForKeyedSubscript:v4];
   v6 = [v5 count] != 0;
 
   return v6;
 }
 
-- (void)setScrollDisabled:(BOOL)a3 axis:(int64_t)a4 forReason:(id)a5
+- (void)setScrollDisabled:(BOOL)disabled axis:(int64_t)axis forReason:(id)reason
 {
-  v6 = a3;
-  v17 = a5;
-  v8 = [(PXPhotosViewModel *)self isScrollDisabledForAxis:a4];
+  disabledCopy = disabled;
+  reasonCopy = reason;
+  v8 = [(PXPhotosViewModel *)self isScrollDisabledForAxis:axis];
   scrollDisabledReasonsByAxis = self->_scrollDisabledReasonsByAxis;
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:axis];
   v11 = [(NSMutableDictionary *)scrollDisabledReasonsByAxis objectForKeyedSubscript:v10];
 
   if (v11)
@@ -1830,7 +1830,7 @@ LABEL_9:
 
   else
   {
-    v12 = !v6;
+    v12 = !disabledCopy;
   }
 
   if (!v12)
@@ -1839,71 +1839,71 @@ LABEL_9:
     v13 = self->_scrollDisabledReasonsByAxis;
     if (!v13)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v15 = self->_scrollDisabledReasonsByAxis;
-      self->_scrollDisabledReasonsByAxis = v14;
+      self->_scrollDisabledReasonsByAxis = dictionary;
 
       v13 = self->_scrollDisabledReasonsByAxis;
     }
 
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:axis];
     [(NSMutableDictionary *)v13 setObject:v11 forKeyedSubscript:v16];
   }
 
-  if (v6)
+  if (disabledCopy)
   {
-    [v11 addObject:v17];
+    [v11 addObject:reasonCopy];
   }
 
   else
   {
-    [v11 removeObject:v17];
+    [v11 removeObject:reasonCopy];
   }
 
-  if (v8 != [(PXPhotosViewModel *)self isScrollDisabledForAxis:a4])
+  if (v8 != [(PXPhotosViewModel *)self isScrollDisabledForAxis:axis])
   {
     [(PXPhotosViewModel *)self signalChange:0x200000000000000];
   }
 }
 
-- (void)setHideSurroundingContent:(BOOL)a3 forReason:(id)a4
+- (void)setHideSurroundingContent:(BOOL)content forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PXPhotosViewModel *)self hideSurroundingContent];
+  contentCopy = content;
+  reasonCopy = reason;
+  hideSurroundingContent = [(PXPhotosViewModel *)self hideSurroundingContent];
   hideSurroundingContentForReasons = self->_hideSurroundingContentForReasons;
-  if (v4)
+  if (contentCopy)
   {
-    [(NSMutableSet *)hideSurroundingContentForReasons addObject:v6];
+    [(NSMutableSet *)hideSurroundingContentForReasons addObject:reasonCopy];
   }
 
   else
   {
-    [(NSMutableSet *)hideSurroundingContentForReasons removeObject:v6];
+    [(NSMutableSet *)hideSurroundingContentForReasons removeObject:reasonCopy];
   }
 
-  if (v7 != [(PXPhotosViewModel *)self hideSurroundingContent])
+  if (hideSurroundingContent != [(PXPhotosViewModel *)self hideSurroundingContent])
   {
 
     [(PXPhotosViewModel *)self signalChange:0x20000000];
   }
 }
 
-- (void)setAspectRatioToggleAllowed:(BOOL)a3 forReason:(id)a4
+- (void)setAspectRatioToggleAllowed:(BOOL)allowed forReason:(id)reason
 {
-  v4 = a3;
+  allowedCopy = allowed;
   aspectRatioTogglePreventedForReasons = self->_aspectRatioTogglePreventedForReasons;
-  v7 = a4;
+  reasonCopy = reason;
   v8 = [(NSMutableSet *)aspectRatioTogglePreventedForReasons count];
   v9 = self->_aspectRatioTogglePreventedForReasons;
-  if (v4)
+  if (allowedCopy)
   {
-    [(NSMutableSet *)v9 removeObject:v7];
+    [(NSMutableSet *)v9 removeObject:reasonCopy];
   }
 
   else
   {
-    [(NSMutableSet *)v9 addObject:v7];
+    [(NSMutableSet *)v9 addObject:reasonCopy];
   }
 
   if ((v8 != 0) == ([(NSMutableSet *)self->_aspectRatioTogglePreventedForReasons count]== 0))
@@ -1913,108 +1913,108 @@ LABEL_9:
   }
 }
 
-- (void)setOneUpPresentationAllowed:(BOOL)a3 forReason:(id)a4
+- (void)setOneUpPresentationAllowed:(BOOL)allowed forReason:(id)reason
 {
   oneUpPresentationPreventedForReasons = self->_oneUpPresentationPreventedForReasons;
-  if (a3)
+  if (allowed)
   {
-    [(NSMutableSet *)oneUpPresentationPreventedForReasons removeObject:a4];
+    [(NSMutableSet *)oneUpPresentationPreventedForReasons removeObject:reason];
   }
 
   else
   {
-    [(NSMutableSet *)oneUpPresentationPreventedForReasons addObject:a4];
+    [(NSMutableSet *)oneUpPresentationPreventedForReasons addObject:reason];
   }
 }
 
 - (BOOL)canFilterContent
 {
-  v3 = [(PXPhotosViewModel *)self dataSourceManager];
-  if ([v3 supportsFiltering])
+  dataSourceManager = [(PXPhotosViewModel *)self dataSourceManager];
+  if ([dataSourceManager supportsFiltering])
   {
-    v4 = [(PXPhotosViewModel *)self filterState];
-    if ([v4 isFiltering])
+    filterState = [(PXPhotosViewModel *)self filterState];
+    if ([filterState isFiltering])
     {
-      v5 = 1;
+      containsAnyItems = 1;
     }
 
     else
     {
-      v6 = [(PXPhotosViewModel *)self currentDataSource];
-      v5 = [v6 containsAnyItems];
+      currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+      containsAnyItems = [currentDataSource containsAnyItems];
     }
   }
 
   else
   {
-    v5 = 0;
+    containsAnyItems = 0;
   }
 
-  return v5;
+  return containsAnyItems;
 }
 
 - (void)deselectAll
 {
-  v2 = [(PXPhotosViewModel *)self selectionManager];
-  [v2 performChanges:&__block_literal_global_95];
+  selectionManager = [(PXPhotosViewModel *)self selectionManager];
+  [selectionManager performChanges:&__block_literal_global_95];
 }
 
 - (void)selectAll
 {
-  v2 = [(PXPhotosViewModel *)self selectionManager];
-  [v2 performChanges:&__block_literal_global_93];
+  selectionManager = [(PXPhotosViewModel *)self selectionManager];
+  [selectionManager performChanges:&__block_literal_global_93];
 }
 
 - (BOOL)canSwipeSelect
 {
-  v3 = [(PXPhotosViewModel *)self isInSelectMode];
-  if (v3)
+  isInSelectMode = [(PXPhotosViewModel *)self isInSelectMode];
+  if (isInSelectMode)
   {
-    LOBYTE(v3) = [(NSMutableSet *)self->_enterSelectModePreventedForReasons count]== 0;
+    LOBYTE(isInSelectMode) = [(NSMutableSet *)self->_enterSelectModePreventedForReasons count]== 0;
   }
 
-  return v3;
+  return isInSelectMode;
 }
 
 - (BOOL)canEnterSelectMode
 {
-  v3 = [(PXPhotosViewModel *)self allowsSelectModeToggle];
-  if (v3)
+  allowsSelectModeToggle = [(PXPhotosViewModel *)self allowsSelectModeToggle];
+  if (allowsSelectModeToggle)
   {
-    LOBYTE(v3) = [(NSMutableSet *)self->_enterSelectModePreventedForReasons count]== 0;
+    LOBYTE(allowsSelectModeToggle) = [(NSMutableSet *)self->_enterSelectModePreventedForReasons count]== 0;
   }
 
-  return v3;
+  return allowsSelectModeToggle;
 }
 
-- (void)setEnterSelectModeAllowed:(BOOL)a3 forReason:(id)a4
+- (void)setEnterSelectModeAllowed:(BOOL)allowed forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PXPhotosViewModel *)self canEnterSelectMode];
+  allowedCopy = allowed;
+  reasonCopy = reason;
+  canEnterSelectMode = [(PXPhotosViewModel *)self canEnterSelectMode];
   enterSelectModePreventedForReasons = self->_enterSelectModePreventedForReasons;
-  if (v4)
+  if (allowedCopy)
   {
-    [(NSMutableSet *)enterSelectModePreventedForReasons removeObject:v6];
+    [(NSMutableSet *)enterSelectModePreventedForReasons removeObject:reasonCopy];
   }
 
   else
   {
-    [(NSMutableSet *)enterSelectModePreventedForReasons addObject:v6];
+    [(NSMutableSet *)enterSelectModePreventedForReasons addObject:reasonCopy];
   }
 
-  if (v7 != [(PXPhotosViewModel *)self canEnterSelectMode])
+  if (canEnterSelectMode != [(PXPhotosViewModel *)self canEnterSelectMode])
   {
 
     [(PXPhotosViewModel *)self signalChange:0x200000];
   }
 }
 
-- (BOOL)attemptSetInSelectMode:(BOOL)a3
+- (BOOL)attemptSetInSelectMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v11 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!mode)
   {
     if (![(PXPhotosViewModel *)self canExitSelectMode])
     {
@@ -2022,7 +2022,7 @@ LABEL_9:
     }
 
 LABEL_6:
-    [(PXPhotosViewModel *)self setIsInSelectMode:v3];
+    [(PXPhotosViewModel *)self setIsInSelectMode:modeCopy];
     return 1;
   }
 
@@ -2036,7 +2036,7 @@ LABEL_3:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v7 = @"NO";
-    if (v3)
+    if (modeCopy)
     {
       v7 = @"YES";
     }
@@ -2050,33 +2050,33 @@ LABEL_3:
   return 0;
 }
 
-- (void)setIsInSelectMode:(BOOL)a3
+- (void)setIsInSelectMode:(BOOL)mode
 {
-  if (self->_isInSelectMode != a3)
+  if (self->_isInSelectMode != mode)
   {
-    v4 = a3;
-    self->_isInSelectMode = a3;
+    modeCopy = mode;
+    self->_isInSelectMode = mode;
     [(PXPhotosViewModel *)self signalChange:4];
-    if (!v4)
+    if (!modeCopy)
     {
-      v6 = [(PXPhotosViewModel *)self selectionManager];
-      [v6 performChanges:&__block_literal_global_1268];
+      selectionManager = [(PXPhotosViewModel *)self selectionManager];
+      [selectionManager performChanges:&__block_literal_global_1268];
     }
 
     [(PXPhotosViewModel *)self _invalidateChromeVisibility];
     [(PXPhotosViewModel *)self _invalidateWantsLensControlVisible];
-    [(PXPhotosViewModel *)self setScrollDisabled:v4 axis:2 forReason:@"selectMode"];
+    [(PXPhotosViewModel *)self setScrollDisabled:modeCopy axis:2 forReason:@"selectMode"];
 
-    [(PXPhotosViewModel *)self setModalInPresentation:v4 forReason:@"selectMode"];
+    [(PXPhotosViewModel *)self setModalInPresentation:modeCopy forReason:@"selectMode"];
   }
 }
 
-- (void)setSelectionSnapshot:(id)a3
+- (void)setSelectionSnapshot:(id)snapshot
 {
-  v8 = a3;
+  snapshotCopy = snapshot;
   v5 = self->_selectionSnapshot;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == snapshotCopy)
   {
   }
 
@@ -2086,18 +2086,18 @@ LABEL_3:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_selectionSnapshot, a3);
+      objc_storeStrong(&self->_selectionSnapshot, snapshot);
       [(PXPhotosViewModel *)self signalChange:2];
     }
   }
 }
 
-- (void)setCurrentDataSource:(id)a3
+- (void)setCurrentDataSource:(id)source
 {
-  v8 = a3;
+  sourceCopy = source;
   v5 = self->_currentDataSource;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == sourceCopy)
   {
   }
 
@@ -2107,7 +2107,7 @@ LABEL_3:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentDataSource, a3);
+      objc_storeStrong(&self->_currentDataSource, source);
       [(PXPhotosViewModel *)self signalChange:1];
       [(PXPhotosViewModel *)self _invalidateDraggedAssetReferences];
       [(PXPhotosViewModel *)self _invalidateChromeVisibility];
@@ -2124,47 +2124,47 @@ LABEL_3:
 
 - (void)markContentAsViewed
 {
-  v2 = [(PXPhotosViewModel *)self dataSourceManager];
-  [v2 markContentAsViewed];
+  dataSourceManager = [(PXPhotosViewModel *)self dataSourceManager];
+  [dataSourceManager markContentAsViewed];
 }
 
-- (void)setShouldAlwaysRespectToolbarActionPlacementPreference:(BOOL)a3
+- (void)setShouldAlwaysRespectToolbarActionPlacementPreference:(BOOL)preference
 {
-  if (self->_shouldAlwaysRespectToolbarActionPlacementPreference != a3)
+  if (self->_shouldAlwaysRespectToolbarActionPlacementPreference != preference)
   {
-    self->_shouldAlwaysRespectToolbarActionPlacementPreference = a3;
+    self->_shouldAlwaysRespectToolbarActionPlacementPreference = preference;
     [(PXPhotosViewModel *)self signalChange:0x2000000000];
   }
 }
 
-- (void)setAllowsEmptyPlaceholderBehavior:(BOOL)a3
+- (void)setAllowsEmptyPlaceholderBehavior:(BOOL)behavior
 {
-  if (self->_allowsEmptyPlaceholderBehavior != a3)
+  if (self->_allowsEmptyPlaceholderBehavior != behavior)
   {
-    self->_allowsEmptyPlaceholderBehavior = a3;
+    self->_allowsEmptyPlaceholderBehavior = behavior;
     [(PXPhotosViewModel *)self signalChange:0];
 
     [(PXPhotosViewModel *)self _invalidateEmptyPlaceholderState];
   }
 }
 
-- (void)setShowLoadingPlaceholderWhenEmpty:(BOOL)a3
+- (void)setShowLoadingPlaceholderWhenEmpty:(BOOL)empty
 {
-  if (self->_showLoadingPlaceholderWhenEmpty != a3)
+  if (self->_showLoadingPlaceholderWhenEmpty != empty)
   {
-    self->_showLoadingPlaceholderWhenEmpty = a3;
+    self->_showLoadingPlaceholderWhenEmpty = empty;
     [(PXPhotosViewModel *)self signalChange:0];
 
     [(PXPhotosViewModel *)self _invalidateEmptyPlaceholderState];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v8 = a3;
+  titleCopy = title;
   v5 = self->_title;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == titleCopy)
   {
   }
 
@@ -2174,55 +2174,55 @@ LABEL_3:
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_title, a3);
+      objc_storeStrong(&self->_title, title);
       [(PXPhotosViewModel *)self signalChange:32];
     }
   }
 }
 
-- (void)setAllowsSortAndFilterMenu:(BOOL)a3
+- (void)setAllowsSortAndFilterMenu:(BOOL)menu
 {
-  if (self->_allowsSortAndFilterMenu != a3)
+  if (self->_allowsSortAndFilterMenu != menu)
   {
-    self->_allowsSortAndFilterMenu = a3;
+    self->_allowsSortAndFilterMenu = menu;
     [(PXPhotosViewModel *)self signalChange:32];
   }
 }
 
-- (void)setAllowsShareAllAction:(BOOL)a3
+- (void)setAllowsShareAllAction:(BOOL)action
 {
-  if (self->_allowsShareAllAction != a3)
+  if (self->_allowsShareAllAction != action)
   {
-    self->_allowsShareAllAction = a3;
+    self->_allowsShareAllAction = action;
     [(PXPhotosViewModel *)self signalChange:32];
   }
 }
 
-- (void)setAllowsSearch:(BOOL)a3
+- (void)setAllowsSearch:(BOOL)search
 {
-  if (self->_allowsSearch != a3)
+  if (self->_allowsSearch != search)
   {
-    self->_allowsSearch = a3;
+    self->_allowsSearch = search;
     [(PXPhotosViewModel *)self signalChange:32];
   }
 }
 
-- (void)setHidesToolbar:(BOOL)a3
+- (void)setHidesToolbar:(BOOL)toolbar
 {
-  if (self->_hidesToolbar != a3)
+  if (self->_hidesToolbar != toolbar)
   {
-    self->_hidesToolbar = a3;
+    self->_hidesToolbar = toolbar;
     [(PXPhotosViewModel *)self signalChange:0];
 
     [(PXPhotosViewModel *)self _invalidateChromeVisibility];
   }
 }
 
-- (void)setHidesNavbar:(BOOL)a3
+- (void)setHidesNavbar:(BOOL)navbar
 {
-  if (self->_hidesNavbar != a3)
+  if (self->_hidesNavbar != navbar)
   {
-    self->_hidesNavbar = a3;
+    self->_hidesNavbar = navbar;
     [(PXPhotosViewModel *)self signalChange:0];
     [(PXPhotosViewModel *)self _invalidateTopBarsStyles];
 
@@ -2230,16 +2230,16 @@ LABEL_3:
   }
 }
 
-- (id)_indexPathsForAssetCollectionReference:(id)a3
+- (id)_indexPathsForAssetCollectionReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(PXPhotosViewModel *)self currentDataSource];
-  v6 = v5;
-  if (v5)
+  currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+  v6 = currentDataSource;
+  if (currentDataSource)
   {
-    [v5 indexPathForAssetCollectionReference:v4];
+    [currentDataSource indexPathForAssetCollectionReference:referenceCopy];
   }
 
   else
@@ -2248,26 +2248,26 @@ LABEL_3:
     v12 = 0u;
   }
 
-  v7 = [(PXPhotosViewModel *)self currentDataSource];
+  currentDataSource2 = [(PXPhotosViewModel *)self currentDataSource];
   v10[0] = v11;
   v10[1] = v12;
-  v8 = [v7 indexPathSetForItemsInIndexPath:v10];
+  v8 = [currentDataSource2 indexPathSetForItemsInIndexPath:v10];
 
   return v8;
 }
 
-- (void)clickSelectAssetReference:(id)a3 updateCursorIndexPath:(BOOL)a4
+- (void)clickSelectAssetReference:(id)reference updateCursorIndexPath:(BOOL)path
 {
-  v4 = a4;
+  pathCopy = path;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  referenceCopy = reference;
   v11 = 0u;
   v12 = 0u;
-  v7 = [(PXPhotosViewModel *)self currentDataSource];
-  v8 = v7;
-  if (v7)
+  currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+  v8 = currentDataSource;
+  if (currentDataSource)
   {
-    [v7 indexPathForAssetReference:v6];
+    [currentDataSource indexPathForAssetReference:referenceCopy];
   }
 
   else
@@ -2281,11 +2281,11 @@ LABEL_3:
     v9 = PXAssertGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(PXPhotosViewModel *)self currentDataSource];
+      currentDataSource2 = [(PXPhotosViewModel *)self currentDataSource];
       *buf = 138412546;
-      *&buf[4] = v6;
+      *&buf[4] = referenceCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = currentDataSource2;
       _os_log_error_impl(&dword_21ABF3000, v9, OS_LOG_TYPE_ERROR, "can't toggle selection for %@ because it's not in %@", buf, 0x16u);
     }
   }
@@ -2294,53 +2294,53 @@ LABEL_3:
   {
     *buf = v11;
     *&buf[16] = v12;
-    [(PXPhotosViewModel *)self clickSelectIndexPath:buf updateCursorIndexPath:v4];
+    [(PXPhotosViewModel *)self clickSelectIndexPath:buf updateCursorIndexPath:pathCopy];
   }
 }
 
-- (void)clickSelectIndexPath:(PXSimpleIndexPath *)a3 updateCursorIndexPath:(BOOL)a4
+- (void)clickSelectIndexPath:(PXSimpleIndexPath *)path updateCursorIndexPath:(BOOL)indexPath
 {
-  v4 = a4;
-  v7 = [(PXPhotosViewModel *)self selectionSnapshot];
-  v8 = *&a3->item;
-  v27[0] = *&a3->dataSourceIdentifier;
+  indexPathCopy = indexPath;
+  selectionSnapshot = [(PXPhotosViewModel *)self selectionSnapshot];
+  v8 = *&path->item;
+  v27[0] = *&path->dataSourceIdentifier;
   v27[1] = v8;
-  v9 = [v7 isIndexPathSelected:v27];
+  v9 = [selectionSnapshot isIndexPathSelected:v27];
 
   if (v9)
   {
-    if (!v4)
+    if (!indexPathCopy)
     {
       return;
     }
 
-    v10 = [(PXPhotosViewModel *)self selectionManager];
-    v11 = v10;
+    selectionManager = [(PXPhotosViewModel *)self selectionManager];
+    v11 = selectionManager;
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __64__PXPhotosViewModel_clickSelectIndexPath_updateCursorIndexPath___block_invoke_2;
     v18 = &__block_descriptor_64_e37_v16__0___PXMutableSelectionManager__8l;
-    v12 = *&a3->item;
-    v19 = *&a3->dataSourceIdentifier;
+    v12 = *&path->item;
+    v19 = *&path->dataSourceIdentifier;
     v20 = v12;
     v13 = &v15;
   }
 
   else
   {
-    v10 = [(PXPhotosViewModel *)self selectionManager];
-    v11 = v10;
+    selectionManager = [(PXPhotosViewModel *)self selectionManager];
+    v11 = selectionManager;
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __64__PXPhotosViewModel_clickSelectIndexPath_updateCursorIndexPath___block_invoke;
     v24 = &__block_descriptor_64_e37_v16__0___PXMutableSelectionManager__8l;
-    v14 = *&a3->item;
-    v25 = *&a3->dataSourceIdentifier;
+    v14 = *&path->item;
+    v25 = *&path->dataSourceIdentifier;
     v26 = v14;
     v13 = &v21;
   }
 
-  [v10 performChanges:{v13, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26}];
+  [selectionManager performChanges:{v13, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26}];
 }
 
 uint64_t __64__PXPhotosViewModel_clickSelectIndexPath_updateCursorIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -2359,14 +2359,14 @@ uint64_t __64__PXPhotosViewModel_clickSelectIndexPath_updateCursorIndexPath___bl
   return [a2 setCursorIndexPath:v4];
 }
 
-- (void)toggleSelectionForAssetCollectionReference:(id)a3
+- (void)toggleSelectionForAssetCollectionReference:(id)reference
 {
-  v4 = [(PXPhotosViewModel *)self _indexPathsForAssetCollectionReference:a3];
-  v5 = [(PXPhotosViewModel *)self selectionSnapshot];
-  v6 = [v5 selectedIndexPaths];
-  v7 = [v4 isSubsetOfSet:v6];
+  v4 = [(PXPhotosViewModel *)self _indexPathsForAssetCollectionReference:reference];
+  selectionSnapshot = [(PXPhotosViewModel *)self selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v7 = [v4 isSubsetOfSet:selectedIndexPaths];
 
-  v8 = [(PXPhotosViewModel *)self selectionManager];
+  selectionManager = [(PXPhotosViewModel *)self selectionManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__PXPhotosViewModel_toggleSelectionForAssetCollectionReference___block_invoke;
@@ -2374,21 +2374,21 @@ uint64_t __64__PXPhotosViewModel_clickSelectIndexPath_updateCursorIndexPath___bl
   v12 = v7;
   v11 = v4;
   v9 = v4;
-  [v8 performChanges:v10];
+  [selectionManager performChanges:v10];
 }
 
-- (void)toggleSelectionForAssetReference:(id)a3 updateCursorIndexPath:(BOOL)a4
+- (void)toggleSelectionForAssetReference:(id)reference updateCursorIndexPath:(BOOL)path
 {
-  v4 = a4;
+  pathCopy = path;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  referenceCopy = reference;
   v11 = 0u;
   v12 = 0u;
-  v7 = [(PXPhotosViewModel *)self currentDataSource];
-  v8 = v7;
-  if (v7)
+  currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+  v8 = currentDataSource;
+  if (currentDataSource)
   {
-    [v7 indexPathForAssetReference:v6];
+    [currentDataSource indexPathForAssetReference:referenceCopy];
   }
 
   else
@@ -2402,11 +2402,11 @@ uint64_t __64__PXPhotosViewModel_clickSelectIndexPath_updateCursorIndexPath___bl
     v9 = PXAssertGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(PXPhotosViewModel *)self currentDataSource];
+      currentDataSource2 = [(PXPhotosViewModel *)self currentDataSource];
       *buf = 138412546;
-      *&buf[4] = v6;
+      *&buf[4] = referenceCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = currentDataSource2;
       _os_log_error_impl(&dword_21ABF3000, v9, OS_LOG_TYPE_ERROR, "can't toggle selection for %@ because it's not in %@", buf, 0x16u);
     }
   }
@@ -2415,37 +2415,37 @@ uint64_t __64__PXPhotosViewModel_clickSelectIndexPath_updateCursorIndexPath___bl
   {
     *buf = v11;
     *&buf[16] = v12;
-    [(PXPhotosViewModel *)self toggleSelectionForIndexPath:buf updateCursorIndexPath:v4];
+    [(PXPhotosViewModel *)self toggleSelectionForIndexPath:buf updateCursorIndexPath:pathCopy];
   }
 }
 
-- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)a3
+- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v4[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v4[0] = *&path->dataSourceIdentifier;
   v4[1] = v3;
   [(PXPhotosViewModel *)self toggleSelectionForIndexPath:v4 updateCursorIndexPath:0];
 }
 
-- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)a3 updateCursorIndexPath:(BOOL)a4
+- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)path updateCursorIndexPath:(BOOL)indexPath
 {
-  v7 = [(PXPhotosViewModel *)self selectionSnapshot];
-  v8 = *&a3->item;
-  v17[0] = *&a3->dataSourceIdentifier;
+  selectionSnapshot = [(PXPhotosViewModel *)self selectionSnapshot];
+  v8 = *&path->item;
+  v17[0] = *&path->dataSourceIdentifier;
   v17[1] = v8;
-  v9 = [v7 isIndexPathSelected:v17];
+  v9 = [selectionSnapshot isIndexPathSelected:v17];
 
-  v10 = [(PXPhotosViewModel *)self selectionManager];
+  selectionManager = [(PXPhotosViewModel *)self selectionManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__PXPhotosViewModel_toggleSelectionForIndexPath_updateCursorIndexPath___block_invoke;
   v12[3] = &__block_descriptor_66_e37_v16__0___PXMutableSelectionManager__8l;
   v15 = v9;
-  v11 = *&a3->item;
-  v13 = *&a3->dataSourceIdentifier;
+  v11 = *&path->item;
+  v13 = *&path->dataSourceIdentifier;
   v14 = v11;
-  v16 = a4;
-  [v10 performChanges:v12];
+  indexPathCopy = indexPath;
+  [selectionManager performChanges:v12];
 }
 
 uint64_t __71__PXPhotosViewModel_toggleSelectionForIndexPath_updateCursorIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -2463,12 +2463,12 @@ uint64_t __71__PXPhotosViewModel_toggleSelectionForIndexPath_updateCursorIndexPa
   selectionContext = self->_selectionContext;
   if (!selectionContext)
   {
-    v4 = [(PXPhotosViewModel *)self currentDataSource];
-    v5 = [v4 containerCollection];
+    currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+    containerCollection = [currentDataSource containerCollection];
 
-    if ([v5 px_isSmartAlbum])
+    if ([containerCollection px_isSmartAlbum])
     {
-      if ([v5 px_isRecentlyDeletedSmartAlbum])
+      if ([containerCollection px_isRecentlyDeletedSmartAlbum])
       {
         selectionContext = 21;
 LABEL_14:
@@ -2476,26 +2476,26 @@ LABEL_14:
         return selectionContext;
       }
 
-      v6 = [v5 px_isRecoveredSmartAlbum] == 0;
+      v6 = [containerCollection px_isRecoveredSmartAlbum] == 0;
       v7 = 27;
       v8 = 22;
     }
 
     else
     {
-      if ([v5 px_isMoment])
+      if ([containerCollection px_isMoment])
       {
         selectionContext = 14;
         goto LABEL_14;
       }
 
-      if ([v5 px_isImportSessionCollection] & 1) != 0 || (objc_msgSend(v5, "px_isImportHistoryCollection"))
+      if ([containerCollection px_isImportSessionCollection] & 1) != 0 || (objc_msgSend(containerCollection, "px_isImportHistoryCollection"))
       {
         selectionContext = 6;
         goto LABEL_14;
       }
 
-      if ([v5 px_isContentSyndicationAlbum])
+      if ([containerCollection px_isContentSyndicationAlbum])
       {
         selectionContext = 29;
         goto LABEL_14;
@@ -2507,7 +2507,7 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      v6 = [v5 px_isSharedAlbum] == 0;
+      v6 = [containerCollection px_isSharedAlbum] == 0;
       v7 = 28;
       v8 = 24;
     }
@@ -2545,25 +2545,25 @@ LABEL_14:
 
 - (void)_invalidateWantsLensControlVisible
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateWantsLensControlVisible];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateWantsLensControlVisible];
 }
 
 - (void)_updateCurrentLens
 {
-  v8 = [(PXPhotosViewModel *)self availableLenses];
-  v3 = [(PXPhotosViewModel *)self currentLens];
-  if (!v3 || (v4 = v3, -[PXPhotosViewModel currentLens](self, "currentLens"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v8 containsObject:v5], v5, v4, (v6 & 1) == 0))
+  availableLenses = [(PXPhotosViewModel *)self availableLenses];
+  currentLens = [(PXPhotosViewModel *)self currentLens];
+  if (!currentLens || (v4 = currentLens, -[PXPhotosViewModel currentLens](self, "currentLens"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [availableLenses containsObject:v5], v5, v4, (v6 & 1) == 0))
   {
-    v7 = [v8 firstObject];
-    [(PXPhotosViewModel *)self setCurrentLens:v7];
+    firstObject = [availableLenses firstObject];
+    [(PXPhotosViewModel *)self setCurrentLens:firstObject];
   }
 }
 
 - (void)_invalidateCurrentLens
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentLens];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentLens];
 }
 
 - (void)_updateAvailableLenses
@@ -2576,11 +2576,11 @@ LABEL_14:
 
   else
   {
-    v4 = [(PXPhotosViewModel *)self availableLenses];
-    v5 = v4;
-    if (v4)
+    availableLenses = [(PXPhotosViewModel *)self availableLenses];
+    v5 = availableLenses;
+    if (availableLenses)
     {
-      v3 = v4;
+      v3 = availableLenses;
     }
 
     else
@@ -2596,68 +2596,68 @@ LABEL_14:
 
 - (void)_invalidateAvailableLenses
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAvailableLenses];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAvailableLenses];
 }
 
 - (void)_updateWantsContentUnavailableUnlockButtonVisible
 {
-  v3 = [(PXPhotosViewModel *)self viewModelHelper];
-  -[PXPhotosViewModel setWantsContentUnavailableUnlockButtonVisible:](self, "setWantsContentUnavailableUnlockButtonVisible:", [v3 wantsContentUnavailableUnlockButtonVisible]);
+  viewModelHelper = [(PXPhotosViewModel *)self viewModelHelper];
+  -[PXPhotosViewModel setWantsContentUnavailableUnlockButtonVisible:](self, "setWantsContentUnavailableUnlockButtonVisible:", [viewModelHelper wantsContentUnavailableUnlockButtonVisible]);
 }
 
 - (void)_invalidateWantsContentUnavailableUnlockButtonVisible
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateWantsContentUnavailableUnlockButtonVisible];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateWantsContentUnavailableUnlockButtonVisible];
 }
 
 - (void)_updateSystemAuthenticationType
 {
-  v3 = [(PXPhotosViewModel *)self viewModelHelper];
-  v4 = [v3 authenticationType];
+  viewModelHelper = [(PXPhotosViewModel *)self viewModelHelper];
+  authenticationType = [viewModelHelper authenticationType];
 
-  [(PXPhotosViewModel *)self setSystemAuthenticationType:v4];
+  [(PXPhotosViewModel *)self setSystemAuthenticationType:authenticationType];
 }
 
 - (void)_invalidateSystemAuthenticationType
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSystemAuthenticationType];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSystemAuthenticationType];
 }
 
 - (void)_updateContentPrivacyState
 {
-  v3 = [(PXPhotosViewModel *)self viewModelHelper];
-  v4 = [v3 isLocked];
+  viewModelHelper = [(PXPhotosViewModel *)self viewModelHelper];
+  isLocked = [viewModelHelper isLocked];
 
-  [(PXPhotosViewModel *)self setContentPrivacyState:v4];
+  [(PXPhotosViewModel *)self setContentPrivacyState:isLocked];
 }
 
 - (void)_invalidateContentPrivacyState
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateContentPrivacyState];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateContentPrivacyState];
 }
 
 - (void)_updateEmptyPlaceholderState
 {
-  v11 = [(PXPhotosViewModel *)self dataSourceManager];
-  v3 = [(PXPhotosViewModel *)self contentPrivacyState];
-  v4 = [(PXPhotosViewModel *)self currentDataSource];
-  v5 = [v4 containsAnyItems];
+  dataSourceManager = [(PXPhotosViewModel *)self dataSourceManager];
+  contentPrivacyState = [(PXPhotosViewModel *)self contentPrivacyState];
+  currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+  containsAnyItems = [currentDataSource containsAnyItems];
 
-  v6 = [v11 isLoadingInitialDataSource];
-  if (v6 & 1) != 0 || (v5)
+  isLoadingInitialDataSource = [dataSourceManager isLoadingInitialDataSource];
+  if (isLoadingInitialDataSource & 1) != 0 || (containsAnyItems)
   {
-    v7 = v3 == 1;
+    v7 = contentPrivacyState == 1;
     v8 = 3;
-    if (v5)
+    if (containsAnyItems)
     {
       v8 = 0;
     }
 
-    if (v6)
+    if (isLoadingInitialDataSource)
     {
       goto LABEL_10;
     }
@@ -2665,17 +2665,17 @@ LABEL_14:
 
   else
   {
-    if ([v11 isBackgroundFetching])
+    if ([dataSourceManager isBackgroundFetching])
     {
-      v7 = v3 == 1;
+      v7 = contentPrivacyState == 1;
 LABEL_10:
       v8 = 2;
       goto LABEL_11;
     }
 
-    v9 = [(PXPhotosViewModel *)self showLoadingPlaceholderWhenEmpty];
-    v7 = v3 == 1;
-    if (v9)
+    showLoadingPlaceholderWhenEmpty = [(PXPhotosViewModel *)self showLoadingPlaceholderWhenEmpty];
+    v7 = contentPrivacyState == 1;
+    if (showLoadingPlaceholderWhenEmpty)
     {
       goto LABEL_10;
     }
@@ -2699,87 +2699,87 @@ LABEL_11:
 
 - (void)_invalidateEmptyPlaceholderState
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateEmptyPlaceholderState];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateEmptyPlaceholderState];
 }
 
 - (void)_updateAssetsDataSourceManager
 {
-  v4 = [(PXPhotosViewModel *)self filterState];
-  if ([v4 isFiltering])
+  filterState = [(PXPhotosViewModel *)self filterState];
+  if ([filterState isFiltering])
   {
   }
 
   else
   {
-    v5 = [(PXPhotosViewModel *)self ignoreFilterStateWhenNotFiltering];
+    ignoreFilterStateWhenNotFiltering = [(PXPhotosViewModel *)self ignoreFilterStateWhenNotFiltering];
 
-    if (v5)
+    if (ignoreFilterStateWhenNotFiltering)
     {
       return;
     }
   }
 
-  v6 = [(PXPhotosViewModel *)self selectionSnapshot];
-  v7 = [v6 dataSource];
+  selectionSnapshot = [(PXPhotosViewModel *)self selectionSnapshot];
+  dataSource = [selectionSnapshot dataSource];
 
-  v8 = [(PXPhotosViewModel *)self visibleAssetCollections];
+  visibleAssetCollections = [(PXPhotosViewModel *)self visibleAssetCollections];
   v37[0] = 0;
   v37[1] = v37;
   v37[2] = 0x3032000000;
   v37[3] = __Block_byref_object_copy__1279;
   v37[4] = __Block_byref_object_dispose__1280;
-  v9 = [v8 set];
+  v9 = [visibleAssetCollections set];
   v38 = [v9 mutableCopy];
 
-  v10 = [(PXPhotosViewModel *)self selectionSnapshot];
-  v11 = [v10 selectedIndexPaths];
+  selectionSnapshot2 = [(PXPhotosViewModel *)self selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot2 selectedIndexPaths];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke;
   v34[3] = &unk_278297A70;
   v36 = v37;
-  v12 = v7;
+  v12 = dataSource;
   v35 = v12;
-  [v11 enumerateItemIndexSetsUsingBlock:v34];
+  [selectedIndexPaths enumerateItemIndexSetsUsingBlock:v34];
 
-  v13 = [v12 numberOfSections];
-  v14 = [(PXPhotosViewModel *)self filterState];
-  v15 = [v14 predicateForUseCase:v13 > 1];
+  numberOfSections = [v12 numberOfSections];
+  filterState2 = [(PXPhotosViewModel *)self filterState];
+  v15 = [filterState2 predicateForUseCase:numberOfSections > 1];
 
-  v16 = [v12 filterPredicate];
+  filterPredicate = [v12 filterPredicate];
   v17 = v15;
-  if (v16 == v17)
+  if (filterPredicate == v17)
   {
     v18 = 1;
   }
 
   else
   {
-    v18 = [v16 isEqual:v17];
+    v18 = [filterPredicate isEqual:v17];
   }
 
-  v19 = [v12 includeOthersInSocialGroupAssets];
-  v20 = [(PXPhotosViewModel *)self filterState];
-  v21 = [v20 includeOthersInSocialGroupAssets];
+  includeOthersInSocialGroupAssets = [v12 includeOthersInSocialGroupAssets];
+  filterState3 = [(PXPhotosViewModel *)self filterState];
+  includeOthersInSocialGroupAssets2 = [filterState3 includeOthersInSocialGroupAssets];
 
-  v22 = [(PXPhotosViewModel *)self dataSourceManager];
+  dataSourceManager = [(PXPhotosViewModel *)self dataSourceManager];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke_2;
   v26[3] = &unk_278297A98;
   v32 = v18 ^ 1;
-  v33 = v19 ^ v21;
+  v33 = includeOthersInSocialGroupAssets ^ includeOthersInSocialGroupAssets2;
   v26[4] = self;
   v31 = a2;
   v23 = v12;
   v27 = v23;
   v24 = v17;
   v28 = v24;
-  v25 = v8;
+  v25 = visibleAssetCollections;
   v29 = v25;
   v30 = v37;
-  [v22 performChanges:v26];
+  [dataSourceManager performChanges:v26];
 
   _Block_object_dispose(v37, 8);
 }
@@ -2879,8 +2879,8 @@ void __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke_2(uint
 
 - (void)_invalidateAssetsDataSourceManager
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAssetsDataSourceManager];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAssetsDataSourceManager];
 }
 
 - (PXFooterViewModel)footerViewModel
@@ -2904,68 +2904,68 @@ void __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke_2(uint
   footerVisibilityStyle = self->_footerVisibilityStyle;
   if (footerVisibilityStyle == 2 || footerVisibilityStyle == 1 && [(PXPhotosViewModel *)self hasScrollableContent])
   {
-    v4 = [(PXPhotosViewModel *)self currentLens];
-    v5 = [v4 allowsFooter];
+    currentLens = [(PXPhotosViewModel *)self currentLens];
+    allowsFooter = [currentLens allowsFooter];
   }
 
   else
   {
-    v5 = 0;
+    allowsFooter = 0;
   }
 
-  [(PXPhotosViewModel *)self setWantsFooterVisible:v5];
+  [(PXPhotosViewModel *)self setWantsFooterVisible:allowsFooter];
 }
 
 - (void)_invalidateFooterVisibility
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFooterVisibility];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFooterVisibility];
 }
 
 - (void)_updateGridAppearance
 {
-  v3 = [(PXPhotosViewModel *)self specManager];
-  v4 = [v3 spec];
-  v9 = [v4 assetsSpec];
+  specManager = [(PXPhotosViewModel *)self specManager];
+  spec = [specManager spec];
+  assetsSpec = [spec assetsSpec];
 
-  if (([v9 disableConfigurators] & 1) == 0)
+  if (([assetsSpec disableConfigurators] & 1) == 0)
   {
-    v5 = [(PXPhotosViewModel *)self dataSourceManager];
-    v6 = [v5 dataSource];
-    v7 = [v9 numberOfGridZoomStepsWithDataSource:v6];
+    dataSourceManager = [(PXPhotosViewModel *)self dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
+    v7 = [assetsSpec numberOfGridZoomStepsWithDataSource:dataSource];
 
     if ([(PXPhotosViewModel *)self supportsAspectRatioToggle])
     {
-      v8 = [v9 supportsGridAspectRatioToggle];
+      supportsGridAspectRatioToggle = [assetsSpec supportsGridAspectRatioToggle];
     }
 
     else
     {
-      v8 = 0;
+      supportsGridAspectRatioToggle = 0;
     }
 
     [(PXPhotosViewModel *)self setNumberOfZoomSteps:v7];
-    [(PXPhotosViewModel *)self setSupportsAspectRatioToggle:v8];
+    [(PXPhotosViewModel *)self setSupportsAspectRatioToggle:supportsGridAspectRatioToggle];
   }
 }
 
 - (void)_invalidateGridAppearance
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateGridAppearance];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateGridAppearance];
 }
 
 - (void)_updateDraggedAssetReferences
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(PXPhotosViewModel *)self currentDataSource];
+  currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(PXPhotosViewModel *)self draggedAssetReferences];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  draggedAssetReferences = [(PXPhotosViewModel *)self draggedAssetReferences];
+  v6 = [draggedAssetReferences countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2977,10 +2977,10 @@ void __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke_2(uint
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(draggedAssetReferences);
         }
 
-        v10 = [v3 assetReferenceForAssetReference:*(*(&v12 + 1) + 8 * v9)];
+        v10 = [currentDataSource assetReferenceForAssetReference:*(*(&v12 + 1) + 8 * v9)];
         if (v10)
         {
           [v4 addObject:v10];
@@ -2990,7 +2990,7 @@ void __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke_2(uint
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [draggedAssetReferences countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -3011,56 +3011,56 @@ void __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke_2(uint
 
 - (void)_invalidateDraggedAssetReferences
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDraggedAssetReferences];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDraggedAssetReferences];
 }
 
 - (void)_updateContainerFallbackTitle
 {
-  v3 = [(PXPhotosViewModel *)self currentDataSource];
-  v5 = [v3 container];
+  currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+  container = [currentDataSource container];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v5 localizedFallbackTitle];
-    [(PXPhotosViewModel *)self setContainerFallbackTitle:v4];
+    localizedFallbackTitle = [container localizedFallbackTitle];
+    [(PXPhotosViewModel *)self setContainerFallbackTitle:localizedFallbackTitle];
   }
 }
 
 - (void)_invalidateContainerFallbackTitle
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateContainerFallbackTitle];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateContainerFallbackTitle];
 }
 
 - (void)_updateContainerTitle
 {
-  v3 = [(PXPhotosViewModel *)self currentDataSource];
-  v5 = [v3 container];
+  currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+  container = [currentDataSource container];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v5 localizedTitle];
-    [(PXPhotosViewModel *)self setContainerTitle:v4];
+    localizedTitle = [container localizedTitle];
+    [(PXPhotosViewModel *)self setContainerTitle:localizedTitle];
   }
 }
 
 - (void)_invalidateContainerTitle
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateContainerTitle];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateContainerTitle];
 }
 
 - (void)_updateChromeVisibility
 {
-  v3 = [(PXPhotosViewModel *)self allowsChromeManagementBehavior];
-  v4 = [(PXPhotosViewModel *)self isEmbedded];
-  v5 = [(PXPhotosViewModel *)self isInSelectMode];
-  v6 = [(PXPhotosViewModel *)self isInCompactMode];
-  if (v3)
+  allowsChromeManagementBehavior = [(PXPhotosViewModel *)self allowsChromeManagementBehavior];
+  isEmbedded = [(PXPhotosViewModel *)self isEmbedded];
+  isInSelectMode = [(PXPhotosViewModel *)self isInSelectMode];
+  isInCompactMode = [(PXPhotosViewModel *)self isInCompactMode];
+  if (allowsChromeManagementBehavior)
   {
-    v7 = [(PXPhotosViewModel *)self currentDataSource];
-    v8 = [v7 containsAnyItems] ^ 1;
+    currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+    v8 = [currentDataSource containsAnyItems] ^ 1;
   }
 
   else
@@ -3068,12 +3068,12 @@ void __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke_2(uint
     v8 = 0;
   }
 
-  v19 = [(PXPhotosViewModel *)self navBarStyle];
+  navBarStyle = [(PXPhotosViewModel *)self navBarStyle];
   v9 = ![(PXPhotosViewModel *)self hidesNavbar]&& [(PXPhotosViewModel *)self navBarStyle]!= 8 && [(PXPhotosViewModel *)self navBarStyle]!= 7;
-  v10 = [(PXPhotosViewModel *)self contentPrivacyState];
-  if ([(PXPhotosViewModel *)self allowsTabBarVisible]&& v3)
+  contentPrivacyState = [(PXPhotosViewModel *)self contentPrivacyState];
+  if ([(PXPhotosViewModel *)self allowsTabBarVisible]&& allowsChromeManagementBehavior)
   {
-    v11 = v8 | !v5;
+    v11 = v8 | !isInSelectMode;
   }
 
   else
@@ -3083,7 +3083,7 @@ void __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke_2(uint
 
   if (MEMORY[0x21CEE04B0]())
   {
-    if (v10 != 1 && v3)
+    if (contentPrivacyState != 1 && allowsChromeManagementBehavior)
     {
       goto LABEL_16;
     }
@@ -3091,12 +3091,12 @@ void __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke_2(uint
     goto LABEL_24;
   }
 
-  v14 = v6;
-  v15 = !v3;
-  v16 = [(PXPhotosViewModel *)self navBarStyle];
-  if (v19)
+  v14 = isInCompactMode;
+  v15 = !allowsChromeManagementBehavior;
+  navBarStyle2 = [(PXPhotosViewModel *)self navBarStyle];
+  if (navBarStyle)
   {
-    v17 = v16 == 8;
+    v17 = navBarStyle2 == 8;
   }
 
   else
@@ -3105,14 +3105,14 @@ void __51__PXPhotosViewModel__updateAssetsDataSourceManager__block_invoke_2(uint
   }
 
   v18 = !v17;
-  if (((v15 | v8) & 1) != 0 || !v5 && ![(PXPhotosViewModel *)self prefersActionsInToolbar])
+  if (((v15 | v8) & 1) != 0 || !isInSelectMode && ![(PXPhotosViewModel *)self prefersActionsInToolbar])
   {
     goto LABEL_24;
   }
 
   if ((v14 | v18))
   {
-    if (v10 != 1)
+    if (contentPrivacyState != 1)
     {
       goto LABEL_35;
     }
@@ -3123,7 +3123,7 @@ LABEL_24:
   }
 
   v13 = 0;
-  if ([(PXPhotosViewModel *)self prefersActionsInToolbar]&& v10 != 1)
+  if ([(PXPhotosViewModel *)self prefersActionsInToolbar]&& contentPrivacyState != 1)
   {
 LABEL_35:
     if (![(PXPhotosViewModel *)self hidesToolbar])
@@ -3137,7 +3137,7 @@ LABEL_16:
   }
 
 LABEL_25:
-  [(PXPhotosViewModel *)self setWantsNavbarVisible:(v5 | ~v4 | (v19 == 0)) & v9 & 1];
+  [(PXPhotosViewModel *)self setWantsNavbarVisible:(isInSelectMode | ~isEmbedded | (navBarStyle == 0)) & v9 & 1];
   [(PXPhotosViewModel *)self setWantsTabBarVisible:v11 & 1];
 
   [(PXPhotosViewModel *)self setWantsToolbarVisible:v13];
@@ -3145,16 +3145,16 @@ LABEL_25:
 
 - (void)_invalidateChromeVisibility
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateChromeVisibility];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateChromeVisibility];
 }
 
 - (void)_updateAspectFitContent
 {
   if (self->_allowsAspectFitToggle && ![(NSMutableSet *)self->_aspectRatioTogglePreventedForReasons count])
   {
-    v7 = [(PXPhotosViewModel *)self currentLens];
-    v3 = ([v7 defaultSectionBodyStyle] - 5) < 0xFFFFFFFFFFFFFFFDLL;
+    currentLens = [(PXPhotosViewModel *)self currentLens];
+    v3 = ([currentLens defaultSectionBodyStyle] - 5) < 0xFFFFFFFFFFFFFFFDLL;
   }
 
   else
@@ -3163,44 +3163,44 @@ LABEL_25:
   }
 
   [(PXPhotosViewModel *)self setSupportsAspectRatioToggle:v3];
-  v4 = [(PXPhotosViewModel *)self shouldAspectFitContentByDefault];
+  shouldAspectFitContentByDefault = [(PXPhotosViewModel *)self shouldAspectFitContentByDefault];
   if (self->_allowsAspectFitToggle)
   {
-    v5 = [(PXPhotosViewModel *)self userWantsAspectFitContent];
+    userWantsAspectFitContent = [(PXPhotosViewModel *)self userWantsAspectFitContent];
 
-    if (v5)
+    if (userWantsAspectFitContent)
     {
-      v6 = [(PXPhotosViewModel *)self userWantsAspectFitContent];
-      v4 = [v6 BOOLValue];
+      userWantsAspectFitContent2 = [(PXPhotosViewModel *)self userWantsAspectFitContent];
+      shouldAspectFitContentByDefault = [userWantsAspectFitContent2 BOOLValue];
     }
   }
 
-  [(PXPhotosViewModel *)self setAspectFitContent:v4];
+  [(PXPhotosViewModel *)self setAspectFitContent:shouldAspectFitContentByDefault];
 }
 
 - (void)_invalidateAspectFitContent
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAspectFitContent];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAspectFitContent];
 }
 
 - (void)_updateUserWantsAspectFitContent
 {
-  v7 = [MEMORY[0x277D3CE30] standardUserDefaults];
-  v3 = [v7 photosGridAspectFit];
-  v4 = [(PXPhotosViewModel *)self specManager];
-  v5 = [v4 spec];
-  if ([v5 userInterfaceIdiom] == 2)
+  standardUserDefaults = [MEMORY[0x277D3CE30] standardUserDefaults];
+  photosGridAspectFit = [standardUserDefaults photosGridAspectFit];
+  specManager = [(PXPhotosViewModel *)self specManager];
+  spec = [specManager spec];
+  if ([spec userInterfaceIdiom] == 2)
   {
-    v6 = [(PXPhotosViewModel *)self isInCompactMode];
+    isInCompactMode = [(PXPhotosViewModel *)self isInCompactMode];
 
-    if (!v6)
+    if (!isInCompactMode)
     {
       goto LABEL_6;
     }
 
-    [v7 photosGridAspectFitInCompact];
-    v3 = v4 = v3;
+    [standardUserDefaults photosGridAspectFitInCompact];
+    photosGridAspectFit = specManager = photosGridAspectFit;
   }
 
   else
@@ -3208,13 +3208,13 @@ LABEL_25:
   }
 
 LABEL_6:
-  [(PXPhotosViewModel *)self setUserWantsAspectFitContent:v3];
+  [(PXPhotosViewModel *)self setUserWantsAspectFitContent:photosGridAspectFit];
 }
 
 - (void)_invalidateUserWantsAspectFitContent
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateUserWantsAspectFitContent];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateUserWantsAspectFitContent];
 }
 
 - (void)_updateTopBarsStyles
@@ -3226,8 +3226,8 @@ LABEL_6:
 
 - (void)_invalidateTopBarsStyles
 {
-  v2 = [(PXPhotosViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTopBarsStyles];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTopBarsStyles];
 }
 
 - (void)didPerformChanges
@@ -3236,23 +3236,23 @@ LABEL_6:
   v5.super_class = PXPhotosViewModel;
   [(PXPhotosViewModel *)&v5 didPerformChanges];
   [(PXPhotosViewModel *)self swift_didPerformChanges];
-  v3 = [(PXPhotosViewModel *)self viewModelHelper];
-  [v3 viewModelDidChange:self];
+  viewModelHelper = [(PXPhotosViewModel *)self viewModelHelper];
+  [viewModelHelper viewModelDidChange:self];
 
-  v4 = [(PXPhotosViewModel *)self updater];
-  [v4 updateIfNeeded];
+  updater = [(PXPhotosViewModel *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (void)_updateDataSourceDependentProperties
 {
-  v3 = [(PXPhotosViewModel *)self dataSourceManager];
-  v4 = [v3 dataSource];
+  dataSourceManager = [(PXPhotosViewModel *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  v5 = [(PXPhotosViewModel *)self selectionManager];
-  v6 = [v5 selectionSnapshot];
+  selectionManager = [(PXPhotosViewModel *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  v7 = [v6 dataSource];
-  v8 = [v4 isEqual:v7];
+  dataSource2 = [selectionSnapshot dataSource];
+  v8 = [dataSource isEqual:dataSource2];
 
   if (v8)
   {
@@ -3260,8 +3260,8 @@ LABEL_6:
     v9[1] = 3221225472;
     v9[2] = __57__PXPhotosViewModel__updateDataSourceDependentProperties__block_invoke;
     v9[3] = &unk_278298C40;
-    v10 = v4;
-    v11 = v6;
+    v10 = dataSource;
+    v11 = selectionSnapshot;
     [(PXPhotosViewModel *)self performChanges:v9];
   }
 }
@@ -3274,36 +3274,36 @@ void __57__PXPhotosViewModel__updateDataSourceDependentProperties__block_invoke(
   [v4 setSelectionSnapshot:*(a1 + 40)];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXPhotosViewModel;
-  [(PXPhotosViewModel *)&v3 performChanges:a3];
+  [(PXPhotosViewModel *)&v3 performChanges:changes];
 }
 
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(PXPhotosViewModel *)self currentDataSource];
-  v6 = [v3 stringWithFormat:@"<%@:%p currentDataSource:%@>", v4, self, v5];
+  currentDataSource = [(PXPhotosViewModel *)self currentDataSource];
+  v6 = [v3 stringWithFormat:@"<%@:%p currentDataSource:%@>", v4, self, currentDataSource];
 
   return v6;
 }
 
 - (PXPhotosViewModel)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosViewModel.m" lineNumber:442 description:{@"%s is not available as initializer", "-[PXPhotosViewModel init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewModel.m" lineNumber:442 description:{@"%s is not available as initializer", "-[PXPhotosViewModel init]"}];
 
   abort();
 }
 
-- (PXPhotosViewModel)initWithConfiguration:(id)a3 specManager:(id)a4 inlinePlaybackController:(id)a5
+- (PXPhotosViewModel)initWithConfiguration:(id)configuration specManager:(id)manager inlinePlaybackController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  controllerCopy = controller;
   v150.receiver = self;
   v150.super_class = PXPhotosViewModel;
   v12 = [(PXPhotosViewModel *)&v150 init];
@@ -3336,42 +3336,42 @@ void __57__PXPhotosViewModel__updateDataSourceDependentProperties__block_invoke(
   [(PXUpdater *)v13->_updater addUpdateSelector:sel__updateSystemAuthenticationType];
   [(PXUpdater *)v13->_updater addUpdateSelector:sel__updateWantsContentUnavailableUnlockButtonVisible];
   [(PXUpdater *)v13->_updater addUpdateSelector:sel__updateEmptyPlaceholderState];
-  v16 = [v9 appSpecificConfiguration];
-  v17 = [v16 createViewModelHelperWithConfiguration:v9 viewModel:v13];
+  appSpecificConfiguration = [configurationCopy appSpecificConfiguration];
+  v17 = [appSpecificConfiguration createViewModelHelperWithConfiguration:configurationCopy viewModel:v13];
   viewModelHelper = v13->_viewModelHelper;
   v13->_viewModelHelper = v17;
 
-  [(PXPhotosViewModelHelper *)v13->_viewModelHelper applySpecManagerOptions:v10];
+  [(PXPhotosViewModelHelper *)v13->_viewModelHelper applySpecManagerOptions:managerCopy];
   [(PXPhotosViewModelHelper *)v13->_viewModelHelper registerChangeObserver:v13 context:ViewModelHelperObservationContext];
-  objc_storeStrong(&v13->_specManager, a4);
-  objc_storeWeak(&v13->_inlinePlaybackController, v11);
-  v19 = [v9 dataSourceManager];
+  objc_storeStrong(&v13->_specManager, manager);
+  objc_storeWeak(&v13->_inlinePlaybackController, controllerCopy);
+  dataSourceManager = [configurationCopy dataSourceManager];
   dataSourceManager = v13->_dataSourceManager;
-  v13->_dataSourceManager = v19;
+  v13->_dataSourceManager = dataSourceManager;
 
-  v21 = [v9 mediaProvider];
+  mediaProvider = [configurationCopy mediaProvider];
   mediaProvider = v13->_mediaProvider;
-  v13->_mediaProvider = v21;
+  v13->_mediaProvider = mediaProvider;
 
-  v23 = [v9 assetCollectionActionManager];
+  assetCollectionActionManager = [configurationCopy assetCollectionActionManager];
   assetCollectionActionManager = v13->_assetCollectionActionManager;
-  v13->_assetCollectionActionManager = v23;
+  v13->_assetCollectionActionManager = assetCollectionActionManager;
 
-  v25 = [v9 loadingStatusManager];
+  loadingStatusManager = [configurationCopy loadingStatusManager];
   loadingStatusManager = v13->_loadingStatusManager;
-  v13->_loadingStatusManager = v25;
+  v13->_loadingStatusManager = loadingStatusManager;
 
-  v27 = [v9 decorationDataSource];
+  decorationDataSource = [configurationCopy decorationDataSource];
   decorationDataSource = v13->_decorationDataSource;
-  v13->_decorationDataSource = v27;
+  v13->_decorationDataSource = decorationDataSource;
 
-  v29 = [v9 tapbackStatusManager];
+  tapbackStatusManager = [configurationCopy tapbackStatusManager];
   tapbackStatusManager = v13->_tapbackStatusManager;
-  v13->_tapbackStatusManager = v29;
+  v13->_tapbackStatusManager = tapbackStatusManager;
 
-  v31 = [v9 assetImportStatusManager];
+  assetImportStatusManager = [configurationCopy assetImportStatusManager];
   assetImportStatusManager = v13->_assetImportStatusManager;
-  v13->_assetImportStatusManager = v31;
+  v13->_assetImportStatusManager = assetImportStatusManager;
 
   v33 = [(PXPhotosViewModelHelper *)v13->_viewModelHelper createGridActionManagerForViewModel:v13];
   v34 = v33;
@@ -3385,205 +3385,205 @@ void __57__PXPhotosViewModel__updateDataSourceDependentProperties__block_invoke(
   {
   }
 
-  v140 = v11;
-  v35 = [v9 assetActionManager];
+  v140 = controllerCopy;
+  assetActionManager = [configurationCopy assetActionManager];
   assetActionManager = v13->_assetActionManager;
-  v13->_assetActionManager = v35;
+  v13->_assetActionManager = assetActionManager;
 
-  v37 = [v9 fullscreenOverlayControllers];
+  fullscreenOverlayControllers = [configurationCopy fullscreenOverlayControllers];
   fullscreenOverlayControllers = v13->_fullscreenOverlayControllers;
-  v13->_fullscreenOverlayControllers = v37;
+  v13->_fullscreenOverlayControllers = fullscreenOverlayControllers;
 
-  v39 = [v9 customAssetSelectionHandler];
-  v40 = [v39 copy];
+  customAssetSelectionHandler = [configurationCopy customAssetSelectionHandler];
+  v40 = [customAssetSelectionHandler copy];
   customAssetSelectionHandler = v13->_customAssetSelectionHandler;
   v13->_customAssetSelectionHandler = v40;
 
-  v13->_titleMode = [v9 titleMode];
-  v42 = [v9 selectionManager];
+  v13->_titleMode = [configurationCopy titleMode];
+  selectionManager = [configurationCopy selectionManager];
 
   v141 = v33;
-  v142 = v10;
-  if (v42)
+  v142 = managerCopy;
+  if (selectionManager)
   {
-    v43 = [v9 selectionManager];
-    v44 = [v43 dataSourceManager];
+    selectionManager2 = [configurationCopy selectionManager];
+    dataSourceManager2 = [selectionManager2 dataSourceManager];
     v45 = v13->_dataSourceManager;
 
-    if (v44 != v45)
+    if (dataSourceManager2 != v45)
     {
-      v138 = [MEMORY[0x277CCA890] currentHandler];
-      [v138 handleFailureInMethod:a2 object:v13 file:@"PXPhotosViewModel.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"configuration.selectionManager.dataSourceManager == _dataSourceManager"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v13 file:@"PXPhotosViewModel.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"configuration.selectionManager.dataSourceManager == _dataSourceManager"}];
     }
 
-    v46 = [v9 assetActionManager];
-    v47 = [v46 selectionManager];
-    if (v47)
+    assetActionManager2 = [configurationCopy assetActionManager];
+    selectionManager3 = [assetActionManager2 selectionManager];
+    if (selectionManager3)
     {
-      v48 = v47;
-      v49 = [v9 assetActionManager];
-      v50 = [v49 selectionManager];
-      v51 = [v9 selectionManager];
+      v48 = selectionManager3;
+      assetActionManager3 = [configurationCopy assetActionManager];
+      selectionManager4 = [assetActionManager3 selectionManager];
+      selectionManager5 = [configurationCopy selectionManager];
 
-      if (v50 == v51)
+      if (selectionManager4 == selectionManager5)
       {
 LABEL_13:
-        v52 = [v9 selectionManager];
+        selectionManager6 = [configurationCopy selectionManager];
         goto LABEL_14;
       }
 
-      v46 = [MEMORY[0x277CCA890] currentHandler];
-      [v46 handleFailureInMethod:a2 object:v13 file:@"PXPhotosViewModel.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"configuration.assetActionManager.selectionManager == nil || configuration.assetActionManager.selectionManager == configuration.selectionManager"}];
+      assetActionManager2 = [MEMORY[0x277CCA890] currentHandler];
+      [assetActionManager2 handleFailureInMethod:a2 object:v13 file:@"PXPhotosViewModel.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"configuration.assetActionManager.selectionManager == nil || configuration.assetActionManager.selectionManager == configuration.selectionManager"}];
     }
 
     goto LABEL_13;
   }
 
-  v54 = [v9 assetActionManager];
-  v55 = [v54 selectionManager];
+  assetActionManager4 = [configurationCopy assetActionManager];
+  selectionManager7 = [assetActionManager4 selectionManager];
 
-  if (v55)
+  if (selectionManager7)
   {
-    v56 = [v9 assetActionManager];
-    v57 = [v56 selectionManager];
-    v58 = [v57 dataSourceManager];
-    v59 = [v9 dataSourceManager];
+    assetActionManager5 = [configurationCopy assetActionManager];
+    selectionManager8 = [assetActionManager5 selectionManager];
+    dataSourceManager3 = [selectionManager8 dataSourceManager];
+    dataSourceManager4 = [configurationCopy dataSourceManager];
 
-    if (v58 != v59)
+    if (dataSourceManager3 != dataSourceManager4)
     {
-      v139 = [MEMORY[0x277CCA890] currentHandler];
-      [v139 handleFailureInMethod:a2 object:v13 file:@"PXPhotosViewModel.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"configuration.assetActionManager.selectionManager.dataSourceManager == configuration.dataSourceManager"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v13 file:@"PXPhotosViewModel.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"configuration.assetActionManager.selectionManager.dataSourceManager == configuration.dataSourceManager"}];
     }
 
-    v53 = [v9 assetActionManager];
-    v60 = [v53 selectionManager];
+    assetActionManager6 = [configurationCopy assetActionManager];
+    selectionManager9 = [assetActionManager6 selectionManager];
     selectionManager = v13->_selectionManager;
-    v13->_selectionManager = v60;
+    v13->_selectionManager = selectionManager9;
 
     goto LABEL_19;
   }
 
-  v52 = [objc_alloc(MEMORY[0x277D3CDE0]) initWithDataSourceManager:v13->_dataSourceManager];
+  selectionManager6 = [objc_alloc(MEMORY[0x277D3CDE0]) initWithDataSourceManager:v13->_dataSourceManager];
 LABEL_14:
-  v53 = v13->_selectionManager;
-  v13->_selectionManager = v52;
+  assetActionManager6 = v13->_selectionManager;
+  v13->_selectionManager = selectionManager6;
 LABEL_19:
 
-  v13->_selectionContext = [v9 selectionContextOverride];
+  v13->_selectionContext = [configurationCopy selectionContextOverride];
   [(PXAssetActionManager *)v13->_assetActionManager setSelectionManager:v13->_selectionManager];
-  v62 = [v9 delegate];
-  [(PXPhotosViewModel *)v13 setViewDelegate:v62];
+  delegate = [configurationCopy delegate];
+  [(PXPhotosViewModel *)v13 setViewDelegate:delegate];
 
   [(PXAssetsDataSourceManager *)v13->_dataSourceManager registerChangeObserver:v13 context:DataSourceManagerObservationContext];
   [(PXSectionedSelectionManager *)v13->_selectionManager registerChangeObserver:v13 context:SelectionManagerObservationContext];
-  v63 = [(PXSectionedSelectionManager *)v13->_selectionManager snapshotValidator];
+  snapshotValidator = [(PXSectionedSelectionManager *)v13->_selectionManager snapshotValidator];
 
-  if (!v63)
+  if (!snapshotValidator)
   {
     [(PXSectionedSelectionManager *)v13->_selectionManager setSnapshotValidator:v13];
   }
 
-  v64 = [v9 initialScrollPositionDetentIdentifier];
-  v65 = [v64 copy];
+  initialScrollPositionDetentIdentifier = [configurationCopy initialScrollPositionDetentIdentifier];
+  v65 = [initialScrollPositionDetentIdentifier copy];
   initialScrollPositionDetentIdentifier = v13->_initialScrollPositionDetentIdentifier;
   v13->_initialScrollPositionDetentIdentifier = v65;
 
-  v67 = [(PXAssetsDataSourceManager *)v13->_dataSourceManager dataSource];
+  dataSource = [(PXAssetsDataSourceManager *)v13->_dataSourceManager dataSource];
   currentDataSource = v13->_currentDataSource;
-  v13->_currentDataSource = v67;
+  v13->_currentDataSource = dataSource;
 
-  v69 = [(PXSectionedSelectionManager *)v13->_selectionManager selectionSnapshot];
+  selectionSnapshot = [(PXSectionedSelectionManager *)v13->_selectionManager selectionSnapshot];
   selectionSnapshot = v13->_selectionSnapshot;
-  v13->_selectionSnapshot = v69;
+  v13->_selectionSnapshot = selectionSnapshot;
 
   v71 = objc_alloc_init(MEMORY[0x277CBEB40]);
   visibleAssetCollections = v13->_visibleAssetCollections;
   v13->_visibleAssetCollections = v71;
 
-  v13->_contentStartingPosition = [v9 contentStartingPosition];
-  v73 = [v9 decorationViewClass];
+  v13->_contentStartingPosition = [configurationCopy contentStartingPosition];
+  decorationViewClass = [configurationCopy decorationViewClass];
   decorationViewClass = v13->_decorationViewClass;
-  v13->_decorationViewClass = v73;
+  v13->_decorationViewClass = decorationViewClass;
 
-  v13->_hidesDurationLabelBadge = [v9 decorationViewClass] != 0;
-  v75 = [v9 emptyPlaceholderStatusViewModel];
+  v13->_hidesDurationLabelBadge = [configurationCopy decorationViewClass] != 0;
+  emptyPlaceholderStatusViewModel = [configurationCopy emptyPlaceholderStatusViewModel];
   emptyPlaceholderStatusViewModel = v13->_emptyPlaceholderStatusViewModel;
-  v13->_emptyPlaceholderStatusViewModel = v75;
+  v13->_emptyPlaceholderStatusViewModel = emptyPlaceholderStatusViewModel;
 
-  v13->_wantsContentFilterVisible = [v9 wantsContentFilterVisible];
-  v13->_footerVisibilityStyle = [v9 footerVisibilityStyle];
-  v13->_wantsDimmedSelectionStyle = [v9 wantsDimmedSelectionStyle];
-  v13->_wantsNumberedSelectionStyle = [v9 wantsNumberedSelectionStyle];
-  v13->_wantsFileSizeBadge = [v9 wantsFileSizeBadge];
-  v13->_wantsAssetIndexBadge = [v9 wantsAssetIndexBadge];
-  v13->_noContentPlaceholderType = [v9 noContentPlaceholderType];
-  v13->_wantsDynamicTitles = [v9 wantsDynamicTitles];
-  v13->_wantsFooterMask = [v9 wantsFooterMask];
-  v13->_hidesAssetCountInFooter = [v9 hidesAssetCountInFooter];
-  v13->_wantsCPLStatus = [v9 wantsCPLStatus];
-  v13->_wantsRenderingStatus = [v9 wantsRenderingStatus];
-  v13->_wantsShareGridButtonVisible = [v9 wantsShareGridButtonVisible];
-  v13->_disableAutoPlaybackInOneUp = [v9 disableAutoPlaybackInOneUp];
-  v13->_wantsDecorationSpritesHostedInDecoratedSprite = [v9 wantsDecorationSpritesHostedInDecoratedSprite];
-  v13->_isEmbedded = [v9 isEmbedded];
-  v77 = [v9 bannerControllerProvider];
+  v13->_wantsContentFilterVisible = [configurationCopy wantsContentFilterVisible];
+  v13->_footerVisibilityStyle = [configurationCopy footerVisibilityStyle];
+  v13->_wantsDimmedSelectionStyle = [configurationCopy wantsDimmedSelectionStyle];
+  v13->_wantsNumberedSelectionStyle = [configurationCopy wantsNumberedSelectionStyle];
+  v13->_wantsFileSizeBadge = [configurationCopy wantsFileSizeBadge];
+  v13->_wantsAssetIndexBadge = [configurationCopy wantsAssetIndexBadge];
+  v13->_noContentPlaceholderType = [configurationCopy noContentPlaceholderType];
+  v13->_wantsDynamicTitles = [configurationCopy wantsDynamicTitles];
+  v13->_wantsFooterMask = [configurationCopy wantsFooterMask];
+  v13->_hidesAssetCountInFooter = [configurationCopy hidesAssetCountInFooter];
+  v13->_wantsCPLStatus = [configurationCopy wantsCPLStatus];
+  v13->_wantsRenderingStatus = [configurationCopy wantsRenderingStatus];
+  v13->_wantsShareGridButtonVisible = [configurationCopy wantsShareGridButtonVisible];
+  v13->_disableAutoPlaybackInOneUp = [configurationCopy disableAutoPlaybackInOneUp];
+  v13->_wantsDecorationSpritesHostedInDecoratedSprite = [configurationCopy wantsDecorationSpritesHostedInDecoratedSprite];
+  v13->_isEmbedded = [configurationCopy isEmbedded];
+  bannerControllerProvider = [configurationCopy bannerControllerProvider];
   bannerControllerProvider = v13->_bannerControllerProvider;
-  v13->_bannerControllerProvider = v77;
+  v13->_bannerControllerProvider = bannerControllerProvider;
 
-  v13->_gridStyle = [v9 gridStyle];
-  v13->_preferredUserInterfaceStyle = [v9 preferredUserInterfaceStyle];
-  v13->_configuredSectionHeaderStyle = [v9 sectionHeaderStyle];
-  v13->_configuredSectionBodyStyle = [v9 sectionBodyStyle];
-  v13->_wantsSingleRowScrollingLayout = [v9 wantsSingleRowScrollingLayout];
-  v79 = [v9 pickerClientBundleIdentifier];
+  v13->_gridStyle = [configurationCopy gridStyle];
+  v13->_preferredUserInterfaceStyle = [configurationCopy preferredUserInterfaceStyle];
+  v13->_configuredSectionHeaderStyle = [configurationCopy sectionHeaderStyle];
+  v13->_configuredSectionBodyStyle = [configurationCopy sectionBodyStyle];
+  v13->_wantsSingleRowScrollingLayout = [configurationCopy wantsSingleRowScrollingLayout];
+  pickerClientBundleIdentifier = [configurationCopy pickerClientBundleIdentifier];
   pickerClientBundleIdentifier = v13->_pickerClientBundleIdentifier;
-  v13->_pickerClientBundleIdentifier = v79;
+  v13->_pickerClientBundleIdentifier = pickerClientBundleIdentifier;
 
-  [v9 itemAspectRatio];
+  [configurationCopy itemAspectRatio];
   v13->_itemAspectRatio = v81;
-  v13->_showLoadingPlaceholderWhenEmpty = [v9 showLoadingPlaceholderWhenEmpty];
-  v82 = [v9 preferredAssetCropDelegate];
-  objc_storeWeak(&v13->_preferredAssetCropDelegate, v82);
+  v13->_showLoadingPlaceholderWhenEmpty = [configurationCopy showLoadingPlaceholderWhenEmpty];
+  preferredAssetCropDelegate = [configurationCopy preferredAssetCropDelegate];
+  objc_storeWeak(&v13->_preferredAssetCropDelegate, preferredAssetCropDelegate);
 
-  v83 = [v9 preferredColumnCountsDelegate];
-  objc_storeWeak(&v13->_preferredColumnCountsDelegate, v83);
+  preferredColumnCountsDelegate = [configurationCopy preferredColumnCountsDelegate];
+  objc_storeWeak(&v13->_preferredColumnCountsDelegate, preferredColumnCountsDelegate);
 
-  v13->_overrideDefaultNumberOfColumns = [v9 overrideDefaultNumberOfColumns];
-  v13->_ignoreFilterStateWhenNotFiltering = [v9 ignoreFilterStateWhenNotFiltering];
-  v13->_ignoreFilterPredicateAssert = [v9 ignoreFilterPredicateAssert];
-  v13->_allowsOneUpPresentation = ([v9 allowedActions] & 0x80) != 0;
-  v13->_allowsSearch = ([v9 allowedBehaviors] >> 16) & 1;
-  v13->_allowsSortAndFilterMenu = ([v9 allowedBehaviors] & 0x20000) != 0;
-  v13->_allowsCurationModeToggle = ([v9 allowedBehaviors] & 0x40000) != 0;
-  v13->_allowsShowDetails = ([v9 allowedActions] >> 8) & 1;
-  v13->_allowsChromeManagementBehavior = [v9 allowedBehaviors] & 1;
-  v13->_allowsInlineAddBehavior = ([v9 allowedBehaviors] & 2) != 0;
-  v13->_allowsSelectionUserActivityBehavior = ([v9 allowedBehaviors] & 4) != 0;
-  v13->_allowsPopOnContainerDeleteBehavior = ([v9 allowedBehaviors] & 8) != 0;
-  v13->_allowsPopOnEmptyBehavior = ([v9 allowedBehaviors] & 0x800) != 0;
-  v13->_allowsEmptyPlaceholderBehavior = ([v9 allowedBehaviors] & 0x10) != 0;
-  v13->_allowsActionMenuBehavior = ([v9 allowedBehaviors] & 0x20) != 0;
-  v13->_allowsDoubleTapBehavior = ([v9 allowedBehaviors] & 0x40) != 0;
-  v13->_allowsHoverBehavior = ([v9 allowedBehaviors] & 0x400) != 0;
-  v13->_allowsCaptionsInSquareBehavior = ([v9 allowedBehaviors] & 0x1000) != 0;
-  v13->_allowsContextMenuCustomization = ([v9 allowedBehaviors] & 0x80) != 0;
-  v13->_allowsAccessoriesContextMenuCustomization = ([v9 allowedBehaviors] & 0x200) != 0;
-  v13->_allowsMacStyleSelection = ([v9 allowedBehaviors] >> 8) & 1;
-  v13->_allowsLensControl = ([v9 allowedBehaviors] & 0x4000) != 0;
-  v13->_wantsSelectModeCaptionInContextMenu = [v9 wantsSelectModeCaptionInContextMenu];
-  v13->_prefersCurationModeToggleInNavBar = [v9 prefersCurationModeToggleInNavBar];
-  v13->_neverShowsLensControl = [v9 containerProvidesSecondaryToolbar];
-  v13->_canShowSortButton = ([v9 allowedBehaviors] & 0x8000) != 0;
-  v13->_wantsTopBadgesWithViewBasedDecorations = ([v9 allowedBehaviors] & 0x2000) != 0;
-  v84 = [(PXAssetsDataSource *)v13->_currentDataSource containerCollection];
-  v13->_wantsSensitiveWarningBadgeDecorations = [v84 px_canContainPotentiallySensitiveContent];
+  v13->_overrideDefaultNumberOfColumns = [configurationCopy overrideDefaultNumberOfColumns];
+  v13->_ignoreFilterStateWhenNotFiltering = [configurationCopy ignoreFilterStateWhenNotFiltering];
+  v13->_ignoreFilterPredicateAssert = [configurationCopy ignoreFilterPredicateAssert];
+  v13->_allowsOneUpPresentation = ([configurationCopy allowedActions] & 0x80) != 0;
+  v13->_allowsSearch = ([configurationCopy allowedBehaviors] >> 16) & 1;
+  v13->_allowsSortAndFilterMenu = ([configurationCopy allowedBehaviors] & 0x20000) != 0;
+  v13->_allowsCurationModeToggle = ([configurationCopy allowedBehaviors] & 0x40000) != 0;
+  v13->_allowsShowDetails = ([configurationCopy allowedActions] >> 8) & 1;
+  v13->_allowsChromeManagementBehavior = [configurationCopy allowedBehaviors] & 1;
+  v13->_allowsInlineAddBehavior = ([configurationCopy allowedBehaviors] & 2) != 0;
+  v13->_allowsSelectionUserActivityBehavior = ([configurationCopy allowedBehaviors] & 4) != 0;
+  v13->_allowsPopOnContainerDeleteBehavior = ([configurationCopy allowedBehaviors] & 8) != 0;
+  v13->_allowsPopOnEmptyBehavior = ([configurationCopy allowedBehaviors] & 0x800) != 0;
+  v13->_allowsEmptyPlaceholderBehavior = ([configurationCopy allowedBehaviors] & 0x10) != 0;
+  v13->_allowsActionMenuBehavior = ([configurationCopy allowedBehaviors] & 0x20) != 0;
+  v13->_allowsDoubleTapBehavior = ([configurationCopy allowedBehaviors] & 0x40) != 0;
+  v13->_allowsHoverBehavior = ([configurationCopy allowedBehaviors] & 0x400) != 0;
+  v13->_allowsCaptionsInSquareBehavior = ([configurationCopy allowedBehaviors] & 0x1000) != 0;
+  v13->_allowsContextMenuCustomization = ([configurationCopy allowedBehaviors] & 0x80) != 0;
+  v13->_allowsAccessoriesContextMenuCustomization = ([configurationCopy allowedBehaviors] & 0x200) != 0;
+  v13->_allowsMacStyleSelection = ([configurationCopy allowedBehaviors] >> 8) & 1;
+  v13->_allowsLensControl = ([configurationCopy allowedBehaviors] & 0x4000) != 0;
+  v13->_wantsSelectModeCaptionInContextMenu = [configurationCopy wantsSelectModeCaptionInContextMenu];
+  v13->_prefersCurationModeToggleInNavBar = [configurationCopy prefersCurationModeToggleInNavBar];
+  v13->_neverShowsLensControl = [configurationCopy containerProvidesSecondaryToolbar];
+  v13->_canShowSortButton = ([configurationCopy allowedBehaviors] & 0x8000) != 0;
+  v13->_wantsTopBadgesWithViewBasedDecorations = ([configurationCopy allowedBehaviors] & 0x2000) != 0;
+  containerCollection = [(PXAssetsDataSource *)v13->_currentDataSource containerCollection];
+  v13->_wantsSensitiveWarningBadgeDecorations = [containerCollection px_canContainPotentiallySensitiveContent];
 
-  v13->_allowsSelectModeToggle = ([v9 allowedActions] & 0x20) != 0;
-  v13->_allowsSelectAllAction = [v9 allowedActions] & 1;
+  v13->_allowsSelectModeToggle = ([configurationCopy allowedActions] & 0x20) != 0;
+  v13->_allowsSelectAllAction = [configurationCopy allowedActions] & 1;
   v85 = +[PXPhotosGridSettings sharedInstance];
-  if ([v85 enableAspectFitToggle] && objc_msgSend(v9, "gridStyle") != 1 && (objc_msgSend(v9, "allowedActions") & 0x200) != 0)
+  if ([v85 enableAspectFitToggle] && objc_msgSend(configurationCopy, "gridStyle") != 1 && (objc_msgSend(configurationCopy, "allowedActions") & 0x200) != 0)
   {
-    [v9 itemAspectRatio];
+    [configurationCopy itemAspectRatio];
     v86 = v137 == 1.0;
   }
 
@@ -3595,46 +3595,46 @@ LABEL_19:
   v13->_allowsAspectFitToggle = v86;
 
   v13->_allowsSlideshowAction = 0;
-  v13->_allowsAddAction = ([v9 allowedActions] & 8) != 0;
-  v13->_allowsCopyAction = ([v9 allowedActions] & 0x40) != 0;
-  v13->_allowsSelectSectionAction = ([v9 allowedActions] & 0x10) != 0;
-  v13->_allowsGridAppearanceActions = [v9 allowsGridAppearanceActions];
-  v13->_allowsShareAllAction = ([v9 allowedActions] & 0x400) != 0;
-  v13->_allowsQuickLookAction = ([v9 allowedActions] & 0x800) != 0;
-  v13->_allowsShowMapAction = ([v9 allowedActions] & 0x1000) != 0;
-  v13->_allowsPickAssetAction = ([v9 allowedActions] & 2) != 0;
-  v13->_allowsDismissAction = ([v9 allowedActions] & 0x2000) != 0;
+  v13->_allowsAddAction = ([configurationCopy allowedActions] & 8) != 0;
+  v13->_allowsCopyAction = ([configurationCopy allowedActions] & 0x40) != 0;
+  v13->_allowsSelectSectionAction = ([configurationCopy allowedActions] & 0x10) != 0;
+  v13->_allowsGridAppearanceActions = [configurationCopy allowsGridAppearanceActions];
+  v13->_allowsShareAllAction = ([configurationCopy allowedActions] & 0x400) != 0;
+  v13->_allowsQuickLookAction = ([configurationCopy allowedActions] & 0x800) != 0;
+  v13->_allowsShowMapAction = ([configurationCopy allowedActions] & 0x1000) != 0;
+  v13->_allowsPickAssetAction = ([configurationCopy allowedActions] & 2) != 0;
+  v13->_allowsDismissAction = ([configurationCopy allowedActions] & 0x2000) != 0;
   v87 = PXCanShowInternalUI();
   LOBYTE(v88) = 0;
   if (v87)
   {
-    v88 = ([v9 allowedActions] >> 14) & 1;
+    v88 = ([configurationCopy allowedActions] >> 14) & 1;
   }
 
   v13->_allowsFileRadarAction = v88;
-  v13->_allowsTrashAction = ([v9 allowedActions] & 0x8000) != 0;
-  v13->_allowsShareAction = ([v9 allowedActions] & 0x20000000) != 0;
-  v13->_allowsAddToLibraryAction = ([v9 allowedActions] >> 16) & 1;
-  v13->_allowsSwitchLibraryAction = ([v9 allowedActions] >> 24) & 1;
-  v13->_allowsMoveToLibraryAction = ([v9 allowedActions] & 0x2000000) != 0;
-  v13->_allowsMoveToPersonalLibraryAction = ([v9 allowedActions] & 0x8000000) != 0;
-  v13->_allowsMoveToSharedLibraryAction = ([v9 allowedActions] & 0x4000000) != 0;
-  v13->_allowsInfoAction = ([v9 allowedActions] & 0x80000) != 0;
-  v13->_allowsCMMActions = ([v9 allowedActions] & 0x20000) != 0;
-  v13->_allowsSyndicatedContentFiltering = ([v9 allowedActions] & 0x200000) != 0;
-  v13->_allowsContentSyndicationSaveAllAction = ([v9 allowedActions] & 0x40000) != 0;
-  v13->_allowsReplyAction = ([v9 allowedActions] & 0x100000) != 0;
-  v13->_allowsTapbackAction = ([v9 allowedActions] & 0x400000) != 0;
-  v13->_allowsMergeDuplicatesAction = ([v9 allowedActions] & 0x800000) != 0;
-  v13->_supportsPeopleActions = ([v9 allowedActions] & 0x10000000) != 0;
-  v13->_supportsSocialGroupActions = ([v9 allowedActions] & 0x40000000) != 0;
-  v13->_oneUpAssetsViewMode = [v9 oneUpAssetsViewMode];
-  v13->_allowsSwipeToSelect = [v9 allowsSwipeToSelect];
+  v13->_allowsTrashAction = ([configurationCopy allowedActions] & 0x8000) != 0;
+  v13->_allowsShareAction = ([configurationCopy allowedActions] & 0x20000000) != 0;
+  v13->_allowsAddToLibraryAction = ([configurationCopy allowedActions] >> 16) & 1;
+  v13->_allowsSwitchLibraryAction = ([configurationCopy allowedActions] >> 24) & 1;
+  v13->_allowsMoveToLibraryAction = ([configurationCopy allowedActions] & 0x2000000) != 0;
+  v13->_allowsMoveToPersonalLibraryAction = ([configurationCopy allowedActions] & 0x8000000) != 0;
+  v13->_allowsMoveToSharedLibraryAction = ([configurationCopy allowedActions] & 0x4000000) != 0;
+  v13->_allowsInfoAction = ([configurationCopy allowedActions] & 0x80000) != 0;
+  v13->_allowsCMMActions = ([configurationCopy allowedActions] & 0x20000) != 0;
+  v13->_allowsSyndicatedContentFiltering = ([configurationCopy allowedActions] & 0x200000) != 0;
+  v13->_allowsContentSyndicationSaveAllAction = ([configurationCopy allowedActions] & 0x40000) != 0;
+  v13->_allowsReplyAction = ([configurationCopy allowedActions] & 0x100000) != 0;
+  v13->_allowsTapbackAction = ([configurationCopy allowedActions] & 0x400000) != 0;
+  v13->_allowsMergeDuplicatesAction = ([configurationCopy allowedActions] & 0x800000) != 0;
+  v13->_supportsPeopleActions = ([configurationCopy allowedActions] & 0x10000000) != 0;
+  v13->_supportsSocialGroupActions = ([configurationCopy allowedActions] & 0x40000000) != 0;
+  v13->_oneUpAssetsViewMode = [configurationCopy oneUpAssetsViewMode];
+  v13->_allowsSwipeToSelect = [configurationCopy allowsSwipeToSelect];
   v13->_wantsPinchEffect = PFIsMessagesApp() ^ 1;
-  v13->_allowsDragIn = [v9 allowsDragIn];
-  v89 = [v9 allowsDragOut];
-  v13->_allowsDragOut = v89;
-  if (v13->_allowsDragIn && (v89 & 1) == 0)
+  v13->_allowsDragIn = [configurationCopy allowsDragIn];
+  allowsDragOut = [configurationCopy allowsDragOut];
+  v13->_allowsDragOut = allowsDragOut;
+  if (v13->_allowsDragIn && (allowsDragOut & 1) == 0)
   {
     v90 = PXAssertGetLog();
     if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
@@ -3644,33 +3644,33 @@ LABEL_19:
     }
   }
 
-  v13->_allowsUserDefaults = [v9 allowsUserDefaults];
-  v13->_allowsLinkInteractions = [v9 allowsLinkInteractions];
-  v13->_allowsMultiSelectMenu = [v9 allowsMultiSelectMenu];
-  v13->_lowMemoryMode = [v9 lowMemoryMode];
-  v13->_oneUpPresentationOrigin = [v9 oneUpPresentationOrigin];
-  v13->_preventShowInAllPhotosAction = [v9 preventShowInAllPhotosAction];
-  v13->_wantsOneUpShowInLibraryButton = [v9 wantsOneUpShowInLibraryButton];
-  v13->_wantsFooterVisibleImmediately = [v9 wantsFooterVisibleImmediately];
-  v13->_wantsFooterVisibleWhenEmpty = [v9 wantsFooterVisibleWhenEmpty];
-  v91 = [v9 centerAccessoryActionType];
-  v92 = [v91 copy];
+  v13->_allowsUserDefaults = [configurationCopy allowsUserDefaults];
+  v13->_allowsLinkInteractions = [configurationCopy allowsLinkInteractions];
+  v13->_allowsMultiSelectMenu = [configurationCopy allowsMultiSelectMenu];
+  v13->_lowMemoryMode = [configurationCopy lowMemoryMode];
+  v13->_oneUpPresentationOrigin = [configurationCopy oneUpPresentationOrigin];
+  v13->_preventShowInAllPhotosAction = [configurationCopy preventShowInAllPhotosAction];
+  v13->_wantsOneUpShowInLibraryButton = [configurationCopy wantsOneUpShowInLibraryButton];
+  v13->_wantsFooterVisibleImmediately = [configurationCopy wantsFooterVisibleImmediately];
+  v13->_wantsFooterVisibleWhenEmpty = [configurationCopy wantsFooterVisibleWhenEmpty];
+  centerAccessoryActionType = [configurationCopy centerAccessoryActionType];
+  v92 = [centerAccessoryActionType copy];
   centerAccessoryActionType = v13->_centerAccessoryActionType;
   v13->_centerAccessoryActionType = v92;
 
-  v94 = [v9 trailingAccessoryActionType];
-  v95 = [v94 copy];
+  trailingAccessoryActionType = [configurationCopy trailingAccessoryActionType];
+  v95 = [trailingAccessoryActionType copy];
   trailingAccessoryActionType = v13->_trailingAccessoryActionType;
   v13->_trailingAccessoryActionType = v95;
 
-  v13->_dismissAffordance = [v9 dismissAffordance];
-  v97 = [v9 initialNavigationObjectReference];
+  v13->_dismissAffordance = [configurationCopy dismissAffordance];
+  initialNavigationObjectReference = [configurationCopy initialNavigationObjectReference];
   initialNavigationObjectReference = v13->_initialNavigationObjectReference;
-  v13->_initialNavigationObjectReference = v97;
+  v13->_initialNavigationObjectReference = initialNavigationObjectReference;
 
-  v13->_initialNavigationScrollPosition = [v9 initialNavigationScrollPosition];
-  v13->_scrollingBehavior = [v9 scrollingBehavior];
-  if ([v9 sectionBodyStyle] == 2)
+  v13->_initialNavigationScrollPosition = [configurationCopy initialNavigationScrollPosition];
+  v13->_scrollingBehavior = [configurationCopy scrollingBehavior];
+  if ([configurationCopy sectionBodyStyle] == 2)
   {
     v99 = PFIsiOSPhotosApp() ^ 1;
   }
@@ -3681,11 +3681,11 @@ LABEL_19:
   }
 
   v13->__shouldMimicSystemChromelessUsingManualScrollEdgeAppearance = v99;
-  v13->_contentMode = [v9 contentMode];
-  v100 = [MEMORY[0x277D3CE30] standardUserDefaults];
-  v101 = [v100 photosGridAspectFit];
+  v13->_contentMode = [configurationCopy contentMode];
+  standardUserDefaults = [MEMORY[0x277D3CE30] standardUserDefaults];
+  photosGridAspectFit = [standardUserDefaults photosGridAspectFit];
   userWantsAspectFitContent = v13->_userWantsAspectFitContent;
-  v13->_userWantsAspectFitContent = v101;
+  v13->_userWantsAspectFitContent = photosGridAspectFit;
 
   if (v13->_allowsCopyAction || v13->_allowsQuickLookAction || v13->_allowsPickAssetAction)
   {
@@ -3709,13 +3709,13 @@ LABEL_19:
     [(PXAssetActionManager *)v13->_assetActionManager setAllowedActionTypes:v104];
   }
 
-  v105 = [v9 title];
-  v106 = [v105 copy];
+  title = [configurationCopy title];
+  v106 = [title copy];
   title = v13->_title;
   v13->_title = v106;
 
-  v108 = [v9 containerTitle];
-  v109 = [v108 copy];
+  containerTitle = [configurationCopy containerTitle];
+  v109 = [containerTitle copy];
   containerTitle = v13->_containerTitle;
   v13->_containerTitle = v109;
 
@@ -3723,32 +3723,32 @@ LABEL_19:
   v13->_floatingTitleOpacity = 1.0;
   v13->_titleBackgroundOpacity = 1.0;
   v13->_wantsFloatingTitle = 1;
-  v111 = [v9 footerSubtitle];
-  v112 = [v111 copy];
+  footerSubtitle = [configurationCopy footerSubtitle];
+  v112 = [footerSubtitle copy];
   footerSubtitle = v13->_footerSubtitle;
   v13->_footerSubtitle = v112;
 
-  v114 = [v9 footerLearnMoreURL];
-  v115 = [v114 copy];
+  footerLearnMoreURL = [configurationCopy footerLearnMoreURL];
+  v115 = [footerLearnMoreURL copy];
   footerLearnMoreURL = v13->_footerLearnMoreURL;
   v13->_footerLearnMoreURL = v115;
 
-  v13->_forbiddenBadges = [v9 forbiddenBadges];
-  v13->_allowsInteractiveFavoriteBadges = [v9 allowsInteractiveFavoriteBadges];
-  v117 = [v9 infoActionHandler];
+  v13->_forbiddenBadges = [configurationCopy forbiddenBadges];
+  v13->_allowsInteractiveFavoriteBadges = [configurationCopy allowsInteractiveFavoriteBadges];
+  infoActionHandler = [configurationCopy infoActionHandler];
   infoActionHandler = v13->_infoActionHandler;
-  v13->_infoActionHandler = v117;
+  v13->_infoActionHandler = infoActionHandler;
 
-  v13->_navBarStyle = [v9 navBarStyle];
-  v13->_toolbarStyle = [v9 toolbarStyle];
-  v13->_shouldOptOutOfChromelessBars = [v9 shouldOptOutOfChromelessBars];
+  v13->_navBarStyle = [configurationCopy navBarStyle];
+  v13->_toolbarStyle = [configurationCopy toolbarStyle];
+  v13->_shouldOptOutOfChromelessBars = [configurationCopy shouldOptOutOfChromelessBars];
   v119 = +[PXPhotosGridSettings sharedInstance];
   if ([v119 enableTitleLegibilityDimmingFilter])
   {
     navBarStyle = v13->_navBarStyle;
 
     v121 = v141;
-    v10 = v142;
+    managerCopy = v142;
     if (navBarStyle == 1)
     {
       v13->_navBarStyle = 2;
@@ -3759,13 +3759,13 @@ LABEL_19:
   {
 
     v121 = v141;
-    v10 = v142;
+    managerCopy = v142;
   }
 
-  v13->_wantsModernNavBarButtons = [v9 wantsModernNavBarButtons];
-  v13->_wantsAdaptiveSelectModeBarButton = [v9 wantsAdaptiveSelectModeBarButton];
+  v13->_wantsModernNavBarButtons = [configurationCopy wantsModernNavBarButtons];
+  v13->_wantsAdaptiveSelectModeBarButton = [configurationCopy wantsAdaptiveSelectModeBarButton];
   v13->_chromeOpacity = 1.0;
-  v13->_allowedChromeItems = [v9 allowedChromeItems];
+  v13->_allowedChromeItems = [configurationCopy allowedChromeItems];
   v13->_allowedGesturesKind = 0;
   v122 = objc_alloc_init(MEMORY[0x277CBEB58]);
   enterSelectModePreventedForReasons = v13->_enterSelectModePreventedForReasons;
@@ -3783,23 +3783,23 @@ LABEL_19:
   hideSurroundingContentForReasons = v13->_hideSurroundingContentForReasons;
   v13->_hideSurroundingContentForReasons = v128;
 
-  v13->_prefersActionsInToolbar = [v9 prefersActionsInToolbar];
+  v13->_prefersActionsInToolbar = [configurationCopy prefersActionsInToolbar];
   v13->_topBarsAppearanceChangeAnimationDuration = 0.25;
-  v130 = [v9 footerViewModel];
+  footerViewModel = [configurationCopy footerViewModel];
   footerViewModel = v13->_footerViewModel;
-  v13->_footerViewModel = v130;
+  v13->_footerViewModel = footerViewModel;
 
-  v132 = [v9 badgesModifier];
+  badgesModifier = [configurationCopy badgesModifier];
   badgesModifier = v13->_badgesModifier;
-  v13->_badgesModifier = v132;
+  v13->_badgesModifier = badgesModifier;
 
-  v134 = [v10 headerCustomizationModel];
+  headerCustomizationModel = [managerCopy headerCustomizationModel];
   headerCustomizationModel = v13->_headerCustomizationModel;
-  v13->_headerCustomizationModel = v134;
+  v13->_headerCustomizationModel = headerCustomizationModel;
 
-  v13->_useLowMemoryDecode = [v9 useLowMemoryDecode];
-  v13->_contentShiftStrategy = [v9 contentShiftStrategy];
-  v13->_allowsTabBarVisible = [v9 allowsTabBarVisible];
+  v13->_useLowMemoryDecode = [configurationCopy useLowMemoryDecode];
+  v13->_contentShiftStrategy = [configurationCopy contentShiftStrategy];
+  v13->_allowsTabBarVisible = [configurationCopy allowsTabBarVisible];
   if (v13->_wantsSensitiveWarningBadgeDecorations)
   {
     objc_initWeak(&location, v13);
@@ -3813,10 +3813,10 @@ LABEL_19:
     objc_destroyWeak(&location);
   }
 
-  v13->_hidesNavbar = [v9 wantsNavbarHidden];
-  v13->_hidesToolbar = [v9 wantsToolbarHidden];
-  v13->_startsInSelectMode = [v9 startsInSelectMode];
-  [(PXPhotosViewModel *)v13 swift_initWithConfiguration:v9];
+  v13->_hidesNavbar = [configurationCopy wantsNavbarHidden];
+  v13->_hidesToolbar = [configurationCopy wantsToolbarHidden];
+  v13->_startsInSelectMode = [configurationCopy startsInSelectMode];
+  [(PXPhotosViewModel *)v13 swift_initWithConfiguration:configurationCopy];
   objc_initWeak(&location, v13);
   v145[0] = MEMORY[0x277D85DD0];
   v145[1] = 3221225472;
@@ -3831,13 +3831,13 @@ LABEL_19:
   v143[3] = &unk_278298E60;
   v144 = v13;
   [(PXPhotosViewModel *)v144 performChanges:v143];
-  [(PXPhotosViewModelHelper *)v13->_viewModelHelper initializationWillFinishWithConfiguration:v9];
+  [(PXPhotosViewModelHelper *)v13->_viewModelHelper initializationWillFinishWithConfiguration:configurationCopy];
   v13->_isInitializing = 0;
 
   objc_destroyWeak(&v146);
   objc_destroyWeak(&location);
 
-  v11 = v140;
+  controllerCopy = v140;
 LABEL_52:
 
   return v13;

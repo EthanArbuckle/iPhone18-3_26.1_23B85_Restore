@@ -23,7 +23,7 @@
   {
     v6 = *(&self->super.isa + OBJC_IVAR___BlastDoorSMSCTPartAttributedRichCards_sMSCTPartAttributedRichCards);
     v7 = *&self->sMSCTPartAttributedRichCards[OBJC_IVAR___BlastDoorSMSCTPartAttributedRichCards_sMSCTPartAttributedRichCards];
-    v3 = self;
+    selfCopy = self;
     sub_2143001B8(v2);
     MBDRichCards.dictionaryRepresentation.getter();
     v4 = sub_2146D9468();

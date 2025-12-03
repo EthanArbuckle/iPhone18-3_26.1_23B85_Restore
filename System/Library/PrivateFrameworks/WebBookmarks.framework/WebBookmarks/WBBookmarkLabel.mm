@@ -1,64 +1,64 @@
 @interface WBBookmarkLabel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)privacyPreservingDescription;
-- (WBBookmarkLabel)initWithCoder:(id)a3;
-- (WBBookmarkLabel)initWithTitle:(id)a3 address:(id)a4 pinned:(BOOL)a5;
-- (WBBookmarkLabel)labelWithAddress:(id)a3;
-- (WBBookmarkLabel)labelWithTitle:(id)a3;
+- (WBBookmarkLabel)initWithCoder:(id)coder;
+- (WBBookmarkLabel)initWithTitle:(id)title address:(id)address pinned:(BOOL)pinned;
+- (WBBookmarkLabel)labelWithAddress:(id)address;
+- (WBBookmarkLabel)labelWithTitle:(id)title;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBBookmarkLabel
 
-- (WBBookmarkLabel)initWithTitle:(id)a3 address:(id)a4 pinned:(BOOL)a5
+- (WBBookmarkLabel)initWithTitle:(id)title address:(id)address pinned:(BOOL)pinned
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  addressCopy = address;
   v17.receiver = self;
   v17.super_class = WBBookmarkLabel;
   v10 = [(WBBookmarkLabel *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v11;
 
-    v13 = [v9 copy];
+    v13 = [addressCopy copy];
     address = v10->_address;
     v10->_address = v13;
 
-    v10->_pinned = a5;
+    v10->_pinned = pinned;
     v15 = v10;
   }
 
   return v10;
 }
 
-- (WBBookmarkLabel)initWithCoder:(id)a3
+- (WBBookmarkLabel)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Title"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Address"];
-  v7 = [v4 decodeBoolForKey:@"Pinned"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Address"];
+  v7 = [coderCopy decodeBoolForKey:@"Pinned"];
 
   v8 = [(WBBookmarkLabel *)self initWithTitle:v5 address:v6 pinned:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"Title"];
-  [v5 encodeObject:self->_address forKey:@"Address"];
-  [v5 encodeBool:self->_pinned forKey:@"Pinned"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"Title"];
+  [coderCopy encodeObject:self->_address forKey:@"Address"];
+  [coderCopy encodeBool:self->_pinned forKey:@"Pinned"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
@@ -68,17 +68,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WBBookmarkLabel *)v5 title];
-      v7 = [(WBBookmarkLabel *)self title];
+      v5 = equalCopy;
+      title = [(WBBookmarkLabel *)v5 title];
+      title2 = [(WBBookmarkLabel *)self title];
       if (WBSIsEqual())
       {
-        v8 = [(WBBookmarkLabel *)v5 address];
-        v9 = [(WBBookmarkLabel *)self address];
+        address = [(WBBookmarkLabel *)v5 address];
+        address2 = [(WBBookmarkLabel *)self address];
         if (WBSIsEqual())
         {
-          v10 = [(WBBookmarkLabel *)v5 isPinned];
-          v11 = v10 ^ [(WBBookmarkLabel *)self isPinned]^ 1;
+          isPinned = [(WBBookmarkLabel *)v5 isPinned];
+          v11 = isPinned ^ [(WBBookmarkLabel *)self isPinned]^ 1;
         }
 
         else
@@ -102,18 +102,18 @@
   return v11;
 }
 
-- (WBBookmarkLabel)labelWithTitle:(id)a3
+- (WBBookmarkLabel)labelWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithTitle:v4 address:self->_address pinned:self->_pinned];
+  titleCopy = title;
+  v5 = [objc_alloc(objc_opt_class()) initWithTitle:titleCopy address:self->_address pinned:self->_pinned];
 
   return v5;
 }
 
-- (WBBookmarkLabel)labelWithAddress:(id)a3
+- (WBBookmarkLabel)labelWithAddress:(id)address
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithTitle:self->_title address:v4 pinned:self->_pinned];
+  addressCopy = address;
+  v5 = [objc_alloc(objc_opt_class()) initWithTitle:self->_title address:addressCopy pinned:self->_pinned];
 
   return v5;
 }

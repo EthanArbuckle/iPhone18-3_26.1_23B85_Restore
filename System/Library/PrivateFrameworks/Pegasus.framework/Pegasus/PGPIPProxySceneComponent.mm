@@ -1,36 +1,36 @@
 @interface PGPIPProxySceneComponent
-- (PGPIPProxySceneComponent)initWithScene:(id)a3;
+- (PGPIPProxySceneComponent)initWithScene:(id)scene;
 - (UIScene)_scene;
-- (void)_sceneWillInvalidate:(id)a3;
+- (void)_sceneWillInvalidate:(id)invalidate;
 @end
 
 @implementation PGPIPProxySceneComponent
 
-- (PGPIPProxySceneComponent)initWithScene:(id)a3
+- (PGPIPProxySceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v11.receiver = self;
   v11.super_class = PGPIPProxySceneComponent;
   v5 = [(PGPIPProxySceneComponent *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(PGPIPProxySceneComponent *)v5 _setScene:v4];
-    v7 = [v4 _sceneIdentifier];
+    [(PGPIPProxySceneComponent *)v5 _setScene:sceneCopy];
+    _sceneIdentifier = [sceneCopy _sceneIdentifier];
     identifier = v6->_identifier;
-    v6->_identifier = v7;
+    v6->_identifier = _sceneIdentifier;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"PGPIPSceneComponentDidConnectNotification" object:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PGPIPSceneComponentDidConnectNotification" object:v6];
   }
 
   return v6;
 }
 
-- (void)_sceneWillInvalidate:(id)a3
+- (void)_sceneWillInvalidate:(id)invalidate
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"PGPIPSceneComponentDidDisconnectNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PGPIPSceneComponentDidDisconnectNotification" object:self];
 }
 
 - (UIScene)_scene

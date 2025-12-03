@@ -1,56 +1,56 @@
 @interface ALCLMotionActivity
-- (BOOL)isEqual:(id)a3;
-- (id)confidenceAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)confidenceAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)exitStateAsString:(int)a3;
-- (id)mountedConfidenceAsString:(int)a3;
-- (id)mountedStateAsString:(int)a3;
-- (id)typeAsString:(int)a3;
-- (int)StringAsConfidence:(id)a3;
-- (int)StringAsExitState:(id)a3;
-- (int)StringAsMountedConfidence:(id)a3;
-- (int)StringAsMountedState:(id)a3;
-- (int)StringAsType:(id)a3;
+- (id)exitStateAsString:(int)string;
+- (id)mountedConfidenceAsString:(int)string;
+- (id)mountedStateAsString:(int)string;
+- (id)typeAsString:(int)string;
+- (int)StringAsConfidence:(id)confidence;
+- (int)StringAsExitState:(id)state;
+- (int)StringAsMountedConfidence:(id)confidence;
+- (int)StringAsMountedState:(id)state;
+- (int)StringAsType:(id)type;
 - (int)confidence;
 - (int)exitState;
 - (int)mountedConfidence;
 - (int)mountedState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConfidence:(BOOL)a3;
-- (void)setHasExitState:(BOOL)a3;
-- (void)setHasIsStanding:(BOOL)a3;
-- (void)setHasIsVehicleConnected:(BOOL)a3;
-- (void)setHasMountedConfidence:(BOOL)a3;
-- (void)setHasMountedState:(BOOL)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)setHasTilt:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConfidence:(BOOL)confidence;
+- (void)setHasExitState:(BOOL)state;
+- (void)setHasIsStanding:(BOOL)standing;
+- (void)setHasIsVehicleConnected:(BOOL)connected;
+- (void)setHasMountedConfidence:(BOOL)confidence;
+- (void)setHasMountedState:(BOOL)state;
+- (void)setHasStartTime:(BOOL)time;
+- (void)setHasTilt:(BOOL)tilt;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCLMotionActivity
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3 > 15029)
+  if (string > 15029)
   {
-    if (a3 > 15652)
+    if (string > 15652)
     {
-      if (a3 > 18224)
+      if (string > 18224)
       {
-        if (a3 <= 19149)
+        if (string <= 19149)
         {
-          if (a3 > 19029)
+          if (string > 19029)
           {
-            if (a3 == 19030)
+            if (string == 19030)
             {
               return @"kTypeIndoorSkatingSports";
             }
 
-            if (a3 == 19090)
+            if (string == 19090)
             {
               return @"kTypeCrossCountrySkiing";
             }
@@ -58,26 +58,26 @@
 
           else
           {
-            if (a3 == 18225)
+            if (string == 18225)
             {
               return @"kTypePaddleSports";
             }
 
-            if (a3 == 18240)
+            if (string == 18240)
             {
               return @"kTypeSwimming";
             }
           }
         }
 
-        else if (a3 <= 90120)
+        else if (string <= 90120)
         {
-          if (a3 == 19150)
+          if (string == 19150)
           {
             return @"kTypeSummer";
           }
 
-          if (a3 == 19160)
+          if (string == 19160)
           {
             return @"kTypeSnowboarding";
           }
@@ -85,7 +85,7 @@
 
         else
         {
-          switch(a3)
+          switch(string)
           {
             case 90121:
               return @"kTypeOutdoorHandCycling";
@@ -97,16 +97,16 @@
         }
       }
 
-      else if (a3 <= 15709)
+      else if (string <= 15709)
       {
-        if (a3 > 15669)
+        if (string > 15669)
         {
-          if (a3 == 15670)
+          if (string == 15670)
           {
             return @"kTypeTaiChi";
           }
 
-          if (a3 == 15675)
+          if (string == 15675)
           {
             return @"kTypeTennis";
           }
@@ -114,26 +114,26 @@
 
         else
         {
-          if (a3 == 15653)
+          if (string == 15653)
           {
             return @"kTypeRacquetball";
           }
 
-          if (a3 == 15660)
+          if (string == 15660)
           {
             return @"kTypeTableTennis";
           }
         }
       }
 
-      else if (a3 <= 17149)
+      else if (string <= 17149)
       {
-        if (a3 == 15710)
+        if (string == 15710)
         {
           return @"kTypeVolleyball";
         }
 
-        if (a3 == 15733)
+        if (string == 15733)
         {
           return @"kTypeTrackAndField";
         }
@@ -141,7 +141,7 @@
 
       else
       {
-        switch(a3)
+        switch(string)
         {
           case 17150:
             return @"kTypeIndoorWalking";
@@ -153,18 +153,18 @@
       }
     }
 
-    else if (a3 > 15349)
+    else if (string > 15349)
     {
-      if (a3 <= 15591)
+      if (string <= 15591)
       {
-        if (a3 > 15459)
+        if (string > 15459)
         {
-          if (a3 == 15460)
+          if (string == 15460)
           {
             return @"kTypeLacrosse";
           }
 
-          if (a3 == 15562)
+          if (string == 15562)
           {
             return @"kTypeRugby";
           }
@@ -172,26 +172,26 @@
 
         else
         {
-          if (a3 == 15350)
+          if (string == 15350)
           {
             return @"kTypeOutdoorHockey";
           }
 
-          if (a3 == 15360)
+          if (string == 15360)
           {
             return @"kTypeIndoorHockey";
           }
         }
       }
 
-      else if (a3 <= 15619)
+      else if (string <= 15619)
       {
-        if (a3 == 15592)
+        if (string == 15592)
         {
           return @"kTypeOutdoorSkatingSports";
         }
 
-        if (a3 == 15610)
+        if (string == 15610)
         {
           return @"kTypeOutdoorSoccer";
         }
@@ -199,7 +199,7 @@
 
       else
       {
-        switch(a3)
+        switch(string)
         {
           case 15620:
             return @"kTypeSoftball";
@@ -211,16 +211,16 @@
       }
     }
 
-    else if (a3 <= 15149)
+    else if (string <= 15149)
     {
-      if (a3 > 15099)
+      if (string > 15099)
       {
-        if (a3 == 15100)
+        if (string == 15100)
         {
           return @"kTypeBoxing";
         }
 
-        if (a3 == 15110)
+        if (string == 15110)
         {
           return @"kTypeKickboxing";
         }
@@ -228,26 +228,26 @@
 
       else
       {
-        if (a3 == 15030)
+        if (string == 15030)
         {
           return @"kTypeBadminton";
         }
 
-        if (a3 == 15055)
+        if (string == 15055)
         {
           return @"kTypeBasketball";
         }
       }
     }
 
-    else if (a3 <= 15239)
+    else if (string <= 15239)
     {
-      if (a3 == 15150)
+      if (string == 15150)
       {
         return @"kTypeCricket";
       }
 
-      if (a3 == 15230)
+      if (string == 15230)
       {
         return @"kTypeAmericanFootball";
       }
@@ -255,7 +255,7 @@
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 15240:
           return @"kTypeDiscSports";
@@ -266,23 +266,23 @@
       }
     }
 
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
-  if (a3 > 65)
+  if (string > 65)
   {
-    if (a3 > 2067)
+    if (string > 2067)
     {
-      if (a3 <= 2149)
+      if (string <= 2149)
       {
-        if (a3 > 2100)
+        if (string > 2100)
         {
-          if (a3 == 2101)
+          if (string == 2101)
           {
             return @"kTypeCoolDown";
           }
 
-          if (a3 == 2105)
+          if (string == 2105)
           {
             return @"kTypePilates";
           }
@@ -290,26 +290,26 @@
 
         else
         {
-          if (a3 == 2068)
+          if (string == 2068)
           {
             return @"kTypeJumpRope";
           }
 
-          if (a3 == 2071)
+          if (string == 2071)
           {
             return @"kTypeRowing";
           }
         }
       }
 
-      else if (a3 <= 3015)
+      else if (string <= 3015)
       {
-        if (a3 == 2150)
+        if (string == 2150)
         {
           return @"kTypeYoga";
         }
 
-        if (a3 == 3015)
+        if (string == 3015)
         {
           return @"kTypeDancing";
         }
@@ -317,7 +317,7 @@
 
       else
       {
-        switch(a3)
+        switch(string)
         {
           case 3016:
             return @"kTypeStepTraining";
@@ -329,16 +329,16 @@
       }
     }
 
-    else if (a3 <= 2021)
+    else if (string <= 2021)
     {
-      if (a3 > 2009)
+      if (string > 2009)
       {
-        if (a3 == 2010)
+        if (string == 2010)
         {
           return @"kTypeStationaryCycling";
         }
 
-        if (a3 == 2020)
+        if (string == 2020)
         {
           return @"kTypeCalisthenics";
         }
@@ -346,26 +346,26 @@
 
       else
       {
-        if (a3 == 66)
+        if (string == 66)
         {
           return @"kTypePickleball";
         }
 
-        if (a3 == 100)
+        if (string == 100)
         {
           return @"kTypeCyclingLeg";
         }
       }
     }
 
-    else if (a3 <= 2047)
+    else if (string <= 2047)
     {
-      if (a3 == 2022)
+      if (string == 2022)
       {
         return @"kTypeFunctionalStrength";
       }
 
-      if (a3 == 2024)
+      if (string == 2024)
       {
         return @"kTypeCoreTraining";
       }
@@ -373,7 +373,7 @@
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 2048:
           return @"kTypeElliptical";
@@ -384,29 +384,29 @@
       }
     }
 
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
-  if (a3 > 8)
+  if (string > 8)
   {
-    if (a3 <= 51)
+    if (string <= 51)
     {
-      if (a3 > 10)
+      if (string > 10)
       {
-        if (a3 == 11)
+        if (string == 11)
         {
           return @"kTypeInVehicleStatic";
         }
 
-        if (a3 == 41)
+        if (string == 41)
         {
           return @"kTypeWalkingSlow";
         }
 
-        return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+        return [NSString stringWithFormat:@"(unknown: %i)", *&string];
       }
 
-      if (a3 == 9)
+      if (string == 9)
       {
         return @"kTypeMovingCoarse";
       }
@@ -419,27 +419,27 @@
 
     else
     {
-      if (a3 <= 62)
+      if (string <= 62)
       {
-        if (a3 == 52)
+        if (string == 52)
         {
           return @"kTypeVehicularInHand";
         }
 
-        if (a3 == 56)
+        if (string == 56)
         {
           return @"kTypeDrivingOther";
         }
 
-        return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+        return [NSString stringWithFormat:@"(unknown: %i)", *&string];
       }
 
-      if (a3 == 63)
+      if (string == 63)
       {
         return @"kTypeMultiSportTransition";
       }
 
-      else if (a3 == 64)
+      else if (string == 64)
       {
         return @"kTypeIndoorSoccer";
       }
@@ -453,11 +453,11 @@
 
   else
   {
-    if (a3 > 3)
+    if (string > 3)
     {
-      if (a3 <= 5)
+      if (string <= 5)
       {
-        if (a3 == 4)
+        if (string == 4)
         {
           return @"kTypeWalking";
         }
@@ -468,12 +468,12 @@
         }
       }
 
-      else if (a3 == 6)
+      else if (string == 6)
       {
         return @"kTypeCycling";
       }
 
-      else if (a3 == 7)
+      else if (string == 7)
       {
         return @"kTypeSemiStationary";
       }
@@ -484,22 +484,22 @@
       }
     }
 
-    if (a3 <= 1)
+    if (string <= 1)
     {
-      if (!a3)
+      if (!string)
       {
         return @"kTypeUnknown";
       }
 
-      if (a3 == 1)
+      if (string == 1)
       {
         return @"kTypeFrozen";
       }
 
-      return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+      return [NSString stringWithFormat:@"(unknown: %i)", *&string];
     }
 
-    if (a3 == 2)
+    if (string == 2)
     {
       return @"kTypeStatic";
     }
@@ -511,364 +511,364 @@
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  if ([a3 isEqualToString:@"kTypeUnknown"])
+  if ([type isEqualToString:@"kTypeUnknown"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kTypeFrozen"])
+  if ([type isEqualToString:@"kTypeFrozen"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kTypeStatic"])
+  if ([type isEqualToString:@"kTypeStatic"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"kTypeMoving"])
+  if ([type isEqualToString:@"kTypeMoving"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kTypeWalking"])
+  if ([type isEqualToString:@"kTypeWalking"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"kTypeDriving"])
+  if ([type isEqualToString:@"kTypeDriving"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"kTypeCycling"])
+  if ([type isEqualToString:@"kTypeCycling"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"kTypeSemiStationary"])
+  if ([type isEqualToString:@"kTypeSemiStationary"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"kTypeRunning"])
+  if ([type isEqualToString:@"kTypeRunning"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"kTypeMovingCoarse"])
+  if ([type isEqualToString:@"kTypeMovingCoarse"])
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"kTypeInVehicleFrozen"])
+  if ([type isEqualToString:@"kTypeInVehicleFrozen"])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:@"kTypeInVehicleStatic"])
+  if ([type isEqualToString:@"kTypeInVehicleStatic"])
   {
     return 11;
   }
 
-  if ([a3 isEqualToString:@"kTypeWalkingSlow"])
+  if ([type isEqualToString:@"kTypeWalkingSlow"])
   {
     return 41;
   }
 
-  if ([a3 isEqualToString:@"kTypeVehicularInHand"])
+  if ([type isEqualToString:@"kTypeVehicularInHand"])
   {
     return 52;
   }
 
-  if ([a3 isEqualToString:@"kTypeDrivingOther"])
+  if ([type isEqualToString:@"kTypeDrivingOther"])
   {
     return 56;
   }
 
-  if ([a3 isEqualToString:@"kTypeCyclingLeg"])
+  if ([type isEqualToString:@"kTypeCyclingLeg"])
   {
     return 100;
   }
 
-  if ([a3 isEqualToString:@"kTypeStationaryCycling"])
+  if ([type isEqualToString:@"kTypeStationaryCycling"])
   {
     return 2010;
   }
 
-  if ([a3 isEqualToString:@"kTypeCalisthenics"])
+  if ([type isEqualToString:@"kTypeCalisthenics"])
   {
     return 2020;
   }
 
-  if ([a3 isEqualToString:@"kTypeElliptical"])
+  if ([type isEqualToString:@"kTypeElliptical"])
   {
     return 2048;
   }
 
-  if ([a3 isEqualToString:@"kTypeCrossTraining"])
+  if ([type isEqualToString:@"kTypeCrossTraining"])
   {
     return 2061;
   }
 
-  if ([a3 isEqualToString:@"kTypeStairClimbing"])
+  if ([type isEqualToString:@"kTypeStairClimbing"])
   {
     return 2065;
   }
 
-  if ([a3 isEqualToString:@"kTypeRowing"])
+  if ([type isEqualToString:@"kTypeRowing"])
   {
     return 2071;
   }
 
-  if ([a3 isEqualToString:@"kTypeYoga"])
+  if ([type isEqualToString:@"kTypeYoga"])
   {
     return 2150;
   }
 
-  if ([a3 isEqualToString:@"kTypeDancing"])
+  if ([type isEqualToString:@"kTypeDancing"])
   {
     return 3015;
   }
 
-  if ([a3 isEqualToString:@"kTypePushingWheelchair"])
+  if ([type isEqualToString:@"kTypePushingWheelchair"])
   {
     return 11805;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorRunning"])
+  if ([type isEqualToString:@"kTypeIndoorRunning"])
   {
     return 12150;
   }
 
-  if ([a3 isEqualToString:@"kTypeGolfing"])
+  if ([type isEqualToString:@"kTypeGolfing"])
   {
     return 15255;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorWalking"])
+  if ([type isEqualToString:@"kTypeIndoorWalking"])
   {
     return 17150;
   }
 
-  if ([a3 isEqualToString:@"kTypeSwimming"])
+  if ([type isEqualToString:@"kTypeSwimming"])
   {
     return 18240;
   }
 
-  if ([a3 isEqualToString:@"kTypeSummer"])
+  if ([type isEqualToString:@"kTypeSummer"])
   {
     return 19150;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorWheelchair"])
+  if ([type isEqualToString:@"kTypeOutdoorWheelchair"])
   {
     return 90603;
   }
 
-  if ([a3 isEqualToString:@"kTypeFunctionalStrength"])
+  if ([type isEqualToString:@"kTypeFunctionalStrength"])
   {
     return 2022;
   }
 
-  if ([a3 isEqualToString:@"kTypeCoolDown"])
+  if ([type isEqualToString:@"kTypeCoolDown"])
   {
     return 2101;
   }
 
-  if ([a3 isEqualToString:@"kTypeCoreTraining"])
+  if ([type isEqualToString:@"kTypeCoreTraining"])
   {
     return 2024;
   }
 
-  if ([a3 isEqualToString:@"kTypeTaiChi"])
+  if ([type isEqualToString:@"kTypeTaiChi"])
   {
     return 15670;
   }
 
-  if ([a3 isEqualToString:@"kTypePilates"])
+  if ([type isEqualToString:@"kTypePilates"])
   {
     return 2105;
   }
 
-  if ([a3 isEqualToString:@"kTypeMultiSportTransition"])
+  if ([type isEqualToString:@"kTypeMultiSportTransition"])
   {
     return 63;
   }
 
-  if ([a3 isEqualToString:@"kTypeScubaDiving"])
+  if ([type isEqualToString:@"kTypeScubaDiving"])
   {
     return 18200;
   }
 
-  if ([a3 isEqualToString:@"kTypeKickboxing"])
+  if ([type isEqualToString:@"kTypeKickboxing"])
   {
     return 15110;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorRowing"])
+  if ([type isEqualToString:@"kTypeOutdoorRowing"])
   {
     return 18070;
   }
 
-  if ([a3 isEqualToString:@"kTypeCrossCountrySkiing"])
+  if ([type isEqualToString:@"kTypeCrossCountrySkiing"])
   {
     return 19090;
   }
 
-  if ([a3 isEqualToString:@"kTypeSnowboarding"])
+  if ([type isEqualToString:@"kTypeSnowboarding"])
   {
     return 19160;
   }
 
-  if ([a3 isEqualToString:@"kTypePaddleSports"])
+  if ([type isEqualToString:@"kTypePaddleSports"])
   {
     return 18225;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorSoccer"])
+  if ([type isEqualToString:@"kTypeOutdoorSoccer"])
   {
     return 15610;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorSoccer"])
+  if ([type isEqualToString:@"kTypeIndoorSoccer"])
   {
     return 64;
   }
 
-  if ([a3 isEqualToString:@"kTypeAustralianFootball"])
+  if ([type isEqualToString:@"kTypeAustralianFootball"])
   {
     return 65;
   }
 
-  if ([a3 isEqualToString:@"kTypeAmericanFootball"])
+  if ([type isEqualToString:@"kTypeAmericanFootball"])
   {
     return 15230;
   }
 
-  if ([a3 isEqualToString:@"kTypeDiscSports"])
+  if ([type isEqualToString:@"kTypeDiscSports"])
   {
     return 15240;
   }
 
-  if ([a3 isEqualToString:@"kTypeRugby"])
+  if ([type isEqualToString:@"kTypeRugby"])
   {
     return 15562;
   }
 
-  if ([a3 isEqualToString:@"kTypeLacrosse"])
+  if ([type isEqualToString:@"kTypeLacrosse"])
   {
     return 15460;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorSkatingSports"])
+  if ([type isEqualToString:@"kTypeOutdoorSkatingSports"])
   {
     return 15592;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorSkatingSports"])
+  if ([type isEqualToString:@"kTypeIndoorSkatingSports"])
   {
     return 19030;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorHockey"])
+  if ([type isEqualToString:@"kTypeIndoorHockey"])
   {
     return 15360;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorHockey"])
+  if ([type isEqualToString:@"kTypeOutdoorHockey"])
   {
     return 15350;
   }
 
-  if ([a3 isEqualToString:@"kTypeBasketball"])
+  if ([type isEqualToString:@"kTypeBasketball"])
   {
     return 15055;
   }
 
-  if ([a3 isEqualToString:@"kTypeTennis"])
+  if ([type isEqualToString:@"kTypeTennis"])
   {
     return 15675;
   }
 
-  if ([a3 isEqualToString:@"kTypeBadminton"])
+  if ([type isEqualToString:@"kTypeBadminton"])
   {
     return 15030;
   }
 
-  if ([a3 isEqualToString:@"kTypeRacquetball"])
+  if ([type isEqualToString:@"kTypeRacquetball"])
   {
     return 15653;
   }
 
-  if ([a3 isEqualToString:@"kTypePickleball"])
+  if ([type isEqualToString:@"kTypePickleball"])
   {
     return 66;
   }
 
-  if ([a3 isEqualToString:@"kTypeVolleyball"])
+  if ([type isEqualToString:@"kTypeVolleyball"])
   {
     return 15710;
   }
 
-  if ([a3 isEqualToString:@"kTypeSquash"])
+  if ([type isEqualToString:@"kTypeSquash"])
   {
     return 15652;
   }
 
-  if ([a3 isEqualToString:@"kTypeHandball"])
+  if ([type isEqualToString:@"kTypeHandball"])
   {
     return 15320;
   }
 
-  if ([a3 isEqualToString:@"kTypeTrackAndField"])
+  if ([type isEqualToString:@"kTypeTrackAndField"])
   {
     return 15733;
   }
 
-  if ([a3 isEqualToString:@"kTypeSoftball"])
+  if ([type isEqualToString:@"kTypeSoftball"])
   {
     return 15620;
   }
 
-  if ([a3 isEqualToString:@"kTypeBaseball"])
+  if ([type isEqualToString:@"kTypeBaseball"])
   {
     return 15621;
   }
 
-  if ([a3 isEqualToString:@"kTypeCricket"])
+  if ([type isEqualToString:@"kTypeCricket"])
   {
     return 15150;
   }
 
-  if ([a3 isEqualToString:@"kTypeTableTennis"])
+  if ([type isEqualToString:@"kTypeTableTennis"])
   {
     return 15660;
   }
 
-  if ([a3 isEqualToString:@"kTypeJumpRope"])
+  if ([type isEqualToString:@"kTypeJumpRope"])
   {
     return 2068;
   }
 
-  if ([a3 isEqualToString:@"kTypeBoxing"])
+  if ([type isEqualToString:@"kTypeBoxing"])
   {
     return 15100;
   }
 
-  if ([a3 isEqualToString:@"kTypeStepTraining"])
+  if ([type isEqualToString:@"kTypeStepTraining"])
   {
     return 3016;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorHandCycling"])
+  if ([type isEqualToString:@"kTypeIndoorHandCycling"])
   {
     return 90122;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorHandCycling"])
+  if ([type isEqualToString:@"kTypeOutdoorHandCycling"])
   {
     return 90121;
   }
@@ -889,9 +889,9 @@
   }
 }
 
-- (void)setHasConfidence:(BOOL)a3
+- (void)setHasConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 4;
   }
@@ -904,32 +904,32 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (id)confidenceAsString:(int)a3
+- (id)confidenceAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return *(&off_1024573E0 + a3);
+    return *(&off_1024573E0 + string);
   }
 }
 
-- (int)StringAsConfidence:(id)a3
+- (int)StringAsConfidence:(id)confidence
 {
-  if ([a3 isEqualToString:@"kConfidenceLow"])
+  if ([confidence isEqualToString:@"kConfidenceLow"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kConfidenceMedium"])
+  if ([confidence isEqualToString:@"kConfidenceMedium"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kConfidenceHigh"])
+  if ([confidence isEqualToString:@"kConfidenceHigh"])
   {
     return 2;
   }
@@ -950,9 +950,9 @@
   }
 }
 
-- (void)setHasMountedState:(BOOL)a3
+- (void)setHasMountedState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -965,31 +965,31 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (id)mountedStateAsString:(int)a3
+- (id)mountedStateAsString:(int)string
 {
-  if (!a3)
+  if (!string)
   {
     return @"kNotMounted";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"kMounted";
   }
 
-  return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+  return [NSString stringWithFormat:@"(unknown: %i)", *&string];
 }
 
-- (int)StringAsMountedState:(id)a3
+- (int)StringAsMountedState:(id)state
 {
-  if ([a3 isEqualToString:@"kNotMounted"])
+  if ([state isEqualToString:@"kNotMounted"])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqualToString:@"kMounted"];
+    return [state isEqualToString:@"kMounted"];
   }
 }
 
@@ -1006,9 +1006,9 @@
   }
 }
 
-- (void)setHasMountedConfidence:(BOOL)a3
+- (void)setHasMountedConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 16;
   }
@@ -1021,32 +1021,32 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (id)mountedConfidenceAsString:(int)a3
+- (id)mountedConfidenceAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return *(&off_1024573E0 + a3);
+    return *(&off_1024573E0 + string);
   }
 }
 
-- (int)StringAsMountedConfidence:(id)a3
+- (int)StringAsMountedConfidence:(id)confidence
 {
-  if ([a3 isEqualToString:@"kConfidenceLow"])
+  if ([confidence isEqualToString:@"kConfidenceLow"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kConfidenceMedium"])
+  if ([confidence isEqualToString:@"kConfidenceMedium"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kConfidenceHigh"])
+  if ([confidence isEqualToString:@"kConfidenceHigh"])
   {
     return 2;
   }
@@ -1054,9 +1054,9 @@
   return 0;
 }
 
-- (void)setHasIsStanding:(BOOL)a3
+- (void)setHasIsStanding:(BOOL)standing
 {
-  if (a3)
+  if (standing)
   {
     v3 = 128;
   }
@@ -1069,9 +1069,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTilt:(BOOL)a3
+- (void)setHasTilt:(BOOL)tilt
 {
-  if (a3)
+  if (tilt)
   {
     v3 = 64;
   }
@@ -1097,9 +1097,9 @@
   }
 }
 
-- (void)setHasExitState:(BOOL)a3
+- (void)setHasExitState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -1112,32 +1112,32 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (id)exitStateAsString:(int)a3
+- (id)exitStateAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return *(&off_1024573F8 + a3);
+    return *(&off_1024573F8 + string);
   }
 }
 
-- (int)StringAsExitState:(id)a3
+- (int)StringAsExitState:(id)state
 {
-  if ([a3 isEqualToString:@"kNoDetection"])
+  if ([state isEqualToString:@"kNoDetection"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kExitPreheat"])
+  if ([state isEqualToString:@"kExitPreheat"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kExitDetected"])
+  if ([state isEqualToString:@"kExitDetected"])
   {
     return 2;
   }
@@ -1145,9 +1145,9 @@
   return 0;
 }
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -1160,9 +1160,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasIsVehicleConnected:(BOOL)a3
+- (void)setHasIsVehicleConnected:(BOOL)connected
 {
-  if (a3)
+  if (connected)
   {
     v3 = 256;
   }
@@ -1870,7 +1870,7 @@ LABEL_198:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteInt32Field();
   has = self->_has;
@@ -1979,14 +1979,14 @@ LABEL_20:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 13) = self->_type;
+  *(to + 13) = self->_type;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 8) = self->_confidence;
-    *(a3 + 30) |= 4u;
+    *(to + 8) = self->_confidence;
+    *(to + 30) |= 4u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -2005,8 +2005,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 11) = self->_mountedState;
-  *(a3 + 30) |= 0x20u;
+  *(to + 11) = self->_mountedState;
+  *(to + 30) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -2020,8 +2020,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  *(a3 + 10) = self->_mountedConfidence;
-  *(a3 + 30) |= 0x10u;
+  *(to + 10) = self->_mountedConfidence;
+  *(to + 30) |= 0x10u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -2035,22 +2035,22 @@ LABEL_5:
   }
 
 LABEL_15:
-  *(a3 + 56) = self->_isStanding;
-  *(a3 + 30) |= 0x80u;
+  *(to + 56) = self->_isStanding;
+  *(to + 30) |= 0x80u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_6:
-    *(a3 + 12) = LODWORD(self->_tilt);
-    *(a3 + 30) |= 0x40u;
+    *(to + 12) = LODWORD(self->_tilt);
+    *(to + 30) |= 0x40u;
   }
 
 LABEL_7:
-  *(a3 + 3) = *&self->_timestamp;
+  *(to + 3) = *&self->_timestamp;
   v4 = self->_has;
   if ((v4 & 8) != 0)
   {
-    *(a3 + 9) = self->_exitState;
-    *(a3 + 30) |= 8u;
+    *(to + 9) = self->_exitState;
+    *(to + 30) |= 8u;
     v4 = self->_has;
     if ((v4 & 1) == 0)
     {
@@ -2069,8 +2069,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(a3 + 1) = *&self->_estExitTime;
-  *(a3 + 30) |= 1u;
+  *(to + 1) = *&self->_estExitTime;
+  *(to + 30) |= 1u;
   v4 = self->_has;
   if ((v4 & 2) == 0)
   {
@@ -2081,23 +2081,23 @@ LABEL_10:
     }
 
 LABEL_20:
-    *(a3 + 57) = self->_isVehicleConnected;
-    *(a3 + 30) |= 0x100u;
+    *(to + 57) = self->_isVehicleConnected;
+    *(to + 30) |= 0x100u;
     return;
   }
 
 LABEL_19:
-  *(a3 + 2) = *&self->_startTime;
-  *(a3 + 30) |= 2u;
+  *(to + 2) = *&self->_startTime;
+  *(to + 30) |= 2u;
   if ((*&self->_has & 0x100) != 0)
   {
     goto LABEL_20;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 13) = self->_type;
   has = self->_has;
   if ((has & 4) != 0)
@@ -2214,24 +2214,24 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
-  if (self->_type != *(a3 + 13))
+  if (self->_type != *(equal + 13))
   {
     goto LABEL_49;
   }
 
   has = self->_has;
-  v7 = *(a3 + 30);
+  v7 = *(equal + 30);
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_confidence != *(a3 + 8))
+    if ((v7 & 4) == 0 || self->_confidence != *(equal + 8))
     {
       goto LABEL_49;
     }
@@ -2244,7 +2244,7 @@ LABEL_11:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_mountedState != *(a3 + 11))
+    if ((v7 & 0x20) == 0 || self->_mountedState != *(equal + 11))
     {
       goto LABEL_49;
     }
@@ -2257,7 +2257,7 @@ LABEL_11:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_mountedConfidence != *(a3 + 10))
+    if ((v7 & 0x10) == 0 || self->_mountedConfidence != *(equal + 10))
     {
       goto LABEL_49;
     }
@@ -2277,13 +2277,13 @@ LABEL_11:
 
     if (self->_isStanding)
     {
-      if ((*(a3 + 56) & 1) == 0)
+      if ((*(equal + 56) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(a3 + 56))
+    else if (*(equal + 56))
     {
       goto LABEL_49;
     }
@@ -2296,7 +2296,7 @@ LABEL_11:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_tilt != *(a3 + 12))
+    if ((v7 & 0x40) == 0 || self->_tilt != *(equal + 12))
     {
       goto LABEL_49;
     }
@@ -2307,7 +2307,7 @@ LABEL_11:
     goto LABEL_49;
   }
 
-  if (self->_timestamp != *(a3 + 3))
+  if (self->_timestamp != *(equal + 3))
   {
 LABEL_49:
     LOBYTE(v5) = 0;
@@ -2316,7 +2316,7 @@ LABEL_49:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_exitState != *(a3 + 9))
+    if ((v7 & 8) == 0 || self->_exitState != *(equal + 9))
     {
       goto LABEL_49;
     }
@@ -2329,7 +2329,7 @@ LABEL_49:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_estExitTime != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_estExitTime != *(equal + 1))
     {
       goto LABEL_49;
     }
@@ -2342,7 +2342,7 @@ LABEL_49:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_startTime != *(a3 + 2))
+    if ((v7 & 2) == 0 || self->_startTime != *(equal + 2))
     {
       goto LABEL_49;
     }
@@ -2356,20 +2356,20 @@ LABEL_49:
   LOBYTE(v5) = (v7 & 0x100) == 0;
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(a3 + 30) & 0x100) == 0)
+    if ((*(equal + 30) & 0x100) == 0)
     {
       goto LABEL_49;
     }
 
     if (self->_isVehicleConnected)
     {
-      if ((*(a3 + 57) & 1) == 0)
+      if ((*(equal + 57) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(a3 + 57))
+    else if (*(equal + 57))
     {
       goto LABEL_49;
     }
@@ -2586,15 +2586,15 @@ LABEL_18:
   return v5 ^ v6 ^ v7 ^ v8 ^ v14 ^ (2654435761 * self->_type) ^ v22 ^ v23 ^ v27 ^ v31 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_type = *(a3 + 13);
-  v3 = *(a3 + 30);
+  self->_type = *(from + 13);
+  v3 = *(from + 30);
   if ((v3 & 4) != 0)
   {
-    self->_confidence = *(a3 + 8);
+    self->_confidence = *(from + 8);
     *&self->_has |= 4u;
-    v3 = *(a3 + 30);
+    v3 = *(from + 30);
     if ((v3 & 0x20) == 0)
     {
 LABEL_3:
@@ -2612,9 +2612,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_mountedState = *(a3 + 11);
+  self->_mountedState = *(from + 11);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 30);
+  v3 = *(from + 30);
   if ((v3 & 0x10) == 0)
   {
 LABEL_4:
@@ -2627,9 +2627,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_mountedConfidence = *(a3 + 10);
+  self->_mountedConfidence = *(from + 10);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 30);
+  v3 = *(from + 30);
   if ((v3 & 0x80) == 0)
   {
 LABEL_5:
@@ -2642,23 +2642,23 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_isStanding = *(a3 + 56);
+  self->_isStanding = *(from + 56);
   *&self->_has |= 0x80u;
-  if ((*(a3 + 30) & 0x40) != 0)
+  if ((*(from + 30) & 0x40) != 0)
   {
 LABEL_6:
-    self->_tilt = *(a3 + 12);
+    self->_tilt = *(from + 12);
     *&self->_has |= 0x40u;
   }
 
 LABEL_7:
-  self->_timestamp = *(a3 + 3);
-  v4 = *(a3 + 30);
+  self->_timestamp = *(from + 3);
+  v4 = *(from + 30);
   if ((v4 & 8) != 0)
   {
-    self->_exitState = *(a3 + 9);
+    self->_exitState = *(from + 9);
     *&self->_has |= 8u;
-    v4 = *(a3 + 30);
+    v4 = *(from + 30);
     if ((v4 & 1) == 0)
     {
 LABEL_9:
@@ -2676,9 +2676,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  self->_estExitTime = *(a3 + 1);
+  self->_estExitTime = *(from + 1);
   *&self->_has |= 1u;
-  v4 = *(a3 + 30);
+  v4 = *(from + 30);
   if ((v4 & 2) == 0)
   {
 LABEL_10:
@@ -2688,15 +2688,15 @@ LABEL_10:
     }
 
 LABEL_20:
-    self->_isVehicleConnected = *(a3 + 57);
+    self->_isVehicleConnected = *(from + 57);
     *&self->_has |= 0x100u;
     return;
   }
 
 LABEL_19:
-  self->_startTime = *(a3 + 2);
+  self->_startTime = *(from + 2);
   *&self->_has |= 2u;
-  if ((*(a3 + 30) & 0x100) != 0)
+  if ((*(from + 30) & 0x100) != 0)
   {
     goto LABEL_20;
   }

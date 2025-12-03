@@ -1,37 +1,37 @@
 @interface PLModelMigrationAction_RelocateBundleScopeData
-- (id)legacyPrefixPathWithType:(unsigned __int8)a3;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (int64_t)renameWithDestinationPath:(unsigned __int8)a3 error:(id *)a4;
-- (int64_t)updateResourceFilePathWithManagedObjectContext:(id)a3 bundleScope:(unsigned __int16)a4 progress:(id)a5 error:(id *)a6;
+- (id)legacyPrefixPathWithType:(unsigned __int8)type;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
+- (int64_t)renameWithDestinationPath:(unsigned __int8)path error:(id *)error;
+- (int64_t)updateResourceFilePathWithManagedObjectContext:(id)context bundleScope:(unsigned __int16)scope progress:(id)progress error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RelocateBundleScopeData
 
-- (id)legacyPrefixPathWithType:(unsigned __int8)a3
+- (id)legacyPrefixPathWithType:(unsigned __int8)type
 {
-  v3 = a3;
-  v5 = [(PLModelMigrationActionCore *)self pathManager];
-  v6 = [v5 photoDirectoryWithType:v3];
+  typeCopy = type;
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v6 = [pathManager photoDirectoryWithType:typeCopy];
 
-  v7 = [(PLModelMigrationActionCore *)self pathManager];
-  v8 = [v7 photoDirectoryWithType:7];
+  pathManager2 = [(PLModelMigrationActionCore *)self pathManager];
+  v8 = [pathManager2 photoDirectoryWithType:7];
 
-  v9 = [v6 lastPathComponent];
-  v10 = [v8 stringByAppendingPathComponent:v9];
+  lastPathComponent = [v6 lastPathComponent];
+  v10 = [v8 stringByAppendingPathComponent:lastPathComponent];
 
   return v10;
 }
 
-- (int64_t)updateResourceFilePathWithManagedObjectContext:(id)a3 bundleScope:(unsigned __int16)a4 progress:(id)a5 error:(id *)a6
+- (int64_t)updateResourceFilePathWithManagedObjectContext:(id)context bundleScope:(unsigned __int16)scope progress:(id)progress error:(id *)error
 {
-  v8 = a4;
+  scopeCopy = scope;
   v44[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v33 = a5;
-  if (v8 > 5 || ((1 << v8) & 0x2A) == 0)
+  contextCopy = context;
+  progressCopy = progress;
+  if (scopeCopy > 5 || ((1 << scopeCopy) & 0x2A) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_15000.m" lineNumber:519 description:{@"Invalid parameter not satisfying: %@", @"scope == PLBundleScopeCMM || scope == PLBundleScopeSyndication || scope == PLBundleScopeCollectionShare"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_15000.m" lineNumber:519 description:{@"Invalid parameter not satisfying: %@", @"scope == PLBundleScopeCMM || scope == PLBundleScopeSyndication || scope == PLBundleScopeCollectionShare"}];
   }
 
   v13 = MEMORY[0x1E695D5E0];
@@ -41,8 +41,8 @@
   v16 = MEMORY[0x1E696AB28];
   v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != NULL", @"dataStoreKeyData"];
   v44[0] = v17;
-  v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"asset.bundleScope", v8];
-  v44[1] = v18;
+  scopeCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"asset.bundleScope", scopeCopy];
+  v44[1] = scopeCopy;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
   v20 = [v16 andPredicateWithSubpredicates:v19];
   [v15 setPredicate:v20];
@@ -53,7 +53,7 @@
 
   [v15 setFetchBatchSize:100];
   v38 = 0;
-  v22 = [v11 executeFetchRequest:v15 error:&v38];
+  v22 = [contextCopy executeFetchRequest:v15 error:&v38];
   v23 = v38;
   if (v22)
   {
@@ -61,8 +61,8 @@
     *&v41[8] = v41;
     *&v41[16] = 0x2020000000;
     v42 = 0;
-    v24 = [(PLModelMigrationActionCore *)self pathManager];
-    v25 = [v24 photoLibraryPathTypeForBundleScope:v8];
+    pathManager = [(PLModelMigrationActionCore *)self pathManager];
+    v25 = [pathManager photoLibraryPathTypeForBundleScope:scopeCopy];
 
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
@@ -71,8 +71,8 @@
     v37 = v25;
     v34[4] = self;
     v36 = v41;
-    v35 = v33;
-    v26 = [v11 enumerateWithIncrementalSaveUsingObjects:v22 withBlock:v34];
+    v35 = progressCopy;
+    v26 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v22 withBlock:v34];
 
     if (v26)
     {
@@ -106,11 +106,11 @@
     }
 
     _Block_object_dispose(v41, 8);
-    if (a6)
+    if (error)
     {
 LABEL_17:
       v31 = v26;
-      *a6 = v26;
+      *error = v26;
     }
   }
 
@@ -128,7 +128,7 @@ LABEL_17:
 
     v28 = 3;
     v26 = v23;
-    if (a6)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -137,22 +137,22 @@ LABEL_17:
   return v28;
 }
 
-- (int64_t)renameWithDestinationPath:(unsigned __int8)a3 error:(id *)a4
+- (int64_t)renameWithDestinationPath:(unsigned __int8)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v100 = *MEMORY[0x1E69E9840];
-  v7 = [(PLModelMigrationActionCore *)self pathManager];
-  v8 = [v7 photoDirectoryWithType:v5];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v8 = [pathManager photoDirectoryWithType:pathCopy];
 
-  v9 = [(PLModelMigrationAction_RelocateBundleScopeData *)self legacyPrefixPathWithType:v5];
-  v10 = [v9 fileSystemRepresentation];
-  v11 = [v8 fileSystemRepresentation];
-  rename(v10, v11, v12);
+  v9 = [(PLModelMigrationAction_RelocateBundleScopeData *)self legacyPrefixPathWithType:pathCopy];
+  fileSystemRepresentation = [v9 fileSystemRepresentation];
+  fileSystemRepresentation2 = [v8 fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v12);
   if (v13)
   {
     if (*__error() != 2)
     {
-      v57 = a4;
+      errorCopy = error;
       v21 = MEMORY[0x1E696ABC0];
       v22 = *MEMORY[0x1E696A798];
       v23 = *__error();
@@ -180,9 +180,9 @@ LABEL_17:
 
       if (v33)
       {
-        v36 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v36)
+        if (logger)
         {
           v98 = 0u;
           v99 = 0u;
@@ -216,15 +216,15 @@ LABEL_17:
           memset(buf, 0, sizeof(buf));
           v37 = PLMigrationGetLog();
           os_log_type_enabled(v37, OS_LOG_TYPE_ERROR);
-          v38 = [v9 lastPathComponent];
-          v39 = [v8 lastPathComponent];
+          lastPathComponent = [v9 lastPathComponent];
+          lastPathComponent2 = [v8 lastPathComponent];
           v40 = *__error();
           v41 = __error();
           v42 = strerror(*v41);
           v58 = 138544130;
-          v59 = v38;
+          v59 = lastPathComponent;
           v60 = 2114;
-          v61 = v39;
+          v61 = lastPathComponent2;
           v62 = 1024;
           v63 = v40;
           v64 = 2082;
@@ -246,15 +246,15 @@ LABEL_17:
           v50 = PLMigrationGetLog();
           if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
           {
-            v51 = [v9 lastPathComponent];
-            v52 = [v8 lastPathComponent];
+            lastPathComponent3 = [v9 lastPathComponent];
+            lastPathComponent4 = [v8 lastPathComponent];
             v53 = *__error();
             v54 = __error();
             v55 = strerror(*v54);
             *buf = 138544130;
-            *&buf[4] = v51;
+            *&buf[4] = lastPathComponent3;
             *&buf[12] = 2114;
-            *&buf[14] = v52;
+            *&buf[14] = lastPathComponent4;
             *&buf[22] = 1024;
             *&buf[24] = v53;
             *&buf[28] = 2082;
@@ -265,8 +265,8 @@ LABEL_17:
       }
 
       v47 = 3;
-      a4 = v57;
-      if (v57)
+      error = errorCopy;
+      if (errorCopy)
       {
         goto LABEL_15;
       }
@@ -279,9 +279,9 @@ LABEL_17:
 
     if (v15)
     {
-      v16 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v16)
+      if (logger2)
       {
         v98 = 0u;
         v99 = 0u;
@@ -315,9 +315,9 @@ LABEL_17:
         memset(buf, 0, sizeof(buf));
         v17 = PLMigrationGetLog();
         os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-        v18 = [v9 lastPathComponent];
+        lastPathComponent5 = [v9 lastPathComponent];
         v58 = 138543362;
-        v59 = v18;
+        v59 = lastPathComponent5;
         LODWORD(v56) = 12;
         v19 = _os_log_send_and_compose_impl();
 
@@ -335,9 +335,9 @@ LABEL_17:
         v45 = PLMigrationGetLog();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
         {
-          v46 = [v9 lastPathComponent];
+          lastPathComponent6 = [v9 lastPathComponent];
           *buf = 138543362;
-          *&buf[4] = v46;
+          *&buf[4] = lastPathComponent6;
           _os_log_impl(&dword_19BF1F000, v45, OS_LOG_TYPE_DEFAULT, "skipping rename of filename %{public}@", buf, 0xCu);
         }
       }
@@ -346,11 +346,11 @@ LABEL_17:
 
   v34 = 0;
   v47 = 1;
-  if (a4)
+  if (error)
   {
 LABEL_15:
     v48 = v34;
-    *a4 = v34;
+    *error = v34;
   }
 
 LABEL_16:
@@ -358,14 +358,14 @@ LABEL_16:
   return v47;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v110[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLModelMigrationActionCore *)self pathManager];
-  v8 = [v7 isUBF];
+  contextCopy = context;
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  isUBF = [pathManager isUBF];
 
-  if (v8)
+  if (isUBF)
   {
     v9 = MEMORY[0x1E695D5E0];
     v10 = +[PLInternalResource entityName];
@@ -382,7 +382,7 @@ LABEL_16:
 
     v72 = 0;
     v63 = v11;
-    v17 = [v6 countForFetchRequest:v11 error:&v72];
+    v17 = [contextCopy countForFetchRequest:v11 error:&v72];
     v18 = v72;
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -391,9 +391,9 @@ LABEL_16:
 
       if (v20)
       {
-        v21 = [(PLModelMigrationActionCore *)self logger];
+        logger = [(PLModelMigrationActionCore *)self logger];
 
-        if (v21)
+        if (logger)
         {
           v107 = 0u;
           v108 = 0u;
@@ -461,13 +461,13 @@ LABEL_16:
     else
     {
       v33 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [&unk_1F0FBFCA0 count] + v17, 0);
-      v34 = [(PLModelMigrationActionCore *)self pathManager];
+      pathManager2 = [(PLModelMigrationActionCore *)self pathManager];
       v35 = *MEMORY[0x1E69BFF80];
       v71 = v18;
-      v36 = [v34 photoDirectoryWithType:1 leafType:1 additionalPathComponents:v35 createIfNeeded:1 error:&v71];
+      v36 = [pathManager2 photoDirectoryWithType:1 leafType:1 additionalPathComponents:v35 createIfNeeded:1 error:&v71];
       v37 = v71;
 
-      v64 = v6;
+      v64 = contextCopy;
       if (v36)
       {
         v69 = 0u;
@@ -480,7 +480,7 @@ LABEL_16:
           v39 = v38;
           v40 = *v68;
           v41 = 1;
-          v62 = a4;
+          errorCopy = error;
           while (2)
           {
             for (i = 0; i != v39; ++i)
@@ -490,15 +490,15 @@ LABEL_16:
                 objc_enumerationMutation(&unk_1F0FBFCA0);
               }
 
-              v43 = [*(*(&v67 + 1) + 8 * i) unsignedIntValue];
-              v44 = [(PLModelMigrationActionCore *)self pathManager];
-              v45 = [v44 photoLibraryPathTypeForBundleScope:v43];
+              unsignedIntValue = [*(*(&v67 + 1) + 8 * i) unsignedIntValue];
+              pathManager3 = [(PLModelMigrationActionCore *)self pathManager];
+              v45 = [pathManager3 photoLibraryPathTypeForBundleScope:unsignedIntValue];
 
               v66 = v37;
               v46 = [(PLModelMigrationAction_RelocateBundleScopeData *)self renameWithDestinationPath:v45 error:&v66];
               v47 = v66;
 
-              if (v46 != 1 || v43 == 2)
+              if (v46 != 1 || unsignedIntValue == 2)
               {
                 v37 = v47;
               }
@@ -506,7 +506,7 @@ LABEL_16:
               else
               {
                 v65 = v47;
-                v46 = [(PLModelMigrationAction_RelocateBundleScopeData *)self updateResourceFilePathWithManagedObjectContext:v64 bundleScope:v43 progress:v33 error:&v65];
+                v46 = [(PLModelMigrationAction_RelocateBundleScopeData *)self updateResourceFilePathWithManagedObjectContext:v64 bundleScope:unsignedIntValue progress:v33 error:&v65];
                 v37 = v65;
               }
 
@@ -514,13 +514,13 @@ LABEL_16:
               if (v46 != 1)
               {
                 v41 = v46;
-                a4 = v62;
+                error = errorCopy;
                 goto LABEL_45;
               }
             }
 
             v39 = [&unk_1F0FBFCA0 countByEnumeratingWithState:&v67 objects:v109 count:16];
-            a4 = v62;
+            error = errorCopy;
             if (v39)
             {
               continue;
@@ -543,9 +543,9 @@ LABEL_16:
 
         if (v51)
         {
-          v52 = [(PLModelMigrationActionCore *)self logger];
+          logger2 = [(PLModelMigrationActionCore *)self logger];
 
-          if (v52)
+          if (logger2)
           {
             v107 = 0u;
             v108 = 0u;
@@ -613,7 +613,7 @@ LABEL_16:
 LABEL_45:
 
       v18 = v37;
-      v6 = v64;
+      contextCopy = v64;
     }
   }
 
@@ -631,9 +631,9 @@ LABEL_45:
 
     if (v26)
     {
-      v29 = [(PLModelMigrationActionCore *)self logger];
+      logger3 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v29)
+      if (logger3)
       {
         v107 = 0u;
         v108 = 0u;
@@ -697,10 +697,10 @@ LABEL_45:
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
     v58 = v18;
-    *a4 = v18;
+    *error = v18;
   }
 
   return v41;

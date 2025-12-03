@@ -1,19 +1,19 @@
 @interface PUAirPlayScreenDetector
-- (BOOL)shouldIgnoreScreen:(id)a3 displayInfo:(id)a4;
+- (BOOL)shouldIgnoreScreen:(id)screen displayInfo:(id)info;
 - (NSArray)availableScreens;
 - (PUAirPlayScreenDetector)init;
 - (PUAirPlayScreenReceiver)receiver;
-- (void)_createAirPlayScreenAndNotifyDelegate:(id)a3;
-- (void)_enumerateAllScreensAndDisplayInfos:(id)a3;
-- (void)_handleUpdatedDisplayInfo:(id)a3;
-- (void)_performBlockWithDisplayInfoForScreen:(id)a3 handler:(id)a4;
-- (void)_performBlockWithScreenForDisplayInfo:(id)a3 handler:(id)a4;
-- (void)_removeAirPlayScreenAndNotifyDelegate:(id)a3;
+- (void)_createAirPlayScreenAndNotifyDelegate:(id)delegate;
+- (void)_enumerateAllScreensAndDisplayInfos:(id)infos;
+- (void)_handleUpdatedDisplayInfo:(id)info;
+- (void)_performBlockWithDisplayInfoForScreen:(id)screen handler:(id)handler;
+- (void)_performBlockWithScreenForDisplayInfo:(id)info handler:(id)handler;
+- (void)_removeAirPlayScreenAndNotifyDelegate:(id)delegate;
 - (void)_scanForAvailableScreens;
-- (void)_sceneDidDisconnect:(id)a3;
-- (void)_sceneWillConnect:(id)a3;
+- (void)_sceneDidDisconnect:(id)disconnect;
+- (void)_sceneWillConnect:(id)connect;
 - (void)_setUpSceneNotifications;
-- (void)externalDisplayDidUpdateProperties:(id)a3;
+- (void)externalDisplayDidUpdateProperties:(id)properties;
 @end
 
 @implementation PUAirPlayScreenDetector
@@ -25,55 +25,55 @@
   return WeakRetained;
 }
 
-- (void)externalDisplayDidUpdateProperties:(id)a3
+- (void)externalDisplayDidUpdateProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__PUAirPlayScreenDetector_externalDisplayDidUpdateProperties___block_invoke;
   v6[3] = &unk_1E7B80C38;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = propertiesCopy;
+  v5 = propertiesCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_sceneDidDisconnect:(id)a3
+- (void)_sceneDidDisconnect:(id)disconnect
 {
-  v11 = a3;
-  v4 = [v11 object];
+  disconnectCopy = disconnect;
+  object = [disconnectCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v11 object];
-    v7 = [v6 screen];
+    object2 = [disconnectCopy object];
+    screen = [object2 screen];
     detectedScreensMap = self->_detectedScreensMap;
-    v9 = [(UIScreen *)v7 pu_hardwareIdentifier];
-    v10 = [(NSMutableDictionary *)detectedScreensMap objectForKey:v9];
+    pu_hardwareIdentifier = [(UIScreen *)screen pu_hardwareIdentifier];
+    v10 = [(NSMutableDictionary *)detectedScreensMap objectForKey:pu_hardwareIdentifier];
 
     [(PUAirPlayScreenDetector *)self _removeAirPlayScreenAndNotifyDelegate:v10];
   }
 }
 
-- (void)_sceneWillConnect:(id)a3
+- (void)_sceneWillConnect:(id)connect
 {
-  v4 = a3;
-  v5 = [v4 object];
+  connectCopy = connect;
+  object = [connectCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
-    v8 = [v7 screen];
+    object2 = [connectCopy object];
+    screen = [object2 screen];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45__PUAirPlayScreenDetector__sceneWillConnect___block_invoke;
     v9[3] = &unk_1E7B74C70;
     v9[4] = self;
-    [(PUAirPlayScreenDetector *)self _performBlockWithDisplayInfoForScreen:v8 handler:v9];
+    [(PUAirPlayScreenDetector *)self _performBlockWithDisplayInfoForScreen:screen handler:v9];
   }
 }
 
@@ -88,23 +88,23 @@ void __45__PUAirPlayScreenDetector__sceneWillConnect___block_invoke(uint64_t a1,
 
 - (void)_setUpSceneNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__sceneWillConnect_ name:*MEMORY[0x1E69DE350] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__sceneWillConnect_ name:*MEMORY[0x1E69DE350] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__sceneDidDisconnect_ name:*MEMORY[0x1E69DE340] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__sceneDidDisconnect_ name:*MEMORY[0x1E69DE340] object:0];
 }
 
-- (void)_enumerateAllScreensAndDisplayInfos:(id)a3
+- (void)_enumerateAllScreensAndDisplayInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   externalDisplayService = self->_externalDisplayService;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PUAirPlayScreenDetector__enumerateAllScreensAndDisplayInfos___block_invoke;
   v7[3] = &unk_1E7B7DAA8;
-  v8 = v4;
-  v6 = v4;
+  v8 = infosCopy;
+  v6 = infosCopy;
   [(SBSExternalDisplayService *)externalDisplayService getConnectedDisplayInfoWithCompletionHandler:v7];
 }
 
@@ -251,19 +251,19 @@ void __63__PUAirPlayScreenDetector__enumerateAllScreensAndDisplayInfos___block_i
   }
 }
 
-- (void)_performBlockWithScreenForDisplayInfo:(id)a3 handler:(id)a4
+- (void)_performBlockWithScreenForDisplayInfo:(id)info handler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 connectedScenes];
+  infoCopy = info;
+  handlerCopy = handler;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v7;
+  v8 = connectedScenes;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -283,10 +283,10 @@ void __63__PUAirPlayScreenDetector__enumerateAllScreensAndDisplayInfos___block_i
         if (objc_opt_isKindOfClass())
         {
           v14 = v13;
-          v15 = [v14 screen];
-          v16 = [(UIScreen *)v15 pu_hardwareIdentifier];
-          v17 = [v19 identifier];
-          v18 = [v16 isEqualToString:v17];
+          screen = [v14 screen];
+          pu_hardwareIdentifier = [(UIScreen *)screen pu_hardwareIdentifier];
+          identifier = [infoCopy identifier];
+          v18 = [pu_hardwareIdentifier isEqualToString:identifier];
 
           if (v18)
           {
@@ -305,35 +305,35 @@ void __63__PUAirPlayScreenDetector__enumerateAllScreensAndDisplayInfos___block_i
       break;
     }
 
-    v15 = 0;
+    screen = 0;
   }
 
   else
   {
-    v15 = 0;
+    screen = 0;
   }
 
 LABEL_14:
 
-  v5[2](v5, v15, v19);
+  handlerCopy[2](handlerCopy, screen, infoCopy);
 }
 
-- (void)_performBlockWithDisplayInfoForScreen:(id)a3 handler:(id)a4
+- (void)_performBlockWithDisplayInfoForScreen:(id)screen handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  screenCopy = screen;
+  handlerCopy = handler;
+  if (screenCopy)
   {
-    v8 = [(UIScreen *)v6 pu_hardwareIdentifier];
+    pu_hardwareIdentifier = [(UIScreen *)screenCopy pu_hardwareIdentifier];
     externalDisplayService = self->_externalDisplayService;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __73__PUAirPlayScreenDetector__performBlockWithDisplayInfoForScreen_handler___block_invoke;
     v11[3] = &unk_1E7B74C98;
-    v12 = v8;
-    v14 = v7;
-    v13 = v6;
-    v10 = v8;
+    v12 = pu_hardwareIdentifier;
+    v14 = handlerCopy;
+    v13 = screenCopy;
+    v10 = pu_hardwareIdentifier;
     [(SBSExternalDisplayService *)externalDisplayService getConnectedDisplayInfoWithCompletionHandler:v11];
   }
 }
@@ -393,52 +393,52 @@ LABEL_11:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_removeAirPlayScreenAndNotifyDelegate:(id)a3
+- (void)_removeAirPlayScreenAndNotifyDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
-    v5 = [v4 screen];
-    v7 = [(UIScreen *)v5 pu_hardwareIdentifier];
+    delegateCopy = delegate;
+    screen = [delegateCopy screen];
+    pu_hardwareIdentifier = [(UIScreen *)screen pu_hardwareIdentifier];
 
-    [(NSMutableDictionary *)self->_detectedScreensMap removeObjectForKey:v7];
-    v6 = [(PUAirPlayScreenDetector *)self receiver];
-    [v6 screenDetector:self didLoseScreen:v4];
+    [(NSMutableDictionary *)self->_detectedScreensMap removeObjectForKey:pu_hardwareIdentifier];
+    receiver = [(PUAirPlayScreenDetector *)self receiver];
+    [receiver screenDetector:self didLoseScreen:delegateCopy];
   }
 }
 
-- (void)_createAirPlayScreenAndNotifyDelegate:(id)a3
+- (void)_createAirPlayScreenAndNotifyDelegate:(id)delegate
 {
-  v4 = a3;
-  v7 = [(UIScreen *)v4 pu_hardwareIdentifier];
-  v5 = [[PUAirPlayScreen alloc] initWithScreen:v4];
+  delegateCopy = delegate;
+  pu_hardwareIdentifier = [(UIScreen *)delegateCopy pu_hardwareIdentifier];
+  v5 = [[PUAirPlayScreen alloc] initWithScreen:delegateCopy];
 
-  [(NSMutableDictionary *)self->_detectedScreensMap setObject:v5 forKey:v7];
-  v6 = [(PUAirPlayScreenDetector *)self receiver];
-  [v6 screenDetector:self didDetectScreen:v5];
+  [(NSMutableDictionary *)self->_detectedScreensMap setObject:v5 forKey:pu_hardwareIdentifier];
+  receiver = [(PUAirPlayScreenDetector *)self receiver];
+  [receiver screenDetector:self didDetectScreen:v5];
 }
 
-- (void)_handleUpdatedDisplayInfo:(id)a3
+- (void)_handleUpdatedDisplayInfo:(id)info
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = PLAirPlayGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 identifier];
+    identifier = [infoCopy identifier];
     *buf = 138543362;
-    v14 = v6;
+    v14 = identifier;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_INFO, "Received update info for screen: %{public}@", buf, 0xCu);
   }
 
   detectedScreensMap = self->_detectedScreensMap;
-  v8 = [v4 identifier];
-  v9 = [(NSMutableDictionary *)detectedScreensMap objectForKey:v8];
+  identifier2 = [infoCopy identifier];
+  v9 = [(NSMutableDictionary *)detectedScreensMap objectForKey:identifier2];
 
   if (v9)
   {
-    v10 = [v9 screen];
-    v11 = [(PUAirPlayScreenDetector *)self shouldIgnoreScreen:v10 displayInfo:v4];
+    screen = [v9 screen];
+    v11 = [(PUAirPlayScreenDetector *)self shouldIgnoreScreen:screen displayInfo:infoCopy];
 
     if (v11)
     {
@@ -453,7 +453,7 @@ LABEL_11:
     v12[2] = __53__PUAirPlayScreenDetector__handleUpdatedDisplayInfo___block_invoke;
     v12[3] = &unk_1E7B74C70;
     v12[4] = self;
-    [(PUAirPlayScreenDetector *)self _performBlockWithScreenForDisplayInfo:v4 handler:v12];
+    [(PUAirPlayScreenDetector *)self _performBlockWithScreenForDisplayInfo:infoCopy handler:v12];
   }
 }
 
@@ -505,22 +505,22 @@ void __51__PUAirPlayScreenDetector__scanForAvailableScreens__block_invoke(uint64
   }
 }
 
-- (BOOL)shouldIgnoreScreen:(id)a3 displayInfo:(id)a4
+- (BOOL)shouldIgnoreScreen:(id)screen displayInfo:(id)info
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  screenCopy = screen;
+  infoCopy = info;
+  traitCollection = [screenCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 == 3)
+  if (userInterfaceIdiom == 3)
   {
     v9 = PLAirPlayGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(UIScreen *)v5 pu_hardwareIdentifier];
+      pu_hardwareIdentifier = [(UIScreen *)screenCopy pu_hardwareIdentifier];
       v21 = 138543362;
-      v22 = v10;
+      v22 = pu_hardwareIdentifier;
       v11 = "Ignoring CarPlay screen: %{public}@";
 LABEL_17:
       _os_log_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_INFO, v11, &v21, 0xCu);
@@ -531,17 +531,17 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v12 = [v5 displayConfiguration];
-  v13 = [v12 isMainDisplay];
+  displayConfiguration = [screenCopy displayConfiguration];
+  isMainDisplay = [displayConfiguration isMainDisplay];
 
-  if (v13)
+  if (isMainDisplay)
   {
     v9 = PLAirPlayGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(UIScreen *)v5 pu_hardwareIdentifier];
+      pu_hardwareIdentifier = [(UIScreen *)screenCopy pu_hardwareIdentifier];
       v21 = 138543362;
-      v22 = v10;
+      v22 = pu_hardwareIdentifier;
       v11 = "Ignoring main screen: %{public}@";
       goto LABEL_17;
     }
@@ -554,20 +554,20 @@ LABEL_18:
 
   if ((PFIsCamera() & 1) != 0 || PFIsPhotosAppAnyPlatform())
   {
-    v14 = [v5 displayConfiguration];
-    v15 = [v14 name];
-    v16 = [MEMORY[0x1E6979328] TVOutDisplay];
-    v17 = [v16 name];
-    v18 = [v15 isEqualToString:v17];
+    displayConfiguration2 = [screenCopy displayConfiguration];
+    name = [displayConfiguration2 name];
+    tVOutDisplay = [MEMORY[0x1E6979328] TVOutDisplay];
+    name2 = [tVOutDisplay name];
+    v18 = [name isEqualToString:name2];
 
     if (v18)
     {
       v9 = PLAirPlayGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(UIScreen *)v5 pu_hardwareIdentifier];
+        pu_hardwareIdentifier = [(UIScreen *)screenCopy pu_hardwareIdentifier];
         v21 = 138543362;
-        v22 = v10;
+        v22 = pu_hardwareIdentifier;
         v11 = "Ignoring TVOut screen: %{public}@";
         goto LABEL_17;
       }
@@ -576,14 +576,14 @@ LABEL_18:
     }
   }
 
-  if (v6 && ([v6 isMirrored] & 1) == 0)
+  if (infoCopy && ([infoCopy isMirrored] & 1) == 0)
   {
     v9 = PLAirPlayGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(UIScreen *)v5 pu_hardwareIdentifier];
+      pu_hardwareIdentifier = [(UIScreen *)screenCopy pu_hardwareIdentifier];
       v21 = 138543362;
-      v22 = v10;
+      v22 = pu_hardwareIdentifier;
       v11 = "Ignoring non-mirrored screen: %{public}@";
       goto LABEL_17;
     }
@@ -599,10 +599,10 @@ LABEL_19:
 
 - (NSArray)availableScreens
 {
-  v2 = [(NSMutableDictionary *)self->_detectedScreensMap objectEnumerator];
-  v3 = [v2 allObjects];
+  objectEnumerator = [(NSMutableDictionary *)self->_detectedScreensMap objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (PUAirPlayScreenDetector)init

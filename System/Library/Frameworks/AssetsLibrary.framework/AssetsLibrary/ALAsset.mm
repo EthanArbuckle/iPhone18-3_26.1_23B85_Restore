@@ -1,6 +1,6 @@
 @interface ALAsset
-+ (CGSize)largePreviewImageSizeForSize:(CGSize)a3;
-- (ALAsset)initWithManagedAsset:(id)a3 library:(id)a4;
++ (CGSize)largePreviewImageSizeForSize:(CGSize)size;
+- (ALAsset)initWithManagedAsset:(id)asset library:(id)library;
 - (ALAsset)originalAsset;
 - (ALAssetRepresentation)defaultRepresentation;
 - (ALAssetRepresentation)representationForUTI:(NSString *)representationUTI;
@@ -9,7 +9,7 @@
 - (BOOL)isValid;
 - (CGImageRef)aspectRatioThumbnail;
 - (CGImageRef)thumbnail;
-- (id)_newContentEditingOutputWithType:(int64_t)a3;
+- (id)_newContentEditingOutputWithType:(int64_t)type;
 - (id)_typeAsString;
 - (id)_uuid;
 - (id)valueForProperty:(NSString *)property;
@@ -27,9 +27,9 @@
 {
   if ([(ALAsset *)self isValid])
   {
-    v3 = [(ALAsset *)self internal];
+    internal = [(ALAsset *)self internal];
 
-    [(ALAssetPrivate *)v3 _performBlockAndWait:&__block_literal_global];
+    [(ALAssetPrivate *)internal _performBlockAndWait:&__block_literal_global];
   }
 }
 
@@ -103,7 +103,7 @@ LABEL_6:
   v9[1] = v9;
   v9[2] = 0x2020000000;
   v10 = 0;
-  v7 = [MEMORY[0x277D3B240] sharedInstance];
+  mEMORY[0x277D3B240] = [MEMORY[0x277D3B240] sharedInstance];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__ALAsset_setVideoAtPath_completionBlock___block_invoke;
@@ -112,7 +112,7 @@ LABEL_6:
   v8[5] = videoPathURL;
   v8[6] = completionBlock;
   v8[7] = v9;
-  [v7 checkPhotosAccessAllowedWithScope:4 handler:v8];
+  [mEMORY[0x277D3B240] checkPhotosAccessAllowedWithScope:4 handler:v8];
   _Block_object_dispose(v9, 8);
 }
 
@@ -217,7 +217,7 @@ uint64_t __42__ALAsset_setVideoAtPath_completionBlock___block_invoke_3(uint64_t 
   v10[1] = v10;
   v10[2] = 0x2020000000;
   v11 = 0;
-  v8 = [MEMORY[0x277D3B240] sharedInstance];
+  mEMORY[0x277D3B240] = [MEMORY[0x277D3B240] sharedInstance];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__ALAsset_setImageData_metadata_completionBlock___block_invoke;
@@ -226,7 +226,7 @@ uint64_t __42__ALAsset_setVideoAtPath_completionBlock___block_invoke_3(uint64_t 
   v9[5] = imageData;
   v9[6] = completionBlock;
   v9[7] = v10;
-  [v8 checkPhotosAccessAllowedWithScope:4 handler:v9];
+  [mEMORY[0x277D3B240] checkPhotosAccessAllowedWithScope:4 handler:v9];
   _Block_object_dispose(v10, 8);
 }
 
@@ -325,7 +325,7 @@ uint64_t __49__ALAsset_setImageData_metadata_completionBlock___block_invoke_3(ui
   return result;
 }
 
-- (id)_newContentEditingOutputWithType:(int64_t)a3
+- (id)_newContentEditingOutputWithType:(int64_t)type
 {
   v4 = [@"assets-library-unsupported-edit" dataUsingEncoding:4];
   v5 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
@@ -369,7 +369,7 @@ uint64_t __49__ALAsset_setImageData_metadata_completionBlock___block_invoke_3(ui
 
   _Block_object_dispose(&v17, 8);
   v9 = [v8 alloc];
-  v10 = [v9 initWithAdjustmentBaseVersion:0 mediaType:a3 appropriateForURL:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "mainBundle"), "bundleURL")}];
+  v10 = [v9 initWithAdjustmentBaseVersion:0 mediaType:type appropriateForURL:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "mainBundle"), "bundleURL")}];
   [v10 setAdjustmentData:v7];
 
   return v10;
@@ -377,9 +377,9 @@ uint64_t __49__ALAsset_setImageData_metadata_completionBlock___block_invoke_3(ui
 
 - (BOOL)isDeletable
 {
-  v2 = [(ALAsset *)self internal];
+  internal = [(ALAsset *)self internal];
 
-  return [(ALAssetPrivate *)v2 isDeletable];
+  return [(ALAssetPrivate *)internal isDeletable];
 }
 
 - (BOOL)isEditable
@@ -392,14 +392,14 @@ uint64_t __49__ALAsset_setImageData_metadata_completionBlock___block_invoke_3(ui
   v4 = v3;
   if (v3 && [v3 length])
   {
-    v5 = [(ALAsset *)self internal];
+    internal = [(ALAsset *)self internal];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __21__ALAsset_isEditable__block_invoke;
     v8[3] = &unk_278A074A0;
     v8[4] = v4;
     v8[5] = &v9;
-    [(ALAssetPrivate *)v5 _performBlockAndWait:v8];
+    [(ALAssetPrivate *)internal _performBlockAndWait:v8];
   }
 
   v6 = *(v10 + 24);
@@ -436,14 +436,14 @@ uint64_t __21__ALAsset_isEditable__block_invoke(uint64_t a1, uint64_t a2, void *
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
   v11 = 0;
-  v2 = [(ALAsset *)self internal];
+  internal = [(ALAsset *)self internal];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __24__ALAsset_originalAsset__block_invoke;
   v5[3] = &unk_278A074A0;
-  v5[4] = v2;
+  v5[4] = internal;
   v5[5] = &v6;
-  [(ALAssetPrivate *)v2 _performBlockAndWait:v5];
+  [(ALAssetPrivate *)internal _performBlockAndWait:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -467,10 +467,10 @@ ALAsset *__24__ALAsset_originalAsset__block_invoke(uint64_t a1, uint64_t a2, voi
 
 - (void)writeModifiedVideoAtPathToSavedPhotosAlbum:(NSURL *)videoPathURL completionBlock:(ALAssetsLibraryWriteVideoCompletionBlock)completionBlock
 {
-  v7 = [(ALAsset *)self _uuid];
-  if (v7)
+  _uuid = [(ALAsset *)self _uuid];
+  if (_uuid)
   {
-    v8 = v7;
+    v8 = _uuid;
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v9 setObject:v8 forKey:*MEMORY[0x277D3B290]];
     [(ALAssetsLibrary *)[(ALAssetPrivate *)[(ALAsset *)self internal] library] _writeVideoAtPathToSavedPhotosAlbum:videoPathURL internalProperties:v9 completionBlock:completionBlock];
@@ -479,10 +479,10 @@ ALAsset *__24__ALAsset_originalAsset__block_invoke(uint64_t a1, uint64_t a2, voi
 
 - (void)writeModifiedImageDataToSavedPhotosAlbum:(NSData *)imageData metadata:(NSDictionary *)metadata completionBlock:(ALAssetsLibraryWriteImageCompletionBlock)completionBlock
 {
-  v9 = [(ALAsset *)self _uuid];
-  if (v9)
+  _uuid = [(ALAsset *)self _uuid];
+  if (_uuid)
   {
-    v10 = v9;
+    v10 = _uuid;
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v11 setObject:v10 forKey:*MEMORY[0x277D3B290]];
     [(ALAssetsLibrary *)[(ALAssetPrivate *)[(ALAsset *)self internal] library] _writeImageToSavedPhotosAlbum:0 orientation:0 imageData:imageData metadata:metadata internalProperties:v11 completionBlock:completionBlock];
@@ -497,27 +497,27 @@ ALAsset *__24__ALAsset_originalAsset__block_invoke(uint64_t a1, uint64_t a2, voi
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  v2 = [(ALAsset *)self internal];
+  internal = [(ALAsset *)self internal];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__ALAsset_aspectRatioThumbnail__block_invoke;
   v7[3] = &unk_278A07BB8;
   v7[4] = &v8;
-  [(ALAssetPrivate *)v2 _performBlockAndWait:v7];
+  [(ALAssetPrivate *)internal _performBlockAndWait:v7];
   v3 = v9[5];
   if (v3)
   {
-    v4 = [v3 CGImage];
+    cGImage = [v3 CGImage];
     v5 = v9[5];
   }
 
   else
   {
-    v4 = 0;
+    cGImage = 0;
   }
 
   _Block_object_dispose(&v8, 8);
-  return v4;
+  return cGImage;
 }
 
 uint64_t __31__ALAsset_aspectRatioThumbnail__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -545,27 +545,27 @@ uint64_t __31__ALAsset_aspectRatioThumbnail__block_invoke(uint64_t a1, uint64_t 
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  v2 = [(ALAsset *)self internal];
+  internal = [(ALAsset *)self internal];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __20__ALAsset_thumbnail__block_invoke;
   v7[3] = &unk_278A07BB8;
   v7[4] = &v8;
-  [(ALAssetPrivate *)v2 _performBlockAndWait:v7];
+  [(ALAssetPrivate *)internal _performBlockAndWait:v7];
   v3 = v9[5];
   if (v3)
   {
-    v4 = [v3 CGImage];
+    cGImage = [v3 CGImage];
     v5 = v9[5];
   }
 
   else
   {
-    v4 = 0;
+    cGImage = 0;
   }
 
   _Block_object_dispose(&v8, 8);
-  return v4;
+  return cGImage;
 }
 
 uint64_t __20__ALAsset_thumbnail__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -595,15 +595,15 @@ uint64_t __20__ALAsset_thumbnail__block_invoke(uint64_t a1, uint64_t a2, void *a
   v14 = 0;
   if ([(ALAsset *)self isValid])
   {
-    v5 = [(ALAsset *)self internal];
+    internal = [(ALAsset *)self internal];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __32__ALAsset_representationForUTI___block_invoke;
     v8[3] = &unk_278A074C8;
-    v8[5] = v5;
+    v8[5] = internal;
     v8[6] = &v9;
     v8[4] = representationUTI;
-    [(ALAssetPrivate *)v5 _performBlockAndWait:v8];
+    [(ALAssetPrivate *)internal _performBlockAndWait:v8];
   }
 
   v6 = v10[5];
@@ -697,14 +697,14 @@ LABEL_17:
   v12 = 0;
   if ([(ALAsset *)self isValid])
   {
-    v3 = [(ALAsset *)self internal];
+    internal = [(ALAsset *)self internal];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __32__ALAsset_defaultRepresentation__block_invoke;
     v6[3] = &unk_278A074A0;
-    v6[4] = v3;
+    v6[4] = internal;
     v6[5] = &v7;
-    [(ALAssetPrivate *)v3 _performBlockAndWait:v6];
+    [(ALAssetPrivate *)internal _performBlockAndWait:v6];
   }
 
   v4 = v8[5];
@@ -737,14 +737,14 @@ ALAssetRepresentation *__32__ALAsset_defaultRepresentation__block_invoke(uint64_
   v14 = 0;
   if ([(ALAsset *)self isValid])
   {
-    v5 = [(ALAsset *)self internal];
+    internal = [(ALAsset *)self internal];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __28__ALAsset_valueForProperty___block_invoke;
     v8[3] = &unk_278A074A0;
     v8[4] = property;
     v8[5] = &v9;
-    [(ALAssetPrivate *)v5 _performBlockAndWait:v8];
+    [(ALAssetPrivate *)internal _performBlockAndWait:v8];
   }
 
   v6 = v10[5];
@@ -895,9 +895,9 @@ LABEL_40:
 
 - (BOOL)isValid
 {
-  v2 = [(ALAsset *)self internal];
+  internal = [(ALAsset *)self internal];
 
-  return [(ALAssetPrivate *)v2 isValid];
+  return [(ALAssetPrivate *)internal isValid];
 }
 
 - (id)_uuid
@@ -908,13 +908,13 @@ LABEL_40:
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
   v11 = 0;
-  v2 = [(ALAsset *)self internal];
+  internal = [(ALAsset *)self internal];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __16__ALAsset__uuid__block_invoke;
   v5[3] = &unk_278A07BB8;
   v5[4] = &v6;
-  [(ALAssetPrivate *)v2 _performBlockAndWait:v5];
+  [(ALAssetPrivate *)internal _performBlockAndWait:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -933,13 +933,13 @@ uint64_t __16__ALAsset__uuid__block_invoke(uint64_t a1, uint64_t a2, void *a3)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 3;
-  v2 = [(ALAsset *)self internal];
+  internal = [(ALAsset *)self internal];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __24__ALAsset__typeAsString__block_invoke;
   v6[3] = &unk_278A07BB8;
   v6[4] = &v7;
-  [(ALAssetPrivate *)v2 _performBlockAndWait:v6];
+  [(ALAssetPrivate *)internal _performBlockAndWait:v6];
   v3 = @"Unknown";
   if (*(v8 + 12) == 1)
   {
@@ -980,21 +980,21 @@ uint64_t __24__ALAsset__typeAsString__block_invoke(uint64_t a1, uint64_t a2, voi
   [(ALAsset *)&v3 dealloc];
 }
 
-- (ALAsset)initWithManagedAsset:(id)a3 library:(id)a4
+- (ALAsset)initWithManagedAsset:(id)asset library:(id)library
 {
   v9.receiver = self;
   v9.super_class = ALAsset;
   v6 = [(ALAsset *)&v9 init];
   if (v6)
   {
-    v7 = [[ALAssetPrivate alloc] initWithManagedAsset:a3 library:a4];
+    v7 = [[ALAssetPrivate alloc] initWithManagedAsset:asset library:library];
     [(ALAsset *)v6 setInternal:v7];
   }
 
   return v6;
 }
 
-+ (CGSize)largePreviewImageSizeForSize:(CGSize)a3
++ (CGSize)largePreviewImageSizeForSize:(CGSize)size
 {
   v3 = [objc_msgSend(MEMORY[0x277D3B228] "defaultFormatChooser")];
   [v3 fullSizeMinShortSide];

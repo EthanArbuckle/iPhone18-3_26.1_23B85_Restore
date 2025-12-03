@@ -1,36 +1,36 @@
 @interface OKMediaFeeder
-+ (id)operationWithBlock:(id)a3 cancellationBlock:(id)a4 completionHandler:(id)a5;
++ (id)operationWithBlock:(id)block cancellationBlock:(id)cancellationBlock completionHandler:(id)handler;
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (OKMediaFeeder)init;
-- (OKMediaFeeder)initWithSettings:(id)a3;
-- (id)_mediaItemsForMediaURLs:(id)a3;
+- (OKMediaFeeder)initWithSettings:(id)settings;
+- (id)_mediaItemsForMediaURLs:(id)ls;
 - (id)allMediaURLs;
 - (id)allObjects;
-- (id)dictionaryProxy:(id)a3 objectAtIndexPath:(id)a4;
+- (id)dictionaryProxy:(id)proxy objectAtIndexPath:(id)path;
 - (id)feederSettings;
-- (id)indexesForMediaObjects:(id)a3;
-- (id)mediaItemAtIndex:(unint64_t)a3;
-- (id)mediaItemsAtIndexes:(id)a3;
-- (id)mediaObjectURLsAtIndexes:(id)a3;
-- (id)mediaObjectsAtIndexes:(id)a3;
-- (id)mediaURLAtIndex:(unint64_t)a3;
-- (id)mediaURLsAtIndexes:(id)a3;
+- (id)indexesForMediaObjects:(id)objects;
+- (id)mediaItemAtIndex:(unint64_t)index;
+- (id)mediaItemsAtIndexes:(id)indexes;
+- (id)mediaObjectURLsAtIndexes:(id)indexes;
+- (id)mediaObjectsAtIndexes:(id)indexes;
+- (id)mediaURLAtIndex:(unint64_t)index;
+- (id)mediaURLsAtIndexes:(id)indexes;
 - (id)reloadData;
-- (id)reloadMediaObjectsWithCompletionHandler:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (unint64_t)_indexFromRotatedIndex:(unint64_t)a3;
+- (id)reloadMediaObjectsWithCompletionHandler:(id)handler;
+- (id)valueForUndefinedKey:(id)key;
+- (unint64_t)_indexFromRotatedIndex:(unint64_t)index;
 - (unint64_t)_numberOfMediaItems;
-- (unint64_t)_rotatedIndexFromIndex:(unint64_t)a3;
-- (unint64_t)countOfDictionaryProxy:(id)a3;
-- (unint64_t)indexForMediaItem:(id)a3;
+- (unint64_t)_rotatedIndexFromIndex:(unint64_t)index;
+- (unint64_t)countOfDictionaryProxy:(id)proxy;
+- (unint64_t)indexForMediaItem:(id)item;
 - (unint64_t)numberOfMediaItems;
 - (unint64_t)numberOfMediaObjects;
 - (void)dealloc;
-- (void)enumerateObjectsAtIndexes:(id)a3 usingBlock:(id)a4;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)performAsynchronousBarrierUsingBlock:(id)a3;
-- (void)reloadDataWithProgressBlock:(id)a3 andCompletionHandler:(id)a4;
+- (void)enumerateObjectsAtIndexes:(id)indexes usingBlock:(id)block;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)performAsynchronousBarrierUsingBlock:(id)block;
+- (void)reloadDataWithProgressBlock:(id)block andCompletionHandler:(id)handler;
 @end
 
 @implementation OKMediaFeeder
@@ -47,9 +47,9 @@
     v3->_wantsLiveUpdates = 0;
     objc_storeWeak(&v3->_delegate, 0);
     [objc_msgSend(+[OKProducerManager defaultManager](OKProducerManager "defaultManager")];
-    v4 = [@"com.apple.Opus.OKMediaFeeder.processingQueue" UTF8String];
+    uTF8String = [@"com.apple.Opus.OKMediaFeeder.processingQueue" UTF8String];
     v5 = dispatch_queue_attr_make_with_qos_class(MEMORY[0x277D85CD8], QOS_CLASS_USER_INTERACTIVE, 0);
-    v3->_processingQueue = dispatch_queue_create(v4, v5);
+    v3->_processingQueue = dispatch_queue_create(uTF8String, v5);
     v3->_startIndex = 0;
     v3->_rotationEnabled = 1;
   }
@@ -57,13 +57,13 @@
   return v3;
 }
 
-- (OKMediaFeeder)initWithSettings:(id)a3
+- (OKMediaFeeder)initWithSettings:(id)settings
 {
   v4 = [(OKMediaFeeder *)self init];
   if (v4)
   {
-    v4->_startIndex = [objc_msgSend(a3 objectForKey:{@"startIndex", "unsignedIntegerValue"}];
-    v4->_rotationEnabled = [objc_msgSend(a3 objectForKey:{@"rotationEnabled", "BOOLValue"}];
+    v4->_startIndex = [objc_msgSend(settings objectForKey:{@"startIndex", "unsignedIntegerValue"}];
+    v4->_rotationEnabled = [objc_msgSend(settings objectForKey:{@"rotationEnabled", "BOOLValue"}];
   }
 
   return v4;
@@ -89,7 +89,7 @@
 + (id)supportedSettings
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8[0] = @"startIndex";
   v6[0] = @"type";
   v6[1] = @"default";
@@ -102,13 +102,13 @@
   v5[0] = &unk_287AF0B48;
   v5[1] = MEMORY[0x277CBEC38];
   v9[1] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:v4 count:2];
-  [v2 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
-  return v2;
+  [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v9, v8, 2)}];
+  return dictionary;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqualToString:@"items"])
+  if ([key isEqualToString:@"items"])
   {
     v5 = objc_opt_new();
     [v5 setTag:1];
@@ -121,16 +121,16 @@
   {
     v7.receiver = self;
     v7.super_class = OKMediaFeeder;
-    return [(OKMediaFeeder *)&v7 valueForUndefinedKey:a3];
+    return [(OKMediaFeeder *)&v7 valueForUndefinedKey:key];
   }
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v7[3] = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKMediaFeeder"];
-  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:a3];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKMediaFeeder", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKMediaFeeder"];
+  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:context];
+  v4 = [objc_msgSend(context objectForKeyedSubscript:{@"OKMediaFeeder", "objectForKeyedSubscript:", @"prototype"}];
   v5 = *MEMORY[0x277CD4618];
   v6[0] = *MEMORY[0x277CD4620];
   v6[1] = v5;
@@ -150,9 +150,9 @@ id __40__OKMediaFeeder_setupJavascriptContext___block_invoke()
   return v0;
 }
 
-- (unint64_t)countOfDictionaryProxy:(id)a3
+- (unint64_t)countOfDictionaryProxy:(id)proxy
 {
-  if ([a3 tag] != 1)
+  if ([proxy tag] != 1)
   {
     return 0;
   }
@@ -160,14 +160,14 @@ id __40__OKMediaFeeder_setupJavascriptContext___block_invoke()
   return [(OKMediaFeeder *)self numberOfMediaItems];
 }
 
-- (id)dictionaryProxy:(id)a3 objectAtIndexPath:(id)a4
+- (id)dictionaryProxy:(id)proxy objectAtIndexPath:(id)path
 {
-  if ([a3 tag] != 1)
+  if ([proxy tag] != 1)
   {
     return 0;
   }
 
-  v6 = -[OKMediaFeeder _rotatedIndexFromIndex:](self, "_rotatedIndexFromIndex:", [a4 indexAtPosition:0]);
+  v6 = -[OKMediaFeeder _rotatedIndexFromIndex:](self, "_rotatedIndexFromIndex:", [path indexAtPosition:0]);
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -178,9 +178,9 @@ id __40__OKMediaFeeder_setupJavascriptContext___block_invoke()
   return [(OKMediaFeeder *)self mediaItemsAtIndexes:v8];
 }
 
-- (void)performAsynchronousBarrierUsingBlock:(id)a3
+- (void)performAsynchronousBarrierUsingBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     processingQueue = self->_processingQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -188,7 +188,7 @@ id __40__OKMediaFeeder_setupJavascriptContext___block_invoke()
     block[2] = __54__OKMediaFeeder_performAsynchronousBarrierUsingBlock___block_invoke;
     block[3] = &unk_279C8E670;
     block[4] = self;
-    block[5] = a3;
+    block[5] = block;
     dispatch_barrier_async(processingQueue, block);
   }
 
@@ -198,20 +198,20 @@ id __40__OKMediaFeeder_setupJavascriptContext___block_invoke()
   }
 }
 
-+ (id)operationWithBlock:(id)a3 cancellationBlock:(id)a4 completionHandler:(id)a5
++ (id)operationWithBlock:(id)block cancellationBlock:(id)cancellationBlock completionHandler:(id)handler
 {
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__OKMediaFeeder_operationWithBlock_cancellationBlock_completionHandler___block_invoke;
   v9[3] = &unk_279C90B00;
-  v9[4] = a3;
-  v9[5] = a5;
+  v9[4] = block;
+  v9[5] = handler;
   v6 = [MEMORY[0x277D627C0] blockOperationWithExecutionBlock:v9];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__OKMediaFeeder_operationWithBlock_cancellationBlock_completionHandler___block_invoke_3;
   v8[3] = &unk_279C90B28;
-  v8[4] = a4;
+  v8[4] = cancellationBlock;
   [v6 setCancelBlock:v8];
   return v6;
 }
@@ -270,7 +270,7 @@ uint64_t __72__OKMediaFeeder_operationWithBlock_cancellationBlock_completionHand
   return [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:v5 count:2];
 }
 
-- (void)reloadDataWithProgressBlock:(id)a3 andCompletionHandler:(id)a4
+- (void)reloadDataWithProgressBlock:(id)block andCompletionHandler:(id)handler
 {
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -278,8 +278,8 @@ uint64_t __72__OKMediaFeeder_operationWithBlock_cancellationBlock_completionHand
   block[2] = __66__OKMediaFeeder_reloadDataWithProgressBlock_andCompletionHandler___block_invoke;
   block[3] = &unk_279C90B78;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = handler;
+  block[6] = block;
   dispatch_barrier_async(processingQueue, block);
 }
 
@@ -402,7 +402,7 @@ intptr_t __27__OKMediaFeeder_reloadData__block_invoke(uint64_t a1, void *a2)
   return dispatch_semaphore_signal(v3);
 }
 
-- (id)reloadMediaObjectsWithCompletionHandler:(id)a3
+- (id)reloadMediaObjectsWithCompletionHandler:(id)handler
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -428,7 +428,7 @@ intptr_t __27__OKMediaFeeder_reloadData__block_invoke(uint64_t a1, void *a2)
   return 0;
 }
 
-- (id)mediaObjectsAtIndexes:(id)a3
+- (id)mediaObjectsAtIndexes:(id)indexes
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -441,7 +441,7 @@ intptr_t __27__OKMediaFeeder_reloadData__block_invoke(uint64_t a1, void *a2)
   return 0;
 }
 
-- (id)mediaObjectURLsAtIndexes:(id)a3
+- (id)mediaObjectURLsAtIndexes:(id)indexes
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -454,7 +454,7 @@ intptr_t __27__OKMediaFeeder_reloadData__block_invoke(uint64_t a1, void *a2)
   return 0;
 }
 
-- (id)indexesForMediaObjects:(id)a3
+- (id)indexesForMediaObjects:(id)objects
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -467,19 +467,19 @@ intptr_t __27__OKMediaFeeder_reloadData__block_invoke(uint64_t a1, void *a2)
   return 0;
 }
 
-- (id)_mediaItemsForMediaURLs:(id)a3
+- (id)_mediaItemsForMediaURLs:(id)ls
 {
   if ([(OKMediaFeeder *)self presentation])
   {
-    v5 = [(OKMediaFeeder *)self presentation];
+    presentation = [(OKMediaFeeder *)self presentation];
   }
 
   else
   {
-    v5 = +[OKMediaManager defaultManager];
+    presentation = +[OKMediaManager defaultManager];
   }
 
-  return [(OKPresentation *)v5 mediaItemsForURLs:a3];
+  return [(OKPresentation *)presentation mediaItemsForURLs:ls];
 }
 
 - (unint64_t)_numberOfMediaItems
@@ -518,10 +518,10 @@ uint64_t __35__OKMediaFeeder_numberOfMediaItems__block_invoke(uint64_t a1)
   return result;
 }
 
-- (unint64_t)_rotatedIndexFromIndex:(unint64_t)a3
+- (unint64_t)_rotatedIndexFromIndex:(unint64_t)index
 {
-  v5 = [(OKMediaFeeder *)self numberOfMediaObjects];
-  if (!v5)
+  numberOfMediaObjects = [(OKMediaFeeder *)self numberOfMediaObjects];
+  if (!numberOfMediaObjects)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -529,19 +529,19 @@ uint64_t __35__OKMediaFeeder_numberOfMediaItems__block_invoke(uint64_t a1)
   startIndex = self->_startIndex;
   if (startIndex)
   {
-    return (startIndex + a3) % v5;
+    return (startIndex + index) % numberOfMediaObjects;
   }
 
-  return a3;
+  return index;
 }
 
-- (unint64_t)_indexFromRotatedIndex:(unint64_t)a3
+- (unint64_t)_indexFromRotatedIndex:(unint64_t)index
 {
   startIndex = self->_startIndex;
-  v4 = startIndex + a3;
-  if (a3 >= startIndex)
+  v4 = startIndex + index;
+  if (index >= startIndex)
   {
-    v4 = a3 - startIndex;
+    v4 = index - startIndex;
   }
 
   if (startIndex)
@@ -551,11 +551,11 @@ uint64_t __35__OKMediaFeeder_numberOfMediaItems__block_invoke(uint64_t a1)
 
   else
   {
-    return a3;
+    return index;
   }
 }
 
-- (id)mediaItemAtIndex:(unint64_t)a3
+- (id)mediaItemAtIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -569,7 +569,7 @@ uint64_t __35__OKMediaFeeder_numberOfMediaItems__block_invoke(uint64_t a1)
   block[2] = __34__OKMediaFeeder_mediaItemAtIndex___block_invoke;
   block[3] = &unk_279C90BF0;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = index;
   block[4] = self;
   dispatch_sync(processingQueue, block);
   v4 = v8[5];
@@ -610,7 +610,7 @@ id __34__OKMediaFeeder_mediaItemAtIndex___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)mediaURLAtIndex:(unint64_t)a3
+- (id)mediaURLAtIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -624,7 +624,7 @@ id __34__OKMediaFeeder_mediaItemAtIndex___block_invoke(uint64_t a1)
   block[2] = __33__OKMediaFeeder_mediaURLAtIndex___block_invoke;
   block[3] = &unk_279C90BF0;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = index;
   block[4] = self;
   dispatch_sync(processingQueue, block);
   v4 = v8[5];
@@ -653,7 +653,7 @@ id __33__OKMediaFeeder_mediaURLAtIndex___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)mediaItemsAtIndexes:(id)a3
+- (id)mediaItemsAtIndexes:(id)indexes
 {
   v7 = 0;
   v8 = &v7;
@@ -666,7 +666,7 @@ id __33__OKMediaFeeder_mediaURLAtIndex___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __37__OKMediaFeeder_mediaItemsAtIndexes___block_invoke;
   block[3] = &unk_279C90C18;
-  block[4] = a3;
+  block[4] = indexes;
   block[5] = self;
   block[6] = &v7;
   dispatch_sync(processingQueue, block);
@@ -715,7 +715,7 @@ void *__37__OKMediaFeeder_mediaItemsAtIndexes___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)mediaURLsAtIndexes:(id)a3
+- (id)mediaURLsAtIndexes:(id)indexes
 {
   v7 = 0;
   v8 = &v7;
@@ -728,7 +728,7 @@ void *__37__OKMediaFeeder_mediaItemsAtIndexes___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__OKMediaFeeder_mediaURLsAtIndexes___block_invoke;
   block[3] = &unk_279C90C18;
-  block[4] = a3;
+  block[4] = indexes;
   block[5] = self;
   block[6] = &v7;
   dispatch_sync(processingQueue, block);
@@ -758,7 +758,7 @@ id __36__OKMediaFeeder_mediaURLsAtIndexes___block_invoke(uint64_t a1)
   return result;
 }
 
-- (unint64_t)indexForMediaItem:(id)a3
+- (unint64_t)indexForMediaItem:(id)item
 {
   v7 = 0;
   v8 = &v7;
@@ -769,7 +769,7 @@ id __36__OKMediaFeeder_mediaURLsAtIndexes___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__OKMediaFeeder_indexForMediaItem___block_invoke;
   block[3] = &unk_279C90C18;
-  block[4] = a3;
+  block[4] = item;
   block[5] = self;
   block[6] = &v7;
   dispatch_sync(processingQueue, block);
@@ -795,16 +795,16 @@ uint64_t __35__OKMediaFeeder_indexForMediaItem___block_invoke(uint64_t a1)
 
 - (id)allMediaURLs
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   processingQueue = self->_processingQueue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__OKMediaFeeder_allMediaURLs__block_invoke;
   v6[3] = &unk_279C90078;
   v6[4] = self;
-  v6[5] = v3;
+  v6[5] = array;
   dispatch_sync(processingQueue, v6);
-  return [MEMORY[0x277CBEA60] arrayWithArray:v3];
+  return [MEMORY[0x277CBEA60] arrayWithArray:array];
 }
 
 uint64_t __29__OKMediaFeeder_allMediaURLs__block_invoke(uint64_t a1)
@@ -834,16 +834,16 @@ uint64_t __29__OKMediaFeeder_allMediaURLs__block_invoke(uint64_t a1)
 
 - (id)allObjects
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   processingQueue = self->_processingQueue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __27__OKMediaFeeder_allObjects__block_invoke;
   v6[3] = &unk_279C90078;
   v6[4] = self;
-  v6[5] = v3;
+  v6[5] = array;
   dispatch_sync(processingQueue, v6);
-  return v3;
+  return array;
 }
 
 uint64_t __27__OKMediaFeeder_allObjects__block_invoke(uint64_t a1)
@@ -857,7 +857,7 @@ uint64_t __27__OKMediaFeeder_allObjects__block_invoke(uint64_t a1)
   return [v1 enumerateObjectsUsingBlock:v3];
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
   processingQueue = self->_processingQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -865,7 +865,7 @@ uint64_t __27__OKMediaFeeder_allObjects__block_invoke(uint64_t a1)
   v4[2] = __44__OKMediaFeeder_enumerateObjectsUsingBlock___block_invoke;
   v4[3] = &unk_279C8FE40;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   dispatch_sync(processingQueue, v4);
 }
 
@@ -878,7 +878,7 @@ uint64_t __44__OKMediaFeeder_enumerateObjectsUsingBlock___block_invoke(uint64_t 
   return [v2 enumerateObjectsAtIndexes:v3 usingBlock:v4];
 }
 
-- (void)enumerateObjectsAtIndexes:(id)a3 usingBlock:(id)a4
+- (void)enumerateObjectsAtIndexes:(id)indexes usingBlock:(id)block
 {
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -886,8 +886,8 @@ uint64_t __44__OKMediaFeeder_enumerateObjectsUsingBlock___block_invoke(uint64_t 
   block[2] = __54__OKMediaFeeder_enumerateObjectsAtIndexes_usingBlock___block_invoke;
   block[3] = &unk_279C90C68;
   block[5] = self;
-  block[6] = a4;
-  block[4] = a3;
+  block[6] = block;
+  block[4] = indexes;
   dispatch_sync(processingQueue, block);
 }
 

@@ -1,11 +1,11 @@
 @interface TIDynamicLanguageLikelihoodModel
 - (TIDynamicLanguageLikelihoodModel)init;
-- (float)_priorProbabilityForLanguage:(const void *)a3;
+- (float)_priorProbabilityForLanguage:(const void *)language;
 - (id).cxx_construct;
-- (id)rankedLanguagesForRecipient:(id)a3;
-- (void)addEvidence:(id)a3 forRecipient:(id)a4 language:(id)a5;
-- (void)addEvidence:(id)a3 timestamp:(double)a4 adaptationType:(int)a5 forRecipient:(id)a6 app:(id)a7 language:(id)a8;
-- (void)priorProbabilityForLanguages:(id)a3 recipient:(id)a4 handler:(id)a5;
+- (id)rankedLanguagesForRecipient:(id)recipient;
+- (void)addEvidence:(id)evidence forRecipient:(id)recipient language:(id)language;
+- (void)addEvidence:(id)evidence timestamp:(double)timestamp adaptationType:(int)type forRecipient:(id)recipient app:(id)app language:(id)language;
+- (void)priorProbabilityForLanguages:(id)languages recipient:(id)recipient handler:(id)handler;
 @end
 
 @implementation TIDynamicLanguageLikelihoodModel
@@ -18,17 +18,17 @@
   return self;
 }
 
-- (void)priorProbabilityForLanguages:(id)a3 recipient:(id)a4 handler:(id)a5
+- (void)priorProbabilityForLanguages:(id)languages recipient:(id)recipient handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  languagesCopy = languages;
+  handlerCopy = handler;
   v23 = 0;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = languagesCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v10)
   {
@@ -52,7 +52,7 @@ LABEL_3:
         operator delete(__p[0]);
       }
 
-      v8[2](v8, v13, &v23, v16);
+      handlerCopy[2](handlerCopy, v13, &v23, v16);
       if (v23)
       {
         break;
@@ -72,7 +72,7 @@ LABEL_3:
   }
 }
 
-- (float)_priorProbabilityForLanguage:(const void *)a3
+- (float)_priorProbabilityForLanguage:(const void *)language
 {
   p_end_node = &self->m_counts_for_language.__tree_.__end_node_;
   left = self->m_counts_for_language.__tree_.__end_node_.__left_;
@@ -82,7 +82,7 @@ LABEL_3:
     v8 = &self->m_counts_for_language.__tree_.__end_node_;
     do
     {
-      v9 = std::operator<=>[abi:nn200100]<char,std::char_traits<char>,std::allocator<char>>(&left[4].__left_, a3);
+      v9 = std::operator<=>[abi:nn200100]<char,std::char_traits<char>,std::allocator<char>>(&left[4].__left_, language);
       if ((v9 & 0x80u) == 0)
       {
         v8 = left;
@@ -92,7 +92,7 @@ LABEL_3:
     }
 
     while (left);
-    if (v8 != p_end_node && (std::operator<=>[abi:nn200100]<char,std::char_traits<char>,std::allocator<char>>(a3, &v8[4].__left_) & 0x80) == 0)
+    if (v8 != p_end_node && (std::operator<=>[abi:nn200100]<char,std::char_traits<char>,std::allocator<char>>(language, &v8[4].__left_) & 0x80) == 0)
     {
       m_total_counts = self->m_total_counts;
       if (m_total_counts >= 1)
@@ -105,10 +105,10 @@ LABEL_3:
   return v5;
 }
 
-- (id)rankedLanguagesForRecipient:(id)a3
+- (id)rankedLanguagesForRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  recipientCopy = recipient;
+  array = [MEMORY[0x277CBEB18] array];
   v36 = 0;
   v6 = 0uLL;
   v35 = 0u;
@@ -117,7 +117,7 @@ LABEL_3:
   p_end_node = &self->m_counts_for_language.__tree_.__end_node_;
   if (begin_node != &self->m_counts_for_language.__tree_.__end_node_)
   {
-    v33 = self;
+    selfCopy = self;
     v10 = 0;
     do
     {
@@ -234,7 +234,7 @@ LABEL_3:
 
     while (v22 != p_end_node);
     v6 = v35;
-    self = v33;
+    self = selfCopy;
   }
 
   v24 = *(&v6 + 1);
@@ -271,31 +271,31 @@ LABEL_3:
       }
 
       v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:v30];
-      [v5 addObject:v31];
+      [array addObject:v31];
     }
   }
 
   v37.__first_ = &v35;
   std::vector<std::string>::__destroy_vector::operator()[abi:nn200100](&v37);
 
-  return v5;
+  return array;
 }
 
-- (void)addEvidence:(id)a3 forRecipient:(id)a4 language:(id)a5
+- (void)addEvidence:(id)evidence forRecipient:(id)recipient language:(id)language
 {
-  v6 = a3;
-  v7 = [(TIDynamicLanguageLikelihoodModel *)self linguisticTagger];
-  [v7 setString:v6];
+  evidenceCopy = evidence;
+  linguisticTagger = [(TIDynamicLanguageLikelihoodModel *)self linguisticTagger];
+  [linguisticTagger setString:evidenceCopy];
 
-  v8 = [(TIDynamicLanguageLikelihoodModel *)self linguisticTagger];
-  v9 = [v6 length];
+  linguisticTagger2 = [(TIDynamicLanguageLikelihoodModel *)self linguisticTagger];
+  v9 = [evidenceCopy length];
   v10 = *MEMORY[0x277CCA3D8];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __70__TIDynamicLanguageLikelihoodModel_addEvidence_forRecipient_language___block_invoke;
   v11[3] = &unk_279DA05B8;
   v11[4] = self;
-  [v8 enumerateTagsInRange:0 scheme:v9 options:v10 usingBlock:{14, v11}];
+  [linguisticTagger2 enumerateTagsInRange:0 scheme:v9 options:v10 usingBlock:{14, v11}];
 }
 
 void __70__TIDynamicLanguageLikelihoodModel_addEvidence_forRecipient_language___block_invoke(uint64_t a1, void *a2)
@@ -320,21 +320,21 @@ void __70__TIDynamicLanguageLikelihoodModel_addEvidence_forRecipient_language___
   }
 }
 
-- (void)addEvidence:(id)a3 timestamp:(double)a4 adaptationType:(int)a5 forRecipient:(id)a6 app:(id)a7 language:(id)a8
+- (void)addEvidence:(id)evidence timestamp:(double)timestamp adaptationType:(int)type forRecipient:(id)recipient app:(id)app language:(id)language
 {
-  v9 = a3;
-  v10 = [(TIDynamicLanguageLikelihoodModel *)self linguisticTagger];
-  [v10 setString:v9];
+  evidenceCopy = evidence;
+  linguisticTagger = [(TIDynamicLanguageLikelihoodModel *)self linguisticTagger];
+  [linguisticTagger setString:evidenceCopy];
 
-  v11 = [(TIDynamicLanguageLikelihoodModel *)self linguisticTagger];
-  v12 = [v9 length];
+  linguisticTagger2 = [(TIDynamicLanguageLikelihoodModel *)self linguisticTagger];
+  v12 = [evidenceCopy length];
   v13 = *MEMORY[0x277CCA3D8];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __99__TIDynamicLanguageLikelihoodModel_addEvidence_timestamp_adaptationType_forRecipient_app_language___block_invoke;
   v14[3] = &unk_279DA05B8;
   v14[4] = self;
-  [v11 enumerateTagsInRange:0 scheme:v12 options:v13 usingBlock:{14, v14}];
+  [linguisticTagger2 enumerateTagsInRange:0 scheme:v12 options:v13 usingBlock:{14, v14}];
 }
 
 void __99__TIDynamicLanguageLikelihoodModel_addEvidence_timestamp_adaptationType_forRecipient_app_language___block_invoke(uint64_t a1, void *a2)

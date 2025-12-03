@@ -1,26 +1,26 @@
 @interface _UIPlatterTransformView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIView)sourceView;
-- (_UIPlatterTransformView)initWithFrame:(CGRect)a3;
+- (_UIPlatterTransformView)initWithFrame:(CGRect)frame;
 - (void)_updateMinificationFilter;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)didTearOffForDrag;
 - (void)layoutSubviews;
-- (void)setAppliesMinificationFilter:(BOOL)a3;
-- (void)setForwardsHitTestingToSourceView:(BOOL)a3;
-- (void)setHidesSourceView:(BOOL)a3;
-- (void)setMatchesAlpha:(BOOL)a3;
-- (void)setSourcePreview:(id)a3;
+- (void)setAppliesMinificationFilter:(BOOL)filter;
+- (void)setForwardsHitTestingToSourceView:(BOOL)view;
+- (void)setHidesSourceView:(BOOL)view;
+- (void)setMatchesAlpha:(BOOL)alpha;
+- (void)setSourcePreview:(id)preview;
 @end
 
 @implementation _UIPlatterTransformView
 
-- (_UIPlatterTransformView)initWithFrame:(CGRect)a3
+- (_UIPlatterTransformView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIPlatterTransformView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,8 +34,8 @@
 
 - (void)dealloc
 {
-  v3 = [(_UIPlatterTransformView *)self backgroundCaptureView];
-  [v3 removeFromSuperview];
+  backgroundCaptureView = [(_UIPlatterTransformView *)self backgroundCaptureView];
+  [backgroundCaptureView removeFromSuperview];
 
   v4.receiver = self;
   v4.super_class = _UIPlatterTransformView;
@@ -44,24 +44,24 @@
 
 - (UIView)sourceView
 {
-  v2 = [(_UIPlatterTransformView *)self sourcePreview];
-  v3 = [v2 view];
+  sourcePreview = [(_UIPlatterTransformView *)self sourcePreview];
+  view = [sourcePreview view];
 
-  return v3;
+  return view;
 }
 
-- (void)setSourcePreview:(id)a3
+- (void)setSourcePreview:(id)preview
 {
-  v53 = a3;
-  if (self->_sourcePreview != v53)
+  previewCopy = preview;
+  if (self->_sourcePreview != previewCopy)
   {
     if ([(_UIPlatterTransformView *)self shouldTakeOwnershipOfSourceView])
     {
-      v5 = [(UITargetedPreview *)self->_sourcePreview view];
-      [v5 removeFromSuperview];
+      view = [(UITargetedPreview *)self->_sourcePreview view];
+      [view removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_sourcePreview, a3);
+    objc_storeStrong(&self->_sourcePreview, preview);
     if ([(_UIPlatterTransformView *)self allowsUserInteraction])
     {
       v6 = 1;
@@ -78,121 +78,121 @@
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(_UIPlatterTransformView *)self shouldTakeOwnershipOfSourceView];
-    v16 = [(_UIPlatterTransformView *)self portalView];
-    v17 = v16;
-    if (v15)
+    shouldTakeOwnershipOfSourceView = [(_UIPlatterTransformView *)self shouldTakeOwnershipOfSourceView];
+    portalView = [(_UIPlatterTransformView *)self portalView];
+    sourceView = portalView;
+    if (shouldTakeOwnershipOfSourceView)
     {
-      [(UIView *)v16 removeFromSuperview];
+      [(UIView *)portalView removeFromSuperview];
 
-      v17 = [(_UIPlatterTransformView *)self sourceView];
+      sourceView = [(_UIPlatterTransformView *)self sourceView];
     }
 
     else
     {
-      if (!v16)
+      if (!portalView)
       {
-        v17 = [[_UIPortalView alloc] initWithFrame:v8, v10, v12, v14];
-        [(_UIPortalView *)v17 setAllowsBackdropGroups:1];
-        [(_UIPortalView *)v17 setHidesSourceView:[(_UIPlatterTransformView *)self hidesSourceView]];
-        [(_UIPortalView *)v17 setMatchesAlpha:[(_UIPlatterTransformView *)self matchesAlpha]];
-        [(_UIPortalView *)v17 setForwardsClientHitTestingToSourceView:[(_UIPlatterTransformView *)self forwardsHitTestingToSourceView]];
-        v18 = [(_UIPlatterTransformView *)self sourceView];
-        -[UIView _setFlipsHorizontalAxis:](v17, "_setFlipsHorizontalAxis:", [v18 _flipsHorizontalAxis]);
+        sourceView = [[_UIPortalView alloc] initWithFrame:v8, v10, v12, v14];
+        [(_UIPortalView *)sourceView setAllowsBackdropGroups:1];
+        [(_UIPortalView *)sourceView setHidesSourceView:[(_UIPlatterTransformView *)self hidesSourceView]];
+        [(_UIPortalView *)sourceView setMatchesAlpha:[(_UIPlatterTransformView *)self matchesAlpha]];
+        [(_UIPortalView *)sourceView setForwardsClientHitTestingToSourceView:[(_UIPlatterTransformView *)self forwardsHitTestingToSourceView]];
+        sourceView2 = [(_UIPlatterTransformView *)self sourceView];
+        -[UIView _setFlipsHorizontalAxis:](sourceView, "_setFlipsHorizontalAxis:", [sourceView2 _flipsHorizontalAxis]);
 
-        [(_UIPortalView *)v17 setName:@"_UIPlatterTransformView.content"];
-        [(_UIPlatterTransformView *)self setPortalView:v17];
+        [(_UIPortalView *)sourceView setName:@"_UIPlatterTransformView.content"];
+        [(_UIPlatterTransformView *)self setPortalView:sourceView];
       }
 
-      v19 = [(_UIPlatterTransformView *)self sourceView];
-      [(_UIPortalView *)v17 setSourceView:v19];
+      sourceView3 = [(_UIPlatterTransformView *)self sourceView];
+      [(_UIPortalView *)sourceView setSourceView:sourceView3];
     }
 
-    [(UIView *)self addSubview:v17];
+    [(UIView *)self addSubview:sourceView];
 
     [(UIView *)self sizeToFit];
-    if ([(UITargetedPreview *)v53 _captureHierarchyBelowSourceView]&& [(UITargetedPreview *)v53 _sourceViewIsInViewHierarchy])
+    if ([(UITargetedPreview *)previewCopy _captureHierarchyBelowSourceView]&& [(UITargetedPreview *)previewCopy _sourceViewIsInViewHierarchy])
     {
-      v20 = [(_UIPlatterTransformView *)self backgroundCaptureView];
+      backgroundCaptureView = [(_UIPlatterTransformView *)self backgroundCaptureView];
 
-      if (!v20)
+      if (!backgroundCaptureView)
       {
         v21 = objc_opt_new();
         [(_UIPlatterTransformView *)self setBackgroundCaptureView:v21];
 
-        v22 = [(_UIPlatterTransformView *)self backgroundCaptureView];
-        [v22 setAlpha:0.002];
+        backgroundCaptureView2 = [(_UIPlatterTransformView *)self backgroundCaptureView];
+        [backgroundCaptureView2 setAlpha:0.002];
       }
 
-      v23 = [(_UIPlatterTransformView *)self backgroundPortalView];
+      backgroundPortalView = [(_UIPlatterTransformView *)self backgroundPortalView];
 
-      if (!v23)
+      if (!backgroundPortalView)
       {
         v24 = [_UIPortalView alloc];
-        v25 = [(_UIPlatterTransformView *)self backgroundCaptureView];
-        v26 = [(_UIPortalView *)v24 initWithSourceView:v25];
+        backgroundCaptureView3 = [(_UIPlatterTransformView *)self backgroundCaptureView];
+        v26 = [(_UIPortalView *)v24 initWithSourceView:backgroundCaptureView3];
         [(_UIPlatterTransformView *)self setBackgroundPortalView:v26];
 
-        v27 = [(_UIPlatterTransformView *)self backgroundPortalView];
-        [v27 setName:@"_UIPlatterTransformView.backgroundCapture"];
+        backgroundPortalView2 = [(_UIPlatterTransformView *)self backgroundPortalView];
+        [backgroundPortalView2 setName:@"_UIPlatterTransformView.backgroundCapture"];
 
-        v28 = [(_UIPlatterTransformView *)self backgroundPortalView];
-        [v28 setAllowsBackdropGroups:1];
+        backgroundPortalView3 = [(_UIPlatterTransformView *)self backgroundPortalView];
+        [backgroundPortalView3 setAllowsBackdropGroups:1];
       }
 
-      v29 = [(UITargetedPreview *)v53 target];
-      v30 = [v29 container];
-      v31 = [(_UIPlatterTransformView *)self backgroundCaptureView];
-      v32 = [(UITargetedPreview *)v53 view];
-      [v30 insertSubview:v31 belowSubview:v32];
+      target = [(UITargetedPreview *)previewCopy target];
+      container = [target container];
+      backgroundCaptureView4 = [(_UIPlatterTransformView *)self backgroundCaptureView];
+      view2 = [(UITargetedPreview *)previewCopy view];
+      [container insertSubview:backgroundCaptureView4 belowSubview:view2];
 
-      v33 = [(_UIPlatterTransformView *)self backgroundPortalView];
-      [(UIView *)self insertSubview:v33 atIndex:0];
+      backgroundPortalView4 = [(_UIPlatterTransformView *)self backgroundPortalView];
+      [(UIView *)self insertSubview:backgroundPortalView4 atIndex:0];
 
-      v34 = [(UITargetedPreview *)v53 view];
-      [v34 frame];
+      view3 = [(UITargetedPreview *)previewCopy view];
+      [view3 frame];
       v56 = CGRectInset(v55, -50.0, 0.0);
       x = v56.origin.x;
       y = v56.origin.y;
       width = v56.size.width;
       height = v56.size.height;
-      v39 = [(_UIPlatterTransformView *)self backgroundCaptureView];
-      [v39 setFrame:{x, y, width, height}];
+      backgroundCaptureView5 = [(_UIPlatterTransformView *)self backgroundCaptureView];
+      [backgroundCaptureView5 setFrame:{x, y, width, height}];
 
-      v40 = [(_UIPlatterTransformView *)self backgroundCaptureView];
-      [v40 bounds];
+      backgroundCaptureView6 = [(_UIPlatterTransformView *)self backgroundCaptureView];
+      [backgroundCaptureView6 bounds];
       v42 = v41;
       v44 = v43;
       [(UIView *)self bounds];
       v49 = round(v48 + v47 * 0.5 - v44 * 0.5);
       v50 = round(v46 + v45 * 0.5 - v42 * 0.5);
-      v51 = [(_UIPlatterTransformView *)self backgroundPortalView];
-      [v51 setFrame:{v50, v49, v42, v44}];
+      backgroundPortalView5 = [(_UIPlatterTransformView *)self backgroundPortalView];
+      [backgroundPortalView5 setFrame:{v50, v49, v42, v44}];
     }
 
     else
     {
-      v52 = [(_UIPlatterTransformView *)self backgroundCaptureView];
-      [v52 removeFromSuperview];
+      backgroundCaptureView7 = [(_UIPlatterTransformView *)self backgroundCaptureView];
+      [backgroundCaptureView7 removeFromSuperview];
 
-      v40 = [(_UIPlatterTransformView *)self backgroundPortalView];
-      [v40 removeFromSuperview];
+      backgroundCaptureView6 = [(_UIPlatterTransformView *)self backgroundPortalView];
+      [backgroundCaptureView6 removeFromSuperview];
     }
   }
 }
 
 - (void)didTearOffForDrag
 {
-  v4 = [(_UIPlatterTransformView *)self sourceView];
+  sourceView = [(_UIPlatterTransformView *)self sourceView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setHidesSourceView:0];
+    [sourceView setHidesSourceView:0];
   }
 
   [(_UIPlatterTransformView *)self setHidesSourceView:0];
-  v3 = [(_UIPlatterTransformView *)self backgroundCaptureView];
-  [v3 removeFromSuperview];
+  backgroundCaptureView = [(_UIPlatterTransformView *)self backgroundCaptureView];
+  [backgroundCaptureView removeFromSuperview];
 }
 
 - (void)layoutSubviews
@@ -210,13 +210,13 @@
     [(_UIPlatterTransformView *)self portalView];
   }
   v3 = ;
-  v4 = [(_UIPlatterTransformView *)self sourcePreview];
-  v5 = [v4 parameters];
-  v6 = [v5 visiblePath];
+  sourcePreview = [(_UIPlatterTransformView *)self sourcePreview];
+  parameters = [sourcePreview parameters];
+  visiblePath = [parameters visiblePath];
 
-  v7 = [(_UIPlatterTransformView *)self sourceView];
-  v8 = v6;
-  v9 = v7;
+  sourceView = [(_UIPlatterTransformView *)self sourceView];
+  v8 = visiblePath;
+  v9 = sourceView;
   v10 = v9;
   if (v8)
   {
@@ -224,8 +224,8 @@
     {
 
 LABEL_11:
-      v34 = [(_UIPlatterTransformView *)self sourceView];
-      [v34 bounds];
+      sourceView2 = [(_UIPlatterTransformView *)self sourceView];
+      [sourceView2 bounds];
       v36 = v35;
       v47 = v35;
       v38 = v37;
@@ -291,110 +291,110 @@ LABEL_12:
   v6.super_class = _UIPlatterTransformView;
   [(UIView *)&v6 didMoveToWindow];
   [(_UIPlatterTransformView *)self _updateMinificationFilter];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (!v3)
+  if (!window)
   {
-    v4 = [(_UIPlatterTransformView *)self backgroundCaptureView];
-    [v4 removeFromSuperview];
+    backgroundCaptureView = [(_UIPlatterTransformView *)self backgroundCaptureView];
+    [backgroundCaptureView removeFromSuperview];
 
-    v5 = [(_UIPlatterTransformView *)self backgroundPortalView];
-    [v5 removeFromSuperview];
+    backgroundPortalView = [(_UIPlatterTransformView *)self backgroundPortalView];
+    [backgroundPortalView removeFromSuperview];
   }
 }
 
-- (void)setHidesSourceView:(BOOL)a3
+- (void)setHidesSourceView:(BOOL)view
 {
-  if (self->_hidesSourceView != a3)
+  if (self->_hidesSourceView != view)
   {
-    v4 = a3;
-    self->_hidesSourceView = a3;
-    v5 = [(_UIPlatterTransformView *)self portalView];
-    [v5 setHidesSourceView:v4];
+    viewCopy = view;
+    self->_hidesSourceView = view;
+    portalView = [(_UIPlatterTransformView *)self portalView];
+    [portalView setHidesSourceView:viewCopy];
   }
 }
 
-- (void)setForwardsHitTestingToSourceView:(BOOL)a3
+- (void)setForwardsHitTestingToSourceView:(BOOL)view
 {
-  if (self->_forwardsHitTestingToSourceView != a3)
+  if (self->_forwardsHitTestingToSourceView != view)
   {
-    v4 = a3;
-    self->_forwardsHitTestingToSourceView = a3;
-    v5 = [(_UIPlatterTransformView *)self portalView];
-    [v5 setForwardsClientHitTestingToSourceView:v4];
+    viewCopy = view;
+    self->_forwardsHitTestingToSourceView = view;
+    portalView = [(_UIPlatterTransformView *)self portalView];
+    [portalView setForwardsClientHitTestingToSourceView:viewCopy];
   }
 }
 
-- (void)setMatchesAlpha:(BOOL)a3
+- (void)setMatchesAlpha:(BOOL)alpha
 {
-  if (self->_matchesAlpha != a3)
+  if (self->_matchesAlpha != alpha)
   {
-    v4 = a3;
-    self->_matchesAlpha = a3;
-    v5 = [(_UIPlatterTransformView *)self portalView];
-    [v5 setMatchesAlpha:v4];
+    alphaCopy = alpha;
+    self->_matchesAlpha = alpha;
+    portalView = [(_UIPlatterTransformView *)self portalView];
+    [portalView setMatchesAlpha:alphaCopy];
   }
 }
 
-- (void)setAppliesMinificationFilter:(BOOL)a3
+- (void)setAppliesMinificationFilter:(BOOL)filter
 {
-  if (self->_appliesMinificationFilter != a3)
+  if (self->_appliesMinificationFilter != filter)
   {
-    self->_appliesMinificationFilter = a3;
+    self->_appliesMinificationFilter = filter;
     [(_UIPlatterTransformView *)self _updateMinificationFilter];
   }
 }
 
 - (void)_updateMinificationFilter
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(_UIPlatterTransformView *)self appliesMinificationFilter];
-    v5 = [(UIView *)self layer];
-    v6 = v5;
-    if (v4)
+    appliesMinificationFilter = [(_UIPlatterTransformView *)self appliesMinificationFilter];
+    layer = [(UIView *)self layer];
+    window2 = layer;
+    if (appliesMinificationFilter)
     {
-      [v5 setShouldRasterize:1];
+      [layer setShouldRasterize:1];
 
-      v6 = [(UIView *)self window];
-      v7 = [v6 screen];
-      [v7 scale];
+      window2 = [(UIView *)self window];
+      screen = [window2 screen];
+      [screen scale];
       v9 = v8;
-      v10 = [(UIView *)self layer];
-      [v10 setRasterizationScale:v9];
+      layer2 = [(UIView *)self layer];
+      [layer2 setRasterizationScale:v9];
 
       v11 = MEMORY[0x1E6979820];
     }
 
     else
     {
-      [v5 setShouldRasterize:0];
+      [layer setShouldRasterize:0];
       v11 = MEMORY[0x1E6979C48];
     }
 
     v12 = *v11;
-    v13 = [(UIView *)self layer];
-    [v13 setMinificationFilter:v12];
+    layer3 = [(UIView *)self layer];
+    [layer3 setMinificationFilter:v12];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_UIPlatterTransformView *)self sourceView];
+  height = fits.height;
+  width = fits.width;
+  sourceView = [(_UIPlatterTransformView *)self sourceView];
 
-  if (v6)
+  if (sourceView)
   {
-    v7 = [(_UIPlatterTransformView *)self sourcePreview];
-    v8 = [v7 parameters];
-    v9 = [v8 visiblePath];
+    sourcePreview = [(_UIPlatterTransformView *)self sourcePreview];
+    parameters = [sourcePreview parameters];
+    visiblePath = [parameters visiblePath];
 
-    v10 = [(_UIPlatterTransformView *)self sourceView];
-    v11 = v9;
-    v12 = v10;
+    sourceView2 = [(_UIPlatterTransformView *)self sourceView];
+    v11 = visiblePath;
+    v12 = sourceView2;
     v13 = v12;
     if (v11)
     {
@@ -434,8 +434,8 @@ LABEL_10:
     {
     }
 
-    v31 = [(_UIPlatterTransformView *)self sourceView];
-    [v31 bounds];
+    sourceView3 = [(_UIPlatterTransformView *)self sourceView];
+    [sourceView3 bounds];
     v28 = v32;
     v30 = v33;
 

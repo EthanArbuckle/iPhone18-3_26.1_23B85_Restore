@@ -1,13 +1,13 @@
 @interface PFMirroredOneToManyRelationship
-- (BOOL)updateRelationshipValueUsingImportContext:(id)a3 andManagedObjectContext:(id)a4 error:(id *)a5;
-- (PFMirroredOneToManyRelationship)initWithManagedObject:(id)a3 withRecordName:(id)a4 relatedToRecordWithRecordName:(id)a5 byRelationship:(id)a6;
+- (BOOL)updateRelationshipValueUsingImportContext:(id)context andManagedObjectContext:(id)objectContext error:(id *)error;
+- (PFMirroredOneToManyRelationship)initWithManagedObject:(id)object withRecordName:(id)name relatedToRecordWithRecordName:(id)recordName byRelationship:(id)relationship;
 - (void)dealloc;
 - (void)recordTypesToRecordIDs;
 @end
 
 @implementation PFMirroredOneToManyRelationship
 
-- (PFMirroredOneToManyRelationship)initWithManagedObject:(id)a3 withRecordName:(id)a4 relatedToRecordWithRecordName:(id)a5 byRelationship:(id)a6
+- (PFMirroredOneToManyRelationship)initWithManagedObject:(id)object withRecordName:(id)name relatedToRecordWithRecordName:(id)recordName byRelationship:(id)relationship
 {
   v26 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -15,43 +15,43 @@
   v10 = [(PFMirroredOneToManyRelationship *)&v17 init];
   if (v10)
   {
-    if (([objc_msgSend(a4 "zoneID")] & 1) == 0)
+    if (([objc_msgSend(name "zoneID")] & 1) == 0)
     {
       LogStream = _PFLogGetLogStream(17);
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
-        v15 = [a6 name];
+        name = [relationship name];
         *buf = 138413058;
-        v19 = v15;
+        v19 = name;
         v20 = 2112;
-        v21 = a4;
+        nameCopy2 = name;
         v22 = 2112;
-        v23 = a5;
+        recordNameCopy2 = recordName;
         v24 = 2112;
-        v25 = a3;
+        objectCopy2 = object;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Attempting to link objects across zones via one-to-many relationship '%@': %@ / %@\n%@\n", buf, 0x2Au);
       }
 
       v12 = _PFLogGetLogStream(17);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        v16 = [a6 name];
+        name2 = [relationship name];
         *buf = 138413058;
-        v19 = v16;
+        v19 = name2;
         v20 = 2112;
-        v21 = a4;
+        nameCopy2 = name;
         v22 = 2112;
-        v23 = a5;
+        recordNameCopy2 = recordName;
         v24 = 2112;
-        v25 = a3;
+        objectCopy2 = object;
         _os_log_fault_impl(&dword_18565F000, v12, OS_LOG_TYPE_FAULT, "CoreData: Attempting to link objects across zones via one-to-many relationship '%@': %@ / %@\n%@", buf, 0x2Au);
       }
     }
 
-    v10->_recordID = a4;
-    v10->_relationshipDescription = a6;
-    v10->_inverseRelationshipDescription = [a6 inverseRelationship];
-    v10->_relatedRecordID = a5;
+    v10->_recordID = name;
+    v10->_relationshipDescription = relationship;
+    v10->_inverseRelationshipDescription = [relationship inverseRelationship];
+    v10->_relatedRecordID = recordName;
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -71,18 +71,18 @@
   [(PFMirroredOneToManyRelationship *)&v3 dealloc];
 }
 
-- (BOOL)updateRelationshipValueUsingImportContext:(id)a3 andManagedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)updateRelationshipValueUsingImportContext:(id)context andManagedObjectContext:(id)objectContext error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
   recordID = self->_recordID;
-  v10 = [(NSEntityDescription *)[(NSPropertyDescription *)self->_relationshipDescription entity] name];
-  if (a3)
+  name = [(NSEntityDescription *)[(NSPropertyDescription *)self->_relationshipDescription entity] name];
+  if (context)
   {
-    v11 = [objc_msgSend(*(a3 + 8) objectForKey:{v10), "objectForKey:", recordID}];
+    v11 = [objc_msgSend(*(context + 8) objectForKey:{name), "objectForKey:", recordID}];
     if (v11)
     {
       v12 = v11;
-      v13 = [a4 objectWithID:v11];
+      v13 = [objectContext objectWithID:v11];
       relatedRecordID = self->_relatedRecordID;
       if (!relatedRecordID)
       {
@@ -90,10 +90,10 @@
         goto LABEL_38;
       }
 
-      v15 = [objc_msgSend(*(a3 + 8) objectForKey:{-[NSEntityDescription name](-[NSPropertyDescription entity](self->_inverseRelationshipDescription, "entity"), "name")), "objectForKey:", relatedRecordID}];
+      v15 = [objc_msgSend(*(context + 8) objectForKey:{-[NSEntityDescription name](-[NSPropertyDescription entity](self->_inverseRelationshipDescription, "entity"), "name")), "objectForKey:", relatedRecordID}];
       if (v15)
       {
-        v16 = [a4 objectWithID:v15];
+        v16 = [objectContext objectWithID:v15];
         v17 = objc_autoreleasePoolPush();
         Stream = __PFCloudKitLoggingGetStream();
         v19 = Stream;
@@ -142,7 +142,7 @@
           v45 = v17;
           v23 = self->_recordID;
           v24 = self->_relatedRecordID;
-          v25 = [(NSPropertyDescription *)self->_relationshipDescription name];
+          name2 = [(NSPropertyDescription *)self->_relationshipDescription name];
           *buf = 136316674;
           v47 = "[PFMirroredOneToManyRelationship updateRelationshipValueUsingImportContext:andManagedObjectContext:error:]";
           v48 = 1024;
@@ -153,11 +153,11 @@
           v50 = 2112;
           v51 = v24;
           v52 = 2112;
-          v53 = v25;
+          v53 = name2;
           v54 = 2112;
           v55 = v12;
           v56 = 2112;
-          v57 = [v16 objectID];
+          objectID = [v16 objectID];
           _os_log_impl(&dword_18565F000, v19, v22, "CoreData+CloudKit: %s(%d): Linking object with record name %@ to %@ via %@ on %@->%@", buf, 0x44u);
         }
 
@@ -190,7 +190,7 @@ LABEL_32:
       {
         v35 = self->_recordID;
         v36 = self->_relatedRecordID;
-        v37 = [(NSPropertyDescription *)self->_relationshipDescription name];
+        name3 = [(NSPropertyDescription *)self->_relationshipDescription name];
         *buf = 136316162;
         v47 = "[PFMirroredOneToManyRelationship updateRelationshipValueUsingImportContext:andManagedObjectContext:error:]";
         v48 = 1024;
@@ -200,7 +200,7 @@ LABEL_32:
         v50 = 2112;
         v51 = v36;
         v52 = 2112;
-        v53 = v37;
+        v53 = name3;
         _os_log_impl(&dword_18565F000, v33, v34, "CoreData+CloudKit: %s(%d): Couldn't find related object to link for object with record name %@ to %@ via %@", buf, 0x30u);
       }
 
@@ -237,11 +237,11 @@ LABEL_35:
   v26 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134412 userInfo:0];
   if (v26)
   {
-    if (a5)
+    if (error)
     {
       v38 = v26;
       LOBYTE(v26) = 0;
-      *a5 = v38;
+      *error = v38;
       goto LABEL_43;
     }
 

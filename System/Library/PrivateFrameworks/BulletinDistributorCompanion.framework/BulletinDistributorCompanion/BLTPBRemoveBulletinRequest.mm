@@ -1,12 +1,12 @@
 @interface BLTPBRemoveBulletinRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBRemoveBulletinRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = BLTPBRemoveBulletinRequest;
   v4 = [(BLTPBRemoveBulletinRequest *)&v8 description];
-  v5 = [(BLTPBRemoveBulletinRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBRemoveBulletinRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   publisherBulletinID = self->_publisherBulletinID;
   if (publisherBulletinID)
   {
-    [v3 setObject:publisherBulletinID forKey:@"publisherBulletinID"];
+    [dictionary setObject:publisherBulletinID forKey:@"publisherBulletinID"];
   }
 
   recordID = self->_recordID;
@@ -48,77 +48,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_publisherBulletinID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recordID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sectionID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_publisherBulletinID)
   {
-    [v4 setPublisherBulletinID:?];
-    v4 = v5;
+    [toCopy setPublisherBulletinID:?];
+    toCopy = v5;
   }
 
   if (self->_recordID)
   {
     [v5 setRecordID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sectionID)
   {
     [v5 setSectionID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_publisherBulletinID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_publisherBulletinID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_recordID copyWithZone:a3];
+  v8 = [(NSString *)self->_recordID copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_sectionID copyWithZone:a3];
+  v10 = [(NSString *)self->_sectionID copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((publisherBulletinID = self->_publisherBulletinID, !(publisherBulletinID | v4[1])) || -[NSString isEqual:](publisherBulletinID, "isEqual:")) && ((recordID = self->_recordID, !(recordID | v4[2])) || -[NSString isEqual:](recordID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((publisherBulletinID = self->_publisherBulletinID, !(publisherBulletinID | equalCopy[1])) || -[NSString isEqual:](publisherBulletinID, "isEqual:")) && ((recordID = self->_recordID, !(recordID | equalCopy[2])) || -[NSString isEqual:](recordID, "isEqual:")))
   {
     sectionID = self->_sectionID;
-    if (sectionID | v4[3])
+    if (sectionID | equalCopy[3])
     {
       v8 = [(NSString *)sectionID isEqual:?];
     }
@@ -144,26 +144,26 @@
   return v4 ^ [(NSString *)self->_sectionID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(BLTPBRemoveBulletinRequest *)self setPublisherBulletinID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(BLTPBRemoveBulletinRequest *)self setRecordID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(BLTPBRemoveBulletinRequest *)self setSectionID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

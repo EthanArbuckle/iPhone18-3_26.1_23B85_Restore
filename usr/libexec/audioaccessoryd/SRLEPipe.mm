@@ -4,14 +4,14 @@
 - (void)_pipeDone;
 - (void)_pipeEnsureStarted;
 - (void)_pipeEnsureStopped;
-- (void)_pipeReceivedRouteRequest:(id)a3 options:(id)a4 responseHandler:(id)a5;
-- (void)_pipeRequestCompleted:(id)a3 error:(id)a4;
+- (void)_pipeReceivedRouteRequest:(id)request options:(id)options responseHandler:(id)handler;
+- (void)_pipeRequestCompleted:(id)completed error:(id)error;
 - (void)_runPipeStates;
-- (void)activateWithDispatch:(id)a3;
+- (void)activateWithDispatch:(id)dispatch;
 - (void)invalidate;
-- (void)pipeConnectionComplete:(id)a3 andWxHeadset:(id)a4 isSender:(BOOL)a5;
-- (void)pipeRequestResponse:(id)a3 error:(id)a4;
-- (void)pipeSendRouteRequestToSFDevice:(id)a3 andWxHeadset:(id)a4 newPipe:(BOOL)a5 connectionResult:(id)a6 completion:(id)a7;
+- (void)pipeConnectionComplete:(id)complete andWxHeadset:(id)headset isSender:(BOOL)sender;
+- (void)pipeRequestResponse:(id)response error:(id)error;
+- (void)pipeSendRouteRequestToSFDevice:(id)device andWxHeadset:(id)headset newPipe:(BOOL)pipe connectionResult:(id)result completion:(id)completion;
 @end
 
 @implementation SRLEPipe
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (void)activateWithDispatch:(id)a3
+- (void)activateWithDispatch:(id)dispatch
 {
-  objc_storeStrong(&self->_dispatchQueue, a3);
+  objc_storeStrong(&self->_dispatchQueue, dispatch);
 
   [(SRLEPipe *)self _pipeEnsureStarted];
 }
@@ -175,11 +175,11 @@
   }
 }
 
-- (void)pipeConnectionComplete:(id)a3 andWxHeadset:(id)a4 isSender:(BOOL)a5
+- (void)pipeConnectionComplete:(id)complete andWxHeadset:(id)headset isSender:(BOOL)sender
 {
-  v29 = a5;
-  v7 = a4;
-  if (a3)
+  senderCopy = sender;
+  headsetCopy = headset;
+  if (complete)
   {
     v8 = 12;
   }
@@ -189,34 +189,34 @@
     v8 = 11;
   }
 
-  v30 = self;
+  selfCopy = self;
   self->_state = v8;
-  v9 = a3;
+  completeCopy = complete;
   v10 = CUPrintNSError();
   v11 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
-  v12 = [v11 pipePendingRequest];
-  v13 = [v12 timer];
+  pipePendingRequest = [v11 pipePendingRequest];
+  timer = [pipePendingRequest timer];
 
-  if (v13)
+  if (timer)
   {
-    dispatch_source_cancel(v13);
+    dispatch_source_cancel(timer);
   }
 
-  v14 = [v11 pipePendingRequest];
-  [v14 setTimer:0];
+  pipePendingRequest2 = [v11 pipePendingRequest];
+  [pipePendingRequest2 setTimer:0];
 
   [v11 setPipePendingRequest:0];
   [v11 _setTipiElectionInProgress:0];
   [v11 _setTipiElectionReceivedLePipe:&stru_1002C1358];
   [v11 _startTipiSetupTicks];
-  if (!a3)
+  if (!complete)
   {
-    [v11 _setIsFirstConnentionAfterSREnable:0 forDevice:v7];
+    [v11 _setIsFirstConnentionAfterSREnable:0 forDevice:headsetCopy];
   }
 
-  if (v7)
+  if (headsetCopy)
   {
-    v15 = v7;
+    v15 = headsetCopy;
   }
 
   else
@@ -246,9 +246,9 @@
   v32[1] = v10;
   v31[2] = @"pipeErrorCode";
   v28 = v10;
-  v22 = [v9 code];
+  code = [completeCopy code];
 
-  v23 = [NSNumber numberWithInteger:v22];
+  v23 = [NSNumber numberWithInteger:code];
   v32[2] = v23;
   v32[3] = v20;
   v31[3] = @"wxBuildVersion";
@@ -256,42 +256,42 @@
   v24 = [NSNumber numberWithUnsignedInt:v21];
   v32[4] = v24;
   v31[5] = @"isSender";
-  v25 = [NSNumber numberWithBool:v29];
+  v25 = [NSNumber numberWithBool:senderCopy];
   v32[5] = v25;
   v31[6] = @"isSender2";
-  v26 = [NSNumber numberWithBool:v29];
+  v26 = [NSNumber numberWithBool:senderCopy];
   v32[6] = v26;
   v27 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:7];
 
   CUMetricsLogEx();
-  [(SRLEPipe *)v30 _runPipeStates];
+  [(SRLEPipe *)selfCopy _runPipeStates];
 }
 
-- (void)pipeSendRouteRequestToSFDevice:(id)a3 andWxHeadset:(id)a4 newPipe:(BOOL)a5 connectionResult:(id)a6 completion:(id)a7
+- (void)pipeSendRouteRequestToSFDevice:(id)device andWxHeadset:(id)headset newPipe:(BOOL)pipe connectionResult:(id)result completion:(id)completion
 {
-  v9 = a5;
-  v13 = a3;
-  v14 = a4;
-  v32 = a6;
-  v15 = a7;
+  pipeCopy = pipe;
+  deviceCopy = device;
+  headsetCopy = headset;
+  resultCopy = result;
+  completionCopy = completion;
   v42[0] = 0;
   v42[1] = v42;
   v42[2] = 0x2020000000;
-  v43 = v9;
+  v43 = pipeCopy;
   v16 = objc_alloc_init(NSMutableDictionary);
   v17 = v16;
-  if (v9)
+  if (pipeCopy)
   {
     v18 = objc_alloc_init(RPCompanionLinkDevice);
-    [v18 setIdentifier:v13];
+    [v18 setIdentifier:deviceCopy];
     inError = self->_inError;
     self->_inError = 0;
 
-    v20 = objc_retainBlock(v15);
+    v20 = objc_retainBlock(completionCopy);
     inCompletion = self->_inCompletion;
     self->_inCompletion = v20;
 
-    objc_storeStrong(&self->_senderIDS, a3);
+    objc_storeStrong(&self->_senderIDS, device);
     v22 = objc_alloc_init(RPCompanionLinkClient);
     objc_storeStrong(&self->_client, v22);
     [v22 setControlFlags:{objc_msgSend(v22, "controlFlags") | 0x600100}];
@@ -307,13 +307,13 @@
     v40[2] = sub_1000CBB54;
     v40[3] = &unk_1002B68A8;
     v40[4] = self;
-    v23 = v14;
+    v23 = headsetCopy;
     v41 = v23;
     [v22 activateWithCompletion:v40];
     self->_state = 10;
     v24 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
-    v25 = [v24 _myBluetoothAddressString];
-    [v17 setObject:v25 forKeyedSubscript:@"btAddress"];
+    _myBluetoothAddressString = [v24 _myBluetoothAddressString];
+    [v17 setObject:_myBluetoothAddressString forKeyedSubscript:@"btAddress"];
 
     v26 = GestaltCopyAnswer();
     [v17 setObject:v26 forKeyedSubscript:@"btName"];
@@ -327,9 +327,9 @@
 
   else
   {
-    [v16 setObject:v32 forKeyedSubscript:@"btConnectionResult"];
+    [v16 setObject:resultCopy forKeyedSubscript:@"btConnectionResult"];
     [v17 setObject:&off_1002CB638 forKeyedSubscript:@"version"];
-    [v17 setObject:v14 forKeyedSubscript:@"wxAddress"];
+    [v17 setObject:headsetCopy forKeyedSubscript:@"wxAddress"];
   }
 
   v28 = self->_client;
@@ -349,10 +349,10 @@
   v33[1] = 3221225472;
   v33[2] = sub_1000CBBE4;
   v33[3] = &unk_1002BB008;
-  v30 = v13;
+  v30 = deviceCopy;
   v34 = v30;
-  v35 = self;
-  v31 = v14;
+  selfCopy = self;
+  v31 = headsetCopy;
   v36 = v31;
   v37 = v39;
   v38 = v42;
@@ -362,24 +362,24 @@
   _Block_object_dispose(v42, 8);
 }
 
-- (void)_pipeReceivedRouteRequest:(id)a3 options:(id)a4 responseHandler:(id)a5
+- (void)_pipeReceivedRouteRequest:(id)request options:(id)options responseHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   CFStringGetTypeID();
-  v74 = v8;
+  v74 = optionsCopy;
   v10 = CFDictionaryGetTypedValue();
   v11 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
-  v12 = [v11 pipePendingRequest];
-  if (!v12)
+  pipePendingRequest = [v11 pipePendingRequest];
+  if (!pipePendingRequest)
   {
     goto LABEL_3;
   }
 
-  v13 = [v11 pipePendingRequest];
-  v14 = [v13 senderIDS];
-  v15 = [v14 isEqualToString:v10];
+  pipePendingRequest2 = [v11 pipePendingRequest];
+  senderIDS = [pipePendingRequest2 senderIDS];
+  v15 = [senderIDS isEqualToString:v10];
 
   if (v15)
   {
@@ -388,8 +388,8 @@ LABEL_3:
     v17 = NSDictionaryGetNSNumber();
     [(SRPipeRequest *)v16 setBtXID:v17];
 
-    [(SRPipeRequest *)v16 setRequest:v7];
-    [(SRPipeRequest *)v16 setResponseHandler:v9];
+    [(SRPipeRequest *)v16 setRequest:requestCopy];
+    [(SRPipeRequest *)v16 setResponseHandler:handlerCopy];
     [(SRPipeRequest *)v16 setSenderIDS:v10];
     v96 = 0;
     v97 = &v96;
@@ -404,9 +404,9 @@ LABEL_3:
     v95 = &v96;
     v18 = v10;
     v91 = v18;
-    v19 = v7;
+    v19 = requestCopy;
     v92 = v19;
-    v93 = self;
+    selfCopy = self;
     v94 = v16;
     v20 = objc_retainBlock(v90);
     if (dword_1002F7228 <= 30 && (dword_1002F7228 != -1 || _LogCategory_Initialize()))
@@ -418,9 +418,9 @@ LABEL_3:
 
     [v11 _powerLogSmartIncomingConnection];
     v21 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
-    v22 = [v21 _isForceRejectPipe];
+    _isForceRejectPipe = [v21 _isForceRejectPipe];
 
-    if (v22)
+    if (_isForceRejectPipe)
     {
       if (dword_1002F7228 <= 30 && (dword_1002F7228 != -1 || _LogCategory_Initialize()))
       {
@@ -450,18 +450,18 @@ LABEL_3:
     {
       if (v71)
       {
-        v26 = [v11 pipePendingRequest];
-        v27 = v26 == 0;
+        pipePendingRequest3 = [v11 pipePendingRequest];
+        v27 = pipePendingRequest3 == 0;
 
         if (!v27)
         {
-          v28 = [v11 pipePendingRequest];
-          v29 = [v28 progressStarted];
+          pipePendingRequest4 = [v11 pipePendingRequest];
+          progressStarted = [pipePendingRequest4 progressStarted];
 
-          if (v29)
+          if (progressStarted)
           {
-            v30 = [v11 pipePendingRequest];
-            [v30 setProgressStarted:0];
+            pipePendingRequest5 = [v11 pipePendingRequest];
+            [pipePendingRequest5 setProgressStarted:0];
 
             [v11 _setTipiElectionInProgress:0];
             [v11 _setTipiElectionReceivedLePipe:&stru_1002C1358];
@@ -474,15 +474,15 @@ LABEL_3:
                 LogPrintF();
               }
 
-              v48 = [v11 pipePendingRequest];
-              v67 = [v48 wxAddress];
+              pipePendingRequest6 = [v11 pipePendingRequest];
+              wxAddress = [pipePendingRequest6 wxAddress];
 
               v49 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
               v50 = NSErrorF();
-              [v49 _updateOtherTipiDevice:v67 otherAddress:0 otherName:0 otherVersion:0 withResult:v50];
+              [v49 _updateOtherTipiDevice:wxAddress otherAddress:0 otherName:0 otherVersion:0 withResult:v50];
 
               v65 = NSErrorF();
-              [(SRLEPipe *)self pipeConnectionComplete:v65 andWxHeadset:v67 isSender:0];
+              [(SRLEPipe *)self pipeConnectionComplete:v65 andWxHeadset:wxAddress isSender:0];
 
 LABEL_55:
               goto LABEL_56;
@@ -510,32 +510,32 @@ LABEL_57:
       }
     }
 
-    v31 = [v11 pipePendingRequest];
+    pipePendingRequest7 = [v11 pipePendingRequest];
 
-    if (v31)
+    if (pipePendingRequest7)
     {
       if (dword_1002F7228 <= 30 && (dword_1002F7228 != -1 || _LogCategory_Initialize()))
       {
         LogPrintF();
       }
 
-      v33 = [v11 pipePendingRequest];
-      v34 = [v33 timer];
+      pipePendingRequest8 = [v11 pipePendingRequest];
+      timer = [pipePendingRequest8 timer];
 
-      if (v34)
+      if (timer)
       {
-        dispatch_source_cancel(v34);
+        dispatch_source_cancel(timer);
       }
 
-      v35 = [v11 pipePendingRequest];
-      [v35 setTimer:0];
+      pipePendingRequest9 = [v11 pipePendingRequest];
+      [pipePendingRequest9 setTimer:0];
 
       [v11 setPipePendingRequest:0];
     }
 
     CFStringGetTypeID();
-    v67 = CFDictionaryGetTypedValue();
-    if (v67)
+    wxAddress = CFDictionaryGetTypedValue();
+    if (wxAddress)
     {
       CFStringGetTypeID();
       v64 = CFDictionaryGetTypedValue();
@@ -549,8 +549,8 @@ LABEL_57:
       else
       {
         v69 = [v11 _verifyWxConnectedBTAddress:v72 withVersion:v73];
-        v36 = [v69 identifier];
-        v37 = [v36 isEqualToString:@"FF:FF:FF:FF:FF:FF"];
+        identifier = [v69 identifier];
+        v37 = [identifier isEqualToString:@"FF:FF:FF:FF:FF:FF"];
 
         if (v37)
         {
@@ -561,7 +561,7 @@ LABEL_57:
 
         else
         {
-          v40 = [v69 btAddressData];
+          btAddressData = [v69 btAddressData];
           v63 = CUPrintNSDataAddress();
 
           if ([v11 _verifyWxConnectedRouted:v63])
@@ -574,7 +574,7 @@ LABEL_57:
             handler[3] = &unk_1002BB058;
             v84 = v18;
             v85 = v19;
-            v86 = self;
+            selfCopy2 = self;
             v87 = v16;
             v88 = v11;
             v42 = v69;
@@ -585,12 +585,12 @@ LABEL_57:
             [(SRPipeRequest *)v16 setWxAddress:v63];
             v60 = v41;
             v43 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
-            v62 = [v43 _myBluetoothAddressString];
+            _myBluetoothAddressString = [v43 _myBluetoothAddressString];
 
-            if (v62)
+            if (_myBluetoothAddressString)
             {
-              v102[0] = v62;
-              v102[1] = v67;
+              v102[0] = _myBluetoothAddressString;
+              v102[1] = wxAddress;
               v44 = [NSArray arrayWithObjects:v102 count:2];
               if (dword_1002F7228 <= 30 && (dword_1002F7228 != -1 || _LogCategory_Initialize()))
               {
@@ -604,9 +604,9 @@ LABEL_57:
               [v11 _setTipiElectionReceivedLePipe:v63];
               [(SRPipeRequest *)v16 setProgressStarted:1];
               [v11 _startTipiSetupTicks];
-              v46 = [v42 btAddressData];
+              btAddressData2 = [v42 btAddressData];
               v47 = CUPrintNSDataAddress();
-              [v11 _updateOtherTipiDevice:v47 otherAddress:v67 otherName:v64 otherVersion:v73 withResult:0];
+              [v11 _updateOtherTipiDevice:v47 otherAddress:wxAddress otherName:v64 otherVersion:v73 withResult:0];
 
               v76[0] = _NSConcreteStackBlock;
               v76[1] = 3221225472;
@@ -616,7 +616,7 @@ LABEL_57:
               v78 = v44;
               v79 = v11;
               v80 = v42;
-              v81 = self;
+              selfCopy3 = self;
               v82 = v16;
               [v11 _updateAccessoryID:v80 connectionDeviceAddresses:v44 completion:v76];
             }
@@ -657,18 +657,18 @@ LABEL_57:
   }
 
   v32 = NSErrorF();
-  (*(v9 + 2))(v9, 0, 0, v32);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v32);
 
 LABEL_58:
 }
 
-- (void)_pipeRequestCompleted:(id)a3 error:(id)a4
+- (void)_pipeRequestCompleted:(id)completed error:(id)error
 {
-  v15 = a3;
-  v5 = a4;
+  completedCopy = completed;
+  errorCopy = error;
   v6 = objc_alloc_init(NSMutableDictionary);
   v7 = v6;
-  if (v5)
+  if (errorCopy)
   {
     v8 = @"NO";
   }
@@ -679,94 +679,94 @@ LABEL_58:
   }
 
   [v6 setObject:v8 forKeyedSubscript:@"connectionResultACK"];
-  v9 = [v15 wxAddress];
-  [v7 setObject:v9 forKeyedSubscript:@"wxAddress"];
+  wxAddress = [completedCopy wxAddress];
+  [v7 setObject:wxAddress forKeyedSubscript:@"wxAddress"];
 
   [v7 setObject:&off_1002CB638 forKeyedSubscript:@"version"];
-  v10 = [v15 btXID];
-  [v7 setObject:v10 forKeyedSubscript:@"btXID"];
+  btXID = [completedCopy btXID];
+  [v7 setObject:btXID forKeyedSubscript:@"btXID"];
 
   if (dword_1002F7228 <= 30 && (dword_1002F7228 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001F865C(v15);
+    sub_1001F865C(completedCopy);
   }
 
-  v11 = [v15 responseHandler];
-  v12 = v11;
-  if (v11)
+  responseHandler = [completedCopy responseHandler];
+  v12 = responseHandler;
+  if (responseHandler)
   {
-    (*(v11 + 16))(v11, v7, 0, v5);
+    (*(responseHandler + 16))(responseHandler, v7, 0, errorCopy);
   }
 
-  [v15 setResponseHandler:0];
-  v13 = [v15 timer];
-  v14 = v13;
-  if (v13)
+  [completedCopy setResponseHandler:0];
+  timer = [completedCopy timer];
+  v14 = timer;
+  if (timer)
   {
-    dispatch_source_cancel(v13);
+    dispatch_source_cancel(timer);
   }
 
-  [v15 setTimer:0];
+  [completedCopy setTimer:0];
 }
 
-- (void)pipeRequestResponse:(id)a3 error:(id)a4
+- (void)pipeRequestResponse:(id)response error:(id)error
 {
-  v18 = a3;
-  v6 = a4;
-  if (v6)
+  responseCopy = response;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (dword_1002F7228 <= 90 && (dword_1002F7228 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001F86F4(v18);
+      sub_1001F86F4(responseCopy);
     }
 
-    v7 = [v18 responseHandler];
-    v8 = v7;
-    if (v7)
+    responseHandler = [responseCopy responseHandler];
+    v8 = responseHandler;
+    if (responseHandler)
     {
-      (*(v7 + 16))(v7, 0, 0, v6);
+      (*(responseHandler + 16))(responseHandler, 0, 0, errorCopy);
     }
 
-    [v18 setResponseHandler:0];
-    v9 = [v18 timer];
-    v10 = v9;
-    if (v9)
+    [responseCopy setResponseHandler:0];
+    timer = [responseCopy timer];
+    v10 = timer;
+    if (timer)
     {
-      dispatch_source_cancel(v9);
+      dispatch_source_cancel(timer);
     }
 
-    [v18 setTimer:0];
-    v11 = [v18 wxAddress];
-    [(SRLEPipe *)self pipeConnectionComplete:v6 andWxHeadset:v11 isSender:0];
+    [responseCopy setTimer:0];
+    wxAddress = [responseCopy wxAddress];
+    [(SRLEPipe *)self pipeConnectionComplete:errorCopy andWxHeadset:wxAddress isSender:0];
   }
 
   else
   {
     v10 = objc_alloc_init(NSMutableDictionary);
     v12 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
-    v13 = [v12 _myBluetoothAddressString];
-    [v10 setObject:v13 forKeyedSubscript:@"btAddress"];
+    _myBluetoothAddressString = [v12 _myBluetoothAddressString];
+    [v10 setObject:_myBluetoothAddressString forKeyedSubscript:@"btAddress"];
 
     v14 = GestaltCopyAnswer();
     [v10 setObject:v14 forKeyedSubscript:@"btName"];
 
     [v10 setObject:&off_1002CB638 forKeyedSubscript:@"version"];
-    v15 = [v18 btXID];
-    [v10 setObject:v15 forKeyedSubscript:@"btXID"];
+    btXID = [responseCopy btXID];
+    [v10 setObject:btXID forKeyedSubscript:@"btXID"];
 
     if (dword_1002F7228 <= 30 && (dword_1002F7228 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001F8780(v18);
+      sub_1001F8780(responseCopy);
     }
 
-    v16 = [v18 responseHandler];
-    v17 = v16;
-    if (v16)
+    responseHandler2 = [responseCopy responseHandler];
+    v17 = responseHandler2;
+    if (responseHandler2)
     {
-      (*(v16 + 16))(v16, v10, 0, 0);
+      (*(responseHandler2 + 16))(responseHandler2, v10, 0, 0);
     }
 
-    [v18 setResponseHandler:0];
+    [responseCopy setResponseHandler:0];
   }
 }
 

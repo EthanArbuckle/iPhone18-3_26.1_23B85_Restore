@@ -1,34 +1,34 @@
 @interface _PASLevenshtein
-+ (unint64_t)distanceBetweenStrings:(id)a3 and:(id)a4;
++ (unint64_t)distanceBetweenStrings:(id)strings and:(id)and;
 @end
 
 @implementation _PASLevenshtein
 
-+ (unint64_t)distanceBetweenStrings:(id)a3 and:(id)a4
++ (unint64_t)distanceBetweenStrings:(id)strings and:(id)and
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(__CFString *)v7 length];
-  v10 = [(__CFString *)v8 length];
+  stringsCopy = strings;
+  andCopy = and;
+  v9 = [(__CFString *)stringsCopy length];
+  v10 = [(__CFString *)andCopy length];
   if (!v9 || (v11 = v10) == 0)
   {
-    v13 = [(__CFString *)v8 lengthOfBytesUsingEncoding:2348810496];
-    v12 = ([(__CFString *)v7 lengthOfBytesUsingEncoding:2348810496]>> 2) + (v13 >> 2);
+    v13 = [(__CFString *)andCopy lengthOfBytesUsingEncoding:2348810496];
+    v12 = ([(__CFString *)stringsCopy lengthOfBytesUsingEncoding:2348810496]>> 2) + (v13 >> 2);
     goto LABEL_30;
   }
 
-  if (([(__CFString *)v7 isEqualToString:v8]& 1) != 0)
+  if (([(__CFString *)stringsCopy isEqualToString:andCopy]& 1) != 0)
   {
     v12 = 0;
     goto LABEL_30;
   }
 
-  CStringPtr = CFStringGetCStringPtr(v7, 0x600u);
-  v15 = CFStringGetCStringPtr(v8, 0x600u);
-  if (CStringPtr || [(__CFString *)v7 UTF8String])
+  CStringPtr = CFStringGetCStringPtr(stringsCopy, 0x600u);
+  uTF8String = CFStringGetCStringPtr(andCopy, 0x600u);
+  if (CStringPtr || [(__CFString *)stringsCopy UTF8String])
   {
-    if (v15)
+    if (uTF8String)
     {
       goto LABEL_11;
     }
@@ -36,29 +36,29 @@
 
   else
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"_PASLevenshtein.mm" lineNumber:133 description:@"First string is not valid Unicode."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLevenshtein.mm" lineNumber:133 description:@"First string is not valid Unicode."];
 
-    if (v15)
+    if (uTF8String)
     {
       goto LABEL_11;
     }
   }
 
-  if (![(__CFString *)v8 UTF8String])
+  if (![(__CFString *)andCopy UTF8String])
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"_PASLevenshtein.mm" lineNumber:134 description:@"Second string is not valid Unicode."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASLevenshtein.mm" lineNumber:134 description:@"Second string is not valid Unicode."];
   }
 
 LABEL_11:
-  if (CStringPtr || (v16 = [(__CFString *)v7 canBeConvertedToEncoding:1], v16))
+  if (CStringPtr || (v16 = [(__CFString *)stringsCopy canBeConvertedToEncoding:1], v16))
   {
-    if (v15 || (v16 = [(__CFString *)v8 canBeConvertedToEncoding:1], v16))
+    if (uTF8String || (v16 = [(__CFString *)andCopy canBeConvertedToEncoding:1], v16))
     {
       if (CStringPtr)
       {
-        if (!v15)
+        if (!uTF8String)
         {
           goto LABEL_27;
         }
@@ -66,15 +66,15 @@ LABEL_11:
 
       else
       {
-        CStringPtr = [(__CFString *)v7 UTF8String];
-        if (!v15)
+        CStringPtr = [(__CFString *)stringsCopy UTF8String];
+        if (!uTF8String)
         {
 LABEL_27:
-          v15 = [(__CFString *)v8 UTF8String];
+          uTF8String = [(__CFString *)andCopy UTF8String];
         }
       }
 
-      v12 = levenshtein<char>(CStringPtr, v15, v9, v11);
+      v12 = levenshtein<char>(CStringPtr, uTF8String, v9, v11);
       goto LABEL_30;
     }
   }
@@ -83,8 +83,8 @@ LABEL_27:
   v18 = 4 * v11;
   if (v18 + 4 * v9 > 0x7CF)
   {
-    v28 = [(__CFString *)v7 dataUsingEncoding:2348810496];
-    v29 = [(__CFString *)v8 dataUsingEncoding:2348810496];
+    v28 = [(__CFString *)stringsCopy dataUsingEncoding:2348810496];
+    v29 = [(__CFString *)andCopy dataUsingEncoding:2348810496];
     v12 = levenshtein<unsigned int>([v28 bytes], objc_msgSend(v29, "bytes"), objc_msgSend(v28, "length") >> 2, objc_msgSend(v29, "length") >> 2);
   }
 
@@ -152,8 +152,8 @@ LABEL_27:
     v27 = MEMORY[0x1AC566DD0](v38);
     memptr = 0;
     v37 = 0;
-    [(__CFString *)v7 getBytes:v22 maxLength:v20 usedLength:&memptr encoding:2348810496 options:0 range:0 remainingRange:v19, 0];
-    [(__CFString *)v8 getBytes:v26 maxLength:v18 usedLength:&v37 encoding:2348810496 options:0 range:0 remainingRange:v17, 0];
+    [(__CFString *)stringsCopy getBytes:v22 maxLength:v20 usedLength:&memptr encoding:2348810496 options:0 range:0 remainingRange:v19, 0];
+    [(__CFString *)andCopy getBytes:v26 maxLength:v18 usedLength:&v37 encoding:2348810496 options:0 range:0 remainingRange:v17, 0];
     v12 = levenshtein<unsigned int>(v22, v26, memptr >> 2, v37 >> 2);
     if (v27)
     {

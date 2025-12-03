@@ -1,5 +1,5 @@
 @interface CRKSession
-- (CRKSession)initWithEndpoint:(id)a3;
+- (CRKSession)initWithEndpoint:(id)endpoint;
 - (CRKSessionDelegate)delegate;
 - (NSDictionary)stateDictionary;
 - (id)studentSocketOptions;
@@ -22,23 +22,23 @@
 - (void)localWiFiBecameUnavailable;
 - (void)lostBeacon;
 - (void)lostConnection;
-- (void)processFinishedTransportPreflightOperation:(id)a3;
+- (void)processFinishedTransportPreflightOperation:(id)operation;
 - (void)registerDefaults;
 - (void)rejected;
 - (void)resetBackoff;
-- (void)setRequiresBeacon:(BOOL)a3;
-- (void)startPreflightingTransport:(id)a3;
+- (void)setRequiresBeacon:(BOOL)beacon;
+- (void)startPreflightingTransport:(id)transport;
 - (void)stopPreflightingTransport;
-- (void)transportPreflightOperationDidFinish:(id)a3;
+- (void)transportPreflightOperationDidFinish:(id)finish;
 - (void)tryConnecting;
 @end
 
 @implementation CRKSession
 
-- (CRKSession)initWithEndpoint:(id)a3
+- (CRKSession)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (!v5)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
     [CRKSession initWithEndpoint:];
   }
@@ -60,7 +60,7 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_endpoint, a3);
+    objc_storeStrong(&v11->_endpoint, endpoint);
     *&v12->_lostBeaconTimeout = xmmword_243616500;
     v12->_requiresBeacon = 1;
     v28 = [[CRKExponentialGrowthFunction alloc] initWithGrowthRate:2.0];
@@ -73,15 +73,15 @@
     mFSM = v12->mFSM;
     v12->mFSM = v15;
 
-    v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v18 = [v17 objectForKey:@"CRKClassSessionLogLevel"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v18 = [standardUserDefaults objectForKey:@"CRKClassSessionLogLevel"];
     -[CATStateMachine setLogLevel:](v12->mFSM, "setLogLevel:", [v18 integerValue]);
 
     v19 = [(CATStateMachine *)v12->mFSM addStateWithName:@"Out of Range"];
     v20 = [(CATStateMachine *)v12->mFSM addStateWithName:@"No Network and Not in Range"];
     v21 = [(CATStateMachine *)v12->mFSM addStateWithName:@"No Network"];
     [(CATStateMachine *)v12->mFSM addStateWithName:@"Backoff Can Connect"];
-    v22 = v29 = v5;
+    v22 = v29 = endpointCopy;
     v27 = [(CATStateMachine *)v12->mFSM addStateWithName:@"Should Connect?"];
     v23 = [(CATStateMachine *)v12->mFSM addStateWithName:@"Connecting"];
     v24 = [(CATStateMachine *)v12->mFSM addStateWithName:@"Connected"];
@@ -157,15 +157,15 @@
     [v25 addTransitionToState:0 triggeringEvent:@"invalidate"];
     [(CATStateMachine *)v12->mFSM start];
 
-    v5 = v29;
+    endpointCopy = v29;
   }
 
   return v12;
 }
 
-- (void)setRequiresBeacon:(BOOL)a3
+- (void)setRequiresBeacon:(BOOL)beacon
 {
-  v3 = a3;
+  beaconCopy = beacon;
   v13 = *MEMORY[0x277D85DE8];
   if (_CRKLogBluetooth_onceToken_1 != -1)
   {
@@ -177,17 +177,17 @@
   {
     v6 = MEMORY[0x277CCABB0];
     v7 = v5;
-    v8 = [v6 numberWithBool:v3];
+    v8 = [v6 numberWithBool:beaconCopy];
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = v8;
     _os_log_impl(&dword_243550000, v7, OS_LOG_TYPE_DEFAULT, "Setting requiresBeacon for session %p: %{public}@", &v9, 0x16u);
   }
 
-  if (self->_requiresBeacon != v3)
+  if (self->_requiresBeacon != beaconCopy)
   {
-    self->_requiresBeacon = v3;
+    self->_requiresBeacon = beaconCopy;
     [(CRKSession *)self foundBeacon];
   }
 }
@@ -279,18 +279,18 @@
 - (NSDictionary)stateDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(CRKSession *)self stateMachine];
-  v5 = [v4 currentState];
-  v6 = [v5 name];
-  [v3 setObject:v6 forKeyedSubscript:@"state"];
+  stateMachine = [(CRKSession *)self stateMachine];
+  currentState = [stateMachine currentState];
+  name = [currentState name];
+  [v3 setObject:name forKeyedSubscript:@"state"];
 
-  v7 = [(CRKSession *)self transport];
-  v8 = [v7 description];
+  transport = [(CRKSession *)self transport];
+  v8 = [transport description];
   [v3 setObject:v8 forKeyedSubscript:@"transport"];
 
-  v9 = [(CRKSession *)self transportPreflightOperation];
-  v10 = [v9 stateDictionary];
-  [v3 setObject:v10 forKeyedSubscript:@"transportPreflightOperation"];
+  transportPreflightOperation = [(CRKSession *)self transportPreflightOperation];
+  stateDictionary = [transportPreflightOperation stateDictionary];
+  [v3 setObject:stateDictionary forKeyedSubscript:@"transportPreflightOperation"];
 
   if ([(CRKSession *)self requiresBeacon])
   {
@@ -347,7 +347,7 @@
 - (void)registerDefaults
 {
   v5[5] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v4[0] = @"CRKStudentAdaptiveWriteTimeout";
   v4[1] = @"CRKStudentKeepAliveEnabled";
   v5[0] = &unk_2856727A8;
@@ -359,19 +359,19 @@
   v4[4] = @"CRKStudentKeepAliveCount";
   v5[4] = &unk_2856727C0;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:v4 count:5];
-  [v2 registerDefaults:v3];
+  [standardUserDefaults registerDefaults:v3];
 }
 
 - (void)tryConnecting
 {
   OUTLINED_FUNCTION_1_0();
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [v2 endpoint];
-  v4 = [v3 stringValue];
+  endpoint = [v2 endpoint];
+  stringValue = [endpoint stringValue];
   v5 = 138543618;
   v6 = v1;
   v7 = 2114;
-  v8 = v4;
+  v8 = stringValue;
   _os_log_error_impl(&dword_243550000, v0, OS_LOG_TYPE_ERROR, "SESSION:%{public}@. IP:%{public}@. Failed to connect: No Client Identity", &v5, 0x16u);
 }
 
@@ -385,24 +385,24 @@ uint64_t __27__CRKSession_tryConnecting__block_invoke(int a1, id a2)
 - (id)studentSocketOptions
 {
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 valueForKey:@"CRKStudentAdaptiveWriteTimeout"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults valueForKey:@"CRKStudentAdaptiveWriteTimeout"];
   [v2 setAdaptiveWriteTimeout:v4];
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 valueForKey:@"CRKStudentKeepAliveEnabled"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults2 valueForKey:@"CRKStudentKeepAliveEnabled"];
   [v2 setKeepAliveEnabled:v6];
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v8 = [v7 valueForKey:@"CRKStudentKeepAliveDelay"];
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v8 = [standardUserDefaults3 valueForKey:@"CRKStudentKeepAliveDelay"];
   [v2 setKeepAliveDelay:v8];
 
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [v9 valueForKey:@"CRKStudentKeepAliveInterval"];
+  standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v10 = [standardUserDefaults4 valueForKey:@"CRKStudentKeepAliveInterval"];
   [v2 setKeepAliveInterval:v10];
 
-  v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v12 = [v11 valueForKey:@"CRKStudentKeepAliveCount"];
+  standardUserDefaults5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v12 = [standardUserDefaults5 valueForKey:@"CRKStudentKeepAliveCount"];
   [v2 setKeepAliveCount:v12];
 
   return v2;
@@ -425,26 +425,26 @@ uint64_t __27__CRKSession_tryConnecting__block_invoke(int a1, id a2)
   }
 
   [(CRKSession *)self performSelector:sel_lostBeacon withObject:0 afterDelay:v7];
-  v8 = [(CRKSession *)self delegate];
+  delegate = [(CRKSession *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CRKSession *)self delegate];
-    [v10 session:self willLoseBeaconAfterTimeInterval:v7];
+    delegate2 = [(CRKSession *)self delegate];
+    [delegate2 session:self willLoseBeaconAfterTimeInterval:v7];
   }
 }
 
 - (void)delegateDidLoseBeacon
 {
-  v3 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __35__CRKSession_delegateDidLoseBeacon__block_invoke;
   v5[3] = &unk_278DC10F0;
   v5[4] = self;
   v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v5];
-  [v3 addOperation:v4];
+  [mainQueue addOperation:v4];
 }
 
 void __35__CRKSession_delegateDidLoseBeacon__block_invoke(uint64_t a1)
@@ -461,13 +461,13 @@ void __35__CRKSession_delegateDidLoseBeacon__block_invoke(uint64_t a1)
 
 - (void)delegateDidBecomeConnectable
 {
-  v3 = [(CRKSession *)self delegate];
+  delegate = [(CRKSession *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CRKSession *)self delegate];
-    [v5 sessionDidBecomeConnectable:self];
+    delegate2 = [(CRKSession *)self delegate];
+    [delegate2 sessionDidBecomeConnectable:self];
   }
 
   else
@@ -479,14 +479,14 @@ void __35__CRKSession_delegateDidLoseBeacon__block_invoke(uint64_t a1)
 
 - (void)delegateDidBecomeNotConnectable
 {
-  v3 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __45__CRKSession_delegateDidBecomeNotConnectable__block_invoke;
   v5[3] = &unk_278DC10F0;
   v5[4] = self;
   v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v5];
-  [v3 addOperation:v4];
+  [mainQueue addOperation:v4];
 }
 
 void __45__CRKSession_delegateDidBecomeNotConnectable__block_invoke(uint64_t a1)
@@ -503,14 +503,14 @@ void __45__CRKSession_delegateDidBecomeNotConnectable__block_invoke(uint64_t a1)
 
 - (void)delegateDidBecomeNotConnectableAndDidLoseBeacon
 {
-  v3 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __61__CRKSession_delegateDidBecomeNotConnectableAndDidLoseBeacon__block_invoke;
   v5[3] = &unk_278DC10F0;
   v5[4] = self;
   v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v5];
-  [v3 addOperation:v4];
+  [mainQueue addOperation:v4];
 }
 
 void __61__CRKSession_delegateDidBecomeNotConnectableAndDidLoseBeacon__block_invoke(uint64_t a1)
@@ -540,36 +540,36 @@ void __61__CRKSession_delegateDidBecomeNotConnectableAndDidLoseBeacon__block_inv
   v3 = _CRKLogSession();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CRKSession *)self endpoint];
-    v5 = [v4 stringValue];
+    endpoint = [(CRKSession *)self endpoint];
+    stringValue = [endpoint stringValue];
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v5;
+    v13 = stringValue;
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_DEFAULT, "SESSION:%{public}@. IP:%{public}@. Connected", &v10, 0x16u);
   }
 
-  v6 = [(CRKSession *)self delegate];
+  delegate = [(CRKSession *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CRKSession *)self delegate];
-    v9 = [(CRKSession *)self transport];
-    [v8 session:self didConnectWithTransport:v9];
+    delegate2 = [(CRKSession *)self delegate];
+    transport = [(CRKSession *)self transport];
+    [delegate2 session:self didConnectWithTransport:transport];
   }
 }
 
 - (void)delegateDisconnected
 {
-  v3 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __34__CRKSession_delegateDisconnected__block_invoke;
   v5[3] = &unk_278DC10F0;
   v5[4] = self;
   v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v5];
-  [v3 addOperation:v4];
+  [mainQueue addOperation:v4];
 }
 
 void __34__CRKSession_delegateDisconnected__block_invoke(uint64_t a1)
@@ -588,21 +588,21 @@ void __34__CRKSession_delegateDisconnected__block_invoke(uint64_t a1)
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_lostBeacon object:0];
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_delegateWillLoseBeacon object:0];
-  v3 = [(CRKSession *)self delegate];
+  delegate = [(CRKSession *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CRKSession *)self delegate];
-    [v5 sessionDidInvalidate:self];
+    delegate2 = [(CRKSession *)self delegate];
+    [delegate2 sessionDidInvalidate:self];
   }
 }
 
 - (void)enterBackoffCanConnect
 {
   mCurrentBackoffInterval = self->mCurrentBackoffInterval;
-  v4 = [(CRKSession *)self backoffGrowthFunction];
-  [v4 evaluateWithValue:self->mCurrentBackoffInterval];
+  backoffGrowthFunction = [(CRKSession *)self backoffGrowthFunction];
+  [backoffGrowthFunction evaluateWithValue:self->mCurrentBackoffInterval];
   self->mCurrentBackoffInterval = v5;
 
   [(CRKSession *)self performSelector:sel_backoffDidFinish withObject:0 afterDelay:mCurrentBackoffInterval];
@@ -626,69 +626,69 @@ void __34__CRKSession_delegateDisconnected__block_invoke(uint64_t a1)
   v3 = _CRKLogSession();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CRKSession *)self endpoint];
-    v5 = [v4 stringValue];
+    endpoint = [(CRKSession *)self endpoint];
+    stringValue = [endpoint stringValue];
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = v5;
+    v9 = stringValue;
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_DEFAULT, "SESSION:%{public}@. IP:%{public}@. Resetting session backoff.", &v6, 0x16u);
   }
 
   self->mCurrentBackoffInterval = 0.0;
 }
 
-- (void)startPreflightingTransport:(id)a3
+- (void)startPreflightingTransport:(id)transport
 {
-  v4 = a3;
-  v5 = [(CRKSession *)self transportPreflightOperation];
+  transportCopy = transport;
+  transportPreflightOperation = [(CRKSession *)self transportPreflightOperation];
 
-  if (v5)
+  if (transportPreflightOperation)
   {
     [CRKSession startPreflightingTransport:];
   }
 
-  v6 = [[CRKTransportPreflightOperation alloc] initWithTransport:v4 session:self];
+  v6 = [[CRKTransportPreflightOperation alloc] initWithTransport:transportCopy session:self];
 
   [(CRKSession *)self setTransportPreflightOperation:v6];
-  v7 = [(CRKSession *)self transportPreflightOperation];
-  [v7 addTarget:self selector:sel_transportPreflightOperationDidFinish_ forOperationEvents:6];
+  transportPreflightOperation2 = [(CRKSession *)self transportPreflightOperation];
+  [transportPreflightOperation2 addTarget:self selector:sel_transportPreflightOperationDidFinish_ forOperationEvents:6];
 
-  v9 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-  v8 = [(CRKSession *)self transportPreflightOperation];
-  [v9 addOperation:v8];
+  crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+  transportPreflightOperation3 = [(CRKSession *)self transportPreflightOperation];
+  [crk_backgroundQueue addOperation:transportPreflightOperation3];
 }
 
 - (void)stopPreflightingTransport
 {
-  v3 = [(CRKSession *)self transportPreflightOperation];
-  [v3 cancel];
+  transportPreflightOperation = [(CRKSession *)self transportPreflightOperation];
+  [transportPreflightOperation cancel];
 
   [(CRKSession *)self setTransportPreflightOperation:0];
 }
 
-- (void)transportPreflightOperationDidFinish:(id)a3
+- (void)transportPreflightOperationDidFinish:(id)finish
 {
-  v5 = a3;
-  v4 = [(CRKSession *)self transportPreflightOperation];
+  finishCopy = finish;
+  transportPreflightOperation = [(CRKSession *)self transportPreflightOperation];
 
-  if (v4 == v5)
+  if (transportPreflightOperation == finishCopy)
   {
     [(CRKSession *)self setTransportPreflightOperation:0];
-    [(CRKSession *)self processFinishedTransportPreflightOperation:v5];
+    [(CRKSession *)self processFinishedTransportPreflightOperation:finishCopy];
   }
 }
 
-- (void)processFinishedTransportPreflightOperation:(id)a3
+- (void)processFinishedTransportPreflightOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [v4 error];
-  if (v5)
+  operationCopy = operation;
+  error = [operationCopy error];
+  if (error)
   {
     v6 = _CRKLogSession();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CRKSession *)self processFinishedTransportPreflightOperation:v5, v6];
+      [(CRKSession *)self processFinishedTransportPreflightOperation:error, v6];
     }
 
     [(CRKSession *)self failedToConnect];
@@ -696,17 +696,17 @@ void __34__CRKSession_delegateDisconnected__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [v4 resultObject];
-    v8 = [v7 takeTransport];
-    if (v8)
+    resultObject = [operationCopy resultObject];
+    takeTransport = [resultObject takeTransport];
+    if (takeTransport)
     {
-      [(CRKSession *)self setTransport:v8];
+      [(CRKSession *)self setTransport:takeTransport];
       [(CRKSession *)self didConnect];
     }
 
     else
     {
-      if ([v7 shouldResetBackoff])
+      if ([resultObject shouldResetBackoff])
       {
         [(CRKSession *)self resetBackoff];
       }

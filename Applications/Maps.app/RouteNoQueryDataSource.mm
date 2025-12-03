@@ -1,65 +1,65 @@
 @interface RouteNoQueryDataSource
-- (RouteNoQueryDataSource)initWithTableView:(id)a3 filterPredicate:(id)a4;
+- (RouteNoQueryDataSource)initWithTableView:(id)view filterPredicate:(id)predicate;
 - (id)_allDataProviders;
 - (id)newTraits;
-- (id)objectAtIndexPath:(id)a3;
-- (id)placeSummaryTemplateForObject:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)objectAtIndexPath:(id)path;
+- (id)placeSummaryTemplateForObject:(id)object;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_addAnalyticsInfo;
 - (void)_buildContents;
 - (void)_createDataProviders;
-- (void)_hoverGestureRecognizerStateDidChange:(id)a3;
-- (void)_sendNoTypingACAnalyticsForSelectedAtIndexPath:(id)a3;
+- (void)_hoverGestureRecognizerStateDidChange:(id)change;
+- (void)_sendNoTypingACAnalyticsForSelectedAtIndexPath:(id)path;
 - (void)_updateContents;
-- (void)setActive:(BOOL)a3;
-- (void)setUserLocationSearchResult:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)updateTableViewHeader:(BOOL)a3;
+- (void)setActive:(BOOL)active;
+- (void)setUserLocationSearchResult:(id)result;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)updateTableViewHeader:(BOOL)header;
 @end
 
 @implementation RouteNoQueryDataSource
 
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   lastSelectedIndexPath = self->_lastSelectedIndexPath;
-  v8 = a4;
-  v9 = a3;
-  [v9 deselectRowAtIndexPath:lastSelectedIndexPath animated:0];
-  v10 = [v8 nextFocusedIndexPath];
-  [v9 selectRowAtIndexPath:v10 animated:0 scrollPosition:0];
+  contextCopy = context;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:lastSelectedIndexPath animated:0];
+  nextFocusedIndexPath = [contextCopy nextFocusedIndexPath];
+  [viewCopy selectRowAtIndexPath:nextFocusedIndexPath animated:0 scrollPosition:0];
 
-  v11 = [v8 nextFocusedIndexPath];
+  nextFocusedIndexPath2 = [contextCopy nextFocusedIndexPath];
 
   v12 = self->_lastSelectedIndexPath;
-  self->_lastSelectedIndexPath = v11;
+  self->_lastSelectedIndexPath = nextFocusedIndexPath2;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(RouteNoQueryDataSource *)self objectAtIndexPath:v6];
-  [(DataSource *)self sendAnalyticsForDataAtIndexPath:v6 object:v9 action:2007];
-  [(RouteNoQueryDataSource *)self _sendNoTypingACAnalyticsForSelectedAtIndexPath:v6];
-  v8 = [(DataSource *)self delegate];
-  [v8 dataSource:self itemTapped:v9];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [(RouteNoQueryDataSource *)self objectAtIndexPath:pathCopy];
+  [(DataSource *)self sendAnalyticsForDataAtIndexPath:pathCopy object:v9 action:2007];
+  [(RouteNoQueryDataSource *)self _sendNoTypingACAnalyticsForSelectedAtIndexPath:pathCopy];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSource:self itemTapped:v9];
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   cachedViewModelForIndexPath = self->_cachedViewModelForIndexPath;
-  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a4 row]);
+  v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [path row]);
   v9 = [(NSMutableDictionary *)cachedViewModelForIndexPath objectForKeyedSubscript:v8];
 
   if (v9)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v6 dequeueReusableCellWithIdentifier:v11];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:v11];
 
     [v12 configureWithTemplate:v9 query:0 asyncDataManager:self->_placeSummaryAsyncDataManager delegate:0];
   }
@@ -74,10 +74,10 @@
 
 - (id)newTraits
 {
-  v2 = [(DataSource *)self delegate];
-  if ([v2 conformsToProtocol:&OBJC_PROTOCOL___RouteNoQueryDataSourceDelegate])
+  delegate = [(DataSource *)self delegate];
+  if ([delegate conformsToProtocol:&OBJC_PROTOCOL___RouteNoQueryDataSourceDelegate])
   {
-    v3 = v2;
+    v3 = delegate;
   }
 
   else
@@ -87,10 +87,10 @@
 
   v4 = v3;
 
-  v5 = [v4 newTraits];
-  if (v5)
+  newTraits = [v4 newTraits];
+  if (newTraits)
   {
-    v6 = v5;
+    v6 = newTraits;
   }
 
   else
@@ -103,16 +103,16 @@
   return v7;
 }
 
-- (void)_sendNoTypingACAnalyticsForSelectedAtIndexPath:(id)a3
+- (void)_sendNoTypingACAnalyticsForSelectedAtIndexPath:(id)path
 {
-  v10 = a3;
-  v4 = [(DataSource *)self objectsForAnalytics];
-  if (v4)
+  pathCopy = path;
+  objectsForAnalytics = [(DataSource *)self objectsForAnalytics];
+  if (objectsForAnalytics)
   {
     contents = self->_contents;
-    v6 = [(RouteNoQueryDataSource *)self analyticsContext];
-    v7 = [(RouteNoQueryDataSource *)self newTraits];
-    v8 = [MapsAnalyticsHelper acSuggestionEntriesFromAutoCompleteObjects:contents context:v6 mapsSuggestionsInsights:0 skipReportASearchItems:1 traits:v7];
+    analyticsContext = [(RouteNoQueryDataSource *)self analyticsContext];
+    newTraits = [(RouteNoQueryDataSource *)self newTraits];
+    v8 = [MapsAnalyticsHelper acSuggestionEntriesFromAutoCompleteObjects:contents context:analyticsContext mapsSuggestionsInsights:0 skipReportASearchItems:1 traits:newTraits];
   }
 
   else
@@ -120,9 +120,9 @@
     v8 = 0;
   }
 
-  if (v10)
+  if (pathCopy)
   {
-    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 row]);
+    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [pathCopy row]);
     [GEOAPPortal captureClientACSuggestionWithQuery:&stru_1016631F0 queryTokens:0 entries:v8 selectedIndex:v9 selectedSectionIndex:0 withinSectionSelectedIndex:0 isRetainedQuery:0 isRerankerTriggered:0 shouldDifferentiateClientAndServerResults:0];
   }
 
@@ -160,8 +160,8 @@
 
         v10 = *(*(&v13 + 1) + 8 * v9);
         v11 = [AutocompleteMatchInfo matchInfoWithType:0, v13];
-        v12 = [(RouteNoQueryDataSource *)self analyticsContext];
-        [v12 setMatchInfo:v11 forObject:v10];
+        analyticsContext = [(RouteNoQueryDataSource *)self analyticsContext];
+        [analyticsContext setMatchInfo:v11 forObject:v10];
 
         v9 = v9 + 1;
       }
@@ -174,9 +174,9 @@
   }
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = [a3 row];
+  v4 = [path row];
   if (v4 >= [(NSArray *)self->_contents count])
   {
     v5 = 0;
@@ -190,32 +190,32 @@
   return v5;
 }
 
-- (void)setUserLocationSearchResult:(id)a3
+- (void)setUserLocationSearchResult:(id)result
 {
-  v5 = a3;
-  if (self->_userLocationSearchResult != v5)
+  resultCopy = result;
+  if (self->_userLocationSearchResult != resultCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_userLocationSearchResult, a3);
+    v6 = resultCopy;
+    objc_storeStrong(&self->_userLocationSearchResult, result);
     [(RouteNoQueryDataSource *)self _updateContents];
-    v5 = v6;
+    resultCopy = v6;
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
-  if ([(DataSource *)self active]!= a3)
+  activeCopy = active;
+  if ([(DataSource *)self active]!= active)
   {
     v15.receiver = self;
     v15.super_class = RouteNoQueryDataSource;
-    [(DataSource *)&v15 setActive:v3];
+    [(DataSource *)&v15 setActive:activeCopy];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(RouteNoQueryDataSource *)self _allDataProviders];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    _allDataProviders = [(RouteNoQueryDataSource *)self _allDataProviders];
+    v6 = [_allDataProviders countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -227,22 +227,22 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_allDataProviders);
           }
 
-          [*(*(&v11 + 1) + 8 * v9) setActive:v3];
+          [*(*(&v11 + 1) + 8 * v9) setActive:activeCopy];
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [_allDataProviders countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v7);
     }
 
     [(RouteNoQueryDataSource *)self _updateContents];
-    if (!v3)
+    if (!activeCopy)
     {
       LOBYTE(v10) = 0;
       [(DataSource *)self sendAnalyticsForDataAtIndexPath:0 object:0 childPlaceIndexPath:0 childPlaceObject:0 action:0 eventValue:0 populateSearchTapEvent:v10];
@@ -254,13 +254,13 @@
 {
   [(RouteNoQueryDataSource *)self _buildContents];
   [(RouteNoQueryDataSource *)self _addAnalyticsInfo];
-  v3 = [(DataSource *)self delegate];
-  [v3 dataSourceUpdated:self];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSourceUpdated:self];
 }
 
-- (id)placeSummaryTemplateForObject:(id)a3
+- (id)placeSummaryTemplateForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -269,14 +269,14 @@
   v30 = 0;
   v5 = [[_TtC4Maps29PlaceSummaryTextHighlightType alloc] initWithHighlightType:0];
   v6 = [[_TtC4Maps38PlaceSummaryTextHighlightConfiguration alloc] initWithTypedAutocompleteQuery:0 type:v5];
-  v7 = [(DataSource *)self tableView];
-  [v7 frame];
+  tableView = [(DataSource *)self tableView];
+  [tableView frame];
   Width = CGRectGetWidth(v32);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v4 historyEntry];
+    historyEntry = [objectCopy historyEntry];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100B112D4;
@@ -290,10 +290,10 @@
     v20 = &v25;
     v21 = Width;
     v18 = v23;
-    v19 = self;
-    [v9 ifSearch:v22 ifRoute:0 ifPlaceDisplay:v17 ifTransitLineItem:0];
+    selfCopy = self;
+    [historyEntry ifSearch:v22 ifRoute:0 ifPlaceDisplay:v17 ifTransitLineItem:0];
 
-    v10 = v23;
+    currentLocation = v23;
   }
 
   else
@@ -301,9 +301,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v4;
-      v10 = [(DataSource *)self currentLocation];
-      v12 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithSearchResult:v11 highlightConfiguration:v6 currentLocation:v10 availableWidth:0 searchAlongRoute:Width];
+      v11 = objectCopy;
+      currentLocation = [(DataSource *)self currentLocation];
+      v12 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithSearchResult:v11 highlightConfiguration:v6 currentLocation:currentLocation availableWidth:0 searchAlongRoute:Width];
       v13 = v26[5];
       v26[5] = v12;
     }
@@ -316,8 +316,8 @@
         goto LABEL_8;
       }
 
-      v14 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithCoreRecentContact:v4 highlightConfiguration:v6 searchAlongRoute:0];
-      v10 = v26[5];
+      v14 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithCoreRecentContact:objectCopy highlightConfiguration:v6 searchAlongRoute:0];
+      currentLocation = v26[5];
       v26[5] = v14;
     }
   }
@@ -341,14 +341,14 @@ LABEL_8:
       [(NSArray *)v3 addObject:?];
     }
 
-    v5 = [(MarkedLocationDataProvider *)self->_markedLocationDataProvider markedLocation];
-    if (v5)
+    markedLocation = [(MarkedLocationDataProvider *)self->_markedLocationDataProvider markedLocation];
+    if (markedLocation)
     {
-      [(NSArray *)v4 addObject:v5];
+      [(NSArray *)v4 addObject:markedLocation];
     }
 
-    v6 = [(RecentsDataProvider *)self->_recentsDataProvider recents];
-    [(NSArray *)v4 addObjectsFromArray:v6];
+    recents = [(RecentsDataProvider *)self->_recentsDataProvider recents];
+    [(NSArray *)v4 addObjectsFromArray:recents];
 
     v7 = [(RecentsDataFilter *)self->_recentsDataFilter filteredRecents:v4 excludingDuplicatesOfEntries:&__NSArray0__struct];
     contents = self->_contents;
@@ -407,31 +407,31 @@ LABEL_8:
   self->_recentsDataProvider = v5;
 }
 
-- (void)_hoverGestureRecognizerStateDidChange:(id)a3
+- (void)_hoverGestureRecognizerStateDidChange:(id)change
 {
-  v26 = a3;
-  v4 = [(DataSource *)self tableView];
-  v5 = [v4 dataSource];
-  v6 = v5;
-  if (v5 == self)
+  changeCopy = change;
+  tableView = [(DataSource *)self tableView];
+  dataSource = [tableView dataSource];
+  v6 = dataSource;
+  if (dataSource == self)
   {
-    v7 = [v26 _maps_isHovering];
+    _maps_isHovering = [changeCopy _maps_isHovering];
 
-    if (!v7)
+    if (!_maps_isHovering)
     {
       goto LABEL_9;
     }
 
-    v8 = [(DataSource *)self tableView];
-    [v26 locationInView:v8];
+    tableView2 = [(DataSource *)self tableView];
+    [changeCopy locationInView:tableView2];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(DataSource *)self tableView];
-    v14 = [v13 indexPathForRowAtPoint:{v10, v12}];
+    tableView3 = [(DataSource *)self tableView];
+    v14 = [tableView3 indexPathForRowAtPoint:{v10, v12}];
 
-    v15 = [(DataSource *)self tableView];
-    v16 = [v15 cellForRowAtIndexPath:v14];
+    tableView4 = [(DataSource *)self tableView];
+    v16 = [tableView4 cellForRowAtIndexPath:v14];
 
     if (v16 && ([v16 frame], v28.x = v10, v28.y = v12, CGRectContainsPoint(v29, v28)))
     {
@@ -441,8 +441,8 @@ LABEL_8:
         {
           v17 = 0;
 LABEL_15:
-          v22 = [(DataSource *)self tableView];
-          [v22 selectRowAtIndexPath:v14 animated:0 scrollPosition:0];
+          tableView5 = [(DataSource *)self tableView];
+          [tableView5 selectRowAtIndexPath:v14 animated:0 scrollPosition:0];
 
           objc_storeStrong(&self->_lastSelectedIndexPath, v14);
           if (v16)
@@ -491,7 +491,7 @@ LABEL_14:
   }
 
 LABEL_9:
-  if ([v26 state] == 3)
+  if ([changeCopy state] == 3)
   {
     v18 = self->_lastSelectedIndexPath;
     if (v18)
@@ -501,21 +501,21 @@ LABEL_9:
       self->_lastSelectedIndexPath = 0;
 
 LABEL_20:
-      v23 = [(DataSource *)self tableView];
-      v24 = [v23 cellForRowAtIndexPath:v17];
+      tableView6 = [(DataSource *)self tableView];
+      v24 = [tableView6 cellForRowAtIndexPath:v17];
 
       [v24 resignFirstResponder];
-      v25 = [(DataSource *)self tableView];
-      [v25 deselectRowAtIndexPath:v17 animated:0];
+      tableView7 = [(DataSource *)self tableView];
+      [tableView7 deselectRowAtIndexPath:v17 animated:0];
     }
   }
 
 LABEL_21:
 }
 
-- (void)updateTableViewHeader:(BOOL)a3
+- (void)updateTableViewHeader:(BOOL)header
 {
-  if (a3)
+  if (header)
   {
     v3 = +[NSBundle mainBundle];
     v26 = [v3 localizedStringForKey:@"[Offline Route Planning] Recents" value:@"localized string not found" table:0];
@@ -524,58 +524,58 @@ LABEL_21:
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v8 = [(StandardSectionHeaderView *)v4 initWithFrame:CGRectZero.origin.x, y, width, height];
-    [(StandardSectionHeaderView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(StandardSectionHeaderView *)v8 setTitle:v26];
-    [(StandardSectionHeaderView *)v8 setSectionHeaderSize:0];
-    [(StandardSectionHeaderView *)v8 setSectionHeaderPosition:0];
+    height = [(StandardSectionHeaderView *)v4 initWithFrame:CGRectZero.origin.x, y, width, height];
+    [(StandardSectionHeaderView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(StandardSectionHeaderView *)height setTitle:v26];
+    [(StandardSectionHeaderView *)height setSectionHeaderSize:0];
+    [(StandardSectionHeaderView *)height setSectionHeaderPosition:0];
     +[_TtC4Maps23MapsDesignConstantsShim textHorizontalPadding];
     v10 = v9;
     v11 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v11 addSubview:v8];
-    v25 = [(StandardSectionHeaderView *)v8 leadingAnchor];
-    v24 = [v11 leadingAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24 constant:v10];
+    [v11 addSubview:height];
+    leadingAnchor = [(StandardSectionHeaderView *)height leadingAnchor];
+    leadingAnchor2 = [v11 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v10];
     v29[0] = v23;
-    v22 = [(StandardSectionHeaderView *)v8 trailingAnchor];
-    v21 = [v11 trailingAnchor];
-    v12 = [v22 constraintEqualToAnchor:v21 constant:-v10];
+    trailingAnchor = [(StandardSectionHeaderView *)height trailingAnchor];
+    trailingAnchor2 = [v11 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v10];
     v29[1] = v12;
-    v13 = [v11 topAnchor];
-    v14 = [(StandardSectionHeaderView *)v8 topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor = [v11 topAnchor];
+    topAnchor2 = [(StandardSectionHeaderView *)height topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v29[2] = v15;
-    v16 = [v11 bottomAnchor];
-    v17 = [(StandardSectionHeaderView *)v8 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor = [v11 bottomAnchor];
+    bottomAnchor2 = [(StandardSectionHeaderView *)height bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v29[3] = v18;
     v19 = [NSArray arrayWithObjects:v29 count:4];
     [NSLayoutConstraint activateConstraints:v19];
 
-    v20 = [(DataSource *)self tableView];
-    [v20 setTableHeaderView:v11];
+    tableView = [(DataSource *)self tableView];
+    [tableView setTableHeaderView:v11];
   }
 
   else
   {
-    v28 = [(DataSource *)self tableView];
-    [v28 setTableHeaderView:0];
+    tableView2 = [(DataSource *)self tableView];
+    [tableView2 setTableHeaderView:0];
   }
 }
 
-- (RouteNoQueryDataSource)initWithTableView:(id)a3 filterPredicate:(id)a4
+- (RouteNoQueryDataSource)initWithTableView:(id)view filterPredicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  predicateCopy = predicate;
   v29.receiver = self;
   v29.super_class = RouteNoQueryDataSource;
-  v8 = [(DataSource *)&v29 initWithTableView:v6 updateLocation:0];
+  v8 = [(DataSource *)&v29 initWithTableView:viewCopy updateLocation:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_filterPredicate, a4);
-    v10 = [[RecentsDataFilter alloc] initWithSearchMode:2 filterPredicate:v7];
+    objc_storeStrong(&v8->_filterPredicate, predicate);
+    v10 = [[RecentsDataFilter alloc] initWithSearchMode:2 filterPredicate:predicateCopy];
     recentsDataFilter = v9->_recentsDataFilter;
     v9->_recentsDataFilter = v10;
 
@@ -584,8 +584,8 @@ LABEL_21:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = [(RouteNoQueryDataSource *)v9 _allDataProviders];
-    v13 = [v12 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    _allDataProviders = [(RouteNoQueryDataSource *)v9 _allDataProviders];
+    v13 = [_allDataProviders countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v13)
     {
       v14 = v13;
@@ -597,17 +597,17 @@ LABEL_21:
         {
           if (*v26 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(_allDataProviders);
           }
 
-          v17 = [*(*(&v25 + 1) + 8 * v16) observers];
-          [v17 registerObserver:v9];
+          observers = [*(*(&v25 + 1) + 8 * v16) observers];
+          [observers registerObserver:v9];
 
           v16 = v16 + 1;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v14 = [_allDataProviders countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v14);
@@ -616,12 +616,12 @@ LABEL_21:
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    [v6 registerClass:v18 forCellReuseIdentifier:v20];
+    [viewCopy registerClass:v18 forCellReuseIdentifier:v20];
 
-    if (sub_10000FA08(v6) == 5)
+    if (sub_10000FA08(viewCopy) == 5)
     {
       v21 = [[UIHoverGestureRecognizer alloc] initWithTarget:v9 action:"_hoverGestureRecognizerStateDidChange:"];
-      [v6 addGestureRecognizer:v21];
+      [viewCopy addGestureRecognizer:v21];
     }
 
     v22 = objc_alloc_init(_TtC4Maps28PlaceSummaryAsyncDataManager);

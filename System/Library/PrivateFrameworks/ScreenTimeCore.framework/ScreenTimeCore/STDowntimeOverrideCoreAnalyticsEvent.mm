@@ -1,20 +1,20 @@
 @interface STDowntimeOverrideCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STDowntimeOverrideCoreAnalyticsEvent)initWithDowntimeEnabled:(BOOL)a3 gracePeriodUsed:(BOOL)a4 scheduleEnabled:(BOOL)a5 hourOfDay:(int64_t)a6 userIsManaged:(BOOL)a7;
+- (STDowntimeOverrideCoreAnalyticsEvent)initWithDowntimeEnabled:(BOOL)enabled gracePeriodUsed:(BOOL)used scheduleEnabled:(BOOL)scheduleEnabled hourOfDay:(int64_t)day userIsManaged:(BOOL)managed;
 @end
 
 @implementation STDowntimeOverrideCoreAnalyticsEvent
 
-- (STDowntimeOverrideCoreAnalyticsEvent)initWithDowntimeEnabled:(BOOL)a3 gracePeriodUsed:(BOOL)a4 scheduleEnabled:(BOOL)a5 hourOfDay:(int64_t)a6 userIsManaged:(BOOL)a7
+- (STDowntimeOverrideCoreAnalyticsEvent)initWithDowntimeEnabled:(BOOL)enabled gracePeriodUsed:(BOOL)used scheduleEnabled:(BOOL)scheduleEnabled hourOfDay:(int64_t)day userIsManaged:(BOOL)managed
 {
   v13.receiver = self;
   v13.super_class = STDowntimeOverrideCoreAnalyticsEvent;
   result = [(STDowntimeOverrideCoreAnalyticsEvent *)&v13 init];
-  result->_downtimeEnabled = a3;
-  result->_gracePeriodUsed = a4;
-  result->_scheduleEnabled = a5;
-  result->_hourOfDay = a6;
-  result->_userIsManaged = a7;
+  result->_downtimeEnabled = enabled;
+  result->_gracePeriodUsed = used;
+  result->_scheduleEnabled = scheduleEnabled;
+  result->_hourOfDay = day;
+  result->_userIsManaged = managed;
   return result;
 }
 

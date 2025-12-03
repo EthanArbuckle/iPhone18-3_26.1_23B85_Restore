@@ -1,21 +1,21 @@
 @interface HDAttachmentEntity
-+ (BOOL)enumerateAttachmentsWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (id)_attachmentForEntity:(void *)a3 database:(uint64_t)a4 error:;
-+ (id)_insertAttachment:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)_insertIfDoesNotExistAttachment:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (BOOL)enumerateAttachmentsWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (id)_attachmentForEntity:(void *)entity database:(uint64_t)database error:;
++ (id)_insertAttachment:(id)attachment transaction:(id)transaction error:(id *)error;
++ (id)_insertIfDoesNotExistAttachment:(id)attachment transaction:(id)transaction error:(id *)error;
 + (id)_propertiesForEntity;
-+ (id)attachmentWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)attachmentWithIdentifier:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (id)attachmentWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)attachmentWithIdentifier:(id)identifier transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDAttachmentEntity
 
-+ (BOOL)enumerateAttachmentsWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateAttachmentsWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 databaseForEntityClass:a1];
+  predicateCopy = predicate;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v13 = [transactionCopy databaseForEntityClass:self];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -26,21 +26,21 @@
   v21[1] = 3221225472;
   v21[2] = __93__HDAttachmentEntity_enumerateAttachmentsWithPredicate_transaction_error_enumerationHandler___block_invoke;
   v21[3] = &unk_278615698;
-  v25 = a1;
+  selfCopy = self;
   v14 = v13;
   v22 = v14;
   v24 = &v26;
-  v15 = v12;
+  v15 = handlerCopy;
   v23 = v15;
-  v16 = [(HDSQLiteEntity *)HDAttachmentEntity enumerateEntitiesInDatabase:v14 predicate:v10 error:a5 enumerationHandler:v21];
+  v16 = [(HDSQLiteEntity *)HDAttachmentEntity enumerateEntitiesInDatabase:v14 predicate:predicateCopy error:error enumerationHandler:v21];
   v17 = v27[5];
   v18 = v17;
   if (v17)
   {
-    if (a5)
+    if (error)
     {
       v19 = v17;
-      *a5 = v18;
+      *error = v18;
     }
 
     else
@@ -78,10 +78,10 @@ uint64_t __93__HDAttachmentEntity_enumerateAttachmentsWithPredicate_transaction_
   return v9;
 }
 
-+ (id)_attachmentForEntity:(void *)a3 database:(uint64_t)a4 error:
++ (id)_attachmentForEntity:(void *)entity database:(uint64_t)database error:
 {
   v6 = a2;
-  v7 = a3;
+  entityCopy = entity;
   objc_opt_self();
   v12 = 0;
   v13 = &v12;
@@ -95,7 +95,7 @@ uint64_t __93__HDAttachmentEntity_enumerateAttachmentsWithPredicate_transaction_
   v11[2] = __58__HDAttachmentEntity__attachmentForEntity_database_error___block_invoke;
   v11[3] = &unk_278618B98;
   v11[4] = &v12;
-  [v6 getValuesForProperties:v8 database:v7 error:a4 handler:v11];
+  [v6 getValuesForProperties:v8 database:entityCopy error:database handler:v11];
 
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -103,26 +103,26 @@ uint64_t __93__HDAttachmentEntity_enumerateAttachmentsWithPredicate_transaction_
   return v9;
 }
 
-+ (id)attachmentWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)attachmentWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__93;
   v22 = __Block_byref_object_dispose__93;
   v23 = 0;
-  v10 = [v9 database];
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__HDAttachmentEntity_attachmentWithIdentifier_profile_error___block_invoke;
   v14[3] = &unk_2786169D8;
   v16 = &v18;
-  v17 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = identifierCopy;
   v15 = v11;
-  [a1 performReadTransactionWithHealthDatabase:v10 error:a5 block:v14];
+  [self performReadTransactionWithHealthDatabase:database error:error block:v14];
 
   v12 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -176,17 +176,17 @@ BOOL __61__HDAttachmentEntity_attachmentWithIdentifier_profile_error___block_inv
   return v17 == 0;
 }
 
-+ (id)attachmentWithIdentifier:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)attachmentWithIdentifier:(id)identifier transaction:(id)transaction error:(id *)error
 {
   v8 = MEMORY[0x277D10B18];
-  v9 = a4;
-  v10 = [v8 predicateWithProperty:@"identifier" equalToValue:a3];
-  v11 = [v9 databaseForEntityClass:a1];
+  transactionCopy = transaction;
+  v10 = [v8 predicateWithProperty:@"identifier" equalToValue:identifier];
+  v11 = [transactionCopy databaseForEntityClass:self];
 
-  v12 = [a1 anyInDatabase:v11 predicate:v10 error:a5];
+  v12 = [self anyInDatabase:v11 predicate:v10 error:error];
   if (v12)
   {
-    v13 = [(HDAttachmentEntity *)a1 _attachmentForEntity:v12 database:v11 error:a5];
+    v13 = [(HDAttachmentEntity *)self _attachmentForEntity:v12 database:v11 error:error];
   }
 
   else
@@ -234,26 +234,26 @@ void __58__HDAttachmentEntity__attachmentForEntity_database_error___block_invoke
   *(v12 + 40) = v11;
 }
 
-+ (id)_insertAttachment:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)_insertAttachment:(id)attachment transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 metadata];
-  if (v10 && (v11 = v10, [v8 metadata], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hk_validateAttachmentMetadataKeysAndValuesWithError:", a5), v12, v11, !v13))
+  attachmentCopy = attachment;
+  transactionCopy = transaction;
+  metadata = [attachmentCopy metadata];
+  if (metadata && (v11 = metadata, [attachmentCopy metadata], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hk_validateAttachmentMetadataKeysAndValuesWithError:", error), v12, v11, !v13))
   {
     v16 = 0;
   }
 
   else
   {
-    v14 = [v9 databaseForEntityClass:a1];
+    v14 = [transactionCopy databaseForEntityClass:self];
     v15 = +[HDAttachmentEntity _propertiesForEntity];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __58__HDAttachmentEntity__insertAttachment_transaction_error___block_invoke;
     v18[3] = &unk_278614508;
-    v19 = v8;
-    v16 = [a1 insertOrReplaceEntity:0 database:v14 properties:v15 error:a5 bindingHandler:v18];
+    v19 = attachmentCopy;
+    v16 = [self insertOrReplaceEntity:0 database:v14 properties:v15 error:error bindingHandler:v18];
   }
 
   return v16;
@@ -295,32 +295,32 @@ void __58__HDAttachmentEntity__insertAttachment_transaction_error___block_invoke
   MEMORY[0x22AAC6B40](a2, @"metadata", v13);
 }
 
-+ (id)_insertIfDoesNotExistAttachment:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)_insertIfDoesNotExistAttachment:(id)attachment transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 metadata];
-  if (v10 && (v11 = v10, [v8 metadata], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hk_validateAttachmentMetadataKeysAndValuesWithError:", a5), v12, v11, !v13))
+  attachmentCopy = attachment;
+  transactionCopy = transaction;
+  metadata = [attachmentCopy metadata];
+  if (metadata && (v11 = metadata, [attachmentCopy metadata], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hk_validateAttachmentMetadataKeysAndValuesWithError:", error), v12, v11, !v13))
   {
     v20 = 0;
   }
 
   else
   {
-    v14 = [v8 identifier];
-    v15 = [MEMORY[0x277D10B18] predicateWithProperty:@"identifier" equalToValue:v14];
+    identifier = [attachmentCopy identifier];
+    v15 = [MEMORY[0x277D10B18] predicateWithProperty:@"identifier" equalToValue:identifier];
 
-    v16 = [v9 databaseForEntityClass:objc_opt_class()];
+    v16 = [transactionCopy databaseForEntityClass:objc_opt_class()];
     v23 = 0;
-    v17 = [a1 anyInDatabase:v16 predicate:v15 error:&v23];
+    v17 = [self anyInDatabase:v16 predicate:v15 error:&v23];
     v18 = v23;
     if (v18)
     {
-      if (a5)
+      if (error)
       {
         v19 = v18;
         v20 = 0;
-        *a5 = v18;
+        *error = v18;
       }
 
       else
@@ -339,7 +339,7 @@ void __58__HDAttachmentEntity__insertAttachment_transaction_error___block_invoke
 
       else
       {
-        v21 = [a1 _insertAttachment:v8 transaction:v9 error:a5];
+        v21 = [self _insertAttachment:attachmentCopy transaction:transactionCopy error:error];
       }
 
       v20 = v21;

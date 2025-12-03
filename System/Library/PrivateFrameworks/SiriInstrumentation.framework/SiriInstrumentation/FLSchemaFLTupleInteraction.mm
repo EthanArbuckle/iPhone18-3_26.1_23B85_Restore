@@ -1,28 +1,28 @@
 @interface FLSchemaFLTupleInteraction
-- (BOOL)isEqual:(id)a3;
-- (FLSchemaFLTupleInteraction)initWithDictionary:(id)a3;
-- (FLSchemaFLTupleInteraction)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLSchemaFLTupleInteraction)initWithDictionary:(id)dictionary;
+- (FLSchemaFLTupleInteraction)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addIdentifiers:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIdentifiers:(id)identifiers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLSchemaFLTupleInteraction
 
-- (FLSchemaFLTupleInteraction)initWithDictionary:(id)a3
+- (FLSchemaFLTupleInteraction)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = FLSchemaFLTupleInteraction;
   v5 = [(FLSchemaFLTupleInteraction *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"identifiers"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"identifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"alignment", v18}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"alignment", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (FLSchemaFLTupleInteraction)initWithJSON:(id)a3
+- (FLSchemaFLTupleInteraction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLSchemaFLTupleInteraction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLSchemaFLTupleInteraction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLSchemaFLTupleInteraction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,7 +116,7 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(FLSchemaFLTupleInteraction *)self alignment]- 1;
@@ -130,12 +130,12 @@
       v5 = off_1E78D6E58[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"alignment"];
+    [dictionary setObject:v5 forKeyedSubscript:@"alignment"];
   }
 
   if ([(NSArray *)self->_identifiers count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -155,16 +155,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -174,12 +174,12 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"identifiers"];
+    [dictionary setObject:array forKeyedSubscript:@"identifiers"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v15];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v15];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -198,18 +198,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(FLSchemaFLTupleInteraction *)self identifiers];
-  v6 = [v4 identifiers];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  identifiers = [(FLSchemaFLTupleInteraction *)self identifiers];
+  identifiers2 = [equalCopy identifiers];
+  v7 = identifiers2;
+  if ((identifiers != 0) == (identifiers2 == 0))
   {
 
 LABEL_12:
@@ -217,13 +217,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(FLSchemaFLTupleInteraction *)self identifiers];
-  if (v8)
+  identifiers3 = [(FLSchemaFLTupleInteraction *)self identifiers];
+  if (identifiers3)
   {
-    v9 = v8;
-    v10 = [(FLSchemaFLTupleInteraction *)self identifiers];
-    v11 = [v4 identifiers];
-    v12 = [v10 isEqual:v11];
+    v9 = identifiers3;
+    identifiers4 = [(FLSchemaFLTupleInteraction *)self identifiers];
+    identifiers5 = [equalCopy identifiers];
+    v12 = [identifiers4 isEqual:identifiers5];
 
     if (!v12)
     {
@@ -235,7 +235,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -243,7 +243,7 @@ LABEL_12:
   if (*&self->_has)
   {
     alignment = self->_alignment;
-    if (alignment != [v4 alignment])
+    if (alignment != [equalCopy alignment])
     {
       goto LABEL_12;
     }
@@ -255,10 +255,10 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -296,32 +296,32 @@ LABEL_13:
   }
 }
 
-- (void)addIdentifiers:(id)a3
+- (void)addIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   identifiers = self->_identifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!identifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_identifiers;
-    self->_identifiers = v6;
+    self->_identifiers = array;
 
-    v4 = v8;
+    identifiersCopy = v8;
     identifiers = self->_identifiers;
   }
 
-  [(NSArray *)identifiers addObject:v4];
+  [(NSArray *)identifiers addObject:identifiersCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = FLSchemaFLTupleInteraction;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(FLSchemaFLTupleInteraction *)self identifiers:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(FLSchemaFLTupleInteraction *)self setIdentifiers:v7];
 

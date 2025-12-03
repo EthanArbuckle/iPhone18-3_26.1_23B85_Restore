@@ -1,19 +1,19 @@
 @interface MUGroupedActionsRowView
 - (BOOL)hasContent;
-- (MUGroupedActionsRowView)initWithConfiguration:(id)a3;
+- (MUGroupedActionsRowView)initWithConfiguration:(id)configuration;
 - (MUPlaceCardActionsRowViewDelegate)delegate;
 - (NSArray)actionButtons;
 - (NSArray)menuActionBarItems;
-- (id)itemViewForViewModel:(id)a3;
-- (id)viewModelForItemView:(id)a3;
+- (id)itemViewForViewModel:(id)model;
+- (id)viewModelForItemView:(id)view;
 - (int64_t)preferredOrientation;
 - (void)_setupStackLayout;
 - (void)_updateLayoutIfNeeded;
-- (void)actionRowItemViewModelDidSelect:(id)a3;
-- (void)actionRowItemViewModelDidUpdate:(id)a3;
+- (void)actionRowItemViewModelDidSelect:(id)select;
+- (void)actionRowItemViewModelDidUpdate:(id)update;
 - (void)createActionViews;
 - (void)didMoveToWindow;
-- (void)setViewModels:(id)a3;
+- (void)setViewModels:(id)models;
 @end
 
 @implementation MUGroupedActionsRowView
@@ -29,7 +29,7 @@
 {
   if ([(MUGroupedActionsRowView *)self hasContent])
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v4 = [[MUPlaceActionBarTypeCustom alloc] initWithSymbolName:&stru_1F44CA030 text:&stru_1F44CA030];
     v5 = [[MUPlaceActionBarItem alloc] initWithType:v4 axID:&stru_1F44CA030];
     objc_initWeak(&location, self);
@@ -39,17 +39,17 @@
     v10 = &unk_1E8218DF8;
     objc_copyWeak(&v11, &location);
     [(MUPlaceActionBarItem *)v5 addMenuProvider:&v7];
-    [v3 addObject:{v5, v7, v8, v9, v10}];
+    [array addObject:{v5, v7, v8, v9, v10}];
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 
   else
   {
-    v3 = 0;
+    array = 0;
   }
 
-  return v3;
+  return array;
 }
 
 id __45__MUGroupedActionsRowView_menuActionBarItems__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -267,15 +267,15 @@ LABEL_11:
 - (void)_updateLayoutIfNeeded
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = [(MUGroupedActionsRowViewConfiguration *)self->_configuration style];
-  if (v3 == 1)
+  style = [(MUGroupedActionsRowViewConfiguration *)self->_configuration style];
+  if (style == 1)
   {
     v4 = 4.0;
   }
 
   else
   {
-    if (v3)
+    if (style)
     {
       goto LABEL_6;
     }
@@ -287,10 +287,10 @@ LABEL_11:
 LABEL_6:
   [(MUCompositionalStackLayoutGroup *)self->_buttonLayoutGroup setAxis:[(MUGroupedActionsRowView *)self preferredOrientation]];
   [(MUCompositionalStackLayoutGroup *)self->_buttonLayoutGroup setDistribution:[(MUGroupedActionsRowView *)self preferredDistribution]];
-  v5 = [(MUGroupedActionsRowView *)self preferredOrientation];
-  if (v5)
+  preferredOrientation = [(MUGroupedActionsRowView *)self preferredOrientation];
+  if (preferredOrientation)
   {
-    v6 = v5 == 1;
+    v6 = preferredOrientation == 1;
   }
 
   else
@@ -302,7 +302,7 @@ LABEL_6:
   featureDiscoveryView = self->_featureDiscoveryView;
   self->_featureDiscoveryView = 0;
 
-  v39 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -332,19 +332,19 @@ LABEL_6:
         else
         {
           [(MUGroupedActionsRowView *)self addSubview:v13];
-          [v39 addObject:v13];
+          [array addObject:v13];
         }
 
-        v15 = [v14 featureDiscoveryView];
-        if (v15)
+        featureDiscoveryView = [v14 featureDiscoveryView];
+        if (featureDiscoveryView)
         {
           v16 = self->_featureDiscoveryView;
 
           if (!v16)
           {
-            v17 = [v14 featureDiscoveryView];
+            featureDiscoveryView2 = [v14 featureDiscoveryView];
             v18 = self->_featureDiscoveryView;
-            self->_featureDiscoveryView = v17;
+            self->_featureDiscoveryView = featureDiscoveryView2;
 
             [(MUFeatureDiscoveryAnnotationView *)self->_featureDiscoveryView setTranslatesAutoresizingMaskIntoConstraints:0];
             [(MUFeatureDiscoveryAnnotationView *)self->_featureDiscoveryView setShowBubbleIndicator:1];
@@ -362,7 +362,7 @@ LABEL_6:
     while (v10);
   }
 
-  [(MUCompositionalStackLayoutGroup *)self->_buttonLayoutGroup setArrangedLayoutItems:v39];
+  [(MUCompositionalStackLayoutGroup *)self->_buttonLayoutGroup setArrangedLayoutItems:array];
   v19 = MEMORY[0x1E696ACD8];
   containerStackLayout = self->_containerStackLayout;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&containerStackLayout count:1];
@@ -370,17 +370,17 @@ LABEL_6:
 
   if (self->_featureDiscoveryView)
   {
-    v21 = [[MUCompositionalStackLayoutGroup alloc] initWithIdentifier:@"content" axis:1];
-    [(MUCompositionalStackLayoutGroup *)v21 setSpacing:20.0];
+    layoutMarginsGuide2 = [[MUCompositionalStackLayoutGroup alloc] initWithIdentifier:@"content" axis:1];
+    [(MUCompositionalStackLayoutGroup *)layoutMarginsGuide2 setSpacing:20.0];
     v22 = self->_featureDiscoveryView;
     v50[0] = self->_buttonLayoutGroup;
     v50[1] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:2];
-    [(MUCompositionalStackLayoutGroup *)v21 setArrangedLayoutItems:v23];
+    [(MUCompositionalStackLayoutGroup *)layoutMarginsGuide2 setArrangedLayoutItems:v23];
 
     v24 = [MUCompositionalStackLayout alloc];
-    v25 = [(MUGroupedActionsRowView *)self layoutMarginsGuide];
-    v26 = [(MUCompositionalStackLayout *)v24 initWithContainer:v25 group:v21];
+    layoutMarginsGuide = [(MUGroupedActionsRowView *)self layoutMarginsGuide];
+    v26 = [(MUCompositionalStackLayout *)v24 initWithContainer:layoutMarginsGuide group:layoutMarginsGuide2];
     v27 = self->_containerStackLayout;
     self->_containerStackLayout = v26;
   }
@@ -388,9 +388,9 @@ LABEL_6:
   else
   {
     v28 = [MUCompositionalStackLayout alloc];
-    v21 = [(MUGroupedActionsRowView *)self layoutMarginsGuide];
-    v29 = [(MUCompositionalStackLayout *)v28 initWithContainer:v21 group:self->_buttonLayoutGroup];
-    v25 = self->_containerStackLayout;
+    layoutMarginsGuide2 = [(MUGroupedActionsRowView *)self layoutMarginsGuide];
+    v29 = [(MUCompositionalStackLayout *)v28 initWithContainer:layoutMarginsGuide2 group:self->_buttonLayoutGroup];
+    layoutMarginsGuide = self->_containerStackLayout;
     self->_containerStackLayout = v29;
   }
 
@@ -399,7 +399,7 @@ LABEL_6:
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
   [v30 _mapsui_activateLayouts:v31];
 
-  v32 = [(MUCompositionalStackLayoutGroup *)self->_buttonLayoutGroup axis];
+  axis = [(MUCompositionalStackLayoutGroup *)self->_buttonLayoutGroup axis];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -419,7 +419,7 @@ LABEL_6:
           objc_enumerationMutation(v33);
         }
 
-        [*(*(&v40 + 1) + 8 * j) setFullWidthMode:v32 == 1];
+        [*(*(&v40 + 1) + 8 * j) setFullWidthMode:axis == 1];
       }
 
       v35 = [(NSArray *)v33 countByEnumeratingWithState:&v40 objects:v48 count:16];
@@ -431,9 +431,9 @@ LABEL_6:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (id)viewModelForItemView:(id)a3
+- (id)viewModelForItemView:(id)view
 {
-  v4 = [(NSArray *)self->_actionButtons indexOfObject:a3];
+  v4 = [(NSArray *)self->_actionButtons indexOfObject:view];
   if (v4 >= [(NSArray *)self->_viewModels count])
   {
     v5 = 0;
@@ -447,9 +447,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)itemViewForViewModel:(id)a3
+- (id)itemViewForViewModel:(id)model
 {
-  v4 = [(NSArray *)self->_viewModels indexOfObject:a3];
+  v4 = [(NSArray *)self->_viewModels indexOfObject:model];
   if (v4 >= [(NSArray *)self->_actionButtons count])
   {
     v5 = 0;
@@ -463,43 +463,43 @@ LABEL_6:
   return v5;
 }
 
-- (void)actionRowItemViewModelDidSelect:(id)a3
+- (void)actionRowItemViewModelDidSelect:(id)select
 {
-  v4 = a3;
-  v6 = [(MUGroupedActionsRowView *)self itemViewForViewModel:v4];
-  v5 = [v4 isForActionBar];
+  selectCopy = select;
+  v6 = [(MUGroupedActionsRowView *)self itemViewForViewModel:selectCopy];
+  isForActionBar = [selectCopy isForActionBar];
 
-  [(MUGroupedActionsRowView *)self actionRowItemSelected:v6 isForActionBar:v5 actionBarMoreMenu:0];
+  [(MUGroupedActionsRowView *)self actionRowItemSelected:v6 isForActionBar:isForActionBar actionBarMoreMenu:0];
 }
 
-- (void)actionRowItemViewModelDidUpdate:(id)a3
+- (void)actionRowItemViewModelDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(MUGroupedActionsRowView *)self itemViewForViewModel:v4];
+  updateCopy = update;
+  v5 = [(MUGroupedActionsRowView *)self itemViewForViewModel:updateCopy];
   if (v5)
   {
-    [v5 setEnabled:{objc_msgSend(v4, "isEnabled")}];
-    v6 = [v4 titleText];
-    [v5 setTitleText:v6];
+    [v5 setEnabled:{objc_msgSend(updateCopy, "isEnabled")}];
+    titleText = [updateCopy titleText];
+    [v5 setTitleText:titleText];
 
-    v7 = [v4 symbolName];
-    [v5 setGlyphName:v7];
+    symbolName = [updateCopy symbolName];
+    [v5 setGlyphName:symbolName];
 
-    v8 = [v4 accessoryView];
-    [v5 setAccessoryView:v8];
+    accessoryView = [updateCopy accessoryView];
+    [v5 setAccessoryView:accessoryView];
 
-    [v5 setTitleUsesMonospacedNumbersFont:{objc_msgSend(v4, "titleUsesMonospacedNumbersFont")}];
-    v9 = [v4 accessibilityIdentifier];
-    v10 = [@"ActionRowItemType" stringByAppendingString:v9];
+    [v5 setTitleUsesMonospacedNumbersFont:{objc_msgSend(updateCopy, "titleUsesMonospacedNumbersFont")}];
+    accessibilityIdentifier = [updateCopy accessibilityIdentifier];
+    v10 = [@"ActionRowItemType" stringByAppendingString:accessibilityIdentifier];
     [v5 setAccessibilityIdentifier:v10];
 
-    v11 = [v4 titleText];
-    [v5 setAccessibilityLabel:v11];
+    titleText2 = [updateCopy titleText];
+    [v5 setAccessibilityLabel:titleText2];
 
     objc_initWeak(&location, v5);
-    objc_initWeak(&from, v4);
-    v12 = +[MUGroupedActionsRowView presentationOptionsForSourceView:isForActionBar:](MUGroupedActionsRowView, "presentationOptionsForSourceView:isForActionBar:", v5, [v4 isForActionBar]);
-    v13 = [v4 buildMenuWithPresentationOptions:v12];
+    objc_initWeak(&from, updateCopy);
+    v12 = +[MUGroupedActionsRowView presentationOptionsForSourceView:isForActionBar:](MUGroupedActionsRowView, "presentationOptionsForSourceView:isForActionBar:", v5, [updateCopy isForActionBar]);
+    v13 = [updateCopy buildMenuWithPresentationOptions:v12];
 
     if (v13)
     {
@@ -517,20 +517,20 @@ LABEL_6:
 
     if (![MUInfoCardStyle hasExternallyProvidedTintColor:v18])
     {
-      v14 = [v4 preferredTintColor];
+      preferredTintColor = [updateCopy preferredTintColor];
 
-      if (v14)
+      if (preferredTintColor)
       {
-        v15 = [v4 preferredTintColor];
-        [v5 setTintColor:v15];
+        preferredTintColor2 = [updateCopy preferredTintColor];
+        [v5 setTintColor:preferredTintColor2];
       }
 
-      v16 = [v4 preferredBackgroundColor];
+      preferredBackgroundColor = [updateCopy preferredBackgroundColor];
 
-      if (v16)
+      if (preferredBackgroundColor)
       {
-        v17 = [v4 preferredBackgroundColor];
-        [v5 setContentBackgroundColor:v17];
+        preferredBackgroundColor2 = [updateCopy preferredBackgroundColor];
+        [v5 setContentBackgroundColor:preferredBackgroundColor2];
       }
     }
 
@@ -584,9 +584,9 @@ id __59__MUGroupedActionsRowView_actionRowItemViewModelDidUpdate___block_invoke(
 
 - (int64_t)preferredOrientation
 {
-  v2 = [(MUGroupedActionsRowView *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  traitCollection = [(MUGroupedActionsRowView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
@@ -595,24 +595,24 @@ id __59__MUGroupedActionsRowView_actionRowItemViewModelDidUpdate___block_invoke(
 {
   v20 = *MEMORY[0x1E69E9840];
   [(NSArray *)self->_actionButtons makeObjectsPerformSelector:sel_removeFromSuperview];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSArray *)self->_viewModels count])
   {
     v4 = 0;
     do
     {
       v5 = [[MUActionRowItemView alloc] initWithStyle:[(MUGroupedActionsRowViewConfiguration *)self->_configuration style] useVibrancy:[(MUGroupedActionsRowViewConfiguration *)self->_configuration useVibrancy]];
-      v6 = [(MUGroupedActionsRowViewConfiguration *)self->_configuration tintColor];
-      [(MUActionRowItemView *)v5 setTintColor:v6];
+      tintColor = [(MUGroupedActionsRowViewConfiguration *)self->_configuration tintColor];
+      [(MUActionRowItemView *)v5 setTintColor:tintColor];
 
-      v7 = [(MUGroupedActionsRowViewConfiguration *)self->_configuration itemBackgroundColor];
-      [(MUActionRowItemView *)v5 setContentBackgroundColor:v7];
+      itemBackgroundColor = [(MUGroupedActionsRowViewConfiguration *)self->_configuration itemBackgroundColor];
+      [(MUActionRowItemView *)v5 setContentBackgroundColor:itemBackgroundColor];
 
-      v8 = [(MUGroupedActionsRowViewConfiguration *)self->_configuration itemHighlightColor];
-      [(MUActionRowItemView *)v5 setHighlightedBackgroundColor:v8];
+      itemHighlightColor = [(MUGroupedActionsRowViewConfiguration *)self->_configuration itemHighlightColor];
+      [(MUActionRowItemView *)v5 setHighlightedBackgroundColor:itemHighlightColor];
 
       [(MUActionRowItemView *)v5 setDelegate:self];
-      [v3 addObject:v5];
+      [array addObject:v5];
 
       ++v4;
     }
@@ -620,7 +620,7 @@ id __59__MUGroupedActionsRowView_actionRowItemViewModelDidUpdate___block_invoke(
     while (v4 < [(NSArray *)self->_viewModels count]);
   }
 
-  objc_storeStrong(&self->_actionButtons, v3);
+  objc_storeStrong(&self->_actionButtons, array);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -662,11 +662,11 @@ id __59__MUGroupedActionsRowView_actionRowItemViewModelDidUpdate___block_invoke(
   return v2;
 }
 
-- (void)setViewModels:(id)a3
+- (void)setViewModels:(id)models
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSArray *)self->_viewModels isEqual:v4]& 1) == 0)
+  modelsCopy = models;
+  if (([(NSArray *)self->_viewModels isEqual:modelsCopy]& 1) == 0)
   {
     v25 = 0u;
     v26 = 0u;
@@ -698,7 +698,7 @@ id __59__MUGroupedActionsRowView_actionRowItemViewModelDidUpdate___block_invoke(
       while (v7);
     }
 
-    v10 = [v4 copy];
+    v10 = [modelsCopy copy];
     viewModels = self->_viewModels;
     self->_viewModels = v10;
 
@@ -733,8 +733,8 @@ id __59__MUGroupedActionsRowView_actionRowItemViewModelDidUpdate___block_invoke(
     }
 
     [(MUGroupedActionsRowView *)self createActionViews];
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 postNotificationName:@"MUPlaceActionBarDataSourceDidUpdateNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MUPlaceActionBarDataSourceDidUpdateNotification" object:self];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -751,8 +751,8 @@ id __59__MUGroupedActionsRowView_actionRowItemViewModelDidUpdate___block_invoke(
   LODWORD(v5) = 1112276992;
   [(MUCompositionalStackLayoutGroup *)self->_buttonLayoutGroup setAlignmentFittingSizePriority:v5];
   v6 = [MUCompositionalStackLayout alloc];
-  v7 = [(MUGroupedActionsRowView *)self layoutMarginsGuide];
-  v8 = [(MUCompositionalStackLayout *)v6 initWithContainer:v7 group:self->_buttonLayoutGroup];
+  layoutMarginsGuide = [(MUGroupedActionsRowView *)self layoutMarginsGuide];
+  v8 = [(MUCompositionalStackLayout *)v6 initWithContainer:layoutMarginsGuide group:self->_buttonLayoutGroup];
   containerStackLayout = self->_containerStackLayout;
   self->_containerStackLayout = v8;
 
@@ -770,16 +770,16 @@ id __59__MUGroupedActionsRowView_actionRowItemViewModelDidUpdate___block_invoke(
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (MUGroupedActionsRowView)initWithConfiguration:(id)a3
+- (MUGroupedActionsRowView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = MUGroupedActionsRowView;
   v6 = [(MUGroupedActionsRowView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     [(MUGroupedActionsRowView *)v7 _setupStackLayout];
   }
 

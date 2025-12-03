@@ -1,77 +1,77 @@
 @interface SOErrorHelper
-+ (BOOL)error:(id)a3 hasCode:(int64_t)a4;
-+ (BOOL)error:(id)a3 hasCode:(int64_t)a4 subcode:(int64_t)a5;
-+ (id)deniedBundleIdentifier:(id)a3;
-+ (id)doNotHandleBreakingRecursionWithCallerBundleIdentifier:(id)a3;
++ (BOOL)error:(id)error hasCode:(int64_t)code;
++ (BOOL)error:(id)error hasCode:(int64_t)code subcode:(int64_t)subcode;
++ (id)deniedBundleIdentifier:(id)identifier;
++ (id)doNotHandleBreakingRecursionWithCallerBundleIdentifier:(id)identifier;
 + (id)errorNotSupported;
-+ (id)errorWithCode:(int64_t)a3 message:(id)a4 moreInfo:(id)a5;
-+ (id)errorWithCode:(int64_t)a3 message:(id)a4 suberror:(id)a5;
-+ (id)errorWithCode:(int64_t)a3 subcode:(int64_t)a4 message:(id)a5;
-+ (id)internalErrorWithMessage:(id)a3;
-+ (id)invalidURLError:(id)a3;
-+ (id)missingEntitlementError:(id)a3;
-+ (id)parameterErrorWithMessage:(id)a3;
-+ (void)raiseExceptionOnError:(id)a3;
++ (id)errorWithCode:(int64_t)code message:(id)message moreInfo:(id)info;
++ (id)errorWithCode:(int64_t)code message:(id)message suberror:(id)suberror;
++ (id)errorWithCode:(int64_t)code subcode:(int64_t)subcode message:(id)message;
++ (id)internalErrorWithMessage:(id)message;
++ (id)invalidURLError:(id)error;
++ (id)missingEntitlementError:(id)error;
++ (id)parameterErrorWithMessage:(id)message;
++ (void)raiseExceptionOnError:(id)error;
 @end
 
 @implementation SOErrorHelper
 
-+ (id)errorWithCode:(int64_t)a3 message:(id)a4 suberror:(id)a5
++ (id)errorWithCode:(int64_t)code message:(id)message suberror:(id)suberror
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = *MEMORY[0x1E696AA08];
-  v15[0] = a5;
+  v15[0] = suberror;
   v7 = MEMORY[0x1E695DF20];
-  v8 = a5;
-  v9 = a4;
+  suberrorCopy = suberror;
+  messageCopy = message;
   v10 = [v7 dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  v11 = [SOErrorHelper errorWithCode:a3 message:v9 moreInfo:v10];
+  v11 = [SOErrorHelper errorWithCode:code message:messageCopy moreInfo:v10];
 
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-+ (id)errorWithCode:(int64_t)a3 subcode:(int64_t)a4 message:(id)a5
++ (id)errorWithCode:(int64_t)code subcode:(int64_t)subcode message:(id)message
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = @"Subcode";
   v7 = MEMORY[0x1E696AD98];
-  v8 = a5;
-  v9 = [v7 numberWithInteger:a4];
+  messageCopy = message;
+  v9 = [v7 numberWithInteger:subcode];
   v15[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  v11 = [SOErrorHelper errorWithCode:a3 message:v8 moreInfo:v10];
+  v11 = [SOErrorHelper errorWithCode:code message:messageCopy moreInfo:v10];
 
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-+ (id)errorWithCode:(int64_t)a3 message:(id)a4 moreInfo:(id)a5
++ (id)errorWithCode:(int64_t)code message:(id)message moreInfo:(id)info
 {
-  v7 = a4;
-  v8 = a5;
+  messageCopy = message;
+  infoCopy = info;
   v9 = objc_opt_new();
   v10 = v9;
-  if (v7)
+  if (messageCopy)
   {
-    [v9 setObject:v7 forKey:*MEMORY[0x1E696A578]];
+    [v9 setObject:messageCopy forKey:*MEMORY[0x1E696A578]];
   }
 
-  if (v8)
+  if (infoCopy)
   {
-    [v10 addEntriesFromDictionary:v8];
+    [v10 addEntriesFromDictionary:infoCopy];
   }
 
-  v11 = [SOErrorHelper errorWithCode:a3 userInfo:v10];
+  v11 = [SOErrorHelper errorWithCode:code userInfo:v10];
 
   return v11;
 }
 
-+ (id)internalErrorWithMessage:(id)a3
++ (id)internalErrorWithMessage:(id)message
 {
-  v3 = [SOErrorHelper silentInternalErrorWithMessage:a3];
+  v3 = [SOErrorHelper silentInternalErrorWithMessage:message];
   v4 = SO_LOG_SOErrorHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -81,9 +81,9 @@
   return v3;
 }
 
-+ (id)parameterErrorWithMessage:(id)a3
++ (id)parameterErrorWithMessage:(id)message
 {
-  v3 = [SOErrorHelper errorWithCode:-9 message:a3];
+  v3 = [SOErrorHelper errorWithCode:-9 message:message];
   v4 = SO_LOG_SOErrorHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -93,10 +93,10 @@
   return v3;
 }
 
-+ (id)missingEntitlementError:(id)a3
++ (id)missingEntitlementError:(id)error
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Caller is missing the required '%@' entitlement.", a3];
-  v4 = [SOErrorHelper errorWithCode:-11 message:v3];
+  error = [MEMORY[0x1E696AEC0] stringWithFormat:@"Caller is missing the required '%@' entitlement.", error];
+  v4 = [SOErrorHelper errorWithCode:-11 message:error];
 
   v5 = SO_LOG_SOErrorHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -107,23 +107,23 @@
   return v4;
 }
 
-+ (id)invalidURLError:(id)a3
++ (id)invalidURLError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = [SOErrorHelper errorWithCode:-9 message:@"not AppSSO URL"];
   v5 = SO_LOG_SOErrorHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(SOErrorHelper *)v3 invalidURLError:v5];
+    [(SOErrorHelper *)errorCopy invalidURLError:v5];
   }
 
   return v4;
 }
 
-+ (id)doNotHandleBreakingRecursionWithCallerBundleIdentifier:(id)a3
++ (id)doNotHandleBreakingRecursionWithCallerBundleIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"breaking calling recursion for caller with bundleIdentifier: %@", a3];
-  v4 = [SOErrorHelper errorWithCode:-5 message:v3];
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"breaking calling recursion for caller with bundleIdentifier: %@", identifier];
+  v4 = [SOErrorHelper errorWithCode:-5 message:identifier];
 
   v5 = SO_LOG_SOErrorHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -134,10 +134,10 @@
   return v4;
 }
 
-+ (id)deniedBundleIdentifier:(id)a3
++ (id)deniedBundleIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"denied caller with bundleIdentifier: %@", a3];
-  v4 = [SOErrorHelper errorWithCode:-5 message:v3];
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"denied caller with bundleIdentifier: %@", identifier];
+  v4 = [SOErrorHelper errorWithCode:-5 message:identifier];
 
   v5 = SO_LOG_SOErrorHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -160,14 +160,14 @@
   return v2;
 }
 
-+ (void)raiseExceptionOnError:(id)a3
++ (void)raiseExceptionOnError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:@"com.apple.AppSSO.AuthorizationError"];
+    domain = [errorCopy domain];
+    v6 = [domain isEqualToString:@"com.apple.AppSSO.AuthorizationError"];
 
     if (v6 && [v4 code] == -9)
     {
@@ -184,13 +184,13 @@
   }
 }
 
-+ (BOOL)error:(id)a3 hasCode:(int64_t)a4
++ (BOOL)error:(id)error hasCode:(int64_t)code
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  if ([v6 isEqualToString:@"com.apple.AppSSO.AuthorizationError"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"com.apple.AppSSO.AuthorizationError"])
   {
-    v7 = [v5 code] == a4;
+    v7 = [errorCopy code] == code;
   }
 
   else
@@ -201,19 +201,19 @@
   return v7;
 }
 
-+ (BOOL)error:(id)a3 hasCode:(int64_t)a4 subcode:(int64_t)a5
++ (BOOL)error:(id)error hasCode:(int64_t)code subcode:(int64_t)subcode
 {
-  v7 = a3;
-  v8 = [v7 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"Subcode"];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"Subcode"];
 
-  v10 = [v7 domain];
-  if ([v10 isEqualToString:@"com.apple.AppSSO.AuthorizationError"])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"com.apple.AppSSO.AuthorizationError"])
   {
     v11 = 0;
-    if ([v7 code] == a4 && v9)
+    if ([errorCopy code] == code && v9)
     {
-      v11 = [v9 integerValue] == a5;
+      v11 = [v9 integerValue] == subcode;
     }
   }
 

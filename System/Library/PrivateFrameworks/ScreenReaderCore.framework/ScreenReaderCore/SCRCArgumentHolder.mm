@@ -1,11 +1,11 @@
 @interface SCRCArgumentHolder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)process;
 - (SCRCArgumentHolder)init;
-- (SCRCArgumentHolder)initWithArgument:(id)a3 option:(id)a4 description:(id)a5 target:(id)a6 action:(SEL)a7 required:(BOOL)a8;
+- (SCRCArgumentHolder)initWithArgument:(id)argument option:(id)option description:(id)description target:(id)target action:(SEL)action required:(BOOL)required;
 - (SEL)action;
 - (id)target;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation SCRCArgumentHolder
@@ -23,34 +23,34 @@
   return result;
 }
 
-- (SCRCArgumentHolder)initWithArgument:(id)a3 option:(id)a4 description:(id)a5 target:(id)a6 action:(SEL)a7 required:(BOOL)a8
+- (SCRCArgumentHolder)initWithArgument:(id)argument option:(id)option description:(id)description target:(id)target action:(SEL)action required:(BOOL)required
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  argumentCopy = argument;
+  optionCopy = option;
+  descriptionCopy = description;
+  targetCopy = target;
   v23.receiver = self;
   v23.super_class = SCRCArgumentHolder;
   v19 = [(SCRCArgumentHolder *)&v23 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_argument, a3);
-    objc_storeStrong(&v20->_option, a4);
-    objc_storeStrong(&v20->_argumentDescription, a5);
-    objc_storeWeak(&v20->_target, v18);
-    if (a7)
+    objc_storeStrong(&v19->_argument, argument);
+    objc_storeStrong(&v20->_option, option);
+    objc_storeStrong(&v20->_argumentDescription, description);
+    objc_storeWeak(&v20->_target, targetCopy);
+    if (action)
     {
-      v21 = a7;
+      actionCopy = action;
     }
 
     else
     {
-      v21 = 0;
+      actionCopy = 0;
     }
 
-    v20->_action = v21;
-    v20->_required = a8;
+    v20->_action = actionCopy;
+    v20->_required = required;
   }
 
   return v20;
@@ -58,42 +58,42 @@
 
 - (BOOL)process
 {
-  v3 = [(SCRCArgumentHolder *)self target];
-  if (v3 && (v4 = v3, v5 = [(SCRCArgumentHolder *)self action], v4, v5))
+  target = [(SCRCArgumentHolder *)self target];
+  if (target && (v4 = target, v5 = [(SCRCArgumentHolder *)self action], v4, v5))
   {
-    v6 = [(SCRCArgumentHolder *)self target];
-    v7 = [(SCRCArgumentHolder *)self action];
-    v8 = [(SCRCArgumentHolder *)self argument];
-    v9 = SCRCPerformSelector(v6, v7);
-    v10 = [v9 BOOLValue];
+    target2 = [(SCRCArgumentHolder *)self target];
+    action = [(SCRCArgumentHolder *)self action];
+    argument = [(SCRCArgumentHolder *)self argument];
+    v9 = SCRCPerformSelector(target2, action);
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[SCRCArgumentHolder required](self, "required") ^ 1}];
-    v10 = [v6 BOOLValue];
+    target2 = [MEMORY[0x277CCABB0] numberWithBool:{-[SCRCArgumentHolder required](self, "required") ^ 1}];
+    bOOLValue = [target2 BOOLValue];
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(SCRCArgumentHolder *)self option];
-  v6 = [v4 option];
+  equalCopy = equal;
+  option = [(SCRCArgumentHolder *)self option];
+  option2 = [equalCopy option];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(equalCopy) = [option isEqualToString:option2];
+  return equalCopy;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(SCRCArgumentHolder *)self option];
-  v6 = [v4 option];
+  compareCopy = compare;
+  option = [(SCRCArgumentHolder *)self option];
+  option2 = [compareCopy option];
 
-  v7 = [v5 compare:v6 options:1];
+  v7 = [option compare:option2 options:1];
   return v7;
 }
 

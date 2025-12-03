@@ -1,41 +1,41 @@
 @interface ApplicationWorkspaceInstallPlaceholderOperation
-- (ApplicationWorkspaceInstallPlaceholderOperation)initWithApplicationHandle:(id)a3 forceUpdate:(BOOL)a4;
-- (ApplicationWorkspaceInstallPlaceholderOperation)initWithApplicationHandle:(id)a3 iconData:(id)a4;
+- (ApplicationWorkspaceInstallPlaceholderOperation)initWithApplicationHandle:(id)handle forceUpdate:(BOOL)update;
+- (ApplicationWorkspaceInstallPlaceholderOperation)initWithApplicationHandle:(id)handle iconData:(id)data;
 - (id)_download;
-- (void)runWithCompletionBlock:(id)a3;
+- (void)runWithCompletionBlock:(id)block;
 @end
 
 @implementation ApplicationWorkspaceInstallPlaceholderOperation
 
-- (ApplicationWorkspaceInstallPlaceholderOperation)initWithApplicationHandle:(id)a3 forceUpdate:(BOOL)a4
+- (ApplicationWorkspaceInstallPlaceholderOperation)initWithApplicationHandle:(id)handle forceUpdate:(BOOL)update
 {
   v5.receiver = self;
   v5.super_class = ApplicationWorkspaceInstallPlaceholderOperation;
-  return [(ApplicationWorkspaceOperation *)&v5 initWithApplicationHandle:a3, a4];
+  return [(ApplicationWorkspaceOperation *)&v5 initWithApplicationHandle:handle, update];
 }
 
-- (ApplicationWorkspaceInstallPlaceholderOperation)initWithApplicationHandle:(id)a3 iconData:(id)a4
+- (ApplicationWorkspaceInstallPlaceholderOperation)initWithApplicationHandle:(id)handle iconData:(id)data
 {
   v5.receiver = self;
   v5.super_class = ApplicationWorkspaceInstallPlaceholderOperation;
-  return [(ApplicationWorkspaceOperation *)&v5 initWithApplicationHandle:a3, a4];
+  return [(ApplicationWorkspaceOperation *)&v5 initWithApplicationHandle:handle, data];
 }
 
-- (void)runWithCompletionBlock:(id)a3
+- (void)runWithCompletionBlock:(id)block
 {
-  v5 = [(ApplicationWorkspaceInstallPlaceholderOperation *)self _download];
-  v6 = [(ApplicationHandle *)[(ApplicationWorkspaceOperation *)self applicationHandle] bundleID];
-  if (!v6)
+  _download = [(ApplicationWorkspaceInstallPlaceholderOperation *)self _download];
+  bundleID = [(ApplicationHandle *)[(ApplicationWorkspaceOperation *)self applicationHandle] bundleID];
+  if (!bundleID)
   {
-    v6 = [v5 valueForProperty:@"bundle_id"];
+    bundleID = [_download valueForProperty:@"bundle_id"];
   }
 
-  [ApplicationWorkspaceState completeNotificationForInstallingBundleIdentifier:v6];
-  if (a3)
+  [ApplicationWorkspaceState completeNotificationForInstallingBundleIdentifier:bundleID];
+  if (block)
   {
-    v7 = *(a3 + 2);
+    v7 = *(block + 2);
 
-    v7(a3, 1, 0, 0);
+    v7(block, 1, 0, 0);
   }
 }
 

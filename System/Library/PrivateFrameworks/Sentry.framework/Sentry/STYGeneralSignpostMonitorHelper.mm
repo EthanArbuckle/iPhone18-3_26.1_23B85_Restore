@@ -1,9 +1,9 @@
 @interface STYGeneralSignpostMonitorHelper
 - (STYGeneralSignpostMonitorHelper)init;
-- (void)handleEmit:(id)a3;
-- (void)handleInterval:(id)a3;
-- (void)perfProblemDetected:(id)a3 tailspinFilenamePrefix:(id)a4;
-- (void)perfProblemDetectedOnMac:(id)a3;
+- (void)handleEmit:(id)emit;
+- (void)handleInterval:(id)interval;
+- (void)perfProblemDetected:(id)detected tailspinFilenamePrefix:(id)prefix;
+- (void)perfProblemDetectedOnMac:(id)mac;
 @end
 
 @implementation STYGeneralSignpostMonitorHelper
@@ -29,12 +29,12 @@
     if ([v5 BOOLForKey:@"shouldDisableEPLAppLaunchMonitoring"])
     {
       v6 = +[STYFrameworkHelper sharedHelper];
-      v7 = [v6 logHandle];
+      logHandle = [v6 logHandle];
 
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
         *v9 = 0;
-        _os_log_impl(&dword_2656CE000, v7, OS_LOG_TYPE_DEFAULT, "App launch monitoring and watchdog termination monitoring via EPL is disabled", v9, 2u);
+        _os_log_impl(&dword_2656CE000, logHandle, OS_LOG_TYPE_DEFAULT, "App launch monitoring and watchdog termination monitoring via EPL is disabled", v9, 2u);
       }
     }
 
@@ -48,38 +48,38 @@
   return v2;
 }
 
-- (void)perfProblemDetectedOnMac:(id)a3
+- (void)perfProblemDetectedOnMac:(id)mac
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  macCopy = mac;
   v4 = +[STYFrameworkHelper sharedHelper];
-  v5 = [v4 logHandle];
+  logHandle = [v4 logHandle];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    [STYGeneralSignpostMonitorHelper perfProblemDetectedOnMac:v3];
+    [STYGeneralSignpostMonitorHelper perfProblemDetectedOnMac:macCopy];
   }
 
-  v6 = [v3 issueCategory];
-  v7 = [v3 scenario];
-  v8 = [v7 kpi];
+  issueCategory = [macCopy issueCategory];
+  scenario = [macCopy scenario];
+  v8 = [scenario kpi];
 
   if (v8 == -1000)
   {
     v27[0] = @"observedLatency_in_ms";
     v9 = MEMORY[0x277CCABB0];
-    [v3 observedLatencyInMs];
+    [macCopy observedLatencyInMs];
     v10 = [v9 numberWithFloat:?];
     v28[0] = v10;
     v27[1] = @"threshold_in_ms";
     v11 = MEMORY[0x277CCABB0];
-    [v3 targetLatencyInMs];
+    [macCopy targetLatencyInMs];
     v12 = [v11 numberWithFloat:?];
     v28[1] = v12;
     v27[2] = @"scenarioID";
-    v13 = [v3 scenario];
-    v14 = [v13 scenarioID];
-    v28[2] = v14;
+    scenario2 = [macCopy scenario];
+    scenarioID = [scenario2 scenarioID];
+    v28[2] = scenarioID;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:3];
   }
 
@@ -87,18 +87,18 @@
   {
     v25[0] = @"observedFramerate_fps";
     v16 = MEMORY[0x277CCABB0];
-    [v3 observedFps];
+    [macCopy observedFps];
     v10 = [v16 numberWithFloat:?];
     v26[0] = v10;
     v25[1] = @"threshold_fps";
     v17 = MEMORY[0x277CCABB0];
-    [v3 targetFps];
+    [macCopy targetFps];
     v12 = [v17 numberWithFloat:?];
     v26[1] = v12;
     v25[2] = @"scenarioID";
-    v13 = [v3 scenario];
-    v14 = [v13 scenarioID];
-    v26[2] = v14;
+    scenario2 = [macCopy scenario];
+    scenarioID = [scenario2 scenarioID];
+    v26[2] = scenarioID;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:3];
   }
 
@@ -106,14 +106,14 @@
   v18 = DRTailspinRequest();
   v19 = v24;
   v20 = +[STYFrameworkHelper sharedHelper];
-  v21 = [v20 logHandle];
+  logHandle2 = [v20 logHandle];
 
-  v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG);
+  v22 = os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG);
   if (v18)
   {
     if (v22)
     {
-      [STYGeneralSignpostMonitorHelper perfProblemDetectedOnMac:v3];
+      [STYGeneralSignpostMonitorHelper perfProblemDetectedOnMac:macCopy];
     }
   }
 
@@ -125,46 +125,46 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)perfProblemDetected:(id)a3 tailspinFilenamePrefix:(id)a4
+- (void)perfProblemDetected:(id)detected tailspinFilenamePrefix:(id)prefix
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "hash")}];
-  v8 = [MEMORY[0x277CBEAA8] date];
+  detectedCopy = detected;
+  prefixCopy = prefix;
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(detectedCopy, "hash")}];
+  date = [MEMORY[0x277CBEAA8] date];
   v9 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v9 setDateFormat:@"yyyy-MM-dd-HHmmss"];
-  v10 = v6;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v5, "scenarioStartTime")}];
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v5, "scenarioEndTime")}];
+  v10 = prefixCopy;
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(detectedCopy, "scenarioStartTime")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(detectedCopy, "scenarioEndTime")}];
   v13 = +[STYFrameworkHelper sharedHelper];
-  v14 = [v13 logHandle];
+  logHandle = [v13 logHandle];
 
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    [STYGeneralSignpostMonitorHelper perfProblemDetected:v5 tailspinFilenamePrefix:?];
+    [STYGeneralSignpostMonitorHelper perfProblemDetected:detectedCopy tailspinFilenamePrefix:?];
   }
 
   v15 = +[STYFrameworkHelper sharedHelper];
-  v16 = [v15 logHandle];
+  logHandle2 = [v15 logHandle];
 
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
   {
-    v25 = [v5 scenario];
-    v24 = [v25 scenarioID];
+    scenario = [detectedCopy scenario];
+    scenarioID = [scenario scenarioID];
     *buf = 138413570;
-    v32 = v24;
+    v32 = scenarioID;
     v33 = 2112;
     v34 = v10;
     v35 = 2048;
-    v36 = [v11 unsignedLongLongValue];
+    unsignedLongLongValue = [v11 unsignedLongLongValue];
     v37 = 2048;
-    v38 = [v12 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v12 unsignedLongLongValue];
     v39 = 1024;
-    v40 = [v7 intValue];
+    intValue = [v7 intValue];
     v41 = 2112;
     v42 = kSTYEplReportType;
-    _os_log_debug_impl(&dword_2656CE000, v16, OS_LOG_TYPE_DEBUG, "[Signpost: %@] Request details area as follows:\n\t Filename prefix : %@\n\t interval begin timestamp : %llu\n\t interval end timestamp : %llu\n\t Request identifier %d\n\t Report Type : %@", buf, 0x3Au);
+    _os_log_debug_impl(&dword_2656CE000, logHandle2, OS_LOG_TYPE_DEBUG, "[Signpost: %@] Request details area as follows:\n\t Filename prefix : %@\n\t interval begin timestamp : %llu\n\t interval end timestamp : %llu\n\t Request identifier %d\n\t Report Type : %@", buf, 0x3Au);
   }
 
   v29[0] = kSTYScenarioReportRefKey;
@@ -177,13 +177,13 @@
   v30[3] = v12;
   v29[4] = kSTYScenarioReportKey;
   v29[5] = kSTYReportTypeKey;
-  v30[4] = v5;
+  v30[4] = detectedCopy;
   v30[5] = kSTYEplReportType;
   v29[6] = kSTYReasonKey;
   v30[6] = @"EPL Request";
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:7];
-  [outstandingTailspinSaveRequests setObject:v5 forKey:v7];
-  [perfIssueDetectionTimeLogs setObject:v8 forKey:v7];
+  [outstandingTailspinSaveRequests setObject:detectedCopy forKey:v7];
+  [perfIssueDetectionTimeLogs setObject:date forKey:v7];
   LocalCenter = CFNotificationCenterGetLocalCenter();
   CFNotificationCenterPostNotification(LocalCenter, kSTYPerfProblemDetectedNotification, 0, v17, 1u);
   v19 = dispatch_time(0, 900000000000);
@@ -193,8 +193,8 @@
   block[2] = __78__STYGeneralSignpostMonitorHelper_perfProblemDetected_tailspinFilenamePrefix___block_invoke;
   block[3] = &unk_279B9B4C0;
   v27 = v7;
-  v28 = v5;
-  v21 = v5;
+  v28 = detectedCopy;
+  v21 = detectedCopy;
   v22 = v7;
   dispatch_after(v19, v20, block);
 
@@ -220,17 +220,17 @@ void __78__STYGeneralSignpostMonitorHelper_perfProblemDetected_tailspinFilenameP
   }
 }
 
-- (void)handleInterval:(id)a3
+- (void)handleInterval:(id)interval
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 endEvent];
-  v6 = eventEndToNow(v5);
+  intervalCopy = interval;
+  endEvent = [intervalCopy endEvent];
+  v6 = eventEndToNow(endEvent);
 
   v7 = +[STYFrameworkHelper sharedHelper];
-  v8 = [v7 logHandle];
+  logHandle = [v7 logHandle];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     [STYGeneralSignpostMonitorHelper handleInterval:];
   }
@@ -242,7 +242,7 @@ void __78__STYGeneralSignpostMonitorHelper_perfProblemDetected_tailspinFilenameP
     v32[2] = 0x3032000000;
     v32[3] = __Block_byref_object_copy__0;
     v32[4] = __Block_byref_object_dispose__0;
-    v11 = v4;
+    v11 = intervalCopy;
     v33 = v11;
     v31 = 0;
     v12 = [STYScenarioReport reportFromSignpostInterval:v11 error:&v31];
@@ -250,23 +250,23 @@ void __78__STYGeneralSignpostMonitorHelper_perfProblemDetected_tailspinFilenameP
     v14 = v13;
     if (v12)
     {
-      v15 = [v11 subsystem];
-      v16 = [v15 isEqualToString:@"com.apple.app_launch_measurement"];
+      subsystem = [v11 subsystem];
+      v16 = [subsystem isEqualToString:@"com.apple.app_launch_measurement"];
 
       if (v16)
       {
         if ([(STYGeneralSignpostMonitorHelper *)self avoidGeneratingTailspinsForAppLaunches])
         {
           v17 = +[STYFrameworkHelper sharedHelper];
-          v18 = [v17 logHandle];
+          logHandle2 = [v17 logHandle];
 
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v12 scenario];
-            v20 = [v19 scenarioID];
+            scenario = [v12 scenario];
+            scenarioID = [scenario scenarioID];
             *buf = 138412290;
-            v35 = v20;
-            _os_log_impl(&dword_2656CE000, v18, OS_LOG_TYPE_DEFAULT, "[Signpost: %@] Deferring app launch tailspin to special app launch monitoring ", buf, 0xCu);
+            v35 = scenarioID;
+            _os_log_impl(&dword_2656CE000, logHandle2, OS_LOG_TYPE_DEFAULT, "[Signpost: %@] Deferring app launch tailspin to special app launch monitoring ", buf, 0xCu);
           }
 
 LABEL_27:
@@ -308,9 +308,9 @@ LABEL_28:
       if ([v13 code] == -2007 || objc_msgSend(v14, "code") == -2002)
       {
         v21 = +[STYFrameworkHelper sharedHelper];
-        v18 = [v21 logHandle];
+        logHandle2 = [v21 logHandle];
 
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
         {
           [v14 description];
           objc_claimAutoreleasedReturnValue();
@@ -321,9 +321,9 @@ LABEL_28:
       else if ([v14 code] == -2000)
       {
         v28 = +[STYFrameworkHelper sharedHelper];
-        v18 = [v28 logHandle];
+        logHandle2 = [v28 logHandle];
 
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+        if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
         {
           +[STYUserScenarioCache sharedCache];
           [objc_claimAutoreleasedReturnValue() scenarioIdForSignpostInterval:v11];
@@ -335,9 +335,9 @@ LABEL_28:
       else
       {
         v29 = +[STYFrameworkHelper sharedHelper];
-        v18 = [v29 logHandle];
+        logHandle2 = [v29 logHandle];
 
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+        if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEBUG))
         {
           [v14 description];
           objc_claimAutoreleasedReturnValue();
@@ -349,9 +349,9 @@ LABEL_28:
     else
     {
       v26 = +[STYFrameworkHelper sharedHelper];
-      v18 = [v26 logHandle];
+      logHandle2 = [v26 logHandle];
 
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
       {
         [STYGeneralSignpostMonitorHelper handleInterval:];
       }
@@ -361,9 +361,9 @@ LABEL_28:
   }
 
   v9 = +[STYFrameworkHelper sharedHelper];
-  v10 = [v9 logHandle];
+  logHandle3 = [v9 logHandle];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_ERROR))
   {
     [STYGeneralSignpostMonitorHelper handleInterval:];
   }
@@ -555,19 +555,19 @@ void __50__STYGeneralSignpostMonitorHelper_handleInterval___block_invoke_2(uint6
   [*(a1 + 32) perfProblemDetected:*(a1 + 40) tailspinFilenamePrefix:v4];
 }
 
-- (void)handleEmit:(id)a3
+- (void)handleEmit:(id)emit
 {
   v19 = 0;
-  v4 = [STYScenarioReport reportFromSignpostEvent:a3 error:&v19];
+  v4 = [STYScenarioReport reportFromSignpostEvent:emit error:&v19];
   v5 = v19;
   if (v4)
   {
     if (dateOfLastTailspinRequest && ([MEMORY[0x277CBEAA8] date], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "timeIntervalSinceDate:", dateOfLastTailspinRequest), v8 = v7, v6, v8 <= 60.0))
     {
       v17 = +[STYFrameworkHelper sharedHelper];
-      v15 = [v17 logHandle];
+      logHandle = [v17 logHandle];
 
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         [STYGeneralSignpostMonitorHelper handleEmit:v4];
       }
@@ -575,38 +575,38 @@ void __50__STYGeneralSignpostMonitorHelper_handleInterval___block_invoke_2(uint6
 
     else
     {
-      v9 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v10 = dateOfLastTailspinRequest;
-      dateOfLastTailspinRequest = v9;
+      dateOfLastTailspinRequest = date;
 
-      v11 = [v4 scenario];
-      v12 = [v11 appName];
+      scenario = [v4 scenario];
+      appName = [scenario appName];
 
-      if (v12)
+      if (appName)
       {
-        v13 = [v4 scenario];
-        v14 = [v13 appName];
-        v15 = [@"Sentry_LaunchWatchdog_" stringByAppendingString:v14];
+        scenario2 = [v4 scenario];
+        appName2 = [scenario2 appName];
+        logHandle = [@"Sentry_LaunchWatchdog_" stringByAppendingString:appName2];
       }
 
       else
       {
-        v15 = @"Sentry_LaunchWatchdog_";
+        logHandle = @"Sentry_LaunchWatchdog_";
       }
 
-      [(STYGeneralSignpostMonitorHelper *)self perfProblemDetected:v4 tailspinFilenamePrefix:v15];
+      [(STYGeneralSignpostMonitorHelper *)self perfProblemDetected:v4 tailspinFilenamePrefix:logHandle];
     }
   }
 
   else
   {
     v16 = +[STYFrameworkHelper sharedHelper];
-    v15 = [v16 logHandle];
+    logHandle = [v16 logHandle];
 
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v18 = 0;
-      _os_log_impl(&dword_2656CE000, v15, OS_LOG_TYPE_DEFAULT, "Signpost Event is not whitelisted", v18, 2u);
+      _os_log_impl(&dword_2656CE000, logHandle, OS_LOG_TYPE_DEFAULT, "Signpost Event is not whitelisted", v18, 2u);
     }
   }
 }

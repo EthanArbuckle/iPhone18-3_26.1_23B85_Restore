@@ -1,26 +1,26 @@
 @interface CRLMovieRenderingOperation
-- (CRLMovieRenderingOperation)initWithImageSize:(CGSize)a3 imageScale:(double)a4 swatchFrame:(CGRect)a5 movieInfo:(id)a6 editingCoordinator:(id)a7;
+- (CRLMovieRenderingOperation)initWithImageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame movieInfo:(id)info editingCoordinator:(id)coordinator;
 - (void)doWorkWithReadLock;
 @end
 
 @implementation CRLMovieRenderingOperation
 
-- (CRLMovieRenderingOperation)initWithImageSize:(CGSize)a3 imageScale:(double)a4 swatchFrame:(CGRect)a5 movieInfo:(id)a6 editingCoordinator:(id)a7
+- (CRLMovieRenderingOperation)initWithImageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame movieInfo:(id)info editingCoordinator:(id)coordinator
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a3.height;
-  v15 = a3.width;
-  v17 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v14 = size.height;
+  v15 = size.width;
+  infoCopy = info;
   v21.receiver = self;
   v21.super_class = CRLMovieRenderingOperation;
-  v18 = [(CRLSwatchRenderingOperation *)&v21 initWithImageSize:a7 imageScale:v15 swatchFrame:v14 editingCoordinator:a4, x, y, width, height];
-  v19 = v18;
-  if (v18)
+  height = [(CRLSwatchRenderingOperation *)&v21 initWithImageSize:coordinator imageScale:v15 swatchFrame:v14 editingCoordinator:scale, x, y, width, height];
+  v19 = height;
+  if (height)
   {
-    objc_storeStrong(&v18->_movieInfo, a6);
+    objc_storeStrong(&height->_movieInfo, info);
   }
 
   return v19;
@@ -35,8 +35,8 @@
   [(CRLSwatchRenderingOperation *)self imageScale];
   v9 = v8;
   movieInfo = self->_movieInfo;
-  v11 = [(CRLSwatchRenderingOperation *)self editingCoordinator];
-  v12 = [v3 imageForMovieWithSize:movieInfo imageScale:v11 movieInfo:-[CRLSwatchRenderingOperation renderForWideGamut](self editingCoordinator:"renderForWideGamut") renderForWideGamut:{v5, v7, v9}];
+  editingCoordinator = [(CRLSwatchRenderingOperation *)self editingCoordinator];
+  v12 = [v3 imageForMovieWithSize:movieInfo imageScale:editingCoordinator movieInfo:-[CRLSwatchRenderingOperation renderForWideGamut](self editingCoordinator:"renderForWideGamut") renderForWideGamut:{v5, v7, v9}];
 
   -[CRLSwatchRenderingOperation deliverCGImage:](self, "deliverCGImage:", [v12 CGImage]);
 }

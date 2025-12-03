@@ -1,23 +1,23 @@
 @interface LearnedNRMetalStage
-+ (int)prewarmShadersWithCommandQueue:(id)a3;
-- (LearnedNRMetalStage)initWithCommandQueue:(id)a3 cameraInfo:(id)a4 tuningParameters:(id)a5 isQuadra:(BOOL)a6;
++ (int)prewarmShadersWithCommandQueue:(id)queue;
+- (LearnedNRMetalStage)initWithCommandQueue:(id)queue cameraInfo:(id)info tuningParameters:(id)parameters isQuadra:(BOOL)quadra;
 - (int)_compileShaders;
-- (int)clearBuffer:(__CVBuffer *)a3;
-- (int)createRawTile:(__CVBuffer *)a3 fromInputRaw:(__CVBuffer *)a4 tileStart:(id *)a5 cmdBuffer:;
-- (int)createRawTile:(__CVBuffer *)a3 fromInputYuv:(__CVBuffer *)a4 tileStart:(id *)a5 cmdBuffer:;
-- (int)updateParametersFromMetadata:(id)a3 lscSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (int)writeRgbTile:(__CVBuffer *)a3 toYuvBuffer:(__CVBuffer *)a4 intermediateLumaBuffer:(__CVBuffer *)a5 intermediateDeltaBuffer:(__CVBuffer *)a6 origRawInputBuffer:(__CVBuffer *)a7 srcStart:(id *)a8 dstStart:size:cmdBuffer:;
-- (int)writeRgbTile:(__CVBuffer *)a3 toYuvBuffer:(__CVBuffer *)a4 intermediateLumaBuffer:(__CVBuffer *)a5 intermediateDeltaBuffer:(__CVBuffer *)a6 origYuvInputBuffer:(__CVBuffer *)a7 srcStart:(id *)a8 dstStart:size:cmdBuffer:;
-- (void)_bindYuvBuffer:(__CVBuffer *)a3 toLumaTexture:(id *)a4 chromaTexture:(id *)a5 withUsage:(unint64_t)a6;
+- (int)clearBuffer:(__CVBuffer *)buffer;
+- (int)createRawTile:(__CVBuffer *)tile fromInputRaw:(__CVBuffer *)raw tileStart:(id *)start cmdBuffer:;
+- (int)createRawTile:(__CVBuffer *)tile fromInputYuv:(__CVBuffer *)yuv tileStart:(id *)start cmdBuffer:;
+- (int)updateParametersFromMetadata:(id)metadata lscSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (int)writeRgbTile:(__CVBuffer *)tile toYuvBuffer:(__CVBuffer *)buffer intermediateLumaBuffer:(__CVBuffer *)lumaBuffer intermediateDeltaBuffer:(__CVBuffer *)deltaBuffer origRawInputBuffer:(__CVBuffer *)inputBuffer srcStart:(id *)start dstStart:size:cmdBuffer:;
+- (int)writeRgbTile:(__CVBuffer *)tile toYuvBuffer:(__CVBuffer *)buffer intermediateLumaBuffer:(__CVBuffer *)lumaBuffer intermediateDeltaBuffer:(__CVBuffer *)deltaBuffer origYuvInputBuffer:(__CVBuffer *)inputBuffer srcStart:(id *)start dstStart:size:cmdBuffer:;
+- (void)_bindYuvBuffer:(__CVBuffer *)buffer toLumaTexture:(id *)texture chromaTexture:(id *)chromaTexture withUsage:(unint64_t)usage;
 @end
 
 @implementation LearnedNRMetalStage
 
-+ (int)prewarmShadersWithCommandQueue:(id)a3
++ (int)prewarmShadersWithCommandQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = [LearnedNRMetalStage alloc];
-  isQuadra = objc_msgSend_initWithCommandQueue_cameraInfo_tuningParameters_isQuadra_(v4, v5, v3, 0, 0, 0);
+  isQuadra = objc_msgSend_initWithCommandQueue_cameraInfo_tuningParameters_isQuadra_(v4, v5, queueCopy, 0, 0, 0);
 
   if (isQuadra)
   {
@@ -32,11 +32,11 @@
   return v7;
 }
 
-- (LearnedNRMetalStage)initWithCommandQueue:(id)a3 cameraInfo:(id)a4 tuningParameters:(id)a5 isQuadra:(BOOL)a6
+- (LearnedNRMetalStage)initWithCommandQueue:(id)queue cameraInfo:(id)info tuningParameters:(id)parameters isQuadra:(BOOL)quadra
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  infoCopy = info;
+  parametersCopy = parameters;
   v55.receiver = self;
   v55.super_class = LearnedNRMetalStage;
   v12 = [(LearnedNRMetalStage *)&v55 init];
@@ -46,7 +46,7 @@
     v14 = objc_opt_class();
     v17 = objc_msgSend_bundleForClass_(v13, v15, v14, v16);
     v18 = objc_alloc(MEMORY[0x29EDC0A40]);
-    inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v18, v19, v17, v9);
+    inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v18, v19, v17, queueCopy);
     v21 = *(v12 + 1);
     *(v12 + 1) = inited;
 
@@ -55,14 +55,14 @@
       if (!objc_msgSend__compileShaders(v12, v22, v23, v24))
       {
         v47 = v17;
-        v48 = v10;
-        v49 = v9;
+        v48 = infoCopy;
+        v49 = queueCopy;
         v25 = objc_alloc_init(MEMORY[0x29EDB8E00]);
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
         v54 = 0u;
-        v26 = v11;
+        v26 = parametersCopy;
         v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v26, v27, &v51, v50, 16);
         if (v28)
         {
@@ -92,7 +92,7 @@
         }
 
         objc_storeStrong(v12 + 44, v25);
-        v10 = v48;
+        infoCopy = v48;
         if (v48)
         {
           v41 = [LSCGainsPlist alloc];
@@ -104,12 +104,12 @@
           {
             sub_2958770C4(v25, v47);
             v45 = 0;
-            v9 = v49;
+            queueCopy = v49;
             goto LABEL_15;
           }
         }
 
-        v9 = v49;
+        queueCopy = v49;
         goto LABEL_14;
       }
 
@@ -177,15 +177,15 @@ LABEL_15:
   return 0;
 }
 
-- (int)clearBuffer:(__CVBuffer *)a3
+- (int)clearBuffer:(__CVBuffer *)buffer
 {
-  v6 = objc_msgSend_commandQueue(self->_metalContext, a2, a3, v3);
+  v6 = objc_msgSend_commandQueue(self->_metalContext, a2, buffer, v3);
   v10 = objc_msgSend_commandBuffer(v6, v7, v8, v9);
 
   v14 = objc_msgSend_computeCommandEncoder(v10, v11, v12, v13);
   v71 = 0;
   v72 = 0;
-  objc_msgSend__bindYuvBuffer_toLumaTexture_chromaTexture_withUsage_(self, v15, a3, &v72, &v71, 22);
+  objc_msgSend__bindYuvBuffer_toLumaTexture_chromaTexture_withUsage_(self, v15, buffer, &v72, &v71, 22);
   v16 = v72;
   v17 = v71;
   v20 = v17;
@@ -235,18 +235,18 @@ LABEL_4:
   return v63;
 }
 
-- (int)createRawTile:(__CVBuffer *)a3 fromInputYuv:(__CVBuffer *)a4 tileStart:(id *)a5 cmdBuffer:
+- (int)createRawTile:(__CVBuffer *)tile fromInputYuv:(__CVBuffer *)yuv tileStart:(id *)start cmdBuffer:
 {
   v6 = v5;
-  v60 = a5;
-  v10 = objc_msgSend_commandQueue(self->_metalContext, a2, a3, a4);
+  startCopy = start;
+  v10 = objc_msgSend_commandQueue(self->_metalContext, a2, tile, yuv);
   v14 = objc_msgSend_commandBuffer(v10, v11, v12, v13);
 
   objc_msgSend_setLabel_(v14, v15, @"createRawTile", v16);
   v20 = objc_msgSend_computeCommandEncoder(v14, v17, v18, v19);
   v58 = 0;
   v59 = 0;
-  objc_msgSend__bindYuvBuffer_toLumaTexture_chromaTexture_withUsage_(self, v21, a4, &v59, &v58, 17);
+  objc_msgSend__bindYuvBuffer_toLumaTexture_chromaTexture_withUsage_(self, v21, yuv, &v59, &v58, 17);
   v22 = v59;
   v23 = v58;
   v25 = v23;
@@ -266,7 +266,7 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v28 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v24, a3, 25, 23, 0);
+  v28 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v24, tile, 25, 23, 0);
   if (!v28)
   {
     sub_295877680(v57);
@@ -278,7 +278,7 @@ LABEL_14:
   objc_msgSend_setTexture_atIndex_(v20, v30, v25, 1);
   objc_msgSend_setTexture_atIndex_(v20, v31, v28, 2);
   objc_msgSend_setTexture_atIndex_(v20, v32, self->_lscGainsTex, 3);
-  objc_msgSend_setBytes_length_atIndex_(v20, v33, &v60, 4, 0);
+  objc_msgSend_setBytes_length_atIndex_(v20, v33, &startCopy, 4, 0);
   objc_msgSend_setBytes_length_atIndex_(v20, v34, self->_anon_40, 288, 1);
   v38 = objc_msgSend_threadExecutionWidth(self->_lumaChromaFullToRawTilePipelineState, v35, v36, v37);
   v42 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_lumaChromaFullToRawTilePipelineState, v39, v40, v41) / v38;
@@ -313,26 +313,26 @@ LABEL_8:
   return v54;
 }
 
-- (int)createRawTile:(__CVBuffer *)a3 fromInputRaw:(__CVBuffer *)a4 tileStart:(id *)a5 cmdBuffer:
+- (int)createRawTile:(__CVBuffer *)tile fromInputRaw:(__CVBuffer *)raw tileStart:(id *)start cmdBuffer:
 {
   v5 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x29EDB8DD0], a2, *MEMORY[0x29EDB8CC8], @"Not supported", 0);
   objc_exception_throw(v5);
 }
 
-- (int)writeRgbTile:(__CVBuffer *)a3 toYuvBuffer:(__CVBuffer *)a4 intermediateLumaBuffer:(__CVBuffer *)a5 intermediateDeltaBuffer:(__CVBuffer *)a6 origYuvInputBuffer:(__CVBuffer *)a7 srcStart:(id *)a8 dstStart:size:cmdBuffer:
+- (int)writeRgbTile:(__CVBuffer *)tile toYuvBuffer:(__CVBuffer *)buffer intermediateLumaBuffer:(__CVBuffer *)lumaBuffer intermediateDeltaBuffer:(__CVBuffer *)deltaBuffer origYuvInputBuffer:(__CVBuffer *)inputBuffer srcStart:(id *)start dstStart:size:cmdBuffer:
 {
-  v9 = a8;
-  v108[0] = a8;
+  startCopy = start;
+  v108[0] = start;
   v8.i16[0] = v109;
   v8.i16[2] = v110;
   v94 = v8;
-  v16 = objc_msgSend_commandQueue(self->_metalContext, a2, a3, a4);
+  v16 = objc_msgSend_commandQueue(self->_metalContext, a2, tile, buffer);
   v20 = objc_msgSend_commandBuffer(v16, v17, v18, v19);
 
   v24 = objc_msgSend_computeCommandEncoder(v20, v21, v22, v23);
   v107 = 0;
   v106 = 0;
-  objc_msgSend__bindYuvBuffer_toLumaTexture_chromaTexture_withUsage_(self, v25, a4, &v107, &v106, 22);
+  objc_msgSend__bindYuvBuffer_toLumaTexture_chromaTexture_withUsage_(self, v25, buffer, &v107, &v106, 22);
   v26 = v107;
   v27 = v106;
   v29 = v27;
@@ -340,8 +340,8 @@ LABEL_8:
   if (!v26)
   {
     sub_295877E90(&v99);
-    a5 = 0;
-    a6 = 0;
+    lumaBuffer = 0;
+    deltaBuffer = 0;
 LABEL_18:
     v30 = 0;
 LABEL_22:
@@ -354,15 +354,15 @@ LABEL_29:
   if (!v27)
   {
     sub_295877DE4(&v99);
-    a5 = 0;
-    a6 = 0;
+    lumaBuffer = 0;
+    deltaBuffer = 0;
     v26 = 0;
     goto LABEL_18;
   }
 
   v104 = 0;
   v105 = 0;
-  objc_msgSend__bindYuvBuffer_toLumaTexture_chromaTexture_withUsage_(self, v28, a7, &v105, &v104, 17);
+  objc_msgSend__bindYuvBuffer_toLumaTexture_chromaTexture_withUsage_(self, v28, inputBuffer, &v105, &v104, 17);
   v30 = v105;
   v31 = v104;
   v26 = v31;
@@ -370,8 +370,8 @@ LABEL_29:
   {
     sub_295877D38(&v99);
 LABEL_21:
-    a5 = 0;
-    a6 = 0;
+    lumaBuffer = 0;
+    deltaBuffer = 0;
     goto LABEL_22;
   }
 
@@ -381,37 +381,37 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v34 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v32, a3, 25, 17, 0);
+  v34 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v32, tile, 25, 17, 0);
   if (!v34)
   {
     sub_295877BE0(&v99);
-    a5 = 0;
+    lumaBuffer = 0;
 LABEL_26:
-    a6 = 0;
+    deltaBuffer = 0;
     goto LABEL_29;
   }
 
-  if (!a5)
+  if (!lumaBuffer)
   {
     sub_295877B34(&v99);
     goto LABEL_26;
   }
 
-  a5 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v33, a5, 25, 23, 0);
-  if (!a5)
+  lumaBuffer = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v33, lumaBuffer, 25, 23, 0);
+  if (!lumaBuffer)
   {
     sub_295877A88(&v99);
     goto LABEL_26;
   }
 
-  if (!a6)
+  if (!deltaBuffer)
   {
     sub_2958779DC(&v99);
     goto LABEL_29;
   }
 
-  a6 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v35, a6, 25, 23, 0);
-  if (!a6)
+  deltaBuffer = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v35, deltaBuffer, 25, 23, 0);
+  if (!deltaBuffer)
   {
     sub_295877930(&v99);
     goto LABEL_29;
@@ -420,7 +420,7 @@ LABEL_26:
   v93 = v26;
   v38.i32[0] = v111;
   v40 = vmovl_u16(v38).u64[0];
-  v39.i32[0] = v9;
+  v39.i32[0] = startCopy;
   v41 = vdup_n_s32(0xFFFEu);
   v42 = vadd_s32(*&vmovl_u16(v39), v41);
   v103[1] = v42.i16[2];
@@ -440,8 +440,8 @@ LABEL_26:
   objc_msgSend_setTexture_atIndex_(v24, v47, v34, 0);
   objc_msgSend_setTexture_atIndex_(v24, v48, v30, 1);
   objc_msgSend_setTexture_atIndex_(v24, v49, self->_lscGainsTex, 2);
-  objc_msgSend_setTexture_atIndex_(v24, v50, a5, 3);
-  objc_msgSend_setTexture_atIndex_(v24, v51, a6, 4);
+  objc_msgSend_setTexture_atIndex_(v24, v50, lumaBuffer, 3);
+  objc_msgSend_setTexture_atIndex_(v24, v51, deltaBuffer, 4);
   objc_msgSend_setTexture_atIndex_(v24, v52, v29, 5);
   objc_msgSend_setBytes_length_atIndex_(v24, v53, v103, 4, 0);
   objc_msgSend_setBytes_length_atIndex_(v24, v54, v102, 4, 1);
@@ -461,8 +461,8 @@ LABEL_26:
   objc_msgSend_dispatchThreads_threadsPerThreadgroup_(v24, v67, &v99, &v96);
   v68 = vshr_n_u32(v44, 1uLL);
   objc_msgSend_setComputePipelineState_(v24, v69, self->_lumaAddbackAndWriteToFullPipelineState, v70);
-  objc_msgSend_setTexture_atIndex_(v24, v71, a5, 0);
-  objc_msgSend_setTexture_atIndex_(v24, v72, a6, 1);
+  objc_msgSend_setTexture_atIndex_(v24, v71, lumaBuffer, 0);
+  objc_msgSend_setTexture_atIndex_(v24, v72, deltaBuffer, 1);
   objc_msgSend_setTexture_atIndex_(v24, v73, v95, 2);
   objc_msgSend_setBytes_length_atIndex_(v24, v74, v108, 4, 0);
   objc_msgSend_setBytes_length_atIndex_(v24, v75, &v109, 4, 1);
@@ -506,17 +506,17 @@ LABEL_15:
   return v91;
 }
 
-- (int)writeRgbTile:(__CVBuffer *)a3 toYuvBuffer:(__CVBuffer *)a4 intermediateLumaBuffer:(__CVBuffer *)a5 intermediateDeltaBuffer:(__CVBuffer *)a6 origRawInputBuffer:(__CVBuffer *)a7 srcStart:(id *)a8 dstStart:size:cmdBuffer:
+- (int)writeRgbTile:(__CVBuffer *)tile toYuvBuffer:(__CVBuffer *)buffer intermediateLumaBuffer:(__CVBuffer *)lumaBuffer intermediateDeltaBuffer:(__CVBuffer *)deltaBuffer origRawInputBuffer:(__CVBuffer *)inputBuffer srcStart:(id *)start dstStart:size:cmdBuffer:
 {
-  v8 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x29EDB8DD0], a2, *MEMORY[0x29EDB8CC8], @"Not supported", 0, a6, a7, a8);
+  v8 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x29EDB8DD0], a2, *MEMORY[0x29EDB8CC8], @"Not supported", 0, deltaBuffer, inputBuffer, start);
   objc_exception_throw(v8);
 }
 
-- (int)updateParametersFromMetadata:(id)a3 lscSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (int)updateParametersFromMetadata:(id)metadata lscSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  metadataCopy = metadata;
+  v8 = metadataCopy;
+  if (!metadataCopy)
   {
     sub_295877FA0(&v161);
     v111 = 0;
@@ -527,7 +527,7 @@ LABEL_59:
     goto LABEL_55;
   }
 
-  v9 = objc_msgSend_objectForKeyedSubscript_(v5, v6, *MEMORY[0x29EDC0388], v7);
+  v9 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v6, *MEMORY[0x29EDC0388], v7);
   v13 = v9;
   if (v9)
   {
@@ -861,9 +861,9 @@ LABEL_55:
   return v155;
 }
 
-- (void)_bindYuvBuffer:(__CVBuffer *)a3 toLumaTexture:(id *)a4 chromaTexture:(id *)a5 withUsage:(unint64_t)a6
+- (void)_bindYuvBuffer:(__CVBuffer *)buffer toLumaTexture:(id *)texture chromaTexture:(id *)chromaTexture withUsage:(unint64_t)usage
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v13 = 0;
   if (PixelFormatType <= 792229423)
   {
@@ -903,7 +903,7 @@ LABEL_55:
       {
 LABEL_30:
         v16 = 589;
-        objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v12, a3, 588, a6, 0);
+        objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v12, buffer, 588, usage, 0);
         goto LABEL_33;
       }
 
@@ -976,15 +976,15 @@ LABEL_29:
     }
 
 LABEL_32:
-    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v12, a3, v13, a6, 0);
+    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v12, buffer, v13, usage, 0);
     goto LABEL_33;
   }
 
 LABEL_26:
   v16 = 30;
-  objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v12, a3, 10, a6, 0);
-  *a4 = LABEL_33:;
-  *a5 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v17, a3, v16, a6, 1);
+  objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v12, buffer, 10, usage, 0);
+  *texture = LABEL_33:;
+  *chromaTexture = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v17, buffer, v16, usage, 1);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface TLKLabelInvertColorsAccessibility
-- (TLKLabelInvertColorsAccessibility)initWithProminence:(unint64_t)a3;
+- (TLKLabelInvertColorsAccessibility)initWithProminence:(unint64_t)prominence;
 - (void)_accessibilityLoadInvertColors;
 @end
 
@@ -13,11 +13,11 @@
   }
 }
 
-- (TLKLabelInvertColorsAccessibility)initWithProminence:(unint64_t)a3
+- (TLKLabelInvertColorsAccessibility)initWithProminence:(unint64_t)prominence
 {
   v6.receiver = self;
   v6.super_class = TLKLabelInvertColorsAccessibility;
-  v3 = [(TLKLabelInvertColorsAccessibility *)&v6 initWithProminence:a3];
+  v3 = [(TLKLabelInvertColorsAccessibility *)&v6 initWithProminence:prominence];
   v4 = v3;
   if (v3)
   {

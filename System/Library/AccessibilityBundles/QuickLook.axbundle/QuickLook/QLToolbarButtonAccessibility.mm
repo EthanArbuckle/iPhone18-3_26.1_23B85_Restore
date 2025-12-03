@@ -1,29 +1,29 @@
 @interface QLToolbarButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)barButtonWithTarget:(id)a3 action:(SEL)a4 maxSize:(CGSize)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)barButtonWithTarget:(id)target action:(SEL)action maxSize:(CGSize)size;
 @end
 
 @implementation QLToolbarButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"QLToolbarButton" hasInstanceMethod:@"barButtonWithTarget: action: maxSize:" withFullSignature:{"@", "@", ":", "{CGSize=dd}", 0}];
-  [v3 validateClass:@"QLToolbarButton" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"QLToolbarButton" hasInstanceMethod:@"barButtonWithTarget: action: maxSize:" withFullSignature:{"@", "@", ":", "{CGSize=dd}", 0}];
+  [validationsCopy validateClass:@"QLToolbarButton" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
 }
 
-- (id)barButtonWithTarget:(id)a3 action:(SEL)a4 maxSize:(CGSize)a5
+- (id)barButtonWithTarget:(id)target action:(SEL)action maxSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  targetCopy = target;
   v26.receiver = self;
   v26.super_class = QLToolbarButtonAccessibility;
-  v10 = [(QLToolbarButtonAccessibility *)&v26 barButtonWithTarget:v9 action:a4 maxSize:width, height];
+  height = [(QLToolbarButtonAccessibility *)&v26 barButtonWithTarget:targetCopy action:action maxSize:width, height];
   LOBYTE(location) = 0;
   objc_opt_class();
   v11 = __UIAccessibilityCastAsClass();
-  v12 = [v11 customView];
+  customView = [v11 customView];
 
   v13 = [(QLToolbarButtonAccessibility *)self safeStringForKey:@"identifier"];
   if (([v13 isEqualToString:@"QLInlineMarkup"] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", @"QLOverlayMarkupButtonAccessibilityIdentifier"))
@@ -32,13 +32,13 @@
     [(QLToolbarButtonAccessibility *)self setAccessibilityLabel:v14];
 
     objc_initWeak(&location, self);
-    [v10 _setAccessibilityTraitsBlock:&__block_literal_global_0];
+    [height _setAccessibilityTraitsBlock:&__block_literal_global_0];
     v20 = MEMORY[0x29EDCA5F8];
     v21 = 3221225472;
     v22 = __67__QLToolbarButtonAccessibility_barButtonWithTarget_action_maxSize___block_invoke_2;
     v23 = &unk_29F2EF9F0;
     objc_copyWeak(&v24, &location);
-    [v10 _setAccessibilityValueBlock:&v20];
+    [height _setAccessibilityValueBlock:&v20];
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
     goto LABEL_15;
@@ -79,12 +79,12 @@
 
 LABEL_15:
   v17 = [(QLToolbarButtonAccessibility *)self accessibilityLabel:v20];
-  [v12 setAccessibilityLabel:v17];
+  [customView setAccessibilityLabel:v17];
 
-  v18 = [(QLToolbarButtonAccessibility *)self accessibilityLabel];
-  [v10 setAccessibilityLabel:v18];
+  accessibilityLabel = [(QLToolbarButtonAccessibility *)self accessibilityLabel];
+  [height setAccessibilityLabel:accessibilityLabel];
 
-  return v10;
+  return height;
 }
 
 __CFString *__67__QLToolbarButtonAccessibility_barButtonWithTarget_action_maxSize___block_invoke_2(uint64_t a1)

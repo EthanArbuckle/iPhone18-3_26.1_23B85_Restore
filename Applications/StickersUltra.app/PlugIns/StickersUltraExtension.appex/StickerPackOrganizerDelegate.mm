@@ -1,19 +1,19 @@
 @interface StickerPackOrganizerDelegate
 - (_TtC22StickersUltraExtension28StickerPackOrganizerDelegate)init;
-- (void)browserAppManagerDidSelectPlugin:(id)a3;
+- (void)browserAppManagerDidSelectPlugin:(id)plugin;
 - (void)dismiss;
-- (void)openURL:(id)a3 applicationIdentifier:(id)a4 pluginID:(id)a5 completionHandler:(id)a6;
-- (void)openURL:(id)a3 pluginID:(id)a4 completionHandler:(id)a5;
+- (void)openURL:(id)l applicationIdentifier:(id)identifier pluginID:(id)d completionHandler:(id)handler;
+- (void)openURL:(id)l pluginID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation StickerPackOrganizerDelegate
 
-- (void)openURL:(id)a3 pluginID:(id)a4 completionHandler:(id)a5
+- (void)openURL:(id)l pluginID:(id)d completionHandler:(id)handler
 {
   sub_100006D40(&qword_1000B2130);
   __chkstk_darwin();
   v7 = &v10 - v6;
-  if (a3)
+  if (l)
   {
     sub_10007C390();
     v8 = sub_10007C3B0();
@@ -29,12 +29,12 @@
   sub_100006D88(v7);
 }
 
-- (void)openURL:(id)a3 applicationIdentifier:(id)a4 pluginID:(id)a5 completionHandler:(id)a6
+- (void)openURL:(id)l applicationIdentifier:(id)identifier pluginID:(id)d completionHandler:(id)handler
 {
   sub_100006D40(&qword_1000B2130);
   __chkstk_darwin();
   v8 = &v11 - v7;
-  if (a3)
+  if (l)
   {
     sub_10007C390();
     v9 = sub_10007C3B0();
@@ -53,15 +53,15 @@
 - (void)dismiss
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC22StickersUltraExtension28StickerPackOrganizerDelegate_requestDismiss);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
-- (void)browserAppManagerDidSelectPlugin:(id)a3
+- (void)browserAppManagerDidSelectPlugin:(id)plugin
 {
-  v5 = a3;
-  v6 = self;
-  sub_100006748(a3);
+  pluginCopy = plugin;
+  selfCopy = self;
+  sub_100006748(plugin);
 }
 
 - (_TtC22StickersUltraExtension28StickerPackOrganizerDelegate)init

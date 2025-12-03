@@ -18,20 +18,20 @@
 - (void)updateImageInfoWithType:()UIAdditions
 {
   v2 = [MEMORY[0x1E695CD58] stringIdentifierForImageType:?];
-  [a1 setImageType:v2];
+  [self setImageType:v2];
 }
 
 - (uint64_t)removePhoto
 {
-  [a1 setImageData:0];
-  [a1 setThumbnailImageData:0];
-  [a1 setFullscreenImageData:0];
-  [a1 setImageType:0];
-  [a1 setImageHash:0];
-  [a1 setCropRect:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  [a1 setMemojiMetadata:0];
+  [self setImageData:0];
+  [self setThumbnailImageData:0];
+  [self setFullscreenImageData:0];
+  [self setImageType:0];
+  [self setImageHash:0];
+  [self setCropRect:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  [self setMemojiMetadata:0];
 
-  return [a1 setImageBackgroundColorsData:0];
+  return [self setImageBackgroundColorsData:0];
 }
 
 - (void)setBirthdays:()UIAdditions
@@ -40,32 +40,32 @@
   if ([v4 count] == 2)
   {
     v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v5 value];
-    v7 = [v6 calendar];
-    v8 = [v7 calendarIdentifier];
-    v9 = [v8 isEqualToString:*MEMORY[0x1E695D850]];
+    value = [v5 value];
+    calendar = [value calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
+    v9 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D850]];
 
     v10 = [v4 objectAtIndexedSubscript:1];
-    v11 = [v10 value];
+    value2 = [v10 value];
 
     if (v9)
     {
-      v12 = v11;
+      v12 = value2;
     }
 
     else
     {
-      v12 = v6;
+      v12 = value;
     }
 
     if (v9)
     {
-      v13 = v6;
+      v13 = value;
     }
 
     else
     {
-      v13 = v11;
+      v13 = value2;
     }
 
 LABEL_15:
@@ -78,10 +78,10 @@ LABEL_15:
   if ([v4 count] == 1)
   {
     v5 = [v4 objectAtIndexedSubscript:0];
-    v14 = [v5 value];
-    v15 = [v14 calendar];
-    v16 = [v15 calendarIdentifier];
-    v17 = [v16 isEqualToString:*MEMORY[0x1E695D850]];
+    value3 = [v5 value];
+    calendar2 = [value3 calendar];
+    calendarIdentifier2 = [calendar2 calendarIdentifier];
+    v17 = [calendarIdentifier2 isEqualToString:*MEMORY[0x1E695D850]];
 
     if (v17)
     {
@@ -90,12 +90,12 @@ LABEL_15:
 
     else
     {
-      v12 = v14;
+      v12 = value3;
     }
 
     if (v17)
     {
-      v13 = v14;
+      v13 = value3;
     }
 
     else
@@ -125,7 +125,7 @@ LABEL_17:
     v19 = v22;
   }
 
-  [a1 setBirthday:v19];
+  [self setBirthday:v19];
   if ([v12 month] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v20 = 0;
@@ -141,7 +141,7 @@ LABEL_17:
     v20 = v12;
   }
 
-  [a1 setNonGregorianBirthday:v20];
+  [self setNonGregorianBirthday:v20];
 }
 
 - (uint64_t)deleteContactFromStore:()UIAdditions request:
@@ -151,15 +151,15 @@ LABEL_17:
   v8 = a4;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"CNContact+UIAdditions.m" lineNumber:636 description:@"A store is needed here"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContact+UIAdditions.m" lineNumber:636 description:@"A store is needed here"];
   }
 
   v9 = CNUILogContactCard();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349314;
-    v18 = a1;
+    selfCopy = self;
     v19 = 2114;
     v20 = v7;
     _os_log_impl(&dword_199A75000, v9, OS_LOG_TYPE_DEFAULT, "[CNContact+UIAdditions] Deleting contact %{public}p from store %{public}@", buf, 0x16u);
@@ -170,7 +170,7 @@ LABEL_17:
     v8 = objc_alloc_init(MEMORY[0x1E695CF88]);
   }
 
-  [v8 deleteContact:a1];
+  [v8 deleteContact:self];
   v16 = 0;
   v10 = [v7 executeSaveRequest:v8 error:&v16];
   v11 = v16;
@@ -179,15 +179,15 @@ LABEL_17:
     v12 = CNUILogContactCard();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [a1 identifier];
+      identifier = [self identifier];
       *buf = 138544130;
-      v18 = v14;
+      selfCopy = identifier;
       v19 = 2114;
       v20 = v11;
       v21 = 2114;
       v22 = v7;
       v23 = 2112;
-      v24 = a1;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_199A75000, v12, OS_LOG_TYPE_ERROR, "[CNContact+UIAdditions] Could not delete contact with identifer %{public}@, error %{public}@, store %{public}@, full contact %@", buf, 0x2Au);
     }
   }
@@ -204,15 +204,15 @@ LABEL_17:
   v14 = a6;
   if (!v11)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"CNContact+UIAdditions.m" lineNumber:602 description:@"A store is needed here"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContact+UIAdditions.m" lineNumber:602 description:@"A store is needed here"];
   }
 
   v15 = CNUILogContactCard();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349312;
-    v40 = a1;
+    selfCopy3 = self;
     v41 = 1024;
     LODWORD(v42) = v14 != 0;
     _os_log_impl(&dword_199A75000, v15, OS_LOG_TYPE_DEFAULT, "[CNContact+UIAdditions] Saving contact %{public}p with request? %d", buf, 0x12u);
@@ -223,24 +223,24 @@ LABEL_17:
     v14 = objc_alloc_init(MEMORY[0x1E695CF88]);
   }
 
-  if (![a1 hasBeenPersisted] || (objc_msgSend(a1, "isSuggestedMe") & 1) != 0)
+  if (![self hasBeenPersisted] || (objc_msgSend(self, "isSuggestedMe") & 1) != 0)
   {
     v16 = CNUILogContactCard();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v13 identifier];
-      v18 = [v13 type];
+      identifier = [v13 identifier];
+      type = [v13 type];
       *buf = 134349570;
-      v40 = a1;
+      selfCopy3 = self;
       v41 = 2114;
-      v42 = v17;
+      v42 = identifier;
       v43 = 2048;
-      v44 = v18;
+      v44 = type;
       _os_log_impl(&dword_199A75000, v16, OS_LOG_TYPE_DEFAULT, "[CNContact+UIAdditions] Saving contact %{public}p by adding, to container with identifier %{public}@ type %ld", buf, 0x20u);
     }
 
-    v19 = [v13 identifier];
-    [v14 addContact:a1 toContainerWithIdentifier:v19];
+    identifier2 = [v13 identifier];
+    [v14 addContact:self toContainerWithIdentifier:identifier2];
 
     if (!v12)
     {
@@ -268,7 +268,7 @@ LABEL_16:
             objc_enumerationMutation(v21);
           }
 
-          [v14 addMember:a1 toGroup:*(*(&v35 + 1) + 8 * v25++)];
+          [v14 addMember:self toGroup:*(*(&v35 + 1) + 8 * v25++)];
         }
 
         while (v23 != v25);
@@ -285,11 +285,11 @@ LABEL_16:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v40 = a1;
+    selfCopy3 = self;
     _os_log_impl(&dword_199A75000, v20, OS_LOG_TYPE_DEFAULT, "[CNContact+UIAdditions] Saving contact %{public}p by updating", buf, 0xCu);
   }
 
-  [v14 updateContact:a1];
+  [v14 updateContact:self];
   if (v12)
   {
     goto LABEL_16;
@@ -297,25 +297,25 @@ LABEL_16:
 
 LABEL_24:
   v26 = +[CNUIContactsEnvironment currentEnvironment];
-  v27 = [v26 authorizationContext];
+  authorizationContext = [v26 authorizationContext];
 
   v34 = 0;
-  v28 = [v11 executeSaveRequest:v14 response:0 authorizationContext:v27 error:&v34];
+  v28 = [v11 executeSaveRequest:v14 response:0 authorizationContext:authorizationContext error:&v34];
   v29 = v34;
   if ((v28 & 1) == 0)
   {
     v30 = CNUILogContactCard();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v32 = [a1 identifier];
+      identifier3 = [self identifier];
       *buf = 138544130;
-      v40 = v32;
+      selfCopy3 = identifier3;
       v41 = 2114;
       v42 = v29;
       v43 = 2114;
       v44 = v11;
       v45 = 2112;
-      v46 = a1;
+      selfCopy4 = self;
       _os_log_error_impl(&dword_199A75000, v30, OS_LOG_TYPE_ERROR, "[CNContact+UIAdditions] Could not save contact with identifer %{public}@, error %{public}@, store %{public}@, full contact %@", buf, 0x2Au);
     }
   }
@@ -337,7 +337,7 @@ LABEL_24:
     a4 = [v13 arrayWithObjects:&v17 count:1];
   }
 
-  v15 = [a1 saveContactInStore:v10 groups:a4 container:v11 request:{v12, v17, v18}];
+  v15 = [self saveContactInStore:v10 groups:a4 container:v11 request:{v12, v17, v18}];
 
   return v15;
 }
@@ -352,15 +352,15 @@ LABEL_24:
   {
     if (!v10)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:a1 file:@"CNContact+UIAdditions.m" lineNumber:569 description:@"A store is needed here"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CNContact+UIAdditions.m" lineNumber:569 description:@"A store is needed here"];
     }
 
     v12 = CNUILogContactCard();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349314;
-      v30 = a1;
+      selfCopy = self;
       v31 = 2112;
       v32 = v9;
       _os_log_impl(&dword_199A75000, v12, OS_LOG_TYPE_DEFAULT, "[CNContact+UIAdditions] Removing contact %{public}p from groups %@", buf, 0x16u);
@@ -391,7 +391,7 @@ LABEL_24:
             objc_enumerationMutation(v13);
           }
 
-          [v11 removeMember:a1 fromGroup:*(*(&v25 + 1) + 8 * v17++)];
+          [v11 removeMember:self fromGroup:*(*(&v25 + 1) + 8 * v17++)];
         }
 
         while (v15 != v17);
@@ -409,9 +409,9 @@ LABEL_24:
       v20 = CNUILogContactCard();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v22 = [a1 identifier];
+        identifier = [self identifier];
         *buf = 138544386;
-        v30 = v22;
+        selfCopy = identifier;
         v31 = 2112;
         v32 = v13;
         v33 = 2114;
@@ -419,7 +419,7 @@ LABEL_24:
         v35 = 2114;
         v36 = v10;
         v37 = 2112;
-        v38 = a1;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_199A75000, v20, OS_LOG_TYPE_ERROR, "[CNContact+UIAdditions] Could not remove contact with identifer %{public}@ from groups %@, error %{public}@, store %{public}@, full contact %@", buf, 0x34u);
       }
     }
@@ -448,15 +448,15 @@ LABEL_24:
   {
     if (!v10)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:a1 file:@"CNContact+UIAdditions.m" lineNumber:545 description:@"A store is needed here"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CNContact+UIAdditions.m" lineNumber:545 description:@"A store is needed here"];
     }
 
     v13 = CNUILogContactCard();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349314;
-      v30 = a1;
+      selfCopy = self;
       v31 = 2112;
       v32 = v9;
       _os_log_impl(&dword_199A75000, v13, OS_LOG_TYPE_DEFAULT, "[CNContact+UIAdditions] Adding contact %{public}p to groups %@", buf, 0x16u);
@@ -487,7 +487,7 @@ LABEL_24:
             objc_enumerationMutation(v14);
           }
 
-          [v11 addMember:a1 toGroup:*(*(&v25 + 1) + 8 * v18++)];
+          [v11 addMember:self toGroup:*(*(&v25 + 1) + 8 * v18++)];
         }
 
         while (v16 != v18);
@@ -505,9 +505,9 @@ LABEL_24:
       v20 = CNUILogContactCard();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v22 = [a1 identifier];
+        identifier = [self identifier];
         *buf = 138544386;
-        v30 = v22;
+        selfCopy = identifier;
         v31 = 2112;
         v32 = v14;
         v33 = 2114;
@@ -515,7 +515,7 @@ LABEL_24:
         v35 = 2114;
         v36 = v10;
         v37 = 2112;
-        v38 = a1;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_199A75000, v20, OS_LOG_TYPE_ERROR, "[CNContact+UIAdditions] Could not add contact with identifer %{public}@ to groups %@, error %{public}@, store %{public}@, full contact %@", buf, 0x34u);
       }
     }
@@ -527,48 +527,48 @@ LABEL_24:
 - (void)updateContactTypeWithPolicy:()UIAdditions
 {
   v30 = a3;
-  v4 = [a1 organizationName];
-  v5 = [a1 snapshot];
-  v6 = [v5 organizationName];
+  organizationName = [self organizationName];
+  snapshot = [self snapshot];
+  organizationName2 = [snapshot organizationName];
 
-  v7 = [a1 givenName];
-  v8 = [a1 snapshot];
-  v9 = [v8 givenName];
+  givenName = [self givenName];
+  snapshot2 = [self snapshot];
+  givenName2 = [snapshot2 givenName];
 
-  v10 = [a1 familyName];
-  v11 = [a1 snapshot];
-  v12 = [v11 familyName];
+  familyName = [self familyName];
+  snapshot3 = [self snapshot];
+  familyName2 = [snapshot3 familyName];
 
-  v13 = [a1 middleName];
-  v14 = [a1 snapshot];
-  v15 = [v14 middleName];
+  middleName = [self middleName];
+  snapshot4 = [self snapshot];
+  middleName2 = [snapshot4 middleName];
 
-  if (v4 == v6 && v7 == v9 && v10 == v12 && v13 == v15)
+  if (organizationName == organizationName2 && givenName == givenName2 && familyName == familyName2 && middleName == middleName2)
   {
     goto LABEL_23;
   }
 
-  v16 = [a1 snapshot];
-  if (v16)
+  snapshot5 = [self snapshot];
+  if (snapshot5)
   {
-    v17 = [a1 snapshot];
-    v18 = [v17 contactType];
+    snapshot6 = [self snapshot];
+    contactType = [snapshot6 contactType];
   }
 
   else
   {
-    v18 = [a1 contactType];
+    contactType = [self contactType];
   }
 
   v19 = *MEMORY[0x1E6996568];
-  v20 = [a1 givenName];
-  if ((*(v19 + 16))(v19, v20))
+  givenName3 = [self givenName];
+  if ((*(v19 + 16))(v19, givenName3))
   {
-    v21 = [a1 familyName];
-    if ((*(v19 + 16))(v19, v21))
+    familyName3 = [self familyName];
+    if ((*(v19 + 16))(v19, familyName3))
     {
-      v22 = [a1 middleName];
-      v23 = (*(v19 + 16))(v19, v22) ^ 1;
+      middleName3 = [self middleName];
+      v23 = (*(v19 + 16))(v19, middleName3) ^ 1;
     }
 
     else
@@ -582,17 +582,17 @@ LABEL_24:
     LOBYTE(v23) = 1;
   }
 
-  v24 = [a1 organizationName];
-  v25 = (*(v19 + 16))(v19, v24);
+  organizationName3 = [self organizationName];
+  v25 = (*(v19 + 16))(v19, organizationName3);
 
-  if (v18 == 1)
+  if (contactType == 1)
   {
     v26 = v23 & v25;
   }
 
   else
   {
-    if (v18)
+    if (contactType)
     {
       v27 = 0;
       goto LABEL_20;
@@ -603,9 +603,9 @@ LABEL_24:
 
   v27 = v26 ^ 1;
 LABEL_20:
-  if (!v30 || ([MEMORY[0x1E696AD98] numberWithInteger:v27 & 1], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v30, "shouldSetValue:property:contact:replacementValue:", v28, *MEMORY[0x1E695C410], a1, 0), v28, v29))
+  if (!v30 || ([MEMORY[0x1E696AD98] numberWithInteger:v27 & 1], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v30, "shouldSetValue:property:contact:replacementValue:", v28, *MEMORY[0x1E695C410], self, 0), v28, v29))
   {
-    [a1 setContactType:v27 & 1];
+    [self setContactType:v27 & 1];
   }
 
 LABEL_23:
@@ -617,7 +617,7 @@ LABEL_23:
   v8 = a3;
   v9 = a4;
   v50 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v44 = v8;
   v11 = [v8 mutableCopy];
   v43 = v9;
@@ -648,7 +648,7 @@ LABEL_23:
 
         v52 = v16;
         v17 = *(*(&v62 + 1) + 8 * v16);
-        v53 = [a1 valueForKey:v17];
+        v53 = [self valueForKey:v17];
         v18 = [v50 valueForKey:v17];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -722,10 +722,10 @@ LABEL_23:
                     }
 
                     v30 = MEMORY[0x1E695CE08];
-                    v31 = [*(*(&v58 + 1) + 8 * i) identifier];
-                    v32 = [v30 contactPropertyWithContactNoCopy:a1 propertyKey:v17 identifier:v31];
+                    identifier = [*(*(&v58 + 1) + 8 * i) identifier];
+                    v32 = [v30 contactPropertyWithContactNoCopy:self propertyKey:v17 identifier:identifier];
 
-                    [v10 addObject:v32];
+                    [array addObject:v32];
                   }
 
                   v27 = [v25 countByEnumeratingWithState:&v58 objects:v67 count:16];
@@ -741,8 +741,8 @@ LABEL_23:
 
             else
             {
-              v25 = [MEMORY[0x1E695CE08] contactPropertyWithContactNoCopy:a1 propertyKey:v17 identifier:0];
-              [v10 addObject:v25];
+              v25 = [MEMORY[0x1E695CE08] contactPropertyWithContactNoCopy:self propertyKey:v17 identifier:0];
+              [array addObject:v25];
             }
           }
 
@@ -778,10 +778,10 @@ LABEL_23:
                   }
 
                   v39 = MEMORY[0x1E695CE08];
-                  v40 = [*(*(&v54 + 1) + 8 * j) identifier];
-                  v41 = [v39 contactPropertyWithContactNoCopy:a1 propertyKey:v17 identifier:v40];
+                  identifier2 = [*(*(&v54 + 1) + 8 * j) identifier];
+                  v41 = [v39 contactPropertyWithContactNoCopy:self propertyKey:v17 identifier:identifier2];
 
-                  [v10 addObject:v41];
+                  [array addObject:v41];
                 }
 
                 v36 = [v25 countByEnumeratingWithState:&v54 objects:v66 count:16];
@@ -801,7 +801,7 @@ LABEL_38:
           v18 = v51;
           if (v24)
           {
-            [a1 setValue:v24 forKey:v17];
+            [self setValue:v24 forKey:v17];
 
             v18 = v51;
           }
@@ -819,7 +819,7 @@ LABEL_43:
     while (v13);
   }
 
-  return v10;
+  return array;
 }
 
 - (id)addAllPropertiesFromContact:()UIAdditions
@@ -832,16 +832,16 @@ LABEL_43:
   v7 = +[CNContactView allImageProperties];
   v12[2] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
-  v9 = [v8 _cn_flatten];
+  _cn_flatten = [v8 _cn_flatten];
 
-  v10 = [a1 addProperties:v9 excludingProperties:MEMORY[0x1E695E0F0] fromContact:v4];
+  v10 = [self addProperties:_cn_flatten excludingProperties:MEMORY[0x1E695E0F0] fromContact:v4];
 
   return v10;
 }
 
 - (uint64_t)hasNonPersistedData
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &off_1F0E0BC20;
   if (objc_msgSendSuper2(&v3, sel_hasNonPersistedData))
   {
@@ -850,7 +850,7 @@ LABEL_43:
 
   else
   {
-    return [a1 hasChanges];
+    return [self hasChanges];
   }
 }
 

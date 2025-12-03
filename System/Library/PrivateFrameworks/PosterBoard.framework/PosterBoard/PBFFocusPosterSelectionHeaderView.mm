@@ -1,6 +1,6 @@
 @interface PBFFocusPosterSelectionHeaderView
-- (PBFFocusPosterSelectionHeaderView)initWithCoder:(id)a3;
-- (PBFFocusPosterSelectionHeaderView)initWithFrame:(CGRect)a3;
+- (PBFFocusPosterSelectionHeaderView)initWithCoder:(id)coder;
+- (PBFFocusPosterSelectionHeaderView)initWithFrame:(CGRect)frame;
 - (void)_createSeparatorView;
 - (void)_createStackView;
 - (void)_createSubtitleLabel;
@@ -8,18 +8,18 @@
 - (void)_updateSeparatorHeightConstraint;
 - (void)didMoveToWindow;
 - (void)prepareForReuse;
-- (void)setAttributedSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAttributedSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PBFFocusPosterSelectionHeaderView
 
-- (PBFFocusPosterSelectionHeaderView)initWithFrame:(CGRect)a3
+- (PBFFocusPosterSelectionHeaderView)initWithFrame:(CGRect)frame
 {
   v27[6] = *MEMORY[0x277D85DE8];
   v26.receiver = self;
   v26.super_class = PBFFocusPosterSelectionHeaderView;
-  v3 = [(PBFFocusPosterSelectionHeaderView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PBFFocusPosterSelectionHeaderView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,29 +30,29 @@
     [(PBFFocusPosterSelectionHeaderView *)v4 _createSubtitleLabel];
     [(UIStackView *)v4->_stackView setCustomSpacing:v4->_titleLabel afterView:2.0];
     v19 = MEMORY[0x277CCAAD0];
-    v25 = [(UIStackView *)v4->_stackView leadingAnchor];
-    v24 = [(PBFFocusPosterSelectionHeaderView *)v4 leadingAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24 constant:10.0];
+    leadingAnchor = [(UIStackView *)v4->_stackView leadingAnchor];
+    leadingAnchor2 = [(PBFFocusPosterSelectionHeaderView *)v4 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     v27[0] = v23;
-    v22 = [(UIStackView *)v4->_stackView trailingAnchor];
-    v21 = [(PBFFocusPosterSelectionHeaderView *)v4 trailingAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21 constant:-10.0];
+    trailingAnchor = [(UIStackView *)v4->_stackView trailingAnchor];
+    trailingAnchor2 = [(PBFFocusPosterSelectionHeaderView *)v4 trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
     v27[1] = v20;
-    v18 = [(UIStackView *)v4->_stackView topAnchor];
-    v17 = [(PBFFocusPosterSelectionHeaderView *)v4 topAnchor];
-    v16 = [v18 constraintEqualToAnchor:v17 constant:12.0];
+    topAnchor = [(UIStackView *)v4->_stackView topAnchor];
+    topAnchor2 = [(PBFFocusPosterSelectionHeaderView *)v4 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
     v27[2] = v16;
-    v15 = [(UIStackView *)v4->_stackView bottomAnchor];
-    v5 = [(PBFFocusPosterSelectionHeaderView *)v4 bottomAnchor];
-    v6 = [v15 constraintEqualToAnchor:v5 constant:-12.0];
+    bottomAnchor = [(UIStackView *)v4->_stackView bottomAnchor];
+    bottomAnchor2 = [(PBFFocusPosterSelectionHeaderView *)v4 bottomAnchor];
+    v6 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-12.0];
     v27[3] = v6;
-    v7 = [(UIStackView *)v4->_stackView leadingAnchor];
-    v8 = [(UIView *)v4->_separatorView leadingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    leadingAnchor3 = [(UIStackView *)v4->_stackView leadingAnchor];
+    leadingAnchor4 = [(UIView *)v4->_separatorView leadingAnchor];
+    v9 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v27[4] = v9;
-    v10 = [(UIStackView *)v4->_stackView trailingAnchor];
-    v11 = [(UIView *)v4->_separatorView trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    trailingAnchor3 = [(UIStackView *)v4->_stackView trailingAnchor];
+    trailingAnchor4 = [(UIView *)v4->_separatorView trailingAnchor];
+    v12 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v27[5] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:6];
     [v19 activateConstraints:v13];
@@ -61,17 +61,17 @@
   return v4;
 }
 
-- (PBFFocusPosterSelectionHeaderView)initWithCoder:(id)a3
+- (PBFFocusPosterSelectionHeaderView)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCA890];
-  v5 = a3;
-  v6 = [v4 currentHandler];
+  coderCopy = coder;
+  currentHandler = [v4 currentHandler];
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PBFFocusPosterSelectionHeaderView initWithCoder:]"];
-  [v6 handleFailureInFunction:v7 file:@"PBFFocusPosterSelectionHeaderView.m" lineNumber:50 description:{@"%s: not supported", "-[PBFFocusPosterSelectionHeaderView initWithCoder:]"}];
+  [currentHandler handleFailureInFunction:v7 file:@"PBFFocusPosterSelectionHeaderView.m" lineNumber:50 description:{@"%s: not supported", "-[PBFFocusPosterSelectionHeaderView initWithCoder:]"}];
 
   v10.receiver = self;
   v10.super_class = PBFFocusPosterSelectionHeaderView;
-  v8 = [(PBFFocusPosterSelectionHeaderView *)&v10 initWithCoder:v5];
+  v8 = [(PBFFocusPosterSelectionHeaderView *)&v10 initWithCoder:coderCopy];
 
   return v8;
 }
@@ -98,12 +98,12 @@
 
   [(UIView *)self->_separatorView setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = self->_separatorView;
-  v6 = [MEMORY[0x277D75348] separatorColor];
-  [(UIView *)v5 setBackgroundColor:v6];
+  separatorColor = [MEMORY[0x277D75348] separatorColor];
+  [(UIView *)v5 setBackgroundColor:separatorColor];
 
   [(UIStackView *)self->_stackView addArrangedSubview:self->_separatorView];
-  v7 = [(UIView *)self->_separatorView heightAnchor];
-  v8 = [v7 constraintEqualToConstant:0.0];
+  heightAnchor = [(UIView *)self->_separatorView heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:0.0];
   separatorViewHeightConstraint = self->_separatorViewHeightConstraint;
   self->_separatorViewHeightConstraint = v8;
 
@@ -124,8 +124,8 @@
   [(UILabel *)v5 setFont:v6];
 
   v7 = self->_titleLabel;
-  v8 = [MEMORY[0x277D75348] labelColor];
-  [(UILabel *)v7 setTextColor:v8];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(UILabel *)v7 setTextColor:labelColor];
 
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
   [(UILabel *)self->_titleLabel setLineBreakMode:0];
@@ -148,8 +148,8 @@
   [(UILabel *)v5 setFont:v6];
 
   v7 = self->_subtitleLabel;
-  v8 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)v7 setTextColor:v8];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)v7 setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
   [(UILabel *)self->_subtitleLabel setLineBreakMode:0];
@@ -160,36 +160,36 @@
   [(UIStackView *)stackView addArrangedSubview:v10];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v8 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
-  v5 = [v4 isEqualToString:v8];
+  titleCopy = title;
+  text = [(UILabel *)self->_titleLabel text];
+  v5 = [text isEqualToString:titleCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v8 copy];
+    v6 = [titleCopy copy];
     title = self->_title;
     self->_title = v6;
 
-    [(UILabel *)self->_titleLabel setText:v8];
+    [(UILabel *)self->_titleLabel setText:titleCopy];
   }
 }
 
-- (void)setAttributedSubtitle:(id)a3
+- (void)setAttributedSubtitle:(id)subtitle
 {
-  v8 = a3;
-  v4 = [(UILabel *)self->_subtitleLabel attributedText];
-  v5 = [v4 isEqualToAttributedString:v8];
+  subtitleCopy = subtitle;
+  attributedText = [(UILabel *)self->_subtitleLabel attributedText];
+  v5 = [attributedText isEqualToAttributedString:subtitleCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v8 copy];
+    v6 = [subtitleCopy copy];
     attributedSubtitle = self->_attributedSubtitle;
     self->_attributedSubtitle = v6;
 
-    [(UILabel *)self->_subtitleLabel setAttributedText:v8];
-    -[UILabel setHidden:](self->_subtitleLabel, "setHidden:", [v8 length] == 0);
+    [(UILabel *)self->_subtitleLabel setAttributedText:subtitleCopy];
+    -[UILabel setHidden:](self->_subtitleLabel, "setHidden:", [subtitleCopy length] == 0);
   }
 }
 
@@ -214,20 +214,20 @@
 
 - (void)_updateSeparatorHeightConstraint
 {
-  v3 = [(PBFFocusPosterSelectionHeaderView *)self window];
-  v4 = [v3 screen];
-  v5 = v4;
-  if (v4)
+  window = [(PBFFocusPosterSelectionHeaderView *)self window];
+  screen = [window screen];
+  v5 = screen;
+  if (screen)
   {
-    v6 = v4;
+    mainScreen = screen;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
   }
 
-  v9 = v6;
+  v9 = mainScreen;
 
   separatorViewHeightConstraint = self->_separatorViewHeightConstraint;
   [v9 scale];

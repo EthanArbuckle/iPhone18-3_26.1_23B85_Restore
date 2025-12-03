@@ -1,18 +1,18 @@
 @interface DSSourceRepository
-+ (BOOL)runtimeFeatureFlagsEnabledFor:(id)a3;
-+ (DSSourceRepository)repositoryWithURL:(id)a3;
++ (BOOL)runtimeFeatureFlagsEnabledFor:(id)for;
++ (DSSourceRepository)repositoryWithURL:(id)l;
 + (void)initialize;
 - (DSSourceRepository)init;
-- (DSSourceRepository)initWithSources:(id)a3;
+- (DSSourceRepository)initWithSources:(id)sources;
 - (NSArray)sources;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)objectForKeyedSubscript:(id)subscript;
 @end
 
 @implementation DSSourceRepository
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLog_2 = os_log_create("com.apple.DigitalSeparation", "DSSourceRepository");
 
@@ -31,33 +31,33 @@
   }
 
   v3 = v2;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 URLsForDirectory:5 inDomains:8];
-  v6 = [v5 firstObject];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager URLsForDirectory:5 inDomains:8];
+  firstObject = [v5 firstObject];
 
-  v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"DigitalSeparation" isDirectory:1 relativeToURL:v6];
+  v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"DigitalSeparation" isDirectory:1 relativeToURL:firstObject];
   v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"SharingSources" isDirectory:1 relativeToURL:v7];
   v9 = [objc_opt_class() repositoryWithURL:v8];
 
   return v9;
 }
 
-+ (DSSourceRepository)repositoryWithURL:(id)a3
++ (DSSourceRepository)repositoryWithURL:(id)l
 {
   v56 = *MEMORY[0x277D85DE8];
-  v42 = a3;
+  lCopy = l;
   v3 = DSLog_2;
   if (os_log_type_enabled(DSLog_2, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v52 = v42;
+    v52 = lCopy;
     _os_log_impl(&dword_248C40000, v3, OS_LOG_TYPE_INFO, "Searching %{public}@ for sharing sources", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 enumeratorAtURL:v43 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:1 errorHandler:&__block_literal_global_5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager enumeratorAtURL:v43 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:1 errorHandler:&__block_literal_global_5];
 
-  v44 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
@@ -88,19 +88,19 @@
             _os_log_impl(&dword_248C40000, v10, OS_LOG_TYPE_INFO, "Found potential source %{public}@", buf, 0xCu);
           }
 
-          v11 = [(__CFString *)v9 principalClass];
-          v12 = objc_alloc_init(v11);
+          principalClass = [(__CFString *)v9 principalClass];
+          v12 = objc_alloc_init(principalClass);
           if ([v12 conformsToProtocol:&unk_285BA67B0])
           {
             v13 = v12;
-            v14 = [v13 name];
-            if (!v14)
+            name = [v13 name];
+            if (!name)
             {
               v20 = DSLog_2;
               if (os_log_type_enabled(DSLog_2, OS_LOG_TYPE_ERROR))
               {
                 v21 = v20;
-                v22 = NSStringFromClass(v11);
+                v22 = NSStringFromClass(principalClass);
                 *buf = 138543618;
                 v52 = v9;
                 v53 = 2114;
@@ -111,7 +111,7 @@
               goto LABEL_35;
             }
 
-            if (([a1 runtimeFeatureFlagsEnabledFor:v14] & 1) == 0)
+            if (([self runtimeFeatureFlagsEnabledFor:name] & 1) == 0)
             {
               v23 = DSLog_2;
               if (os_log_type_enabled(DSLog_2, OS_LOG_TYPE_ERROR))
@@ -119,7 +119,7 @@
                 *buf = 138543618;
                 v52 = v9;
                 v53 = 2114;
-                v54 = v14;
+                v54 = name;
                 _os_log_error_impl(&dword_248C40000, v23, OS_LOG_TYPE_ERROR, "Runtime feature flags for %{public}@ with name %{public}@ are not enabled, not adding bundle.", buf, 0x16u);
               }
 
@@ -129,15 +129,15 @@
             if ([DSSourceWrapper shouldEnumerateResourceNamesForSource:v13])
             {
               v15 = [DSSourceWrapper wrapMultiSource:v13];
-              [v44 addEntriesFromDictionary:v15];
+              [dictionary addEntriesFromDictionary:v15];
 
               v16 = DSLog_2;
               if (os_log_type_enabled(DSLog_2, OS_LOG_TYPE_DEFAULT))
               {
                 v17 = v16;
-                v18 = [v13 name];
+                name2 = [v13 name];
                 *buf = 138543618;
-                v52 = v18;
+                v52 = name2;
                 v53 = 2114;
                 v54 = v9;
                 _os_log_impl(&dword_248C40000, v17, OS_LOG_TYPE_DEFAULT, "Adding sharing sub sources %{public}@ from %{public}@", buf, 0x16u);
@@ -146,34 +146,34 @@
               goto LABEL_35;
             }
 
-            v24 = [v44 objectForKeyedSubscript:v14];
+            v24 = [dictionary objectForKeyedSubscript:name];
 
             if (v24)
             {
-              v25 = [(__CFString *)v9 bundleIdentifier];
+              bundleIdentifier = [(__CFString *)v9 bundleIdentifier];
               v26 = DSLog_2;
               if (os_log_type_enabled(DSLog_2, OS_LOG_TYPE_DEFAULT))
               {
                 v27 = v26;
-                v28 = [v13 name];
+                name3 = [v13 name];
                 *buf = 138543618;
-                v52 = v25;
+                v52 = bundleIdentifier;
                 v53 = 2114;
-                v54 = v28;
+                v54 = name3;
                 _os_log_impl(&dword_248C40000, v27, OS_LOG_TYPE_DEFAULT, "Found additional bundle %{public}@ for source %{public}@", buf, 0x16u);
               }
 
-              if (v14 != @"com.apple.DigitalSeparation.FindMy")
+              if (name != @"com.apple.DigitalSeparation.FindMy")
               {
                 v29 = DSLog_2;
                 if (os_log_type_enabled(DSLog_2, OS_LOG_TYPE_ERROR))
                 {
                   v36 = v29;
-                  v37 = [v13 name];
+                  name4 = [v13 name];
                   *buf = 138543618;
-                  v52 = v25;
+                  v52 = bundleIdentifier;
                   v53 = 2114;
-                  v54 = v37;
+                  v54 = name4;
                   _os_log_error_impl(&dword_248C40000, v36, OS_LOG_TYPE_ERROR, "Duplicate implementation %{public}@ is unexpected for %{public}@, not adding bundle.", buf, 0x16u);
                 }
 
@@ -183,7 +183,7 @@ LABEL_35:
                 goto LABEL_36;
               }
 
-              if (([(__CFString *)v25 containsString:@"FindMyPeopleDigitalSeparation"]& 1) == 0)
+              if (([(__CFString *)bundleIdentifier containsString:@"FindMyPeopleDigitalSeparation"]& 1) == 0)
               {
                 v35 = DSLog_2;
                 if (os_log_type_enabled(DSLog_2, OS_LOG_TYPE_DEFAULT))
@@ -197,14 +197,14 @@ LABEL_35:
               }
             }
 
-            [v44 setObject:v13 forKeyedSubscript:v14];
+            [dictionary setObject:v13 forKeyedSubscript:name];
             v32 = DSLog_2;
             if (os_log_type_enabled(DSLog_2, OS_LOG_TYPE_DEFAULT))
             {
               v33 = v32;
-              v34 = [v13 name];
+              name5 = [v13 name];
               *buf = 138543618;
-              v52 = v34;
+              v52 = name5;
               v53 = 2114;
               v54 = v9;
               _os_log_impl(&dword_248C40000, v33, OS_LOG_TYPE_DEFAULT, "Adding sharing source for %{public}@ from %{public}@", buf, 0x16u);
@@ -217,7 +217,7 @@ LABEL_35:
           if (os_log_type_enabled(DSLog_2, OS_LOG_TYPE_ERROR))
           {
             v30 = v19;
-            v31 = NSStringFromClass(v11);
+            v31 = NSStringFromClass(principalClass);
             *buf = 138543618;
             v52 = v9;
             v53 = 2114;
@@ -239,7 +239,7 @@ LABEL_36:
     while (v38);
   }
 
-  v39 = [[DSSourceRepository alloc] initWithSources:v44];
+  v39 = [[DSSourceRepository alloc] initWithSources:dictionary];
   v40 = *MEMORY[0x277D85DE8];
 
   return v39;
@@ -258,9 +258,9 @@ uint64_t __40__DSSourceRepository_repositoryWithURL___block_invoke(uint64_t a1, 
   return 0;
 }
 
-+ (BOOL)runtimeFeatureFlagsEnabledFor:(id)a3
++ (BOOL)runtimeFeatureFlagsEnabledFor:(id)for
 {
-  if (![a3 isEqualToString:@"com.apple.DigitalSeparation.Zelkova"])
+  if (![for isEqualToString:@"com.apple.DigitalSeparation.Zelkova"])
   {
     return 1;
   }
@@ -268,36 +268,36 @@ uint64_t __40__DSSourceRepository_repositoryWithURL___block_invoke(uint64_t a1, 
   return _os_feature_enabled_impl();
 }
 
-- (DSSourceRepository)initWithSources:(id)a3
+- (DSSourceRepository)initWithSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   v8.receiver = self;
   v8.super_class = DSSourceRepository;
   v5 = [(DSSourceRepository *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DSSourceRepository *)v5 setSourcesByName:v4];
+    [(DSSourceRepository *)v5 setSourcesByName:sourcesCopy];
   }
 
   return v6;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = [(DSSourceRepository *)self sourcesByName];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  subscriptCopy = subscript;
+  sourcesByName = [(DSSourceRepository *)self sourcesByName];
+  v6 = [sourcesByName objectForKeyedSubscript:subscriptCopy];
 
   return v6;
 }
 
 - (NSArray)sources
 {
-  v2 = [(DSSourceRepository *)self sourcesByName];
-  v3 = [v2 allValues];
+  sourcesByName = [(DSSourceRepository *)self sourcesByName];
+  allValues = [sourcesByName allValues];
 
-  return v3;
+  return allValues;
 }
 
 void __40__DSSourceRepository_repositoryWithURL___block_invoke_cold_1(uint64_t a1, uint64_t a2, os_log_t log)

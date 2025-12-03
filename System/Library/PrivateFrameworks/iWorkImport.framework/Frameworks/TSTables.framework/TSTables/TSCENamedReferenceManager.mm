@@ -1,32 +1,32 @@
 @interface TSCENamedReferenceManager
-- (BOOL)trackedReferencesExistForTable:(const TSKUIDStruct *)a3;
+- (BOOL)trackedReferencesExistForTable:(const TSKUIDStruct *)table;
 - (TSCECalculationEngine)calcEngine;
-- (TSCENamedReferenceManager)initWithContext:(id)a3;
-- (TSCENamedReferenceManager)initWithContext:(id)a3 calculationEngine:(id)a4;
+- (TSCENamedReferenceManager)initWithContext:(id)context;
+- (TSCENamedReferenceManager)initWithContext:(id)context calculationEngine:(id)engine;
 - (TSKUIDStruct)formulaOwnerUID;
 - (TSKUIDStruct)ownerUID;
-- (id)beginTrackingNamesInTable:(const TSKUIDStruct *)a3 limitedToRange:(TSCERangeCoordinate)a4;
-- (id)beginTrackingReferenceWithCellRef:(const TSCECellRef *)a3;
-- (void)beginTrackingNameInCell:(TSUCellCoord)a3 ofTableUID:(const TSKUIDStruct *)a4 addingTrackedReferencesTo:(id)a5;
-- (void)beginTrackingNamesInRange:(TSCERangeCoordinate)a3 ofTableUID:(const TSKUIDStruct *)a4 addingTrackedReferencesTo:(id)a5;
-- (void)beginTrackingNamesInTable:(const TSKUIDStruct *)a3;
-- (void)beginTrackingReference:(id)a3;
-- (void)endTrackingNamesInTable:(const TSKUIDStruct *)a3;
-- (void)endTrackingReference:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)registerWithCalcEngine:(BOOL)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setCalculationEngine:(id)a3;
-- (void)setFormulaOwnerUID:(const TSKUIDStruct *)a3;
+- (id)beginTrackingNamesInTable:(const TSKUIDStruct *)table limitedToRange:(TSCERangeCoordinate)range;
+- (id)beginTrackingReferenceWithCellRef:(const TSCECellRef *)ref;
+- (void)beginTrackingNameInCell:(TSUCellCoord)cell ofTableUID:(const TSKUIDStruct *)d addingTrackedReferencesTo:(id)to;
+- (void)beginTrackingNamesInRange:(TSCERangeCoordinate)range ofTableUID:(const TSKUIDStruct *)d addingTrackedReferencesTo:(id)to;
+- (void)beginTrackingNamesInTable:(const TSKUIDStruct *)table;
+- (void)beginTrackingReference:(id)reference;
+- (void)endTrackingNamesInTable:(const TSKUIDStruct *)table;
+- (void)endTrackingReference:(id)reference;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)registerWithCalcEngine:(BOOL)engine;
+- (void)saveToArchiver:(id)archiver;
+- (void)setCalculationEngine:(id)engine;
+- (void)setFormulaOwnerUID:(const TSKUIDStruct *)d;
 - (void)unregisterFromCalcEngine;
-- (void)updateTrackedHeaders:(const TSKUIDStruct *)a3;
+- (void)updateTrackedHeaders:(const TSKUIDStruct *)headers;
 - (void)willClose;
-- (void)writeResultsForCalcEngine:(id)a3;
+- (void)writeResultsForCalcEngine:(id)engine;
 @end
 
 @implementation TSCENamedReferenceManager
 
-- (TSCENamedReferenceManager)initWithContext:(id)a3
+- (TSCENamedReferenceManager)initWithContext:(id)context
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCENamedReferenceManager initWithContext:]", v3, v4);
@@ -37,24 +37,24 @@
   return 0;
 }
 
-- (TSCENamedReferenceManager)initWithContext:(id)a3 calculationEngine:(id)a4
+- (TSCENamedReferenceManager)initWithContext:(id)context calculationEngine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  engineCopy = engine;
   v20.receiver = self;
   v20.super_class = TSCENamedReferenceManager;
-  v8 = [(TSCENamedReferenceManager *)&v20 initWithContext:v6];
+  v8 = [(TSCENamedReferenceManager *)&v20 initWithContext:contextCopy];
   if (v8)
   {
     v8->_ownerUID._lower = TSKMakeUIDStructRandom();
     v8->_ownerUID._upper = v9;
     v8->_isRegisteredWithCalculationEngine = 0;
     v10 = [TSCETrackedReferenceStore alloc];
-    v14 = objc_msgSend_initWithContext_(v10, v11, v6, v12, v13);
+    v14 = objc_msgSend_initWithContext_(v10, v11, contextCopy, v12, v13);
     trackedRefsStore = v8->_trackedRefsStore;
     v8->_trackedRefsStore = v14;
 
-    objc_storeWeak(&v8->_calcEngine, v7);
+    objc_storeWeak(&v8->_calcEngine, engineCopy);
     objc_msgSend_registerWithCalcEngine_(v8, v16, 0, v17, v18);
   }
 
@@ -73,28 +73,28 @@
   objc_storeWeak(&self->_calcEngine, 0);
 }
 
-- (void)setCalculationEngine:(id)a3
+- (void)setCalculationEngine:(id)engine
 {
-  objc_storeWeak(&self->_calcEngine, a3);
+  objc_storeWeak(&self->_calcEngine, engine);
 
   objc_msgSend_registerWithCalcEngine_(self, v4, 1, v5, v6);
 }
 
-- (void)beginTrackingNamesInTable:(const TSKUIDStruct *)a3
+- (void)beginTrackingNamesInTable:(const TSKUIDStruct *)table
 {
-  if ((objc_msgSend_trackedReferencesExistForTable_(self, a2, a3, v3, v4) & 1) == 0)
+  if ((objc_msgSend_trackedReferencesExistForTable_(self, a2, table, v3, v4) & 1) == 0)
   {
-    v8 = objc_msgSend_beginTrackingNamesInTable_limitedToRange_(self, v7, a3, 0x7FFF7FFFFFFFLL, 0x7FFF7FFFFFFFLL);
+    v8 = objc_msgSend_beginTrackingNamesInTable_limitedToRange_(self, v7, table, 0x7FFF7FFFFFFFLL, 0x7FFF7FFFFFFFLL);
   }
 }
 
-- (id)beginTrackingNamesInTable:(const TSKUIDStruct *)a3 limitedToRange:(TSCERangeCoordinate)a4
+- (id)beginTrackingNamesInTable:(const TSKUIDStruct *)table limitedToRange:(TSCERangeCoordinate)range
 {
-  bottomRight = a4._bottomRight;
-  topLeft = a4._topLeft;
+  bottomRight = range._bottomRight;
+  topLeft = range._topLeft;
   v62 = objc_opt_new();
   v11 = objc_msgSend_calcEngine(self, v7, v8, v9, v10);
-  v15 = objc_msgSend_tableResolverForTableUID_(v11, v12, a3, v13, v14);
+  v15 = objc_msgSend_tableResolverForTableUID_(v11, v12, table, v13, v14);
 
   if (!v15)
   {
@@ -112,7 +112,7 @@
   if (objc_msgSend_hasEverBeenEmbiggened(v15, v33, v35, v36, v37))
   {
     v42 = objc_msgSend_calcEngine(self, v38, v39, v40, v41);
-    objc_msgSend_endTrackingNamesInTableForLegacyNRM_(v42, v43, a3, v44, v45);
+    objc_msgSend_endTrackingNamesInTableForLegacyNRM_(v42, v43, table, v44, v45);
 
     goto LABEL_73;
   }
@@ -193,7 +193,7 @@
     }
 
 LABEL_54:
-    objc_msgSend_beginTrackingNamesInRange_ofTableUID_addingTrackedReferencesTo_(self, v38, v29, v31, a3, v62);
+    objc_msgSend_beginTrackingNamesInRange_ofTableUID_addingTrackedReferencesTo_(self, v38, v29, v31, table, v62);
     goto LABEL_55;
   }
 
@@ -270,7 +270,7 @@ LABEL_55:
 
   if (v54 != 0x7FFFFFFF && v55 != 0x7FFF00000000 && v34 != 0x7FFFFFFF && (v34 & 0xFFFF00000000) != 0x7FFF00000000 && v52 <= v53 && v32 <= v34)
   {
-    objc_msgSend_beginTrackingNamesInRange_ofTableUID_addingTrackedReferencesTo_(self, v38, v32, v34, a3, v62);
+    objc_msgSend_beginTrackingNamesInRange_ofTableUID_addingTrackedReferencesTo_(self, v38, v32, v34, table, v62);
   }
 
 LABEL_73:
@@ -278,11 +278,11 @@ LABEL_73:
   return v62;
 }
 
-- (void)beginTrackingNamesInRange:(TSCERangeCoordinate)a3 ofTableUID:(const TSKUIDStruct *)a4 addingTrackedReferencesTo:(id)a5
+- (void)beginTrackingNamesInRange:(TSCERangeCoordinate)range ofTableUID:(const TSKUIDStruct *)d addingTrackedReferencesTo:(id)to
 {
-  bottomRight = a3._bottomRight;
-  topLeft = a3._topLeft;
-  v12 = a5;
+  bottomRight = range._bottomRight;
+  topLeft = range._topLeft;
+  toCopy = to;
   if (topLeft.row <= bottomRight.row)
   {
     v10 = HIDWORD(*&topLeft);
@@ -293,7 +293,7 @@ LABEL_73:
         v11 = v10;
         do
         {
-          objc_msgSend_beginTrackingNameInCell_ofTableUID_addingTrackedReferencesTo_(self, v9, topLeft.row | (v11++ << 32), a4, v12);
+          objc_msgSend_beginTrackingNameInCell_ofTableUID_addingTrackedReferencesTo_(self, v9, topLeft.row | (v11++ << 32), d, toCopy);
         }
 
         while (v11 <= bottomRight.column);
@@ -306,17 +306,17 @@ LABEL_73:
   }
 }
 
-- (void)beginTrackingNameInCell:(TSUCellCoord)a3 ofTableUID:(const TSKUIDStruct *)a4 addingTrackedReferencesTo:(id)a5
+- (void)beginTrackingNameInCell:(TSUCellCoord)cell ofTableUID:(const TSKUIDStruct *)d addingTrackedReferencesTo:(id)to
 {
-  v8 = a5;
+  toCopy = to;
   objc_msgSend_willModify(self, v9, v10, v11, v12);
-  v20 = a3;
-  v21 = *a4;
-  v16 = objc_msgSend_beginTrackingReferenceWithCellRef_(self, v13, &v20, v14, v15);
-  objc_msgSend_addObject_(v8, v17, v16, v18, v19);
+  cellCopy = cell;
+  v21 = *d;
+  v16 = objc_msgSend_beginTrackingReferenceWithCellRef_(self, v13, &cellCopy, v14, v15);
+  objc_msgSend_addObject_(toCopy, v17, v16, v18, v19);
 }
 
-- (void)endTrackingNamesInTable:(const TSKUIDStruct *)a3
+- (void)endTrackingNamesInTable:(const TSKUIDStruct *)table
 {
   v40 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
@@ -352,7 +352,7 @@ LABEL_73:
         v33[2] = sub_2211D4E3C;
         v33[3] = &unk_278460E68;
         v33[5] = v23;
-        v33[6] = a3;
+        v33[6] = table;
         v33[4] = self;
         objc_msgSend_foreachCellRef_(v27, v28, v33, v29, v30);
 
@@ -369,16 +369,16 @@ LABEL_73:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)updateTrackedHeaders:(const TSKUIDStruct *)a3
+- (void)updateTrackedHeaders:(const TSKUIDStruct *)headers
 {
   v81 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_calcEngine(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_calcEngine(self, a2, headers, v3, v4);
   v56 = v6;
   v7 = v6;
-  if (*a3 != 0 && v6 != 0)
+  if (*headers != 0 && v6 != 0)
   {
     context = objc_autoreleasePoolPush();
-    v12 = objc_msgSend_tableResolverForTableUID_(v7, v9, a3, v10, v11);
+    v12 = objc_msgSend_tableResolverForTableUID_(v7, v9, headers, v10, v11);
     v55 = v12;
     if (v12)
     {
@@ -495,7 +495,7 @@ LABEL_73:
             v64[10] = v58;
             v64[11] = v60;
             v64[6] = &v70;
-            v64[7] = a3;
+            v64[7] = headers;
             v64[4] = self;
             v64[5] = v46;
             objc_msgSend_foreachCellRef_(v50, v51, v64, v52, v53);
@@ -512,7 +512,7 @@ LABEL_73:
       v63[2] = sub_2211D554C;
       v63[3] = &unk_278460EB8;
       v63[4] = self;
-      v63[5] = a3;
+      v63[5] = headers;
       TSCECellCoordSet::enumerateCoordsUsingBlock(v71 + 6, v63);
 
       _Block_object_dispose(&v70, 8);
@@ -525,7 +525,7 @@ LABEL_73:
   }
 }
 
-- (BOOL)trackedReferencesExistForTable:(const TSKUIDStruct *)a3
+- (BOOL)trackedReferencesExistForTable:(const TSKUIDStruct *)table
 {
   v36 = *MEMORY[0x277D85DE8];
   v31 = 0;
@@ -560,7 +560,7 @@ LABEL_3:
       v26[2] = sub_2211D57C8;
       v26[3] = &unk_278460EE0;
       v26[4] = &v31;
-      v26[5] = a3;
+      v26[5] = table;
       objc_msgSend_foreachCellRef_(v17, v18, v26, v19, v20);
       LOBYTE(WeakRetained) = *(v32 + 24);
 
@@ -588,11 +588,11 @@ LABEL_3:
   return v22;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v12 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v12, v4, sub_2211D6418, off_2812E2AC8[162], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2211D6418, off_2812E2AC8[162], v5);
 
   WeakRetained = self->_trackedRefsStore;
   if (!WeakRetained)
@@ -614,14 +614,14 @@ LABEL_3:
     *(v6 + 48) = v10;
   }
 
-  objc_msgSend_setStrongReference_message_(v12, v7, WeakRetained, v10, v8);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v7, WeakRetained, v10, v8);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E2AC8[162], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E2AC8[162], v6, v7);
 
   v9 = *(v8 + 48);
   v13[0] = MEMORY[0x277D85DD0];
@@ -629,7 +629,7 @@ LABEL_3:
   v13[2] = sub_2211D5A3C;
   v13[3] = &unk_278460F08;
   v13[4] = self;
-  v10 = v4;
+  v10 = unarchiverCopy;
   v12 = objc_opt_class();
   if (v9)
   {
@@ -642,13 +642,13 @@ LABEL_3:
   }
 }
 
-- (void)registerWithCalcEngine:(BOOL)a3
+- (void)registerWithCalcEngine:(BOOL)engine
 {
   WeakRetained = objc_loadWeakRetained(&self->_calcEngine);
 
   if (WeakRetained)
   {
-    if (!a3)
+    if (!engine)
     {
       objc_msgSend_willModify(self->_trackedRefsStore, v6, v7, v8, v9);
       v10 = objc_loadWeakRetained(&self->_calcEngine);
@@ -674,27 +674,27 @@ LABEL_3:
   self->_isRegisteredWithCalculationEngine = 0;
 }
 
-- (void)beginTrackingReference:(id)a3
+- (void)beginTrackingReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   WeakRetained = objc_loadWeakRetained(&self->_calcEngine);
-  objc_msgSend_beginTrackingReference_calcEngine_(self->_trackedRefsStore, v5, v4, WeakRetained, v6);
+  objc_msgSend_beginTrackingReference_calcEngine_(self->_trackedRefsStore, v5, referenceCopy, WeakRetained, v6);
 }
 
-- (id)beginTrackingReferenceWithCellRef:(const TSCECellRef *)a3
+- (id)beginTrackingReferenceWithCellRef:(const TSCECellRef *)ref
 {
   v5 = [TSCETrackedReference alloc];
-  v9 = objc_msgSend_initWithCellRef_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_initWithCellRef_(v5, v6, ref, v7, v8);
   objc_msgSend_beginTrackingReference_(self, v10, v9, v11, v12);
 
   return v9;
 }
 
-- (void)endTrackingReference:(id)a3
+- (void)endTrackingReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   WeakRetained = objc_loadWeakRetained(&self->_calcEngine);
-  objc_msgSend_endTrackingReference_calcEngine_(self->_trackedRefsStore, v5, v4, WeakRetained, v6);
+  objc_msgSend_endTrackingReference_calcEngine_(self->_trackedRefsStore, v5, referenceCopy, WeakRetained, v6);
 }
 
 - (TSKUIDStruct)formulaOwnerUID
@@ -707,9 +707,9 @@ LABEL_3:
   return result;
 }
 
-- (void)setFormulaOwnerUID:(const TSKUIDStruct *)a3
+- (void)setFormulaOwnerUID:(const TSKUIDStruct *)d
 {
-  if (*a3 == 0)
+  if (*d == 0)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCENamedReferenceManager setFormulaOwnerUID:]", v3, v4);
@@ -719,7 +719,7 @@ LABEL_3:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  self->_ownerUID = *a3;
+  self->_ownerUID = *d;
   lower = self->_ownerUID._lower;
   upper = self->_ownerUID._upper;
   trackedRefsStore = self->_trackedRefsStore;
@@ -737,13 +737,13 @@ LABEL_3:
   return result;
 }
 
-- (void)writeResultsForCalcEngine:(id)a3
+- (void)writeResultsForCalcEngine:(id)engine
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  engineCopy = engine;
+  v9 = engineCopy;
+  if (engineCopy)
   {
-    objc_msgSend_corruptCellRefs(v4, v5, v6, v7, v8);
+    objc_msgSend_corruptCellRefs(engineCopy, v5, v6, v7, v8);
   }
 
   else
@@ -776,7 +776,7 @@ LABEL_3:
     v35 = &unk_278460F30;
     v10 = v9;
     v36 = v10;
-    v37 = self;
+    selfCopy = self;
     v38 = &v48;
     v39 = &v40;
     sub_2212DFEC0(v56, &v32);

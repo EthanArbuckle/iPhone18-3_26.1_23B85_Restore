@@ -1,11 +1,11 @@
 @interface HDRapportMessenger
 - (id)initForCompanionDevice;
-- (void)_handleIncomingRequest:(id)a3 responseHandler:(id)a4;
-- (void)addObserver:(id)a3 forSchemaIdentifier:(int64_t)a4;
+- (void)_handleIncomingRequest:(id)request responseHandler:(id)handler;
+- (void)addObserver:(id)observer forSchemaIdentifier:(int64_t)identifier;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 forSchemaIdentifier:(int64_t)a4;
-- (void)sendRequest:(id)a3 data:(id)a4 completion:(id)a5;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer forSchemaIdentifier:(int64_t)identifier;
+- (void)sendRequest:(id)request data:(id)data completion:(id)completion;
 @end
 
 @implementation HDRapportMessenger
@@ -22,9 +22,9 @@
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [(HDRapportMessenger *)v2 newRapportClient];
+    newRapportClient = [(HDRapportMessenger *)v2 newRapportClient];
     rapportClient = v2->_rapportClient;
-    v2->_rapportClient = v5;
+    v2->_rapportClient = newRapportClient;
 
     [(RPCompanionLinkClient *)v2->_rapportClient setServiceType:@"com.apple.healthd.rapport"];
     [(RPCompanionLinkClient *)v2->_rapportClient setDispatchQueue:v2->_queue];
@@ -79,15 +79,15 @@ void __44__HDRapportMessenger_initForCompanionDevice__block_invoke(uint64_t a1, 
   [(HDRapportMessenger *)&v3 dealloc];
 }
 
-- (void)sendRequest:(id)a3 data:(id)a4 completion:(id)a5
+- (void)sendRequest:(id)request data:(id)data completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v29 = a5;
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v11 substringToIndex:4];
+  requestCopy = request;
+  dataCopy = data;
+  completionCopy = completion;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [uUIDString substringToIndex:4];
 
   _HKInitializeLogging();
   v13 = *MEMORY[0x277CCC328];
@@ -101,22 +101,22 @@ void __44__HDRapportMessenger_initForCompanionDevice__block_invoke(uint64_t a1, 
     v38 = 2114;
     v39 = v12;
     v40 = 2114;
-    v41 = v8;
+    v41 = requestCopy;
     v42 = 2048;
-    v43 = [v9 length];
+    v43 = [dataCopy length];
     _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "[mirroring] %{public}@: Sending request [%{public}@] %{public}@ (%lu bytes)", buf, 0x2Au);
   }
 
   v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "schemaIdentifier")}];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(requestCopy, "schemaIdentifier")}];
   [v17 setObject:v18 forKeyedSubscript:@"schemaId"];
 
-  v19 = [v8 name];
-  [v17 setObject:v19 forKeyedSubscript:@"requestName"];
+  name = [requestCopy name];
+  [v17 setObject:name forKeyedSubscript:@"requestName"];
 
   [v17 setObject:v12 forKeyedSubscript:@"requestId"];
-  [v17 setObject:v9 forKeyedSubscript:@"data"];
-  v20 = NSStringForRapportSchemaIdentifier([v8 schemaIdentifier]);
+  [v17 setObject:dataCopy forKeyedSubscript:@"data"];
+  v20 = NSStringForRapportSchemaIdentifier([requestCopy schemaIdentifier]);
   rapportClient = self->_rapportClient;
   v22 = [v17 copy];
   v23 = *MEMORY[0x277D44230];
@@ -129,10 +129,10 @@ void __44__HDRapportMessenger_initForCompanionDevice__block_invoke(uint64_t a1, 
   v30[3] = &unk_27862F770;
   v30[4] = self;
   v31 = v12;
-  v32 = v9;
-  v33 = v29;
-  v25 = v29;
-  v26 = v9;
+  v32 = dataCopy;
+  v33 = completionCopy;
+  v25 = completionCopy;
+  v26 = dataCopy;
   v27 = v12;
   [(RPCompanionLinkClient *)rapportClient sendRequestID:v20 request:v22 destinationID:v23 options:v24 responseHandler:v30];
 
@@ -264,11 +264,11 @@ void __50__HDRapportMessenger_sendRequest_data_completion___block_invoke(void *a
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3 forSchemaIdentifier:(int64_t)a4
+- (void)addObserver:(id)observer forSchemaIdentifier:(int64_t)identifier
 {
-  v9 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v6 = NSStringForRapportSchemaIdentifier(a4);
+  v6 = NSStringForRapportSchemaIdentifier(identifier);
   v7 = [(NSMutableDictionary *)self->_observersBySchemaIdentifier objectForKeyedSubscript:v6];
   if (!v7)
   {
@@ -277,33 +277,33 @@ void __50__HDRapportMessenger_sendRequest_data_completion___block_invoke(void *a
     [(NSMutableDictionary *)self->_observersBySchemaIdentifier setObject:v7 forKeyedSubscript:v6];
   }
 
-  [v7 registerObserver:v9];
+  [v7 registerObserver:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3 forSchemaIdentifier:(int64_t)a4
+- (void)removeObserver:(id)observer forSchemaIdentifier:(int64_t)identifier
 {
-  v6 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   observersBySchemaIdentifier = self->_observersBySchemaIdentifier;
-  v8 = NSStringForRapportSchemaIdentifier(a4);
+  v8 = NSStringForRapportSchemaIdentifier(identifier);
   v9 = [(NSMutableDictionary *)observersBySchemaIdentifier objectForKeyedSubscript:v8];
-  [v9 unregisterObserver:v6];
+  [v9 unregisterObserver:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMutableDictionary *)self->_observersBySchemaIdentifier allValues];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_observersBySchemaIdentifier allValues];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -315,14 +315,14 @@ void __50__HDRapportMessenger_sendRequest_data_completion___block_invoke(void *a
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) unregisterObserver:v4];
+        [*(*(&v11 + 1) + 8 * v9++) unregisterObserver:observerCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -332,20 +332,20 @@ void __50__HDRapportMessenger_sendRequest_data_completion___block_invoke(void *a
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleIncomingRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleIncomingRequest:(id)request responseHandler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"schemaId"];
-  v9 = [v8 integerValue];
+  handlerCopy = handler;
+  requestCopy = request;
+  v8 = [requestCopy objectForKeyedSubscript:@"schemaId"];
+  integerValue = [v8 integerValue];
 
   v10 = [HDRapportRequestIdentifier alloc];
-  v11 = [v7 objectForKeyedSubscript:@"requestName"];
-  v12 = [(HDRapportRequestIdentifier *)v10 initWithSchemaIdentifier:v9 name:v11];
+  v11 = [requestCopy objectForKeyedSubscript:@"requestName"];
+  v12 = [(HDRapportRequestIdentifier *)v10 initWithSchemaIdentifier:integerValue name:v11];
 
-  v13 = [v7 objectForKeyedSubscript:@"requestId"];
-  v14 = [v7 objectForKeyedSubscript:@"data"];
+  v13 = [requestCopy objectForKeyedSubscript:@"requestId"];
+  v14 = [requestCopy objectForKeyedSubscript:@"data"];
 
   _HKInitializeLogging();
   v15 = MEMORY[0x277CCC328];
@@ -370,7 +370,7 @@ void __50__HDRapportMessenger_sendRequest_data_completion___block_invoke(void *a
   {
     os_unfair_lock_lock(&self->_lock);
     observersBySchemaIdentifier = self->_observersBySchemaIdentifier;
-    v21 = NSStringForRapportSchemaIdentifier(v9);
+    v21 = NSStringForRapportSchemaIdentifier(integerValue);
     v22 = [(NSMutableDictionary *)observersBySchemaIdentifier objectForKeyedSubscript:v21];
 
     os_unfair_lock_unlock(&self->_lock);
@@ -384,7 +384,7 @@ void __50__HDRapportMessenger_sendRequest_data_completion___block_invoke(void *a
       v32 = v12;
       v33 = v14;
       v34 = v13;
-      v35 = v6;
+      v35 = handlerCopy;
       [v22 notifyObservers:v31];
     }
 

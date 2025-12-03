@@ -1,22 +1,22 @@
 @interface FCGetWebTokenOperation
-- (FCGetWebTokenOperation)initWithEndpointConnection:(id)a3 completion:(id)a4;
+- (FCGetWebTokenOperation)initWithEndpointConnection:(id)connection completion:(id)completion;
 - (void)performOperation;
 @end
 
 @implementation FCGetWebTokenOperation
 
-- (FCGetWebTokenOperation)initWithEndpointConnection:(id)a3 completion:(id)a4
+- (FCGetWebTokenOperation)initWithEndpointConnection:(id)connection completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = FCGetWebTokenOperation;
   v9 = [(FCOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_endpointConnection, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_endpointConnection, connection);
+    v11 = _Block_copy(completionCopy);
     completion = v10->_completion;
     v10->_completion = v11;
   }

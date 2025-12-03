@@ -1,49 +1,49 @@
 @interface WFRemoteExecutionIncomingDialogRequestSession
-- (void)finishWithError:(id)a3;
-- (void)handleIncomingProtobuf:(id)a3 currentlyActiveSessions:(id)a4 destinations:(id)a5 options:(id)a6;
+- (void)finishWithError:(id)error;
+- (void)handleIncomingProtobuf:(id)protobuf currentlyActiveSessions:(id)sessions destinations:(id)destinations options:(id)options;
 - (void)handleTimeout;
-- (void)sendResponseWithOriginatingRequestIdentifier:(id)a3 dialogResponse:(id)a4 error:(id)a5 destinations:(id)a6 options:(id)a7;
-- (void)sendToDestinations:(id)a3 options:(id)a4;
+- (void)sendResponseWithOriginatingRequestIdentifier:(id)identifier dialogResponse:(id)response error:(id)error destinations:(id)destinations options:(id)options;
+- (void)sendToDestinations:(id)destinations options:(id)options;
 @end
 
 @implementation WFRemoteExecutionIncomingDialogRequestSession
 
-- (void)sendToDestinations:(id)a3 options:(id)a4
+- (void)sendToDestinations:(id)destinations options:(id)options
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v31.receiver = self;
   v31.super_class = WFRemoteExecutionIncomingDialogRequestSession;
-  [(WFRemoteExecutionSession *)&v31 sendToDestinations:v6 options:v7];
+  [(WFRemoteExecutionSession *)&v31 sendToDestinations:destinationsCopy options:optionsCopy];
   v8 = objc_alloc_init(MEMORY[0x1E69C65C0]);
-  v9 = [(WFRemoteExecutionIncomingDialogRequestSession *)self response];
+  response = [(WFRemoteExecutionIncomingDialogRequestSession *)self response];
   v30 = 0;
-  v10 = [v9 writeTo:v8 error:&v30];
+  v10 = [response writeTo:v8 error:&v30];
   v11 = v30;
 
   if (v10)
   {
     v12 = objc_alloc(MEMORY[0x1E69A5388]);
-    v13 = [v8 immutableData];
-    v14 = [v12 initWithProtobufData:v13 type:11 isResponse:0];
+    immutableData = [v8 immutableData];
+    v14 = [v12 initWithProtobufData:immutableData type:11 isResponse:0];
 
     v15 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(WFRemoteExecutionIncomingDialogRequestSession *)self response];
-      v17 = [v16 identifier];
+      response2 = [(WFRemoteExecutionIncomingDialogRequestSession *)self response];
+      identifier = [response2 identifier];
       *buf = 136315394;
       v33 = "[WFRemoteExecutionIncomingDialogRequestSession sendToDestinations:options:]";
       v34 = 2114;
-      v35 = v17;
+      selfCopy = identifier;
       _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_INFO, "%s <%{public}@> sending dialog request response", buf, 0x16u);
     }
 
-    v18 = [(WFRemoteExecutionSession *)self service];
+    service = [(WFRemoteExecutionSession *)self service];
     v28 = 0;
     v29 = 0;
-    v19 = [v18 sendProtobuf:v14 toDestinations:v6 priority:300 options:v7 identifier:&v29 error:&v28];
+    v19 = [service sendProtobuf:v14 toDestinations:destinationsCopy priority:300 options:optionsCopy identifier:&v29 error:&v28];
     v20 = v29;
     v21 = v28;
 
@@ -61,7 +61,7 @@
         *buf = 136315650;
         v33 = "[WFRemoteExecutionIncomingDialogRequestSession sendToDestinations:options:]";
         v34 = 2114;
-        v35 = self;
+        selfCopy = self;
         v36 = 2114;
         v37 = v21;
         _os_log_impl(&dword_1CA256000, v26, OS_LOG_TYPE_ERROR, "%s %{public}@ failed to send with error: %{public}@", buf, 0x20u);
@@ -79,12 +79,12 @@
     v23 = getWFRemoteExecutionLogObject();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
-      v24 = [(WFRemoteExecutionIncomingDialogRequestSession *)self response];
-      v25 = [v24 identifier];
+      response3 = [(WFRemoteExecutionIncomingDialogRequestSession *)self response];
+      identifier2 = [response3 identifier];
       *buf = 136315650;
       v33 = "[WFRemoteExecutionIncomingDialogRequestSession sendToDestinations:options:]";
       v34 = 2114;
-      v35 = v25;
+      selfCopy = identifier2;
       v36 = 2114;
       v37 = v11;
       _os_log_impl(&dword_1CA256000, v23, OS_LOG_TYPE_FAULT, "%s <%{public}@> failed to write protobuf with error: %{public}@", buf, 0x20u);
@@ -96,17 +96,17 @@
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendResponseWithOriginatingRequestIdentifier:(id)a3 dialogResponse:(id)a4 error:(id)a5 destinations:(id)a6 options:(id)a7
+- (void)sendResponseWithOriginatingRequestIdentifier:(id)identifier dialogResponse:(id)response error:(id)error destinations:(id)destinations options:(id)options
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[WFRemoteExecutionDialogRequestResponse alloc] initWithOriginatingRequestIdentifier:v16 dialogResponse:v15 error:v14];
+  optionsCopy = options;
+  destinationsCopy = destinations;
+  errorCopy = error;
+  responseCopy = response;
+  identifierCopy = identifier;
+  v17 = [[WFRemoteExecutionDialogRequestResponse alloc] initWithOriginatingRequestIdentifier:identifierCopy dialogResponse:responseCopy error:errorCopy];
 
   [(WFRemoteExecutionIncomingDialogRequestSession *)self setResponse:v17];
-  [(WFRemoteExecutionIncomingDialogRequestSession *)self sendToDestinations:v13 options:v12];
+  [(WFRemoteExecutionIncomingDialogRequestSession *)self sendToDestinations:destinationsCopy options:optionsCopy];
 }
 
 - (void)handleTimeout
@@ -116,23 +116,23 @@
   [(WFRemoteExecutionSession *)self finish];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   [(WFRemoteExecutionSession *)self setState:202];
 
   [(WFRemoteExecutionSession *)self finish];
 }
 
-- (void)handleIncomingProtobuf:(id)a3 currentlyActiveSessions:(id)a4 destinations:(id)a5 options:(id)a6
+- (void)handleIncomingProtobuf:(id)protobuf currentlyActiveSessions:(id)sessions destinations:(id)destinations options:(id)options
 {
   v94 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  protobufCopy = protobuf;
+  sessionsCopy = sessions;
+  destinationsCopy = destinations;
+  optionsCopy = options;
+  if (protobufCopy)
   {
-    if (v13)
+    if (destinationsCopy)
     {
       goto LABEL_3;
     }
@@ -140,37 +140,37 @@
 
   else
   {
-    v65 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v65 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingDialogRequestSession.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"protobuf"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingDialogRequestSession.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"protobuf"}];
 
-    if (v13)
+    if (destinationsCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v66 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v66 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingDialogRequestSession.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"responseDestinations"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionIncomingDialogRequestSession.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"responseDestinations"}];
 
 LABEL_3:
   [(WFRemoteExecutionSession *)self setState:200];
   v15 = [WFRemoteExecutionDialogRequest alloc];
-  v16 = [v11 data];
+  data = [protobufCopy data];
   v84 = 0;
-  v17 = [(WFRemoteExecutionDialogRequest *)v15 initWithData:v16 error:&v84];
+  v17 = [(WFRemoteExecutionDialogRequest *)v15 initWithData:data error:&v84];
   v18 = v84;
 
   if (v17)
   {
     v72 = v18;
-    v73 = v14;
-    v71 = self;
+    v73 = optionsCopy;
+    selfCopy = self;
     [(WFRemoteExecutionSession *)self setRequest:v17];
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v19 = v12;
+    v19 = sessionsCopy;
     v20 = [v19 countByEnumeratingWithState:&v79 objects:v85 count:16];
     if (!v20)
     {
@@ -179,9 +179,9 @@ LABEL_3:
     }
 
     v21 = v20;
-    v68 = v11;
-    v69 = v13;
-    v67 = v12;
+    v68 = protobufCopy;
+    v69 = destinationsCopy;
+    v67 = sessionsCopy;
     v74 = 0;
     v22 = *v80;
     v23 = off_1E836F000;
@@ -208,11 +208,11 @@ LABEL_6:
       {
         v29 = v23;
         v30 = v19;
-        v31 = [v28 request];
-        v32 = [v31 identifier];
+        request = [v28 request];
+        identifier = [request identifier];
         v33 = v17;
-        v34 = [(WFRemoteExecutionDialogRequest *)v17 runRequestIdentifier];
-        v35 = [v32 isEqualToString:v34];
+        runRequestIdentifier = [(WFRemoteExecutionDialogRequest *)v17 runRequestIdentifier];
+        v35 = [identifier isEqualToString:runRequestIdentifier];
 
         if (!v35)
         {
@@ -262,18 +262,18 @@ LABEL_18:
         if (!v21)
         {
 
-          v12 = v67;
-          v11 = v68;
-          v13 = v69;
+          sessionsCopy = v67;
+          protobufCopy = v68;
+          destinationsCopy = v69;
           v40 = v74;
           if (v74)
           {
             v18 = v72;
             if (VCIsDeviceLocked())
             {
-              [(WFRemoteExecutionSession *)v71 setState:1];
+              [(WFRemoteExecutionSession *)selfCopy setState:1];
               v41 = getWFRemoteExecutionLogObject();
-              v14 = v73;
+              optionsCopy = v73;
               if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
               {
                 *buf = 136315138;
@@ -281,37 +281,37 @@ LABEL_18:
                 _os_log_impl(&dword_1CA256000, v41, OS_LOG_TYPE_ERROR, "%s Found a outgoing run request session to show the alert in, but the device is locked", buf, 0xCu);
               }
 
-              v42 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
-              [v74 finishWithError:v42];
+              wfUnsupportedUserInterfaceError = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+              [v74 finishWithError:wfUnsupportedUserInterfaceError];
             }
 
             else
             {
-              v51 = [v74 userInterface];
+              userInterface = [v74 userInterface];
               v52 = objc_opt_respondsToSelector();
 
-              v14 = v73;
+              optionsCopy = v73;
               if (v52)
               {
-                v53 = [v74 userInterface];
-                v54 = [v53 dialogTransformer];
+                userInterface2 = [v74 userInterface];
+                dialogTransformer = [userInterface2 dialogTransformer];
 
-                v55 = [v54 userInterfacePresenter];
+                userInterfacePresenter = [dialogTransformer userInterfacePresenter];
 
-                if (v55)
+                if (userInterfacePresenter)
                 {
-                  [v54 userInterfacePresenter];
+                  [dialogTransformer userInterfacePresenter];
                   v57 = v56 = v17;
-                  v58 = [(WFRemoteExecutionDialogRequest *)v56 dialogRequest];
-                  v59 = [v54 runningContext];
+                  dialogRequest = [(WFRemoteExecutionDialogRequest *)v56 dialogRequest];
+                  runningContext = [dialogTransformer runningContext];
                   v76[0] = MEMORY[0x1E69E9820];
                   v76[1] = 3221225472;
                   v76[2] = __117__WFRemoteExecutionIncomingDialogRequestSession_handleIncomingProtobuf_currentlyActiveSessions_destinations_options___block_invoke;
                   v76[3] = &unk_1E83771B0;
-                  v76[4] = v71;
+                  v76[4] = selfCopy;
                   v77 = v69;
                   v78 = v73;
-                  [v57 showDialogRequest:v58 runningContext:v59 completionHandler:v76];
+                  [v57 showDialogRequest:dialogRequest runningContext:runningContext completionHandler:v76];
 
                   v17 = v56;
                   v40 = v74;
@@ -327,10 +327,10 @@ LABEL_18:
                     _os_log_impl(&dword_1CA256000, v62, OS_LOG_TYPE_DEFAULT, "%s Unable to handle dialog request locally, need to handoff", buf, 0xCu);
                   }
 
-                  v63 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
-                  [v74 finishWithError:v63];
+                  wfUnsupportedUserInterfaceError2 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+                  [v74 finishWithError:wfUnsupportedUserInterfaceError2];
 
-                  [(WFRemoteExecutionSession *)v71 finish];
+                  [(WFRemoteExecutionSession *)selfCopy finish];
                 }
               }
 
@@ -344,10 +344,10 @@ LABEL_18:
                   _os_log_impl(&dword_1CA256000, v60, OS_LOG_TYPE_DEFAULT, "%s Unable to handle dialog request locally, need to handoff", buf, 0xCu);
                 }
 
-                v61 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
-                [v74 finishWithError:v61];
+                wfUnsupportedUserInterfaceError3 = [MEMORY[0x1E696ABC0] wfUnsupportedUserInterfaceError];
+                [v74 finishWithError:wfUnsupportedUserInterfaceError3];
 
-                [(WFRemoteExecutionSession *)v71 finish];
+                [(WFRemoteExecutionSession *)selfCopy finish];
               }
             }
 
@@ -355,10 +355,10 @@ LABEL_18:
           }
 
 LABEL_33:
-          [(WFRemoteExecutionSession *)v71 setState:-420];
-          [(WFRemoteExecutionSession *)v71 finish];
+          [(WFRemoteExecutionSession *)selfCopy setState:-420];
+          [(WFRemoteExecutionSession *)selfCopy finish];
           v18 = v72;
-          v14 = v73;
+          optionsCopy = v73;
           goto LABEL_52;
         }
 
@@ -372,7 +372,7 @@ LABEL_33:
   v45 = os_log_type_enabled(v44, OS_LOG_TYPE_FAULT);
   if (v43)
   {
-    v70 = v13;
+    v70 = destinationsCopy;
     if (v45)
     {
       *buf = 136315138;
@@ -381,9 +381,9 @@ LABEL_33:
     }
 
     [(WFRemoteExecutionSession *)self setState:2];
-    v46 = [v11 data];
+    data2 = [protobufCopy data];
     v83 = 0;
-    v47 = [WFRemoteExecutionRequest identifierFromData:v46 error:&v83];
+    v47 = [WFRemoteExecutionRequest identifierFromData:data2 error:&v83];
     v48 = v83;
 
     v49 = getWFRemoteExecutionLogObject();
@@ -397,8 +397,8 @@ LABEL_33:
         _os_log_impl(&dword_1CA256000, v50, OS_LOG_TYPE_DEFAULT, "%s Sending unsupported dialog request error back", buf, 0xCu);
       }
 
-      v13 = v70;
-      [(WFRemoteExecutionIncomingDialogRequestSession *)self sendResponseWithOriginatingRequestIdentifier:v47 dialogResponse:0 error:v18 destinations:v70 options:v14];
+      destinationsCopy = v70;
+      [(WFRemoteExecutionIncomingDialogRequestSession *)self sendResponseWithOriginatingRequestIdentifier:v47 dialogResponse:0 error:v18 destinations:v70 options:optionsCopy];
     }
 
     else
@@ -413,7 +413,7 @@ LABEL_33:
       }
 
       [(WFRemoteExecutionSession *)self finish];
-      v13 = v70;
+      destinationsCopy = v70;
     }
 
     v17 = 0;

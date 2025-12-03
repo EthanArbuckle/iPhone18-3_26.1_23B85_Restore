@@ -1,21 +1,21 @@
 @interface PLProjectAlbumJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
 + (id)modelProperties;
 + (id)modelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (void)updateAlbum:(id)a3 includePendingChanges:(BOOL)a4;
+- (void)updateAlbum:(id)album includePendingChanges:(BOOL)changes;
 @end
 
 @implementation PLProjectAlbumJournalEntryPayload
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[PLProjectAlbum validKindsForPersistence];
-  v6 = [v4 objectForKeyedSubscript:@"kind"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(dictionaryCopy) = [v5 containsObject:v6];
+  return dictionaryCopy;
 }
 
 + (id)persistedPropertyNamesForEntityNames
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __73__PLProjectAlbumJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_36382 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_36382, block);
@@ -48,7 +48,7 @@ void __73__PLProjectAlbumJournalEntryPayload_persistedPropertyNamesForEntityName
   block[1] = 3221225472;
   block[2] = __52__PLProjectAlbumJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_36384 != -1)
   {
     dispatch_once(&modelProperties_onceToken_36384, block);
@@ -75,7 +75,7 @@ uint64_t __52__PLProjectAlbumJournalEntryPayload_modelProperties__block_invoke(u
 {
   v14[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___PLProjectAlbumJournalEntryPayload;
   v4 = objc_msgSendSuper2(&v12, sel_modelPropertiesDescription);
   v5 = [v3 initWithDictionary:v4];
@@ -98,15 +98,15 @@ uint64_t __52__PLProjectAlbumJournalEntryPayload_modelProperties__block_invoke(u
   return v5;
 }
 
-- (void)updateAlbum:(id)a3 includePendingChanges:(BOOL)a4
+- (void)updateAlbum:(id)album includePendingChanges:(BOOL)changes
 {
-  v4 = a4;
-  v6 = a3;
+  changesCopy = changes;
+  albumCopy = album;
   v13.receiver = self;
   v13.super_class = PLProjectAlbumJournalEntryPayload;
-  [(PLAlbumJournalEntryPayload *)&v13 updateAlbum:v6 includePendingChanges:v4];
+  [(PLAlbumJournalEntryPayload *)&v13 updateAlbum:albumCopy includePendingChanges:changesCopy];
   payloadAttributes = self->super.super.super._payloadAttributes;
-  v8 = v6;
+  v8 = albumCopy;
   v9 = [(NSMutableDictionary *)payloadAttributes objectForKeyedSubscript:@"documentType"];
   [v8 setProjectDocumentType:v9];
 

@@ -1,51 +1,51 @@
 @interface PBUIWallpaperWindowSceneTwoCurveTransitionContext
 - (BSAnimationSettings)inAnimationSettings;
 - (BSAnimationSettings)outAnimationSettings;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (void)setInAnimationSettings:(id)a3;
-- (void)setOutAnimationSettings:(id)a3;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (void)setInAnimationSettings:(id)settings;
+- (void)setOutAnimationSettings:(id)settings;
 @end
 
 @implementation PBUIWallpaperWindowSceneTwoCurveTransitionContext
 
 - (BSAnimationSettings)inAnimationSettings
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3263779365];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3263779365];
 
   return v3;
 }
 
-- (void)setInAnimationSettings:(id)a3
+- (void)setInAnimationSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:3263779365];
+  settingsCopy = settings;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:settingsCopy forSetting:3263779365];
 }
 
 - (BSAnimationSettings)outAnimationSettings
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3263779366];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3263779366];
 
   return v3;
 }
 
-- (void)setOutAnimationSettings:(id)a3
+- (void)setOutAnimationSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:3263779366];
+  settingsCopy = settings;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:settingsCopy forSetting:3263779366];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 3263779365)
+  if (setting == 3263779365)
   {
     v5 = @"inAnimationSettings";
   }
 
-  else if (a3 == 3263779366)
+  else if (setting == 3263779366)
   {
     v5 = @"outAnimationSettings";
   }

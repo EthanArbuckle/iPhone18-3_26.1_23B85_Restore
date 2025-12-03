@@ -1,10 +1,10 @@
 @interface GQDChartModel
-- (BOOL)hasFloatValueForProperty:(__CFString *)a3 forSeriesAtIndex:(int64_t)a4 value:(float *)a5;
-- (BOOL)hasIntValueForProperty:(__CFString *)a3 forSeriesAtIndex:(int64_t)a4 value:(int *)a5;
-- (BOOL)hasStringValueForProperty:(__CFString *)a3 forSeriesAtIndex:(int64_t)a4 value:(const __CFString *)a5;
-- (BOOL)hasValueForProperty:(__CFString *)a3 forSeriesAtIndex:(int64_t)a4 value:(const void *)a5;
+- (BOOL)hasFloatValueForProperty:(__CFString *)property forSeriesAtIndex:(int64_t)index value:(float *)value;
+- (BOOL)hasIntValueForProperty:(__CFString *)property forSeriesAtIndex:(int64_t)index value:(int *)value;
+- (BOOL)hasStringValueForProperty:(__CFString *)property forSeriesAtIndex:(int64_t)index value:(const __CFString *)value;
+- (BOOL)hasValueForProperty:(__CFString *)property forSeriesAtIndex:(int64_t)index value:(const void *)value;
 - (__CFArray)seriesArray;
-- (__CFDictionary)propertiesForSeriesAtIndex:(int64_t)a3;
+- (__CFDictionary)propertiesForSeriesAtIndex:(int64_t)index;
 - (__CFString)catagoryTitle;
 - (__CFString)title;
 - (__CFString)value2Title;
@@ -26,61 +26,61 @@
   return result;
 }
 
-- (__CFDictionary)propertiesForSeriesAtIndex:(int64_t)a3
+- (__CFDictionary)propertiesForSeriesAtIndex:(int64_t)index
 {
   result = [(GQDChartModel *)self seriesArray];
   if (result)
   {
-    v6 = [(GQDChartModel *)self seriesArray];
+    seriesArray = [(GQDChartModel *)self seriesArray];
 
-    return CFArrayGetValueAtIndex(v6, a3);
+    return CFArrayGetValueAtIndex(seriesArray, index);
   }
 
   return result;
 }
 
-- (BOOL)hasValueForProperty:(__CFString *)a3 forSeriesAtIndex:(int64_t)a4 value:(const void *)a5
+- (BOOL)hasValueForProperty:(__CFString *)property forSeriesAtIndex:(int64_t)index value:(const void *)value
 {
-  v9 = [(GQDChartModel *)self propertiesForSeriesAtIndex:a4];
+  v9 = [(GQDChartModel *)self propertiesForSeriesAtIndex:index];
   if (v9)
   {
-    LOBYTE(v9) = CFDictionaryGetValueIfPresent([(GQDChartModel *)self propertiesForSeriesAtIndex:a4], a3, a5) != 0;
+    LOBYTE(v9) = CFDictionaryGetValueIfPresent([(GQDChartModel *)self propertiesForSeriesAtIndex:index], property, value) != 0;
   }
 
   return v9;
 }
 
-- (BOOL)hasStringValueForProperty:(__CFString *)a3 forSeriesAtIndex:(int64_t)a4 value:(const __CFString *)a5
+- (BOOL)hasStringValueForProperty:(__CFString *)property forSeriesAtIndex:(int64_t)index value:(const __CFString *)value
 {
   v8 = 0;
-  v6 = [(GQDChartModel *)self hasValueForProperty:a3 forSeriesAtIndex:a4 value:&v8];
+  v6 = [(GQDChartModel *)self hasValueForProperty:property forSeriesAtIndex:index value:&v8];
   if (v6)
   {
-    *a5 = v8;
+    *value = v8;
   }
 
   return v6;
 }
 
-- (BOOL)hasIntValueForProperty:(__CFString *)a3 forSeriesAtIndex:(int64_t)a4 value:(int *)a5
+- (BOOL)hasIntValueForProperty:(__CFString *)property forSeriesAtIndex:(int64_t)index value:(int *)value
 {
   number = 0;
-  v6 = [(GQDChartModel *)self hasValueForProperty:a3 forSeriesAtIndex:a4 value:&number];
+  v6 = [(GQDChartModel *)self hasValueForProperty:property forSeriesAtIndex:index value:&number];
   if (v6)
   {
-    CFNumberGetValue(number, kCFNumberIntType, a5);
+    CFNumberGetValue(number, kCFNumberIntType, value);
   }
 
   return v6;
 }
 
-- (BOOL)hasFloatValueForProperty:(__CFString *)a3 forSeriesAtIndex:(int64_t)a4 value:(float *)a5
+- (BOOL)hasFloatValueForProperty:(__CFString *)property forSeriesAtIndex:(int64_t)index value:(float *)value
 {
   number = 0;
-  v6 = [(GQDChartModel *)self hasValueForProperty:a3 forSeriesAtIndex:a4 value:&number];
+  v6 = [(GQDChartModel *)self hasValueForProperty:property forSeriesAtIndex:index value:&number];
   if (v6)
   {
-    CFNumberGetValue(number, kCFNumberFloatType, a5);
+    CFNumberGetValue(number, kCFNumberFloatType, value);
   }
 
   return v6;

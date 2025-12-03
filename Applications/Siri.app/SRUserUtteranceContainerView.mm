@@ -1,12 +1,12 @@
 @interface SRUserUtteranceContainerView
 - (BOOL)isFirstResponder;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SRUserUtteranceView)displayView;
 - (UIView)tableView;
 - (double)baselineOffsetFromBottom;
 - (double)firstLineBaselineOffsetFromTop;
-- (void)animateToDisplayWithDuration:(double)a3 completion:(id)a4;
-- (void)animateToEditWithDuration:(double)a3 completion:(id)a4;
+- (void)animateToDisplayWithDuration:(double)duration completion:(id)completion;
+- (void)animateToEditWithDuration:(double)duration completion:(id)completion;
 - (void)layoutSubviews;
 @end
 
@@ -22,8 +22,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(SRUserUtteranceContainerView *)self subviews];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v20 count:16];
+  subviews = [(SRUserUtteranceContainerView *)self subviews];
+  v3 = [subviews countByEnumeratingWithState:&v12 objects:v20 count:16];
   if (v3)
   {
     v4 = *v13;
@@ -33,7 +33,7 @@ LABEL_3:
     {
       if (*v13 != v4)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(subviews);
       }
 
       v6 = *(*(&v12 + 1) + 8 * v5);
@@ -57,7 +57,7 @@ LABEL_3:
 
       if (v3 == ++v5)
       {
-        v3 = [v2 countByEnumeratingWithState:&v12 objects:v20 count:16];
+        v3 = [subviews countByEnumeratingWithState:&v12 objects:v20 count:16];
         if (v3)
         {
           goto LABEL_3;
@@ -73,9 +73,9 @@ LABEL_3:
   return v9;
 }
 
-- (void)animateToEditWithDuration:(double)a3 completion:(id)a4
+- (void)animateToEditWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_tableView);
   [WeakRetained setAlpha:0.0];
 
@@ -93,14 +93,14 @@ LABEL_3:
   v10[2] = sub_10004C570;
   v10[3] = &unk_100167A80;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [UIView animateWithDuration:v12 animations:v10 completion:a3];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [UIView animateWithDuration:v12 animations:v10 completion:duration];
 }
 
-- (void)animateToDisplayWithDuration:(double)a3 completion:(id)a4
+- (void)animateToDisplayWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_displayView);
   [WeakRetained setChevronHidden:0];
 
@@ -121,9 +121,9 @@ LABEL_3:
   v11[2] = sub_10004C7A8;
   v11[3] = &unk_100167A80;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [UIView animateWithDuration:v13 animations:v11 completion:a3];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [UIView animateWithDuration:v13 animations:v11 completion:duration];
 }
 
 - (double)firstLineBaselineOffsetFromTop
@@ -197,10 +197,10 @@ LABEL_3:
   [WeakRetained setFrame:{0.0, v12, Width, CGRectGetHeight(v17)}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (self->_showEditingView)
   {
     WeakRetained = objc_loadWeakRetained(&self->_tableView);

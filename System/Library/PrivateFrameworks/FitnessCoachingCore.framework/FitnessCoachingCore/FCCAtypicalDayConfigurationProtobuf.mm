@@ -1,15 +1,15 @@
 @interface FCCAtypicalDayConfigurationProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)allowedGoalTypesAtIndex:(unint64_t)a3;
+- (int)allowedGoalTypesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMinimumBehindPercentage:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasMinimumBehindPercentage:(BOOL)percentage;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FCCAtypicalDayConfigurationProtobuf
@@ -22,9 +22,9 @@
   [(FCCAtypicalDayConfigurationProtobuf *)&v3 dealloc];
 }
 
-- (void)setHasMinimumBehindPercentage:(BOOL)a3
+- (void)setHasMinimumBehindPercentage:(BOOL)percentage
 {
-  if (a3)
+  if (percentage)
   {
     v3 = 2;
   }
@@ -37,20 +37,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)allowedGoalTypesAtIndex:(unint64_t)a3
+- (int)allowedGoalTypesAtIndex:(unint64_t)index
 {
   p_allowedGoalTypes = &self->_allowedGoalTypes;
   count = self->_allowedGoalTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_allowedGoalTypes->list[a3];
+  return p_allowedGoalTypes->list[index];
 }
 
 - (id)description
@@ -59,20 +59,20 @@
   v8.receiver = self;
   v8.super_class = FCCAtypicalDayConfigurationProtobuf;
   v4 = [(FCCAtypicalDayConfigurationProtobuf *)&v8 description];
-  v5 = [(FCCAtypicalDayConfigurationProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(FCCAtypicalDayConfigurationProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
@@ -93,8 +93,8 @@
   percentageOfDayRule = self->_percentageOfDayRule;
   if (percentageOfDayRule)
   {
-    v10 = [(FCCPercentageOfDayRuleProtobuf *)percentageOfDayRule dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"percentageOfDayRule"];
+    dictionaryRepresentation = [(FCCPercentageOfDayRuleProtobuf *)percentageOfDayRule dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"percentageOfDayRule"];
   }
 
   v11 = PBRepeatedInt32NSArray();
@@ -103,14 +103,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
@@ -118,7 +118,7 @@
   {
     minimumAheadPercentage = self->_minimumAheadPercentage;
     PBDataWriterWriteDoubleField();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
   }
 
@@ -126,13 +126,13 @@
   {
     minimumBehindPercentage = self->_minimumBehindPercentage;
     PBDataWriterWriteDoubleField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_percentageOfDayRule)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v11;
+    toCopy = v11;
   }
 
   p_allowedGoalTypes = &self->_allowedGoalTypes;
@@ -143,7 +143,7 @@
     {
       v10 = p_allowedGoalTypes->list[v9];
       PBDataWriterWriteInt32Field();
-      v4 = v11;
+      toCopy = v11;
       ++v9;
     }
 
@@ -151,28 +151,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v9;
+    [toCopy setIdentifier:?];
+    toCopy = v9;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 4) = *&self->_minimumAheadPercentage;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 4) = *&self->_minimumAheadPercentage;
+    *(toCopy + 64) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 5) = *&self->_minimumBehindPercentage;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 5) = *&self->_minimumBehindPercentage;
+    *(toCopy + 64) |= 2u;
   }
 
   if (self->_percentageOfDayRule)
@@ -183,10 +183,10 @@
   if ([(FCCAtypicalDayConfigurationProtobuf *)self allowedGoalTypesCount])
   {
     [v9 clearAllowedGoalTypes];
-    v6 = [(FCCAtypicalDayConfigurationProtobuf *)self allowedGoalTypesCount];
-    if (v6)
+    allowedGoalTypesCount = [(FCCAtypicalDayConfigurationProtobuf *)self allowedGoalTypesCount];
+    if (allowedGoalTypesCount)
     {
-      v7 = v6;
+      v7 = allowedGoalTypesCount;
       for (i = 0; i != v7; ++i)
       {
         [v9 addAllowedGoalTypes:{-[FCCAtypicalDayConfigurationProtobuf allowedGoalTypesAtIndex:](self, "allowedGoalTypesAtIndex:", i)}];
@@ -195,10 +195,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
@@ -216,7 +216,7 @@
     *(v5 + 64) |= 2u;
   }
 
-  v9 = [(FCCPercentageOfDayRuleProtobuf *)self->_percentageOfDayRule copyWithZone:a3];
+  v9 = [(FCCPercentageOfDayRuleProtobuf *)self->_percentageOfDayRule copyWithZone:zone];
   v10 = *(v5 + 56);
   *(v5 + 56) = v9;
 
@@ -224,16 +224,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 6))
+  if (identifier | *(equalCopy + 6))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -241,16 +241,16 @@
     }
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_minimumAheadPercentage != *(v4 + 4))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_minimumAheadPercentage != *(equalCopy + 4))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_17:
     IsEqual = 0;
@@ -259,19 +259,19 @@ LABEL_17:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_minimumBehindPercentage != *(v4 + 5))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_minimumBehindPercentage != *(equalCopy + 5))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_17;
   }
 
   percentageOfDayRule = self->_percentageOfDayRule;
-  if (percentageOfDayRule | *(v4 + 7) && ![(FCCPercentageOfDayRuleProtobuf *)percentageOfDayRule isEqual:?])
+  if (percentageOfDayRule | *(equalCopy + 7) && ![(FCCPercentageOfDayRuleProtobuf *)percentageOfDayRule isEqual:?])
   {
     goto LABEL_17;
   }
@@ -356,32 +356,32 @@ LABEL_18:
   return v14 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v11 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v11 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(FCCAtypicalDayConfigurationProtobuf *)self setIdentifier:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if (v5)
   {
-    self->_minimumAheadPercentage = v4[4];
+    self->_minimumAheadPercentage = fromCopy[4];
     *&self->_has |= 1u;
-    v5 = *(v4 + 64);
+    v5 = *(fromCopy + 64);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_minimumBehindPercentage = v4[5];
+    self->_minimumBehindPercentage = fromCopy[5];
     *&self->_has |= 2u;
   }
 
   percentageOfDayRule = self->_percentageOfDayRule;
-  v7 = *(v4 + 7);
+  v7 = *(fromCopy + 7);
   if (percentageOfDayRule)
   {
     if (!v7)
@@ -402,12 +402,12 @@ LABEL_18:
     [(FCCAtypicalDayConfigurationProtobuf *)self setPercentageOfDayRule:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
-  v8 = [v4 allowedGoalTypesCount];
-  if (v8)
+  allowedGoalTypesCount = [fromCopy allowedGoalTypesCount];
+  if (allowedGoalTypesCount)
   {
-    v9 = v8;
+    v9 = allowedGoalTypesCount;
     for (i = 0; i != v9; ++i)
     {
       -[FCCAtypicalDayConfigurationProtobuf addAllowedGoalTypes:](self, "addAllowedGoalTypes:", [v11 allowedGoalTypesAtIndex:i]);

@@ -1,27 +1,27 @@
 @interface SCNAnimation
 + (SCNAnimation)animationNamed:(NSString *)animationName;
-+ (SCNAnimation)animationWithC3DAnimation:(__C3DAnimation *)a3;
++ (SCNAnimation)animationWithC3DAnimation:(__C3DAnimation *)animation;
 + (SCNAnimation)animationWithCAAnimation:(CAAnimation *)caAnimation;
 + (SCNAnimation)animationWithContentsOfURL:(NSURL *)animationUrl;
-+ (SCNAnimation)animationWithMDLTransform:(id)a3;
-+ (id)animationFromScene:(id)a3;
++ (SCNAnimation)animationWithMDLTransform:(id)transform;
++ (id)animationFromScene:(id)scene;
 - (NSString)description;
-- (SCNAnimation)initWithC3DAnimation:(__C3DAnimation *)a3;
-- (SCNAnimation)initWithCAAnimation:(id)a3;
-- (SCNAnimation)initWithCoder:(id)a3;
+- (SCNAnimation)initWithC3DAnimation:(__C3DAnimation *)animation;
+- (SCNAnimation)initWithCAAnimation:(id)animation;
+- (SCNAnimation)initWithCoder:(id)coder;
 - (double)repeatDuration;
 - (id)caAnimation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)subAnimations;
 - (id)userAnimation;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)_optimizeKeyframesWithTarget:(id)a3;
-- (void)_setAnimationRef:(__C3DAnimation *)a3;
+- (id)valueForUndefinedKey:(id)key;
+- (void)_optimizeKeyframesWithTarget:(id)target;
+- (void)_setAnimationRef:(__C3DAnimation *)ref;
 - (void)_syncObjCModel;
 - (void)caAnimation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)prepareWithTarget:(id)a3 implicitDuration:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)prepareWithTarget:(id)target implicitDuration:(double)duration;
 - (void)setAdditive:(BOOL)additive;
 - (void)setAnimationDidStart:(SCNAnimationDidStartBlock)animationDidStart;
 - (void)setAnimationDidStop:(SCNAnimationDidStopBlock)animationDidStop;
@@ -37,21 +37,21 @@
 - (void)setKeyPath:(NSString *)keyPath;
 - (void)setRemovedOnCompletion:(BOOL)removedOnCompletion;
 - (void)setRepeatCount:(CGFloat)repeatCount;
-- (void)setRepeatDuration:(double)a3;
+- (void)setRepeatDuration:(double)duration;
 - (void)setStartDelay:(NSTimeInterval)startDelay;
 - (void)setTimeOffset:(NSTimeInterval)timeOffset;
 - (void)setTimingFunction:(SCNTimingFunction *)timingFunction;
 - (void)setUsesSceneTimeBase:(BOOL)usesSceneTimeBase;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation SCNAnimation
 
-+ (SCNAnimation)animationWithMDLTransform:(id)a3
++ (SCNAnimation)animationWithMDLTransform:(id)transform
 {
-  v3 = [a3 transformAnimation];
+  transformAnimation = [transform transformAnimation];
 
-  return [SCNAnimation animationWithCAAnimation:v3];
+  return [SCNAnimation animationWithCAAnimation:transformAnimation];
 }
 
 - (void)dealloc
@@ -86,7 +86,7 @@
   [(SCNAnimation *)&v7 dealloc];
 }
 
-- (SCNAnimation)initWithC3DAnimation:(__C3DAnimation *)a3
+- (SCNAnimation)initWithC3DAnimation:(__C3DAnimation *)animation
 {
   v7.receiver = self;
   v7.super_class = SCNAnimation;
@@ -95,7 +95,7 @@
   if (v4)
   {
     v4->_userInfoLock._os_unfair_lock_opaque = 0;
-    [(SCNAnimation *)v4 _setAnimationRef:a3];
+    [(SCNAnimation *)v4 _setAnimationRef:animation];
     [(SCNAnimation *)v5 _syncObjCModel];
     v5->_didMutate = 0;
   }
@@ -103,7 +103,7 @@
   return v5;
 }
 
-- (SCNAnimation)initWithCAAnimation:(id)a3
+- (SCNAnimation)initWithCAAnimation:(id)animation
 {
   v27.receiver = self;
   v27.super_class = SCNAnimation;
@@ -112,53 +112,53 @@
   if (v4)
   {
     v4->_userInfoLock._os_unfair_lock_opaque = 0;
-    v4->_userAnimation = [a3 copy];
-    [a3 duration];
+    v4->_userAnimation = [animation copy];
+    [animation duration];
     v5->_duration = v6;
-    [a3 repeatCount];
+    [animation repeatCount];
     v5->_repeatCount = v7;
-    v5->_autoreverses = [a3 autoreverses];
+    v5->_autoreverses = [animation autoreverses];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5->_additive = [a3 isAdditive];
-      v5->_cumulative = [a3 isCumulative];
-      v5->_keyPath = [objc_msgSend(a3 "keyPath")];
+      v5->_additive = [animation isAdditive];
+      v5->_cumulative = [animation isCumulative];
+      v5->_keyPath = [objc_msgSend(animation "keyPath")];
     }
 
-    v5->_removedOnCompletion = [a3 isRemovedOnCompletion];
-    [a3 beginTime];
+    v5->_removedOnCompletion = [animation isRemovedOnCompletion];
+    [animation beginTime];
     v5->_beginTime = v8;
-    [a3 timeOffset];
+    [animation timeOffset];
     v5->_timeOffset = v9;
-    [a3 fadeInDuration];
+    [animation fadeInDuration];
     v5->_fadeInDuration = v10;
-    [a3 fadeOutDuration];
+    [animation fadeOutDuration];
     v5->_fadeOutDuration = v11;
-    v5->_usesSceneTimeBase = [a3 usesSceneTimeBase];
-    v12 = [a3 fillMode];
+    v5->_usesSceneTimeBase = [animation usesSceneTimeBase];
+    fillMode = [animation fillMode];
     v13 = *MEMORY[0x277CDA230];
-    if (v12 == *MEMORY[0x277CDA230])
+    if (fillMode == *MEMORY[0x277CDA230])
     {
       v15 = 1;
     }
 
     else
     {
-      v14 = [a3 fillMode];
-      v15 = v14 == *MEMORY[0x277CDA238];
+      fillMode2 = [animation fillMode];
+      v15 = fillMode2 == *MEMORY[0x277CDA238];
     }
 
     v5->_fillForward = v15;
-    if ([a3 fillMode] == v13)
+    if ([animation fillMode] == v13)
     {
       v17 = 1;
     }
 
     else
     {
-      v16 = [a3 fillMode];
-      v17 = v16 == *MEMORY[0x277CDA228];
+      fillMode3 = [animation fillMode];
+      v17 = fillMode3 == *MEMORY[0x277CDA228];
     }
 
     v5->_fillBackward = v17;
@@ -171,25 +171,25 @@
       }
     }
 
-    v5->_animationEvents = [objc_msgSend(a3 "animationEvents")];
-    v5->_timingFunction = +[SCNTimingFunction functionWithCAMediaTimingFunction:](SCNTimingFunction, "functionWithCAMediaTimingFunction:", [a3 timingFunction]);
+    v5->_animationEvents = [objc_msgSend(animation "animationEvents")];
+    v5->_timingFunction = +[SCNTimingFunction functionWithCAMediaTimingFunction:](SCNTimingFunction, "functionWithCAMediaTimingFunction:", [animation timingFunction]);
     v5->_didMutate = 0;
   }
 
   return v5;
 }
 
-+ (SCNAnimation)animationWithC3DAnimation:(__C3DAnimation *)a3
++ (SCNAnimation)animationWithC3DAnimation:(__C3DAnimation *)animation
 {
-  v3 = [[SCNAnimation alloc] initWithC3DAnimation:a3];
+  v3 = [[SCNAnimation alloc] initWithC3DAnimation:animation];
 
   return v3;
 }
 
-- (void)_setAnimationRef:(__C3DAnimation *)a3
+- (void)_setAnimationRef:(__C3DAnimation *)ref
 {
   animationRef = self->_animationRef;
-  if (animationRef != a3)
+  if (animationRef != ref)
   {
     if (animationRef)
     {
@@ -197,9 +197,9 @@
       self->_animationRef = 0;
     }
 
-    if (a3)
+    if (ref)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(ref);
     }
 
     else
@@ -210,14 +210,14 @@
     self->_animationRef = v6;
   }
 
-  if (a3)
+  if (ref)
   {
 
-    C3DEntitySetObjCWrapper(a3, self);
+    C3DEntitySetObjCWrapper(ref, self);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[30] = 0;
@@ -305,7 +305,7 @@
   self->_cumulative = C3DAnimationGetCumulative(self->_animationRef);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   animationRef = self->_animationRef;
   if (animationRef)
@@ -340,8 +340,8 @@
     }
 
     v11 = C3DCopyPropertyList(self->_animationRef, 0, 0, 0);
-    [a3 encodeObject:v11 forKey:@"c3dAnimation"];
-    [a3 encodeObject:v7 forKey:@"c3dAnimationType"];
+    [coder encodeObject:v11 forKey:@"c3dAnimation"];
+    [coder encodeObject:v7 forKey:@"c3dAnimationType"];
   }
 
   else
@@ -353,37 +353,37 @@
     }
   }
 
-  [a3 encodeObject:-[SCNAnimation keyPath](self forKey:{"keyPath"), @"keyPath"}];
+  [coder encodeObject:-[SCNAnimation keyPath](self forKey:{"keyPath"), @"keyPath"}];
   [(SCNAnimation *)self duration];
-  [a3 encodeDouble:@"duration" forKey:?];
+  [coder encodeDouble:@"duration" forKey:?];
   [(SCNAnimation *)self repeatCount];
-  [a3 encodeDouble:@"repeatCount" forKey:?];
+  [coder encodeDouble:@"repeatCount" forKey:?];
   [(SCNAnimation *)self timeOffset];
-  [a3 encodeDouble:@"timeOffset" forKey:?];
+  [coder encodeDouble:@"timeOffset" forKey:?];
   [(SCNAnimation *)self startDelay];
-  [a3 encodeDouble:@"beginTime" forKey:?];
-  [a3 encodeBool:-[SCNAnimation autoreverses](self forKey:{"autoreverses"), @"autoreverses"}];
-  [a3 encodeBool:-[SCNAnimation isRemovedOnCompletion](self forKey:{"isRemovedOnCompletion"), @"removedOnCompletion"}];
-  [a3 encodeBool:-[SCNAnimation isAppliedOnCompletion](self forKey:{"isAppliedOnCompletion"), @"applyOnCompletion"}];
-  [a3 encodeBool:-[SCNAnimation isAdditive](self forKey:{"isAdditive"), @"additive"}];
-  [a3 encodeBool:-[SCNAnimation isCumulative](self forKey:{"isCumulative"), @"cumulative"}];
-  [a3 encodeBool:-[SCNAnimation usesSceneTimeBase](self forKey:{"usesSceneTimeBase"), @"usesSceneTimeBase"}];
-  [a3 encodeBool:-[SCNAnimation fillsForward](self forKey:{"fillsForward"), @"fillForward"}];
-  [a3 encodeBool:-[SCNAnimation fillsBackward](self forKey:{"fillsBackward"), @"fillBackward"}];
-  [a3 encodeObject:-[SCNAnimation timingFunction](self forKey:{"timingFunction"), @"timingFunction"}];
+  [coder encodeDouble:@"beginTime" forKey:?];
+  [coder encodeBool:-[SCNAnimation autoreverses](self forKey:{"autoreverses"), @"autoreverses"}];
+  [coder encodeBool:-[SCNAnimation isRemovedOnCompletion](self forKey:{"isRemovedOnCompletion"), @"removedOnCompletion"}];
+  [coder encodeBool:-[SCNAnimation isAppliedOnCompletion](self forKey:{"isAppliedOnCompletion"), @"applyOnCompletion"}];
+  [coder encodeBool:-[SCNAnimation isAdditive](self forKey:{"isAdditive"), @"additive"}];
+  [coder encodeBool:-[SCNAnimation isCumulative](self forKey:{"isCumulative"), @"cumulative"}];
+  [coder encodeBool:-[SCNAnimation usesSceneTimeBase](self forKey:{"usesSceneTimeBase"), @"usesSceneTimeBase"}];
+  [coder encodeBool:-[SCNAnimation fillsForward](self forKey:{"fillsForward"), @"fillForward"}];
+  [coder encodeBool:-[SCNAnimation fillsBackward](self forKey:{"fillsBackward"), @"fillBackward"}];
+  [coder encodeObject:-[SCNAnimation timingFunction](self forKey:{"timingFunction"), @"timingFunction"}];
   [(SCNAnimation *)self fadeInDuration];
-  [a3 encodeDouble:@"fadeInDuration" forKey:?];
+  [coder encodeDouble:@"fadeInDuration" forKey:?];
   [(SCNAnimation *)self fadeOutDuration];
-  [a3 encodeDouble:@"fadeOutDuration" forKey:?];
+  [coder encodeDouble:@"fadeOutDuration" forKey:?];
   if (self->_userInfo)
   {
     os_unfair_lock_lock(&self->_userInfoLock);
-    [a3 encodeObject:self->_userInfo forKey:@"userInfo"];
+    [coder encodeObject:self->_userInfo forKey:@"userInfo"];
     os_unfair_lock_unlock(&self->_userInfoLock);
   }
 }
 
-- (SCNAnimation)initWithCoder:(id)a3
+- (SCNAnimation)initWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = SCNAnimation;
@@ -395,8 +395,8 @@
   }
 
   v4->_userInfoLock._os_unfair_lock_opaque = 0;
-  v6 = [a3 decodeObjectOfClasses:SCNPlistClasses() forKey:@"c3dAnimation"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"c3dAnimationType"];
+  v6 = [coder decodeObjectOfClasses:SCNPlistClasses() forKey:@"c3dAnimation"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"c3dAnimationType"];
   if ([v7 isEqualToString:@"basic"])
   {
     v8 = C3DSimpleAnimationCreate();
@@ -434,30 +434,30 @@ LABEL_8:
   CFRelease(v9);
   +[SCNTransaction begin];
   [SCNTransaction setImmediateMode:1];
-  -[SCNAnimation setKeyPath:](v5, "setKeyPath:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"]);
-  [a3 decodeDoubleForKey:@"duration"];
+  -[SCNAnimation setKeyPath:](v5, "setKeyPath:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"]);
+  [coder decodeDoubleForKey:@"duration"];
   [(SCNAnimation *)v5 setDuration:?];
-  [a3 decodeDoubleForKey:@"repeatCount"];
+  [coder decodeDoubleForKey:@"repeatCount"];
   [(SCNAnimation *)v5 setRepeatCount:?];
-  [a3 decodeDoubleForKey:@"timeOffset"];
+  [coder decodeDoubleForKey:@"timeOffset"];
   [(SCNAnimation *)v5 setTimeOffset:?];
-  [a3 decodeDoubleForKey:@"beginTime"];
+  [coder decodeDoubleForKey:@"beginTime"];
   [(SCNAnimation *)v5 setStartDelay:?];
-  -[SCNAnimation setAutoreverses:](v5, "setAutoreverses:", [a3 decodeBoolForKey:@"autoreverses"]);
-  -[SCNAnimation setAppliedOnCompletion:](v5, "setAppliedOnCompletion:", [a3 decodeBoolForKey:@"appliedOnCompletion"]);
-  -[SCNAnimation setRemovedOnCompletion:](v5, "setRemovedOnCompletion:", [a3 decodeBoolForKey:@"removedOnCompletion"]);
-  -[SCNAnimation setAdditive:](v5, "setAdditive:", [a3 decodeBoolForKey:@"additive"]);
-  -[SCNAnimation setCumulative:](v5, "setCumulative:", [a3 decodeBoolForKey:@"cumulative"]);
-  -[SCNAnimation setUsesSceneTimeBase:](v5, "setUsesSceneTimeBase:", [a3 decodeBoolForKey:@"usesSceneTimeBase"]);
-  -[SCNAnimation setFillsForward:](v5, "setFillsForward:", [a3 decodeBoolForKey:@"fillForward"]);
-  -[SCNAnimation setFillsBackward:](v5, "setFillsBackward:", [a3 decodeBoolForKey:@"fillBackward"]);
-  -[SCNAnimation setTimingFunction:](v5, "setTimingFunction:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"timingFunction"]);
-  [a3 decodeDoubleForKey:@"fadeInDuration"];
+  -[SCNAnimation setAutoreverses:](v5, "setAutoreverses:", [coder decodeBoolForKey:@"autoreverses"]);
+  -[SCNAnimation setAppliedOnCompletion:](v5, "setAppliedOnCompletion:", [coder decodeBoolForKey:@"appliedOnCompletion"]);
+  -[SCNAnimation setRemovedOnCompletion:](v5, "setRemovedOnCompletion:", [coder decodeBoolForKey:@"removedOnCompletion"]);
+  -[SCNAnimation setAdditive:](v5, "setAdditive:", [coder decodeBoolForKey:@"additive"]);
+  -[SCNAnimation setCumulative:](v5, "setCumulative:", [coder decodeBoolForKey:@"cumulative"]);
+  -[SCNAnimation setUsesSceneTimeBase:](v5, "setUsesSceneTimeBase:", [coder decodeBoolForKey:@"usesSceneTimeBase"]);
+  -[SCNAnimation setFillsForward:](v5, "setFillsForward:", [coder decodeBoolForKey:@"fillForward"]);
+  -[SCNAnimation setFillsBackward:](v5, "setFillsBackward:", [coder decodeBoolForKey:@"fillBackward"]);
+  -[SCNAnimation setTimingFunction:](v5, "setTimingFunction:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"timingFunction"]);
+  [coder decodeDoubleForKey:@"fadeInDuration"];
   [(SCNAnimation *)v5 setFadeInDuration:?];
-  [a3 decodeDoubleForKey:@"fadeOutDuration"];
+  [coder decodeDoubleForKey:@"fadeOutDuration"];
   [(SCNAnimation *)v5 setFadeOutDuration:?];
   +[SCNTransaction commit];
-  v10 = [a3 decodeObjectOfClasses:SCNUserInfoClasses() forKey:@"userInfo"];
+  v10 = [coder decodeObjectOfClasses:SCNUserInfoClasses() forKey:@"userInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -471,11 +471,11 @@ LABEL_8:
 + (SCNAnimation)animationNamed:(NSString *)animationName
 {
   v5 = SCNGetResourceBundle();
-  v6 = [(NSString *)animationName pathExtension];
-  v7 = [(NSString *)animationName stringByDeletingPathExtension];
-  if (v6)
+  pathExtension = [(NSString *)animationName pathExtension];
+  stringByDeletingPathExtension = [(NSString *)animationName stringByDeletingPathExtension];
+  if (pathExtension)
   {
-    v8 = v6;
+    v8 = pathExtension;
   }
 
   else
@@ -483,44 +483,44 @@ LABEL_8:
     v8 = @"scna";
   }
 
-  result = [v5 URLForResource:v7 withExtension:v8];
+  result = [v5 URLForResource:stringByDeletingPathExtension withExtension:v8];
   if (result)
   {
 
-    return [a1 animationWithContentsOfURL:result];
+    return [self animationWithContentsOfURL:result];
   }
 
   return result;
 }
 
-+ (id)animationFromScene:(id)a3
++ (id)animationFromScene:(id)scene
 {
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [a3 rootNode];
+  rootNode = [scene rootNode];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __35__SCNAnimation_animationFromScene___block_invoke;
   v10[3] = &unk_2782FF308;
-  v10[4] = v4;
+  v10[4] = array;
   v10[5] = &v11;
-  [v5 enumerateHierarchyUsingBlock:v10];
-  if ([v4 count])
+  [rootNode enumerateHierarchyUsingBlock:v10];
+  if ([array count])
   {
-    if ([v4 count] == 1)
+    if ([array count] == 1)
     {
-      v6 = +[SCNAnimation animationWithCAAnimation:](SCNAnimation, "animationWithCAAnimation:", [v4 objectAtIndexedSubscript:0]);
+      v6 = +[SCNAnimation animationWithCAAnimation:](SCNAnimation, "animationWithCAAnimation:", [array objectAtIndexedSubscript:0]);
     }
 
     else
     {
-      v8 = [MEMORY[0x277CD9E00] animation];
-      [v8 setAnimations:v4];
-      [v8 setDuration:v12[3]];
-      v6 = [SCNAnimation animationWithCAAnimation:v8];
+      animation = [MEMORY[0x277CD9E00] animation];
+      [animation setAnimations:array];
+      [animation setDuration:v12[3]];
+      v6 = [SCNAnimation animationWithCAAnimation:animation];
     }
 
     v7 = v6;
@@ -610,7 +610,7 @@ uint64_t __35__SCNAnimation_animationFromScene___block_invoke(uint64_t a1, void 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return [a1 animationFromScene:v8];
+    return [self animationFromScene:v8];
   }
 
   objc_opt_class();
@@ -629,7 +629,7 @@ uint64_t __35__SCNAnimation_animationFromScene___block_invoke(uint64_t a1, void 
   return v3;
 }
 
-- (void)prepareWithTarget:(id)a3 implicitDuration:(double)a4
+- (void)prepareWithTarget:(id)target implicitDuration:(double)duration
 {
   if (self->_animationRef || (v9 = [(SCNAnimation *)self caAnimation]) == 0)
   {
@@ -637,10 +637,10 @@ LABEL_2:
     [(SCNAnimation *)self duration];
     if (v6 == 0.0)
     {
-      if (a4 == 0.0)
+      if (duration == 0.0)
       {
         v7 = scn_default_log();
-        a4 = 0.25;
+        duration = 0.25;
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           *v12 = 0;
@@ -648,13 +648,13 @@ LABEL_2:
         }
       }
 
-      [(SCNAnimation *)self setDuration:a4];
+      [(SCNAnimation *)self setDuration:duration];
     }
 
     return;
   }
 
-  v10 = CAAnimationToC3DAnimation(v9, a3);
+  v10 = CAAnimationToC3DAnimation(v9, target);
   if (v10)
   {
     [(SCNAnimation *)self _setAnimationRef:v10];
@@ -724,21 +724,21 @@ LABEL_18:
         [userAnimation setRemovedOnCompletion:{-[SCNAnimation isRemovedOnCompletion](self, "isRemovedOnCompletion")}];
         [userAnimation setCommitsOnCompletion:{-[SCNAnimation isAppliedOnCompletion](self, "isAppliedOnCompletion")}];
         [userAnimation setUsesSceneTimeBase:{-[SCNAnimation usesSceneTimeBase](self, "usesSceneTimeBase")}];
-        v9 = [(SCNAnimation *)self fillsForward];
-        v10 = [(SCNAnimation *)self fillsBackward];
+        fillsForward = [(SCNAnimation *)self fillsForward];
+        fillsBackward = [(SCNAnimation *)self fillsBackward];
         v11 = MEMORY[0x277CDA230];
-        if (!v9)
+        if (!fillsForward)
         {
           v11 = MEMORY[0x277CDA228];
         }
 
         v12 = MEMORY[0x277CDA238];
-        if (!v9)
+        if (!fillsForward)
         {
           v12 = MEMORY[0x277CDA240];
         }
 
-        if (!v10)
+        if (!fillsBackward)
         {
           v11 = v12;
         }
@@ -853,14 +853,14 @@ float __31__SCNAnimation_setRepeatCount___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setRepeatDuration:(double)a3
+- (void)setRepeatDuration:(double)duration
 {
-  if (a3 != 0.0)
+  if (duration != 0.0)
   {
     duration = self->_duration;
     if (duration != 0.0)
     {
-      v4 = a3 / duration;
+      v4 = duration / duration;
       if (self->_autoreverses)
       {
         v4 = v4 * 0.5;
@@ -1312,34 +1312,34 @@ void __30__SCNAnimation_setCumulative___block_invoke(uint64_t a1)
   C3DAnimationSetCumulative(*(*(a1 + 32) + 8), *(a1 + 40));
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   os_unfair_lock_lock(&self->_userInfoLock);
   userInfo = self->_userInfo;
-  if (a3 && !userInfo)
+  if (value && !userInfo)
   {
     userInfo = objc_alloc_init(MEMORY[0x277CBEB38]);
     self->_userInfo = userInfo;
 LABEL_5:
-    [(NSMutableDictionary *)userInfo setValue:a3 forKey:a4];
+    [(NSMutableDictionary *)userInfo setValue:value forKey:key];
     goto LABEL_6;
   }
 
-  if (a3)
+  if (value)
   {
     goto LABEL_5;
   }
 
-  [(NSMutableDictionary *)userInfo removeObjectForKey:a4];
+  [(NSMutableDictionary *)userInfo removeObjectForKey:key];
 LABEL_6:
 
   os_unfair_lock_unlock(&self->_userInfoLock);
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   os_unfair_lock_lock(&self->_userInfoLock);
-  v5 = [(NSMutableDictionary *)self->_userInfo valueForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_userInfo valueForKey:key];
   os_unfair_lock_unlock(&self->_userInfoLock);
 
   return v5;
@@ -1355,9 +1355,9 @@ LABEL_6:
   return [v3 stringWithFormat:@"<%@: %p, keyPath=%@ duration=%f repeatCount=%f>", v5, self, self->_keyPath, duration, repeatCount];
 }
 
-- (void)_optimizeKeyframesWithTarget:(id)a3
+- (void)_optimizeKeyframesWithTarget:(id)target
 {
-  [(SCNAnimation *)self prepareWithTarget:a3 implicitDuration:0.0];
+  [(SCNAnimation *)self prepareWithTarget:target implicitDuration:0.0];
   animationRef = self->_animationRef;
   if (animationRef)
   {

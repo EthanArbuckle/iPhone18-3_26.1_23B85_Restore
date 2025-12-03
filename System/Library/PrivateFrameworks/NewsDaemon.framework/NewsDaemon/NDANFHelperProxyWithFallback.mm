@@ -1,6 +1,6 @@
 @interface NDANFHelperProxyWithFallback
 - (NDANFHelperProxyWithFallback)init;
-- (id)manifestFromANFDocumentData:(id)a3;
+- (id)manifestFromANFDocumentData:(id)data;
 - (void)popInterest;
 - (void)pushInterest;
 @end
@@ -28,27 +28,27 @@
 
 - (void)pushInterest
 {
-  v3 = [(NDANFHelperProxyWithFallback *)self proxyHelper];
-  [v3 pushInterest];
+  proxyHelper = [(NDANFHelperProxyWithFallback *)self proxyHelper];
+  [proxyHelper pushInterest];
 
-  v4 = [(NDANFHelperProxyWithFallback *)self inProcessHelper];
-  [v4 pushInterest];
+  inProcessHelper = [(NDANFHelperProxyWithFallback *)self inProcessHelper];
+  [inProcessHelper pushInterest];
 }
 
 - (void)popInterest
 {
-  v3 = [(NDANFHelperProxyWithFallback *)self proxyHelper];
-  [v3 popInterest];
+  proxyHelper = [(NDANFHelperProxyWithFallback *)self proxyHelper];
+  [proxyHelper popInterest];
 
-  v4 = [(NDANFHelperProxyWithFallback *)self inProcessHelper];
-  [v4 popInterest];
+  inProcessHelper = [(NDANFHelperProxyWithFallback *)self inProcessHelper];
+  [inProcessHelper popInterest];
 }
 
-- (id)manifestFromANFDocumentData:(id)a3
+- (id)manifestFromANFDocumentData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v13 = 0;
-  v5 = [(NDANFHelperProxy *)self->_proxyHelper manifestFromANFDocumentData:v4 reachedService:&v13];
+  v5 = [(NDANFHelperProxy *)self->_proxyHelper manifestFromANFDocumentData:dataCopy reachedService:&v13];
   v6 = v13;
   if (v13 == 1)
   {
@@ -69,7 +69,7 @@
 
   else
   {
-    v8 = [(NDANFHelper *)self->_inProcessHelper manifestFromANFDocumentData:v4];
+    v8 = [(NDANFHelper *)self->_inProcessHelper manifestFromANFDocumentData:dataCopy];
 
     v9 = *MEMORY[0x277D30988];
     if (os_log_type_enabled(*MEMORY[0x277D30988], OS_LOG_TYPE_DEFAULT))

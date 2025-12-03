@@ -8,10 +8,10 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a4 fileSystemRepresentation];
-  v9 = [v7 UTF8String];
+  fileSystemRepresentation = [a4 fileSystemRepresentation];
+  uTF8String = [v7 UTF8String];
 
-  return removexattr(v8, v9, 0) != -1;
+  return removexattr(fileSystemRepresentation, uTF8String, 0) != -1;
 }
 
 @end

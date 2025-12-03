@@ -1,17 +1,17 @@
 @interface BLTBulletinDistributorBulletinUpdate
-+ (id)bulletinUpdateWithType:(unint64_t)a3 bulletin:(id)a4 feed:(unint64_t)a5;
++ (id)bulletinUpdateWithType:(unint64_t)type bulletin:(id)bulletin feed:(unint64_t)feed;
 @end
 
 @implementation BLTBulletinDistributorBulletinUpdate
 
-+ (id)bulletinUpdateWithType:(unint64_t)a3 bulletin:(id)a4 feed:(unint64_t)a5
++ (id)bulletinUpdateWithType:(unint64_t)type bulletin:(id)bulletin feed:(unint64_t)feed
 {
-  v7 = a4;
+  bulletinCopy = bulletin;
   v8 = objc_alloc_init(BLTBulletinDistributorBulletinUpdate);
-  [(BLTBulletinDistributorBulletinUpdate *)v8 setUpdateType:a3];
-  [(BLTBulletinDistributorBulletinUpdate *)v8 setBulletin:v7];
+  [(BLTBulletinDistributorBulletinUpdate *)v8 setUpdateType:type];
+  [(BLTBulletinDistributorBulletinUpdate *)v8 setBulletin:bulletinCopy];
 
-  [(BLTBulletinDistributorBulletinUpdate *)v8 setFeed:a5];
+  [(BLTBulletinDistributorBulletinUpdate *)v8 setFeed:feed];
 
   return v8;
 }

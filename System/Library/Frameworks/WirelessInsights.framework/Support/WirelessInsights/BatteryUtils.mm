@@ -1,11 +1,11 @@
 @interface BatteryUtils
-+ (id)batteryInfoWithError:(id *)a3;
-+ (void)setError:(id *)a3 code:(int64_t)a4 message:(id)a5;
++ (id)batteryInfoWithError:(id *)error;
++ (void)setError:(id *)error code:(int64_t)code message:(id)message;
 @end
 
 @implementation BatteryUtils
 
-+ (id)batteryInfoWithError:(id *)a3
++ (id)batteryInfoWithError:(id *)error
 {
   os_unfair_lock_lock(&unk_1002D85C0);
   v4 = qword_1002D85C8;
@@ -17,7 +17,7 @@
 
   else if (IOPSCopyPowerSourcesByTypePrecise())
   {
-    [BatteryUtils setError:a3 code:0 message:@"Failed to retrieve power sources"];
+    [BatteryUtils setError:error code:0 message:@"Failed to retrieve power sources"];
     v5 = 0;
   }
 
@@ -50,28 +50,28 @@
 
           else
           {
-            [BatteryUtils setError:a3 code:0 message:@"Failed to retrieve battery date of first use"];
+            [BatteryUtils setError:error code:0 message:@"Failed to retrieve battery date of first use"];
             v5 = 0;
           }
         }
 
         else
         {
-          [BatteryUtils setError:a3 code:0 message:@"Failed to retrieve battery date of manufacture"];
+          [BatteryUtils setError:error code:0 message:@"Failed to retrieve battery date of manufacture"];
           v5 = 0;
         }
       }
 
       else
       {
-        [BatteryUtils setError:a3 code:0 message:@"Failed to retrieve power source description"];
+        [BatteryUtils setError:error code:0 message:@"Failed to retrieve power source description"];
         v5 = 0;
       }
     }
 
     else
     {
-      [BatteryUtils setError:a3 code:0 message:@"Failed to retrieve power sources list"];
+      [BatteryUtils setError:error code:0 message:@"Failed to retrieve power sources list"];
       v5 = 0;
     }
   }
@@ -79,13 +79,13 @@
   return v5;
 }
 
-+ (void)setError:(id *)a3 code:(int64_t)a4 message:(id)a5
++ (void)setError:(id *)error code:(int64_t)code message:(id)message
 {
-  v7 = a5;
+  messageCopy = message;
   v9 = NSLocalizedDescriptionKey;
-  v10 = v7;
+  v10 = messageCopy;
   v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  *a3 = [NSError errorWithDomain:@"WISBatteryUtils" code:a4 userInfo:v8];
+  *error = [NSError errorWithDomain:@"WISBatteryUtils" code:code userInfo:v8];
 }
 
 @end

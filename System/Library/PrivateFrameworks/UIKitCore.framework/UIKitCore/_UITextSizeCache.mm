@@ -1,8 +1,8 @@
 @interface _UITextSizeCache
-- (BOOL)getSize:(CGSize *)a3 baselineInfo:(id *)a4 forTargetSize:(CGSize)a5 isMultiline:(BOOL)a6;
+- (BOOL)getSize:(CGSize *)size baselineInfo:(id *)info forTargetSize:(CGSize)targetSize isMultiline:(BOOL)multiline;
 - (id).cxx_construct;
 - (id)description;
-- (void)addSize:(CGSize)a3 baselineInfo:(id *)a4 forTargetSize:(CGSize)a5;
+- (void)addSize:(CGSize)size baselineInfo:(id *)info forTargetSize:(CGSize)targetSize;
 @end
 
 @implementation _UITextSizeCache
@@ -15,16 +15,16 @@
   return self;
 }
 
-- (BOOL)getSize:(CGSize *)a3 baselineInfo:(id *)a4 forTargetSize:(CGSize)a5 isMultiline:(BOOL)a6
+- (BOOL)getSize:(CGSize *)size baselineInfo:(id *)info forTargetSize:(CGSize)targetSize isMultiline:(BOOL)multiline
 {
-  if (fabs(a5.width) < 0.001)
+  if (fabs(targetSize.width) < 0.001)
   {
-    a5.width = 3.40282347e38;
+    targetSize.width = 3.40282347e38;
   }
 
-  if (fabs(a5.height) < 0.001)
+  if (fabs(targetSize.height) < 0.001)
   {
-    a5.height = 3.40282347e38;
+    targetSize.height = 3.40282347e38;
   }
 
   begin = self->_cache.__begin_;
@@ -37,16 +37,16 @@
   while (1)
   {
     v8 = *begin;
-    if (vabdd_f64(*begin, a5.width) < 0.001 || (v8 - a5.width < -0.001 ? (v9 = a6) : (v9 = 0), !v9 && (v10 = *(begin + 2), v10 - v8 < -0.001) && v10 - a5.width < 0.001))
+    if (vabdd_f64(*begin, targetSize.width) < 0.001 || (v8 - targetSize.width < -0.001 ? (v9 = multiline) : (v9 = 0), !v9 && (v10 = *(begin + 2), v10 - v8 < -0.001) && v10 - targetSize.width < 0.001))
     {
       v11 = *(begin + 1);
-      if (vabdd_f64(v11, a5.height) < 0.001)
+      if (vabdd_f64(v11, targetSize.height) < 0.001)
       {
         break;
       }
 
       v12 = *(begin + 3);
-      if (v12 - v11 < -0.001 && v12 - a5.height < 0.001)
+      if (v12 - v11 < -0.001 && v12 - targetSize.height < 0.001)
       {
         break;
       }
@@ -65,16 +65,16 @@
   v14.var4.size.height = *(begin + 14);
   *&v14.var0 = *(begin + 2);
   v14.var2.origin = *(begin + 3);
-  *a3 = *(begin + 1);
-  if (a4)
+  *size = *(begin + 1);
+  if (info)
   {
-    *a4 = v14;
+    *info = v14;
   }
 
   return 1;
 }
 
-- (void)addSize:(CGSize)a3 baselineInfo:(id *)a4 forTargetSize:(CGSize)a5
+- (void)addSize:(CGSize)size baselineInfo:(id *)info forTargetSize:(CGSize)targetSize
 {
   begin = self->_cache.__begin_;
   end = self->_cache.__end_;
@@ -84,27 +84,27 @@
     end = begin;
   }
 
-  if (fabs(a5.width) < 0.001)
+  if (fabs(targetSize.width) < 0.001)
   {
-    a5.width = 3.40282347e38;
+    targetSize.width = 3.40282347e38;
   }
 
-  if (fabs(a5.height) < 0.001)
+  if (fabs(targetSize.height) < 0.001)
   {
-    a5.height = 3.40282347e38;
+    targetSize.height = 3.40282347e38;
   }
 
-  v55 = a5;
-  v56 = a3;
-  if (a4)
+  targetSizeCopy = targetSize;
+  sizeCopy = size;
+  if (info)
   {
-    v8 = *&a4->var3;
-    size = a4->var2.size;
+    v8 = *&info->var3;
+    size = info->var2.size;
     v60 = v8;
-    v61 = *&a4->var4.origin.y;
-    height = a4->var4.size.height;
-    origin = a4->var2.origin;
-    v57 = *&a4->var0;
+    v61 = *&info->var4.origin.y;
+    height = info->var4.size.height;
+    origin = info->var2.origin;
+    v57 = *&info->var0;
     v58 = origin;
   }
 
@@ -131,8 +131,8 @@
     {
       v12 = v11 >> 1;
       v13 = (v10 + 120 * (v11 >> 1));
-      v14 = *v13 - a5.width;
-      if (v14 < -0.001 || fabs(v14) < 0.001 && v13[1] - a5.height < -0.001)
+      v14 = *v13 - targetSize.width;
+      if (v14 < -0.001 || fabs(v14) < 0.001 && v13[1] - targetSize.height < -0.001)
       {
         v10 = (v13 + 15);
         v12 = v11 + ~v12;
@@ -196,20 +196,20 @@
       v42 = 8 * (v33 >> 3) - 120 * ((0xEEEEEEEEEEEEEEEFLL * ((8 * (v33 >> 3)) >> 3) + 1 + ((0xEEEEEEEEEEEEEEEFLL * ((8 * (v33 >> 3)) >> 3) + 1) >> 63)) >> 1);
     }
 
-    v44 = v55;
-    v45 = v56;
+    v44 = targetSizeCopy;
+    v45 = sizeCopy;
     v46 = v58;
     *(v42 + 32) = v57;
     *(v42 + 48) = v46;
     *v42 = v44;
     *(v42 + 16) = v45;
-    v47 = size;
+    sizeCopy2 = size;
     v48 = v60;
     v49 = v61;
     *(v42 + 112) = height;
     *(v42 + 80) = v48;
     *(v42 + 96) = v49;
-    *(v42 + 64) = v47;
+    *(v42 + 64) = sizeCopy2;
     memcpy((v42 + 120), v10, self->_cache.__end_ - v10);
     v50 = self->_cache.__begin_;
     v51 = (self->_cache.__end_ + v42 - v10 + 120);
@@ -230,20 +230,20 @@
 
   else if (v10 == end)
   {
-    v36 = v55;
-    v37 = v56;
+    v36 = targetSizeCopy;
+    v37 = sizeCopy;
     v38 = v58;
     *(end + 2) = v57;
     *(end + 3) = v38;
     *end = v36;
     *(end + 1) = v37;
-    v39 = size;
+    sizeCopy3 = size;
     v40 = v60;
     v41 = v61;
     *(end + 14) = height;
     *(end + 5) = v40;
     *(end + 6) = v41;
-    *(end + 4) = v39;
+    *(end + 4) = sizeCopy3;
     self->_cache.__end_ = (end + 120);
   }
 
@@ -277,15 +277,15 @@
       v17 = self->_cache.__end_;
     }
 
-    v24 = v17 <= &v55 || v10 > &v55;
+    v24 = v17 <= &targetSizeCopy || v10 > &targetSizeCopy;
     v25 = 120;
     if (v24)
     {
       v25 = 0;
     }
 
-    v26 = *(&v55 + v25);
-    v27 = *(&v55 + v25 + 16);
+    v26 = *(&targetSizeCopy + v25);
+    v27 = *(&targetSizeCopy + v25 + 16);
     v28 = *(&v58 + v25);
     *(v10 + 32) = *(&v57 + v25);
     *(v10 + 48) = v28;

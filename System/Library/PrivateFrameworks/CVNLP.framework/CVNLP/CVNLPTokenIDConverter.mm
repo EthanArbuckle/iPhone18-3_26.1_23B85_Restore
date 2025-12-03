@@ -1,22 +1,22 @@
 @interface CVNLPTokenIDConverter
-- (BOOL)enumerateTokensForText:(id)a3 withBlock:(id)a4;
-- (CVNLPTokenIDConverter)initWithLanguageModel:(void *)a3;
-- (CVNLPTokenIDConverter)initWithResource:(id)a3 andTokenType:(int)a4;
+- (BOOL)enumerateTokensForText:(id)text withBlock:(id)block;
+- (CVNLPTokenIDConverter)initWithLanguageModel:(void *)model;
+- (CVNLPTokenIDConverter)initWithResource:(id)resource andTokenType:(int)type;
 - (id).cxx_construct;
-- (void)enumerateTokenIDsForText:(id)a3 withBlock:(id)a4;
+- (void)enumerateTokenIDsForText:(id)text withBlock:(id)block;
 @end
 
 @implementation CVNLPTokenIDConverter
 
-- (CVNLPTokenIDConverter)initWithResource:(id)a3 andTokenType:(int)a4
+- (CVNLPTokenIDConverter)initWithResource:(id)resource andTokenType:(int)type
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  resourceCopy = resource;
   v24.receiver = self;
   v24.super_class = CVNLPTokenIDConverter;
   if ([(CVNLPTokenIDConverter *)&v24 init])
   {
-    v10 = objc_msgSend_path(v6, v7, v8, v9);
+    v10 = objc_msgSend_path(resourceCopy, v7, v8, v9);
     v11 = v10;
     v15 = objc_msgSend_UTF8String(v10, v12, v13, v14);
     memset(&v23, 0, sizeof(v23));
@@ -32,7 +32,7 @@
     v22 = &unk_1F554E258;
 
     sub_1D9D54E34(&v21, &v22);
-    sub_1D9DB8A38(&v21, a4);
+    sub_1D9DB8A38(&v21, type);
   }
 
   v18 = 0;
@@ -41,7 +41,7 @@
   return v18;
 }
 
-- (CVNLPTokenIDConverter)initWithLanguageModel:(void *)a3
+- (CVNLPTokenIDConverter)initWithLanguageModel:(void *)model
 {
   v19.receiver = self;
   v19.super_class = CVNLPTokenIDConverter;
@@ -52,8 +52,8 @@
     return v5;
   }
 
-  v6 = *(a3 + 15);
-  v7 = *(a3 + 16);
+  v6 = *(model + 15);
+  v7 = *(model + 16);
   if (v7)
   {
     atomic_fetch_add_explicit(&v7->__shared_owners_, 1uLL, memory_order_relaxed);
@@ -128,14 +128,14 @@ LABEL_13:
   return v5;
 }
 
-- (void)enumerateTokenIDsForText:(id)a3 withBlock:(id)a4
+- (void)enumerateTokenIDsForText:(id)text withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  blockCopy = block;
   ptr = self->_vocabTokenizer.__ptr_;
   if (ptr)
   {
-    v9 = v6;
+    v9 = textCopy;
     v13 = objc_msgSend_UTF8String(v9, v10, v11, v12);
     v14 = strlen(v13);
     (*(*ptr + 24))(&__p, ptr, v13, v14, 0);
@@ -146,7 +146,7 @@ LABEL_13:
       v16 = 0;
       do
       {
-        (*(v7 + 2))(v7, 0x7FFFFFFFFFFFFFFFLL, 0, v15[v16], &v17);
+        (*(blockCopy + 2))(blockCopy, 0x7FFFFFFFFFFFFFFFLL, 0, v15[v16], &v17);
         v15 = __p;
         if (v17)
         {
@@ -167,15 +167,15 @@ LABEL_13:
   }
 }
 
-- (BOOL)enumerateTokensForText:(id)a3 withBlock:(id)a4
+- (BOOL)enumerateTokensForText:(id)text withBlock:(id)block
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  blockCopy = block;
   ptr = self->_vocabTokenizer.__ptr_;
   if (ptr)
   {
-    v9 = v6;
+    v9 = textCopy;
     v13 = objc_msgSend_UTF8String(v9, v10, v11, v12);
     v14 = strlen(v13);
     (*(*ptr + 16))(&__p, ptr, v13, v14, 0);
@@ -237,7 +237,7 @@ LABEL_10:
         }
 
         v26 = (*(*self->_vocabTokenizer.__ptr_ + 40))(self->_vocabTokenizer.__ptr_, v25, v24);
-        v7[2](v7, v22, v26, &v37);
+        blockCopy[2](blockCopy, v22, v26, &v37);
         v27 = v37;
 
         if (v27)

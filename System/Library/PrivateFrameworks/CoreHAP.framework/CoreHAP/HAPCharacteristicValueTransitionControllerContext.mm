@@ -1,12 +1,12 @@
 @interface HAPCharacteristicValueTransitionControllerContext
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicValueTransitionControllerContext)init;
-- (HAPCharacteristicValueTransitionControllerContext)initWithIdentifier:(id)a3 startTime:(id)a4 transitionChecksum:(id)a5;
+- (HAPCharacteristicValueTransitionControllerContext)initWithIdentifier:(id)identifier startTime:(id)time transitionChecksum:(id)checksum;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicValueTransitionControllerContext
@@ -14,18 +14,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
-  v5 = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
-  v6 = [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
-  v7 = [v3 stringWithFormat:@"<HAPCharacteristicValueTransitionControllerContext identifier=%@, startTime=%@, transitionChecksum=%@>", v4, v5, v6];
+  identifier = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
+  startTime = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
+  transitionChecksum = [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
+  v7 = [v3 stringWithFormat:@"<HAPCharacteristicValueTransitionControllerContext identifier=%@, startTime=%@, transitionChecksum=%@>", identifier, startTime, transitionChecksum];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,46 +35,46 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
-      v9 = [(HAPCharacteristicValueTransitionControllerContext *)v7 identifier];
-      if (v8 != v9)
+      v7 = equalCopy;
+      identifier = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
+      identifier2 = [(HAPCharacteristicValueTransitionControllerContext *)v7 identifier];
+      if (identifier != identifier2)
       {
-        v3 = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
-        v4 = [(HAPCharacteristicValueTransitionControllerContext *)v7 identifier];
-        if (![v3 isEqual:v4])
+        identifier3 = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
+        identifier4 = [(HAPCharacteristicValueTransitionControllerContext *)v7 identifier];
+        if (![identifier3 isEqual:identifier4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
-      v12 = [(HAPCharacteristicValueTransitionControllerContext *)v7 startTime];
-      v13 = v12;
-      if (v11 == v12)
+      startTime = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
+      startTime2 = [(HAPCharacteristicValueTransitionControllerContext *)v7 startTime];
+      v13 = startTime2;
+      if (startTime == startTime2)
       {
-        v28 = v12;
+        v28 = startTime2;
       }
 
       else
       {
-        v14 = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
-        v27 = [(HAPCharacteristicValueTransitionControllerContext *)v7 startTime];
-        if (![v14 isEqual:?])
+        startTime3 = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
+        startTime4 = [(HAPCharacteristicValueTransitionControllerContext *)v7 startTime];
+        if (![startTime3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = startTime3;
         v28 = v13;
       }
 
-      v15 = [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
-      v16 = [(HAPCharacteristicValueTransitionControllerContext *)v7 transitionChecksum];
-      v17 = v16;
-      if (v15 == v16)
+      transitionChecksum = [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
+      transitionChecksum2 = [(HAPCharacteristicValueTransitionControllerContext *)v7 transitionChecksum];
+      v17 = transitionChecksum2;
+      if (transitionChecksum == transitionChecksum2)
       {
 
         v10 = 1;
@@ -83,29 +83,29 @@
       else
       {
         [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
-        v18 = v25 = v3;
+        v18 = v25 = identifier3;
         [(HAPCharacteristicValueTransitionControllerContext *)v7 transitionChecksum];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = startTime;
+        v19 = identifier4;
+        v20 = identifier2;
+        v22 = v21 = identifier;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        identifier = v21;
+        identifier2 = v20;
+        identifier4 = v19;
+        startTime = v24;
 
-        v3 = v25;
+        identifier3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      startTime3 = v26;
+      if (startTime == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (identifier == identifier2)
         {
 LABEL_20:
 
@@ -130,18 +130,18 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicValueTransitionControllerContext allocWithZone:a3];
-  v5 = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
-  v6 = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
-  v7 = [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
-  v8 = [(HAPCharacteristicValueTransitionControllerContext *)v4 initWithIdentifier:v5 startTime:v6 transitionChecksum:v7];
+  v4 = [HAPCharacteristicValueTransitionControllerContext allocWithZone:zone];
+  identifier = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
+  startTime = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
+  transitionChecksum = [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
+  v8 = [(HAPCharacteristicValueTransitionControllerContext *)v4 initWithIdentifier:identifier startTime:startTime transitionChecksum:transitionChecksum];
 
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
   v44 = 0u;
@@ -166,18 +166,18 @@ LABEL_21:
   v27 = 0u;
   v25 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
+  identifier = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
 
-  if (!v5)
+  if (!identifier)
   {
 LABEL_10:
-    v13 = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
+    startTime = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
 
-    if (v13)
+    if (startTime)
     {
-      v14 = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
+      startTime2 = [(HAPCharacteristicValueTransitionControllerContext *)self startTime];
       v23 = 0;
-      v7 = [v14 serializeWithError:&v23];
+      v7 = [startTime2 serializeWithError:&v23];
       v8 = v23;
 
       if (v8)
@@ -195,13 +195,13 @@ LABEL_10:
       }
     }
 
-    v16 = [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
+    transitionChecksum = [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
 
-    if (v16)
+    if (transitionChecksum)
     {
-      v17 = [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
+      transitionChecksum2 = [(HAPCharacteristicValueTransitionControllerContext *)self transitionChecksum];
       v22 = 0;
-      v7 = [v17 serializeWithError:&v22];
+      v7 = [transitionChecksum2 serializeWithError:&v22];
       v8 = v22;
 
       if (v8)
@@ -216,11 +216,11 @@ LABEL_10:
       if (v15)
       {
 LABEL_19:
-        if (a3)
+        if (error)
         {
           HMErrorFromOSStatus(v15);
           v8 = 0;
-          *a3 = v19 = 0;
+          *error = v19 = 0;
           goto LABEL_24;
         }
 
@@ -234,26 +234,26 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  v6 = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
+  identifier2 = [(HAPCharacteristicValueTransitionControllerContext *)self identifier];
   v24 = 0;
-  v7 = [v6 serializeWithError:&v24];
+  v7 = [identifier2 serializeWithError:&v24];
   v8 = v24;
 
   if (!v8)
   {
-    v9 = [v7 bytes];
-    v10 = v9 + [v7 length];
+    bytes = [v7 bytes];
+    v10 = bytes + [v7 length];
     while (1)
     {
-      v11 = (v10 - v9) >= 255 ? 255 : v10 - v9;
+      v11 = (v10 - bytes) >= 255 ? 255 : v10 - bytes;
       v12 = TLV8BufferAppend();
       if (v12)
       {
         break;
       }
 
-      v9 += v11;
-      if (v9 >= v10)
+      bytes += v11;
+      if (bytes >= v10)
       {
 
         goto LABEL_10;
@@ -267,11 +267,11 @@ LABEL_19:
 
 LABEL_15:
 
-  if (a3)
+  if (error)
   {
     v18 = v8;
     v19 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_24;
   }
 
@@ -285,18 +285,18 @@ LABEL_24:
   return v19;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
     v11 = 0;
     v12 = 0;
 LABEL_23:
-    [(HAPCharacteristicValueTransitionControllerContext *)self setIdentifier:v12, v25];
+    [(HAPCharacteristicValueTransitionControllerContext *)self setIdentifier:v12, selfCopy];
     [(HAPCharacteristicValueTransitionControllerContext *)self setStartTime:v11];
     [(HAPCharacteristicValueTransitionControllerContext *)self setTransitionChecksum:v10];
     v9 = 0;
@@ -304,13 +304,13 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v25 = self;
-  v26 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v33 = 0;
@@ -362,7 +362,7 @@ LABEL_13:
         goto LABEL_12;
       case 1:
         v30 = v9;
-        v15 = HAPTLVParseContiguousTlvs(1, v7, v13, v31, &v30);
+        v15 = HAPTLVParseContiguousTlvs(1, bytes, v13, v31, &v30);
         v16 = v30;
 
         if (!v16)
@@ -378,17 +378,17 @@ LABEL_13:
         goto LABEL_13;
     }
 
-    v7 = v31[0];
+    bytes = v31[0];
     if (v31[0] >= v13)
     {
       if (v9)
       {
 LABEL_16:
-        if (v26)
+        if (errorCopy)
         {
           v21 = v9;
           v22 = 0;
-          *v26 = v9;
+          *errorCopy = v9;
           goto LABEL_25;
         }
 
@@ -396,15 +396,15 @@ LABEL_16:
       }
 
 LABEL_22:
-      self = v25;
+      self = selfCopy;
       goto LABEL_23;
     }
   }
 
-  if (v26)
+  if (errorCopy)
   {
     HMErrorFromOSStatus(Next);
-    *v26 = v22 = 0;
+    *errorCopy = v22 = 0;
     goto LABEL_25;
   }
 
@@ -415,20 +415,20 @@ LABEL_25:
   return v22;
 }
 
-- (HAPCharacteristicValueTransitionControllerContext)initWithIdentifier:(id)a3 startTime:(id)a4 transitionChecksum:(id)a5
+- (HAPCharacteristicValueTransitionControllerContext)initWithIdentifier:(id)identifier startTime:(id)time transitionChecksum:(id)checksum
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  timeCopy = time;
+  checksumCopy = checksum;
   v15.receiver = self;
   v15.super_class = HAPCharacteristicValueTransitionControllerContext;
   v12 = [(HAPCharacteristicValueTransitionControllerContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_startTime, a4);
-    objc_storeStrong(&v13->_transitionChecksum, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_startTime, time);
+    objc_storeStrong(&v13->_transitionChecksum, checksum);
   }
 
   return v13;
@@ -441,24 +441,24 @@ LABEL_25:
   return [(HAPCharacteristicValueTransitionControllerContext *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicValueTransitionControllerContext);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicValueTransitionControllerContext *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicValueTransitionControllerContext *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

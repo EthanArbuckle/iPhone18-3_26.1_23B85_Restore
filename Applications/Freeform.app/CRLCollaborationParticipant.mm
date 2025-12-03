@@ -1,6 +1,6 @@
 @interface CRLCollaborationParticipant
 - (BOOL)isActive;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSelf;
 - (NSArray)presences;
 - (NSPersonNameComponents)nameComponents;
@@ -11,41 +11,41 @@
 - (_TtC8Freeform23CRLCollaboratorPresence)localPresence;
 - (_TtC8Freeform23CRLCollaboratorPresence)oldestPresence;
 - (_TtC8Freeform27CRLCollaborationParticipant)init;
-- (id)collaboratorColorForType:(int64_t)a3;
+- (id)collaboratorColorForType:(int64_t)type;
 - (id)contact;
-- (id)presenceWith:(id)a3;
+- (id)presenceWith:(id)with;
 - (int64_t)collaboratorColorIndex;
 - (void)populateContactIfNeeded;
-- (void)populateContactInBackgroundWithCompletionHandler:(id)a3;
-- (void)removePresenceWith:(id)a3;
-- (void)setCnContact:(id)a3;
-- (void)setIsFollowedBy:(id)a3;
-- (void)setIsFollowing:(id)a3;
-- (void)setPresences:(id)a3;
+- (void)populateContactInBackgroundWithCompletionHandler:(id)handler;
+- (void)removePresenceWith:(id)with;
+- (void)setCnContact:(id)contact;
+- (void)setIsFollowedBy:(id)by;
+- (void)setIsFollowing:(id)following;
+- (void)setPresences:(id)presences;
 - (void)updateCachedCollaboratorColors;
 @end
 
 @implementation CRLCollaborationParticipant
 
-- (void)setCnContact:(id)a3
+- (void)setCnContact:(id)contact
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform27CRLCollaborationParticipant_cnContact);
-  *(self + OBJC_IVAR____TtC8Freeform27CRLCollaborationParticipant_cnContact) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform27CRLCollaborationParticipant_cnContact) = contact;
+  contactCopy = contact;
 }
 
-- (void)setIsFollowing:(id)a3
+- (void)setIsFollowing:(id)following
 {
-  v5 = a3;
-  v6 = self;
-  sub_1007D39D8(a3);
+  followingCopy = following;
+  selfCopy = self;
+  sub_1007D39D8(following);
 }
 
 - (NSSet)isFollowedBy
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   type metadata accessor for CRLCollaborationParticipant(0);
@@ -55,14 +55,14 @@
   return v4.super.isa;
 }
 
-- (void)setIsFollowedBy:(id)a3
+- (void)setIsFollowedBy:(id)by
 {
   type metadata accessor for CRLCollaborationParticipant(0);
   sub_1007E03E8(&qword_101A00E38, type metadata accessor for CRLCollaborationParticipant);
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
@@ -83,7 +83,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   type metadata accessor for CRLCollaboratorPresence();
@@ -92,22 +92,22 @@
   return v4.super.isa;
 }
 
-- (void)setPresences:(id)a3
+- (void)setPresences:(id)presences
 {
   type metadata accessor for CRLCollaboratorPresence();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
   sub_1007D40B4();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -116,7 +116,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1007D4BE0(v8);
@@ -125,20 +125,20 @@
   return v6;
 }
 
-- (void)removePresenceWith:(id)a3
+- (void)removePresenceWith:(id)with
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1007D5BB0(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (id)presenceWith:(id)a3
+- (id)presenceWith:(id)with
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -147,7 +147,7 @@
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getKeyPath();
   swift_getKeyPath();
-  v8 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   v12 = v7;
@@ -162,7 +162,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   if (v6 >> 62)
@@ -180,7 +180,7 @@
 
 - (_TtC8Freeform23CRLCollaboratorPresence)latestPresence
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D608C();
 
   return v3;
@@ -188,7 +188,7 @@
 
 - (_TtC8Freeform23CRLCollaboratorPresence)oldestPresence
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D63F0();
 
   return v3;
@@ -196,18 +196,18 @@
 
 - (_TtC8Freeform23CRLCollaboratorPresence)localPresence
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D6520();
 
   return v3;
 }
 
-- (void)populateContactInBackgroundWithCompletionHandler:(id)a3
+- (void)populateContactInBackgroundWithCompletionHandler:(id)handler
 {
   v5 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v5 - 8);
   v7 = &v15 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -220,12 +220,12 @@
     v9 = 0;
   }
 
-  v10 = self;
+  selfCopy = self;
   static TaskPriority.background.getter();
   v11 = type metadata accessor for TaskPriority();
   (*(*(v11 - 8) + 56))(v7, 0, 1, v11);
   type metadata accessor for MainActor();
-  v12 = v10;
+  v12 = selfCopy;
   sub_10067F2EC(v8);
   v13 = static MainActor.shared.getter();
   v14 = swift_allocObject();
@@ -241,15 +241,15 @@
 
 - (void)populateContactIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007D6930();
 }
 
 - (id)contact
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007D6930();
-  v3 = *(v2 + OBJC_IVAR____TtC8Freeform27CRLCollaborationParticipant_cnContact);
+  v3 = *(selfCopy + OBJC_IVAR____TtC8Freeform27CRLCollaborationParticipant_cnContact);
   v4 = v3;
 
   return v3;
@@ -257,7 +257,7 @@
 
 - (BOOL)isSelf
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D6C84();
 
   return v3 & 1;
@@ -268,7 +268,7 @@
   v3 = sub_1005B981C(&qword_101A0DE80);
   __chkstk_darwin(v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_1007D6EB8(v5);
 
   v7 = type metadata accessor for PersonNameComponents();
@@ -287,7 +287,7 @@
 
 - (NSString)personName
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007D778C();
   v4 = v3;
 
@@ -313,23 +313,23 @@
 
 - (int64_t)collaboratorColorIndex
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007D842C();
 
   return v3;
 }
 
-- (id)collaboratorColorForType:(int64_t)a3
+- (id)collaboratorColorForType:(int64_t)type
 {
-  v4 = self;
-  v5 = sub_1007D8530(a3);
+  selfCopy = self;
+  v5 = sub_1007D8530(type);
 
   return v5;
 }
 
 - (void)updateCachedCollaboratorColors
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007D8808();
 }
 

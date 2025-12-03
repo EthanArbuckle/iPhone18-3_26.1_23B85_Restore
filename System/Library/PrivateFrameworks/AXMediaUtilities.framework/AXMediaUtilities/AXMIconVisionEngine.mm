@@ -2,18 +2,18 @@
 + (id)sharedInstance;
 - (AXMBrailleEdgesDetectorNode)brailleEdgeDetector;
 - (AXMIconClassDetectorNode)iconClassDetector;
-- (AXMIconVisionEngine)initWithIdentifier:(id)a3;
+- (AXMIconVisionEngine)initWithIdentifier:(id)identifier;
 - (AXMImageNode)imageNode;
-- (id)classifyImages:(id)a3 withTimeout:(double)a4;
+- (id)classifyImages:(id)images withTimeout:(double)timeout;
 @end
 
 @implementation AXMIconVisionEngine
 
-- (AXMIconVisionEngine)initWithIdentifier:(id)a3
+- (AXMIconVisionEngine)initWithIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = AXMIconVisionEngine;
-  v3 = [(AXMVisionEngine *)&v8 initWithIdentifier:a3];
+  v3 = [(AXMVisionEngine *)&v8 initWithIdentifier:identifier];
   if (v3)
   {
     if ([(AXMVisionEngine *)v3 canAddSourceNodeClass:objc_opt_class()])
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __37__AXMIconVisionEngine_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -65,7 +65,7 @@ void __37__AXMIconVisionEngine_sharedInstance__block_invoke(uint64_t a1)
   sharedInstance__instance = v1;
 }
 
-- (id)classifyImages:(id)a3 withTimeout:(double)a4
+- (id)classifyImages:(id)images withTimeout:(double)timeout
 {
   v36 = *MEMORY[0x1E69E9840];
   v34[0] = 0;
@@ -78,15 +78,15 @@ void __37__AXMIconVisionEngine_sharedInstance__block_invoke(uint64_t a1)
   v31 = __Block_byref_object_copy__2;
   v32 = __Block_byref_object_dispose__2;
   v33 = 0;
-  v18 = a3;
-  if ([v18 count])
+  imagesCopy = images;
+  if ([imagesCopy count])
   {
     v6 = dispatch_group_create();
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v18;
+    obj = imagesCopy;
     v7 = [obj countByEnumeratingWithState:&v24 objects:v35 count:16];
     if (v7)
     {
@@ -104,11 +104,11 @@ void __37__AXMIconVisionEngine_sharedInstance__block_invoke(uint64_t a1)
           v11 = [MEMORY[0x1E695F658] imageWithData:v10];
           v12 = objc_alloc_init(AXMVisionAnalysisOptions);
           [(AXMVisionAnalysisOptions *)v12 setDetectIconClass:1];
-          v13 = [(AXMIconVisionEngine *)self imageNode];
-          [v13 setShouldProcessRemotely:1];
+          imageNode = [(AXMIconVisionEngine *)self imageNode];
+          [imageNode setShouldProcessRemotely:1];
 
           dispatch_group_enter(v6);
-          v14 = [(AXMIconVisionEngine *)self imageNode];
+          imageNode2 = [(AXMIconVisionEngine *)self imageNode];
           v20[0] = MEMORY[0x1E69E9820];
           v20[1] = 3221225472;
           v20[2] = __50__AXMIconVisionEngine_classifyImages_withTimeout___block_invoke;
@@ -116,7 +116,7 @@ void __37__AXMIconVisionEngine_sharedInstance__block_invoke(uint64_t a1)
           v22 = v34;
           v23 = &v28;
           v21 = v6;
-          [v14 triggerWithImage:v11 options:v12 cacheKey:v10 resultHandler:v20];
+          [imageNode2 triggerWithImage:v11 options:v12 cacheKey:v10 resultHandler:v20];
         }
 
         v7 = [obj countByEnumeratingWithState:&v24 objects:v35 count:16];
@@ -125,7 +125,7 @@ void __37__AXMIconVisionEngine_sharedInstance__block_invoke(uint64_t a1)
       while (v7);
     }
 
-    v15 = dispatch_time(0, (a4 * 1000000000.0));
+    v15 = dispatch_time(0, (timeout * 1000000000.0));
     dispatch_group_wait(v6, v15);
   }
 

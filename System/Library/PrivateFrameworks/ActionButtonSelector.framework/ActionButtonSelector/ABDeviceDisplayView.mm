@@ -1,8 +1,8 @@
 @interface ABDeviceDisplayView
-- (ABDeviceDisplayView)initWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (ABDeviceDisplayView)initWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)_resetSprings;
-- (void)_setSilentModeEnabled:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setSilentModeEnabled:(BOOL)enabled animated:(BOOL)animated;
 - (void)_shake;
 - (void)_transitionIslandToCompact;
 - (void)_transitionIslandToGrowing;
@@ -14,12 +14,12 @@
 
 @implementation ABDeviceDisplayView
 
-- (ABDeviceDisplayView)initWithFrame:(CGRect)a3
+- (ABDeviceDisplayView)initWithFrame:(CGRect)frame
 {
   v50[4] = *MEMORY[0x277D85DE8];
   v49.receiver = self;
   v49.super_class = ABDeviceDisplayView;
-  v3 = [(ABDeviceDisplayView *)&v49 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ABDeviceDisplayView *)&v49 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v45 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -30,8 +30,8 @@
     package = v3->_package;
     v3->_package = v5;
 
-    v7 = [(CAPackage *)v3->_package rootLayer];
-    [v7 setGeometryFlipped:1];
+    rootLayer = [(CAPackage *)v3->_package rootLayer];
+    [rootLayer setGeometryFlipped:1];
 
     v8 = [(CAPackage *)v3->_package publishedObjectWithName:@"island"];
     islandLayer = v3->_islandLayer;
@@ -113,9 +113,9 @@
     }
 
     [(CALayer *)v3->_islandLayer setPosition:v35, v37 + v39];
-    v40 = [(ABDeviceDisplayView *)v3 layer];
-    v41 = [(CAPackage *)v3->_package rootLayer];
-    [v40 addSublayer:v41];
+    layer = [(ABDeviceDisplayView *)v3 layer];
+    rootLayer2 = [(CAPackage *)v3->_package rootLayer];
+    [layer addSublayer:rootLayer2];
 
     objc_destroyWeak(&v47);
     objc_destroyWeak(&location);
@@ -131,9 +131,9 @@ void __37__ABDeviceDisplayView_initWithFrame___block_invoke(uint64_t a1)
   [WeakRetained setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(CAPackage *)self->_package rootLayer:a3.width];
+  v3 = [(CAPackage *)self->_package rootLayer:fits.width];
   [v3 bounds];
   v5 = v4;
   v7 = v6;
@@ -150,13 +150,13 @@ void __37__ABDeviceDisplayView_initWithFrame___block_invoke(uint64_t a1)
   v27.receiver = self;
   v27.super_class = ABDeviceDisplayView;
   [(ABDeviceDisplayView *)&v27 layoutSubviews];
-  v3 = [MEMORY[0x277CD9FF0] disableActions];
+  disableActions = [MEMORY[0x277CD9FF0] disableActions];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   [(ABDeviceDisplayView *)self bounds];
   v5 = v4 * 0.5;
   v7 = v6 * 0.5;
-  v8 = [(CAPackage *)self->_package rootLayer];
-  [v8 setPosition:{v5, v7}];
+  rootLayer = [(CAPackage *)self->_package rootLayer];
+  [rootLayer setPosition:{v5, v7}];
 
   [(ABFloatSpringProperty *)self->_islandWidth output];
   v10 = v9;
@@ -190,7 +190,7 @@ void __37__ABDeviceDisplayView_initWithFrame___block_invoke(uint64_t a1)
     [(CALayer *)self->_ringerLayer setPosition:v23 * v26 * 0.5 + (v12 - v23 * v26) * 0.5, v12 * 0.5];
   }
 
-  [MEMORY[0x277CD9FF0] setDisableActions:v3];
+  [MEMORY[0x277CD9FF0] setDisableActions:disableActions];
 }
 
 - (void)_resetSprings
@@ -207,12 +207,12 @@ void __37__ABDeviceDisplayView_initWithFrame___block_invoke(uint64_t a1)
   [(ABFloatSpringProperty *)ringerVisible setOutput:?];
 }
 
-- (void)_setSilentModeEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)_setSilentModeEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_isSilentModeEnabled = a3;
+  animatedCopy = animated;
+  self->_isSilentModeEnabled = enabled;
   ringerLayer = self->_ringerLayer;
-  if (a3)
+  if (enabled)
   {
     v7 = @"silent";
   }
@@ -225,14 +225,14 @@ void __37__ABDeviceDisplayView_initWithFrame___block_invoke(uint64_t a1)
   v8 = [(CALayer *)ringerLayer stateWithName:v7];
   v9 = self->_ringerLayer;
   v10 = 0.0;
-  if (v4)
+  if (animatedCopy)
   {
     *&v10 = 1.0;
   }
 
   v12 = v8;
   [CAStateController setState:"setState:ofLayer:transitionSpeed:" ofLayer:v10 transitionSpeed:?];
-  if (self->_isSilentModeEnabled && v4)
+  if (self->_isSilentModeEnabled && animatedCopy)
   {
     [(ABDeviceDisplayView *)self _shake];
   }

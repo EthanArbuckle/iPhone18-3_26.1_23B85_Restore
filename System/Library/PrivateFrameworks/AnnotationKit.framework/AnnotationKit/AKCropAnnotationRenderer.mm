@@ -1,27 +1,27 @@
 @interface AKCropAnnotationRenderer
-+ (BOOL)_shouldUseRoundedCorner:(int64_t)a3 forAnnotation:(id)a4 withPageController:(id)a5;
-+ (CGPath)_newClipMaskEOPathForAnnotation:(id)a3 withPageController:(id)a4;
-+ (CGPath)_newRectanglePathForAnnotation:(id)a3 withPageController:(id)a4 outLineWidth:(double *)a5;
-+ (CGPath)cropHandle:(int64_t)a3 forAnnotation:(id)a4 withPageController:(id)a5;
-+ (CGPath)newBottomEdgePathForAnnotation:(id)a3 withPageController:(id)a4;
-+ (CGPath)newBottomLeftCornerPathForAnnotation:(id)a3 withPageController:(id)a4;
-+ (CGPath)newBottomRightCornerPathForAnnotation:(id)a3 withPageController:(id)a4;
-+ (CGPath)newLeftEdgePathForAnnotation:(id)a3 withPageController:(id)a4;
-+ (CGPath)newRightEdgePathForAnnotation:(id)a3 withPageController:(id)a4;
-+ (CGPath)newTopEdgePathForAnnotation:(id)a3 withPageController:(id)a4;
-+ (CGPath)newTopLeftCornerPathForAnnotation:(id)a3 withPageController:(id)a4;
-+ (CGPath)newTopRightCornerPathForAnnotation:(id)a3 withPageController:(id)a4;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_addCurvedCornerToPath:(CGPath *)a3 cornerType:(int64_t)a4 cornerPoint:(CGPoint)a5 cornerRadius:(double)a6 handleInside:(double)a7 handleOutside:(double)a8 handleWidth:(double)a9;
-+ (void)_addStraightCornerToPath:(CGPath *)a3 cornerType:(int64_t)a4 cornerPoint:(CGPoint)a5 handleInside:(double)a6 handleOutside:(double)a7 handleWidth:(double)a8;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
-+ (void)_pixelAlignedBaseRect:(CGRect *)a3 interiorRect:(CGRect *)a4 scaleFactor:(double *)a5 forAnnotation:(id)a6 withPageController:(id)a7;
++ (BOOL)_shouldUseRoundedCorner:(int64_t)corner forAnnotation:(id)annotation withPageController:(id)controller;
++ (CGPath)_newClipMaskEOPathForAnnotation:(id)annotation withPageController:(id)controller;
++ (CGPath)_newRectanglePathForAnnotation:(id)annotation withPageController:(id)controller outLineWidth:(double *)width;
++ (CGPath)cropHandle:(int64_t)handle forAnnotation:(id)annotation withPageController:(id)controller;
++ (CGPath)newBottomEdgePathForAnnotation:(id)annotation withPageController:(id)controller;
++ (CGPath)newBottomLeftCornerPathForAnnotation:(id)annotation withPageController:(id)controller;
++ (CGPath)newBottomRightCornerPathForAnnotation:(id)annotation withPageController:(id)controller;
++ (CGPath)newLeftEdgePathForAnnotation:(id)annotation withPageController:(id)controller;
++ (CGPath)newRightEdgePathForAnnotation:(id)annotation withPageController:(id)controller;
++ (CGPath)newTopEdgePathForAnnotation:(id)annotation withPageController:(id)controller;
++ (CGPath)newTopLeftCornerPathForAnnotation:(id)annotation withPageController:(id)controller;
++ (CGPath)newTopRightCornerPathForAnnotation:(id)annotation withPageController:(id)controller;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_addCurvedCornerToPath:(CGPath *)path cornerType:(int64_t)type cornerPoint:(CGPoint)point cornerRadius:(double)radius handleInside:(double)inside handleOutside:(double)outside handleWidth:(double)width;
++ (void)_addStraightCornerToPath:(CGPath *)path cornerType:(int64_t)type cornerPoint:(CGPoint)point handleInside:(double)inside handleOutside:(double)outside handleWidth:(double)width;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
++ (void)_pixelAlignedBaseRect:(CGRect *)rect interiorRect:(CGRect *)interiorRect scaleFactor:(double *)factor forAnnotation:(id)annotation withPageController:(id)controller;
 @end
 
 @implementation AKCropAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF390];
   v4 = *(MEMORY[0x277CBF390] + 8);
@@ -34,7 +34,7 @@
   return result;
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -43,49 +43,49 @@
   return result;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (([v10 hidden] & 1) == 0)
+  annotationCopy = annotation;
+  optionsCopy = options;
+  nilCopy = nil;
+  if (([annotationCopy hidden] & 1) == 0)
   {
-    CGContextSaveGState(a4);
-    [a1 _transformContextToModelCoordinates:a4 forAnnotation:v10 forDisplay:objc_msgSend(v11 pageControllerOrNil:{"forDisplay"), v12}];
+    CGContextSaveGState(context);
+    [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:objc_msgSend(optionsCopy pageControllerOrNil:{"forDisplay"), nilCopy}];
     v24 = 1.0;
-    [a1 _pixelAlignedBaseRect:0 interiorRect:0 scaleFactor:&v24 forAnnotation:v10 withPageController:v12];
-    [v10 rectangle];
+    [self _pixelAlignedBaseRect:0 interiorRect:0 scaleFactor:&v24 forAnnotation:annotationCopy withPageController:nilCopy];
+    [annotationCopy rectangle];
     if (CGRectIsInfinite(v41))
     {
-      v13 = [v12 controller];
-      v14 = [v13 undoController];
-      v15 = [v14 undoManager];
+      controller = [nilCopy controller];
+      undoController = [controller undoController];
+      undoManager = [undoController undoManager];
 
-      v16 = [v15 isUndoRegistrationEnabled];
-      if (v16)
+      isUndoRegistrationEnabled = [undoManager isUndoRegistrationEnabled];
+      if (isUndoRegistrationEnabled)
       {
-        [v15 disableUndoRegistration];
+        [undoManager disableUndoRegistration];
       }
 
-      [v12 maxPageRect];
-      [v10 setRectangle:?];
-      if (v16)
+      [nilCopy maxPageRect];
+      [annotationCopy setRectangle:?];
+      if (isUndoRegistrationEnabled)
       {
-        [v15 enableUndoRegistration];
+        [undoManager enableUndoRegistration];
       }
     }
 
-    v17 = [a1 _newClipMaskEOPathForAnnotation:v10 withPageController:v12];
+    v17 = [self _newClipMaskEOPathForAnnotation:annotationCopy withPageController:nilCopy];
     v18 = [MEMORY[0x277D75348] akColorWithWhite:0.2 alpha:0.8];
-    CGContextSetFillColorWithColor(a4, [v18 CGColor]);
+    CGContextSetFillColorWithColor(context, [v18 CGColor]);
 
-    CGContextAddPath(a4, v17);
-    CGContextEOFillPath(a4);
+    CGContextAddPath(context, v17);
+    CGContextEOFillPath(context);
     CGPathRelease(v17);
-    if ([v10 isDraggingHandle])
+    if ([annotationCopy isDraggingHandle])
     {
-      [v10 rectangle];
+      [annotationCopy rectangle];
       points.x = v20;
       points.y = v21 + v19 / 3.0;
       v26 = v20 + v22;
@@ -102,63 +102,63 @@
       v37 = v21 + v19;
       v38 = v36;
       v39 = v21;
-      CGContextSetStrokeColorWithColor(a4, [v10 color]);
-      CGContextSetLineWidth(a4, 1.0 / v24);
-      CGContextStrokeLineSegments(a4, &points, 8uLL);
+      CGContextSetStrokeColorWithColor(context, [annotationCopy color]);
+      CGContextSetLineWidth(context, 1.0 / v24);
+      CGContextStrokeLineSegments(context, &points, 8uLL);
     }
 
-    if ([v10 cropApplied] && (objc_msgSend(v10, "showHandles") & 1) == 0)
+    if ([annotationCopy cropApplied] && (objc_msgSend(annotationCopy, "showHandles") & 1) == 0)
     {
       points.x = 1.0;
-      v23 = [a1 _newRectanglePathForAnnotation:v10 withPageController:v12 outLineWidth:&points];
-      CGContextSetStrokeColorWithColor(a4, [v10 color]);
-      CGContextSetLineWidth(a4, points.x);
-      CGContextSetLineJoin(a4, kCGLineJoinMiter);
-      CGContextAddPath(a4, v23);
-      CGContextStrokePath(a4);
+      v23 = [self _newRectanglePathForAnnotation:annotationCopy withPageController:nilCopy outLineWidth:&points];
+      CGContextSetStrokeColorWithColor(context, [annotationCopy color]);
+      CGContextSetLineWidth(context, points.x);
+      CGContextSetLineJoin(context, kCGLineJoinMiter);
+      CGContextAddPath(context, v23);
+      CGContextStrokePath(context);
       CGPathRelease(v23);
     }
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
-+ (CGPath)cropHandle:(int64_t)a3 forAnnotation:(id)a4 withPageController:(id)a5
++ (CGPath)cropHandle:(int64_t)handle forAnnotation:(id)annotation withPageController:(id)controller
 {
-  v8 = a4;
-  v9 = a5;
+  annotationCopy = annotation;
+  controllerCopy = controller;
   *&v85 = 1.0;
   v10 = *(MEMORY[0x277CBF3A0] + 16);
   v84.origin = *MEMORY[0x277CBF3A0];
   v84.size = v10;
-  [a1 _pixelAlignedBaseRect:&v84 interiorRect:0 scaleFactor:&v85 forAnnotation:v8 withPageController:v9];
+  [self _pixelAlignedBaseRect:&v84 interiorRect:0 scaleFactor:&v85 forAnnotation:annotationCopy withPageController:controllerCopy];
   origin = v84.origin;
   v12 = v84.origin.y + v84.size.height;
   v13 = v84.origin.x + v84.size.width;
-  [v9 convertPointFromModelToOverlay:*&v84.origin];
+  [controllerCopy convertPointFromModelToOverlay:*&v84.origin];
   v15 = v14;
   y = v16;
-  [v9 convertPointFromModelToOverlay:{origin.x, v12}];
+  [controllerCopy convertPointFromModelToOverlay:{origin.x, v12}];
   v18 = v17;
   v20 = v19;
-  [v9 convertPointFromModelToOverlay:{v13, origin.y}];
+  [controllerCopy convertPointFromModelToOverlay:{v13, origin.y}];
   v22 = v21;
   v82 = v23;
-  [v9 convertPointFromModelToOverlay:{v13, v12}];
+  [controllerCopy convertPointFromModelToOverlay:{v13, v12}];
   v25 = v24;
   v27 = v26;
   Mutable = CGPathCreateMutable();
   v29 = *&v85;
-  [v9 maxPageRect];
-  if (a3 > 3)
+  [controllerCopy maxPageRect];
+  if (handle > 3)
   {
     v76 = v31;
     v77 = v32;
     v78 = v33;
     v38 = 1.0 / v29;
-    if (a3 > 5)
+    if (handle > 5)
     {
-      if (a3 == 6)
+      if (handle == 6)
       {
         v65 = v30;
         v80 = 19.0 / v29;
@@ -166,7 +166,7 @@
         v79 = 5.0 / v29;
         v40 = v15 - v38;
         v41 = y - v38;
-        if ([a1 _shouldUseRoundedCorner:6 forAnnotation:v8 withPageController:v9])
+        if ([self _shouldUseRoundedCorner:6 forAnnotation:annotationCopy withPageController:controllerCopy])
         {
           MinX = CGRectGetMinX(v84);
           v92.origin.x = v65;
@@ -196,19 +196,19 @@
             v47 = v70;
           }
 
-          v48 = a1;
+          selfCopy7 = self;
           v49 = Mutable;
           v50 = 6;
           goto LABEL_43;
         }
 
-        v71 = a1;
+        selfCopy8 = self;
         v72 = Mutable;
         v73 = 6;
         goto LABEL_48;
       }
 
-      if (a3 != 7)
+      if (handle != 7)
       {
         goto LABEL_51;
       }
@@ -219,7 +219,7 @@
       v79 = 5.0 / v29;
       v52 = v22 + origin.x;
       v41 = v82 - origin.x;
-      if ([a1 _shouldUseRoundedCorner:7 forAnnotation:v8 withPageController:v9])
+      if ([self _shouldUseRoundedCorner:7 forAnnotation:annotationCopy withPageController:controllerCopy])
       {
         v88.origin.x = v51;
         v88.origin.y = v76;
@@ -249,14 +249,14 @@
           v47 = v57;
         }
 
-        v48 = a1;
+        selfCopy7 = self;
         v49 = Mutable;
         v50 = 7;
         v58 = v52;
         goto LABEL_44;
       }
 
-      v71 = a1;
+      selfCopy8 = self;
       v72 = Mutable;
       v73 = 7;
       v74 = v52;
@@ -264,7 +264,7 @@
 
     else
     {
-      if (a3 != 4)
+      if (handle != 4)
       {
         v39 = v30;
         v80 = 19.0 / v29;
@@ -272,7 +272,7 @@
         v79 = 5.0 / v29;
         v40 = v25 + v38;
         v41 = v27 + v38;
-        if ([a1 _shouldUseRoundedCorner:5 forAnnotation:v8 withPageController:v9])
+        if ([self _shouldUseRoundedCorner:5 forAnnotation:annotationCopy withPageController:controllerCopy])
         {
           v86.origin.x = v39;
           v86.origin.y = v76;
@@ -302,17 +302,17 @@
             v47 = v46;
           }
 
-          v48 = a1;
+          selfCopy7 = self;
           v49 = Mutable;
           v50 = 5;
 LABEL_43:
           v58 = v40;
 LABEL_44:
-          [v48 _addCurvedCornerToPath:v49 cornerType:v50 cornerPoint:v58 cornerRadius:v41 handleInside:v47 handleOutside:v80 handleWidth:v81];
+          [selfCopy7 _addCurvedCornerToPath:v49 cornerType:v50 cornerPoint:v58 cornerRadius:v41 handleInside:v47 handleOutside:v80 handleWidth:v81];
           goto LABEL_51;
         }
 
-        v71 = a1;
+        selfCopy8 = self;
         v72 = Mutable;
         v73 = 5;
 LABEL_48:
@@ -325,7 +325,7 @@ LABEL_48:
       v81 = 24.0 / v29;
       v79 = 5.0 / v29;
       v41 = v20 + v38;
-      if ([a1 _shouldUseRoundedCorner:4 forAnnotation:v8 withPageController:v9])
+      if ([self _shouldUseRoundedCorner:4 forAnnotation:annotationCopy withPageController:controllerCopy])
       {
         v60 = CGRectGetMinX(v84);
         v90.origin.x = v59;
@@ -355,28 +355,28 @@ LABEL_48:
           v47 = v64;
         }
 
-        v48 = a1;
+        selfCopy7 = self;
         v49 = Mutable;
         v50 = 4;
         v58 = v18 - v38;
         goto LABEL_44;
       }
 
-      v71 = a1;
+      selfCopy8 = self;
       v72 = Mutable;
       v73 = 4;
       v74 = v18 - v38;
     }
 
 LABEL_50:
-    [v71 _addStraightCornerToPath:v72 cornerType:v73 cornerPoint:v74 handleInside:v41 handleOutside:v80 handleWidth:{v81, v79}];
+    [selfCopy8 _addStraightCornerToPath:v72 cornerType:v73 cornerPoint:v74 handleInside:v41 handleOutside:v80 handleWidth:{v81, v79}];
     goto LABEL_51;
   }
 
   v34 = 23.0 / v29;
-  if (a3 > 1)
+  if (handle > 1)
   {
-    if (a3 == 2)
+    if (handle == 2)
     {
       CGPathMoveToPoint(Mutable, 0, v18 + v34, v20);
       v37 = v25 - v34;
@@ -395,7 +395,7 @@ LABEL_50:
     goto LABEL_35;
   }
 
-  if (!a3)
+  if (!handle)
   {
     CGPathMoveToPoint(Mutable, 0, v18, v20 - v34);
     v35 = y + v34;
@@ -404,7 +404,7 @@ LABEL_50:
     goto LABEL_35;
   }
 
-  if (a3 == 1)
+  if (handle == 1)
   {
     CGPathMoveToPoint(Mutable, 0, v25, v27 - origin.x);
     v35 = v82 + origin.x;
@@ -419,7 +419,7 @@ LABEL_51:
   return Mutable;
 }
 
-+ (CGPath)newLeftEdgePathForAnnotation:(id)a3 withPageController:(id)a4
++ (CGPath)newLeftEdgePathForAnnotation:(id)annotation withPageController:(id)controller
 {
   *&v14 = 1.0;
   v4 = *(MEMORY[0x277CBF3A0] + 16);
@@ -427,7 +427,7 @@ LABEL_51:
   v13.size = v4;
   v12.origin = v13.origin;
   v12.size = v4;
-  [a1 _pixelAlignedBaseRect:&v13 interiorRect:&v12 scaleFactor:&v14 forAnnotation:a3 withPageController:a4];
+  [self _pixelAlignedBaseRect:&v13 interiorRect:&v12 scaleFactor:&v14 forAnnotation:annotation withPageController:controller];
   v5 = *&v14;
   v6 = 20.0 / v5 + 20.0 / v5;
   v7 = CGRectGetHeight(v12) + -20.0;
@@ -453,7 +453,7 @@ LABEL_51:
   return CGPathCreateWithRect(v15, 0);
 }
 
-+ (CGPath)newRightEdgePathForAnnotation:(id)a3 withPageController:(id)a4
++ (CGPath)newRightEdgePathForAnnotation:(id)annotation withPageController:(id)controller
 {
   v14 = 0x3FF0000000000000;
   v4 = *(MEMORY[0x277CBF3A0] + 16);
@@ -461,7 +461,7 @@ LABEL_51:
   v13.size = v4;
   v12.origin = v13.origin;
   v12.size = v4;
-  [a1 _pixelAlignedBaseRect:&v13 interiorRect:&v12 scaleFactor:&v14 forAnnotation:a3 withPageController:a4];
+  [self _pixelAlignedBaseRect:&v13 interiorRect:&v12 scaleFactor:&v14 forAnnotation:annotation withPageController:controller];
   v5 = *&v14;
   v6 = 20.0 / v5 + 20.0 / v5;
   v7 = CGRectGetHeight(v12) + -20.0;
@@ -487,7 +487,7 @@ LABEL_51:
   return CGPathCreateWithRect(v15, 0);
 }
 
-+ (CGPath)newBottomEdgePathForAnnotation:(id)a3 withPageController:(id)a4
++ (CGPath)newBottomEdgePathForAnnotation:(id)annotation withPageController:(id)controller
 {
   *&v14 = 1.0;
   v4 = *(MEMORY[0x277CBF3A0] + 16);
@@ -495,7 +495,7 @@ LABEL_51:
   v13.size = v4;
   v12.origin = v13.origin;
   v12.size = v4;
-  [a1 _pixelAlignedBaseRect:&v13 interiorRect:&v12 scaleFactor:&v14 forAnnotation:a3 withPageController:a4];
+  [self _pixelAlignedBaseRect:&v13 interiorRect:&v12 scaleFactor:&v14 forAnnotation:annotation withPageController:controller];
   v5 = *&v14;
   v6 = 20.0 / v5 + 20.0 / v5;
   v7 = CGRectGetWidth(v12) + -20.0;
@@ -521,7 +521,7 @@ LABEL_51:
   return CGPathCreateWithRect(v15, 0);
 }
 
-+ (CGPath)newTopEdgePathForAnnotation:(id)a3 withPageController:(id)a4
++ (CGPath)newTopEdgePathForAnnotation:(id)annotation withPageController:(id)controller
 {
   v14 = 0x3FF0000000000000;
   v4 = *(MEMORY[0x277CBF3A0] + 16);
@@ -529,7 +529,7 @@ LABEL_51:
   v13.size = v4;
   v12.origin = v13.origin;
   v12.size = v4;
-  [a1 _pixelAlignedBaseRect:&v13 interiorRect:&v12 scaleFactor:&v14 forAnnotation:a3 withPageController:a4];
+  [self _pixelAlignedBaseRect:&v13 interiorRect:&v12 scaleFactor:&v14 forAnnotation:annotation withPageController:controller];
   v5 = *&v14;
   v6 = 20.0 / v5 + 20.0 / v5;
   v7 = CGRectGetWidth(v12) + -20.0;
@@ -555,7 +555,7 @@ LABEL_51:
   return CGPathCreateWithRect(v15, 0);
 }
 
-+ (CGPath)newTopLeftCornerPathForAnnotation:(id)a3 withPageController:(id)a4
++ (CGPath)newTopLeftCornerPathForAnnotation:(id)annotation withPageController:(id)controller
 {
   v26 = 1.0;
   v4 = *(MEMORY[0x277CBF3A0] + 16);
@@ -563,7 +563,7 @@ LABEL_51:
   v25.size = v4;
   v24.origin = v25.origin;
   v24.size = v4;
-  [a1 _pixelAlignedBaseRect:&v25 interiorRect:&v24 scaleFactor:&v26 forAnnotation:a3 withPageController:a4];
+  [self _pixelAlignedBaseRect:&v25 interiorRect:&v24 scaleFactor:&v26 forAnnotation:annotation withPageController:controller];
   v5 = 4.0 / v26;
   MinX = CGRectGetMinX(v25);
   v7 = CGRectGetMaxY(v25) - v5;
@@ -605,7 +605,7 @@ LABEL_51:
   return Mutable;
 }
 
-+ (CGPath)newTopRightCornerPathForAnnotation:(id)a3 withPageController:(id)a4
++ (CGPath)newTopRightCornerPathForAnnotation:(id)annotation withPageController:(id)controller
 {
   v26 = 1.0;
   v4 = *(MEMORY[0x277CBF3A0] + 16);
@@ -613,7 +613,7 @@ LABEL_51:
   v25.size = v4;
   v24.origin = v25.origin;
   v24.size = v4;
-  [a1 _pixelAlignedBaseRect:&v25 interiorRect:&v24 scaleFactor:&v26 forAnnotation:a3 withPageController:a4];
+  [self _pixelAlignedBaseRect:&v25 interiorRect:&v24 scaleFactor:&v26 forAnnotation:annotation withPageController:controller];
   v5 = 4.0 / v26;
   MaxX = CGRectGetMaxX(v24);
   v7 = CGRectGetMaxY(v25) - v5;
@@ -655,7 +655,7 @@ LABEL_51:
   return Mutable;
 }
 
-+ (CGPath)newBottomLeftCornerPathForAnnotation:(id)a3 withPageController:(id)a4
++ (CGPath)newBottomLeftCornerPathForAnnotation:(id)annotation withPageController:(id)controller
 {
   v24 = 1.0;
   v4 = *(MEMORY[0x277CBF3A0] + 16);
@@ -663,7 +663,7 @@ LABEL_51:
   v23.size = v4;
   v22.origin = v23.origin;
   v22.size = v4;
-  [a1 _pixelAlignedBaseRect:&v23 interiorRect:&v22 scaleFactor:&v24 forAnnotation:a3 withPageController:a4];
+  [self _pixelAlignedBaseRect:&v23 interiorRect:&v22 scaleFactor:&v24 forAnnotation:annotation withPageController:controller];
   v5 = 4.0 / v24;
   MinX = CGRectGetMinX(v23);
   MinY = CGRectGetMinY(v23);
@@ -703,7 +703,7 @@ LABEL_51:
   return Mutable;
 }
 
-+ (CGPath)newBottomRightCornerPathForAnnotation:(id)a3 withPageController:(id)a4
++ (CGPath)newBottomRightCornerPathForAnnotation:(id)annotation withPageController:(id)controller
 {
   v24 = 1.0;
   v4 = *(MEMORY[0x277CBF3A0] + 16);
@@ -711,7 +711,7 @@ LABEL_51:
   v23.size = v4;
   v22.origin = v23.origin;
   v22.size = v4;
-  [a1 _pixelAlignedBaseRect:&v23 interiorRect:&v22 scaleFactor:&v24 forAnnotation:a3 withPageController:a4];
+  [self _pixelAlignedBaseRect:&v23 interiorRect:&v22 scaleFactor:&v24 forAnnotation:annotation withPageController:controller];
   v5 = 4.0 / v24;
   MaxX = CGRectGetMaxX(v22);
   MinY = CGRectGetMinY(v23);
@@ -751,24 +751,24 @@ LABEL_51:
   return Mutable;
 }
 
-+ (BOOL)_shouldUseRoundedCorner:(int64_t)a3 forAnnotation:(id)a4 withPageController:(id)a5
++ (BOOL)_shouldUseRoundedCorner:(int64_t)corner forAnnotation:(id)annotation withPageController:(id)controller
 {
-  v8 = a4;
-  v9 = a5;
-  if (([v8 isDraggingHandle] & 1) == 0)
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  if (([annotationCopy isDraggingHandle] & 1) == 0)
   {
-    v11 = [v9 overlayView];
-    v12 = [v11 superview];
-    v13 = [v12 superview];
+    overlayView = [controllerCopy overlayView];
+    superview = [overlayView superview];
+    v12Superview = [superview superview];
 
-    if (v13)
+    if (v12Superview)
     {
-      v14 = [v13 layer];
-      if (v14)
+      layer = [v12Superview layer];
+      if (layer)
       {
-        v15 = v14;
-        v16 = [v13 layer];
-        [v16 cornerRadius];
+        v15 = layer;
+        layer2 = [v12Superview layer];
+        [layer2 cornerRadius];
         v18 = v17;
 
         if (v18 == 0.0)
@@ -781,12 +781,12 @@ LABEL_21:
       }
     }
 
-    [v8 rectangle];
+    [annotationCopy rectangle];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    [v9 maxPageRect];
+    [controllerCopy maxPageRect];
     v28 = v27;
     v30 = v29;
     v32 = v31;
@@ -795,13 +795,13 @@ LABEL_21:
     v35 = *(MEMORY[0x277CBF3A0] + 16);
     v50[0] = *MEMORY[0x277CBF3A0];
     v50[1] = v35;
-    [a1 _pixelAlignedBaseRect:v50 interiorRect:0 scaleFactor:&v51 forAnnotation:v8 withPageController:v9];
+    [self _pixelAlignedBaseRect:v50 interiorRect:0 scaleFactor:&v51 forAnnotation:annotationCopy withPageController:controllerCopy];
     v10 = 0;
     v48 = 16.0 / v51;
     v49 = 5.0 / v51;
-    if (a3 > 5)
+    if (corner > 5)
     {
-      if (a3 == 6)
+      if (corner == 6)
       {
         v60.origin.x = v20;
         v60.origin.y = v22;
@@ -817,7 +817,7 @@ LABEL_21:
 
       else
       {
-        if (a3 != 7)
+        if (corner != 7)
         {
           goto LABEL_21;
         }
@@ -849,7 +849,7 @@ LABEL_21:
 
     else
     {
-      if (a3 == 4)
+      if (corner == 4)
       {
         v56.origin.x = v20;
         v56.origin.y = v22;
@@ -865,7 +865,7 @@ LABEL_21:
 
       else
       {
-        if (a3 != 5)
+        if (corner != 5)
         {
           goto LABEL_21;
         }
@@ -913,207 +913,207 @@ LABEL_22:
   return v10;
 }
 
-+ (void)_addStraightCornerToPath:(CGPath *)a3 cornerType:(int64_t)a4 cornerPoint:(CGPoint)a5 handleInside:(double)a6 handleOutside:(double)a7 handleWidth:(double)a8
++ (void)_addStraightCornerToPath:(CGPath *)path cornerType:(int64_t)type cornerPoint:(CGPoint)point handleInside:(double)inside handleOutside:(double)outside handleWidth:(double)width
 {
-  if (a4 > 5)
+  if (type > 5)
   {
-    if (a4 != 6)
+    if (type != 6)
     {
-      if (a4 != 7)
+      if (type != 7)
       {
         return;
       }
 
-      v19 = a5.x - a8;
-      v20 = a5.y + a8;
-      CGPathMoveToPoint(a3, 0, a5.x - a8, a5.y + a8);
-      v21 = v20 + a6;
-      CGPathAddLineToPoint(a3, 0, v19, v21);
-      v22 = v19 + a8;
-      CGPathAddLineToPoint(a3, 0, v22, v21);
-      v23 = v21 - a7;
-      CGPathAddLineToPoint(a3, 0, v22, v23);
-      v17 = v22 - a7;
-      CGPathAddLineToPoint(a3, 0, v17, v23);
-      v18 = v23 + a8;
+      v19 = point.x - width;
+      v20 = point.y + width;
+      CGPathMoveToPoint(path, 0, point.x - width, point.y + width);
+      v21 = v20 + inside;
+      CGPathAddLineToPoint(path, 0, v19, v21);
+      v22 = v19 + width;
+      CGPathAddLineToPoint(path, 0, v22, v21);
+      v23 = v21 - outside;
+      CGPathAddLineToPoint(path, 0, v22, v23);
+      v17 = v22 - outside;
+      CGPathAddLineToPoint(path, 0, v17, v23);
+      v18 = v23 + width;
       goto LABEL_8;
     }
 
-    v31 = a5.x + a8;
-    v32 = a5.y + a8;
-    CGPathMoveToPoint(a3, 0, a5.x + a8, a5.y + a8);
-    v33 = v32 + a6;
-    CGPathAddLineToPoint(a3, 0, v31, v33);
-    v34 = v31 - a8;
-    CGPathAddLineToPoint(a3, 0, v34, v33);
-    v35 = v33 - a7;
-    CGPathAddLineToPoint(a3, 0, v34, v35);
-    v30 = v34 + a7;
-    CGPathAddLineToPoint(a3, 0, v30, v35);
-    v18 = v35 + a8;
+    v31 = point.x + width;
+    v32 = point.y + width;
+    CGPathMoveToPoint(path, 0, point.x + width, point.y + width);
+    v33 = v32 + inside;
+    CGPathAddLineToPoint(path, 0, v31, v33);
+    v34 = v31 - width;
+    CGPathAddLineToPoint(path, 0, v34, v33);
+    v35 = v33 - outside;
+    CGPathAddLineToPoint(path, 0, v34, v35);
+    v30 = v34 + outside;
+    CGPathAddLineToPoint(path, 0, v30, v35);
+    v18 = v35 + width;
 LABEL_12:
-    CGPathAddLineToPoint(a3, 0, v30, v18);
-    v24 = v30 - a6;
+    CGPathAddLineToPoint(path, 0, v30, v18);
+    v24 = v30 - inside;
     goto LABEL_13;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
-    v25 = a5.x + a8;
-    v26 = a5.y - a8;
-    CGPathMoveToPoint(a3, 0, a5.x + a8, a5.y - a8);
-    v27 = v26 - a6;
-    CGPathAddLineToPoint(a3, 0, v25, v27);
-    v28 = v25 - a8;
-    CGPathAddLineToPoint(a3, 0, v28, v27);
-    v29 = v27 + a7;
-    CGPathAddLineToPoint(a3, 0, v28, v29);
-    v30 = v28 + a7;
-    CGPathAddLineToPoint(a3, 0, v30, v29);
-    v18 = v29 - a8;
+    v25 = point.x + width;
+    v26 = point.y - width;
+    CGPathMoveToPoint(path, 0, point.x + width, point.y - width);
+    v27 = v26 - inside;
+    CGPathAddLineToPoint(path, 0, v25, v27);
+    v28 = v25 - width;
+    CGPathAddLineToPoint(path, 0, v28, v27);
+    v29 = v27 + outside;
+    CGPathAddLineToPoint(path, 0, v28, v29);
+    v30 = v28 + outside;
+    CGPathAddLineToPoint(path, 0, v30, v29);
+    v18 = v29 - width;
     goto LABEL_12;
   }
 
-  if (a4 != 5)
+  if (type != 5)
   {
     return;
   }
 
-  v12 = a5.x - a8;
-  v13 = a5.y - a8;
-  CGPathMoveToPoint(a3, 0, a5.x - a8, a5.y - a8);
-  v14 = v13 - a6;
-  CGPathAddLineToPoint(a3, 0, v12, v14);
-  v15 = v12 + a8;
-  CGPathAddLineToPoint(a3, 0, v15, v14);
-  v16 = v14 + a7;
-  CGPathAddLineToPoint(a3, 0, v15, v16);
-  v17 = v15 - a7;
-  CGPathAddLineToPoint(a3, 0, v17, v16);
-  v18 = v16 - a8;
+  v12 = point.x - width;
+  v13 = point.y - width;
+  CGPathMoveToPoint(path, 0, point.x - width, point.y - width);
+  v14 = v13 - inside;
+  CGPathAddLineToPoint(path, 0, v12, v14);
+  v15 = v12 + width;
+  CGPathAddLineToPoint(path, 0, v15, v14);
+  v16 = v14 + outside;
+  CGPathAddLineToPoint(path, 0, v15, v16);
+  v17 = v15 - outside;
+  CGPathAddLineToPoint(path, 0, v17, v16);
+  v18 = v16 - width;
 LABEL_8:
-  CGPathAddLineToPoint(a3, 0, v17, v18);
-  v24 = v17 + a6;
+  CGPathAddLineToPoint(path, 0, v17, v18);
+  v24 = v17 + inside;
 LABEL_13:
 
-  CGPathAddLineToPoint(a3, 0, v24, v18);
+  CGPathAddLineToPoint(path, 0, v24, v18);
 }
 
-+ (void)_addCurvedCornerToPath:(CGPath *)a3 cornerType:(int64_t)a4 cornerPoint:(CGPoint)a5 cornerRadius:(double)a6 handleInside:(double)a7 handleOutside:(double)a8 handleWidth:(double)a9
++ (void)_addCurvedCornerToPath:(CGPath *)path cornerType:(int64_t)type cornerPoint:(CGPoint)point cornerRadius:(double)radius handleInside:(double)inside handleOutside:(double)outside handleWidth:(double)width
 {
-  v12 = a5.y;
-  x = a5.x;
-  if (a4 > 5)
+  v12 = point.y;
+  x = point.x;
+  if (type > 5)
   {
-    if (a4 != 6)
+    if (type != 6)
     {
-      if (a4 != 7)
+      if (type != 7)
       {
         return;
       }
 
-      y = a5.y + a8;
-      CGPathMoveToPoint(a3, 0, a5.x, a5.y + a8);
-      v24 = v12 + a6;
-      CGPathAddLineToPoint(a3, 0, x, v12 + a6);
-      CGPathAddArc(a3, 0, x - a6, v12 + a6, a6, 0.0, -1.57079633, 1);
-      v25 = x - a8;
-      CGPathAddLineToPoint(a3, 0, v25, v12);
-      v26 = v12 + a9;
-      CGPathAddLineToPoint(a3, 0, v25, v26);
-      CGPathAddLineToPoint(a3, 0, x - a7, v26);
-      v18 = a6 - a9;
-      v19 = a3;
-      v20 = x - a6;
+      y = point.y + outside;
+      CGPathMoveToPoint(path, 0, point.x, point.y + outside);
+      v24 = v12 + radius;
+      CGPathAddLineToPoint(path, 0, x, v12 + radius);
+      CGPathAddArc(path, 0, x - radius, v12 + radius, radius, 0.0, -1.57079633, 1);
+      v25 = x - outside;
+      CGPathAddLineToPoint(path, 0, v25, v12);
+      v26 = v12 + width;
+      CGPathAddLineToPoint(path, 0, v25, v26);
+      CGPathAddLineToPoint(path, 0, x - inside, v26);
+      v18 = radius - width;
+      pathCopy4 = path;
+      v20 = x - radius;
       v21 = v24;
       v22 = -1.57079633;
       v23 = 0;
       goto LABEL_8;
     }
 
-    y = a5.y + a8;
-    CGPathMoveToPoint(a3, 0, a5.x, a5.y + a8);
-    v37 = v12 + a6;
-    CGPathAddLineToPoint(a3, 0, x, v12 + a6);
-    CGPathAddArc(a3, 0, x + a6, v12 + a6, a6, 3.14159265, -1.57079633, 0);
-    v38 = x + a8;
-    CGPathAddLineToPoint(a3, 0, v38, v12);
-    v39 = v12 + a9;
-    CGPathAddLineToPoint(a3, 0, v38, v39);
-    CGPathAddLineToPoint(a3, 0, x + a7, v39);
-    v31 = a6 - a9;
-    v32 = a3;
-    v33 = x + a6;
+    y = point.y + outside;
+    CGPathMoveToPoint(path, 0, point.x, point.y + outside);
+    v37 = v12 + radius;
+    CGPathAddLineToPoint(path, 0, x, v12 + radius);
+    CGPathAddArc(path, 0, x + radius, v12 + radius, radius, 3.14159265, -1.57079633, 0);
+    v38 = x + outside;
+    CGPathAddLineToPoint(path, 0, v38, v12);
+    v39 = v12 + width;
+    CGPathAddLineToPoint(path, 0, v38, v39);
+    CGPathAddLineToPoint(path, 0, x + inside, v39);
+    v31 = radius - width;
+    pathCopy3 = path;
+    v33 = x + radius;
     v34 = v37;
     v35 = -1.57079633;
     v36 = 1;
 LABEL_12:
-    CGPathAddArc(v32, 0, v33, v34, v31, v35, 3.14159265, v36);
-    v27 = x + a9;
+    CGPathAddArc(pathCopy3, 0, v33, v34, v31, v35, 3.14159265, v36);
+    v27 = x + width;
     goto LABEL_13;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
-    y = a5.y - a8;
-    CGPathMoveToPoint(a3, 0, a5.x, a5.y - a8);
-    v28 = v12 - a6;
-    CGPathAddLineToPoint(a3, 0, x, v12 - a6);
-    CGPathAddArc(a3, 0, x + a6, v12 - a6, a6, 3.14159265, 1.57079633, 1);
-    v29 = x + a8;
-    CGPathAddLineToPoint(a3, 0, v29, v12);
-    v30 = v12 - a9;
-    CGPathAddLineToPoint(a3, 0, v29, v30);
-    CGPathAddLineToPoint(a3, 0, x + a7, v30);
-    v31 = a6 - a9;
-    v32 = a3;
-    v33 = x + a6;
+    y = point.y - outside;
+    CGPathMoveToPoint(path, 0, point.x, point.y - outside);
+    v28 = v12 - radius;
+    CGPathAddLineToPoint(path, 0, x, v12 - radius);
+    CGPathAddArc(path, 0, x + radius, v12 - radius, radius, 3.14159265, 1.57079633, 1);
+    v29 = x + outside;
+    CGPathAddLineToPoint(path, 0, v29, v12);
+    v30 = v12 - width;
+    CGPathAddLineToPoint(path, 0, v29, v30);
+    CGPathAddLineToPoint(path, 0, x + inside, v30);
+    v31 = radius - width;
+    pathCopy3 = path;
+    v33 = x + radius;
     v34 = v28;
     v35 = 1.57079633;
     v36 = 0;
     goto LABEL_12;
   }
 
-  if (a4 != 5)
+  if (type != 5)
   {
     return;
   }
 
-  y = a5.y - a8;
-  CGPathMoveToPoint(a3, 0, a5.x, a5.y - a8);
-  v15 = v12 - a6;
-  CGPathAddLineToPoint(a3, 0, x, v12 - a6);
-  CGPathAddArc(a3, 0, x - a6, v12 - a6, a6, 0.0, 1.57079633, 0);
-  v16 = x - a8;
-  CGPathAddLineToPoint(a3, 0, v16, v12);
-  v17 = v12 - a9;
-  CGPathAddLineToPoint(a3, 0, v16, v17);
-  CGPathAddLineToPoint(a3, 0, x - a7, v17);
-  v18 = a6 - a9;
-  v19 = a3;
-  v20 = x - a6;
+  y = point.y - outside;
+  CGPathMoveToPoint(path, 0, point.x, point.y - outside);
+  v15 = v12 - radius;
+  CGPathAddLineToPoint(path, 0, x, v12 - radius);
+  CGPathAddArc(path, 0, x - radius, v12 - radius, radius, 0.0, 1.57079633, 0);
+  v16 = x - outside;
+  CGPathAddLineToPoint(path, 0, v16, v12);
+  v17 = v12 - width;
+  CGPathAddLineToPoint(path, 0, v16, v17);
+  CGPathAddLineToPoint(path, 0, x - inside, v17);
+  v18 = radius - width;
+  pathCopy4 = path;
+  v20 = x - radius;
   v21 = v15;
   v22 = 1.57079633;
   v23 = 1;
 LABEL_8:
-  CGPathAddArc(v19, 0, v20, v21, v18, v22, 0.0, v23);
-  v27 = x - a9;
+  CGPathAddArc(pathCopy4, 0, v20, v21, v18, v22, 0.0, v23);
+  v27 = x - width;
 LABEL_13:
-  CGPathAddLineToPoint(a3, 0, v27, y);
+  CGPathAddLineToPoint(path, 0, v27, y);
 
-  CGPathCloseSubpath(a3);
+  CGPathCloseSubpath(path);
 }
 
-+ (CGPath)_newClipMaskEOPathForAnnotation:(id)a3 withPageController:(id)a4
++ (CGPath)_newClipMaskEOPathForAnnotation:(id)annotation withPageController:(id)controller
 {
   *&v68 = 1.0;
   v6 = *(MEMORY[0x277CBF3A0] + 16);
   rect_24.origin = *MEMORY[0x277CBF3A0];
   rect_24.size = v6;
-  v7 = a4;
-  v8 = a3;
-  [a1 _pixelAlignedBaseRect:&rect_24 interiorRect:0 scaleFactor:&v68 forAnnotation:v8 withPageController:v7];
-  [v7 maxPageRect];
+  controllerCopy = controller;
+  annotationCopy = annotation;
+  [self _pixelAlignedBaseRect:&rect_24 interiorRect:0 scaleFactor:&v68 forAnnotation:annotationCopy withPageController:controllerCopy];
+  [controllerCopy maxPageRect];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1125,17 +1125,17 @@ LABEL_13:
   v69.size.height = v16;
   CGPathAddRect(Mutable, 0, v69);
   v18 = *&v68;
-  [v7 maxPageRect];
+  [controllerCopy maxPageRect];
   v20 = v19;
   v22 = v21;
   rect_8 = v24;
   rect_16 = v23;
   origin = rect_24.origin;
   size = rect_24.size;
-  v27 = [a1 _shouldUseRoundedCorner:4 forAnnotation:v8 withPageController:v7];
-  v28 = [a1 _shouldUseRoundedCorner:5 forAnnotation:v8 withPageController:v7];
-  v29 = [a1 _shouldUseRoundedCorner:6 forAnnotation:v8 withPageController:v7];
-  v30 = [a1 _shouldUseRoundedCorner:7 forAnnotation:v8 withPageController:v7];
+  v27 = [self _shouldUseRoundedCorner:4 forAnnotation:annotationCopy withPageController:controllerCopy];
+  v28 = [self _shouldUseRoundedCorner:5 forAnnotation:annotationCopy withPageController:controllerCopy];
+  v29 = [self _shouldUseRoundedCorner:6 forAnnotation:annotationCopy withPageController:controllerCopy];
+  v30 = [self _shouldUseRoundedCorner:7 forAnnotation:annotationCopy withPageController:controllerCopy];
 
   if ((v27 & 1) != 0 || (v28 & 1) != 0 || (v29 & 1) != 0 || v30)
   {
@@ -1316,39 +1316,39 @@ LABEL_13:
   return Mutable;
 }
 
-+ (CGPath)_newRectanglePathForAnnotation:(id)a3 withPageController:(id)a4 outLineWidth:(double *)a5
++ (CGPath)_newRectanglePathForAnnotation:(id)annotation withPageController:(id)controller outLineWidth:(double *)width
 {
   v10 = 1.0;
   v6 = *(MEMORY[0x277CBF3A0] + 16);
   v9.origin = *MEMORY[0x277CBF3A0];
   v9.size = v6;
-  [a1 _pixelAlignedBaseRect:&v9 interiorRect:0 scaleFactor:&v10 forAnnotation:a3 withPageController:a4];
+  [self _pixelAlignedBaseRect:&v9 interiorRect:0 scaleFactor:&v10 forAnnotation:annotation withPageController:controller];
   v7 = 1.0 / v10;
   v9 = CGRectInset(v9, 1.0 / v10 * -0.5, 1.0 / v10 * -0.5);
   result = CGPathCreateWithRect(v9, 0);
-  *a5 = v7;
+  *width = v7;
   return result;
 }
 
-+ (void)_pixelAlignedBaseRect:(CGRect *)a3 interiorRect:(CGRect *)a4 scaleFactor:(double *)a5 forAnnotation:(id)a6 withPageController:(id)a7
++ (void)_pixelAlignedBaseRect:(CGRect *)rect interiorRect:(CGRect *)interiorRect scaleFactor:(double *)factor forAnnotation:(id)annotation withPageController:(id)controller
 {
-  v11 = a7;
-  [a6 rectangle];
+  controllerCopy = controller;
+  [annotation rectangle];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v11 geometryHelper];
-  [v20 screenPixelAlignedRectForRect:{v13, v15, v17, v19}];
+  geometryHelper = [controllerCopy geometryHelper];
+  [geometryHelper screenPixelAlignedRectForRect:{v13, v15, v17, v19}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
 
-  [v11 currentModelToScreenScaleFactor];
+  [controllerCopy currentModelToScreenScaleFactor];
   v30 = v29;
 
-  if (a4)
+  if (interiorRect)
   {
     v37.origin.x = v22;
     v37.origin.y = v24;
@@ -1379,7 +1379,7 @@ LABEL_13:
     v39.size.width = v26;
     v39.size.height = v28;
     v40 = CGRectInset(v39, v33 / v30, v36);
-    if (a3)
+    if (rect)
     {
       goto LABEL_7;
     }
@@ -1391,24 +1391,24 @@ LABEL_13:
     v40.size.width = 0.0;
     v40.origin.y = 0.0;
     v40.origin.x = 0.0;
-    if (a3)
+    if (rect)
     {
 LABEL_7:
-      a3->origin.x = v22;
-      a3->origin.y = v24;
-      a3->size.width = v26;
-      a3->size.height = v28;
+      rect->origin.x = v22;
+      rect->origin.y = v24;
+      rect->size.width = v26;
+      rect->size.height = v28;
     }
   }
 
-  if (a4)
+  if (interiorRect)
   {
-    *a4 = v40;
+    *interiorRect = v40;
   }
 
-  if (a5)
+  if (factor)
   {
-    *a5 = v30;
+    *factor = v30;
   }
 }
 

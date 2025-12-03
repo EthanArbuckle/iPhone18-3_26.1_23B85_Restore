@@ -1,17 +1,17 @@
 @interface _SFAuthenticatedEncryptionOperation
 + (id)_defaultEncryptionOperation;
 - (_SFAuthenticatedEncryptionOperation)init;
-- (_SFAuthenticatedEncryptionOperation)initWithCoder:(id)a3;
-- (_SFAuthenticatedEncryptionOperation)initWithKeySpecifier:(id)a3;
-- (_SFAuthenticatedEncryptionOperation)initWithKeySpecifier:(id)a3 authenticationMode:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)decrypt:(id)a3 withKey:(id)a4 additionalAuthenticatedData:(id)a5 error:(id *)a6;
-- (id)decrypt:(id)a3 withKey:(id)a4 error:(id *)a5;
-- (id)encrypt:(id)a3 withKey:(id)a4 additionalAuthenticatedData:(id)a5 error:(id *)a6;
-- (id)encrypt:(id)a3 withKey:(id)a4 additionalAuthenticatedData:(id)a5 ivGenerator:(id)a6 error:(id *)a7;
-- (id)encrypt:(id)a3 withKey:(id)a4 error:(id *)a5;
-- (void)setAuthenticationMode:(int64_t)a3;
-- (void)setEncryptionKeySpecifier:(id)a3;
+- (_SFAuthenticatedEncryptionOperation)initWithCoder:(id)coder;
+- (_SFAuthenticatedEncryptionOperation)initWithKeySpecifier:(id)specifier;
+- (_SFAuthenticatedEncryptionOperation)initWithKeySpecifier:(id)specifier authenticationMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)decrypt:(id)decrypt withKey:(id)key additionalAuthenticatedData:(id)data error:(id *)error;
+- (id)decrypt:(id)decrypt withKey:(id)key error:(id *)error;
+- (id)encrypt:(id)encrypt withKey:(id)key additionalAuthenticatedData:(id)data error:(id *)error;
+- (id)encrypt:(id)encrypt withKey:(id)key additionalAuthenticatedData:(id)data ivGenerator:(id)generator error:(id *)error;
+- (id)encrypt:(id)encrypt withKey:(id)key error:(id *)error;
+- (void)setAuthenticationMode:(int64_t)mode;
+- (void)setEncryptionKeySpecifier:(id)specifier;
 @end
 
 @implementation _SFAuthenticatedEncryptionOperation
@@ -31,23 +31,23 @@
   return v4;
 }
 
-- (_SFAuthenticatedEncryptionOperation)initWithKeySpecifier:(id)a3
+- (_SFAuthenticatedEncryptionOperation)initWithKeySpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = -[_SFAuthenticatedEncryptionOperation initWithKeySpecifier:authenticationMode:](self, "initWithKeySpecifier:authenticationMode:", v4, [objc_opt_class() _defaultAuthenticationMode]);
+  specifierCopy = specifier;
+  v5 = -[_SFAuthenticatedEncryptionOperation initWithKeySpecifier:authenticationMode:](self, "initWithKeySpecifier:authenticationMode:", specifierCopy, [objc_opt_class() _defaultAuthenticationMode]);
 
   return v5;
 }
 
-- (_SFAuthenticatedEncryptionOperation)initWithKeySpecifier:(id)a3 authenticationMode:(int64_t)a4
+- (_SFAuthenticatedEncryptionOperation)initWithKeySpecifier:(id)specifier authenticationMode:(int64_t)mode
 {
-  v7 = a3;
-  if (!v7)
+  specifierCopy = specifier;
+  if (!specifierCopy)
   {
     [_SFAuthenticatedEncryptionOperation initWithKeySpecifier:authenticationMode:];
   }
 
-  if (a4 != 1)
+  if (mode != 1)
   {
     [_SFAuthenticatedEncryptionOperation initWithKeySpecifier:authenticationMode:];
   }
@@ -61,80 +61,80 @@
     authenticatedEncryptionOperationInternal = v8->_authenticatedEncryptionOperationInternal;
     v8->_authenticatedEncryptionOperationInternal = v9;
 
-    objc_storeStrong(v8->_authenticatedEncryptionOperationInternal + 1, a3);
-    *(v8->_authenticatedEncryptionOperationInternal + 2) = a4;
-    *(v8->_authenticatedEncryptionOperationInternal + 3) = [v7 blockSize];
+    objc_storeStrong(v8->_authenticatedEncryptionOperationInternal + 1, specifier);
+    *(v8->_authenticatedEncryptionOperationInternal + 2) = mode;
+    *(v8->_authenticatedEncryptionOperationInternal + 3) = [specifierCopy blockSize];
   }
 
   return v8;
 }
 
-- (_SFAuthenticatedEncryptionOperation)initWithCoder:(id)a3
+- (_SFAuthenticatedEncryptionOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _SFAuthenticatedEncryptionOperation;
   return [(_SFAuthenticatedEncryptionOperation *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithKeySpecifier:*(self->_authenticatedEncryptionOperationInternal + 1) authenticationMode:*(self->_authenticatedEncryptionOperationInternal + 2)];
   *(*(result + 1) + 24) = *(self->_authenticatedEncryptionOperationInternal + 3);
   return result;
 }
 
-- (id)encrypt:(id)a3 withKey:(id)a4 error:(id *)a5
+- (id)encrypt:(id)encrypt withKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  keyCopy = key;
+  encryptCopy = encrypt;
   v10 = objc_alloc_init(SFIncrementingIVGenerator);
-  v11 = [(_SFAuthenticatedEncryptionOperation *)self encrypt:v9 withKey:v8 additionalAuthenticatedData:0 ivGenerator:v10 error:a5];
+  v11 = [(_SFAuthenticatedEncryptionOperation *)self encrypt:encryptCopy withKey:keyCopy additionalAuthenticatedData:0 ivGenerator:v10 error:error];
 
   return v11;
 }
 
-- (id)encrypt:(id)a3 withKey:(id)a4 additionalAuthenticatedData:(id)a5 error:(id *)a6
+- (id)encrypt:(id)encrypt withKey:(id)key additionalAuthenticatedData:(id)data error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  dataCopy = data;
+  keyCopy = key;
+  encryptCopy = encrypt;
   v13 = objc_alloc_init(SFIncrementingIVGenerator);
-  v14 = [(_SFAuthenticatedEncryptionOperation *)self encrypt:v12 withKey:v11 additionalAuthenticatedData:v10 ivGenerator:v13 error:a6];
+  v14 = [(_SFAuthenticatedEncryptionOperation *)self encrypt:encryptCopy withKey:keyCopy additionalAuthenticatedData:dataCopy ivGenerator:v13 error:error];
 
   return v14;
 }
 
-- (id)encrypt:(id)a3 withKey:(id)a4 additionalAuthenticatedData:(id)a5 ivGenerator:(id)a6 error:(id *)a7
+- (id)encrypt:(id)encrypt withKey:(id)key additionalAuthenticatedData:(id)data ivGenerator:(id)generator error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  encryptCopy = encrypt;
+  keyCopy = key;
+  dataCopy = data;
+  generatorCopy = generator;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [_SFAuthenticatedEncryptionOperation encrypt:withKey:additionalAuthenticatedData:ivGenerator:error:];
   }
 
-  v16 = [v13 keyData];
-  v17 = [v15 generateIVWithLength:objc_msgSend(v16 error:{"length"), a7}];
+  keyData = [keyCopy keyData];
+  v17 = [generatorCopy generateIVWithLength:objc_msgSend(keyData error:{"length"), error}];
 
   if (v17)
   {
-    v28 = v13;
-    v18 = [v12 length];
+    v28 = keyCopy;
+    v18 = [encryptCopy length];
     v27 = malloc_type_malloc(v18, 0x11B28C1FuLL);
     v19 = malloc_type_malloc(*(self->_authenticatedEncryptionOperationInternal + 3), 0xA4026CBFuLL);
     v30 = *(self->_authenticatedEncryptionOperationInternal + 3);
-    [v16 bytes];
+    [keyData bytes];
     [v17 bytes];
     [v17 length];
-    [v14 bytes];
-    [v14 length];
-    v20 = v12;
-    v29 = v12;
+    [dataCopy bytes];
+    [dataCopy length];
+    v20 = encryptCopy;
+    v29 = encryptCopy;
     v21 = v27;
-    v26 = [v20 bytes];
+    bytes = [v20 bytes];
     if (CCCryptorGCM())
     {
       v22 = 0;
@@ -142,7 +142,7 @@
 
     else
     {
-      v23 = [MEMORY[0x277CBEA90] dataWithBytes:v27 length:{v18, v26, v18, v27, v19, &v30}];
+      v23 = [MEMORY[0x277CBEA90] dataWithBytes:v27 length:{v18, bytes, v18, v27, v19, &v30}];
       v24 = [MEMORY[0x277CBEA90] dataWithBytes:v19 length:v30];
       v22 = [[_SFAuthenticatedCiphertext alloc] initWithCiphertext:v23 authenticationCode:v24 initializationVector:v17];
 
@@ -151,18 +151,18 @@
 
     free(v21);
     free(v19);
-    v13 = v28;
-    v12 = v29;
-    if (a7 && !v22)
+    keyCopy = v28;
+    encryptCopy = v29;
+    if (error && !v22)
     {
-      *a7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:2 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:2 userInfo:0];
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:4 userInfo:0];
-    *a7 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -173,19 +173,19 @@
   return v22;
 }
 
-- (id)decrypt:(id)a3 withKey:(id)a4 error:(id *)a5
+- (id)decrypt:(id)decrypt withKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  decryptCopy = decrypt;
+  keyCopy = key;
+  if (decryptCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v10 = [(_SFAuthenticatedEncryptionOperation *)self decrypt:v8 withKey:v9 additionalAuthenticatedData:0 error:a5];
+    v10 = [(_SFAuthenticatedEncryptionOperation *)self decrypt:decryptCopy withKey:keyCopy additionalAuthenticatedData:0 error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:9 userInfo:0];
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -196,56 +196,56 @@
   return v10;
 }
 
-- (id)decrypt:(id)a3 withKey:(id)a4 additionalAuthenticatedData:(id)a5 error:(id *)a6
+- (id)decrypt:(id)decrypt withKey:(id)key additionalAuthenticatedData:(id)data error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  decryptCopy = decrypt;
+  keyCopy = key;
+  dataCopy = data;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [_SFAuthenticatedEncryptionOperation decrypt:withKey:additionalAuthenticatedData:error:];
   }
 
-  v13 = v11;
-  v14 = [v10 authenticationCode];
-  v15 = [v14 length];
+  v13 = keyCopy;
+  authenticationCode = [decryptCopy authenticationCode];
+  v15 = [authenticationCode length];
   v16 = *(self->_authenticatedEncryptionOperationInternal + 3);
 
   if (v15 == v16)
   {
-    v34 = a6;
+    errorCopy = error;
     v31 = v13;
-    v17 = [v13 keyData];
-    [v17 length];
-    v18 = [v10 initializationVector];
-    v19 = [v10 ciphertext];
-    v20 = [v19 length];
+    keyData = [v13 keyData];
+    [keyData length];
+    initializationVector = [decryptCopy initializationVector];
+    ciphertext = [decryptCopy ciphertext];
+    v20 = [ciphertext length];
 
     v21 = malloc_type_malloc(v20, 0x8C929CFAuLL);
     v22 = malloc_type_malloc(*(self->_authenticatedEncryptionOperationInternal + 3), 0xC3A3346uLL);
     v35 = *(self->_authenticatedEncryptionOperationInternal + 3);
-    v33 = v17;
-    [v17 bytes];
-    [v18 bytes];
-    v32 = v18;
-    [v18 length];
-    [v12 bytes];
-    [v12 length];
-    v23 = [v10 ciphertext];
-    v30 = [v23 bytes];
-    LODWORD(v17) = CCCryptorGCM();
+    v33 = keyData;
+    [keyData bytes];
+    [initializationVector bytes];
+    v32 = initializationVector;
+    [initializationVector length];
+    [dataCopy bytes];
+    [dataCopy length];
+    ciphertext2 = [decryptCopy ciphertext];
+    bytes = [ciphertext2 bytes];
+    LODWORD(keyData) = CCCryptorGCM();
 
-    if (v17 || ([v10 authenticationCode], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "bytes"), v26 = timingsafe_bcmp(v22, v25, v35), v24, v26))
+    if (keyData || ([decryptCopy authenticationCode], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "bytes"), v26 = timingsafe_bcmp(v22, v25, v35), v24, v26))
     {
       v27 = 0;
-      v28 = v34;
+      v28 = errorCopy;
     }
 
     else
     {
       v27 = [MEMORY[0x277CBEA90] dataWithBytes:v21 length:v20];
-      v28 = v34;
+      v28 = errorCopy;
     }
 
     free(v21);
@@ -258,10 +258,10 @@
     v13 = v31;
   }
 
-  else if (a6)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:5 userInfo:0];
-    *a6 = v27 = 0;
+    *error = v27 = 0;
   }
 
   else
@@ -272,9 +272,9 @@
   return v27;
 }
 
-- (void)setEncryptionKeySpecifier:(id)a3
+- (void)setEncryptionKeySpecifier:(id)specifier
 {
-  v4 = [a3 copy];
+  v4 = [specifier copy];
   authenticatedEncryptionOperationInternal = self->_authenticatedEncryptionOperationInternal;
   v6 = authenticatedEncryptionOperationInternal[1];
   authenticatedEncryptionOperationInternal[1] = v4;
@@ -282,14 +282,14 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setAuthenticationMode:(int64_t)a3
+- (void)setAuthenticationMode:(int64_t)mode
 {
-  if (a3 != 1)
+  if (mode != 1)
   {
     [_SFAuthenticatedEncryptionOperation setAuthenticationMode:];
   }
 
-  *(self->_authenticatedEncryptionOperationInternal + 2) = a3;
+  *(self->_authenticatedEncryptionOperationInternal + 2) = mode;
 }
 
 - (void)initWithKeySpecifier:authenticationMode:.cold.1()

@@ -1,73 +1,73 @@
 @interface OTAccountMetadataClassC
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAttemptedJoin:(id)a3;
-- (int)StringAsCdpState:(id)a3;
-- (int)StringAsIcloudAccountState:(id)a3;
-- (int)StringAsSendingMetricsPermitted:(id)a3;
-- (int)StringAsTrustState:(id)a3;
+- (int)StringAsAttemptedJoin:(id)join;
+- (int)StringAsCdpState:(id)state;
+- (int)StringAsIcloudAccountState:(id)state;
+- (int)StringAsSendingMetricsPermitted:(id)permitted;
+- (int)StringAsTrustState:(id)state;
 - (int)attemptedJoin;
 - (int)cdpState;
 - (int)icloudAccountState;
 - (int)sendingMetricsPermitted;
 - (int)trustState;
 - (unint64_t)hash;
-- (void)addTlkSharesForVouchedIdentity:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAttemptedJoin:(BOOL)a3;
-- (void)setHasCdpState:(BOOL)a3;
-- (void)setHasEscrowRepairAttemptVersion:(BOOL)a3;
-- (void)setHasIcloudAccountState:(BOOL)a3;
-- (void)setHasIsInheritedAccount:(BOOL)a3;
-- (void)setHasLastEscrowRepairAttempted:(BOOL)a3;
-- (void)setHasLastEscrowRepairTriggered:(BOOL)a3;
-- (void)setHasLastHealthCheckup:(BOOL)a3;
-- (void)setHasSendingMetricsPermitted:(BOOL)a3;
-- (void)setHasTrustState:(BOOL)a3;
-- (void)setHasWarmedEscrowCache:(BOOL)a3;
-- (void)setHasWarnedTooManyPeers:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addTlkSharesForVouchedIdentity:(id)identity;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAttemptedJoin:(BOOL)join;
+- (void)setHasCdpState:(BOOL)state;
+- (void)setHasEscrowRepairAttemptVersion:(BOOL)version;
+- (void)setHasIcloudAccountState:(BOOL)state;
+- (void)setHasIsInheritedAccount:(BOOL)account;
+- (void)setHasLastEscrowRepairAttempted:(BOOL)attempted;
+- (void)setHasLastEscrowRepairTriggered:(BOOL)triggered;
+- (void)setHasLastHealthCheckup:(BOOL)checkup;
+- (void)setHasSendingMetricsPermitted:(BOOL)permitted;
+- (void)setHasTrustState:(BOOL)state;
+- (void)setHasWarmedEscrowCache:(BOOL)cache;
+- (void)setHasWarnedTooManyPeers:(BOOL)peers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTAccountMetadataClassC
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 11))
+  fromCopy = from;
+  if (*(fromCopy + 11))
   {
     [(OTAccountMetadataClassC *)self setPeerID:?];
   }
 
-  v5 = *(v4 + 78);
+  v5 = *(fromCopy + 78);
   if ((v5 & 0x80) != 0)
   {
-    self->_icloudAccountState = *(v4 + 16);
+    self->_icloudAccountState = *(fromCopy + 16);
     *&self->_has |= 0x80u;
-    v5 = *(v4 + 78);
+    v5 = *(fromCopy + 78);
   }
 
   if (v5)
   {
-    self->_epoch = *(v4 + 1);
+    self->_epoch = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(OTAccountMetadataClassC *)self setAltDSID:?];
   }
 
-  v6 = *(v4 + 78);
+  v6 = *(fromCopy + 78);
   if ((v6 & 0x200) != 0)
   {
-    self->_trustState = *(v4 + 32);
+    self->_trustState = *(fromCopy + 32);
     *&self->_has |= 0x200u;
-    v6 = *(v4 + 78);
+    v6 = *(fromCopy + 78);
     if ((v6 & 0x10) == 0)
     {
 LABEL_11:
@@ -85,9 +85,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  self->_lastHealthCheckup = *(v4 + 5);
+  self->_lastHealthCheckup = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 78);
+  v6 = *(fromCopy + 78);
   if ((v6 & 0x20) == 0)
   {
 LABEL_12:
@@ -100,27 +100,27 @@ LABEL_12:
   }
 
 LABEL_47:
-  self->_attemptedJoin = *(v4 + 14);
+  self->_attemptedJoin = *(fromCopy + 14);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 78) & 0x40) != 0)
+  if ((*(fromCopy + 78) & 0x40) != 0)
   {
 LABEL_13:
-    self->_cdpState = *(v4 + 15);
+    self->_cdpState = *(fromCopy + 15);
     *&self->_has |= 0x40u;
   }
 
 LABEL_14:
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(OTAccountMetadataClassC *)self setSyncingPolicy:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(OTAccountMetadataClassC *)self setVoucher:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(OTAccountMetadataClassC *)self setVoucherSignature:?];
   }
@@ -129,7 +129,7 @@ LABEL_14:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = *(v4 + 15);
+  v7 = *(fromCopy + 15);
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -153,17 +153,17 @@ LABEL_14:
     while (v9);
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(OTAccountMetadataClassC *)self setSecureElementIdentity:?];
   }
 
-  v12 = *(v4 + 78);
+  v12 = *(fromCopy + 78);
   if ((v12 & 0x400) != 0)
   {
-    self->_isInheritedAccount = *(v4 + 152);
+    self->_isInheritedAccount = *(fromCopy + 152);
     *&self->_has |= 0x400u;
-    v12 = *(v4 + 78);
+    v12 = *(fromCopy + 78);
     if ((v12 & 0x800) == 0)
     {
 LABEL_31:
@@ -176,14 +176,14 @@ LABEL_31:
     }
   }
 
-  else if ((*(v4 + 78) & 0x800) == 0)
+  else if ((*(fromCopy + 78) & 0x800) == 0)
   {
     goto LABEL_31;
   }
 
-  self->_warmedEscrowCache = *(v4 + 153);
+  self->_warmedEscrowCache = *(fromCopy + 153);
   *&self->_has |= 0x800u;
-  v12 = *(v4 + 78);
+  v12 = *(fromCopy + 78);
   if ((v12 & 0x1000) == 0)
   {
 LABEL_32:
@@ -196,43 +196,43 @@ LABEL_32:
   }
 
 LABEL_51:
-  self->_warnedTooManyPeers = *(v4 + 154);
+  self->_warnedTooManyPeers = *(fromCopy + 154);
   *&self->_has |= 0x1000u;
-  if ((*(v4 + 78) & 0x100) != 0)
+  if ((*(fromCopy + 78) & 0x100) != 0)
   {
 LABEL_33:
-    self->_sendingMetricsPermitted = *(v4 + 26);
+    self->_sendingMetricsPermitted = *(fromCopy + 26);
     *&self->_has |= 0x100u;
   }
 
 LABEL_34:
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(OTAccountMetadataClassC *)self setOldPeerID:?];
   }
 
-  v13 = *(v4 + 78);
+  v13 = *(fromCopy + 78);
   if ((v13 & 8) != 0)
   {
-    self->_lastEscrowRepairTriggered = *(v4 + 4);
+    self->_lastEscrowRepairTriggered = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v13 = *(v4 + 78);
+    v13 = *(fromCopy + 78);
   }
 
   if ((v13 & 4) != 0)
   {
-    self->_lastEscrowRepairAttempted = *(v4 + 3);
+    self->_lastEscrowRepairAttempted = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(OTAccountMetadataClassC *)self setMachineID:?];
   }
 
-  if ((*(v4 + 78) & 2) != 0)
+  if ((*(fromCopy + 78) & 2) != 0)
   {
-    self->_escrowRepairAttemptVersion = *(v4 + 2);
+    self->_escrowRepairAttemptVersion = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 }
@@ -408,16 +408,16 @@ LABEL_29:
   return v27 ^ v28 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_97;
   }
 
   peerID = self->_peerID;
-  if (peerID | *(v4 + 11))
+  if (peerID | *(equalCopy + 11))
   {
     if (![(NSString *)peerID isEqual:?])
     {
@@ -426,10 +426,10 @@ LABEL_29:
   }
 
   has = self->_has;
-  v7 = *(v4 + 78);
+  v7 = *(equalCopy + 78);
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_icloudAccountState != *(v4 + 16))
+    if ((v7 & 0x80) == 0 || self->_icloudAccountState != *(equalCopy + 16))
     {
       goto LABEL_97;
     }
@@ -442,7 +442,7 @@ LABEL_29:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_epoch != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_epoch != *(equalCopy + 1))
     {
       goto LABEL_97;
     }
@@ -454,7 +454,7 @@ LABEL_29:
   }
 
   altDSID = self->_altDSID;
-  if (altDSID | *(v4 + 6))
+  if (altDSID | *(equalCopy + 6))
   {
     if (![(NSString *)altDSID isEqual:?])
     {
@@ -462,12 +462,12 @@ LABEL_29:
     }
 
     has = self->_has;
-    v7 = *(v4 + 78);
+    v7 = *(equalCopy + 78);
   }
 
   if ((has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_trustState != *(v4 + 32))
+    if ((v7 & 0x200) == 0 || self->_trustState != *(equalCopy + 32))
     {
       goto LABEL_97;
     }
@@ -480,7 +480,7 @@ LABEL_29:
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_lastHealthCheckup != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_lastHealthCheckup != *(equalCopy + 5))
     {
       goto LABEL_97;
     }
@@ -493,7 +493,7 @@ LABEL_29:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_attemptedJoin != *(v4 + 14))
+    if ((v7 & 0x20) == 0 || self->_attemptedJoin != *(equalCopy + 14))
     {
       goto LABEL_97;
     }
@@ -506,7 +506,7 @@ LABEL_29:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_cdpState != *(v4 + 15))
+    if ((v7 & 0x40) == 0 || self->_cdpState != *(equalCopy + 15))
     {
       goto LABEL_97;
     }
@@ -518,13 +518,13 @@ LABEL_29:
   }
 
   syncingPolicy = self->_syncingPolicy;
-  if (syncingPolicy | *(v4 + 14) && ![(NSData *)syncingPolicy isEqual:?])
+  if (syncingPolicy | *(equalCopy + 14) && ![(NSData *)syncingPolicy isEqual:?])
   {
     goto LABEL_97;
   }
 
   voucher = self->_voucher;
-  if (voucher | *(v4 + 17))
+  if (voucher | *(equalCopy + 17))
   {
     if (![(NSData *)voucher isEqual:?])
     {
@@ -533,7 +533,7 @@ LABEL_29:
   }
 
   voucherSignature = self->_voucherSignature;
-  if (voucherSignature | *(v4 + 18))
+  if (voucherSignature | *(equalCopy + 18))
   {
     if (![(NSData *)voucherSignature isEqual:?])
     {
@@ -542,7 +542,7 @@ LABEL_29:
   }
 
   tlkSharesForVouchedIdentitys = self->_tlkSharesForVouchedIdentitys;
-  if (tlkSharesForVouchedIdentitys | *(v4 + 15))
+  if (tlkSharesForVouchedIdentitys | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)tlkSharesForVouchedIdentitys isEqual:?])
     {
@@ -551,7 +551,7 @@ LABEL_29:
   }
 
   secureElementIdentity = self->_secureElementIdentity;
-  if (secureElementIdentity | *(v4 + 12))
+  if (secureElementIdentity | *(equalCopy + 12))
   {
     if (![(NSData *)secureElementIdentity isEqual:?])
     {
@@ -560,103 +560,103 @@ LABEL_29:
   }
 
   v14 = self->_has;
-  v15 = *(v4 + 78);
+  v15 = *(equalCopy + 78);
   if ((v14 & 0x400) != 0)
   {
-    if ((*(v4 + 78) & 0x400) == 0)
+    if ((*(equalCopy + 78) & 0x400) == 0)
     {
       goto LABEL_97;
     }
 
-    v16 = *(v4 + 152);
+    v16 = *(equalCopy + 152);
     if (self->_isInheritedAccount)
     {
-      if ((*(v4 + 152) & 1) == 0)
+      if ((*(equalCopy + 152) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 152))
+    else if (*(equalCopy + 152))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 78) & 0x400) != 0)
+  else if ((*(equalCopy + 78) & 0x400) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 78) & 0x800) == 0)
+    if ((*(equalCopy + 78) & 0x800) == 0)
     {
       goto LABEL_97;
     }
 
-    v17 = *(v4 + 153);
+    v17 = *(equalCopy + 153);
     if (self->_warmedEscrowCache)
     {
-      if ((*(v4 + 153) & 1) == 0)
+      if ((*(equalCopy + 153) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 153))
+    else if (*(equalCopy + 153))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 78) & 0x800) != 0)
+  else if ((*(equalCopy + 78) & 0x800) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 78) & 0x1000) == 0)
+    if ((*(equalCopy + 78) & 0x1000) == 0)
     {
       goto LABEL_97;
     }
 
-    v18 = *(v4 + 154);
+    v18 = *(equalCopy + 154);
     if (self->_warnedTooManyPeers)
     {
-      if ((*(v4 + 154) & 1) == 0)
+      if ((*(equalCopy + 154) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 154))
+    else if (*(equalCopy + 154))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 78) & 0x1000) != 0)
+  else if ((*(equalCopy + 78) & 0x1000) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 78) & 0x100) == 0 || self->_sendingMetricsPermitted != *(v4 + 26))
+    if ((*(equalCopy + 78) & 0x100) == 0 || self->_sendingMetricsPermitted != *(equalCopy + 26))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 78) & 0x100) != 0)
+  else if ((*(equalCopy + 78) & 0x100) != 0)
   {
     goto LABEL_97;
   }
 
   oldPeerID = self->_oldPeerID;
-  if (oldPeerID | *(v4 + 10))
+  if (oldPeerID | *(equalCopy + 10))
   {
     if (![(NSString *)oldPeerID isEqual:?])
     {
@@ -664,12 +664,12 @@ LABEL_29:
     }
 
     v14 = self->_has;
-    v15 = *(v4 + 78);
+    v15 = *(equalCopy + 78);
   }
 
   if ((v14 & 8) != 0)
   {
-    if ((v15 & 8) == 0 || self->_lastEscrowRepairTriggered != *(v4 + 4))
+    if ((v15 & 8) == 0 || self->_lastEscrowRepairTriggered != *(equalCopy + 4))
     {
       goto LABEL_97;
     }
@@ -682,7 +682,7 @@ LABEL_29:
 
   if ((v14 & 4) != 0)
   {
-    if ((v15 & 4) == 0 || self->_lastEscrowRepairAttempted != *(v4 + 3))
+    if ((v15 & 4) == 0 || self->_lastEscrowRepairAttempted != *(equalCopy + 3))
     {
       goto LABEL_97;
     }
@@ -694,12 +694,12 @@ LABEL_29:
   }
 
   machineID = self->_machineID;
-  if (machineID | *(v4 + 9))
+  if (machineID | *(equalCopy + 9))
   {
     if ([(NSString *)machineID isEqual:?])
     {
       v14 = self->_has;
-      v15 = *(v4 + 78);
+      v15 = *(equalCopy + 78);
       goto LABEL_92;
     }
 
@@ -711,7 +711,7 @@ LABEL_97:
 LABEL_92:
   if ((v14 & 2) != 0)
   {
-    if ((v15 & 2) == 0 || self->_escrowRepairAttemptVersion != *(v4 + 2))
+    if ((v15 & 2) == 0 || self->_escrowRepairAttemptVersion != *(equalCopy + 2))
     {
       goto LABEL_97;
     }
@@ -729,10 +729,10 @@ LABEL_98:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_peerID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_peerID copyWithZone:zone];
   v7 = v5[11];
   v5[11] = v6;
 
@@ -750,7 +750,7 @@ LABEL_98:
     *(v5 + 78) |= 1u;
   }
 
-  v9 = [(NSString *)self->_altDSID copyWithZone:a3];
+  v9 = [(NSString *)self->_altDSID copyWithZone:zone];
   v10 = v5[6];
   v5[6] = v9;
 
@@ -802,15 +802,15 @@ LABEL_9:
   }
 
 LABEL_10:
-  v12 = [(NSData *)self->_syncingPolicy copyWithZone:a3];
+  v12 = [(NSData *)self->_syncingPolicy copyWithZone:zone];
   v13 = v5[14];
   v5[14] = v12;
 
-  v14 = [(NSData *)self->_voucher copyWithZone:a3];
+  v14 = [(NSData *)self->_voucher copyWithZone:zone];
   v15 = v5[17];
   v5[17] = v14;
 
-  v16 = [(NSData *)self->_voucherSignature copyWithZone:a3];
+  v16 = [(NSData *)self->_voucherSignature copyWithZone:zone];
   v17 = v5[18];
   v5[18] = v16;
 
@@ -833,7 +833,7 @@ LABEL_10:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v33 + 1) + 8 * i) copyWithZone:{a3, v33}];
+        v23 = [*(*(&v33 + 1) + 8 * i) copyWithZone:{zone, v33}];
         [v5 addTlkSharesForVouchedIdentity:v23];
       }
 
@@ -843,7 +843,7 @@ LABEL_10:
     while (v20);
   }
 
-  v24 = [(NSData *)self->_secureElementIdentity copyWithZone:a3];
+  v24 = [(NSData *)self->_secureElementIdentity copyWithZone:zone];
   v25 = v5[12];
   v5[12] = v24;
 
@@ -895,7 +895,7 @@ LABEL_21:
   }
 
 LABEL_22:
-  v27 = [(NSString *)self->_oldPeerID copyWithZone:a3, v33];
+  v27 = [(NSString *)self->_oldPeerID copyWithZone:zone, v33];
   v28 = v5[10];
   v5[10] = v27;
 
@@ -913,7 +913,7 @@ LABEL_22:
     *(v5 + 78) |= 4u;
   }
 
-  v30 = [(NSString *)self->_machineID copyWithZone:a3];
+  v30 = [(NSString *)self->_machineID copyWithZone:zone];
   v31 = v5[9];
   v5[9] = v30;
 
@@ -926,41 +926,41 @@ LABEL_22:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_peerID)
   {
-    [v4 setPeerID:?];
-    v4 = v14;
+    [toCopy setPeerID:?];
+    toCopy = v14;
   }
 
   has = self->_has;
   if ((has & 0x80) != 0)
   {
-    *(v4 + 16) = self->_icloudAccountState;
-    *(v4 + 78) |= 0x80u;
+    *(toCopy + 16) = self->_icloudAccountState;
+    *(toCopy + 78) |= 0x80u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = self->_epoch;
-    *(v4 + 78) |= 1u;
+    *(toCopy + 1) = self->_epoch;
+    *(toCopy + 78) |= 1u;
   }
 
   if (self->_altDSID)
   {
     [v14 setAltDSID:?];
-    v4 = v14;
+    toCopy = v14;
   }
 
   v6 = self->_has;
   if ((v6 & 0x200) != 0)
   {
-    *(v4 + 32) = self->_trustState;
-    *(v4 + 78) |= 0x200u;
+    *(toCopy + 32) = self->_trustState;
+    *(toCopy + 78) |= 0x200u;
     v6 = self->_has;
     if ((v6 & 0x10) == 0)
     {
@@ -979,8 +979,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 5) = self->_lastHealthCheckup;
-  *(v4 + 78) |= 0x10u;
+  *(toCopy + 5) = self->_lastHealthCheckup;
+  *(toCopy + 78) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -994,13 +994,13 @@ LABEL_12:
   }
 
 LABEL_46:
-  *(v4 + 14) = self->_attemptedJoin;
-  *(v4 + 78) |= 0x20u;
+  *(toCopy + 14) = self->_attemptedJoin;
+  *(toCopy + 78) |= 0x20u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_13:
-    *(v4 + 15) = self->_cdpState;
-    *(v4 + 78) |= 0x40u;
+    *(toCopy + 15) = self->_cdpState;
+    *(toCopy + 78) |= 0x40u;
   }
 
 LABEL_14:
@@ -1022,10 +1022,10 @@ LABEL_14:
   if ([(OTAccountMetadataClassC *)self tlkSharesForVouchedIdentitysCount])
   {
     [v14 clearTlkSharesForVouchedIdentitys];
-    v7 = [(OTAccountMetadataClassC *)self tlkSharesForVouchedIdentitysCount];
-    if (v7)
+    tlkSharesForVouchedIdentitysCount = [(OTAccountMetadataClassC *)self tlkSharesForVouchedIdentitysCount];
+    if (tlkSharesForVouchedIdentitysCount)
     {
-      v8 = v7;
+      v8 = tlkSharesForVouchedIdentitysCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(OTAccountMetadataClassC *)self tlkSharesForVouchedIdentityAtIndex:i];
@@ -1121,9 +1121,9 @@ LABEL_31:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_peerID)
   {
     PBDataWriterWriteStringField();
@@ -1324,14 +1324,14 @@ LABEL_34:
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -1342,18 +1342,18 @@ LABEL_34:
       while (1)
       {
         v105 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v105 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v105 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v105 & 0x7F) << v6;
@@ -1371,9 +1371,9 @@ LABEL_34:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -1392,18 +1392,18 @@ LABEL_15:
           while (1)
           {
             v110 = 0;
-            v58 = [a3 position] + 1;
-            if (v58 >= [a3 position] && (v59 = objc_msgSend(a3, "position") + 1, v59 <= objc_msgSend(a3, "length")))
+            v58 = [from position] + 1;
+            if (v58 >= [from position] && (v59 = objc_msgSend(from, "position") + 1, v59 <= objc_msgSend(from, "length")))
             {
-              v60 = [a3 data];
-              [v60 getBytes:&v110 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v110 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v57 |= (v110 & 0x7F) << v55;
@@ -1421,7 +1421,7 @@ LABEL_15:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v61 = 0;
           }
@@ -1442,18 +1442,18 @@ LABEL_175:
           while (1)
           {
             v112 = 0;
-            v45 = [a3 position] + 1;
-            if (v45 >= [a3 position] && (v46 = objc_msgSend(a3, "position") + 1, v46 <= objc_msgSend(a3, "length")))
+            v45 = [from position] + 1;
+            if (v45 >= [from position] && (v46 = objc_msgSend(from, "position") + 1, v46 <= objc_msgSend(from, "length")))
             {
-              v47 = [a3 data];
-              [v47 getBytes:&v112 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:&v112 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v44 |= (v112 & 0x7F) << v42;
@@ -1471,7 +1471,7 @@ LABEL_175:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -1496,18 +1496,18 @@ LABEL_166:
           while (1)
           {
             v109 = 0;
-            v90 = [a3 position] + 1;
-            if (v90 >= [a3 position] && (v91 = objc_msgSend(a3, "position") + 1, v91 <= objc_msgSend(a3, "length")))
+            v90 = [from position] + 1;
+            if (v90 >= [from position] && (v91 = objc_msgSend(from, "position") + 1, v91 <= objc_msgSend(from, "length")))
             {
-              v92 = [a3 data];
-              [v92 getBytes:&v109 range:{objc_msgSend(a3, "position"), 1}];
+              data4 = [from data];
+              [data4 getBytes:&v109 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v89 |= (v109 & 0x7F) << v87;
@@ -1525,7 +1525,7 @@ LABEL_166:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v61 = 0;
           }
@@ -1546,18 +1546,18 @@ LABEL_192:
           while (1)
           {
             v115 = 0;
-            v51 = [a3 position] + 1;
-            if (v51 >= [a3 position] && (v52 = objc_msgSend(a3, "position") + 1, v52 <= objc_msgSend(a3, "length")))
+            v51 = [from position] + 1;
+            if (v51 >= [from position] && (v52 = objc_msgSend(from, "position") + 1, v52 <= objc_msgSend(from, "length")))
             {
-              v53 = [a3 data];
-              [v53 getBytes:&v115 range:{objc_msgSend(a3, "position"), 1}];
+              data5 = [from data];
+              [data5 getBytes:&v115 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v50 |= (v115 & 0x7F) << v48;
@@ -1575,7 +1575,7 @@ LABEL_192:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -1596,18 +1596,18 @@ LABEL_170:
           while (1)
           {
             v108 = 0;
-            v65 = [a3 position] + 1;
-            if (v65 >= [a3 position] && (v66 = objc_msgSend(a3, "position") + 1, v66 <= objc_msgSend(a3, "length")))
+            v65 = [from position] + 1;
+            if (v65 >= [from position] && (v66 = objc_msgSend(from, "position") + 1, v66 <= objc_msgSend(from, "length")))
             {
-              v67 = [a3 data];
-              [v67 getBytes:&v108 range:{objc_msgSend(a3, "position"), 1}];
+              data6 = [from data];
+              [data6 getBytes:&v108 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v64 |= (v108 & 0x7F) << v62;
@@ -1625,7 +1625,7 @@ LABEL_170:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v61 = 0;
           }
@@ -1646,18 +1646,18 @@ LABEL_179:
           while (1)
           {
             v107 = 0;
-            v71 = [a3 position] + 1;
-            if (v71 >= [a3 position] && (v72 = objc_msgSend(a3, "position") + 1, v72 <= objc_msgSend(a3, "length")))
+            v71 = [from position] + 1;
+            if (v71 >= [from position] && (v72 = objc_msgSend(from, "position") + 1, v72 <= objc_msgSend(from, "length")))
             {
-              v73 = [a3 data];
-              [v73 getBytes:&v107 range:{objc_msgSend(a3, "position"), 1}];
+              data7 = [from data];
+              [data7 getBytes:&v107 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v70 |= (v107 & 0x7F) << v68;
@@ -1675,7 +1675,7 @@ LABEL_179:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v61 = 0;
           }
@@ -1720,18 +1720,18 @@ LABEL_183:
           while (1)
           {
             v118 = 0;
-            v32 = [a3 position] + 1;
-            if (v32 >= [a3 position] && (v33 = objc_msgSend(a3, "position") + 1, v33 <= objc_msgSend(a3, "length")))
+            v32 = [from position] + 1;
+            if (v32 >= [from position] && (v33 = objc_msgSend(from, "position") + 1, v33 <= objc_msgSend(from, "length")))
             {
-              v34 = [a3 data];
-              [v34 getBytes:&v118 range:{objc_msgSend(a3, "position"), 1}];
+              data8 = [from data];
+              [data8 getBytes:&v118 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v31 |= (v118 & 0x7F) << v29;
@@ -1749,7 +1749,7 @@ LABEL_183:
             }
           }
 
-          v35 = (v31 != 0) & ~[a3 hasError];
+          v35 = (v31 != 0) & ~[from hasError];
 LABEL_158:
           v101 = 152;
           goto LABEL_188;
@@ -1761,18 +1761,18 @@ LABEL_158:
           while (1)
           {
             v117 = 0;
-            v77 = [a3 position] + 1;
-            if (v77 >= [a3 position] && (v78 = objc_msgSend(a3, "position") + 1, v78 <= objc_msgSend(a3, "length")))
+            v77 = [from position] + 1;
+            if (v77 >= [from position] && (v78 = objc_msgSend(from, "position") + 1, v78 <= objc_msgSend(from, "length")))
             {
-              v79 = [a3 data];
-              [v79 getBytes:&v117 range:{objc_msgSend(a3, "position"), 1}];
+              data9 = [from data];
+              [data9 getBytes:&v117 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v76 |= (v117 & 0x7F) << v74;
@@ -1790,7 +1790,7 @@ LABEL_158:
             }
           }
 
-          v35 = (v76 != 0) & ~[a3 hasError];
+          v35 = (v76 != 0) & ~[from hasError];
 LABEL_185:
           v101 = 153;
           goto LABEL_188;
@@ -1802,18 +1802,18 @@ LABEL_185:
           while (1)
           {
             v116 = 0;
-            v83 = [a3 position] + 1;
-            if (v83 >= [a3 position] && (v84 = objc_msgSend(a3, "position") + 1, v84 <= objc_msgSend(a3, "length")))
+            v83 = [from position] + 1;
+            if (v83 >= [from position] && (v84 = objc_msgSend(from, "position") + 1, v84 <= objc_msgSend(from, "length")))
             {
-              v85 = [a3 data];
-              [v85 getBytes:&v116 range:{objc_msgSend(a3, "position"), 1}];
+              data10 = [from data];
+              [data10 getBytes:&v116 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v82 |= (v116 & 0x7F) << v80;
@@ -1831,7 +1831,7 @@ LABEL_185:
             }
           }
 
-          v35 = (v82 != 0) & ~[a3 hasError];
+          v35 = (v82 != 0) & ~[from hasError];
 LABEL_187:
           v101 = 154;
 LABEL_188:
@@ -1845,18 +1845,18 @@ LABEL_188:
           while (1)
           {
             v106 = 0;
-            v96 = [a3 position] + 1;
-            if (v96 >= [a3 position] && (v97 = objc_msgSend(a3, "position") + 1, v97 <= objc_msgSend(a3, "length")))
+            v96 = [from position] + 1;
+            if (v96 >= [from position] && (v97 = objc_msgSend(from, "position") + 1, v97 <= objc_msgSend(from, "length")))
             {
-              v98 = [a3 data];
-              [v98 getBytes:&v106 range:{objc_msgSend(a3, "position"), 1}];
+              data11 = [from data];
+              [data11 getBytes:&v106 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v95 |= (v106 & 0x7F) << v93;
@@ -1874,7 +1874,7 @@ LABEL_188:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v61 = 0;
           }
@@ -1901,18 +1901,18 @@ LABEL_197:
           while (1)
           {
             v114 = 0;
-            v19 = [a3 position] + 1;
-            if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+            v19 = [from position] + 1;
+            if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
             {
-              v21 = [a3 data];
-              [v21 getBytes:&v114 range:{objc_msgSend(a3, "position"), 1}];
+              data12 = [from data];
+              [data12 getBytes:&v114 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v18 |= (v114 & 0x7F) << v16;
@@ -1930,7 +1930,7 @@ LABEL_197:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -1951,18 +1951,18 @@ LABEL_152:
           while (1)
           {
             v113 = 0;
-            v39 = [a3 position] + 1;
-            if (v39 >= [a3 position] && (v40 = objc_msgSend(a3, "position") + 1, v40 <= objc_msgSend(a3, "length")))
+            v39 = [from position] + 1;
+            if (v39 >= [from position] && (v40 = objc_msgSend(from, "position") + 1, v40 <= objc_msgSend(from, "length")))
             {
-              v41 = [a3 data];
-              [v41 getBytes:&v113 range:{objc_msgSend(a3, "position"), 1}];
+              data13 = [from data];
+              [data13 getBytes:&v113 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v38 |= (v113 & 0x7F) << v36;
@@ -1980,7 +1980,7 @@ LABEL_152:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v22 = 0;
           }
@@ -2020,18 +2020,18 @@ LABEL_148:
       while (1)
       {
         v111 = 0;
-        v26 = [a3 position] + 1;
-        if (v26 >= [a3 position] && (v27 = objc_msgSend(a3, "position") + 1, v27 <= objc_msgSend(a3, "length")))
+        v26 = [from position] + 1;
+        if (v26 >= [from position] && (v27 = objc_msgSend(from, "position") + 1, v27 <= objc_msgSend(from, "length")))
         {
-          v28 = [a3 data];
-          [v28 getBytes:&v111 range:{objc_msgSend(a3, "position"), 1}];
+          data14 = [from data];
+          [data14 getBytes:&v111 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v25 |= (v111 & 0x7F) << v23;
@@ -2049,19 +2049,19 @@ LABEL_148:
         }
       }
 
-      v22 = [a3 hasError] ? 0 : v25;
+      v22 = [from hasError] ? 0 : v25;
 LABEL_156:
       v100 = 16;
 LABEL_171:
       *&self->PBCodable_opaque[v100] = v22;
 LABEL_198:
-      v103 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v103 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v86) = [a3 hasError] ^ 1;
+  LOBYTE(v86) = [from hasError] ^ 1;
   return v86;
 }
 
@@ -2321,15 +2321,15 @@ LABEL_52:
   v7.receiver = self;
   v7.super_class = OTAccountMetadataClassC;
   v3 = [(OTAccountMetadataClassC *)&v7 description];
-  v4 = [(OTAccountMetadataClassC *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(OTAccountMetadataClassC *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasEscrowRepairAttemptVersion:(BOOL)a3
+- (void)setHasEscrowRepairAttemptVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -2342,9 +2342,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasLastEscrowRepairAttempted:(BOOL)a3
+- (void)setHasLastEscrowRepairAttempted:(BOOL)attempted
 {
-  if (a3)
+  if (attempted)
   {
     v3 = 4;
   }
@@ -2357,9 +2357,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasLastEscrowRepairTriggered:(BOOL)a3
+- (void)setHasLastEscrowRepairTriggered:(BOOL)triggered
 {
-  if (a3)
+  if (triggered)
   {
     v3 = 8;
   }
@@ -2372,20 +2372,20 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (int)StringAsSendingMetricsPermitted:(id)a3
+- (int)StringAsSendingMetricsPermitted:(id)permitted
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  permittedCopy = permitted;
+  if ([permittedCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PERMITTED"])
+  else if ([permittedCopy isEqualToString:@"PERMITTED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NOTPERMITTED"])
+  else if ([permittedCopy isEqualToString:@"NOTPERMITTED"])
   {
     v4 = 2;
   }
@@ -2398,9 +2398,9 @@ LABEL_52:
   return v4;
 }
 
-- (void)setHasSendingMetricsPermitted:(BOOL)a3
+- (void)setHasSendingMetricsPermitted:(BOOL)permitted
 {
-  if (a3)
+  if (permitted)
   {
     v3 = 256;
   }
@@ -2426,9 +2426,9 @@ LABEL_52:
   }
 }
 
-- (void)setHasWarnedTooManyPeers:(BOOL)a3
+- (void)setHasWarnedTooManyPeers:(BOOL)peers
 {
-  if (a3)
+  if (peers)
   {
     v3 = 4096;
   }
@@ -2441,9 +2441,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasWarmedEscrowCache:(BOOL)a3
+- (void)setHasWarmedEscrowCache:(BOOL)cache
 {
-  if (a3)
+  if (cache)
   {
     v3 = 2048;
   }
@@ -2456,9 +2456,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasIsInheritedAccount:(BOOL)a3
+- (void)setHasIsInheritedAccount:(BOOL)account
 {
-  if (a3)
+  if (account)
   {
     v3 = 1024;
   }
@@ -2471,38 +2471,38 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)addTlkSharesForVouchedIdentity:(id)a3
+- (void)addTlkSharesForVouchedIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   tlkSharesForVouchedIdentitys = self->_tlkSharesForVouchedIdentitys;
-  v8 = v4;
+  v8 = identityCopy;
   if (!tlkSharesForVouchedIdentitys)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_tlkSharesForVouchedIdentitys;
     self->_tlkSharesForVouchedIdentitys = v6;
 
-    v4 = v8;
+    identityCopy = v8;
     tlkSharesForVouchedIdentitys = self->_tlkSharesForVouchedIdentitys;
   }
 
-  [(NSMutableArray *)tlkSharesForVouchedIdentitys addObject:v4];
+  [(NSMutableArray *)tlkSharesForVouchedIdentitys addObject:identityCopy];
 }
 
-- (int)StringAsCdpState:(id)a3
+- (int)StringAsCdpState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DISABLED"])
+  else if ([stateCopy isEqualToString:@"DISABLED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ENABLED"])
+  else if ([stateCopy isEqualToString:@"ENABLED"])
   {
     v4 = 2;
   }
@@ -2515,9 +2515,9 @@ LABEL_52:
   return v4;
 }
 
-- (void)setHasCdpState:(BOOL)a3
+- (void)setHasCdpState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 64;
   }
@@ -2543,20 +2543,20 @@ LABEL_52:
   }
 }
 
-- (int)StringAsAttemptedJoin:(id)a3
+- (int)StringAsAttemptedJoin:(id)join
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  joinCopy = join;
+  if ([joinCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NOTATTEMPTED"])
+  else if ([joinCopy isEqualToString:@"NOTATTEMPTED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ATTEMPTED"])
+  else if ([joinCopy isEqualToString:@"ATTEMPTED"])
   {
     v4 = 2;
   }
@@ -2569,9 +2569,9 @@ LABEL_52:
   return v4;
 }
 
-- (void)setHasAttemptedJoin:(BOOL)a3
+- (void)setHasAttemptedJoin:(BOOL)join
 {
-  if (a3)
+  if (join)
   {
     v3 = 32;
   }
@@ -2597,9 +2597,9 @@ LABEL_52:
   }
 }
 
-- (void)setHasLastHealthCheckup:(BOOL)a3
+- (void)setHasLastHealthCheckup:(BOOL)checkup
 {
-  if (a3)
+  if (checkup)
   {
     v3 = 16;
   }
@@ -2612,20 +2612,20 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (int)StringAsTrustState:(id)a3
+- (int)StringAsTrustState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UNTRUSTED"])
+  else if ([stateCopy isEqualToString:@"UNTRUSTED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TRUSTED"])
+  else if ([stateCopy isEqualToString:@"TRUSTED"])
   {
     v4 = 2;
   }
@@ -2638,9 +2638,9 @@ LABEL_52:
   return v4;
 }
 
-- (void)setHasTrustState:(BOOL)a3
+- (void)setHasTrustState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 512;
   }
@@ -2666,25 +2666,25 @@ LABEL_52:
   }
 }
 
-- (int)StringAsIcloudAccountState:(id)a3
+- (int)StringAsIcloudAccountState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NO_ACCOUNT"])
+  else if ([stateCopy isEqualToString:@"NO_ACCOUNT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ACCOUNT_AVAILABLE"])
+  else if ([stateCopy isEqualToString:@"ACCOUNT_AVAILABLE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ACCOUNT_AVAILABLE_UNUSED"])
+  else if ([stateCopy isEqualToString:@"ACCOUNT_AVAILABLE_UNUSED"])
   {
     v4 = 3;
   }
@@ -2697,9 +2697,9 @@ LABEL_52:
   return v4;
 }
 
-- (void)setHasIcloudAccountState:(BOOL)a3
+- (void)setHasIcloudAccountState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 128;
   }

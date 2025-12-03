@@ -1,26 +1,26 @@
 @interface FeedbackServiceNoOpServer
-- (BOOL)logWithFeedbackData:(id)a3 type:(id)a4 variant:(id)a5 eventId:(int64_t)a6 withTimestamp:(id)a7 shouldProcessImmediately:(BOOL)a8 error:(id *)a9;
+- (BOOL)logWithFeedbackData:(id)data type:(id)type variant:(id)variant eventId:(int64_t)id withTimestamp:(id)timestamp shouldProcessImmediately:(BOOL)immediately error:(id *)error;
 @end
 
 @implementation FeedbackServiceNoOpServer
 
-- (BOOL)logWithFeedbackData:(id)a3 type:(id)a4 variant:(id)a5 eventId:(int64_t)a6 withTimestamp:(id)a7 shouldProcessImmediately:(BOOL)a8 error:(id *)a9
+- (BOOL)logWithFeedbackData:(id)data type:(id)type variant:(id)variant eventId:(int64_t)id withTimestamp:(id)timestamp shouldProcessImmediately:(BOOL)immediately error:(id *)error
 {
   v28 = sub_1ABF21EB4();
   v14 = *(v28 - 8);
   v15 = *(v14 + 64);
   MEMORY[0x1EEE9AC00](v28);
   v17 = &v27 - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v18 = a3;
-  v19 = a4;
-  v20 = a7;
-  v21 = self;
-  v22 = a5;
+  dataCopy = data;
+  typeCopy = type;
+  timestampCopy = timestamp;
+  selfCopy = self;
+  variantCopy = variant;
   v23 = sub_1ABF21DD4();
   v25 = v24;
 
   sub_1ABF23C04();
-  if (v22)
+  if (variantCopy)
   {
     sub_1ABF23C04();
   }

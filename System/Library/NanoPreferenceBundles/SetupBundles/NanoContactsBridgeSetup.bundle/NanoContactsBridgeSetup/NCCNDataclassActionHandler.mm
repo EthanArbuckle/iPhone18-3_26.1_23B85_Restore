@@ -1,10 +1,10 @@
 @interface NCCNDataclassActionHandler
 + (OS_os_log)os_log;
-- (BOOL)createABAccountForACAccount:(id)a3 withChildren:(id)a4;
-- (BOOL)mergeContactsFromLocalSourceIntoSource:(id)a3;
+- (BOOL)createABAccountForACAccount:(id)account withChildren:(id)children;
+- (BOOL)mergeContactsFromLocalSourceIntoSource:(id)source;
 - (BOOL)perform;
-- (NCCNDataclassActionHandler)initWithParameters:(id)a3;
-- (void)disableLocalSourceIfNeededAddingAccount:(id)a3;
+- (NCCNDataclassActionHandler)initWithParameters:(id)parameters;
+- (void)disableLocalSourceIfNeededAddingAccount:(id)account;
 @end
 
 @implementation NCCNDataclassActionHandler
@@ -21,25 +21,25 @@
   return v3;
 }
 
-- (NCCNDataclassActionHandler)initWithParameters:(id)a3
+- (NCCNDataclassActionHandler)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v14.receiver = self;
   v14.super_class = NCCNDataclassActionHandler;
   v5 = [(NCCNDataclassActionHandler *)&v14 init];
   if (v5)
   {
-    v6 = [v4 account];
+    account = [parametersCopy account];
     account = v5->_account;
-    v5->_account = v6;
+    v5->_account = account;
 
-    v8 = [v4 childAccounts];
+    childAccounts = [parametersCopy childAccounts];
     childAccounts = v5->_childAccounts;
-    v5->_childAccounts = v8;
+    v5->_childAccounts = childAccounts;
 
-    v10 = [v4 implementation];
+    implementation = [parametersCopy implementation];
     implementation = v5->_implementation;
-    v5->_implementation = v10;
+    v5->_implementation = implementation;
 
     v12 = v5;
   }
@@ -49,39 +49,39 @@
 
 - (BOOL)perform
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (BOOL)createABAccountForACAccount:(id)a3 withChildren:(id)a4
+- (BOOL)createABAccountForACAccount:(id)account withChildren:(id)children
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NCCNDataclassActionHandler *)self implementation];
-  v9 = [v8 createContactsAccountForParentAccount:v7 withChildAccounts:v6];
+  childrenCopy = children;
+  accountCopy = account;
+  implementation = [(NCCNDataclassActionHandler *)self implementation];
+  v9 = [implementation createContactsAccountForParentAccount:accountCopy withChildAccounts:childrenCopy];
 
   return v9;
 }
 
-- (BOOL)mergeContactsFromLocalSourceIntoSource:(id)a3
+- (BOOL)mergeContactsFromLocalSourceIntoSource:(id)source
 {
-  v4 = a3;
-  v5 = [(NCCNDataclassActionHandler *)self implementation];
-  v6 = [v5 mergeContactsFromLocalContainerToContainer:v4];
+  sourceCopy = source;
+  implementation = [(NCCNDataclassActionHandler *)self implementation];
+  v6 = [implementation mergeContactsFromLocalContainerToContainer:sourceCopy];
 
   return v6;
 }
 
-- (void)disableLocalSourceIfNeededAddingAccount:(id)a3
+- (void)disableLocalSourceIfNeededAddingAccount:(id)account
 {
-  if (([a3 MCIsManaged] & 1) == 0)
+  if (([account MCIsManaged] & 1) == 0)
   {
-    v4 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "It is necessary to disable the AB local source", v5, 2u);
+      _os_log_impl(&dword_0, os_log, OS_LOG_TYPE_DEFAULT, "It is necessary to disable the AB local source", v5, 2u);
     }
 
     [(NCCNDataclassActionHandler *)self setLocalSourceEnabled:0];

@@ -1,6 +1,6 @@
 @interface PIParallaxColorAnalysis
-+ (id)colorsFromDictionary:(id)a3 key:(id)a4 error:(id *)a5;
-+ (id)loadFromContentsDictionary:(id)a3 error:(id *)a4;
++ (id)colorsFromDictionary:(id)dictionary key:(id)key error:(id *)error;
++ (id)loadFromContentsDictionary:(id)dictionary error:(id *)error;
 - (PIParallaxColorAnalysis)init;
 - (id)contentsDictionary;
 @end
@@ -28,19 +28,19 @@
   v10 = [v9 numberWithDouble:?];
   [v3 setObject:v10 forKeyedSubscript:@"backgroundLuminance"];
 
-  v11 = [(PIParallaxColorAnalysis *)self colors];
+  colors = [(PIParallaxColorAnalysis *)self colors];
   v12 = PFMap();
   [v3 setObject:v12 forKeyedSubscript:@"colors"];
 
-  v13 = [(PIParallaxColorAnalysis *)self foregroundColors];
+  foregroundColors = [(PIParallaxColorAnalysis *)self foregroundColors];
   v14 = PFMap();
   [v3 setObject:v14 forKeyedSubscript:@"foregroundColors"];
 
-  v15 = [(PIParallaxColorAnalysis *)self backgroundColors];
+  backgroundColors = [(PIParallaxColorAnalysis *)self backgroundColors];
   v16 = PFMap();
   [v3 setObject:v16 forKeyedSubscript:@"backgroundColors"];
 
-  v17 = [(PIParallaxColorAnalysis *)self clockAreaColors];
+  clockAreaColors = [(PIParallaxColorAnalysis *)self clockAreaColors];
   v18 = PFMap();
   [v3 setObject:v18 forKeyedSubscript:@"clockAreaColors"];
 
@@ -56,10 +56,10 @@
   return result;
 }
 
-+ (id)colorsFromDictionary:(id)a3 key:(id)a4 error:(id *)a5
++ (id)colorsFromDictionary:(id)dictionary key:(id)key error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:a4];
+  v6 = [dictionary objectForKeyedSubscript:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -96,7 +96,7 @@ LABEL_4:
         v15 = v19;
         if (!v14)
         {
-          *a5 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to deserialize color values" object:v13 underlyingError:v15];
+          *error = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to deserialize color values" object:v13 underlyingError:v15];
 
           goto LABEL_15;
         }
@@ -116,7 +116,7 @@ LABEL_4:
         }
       }
 
-      *a5 = [MEMORY[0x1E69B3A48] invalidError:@"Invalid color values" object:v13];
+      *error = [MEMORY[0x1E69B3A48] invalidError:@"Invalid color values" object:v13];
 LABEL_15:
 
       v16 = 0;
@@ -133,17 +133,17 @@ LABEL_16:
   else
   {
     [MEMORY[0x1E69B3A48] invalidError:@"Invalid color array" object:v6];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
   }
 
   return v16;
 }
 
-+ (id)loadFromContentsDictionary:(id)a3 error:(id *)a4
++ (id)loadFromContentsDictionary:(id)dictionary error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v24 = NUAssertLogger_5651();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -154,7 +154,7 @@ LABEL_16:
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v26 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v28 = NUAssertLogger_5651();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_ERROR);
@@ -162,11 +162,11 @@ LABEL_16:
     {
       if (v29)
       {
-        v37 = dispatch_get_specific(*v26);
+        v37 = dispatch_get_specific(*callStackSymbols);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v26 = [v38 callStackSymbols];
-        v40 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v37;
         v48 = 2114;
@@ -177,10 +177,10 @@ LABEL_16:
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v47 = v26;
+      v47 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -188,7 +188,7 @@ LABEL_16:
     goto LABEL_45;
   }
 
-  if (!a4)
+  if (!error)
   {
     v31 = NUAssertLogger_5651();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -199,7 +199,7 @@ LABEL_16:
       _os_log_error_impl(&dword_1C7694000, v31, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v26 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v33 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v28 = NUAssertLogger_5651();
     v34 = os_log_type_enabled(v28, OS_LOG_TYPE_ERROR);
@@ -207,8 +207,8 @@ LABEL_16:
     {
       if (v34)
       {
-        v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v36 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v47 = v36;
         _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -220,11 +220,11 @@ LABEL_16:
 LABEL_45:
     if (v34)
     {
-      v41 = dispatch_get_specific(*v26);
+      v41 = dispatch_get_specific(*callStackSymbols);
       v42 = MEMORY[0x1E696AF00];
       v43 = v41;
-      v44 = [v42 callStackSymbols];
-      v45 = [v44 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v42 callStackSymbols];
+      v45 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v47 = v41;
       v48 = 2114;
@@ -237,7 +237,7 @@ LABEL_47:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
+  v7 = dictionaryCopy;
   v8 = objc_alloc_init(PIParallaxColorAnalysis);
   v9 = [v7 objectForKeyedSubscript:@"version"];
   objc_opt_class();
@@ -252,7 +252,7 @@ LABEL_47:
     v10 = [MEMORY[0x1E69B3A48] unsupportedError:@"Incompatible color analysis version" object:v9];
 LABEL_7:
     v11 = 0;
-    *a4 = v10;
+    *error = v10;
     goto LABEL_21;
   }
 
@@ -270,12 +270,12 @@ LABEL_7:
     {
       [v14 floatValue];
       [(PIParallaxColorAnalysis *)v8 setBackgroundLuminance:v15];
-      v16 = [a1 colorsFromDictionary:v7 key:@"foregroundColors" error:a4];
+      v16 = [self colorsFromDictionary:v7 key:@"foregroundColors" error:error];
       if (v16)
       {
         v17 = v16;
         [(PIParallaxColorAnalysis *)v8 setForegroundColors:v16];
-        v18 = [a1 colorsFromDictionary:v7 key:@"backgroundColors" error:a4];
+        v18 = [self colorsFromDictionary:v7 key:@"backgroundColors" error:error];
 
         if (v18)
         {
@@ -284,8 +284,8 @@ LABEL_7:
           {
             [(PIParallaxColorAnalysis *)v8 backgroundLuminance];
             [(PIParallaxColorAnalysis *)v8 setLuminance:?];
-            v22 = [(PIParallaxColorAnalysis *)v8 backgroundColors];
-            [(PIParallaxColorAnalysis *)v8 setColors:v22];
+            backgroundColors = [(PIParallaxColorAnalysis *)v8 backgroundColors];
+            [(PIParallaxColorAnalysis *)v8 setColors:backgroundColors];
 
             v12 = v14;
           }
@@ -298,13 +298,13 @@ LABEL_7:
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
               [MEMORY[0x1E69B3A48] invalidError:@"Invalid luminance value" object:v12];
-              *a4 = v11 = 0;
+              *error = v11 = 0;
               goto LABEL_31;
             }
 
             [v12 floatValue];
             [(PIParallaxColorAnalysis *)v8 setLuminance:v19];
-            v20 = [a1 colorsFromDictionary:v7 key:@"colors" error:a4];
+            v20 = [self colorsFromDictionary:v7 key:@"colors" error:error];
 
             if (!v20)
             {
@@ -324,7 +324,7 @@ LABEL_27:
 
           else
           {
-            v23 = [a1 colorsFromDictionary:v7 key:@"clockAreaColors" error:a4];
+            v23 = [self colorsFromDictionary:v7 key:@"clockAreaColors" error:error];
 
             v18 = v23;
             if (!v23)
@@ -347,7 +347,7 @@ LABEL_31:
     else
     {
       [MEMORY[0x1E69B3A48] invalidError:@"Invalid luminance value" object:v14];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     v12 = v14;
@@ -356,7 +356,7 @@ LABEL_31:
   else
   {
     [MEMORY[0x1E69B3A48] invalidError:@"Invalid luminance value" object:v12];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
 LABEL_20:

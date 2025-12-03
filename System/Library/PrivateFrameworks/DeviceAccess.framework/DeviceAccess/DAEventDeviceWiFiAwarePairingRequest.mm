@@ -1,39 +1,39 @@
 @interface DAEventDeviceWiFiAwarePairingRequest
-- (DAEventDeviceWiFiAwarePairingRequest)initWithEventType:(int64_t)a3 pairingInfo:(id)a4;
-- (DAEventDeviceWiFiAwarePairingRequest)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (DAEventDeviceWiFiAwarePairingRequest)initWithEventType:(int64_t)type pairingInfo:(id)info;
+- (DAEventDeviceWiFiAwarePairingRequest)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DAEventDeviceWiFiAwarePairingRequest
 
-- (DAEventDeviceWiFiAwarePairingRequest)initWithEventType:(int64_t)a3 pairingInfo:(id)a4
+- (DAEventDeviceWiFiAwarePairingRequest)initWithEventType:(int64_t)type pairingInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v7 = [(DAEvent *)self initWithEventType:56];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_pairingInfo, a4);
+    objc_storeStrong(&v7->_pairingInfo, info);
     v9 = v8;
   }
 
   return v8;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v6.receiver = self;
   v6.super_class = DAEventDeviceWiFiAwarePairingRequest;
-  v4 = a3;
-  [(DAEvent *)&v6 encodeWithXPCObject:v4];
+  objectCopy = object;
+  [(DAEvent *)&v6 encodeWithXPCObject:objectCopy];
   pairingInfo = self->_pairingInfo;
   CUXPCEncodeObject();
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -60,9 +60,9 @@
   return v7;
 }
 
-- (DAEventDeviceWiFiAwarePairingRequest)initWithXPCObject:(id)a3 error:(id *)a4
+- (DAEventDeviceWiFiAwarePairingRequest)initWithXPCObject:(id)object error:(id *)error
 {
-  v5 = OUTLINED_FUNCTION_4_0(self, a2, a3);
+  v5 = OUTLINED_FUNCTION_4_0(self, a2, object);
   v15.receiver = v4;
   v15.super_class = DAEventDeviceWiFiAwarePairingRequest;
   v12 = OUTLINED_FUNCTION_1_1(v5, sel_initWithXPCObject_error_, v6, v7, v8, v9, v10, v11, v15);

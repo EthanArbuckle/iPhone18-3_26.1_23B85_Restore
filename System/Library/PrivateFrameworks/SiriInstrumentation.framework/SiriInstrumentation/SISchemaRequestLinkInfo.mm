@@ -1,33 +1,33 @@
 @interface SISchemaRequestLinkInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaRequestLinkInfo)initWithDictionary:(id)a3;
-- (SISchemaRequestLinkInfo)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaRequestLinkInfo)initWithDictionary:(id)dictionary;
+- (SISchemaRequestLinkInfo)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaRequestLinkInfo
 
-- (SISchemaRequestLinkInfo)initWithDictionary:(id)a3
+- (SISchemaRequestLinkInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SISchemaRequestLinkInfo;
   v5 = [(SISchemaRequestLinkInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"component"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"component"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaRequestLinkInfo setComponent:](v5, "setComponent:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"uuid"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"uuid"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (SISchemaRequestLinkInfo)initWithJSON:(id)a3
+- (SISchemaRequestLinkInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaRequestLinkInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaRequestLinkInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaRequestLinkInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,7 +77,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(SISchemaRequestLinkInfo *)self component]- 1;
@@ -91,28 +91,28 @@
       v5 = off_1E78E6218[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"component"];
+    [dictionary setObject:v5 forKeyedSubscript:@"component"];
   }
 
   if (self->_uuid)
   {
-    v6 = [(SISchemaRequestLinkInfo *)self uuid];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    uuid = [(SISchemaRequestLinkInfo *)self uuid];
+    dictionaryRepresentation = [uuid dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"uuid"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"uuid"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"uuid"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"uuid"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -130,22 +130,22 @@
   return [(SISchemaUUID *)self->_uuid hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (component = self->_component, component == [v4 component]))
+      if ((*&self->_has & 1) == 0 || (component = self->_component, component == [equalCopy component]))
       {
-        v6 = [(SISchemaRequestLinkInfo *)self uuid];
-        v7 = [v4 uuid];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        uuid = [(SISchemaRequestLinkInfo *)self uuid];
+        uuid2 = [equalCopy uuid];
+        v8 = uuid2;
+        if ((uuid != 0) != (uuid2 == 0))
         {
-          v9 = [(SISchemaRequestLinkInfo *)self uuid];
-          if (!v9)
+          uuid3 = [(SISchemaRequestLinkInfo *)self uuid];
+          if (!uuid3)
           {
 
 LABEL_13:
@@ -153,10 +153,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(SISchemaRequestLinkInfo *)self uuid];
-          v12 = [v4 uuid];
-          v13 = [v11 isEqual:v12];
+          v10 = uuid3;
+          uuid4 = [(SISchemaRequestLinkInfo *)self uuid];
+          uuid5 = [equalCopy uuid];
+          v13 = [uuid4 isEqual:uuid5];
 
           if (v13)
           {
@@ -177,37 +177,37 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(SISchemaRequestLinkInfo *)self uuid];
+  uuid = [(SISchemaRequestLinkInfo *)self uuid];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (uuid)
   {
-    v6 = [(SISchemaRequestLinkInfo *)self uuid];
+    uuid2 = [(SISchemaRequestLinkInfo *)self uuid];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaRequestLinkInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaRequestLinkInfo *)self uuid:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaRequestLinkInfo *)self deleteUuid];
   }

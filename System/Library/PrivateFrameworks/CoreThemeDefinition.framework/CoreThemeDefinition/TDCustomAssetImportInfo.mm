@@ -21,22 +21,22 @@
   {
     if ([(TDCustomAssetImportInfo *)self resizingMode]== 1)
     {
-      v3 = [(TDCustomAssetImportInfo *)self renditionType];
-      if (v3 < 4)
+      renditionType = [(TDCustomAssetImportInfo *)self renditionType];
+      if (renditionType < 4)
       {
         v4 = &unk_247A49448;
-        return v4[v3];
+        return v4[renditionType];
       }
     }
   }
 
   else
   {
-    v3 = [(TDCustomAssetImportInfo *)self renditionType];
-    if (v3 < 4)
+    renditionType = [(TDCustomAssetImportInfo *)self renditionType];
+    if (renditionType < 4)
     {
       v4 = &unk_247A49428;
-      return v4[v3];
+      return v4[renditionType];
     }
   }
 

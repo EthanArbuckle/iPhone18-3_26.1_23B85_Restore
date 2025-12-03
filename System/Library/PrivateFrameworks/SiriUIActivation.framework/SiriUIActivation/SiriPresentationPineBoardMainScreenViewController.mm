@@ -1,31 +1,31 @@
 @interface SiriPresentationPineBoardMainScreenViewController
 - (BOOL)_getValueForShouldRequestDictation;
-- (SiriPresentationPineBoardMainScreenViewController)initWithIdentifier:(int64_t)a3 hostedPresentationFrame:(CGRect)a4;
-- (id)siriViewController:(id)a3 willStartRequestWithOptions:(id)a4;
-- (void)_forwardHIDButtonEventWithUsagePage:(unsigned int)a3 usage:(unsigned int)a4 type:(int64_t)a5 senderID:(unint64_t)a6;
+- (SiriPresentationPineBoardMainScreenViewController)initWithIdentifier:(int64_t)identifier hostedPresentationFrame:(CGRect)frame;
+- (id)siriViewController:(id)controller willStartRequestWithOptions:(id)options;
+- (void)_forwardHIDButtonEventWithUsagePage:(unsigned int)page usage:(unsigned int)usage type:(int64_t)type senderID:(unint64_t)d;
 - (void)_prewarmSiriVideoFlowDelegatePlugin;
-- (void)setNextAssistantRecognitionStrings:(id)a3;
-- (void)setNextVoiceRecognitionAudioInputPaths:(id)a3;
-- (void)siriViewController:(id)a3 didChangePresentationPeekMode:(unint64_t)a4;
-- (void)siriViewController:(id)a3 didChangePresentationVisualState:(unint64_t)a4;
-- (void)siriViewController:(id)a3 didReceiveButtonUpWithRequestOptions:(id)a4;
-- (void)siriViewController:(id)a3 sceneDidActivateWithIdentifier:(id)a4;
-- (void)siriViewControllerDidChangeToListeningMode:(id)a3;
-- (void)siriViewControllerDidDeactivateScene:(id)a3;
-- (void)siriViewControllerDidPresentKeyboard:(id)a3;
+- (void)setNextAssistantRecognitionStrings:(id)strings;
+- (void)setNextVoiceRecognitionAudioInputPaths:(id)paths;
+- (void)siriViewController:(id)controller didChangePresentationPeekMode:(unint64_t)mode;
+- (void)siriViewController:(id)controller didChangePresentationVisualState:(unint64_t)state;
+- (void)siriViewController:(id)controller didReceiveButtonUpWithRequestOptions:(id)options;
+- (void)siriViewController:(id)controller sceneDidActivateWithIdentifier:(id)identifier;
+- (void)siriViewControllerDidChangeToListeningMode:(id)mode;
+- (void)siriViewControllerDidDeactivateScene:(id)scene;
+- (void)siriViewControllerDidPresentKeyboard:(id)keyboard;
 @end
 
 @implementation SiriPresentationPineBoardMainScreenViewController
 
-- (SiriPresentationPineBoardMainScreenViewController)initWithIdentifier:(int64_t)a3 hostedPresentationFrame:(CGRect)a4
+- (SiriPresentationPineBoardMainScreenViewController)initWithIdentifier:(int64_t)identifier hostedPresentationFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = SiriPresentationPineBoardMainScreenViewController;
-  v8 = [(SiriPresentationViewController *)&v11 initWithIdentifier:a3 hostedPresentationFrame:?];
+  v8 = [(SiriPresentationViewController *)&v11 initWithIdentifier:identifier hostedPresentationFrame:?];
   v9 = v8;
   if (v8)
   {
@@ -57,9 +57,9 @@
   self->_clientLite = v5;
 
   v7 = [objc_alloc(MEMORY[0x277D47458]) initWithBundleIdentifier:@"com.apple.siri.VideoFlowDelegatePlugin"];
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
-  [v7 setAceId:v9];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v7 setAceId:uUIDString];
 
   [(AFClientLite *)self->_clientLite handleCommand:v7 commandHandler:0 completion:&__block_literal_global_0];
   v10 = *MEMORY[0x277D85DE8];
@@ -100,32 +100,32 @@ LABEL_7:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)siriViewController:(id)a3 didChangePresentationPeekMode:(unint64_t)a4
+- (void)siriViewController:(id)controller didChangePresentationPeekMode:(unint64_t)mode
 {
-  v6 = [(SiriPresentationViewController *)self siriPresentationControllerDelegate];
+  siriPresentationControllerDelegate = [(SiriPresentationViewController *)self siriPresentationControllerDelegate];
   v7 = [objc_opt_class() conformsToProtocol:&unk_2833C6AF8];
 
   if (v7)
   {
-    v8 = [(SiriPresentationViewController *)self siriPresentationControllerDelegate];
-    [v8 siriPresentation:self didChangePresentationPeekMode:a4];
+    siriPresentationControllerDelegate2 = [(SiriPresentationViewController *)self siriPresentationControllerDelegate];
+    [siriPresentationControllerDelegate2 siriPresentation:self didChangePresentationPeekMode:mode];
   }
 }
 
-- (void)siriViewController:(id)a3 didChangePresentationVisualState:(unint64_t)a4
+- (void)siriViewController:(id)controller didChangePresentationVisualState:(unint64_t)state
 {
-  v6 = [(SiriPresentationViewController *)self siriPresentationControllerDelegate];
+  siriPresentationControllerDelegate = [(SiriPresentationViewController *)self siriPresentationControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 siriPresentation:self didChangePresentationVisualState:a4];
+    [siriPresentationControllerDelegate siriPresentation:self didChangePresentationVisualState:state];
   }
 }
 
-- (id)siriViewController:(id)a3 willStartRequestWithOptions:(id)a4
+- (id)siriViewController:(id)controller willStartRequestWithOptions:(id)options
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  optionsCopy = options;
   v8 = MEMORY[0x277CEF098];
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -133,23 +133,23 @@ LABEL_7:
     *buf = 136315394;
     v47 = "[SiriPresentationPineBoardMainScreenViewController siriViewController:willStartRequestWithOptions:]";
     v48 = 2112;
-    v49 = v7;
+    v49 = optionsCopy;
     _os_log_impl(&dword_21FEE5000, v9, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
-  v10 = v7;
+  v10 = optionsCopy;
   [v10 setUseAutomaticEndpointing:0];
   [v10 setUseStreamingDictation:1];
-  v11 = [v10 requestInfo];
-  if ([v11 afui_isRemoteHeadsetActivation])
+  requestInfo = [v10 requestInfo];
+  if ([requestInfo afui_isRemoteHeadsetActivation])
   {
   }
 
   else
   {
-    v12 = [v10 afui_isTVFollowUpHearstActivation];
+    afui_isTVFollowUpHearstActivation = [v10 afui_isTVFollowUpHearstActivation];
 
-    if ((v12 & 1) == 0)
+    if ((afui_isTVFollowUpHearstActivation & 1) == 0)
     {
       goto LABEL_9;
     }
@@ -168,18 +168,18 @@ LABEL_9:
   [v10 setReleaseAudioSessionOnRecordingCompletion:1];
   v14 = [(SiriPresentationViewController *)self _updateRequestOptionsWithTestingInput:v10];
 
-  v15 = [v14 activationDeviceIdentifier];
+  activationDeviceIdentifier = [v14 activationDeviceIdentifier];
   v16 = *v8;
   if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = MEMORY[0x277CCACC8];
     v18 = v16;
-    v19 = [v17 currentThread];
-    v20 = [v19 qualityOfService];
+    currentThread = [v17 currentThread];
+    qualityOfService = [currentThread qualityOfService];
     *buf = 136315394;
     v47 = "[SiriPresentationPineBoardMainScreenViewController siriViewController:willStartRequestWithOptions:]";
     v48 = 2048;
-    v49 = v20;
+    v49 = qualityOfService;
     _os_log_impl(&dword_21FEE5000, v18, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _dictationInProgressLock about to lock with qos: %zd", buf, 0x16u);
   }
 
@@ -192,9 +192,9 @@ LABEL_9:
     _os_log_impl(&dword_21FEE5000, v21, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _dictationInProgressLock successfully locked", buf, 0xCu);
   }
 
-  v22 = [v14 inputType];
-  v23 = ([v14 isShortButtonPressAction] & 1) == 0 && objc_msgSend(v14, "requestSource") != 36 && objc_msgSend(v14, "requestSource") != 24 && objc_msgSend(v15, "length") != 0;
-  self->_shouldRequestDictation = v22 == v23;
+  inputType = [v14 inputType];
+  v23 = ([v14 isShortButtonPressAction] & 1) == 0 && objc_msgSend(v14, "requestSource") != 36 && objc_msgSend(v14, "requestSource") != 24 && objc_msgSend(activationDeviceIdentifier, "length") != 0;
+  self->_shouldRequestDictation = inputType == v23;
   os_unfair_lock_unlock(&self->_dictationInProgressLock);
   v24 = *v8;
   if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
@@ -234,12 +234,12 @@ LABEL_9:
       {
         v33 = MEMORY[0x277CCACC8];
         v34 = v32;
-        v35 = [v33 currentThread];
-        v36 = [v35 qualityOfService];
+        currentThread2 = [v33 currentThread];
+        qualityOfService2 = [currentThread2 qualityOfService];
         *buf = 136315394;
         v47 = "[SiriPresentationPineBoardMainScreenViewController siriViewController:willStartRequestWithOptions:]";
         v48 = 2048;
-        v49 = v36;
+        v49 = qualityOfService2;
         _os_log_impl(&dword_21FEE5000, v34, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _dictationInProgressLock about to lock with qos: %zd", buf, 0x16u);
       }
 
@@ -271,7 +271,7 @@ LABEL_9:
     v43[2] = __100__SiriPresentationPineBoardMainScreenViewController_siriViewController_willStartRequestWithOptions___block_invoke;
     v43[3] = &unk_2784300F8;
     objc_copyWeak(&v45, buf);
-    v44 = v15;
+    v44 = activationDeviceIdentifier;
     dispatch_group_notify(v39, MEMORY[0x277D85CD0], v43);
 
     objc_destroyWeak(&v45);
@@ -352,22 +352,22 @@ void __100__SiriPresentationPineBoardMainScreenViewController_siriViewController
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)siriViewController:(id)a3 didReceiveButtonUpWithRequestOptions:(id)a4
+- (void)siriViewController:(id)controller didReceiveButtonUpWithRequestOptions:(id)options
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  optionsCopy = options;
   v8 = MEMORY[0x277CEF098];
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v10 = MEMORY[0x277CCACC8];
     v11 = v9;
-    v12 = [v10 currentThread];
+    currentThread = [v10 currentThread];
     v20 = 136315394;
     v21 = "[SiriPresentationPineBoardMainScreenViewController siriViewController:didReceiveButtonUpWithRequestOptions:]";
     v22 = 2048;
-    v23 = [v12 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_21FEE5000, v11, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _dictationInProgressLock about to lock with qos: %zd", &v20, 0x16u);
   }
 
@@ -402,8 +402,8 @@ void __100__SiriPresentationPineBoardMainScreenViewController_siriViewController
       _os_log_impl(&dword_21FEE5000, v16, OS_LOG_TYPE_DEFAULT, "%s #activation Forwarding Dictation stop event to BackBoard", &v20, 0xCu);
     }
 
-    v17 = [v7 activationDeviceIdentifier];
-    -[SiriPresentationPineBoardMainScreenViewController _forwardHIDButtonEventWithUsagePage:usage:type:senderID:](self, "_forwardHIDButtonEventWithUsagePage:usage:type:senderID:", 12, 4, 1, [v17 longLongValue]);
+    activationDeviceIdentifier = [optionsCopy activationDeviceIdentifier];
+    -[SiriPresentationPineBoardMainScreenViewController _forwardHIDButtonEventWithUsagePage:usage:type:senderID:](self, "_forwardHIDButtonEventWithUsagePage:usage:type:senderID:", 12, 4, 1, [activationDeviceIdentifier longLongValue]);
   }
 
   requestDictationFromSiriGroup = self->_requestDictationFromSiriGroup;
@@ -412,21 +412,21 @@ void __100__SiriPresentationPineBoardMainScreenViewController_siriViewController
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)siriViewControllerDidPresentKeyboard:(id)a3
+- (void)siriViewControllerDidPresentKeyboard:(id)keyboard
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyboardCopy = keyboard;
   v5 = MEMORY[0x277CEF098];
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v7 = MEMORY[0x277CCACC8];
     v8 = v6;
-    v9 = [v7 currentThread];
+    currentThread = [v7 currentThread];
     v15 = 136315394;
     v16 = "[SiriPresentationPineBoardMainScreenViewController siriViewControllerDidPresentKeyboard:]";
     v17 = 2048;
-    v18 = [v9 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_21FEE5000, v8, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _dictationInProgressLock about to lock with qos: %zd", &v15, 0x16u);
   }
 
@@ -474,14 +474,14 @@ void __100__SiriPresentationPineBoardMainScreenViewController_siriViewController
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)siriViewController:(id)a3 sceneDidActivateWithIdentifier:(id)a4
+- (void)siriViewController:(id)controller sceneDidActivateWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SiriPresentationViewController *)self siriPresentationControllerDelegate];
+  identifierCopy = identifier;
+  siriPresentationControllerDelegate = [(SiriPresentationViewController *)self siriPresentationControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 siriPresentation:self sceneDidActivateWithIdentifier:v5];
+    [siriPresentationControllerDelegate siriPresentation:self sceneDidActivateWithIdentifier:identifierCopy];
   }
 
   v7 = MEMORY[0x277CEF098];
@@ -490,11 +490,11 @@ void __100__SiriPresentationPineBoardMainScreenViewController_siriViewController
   {
     v9 = MEMORY[0x277CCACC8];
     v10 = v8;
-    v11 = [v9 currentThread];
+    currentThread = [v9 currentThread];
     v17 = 136315394;
     v18 = "[SiriPresentationPineBoardMainScreenViewController siriViewController:sceneDidActivateWithIdentifier:]";
     v19 = 2048;
-    v20 = [v11 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_21FEE5000, v10, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _dictationInProgressLock about to lock with qos: %zd", &v17, 0x16u);
   }
 
@@ -543,16 +543,16 @@ void __100__SiriPresentationPineBoardMainScreenViewController_siriViewController
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)siriViewControllerDidDeactivateScene:(id)a3
+- (void)siriViewControllerDidDeactivateScene:(id)scene
 {
-  v4 = [(SiriPresentationViewController *)self siriPresentationControllerDelegate];
+  siriPresentationControllerDelegate = [(SiriPresentationViewController *)self siriPresentationControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 siriPresentationDidDeactivateScene:self];
+    [siriPresentationControllerDelegate siriPresentationDidDeactivateScene:self];
   }
 }
 
-- (void)siriViewControllerDidChangeToListeningMode:(id)a3
+- (void)siriViewControllerDidChangeToListeningMode:(id)mode
 {
   v19 = *MEMORY[0x277D85DE8];
   [(SiriPresentationPineBoardMainScreenViewController *)self _buttonDownTimestamp];
@@ -593,17 +593,17 @@ void __100__SiriPresentationPineBoardMainScreenViewController_siriViewController
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNextVoiceRecognitionAudioInputPaths:(id)a3
+- (void)setNextVoiceRecognitionAudioInputPaths:(id)paths
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v24 = "[SiriPresentationPineBoardMainScreenViewController setNextVoiceRecognitionAudioInputPaths:]";
     v25 = 2112;
-    v26 = v4;
+    v26 = pathsCopy;
     _os_log_impl(&dword_21FEE5000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -612,7 +612,7 @@ void __100__SiriPresentationPineBoardMainScreenViewController_siriViewController
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v4;
+  obj = pathsCopy;
   v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -659,17 +659,17 @@ void __92__SiriPresentationPineBoardMainScreenViewController_setNextVoiceRecogni
   [v3 setRecordedSpeechURL:*(a1 + 32)];
 }
 
-- (void)setNextAssistantRecognitionStrings:(id)a3
+- (void)setNextAssistantRecognitionStrings:(id)strings
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringsCopy = strings;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v22 = "[SiriPresentationPineBoardMainScreenViewController setNextAssistantRecognitionStrings:]";
     v23 = 2112;
-    v24 = v4;
+    v24 = stringsCopy;
     _os_log_impl(&dword_21FEE5000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -678,7 +678,7 @@ void __92__SiriPresentationPineBoardMainScreenViewController_setNextVoiceRecogni
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = stringsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -724,10 +724,10 @@ void __88__SiriPresentationPineBoardMainScreenViewController_setNextAssistantRec
   [v3 setText:*(a1 + 32)];
 }
 
-- (void)_forwardHIDButtonEventWithUsagePage:(unsigned int)a3 usage:(unsigned int)a4 type:(int64_t)a5 senderID:(unint64_t)a6
+- (void)_forwardHIDButtonEventWithUsagePage:(unsigned int)page usage:(unsigned int)usage type:(int64_t)type senderID:(unint64_t)d
 {
-  v9 = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
-  if (a5 <= 1)
+  keyboardFocusEnvironment = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
+  if (type <= 1)
   {
     v7 = *MEMORY[0x277CBECE8];
     mach_absolute_time();
@@ -747,11 +747,11 @@ void __88__SiriPresentationPineBoardMainScreenViewController_setNextAssistantRec
   {
     v5 = MEMORY[0x277CCACC8];
     v6 = v4;
-    v7 = [v5 currentThread];
+    currentThread = [v5 currentThread];
     v11 = 136315394;
     v12 = "[SiriPresentationPineBoardMainScreenViewController _getValueForShouldRequestDictation]";
     v13 = 2048;
-    v14 = [v7 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_21FEE5000, v6, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _dictationInProgressLock about to lock with qos: %zd", &v11, 0x16u);
   }
 

@@ -1,24 +1,24 @@
 @interface GKDiscoveryPeer
-- (BOOL)parseServiceNameForInit:(id)a3;
-- (GKDiscoveryPeer)initWithServiceName:(id)a3;
+- (BOOL)parseServiceNameForInit:(id)init;
+- (GKDiscoveryPeer)initWithServiceName:(id)name;
 - (id)nextInterfaceIndex;
-- (id)stringForState:(int)a3;
+- (id)stringForState:(int)state;
 - (void)cleanUpForBrowse;
 - (void)dealloc;
-- (void)didLoseInterface:(id)a3;
+- (void)didLoseInterface:(id)interface;
 - (void)flushDataBuffer;
 - (void)invalidate;
-- (void)sendData:(id)a3 withCompletionHandler:(id)a4;
-- (void)startResolveTimerWithHandler:(id)a3;
+- (void)sendData:(id)data withCompletionHandler:(id)handler;
+- (void)startResolveTimerWithHandler:(id)handler;
 - (void)stopResolveTimer;
-- (void)timeout:(id)a3;
+- (void)timeout:(id)timeout;
 @end
 
 @implementation GKDiscoveryPeer
 
-- (BOOL)parseServiceNameForInit:(id)a3
+- (BOOL)parseServiceNameForInit:(id)init
 {
-  if (a3)
+  if (init)
   {
     [(GKDiscoveryPeer *)self setServiceName:?];
     v4 = [MEMORY[0x277CCAC80] scannerWithString:self->_serviceName];
@@ -42,7 +42,7 @@
   return v5;
 }
 
-- (GKDiscoveryPeer)initWithServiceName:(id)a3
+- (GKDiscoveryPeer)initWithServiceName:(id)name
 {
   v7.receiver = self;
   v7.super_class = GKDiscoveryPeer;
@@ -50,13 +50,13 @@
   v5 = v4;
   if (v4)
   {
-    if ([(GKDiscoveryPeer *)v4 parseServiceNameForInit:a3])
+    if ([(GKDiscoveryPeer *)v4 parseServiceNameForInit:name])
     {
       v5->_interfaces = objc_alloc_init(MEMORY[0x277CBEB58]);
       v5->_orderedInterfaces = objc_alloc_init(MEMORY[0x277CBEB18]);
       v5->_attemptedInterfaces = objc_alloc_init(MEMORY[0x277CBEB18]);
       v5->_shouldSignalDiscovery = 1;
-      v5->_syncQueue = dispatch_queue_create([a3 UTF8String], 0);
+      v5->_syncQueue = dispatch_queue_create([name UTF8String], 0);
       v5->_sendDataBuffer = objc_alloc_init(MEMORY[0x277CBEB18]);
       v5->_state = 0;
     }
@@ -84,12 +84,12 @@
       serviceName = self->_serviceName;
       if (serviceName)
       {
-        v8 = [[(NSString *)serviceName description] UTF8String];
+        uTF8String = [[(NSString *)serviceName description] UTF8String];
       }
 
       else
       {
-        v8 = "<nil>";
+        uTF8String = "<nil>";
       }
 
       *buf = 136316162;
@@ -101,7 +101,7 @@
       v18 = 2080;
       v19 = Name;
       v20 = 2080;
-      v21 = v8;
+      v21 = uTF8String;
       _os_log_impl(&dword_24E50C000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s: peer[%s] -dealloc", buf, 0x30u);
     }
   }
@@ -122,10 +122,10 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)stringForState:(int)a3
+- (id)stringForState:(int)state
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a3 >= 4)
+  if (state >= 4)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -135,12 +135,12 @@
       {
         if ([(GKDiscoveryPeer *)self serviceName])
         {
-          v8 = [[(NSString *)[(GKDiscoveryPeer *)self serviceName] description] UTF8String];
+          uTF8String = [[(NSString *)[(GKDiscoveryPeer *)self serviceName] description] UTF8String];
         }
 
         else
         {
-          v8 = "<nil>";
+          uTF8String = "<nil>";
         }
 
         v10 = 136316162;
@@ -150,9 +150,9 @@
         v14 = 1024;
         v15 = 209;
         v16 = 2080;
-        v17 = v8;
+        v17 = uTF8String;
         v18 = 1024;
-        v19 = a3;
+        stateCopy = state;
         _os_log_impl(&dword_24E50C000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d peer [%s] unrecognized state [%d]", &v10, 0x2Cu);
       }
     }
@@ -162,7 +162,7 @@
 
   else
   {
-    result = off_279683088[a3];
+    result = off_279683088[state];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -220,12 +220,12 @@ LABEL_11:
       serviceName = self->_serviceName;
       if (serviceName)
       {
-        v12 = [[(NSString *)serviceName description] UTF8String];
+        uTF8String = [[(NSString *)serviceName description] UTF8String];
       }
 
       else
       {
-        v12 = "<nil>";
+        uTF8String = "<nil>";
       }
 
       if ([(NSMutableArray *)self->_orderedInterfaces description])
@@ -255,7 +255,7 @@ LABEL_11:
       v25 = 1024;
       v26 = 247;
       v27 = 2080;
-      v28 = v12;
+      v28 = uTF8String;
       v29 = 2080;
       v30 = v13;
       v31 = 2080;
@@ -273,11 +273,11 @@ LABEL_11:
   return v8;
 }
 
-- (void)startResolveTimerWithHandler:(id)a3
+- (void)startResolveTimerWithHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = micro();
-  if (!a3 && VRTraceGetErrorLogLevelForModule() >= 5)
+  if (!handler && VRTraceGetErrorLogLevelForModule() >= 5)
   {
     v6 = VRTraceErrorLogLevelToCSTR();
     v7 = *MEMORY[0x277CE5818];
@@ -293,7 +293,7 @@ LABEL_11:
     }
   }
 
-  -[GKDiscoveryPeer setResolveTimeoutHandler:](self, "setResolveTimeoutHandler:", [a3 copy]);
+  -[GKDiscoveryPeer setResolveTimeoutHandler:](self, "setResolveTimeoutHandler:", [handler copy]);
   v8 = objc_alloc_init(GKSimpleTimer);
   [(GKSimpleTimer *)v8 setDelegate:self];
   [(GKDiscoveryPeer *)self setResolveTimer:v8];
@@ -305,12 +305,12 @@ LABEL_11:
     {
       if ([(GKDiscoveryPeer *)self serviceName])
       {
-        v11 = [[(NSString *)[(GKDiscoveryPeer *)self serviceName] description] UTF8String];
+        uTF8String = [[(NSString *)[(GKDiscoveryPeer *)self serviceName] description] UTF8String];
       }
 
       else
       {
-        v11 = "<nil>";
+        uTF8String = "<nil>";
       }
 
       v13 = 136316162;
@@ -320,7 +320,7 @@ LABEL_11:
       v17 = 1024;
       v18 = 269;
       v19 = 2080;
-      v20 = v11;
+      v20 = uTF8String;
       v21 = 2048;
       v22 = 0x404E000000000000;
       _os_log_impl(&dword_24E50C000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d peer [%s] starting resolve timer with timout [%f seconds]", &v13, 0x30u);
@@ -347,12 +347,12 @@ LABEL_11:
         {
           if ([(GKDiscoveryPeer *)self serviceName])
           {
-            v5 = [[(NSString *)[(GKDiscoveryPeer *)self serviceName] description] UTF8String];
+            uTF8String = [[(NSString *)[(GKDiscoveryPeer *)self serviceName] description] UTF8String];
           }
 
           else
           {
-            v5 = "<nil>";
+            uTF8String = "<nil>";
           }
 
           v7 = 136315906;
@@ -362,7 +362,7 @@ LABEL_11:
           v11 = 1024;
           v12 = 278;
           v13 = 2080;
-          v14 = v5;
+          v14 = uTF8String;
           _os_log_impl(&dword_24E50C000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d peer [%s] resolve timer stopped", &v7, 0x26u);
         }
       }
@@ -376,13 +376,13 @@ LABEL_11:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didLoseInterface:(id)a3
+- (void)didLoseInterface:(id)interface
 {
   [(NSMutableSet *)self->_interfaces removeObject:?];
-  [(NSMutableArray *)self->_orderedInterfaces removeObject:a3];
+  [(NSMutableArray *)self->_orderedInterfaces removeObject:interface];
   attemptedInterfaces = self->_attemptedInterfaces;
 
-  [(NSMutableArray *)attemptedInterfaces removeObject:a3];
+  [(NSMutableArray *)attemptedInterfaces removeObject:interface];
 }
 
 - (void)cleanUpForBrowse
@@ -403,7 +403,7 @@ LABEL_11:
   [(GKDiscoveryPeer *)self cleanUpForBrowse];
 }
 
-- (void)sendData:(id)a3 withCompletionHandler:(id)a4
+- (void)sendData:(id)data withCompletionHandler:(id)handler
 {
   v9[2] = *MEMORY[0x277D85DE8];
   if (self->_state == 3)
@@ -411,7 +411,7 @@ LABEL_11:
     connection = self->_connection;
     v5 = *MEMORY[0x277D85DE8];
 
-    [(GKDiscoveryPeerConnection *)connection sendData:a3 withCompletionHandler:a4];
+    [(GKDiscoveryPeerConnection *)connection sendData:data withCompletionHandler:handler];
   }
 
   else
@@ -419,8 +419,8 @@ LABEL_11:
     sendDataBuffer = self->_sendDataBuffer;
     v8[0] = @"GKDiscoveryPeerSendDataKey";
     v8[1] = @"GKDiscoveryPeerSendCompletionHandlerKey";
-    v9[0] = a3;
-    v9[1] = a4;
+    v9[0] = data;
+    v9[1] = handler;
     -[NSMutableArray addObject:](sendDataBuffer, "addObject:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2]);
     v7 = *MEMORY[0x277D85DE8];
   }
@@ -443,12 +443,12 @@ LABEL_11:
         serviceName = self->_serviceName;
         if (serviceName)
         {
-          v10 = [[(NSString *)serviceName description] UTF8String];
+          uTF8String = [[(NSString *)serviceName description] UTF8String];
         }
 
         else
         {
-          v10 = "<nil>";
+          uTF8String = "<nil>";
         }
 
         v15 = [(NSMutableArray *)self->_sendDataBuffer count];
@@ -461,7 +461,7 @@ LABEL_11:
         v48 = 2080;
         v49 = Name;
         v50 = 2080;
-        v51 = v10;
+        v51 = uTF8String;
         v52 = 1024;
         v53 = v15;
         _os_log_impl(&dword_24E50C000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s: peer [%s] relaying buffered data (%d sendData calls) to the peer connection object)", buf, 0x36u);
@@ -508,12 +508,12 @@ LABEL_11:
         v13 = self->_serviceName;
         if (v13)
         {
-          v14 = [[(NSString *)v13 description] UTF8String];
+          uTF8String2 = [[(NSString *)v13 description] UTF8String];
         }
 
         else
         {
-          v14 = "<nil>";
+          uTF8String2 = "<nil>";
         }
 
         v21 = [(NSMutableArray *)self->_sendDataBuffer count];
@@ -524,7 +524,7 @@ LABEL_11:
         v46 = 1024;
         v47 = 331;
         v48 = 2080;
-        v49 = v14;
+        v49 = uTF8String2;
         v50 = 1024;
         LODWORD(v51) = v21;
         _os_log_impl(&dword_24E50C000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d peer [%s] no connection; notify GK that data [%d] failed to send", buf, 0x2Cu);
@@ -571,7 +571,7 @@ LABEL_11:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timeout:(id)a3
+- (void)timeout:(id)timeout
 {
   v17 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -582,12 +582,12 @@ LABEL_11:
     {
       if ([(GKDiscoveryPeer *)self serviceName])
       {
-        v6 = [[(NSString *)[(GKDiscoveryPeer *)self serviceName] description] UTF8String];
+        uTF8String = [[(NSString *)[(GKDiscoveryPeer *)self serviceName] description] UTF8String];
       }
 
       else
       {
-        v6 = "<nil>";
+        uTF8String = "<nil>";
       }
 
       v9 = 136315906;
@@ -597,7 +597,7 @@ LABEL_11:
       v13 = 1024;
       v14 = 349;
       v15 = 2080;
-      v16 = v6;
+      v16 = uTF8String;
       _os_log_impl(&dword_24E50C000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d peer [%s] resolve timout fired", &v9, 0x26u);
     }
   }

@@ -1,44 +1,44 @@
 @interface _SFDownloadManager
 + (id)defaultDownloadsHistoryURL;
-+ (id)downloadRepresentationsAtURL:(id)a3;
++ (id)downloadRepresentationsAtURL:(id)l;
 + (id)sharedManager;
-- (BOOL)downloadShouldImportPlaceholderToDownloadsFolder:(id)a3;
+- (BOOL)downloadShouldImportPlaceholderToDownloadsFolder:(id)folder;
 - (BOOL)hasUnviewedDownloads;
-- (BOOL)shouldExcludeDownloadFromFileSystem:(id)a3;
-- (BOOL)shouldExcludeDownloadFromList:(id)a3;
+- (BOOL)shouldExcludeDownloadFromFileSystem:(id)system;
+- (BOOL)shouldExcludeDownloadFromList:(id)list;
 - (NSArray)downloads;
 - (NSDate)_lastUnviewedDownloadDate;
 - (_SFDownloadDelegate)extraDownloadDelegate;
 - (double)_calculateTotalProgress;
-- (id)_containerDirectoryForDownload:(id)a3;
+- (id)_containerDirectoryForDownload:(id)download;
 - (id)_dataForPersistingToHistory;
-- (id)initAsReadonly:(BOOL)a3;
+- (id)initAsReadonly:(BOOL)readonly;
 - (unint64_t)runningDownloadsCount;
-- (void)_addDownload:(id)a3;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_loadDownloadHistoryAsynchronous:(BOOL)a3;
+- (void)_addDownload:(id)download;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_loadDownloadHistoryAsynchronous:(BOOL)asynchronous;
 - (void)_noteDownloadsChanged;
 - (void)_removeDeletedDownloads;
 - (void)_removeOldDownloadsAndUpdateTimerIfNeeded;
 - (void)_setHasUnviewedDownloadsIfNeeded;
-- (void)_setLastUnviewedDownloadDate:(id)a3;
+- (void)_setLastUnviewedDownloadDate:(id)date;
 - (void)_startUpdateTotalProgressTimerIfNeeded;
-- (void)_updateTotalProgress:(id)a3;
-- (void)createDirectoryForDownload:(id)a3 completionHandler:(id)a4;
+- (void)_updateTotalProgress:(id)progress;
+- (void)createDirectoryForDownload:(id)download completionHandler:(id)handler;
 - (void)dealloc;
-- (void)downloadDidFail:(id)a3;
-- (void)downloadDidFinish:(id)a3;
-- (void)downloadDidImportFileToDownloadsFolder:(id)a3;
-- (void)downloadDidReceiveResponse:(id)a3;
-- (void)downloadDidStart:(id)a3;
-- (void)downloadShouldContinueAfterReceivingResponse:(id)a3 decisionHandler:(id)a4;
-- (void)downloadWillBeDeleted:(id)a3;
-- (void)getDownloadsWithCompletionHandler:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeDownloads:(id)a3;
-- (void)removeDownloadsStartedAfterDate:(id)a3;
+- (void)downloadDidFail:(id)fail;
+- (void)downloadDidFinish:(id)finish;
+- (void)downloadDidImportFileToDownloadsFolder:(id)folder;
+- (void)downloadDidReceiveResponse:(id)response;
+- (void)downloadDidStart:(id)start;
+- (void)downloadShouldContinueAfterReceivingResponse:(id)response decisionHandler:(id)handler;
+- (void)downloadWillBeDeleted:(id)deleted;
+- (void)getDownloadsWithCompletionHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeDownloads:(id)downloads;
+- (void)removeDownloadsStartedAfterDate:(id)date;
 - (void)savePendingChangesBeforeTermination;
-- (void)setHasUnviewedDownloads:(BOOL)a3;
+- (void)setHasUnviewedDownloads:(BOOL)downloads;
 @end
 
 @implementation _SFDownloadManager
@@ -67,8 +67,8 @@
 - (void)_removeOldDownloadsAndUpdateTimerIfNeeded
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v3 doubleForKey:*MEMORY[0x1E69B1EC8]];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults doubleForKey:*MEMORY[0x1E69B1EC8]];
   v5 = v4;
 
   [(NSTimer *)self->_removeDownloadsTimer invalidate];
@@ -77,13 +77,13 @@
 
   if (v5 >= 0.0)
   {
-    v7 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     downloads = self->_downloads;
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __63___SFDownloadManager__removeOldDownloadsAndUpdateTimerIfNeeded__block_invoke;
     v35[3] = &unk_1E8495E80;
-    v9 = v7;
+    v9 = date;
     v36 = v9;
     v37 = v5;
     v10 = [(NSMutableArray *)downloads safari_filterObjectsUsingBlock:v35];
@@ -111,9 +111,9 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v31 + 1) + 8 * i) dateFinished];
-          v17 = v16;
-          if (v16 && (!v13 || [v16 compare:v13] == -1))
+          dateFinished = [*(*(&v31 + 1) + 8 * i) dateFinished];
+          v17 = dateFinished;
+          if (dateFinished && (!v13 || [dateFinished compare:v13] == -1))
           {
             v18 = v17;
 
@@ -168,11 +168,11 @@ LABEL_19:
 
 - (BOOL)hasUnviewedDownloads
 {
-  v2 = [(_SFDownloadManager *)self _lastUnviewedDownloadDate];
-  v3 = v2;
-  if (v2)
+  _lastUnviewedDownloadDate = [(_SFDownloadManager *)self _lastUnviewedDownloadDate];
+  v3 = _lastUnviewedDownloadDate;
+  if (_lastUnviewedDownloadDate)
   {
-    [v2 safari_timeIntervalUntilNow];
+    [_lastUnviewedDownloadDate safari_timeIntervalUntilNow];
     v5 = v4 < 28800.0;
   }
 
@@ -186,8 +186,8 @@ LABEL_19:
 
 - (NSDate)_lastUnviewedDownloadDate
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 safari_dateForKey:*MEMORY[0x1E69B1F08]];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults safari_dateForKey:*MEMORY[0x1E69B1F08]];
 
   return v3;
 }
@@ -200,9 +200,9 @@ LABEL_19:
   return v3;
 }
 
-+ (id)downloadRepresentationsAtURL:(id)a3
++ (id)downloadRepresentationsAtURL:(id)l
 {
-  v3 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:a3];
+  v3 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:l];
   v4 = [v3 safari_arrayForKey:@"DownloadHistory"];
   v5 = v4;
   if (v4)
@@ -220,7 +220,7 @@ LABEL_19:
   return v6;
 }
 
-- (id)initAsReadonly:(BOOL)a3
+- (id)initAsReadonly:(BOOL)readonly
 {
   v30.receiver = self;
   v30.super_class = _SFDownloadManager;
@@ -245,11 +245,11 @@ LABEL_19:
     downloadHistoryURL = v4->_downloadHistoryURL;
     v4->_downloadHistoryURL = v12;
 
-    v14 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     downloadsToDeferAdding = v4->_downloadsToDeferAdding;
-    v4->_downloadsToDeferAdding = v14;
+    v4->_downloadsToDeferAdding = weakToWeakObjectsMapTable;
 
-    if (!a3)
+    if (!readonly)
     {
       objc_initWeak(&location, v4);
       v16 = objc_alloc(MEMORY[0x1E69C8840]);
@@ -267,11 +267,11 @@ LABEL_19:
       objc_destroyWeak(&location);
     }
 
-    v20 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v20 addObserver:v4 forKeyPath:*MEMORY[0x1E69B1EC8] options:1 context:0];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults addObserver:v4 forKeyPath:*MEMORY[0x1E69B1EC8] options:1 context:0];
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v4 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:v4];
 
     [(_SFDownloadManager *)v4 _loadDownloadHistory];
     v22 = v4;
@@ -282,20 +282,20 @@ LABEL_19:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v3 removeObserver:self forKeyPath:*MEMORY[0x1E69B1EC8]];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults removeObserver:self forKeyPath:*MEMORY[0x1E69B1EC8]];
 
   v4.receiver = self;
   v4.super_class = _SFDownloadManager;
   [(_SFDownloadManager *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:*MEMORY[0x1E69B1EC8]])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:*MEMORY[0x1E69B1EC8]])
   {
     objc_initWeak(&location, self);
     block[0] = MEMORY[0x1E69E9820];
@@ -312,19 +312,19 @@ LABEL_19:
   {
     v13.receiver = self;
     v13.super_class = _SFDownloadManager;
-    [(_SFDownloadManager *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_SFDownloadManager *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
-  v3 = [(_SFDownloadManager *)self _busyDownloads];
-  v4 = [v3 count];
+  _busyDownloads = [(_SFDownloadManager *)self _busyDownloads];
+  v4 = [_busyDownloads count];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E69C8810] sharedLogger];
-    [v5 didMoveToBackgroundWithNumberOfOnGoingDownloads:v4];
+    mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+    [mEMORY[0x1E69C8810] didMoveToBackgroundWithNumberOfOnGoingDownloads:v4];
   }
 }
 
@@ -348,9 +348,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)_loadDownloadHistoryAsynchronous:(BOOL)a3
+- (void)_loadDownloadHistoryAsynchronous:(BOOL)asynchronous
 {
-  v3 = a3;
+  asynchronousCopy = asynchronous;
   v5 = self->_downloadHistoryURL;
   v24[0] = 0;
   v24[1] = v24;
@@ -386,12 +386,12 @@ LABEL_19:
   v13 = v7;
   v16 = v22;
   v17 = v20;
-  v18 = v3;
+  v18 = asynchronousCopy;
   v8 = v6;
   v14 = v8;
   v9 = _Block_copy(v12);
   v10 = v9;
-  if (v3)
+  if (asynchronousCopy)
   {
     v11 = dispatch_get_global_queue(25, 0);
     dispatch_async(v11, v10);
@@ -416,12 +416,12 @@ LABEL_19:
   }
 }
 
-- (void)getDownloadsWithCompletionHandler:(id)a3
+- (void)getDownloadsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_loadedDownloadHistory)
   {
-    dispatch_async(MEMORY[0x1E69E96A0], v4);
+    dispatch_async(MEMORY[0x1E69E96A0], handlerCopy);
   }
 
   else
@@ -435,7 +435,7 @@ LABEL_19:
       v12[2] = __56___SFDownloadManager_getDownloadsWithCompletionHandler___block_invoke;
       v12[3] = &unk_1E8495E30;
       v13 = v6;
-      v14 = v4;
+      v14 = handlerCopy;
       v7 = v6;
       v8 = _Block_copy(v12);
       v9 = self->_blockToExecuteWhenDownloadHistoryIsLoaded;
@@ -444,7 +444,7 @@ LABEL_19:
 
     else
     {
-      v10 = _Block_copy(v4);
+      v10 = _Block_copy(handlerCopy);
       v11 = self->_blockToExecuteWhenDownloadHistoryIsLoaded;
       self->_blockToExecuteWhenDownloadHistoryIsLoaded = v10;
     }
@@ -457,18 +457,18 @@ LABEL_19:
   if (self->_loadedDownloadHistory)
   {
     [(_SFDownloadManager *)self _startUpdateTotalProgressTimerIfNeeded];
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 postNotificationName:@"_SFDownloadsDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_SFDownloadsDidChangeNotification" object:self];
   }
 }
 
-- (void)removeDownloads:(id)a3
+- (void)removeDownloads:(id)downloads
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  downloadsCopy = downloads;
+  if ([downloadsCopy count])
   {
-    v5 = [MEMORY[0x1E695DFA8] setWithArray:v4];
+    v5 = [MEMORY[0x1E695DFA8] setWithArray:downloadsCopy];
     v6 = [MEMORY[0x1E695DFD8] setWithArray:self->_downloads];
     [v5 intersectSet:v6];
 
@@ -507,54 +507,54 @@ LABEL_19:
   }
 }
 
-- (void)removeDownloadsStartedAfterDate:(id)a3
+- (void)removeDownloadsStartedAfterDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   downloads = self->_downloads;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54___SFDownloadManager_removeDownloadsStartedAfterDate___block_invoke;
   v8[3] = &unk_1E8495E58;
-  v9 = v4;
-  v6 = v4;
+  v9 = dateCopy;
+  v6 = dateCopy;
   v7 = [(NSMutableArray *)downloads safari_filterObjectsUsingBlock:v8];
   [(_SFDownloadManager *)self removeDownloads:v7];
 }
 
-- (void)_addDownload:(id)a3
+- (void)_addDownload:(id)download
 {
-  v6 = a3;
-  v4 = [(_SFDownloadManager *)self shouldExcludeDownloadFromList:v6];
-  v5 = v6;
+  downloadCopy = download;
+  v4 = [(_SFDownloadManager *)self shouldExcludeDownloadFromList:downloadCopy];
+  v5 = downloadCopy;
   if (!v4)
   {
-    if (([(NSMutableArray *)self->_downloads containsObject:v6]& 1) == 0)
+    if (([(NSMutableArray *)self->_downloads containsObject:downloadCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->_downloads insertObject:v6 atIndex:0];
+      [(NSMutableArray *)self->_downloads insertObject:downloadCopy atIndex:0];
     }
 
     [(_SFDownloadManager *)self _noteDownloadsChanged];
     [(_SFDownloadManager *)self _removeOldDownloadsAndUpdateTimerIfNeeded];
-    v5 = v6;
+    v5 = downloadCopy;
   }
 }
 
-- (BOOL)shouldExcludeDownloadFromFileSystem:(id)a3
+- (BOOL)shouldExcludeDownloadFromFileSystem:(id)system
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(_SFDownloadManager *)self shouldExcludeDownloadFromList:v4])
+  systemCopy = system;
+  if (![(_SFDownloadManager *)self shouldExcludeDownloadFromList:systemCopy])
   {
-    if ([v4 dataOwner] != 2)
+    if ([systemCopy dataOwner] != 2)
     {
       v5 = 0;
       goto LABEL_15;
     }
 
-    v6 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    if ([v6 mayOpenFromManagedToUnmanaged])
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    if ([mEMORY[0x1E69ADFB8] mayOpenFromManagedToUnmanaged])
     {
-      if ([v6 mayOpenFromUnmanagedToManaged])
+      if ([mEMORY[0x1E69ADFB8] mayOpenFromUnmanagedToManaged])
       {
         v5 = 0;
 LABEL_14:
@@ -566,7 +566,7 @@ LABEL_14:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138543362;
-        v11 = v4;
+        v11 = systemCopy;
         v8 = "Excluding %{public}@ from Files because Managed Configuration prohibits moving unmanaged content to managed destinations";
         goto LABEL_12;
       }
@@ -578,7 +578,7 @@ LABEL_14:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138543362;
-        v11 = v4;
+        v11 = systemCopy;
         v8 = "Excluding %{public}@ from Files because Managed Configuration prohibits moving managed content to unmanaged destinations";
 LABEL_12:
         _os_log_impl(&dword_1D4644000, v7, OS_LOG_TYPE_DEFAULT, v8, &v10, 0xCu);
@@ -595,13 +595,13 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)shouldExcludeDownloadFromList:(id)a3
+- (BOOL)shouldExcludeDownloadFromList:(id)list
 {
-  v3 = a3;
-  v4 = [v3 fileType];
-  if ((v4 - 3) < 5 || v4 == 1)
+  listCopy = list;
+  fileType = [listCopy fileType];
+  if ((fileType - 3) < 5 || fileType == 1)
   {
-    v7 = [v3 explicitlySaved] ^ 1;
+    v7 = [listCopy explicitlySaved] ^ 1;
   }
 
   else
@@ -616,8 +616,8 @@ LABEL_15:
 {
   if (![(NSTimer *)self->_updateTotalProgressTimer isValid])
   {
-    v3 = [(_SFDownloadManager *)self _busyDownloads];
-    v4 = [v3 count];
+    _busyDownloads = [(_SFDownloadManager *)self _busyDownloads];
+    v4 = [_busyDownloads count];
 
     if (v4)
     {
@@ -626,8 +626,8 @@ LABEL_15:
       self->_updateTotalProgressTimer = v5;
 
       [(NSTimer *)self->_updateTotalProgressTimer setTolerance:1.0];
-      v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v7 addTimer:self->_updateTotalProgressTimer forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [mainRunLoop addTimer:self->_updateTotalProgressTimer forMode:*MEMORY[0x1E695DA28]];
 
       v8 = self->_updateTotalProgressTimer;
 
@@ -636,7 +636,7 @@ LABEL_15:
   }
 }
 
-- (void)_updateTotalProgress:(id)a3
+- (void)_updateTotalProgress:(id)progress
 {
   [(_SFDownloadManager *)self _calculateTotalProgress];
   self->_totalProgress = v4;
@@ -647,21 +647,21 @@ LABEL_15:
     self->_updateTotalProgressTimer = 0;
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"_SFDownloadManagerTotalProgressDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_SFDownloadManagerTotalProgressDidChangeNotification" object:self];
 }
 
 - (double)_calculateTotalProgress
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [(_SFDownloadManager *)self _busyDownloads];
-  if ([v2 count])
+  _busyDownloads = [(_SFDownloadManager *)self _busyDownloads];
+  if ([_busyDownloads count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v3 = v2;
+    v3 = _busyDownloads;
     v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v4)
     {
@@ -680,10 +680,10 @@ LABEL_15:
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 bytesExpected];
-          if (v12 != -1)
+          bytesExpected = [v11 bytesExpected];
+          if (bytesExpected != -1)
           {
-            v13 = v12;
+            v13 = bytesExpected;
             v9 = 0;
             v6 += [v11 bytesLoaded];
             v7 += v13;
@@ -725,22 +725,22 @@ LABEL_15:
   return v14;
 }
 
-- (void)_setLastUnviewedDownloadDate:(id)a3
+- (void)_setLastUnviewedDownloadDate:(id)date
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 safari_browserDefaults];
-  [v5 setObject:v4 forKey:*MEMORY[0x1E69B1F08]];
+  dateCopy = date;
+  safari_browserDefaults = [v3 safari_browserDefaults];
+  [safari_browserDefaults setObject:dateCopy forKey:*MEMORY[0x1E69B1F08]];
 }
 
-- (void)setHasUnviewedDownloads:(BOOL)a3
+- (void)setHasUnviewedDownloads:(BOOL)downloads
 {
-  v3 = a3;
-  v5 = [(_SFDownloadManager *)self hasUnviewedDownloads];
-  if (v3)
+  downloadsCopy = downloads;
+  hasUnviewedDownloads = [(_SFDownloadManager *)self hasUnviewedDownloads];
+  if (downloadsCopy)
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    [(_SFDownloadManager *)self _setLastUnviewedDownloadDate:v6];
+    date = [MEMORY[0x1E695DF00] date];
+    [(_SFDownloadManager *)self _setLastUnviewedDownloadDate:date];
   }
 
   else
@@ -748,10 +748,10 @@ LABEL_15:
     [(_SFDownloadManager *)self _setLastUnviewedDownloadDate:0];
   }
 
-  if (v5 != v3)
+  if (hasUnviewedDownloads != downloadsCopy)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"_SFDownloadManagerHasUnviewedDownloadsDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_SFDownloadManagerHasUnviewedDownloadsDidChangeNotification" object:self];
   }
 }
 
@@ -763,80 +763,80 @@ LABEL_15:
   }
 }
 
-- (void)downloadDidFinish:(id)a3
+- (void)downloadDidFinish:(id)finish
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  finishCopy = finish;
   WeakRetained = objc_loadWeakRetained(&self->_extraDownloadDelegate);
-  [WeakRetained downloadDidFinish:v4];
+  [WeakRetained downloadDidFinish:finishCopy];
 
   [(WBSCoalescedAsynchronousWriter *)self->_historyWriter scheduleWrite];
   [(_SFDownloadManager *)self _removeOldDownloadsAndUpdateTimerIfNeeded];
-  v6 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v6 doubleForKey:*MEMORY[0x1E69B1EC8]];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults doubleForKey:*MEMORY[0x1E69B1EC8]];
   v8 = v7;
 
-  if (v8 == -2.0 && [(_SFDownloadManager *)self _canExpireDownloadOnCompletion:v4])
+  if (v8 == -2.0 && [(_SFDownloadManager *)self _canExpireDownloadOnCompletion:finishCopy])
   {
-    v13[0] = v4;
+    v13[0] = finishCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     [(_SFDownloadManager *)self removeDownloads:v9];
   }
 
   else
   {
-    [(_SFDownloadIconCache *)self->_iconCache regenerateIconForSource:v4];
+    [(_SFDownloadIconCache *)self->_iconCache regenerateIconForSource:finishCopy];
   }
 
-  v10 = [(_SFDownloadManager *)self _busyDownloads];
-  v11 = [v10 count];
+  _busyDownloads = [(_SFDownloadManager *)self _busyDownloads];
+  v11 = [_busyDownloads count];
 
   if (!v11)
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 postNotificationName:@"_SFDownloadManagerDidFinishLastDownloadNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_SFDownloadManagerDidFinishLastDownloadNotification" object:self];
   }
 
-  if ([(NSMutableArray *)self->_downloads containsObject:v4])
+  if ([(NSMutableArray *)self->_downloads containsObject:finishCopy])
   {
     [(_SFDownloadManager *)self _setHasUnviewedDownloadsIfNeeded];
   }
 }
 
-- (void)downloadDidFail:(id)a3
+- (void)downloadDidFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   WeakRetained = objc_loadWeakRetained(&self->_extraDownloadDelegate);
-  [WeakRetained downloadDidFail:v4];
+  [WeakRetained downloadDidFail:failCopy];
 
   [(WBSCoalescedAsynchronousWriter *)self->_historyWriter scheduleWrite];
 
   [(_SFDownloadManager *)self _removeOldDownloadsAndUpdateTimerIfNeeded];
 }
 
-- (void)downloadDidStart:(id)a3
+- (void)downloadDidStart:(id)start
 {
-  v6 = a3;
+  startCopy = start;
   WeakRetained = objc_loadWeakRetained(&self->_extraDownloadDelegate);
-  [WeakRetained downloadDidStart:v6];
+  [WeakRetained downloadDidStart:startCopy];
 
-  v5 = [(NSMapTable *)self->_downloadsToDeferAdding objectForKey:v6];
+  v5 = [(NSMapTable *)self->_downloadsToDeferAdding objectForKey:startCopy];
 
   if (!v5)
   {
-    [(_SFDownloadManager *)self _addDownload:v6];
+    [(_SFDownloadManager *)self _addDownload:startCopy];
   }
 }
 
-- (BOOL)downloadShouldImportPlaceholderToDownloadsFolder:(id)a3
+- (BOOL)downloadShouldImportPlaceholderToDownloadsFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v6 = [v5 BOOLForKey:*MEMORY[0x1E69B1ED0]];
+  folderCopy = folder;
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v6 = [safari_browserDefaults BOOLForKey:*MEMORY[0x1E69B1ED0]];
 
   if (v6)
   {
-    v7 = ![(_SFDownloadManager *)self shouldExcludeDownloadFromFileSystem:v4];
+    v7 = ![(_SFDownloadManager *)self shouldExcludeDownloadFromFileSystem:folderCopy];
   }
 
   else
@@ -854,9 +854,9 @@ LABEL_15:
   return v7;
 }
 
-- (void)downloadDidImportFileToDownloadsFolder:(id)a3
+- (void)downloadDidImportFileToDownloadsFolder:(id)folder
 {
-  v3 = [(_SFDownloadManager *)self _containerDirectoryForDownload:a3];
+  v3 = [(_SFDownloadManager *)self _containerDirectoryForDownload:folder];
   v4 = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -867,81 +867,81 @@ LABEL_15:
   dispatch_async(v4, block);
 }
 
-- (void)downloadDidReceiveResponse:(id)a3
+- (void)downloadDidReceiveResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(_SFDownloadIconCache *)self->_iconCache regenerateIconForSource:?];
   WeakRetained = objc_loadWeakRetained(&self->_extraDownloadDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained downloadDidReceiveResponse:v5];
+    [WeakRetained downloadDidReceiveResponse:responseCopy];
   }
 
   [(WBSCoalescedAsynchronousWriter *)self->_historyWriter scheduleWrite];
 }
 
-- (id)_containerDirectoryForDownload:(id)a3
+- (id)_containerDirectoryForDownload:(id)download
 {
-  v4 = [a3 identifier];
-  v5 = [v4 UUIDString];
+  identifier = [download identifier];
+  uUIDString = [identifier UUIDString];
 
-  v6 = [(NSURL *)self->_downloadsRootURL URLByAppendingPathComponent:v5 isDirectory:1];
+  v6 = [(NSURL *)self->_downloadsRootURL URLByAppendingPathComponent:uUIDString isDirectory:1];
 
   return v6;
 }
 
-- (void)createDirectoryForDownload:(id)a3 completionHandler:(id)a4
+- (void)createDirectoryForDownload:(id)download completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(_SFDownloadManager *)self shouldExcludeDownloadFromList:v6])
+  downloadCopy = download;
+  handlerCopy = handler;
+  if ([(_SFDownloadManager *)self shouldExcludeDownloadFromList:downloadCopy])
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v8 = [(_SFDownloadManager *)self _containerDirectoryForDownload:v6];
+    v8 = [(_SFDownloadManager *)self _containerDirectoryForDownload:downloadCopy];
     v9 = dispatch_get_global_queue(25, 0);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __67___SFDownloadManager_createDirectoryForDownload_completionHandler___block_invoke;
     v11[3] = &unk_1E8490818;
     v12 = v8;
-    v13 = v7;
+    v13 = handlerCopy;
     v10 = v8;
     dispatch_async(v9, v11);
   }
 }
 
-- (void)downloadShouldContinueAfterReceivingResponse:(id)a3 decisionHandler:(id)a4
+- (void)downloadShouldContinueAfterReceivingResponse:(id)response decisionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_downloadsToDeferAdding objectForKey:v6];
+  responseCopy = response;
+  handlerCopy = handler;
+  v8 = [(NSMapTable *)self->_downloadsToDeferAdding objectForKey:responseCopy];
 
   if (v8)
   {
-    [(NSMapTable *)self->_downloadsToDeferAdding removeObjectForKey:v6];
+    [(NSMapTable *)self->_downloadsToDeferAdding removeObjectForKey:responseCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __83___SFDownloadManager_downloadShouldContinueAfterReceivingResponse_decisionHandler___block_invoke;
     aBlock[3] = &unk_1E8492088;
     aBlock[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = responseCopy;
+    v13 = handlerCopy;
     v9 = _Block_copy(aBlock);
   }
 
   else
   {
-    v9 = _Block_copy(v7);
+    v9 = _Block_copy(handlerCopy);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_extraDownloadDelegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained downloadShouldContinueAfterReceivingResponse:v6 decisionHandler:v9];
+    [WeakRetained downloadShouldContinueAfterReceivingResponse:responseCopy decisionHandler:v9];
   }
 
   else
@@ -950,15 +950,15 @@ LABEL_15:
   }
 }
 
-- (void)downloadWillBeDeleted:(id)a3
+- (void)downloadWillBeDeleted:(id)deleted
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  deletedCopy = deleted;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  deletedCopy2 = deleted;
+  v6 = [v4 arrayWithObjects:&deletedCopy count:1];
 
-  [(_SFDownloadManager *)self removeDownloads:v6, v7, v8];
+  [(_SFDownloadManager *)self removeDownloads:v6, deletedCopy, v8];
 }
 
 - (_SFDownloadDelegate)extraDownloadDelegate

@@ -1,14 +1,14 @@
 @interface HDOntologyMercuryZipTSVImporter
-+ (BOOL)_importShardWithEntry:(void *)a3 fileHandle:(void *)a4 updateCoordinator:(void *)a5 transaction:(void *)a6 error:;
-+ (BOOL)canImportEntry:(id)a3;
-+ (BOOL)importOntologyShardEntry:(id)a3 shardRegistry:(id)a4 error:(id *)a5;
-+ (id)_assignSlotToEntry:(uint64_t)a3 updateCoordinator:(void *)a4 transaction:(void *)a5 error:;
-+ (id)_lineImporterClassForFileName:(uint64_t)a1;
-+ (id)pruneEntries:(id)a3 options:(unint64_t)a4 shardRegistry:(id)a5 error:(id *)a6;
-+ (int64_t)purgeableSpaceForUrgency:(int)a3 shardRegistry:(id)a4;
-+ (uint64_t)_importArchiveEntry:(void *)a3 filename:(void *)a4 ontologyEntry:(void *)a5 transaction:(void *)a6 error:;
-+ (uint64_t)_importShardWithFileHandle:(void *)a3 entry:(void *)a4 updateCoordinator:(void *)a5 transaction:(void *)a6 error:;
-+ (uint64_t)_ontologyDatabaseSizeWithShardRegistry:(uint64_t)a1;
++ (BOOL)_importShardWithEntry:(void *)entry fileHandle:(void *)handle updateCoordinator:(void *)coordinator transaction:(void *)transaction error:;
++ (BOOL)canImportEntry:(id)entry;
++ (BOOL)importOntologyShardEntry:(id)entry shardRegistry:(id)registry error:(id *)error;
++ (id)_assignSlotToEntry:(uint64_t)entry updateCoordinator:(void *)coordinator transaction:(void *)transaction error:;
++ (id)_lineImporterClassForFileName:(uint64_t)name;
++ (id)pruneEntries:(id)entries options:(unint64_t)options shardRegistry:(id)registry error:(id *)error;
++ (int64_t)purgeableSpaceForUrgency:(int)urgency shardRegistry:(id)registry;
++ (uint64_t)_importArchiveEntry:(void *)entry filename:(void *)filename ontologyEntry:(void *)ontologyEntry transaction:(void *)transaction error:;
++ (uint64_t)_importShardWithFileHandle:(void *)handle entry:(void *)entry updateCoordinator:(void *)coordinator transaction:(void *)transaction error:;
++ (uint64_t)_ontologyDatabaseSizeWithShardRegistry:(uint64_t)registry;
 - (HDOntologyMercuryZipTSVImporter)init;
 @end
 
@@ -24,12 +24,12 @@
   return 0;
 }
 
-+ (BOOL)canImportEntry:(id)a3
++ (BOOL)canImportEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 schemaType];
+  entryCopy = entry;
+  schemaType = [entryCopy schemaType];
   v6 = *MEMORY[0x277CCC630];
-  if (v5 != *MEMORY[0x277CCC630])
+  if (schemaType != *MEMORY[0x277CCC630])
   {
     if (!v6)
     {
@@ -37,8 +37,8 @@
       goto LABEL_8;
     }
 
-    v3 = [v4 schemaType];
-    if (![v3 isEqualToString:v6])
+    schemaType2 = [entryCopy schemaType];
+    if (![schemaType2 isEqualToString:v6])
     {
       v7 = 0;
 LABEL_6:
@@ -47,11 +47,11 @@ LABEL_6:
     }
   }
 
-  v8 = [v4 schemaVersion];
-  v9 = [v4 identifier];
-  v7 = v8 == HKCurrentSchemaVersionForShardIdentifier();
+  schemaVersion = [entryCopy schemaVersion];
+  identifier = [entryCopy identifier];
+  v7 = schemaVersion == HKCurrentSchemaVersionForShardIdentifier();
 
-  if (v5 != v6)
+  if (schemaType != v6)
   {
     goto LABEL_6;
   }
@@ -61,25 +61,25 @@ LABEL_8:
   return v7;
 }
 
-+ (BOOL)importOntologyShardEntry:(id)a3 shardRegistry:(id)a4 error:(id *)a5
++ (BOOL)importOntologyShardEntry:(id)entry shardRegistry:(id)registry error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 openShardFileForEntry:v8 error:a5];
+  entryCopy = entry;
+  registryCopy = registry;
+  v10 = [registryCopy openShardFileForEntry:entryCopy error:error];
   if (v10)
   {
-    v11 = [v9 updateCoordinator];
+    updateCoordinator = [registryCopy updateCoordinator];
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __80__HDOntologyMercuryZipTSVImporter_importOntologyShardEntry_shardRegistry_error___block_invoke;
     v19 = &unk_2796B8CA8;
-    v23 = a1;
-    v20 = v8;
+    selfCopy = self;
+    v20 = entryCopy;
     v12 = v10;
     v21 = v12;
-    v22 = v11;
-    v13 = v11;
-    v14 = [v13 performOntologyTransactionForWrite:1 databaseTransaction:0 error:a5 transactionHandler:&v16];
+    v22 = updateCoordinator;
+    v13 = updateCoordinator;
+    v14 = [v13 performOntologyTransactionForWrite:1 databaseTransaction:0 error:error transactionHandler:&v16];
     [v12 closeFile];
   }
 
@@ -91,21 +91,21 @@ LABEL_8:
   return v14;
 }
 
-+ (BOOL)_importShardWithEntry:(void *)a3 fileHandle:(void *)a4 updateCoordinator:(void *)a5 transaction:(void *)a6 error:
++ (BOOL)_importShardWithEntry:(void *)entry fileHandle:(void *)handle updateCoordinator:(void *)coordinator transaction:(void *)transaction error:
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  entryCopy = entry;
+  handleCopy = handle;
+  coordinatorCopy = coordinator;
   v13 = a2;
   v14 = objc_opt_self();
-  v16 = [(HDOntologyMercuryZipTSVImporter *)v14 _assignSlotToEntry:v13 updateCoordinator:v15 transaction:v12 error:a6];
+  v16 = [(HDOntologyMercuryZipTSVImporter *)v14 _assignSlotToEntry:v13 updateCoordinator:v15 transaction:coordinatorCopy error:transaction];
 
-  if (v16 && [(HDOntologyMercuryZipTSVImporter *)v14 _importShardWithFileHandle:v10 entry:v16 updateCoordinator:v11 transaction:v12 error:a6])
+  if (v16 && [(HDOntologyMercuryZipTSVImporter *)v14 _importShardWithFileHandle:entryCopy entry:v16 updateCoordinator:handleCopy transaction:coordinatorCopy error:transaction])
   {
-    v17 = [v16 copyWithAvailableStateImported];
+    copyWithAvailableStateImported = [v16 copyWithAvailableStateImported];
 
-    v18 = [HDOntologyShardRegistry insertEntry:v17 transaction:v12 error:a6];
-    v16 = v17;
+    v18 = [HDOntologyShardRegistry insertEntry:copyWithAvailableStateImported transaction:coordinatorCopy error:transaction];
+    v16 = copyWithAvailableStateImported;
   }
 
   else
@@ -124,15 +124,15 @@ uint64_t __80__HDOntologyMercuryZipTSVImporter_willPruneEntries_options_shardReg
   return v3;
 }
 
-+ (id)pruneEntries:(id)a3 options:(unint64_t)a4 shardRegistry:(id)a5 error:(id *)a6
++ (id)pruneEntries:(id)entries options:(unint64_t)options shardRegistry:(id)registry error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
+  entriesCopy = entries;
+  registryCopy = registry;
   v13 = [HDOntologyMercuryZipTSVPruner alloc];
-  v14 = [v12 updateCoordinator];
+  updateCoordinator = [registryCopy updateCoordinator];
 
-  v15 = [(HDOntologyMercuryZipTSVPruner *)v13 initWithOntologyUpdateCoordinator:v14];
-  v16 = [(HDOntologyMercuryZipTSVPruner *)v15 pruneEntries:v11 options:a4 error:a6];
+  v15 = [(HDOntologyMercuryZipTSVPruner *)v13 initWithOntologyUpdateCoordinator:updateCoordinator];
+  v16 = [(HDOntologyMercuryZipTSVPruner *)v15 pruneEntries:entriesCopy options:options error:error];
   if (v16)
   {
     if (v16 == 2)
@@ -143,12 +143,12 @@ uint64_t __80__HDOntologyMercuryZipTSVImporter_willPruneEntries_options_shardReg
 
     if (v16 == 1)
     {
-      v17 = v11;
+      v17 = entriesCopy;
       goto LABEL_8;
     }
 
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"HDOntologyMercuryZipTSVImporter.m" lineNumber:96 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDOntologyMercuryZipTSVImporter.m" lineNumber:96 description:@"Unreachable code has been executed"];
   }
 
   v17 = 0;
@@ -157,14 +157,14 @@ LABEL_8:
   return v17;
 }
 
-+ (int64_t)purgeableSpaceForUrgency:(int)a3 shardRegistry:(id)a4
++ (int64_t)purgeableSpaceForUrgency:(int)urgency shardRegistry:(id)registry
 {
-  if (a3 != 4)
+  if (urgency != 4)
   {
     return 0;
   }
 
-  result = [(HDOntologyMercuryZipTSVImporter *)a1 _ontologyDatabaseSizeWithShardRegistry:a4];
+  result = [(HDOntologyMercuryZipTSVImporter *)self _ontologyDatabaseSizeWithShardRegistry:registry];
   if (result < 0x100000)
   {
     return 0;
@@ -173,30 +173,30 @@ LABEL_8:
   return result;
 }
 
-+ (uint64_t)_ontologyDatabaseSizeWithShardRegistry:(uint64_t)a1
++ (uint64_t)_ontologyDatabaseSizeWithShardRegistry:(uint64_t)registry
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 daemon];
+  daemon = [v2 daemon];
 
-  v4 = [v3 ontologyBackingStore];
-  v5 = [v4 sizeOfUnderlyingDatabaseInBytes];
-  v6 = [v5 integerValue];
+  ontologyBackingStore = [daemon ontologyBackingStore];
+  sizeOfUnderlyingDatabaseInBytes = [ontologyBackingStore sizeOfUnderlyingDatabaseInBytes];
+  integerValue = [sizeOfUnderlyingDatabaseInBytes integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-+ (id)_assignSlotToEntry:(uint64_t)a3 updateCoordinator:(void *)a4 transaction:(void *)a5 error:
++ (id)_assignSlotToEntry:(uint64_t)entry updateCoordinator:(void *)coordinator transaction:(void *)transaction error:
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a4;
+  coordinatorCopy = coordinator;
   v9 = objc_opt_self();
-  v10 = [v7 slot];
-  if (v10 == *MEMORY[0x277CCC618])
+  slot = [v7 slot];
+  if (slot == *MEMORY[0x277CCC618])
   {
     v20 = 0;
-    v11 = [HDOntologyShardRegistry nextAvailableMercuryZipTSVSlotWithTransaction:v8 error:&v20];
+    v11 = [HDOntologyShardRegistry nextAvailableMercuryZipTSVSlotWithTransaction:coordinatorCopy error:&v20];
     v12 = v20;
     v13 = v12;
     if (v11)
@@ -225,10 +225,10 @@ LABEL_8:
       v16 = v13;
       if (v16)
       {
-        if (a5)
+        if (transaction)
         {
           v17 = v16;
-          *a5 = v16;
+          *transaction = v16;
         }
 
         else
@@ -251,13 +251,13 @@ LABEL_8:
   return v14;
 }
 
-+ (uint64_t)_importShardWithFileHandle:(void *)a3 entry:(void *)a4 updateCoordinator:(void *)a5 transaction:(void *)a6 error:
++ (uint64_t)_importShardWithFileHandle:(void *)handle entry:(void *)entry updateCoordinator:(void *)coordinator transaction:(void *)transaction error:
 {
   v43[3] = *MEMORY[0x277D85DE8];
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  handleCopy = handle;
+  entryCopy = entry;
+  coordinatorCopy = coordinator;
   v14 = objc_opt_self();
   v43[0] = @"nodes";
   v43[1] = @"attributes";
@@ -282,12 +282,12 @@ LABEL_8:
   v32 = v14;
   v27 = v17;
   v30 = &v39;
-  v18 = v11;
+  v18 = handleCopy;
   v28 = v18;
-  v19 = v13;
+  v19 = coordinatorCopy;
   v29 = v19;
   v31 = &v33;
-  if (([v16 enumerateEntriesWithError:a6 block:v26] & 1) == 0)
+  if (([v16 enumerateEntriesWithError:transaction block:v26] & 1) == 0)
   {
 LABEL_9:
     v20 = 0;
@@ -300,10 +300,10 @@ LABEL_9:
     v22 = v21;
     if (v21)
     {
-      if (a6)
+      if (transaction)
       {
         v23 = v21;
-        *a6 = v22;
+        *transaction = v22;
       }
 
       else
@@ -373,15 +373,15 @@ void __104__HDOntologyMercuryZipTSVImporter__importShardWithFileHandle_entry_upd
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (uint64_t)_importArchiveEntry:(void *)a3 filename:(void *)a4 ontologyEntry:(void *)a5 transaction:(void *)a6 error:
++ (uint64_t)_importArchiveEntry:(void *)entry filename:(void *)filename ontologyEntry:(void *)ontologyEntry transaction:(void *)transaction error:
 {
   v61 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  entryCopy = entry;
+  filenameCopy = filename;
+  ontologyEntryCopy = ontologyEntry;
   v13 = objc_opt_self();
-  v14 = [(HDOntologyMercuryZipTSVImporter *)v13 _lineImporterClassForFileName:v10];
+  v14 = [(HDOntologyMercuryZipTSVImporter *)v13 _lineImporterClassForFileName:entryCopy];
   CFAbsoluteTimeGetCurrent();
   v45 = 0;
   v46 = &v45;
@@ -400,12 +400,12 @@ void __104__HDOntologyMercuryZipTSVImporter__importShardWithFileHandle_entry_upd
   v33[3] = &unk_2796B97D0;
   v37 = &v45;
   v39 = v13;
-  v15 = v10;
+  v15 = entryCopy;
   v34 = v15;
   v40 = v14;
-  v16 = v11;
+  v16 = filenameCopy;
   v35 = v16;
-  v17 = v12;
+  v17 = ontologyEntryCopy;
   v36 = v17;
   v38 = v42;
   v31 = v9;
@@ -462,10 +462,10 @@ void __104__HDOntologyMercuryZipTSVImporter__importShardWithFileHandle_entry_upd
   v26 = v25;
   if (v25)
   {
-    if (a6)
+    if (transaction)
     {
       v27 = v25;
-      *a6 = v26;
+      *transaction = v26;
     }
 
     else
@@ -481,7 +481,7 @@ void __104__HDOntologyMercuryZipTSVImporter__importShardWithFileHandle_entry_upd
   return v18;
 }
 
-+ (id)_lineImporterClassForFileName:(uint64_t)a1
++ (id)_lineImporterClassForFileName:(uint64_t)name
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -492,8 +492,8 @@ void __104__HDOntologyMercuryZipTSVImporter__importShardWithFileHandle_entry_upd
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:sel__lineImporterClassForFileName_ object:v3 file:@"HDOntologyMercuryZipTSVImporter.m" lineNumber:296 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__lineImporterClassForFileName_ object:v3 file:@"HDOntologyMercuryZipTSVImporter.m" lineNumber:296 description:@"Unreachable code has been executed"];
 
     v4 = 0;
   }

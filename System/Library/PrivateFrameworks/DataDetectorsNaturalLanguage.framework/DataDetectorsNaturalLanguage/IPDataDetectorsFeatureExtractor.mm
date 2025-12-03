@@ -1,27 +1,27 @@
 @interface IPDataDetectorsFeatureExtractor
-- (BOOL)stringContainsNonTimeStrings:(id)a3 aroundRange:(_NSRange)a4;
+- (BOOL)stringContainsNonTimeStrings:(id)strings aroundRange:(_NSRange)range;
 - (IPDataDetectorsFeatureExtractor)init;
-- (_NSRange)textRangeReferencingAfternoon:(id)a3;
-- (_NSRange)textRangeReferencingAllDay:(id)a3;
-- (_NSRange)textRangeReferencingEvening:(id)a3;
-- (_NSRange)textRangeReferencingMorning:(id)a3;
-- (_NSRange)textRangeReferencingNewYearsEve:(id)a3;
-- (_NSRange)textRangeReferencingNextWeekEnd:(id)a3;
-- (_NSRange)textRangeReferencingNoon:(id)a3;
-- (_NSRange)textRangeReferencingThisWeekEnd:(id)a3;
-- (_NSRange)textRangeReferencingTomorrow:(id)a3;
-- (_NSRange)textRangeReferencingValentineDay:(id)a3;
+- (_NSRange)textRangeReferencingAfternoon:(id)afternoon;
+- (_NSRange)textRangeReferencingAllDay:(id)day;
+- (_NSRange)textRangeReferencingEvening:(id)evening;
+- (_NSRange)textRangeReferencingMorning:(id)morning;
+- (_NSRange)textRangeReferencingNewYearsEve:(id)eve;
+- (_NSRange)textRangeReferencingNextWeekEnd:(id)end;
+- (_NSRange)textRangeReferencingNoon:(id)noon;
+- (_NSRange)textRangeReferencingThisWeekEnd:(id)end;
+- (_NSRange)textRangeReferencingTomorrow:(id)tomorrow;
+- (_NSRange)textRangeReferencingValentineDay:(id)day;
 - (__DDScanner)standardScanner;
-- (id)featureDataComplementingFeatureData:(id)a3 hour:(unint64_t)a4 minute:(unint64_t)a5 duration:(double)a6;
-- (id)featuresForTextString:(id)a3 inMessageUnit:(id)a4 context:(id)a5;
-- (id)newYearsEveDayDateFromReferenceDate:(id)a3;
+- (id)featureDataComplementingFeatureData:(id)data hour:(unint64_t)hour minute:(unint64_t)minute duration:(double)duration;
+- (id)featuresForTextString:(id)string inMessageUnit:(id)unit context:(id)context;
+- (id)newYearsEveDayDateFromReferenceDate:(id)date;
 - (id)queue;
-- (id)stringByReplacingDetectedDataWithNGramMarkersInString:(id)a3;
-- (id)thisSaturdayDateFromReferenceDate:(id)a3;
-- (id)tomorrowDateFromReferenceDate:(id)a3;
-- (id)valentineDayDateFromReferenceDate:(id)a3;
-- (void)setTimeZone:(id)a3 forDateFeatures:(id)a4;
-- (void)standardizeTimezonesForDetectedFeatures:(id)a3;
+- (id)stringByReplacingDetectedDataWithNGramMarkersInString:(id)string;
+- (id)thisSaturdayDateFromReferenceDate:(id)date;
+- (id)tomorrowDateFromReferenceDate:(id)date;
+- (id)valentineDayDateFromReferenceDate:(id)date;
+- (void)setTimeZone:(id)zone forDateFeatures:(id)features;
+- (void)standardizeTimezonesForDetectedFeatures:(id)features;
 @end
 
 @implementation IPDataDetectorsFeatureExtractor
@@ -53,10 +53,10 @@ void __39__IPDataDetectorsFeatureExtractor_init__block_invoke()
   if (sScanner)
   {
     v2 = sLastPreferredLanguage;
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 arrayForKey:@"AppleLanguages"];
-    v5 = [v4 firstObject];
-    LOBYTE(v2) = [v2 isEqualToString:v5];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults arrayForKey:@"AppleLanguages"];
+    firstObject = [v4 firstObject];
+    LOBYTE(v2) = [v2 isEqualToString:firstObject];
 
     result = sScanner;
     if (v2)
@@ -78,11 +78,11 @@ void __39__IPDataDetectorsFeatureExtractor_init__block_invoke()
   if (sScanner)
   {
     DDScannerEnableOptionalSource();
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v8 = [v7 arrayForKey:@"AppleLanguages"];
-    v9 = [v8 firstObject];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v8 = [standardUserDefaults2 arrayForKey:@"AppleLanguages"];
+    firstObject2 = [v8 firstObject];
     v10 = sLastPreferredLanguage;
-    sLastPreferredLanguage = v9;
+    sLastPreferredLanguage = firstObject2;
   }
 
   else
@@ -110,11 +110,11 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)stringContainsNonTimeStrings:(id)a3 aroundRange:(_NSRange)a4
+- (BOOL)stringContainsNonTimeStrings:(id)strings aroundRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  stringsCopy = strings;
   v7 = [IPRegexToolbox regularExpressionWithKey:@"stringContainsNonTimeStrings:aroundRange:" generator:&__block_literal_global_15];
   if (location <= 1)
   {
@@ -136,13 +136,13 @@ LABEL_14:
     v9 = location - 2;
   }
 
-  v10 = [v6 length] - (v9 + v8);
+  v10 = [stringsCopy length] - (v9 + v8);
   if (v10 >= 2)
   {
     v10 = 2;
   }
 
-  v11 = [v7 rangeOfFirstMatchInString:v6 options:2 range:{v9, v10 + v8}];
+  v11 = [v7 rangeOfFirstMatchInString:stringsCopy options:2 range:{v9, v10 + v8}];
 
   return v11 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -155,49 +155,49 @@ id __76__IPDataDetectorsFeatureExtractor_stringContainsNonTimeStrings_aroundRang
   return v0;
 }
 
-- (id)featuresForTextString:(id)a3 inMessageUnit:(id)a4 context:(id)a5
+- (id)featuresForTextString:(id)string inMessageUnit:(id)unit context:(id)context
 {
   v120 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v84 = a4;
-  v88 = a5;
+  stringCopy = string;
+  unitCopy = unit;
+  contextCopy = context;
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:30];
-  v9 = [v84 originalMessage];
-  v10 = [v9 dateSent];
+  originalMessage = [unitCopy originalMessage];
+  dateSent = [originalMessage dateSent];
 
   v116[0] = 0;
   v116[1] = v116;
   v116[2] = 0x3032000000;
   v116[3] = __Block_byref_object_copy__1;
   v116[4] = __Block_byref_object_dispose__1;
-  v117 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v112 = 0;
   v113 = &v112;
   v114 = 0x2020000000;
   v115 = 0;
-  v11 = [v88 objectForKey:@"IPFeatureExtractorDetectedDateInSubjectFeatureData"];
-  v12 = [v11 value];
+  v11 = [contextCopy objectForKey:@"IPFeatureExtractorDetectedDateInSubjectFeatureData"];
+  value = [v11 value];
   v83 = v11;
-  v13 = [v11 contextDictionary];
-  v14 = [v13 objectForKeyedSubscript:?];
-  v15 = [v14 BOOLValue];
+  contextDictionary = [v11 contextDictionary];
+  v14 = [contextDictionary objectForKeyedSubscript:?];
+  bOOLValue = [v14 BOOLValue];
 
-  v16 = [v83 contextDictionary];
-  v17 = [v16 objectForKeyedSubscript:@"timeIsApproximate"];
-  v18 = [v17 BOOLValue];
+  contextDictionary2 = [v83 contextDictionary];
+  v17 = [contextDictionary2 objectForKeyedSubscript:@"timeIsApproximate"];
+  bOOLValue2 = [v17 BOOLValue];
 
-  v19 = [v7 length];
-  v20 = [v88 objectForKey:@"IPFeatureExtractorContextText"];
-  v93 = [v7 copy];
+  v19 = [stringCopy length];
+  v20 = [contextCopy objectForKey:@"IPFeatureExtractorContextText"];
+  v93 = [stringCopy copy];
   v86 = v20;
   if (v20)
   {
-    v19 = [v7 length];
-    v21 = [v20 stringByAppendingString:v7];
+    v19 = [stringCopy length];
+    v21 = [v20 stringByAppendingString:stringCopy];
 
     v22 = v8;
     v20 = ([v20 length] + 1);
-    v7 = v21;
+    stringCopy = v21;
   }
 
   else
@@ -210,42 +210,42 @@ id __76__IPDataDetectorsFeatureExtractor_stringContainsNonTimeStrings_aroundRang
   block[1] = 3221225472;
   block[2] = __79__IPDataDetectorsFeatureExtractor_featuresForTextString_inMessageUnit_context___block_invoke;
   block[3] = &unk_278F23078;
-  v109 = v7;
+  v109 = stringCopy;
   block[4] = self;
   v107 = v116;
-  v87 = v7;
+  v87 = stringCopy;
   v103 = v87;
   v24 = v22;
   v104 = v24;
-  v81 = v12;
+  v81 = value;
   v105 = v81;
-  v110 = v15;
-  v111 = v18;
-  v90 = v10;
+  v110 = bOOLValue;
+  v111 = bOOLValue2;
+  v90 = dateSent;
   v106 = v90;
   v108 = &v112;
   dispatch_sync(v23, block);
   v25 = objc_autoreleasePoolPush();
-  v85 = [v87 lowercaseString];
+  lowercaseString = [v87 lowercaseString];
   objc_autoreleasePoolPop(v25);
   if ((v113[3] & 1) == 0)
   {
     if (v90)
     {
-      v27 = [(IPDataDetectorsFeatureExtractor *)self textRangeReferencingTomorrow:v85, v81];
+      v27 = [(IPDataDetectorsFeatureExtractor *)self textRangeReferencingTomorrow:lowercaseString, v81];
       if (v27 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v28 = v26;
         v29 = [(IPDataDetectorsFeatureExtractor *)self tomorrowDateFromReferenceDate:v90];
         v30 = [IPFeatureData featureDataWithType:1 value:v29 matchRange:v27, v28];
-        v31 = [v30 contextDictionary];
-        [v31 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"allDay"];
+        contextDictionary3 = [v30 contextDictionary];
+        [contextDictionary3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"allDay"];
 
-        v32 = [v30 contextDictionary];
-        [v32 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"dateTimeIsTenseDependent"];
+        contextDictionary4 = [v30 contextDictionary];
+        [contextDictionary4 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"dateTimeIsTenseDependent"];
 
-        v33 = [v30 contextDictionary];
-        [v33 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"IPFeatureDataContextDateTimeFromIpsosOverlay"];
+        contextDictionary5 = [v30 contextDictionary];
+        [contextDictionary5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"IPFeatureDataContextDateTimeFromIpsosOverlay"];
 
         [v30 setTextUnit:v87];
         [v24 addObject:v30];
@@ -257,24 +257,24 @@ id __76__IPDataDetectorsFeatureExtractor_stringContainsNonTimeStrings_aroundRang
   {
     if (v90)
     {
-      v35 = [(IPDataDetectorsFeatureExtractor *)self textRangeReferencingValentineDay:v85];
+      v35 = [(IPDataDetectorsFeatureExtractor *)self textRangeReferencingValentineDay:lowercaseString];
       if (v35 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v36 = v34;
         v37 = [(IPDataDetectorsFeatureExtractor *)self valentineDayDateFromReferenceDate:v90];
         v38 = [IPFeatureData featureDataWithType:1 value:v37 matchRange:v35, v36];
-        v39 = [v38 contextDictionary];
-        [v39 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"allDay"];
+        contextDictionary6 = [v38 contextDictionary];
+        [contextDictionary6 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"allDay"];
 
         v40 = [v37 dateByAddingTimeInterval:10800.0];
-        v41 = [v38 contextDictionary];
-        [v41 setObject:v40 forKeyedSubscript:@"endDate"];
+        contextDictionary7 = [v38 contextDictionary];
+        [contextDictionary7 setObject:v40 forKeyedSubscript:@"endDate"];
 
-        v42 = [v38 contextDictionary];
-        [v42 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"dateTimeIsTenseDependent"];
+        contextDictionary8 = [v38 contextDictionary];
+        [contextDictionary8 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"dateTimeIsTenseDependent"];
 
-        v43 = [v38 contextDictionary];
-        [v43 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"IPFeatureDataContextDateTimeFromIpsosOverlay"];
+        contextDictionary9 = [v38 contextDictionary];
+        [contextDictionary9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"IPFeatureDataContextDateTimeFromIpsosOverlay"];
 
         [v38 setTextUnit:v87];
         [v24 addObject:v38];
@@ -293,24 +293,24 @@ id __76__IPDataDetectorsFeatureExtractor_stringContainsNonTimeStrings_aroundRang
     v45 = [v44 components:8 fromDate:v90];
     if ([v45 month] == 12)
     {
-      v47 = [(IPDataDetectorsFeatureExtractor *)self textRangeReferencingNewYearsEve:v85];
+      v47 = [(IPDataDetectorsFeatureExtractor *)self textRangeReferencingNewYearsEve:lowercaseString];
       if (v47 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v48 = v46;
         v49 = [(IPDataDetectorsFeatureExtractor *)self newYearsEveDayDateFromReferenceDate:v90];
         v50 = [IPFeatureData featureDataWithType:1 value:v49 matchRange:v47, v48];
-        v51 = [v50 contextDictionary];
-        [v51 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"allDay"];
+        contextDictionary10 = [v50 contextDictionary];
+        [contextDictionary10 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"allDay"];
 
         v52 = [v49 dateByAddingTimeInterval:21600.0];
-        v53 = [v50 contextDictionary];
-        [v53 setObject:v52 forKeyedSubscript:@"endDate"];
+        contextDictionary11 = [v50 contextDictionary];
+        [contextDictionary11 setObject:v52 forKeyedSubscript:@"endDate"];
 
-        v54 = [v50 contextDictionary];
-        [v54 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"dateTimeIsTenseDependent"];
+        contextDictionary12 = [v50 contextDictionary];
+        [contextDictionary12 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"dateTimeIsTenseDependent"];
 
-        v55 = [v50 contextDictionary];
-        [v55 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"IPFeatureDataContextDateTimeFromIpsosOverlay"];
+        contextDictionary13 = [v50 contextDictionary];
+        [contextDictionary13 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"IPFeatureDataContextDateTimeFromIpsosOverlay"];
 
         [v50 setTextUnit:v87];
         [v24 addObject:v50];
@@ -348,9 +348,9 @@ LABEL_43:
       v60 = *(*(&v98 + 1) + 8 * i);
       if (![v60 type] || objc_msgSend(v60, "type") == 1)
       {
-        v61 = [v60 contextDictionary];
-        v62 = [v61 objectForKeyedSubscript:@"allDay"];
-        v63 = [v62 BOOLValue];
+        contextDictionary14 = [v60 contextDictionary];
+        v62 = [contextDictionary14 objectForKeyedSubscript:@"allDay"];
+        bOOLValue3 = [v62 BOOLValue];
 
         if (v57)
         {
@@ -359,7 +359,7 @@ LABEL_43:
 
         else
         {
-          v64 = v63;
+          v64 = bOOLValue3;
         }
 
         if ((v64 & 1) == 0)
@@ -384,25 +384,25 @@ LABEL_43:
   v65 = v57;
   if (v57)
   {
-    if ([(IPDataDetectorsFeatureExtractor *)self textRangeReferencingMorning:v85]== 0x7FFFFFFFFFFFFFFFLL)
+    if ([(IPDataDetectorsFeatureExtractor *)self textRangeReferencingMorning:lowercaseString]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([(IPDataDetectorsFeatureExtractor *)self textRangeReferencingNoon:v85]== 0x7FFFFFFFFFFFFFFFLL)
+      if ([(IPDataDetectorsFeatureExtractor *)self textRangeReferencingNoon:lowercaseString]== 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([(IPDataDetectorsFeatureExtractor *)self textRangeReferencingAfternoon:v85]== 0x7FFFFFFFFFFFFFFFLL)
+        if ([(IPDataDetectorsFeatureExtractor *)self textRangeReferencingAfternoon:lowercaseString]== 0x7FFFFFFFFFFFFFFFLL)
         {
-          if ([(IPDataDetectorsFeatureExtractor *)self textRangeReferencingEvening:v85]== 0x7FFFFFFFFFFFFFFFLL)
+          if ([(IPDataDetectorsFeatureExtractor *)self textRangeReferencingEvening:lowercaseString]== 0x7FFFFFFFFFFFFFFFLL)
           {
-            if ([(IPDataDetectorsFeatureExtractor *)self textRangeReferencingAllDay:v85]== 0x7FFFFFFFFFFFFFFFLL)
+            if ([(IPDataDetectorsFeatureExtractor *)self textRangeReferencingAllDay:lowercaseString]== 0x7FFFFFFFFFFFFFFFLL)
             {
               goto LABEL_44;
             }
 
             v66 = [(IPDataDetectorsFeatureExtractor *)self featureDataComplementingFeatureData:v57 hour:8 minute:0 duration:43200.0];
-            v67 = [v66 contextDictionary];
-            [v67 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"allDay"];
+            contextDictionary15 = [v66 contextDictionary];
+            [contextDictionary15 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"allDay"];
 
-            v68 = [v66 contextDictionary];
-            [v68 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"prefersAllDay"];
+            contextDictionary16 = [v66 contextDictionary];
+            [contextDictionary16 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"prefersAllDay"];
 
             [v66 setTextUnit:v87];
             v65 = v57;
@@ -479,9 +479,9 @@ LABEL_44:
           v123.length = v19;
           if (NSIntersectionRange(v122, v123).length)
           {
-            v76 = [v75 matchRange];
+            matchRange = [v75 matchRange];
             [v75 matchRange];
-            [v75 setMatchRange:{v76 - v69, v77}];
+            [v75 setMatchRange:{matchRange - v69, v77}];
             [v75 setTextUnit:v93];
             [v70 addObject:v75];
           }
@@ -1296,16 +1296,16 @@ LABEL_202:
   v152 = *MEMORY[0x277D85DE8];
 }
 
-- (void)standardizeTimezonesForDetectedFeatures:(id)a3
+- (void)standardizeTimezonesForDetectedFeatures:(id)features
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  featuresCopy = features;
   v4 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = featuresCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   obj = v5;
   if (!v6)
@@ -1331,11 +1331,11 @@ LABEL_20:
       v10 = *(*(&v21 + 1) + 8 * v9);
       if (![v10 type] || objc_msgSend(v10, "type") == 1)
       {
-        v11 = [v10 contextDictionary];
-        v12 = [v11 objectForKeyedSubscript:@"startDateTimeZone"];
+        contextDictionary = [v10 contextDictionary];
+        v12 = [contextDictionary objectForKeyedSubscript:@"startDateTimeZone"];
 
-        v13 = [v10 contextDictionary];
-        v14 = [v13 objectForKeyedSubscript:@"endDateTimeZone"];
+        contextDictionary2 = [v10 contextDictionary];
+        v14 = [contextDictionary2 objectForKeyedSubscript:@"endDateTimeZone"];
 
         if (v12)
         {
@@ -1381,30 +1381,30 @@ LABEL_21:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTimeZone:(id)a3 forDateFeatures:(id)a4
+- (void)setTimeZone:(id)zone forDateFeatures:(id)features
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v8 = [v5 secondsFromGMT];
-  v30 = v7;
-  v9 = [v7 secondsFromGMT];
-  v33 = v5;
-  v10 = [v5 secondsFromGMT];
+  zoneCopy = zone;
+  featuresCopy = features;
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  secondsFromGMT = [zoneCopy secondsFromGMT];
+  v30 = localTimeZone;
+  secondsFromGMT2 = [localTimeZone secondsFromGMT];
+  v33 = zoneCopy;
+  secondsFromGMT3 = [zoneCopy secondsFromGMT];
   v11 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"GMT"];
-  v12 = [v11 secondsFromGMT];
+  secondsFromGMT4 = [v11 secondsFromGMT];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = featuresCopy;
   v13 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v13)
   {
     v14 = v13;
-    v32 = v10 - v12 + 82800;
+    v32 = secondsFromGMT3 - secondsFromGMT4 + 82800;
     v15 = *v35;
     do
     {
@@ -1416,31 +1416,31 @@ LABEL_21:
         }
 
         v17 = *(*(&v34 + 1) + 8 * i);
-        v18 = [v17 contextDictionary];
-        v19 = [v18 objectForKeyedSubscript:@"allDay"];
-        v20 = [v19 BOOLValue];
+        contextDictionary = [v17 contextDictionary];
+        v19 = [contextDictionary objectForKeyedSubscript:@"allDay"];
+        bOOLValue = [v19 BOOLValue];
 
-        v21 = v8 - v9;
-        if (v20)
+        v21 = secondsFromGMT - secondsFromGMT2;
+        if (bOOLValue)
         {
           v21 = v32;
         }
 
         v22 = v21;
-        v23 = [v17 value];
-        v24 = [v23 dateByAddingTimeInterval:v22];
+        value = [v17 value];
+        v24 = [value dateByAddingTimeInterval:v22];
         [v17 setValue:v24];
 
-        v25 = [v17 contextDictionary];
-        [v25 setObject:v33 forKeyedSubscript:@"startDateTimeZone"];
+        contextDictionary2 = [v17 contextDictionary];
+        [contextDictionary2 setObject:v33 forKeyedSubscript:@"startDateTimeZone"];
 
-        v26 = [v17 contextDictionary];
-        v27 = [v26 objectForKeyedSubscript:@"endDate"];
+        contextDictionary3 = [v17 contextDictionary];
+        v27 = [contextDictionary3 objectForKeyedSubscript:@"endDate"];
 
         if (v27)
         {
-          v28 = [v17 contextDictionary];
-          [v28 setObject:0 forKeyedSubscript:@"endDate"];
+          contextDictionary4 = [v17 contextDictionary];
+          [contextDictionary4 setObject:0 forKeyedSubscript:@"endDate"];
         }
       }
 
@@ -1453,62 +1453,62 @@ LABEL_21:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)featureDataComplementingFeatureData:(id)a3 hour:(unint64_t)a4 minute:(unint64_t)a5 duration:(double)a6
+- (id)featureDataComplementingFeatureData:(id)data hour:(unint64_t)hour minute:(unint64_t)minute duration:(double)duration
 {
-  v9 = a3;
-  v10 = [v9 value];
+  dataCopy = data;
+  value = [dataCopy value];
   if (IPGregorianCalendar_once_0 != -1)
   {
     [IPDataDetectorsFeatureExtractor featureDataComplementingFeatureData:hour:minute:duration:];
   }
 
   v11 = IPGregorianCalendar_calendar_0;
-  v12 = [v11 components:2097182 fromDate:v10];
+  v12 = [v11 components:2097182 fromDate:value];
   v13 = objc_opt_new();
   [v13 setDay:{objc_msgSend(v12, "day")}];
   [v13 setMonth:{objc_msgSend(v12, "month")}];
   [v13 setYear:{objc_msgSend(v12, "year")}];
   [v13 setEra:{objc_msgSend(v12, "era")}];
-  v14 = [v12 timeZone];
-  [v13 setTimeZone:v14];
+  timeZone = [v12 timeZone];
+  [v13 setTimeZone:timeZone];
 
-  [v13 setHour:a4];
-  [v13 setMinute:a5];
+  [v13 setHour:hour];
+  [v13 setMinute:minute];
   v15 = [v11 dateFromComponents:v13];
 
-  v16 = [v9 matchRange];
-  v18 = [IPFeatureData featureDataWithType:1 value:v15 matchRange:v16, v17];
-  v19 = [v18 contextDictionary];
-  [v19 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"allDay"];
+  matchRange = [dataCopy matchRange];
+  v18 = [IPFeatureData featureDataWithType:1 value:v15 matchRange:matchRange, v17];
+  contextDictionary = [v18 contextDictionary];
+  [contextDictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"allDay"];
 
-  v20 = [v18 contextDictionary];
+  contextDictionary2 = [v18 contextDictionary];
   v21 = MEMORY[0x277CBEC38];
-  [v20 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"timeIsApproximate"];
+  [contextDictionary2 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"timeIsApproximate"];
 
-  v22 = [v18 contextDictionary];
-  [v22 setObject:v21 forKeyedSubscript:@"dateTimeComplement"];
+  contextDictionary3 = [v18 contextDictionary];
+  [contextDictionary3 setObject:v21 forKeyedSubscript:@"dateTimeComplement"];
 
-  v23 = [v9 contextDictionary];
+  contextDictionary4 = [dataCopy contextDictionary];
 
-  v24 = [v23 objectForKeyedSubscript:@"dateTimeIsTenseDependent"];
-  v25 = [v18 contextDictionary];
-  [v25 setObject:v24 forKeyedSubscript:@"dateTimeIsTenseDependent"];
+  v24 = [contextDictionary4 objectForKeyedSubscript:@"dateTimeIsTenseDependent"];
+  contextDictionary5 = [v18 contextDictionary];
+  [contextDictionary5 setObject:v24 forKeyedSubscript:@"dateTimeIsTenseDependent"];
 
-  if (a6 > 0.0)
+  if (duration > 0.0)
   {
-    v26 = [v15 dateByAddingTimeInterval:a6];
-    v27 = [v18 contextDictionary];
-    [v27 setObject:v26 forKeyedSubscript:@"endDate"];
+    v26 = [v15 dateByAddingTimeInterval:duration];
+    contextDictionary6 = [v18 contextDictionary];
+    [contextDictionary6 setObject:v26 forKeyedSubscript:@"endDate"];
   }
 
   return v18;
 }
 
-- (id)stringByReplacingDetectedDataWithNGramMarkersInString:(id)a3
+- (id)stringByReplacingDetectedDataWithNGramMarkersInString:(id)string
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IPDataDetectorsFeatureExtractor *)self featuresForTextString:v4 inMessageUnit:0 context:0];
+  stringCopy = string;
+  v5 = [(IPDataDetectorsFeatureExtractor *)self featuresForTextString:stringCopy inMessageUnit:0 context:0];
   v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v21 = 0u;
   v22 = 0u;
@@ -1533,14 +1533,14 @@ LABEL_21:
         v13 = *(*(&v21 + 1) + 8 * i);
         if ([v13 matchRange] >= v10 && v10 < objc_msgSend(v13, "matchRange"))
         {
-          v14 = [v4 substringWithRange:{v10, objc_msgSend(v13, "matchRange") - v10}];
+          v14 = [stringCopy substringWithRange:{v10, objc_msgSend(v13, "matchRange") - v10}];
           [v6 appendString:v14];
 
-          v15 = [v13 nGramMarker];
-          [v6 appendString:v15];
+          nGramMarker = [v13 nGramMarker];
+          [v6 appendString:nGramMarker];
 
-          v16 = [v13 matchRange];
-          v10 = v16 + v17;
+          matchRange = [v13 matchRange];
+          v10 = matchRange + v17;
         }
       }
 
@@ -1555,7 +1555,7 @@ LABEL_21:
     v10 = 0;
   }
 
-  v18 = [v4 substringWithRange:{v10, objc_msgSend(v4, "length") - v10}];
+  v18 = [stringCopy substringWithRange:{v10, objc_msgSend(stringCopy, "length") - v10}];
   [v6 appendString:v18];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1563,17 +1563,17 @@ LABEL_21:
   return v6;
 }
 
-- (id)thisSaturdayDateFromReferenceDate:(id)a3
+- (id)thisSaturdayDateFromReferenceDate:(id)date
 {
   v3 = IPGregorianCalendar_once_0;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     [IPDataDetectorsFeatureExtractor featureDataComplementingFeatureData:hour:minute:duration:];
   }
 
   v5 = IPGregorianCalendar_calendar_0;
-  v6 = [v5 components:25088 fromDate:v4];
+  v6 = [v5 components:25088 fromDate:dateCopy];
 
   [v6 setWeekday:7];
   v7 = [v5 dateFromComponents:v6];
@@ -1581,14 +1581,14 @@ LABEL_21:
   return v7;
 }
 
-- (id)tomorrowDateFromReferenceDate:(id)a3
+- (id)tomorrowDateFromReferenceDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
   [v4 setDay:1];
   v5 = objc_alloc(MEMORY[0x277CBEA80]);
   v6 = [v5 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  v7 = [v6 dateByAddingComponents:v4 toDate:v3 options:0];
+  v7 = [v6 dateByAddingComponents:v4 toDate:dateCopy options:0];
 
   v8 = [v6 components:28 fromDate:v7];
   v9 = [v6 dateFromComponents:v8];
@@ -1596,17 +1596,17 @@ LABEL_21:
   return v9;
 }
 
-- (id)valentineDayDateFromReferenceDate:(id)a3
+- (id)valentineDayDateFromReferenceDate:(id)date
 {
   v3 = IPGregorianCalendar_once_0;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     [IPDataDetectorsFeatureExtractor featureDataComplementingFeatureData:hour:minute:duration:];
   }
 
   v5 = IPGregorianCalendar_calendar_0;
-  v6 = [v5 components:4 fromDate:v4];
+  v6 = [v5 components:4 fromDate:dateCopy];
 
   v7 = objc_opt_new();
   [v7 setDay:14];
@@ -1618,17 +1618,17 @@ LABEL_21:
   return v8;
 }
 
-- (id)newYearsEveDayDateFromReferenceDate:(id)a3
+- (id)newYearsEveDayDateFromReferenceDate:(id)date
 {
   v3 = IPGregorianCalendar_once_0;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     [IPDataDetectorsFeatureExtractor featureDataComplementingFeatureData:hour:minute:duration:];
   }
 
   v5 = IPGregorianCalendar_calendar_0;
-  v6 = [v5 components:4 fromDate:v4];
+  v6 = [v5 components:4 fromDate:dateCopy];
 
   v7 = objc_opt_new();
   [v7 setDay:31];
@@ -1640,11 +1640,11 @@ LABEL_21:
   return v8;
 }
 
-- (_NSRange)textRangeReferencingTomorrow:(id)a3
+- (_NSRange)textRangeReferencingTomorrow:(id)tomorrow
 {
-  v3 = a3;
+  tomorrowCopy = tomorrow;
   v4 = [IPRegexToolbox regularExpressionWithKey:@"textRangeReferencingTomorrow" generator:&__block_literal_global_84];
-  v5 = [v4 rangeOfFirstMatchInString:v3 options:2 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 rangeOfFirstMatchInString:tomorrowCopy options:2 range:{0, objc_msgSend(tomorrowCopy, "length")}];
   v7 = v6;
 
   v8 = v5;
@@ -1662,11 +1662,11 @@ id __64__IPDataDetectorsFeatureExtractor_textRangeReferencingTomorrow___block_in
   return v0;
 }
 
-- (_NSRange)textRangeReferencingThisWeekEnd:(id)a3
+- (_NSRange)textRangeReferencingThisWeekEnd:(id)end
 {
-  v3 = a3;
+  endCopy = end;
   v4 = [IPRegexToolbox regularExpressionWithKey:@"textRangeReferencingThisWeekEnd" generator:&__block_literal_global_92];
-  v5 = [v4 rangeOfFirstMatchInString:v3 options:2 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 rangeOfFirstMatchInString:endCopy options:2 range:{0, objc_msgSend(endCopy, "length")}];
   v7 = v6;
 
   v8 = v5;
@@ -1684,11 +1684,11 @@ id __67__IPDataDetectorsFeatureExtractor_textRangeReferencingThisWeekEnd___block
   return v0;
 }
 
-- (_NSRange)textRangeReferencingNextWeekEnd:(id)a3
+- (_NSRange)textRangeReferencingNextWeekEnd:(id)end
 {
-  v3 = a3;
+  endCopy = end;
   v4 = [IPRegexToolbox regularExpressionWithKey:@"textRangeReferencingNextWeekEnd" generator:&__block_literal_global_100];
-  v5 = [v4 rangeOfFirstMatchInString:v3 options:2 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 rangeOfFirstMatchInString:endCopy options:2 range:{0, objc_msgSend(endCopy, "length")}];
   v7 = v6;
 
   v8 = v5;
@@ -1706,11 +1706,11 @@ id __67__IPDataDetectorsFeatureExtractor_textRangeReferencingNextWeekEnd___block
   return v0;
 }
 
-- (_NSRange)textRangeReferencingAllDay:(id)a3
+- (_NSRange)textRangeReferencingAllDay:(id)day
 {
-  v3 = a3;
+  dayCopy = day;
   v4 = [IPRegexToolbox regularExpressionWithKey:@"textRangeReferencingAllDay" generator:&__block_literal_global_108];
-  v5 = [v4 rangeOfFirstMatchInString:v3 options:2 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 rangeOfFirstMatchInString:dayCopy options:2 range:{0, objc_msgSend(dayCopy, "length")}];
   v7 = v6;
 
   v8 = v5;
@@ -1728,11 +1728,11 @@ id __62__IPDataDetectorsFeatureExtractor_textRangeReferencingAllDay___block_invo
   return v0;
 }
 
-- (_NSRange)textRangeReferencingValentineDay:(id)a3
+- (_NSRange)textRangeReferencingValentineDay:(id)day
 {
-  v3 = a3;
+  dayCopy = day;
   v4 = [IPRegexToolbox regularExpressionWithKey:@"textRangeReferencingValentineDay" generator:&__block_literal_global_116];
-  v5 = [v4 rangeOfFirstMatchInString:v3 options:2 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 rangeOfFirstMatchInString:dayCopy options:2 range:{0, objc_msgSend(dayCopy, "length")}];
   v7 = v6;
 
   v8 = v5;
@@ -1750,11 +1750,11 @@ id __68__IPDataDetectorsFeatureExtractor_textRangeReferencingValentineDay___bloc
   return v0;
 }
 
-- (_NSRange)textRangeReferencingNewYearsEve:(id)a3
+- (_NSRange)textRangeReferencingNewYearsEve:(id)eve
 {
-  v3 = a3;
+  eveCopy = eve;
   v4 = [IPRegexToolbox regularExpressionWithKey:@"textRangeReferencingNewYearsEve" generator:&__block_literal_global_124];
-  v5 = [v4 rangeOfFirstMatchInString:v3 options:2 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 rangeOfFirstMatchInString:eveCopy options:2 range:{0, objc_msgSend(eveCopy, "length")}];
   v7 = v6;
 
   v8 = v5;
@@ -1772,11 +1772,11 @@ id __67__IPDataDetectorsFeatureExtractor_textRangeReferencingNewYearsEve___block
   return v0;
 }
 
-- (_NSRange)textRangeReferencingMorning:(id)a3
+- (_NSRange)textRangeReferencingMorning:(id)morning
 {
-  v3 = a3;
+  morningCopy = morning;
   v4 = [IPRegexToolbox regularExpressionWithKey:@"textRangeReferencingMorning" generator:&__block_literal_global_132];
-  v5 = [v4 rangeOfFirstMatchInString:v3 options:2 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 rangeOfFirstMatchInString:morningCopy options:2 range:{0, objc_msgSend(morningCopy, "length")}];
   v7 = v6;
 
   v8 = v5;
@@ -1794,11 +1794,11 @@ id __63__IPDataDetectorsFeatureExtractor_textRangeReferencingMorning___block_inv
   return v0;
 }
 
-- (_NSRange)textRangeReferencingNoon:(id)a3
+- (_NSRange)textRangeReferencingNoon:(id)noon
 {
-  v3 = a3;
+  noonCopy = noon;
   v4 = [IPRegexToolbox regularExpressionWithKey:@"textRangeReferencingNoon" generator:&__block_literal_global_140];
-  v5 = [v4 rangeOfFirstMatchInString:v3 options:2 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 rangeOfFirstMatchInString:noonCopy options:2 range:{0, objc_msgSend(noonCopy, "length")}];
   v7 = v6;
 
   v8 = v5;
@@ -1816,11 +1816,11 @@ id __60__IPDataDetectorsFeatureExtractor_textRangeReferencingNoon___block_invoke
   return v0;
 }
 
-- (_NSRange)textRangeReferencingAfternoon:(id)a3
+- (_NSRange)textRangeReferencingAfternoon:(id)afternoon
 {
-  v3 = a3;
+  afternoonCopy = afternoon;
   v4 = [IPRegexToolbox regularExpressionWithKey:@"textRangeReferencingAfternoon" generator:&__block_literal_global_148];
-  v5 = [v4 rangeOfFirstMatchInString:v3 options:2 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 rangeOfFirstMatchInString:afternoonCopy options:2 range:{0, objc_msgSend(afternoonCopy, "length")}];
   v7 = v6;
 
   v8 = v5;
@@ -1838,11 +1838,11 @@ id __65__IPDataDetectorsFeatureExtractor_textRangeReferencingAfternoon___block_i
   return v0;
 }
 
-- (_NSRange)textRangeReferencingEvening:(id)a3
+- (_NSRange)textRangeReferencingEvening:(id)evening
 {
-  v3 = a3;
+  eveningCopy = evening;
   v4 = [IPRegexToolbox regularExpressionWithKey:@"textRangeReferencingEvening" generator:&__block_literal_global_156];
-  v5 = [v4 rangeOfFirstMatchInString:v3 options:2 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 rangeOfFirstMatchInString:eveningCopy options:2 range:{0, objc_msgSend(eveningCopy, "length")}];
   v7 = v6;
 
   v8 = v5;

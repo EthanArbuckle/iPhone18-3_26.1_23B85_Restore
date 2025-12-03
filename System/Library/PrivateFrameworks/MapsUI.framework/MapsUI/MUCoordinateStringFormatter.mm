@@ -1,13 +1,13 @@
 @interface MUCoordinateStringFormatter
-- (id)_coordinatePartStringForValue:(double)a3 positiveSymbol:(int)a4 negativeSymbol:(int)a5;
-- (id)stringFromCoordinate:(CLLocationCoordinate2D)a3;
+- (id)_coordinatePartStringForValue:(double)value positiveSymbol:(int)symbol negativeSymbol:(int)negativeSymbol;
+- (id)stringFromCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation MUCoordinateStringFormatter
 
-- (id)_coordinatePartStringForValue:(double)a3 positiveSymbol:(int)a4 negativeSymbol:(int)a5
+- (id)_coordinatePartStringForValue:(double)value positiveSymbol:(int)symbol negativeSymbol:(int)negativeSymbol
 {
-  v6 = fabs(a3);
+  v6 = fabs(value);
   v7 = MKLocalizedAbbreviationForCompassPoint();
   if ([(MUCoordinateStringFormatter *)self isCoarseLocation])
   {
@@ -25,11 +25,11 @@
   return v10;
 }
 
-- (id)stringFromCoordinate:(CLLocationCoordinate2D)a3
+- (id)stringFromCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
+  longitude = coordinate.longitude;
   v12[2] = *MEMORY[0x1E69E9840];
-  v5 = [(MUCoordinateStringFormatter *)self _coordinatePartStringForValue:1 positiveSymbol:5 negativeSymbol:a3.latitude];
+  v5 = [(MUCoordinateStringFormatter *)self _coordinatePartStringForValue:1 positiveSymbol:5 negativeSymbol:coordinate.latitude];
   v6 = [(MUCoordinateStringFormatter *)self _coordinatePartStringForValue:7 positiveSymbol:3 negativeSymbol:longitude];
   v12[0] = v5;
   v12[1] = v6;

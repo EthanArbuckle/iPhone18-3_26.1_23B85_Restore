@@ -6,20 +6,20 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(AppStore_UIButtonBarButtonAccessibility *)self accessibilityLabel];
-  if (v3)
+  accessibilityLabel = [(AppStore_UIButtonBarButtonAccessibility *)self accessibilityLabel];
+  if (accessibilityLabel)
   {
     v6.receiver = self;
     v6.super_class = AppStore_UIButtonBarButtonAccessibility;
-    v4 = [(AppStore_UIButtonBarButtonAccessibility *)&v6 isAccessibilityElement];
+    isAccessibilityElement = [(AppStore_UIButtonBarButtonAccessibility *)&v6 isAccessibilityElement];
   }
 
   else
   {
-    v4 = 0;
+    isAccessibilityElement = 0;
   }
 
-  return v4;
+  return isAccessibilityElement;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface PXThreadSafeDictionary
 - (PXThreadSafeDictionary)init;
-- (id)objectForKey:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (id)safeCopy;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation PXThreadSafeDictionary
@@ -21,14 +21,14 @@
   v10 = __Block_byref_object_copy__207615;
   v11 = __Block_byref_object_dispose__207616;
   v12 = 0;
-  v3 = [(PXThreadSafeDictionary *)self queue];
+  queue = [(PXThreadSafeDictionary *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__PXThreadSafeDictionary_safeCopy__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -46,48 +46,48 @@ void __34__PXThreadSafeDictionary_safeCopy__block_invoke(uint64_t a1)
 
 - (void)removeAllObjects
 {
-  v3 = [(PXThreadSafeDictionary *)self queue];
+  queue = [(PXThreadSafeDictionary *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__PXThreadSafeDictionary_removeAllObjects__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(queue, block);
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXThreadSafeDictionary *)self queue];
+  blockCopy = block;
+  queue = [(PXThreadSafeDictionary *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__PXThreadSafeDictionary_enumerateKeysAndObjectsUsingBlock___block_invoke;
   v7[3] = &unk_1E774C2F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__207615;
   v16 = __Block_byref_object_dispose__207616;
   v17 = 0;
-  v5 = [(PXThreadSafeDictionary *)self queue];
+  queue = [(PXThreadSafeDictionary *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__PXThreadSafeDictionary_objectForKey___block_invoke;
   block[3] = &unk_1E7746448;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = keyCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -103,70 +103,70 @@ void __39__PXThreadSafeDictionary_objectForKey___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXThreadSafeDictionary *)self queue];
+  objectCopy = object;
+  keyCopy = key;
+  queue = [(PXThreadSafeDictionary *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__PXThreadSafeDictionary_setObject_forKey___block_invoke;
   block[3] = &unk_1E774A1B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_async(v8, block);
+  v12 = objectCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = objectCopy;
+  dispatch_barrier_async(queue, block);
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PXThreadSafeDictionary *)self queue];
+  keysCopy = keys;
+  queue = [(PXThreadSafeDictionary *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__PXThreadSafeDictionary_removeObjectsForKeys___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = keysCopy;
+  v6 = keysCopy;
+  dispatch_barrier_async(queue, v7);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PXThreadSafeDictionary *)self queue];
+  keyCopy = key;
+  queue = [(PXThreadSafeDictionary *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PXThreadSafeDictionary_removeObjectForKey___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = keyCopy;
+  v6 = keyCopy;
+  dispatch_barrier_async(queue, v7);
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
+  subscriptCopy = subscript;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__207615;
   v16 = __Block_byref_object_dispose__207616;
   v17 = 0;
-  v5 = [(PXThreadSafeDictionary *)self queue];
+  queue = [(PXThreadSafeDictionary *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__PXThreadSafeDictionary_objectForKeyedSubscript___block_invoke;
   block[3] = &unk_1E7746448;
-  v10 = v4;
+  v10 = subscriptCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = subscriptCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -182,21 +182,21 @@ void __50__PXThreadSafeDictionary_objectForKeyedSubscript___block_invoke(void *a
   *(v3 + 40) = v2;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXThreadSafeDictionary *)self queue];
+  objectCopy = object;
+  subscriptCopy = subscript;
+  queue = [(PXThreadSafeDictionary *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__PXThreadSafeDictionary_setObject_forKeyedSubscript___block_invoke;
   block[3] = &unk_1E774A1B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_async(v8, block);
+  v12 = objectCopy;
+  v13 = subscriptCopy;
+  v9 = subscriptCopy;
+  v10 = objectCopy;
+  dispatch_barrier_async(queue, block);
 }
 
 - (PXThreadSafeDictionary)init

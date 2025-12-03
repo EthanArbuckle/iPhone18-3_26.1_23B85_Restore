@@ -1,6 +1,6 @@
 @interface NTSection
 + (id)_itemClassesByType;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)actionTitle;
 - (NSString)backgroundColorDark;
 - (NSString)backgroundColorLight;
@@ -10,11 +10,11 @@
 - (NSURL)actionURL;
 - (NSURL)nameActionURL;
 - (NTSection)init;
-- (NTSection)initWithCoder:(id)a3;
-- (NTSection)initWithIdentifier:(id)a3 subidentifier:(id)a4 actionTitle:(id)a5 actionURL:(id)a6 personalizationFeatureID:(id)a7 items:(id)a8 rankingFeedback:(id)a9 displayDescriptor:(id)a10 referralBarName:(id)a11 backingTagID:(id)a12;
+- (NTSection)initWithCoder:(id)coder;
+- (NTSection)initWithIdentifier:(id)identifier subidentifier:(id)subidentifier actionTitle:(id)title actionURL:(id)l personalizationFeatureID:(id)d items:(id)items rankingFeedback:(id)feedback displayDescriptor:(id)self0 referralBarName:(id)self1 backingTagID:(id)self2;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTSection
@@ -45,32 +45,32 @@
   objc_exception_throw(v6);
 }
 
-- (NTSection)initWithIdentifier:(id)a3 subidentifier:(id)a4 actionTitle:(id)a5 actionURL:(id)a6 personalizationFeatureID:(id)a7 items:(id)a8 rankingFeedback:(id)a9 displayDescriptor:(id)a10 referralBarName:(id)a11 backingTagID:(id)a12
+- (NTSection)initWithIdentifier:(id)identifier subidentifier:(id)subidentifier actionTitle:(id)title actionURL:(id)l personalizationFeatureID:(id)d items:(id)items rankingFeedback:(id)feedback displayDescriptor:(id)self0 referralBarName:(id)self1 backingTagID:(id)self2
 {
-  v17 = a3;
-  v51 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v52 = v17;
-  if (!v17 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  subidentifierCopy = subidentifier;
+  titleCopy = title;
+  lCopy = l;
+  dCopy = d;
+  itemsCopy = items;
+  feedbackCopy = feedback;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  iDCopy = iD;
+  v52 = identifierCopy;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTSection initWithIdentifier:subidentifier:actionTitle:actionURL:personalizationFeatureID:items:rankingFeedback:displayDescriptor:referralBarName:backingTagID:];
   }
 
-  v26 = v25;
-  if (!v21 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v26 = iDCopy;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTSection initWithIdentifier:subidentifier:actionTitle:actionURL:personalizationFeatureID:items:rankingFeedback:displayDescriptor:referralBarName:backingTagID:];
   }
 
-  v27 = v22;
-  if (!v23 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v27 = feedbackCopy;
+  if (!descriptorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTSection initWithIdentifier:subidentifier:actionTitle:actionURL:personalizationFeatureID:items:rankingFeedback:displayDescriptor:referralBarName:backingTagID:];
   }
@@ -84,23 +84,23 @@
     identifier = v28->_identifier;
     v28->_identifier = v29;
 
-    v31 = [v51 copy];
+    v31 = [subidentifierCopy copy];
     subidentifier = v28->_subidentifier;
     v28->_subidentifier = v31;
 
-    v33 = [v18 copy];
+    v33 = [titleCopy copy];
     actionTitle = v28->_actionTitle;
     v28->_actionTitle = v33;
 
-    v35 = [v19 copy];
+    v35 = [lCopy copy];
     actionURL = v28->_actionURL;
     v28->_actionURL = v35;
 
-    v37 = [v20 copy];
+    v37 = [dCopy copy];
     personalizationFeatureID = v28->_personalizationFeatureID;
     v28->_personalizationFeatureID = v37;
 
-    v39 = [v21 copy];
+    v39 = [itemsCopy copy];
     items = v28->_items;
     v28->_items = v39;
 
@@ -108,11 +108,11 @@
     rankingFeedback = v28->_rankingFeedback;
     v28->_rankingFeedback = v41;
 
-    v43 = [v23 copy];
+    v43 = [descriptorCopy copy];
     displayDescriptor = v28->_displayDescriptor;
     v28->_displayDescriptor = v43;
 
-    v45 = [v24 copy];
+    v45 = [nameCopy copy];
     referralBarName = v28->_referralBarName;
     v28->_referralBarName = v45;
 
@@ -138,59 +138,59 @@
 - (id)description
 {
   v3 = [MEMORY[0x277D30F48] descriptionWithObject:self];
-  v4 = [(NTSection *)self identifier];
-  [v3 addField:@"identifier" object:v4];
+  identifier = [(NTSection *)self identifier];
+  [v3 addField:@"identifier" object:identifier];
 
-  v5 = [(NTSection *)self name];
-  [v3 addField:@"name" object:v5];
+  name = [(NTSection *)self name];
+  [v3 addField:@"name" object:name];
 
-  v6 = [(NTSection *)self actionTitle];
-  [v3 addField:@"actionTitle" object:v6];
+  actionTitle = [(NTSection *)self actionTitle];
+  [v3 addField:@"actionTitle" object:actionTitle];
 
-  v7 = [(NTSection *)self actionURL];
-  v8 = [v7 absoluteString];
-  [v3 addField:@"actionURL" object:v8];
+  actionURL = [(NTSection *)self actionURL];
+  absoluteString = [actionURL absoluteString];
+  [v3 addField:@"actionURL" object:absoluteString];
 
-  v9 = [(NTSection *)self items];
-  [v3 addField:@"items" object:v9];
+  items = [(NTSection *)self items];
+  [v3 addField:@"items" object:items];
 
-  v10 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v10;
+  return descriptionString;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = FCDynamicCast();
 
   if (v5)
   {
-    v6 = [(NTSection *)self identifier];
-    v7 = [v5 identifier];
-    if ([v6 isEqual:v7])
+    identifier = [(NTSection *)self identifier];
+    identifier2 = [v5 identifier];
+    if ([identifier isEqual:identifier2])
     {
       v8 = MEMORY[0x277D82BB8];
-      v9 = [(NTSection *)self subidentifier];
-      v10 = [v5 subidentifier];
-      if ([v8 nf_object:v9 isEqualToObject:v10])
+      subidentifier = [(NTSection *)self subidentifier];
+      subidentifier2 = [v5 subidentifier];
+      if ([v8 nf_object:subidentifier isEqualToObject:subidentifier2])
       {
-        v11 = [(NTSection *)self items];
-        v12 = [v5 items];
-        if ([v11 isEqual:v12])
+        items = [(NTSection *)self items];
+        items2 = [v5 items];
+        if ([items isEqual:items2])
         {
           v13 = MEMORY[0x277D82BB8];
-          v14 = [(NTSection *)self rankingFeedback];
-          v15 = [v5 rankingFeedback];
-          v22 = v14;
-          v16 = v14;
-          v17 = v15;
-          if ([v13 nf_object:v16 isEqualToObject:v15])
+          rankingFeedback = [(NTSection *)self rankingFeedback];
+          rankingFeedback2 = [v5 rankingFeedback];
+          v22 = rankingFeedback;
+          v16 = rankingFeedback;
+          v17 = rankingFeedback2;
+          if ([v13 nf_object:v16 isEqualToObject:rankingFeedback2])
           {
-            v21 = [(NTSection *)self displayDescriptor];
-            v18 = [v5 displayDescriptor];
-            v19 = [v21 isEqual:v18];
+            displayDescriptor = [(NTSection *)self displayDescriptor];
+            displayDescriptor2 = [v5 displayDescriptor];
+            v19 = [displayDescriptor isEqual:displayDescriptor2];
           }
 
           else
@@ -227,79 +227,79 @@
 
 - (unint64_t)hash
 {
-  v3 = [(NTSection *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(NTSection *)self subidentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(NTSection *)self items];
-  v8 = [v7 hash];
-  v9 = [(NTSection *)self rankingFeedback];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(NTSection *)self displayDescriptor];
-  v12 = [v11 hash];
+  identifier = [(NTSection *)self identifier];
+  v4 = [identifier hash];
+  subidentifier = [(NTSection *)self subidentifier];
+  v6 = [subidentifier hash] ^ v4;
+  items = [(NTSection *)self items];
+  v8 = [items hash];
+  rankingFeedback = [(NTSection *)self rankingFeedback];
+  v10 = v6 ^ v8 ^ [rankingFeedback hash];
+  displayDescriptor = [(NTSection *)self displayDescriptor];
+  v12 = [displayDescriptor hash];
 
   return v10 ^ v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NTSection *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(NTSection *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(NTSection *)self subidentifier];
+  subidentifier = [(NTSection *)self subidentifier];
 
-  if (v6)
+  if (subidentifier)
   {
-    v7 = [(NTSection *)self subidentifier];
-    [v4 encodeObject:v7 forKey:@"subidentifier"];
+    subidentifier2 = [(NTSection *)self subidentifier];
+    [coderCopy encodeObject:subidentifier2 forKey:@"subidentifier"];
   }
 
-  v8 = [(NTSection *)self personalizationFeatureID];
-  [v4 encodeObject:v8 forKey:@"p"];
+  personalizationFeatureID = [(NTSection *)self personalizationFeatureID];
+  [coderCopy encodeObject:personalizationFeatureID forKey:@"p"];
 
-  v9 = [(NTSection *)self displayDescriptor];
-  [v4 encodeObject:v9 forKey:@"displayDescriptor"];
+  displayDescriptor = [(NTSection *)self displayDescriptor];
+  [coderCopy encodeObject:displayDescriptor forKey:@"displayDescriptor"];
 
-  v10 = [(NTSection *)self actionTitle];
+  actionTitle = [(NTSection *)self actionTitle];
 
-  if (v10)
+  if (actionTitle)
   {
-    v11 = [(NTSection *)self actionTitle];
-    [v4 encodeObject:v11 forKey:@"actionTitle"];
+    actionTitle2 = [(NTSection *)self actionTitle];
+    [coderCopy encodeObject:actionTitle2 forKey:@"actionTitle"];
   }
 
-  v12 = [(NTSection *)self actionURL];
+  actionURL = [(NTSection *)self actionURL];
 
-  if (v12)
+  if (actionURL)
   {
-    v13 = [(NTSection *)self actionURL];
-    v14 = [v13 absoluteString];
-    [v4 encodeObject:v14 forKey:@"actionURL"];
+    actionURL2 = [(NTSection *)self actionURL];
+    absoluteString = [actionURL2 absoluteString];
+    [coderCopy encodeObject:absoluteString forKey:@"actionURL"];
   }
 
-  v15 = [(NTSection *)self rankingFeedback];
-  if (v15)
+  rankingFeedback = [(NTSection *)self rankingFeedback];
+  if (rankingFeedback)
   {
-    [v4 encodeObject:v15 forKey:@"rankingFeedback"];
+    [coderCopy encodeObject:rankingFeedback forKey:@"rankingFeedback"];
   }
 
-  v16 = [(NTSection *)self referralBarName];
-  if (v16)
+  referralBarName = [(NTSection *)self referralBarName];
+  if (referralBarName)
   {
-    [v4 encodeObject:v16 forKey:@"referralBarName"];
+    [coderCopy encodeObject:referralBarName forKey:@"referralBarName"];
   }
 
-  v17 = [(NTSection *)self backingTagID];
-  if (v17)
+  backingTagID = [(NTSection *)self backingTagID];
+  if (backingTagID)
   {
-    [v4 encodeObject:v17 forKey:@"btid"];
+    [coderCopy encodeObject:backingTagID forKey:@"btid"];
   }
 
   v18 = objc_opt_new();
   v19 = objc_opt_new();
   v20 = objc_opt_new();
-  v21 = [(NTSection *)self items];
+  items = [(NTSection *)self items];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __29__NTSection_encodeWithCoder___block_invoke;
@@ -308,10 +308,10 @@
   v38 = v19;
   v22 = v19;
   v23 = v18;
-  [v21 enumerateObjectsUsingBlock:v36];
+  [items enumerateObjectsUsingBlock:v36];
 
-  v24 = [(NTSection *)self items];
-  v25 = [v24 count];
+  items2 = [(NTSection *)self items];
+  v25 = [items2 count];
 
   v26 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v25];
   v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v25];
@@ -324,10 +324,10 @@
   v28 = v26;
   v29 = v27;
   [v23 enumerateKeysAndObjectsUsingBlock:&v30];
-  [v4 encodeObject:v22 forKey:{@"feedItemIDs", v30, v31, v32, v33}];
-  [v4 encodeObject:v20 forKey:@"videoPlaylistHeadlineIDs"];
-  [v4 encodeObject:v28 forKey:@"allItemTypesByID"];
-  [v4 encodeObject:v29 forKey:@"allItemDataByID"];
+  [coderCopy encodeObject:v22 forKey:{@"feedItemIDs", v30, v31, v32, v33}];
+  [coderCopy encodeObject:v20 forKey:@"videoPlaylistHeadlineIDs"];
+  [coderCopy encodeObject:v28 forKey:@"allItemTypesByID"];
+  [coderCopy encodeObject:v29 forKey:@"allItemDataByID"];
 }
 
 void __29__NTSection_encodeWithCoder___block_invoke(uint64_t a1, void *a2)
@@ -352,13 +352,13 @@ void __29__NTSection_encodeWithCoder___block_invoke_2(uint64_t a1, void *a2, voi
   }
 }
 
-- (NTSection)initWithCoder:(id)a3
+- (NTSection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subidentifier"];
-  v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionTitle"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
+  coderCopy = coder;
+  v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subidentifier"];
+  v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionTitle"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
   v35 = v5;
   if (v5)
   {
@@ -370,43 +370,43 @@ void __29__NTSection_encodeWithCoder___block_invoke_2(uint64_t a1, void *a2, voi
     v34 = 0;
   }
 
-  v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"p"];
-  v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rankingFeedback"];
-  v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayDescriptor"];
-  v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referralBarName"];
+  v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"p"];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rankingFeedback"];
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayDescriptor"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referralBarName"];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v27 = [v4 decodeObjectOfClasses:v8 forKey:@"feedItemIDs"];
+  v27 = [coderCopy decodeObjectOfClasses:v8 forKey:@"feedItemIDs"];
 
   v9 = MEMORY[0x277CBEB98];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"allItemTypesByID"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"allItemTypesByID"];
 
   v14 = MEMORY[0x277CBEB98];
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v17 = [v14 setWithObjects:{v15, v16, objc_opt_class(), 0}];
-  v28 = [v4 decodeObjectOfClasses:v17 forKey:@"allItemDataByID"];
+  v28 = [coderCopy decodeObjectOfClasses:v17 forKey:@"allItemDataByID"];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __27__NTSection_initWithCoder___block_invoke;
   v39[3] = &unk_279982CB0;
   v40 = v13;
-  v18 = self;
-  v41 = v18;
+  selfCopy = self;
+  v41 = selfCopy;
   v29 = v13;
   v19 = [v28 fc_dictionaryByTransformingValuesWithKeyAndValueBlock:v39];
   v20 = MEMORY[0x277CBEB70];
-  v21 = [v27 array];
-  v22 = [v19 nf_objectsForKeysWithoutMarker:v21];
+  array = [v27 array];
+  v22 = [v19 nf_objectsForKeysWithoutMarker:array];
   v23 = [v20 orderedSetWithArray:v22];
 
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"btid"];
-  v26 = [(NTSection *)v18 initWithIdentifier:v38 subidentifier:v37 actionTitle:v36 actionURL:v34 personalizationFeatureID:v33 items:v23 rankingFeedback:v32 displayDescriptor:v31 referralBarName:v30 backingTagID:v24];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"btid"];
+  v26 = [(NTSection *)selfCopy initWithIdentifier:v38 subidentifier:v37 actionTitle:v36 actionURL:v34 personalizationFeatureID:v33 items:v23 rankingFeedback:v32 displayDescriptor:v31 referralBarName:v30 backingTagID:v24];
 
   return v26;
 }
@@ -427,66 +427,66 @@ id __27__NTSection_initWithCoder___block_invoke(uint64_t a1, uint64_t a2, void *
 
 - (NSString)name
 {
-  v2 = [(NTSection *)self displayDescriptor];
-  v3 = [v2 name];
+  displayDescriptor = [(NTSection *)self displayDescriptor];
+  name = [displayDescriptor name];
 
-  return v3;
+  return name;
 }
 
 - (NSString)nameColorLight
 {
-  v2 = [(NTSection *)self displayDescriptor];
-  v3 = [v2 nameColorLight];
+  displayDescriptor = [(NTSection *)self displayDescriptor];
+  nameColorLight = [displayDescriptor nameColorLight];
 
-  return v3;
+  return nameColorLight;
 }
 
 - (NSString)nameColorDark
 {
-  v2 = [(NTSection *)self displayDescriptor];
-  v3 = [v2 nameColorDark];
+  displayDescriptor = [(NTSection *)self displayDescriptor];
+  nameColorDark = [displayDescriptor nameColorDark];
 
-  return v3;
+  return nameColorDark;
 }
 
 - (NSString)actionTitle
 {
-  v2 = [(NTSection *)self displayDescriptor];
-  v3 = [v2 actionTitle];
+  displayDescriptor = [(NTSection *)self displayDescriptor];
+  actionTitle = [displayDescriptor actionTitle];
 
-  return v3;
+  return actionTitle;
 }
 
 - (NSURL)actionURL
 {
-  v2 = [(NTSection *)self displayDescriptor];
-  v3 = [v2 actionURL];
+  displayDescriptor = [(NTSection *)self displayDescriptor];
+  actionURL = [displayDescriptor actionURL];
 
-  return v3;
+  return actionURL;
 }
 
 - (NSURL)nameActionURL
 {
-  v2 = [(NTSection *)self displayDescriptor];
-  v3 = [v2 nameActionURL];
+  displayDescriptor = [(NTSection *)self displayDescriptor];
+  nameActionURL = [displayDescriptor nameActionURL];
 
-  return v3;
+  return nameActionURL;
 }
 
 - (NSString)backgroundColorLight
 {
-  v2 = [(NTSection *)self displayDescriptor];
-  v3 = [v2 backgroundColorLight];
+  displayDescriptor = [(NTSection *)self displayDescriptor];
+  backgroundColorLight = [displayDescriptor backgroundColorLight];
 
-  return v3;
+  return backgroundColorLight;
 }
 
 - (NSString)backgroundColorDark
 {
-  v2 = [(NTSection *)self displayDescriptor];
-  v3 = [v2 backgroundColorDark];
+  displayDescriptor = [(NTSection *)self displayDescriptor];
+  backgroundColorDark = [displayDescriptor backgroundColorDark];
 
-  return v3;
+  return backgroundColorDark;
 }
 
 - (void)initWithIdentifier:subidentifier:actionTitle:actionURL:personalizationFeatureID:items:rankingFeedback:displayDescriptor:referralBarName:backingTagID:.cold.1()

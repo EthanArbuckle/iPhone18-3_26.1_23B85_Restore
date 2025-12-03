@@ -1,12 +1,12 @@
 @interface CLKUITimeViewConfiguration
-- (CLKUITimeViewConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CLKUITimeViewConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKUITimeViewConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CLKUITimeViewConfiguration);
   v5 = v4;
@@ -18,28 +18,28 @@
   return v5;
 }
 
-- (CLKUITimeViewConfiguration)initWithCoder:(id)a3
+- (CLKUITimeViewConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CLKUITimeViewConfiguration;
   v5 = [(CLKUITimeViewConfiguration *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundStyle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundStyle"];
     v5->_backgroundStyle = [v6 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E696AD98];
   backgroundStyle = self->_backgroundStyle;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithUnsignedInteger:backgroundStyle];
-  [v5 encodeObject:v6 forKey:@"backgroundStyle"];
+  [coderCopy encodeObject:v6 forKey:@"backgroundStyle"];
 }
 
 @end

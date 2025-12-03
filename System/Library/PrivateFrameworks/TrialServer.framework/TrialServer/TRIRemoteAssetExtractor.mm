@@ -1,31 +1,31 @@
 @interface TRIRemoteAssetExtractor
-- ($A5A652246548B43F8BC05201A1C72A70)extractArchiveFromFile:(id)a3 withArchiveName:(id)a4 toEmptyDirectory:(id)a5 postExtractionCompression:(id)a6 error:(id *)a7;
-- (TRIRemoteAssetExtractor)initWithMonitoredActivity:(id)a3;
+- ($A5A652246548B43F8BC05201A1C72A70)extractArchiveFromFile:(id)file withArchiveName:(id)name toEmptyDirectory:(id)directory postExtractionCompression:(id)compression error:(id *)error;
+- (TRIRemoteAssetExtractor)initWithMonitoredActivity:(id)activity;
 @end
 
 @implementation TRIRemoteAssetExtractor
 
-- (TRIRemoteAssetExtractor)initWithMonitoredActivity:(id)a3
+- (TRIRemoteAssetExtractor)initWithMonitoredActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v9.receiver = self;
   v9.super_class = TRIRemoteAssetExtractor;
   v6 = [(TRIRemoteAssetExtractor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_monitoredActivity, a3);
+    objc_storeStrong(&v6->_monitoredActivity, activity);
   }
 
   return v7;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)extractArchiveFromFile:(id)a3 withArchiveName:(id)a4 toEmptyDirectory:(id)a5 postExtractionCompression:(id)a6 error:(id *)a7
+- ($A5A652246548B43F8BC05201A1C72A70)extractArchiveFromFile:(id)file withArchiveName:(id)name toEmptyDirectory:(id)directory postExtractionCompression:(id)compression error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v28 = a4;
-  v13 = a5;
+  fileCopy = file;
+  nameCopy = name;
+  directoryCopy = directory;
   monitoredActivity = self->_monitoredActivity;
   if (monitoredActivity && xpc_activity_should_defer(monitoredActivity))
   {
@@ -62,11 +62,11 @@
     v38[3] = &unk_279DE09F8;
     v38[4] = buf;
     v18 = [v15 synchronousRemoteObjectProxyWithErrorHandler:v38];
-    v19 = [TRISandboxExtensionFactory extensionTokenForPath:v13 extensionClass:1];
+    v19 = [TRISandboxExtensionFactory extensionTokenForPath:directoryCopy extensionClass:1];
     if (v19)
     {
       v20 = MEMORY[0x277CCA9F8];
-      v21 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v12];
+      v21 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:fileCopy];
       v37 = 0;
       v22 = [v20 fileHandleForReadingFromURL:v21 error:&v37];
       v27 = v37;
@@ -85,16 +85,16 @@
         v29[3] = &unk_279DE32F8;
         v30 = v18;
         v31 = v22;
-        v32 = v28;
-        v33 = v13;
+        v32 = nameCopy;
+        v33 = directoryCopy;
         v34 = v19;
         v35 = v45;
-        var0 = a6.var0;
+        var0 = compression.var0;
         [TRIDeferralNotifier forwardDeferralsFromMonitoredActivity:v23 usingDarwinNotificationName:"com.apple.trial.TrialArchivingService.shouldDefer" whileExecutingBlock:v29];
         [v15 invalidate];
-        if (a7)
+        if (error)
         {
-          *a7 = *(v40 + 5);
+          *error = *(v40 + 5);
         }
 
         if (*(v40 + 5))
@@ -116,7 +116,7 @@
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           *v45 = 138543618;
-          *&v45[4] = v12;
+          *&v45[4] = fileCopy;
           *&v45[12] = 2114;
           *&v45[14] = v27;
           _os_log_error_impl(&dword_26F567000, v24, OS_LOG_TYPE_ERROR, "Failed to open archive handle for %{public}@ with error %{public}@", v45, 0x16u);

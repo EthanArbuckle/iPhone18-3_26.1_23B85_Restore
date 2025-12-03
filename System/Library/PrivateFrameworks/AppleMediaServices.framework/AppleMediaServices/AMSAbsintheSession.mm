@@ -2,10 +2,10 @@
 + (AMSAbsintheSession)defaultSession;
 - (AMSAbsintheSession)init;
 - (BOOL)clearSession;
-- (id)_prepareContextWithBag:(id)a3;
+- (id)_prepareContextWithBag:(id)bag;
 - (id)asynchronouslyClearSession;
-- (id)signData:(id)a3 bag:(id)a4;
-- (id)signData:(id)a3 bag:(id)a4 error:(id *)a5;
+- (id)signData:(id)data bag:(id)bag;
+- (id)signData:(id)data bag:(id)bag error:(id *)error;
 @end
 
 @implementation AMSAbsintheSession
@@ -48,13 +48,13 @@ uint64_t __36__AMSAbsintheSession_defaultSession__block_invoke()
 
 - (id)asynchronouslyClearSession
 {
-  v3 = [(AMSAbsintheSession *)self queue];
+  queue = [(AMSAbsintheSession *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__AMSAbsintheSession_asynchronouslyClearSession__block_invoke;
   v6[3] = &unk_1E73B3368;
   v6[4] = self;
-  v4 = [v3 runBinaryPromiseBlock:v6];
+  v4 = [queue runBinaryPromiseBlock:v6];
 
   return v4;
 }
@@ -100,27 +100,27 @@ void __48__AMSAbsintheSession_asynchronouslyClearSession__block_invoke(uint64_t 
   }
 }
 
-- (id)signData:(id)a3 bag:(id)a4
+- (id)signData:(id)data bag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dataCopy = data;
+  bagCopy = bag;
+  if (bagCopy)
   {
-    v8 = [(AMSAbsintheSession *)self queue];
+    queue = [(AMSAbsintheSession *)self queue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __35__AMSAbsintheSession_signData_bag___block_invoke;
     v11[3] = &unk_1E73B3400;
-    v12 = v6;
-    v13 = self;
-    v14 = v7;
-    v9 = [v8 runPromiseBlock:v11];
+    v12 = dataCopy;
+    selfCopy = self;
+    v14 = bagCopy;
+    v9 = [queue runPromiseBlock:v11];
   }
 
   else
   {
-    v8 = AMSError(2, @"Absinthe Session Failure", @"Bag was not provided", 0);
-    v9 = [AMSPromise promiseWithError:v8];
+    queue = AMSError(2, @"Absinthe Session Failure", @"Bag was not provided", 0);
+    v9 = [AMSPromise promiseWithError:queue];
   }
 
   return v9;
@@ -329,18 +329,18 @@ void __35__AMSAbsintheSession_signData_bag___block_invoke_2_63(uint64_t a1, void
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_prepareContextWithBag:(id)a3
+- (id)_prepareContextWithBag:(id)bag
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bagCopy = bag;
   v5 = +[AMSLogConfig sharedConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -348,24 +348,24 @@ void __35__AMSAbsintheSession_signData_bag___block_invoke_2_63(uint64_t a1, void
     *&buf[4] = v7;
     *&buf[12] = 2114;
     *&buf[14] = v8;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Provisioning session", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Provisioning session", buf, 0x16u);
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v22 = 0;
-  v9 = [v4 URLForKey:@"absinthe-handshake"];
-  v10 = [v9 valuePromise];
+  v9 = [bagCopy URLForKey:@"absinthe-handshake"];
+  valuePromise = [v9 valuePromise];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __45__AMSAbsintheSession__prepareContextWithBag___block_invoke;
   v18[3] = &unk_1E73B3448;
   v18[4] = self;
   v20 = buf;
-  v11 = v4;
+  v11 = bagCopy;
   v19 = v11;
-  v12 = [v10 thenWithBlock:v18];
+  v12 = [valuePromise thenWithBlock:v18];
   v13 = [v12 thenWithBlock:&__block_literal_global_91];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -374,11 +374,11 @@ void __35__AMSAbsintheSession_signData_bag___block_invoke_2_63(uint64_t a1, void
   v17[4] = self;
   v17[5] = buf;
   v14 = [v13 thenWithBlock:v17];
-  v15 = [v14 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v14 binaryPromiseAdapter];
 
   _Block_object_dispose(buf, 8);
 
-  return v15;
+  return binaryPromiseAdapter;
 }
 
 id __45__AMSAbsintheSession__prepareContextWithBag___block_invoke(uint64_t a1, void *a2)
@@ -625,16 +625,16 @@ LABEL_32:
 
 - (BOOL)clearSession
 {
-  v2 = [(AMSAbsintheSession *)self asynchronouslyClearSession];
-  v3 = [v2 resultWithError:0];
+  asynchronouslyClearSession = [(AMSAbsintheSession *)self asynchronouslyClearSession];
+  v3 = [asynchronouslyClearSession resultWithError:0];
 
   return v3;
 }
 
-- (id)signData:(id)a3 bag:(id)a4 error:(id *)a5
+- (id)signData:(id)data bag:(id)bag error:(id *)error
 {
-  v6 = [(AMSAbsintheSession *)self signData:a3 bag:a4];
-  v7 = [v6 resultWithError:a5];
+  v6 = [(AMSAbsintheSession *)self signData:data bag:bag];
+  v7 = [v6 resultWithError:error];
 
   return v7;
 }

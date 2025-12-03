@@ -1,24 +1,24 @@
 @interface WFTopHitsAppShortcutsUpdater
-- (WFTopHitsAppShortcutsUpdater)initWithXPCEventHandler:(id)a3;
-- (void)_updateWithCompletion:(id)a3;
-- (void)applicationRegistered:(id)a3;
+- (WFTopHitsAppShortcutsUpdater)initWithXPCEventHandler:(id)handler;
+- (void)_updateWithCompletion:(id)completion;
+- (void)applicationRegistered:(id)registered;
 - (void)handleFavoriteCallsUpdate;
 - (void)handleRecentCallsUpdate;
 - (void)registerForUpcomingMediaSuggestionChanged;
 - (void)start;
-- (void)updateWithCompletion:(id)a3;
+- (void)updateWithCompletion:(id)completion;
 @end
 
 @implementation WFTopHitsAppShortcutsUpdater
 
 - (void)registerForUpcomingMediaSuggestionChanged
 {
-  v3 = [MEMORY[0x277CFE338] keyPathForIntentsDataDictionary];
+  keyPathForIntentsDataDictionary = [MEMORY[0x277CFE338] keyPathForIntentsDataDictionary];
   v4 = MEMORY[0x277CCAC30];
-  v5 = [MEMORY[0x277CFE338] intentClassKey];
-  v6 = [v4 predicateWithFormat:@"self.%@.value.%@ == %@", v3, v5, @"INPlayMediaIntent"];
+  intentClassKey = [MEMORY[0x277CFE338] intentClassKey];
+  v6 = [v4 predicateWithFormat:@"self.%@.value.%@ == %@", keyPathForIntentsDataDictionary, intentClassKey, @"INPlayMediaIntent"];
 
-  v7 = [MEMORY[0x277CFE360] predicateForKeyPath:v3 withPredicate:v6];
+  v7 = [MEMORY[0x277CFE360] predicateForKeyPath:keyPathForIntentsDataDictionary withPredicate:v6];
   objc_initWeak(&location, self);
   v8 = MEMORY[0x277CFE350];
   v12[0] = MEMORY[0x277D85DD0];
@@ -28,11 +28,11 @@
   objc_copyWeak(&v13, &location);
   v9 = [v8 localWakingRegistrationWithIdentifier:@"com.apple.siriactionsd.TopHitsAppShortcutsUpdater" contextualPredicate:v7 clientIdentifier:@"com.apple.siriactionsd.contextstore-registration" callback:v12];
   [(WFTopHitsAppShortcutsUpdater *)self setChangeRegistration:v9];
-  v10 = [MEMORY[0x277CFE318] userContext];
-  [(WFTopHitsAppShortcutsUpdater *)self setClientContext:v10];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  [(WFTopHitsAppShortcutsUpdater *)self setClientContext:userContext];
 
-  v11 = [(WFTopHitsAppShortcutsUpdater *)self clientContext];
-  [v11 registerCallback:v9];
+  clientContext = [(WFTopHitsAppShortcutsUpdater *)self clientContext];
+  [clientContext registerCallback:v9];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -75,10 +75,10 @@ void __73__WFTopHitsAppShortcutsUpdater_registerForUpcomingMediaSuggestionChange
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithCompletion:(id)a3
+- (void)_updateWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = getWFTopHitsLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -97,7 +97,7 @@ void __73__WFTopHitsAppShortcutsUpdater_registerForUpcomingMediaSuggestionChange
     v10[1] = 3221225472;
     v10[2] = __54__WFTopHitsAppShortcutsUpdater__updateWithCompletion___block_invoke;
     v10[3] = &unk_2789001E0;
-    v11 = v3;
+    v11 = completionCopy;
     [v6 updateAppShortcutParametersWithCompletionHandler:v10];
   }
 
@@ -113,7 +113,7 @@ void __73__WFTopHitsAppShortcutsUpdater_registerForUpcomingMediaSuggestionChange
       _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_ERROR, "%s App Shortcuts update connection failed: %@", buf, 0x16u);
     }
 
-    (*(v3 + 2))(v3, v7);
+    (*(completionCopy + 2))(completionCopy, v7);
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -157,15 +157,15 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithCompletion:(id)a3
+- (void)updateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__WFTopHitsAppShortcutsUpdater_updateWithCompletion___block_invoke;
   v6[3] = &unk_2789001E0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(WFTopHitsAppShortcutsUpdater *)self _updateWithCompletion:v6];
 }
 
@@ -212,12 +212,12 @@ void __53__WFTopHitsAppShortcutsUpdater_updateWithCompletion___block_invoke(uint
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationRegistered:(id)a3
+- (void)applicationRegistered:(id)registered
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"isPlaceholder"];
+  registeredCopy = registered;
+  userInfo = [registeredCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"isPlaceholder"];
 
   if (v6)
   {
@@ -240,11 +240,11 @@ void __53__WFTopHitsAppShortcutsUpdater_updateWithCompletion___block_invoke(uint
 
   v8 = v7;
 
-  v9 = [v8 BOOLValue];
-  if ((v9 & 1) == 0)
+  bOOLValue = [v8 BOOLValue];
+  if ((bOOLValue & 1) == 0)
   {
-    v10 = [v4 userInfo];
-    v11 = [v10 objectForKeyedSubscript:@"bundleIDs"];
+    userInfo2 = [registeredCopy userInfo];
+    v11 = [userInfo2 objectForKeyedSubscript:@"bundleIDs"];
 
     if (v11)
     {
@@ -280,14 +280,14 @@ void __53__WFTopHitsAppShortcutsUpdater_updateWithCompletion___block_invoke(uint
 - (void)start
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(WFTopHitsAppShortcutsUpdater *)self xpcEventHandler];
-  [v3 addObserver:self selector:sel_applicationRegistered_ name:@"ApplicationRegistered"];
+  xpcEventHandler = [(WFTopHitsAppShortcutsUpdater *)self xpcEventHandler];
+  [xpcEventHandler addObserver:self selector:sel_applicationRegistered_ name:@"ApplicationRegistered"];
 
-  v4 = [(WFTopHitsAppShortcutsUpdater *)self xpcEventHandler];
-  [v4 addObserver:self selector:sel_handleRecentCallsUpdate name:@"com.apple.callhistory.notification.calls-changed"];
+  xpcEventHandler2 = [(WFTopHitsAppShortcutsUpdater *)self xpcEventHandler];
+  [xpcEventHandler2 addObserver:self selector:sel_handleRecentCallsUpdate name:@"com.apple.callhistory.notification.calls-changed"];
 
-  v5 = [(WFTopHitsAppShortcutsUpdater *)self xpcEventHandler];
-  [v5 addObserver:self selector:sel_handleFavoriteCallsUpdate name:@"CNFavoritesChangedExternallyNotification"];
+  xpcEventHandler3 = [(WFTopHitsAppShortcutsUpdater *)self xpcEventHandler];
+  [xpcEventHandler3 addObserver:self selector:sel_handleFavoriteCallsUpdate name:@"CNFavoritesChangedExternallyNotification"];
 
   [(WFTopHitsAppShortcutsUpdater *)self registerForUpcomingMediaSuggestionChanged];
   v6 = [[WFXPCActivityScheduler alloc] initWithActivityIdentifier:@"com.apple.siriactionsd.UpdateAppShortcutsCheckIn"];
@@ -297,8 +297,8 @@ void __53__WFTopHitsAppShortcutsUpdater_updateWithCompletion___block_invoke(uint
   v14[3] = &unk_278900208;
   v14[4] = self;
   [(WFXPCActivityScheduler *)v6 scheduleWithRunHandler:v14];
-  v7 = [MEMORY[0x277CBEBD0] lastAppShortcutUpdateDate];
-  if (v7 && (v8 = objc_opt_new(), [v8 timeIntervalSinceDate:v7], v10 = v9, v8, v10 <= 3600.0))
+  lastAppShortcutUpdateDate = [MEMORY[0x277CBEBD0] lastAppShortcutUpdateDate];
+  if (lastAppShortcutUpdateDate && (v8 = objc_opt_new(), [v8 timeIntervalSinceDate:lastAppShortcutUpdateDate], v10 = v9, v8, v10 <= 3600.0))
   {
     v12 = getWFTopHitsLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -306,7 +306,7 @@ void __53__WFTopHitsAppShortcutsUpdater_updateWithCompletion___block_invoke(uint
       *buf = 136315394;
       v16 = "[WFTopHitsAppShortcutsUpdater start]";
       v17 = 2112;
-      v18 = v7;
+      v18 = lastAppShortcutUpdateDate;
       _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_DEFAULT, "%s Last update at: %@ was within the past hour, ignoring initial update", buf, 0x16u);
     }
   }
@@ -319,7 +319,7 @@ void __53__WFTopHitsAppShortcutsUpdater_updateWithCompletion___block_invoke(uint
       *buf = 136315394;
       v16 = "[WFTopHitsAppShortcutsUpdater start]";
       v17 = 2112;
-      v18 = v7;
+      v18 = lastAppShortcutUpdateDate;
       _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_DEFAULT, "%s Last update at: %@ was more than an hour ago, performing initial App Shortcuts update", buf, 0x16u);
     }
 
@@ -391,16 +391,16 @@ LABEL_6:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (WFTopHitsAppShortcutsUpdater)initWithXPCEventHandler:(id)a3
+- (WFTopHitsAppShortcutsUpdater)initWithXPCEventHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v10.receiver = self;
   v10.super_class = WFTopHitsAppShortcutsUpdater;
   v6 = [(WFTopHitsAppShortcutsUpdater *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpcEventHandler, a3);
+    objc_storeStrong(&v6->_xpcEventHandler, handler);
     v8 = v7;
   }
 

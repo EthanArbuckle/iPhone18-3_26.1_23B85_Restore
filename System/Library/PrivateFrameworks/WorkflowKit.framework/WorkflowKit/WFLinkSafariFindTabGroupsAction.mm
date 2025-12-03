@@ -1,24 +1,24 @@
 @interface WFLinkSafariFindTabGroupsAction
-- (id)localizedCategoryWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 @end
 
 @implementation WFLinkSafariFindTabGroupsAction
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Find Tab Groups", @"Find Tab Groups");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"SafariSubcategoryTabGroups", @"Tab Groups");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

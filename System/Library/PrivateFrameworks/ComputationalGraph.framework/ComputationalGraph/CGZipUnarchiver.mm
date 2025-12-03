@@ -1,19 +1,19 @@
 @interface CGZipUnarchiver
-+ (BOOL)unarchiveZipAtURL:(id)a3 to:(id)a4 error:(id *)a5;
++ (BOOL)unarchiveZipAtURL:(id)l to:(id)to error:(id *)error;
 @end
 
 @implementation CGZipUnarchiver
 
-+ (BOOL)unarchiveZipAtURL:(id)a3 to:(id)a4 error:(id *)a5
++ (BOOL)unarchiveZipAtURL:(id)l to:(id)to error:(id *)error
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
-  v33 = a5;
+  objc_storeStrong(&v34, to);
+  errorCopy = error;
   v32 = 0;
   v31[1] = BOMCopierNew();
   v31[0] = [MEMORY[0x1E695DF70] array];
@@ -54,7 +54,7 @@
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:?];
     v15 = [v13 errorWithDomain:@"CGZipUnarchiverErrorDomain" code:1 userInfo:?];
     v11 = v15;
-    *v33 = v15;
+    *errorCopy = v15;
     MEMORY[0x1E69E5920](v14);
     MEMORY[0x1E69E5920](v16);
     v36 = 0;

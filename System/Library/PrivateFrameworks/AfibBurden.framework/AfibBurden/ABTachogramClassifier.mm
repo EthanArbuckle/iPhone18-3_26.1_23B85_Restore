@@ -1,7 +1,7 @@
 @interface ABTachogramClassifier
 - (ABTachogramClassifier)init;
-- (id)classifyTachogram:(id)a3;
-- (void)logToFileForTacho:(const void *)a3 withClassification:(id)a4;
+- (id)classifyTachogram:(id)tachogram;
+- (void)logToFileForTacho:(const void *)tacho withClassification:(id)classification;
 @end
 
 @implementation ABTachogramClassifier
@@ -19,10 +19,10 @@
   return 0;
 }
 
-- (id)classifyTachogram:(id)a3
+- (id)classifyTachogram:(id)tachogram
 {
   v35[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tachogramCopy = tachogram;
   memset(v27, 0, sizeof(v27));
   v29 = 0;
   v30 = &v29;
@@ -46,7 +46,7 @@
   v17[3] = &unk_278C5CB70;
   v17[4] = &v18;
   v17[5] = &v29;
-  [v4 _enumerateHeartbeatDataWithBlock:v17];
+  [tachogramCopy _enumerateHeartbeatDataWithBlock:v17];
   if (v19[6] != v19[7])
   {
     std::vector<std::vector<double>>::push_back[abi:ne200100]((v30 + 6), v19 + 6);
@@ -66,19 +66,19 @@
 
   else
   {
-    v5 = [v4 UUID];
-    [v5 getUUIDBytes:v30 + 10];
+    uUID = [tachogramCopy UUID];
+    [uUID getUUIDBytes:v30 + 10];
 
     v6 = ab_get_framework_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 UUID];
+      uUID2 = [tachogramCopy UUID];
       LODWORD(buf[0]) = 138412290;
-      *(buf + 4) = v7;
+      *(buf + 4) = uUID2;
       _os_log_impl(&dword_23E83E000, v6, OS_LOG_TYPE_DEFAULT, "Classifying tachogram with UUID : %@", buf, 0xCu);
     }
 
-    [v4 _startTimestamp];
+    [tachogramCopy _startTimestamp];
     v9 = v30;
     v30[9] = v8;
     std::vector<Tellurium::tellurium_input_t>::push_back[abi:ne200100](v27, (v9 + 6));
@@ -89,11 +89,11 @@
       v10 = objc_opt_new();
       if (v10)
       {
-        v11 = [v4 UUID];
-        [v10 setUuid:v11];
+        uUID3 = [tachogramCopy UUID];
+        [v10 setUuid:uUID3];
 
-        v12 = [v4 startDate];
-        [v10 setDate:v12];
+        startDate = [tachogramCopy startDate];
+        [v10 setDate:startDate];
 
         [v10 setAFibDetected:*(*&buf[0] + 16)];
         [(ABTachogramClassifier *)self logToFileForTacho:v30 + 6 withClassification:v10];
@@ -216,10 +216,10 @@ uint64_t __43__ABTachogramClassifier_classifyTachogram___block_invoke(uint64_t a
   return 1;
 }
 
-- (void)logToFileForTacho:(const void *)a3 withClassification:(id)a4
+- (void)logToFileForTacho:(const void *)tacho withClassification:(id)classification
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  classificationCopy = classification;
   out_token = -1;
   notify_register_check("com.apple.AfibBurden.ForceAnalysis.WriteToJson", &out_token);
   state64 = 0;
@@ -234,12 +234,12 @@ uint64_t __43__ABTachogramClassifier_classifyTachogram___block_invoke(uint64_t a
       _os_log_impl(&dword_23E83E000, v5, OS_LOG_TYPE_DEFAULT, "ABTachogramClassifier : logging to file. notifyState is set to %llu", buf, 0xCu);
     }
 
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v25 = *MEMORY[0x277CCA1B0];
     v26[0] = *MEMORY[0x277CCA198];
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v21 = 0;
-    v8 = [v6 createDirectoryAtPath:@"/var/mobile/Library/Logs/AfBHIDDiagnostics/" withIntermediateDirectories:1 attributes:v7 error:&v21];
+    v8 = [defaultManager createDirectoryAtPath:@"/var/mobile/Library/Logs/AfBHIDDiagnostics/" withIntermediateDirectories:1 attributes:v7 error:&v21];
     v9 = v21;
 
     if (v8)

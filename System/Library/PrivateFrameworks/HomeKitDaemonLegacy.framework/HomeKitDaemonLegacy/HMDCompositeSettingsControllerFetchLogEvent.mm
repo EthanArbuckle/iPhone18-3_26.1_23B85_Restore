@@ -1,5 +1,5 @@
 @interface HMDCompositeSettingsControllerFetchLogEvent
-- (HMDCompositeSettingsControllerFetchLogEvent)initWithStartTime:(double)a3 keyPath:(id)a4;
+- (HMDCompositeSettingsControllerFetchLogEvent)initWithStartTime:(double)time keyPath:(id)path;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -7,28 +7,28 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDCompositeSettingsControllerFetchLogEvent *)self keyPath];
-  [v3 setObject:v4 forKeyedSubscript:@"keyPath"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  keyPath = [(HMDCompositeSettingsControllerFetchLogEvent *)self keyPath];
+  [dictionary setObject:keyPath forKeyedSubscript:@"keyPath"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMMLogEvent durationMilliseconds](self, "durationMilliseconds")}];
-  [v3 setObject:v5 forKeyedSubscript:@"latency"];
+  [dictionary setObject:v5 forKeyedSubscript:@"latency"];
 
-  v6 = [v3 copy];
+  v6 = [dictionary copy];
 
   return v6;
 }
 
-- (HMDCompositeSettingsControllerFetchLogEvent)initWithStartTime:(double)a3 keyPath:(id)a4
+- (HMDCompositeSettingsControllerFetchLogEvent)initWithStartTime:(double)time keyPath:(id)path
 {
-  v7 = a4;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = HMDCompositeSettingsControllerFetchLogEvent;
-  v8 = [(HMMLogEvent *)&v11 initWithStartTime:a3];
+  v8 = [(HMMLogEvent *)&v11 initWithStartTime:time];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_keyPath, a4);
+    objc_storeStrong(&v8->_keyPath, path);
   }
 
   return v9;

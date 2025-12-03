@@ -1,16 +1,16 @@
 @interface IdentityLivenessConfig
 - (_TtC13CoreIDVShared22IdentityLivenessConfig)init;
-- (_TtC13CoreIDVShared22IdentityLivenessConfig)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared22IdentityLivenessConfig)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityLivenessConfig
 
-- (_TtC13CoreIDVShared22IdentityLivenessConfig)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared22IdentityLivenessConfig)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   type metadata accessor for IdentityActiveLivenessConfig();
-  v6 = a3;
+  coderCopy = coder;
   *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared22IdentityLivenessConfig_active) = sub_225CCEF14();
   type metadata accessor for IdentityPassiveLivenessConfig();
   *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared22IdentityLivenessConfig_passive) = sub_225CCEF14();
@@ -21,17 +21,17 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared22IdentityLivenessConfig_active);
-  v9 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_225CCE444();
-  [v9 encodeObject:v4 forKey:v6];
+  [coderCopy encodeObject:v4 forKey:v6];
 
-  v7 = *(&v5->super.isa + OBJC_IVAR____TtC13CoreIDVShared22IdentityLivenessConfig_passive);
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC13CoreIDVShared22IdentityLivenessConfig_passive);
   v8 = sub_225CCE444();
-  [v9 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
 - (_TtC13CoreIDVShared22IdentityLivenessConfig)init

@@ -1,43 +1,43 @@
 @interface SCKOperationThrottler
 - (BOOL)suspended;
-- (SCKOperationThrottler)initWithDelegate:(id)a3;
-- (SCKOperationThrottler)initWithDelegate:(id)a3 updateQueue:(id)a4;
+- (SCKOperationThrottler)initWithDelegate:(id)delegate;
+- (SCKOperationThrottler)initWithDelegate:(id)delegate updateQueue:(id)queue;
 - (void)dealloc;
-- (void)setSuspended:(BOOL)a3;
-- (void)tickleWithCompletion:(id)a3;
+- (void)setSuspended:(BOOL)suspended;
+- (void)tickleWithCompletion:(id)completion;
 @end
 
 @implementation SCKOperationThrottler
 
-- (SCKOperationThrottler)initWithDelegate:(id)a3
+- (SCKOperationThrottler)initWithDelegate:(id)delegate
 {
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_attr_make_with_qos_class(v5, QOS_CLASS_BACKGROUND, 0);
-  v7 = a3;
+  delegateCopy = delegate;
   v8 = dispatch_queue_create(0, v6);
-  v9 = [(SCKOperationThrottler *)self initWithDelegate:v7 updateQueue:v8];
+  v9 = [(SCKOperationThrottler *)self initWithDelegate:delegateCopy updateQueue:v8];
 
   return v9;
 }
 
-- (SCKOperationThrottler)initWithDelegate:(id)a3 updateQueue:(id)a4
+- (SCKOperationThrottler)initWithDelegate:(id)delegate updateQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v30.receiver = self;
   v30.super_class = SCKOperationThrottler;
   v8 = [(SCKOperationThrottler *)&v30 init];
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (delegateCopy)
     {
       objc_initWeak(&location, v8);
-      objc_initWeak(&from, v6);
+      objc_initWeak(&from, delegateCopy);
       v10 = dispatch_group_create();
       objc_storeStrong(&v9->_handlerSynchronizationGroup, v10);
-      objc_storeStrong(&v9->_serialQueue, a4);
-      v11 = dispatch_source_create(MEMORY[0x277D85CE8], 0, 0, v7);
+      objc_storeStrong(&v9->_serialQueue, queue);
+      v11 = dispatch_source_create(MEMORY[0x277D85CE8], 0, 0, queueCopy);
       dispatchSource = v9->_dispatchSource;
       v9->_dispatchSource = v11;
       v13 = v11;
@@ -52,7 +52,7 @@
       objc_copyWeak(&v24, &from);
       objc_copyWeak(&v25, &location);
       objc_copyWeak(&v26, &v27);
-      v15 = v7;
+      v15 = queueCopy;
       v23 = v15;
       dispatch_source_set_event_handler(v13, handler);
       dispatch_group_enter(v14);
@@ -181,11 +181,11 @@ void __54__SCKOperationThrottler_initWithDelegate_updateQueue___block_invoke_5(u
   [(SCKOperationThrottler *)&v3 dealloc];
 }
 
-- (void)tickleWithCompletion:(id)a3
+- (void)tickleWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    dispatch_group_notify(self->_handlerSynchronizationGroup, self->_serialQueue, a3);
+    dispatch_group_notify(self->_handlerSynchronizationGroup, self->_serialQueue, completion);
   }
 
   dispatchSource = self->_dispatchSource;
@@ -195,25 +195,25 @@ void __54__SCKOperationThrottler_initWithDelegate_updateQueue___block_invoke_5(u
 
 - (BOOL)suspended
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  suspended = v2->_suspended;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suspended = selfCopy->_suspended;
+  objc_sync_exit(selfCopy);
 
   return suspended;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   obj = self;
   objc_sync_enter(obj);
   v4 = obj;
-  if (obj->_suspended != v3)
+  if (obj->_suspended != suspendedCopy)
   {
-    obj->_suspended = v3;
+    obj->_suspended = suspendedCopy;
     dispatchSource = obj->_dispatchSource;
-    if (v3)
+    if (suspendedCopy)
     {
       dispatch_suspend(dispatchSource);
     }

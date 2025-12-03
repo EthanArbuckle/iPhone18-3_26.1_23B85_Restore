@@ -1,17 +1,17 @@
 @interface FTRecognitionProgress
-- (FTRecognitionProgress)initWithFlatbuffData:(id)a3 root:(const RecognitionProgress *)a4 verify:(BOOL)a5;
+- (FTRecognitionProgress)initWithFlatbuffData:(id)data root:(const RecognitionProgress *)root verify:(BOOL)verify;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::RecognitionProgress>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::RecognitionProgress>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int)processed_audio_duration_ms;
 @end
 
 @implementation FTRecognitionProgress
 
-- (FTRecognitionProgress)initWithFlatbuffData:(id)a3 root:(const RecognitionProgress *)a4 verify:(BOOL)a5
+- (FTRecognitionProgress)initWithFlatbuffData:(id)data root:(const RecognitionProgress *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTRecognitionProgress;
   v10 = [(FTRecognitionProgress *)&v25 init];
@@ -20,35 +20,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -112,27 +112,27 @@ LABEL_13:
   return v6;
 }
 
-- (Offset<siri::speech::schema_fb::RecognitionProgress>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::RecognitionProgress>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTRecognitionProgress *)self processed_audio_duration_ms];
-  v6 = [(FTRecognitionProgress *)self speech_id];
-  v7 = v6;
-  if (!v6)
+  processed_audio_duration_ms = [(FTRecognitionProgress *)self processed_audio_duration_ms];
+  speech_id = [(FTRecognitionProgress *)self speech_id];
+  v7 = speech_id;
+  if (!speech_id)
   {
-    v6 = &stru_284834138;
+    speech_id = &stru_284834138;
   }
 
-  v8 = [(__CFString *)v6 UTF8String];
-  v9 = strlen(v8);
-  LODWORD(v8) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v8, v9);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v9 = strlen(uTF8String);
+  LODWORD(uTF8String) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v9);
 
-  *(a3 + 70) = 1;
-  v10 = *(a3 + 10);
-  v11 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v8);
+  *(buffer + 70) = 1;
+  v10 = *(buffer + 10);
+  v11 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, processed_audio_duration_ms, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, uTF8String);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v11 + v10);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v11 + v10);
 }
 
 - (id)flatbuffData

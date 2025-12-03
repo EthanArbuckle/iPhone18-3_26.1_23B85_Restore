@@ -1,13 +1,13 @@
 @interface HDRImageConverter_SIMD
-- (BOOL)computeGainMap:(__CVBuffer *)a3 transform:(id *)a4 fromBaseImage:(__CVBuffer *)a5 transform:(id *)a6 alternateImage:(__CVBuffer *)a7 transform:(id *)a8;
-- (BOOL)computeGainMap:(__CVBuffer *)a3 transform:(id *)a4 outputImage:(__CVBuffer *)a5 transform:(id *)a6 fromBaseImage:(__CVBuffer *)a7 transform:(id *)a8 alternateImage:(__CVBuffer *)a9 transform:(id *)a10;
-- (BOOL)computeLumaGainHistogram:(id *)a3 scale:(__CVBuffer *)a4 image:(id *)a5 transform:(__CVBuffer *)a6 gainMap:(id *)a7 transform:;
-- (BOOL)computeStatistics:(id *)a3 image:(__CVBuffer *)a4 transform:(id *)a5;
-- (BOOL)computeStatistics:(id *)a3 image:(__CVBuffer *)a4 transform:(id *)a5 gainMap:(__CVBuffer *)a6 transform:(id *)a7;
-- (BOOL)convertImage:(__CVBuffer *)a3 transform:(id *)a4 alternate:(id *)a5 gainMap:(__CVBuffer *)a6 transform:(id *)a7 alternate:(id *)a8 toImage:(__CVBuffer *)a9 transform:(id *)a10 gainMap:(__CVBuffer *)a11 transform:(id *)a12;
-- (BOOL)convertImage:(__CVBuffer *)a3 transform:(id *)a4 alternate:(id *)a5 toImage:(__CVBuffer *)a6 transform:(id *)a7 gainMap:(__CVBuffer *)a8 transform:(id *)a9;
-- (BOOL)convertImage:(__CVBuffer *)a3 transform:(id *)a4 gainMap:(__CVBuffer *)a5 transform:(id *)a6 toImage:(__CVBuffer *)a7 transform:(id *)a8;
-- (BOOL)convertImage:(__CVBuffer *)a3 transform:(id *)a4 toImage:(__CVBuffer *)a5 transform:(id *)a6;
+- (BOOL)computeGainMap:(__CVBuffer *)map transform:(id *)transform fromBaseImage:(__CVBuffer *)image transform:(id *)a6 alternateImage:(__CVBuffer *)alternateImage transform:(id *)a8;
+- (BOOL)computeGainMap:(__CVBuffer *)map transform:(id *)transform outputImage:(__CVBuffer *)image transform:(id *)a6 fromBaseImage:(__CVBuffer *)baseImage transform:(id *)a8 alternateImage:(__CVBuffer *)alternateImage transform:(id *)self0;
+- (BOOL)computeLumaGainHistogram:(id *)histogram scale:(__CVBuffer *)scale image:(id *)image transform:(__CVBuffer *)transform gainMap:(id *)map transform:;
+- (BOOL)computeStatistics:(id *)statistics image:(__CVBuffer *)image transform:(id *)transform;
+- (BOOL)computeStatistics:(id *)statistics image:(__CVBuffer *)image transform:(id *)transform gainMap:(__CVBuffer *)map transform:(id *)a7;
+- (BOOL)convertImage:(__CVBuffer *)image transform:(id *)transform alternate:(id *)alternate gainMap:(__CVBuffer *)map transform:(id *)a7 alternate:(id *)a8 toImage:(__CVBuffer *)toImage transform:(id *)self0 gainMap:(__CVBuffer *)self1 transform:(id *)self2;
+- (BOOL)convertImage:(__CVBuffer *)image transform:(id *)transform alternate:(id *)alternate toImage:(__CVBuffer *)toImage transform:(id *)a7 gainMap:(__CVBuffer *)map transform:(id *)a9;
+- (BOOL)convertImage:(__CVBuffer *)image transform:(id *)transform gainMap:(__CVBuffer *)map transform:(id *)a6 toImage:(__CVBuffer *)toImage transform:(id *)a8;
+- (BOOL)convertImage:(__CVBuffer *)image transform:(id *)transform toImage:(__CVBuffer *)toImage transform:(id *)a6;
 - (id)description;
 @end
 
@@ -26,15 +26,15 @@
   return v4;
 }
 
-- (BOOL)convertImage:(__CVBuffer *)a3 transform:(id *)a4 toImage:(__CVBuffer *)a5 transform:(id *)a6
+- (BOOL)convertImage:(__CVBuffer *)image transform:(id *)transform toImage:(__CVBuffer *)toImage transform:(id *)a6
 {
   v129 = *MEMORY[0x1E69E9840];
   v71 = 0u;
   v72 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v71, a3, &a4->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v71, image, &transform->var0.var0);
   v69 = 0u;
   v70 = 0u;
-  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v69, a5, &a6[2].var0.var1.var2);
+  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v69, toImage, &a6[2].var0.var1.var2);
   v68[0] = v72;
   v9 = *(*(&v71 + 1) + 48);
   v11 = **(&v71 + 1);
@@ -78,7 +78,7 @@
   v66 = 0;
   v64 = 0uLL;
   v65 = 0uLL;
-  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v64, &a4->var1.var1.var4.var1.var3);
+  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v64, &transform->var1.var1.var4.var1.var3);
   v63 = 0;
   v61 = 0u;
   v62 = 0u;
@@ -238,18 +238,18 @@ LABEL_15:
   return v58;
 }
 
-- (BOOL)convertImage:(__CVBuffer *)a3 transform:(id *)a4 gainMap:(__CVBuffer *)a5 transform:(id *)a6 toImage:(__CVBuffer *)a7 transform:(id *)a8
+- (BOOL)convertImage:(__CVBuffer *)image transform:(id *)transform gainMap:(__CVBuffer *)map transform:(id *)a6 toImage:(__CVBuffer *)toImage transform:(id *)a8
 {
   v165 = *MEMORY[0x1E69E9840];
   v105 = 0u;
   v106 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v105, a3, &a4->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v105, image, &transform->var0.var0);
   v103 = 0u;
   v104 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v103, a5, &a6->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v103, map, &a6->var0.var0);
   v101 = 0u;
   v102 = 0u;
-  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v101, a7, &a8[2].var0.var1.var2);
+  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v101, toImage, &a8[2].var0.var1.var2);
   v100[0] = v106;
   v13 = *(*(&v105 + 1) + 48);
   v15 = **(&v105 + 1);
@@ -296,7 +296,7 @@ LABEL_15:
   v97 = 0;
   v95 = 0u;
   v96 = 0u;
-  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v95, &a4->var1.var1.var4.var1.var3);
+  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v95, &transform->var1.var1.var4.var1.var3);
   v30 = *&a6[22].var1.var1.var1;
   v92 = *&a6[21].var1.var0.var0;
   v93 = v30;
@@ -501,18 +501,18 @@ LABEL_13:
   return v67;
 }
 
-- (BOOL)convertImage:(__CVBuffer *)a3 transform:(id *)a4 alternate:(id *)a5 toImage:(__CVBuffer *)a6 transform:(id *)a7 gainMap:(__CVBuffer *)a8 transform:(id *)a9
+- (BOOL)convertImage:(__CVBuffer *)image transform:(id *)transform alternate:(id *)alternate toImage:(__CVBuffer *)toImage transform:(id *)a7 gainMap:(__CVBuffer *)map transform:(id *)a9
 {
   v213 = *MEMORY[0x1E69E9840];
   v128 = 0u;
   v129 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v128, a3, &a4->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v128, image, &transform->var0.var0);
   v126 = 0u;
   v127 = 0u;
-  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v126, a6, &a7[2].var0.var1.var2);
+  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v126, toImage, &a7[2].var0.var1.var2);
   v124 = 0u;
   v125 = 0u;
-  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v124, a8, &a9[18].var1.var0);
+  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v124, map, &a9[18].var1.var0);
   v123[0] = v129;
   v14 = *(*(&v128 + 1) + 48);
   v16 = **(&v128 + 1);
@@ -557,11 +557,11 @@ LABEL_13:
   v120 = 0;
   v118 = 0u;
   v119 = 0u;
-  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v118, &a4->var1.var1.var4.var1.var3);
+  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v118, &transform->var1.var1.var4.var1.var3);
   v117 = 0;
   v115 = 0u;
   v116 = 0u;
-  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v115, &a5->var1.var1.var4.var1.var3);
+  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v115, &alternate->var1.var1.var4.var1.var3);
   v114 = 0;
   v112 = 0u;
   v113 = 0u;
@@ -848,12 +848,12 @@ LABEL_16:
   return v90;
 }
 
-- (BOOL)convertImage:(__CVBuffer *)a3 transform:(id *)a4 alternate:(id *)a5 gainMap:(__CVBuffer *)a6 transform:(id *)a7 alternate:(id *)a8 toImage:(__CVBuffer *)a9 transform:(id *)a10 gainMap:(__CVBuffer *)a11 transform:(id *)a12
+- (BOOL)convertImage:(__CVBuffer *)image transform:(id *)transform alternate:(id *)alternate gainMap:(__CVBuffer *)map transform:(id *)a7 alternate:(id *)a8 toImage:(__CVBuffer *)toImage transform:(id *)self0 gainMap:(__CVBuffer *)self1 transform:(id *)self2
 {
   v265 = *MEMORY[0x1E69E9840];
   v178 = 0u;
   v177 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v177, a3, &a4->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v177, image, &transform->var0.var0);
   v176 = 0u;
   v175 = 0u;
   if (a7->var0.var0)
@@ -866,13 +866,13 @@ LABEL_16:
     v17 = a8;
   }
 
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v175, a6, &v17->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v175, map, &v17->var0.var0);
   v174 = 0u;
   v173 = 0u;
-  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v173, a9, &a10[2].var0.var1.var2);
+  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v173, toImage, &a10[2].var0.var1.var2);
   v172 = 0u;
   v171 = 0u;
-  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v171, a11, &a12[18].var1.var0);
+  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v171, gainMap, &a12[18].var1.var0);
   v170[0] = v178;
   v18 = *(*(&v177 + 1) + 32);
   v20 = **(&v177 + 1);
@@ -932,7 +932,7 @@ LABEL_16:
   v166 = 0;
   v165 = 0u;
   v164 = 0u;
-  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v164, &a4->var1.var1.var4.var1.var3);
+  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v164, &transform->var1.var1.var4.var1.var3);
   v40 = *&a7[22].var1.var1.var1;
   v161 = *&a7[21].var1.var0.var0;
   v162 = v40;
@@ -952,7 +952,7 @@ LABEL_16:
   v152 = 0;
   v150 = 0u;
   v151 = 0u;
-  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v150, &a5->var1.var1.var4.var1.var3);
+  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v150, &alternate->var1.var1.var4.var1.var3);
   v45 = *&a8[22].var1.var1.var1;
   v147 = *&a8[21].var1.var0.var0;
   v148 = v45;
@@ -1286,18 +1286,18 @@ LABEL_19:
   return v110;
 }
 
-- (BOOL)computeGainMap:(__CVBuffer *)a3 transform:(id *)a4 fromBaseImage:(__CVBuffer *)a5 transform:(id *)a6 alternateImage:(__CVBuffer *)a7 transform:(id *)a8
+- (BOOL)computeGainMap:(__CVBuffer *)map transform:(id *)transform fromBaseImage:(__CVBuffer *)image transform:(id *)a6 alternateImage:(__CVBuffer *)alternateImage transform:(id *)a8
 {
   v163 = *MEMORY[0x1E69E9840];
   v100 = 0u;
   v101 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v100, a5, &a6->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v100, image, &a6->var0.var0);
   v98 = 0u;
   v99 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v98, a7, &a8->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v98, alternateImage, &a8->var0.var0);
   v96 = 0u;
   v97 = 0u;
-  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v96, a3, &a4[18].var1.var0);
+  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v96, map, &transform[18].var1.var0);
   v95[0] = v101;
   v13 = *(*(&v100 + 1) + 48);
   v15 = **(&v100 + 1);
@@ -1349,8 +1349,8 @@ LABEL_19:
   v87 = 0u;
   v88 = 0u;
   xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v87, &a8->var1.var1.var4.var1.var3);
-  v30.i64[0] = *&a4[14].var1.var0;
-  v31 = *&a4[16].var0.var0.var0;
+  v30.i64[0] = *&transform[14].var1.var0;
+  v31 = *&transform[16].var0.var0.var0;
   v139[0] = *v90;
   v32 = *(v90 + 16);
   v33 = *(v90 + 32);
@@ -1388,7 +1388,7 @@ LABEL_19:
   v160 = v42;
   v159 = v41;
   v115[0] = *v87;
-  var1 = a4[17].var0.var1.var1;
+  var1 = transform[17].var0.var1.var1;
   v45 = *(v87 + 16);
   v46 = *(v87 + 48);
   v117 = *(v87 + 32);
@@ -1424,21 +1424,21 @@ LABEL_19:
   v137 = v56;
   v136 = v55;
   v135 = v54;
-  v57 = *&a4[6].var1.var0;
-  v83[4] = *&a4[5].var0.var1.var1;
+  v57 = *&transform[6].var1.var0;
+  v83[4] = *&transform[5].var0.var1.var1;
   v83[5] = v57;
-  v58 = *&a4[1].var0.var1.var1;
-  v83[0] = *&a4->var0.var0.var0;
+  v58 = *&transform[1].var0.var1.var1;
+  v83[0] = *&transform->var0.var0.var0;
   v83[1] = v58;
-  v59 = *&a4[4].var0.var0.var0;
-  v83[2] = *&a4[2].var1.var0;
+  v59 = *&transform[4].var0.var0.var0;
+  v83[2] = *&transform[2].var1.var0;
   v83[3] = v59;
-  v60 = *&a4[8].var0.var0.var0;
-  v61 = *&a4[9].var0.var1.var1;
-  v62 = *&a4[13].var0.var1.var1;
-  v83[9] = *&a4[12].var0.var0.var0;
+  v60 = *&transform[8].var0.var0.var0;
+  v61 = *&transform[9].var0.var1.var1;
+  v62 = *&transform[13].var0.var1.var1;
+  v83[9] = *&transform[12].var0.var0.var0;
   v83[10] = v62;
-  v63 = *&a4[10].var1.var0;
+  v63 = *&transform[10].var1.var0;
   v83[7] = v61;
   v83[8] = v63;
   v83[6] = v60;
@@ -1456,7 +1456,7 @@ LABEL_19:
     v30.i64[0] = 0;
   }
 
-  v64 = vmax_u16(vdup_lane_s16(*&a4[26].var1.var0, 0).u32[0], vext_s8(*&a4[26].var1.var0, *v30.i8, 2uLL).u32[0]);
+  v64 = vmax_u16(vdup_lane_s16(*&transform[26].var1.var0, 0).u32[0], vext_s8(*&transform[26].var1.var0, *v30.i8, 2uLL).u32[0]);
   v65 = vmovl_u16(v64).u64[0];
   v66 = vand_s8(v65, 0xFFFF0000FFFFLL);
   v67 = vceq_s32(v66, 0x100000001);
@@ -1544,22 +1544,22 @@ LABEL_13:
   return v70;
 }
 
-- (BOOL)computeGainMap:(__CVBuffer *)a3 transform:(id *)a4 outputImage:(__CVBuffer *)a5 transform:(id *)a6 fromBaseImage:(__CVBuffer *)a7 transform:(id *)a8 alternateImage:(__CVBuffer *)a9 transform:(id *)a10
+- (BOOL)computeGainMap:(__CVBuffer *)map transform:(id *)transform outputImage:(__CVBuffer *)image transform:(id *)a6 fromBaseImage:(__CVBuffer *)baseImage transform:(id *)a8 alternateImage:(__CVBuffer *)alternateImage transform:(id *)self0
 {
   v10 = a8;
   v234 = *MEMORY[0x1E69E9840];
   v149 = 0u;
   v148 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v148, a7, &a8->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v148, baseImage, &a8->var0.var0);
   v147 = 0u;
   v146 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v146, a9, &a10->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v146, alternateImage, &a10->var0.var0);
   v145 = 0u;
   v144 = 0u;
-  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v144, a3, &a4[18].var1.var0);
+  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v144, map, &transform[18].var1.var0);
   v143 = 0u;
   v142 = 0u;
-  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v142, a5, &a6[2].var0.var1.var2);
+  _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EEC2EP10__CVBufferRKS1_(&v142, image, &a6[2].var0.var1.var2);
   v141[0] = v149;
   v15 = *(*(&v148 + 1) + 32);
   v17 = **(&v148 + 1);
@@ -1624,25 +1624,25 @@ LABEL_13:
   v132 = 0u;
   v133 = 0u;
   xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v132, &a10->var1.var1.var4.var1.var3);
-  v37 = *&a4[12].var0.var0.var0;
-  v129 = *&a4[10].var1.var0;
+  v37 = *&transform[12].var0.var0.var0;
+  v129 = *&transform[10].var1.var0;
   v130 = v37;
-  v131 = *&a4[13].var0.var1.var1;
-  v38 = *&a4[6].var1.var0;
-  v125 = *&a4[5].var0.var1.var1;
+  v131 = *&transform[13].var0.var1.var1;
+  v38 = *&transform[6].var1.var0;
+  v125 = *&transform[5].var0.var1.var1;
   v126 = v38;
-  v39 = *&a4[9].var0.var1.var1;
-  v127 = *&a4[8].var0.var0.var0;
+  v39 = *&transform[9].var0.var1.var1;
+  v127 = *&transform[8].var0.var0.var0;
   v128 = v39;
-  v40 = *&a4[1].var0.var1.var1;
-  v121 = *&a4->var0.var0.var0;
+  v40 = *&transform[1].var0.var1.var1;
+  v121 = *&transform->var0.var0.var0;
   v122 = v40;
-  v41 = *&a4[4].var0.var0.var0;
-  v123 = *&a4[2].var1.var0;
+  v41 = *&transform[4].var0.var0.var0;
+  v123 = *&transform[2].var1.var0;
   v124 = v41;
-  v42 = *&a4[14].var1.var0;
-  v113 = *&a4[16].var0.var0.var0;
-  LOBYTE(v10) = a4[17].var0.var1.var1;
+  v42 = *&transform[14].var1.var0;
+  v113 = *&transform[16].var0.var0.var0;
+  LOBYTE(v10) = transform[17].var0.var1.var1;
   v120 = 0;
   v118 = 0u;
   v119 = 0u;
@@ -1781,7 +1781,7 @@ LABEL_13:
   }
 
   v79 = *&a6[2].var0.var2.var1.var7;
-  v80 = *&a4[26].var1.var0;
+  v80 = *&transform[26].var1.var0;
   v79.i16[3] = 0;
   v80.i16[3] = 0;
   v81 = vmax_u16(v79, v80);
@@ -1926,16 +1926,16 @@ LABEL_17:
   return v91;
 }
 
-- (BOOL)computeLumaGainHistogram:(id *)a3 scale:(__CVBuffer *)a4 image:(id *)a5 transform:(__CVBuffer *)a6 gainMap:(id *)a7 transform:
+- (BOOL)computeLumaGainHistogram:(id *)histogram scale:(__CVBuffer *)scale image:(id *)image transform:(__CVBuffer *)transform gainMap:(id *)map transform:
 {
   v11 = v7;
   v80 = *MEMORY[0x1E69E9840];
   v54 = 0u;
   v55 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v54, a4, &a5->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v54, scale, &image->var0.var0);
   v52 = 0u;
   v53 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v52, a6, &a7->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v52, transform, &map->var0.var0);
   v51[0] = v55;
   v13 = *(*(&v54 + 1) + 48);
   v15 = **(&v54 + 1);
@@ -1969,7 +1969,7 @@ LABEL_17:
   v49 = 0;
   v47 = 0u;
   v48 = 0u;
-  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v47, &a5->var1.var1.var4.var1.var3);
+  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v47, &image->var1.var1.var4.var1.var3);
   v56[0] = *v47;
   v25 = *(v47 + 16);
   v26 = *(v47 + 48);
@@ -2006,21 +2006,21 @@ LABEL_17:
   v79 = v36;
   v76 = v34;
   v77 = v35;
-  v37 = *&a7[17].var1.var0.var0;
-  v46[4] = *&a7[16].var0.var0;
+  v37 = *&map[17].var1.var0.var0;
+  v46[4] = *&map[16].var0.var0;
   v46[5] = v37;
-  v38 = *&a7[12].var0.var0;
-  v46[0] = *&a7[10].var1.var1.var1;
+  v38 = *&map[12].var0.var0;
+  v46[0] = *&map[10].var1.var1.var1;
   v46[1] = v38;
-  v39 = *&a7[14].var1.var1.var1;
-  v46[2] = *&a7[13].var1.var0.var0;
+  v39 = *&map[14].var1.var1.var1;
+  v46[2] = *&map[13].var1.var0.var0;
   v46[3] = v39;
-  v40 = *&a7[18].var1.var1.var1;
-  v41 = *&a7[20].var0.var0;
-  v42 = *&a7[24].var0.var0;
-  v46[9] = *&a7[22].var1.var1.var1;
+  v40 = *&map[18].var1.var1.var1;
+  v41 = *&map[20].var0.var0;
+  v42 = *&map[24].var0.var0;
+  v46[9] = *&map[22].var1.var1.var1;
   v46[10] = v42;
-  v43 = *&a7[21].var1.var0.var0;
+  v43 = *&map[21].var1.var0.var0;
   v46[7] = v41;
   v46[8] = v43;
   v46[6] = v40;
@@ -2034,19 +2034,19 @@ LABEL_17:
     v44 = 0;
   }
 
-  xdr::dispatch_compute_luma_gain_histogram<(unsigned short)2,(unsigned short)2,(unsigned short)4>(v51, v50, v56, v46, a3, v44, v11, *&v41, v43);
+  xdr::dispatch_compute_luma_gain_histogram<(unsigned short)2,(unsigned short)2,(unsigned short)4>(v51, v50, v56, v46, histogram, v44, v11, *&v41, v43);
   xdr::ColorBox<HDRColorTransformOut>::~ColorBox(&v47);
   _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EED2Ev(&v52);
   _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EED2Ev(&v54);
   return 1;
 }
 
-- (BOOL)computeStatistics:(id *)a3 image:(__CVBuffer *)a4 transform:(id *)a5
+- (BOOL)computeStatistics:(id *)statistics image:(__CVBuffer *)image transform:(id *)transform
 {
   v62 = *MEMORY[0x1E69E9840];
   v36 = 0u;
   v37 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v36, a4, &a5->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v36, image, &transform->var0.var0);
   v35[0] = v37;
   v7 = *(*(&v36 + 1) + 48);
   v9 = **(&v36 + 1);
@@ -2065,7 +2065,7 @@ LABEL_17:
   v34 = 0;
   v32 = 0u;
   v33 = 0u;
-  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v32, &a5->var1.var1.var4.var1.var3);
+  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v32, &transform->var1.var1.var4.var1.var3);
   v38[0] = *v32;
   v13 = *(v32 + 16);
   v14 = *(v32 + 48);
@@ -2146,18 +2146,18 @@ LABEL_17:
     {
       if (v29 == 1)
       {
-        xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)2>(v35, v38, a3, v25, *&v22, v23);
+        xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)2>(v35, v38, statistics, v25, *&v22, v23);
       }
 
       else
       {
-        xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)4>(v35, v38, a3, v25, *&v22, v23);
+        xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)4>(v35, v38, statistics, v25, *&v22, v23);
       }
     }
 
     else
     {
-      xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)1>(v35, v38, a3, v25, *&v22, v23);
+      xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)1>(v35, v38, statistics, v25, *&v22, v23);
     }
   }
 
@@ -2165,23 +2165,23 @@ LABEL_17:
   {
     if (v29 == 5)
     {
-      xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)32>(v35, v38, a3, v25, *&v22, v23);
+      xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)32>(v35, v38, statistics, v25, *&v22, v23);
     }
 
     else
     {
-      xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)64>(v35, v38, a3, v25, *&v22, v23);
+      xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)64>(v35, v38, statistics, v25, *&v22, v23);
     }
   }
 
   else if (v29 == 3)
   {
-    xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)8>(v35, v38, a3, v25, *&v22, v23);
+    xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)8>(v35, v38, statistics, v25, *&v22, v23);
   }
 
   else
   {
-    xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)16>(v35, v38, a3, v25, *&v22, v23);
+    xdr::dispatch_compute_image_stats<(unsigned short)8,(unsigned short)8,(unsigned short)16>(v35, v38, statistics, v25, *&v22, v23);
   }
 
   xdr::ColorBox<HDRColorTransformOut>::~ColorBox(&v32);
@@ -2189,15 +2189,15 @@ LABEL_17:
   return 1;
 }
 
-- (BOOL)computeStatistics:(id *)a3 image:(__CVBuffer *)a4 transform:(id *)a5 gainMap:(__CVBuffer *)a6 transform:(id *)a7
+- (BOOL)computeStatistics:(id *)statistics image:(__CVBuffer *)image transform:(id *)transform gainMap:(__CVBuffer *)map transform:(id *)a7
 {
   v78 = *MEMORY[0x1E69E9840];
   v52 = 0u;
   v53 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v52, a4, &a5->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v52, image, &transform->var0.var0);
   v50 = 0u;
   v51 = 0u;
-  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v50, a6, &a7->var0.var0);
+  _ZN3xdr8ImageBoxI19HDRPixelTransformInLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE0EEC2EP10__CVBufferRKS1_(&v50, map, &a7->var0.var0);
   v49[0] = v53;
   v11 = *(*(&v52 + 1) + 48);
   v13 = **(&v52 + 1);
@@ -2231,7 +2231,7 @@ LABEL_17:
   v47 = 0;
   v45 = 0u;
   v46 = 0u;
-  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v45, &a5->var1.var1.var4.var1.var3);
+  xdr::ColorBox<HDRColorTransformIn>::ColorBox(&v45, &transform->var1.var1.var4.var1.var3);
   v54[0] = *v45;
   v23 = *(v45 + 16);
   v24 = *(v45 + 48);
@@ -2296,7 +2296,7 @@ LABEL_17:
     v42 = 0;
   }
 
-  xdr::dispatch_compute_image_gainmap_stats<(unsigned short)2,(unsigned short)2,(unsigned short)4>(v49, v48, v54, v44, a3, v42, *&v38, v39);
+  xdr::dispatch_compute_image_gainmap_stats<(unsigned short)2,(unsigned short)2,(unsigned short)4>(v49, v48, v54, v44, statistics, v42, *&v38, v39);
   xdr::ColorBox<HDRColorTransformOut>::~ColorBox(&v45);
   _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EED2Ev(&v50);
   _ZN3xdr8ImageBoxI20HDRPixelTransformOutLNS_7TextureIDv2_tDv2_fDv2_iE10AccessModeE1EED2Ev(&v52);

@@ -1,18 +1,18 @@
 @interface MDLNormalMapTexture
 - (MDLNormalMapTexture)initByGeneratingNormalMapWithTexture:(MDLTexture *)sourceTexture name:(NSString *)name smoothness:(float)smoothness contrast:(float)contrast;
-- (id)generateDataAtLevel:(int64_t)a3 selector:(SEL)a4;
+- (id)generateDataAtLevel:(int64_t)level selector:(SEL)selector;
 @end
 
 @implementation MDLNormalMapTexture
 
-- (id)generateDataAtLevel:(int64_t)a3 selector:(SEL)a4
+- (id)generateDataAtLevel:(int64_t)level selector:(SEL)selector
 {
   if (self->super._channelEncoding != 1)
   {
     v8 = MEMORY[0x277CBEAD8];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = NSStringFromSelector(a4);
+    v11 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v8, v12, @"ModelIOException", @"[%@ %@]: Only 8 bit textures supported", v10, v11);
   }
 
@@ -21,7 +21,7 @@
     v13 = MEMORY[0x277CBEAD8];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = NSStringFromSelector(a4);
+    v16 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v13, v17, @"ModelIOException", @"[%@ %@]: Only 4 channel textures supported", v15, v16);
   }
 
@@ -30,27 +30,27 @@
   v18.i32[0] = 1;
   v19 = vbsl_s8(vdup_lane_s32(vcgt_s32(v4, *self->super._anon_118), 0), v18, *self->super._anon_118);
   v20 = vbsl_s8(vdup_lane_s32(vcgt_s32(v4, vdup_lane_s32(v19, 1)), 0), (v19.u32[0] | 0x100000000), v19);
-  if (v20.i32[0] >> a3 <= 1)
+  if (v20.i32[0] >> level <= 1)
   {
     v21 = 1;
   }
 
   else
   {
-    v21 = v20.i32[0] >> a3;
+    v21 = v20.i32[0] >> level;
   }
 
-  if (v20.i32[1] >> a3 <= 1)
+  if (v20.i32[1] >> level <= 1)
   {
     v22 = 1;
   }
 
   else
   {
-    v22 = v20.i32[1] >> a3;
+    v22 = v20.i32[1] >> level;
   }
 
-  v23 = objc_msgSend_allocateDataAtLevel_(self, a2, a3);
+  v23 = objc_msgSend_allocateDataAtLevel_(self, a2, level);
   v24 = v23;
   v27 = objc_msgSend_mutableBytes(v24, v25, v26);
   v30 = objc_msgSend_texelDataWithTopLeftOrigin(self->_sourceTexture, v28, v29);

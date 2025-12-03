@@ -1,26 +1,26 @@
 @interface _TVControlTargetAccessibility
-+ (void)addTargetInControl:(id)a3 withViewElement:(id)a4;
++ (void)addTargetInControl:(id)control withViewElement:(id)element;
 @end
 
 @implementation _TVControlTargetAccessibility
 
-+ (void)addTargetInControl:(id)a3 withViewElement:(id)a4
++ (void)addTargetInControl:(id)control withViewElement:(id)element
 {
-  v6 = a3;
-  v13.receiver = a1;
+  controlCopy = control;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS____TVControlTargetAccessibility;
-  v7 = a4;
-  objc_msgSendSuper2(&v13, sel_addTargetInControl_withViewElement_, v6, v7);
-  v8 = [v7 dataDictionary];
+  elementCopy = element;
+  objc_msgSendSuper2(&v13, sel_addTargetInControl_withViewElement_, controlCopy, elementCopy);
+  dataDictionary = [elementCopy dataDictionary];
 
-  v9 = [v8 objectForKeyedSubscript:@"metrics"];
+  v9 = [dataDictionary objectForKeyedSubscript:@"metrics"];
   v10 = [v9 objectForKeyedSubscript:@"click"];
   v11 = [v10 safeStringForKey:@"targetType"];
 
   v12 = accessibilityRetrieveLabelForSource(v11);
   if ([v12 length])
   {
-    [v6 _accessibilitySetRetainedValue:v12 forKey:@"AXTVMLKitAccessibilityTextOverrideKey"];
+    [controlCopy _accessibilitySetRetainedValue:v12 forKey:@"AXTVMLKitAccessibilityTextOverrideKey"];
   }
 }
 

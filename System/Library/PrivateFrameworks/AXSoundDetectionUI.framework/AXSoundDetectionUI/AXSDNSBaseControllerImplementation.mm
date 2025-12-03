@@ -1,8 +1,8 @@
 @interface AXSDNSBaseControllerImplementation
 - (BOOL)isListening;
 - (BOOL)listenEngineShouldResumeAfterAudioSessionInterruption;
-- (void)listenEngineDidStartWithInputFormat:(id)a3;
-- (void)listenEngineFailedToStartWithError:(id)a3;
+- (void)listenEngineDidStartWithInputFormat:(id)format;
+- (void)listenEngineFailedToStartWithError:(id)error;
 - (void)startListening;
 - (void)stopListening;
 @end
@@ -18,34 +18,34 @@
 
 - (void)startListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D656168();
 }
 
 - (void)stopListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D6563BC();
 }
 
-- (void)listenEngineDidStartWithInputFormat:(id)a3
+- (void)listenEngineDidStartWithInputFormat:(id)format
 {
-  v5 = a3;
-  v6 = self;
-  AXSDNSBaseControllerImplementation.listenEngineDidStart(withInputFormat:)(a3);
+  formatCopy = format;
+  selfCopy = self;
+  AXSDNSBaseControllerImplementation.listenEngineDidStart(withInputFormat:)(format);
 }
 
-- (void)listenEngineFailedToStartWithError:(id)a3
+- (void)listenEngineFailedToStartWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  AXSDNSBaseControllerImplementation.listenEngineFailedToStartWithError(_:)(a3);
+  selfCopy = self;
+  errorCopy = error;
+  AXSDNSBaseControllerImplementation.listenEngineFailedToStartWithError(_:)(error);
 }
 
 - (BOOL)listenEngineShouldResumeAfterAudioSessionInterruption
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.isa) + 0xA0);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2();
 
   return v2 & 1;

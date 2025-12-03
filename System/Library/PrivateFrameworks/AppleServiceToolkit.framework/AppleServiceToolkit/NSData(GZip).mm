@@ -7,7 +7,7 @@
 
 - (id)dataGZipDeflated
 {
-  if ([a1 length])
+  if ([self length])
   {
     v11 = 0;
     v12 = &v11;
@@ -33,10 +33,10 @@
       v8[2] = __32__NSData_GZip__dataGZipDeflated__block_invoke;
       v8[3] = &unk_278CBD4C8;
       v10 = &v11;
-      v8[4] = a1;
+      v8[4] = self;
       v5 = v2;
       v9 = v5;
-      [a1 enumerateByteRangesUsingBlock:v8];
+      [self enumerateByteRangesUsingBlock:v8];
       if (deflate((v12 + 4), 4))
       {
         v6 = v12;
@@ -52,7 +52,7 @@
             break;
           }
 
-          [a1 _resizeOutputBuffer:v5 forStream:v12 + 4];
+          [self _resizeOutputBuffer:v5 forStream:v12 + 4];
           deflate((v12 + 4), 4);
         }
       }
@@ -70,17 +70,17 @@
       }
     }
 
-    v4 = v3;
+    selfCopy = v3;
 
     _Block_object_dispose(&v11, 8);
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)_resizeOutputBuffer:()GZip forStream:

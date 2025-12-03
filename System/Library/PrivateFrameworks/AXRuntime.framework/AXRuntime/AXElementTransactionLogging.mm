@@ -2,10 +2,10 @@
 + (id)sharedLogger;
 + (id)transactionSummary;
 - (AXElementTransactionLogging)init;
-- (id)_appNameForUIElement:(__AXUIElement *)a3 pid:(int)a4;
-- (unint64_t)willFetchAttribute:(int64_t)a3 forElement:(__AXUIElement *)a4;
-- (void)failedTransaction:(unint64_t)a3;
-- (void)finishedTransaction:(unint64_t)a3 withValue:(void *)a4 amortization:(double)a5;
+- (id)_appNameForUIElement:(__AXUIElement *)element pid:(int)pid;
+- (unint64_t)willFetchAttribute:(int64_t)attribute forElement:(__AXUIElement *)element;
+- (void)failedTransaction:(unint64_t)transaction;
+- (void)finishedTransaction:(unint64_t)transaction withValue:(void *)value amortization:(double)amortization;
 @end
 
 @implementation AXElementTransactionLogging
@@ -34,9 +34,9 @@ uint64_t __43__AXElementTransactionLogging_sharedLogger__block_invoke()
   v8.receiver = self;
   v8.super_class = AXElementTransactionLogging;
   v2 = [(AXElementTransactionLogging *)&v8 init];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   pendingTransactions = v2->_pendingTransactions;
-  v2->_pendingTransactions = v3;
+  v2->_pendingTransactions = dictionary;
 
   v5 = dispatch_queue_create("AXElementTransactionLogging", 0);
   queue = v2->_queue;
@@ -48,31 +48,31 @@ uint64_t __43__AXElementTransactionLogging_sharedLogger__block_invoke()
 + (id)transactionSummary
 {
   v2 = +[AXProfileDatabase sharedDatabase];
-  v3 = [v2 transactionSummary];
+  transactionSummary = [v2 transactionSummary];
 
-  return v3;
+  return transactionSummary;
 }
 
-- (unint64_t)willFetchAttribute:(int64_t)a3 forElement:(__AXUIElement *)a4
+- (unint64_t)willFetchAttribute:(int64_t)attribute forElement:(__AXUIElement *)element
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v8 = self;
-  objc_sync_enter(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   ++willFetchAttribute_forElement____transactionID;
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
-  if (a4)
+  if (element)
   {
-    CFRetain(a4);
-    queue = v8->_queue;
+    CFRetain(element);
+    queue = selfCopy->_queue;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __61__AXElementTransactionLogging_willFetchAttribute_forElement___block_invoke;
     v11[3] = &unk_1E80D4030;
-    v11[5] = a3;
-    v11[6] = a4;
+    v11[5] = attribute;
+    v11[6] = element;
     *&v11[7] = Current;
-    v11[4] = v8;
+    v11[4] = selfCopy;
     dispatch_async(queue, v11);
   }
 
@@ -90,14 +90,14 @@ void __61__AXElementTransactionLogging_willFetchAttribute_forElement___block_inv
   [v2 setObject:v4 forKey:v3];
 }
 
-- (id)_appNameForUIElement:(__AXUIElement *)a3 pid:(int)a4
+- (id)_appNameForUIElement:(__AXUIElement *)element pid:(int)pid
 {
-  v4 = *&a4;
+  v4 = *&pid;
   pidsToBundleIDs = self->_pidsToBundleIDs;
-  v8 = [MEMORY[0x1E696AD98] numberWithInt:*&a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithInt:*&pid];
   v9 = [(NSMutableDictionary *)pidsToBundleIDs objectForKey:v8];
 
-  if (v9 || (value = 0, AXUIElementCopyAttributeValue(a3, 0xBBB, &value)) || (v12 = value) == 0)
+  if (v9 || (value = 0, AXUIElementCopyAttributeValue(element, 0xBBB, &value)) || (v12 = value) == 0)
   {
     v10 = &stru_1F3E63FB0;
   }
@@ -114,7 +114,7 @@ void __61__AXElementTransactionLogging_willFetchAttribute_forElement___block_inv
   return v10;
 }
 
-- (void)failedTransaction:(unint64_t)a3
+- (void)failedTransaction:(unint64_t)transaction
 {
   Current = CFAbsoluteTimeGetCurrent();
   queue = self->_queue;
@@ -123,7 +123,7 @@ void __61__AXElementTransactionLogging_willFetchAttribute_forElement___block_inv
   block[2] = __49__AXElementTransactionLogging_failedTransaction___block_invoke;
   block[3] = &unk_1E80D4058;
   block[4] = self;
-  block[5] = a3;
+  block[5] = transaction;
   *&block[6] = Current;
   dispatch_async(queue, block);
 }
@@ -167,21 +167,21 @@ void __49__AXElementTransactionLogging_failedTransaction___block_invoke(uint64_t
   }
 }
 
-- (void)finishedTransaction:(unint64_t)a3 withValue:(void *)a4 amortization:(double)a5
+- (void)finishedTransaction:(unint64_t)transaction withValue:(void *)value amortization:(double)amortization
 {
-  if (a4)
+  if (value)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    v10 = CFHash(a4);
-    v11 = CFGetTypeID(a4);
+    v10 = CFHash(value);
+    v11 = CFGetTypeID(value);
     if (v11 == CFStringGetTypeID())
     {
-      Length = CFStringGetLength(a4);
+      Length = CFStringGetLength(value);
     }
 
     else if (AXIsAXAttributedString())
     {
-      Length = AXGetCFAttributedStringFromAXAttributedString(a4);
+      Length = AXGetCFAttributedStringFromAXAttributedString(value);
       if (Length)
       {
         Length = CFAttributedStringGetLength(Length);
@@ -199,9 +199,9 @@ void __49__AXElementTransactionLogging_failedTransaction___block_invoke(uint64_t
     v14[2] = __74__AXElementTransactionLogging_finishedTransaction_withValue_amortization___block_invoke;
     v14[3] = &unk_1E80D4080;
     v14[4] = self;
-    v14[5] = a3;
+    v14[5] = transaction;
     *&v14[6] = Current;
-    *&v14[7] = a5;
+    *&v14[7] = amortization;
     v14[8] = Length;
     v14[9] = v10;
     dispatch_async(queue, v14);

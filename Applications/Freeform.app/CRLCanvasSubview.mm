@@ -1,19 +1,19 @@
 @interface CRLCanvasSubview
 - (CALayerDelegate)layerDelegate;
-- (CRLCanvasSubview)initWithFrame:(CGRect)a3;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)setSubviews:(id)a3;
+- (CRLCanvasSubview)initWithFrame:(CGRect)frame;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)setSubviews:(id)subviews;
 @end
 
 @implementation CRLCanvasSubview
 
-- (CRLCanvasSubview)initWithFrame:(CGRect)a3
+- (CRLCanvasSubview)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CRLCanvasSubview;
-  v3 = [(CRLCanvasSubview *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRLCanvasSubview *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,23 +23,23 @@
   return v4;
 }
 
-- (void)setSubviews:(id)a3
+- (void)setSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = [(CRLCanvasSubview *)self subviews];
-  v6 = [v5 isEqualToArray:v4];
+  subviewsCopy = subviews;
+  subviews = [(CRLCanvasSubview *)self subviews];
+  v6 = [subviews isEqualToArray:subviewsCopy];
 
   if ((v6 & 1) == 0)
   {
     v7 = [NSMutableOrderedSet alloc];
-    v8 = [(CRLCanvasSubview *)self subviews];
-    v9 = [v7 initWithArray:v8];
+    subviews2 = [(CRLCanvasSubview *)self subviews];
+    v9 = [v7 initWithArray:subviews2];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = v4;
+    v10 = subviewsCopy;
     v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v11)
     {
@@ -57,14 +57,14 @@
           v15 = *(*(&v28 + 1) + 8 * i);
           if ([v9 containsObject:v15])
           {
-            v16 = [(CRLCanvasSubview *)self subviews];
-            v17 = [v16 lastObject];
+            subviews3 = [(CRLCanvasSubview *)self subviews];
+            lastObject = [subviews3 lastObject];
 
-            if (v15 != v17)
+            if (v15 != lastObject)
             {
-              v18 = [v15 superview];
+              superview = [v15 superview];
 
-              if (v18 == self)
+              if (superview == self)
               {
                 [(CRLCanvasSubview *)self bringSubviewToFront:v15];
               }
@@ -121,11 +121,11 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CRLCanvasSubview;
-  v5 = [(CRLCanvasSubview *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CRLCanvasSubview *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 
@@ -135,14 +135,14 @@
   return v5;
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLCanvasSubview *)self layerDelegate];
+  layerCopy = layer;
+  keyCopy = key;
+  layerDelegate = [(CRLCanvasSubview *)self layerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 actionForLayer:v6 forKey:v7];
+    v9 = [layerDelegate actionForLayer:layerCopy forKey:keyCopy];
   }
 
   else
@@ -153,14 +153,14 @@
   return v9;
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   if (+[NSThread isMainThread])
   {
     v5.receiver = self;
     v5.super_class = CRLCanvasSubview;
-    [(CRLCanvasSubview *)&v5 layoutSublayersOfLayer:v4];
+    [(CRLCanvasSubview *)&v5 layoutSublayersOfLayer:layerCopy];
   }
 }
 

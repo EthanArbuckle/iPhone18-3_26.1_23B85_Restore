@@ -19,8 +19,8 @@
     v4 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"_showInternalSettings"];
     [v4 setNumberOfTouchesRequired:2];
     [v4 setMinimumPressDuration:5.0];
-    v5 = [(UIViewController *)self view];
-    [v5 addGestureRecognizer:v4];
+    view = [(UIViewController *)self view];
+    [view addGestureRecognizer:v4];
   }
 }
 

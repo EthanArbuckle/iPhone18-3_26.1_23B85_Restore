@@ -1,27 +1,27 @@
 @interface DAEASOAuthTokenResponse
-- (DAEASOAuthTokenResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5;
-- (id)usernameFromJWTToken:(id)a3;
+- (DAEASOAuthTokenResponse)initWithData:(id)data urlResponse:(id)response error:(id)error;
+- (id)usernameFromJWTToken:(id)token;
 @end
 
 @implementation DAEASOAuthTokenResponse
 
-- (DAEASOAuthTokenResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5
+- (DAEASOAuthTokenResponse)initWithData:(id)data urlResponse:(id)response error:(id)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
   v11 = DALoggingwithCategory();
   v12 = MEMORY[0x277D03988];
   v13 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v11, v13))
   {
     *buf = 134218498;
-    v54 = [v8 length];
+    v54 = [dataCopy length];
     v55 = 2112;
-    v56 = v9;
+    v56 = responseCopy;
     v57 = 2112;
-    v58 = v10;
+    v58 = errorCopy;
     _os_log_impl(&dword_247E05000, v11, v13, "DAEASOAuthOAuth2TokenResponse initWithData: %lu length urlResponse: %@ error: %@", buf, 0x20u);
   }
 
@@ -31,7 +31,7 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_error, a5);
+    objc_storeStrong(&v14->_error, error);
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -46,7 +46,7 @@
       goto LABEL_15;
     }
 
-    v16 = v9;
+    v16 = responseCopy;
     v15->_statusCode = [v16 statusCode];
     v17 = DALoggingwithCategory();
     if (os_log_type_enabled(v17, v13))
@@ -65,7 +65,7 @@ LABEL_15:
     }
 
     v51 = 0;
-    v19 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:&v51];
+    v19 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v51];
     v20 = v51;
     if (v20)
     {
@@ -172,9 +172,9 @@ LABEL_16:
   return v15;
 }
 
-- (id)usernameFromJWTToken:(id)a3
+- (id)usernameFromJWTToken:(id)token
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [token componentsSeparatedByString:@"."];
   v4 = [v3 objectAtIndexedSubscript:1];
 
   if (([v4 length] & 3) != 0)

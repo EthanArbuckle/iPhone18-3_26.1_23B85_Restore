@@ -35,8 +35,8 @@
   linePaddingCharacters = self->_linePaddingCharacters;
   if (!linePaddingCharacters)
   {
-    v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v5 = [v4 mutableCopy];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v5 = [whitespaceAndNewlineCharacterSet mutableCopy];
 
     [v5 addCharactersInString:@"\u200E\u200F"];
     v6 = [v5 copy];

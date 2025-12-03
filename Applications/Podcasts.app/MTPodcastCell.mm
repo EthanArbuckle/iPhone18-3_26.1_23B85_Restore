@@ -1,20 +1,20 @@
 @interface MTPodcastCell
 - (MTCountChevronView)countView;
-- (MTPodcastCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)_subtitleForPodcast:(id)a3;
+- (MTPodcastCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)_subtitleForPodcast:(id)podcast;
 - (void)configureSubviews;
 - (void)updateColors;
 - (void)updateFonts;
-- (void)updateWithObject:(id)a3;
+- (void)updateWithObject:(id)object;
 @end
 
 @implementation MTPodcastCell
 
-- (MTPodcastCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTPodcastCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = MTPodcastCell;
-  v4 = [(MTGenericCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTGenericCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -24,63 +24,63 @@
   return v5;
 }
 
-- (void)updateWithObject:(id)a3
+- (void)updateWithObject:(id)object
 {
-  v11 = a3;
-  v4 = [v11 title];
-  [(MTGenericCell *)self setTitle:v4];
+  objectCopy = object;
+  title = [objectCopy title];
+  [(MTGenericCell *)self setTitle:title];
 
-  v5 = [(MTPodcastCell *)self _subtitleForPodcast:v11];
+  v5 = [(MTPodcastCell *)self _subtitleForPodcast:objectCopy];
   [(MTGenericCell *)self setSubtitle:v5];
 
-  v6 = [v11 isDark];
-  if (v6)
+  isDark = [objectCopy isDark];
+  if (isDark)
   {
-    v7 = &off_100500FA0;
+    countOfUnplayedEpisodes = &off_100500FA0;
   }
 
   else
   {
-    v7 = [v11 countOfUnplayedEpisodes];
+    countOfUnplayedEpisodes = [objectCopy countOfUnplayedEpisodes];
   }
 
-  v8 = [(MTPodcastCell *)self countView];
-  [v8 setCount:v7];
+  countView = [(MTPodcastCell *)self countView];
+  [countView setCount:countOfUnplayedEpisodes];
 
-  if ((v6 & 1) == 0)
+  if ((isDark & 1) == 0)
   {
   }
 
-  v9 = [(MTPodcastCell *)self countView];
-  [v9 sizeToFit];
+  countView2 = [(MTPodcastCell *)self countView];
+  [countView2 sizeToFit];
 
-  v10 = [v11 uuid];
-  [(MTGenericCell *)self setArtworkKey:v10];
+  uuid = [objectCopy uuid];
+  [(MTGenericCell *)self setArtworkKey:uuid];
 
   [(MTPodcastCell *)self setNeedsLayout];
 }
 
-- (id)_subtitleForPodcast:(id)a3
+- (id)_subtitleForPodcast:(id)podcast
 {
   v3 = kPodcastFeedChangedDate;
-  v4 = a3;
-  v5 = [v4 valueForKey:v3];
-  v6 = [v5 friendlyDisplayString];
-  v7 = [v4 countOfNewEpisodes];
+  podcastCopy = podcast;
+  v5 = [podcastCopy valueForKey:v3];
+  friendlyDisplayString = [v5 friendlyDisplayString];
+  countOfNewEpisodes = [podcastCopy countOfNewEpisodes];
 
-  v8 = [v7 unsignedIntegerValue];
-  if (v8)
+  unsignedIntegerValue = [countOfNewEpisodes unsignedIntegerValue];
+  if (unsignedIntegerValue)
   {
-    v8 = [MTCountUtil stringForNewEpisodeCount:v8 titleCase:0];
+    unsignedIntegerValue = [MTCountUtil stringForNewEpisodeCount:unsignedIntegerValue titleCase:0];
   }
 
-  if ([v5 isToday] && objc_msgSend(v8, "isNotEmpty"))
+  if ([v5 isToday] && objc_msgSend(unsignedIntegerValue, "isNotEmpty"))
   {
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"UPDATED_DATE_AT_TIME_AND_NEW_EPISODE_COUNT_FORMAT" value:&stru_1004F3018 table:0];
 
-    v11 = [v5 timeString];
-    [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@ %@" error:0, v6, v11, v8];
+    timeString = [v5 timeString];
+    [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@ %@" error:0, friendlyDisplayString, timeString, unsignedIntegerValue];
     v13 = LABEL_8:;
 
 LABEL_9:
@@ -92,31 +92,31 @@ LABEL_9:
     v12 = +[NSBundle mainBundle];
     v10 = [v12 localizedStringForKey:@"DATE_AT_TIME" value:&stru_1004F3018 table:0];
 
-    v11 = [v5 timeString];
-    [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@" error:0, v6, v11, v17];
+    timeString = [v5 timeString];
+    [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@" error:0, friendlyDisplayString, timeString, v17];
     goto LABEL_8;
   }
 
-  if ([v6 isNotEmpty] && objc_msgSend(v8, "isNotEmpty"))
+  if ([friendlyDisplayString isNotEmpty] && objc_msgSend(unsignedIntegerValue, "isNotEmpty"))
   {
     v14 = +[NSBundle mainBundle];
     v10 = [v14 localizedStringForKey:@"UPDATED_DATE_AND_NEW_EPISODE_COUNT_FORMAT" value:&stru_1004F3018 table:0];
 
-    v13 = [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@" error:0, v6, v8];
+    v13 = [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@" error:0, friendlyDisplayString, unsignedIntegerValue];
     goto LABEL_9;
   }
 
-  if ([v6 isNotEmpty])
+  if ([friendlyDisplayString isNotEmpty])
   {
-    v15 = v6;
+    v15 = friendlyDisplayString;
 LABEL_17:
     v13 = v15;
     goto LABEL_19;
   }
 
-  if ([v8 isNotEmpty])
+  if ([unsignedIntegerValue isNotEmpty])
   {
-    v15 = v8;
+    v15 = unsignedIntegerValue;
     goto LABEL_17;
   }
 
@@ -131,8 +131,8 @@ LABEL_19:
   v4.receiver = self;
   v4.super_class = MTPodcastCell;
   [(MTGenericCell *)&v4 configureSubviews];
-  v3 = [(MTPodcastCell *)self countView];
-  [(MTGenericCell *)self setSideView:v3];
+  countView = [(MTPodcastCell *)self countView];
+  [(MTGenericCell *)self setSideView:countView];
 }
 
 - (void)updateFonts
@@ -140,14 +140,14 @@ LABEL_19:
   v8.receiver = self;
   v8.super_class = MTPodcastCell;
   [(MTGenericCell *)&v8 updateFonts];
-  v3 = [(MTGenericCell *)self textStackView];
-  v4 = [v3 titleTextStyle];
-  v5 = [UIFont mt_preferredFontForTextStyle:v4];
-  v6 = [(MTPodcastCell *)self countView];
-  [v6 setFont:v5];
+  textStackView = [(MTGenericCell *)self textStackView];
+  titleTextStyle = [textStackView titleTextStyle];
+  v5 = [UIFont mt_preferredFontForTextStyle:titleTextStyle];
+  countView = [(MTPodcastCell *)self countView];
+  [countView setFont:v5];
 
-  v7 = [(MTPodcastCell *)self countView];
-  [v7 sizeToFit];
+  countView2 = [(MTPodcastCell *)self countView];
+  [countView2 sizeToFit];
 
   [(MTPodcastCell *)self setNeedsLayout];
 }
@@ -157,10 +157,10 @@ LABEL_19:
   v6.receiver = self;
   v6.super_class = MTPodcastCell;
   [(MTGenericCell *)&v6 updateColors];
-  v3 = [(MTGenericCell *)self textStackView];
-  v4 = [v3 subtitleTextColor];
-  v5 = [(MTPodcastCell *)self countView];
-  [v5 setTextColor:v4];
+  textStackView = [(MTGenericCell *)self textStackView];
+  subtitleTextColor = [textStackView subtitleTextColor];
+  countView = [(MTPodcastCell *)self countView];
+  [countView setTextColor:subtitleTextColor];
 }
 
 - (MTCountChevronView)countView

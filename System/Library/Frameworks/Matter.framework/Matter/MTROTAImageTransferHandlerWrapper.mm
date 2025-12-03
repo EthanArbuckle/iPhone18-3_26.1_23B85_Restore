@@ -1,10 +1,10 @@
 @interface MTROTAImageTransferHandlerWrapper
-- (MTROTAImageTransferHandlerWrapper)initWithMTROTAImageTransferHandler:(void *)a3;
+- (MTROTAImageTransferHandlerWrapper)initWithMTROTAImageTransferHandler:(void *)handler;
 @end
 
 @implementation MTROTAImageTransferHandlerWrapper
 
-- (MTROTAImageTransferHandlerWrapper)initWithMTROTAImageTransferHandler:(void *)a3
+- (MTROTAImageTransferHandlerWrapper)initWithMTROTAImageTransferHandler:(void *)handler
 {
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTROTAImageTransferHandler.mm", 107);
   v6.receiver = self;
@@ -12,7 +12,7 @@
   result = [(MTROTAImageTransferHandlerWrapper *)&v6 init];
   if (result)
   {
-    result->_otaImageTransferHandler = a3;
+    result->_otaImageTransferHandler = handler;
   }
 
   return result;

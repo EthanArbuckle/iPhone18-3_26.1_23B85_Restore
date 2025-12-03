@@ -5,7 +5,7 @@
 - (BOOL)needsToPerformRefinement;
 - (GEORelatedPlaceList)effectiveRelatedPlaceList;
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel;
-- (MURelatedPlacesSectionController)initWithMapItem:(id)a3 configuration:(id)a4;
+- (MURelatedPlacesSectionController)initWithMapItem:(id)item configuration:(id)configuration;
 - (MURelatedPlacesSectionControllerDelegate)relatedPlacesDelegate;
 - (UIView)sectionView;
 - (id)_moduleTitle;
@@ -13,22 +13,22 @@
 - (void)_buildInitialContent;
 - (void)_cancelFollowUpRequestIfNeeded;
 - (void)_cancelPlaceRefinementIfNeeded;
-- (void)_displayTilesForViewModels:(id)a3;
-- (void)_handleViewModel:(id)a3;
+- (void)_displayTilesForViewModels:(id)models;
+- (void)_handleViewModel:(id)model;
 - (void)_notifyDelegateForSeeAll;
-- (void)_notifyDelegateOfSelectedMapItem:(id)a3;
-- (void)_populateAnalyticsModule:(id)a3;
-- (void)_refineHikingTrailListWithCompletion:(id)a3;
-- (void)_refinePlaceAndNotifyDelegate:(id)a3;
-- (void)_refineRelatedPlaceListWithCompletion:(id)a3;
+- (void)_notifyDelegateOfSelectedMapItem:(id)item;
+- (void)_populateAnalyticsModule:(id)module;
+- (void)_refineHikingTrailListWithCompletion:(id)completion;
+- (void)_refinePlaceAndNotifyDelegate:(id)delegate;
+- (void)_refineRelatedPlaceListWithCompletion:(id)completion;
 - (void)_seeAllTapped;
 - (void)_setupSectionView;
 - (void)_updateSection;
-- (void)_updateWithListFromFollowUpRequest:(id)a3;
+- (void)_updateWithListFromFollowUpRequest:(id)request;
 - (void)performInstrumentationForScrollLeft;
 - (void)performInstrumentationForScrollRight;
 - (void)performNearbyPlacesFollowUpRequest;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation MURelatedPlacesSectionController
@@ -52,17 +52,17 @@
 {
   if ([(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource]== 1)
   {
-    v3 = [(MUPlaceSectionController *)self mapItem];
-    v4 = [v3 _mapsui_associatedHikingItemType];
+    mapItem = [(MUPlaceSectionController *)self mapItem];
+    _mapsui_associatedHikingItemType = [mapItem _mapsui_associatedHikingItemType];
 
-    if (v4 == 2)
+    if (_mapsui_associatedHikingItemType == 2)
     {
       v5 = 410;
     }
 
     else
     {
-      if (v4 != 1)
+      if (_mapsui_associatedHikingItemType != 1)
       {
         return;
       }
@@ -78,17 +78,17 @@
 {
   if ([(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource]== 1)
   {
-    v3 = [(MUPlaceSectionController *)self mapItem];
-    v4 = [v3 _mapsui_associatedHikingItemType];
+    mapItem = [(MUPlaceSectionController *)self mapItem];
+    _mapsui_associatedHikingItemType = [mapItem _mapsui_associatedHikingItemType];
 
-    if (v4 == 2)
+    if (_mapsui_associatedHikingItemType == 2)
     {
       v5 = 422;
     }
 
     else
     {
-      if (v4 != 1)
+      if (_mapsui_associatedHikingItemType != 1)
       {
         return;
       }
@@ -102,18 +102,18 @@
 
 - (id)_moduleTitle
 {
-  v3 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
-  v4 = [v3 placeTemplates];
-  v5 = [v4 count];
+  effectiveRelatedPlaceList = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+  placeTemplates = [effectiveRelatedPlaceList placeTemplates];
+  v5 = [placeTemplates count];
 
-  v6 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
-  v7 = [v6 type];
+  effectiveRelatedPlaceList2 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+  type = [effectiveRelatedPlaceList2 type];
 
-  if (v7 <= 1)
+  if (type <= 1)
   {
-    if (v7)
+    if (type)
     {
-      if (v7 != 1)
+      if (type != 1)
       {
         goto LABEL_19;
       }
@@ -134,14 +134,14 @@
     goto LABEL_10;
   }
 
-  switch(v7)
+  switch(type)
   {
     case 2:
       goto LABEL_10;
     case 3:
-      v10 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-      v11 = [v10 countryCode];
-      v12 = [v11 isEqualToString:@"CN"];
+      mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+      countryCode = [mEMORY[0x1E69A1CD8] countryCode];
+      v12 = [countryCode isEqualToString:@"CN"];
 
       if (v12)
       {
@@ -160,40 +160,40 @@ LABEL_10:
       {
         v8 = @"At this Address [Related Places]";
 LABEL_18:
-        v6 = _MULocalizedStringFromThisBundle(v8);
+        effectiveRelatedPlaceList2 = _MULocalizedStringFromThisBundle(v8);
         break;
       }
 
       v9 = @"[Related Places] Num Places At This Address";
 LABEL_16:
       v13 = _MULocalizedStringFromThisBundle(v9);
-      v6 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v13 validFormatSpecifiers:@"%lu" error:0, v5];
+      effectiveRelatedPlaceList2 = [MEMORY[0x1E696AEC0] localizedStringWithValidatedFormat:v13 validFormatSpecifiers:@"%lu" error:0, v5];
 
       break;
   }
 
 LABEL_19:
 
-  return v6;
+  return effectiveRelatedPlaceList2;
 }
 
-- (void)_populateAnalyticsModule:(id)a3
+- (void)_populateAnalyticsModule:(id)module
 {
-  v10 = a3;
+  moduleCopy = module;
   if ([(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource]== 1)
   {
-    v4 = [(MUPlaceSectionController *)self mapItem];
-    v5 = [v4 _mapsui_associatedHikingItemType];
+    mapItem = [(MUPlaceSectionController *)self mapItem];
+    _mapsui_associatedHikingItemType = [mapItem _mapsui_associatedHikingItemType];
 
-    if (v5 == 1)
+    if (_mapsui_associatedHikingItemType == 1)
     {
       v7 = @"Trails";
     }
 
     else
     {
-      v6 = v10;
-      if (v5 != 2)
+      v6 = moduleCopy;
+      if (_mapsui_associatedHikingItemType != 2)
       {
         goto LABEL_9;
       }
@@ -201,17 +201,17 @@ LABEL_19:
       v7 = @"Trailheads";
     }
 
-    [v10 setMetadata:v7];
+    [moduleCopy setMetadata:v7];
   }
 
   else
   {
-    v8 = [(MURelatedPlacesSectionController *)self sectionHeaderViewModel];
-    v9 = [v8 titleString];
-    [v10 setMetadata:v9];
+    sectionHeaderViewModel = [(MURelatedPlacesSectionController *)self sectionHeaderViewModel];
+    titleString = [sectionHeaderViewModel titleString];
+    [moduleCopy setMetadata:titleString];
   }
 
-  v6 = v10;
+  v6 = moduleCopy;
 LABEL_9:
 }
 
@@ -219,10 +219,10 @@ LABEL_9:
 {
   if ([(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource]== 1)
   {
-    v3 = [(MUPlaceSectionController *)self mapItem];
-    v4 = [v3 _mapsui_associatedHikingItemType];
+    mapItem = [(MUPlaceSectionController *)self mapItem];
+    _mapsui_associatedHikingItemType = [mapItem _mapsui_associatedHikingItemType];
 
-    if (v4 == 2)
+    if (_mapsui_associatedHikingItemType == 2)
     {
       v5 = 428;
     }
@@ -232,7 +232,7 @@ LABEL_9:
       v5 = 9040;
     }
 
-    if (v4 == 1)
+    if (_mapsui_associatedHikingItemType == 1)
     {
       v6 = 364;
     }
@@ -254,11 +254,11 @@ LABEL_9:
   }
 
   [(MUPlaceSectionController *)self captureInfoCardAction:v6 eventValue:0 feedbackType:0 actionRichProviderId:0 classification:0];
-  v10 = [(MURelatedPlacesSectionController *)self relatedPlacesDelegate];
-  v7 = [(MUPlaceSectionHeaderViewModel *)self->_sectionHeaderViewModel titleString];
+  relatedPlacesDelegate = [(MURelatedPlacesSectionController *)self relatedPlacesDelegate];
+  titleString = [(MUPlaceSectionHeaderViewModel *)self->_sectionHeaderViewModel titleString];
   mapItemList = self->_mapItemList;
-  v9 = [(MUPlaceSectionController *)self mapItem];
-  [v10 relatedPlaceSectionController:self showSeeAllWithTitle:v7 relatedMapItems:mapItemList originalMapItem:v9];
+  mapItem2 = [(MUPlaceSectionController *)self mapItem];
+  [relatedPlacesDelegate relatedPlaceSectionController:self showSeeAllWithTitle:titleString relatedMapItems:mapItemList originalMapItem:mapItem2];
 }
 
 - (void)_seeAllTapped
@@ -284,8 +284,8 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  v5 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
-  if ([v5 hasInitialData])
+  effectiveRelatedPlaceList = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+  if ([effectiveRelatedPlaceList hasInitialData])
   {
     mapItemList = self->_mapItemList;
 
@@ -359,8 +359,8 @@ void __49__MURelatedPlacesSectionController__seeAllTapped__block_invoke_2(uint64
 
   else
   {
-    v4 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
-    v3 = [v4 hasInitialData] ^ 1;
+    effectiveRelatedPlaceList = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+    v3 = [effectiveRelatedPlaceList hasInitialData] ^ 1;
   }
 
   return v3;
@@ -368,9 +368,9 @@ void __49__MURelatedPlacesSectionController__seeAllTapped__block_invoke_2(uint64
 
 - (GEORelatedPlaceList)effectiveRelatedPlaceList
 {
-  v3 = [(MURelatedPlacesSectionController *)self relatedPlaceListFromFollowUpRequest];
+  relatedPlaceListFromFollowUpRequest = [(MURelatedPlacesSectionController *)self relatedPlaceListFromFollowUpRequest];
 
-  if (v3)
+  if (relatedPlaceListFromFollowUpRequest)
   {
     [(MURelatedPlacesSectionController *)self relatedPlaceListFromFollowUpRequest];
   }
@@ -401,15 +401,15 @@ void __49__MURelatedPlacesSectionController__seeAllTapped__block_invoke_2(uint64
   [(MUPlaceSectionView *)sectionView endAnimatingActivityIndicatorWithError:0];
 }
 
-- (void)_refineHikingTrailListWithCompletion:(id)a3
+- (void)_refineHikingTrailListWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration trailHead];
-  v6 = [v5 trails];
-  v7 = MUMap(v6, &__block_literal_global_7823);
+  completionCopy = completion;
+  trailHead = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration trailHead];
+  trails = [trailHead trails];
+  v7 = MUMap(trails, &__block_literal_global_7823);
 
-  v8 = [MEMORY[0x1E696F298] sharedService];
-  v9 = [v8 ticketForIdentifiers:v7 traits:0];
+  mEMORY[0x1E696F298] = [MEMORY[0x1E696F298] sharedService];
+  v9 = [mEMORY[0x1E696F298] ticketForIdentifiers:v7 traits:0];
   ticket = self->_ticket;
   self->_ticket = v9;
 
@@ -418,8 +418,8 @@ void __49__MURelatedPlacesSectionController__seeAllTapped__block_invoke_2(uint64
   v13[1] = 3221225472;
   v13[2] = __73__MURelatedPlacesSectionController__refineHikingTrailListWithCompletion___block_invoke_2;
   v13[3] = &unk_1E821A3A8;
-  v14 = v4;
-  v12 = v4;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [(MKMapServiceTicket *)v11 submitWithHandler:v13 networkActivity:0];
 }
 
@@ -438,12 +438,12 @@ id __73__MURelatedPlacesSectionController__refineHikingTrailListWithCompletion__
   return v3;
 }
 
-- (void)_refineRelatedPlaceListWithCompletion:(id)a3
+- (void)_refineRelatedPlaceListWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696F298] sharedService];
-  v6 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
-  v7 = [v5 ticketForRelatedPlaceList:v6 traits:0];
+  completionCopy = completion;
+  mEMORY[0x1E696F298] = [MEMORY[0x1E696F298] sharedService];
+  effectiveRelatedPlaceList = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+  v7 = [mEMORY[0x1E696F298] ticketForRelatedPlaceList:effectiveRelatedPlaceList traits:0];
   ticket = self->_ticket;
   self->_ticket = v7;
 
@@ -452,21 +452,21 @@ id __73__MURelatedPlacesSectionController__refineHikingTrailListWithCompletion__
   v11[1] = 3221225472;
   v11[2] = __74__MURelatedPlacesSectionController__refineRelatedPlaceListWithCompletion___block_invoke;
   v11[3] = &unk_1E821A3A8;
-  v12 = v4;
-  v10 = v4;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(MKMapServiceTicket *)v9 submitWithHandler:v11 networkActivity:0];
 }
 
-- (void)_notifyDelegateOfSelectedMapItem:(id)a3
+- (void)_notifyDelegateOfSelectedMapItem:(id)item
 {
-  v11 = a3;
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", objc_msgSend(v11, "_muid")];
+  itemCopy = item;
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", objc_msgSend(itemCopy, "_muid")];
   if ([(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource]== 1)
   {
-    v5 = [(MUPlaceSectionController *)self mapItem];
-    v6 = [v5 _mapsui_associatedHikingItemType];
+    mapItem = [(MUPlaceSectionController *)self mapItem];
+    _mapsui_associatedHikingItemType = [mapItem _mapsui_associatedHikingItemType];
 
-    if (v6 == 2)
+    if (_mapsui_associatedHikingItemType == 2)
     {
       v7 = 412;
     }
@@ -476,7 +476,7 @@ id __73__MURelatedPlacesSectionController__refineHikingTrailListWithCompletion__
       v7 = 6079;
     }
 
-    if (v6 == 1)
+    if (_mapsui_associatedHikingItemType == 1)
     {
       v8 = 365;
     }
@@ -487,11 +487,11 @@ id __73__MURelatedPlacesSectionController__refineHikingTrailListWithCompletion__
     }
   }
 
-  else if ([v11 _hasHikeInfo])
+  else if ([itemCopy _hasHikeInfo])
   {
-    if ([v11 _hasHikeInfo])
+    if ([itemCopy _hasHikeInfo])
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", objc_msgSend(v11, "_muid")];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", objc_msgSend(itemCopy, "_muid")];
 
       v8 = 467;
       v4 = v9;
@@ -509,19 +509,19 @@ id __73__MURelatedPlacesSectionController__refineHikingTrailListWithCompletion__
   }
 
   [(MUPlaceSectionController *)self captureInfoCardAction:v8 eventValue:v4 feedbackType:0 actionRichProviderId:0 classification:0];
-  v10 = [(MURelatedPlacesSectionController *)self relatedPlacesDelegate];
-  [v10 relatedPlaceSectionController:self itemSelected:v11];
+  relatedPlacesDelegate = [(MURelatedPlacesSectionController *)self relatedPlacesDelegate];
+  [relatedPlacesDelegate relatedPlaceSectionController:self itemSelected:itemCopy];
 }
 
-- (void)_refinePlaceAndNotifyDelegate:(id)a3
+- (void)_refinePlaceAndNotifyDelegate:(id)delegate
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696F280]) initWithGEOMapItemIdentifier:v4];
-  v6 = [MEMORY[0x1E696F298] sharedService];
+  delegateCopy = delegate;
+  v5 = [objc_alloc(MEMORY[0x1E696F280]) initWithGEOMapItemIdentifier:delegateCopy];
+  mEMORY[0x1E696F298] = [MEMORY[0x1E696F298] sharedService];
   v13[0] = v5;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v8 = [v6 ticketForIdentifiers:v7 traits:0];
+  v8 = [mEMORY[0x1E696F298] ticketForIdentifiers:v7 traits:0];
 
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
@@ -551,9 +551,9 @@ void __66__MURelatedPlacesSectionController__refinePlaceAndNotifyDelegate___bloc
   }
 }
 
-- (void)_handleViewModel:(id)a3
+- (void)_handleViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if ([(MURelatedPlaceSectionControllerConfiguration *)self->_configuration suppressItemSelection])
   {
     v5 = MUGetPlaceCardLog();
@@ -572,8 +572,8 @@ void __66__MURelatedPlacesSectionController__refinePlaceAndNotifyDelegate___bloc
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [v4 mapItemIdentifier];
-        [(MURelatedPlacesSectionController *)self _refinePlaceAndNotifyDelegate:v6];
+        mapItemIdentifier = [modelCopy mapItemIdentifier];
+        [(MURelatedPlacesSectionController *)self _refinePlaceAndNotifyDelegate:mapItemIdentifier];
       }
 
       else
@@ -584,15 +584,15 @@ void __66__MURelatedPlacesSectionController__refinePlaceAndNotifyDelegate___bloc
           goto LABEL_12;
         }
 
-        v6 = [v4 geoTrail];
-        v7 = [v6 trailIdentifier];
-        [(MURelatedPlacesSectionController *)self _refinePlaceAndNotifyDelegate:v7];
+        mapItemIdentifier = [modelCopy geoTrail];
+        trailIdentifier = [mapItemIdentifier trailIdentifier];
+        [(MURelatedPlacesSectionController *)self _refinePlaceAndNotifyDelegate:trailIdentifier];
       }
 
       goto LABEL_12;
     }
 
-    [(MURelatedPlacesSectionController *)self _notifyDelegateOfSelectedMapItem:v4];
+    [(MURelatedPlacesSectionController *)self _notifyDelegateOfSelectedMapItem:modelCopy];
   }
 
 LABEL_12:
@@ -606,36 +606,36 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  v4 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource];
-  if (v4 != 1)
+  dataSource = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource];
+  if (dataSource != 1)
   {
-    if (!v4)
+    if (!dataSource)
     {
-      v5 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration moduleConfiguration];
-      v6 = [v5 sectionTitle];
+      moduleConfiguration = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration moduleConfiguration];
+      sectionTitle = [moduleConfiguration sectionTitle];
 
-      if (![(__CFString *)v6 length])
+      if (![(__CFString *)sectionTitle length])
       {
-        v7 = [(MURelatedPlacesSectionController *)self _moduleTitle];
+        _moduleTitle = [(MURelatedPlacesSectionController *)self _moduleTitle];
 
-        v6 = v7;
+        sectionTitle = _moduleTitle;
       }
 
 LABEL_13:
-      v11 = [[MUPlaceSectionHeaderViewModel alloc] initWithTitleString:v6];
+      v11 = [[MUPlaceSectionHeaderViewModel alloc] initWithTitleString:sectionTitle];
       v12 = self->_sectionHeaderViewModel;
       self->_sectionHeaderViewModel = v11;
 
       if (![(MURelatedPlaceSectionControllerConfiguration *)self->_configuration suppressSeeAllButton])
       {
-        v13 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource];
-        if (!v13)
+        dataSource2 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource];
+        if (!dataSource2)
         {
-          v14 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
-          v15 = [v14 mapIdentifiers];
+          effectiveRelatedPlaceList = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+          mapIdentifiers = [effectiveRelatedPlaceList mapIdentifiers];
 LABEL_18:
-          v16 = v15;
-          v17 = [v15 count];
+          v16 = mapIdentifiers;
+          v17 = [mapIdentifiers count];
 
           if (v17 > GEOConfigGetUInteger())
           {
@@ -645,10 +645,10 @@ LABEL_18:
           goto LABEL_21;
         }
 
-        if (v13 == 1)
+        if (dataSource2 == 1)
         {
-          v14 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration trailHead];
-          v15 = [v14 trails];
+          effectiveRelatedPlaceList = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration trailHead];
+          mapIdentifiers = [effectiveRelatedPlaceList trails];
           goto LABEL_18;
         }
 
@@ -664,23 +664,23 @@ LABEL_22:
     }
 
 LABEL_10:
-    v6 = &stru_1F44CA030;
+    sectionTitle = &stru_1F44CA030;
     goto LABEL_13;
   }
 
-  v8 = [(MUPlaceSectionController *)self mapItem];
-  v9 = [v8 _mapsui_associatedHikingItemType];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _mapsui_associatedHikingItemType = [mapItem _mapsui_associatedHikingItemType];
 
-  if (v9)
+  if (_mapsui_associatedHikingItemType)
   {
-    if (v9 == 1)
+    if (_mapsui_associatedHikingItemType == 1)
     {
       v10 = @"Trails [Place card]";
     }
 
     else
     {
-      if (v9 != 2)
+      if (_mapsui_associatedHikingItemType != 2)
       {
         goto LABEL_10;
       }
@@ -688,7 +688,7 @@ LABEL_10:
       v10 = @"Trailheads [Place card]";
     }
 
-    v6 = _MULocalizedStringFromThisBundle(v10);
+    sectionTitle = _MULocalizedStringFromThisBundle(v10);
     goto LABEL_13;
   }
 
@@ -716,8 +716,8 @@ LABEL_23:
     }
 
     v6 = [MUPlaceSectionView alloc];
-    v7 = [(MURelatedPlacesSectionController *)self sectionHeaderViewModel];
-    v8 = [(MUPlaceSectionView *)v6 initWithStyle:v5 sectionHeaderViewModel:v7];
+    sectionHeaderViewModel = [(MURelatedPlacesSectionController *)self sectionHeaderViewModel];
+    v8 = [(MUPlaceSectionView *)v6 initWithStyle:v5 sectionHeaderViewModel:sectionHeaderViewModel];
 
     [(MUPlaceSectionView *)v8 attachViewToContentView:v4];
     v9 = self->_sectionView;
@@ -733,27 +733,27 @@ LABEL_23:
 
 - (BOOL)hasContent
 {
-  v3 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource];
-  if (v3 == 1)
+  dataSource = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource];
+  if (dataSource == 1)
   {
-    v5 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration trailHead];
-    v6 = [v5 trails];
+    trailHead = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration trailHead];
+    trails = [trailHead trails];
 LABEL_8:
-    v7 = v6;
-    v4 = [v6 count] != 0;
+    v7 = trails;
+    v4 = [trails count] != 0;
 
     return v4;
   }
 
-  if (v3)
+  if (dataSource)
   {
     return 0;
   }
 
   if (![(MURelatedPlacesSectionController *)self needsToPerformRefinement])
   {
-    v5 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
-    v6 = [v5 placeTemplates];
+    trailHead = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+    trails = [trailHead placeTemplates];
     goto LABEL_8;
   }
 
@@ -763,22 +763,22 @@ LABEL_8:
 - (void)performNearbyPlacesFollowUpRequest
 {
   [(MURelatedPlacesSectionController *)self setIsFollowUpRequestInProgress:1];
-  v3 = [(MUPlaceSectionController *)self mapItem];
-  v4 = [v3 _geoMapItem];
-  v5 = [v4 _mapsCategoryId];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
+  _mapsCategoryId = [_geoMapItem _mapsCategoryId];
 
-  v6 = [MEMORY[0x1E696F298] sharedService];
-  v7 = [v6 defaultTraits];
+  mEMORY[0x1E696F298] = [MEMORY[0x1E696F298] sharedService];
+  defaultTraits = [mEMORY[0x1E696F298] defaultTraits];
 
   v8 = objc_alloc_init(MEMORY[0x1E69A2570]);
   [v8 setSearchImplicitType:2];
-  [v7 setSearchImplicitFilterInfo:v8];
-  [v7 setSearchOriginationType:3];
+  [defaultTraits setSearchImplicitFilterInfo:v8];
+  [defaultTraits setSearchOriginationType:3];
   objc_initWeak(&location, self);
-  v9 = [MEMORY[0x1E696F298] sharedService];
-  v10 = [(MUPlaceSectionController *)self mapItem];
-  v11 = [v10 _identifier];
-  v12 = [v9 searchAroundPOITicketWithIdentifier:v11 categoryID:v5 maxResults:100 traits:v7];
+  mEMORY[0x1E696F298]2 = [MEMORY[0x1E696F298] sharedService];
+  mapItem2 = [(MUPlaceSectionController *)self mapItem];
+  _identifier = [mapItem2 _identifier];
+  v12 = [mEMORY[0x1E696F298]2 searchAroundPOITicketWithIdentifier:_identifier categoryID:_mapsCategoryId maxResults:100 traits:defaultTraits];
   nearbyPlacesTicket = self->_nearbyPlacesTicket;
   self->_nearbyPlacesTicket = v12;
 
@@ -858,14 +858,14 @@ void __70__MURelatedPlacesSectionController_performNearbyPlacesFollowUpRequest__
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_displayTilesForViewModels:(id)a3
+- (void)_displayTilesForViewModels:(id)models
 {
-  v4 = a3;
-  v5 = [(MURelatedPlacesSectionController *)self numInlineItems];
-  v6 = [v4 count];
-  if (v6 >= v5)
+  modelsCopy = models;
+  numInlineItems = [(MURelatedPlacesSectionController *)self numInlineItems];
+  v6 = [modelsCopy count];
+  if (v6 >= numInlineItems)
   {
-    v7 = v5;
+    v7 = numInlineItems;
   }
 
   else
@@ -873,7 +873,7 @@ void __70__MURelatedPlacesSectionController_performNearbyPlacesFollowUpRequest__
     v7 = v6;
   }
 
-  v8 = [v4 subarrayWithRange:{0, v7}];
+  v8 = [modelsCopy subarrayWithRange:{0, v7}];
 
   if ([(MURelatedPlacesSectionController *)self isVertical])
   {
@@ -889,11 +889,11 @@ void __70__MURelatedPlacesSectionController_performNearbyPlacesFollowUpRequest__
 
 - (void)_updateSection
 {
-  v3 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
-  v4 = [v3 followUpRequestMetadata];
-  v5 = [v4 isSearchRequestForNearbyPlaces];
+  effectiveRelatedPlaceList = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+  followUpRequestMetadata = [effectiveRelatedPlaceList followUpRequestMetadata];
+  isSearchRequestForNearbyPlaces = [followUpRequestMetadata isSearchRequestForNearbyPlaces];
 
-  if (v5)
+  if (isSearchRequestForNearbyPlaces)
   {
     if ([(MURelatedPlacesSectionController *)self isActive])
     {
@@ -918,9 +918,9 @@ void __70__MURelatedPlacesSectionController_performNearbyPlacesFollowUpRequest__
 
   if ([(MURelatedPlacesSectionController *)self needsToPerformRefinement])
   {
-    v6 = [(MURelatedPlacesSectionController *)self isActive];
+    isActive = [(MURelatedPlacesSectionController *)self isActive];
     [(MURelatedPlacesSectionController *)self _cancelPlaceRefinementIfNeeded];
-    if (v6)
+    if (isActive)
     {
       objc_initWeak(&location, self);
       v7[0] = MEMORY[0x1E69E9820];
@@ -952,11 +952,11 @@ void __50__MURelatedPlacesSectionController__updateSection__block_invoke(uint64_
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(MURelatedPlacesSectionController *)self _updateSection];
   }
 }
@@ -968,34 +968,34 @@ void __50__MURelatedPlacesSectionController__updateSection__block_invoke(uint64_
     return [(MURelatedPlacesSectionController *)self numInlineItems]< 3;
   }
 
-  v4 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration moduleConfiguration];
+  moduleConfiguration = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration moduleConfiguration];
 
-  if (v4)
+  if (moduleConfiguration)
   {
-    v5 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration moduleConfiguration];
-    v6 = [v5 isVertical];
+    moduleConfiguration2 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration moduleConfiguration];
+    isVertical = [moduleConfiguration2 isVertical];
 
-    return v6;
+    return isVertical;
   }
 
-  v8 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
-  v9 = [v8 placeTemplates];
-  v3 = [v9 count] < 3;
+  effectiveRelatedPlaceList = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+  placeTemplates = [effectiveRelatedPlaceList placeTemplates];
+  v3 = [placeTemplates count] < 3;
 
   return v3;
 }
 
-- (void)_updateWithListFromFollowUpRequest:(id)a3
+- (void)_updateWithListFromFollowUpRequest:(id)request
 {
-  [(MURelatedPlacesSectionController *)self setRelatedPlaceListFromFollowUpRequest:a3];
+  [(MURelatedPlacesSectionController *)self setRelatedPlaceListFromFollowUpRequest:request];
   sectionView = self->_sectionView;
   self->_sectionView = 0;
 
   [(MURelatedPlacesSectionController *)self _setupSectionView];
   [(MURelatedPlacesSectionController *)self _buildInitialContent];
   [(MURelatedPlacesSectionController *)self _updateSection];
-  v5 = [(MUPlaceSectionController *)self delegate];
-  [v5 placeSectionControllerDidUpdateContent:self];
+  delegate = [(MUPlaceSectionController *)self delegate];
+  [delegate placeSectionControllerDidUpdateContent:self];
 }
 
 - (void)_buildInitialContent
@@ -1004,19 +1004,19 @@ void __50__MURelatedPlacesSectionController__updateSection__block_invoke(uint64_
   if (![(MURelatedPlacesSectionController *)self needsToPerformRefinement])
   {
     v3 = objc_opt_new();
-    v4 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource];
-    if (v4 == 1)
+    dataSource = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource];
+    if (dataSource == 1)
     {
       v18 = v3;
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v7 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration trailHead];
-      v8 = [v7 trails];
+      trailHead = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration trailHead];
+      trails = [trailHead trails];
 
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [trails countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         v10 = v9;
@@ -1028,38 +1028,38 @@ void __50__MURelatedPlacesSectionController__updateSection__block_invoke(uint64_
           {
             if (*v20 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(trails);
             }
 
             v13 = *(*(&v19 + 1) + 8 * v12);
             v14 = [MUPlaceHikingTileViewModel alloc];
-            v15 = [(MUPlaceSectionController *)self mapItem];
-            v16 = -[MUPlaceHikingTileViewModel initWithGEOTrail:hikingItemType:](v14, "initWithGEOTrail:hikingItemType:", v13, [v15 _mapsui_associatedHikingItemType]);
+            mapItem = [(MUPlaceSectionController *)self mapItem];
+            v16 = -[MUPlaceHikingTileViewModel initWithGEOTrail:hikingItemType:](v14, "initWithGEOTrail:hikingItemType:", v13, [mapItem _mapsui_associatedHikingItemType]);
 
-            [v6 addObject:v16];
+            [array addObject:v16];
             ++v12;
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v10 = [trails countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v10);
       }
     }
 
-    else if (v4)
+    else if (dataSource)
     {
-      v6 = v3;
+      array = v3;
     }
 
     else
     {
-      v5 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
-      v6 = [v5 placeTemplates];
+      effectiveRelatedPlaceList = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+      array = [effectiveRelatedPlaceList placeTemplates];
     }
 
-    [(MURelatedPlacesSectionController *)self _displayTilesForViewModels:v6];
+    [(MURelatedPlacesSectionController *)self _displayTilesForViewModels:array];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -1087,8 +1087,8 @@ void __50__MURelatedPlacesSectionController__updateSection__block_invoke(uint64_
 
     else
     {
-      v5 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration moduleConfiguration];
-      v8 = [MUPlaceTilesViewConfiguration configurationFromModuleConfiguration:v5];
+      moduleConfiguration = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration moduleConfiguration];
+      v8 = [MUPlaceTilesViewConfiguration configurationFromModuleConfiguration:moduleConfiguration];
     }
 
     v6 = [[MUPlaceTilesView alloc] initWithConfiguration:v8];
@@ -1103,46 +1103,46 @@ void __50__MURelatedPlacesSectionController__updateSection__block_invoke(uint64_
 
 - (unint64_t)numInlineItems
 {
-  v3 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource];
-  if (v3 == 1)
+  dataSource = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration dataSource];
+  if (dataSource == 1)
   {
-    v4 = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration trailHead];
+    trailHead = [(MURelatedPlaceSectionControllerConfiguration *)self->_configuration trailHead];
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!dataSource)
   {
-    v4 = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
+    trailHead = [(MURelatedPlacesSectionController *)self effectiveRelatedPlaceList];
 LABEL_5:
-    v5 = v4;
-    v6 = [v4 numberOfInlineItems];
+    v5 = trailHead;
+    numberOfInlineItems = [trailHead numberOfInlineItems];
 
     goto LABEL_7;
   }
 
-  v6 = 0;
+  numberOfInlineItems = 0;
 LABEL_7:
   result = GEOConfigGetUInteger();
-  if (v6 < result)
+  if (numberOfInlineItems < result)
   {
-    return v6;
+    return numberOfInlineItems;
   }
 
   return result;
 }
 
-- (MURelatedPlacesSectionController)initWithMapItem:(id)a3 configuration:(id)a4
+- (MURelatedPlacesSectionController)initWithMapItem:(id)item configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 relatedPlaceList];
-  if (v8)
+  itemCopy = item;
+  configurationCopy = configuration;
+  relatedPlaceList = [configurationCopy relatedPlaceList];
+  if (relatedPlaceList)
   {
 
 LABEL_4:
     v16.receiver = self;
     v16.super_class = MURelatedPlacesSectionController;
-    v10 = [(MUPlaceSectionController *)&v16 initWithMapItem:v6];
+    v10 = [(MUPlaceSectionController *)&v16 initWithMapItem:itemCopy];
     if (v10)
     {
       v11 = MUGetPlaceCardLog();
@@ -1152,7 +1152,7 @@ LABEL_4:
         _os_signpost_emit_with_name_impl(&dword_1C5620000, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MURelatedPlacesSectionControllerInit", "", buf, 2u);
       }
 
-      objc_storeStrong(&v10->_configuration, a4);
+      objc_storeStrong(&v10->_configuration, configuration);
       [(MURelatedPlacesSectionController *)v10 _setupSectionView];
       [(MURelatedPlacesSectionController *)v10 _buildInitialContent];
       v12 = MUGetPlaceCardLog();
@@ -1164,13 +1164,13 @@ LABEL_4:
     }
 
     self = v10;
-    v13 = self;
+    selfCopy = self;
     goto LABEL_11;
   }
 
-  v9 = [v7 trailHead];
+  trailHead = [configurationCopy trailHead];
 
-  if (v9)
+  if (trailHead)
   {
     goto LABEL_4;
   }
@@ -1182,10 +1182,10 @@ LABEL_4:
     _os_log_impl(&dword_1C5620000, v15, OS_LOG_TYPE_FAULT, "MURelatedPlacesSectionController: Tried to initialize with no related place list or trail head", buf, 2u);
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_11:
 
-  return v13;
+  return selfCopy;
 }
 
 @end

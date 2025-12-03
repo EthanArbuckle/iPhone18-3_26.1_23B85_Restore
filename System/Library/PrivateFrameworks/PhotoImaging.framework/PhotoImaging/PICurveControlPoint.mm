@@ -1,7 +1,7 @@
 @interface PICurveControlPoint
-- (BOOL)isEqual:(id)a3;
-- (PICurveControlPoint)initWithDictionary:(id)a3;
-- (PICurveControlPoint)initWithX:(double)a3 y:(double)a4 editable:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (PICurveControlPoint)initWithDictionary:(id)dictionary;
+- (PICurveControlPoint)initWithX:(double)x y:(double)y editable:(BOOL)editable;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
@@ -26,20 +26,20 @@
   return [v3 stringWithFormat:@"<%@:%p> [(%.3f, %.3f), %s]", v4, self, *&self->_x, *&self->_y, v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(PICurveControlPoint *)self x];
     v7 = v6;
     [v5 x];
     if (v7 == v8 && (-[PICurveControlPoint y](self, "y"), v10 = v9, [v5 y], v10 == v11))
     {
-      v14 = [(PICurveControlPoint *)self isEditable];
-      v12 = v14 ^ [v5 isEditable] ^ 1;
+      isEditable = [(PICurveControlPoint *)self isEditable];
+      v12 = isEditable ^ [v5 isEditable] ^ 1;
     }
 
     else
@@ -68,9 +68,9 @@
   v7 = [v6 numberWithDouble:?];
   v8 = 0x19E7B7D8491DEDLL * [v7 hash];
 
-  v9 = [(PICurveControlPoint *)self isEditable];
+  isEditable = [(PICurveControlPoint *)self isEditable];
   v10 = 0x1DB601AC6044F9;
-  if (!v9)
+  if (!isEditable)
   {
     v10 = 0;
   }
@@ -99,34 +99,34 @@
   return v8;
 }
 
-- (PICurveControlPoint)initWithDictionary:(id)a3
+- (PICurveControlPoint)initWithDictionary:(id)dictionary
 {
   v11.receiver = self;
   v11.super_class = PICurveControlPoint;
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(PICurveControlPoint *)&v11 init];
-  v5 = [v3 objectForKeyedSubscript:{@"x", v11.receiver, v11.super_class}];
+  v5 = [dictionaryCopy objectForKeyedSubscript:{@"x", v11.receiver, v11.super_class}];
   [v5 doubleValue];
   v4->_x = v6;
 
-  v7 = [v3 objectForKeyedSubscript:@"y"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"y"];
   [v7 doubleValue];
   v4->_y = v8;
 
-  v9 = [v3 objectForKeyedSubscript:@"editable"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"editable"];
 
   v4->_editable = [v9 BOOLValue];
   return v4;
 }
 
-- (PICurveControlPoint)initWithX:(double)a3 y:(double)a4 editable:(BOOL)a5
+- (PICurveControlPoint)initWithX:(double)x y:(double)y editable:(BOOL)editable
 {
   v9.receiver = self;
   v9.super_class = PICurveControlPoint;
   result = [(PICurveControlPoint *)&v9 init];
-  result->_x = a3;
-  result->_y = a4;
-  result->_editable = a5;
+  result->_x = x;
+  result->_y = y;
+  result->_editable = editable;
   return result;
 }
 

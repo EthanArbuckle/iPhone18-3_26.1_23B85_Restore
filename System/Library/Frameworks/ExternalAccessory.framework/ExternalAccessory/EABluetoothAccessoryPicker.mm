@@ -1,14 +1,14 @@
 @interface EABluetoothAccessoryPicker
-- (EABluetoothAccessoryPicker)initWithPredicate:(id)a3;
+- (EABluetoothAccessoryPicker)initWithPredicate:(id)predicate;
 - (void)dealloc;
-- (void)devicePicker:(id)a3 didDismissWithResult:(int64_t)a4 deviceAddress:(id)a5;
+- (void)devicePicker:(id)picker didDismissWithResult:(int64_t)result deviceAddress:(id)address;
 - (void)dismissPicker;
 - (void)show;
 @end
 
 @implementation EABluetoothAccessoryPicker
 
-- (EABluetoothAccessoryPicker)initWithPredicate:(id)a3
+- (EABluetoothAccessoryPicker)initWithPredicate:(id)predicate
 {
   v8.receiver = self;
   v8.super_class = EABluetoothAccessoryPicker;
@@ -23,7 +23,7 @@
 
     if (getBTDevicePickerClass())
     {
-      v6 = [objc_alloc(getBTDevicePickerClass()) initWithTitle:v5 service:128 discoveryNameFilter:a3];
+      v6 = [objc_alloc(getBTDevicePickerClass()) initWithTitle:v5 service:128 discoveryNameFilter:predicate];
       v4->_picker = v6;
       [(BTDevicePicker *)v6 setDelegate:v4];
     }
@@ -68,25 +68,25 @@
   self->_picker = 0;
 }
 
-- (void)devicePicker:(id)a3 didDismissWithResult:(int64_t)a4 deviceAddress:(id)a5
+- (void)devicePicker:(id)picker didDismissWithResult:(int64_t)result deviceAddress:(id)address
 {
-  if (self->_picker == a3)
+  if (self->_picker == picker)
   {
     delegate = self->_delegate;
     if (objc_opt_respondsToSelector())
     {
       v9 = self->_delegate;
-      if ((a4 - 1) >= 3)
+      if ((result - 1) >= 3)
       {
-        v10 = 0;
+        resultCopy = 0;
       }
 
       else
       {
-        v10 = a4;
+        resultCopy = result;
       }
 
-      [(EABluetoothAccessoryPickerDelegate *)v9 devicePicker:self didSelectAddress:a5 errorCode:v10];
+      [(EABluetoothAccessoryPickerDelegate *)v9 devicePicker:self didSelectAddress:address errorCode:resultCopy];
     }
   }
 }

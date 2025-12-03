@@ -1,28 +1,28 @@
 @interface CPLSuggestionRecordList
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAsset:(id)a3;
-- (void)addMemory:(id)a3;
-- (void)addPerson:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAsset:(id)asset;
+- (void)addMemory:(id)memory;
+- (void)addPerson:(id)person;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CPLSuggestionRecordList
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
@@ -48,9 +48,9 @@
     while (v7);
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_version = *(v4 + 8);
+    self->_version = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
@@ -58,7 +58,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v11)
   {
@@ -88,7 +88,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = *(v4 + 2);
+  v15 = *(fromCopy + 2);
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v16)
   {
@@ -135,16 +135,16 @@
   return v5 ^ v6 ^ [(NSMutableArray *)self->_memorys hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   assets = self->_assets;
-  if (assets | *(v4 + 1))
+  if (assets | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)assets isEqual:?])
     {
@@ -152,16 +152,16 @@
     }
   }
 
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_version != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_version != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -169,13 +169,13 @@ LABEL_13:
   }
 
   persons = self->_persons;
-  if (persons | *(v4 + 3) && ![(NSMutableArray *)persons isEqual:?])
+  if (persons | *(equalCopy + 3) && ![(NSMutableArray *)persons isEqual:?])
   {
     goto LABEL_13;
   }
 
   memorys = self->_memorys;
-  if (memorys | *(v4 + 2))
+  if (memorys | *(equalCopy + 2))
   {
     v9 = [(NSMutableArray *)memorys isEqual:?];
   }
@@ -190,10 +190,10 @@ LABEL_14:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -214,7 +214,7 @@ LABEL_14:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v34 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v34 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addAsset:v11];
 
         ++v10;
@@ -253,7 +253,7 @@ LABEL_14:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v30 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v30 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addPerson:v17];
 
         ++v16;
@@ -286,7 +286,7 @@ LABEL_14:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{a3, v26}];
+        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{zone, v26}];
         [v5 addMemory:v23];
 
         ++v22;
@@ -303,65 +303,65 @@ LABEL_14:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if ([(CPLSuggestionRecordList *)self assetsCount])
   {
-    [v16 clearAssets];
-    v4 = [(CPLSuggestionRecordList *)self assetsCount];
-    if (v4)
+    [toCopy clearAssets];
+    assetsCount = [(CPLSuggestionRecordList *)self assetsCount];
+    if (assetsCount)
     {
-      v5 = v4;
+      v5 = assetsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(CPLSuggestionRecordList *)self assetAtIndex:i];
-        [v16 addAsset:v7];
+        [toCopy addAsset:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v16 + 8) = self->_version;
-    *(v16 + 36) |= 1u;
+    *(toCopy + 8) = self->_version;
+    *(toCopy + 36) |= 1u;
   }
 
   if ([(CPLSuggestionRecordList *)self personsCount])
   {
-    [v16 clearPersons];
-    v8 = [(CPLSuggestionRecordList *)self personsCount];
-    if (v8)
+    [toCopy clearPersons];
+    personsCount = [(CPLSuggestionRecordList *)self personsCount];
+    if (personsCount)
     {
-      v9 = v8;
+      v9 = personsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(CPLSuggestionRecordList *)self personAtIndex:j];
-        [v16 addPerson:v11];
+        [toCopy addPerson:v11];
       }
     }
   }
 
   if ([(CPLSuggestionRecordList *)self memorysCount])
   {
-    [v16 clearMemorys];
-    v12 = [(CPLSuggestionRecordList *)self memorysCount];
-    if (v12)
+    [toCopy clearMemorys];
+    memorysCount = [(CPLSuggestionRecordList *)self memorysCount];
+    if (memorysCount)
     {
-      v13 = v12;
+      v13 = memorysCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(CPLSuggestionRecordList *)self memoryAtIndex:k];
-        [v16 addMemory:v15];
+        [toCopy addMemory:v15];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -470,7 +470,7 @@ LABEL_14:
 - (id)dictionaryRepresentation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_assets count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_assets, "count")}];
@@ -493,8 +493,8 @@ LABEL_14:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -503,13 +503,13 @@ LABEL_14:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"asset"];
+    [dictionary setObject:v4 forKey:@"asset"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-    [v3 setObject:v11 forKey:@"version"];
+    [dictionary setObject:v11 forKey:@"version"];
   }
 
   if ([(NSMutableArray *)self->_persons count])
@@ -534,8 +534,8 @@ LABEL_14:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v32 objects:v41 count:16];
@@ -544,7 +544,7 @@ LABEL_14:
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"person"];
+    [dictionary setObject:v12 forKey:@"person"];
   }
 
   if ([(NSMutableArray *)self->_memorys count])
@@ -569,8 +569,8 @@ LABEL_14:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v28 + 1) + 8 * k) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v28 + 1) + 8 * k) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v28 objects:v40 count:16];
@@ -579,12 +579,12 @@ LABEL_14:
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"memory"];
+    [dictionary setObject:v19 forKey:@"memory"];
   }
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -593,64 +593,64 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = CPLSuggestionRecordList;
   v4 = [(CPLSuggestionRecordList *)&v8 description];
-  v5 = [(CPLSuggestionRecordList *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CPLSuggestionRecordList *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addMemory:(id)a3
+- (void)addMemory:(id)memory
 {
-  v4 = a3;
+  memoryCopy = memory;
   memorys = self->_memorys;
-  v8 = v4;
+  v8 = memoryCopy;
   if (!memorys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_memorys;
     self->_memorys = v6;
 
-    v4 = v8;
+    memoryCopy = v8;
     memorys = self->_memorys;
   }
 
-  [(NSMutableArray *)memorys addObject:v4];
+  [(NSMutableArray *)memorys addObject:memoryCopy];
 }
 
-- (void)addPerson:(id)a3
+- (void)addPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   persons = self->_persons;
-  v8 = v4;
+  v8 = personCopy;
   if (!persons)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_persons;
     self->_persons = v6;
 
-    v4 = v8;
+    personCopy = v8;
     persons = self->_persons;
   }
 
-  [(NSMutableArray *)persons addObject:v4];
+  [(NSMutableArray *)persons addObject:personCopy];
 }
 
-- (void)addAsset:(id)a3
+- (void)addAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   assets = self->_assets;
-  v8 = v4;
+  v8 = assetCopy;
   if (!assets)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_assets;
     self->_assets = v6;
 
-    v4 = v8;
+    assetCopy = v8;
     assets = self->_assets;
   }
 
-  [(NSMutableArray *)assets addObject:v4];
+  [(NSMutableArray *)assets addObject:assetCopy];
 }
 
 @end

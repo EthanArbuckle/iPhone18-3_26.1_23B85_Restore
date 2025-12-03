@@ -1,12 +1,12 @@
 @interface PXSharedLibraryAggregateSharingSuggestionContainer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)px_sl_title;
 - (PHAssetCollection)px_sl_containerCollection;
-- (PXSharedLibraryAggregateSharingSuggestionContainer)initWithSharingSuggestions:(id)a3 aggregateBeforeDate:(id)a4;
+- (PXSharedLibraryAggregateSharingSuggestionContainer)initWithSharingSuggestions:(id)suggestions aggregateBeforeDate:(id)date;
 - (_NSRange)aggregationRange;
 - (id)px_sl_fetchAssetCollections;
 - (unint64_t)hash;
-- (void)px_sl_getKeyAsset:(id *)a3 suggestedDate:(id *)a4 locations:(id *)a5;
+- (void)px_sl_getKeyAsset:(id *)asset suggestedDate:(id *)date locations:(id *)locations;
 @end
 
 @implementation PXSharedLibraryAggregateSharingSuggestionContainer
@@ -22,40 +22,40 @@
 
 - (PHAssetCollection)px_sl_containerCollection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_px_sl_containerCollection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_px_sl_containerCollection)
   {
-    v3 = [(PXSharedLibraryAggregateSharingSuggestionContainer *)v2 px_sl_containedSharingSuggestions];
-    v4 = [v3 firstObject];
-    v5 = [v4 photoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
+    px_sl_containedSharingSuggestions = [(PXSharedLibraryAggregateSharingSuggestionContainer *)selfCopy px_sl_containedSharingSuggestions];
+    firstObject = [px_sl_containedSharingSuggestions firstObject];
+    photoLibrary = [firstObject photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v6 setIncludeSharedLibrarySharingSuggestionsSmartAlbum:1];
-    v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000214 options:v6];
+    [librarySpecificFetchOptions setIncludeSharedLibrarySharingSuggestionsSmartAlbum:1];
+    v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000214 options:librarySpecificFetchOptions];
     v8 = MEMORY[0x1E696AE18];
-    v9 = [(PXSharedLibraryAggregateSharingSuggestionContainer *)v2 px_sl_containedSharingSuggestionObjectIDs];
-    v10 = [v8 predicateWithFormat:@"highlightBeingAssets.parentPhotosHighlight IN (%@)", v9];
-    [v6 setInternalPredicate:v10];
+    px_sl_containedSharingSuggestionObjectIDs = [(PXSharedLibraryAggregateSharingSuggestionContainer *)selfCopy px_sl_containedSharingSuggestionObjectIDs];
+    v10 = [v8 predicateWithFormat:@"highlightBeingAssets.parentPhotosHighlight IN (%@)", px_sl_containedSharingSuggestionObjectIDs];
+    [librarySpecificFetchOptions setInternalPredicate:v10];
 
-    [v6 setWantsIncrementalChangeDetails:0];
+    [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
     v11 = MEMORY[0x1E6978630];
-    v12 = [v7 firstObject];
-    v13 = [v11 fetchAssetsInAssetCollection:v12 options:v6];
+    firstObject2 = [v7 firstObject];
+    v13 = [v11 fetchAssetsInAssetCollection:firstObject2 options:librarySpecificFetchOptions];
 
     v14 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssetFetchResult:v13 title:0 identifier:@"PXSharedLibrarySharingSuggestionTransientIdentifier"];
-    px_sl_containerCollection = v2->_px_sl_containerCollection;
-    v2->_px_sl_containerCollection = v14;
+    px_sl_containerCollection = selfCopy->_px_sl_containerCollection;
+    selfCopy->_px_sl_containerCollection = v14;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v16 = v2->_px_sl_containerCollection;
+  v16 = selfCopy->_px_sl_containerCollection;
 
   return v16;
 }
 
-- (void)px_sl_getKeyAsset:(id *)a3 suggestedDate:(id *)a4 locations:(id *)a5
+- (void)px_sl_getKeyAsset:(id *)asset suggestedDate:(id *)date locations:(id *)locations
 {
   v43 = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
@@ -152,78 +152,78 @@
 LABEL_26:
 
   v21 = v8;
-  *a3 = v8;
+  *asset = v8;
   v22 = v7;
-  *a4 = v7;
-  *a5 = [v6 array];
+  *date = v7;
+  *locations = [v6 array];
 }
 
 - (id)px_sl_fetchAssetCollections
 {
   v2 = MEMORY[0x1E69789F0];
-  v3 = [(PXSharedLibraryAggregateSharingSuggestionContainer *)self px_sl_containedSharingSuggestions];
-  v4 = [v2 fetchHighlightsInSharedLibrarySharingSuggestions:v3];
+  px_sl_containedSharingSuggestions = [(PXSharedLibraryAggregateSharingSuggestionContainer *)self px_sl_containedSharingSuggestions];
+  v4 = [v2 fetchHighlightsInSharedLibrarySharingSuggestions:px_sl_containedSharingSuggestions];
 
   return v4;
 }
 
 - (NSString)px_sl_title
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_px_sl_title)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_px_sl_title)
   {
-    v3 = [(PXSharedLibraryAggregateSharingSuggestionContainer *)v2 px_sl_containedSharingSuggestions];
-    v4 = [v3 firstObject];
+    px_sl_containedSharingSuggestions = [(PXSharedLibraryAggregateSharingSuggestionContainer *)selfCopy px_sl_containedSharingSuggestions];
+    firstObject = [px_sl_containedSharingSuggestions firstObject];
 
-    v5 = [(PXSharedLibraryAggregateSharingSuggestionContainer *)v2 px_sl_containedSharingSuggestions];
-    v6 = [v5 lastObject];
+    px_sl_containedSharingSuggestions2 = [(PXSharedLibraryAggregateSharingSuggestionContainer *)selfCopy px_sl_containedSharingSuggestions];
+    lastObject = [px_sl_containedSharingSuggestions2 lastObject];
 
-    v7 = [v4 startDate];
-    v8 = [v6 startDate];
-    v9 = [v7 earlierDate:v8];
+    startDate = [firstObject startDate];
+    startDate2 = [lastObject startDate];
+    v9 = [startDate earlierDate:startDate2];
 
-    v10 = [v4 endDate];
-    v11 = [v6 endDate];
-    v12 = [v10 laterDate:v11];
+    endDate = [firstObject endDate];
+    endDate2 = [lastObject endDate];
+    v12 = [endDate laterDate:endDate2];
 
     v13 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v9 endDate:v12];
     v14 = _localizedSuggestionTitleForDateInterval(v13);
-    px_sl_title = v2->_px_sl_title;
-    v2->_px_sl_title = v14;
+    px_sl_title = selfCopy->_px_sl_title;
+    selfCopy->_px_sl_title = v14;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v16 = v2->_px_sl_title;
+  v16 = selfCopy->_px_sl_title;
 
   return v16;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PXSharedLibraryAggregateSharingSuggestionContainer *)self px_sl_identifier];
-  v3 = [v2 hash];
+  px_sl_identifier = [(PXSharedLibraryAggregateSharingSuggestionContainer *)self px_sl_identifier];
+  v3 = [px_sl_identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PXSharedLibraryAggregateSharingSuggestionContainer *)self px_sl_identifier];
-    v6 = [v4 px_sl_identifier];
-    if (v5 == v6)
+    px_sl_identifier = [(PXSharedLibraryAggregateSharingSuggestionContainer *)self px_sl_identifier];
+    px_sl_identifier2 = [equalCopy px_sl_identifier];
+    if (px_sl_identifier == px_sl_identifier2)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [v5 isEqualToString:v6];
+      v7 = [px_sl_identifier isEqualToString:px_sl_identifier2];
     }
   }
 
@@ -235,25 +235,25 @@ LABEL_26:
   return v7;
 }
 
-- (PXSharedLibraryAggregateSharingSuggestionContainer)initWithSharingSuggestions:(id)a3 aggregateBeforeDate:(id)a4
+- (PXSharedLibraryAggregateSharingSuggestionContainer)initWithSharingSuggestions:(id)suggestions aggregateBeforeDate:(id)date
 {
-  v7 = a3;
-  obj = a4;
-  v8 = a4;
-  v9 = [v7 count];
+  suggestionsCopy = suggestions;
+  obj = date;
+  dateCopy = date;
+  v9 = [suggestionsCopy count];
   v10 = 0;
   while (1)
   {
     if ((v9 & ~(v9 >> 63)) == v10)
     {
 LABEL_6:
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_7;
     }
 
-    v11 = [v7 objectAtIndexedSubscript:v10];
-    v12 = [v11 endDate];
-    v13 = [v12 compare:v8];
+    v11 = [suggestionsCopy objectAtIndexedSubscript:v10];
+    endDate = [v11 endDate];
+    v13 = [endDate compare:dateCopy];
 
     if (v13 == -1 && (v10 + 1) < v9)
     {
@@ -267,7 +267,7 @@ LABEL_6:
     }
   }
 
-  v14 = 0;
+  selfCopy = 0;
   if (v9 != v10 && v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v27.receiver = self;
@@ -276,30 +276,30 @@ LABEL_6:
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_sharingSuggestions, a3);
+      objc_storeStrong(&v16->_sharingSuggestions, suggestions);
       objc_storeStrong(&v17->_aggregateBeforeDate, obj);
       v17->_aggregationRange.location = v10;
       v17->_aggregationRange.length = v9 - v10;
-      v18 = [(PHFetchResult *)v17->_sharingSuggestions fetchedObjects];
-      v19 = [v18 subarrayWithRange:{v17->_aggregationRange.location, v17->_aggregationRange.length}];
+      fetchedObjects = [(PHFetchResult *)v17->_sharingSuggestions fetchedObjects];
+      v19 = [fetchedObjects subarrayWithRange:{v17->_aggregationRange.location, v17->_aggregationRange.length}];
       px_sl_containedSharingSuggestions = v17->_px_sl_containedSharingSuggestions;
       v17->_px_sl_containedSharingSuggestions = v19;
 
       v21 = MEMORY[0x1E695DFD8];
-      v22 = [(PHFetchResult *)v17->_sharingSuggestions fetchedObjectIDs];
-      v23 = [v22 subarrayWithRange:{v17->_aggregationRange.location, v17->_aggregationRange.length}];
+      fetchedObjectIDs = [(PHFetchResult *)v17->_sharingSuggestions fetchedObjectIDs];
+      v23 = [fetchedObjectIDs subarrayWithRange:{v17->_aggregationRange.location, v17->_aggregationRange.length}];
       v24 = [v21 setWithArray:v23];
       px_sl_containedSharingSuggestionObjectIDs = v17->_px_sl_containedSharingSuggestionObjectIDs;
       v17->_px_sl_containedSharingSuggestionObjectIDs = v24;
     }
 
     self = v17;
-    v14 = self;
+    selfCopy = self;
   }
 
 LABEL_7:
 
-  return v14;
+  return selfCopy;
 }
 
 @end

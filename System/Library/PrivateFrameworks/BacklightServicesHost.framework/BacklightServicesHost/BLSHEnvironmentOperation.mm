@@ -1,18 +1,18 @@
 @interface BLSHEnvironmentOperation
-- (BLSHEnvironmentOperation)initWithBacklightState:(int64_t)a3;
+- (BLSHEnvironmentOperation)initWithBacklightState:(int64_t)state;
 - (id)description;
 @end
 
 @implementation BLSHEnvironmentOperation
 
-- (BLSHEnvironmentOperation)initWithBacklightState:(int64_t)a3
+- (BLSHEnvironmentOperation)initWithBacklightState:(int64_t)state
 {
   v5.receiver = self;
   v5.super_class = BLSHEnvironmentOperation;
   result = [(BLSHEnvironmentOperation *)&v5 init];
   if (result)
   {
-    result->_backlightState = a3;
+    result->_backlightState = state;
   }
 
   return result;
@@ -25,9 +25,9 @@
   v5 = NSStringFromBLSBacklightState();
   v6 = [v3 appendObject:v5 withName:@"backlightState"];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

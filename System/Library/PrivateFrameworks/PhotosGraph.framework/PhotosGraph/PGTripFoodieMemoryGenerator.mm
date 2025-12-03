@@ -1,16 +1,16 @@
 @interface PGTripFoodieMemoryGenerator
-- (id)generatePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5;
+- (id)generatePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block;
 @end
 
 @implementation PGTripFoodieMemoryGenerator
 
-- (id)generatePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5
+- (id)generatePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block
 {
   v71 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v40 = a5;
-  v43 = _Block_copy(v40);
+  windowCopy = window;
+  graphCopy = graph;
+  blockCopy = block;
+  v43 = _Block_copy(blockCopy);
   v60 = 0;
   v61 = &v60;
   v62 = 0x2020000000;
@@ -19,39 +19,39 @@
   v57 = &v56;
   v58 = 0x2020000000;
   v59 = 0;
-  v10 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneName:@"Food" inGraph:v9];
-  v42 = [v10 momentNodes];
-  [PGGraphHighlightTypeNodeCollection concludedTripTypeNodesInGraph:v9];
-  v41 = v39 = v8;
-  v11 = [v41 highlightGroupNodes];
+  v10 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneName:@"Food" inGraph:graphCopy];
+  momentNodes = [v10 momentNodes];
+  [PGGraphHighlightTypeNodeCollection concludedTripTypeNodesInGraph:graphCopy];
+  v41 = v39 = windowCopy;
+  highlightGroupNodes = [v41 highlightGroupNodes];
   v12 = MEMORY[0x277D22BF8];
   v13 = +[PGGraphHighlightGroupNode momentInHighlight];
   v14 = objc_opt_self();
-  v15 = [v12 adjacencyWithSources:v11 relation:v13 targetsClass:v14];
+  v15 = [v12 adjacencyWithSources:highlightGroupNodes relation:v13 targetsClass:v14];
 
-  v16 = [v15 intersectingTargetsWith:v42];
+  v16 = [v15 intersectingTargetsWith:momentNodes];
 
-  v17 = [PGFoodieMemoryGenerator incompatibleMomentNodesInGraph:v9];
+  v17 = [PGFoodieMemoryGenerator incompatibleMomentNodesInGraph:graphCopy];
   v18 = [v16 subtractingTargetsWith:v17];
 
-  v19 = [(PGMemoryGenerator *)self momentNodesWithBlockedFeatureCache];
-  v20 = [v19 momentNodesWithBlockedFeature];
+  momentNodesWithBlockedFeatureCache = [(PGMemoryGenerator *)self momentNodesWithBlockedFeatureCache];
+  momentNodesWithBlockedFeature = [momentNodesWithBlockedFeatureCache momentNodesWithBlockedFeature];
 
-  v21 = [v18 subtractingTargetsWith:v20];
+  v21 = [v18 subtractingTargetsWith:momentNodesWithBlockedFeature];
 
-  v22 = [v21 targets];
+  targets = [v21 targets];
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __96__PGTripFoodieMemoryGenerator_generatePotentialMemoriesForProcessingWindow_graph_progressBlock___block_invoke;
   v54[3] = &unk_278888AE0;
   v23 = v10;
   v55 = v23;
-  v24 = [v22 filteredCollectionUsingBlock:v54];
+  v24 = [targets filteredCollectionUsingBlock:v54];
 
   v25 = [v21 intersectingTargetsWith:v24];
 
-  v26 = [v25 sources];
-  v27 = [v26 count];
+  sources = [v25 sources];
+  v27 = [sources count];
 
   if (v27)
   {

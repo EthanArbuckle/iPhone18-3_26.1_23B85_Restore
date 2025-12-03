@@ -1,71 +1,71 @@
 @interface ACUIAccountCollectionViewController
 - (id)specifiers;
-- (void)removeContiguousSpecifiers:(id)a3 animated:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)removeContiguousSpecifiers:(id)specifiers animated:(BOOL)animated;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ACUIAccountCollectionViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
-  v4 = [(ACUIAccountCollectionViewController *)self specifier];
-  location = [v4 propertyForKey:@"ACUIAccountCollectionTitle"];
-  MEMORY[0x277D82BD8](v4);
+  appearCopy = appear;
+  specifier = [(ACUIAccountCollectionViewController *)self specifier];
+  location = [specifier propertyForKey:@"ACUIAccountCollectionTitle"];
+  MEMORY[0x277D82BD8](specifier);
   if (location)
   {
-    v3 = [(ACUIAccountCollectionViewController *)v9 navigationItem];
-    [v3 setTitle:location];
-    MEMORY[0x277D82BD8](v3);
+    navigationItem = [(ACUIAccountCollectionViewController *)selfCopy navigationItem];
+    [navigationItem setTitle:location];
+    MEMORY[0x277D82BD8](navigationItem);
   }
 
-  v5.receiver = v9;
+  v5.receiver = selfCopy;
   v5.super_class = ACUIAccountCollectionViewController;
-  [(ACUIAccountCollectionViewController *)&v5 viewWillAppear:v7];
+  [(ACUIAccountCollectionViewController *)&v5 viewWillAppear:appearCopy];
   objc_storeStrong(&location, 0);
 }
 
 - (id)specifiers
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   if (!*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]))
   {
     v6[0] = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v4 = [(ACUIAccountCollectionViewController *)v7 specifier];
-    location = [v4 propertyForKey:@"ACUIAccountCollectionSpecifiers"];
-    MEMORY[0x277D82BD8](v4);
+    specifier = [(ACUIAccountCollectionViewController *)selfCopy specifier];
+    location = [specifier propertyForKey:@"ACUIAccountCollectionSpecifiers"];
+    MEMORY[0x277D82BD8](specifier);
     if (location)
     {
       [v6[0] addObjectsFromArray:location];
     }
 
-    objc_storeStrong((&v7->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]), v6[0]);
+    objc_storeStrong((&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]), v6[0]);
     objc_storeStrong(&location, 0);
     objc_storeStrong(v6, 0);
   }
 
-  v2 = *(&v7->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
+  v2 = *(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]);
 
   return v2;
 }
 
-- (void)removeContiguousSpecifiers:(id)a3 animated:(BOOL)a4
+- (void)removeContiguousSpecifiers:(id)specifiers animated:(BOOL)animated
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
-  v17.receiver = v20;
+  objc_storeStrong(location, specifiers);
+  animatedCopy = animated;
+  v17.receiver = selfCopy;
   v17.super_class = ACUIAccountCollectionViewController;
-  [(ACUIAccountCollectionViewController *)&v17 removeContiguousSpecifiers:location[0] animated:a4];
+  [(ACUIAccountCollectionViewController *)&v17 removeContiguousSpecifiers:location[0] animated:animated];
   v16 = 0;
   memset(__b, 0, sizeof(__b));
-  obj = [(ACUIAccountCollectionViewController *)v20 specifiers];
+  obj = [(ACUIAccountCollectionViewController *)selfCopy specifiers];
   v13 = [obj countByEnumeratingWithState:__b objects:v21 count:16];
   if (v13)
   {
@@ -105,11 +105,11 @@ LABEL_9:
   MEMORY[0x277D82BD8](obj);
   if ((v16 & 1) == 0)
   {
-    v6 = [(ACUIAccountCollectionViewController *)v20 navigationController];
-    WeakRetained = objc_loadWeakRetained((&v20->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
-    v4 = [v6 popToViewController:? animated:?];
+    navigationController = [(ACUIAccountCollectionViewController *)selfCopy navigationController];
+    WeakRetained = objc_loadWeakRetained((&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]));
+    v4 = [navigationController popToViewController:? animated:?];
     MEMORY[0x277D82BD8](WeakRetained);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](navigationController);
   }
 
   objc_storeStrong(location, 0);

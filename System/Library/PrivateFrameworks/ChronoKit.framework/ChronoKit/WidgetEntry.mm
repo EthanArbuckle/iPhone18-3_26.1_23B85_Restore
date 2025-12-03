@@ -12,7 +12,7 @@
   v4 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v3[3]);
   v5 = *(v4 + 24);
-  v6 = self;
+  selfCopy = self;
   v5();
 }
 
@@ -25,7 +25,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   WidgetEntry.description.getter();
 
   v3 = sub_1BF4E88E4();

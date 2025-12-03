@@ -1,40 +1,40 @@
 @interface ACHEarnedInstanceEntity
 + (ACHEarnedInstanceEntityJournalEntryAppliedObserver)journalEntryAppliedObserver;
 + (ACHEarnedInstanceEntitySyncedEarnedInstancesObserver)syncedEarnedInstancesObserver;
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (BOOL)removeAllEarnedInstancesWithProfile:(id)a3 error:(id *)a4;
-+ (BOOL)removeEarnedInstances:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)a3 profile:(id)a4 error:(id *)a5;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (BOOL)removeAllEarnedInstancesWithProfile:(id)profile error:(id *)error;
++ (BOOL)removeEarnedInstances:(id)instances profile:(id)profile error:(id *)error;
++ (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)name profile:(id)profile error:(id *)error;
 + (HDSyncEntityIdentifier)syncEntityIdentifier;
-+ (id)_earnedInstancesWithPredicate:(id)a3 limit:(unint64_t)a4 ascendingByEarnedDate:(BOOL)a5 profile:(id)a6 error:(id *)a7;
-+ (id)_insertEarnedInstance:(id)a3 provenance:(int64_t)a4 syncIdentity:(int64_t)a5 database:(id)a6 error:(id *)a7;
-+ (id)_insertEarnedInstances:(id)a3 provenance:(int64_t)a4 useLegacySyncIdentity:(BOOL)a5 profile:(id)a6 databaseContext:(id)a7 error:(id *)a8;
-+ (id)allEarnedInstancesWithProfile:(id)a3 error:(id *)a4;
-+ (id)codableEarnedInstanceForEarnedInstanceInDatabase:(id)a3 profile:(id)a4 error:(id *)a5;
++ (id)_earnedInstancesWithPredicate:(id)predicate limit:(unint64_t)limit ascendingByEarnedDate:(BOOL)date profile:(id)profile error:(id *)error;
++ (id)_insertEarnedInstance:(id)instance provenance:(int64_t)provenance syncIdentity:(int64_t)identity database:(id)database error:(id *)error;
++ (id)_insertEarnedInstances:(id)instances provenance:(int64_t)provenance useLegacySyncIdentity:(BOOL)identity profile:(id)profile databaseContext:(id)context error:(id *)error;
++ (id)allEarnedInstancesWithProfile:(id)profile error:(id *)error;
++ (id)codableEarnedInstanceForEarnedInstanceInDatabase:(id)database profile:(id)profile error:(id *)error;
 + (id)createTableSQL;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)earnedInstancesForAnniversaryDateComponentsString:(id)a3 templateUniqueNames:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)earnedInstancesForDateComponentStringsArray:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)earnedInstancesForDateComponents:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)earnedInstancesForTemplateUniqueName:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)mostRecentEarnedInstanceForTemplateUniqueName:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (unint64_t)_countOfEarnedInstancesWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (unint64_t)supportedNanoSyncDirectionsForProtocolVersion:(int)a3;
-+ (void)setJournalEntryAppliedObserver:(id)a3;
-+ (void)setSyncedEarnedInstancesObserver:(id)a3;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)earnedInstancesForAnniversaryDateComponentsString:(id)string templateUniqueNames:(id)names profile:(id)profile error:(id *)error;
++ (id)earnedInstancesForDateComponentStringsArray:(id)array profile:(id)profile error:(id *)error;
++ (id)earnedInstancesForDateComponents:(id)components profile:(id)profile error:(id *)error;
++ (id)earnedInstancesForTemplateUniqueName:(id)name profile:(id)profile error:(id *)error;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)mostRecentEarnedInstanceForTemplateUniqueName:(id)name profile:(id)profile error:(id *)error;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
++ (unint64_t)_countOfEarnedInstancesWithPredicate:(id)predicate profile:(id)profile error:(id *)error;
++ (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)name profile:(id)profile error:(id *)error;
++ (unint64_t)supportedNanoSyncDirectionsForProtocolVersion:(int)version;
++ (void)setJournalEntryAppliedObserver:(id)observer;
++ (void)setSyncedEarnedInstancesObserver:(id)observer;
 @end
 
 @implementation ACHEarnedInstanceEntity
 
-+ (void)setSyncedEarnedInstancesObserver:(id)a3
++ (void)setSyncedEarnedInstancesObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&syncObserverLock);
-  objc_storeWeak(&_syncObserver, v3);
+  objc_storeWeak(&_syncObserver, observerCopy);
 
   os_unfair_lock_unlock(&syncObserverLock);
 }
@@ -48,11 +48,11 @@
   return WeakRetained;
 }
 
-+ (void)setJournalEntryAppliedObserver:(id)a3
++ (void)setJournalEntryAppliedObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&journalAppliedObserverLock);
-  objc_storeWeak(&_journalEntryAppliedObserver, v3);
+  objc_storeWeak(&_journalEntryAppliedObserver, observerCopy);
 
   os_unfair_lock_unlock(&journalAppliedObserverLock);
 }
@@ -69,74 +69,74 @@
 + (id)createTableSQL
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 databaseTable];
-  v4 = [v2 stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@             (%@ INTEGER PRIMARY KEY AUTOINCREMENT, %@ TEXT, %@ REAL, %@ TEXT, %@ REAL, %@ TEXT, %@ TEXT, %@ INTEGER, %@ INTEGER, %@ INTEGER NOT NULL)", v3, *MEMORY[0x277D10A40], @"template_unique_name", @"created_date", @"earned_date", @"value_in_canonical_unit", @"value_canonical_unit", @"external_identifier", @"creator_device", @"sync_provenance", @"sync_identity"];
+  databaseTable = [self databaseTable];
+  v4 = [v2 stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@             (%@ INTEGER PRIMARY KEY AUTOINCREMENT, %@ TEXT, %@ REAL, %@ TEXT, %@ REAL, %@ TEXT, %@ TEXT, %@ INTEGER, %@ INTEGER, %@ INTEGER NOT NULL)", databaseTable, *MEMORY[0x277D10A40], @"template_unique_name", @"created_date", @"earned_date", @"value_in_canonical_unit", @"value_canonical_unit", @"external_identifier", @"creator_device", @"sync_provenance", @"sync_identity"];
 
   return v4;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[ACHEarnedInstanceEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[ACHEarnedInstanceEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (id)allEarnedInstancesWithProfile:(id)a3 error:(id *)a4
++ (id)allEarnedInstancesWithProfile:(id)profile error:(id *)error
 {
   v5 = MEMORY[0x277D10B70];
-  v6 = a3;
-  v7 = [v5 truePredicate];
-  v8 = [objc_opt_class() _earnedInstancesWithPredicate:v7 profile:v6 error:a4];
+  profileCopy = profile;
+  truePredicate = [v5 truePredicate];
+  v8 = [objc_opt_class() _earnedInstancesWithPredicate:truePredicate profile:profileCopy error:error];
 
   return v8;
 }
 
-+ (id)mostRecentEarnedInstanceForTemplateUniqueName:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)mostRecentEarnedInstanceForTemplateUniqueName:(id)name profile:(id)profile error:(id *)error
 {
   v7 = MEMORY[0x277D10B18];
-  v8 = a4;
-  v9 = [v7 predicateWithProperty:@"template_unique_name" equalToValue:a3];
-  v10 = [objc_opt_class() _earnedInstancesWithPredicate:v9 limit:1 ascendingByEarnedDate:0 profile:v8 error:a5];
+  profileCopy = profile;
+  v9 = [v7 predicateWithProperty:@"template_unique_name" equalToValue:name];
+  v10 = [objc_opt_class() _earnedInstancesWithPredicate:v9 limit:1 ascendingByEarnedDate:0 profile:profileCopy error:error];
 
-  v11 = [v10 lastObject];
+  lastObject = [v10 lastObject];
 
-  return v11;
+  return lastObject;
 }
 
-+ (id)earnedInstancesForTemplateUniqueName:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)earnedInstancesForTemplateUniqueName:(id)name profile:(id)profile error:(id *)error
 {
   v7 = MEMORY[0x277D10B18];
-  v8 = a4;
-  v9 = [v7 predicateWithProperty:@"template_unique_name" equalToValue:a3];
-  v10 = [objc_opt_class() _earnedInstancesWithPredicate:v9 profile:v8 error:a5];
+  profileCopy = profile;
+  v9 = [v7 predicateWithProperty:@"template_unique_name" equalToValue:name];
+  v10 = [objc_opt_class() _earnedInstancesWithPredicate:v9 profile:profileCopy error:error];
 
   return v10;
 }
 
-+ (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)a3 profile:(id)a4 error:(id *)a5
++ (unint64_t)countOfEarnedInstancesForTemplateUniqueName:(id)name profile:(id)profile error:(id *)error
 {
   v7 = MEMORY[0x277D10B18];
-  v8 = a4;
-  v9 = [v7 predicateWithProperty:@"template_unique_name" equalToValue:a3];
-  v10 = [objc_opt_class() _countOfEarnedInstancesWithPredicate:v9 profile:v8 error:a5];
+  profileCopy = profile;
+  v9 = [v7 predicateWithProperty:@"template_unique_name" equalToValue:name];
+  v10 = [objc_opt_class() _countOfEarnedInstancesWithPredicate:v9 profile:profileCopy error:error];
 
   return v10;
 }
 
-+ (id)earnedInstancesForDateComponents:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)earnedInstancesForDateComponents:(id)components profile:(id)profile error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  profileCopy = profile;
   v7 = ACHYearMonthDayStringFromDateComponents();
   if (v7)
   {
     v8 = [MEMORY[0x277D10B18] predicateWithProperty:@"earned_date" equalToValue:v7];
-    v9 = [objc_opt_class() _earnedInstancesWithPredicate:v8 profile:v6 error:a5];
+    v9 = [objc_opt_class() _earnedInstancesWithPredicate:v8 profile:profileCopy error:error];
   }
 
   else
@@ -148,10 +148,10 @@
     v12 = [v10 errorWithDomain:@"com.apple.ActivityAchievements" code:133 userInfo:v11];
     if (v12)
     {
-      if (a5)
+      if (error)
       {
         v13 = v12;
-        *a5 = v12;
+        *error = v12;
       }
 
       else
@@ -168,47 +168,47 @@
   return v9;
 }
 
-+ (id)earnedInstancesForDateComponentStringsArray:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)earnedInstancesForDateComponentStringsArray:(id)array profile:(id)profile error:(id *)error
 {
-  v7 = a4;
-  v8 = ACHEarnedInstanceCompoundPredicateForDateComponentStringsArray(a3);
-  v9 = [objc_opt_class() _earnedInstancesWithPredicate:v8 profile:v7 error:a5];
+  profileCopy = profile;
+  v8 = ACHEarnedInstanceCompoundPredicateForDateComponentStringsArray(array);
+  v9 = [objc_opt_class() _earnedInstancesWithPredicate:v8 profile:profileCopy error:error];
 
   return v9;
 }
 
-+ (id)earnedInstancesForAnniversaryDateComponentsString:(id)a3 templateUniqueNames:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)earnedInstancesForAnniversaryDateComponentsString:(id)string templateUniqueNames:(id)names profile:(id)profile error:(id *)error
 {
-  v9 = a5;
-  v10 = ACHEarnedInstanceCompoundPredicateForAnniversaryDateComponentsString(a3, a4);
-  v11 = [objc_opt_class() _earnedInstancesWithPredicate:v10 profile:v9 error:a6];
+  profileCopy = profile;
+  v10 = ACHEarnedInstanceCompoundPredicateForAnniversaryDateComponentsString(string, names);
+  v11 = [objc_opt_class() _earnedInstancesWithPredicate:v10 profile:profileCopy error:error];
 
   return v11;
 }
 
-+ (BOOL)removeEarnedInstances:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)removeEarnedInstances:(id)instances profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  instancesCopy = instances;
+  profileCopy = profile;
+  if ([instancesCopy count])
   {
-    v10 = ACHEarnedInstancePredicateUsingKey(v8);
-    v11 = [v9 database];
+    v10 = ACHEarnedInstancePredicateUsingKey(instancesCopy);
+    database = [profileCopy database];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __63__ACHEarnedInstanceEntity_removeEarnedInstances_profile_error___block_invoke;
     v18[3] = &unk_278490E08;
-    v21 = a1;
+    selfCopy = self;
     v19 = v10;
-    v20 = v9;
+    v20 = profileCopy;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __63__ACHEarnedInstanceEntity_removeEarnedInstances_profile_error___block_invoke_2;
     v15[3] = &unk_278490E30;
-    v16 = v8;
+    v16 = instancesCopy;
     v17 = v20;
     v12 = v10;
-    v13 = [a1 performWriteTransactionWithHealthDatabase:v11 error:a5 block:v18 inaccessibilityHandler:v15];
+    v13 = [self performWriteTransactionWithHealthDatabase:database error:error block:v18 inaccessibilityHandler:v15];
   }
 
   else
@@ -275,57 +275,57 @@ uint64_t __63__ACHEarnedInstanceEntity_removeEarnedInstances_profile_error___blo
   return v15;
 }
 
-+ (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)removeEarnedInstancesForTemplateUniqueName:(id)name profile:(id)profile error:(id *)error
 {
-  v8 = a4;
-  v9 = [a1 earnedInstancesForTemplateUniqueName:a3 profile:v8 error:a5];
-  LOBYTE(a5) = [objc_opt_class() removeEarnedInstances:v9 profile:v8 error:a5];
+  profileCopy = profile;
+  v9 = [self earnedInstancesForTemplateUniqueName:name profile:profileCopy error:error];
+  LOBYTE(error) = [objc_opt_class() removeEarnedInstances:v9 profile:profileCopy error:error];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)removeAllEarnedInstancesWithProfile:(id)a3 error:(id *)a4
++ (BOOL)removeAllEarnedInstancesWithProfile:(id)profile error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_opt_class() allEarnedInstancesWithProfile:v5 error:a4];
-  LOBYTE(a4) = [objc_opt_class() removeEarnedInstances:v6 profile:v5 error:a4];
+  profileCopy = profile;
+  v6 = [objc_opt_class() allEarnedInstancesWithProfile:profileCopy error:error];
+  LOBYTE(error) = [objc_opt_class() removeEarnedInstances:v6 profile:profileCopy error:error];
 
-  return a4;
+  return error;
 }
 
-+ (unint64_t)_countOfEarnedInstancesWithPredicate:(id)a3 profile:(id)a4 error:(id *)a5
++ (unint64_t)_countOfEarnedInstancesWithPredicate:(id)predicate profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 database];
-  v10 = [a1 countOfObjectsWithPredicate:v8 healthDatabase:v9 error:a5];
+  predicateCopy = predicate;
+  database = [profile database];
+  v10 = [self countOfObjectsWithPredicate:predicateCopy healthDatabase:database error:error];
 
   return v10;
 }
 
-+ (id)_earnedInstancesWithPredicate:(id)a3 limit:(unint64_t)a4 ascendingByEarnedDate:(BOOL)a5 profile:(id)a6 error:(id *)a7
++ (id)_earnedInstancesWithPredicate:(id)predicate limit:(unint64_t)limit ascendingByEarnedDate:(BOOL)date profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
+  predicateCopy = predicate;
+  profileCopy = profile;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__1;
   v30 = __Block_byref_object_dispose__1;
   v31 = MEMORY[0x277CBEBF8];
-  v14 = [v13 database];
+  database = [profileCopy database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __99__ACHEarnedInstanceEntity__earnedInstancesWithPredicate_limit_ascendingByEarnedDate_profile_error___block_invoke;
   v19[3] = &unk_278490E80;
-  v23 = a1;
-  v15 = v13;
+  selfCopy = self;
+  v15 = profileCopy;
   v20 = v15;
-  v16 = v12;
-  v24 = a4;
-  v25 = a5;
+  v16 = predicateCopy;
+  limitCopy = limit;
+  dateCopy = date;
   v21 = v16;
   v22 = &v26;
-  [a1 performReadTransactionWithHealthDatabase:v14 error:a7 block:v19];
+  [self performReadTransactionWithHealthDatabase:database error:error block:v19];
 
   v17 = v27[5];
   _Block_object_dispose(&v26, 8);
@@ -420,28 +420,28 @@ BOOL __99__ACHEarnedInstanceEntity__earnedInstancesWithPredicate_limit_ascending
   return v13;
 }
 
-+ (id)_insertEarnedInstances:(id)a3 provenance:(int64_t)a4 useLegacySyncIdentity:(BOOL)a5 profile:(id)a6 databaseContext:(id)a7 error:(id *)a8
++ (id)_insertEarnedInstances:(id)instances provenance:(int64_t)provenance useLegacySyncIdentity:(BOOL)identity profile:(id)profile databaseContext:(id)context error:(id *)error
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  instancesCopy = instances;
+  profileCopy = profile;
+  contextCopy = context;
   v17 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  if (!v16)
+  if (!contextCopy)
   {
-    v16 = [MEMORY[0x277D106B8] contextForWritingProtectedData];
+    contextCopy = [MEMORY[0x277D106B8] contextForWritingProtectedData];
   }
 
-  v18 = [v15 database];
-  v19 = [v16 copyForWritingProtectedData];
+  database = [profileCopy database];
+  copyForWritingProtectedData = [contextCopy copyForWritingProtectedData];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __113__ACHEarnedInstanceEntity__insertEarnedInstances_provenance_useLegacySyncIdentity_profile_databaseContext_error___block_invoke;
   v32[3] = &unk_278490EA8;
-  v33 = v14;
-  v38 = a5;
-  v34 = v15;
-  v36 = a1;
-  v37 = a4;
+  v33 = instancesCopy;
+  identityCopy = identity;
+  v34 = profileCopy;
+  selfCopy = self;
+  provenanceCopy = provenance;
   v20 = v17;
   v35 = v20;
   v27[0] = MEMORY[0x277D85DD0];
@@ -450,18 +450,18 @@ BOOL __99__ACHEarnedInstanceEntity__earnedInstancesWithPredicate_limit_ascending
   v27[3] = &unk_278490ED0;
   v21 = v33;
   v28 = v21;
-  v30 = a4;
-  v31 = a5;
+  provenanceCopy2 = provenance;
+  identityCopy2 = identity;
   v22 = v34;
   v29 = v22;
-  v23 = [v18 performTransactionWithContext:v19 error:a8 block:v32 inaccessibilityHandler:v27];
+  v23 = [database performTransactionWithContext:copyForWritingProtectedData error:error block:v32 inaccessibilityHandler:v27];
 
   if ((v23 & 1) == 0)
   {
     v24 = ACHLogDatabase();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      [ACHEarnedInstanceEntity _insertEarnedInstances:v21 provenance:a8 useLegacySyncIdentity:? profile:? databaseContext:? error:?];
+      [ACHEarnedInstanceEntity _insertEarnedInstances:v21 provenance:error useLegacySyncIdentity:? profile:? databaseContext:? error:?];
     }
   }
 
@@ -585,11 +585,11 @@ uint64_t __113__ACHEarnedInstanceEntity__insertEarnedInstances_provenance_useLeg
   return v15;
 }
 
-+ (id)_insertEarnedInstance:(id)a3 provenance:(int64_t)a4 syncIdentity:(int64_t)a5 database:(id)a6 error:(id *)a7
++ (id)_insertEarnedInstance:(id)instance provenance:(int64_t)provenance syncIdentity:(int64_t)identity database:(id)database error:(id *)error
 {
-  v12 = a3;
+  instanceCopy = instance;
   v13 = _insertEarnedInstance_provenance_syncIdentity_database_error__onceToken;
-  v14 = a6;
+  databaseCopy = database;
   if (v13 != -1)
   {
     +[ACHEarnedInstanceEntity _insertEarnedInstance:provenance:syncIdentity:database:error:];
@@ -600,11 +600,11 @@ uint64_t __113__ACHEarnedInstanceEntity__insertEarnedInstances_provenance_useLeg
   v19[1] = 3221225472;
   v19[2] = __88__ACHEarnedInstanceEntity__insertEarnedInstance_provenance_syncIdentity_database_error___block_invoke_2;
   v19[3] = &unk_278490EF8;
-  v20 = v12;
-  v21 = a4;
-  v22 = a5;
-  v16 = v12;
-  v17 = [a1 insertOrReplaceEntity:1 database:v14 properties:v15 error:a7 bindingHandler:v19];
+  v20 = instanceCopy;
+  provenanceCopy = provenance;
+  identityCopy = identity;
+  v16 = instanceCopy;
+  v17 = [self insertOrReplaceEntity:1 database:databaseCopy properties:v15 error:error bindingHandler:v19];
 
   return v17;
 }
@@ -665,20 +665,20 @@ void __88__ACHEarnedInstanceEntity__insertEarnedInstance_provenance_syncIdentity
   return v3;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
   v3 = MEMORY[0x277CE8CF8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[v3 alloc] initWithData:dataCopy];
 
   return v5;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = [a5 database];
-  v12 = [a1 nextSyncAnchorWithStartAnchor:a4 predicate:0 session:v10 healthDatabase:v11 error:a6];
+  sessionCopy = session;
+  database = [profile database];
+  v12 = [self nextSyncAnchorWithStartAnchor:anchor predicate:0 session:sessionCopy healthDatabase:database error:error];
 
   v13 = ACHLogSync();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -689,14 +689,14 @@ void __88__ACHEarnedInstanceEntity__insertEarnedInstance_provenance_syncIdentity
   return v12;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v74 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v36 = a6;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v64 = 0;
   v65 = &v64;
@@ -706,7 +706,7 @@ void __88__ACHEarnedInstanceEntity__insertEarnedInstance_provenance_syncIdentity
   v61 = &v60;
   v62 = 0x2020000000;
   v63 = 0;
-  v16 = [v13 maxEncodedBytesPerCodableChangeForSyncEntityClass:a1];
+  v16 = [sessionCopy maxEncodedBytesPerCodableChangeForSyncEntityClass:self];
   v56 = 0;
   v57 = &v56;
   v58 = 0x2020000000;
@@ -719,7 +719,7 @@ void __88__ACHEarnedInstanceEntity__insertEarnedInstance_provenance_syncIdentity
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v69 = v13;
+    v69 = sessionCopy;
     v70 = 2048;
     v71 = var0;
     v72 = 2048;
@@ -727,15 +727,15 @@ void __88__ACHEarnedInstanceEntity__insertEarnedInstance_provenance_syncIdentity
     _os_log_debug_impl(&dword_221DDC000, v17, OS_LOG_TYPE_DEBUG, "Earned Instance Entity generating sync objects for session (%@), Anchor Range Start (%lld), Anchor Range End (%lld)", buf, 0x20u);
   }
 
-  v18 = [v14 database];
+  database = [profileCopy database];
   v37 = MEMORY[0x277D85DD0];
   v38 = 3221225472;
   v39 = __102__ACHEarnedInstanceEntity_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error___block_invoke;
   v40 = &unk_278490F48;
-  v48 = a1;
-  v19 = v14;
+  selfCopy = self;
+  v19 = profileCopy;
   v41 = v19;
-  v20 = v13;
+  v20 = sessionCopy;
   v49 = var0;
   v50 = var1;
   v42 = v20;
@@ -746,7 +746,7 @@ void __88__ACHEarnedInstanceEntity__insertEarnedInstance_provenance_syncIdentity
   v21 = v15;
   v43 = v21;
   v47 = &v60;
-  v22 = [a1 performReadTransactionWithHealthDatabase:v18 error:a7 block:&v37];
+  v22 = [self performReadTransactionWithHealthDatabase:database error:error block:&v37];
 
   if (v22)
   {
@@ -770,7 +770,7 @@ void __88__ACHEarnedInstanceEntity__insertEarnedInstance_provenance_syncIdentity
       v25 = v65[3];
     }
 
-    v33 = [v36 sendCodableChange:v21 resultAnchor:v25 sequence:0 done:1 error:{a7, v36, v37, v38, v39, v40, v41, v42}];
+    v33 = [handlerCopy sendCodableChange:v21 resultAnchor:v25 sequence:0 done:1 error:{error, handlerCopy, v37, v38, v39, v40, v41, v42}];
   }
 
   else
@@ -778,7 +778,7 @@ void __88__ACHEarnedInstanceEntity__insertEarnedInstance_provenance_syncIdentity
     v26 = ACHLogSync();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      [(ACHEarnedInstanceEntity *)a7 generateSyncObjectsForSession:v26 syncAnchorRange:v27 profile:v28 messageHandler:v29 error:v30, v31, v32];
+      [(ACHEarnedInstanceEntity *)error generateSyncObjectsForSession:v26 syncAnchorRange:v27 profile:v28 messageHandler:v29 error:v30, v31, v32];
     }
 
     v33 = 0;
@@ -905,29 +905,29 @@ BOOL __102__ACHEarnedInstanceEntity_generateSyncObjectsForSession_syncAnchorRang
   return v15;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  objectsCopy = objects;
+  storeCopy = store;
+  profileCopy = profile;
   v12 = ACHLogSync();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objectsCopy, "count")}];
     *buf = 138543362;
     v43 = v13;
     _os_log_impl(&dword_221DDC000, v12, OS_LOG_TYPE_DEFAULT, "Earned Instance Entity received sync objects, count: %{public}@", buf, 0xCu);
   }
 
-  if ([v9 count])
+  if ([objectsCopy count])
   {
-    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(objectsCopy, "count")}];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v15 = v9;
+    v15 = objectsCopy;
     v16 = [v15 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v16)
     {
@@ -986,7 +986,7 @@ BOOL __102__ACHEarnedInstanceEntity_generateSyncObjectsForSession_syncAnchorRang
         }
 
         v28 = objc_loadWeakRetained(&_syncObserver);
-        v29 = [v28 earnedInstanceEntityDidReceiveSyncedEarnedInstances:v14 provenance:{objc_msgSend(v10, "syncProvenance")}];
+        v29 = [v28 earnedInstanceEntityDidReceiveSyncedEarnedInstances:v14 provenance:{objc_msgSend(storeCopy, "syncProvenance")}];
 
         if (v29)
         {
@@ -1010,7 +1010,7 @@ BOOL __102__ACHEarnedInstanceEntity_generateSyncObjectsForSession_syncAnchorRang
 
         v31 = [MEMORY[0x277CBEB98] setWithArray:v14];
         v36 = 0;
-        v32 = [objc_opt_class() insertEarnedInstances:v31 provenance:objc_msgSend(v10 useLegacySyncIdentity:"syncProvenance") profile:1 databaseContext:v11 error:{0, &v36}];
+        v32 = [objc_opt_class() insertEarnedInstances:v31 provenance:objc_msgSend(storeCopy useLegacySyncIdentity:"syncProvenance") profile:1 databaseContext:profileCopy error:{0, &v36}];
         v30 = v36;
         if (v30)
         {
@@ -1050,9 +1050,9 @@ LABEL_36:
   return 0;
 }
 
-+ (unint64_t)supportedNanoSyncDirectionsForProtocolVersion:(int)a3
++ (unint64_t)supportedNanoSyncDirectionsForProtocolVersion:(int)version
 {
-  if (a3 > 7)
+  if (version > 7)
   {
     v4 = 3;
   }
@@ -1079,29 +1079,29 @@ LABEL_36:
   return v4;
 }
 
-+ (id)codableEarnedInstanceForEarnedInstanceInDatabase:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)codableEarnedInstanceForEarnedInstanceInDatabase:(id)database profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  databaseCopy = database;
+  profileCopy = profile;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__1;
   v25 = __Block_byref_object_dispose__1;
   v26 = 0;
-  v10 = ACHEarnedInstancePredicateForKey(v8);
-  v11 = [v9 database];
+  v10 = ACHEarnedInstancePredicateForKey(databaseCopy);
+  database = [profileCopy database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__ACHEarnedInstanceEntity_codableEarnedInstanceForEarnedInstanceInDatabase_profile_error___block_invoke;
   v16[3] = &unk_278490F98;
-  v20 = a1;
-  v12 = v9;
+  selfCopy = self;
+  v12 = profileCopy;
   v17 = v12;
   v13 = v10;
   v18 = v13;
   v19 = &v21;
-  [a1 performReadTransactionWithHealthDatabase:v11 error:a5 block:v16];
+  [self performReadTransactionWithHealthDatabase:database error:error block:v16];
 
   v14 = v22[5];
   _Block_object_dispose(&v21, 8);

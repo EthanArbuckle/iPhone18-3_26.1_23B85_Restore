@@ -1,17 +1,17 @@
 @interface PGSearchEntityPersister
-- (BOOL)persistSearchEntitiesFromSearchEntityProvider:(id)a3 progressReporter:(id)a4 error:(id *)a5;
+- (BOOL)persistSearchEntitiesFromSearchEntityProvider:(id)provider progressReporter:(id)reporter error:(id *)error;
 - (PGSearchEntityPersister)init;
-- (PGSearchEntityPersister)initWithPhotoLibrary:(id)a3;
+- (PGSearchEntityPersister)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation PGSearchEntityPersister
 
-- (PGSearchEntityPersister)initWithPhotoLibrary:(id)a3
+- (PGSearchEntityPersister)initWithPhotoLibrary:(id)library
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR___PGSearchEntityPersister_logger;
   v7 = qword_2810A9400;
-  v8 = a3;
+  libraryCopy = library;
   if (v7 != -1)
   {
     swift_once();
@@ -21,18 +21,18 @@
   v10 = __swift_project_value_buffer(v9, qword_2810B4CE0);
   (*(*(v9 - 8) + 16))(self + v6, v10, v9);
   *(&self->super.isa + OBJC_IVAR___PGSearchEntityPersister_batchSize) = 100;
-  *(&self->super.isa + OBJC_IVAR___PGSearchEntityPersister_photoLibrary) = v8;
+  *(&self->super.isa + OBJC_IVAR___PGSearchEntityPersister_photoLibrary) = libraryCopy;
   v12.receiver = self;
   v12.super_class = ObjectType;
   return [(PGSearchEntityPersister *)&v12 init];
 }
 
-- (BOOL)persistSearchEntitiesFromSearchEntityProvider:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)persistSearchEntitiesFromSearchEntityProvider:(id)provider progressReporter:(id)reporter error:(id *)error
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = self;
-  SearchEntityPersister.persistSearchEntities(from:progressReporter:)(a3);
+  reporterCopy = reporter;
+  selfCopy = self;
+  SearchEntityPersister.persistSearchEntities(from:progressReporter:)(provider);
 
   swift_unknownObjectRelease();
   return 1;

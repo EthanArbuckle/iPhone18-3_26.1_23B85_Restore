@@ -1,14 +1,14 @@
 @interface TVBrowsingNavigationController
-- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithRootViewController:(id)a3;
+- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithRootViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation TVBrowsingNavigationController
 
-- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithCoder:(id)a3
+- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC9SeymourUI30TVBrowsingNavigationController_purchaseCoordinator;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(type metadata accessor for MarketingPurchaseCoordinator()) init];
@@ -19,25 +19,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BD5255C();
 }
 
-- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithRootViewController:(id)a3
+- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI30TVBrowsingNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

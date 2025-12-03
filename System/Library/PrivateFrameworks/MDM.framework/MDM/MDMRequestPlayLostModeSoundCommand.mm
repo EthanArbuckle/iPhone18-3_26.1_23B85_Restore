@@ -1,16 +1,16 @@
 @interface MDMRequestPlayLostModeSoundCommand
 + (id)request;
 + (unint64_t)requiredAccessRights;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)processRequest:(id)a3 completionHandler:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)processRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation MDMRequestPlayLostModeSoundCommand
 
 + (unint64_t)requiredAccessRights
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___MDMRequestPlayLostModeSoundCommand;
   return objc_msgSendSuper2(&v3, sel_requiredAccessRights);
 }
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v3 = objc_opt_new();
   v4 = [v3 copy];
@@ -30,17 +30,17 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = MDMRequestPlayLostModeSoundCommand;
-  return [(RMModelPayloadBase *)&v4 copyWithZone:a3];
+  return [(RMModelPayloadBase *)&v4 copyWithZone:zone];
 }
 
-- (void)processRequest:(id)a3 completionHandler:(id)a4
+- (void)processRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -53,20 +53,20 @@
   v25 = __Block_byref_object_copy__9;
   v26 = __Block_byref_object_dispose__9;
   v27 = 0;
-  v7 = [MEMORY[0x277D08F78] sharedInstance];
-  v8 = [v7 isManagedLostModeActive];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
+  isManagedLostModeActive = [mEMORY[0x277D08F78] isManagedLostModeActive];
 
-  if (v8)
+  if (isManagedLostModeActive)
   {
-    v9 = [MEMORY[0x277D08F78] sharedInstance];
+    mEMORY[0x277D08F78]2 = [MEMORY[0x277D08F78] sharedInstance];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __80__MDMRequestPlayLostModeSoundCommand_Handler__processRequest_completionHandler___block_invoke;
     v17[3] = &unk_27982CB18;
     v19 = &v22;
     v20 = &v28;
-    v18 = v6;
-    [v9 playSoundWithOptions:0 completion:v17];
+    v18 = handlerCopy;
+    [mEMORY[0x277D08F78]2 playSoundWithOptions:0 completion:v17];
   }
 
   else
@@ -88,7 +88,7 @@
     v16 = v29[5];
     v29[5] = v15;
 
-    (*(v6 + 2))(v6, v29[5]);
+    (*(handlerCopy + 2))(handlerCopy, v29[5]);
   }
 
   _Block_object_dispose(&v22, 8);

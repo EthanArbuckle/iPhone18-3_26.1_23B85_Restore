@@ -1,18 +1,18 @@
 @interface FBAAddAttachmentsController
-+ (void)handleErrorAttachingWithAttachment:(id)a3 viewController:(id)a4 devicesDiagnosticsController:(id)a5 error:(id)a6;
-- (BOOL)tableView:(id)a3 canHandleDropSession:(id)a4;
++ (void)handleErrorAttachingWithAttachment:(id)attachment viewController:(id)controller devicesDiagnosticsController:(id)diagnosticsController error:(id)error;
+- (BOOL)tableView:(id)view canHandleDropSession:(id)session;
 - (_TtC18Feedback_Assistant27FBAAddAttachmentsController)init;
-- (_TtC18Feedback_Assistant27FBAAddAttachmentsController)initWithDelegate:(id)a3;
-- (id)menuForController:(id)a3;
-- (id)sheetForController:(id)a3 selectedIndexPath:(id)a4 sender:(id)a5;
-- (id)tableView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)getFilesFromFileProviderBeforeTheyDisappearWithCoordinator:(id)a3;
+- (_TtC18Feedback_Assistant27FBAAddAttachmentsController)initWithDelegate:(id)delegate;
+- (id)menuForController:(id)controller;
+- (id)sheetForController:(id)controller selectedIndexPath:(id)path sender:(id)sender;
+- (id)tableView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)getFilesFromFileProviderBeforeTheyDisappearWithCoordinator:(id)coordinator;
 @end
 
 @implementation FBAAddAttachmentsController
 
-- (_TtC18Feedback_Assistant27FBAAddAttachmentsController)initWithDelegate:(id)a3
+- (_TtC18Feedback_Assistant27FBAAddAttachmentsController)initWithDelegate:(id)delegate
 {
   swift_unknownObjectWeakInit();
   v4 = OBJC_IVAR____TtC18Feedback_Assistant27FBAAddAttachmentsController____lazy_storage___temporaryDirectory;
@@ -24,7 +24,7 @@
   return [(FBAAddAttachmentsController *)&v7 init];
 }
 
-- (id)sheetForController:(id)a3 selectedIndexPath:(id)a4 sender:(id)a5
+- (id)sheetForController:(id)controller selectedIndexPath:(id)path sender:(id)sender
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
@@ -32,21 +32,21 @@
   __chkstk_darwin(v8);
   v12 = &v18 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = a5;
-  v15 = self;
-  v16 = sub_10004F504(v13, v12, a5);
+  controllerCopy = controller;
+  senderCopy = sender;
+  selfCopy = self;
+  v16 = sub_10004F504(controllerCopy, v12, sender);
 
   (*(v9 + 8))(v12, v8);
 
   return v16;
 }
 
-- (id)menuForController:(id)a3
+- (id)menuForController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10004F894(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = sub_10004F894(controllerCopy);
 
   return v6;
 }
@@ -58,43 +58,43 @@
   return result;
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   type metadata accessor for URL();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_100052E18(v6);
 }
 
-+ (void)handleErrorAttachingWithAttachment:(id)a3 viewController:(id)a4 devicesDiagnosticsController:(id)a5 error:(id)a6
++ (void)handleErrorAttachingWithAttachment:(id)attachment viewController:(id)controller devicesDiagnosticsController:(id)diagnosticsController error:(id)error
 {
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  sub_100050218(v10, v11, v12, v13);
+  attachmentCopy = attachment;
+  controllerCopy = controller;
+  diagnosticsControllerCopy = diagnosticsController;
+  errorCopy = error;
+  sub_100050218(attachmentCopy, controllerCopy, diagnosticsControllerCopy, errorCopy);
 }
 
-- (BOOL)tableView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)tableView:(id)view canHandleDropSession:(id)session
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_100052F20(a4);
+  selfCopy = self;
+  v8 = sub_100052F20(session);
 
   swift_unknownObjectRelease();
   return v8 & 1;
 }
 
-- (id)tableView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)tableView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v9 = sub_100041AA0(&qword_100109880, &qword_1000C2C98);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v19 - v11;
-  if (a5)
+  if (path)
   {
     static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = type metadata accessor for IndexPath();
@@ -107,10 +107,10 @@
     (*(*(v14 - 8) + 56))(v12, 1, 1, v14);
   }
 
-  v15 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v16 = self;
-  v17 = sub_100050A18(v15, a4, v12);
+  selfCopy = self;
+  v17 = sub_100050A18(viewCopy, update, v12);
 
   swift_unknownObjectRelease();
   sub_1000454C8(v12, &qword_100109880, &qword_1000C2C98);
@@ -118,11 +118,11 @@
   return v17;
 }
 
-- (void)getFilesFromFileProviderBeforeTheyDisappearWithCoordinator:(id)a3
+- (void)getFilesFromFileProviderBeforeTheyDisappearWithCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100050D74(a3);
+  selfCopy = self;
+  sub_100050D74(coordinator);
   swift_unknownObjectRelease();
 }
 

@@ -2,16 +2,16 @@
 - (UIImage)itemImage;
 - (id)_itemView;
 - (void)_reloadItemView;
-- (void)_setHeaderImage:(id)a3;
-- (void)_setMessage:(id)a3;
-- (void)_setPrice:(id)a3;
-- (void)_setSenderName:(id)a3;
+- (void)_setHeaderImage:(id)image;
+- (void)_setMessage:(id)message;
+- (void)_setPrice:(id)price;
+- (void)_setSenderName:(id)name;
 - (void)layoutSubviews;
 - (void)reloadThemeHeaderImage;
-- (void)setBackgroundColor:(id)a3;
-- (void)setGift:(id)a3;
-- (void)setItemImage:(id)a3;
-- (void)setTheme:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setGift:(id)gift;
+- (void)setItemImage:(id)image;
+- (void)setTheme:(id)theme;
 @end
 
 @implementation SKUIGiftThemeCollectionViewCell
@@ -30,10 +30,10 @@
     }
   }
 
-  v11 = [(SKUIGiftThemeCollectionViewCell *)self _itemView];
-  v12 = [v11 itemImage];
+  _itemView = [(SKUIGiftThemeCollectionViewCell *)self _itemView];
+  itemImage = [_itemView itemImage];
 
-  return v12;
+  return itemImage;
 }
 
 - (void)reloadThemeHeaderImage
@@ -53,14 +53,14 @@
   theme = self->_theme;
   if (theme)
   {
-    v12 = [(SKUIGiftTheme *)theme headerImage];
-    [(SKUIGiftThemeCollectionViewCell *)self _setHeaderImage:v12];
+    headerImage = [(SKUIGiftTheme *)theme headerImage];
+    [(SKUIGiftThemeCollectionViewCell *)self _setHeaderImage:headerImage];
   }
 }
 
-- (void)setGift:(id)a3
+- (void)setGift:(id)gift
 {
-  v5 = a3;
+  giftCopy = gift;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -73,18 +73,18 @@
     }
   }
 
-  if (self->_gift != v5)
+  if (self->_gift != giftCopy)
   {
-    objc_storeStrong(&self->_gift, a3);
-    v14 = [(SKUIGift *)self->_gift message];
-    [(SKUIGiftThemeCollectionViewCell *)self _setMessage:v14];
+    objc_storeStrong(&self->_gift, gift);
+    message = [(SKUIGift *)self->_gift message];
+    [(SKUIGiftThemeCollectionViewCell *)self _setMessage:message];
 
-    v15 = [(SKUIGift *)self->_gift senderName];
-    [(SKUIGiftThemeCollectionViewCell *)self _setSenderName:v15];
+    senderName = [(SKUIGift *)self->_gift senderName];
+    [(SKUIGiftThemeCollectionViewCell *)self _setSenderName:senderName];
 
-    v16 = [(SKUIGift *)self->_gift item];
+    item = [(SKUIGift *)self->_gift item];
 
-    if (v16)
+    if (item)
     {
       [(SKUIGiftThemeCollectionViewCell *)self _setPrice:0];
       [(SKUIGiftThemeCollectionViewCell *)self _reloadItemView];
@@ -100,16 +100,16 @@
       v19 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SKUIGift giftAmount](self->_gift, "giftAmount")}];
       v20 = [v18 localizedStringFromNumber:v19 numberStyle:1];
 
-      v21 = [(SKUIGiftConfiguration *)self->_giftConfiguration currencySymbol];
+      currencySymbol = [(SKUIGiftConfiguration *)self->_giftConfiguration currencySymbol];
       if ([(SKUIGiftConfiguration *)self->_giftConfiguration currencySymbolPosition]== 1)
       {
         v22 = v20;
-        v23 = v21;
+        v23 = currencySymbol;
       }
 
       else
       {
-        v22 = v21;
+        v22 = currencySymbol;
         v23 = v20;
       }
 
@@ -119,9 +119,9 @@
   }
 }
 
-- (void)setItemImage:(id)a3
+- (void)setItemImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -134,13 +134,13 @@
     }
   }
 
-  v13 = [(SKUIGiftThemeCollectionViewCell *)self _itemView];
-  [v13 setItemImage:v4];
+  _itemView = [(SKUIGiftThemeCollectionViewCell *)self _itemView];
+  [_itemView setItemImage:imageCopy];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v5 = a3;
+  themeCopy = theme;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -153,41 +153,41 @@
     }
   }
 
-  if (self->_theme != v5)
+  if (self->_theme != themeCopy)
   {
-    objc_storeStrong(&self->_theme, a3);
-    v14 = [(SKUIGiftTheme *)self->_theme headerImage];
-    [(SKUIGiftThemeCollectionViewCell *)self _setHeaderImage:v14];
+    objc_storeStrong(&self->_theme, theme);
+    headerImage = [(SKUIGiftTheme *)self->_theme headerImage];
+    [(SKUIGiftThemeCollectionViewCell *)self _setHeaderImage:headerImage];
 
-    v15 = [(SKUIGiftTheme *)self->_theme backgroundColor];
-    v16 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
-    [v16 setBackgroundColor:v15];
+    backgroundColor = [(SKUIGiftTheme *)self->_theme backgroundColor];
+    contentView = [(SKUIGiftThemeCollectionViewCell *)self contentView];
+    [contentView setBackgroundColor:backgroundColor];
 
-    [(UIImageView *)self->_headerImageView setBackgroundColor:v15];
-    [(SKUIGiftItemView *)self->_itemView setBackgroundColor:v15];
+    [(UIImageView *)self->_headerImageView setBackgroundColor:backgroundColor];
+    [(SKUIGiftItemView *)self->_itemView setBackgroundColor:backgroundColor];
     [(SKUIGiftItemView *)self->_itemView setTheme:self->_theme];
-    [(UILabel *)self->_priceLabel setBackgroundColor:v15];
+    [(UILabel *)self->_priceLabel setBackgroundColor:backgroundColor];
     priceLabel = self->_priceLabel;
-    v18 = [(SKUIGiftTheme *)self->_theme primaryTextColor];
-    [(UILabel *)priceLabel setTextColor:v18];
+    primaryTextColor = [(SKUIGiftTheme *)self->_theme primaryTextColor];
+    [(UILabel *)priceLabel setTextColor:primaryTextColor];
 
-    [(UILabel *)self->_messageLabel setBackgroundColor:v15];
+    [(UILabel *)self->_messageLabel setBackgroundColor:backgroundColor];
     messageLabel = self->_messageLabel;
-    v20 = [(SKUIGiftTheme *)self->_theme bodyTextColor];
-    [(UILabel *)messageLabel setTextColor:v20];
+    bodyTextColor = [(SKUIGiftTheme *)self->_theme bodyTextColor];
+    [(UILabel *)messageLabel setTextColor:bodyTextColor];
 
-    [(UILabel *)self->_senderNameLabel setBackgroundColor:v15];
+    [(UILabel *)self->_senderNameLabel setBackgroundColor:backgroundColor];
     senderNameLabel = self->_senderNameLabel;
-    v22 = [(SKUIGiftTheme *)self->_theme bodyTextColor];
-    [(UILabel *)senderNameLabel setTextColor:v22];
+    bodyTextColor2 = [(SKUIGiftTheme *)self->_theme bodyTextColor];
+    [(UILabel *)senderNameLabel setTextColor:bodyTextColor2];
 
-    [(UILabel *)self->_senderNameLabelLabel setBackgroundColor:v15];
+    [(UILabel *)self->_senderNameLabelLabel setBackgroundColor:backgroundColor];
     senderNameLabelLabel = self->_senderNameLabelLabel;
-    v24 = [(SKUIGiftTheme *)self->_theme primaryTextColor];
-    [(UILabel *)senderNameLabelLabel setTextColor:v24];
+    primaryTextColor2 = [(SKUIGiftTheme *)self->_theme primaryTextColor];
+    [(UILabel *)senderNameLabelLabel setTextColor:primaryTextColor2];
 
-    v25 = [(SKUIGiftTheme *)v5 themeName];
-    [(SKUIGiftThemeCollectionViewCell *)self setAccessibilityLabel:v25];
+    themeName = [(SKUIGiftTheme *)themeCopy themeName];
+    [(SKUIGiftThemeCollectionViewCell *)self setAccessibilityLabel:themeName];
 
     [(SKUIGiftThemeCollectionViewCell *)self setIsAccessibilityElement:1];
     [(SKUIGiftThemeCollectionViewCell *)self setNeedsLayout];
@@ -211,14 +211,14 @@
   v61.receiver = self;
   v61.super_class = SKUIGiftThemeCollectionViewCell;
   [(SKUIGiftThemeCollectionViewCell *)&v61 layoutSubviews];
-  v11 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
-  [v11 frame];
+  contentView = [(SKUIGiftThemeCollectionViewCell *)self contentView];
+  [contentView frame];
   v13 = v12;
   v15 = v14;
-  v16 = [MEMORY[0x277D75418] currentDevice];
-  v17 = [v16 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v17 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v18 = 25.0;
   }
@@ -230,29 +230,29 @@
 
   [(SKUIGiftThemeCollectionViewCell *)self bounds];
   v20 = v19;
-  v21 = [MEMORY[0x277D75418] currentDevice];
-  v22 = [v21 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v23 = 50.0;
-  if ((v22 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v23 = 10.0;
   }
 
   v24 = v20 - v23;
-  [v11 setFrame:{v18, v13, v24, v15}];
-  v25 = [(SKUIGiftThemeCollectionViewCell *)self backgroundView];
+  [contentView setFrame:{v18, v13, v24, v15}];
+  backgroundView = [(SKUIGiftThemeCollectionViewCell *)self backgroundView];
   v62.origin.x = v18;
   v62.origin.y = v13;
   v62.size.width = v24;
   v62.size.height = v15;
   v63 = CGRectInset(v62, -4.0, -4.0);
-  [v25 setFrame:{v63.origin.x, v63.origin.y, v63.size.width, v63.size.height}];
-  [v11 bounds];
+  [backgroundView setFrame:{v63.origin.x, v63.origin.y, v63.size.width, v63.size.height}];
+  [contentView bounds];
   v27 = v26;
   v29 = v28;
-  v30 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
-  [v30 bounds];
+  contentView2 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
+  [contentView2 bounds];
   v32 = v31 * 0.5;
   v33 = (floorf(v32) + -4.0);
 
@@ -339,30 +339,30 @@ LABEL_17:
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = SKUIGiftThemeCollectionViewCell;
-  [(SKUIGiftThemeCollectionViewCell *)&v6 setBackgroundColor:a3];
-  v4 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
-  v5 = [(SKUIGiftTheme *)self->_theme backgroundColor];
-  [v4 setBackgroundColor:v5];
+  [(SKUIGiftThemeCollectionViewCell *)&v6 setBackgroundColor:color];
+  contentView = [(SKUIGiftThemeCollectionViewCell *)self contentView];
+  backgroundColor = [(SKUIGiftTheme *)self->_theme backgroundColor];
+  [contentView setBackgroundColor:backgroundColor];
 }
 
 - (id)_itemView
 {
-  v3 = [(SKUIGift *)self->_gift item];
-  if (v3)
+  item = [(SKUIGift *)self->_gift item];
+  if (item)
   {
     itemView = self->_itemView;
     if (!itemView)
     {
-      v5 = [[SKUIGiftItemView alloc] initWithStyle:1 item:v3 clientContext:0];
+      v5 = [[SKUIGiftItemView alloc] initWithStyle:1 item:item clientContext:0];
       v6 = self->_itemView;
       self->_itemView = v5;
 
-      v7 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_itemView];
+      contentView = [(SKUIGiftThemeCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_itemView];
 
       itemView = self->_itemView;
     }
@@ -380,41 +380,41 @@ LABEL_17:
 
 - (void)_reloadItemView
 {
-  v12 = [(SKUIGift *)self->_gift item];
-  v3 = [(SKUIGiftThemeCollectionViewCell *)self _itemView];
-  v4 = [v12 artistName];
-  [v3 setArtistName:v4];
+  item = [(SKUIGift *)self->_gift item];
+  _itemView = [(SKUIGiftThemeCollectionViewCell *)self _itemView];
+  artistName = [item artistName];
+  [_itemView setArtistName:artistName];
 
-  v5 = [(SKUIGiftTheme *)self->_theme backgroundColor];
-  [v3 setBackgroundColor:v5];
+  backgroundColor = [(SKUIGiftTheme *)self->_theme backgroundColor];
+  [_itemView setBackgroundColor:backgroundColor];
 
-  v6 = [v12 categoryName];
-  [v3 setCategoryName:v6];
+  categoryName = [item categoryName];
+  [_itemView setCategoryName:categoryName];
 
-  [v3 setNumberOfUserRatings:{objc_msgSend(v12, "numberOfUserRatings")}];
-  v7 = [v12 primaryItemOffer];
-  v8 = [v7 buttonText];
-  [v3 setPrice:v8];
+  [_itemView setNumberOfUserRatings:{objc_msgSend(item, "numberOfUserRatings")}];
+  primaryItemOffer = [item primaryItemOffer];
+  buttonText = [primaryItemOffer buttonText];
+  [_itemView setPrice:buttonText];
 
-  [v3 setTheme:self->_theme];
-  v9 = [v12 title];
-  [v3 setTitle:v9];
+  [_itemView setTheme:self->_theme];
+  title = [item title];
+  [_itemView setTitle:title];
 
-  [v12 userRating];
+  [item userRating];
   *&v11 = v10 / 5.0;
-  [v3 setUserRating:v11];
+  [_itemView setUserRating:v11];
   [(SKUIGiftThemeCollectionViewCell *)self setNeedsLayout];
 }
 
-- (void)_setHeaderImage:(id)a3
+- (void)_setHeaderImage:(id)image
 {
-  v11 = a3;
-  v4 = [(UIImageView *)self->_headerImageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_headerImageView image];
 
-  if (v4 != v11)
+  if (image != imageCopy)
   {
     headerImageView = self->_headerImageView;
-    if (v11)
+    if (imageCopy)
     {
       if (!headerImageView)
       {
@@ -423,8 +423,8 @@ LABEL_17:
         self->_headerImageView = v7;
 
         [(UIImageView *)self->_headerImageView setContentMode:1];
-        v9 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
-        [v9 addSubview:self->_headerImageView];
+        contentView = [(SKUIGiftThemeCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_headerImageView];
 
         headerImageView = self->_headerImageView;
       }
@@ -440,20 +440,20 @@ LABEL_17:
       self->_headerImageView = 0;
     }
 
-    v5 = [(SKUIGiftThemeCollectionViewCell *)self setNeedsLayout];
+    setNeedsLayout = [(SKUIGiftThemeCollectionViewCell *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
-- (void)_setMessage:(id)a3
+- (void)_setMessage:(id)message
 {
-  v16 = a3;
-  v4 = [(UILabel *)self->_messageLabel text];
-  if (v4 != v16 && ([v16 isEqualToString:v4] & 1) == 0)
+  messageCopy = message;
+  text = [(UILabel *)self->_messageLabel text];
+  if (text != messageCopy && ([messageCopy isEqualToString:text] & 1) == 0)
   {
     messageLabel = self->_messageLabel;
-    if (v16)
+    if (messageCopy)
     {
       if (!messageLabel)
       {
@@ -462,8 +462,8 @@ LABEL_17:
         self->_messageLabel = v6;
 
         v8 = self->_messageLabel;
-        v9 = [(SKUIGiftTheme *)self->_theme backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUIGiftTheme *)self->_theme backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_messageLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
@@ -471,11 +471,11 @@ LABEL_17:
 
         [(UILabel *)self->_messageLabel setNumberOfLines:0];
         v12 = self->_messageLabel;
-        v13 = [(SKUIGiftTheme *)self->_theme bodyTextColor];
-        [(UILabel *)v12 setTextColor:v13];
+        bodyTextColor = [(SKUIGiftTheme *)self->_theme bodyTextColor];
+        [(UILabel *)v12 setTextColor:bodyTextColor];
 
-        v14 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
-        [v14 addSubview:self->_messageLabel];
+        contentView = [(SKUIGiftThemeCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_messageLabel];
 
         messageLabel = self->_messageLabel;
       }
@@ -494,14 +494,14 @@ LABEL_17:
   }
 }
 
-- (void)_setPrice:(id)a3
+- (void)_setPrice:(id)price
 {
-  v16 = a3;
-  v4 = [(UILabel *)self->_priceLabel text];
-  if (v4 != v16 && ([v16 isEqualToString:v4] & 1) == 0)
+  priceCopy = price;
+  text = [(UILabel *)self->_priceLabel text];
+  if (text != priceCopy && ([priceCopy isEqualToString:text] & 1) == 0)
   {
     priceLabel = self->_priceLabel;
-    if (v16)
+    if (priceCopy)
     {
       if (!priceLabel)
       {
@@ -510,19 +510,19 @@ LABEL_17:
         self->_priceLabel = v6;
 
         v8 = self->_priceLabel;
-        v9 = [(SKUIGiftTheme *)self->_theme backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUIGiftTheme *)self->_theme backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_priceLabel;
         v11 = [MEMORY[0x277D74300] systemFontOfSize:35.0];
         [(UILabel *)v10 setFont:v11];
 
         v12 = self->_priceLabel;
-        v13 = [(SKUIGiftTheme *)self->_theme primaryTextColor];
-        [(UILabel *)v12 setTextColor:v13];
+        primaryTextColor = [(SKUIGiftTheme *)self->_theme primaryTextColor];
+        [(UILabel *)v12 setTextColor:primaryTextColor];
 
-        v14 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
-        [v14 addSubview:self->_priceLabel];
+        contentView = [(SKUIGiftThemeCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_priceLabel];
 
         priceLabel = self->_priceLabel;
       }
@@ -542,14 +542,14 @@ LABEL_17:
   }
 }
 
-- (void)_setSenderName:(id)a3
+- (void)_setSenderName:(id)name
 {
-  v33 = a3;
-  v4 = [(UILabel *)self->_senderNameLabel text];
-  if (v4 != v33 && ([v33 isEqualToString:v4] & 1) == 0)
+  nameCopy = name;
+  text = [(UILabel *)self->_senderNameLabel text];
+  if (text != nameCopy && ([nameCopy isEqualToString:text] & 1) == 0)
   {
     senderNameLabel = self->_senderNameLabel;
-    if (v33)
+    if (nameCopy)
     {
       if (!senderNameLabel)
       {
@@ -558,23 +558,23 @@ LABEL_17:
         self->_senderNameLabel = v6;
 
         v8 = self->_senderNameLabel;
-        v9 = [(SKUIGiftTheme *)self->_theme backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SKUIGiftTheme *)self->_theme backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_senderNameLabel;
-        v11 = [MEMORY[0x277D75348] systemRedColor];
-        [(UILabel *)v10 setBackgroundColor:v11];
+        systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+        [(UILabel *)v10 setBackgroundColor:systemRedColor];
 
         v12 = self->_senderNameLabel;
         v13 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
         [(UILabel *)v12 setFont:v13];
 
         v14 = self->_senderNameLabel;
-        v15 = [(SKUIGiftTheme *)self->_theme bodyTextColor];
-        [(UILabel *)v14 setTextColor:v15];
+        bodyTextColor = [(SKUIGiftTheme *)self->_theme bodyTextColor];
+        [(UILabel *)v14 setTextColor:bodyTextColor];
 
-        v16 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
-        [v16 addSubview:self->_senderNameLabel];
+        contentView = [(SKUIGiftThemeCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_senderNameLabel];
 
         senderNameLabel = self->_senderNameLabel;
       }
@@ -590,27 +590,27 @@ LABEL_17:
       self->_senderNameLabelLabel = v17;
 
       v19 = self->_senderNameLabelLabel;
-      v20 = [(SKUIGiftTheme *)self->_theme backgroundColor];
-      [(UILabel *)v19 setBackgroundColor:v20];
+      backgroundColor2 = [(SKUIGiftTheme *)self->_theme backgroundColor];
+      [(UILabel *)v19 setBackgroundColor:backgroundColor2];
 
       v21 = self->_senderNameLabelLabel;
-      v22 = [MEMORY[0x277D75348] systemRedColor];
-      [(UILabel *)v21 setBackgroundColor:v22];
+      systemRedColor2 = [MEMORY[0x277D75348] systemRedColor];
+      [(UILabel *)v21 setBackgroundColor:systemRedColor2];
 
       v23 = self->_senderNameLabelLabel;
       v24 = [MEMORY[0x277D74300] boldSystemFontOfSize:12.0];
       [(UILabel *)v23 setFont:v24];
 
       v25 = self->_senderNameLabelLabel;
-      v26 = [(SKUIGiftTheme *)self->_theme primaryTextColor];
-      [(UILabel *)v25 setTextColor:v26];
+      primaryTextColor = [(SKUIGiftTheme *)self->_theme primaryTextColor];
+      [(UILabel *)v25 setTextColor:primaryTextColor];
 
       v27 = self->_senderNameLabelLabel;
-      v28 = [(SKUIGiftConfiguration *)self->_giftConfiguration clientContext];
-      v29 = v28;
-      if (v28)
+      clientContext = [(SKUIGiftConfiguration *)self->_giftConfiguration clientContext];
+      v29 = clientContext;
+      if (clientContext)
       {
-        [v28 localizedStringForKey:@"GIFTING_THEME_SENDER_LABEL" inTable:@"Gifting"];
+        [clientContext localizedStringForKey:@"GIFTING_THEME_SENDER_LABEL" inTable:@"Gifting"];
       }
 
       else
@@ -621,8 +621,8 @@ LABEL_17:
       [(UILabel *)v27 setText:v32];
 
       [(UILabel *)self->_senderNameLabelLabel sizeToFit];
-      v31 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
-      [v31 addSubview:self->_senderNameLabelLabel];
+      contentView2 = [(SKUIGiftThemeCollectionViewCell *)self contentView];
+      [contentView2 addSubview:self->_senderNameLabelLabel];
     }
 
     else
@@ -632,7 +632,7 @@ LABEL_17:
       self->_senderNameLabel = 0;
 
       [(UILabel *)self->_senderNameLabelLabel removeFromSuperview];
-      v31 = self->_senderNameLabelLabel;
+      contentView2 = self->_senderNameLabelLabel;
       self->_senderNameLabelLabel = 0;
     }
 

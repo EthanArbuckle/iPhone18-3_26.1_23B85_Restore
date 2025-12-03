@@ -1,15 +1,15 @@
 @interface BMCommCenterEmergencyVoiceCall
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMCommCenterEmergencyVoiceCall)initWithEmNum:(id)a3 MCC:(id)a4 MNC:(id)a5 matchedEmNumSource:(int)a6 sip380Procedure:(int)a7 sip380RedirectedURN:(int)a8 callDuration:(id)a9;
-- (BMCommCenterEmergencyVoiceCall)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMCommCenterEmergencyVoiceCall)initWithEmNum:(id)num MCC:(id)c MNC:(id)nC matchedEmNumSource:(int)source sip380Procedure:(int)procedure sip380RedirectedURN:(int)n callDuration:(id)duration;
+- (BMCommCenterEmergencyVoiceCall)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMCommCenterEmergencyVoiceCall
@@ -38,25 +38,25 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMCommCenterEmergencyVoiceCall *)self emNum];
-    v7 = [v5 emNum];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    emNum = [(BMCommCenterEmergencyVoiceCall *)self emNum];
+    emNum2 = [v5 emNum];
+    v8 = emNum2;
+    if (emNum == emNum2)
     {
     }
 
     else
     {
-      v9 = [(BMCommCenterEmergencyVoiceCall *)self emNum];
-      v10 = [v5 emNum];
-      v11 = [v9 isEqual:v10];
+      emNum3 = [(BMCommCenterEmergencyVoiceCall *)self emNum];
+      emNum4 = [v5 emNum];
+      v11 = [emNum3 isEqual:emNum4];
 
       if (!v11)
       {
@@ -102,14 +102,14 @@
       }
     }
 
-    v25 = [(BMCommCenterEmergencyVoiceCall *)self matchedEmNumSource];
-    if (v25 == [v5 matchedEmNumSource])
+    matchedEmNumSource = [(BMCommCenterEmergencyVoiceCall *)self matchedEmNumSource];
+    if (matchedEmNumSource == [v5 matchedEmNumSource])
     {
-      v26 = [(BMCommCenterEmergencyVoiceCall *)self sip380Procedure];
-      if (v26 == [v5 sip380Procedure])
+      sip380Procedure = [(BMCommCenterEmergencyVoiceCall *)self sip380Procedure];
+      if (sip380Procedure == [v5 sip380Procedure])
       {
-        v27 = [(BMCommCenterEmergencyVoiceCall *)self sip380RedirectedURN];
-        if (v27 == [v5 sip380RedirectedURN])
+        sip380RedirectedURN = [(BMCommCenterEmergencyVoiceCall *)self sip380RedirectedURN];
+        if (sip380RedirectedURN == [v5 sip380RedirectedURN])
         {
           if (!-[BMCommCenterEmergencyVoiceCall hasCallDuration](self, "hasCallDuration") && ![v5 hasCallDuration])
           {
@@ -119,8 +119,8 @@
 
           if (-[BMCommCenterEmergencyVoiceCall hasCallDuration](self, "hasCallDuration") && [v5 hasCallDuration])
           {
-            v28 = [(BMCommCenterEmergencyVoiceCall *)self callDuration];
-            v12 = v28 == [v5 callDuration];
+            callDuration = [(BMCommCenterEmergencyVoiceCall *)self callDuration];
+            v12 = callDuration == [v5 callDuration];
 LABEL_24:
 
             goto LABEL_25;
@@ -143,7 +143,7 @@ LABEL_25:
 - (id)jsonDictionary
 {
   v26[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMCommCenterEmergencyVoiceCall *)self emNum];
+  emNum = [(BMCommCenterEmergencyVoiceCall *)self emNum];
   v4 = [(BMCommCenterEmergencyVoiceCall *)self MCC];
   v5 = [(BMCommCenterEmergencyVoiceCall *)self MNC];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMCommCenterEmergencyVoiceCall matchedEmNumSource](self, "matchedEmNumSource")}];
@@ -160,66 +160,66 @@ LABEL_25:
   }
 
   v25[0] = @"emNum";
-  v10 = v3;
-  if (!v3)
+  null = emNum;
+  if (!emNum)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v10;
-  v26[0] = v10;
+  v22 = null;
+  v26[0] = null;
   v25[1] = @"MCC";
-  v11 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v11;
-  v26[1] = v11;
+  v21 = null2;
+  v26[1] = null2;
   v25[2] = @"MNC";
-  v12 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v3;
-  v20 = v12;
-  v26[2] = v12;
+  v24 = emNum;
+  v20 = null3;
+  v26[2] = null3;
   v25[3] = @"matchedEmNumSource";
-  v13 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v23 = v4;
-  v26[3] = v13;
+  v26[3] = null4;
   v25[4] = @"sip380Procedure";
-  v14 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v14;
+  v26[4] = null5;
   v25[5] = @"sip380RedirectedURN";
-  v15 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[5] = v15;
+  v26[5] = null6;
   v25[6] = @"callDuration";
-  v16 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[6] = v16;
+  v26[6] = null7;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:7];
   if (v9)
   {
@@ -292,59 +292,59 @@ LABEL_26:
   return v17;
 }
 
-- (BMCommCenterEmergencyVoiceCall)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMCommCenterEmergencyVoiceCall)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v79[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"emNum"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"emNum"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v64 = 0;
 LABEL_4:
-    v7 = [v5 objectForKeyedSubscript:@"MCC"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"MCC"];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v20 = 0;
           goto LABEL_55;
         }
 
         v21 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v22 = a4;
+        errorCopy = error;
         v23 = *MEMORY[0x1E698F240];
         v76 = *MEMORY[0x1E696A578];
         v63 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"MCC"];
         v77 = v63;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
         v25 = [v21 initWithDomain:v23 code:2 userInfo:v24];
-        a4 = 0;
+        error = 0;
         v20 = 0;
-        *v22 = v25;
+        *errorCopy = v25;
         goto LABEL_54;
       }
 
-      v54 = a4;
-      a4 = v7;
+      errorCopy3 = error;
+      error = v7;
     }
 
     else
     {
-      v54 = a4;
-      a4 = 0;
+      errorCopy3 = error;
+      error = 0;
     }
 
-    v8 = [v5 objectForKeyedSubscript:@"MNC"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"MNC"];
     v59 = v8;
     if (v8 && (v9 = v8, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v54)
+        if (!errorCopy3)
         {
           v63 = 0;
           v20 = 0;
@@ -353,17 +353,17 @@ LABEL_4:
         }
 
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v60 = a4;
+        errorCopy4 = error;
         v27 = *MEMORY[0x1E698F240];
         v74 = *MEMORY[0x1E696A578];
         v58 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"MNC"];
         v75 = v58;
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
         v29 = v27;
-        a4 = v60;
+        error = errorCopy4;
         v63 = 0;
         v20 = 0;
-        *v54 = [v26 initWithDomain:v29 code:2 userInfo:v28];
+        *errorCopy3 = [v26 initWithDomain:v29 code:2 userInfo:v28];
         v24 = v59;
 LABEL_53:
 
@@ -379,7 +379,7 @@ LABEL_54:
       v63 = 0;
     }
 
-    v10 = [v5 objectForKeyedSubscript:@"matchedEmNumSource"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"matchedEmNumSource"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -394,7 +394,7 @@ LABEL_54:
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v28 = v10;
-          if (!v54)
+          if (!errorCopy3)
           {
             v58 = 0;
             v20 = 0;
@@ -411,7 +411,7 @@ LABEL_54:
           v47 = [v44 initWithDomain:v45 code:2 userInfo:v46];
           v58 = 0;
           v20 = 0;
-          *v54 = v47;
+          *errorCopy3 = v47;
           v37 = v46;
           v24 = v59;
           goto LABEL_52;
@@ -426,7 +426,7 @@ LABEL_54:
       v11 = 0;
     }
 
-    v12 = [v5 objectForKeyedSubscript:@"sip380Procedure"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"sip380Procedure"];
     v55 = v6;
     v56 = v10;
     v57 = v12;
@@ -444,7 +444,7 @@ LABEL_54:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v54)
+          if (!errorCopy3)
           {
             v62 = 0;
             v20 = 0;
@@ -460,7 +460,7 @@ LABEL_54:
           v50 = [v48 initWithDomain:v49 code:2 userInfo:v30];
           v62 = 0;
           v20 = 0;
-          *v54 = v50;
+          *errorCopy3 = v50;
 LABEL_50:
 
           v6 = v55;
@@ -484,7 +484,7 @@ LABEL_52:
       v62 = 0;
     }
 
-    v30 = [v5 objectForKeyedSubscript:@"sip380RedirectedURN"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"sip380RedirectedURN"];
     if (v30 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -498,7 +498,7 @@ LABEL_52:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v54)
+          if (!errorCopy3)
           {
             v61 = 0;
             v20 = 0;
@@ -514,7 +514,7 @@ LABEL_52:
           v53 = [v51 initWithDomain:v52 code:2 userInfo:v32];
           v61 = 0;
           v20 = 0;
-          *v54 = v53;
+          *errorCopy3 = v53;
           goto LABEL_49;
         }
 
@@ -529,13 +529,13 @@ LABEL_52:
       v61 = 0;
     }
 
-    v32 = [v5 objectForKeyedSubscript:@"callDuration"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"callDuration"];
     if (v32 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v54)
+        if (errorCopy3)
         {
           v40 = objc_alloc(MEMORY[0x1E696ABC0]);
           v41 = *MEMORY[0x1E698F240];
@@ -543,7 +543,7 @@ LABEL_52:
           v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"callDuration"];
           v67 = v42;
           v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-          *v54 = [v40 initWithDomain:v41 code:2 userInfo:v43];
+          *errorCopy3 = [v40 initWithDomain:v41 code:2 userInfo:v43];
         }
 
         v36 = 0;
@@ -553,7 +553,7 @@ LABEL_52:
 
       v33 = v7;
       v35 = v64;
-      v34 = self;
+      selfCopy2 = self;
       v36 = v32;
     }
 
@@ -561,12 +561,12 @@ LABEL_52:
     {
       v33 = v7;
       v35 = v64;
-      v34 = self;
+      selfCopy2 = self;
       v36 = 0;
     }
 
     v64 = v35;
-    v20 = -[BMCommCenterEmergencyVoiceCall initWithEmNum:MCC:MNC:matchedEmNumSource:sip380Procedure:sip380RedirectedURN:callDuration:](v34, "initWithEmNum:MCC:MNC:matchedEmNumSource:sip380Procedure:sip380RedirectedURN:callDuration:", v35, a4, v63, [v11 intValue], objc_msgSend(v62, "intValue"), objc_msgSend(v61, "intValue"), v36);
+    v20 = -[BMCommCenterEmergencyVoiceCall initWithEmNum:MCC:MNC:matchedEmNumSource:sip380Procedure:sip380RedirectedURN:callDuration:](selfCopy2, "initWithEmNum:MCC:MNC:matchedEmNumSource:sip380Procedure:sip380RedirectedURN:callDuration:", v35, error, v63, [v11 intValue], objc_msgSend(v62, "intValue"), objc_msgSend(v61, "intValue"), v36);
     self = v20;
     v7 = v33;
 LABEL_49:
@@ -581,7 +581,7 @@ LABEL_49:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v64 = 0;
     v20 = 0;
@@ -589,17 +589,17 @@ LABEL_49:
   }
 
   v15 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v16 = a4;
+  errorCopy5 = error;
   v17 = *MEMORY[0x1E698F240];
   v78 = *MEMORY[0x1E696A578];
   v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"emNum"];
   v79[0] = v18;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:&v78 count:1];
   v19 = v17;
-  a4 = v18;
+  error = v18;
   v64 = 0;
   v20 = 0;
-  *v16 = [v15 initWithDomain:v19 code:2 userInfo:v7];
+  *errorCopy5 = [v15 initWithDomain:v19 code:2 userInfo:v7];
 LABEL_55:
 
 LABEL_56:
@@ -611,14 +611,14 @@ LABEL_56:
 {
   v3 = objc_opt_new();
   [(BMCommCenterEmergencyVoiceCall *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_emNum)
   {
     PBDataWriterWriteStringField();
@@ -647,9 +647,9 @@ LABEL_56:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v47.receiver = self;
   v47.super_class = BMCommCenterEmergencyVoiceCall;
   v5 = [(BMEventBase *)&v47 init];
@@ -658,12 +658,12 @@ LABEL_56:
     goto LABEL_89;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -674,18 +674,18 @@ LABEL_56:
       while (1)
       {
         v48 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v48 & 0x7F) << v7;
@@ -703,9 +703,9 @@ LABEL_56:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -748,18 +748,18 @@ LABEL_16:
             while (1)
             {
               v48 = 0;
-              v38 = [v4 position] + 1;
-              if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 1, v39 <= objc_msgSend(v4, "length")))
+              v38 = [fromCopy position] + 1;
+              if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 1, v39 <= objc_msgSend(fromCopy, "length")))
               {
-                v40 = [v4 data];
-                [v40 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v37 |= (v48 & 0x7F) << v35;
@@ -777,7 +777,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v41 = 0;
             }
@@ -809,18 +809,18 @@ LABEL_47:
           while (1)
           {
             v48 = 0;
-            v27 = [v4 position] + 1;
-            if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+            v27 = [fromCopy position] + 1;
+            if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
             {
-              v29 = [v4 data];
-              [v29 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v48 & 0x7F) << v25;
@@ -837,7 +837,7 @@ LABEL_47:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 6)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 6)
           {
 LABEL_83:
             LODWORD(v18) = 0;
@@ -854,18 +854,18 @@ LABEL_83:
           while (1)
           {
             v48 = 0;
-            v32 = [v4 position] + 1;
-            if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+            v32 = [fromCopy position] + 1;
+            if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
             {
-              v34 = [v4 data];
-              [v34 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v48 & 0x7F) << v30;
@@ -882,7 +882,7 @@ LABEL_83:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 0x11)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 0x11)
           {
 LABEL_71:
             LODWORD(v18) = 0;
@@ -904,18 +904,18 @@ LABEL_71:
           while (1)
           {
             v48 = 0;
-            v19 = [v4 position] + 1;
-            if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+            v19 = [fromCopy position] + 1;
+            if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v48 & 0x7F) << v16;
@@ -932,7 +932,7 @@ LABEL_71:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 4)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 4)
           {
 LABEL_79:
             LODWORD(v18) = 0;
@@ -945,13 +945,13 @@ LABEL_79:
       }
 
 LABEL_86:
-      v44 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v44 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_88:
     v45 = 0;
@@ -969,49 +969,49 @@ LABEL_89:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMCommCenterEmergencyVoiceCall *)self emNum];
+  emNum = [(BMCommCenterEmergencyVoiceCall *)self emNum];
   v5 = [(BMCommCenterEmergencyVoiceCall *)self MCC];
   v6 = [(BMCommCenterEmergencyVoiceCall *)self MNC];
   v7 = BMCommCenterEmergencyVoiceCallMatchedEmNumSourceAsString([(BMCommCenterEmergencyVoiceCall *)self matchedEmNumSource]);
   v8 = BMCommCenterEmergencyVoiceCallSIP380ProcedureAsString([(BMCommCenterEmergencyVoiceCall *)self sip380Procedure]);
   v9 = BMCommCenterEmergencyVoiceCallEmergencyURNAsString([(BMCommCenterEmergencyVoiceCall *)self sip380RedirectedURN]);
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMCommCenterEmergencyVoiceCall callDuration](self, "callDuration")}];
-  v11 = [v3 initWithFormat:@"BMCommCenterEmergencyVoiceCall with emNum: %@, MCC: %@, MNC: %@, matchedEmNumSource: %@, sip380Procedure: %@, sip380RedirectedURN: %@, callDuration: %@", v4, v5, v6, v7, v8, v9, v10];
+  v11 = [v3 initWithFormat:@"BMCommCenterEmergencyVoiceCall with emNum: %@, MCC: %@, MNC: %@, matchedEmNumSource: %@, sip380Procedure: %@, sip380RedirectedURN: %@, callDuration: %@", emNum, v5, v6, v7, v8, v9, v10];
 
   return v11;
 }
 
-- (BMCommCenterEmergencyVoiceCall)initWithEmNum:(id)a3 MCC:(id)a4 MNC:(id)a5 matchedEmNumSource:(int)a6 sip380Procedure:(int)a7 sip380RedirectedURN:(int)a8 callDuration:(id)a9
+- (BMCommCenterEmergencyVoiceCall)initWithEmNum:(id)num MCC:(id)c MNC:(id)nC matchedEmNumSource:(int)source sip380Procedure:(int)procedure sip380RedirectedURN:(int)n callDuration:(id)duration
 {
-  v22 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a9;
+  numCopy = num;
+  cCopy = c;
+  nCCopy = nC;
+  durationCopy = duration;
   v23.receiver = self;
   v23.super_class = BMCommCenterEmergencyVoiceCall;
   v19 = [(BMEventBase *)&v23 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v19->_emNum, a3);
-    objc_storeStrong(&v19->_MCC, a4);
-    objc_storeStrong(&v19->_MNC, a5);
-    v19->_matchedEmNumSource = a6;
-    v19->_sip380Procedure = a7;
-    v19->_sip380RedirectedURN = a8;
-    if (v18)
+    objc_storeStrong(&v19->_emNum, num);
+    objc_storeStrong(&v19->_MCC, c);
+    objc_storeStrong(&v19->_MNC, nC);
+    v19->_matchedEmNumSource = source;
+    v19->_sip380Procedure = procedure;
+    v19->_sip380RedirectedURN = n;
+    if (durationCopy)
     {
       v19->_hasCallDuration = 1;
-      v20 = [v18 intValue];
+      intValue = [durationCopy intValue];
     }
 
     else
     {
       v19->_hasCallDuration = 0;
-      v20 = -1;
+      intValue = -1;
     }
 
-    v19->_callDuration = v20;
+    v19->_callDuration = intValue;
   }
 
   return v19;
@@ -1040,13 +1040,13 @@ LABEL_89:
   return v9;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 2)
+  if (version == 2)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMCommCenterEmergencyVoiceCall alloc] initByReadFrom:v6];
     v8 = v7;

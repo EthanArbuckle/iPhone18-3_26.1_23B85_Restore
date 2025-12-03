@@ -1,8 +1,8 @@
 @interface PXSmartScaleView
 - (CGSize)displaySize;
 - (double)displayScale;
-- (void)setFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXSmartScaleView
@@ -17,13 +17,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v9.receiver = self;
   v9.super_class = PXSmartScaleView;
-  [(PXSmartScaleView *)&v9 setFrame:a3.origin.x, a3.origin.y];
+  [(PXSmartScaleView *)&v9 setFrame:frame.origin.x, frame.origin.y];
   [(PXSmartScaleView *)self displaySize];
   if (width != v7 || height != v6)
   {
@@ -32,17 +32,17 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = PXSmartScaleView;
-  v4 = a3;
-  [(PXSmartScaleView *)&v10 traitCollectionDidChange:v4];
-  [v4 displayScale];
+  changeCopy = change;
+  [(PXSmartScaleView *)&v10 traitCollectionDidChange:changeCopy];
+  [changeCopy displayScale];
   v6 = v5;
 
-  v7 = [(PXSmartScaleView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(PXSmartScaleView *)self traitCollection];
+  [traitCollection displayScale];
   v9 = v8;
 
   if (v6 != v9)
@@ -53,8 +53,8 @@
 
 - (double)displayScale
 {
-  v2 = [(PXSmartScaleView *)self traitCollection];
-  [v2 displayScale];
+  traitCollection = [(PXSmartScaleView *)self traitCollection];
+  [traitCollection displayScale];
   v4 = v3;
 
   return fmax(v4, 1.0);

@@ -1,6 +1,6 @@
 @interface MSDLocalEventStreamHandler
 + (id)sharedInstance;
-- (void)handleEvent:(id)a3 fromStream:(const char *)a4;
+- (void)handleEvent:(id)event fromStream:(const char *)stream;
 - (void)start;
 @end
 
@@ -21,20 +21,20 @@
 - (void)start
 {
   v3 = +[MSDWorkQueueSet sharedInstance];
-  v4 = [v3 messageQueue];
+  messageQueue = [v3 messageQueue];
 
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100068E8C;
   handler[3] = &unk_10016A7E8;
   handler[4] = self;
-  xpc_set_event_stream_handler("com.apple.fsevents.matching", v4, handler);
+  xpc_set_event_stream_handler("com.apple.fsevents.matching", messageQueue, handler);
 }
 
-- (void)handleEvent:(id)a3 fromStream:(const char *)a4
+- (void)handleEvent:(id)event fromStream:(const char *)stream
 {
-  v5 = a3;
-  type = xpc_get_type(v5);
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
   if (type != &_xpc_type_dictionary)
   {
     v7 = type;
@@ -47,18 +47,18 @@
     goto LABEL_4;
   }
 
-  string = xpc_dictionary_get_string(v5, _xpc_event_key_name);
+  string = xpc_dictionary_get_string(eventCopy, _xpc_event_key_name);
   v10 = sub_100063B64();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = string;
     v13 = 2080;
-    v14 = a4;
+    streamCopy = stream;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Received XPC event of name: %s from stream: %s", &v11, 0x16u);
   }
 
-  if (!strncmp(a4, "com.apple.fsevents.matching", 0x1CuLL) && !strncmp(string, "DemoSettingsManagedPreferencesChanged", 0x26uLL))
+  if (!strncmp(stream, "com.apple.fsevents.matching", 0x1CuLL) && !strncmp(string, "DemoSettingsManagedPreferencesChanged", 0x26uLL))
   {
     v8 = +[MSDTargetDevice sharedInstance];
     [v8 toggleSEPDemoModeOnManagedPreferencesChange];

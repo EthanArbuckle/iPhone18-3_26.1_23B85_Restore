@@ -1,18 +1,18 @@
 @interface AMSPushParsableRichNotification
-+ (void)handleNotificationPayload:(id)a3 config:(id)a4 bag:(id)a5;
++ (void)handleNotificationPayload:(id)payload config:(id)config bag:(id)bag;
 @end
 
 @implementation AMSPushParsableRichNotification
 
-+ (void)handleNotificationPayload:(id)a3 config:(id)a4 bag:(id)a5
++ (void)handleNotificationPayload:(id)payload config:(id)config bag:(id)bag
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v33 = a4;
-  v9 = a5;
-  v10 = [v8 clientIdentifier];
-  v11 = [v8 account];
-  if (v11 && ([v8 isAccountTypeActive] & 1) == 0)
+  payloadCopy = payload;
+  configCopy = config;
+  bagCopy = bag;
+  clientIdentifier = [payloadCopy clientIdentifier];
+  account = [payloadCopy account];
+  if (account && ([payloadCopy isAccountTypeActive] & 1) == 0)
   {
     v13 = +[AMSLogConfig sharedPushNotificationConfig];
     if (!v13)
@@ -20,29 +20,29 @@
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v29 = [v13 OSLogObject];
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v30 = objc_opt_class();
       v31 = v30;
-      v32 = [v8 logKey];
+      logKey = [payloadCopy logKey];
       *buf = 138543874;
-      v37 = v30;
+      selfCopy2 = v30;
       v38 = 2114;
-      v39 = v32;
+      v39 = logKey;
       v40 = 2114;
-      v41 = v10;
-      _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Rejecting notification due to inactive account. %{public}@", buf, 0x20u);
+      v41 = clientIdentifier;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Rejecting notification due to inactive account. %{public}@", buf, 0x20u);
     }
 
-    v17 = v33;
+    v17 = configCopy;
   }
 
   else
   {
     v35 = 0;
     v34 = 0;
-    v12 = [AMSUserNotification shouldDeleteNotificationForPayload:v8 outIdentifier:&v34 scheduledOnly:&v35];
+    v12 = [AMSUserNotification shouldDeleteNotificationForPayload:payloadCopy outIdentifier:&v34 scheduledOnly:&v35];
     v13 = v34;
     v14 = +[AMSLogConfig sharedPushNotificationConfig];
     v15 = v14;
@@ -53,22 +53,22 @@
         v15 = +[AMSLogConfig sharedConfig];
       }
 
-      v16 = [v15 OSLogObject];
-      v17 = v33;
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v15 OSLogObject];
+      v17 = configCopy;
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v8 logKey];
+        logKey2 = [payloadCopy logKey];
         *buf = 138543874;
-        v37 = a1;
+        selfCopy2 = self;
         v38 = 2114;
-        v39 = v18;
+        v39 = logKey2;
         v40 = 2114;
-        v41 = v10;
-        _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Deleting notification with identifier: %{public}@", buf, 0x20u);
+        v41 = clientIdentifier;
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Deleting notification with identifier: %{public}@", buf, 0x20u);
       }
 
       v19 = AMSLogKey();
-      v20 = [AMSUserNotificationCenter removeNotificationWithIdentifier:v13 centerBundleId:v10 logKey:v19 scheduledOnly:v35];
+      v20 = [AMSUserNotificationCenter removeNotificationWithIdentifier:v13 centerBundleId:clientIdentifier logKey:v19 scheduledOnly:v35];
     }
 
     else
@@ -78,26 +78,26 @@
         v15 = +[AMSLogConfig sharedConfig];
       }
 
-      v21 = [v15 OSLogObject];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v15 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v8 logKey];
+        logKey3 = [payloadCopy logKey];
         *buf = 138543874;
-        v37 = a1;
+        selfCopy2 = self;
         v38 = 2114;
-        v39 = v22;
+        v39 = logKey3;
         v40 = 2114;
-        v41 = v10;
-        _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting notification with identifier: %{public}@", buf, 0x20u);
+        v41 = clientIdentifier;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Posting notification with identifier: %{public}@", buf, 0x20u);
       }
 
-      v17 = v33;
-      v19 = [AMSUserNotification notificationWithPayload:v8 andConfig:v33];
-      v23 = [v19 metricsEvent];
-      v24 = v23;
-      if (v23)
+      v17 = configCopy;
+      v19 = [AMSUserNotification notificationWithPayload:payloadCopy andConfig:configCopy];
+      metricsEvent = [v19 metricsEvent];
+      v24 = metricsEvent;
+      if (metricsEvent)
       {
-        v25 = v23;
+        v25 = metricsEvent;
       }
 
       else
@@ -105,11 +105,11 @@
         v25 = MEMORY[0x1E695E0F8];
       }
 
-      v26 = [v8 metricsOverlay];
-      v27 = [v25 ams_dictionaryByAddingEntriesFromDictionary:v26];
+      metricsOverlay = [payloadCopy metricsOverlay];
+      v27 = [v25 ams_dictionaryByAddingEntriesFromDictionary:metricsOverlay];
       [v19 setMetricsEvent:v27];
 
-      v28 = [AMSUserNotificationCenter postNotification:v19 bag:v9 centerBundleId:v10];
+      v28 = [AMSUserNotificationCenter postNotification:v19 bag:bagCopy centerBundleId:clientIdentifier];
     }
   }
 }

@@ -1,18 +1,18 @@
 @interface SBHImmutableIconGridSizeClassIconImageInfoMap
-- (SBHImmutableIconGridSizeClassIconImageInfoMap)initWithIconImageInfos:(id)a3;
+- (SBHImmutableIconGridSizeClassIconImageInfoMap)initWithIconImageInfos:(id)infos;
 @end
 
 @implementation SBHImmutableIconGridSizeClassIconImageInfoMap
 
-- (SBHImmutableIconGridSizeClassIconImageInfoMap)initWithIconImageInfos:(id)a3
+- (SBHImmutableIconGridSizeClassIconImageInfoMap)initWithIconImageInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v9.receiver = self;
   v9.super_class = SBHImmutableIconGridSizeClassIconImageInfoMap;
-  v5 = [(SBHIconGridSizeClassIconImageInfoMap *)&v9 initWithIconImageInfos:v4];
+  v5 = [(SBHIconGridSizeClassIconImageInfoMap *)&v9 initWithIconImageInfos:infosCopy];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [infosCopy copy];
     iconImageInfos = v5->_iconImageInfos;
     v5->_iconImageInfos = v6;
   }

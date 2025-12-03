@@ -1,10 +1,10 @@
 @interface ASDisplayContext
 + (id)_companionContext;
 + (id)_gizmoContext;
-+ (id)displayContextWithName:(id)a3;
-+ (void)_contentSizeChangeForContext:(id)a3 withBlock:(id)a4;
-- (id)keyColorForDisplayMode:(int64_t)a3;
-- (id)titleColorForDisplayMode:(int64_t)a3;
++ (id)displayContextWithName:(id)name;
++ (void)_contentSizeChangeForContext:(id)context withBlock:(id)block;
+- (id)keyColorForDisplayMode:(int64_t)mode;
+- (id)titleColorForDisplayMode:(int64_t)mode;
 @end
 
 @implementation ASDisplayContext
@@ -93,24 +93,24 @@ void __37__ASDisplayContext__companionContext__block_invoke_27(uint64_t a1, void
     +[ASDisplayContext _companionContext];
   }
 
-  [a1 _contentSizeChangeForContext:_companionContext___companionContext withBlock:&__block_literal_global_30];
+  [self _contentSizeChangeForContext:_companionContext___companionContext withBlock:&__block_literal_global_30];
   v3 = _companionContext___companionContext;
 
   return v3;
 }
 
-+ (void)_contentSizeChangeForContext:(id)a3 withBlock:(id)a4
++ (void)_contentSizeChangeForContext:(id)context withBlock:(id)block
 {
-  v10 = a4;
+  blockCopy = block;
   v5 = MEMORY[0x277D75128];
-  v6 = a3;
-  v7 = [v5 sharedApplication];
-  v8 = [v7 preferredContentSizeCategory];
+  contextCopy = context;
+  sharedApplication = [v5 sharedApplication];
+  preferredContentSizeCategory = [sharedApplication preferredContentSizeCategory];
 
-  v9 = v6[9];
-  if (([v8 isEqualToString:v9] & 1) == 0)
+  v9 = contextCopy[9];
+  if (([preferredContentSizeCategory isEqualToString:v9] & 1) == 0)
   {
-    v10[2](v10, v8);
+    blockCopy[2](blockCopy, preferredContentSizeCategory);
   }
 }
 
@@ -135,7 +135,7 @@ void __37__ASDisplayContext__companionContext__block_invoke_27(uint64_t a1, void
   v10[3] = &unk_278C53370;
   v11 = v4;
   v6 = v4;
-  [a1 _contentSizeChangeForContext:v5 withBlock:v10];
+  [self _contentSizeChangeForContext:v5 withBlock:v10];
   v7 = _gizmoContext___gizmoContext;
   v8 = _gizmoContext___gizmoContext;
 
@@ -237,10 +237,10 @@ void __33__ASDisplayContext__gizmoContext__block_invoke_2(uint64_t a1, void *a2)
   *(_gizmoContext___gizmoContext + 72) = v3;
 }
 
-+ (id)displayContextWithName:(id)a3
++ (id)displayContextWithName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ASDisplayContextCompanion"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ASDisplayContextCompanion"])
   {
     v4 = +[ASDisplayContext _companionContext];
 LABEL_5:
@@ -248,7 +248,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"ASDisplayContextGizmo"])
+  if ([nameCopy isEqualToString:@"ASDisplayContextGizmo"])
   {
     v4 = +[ASDisplayContext _gizmoContext];
     goto LABEL_5;
@@ -260,44 +260,44 @@ LABEL_7:
   return v5;
 }
 
-- (id)titleColorForDisplayMode:(int64_t)a3
+- (id)titleColorForDisplayMode:(int64_t)mode
 {
-  v5 = [(ASDisplayContext *)self titleColors];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  titleColors = [(ASDisplayContext *)self titleColors];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
+  v7 = [titleColors objectForKeyedSubscript:v6];
   if (v7)
   {
-    v8 = [(ASDisplayContext *)self titleColors];
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    titleColors2 = [(ASDisplayContext *)self titleColors];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
+    whiteColor = [titleColors2 objectForKeyedSubscript:v9];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  return v10;
+  return whiteColor;
 }
 
-- (id)keyColorForDisplayMode:(int64_t)a3
+- (id)keyColorForDisplayMode:(int64_t)mode
 {
-  v5 = [(ASDisplayContext *)self keyColors];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  keyColors = [(ASDisplayContext *)self keyColors];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
+  v7 = [keyColors objectForKeyedSubscript:v6];
   if (v7)
   {
-    v8 = [(ASDisplayContext *)self keyColors];
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    keyColors2 = [(ASDisplayContext *)self keyColors];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
+    whiteColor = [keyColors2 objectForKeyedSubscript:v9];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  return v10;
+  return whiteColor;
 }
 
 @end

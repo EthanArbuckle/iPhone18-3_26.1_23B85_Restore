@@ -7,10 +7,10 @@
 
 - (id)af_bestTextInterpretationWithRefId:()AFUserUtteranceAdditions sessionId:
 {
-  v1 = [a1 af_userUtteranceValueWithRefId:? sessionId:?];
-  v2 = [v1 bestTextInterpretation];
+  v1 = [self af_userUtteranceValueWithRefId:? sessionId:?];
+  bestTextInterpretation = [v1 bestTextInterpretation];
 
-  return v2;
+  return bestTextInterpretation;
 }
 
 - (AFUserUtterance)af_userUtteranceValueWithRefId:()AFUserUtteranceAdditions sessionId:
@@ -18,12 +18,12 @@
   v6 = a4;
   v7 = a3;
   v8 = [AFUserUtterance alloc];
-  v9 = [a1 af_speechPhrases];
-  v10 = [a1 sentenceConfidence];
-  v11 = [a1 af_speechUtterances];
-  v12 = [a1 af_correctionContextWithRefId:v7 sessionId:v6];
+  af_speechPhrases = [self af_speechPhrases];
+  sentenceConfidence = [self sentenceConfidence];
+  af_speechUtterances = [self af_speechUtterances];
+  v12 = [self af_correctionContextWithRefId:v7 sessionId:v6];
 
-  v13 = [(AFUserUtterance *)v8 initWithPhrases:v9 sentenceConfidence:v10 utterances:v11 correctionIdentifier:v12];
+  v13 = [(AFUserUtterance *)v8 initWithPhrases:af_speechPhrases sentenceConfidence:sentenceConfidence utterances:af_speechUtterances correctionIdentifier:v12];
 
   return v13;
 }

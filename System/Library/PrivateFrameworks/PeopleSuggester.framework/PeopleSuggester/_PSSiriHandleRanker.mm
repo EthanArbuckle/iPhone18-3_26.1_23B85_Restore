@@ -1,6 +1,6 @@
 @interface _PSSiriHandleRanker
 - (_PSSiriHandleRanker)init;
-- (id)rankedHandles:(id)a3 context:(id)a4;
+- (id)rankedHandles:(id)handles context:(id)context;
 - (void)dealloc;
 @end
 
@@ -35,10 +35,10 @@
   [(_PSSiriHandleRanker *)&v3 dealloc];
 }
 
-- (id)rankedHandles:(id)a3 context:(id)a4
+- (id)rankedHandles:(id)handles context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  contextCopy = context;
   connection = self->_connection;
   if (connection)
   {
@@ -54,7 +54,7 @@
     v12[2] = __45___PSSiriHandleRanker_rankedHandles_context___block_invoke_4;
     v12[3] = &unk_1E7C25420;
     v12[4] = &v13;
-    [v9 rankedSiriMLCRHandlesFromContext:v7 handles:v6 reply:v12];
+    [v9 rankedSiriMLCRHandlesFromContext:contextCopy handles:handlesCopy reply:v12];
     v10 = v14[5];
 
     _Block_object_dispose(&v13, 8);

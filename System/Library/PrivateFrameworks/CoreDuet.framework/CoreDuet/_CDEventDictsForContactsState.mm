@@ -1,10 +1,10 @@
 @interface _CDEventDictsForContactsState
-- (void)initWithMngr:(int)a3 me:(int)a4 relationshipContacts:(int)a5 avgOfAllCalls:(int)a6 emergencyFamilyContacts:(int)a7 emergencyContacts:(int)a8 contactParents:(id)obj photosContactIds:(id)a10 airDropDict:(id)a11 airDropDictAtHome:(uint64_t)a12 homeContacts:(uint64_t)a13;
+- (void)initWithMngr:(int)mngr me:(int)me relationshipContacts:(int)contacts avgOfAllCalls:(int)calls emergencyFamilyContacts:(int)familyContacts emergencyContacts:(int)emergencyContacts contactParents:(id)obj photosContactIds:(id)self0 airDropDict:(id)self1 airDropDictAtHome:(uint64_t)self2 homeContacts:(uint64_t)self3;
 @end
 
 @implementation _CDEventDictsForContactsState
 
-- (void)initWithMngr:(int)a3 me:(int)a4 relationshipContacts:(int)a5 avgOfAllCalls:(int)a6 emergencyFamilyContacts:(int)a7 emergencyContacts:(int)a8 contactParents:(id)obj photosContactIds:(id)a10 airDropDict:(id)a11 airDropDictAtHome:(uint64_t)a12 homeContacts:(uint64_t)a13
+- (void)initWithMngr:(int)mngr me:(int)me relationshipContacts:(int)contacts avgOfAllCalls:(int)calls emergencyFamilyContacts:(int)familyContacts emergencyContacts:(int)emergencyContacts contactParents:(id)obj photosContactIds:(id)self0 airDropDict:(id)self1 airDropDictAtHome:(uint64_t)self2 homeContacts:(uint64_t)self3
 {
   OUTLINED_FUNCTION_70_0();
   a28 = v33;

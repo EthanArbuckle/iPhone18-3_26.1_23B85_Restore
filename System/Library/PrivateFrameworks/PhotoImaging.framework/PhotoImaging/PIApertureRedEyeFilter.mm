@@ -13,15 +13,15 @@
   v49 = v4;
   v46 = v7;
   v47 = v6;
-  v50 = self;
+  selfCopy = self;
   v8 = [(CIImage *)self->inputImage imageByColorMatchingWorkingSpaceToColorSpace:v3];
-  v9 = [v8 imageByClampingToExtent];
+  imageByClampingToExtent = [v8 imageByClampingToExtent];
 
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v50->inputSpots;
+  obj = selfCopy->inputSpots;
   v10 = [(NSArray *)obj countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v10)
   {
@@ -31,7 +31,7 @@
     while (2)
     {
       v13 = 0;
-      v14 = v9;
+      v14 = imageByClampingToExtent;
       do
       {
         if (*v57 != v52)
@@ -96,14 +96,14 @@
             _os_log_error_impl(&dword_1C7694000, v43, OS_LOG_TYPE_ERROR, "Failed to apply red eye repair. error: %{public}@", buf, 0xCu);
           }
 
-          v42 = v50->inputImage;
+          v42 = selfCopy->inputImage;
           goto LABEL_15;
         }
 
-        v9 = [v40 imageByCompositingOverImage:v14];
+        imageByClampingToExtent = [v40 imageByCompositingOverImage:v14];
 
         ++v13;
-        v14 = v9;
+        v14 = imageByClampingToExtent;
       }
 
       while (v10 != v13);
@@ -117,7 +117,7 @@
     }
   }
 
-  v14 = [v9 imageByCroppingToRect:{v49, v48, v47, v46}];
+  v14 = [imageByClampingToExtent imageByCroppingToRect:{v49, v48, v47, v46}];
 
   v42 = [v14 imageByColorMatchingColorSpaceToWorkingSpace:v3];
 LABEL_15:

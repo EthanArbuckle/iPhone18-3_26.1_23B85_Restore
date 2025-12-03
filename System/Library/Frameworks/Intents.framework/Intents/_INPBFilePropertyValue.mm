@@ -1,53 +1,53 @@
 @interface _INPBFilePropertyValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBFilePropertyValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBFilePropertyValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsFileType:(id)a3;
+- (int)StringAsFileType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFileType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFileType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBFilePropertyValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBFilePropertyValue *)self dateTime];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"dateTime"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dateTime = [(_INPBFilePropertyValue *)self dateTime];
+  dictionaryRepresentation = [dateTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dateTime"];
 
   if ([(_INPBFilePropertyValue *)self hasFileType])
   {
-    v6 = [(_INPBFilePropertyValue *)self fileType];
-    if (v6 >= 0xB)
+    fileType = [(_INPBFilePropertyValue *)self fileType];
+    if (fileType >= 0xB)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", fileType];
     }
 
     else
     {
-      v7 = off_1E727F398[v6];
+      v7 = off_1E727F398[fileType];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"fileType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"fileType"];
   }
 
-  v8 = [(_INPBFilePropertyValue *)self person];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"person"];
+  person = [(_INPBFilePropertyValue *)self person];
+  dictionaryRepresentation2 = [person dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"person"];
 
-  v10 = [(_INPBFilePropertyValue *)self quantity];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"quantity"];
+  quantity = [(_INPBFilePropertyValue *)self quantity];
+  dictionaryRepresentation3 = [quantity dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"quantity"];
 
-  v12 = [(_INPBFilePropertyValue *)self value];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"value"];
+  value = [(_INPBFilePropertyValue *)self value];
+  dictionaryRepresentation4 = [value dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"value"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -69,28 +69,28 @@
   return v7 ^ [(_INPBString *)self->_value hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
-  v5 = [(_INPBFilePropertyValue *)self dateTime];
-  v6 = [v4 dateTime];
-  if ((v5 != 0) == (v6 == 0))
+  dateTime = [(_INPBFilePropertyValue *)self dateTime];
+  dateTime2 = [equalCopy dateTime];
+  if ((dateTime != 0) == (dateTime2 == 0))
   {
     goto LABEL_25;
   }
 
-  v7 = [(_INPBFilePropertyValue *)self dateTime];
-  if (v7)
+  dateTime3 = [(_INPBFilePropertyValue *)self dateTime];
+  if (dateTime3)
   {
-    v8 = v7;
-    v9 = [(_INPBFilePropertyValue *)self dateTime];
-    v10 = [v4 dateTime];
-    v11 = [v9 isEqual:v10];
+    v8 = dateTime3;
+    dateTime4 = [(_INPBFilePropertyValue *)self dateTime];
+    dateTime5 = [equalCopy dateTime];
+    v11 = [dateTime4 isEqual:dateTime5];
 
     if (!v11)
     {
@@ -102,38 +102,38 @@
   {
   }
 
-  v12 = [(_INPBFilePropertyValue *)self hasFileType];
-  if (v12 != [v4 hasFileType])
+  hasFileType = [(_INPBFilePropertyValue *)self hasFileType];
+  if (hasFileType != [equalCopy hasFileType])
   {
     goto LABEL_26;
   }
 
   if ([(_INPBFilePropertyValue *)self hasFileType])
   {
-    if ([v4 hasFileType])
+    if ([equalCopy hasFileType])
     {
       fileType = self->_fileType;
-      if (fileType != [v4 fileType])
+      if (fileType != [equalCopy fileType])
       {
         goto LABEL_26;
       }
     }
   }
 
-  v5 = [(_INPBFilePropertyValue *)self person];
-  v6 = [v4 person];
-  if ((v5 != 0) == (v6 == 0))
+  dateTime = [(_INPBFilePropertyValue *)self person];
+  dateTime2 = [equalCopy person];
+  if ((dateTime != 0) == (dateTime2 == 0))
   {
     goto LABEL_25;
   }
 
-  v14 = [(_INPBFilePropertyValue *)self person];
-  if (v14)
+  person = [(_INPBFilePropertyValue *)self person];
+  if (person)
   {
-    v15 = v14;
-    v16 = [(_INPBFilePropertyValue *)self person];
-    v17 = [v4 person];
-    v18 = [v16 isEqual:v17];
+    v15 = person;
+    person2 = [(_INPBFilePropertyValue *)self person];
+    person3 = [equalCopy person];
+    v18 = [person2 isEqual:person3];
 
     if (!v18)
     {
@@ -145,20 +145,20 @@
   {
   }
 
-  v5 = [(_INPBFilePropertyValue *)self quantity];
-  v6 = [v4 quantity];
-  if ((v5 != 0) == (v6 == 0))
+  dateTime = [(_INPBFilePropertyValue *)self quantity];
+  dateTime2 = [equalCopy quantity];
+  if ((dateTime != 0) == (dateTime2 == 0))
   {
     goto LABEL_25;
   }
 
-  v19 = [(_INPBFilePropertyValue *)self quantity];
-  if (v19)
+  quantity = [(_INPBFilePropertyValue *)self quantity];
+  if (quantity)
   {
-    v20 = v19;
-    v21 = [(_INPBFilePropertyValue *)self quantity];
-    v22 = [v4 quantity];
-    v23 = [v21 isEqual:v22];
+    v20 = quantity;
+    quantity2 = [(_INPBFilePropertyValue *)self quantity];
+    quantity3 = [equalCopy quantity];
+    v23 = [quantity2 isEqual:quantity3];
 
     if (!v23)
     {
@@ -170,12 +170,12 @@
   {
   }
 
-  v5 = [(_INPBFilePropertyValue *)self value];
-  v6 = [v4 value];
-  if ((v5 != 0) != (v6 == 0))
+  dateTime = [(_INPBFilePropertyValue *)self value];
+  dateTime2 = [equalCopy value];
+  if ((dateTime != 0) != (dateTime2 == 0))
   {
-    v24 = [(_INPBFilePropertyValue *)self value];
-    if (!v24)
+    value = [(_INPBFilePropertyValue *)self value];
+    if (!value)
     {
 
 LABEL_29:
@@ -183,10 +183,10 @@ LABEL_29:
       goto LABEL_27;
     }
 
-    v25 = v24;
-    v26 = [(_INPBFilePropertyValue *)self value];
-    v27 = [v4 value];
-    v28 = [v26 isEqual:v27];
+    v25 = value;
+    value2 = [(_INPBFilePropertyValue *)self value];
+    value3 = [equalCopy value];
+    v28 = [value2 isEqual:value3];
 
     if (v28)
     {
@@ -206,10 +206,10 @@ LABEL_27:
   return v29;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBFilePropertyValue allocWithZone:](_INPBFilePropertyValue init];
-  v6 = [(_INPBDateTimeRange *)self->_dateTime copyWithZone:a3];
+  v6 = [(_INPBDateTimeRange *)self->_dateTime copyWithZone:zone];
   [(_INPBFilePropertyValue *)v5 setDateTime:v6];
 
   if ([(_INPBFilePropertyValue *)self hasFileType])
@@ -217,50 +217,50 @@ LABEL_27:
     [(_INPBFilePropertyValue *)v5 setFileType:[(_INPBFilePropertyValue *)self fileType]];
   }
 
-  v7 = [(_INPBContact *)self->_person copyWithZone:a3];
+  v7 = [(_INPBContact *)self->_person copyWithZone:zone];
   [(_INPBFilePropertyValue *)v5 setPerson:v7];
 
-  v8 = [(_INPBLong *)self->_quantity copyWithZone:a3];
+  v8 = [(_INPBLong *)self->_quantity copyWithZone:zone];
   [(_INPBFilePropertyValue *)v5 setQuantity:v8];
 
-  v9 = [(_INPBString *)self->_value copyWithZone:a3];
+  v9 = [(_INPBString *)self->_value copyWithZone:zone];
   [(_INPBFilePropertyValue *)v5 setValue:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBFilePropertyValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBFilePropertyValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBFilePropertyValue)initWithCoder:(id)a3
+- (_INPBFilePropertyValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBFilePropertyValue *)self initWithData:v6];
+    self = [(_INPBFilePropertyValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
-  v4 = [(_INPBFilePropertyValue *)self dateTime];
+  toCopy = to;
+  dateTime = [(_INPBFilePropertyValue *)self dateTime];
 
-  if (v4)
+  if (dateTime)
   {
-    v5 = [(_INPBFilePropertyValue *)self dateTime];
+    dateTime2 = [(_INPBFilePropertyValue *)self dateTime];
     PBDataWriterWriteSubmessage();
   }
 
@@ -270,88 +270,88 @@ LABEL_27:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(_INPBFilePropertyValue *)self person];
+  person = [(_INPBFilePropertyValue *)self person];
 
-  if (v7)
+  if (person)
   {
-    v8 = [(_INPBFilePropertyValue *)self person];
+    person2 = [(_INPBFilePropertyValue *)self person];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBFilePropertyValue *)self quantity];
+  quantity = [(_INPBFilePropertyValue *)self quantity];
 
-  if (v9)
+  if (quantity)
   {
-    v10 = [(_INPBFilePropertyValue *)self quantity];
+    quantity2 = [(_INPBFilePropertyValue *)self quantity];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_INPBFilePropertyValue *)self value];
+  value = [(_INPBFilePropertyValue *)self value];
 
-  v12 = v14;
-  if (v11)
+  v12 = toCopy;
+  if (value)
   {
-    v13 = [(_INPBFilePropertyValue *)self value];
+    value2 = [(_INPBFilePropertyValue *)self value];
     PBDataWriterWriteSubmessage();
 
-    v12 = v14;
+    v12 = toCopy;
   }
 }
 
-- (int)StringAsFileType:(id)a3
+- (int)StringAsFileType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OTHER"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"OTHER"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"APPLICATION"])
+  else if ([typeCopy isEqualToString:@"APPLICATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DOCUMENT"])
+  else if ([typeCopy isEqualToString:@"DOCUMENT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MUSIC"])
+  else if ([typeCopy isEqualToString:@"MUSIC"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MOVIE"])
+  else if ([typeCopy isEqualToString:@"MOVIE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PDF"])
+  else if ([typeCopy isEqualToString:@"PDF"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PRESENTATION"])
+  else if ([typeCopy isEqualToString:@"PRESENTATION"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"IMAGE"])
+  else if ([typeCopy isEqualToString:@"IMAGE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SOURCE"])
+  else if ([typeCopy isEqualToString:@"SOURCE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SPREADSHEET"])
+  else if ([typeCopy isEqualToString:@"SPREADSHEET"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TEXT"])
+  else if ([typeCopy isEqualToString:@"TEXT"])
   {
     v4 = 10;
   }
@@ -364,10 +364,10 @@ LABEL_27:
   return v4;
 }
 
-- (void)setFileType:(int)a3
+- (void)setFileType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -375,7 +375,7 @@ LABEL_27:
   else
   {
     *&self->_has = has | 1;
-    self->_fileType = a3;
+    self->_fileType = type;
   }
 }
 

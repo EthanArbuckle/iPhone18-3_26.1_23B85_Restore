@@ -1,19 +1,19 @@
 @interface ExternalSequenceNumberToAttachmentNoteBodyToAttachmentMigrationPolicy
-- (BOOL)createDestinationInstancesForSourceInstance:(id)a3 entityMapping:(id)a4 manager:(id)a5 error:(id *)a6;
-- (BOOL)createRelationshipsForDestinationInstance:(id)a3 entityMapping:(id)a4 manager:(id)a5 error:(id *)a6;
-- (BOOL)endEntityMapping:(id)a3 manager:(id)a4 error:(id *)a5;
-- (id)unarchiveObjectWithExternalRepresentation:(id)a3;
+- (BOOL)createDestinationInstancesForSourceInstance:(id)instance entityMapping:(id)mapping manager:(id)manager error:(id *)error;
+- (BOOL)createRelationshipsForDestinationInstance:(id)instance entityMapping:(id)mapping manager:(id)manager error:(id *)error;
+- (BOOL)endEntityMapping:(id)mapping manager:(id)manager error:(id *)error;
+- (id)unarchiveObjectWithExternalRepresentation:(id)representation;
 @end
 
 @implementation ExternalSequenceNumberToAttachmentNoteBodyToAttachmentMigrationPolicy
 
-- (id)unarchiveObjectWithExternalRepresentation:(id)a3
+- (id)unarchiveObjectWithExternalRepresentation:(id)representation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  representationCopy = representation;
   v4 = objc_autoreleasePoolPush();
   v23 = 0;
-  v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v3 error:&v23];
+  v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:representationCopy error:&v23];
   v6 = v23;
   if (v6)
   {
@@ -28,8 +28,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [MEMORY[0x277D24F38] supportedArchivedClassNames];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  supportedArchivedClassNames = [MEMORY[0x277D24F38] supportedArchivedClassNames];
+  v9 = [supportedArchivedClassNames countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -40,13 +40,13 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(supportedArchivedClassNames);
         }
 
         [v5 setClass:objc_opt_class() forClassName:*(*(&v19 + 1) + 8 * i)];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v10 = [supportedArchivedClassNames countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v10);
@@ -65,17 +65,17 @@
   return v16;
 }
 
-- (BOOL)createDestinationInstancesForSourceInstance:(id)a3 entityMapping:(id)a4 manager:(id)a5 error:(id *)a6
+- (BOOL)createDestinationInstancesForSourceInstance:(id)instance entityMapping:(id)mapping manager:(id)manager error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v42 = a4;
-  v43 = a5;
-  v44 = v9;
-  v38 = [v9 valueForKey:@"externalRepresentation"];
+  instanceCopy = instance;
+  mappingCopy = mapping;
+  managerCopy = manager;
+  v44 = instanceCopy;
+  v38 = [instanceCopy valueForKey:@"externalRepresentation"];
   if (v38)
   {
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v11 = [(ExternalSequenceNumberToAttachmentNoteBodyToAttachmentMigrationPolicy *)self unarchiveObjectWithExternalRepresentation:v38];
     if ([v11 conformsToProtocol:&unk_286E33538] && objc_msgSend(v11, "conformsToProtocol:", &unk_286E3BCD0))
     {
@@ -101,12 +101,12 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v17 = [v16 contentID];
-              v18 = [v17 length] == 0;
+              contentID = [v16 contentID];
+              v18 = [contentID length] == 0;
 
               if (!v18)
               {
-                [v10 addObject:v16];
+                [array addObject:v16];
               }
             }
           }
@@ -118,14 +118,14 @@
       }
     }
 
-    if ([v10 count])
+    if ([array count])
     {
-      v19 = [v43 destinationContext];
+      destinationContext = [managerCopy destinationContext];
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      obj = v10;
+      obj = array;
       v20 = [obj countByEnumeratingWithState:&v45 objects:v53 count:16];
       if (v20)
       {
@@ -143,36 +143,36 @@
             }
 
             v25 = *(*(&v45 + 1) + 8 * v23);
-            v26 = [MEMORY[0x277CBE408] insertNewObjectForEntityForName:@"NoteAttachment" inManagedObjectContext:{v19, v38}];
-            v27 = [v25 contentID];
-            [v26 setValue:v27 forKey:@"contentID"];
+            v26 = [MEMORY[0x277CBE408] insertNewObjectForEntityForName:@"NoteAttachment" inManagedObjectContext:{destinationContext, v38}];
+            contentID2 = [v25 contentID];
+            [v26 setValue:contentID2 forKey:@"contentID"];
 
-            v28 = [v25 preferredFilename];
-            if (v28)
+            preferredFilename = [v25 preferredFilename];
+            if (preferredFilename)
             {
-              [v26 setValue:v28 forKey:@"filename"];
+              [v26 setValue:preferredFilename forKey:@"filename"];
             }
 
             else
             {
-              v29 = [v25 filename];
-              [v26 setValue:v29 forKey:@"filename"];
+              filename = [v25 filename];
+              [v26 setValue:filename forKey:@"filename"];
             }
 
-            v30 = [v25 mimeType];
-            [v26 setValue:v30 forKey:@"mimeType"];
+            mimeType = [v25 mimeType];
+            [v26 setValue:mimeType forKey:@"mimeType"];
 
-            v31 = [v25 regularFileContents];
+            regularFileContents = [v25 regularFileContents];
             v32 = objc_opt_class();
             MethodImplementation = class_getMethodImplementation(v32, v24);
-            if (((MethodImplementation)(v26, v24, v31, a6) & 1) == 0)
+            if (((MethodImplementation)(v26, v24, regularFileContents, error) & 1) == 0)
             {
 
               v34 = 0;
               goto LABEL_30;
             }
 
-            [v43 associateSourceInstance:v44 withDestinationInstance:v26 forEntityMapping:v42];
+            [managerCopy associateSourceInstance:v44 withDestinationInstance:v26 forEntityMapping:mappingCopy];
 
             ++v23;
           }
@@ -204,40 +204,40 @@ LABEL_30:
     v34 = 1;
   }
 
-  v35 = [v44 managedObjectContext];
-  [v35 refreshObject:v44 mergeChanges:0];
+  managedObjectContext = [v44 managedObjectContext];
+  [managedObjectContext refreshObject:v44 mergeChanges:0];
 
   v36 = *MEMORY[0x277D85DE8];
   return v34;
 }
 
-- (BOOL)createRelationshipsForDestinationInstance:(id)a3 entityMapping:(id)a4 manager:(id)a5 error:(id *)a6
+- (BOOL)createRelationshipsForDestinationInstance:(id)instance entityMapping:(id)mapping manager:(id)manager error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = [a4 name];
-  v30[0] = v9;
+  instanceCopy = instance;
+  managerCopy = manager;
+  name = [mapping name];
+  v30[0] = instanceCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-  v13 = [v10 sourceInstancesForEntityMappingNamed:v11 destinationInstances:v12];
-  v14 = [v13 lastObject];
+  v13 = [managerCopy sourceInstancesForEntityMappingNamed:name destinationInstances:v12];
+  lastObject = [v13 lastObject];
 
-  v15 = [v14 valueForKey:@"owner"];
+  v15 = [lastObject valueForKey:@"owner"];
   v29 = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
-  v17 = [v10 destinationInstancesForEntityMappingNamed:@"NoteToNote" sourceInstances:v16];
+  v17 = [managerCopy destinationInstancesForEntityMappingNamed:@"NoteToNote" sourceInstances:v16];
 
-  v18 = [v17 lastObject];
+  lastObject2 = [v17 lastObject];
 
-  if (v18)
+  if (lastObject2)
   {
-    [v9 setValue:v18 forKey:@"note"];
+    [instanceCopy setValue:lastObject2 forKey:@"note"];
   }
 
-  else if (a6)
+  else if (error)
   {
     v19 = MEMORY[0x277CCACA8];
-    v20 = [v9 valueForKey:@"contentID"];
+    v20 = [instanceCopy valueForKey:@"contentID"];
     v21 = [v19 stringWithFormat:@"Can't find destination note for attachment with CID: %@", v20];
 
     v22 = MEMORY[0x277CCA9B8];
@@ -245,22 +245,22 @@ LABEL_30:
     v27 = *MEMORY[0x277D36170];
     v28 = v21;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-    *a6 = [v22 errorWithDomain:v23 code:100 userInfo:v24];
+    *error = [v22 errorWithDomain:v23 code:100 userInfo:v24];
   }
 
   v25 = *MEMORY[0x277D85DE8];
-  return v18 != 0;
+  return lastObject2 != 0;
 }
 
-- (BOOL)endEntityMapping:(id)a3 manager:(id)a4 error:(id *)a5
+- (BOOL)endEntityMapping:(id)mapping manager:(id)manager error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
   v56.receiver = self;
   v56.super_class = ExternalSequenceNumberToAttachmentNoteBodyToAttachmentMigrationPolicy;
-  v31 = a3;
-  v32 = a4;
-  v30 = a5;
-  if ([NSEntityMigrationPolicy endEntityMapping:sel_endEntityMapping_manager_error_ manager:v31 error:?])
+  mappingCopy = mapping;
+  managerCopy = manager;
+  errorCopy = error;
+  if ([NSEntityMigrationPolicy endEntityMapping:sel_endEntityMapping_manager_error_ manager:mappingCopy error:?])
   {
     v50 = 0;
     v51 = &v50;
@@ -275,8 +275,8 @@ LABEL_30:
     v49[4] = &v50;
     v27 = MEMORY[0x25F88B080](v49);
     v29 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"NoteAttachment"];
-    v7 = [v32 destinationContext];
-    v28 = [v7 executeFetchRequest:v29 error:a5];
+    destinationContext = [managerCopy destinationContext];
+    v28 = [destinationContext executeFetchRequest:v29 error:error];
 
     if (!v28)
     {
@@ -335,9 +335,9 @@ LABEL_30:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v19 = [v18 contentID];
+                    contentID = [v18 contentID];
                     v20 = [v10 valueForKey:@"contentID"];
-                    v21 = [v19 isEqual:v20];
+                    v21 = [contentID isEqual:v20];
 
                     if (v21)
                     {
@@ -391,10 +391,10 @@ LABEL_30:
       goto LABEL_36;
     }
 
-    if (v30)
+    if (errorCopy)
     {
       v24 = 0;
-      *v30 = v23;
+      *errorCopy = v23;
     }
 
     else

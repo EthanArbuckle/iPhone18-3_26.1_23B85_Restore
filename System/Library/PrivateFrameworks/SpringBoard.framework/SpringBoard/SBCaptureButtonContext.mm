@@ -3,13 +3,13 @@
 + (id)defaultGravity;
 + (id)defaultPolicy;
 + (id)defaultRotationRate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSuppressed;
 - (BOOL)isWithinDirectLaunchGracePeriod;
 - (BOOL)shouldSuspendLaunchOnButtonDown;
 - (NSString)description;
-- (SBCaptureButtonContext)initWithDictionary:(id)a3;
-- (SBCaptureButtonContext)initWithEvent:(unint64_t)a3 gesture:(unint64_t)a4 machAbsoluteTimestamp:(unint64_t)a5 consoleModeActive:(BOOL)a6 consoleModeActiveStreakCount:(unint64_t)a7 backlightState:(int64_t)a8 timeSinceLastViewUnobstructed:(double)a9 uiLocked:(BOOL)a10 timeSinceLastStationary:(double)a11 timeSinceLastNonStationary:(double)a12 timeSinceLastStationarySquelch:(double)a13 lowLatencyTimeSinceLastStationary:(double)a14 lowLatencyTimeSinceLastNonStationary:(double)a15 inCameraPose:(BOOL)a16 gravity:(id)a17 rotationRate:(id)a18 deviceOrientation:(int64_t)a19 policy:(id)a20 cameraPrewarmed:(BOOL)a21 suppressedOnButtonDown:(BOOL)a22 suppressionState:(int64_t)a23 prewarmLockoutActive:(BOOL)a24 captureAppBundleID:(id)a25 pressDuration:(double)a26 foregroundAppBundleID:(id)a27 inAmbientPresentationMode:(BOOL)a28 connectedToWirelessCharger:(BOOL)a29 voiceOverScreenCurtainActive:(BOOL)a30 wantsClickAgain:(BOOL)a31 timeSinceLastClickAgainCoaching:(double)a32;
+- (SBCaptureButtonContext)initWithDictionary:(id)dictionary;
+- (SBCaptureButtonContext)initWithEvent:(unint64_t)event gesture:(unint64_t)gesture machAbsoluteTimestamp:(unint64_t)timestamp consoleModeActive:(BOOL)active consoleModeActiveStreakCount:(unint64_t)count backlightState:(int64_t)state timeSinceLastViewUnobstructed:(double)unobstructed uiLocked:(BOOL)self0 timeSinceLastStationary:(double)self1 timeSinceLastNonStationary:(double)self2 timeSinceLastStationarySquelch:(double)self3 lowLatencyTimeSinceLastStationary:(double)self4 lowLatencyTimeSinceLastNonStationary:(double)self5 inCameraPose:(BOOL)self6 gravity:(id)self7 rotationRate:(id)self8 deviceOrientation:(int64_t)self9 policy:(id)policy cameraPrewarmed:(BOOL)prewarmed suppressedOnButtonDown:(BOOL)down suppressionState:(int64_t)suppressionState prewarmLockoutActive:(BOOL)lockoutActive captureAppBundleID:(id)d pressDuration:(double)duration foregroundAppBundleID:(id)iD inAmbientPresentationMode:(BOOL)mode connectedToWirelessCharger:(BOOL)charger voiceOverScreenCurtainActive:(BOOL)event0 wantsClickAgain:(BOOL)event1 timeSinceLastClickAgainCoaching:(double)event2;
 - (id)computedContext;
 - (id)dictionaryRepresentation;
 - (int64_t)stationaryState;
@@ -18,64 +18,64 @@
 
 @implementation SBCaptureButtonContext
 
-- (SBCaptureButtonContext)initWithEvent:(unint64_t)a3 gesture:(unint64_t)a4 machAbsoluteTimestamp:(unint64_t)a5 consoleModeActive:(BOOL)a6 consoleModeActiveStreakCount:(unint64_t)a7 backlightState:(int64_t)a8 timeSinceLastViewUnobstructed:(double)a9 uiLocked:(BOOL)a10 timeSinceLastStationary:(double)a11 timeSinceLastNonStationary:(double)a12 timeSinceLastStationarySquelch:(double)a13 lowLatencyTimeSinceLastStationary:(double)a14 lowLatencyTimeSinceLastNonStationary:(double)a15 inCameraPose:(BOOL)a16 gravity:(id)a17 rotationRate:(id)a18 deviceOrientation:(int64_t)a19 policy:(id)a20 cameraPrewarmed:(BOOL)a21 suppressedOnButtonDown:(BOOL)a22 suppressionState:(int64_t)a23 prewarmLockoutActive:(BOOL)a24 captureAppBundleID:(id)a25 pressDuration:(double)a26 foregroundAppBundleID:(id)a27 inAmbientPresentationMode:(BOOL)a28 connectedToWirelessCharger:(BOOL)a29 voiceOverScreenCurtainActive:(BOOL)a30 wantsClickAgain:(BOOL)a31 timeSinceLastClickAgainCoaching:(double)a32
+- (SBCaptureButtonContext)initWithEvent:(unint64_t)event gesture:(unint64_t)gesture machAbsoluteTimestamp:(unint64_t)timestamp consoleModeActive:(BOOL)active consoleModeActiveStreakCount:(unint64_t)count backlightState:(int64_t)state timeSinceLastViewUnobstructed:(double)unobstructed uiLocked:(BOOL)self0 timeSinceLastStationary:(double)self1 timeSinceLastNonStationary:(double)self2 timeSinceLastStationarySquelch:(double)self3 lowLatencyTimeSinceLastStationary:(double)self4 lowLatencyTimeSinceLastNonStationary:(double)self5 inCameraPose:(BOOL)self6 gravity:(id)self7 rotationRate:(id)self8 deviceOrientation:(int64_t)self9 policy:(id)policy cameraPrewarmed:(BOOL)prewarmed suppressedOnButtonDown:(BOOL)down suppressionState:(int64_t)suppressionState prewarmLockoutActive:(BOOL)lockoutActive captureAppBundleID:(id)d pressDuration:(double)duration foregroundAppBundleID:(id)iD inAmbientPresentationMode:(BOOL)mode connectedToWirelessCharger:(BOOL)charger voiceOverScreenCurtainActive:(BOOL)event0 wantsClickAgain:(BOOL)event1 timeSinceLastClickAgainCoaching:(double)event2
 {
-  v41 = a17;
-  v42 = a18;
-  v43 = a20;
-  v44 = a25;
-  v54 = a27;
+  gravityCopy = gravity;
+  rateCopy = rate;
+  policyCopy = policy;
+  dCopy = d;
+  iDCopy = iD;
   v55.receiver = self;
   v55.super_class = SBCaptureButtonContext;
   v45 = [(SBCaptureButtonContext *)&v55 init];
   v46 = v45;
   if (v45)
   {
-    v45->_machAbsoluteTimestamp = a5;
-    v45->_event = a3;
-    v45->_inGameMode = a6;
-    v45->_gesture = a4;
-    v45->_inGameModeStreakCount = a7;
-    v45->_backlightState = a8;
-    v45->_uiLocked = a10;
-    v45->_timeSinceLastViewUnobstructed = a9;
-    v45->_timeSinceLastStationary = a11;
-    v45->_timeSinceLastNonStationary = a12;
-    v45->_timeSinceLastStationarySquelch = a13;
-    v45->_lowLatencyTimeSinceLastStationary = a14;
-    v45->_lowLatencyTimeSinceLastNonStationary = a15;
-    v45->_inCameraPose = a16;
-    objc_storeStrong(&v45->_gravity, a17);
-    objc_storeStrong(&v46->_rotationRate, a18);
-    v46->_deviceOrientation = a19;
-    objc_storeStrong(&v46->_policy, a20);
-    v46->_cameraPrewarmed = a21;
-    v46->_suppressedOnButtonDown = a22;
-    v46->_suppressionState = a23;
-    v46->_prewarmLockoutActive = a24;
-    objc_storeStrong(&v46->_captureAppBundleID, a25);
-    v46->_pressDuration = a26;
-    objc_storeStrong(&v46->_foregroundAppBundleID, a27);
-    v46->_inAmbientPresentationMode = a28;
-    v46->_connectedToWirelessCharger = a29;
-    v46->_voiceOverScreenCurtainActive = a30;
-    v46->_wantsClickAgain = a31;
-    v46->_timeSinceLastClickAgainCoaching = a32;
+    v45->_machAbsoluteTimestamp = timestamp;
+    v45->_event = event;
+    v45->_inGameMode = active;
+    v45->_gesture = gesture;
+    v45->_inGameModeStreakCount = count;
+    v45->_backlightState = state;
+    v45->_uiLocked = locked;
+    v45->_timeSinceLastViewUnobstructed = unobstructed;
+    v45->_timeSinceLastStationary = stationary;
+    v45->_timeSinceLastNonStationary = nonStationary;
+    v45->_timeSinceLastStationarySquelch = squelch;
+    v45->_lowLatencyTimeSinceLastStationary = lastStationary;
+    v45->_lowLatencyTimeSinceLastNonStationary = lastNonStationary;
+    v45->_inCameraPose = pose;
+    objc_storeStrong(&v45->_gravity, gravity);
+    objc_storeStrong(&v46->_rotationRate, rate);
+    v46->_deviceOrientation = orientation;
+    objc_storeStrong(&v46->_policy, policy);
+    v46->_cameraPrewarmed = prewarmed;
+    v46->_suppressedOnButtonDown = down;
+    v46->_suppressionState = suppressionState;
+    v46->_prewarmLockoutActive = lockoutActive;
+    objc_storeStrong(&v46->_captureAppBundleID, d);
+    v46->_pressDuration = duration;
+    objc_storeStrong(&v46->_foregroundAppBundleID, iD);
+    v46->_inAmbientPresentationMode = mode;
+    v46->_connectedToWirelessCharger = charger;
+    v46->_voiceOverScreenCurtainActive = curtainActive;
+    v46->_wantsClickAgain = again;
+    v46->_timeSinceLastClickAgainCoaching = coaching;
   }
 
   return v46;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   event = self->_event;
   v158[0] = MEMORY[0x277D85DD0];
   v158[1] = 3221225472;
   v158[2] = __34__SBCaptureButtonContext_isEqual___block_invoke;
   v158[3] = &unk_2783ACDE0;
-  v7 = v4;
+  v7 = equalCopy;
   v159 = v7;
   v8 = [v5 appendInteger:event counterpart:v158];
   gesture = self->_gesture;
@@ -317,130 +317,130 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_event];
-  v5 = [v3 appendInteger:self->_gesture];
-  v6 = [v3 appendInt64:self->_machAbsoluteTimestamp];
-  v7 = [v3 appendBool:self->_inGameMode];
-  v8 = [v3 appendInteger:self->_inGameModeStreakCount];
-  v9 = [v3 appendInteger:self->_backlightState];
-  v10 = [v3 appendDouble:self->_timeSinceLastViewUnobstructed];
-  v11 = [v3 appendBool:self->_uiLocked];
-  v12 = [v3 appendDouble:self->_timeSinceLastStationary];
-  v13 = [v3 appendDouble:self->_timeSinceLastNonStationary];
-  v14 = [v3 appendDouble:self->_timeSinceLastStationarySquelch];
-  v15 = [v3 appendBool:self->_lowLatencyTimeSinceLastStationary != 0.0];
-  v16 = [v3 appendBool:self->_lowLatencyTimeSinceLastNonStationary != 0.0];
-  v17 = [v3 appendBool:self->_inCameraPose];
-  v18 = [v3 appendObject:self->_gravity];
-  v19 = [v3 appendObject:self->_rotationRate];
-  v20 = [v3 appendObject:self->_policy];
-  v21 = [v3 appendInteger:self->_deviceOrientation];
-  v22 = [v3 appendBool:self->_cameraPrewarmed];
-  v23 = [v3 appendBool:self->_suppressedOnButtonDown];
-  v24 = [v3 appendInteger:self->_suppressionState];
-  v25 = [v3 appendBool:self->_prewarmLockoutActive];
-  v26 = [v3 appendString:self->_captureAppBundleID];
-  v27 = [v3 appendInt64:self->_pressDuration];
-  v28 = [v3 appendString:self->_foregroundAppBundleID];
-  v29 = [v3 appendBool:self->_inAmbientPresentationMode];
-  v30 = [v3 appendBool:self->_connectedToWirelessCharger];
-  v31 = [v3 appendBool:self->_voiceOverScreenCurtainActive];
-  v32 = [v3 appendBool:self->_wantsClickAgain];
-  v33 = [v3 appendDouble:self->_timeSinceLastClickAgainCoaching];
-  v34 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_event];
+  v5 = [builder appendInteger:self->_gesture];
+  v6 = [builder appendInt64:self->_machAbsoluteTimestamp];
+  v7 = [builder appendBool:self->_inGameMode];
+  v8 = [builder appendInteger:self->_inGameModeStreakCount];
+  v9 = [builder appendInteger:self->_backlightState];
+  v10 = [builder appendDouble:self->_timeSinceLastViewUnobstructed];
+  v11 = [builder appendBool:self->_uiLocked];
+  v12 = [builder appendDouble:self->_timeSinceLastStationary];
+  v13 = [builder appendDouble:self->_timeSinceLastNonStationary];
+  v14 = [builder appendDouble:self->_timeSinceLastStationarySquelch];
+  v15 = [builder appendBool:self->_lowLatencyTimeSinceLastStationary != 0.0];
+  v16 = [builder appendBool:self->_lowLatencyTimeSinceLastNonStationary != 0.0];
+  v17 = [builder appendBool:self->_inCameraPose];
+  v18 = [builder appendObject:self->_gravity];
+  v19 = [builder appendObject:self->_rotationRate];
+  v20 = [builder appendObject:self->_policy];
+  v21 = [builder appendInteger:self->_deviceOrientation];
+  v22 = [builder appendBool:self->_cameraPrewarmed];
+  v23 = [builder appendBool:self->_suppressedOnButtonDown];
+  v24 = [builder appendInteger:self->_suppressionState];
+  v25 = [builder appendBool:self->_prewarmLockoutActive];
+  v26 = [builder appendString:self->_captureAppBundleID];
+  v27 = [builder appendInt64:self->_pressDuration];
+  v28 = [builder appendString:self->_foregroundAppBundleID];
+  v29 = [builder appendBool:self->_inAmbientPresentationMode];
+  v30 = [builder appendBool:self->_connectedToWirelessCharger];
+  v31 = [builder appendBool:self->_voiceOverScreenCurtainActive];
+  v32 = [builder appendBool:self->_wantsClickAgain];
+  v33 = [builder appendDouble:self->_timeSinceLastClickAgainCoaching];
+  v34 = [builder hash];
 
   return v34;
 }
 
 - (NSString)description
 {
-  v2 = [(SBCaptureButtonContext *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(SBCaptureButtonContext *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
 
-- (SBCaptureButtonContext)initWithDictionary:(id)a3
+- (SBCaptureButtonContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v78 = [v4 objectForKeyedSubscript:@"CaptureButtonEvent"];
+  dictionaryCopy = dictionary;
+  v78 = [dictionaryCopy objectForKeyedSubscript:@"CaptureButtonEvent"];
   v66 = qword_21F8A6820[SBCaptureButtonLoggingEventFromString(v78)];
-  v77 = [v4 objectForKeyedSubscript:@"CaptureButtonGesture"];
-  v67 = [v77 integerValue];
-  v76 = [v4 objectForKeyedSubscript:@"Timestamp"];
-  v65 = [v76 unsignedLongLongValue];
-  v75 = [v4 objectForKeyedSubscript:@"InGameMode"];
-  v63 = [v75 BOOLValue];
+  v77 = [dictionaryCopy objectForKeyedSubscript:@"CaptureButtonGesture"];
+  integerValue = [v77 integerValue];
+  v76 = [dictionaryCopy objectForKeyedSubscript:@"Timestamp"];
+  unsignedLongLongValue = [v76 unsignedLongLongValue];
+  v75 = [dictionaryCopy objectForKeyedSubscript:@"InGameMode"];
+  bOOLValue = [v75 BOOLValue];
   inGameModeStreakCount = self->_inGameModeStreakCount;
-  v74 = [v4 objectForKeyedSubscript:@"BacklightState"];
+  v74 = [dictionaryCopy objectForKeyedSubscript:@"BacklightState"];
   v60 = SBBacklightStateFromString(v74);
-  v73 = [v4 objectForKeyedSubscript:@"TimeSinceLastViewUnobstructed"];
+  v73 = [dictionaryCopy objectForKeyedSubscript:@"TimeSinceLastViewUnobstructed"];
   [v73 doubleValue];
   v6 = v5;
-  v72 = [v4 objectForKeyedSubscript:@"UILocked"];
-  v56 = [v72 BOOLValue];
-  v71 = [v4 objectForKeyedSubscript:@"TimeSinceLastStationary"];
+  v72 = [dictionaryCopy objectForKeyedSubscript:@"UILocked"];
+  bOOLValue2 = [v72 BOOLValue];
+  v71 = [dictionaryCopy objectForKeyedSubscript:@"TimeSinceLastStationary"];
   [v71 doubleValue];
   v8 = v7;
-  v70 = [v4 objectForKeyedSubscript:@"TimeSinceLastNonStationary"];
+  v70 = [dictionaryCopy objectForKeyedSubscript:@"TimeSinceLastNonStationary"];
   [v70 doubleValue];
   v10 = v9;
-  v69 = [v4 objectForKeyedSubscript:@"TimeSinceLastStationarySquelch"];
+  v69 = [dictionaryCopy objectForKeyedSubscript:@"TimeSinceLastStationarySquelch"];
   [v69 doubleValue];
   v12 = v11;
-  v64 = [v4 objectForKeyedSubscript:@"LowLatencyTimeSinceLastStationary"];
+  v64 = [dictionaryCopy objectForKeyedSubscript:@"LowLatencyTimeSinceLastStationary"];
   [v64 doubleValue];
   v14 = v13;
-  v61 = [v4 objectForKeyedSubscript:@"LowLatencyTimeSinceLastNonStationary"];
+  v61 = [dictionaryCopy objectForKeyedSubscript:@"LowLatencyTimeSinceLastNonStationary"];
   [v61 doubleValue];
   v16 = v15;
-  v58 = [v4 objectForKeyedSubscript:@"InCameraPose"];
-  v52 = [v58 BOOLValue];
+  v58 = [dictionaryCopy objectForKeyedSubscript:@"InCameraPose"];
+  bOOLValue3 = [v58 BOOLValue];
   v17 = [SBDeviceMotionVector alloc];
-  v57 = [v4 objectForKeyedSubscript:@"GravityVector"];
+  v57 = [dictionaryCopy objectForKeyedSubscript:@"GravityVector"];
   v50 = [(SBDeviceMotionVector *)v17 initWithDictionary:v57];
   v18 = [SBDeviceMotionVector alloc];
-  v55 = [v4 objectForKeyedSubscript:@"RotationRateVector"];
+  v55 = [dictionaryCopy objectForKeyedSubscript:@"RotationRateVector"];
   v48 = [(SBDeviceMotionVector *)v18 initWithDictionary:v55];
-  v54 = [v4 objectForKeyedSubscript:@"UIDeviceOrientation"];
-  v46 = [v54 integerValue];
+  v54 = [dictionaryCopy objectForKeyedSubscript:@"UIDeviceOrientation"];
+  integerValue2 = [v54 integerValue];
   v19 = [SBCaptureButtonPolicy alloc];
-  v53 = [v4 objectForKeyedSubscript:@"Policy"];
+  v53 = [dictionaryCopy objectForKeyedSubscript:@"Policy"];
   v44 = [(SBCaptureButtonPolicy *)v19 initWithDictionary:v53];
-  v51 = [v4 objectForKeyedSubscript:@"CameraPrewarmed"];
-  v42 = [v51 BOOLValue];
-  v49 = [v4 objectForKeyedSubscript:@"SuppressedOnButtonDown"];
-  v41 = [v49 BOOLValue];
-  v47 = [v4 objectForKeyedSubscript:@"SuppressionState"];
+  v51 = [dictionaryCopy objectForKeyedSubscript:@"CameraPrewarmed"];
+  bOOLValue4 = [v51 BOOLValue];
+  v49 = [dictionaryCopy objectForKeyedSubscript:@"SuppressedOnButtonDown"];
+  bOOLValue5 = [v49 BOOLValue];
+  v47 = [dictionaryCopy objectForKeyedSubscript:@"SuppressionState"];
   v39 = SBCaptureButtonSuppressionStateFromString(v47);
-  v45 = [v4 objectForKeyedSubscript:@"PrewarmLockoutActive"];
-  v38 = [v45 BOOLValue];
-  v37 = [v4 objectForKeyedSubscript:@"CaptureAppBundleID"];
-  v43 = [v4 objectForKeyedSubscript:@"PressDuration"];
+  v45 = [dictionaryCopy objectForKeyedSubscript:@"PrewarmLockoutActive"];
+  bOOLValue6 = [v45 BOOLValue];
+  v37 = [dictionaryCopy objectForKeyedSubscript:@"CaptureAppBundleID"];
+  v43 = [dictionaryCopy objectForKeyedSubscript:@"PressDuration"];
   [v43 doubleValue];
   v21 = v20;
-  v22 = [v4 objectForKeyedSubscript:@"ForegroundAppBundleID"];
-  v40 = [v4 objectForKeyedSubscript:@"InAmbientPresentationMode"];
-  v23 = [v40 BOOLValue];
-  v24 = [v4 objectForKeyedSubscript:@"ConnectedToWirelessCharger"];
-  v25 = [v24 BOOLValue];
-  v26 = [v4 objectForKeyedSubscript:@"VoiceOverScreenCurtainActiveKey"];
-  v27 = [v26 BOOLValue];
-  v28 = [v4 objectForKeyedSubscript:@"WantsClickAgain"];
-  v29 = [v28 BOOLValue];
-  v30 = [v4 objectForKeyedSubscript:@"TimeSinceLastClickAgainCoaching"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"ForegroundAppBundleID"];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"InAmbientPresentationMode"];
+  bOOLValue7 = [v40 BOOLValue];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"ConnectedToWirelessCharger"];
+  bOOLValue8 = [v24 BOOLValue];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"VoiceOverScreenCurtainActiveKey"];
+  bOOLValue9 = [v26 BOOLValue];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"WantsClickAgain"];
+  bOOLValue10 = [v28 BOOLValue];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"TimeSinceLastClickAgainCoaching"];
   [v30 doubleValue];
-  BYTE3(v36) = v29;
-  BYTE2(v36) = v27;
-  BYTE1(v36) = v25;
-  LOBYTE(v36) = v23;
-  LOBYTE(v35) = v38;
-  BYTE1(v34) = v41;
-  LOBYTE(v34) = v42;
-  BYTE1(v33) = v52;
-  LOBYTE(v33) = v56;
-  v68 = [SBCaptureButtonContext initWithEvent:"initWithEvent:gesture:machAbsoluteTimestamp:consoleModeActive:consoleModeActiveStreakCount:backlightState:timeSinceLastViewUnobstructed:uiLocked:timeSinceLastStationary:timeSinceLastNonStationary:timeSinceLastStationarySquelch:lowLatencyTimeSinceLastStationary:lowLatencyTimeSinceLastNonStationary:inCameraPose:gravity:rotationRate:deviceOrientation:policy:cameraPrewarmed:suppressedOnButtonDown:suppressionState:prewarmLockoutActive:captureAppBundleID:pressDuration:foregroundAppBundleID:inAmbientPresentationMode:connectedToWirelessCharger:voiceOverScreenCurtainActive:wantsClickAgain:timeSinceLastClickAgainCoaching:" gesture:v66 machAbsoluteTimestamp:v67 consoleModeActive:v65 consoleModeActiveStreakCount:v63 backlightState:inGameModeStreakCount timeSinceLastViewUnobstructed:v60 uiLocked:v6 timeSinceLastStationary:v8 timeSinceLastNonStationary:v10 timeSinceLastStationarySquelch:v12 lowLatencyTimeSinceLastStationary:v14 lowLatencyTimeSinceLastNonStationary:v16 inCameraPose:v21 gravity:v31 rotationRate:v33 deviceOrientation:v50 policy:v48 cameraPrewarmed:v46 suppressedOnButtonDown:v44 suppressionState:v34 prewarmLockoutActive:v39 captureAppBundleID:v35 pressDuration:v37 foregroundAppBundleID:v22 inAmbientPresentationMode:v36 connectedToWirelessCharger:? voiceOverScreenCurtainActive:? wantsClickAgain:? timeSinceLastClickAgainCoaching:?];
+  BYTE3(v36) = bOOLValue10;
+  BYTE2(v36) = bOOLValue9;
+  BYTE1(v36) = bOOLValue8;
+  LOBYTE(v36) = bOOLValue7;
+  LOBYTE(v35) = bOOLValue6;
+  BYTE1(v34) = bOOLValue5;
+  LOBYTE(v34) = bOOLValue4;
+  BYTE1(v33) = bOOLValue3;
+  LOBYTE(v33) = bOOLValue2;
+  v68 = [SBCaptureButtonContext initWithEvent:"initWithEvent:gesture:machAbsoluteTimestamp:consoleModeActive:consoleModeActiveStreakCount:backlightState:timeSinceLastViewUnobstructed:uiLocked:timeSinceLastStationary:timeSinceLastNonStationary:timeSinceLastStationarySquelch:lowLatencyTimeSinceLastStationary:lowLatencyTimeSinceLastNonStationary:inCameraPose:gravity:rotationRate:deviceOrientation:policy:cameraPrewarmed:suppressedOnButtonDown:suppressionState:prewarmLockoutActive:captureAppBundleID:pressDuration:foregroundAppBundleID:inAmbientPresentationMode:connectedToWirelessCharger:voiceOverScreenCurtainActive:wantsClickAgain:timeSinceLastClickAgainCoaching:" gesture:v66 machAbsoluteTimestamp:integerValue consoleModeActive:unsignedLongLongValue consoleModeActiveStreakCount:bOOLValue backlightState:inGameModeStreakCount timeSinceLastViewUnobstructed:v60 uiLocked:v6 timeSinceLastStationary:v8 timeSinceLastNonStationary:v10 timeSinceLastStationarySquelch:v12 lowLatencyTimeSinceLastStationary:v14 lowLatencyTimeSinceLastNonStationary:v16 inCameraPose:v21 gravity:v31 rotationRate:v33 deviceOrientation:v50 policy:v48 cameraPrewarmed:integerValue2 suppressedOnButtonDown:v44 suppressionState:v34 prewarmLockoutActive:v39 captureAppBundleID:v35 pressDuration:v37 foregroundAppBundleID:v22 inAmbientPresentationMode:v36 connectedToWirelessCharger:? voiceOverScreenCurtainActive:? wantsClickAgain:? timeSinceLastClickAgainCoaching:?];
 
   return v68;
 }
@@ -504,17 +504,17 @@
   v25 = [MEMORY[0x277CCABB0] numberWithBool:self->_inCameraPose];
   v40[14] = v25;
   v39[15] = @"GravityVector";
-  v24 = [(SBDeviceMotionVector *)self->_gravity dictionaryRepresentation];
-  v40[15] = v24;
+  dictionaryRepresentation = [(SBDeviceMotionVector *)self->_gravity dictionaryRepresentation];
+  v40[15] = dictionaryRepresentation;
   v39[16] = @"RotationRateVector";
-  v23 = [(SBDeviceMotionVector *)self->_rotationRate dictionaryRepresentation];
-  v40[16] = v23;
+  dictionaryRepresentation2 = [(SBDeviceMotionVector *)self->_rotationRate dictionaryRepresentation];
+  v40[16] = dictionaryRepresentation2;
   v39[17] = @"UIDeviceOrientation";
   v22 = [MEMORY[0x277CCABB0] numberWithInteger:self->_deviceOrientation];
   v40[17] = v22;
   v39[18] = @"Policy";
-  v21 = [(SBCaptureButtonPolicy *)self->_policy dictionaryRepresentation];
-  v40[18] = v21;
+  dictionaryRepresentation3 = [(SBCaptureButtonPolicy *)self->_policy dictionaryRepresentation];
+  v40[18] = dictionaryRepresentation3;
   v39[19] = @"CameraPrewarmed";
   v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_cameraPrewarmed];
   v40[19] = v20;
@@ -612,11 +612,11 @@
   v4 = v3;
   [(SBCaptureButtonContext *)self timeSinceLastNonStationary];
   v6 = v5;
-  v7 = [(SBCaptureButtonContext *)self policy];
-  [v7 deviceStationaryDetectionStationaryThreshold];
+  policy = [(SBCaptureButtonContext *)self policy];
+  [policy deviceStationaryDetectionStationaryThreshold];
   v9 = v8;
-  v10 = [(SBCaptureButtonContext *)self policy];
-  [v10 deviceStationaryDetectionStationaryPickUpBuffer];
+  policy2 = [(SBCaptureButtonContext *)self policy];
+  [policy2 deviceStationaryDetectionStationaryPickUpBuffer];
   v12 = [SBDeviceStationaryMotionDetector stateFromTimeSinceLastStationary:v4 timeSinceLastNonStationary:v6 stationaryThreshold:v9 pickUpBuffer:v11];
 
   return v12;
@@ -626,8 +626,8 @@
 {
   [(SBCaptureButtonContext *)self timeSinceLastViewUnobstructed];
   v4 = v3;
-  v5 = [(SBCaptureButtonContext *)self policy];
-  [v5 directLaunchAfterUnsuppressGracePeriod];
+  policy = [(SBCaptureButtonContext *)self policy];
+  [policy directLaunchAfterUnsuppressGracePeriod];
   v7 = v4 <= v6;
 
   return v7;
@@ -657,33 +657,33 @@
     return 0;
   }
 
-  v3 = [(SBCaptureButtonContext *)self policy];
-  if ([v3 suppressionEnabled])
+  policy = [(SBCaptureButtonContext *)self policy];
+  if ([policy suppressionEnabled])
   {
-    v4 = [(SBCaptureButtonContext *)self policy];
-    if ([v4 launchIfUnobstructedWhileButtonDownEnabled])
+    policy2 = [(SBCaptureButtonContext *)self policy];
+    if ([policy2 launchIfUnobstructedWhileButtonDownEnabled])
     {
-      v5 = [(SBCaptureButtonContext *)self isSuppressed];
+      isSuppressed = [(SBCaptureButtonContext *)self isSuppressed];
     }
 
     else
     {
-      v5 = 0;
+      isSuppressed = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    isSuppressed = 0;
   }
 
-  return v5;
+  return isSuppressed;
 }
 
 - (BOOL)isSuppressed
 {
-  v3 = [(SBCaptureButtonContext *)self policy];
-  if ([v3 suppressionEnabled])
+  policy = [(SBCaptureButtonContext *)self policy];
+  if ([policy suppressionEnabled])
   {
     v4 = [(SBCaptureButtonContext *)self suppressionState]== 1;
   }

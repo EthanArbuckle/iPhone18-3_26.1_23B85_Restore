@@ -2,26 +2,26 @@
 - (BOOL)_isOverUnlockedApplication;
 - (BOOL)_isVisionIntelligenceEnabled;
 - (BOOL)isActivationInProgress;
-- (SBCaptureHardwareButtonAppActivator)initWithSettingsSnapshot:(id)a3 windowScene:(id)a4 scanModeResource:(id)a5 activationManager:(id)a6 suppressionManager:(id)a7 setupManager:(id)a8 authenticationController:(id)a9 HUDController:(id)a10;
+- (SBCaptureHardwareButtonAppActivator)initWithSettingsSnapshot:(id)snapshot windowScene:(id)scene scanModeResource:(id)resource activationManager:(id)manager suppressionManager:(id)suppressionManager setupManager:(id)setupManager authenticationController:(id)controller HUDController:(id)self0;
 - (double)deviceStationaryDetectionStationaryDebounceInterval;
 - (id)__clickAgainCoachingText;
 - (id)__consoleModeCoachingText;
 - (id)_behaviorsPolicy;
-- (id)_coachingStringForCoachIntent:(unint64_t)a3;
+- (id)_coachingStringForCoachIntent:(unint64_t)intent;
 - (id)_createCaptureButtonDefaultsObserver;
 - (id)_foregoundAppBundleID;
 - (void)_abortVisionIntelligence;
-- (void)_activateVisionIntelligenceWithCompletion:(id)a3;
+- (void)_activateVisionIntelligenceWithCompletion:(id)completion;
 - (void)_attemptCameraAppLaunchSequence;
 - (void)_beginObservingConsoleMode;
 - (void)_cancel;
-- (void)_cancelCameraPrewarmForBundleIdentifier:(id)a3;
+- (void)_cancelCameraPrewarmForBundleIdentifier:(id)identifier;
 - (void)_cancelHintingDroplet;
 - (void)_cancelLaunchAnimation;
 - (void)_consoleModeDidChange;
 - (void)_deferredLaunchTimeoutDidOccur;
-- (void)_handleButtonUpInteraction:(id)a3;
-- (void)_handleCaptureButtonInteraction:(id)a3;
+- (void)_handleButtonUpInteraction:(id)interaction;
+- (void)_handleCaptureButtonInteraction:(id)interaction;
 - (void)_initiateLaunchAnimationExpansion;
 - (void)_initiateLaunchAnimationPrelude;
 - (void)_invalidateDeferredLaunchTimer;
@@ -31,42 +31,42 @@
 - (void)_invalidateVisionIntelligenceActivation;
 - (void)_launchCaptureApp;
 - (void)_launchGracePeriodTimeoutDidOccur;
-- (void)_prepareConfirmedLaunchSequenceForButtonDown:(BOOL)a3;
-- (void)_prewarmCameraForBundleIdentifier:(id)a3;
+- (void)_prepareConfirmedLaunchSequenceForButtonDown:(BOOL)down;
+- (void)_prewarmCameraForBundleIdentifier:(id)identifier;
 - (void)_prewarmLockoutTimeoutDidOccur;
 - (void)_prewarmVisionIntelligenceActivation;
 - (void)_setupCaptureButtonBehaviors;
 - (void)_showHintingDroplet;
-- (void)_startDeferredLaunchTimerWithTimeout:(double)a3;
-- (void)_startLaunchGracePeriodTimerWithTimeout:(double)a3;
-- (void)_startPrewarmLockoutTimerWithTimeout:(double)a3;
-- (void)_suppressionManagerDidUnsuppress:(id)a3;
+- (void)_startDeferredLaunchTimerWithTimeout:(double)timeout;
+- (void)_startLaunchGracePeriodTimerWithTimeout:(double)timeout;
+- (void)_startPrewarmLockoutTimerWithTimeout:(double)timeout;
+- (void)_suppressionManagerDidUnsuppress:(id)unsuppress;
 - (void)_takeButtonDownPowerAssertion;
 - (void)_updateCaptureButtonDefaults;
-- (void)_updateStationarySquelchTimestampInContext:(id)a3 timeSinceLastStationarySquelch:(double)a4;
+- (void)_updateStationarySquelchTimestampInContext:(id)context timeSinceLastStationarySquelch:(double)squelch;
 - (void)_updateStationaryState;
-- (void)activateForGesture:(unint64_t)a3 atMachAbsoluteTime:(unint64_t)a4 pressDuration:(double)a5 suppressionOptions:(unint64_t)a6;
-- (void)cancelActivationForGesture:(unint64_t)a3;
-- (void)captureButtonSuppressionManager:(id)a3 event:(id)a4;
+- (void)activateForGesture:(unint64_t)gesture atMachAbsoluteTime:(unint64_t)time pressDuration:(double)duration suppressionOptions:(unint64_t)options;
+- (void)cancelActivationForGesture:(unint64_t)gesture;
+- (void)captureButtonSuppressionManager:(id)manager event:(id)event;
 - (void)dealloc;
 - (void)invalidate;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4;
-- (void)prepareForGesture:(unint64_t)a3 forAppBundleID:(id)a4 atMachAbsoluteTime:(unint64_t)a5 suppressionOptions:(unint64_t)a6;
-- (void)sessionDidFinalize:(id)a3;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context;
+- (void)prepareForGesture:(unint64_t)gesture forAppBundleID:(id)d atMachAbsoluteTime:(unint64_t)time suppressionOptions:(unint64_t)options;
+- (void)sessionDidFinalize:(id)finalize;
 @end
 
 @implementation SBCaptureHardwareButtonAppActivator
 
-- (SBCaptureHardwareButtonAppActivator)initWithSettingsSnapshot:(id)a3 windowScene:(id)a4 scanModeResource:(id)a5 activationManager:(id)a6 suppressionManager:(id)a7 setupManager:(id)a8 authenticationController:(id)a9 HUDController:(id)a10
+- (SBCaptureHardwareButtonAppActivator)initWithSettingsSnapshot:(id)snapshot windowScene:(id)scene scanModeResource:(id)resource activationManager:(id)manager suppressionManager:(id)suppressionManager setupManager:(id)setupManager authenticationController:(id)controller HUDController:(id)self0
 {
-  v16 = a3;
-  v44 = a4;
-  v43 = a5;
-  v42 = a6;
-  v17 = a7;
-  v41 = a8;
-  v40 = a9;
-  v18 = a10;
+  snapshotCopy = snapshot;
+  sceneCopy = scene;
+  resourceCopy = resource;
+  managerCopy = manager;
+  suppressionManagerCopy = suppressionManager;
+  setupManagerCopy = setupManager;
+  controllerCopy = controller;
+  dControllerCopy = dController;
   v45.receiver = self;
   v45.super_class = SBCaptureHardwareButtonAppActivator;
   v19 = [(SBCaptureHardwareButtonAppActivator *)&v45 init];
@@ -75,20 +75,20 @@
     goto LABEL_11;
   }
 
-  if (!v16)
+  if (!snapshotCopy)
   {
     [SBCaptureHardwareButtonAppActivator initWithSettingsSnapshot:windowScene:scanModeResource:activationManager:suppressionManager:setupManager:authenticationController:HUDController:];
   }
 
-  if (!v43)
+  if (!resourceCopy)
   {
     [SBCaptureHardwareButtonAppActivator initWithSettingsSnapshot:windowScene:scanModeResource:activationManager:suppressionManager:setupManager:authenticationController:HUDController:];
   }
 
-  if (!v42)
+  if (!managerCopy)
   {
     [SBCaptureHardwareButtonAppActivator initWithSettingsSnapshot:windowScene:scanModeResource:activationManager:suppressionManager:setupManager:authenticationController:HUDController:];
-    if (v17)
+    if (suppressionManagerCopy)
     {
       goto LABEL_8;
     }
@@ -98,23 +98,23 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (!v17)
+  if (!suppressionManagerCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_8:
-  if (!v44)
+  if (!sceneCopy)
   {
     [SBCaptureHardwareButtonAppActivator initWithSettingsSnapshot:windowScene:scanModeResource:activationManager:suppressionManager:setupManager:authenticationController:HUDController:];
   }
 
-  objc_storeStrong(&v19->_windowScene, a4);
-  objc_storeStrong(&v19->_scanningModeAssertionProvider, a5);
-  objc_storeStrong(&v19->_activationManager, a6);
-  objc_storeStrong(&v19->_suppressionManager, a7);
-  objc_storeStrong(&v19->_setupManager, a8);
-  objc_storeStrong(&v19->_authenticationController, a9);
+  objc_storeStrong(&v19->_windowScene, scene);
+  objc_storeStrong(&v19->_scanningModeAssertionProvider, resource);
+  objc_storeStrong(&v19->_activationManager, manager);
+  objc_storeStrong(&v19->_suppressionManager, suppressionManager);
+  objc_storeStrong(&v19->_setupManager, setupManager);
+  objc_storeStrong(&v19->_authenticationController, controller);
   v19->_valid = 1;
   v19->_preparedForCurrentActivation = 0;
   v19->_lastClickAgainSquelchTimestamp = 0.0;
@@ -124,10 +124,10 @@ LABEL_8:
 
   v19->_consoleModeNotifyToken = -1;
   [(SBCaptureHardwareButtonAppActivator *)v19 _beginObservingConsoleMode];
-  v22 = [v44 layoutStateTransitionCoordinator];
-  [v22 addObserver:v19];
-  objc_storeStrong(&v19->_settings, a3);
-  v23 = [[SBCaptureButtonCoachingController alloc] initWithHUDController:v18];
+  layoutStateTransitionCoordinator = [sceneCopy layoutStateTransitionCoordinator];
+  [layoutStateTransitionCoordinator addObserver:v19];
+  objc_storeStrong(&v19->_settings, snapshot);
+  v23 = [[SBCaptureButtonCoachingController alloc] initWithHUDController:dControllerCopy];
   coachingController = v19->_coachingController;
   v19->_coachingController = v23;
 
@@ -142,21 +142,21 @@ LABEL_8:
   v19->_deviceMotionDetector = v27;
 
   v29 = +[SBDefaults localDefaults];
-  v30 = [v29 captureButtonDefaults];
+  captureButtonDefaults = [v29 captureButtonDefaults];
   captureButtonDefaults = v19->_captureButtonDefaults;
-  v19->_captureButtonDefaults = v30;
+  v19->_captureButtonDefaults = captureButtonDefaults;
 
-  v32 = [(SBCaptureHardwareButtonAppActivator *)v19 _createCaptureButtonDefaultsObserver];
+  _createCaptureButtonDefaultsObserver = [(SBCaptureHardwareButtonAppActivator *)v19 _createCaptureButtonDefaultsObserver];
   captureButtonDefaultsObserver = v19->_captureButtonDefaultsObserver;
-  v19->_captureButtonDefaultsObserver = v32;
+  v19->_captureButtonDefaultsObserver = _createCaptureButtonDefaultsObserver;
 
   [(SBCaptureHardwareButtonAppActivator *)v19 _updateCaptureButtonDefaults];
   v19->_machAbsoluteButtonPressDownTimeForDeferredLaunches = 0;
-  [v16 launchAfterButtonUpGracePeriod];
+  [snapshotCopy launchAfterButtonUpGracePeriod];
   v19->_gracePeriodForVOUnobstructionAfterRelease = v34;
-  [v16 ignoreFaceDownAfterDuration];
+  [snapshotCopy ignoreFaceDownAfterDuration];
   v19->_honorFaceDownDuration = v35;
-  [(SBSystemActionControl *)v17 addSystemActionValidator:v19];
+  [(SBSystemActionControl *)suppressionManagerCopy addSystemActionValidator:v19];
   v36 = objc_alloc_init(MEMORY[0x277CF0DB0]);
   batteryDeviceController = v19->_batteryDeviceController;
   v19->_batteryDeviceController = v36;
@@ -170,7 +170,7 @@ LABEL_11:
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v1 handleFailureInMethod:v0 object:? file:? lineNumber:? description:?];
 }
@@ -188,11 +188,11 @@ LABEL_11:
   }
 }
 
-- (void)prepareForGesture:(unint64_t)a3 forAppBundleID:(id)a4 atMachAbsoluteTime:(unint64_t)a5 suppressionOptions:(unint64_t)a6
+- (void)prepareForGesture:(unint64_t)gesture forAppBundleID:(id)d atMachAbsoluteTime:(unint64_t)time suppressionOptions:(unint64_t)options
 {
-  v52 = a6;
+  optionsCopy = options;
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  dCopy = d;
   if (!self->_valid)
   {
     [SBCaptureHardwareButtonAppActivator prepareForGesture:forAppBundleID:atMachAbsoluteTime:suppressionOptions:];
@@ -208,53 +208,53 @@ LABEL_11:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v58 = v8;
+    v58 = dCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Preparing launching %{public}@.", buf, 0xCu);
   }
 
-  v56 = v8;
+  v56 = dCopy;
 
   self->_isWaitingForButtonUpToPerformLaunch = 0;
   self->_isLongPressActivation = 0;
-  objc_storeStrong(&self->_bundleIDForCurrentActivation, a4);
+  objc_storeStrong(&self->_bundleIDForCurrentActivation, d);
   [(SBCaptureHardwareButtonAppActivator *)self _invalidateDeferredLaunchTimer];
   [(SBCaptureButtonCoachingController *)self->_coachingController setExtraCoachingUIButtonOffset:6.0];
   [(SBCaptureHardwareButtonAppActivator *)self _updateStationaryState];
-  v10 = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager lowLatencyPose];
+  lowLatencyPose = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager lowLatencyPose];
   v11 = [SBCaptureButtonContext alloc];
   isConsoleModeActive = self->_isConsoleModeActive;
   v47 = v11;
   consoleModeActiveStreakCount = self->_consoleModeActiveStreakCount;
   v51 = +[SBBacklightController sharedInstance];
-  v46 = [v51 backlightState];
+  backlightState = [v51 backlightState];
   [(SBCaptureHardwareButtonAppActivator *)self _timeSinceLastViewUnobstructed];
   v13 = v12;
-  v50 = [(SBWindowScene *)self->_windowScene lockScreenManager];
-  v44 = [v50 isUILocked];
+  lockScreenManager = [(SBWindowScene *)self->_windowScene lockScreenManager];
+  isUILocked = [lockScreenManager isUILocked];
   timeSinceLastStationary = self->_timeSinceLastStationary;
   timeSinceLastNonStationary = self->_timeSinceLastNonStationary;
   BSAbsoluteMachTimeNow();
   v17 = v16;
   lastStationarySquelchTimestamp = self->_lastStationarySquelchTimestamp;
-  [v10 timeSinceLastStationary];
+  [lowLatencyPose timeSinceLastStationary];
   v20 = v19;
-  v53 = v10;
-  [v10 timeSinceLastNonStationary];
+  v53 = lowLatencyPose;
+  [lowLatencyPose timeSinceLastNonStationary];
   v22 = v21;
-  v42 = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager isInCameraCapturePose];
-  v45 = [(SBDeviceMotionDetector *)self->_deviceMotionDetector gravity];
-  v43 = [(SBDeviceMotionDetector *)self->_deviceMotionDetector rotationRate];
-  v23 = [MEMORY[0x277D75418] currentDevice];
-  v41 = [v23 orientation];
-  v24 = [(SBCaptureHardwareButtonAppActivator *)self _behaviorsPolicy];
+  isInCameraCapturePose = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager isInCameraCapturePose];
+  gravity = [(SBDeviceMotionDetector *)self->_deviceMotionDetector gravity];
+  rotationRate = [(SBDeviceMotionDetector *)self->_deviceMotionDetector rotationRate];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  orientation = [currentDevice orientation];
+  _behaviorsPolicy = [(SBCaptureHardwareButtonAppActivator *)self _behaviorsPolicy];
   launchPendedDueToButtonDownWhileSuppressed = self->_launchPendedDueToButtonDownWhileSuppressed;
   isWaitingForButtonUpToPerformLaunch = self->_isWaitingForButtonUpToPerformLaunch;
-  v25 = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager suppressionState];
-  v26 = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)self->_prewarmLockoutTimer isScheduled];
-  v27 = [(SBCaptureHardwareButtonAppActivator *)self _foregoundAppBundleID];
-  v28 = [(SBWindowScene *)self->_windowScene ambientPresentationController];
-  v29 = [v28 isPresented];
-  v30 = [(BCBatteryDeviceController *)self->_batteryDeviceController sb_isConnectedToWirelessCharger];
+  suppressionState = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager suppressionState];
+  isScheduled = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)self->_prewarmLockoutTimer isScheduled];
+  _foregoundAppBundleID = [(SBCaptureHardwareButtonAppActivator *)self _foregoundAppBundleID];
+  ambientPresentationController = [(SBWindowScene *)self->_windowScene ambientPresentationController];
+  isPresented = [ambientPresentationController isPresented];
+  sb_isConnectedToWirelessCharger = [(BCBatteryDeviceController *)self->_batteryDeviceController sb_isConnectedToWirelessCharger];
   if (_AXSVoiceOverTouchEnabled())
   {
     v31 = _AXSVoiceOverTouchScreenCurtainEnabled() != 0;
@@ -266,25 +266,25 @@ LABEL_11:
   }
 
   BSAbsoluteMachTimeNow();
-  BYTE3(v38) = v52 & 1;
+  BYTE3(v38) = optionsCopy & 1;
   BYTE2(v38) = v31;
-  BYTE1(v38) = v30;
-  LOBYTE(v38) = v29;
-  LOBYTE(v37) = v26;
+  BYTE1(v38) = sb_isConnectedToWirelessCharger;
+  LOBYTE(v38) = isPresented;
+  LOBYTE(v37) = isScheduled;
   BYTE1(v36) = launchPendedDueToButtonDownWhileSuppressed;
   LOBYTE(v36) = isWaitingForButtonUpToPerformLaunch;
-  BYTE1(v35) = v42;
-  LOBYTE(v35) = v44;
-  v33 = [SBCaptureButtonContext initWithEvent:v47 gesture:"initWithEvent:gesture:machAbsoluteTimestamp:consoleModeActive:consoleModeActiveStreakCount:backlightState:timeSinceLastViewUnobstructed:uiLocked:timeSinceLastStationary:timeSinceLastNonStationary:timeSinceLastStationarySquelch:lowLatencyTimeSinceLastStationary:lowLatencyTimeSinceLastNonStationary:inCameraPose:gravity:rotationRate:deviceOrientation:policy:cameraPrewarmed:suppressedOnButtonDown:suppressionState:prewarmLockoutActive:captureAppBundleID:pressDuration:foregroundAppBundleID:inAmbientPresentationMode:connectedToWirelessCharger:voiceOverScreenCurtainActive:wantsClickAgain:timeSinceLastClickAgainCoaching:" machAbsoluteTimestamp:1 consoleModeActive:a3 consoleModeActiveStreakCount:a5 backlightState:isConsoleModeActive timeSinceLastViewUnobstructed:consoleModeActiveStreakCount uiLocked:v46 timeSinceLastStationary:v13 timeSinceLastNonStationary:timeSinceLastStationary timeSinceLastStationarySquelch:timeSinceLastNonStationary lowLatencyTimeSinceLastStationary:v17 - lastStationarySquelchTimestamp lowLatencyTimeSinceLastNonStationary:v20 inCameraPose:v22 gravity:0.0 rotationRate:v32 - self->_lastClickAgainSquelchTimestamp deviceOrientation:v35 policy:v45 cameraPrewarmed:v43 suppressedOnButtonDown:v41 suppressionState:v24 prewarmLockoutActive:v36 captureAppBundleID:v25 pressDuration:v37 foregroundAppBundleID:v56 inAmbientPresentationMode:v27 connectedToWirelessCharger:v38 voiceOverScreenCurtainActive:? wantsClickAgain:? timeSinceLastClickAgainCoaching:?];
+  BYTE1(v35) = isInCameraCapturePose;
+  LOBYTE(v35) = isUILocked;
+  v33 = [SBCaptureButtonContext initWithEvent:v47 gesture:"initWithEvent:gesture:machAbsoluteTimestamp:consoleModeActive:consoleModeActiveStreakCount:backlightState:timeSinceLastViewUnobstructed:uiLocked:timeSinceLastStationary:timeSinceLastNonStationary:timeSinceLastStationarySquelch:lowLatencyTimeSinceLastStationary:lowLatencyTimeSinceLastNonStationary:inCameraPose:gravity:rotationRate:deviceOrientation:policy:cameraPrewarmed:suppressedOnButtonDown:suppressionState:prewarmLockoutActive:captureAppBundleID:pressDuration:foregroundAppBundleID:inAmbientPresentationMode:connectedToWirelessCharger:voiceOverScreenCurtainActive:wantsClickAgain:timeSinceLastClickAgainCoaching:" machAbsoluteTimestamp:1 consoleModeActive:gesture consoleModeActiveStreakCount:time backlightState:isConsoleModeActive timeSinceLastViewUnobstructed:consoleModeActiveStreakCount uiLocked:backlightState timeSinceLastStationary:v13 timeSinceLastNonStationary:timeSinceLastStationary timeSinceLastStationarySquelch:timeSinceLastNonStationary lowLatencyTimeSinceLastStationary:v17 - lastStationarySquelchTimestamp lowLatencyTimeSinceLastNonStationary:v20 inCameraPose:v22 gravity:0.0 rotationRate:v32 - self->_lastClickAgainSquelchTimestamp deviceOrientation:v35 policy:gravity cameraPrewarmed:rotationRate suppressedOnButtonDown:orientation suppressionState:_behaviorsPolicy prewarmLockoutActive:v36 captureAppBundleID:suppressionState pressDuration:v37 foregroundAppBundleID:v56 inAmbientPresentationMode:_foregoundAppBundleID connectedToWirelessCharger:v38 voiceOverScreenCurtainActive:? wantsClickAgain:? timeSinceLastClickAgainCoaching:?];
 
   v34 = [SBCaptureButtonBehaviorResolver resolveInteractionForBehaviors:self->_behaviors inContext:v33];
   [(SBCaptureHardwareButtonAppActivator *)self _handleCaptureButtonInteraction:v34];
   [(SBDeviceMotionDetector *)self->_deviceMotionDetector startWithTimeout:2.0];
 }
 
-- (void)activateForGesture:(unint64_t)a3 atMachAbsoluteTime:(unint64_t)a4 pressDuration:(double)a5 suppressionOptions:(unint64_t)a6
+- (void)activateForGesture:(unint64_t)gesture atMachAbsoluteTime:(unint64_t)time pressDuration:(double)duration suppressionOptions:(unint64_t)options
 {
-  v6 = a6;
+  optionsCopy = options;
   v63 = *MEMORY[0x277D85DE8];
   if (!self->_valid)
   {
@@ -295,17 +295,17 @@ LABEL_11:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v62 = a3;
+    gestureCopy = gesture;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Activating for gesture %lu.", buf, 0xCu);
   }
 
   if (self->_preparedForCurrentActivation)
   {
-    v57 = v6;
-    v58 = a4;
+    v57 = optionsCopy;
+    timeCopy = time;
     self->_preparedForCurrentActivation = 0;
-    v59 = a3;
-    self->_isLongPressActivation = a3 == 3;
+    gestureCopy2 = gesture;
+    self->_isLongPressActivation = gesture == 3;
     [(SBCaptureHardwareButtonAppActivator *)self _timeSinceLastStationarySquelch];
     v13 = v12;
     if (self->_isConsoleModeActive)
@@ -313,38 +313,38 @@ LABEL_11:
       ++self->_consoleModeActiveStreakCount;
     }
 
-    v14 = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager lowLatencyPose];
+    lowLatencyPose = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager lowLatencyPose];
     v51 = [SBCaptureButtonContext alloc];
     isConsoleModeActive = self->_isConsoleModeActive;
     consoleModeActiveStreakCount = self->_consoleModeActiveStreakCount;
     v56 = +[SBBacklightController sharedInstance];
-    v52 = [v56 backlightState];
+    backlightState = [v56 backlightState];
     [(SBCaptureHardwareButtonAppActivator *)self _timeSinceLastViewUnobstructed];
     v16 = v15;
-    v55 = [(SBWindowScene *)self->_windowScene lockScreenManager];
-    v48 = [v55 isUILocked];
+    lockScreenManager = [(SBWindowScene *)self->_windowScene lockScreenManager];
+    isUILocked = [lockScreenManager isUILocked];
     timeSinceLastStationary = self->_timeSinceLastStationary;
     timeSinceLastNonStationary = self->_timeSinceLastNonStationary;
-    [v14 timeSinceLastStationary];
+    [lowLatencyPose timeSinceLastStationary];
     v20 = v19;
-    v60 = v14;
-    [v14 timeSinceLastNonStationary];
+    v60 = lowLatencyPose;
+    [lowLatencyPose timeSinceLastNonStationary];
     v22 = v21;
-    v46 = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager isInCameraCapturePose];
-    v50 = [(SBDeviceMotionDetector *)self->_deviceMotionDetector gravity];
-    v49 = [(SBDeviceMotionDetector *)self->_deviceMotionDetector rotationRate];
-    v47 = [MEMORY[0x277D75418] currentDevice];
-    v45 = [v47 orientation];
-    v23 = [(SBCaptureHardwareButtonAppActivator *)self _behaviorsPolicy];
+    isInCameraCapturePose = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager isInCameraCapturePose];
+    gravity = [(SBDeviceMotionDetector *)self->_deviceMotionDetector gravity];
+    rotationRate = [(SBDeviceMotionDetector *)self->_deviceMotionDetector rotationRate];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    orientation = [currentDevice orientation];
+    _behaviorsPolicy = [(SBCaptureHardwareButtonAppActivator *)self _behaviorsPolicy];
     launchPendedDueToButtonDownWhileSuppressed = self->_launchPendedDueToButtonDownWhileSuppressed;
     isWaitingForButtonUpToPerformLaunch = self->_isWaitingForButtonUpToPerformLaunch;
-    v24 = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager suppressionState];
-    v25 = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)self->_prewarmLockoutTimer isScheduled];
+    suppressionState = [(SBCaptureButtonSuppressionManager *)self->_suppressionManager suppressionState];
+    isScheduled = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)self->_prewarmLockoutTimer isScheduled];
     bundleIDForCurrentActivation = self->_bundleIDForCurrentActivation;
-    v27 = [(SBCaptureHardwareButtonAppActivator *)self _foregoundAppBundleID];
-    v28 = [(SBWindowScene *)self->_windowScene ambientPresentationController];
-    v29 = [v28 isPresented];
-    v30 = [(BCBatteryDeviceController *)self->_batteryDeviceController sb_isConnectedToWirelessCharger];
+    _foregoundAppBundleID = [(SBCaptureHardwareButtonAppActivator *)self _foregoundAppBundleID];
+    ambientPresentationController = [(SBWindowScene *)self->_windowScene ambientPresentationController];
+    isPresented = [ambientPresentationController isPresented];
+    sb_isConnectedToWirelessCharger = [(BCBatteryDeviceController *)self->_batteryDeviceController sb_isConnectedToWirelessCharger];
     if (_AXSVoiceOverTouchEnabled())
     {
       v31 = _AXSVoiceOverTouchScreenCurtainEnabled() != 0;
@@ -358,14 +358,14 @@ LABEL_11:
     BSAbsoluteMachTimeNow();
     BYTE3(v42) = v57 & 1;
     BYTE2(v42) = v31;
-    BYTE1(v42) = v30;
-    LOBYTE(v42) = v29;
-    LOBYTE(v41) = v25;
+    BYTE1(v42) = sb_isConnectedToWirelessCharger;
+    LOBYTE(v42) = isPresented;
+    LOBYTE(v41) = isScheduled;
     BYTE1(v40) = launchPendedDueToButtonDownWhileSuppressed;
     LOBYTE(v40) = isWaitingForButtonUpToPerformLaunch;
-    BYTE1(v39) = v46;
-    LOBYTE(v39) = v48;
-    v34 = [SBCaptureButtonContext initWithEvent:v51 gesture:"initWithEvent:gesture:machAbsoluteTimestamp:consoleModeActive:consoleModeActiveStreakCount:backlightState:timeSinceLastViewUnobstructed:uiLocked:timeSinceLastStationary:timeSinceLastNonStationary:timeSinceLastStationarySquelch:lowLatencyTimeSinceLastStationary:lowLatencyTimeSinceLastNonStationary:inCameraPose:gravity:rotationRate:deviceOrientation:policy:cameraPrewarmed:suppressedOnButtonDown:suppressionState:prewarmLockoutActive:captureAppBundleID:pressDuration:foregroundAppBundleID:inAmbientPresentationMode:connectedToWirelessCharger:voiceOverScreenCurtainActive:wantsClickAgain:timeSinceLastClickAgainCoaching:" machAbsoluteTimestamp:2 consoleModeActive:v59 consoleModeActiveStreakCount:v58 backlightState:isConsoleModeActive timeSinceLastViewUnobstructed:consoleModeActiveStreakCount uiLocked:v52 timeSinceLastStationary:v16 timeSinceLastNonStationary:timeSinceLastStationary timeSinceLastStationarySquelch:timeSinceLastNonStationary lowLatencyTimeSinceLastStationary:v13 lowLatencyTimeSinceLastNonStationary:v20 inCameraPose:v22 gravity:a5 rotationRate:v33 - self->_lastClickAgainSquelchTimestamp deviceOrientation:v39 policy:v50 cameraPrewarmed:v49 suppressedOnButtonDown:v45 suppressionState:v23 prewarmLockoutActive:v40 captureAppBundleID:v24 pressDuration:v41 foregroundAppBundleID:bundleIDForCurrentActivation inAmbientPresentationMode:v27 connectedToWirelessCharger:v42 voiceOverScreenCurtainActive:? wantsClickAgain:? timeSinceLastClickAgainCoaching:?];
+    BYTE1(v39) = isInCameraCapturePose;
+    LOBYTE(v39) = isUILocked;
+    v34 = [SBCaptureButtonContext initWithEvent:v51 gesture:"initWithEvent:gesture:machAbsoluteTimestamp:consoleModeActive:consoleModeActiveStreakCount:backlightState:timeSinceLastViewUnobstructed:uiLocked:timeSinceLastStationary:timeSinceLastNonStationary:timeSinceLastStationarySquelch:lowLatencyTimeSinceLastStationary:lowLatencyTimeSinceLastNonStationary:inCameraPose:gravity:rotationRate:deviceOrientation:policy:cameraPrewarmed:suppressedOnButtonDown:suppressionState:prewarmLockoutActive:captureAppBundleID:pressDuration:foregroundAppBundleID:inAmbientPresentationMode:connectedToWirelessCharger:voiceOverScreenCurtainActive:wantsClickAgain:timeSinceLastClickAgainCoaching:" machAbsoluteTimestamp:2 consoleModeActive:gestureCopy2 consoleModeActiveStreakCount:timeCopy backlightState:isConsoleModeActive timeSinceLastViewUnobstructed:consoleModeActiveStreakCount uiLocked:backlightState timeSinceLastStationary:v16 timeSinceLastNonStationary:timeSinceLastStationary timeSinceLastStationarySquelch:timeSinceLastNonStationary lowLatencyTimeSinceLastStationary:v13 lowLatencyTimeSinceLastNonStationary:v20 inCameraPose:v22 gravity:duration rotationRate:v33 - self->_lastClickAgainSquelchTimestamp deviceOrientation:v39 policy:gravity cameraPrewarmed:rotationRate suppressedOnButtonDown:orientation suppressionState:_behaviorsPolicy prewarmLockoutActive:v40 captureAppBundleID:suppressionState pressDuration:v41 foregroundAppBundleID:bundleIDForCurrentActivation inAmbientPresentationMode:_foregoundAppBundleID connectedToWirelessCharger:v42 voiceOverScreenCurtainActive:? wantsClickAgain:? timeSinceLastClickAgainCoaching:?];
 
     v35 = [SBCaptureButtonBehaviorResolver resolveInteractionForBehaviors:self->_behaviors inContext:v34];
     [(SBCaptureHardwareButtonAppActivator *)self _handleCaptureButtonInteraction:v35];
@@ -376,14 +376,14 @@ LABEL_11:
 
     [(SBCaptureHardwareButtonAppActivator *)self _cancelHintingDroplet];
     [(SBCaptureHardwareButtonAppActivator *)self _updateStationarySquelchTimestampInContext:v34 timeSinceLastStationarySquelch:v13];
-    if (v59 <= 4 && ((1 << v59) & 0x16) != 0)
+    if (gestureCopy2 <= 4 && ((1 << gestureCopy2) & 0x16) != 0)
     {
       v37 = SBLogCameraCaptureStudyLogs();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [v35 JSONString];
+        jSONString = [v35 JSONString];
         *buf = 138543362;
-        v62 = v38;
+        gestureCopy = jSONString;
         _os_log_impl(&dword_21ED4E000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
       }
 
@@ -403,14 +403,14 @@ LABEL_11:
   }
 }
 
-- (void)cancelActivationForGesture:(unint64_t)a3
+- (void)cancelActivationForGesture:(unint64_t)gesture
 {
   if (!self->_valid)
   {
     [SBCaptureHardwareButtonAppActivator cancelActivationForGesture:];
   }
 
-  if (a3 - 1 < 2)
+  if (gesture - 1 < 2)
   {
 LABEL_6:
     v5 = SBLogCameraCaptureLaunch();
@@ -424,9 +424,9 @@ LABEL_6:
     return;
   }
 
-  if (a3 != 3)
+  if (gesture != 3)
   {
-    if (a3 != 4)
+    if (gesture != 4)
     {
       return;
     }
@@ -446,31 +446,31 @@ LABEL_6:
   [(SBCaptureHardwareButtonAppActivator *)self _cancelLaunchAnimation];
 }
 
-- (void)sessionDidFinalize:(id)a3
+- (void)sessionDidFinalize:(id)finalize
 {
-  v4 = a3;
-  [v4 logInteractionIntentions];
-  [v4 logToCoreAnalytics];
+  finalizeCopy = finalize;
+  [finalizeCopy logInteractionIntentions];
+  [finalizeCopy logToCoreAnalytics];
 
   session = self->_session;
   self->_session = 0;
 }
 
-- (void)_handleButtonUpInteraction:(id)a3
+- (void)_handleButtonUpInteraction:(id)interaction
 {
-  v10 = a3;
+  interactionCopy = interaction;
   session = self->_session;
   if (session && [(SBCaptureButtonSession *)session isActive])
   {
-    [(SBCaptureButtonSession *)self->_session coalesceInteraction:v10];
+    [(SBCaptureButtonSession *)self->_session coalesceInteraction:interactionCopy];
   }
 
   else
   {
     v5 = [SBCaptureButtonSession alloc];
-    v6 = [(SBWindowScene *)self->_windowScene appInteractionEventSource];
-    v7 = [(SBWindowScene *)self->_windowScene displayLayoutPublisher];
-    v8 = [(SBCaptureButtonSession *)v5 initWithInteraction:v10 delegate:self appInteractionEventSource:v6 displayLayoutPublisher:v7];
+    appInteractionEventSource = [(SBWindowScene *)self->_windowScene appInteractionEventSource];
+    displayLayoutPublisher = [(SBWindowScene *)self->_windowScene displayLayoutPublisher];
+    v8 = [(SBCaptureButtonSession *)v5 initWithInteraction:interactionCopy delegate:self appInteractionEventSource:appInteractionEventSource displayLayoutPublisher:displayLayoutPublisher];
     v9 = self->_session;
     self->_session = v8;
   }
@@ -505,7 +505,7 @@ LABEL_6:
   [(SBCaptureButtonSettings *)self->_settings directLaunchAfterUnsuppressGracePeriod];
   v7 = v6;
   disableStationaryDetection = self->_disableStationaryDetection;
-  v9 = [(SBCaptureButtonSettings *)self->_settings enablesStationaryDetectionForUnlocked];
+  enablesStationaryDetectionForUnlocked = [(SBCaptureButtonSettings *)self->_settings enablesStationaryDetectionForUnlocked];
   [(SBCaptureButtonSettings *)self->_settings accidentalPreventionStationaryThreshold];
   v11 = v10;
   [(SBCaptureButtonSettings *)self->_settings accidentalPreventionPickUpBuffer];
@@ -516,7 +516,7 @@ LABEL_6:
   v17 = *&self->_allowLaunchIfUnobstructedWhileButtonDown;
   LOBYTE(v21) = [(SBCaptureHardwareButtonAppActivator *)self _isVisionIntelligenceEnabled];
   LOWORD(v20) = v17;
-  v18 = [(SBCaptureButtonPolicy *)v3 initWithConsoleModeEnabled:1 wakeEnabled:!disableWakeWhenDim directLaunchAfterUnsuppressEnabled:!disableDirectLaunchAfterUnsuppress directLaunchAfterUnsuppressGracePeriod:!disableStationaryDetection deviceStationaryDetectionEnabled:v9 deviceStationaryDetectionEnabledWhenUnlocked:!disablePreLaunchCaptureButtonSuppression deviceStationaryDetectionStationaryThreshold:v7 deviceStationaryDetectionStationaryPickUpBuffer:v11 deviceStationaryDetectionStationaryDebounceInterval:v13 suppressionEnabled:v15 launchIfUnobstructedWhileButtonDownEnabled:v20 launchIfUnobstructedPromptlyAfterButtonUpEnabled:&unk_28336E8C8 wakingBacklightStates:v21 visionIntelligenceEnabled:?];
+  v18 = [(SBCaptureButtonPolicy *)v3 initWithConsoleModeEnabled:1 wakeEnabled:!disableWakeWhenDim directLaunchAfterUnsuppressEnabled:!disableDirectLaunchAfterUnsuppress directLaunchAfterUnsuppressGracePeriod:!disableStationaryDetection deviceStationaryDetectionEnabled:enablesStationaryDetectionForUnlocked deviceStationaryDetectionEnabledWhenUnlocked:!disablePreLaunchCaptureButtonSuppression deviceStationaryDetectionStationaryThreshold:v7 deviceStationaryDetectionStationaryPickUpBuffer:v11 deviceStationaryDetectionStationaryDebounceInterval:v13 suppressionEnabled:v15 launchIfUnobstructedWhileButtonDownEnabled:v20 launchIfUnobstructedPromptlyAfterButtonUpEnabled:&unk_28336E8C8 wakingBacklightStates:v21 visionIntelligenceEnabled:?];
 
   return v18;
 }
@@ -534,37 +534,37 @@ LABEL_6:
 
 - (id)_foregoundAppBundleID
 {
-  v2 = [(SBWindowScene *)self->_windowScene displayLayoutPublisher];
-  v3 = [v2 currentLayout];
-  v4 = [v3 elements];
-  v5 = [v4 lastObject];
+  displayLayoutPublisher = [(SBWindowScene *)self->_windowScene displayLayoutPublisher];
+  currentLayout = [displayLayoutPublisher currentLayout];
+  elements = [currentLayout elements];
+  lastObject = [elements lastObject];
 
-  v6 = [v5 bundleIdentifier];
-  v7 = v6;
-  if (v6)
+  bundleIdentifier = [lastObject bundleIdentifier];
+  v7 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v8 = v6;
+    identifier = bundleIdentifier;
   }
 
   else
   {
-    v8 = [v5 identifier];
+    identifier = [lastObject identifier];
   }
 
-  v9 = v8;
+  v9 = identifier;
 
   return v9;
 }
 
-- (void)_handleCaptureButtonInteraction:(id)a3
+- (void)_handleCaptureButtonInteraction:(id)interaction
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v4 response];
+  interactionCopy = interaction;
+  context = [interactionCopy context];
+  response = [interactionCopy response];
 
-  v7 = [v6 prewarmIntent];
-  if (v7 < 2)
+  prewarmIntent = [response prewarmIntent];
+  if (prewarmIntent < 2)
   {
     v13 = SBLogCameraCaptureLaunch();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -573,14 +573,14 @@ LABEL_6:
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "Suppressing prewarm.", buf, 2u);
     }
 
-    if ([v5 isPrewarmLockoutActive])
+    if ([context isPrewarmLockoutActive])
     {
       v14 = SBLogCameraCaptureSuppression();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v5 machAbsoluteTimestamp];
+        machAbsoluteTimestamp = [context machAbsoluteTimestamp];
         *buf = 134217984;
-        v47 = v15;
+        v47 = machAbsoluteTimestamp;
         _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Button press at timestamp %lld ignored; confirmed launch prewarm already in progress.", buf, 0xCu);
       }
     }
@@ -588,7 +588,7 @@ LABEL_6:
     [(SBCaptureHardwareButtonAppActivator *)self _showHintingDroplet];
   }
 
-  else if (v7 == 3)
+  else if (prewarmIntent == 3)
   {
     v16 = SBLogCameraCaptureLaunch();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -601,45 +601,45 @@ LABEL_6:
     [(SBCaptureHardwareButtonAppActivator *)self _initiateLaunchAnimationPrelude];
   }
 
-  else if (v7 == 2)
+  else if (prewarmIntent == 2)
   {
     v8 = SBLogCameraCaptureLaunch();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 captureAppBundleID];
+      captureAppBundleID = [context captureAppBundleID];
       *buf = 138543362;
-      v47 = v9;
+      v47 = captureAppBundleID;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Prewarming capture application. %{public}@", buf, 0xCu);
     }
 
     v10 = SBLogCameraCaptureSuppression();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v5 machAbsoluteTimestamp];
-      v12 = NSStringFromSBCaptureButtonSuppressionState([v5 suppressionState]);
+      machAbsoluteTimestamp2 = [context machAbsoluteTimestamp];
+      v12 = NSStringFromSBCaptureButtonSuppressionState([context suppressionState]);
       *buf = 134218242;
-      v47 = v11;
+      v47 = machAbsoluteTimestamp2;
       v48 = 2114;
       v49 = v12;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Button press at timestamp %lld NOT suppressed; VO=%{public}@; will launch on button up.", buf, 0x16u);
     }
 
     [(SBCaptureHardwareButtonAppActivator *)self _prepareConfirmedLaunchSequenceForButtonDown:1];
-    if ([v5 gesture] == 2)
+    if ([context gesture] == 2)
     {
       [(SBCaptureHardwareButtonAppActivator *)self _abortVisionIntelligence];
     }
   }
 
-  v17 = [v6 coachIntent];
-  if (v17 != 2)
+  coachIntent = [response coachIntent];
+  if (coachIntent != 2)
   {
-    if (v17 != 1)
+    if (coachIntent != 1)
     {
       goto LABEL_28;
     }
 
-    if ([v5 event] == 2)
+    if ([context event] == 2)
     {
       BSAbsoluteMachTimeNow();
       self->_lastClickAgainSquelchTimestamp = v18;
@@ -649,7 +649,7 @@ LABEL_6:
   v19 = SBLogCameraCaptureLaunch();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = SBCameraCoachIntentDescription([v6 coachIntent]);
+    v20 = SBCameraCoachIntentDescription([response coachIntent]);
     *buf = 138543362;
     v47 = v20;
     _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "Showing coaching UI for %{public}@", buf, 0xCu);
@@ -658,33 +658,33 @@ LABEL_6:
   if (self->_bundleIDForCurrentActivation)
   {
     coachingController = self->_coachingController;
-    v22 = -[SBCaptureHardwareButtonAppActivator _coachingStringForCoachIntent:](self, "_coachingStringForCoachIntent:", [v6 coachIntent]);
+    v22 = -[SBCaptureHardwareButtonAppActivator _coachingStringForCoachIntent:](self, "_coachingStringForCoachIntent:", [response coachIntent]);
     [(SBCaptureButtonSettings *)self->_settings coachingUIDismissalInterval];
     [(SBCaptureButtonCoachingController *)coachingController showCoachingUIWithText:v22 dismissInterval:?];
   }
 
 LABEL_28:
-  v23 = [v6 launchIntent];
-  if (v23 <= 2)
+  launchIntent = [response launchIntent];
+  if (launchIntent <= 2)
   {
-    if (v23 != 1)
+    if (launchIntent != 1)
     {
-      if (v23 != 2)
+      if (launchIntent != 2)
       {
         goto LABEL_58;
       }
 
       [(SBCaptureHardwareButtonAppActivator *)self _abortVisionIntelligence];
-      v25 = [v5 cameraPrewarmed];
+      cameraPrewarmed = [context cameraPrewarmed];
       v24 = SBLogCameraCaptureLaunch();
       v26 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-      if ((v25 & 1) == 0)
+      if ((cameraPrewarmed & 1) == 0)
       {
         if (v26)
         {
-          v39 = [v5 captureAppBundleID];
+          captureAppBundleID2 = [context captureAppBundleID];
           *buf = 138543362;
-          v47 = v39;
+          v47 = captureAppBundleID2;
           _os_log_impl(&dword_21ED4E000, v24, OS_LOG_TYPE_DEFAULT, "Launching capture app (%{public}@) (not prewarmed).", buf, 0xCu);
         }
 
@@ -695,9 +695,9 @@ LABEL_28:
 
       if (v26)
       {
-        v27 = [v5 captureAppBundleID];
+        captureAppBundleID3 = [context captureAppBundleID];
         *buf = 138543362;
-        v47 = v27;
+        v47 = captureAppBundleID3;
         _os_log_impl(&dword_21ED4E000, v24, OS_LOG_TYPE_DEFAULT, "Launching capture app (%{public}@ (prewarmed).", buf, 0xCu);
       }
 
@@ -714,9 +714,9 @@ LABEL_57:
     v36 = SBLogCameraCaptureLaunch();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v5 captureAppBundleID];
+      captureAppBundleID4 = [context captureAppBundleID];
       *buf = 138543362;
-      v47 = v37;
+      v47 = captureAppBundleID4;
       _os_log_impl(&dword_21ED4E000, v36, OS_LOG_TYPE_DEFAULT, "Aborting launching %{public}@", buf, 0xCu);
     }
 
@@ -726,7 +726,7 @@ LABEL_57:
 
   else
   {
-    switch(v23)
+    switch(launchIntent)
     {
       case 3:
         allowLaunchIfUnobstructedPromptlyAfterButtonUp = self->_allowLaunchIfUnobstructedPromptlyAfterButtonUp;
@@ -760,24 +760,24 @@ LABEL_57:
 
         break;
       case 4:
-        v32 = [v5 captureAppBundleID];
+        captureAppBundleID5 = [context captureAppBundleID];
 
-        if (v32)
+        if (captureAppBundleID5)
         {
           v33 = SBLogCameraCaptureSuppression();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
           {
-            v34 = [v5 machAbsoluteTimestamp];
-            v35 = NSStringFromSBCaptureButtonSuppressionState([v5 suppressionState]);
+            machAbsoluteTimestamp3 = [context machAbsoluteTimestamp];
+            v35 = NSStringFromSBCaptureButtonSuppressionState([context suppressionState]);
             *buf = 134218242;
-            v47 = v34;
+            v47 = machAbsoluteTimestamp3;
             v48 = 2114;
             v49 = v35;
             _os_log_impl(&dword_21ED4E000, v33, OS_LOG_TYPE_DEFAULT, "Button press at timestamp %lld pended (VO=%{public}@); pending launch", buf, 0x16u);
           }
 
           self->_launchPendedDueToButtonDownWhileSuppressed = 1;
-          self->_machAbsoluteButtonPressDownTimeForDeferredLaunches = [v5 machAbsoluteTimestamp];
+          self->_machAbsoluteButtonPressDownTimeForDeferredLaunches = [context machAbsoluteTimestamp];
         }
 
         else
@@ -806,7 +806,7 @@ LABEL_57:
   }
 
 LABEL_58:
-  if ([v6 wakeIntent] == 1)
+  if ([response wakeIntent] == 1)
   {
     v40 = SBLogCameraCaptureLaunch();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -825,20 +825,20 @@ LABEL_58:
   }
 }
 
-- (void)_suppressionManagerDidUnsuppress:(id)a3
+- (void)_suppressionManagerDidUnsuppress:(id)unsuppress
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  unsuppressCopy = unsuppress;
   BSAbsoluteMachTimeNow();
   self->_lastUnsuppressEventTimestamp = v5;
-  v6 = [v4 suppressionState];
+  suppressionState = [unsuppressCopy suppressionState];
 
   if (self->_allowLaunchIfUnobstructedWhileButtonDown && self->_launchPendedDueToButtonDownWhileSuppressed)
   {
     v7 = SBLogCameraCaptureSuppression();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = NSStringFromSBCaptureButtonSuppressionState(v6);
+      v8 = NSStringFromSBCaptureButtonSuppressionState(suppressionState);
       machAbsoluteButtonPressDownTimeForDeferredLaunches = self->_machAbsoluteButtonPressDownTimeForDeferredLaunches;
       v16 = 138543618;
       v17 = v8;
@@ -862,7 +862,7 @@ LABEL_58:
         v11 = SBLogCameraCaptureSuppression();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = NSStringFromSBCaptureButtonSuppressionState(v6);
+          v12 = NSStringFromSBCaptureButtonSuppressionState(suppressionState);
           gracePeriodForVOUnobstructionAfterRelease = self->_gracePeriodForVOUnobstructionAfterRelease;
           [(BSAbsoluteMachTimer *)self->_deferredLaunchAfterButtonUpGracePeriodTimer timeRemaining];
           v14 = self->_machAbsoluteButtonPressDownTimeForDeferredLaunches;
@@ -883,13 +883,13 @@ LABEL_58:
   }
 }
 
-- (void)captureButtonSuppressionManager:(id)a3 event:(id)a4
+- (void)captureButtonSuppressionManager:(id)manager event:(id)event
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 suppressionState] == 2)
+  eventCopy = event;
+  if ([eventCopy suppressionState] == 2)
   {
-    [v5 secondsAfterFaceDownAtUnsuppressionTime];
+    [eventCopy secondsAfterFaceDownAtUnsuppressionTime];
     v7 = v6;
     honorFaceDownDuration = self->_honorFaceDownDuration;
     v9 = SBLogCameraCaptureSuppression();
@@ -912,7 +912,7 @@ LABEL_58:
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "VO->%{public}@, deferred launch for button press down at timestamp %lld;  face down limit of %g exceeded (%g)", &v17, 0x2Au);
       }
 
-      [(SBCaptureHardwareButtonAppActivator *)self _suppressionManagerDidUnsuppress:v5];
+      [(SBCaptureHardwareButtonAppActivator *)self _suppressionManagerDidUnsuppress:eventCopy];
     }
 
     else
@@ -936,10 +936,10 @@ LABEL_58:
   }
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context
 {
-  v5 = [a4 toLayoutState];
-  self->_unlockedEnvironmentMode = [v5 unlockedEnvironmentMode];
+  toLayoutState = [context toLayoutState];
+  self->_unlockedEnvironmentMode = [toLayoutState unlockedEnvironmentMode];
 }
 
 - (void)invalidate
@@ -962,8 +962,8 @@ LABEL_58:
     siriTostadaActivationIdentifier = self->_siriTostadaActivationIdentifier;
     self->_siriTostadaActivationIdentifier = 0;
 
-    v9 = [(SBWindowScene *)self->_windowScene layoutStateTransitionCoordinator];
-    [v9 removeObserver:self];
+    layoutStateTransitionCoordinator = [(SBWindowScene *)self->_windowScene layoutStateTransitionCoordinator];
+    [layoutStateTransitionCoordinator removeObserver:self];
     self->_valid = 0;
     consoleModeNotifyToken = self->_consoleModeNotifyToken;
     if ((consoleModeNotifyToken & 0x80000000) == 0)
@@ -981,9 +981,9 @@ LABEL_58:
   self->_prewarmLockoutTimer = 0;
 }
 
-- (void)_startPrewarmLockoutTimerWithTimeout:(double)a3
+- (void)_startPrewarmLockoutTimerWithTimeout:(double)timeout
 {
-  if (a3 > 0.0)
+  if (timeout > 0.0)
   {
     [(SBCaptureHardwareButtonAppActivator *)self _invalidatePrewarmLockoutTimer];
     v5 = SBLogCameraCaptureLaunch();
@@ -1001,7 +1001,7 @@ LABEL_58:
     v10[2] = __76__SBCaptureHardwareButtonAppActivator__startPrewarmLockoutTimerWithTimeout___block_invoke;
     v10[3] = &unk_2783BD5C8;
     objc_copyWeak(&v11, buf);
-    v8 = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)v6 initWithIdentifier:@"appActivator.prewarmLockoutTimer" timeout:0 existingRequest:scanningModeAssertionProvider scanModeResource:v10 handler:a3];
+    v8 = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)v6 initWithIdentifier:@"appActivator.prewarmLockoutTimer" timeout:0 existingRequest:scanningModeAssertionProvider scanModeResource:v10 handler:timeout];
     prewarmLockoutTimer = self->_prewarmLockoutTimer;
     self->_prewarmLockoutTimer = v8;
 
@@ -1019,7 +1019,7 @@ void __76__SBCaptureHardwareButtonAppActivator__startPrewarmLockoutTimerWithTime
 - (void)_prewarmLockoutTimeoutDidOccur
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:@"_valid == YES" object:? file:? lineNumber:? description:?];
 }
@@ -1035,20 +1035,20 @@ void __76__SBCaptureHardwareButtonAppActivator__startPrewarmLockoutTimerWithTime
 {
   v14 = *MEMORY[0x277D85DE8];
   isWaitingForButtonUpToPerformLaunch = self->_isWaitingForButtonUpToPerformLaunch;
-  v4 = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)self->_prewarmLockoutTimer isScheduled];
-  v5 = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)self->_expansionAnimationYAndScaleComponentsLockoutTimer isScheduled];
+  isScheduled = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)self->_prewarmLockoutTimer isScheduled];
+  isScheduled2 = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)self->_expansionAnimationYAndScaleComponentsLockoutTimer isScheduled];
   v6 = SBLogCameraCaptureLaunch();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (isWaitingForButtonUpToPerformLaunch || v4 || v5)
+  if (isWaitingForButtonUpToPerformLaunch || isScheduled || isScheduled2)
   {
     if (v7)
     {
       v9[0] = 67109632;
       v9[1] = isWaitingForButtonUpToPerformLaunch;
       v10 = 1024;
-      v11 = v4;
+      v11 = isScheduled;
       v12 = 1024;
-      v13 = v5;
+      v13 = isScheduled2;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Not performing camera app launch sequence because waitingForButtonUp:%{BOOL}u waitingForPrewarm:%{BOOL}u waitingForYAndScaleComponents:%{BOOL}u", v9, 0x14u);
     }
   }
@@ -1076,9 +1076,9 @@ void __76__SBCaptureHardwareButtonAppActivator__startPrewarmLockoutTimerWithTime
   self->_launchGracePeriodActiveTimer = 0;
 }
 
-- (void)_startLaunchGracePeriodTimerWithTimeout:(double)a3
+- (void)_startLaunchGracePeriodTimerWithTimeout:(double)timeout
 {
-  if (a3 > 0.0)
+  if (timeout > 0.0)
   {
     [(SBCaptureHardwareButtonAppActivator *)self _invalidateLaunchGracePeriodTimer];
     v5 = SBLogCameraCaptureLaunch();
@@ -1097,7 +1097,7 @@ void __76__SBCaptureHardwareButtonAppActivator__startPrewarmLockoutTimerWithTime
     v11[2] = __79__SBCaptureHardwareButtonAppActivator__startLaunchGracePeriodTimerWithTimeout___block_invoke;
     v11[3] = &unk_2783BD5C8;
     objc_copyWeak(&v12, buf);
-    v9 = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)v7 initWithIdentifier:@"appActivator.launchGracePeriodTimer" timeout:v6 existingRequest:scanningModeAssertionProvider scanModeResource:v11 handler:a3];
+    v9 = [(SBCaptureHardwareButtonScanningPowerLinkedTimer *)v7 initWithIdentifier:@"appActivator.launchGracePeriodTimer" timeout:v6 existingRequest:scanningModeAssertionProvider scanModeResource:v11 handler:timeout];
     launchGracePeriodActiveTimer = self->_launchGracePeriodActiveTimer;
     self->_launchGracePeriodActiveTimer = v9;
 
@@ -1134,9 +1134,9 @@ void __79__SBCaptureHardwareButtonAppActivator__startLaunchGracePeriodTimerWithT
   self->_deferredLaunchAfterButtonUpGracePeriodTimer = 0;
 }
 
-- (void)_startDeferredLaunchTimerWithTimeout:(double)a3
+- (void)_startDeferredLaunchTimerWithTimeout:(double)timeout
 {
-  if (a3 > 0.0)
+  if (timeout > 0.0)
   {
     if (self->_deferredLaunchAfterButtonUpGracePeriodTimer)
     {
@@ -1163,7 +1163,7 @@ void __79__SBCaptureHardwareButtonAppActivator__startLaunchGracePeriodTimerWithT
     v11[2] = __76__SBCaptureHardwareButtonAppActivator__startDeferredLaunchTimerWithTimeout___block_invoke;
     v11[3] = &unk_2783A9918;
     objc_copyWeak(&v12, buf);
-    [(BSAbsoluteMachTimer *)v8 scheduleWithFireInterval:v9 leewayInterval:v11 queue:a3 handler:0.0];
+    [(BSAbsoluteMachTimer *)v8 scheduleWithFireInterval:v9 leewayInterval:v11 queue:timeout handler:0.0];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(buf);
@@ -1198,8 +1198,8 @@ void __76__SBCaptureHardwareButtonAppActivator__startDeferredLaunchTimerWithTime
 {
   if (!self->_activeLaunchAnimationPreludeToken)
   {
-    v6 = [(SBWindowScene *)self->_windowScene hardwareButtonBezelEffectsCoordinator];
-    v4 = [v6 animateLaunchZoomUpPreludeFromButton:9];
+    hardwareButtonBezelEffectsCoordinator = [(SBWindowScene *)self->_windowScene hardwareButtonBezelEffectsCoordinator];
+    v4 = [hardwareButtonBezelEffectsCoordinator animateLaunchZoomUpPreludeFromButton:9];
     activeLaunchAnimationPreludeToken = self->_activeLaunchAnimationPreludeToken;
     self->_activeLaunchAnimationPreludeToken = v4;
   }
@@ -1284,9 +1284,9 @@ void __72__SBCaptureHardwareButtonAppActivator__initiateLaunchAnimationExpansion
 {
   if (!self->_siriTostadaActivationIdentifier)
   {
-    v4 = [(SiriTostadaSource *)self->_siriTostadaSource prepareForActivation];
+    prepareForActivation = [(SiriTostadaSource *)self->_siriTostadaSource prepareForActivation];
     siriTostadaActivationIdentifier = self->_siriTostadaActivationIdentifier;
-    self->_siriTostadaActivationIdentifier = v4;
+    self->_siriTostadaActivationIdentifier = prepareForActivation;
   }
 }
 
@@ -1296,13 +1296,13 @@ void __72__SBCaptureHardwareButtonAppActivator__initiateLaunchAnimationExpansion
   self->_siriTostadaActivationIdentifier = 0;
 }
 
-- (void)_prepareConfirmedLaunchSequenceForButtonDown:(BOOL)a3
+- (void)_prepareConfirmedLaunchSequenceForButtonDown:(BOOL)down
 {
-  v3 = a3;
+  downCopy = down;
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(SBSetupManager *)self->_setupManager isInSetupMode];
+  isInSetupMode = [(SBSetupManager *)self->_setupManager isInSetupMode];
   bundleIDForCurrentActivation = self->_bundleIDForCurrentActivation;
-  if (v5 || !bundleIDForCurrentActivation)
+  if (isInSetupMode || !bundleIDForCurrentActivation)
   {
     self->_bundleIDForCurrentActivation = 0;
 
@@ -1311,7 +1311,7 @@ void __72__SBCaptureHardwareButtonAppActivator__initiateLaunchAnimationExpansion
 
   else
   {
-    if (v3)
+    if (downCopy)
     {
       self->_isWaitingForButtonUpToPerformLaunch = 1;
       [(SBCaptureHardwareButtonAppActivator *)self _takeButtonDownPowerAssertion];
@@ -1328,17 +1328,17 @@ void __72__SBCaptureHardwareButtonAppActivator__initiateLaunchAnimationExpansion
       {
         if (self->_isConsoleModeActive)
         {
-          v7 = [(SBCaptureHardwareButtonAppActivator *)self _isOverUnlockedApplication];
+          _isOverUnlockedApplication = [(SBCaptureHardwareButtonAppActivator *)self _isOverUnlockedApplication];
           v8 = SBLogCameraCaptureLaunch();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
           {
             isConsoleModeActive = self->_isConsoleModeActive;
             v10 = 138543874;
-            v11 = self;
+            selfCopy = self;
             v12 = 1024;
             v13 = isConsoleModeActive;
             v14 = 1024;
-            v15 = v7;
+            v15 = _isOverUnlockedApplication;
             _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "(%{public}@) skipping lockout timer and camera prewarm because isConsoleModeActive:%{BOOL}u isOverUnlockedApplication:%{BOOL}u", &v10, 0x18u);
           }
         }
@@ -1414,18 +1414,18 @@ void __72__SBCaptureHardwareButtonAppActivator__initiateLaunchAnimationExpansion
   v5 = +[SBLockScreenManager sharedInstance];
   if ([v5 isUILocked])
   {
-    v6 = 1;
+    isLockScreenActive = 1;
   }
 
   else
   {
-    v6 = [v5 isLockScreenActive];
+    isLockScreenActive = [v5 isLockScreenActive];
   }
 
   v7 = +[SBBacklightController sharedInstance];
-  v8 = [v7 screenIsDim];
+  screenIsDim = [v7 screenIsDim];
 
-  if ((v6 & v8) == 1)
+  if ((isLockScreenActive & screenIsDim) == 1)
   {
     v26 = @"SBUIUnlockOptionsTurnOnScreenFirstKey";
     v27[0] = MEMORY[0x277CBEC38];
@@ -1437,9 +1437,9 @@ void __72__SBCaptureHardwareButtonAppActivator__initiateLaunchAnimationExpansion
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    LODWORD(v25[0]) = v6;
+    LODWORD(v25[0]) = isLockScreenActive;
     WORD2(v25[0]) = 1024;
-    *(v25 + 6) = v8;
+    *(v25 + 6) = screenIsDim;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Camera Capture App Activation Requested. Was UI-locked: %{BOOL}u, Was Dimmed: %{BOOL}u", buf, 0xEu);
   }
 
@@ -1526,22 +1526,22 @@ void __56__SBCaptureHardwareButtonAppActivator__launchCaptureApp__block_invoke_1
   }
 }
 
-- (void)_activateVisionIntelligenceWithCompletion:(id)a3
+- (void)_activateVisionIntelligenceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_activeLaunchAnimationPreludeToken;
   if (self->_prewarmedBundleIdentifier)
   {
-    v6 = [(SiriTostadaSource *)self->_siriTostadaSource prewarmBundleIdentifier];
-    if (v6)
+    prewarmBundleIdentifier = [(SiriTostadaSource *)self->_siriTostadaSource prewarmBundleIdentifier];
+    if (prewarmBundleIdentifier)
     {
-      [(SBCaptureHardwareButtonAppActivator *)self _prewarmCameraForBundleIdentifier:v6];
+      [(SBCaptureHardwareButtonAppActivator *)self _prewarmCameraForBundleIdentifier:prewarmBundleIdentifier];
     }
   }
 
   else
   {
-    v6 = 0;
+    prewarmBundleIdentifier = 0;
   }
 
   objc_initWeak(&location, self);
@@ -1553,9 +1553,9 @@ void __56__SBCaptureHardwareButtonAppActivator__launchCaptureApp__block_invoke_1
   objc_copyWeak(&v24, &location);
   v8 = v5;
   v21 = v8;
-  v9 = v4;
+  v9 = completionCopy;
   v23 = v9;
-  v10 = v6;
+  v10 = prewarmBundleIdentifier;
   v22 = v10;
   v11 = [v7 responderWithHandler:v20];
   v12 = MEMORY[0x277D85CD0];
@@ -1632,12 +1632,12 @@ LABEL_8:
   }
 }
 
-- (void)_prewarmCameraForBundleIdentifier:(id)a3
+- (void)_prewarmCameraForBundleIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SBCaptureApplicationCenter sharedInstance];
-  v6 = [v5 predictedPrewarmBundleIdentifierForApplicationBundleIdentifier:v4];
+  v6 = [v5 predictedPrewarmBundleIdentifierForApplicationBundleIdentifier:identifierCopy];
 
   v7 = [v6 copy];
   prewarmedBundleIdentifier = self->_prewarmedBundleIdentifier;
@@ -1650,7 +1650,7 @@ LABEL_8:
     {
       v10 = self->_prewarmedBundleIdentifier;
       *buf = 138543618;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = v10;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "(%{public}@) prewarming camera for bundleID: '%{public}@' ", buf, 0x16u);
@@ -1671,24 +1671,24 @@ LABEL_8:
   }
 }
 
-- (void)_cancelCameraPrewarmForBundleIdentifier:(id)a3
+- (void)_cancelCameraPrewarmForBundleIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = SBLogCameraCaptureLaunch();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = identifierCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "(%{public}@) cancelling prewarming camera for bundleID: '%{public}@' ", buf, 0x16u);
   }
 
   v7 = *MEMORY[0x277CE5908];
   v8 = *MEMORY[0x277CE58C0];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v8 forKeys:&v7 count:1];
-  MEMORY[0x223D6A9B0](v4, v6);
+  MEMORY[0x223D6A9B0](identifierCopy, v6);
 }
 
 - (void)_updateStationaryState
@@ -1696,16 +1696,16 @@ LABEL_8:
   *&self->_timeSinceLastStationary = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
   if (!self->_disableStationaryDetection)
   {
-    v3 = [(SBWindowScene *)self->_windowScene lockScreenManager];
-    if ([v3 isUILocked])
+    lockScreenManager = [(SBWindowScene *)self->_windowScene lockScreenManager];
+    if ([lockScreenManager isUILocked])
     {
     }
 
     else
     {
-      v4 = [(SBCaptureButtonSettings *)self->_settings enablesStationaryDetectionForUnlocked];
+      enablesStationaryDetectionForUnlocked = [(SBCaptureButtonSettings *)self->_settings enablesStationaryDetectionForUnlocked];
 
-      if (!v4)
+      if (!enablesStationaryDetectionForUnlocked)
       {
         return;
       }
@@ -1738,7 +1738,7 @@ void __61__SBCaptureHardwareButtonAppActivator__updateStationaryState__block_inv
 {
   v3 = *MEMORY[0x277D85DE8];
   v2[0] = 67240192;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_ERROR, "failed to begin observing console mode. status: %{public}d", v2, 8u);
 }
 
@@ -1746,7 +1746,7 @@ void __61__SBCaptureHardwareButtonAppActivator__updateStationaryState__block_inv
 {
   v3 = *MEMORY[0x277D85DE8];
   v2[0] = 67240192;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_ERROR, "failed to read console mode. status: %{public}d", v2, 8u);
 }
 
@@ -1793,28 +1793,28 @@ void __75__SBCaptureHardwareButtonAppActivator__createCaptureButtonDefaultsObser
 - (void)_updateCaptureButtonDefaults
 {
   OUTLINED_FUNCTION_1_2();
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v1 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (id)_coachingStringForCoachIntent:(unint64_t)a3
+- (id)_coachingStringForCoachIntent:(unint64_t)intent
 {
-  if (a3 == 1)
+  if (intent == 1)
   {
-    v3 = [(SBCaptureHardwareButtonAppActivator *)self __clickAgainCoachingText];
+    __clickAgainCoachingText = [(SBCaptureHardwareButtonAppActivator *)self __clickAgainCoachingText];
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (intent == 2)
   {
-    v3 = [(SBCaptureHardwareButtonAppActivator *)self __consoleModeCoachingText];
+    __clickAgainCoachingText = [(SBCaptureHardwareButtonAppActivator *)self __consoleModeCoachingText];
 LABEL_5:
-    v4 = v3;
+    __clickAgainCoachingText2 = __clickAgainCoachingText;
     goto LABEL_6;
   }
 
-  v4 = [(SBCaptureHardwareButtonAppActivator *)self __clickAgainCoachingText];
+  __clickAgainCoachingText2 = [(SBCaptureHardwareButtonAppActivator *)self __clickAgainCoachingText];
   v6 = SBLogCommon();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
 
@@ -1825,21 +1825,21 @@ LABEL_5:
 
 LABEL_6:
 
-  return v4;
+  return __clickAgainCoachingText2;
 }
 
 - (id)__consoleModeCoachingText
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"CAPTURE_HARDWARE_BUTTON_COACHING_CONSOLE_MODE" value:&stru_283094718 table:@"SpringBoard_Fall_2024_iOS"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"CAPTURE_HARDWARE_BUTTON_COACHING_CONSOLE_MODE" value:&stru_283094718 table:@"SpringBoard_Fall_2024_iOS"];
 
   return v3;
 }
 
 - (id)__clickAgainCoachingText
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"CAPTURE_HARDWARE_BUTTON_COACHING_CLICK_AGAIN" value:&stru_283094718 table:@"SpringBoard_Fall_2024_iOS"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"CAPTURE_HARDWARE_BUTTON_COACHING_CLICK_AGAIN" value:&stru_283094718 table:@"SpringBoard_Fall_2024_iOS"];
 
   return v3;
 }
@@ -1871,12 +1871,12 @@ LABEL_6:
   return v3;
 }
 
-- (void)_updateStationarySquelchTimestampInContext:(id)a3 timeSinceLastStationarySquelch:(double)a4
+- (void)_updateStationarySquelchTimestampInContext:(id)context timeSinceLastStationarySquelch:(double)squelch
 {
-  v9 = a3;
+  contextCopy = context;
   [(SBCaptureHardwareButtonAppActivator *)self deviceStationaryDetectionStationaryDebounceInterval];
   v7 = v6;
-  if (([v9 suppressionState] == 2 || !objc_msgSend(v9, "suppressionState")) && objc_msgSend(v9, "stationaryState") == 1 && v7 <= a4)
+  if (([contextCopy suppressionState] == 2 || !objc_msgSend(contextCopy, "suppressionState")) && objc_msgSend(contextCopy, "stationaryState") == 1 && v7 <= squelch)
   {
     BSAbsoluteMachTimeNow();
     self->_lastStationarySquelchTimestamp = v8;
@@ -1887,8 +1887,8 @@ LABEL_6:
 {
   if (!self->_hintDropletAssertion)
   {
-    v6 = [(SBWindowScene *)self->_windowScene hardwareButtonBezelEffectsCoordinator];
-    v4 = [v6 activateHintDropletForButton:9];
+    hardwareButtonBezelEffectsCoordinator = [(SBWindowScene *)self->_windowScene hardwareButtonBezelEffectsCoordinator];
+    v4 = [hardwareButtonBezelEffectsCoordinator activateHintDropletForButton:9];
     hintDropletAssertion = self->_hintDropletAssertion;
     self->_hintDropletAssertion = v4;
   }
@@ -1907,10 +1907,10 @@ LABEL_6:
 
 - (BOOL)_isVisionIntelligenceEnabled
 {
-  v2 = [(SBWindowScene *)self->_windowScene assistantController];
-  v3 = [v2 isVisualSearchEnabled];
+  assistantController = [(SBWindowScene *)self->_windowScene assistantController];
+  isVisualSearchEnabled = [assistantController isVisualSearchEnabled];
 
-  return v3;
+  return isVisualSearchEnabled;
 }
 
 - (void)initWithSettingsSnapshot:windowScene:scanModeResource:activationManager:suppressionManager:setupManager:authenticationController:HUDController:.cold.1()

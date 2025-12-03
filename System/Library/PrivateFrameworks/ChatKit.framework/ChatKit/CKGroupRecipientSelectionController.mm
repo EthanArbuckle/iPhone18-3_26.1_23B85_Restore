@@ -1,12 +1,12 @@
 @interface CKGroupRecipientSelectionController
 - (BOOL)_enableRecipientsAdditionBasedOnAvailability;
 - (BOOL)alwaysShowSearchResultsTable;
-- (BOOL)hasInvalidRecipientsForService:(id)a3;
+- (BOOL)hasInvalidRecipientsForService:(id)service;
 - (BOOL)isBeingPresentedInMacDetailsView;
-- (BOOL)recipientSelectionIsGroup:(id)a3;
+- (BOOL)recipientSelectionIsGroup:(id)group;
 - (BOOL)shouldAutorotate;
-- (CKGroupRecipientSelectionController)initWithConversation:(id)a3;
-- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)a3;
+- (CKGroupRecipientSelectionController)initWithConversation:(id)conversation;
+- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)controller;
 - (double)topInsetForNavBar;
 - (id)_orderedMutableGroupServices;
 - (id)_serviceForRecipientPresentationOptions;
@@ -14,46 +14,46 @@
 - (void)_checkAvailabilityAndAddToken;
 - (void)_frecencySearch;
 - (void)_updateNavigationButton;
-- (void)composeRecipientViewEscapePressed:(id)a3;
-- (void)composeRecipientViewReturnPressed:(id)a3;
-- (void)didAddRecipient:(id)a3;
-- (void)handleAddingHandles:(id)a3 conversation:(id)a4 viewController:(id)a5 allRecipientAddresses:(id)a6 completion:(id)a7;
-- (void)handleCancelAction:(id)a3 completion:(id)a4;
-- (void)handleDoneActionForConversation:(id)a3 viewController:(id)a4 completion:(id)a5;
+- (void)composeRecipientViewEscapePressed:(id)pressed;
+- (void)composeRecipientViewReturnPressed:(id)pressed;
+- (void)didAddRecipient:(id)recipient;
+- (void)handleAddingHandles:(id)handles conversation:(id)conversation viewController:(id)controller allRecipientAddresses:(id)addresses completion:(id)completion;
+- (void)handleCancelAction:(id)action completion:(id)completion;
+- (void)handleDoneActionForConversation:(id)conversation viewController:(id)controller completion:(id)completion;
 - (void)loadView;
 - (void)recipientAvailabilitiesDidUpdate;
-- (void)recipientSelectionController:(id)a3 textDidChange:(id)a4;
+- (void)recipientSelectionController:(id)controller textDidChange:(id)change;
 - (void)recipientSelectionControllerDidChange;
-- (void)recipientSelectionControllerEscapePressed:(id)a3;
-- (void)recipientSelectionControllerRequestDismissKeyboard:(id)a3;
+- (void)recipientSelectionControllerEscapePressed:(id)pressed;
+- (void)recipientSelectionControllerRequestDismissKeyboard:(id)keyboard;
 - (void)viewDidAppearDeferredSetup;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKGroupRecipientSelectionController
 
-- (CKGroupRecipientSelectionController)initWithConversation:(id)a3
+- (CKGroupRecipientSelectionController)initWithConversation:(id)conversation
 {
   v12.receiver = self;
   v12.super_class = CKGroupRecipientSelectionController;
-  v3 = [(CKRecipientSelectionController *)&v12 initWithConversation:a3];
+  v3 = [(CKRecipientSelectionController *)&v12 initWithConversation:conversation];
   v4 = v3;
   if (v3)
   {
     [(CKRecipientSelectionController *)v3 setDelegate:v3];
   }
 
-  v5 = [(CKRecipientSelectionController *)v4 conversation];
-  v6 = [v5 chat];
+  conversation = [(CKRecipientSelectionController *)v4 conversation];
+  chat = [conversation chat];
 
-  if (v6)
+  if (chat)
   {
-    v7 = [(CKRecipientSelectionController *)v4 conversation];
-    v8 = [v7 chat];
-    v9 = [v8 participants];
-    v10 = [v9 __imArrayByApplyingBlock:&__block_literal_global_259];
+    conversation2 = [(CKRecipientSelectionController *)v4 conversation];
+    chat2 = [conversation2 chat];
+    participants = [chat2 participants];
+    v10 = [participants __imArrayByApplyingBlock:&__block_literal_global_259];
 
     [(CKRecipientSelectionController *)v4 refreshAvailabilityForRecipients:v10 context:0];
   }
@@ -80,9 +80,9 @@ id __60__CKGroupRecipientSelectionController_initWithConversation___block_invoke
   v9.receiver = self;
   v9.super_class = CKGroupRecipientSelectionController;
   [(CKRecipientSelectionController *)&v9 loadView];
-  v3 = [(CKGroupRecipientSelectionController *)self isBeingPresentedInMacDetailsView];
-  v4 = [(CKGroupRecipientSelectionController *)self view];
-  if (v3)
+  isBeingPresentedInMacDetailsView = [(CKGroupRecipientSelectionController *)self isBeingPresentedInMacDetailsView];
+  view = [(CKGroupRecipientSelectionController *)self view];
+  if (isBeingPresentedInMacDetailsView)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -92,12 +92,12 @@ id __60__CKGroupRecipientSelectionController_initWithConversation___block_invoke
     [MEMORY[0x1E69DC888] _ckSystemBackgroundColor];
   }
   v5 = ;
-  [v4 setBackgroundColor:v5];
+  [view setBackgroundColor:v5];
 
-  v6 = [(CKRecipientSelectionController *)self toField];
+  toField = [(CKRecipientSelectionController *)self toField];
   v7 = CKFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"ADD" value:&stru_1F04268F8 table:@"ChatKit"];
-  [v6 setLabel:v8];
+  [toField setLabel:v8];
 }
 
 - (void)viewDidLoad
@@ -107,18 +107,18 @@ id __60__CKGroupRecipientSelectionController_initWithConversation___block_invoke
   [(CKRecipientSelectionController *)&v6 viewDidLoad];
   v3 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v3 configureWithDefaultBackground];
-  v4 = [(CKGroupRecipientSelectionController *)self navigationItem];
-  [v4 setStandardAppearance:v3];
+  navigationItem = [(CKGroupRecipientSelectionController *)self navigationItem];
+  [navigationItem setStandardAppearance:v3];
 
-  v5 = [(CKGroupRecipientSelectionController *)self navigationItem];
-  [v5 setScrollEdgeAppearance:v3];
+  navigationItem2 = [(CKGroupRecipientSelectionController *)self navigationItem];
+  [navigationItem2 setScrollEdgeAppearance:v3];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CKGroupRecipientSelectionController;
-  [(CKRecipientSelectionController *)&v8 viewWillAppear:a3];
+  [(CKRecipientSelectionController *)&v8 viewWillAppear:appear];
   if ([(CKGroupRecipientSelectionController *)self isBeingPresentedInMacDetailsView])
   {
     [(CKGroupRecipientSelectionController *)self _checkAvailabilityAndAddToken];
@@ -131,16 +131,16 @@ id __60__CKGroupRecipientSelectionController_initWithConversation___block_invoke
 
   if ([(CKGroupRecipientSelectionController *)self isBeingPresentedInMacDetailsView])
   {
-    v4 = [(CKRecipientSelectionController *)self toField];
-    v5 = [v4 addButton];
-    [v5 setHidden:1];
+    toField = [(CKRecipientSelectionController *)self toField];
+    addButton = [toField addButton];
+    [addButton setHidden:1];
 
-    v6 = [(CKRecipientSelectionController *)self toField];
-    [v6 setShowsAddButtonWhenExpanded:0];
+    toField2 = [(CKRecipientSelectionController *)self toField];
+    [toField2 setShowsAddButtonWhenExpanded:0];
   }
 
-  v7 = [(CKRecipientSelectionController *)self toField];
-  [v7 becomeFirstResponder];
+  toField3 = [(CKRecipientSelectionController *)self toField];
+  [toField3 becomeFirstResponder];
 }
 
 - (void)viewDidAppearDeferredSetup
@@ -148,33 +148,33 @@ id __60__CKGroupRecipientSelectionController_initWithConversation___block_invoke
   v17.receiver = self;
   v17.super_class = CKGroupRecipientSelectionController;
   [(CKRecipientSelectionController *)&v17 viewDidAppearDeferredSetup];
-  v3 = [(CKRecipientSelectionController *)self searchListController];
-  [v3 setSuppressGroupSuggestions:1];
+  searchListController = [(CKRecipientSelectionController *)self searchListController];
+  [searchListController setSuppressGroupSuggestions:1];
 
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
-  v5 = [(CKRecipientSelectionController *)self conversation];
-  v6 = [v5 recipients];
-  v7 = [v4 initWithCapacity:{objc_msgSend(v6, "count")}];
+  conversation = [(CKRecipientSelectionController *)self conversation];
+  recipients = [conversation recipients];
+  v7 = [v4 initWithCapacity:{objc_msgSend(recipients, "count")}];
 
-  v8 = [(CKRecipientSelectionController *)self conversation];
-  v9 = [v8 recipients];
+  conversation2 = [(CKRecipientSelectionController *)self conversation];
+  recipients2 = [conversation2 recipients];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block_invoke;
   v15[3] = &unk_1E72F67A0;
   v10 = v7;
   v16 = v10;
-  [v9 enumerateObjectsUsingBlock:v15];
+  [recipients2 enumerateObjectsUsingBlock:v15];
 
-  v11 = [(CKRecipientSelectionController *)self searchListController];
-  [v11 setPrefilteredRecipients:v10];
+  searchListController2 = [(CKRecipientSelectionController *)self searchListController];
+  [searchListController2 setPrefilteredRecipients:v10];
 
   if ([(CKGroupRecipientSelectionController *)self isBeingPresentedInMacDetailsView])
   {
-    v12 = [(CKRecipientSelectionController *)self searchListController];
-    v13 = [v12 view];
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [v13 setBackgroundColor:v14];
+    searchListController3 = [(CKRecipientSelectionController *)self searchListController];
+    view = [searchListController3 view];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [view setBackgroundColor:clearColor];
   }
 
   [(CKGroupRecipientSelectionController *)self _frecencySearch];
@@ -200,9 +200,9 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
 - (BOOL)shouldAutorotate
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 shouldSuppressRotationInNewCompose];
+  shouldSuppressRotationInNewCompose = [v2 shouldSuppressRotationInNewCompose];
 
-  return v3 ^ 1;
+  return shouldSuppressRotationInNewCompose ^ 1;
 }
 
 - (void)recipientSelectionControllerDidChange
@@ -243,10 +243,10 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(CKRecipientSelectionController *)self toField];
-    v5 = [v4 recipients];
+    toField = [(CKRecipientSelectionController *)self toField];
+    recipients = [toField recipients];
 
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+    v6 = [recipients countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -258,25 +258,25 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(recipients);
           }
 
           v10 = *(*(&v15 + 1) + 8 * v9);
-          v11 = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
-          v12 = [v10 IDSCanonicalAddress];
-          v13 = [v11 hasResultsForRecipient:v12];
+          expandedRecipientAvailabilities = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
+          iDSCanonicalAddress = [v10 IDSCanonicalAddress];
+          v13 = [expandedRecipientAvailabilities hasResultsForRecipient:iDSCanonicalAddress];
 
           if (v13)
           {
-            v14 = [(CKRecipientSelectionController *)self toField];
-            [v14 invalidateAtomPresentationOptionsForRecipient:v10];
+            toField2 = [(CKRecipientSelectionController *)self toField];
+            [toField2 invalidateAtomPresentationOptionsForRecipient:v10];
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v7 = [recipients countByEnumeratingWithState:&v15 objects:v21 count:16];
       }
 
       while (v7);
@@ -286,31 +286,31 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
 
 - (BOOL)alwaysShowSearchResultsTable
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isRedesignedDetailsViewEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRedesignedDetailsViewEnabled = [mEMORY[0x1E69A8070] isRedesignedDetailsViewEnabled];
 
-  return v3 ^ 1;
+  return isRedesignedDetailsViewEnabled ^ 1;
 }
 
 - (BOOL)isBeingPresentedInMacDetailsView
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isRedesignedDetailsViewEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRedesignedDetailsViewEnabled = [mEMORY[0x1E69A8070] isRedesignedDetailsViewEnabled];
 
-  return (v3 & 1) == 0 && CKIsRunningInMacCatalyst() != 0;
+  return (isRedesignedDetailsViewEnabled & 1) == 0 && CKIsRunningInMacCatalyst() != 0;
 }
 
-- (void)didAddRecipient:(id)a3
+- (void)didAddRecipient:(id)recipient
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recipientCopy = recipient;
   v18.receiver = self;
   v18.super_class = CKGroupRecipientSelectionController;
-  [(CKRecipientSelectionController *)&v18 didAddRecipient:v4];
-  v5 = [(CKRecipientSelectionController *)self conversation];
-  v6 = [v5 sendingService];
-  v7 = [MEMORY[0x1E69A5CA0] iMessageService];
-  v8 = v6 == v7;
+  [(CKRecipientSelectionController *)&v18 didAddRecipient:recipientCopy];
+  conversation = [(CKRecipientSelectionController *)self conversation];
+  sendingService = [conversation sendingService];
+  iMessageService = [MEMORY[0x1E69A5CA0] iMessageService];
+  v8 = sendingService == iMessageService;
 
   if (v8)
   {
@@ -320,11 +320,11 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
   else
   {
     v9 = MEMORY[0x1E695DFD8];
-    v10 = [MEMORY[0x1E69A5CA0] iMessageService];
-    v11 = [v10 internalName];
-    v12 = [MEMORY[0x1E69A5CA0] rcsService];
-    v13 = [v12 internalName];
-    v14 = [v9 setWithObjects:{v11, v13, 0}];
+    iMessageService2 = [MEMORY[0x1E69A5CA0] iMessageService];
+    internalName = [iMessageService2 internalName];
+    rcsService = [MEMORY[0x1E69A5CA0] rcsService];
+    internalName2 = [rcsService internalName];
+    v14 = [v9 setWithObjects:{internalName, internalName2, 0}];
   }
 
   v15 = objc_alloc_init(CKPendingConversationStatusRefreshContext);
@@ -336,47 +336,47 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v21 = v4;
+      v21 = recipientCopy;
       _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "Added recipientURI %@, will refresh availability for it.", buf, 0xCu);
     }
   }
 
-  v19 = v4;
+  v19 = recipientCopy;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
   [(CKRecipientSelectionController *)self refreshAvailabilityForRecipients:v17 context:v15];
 }
 
-- (BOOL)recipientSelectionIsGroup:(id)a3
+- (BOOL)recipientSelectionIsGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(CKRecipientSelectionController *)self recipients];
-  if ([v5 count] > 1)
+  groupCopy = group;
+  recipients = [(CKRecipientSelectionController *)self recipients];
+  if ([recipients count] > 1)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = [v4 recipients];
-    v7 = [v6 count] > 1;
+    recipients2 = [groupCopy recipients];
+    v7 = [recipients2 count] > 1;
   }
 
   return v7;
 }
 
-- (void)recipientSelectionControllerEscapePressed:(id)a3
+- (void)recipientSelectionControllerEscapePressed:(id)pressed
 {
-  v6 = [(CKGroupRecipientSelectionController *)self cancelButton];
-  v4 = [v6 target];
-  v5 = [(CKGroupRecipientSelectionController *)self cancelButton];
-  [v4 performSelectorOnMainThread:objc_msgSend(v5 withObject:"action") waitUntilDone:{0, 0}];
+  cancelButton = [(CKGroupRecipientSelectionController *)self cancelButton];
+  target = [cancelButton target];
+  cancelButton2 = [(CKGroupRecipientSelectionController *)self cancelButton];
+  [target performSelectorOnMainThread:objc_msgSend(cancelButton2 withObject:"action") waitUntilDone:{0, 0}];
 }
 
-- (void)recipientSelectionController:(id)a3 textDidChange:(id)a4
+- (void)recipientSelectionController:(id)controller textDidChange:(id)change
 {
-  v5 = [(CKRecipientSelectionController *)self toField:a3];
-  v6 = [v5 text];
-  v7 = [v6 length];
+  v5 = [(CKRecipientSelectionController *)self toField:controller];
+  text = [v5 text];
+  v7 = [text length];
 
   if (!v7)
   {
@@ -385,14 +385,14 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
   }
 }
 
-- (void)recipientSelectionControllerRequestDismissKeyboard:(id)a3
+- (void)recipientSelectionControllerRequestDismissKeyboard:(id)keyboard
 {
-  v4 = [(CKRecipientSelectionController *)self toField];
-  v3 = [v4 textView];
-  [v3 resignFirstResponder];
+  toField = [(CKRecipientSelectionController *)self toField];
+  textView = [toField textView];
+  [textView resignFirstResponder];
 }
 
-- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)a3
+- (UIEdgeInsets)navigationBarInsetsForRecipientSelectionController:(id)controller
 {
   v3 = *(MEMORY[0x1E69DDCE0] + 8);
   v4 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -410,24 +410,24 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
 
 - (double)topInsetForNavBar
 {
-  v3 = [(CKGroupRecipientSelectionController *)self navigationController];
-  v4 = [v3 navigationBar];
+  navigationController = [(CKGroupRecipientSelectionController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v5 statusBar];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  statusBar = [mEMORY[0x1E69DC668] statusBar];
 
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  v8 = [v7 isStatusBarHidden];
+  mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+  isStatusBarHidden = [mEMORY[0x1E69DC668]2 isStatusBarHidden];
 
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 shouldInsetForStatusBar];
+  shouldInsetForStatusBar = [v9 shouldInsetForStatusBar];
 
-  if (v10)
+  if (shouldInsetForStatusBar)
   {
     v11 = 0.0;
-    if ((v8 & 1) == 0)
+    if ((isStatusBarHidden & 1) == 0)
     {
-      [v6 currentHeight];
+      [statusBar currentHeight];
       v11 = v12;
     }
   }
@@ -435,10 +435,10 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
   else
   {
     v11 = 0.0;
-    if ([v4 isTranslucent])
+    if ([navigationBar isTranslucent])
     {
-      v13 = [(CKGroupRecipientSelectionController *)self view];
-      [v13 safeAreaInsets];
+      view = [(CKGroupRecipientSelectionController *)self view];
+      [view safeAreaInsets];
       v11 = v14;
     }
   }
@@ -448,29 +448,29 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
 
 - (void)_updateNavigationButton
 {
-  v3 = [(CKRecipientSelectionController *)self recipients];
-  v4 = [v3 count];
+  recipients = [(CKRecipientSelectionController *)self recipients];
+  v4 = [recipients count];
 
   if (v4)
   {
-    v5 = [(CKGroupRecipientSelectionController *)self _enableRecipientsAdditionBasedOnAvailability];
+    _enableRecipientsAdditionBasedOnAvailability = [(CKGroupRecipientSelectionController *)self _enableRecipientsAdditionBasedOnAvailability];
   }
 
   else
   {
-    v5 = 0;
+    _enableRecipientsAdditionBasedOnAvailability = 0;
   }
 
-  v6 = [(CKGroupRecipientSelectionController *)self doneButton];
-  [v6 setEnabled:v5];
+  doneButton = [(CKGroupRecipientSelectionController *)self doneButton];
+  [doneButton setEnabled:_enableRecipientsAdditionBasedOnAvailability];
 }
 
 - (void)_checkAvailabilityAndAddToken
 {
   if ([(CKGroupRecipientSelectionController *)self isBeingPresentedInMacDetailsView]&& [(CKGroupRecipientSelectionController *)self _enableRecipientsAdditionBasedOnAvailability])
   {
-    v3 = [(CKRecipientSelectionController *)self delegate];
-    [v3 recipientSelectionControllerReturnPressed:self];
+    delegate = [(CKRecipientSelectionController *)self delegate];
+    [delegate recipientSelectionControllerReturnPressed:self];
   }
 }
 
@@ -497,16 +497,16 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
         }
 
         v7 = *(*(&v23 + 1) + 8 * i);
-        v8 = [v7 IDSCanonicalAddress];
-        v9 = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
-        v10 = [v9 hasResultsForRecipient:v8];
+        iDSCanonicalAddress = [v7 IDSCanonicalAddress];
+        expandedRecipientAvailabilities = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
+        v10 = [expandedRecipientAvailabilities hasResultsForRecipient:iDSCanonicalAddress];
 
-        v11 = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
+        expandedRecipientAvailabilities2 = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
         v12 = MEMORY[0x1E69A7940];
-        v13 = [v11 hasIDStatus:1 forRecipient:v8 forServicesWithCapability:*MEMORY[0x1E69A7940]];
+        v13 = [expandedRecipientAvailabilities2 hasIDStatus:1 forRecipient:iDSCanonicalAddress forServicesWithCapability:*MEMORY[0x1E69A7940]];
 
-        v14 = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
-        LOBYTE(v12) = [v14 hasIDStatus:2 forRecipient:v8 forServicesWithCapability:*v12];
+        expandedRecipientAvailabilities3 = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
+        LOBYTE(v12) = [expandedRecipientAvailabilities3 hasIDStatus:2 forRecipient:iDSCanonicalAddress forServicesWithCapability:*v12];
 
         v15 = v10 & (v13 | v12);
         if (v15)
@@ -518,14 +518,14 @@ void __65__CKGroupRecipientSelectionController_viewDidAppearDeferredSetup__block
         {
           if (![(CKRecipientSelectionController *)self allowedByScreenTime])
           {
-            v16 = [v7 normalizedAddress];
+            normalizedAddress = [v7 normalizedAddress];
 
-            if (v16)
+            if (normalizedAddress)
             {
-              v17 = [(CKRecipientSelectionController *)self currentConversationContext];
-              v18 = [v17 allowedByContactsHandle];
-              v19 = [v7 normalizedAddress];
-              v20 = [v18 objectForKey:v19];
+              currentConversationContext = [(CKRecipientSelectionController *)self currentConversationContext];
+              allowedByContactsHandle = [currentConversationContext allowedByContactsHandle];
+              normalizedAddress2 = [v7 normalizedAddress];
+              v20 = [allowedByContactsHandle objectForKey:normalizedAddress2];
 
               if (v20 && ![v20 BOOLValue])
               {
@@ -556,12 +556,12 @@ LABEL_18:
 
 - (void)_frecencySearch
 {
-  v3 = [(CKRecipientSelectionController *)self searchListController];
-  [v3 searchWithText:0];
+  searchListController = [(CKRecipientSelectionController *)self searchListController];
+  [searchListController searchWithText:0];
 
-  v5 = [(CKRecipientSelectionController *)self searchListController];
-  v4 = [v5 tableView];
-  [v4 __ck_scrollToTop:0];
+  searchListController2 = [(CKRecipientSelectionController *)self searchListController];
+  tableView = [searchListController2 tableView];
+  [tableView __ck_scrollToTop:0];
 }
 
 - (id)handlesForScreenTimePolicyCheck
@@ -570,31 +570,31 @@ LABEL_18:
   {
     v14.receiver = self;
     v14.super_class = CKGroupRecipientSelectionController;
-    v3 = [(CKRecipientSelectionController *)&v14 handlesForScreenTimePolicyCheck];
-    v4 = [v3 mutableCopy];
+    handlesForScreenTimePolicyCheck = [(CKRecipientSelectionController *)&v14 handlesForScreenTimePolicyCheck];
+    array = [handlesForScreenTimePolicyCheck mutableCopy];
 
-    if (!v4)
+    if (!array)
     {
-      v4 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    v5 = [(CKRecipientSelectionController *)self conversation];
-    v6 = [v5 chat];
+    conversation = [(CKRecipientSelectionController *)self conversation];
+    chat = [conversation chat];
 
-    if (v6)
+    if (chat)
     {
-      v7 = [(CKRecipientSelectionController *)self conversation];
-      v8 = [v7 chat];
-      v9 = [v8 participants];
+      conversation2 = [(CKRecipientSelectionController *)self conversation];
+      chat2 = [conversation2 chat];
+      participants = [chat2 participants];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __70__CKGroupRecipientSelectionController_handlesForScreenTimePolicyCheck__block_invoke;
       v12[3] = &unk_1E72F7A68;
-      v13 = v4;
-      [v9 __imForEach:v12];
+      v13 = array;
+      [participants __imForEach:v12];
     }
 
-    v10 = [v4 copy];
+    v10 = [array copy];
   }
 
   else
@@ -618,41 +618,41 @@ void __70__CKGroupRecipientSelectionController_handlesForScreenTimePolicyCheck__
   }
 }
 
-- (void)composeRecipientViewReturnPressed:(id)a3
+- (void)composeRecipientViewReturnPressed:(id)pressed
 {
   if ([(CKGroupRecipientSelectionController *)self _enableRecipientsAdditionBasedOnAvailability])
   {
-    v4 = [(CKRecipientSelectionController *)self delegate];
-    [v4 recipientSelectionControllerReturnPressed:self];
+    delegate = [(CKRecipientSelectionController *)self delegate];
+    [delegate recipientSelectionControllerReturnPressed:self];
   }
 }
 
-- (void)composeRecipientViewEscapePressed:(id)a3
+- (void)composeRecipientViewEscapePressed:(id)pressed
 {
-  v4 = [(CKRecipientSelectionController *)self delegate];
+  delegate = [(CKRecipientSelectionController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKRecipientSelectionController *)self delegate];
-    [v6 recipientSelectionControllerEscapePressed:self];
+    delegate2 = [(CKRecipientSelectionController *)self delegate];
+    [delegate2 recipientSelectionControllerEscapePressed:self];
   }
 }
 
-- (void)handleCancelAction:(id)a3 completion:(id)a4
+- (void)handleCancelAction:(id)action completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(CKRecipientSelectionController *)self stopCheckingRecipientAvailabilityAndRemoveAllTimers];
   [(CKRecipientSelectionController *)self invalidateOutstandingIDStatusRequests];
   [(CKGroupRecipientSelectionController *)self dismissViewControllerAnimated:1 completion:0];
-  (*(v5 + 2))(v5, 0, 0, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
 }
 
-- (void)handleDoneActionForConversation:(id)a3 viewController:(id)a4 completion:(id)a5
+- (void)handleDoneActionForConversation:(id)conversation viewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  conversationCopy = conversation;
+  completionCopy = completion;
+  controllerCopy = controller;
   v11 = CKGroupRecipientSelectionLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -660,13 +660,13 @@ void __70__CKGroupRecipientSelectionController_handlesForScreenTimePolicyCheck__
     _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "User pressed done button to add new participants to the group.", buf, 2u);
   }
 
-  v12 = [(CKRecipientSelectionController *)self toField];
-  v13 = [v12 recipients];
+  toField = [(CKRecipientSelectionController *)self toField];
+  recipients = [toField recipients];
 
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = MEMORY[0x1E695DF70];
-  v16 = [v8 recipientStrings];
-  v17 = [v15 arrayWithArray:v16];
+  recipientStrings = [conversationCopy recipientStrings];
+  v17 = [v15 arrayWithArray:recipientStrings];
 
   v18 = CKGroupRecipientSelectionLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -681,21 +681,21 @@ void __70__CKGroupRecipientSelectionController_handlesForScreenTimePolicyCheck__
   v30[2] = __97__CKGroupRecipientSelectionController_handleDoneActionForConversation_viewController_completion___block_invoke_123;
   v30[3] = &unk_1E72EC398;
   v31 = v17;
-  v32 = v14;
-  v19 = v14;
+  v32 = array;
+  v19 = array;
   v20 = v17;
-  [v13 enumerateObjectsUsingBlock:v30];
+  [recipients enumerateObjectsUsingBlock:v30];
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
   v26 = __97__CKGroupRecipientSelectionController_handleDoneActionForConversation_viewController_completion___block_invoke_125;
   v27 = &unk_1E72F3B28;
-  v28 = v8;
+  v28 = conversationCopy;
   v29 = v21;
   v22 = v21;
-  v23 = v8;
+  v23 = conversationCopy;
   [v19 enumerateObjectsUsingBlock:&v24];
-  [(CKGroupRecipientSelectionController *)self handleAddingHandles:v22 conversation:v23 viewController:v10 allRecipientAddresses:v20 completion:v9, v24, v25, v26, v27];
+  [(CKGroupRecipientSelectionController *)self handleAddingHandles:v22 conversation:v23 viewController:controllerCopy allRecipientAddresses:v20 completion:completionCopy, v24, v25, v26, v27];
 }
 
 void __97__CKGroupRecipientSelectionController_handleDoneActionForConversation_viewController_completion___block_invoke(uint64_t a1, void *a2)
@@ -809,24 +809,24 @@ uint64_t __67__CKGroupRecipientSelectionController__orderedMutableGroupServices_
   return v7;
 }
 
-- (void)handleAddingHandles:(id)a3 conversation:(id)a4 viewController:(id)a5 allRecipientAddresses:(id)a6 completion:(id)a7
+- (void)handleAddingHandles:(id)handles conversation:(id)conversation viewController:(id)controller allRecipientAddresses:(id)addresses completion:(id)completion
 {
   v71 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v55 = a4;
-  v52 = a5;
-  v51 = a6;
-  v50 = a7;
-  v53 = [(CKGroupRecipientSelectionController *)self _orderedMutableGroupServices];
+  handlesCopy = handles;
+  conversationCopy = conversation;
+  controllerCopy = controller;
+  addressesCopy = addresses;
+  completionCopy = completion;
+  _orderedMutableGroupServices = [(CKGroupRecipientSelectionController *)self _orderedMutableGroupServices];
   v13 = CKGroupRecipientSelectionLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v55 chat];
-    v15 = [v14 guid];
+    chat = [conversationCopy chat];
+    guid = [chat guid];
     *buf = 138412546;
-    v68 = v12;
+    v68 = handlesCopy;
     v69 = 2112;
-    v70 = v15;
+    v70 = guid;
     _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Trying to add recipients %@ to chat with guid %@", buf, 0x16u);
   }
 
@@ -835,7 +835,7 @@ uint64_t __67__CKGroupRecipientSelectionController__orderedMutableGroupServices_
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v12;
+  obj = handlesCopy;
   v16 = [obj countByEnumeratingWithState:&v60 objects:v66 count:16];
   if (v16)
   {
@@ -851,12 +851,12 @@ uint64_t __67__CKGroupRecipientSelectionController__orderedMutableGroupServices_
         }
 
         v20 = *(*(&v60 + 1) + 8 * i);
-        v21 = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
+        expandedRecipientAvailabilities = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
         v22 = [v20 ID];
-        v23 = [v22 IDSFormattedDestinationID];
-        v24 = [v55 sendingService];
-        v25 = [v24 name];
-        v26 = [v21 reachabilityForRecipient:v23 service:v25 isFinal:&v64];
+        iDSFormattedDestinationID = [v22 IDSFormattedDestinationID];
+        sendingService = [conversationCopy sendingService];
+        name = [sendingService name];
+        v26 = [expandedRecipientAvailabilities reachabilityForRecipient:iDSFormattedDestinationID service:name isFinal:&v64];
 
         if ((v64 & 1) == 0)
         {
@@ -869,9 +869,9 @@ uint64_t __67__CKGroupRecipientSelectionController__orderedMutableGroupServices_
           }
 
           v41 = obj;
-          v38 = v51;
-          v37 = v52;
-          v39 = v50;
+          v38 = addressesCopy;
+          v37 = controllerCopy;
+          v39 = completionCopy;
           goto LABEL_30;
         }
       }
@@ -886,15 +886,15 @@ uint64_t __67__CKGroupRecipientSelectionController__orderedMutableGroupServices_
     }
   }
 
-  v27 = [(CKRecipientSelectionController *)self conversation];
-  v28 = [v27 supportsMutatingGroupMembers];
+  conversation = [(CKRecipientSelectionController *)self conversation];
+  supportsMutatingGroupMembers = [conversation supportsMutatingGroupMembers];
 
-  if (!v28)
+  if (!supportsMutatingGroupMembers)
   {
     v29 = CKGroupRecipientSelectionLogHandle();
-    v38 = v51;
-    v37 = v52;
-    v39 = v50;
+    v38 = addressesCopy;
+    v37 = controllerCopy;
+    v39 = completionCopy;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
@@ -913,14 +913,14 @@ LABEL_29:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v29 = v53;
+  v29 = _orderedMutableGroupServices;
   v30 = [v29 countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (!v30)
   {
 LABEL_22:
-    v38 = v51;
-    v37 = v52;
-    v39 = v50;
+    v38 = addressesCopy;
+    v37 = controllerCopy;
+    v39 = completionCopy;
     goto LABEL_28;
   }
 
@@ -966,54 +966,54 @@ LABEL_14:
 
   v42 = v34;
 
-  v38 = v51;
-  v37 = v52;
-  v39 = v50;
+  v38 = addressesCopy;
+  v37 = controllerCopy;
+  v39 = completionCopy;
   if (!v42)
   {
     goto LABEL_29;
   }
 
-  v43 = [(CKRecipientSelectionController *)self conversation];
+  conversation2 = [(CKRecipientSelectionController *)self conversation];
   v41 = obj;
-  [v43 addRecipientHandles:obj];
+  [conversation2 addRecipientHandles:obj];
 
-  v44 = [(CKRecipientSelectionController *)self conversation];
-  v45 = [v44 sendingService];
+  conversation3 = [(CKRecipientSelectionController *)self conversation];
+  sendingService2 = [conversation3 sendingService];
 
-  if (v42 != v45)
+  if (v42 != sendingService2)
   {
     v46 = CKGroupRecipientSelectionLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
     {
-      v47 = [(CKRecipientSelectionController *)self conversation];
-      v48 = [v47 sendingService];
+      conversation4 = [(CKRecipientSelectionController *)self conversation];
+      sendingService3 = [conversation4 sendingService];
       *buf = 138412546;
-      v68 = v48;
+      v68 = sendingService3;
       v69 = 2112;
       v70 = v42;
       _os_log_impl(&dword_19020E000, v46, OS_LOG_TYPE_INFO, "Current service %@, new participant(s) supported service %@. Refreshing service for sending...", buf, 0x16u);
     }
 
-    v49 = [(CKRecipientSelectionController *)self conversation];
-    [v49 refreshServiceForSending];
+    conversation5 = [(CKRecipientSelectionController *)self conversation];
+    [conversation5 refreshServiceForSending];
   }
 
-  [(CKGroupRecipientSelectionController *)self handleCancelAction:v52 completion:v50];
+  [(CKGroupRecipientSelectionController *)self handleCancelAction:controllerCopy completion:completionCopy];
 
 LABEL_30:
 }
 
-- (BOOL)hasInvalidRecipientsForService:(id)a3
+- (BOOL)hasInvalidRecipientsForService:(id)service
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v5 = [(CKRecipientSelectionController *)self recipients];
-  v6 = [v5 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  recipients = [(CKRecipientSelectionController *)self recipients];
+  v6 = [recipients countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v6)
   {
     v7 = *v41;
@@ -1023,13 +1023,13 @@ LABEL_30:
       {
         if (*v41 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(recipients);
         }
 
-        v9 = [*(*(&v40 + 1) + 8 * i) IDSCanonicalAddress];
-        v10 = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
-        v11 = [v4 name];
-        v12 = [v10 idStatusForRecipient:v9 service:v11];
+        iDSCanonicalAddress = [*(*(&v40 + 1) + 8 * i) IDSCanonicalAddress];
+        expandedRecipientAvailabilities = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
+        name = [serviceCopy name];
+        v12 = [expandedRecipientAvailabilities idStatusForRecipient:iDSCanonicalAddress service:name];
 
         if (v12 != 1)
         {
@@ -1038,7 +1038,7 @@ LABEL_30:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v6 = [recipients countByEnumeratingWithState:&v40 objects:v49 count:16];
       if (v6)
       {
         continue;
@@ -1048,20 +1048,20 @@ LABEL_30:
     }
   }
 
-  v13 = [v4 name];
-  v14 = [MEMORY[0x1E69A5CA0] iMessageService];
-  v15 = [v14 name];
-  v35 = [v13 isEqualToString:v15];
+  name2 = [serviceCopy name];
+  iMessageService = [MEMORY[0x1E69A5CA0] iMessageService];
+  name3 = [iMessageService name];
+  v35 = [name2 isEqualToString:name3];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v16 = [(CKRecipientSelectionController *)self conversation];
-  v17 = [v16 chat];
-  v5 = [v17 participants];
+  conversation = [(CKRecipientSelectionController *)self conversation];
+  chat = [conversation chat];
+  recipients = [chat participants];
 
-  v18 = [v5 countByEnumeratingWithState:&v36 objects:v48 count:16];
+  v18 = [recipients countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v18)
   {
     v34 = 0;
@@ -1074,7 +1074,7 @@ LABEL_30:
       {
         if (*v37 != v20)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(recipients);
         }
 
         v22 = *(*(&v36 + 1) + 8 * j);
@@ -1084,18 +1084,18 @@ LABEL_30:
         if (v35)
         {
           v25 = [v22 ID];
-          v26 = [v25 _appearsToBeEmail];
+          _appearsToBeEmail = [v25 _appearsToBeEmail];
 
-          if (v26)
+          if (_appearsToBeEmail)
           {
 
             goto LABEL_27;
           }
         }
 
-        v27 = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
-        v28 = [v4 name];
-        v29 = [v27 idStatusForRecipient:v24 service:v28];
+        expandedRecipientAvailabilities2 = [(CKRecipientSelectionController *)self expandedRecipientAvailabilities];
+        name4 = [serviceCopy name];
+        v29 = [expandedRecipientAvailabilities2 idStatusForRecipient:v24 service:name4];
 
         if (v29 != 1)
         {
@@ -1104,11 +1104,11 @@ LABEL_30:
             v30 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
             {
-              v31 = [v4 name];
+              name5 = [serviceCopy name];
               *buf = v33;
               v45 = v24;
               v46 = 2112;
-              v47 = v31;
+              v47 = name5;
               _os_log_impl(&dword_19020E000, v30, OS_LOG_TYPE_INFO, "Existing handle %@ was not reachable on service %@, cannot add.", buf, 0x16u);
             }
           }
@@ -1117,7 +1117,7 @@ LABEL_30:
         }
       }
 
-      v18 = [v5 countByEnumeratingWithState:&v36 objects:v48 count:16];
+      v18 = [recipients countByEnumeratingWithState:&v36 objects:v48 count:16];
       if (v18)
       {
         continue;
@@ -1140,22 +1140,22 @@ LABEL_28:
 
 - (id)_serviceForRecipientPresentationOptions
 {
-  v3 = [(CKRecipientSelectionController *)self conversation];
-  v4 = [v3 sendingService];
-  v5 = v4;
-  if (v4)
+  conversation = [(CKRecipientSelectionController *)self conversation];
+  sendingService = [conversation sendingService];
+  v5 = sendingService;
+  if (sendingService)
   {
-    v6 = v4;
+    _serviceForRecipientPresentationOptions = sendingService;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CKGroupRecipientSelectionController;
-    v6 = [(CKRecipientSelectionController *)&v9 _serviceForRecipientPresentationOptions];
+    _serviceForRecipientPresentationOptions = [(CKRecipientSelectionController *)&v9 _serviceForRecipientPresentationOptions];
   }
 
-  v7 = v6;
+  v7 = _serviceForRecipientPresentationOptions;
 
   return v7;
 }

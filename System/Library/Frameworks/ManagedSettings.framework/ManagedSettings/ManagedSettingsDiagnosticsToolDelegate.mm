@@ -1,5 +1,5 @@
 @interface ManagedSettingsDiagnosticsToolDelegate
-- (BOOL)parseGlobalOptions:(id)a3;
+- (BOOL)parseGlobalOptions:(id)options;
 - (_TtC29managedsettingsdiagnoticstool38ManagedSettingsDiagnosticsToolDelegate)init;
 - (void)registerGlobalOptions;
 @end
@@ -13,10 +13,10 @@
   [v2 registerGlobalFormatOption];
 }
 
-- (BOOL)parseGlobalOptions:(id)a3
+- (BOOL)parseGlobalOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 dictionaryWithOptionsAndValues];
+  optionsCopy = options;
+  dictionaryWithOptionsAndValues = [optionsCopy dictionaryWithOptionsAndValues];
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 
   v5 = objc_opt_self();

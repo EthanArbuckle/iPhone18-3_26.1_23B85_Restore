@@ -1,46 +1,46 @@
 @interface NTKUpNextMatchupScoreView
-+ (id)_timeStringForFetchDate:(id)a3;
++ (id)_timeStringForFetchDate:(id)date;
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NTKUpNextMatchupScoreView)initWithFrame:(CGRect)a3;
-- (void)configureWithMatchup:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (NTKUpNextMatchupScoreView)initWithFrame:(CGRect)frame;
+- (void)configureWithMatchup:(id)matchup;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 - (void)updateTimeLabel;
 @end
 
 @implementation NTKUpNextMatchupScoreView
 
-- (NTKUpNextMatchupScoreView)initWithFrame:(CGRect)a3
+- (NTKUpNextMatchupScoreView)initWithFrame:(CGRect)frame
 {
   v196[2] = *MEMORY[0x277D85DE8];
   v193.receiver = self;
   v193.super_class = NTKUpNextMatchupScoreView;
-  v3 = [(NTKUpNextMatchupScoreView *)&v193 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUpNextMatchupScoreView *)&v193 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-    v5 = [v4 device];
+    device = [v4 device];
 
     v191 = 0u;
     v192 = 0u;
     v189 = 0u;
     v190 = 0u;
-    v172 = v5;
-    ___LayoutConstants_block_invoke_0(v5, &v189);
+    v172 = device;
+    ___LayoutConstants_block_invoke_0(device, &v189);
     v6 = *(&v189 + 1);
     v7 = [MEMORY[0x277CBBB08] systemFontOfSize:*(&v189 + 1) weight:*MEMORY[0x277D74410]];
-    v8 = [v7 fontDescriptor];
+    fontDescriptor = [v7 fontDescriptor];
 
-    v171 = v8;
+    v171 = fontDescriptor;
     if (CLKIsCurrentLocaleNonLatin())
     {
-      v9 = v8;
+      v9 = fontDescriptor;
     }
 
     else
     {
-      v9 = [v8 fontDescriptorWithSymbolicTraits:1];
+      v9 = [fontDescriptor fontDescriptorWithSymbolicTraits:1];
     }
 
     v170 = v9;
@@ -152,50 +152,50 @@
 
     [v44 addLayoutGuide:v44[64]];
     [v44[64] setIdentifier:@"UpNextMatchupDescriptionLayoutGuide"];
-    v56 = [v24[52] leadingAnchor];
-    v57 = [v44[63] trailingAnchor];
+    leadingAnchor = [v24[52] leadingAnchor];
+    trailingAnchor = [v44[63] trailingAnchor];
     v58 = *&v191;
-    [v56 constraintEqualToAnchor:v57 constant:*&v191];
+    [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:*&v191];
     v59 = v173 = v3;
     v196[0] = v59;
-    v60 = [v24[55] leadingAnchor];
-    v61 = [v44[63] trailingAnchor];
-    v62 = [v60 constraintEqualToAnchor:v61 constant:v58];
+    leadingAnchor2 = [v24[55] leadingAnchor];
+    trailingAnchor2 = [v44[63] trailingAnchor];
+    v62 = [leadingAnchor2 constraintEqualToAnchor:trailingAnchor2 constant:v58];
     v196[1] = v62;
     v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v196 count:2];
     v64 = v44[65];
     v44[65] = v63;
 
-    v65 = [v24[53] firstBaselineAnchor];
-    v66 = [v44 topAnchor];
-    v67 = [v65 constraintEqualToAnchor:v66 constant:*&v190 + *(&v190 + 1)];
+    firstBaselineAnchor = [v24[53] firstBaselineAnchor];
+    topAnchor = [v44 topAnchor];
+    v67 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:*&v190 + *(&v190 + 1)];
     v195 = v67;
     v68 = [MEMORY[0x277CBEA60] arrayWithObjects:&v195 count:1];
     v69 = v44[66];
     v44[66] = v68;
 
-    v70 = [v44[64] leadingAnchor];
-    v71 = [v24[53] leadingAnchor];
-    v179 = [v70 constraintLessThanOrEqualToAnchor:v71];
+    leadingAnchor3 = [v44[64] leadingAnchor];
+    leadingAnchor4 = [v24[53] leadingAnchor];
+    v179 = [leadingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor4];
 
     LODWORD(v72) = 1148846080;
     [v179 setPriority:v72];
-    v73 = [v44[64] leadingAnchor];
-    v74 = [v24[56] leadingAnchor];
-    v177 = [v73 constraintLessThanOrEqualToAnchor:v74];
+    leadingAnchor5 = [v44[64] leadingAnchor];
+    leadingAnchor6 = [v24[56] leadingAnchor];
+    v177 = [leadingAnchor5 constraintLessThanOrEqualToAnchor:leadingAnchor6];
 
     LODWORD(v75) = 1148846080;
     [v177 setPriority:v75];
-    v76 = [v44[64] leadingAnchor];
-    v77 = [v24[53] leadingAnchor];
-    v78 = [v76 constraintEqualToAnchor:v77];
+    leadingAnchor7 = [v44[64] leadingAnchor];
+    leadingAnchor8 = [v24[53] leadingAnchor];
+    v78 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
 
     v163 = v78;
     LODWORD(v79) = 1144750080;
     [v78 setPriority:v79];
-    v80 = [v44[64] leadingAnchor];
-    v81 = [v24[56] leadingAnchor];
-    v82 = [v80 constraintEqualToAnchor:v81];
+    leadingAnchor9 = [v44[64] leadingAnchor];
+    leadingAnchor10 = [v24[56] leadingAnchor];
+    v82 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
 
     v161 = v82;
     LODWORD(v83) = 1144750080;
@@ -204,110 +204,110 @@
     [(CLKUIColoringLabel *)v137->_timeLabel setContentCompressionResistancePriority:0 forAxis:v84];
     LODWORD(v85) = 1144750080;
     [(CLKUIColoringLabel *)v137->_statusLabel setContentCompressionResistancePriority:0 forAxis:v85];
-    v162 = [v24[53] trailingAnchor];
-    v160 = [v44[64] trailingAnchor];
-    v159 = [v162 constraintEqualToAnchor:v160];
+    trailingAnchor3 = [v24[53] trailingAnchor];
+    trailingAnchor4 = [v44[64] trailingAnchor];
+    v159 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v194[0] = v159;
-    v158 = [v24[56] trailingAnchor];
-    v157 = [v44[64] trailingAnchor];
-    v156 = [v158 constraintEqualToAnchor:v157];
+    trailingAnchor5 = [v24[56] trailingAnchor];
+    trailingAnchor6 = [v44[64] trailingAnchor];
+    v156 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v194[1] = v156;
     v194[2] = v179;
     v194[3] = v177;
     v194[4] = v78;
     v194[5] = v82;
-    v155 = [v24[52] trailingAnchor];
-    v154 = [v44[64] leadingAnchor];
+    trailingAnchor7 = [v24[52] trailingAnchor];
+    leadingAnchor11 = [v44[64] leadingAnchor];
     v86 = -*(&v191 + 1);
-    v153 = [v155 constraintEqualToAnchor:v154 constant:-*(&v191 + 1)];
+    v153 = [trailingAnchor7 constraintEqualToAnchor:leadingAnchor11 constant:-*(&v191 + 1)];
     v194[6] = v153;
-    v152 = [v24[55] trailingAnchor];
-    v151 = [v44[64] leadingAnchor];
-    v150 = [v152 constraintEqualToAnchor:v151 constant:v86];
+    trailingAnchor8 = [v24[55] trailingAnchor];
+    leadingAnchor12 = [v44[64] leadingAnchor];
+    v150 = [trailingAnchor8 constraintEqualToAnchor:leadingAnchor12 constant:v86];
     v194[7] = v150;
-    v149 = [(CLKUIColoringLabel *)v137->_statusLabel trailingAnchor];
-    v148 = [(CLKUIColoringLabel *)v137->_timeLabel leadingAnchor];
-    v147 = [v149 constraintEqualToAnchor:v148 constant:v86];
+    trailingAnchor9 = [(CLKUIColoringLabel *)v137->_statusLabel trailingAnchor];
+    leadingAnchor13 = [(CLKUIColoringLabel *)v137->_timeLabel leadingAnchor];
+    v147 = [trailingAnchor9 constraintEqualToAnchor:leadingAnchor13 constant:v86];
     v194[8] = v147;
-    v146 = [v44[51] centerXAnchor];
-    v145 = [v44[63] centerXAnchor];
-    v144 = [v146 constraintEqualToAnchor:v145];
+    centerXAnchor = [v44[51] centerXAnchor];
+    centerXAnchor2 = [v44[63] centerXAnchor];
+    v144 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v194[9] = v144;
-    v143 = [v44[51] centerYAnchor];
-    v142 = [v24[53] firstBaselineAnchor];
+    centerYAnchor = [v44[51] centerYAnchor];
+    firstBaselineAnchor2 = [v24[53] firstBaselineAnchor];
     [(CLKFont *)v178 capHeight];
-    v141 = [v143 constraintEqualToAnchor:v142 constant:v87 * -0.5];
+    v141 = [centerYAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:v87 * -0.5];
     v194[10] = v141;
-    v139 = [v44[51] widthAnchor];
+    widthAnchor = [v44[51] widthAnchor];
     v88 = *&v192;
-    v138 = [v139 constraintLessThanOrEqualToConstant:*&v192];
+    v138 = [widthAnchor constraintLessThanOrEqualToConstant:*&v192];
     v194[11] = v138;
-    v136 = [v44[51] heightAnchor];
+    heightAnchor = [v44[51] heightAnchor];
     v89 = *(&v192 + 1);
-    v135 = [v136 constraintLessThanOrEqualToConstant:*(&v192 + 1)];
+    v135 = [heightAnchor constraintLessThanOrEqualToConstant:*(&v192 + 1)];
     v194[12] = v135;
-    v134 = [v44[54] centerXAnchor];
-    v133 = [v44[63] centerXAnchor];
-    v132 = [v134 constraintEqualToAnchor:v133];
+    centerXAnchor3 = [v44[54] centerXAnchor];
+    centerXAnchor4 = [v44[63] centerXAnchor];
+    v132 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v194[13] = v132;
-    v131 = [v44[54] centerYAnchor];
-    v130 = [v24[56] firstBaselineAnchor];
+    centerYAnchor2 = [v44[54] centerYAnchor];
+    firstBaselineAnchor3 = [v24[56] firstBaselineAnchor];
     [(CLKFont *)v178 capHeight];
-    v129 = [v131 constraintEqualToAnchor:v130 constant:v90 * -0.5];
+    v129 = [centerYAnchor2 constraintEqualToAnchor:firstBaselineAnchor3 constant:v90 * -0.5];
     v194[14] = v129;
-    v128 = [v44[54] widthAnchor];
-    v127 = [v128 constraintLessThanOrEqualToConstant:v88];
+    widthAnchor2 = [v44[54] widthAnchor];
+    v127 = [widthAnchor2 constraintLessThanOrEqualToConstant:v88];
     v194[15] = v127;
-    v140 = [v44[54] heightAnchor];
-    v126 = [v140 constraintLessThanOrEqualToConstant:v89];
+    heightAnchor2 = [v44[54] heightAnchor];
+    v126 = [heightAnchor2 constraintLessThanOrEqualToConstant:v89];
     v194[16] = v126;
-    v124 = [v44[63] topAnchor];
-    v123 = [v44 topAnchor];
-    v122 = [v124 constraintEqualToAnchor:v123];
+    topAnchor2 = [v44[63] topAnchor];
+    topAnchor3 = [v44 topAnchor];
+    v122 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v194[17] = v122;
-    v121 = [v44[63] leadingAnchor];
-    v120 = [v44 leadingAnchor];
-    v119 = [v121 constraintEqualToAnchor:v120];
+    leadingAnchor14 = [v44[63] leadingAnchor];
+    leadingAnchor15 = [v44 leadingAnchor];
+    v119 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
     v194[18] = v119;
-    v118 = [v44[63] bottomAnchor];
-    v117 = [v44 bottomAnchor];
-    v116 = [v118 constraintEqualToAnchor:v117];
+    bottomAnchor = [v44[63] bottomAnchor];
+    bottomAnchor2 = [v44 bottomAnchor];
+    v116 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v194[19] = v116;
-    v125 = [v44[63] widthAnchor];
-    v115 = [v125 constraintEqualToConstant:v88];
+    widthAnchor3 = [v44[63] widthAnchor];
+    v115 = [widthAnchor3 constraintEqualToConstant:v88];
     v194[20] = v115;
-    v114 = [v44[64] trailingAnchor];
-    v113 = [v44 trailingAnchor];
-    v112 = [v114 constraintEqualToAnchor:v113];
+    trailingAnchor10 = [v44[64] trailingAnchor];
+    trailingAnchor11 = [v44 trailingAnchor];
+    v112 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
     v194[21] = v112;
-    v111 = [(CLKUIColoringLabel *)v137->_timeLabel trailingAnchor];
-    v110 = [v44 trailingAnchor];
-    v109 = [v111 constraintEqualToAnchor:v110];
+    trailingAnchor12 = [(CLKUIColoringLabel *)v137->_timeLabel trailingAnchor];
+    trailingAnchor13 = [v44 trailingAnchor];
+    v109 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13];
     v194[22] = v109;
-    v108 = [v24[53] firstBaselineAnchor];
-    v175 = [v24[52] firstBaselineAnchor];
-    v107 = [v108 constraintEqualToAnchor:v175];
+    firstBaselineAnchor4 = [v24[53] firstBaselineAnchor];
+    firstBaselineAnchor5 = [v24[52] firstBaselineAnchor];
+    v107 = [firstBaselineAnchor4 constraintEqualToAnchor:firstBaselineAnchor5];
     v194[23] = v107;
-    v106 = [v24[56] firstBaselineAnchor];
-    v174 = [v24[55] firstBaselineAnchor];
-    v105 = [v106 constraintEqualToAnchor:v174];
+    firstBaselineAnchor6 = [v24[56] firstBaselineAnchor];
+    firstBaselineAnchor7 = [v24[55] firstBaselineAnchor];
+    v105 = [firstBaselineAnchor6 constraintEqualToAnchor:firstBaselineAnchor7];
     v194[24] = v105;
-    v176 = [(CLKUIColoringLabel *)v137->_timeLabel firstBaselineAnchor];
-    v104 = [(CLKUIColoringLabel *)v137->_statusLabel firstBaselineAnchor];
-    v103 = [v176 constraintEqualToAnchor:v104];
+    firstBaselineAnchor8 = [(CLKUIColoringLabel *)v137->_timeLabel firstBaselineAnchor];
+    firstBaselineAnchor9 = [(CLKUIColoringLabel *)v137->_statusLabel firstBaselineAnchor];
+    v103 = [firstBaselineAnchor8 constraintEqualToAnchor:firstBaselineAnchor9];
     v194[25] = v103;
-    v102 = [(CLKUIColoringLabel *)v137->_statusLabel leadingAnchor];
-    v91 = [v44 leadingAnchor];
-    v92 = [v102 constraintEqualToAnchor:v91];
+    leadingAnchor16 = [(CLKUIColoringLabel *)v137->_statusLabel leadingAnchor];
+    leadingAnchor17 = [v44 leadingAnchor];
+    v92 = [leadingAnchor16 constraintEqualToAnchor:leadingAnchor17];
     v194[26] = v92;
-    v93 = [v24[56] firstBaselineAnchor];
-    v94 = [v24[53] firstBaselineAnchor];
+    firstBaselineAnchor10 = [v24[56] firstBaselineAnchor];
+    firstBaselineAnchor11 = [v24[53] firstBaselineAnchor];
     v95 = *&v190;
-    v96 = [v93 constraintEqualToAnchor:v94 constant:*&v190];
+    v96 = [firstBaselineAnchor10 constraintEqualToAnchor:firstBaselineAnchor11 constant:*&v190];
     v194[27] = v96;
-    v97 = [(CLKUIColoringLabel *)v137->_statusLabel firstBaselineAnchor];
-    v98 = [v24[56] firstBaselineAnchor];
-    v99 = [v97 constraintEqualToAnchor:v98 constant:v95];
+    firstBaselineAnchor12 = [(CLKUIColoringLabel *)v137->_statusLabel firstBaselineAnchor];
+    firstBaselineAnchor13 = [v24[56] firstBaselineAnchor];
+    v99 = [firstBaselineAnchor12 constraintEqualToAnchor:firstBaselineAnchor13 constant:v95];
     v194[28] = v99;
     v100 = [MEMORY[0x277CBEA60] arrayWithObjects:v194 count:29];
 
@@ -357,44 +357,44 @@ id __43__NTKUpNextMatchupScoreView_initWithFrame___block_invoke_3(uint64_t a1)
   return v3;
 }
 
-- (void)configureWithMatchup:(id)a3
+- (void)configureWithMatchup:(id)matchup
 {
-  v61 = a3;
+  matchupCopy = matchup;
   homeLogoImageView = self->_homeLogoImageView;
-  v5 = [v61 homeTeamImage];
-  v6 = [v5 image];
-  [(UIImageView *)homeLogoImageView setImage:v6];
+  homeTeamImage = [matchupCopy homeTeamImage];
+  image = [homeTeamImage image];
+  [(UIImageView *)homeLogoImageView setImage:image];
 
   awayLogoIamgeView = self->_awayLogoIamgeView;
-  v8 = [v61 awayTeamImage];
-  v9 = [v8 image];
-  [(UIImageView *)awayLogoIamgeView setImage:v9];
+  awayTeamImage = [matchupCopy awayTeamImage];
+  image2 = [awayTeamImage image];
+  [(UIImageView *)awayLogoIamgeView setImage:image2];
 
   homeNameLabel = self->_homeNameLabel;
-  v11 = [v61 homeTeamName];
-  [(CLKUIColoringLabel *)homeNameLabel setText:v11];
+  homeTeamName = [matchupCopy homeTeamName];
+  [(CLKUIColoringLabel *)homeNameLabel setText:homeTeamName];
 
   homeDescriptionLabel = self->_homeDescriptionLabel;
-  v13 = [v61 homeTeamDetail];
-  [(CLKUIColoringLabel *)homeDescriptionLabel setText:v13];
+  homeTeamDetail = [matchupCopy homeTeamDetail];
+  [(CLKUIColoringLabel *)homeDescriptionLabel setText:homeTeamDetail];
 
   awayNameLabel = self->_awayNameLabel;
-  v15 = [v61 awayTeamName];
-  [(CLKUIColoringLabel *)awayNameLabel setText:v15];
+  awayTeamName = [matchupCopy awayTeamName];
+  [(CLKUIColoringLabel *)awayNameLabel setText:awayTeamName];
 
   awayDescriptionLabel = self->_awayDescriptionLabel;
-  v17 = [v61 awayTeamDetail];
-  [(CLKUIColoringLabel *)awayDescriptionLabel setText:v17];
+  awayTeamDetail = [matchupCopy awayTeamDetail];
+  [(CLKUIColoringLabel *)awayDescriptionLabel setText:awayTeamDetail];
 
   timeForLabel = self->_timeForLabel;
   self->_timeForLabel = 0;
 
-  v19 = [v61 status];
-  if (v19 > 3)
+  status = [matchupCopy status];
+  if (status > 3)
   {
-    if (v19 > 5)
+    if (status > 5)
     {
-      if (v19 == 6)
+      if (status == 6)
       {
         v23 = 480;
         [(CLKUIColoringLabel *)self->_homeNameLabel setFont:self->_boldMatchupFont];
@@ -404,7 +404,7 @@ id __43__NTKUpNextMatchupScoreView_initWithFrame___block_invoke_3(uint64_t a1)
 
       else
       {
-        if (v19 != 7)
+        if (status != 7)
         {
           goto LABEL_20;
         }
@@ -423,7 +423,7 @@ id __43__NTKUpNextMatchupScoreView_initWithFrame___block_invoke_3(uint64_t a1)
 
     else
     {
-      if (v19 == 4)
+      if (status == 4)
       {
         [(CLKUIColoringLabel *)self->_homeNameLabel setFont:self->_regularMatchupFont];
         [(CLKUIColoringLabel *)self->_awayNameLabel setFont:self->_regularMatchupFont];
@@ -440,37 +440,37 @@ id __43__NTKUpNextMatchupScoreView_initWithFrame___block_invoke_3(uint64_t a1)
 
     [(CLKUIColoringLabel *)v21 setFont:boldMatchupFont];
     v41 = self->_homeDescriptionLabel;
-    v42 = [(CLKUIColoringLabel *)self->_homeNameLabel textColor];
-    [(CLKUIColoringLabel *)v41 setTextColor:v42];
+    textColor = [(CLKUIColoringLabel *)self->_homeNameLabel textColor];
+    [(CLKUIColoringLabel *)v41 setTextColor:textColor];
 
     v43 = self->_awayDescriptionLabel;
-    v44 = [(CLKUIColoringLabel *)self->_awayNameLabel textColor];
-    [(CLKUIColoringLabel *)v43 setTextColor:v44];
+    textColor2 = [(CLKUIColoringLabel *)self->_awayNameLabel textColor];
+    [(CLKUIColoringLabel *)v43 setTextColor:textColor2];
 
     v45 = MEMORY[0x277CBBB88];
-    v46 = [v61 matchupProgress];
-    v32 = [v45 textProviderWithText:v46];
+    matchupProgress = [matchupCopy matchupProgress];
+    v32 = [v45 textProviderWithText:matchupProgress];
 
     goto LABEL_18;
   }
 
-  if (v19 < 2)
+  if (status < 2)
   {
     [(CLKUIColoringLabel *)self->_homeNameLabel setFont:self->_regularMatchupFont];
     [(CLKUIColoringLabel *)self->_awayNameLabel setFont:self->_regularMatchupFont];
     [(CLKUIColoringLabel *)self->_homeDescriptionLabel setFont:self->_regularMatchupFont];
     [(CLKUIColoringLabel *)self->_awayDescriptionLabel setFont:self->_regularMatchupFont];
     v26 = self->_homeDescriptionLabel;
-    v27 = [(CLKUIColoringLabel *)self->_statusLabel textColor];
-    [(CLKUIColoringLabel *)v26 setTextColor:v27];
+    textColor3 = [(CLKUIColoringLabel *)self->_statusLabel textColor];
+    [(CLKUIColoringLabel *)v26 setTextColor:textColor3];
 
     v28 = self->_awayDescriptionLabel;
-    v29 = [(CLKUIColoringLabel *)self->_statusLabel textColor];
-    [(CLKUIColoringLabel *)v28 setTextColor:v29];
+    textColor4 = [(CLKUIColoringLabel *)self->_statusLabel textColor];
+    [(CLKUIColoringLabel *)v28 setTextColor:textColor4];
 
     v30 = MEMORY[0x277CBBBB8];
-    v31 = [v61 matchupStartDate];
-    v32 = [v30 textProviderWithDate:v31];
+    matchupStartDate = [matchupCopy matchupStartDate];
+    v32 = [v30 textProviderWithDate:matchupStartDate];
 
     v33 = NTKClockFaceLocalizedString(@"UP_NEXT_MATCHUP_FORMAT", @"7:15PM Game");
     v34 = [MEMORY[0x277CBBBA0] textProviderWithFormat:v33, v32];
@@ -482,32 +482,32 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v19 == 2)
+  if (status == 2)
   {
     [(CLKUIColoringLabel *)self->_homeNameLabel setFont:self->_boldMatchupFont];
     [(CLKUIColoringLabel *)self->_awayNameLabel setFont:self->_boldMatchupFont];
     [(CLKUIColoringLabel *)self->_homeDescriptionLabel setFont:self->_regularMatchupFont];
     [(CLKUIColoringLabel *)self->_awayDescriptionLabel setFont:self->_regularMatchupFont];
     v49 = self->_homeDescriptionLabel;
-    v50 = [(CLKUIColoringLabel *)self->_homeNameLabel textColor];
-    [(CLKUIColoringLabel *)v49 setTextColor:v50];
+    textColor5 = [(CLKUIColoringLabel *)self->_homeNameLabel textColor];
+    [(CLKUIColoringLabel *)v49 setTextColor:textColor5];
 
     v51 = self->_awayDescriptionLabel;
-    v52 = [(CLKUIColoringLabel *)self->_awayNameLabel textColor];
-    [(CLKUIColoringLabel *)v51 setTextColor:v52];
+    textColor6 = [(CLKUIColoringLabel *)self->_awayNameLabel textColor];
+    [(CLKUIColoringLabel *)v51 setTextColor:textColor6];
 
-    v53 = [v61 matchupDateFetched];
+    matchupDateFetched = [matchupCopy matchupDateFetched];
     v54 = self->_timeForLabel;
-    self->_timeForLabel = v53;
+    self->_timeForLabel = matchupDateFetched;
 
     [(NTKUpNextMatchupScoreView *)self updateTimeLabel];
     statusLabel = self->_statusLabel;
     v56 = MEMORY[0x277CBBB88];
-    v57 = [v61 matchupProgress];
-    v58 = v57;
-    if (v57)
+    matchupProgress2 = [matchupCopy matchupProgress];
+    v58 = matchupProgress2;
+    if (matchupProgress2)
     {
-      v59 = v57;
+      v59 = matchupProgress2;
     }
 
     else
@@ -521,7 +521,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v19 == 3)
+  if (status == 3)
   {
     [(CLKUIColoringLabel *)self->_homeNameLabel setFont:self->_boldMatchupFont];
     [(CLKUIColoringLabel *)self->_awayNameLabel setFont:self->_boldMatchupFont];
@@ -530,16 +530,16 @@ LABEL_14:
     [(CLKUIColoringLabel *)v20 setFont:self->_regularMatchupFont];
     [(CLKUIColoringLabel *)self->_awayDescriptionLabel setFont:self->_regularMatchupFont];
     v35 = self->_homeDescriptionLabel;
-    v36 = [(CLKUIColoringLabel *)self->_statusLabel textColor];
-    [(CLKUIColoringLabel *)v35 setTextColor:v36];
+    textColor7 = [(CLKUIColoringLabel *)self->_statusLabel textColor];
+    [(CLKUIColoringLabel *)v35 setTextColor:textColor7];
 
     v37 = self->_awayDescriptionLabel;
-    v38 = [(CLKUIColoringLabel *)self->_statusLabel textColor];
-    [(CLKUIColoringLabel *)v37 setTextColor:v38];
+    textColor8 = [(CLKUIColoringLabel *)self->_statusLabel textColor];
+    [(CLKUIColoringLabel *)v37 setTextColor:textColor8];
 
     v39 = MEMORY[0x277CBBB88];
-    v40 = [v61 matchupProgress];
-    v32 = [v39 textProviderWithText:v40];
+    matchupProgress3 = [matchupCopy matchupProgress];
+    v32 = [v39 textProviderWithText:matchupProgress3];
 
 LABEL_18:
     [(CLKUIColoringLabel *)self->_statusLabel setTextProvider:v32];
@@ -548,11 +548,11 @@ LABEL_18:
   }
 
 LABEL_20:
-  v47 = [(CLKUIColoringLabel *)self->_statusLabel textProvider];
-  [v47 setPaused:{-[NTKUpNextMatchupScoreView isPaused](self, "isPaused")}];
+  textProvider = [(CLKUIColoringLabel *)self->_statusLabel textProvider];
+  [textProvider setPaused:{-[NTKUpNextMatchupScoreView isPaused](self, "isPaused")}];
 
-  v48 = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
-  [v48 setPaused:{-[NTKUpNextMatchupScoreView isPaused](self, "isPaused")}];
+  textProvider2 = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
+  [textProvider2 setPaused:{-[NTKUpNextMatchupScoreView isPaused](self, "isPaused")}];
 }
 
 - (void)updateTimeLabel
@@ -576,43 +576,43 @@ LABEL_20:
   }
 }
 
-+ (id)_timeStringForFetchDate:(id)a3
++ (id)_timeStringForFetchDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v5 components:126 fromDate:v6];
-  v8 = [v5 components:126 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [currentCalendar components:126 fromDate:date];
+  v8 = [currentCalendar components:126 fromDate:dateCopy];
 
-  v9 = [v5 components:96 fromDateComponents:v7 toDateComponents:v8 options:0];
-  v10 = [v9 hour];
-  v11 = [v9 minute];
-  v12 = v11;
-  if (v10 < 0 || v11 < 0)
+  v9 = [currentCalendar components:96 fromDateComponents:v7 toDateComponents:v8 options:0];
+  hour = [v9 hour];
+  minute = [v9 minute];
+  v12 = minute;
+  if (hour < 0 || minute < 0)
   {
-    if (v10)
+    if (hour)
     {
-      if (v10 >= 0)
+      if (hour >= 0)
       {
-        v14 = v10;
+        v14 = hour;
       }
 
       else
       {
-        v14 = -v10;
+        v14 = -hour;
       }
 
       v15 = NTKClockFaceLocalizedString(@"COUNTDOWN_HOUR_SHORT", @"H");
-      v16 = [v15 localizedLowercaseString];
+      localizedLowercaseString = [v15 localizedLowercaseString];
 
-      v10 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%d%@", v14, v16];
+      hour = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%d%@", v14, localizedLowercaseString];
     }
 
     if (v12)
     {
       v17 = NTKClockFaceLocalizedString(@"COUNTDOWN_MINUTE_SHORT", @"M");
-      v18 = [v17 localizedLowercaseString];
+      localizedLowercaseString2 = [v17 localizedLowercaseString];
 
       if (v12 >= 0)
       {
@@ -624,10 +624,10 @@ LABEL_20:
         v19 = -v12;
       }
 
-      v20 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%ld%@", v19, v18];
-      if ([v10 length])
+      v20 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%ld%@", v19, localizedLowercaseString2];
+      if ([hour length])
       {
-        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v10, v20];
+        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", hour, v20];
       }
 
       else
@@ -637,12 +637,12 @@ LABEL_20:
 
       v22 = v21;
 
-      v10 = v22;
+      hour = v22;
     }
 
     v23 = MEMORY[0x277CCACA8];
     v24 = NTKClockFaceLocalizedString(@"UP_NEXT_SPORTS_TIME_SINCE", @"%@ ago");
-    v13 = [v23 stringWithFormat:v24, v10];
+    v13 = [v23 stringWithFormat:v24, hour];
   }
 
   else
@@ -653,49 +653,49 @@ LABEL_20:
   return v13;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  v5 = [(CLKUIColoringLabel *)self->_statusLabel textProvider];
-  [v5 setPaused:v3];
+  pausedCopy = paused;
+  textProvider = [(CLKUIColoringLabel *)self->_statusLabel textProvider];
+  [textProvider setPaused:pausedCopy];
 
-  v6 = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
-  [v6 setPaused:v3];
+  textProvider2 = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
+  [textProvider2 setPaused:pausedCopy];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.6];
   v19 = v5;
-  if (fabs(a3) >= 0.00000011920929)
+  if (fabs(fraction) >= 0.00000011920929)
   {
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    v9 = NTKInterpolateBetweenColors();
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    whiteColor3 = NTKInterpolateBetweenColors();
 
-    [(CLKUIColoringLabel *)self->_statusLabel setTextColor:v9];
-    [(CLKUIColoringLabel *)self->_timeLabel setTextColor:v9];
-    v11 = [(NTKUpNextMatchupScoreView *)self filterProvider];
-    v12 = [v11 filtersForView:self style:2 fraction:a3];
+    [(CLKUIColoringLabel *)self->_statusLabel setTextColor:whiteColor3];
+    [(CLKUIColoringLabel *)self->_timeLabel setTextColor:whiteColor3];
+    filterProvider = [(NTKUpNextMatchupScoreView *)self filterProvider];
+    v12 = [filterProvider filtersForView:self style:2 fraction:fraction];
 
     if (v12)
     {
-      v13 = [(CLKUIColoringLabel *)self->_homeNameLabel layer];
-      [v13 setFilters:v12];
+      layer = [(CLKUIColoringLabel *)self->_homeNameLabel layer];
+      [layer setFilters:v12];
 
-      v14 = [(CLKUIColoringLabel *)self->_awayNameLabel layer];
-      [v14 setFilters:v12];
+      layer2 = [(CLKUIColoringLabel *)self->_awayNameLabel layer];
+      [layer2 setFilters:v12];
     }
 
-    v15 = [(NTKUpNextMatchupScoreView *)self filterProvider];
-    v16 = [v15 filtersForView:self style:1 fraction:a3];
+    filterProvider2 = [(NTKUpNextMatchupScoreView *)self filterProvider];
+    v16 = [filterProvider2 filtersForView:self style:1 fraction:fraction];
 
     if (v16)
     {
-      v17 = [(UIImageView *)self->_homeLogoImageView layer];
-      [v17 setFilters:v16];
+      layer3 = [(UIImageView *)self->_homeLogoImageView layer];
+      [layer3 setFilters:v16];
 
-      v18 = [(UIImageView *)self->_awayLogoIamgeView layer];
-      [v18 setFilters:v16];
+      layer4 = [(UIImageView *)self->_awayLogoIamgeView layer];
+      [layer4 setFilters:v16];
     }
   }
 
@@ -704,55 +704,55 @@ LABEL_20:
     [(CLKUIColoringLabel *)self->_timeLabel setTextColor:v5];
     [(CLKUIColoringLabel *)self->_statusLabel setTextColor:v19];
     homeNameLabel = self->_homeNameLabel;
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)homeNameLabel setTextColor:v7];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)homeNameLabel setTextColor:whiteColor2];
 
     awayNameLabel = self->_awayNameLabel;
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)awayNameLabel setTextColor:v9];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)awayNameLabel setTextColor:whiteColor3];
   }
 }
 
 - (void)updateMonochromeColor
 {
   statusLabel = self->_statusLabel;
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  [(CLKUIColoringLabel *)statusLabel setTextColor:v4];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(CLKUIColoringLabel *)statusLabel setTextColor:whiteColor];
 
   timeLabel = self->_timeLabel;
-  v6 = [MEMORY[0x277D75348] whiteColor];
-  [(CLKUIColoringLabel *)timeLabel setTextColor:v6];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [(CLKUIColoringLabel *)timeLabel setTextColor:whiteColor2];
 
   homeNameLabel = self->_homeNameLabel;
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  [(CLKUIColoringLabel *)homeNameLabel setTextColor:v8];
+  whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+  [(CLKUIColoringLabel *)homeNameLabel setTextColor:whiteColor3];
 
   awayNameLabel = self->_awayNameLabel;
-  v10 = [MEMORY[0x277D75348] whiteColor];
-  [(CLKUIColoringLabel *)awayNameLabel setTextColor:v10];
+  whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+  [(CLKUIColoringLabel *)awayNameLabel setTextColor:whiteColor4];
 
-  v11 = [(NTKUpNextMatchupScoreView *)self filterProvider];
-  v18 = [v11 filtersForView:self style:2];
+  filterProvider = [(NTKUpNextMatchupScoreView *)self filterProvider];
+  v18 = [filterProvider filtersForView:self style:2];
 
   if (v18)
   {
-    v12 = [(CLKUIColoringLabel *)self->_homeNameLabel layer];
-    [v12 setFilters:v18];
+    layer = [(CLKUIColoringLabel *)self->_homeNameLabel layer];
+    [layer setFilters:v18];
 
-    v13 = [(CLKUIColoringLabel *)self->_awayNameLabel layer];
-    [v13 setFilters:v18];
+    layer2 = [(CLKUIColoringLabel *)self->_awayNameLabel layer];
+    [layer2 setFilters:v18];
   }
 
-  v14 = [(NTKUpNextMatchupScoreView *)self filterProvider];
-  v15 = [v14 filtersForView:self style:1];
+  filterProvider2 = [(NTKUpNextMatchupScoreView *)self filterProvider];
+  v15 = [filterProvider2 filtersForView:self style:1];
 
   if (v15)
   {
-    v16 = [(UIImageView *)self->_homeLogoImageView layer];
-    [v16 setFilters:v15];
+    layer3 = [(UIImageView *)self->_homeLogoImageView layer];
+    [layer3 setFilters:v15];
 
-    v17 = [(UIImageView *)self->_awayLogoIamgeView layer];
-    [v17 setFilters:v15];
+    layer4 = [(UIImageView *)self->_awayLogoIamgeView layer];
+    [layer4 setFilters:v15];
   }
 }
 

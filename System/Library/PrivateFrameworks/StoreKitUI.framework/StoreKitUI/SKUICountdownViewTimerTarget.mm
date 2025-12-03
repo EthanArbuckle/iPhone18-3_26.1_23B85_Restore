@@ -6,8 +6,8 @@
 
 - (void)action
 {
-  v2 = [(SKUICountdownViewTimerTarget *)self actionBlock];
-  v2[2]();
+  actionBlock = [(SKUICountdownViewTimerTarget *)self actionBlock];
+  actionBlock[2]();
 }
 
 @end

@@ -6,14 +6,14 @@
 
 - (id)accessibilitySpriteKitChildElements
 {
-  v2 = objc_getAssociatedObject(a1, &_axChildElementsStorageKey);
-  if (!v2)
+  accessibilityMakeSpriteKitChildElementsIfNeeded = objc_getAssociatedObject(self, &_axChildElementsStorageKey);
+  if (!accessibilityMakeSpriteKitChildElementsIfNeeded)
   {
-    v2 = [a1 accessibilityMakeSpriteKitChildElementsIfNeeded];
-    [a1 setAccessibilitySpriteKitChildElements:v2];
+    accessibilityMakeSpriteKitChildElementsIfNeeded = [self accessibilityMakeSpriteKitChildElementsIfNeeded];
+    [self setAccessibilitySpriteKitChildElements:accessibilityMakeSpriteKitChildElementsIfNeeded];
   }
 
-  return v2;
+  return accessibilityMakeSpriteKitChildElementsIfNeeded;
 }
 
 @end

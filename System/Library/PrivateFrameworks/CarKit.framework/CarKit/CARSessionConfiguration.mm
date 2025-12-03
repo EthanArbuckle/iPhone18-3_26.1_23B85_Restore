@@ -1,11 +1,11 @@
 @interface CARSessionConfiguration
-+ (id)_descriptionForTransportType:(unint64_t)a3;
-+ (id)descriptionForCapability:(int64_t)a3;
-+ (id)descriptionForUserInterfaceStyle:(int64_t)a3;
-+ (int64_t)_defaultInterfaceStyleFromAppearanceDefault:(id)a3;
-+ (unint64_t)_limitableUserInterfacesFromLimitedUIValues:(id)a3;
++ (id)_descriptionForTransportType:(unint64_t)type;
++ (id)descriptionForCapability:(int64_t)capability;
++ (id)descriptionForUserInterfaceStyle:(int64_t)style;
++ (int64_t)_defaultInterfaceStyleFromAppearanceDefault:(id)default;
++ (unint64_t)_limitableUserInterfacesFromLimitedUIValues:(id)values;
 - (CARDisplayInfoProviding)displayInfoProvider;
-- (CARSessionConfiguration)initWithSessionStatusOptions:(unint64_t)a3 propertySupplier:(id)a4;
+- (CARSessionConfiguration)initWithSessionStatusOptions:(unint64_t)options propertySupplier:(id)supplier;
 - (NSEdgeInsets)dashboardRoundedCorners;
 - (NSEdgeInsets)viewAreaInsets;
 - (id)description;
@@ -14,9 +14,9 @@
 - (id)numberOfScreens;
 - (id)primaryDisplayFirstViewAreaSize;
 - (id)primaryDisplayPhysicalSize;
-- (id)screenInfoForScreenID:(id)a3;
+- (id)screenInfoForScreenID:(id)d;
 - (id)secondaryDisplayFirstViewAreaSize;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (void)updateCarCapabilities;
 @end
 
@@ -28,7 +28,7 @@
   v3 = 136315650;
   v4 = "[CARSessionConfiguration updateCarCapabilities]";
   v5 = 2048;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2112;
   v8 = a2;
   _os_log_debug_impl(&dword_1C81FC000, log, OS_LOG_TYPE_DEBUG, "%s: configuration %p updated with car capabilities with %@", &v3, 0x20u);
@@ -40,12 +40,12 @@
   v28.receiver = self;
   v28.super_class = CARSessionConfiguration;
   v25 = [(CARSessionConfiguration *)&v28 description];
-  v24 = [(CARSessionConfiguration *)self sessionIdentifier];
-  v23 = [(CARSessionConfiguration *)self vehicleName];
-  v22 = [(CARSessionConfiguration *)self vehicleModelName];
-  v3 = [(CARSessionConfiguration *)self vehicleManufacturer];
-  v21 = [(CARSessionConfiguration *)self vehicleSerialNumber];
-  v20 = [(CARSessionConfiguration *)self descriptionForTransportType];
+  sessionIdentifier = [(CARSessionConfiguration *)self sessionIdentifier];
+  vehicleName = [(CARSessionConfiguration *)self vehicleName];
+  vehicleModelName = [(CARSessionConfiguration *)self vehicleModelName];
+  vehicleManufacturer = [(CARSessionConfiguration *)self vehicleManufacturer];
+  vehicleSerialNumber = [(CARSessionConfiguration *)self vehicleSerialNumber];
+  descriptionForTransportType = [(CARSessionConfiguration *)self descriptionForTransportType];
   if ([(CARSessionConfiguration *)self supportsElectronicTollCollection])
   {
     v4 = @"YES";
@@ -68,8 +68,8 @@
   }
 
   v18 = v5;
-  v17 = [(CARSessionConfiguration *)self descriptionForLimitableUserInterfaces];
-  v6 = [(CARSessionConfiguration *)self manufacturerIconLabel];
+  descriptionForLimitableUserInterfaces = [(CARSessionConfiguration *)self descriptionForLimitableUserInterfaces];
+  manufacturerIconLabel = [(CARSessionConfiguration *)self manufacturerIconLabel];
   if ([(CARSessionConfiguration *)self manufacturerIconVisible])
   {
     v7 = @"YES";
@@ -101,14 +101,14 @@
     v9 = @"NO";
   }
 
-  v15 = [(CARSessionConfiguration *)self screens];
+  screens = [(CARSessionConfiguration *)self screens];
   v14 = [CARSessionConfiguration descriptionForCapability:[(CARSessionConfiguration *)self nowPlayingAlbumArtMode]];
   v13 = [CARSessionConfiguration descriptionForUserInterfaceStyle:[(CARSessionConfiguration *)self userInterfaceStyle]];
   [(CARSessionConfiguration *)self viewAreaInsets];
   v10 = [CARSessionConfiguration descriptionForEdgeInsets:?];
   [(CARSessionConfiguration *)self dashboardRoundedCorners];
   v11 = [CARSessionConfiguration descriptionForEdgeInsets:?];
-  v27 = [v26 stringWithFormat:@"[%@ session: %@, name: %@, modelName: %@, manufacturer: %@, serialNumber: %@, transport: %@, ETC supported: %@, right hand drive: %@, limitableUserInterfaces: (%@), manufacturerIconLabel: %@, manufacturerIconVisible: %@, night mode supported: %@, supports AC_BACK: %@, screens: %@], [CC] Now Playing Album Art Mode: %@, [CC] User Interface Style: %@, [CC] Additional Safe Area Insets %@, [CC] Dashboard rounded corners: %@", v25, v24, v23, v22, v3, v21, v20, v19, v18, v17, v6, v16, v8, v9, v15, v14, v13, v10, v11];
+  v27 = [v26 stringWithFormat:@"[%@ session: %@, name: %@, modelName: %@, manufacturer: %@, serialNumber: %@, transport: %@, ETC supported: %@, right hand drive: %@, limitableUserInterfaces: (%@), manufacturerIconLabel: %@, manufacturerIconVisible: %@, night mode supported: %@, supports AC_BACK: %@, screens: %@], [CC] Now Playing Album Art Mode: %@, [CC] User Interface Style: %@, [CC] Additional Safe Area Insets %@, [CC] Dashboard rounded corners: %@", v25, sessionIdentifier, vehicleName, vehicleModelName, vehicleManufacturer, vehicleSerialNumber, descriptionForTransportType, v19, v18, descriptionForLimitableUserInterfaces, manufacturerIconLabel, v16, v8, v9, screens, v14, v13, v10, v11];
 
   return v27;
 }
@@ -116,23 +116,23 @@
 - (id)descriptionForTransportType
 {
   v3 = objc_opt_class();
-  v4 = [(CARSessionConfiguration *)self transportType];
+  transportType = [(CARSessionConfiguration *)self transportType];
 
-  return [v3 _descriptionForTransportType:v4];
+  return [v3 _descriptionForTransportType:transportType];
 }
 
 - (id)descriptionForLimitableUserInterfaces
 {
-  v2 = [(CARSessionConfiguration *)self limitableUserInterfaces];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
-  if (v2)
+  limitableUserInterfaces = [(CARSessionConfiguration *)self limitableUserInterfaces];
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
+  if (limitableUserInterfaces)
   {
-    [v3 addObject:@"Keyboard"];
-    if ((v2 & 2) == 0)
+    [array addObject:@"Keyboard"];
+    if ((limitableUserInterfaces & 2) == 0)
     {
 LABEL_3:
-      if ((v2 & 4) == 0)
+      if ((limitableUserInterfaces & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -141,16 +141,16 @@ LABEL_3:
     }
   }
 
-  else if ((v2 & 2) == 0)
+  else if ((limitableUserInterfaces & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v4 addObject:@"Phone Keypad"];
-  if ((v2 & 4) == 0)
+  if ((limitableUserInterfaces & 4) == 0)
   {
 LABEL_4:
-    if ((v2 & 8) == 0)
+    if ((limitableUserInterfaces & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -160,10 +160,10 @@ LABEL_4:
 
 LABEL_16:
   [v4 addObject:@"Non-Music Lists"];
-  if ((v2 & 8) == 0)
+  if ((limitableUserInterfaces & 8) == 0)
   {
 LABEL_5:
-    if ((v2 & 0x10) == 0)
+    if ((limitableUserInterfaces & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -173,10 +173,10 @@ LABEL_5:
 
 LABEL_17:
   [v4 addObject:@"Music Lists"];
-  if ((v2 & 0x10) == 0)
+  if ((limitableUserInterfaces & 0x10) == 0)
   {
 LABEL_6:
-    if ((v2 & 0x20) == 0)
+    if ((limitableUserInterfaces & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -186,10 +186,10 @@ LABEL_6:
 
 LABEL_18:
   [v4 addObject:@"Japan Maps"];
-  if ((v2 & 0x20) == 0)
+  if ((limitableUserInterfaces & 0x20) == 0)
   {
 LABEL_7:
-    if ((v2 & 0x40) == 0)
+    if ((limitableUserInterfaces & 0x40) == 0)
     {
       goto LABEL_8;
     }
@@ -199,10 +199,10 @@ LABEL_7:
 
 LABEL_19:
   [v4 addObject:@"Automaker Settings"];
-  if ((v2 & 0x40) == 0)
+  if ((limitableUserInterfaces & 0x40) == 0)
   {
 LABEL_8:
-    if ((v2 & 0x80) == 0)
+    if ((limitableUserInterfaces & 0x80) == 0)
     {
       goto LABEL_9;
     }
@@ -212,10 +212,10 @@ LABEL_8:
 
 LABEL_20:
   [v4 addObject:@"Paired Devices"];
-  if ((v2 & 0x80) == 0)
+  if ((limitableUserInterfaces & 0x80) == 0)
   {
 LABEL_9:
-    if ((v2 & 0x100) == 0)
+    if ((limitableUserInterfaces & 0x100) == 0)
     {
       goto LABEL_11;
     }
@@ -225,7 +225,7 @@ LABEL_9:
 
 LABEL_21:
   [v4 addObject:@"Theme Customization"];
-  if ((v2 & 0x100) != 0)
+  if ((limitableUserInterfaces & 0x100) != 0)
   {
 LABEL_10:
     [v4 addObject:@"Automaker Settings Info Button"];
@@ -263,28 +263,28 @@ LABEL_11:
   return result;
 }
 
-+ (id)_descriptionForTransportType:(unint64_t)a3
++ (id)_descriptionForTransportType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E82FCD78[a3 - 1];
+    return off_1E82FCD78[type - 1];
   }
 }
 
-+ (id)descriptionForCapability:(int64_t)a3
++ (id)descriptionForCapability:(int64_t)capability
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (capability == 2)
   {
     v3 = @"Unrestricted";
   }
 
-  if (a3 == 1)
+  if (capability == 1)
   {
     return @"Restricted";
   }
@@ -295,28 +295,28 @@ LABEL_11:
   }
 }
 
-+ (id)descriptionForUserInterfaceStyle:(int64_t)a3
++ (id)descriptionForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E82FCD90[a3];
+    return off_1E82FCD90[style];
   }
 }
 
-+ (unint64_t)_limitableUserInterfacesFromLimitedUIValues:(id)a3
++ (unint64_t)_limitableUserInterfacesFromLimitedUIValues:(id)values
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  valuesCopy = values;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [valuesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -328,7 +328,7 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(valuesCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -378,7 +378,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [valuesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -392,21 +392,21 @@ LABEL_11:
   return v6;
 }
 
-+ (int64_t)_defaultInterfaceStyleFromAppearanceDefault:(id)a3
++ (int64_t)_defaultInterfaceStyleFromAppearanceDefault:(id)default
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  defaultCopy = default;
   v4 = CarGeneralLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = defaultCopy;
     _os_log_impl(&dword_1C81FC000, v4, OS_LOG_TYPE_DEFAULT, "CARSessionConfiguration INFO appearanceDefault=%@", &v7, 0xCu);
   }
 
-  if (v3)
+  if (defaultCopy)
   {
-    v5 = [v3 isEqualToString:@"automatic"] - 1;
+    v5 = [defaultCopy isEqualToString:@"automatic"] - 1;
   }
 
   else
@@ -417,18 +417,18 @@ LABEL_11:
   return v5;
 }
 
-- (CARSessionConfiguration)initWithSessionStatusOptions:(unint64_t)a3 propertySupplier:(id)a4
+- (CARSessionConfiguration)initWithSessionStatusOptions:(unint64_t)options propertySupplier:(id)supplier
 {
-  v190 = a3;
+  optionsCopy = options;
   v209[5] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  supplierCopy = supplier;
   v206.receiver = self;
   v206.super_class = CARSessionConfiguration;
   v6 = [(CARSessionConfiguration *)&v206 init];
 
   if (v6)
   {
-    v7 = v5[2](v5, *MEMORY[0x1E69620F8]);
+    v7 = supplierCopy[2](supplierCopy, *MEMORY[0x1E69620F8]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -443,7 +443,7 @@ LABEL_11:
     endpointIdentifier = v6->_endpointIdentifier;
     v6->_endpointIdentifier = v8;
 
-    v10 = v5[2](v5, *MEMORY[0x1E6962260]);
+    v10 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962260]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -458,7 +458,7 @@ LABEL_11:
     sessionIdentifier = v6->_sessionIdentifier;
     v6->_sessionIdentifier = v11;
 
-    v13 = v5[2](v5, *MEMORY[0x1E69621E8]);
+    v13 = supplierCopy[2](supplierCopy, *MEMORY[0x1E69621E8]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -473,7 +473,7 @@ LABEL_11:
     name = v6->_name;
     v6->_name = v14;
 
-    v16 = v5[2](v5, *MEMORY[0x1E69621D8]);
+    v16 = supplierCopy[2](supplierCopy, *MEMORY[0x1E69621D8]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -488,7 +488,7 @@ LABEL_11:
     modelName = v6->_modelName;
     v6->_modelName = v17;
 
-    v19 = v5[2](v5, *MEMORY[0x1E69621B8]);
+    v19 = supplierCopy[2](supplierCopy, *MEMORY[0x1E69621B8]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -503,7 +503,7 @@ LABEL_11:
     manufacturerName = v6->_manufacturerName;
     v6->_manufacturerName = v20;
 
-    v22 = v5[2](v5, *MEMORY[0x1E69622F0]);
+    v22 = supplierCopy[2](supplierCopy, *MEMORY[0x1E69622F0]);
     v187 = v22;
     if (v22)
     {
@@ -530,7 +530,7 @@ LABEL_11:
     }
 
     v6->_transportType = v24;
-    v25 = v5[2](v5, *MEMORY[0x1E6962230]);
+    v25 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962230]);
     if (v25)
     {
       objc_opt_class();
@@ -539,22 +539,22 @@ LABEL_11:
       {
         v26 = v26;
 
-        v27 = [v26 BOOLValue];
+        bOOLValue = [v26 BOOLValue];
       }
 
       else
       {
-        v27 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v27 = 0;
+      bOOLValue = 0;
     }
 
-    v6->_rightHandDrive = v27;
-    v28 = v5[2](v5, *MEMORY[0x1E69621A0]);
+    v6->_rightHandDrive = bOOLValue;
+    v28 = supplierCopy[2](supplierCopy, *MEMORY[0x1E69621A0]);
     objc_opt_class();
     v29 = v28;
     if (objc_opt_isKindOfClass())
@@ -568,14 +568,14 @@ LABEL_11:
     }
 
     v6->_limitableUserInterfaces = [CARSessionConfiguration _limitableUserInterfacesFromLimitedUIValues:v30];
-    v31 = v5[2](v5, *MEMORY[0x1E69621F0]);
+    v31 = supplierCopy[2](supplierCopy, *MEMORY[0x1E69621F0]);
     v6->_nightModeSupported = v31 != 0;
 
-    v32 = (v5)[2](v5, @"EndpointInfo");
+    v32 = (supplierCopy)[2](supplierCopy, @"EndpointInfo");
     v33 = v32;
-    if ((v190 & 8) != 0)
+    if ((optionsCopy & 8) != 0)
     {
-      if ((v190 & 0x10) != 0)
+      if ((optionsCopy & 0x10) != 0)
       {
         v39 = [v32 copy];
         infoResponse = v6->_infoResponse;
@@ -620,7 +620,7 @@ LABEL_11:
     v185 = [v33 objectForKeyedSubscript:@"appearanceDefault"];
     v6->_defaultUserInterfaceStyle = [CARSessionConfiguration _defaultInterfaceStyleFromAppearanceDefault:?];
     v6->_userInterfaceStyle = -1;
-    v48 = v5[2](v5, *MEMORY[0x1E6962070]);
+    v48 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962070]);
     [(CARSessionConfiguration *)v6 setExtendedFeatures:v48];
 
     [(CARSessionConfiguration *)v6 updateCarCapabilities];
@@ -648,21 +648,21 @@ LABEL_11:
         {
           v53 = v53;
 
-          v54 = [v53 BOOLValue];
+          bOOLValue2 = [v53 BOOLValue];
         }
 
         else
         {
-          v54 = 0;
+          bOOLValue2 = 0;
         }
       }
 
       else
       {
-        v54 = 0;
+        bOOLValue2 = 0;
       }
 
-      v6->_supportsSiriZLL = v54;
+      v6->_supportsSiriZLL = bOOLValue2;
       v55 = [v51 objectForKeyedSubscript:@"enhancedSiriButton"];
       if (v55)
       {
@@ -672,21 +672,21 @@ LABEL_11:
         {
           v56 = v56;
 
-          v57 = [v56 BOOLValue];
+          bOOLValue3 = [v56 BOOLValue];
         }
 
         else
         {
-          v57 = 0;
+          bOOLValue3 = 0;
         }
       }
 
       else
       {
-        v57 = 0;
+        bOOLValue3 = 0;
       }
 
-      v6->_supportsSiriZLLButton = v57;
+      v6->_supportsSiriZLLButton = bOOLValue3;
       v58 = [v51 objectForKey:@"enhancedSiriNotMixable"];
 
       if (v58)
@@ -732,10 +732,10 @@ LABEL_11:
     v62 = [v33 objectForKeyedSubscript:@"videoPlaybackInfo"];
     v6->_videoPlaybackSupported = v62 != 0;
 
-    v63 = [(CARSessionConfiguration *)v6 extendedFeatures];
-    v6->_supportsACBack = [v63 containsObject:*MEMORY[0x1E6962680]];
+    extendedFeatures = [(CARSessionConfiguration *)v6 extendedFeatures];
+    v6->_supportsACBack = [extendedFeatures containsObject:*MEMORY[0x1E6962680]];
 
-    v64 = v5[2](v5, *MEMORY[0x1E6962330]);
+    v64 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962330]);
     if (v64)
     {
       objc_opt_class();
@@ -744,35 +744,35 @@ LABEL_11:
       {
         v65 = v65;
 
-        v66 = [v65 integerValue];
+        integerValue = [v65 integerValue];
       }
 
       else
       {
-        v66 = 0x7FFFFFFFFFFFFFFFLL;
+        integerValue = 0x7FFFFFFFFFFFFFFFLL;
       }
     }
 
     else
     {
-      v66 = 0x7FFFFFFFFFFFFFFFLL;
+      integerValue = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if ((v66 - 3) < 0xFFFFFFFFFFFFFFFCLL || v66 == 0)
+    if ((integerValue - 3) < 0xFFFFFFFFFFFFFFFCLL || integerValue == 0)
     {
       v68 = -1;
     }
 
     else
     {
-      v68 = v66;
+      v68 = integerValue;
     }
 
     v6->_voiceTriggerMode = v68;
     v184 = v51;
-    if ((v190 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
-      v69 = v5[2](v5, *MEMORY[0x1E6962328]);
+      v69 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962328]);
       v70 = v69;
       if (v69)
       {
@@ -850,9 +850,9 @@ LABEL_11:
 
     if (v84)
     {
-      v85 = [v84 unsignedIntegerValue];
-      v6->_vehicleDataPluginCount = v85;
-      if (v85)
+      unsignedIntegerValue = [v84 unsignedIntegerValue];
+      v6->_vehicleDataPluginCount = unsignedIntegerValue;
+      if (unsignedIntegerValue)
       {
 LABEL_103:
 
@@ -863,9 +863,9 @@ LABEL_104:
         v95 = [v33 objectForKey:@"logTransferInfo"];
         v6->_supportsLogTransfer = v95 != 0;
 
-        v96 = [MEMORY[0x1E695DF70] array];
-        v97 = [MEMORY[0x1E695DF70] array];
-        v189 = v5[2](v5, *MEMORY[0x1E6962240]);
+        array = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
+        v189 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962240]);
         v98 = [v33 objectForKey:@"displayPanels"];
         objc_opt_class();
         v99 = v98;
@@ -915,7 +915,7 @@ LABEL_104:
         v108 = [v33 objectForKey:@"displays"];
         v188 = v33;
         v182 = v100;
-        if ((v190 & 4) != 0)
+        if ((optionsCopy & 4) != 0)
         {
           v110 = +[CRCarPlayCapabilities capabilitiesIdentifier];
           v109 = [CRCarPlayCapabilities fetchCarCapabilitiesWithIdentifier:v110];
@@ -938,9 +938,9 @@ LABEL_104:
         v198 = v111;
         v177 = v109;
         v199 = v177;
-        v112 = v96;
+        v112 = array;
         v200 = v112;
-        v113 = v97;
+        v113 = array2;
         v201 = v113;
         [v189 enumerateObjectsUsingBlock:v196];
         v180 = v112;
@@ -954,9 +954,9 @@ LABEL_104:
         v111->_screenIDs = v116;
 
         v111->_hasGaugeClusterScreen = [(NSArray *)v6->_displays bs_containsObjectPassingTest:&__block_literal_global_620];
-        if ((v190 & 2) != 0)
+        if ((optionsCopy & 2) != 0)
         {
-          v118 = v5[2](v5, *MEMORY[0x1E69621F8]);
+          v118 = supplierCopy[2](supplierCopy, *MEMORY[0x1E69621F8]);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -971,7 +971,7 @@ LABEL_104:
           manufacturerIconLabel = v111->_manufacturerIconLabel;
           v111->_manufacturerIconLabel = v119;
 
-          v121 = v5[2](v5, *MEMORY[0x1E6962200]);
+          v121 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962200]);
           if (v121)
           {
             objc_opt_class();
@@ -980,22 +980,22 @@ LABEL_104:
             {
               v122 = v122;
 
-              v123 = [v122 BOOLValue];
+              bOOLValue4 = [v122 BOOLValue];
             }
 
             else
             {
-              v123 = 0;
+              bOOLValue4 = 0;
             }
           }
 
           else
           {
-            v123 = 0;
+            bOOLValue4 = 0;
           }
 
-          v111->_manufacturerIconVisible = v123;
-          v124 = v5[2](v5, *MEMORY[0x1E6962208]);
+          v111->_manufacturerIconVisible = bOOLValue4;
+          v124 = supplierCopy[2](supplierCopy, *MEMORY[0x1E6962208]);
           v125 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v194[0] = MEMORY[0x1E69E9820];
           v194[1] = 3221225472;
@@ -1016,12 +1016,12 @@ LABEL_104:
 
           if (v129)
           {
-            v130 = [MEMORY[0x1E695DF70] array];
+            array3 = [MEMORY[0x1E695DF70] array];
             v192[0] = MEMORY[0x1E69E9820];
             v192[1] = 3221225472;
             v192[2] = __73__CARSessionConfiguration_initWithSessionStatusOptions_propertySupplier___block_invoke_7;
             v192[3] = &unk_1E82FCA80;
-            v131 = v130;
+            v131 = array3;
             v193 = v131;
             [v129 enumerateObjectsUsingBlock:v192];
             v132 = [MEMORY[0x1E695DEC8] arrayWithArray:v131];
@@ -1056,21 +1056,21 @@ LABEL_133:
                 {
                   v138 = v138;
 
-                  v139 = [v138 integerValue];
+                  integerValue2 = [v138 integerValue];
                 }
 
                 else
                 {
-                  v139 = 0x7FFFFFFFFFFFFFFFLL;
+                  integerValue2 = 0x7FFFFFFFFFFFFFFFLL;
                 }
               }
 
               else
               {
-                v139 = 0x7FFFFFFFFFFFFFFFLL;
+                integerValue2 = 0x7FFFFFFFFFFFFFFFLL;
               }
 
-              v111->_supportsStopSession = v139;
+              v111->_supportsStopSession = integerValue2;
               if (v111->_supportsStopSession)
               {
                 v140 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1090,56 +1090,56 @@ LABEL_133:
             }
 
             v144 = +[CRVehicleAccessoryManager sharedInstance];
-            v145 = [v144 connectedVehicleAccessories];
-            v146 = [v145 anyObject];
+            connectedVehicleAccessories = [v144 connectedVehicleAccessories];
+            anyObject = [connectedVehicleAccessories anyObject];
             v191 = v128;
-            if (v146)
+            if (anyObject)
             {
-              v147 = v146;
+              v147 = anyObject;
               v111->_hasAccessory = 1;
 LABEL_151:
-              v148 = [v147 vehicleAccessoryInfoKeys];
-              v149 = [v148 objectForKeyedSubscript:@"name"];
+              vehicleAccessoryInfoKeys = [v147 vehicleAccessoryInfoKeys];
+              v149 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"name"];
               vehicleName = v111->_vehicleName;
               v111->_vehicleName = v149;
 
-              v151 = [v148 objectForKeyedSubscript:@"modelName"];
+              v151 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"modelName"];
               vehicleModelName = v111->_vehicleModelName;
               v111->_vehicleModelName = v151;
 
-              v153 = [v148 objectForKeyedSubscript:@"manufacturer"];
+              v153 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"manufacturer"];
               vehicleManufacturer = v111->_vehicleManufacturer;
               v111->_vehicleManufacturer = v153;
 
-              v155 = [v148 objectForKeyedSubscript:@"serialNumber"];
+              v155 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"serialNumber"];
               vehicleSerialNumber = v111->_vehicleSerialNumber;
               v111->_vehicleSerialNumber = v155;
 
-              v157 = [v148 objectForKeyedSubscript:@"firmwareVersion"];
+              v157 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"firmwareVersion"];
               vehicleFirmwareVersion = v111->_vehicleFirmwareVersion;
               v111->_vehicleFirmwareVersion = v157;
 
-              v159 = [v148 objectForKeyedSubscript:@"hardwareVersion"];
+              v159 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"hardwareVersion"];
               vehicleHardwareVersion = v111->_vehicleHardwareVersion;
               v111->_vehicleHardwareVersion = v159;
 
-              v161 = [v148 objectForKeyedSubscript:@"engineTypeGasoline"];
+              v161 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"engineTypeGasoline"];
               v111->_vehicleSupportsGasoline = [v161 BOOLValue];
 
-              v162 = [v148 objectForKeyedSubscript:@"engineTypeElectric"];
+              v162 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"engineTypeElectric"];
               v111->_vehicleSupportsElectric = [v162 BOOLValue];
 
-              v163 = [v148 objectForKeyedSubscript:@"engineTypeDiesel"];
+              v163 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"engineTypeDiesel"];
               v111->_vehicleSupportsDiesel = [v163 BOOLValue];
 
-              v164 = [v148 objectForKeyedSubscript:@"engineTypeCNG"];
+              v164 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"engineTypeCNG"];
               v111->_vehicleSupportsCNG = [v164 BOOLValue];
 
-              v165 = [v148 objectForKeyedSubscript:@"ppid"];
+              v165 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"ppid"];
               PPID = v111->_PPID;
               v111->_PPID = v165;
 
-              v167 = [v148 objectForKeyedSubscript:@"destinationSharing"];
+              v167 = [vehicleAccessoryInfoKeys objectForKeyedSubscript:@"destinationSharing"];
               v111->_vehicleSupportsDestinationSharing = [v167 BOOLValue];
 
 LABEL_152:
@@ -1151,7 +1151,7 @@ LABEL_152:
             {
               v171 = v170;
               v172 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v170 options:0];
-              v173 = [v144 connectedVehicleAccessories];
+              connectedVehicleAccessories2 = [v144 connectedVehicleAccessories];
               v147 = [v144 vehicleAccessoryForCertificateSerial:v172];
 
               v111->_hasAccessory = v147 != 0;
@@ -1169,9 +1169,9 @@ LABEL_152:
             v147 = CarGeneralLogging();
             if (os_log_type_enabled(v147, OS_LOG_TYPE_DEFAULT))
             {
-              v174 = [v144 connectedAccessories];
+              connectedAccessories = [v144 connectedAccessories];
               *buf = 138412290;
-              v208 = v174;
+              v208 = connectedAccessories;
               _os_log_impl(&dword_1C81FC000, v147, OS_LOG_TYPE_DEFAULT, "Configuration created without an accessory. Connected accessories: %@", buf, 0xCu);
             }
 
@@ -1564,36 +1564,36 @@ void __48__CARSessionConfiguration_updateCarCapabilities__block_invoke(uint64_t 
   [v3 setZoomFactor:v4];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = CarGeneralLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(CARSessionConfiguration *)v3 valueForUndefinedKey:v4];
+    [(CARSessionConfiguration *)keyCopy valueForUndefinedKey:v4];
   }
 
   return 0;
 }
 
-- (id)screenInfoForScreenID:(id)a3
+- (id)screenInfoForScreenID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__2;
   v16 = __Block_byref_object_dispose__2;
   v17 = 0;
-  v5 = [(CARSessionConfiguration *)self screens];
+  screens = [(CARSessionConfiguration *)self screens];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__CARSessionConfiguration_screenInfoForScreenID___block_invoke;
   v9[3] = &unk_1E82FCD10;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [screens enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1621,8 +1621,8 @@ void __49__CARSessionConfiguration_screenInfoForScreenID___block_invoke(uint64_t
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(CARSessionConfiguration *)self screens];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  screens = [(CARSessionConfiguration *)self screens];
+  v3 = [screens countByEnumeratingWithState:&v14 objects:v18 count:16];
   v4 = 0.0;
   if (v3)
   {
@@ -1634,7 +1634,7 @@ void __49__CARSessionConfiguration_screenInfoForScreenID___block_invoke(uint64_t
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(screens);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -1647,7 +1647,7 @@ void __49__CARSessionConfiguration_screenInfoForScreenID___block_invoke(uint64_t
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [screens countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -1670,26 +1670,26 @@ LABEL_11:
 - (id)numberOfScreens
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(CARSessionConfiguration *)self screens];
-  v4 = [v2 numberWithUnsignedInteger:{objc_msgSend(v3, "count")}];
-  v5 = [v4 stringValue];
+  screens = [(CARSessionConfiguration *)self screens];
+  v4 = [v2 numberWithUnsignedInteger:{objc_msgSend(screens, "count")}];
+  stringValue = [v4 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
 - (id)primaryDisplayFirstViewAreaSize
 {
-  v2 = [(CARSessionConfiguration *)self screens];
-  v3 = [v2 firstObject];
+  screens = [(CARSessionConfiguration *)self screens];
+  firstObject = [screens firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 viewAreas];
-    v5 = [v4 firstObject];
+    viewAreas = [firstObject viewAreas];
+    firstObject2 = [viewAreas firstObject];
 
-    if (v5)
+    if (firstObject2)
     {
-      [v5 visibleFrame];
+      [firstObject2 visibleFrame];
       v7 = v6;
       v9 = v8;
     }
@@ -1721,13 +1721,13 @@ LABEL_11:
   v10 = 0;
   v11 = 0;
   v9 = "";
-  v2 = [(CARSessionConfiguration *)self screens];
+  screens = [(CARSessionConfiguration *)self screens];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__CARSessionConfiguration_secondaryDisplayFirstViewAreaSize__block_invoke;
   v5[3] = &unk_1E82FCD38;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [screens enumerateObjectsUsingBlock:v5];
 
   v3 = NSStringFromSize(v7[2]);
   _Block_object_dispose(&v6, 8);

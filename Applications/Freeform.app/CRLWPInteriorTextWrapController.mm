@@ -1,9 +1,9 @@
 @interface CRLWPInteriorTextWrapController
 + (id)sharedInteriorTextWrapController;
-- (BOOL)checkForUnobstructedSpan:(CGRect)a3 wrappableAttachments:(id)a4 userInfo:(id)a5;
-- (double)nextUnobstructedSpanStartingAt:(CGRect)a3 wrappableAttachments:(id)a4 userInfo:(id)a5;
-- (id)beginWrappingToColumn:(id)a3 columnTransformFromWP:(CGAffineTransform *)a4 target:(id)a5 hasWrappables:(BOOL *)a6;
-- (void)splitLine:(CGRect)a3 lineSegmentRects:(id)a4 wrappableAttachments:(id)a5 ignoreFloatingGraphics:(BOOL)a6 canvasCausedWrap:(BOOL *)a7 skipHint:(double *)a8 userInfo:(id)a9;
+- (BOOL)checkForUnobstructedSpan:(CGRect)span wrappableAttachments:(id)attachments userInfo:(id)info;
+- (double)nextUnobstructedSpanStartingAt:(CGRect)at wrappableAttachments:(id)attachments userInfo:(id)info;
+- (id)beginWrappingToColumn:(id)column columnTransformFromWP:(CGAffineTransform *)p target:(id)target hasWrappables:(BOOL *)wrappables;
+- (void)splitLine:(CGRect)line lineSegmentRects:(id)rects wrappableAttachments:(id)attachments ignoreFloatingGraphics:(BOOL)graphics canvasCausedWrap:(BOOL *)wrap skipHint:(double *)hint userInfo:(id)info;
 @end
 
 @implementation CRLWPInteriorTextWrapController
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_1003AF3DC;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A34DB0 != -1)
   {
     dispatch_once(&qword_101A34DB0, block);
@@ -25,54 +25,54 @@
   return v2;
 }
 
-- (id)beginWrappingToColumn:(id)a3 columnTransformFromWP:(CGAffineTransform *)a4 target:(id)a5 hasWrappables:(BOOL *)a6
+- (id)beginWrappingToColumn:(id)column columnTransformFromWP:(CGAffineTransform *)p target:(id)target hasWrappables:(BOOL *)wrappables
 {
-  v9 = a5;
-  v10 = a3;
+  targetCopy = target;
+  columnCopy = column;
   v11 = objc_alloc_init(CRLWPInteriorCookie);
-  [(CRLWPInteriorCookie *)v11 setLayout:v9];
-  [(CRLWPInteriorCookie *)v11 setColumn:v10];
+  [(CRLWPInteriorCookie *)v11 setLayout:targetCopy];
+  [(CRLWPInteriorCookie *)v11 setColumn:columnCopy];
 
-  v12 = *&a4->c;
-  *&v16.a = *&a4->a;
+  v12 = *&p->c;
+  *&v16.a = *&p->a;
   *&v16.c = v12;
-  *&v16.tx = *&a4->tx;
+  *&v16.tx = *&p->tx;
   memset(&v17, 0, sizeof(v17));
   CGAffineTransformInvert(&v17, &v16);
-  v13 = [v9 interiorWrapSegments];
+  interiorWrapSegments = [targetCopy interiorWrapSegments];
 
   v16 = v17;
-  v14 = [v13 wrapSegmentsByApplyingAffineTransform:&v16];
+  v14 = [interiorWrapSegments wrapSegmentsByApplyingAffineTransform:&v16];
   [(CRLWPInteriorCookie *)v11 setInteriorWrapSegmentsInWrapSpace:v14];
 
-  *a6 = 1;
+  *wrappables = 1;
 
   return v11;
 }
 
-- (void)splitLine:(CGRect)a3 lineSegmentRects:(id)a4 wrappableAttachments:(id)a5 ignoreFloatingGraphics:(BOOL)a6 canvasCausedWrap:(BOOL *)a7 skipHint:(double *)a8 userInfo:(id)a9
+- (void)splitLine:(CGRect)line lineSegmentRects:(id)rects wrappableAttachments:(id)attachments ignoreFloatingGraphics:(BOOL)graphics canvasCausedWrap:(BOOL *)wrap skipHint:(double *)hint userInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v19 = a4;
-  *a8 = 1.0;
-  v15 = a9;
+  height = line.size.height;
+  width = line.size.width;
+  y = line.origin.y;
+  x = line.origin.x;
+  rectsCopy = rects;
+  *hint = 1.0;
+  infoCopy = info;
   v16 = objc_opt_class();
-  v17 = sub_100014370(v16, v15);
+  v17 = sub_100014370(v16, infoCopy);
 
   if (v17)
   {
-    v18 = [v17 interiorWrapSegmentsInWrapSpace];
-    [CRLWPTextWrapper splitLine:v19 lineSegmentRects:v18 wrapSegments:0 type:0 skipHint:x, y, width, height];
+    interiorWrapSegmentsInWrapSpace = [v17 interiorWrapSegmentsInWrapSpace];
+    [CRLWPTextWrapper splitLine:rectsCopy lineSegmentRects:interiorWrapSegmentsInWrapSpace wrapSegments:0 type:0 skipHint:x, y, width, height];
   }
 }
 
-- (double)nextUnobstructedSpanStartingAt:(CGRect)a3 wrappableAttachments:(id)a4 userInfo:(id)a5
+- (double)nextUnobstructedSpanStartingAt:(CGRect)at wrappableAttachments:(id)attachments userInfo:(id)info
 {
-  v6 = a4;
-  v7 = a5;
+  attachmentsCopy = attachments;
+  infoCopy = info;
   v8 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -121,10 +121,10 @@
   objc_exception_throw(v16);
 }
 
-- (BOOL)checkForUnobstructedSpan:(CGRect)a3 wrappableAttachments:(id)a4 userInfo:(id)a5
+- (BOOL)checkForUnobstructedSpan:(CGRect)span wrappableAttachments:(id)attachments userInfo:(id)info
 {
-  v6 = a4;
-  v7 = a5;
+  attachmentsCopy = attachments;
+  infoCopy = info;
   v8 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {

@@ -1,21 +1,21 @@
 @interface BMContentSource
-- (void)sendEvent:(id)a3;
-- (void)sendEvent:(id)a3 timestamp:(double)a4;
+- (void)sendEvent:(id)event;
+- (void)sendEvent:(id)event timestamp:(double)timestamp;
 @end
 
 @implementation BMContentSource
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9 = 0;
-  v5 = [v4 isValidWithContext:0 error:&v9];
+  v5 = [eventCopy isValidWithContext:0 error:&v9];
   v6 = v9;
   if (v5)
   {
     v8.receiver = self;
     v8.super_class = BMContentSource;
-    [(BMStoreSource *)&v8 sendEvent:v4];
+    [(BMStoreSource *)&v8 sendEvent:eventCopy];
   }
 
   else
@@ -28,17 +28,17 @@
   }
 }
 
-- (void)sendEvent:(id)a3 timestamp:(double)a4
+- (void)sendEvent:(id)event timestamp:(double)timestamp
 {
-  v6 = a3;
+  eventCopy = event;
   v11 = 0;
-  v7 = [v6 isValidWithContext:0 error:&v11];
+  v7 = [eventCopy isValidWithContext:0 error:&v11];
   v8 = v11;
   if (v7)
   {
     v10.receiver = self;
     v10.super_class = BMContentSource;
-    [(BMStoreSource *)&v10 sendEvent:v6 timestamp:a4];
+    [(BMStoreSource *)&v10 sendEvent:eventCopy timestamp:timestamp];
   }
 
   else

@@ -1,12 +1,12 @@
 @interface DividerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18ASMessagesProvider11DividerView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18ASMessagesProvider11DividerView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation DividerView
 
-- (_TtC18ASMessagesProvider11DividerView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider11DividerView)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC18ASMessagesProvider11DividerView_separatorInset);
   v5 = *&UIEdgeInsetsZero.bottom;
@@ -26,9 +26,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = sub_76A920();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
@@ -40,7 +40,7 @@
   swift_beginAccess();
   sub_395C4(self + v12, v11);
   v13 = qword_93D2C8;
-  v14 = self;
+  selfCopy = self;
   if (v13 != -1)
   {
     swift_once();
@@ -63,7 +63,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_50EFE0();
 }
 

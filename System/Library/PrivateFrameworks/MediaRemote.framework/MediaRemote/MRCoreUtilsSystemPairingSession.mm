@@ -2,13 +2,13 @@
 + (BOOL)systemPairingAvailable;
 + (id)globalPairingQueue;
 + (id)pairingManager;
-- (MRDeviceInfo)_createPeerDeviceFromPairedPeer:(uint64_t)a1;
+- (MRDeviceInfo)_createPeerDeviceFromPairedPeer:(uint64_t)peer;
 - (id)addPeer;
 - (id)mediaRemotePairedDevices;
 - (id)pairedPeerDevice;
 - (id)pairedPeerDevices;
 - (id)removePeer;
-- (id)updateMediaRemotePairedDevice:(id)a1;
+- (id)updateMediaRemotePairedDevice:(id)device;
 - (id)updatePeer;
 @end
 
@@ -20,23 +20,23 @@
   v3 = _MRLogForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MRCryptoPairingSession *)self device];
+    device = [(MRCryptoPairingSession *)self device];
     v12 = 138412290;
-    v13 = v4;
+    v13 = device;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[CryptoPairingSession(CoreUtils-System)] Pairing Device %@", &v12, 0xCu);
   }
 
   v5 = [MRCoreUtilsPairingSession alloc];
-  v6 = [(MRCryptoPairingSession *)self device];
-  v7 = [(MRCoreUtilsPairingSession *)v5 initWithRole:0 device:v6];
+  device2 = [(MRCryptoPairingSession *)self device];
+  v7 = [(MRCoreUtilsPairingSession *)v5 initWithRole:0 device:device2];
 
   [(MRCoreUtilsPairingSession *)v7 open];
-  v8 = [(MRCoreUtilsPairingSession *)v7 removePeer];
-  v9 = [(MRCoreUtilsSystemPairingSession *)self updatePeer];
+  removePeer = [(MRCoreUtilsPairingSession *)v7 removePeer];
+  updatePeer = [(MRCoreUtilsSystemPairingSession *)self updatePeer];
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return updatePeer;
 }
 
 - (id)removePeer
@@ -45,15 +45,15 @@
   v3 = _MRLogForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MRCryptoPairingSession *)self device];
+    device = [(MRCryptoPairingSession *)self device];
     v9 = 138412290;
-    v10 = v4;
+    v10 = device;
     _os_log_impl(&dword_1A2860000, v3, OS_LOG_TYPE_DEFAULT, "[CryptoPairingSession(CoreUtils-System)] Unpairing Device %@", &v9, 0xCu);
   }
 
-  v5 = [(MRCryptoPairingSession *)self device];
+  device2 = [(MRCryptoPairingSession *)self device];
 
-  if (v5)
+  if (device2)
   {
     [(MRCoreUtilsSystemPairingSession *)self updateMediaRemotePairedDevice:?];
   }
@@ -68,10 +68,10 @@
   return v6;
 }
 
-- (id)updateMediaRemotePairedDevice:(id)a1
+- (id)updateMediaRemotePairedDevice:(id)device
 {
   v3 = a2;
-  if (a1)
+  if (device)
   {
     v47 = 0;
     v48 = &v47;
@@ -85,10 +85,10 @@
     v44 = __Block_byref_object_copy_;
     v45 = __Block_byref_object_dispose_;
     v46 = 0;
-    v4 = [objc_opt_class() pairingManager];
-    if (v4)
+    pairingManager = [objc_opt_class() pairingManager];
+    if (pairingManager)
     {
-      v5 = [a1 peerIdentifier];
+      peerIdentifier = [device peerIdentifier];
       v6 = dispatch_semaphore_create(0);
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
@@ -97,7 +97,7 @@
       v40 = &v47;
       v7 = v6;
       v39 = v7;
-      [v4 setInvalidationHandler:v38];
+      [pairingManager setInvalidationHandler:v38];
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __65__MRCoreUtilsSystemPairingSession_updateMediaRemotePairedDevice___block_invoke_2;
@@ -105,29 +105,29 @@
       v37 = &v47;
       v8 = v7;
       v36 = v8;
-      [v4 setInterruptionHandler:v35];
-      v9 = [a1 device];
-      v10 = [v9 identifier];
+      [pairingManager setInterruptionHandler:v35];
+      device = [device device];
+      identifier = [device identifier];
 
-      v11 = [a1 device];
-      v12 = [v11 name];
+      device2 = [device device];
+      name = [device2 name];
 
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __65__MRCoreUtilsSystemPairingSession_updateMediaRemotePairedDevice___block_invoke_3;
       v28[3] = &unk_1E769A2C8;
-      v13 = v10;
+      v13 = identifier;
       v29 = v13;
-      v14 = v5;
+      v14 = peerIdentifier;
       v30 = v14;
       v15 = v3;
       v31 = v15;
-      v16 = v12;
+      v16 = name;
       v32 = v16;
       v34 = &v41;
       v17 = v8;
       v33 = v17;
-      [v4 getPairedPeersWithOptions:4 completion:v28];
+      [pairingManager getPairedPeersWithOptions:4 completion:v28];
       v18 = dispatch_time(0, 7000000000);
       dispatch_semaphore_wait(v17, v18);
       if (v42[5])
@@ -143,21 +143,21 @@
         v21 = v42[5];
         if (v15)
         {
-          [v4 savePairedPeer:v21 options:4 completion:v20];
+          [pairingManager savePairedPeer:v21 options:4 completion:v20];
         }
 
         else
         {
-          [v4 removePairedPeer:v21 options:4 completion:v20];
+          [pairingManager removePairedPeer:v21 options:4 completion:v20];
         }
 
         v23 = dispatch_time(0, 7000000000);
         dispatch_semaphore_wait(v19, v23);
       }
 
-      [v4 setInterruptionHandler:0];
-      [v4 setInvalidationHandler:0];
-      [v4 invalidate];
+      [pairingManager setInterruptionHandler:0];
+      [pairingManager setInvalidationHandler:0];
+      [pairingManager invalidate];
     }
 
     else
@@ -167,23 +167,23 @@
       v48[5] = v22;
     }
 
-    a1 = v48[5];
+    device = v48[5];
     _Block_object_dispose(&v41, 8);
 
     _Block_object_dispose(&v47, 8);
   }
 
-  return a1;
+  return device;
 }
 
 - (id)updatePeer
 {
-  v3 = [(MRCryptoPairingSession *)self device];
+  device = [(MRCryptoPairingSession *)self device];
 
-  if (v3)
+  if (device)
   {
-    v4 = [(MRCryptoPairingSession *)self device];
-    v5 = [(MRCoreUtilsSystemPairingSession *)self updateMediaRemotePairedDevice:v4];
+    device2 = [(MRCryptoPairingSession *)self device];
+    v5 = [(MRCoreUtilsSystemPairingSession *)self updateMediaRemotePairedDevice:device2];
   }
 
   else
@@ -202,17 +202,17 @@
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
-  v3 = [(MRCoreUtilsSystemPairingSession *)self pairedPeerDevices];
-  v4 = [(MRCoreUtilsSystemPairingSession *)self mediaRemotePairedDevices];
+  pairedPeerDevices = [(MRCoreUtilsSystemPairingSession *)self pairedPeerDevices];
+  mediaRemotePairedDevices = [(MRCoreUtilsSystemPairingSession *)self mediaRemotePairedDevices];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__MRCoreUtilsSystemPairingSession_pairedPeerDevice__block_invoke;
   v8[3] = &unk_1E769A200;
   v8[4] = self;
-  v5 = v3;
+  v5 = pairedPeerDevices;
   v9 = v5;
   v10 = &v11;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [mediaRemotePairedDevices enumerateKeysAndObjectsUsingBlock:v8];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -288,8 +288,8 @@ LABEL_12:
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [objc_opt_class() pairingManager];
-  if (v3)
+  pairingManager = [objc_opt_class() pairingManager];
+  if (pairingManager)
   {
     v4 = dispatch_semaphore_create(0);
     v16[0] = MEMORY[0x1E69E9820];
@@ -298,14 +298,14 @@ LABEL_12:
     v16[3] = &unk_1E769A228;
     v5 = v4;
     v17 = v5;
-    [v3 setInvalidationHandler:v16];
+    [pairingManager setInvalidationHandler:v16];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __52__MRCoreUtilsSystemPairingSession_pairedPeerDevices__block_invoke_2;
     v14[3] = &unk_1E769A228;
     v6 = v5;
     v15 = v6;
-    [v3 setInterruptionHandler:v14];
+    [pairingManager setInterruptionHandler:v14];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __52__MRCoreUtilsSystemPairingSession_pairedPeerDevices__block_invoke_3;
@@ -314,12 +314,12 @@ LABEL_12:
     v11[4] = self;
     v7 = v6;
     v12 = v7;
-    [v3 getPairedPeersWithOptions:4 completion:v11];
+    [pairingManager getPairedPeersWithOptions:4 completion:v11];
     v8 = dispatch_time(0, 7000000000);
     dispatch_semaphore_wait(v7, v8);
-    [v3 setInterruptionHandler:0];
-    [v3 setInvalidationHandler:0];
-    [v3 invalidate];
+    [pairingManager setInterruptionHandler:0];
+    [pairingManager setInvalidationHandler:0];
+    [pairingManager invalidate];
   }
 
   v9 = v19[5];
@@ -371,23 +371,23 @@ void __52__MRCoreUtilsSystemPairingSession_pairedPeerDevices__block_invoke_3(uin
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (MRDeviceInfo)_createPeerDeviceFromPairedPeer:(uint64_t)a1
+- (MRDeviceInfo)_createPeerDeviceFromPairedPeer:(uint64_t)peer
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (peer && v3)
   {
     v5 = objc_alloc_init(MRDeviceInfo);
-    v6 = [v4 identifier];
-    v7 = [v6 UUIDString];
-    [(MRDeviceInfo *)v5 setIdentifier:v7];
+    identifier = [v4 identifier];
+    uUIDString = [identifier UUIDString];
+    [(MRDeviceInfo *)v5 setIdentifier:uUIDString];
 
-    v8 = [v4 name];
-    [(MRDeviceInfo *)v5 setName:v8];
+    name = [v4 name];
+    [(MRDeviceInfo *)v5 setName:name];
 
-    v9 = [v4 model];
-    [(MRDeviceInfo *)v5 setLocalizedModelName:v9];
+    model = [v4 model];
+    [(MRDeviceInfo *)v5 setLocalizedModelName:model];
   }
 
   return v5;
@@ -396,8 +396,8 @@ void __52__MRCoreUtilsSystemPairingSession_pairedPeerDevices__block_invoke_3(uin
 - (id)mediaRemotePairedDevices
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [objc_opt_class() pairingManager];
-  if (v3)
+  pairingManager = [objc_opt_class() pairingManager];
+  if (pairingManager)
   {
     v4 = dispatch_semaphore_create(0);
     v18[0] = MEMORY[0x1E69E9820];
@@ -406,14 +406,14 @@ void __52__MRCoreUtilsSystemPairingSession_pairedPeerDevices__block_invoke_3(uin
     v18[3] = &unk_1E769A228;
     v5 = v4;
     v19 = v5;
-    [v3 setInvalidationHandler:v18];
+    [pairingManager setInvalidationHandler:v18];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __59__MRCoreUtilsSystemPairingSession_mediaRemotePairedDevices__block_invoke_2;
     v16[3] = &unk_1E769A228;
     v6 = v5;
     v17 = v6;
-    [v3 setInterruptionHandler:v16];
+    [pairingManager setInterruptionHandler:v16];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __59__MRCoreUtilsSystemPairingSession_mediaRemotePairedDevices__block_invoke_3;
@@ -421,12 +421,12 @@ void __52__MRCoreUtilsSystemPairingSession_pairedPeerDevices__block_invoke_3(uin
     v14 = v2;
     v15 = v6;
     v7 = v6;
-    [v3 getPairedPeersWithOptions:4 completion:&v10];
+    [pairingManager getPairedPeersWithOptions:4 completion:&v10];
     v8 = dispatch_time(0, 7000000000);
     dispatch_semaphore_wait(v7, v8);
-    [v3 setInterruptionHandler:{0, v10, v11, v12, v13}];
-    [v3 setInvalidationHandler:0];
-    [v3 invalidate];
+    [pairingManager setInterruptionHandler:{0, v10, v11, v12, v13}];
+    [pairingManager setInvalidationHandler:0];
+    [pairingManager invalidate];
   }
 
   return v2;
@@ -636,7 +636,7 @@ uint64_t __57__MRCoreUtilsSystemPairingSession_systemPairingAvailable__block_inv
 
 + (id)pairingManager
 {
-  if ([a1 systemPairingAvailable])
+  if ([self systemPairingAvailable])
   {
     v2 = objc_alloc_init(MSVWeakLinkClass());
     v3 = +[MRCoreUtilsSystemPairingSession globalPairingQueue];

@@ -1,36 +1,36 @@
 @interface CRLiOSInspectorTableViewCellAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (id)_crlaxImageButton;
 - (id)accessibilityLabel;
-- (void)setChecked:(BOOL)a3;
+- (void)setChecked:(BOOL)checked;
 @end
 
 @implementation CRLiOSInspectorTableViewCellAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  v3 = a3;
+  checkedCopy = checked;
   v7.receiver = self;
   v7.super_class = CRLiOSInspectorTableViewCellAccessibility;
   [(CRLiOSInspectorTableViewCellAccessibility *)&v7 setChecked:?];
-  v5 = [(CRLiOSInspectorTableViewCellAccessibility *)self accessibilityTraits];
-  if (v3)
+  accessibilityTraits = [(CRLiOSInspectorTableViewCellAccessibility *)self accessibilityTraits];
+  if (checkedCopy)
   {
-    v6 = UIAccessibilityTraitSelected | v5;
+    v6 = UIAccessibilityTraitSelected | accessibilityTraits;
   }
 
   else
   {
-    v6 = v5 & ~UIAccessibilityTraitSelected;
+    v6 = accessibilityTraits & ~UIAccessibilityTraitSelected;
   }
 
   [(CRLiOSInspectorTableViewCellAccessibility *)self setAccessibilityTraits:v6];
@@ -39,9 +39,9 @@
 - (id)accessibilityLabel
 {
   v13 = 0;
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  v4 = __CRLAccessibilityCastAsClass(v3, v2, 1, &v13);
+  v4 = __CRLAccessibilityCastAsClass(v3, selfCopy, 1, &v13);
   if (v13 == 1)
   {
     abort();
@@ -49,32 +49,32 @@
 
   v5 = v4;
 
-  v6 = [v5 textLabel];
-  v7 = [v6 text];
-  v8 = [v7 length];
+  textLabel = [v5 textLabel];
+  text = [textLabel text];
+  v8 = [text length];
 
   if (v8)
   {
-    v9 = [v5 textLabel];
-    v10 = [v9 text];
+    textLabel2 = [v5 textLabel];
+    text2 = [textLabel2 text];
   }
 
   else
   {
-    v12.receiver = v2;
+    v12.receiver = selfCopy;
     v12.super_class = CRLiOSInspectorTableViewCellAccessibility;
-    v10 = [(CRLiOSInspectorTableViewCellAccessibility *)&v12 accessibilityLabel];
+    text2 = [(CRLiOSInspectorTableViewCellAccessibility *)&v12 accessibilityLabel];
   }
 
-  return v10;
+  return text2;
 }
 
 - (id)_crlaxImageButton
 {
-  v2 = [(CRLiOSInspectorTableViewCellAccessibility *)self crlaxTarget];
-  v3 = [v2 imageButton];
+  crlaxTarget = [(CRLiOSInspectorTableViewCellAccessibility *)self crlaxTarget];
+  imageButton = [crlaxTarget imageButton];
 
-  return v3;
+  return imageButton;
 }
 
 @end

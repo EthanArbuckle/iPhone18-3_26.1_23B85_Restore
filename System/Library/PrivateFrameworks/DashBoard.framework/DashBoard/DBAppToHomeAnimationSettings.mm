@@ -1,7 +1,7 @@
 @interface DBAppToHomeAnimationSettings
 - (DBIconView)iconView;
 - (_TtC9DashBoard28DBAppToHomeAnimationSettings)init;
-- (void)setIconView:(id)a3;
+- (void)setIconView:(id)view;
 @end
 
 @implementation DBAppToHomeAnimationSettings
@@ -13,13 +13,13 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setIconView:(id)a3
+- (void)setIconView:(id)view
 {
   v5 = OBJC_IVAR____TtC9DashBoard28DBAppToHomeAnimationSettings_iconView;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = view;
+  viewCopy = view;
 }
 
 - (_TtC9DashBoard28DBAppToHomeAnimationSettings)init

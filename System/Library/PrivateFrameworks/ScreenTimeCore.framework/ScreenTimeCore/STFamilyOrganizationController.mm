@@ -1,61 +1,61 @@
 @interface STFamilyOrganizationController
-+ (id)passcodePayloadWithContext:(id)a3 error:(id *)a4;
-+ (void)handlePasscodePayload:(id)a3 context:(id)a4 nowReference:(id)a5;
-+ (void)postDiagnosticsServiceMessageForPayload:(id)a3;
-- (BOOL)validateBlueprintDictionary:(id)a3;
-- (STFamilyOrganizationController)initWithPersistenceController:(id)a3 askForTimeManager:(id)a4;
++ (id)passcodePayloadWithContext:(id)context error:(id *)error;
++ (void)handlePasscodePayload:(id)payload context:(id)context nowReference:(id)reference;
++ (void)postDiagnosticsServiceMessageForPayload:(id)payload;
+- (BOOL)validateBlueprintDictionary:(id)dictionary;
+- (STFamilyOrganizationController)initWithPersistenceController:(id)controller askForTimeManager:(id)manager;
 - (STRequestManagerBlueprintSourceDelegate)blueprintSourceDelegate;
-- (void)_enqueueOperationToFetchUsageForRequestPayload:(id)a3;
-- (void)_enqueueOperationToPersistUsageForResponsePayload:(id)a3;
-- (void)_fetchUsageOperationDidFinish:(id)a3 requestingAltURI:(id)a4;
-- (void)_handleCheckinRequestPayload:(id)a3;
-- (void)_handleCheckinResponsePayload:(id)a3;
-- (void)_handleIDSAccountBecameActiveNotification:(id)a3;
-- (void)_handlePasscodeActivityPayload:(id)a3;
+- (void)_enqueueOperationToFetchUsageForRequestPayload:(id)payload;
+- (void)_enqueueOperationToPersistUsageForResponsePayload:(id)payload;
+- (void)_fetchUsageOperationDidFinish:(id)finish requestingAltURI:(id)i;
+- (void)_handleCheckinRequestPayload:(id)payload;
+- (void)_handleCheckinResponsePayload:(id)payload;
+- (void)_handleIDSAccountBecameActiveNotification:(id)notification;
+- (void)_handlePasscodeActivityPayload:(id)payload;
 - (void)_sendCheckinRequestOnAccountOfReachabilityChange;
-- (void)_sendCheckinRequestPayloadToDestination:(id)a3;
-- (void)_sendCheckinRequestPayloadToDestination:(id)a3 context:(id)a4;
-- (void)_sendCheckinResponseToDestination:(id)a3 afterVersions:(id)a4;
-- (void)_sendCheckinResponseToDestination:(id)a3 afterVersions:(id)a4 context:(id)a5;
+- (void)_sendCheckinRequestPayloadToDestination:(id)destination;
+- (void)_sendCheckinRequestPayloadToDestination:(id)destination context:(id)context;
+- (void)_sendCheckinResponseToDestination:(id)destination afterVersions:(id)versions;
+- (void)_sendCheckinResponseToDestination:(id)destination afterVersions:(id)versions context:(id)context;
 - (void)_sendOutUsageRequestsIfNeeded;
 - (void)_startListeningForIDSAccountBecameActiveNotifications;
 - (void)_stopListeningForIDSAccountBecameActiveNotifications;
-- (void)conduit:(id)a3 didDeliverTransportPayload:(id)a4;
-- (void)conduit:(id)a3 didReceiveTransportPayload:(id)a4;
-- (void)conduitDidInvalidate:(id)a3;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)conduit:(id)conduit didDeliverTransportPayload:(id)payload;
+- (void)conduit:(id)conduit didReceiveTransportPayload:(id)payload;
+- (void)conduitDidInvalidate:(id)invalidate;
+- (void)controllerDidChangeContent:(id)content;
 - (void)dealloc;
-- (void)groupResultsControllerDidChangeContents:(id)a3;
-- (void)loudlySendLegacyAskRequest:(id)a3 toSpecificDeviceIDSDestinations:(id)a4;
-- (void)reachabilityDidChange:(id)a3;
-- (void)sendAskRequestToParents:(id)a3 toParentsWithDSIDs:(id)a4;
-- (void)sendAskResponse:(id)a3 toChildWithDSID:(id)a4 toParentsWithDSIDs:(id)a5;
+- (void)groupResultsControllerDidChangeContents:(id)contents;
+- (void)loudlySendLegacyAskRequest:(id)request toSpecificDeviceIDSDestinations:(id)destinations;
+- (void)reachabilityDidChange:(id)change;
+- (void)sendAskRequestToParents:(id)parents toParentsWithDSIDs:(id)ds;
+- (void)sendAskResponse:(id)response toChildWithDSID:(id)d toParentsWithDSIDs:(id)ds;
 - (void)sendFamilySettingsPayload;
-- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)a3;
-- (void)sendPayloads:(id)a3;
-- (void)updateWithFamily:(id)a3 inContext:(id)a4;
+- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)handler;
+- (void)sendPayloads:(id)payloads;
+- (void)updateWithFamily:(id)family inContext:(id)context;
 @end
 
 @implementation STFamilyOrganizationController
 
-- (STFamilyOrganizationController)initWithPersistenceController:(id)a3 askForTimeManager:(id)a4
+- (STFamilyOrganizationController)initWithPersistenceController:(id)controller askForTimeManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   v26.receiver = self;
   v26.super_class = STFamilyOrganizationController;
   v9 = [(STFamilyOrganizationController *)&v26 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_persistenceController, a3);
+    objc_storeStrong(&v9->_persistenceController, controller);
     v11 = [STFamilySettingsManager alloc];
-    v12 = [(STFamilyOrganizationController *)v10 persistenceController];
-    v13 = [(STFamilySettingsManager *)v11 initWithCapabilities:0 persistenceController:v12];
+    persistenceController = [(STFamilyOrganizationController *)v10 persistenceController];
+    v13 = [(STFamilySettingsManager *)v11 initWithCapabilities:0 persistenceController:persistenceController];
     familySettingsManager = v10->_familySettingsManager;
     v10->_familySettingsManager = v13;
 
-    objc_storeStrong(&v10->_askForTimeManager, a4);
+    objc_storeStrong(&v10->_askForTimeManager, manager);
     v15 = dispatch_queue_create("com.apple.ScreenTimeAgent.family-screen-time-manager.usage", 0);
     usageQueue = v10->_usageQueue;
     v10->_usageQueue = v15;
@@ -93,24 +93,24 @@
   [(STFamilyOrganizationController *)&v3 dealloc];
 }
 
-- (void)reachabilityDidChange:(id)a3
+- (void)reachabilityDidChange:(id)change
 {
-  v4 = [a3 object];
-  if ([v4 isOnline])
+  object = [change object];
+  if ([object isOnline])
   {
     [(STFamilyOrganizationController *)self _sendCheckinRequestOnAccountOfReachabilityChange];
     [(STFamilyOrganizationController *)self sendCheckinResponseToDestination:0];
   }
 }
 
-- (void)updateWithFamily:(id)a3 inContext:(id)a4
+- (void)updateWithFamily:(id)family inContext:(id)context
 {
-  v7 = a3;
-  v115 = a4;
-  objc_storeStrong(&self->_cachedFamily, a3);
+  familyCopy = family;
+  contextCopy = context;
+  objc_storeStrong(&self->_cachedFamily, family);
   v8 = +[STLog familyScreenTimeManager];
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (!v7)
+  if (!familyCopy)
   {
     if (v9)
     {
@@ -119,8 +119,8 @@
     }
 
     v119 = 0;
-    v35 = v115;
-    v36 = [STCoreUser fetchLocalUserInContext:v115 error:&v119];
+    v35 = contextCopy;
+    v36 = [STCoreUser fetchLocalUserInContext:contextCopy error:&v119];
     v37 = v119;
     if (v36)
     {
@@ -137,19 +137,19 @@
     }
 
     v118 = v37;
-    v38 = [STFamilyOrganization fetchOrCreateFamilyOrganizationWithContext:v115 error:&v118];
+    v38 = [STFamilyOrganization fetchOrCreateFamilyOrganizationWithContext:contextCopy error:&v118];
     v39 = v118;
 
     if (v38)
     {
-      v58 = [v38 settings];
+      settings = [v38 settings];
       v116[0] = _NSConcreteStackBlock;
       v116[1] = 3221225472;
       v116[2] = sub_100032CB8;
       v116[3] = &unk_1001A3D40;
-      v59 = v115;
+      v59 = contextCopy;
       v117 = v59;
-      [v58 enumerateObjectsUsingBlock:v116];
+      [settings enumerateObjectsUsingBlock:v116];
 
       v60 = +[STLog familyScreenTimeManager];
       if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
@@ -159,26 +159,26 @@
       }
 
       [v59 deleteObject:v38];
-      v61 = [(STFamilyOrganizationController *)self conduit];
-      [v61 invalidate];
+      conduit = [(STFamilyOrganizationController *)self conduit];
+      [conduit invalidate];
 
       [(STFamilyOrganizationController *)self setConduit:0];
-      v62 = [(STFamilyOrganizationController *)self settingsResultsController];
-      [v62 setDelegate:0];
+      settingsResultsController = [(STFamilyOrganizationController *)self settingsResultsController];
+      [settingsResultsController setDelegate:0];
 
       [(STFamilyOrganizationController *)self setSettingsResultsController:0];
-      v63 = [(STFamilyOrganizationController *)self usageRequestsFetchedResultsController];
-      [v63 setDelegate:0];
+      usageRequestsFetchedResultsController = [(STFamilyOrganizationController *)self usageRequestsFetchedResultsController];
+      [usageRequestsFetchedResultsController setDelegate:0];
 
       [(STFamilyOrganizationController *)self setUsageRequestsFetchedResultsController:0];
-      v64 = [(STFamilyOrganizationController *)self fetchUsageOperationQueue];
-      [v64 cancelAllOperations];
+      fetchUsageOperationQueue = [(STFamilyOrganizationController *)self fetchUsageOperationQueue];
+      [fetchUsageOperationQueue cancelAllOperations];
 
-      v65 = [(STFamilyOrganizationController *)self persistUsageOperationQueue];
-      [v65 cancelAllOperations];
+      persistUsageOperationQueue = [(STFamilyOrganizationController *)self persistUsageOperationQueue];
+      [persistUsageOperationQueue cancelAllOperations];
 
-      v66 = [(STFamilyOrganizationController *)self familySettingsManager];
-      [v66 registerFamilyMembers:&__NSArray0__struct];
+      familySettingsManager = [(STFamilyOrganizationController *)self familySettingsManager];
+      [familySettingsManager registerFamilyMembers:&__NSArray0__struct];
 
       [(STFamilyOrganizationController *)self _stopListeningForIDSAccountBecameActiveNotifications];
       v42 = v117;
@@ -202,16 +202,16 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating iCloud family", buf, 2u);
   }
 
-  v109 = self;
+  selfCopy = self;
 
   v114 = objc_opt_new();
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
-  v110 = v7;
-  v10 = [v7 members];
-  v11 = [v10 countByEnumeratingWithState:&v128 objects:v141 count:16];
+  v110 = familyCopy;
+  members = [familyCopy members];
+  v11 = [members countByEnumeratingWithState:&v128 objects:v141 count:16];
   if (!v11)
   {
     v13 = 0;
@@ -231,27 +231,27 @@
     {
       if (*v129 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(members);
       }
 
       v18 = *(*(&v128 + 1) + 8 * v16);
-      v19 = [v18 memberType];
+      memberType = [v18 memberType];
 
-      if (v19 == v15)
+      if (memberType == v15)
       {
         v13 = v17;
         goto LABEL_24;
       }
 
-      v20 = [v18 DSID];
+      dSID = [v18 DSID];
       v127 = v17;
-      v21 = [STCoreUser fetchUserWithDSID:v20 inContext:v115 error:&v127];
+      v21 = [STCoreUser fetchUserWithDSID:dSID inContext:contextCopy error:&v127];
       v13 = v127;
 
       if (!v21)
       {
-        v31 = [v13 domain];
-        if (![v31 isEqualToString:v112])
+        domain = [v13 domain];
+        if (![domain isEqualToString:v112])
         {
 
 LABEL_21:
@@ -268,52 +268,52 @@ LABEL_21:
           goto LABEL_23;
         }
 
-        v32 = [v13 code];
+        code = [v13 code];
 
-        if (v32 != 11)
+        if (code != 11)
         {
           goto LABEL_21;
         }
 
-        v21 = [[STCoreUser alloc] initWithContext:v115];
-        v33 = [v18 DSID];
-        [v21 setDsid:v33];
+        v21 = [[STCoreUser alloc] initWithContext:contextCopy];
+        dSID2 = [v18 DSID];
+        [v21 setDsid:dSID2];
         v34 = +[_TtC15ScreenTimeAgent41STExpressIntroductionUserContextStoreObjC sharedInstance];
-        [v34 markUserAsRecentlyCreatedWithDSID:v33];
+        [v34 markUserAsRecentlyCreatedWithDSID:dSID2];
       }
 
-      v22 = [v21 localUserDeviceState];
+      localUserDeviceState = [v21 localUserDeviceState];
 
-      if (!v22)
+      if (!localUserDeviceState)
       {
-        v23 = [v18 appleID];
-        [v21 setAppleID:v23];
+        appleID = [v18 appleID];
+        [v21 setAppleID:appleID];
 
-        v24 = [v18 firstName];
-        [v21 setGivenName:v24];
+        firstName = [v18 firstName];
+        [v21 setGivenName:firstName];
 
-        v25 = [v18 lastName];
-        [v21 setFamilyName:v25];
+        lastName = [v18 lastName];
+        [v21 setFamilyName:lastName];
       }
 
-      v26 = [v18 altDSID];
-      [v21 setAltDSID:v26];
+      altDSID = [v18 altDSID];
+      [v21 setAltDSID:altDSID];
 
       -[NSObject setIsFamilyOrganizer:](v21, "setIsFamilyOrganizer:", [v18 isOrganizer]);
       -[NSObject setIsParent:](v21, "setIsParent:", [v18 isParent]);
-      v27 = [v18 memberType];
-      [v21 setFamilyMemberType:v27];
+      memberType2 = [v18 memberType];
+      [v21 setFamilyMemberType:memberType2];
 
-      v28 = [v21 familySettings];
+      familySettings = [v21 familySettings];
 
-      if (!v28)
+      if (!familySettings)
       {
-        v29 = [[STFamilyOrganizationSettings alloc] initWithContext:v115];
+        v29 = [[STFamilyOrganizationSettings alloc] initWithContext:contextCopy];
         [v21 setFamilySettings:v29];
       }
 
-      v30 = [v21 familySettings];
-      [v114 addObject:v30];
+      familySettings2 = [v21 familySettings];
+      [v114 addObject:familySettings2];
 
 LABEL_23:
       v17 = v13;
@@ -322,22 +322,22 @@ LABEL_24:
     }
 
     while (v12 != v16);
-    v12 = [v10 countByEnumeratingWithState:&v128 objects:v141 count:16];
+    v12 = [members countByEnumeratingWithState:&v128 objects:v141 count:16];
   }
 
   while (v12);
 LABEL_32:
 
   v126 = v13;
-  v35 = v115;
-  v38 = [STFamilyOrganization fetchOrCreateFamilyOrganizationWithContext:v115 error:&v126];
+  v35 = contextCopy;
+  v38 = [STFamilyOrganization fetchOrCreateFamilyOrganizationWithContext:contextCopy error:&v126];
   v39 = v126;
 
   if (v38)
   {
     v111 = v39;
-    v40 = [v38 settings];
-    v41 = [NSMutableSet setWithSet:v40];
+    settings2 = [v38 settings];
+    v41 = [NSMutableSet setWithSet:settings2];
 
     [v41 minusSet:v114];
     v124 = 0u;
@@ -363,16 +363,16 @@ LABEL_32:
           v48 = +[STLog familyScreenTimeManager];
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
           {
-            v49 = [v47 user];
+            user = [v47 user];
             *buf = 138412290;
-            v138 = v49;
+            v138 = user;
             _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "Deleting removed family member: %@", buf, 0xCu);
           }
 
-          v50 = [v47 user];
-          [v115 deleteObject:v50];
+          user2 = [v47 user];
+          [contextCopy deleteObject:user2];
 
-          [v115 deleteObject:v47];
+          [contextCopy deleteObject:v47];
         }
 
         v44 = [v42 countByEnumeratingWithState:&v122 objects:v136 count:16];
@@ -383,12 +383,12 @@ LABEL_32:
 
     v36 = v114;
     [v38 setSettings:v114];
-    v51 = [(STFamilyOrganizationController *)v109 conduit];
+    conduit2 = [(STFamilyOrganizationController *)selfCopy conduit];
 
-    if (v51)
+    if (conduit2)
     {
-      v7 = v110;
-      v35 = v115;
+      familyCopy = v110;
+      v35 = contextCopy;
       goto LABEL_77;
     }
 
@@ -401,15 +401,15 @@ LABEL_32:
 
     v53 = objc_opt_new();
     v54 = [v110 me];
-    v55 = [v54 memberType];
+    memberType3 = [v54 memberType];
     v56 = STFamilyMemberTypeChild;
-    if ([v55 isEqualToString:STFamilyMemberTypeChild])
+    if ([memberType3 isEqualToString:STFamilyMemberTypeChild])
     {
 
       goto LABEL_61;
     }
 
-    v67 = [v55 isEqualToString:STFamilyMemberTypeTeen];
+    v67 = [memberType3 isEqualToString:STFamilyMemberTypeTeen];
 
     if (v67)
     {
@@ -423,15 +423,15 @@ LABEL_61:
     }
 
     v69 = [STConduit alloc];
-    v70 = [(STFamilyOrganizationController *)v109 persistenceController];
+    persistenceController = [(STFamilyOrganizationController *)selfCopy persistenceController];
     v113 = v53;
     v108 = v68;
-    v71 = [(STConduit *)v69 initWithOrganizationIdentifier:@"screentime" transport:v53 localTransport:v68 persistenceController:v70];
+    v71 = [(STConduit *)v69 initWithOrganizationIdentifier:@"screentime" transport:v53 localTransport:v68 persistenceController:persistenceController];
 
-    [(STConduit *)v71 setDelegate:v109];
+    [(STConduit *)v71 setDelegate:selfCopy];
     [(STConduit *)v71 resume];
     v107 = v71;
-    [(STFamilyOrganizationController *)v109 setConduit:v71];
+    [(STFamilyOrganizationController *)selfCopy setConduit:v71];
     v72 = +[STFamilyOrganizationSettings fetchRequest];
     v73 = [NSPredicate predicateWithFormat:@"%K == NO", @"user.isParent"];
     [v72 setPredicate:v73];
@@ -441,21 +441,21 @@ LABEL_61:
     v75 = [STFetchResultsRequest requestWithFetchRequest:v72];
     v135 = v75;
     v76 = [NSArray arrayWithObjects:&v135 count:1];
-    v77 = [v74 initWithContext:v115 resultsRequests:v76];
-    [(STFamilyOrganizationController *)v109 setSettingsResultsController:v77];
+    v77 = [v74 initWithContext:contextCopy resultsRequests:v76];
+    [(STFamilyOrganizationController *)selfCopy setSettingsResultsController:v77];
 
-    v78 = [(STFamilyOrganizationController *)v109 settingsResultsController];
-    [v78 setDelegate:v109];
+    settingsResultsController2 = [(STFamilyOrganizationController *)selfCopy settingsResultsController];
+    [settingsResultsController2 setDelegate:selfCopy];
 
     v79 = [v110 me];
-    v80 = [v79 memberType];
-    if ([v80 isEqualToString:v56])
+    memberType4 = [v79 memberType];
+    if ([memberType4 isEqualToString:v56])
     {
 
       goto LABEL_66;
     }
 
-    v81 = [v80 isEqualToString:STFamilyMemberTypeTeen];
+    v81 = [memberType4 isEqualToString:STFamilyMemberTypeTeen];
 
     if (v81)
     {
@@ -469,12 +469,12 @@ LABEL_66:
       v85 = [NSArray arrayWithObjects:&v134 count:1];
       [v82 setSortDescriptors:v85];
 
-      v86 = [[NSFetchedResultsController alloc] initWithFetchRequest:v82 managedObjectContext:v115 sectionNameKeyPath:0 cacheName:0];
-      [v86 setDelegate:v109];
-      [(STFamilyOrganizationController *)v109 setInstalledAppsFetchedResultsController:v86];
-      v87 = [(STFamilyOrganizationController *)v109 installedAppsFetchedResultsController];
+      v86 = [[NSFetchedResultsController alloc] initWithFetchRequest:v82 managedObjectContext:contextCopy sectionNameKeyPath:0 cacheName:0];
+      [v86 setDelegate:selfCopy];
+      [(STFamilyOrganizationController *)selfCopy setInstalledAppsFetchedResultsController:v86];
+      installedAppsFetchedResultsController = [(STFamilyOrganizationController *)selfCopy installedAppsFetchedResultsController];
       v121 = 0;
-      v88 = [v87 performFetch:&v121];
+      v88 = [installedAppsFetchedResultsController performFetch:&v121];
       v89 = v121;
 
       if ((v88 & 1) == 0)
@@ -489,12 +489,12 @@ LABEL_66:
 
     v91 = +[STUsageRequest fetchRequestForUsageRequestsThatAreForRemoteUsers];
     v92 = [NSPredicate predicateWithFormat:@"%K != %K", @"requestedDate", @"acknowledgedDate"];
-    v93 = [v91 predicate];
-    v133[0] = v93;
+    predicate = [v91 predicate];
+    v133[0] = predicate;
     v133[1] = v92;
     v105 = v92;
     [NSArray arrayWithObjects:v133 count:2];
-    v95 = v94 = v109;
+    v95 = v94 = selfCopy;
     v96 = [NSCompoundPredicate andPredicateWithSubpredicates:v95];
     [v91 setPredicate:v96];
 
@@ -503,36 +503,36 @@ LABEL_66:
     v98 = [NSArray arrayWithObjects:&v132 count:1];
     [v91 setSortDescriptors:v98];
 
-    v35 = v115;
-    v99 = [[NSFetchedResultsController alloc] initWithFetchRequest:v91 managedObjectContext:v115 sectionNameKeyPath:0 cacheName:0];
-    [(STFamilyOrganizationController *)v109 setUsageRequestsFetchedResultsController:v99];
-    [v99 setDelegate:v109];
-    v100 = [(STFamilyOrganizationController *)v109 usageRequestsFetchedResultsController];
+    v35 = contextCopy;
+    v99 = [[NSFetchedResultsController alloc] initWithFetchRequest:v91 managedObjectContext:contextCopy sectionNameKeyPath:0 cacheName:0];
+    [(STFamilyOrganizationController *)selfCopy setUsageRequestsFetchedResultsController:v99];
+    [v99 setDelegate:selfCopy];
+    usageRequestsFetchedResultsController2 = [(STFamilyOrganizationController *)selfCopy usageRequestsFetchedResultsController];
     v120 = 0;
-    LODWORD(v95) = [v100 performFetch:&v120];
+    LODWORD(v95) = [usageRequestsFetchedResultsController2 performFetch:&v120];
     v101 = v120;
 
     if (v95)
     {
-      [(STFamilyOrganizationController *)v109 _sendOutUsageRequestsIfNeeded];
-      v7 = v110;
+      [(STFamilyOrganizationController *)selfCopy _sendOutUsageRequestsIfNeeded];
+      familyCopy = v110;
     }
 
     else
     {
       v102 = +[STLog familyScreenTimeManager];
-      v7 = v110;
+      familyCopy = v110;
       if (os_log_type_enabled(v102, OS_LOG_TYPE_ERROR))
       {
         sub_100114EA4();
       }
 
-      v94 = v109;
+      v94 = selfCopy;
     }
 
-    v103 = [(STFamilyOrganizationController *)v94 familySettingsManager];
-    v104 = [v7 members];
-    [v103 registerFamilyMembers:v104];
+    familySettingsManager2 = [(STFamilyOrganizationController *)v94 familySettingsManager];
+    members2 = [familyCopy members];
+    [familySettingsManager2 registerFamilyMembers:members2];
 
     [(STFamilyOrganizationController *)v94 _startListeningForIDSAccountBecameActiveNotifications];
     v36 = v114;
@@ -548,7 +548,7 @@ LABEL_66:
       sub_100114F0C();
     }
 
-    v7 = v110;
+    familyCopy = v110;
   }
 
 LABEL_77:
@@ -556,24 +556,24 @@ LABEL_77:
 
 - (void)sendFamilySettingsPayload
 {
-  v3 = [(STFamilyOrganizationController *)self familySettingsManager];
+  familySettingsManager = [(STFamilyOrganizationController *)self familySettingsManager];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100032E04;
   v4[3] = &unk_1001A3D68;
   v4[4] = self;
-  [v3 prepareSettingsPayloadsWithCompletion:v4];
+  [familySettingsManager prepareSettingsPayloadsWithCompletion:v4];
 }
 
-- (void)sendPayloads:(id)a3
+- (void)sendPayloads:(id)payloads
 {
-  v4 = a3;
-  v5 = [(STFamilyOrganizationController *)self conduit];
+  payloadsCopy = payloads;
+  conduit = [(STFamilyOrganizationController *)self conduit];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = payloadsCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -589,7 +589,7 @@ LABEL_77:
           objc_enumerationMutation(v6);
         }
 
-        [v5 enqueueTransportPayload:{*(*(&v11 + 1) + 8 * v10), v11}];
+        [conduit enqueueTransportPayload:{*(*(&v11 + 1) + 8 * v10), v11}];
         v10 = v10 + 1;
       }
 
@@ -601,16 +601,16 @@ LABEL_77:
   }
 }
 
-- (void)conduit:(id)a3 didReceiveTransportPayload:(id)a4
+- (void)conduit:(id)conduit didReceiveTransportPayload:(id)payload
 {
-  v5 = a4;
-  v6 = [v5 payloadType];
+  payloadCopy = payload;
+  payloadType = [payloadCopy payloadType];
   if (os_variant_has_internal_content())
   {
-    [STFamilyOrganizationController postDiagnosticsServiceMessageForPayload:v5];
+    [STFamilyOrganizationController postDiagnosticsServiceMessageForPayload:payloadCopy];
   }
 
-  if ([v6 isEqualToString:@"RMUnifiedTransportPayloadTypeCheckinRequest"])
+  if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeCheckinRequest"])
   {
     v7 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -619,11 +619,11 @@ LABEL_77:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received checkin request payload", buf, 2u);
     }
 
-    [(STFamilyOrganizationController *)self _handleCheckinRequestPayload:v5];
+    [(STFamilyOrganizationController *)self _handleCheckinRequestPayload:payloadCopy];
     goto LABEL_28;
   }
 
-  if ([v6 isEqualToString:@"RMUnifiedTransportPayloadTypeCheckinResponse"])
+  if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeCheckinResponse"])
   {
     v8 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -632,11 +632,11 @@ LABEL_77:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received checkin response payload", buf, 2u);
     }
 
-    [(STFamilyOrganizationController *)self _handleCheckinResponsePayload:v5];
+    [(STFamilyOrganizationController *)self _handleCheckinResponsePayload:payloadCopy];
     goto LABEL_28;
   }
 
-  if ([v6 isEqualToString:@"RMUnifiedTransportPayloadTypeFamilySettings"])
+  if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeFamilySettings"])
   {
     v9 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -645,18 +645,18 @@ LABEL_77:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received family settings payload", buf, 2u);
     }
 
-    v10 = [(STFamilyOrganizationController *)self familySettingsManager];
+    familySettingsManager = [(STFamilyOrganizationController *)self familySettingsManager];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000335A0;
     v19[3] = &unk_1001A3D90;
     v19[4] = self;
-    [v10 handleFamilySettingsPayload:v5 withCompletion:v19];
+    [familySettingsManager handleFamilySettingsPayload:payloadCopy withCompletion:v19];
 
     goto LABEL_28;
   }
 
-  if ([v6 isEqualToString:@"RMUnifiedTransportPayloadTypeBlueprints"])
+  if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeBlueprints"])
   {
     v11 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -665,14 +665,14 @@ LABEL_77:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received blueprints", buf, 2u);
     }
 
-    v12 = [(STFamilyOrganizationController *)self blueprintSourceDelegate];
-    [v12 didReceiveBlueprintPayload:v5];
+    blueprintSourceDelegate = [(STFamilyOrganizationController *)self blueprintSourceDelegate];
+    [blueprintSourceDelegate didReceiveBlueprintPayload:payloadCopy];
 LABEL_19:
 
     goto LABEL_28;
   }
 
-  if ([v6 isEqualToString:@"RMUnifiedTransportPayloadTypeUsageRequest"])
+  if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeUsageRequest"])
   {
     v13 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -681,10 +681,10 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received usage request", buf, 2u);
     }
 
-    [(STFamilyOrganizationController *)self _enqueueOperationToFetchUsageForRequestPayload:v5];
+    [(STFamilyOrganizationController *)self _enqueueOperationToFetchUsageForRequestPayload:payloadCopy];
   }
 
-  else if ([v6 isEqualToString:@"RMUnifiedTransportPayloadTypeUsageResponse"])
+  else if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeUsageResponse"])
   {
     v14 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -693,12 +693,12 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Received usage response", buf, 2u);
     }
 
-    [(STFamilyOrganizationController *)self _enqueueOperationToPersistUsageForResponsePayload:v5];
+    [(STFamilyOrganizationController *)self _enqueueOperationToPersistUsageForResponsePayload:payloadCopy];
   }
 
   else
   {
-    if ([v6 isEqualToString:@"RMUnifiedTransportPayloadTypeAskForTimeRequest"])
+    if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeAskForTimeRequest"])
     {
       v15 = +[STLog familyScreenTimeManager];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -707,12 +707,12 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Received ask for time request", buf, 2u);
       }
 
-      v12 = [(STFamilyOrganizationController *)self askForTimeManager];
-      [v12 handleAskForTimeRequestPayload:v5];
+      blueprintSourceDelegate = [(STFamilyOrganizationController *)self askForTimeManager];
+      [blueprintSourceDelegate handleAskForTimeRequestPayload:payloadCopy];
       goto LABEL_19;
     }
 
-    if ([v6 isEqualToString:@"RMUnifiedTransportPayloadTypeAskForTimeResponse"])
+    if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypeAskForTimeResponse"])
     {
       v16 = +[STLog familyScreenTimeManager];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -721,12 +721,12 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Received ask for time response", buf, 2u);
       }
 
-      v12 = [(STFamilyOrganizationController *)self askForTimeManager];
-      [v12 handleAskForTimeResponsePayload:v5];
+      blueprintSourceDelegate = [(STFamilyOrganizationController *)self askForTimeManager];
+      [blueprintSourceDelegate handleAskForTimeResponsePayload:payloadCopy];
       goto LABEL_19;
     }
 
-    if ([v6 isEqualToString:@"STUnifiedTransportPayloadTypeAskForTimeResponseV2"])
+    if ([payloadType isEqualToString:@"STUnifiedTransportPayloadTypeAskForTimeResponseV2"])
     {
       v17 = +[STLog familyScreenTimeManager];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -735,12 +735,12 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Received v2 ask for time response", buf, 2u);
       }
 
-      v12 = [(STFamilyOrganizationController *)self askForTimeManager];
-      [v12 handleV2AskForTimeResponsePayload:v5];
+      blueprintSourceDelegate = [(STFamilyOrganizationController *)self askForTimeManager];
+      [blueprintSourceDelegate handleV2AskForTimeResponsePayload:payloadCopy];
       goto LABEL_19;
     }
 
-    if ([v6 isEqualToString:@"RMUnifiedTransportPayloadTypePasscodeActivity"] && _os_feature_enabled_impl())
+    if ([payloadType isEqualToString:@"RMUnifiedTransportPayloadTypePasscodeActivity"] && _os_feature_enabled_impl())
     {
       v18 = +[STLog familyScreenTimeManager];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -749,17 +749,17 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Received passcode activity payload", buf, 2u);
       }
 
-      [(STFamilyOrganizationController *)self _handlePasscodeActivityPayload:v5];
+      [(STFamilyOrganizationController *)self _handlePasscodeActivityPayload:payloadCopy];
     }
   }
 
 LABEL_28:
 }
 
-+ (void)postDiagnosticsServiceMessageForPayload:(id)a3
++ (void)postDiagnosticsServiceMessageForPayload:(id)payload
 {
   v8 = 0;
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v8];
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:payload requiringSecureCoding:1 error:&v8];
   v5 = v8;
   if (v4)
   {
@@ -767,7 +767,7 @@ LABEL_28:
     v11 = @"data";
     v12 = v4;
     v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    [v6 postNotificationName:@"DiagnosticsService-IDSInbound" object:a1 userInfo:v7];
+    [v6 postNotificationName:@"DiagnosticsService-IDSInbound" object:self userInfo:v7];
   }
 
   else
@@ -782,9 +782,9 @@ LABEL_28:
   }
 }
 
-- (void)conduit:(id)a3 didDeliverTransportPayload:(id)a4
+- (void)conduit:(id)conduit didDeliverTransportPayload:(id)payload
 {
-  v4 = a4;
+  payloadCopy = payload;
   v5 = +[STLog familyScreenTimeManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -794,38 +794,38 @@ LABEL_28:
   }
 }
 
-- (void)conduitDidInvalidate:(id)a3
+- (void)conduitDidInvalidate:(id)invalidate
 {
-  v3 = a3;
+  invalidateCopy = invalidate;
   v4 = +[STLog familyScreenTimeManager];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = invalidateCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Conduit did invalidate: %{public}@", &v5, 0xCu);
   }
 }
 
-- (void)groupResultsControllerDidChangeContents:(id)a3
+- (void)groupResultsControllerDidChangeContents:(id)contents
 {
-  v4 = a3;
-  v5 = [(STFamilyOrganizationController *)self settingsResultsController];
+  contentsCopy = contents;
+  settingsResultsController = [(STFamilyOrganizationController *)self settingsResultsController];
 
-  if (v5 == v4)
+  if (settingsResultsController == contentsCopy)
   {
 
     [(STFamilyOrganizationController *)self sendFamilySettingsPayload];
   }
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   [(STFamilyOrganizationController *)self installedAppsFetchedResultsController];
 
-  v5 = [(STFamilyOrganizationController *)self usageRequestsFetchedResultsController];
+  usageRequestsFetchedResultsController = [(STFamilyOrganizationController *)self usageRequestsFetchedResultsController];
 
-  if (v5 == v4)
+  if (usageRequestsFetchedResultsController == contentCopy)
   {
 
     [(STFamilyOrganizationController *)self _sendOutUsageRequestsIfNeeded];
@@ -867,32 +867,32 @@ LABEL_28:
 LABEL_8:
 }
 
-- (void)_sendCheckinResponseToDestination:(id)a3 afterVersions:(id)a4
+- (void)_sendCheckinResponseToDestination:(id)destination afterVersions:(id)versions
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  versionsCopy = versions;
   v8 = os_transaction_create();
-  v9 = [(STFamilyOrganizationController *)self persistenceController];
+  persistenceController = [(STFamilyOrganizationController *)self persistenceController];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100033BB8;
   v13[3] = &unk_1001A3DB8;
   v14 = v8;
-  v15 = self;
-  v16 = v6;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
+  selfCopy = self;
+  v16 = destinationCopy;
+  v17 = versionsCopy;
+  v10 = versionsCopy;
+  v11 = destinationCopy;
   v12 = v8;
-  [v9 performBackgroundTaskAndWait:v13];
+  [persistenceController performBackgroundTaskAndWait:v13];
 }
 
-- (void)_sendCheckinResponseToDestination:(id)a3 afterVersions:(id)a4 context:(id)a5
+- (void)_sendCheckinResponseToDestination:(id)destination afterVersions:(id)versions context:(id)context
 {
-  v75 = a3;
-  v8 = a4;
+  destinationCopy = destination;
+  versionsCopy = versions;
   v91 = 0;
-  v9 = [STCoreUser fetchLocalUserInContext:a5 error:&v91];
+  v9 = [STCoreUser fetchLocalUserInContext:context error:&v91];
   v10 = v91;
   if ([v9 unmodeledParticipatesInSharedLedger])
   {
@@ -907,22 +907,22 @@ LABEL_8:
 
     if (v13)
     {
-      v70 = self;
+      selfCopy = self;
       v71 = v14;
       v72 = v11;
       v73 = v9;
       v15 = objc_opt_new();
       v16 = objc_opt_new();
       v17 = v16;
-      if (v75)
+      if (destinationCopy)
       {
-        [v16 addObject:v75];
+        [v16 addObject:destinationCopy];
       }
 
       v77 = v17;
       v78 = v15;
-      v74 = v8;
-      v79 = [v8 objectForKeyedSubscript:?];
+      v74 = versionsCopy;
+      v79 = [versionsCopy objectForKeyedSubscript:?];
       v86 = 0u;
       v87 = 0u;
       v88 = 0u;
@@ -946,23 +946,23 @@ LABEL_8:
             v22 = *(*(&v86 + 1) + 8 * i);
             if (([v22 isParent] & 1) == 0)
             {
-              v23 = [v22 familySettings];
-              v24 = [v23 uniqueIdentifier];
-              if (v24)
+              familySettings = [v22 familySettings];
+              uniqueIdentifier = [familySettings uniqueIdentifier];
+              if (uniqueIdentifier)
               {
                 v25 = [STVersionVector alloc];
-                v26 = [v79 objectForKeyedSubscript:v24];
+                v26 = [v79 objectForKeyedSubscript:uniqueIdentifier];
                 v27 = [v25 initWithDataRepresentation:v26];
 
                 v28 = [STVersionVector alloc];
-                v29 = [v23 versionVector];
-                v30 = [v28 initWithDataRepresentation:v29];
+                versionVector = [familySettings versionVector];
+                v30 = [v28 initWithDataRepresentation:versionVector];
 
                 v31 = [v27 evaluateCausality:v30];
                 if (v31 == 3 || v31 == 0)
                 {
-                  v33 = [v23 dictionaryRepresentation];
-                  [v78 addObject:v33];
+                  dictionaryRepresentation = [familySettings dictionaryRepresentation];
+                  [v78 addObject:dictionaryRepresentation];
                 }
               }
 
@@ -971,25 +971,25 @@ LABEL_8:
                 v27 = +[STLog familyScreenTimeManager];
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
                 {
-                  v38 = [v22 dsid];
+                  dsid = [v22 dsid];
                   *buf = 138543618;
-                  v97 = v38;
+                  v97 = dsid;
                   v98 = 2114;
-                  v99 = v23;
+                  v99 = familySettings;
                   _os_log_fault_impl(&_mh_execute_header, v27, OS_LOG_TYPE_FAULT, "Can't send checkin response for user, missing family settings unique identifier: %{public}@ %{public}@", buf, 0x16u);
                 }
               }
             }
 
-            if (!v75)
+            if (!destinationCopy)
             {
-              v34 = [v22 localUserDeviceState];
+              localUserDeviceState = [v22 localUserDeviceState];
 
-              if (!v34)
+              if (!localUserDeviceState)
               {
                 v35 = [STUnifiedTransportPayloadDestination alloc];
-                v36 = [v22 dsid];
-                v37 = [v35 initWithDSID:v36];
+                dsid2 = [v22 dsid];
+                v37 = [v35 initWithDSID:dsid2];
 
                 [v77 addObject:v37];
               }
@@ -1002,20 +1002,20 @@ LABEL_8:
         while (v19);
       }
 
-      v39 = [v73 familySettings];
-      v40 = [v39 organization];
+      familySettings2 = [v73 familySettings];
+      organization = [familySettings2 organization];
 
-      v41 = [v40 blueprints];
-      obja = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v41 count]);
+      blueprints = [organization blueprints];
+      obja = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [blueprints count]);
 
       v42 = [v74 objectForKeyedSubscript:?];
       v82 = 0u;
       v83 = 0u;
       v84 = 0u;
       v85 = 0u;
-      v76 = v40;
-      v43 = [v40 blueprints];
-      v44 = [v43 countByEnumeratingWithState:&v82 objects:v95 count:16];
+      v76 = organization;
+      blueprints2 = [organization blueprints];
+      v44 = [blueprints2 countByEnumeratingWithState:&v82 objects:v95 count:16];
       if (v44)
       {
         v45 = v44;
@@ -1026,40 +1026,40 @@ LABEL_8:
           {
             if (*v83 != v46)
             {
-              objc_enumerationMutation(v43);
+              objc_enumerationMutation(blueprints2);
             }
 
             v48 = *(*(&v82 + 1) + 8 * j);
             v49 = [STVersionVector alloc];
-            v50 = [v48 identifier];
-            v51 = [v42 objectForKeyedSubscript:v50];
+            identifier = [v48 identifier];
+            v51 = [v42 objectForKeyedSubscript:identifier];
             v52 = [v49 initWithDataRepresentation:v51];
 
             v53 = [STVersionVector alloc];
-            v54 = [v48 versionVector];
-            v55 = [v53 initWithDataRepresentation:v54];
+            versionVector2 = [v48 versionVector];
+            v55 = [v53 initWithDataRepresentation:versionVector2];
 
             v56 = [v52 evaluateCausality:v55];
             if (v56 == 3 || v56 == 0)
             {
-              v58 = [v48 dictionaryRepresentation];
-              [obja addObject:v58];
+              dictionaryRepresentation2 = [v48 dictionaryRepresentation];
+              [obja addObject:dictionaryRepresentation2];
             }
           }
 
-          v45 = [v43 countByEnumeratingWithState:&v82 objects:v95 count:16];
+          v45 = [blueprints2 countByEnumeratingWithState:&v82 objects:v95 count:16];
         }
 
         while (v45);
       }
 
-      v59 = [v73 localUserDeviceState];
-      v60 = [v59 dictionaryRepresentation];
-      v61 = v60;
+      localUserDeviceState2 = [v73 localUserDeviceState];
+      dictionaryRepresentation3 = [localUserDeviceState2 dictionaryRepresentation];
+      v61 = dictionaryRepresentation3;
       v62 = &__NSDictionary0__struct;
-      if (v60)
+      if (dictionaryRepresentation3)
       {
-        v62 = v60;
+        v62 = dictionaryRepresentation3;
       }
 
       v63 = v62;
@@ -1077,11 +1077,11 @@ LABEL_8:
       v92 = v66;
       v67 = [NSArray arrayWithObjects:&v92 count:1];
 
-      [(STFamilyOrganizationController *)v70 sendPayloads:v67];
+      [(STFamilyOrganizationController *)selfCopy sendPayloads:v67];
       v9 = v73;
 
-      v8 = v74;
-      v68 = v75;
+      versionsCopy = v74;
+      v68 = destinationCopy;
       v14 = v71;
       v11 = v72;
       v13 = v69;
@@ -1090,7 +1090,7 @@ LABEL_8:
     else
     {
       v64 = +[STLog familyScreenTimeManager];
-      v68 = v75;
+      v68 = destinationCopy;
       if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
       {
         sub_100114FDC();
@@ -1108,71 +1108,71 @@ LABEL_8:
     }
 
     v14 = v10;
-    v68 = v75;
+    v68 = destinationCopy;
   }
 }
 
-- (void)_sendCheckinRequestPayloadToDestination:(id)a3
+- (void)_sendCheckinRequestPayloadToDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(STFamilyOrganizationController *)self persistenceController];
+  destinationCopy = destination;
+  persistenceController = [(STFamilyOrganizationController *)self persistenceController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000343F4;
   v7[3] = &unk_1001A3DE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBackgroundTask:v7];
+  v8 = destinationCopy;
+  v6 = destinationCopy;
+  [persistenceController performBackgroundTask:v7];
 }
 
-- (void)_sendCheckinRequestPayloadToDestination:(id)a3 context:(id)a4
+- (void)_sendCheckinRequestPayloadToDestination:(id)destination context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  contextCopy = context;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000344EC;
   v11[3] = &unk_1001A3E08;
   v12 = os_transaction_create();
-  v13 = self;
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v14 = destinationCopy;
+  v15 = contextCopy;
+  v8 = contextCopy;
+  v9 = destinationCopy;
   v10 = v12;
   [v8 performBlockAndWait:v11];
 }
 
-- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)a3
+- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v5 = os_transaction_create();
-    v6 = [(STFamilyOrganizationController *)self persistenceController];
+    persistenceController = [(STFamilyOrganizationController *)self persistenceController];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100034D34;
     v8[3] = &unk_1001A3E30;
     v8[4] = self;
     v9 = v5;
-    v10 = v4;
+    v10 = handlerCopy;
     v7 = v5;
-    [v6 performBackgroundTask:v8];
+    [persistenceController performBackgroundTask:v8];
   }
 }
 
-+ (id)passcodePayloadWithContext:(id)a3 error:(id *)a4
++ (id)passcodePayloadWithContext:(id)context error:(id *)error
 {
-  v5 = [STCoreUser fetchLocalUserInContext:a3 error:?];
+  v5 = [STCoreUser fetchLocalUserInContext:context error:?];
   v6 = v5;
   if (!v5)
   {
     v10 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_100115114(a4);
+      sub_100115114(error);
     }
 
     goto LABEL_25;
@@ -1180,7 +1180,7 @@ LABEL_8:
 
   if (([v5 isManaged] & 1) == 0)
   {
-    *a4 = [NSError errorWithDomain:STErrorDomain code:568 userInfo:0];
+    *error = [NSError errorWithDomain:STErrorDomain code:568 userInfo:0];
     v10 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -1195,13 +1195,13 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v7 = [v6 localUserDeviceState];
-  v8 = [v7 device];
-  v9 = [v8 supportsPasscodeActivity];
+  localUserDeviceState = [v6 localUserDeviceState];
+  device = [localUserDeviceState device];
+  supportsPasscodeActivity = [device supportsPasscodeActivity];
 
-  if ((v9 & 1) == 0)
+  if ((supportsPasscodeActivity & 1) == 0)
   {
-    *a4 = [NSError errorWithDomain:STErrorDomain code:107 userInfo:0];
+    *error = [NSError errorWithDomain:STErrorDomain code:107 userInfo:0];
     v10 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -1215,7 +1215,7 @@ LABEL_25:
 
   v10 = objc_opt_new();
   v11 = +[STCoreUser fetchRequestForFamilyMembers];
-  v12 = [v11 execute:a4];
+  v12 = [v11 execute:error];
   v13 = v12;
   if (v12)
   {
@@ -1242,8 +1242,8 @@ LABEL_25:
           if ([v18 isParent])
           {
             v19 = [STUnifiedTransportPayloadDestination alloc];
-            v20 = [v18 dsid];
-            v21 = [v19 initWithDSID:v20];
+            dsid = [v18 dsid];
+            v21 = [v19 initWithDSID:dsid];
 
             [v10 addObject:v21];
           }
@@ -1257,13 +1257,13 @@ LABEL_25:
 
     if ([v10 count])
     {
-      v22 = [v6 localUserDeviceState];
-      v23 = [v22 dictionaryRepresentation];
-      v24 = v23;
+      localUserDeviceState2 = [v6 localUserDeviceState];
+      dictionaryRepresentation = [localUserDeviceState2 dictionaryRepresentation];
+      v24 = dictionaryRepresentation;
       v25 = &__NSDictionary0__struct;
-      if (v23)
+      if (dictionaryRepresentation)
       {
-        v25 = v23;
+        v25 = dictionaryRepresentation;
       }
 
       v26 = v25;
@@ -1279,7 +1279,7 @@ LABEL_25:
 
     else
     {
-      *a4 = [NSError errorWithDomain:STErrorDomain code:569 userInfo:0];
+      *error = [NSError errorWithDomain:STErrorDomain code:569 userInfo:0];
       v27 = +[STLog familyScreenTimeManager];
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
@@ -1298,7 +1298,7 @@ LABEL_25:
     v27 = +[STLog familyScreenTimeManager];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      sub_1001150AC(a4);
+      sub_1001150AC(error);
     }
 
     v29 = 0;
@@ -1309,16 +1309,16 @@ LABEL_26:
   return v29;
 }
 
-- (void)_handleCheckinRequestPayload:(id)a3
+- (void)_handleCheckinRequestPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 destinations];
-  v6 = [v5 firstObject];
+  payloadCopy = payload;
+  destinations = [payloadCopy destinations];
+  firstObject = [destinations firstObject];
 
   v7 = STUnifiedTransportPayloadDestinationTypeDevice;
-  v8 = [v6 type];
+  type = [firstObject type];
   v9 = STUnifiedTransportPayloadDestinationTypePairedDevice;
-  v10 = [v8 isEqualToString:STUnifiedTransportPayloadDestinationTypePairedDevice];
+  v10 = [type isEqualToString:STUnifiedTransportPayloadDestinationTypePairedDevice];
 
   if (v10)
   {
@@ -1327,32 +1327,32 @@ LABEL_26:
     v7 = v11;
   }
 
-  v12 = [v4 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"altURI"];
+  userInfo = [payloadCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:@"altURI"];
 
   v14 = [[STUnifiedTransportPayloadDestination alloc] initWithAddress:v13 type:v7];
   [(STFamilyOrganizationController *)self _sendCheckinResponseToDestination:v14 afterVersions:0];
-  v15 = [(STFamilyOrganizationController *)self persistenceController];
+  persistenceController = [(STFamilyOrganizationController *)self persistenceController];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000354F0;
   v17[3] = &unk_1001A3BF0;
-  v18 = v4;
-  v16 = v4;
-  [v15 performBackgroundTask:v17];
+  v18 = payloadCopy;
+  v16 = payloadCopy;
+  [persistenceController performBackgroundTask:v17];
 }
 
-- (void)_handleCheckinResponsePayload:(id)a3
+- (void)_handleCheckinResponsePayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = os_transaction_create();
   v6 = +[STLog familyScreenTimeManager];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"FromID"];
+    userInfo = [payloadCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"FromID"];
     *buf = 138543874;
-    v17 = v4;
+    v17 = payloadCopy;
     v18 = 2160;
     v19 = 1752392040;
     v20 = 2112;
@@ -1360,61 +1360,61 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Handling checkin response payload: %{public}@ FromID: %{mask.hash}@", buf, 0x20u);
   }
 
-  v9 = [(STFamilyOrganizationController *)self persistenceController];
+  persistenceController = [(STFamilyOrganizationController *)self persistenceController];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000358C0;
   v12[3] = &unk_1001A3E58;
   v13 = v5;
-  v14 = v4;
-  v15 = self;
-  v10 = v4;
+  v14 = payloadCopy;
+  selfCopy = self;
+  v10 = payloadCopy;
   v11 = v5;
-  [v9 performBackgroundTaskAndWait:v12];
+  [persistenceController performBackgroundTaskAndWait:v12];
 }
 
-- (void)_handlePasscodeActivityPayload:(id)a3
+- (void)_handlePasscodeActivityPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   if (_os_feature_enabled_impl())
   {
     v5 = os_transaction_create();
-    v6 = [(STFamilyOrganizationController *)self persistenceController];
+    persistenceController = [(STFamilyOrganizationController *)self persistenceController];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1000362D4;
     v8[3] = &unk_1001A3E58;
     v8[4] = self;
-    v9 = v4;
+    v9 = payloadCopy;
     v10 = v5;
     v7 = v5;
-    [v6 performBackgroundTaskAndWait:v8];
+    [persistenceController performBackgroundTaskAndWait:v8];
   }
 }
 
-+ (void)handlePasscodePayload:(id)a3 context:(id)a4 nowReference:(id)a5
++ (void)handlePasscodePayload:(id)payload context:(id)context nowReference:(id)reference
 {
-  v7 = a3;
-  v8 = a4;
-  v50 = a5;
-  v9 = [v7 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"AppleID"];
+  payloadCopy = payload;
+  contextCopy = context;
+  referenceCopy = reference;
+  userInfo = [payloadCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"AppleID"];
 
   v11 = +[STLog familyScreenTimeManager];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543619;
-    v54 = v7;
+    v54 = payloadCopy;
     v55 = 2113;
     v56 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Handling passcode activity payload: %{public}@ from: %{private}@", buf, 0x16u);
   }
 
-  v12 = [v7 payloadDictionary];
-  v13 = [v12 objectForKeyedSubscript:@"UserDeviceState"];
+  payloadDictionary = [payloadCopy payloadDictionary];
+  v13 = [payloadDictionary objectForKeyedSubscript:@"UserDeviceState"];
 
   v52 = 0;
-  v14 = [STUserDeviceState fetchOrCreateWithDictionaryRepresentation:v13 inContext:v8 error:&v52];
+  v14 = [STUserDeviceState fetchOrCreateWithDictionaryRepresentation:v13 inContext:contextCopy error:&v52];
   v15 = v52;
   if (v14)
   {
@@ -1436,14 +1436,14 @@ LABEL_26:
       sub_100115420();
     }
 
-    v19 = [v14 device];
-    v20 = [v19 lastPasscodeUseDate];
-    if (!v20)
+    device = [v14 device];
+    lastPasscodeUseDate = [device lastPasscodeUseDate];
+    if (!lastPasscodeUseDate)
     {
       v47 = v15;
       v21 = v13;
-      v22 = [v7 userInfo];
-      v23 = [v22 objectForKeyedSubscript:@"ServerReceivedTime"];
+      userInfo2 = [payloadCopy userInfo];
+      v23 = [userInfo2 objectForKeyedSubscript:@"ServerReceivedTime"];
 
       if (v23)
       {
@@ -1454,10 +1454,10 @@ LABEL_26:
 
       else
       {
-        v25 = v50;
+        v25 = referenceCopy;
       }
 
-      v20 = v25;
+      lastPasscodeUseDate = v25;
       v26 = +[STLog familyScreenTimeManager];
       v13 = v21;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1465,16 +1465,16 @@ LABEL_26:
         sub_100115488();
       }
 
-      [v19 setLastPasscodeUseDate:v20];
+      [device setLastPasscodeUseDate:lastPasscodeUseDate];
       v15 = v47;
     }
 
-    v48 = v20;
-    v49 = v8;
-    if ([v8 hasChanges])
+    v48 = lastPasscodeUseDate;
+    v49 = contextCopy;
+    if ([contextCopy hasChanges])
     {
       v51 = v15;
-      v27 = [v8 save:&v51];
+      v27 = [contextCopy save:&v51];
       v28 = v51;
 
       v29 = +[STLog familyScreenTimeManager];
@@ -1512,63 +1512,63 @@ LABEL_26:
     v32 = [v31 initWithSuiteName:STScreenTimeAppGroupName];
     if ([v32 BOOLForKey:STUserDefaultsKeyIsPasscodeUseNotificationDisabled])
     {
-      v33 = +[STLog familyScreenTimeManager];
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+      name = +[STLog familyScreenTimeManager];
+      if (os_log_type_enabled(name, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138477827;
         v54 = v10;
-        _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Passcode use notification is disabled. Not posting user notification for passcode activity from %{private}@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, name, OS_LOG_TYPE_DEFAULT, "Passcode use notification is disabled. Not posting user notification for passcode activity from %{private}@", buf, 0xCu);
       }
 
       v34 = v48;
-      v8 = v49;
+      contextCopy = v49;
     }
 
     else
     {
-      v33 = [v19 name];
+      name = [device name];
       v35 = [STPasscodeActivityUserNotificationContext alloc];
       [v14 user];
       v36 = v45 = v32;
       [v36 dsid];
       v46 = v14;
-      v37 = v19;
+      v37 = device;
       v38 = v15;
       v39 = v13;
-      v40 = v7;
+      v40 = payloadCopy;
       v42 = v41 = v10;
       v34 = v48;
-      v43 = [v35 initWithDeviceName:v33 lastPasscodeUseDate:v48 childDSID:v42];
+      v43 = [v35 initWithDeviceName:name lastPasscodeUseDate:v48 childDSID:v42];
 
       v10 = v41;
-      v7 = v40;
+      payloadCopy = v40;
       v13 = v39;
       v15 = v38;
-      v19 = v37;
+      device = v37;
       v14 = v46;
 
       v44 = +[NSNotificationCenter defaultCenter];
       [v44 postNotificationName:@"STUserNotificationManagerShouldPostNotification" object:v43];
 
       v32 = v45;
-      v8 = v49;
+      contextCopy = v49;
     }
   }
 
   else
   {
-    v19 = +[STLog familyScreenTimeManager];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    device = +[STLog familyScreenTimeManager];
+    if (os_log_type_enabled(device, OS_LOG_TYPE_ERROR))
     {
       sub_100115558();
     }
   }
 }
 
-- (BOOL)validateBlueprintDictionary:(id)a3
+- (BOOL)validateBlueprintDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"organization.class"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"organization.class"];
   v5 = [STCoreOrganization internalClassForSerializableClassName:v4];
   if (v5)
   {
@@ -1581,7 +1581,7 @@ LABEL_26:
     v6 = +[STLog blueprint];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      sub_1001155C0(v3);
+      sub_1001155C0(dictionaryCopy);
     }
   }
 
@@ -1590,7 +1590,7 @@ LABEL_26:
     v6 = +[STLog blueprint];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      sub_1001157F0(v4, v3);
+      sub_1001157F0(v4, dictionaryCopy);
     }
   }
 
@@ -1600,21 +1600,21 @@ LABEL_9:
   return v7;
 }
 
-- (void)_enqueueOperationToFetchUsageForRequestPayload:(id)a3
+- (void)_enqueueOperationToFetchUsageForRequestPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"AppleID"];
+  payloadCopy = payload;
+  userInfo = [payloadCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"AppleID"];
 
   if ([v6 length])
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"altURI"];
+    userInfo2 = [payloadCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:@"altURI"];
 
     if ([v8 length])
     {
-      v9 = [v4 payloadDictionary];
-      v10 = [v9 objectForKeyedSubscript:@"StartDate"];
+      payloadDictionary = [payloadCopy payloadDictionary];
+      v10 = [payloadDictionary objectForKeyedSubscript:@"StartDate"];
       if (v10)
       {
         objc_opt_class();
@@ -1635,7 +1635,7 @@ LABEL_9:
       {
         if (_os_feature_enabled_impl())
         {
-          v13 = [v9 objectForKeyedSubscript:@"AllDevicesAreNewUsage"];
+          v13 = [payloadDictionary objectForKeyedSubscript:@"AllDevicesAreNewUsage"];
           v14 = +[STLog familyScreenTimeManager];
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
@@ -1652,19 +1652,19 @@ LABEL_9:
           v13 = 0;
         }
 
-        v16 = [(STFamilyOrganizationController *)self persistenceController];
+        persistenceController = [(STFamilyOrganizationController *)self persistenceController];
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_100036D64;
         v17[3] = &unk_1001A3EA8;
         v18 = v6;
         v19 = v13;
-        v20 = self;
+        selfCopy = self;
         v21 = v8;
         v22 = v10;
         v23 = v12;
         v15 = v13;
-        [v16 performBackgroundTask:v17];
+        [persistenceController performBackgroundTask:v17];
       }
 
       else
@@ -1679,8 +1679,8 @@ LABEL_9:
 
     else
     {
-      v9 = +[STLog familyScreenTimeManager];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+      payloadDictionary = +[STLog familyScreenTimeManager];
+      if (os_log_type_enabled(payloadDictionary, OS_LOG_TYPE_FAULT))
       {
         sub_100115AF0();
       }
@@ -1697,23 +1697,23 @@ LABEL_9:
   }
 }
 
-- (void)_fetchUsageOperationDidFinish:(id)a3 requestingAltURI:(id)a4
+- (void)_fetchUsageOperationDidFinish:(id)finish requestingAltURI:(id)i
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STFamilyOrganizationController *)self usageQueue];
-  dispatch_assert_queue_V2(v8);
+  finishCopy = finish;
+  iCopy = i;
+  usageQueue = [(STFamilyOrganizationController *)self usageQueue];
+  dispatch_assert_queue_V2(usageQueue);
 
-  v9 = [(STFamilyOrganizationController *)self fetchUsageOperationByAltURI];
-  v10 = [v9 objectForKeyedSubscript:v7];
-  if (v10 == v6)
+  fetchUsageOperationByAltURI = [(STFamilyOrganizationController *)self fetchUsageOperationByAltURI];
+  v10 = [fetchUsageOperationByAltURI objectForKeyedSubscript:iCopy];
+  if (v10 == finishCopy)
   {
-    [v9 removeObjectForKey:v7];
-    v11 = [v6 error];
-    if (v11)
+    [fetchUsageOperationByAltURI removeObjectForKey:iCopy];
+    error = [finishCopy error];
+    if (error)
     {
-      v12 = +[STLog familyScreenTimeManager];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      resultObject = +[STLog familyScreenTimeManager];
+      if (os_log_type_enabled(resultObject, OS_LOG_TYPE_ERROR))
       {
         sub_100115E14();
       }
@@ -1721,18 +1721,18 @@ LABEL_9:
 
     else
     {
-      v12 = [v6 resultObject];
+      resultObject = [finishCopy resultObject];
       v32 = 0;
-      v24 = [NSKeyedArchiver archivedDataWithRootObject:v12 requiringSecureCoding:1 error:&v32];
-      v11 = v32;
+      v24 = [NSKeyedArchiver archivedDataWithRootObject:resultObject requiringSecureCoding:1 error:&v32];
+      error = v32;
       if (v24)
       {
         v28 = 0;
         v29 = &v28;
         v30 = 0x2020000000;
         v31 = 0;
-        v13 = [(STFamilyOrganizationController *)self persistenceController];
-        v21 = [v13 newBackgroundContext];
+        persistenceController = [(STFamilyOrganizationController *)self persistenceController];
+        newBackgroundContext = [persistenceController newBackgroundContext];
 
         if (_os_feature_enabled_impl())
         {
@@ -1740,7 +1740,7 @@ LABEL_9:
           v25[1] = 3221225472;
           v25[2] = sub_100037774;
           v25[3] = &unk_1001A3C98;
-          v26 = v21;
+          v26 = newBackgroundContext;
           v27 = &v28;
           [v26 performBlockAndWait:v25];
         }
@@ -1769,7 +1769,7 @@ LABEL_9:
 
         v16 = [[STUnifiedTransportPayload alloc] initWithPayload:v22 type:@"RMUnifiedTransportPayloadTypeUsageResponse"];
         v17 = [STUnifiedTransportPayloadDestination alloc];
-        v18 = [v17 initWithAddress:v7 type:STUnifiedTransportPayloadDestinationTypeDevice];
+        v18 = [v17 initWithAddress:iCopy type:STUnifiedTransportPayloadDestinationTypeDevice];
         v34 = v18;
         v19 = [NSArray arrayWithObjects:&v34 count:1];
         [(STUnifiedTransportPayload *)v16 setDestinations:v19];
@@ -1793,20 +1793,20 @@ LABEL_9:
   }
 }
 
-- (void)_enqueueOperationToPersistUsageForResponsePayload:(id)a3
+- (void)_enqueueOperationToPersistUsageForResponsePayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"AppleID"];
+  payloadCopy = payload;
+  userInfo = [payloadCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"AppleID"];
 
   if ([v6 length])
   {
-    v7 = [v4 payloadDictionary];
-    v8 = [v7 objectForKeyedSubscript:@"DeviceIdentifier"];
+    payloadDictionary = [payloadCopy payloadDictionary];
+    v8 = [payloadDictionary objectForKeyedSubscript:@"DeviceIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v7 objectForKeyedSubscript:@"FetchedUsageResults"];
+      v9 = [payloadDictionary objectForKeyedSubscript:@"FetchedUsageResults"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1822,7 +1822,7 @@ LABEL_9:
           v17 = v11;
           if (_os_feature_enabled_impl())
           {
-            v13 = [v7 objectForKeyedSubscript:@"AllDevicesAreNewUsage"];
+            v13 = [payloadDictionary objectForKeyedSubscript:@"AllDevicesAreNewUsage"];
             v14 = +[STLog familyScreenTimeManager];
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
@@ -1839,20 +1839,20 @@ LABEL_9:
             v13 = 0;
           }
 
-          v16 = [(STFamilyOrganizationController *)self persistenceController];
+          persistenceController = [(STFamilyOrganizationController *)self persistenceController];
           v19[0] = _NSConcreteStackBlock;
           v19[1] = 3221225472;
           v19[2] = sub_100037C10;
           v19[3] = &unk_1001A3EA8;
           v20 = v6;
           v21 = v8;
-          v22 = v4;
-          v23 = self;
+          v22 = payloadCopy;
+          selfCopy = self;
           v24 = v13;
           v12 = v18;
           v25 = v18;
           v15 = v13;
-          [v16 performBackgroundTask:v19];
+          [persistenceController performBackgroundTask:v19];
 
           v11 = v17;
         }
@@ -1889,8 +1889,8 @@ LABEL_9:
 
   else
   {
-    v7 = +[STLog familyScreenTimeManager];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    payloadDictionary = +[STLog familyScreenTimeManager];
+    if (os_log_type_enabled(payloadDictionary, OS_LOG_TYPE_FAULT))
     {
       sub_100116090();
     }
@@ -1899,49 +1899,49 @@ LABEL_9:
 
 - (void)_sendOutUsageRequestsIfNeeded
 {
-  v3 = [(STFamilyOrganizationController *)self usageRequestsFetchedResultsController];
-  v4 = [v3 fetchedObjects];
+  usageRequestsFetchedResultsController = [(STFamilyOrganizationController *)self usageRequestsFetchedResultsController];
+  fetchedObjects = [usageRequestsFetchedResultsController fetchedObjects];
 
-  v5 = [v4 valueForKey:@"objectID"];
+  v5 = [fetchedObjects valueForKey:@"objectID"];
   if ([v5 count])
   {
-    v6 = [v4 valueForKey:@"forUserDSID"];
-    v7 = [(STFamilyOrganizationController *)self persistenceController];
+    v6 = [fetchedObjects valueForKey:@"forUserDSID"];
+    persistenceController = [(STFamilyOrganizationController *)self persistenceController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000382F4;
     v9[3] = &unk_1001A3E58;
     v10 = v6;
     v11 = v5;
-    v12 = self;
+    selfCopy = self;
     v8 = v6;
-    [v7 performBackgroundTask:v9];
+    [persistenceController performBackgroundTask:v9];
   }
 }
 
-- (void)loudlySendLegacyAskRequest:(id)a3 toSpecificDeviceIDSDestinations:(id)a4
+- (void)loudlySendLegacyAskRequest:(id)request toSpecificDeviceIDSDestinations:(id)destinations
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  destinationsCopy = destinations;
   v7 = +[STLog familyScreenTimeManager];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v28 = v6;
+    v28 = destinationsCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Sending legacy ask request to specific IDS destinations %@", buf, 0xCu);
   }
 
-  [v5 setDeliverQuietly:0];
+  [requestCopy setDeliverQuietly:0];
   v8 = [STUnifiedTransportPayload alloc];
-  v9 = [v5 payload];
-  v10 = [(STUnifiedTransportPayload *)v8 initWithPayload:v9 type:@"RMUnifiedTransportPayloadTypeAskForTimeRequest"];
+  payload = [requestCopy payload];
+  v10 = [(STUnifiedTransportPayload *)v8 initWithPayload:payload type:@"RMUnifiedTransportPayloadTypeAskForTimeRequest"];
 
-  v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(destinationsCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v6;
+  v12 = destinationsCopy;
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v13)
   {
@@ -1977,10 +1977,10 @@ LABEL_9:
   [(STFamilyOrganizationController *)self sendPayloads:v19];
 }
 
-- (void)sendAskRequestToParents:(id)a3 toParentsWithDSIDs:(id)a4
+- (void)sendAskRequestToParents:(id)parents toParentsWithDSIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  parentsCopy = parents;
+  dsCopy = ds;
   v8 = +[STLog familyScreenTimeManager];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1989,15 +1989,15 @@ LABEL_9:
   }
 
   v9 = [STUnifiedTransportPayload alloc];
-  v10 = [v6 payload];
-  v11 = [(STUnifiedTransportPayload *)v9 initWithPayload:v10 type:@"RMUnifiedTransportPayloadTypeAskForTimeRequest"];
+  payload = [parentsCopy payload];
+  v11 = [(STUnifiedTransportPayload *)v9 initWithPayload:payload type:@"RMUnifiedTransportPayloadTypeAskForTimeRequest"];
 
-  v12 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  v12 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = v7;
+  v13 = dsCopy;
   v14 = [v13 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v14)
   {
@@ -2034,11 +2034,11 @@ LABEL_9:
   [(STFamilyOrganizationController *)self sendPayloads:v21];
 }
 
-- (void)sendAskResponse:(id)a3 toChildWithDSID:(id)a4 toParentsWithDSIDs:(id)a5
+- (void)sendAskResponse:(id)response toChildWithDSID:(id)d toParentsWithDSIDs:(id)ds
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  dCopy = d;
+  dsCopy = ds;
   v11 = +[STLog familyScreenTimeManager];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -2046,9 +2046,9 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Sending ask response", buf, 2u);
   }
 
-  v12 = [v8 payload];
-  v13 = [[STUnifiedTransportPayloadDestination alloc] initWithDSID:v9];
-  v14 = [[STUnifiedTransportPayload alloc] initWithPayload:v12 type:@"RMUnifiedTransportPayloadTypeAskForTimeResponse"];
+  payload = [responseCopy payload];
+  v13 = [[STUnifiedTransportPayloadDestination alloc] initWithDSID:dCopy];
+  v14 = [[STUnifiedTransportPayload alloc] initWithPayload:payload type:@"RMUnifiedTransportPayloadTypeAskForTimeResponse"];
   v29 = v13;
   v36 = v13;
   v15 = [NSArray arrayWithObjects:&v36 count:1];
@@ -2056,18 +2056,18 @@ LABEL_9:
 
   v16 = [NSMutableArray arrayWithCapacity:2];
   [v16 addObject:v14];
-  if ([v10 count])
+  if ([dsCopy count])
   {
-    v25 = self;
-    v27 = v9;
-    v28 = v8;
-    v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+    selfCopy = self;
+    v27 = dCopy;
+    v28 = responseCopy;
+    v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dsCopy count]);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v26 = v10;
-    v18 = v10;
+    v26 = dsCopy;
+    v18 = dsCopy;
     v19 = [v18 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v19)
     {
@@ -2096,14 +2096,14 @@ LABEL_9:
       while (v20);
     }
 
-    v24 = [[STUnifiedTransportPayload alloc] initWithPayload:v12 type:@"STUnifiedTransportPayloadTypeAskForTimeResponseV2"];
+    v24 = [[STUnifiedTransportPayload alloc] initWithPayload:payload type:@"STUnifiedTransportPayloadTypeAskForTimeResponseV2"];
     [(STUnifiedTransportPayload *)v24 setDestinations:v17];
     [v16 addObject:v24];
 
-    v9 = v27;
-    v8 = v28;
-    self = v25;
-    v10 = v26;
+    dCopy = v27;
+    responseCopy = v28;
+    self = selfCopy;
+    dsCopy = v26;
   }
 
   [(STFamilyOrganizationController *)self sendPayloads:v16];
@@ -2121,7 +2121,7 @@ LABEL_9:
   [v3 removeObserver:self name:@"com.apple.remotemanagementd.ids-account.didBecomeActive" object:0];
 }
 
-- (void)_handleIDSAccountBecameActiveNotification:(id)a3
+- (void)_handleIDSAccountBecameActiveNotification:(id)notification
 {
   v4 = +[STLog familyScreenTimeManager];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

@@ -1,22 +1,22 @@
 @interface OITSUDescription
-+ (id)descriptionWithCFType:(void *)a3 format:(id)a4;
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4;
-- (OITSUDescription)initWithCFType:(void *)a3 header:(id)a4;
-- (OITSUDescription)initWithObject:(id)a3;
-- (OITSUDescription)initWithObject:(id)a3 class:(Class)a4 format:(id)a5 arguments:(char *)a6;
-- (OITSUDescription)initWithObject:(id)a3 class:(Class)a4 header:(id)a5;
++ (id)descriptionWithCFType:(void *)type format:(id)format;
++ (id)descriptionWithObject:(id)object class:(Class)class;
+- (OITSUDescription)initWithCFType:(void *)type header:(id)header;
+- (OITSUDescription)initWithObject:(id)object;
+- (OITSUDescription)initWithObject:(id)object class:(Class)class format:(id)format arguments:(char *)arguments;
+- (OITSUDescription)initWithObject:(id)object class:(Class)class header:(id)header;
 - (id)descriptionString;
 - (id)p_header;
-- (void)addField:(id)a3 format:(id)a4;
-- (void)addField:(id)a3 value:(id)a4;
-- (void)addFieldWithFormat:(id)a3;
+- (void)addField:(id)field format:(id)format;
+- (void)addField:(id)field value:(id)value;
+- (void)addFieldWithFormat:(id)format;
 - (void)addSuperDescription;
 - (void)dealloc;
 @end
 
 @implementation OITSUDescription
 
-- (OITSUDescription)initWithObject:(id)a3 class:(Class)a4 header:(id)a5
+- (OITSUDescription)initWithObject:(id)object class:(Class)class header:(id)header
 {
   ++TSUDescriptionDepth;
   v11.receiver = self;
@@ -25,15 +25,15 @@
   v9 = v8;
   if (v8)
   {
-    v8->_object = a3;
-    v8->_class = a4;
-    v8->_header = [a5 copy];
+    v8->_object = object;
+    v8->_class = class;
+    v8->_header = [header copy];
   }
 
   return v9;
 }
 
-- (OITSUDescription)initWithCFType:(void *)a3 header:(id)a4
+- (OITSUDescription)initWithCFType:(void *)type header:(id)header
 {
   ++TSUDescriptionDepth;
   v9.receiver = self;
@@ -42,39 +42,39 @@
   v7 = v6;
   if (v6)
   {
-    v6->_cfType = a3;
-    v6->_header = [a4 copy];
+    v6->_cfType = type;
+    v6->_header = [header copy];
   }
 
   return v7;
 }
 
-- (OITSUDescription)initWithObject:(id)a3 class:(Class)a4 format:(id)a5 arguments:(char *)a6
+- (OITSUDescription)initWithObject:(id)object class:(Class)class format:(id)format arguments:(char *)arguments
 {
-  v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a5 arguments:a6];
-  v10 = [(OITSUDescription *)self initWithObject:a3 class:a4 header:v9];
+  v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:format arguments:arguments];
+  v10 = [(OITSUDescription *)self initWithObject:object class:class header:v9];
 
   return v10;
 }
 
-- (OITSUDescription)initWithObject:(id)a3
+- (OITSUDescription)initWithObject:(id)object
 {
-  Class = object_getClass(a3);
+  Class = object_getClass(object);
 
-  return [(OITSUDescription *)self initWithObject:a3 class:Class format:&stru_286EE1130];
+  return [(OITSUDescription *)self initWithObject:object class:Class format:&stru_286EE1130];
 }
 
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4
++ (id)descriptionWithObject:(id)object class:(Class)class
 {
-  v4 = [[OITSUDescription alloc] initWithObject:a3 class:a4 format:&stru_286EE1130];
+  v4 = [[OITSUDescription alloc] initWithObject:object class:class format:&stru_286EE1130];
 
   return v4;
 }
 
-+ (id)descriptionWithCFType:(void *)a3 format:(id)a4
++ (id)descriptionWithCFType:(void *)type format:(id)format
 {
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a4 arguments:&v8];
-  v6 = [[OITSUDescription alloc] initWithCFType:a3 header:v5];
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:format arguments:&v8];
+  v6 = [[OITSUDescription alloc] initWithCFType:type header:v5];
 
   return v6;
 }
@@ -106,7 +106,7 @@
   return v7;
 }
 
-- (void)addField:(id)a3 value:(id)a4
+- (void)addField:(id)field value:(id)value
 {
   if (!self->_fields)
   {
@@ -114,24 +114,24 @@
     self->_fieldOrder = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
 
-  if (!a4)
+  if (!value)
   {
-    a4 = @"nil";
+    value = @"nil";
   }
 
-  if (a3 && [a3 length])
+  if (field && [field length])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: ", a3];
+    field = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: ", field];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"$$$%lu", -[NSMutableDictionary count](self->_fields, "count")];
+    field = [MEMORY[0x277CCACA8] stringWithFormat:@"$$$%lu", -[NSMutableDictionary count](self->_fields, "count")];
   }
 
-  v8 = v7;
-  [(NSMutableArray *)self->_fieldOrder addObject:v7];
-  [(NSMutableDictionary *)self->_fields setObject:a4 forKey:v8];
+  v8 = field;
+  [(NSMutableArray *)self->_fieldOrder addObject:field];
+  [(NSMutableDictionary *)self->_fields setObject:value forKey:v8];
   if (([v8 hasPrefix:@"$$$"] & 1) == 0)
   {
     v9 = [v8 length];
@@ -142,15 +142,15 @@
   }
 }
 
-- (void)addField:(id)a3 format:(id)a4
+- (void)addField:(id)field format:(id)format
 {
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a4 arguments:&v7];
-  [(OITSUDescription *)self addField:a3 value:v6];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:format arguments:&v7];
+  [(OITSUDescription *)self addField:field value:v6];
 }
 
-- (void)addFieldWithFormat:(id)a3
+- (void)addFieldWithFormat:(id)format
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a3 arguments:&v5];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:format arguments:&v5];
   [(OITSUDescription *)self addField:0 value:v4];
 }
 
@@ -176,14 +176,14 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      v3 = [self->_object shortDescription];
+      shortDescription = [self->_object shortDescription];
 LABEL_6:
-      v4 = v3;
+      v4 = shortDescription;
       goto LABEL_30;
     }
 
 LABEL_5:
-    v3 = [(OITSUDescription *)self p_header];
+    shortDescription = [(OITSUDescription *)self p_header];
     goto LABEL_6;
   }
 

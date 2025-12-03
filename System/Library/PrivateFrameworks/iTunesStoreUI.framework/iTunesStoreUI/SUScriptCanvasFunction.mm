@@ -1,5 +1,5 @@
 @interface SUScriptCanvasFunction
-- (id)copyResultForSize:(CGSize)a3;
+- (id)copyResultForSize:(CGSize)size;
 - (void)dealloc;
 @end
 
@@ -13,10 +13,10 @@
   [(SUScriptFunction *)&v3 dealloc];
 }
 
-- (id)copyResultForSize:(CGSize)a3
+- (id)copyResultForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SUScriptFunction *)self lock];
   lastResult = self->_lastResult;
   if (lastResult && (v7 = [(SUScriptCanvasResult *)lastResult canvasImage]) != 0 && (([(UIImage *)v7 size], width == v9) ? (v10 = height == v8) : (v10 = 0), v10))
@@ -35,11 +35,11 @@
   }
 
   v11 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v12 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   *&v13 = width;
   v14 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
   *&v15 = height;
-  v16 = [v11 initWithObjects:{v12, v14, objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", v15), 0}];
+  v16 = [v11 initWithObjects:{null, v14, objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", v15), 0}];
   v17 = [(SUScriptFunction *)self callSynchronouslyWithArguments:v16];
   objc_opt_class();
   if (objc_opt_isKindOfClass())

@@ -1,19 +1,19 @@
 @interface SRPlayContentViewController
-- (SRPlayContentViewController)initWithPlayContent:(id)a3;
+- (SRPlayContentViewController)initWithPlayContent:(id)content;
 @end
 
 @implementation SRPlayContentViewController
 
-- (SRPlayContentViewController)initWithPlayContent:(id)a3
+- (SRPlayContentViewController)initWithPlayContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   v14.receiver = self;
   v14.super_class = SRPlayContentViewController;
   v6 = [(SRPlayContentViewController *)&v14 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_playContent, a3);
+    objc_storeStrong(&v6->_playContent, content);
     v8 = [(SAVCSPlayContent *)v7->_playContent _sr_playerForHighResolutionPlayback:[(SRPlayContentViewController *)v7 shouldPlayHighResolutionContent]];
     v9 = AFSiriLogContextConnection;
     if (v8)
@@ -22,13 +22,13 @@
       {
         playContent = v7->_playContent;
         v11 = v9;
-        v12 = [(SAVCSPlayContent *)playContent dictionary];
+        dictionary = [(SAVCSPlayContent *)playContent dictionary];
         *buf = 136315650;
         v16 = "[SRPlayContentViewController initWithPlayContent:]";
         v17 = 2112;
         v18 = v8;
         v19 = 2112;
-        v20 = v12;
+        v20 = dictionary;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s Received player from SAVCSPlayContent; beginning playback\n    Player: %@\n    Play content command: %@", buf, 0x20u);
       }
 

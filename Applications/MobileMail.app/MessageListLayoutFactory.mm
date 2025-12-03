@@ -1,51 +1,51 @@
 @interface MessageListLayoutFactory
-+ (id)_defaultLayoutSectionAtSection:(int64_t)a3 layoutEnvironment:(id)a4 layoutMargins:(NSDirectionalEdgeInsets)a5 showPrioritySection:(BOOL)a6 previousSectionIsPriority:(BOOL)a7 configuration:(id)a8;
-+ (id)_groupedSenderLayoutSectionAtSection:(int64_t)a3 layoutEnvironment:(id)a4 layoutMargins:(NSDirectionalEdgeInsets)a5 configuration:(id)a6;
-+ (id)_plainLayoutSectionAtSection:(int64_t)a3 layoutEnvironment:(id)a4 layoutMargins:(NSDirectionalEdgeInsets)a5 configuration:(id)a6;
-+ (id)_searchLayoutSectionAtSection:(int64_t)a3 layoutEnvironment:(id)a4 layoutMargins:(NSDirectionalEdgeInsets)a5 configuration:(id)a6;
-+ (id)layoutSectionAtSection:(int64_t)a3 layoutEnvironment:(id)a4 layoutMargins:(NSDirectionalEdgeInsets)a5 layout:(int64_t)a6 previousSectionIsPriority:(BOOL)a7 configuration:(id)a8;
++ (id)_defaultLayoutSectionAtSection:(int64_t)section layoutEnvironment:(id)environment layoutMargins:(NSDirectionalEdgeInsets)margins showPrioritySection:(BOOL)prioritySection previousSectionIsPriority:(BOOL)priority configuration:(id)configuration;
++ (id)_groupedSenderLayoutSectionAtSection:(int64_t)section layoutEnvironment:(id)environment layoutMargins:(NSDirectionalEdgeInsets)margins configuration:(id)configuration;
++ (id)_plainLayoutSectionAtSection:(int64_t)section layoutEnvironment:(id)environment layoutMargins:(NSDirectionalEdgeInsets)margins configuration:(id)configuration;
++ (id)_searchLayoutSectionAtSection:(int64_t)section layoutEnvironment:(id)environment layoutMargins:(NSDirectionalEdgeInsets)margins configuration:(id)configuration;
++ (id)layoutSectionAtSection:(int64_t)section layoutEnvironment:(id)environment layoutMargins:(NSDirectionalEdgeInsets)margins layout:(int64_t)layout previousSectionIsPriority:(BOOL)priority configuration:(id)configuration;
 @end
 
 @implementation MessageListLayoutFactory
 
-+ (id)layoutSectionAtSection:(int64_t)a3 layoutEnvironment:(id)a4 layoutMargins:(NSDirectionalEdgeInsets)a5 layout:(int64_t)a6 previousSectionIsPriority:(BOOL)a7 configuration:(id)a8
++ (id)layoutSectionAtSection:(int64_t)section layoutEnvironment:(id)environment layoutMargins:(NSDirectionalEdgeInsets)margins layout:(int64_t)layout previousSectionIsPriority:(BOOL)priority configuration:(id)configuration
 {
-  v10 = a7;
-  trailing = a5.trailing;
-  bottom = a5.bottom;
-  leading = a5.leading;
-  top = a5.top;
-  v17 = a4;
-  v18 = a8;
-  if (a6 <= 1)
+  priorityCopy = priority;
+  trailing = margins.trailing;
+  bottom = margins.bottom;
+  leading = margins.leading;
+  top = margins.top;
+  environmentCopy = environment;
+  configurationCopy = configuration;
+  if (layout <= 1)
   {
-    if (a6)
+    if (layout)
     {
-      if (a6 != 1)
+      if (layout != 1)
       {
         goto LABEL_13;
       }
 
-      v19 = [MessageListLayoutFactory _searchLayoutSectionAtSection:a3 layoutEnvironment:v17 layoutMargins:v18 configuration:top, leading, bottom, trailing];
+      trailing = [MessageListLayoutFactory _searchLayoutSectionAtSection:section layoutEnvironment:environmentCopy layoutMargins:configurationCopy configuration:top, leading, bottom, trailing];
       goto LABEL_12;
     }
 
     goto LABEL_9;
   }
 
-  switch(a6)
+  switch(layout)
   {
     case 2:
-      v19 = [MessageListLayoutFactory _plainLayoutSectionAtSection:a3 layoutEnvironment:v17 layoutMargins:v18 configuration:top, leading, bottom, trailing];
+      trailing = [MessageListLayoutFactory _plainLayoutSectionAtSection:section layoutEnvironment:environmentCopy layoutMargins:configurationCopy configuration:top, leading, bottom, trailing];
       goto LABEL_12;
     case 3:
-      v19 = [MessageListLayoutFactory _groupedSenderLayoutSectionAtSection:a3 layoutEnvironment:v17 layoutMargins:v18 configuration:top, leading, bottom, trailing];
+      trailing = [MessageListLayoutFactory _groupedSenderLayoutSectionAtSection:section layoutEnvironment:environmentCopy layoutMargins:configurationCopy configuration:top, leading, bottom, trailing];
       goto LABEL_12;
     case 4:
 LABEL_9:
-      v19 = [MessageListLayoutFactory _defaultLayoutSectionAtSection:a3 layoutEnvironment:v17 layoutMargins:a6 == 4 showPrioritySection:v10 previousSectionIsPriority:v18 configuration:top, leading, bottom, trailing];
+      trailing = [MessageListLayoutFactory _defaultLayoutSectionAtSection:section layoutEnvironment:environmentCopy layoutMargins:layout == 4 showPrioritySection:priorityCopy previousSectionIsPriority:configurationCopy configuration:top, leading, bottom, trailing];
 LABEL_12:
-      v8 = v19;
+      v8 = trailing;
       break;
   }
 
@@ -54,21 +54,21 @@ LABEL_13:
   return v8;
 }
 
-+ (id)_defaultLayoutSectionAtSection:(int64_t)a3 layoutEnvironment:(id)a4 layoutMargins:(NSDirectionalEdgeInsets)a5 showPrioritySection:(BOOL)a6 previousSectionIsPriority:(BOOL)a7 configuration:(id)a8
++ (id)_defaultLayoutSectionAtSection:(int64_t)section layoutEnvironment:(id)environment layoutMargins:(NSDirectionalEdgeInsets)margins showPrioritySection:(BOOL)prioritySection previousSectionIsPriority:(BOOL)priority configuration:(id)configuration
 {
-  v9 = a7;
-  v10 = a6;
-  trailing = a5.trailing;
-  leading = a5.leading;
-  v13 = a4;
-  v14 = a8;
-  v43 = v13;
-  v44 = v14;
-  v15 = [v13 traitCollection];
-  v16 = [v15 mf_useSplitViewStyling];
+  priorityCopy = priority;
+  prioritySectionCopy = prioritySection;
+  trailing = margins.trailing;
+  leading = margins.leading;
+  environmentCopy = environment;
+  configurationCopy = configuration;
+  v43 = environmentCopy;
+  v44 = configurationCopy;
+  traitCollection = [environmentCopy traitCollection];
+  mf_useSplitViewStyling = [traitCollection mf_useSplitViewStyling];
 
   v17 = [UICollectionLayoutListConfiguration alloc];
-  if (v16)
+  if (mf_useSplitViewStyling)
   {
     v18 = 4;
   }
@@ -79,10 +79,10 @@ LABEL_13:
   }
 
   v19 = [v17 initWithAppearance:v18];
-  (*(v14 + 2))(v14, v19);
-  v20 = [NSCollectionLayoutSection sectionWithListConfiguration:v19 layoutEnvironment:v13];
+  (*(configurationCopy + 2))(configurationCopy, v19);
+  v20 = [NSCollectionLayoutSection sectionWithListConfiguration:v19 layoutEnvironment:environmentCopy];
   v21 = v20;
-  if (v16)
+  if (mf_useSplitViewStyling)
   {
     [v20 setContentInsets:{0.0, leading, 0.0, trailing}];
     [v21 setContentInsetsReference:2];
@@ -92,7 +92,7 @@ LABEL_13:
   {
     [v20 contentInsets];
     v22 = 0.0;
-    if (v9)
+    if (priorityCopy)
     {
       v22 = 10.0;
     }
@@ -100,7 +100,7 @@ LABEL_13:
     [v21 setContentInsets:v22];
   }
 
-  if (_os_feature_enabled_impl() && (EMIsGreymatterSupported() & v10) == 1)
+  if (_os_feature_enabled_impl() && (EMIsGreymatterSupported() & prioritySectionCopy) == 1)
   {
     v23 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
     v24 = [NSCollectionLayoutDimension estimatedDimension:44.0];
@@ -130,8 +130,8 @@ LABEL_13:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v33 = [v21 boundarySupplementaryItems];
-    v34 = [v33 countByEnumeratingWithState:&v45 objects:v49 count:16];
+    boundarySupplementaryItems = [v21 boundarySupplementaryItems];
+    v34 = [boundarySupplementaryItems countByEnumeratingWithState:&v45 objects:v49 count:16];
     if (v34)
     {
       v35 = *v46;
@@ -141,12 +141,12 @@ LABEL_13:
         {
           if (*v46 != v35)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(boundarySupplementaryItems);
           }
 
           v37 = *(*(&v45 + 1) + 8 * i);
-          v38 = [v37 elementKind];
-          v39 = [v38 isEqualToString:UICollectionElementKindSectionHeader];
+          elementKind = [v37 elementKind];
+          v39 = [elementKind isEqualToString:UICollectionElementKindSectionHeader];
 
           if (v39)
           {
@@ -154,7 +154,7 @@ LABEL_13:
           }
         }
 
-        v34 = [v33 countByEnumeratingWithState:&v45 objects:v49 count:16];
+        v34 = [boundarySupplementaryItems countByEnumeratingWithState:&v45 objects:v49 count:16];
       }
 
       while (v34);
@@ -164,15 +164,15 @@ LABEL_13:
   return v21;
 }
 
-+ (id)_searchLayoutSectionAtSection:(int64_t)a3 layoutEnvironment:(id)a4 layoutMargins:(NSDirectionalEdgeInsets)a5 configuration:(id)a6
++ (id)_searchLayoutSectionAtSection:(int64_t)section layoutEnvironment:(id)environment layoutMargins:(NSDirectionalEdgeInsets)margins configuration:(id)configuration
 {
-  v6 = [MessageListLayoutFactory _defaultLayoutSectionAtSection:a3 layoutEnvironment:a4 layoutMargins:0 showPrioritySection:0 previousSectionIsPriority:a6 configuration:a5.top, a5.leading, a5.bottom, a5.trailing];
+  v6 = [MessageListLayoutFactory _defaultLayoutSectionAtSection:section layoutEnvironment:environment layoutMargins:0 showPrioritySection:0 previousSectionIsPriority:configuration configuration:margins.top, margins.leading, margins.bottom, margins.trailing];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [v6 boundarySupplementaryItems];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  boundarySupplementaryItems = [v6 boundarySupplementaryItems];
+  v8 = [boundarySupplementaryItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = *v13;
@@ -182,13 +182,13 @@ LABEL_13:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(boundarySupplementaryItems);
         }
 
         [*(*(&v12 + 1) + 8 * i) setPinToVisibleBounds:0];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [boundarySupplementaryItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -197,26 +197,26 @@ LABEL_13:
   return v6;
 }
 
-+ (id)_plainLayoutSectionAtSection:(int64_t)a3 layoutEnvironment:(id)a4 layoutMargins:(NSDirectionalEdgeInsets)a5 configuration:(id)a6
++ (id)_plainLayoutSectionAtSection:(int64_t)section layoutEnvironment:(id)environment layoutMargins:(NSDirectionalEdgeInsets)margins configuration:(id)configuration
 {
-  v7 = a4;
-  v8 = a6;
+  environmentCopy = environment;
+  configurationCopy = configuration;
   v9 = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:0];
-  v8[2](v8, v9);
-  v10 = [NSCollectionLayoutSection sectionWithListConfiguration:v9 layoutEnvironment:v7];
+  configurationCopy[2](configurationCopy, v9);
+  v10 = [NSCollectionLayoutSection sectionWithListConfiguration:v9 layoutEnvironment:environmentCopy];
 
   return v10;
 }
 
-+ (id)_groupedSenderLayoutSectionAtSection:(int64_t)a3 layoutEnvironment:(id)a4 layoutMargins:(NSDirectionalEdgeInsets)a5 configuration:(id)a6
++ (id)_groupedSenderLayoutSectionAtSection:(int64_t)section layoutEnvironment:(id)environment layoutMargins:(NSDirectionalEdgeInsets)margins configuration:(id)configuration
 {
-  v7 = a4;
-  v8 = a6;
-  v9 = [v7 traitCollection];
-  v10 = [v9 mf_useSplitViewStyling];
+  environmentCopy = environment;
+  configurationCopy = configuration;
+  traitCollection = [environmentCopy traitCollection];
+  mf_useSplitViewStyling = [traitCollection mf_useSplitViewStyling];
 
   v11 = [UICollectionLayoutListConfiguration alloc];
-  if (v10)
+  if (mf_useSplitViewStyling)
   {
     v12 = 4;
   }
@@ -227,8 +227,8 @@ LABEL_13:
   }
 
   v13 = [v11 initWithAppearance:v12];
-  v8[2](v8, v13);
-  v14 = [NSCollectionLayoutSection sectionWithListConfiguration:v13 layoutEnvironment:v7];
+  configurationCopy[2](configurationCopy, v13);
+  v14 = [NSCollectionLayoutSection sectionWithListConfiguration:v13 layoutEnvironment:environmentCopy];
 
   return v14;
 }

@@ -1,8 +1,8 @@
 @interface PXStoryViewChromeTitleConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PXStoryViewChromeTitleConfiguration)initWithTextAlignment:(int64_t)a3 margins:(UIEdgeInsets)a4 hidden:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (PXStoryViewChromeTitleConfiguration)initWithTextAlignment:(int64_t)alignment margins:(UIEdgeInsets)margins hidden:(BOOL)hidden;
 - (UIEdgeInsets)margins;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXStoryViewChromeTitleConfiguration
@@ -20,15 +20,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXStoryViewChromeTitleConfiguration *)self textAlignment];
-    if (v6 == [v5 textAlignment])
+    v5 = equalCopy;
+    textAlignment = [(PXStoryViewChromeTitleConfiguration *)self textAlignment];
+    if (textAlignment == [v5 textAlignment])
     {
       [(PXStoryViewChromeTitleConfiguration *)self margins];
       [v5 margins];
@@ -39,37 +39,37 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PXStoryViewChromeTitleConfiguration *)self textAlignment];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  textAlignment = [(PXStoryViewChromeTitleConfiguration *)self textAlignment];
   [(PXStoryViewChromeTitleConfiguration *)self margins];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(PXStoryViewChromeTitleConfiguration *)self hidden];
+  hidden = [(PXStoryViewChromeTitleConfiguration *)self hidden];
 
-  return [v4 initWithTextAlignment:v5 margins:v14 hidden:{v7, v9, v11, v13}];
+  return [v4 initWithTextAlignment:textAlignment margins:hidden hidden:{v7, v9, v11, v13}];
 }
 
-- (PXStoryViewChromeTitleConfiguration)initWithTextAlignment:(int64_t)a3 margins:(UIEdgeInsets)a4 hidden:(BOOL)a5
+- (PXStoryViewChromeTitleConfiguration)initWithTextAlignment:(int64_t)alignment margins:(UIEdgeInsets)margins hidden:(BOOL)hidden
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   v12.receiver = self;
   v12.super_class = PXStoryViewChromeTitleConfiguration;
   result = [(PXStoryViewChromeTitleConfiguration *)&v12 init];
   if (result)
   {
-    result->_textAlignment = a3;
+    result->_textAlignment = alignment;
     result->_margins.top = top;
     result->_margins.left = left;
     result->_margins.bottom = bottom;
     result->_margins.right = right;
-    result->_hidden = a5;
+    result->_hidden = hidden;
   }
 
   return result;

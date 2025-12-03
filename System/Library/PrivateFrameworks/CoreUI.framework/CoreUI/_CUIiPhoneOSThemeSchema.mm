@@ -1,32 +1,32 @@
 @interface _CUIiPhoneOSThemeSchema
 - (const)_sortedEffectDefinitions;
 - (const)_sortedElementDefinitions;
-- (const)categoryForElementDefinition:(id *)a3;
-- (const)effectDefinitionAtIndex:(unint64_t)a3;
-- (const)effectDefinitionWithName:(id)a3;
-- (const)elementCategoryAtIndex:(unint64_t)a3;
-- (const)elementDefinitionAtIndex:(unint64_t)a3;
-- (const)elementDefinitionWithName:(id)a3;
+- (const)categoryForElementDefinition:(id *)definition;
+- (const)effectDefinitionAtIndex:(unint64_t)index;
+- (const)effectDefinitionWithName:(id)name;
+- (const)elementCategoryAtIndex:(unint64_t)index;
+- (const)elementDefinitionAtIndex:(unint64_t)index;
+- (const)elementDefinitionWithName:(id)name;
 @end
 
 @implementation _CUIiPhoneOSThemeSchema
 
-- (const)elementCategoryAtIndex:(unint64_t)a3
+- (const)elementCategoryAtIndex:(unint64_t)index
 {
-  if ([(_CUIiPhoneOSThemeSchema *)self elementCategoryCount]+ 1 > a3)
+  if ([(_CUIiPhoneOSThemeSchema *)self elementCategoryCount]+ 1 > index)
   {
-    return (&gElementCategoriesEmbedded + 24 * a3);
+    return (&gElementCategoriesEmbedded + 24 * index);
   }
 
   _CUILog(1, "Error: index out of range for elementCategoryAtIndex:", v4, v5, v6, v7, v8, v9, v11);
   return 0;
 }
 
-- (const)elementDefinitionAtIndex:(unint64_t)a3
+- (const)elementDefinitionAtIndex:(unint64_t)index
 {
-  if ([(_CUIiPhoneOSThemeSchema *)self elementDefinitionCount]> a3)
+  if ([(_CUIiPhoneOSThemeSchema *)self elementDefinitionCount]> index)
   {
-    return &gElementDefinitionsEmbedded[444 * a3];
+    return &gElementDefinitionsEmbedded[444 * index];
   }
 
   _CUILog(1, "Error: index out of range for elementDefinitionsAtIndex:", v4, v5, v6, v7, v8, v9, v11);
@@ -48,28 +48,28 @@
   return _sortedElementDefinitions__sortedElements;
 }
 
-- (const)elementDefinitionWithName:(id)a3
+- (const)elementDefinitionWithName:(id)name
 {
-  v4 = [a3 UTF8String];
-  if (v4 && !strcmp("Named Asset", v4))
+  uTF8String = [name UTF8String];
+  if (uTF8String && !strcmp("Named Asset", uTF8String))
   {
     return gElementDefinitionsEmbedded;
   }
 
-  _CUILog(1, "Unable to find elementDefinition for Name: %@", v5, v6, v7, v8, v9, v10, a3);
+  _CUILog(1, "Unable to find elementDefinition for Name: %@", v5, v6, v7, v8, v9, v10, name);
   return 0;
 }
 
-- (const)categoryForElementDefinition:(id *)a3
+- (const)categoryForElementDefinition:(id *)definition
 {
-  if (a3->var3 >= 7)
+  if (definition->var3 >= 7)
   {
     var3 = 5;
   }
 
   else
   {
-    var3 = a3->var3;
+    var3 = definition->var3;
   }
 
   if ([(_CUIiPhoneOSThemeSchema *)self elementCategoryCount])
@@ -100,11 +100,11 @@ LABEL_8:
   return result;
 }
 
-- (const)effectDefinitionAtIndex:(unint64_t)a3
+- (const)effectDefinitionAtIndex:(unint64_t)index
 {
-  if ([(_CUIiPhoneOSThemeSchema *)self elementDefinitionCount]> a3)
+  if ([(_CUIiPhoneOSThemeSchema *)self elementDefinitionCount]> index)
   {
-    return &gEffectDefinitionsEmbedded[444 * a3];
+    return &gEffectDefinitionsEmbedded[444 * index];
   }
 
   _CUILog(1, "Error: index out of range for effectDefinitionAtIndex:", v4, v5, v6, v7, v8, v9, v11);
@@ -126,15 +126,15 @@ LABEL_8:
   return _sortedEffectDefinitions__sortedEffects;
 }
 
-- (const)effectDefinitionWithName:(id)a3
+- (const)effectDefinitionWithName:(id)name
 {
-  v4 = [a3 UTF8String];
-  if (v4 && !strcmp("Named Effect", v4))
+  uTF8String = [name UTF8String];
+  if (uTF8String && !strcmp("Named Effect", uTF8String))
   {
     return gEffectDefinitionsEmbedded;
   }
 
-  _CUILog(1, "Unable to find elementDefinition for Name: %@", v5, v6, v7, v8, v9, v10, a3);
+  _CUILog(1, "Unable to find elementDefinition for Name: %@", v5, v6, v7, v8, v9, v10, name);
   return 0;
 }
 

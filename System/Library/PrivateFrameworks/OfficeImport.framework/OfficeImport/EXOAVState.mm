@@ -1,5 +1,5 @@
 @interface EXOAVState
-- (EXOAVState)initWithEXReadState:(id)a3 packagePart:(id)a4;
+- (EXOAVState)initWithEXReadState:(id)state packagePart:(id)part;
 - (EXReadState)exState;
 @end
 
@@ -12,18 +12,18 @@
   return WeakRetained;
 }
 
-- (EXOAVState)initWithEXReadState:(id)a3 packagePart:(id)a4
+- (EXOAVState)initWithEXReadState:(id)state packagePart:(id)part
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  partCopy = part;
   v8 = objc_opt_class();
   v15.receiver = self;
   v15.super_class = EXOAVState;
-  v9 = [(OAVReadState *)&v15 initWithClient:v8 packagePart:v7];
-  v10 = objc_storeWeak(&v9->mEXReadState, v6);
+  v9 = [(OAVReadState *)&v15 initWithClient:v8 packagePart:partCopy];
+  v10 = objc_storeWeak(&v9->mEXReadState, stateCopy);
   mXMLFormat = v9->super.super.super.mXMLFormat;
   v12 = v10;
-  LODWORD(self) = [v6 xmlFormat];
+  LODWORD(self) = [stateCopy xmlFormat];
 
   if (mXMLFormat != self)
   {

@@ -7,16 +7,16 @@
 - (void)copyForFeedback
 {
   v19 = *MEMORY[0x1E69E9840];
-  v1 = [a1 copy];
-  v2 = [v1 cardSections];
-  v3 = [v2 mutableCopy];
+  v1 = [self copy];
+  cardSections = [v1 cardSections];
+  v3 = [cardSections mutableCopy];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v1 cardSections];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  cardSections2 = [v1 cardSections];
+  v5 = [cardSections2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -29,18 +29,18 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cardSections2);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * v9) copyForFeedback];
-        [v3 setObject:v10 atIndexedSubscript:v7];
+        copyForFeedback = [*(*(&v14 + 1) + 8 * v9) copyForFeedback];
+        [v3 setObject:copyForFeedback atIndexedSubscript:v7];
 
         ++v7;
         ++v9;
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [cardSections2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

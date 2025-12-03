@@ -1,18 +1,18 @@
 @interface FTTextToSpeechRequestMeta
 - (BOOL)is_synthesis;
-- (FTTextToSpeechRequestMeta)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestMeta *)a4 verify:(BOOL)a5;
+- (FTTextToSpeechRequestMeta)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestMeta *)root verify:(BOOL)verify;
 - (NSString)app_id;
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestMeta>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestMeta>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)channel_type;
 @end
 
 @implementation FTTextToSpeechRequestMeta
 
-- (FTTextToSpeechRequestMeta)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestMeta *)a4 verify:(BOOL)a5
+- (FTTextToSpeechRequestMeta)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestMeta *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTTextToSpeechRequestMeta;
   v10 = [(FTTextToSpeechRequestMeta *)&v25 init];
@@ -21,35 +21,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -120,29 +120,29 @@ LABEL_13:
   return *v3->var0 >= 9u && (v4 = *v3[8].var0) != 0 && root[v4].var0[0] != 0;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestMeta>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestMeta>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTTextToSpeechRequestMeta *)self channel_type];
-  v6 = [(FTTextToSpeechRequestMeta *)self app_id];
-  v7 = v6;
-  if (!v6)
+  channel_type = [(FTTextToSpeechRequestMeta *)self channel_type];
+  app_id = [(FTTextToSpeechRequestMeta *)self app_id];
+  v7 = app_id;
+  if (!app_id)
   {
-    v6 = &stru_284834138;
+    app_id = &stru_284834138;
   }
 
-  v8 = [(__CFString *)v6 UTF8String];
-  v9 = strlen(v8);
-  LODWORD(v8) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v8, v9);
+  uTF8String = [(__CFString *)app_id UTF8String];
+  v9 = strlen(uTF8String);
+  LODWORD(uTF8String) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v9);
 
-  v10 = [(FTTextToSpeechRequestMeta *)self is_synthesis];
-  *(a3 + 70) = 1;
-  v11 = *(a3 + 10);
-  v12 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v8);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 8, v10, 0);
+  is_synthesis = [(FTTextToSpeechRequestMeta *)self is_synthesis];
+  *(buffer + 70) = 1;
+  v11 = *(buffer + 10);
+  v12 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, channel_type, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, uTF8String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 8, is_synthesis, 0);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v12 + v11);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v12 + v11);
 }
 
 - (id)flatbuffData

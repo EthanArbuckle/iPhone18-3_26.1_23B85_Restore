@@ -1,30 +1,30 @@
 @interface DiskImageGraphNode
-+ (BOOL)validateWithDictionary:(id)a3 error:(id *)a4;
-+ (id)GraphNodeWithDictionary:(id)a3 workDir:(id)a4 error:(id *)a5;
-- (DiskImageGraphNode)initWithDictionary:(id)a3 workDir:(id)a4 error:(id *)a5;
-- (DiskImageGraphNode)initWithTag:(id)a3 UUID:(id)a4 parentNode:(id)a5 metadata:(id)a6 isCache:(BOOL)a7;
++ (BOOL)validateWithDictionary:(id)dictionary error:(id *)error;
++ (id)GraphNodeWithDictionary:(id)dictionary workDir:(id)dir error:(id *)error;
+- (DiskImageGraphNode)initWithDictionary:(id)dictionary workDir:(id)dir error:(id *)error;
+- (DiskImageGraphNode)initWithTag:(id)tag UUID:(id)d parentNode:(id)node metadata:(id)metadata isCache:(BOOL)cache;
 - (DiskImageGraphNode)parent;
 - (NSArray)children;
-- (id)childrenInfoWithExtra:(BOOL)a3 error:(id *)a4;
+- (id)childrenInfoWithExtra:(BOOL)extra error:(id *)error;
 - (id)getDescendants;
-- (id)infoWithExtra:(BOOL)a3 error:(id *)a4;
+- (id)infoWithExtra:(BOOL)extra error:(id *)error;
 - (id)toDIShadowNode;
 - (id)toDictionary;
-- (void)addDecendantsToArray:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setParent:(id)a3;
-- (void)setTag:(id)a3;
-- (void)setUUID:(id)a3;
+- (void)addDecendantsToArray:(id)array;
+- (void)setMetadata:(id)metadata;
+- (void)setParent:(id)parent;
+- (void)setTag:(id)tag;
+- (void)setUUID:(id)d;
 @end
 
 @implementation DiskImageGraphNode
 
-+ (BOOL)validateWithDictionary:(id)a3 error:(id *)a4
++ (BOOL)validateWithDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
-  if ([v5 validateAndPopObjectForKey:@"Tag" className:objc_opt_class() isOptional:0 error:a4] && objc_msgSend(v5, "validateAndPopObjectForKey:className:isOptional:error:", @"UUID", objc_opt_class(), 0, a4) && objc_msgSend(v5, "validateAndPopObjectForKey:className:isOptional:error:", @"ParentUUID", objc_opt_class(), 1, a4) && objc_msgSend(v5, "validateAndPopObjectForKey:className:isOptional:error:", @"Metadata", objc_opt_class(), 1, a4))
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy validateAndPopObjectForKey:@"Tag" className:objc_opt_class() isOptional:0 error:error] && objc_msgSend(dictionaryCopy, "validateAndPopObjectForKey:className:isOptional:error:", @"UUID", objc_opt_class(), 0, error) && objc_msgSend(dictionaryCopy, "validateAndPopObjectForKey:className:isOptional:error:", @"ParentUUID", objc_opt_class(), 1, error) && objc_msgSend(dictionaryCopy, "validateAndPopObjectForKey:className:isOptional:error:", @"Metadata", objc_opt_class(), 1, error))
   {
-    v6 = [v5 validateAndPopObjectForKey:@"IsCache" className:objc_opt_class() isOptional:0 error:a4];
+    v6 = [dictionaryCopy validateAndPopObjectForKey:@"IsCache" className:objc_opt_class() isOptional:0 error:error];
   }
 
   else
@@ -35,44 +35,44 @@
   return v6;
 }
 
-- (DiskImageGraphNode)initWithDictionary:(id)a3 workDir:(id)a4 error:(id *)a5
+- (DiskImageGraphNode)initWithDictionary:(id)dictionary workDir:(id)dir error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = DiskImageGraphNode;
   v8 = [(DiskImageGraphNode *)&v27 init];
   if (v8)
   {
-    v9 = [v7 objectForKey:@"Tag"];
+    v9 = [dictionaryCopy objectForKey:@"Tag"];
     tag = v8->_tag;
     v8->_tag = v9;
 
     v11 = objc_alloc(MEMORY[0x277CCAD78]);
-    v12 = [v7 objectForKey:@"UUID"];
+    v12 = [dictionaryCopy objectForKey:@"UUID"];
     v13 = [v11 initWithUUIDString:v12];
     UUID = v8->_UUID;
     v8->_UUID = v13;
 
-    v15 = [v7 objectForKey:@"IsCache"];
+    v15 = [dictionaryCopy objectForKey:@"IsCache"];
     v8->_isCache = [v15 BOOLValue];
 
-    objc_storeStrong(&v8->_pstackDict, a3);
-    v16 = [v7 objectForKey:@"ParentUUID"];
+    objc_storeStrong(&v8->_pstackDict, dictionary);
+    v16 = [dictionaryCopy objectForKey:@"ParentUUID"];
 
     if (v16)
     {
       v17 = objc_alloc(MEMORY[0x277CCAD78]);
-      v18 = [v7 objectForKey:@"ParentUUID"];
+      v18 = [dictionaryCopy objectForKey:@"ParentUUID"];
       v19 = [v17 initWithUUIDString:v18];
       parentUUID = v8->_parentUUID;
       v8->_parentUUID = v19;
     }
 
-    v21 = [v7 objectForKey:@"Metadata"];
+    v21 = [dictionaryCopy objectForKey:@"Metadata"];
 
     if (v21)
     {
-      v22 = [v7 objectForKey:@"Metadata"];
+      v22 = [dictionaryCopy objectForKey:@"Metadata"];
       metadata = v8->_metadata;
       v8->_metadata = v22;
     }
@@ -85,11 +85,11 @@
   return v8;
 }
 
-+ (id)GraphNodeWithDictionary:(id)a3 workDir:(id)a4 error:(id *)a5
++ (id)GraphNodeWithDictionary:(id)dictionary workDir:(id)dir error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:@"PluginName"];
+  dirCopy = dir;
+  dictionaryCopy = dictionary;
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"PluginName"];
 
   v10 = off_278F803C0;
   if (v9)
@@ -97,26 +97,26 @@
     v10 = off_278F803C8;
   }
 
-  v11 = [objc_alloc(*v10) initWithDictionary:v8 workDir:v7 error:a5];
+  v11 = [objc_alloc(*v10) initWithDictionary:dictionaryCopy workDir:dirCopy error:error];
 
   return v11;
 }
 
-- (DiskImageGraphNode)initWithTag:(id)a3 UUID:(id)a4 parentNode:(id)a5 metadata:(id)a6 isCache:(BOOL)a7
+- (DiskImageGraphNode)initWithTag:(id)tag UUID:(id)d parentNode:(id)node metadata:(id)metadata isCache:(BOOL)cache
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  tagCopy = tag;
+  dCopy = d;
+  nodeCopy = node;
+  metadataCopy = metadata;
   v24.receiver = self;
   v24.super_class = DiskImageGraphNode;
   v16 = [(DiskImageGraphNode *)&v24 init];
   v17 = v16;
   if (v16)
   {
-    if (v12)
+    if (tagCopy)
     {
-      v18 = v12;
+      v18 = tagCopy;
     }
 
     else
@@ -125,14 +125,14 @@
     }
 
     objc_storeStrong(&v16->_tag, v18);
-    objc_storeStrong(&v17->_UUID, a4);
-    objc_storeWeak(&v17->_parent, v14);
-    v19 = [v14 UUID];
+    objc_storeStrong(&v17->_UUID, d);
+    objc_storeWeak(&v17->_parent, nodeCopy);
+    uUID = [nodeCopy UUID];
     parentUUID = v17->_parentUUID;
-    v17->_parentUUID = v19;
+    v17->_parentUUID = uUID;
 
-    objc_storeStrong(&v17->_metadata, a6);
-    v17->_isCache = a7;
+    objc_storeStrong(&v17->_metadata, metadata);
+    v17->_isCache = cache;
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mutableChildren = v17->_mutableChildren;
     v17->_mutableChildren = v21;
@@ -141,30 +141,30 @@
   return v17;
 }
 
-- (void)setTag:(id)a3
+- (void)setTag:(id)tag
 {
-  v7 = a3;
-  objc_storeStrong(&self->_tag, a3);
-  v5 = [(DiskImageGraphNode *)self pstackDict];
+  tagCopy = tag;
+  objc_storeStrong(&self->_tag, tag);
+  pstackDict = [(DiskImageGraphNode *)self pstackDict];
 
-  if (v5)
+  if (pstackDict)
   {
-    v6 = [(DiskImageGraphNode *)self pstackDict];
-    [v6 setObject:v7 forKey:@"Tag"];
+    pstackDict2 = [(DiskImageGraphNode *)self pstackDict];
+    [pstackDict2 setObject:tagCopy forKey:@"Tag"];
   }
 }
 
-- (void)setUUID:(id)a3
+- (void)setUUID:(id)d
 {
-  v8 = a3;
-  objc_storeStrong(&self->_UUID, a3);
-  v5 = [(DiskImageGraphNode *)self pstackDict];
+  dCopy = d;
+  objc_storeStrong(&self->_UUID, d);
+  pstackDict = [(DiskImageGraphNode *)self pstackDict];
 
-  if (v5)
+  if (pstackDict)
   {
-    v6 = [(DiskImageGraphNode *)self pstackDict];
-    v7 = [v8 UUIDString];
-    [v6 setObject:v7 forKey:@"UUID"];
+    pstackDict2 = [(DiskImageGraphNode *)self pstackDict];
+    uUIDString = [dCopy UUIDString];
+    [pstackDict2 setObject:uUIDString forKey:@"UUID"];
   }
 }
 
@@ -175,59 +175,59 @@
   return WeakRetained;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v10 = a3;
-  objc_storeWeak(&self->_parent, v10);
-  v4 = [v10 UUID];
+  parentCopy = parent;
+  objc_storeWeak(&self->_parent, parentCopy);
+  uUID = [parentCopy UUID];
   parentUUID = self->_parentUUID;
-  self->_parentUUID = v4;
+  self->_parentUUID = uUID;
 
-  v6 = [(DiskImageGraphNode *)self pstackDict];
+  pstackDict = [(DiskImageGraphNode *)self pstackDict];
 
-  if (v6)
+  if (pstackDict)
   {
-    v7 = [(DiskImageGraphNode *)self pstackDict];
-    v8 = [v10 UUID];
-    v9 = [v8 UUIDString];
-    [v7 setObject:v9 forKey:@"ParentUUID"];
+    pstackDict2 = [(DiskImageGraphNode *)self pstackDict];
+    uUID2 = [parentCopy UUID];
+    uUIDString = [uUID2 UUIDString];
+    [pstackDict2 setObject:uUIDString forKey:@"ParentUUID"];
   }
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v7 = a3;
-  objc_storeStrong(&self->_metadata, a3);
-  v5 = [(DiskImageGraphNode *)self pstackDict];
+  metadataCopy = metadata;
+  objc_storeStrong(&self->_metadata, metadata);
+  pstackDict = [(DiskImageGraphNode *)self pstackDict];
 
-  if (v5)
+  if (pstackDict)
   {
-    v6 = [(DiskImageGraphNode *)self pstackDict];
-    [v6 setObject:v7 forKey:@"Metadata"];
+    pstackDict2 = [(DiskImageGraphNode *)self pstackDict];
+    [pstackDict2 setObject:metadataCopy forKey:@"Metadata"];
   }
 }
 
 - (id)getDescendants
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(DiskImageGraphNode *)self mutableChildren];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  mutableChildren = [(DiskImageGraphNode *)self mutableChildren];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(mutableChildren, "count")}];
 
   [(DiskImageGraphNode *)self addDecendantsToArray:v5];
 
   return v5;
 }
 
-- (void)addDecendantsToArray:(id)a3
+- (void)addDecendantsToArray:(id)array
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(DiskImageGraphNode *)self mutableChildren];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  mutableChildren = [(DiskImageGraphNode *)self mutableChildren];
+  v6 = [mutableChildren countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -238,15 +238,15 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(mutableChildren);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        [v4 addObject:v10];
-        [v10 addDecendantsToArray:v4];
+        [arrayCopy addObject:v10];
+        [v10 addDecendantsToArray:arrayCopy];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [mutableChildren countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -259,26 +259,26 @@
 {
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
   v4 = [(DiskImageGraphNode *)self tag];
-  v5 = [(DiskImageGraphNode *)self UUID];
-  v6 = [v5 UUIDString];
+  uUID = [(DiskImageGraphNode *)self UUID];
+  uUIDString = [uUID UUIDString];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[DiskImageGraphNode isCache](self, "isCache")}];
-  v8 = [v3 initWithObjectsAndKeys:{v4, @"Tag", v6, @"UUID", v7, @"IsCache", 0}];
+  v8 = [v3 initWithObjectsAndKeys:{v4, @"Tag", uUIDString, @"UUID", v7, @"IsCache", 0}];
 
-  v9 = [(DiskImageGraphNode *)self parentUUID];
+  parentUUID = [(DiskImageGraphNode *)self parentUUID];
 
-  if (v9)
+  if (parentUUID)
   {
-    v10 = [(DiskImageGraphNode *)self parentUUID];
-    v11 = [v10 UUIDString];
-    [v8 setObject:v11 forKey:@"ParentUUID"];
+    parentUUID2 = [(DiskImageGraphNode *)self parentUUID];
+    uUIDString2 = [parentUUID2 UUIDString];
+    [v8 setObject:uUIDString2 forKey:@"ParentUUID"];
   }
 
-  v12 = [(DiskImageGraphNode *)self metadata];
+  metadata = [(DiskImageGraphNode *)self metadata];
 
-  if (v12)
+  if (metadata)
   {
-    v13 = [(DiskImageGraphNode *)self metadata];
-    [v8 setObject:v13 forKey:@"Metadata"];
+    metadata2 = [(DiskImageGraphNode *)self metadata];
+    [v8 setObject:metadata2 forKey:@"Metadata"];
   }
 
   return v8;
@@ -286,8 +286,8 @@
 
 - (NSArray)children
 {
-  v2 = [(DiskImageGraphNode *)self mutableChildren];
-  v3 = [v2 copy];
+  mutableChildren = [(DiskImageGraphNode *)self mutableChildren];
+  v3 = [mutableChildren copy];
 
   return v3;
 }
@@ -301,7 +301,7 @@
   return v5;
 }
 
-- (id)childrenInfoWithExtra:(BOOL)a3 error:(id *)a4
+- (id)childrenInfoWithExtra:(BOOL)extra error:(id *)error
 {
   v7 = objc_opt_new();
   v22 = 0;
@@ -314,24 +314,24 @@
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = [(DiskImageGraphNode *)self mutableChildren];
+  mutableChildren = [(DiskImageGraphNode *)self mutableChildren];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__DiskImageGraphNode_Info__childrenInfoWithExtra_error___block_invoke;
   v13[3] = &unk_278F80B60;
-  v17 = a3;
+  extraCopy = extra;
   v15 = &v22;
   v16 = &v18;
   v9 = v7;
   v14 = v9;
-  [v8 enumerateObjectsUsingBlock:v13];
+  [mutableChildren enumerateObjectsUsingBlock:v13];
 
-  if (a4)
+  if (error)
   {
     v10 = v23[5];
     if (v10)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -370,17 +370,17 @@ void __56__DiskImageGraphNode_Info__childrenInfoWithExtra_error___block_invoke(u
   }
 }
 
-- (id)infoWithExtra:(BOOL)a3 error:(id *)a4
+- (id)infoWithExtra:(BOOL)extra error:(id *)error
 {
-  v5 = a3;
+  extraCopy = extra;
   v7 = objc_opt_new();
-  v8 = [(DiskImageGraphNode *)self UUID];
-  v9 = [v8 UUIDString];
-  [v7 setObject:v9 forKeyedSubscript:@"UUID"];
+  uUID = [(DiskImageGraphNode *)self UUID];
+  uUIDString = [uUID UUIDString];
+  [v7 setObject:uUIDString forKeyedSubscript:@"UUID"];
 
   v10 = [(DiskImageGraphNode *)self URL];
-  v11 = [v10 absoluteString];
-  [v7 setObject:v11 forKeyedSubscript:@"URL"];
+  absoluteString = [v10 absoluteString];
+  [v7 setObject:absoluteString forKeyedSubscript:@"URL"];
 
   if ([(DiskImageGraphNode *)self isCache])
   {
@@ -407,10 +407,10 @@ void __56__DiskImageGraphNode_Info__childrenInfoWithExtra_error___block_invoke(u
     }
   }
 
-  if (v5)
+  if (extraCopy)
   {
     v18 = [(DiskImageGraphNode *)self URL];
-    v19 = [DiskImageGraph getImageInfoDictWithURL:v18 error:a4];
+    v19 = [DiskImageGraph getImageInfoDictWithURL:v18 error:error];
 
     if (!v19)
     {

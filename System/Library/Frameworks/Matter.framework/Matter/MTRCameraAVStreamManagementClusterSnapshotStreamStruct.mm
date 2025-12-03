@@ -1,6 +1,6 @@
 @interface MTRCameraAVStreamManagementClusterSnapshotStreamStruct
 - (MTRCameraAVStreamManagementClusterSnapshotStreamStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -53,41 +53,41 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterSnapshotStreamStruct);
-  v5 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self snapshotStreamID];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setSnapshotStreamID:v5];
+  snapshotStreamID = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self snapshotStreamID];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setSnapshotStreamID:snapshotStreamID];
 
-  v6 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self imageCodec];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setImageCodec:v6];
+  imageCodec = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self imageCodec];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setImageCodec:imageCodec];
 
-  v7 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self frameRate];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setFrameRate:v7];
+  frameRate = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self frameRate];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setFrameRate:frameRate];
 
-  v8 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self minResolution];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setMinResolution:v8];
+  minResolution = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self minResolution];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setMinResolution:minResolution];
 
-  v9 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self maxResolution];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setMaxResolution:v9];
+  maxResolution = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self maxResolution];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setMaxResolution:maxResolution];
 
-  v10 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self quality];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setQuality:v10];
+  quality = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self quality];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setQuality:quality];
 
-  v11 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self referenceCount];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setReferenceCount:v11];
+  referenceCount = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self referenceCount];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setReferenceCount:referenceCount];
 
-  v12 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self encodedPixels];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setEncodedPixels:v12];
+  encodedPixels = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self encodedPixels];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setEncodedPixels:encodedPixels];
 
-  v13 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self hardwareEncoder];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setHardwareEncoder:v13];
+  hardwareEncoder = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self hardwareEncoder];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setHardwareEncoder:hardwareEncoder];
 
-  v14 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self watermarkEnabled];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setWatermarkEnabled:v14];
+  watermarkEnabled = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self watermarkEnabled];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setWatermarkEnabled:watermarkEnabled];
 
-  v15 = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self osdEnabled];
-  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setOsdEnabled:v15];
+  osdEnabled = [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)self osdEnabled];
+  [(MTRCameraAVStreamManagementClusterSnapshotStreamStruct *)v4 setOsdEnabled:osdEnabled];
 
   return v4;
 }

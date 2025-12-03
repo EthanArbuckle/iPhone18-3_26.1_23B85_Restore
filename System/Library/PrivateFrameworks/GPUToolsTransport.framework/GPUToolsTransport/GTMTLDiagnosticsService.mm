@@ -1,8 +1,8 @@
 @interface GTMTLDiagnosticsService
 - (GTMTLDiagnosticsService)init;
-- (void)notifyCommandBufferIssue:(id)a3;
-- (void)notifyDiagnosticsIssue:(id)a3;
-- (void)raiseRuntimeIssue:(id)a3;
+- (void)notifyCommandBufferIssue:(id)issue;
+- (void)notifyDiagnosticsIssue:(id)issue;
+- (void)raiseRuntimeIssue:(id)issue;
 @end
 
 @implementation GTMTLDiagnosticsService
@@ -38,9 +38,9 @@
   return v2;
 }
 
-- (void)raiseRuntimeIssue:(id)a3
+- (void)raiseRuntimeIssue:(id)issue
 {
-  v3 = a3;
+  issueCopy = issue;
   if (GTCoreLogUseOsLog())
   {
     v4 = gt_tagged_log(0x10u);
@@ -49,7 +49,7 @@
       [GTMTLDiagnosticsService raiseRuntimeIssue:v4];
     }
 
-    if (v3)
+    if (issueCopy)
     {
       goto LABEL_5;
     }
@@ -61,13 +61,13 @@
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"raiseRuntimeIssue"];
     fprintf(v6, "%s\n", [v7 UTF8String]);
 
-    if (v3)
+    if (issueCopy)
     {
 LABEL_5:
       v5 = os_log_create("com.apple.runtime-issues", "Metal Diagnostics");
       if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
       {
-        [(GTMTLDiagnosticsService *)v3 raiseRuntimeIssue:v5];
+        [(GTMTLDiagnosticsService *)issueCopy raiseRuntimeIssue:v5];
       }
 
       goto LABEL_13;
@@ -93,29 +93,29 @@ LABEL_5:
 LABEL_13:
 }
 
-- (void)notifyDiagnosticsIssue:(id)a3
+- (void)notifyDiagnosticsIssue:(id)issue
 {
-  v4 = a3;
+  issueCopy = issue;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__GTMTLDiagnosticsService_notifyDiagnosticsIssue___block_invoke;
   v7[3] = &unk_2796613F0;
-  v8 = v4;
-  v6 = v4;
+  v8 = issueCopy;
+  v6 = issueCopy;
   [(GTObservableService *)observers notifyAll:v7];
 }
 
-- (void)notifyCommandBufferIssue:(id)a3
+- (void)notifyCommandBufferIssue:(id)issue
 {
-  v4 = a3;
+  issueCopy = issue;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__GTMTLDiagnosticsService_notifyCommandBufferIssue___block_invoke;
   v7[3] = &unk_2796613F0;
-  v8 = v4;
-  v6 = v4;
+  v8 = issueCopy;
+  v6 = issueCopy;
   [(GTObservableService *)observers notifyAll:v7];
 }
 

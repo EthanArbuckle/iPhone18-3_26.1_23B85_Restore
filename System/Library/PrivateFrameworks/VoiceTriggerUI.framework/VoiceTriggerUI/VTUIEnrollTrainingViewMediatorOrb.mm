@@ -1,31 +1,31 @@
 @interface VTUIEnrollTrainingViewMediatorOrb
-- (VTUIEnrollTrainingViewMediatorOrb)initWithTrainingView:(id)a3;
-- (void)addTargetToRadarExitButton:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
+- (VTUIEnrollTrainingViewMediatorOrb)initWithTrainingView:(id)view;
+- (void)addTargetToRadarExitButton:(id)button action:(SEL)action forControlEvents:(unint64_t)events;
 - (void)animateToListeningState;
 - (void)animateToOff;
 - (void)hideInstructions;
 - (void)hideTrainingElements;
-- (void)hideTrainingView:(BOOL)a3;
-- (void)setInstructionContinuationLabel:(id)a3;
-- (void)setInstructionPreludeLabel:(id)a3;
-- (void)setPowerLevel:(float)a3;
-- (void)showStatusMessage:(id)a3 afterDelay:(double)a4 completion:(id)a5;
+- (void)hideTrainingView:(BOOL)view;
+- (void)setInstructionContinuationLabel:(id)label;
+- (void)setInstructionPreludeLabel:(id)label;
+- (void)setPowerLevel:(float)level;
+- (void)showStatusMessage:(id)message afterDelay:(double)delay completion:(id)completion;
 - (void)showTrainingElements;
 - (void)showTrainingView;
 @end
 
 @implementation VTUIEnrollTrainingViewMediatorOrb
 
-- (VTUIEnrollTrainingViewMediatorOrb)initWithTrainingView:(id)a3
+- (VTUIEnrollTrainingViewMediatorOrb)initWithTrainingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = VTUIEnrollTrainingViewMediatorOrb;
   v6 = [(VTUIEnrollTrainingViewMediatorOrb *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_enrollTrainingView, a3);
+    objc_storeStrong(&v6->_enrollTrainingView, view);
   }
 
   return v7;
@@ -33,8 +33,8 @@
 
 - (void)hideTrainingElements
 {
-  v3 = [(VTUIEnrollTrainingView *)self->_enrollTrainingView orbView];
-  [v3 setHidden:1];
+  orbView = [(VTUIEnrollTrainingView *)self->_enrollTrainingView orbView];
+  [orbView setHidden:1];
 
   enrollTrainingView = self->_enrollTrainingView;
 
@@ -43,15 +43,15 @@
 
 - (void)showTrainingElements
 {
-  v3 = [(VTUIEnrollTrainingView *)self->_enrollTrainingView orbView];
-  [v3 setHidden:0];
+  orbView = [(VTUIEnrollTrainingView *)self->_enrollTrainingView orbView];
+  [orbView setHidden:0];
 
   enrollTrainingView = self->_enrollTrainingView;
 
   [(VTUIEnrollTrainingView *)enrollTrainingView setCheckMarkViewHidden:0];
 }
 
-- (void)hideTrainingView:(BOOL)a3
+- (void)hideTrainingView:(BOOL)view
 {
   enrollTrainingView = self->_enrollTrainingView;
   if (enrollTrainingView)
@@ -76,57 +76,57 @@
   [(VTUIEnrollTrainingViewMediatorOrb *)self hideContinuationAndPreludeLabel:1];
 }
 
-- (void)setInstructionPreludeLabel:(id)a3
+- (void)setInstructionPreludeLabel:(id)label
 {
   enrollTrainingView = self->_enrollTrainingView;
-  v4 = a3;
-  v5 = [(VTUIEnrollTrainingView *)enrollTrainingView instructionPreludeLabel];
-  [v5 setText:v4];
+  labelCopy = label;
+  instructionPreludeLabel = [(VTUIEnrollTrainingView *)enrollTrainingView instructionPreludeLabel];
+  [instructionPreludeLabel setText:labelCopy];
 }
 
-- (void)setInstructionContinuationLabel:(id)a3
+- (void)setInstructionContinuationLabel:(id)label
 {
   enrollTrainingView = self->_enrollTrainingView;
-  v4 = a3;
-  v5 = [(VTUIEnrollTrainingView *)enrollTrainingView instructionContinuationLabel];
-  [v5 setText:v4];
+  labelCopy = label;
+  instructionContinuationLabel = [(VTUIEnrollTrainingView *)enrollTrainingView instructionContinuationLabel];
+  [instructionContinuationLabel setText:labelCopy];
 }
 
 - (void)animateToOff
 {
-  v2 = [(VTUIEnrollTrainingView *)self->_enrollTrainingView orbView];
-  [v2 animateToOffWithCompletion:0];
+  orbView = [(VTUIEnrollTrainingView *)self->_enrollTrainingView orbView];
+  [orbView animateToOffWithCompletion:0];
 }
 
 - (void)animateToListeningState
 {
-  v2 = [(VTUIEnrollTrainingView *)self->_enrollTrainingView orbView];
-  [v2 setMode:1];
+  orbView = [(VTUIEnrollTrainingView *)self->_enrollTrainingView orbView];
+  [orbView setMode:1];
 }
 
-- (void)addTargetToRadarExitButton:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)addTargetToRadarExitButton:(id)button action:(SEL)action forControlEvents:(unint64_t)events
 {
   enrollTrainingView = self->_enrollTrainingView;
-  v8 = a3;
-  v9 = [(VTUIEnrollTrainingView *)enrollTrainingView radarExitButton];
-  [v9 addTarget:v8 action:a4 forControlEvents:a5];
+  buttonCopy = button;
+  radarExitButton = [(VTUIEnrollTrainingView *)enrollTrainingView radarExitButton];
+  [radarExitButton addTarget:buttonCopy action:action forControlEvents:events];
 }
 
-- (void)showStatusMessage:(id)a3 afterDelay:(double)a4 completion:(id)a5
+- (void)showStatusMessage:(id)message afterDelay:(double)delay completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v10 = dispatch_time(0, (a4 * 1000000000.0));
+  v10 = dispatch_time(0, (delay * 1000000000.0));
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__VTUIEnrollTrainingViewMediatorOrb_showStatusMessage_afterDelay_completion___block_invoke;
   v13[3] = &unk_279E54B48;
   objc_copyWeak(&v16, &location);
-  v14 = v8;
-  v15 = v9;
-  v11 = v8;
-  v12 = v9;
+  v14 = messageCopy;
+  v15 = completionCopy;
+  v11 = messageCopy;
+  v12 = completionCopy;
   dispatch_after(v10, MEMORY[0x277D85CD0], v13);
 
   objc_destroyWeak(&v16);
@@ -237,11 +237,11 @@ uint64_t __77__VTUIEnrollTrainingViewMediatorOrb_showStatusMessage_afterDelay_co
   return result;
 }
 
-- (void)setPowerLevel:(float)a3
+- (void)setPowerLevel:(float)level
 {
-  v5 = [(VTUIEnrollTrainingView *)self->_enrollTrainingView orbView];
-  *&v4 = a3;
-  [v5 setPowerLevel:v4];
+  orbView = [(VTUIEnrollTrainingView *)self->_enrollTrainingView orbView];
+  *&v4 = level;
+  [orbView setPowerLevel:v4];
 }
 
 @end

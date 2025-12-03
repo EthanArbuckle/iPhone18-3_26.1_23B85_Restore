@@ -1,15 +1,15 @@
 @interface HDUserDomainConceptPropertyEntity
-+ (BOOL)addPropertyDataToCodable:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)deleteDeviceLocalPropertiesWithType:(int64_t)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)insertDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)pruneDataForUpdatedUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)retrieveDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 mutableUserDomainConceptProperties:(id)a5 transaction:(id)a6 error:(id *)a7;
-+ (id)deviceLocalPropertiesWithUserDomainConceptID:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
++ (BOOL)addPropertyDataToCodable:(id)codable userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)deleteDeviceLocalPropertiesWithType:(int64_t)type userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)insertDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)pruneDataForUpdatedUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)retrieveDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d mutableUserDomainConceptProperties:(id)properties transaction:(id)transaction error:(id *)error;
++ (id)deviceLocalPropertiesWithUserDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
 + (id)indices;
-+ (uint64_t)_enumerateConceptPropertiesWithUserDomainConceptID:(uint64_t)a3 propertyCategory:(void *)a4 transaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:;
-+ (uint64_t)_enumerateConceptPropertyRowsWithUserDomainConceptID:(uint64_t)a3 propertyCategory:(void *)a4 transaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:;
-+ (uint64_t)_insertUserDomainConceptProperty:(uint64_t)a3 propertyCategory:(uint64_t)a4 userDomainConceptID:(void *)a5 transaction:(uint64_t)a6 error:;
++ (uint64_t)_enumerateConceptPropertiesWithUserDomainConceptID:(uint64_t)d propertyCategory:(void *)category transaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
++ (uint64_t)_enumerateConceptPropertyRowsWithUserDomainConceptID:(uint64_t)d propertyCategory:(void *)category transaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
++ (uint64_t)_insertUserDomainConceptProperty:(uint64_t)property propertyCategory:(uint64_t)category userDomainConceptID:(void *)d transaction:(uint64_t)transaction error:;
 @end
 
 @implementation HDUserDomainConceptPropertyEntity
@@ -45,18 +45,18 @@
   return v3;
 }
 
-+ (BOOL)insertDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a5;
+  transactionCopy = transaction;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [a3 propertyCollection];
-  v12 = [v11 allBasicProperties];
+  propertyCollection = [concept propertyCollection];
+  allBasicProperties = [propertyCollection allBasicProperties];
 
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v13 = [allBasicProperties countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -67,19 +67,19 @@
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allBasicProperties);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
         [v17 type];
-        if ((HKIsDeprecatedPropertyType() & 1) == 0 && ![(HDUserDomainConceptPropertyEntity *)a1 _insertUserDomainConceptProperty:v17 propertyCategory:1 userDomainConceptID:a4 transaction:v10 error:a6])
+        if ((HKIsDeprecatedPropertyType() & 1) == 0 && ![(HDUserDomainConceptPropertyEntity *)self _insertUserDomainConceptProperty:v17 propertyCategory:1 userDomainConceptID:d transaction:transactionCopy error:error])
         {
           v18 = 0;
           goto LABEL_12;
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [allBasicProperties countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v14)
       {
         continue;
@@ -96,68 +96,68 @@ LABEL_12:
   return v18;
 }
 
-+ (uint64_t)_insertUserDomainConceptProperty:(uint64_t)a3 propertyCategory:(uint64_t)a4 userDomainConceptID:(void *)a5 transaction:(uint64_t)a6 error:
++ (uint64_t)_insertUserDomainConceptProperty:(uint64_t)property propertyCategory:(uint64_t)category userDomainConceptID:(void *)d transaction:(uint64_t)transaction error:
 {
   v10 = a2;
-  v11 = a5;
+  dCopy = d;
   objc_opt_self();
-  v12 = [v11 protectedDatabase];
+  protectedDatabase = [dCopy protectedDatabase];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __125__HDUserDomainConceptPropertyEntity__insertUserDomainConceptProperty_propertyCategory_userDomainConceptID_transaction_error___block_invoke_2;
   v16[3] = &unk_278619A20;
-  v18 = a4;
-  v19 = a3;
+  categoryCopy = category;
+  propertyCopy = property;
   v17 = v10;
   v13 = v10;
-  v14 = [v12 executeCachedStatementForKey:&_insertUserDomainConceptProperty_propertyCategory_userDomainConceptID_transaction_error__statementKey error:a6 SQLGenerator:&__block_literal_global_373_0 bindingHandler:v16 enumerationHandler:0];
+  v14 = [protectedDatabase executeCachedStatementForKey:&_insertUserDomainConceptProperty_propertyCategory_userDomainConceptID_transaction_error__statementKey error:transaction SQLGenerator:&__block_literal_global_373_0 bindingHandler:v16 enumerationHandler:0];
 
   return v14;
 }
 
-+ (BOOL)retrieveDataForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 mutableUserDomainConceptProperties:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)retrieveDataForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d mutableUserDomainConceptProperties:(id)properties transaction:(id)transaction error:(id *)error
 {
-  v11 = a5;
+  propertiesCopy = properties;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __143__HDUserDomainConceptPropertyEntity_retrieveDataForUserDomainConcept_userDomainConceptID_mutableUserDomainConceptProperties_transaction_error___block_invoke;
   v14[3] = &unk_278628AB0;
-  v15 = v11;
-  v12 = v11;
-  LOBYTE(a7) = [(HDUserDomainConceptPropertyEntity *)a1 _enumerateConceptPropertiesWithUserDomainConceptID:a4 propertyCategory:1 transaction:a6 error:a7 enumerationHandler:v14];
+  v15 = propertiesCopy;
+  v12 = propertiesCopy;
+  LOBYTE(error) = [(HDUserDomainConceptPropertyEntity *)self _enumerateConceptPropertiesWithUserDomainConceptID:d propertyCategory:1 transaction:transaction error:error enumerationHandler:v14];
 
-  return a7;
+  return error;
 }
 
-+ (uint64_t)_enumerateConceptPropertiesWithUserDomainConceptID:(uint64_t)a3 propertyCategory:(void *)a4 transaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:
++ (uint64_t)_enumerateConceptPropertiesWithUserDomainConceptID:(uint64_t)d propertyCategory:(void *)category transaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
-  v10 = a6;
-  v11 = a4;
+  errorCopy = error;
+  categoryCopy = category;
   v12 = objc_opt_self();
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __142__HDUserDomainConceptPropertyEntity__enumerateConceptPropertiesWithUserDomainConceptID_propertyCategory_transaction_error_enumerationHandler___block_invoke;
   v16[3] = &unk_278613B30;
-  v17 = v10;
-  v13 = v10;
-  v14 = [(HDUserDomainConceptPropertyEntity *)v12 _enumerateConceptPropertyRowsWithUserDomainConceptID:a2 propertyCategory:a3 transaction:v11 error:a5 enumerationHandler:v16];
+  v17 = errorCopy;
+  v13 = errorCopy;
+  v14 = [(HDUserDomainConceptPropertyEntity *)v12 _enumerateConceptPropertyRowsWithUserDomainConceptID:a2 propertyCategory:d transaction:categoryCopy error:transaction enumerationHandler:v16];
 
   return v14;
 }
 
-+ (BOOL)addPropertyDataToCodable:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)addPropertyDataToCodable:(id)codable userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
+  codableCopy = codable;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __100__HDUserDomainConceptPropertyEntity_addPropertyDataToCodable_userDomainConceptID_transaction_error___block_invoke;
   v13[3] = &unk_278614098;
-  v14 = v10;
-  v11 = v10;
-  LOBYTE(a6) = [(HDUserDomainConceptPropertyEntity *)a1 _enumerateConceptPropertyRowsWithUserDomainConceptID:a4 propertyCategory:1 transaction:a5 error:a6 enumerationHandler:v13];
+  v14 = codableCopy;
+  v11 = codableCopy;
+  LOBYTE(error) = [(HDUserDomainConceptPropertyEntity *)self _enumerateConceptPropertyRowsWithUserDomainConceptID:d propertyCategory:1 transaction:transaction error:error enumerationHandler:v13];
 
-  return a6;
+  return error;
 }
 
 uint64_t __100__HDUserDomainConceptPropertyEntity_addPropertyDataToCodable_userDomainConceptID_transaction_error___block_invoke(uint64_t a1)
@@ -217,35 +217,35 @@ LABEL_17:
   return 1;
 }
 
-+ (uint64_t)_enumerateConceptPropertyRowsWithUserDomainConceptID:(uint64_t)a3 propertyCategory:(void *)a4 transaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:
++ (uint64_t)_enumerateConceptPropertyRowsWithUserDomainConceptID:(uint64_t)d propertyCategory:(void *)category transaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
-  v10 = a6;
-  v11 = a4;
+  errorCopy = error;
+  categoryCopy = category;
   objc_opt_self();
-  v12 = [v11 protectedDatabase];
+  protectedDatabase = [categoryCopy protectedDatabase];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __144__HDUserDomainConceptPropertyEntity__enumerateConceptPropertyRowsWithUserDomainConceptID_propertyCategory_transaction_error_enumerationHandler___block_invoke_2;
   v15[3] = &__block_descriptor_48_e23_v16__0__sqlite3_stmt__8l;
   v15[4] = a2;
-  v15[5] = a3;
-  v13 = [v12 executeCachedStatementForKey:&_enumerateConceptPropertyRowsWithUserDomainConceptID_propertyCategory_transaction_error_enumerationHandler__statementKey error:a5 SQLGenerator:&__block_literal_global_378_0 bindingHandler:v15 enumerationHandler:v10];
+  v15[5] = d;
+  v13 = [protectedDatabase executeCachedStatementForKey:&_enumerateConceptPropertyRowsWithUserDomainConceptID_propertyCategory_transaction_error_enumerationHandler__statementKey error:transaction SQLGenerator:&__block_literal_global_378_0 bindingHandler:v15 enumerationHandler:errorCopy];
 
   return v13;
 }
 
-+ (BOOL)pruneDataForUpdatedUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)pruneDataForUpdatedUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v8 = [a5 protectedDatabase];
+  protectedDatabase = [transaction protectedDatabase];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __112__HDUserDomainConceptPropertyEntity_pruneDataForUpdatedUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2;
   v10[3] = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
-  v10[4] = a4;
-  LOBYTE(a6) = [v8 executeCachedStatementForKey:&pruneDataForUpdatedUserDomainConcept_userDomainConceptID_transaction_error__statementKey error:a6 SQLGenerator:&__block_literal_global_190 bindingHandler:v10 enumerationHandler:0];
+  v10[4] = d;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&pruneDataForUpdatedUserDomainConcept_userDomainConceptID_transaction_error__statementKey error:error SQLGenerator:&__block_literal_global_190 bindingHandler:v10 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __112__HDUserDomainConceptPropertyEntity_pruneDataForUpdatedUserDomainConcept_userDomainConceptID_transaction_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -255,10 +255,10 @@ uint64_t __112__HDUserDomainConceptPropertyEntity_pruneDataForUpdatedUserDomainC
   return sqlite3_bind_int64(a2, 2, 1);
 }
 
-+ (id)deviceLocalPropertiesWithUserDomainConceptID:(int64_t)a3 transaction:(id)a4 error:(id *)a5
++ (id)deviceLocalPropertiesWithUserDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   v8 = MEMORY[0x277CBEB18];
-  v9 = a4;
+  transactionCopy = transaction;
   v10 = objc_alloc_init(v8);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -266,9 +266,9 @@ uint64_t __112__HDUserDomainConceptPropertyEntity_pruneDataForUpdatedUserDomainC
   v14[3] = &unk_278628AB0;
   v11 = v10;
   v15 = v11;
-  LODWORD(a5) = [(HDUserDomainConceptPropertyEntity *)a1 _enumerateConceptPropertiesWithUserDomainConceptID:a3 propertyCategory:2 transaction:v9 error:a5 enumerationHandler:v14];
+  LODWORD(error) = [(HDUserDomainConceptPropertyEntity *)self _enumerateConceptPropertiesWithUserDomainConceptID:d propertyCategory:2 transaction:transactionCopy error:error enumerationHandler:v14];
 
-  if (a5)
+  if (error)
   {
     v12 = [objc_alloc(MEMORY[0x277CCDB28]) initWithProperties:v11];
   }
@@ -281,18 +281,18 @@ uint64_t __112__HDUserDomainConceptPropertyEntity_pruneDataForUpdatedUserDomainC
   return v12;
 }
 
-+ (BOOL)deleteDeviceLocalPropertiesWithType:(int64_t)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)deleteDeviceLocalPropertiesWithType:(int64_t)type userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v9 = [a5 protectedDatabase];
+  protectedDatabase = [transaction protectedDatabase];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __111__HDUserDomainConceptPropertyEntity_deleteDeviceLocalPropertiesWithType_userDomainConceptID_transaction_error___block_invoke_2;
   v11[3] = &__block_descriptor_48_e23_v16__0__sqlite3_stmt__8l;
-  v11[4] = a4;
-  v11[5] = a3;
-  LOBYTE(a6) = [v9 executeCachedStatementForKey:&deleteDeviceLocalPropertiesWithType_userDomainConceptID_transaction_error__statementKey error:a6 SQLGenerator:&__block_literal_global_367_0 bindingHandler:v11 enumerationHandler:0];
+  v11[4] = d;
+  v11[5] = type;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&deleteDeviceLocalPropertiesWithType_userDomainConceptID_transaction_error__statementKey error:error SQLGenerator:&__block_literal_global_367_0 bindingHandler:v11 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __111__HDUserDomainConceptPropertyEntity_deleteDeviceLocalPropertiesWithType_userDomainConceptID_transaction_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)

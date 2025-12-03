@@ -1,31 +1,31 @@
 @interface AMUIProactiveUsageObserver
-- (AMUIProactiveUsageObserver)initWithListModel:(id)a3 iconManager:(id)a4 proactiveClient:(id)a5;
-- (id)_proactiveWidgetForIconDataSource:(id)a3 ofIcon:(id)a4;
-- (id)_proactiveWidgetForWidget:(id)a3 ofIcon:(id)a4;
-- (id)_proactiveWidgetStackForWidgetIcon:(id)a3;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteDataSourceDidAppear:(id)a4 forWidgetIcon:(id)a5;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteDataSourceDidDisappear:(id)a4 forWidgetIcon:(id)a5;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserTappedWidgetIcon:(id)a4 withURL:(id)a5;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteWidgetIconStackChangedActiveWidget:(id)a4;
+- (AMUIProactiveUsageObserver)initWithListModel:(id)model iconManager:(id)manager proactiveClient:(id)client;
+- (id)_proactiveWidgetForIconDataSource:(id)source ofIcon:(id)icon;
+- (id)_proactiveWidgetForWidget:(id)widget ofIcon:(id)icon;
+- (id)_proactiveWidgetStackForWidgetIcon:(id)icon;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteDataSourceDidAppear:(id)appear forWidgetIcon:(id)icon;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteDataSourceDidDisappear:(id)disappear forWidgetIcon:(id)icon;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserTappedWidgetIcon:(id)icon withURL:(id)l;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteWidgetIconStackChangedActiveWidget:(id)widget;
 - (void)pushStackConfigurationsToProactive;
 @end
 
 @implementation AMUIProactiveUsageObserver
 
-- (AMUIProactiveUsageObserver)initWithListModel:(id)a3 iconManager:(id)a4 proactiveClient:(id)a5
+- (AMUIProactiveUsageObserver)initWithListModel:(id)model iconManager:(id)manager proactiveClient:(id)client
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modelCopy = model;
+  managerCopy = manager;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = AMUIProactiveUsageObserver;
   v12 = [(AMUIProactiveUsageObserver *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_listModel, a3);
-    objc_storeStrong(&v13->_iconManager, a4);
-    objc_storeStrong(&v13->_proactiveClient, a5);
+    objc_storeStrong(&v12->_listModel, model);
+    objc_storeStrong(&v13->_iconManager, manager);
+    objc_storeStrong(&v13->_proactiveClient, client);
   }
 
   return v13;
@@ -39,11 +39,11 @@
   v7 = 3221225472;
   v8 = __64__AMUIProactiveUsageObserver_pushStackConfigurationsToProactive__block_invoke;
   v9 = &unk_278C75FD0;
-  v10 = self;
+  selfCopy = self;
   v11 = v3;
   v5 = v3;
   [(SBIconListModel *)listModel enumerateIconsUsingBlock:&v6];
-  [(ATXAmbientSuggestionProvider *)self->_proactiveClient writeStacks:v5 completion:&__block_literal_global_3, v6, v7, v8, v9, v10];
+  [(ATXAmbientSuggestionProvider *)self->_proactiveClient writeStacks:v5 completion:&__block_literal_global_3, v6, v7, v8, v9, selfCopy];
 }
 
 void __64__AMUIProactiveUsageObserver_pushStackConfigurationsToProactive__block_invoke(uint64_t a1, void *a2)
@@ -69,17 +69,17 @@ void __64__AMUIProactiveUsageObserver_pushStackConfigurationsToProactive__block_
   }
 }
 
-- (id)_proactiveWidgetStackForWidgetIcon:(id)a3
+- (id)_proactiveWidgetStackForWidgetIcon:(id)icon
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  iconCopy = icon;
   v5 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v4 widgets];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  widgets = [iconCopy widgets];
+  v7 = [widgets countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -90,59 +90,59 @@ void __64__AMUIProactiveUsageObserver_pushStackConfigurationsToProactive__block_
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(widgets);
         }
 
-        v11 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForWidget:*(*(&v19 + 1) + 8 * i) ofIcon:v4];
+        v11 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForWidget:*(*(&v19 + 1) + 8 * i) ofIcon:iconCopy];
         [v5 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [widgets countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
   }
 
   v12 = objc_alloc(MEMORY[0x277CFC810]);
-  v13 = [v4 uniqueIdentifier];
-  v14 = [v4 activeWidget];
-  v15 = [v14 uniqueIdentifier];
-  v16 = [v12 initWithIdentifier:v13 widgets:v5 topWidgetIdentifier:v15 family:1 allowsNewWidget:objc_msgSend(v4 allowsSmartRotate:{"allowsExternalSuggestions"), objc_msgSend(v4, "allowsSuggestions")}];
+  uniqueIdentifier = [iconCopy uniqueIdentifier];
+  activeWidget = [iconCopy activeWidget];
+  uniqueIdentifier2 = [activeWidget uniqueIdentifier];
+  v16 = [v12 initWithIdentifier:uniqueIdentifier widgets:v5 topWidgetIdentifier:uniqueIdentifier2 family:1 allowsNewWidget:objc_msgSend(iconCopy allowsSmartRotate:{"allowsExternalSuggestions"), objc_msgSend(iconCopy, "allowsSuggestions")}];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (id)_proactiveWidgetForWidget:(id)a3 ofIcon:(id)a4
+- (id)_proactiveWidgetForWidget:(id)widget ofIcon:(id)icon
 {
   iconManager = self->_iconManager;
-  v6 = a3;
-  v7 = [(SBHIconManager *)iconManager intentForWidget:v6 ofIcon:a4];
+  widgetCopy = widget;
+  v7 = [(SBHIconManager *)iconManager intentForWidget:widgetCopy ofIcon:icon];
   v8 = objc_alloc(MEMORY[0x277CFA258]);
-  v9 = [v6 extensionBundleIdentifier];
-  v10 = [v6 containerBundleIdentifier];
-  v11 = [v8 initWithExtensionBundleIdentifier:v9 containerBundleIdentifier:v10 deviceIdentifier:0];
+  extensionBundleIdentifier = [widgetCopy extensionBundleIdentifier];
+  containerBundleIdentifier = [widgetCopy containerBundleIdentifier];
+  v11 = [v8 initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
 
   v12 = objc_alloc(MEMORY[0x277CFA358]);
-  v13 = [v6 kind];
-  v14 = [v12 initWithExtensionIdentity:v11 kind:v13 family:1 intent:v7 activityIdentifier:0];
+  kind = [widgetCopy kind];
+  v14 = [v12 initWithExtensionIdentity:v11 kind:kind family:1 intent:v7 activityIdentifier:0];
 
   v15 = objc_alloc(MEMORY[0x277CFC800]);
-  v16 = [v6 uniqueIdentifier];
-  v17 = [v6 suggestionSource];
+  uniqueIdentifier = [widgetCopy uniqueIdentifier];
+  suggestionSource = [widgetCopy suggestionSource];
 
-  v18 = [v15 initWithIdentifier:v16 chsWidget:v14 suggestedWidget:v17 == 1];
+  v18 = [v15 initWithIdentifier:uniqueIdentifier chsWidget:v14 suggestedWidget:suggestionSource == 1];
 
   return v18;
 }
 
-- (id)_proactiveWidgetForIconDataSource:(id)a3 ofIcon:(id)a4
+- (id)_proactiveWidgetForIconDataSource:(id)source ofIcon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  iconCopy = icon;
   v8 = objc_opt_class();
-  v9 = v6;
+  v9 = sourceCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -165,7 +165,7 @@ void __64__AMUIProactiveUsageObserver_pushStackConfigurationsToProactive__block_
 
   if (v11)
   {
-    v12 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForWidget:v11 ofIcon:v7];
+    v12 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForWidget:v11 ofIcon:iconCopy];
   }
 
   else
@@ -176,9 +176,9 @@ void __64__AMUIProactiveUsageObserver_pushStackConfigurationsToProactive__block_
   return v12;
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteDataSourceDidAppear:(id)a4 forWidgetIcon:(id)a5
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteDataSourceDidAppear:(id)appear forWidgetIcon:(id)icon
 {
-  v6 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForIconDataSource:a4 ofIcon:a5];
+  v6 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForIconDataSource:appear ofIcon:icon];
   if (v6)
   {
     [(ATXAmbientSuggestionProvider *)self->_proactiveClient logWidgetDidAppear:v6];
@@ -187,9 +187,9 @@ void __64__AMUIProactiveUsageObserver_pushStackConfigurationsToProactive__block_
   MEMORY[0x2821F96F8]();
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteDataSourceDidDisappear:(id)a4 forWidgetIcon:(id)a5
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteDataSourceDidDisappear:(id)disappear forWidgetIcon:(id)icon
 {
-  v6 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForIconDataSource:a4 ofIcon:a5];
+  v6 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForIconDataSource:disappear ofIcon:icon];
   if (v6)
   {
     [(ATXAmbientSuggestionProvider *)self->_proactiveClient logWidgetDidDisappear:v6];
@@ -198,24 +198,24 @@ void __64__AMUIProactiveUsageObserver_pushStackConfigurationsToProactive__block_
   MEMORY[0x2821F96F8]();
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserTappedWidgetIcon:(id)a4 withURL:(id)a5
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserTappedWidgetIcon:(id)icon withURL:(id)l
 {
-  v6 = a4;
-  v8 = [v6 activeWidget];
-  v7 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForWidget:v8 ofIcon:v6];
+  iconCopy = icon;
+  activeWidget = [iconCopy activeWidget];
+  v7 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForWidget:activeWidget ofIcon:iconCopy];
 
   [(ATXAmbientSuggestionProvider *)self->_proactiveClient logUserDidTapWidget:v7];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteWidgetIconStackChangedActiveWidget:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteWidgetIconStackChangedActiveWidget:(id)widget
 {
-  v11 = a4;
-  v5 = [v11 activeDataSource];
-  v6 = [v11 stackChangeReason] - 1;
+  widgetCopy = widget;
+  activeDataSource = [widgetCopy activeDataSource];
+  v6 = [widgetCopy stackChangeReason] - 1;
   if (v6 > 5)
   {
     v7 = 0;
-    if (!v5)
+    if (!activeDataSource)
     {
       goto LABEL_7;
     }
@@ -224,17 +224,17 @@ void __64__AMUIProactiveUsageObserver_pushStackConfigurationsToProactive__block_
   else
   {
     v7 = qword_23F3C1060[v6];
-    if (!v5)
+    if (!activeDataSource)
     {
       goto LABEL_7;
     }
   }
 
-  v8 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForIconDataSource:v5 ofIcon:v11];
+  v8 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetForIconDataSource:activeDataSource ofIcon:widgetCopy];
   if (v8)
   {
     v9 = v8;
-    v10 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetStackForWidgetIcon:v11];
+    v10 = [(AMUIProactiveUsageObserver *)self _proactiveWidgetStackForWidgetIcon:widgetCopy];
     [(ATXAmbientSuggestionProvider *)self->_proactiveClient logWidgetStack:v10 didChangeToWidget:v9 reason:v7];
   }
 

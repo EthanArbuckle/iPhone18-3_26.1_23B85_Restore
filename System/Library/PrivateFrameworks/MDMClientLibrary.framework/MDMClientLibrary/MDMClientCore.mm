@@ -1,64 +1,64 @@
 @interface MDMClientCore
-+ (id)clientWithChannelType:(unint64_t)a3;
++ (id)clientWithChannelType:(unint64_t)type;
 - (BOOL)isAwaitingUserConfigured;
-- (MDMClientCore)initWithChannelType:(unint64_t)a3;
+- (MDMClientCore)initWithChannelType:(unint64_t)type;
 - (NSXPCConnection)xpcConnection;
 - (id)pushToken;
-- (void)_debug_nagForMigrationWithCompletion:(id)a3;
+- (void)_debug_nagForMigrationWithCompletion:(id)completion;
 - (void)_debug_stopNaggingForMigration;
-- (void)_destroyXPCConnectionAndInvalidate:(BOOL)a3;
+- (void)_destroyXPCConnectionAndInvalidate:(BOOL)invalidate;
 - (void)_queue_createAndStartMDMXPCConnection;
-- (void)blockAppInstallsWithCompletion:(id)a3;
-- (void)blockMDMCommandsWithCompletion:(id)a3;
+- (void)blockAppInstallsWithCompletion:(id)completion;
+- (void)blockMDMCommandsWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscode:(id)a4 completionHandler:(id)a5;
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscodeContext:(id)a4 completionHandler:(id)a5;
-- (void)depPushTokenWithCompletion:(id)a3;
-- (void)disablePushWakeWithCompletion:(id)a3;
-- (void)enablePushWakeWithCompletion:(id)a3;
-- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4;
-- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4;
-- (void)generateBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4;
-- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4;
-- (void)getAssertionDescriptionsWithCompletion:(id)a3;
-- (void)getOrgTokenForMAIDWithCompletionHandler:(id)a3;
-- (void)getWatchPairingTokenForPhoneID:(id)a3 watchID:(id)a4 securityToken:(id)a5 completionHandler:(id)a6;
-- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)a3;
-- (void)monitorDEPPushTokenWithCompletion:(id)a3;
-- (void)nagWithID:(id)a3 clientID:(id)a4 schedule:(id)a5 title:(id)a6 message:(id)a7 notificationTitle:(id)a8 notificationMessage:(id)a9 actionTitle:(id)a10 actionURL:(id)a11 dismissTitle:(id)a12 dismissURL:(id)a13 deadlineURL:(id)a14 completion:(id)a15;
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscode:(id)passcode completionHandler:(id)handler;
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscodeContext:(id)context completionHandler:(id)handler;
+- (void)depPushTokenWithCompletion:(id)completion;
+- (void)disablePushWakeWithCompletion:(id)completion;
+- (void)enablePushWakeWithCompletion:(id)completion;
+- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler;
+- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler;
+- (void)generateBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler;
+- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler;
+- (void)getAssertionDescriptionsWithCompletion:(id)completion;
+- (void)getOrgTokenForMAIDWithCompletionHandler:(id)handler;
+- (void)getWatchPairingTokenForPhoneID:(id)d watchID:(id)iD securityToken:(id)token completionHandler:(id)handler;
+- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)completion;
+- (void)monitorDEPPushTokenWithCompletion:(id)completion;
+- (void)nagWithID:(id)d clientID:(id)iD schedule:(id)schedule title:(id)title message:(id)message notificationTitle:(id)notificationTitle notificationMessage:(id)notificationMessage actionTitle:(id)self0 actionURL:(id)self1 dismissTitle:(id)self2 dismissURL:(id)self3 deadlineURL:(id)self4 completion:(id)self5;
 - (void)notifyNewConfiguration;
-- (void)preserveAppsWithCompletion:(id)a3;
+- (void)preserveAppsWithCompletion:(id)completion;
 - (void)reauthenticationComplete;
-- (void)removeUnusedPreservedAppsWithCompletion:(id)a3;
-- (void)requestInstallOfAppsInRestoreWithCompletion:(id)a3;
-- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)a3;
+- (void)removeUnusedPreservedAppsWithCompletion:(id)completion;
+- (void)requestInstallOfAppsInRestoreWithCompletion:(id)completion;
+- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)handler;
 - (void)retryNotNowResponse;
 - (void)scheduleTokenUpdate;
 - (void)scheduleTokenUpdateIfNecessary;
-- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)a3;
-- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)a3;
-- (void)simulateDEPPushWithCompletion:(id)a3;
+- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)handler;
+- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)handler;
+- (void)simulateDEPPushWithCompletion:(id)completion;
 - (void)simulatePush;
-- (void)simulatePushIfNetworkTetheredWithCompletion:(id)a3;
-- (void)simulatePushWithCompletion:(id)a3;
-- (void)syncBootstrapTokenToMDMWithToken:(id)a3 completionHandler:(id)a4;
-- (void)syncDEPPushTokenWithDelay:(double)a3 completion:(id)a4;
-- (void)touchWithCompletion:(id)a3;
-- (void)unblockAppInstallsWithCompletion:(id)a3;
-- (void)unblockMDMCommandsWithCompletion:(id)a3;
+- (void)simulatePushIfNetworkTetheredWithCompletion:(id)completion;
+- (void)simulatePushWithCompletion:(id)completion;
+- (void)syncBootstrapTokenToMDMWithToken:(id)token completionHandler:(id)handler;
+- (void)syncDEPPushTokenWithDelay:(double)delay completion:(id)completion;
+- (void)touchWithCompletion:(id)completion;
+- (void)unblockAppInstallsWithCompletion:(id)completion;
+- (void)unblockMDMCommandsWithCompletion:(id)completion;
 - (void)uprootMDM;
 @end
 
 @implementation MDMClientCore
 
-+ (id)clientWithChannelType:(unint64_t)a3
++ (id)clientWithChannelType:(unint64_t)type
 {
-  v3 = [[MDMClientCore alloc] initWithChannelType:a3];
+  v3 = [[MDMClientCore alloc] initWithChannelType:type];
 
   return v3;
 }
 
-- (MDMClientCore)initWithChannelType:(unint64_t)a3
+- (MDMClientCore)initWithChannelType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = MDMClientCore;
@@ -66,7 +66,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_channelType = a3;
+    v4->_channelType = type;
     v6 = dispatch_queue_create("com.apple.devicemanagementclient.MDMClientCore._xpcConnectionSyncQueue", 0);
     xpcConnectionSyncQueue = v5->_xpcConnectionSyncQueue;
     v5->_xpcConnectionSyncQueue = v6;
@@ -83,17 +83,17 @@
   [(MDMClientCore *)&v3 dealloc];
 }
 
-- (void)getAssertionDescriptionsWithCompletion:(id)a3
+- (void)getAssertionDescriptionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MDMClientCore *)self xpcConnection];
+  completionCopy = completion;
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__MDMClientCore_getAssertionDescriptionsWithCompletion___block_invoke;
   v8[3] = &unk_278856D88;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
 
   [v7 getAssertionDescriptionsWithCompletion:v6];
 }
@@ -119,8 +119,8 @@ void __56__MDMClientCore_getAssertionDescriptionsWithCompletion___block_invoke(u
 
 - (void)notifyNewConfiguration
 {
-  v3 = [(MDMClientCore *)self xpcConnection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_0];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v2 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_0];
   [v2 notifyNewConfigurationWithCompletion:&__block_literal_global_0];
 }
 
@@ -146,8 +146,8 @@ void __39__MDMClientCore_notifyNewConfiguration__block_invoke(uint64_t a1, void 
 
 - (void)scheduleTokenUpdate
 {
-  v3 = [(MDMClientCore *)self xpcConnection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v2 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
   [v2 scheduleTokenUpdateWithCompletion:&__block_literal_global_5];
 }
 
@@ -173,8 +173,8 @@ void __36__MDMClientCore_scheduleTokenUpdate__block_invoke(uint64_t a1, void *a2
 
 - (void)scheduleTokenUpdateIfNecessary
 {
-  v3 = [(MDMClientCore *)self xpcConnection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_7];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v2 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_7];
   [v2 scheduleTokenUpdateIfNecessaryWithCompletion:&__block_literal_global_7];
 }
 
@@ -200,8 +200,8 @@ void __47__MDMClientCore_scheduleTokenUpdateIfNecessary__block_invoke(uint64_t a
 
 - (void)retryNotNowResponse
 {
-  v3 = [(MDMClientCore *)self xpcConnection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_9];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v2 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_9];
   [v2 retryNotNowWithCompletion:&__block_literal_global_9];
 }
 
@@ -227,8 +227,8 @@ void __36__MDMClientCore_retryNotNowResponse__block_invoke(uint64_t a1, void *a2
 
 - (void)simulatePush
 {
-  v3 = [(MDMClientCore *)self xpcConnection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v2 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
   [v2 simulatePushWithCompletion:&__block_literal_global_11];
 }
 
@@ -252,18 +252,18 @@ void __29__MDMClientCore_simulatePush__block_invoke(uint64_t a1, void *a2)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simulatePushWithCompletion:(id)a3
+- (void)simulatePushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__MDMClientCore_simulatePushWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 simulatePushWithCompletion:v6];
 }
 
@@ -293,18 +293,18 @@ void __44__MDMClientCore_simulatePushWithCompletion___block_invoke(uint64_t a1, 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simulatePushIfNetworkTetheredWithCompletion:(id)a3
+- (void)simulatePushIfNetworkTetheredWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__MDMClientCore_simulatePushIfNetworkTetheredWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 simulatePushIfNetworkTetheredWithCompletion:v6];
 }
 
@@ -342,8 +342,8 @@ void __61__MDMClientCore_simulatePushIfNetworkTetheredWithCompletion___block_inv
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v2 = [(MDMClientCore *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_13];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_13];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __26__MDMClientCore_pushToken__block_invoke_14;
@@ -402,17 +402,17 @@ void __26__MDMClientCore_pushToken__block_invoke_14(uint64_t a1, void *a2, void 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)touchWithCompletion:(id)a3
+- (void)touchWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MDMClientCore *)self xpcConnection];
+  completionCopy = completion;
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __37__MDMClientCore_touchWithCompletion___block_invoke;
   v11[3] = &unk_278856D88;
-  v6 = v4;
+  v6 = completionCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__MDMClientCore_touchWithCompletion___block_invoke_16;
@@ -474,8 +474,8 @@ void __37__MDMClientCore_touchWithCompletion___block_invoke_16(uint64_t a1, void
 
 - (void)reauthenticationComplete
 {
-  v3 = [(MDMClientCore *)self xpcConnection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_18];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v2 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_18];
   [v2 reauthenticationCompleteWithCompletion:&__block_literal_global_18];
 }
 
@@ -499,31 +499,31 @@ void __41__MDMClientCore_reauthenticationComplete__block_invoke(uint64_t a1, voi
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)nagWithID:(id)a3 clientID:(id)a4 schedule:(id)a5 title:(id)a6 message:(id)a7 notificationTitle:(id)a8 notificationMessage:(id)a9 actionTitle:(id)a10 actionURL:(id)a11 dismissTitle:(id)a12 dismissURL:(id)a13 deadlineURL:(id)a14 completion:(id)a15
+- (void)nagWithID:(id)d clientID:(id)iD schedule:(id)schedule title:(id)title message:(id)message notificationTitle:(id)notificationTitle notificationMessage:(id)notificationMessage actionTitle:(id)self0 actionURL:(id)self1 dismissTitle:(id)self2 dismissURL:(id)self3 deadlineURL:(id)self4 completion:(id)self5
 {
-  v19 = a15;
+  completionCopy = completion;
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __166__MDMClientCore_nagWithID_clientID_schedule_title_message_notificationTitle_notificationMessage_actionTitle_actionURL_dismissTitle_dismissURL_deadlineURL_completion___block_invoke;
   v39[3] = &unk_278856D88;
-  v40 = v19;
-  v37 = v19;
-  v20 = a14;
-  v30 = a13;
-  v29 = a12;
-  v28 = a11;
-  v27 = a10;
-  v38 = a9;
-  v26 = a8;
-  v21 = a7;
-  v24 = a6;
-  v22 = a5;
-  v23 = a4;
-  v25 = a3;
+  v40 = completionCopy;
+  v37 = completionCopy;
+  uRLCopy = uRL;
+  rLCopy = rL;
+  dismissTitleCopy = dismissTitle;
+  lCopy = l;
+  actionTitleCopy = actionTitle;
+  notificationMessageCopy = notificationMessage;
+  notificationTitleCopy = notificationTitle;
+  messageCopy = message;
+  titleCopy = title;
+  scheduleCopy = schedule;
+  iDCopy = iD;
+  dCopy = d;
   v34 = MEMORY[0x2318F0080](v39);
-  v36 = [(MDMClientCore *)self xpcConnection];
-  v32 = [v36 remoteObjectProxyWithErrorHandler:v34];
-  [v32 nagWithID:v25 clientID:v23 schedule:v22 title:v24 message:v21 notificationTitle:v26 notificationMessage:v38 actionTitle:v27 actionURL:v28 dismissTitle:v29 dismissURL:v30 deadlineURL:v20 completion:v34];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v32 = [xpcConnection remoteObjectProxyWithErrorHandler:v34];
+  [v32 nagWithID:dCopy clientID:iDCopy schedule:scheduleCopy title:titleCopy message:messageCopy notificationTitle:notificationTitleCopy notificationMessage:notificationMessageCopy actionTitle:actionTitleCopy actionURL:lCopy dismissTitle:dismissTitleCopy dismissURL:rLCopy deadlineURL:uRLCopy completion:v34];
 }
 
 void __166__MDMClientCore_nagWithID_clientID_schedule_title_message_notificationTitle_notificationMessage_actionTitle_actionURL_dismissTitle_dismissURL_deadlineURL_completion___block_invoke(uint64_t a1, void *a2)
@@ -552,18 +552,18 @@ void __166__MDMClientCore_nagWithID_clientID_schedule_title_message_notification
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_debug_nagForMigrationWithCompletion:(id)a3
+- (void)_debug_nagForMigrationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__MDMClientCore__debug_nagForMigrationWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 nagForMigrationWithHardCodedValuesWithCompletion:v6];
 }
 
@@ -595,8 +595,8 @@ void __54__MDMClientCore__debug_nagForMigrationWithCompletion___block_invoke(uin
 
 - (void)_debug_stopNaggingForMigration
 {
-  v3 = [(MDMClientCore *)self xpcConnection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_20];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v2 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_20];
   [v2 stopNaggingForMigrationWithCompletion:&__block_literal_global_20];
 }
 
@@ -620,18 +620,18 @@ void __47__MDMClientCore__debug_stopNaggingForMigration__block_invoke(uint64_t a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)blockMDMCommandsWithCompletion:(id)a3
+- (void)blockMDMCommandsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__MDMClientCore_blockMDMCommandsWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 blockMDMCommandsWithCompletion:v5];
 }
 
@@ -661,18 +661,18 @@ void __48__MDMClientCore_blockMDMCommandsWithCompletion___block_invoke(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unblockMDMCommandsWithCompletion:(id)a3
+- (void)unblockMDMCommandsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__MDMClientCore_unblockMDMCommandsWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 unblockMDMCommandsWithCompletion:v5];
 }
 
@@ -702,18 +702,18 @@ void __50__MDMClientCore_unblockMDMCommandsWithCompletion___block_invoke(uint64_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enablePushWakeWithCompletion:(id)a3
+- (void)enablePushWakeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__MDMClientCore_enablePushWakeWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 enablePushWakeWithCompletion:v5];
 }
 
@@ -743,18 +743,18 @@ void __46__MDMClientCore_enablePushWakeWithCompletion___block_invoke(uint64_t a1
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disablePushWakeWithCompletion:(id)a3
+- (void)disablePushWakeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__MDMClientCore_disablePushWakeWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 disablePushWakeWithCompletion:v5];
 }
 
@@ -784,18 +784,18 @@ void __47__MDMClientCore_disablePushWakeWithCompletion___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)a3
+- (void)sendMDMAuthenticationRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__MDMClientCore_sendMDMAuthenticationRequestWithCompletionHandler___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 sendMDMAuthenticationRequestWithCompletionHandler:v5];
 }
 
@@ -825,18 +825,18 @@ void __67__MDMClientCore_sendMDMAuthenticationRequestWithCompletionHandler___blo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)a3
+- (void)sendMDMCheckOutRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__MDMClientCore_sendMDMCheckOutRequestWithCompletionHandler___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 sendMDMCheckOutRequestWithCompletionHandler:v5];
 }
 
@@ -892,18 +892,18 @@ void __50__MDMClientCore_migrateMDMWithContext_completion___block_invoke(uint64_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preserveAppsWithCompletion:(id)a3
+- (void)preserveAppsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__MDMClientCore_preserveAppsWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 preserveAppsWithCompletion:v6];
 }
 
@@ -933,18 +933,18 @@ void __44__MDMClientCore_preserveAppsWithCompletion___block_invoke(uint64_t a1, 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeUnusedPreservedAppsWithCompletion:(id)a3
+- (void)removeUnusedPreservedAppsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__MDMClientCore_removeUnusedPreservedAppsWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 removeUnusedPreservedAppsWithCompletion:v6];
 }
 
@@ -984,8 +984,8 @@ void __57__MDMClientCore_removeUnusedPreservedAppsWithCompletion___block_invoke(
   objc_copyWeak(&v8, &location);
   v7 = &__block_literal_global_22;
   v3 = MEMORY[0x2318F0080](v6);
-  v4 = [(MDMClientCore *)self xpcConnection];
-  v5 = [v4 remoteObjectProxyWithErrorHandler:v3];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v5 = [xpcConnection remoteObjectProxyWithErrorHandler:v3];
   [v5 uprootMDMWithCompletion:v3];
 
   objc_destroyWeak(&v8);
@@ -1037,9 +1037,9 @@ void __26__MDMClientCore_uprootMDM__block_invoke_23(uint64_t a1, void *a2)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestInstallOfAppsInRestoreWithCompletion:(id)a3
+- (void)requestInstallOfAppsInRestoreWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1051,11 +1051,11 @@ void __26__MDMClientCore_uprootMDM__block_invoke_23(uint64_t a1, void *a2)
   v10[1] = 3221225472;
   v10[2] = __61__MDMClientCore_requestInstallOfAppsInRestoreWithCompletion___block_invoke;
   v10[3] = &unk_278856D88;
-  v11 = v4;
-  v6 = v4;
+  v11 = completionCopy;
+  v6 = completionCopy;
   v7 = MEMORY[0x2318F0080](v10);
-  v8 = [(MDMClientCore *)self xpcConnection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:v7];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v7];
   [v9 requestInstallOfAppsInRestoreWithCompletion:v7];
 }
 
@@ -1085,9 +1085,9 @@ void __61__MDMClientCore_requestInstallOfAppsInRestoreWithCompletion___block_inv
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)blockAppInstallsWithCompletion:(id)a3
+- (void)blockAppInstallsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1099,11 +1099,11 @@ void __61__MDMClientCore_requestInstallOfAppsInRestoreWithCompletion___block_inv
   v10[1] = 3221225472;
   v10[2] = __48__MDMClientCore_blockAppInstallsWithCompletion___block_invoke;
   v10[3] = &unk_278856D88;
-  v11 = v4;
-  v6 = v4;
+  v11 = completionCopy;
+  v6 = completionCopy;
   v7 = MEMORY[0x2318F0080](v10);
-  v8 = [(MDMClientCore *)self xpcConnection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:v7];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v7];
   [v9 blockAppInstallsWithCompletion:v7];
 }
 
@@ -1133,9 +1133,9 @@ void __48__MDMClientCore_blockAppInstallsWithCompletion___block_invoke(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unblockAppInstallsWithCompletion:(id)a3
+- (void)unblockAppInstallsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1147,11 +1147,11 @@ void __48__MDMClientCore_blockAppInstallsWithCompletion___block_invoke(uint64_t 
   v10[1] = 3221225472;
   v10[2] = __50__MDMClientCore_unblockAppInstallsWithCompletion___block_invoke;
   v10[3] = &unk_278856D88;
-  v11 = v4;
-  v6 = v4;
+  v11 = completionCopy;
+  v6 = completionCopy;
   v7 = MEMORY[0x2318F0080](v10);
-  v8 = [(MDMClientCore *)self xpcConnection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:v7];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v7];
   [v9 unblockAppInstallsWithCompletion:v7];
 }
 
@@ -1207,18 +1207,18 @@ void __64__MDMClientCore_processDeviceRequest_encodeResponse_completion___block_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)depPushTokenWithCompletion:(id)a3
+- (void)depPushTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__MDMClientCore_depPushTokenWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 depPushTokenWithCompletion:v5];
 }
 
@@ -1248,19 +1248,19 @@ void __44__MDMClientCore_depPushTokenWithCompletion___block_invoke(uint64_t a1, 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncDEPPushTokenWithDelay:(double)a3 completion:(id)a4
+- (void)syncDEPPushTokenWithDelay:(double)delay completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__MDMClientCore_syncDEPPushTokenWithDelay_completion___block_invoke;
   v11[3] = &unk_278856D88;
-  v12 = v6;
-  v7 = v6;
+  v12 = completionCopy;
+  v7 = completionCopy;
   v8 = MEMORY[0x2318F0080](v11);
-  v9 = [(MDMClientCore *)self xpcConnection];
-  v10 = [v9 remoteObjectProxyWithErrorHandler:v8];
-  [v10 syncDEPPushTokenWithDelay:v7 completion:a3];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
+  [v10 syncDEPPushTokenWithDelay:v7 completion:delay];
 }
 
 void __54__MDMClientCore_syncDEPPushTokenWithDelay_completion___block_invoke(uint64_t a1, void *a2)
@@ -1289,18 +1289,18 @@ void __54__MDMClientCore_syncDEPPushTokenWithDelay_completion___block_invoke(uin
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)a3
+- (void)monitorDEPPushTokenIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__MDMClientCore_monitorDEPPushTokenIfNeededWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 monitorDEPPushTokenIfNeededWithCompletion:v5];
 }
 
@@ -1330,18 +1330,18 @@ void __59__MDMClientCore_monitorDEPPushTokenIfNeededWithCompletion___block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)monitorDEPPushTokenWithCompletion:(id)a3
+- (void)monitorDEPPushTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__MDMClientCore_monitorDEPPushTokenWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 monitorDEPPushTokenWithCompletion:v5];
 }
 
@@ -1371,18 +1371,18 @@ void __51__MDMClientCore_monitorDEPPushTokenWithCompletion___block_invoke(uint64
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simulateDEPPushWithCompletion:(id)a3
+- (void)simulateDEPPushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__MDMClientCore_simulateDEPPushWithCompletion___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 simulateDEPPushWithCompletion:v5];
 }
 
@@ -1490,22 +1490,22 @@ void __77__MDMClientCore_evaluateMigrationStatusWithPollFromServer_completionHan
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getWatchPairingTokenForPhoneID:(id)a3 watchID:(id)a4 securityToken:(id)a5 completionHandler:(id)a6
+- (void)getWatchPairingTokenForPhoneID:(id)d watchID:(id)iD securityToken:(id)token completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__MDMClientCore_getWatchPairingTokenForPhoneID_watchID_securityToken_completionHandler___block_invoke;
   v18[3] = &unk_278856D88;
-  v19 = v10;
-  v11 = v10;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  v19 = handlerCopy;
+  v11 = handlerCopy;
+  tokenCopy = token;
+  iDCopy = iD;
+  dCopy = d;
   v15 = MEMORY[0x2318F0080](v18);
-  v16 = [(MDMClientCore *)self xpcConnection];
-  v17 = [v16 remoteObjectProxyWithErrorHandler:v15];
-  [v17 getWatchPairingTokenForPhoneID:v14 watchID:v13 securityToken:v12 completionHandler:v11];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v17 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  [v17 getWatchPairingTokenForPhoneID:dCopy watchID:iDCopy securityToken:tokenCopy completionHandler:v11];
 }
 
 void __88__MDMClientCore_getWatchPairingTokenForPhoneID_watchID_securityToken_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1534,18 +1534,18 @@ void __88__MDMClientCore_getWatchPairingTokenForPhoneID_watchID_securityToken_co
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getOrgTokenForMAIDWithCompletionHandler:(id)a3
+- (void)getOrgTokenForMAIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__MDMClientCore_getOrgTokenForMAIDWithCompletionHandler___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 getOrgTokenForMAIDWithCompletionHandler:v5];
 }
 
@@ -1607,8 +1607,8 @@ void __62__MDMClientCore_processUserRequest_encodeResponse_completion___block_in
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v2 = [(MDMClientCore *)self xpcConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_25];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v3 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_25];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__MDMClientCore_isAwaitingUserConfigured__block_invoke_26;
@@ -1616,9 +1616,9 @@ void __62__MDMClientCore_processUserRequest_encodeResponse_completion___block_in
   v5[4] = &v6;
   [v3 isAwaitingUserConfiguredWithCompletion:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(xpcConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return xpcConnection;
 }
 
 void __41__MDMClientCore_isAwaitingUserConfigured__block_invoke(uint64_t a1, void *a2)
@@ -1666,18 +1666,18 @@ void __41__MDMClientCore_isAwaitingUserConfigured__block_invoke_26(uint64_t a1, 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)a3
+- (void)requestRRTSCheckInAndValidationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__MDMClientCore_requestRRTSCheckInAndValidationWithCompletionHandler___block_invoke;
   v9[3] = &unk_278856D88;
-  v10 = v4;
-  v5 = v4;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x2318F0080](v9);
-  v7 = [(MDMClientCore *)self xpcConnection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v6];
   [v8 requestRRTSCheckInAndValidationWithCompletionHandler:v5];
 }
 
@@ -1707,20 +1707,20 @@ void __70__MDMClientCore_requestRRTSCheckInAndValidationWithCompletionHandler___
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4
+- (void)generateBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__MDMClientCore_generateBootstrapTokenWithDevicePasscode_completionHandler___block_invoke;
   v12[3] = &unk_278856D88;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  passcodeCopy = passcode;
   v9 = MEMORY[0x2318F0080](v12);
-  v10 = [(MDMClientCore *)self xpcConnection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 generateBootstrapTokenWithDevicePasscode:v8 completionHandler:v7];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  [v11 generateBootstrapTokenWithDevicePasscode:passcodeCopy completionHandler:v7];
 }
 
 void __76__MDMClientCore_generateBootstrapTokenWithDevicePasscode_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1749,20 +1749,20 @@ void __76__MDMClientCore_generateBootstrapTokenWithDevicePasscode_completionHand
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4
+- (void)generateBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__MDMClientCore_generateBootstrapTokenWithDevicePasscodeContext_completionHandler___block_invoke;
   v12[3] = &unk_278856D88;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  contextCopy = context;
   v9 = MEMORY[0x2318F0080](v12);
-  v10 = [(MDMClientCore *)self xpcConnection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 generateBootstrapTokenWithDevicePasscodeContext:v8 completionHandler:v7];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  [v11 generateBootstrapTokenWithDevicePasscodeContext:contextCopy completionHandler:v7];
 }
 
 void __83__MDMClientCore_generateBootstrapTokenWithDevicePasscodeContext_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1791,20 +1791,20 @@ void __83__MDMClientCore_generateBootstrapTokenWithDevicePasscodeContext_complet
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncBootstrapTokenToMDMWithToken:(id)a3 completionHandler:(id)a4
+- (void)syncBootstrapTokenToMDMWithToken:(id)token completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__MDMClientCore_syncBootstrapTokenToMDMWithToken_completionHandler___block_invoke;
   v12[3] = &unk_278856D88;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  tokenCopy = token;
   v9 = MEMORY[0x2318F0080](v12);
-  v10 = [(MDMClientCore *)self xpcConnection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 syncBootstrapTokenToMDMWithToken:v8 completionHandler:v7];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  [v11 syncBootstrapTokenToMDMWithToken:tokenCopy completionHandler:v7];
 }
 
 void __68__MDMClientCore_syncBootstrapTokenToMDMWithToken_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1833,21 +1833,21 @@ void __68__MDMClientCore_syncBootstrapTokenToMDMWithToken_completionHandler___bl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscode:(id)a4 completionHandler:(id)a5
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__MDMClientCore_deleteBootstrapTokenWithToken_devicePasscode_completionHandler___block_invoke;
   v15[3] = &unk_278856D88;
-  v16 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
+  passcodeCopy = passcode;
+  tokenCopy = token;
   v12 = MEMORY[0x2318F0080](v15);
-  v13 = [(MDMClientCore *)self xpcConnection];
-  v14 = [v13 remoteObjectProxyWithErrorHandler:v12];
-  [v14 deleteBootstrapTokenWithToken:v11 devicePasscode:v10 completionHandler:v9];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  [v14 deleteBootstrapTokenWithToken:tokenCopy devicePasscode:passcodeCopy completionHandler:v9];
 }
 
 void __80__MDMClientCore_deleteBootstrapTokenWithToken_devicePasscode_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1876,21 +1876,21 @@ void __80__MDMClientCore_deleteBootstrapTokenWithToken_devicePasscode_completion
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteBootstrapTokenWithToken:(id)a3 devicePasscodeContext:(id)a4 completionHandler:(id)a5
+- (void)deleteBootstrapTokenWithToken:(id)token devicePasscodeContext:(id)context completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __87__MDMClientCore_deleteBootstrapTokenWithToken_devicePasscodeContext_completionHandler___block_invoke;
   v15[3] = &unk_278856D88;
-  v16 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
+  contextCopy = context;
+  tokenCopy = token;
   v12 = MEMORY[0x2318F0080](v15);
-  v13 = [(MDMClientCore *)self xpcConnection];
-  v14 = [v13 remoteObjectProxyWithErrorHandler:v12];
-  [v14 deleteBootstrapTokenWithToken:v11 devicePasscodeContext:v10 completionHandler:v9];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  [v14 deleteBootstrapTokenWithToken:tokenCopy devicePasscodeContext:contextCopy completionHandler:v9];
 }
 
 void __87__MDMClientCore_deleteBootstrapTokenWithToken_devicePasscodeContext_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1919,20 +1919,20 @@ void __87__MDMClientCore_deleteBootstrapTokenWithToken_devicePasscodeContext_com
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)a3 completionHandler:(id)a4
+- (void)generateAndSyncBootstrapTokenWithDevicePasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__MDMClientCore_generateAndSyncBootstrapTokenWithDevicePasscode_completionHandler___block_invoke;
   v12[3] = &unk_278856D88;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  passcodeCopy = passcode;
   v9 = MEMORY[0x2318F0080](v12);
-  v10 = [(MDMClientCore *)self xpcConnection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 generateAndSyncBootstrapTokenWithDevicePasscode:v8 completionHandler:v7];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  [v11 generateAndSyncBootstrapTokenWithDevicePasscode:passcodeCopy completionHandler:v7];
 }
 
 void __83__MDMClientCore_generateAndSyncBootstrapTokenWithDevicePasscode_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1961,20 +1961,20 @@ void __83__MDMClientCore_generateAndSyncBootstrapTokenWithDevicePasscode_complet
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)a3 completionHandler:(id)a4
+- (void)generateAndSyncBootstrapTokenWithDevicePasscodeContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __90__MDMClientCore_generateAndSyncBootstrapTokenWithDevicePasscodeContext_completionHandler___block_invoke;
   v12[3] = &unk_278856D88;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  contextCopy = context;
   v9 = MEMORY[0x2318F0080](v12);
-  v10 = [(MDMClientCore *)self xpcConnection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 generateAndSyncBootstrapTokenWithDevicePasscodeContext:v8 completionHandler:v7];
+  xpcConnection = [(MDMClientCore *)self xpcConnection];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  [v11 generateAndSyncBootstrapTokenWithDevicePasscodeContext:contextCopy completionHandler:v7];
 }
 
 void __90__MDMClientCore_generateAndSyncBootstrapTokenWithDevicePasscodeContext_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2011,14 +2011,14 @@ void __90__MDMClientCore_generateAndSyncBootstrapTokenWithDevicePasscodeContext_
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(MDMClientCore *)self xpcConnectionSyncQueue];
+  xpcConnectionSyncQueue = [(MDMClientCore *)self xpcConnectionSyncQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__MDMClientCore_xpcConnection__block_invoke;
   v6[3] = &unk_278856E48;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(xpcConnectionSyncQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -2041,16 +2041,16 @@ void __30__MDMClientCore_xpcConnection__block_invoke(uint64_t a1)
   objc_storeStrong(v4, v3);
 }
 
-- (void)_destroyXPCConnectionAndInvalidate:(BOOL)a3
+- (void)_destroyXPCConnectionAndInvalidate:(BOOL)invalidate
 {
-  v5 = [(MDMClientCore *)self xpcConnectionSyncQueue];
+  xpcConnectionSyncQueue = [(MDMClientCore *)self xpcConnectionSyncQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__MDMClientCore__destroyXPCConnectionAndInvalidate___block_invoke;
   v6[3] = &unk_278856E70;
-  v7 = a3;
+  invalidateCopy = invalidate;
   v6[4] = self;
-  dispatch_sync(v5, v6);
+  dispatch_sync(xpcConnectionSyncQueue, v6);
 }
 
 void __52__MDMClientCore__destroyXPCConnectionAndInvalidate___block_invoke(uint64_t a1)
@@ -2067,15 +2067,15 @@ void __52__MDMClientCore__destroyXPCConnectionAndInvalidate___block_invoke(uint6
 
 - (void)_queue_createAndStartMDMXPCConnection
 {
-  v3 = [(MDMClientCore *)self channelType];
-  if (v3 == 1)
+  channelType = [(MDMClientCore *)self channelType];
+  if (channelType == 1)
   {
     v4 = @"com.apple.managedconfiguration.mdmuserdservice";
     v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28435A2C8];
     MDMUserXPCProtocolInitialize(v5);
   }
 
-  else if (v3)
+  else if (channelType)
   {
     v4 = 0;
     v5 = 0;

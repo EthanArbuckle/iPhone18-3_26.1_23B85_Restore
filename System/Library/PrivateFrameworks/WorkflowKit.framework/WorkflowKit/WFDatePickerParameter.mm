@@ -1,24 +1,24 @@
 @interface WFDatePickerParameter
-- (WFDatePickerParameter)initWithDefinition:(id)a3;
+- (WFDatePickerParameter)initWithDefinition:(id)definition;
 - (id)defaultSupportedVariableTypes;
-- (id)parameterStateFromDialogResponse:(id)a3;
-- (void)createDialogRequestWithAttribution:(id)a3 defaultState:(id)a4 prompt:(id)a5 completionHandler:(id)a6;
-- (void)setDatePickerMode:(id)a3;
-- (void)setMaximumDate:(id)a3;
-- (void)setMinimumDate:(id)a3;
+- (id)parameterStateFromDialogResponse:(id)response;
+- (void)createDialogRequestWithAttribution:(id)attribution defaultState:(id)state prompt:(id)prompt completionHandler:(id)handler;
+- (void)setDatePickerMode:(id)mode;
+- (void)setMaximumDate:(id)date;
+- (void)setMinimumDate:(id)date;
 @end
 
 @implementation WFDatePickerParameter
 
-- (id)parameterStateFromDialogResponse:(id)a3
+- (id)parameterStateFromDialogResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 inputtedDate];
-  if (v4)
+  responseCopy = response;
+  inputtedDate = [responseCopy inputtedDate];
+  if (inputtedDate)
   {
     v5 = [WFDateSubstitutableState alloc];
-    v6 = [v3 inputtedDate];
-    v7 = [(WFVariableSubstitutableParameterState *)v5 initWithValue:v6];
+    inputtedDate2 = [responseCopy inputtedDate];
+    v7 = [(WFVariableSubstitutableParameterState *)v5 initWithValue:inputtedDate2];
   }
 
   else
@@ -29,28 +29,28 @@
   return v7;
 }
 
-- (void)createDialogRequestWithAttribution:(id)a3 defaultState:(id)a4 prompt:(id)a5 completionHandler:(id)a6
+- (void)createDialogRequestWithAttribution:(id)attribution defaultState:(id)state prompt:(id)prompt completionHandler:(id)handler
 {
   v10 = MEMORY[0x1E69E0A78];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  handlerCopy = handler;
+  promptCopy = prompt;
+  stateCopy = state;
+  attributionCopy = attribution;
   v20 = objc_alloc_init(v10);
-  v15 = [v13 value];
+  value = [stateCopy value];
 
-  [v20 setDefaultDate:v15];
-  v16 = [(WFDatePickerParameter *)self datePickerMode];
-  [v20 setDatePickerMode:v16];
+  [v20 setDefaultDate:value];
+  datePickerMode = [(WFDatePickerParameter *)self datePickerMode];
+  [v20 setDatePickerMode:datePickerMode];
 
-  v17 = [(WFDatePickerParameter *)self minimumDate];
-  [v20 setMinimumDate:v17];
+  minimumDate = [(WFDatePickerParameter *)self minimumDate];
+  [v20 setMinimumDate:minimumDate];
 
-  v18 = [(WFDatePickerParameter *)self maximumDate];
-  [v20 setMaximumDate:v18];
+  maximumDate = [(WFDatePickerParameter *)self maximumDate];
+  [v20 setMaximumDate:maximumDate];
 
-  v19 = [objc_alloc(MEMORY[0x1E69E0B70]) initWithDatePickerConfiguration:v20 message:0 attribution:v14 prompt:v12];
-  v11[2](v11, v19);
+  v19 = [objc_alloc(MEMORY[0x1E69E0B70]) initWithDatePickerConfiguration:v20 message:0 attribution:attributionCopy prompt:promptCopy];
+  handlerCopy[2](handlerCopy, v19);
 }
 
 - (id)defaultSupportedVariableTypes
@@ -60,20 +60,20 @@
   return [v2 allInsertableVariableTypes];
 }
 
-- (void)setMaximumDate:(id)a3
+- (void)setMaximumDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   maximumDate = self->_maximumDate;
-  v8 = v5;
-  if (maximumDate == v5)
+  v8 = dateCopy;
+  if (maximumDate == dateCopy)
   {
-    objc_storeStrong(&self->_maximumDate, a3);
+    objc_storeStrong(&self->_maximumDate, date);
   }
 
   else
   {
-    v7 = [(NSDate *)maximumDate isEqualToDate:v5];
-    objc_storeStrong(&self->_maximumDate, a3);
+    v7 = [(NSDate *)maximumDate isEqualToDate:dateCopy];
+    objc_storeStrong(&self->_maximumDate, date);
     if (!v7)
     {
       [(WFParameter *)self attributesDidChange];
@@ -81,20 +81,20 @@
   }
 }
 
-- (void)setMinimumDate:(id)a3
+- (void)setMinimumDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   minimumDate = self->_minimumDate;
-  v8 = v5;
-  if (minimumDate == v5)
+  v8 = dateCopy;
+  if (minimumDate == dateCopy)
   {
-    objc_storeStrong(&self->_minimumDate, a3);
+    objc_storeStrong(&self->_minimumDate, date);
   }
 
   else
   {
-    v7 = [(NSDate *)minimumDate isEqualToDate:v5];
-    objc_storeStrong(&self->_minimumDate, a3);
+    v7 = [(NSDate *)minimumDate isEqualToDate:dateCopy];
+    objc_storeStrong(&self->_minimumDate, date);
     if (!v7)
     {
       [(WFParameter *)self attributesDidChange];
@@ -102,11 +102,11 @@
   }
 }
 
-- (void)setDatePickerMode:(id)a3
+- (void)setDatePickerMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = self->_datePickerMode;
-  v6 = v4;
+  v6 = modeCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -135,27 +135,27 @@ LABEL_8:
 LABEL_9:
 }
 
-- (WFDatePickerParameter)initWithDefinition:(id)a3
+- (WFDatePickerParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v20.receiver = self;
   v20.super_class = WFDatePickerParameter;
-  v5 = [(WFParameter *)&v20 initWithDefinition:v4];
+  v5 = [(WFParameter *)&v20 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"DatePickerMode"];
+    v6 = [definitionCopy objectForKey:@"DatePickerMode"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
     datePickerMode = v5->_datePickerMode;
     v5->_datePickerMode = v8;
 
-    v10 = [v4 objectForKey:@"MinimumValue"];
+    v10 = [definitionCopy objectForKey:@"MinimumValue"];
     v11 = objc_opt_class();
     v12 = WFEnforceClass_1501(v10, v11);
     minimumDate = v5->_minimumDate;
     v5->_minimumDate = v12;
 
-    v14 = [v4 objectForKey:@"MaximumValue"];
+    v14 = [definitionCopy objectForKey:@"MaximumValue"];
     v15 = objc_opt_class();
     v16 = WFEnforceClass_1501(v14, v15);
     maximumDate = v5->_maximumDate;

@@ -1,16 +1,16 @@
 @interface VirtualTable.Stream.TypeErasedStreamIterator
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
 @end
 
 @implementation VirtualTable.Stream.TypeErasedStreamIterator
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   v5 = VirtualTable.Stream.TypeErasedStreamIterator.receiveInput(_:)(v7);
@@ -19,23 +19,23 @@
   return v5;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = self;
-  VirtualTable.Stream.TypeErasedStreamIterator.receive(_:)(v4);
+  subscriptionCopy = subscription;
+  selfCopy = self;
+  VirtualTable.Stream.TypeErasedStreamIterator.receive(_:)(subscriptionCopy);
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  VirtualTable.Stream.TypeErasedStreamIterator.receive(_:)(v4);
+  completionCopy = completion;
+  selfCopy = self;
+  VirtualTable.Stream.TypeErasedStreamIterator.receive(_:)(completionCopy);
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   VirtualTable.Stream.TypeErasedStreamIterator.cancel()();
 }
 

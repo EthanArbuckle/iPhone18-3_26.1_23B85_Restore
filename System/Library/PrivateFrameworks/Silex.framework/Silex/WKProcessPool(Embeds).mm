@@ -13,8 +13,8 @@
     v2 = __embedProcessPool;
     __embedProcessPool = v1;
 
-    v3 = [__embedProcessPool _configuration];
-    [v3 setAlwaysRunsAtBackgroundPriority:1];
+    _configuration = [__embedProcessPool _configuration];
+    [_configuration setAlwaysRunsAtBackgroundPriority:1];
 
     v0 = __embedProcessPool;
   }

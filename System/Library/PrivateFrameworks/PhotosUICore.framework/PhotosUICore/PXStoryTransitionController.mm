@@ -1,28 +1,28 @@
 @interface PXStoryTransitionController
-+ (BOOL)_isSupportedTransitionWithKind:(char)a3 forClipWithResourceKind:(int64_t)a4;
++ (BOOL)_isSupportedTransitionWithKind:(char)kind forClipWithResourceKind:(int64_t)resourceKind;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)activeTransition;
-- (BOOL)_canStartTransitionWithKind:(char)a3;
+- (BOOL)_canStartTransitionWithKind:(char)kind;
 - (PXGEntityManager)entityManager;
 - (PXStoryModel)model;
-- (PXStoryTransitionController)initWithModel:(id)a3 transitionSource:(id)a4;
+- (PXStoryTransitionController)initWithModel:(id)model transitionSource:(id)source;
 - (PXStoryTransitionSource)transitionSource;
-- (id)diagnosticErrorsByComponentForHUDType:(int64_t)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4;
-- (void)_handleTransitionCompleted:(id)a3;
+- (id)diagnosticErrorsByComponentForHUDType:(int64_t)type;
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size;
+- (void)_handleTransitionCompleted:(id)completed;
 - (void)_interruptActiveTransitions;
-- (void)_reportInterruptedTransitionForNewTransitionBetweenSegmentWithIdentifier:(int64_t)a3 andSegmentWithIdentifier:(int64_t)a4;
-- (void)_startTransition:(id)a3;
+- (void)_reportInterruptedTransitionForNewTransitionBetweenSegmentWithIdentifier:(int64_t)identifier andSegmentWithIdentifier:(int64_t)withIdentifier;
+- (void)_startTransition:(id)transition;
 - (void)_updateCurrentSegmentIdentifierIfNeeded;
-- (void)_updatePendingTransitionModelWithSegmentTransitionInfo:(id)a3;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
-- (void)enumerateClipIdentifiersForActiveTransitionsUsingBlock:(id)a3;
-- (void)enumerateClipIdentifiersForPendingTransitionUsingBlock:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)setActiveTransition:(id)a3;
-- (void)setCurrentError:(id)a3;
-- (void)setCurrentSegmentIdentifier:(int64_t)a3 allowTransitions:(BOOL)a4;
-- (void)setPendingTransitionModel:(id)a3;
+- (void)_updatePendingTransitionModelWithSegmentTransitionInfo:(id)info;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
+- (void)enumerateClipIdentifiersForActiveTransitionsUsingBlock:(id)block;
+- (void)enumerateClipIdentifiersForPendingTransitionUsingBlock:(id)block;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)setActiveTransition:(id)transition;
+- (void)setCurrentError:(id)error;
+- (void)setCurrentSegmentIdentifier:(int64_t)identifier allowTransitions:(BOOL)transitions;
+- (void)setPendingTransitionModel:(id)model;
 - (void)startPendingTransitionIfNeeded;
 @end
 
@@ -59,38 +59,38 @@
   return WeakRetained;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
-  v8 = a3;
+  containerCopy = container;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(PXStoryTransitionProducer *)self->_transitionProducer fallbackTransitionReasons];
-  [v4 addObjectsFromArray:v5];
-  v6 = [(PXStoryTransitionController *)self interruptedTransitionErrorDescriptions];
-  [v4 addObjectsFromArray:v6];
+  fallbackTransitionReasons = [(PXStoryTransitionProducer *)self->_transitionProducer fallbackTransitionReasons];
+  [v4 addObjectsFromArray:fallbackTransitionReasons];
+  interruptedTransitionErrorDescriptions = [(PXStoryTransitionController *)self interruptedTransitionErrorDescriptions];
+  [v4 addObjectsFromArray:interruptedTransitionErrorDescriptions];
 
   if ([v4 count])
   {
     v7 = [v4 componentsJoinedByString:@"\n"];
-    [v8 addAttachmentWithText:v7 name:@"TransitionErrors"];
+    [containerCopy addAttachmentWithText:v7 name:@"TransitionErrors"];
   }
 }
 
-- (id)diagnosticErrorsByComponentForHUDType:(int64_t)a3
+- (id)diagnosticErrorsByComponentForHUDType:(int64_t)type
 {
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
-  v5 = [(PXStoryTransitionController *)self currentError];
-  [v4 setObject:v5 forKeyedSubscript:@"Transitions"];
+  currentError = [(PXStoryTransitionController *)self currentError];
+  [v4 setObject:currentError forKeyedSubscript:@"Transitions"];
 
   v6 = [v4 copy];
 
   return v6;
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
   WeakRetained = objc_loadWeakRetained(&self->_model);
-  v7 = [WeakRetained timeline];
+  timeline = [WeakRetained timeline];
 
   v8 = objc_loadWeakRetained(&self->_model);
   v9 = v8;
@@ -102,11 +102,11 @@
   +[PXStoryAutoEditConfigurationFactory autoEditConfiguration];
   objc_claimAutoreleasedReturnValue();
   v10 = objc_loadWeakRetained(&self->_model);
-  v11 = [v10 currentStyle];
-  [v11 originalColorGradeCategory];
+  currentStyle = [v10 currentStyle];
+  [currentStyle originalColorGradeCategory];
   objc_claimAutoreleasedReturnValue();
 
-  [v7 size];
+  [timeline size];
   PXRectWithOriginAndSize();
 }
 
@@ -281,15 +281,15 @@ uint64_t __68__PXStoryTransitionController_diagnosticTextForHUDType_displaySize_
 
 - (void)_updateCurrentSegmentIdentifierIfNeeded
 {
-  v3 = [(PXStoryTransitionController *)self model];
-  v4 = ([v3 shouldPauseTransitions] & 1) == 0 && objc_msgSend(v3, "lastPlaybackTimeChangeSource") == 0;
+  model = [(PXStoryTransitionController *)self model];
+  v4 = ([model shouldPauseTransitions] & 1) == 0 && objc_msgSend(model, "lastPlaybackTimeChangeSource") == 0;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__PXStoryTransitionController__updateCurrentSegmentIdentifierIfNeeded__block_invoke;
   v6[3] = &unk_1E773E290;
-  v7 = v3;
+  v7 = model;
   v8 = v4;
-  v5 = v3;
+  v5 = model;
   [(PXStoryTransitionController *)self performChanges:v6];
 }
 
@@ -300,17 +300,17 @@ void __70__PXStoryTransitionController__updateCurrentSegmentIdentifierIfNeeded__
   [v4 setCurrentSegmentIdentifier:objc_msgSend(v3 allowTransitions:{"currentSegmentIdentifier"), *(a1 + 40)}];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (ModelObservationContext_155756 == a5)
+  observableCopy = observable;
+  if (ModelObservationContext_155756 == context)
   {
-    if ((a4 & 0x40020) != 0)
+    if ((change & 0x40020) != 0)
     {
       [(PXStoryTransitionController *)self _updateCurrentSegmentIdentifierIfNeeded];
     }
 
-    if ((a4 & 0x400010000) != 0)
+    if ((change & 0x400010000) != 0)
     {
       [(PXStoryTransitionController *)self _interruptActiveTransitions];
     }
@@ -320,34 +320,34 @@ void __70__PXStoryTransitionController__updateCurrentSegmentIdentifierIfNeeded__
   {
     v9.receiver = self;
     v9.super_class = PXStoryTransitionController;
-    [(PXStoryController *)&v9 observable:v8 didChange:a4 context:a5];
+    [(PXStoryController *)&v9 observable:observableCopy didChange:change context:context];
   }
 }
 
-- (void)setCurrentError:(id)a3
+- (void)setCurrentError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   v6 = self->_currentError;
   v7 = v6;
-  if (v6 == v5)
+  if (v6 == errorCopy)
   {
   }
 
   else
   {
-    v8 = [(NSError *)v6 isEqual:v5];
+    v8 = [(NSError *)v6 isEqual:errorCopy];
 
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_currentError, a3);
-      if (v5)
+      objc_storeStrong(&self->_currentError, error);
+      if (errorCopy)
       {
         v9 = PLStoryGetLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v10 = 138412290;
-          v11 = v5;
+          v11 = errorCopy;
           _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_INFO, "Transition controller encountered error: %@", &v10, 0xCu);
         }
       }
@@ -355,24 +355,24 @@ void __70__PXStoryTransitionController__updateCurrentSegmentIdentifierIfNeeded__
   }
 }
 
-- (void)enumerateClipIdentifiersForActiveTransitionsUsingBlock:(id)a3
+- (void)enumerateClipIdentifiersForActiveTransitionsUsingBlock:(id)block
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  blockCopy = block;
   PXFilter();
 }
 
-- (void)enumerateClipIdentifiersForPendingTransitionUsingBlock:(id)a3
+- (void)enumerateClipIdentifiersForPendingTransitionUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXStoryTransitionController *)self pendingTransitionModel];
-  v6 = v5;
+  blockCopy = block;
+  pendingTransitionModel = [(PXStoryTransitionController *)self pendingTransitionModel];
+  v6 = pendingTransitionModel;
   v27 = 0;
   v25 = 0u;
   v26 = 0u;
-  if (v5)
+  if (pendingTransitionModel)
   {
-    [v5 transitionInfo];
+    [pendingTransitionModel transitionInfo];
     v24 = 0;
     v22 = 0u;
     v23 = 0u;
@@ -406,8 +406,8 @@ void __70__PXStoryTransitionController__updateCurrentSegmentIdentifierIfNeeded__
   v18 = v21;
   v17 = v20;
   v16 = v19;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [v6 enumerateClipIdentifiersUsingBlock:v8];
 }
 
@@ -427,42 +427,42 @@ uint64_t __86__PXStoryTransitionController_enumerateClipIdentifiersForPendingTra
   return v7();
 }
 
-- (BOOL)_canStartTransitionWithKind:(char)a3
+- (BOOL)_canStartTransitionWithKind:(char)kind
 {
-  v4 = a3;
-  v5 = [(PXStoryTransitionController *)self model];
-  v6 = [v5 desiredPlayState];
-  v7 = [(PXStoryTransitionController *)self entityManager];
+  kindCopy = kind;
+  model = [(PXStoryTransitionController *)self model];
+  desiredPlayState = [model desiredPlayState];
+  entityManager = [(PXStoryTransitionController *)self entityManager];
 
-  v8 = 0;
-  v10 = [v5 viewMode] == 4 && (v4 - 4) < 0xFFFFFFFD;
-  if (v6 == 1 && !v10 && v7)
+  wantsTransitions = 0;
+  v10 = [model viewMode] == 4 && (kindCopy - 4) < 0xFFFFFFFD;
+  if (desiredPlayState == 1 && !v10 && entityManager)
   {
-    if ([v5 isScrolling] & 1) != 0 || (objc_msgSend(v5, "inLiveResize") & 1) != 0 || (objc_msgSend(v5, "isTouching") & 1) != 0 || (objc_msgSend(v5, "isPerformingViewControllerTransition"))
+    if ([model isScrolling] & 1) != 0 || (objc_msgSend(model, "inLiveResize") & 1) != 0 || (objc_msgSend(model, "isTouching") & 1) != 0 || (objc_msgSend(model, "isPerformingViewControllerTransition"))
     {
-      v8 = 0;
+      wantsTransitions = 0;
     }
 
     else
     {
       v12 = +[PXStorySettings sharedInstance];
-      v8 = [v12 wantsTransitions];
+      wantsTransitions = [v12 wantsTransitions];
     }
   }
 
-  return v8;
+  return wantsTransitions;
 }
 
-- (void)setActiveTransition:(id)a3
+- (void)setActiveTransition:(id)transition
 {
   v23 = *MEMORY[0x1E69E9840];
   p_activeTransition = &self->_activeTransition;
   fromSegmentIdentifier = self->_activeTransition.fromSegmentIdentifier;
   toSegmentIdentifier = self->_activeTransition.toSegmentIdentifier;
-  if (fromSegmentIdentifier != a3.var0 || toSegmentIdentifier != a3.var1)
+  if (fromSegmentIdentifier != transition.var0 || toSegmentIdentifier != transition.var1)
   {
-    var1 = a3.var1;
-    var0 = a3.var0;
+    var1 = transition.var1;
+    var0 = transition.var0;
     if (fromSegmentIdentifier | toSegmentIdentifier)
     {
       v10 = [(PXStoryTransitionController *)self log];
@@ -473,7 +473,7 @@ uint64_t __86__PXStoryTransitionController_enumerateClipIdentifiersForPendingTra
         if (os_signpost_enabled(v10))
         {
           v17 = 134217984;
-          v18 = [(PXStoryTransitionController *)self logContext];
+          logContext = [(PXStoryTransitionController *)self logContext];
           _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v10, OS_SIGNPOST_INTERVAL_END, v12, "PXStoryTransitionControllerChangedActiveTransition", "Context=%{signpost.telemetry:string2}lu ", &v17, 0xCu);
         }
       }
@@ -488,9 +488,9 @@ uint64_t __86__PXStoryTransitionController_enumerateClipIdentifiersForPendingTra
         v15 = v14;
         if (os_signpost_enabled(v13))
         {
-          v16 = [(PXStoryTransitionController *)self logContext];
+          logContext2 = [(PXStoryTransitionController *)self logContext];
           v17 = 134218496;
-          v18 = v16;
+          logContext = logContext2;
           v19 = 2048;
           v20 = var0;
           v21 = 2048;
@@ -506,20 +506,20 @@ uint64_t __86__PXStoryTransitionController_enumerateClipIdentifiersForPendingTra
   }
 }
 
-- (void)setPendingTransitionModel:(id)a3
+- (void)setPendingTransitionModel:(id)model
 {
-  v5 = a3;
-  if (self->_pendingTransitionModel != v5)
+  modelCopy = model;
+  if (self->_pendingTransitionModel != modelCopy)
   {
-    objc_storeStrong(&self->_pendingTransitionModel, a3);
-    if (v5)
+    objc_storeStrong(&self->_pendingTransitionModel, model);
+    if (modelCopy)
     {
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __57__PXStoryTransitionController_setPendingTransitionModel___block_invoke;
       v6[3] = &unk_1E773E220;
       v6[4] = self;
-      v7 = v5;
+      v7 = modelCopy;
       [(PXStoryTransitionController *)self performChanges:v6];
     }
   }
@@ -533,31 +533,31 @@ uint64_t __57__PXStoryTransitionController_setPendingTransitionModel___block_inv
   return [v4 setActiveTransition:{v3, v2}];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStoryTransitionController;
-  [(PXStoryController *)&v3 performChanges:a3];
+  [(PXStoryController *)&v3 performChanges:changes];
 }
 
-- (void)_handleTransitionCompleted:(id)a3
+- (void)_handleTransitionCompleted:(id)completed
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completedCopy = completed;
   v5 = [(PXStoryTransitionController *)self log];
-  v6 = os_signpost_id_make_with_pointer(v5, v4);
+  v6 = os_signpost_id_make_with_pointer(v5, completedCopy);
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v7 = v6;
     if (os_signpost_enabled(v5))
     {
       *buf = 134217984;
-      v10 = [(PXStoryTransitionController *)self logContext];
+      logContext = [(PXStoryTransitionController *)self logContext];
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryTransitionActive", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
     }
   }
 
-  [(NSMutableArray *)self->_activeClipTransitions removeObject:v4];
+  [(NSMutableArray *)self->_activeClipTransitions removeObject:completedCopy];
   if (![(NSMutableArray *)self->_activeClipTransitions count])
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -569,24 +569,24 @@ uint64_t __57__PXStoryTransitionController_setPendingTransitionModel___block_inv
   }
 }
 
-- (void)_reportInterruptedTransitionForNewTransitionBetweenSegmentWithIdentifier:(int64_t)a3 andSegmentWithIdentifier:(int64_t)a4
+- (void)_reportInterruptedTransitionForNewTransitionBetweenSegmentWithIdentifier:(int64_t)identifier andSegmentWithIdentifier:(int64_t)withIdentifier
 {
-  v7 = [(PXStoryTransitionController *)self activeTransition];
+  activeTransition = [(PXStoryTransitionController *)self activeTransition];
   v9 = v8;
-  v10 = [(PXStoryTransitionController *)self interruptedTransitionErrorDescriptions];
-  v11 = v10;
+  interruptedTransitionErrorDescriptions = [(PXStoryTransitionController *)self interruptedTransitionErrorDescriptions];
+  v11 = interruptedTransitionErrorDescriptions;
   v12 = MEMORY[0x1E695E0F0];
-  if (v10)
+  if (interruptedTransitionErrorDescriptions)
   {
-    v12 = v10;
+    v12 = interruptedTransitionErrorDescriptions;
   }
 
   v13 = v12;
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld → %ld", a3, a4];
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld → %ld", v7, v9];
-  v17 = [v14 stringWithFormat:@"New transition (%@) started while existing one (%@) was in progress.", v15, v16];
+  withIdentifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld → %ld", identifier, withIdentifier];
+  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld → %ld", activeTransition, v9];
+  v17 = [v14 stringWithFormat:@"New transition (%@) started while existing one (%@) was in progress.", withIdentifier, v16];
   v26 = [v13 arrayByAddingObject:v17];
 
   [(PXStoryTransitionController *)self setInterruptedTransitionErrorDescriptions:v26];
@@ -633,48 +633,48 @@ uint64_t __57__PXStoryTransitionController_setPendingTransitionModel___block_inv
   }
 }
 
-- (void)_startTransition:(id)a3
+- (void)_startTransition:(id)transition
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transitionCopy = transition;
   v5 = [(PXStoryTransitionController *)self log];
-  v6 = os_signpost_id_make_with_pointer(v5, v4);
+  v6 = os_signpost_id_make_with_pointer(v5, transitionCopy);
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v7 = v6;
     if (os_signpost_enabled(v5))
     {
       *buf = 134218242;
-      v20 = [(PXStoryTransitionController *)self logContext];
+      logContext = [(PXStoryTransitionController *)self logContext];
       v21 = 2114;
-      v22 = v4;
+      v22 = transitionCopy;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v7, "PXStoryTransitionActive", "Context=%{signpost.telemetry:string2}lu %{public}@", buf, 0x16u);
     }
   }
 
-  if (v4)
+  if (transitionCopy)
   {
-    [(NSMutableArray *)self->_activeClipTransitions addObject:v4];
+    [(NSMutableArray *)self->_activeClipTransitions addObject:transitionCopy];
     objc_initWeak(buf, self);
-    objc_initWeak(&location, v4);
-    v8 = [v4 completionHandler];
+    objc_initWeak(&location, transitionCopy);
+    completionHandler = [transitionCopy completionHandler];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __48__PXStoryTransitionController__startTransition___block_invoke;
     v14[3] = &unk_1E773E1F8;
     objc_copyWeak(&v16, buf);
     objc_copyWeak(&v17, &location);
-    v9 = v8;
+    v9 = completionHandler;
     v15 = v9;
-    [v4 setCompletionHandler:v14];
-    v10 = [(PXStoryTransitionController *)self model];
-    v11 = [v10 animationController];
+    [transitionCopy setCompletionHandler:v14];
+    model = [(PXStoryTransitionController *)self model];
+    animationController = [model animationController];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __48__PXStoryTransitionController__startTransition___block_invoke_2;
     v12[3] = &unk_1E774A370;
-    v13 = v4;
-    [v11 performChanges:v12];
+    v13 = transitionCopy;
+    [animationController performChanges:v12];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v16);
@@ -704,24 +704,24 @@ uint64_t __48__PXStoryTransitionController__startTransition___block_invoke(uint6
 - (void)startPendingTransitionIfNeeded
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryTransitionController *)self pendingTransitionModel];
-  if (v3)
+  pendingTransitionModel = [(PXStoryTransitionController *)self pendingTransitionModel];
+  if (pendingTransitionModel)
   {
     [(PXStoryTransitionController *)self setPendingTransitionModel:0];
-    v4 = [(PXStoryTransitionController *)self model];
+    model = [(PXStoryTransitionController *)self model];
     v5 = objc_alloc_init(PXStoryTransitionConfiguration);
-    [(PXStoryTransitionConfiguration *)v5 setTransitionModel:v3];
-    v6 = [(PXStoryTransitionController *)self entityManager];
-    [(PXStoryTransitionConfiguration *)v5 setEntityManager:v6];
+    [(PXStoryTransitionConfiguration *)v5 setTransitionModel:pendingTransitionModel];
+    entityManager = [(PXStoryTransitionController *)self entityManager];
+    [(PXStoryTransitionConfiguration *)v5 setEntityManager:entityManager];
 
-    v7 = [(PXStoryTransitionController *)self transitionSource];
-    [(PXStoryTransitionConfiguration *)v5 setSource:v7];
+    transitionSource = [(PXStoryTransitionController *)self transitionSource];
+    [(PXStoryTransitionConfiguration *)v5 setSource:transitionSource];
 
-    v8 = [v4 timeline];
-    [(PXStoryTransitionConfiguration *)v5 setTimeline:v8];
+    timeline = [model timeline];
+    [(PXStoryTransitionConfiguration *)v5 setTimeline:timeline];
 
-    v9 = [v4 timelineSpec];
-    [(PXStoryTransitionConfiguration *)v5 setTimelineSpec:v9];
+    timelineSpec = [model timelineSpec];
+    [(PXStoryTransitionConfiguration *)v5 setTimelineSpec:timelineSpec];
 
     v10 = [(PXStoryTransitionProducer *)self->_transitionProducer transitionsWithConfiguration:v5];
     v25 = 0u;
@@ -763,8 +763,8 @@ uint64_t __48__PXStoryTransitionController__startTransition___block_invoke(uint6
       [(PXStoryTransitionController *)self performChanges:v24];
     }
 
-    v15 = [(PXStoryTransitionProducer *)self->_transitionProducer fallbackTransitionReasons];
-    v16 = [v15 count];
+    fallbackTransitionReasons = [(PXStoryTransitionProducer *)self->_transitionProducer fallbackTransitionReasons];
+    v16 = [fallbackTransitionReasons count];
 
     if (v16 >= 1)
     {
@@ -774,12 +774,12 @@ uint64_t __48__PXStoryTransitionController__startTransition___block_invoke(uint6
   }
 }
 
-- (void)_updatePendingTransitionModelWithSegmentTransitionInfo:(id)a3
+- (void)_updatePendingTransitionModelWithSegmentTransitionInfo:(id)info
 {
-  v3 = [(PXStoryTransitionController *)self model];
-  v4 = [v3 timeline];
+  model = [(PXStoryTransitionController *)self model];
+  timeline = [model timeline];
 
-  [v4 size];
+  [timeline size];
   PXRectWithOriginAndSize();
 }
 
@@ -850,52 +850,52 @@ uint64_t __86__PXStoryTransitionController__updatePendingTransitionModelWithSegm
   return result;
 }
 
-- (void)setCurrentSegmentIdentifier:(int64_t)a3 allowTransitions:(BOOL)a4
+- (void)setCurrentSegmentIdentifier:(int64_t)identifier allowTransitions:(BOOL)transitions
 {
   currentSegmentIdentifier = self->_currentSegmentIdentifier;
-  if (currentSegmentIdentifier != a3)
+  if (currentSegmentIdentifier != identifier)
   {
-    v5 = a4;
-    self->_currentSegmentIdentifier = a3;
-    v8 = [(PXStoryTransitionController *)self activeTransition];
-    if (v8 | v9)
+    transitionsCopy = transitions;
+    self->_currentSegmentIdentifier = identifier;
+    activeTransition = [(PXStoryTransitionController *)self activeTransition];
+    if (activeTransition | v9)
     {
       v10 = +[PXStoryTransitionsSettings sharedInstance];
       v11 = v10;
-      if (v5 && ([v10 suppressInterruptedTransitionErrors] & 1) == 0)
+      if (transitionsCopy && ([v10 suppressInterruptedTransitionErrors] & 1) == 0)
       {
-        [(PXStoryTransitionController *)self _reportInterruptedTransitionForNewTransitionBetweenSegmentWithIdentifier:currentSegmentIdentifier andSegmentWithIdentifier:a3];
+        [(PXStoryTransitionController *)self _reportInterruptedTransitionForNewTransitionBetweenSegmentWithIdentifier:currentSegmentIdentifier andSegmentWithIdentifier:identifier];
       }
 
       [(PXStoryTransitionController *)self _interruptActiveTransitions];
     }
 
-    if (v5)
+    if (transitionsCopy)
     {
-      v12 = [(PXStoryTransitionController *)self model];
-      v14 = [v12 timeline];
+      model = [(PXStoryTransitionController *)self model];
+      timeline = [model timeline];
 
-      v13 = [v14 indexOfSegmentWithIdentifier:currentSegmentIdentifier];
-      if (v13 + 1 == [v14 indexOfSegmentWithIdentifier:a3])
+      v13 = [timeline indexOfSegmentWithIdentifier:currentSegmentIdentifier];
+      if (v13 + 1 == [timeline indexOfSegmentWithIdentifier:identifier])
       {
-        [(PXStoryTransitionController *)self _updatePendingTransitionModelWithSegmentTransitionInfo:currentSegmentIdentifier, a3];
+        [(PXStoryTransitionController *)self _updatePendingTransitionModelWithSegmentTransitionInfo:currentSegmentIdentifier, identifier];
       }
     }
   }
 }
 
-- (PXStoryTransitionController)initWithModel:(id)a3 transitionSource:(id)a4
+- (PXStoryTransitionController)initWithModel:(id)model transitionSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  sourceCopy = source;
   v20.receiver = self;
   v20.super_class = PXStoryTransitionController;
-  v8 = [(PXStoryController *)&v20 initWithObservableModel:v6];
+  v8 = [(PXStoryController *)&v20 initWithObservableModel:modelCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = objc_storeWeak(&v8->_model, v6);
-    [v6 registerChangeObserver:v9 context:ModelObservationContext_155756];
+    v10 = objc_storeWeak(&v8->_model, modelCopy);
+    [modelCopy registerChangeObserver:v9 context:ModelObservationContext_155756];
 
     WeakRetained = objc_loadWeakRetained(&v9->_model);
     v18[0] = MEMORY[0x1E69E9820];
@@ -908,12 +908,12 @@ uint64_t __86__PXStoryTransitionController__updatePendingTransitionModelWithSegm
 
     v12->_activeTransition.fromSegmentIdentifier = 0;
     v12->_activeTransition.toSegmentIdentifier = 0;
-    objc_storeWeak(&v12->_transitionSource, v7);
+    objc_storeWeak(&v12->_transitionSource, sourceCopy);
     v13 = objc_alloc_init(PXStoryTransitionProducer);
     transitionProducer = v12->_transitionProducer;
     v12->_transitionProducer = v13;
 
-    v12->_currentSegmentIdentifier = [v6 currentSegmentIdentifier];
+    v12->_currentSegmentIdentifier = [modelCopy currentSegmentIdentifier];
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     activeClipTransitions = v12->_activeClipTransitions;
     v12->_activeClipTransitions = v15;
@@ -922,7 +922,7 @@ uint64_t __86__PXStoryTransitionController__updatePendingTransitionModelWithSegm
   return v9;
 }
 
-+ (BOOL)_isSupportedTransitionWithKind:(char)a3 forClipWithResourceKind:(int64_t)a4
++ (BOOL)_isSupportedTransitionWithKind:(char)kind forClipWithResourceKind:(int64_t)resourceKind
 {
   if (_isSupportedTransitionWithKind_forClipWithResourceKind__onceToken != -1)
   {
@@ -931,7 +931,7 @@ uint64_t __86__PXStoryTransitionController__updatePendingTransitionModelWithSegm
 
   v5 = _isSupportedTransitionWithKind_forClipWithResourceKind__supportedTransitionKinds;
 
-  return [v5 containsIndex:a4];
+  return [v5 containsIndex:resourceKind];
 }
 
 void __86__PXStoryTransitionController__isSupportedTransitionWithKind_forClipWithResourceKind___block_invoke()

@@ -1,89 +1,89 @@
 @interface TTMergeableString
 + (id)unserialisedReplicaID;
-- (BOOL)canMergeString:(id)a3;
-- (BOOL)graphIsEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)canMergeString:(id)string;
+- (BOOL)graphIsEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFragment;
-- (BOOL)selection:(id)a3 wasModifiedAfter:(id)a4;
-- (BOOL)textEitherSideOfSelectionAnchor:(TopoID)a3 wasModifiedAfter:(id)a4;
+- (BOOL)selection:(id)selection wasModifiedAfter:(id)after;
+- (BOOL)textEitherSideOfSelectionAnchor:(TopoID)anchor wasModifiedAfter:(id)after;
 - (NSString)description;
-- (TTMergeableString)initWithArchive:(const void *)a3 andReplicaID:(id)a4 withOrderedSubstrings:(void *)a5 timestamp:(id)a6;
-- (TTMergeableString)initWithData:(id)a3 andReplicaID:(id)a4;
-- (TTMergeableString)initWithReplicaID:(id)a3 asFragment:(BOOL)a4;
+- (TTMergeableString)initWithArchive:(const void *)archive andReplicaID:(id)d withOrderedSubstrings:(void *)substrings timestamp:(id)timestamp;
+- (TTMergeableString)initWithData:(id)data andReplicaID:(id)d;
+- (TTMergeableString)initWithReplicaID:(id)d asFragment:(BOOL)fragment;
 - (TTMergeableStringDelegate)delegate;
-- (TopoIDRange)insertAttributedString:(SEL)a3 after:(id)a4 before:(void *)a5;
-- (__n128)deleteSubstrings:(uint64_t)a3 withCharacterRanges:(char)a4;
+- (TopoIDRange)insertAttributedString:(SEL)string after:(id)after before:(void *)before;
+- (__n128)deleteSubstrings:(uint64_t)substrings withCharacterRanges:(char)ranges;
 - (id).cxx_construct;
-- (id)characterRangesForSelection:(id)a3;
-- (id)characterRangesForSelection:(id)a3 selectedSubstringsBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dotDescription:(unint64_t)a3;
-- (id)i_saveDeltasSinceTimestamp:(id)a3 toArchive:(void *)a4;
-- (id)replicaUUIDForCharacterAtIndex:(unint64_t)a3;
-- (id)selectionForCharacterRanges:(id)a3;
-- (id)selectionForCharacterRanges:(id)a3 selectionAffinity:(unint64_t)a4;
+- (id)characterRangesForSelection:(id)selection;
+- (id)characterRangesForSelection:(id)selection selectedSubstringsBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dotDescription:(unint64_t)description;
+- (id)i_saveDeltasSinceTimestamp:(id)timestamp toArchive:(void *)archive;
+- (id)replicaUUIDForCharacterAtIndex:(unint64_t)index;
+- (id)selectionForCharacterRanges:(id)ranges;
+- (id)selectionForCharacterRanges:(id)ranges selectionAffinity:(unint64_t)affinity;
 - (id)serialize;
-- (id)serializeDeltaSinceTimestamp:(id)a3;
-- (int64_t)substring:(void *)a3 modifiedAfter:(id)a4;
-- (unint64_t)getCharacterIndexForCharID:(TopoID)a3;
+- (id)serializeDeltaSinceTimestamp:(id)timestamp;
+- (int64_t)substring:(void *)substring modifiedAfter:(id)after;
+- (unint64_t)getCharacterIndexForCharID:(TopoID)d;
 - (unint64_t)hash;
 - (unint64_t)length;
-- (unint64_t)mergeWithString:(id)a3 mergeTimestamps:(BOOL)a4;
-- (void)checkTimestampLogStyleErrors:(BOOL)a3;
+- (unint64_t)mergeWithString:(id)string mergeTimestamps:(BOOL)timestamps;
+- (void)checkTimestampLogStyleErrors:(BOOL)errors;
 - (void)cleanupObjectsNeedingUpdatedRanges;
 - (void)coalesce;
 - (void)dealloc;
-- (void)deleteCharactersInRange:(_NSRange)a3;
-- (void)deleteSubstrings:(void *)a3 withCharacterRanges:(void *)a4;
-- (void)dumpMergeData:(id)a3;
+- (void)deleteCharactersInRange:(_NSRange)range;
+- (void)deleteSubstrings:(void *)substrings withCharacterRanges:(void *)ranges;
+- (void)dumpMergeData:(id)data;
 - (void)endEditing;
-- (void)enumerateRangesModifiedAfter:(id)a3 usingBlock:(id)a4;
-- (void)enumerateSubstrings:(id)a3;
+- (void)enumerateRangesModifiedAfter:(id)after usingBlock:(id)block;
+- (void)enumerateSubstrings:(id)substrings;
 - (void)generateIdsForLocalChanges;
-- (void)generateIdsForLocalChangesSafeForSharedTimestamp:(BOOL)a3;
-- (void)getCharacterRanges:(void *)a3 forSubstrings:(void *)a4;
-- (void)getSubstringBeforeTopoID:(TopoID)a3;
-- (void)getSubstrings:(void *)a3 forCharacterRange:(_NSRange)a4;
-- (void)getSubstrings:(void *)a3 forTopoIDRange:(TopoIDRange *)a4;
-- (void)getSubstrings:(void *)a3 inOrderedSubstrings:(void *)a4 forCharacterRange:(_NSRange)a5;
-- (void)insertAttributedString:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertString:(id)a3 atIndex:(unint64_t)a4;
-- (void)mergeWith:(id)a3;
-- (void)moveRange:(_NSRange)a3 toIndex:(unint64_t)a4;
+- (void)generateIdsForLocalChangesSafeForSharedTimestamp:(BOOL)timestamp;
+- (void)getCharacterRanges:(void *)ranges forSubstrings:(void *)substrings;
+- (void)getSubstringBeforeTopoID:(TopoID)d;
+- (void)getSubstrings:(void *)substrings forCharacterRange:(_NSRange)range;
+- (void)getSubstrings:(void *)substrings forTopoIDRange:(TopoIDRange *)range;
+- (void)getSubstrings:(void *)substrings inOrderedSubstrings:(void *)orderedSubstrings forCharacterRange:(_NSRange)range;
+- (void)insertAttributedString:(id)string atIndex:(unint64_t)index;
+- (void)insertString:(id)string atIndex:(unint64_t)index;
+- (void)mergeWith:(id)with;
+- (void)moveRange:(_NSRange)range toIndex:(unint64_t)index;
 - (void)orderedSubstrings;
-- (void)realizeLocalChangesIn:(id)a3;
-- (void)replaceCharactersInRange:(_NSRange)a3 withAttributedString:(id)a4;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4;
-- (void)saveSubstrings:(void *)a3 archiveSet:(void *)a4 linkSet:(void *)a5 archivedString:(id *)a6 toArchive:(void *)a7;
-- (void)saveToArchive:(void *)a3;
-- (void)setDocument:(id)a3;
-- (void)setTimestamp:(id)a3;
+- (void)realizeLocalChangesIn:(id)in;
+- (void)replaceCharactersInRange:(_NSRange)range withAttributedString:(id)string;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string;
+- (void)saveSubstrings:(void *)substrings archiveSet:(void *)set linkSet:(void *)linkSet archivedString:(id *)string toArchive:(void *)archive;
+- (void)saveToArchive:(void *)archive;
+- (void)setDocument:(id)document;
+- (void)setTimestamp:(id)timestamp;
 - (void)sortSplitNodes;
-- (void)splitTopoSubstring:(void *)a3 atIndex:(unsigned int)a4;
-- (void)traverseUnordered:(id)a3;
+- (void)splitTopoSubstring:(void *)substring atIndex:(unsigned int)index;
+- (void)traverseUnordered:(id)unordered;
 - (void)updateAttributedStringAfterMerge;
 - (void)updateCache;
 - (void)updateClock;
 - (void)updateSubstringIndexes;
-- (void)updateTimestampsInRange:(_NSRange)a3;
-- (void)updateTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4;
+- (void)updateTimestampsInRange:(_NSRange)range;
+- (void)updateTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d;
 @end
 
 @implementation TTMergeableString
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  v4 = a3;
-  v5 = [v4 replica];
-  [(TTMergeableString *)self setReplicaUUID:v5];
+  documentCopy = document;
+  replica = [documentCopy replica];
+  [(TTMergeableString *)self setReplicaUUID:replica];
 
   v6 = objc_opt_class();
-  v7 = REMDynamicCast(v6, v4);
+  v7 = REMDynamicCast(v6, documentCopy);
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 sharedTopotextTimestamp];
-    [(TTMergeableString *)self setTimestamp:v9];
+    sharedTopotextTimestamp = [v7 sharedTopotextTimestamp];
+    [(TTMergeableString *)self setTimestamp:sharedTopotextTimestamp];
 
     objc_setAssociatedObject(self, TTMergeableStringCRDataTypeCRDocumentKey, v8, 0);
   }
@@ -98,10 +98,10 @@
   }
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v8 = a3;
-  if (v8)
+  withCopy = with;
+  if (withCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -110,44 +110,44 @@
       objc_exception_throw(v7);
     }
 
-    [(TTMergeableString *)self mergeWithString:v8 mergeTimestamps:0];
-    v4 = [(TTMergeableString *)self document];
+    [(TTMergeableString *)self mergeWithString:withCopy mergeTimestamps:0];
+    document = [(TTMergeableString *)self document];
 
-    if (v4)
+    if (document)
     {
-      v5 = [(TTMergeableString *)self document];
-      v6 = [v5 stringsWithClocksNeedingUpdating];
-      [v6 addObject:self];
+      document2 = [(TTMergeableString *)self document];
+      stringsWithClocksNeedingUpdating = [document2 stringsWithClocksNeedingUpdating];
+      [stringsWithClocksNeedingUpdating addObject:self];
     }
   }
 }
 
-- (void)realizeLocalChangesIn:(id)a3
+- (void)realizeLocalChangesIn:(id)in
 {
   [(TTMergeableString *)self generateIdsForLocalChanges];
-  v4 = [(TTMergeableString *)self document];
+  document = [(TTMergeableString *)self document];
 
-  if (v4)
+  if (document)
   {
-    v6 = [(TTMergeableString *)self document];
-    v5 = [v6 stringsWithClocksToResetAfterRealizingLocalChanges];
-    [v5 addObject:self];
+    document2 = [(TTMergeableString *)self document];
+    stringsWithClocksToResetAfterRealizingLocalChanges = [document2 stringsWithClocksToResetAfterRealizingLocalChanges];
+    [stringsWithClocksToResetAfterRealizingLocalChanges addObject:self];
   }
 }
 
-- (TTMergeableString)initWithReplicaID:(id)a3 asFragment:(BOOL)a4
+- (TTMergeableString)initWithReplicaID:(id)d asFragment:(BOOL)fragment
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = TTMergeableString;
   v8 = [(TTMergeableString *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_replicaUUID, a3);
+    objc_storeStrong(&v8->_replicaUUID, d);
     v9->_unserializedClock = 0;
-    if (!a4)
+    if (!fragment)
     {
       operator new();
     }
@@ -229,13 +229,13 @@
   [(TTMergeableString *)&v11 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   topotext::String::String(v8);
   [(TTMergeableString *)self saveToArchive:v8];
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(TTMergeableString *)self replicaUUID];
-  v6 = [v4 initWithArchive:v8 andReplicaID:v5];
+  replicaUUID = [(TTMergeableString *)self replicaUUID];
+  v6 = [v4 initWithArchive:v8 andReplicaID:replicaUUID];
 
   topotext::String::~String(v8);
   return v6;
@@ -262,43 +262,43 @@ uint64_t __42__TTMergeableString_unserialisedReplicaID__block_invoke()
 
 - (unint64_t)length
 {
-  v2 = [(TTMergeableString *)self string];
-  v3 = [v2 length];
+  string = [(TTMergeableString *)self string];
+  v3 = [string length];
 
   return v3;
 }
 
-- (void)insertString:(id)a3 atIndex:(unint64_t)a4
+- (void)insertString:(id)string atIndex:(unint64_t)index
 {
-  v7 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7];
-  [(TTMergeableString *)self insertAttributedString:v6 atIndex:a4];
+  stringCopy = string;
+  v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy];
+  [(TTMergeableString *)self insertAttributedString:v6 atIndex:index];
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  v7 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy];
   [(TTMergeableString *)self replaceCharactersInRange:location withAttributedString:length, v7];
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withAttributedString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withAttributedString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v7 = [(TTMergeableString *)self delegate];
-  v8 = v7;
-  if (v7)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  delegate = [(TTMergeableString *)self delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    [v7 beginEditing];
+    [delegate beginEditing];
   }
 
   [(TTMergeableString *)self beginEditing];
   [(TTMergeableString *)self deleteCharactersInRange:location, length];
-  [(TTMergeableString *)self insertAttributedString:v9 atIndex:location];
+  [(TTMergeableString *)self insertAttributedString:stringCopy atIndex:location];
   [(TTMergeableString *)self endEditing];
   if (v8)
   {
@@ -306,21 +306,21 @@ uint64_t __42__TTMergeableString_unserialisedReplicaID__block_invoke()
   }
 }
 
-- (void)deleteCharactersInRange:(_NSRange)a3
+- (void)deleteCharactersInRange:(_NSRange)range
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v10 = 0;
     v11 = 0;
     v12 = 0;
-    v13 = a3;
+    rangeCopy = range;
     v8 = 0;
     v9 = 0;
     __p = 0;
-    std::vector<_NSRange>::__init_with_size[abi:ne200100]<_NSRange const*,_NSRange const*>(&__p, &v13, &v14, 1uLL);
+    std::vector<_NSRange>::__init_with_size[abi:ne200100]<_NSRange const*,_NSRange const*>(&__p, &rangeCopy, &v14, 1uLL);
     [(TTMergeableString *)self getSubstrings:&v10 forCharacterRange:location, length];
     [(TTMergeableString *)self deleteSubstrings:&v10 withCharacterRanges:&__p];
     if (__p)
@@ -339,26 +339,26 @@ uint64_t __42__TTMergeableString_unserialisedReplicaID__block_invoke()
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertAttributedString:(id)a3 atIndex:(unint64_t)a4
+- (void)insertAttributedString:(id)string atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (![v6 length])
+  stringCopy = string;
+  if (![stringCopy length])
   {
     goto LABEL_16;
   }
 
-  if (a4)
+  if (index)
   {
-    if ([(TTMergeableString *)self length]== a4)
+    if ([(TTMergeableString *)self length]== index)
     {
-      v7 = [(TTMergeableString *)self orderedSubstrings];
-      v8 = [(TTMergeableString *)self orderedSubstrings];
-      v9 = *(*v7 + v8[1] - *v8 - 16);
+      orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+      orderedSubstrings2 = [(TTMergeableString *)self orderedSubstrings];
+      v9 = *(*orderedSubstrings + orderedSubstrings2[1] - *orderedSubstrings2 - 16);
       begin = self->_endNodes.__begin_;
       goto LABEL_14;
     }
 
-    v12 = TTBoundedCheckedCastNSUIntegerToUInt32(a4);
+    v12 = TTBoundedCheckedCastNSUIntegerToUInt32(index);
     for (i = 0; ; i += 8)
     {
       v9 = *(*[(TTMergeableString *)self orderedSubstrings]+ i);
@@ -395,7 +395,7 @@ uint64_t __42__TTMergeableString_unserialisedReplicaID__block_invoke()
 LABEL_14:
   v17 = *begin;
 LABEL_15:
-  [(TTMergeableString *)self insertAttributedString:v6 after:v9 before:v17];
+  [(TTMergeableString *)self insertAttributedString:stringCopy after:v9 before:v17];
 
 LABEL_16:
 }
@@ -414,12 +414,12 @@ LABEL_16:
   }
 }
 
-- (id)replicaUUIDForCharacterAtIndex:(unint64_t)a3
+- (id)replicaUUIDForCharacterAtIndex:(unint64_t)index
 {
-  v4 = [(TTMergeableString *)self orderedSubstrings];
-  v5 = *v4;
-  v6 = v4[1];
-  if (*v4 == v6)
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v5 = *orderedSubstrings;
+  v6 = orderedSubstrings[1];
+  if (*orderedSubstrings == v6)
   {
 LABEL_9:
     v13 = 0;
@@ -447,8 +447,8 @@ LABEL_8:
 
   v10 = *(v8 + 16);
   v9 = v7 + v10;
-  v11 = a3 >= v7;
-  v12 = a3 - v7;
+  v11 = index >= v7;
+  v12 = index - v7;
   if (!v11 || v12 >= v10)
   {
     goto LABEL_8;
@@ -460,28 +460,28 @@ LABEL_11:
   return v13;
 }
 
-- (id)selectionForCharacterRanges:(id)a3
+- (id)selectionForCharacterRanges:(id)ranges
 {
-  v3 = [(TTMergeableString *)self selectionForCharacterRanges:a3 selectionAffinity:0];
+  v3 = [(TTMergeableString *)self selectionForCharacterRanges:ranges selectionAffinity:0];
 
   return v3;
 }
 
-- (id)selectionForCharacterRanges:(id)a3 selectionAffinity:(unint64_t)a4
+- (id)selectionForCharacterRanges:(id)ranges selectionAffinity:(unint64_t)affinity
 {
-  v6 = a3;
+  rangesCopy = ranges;
   v36 = objc_alloc_init(TTMergeableStringSelection);
-  v35 = a4;
-  [(TTMergeableStringSelection *)v36 setSelectionAffinity:a4];
-  if (![v6 count])
+  affinityCopy = affinity;
+  [(TTMergeableStringSelection *)v36 setSelectionAffinity:affinity];
+  if (![rangesCopy count])
   {
     goto LABEL_32;
   }
 
-  v7 = [(TTMergeableString *)self orderedSubstrings];
-  v33 = v7[1];
-  v34 = *v7;
-  if (*v7 == v33)
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v33 = orderedSubstrings[1];
+  v34 = *orderedSubstrings;
+  if (*orderedSubstrings == v33)
   {
     goto LABEL_32;
   }
@@ -499,8 +499,8 @@ LABEL_11:
 
     while (1)
     {
-      v12 = [v6 objectAtIndexedSubscript:v9];
-      v13 = [v12 rangeValue];
+      v12 = [rangesCopy objectAtIndexedSubscript:v9];
+      rangeValue = [v12 rangeValue];
       v15 = v14;
 
       if (!v10)
@@ -509,24 +509,24 @@ LABEL_11:
       }
 
       v10 = v15 == 0;
-      if (v15 | v35)
+      if (v15 | affinityCopy)
       {
         v16 = 1;
       }
 
       else
       {
-        v16 = v13 == 0;
+        v16 = rangeValue == 0;
       }
 
       v17 = !v16;
-      if (v35 || v8 != v13)
+      if (affinityCopy || v8 != rangeValue)
       {
         v19 = 0;
-        if (v35 == 1)
+        if (affinityCopy == 1)
         {
           v18 = 0;
-          if (v8 == v13)
+          if (v8 == rangeValue)
           {
             v19 = 0;
             v18 = *(v11 + 56) == *(v11 + 48);
@@ -545,8 +545,8 @@ LABEL_11:
         v19 = *(v11 + 72) == 0;
       }
 
-      v27 = v13 - v17;
-      if (v8 + *(v11 + 16) <= v13 - v17 && !v18 && !v19)
+      v27 = rangeValue - v17;
+      if (v8 + *(v11 + 16) <= rangeValue - v17 && !v18 && !v19)
       {
         v10 = 1;
         goto LABEL_29;
@@ -554,25 +554,25 @@ LABEL_11:
 
       v28 = *v11;
       v29 = *(v11 + 8);
-      v30 = [MEMORY[0x1E696AFB0] TTZero];
+      tTZero = [MEMORY[0x1E696AFB0] TTZero];
       v31 = v29 + v27 - v8;
       v25 = v28;
       v37 = v25;
       v38 = v31;
-      v39 = v30;
+      v39 = tTZero;
       v40 = 0;
       std::vector<std::pair<TopoID,TopoID>>::push_back[abi:ne200100](-[TTMergeableStringSelection selectionRanges](v36, "selectionRanges"), &v37);
       v26 = v15 == 0;
 
 LABEL_25:
       v9 += v26;
-      if (v9 >= [v6 count])
+      if (v9 >= [rangesCopy count])
       {
         goto LABEL_29;
       }
     }
 
-    v20 = v13 + v15;
+    v20 = rangeValue + v15;
     if (v8 + *(v11 + 16) > v20 - 1)
     {
       v21 = *v11;
@@ -590,7 +590,7 @@ LABEL_25:
 
     v10 = 0;
 LABEL_29:
-    if (v9 >= [v6 count])
+    if (v9 >= [rangesCopy count])
     {
       break;
     }
@@ -606,22 +606,22 @@ LABEL_32:
   return v36;
 }
 
-- (id)characterRangesForSelection:(id)a3
+- (id)characterRangesForSelection:(id)selection
 {
-  v3 = [(TTMergeableString *)self characterRangesForSelection:a3 selectedSubstringsBlock:0];
+  v3 = [(TTMergeableString *)self characterRangesForSelection:selection selectedSubstringsBlock:0];
 
   return v3;
 }
 
-- (id)characterRangesForSelection:(id)a3 selectedSubstringsBlock:(id)a4
+- (id)characterRangesForSelection:(id)selection selectedSubstringsBlock:(id)block
 {
-  v42 = self;
+  selfCopy = self;
   v47[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v46 = v6;
-  v8 = [v6 selectionRanges];
-  if (v8[1] == *v8)
+  selectionCopy = selection;
+  blockCopy = block;
+  v46 = selectionCopy;
+  selectionRanges = [selectionCopy selectionRanges];
+  if (selectionRanges[1] == *selectionRanges)
   {
     v39 = [MEMORY[0x1E696B098] valueWithRange:{0, 0}];
     v47[0] = v39;
@@ -631,10 +631,10 @@ LABEL_32:
   }
 
   v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(TTMergeableString *)v42 orderedSubstrings];
-  v10 = *v9;
-  v43 = *(v9 + 8);
-  if (*v9 == v43)
+  orderedSubstrings = [(TTMergeableString *)selfCopy orderedSubstrings];
+  v10 = *orderedSubstrings;
+  v43 = *(orderedSubstrings + 8);
+  if (*orderedSubstrings == v43)
   {
     goto LABEL_50;
   }
@@ -648,7 +648,7 @@ LABEL_32:
     v14 = *v10;
     while (1)
     {
-      v15 = v7;
+      v15 = blockCopy;
       v16 = *[v46 selectionRanges] + 32 * v12;
       v17 = *v16;
       v18 = *(v16 + 8);
@@ -682,7 +682,7 @@ LABEL_32:
         v31 = v21 - v30 + 1;
       }
 
-      v7 = v15;
+      blockCopy = v15;
       v32 = [MEMORY[0x1E696B098] valueWithRange:{v4, v11 + v31 - v4}];
       [v45 addObject:v32];
 
@@ -695,8 +695,8 @@ LABEL_32:
       v13 = 1;
 LABEL_35:
 
-      v33 = [v46 selectionRanges];
-      if (v12 >= (v33[1] - *v33) >> 5)
+      selectionRanges2 = [v46 selectionRanges];
+      if (v12 >= (selectionRanges2[1] - *selectionRanges2) >> 5)
       {
         goto LABEL_38;
       }
@@ -722,8 +722,8 @@ LABEL_35:
         v4 = v11 + v18 - *(v14 + 8);
       }
 
-      v26 = [MEMORY[0x1E696AFB0] TTZero];
-      v27 = [v20 isEqual:v26];
+      tTZero = [MEMORY[0x1E696AFB0] TTZero];
+      v27 = [v20 isEqual:tTZero];
       if (v21)
       {
         v28 = 0;
@@ -753,21 +753,21 @@ LABEL_35:
         v13 = 0;
       }
 
-      v7 = v15;
+      blockCopy = v15;
       goto LABEL_35;
     }
 
 LABEL_37:
 
-    v7 = v15;
+    blockCopy = v15;
 LABEL_38:
-    v34 = [v46 selectionRanges];
-    if (v12 >= (v34[1] - *v34) >> 5)
+    selectionRanges3 = [v46 selectionRanges];
+    if (v12 >= (selectionRanges3[1] - *selectionRanges3) >> 5)
     {
       break;
     }
 
-    if (!((v7 == 0) | v13 & 1))
+    if (!((blockCopy == 0) | v13 & 1))
     {
       if (*(v14 + 44))
       {
@@ -780,12 +780,12 @@ LABEL_38:
       }
 
       v36 = *(v14 + 40);
-      v50.length = [(TTMergeableString *)v42 length]- v4;
+      v50.length = [(TTMergeableString *)selfCopy length]- v4;
       v49.location = v36;
       v49.length = v35;
       v50.location = v4;
       v37 = NSIntersectionRange(v49, v50);
-      v7[2](v7, v14, v37.location, v37.length);
+      blockCopy[2](blockCopy, v14, v37.location, v37.length);
     }
 
     v38 = (*(v14 + 44) & 1) != 0 ? 0 : *(v14 + 16);
@@ -801,11 +801,11 @@ LABEL_50:
   return v45;
 }
 
-- (void)setTimestamp:(id)a3
+- (void)setTimestamp:(id)timestamp
 {
-  v11 = a3;
-  objc_storeStrong(&self->_timestamp, a3);
-  if ([(TTMergeableString *)self shouldInvalidateCachedSubstringsWithTimestamp:v11])
+  timestampCopy = timestamp;
+  objc_storeStrong(&self->_timestamp, timestamp);
+  if ([(TTMergeableString *)self shouldInvalidateCachedSubstringsWithTimestamp:timestampCopy])
   {
     [(TTMergeableString *)self invalidateCache];
     [(TTMergeableString *)self updateClock];
@@ -847,13 +847,13 @@ LABEL_50:
   }
 
   v4 = *begin;
-  v5 = [MEMORY[0x1E696AFB0] TTZero];
+  tTZero = [MEMORY[0x1E696AFB0] TTZero];
   if (*(v4 + 2))
   {
     goto LABEL_4;
   }
 
-  v7 = [*v4 isEqual:v5];
+  v7 = [*v4 isEqual:tTZero];
 
   if ((v7 & 1) == 0)
   {
@@ -863,10 +863,10 @@ LABEL_9:
   }
 
   v8 = *self->_endNodes.__begin_;
-  v5 = [MEMORY[0x1E696AFB0] TTZero];
+  tTZero = [MEMORY[0x1E696AFB0] TTZero];
   if (*(v8 + 2) == -1)
   {
-    v6 = [*v8 isEqual:v5] ^ 1;
+    v6 = [*v8 isEqual:tTZero] ^ 1;
     goto LABEL_5;
   }
 
@@ -877,13 +877,13 @@ LABEL_5:
   return v6;
 }
 
-- (void)updateTimestampsInRange:(_NSRange)a3
+- (void)updateTimestampsInRange:(_NSRange)range
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v6 = +[TTMergeableString unserialisedReplicaID];
     v13 = 0;
     v14 = 0;
@@ -921,11 +921,11 @@ LABEL_5:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteSubstrings:(void *)a3 withCharacterRanges:(void *)a4
+- (void)deleteSubstrings:(void *)substrings withCharacterRanges:(void *)ranges
 {
   obj = +[TTMergeableString unserialisedReplicaID];
-  v9 = *a3;
-  for (i = *(a3 + 1); v9 != i; ++v9)
+  v9 = *substrings;
+  for (i = *(substrings + 1); v9 != i; ++v9)
   {
     v10 = *v9;
     if ((*(*v9 + 44) & 1) == 0)
@@ -935,9 +935,9 @@ LABEL_5:
     }
   }
 
-  v11 = *(a4 + 1);
-  v12 = 126 - 2 * __clz((v11 - *a4) >> 4);
-  if (v11 == *a4)
+  v11 = *(ranges + 1);
+  v12 = 126 - 2 * __clz((v11 - *ranges) >> 4);
+  if (v11 == *ranges)
   {
     v13 = 0;
   }
@@ -947,25 +947,25 @@ LABEL_5:
     v13 = v12;
   }
 
-  *&v14 = std::__introsort<std::_ClassicAlgPolicy,[TTMergeableString deleteSubstrings:withCharacterRanges:]::$_1 &,_NSRange *,false>(*a4, v11, v13, 1, v7).n128_u64[0];
-  v15 = *a4;
-  v16 = *(a4 + 1);
+  *&v14 = std::__introsort<std::_ClassicAlgPolicy,[TTMergeableString deleteSubstrings:withCharacterRanges:]::$_1 &,_NSRange *,false>(*ranges, v11, v13, 1, v7).n128_u64[0];
+  v15 = *ranges;
+  v16 = *(ranges + 1);
   while (v15 != v16)
   {
     [(NSMutableAttributedString *)self->_attributedString deleteCharactersInRange:v15->n128_u64[0], v15->n128_u64[1], v14];
     ++v15;
   }
 
-  v17 = [(TTMergeableString *)self delegate];
-  v18 = v17;
-  if (v17)
+  delegate = [(TTMergeableString *)self delegate];
+  v18 = delegate;
+  if (delegate)
   {
-    [v17 beginEditing];
-    v19 = *a4;
-    v20 = *(a4 + 1);
-    location = **a4;
-    v21.length = *(*a4 + 8);
-    if (*a4 == v20)
+    [delegate beginEditing];
+    v19 = *ranges;
+    v20 = *(ranges + 1);
+    location = **ranges;
+    v21.length = *(*ranges + 8);
+    if (*ranges == v20)
     {
       v23 = 0;
     }
@@ -1000,10 +1000,10 @@ LABEL_5:
   }
 }
 
-- (TopoIDRange)insertAttributedString:(SEL)a3 after:(id)a4 before:(void *)a5
+- (TopoIDRange)insertAttributedString:(SEL)string after:(id)after before:(void *)before
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  afterCopy = after;
   v20 = 0;
   v11 = 0;
   v12 = &v11;
@@ -1014,7 +1014,7 @@ LABEL_5:
   v18 = 0;
   v19 = 0;
   v17 = 0;
-  if ([v7 length])
+  if ([afterCopy length])
   {
     +[TTMergeableString unserialisedReplicaID];
     objc_claimAutoreleasedReturnValue();
@@ -1044,14 +1044,14 @@ void __57__TTMergeableString_insertAttributedString_after_before___block_invoke(
   std::vector<TopoIDRange>::__destroy_vector::operator()[abi:ne200100](&v9);
 }
 
-- (void)moveRange:(_NSRange)a3 toIndex:(unint64_t)a4
+- (void)moveRange:(_NSRange)range toIndex:(unint64_t)index
 {
-  if (a3.length)
+  if (range.length)
   {
     __p = 0;
     v5 = 0;
     v6 = 0;
-    [(TTMergeableString *)self getSubstrings:&__p forCharacterRange:a3.location, a3.length];
+    [(TTMergeableString *)self getSubstrings:&__p forCharacterRange:range.location, range.length];
     if (__p)
     {
       v5 = __p;
@@ -1060,33 +1060,33 @@ void __57__TTMergeableString_insertAttributedString_after_before___block_invoke(
   }
 }
 
-- (void)getSubstrings:(void *)a3 forCharacterRange:(_NSRange)a4
+- (void)getSubstrings:(void *)substrings forCharacterRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = [(TTMergeableString *)self orderedSubstrings];
+  length = range.length;
+  location = range.location;
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
 
-  [(TTMergeableString *)self getSubstrings:a3 inOrderedSubstrings:v8 forCharacterRange:location, length];
+  [(TTMergeableString *)self getSubstrings:substrings inOrderedSubstrings:orderedSubstrings forCharacterRange:location, length];
 }
 
-- (void)getSubstrings:(void *)a3 inOrderedSubstrings:(void *)a4 forCharacterRange:(_NSRange)a5
+- (void)getSubstrings:(void *)substrings inOrderedSubstrings:(void *)orderedSubstrings forCharacterRange:(_NSRange)range
 {
-  if (!a5.length)
+  if (!range.length)
   {
     return;
   }
 
-  v8 = *a4;
-  v7 = *(a4 + 1);
-  if (*a4 == v7)
+  v8 = *orderedSubstrings;
+  v7 = *(orderedSubstrings + 1);
+  if (*orderedSubstrings == v7)
   {
     goto LABEL_18;
   }
 
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v12 = 0;
-  v13 = a5.location + a5.length;
+  v13 = range.location + range.length;
   while (1)
   {
     v14 = *v8;
@@ -1098,7 +1098,7 @@ void __57__TTMergeableString_insertAttributedString_after_before___block_invoke(
 
     v15 = v12;
 LABEL_6:
-    v7 = *(a4 + 1);
+    v7 = *(orderedSubstrings + 1);
 LABEL_12:
     v8 += 8;
     v12 = v15;
@@ -1122,8 +1122,8 @@ LABEL_12:
   if (location > v12)
   {
     v19 = [(TTMergeableString *)self splitTopoSubstring:v14 atIndex:TTBoundedCheckedCastNSUIntegerToUInt32(location - v12)];
-    v8 = std::vector<TopoSubstring *>::insert(a4, v8 + 8, &v19);
-    std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](a3, &v19);
+    v8 = std::vector<TopoSubstring *>::insert(orderedSubstrings, v8 + 8, &v19);
+    std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](substrings, &v19);
     if (v13 < v15)
     {
       v18 = [(TTMergeableString *)self splitTopoSubstring:v19 atIndex:TTBoundedCheckedCastNSUIntegerToUInt32(length)];
@@ -1137,37 +1137,37 @@ LABEL_12:
 
   if (v15 <= v13)
   {
-    std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](a3, &v20);
+    std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](substrings, &v20);
     goto LABEL_6;
   }
 
   v19 = [(TTMergeableString *)self splitTopoSubstring:v14 atIndex:TTBoundedCheckedCastNSUIntegerToUInt32(v13 - v12)];
-  std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](a3, &v20);
+  std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](substrings, &v20);
   v16 = v8 + 8;
   v17 = &v19;
 LABEL_17:
-  std::vector<TopoSubstring *>::insert(a4, v16, v17);
+  std::vector<TopoSubstring *>::insert(orderedSubstrings, v16, v17);
 LABEL_18:
   [(TTMergeableString *)self invalidateCache];
 }
 
-- (void)getSubstringBeforeTopoID:(TopoID)a3
+- (void)getSubstringBeforeTopoID:(TopoID)d
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = d.var1;
+  var0 = d.var0;
   v6 = *self->_startNodes.__begin_;
-  v20 = a3.var0;
-  v7 = [(TTMergeableString *)self orderedSubstrings];
-  v9 = *v7;
-  v8 = v7[1];
-  if (*v7 == v8)
+  v20 = d.var0;
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v9 = *orderedSubstrings;
+  v8 = orderedSubstrings[1];
+  if (*orderedSubstrings == v8)
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_18;
   }
 
-  v19 = self;
+  selfCopy = self;
   while (1)
   {
     v10 = *v9;
@@ -1230,8 +1230,8 @@ LABEL_10:
 LABEL_15:
   if ((*(v10 + 44) & 1) == 0)
   {
-    [(TTMergeableString *)v19 splitTopoSubstring:v10 atIndex:v14];
-    [(TTMergeableString *)v19 invalidateCache];
+    [(TTMergeableString *)selfCopy splitTopoSubstring:v10 atIndex:v14];
+    [(TTMergeableString *)selfCopy invalidateCache];
     v6 = v10;
   }
 
@@ -1241,17 +1241,17 @@ LABEL_18:
   return v6;
 }
 
-- (void)getSubstrings:(void *)a3 forTopoIDRange:(TopoIDRange *)a4
+- (void)getSubstrings:(void *)substrings forTopoIDRange:(TopoIDRange *)range
 {
-  if (!a4->var1)
+  if (!range->var1)
   {
     goto LABEL_36;
   }
 
-  v6 = [(TTMergeableString *)self orderedSubstrings];
-  v7 = *v6;
-  v8 = v6[1];
-  if (*v6 == v8)
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v7 = *orderedSubstrings;
+  v8 = orderedSubstrings[1];
+  if (*orderedSubstrings == v8)
   {
     goto LABEL_36;
   }
@@ -1264,7 +1264,7 @@ LABEL_18:
     v10 = *v9;
     v11 = *(v9 + 8);
     v12 = *(v9 + 16);
-    if (([a4->var0.var0 isEqual:v10] & 1) == 0)
+    if (([range->var0.var0 isEqual:v10] & 1) == 0)
     {
       goto LABEL_14;
     }
@@ -1273,14 +1273,14 @@ LABEL_18:
     v14 = v12 + v11;
     v34 = v13;
     v35 = v12 + v11;
-    if (TopoID::operator<=(&v34, a4))
+    if (TopoID::operator<=(&v34, range))
     {
       goto LABEL_13;
     }
 
-    v15 = a4->var0.var0;
+    v15 = range->var0.var0;
     v16 = v15;
-    v17 = a4->var1 + a4->var0.var1;
+    v17 = range->var1 + range->var0.var1;
     if (v11 == v17)
     {
       if ([v13 isEqual:v15])
@@ -1307,12 +1307,12 @@ LABEL_13:
       }
     }
 
-    var1 = a4->var0.var1;
+    var1 = range->var0.var1;
     if (var1 > v11)
     {
       v34 = [(TTMergeableString *)self splitTopoSubstring:v36 atIndex:var1 - v11];
-      v20 = a4->var0.var0;
-      v21 = a4->var1 + a4->var0.var1;
+      v20 = range->var0.var0;
+      v21 = range->var1 + range->var0.var1;
       v22 = v13;
       v23 = v22;
       if (v21 >= v14)
@@ -1335,23 +1335,23 @@ LABEL_13:
       {
       }
 
-      [(TTMergeableString *)self splitTopoSubstring:v34 atIndex:a4->var1];
+      [(TTMergeableString *)self splitTopoSubstring:v34 atIndex:range->var1];
 LABEL_32:
-      std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](a3, &v34);
+      std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](substrings, &v34);
       goto LABEL_33;
     }
 
     v24 = v13;
-    v25 = a4->var0.var0;
+    v25 = range->var0.var0;
     v26 = v25;
-    v27 = a4->var1 + a4->var0.var1;
+    v27 = range->var1 + range->var0.var1;
     if (v14 <= v27)
     {
       if (v14 != v27)
       {
 
 LABEL_31:
-        std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](a3, &v36);
+        std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](substrings, &v36);
         goto LABEL_14;
       }
 
@@ -1368,10 +1368,10 @@ LABEL_31:
     }
 
     v28 = v36;
-    v29 = a4->var0.var0;
-    [(TTMergeableString *)self splitTopoSubstring:v28 atIndex:a4->var0.var1 - v11 + a4->var1];
+    v29 = range->var0.var0;
+    [(TTMergeableString *)self splitTopoSubstring:v28 atIndex:range->var0.var1 - v11 + range->var1];
 
-    std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](a3, &v36);
+    std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](substrings, &v36);
 LABEL_33:
     v32 = 1;
 LABEL_14:
@@ -1388,23 +1388,23 @@ LABEL_14:
 LABEL_36:
 }
 
-- (void)getCharacterRanges:(void *)a3 forSubstrings:(void *)a4
+- (void)getCharacterRanges:(void *)ranges forSubstrings:(void *)substrings
 {
-  std::vector<_NSRange>::reserve(a3, (*(a4 + 1) - *a4) >> 3);
+  std::vector<_NSRange>::reserve(ranges, (*(substrings + 1) - *substrings) >> 3);
   v28 = 0u;
   v29 = 0u;
   v30 = 1065353216;
-  v7 = *a4;
-  v8 = *(a4 + 1);
+  v7 = *substrings;
+  v8 = *(substrings + 1);
   while (v7 != v8)
   {
     std::__hash_table<TopoSubstring *,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,std::allocator<TopoSubstring *>>::__emplace_unique_key_args<TopoSubstring *,TopoSubstring * const&>(&v28, v7++);
   }
 
-  v9 = [(TTMergeableString *)self orderedSubstrings];
-  v10 = *v9;
-  v11 = v9[1];
-  if (*v9 != v11)
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v10 = *orderedSubstrings;
+  v11 = orderedSubstrings[1];
+  if (*orderedSubstrings != v11)
   {
     v12 = 0;
     do
@@ -1430,12 +1430,12 @@ LABEL_36:
         }
       }
 
-      v17 = *(a3 + 1);
-      v16 = *(a3 + 2);
+      v17 = *(ranges + 1);
+      v16 = *(ranges + 2);
       if (v17 >= v16)
       {
-        v19 = *a3;
-        v20 = v17 - *a3;
+        v19 = *ranges;
+        v20 = v17 - *ranges;
         v21 = v20 >> 4;
         v22 = (v20 >> 4) + 1;
         if (v22 >> 60)
@@ -1461,7 +1461,7 @@ LABEL_36:
 
         if (v24)
         {
-          std::__allocate_at_least[abi:ne200100]<std::allocator<_NSRange>>(a3, v24);
+          std::__allocate_at_least[abi:ne200100]<std::allocator<_NSRange>>(ranges, v24);
         }
 
         v25 = (16 * v21);
@@ -1469,10 +1469,10 @@ LABEL_36:
         v25[1] = v15;
         v18 = 16 * v21 + 16;
         memcpy(0, v19, v20);
-        v26 = *a3;
-        *a3 = 0;
-        *(a3 + 1) = v18;
-        *(a3 + 2) = 0;
+        v26 = *ranges;
+        *ranges = 0;
+        *(ranges + 1) = v18;
+        *(ranges + 2) = 0;
         if (v26)
         {
           operator delete(v26);
@@ -1486,7 +1486,7 @@ LABEL_36:
         v18 = (v17 + 2);
       }
 
-      *(a3 + 1) = v18;
+      *(ranges + 1) = v18;
       if (*(&v29 + 1) == 1)
       {
         break;
@@ -1504,14 +1504,14 @@ LABEL_24:
   std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::~__hash_table(&v28);
 }
 
-- (unint64_t)getCharacterIndexForCharID:(TopoID)a3
+- (unint64_t)getCharacterIndexForCharID:(TopoID)d
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(TTMergeableString *)self orderedSubstrings];
-  v6 = *v5;
-  v7 = v5[1];
-  if (*v5 == v7)
+  var1 = d.var1;
+  var0 = d.var0;
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v6 = *orderedSubstrings;
+  v7 = orderedSubstrings[1];
+  if (*orderedSubstrings == v7)
   {
 LABEL_18:
     v8 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1572,13 +1572,13 @@ LABEL_21:
   return v8;
 }
 
-- (void)enumerateSubstrings:(id)a3
+- (void)enumerateSubstrings:(id)substrings
 {
-  v4 = a3;
-  v5 = [(TTMergeableString *)self orderedSubstrings];
-  v6 = *v5;
-  v7 = v5[1];
-  if (*v5 != v7)
+  substringsCopy = substrings;
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v6 = *orderedSubstrings;
+  v7 = orderedSubstrings[1];
+  if (*orderedSubstrings != v7)
   {
     do
     {
@@ -1593,7 +1593,7 @@ LABEL_21:
           v11 = *(v8 + 16);
           v13 = *(v8 + 8);
           v14 = v11;
-          v4[2](v4, v10, v9, &v12, *(v8 + 24), *(v8 + 32));
+          substringsCopy[2](substringsCopy, v10, v9, &v12, *(v8 + 24), *(v8 + 32));
         }
       }
 
@@ -1604,13 +1604,13 @@ LABEL_21:
   }
 }
 
-- (int64_t)substring:(void *)a3 modifiedAfter:(id)a4
+- (int64_t)substring:(void *)substring modifiedAfter:(id)after
 {
-  v5 = a4;
-  v6 = [v5 clockForUUID:*a3 atIndex:0] - *(a3 + 2);
-  if (v6 >= *(a3 + 4))
+  afterCopy = after;
+  v6 = [afterCopy clockForUUID:*substring atIndex:0] - *(substring + 2);
+  if (v6 >= *(substring + 4))
   {
-    if ([v5 clockForUUID:*(a3 + 3) atIndex:1] <= *(a3 + 8))
+    if ([afterCopy clockForUUID:*(substring + 3) atIndex:1] <= *(substring + 8))
     {
       v7 = 0;
     }
@@ -1629,15 +1629,15 @@ LABEL_21:
   return v7;
 }
 
-- (void)enumerateRangesModifiedAfter:(id)a3 usingBlock:(id)a4
+- (void)enumerateRangesModifiedAfter:(id)after usingBlock:(id)block
 {
-  v12 = a3;
-  v6 = a4;
+  afterCopy = after;
+  blockCopy = block;
   [(TTMergeableString *)self generateIdsForLocalChanges];
-  v7 = [(TTMergeableString *)self orderedSubstrings];
-  v8 = *v7;
-  v9 = v7[1];
-  if (*v7 != v9)
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v8 = *orderedSubstrings;
+  v9 = orderedSubstrings[1];
+  if (*orderedSubstrings != v9)
   {
     do
     {
@@ -1646,10 +1646,10 @@ LABEL_21:
       {
         if (*(v10 + 16))
         {
-          v11 = [(TTMergeableString *)self substring:*v8 modifiedAfter:v12];
+          v11 = [(TTMergeableString *)self substring:*v8 modifiedAfter:afterCopy];
           if ((v11 & 0x8000000000000000) == 0)
           {
-            v6[2](v6, v11 + *(v10 + 40), *(v10 + 16) - v11);
+            blockCopy[2](blockCopy, v11 + *(v10 + 40), *(v10 + 16) - v11);
           }
         }
       }
@@ -1661,15 +1661,15 @@ LABEL_21:
   }
 }
 
-- (BOOL)textEitherSideOfSelectionAnchor:(TopoID)a3 wasModifiedAfter:(id)a4
+- (BOOL)textEitherSideOfSelectionAnchor:(TopoID)anchor wasModifiedAfter:(id)after
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
-  v8 = [(TTMergeableString *)self orderedSubstrings];
-  v9 = *v8;
-  v10 = v8[1];
-  if (*v8 != v10)
+  var1 = anchor.var1;
+  var0 = anchor.var0;
+  afterCopy = after;
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v9 = *orderedSubstrings;
+  v10 = orderedSubstrings[1];
+  if (*orderedSubstrings != v10)
   {
     v11 = 0;
     v12 = 0;
@@ -1687,7 +1687,7 @@ LABEL_21:
         if (v14 <= var1 && *(v13 + 4) + v14 > var1)
         {
           v15 = *(v13 + 44) != 1 || v11 == 0;
-          if (!v15 && ([(TTMergeableString *)self substring:v11 modifiedAfter:v7]& 0x8000000000000000) == 0 || (v16 = [(TTMergeableString *)self substring:v13 modifiedAfter:v7], (v16 & 0x8000000000000000) == 0) && v16 <= var1 - *(v13 + 2))
+          if (!v15 && ([(TTMergeableString *)self substring:v11 modifiedAfter:afterCopy]& 0x8000000000000000) == 0 || (v16 = [(TTMergeableString *)self substring:v13 modifiedAfter:afterCopy], (v16 & 0x8000000000000000) == 0) && v16 <= var1 - *(v13 + 2))
           {
 LABEL_32:
             v19 = 1;
@@ -1711,7 +1711,7 @@ LABEL_32:
         goto LABEL_7;
       }
 
-      if (*(v13 + 44) != 1 || ([(TTMergeableString *)self substring:v13 modifiedAfter:v7]& 0x8000000000000000) == 0)
+      if (*(v13 + 44) != 1 || ([(TTMergeableString *)self substring:v13 modifiedAfter:afterCopy]& 0x8000000000000000) == 0)
       {
         v12 = 0;
         goto LABEL_27;
@@ -1729,7 +1729,7 @@ LABEL_27:
       }
     }
 
-    if (![(TTMergeableString *)self substring:*v9 modifiedAfter:v7]&& *(v13 + 4))
+    if (![(TTMergeableString *)self substring:*v9 modifiedAfter:afterCopy]&& *(v13 + 4))
     {
       goto LABEL_32;
     }
@@ -1751,25 +1751,25 @@ LABEL_31:
   return v19;
 }
 
-- (BOOL)selection:(id)a3 wasModifiedAfter:(id)a4
+- (BOOL)selection:(id)selection wasModifiedAfter:(id)after
 {
-  v6 = a3;
-  v7 = a4;
+  selectionCopy = selection;
+  afterCopy = after;
   [(TTMergeableString *)self generateIdsForLocalChanges];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v8 = [v6 selectionRanges];
-  if (v8[1] == *v8)
+  selectionRanges = [selectionCopy selectionRanges];
+  if (selectionRanges[1] == *selectionRanges)
   {
     LOBYTE(self) = 0;
   }
 
   else
   {
-    v9 = [v6 selectionRanges];
-    if (v9[1] - *v9 != 32)
+    selectionRanges2 = [selectionCopy selectionRanges];
+    if (selectionRanges2[1] - *selectionRanges2 != 32)
     {
 LABEL_9:
       v22[0] = MEMORY[0x1E69E9820];
@@ -1777,39 +1777,39 @@ LABEL_9:
       v22[2] = __48__TTMergeableString_selection_wasModifiedAfter___block_invoke;
       v22[3] = &unk_1E7509AA8;
       v22[4] = self;
-      v23 = v7;
+      v23 = afterCopy;
       v24 = &v25;
-      v20 = [(TTMergeableString *)self characterRangesForSelection:v6 selectedSubstringsBlock:v22];
+      v20 = [(TTMergeableString *)self characterRangesForSelection:selectionCopy selectedSubstringsBlock:v22];
       LOBYTE(self) = *(v26 + 24);
 
       goto LABEL_10;
     }
 
-    v10 = *[v6 selectionRanges];
-    v11 = [MEMORY[0x1E696AFB0] TTZero];
-    v12 = v11;
+    v10 = *[selectionCopy selectionRanges];
+    tTZero = [MEMORY[0x1E696AFB0] TTZero];
+    v12 = tTZero;
     if (*(v10 + 24))
     {
 
       goto LABEL_9;
     }
 
-    v13 = [*(v10 + 16) isEqual:v11];
+    v13 = [*(v10 + 16) isEqual:tTZero];
 
     if (!v13)
     {
       goto LABEL_9;
     }
 
-    v14 = [v6 selectionRanges];
-    v15 = *v14;
-    v16 = **v14;
+    selectionRanges3 = [selectionCopy selectionRanges];
+    v15 = *selectionRanges3;
+    v16 = **selectionRanges3;
     v17 = *(v15 + 2);
     v18 = v16;
     v19 = v18;
     if (self)
     {
-      LOBYTE(self) = [(TTMergeableString *)self textEitherSideOfSelectionAnchor:v18 wasModifiedAfter:v17, v7];
+      LOBYTE(self) = [(TTMergeableString *)self textEitherSideOfSelectionAnchor:v18 wasModifiedAfter:v17, afterCopy];
     }
 
     else
@@ -1837,13 +1837,13 @@ NSUInteger __48__TTMergeableString_selection_wasModifiedAfter___block_invoke(uin
   return result;
 }
 
-- (void)splitTopoSubstring:(void *)a3 atIndex:(unsigned int)a4
+- (void)splitTopoSubstring:(void *)substring atIndex:(unsigned int)index
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = *a3;
-  v7 = *(a3 + 2);
-  v8 = *(a3 + 4);
-  *(a3 + 4) = a4;
+  v6 = *substring;
+  v7 = *(substring + 2);
+  v8 = *(substring + 4);
+  *(substring + 4) = index;
   operator new();
 }
 
@@ -1883,9 +1883,9 @@ NSUInteger __48__TTMergeableString_selection_wasModifiedAfter___block_invoke(uin
 - (void)updateAttributedStringAfterMerge
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v4 = [(TTMergeableString *)self orderedSubstrings];
-  v5 = *v4;
-  v6 = v4[1];
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v5 = *orderedSubstrings;
+  v6 = orderedSubstrings[1];
   while (v5 != v6)
   {
     v7 = *v5;
@@ -1905,10 +1905,10 @@ NSUInteger __48__TTMergeableString_selection_wasModifiedAfter___block_invoke(uin
 
 - (void)updateSubstringIndexes
 {
-  v2 = [(TTMergeableString *)self orderedSubstrings];
-  v3 = *v2;
-  v4 = v2[1];
-  if (*v2 != v4)
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v3 = *orderedSubstrings;
+  v4 = orderedSubstrings[1];
+  if (*orderedSubstrings != v4)
   {
     v5 = 0;
     do
@@ -1952,7 +1952,7 @@ NSUInteger __48__TTMergeableString_selection_wasModifiedAfter___block_invoke(uin
     v38 = &unk_19A260519;
     memset(v39, 0, sizeof(v39));
     v40 = 1065353216;
-    v18 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v4 = +[TTMergeableString unserialisedReplicaID];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -1962,9 +1962,9 @@ NSUInteger __48__TTMergeableString_selection_wasModifiedAfter___block_invoke(uin
     v29 = &v33;
     v5 = v4;
     v26 = v5;
-    v6 = v18;
+    v6 = uUID;
     v27 = v6;
-    v28 = self;
+    selfCopy = self;
     v30 = v49;
     v31 = &v41;
     [(TTMergeableString *)self traverseUnordered:v25];
@@ -2139,15 +2139,15 @@ LABEL_26:
   }
 }
 
-- (void)updateTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4
+- (void)updateTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d
 {
   v35 = *MEMORY[0x1E69E9840];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = [(TTMergeableString *)self objectsNeedingUpdatedRanges];
-  v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  objectsNeedingUpdatedRanges = [(TTMergeableString *)self objectsNeedingUpdatedRanges];
+  v8 = [objectsNeedingUpdatedRanges countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v8)
   {
     v9 = *v31;
@@ -2157,17 +2157,17 @@ LABEL_26:
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectsNeedingUpdatedRanges);
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
-        v27 = a3->var0.var0;
-        var1 = a3->var1;
-        v28 = a3->var0.var1;
+        v27 = range->var0.var0;
+        var1 = range->var1;
+        v28 = range->var0.var1;
         v29 = var1;
-        v24 = a4->var0.var0;
-        v13 = a4->var1;
-        v25 = a4->var0.var1;
+        v24 = d->var0.var0;
+        v13 = d->var1;
+        v25 = d->var0.var1;
         v26 = v13;
         if (v11)
         {
@@ -2179,7 +2179,7 @@ LABEL_26:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v8 = [objectsNeedingUpdatedRanges countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v8);
@@ -2188,13 +2188,13 @@ LABEL_26:
   updateRangeBlock = self->_updateRangeBlock;
   if (updateRangeBlock)
   {
-    v21 = a3->var0.var0;
-    v15 = a3->var1;
-    v22 = a3->var0.var1;
+    v21 = range->var0.var0;
+    v15 = range->var1;
+    v22 = range->var0.var1;
     v23 = v15;
-    v18 = a4->var0.var0;
-    v16 = a4->var1;
-    v19 = a4->var0.var1;
+    v18 = d->var0.var0;
+    v16 = d->var1;
+    v19 = d->var0.var1;
     v20 = v16;
     updateRangeBlock[2](updateRangeBlock, &v21, &v18);
   }
@@ -2210,8 +2210,8 @@ LABEL_26:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TTMergeableString *)self objectsNeedingUpdatedRanges];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectsNeedingUpdatedRanges = [(TTMergeableString *)self objectsNeedingUpdatedRanges];
+  v5 = [objectsNeedingUpdatedRanges countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -2221,7 +2221,7 @@ LABEL_26:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectsNeedingUpdatedRanges);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -2231,35 +2231,35 @@ LABEL_26:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [objectsNeedingUpdatedRanges countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(TTMergeableString *)self objectsNeedingUpdatedRanges];
-  [v9 minusHashTable:v3];
+  objectsNeedingUpdatedRanges2 = [(TTMergeableString *)self objectsNeedingUpdatedRanges];
+  [objectsNeedingUpdatedRanges2 minusHashTable:v3];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
 - (void)generateIdsForLocalChanges
 {
-  v3 = [(TTMergeableString *)self timestamp];
-  -[TTMergeableString generateIdsForLocalChangesSafeForSharedTimestamp:](self, "generateIdsForLocalChangesSafeForSharedTimestamp:", [v3 isDocumentShared]);
+  timestamp = [(TTMergeableString *)self timestamp];
+  -[TTMergeableString generateIdsForLocalChangesSafeForSharedTimestamp:](self, "generateIdsForLocalChangesSafeForSharedTimestamp:", [timestamp isDocumentShared]);
 }
 
-- (void)generateIdsForLocalChangesSafeForSharedTimestamp:(BOOL)a3
+- (void)generateIdsForLocalChangesSafeForSharedTimestamp:(BOOL)timestamp
 {
   if (self->_hasLocalChanges)
   {
     replicaStyleClock = self->_replicaStyleClock;
     v6 = +[TTMergeableString unserialisedReplicaID];
-    v7 = [(TTMergeableString *)self orderedSubstrings];
-    v28 = a3;
-    v8 = *v7;
-    v9 = v7[1];
-    if (*v7 != v9)
+    orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+    timestampCopy = timestamp;
+    v8 = *orderedSubstrings;
+    v9 = orderedSubstrings[1];
+    if (*orderedSubstrings != v9)
     {
       v10 = 0;
       while (1)
@@ -2359,7 +2359,7 @@ LABEL_25:
       goto LABEL_35;
     }
 
-    if (v28)
+    if (timestampCopy)
     {
       v24 = [(TTVectorMultiTimestamp *)self->_timestamp clockForUUID:self->_replicaUUID atIndex:0];
       v25 = self->_replicaTextClock;
@@ -2375,7 +2375,7 @@ LABEL_25:
     }
 
     [(TTVectorMultiTimestamp *)self->_timestamp setClock:v25 forUUID:self->_replicaUUID atIndex:0];
-    if (!v28)
+    if (!timestampCopy)
     {
       v27 = self->_replicaStyleClock;
 LABEL_34:
@@ -2399,22 +2399,22 @@ LABEL_31:
   }
 }
 
-- (BOOL)canMergeString:(id)a3
+- (BOOL)canMergeString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(TTMergeableString *)self isFragment])
   {
     v5 = 0;
   }
 
-  else if ([v4 isFragment])
+  else if ([stringCopy isFragment])
   {
     v26 = 0u;
     v27 = 0u;
     v28 = 1065353216;
-    v6 = [v4 startNodes];
-    v7 = *v6;
-    v8 = *(v6 + 8);
+    startNodes = [stringCopy startNodes];
+    v7 = *startNodes;
+    v8 = *(startNodes + 8);
     while (v7 != v8)
     {
       v9 = *v7;
@@ -2427,17 +2427,17 @@ LABEL_31:
       ++v7;
     }
 
-    v12 = [v4 endNodes];
-    v13 = *v12;
-    v14 = v12[1];
+    endNodes = [stringCopy endNodes];
+    v13 = *endNodes;
+    v14 = endNodes[1];
     while (v13 != v14)
     {
       std::__hash_table<TopoID,std::hash<TopoID>,std::equal_to<TopoID>,std::allocator<TopoID>>::__emplace_unique_key_args<TopoID,TopoID const&>(&v26, *v13++);
     }
 
-    v15 = [(TTMergeableString *)self orderedSubstrings];
-    v16 = *v15;
-    v17 = v15[1];
+    orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+    v16 = *orderedSubstrings;
+    v17 = orderedSubstrings[1];
 LABEL_12:
     if (v16 != v17)
     {
@@ -2492,13 +2492,13 @@ LABEL_12:
 {
   if (self->_replicaUUID)
   {
-    v28 = [MEMORY[0x1E696AFB0] TTZero];
-    v3 = [MEMORY[0x1E696AFB0] TTZero];
-    v4 = [(TTMergeableString *)self orderedSubstrings];
-    v27 = self;
-    v5 = *v4;
-    v6 = v4[1];
-    if (*v4 != v6)
+    tTZero = [MEMORY[0x1E696AFB0] TTZero];
+    tTZero2 = [MEMORY[0x1E696AFB0] TTZero];
+    orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+    selfCopy = self;
+    v5 = *orderedSubstrings;
+    v6 = orderedSubstrings[1];
+    if (*orderedSubstrings != v6)
     {
       v7 = 0;
       v8 = 0;
@@ -2506,8 +2506,8 @@ LABEL_12:
       {
         v9 = *v5;
         v10 = **v5;
-        v11 = [MEMORY[0x1E696AFB0] TTZero];
-        if ([v10 isEqual:v11])
+        tTZero3 = [MEMORY[0x1E696AFB0] TTZero];
+        if ([v10 isEqual:tTZero3])
         {
           goto LABEL_12;
         }
@@ -2526,7 +2526,7 @@ LABEL_12:
           goto LABEL_12;
         }
 
-        v16 = [v12 TTCompare:v28];
+        v16 = [v12 TTCompare:tTZero];
 
         if (v16 == 1)
         {
@@ -2535,8 +2535,8 @@ LABEL_12:
 
 LABEL_13:
         v17 = v9[3];
-        v18 = [MEMORY[0x1E696AFB0] TTZero];
-        if (([v17 isEqual:v18] & 1) == 0)
+        tTZero4 = [MEMORY[0x1E696AFB0] TTZero];
+        if (([v17 isEqual:tTZero4] & 1) == 0)
         {
           v19 = *(v9 + 8);
           if (v19 > v8)
@@ -2546,13 +2546,13 @@ LABEL_17:
             v20 = v9[3];
 
             v8 = *(v9 + 8);
-            v3 = v20;
+            tTZero2 = v20;
             goto LABEL_18;
           }
 
           if (v19 == v8)
           {
-            v21 = [v9[3] TTCompare:v3];
+            v21 = [v9[3] TTCompare:tTZero2];
 
             if (v21 != 1)
             {
@@ -2572,9 +2572,9 @@ LABEL_18:
 
 LABEL_7:
       v15 = *v9;
-      v11 = v28;
+      tTZero3 = tTZero;
       v7 = *(v9 + 2) + *(v9 + 4) - 1;
-      v28 = v15;
+      tTZero = v15;
 LABEL_12:
 
       goto LABEL_13;
@@ -2583,9 +2583,9 @@ LABEL_12:
     v8 = 0;
     v7 = 0;
 LABEL_25:
-    v22 = v27;
-    v23 = [v28 TTCompare:{v27->_replicaUUID, v27}];
-    v24 = [v3 TTCompare:v22->_replicaUUID];
+    v22 = selfCopy;
+    v23 = [tTZero TTCompare:{selfCopy->_replicaUUID, selfCopy}];
+    v24 = [tTZero2 TTCompare:v22->_replicaUUID];
     if (v23 == -1)
     {
       v25 = v7;
@@ -2654,14 +2654,14 @@ void __27__TTMergeableString_check___block_invoke(uint64_t a1, uint64_t a2, _BYT
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkTimestampLogStyleErrors:(BOOL)a3
+- (void)checkTimestampLogStyleErrors:(BOOL)errors
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __50__TTMergeableString_checkTimestampLogStyleErrors___block_invoke;
   v3[3] = &unk_1E7509B48;
   v3[4] = self;
-  v4 = a3;
+  errorsCopy = errors;
   [(TTMergeableString *)self traverseUnordered:v3];
 }
 
@@ -2710,26 +2710,26 @@ void __50__TTMergeableString_checkTimestampLogStyleErrors___block_invoke(uint64_
   }
 }
 
-- (void)dumpMergeData:(id)a3
+- (void)dumpMergeData:(id)data
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = [(NSMutableAttributedString *)self->_attributedString mutableCopy];
-  v6 = [v4[19] mutableCopy];
+  v6 = [dataCopy[19] mutableCopy];
   v7 = arc4random();
   v36 = v6;
   v37 = v5;
-  v38 = v4;
+  v38 = dataCopy;
   v8 = [(NSMutableAttributedString *)self->_attributedString length];
   if (v8)
   {
     for (i = 0; i != v8; ++i)
     {
-      v10 = [(NSMutableAttributedString *)self->_attributedString mutableString];
+      mutableString = [(NSMutableAttributedString *)self->_attributedString mutableString];
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [(NSMutableAttributedString *)self->_attributedString mutableString];
-      v13 = [v11 stringWithFormat:@"%c", (v7 ^ objc_msgSend(v12, "characterAtIndex:", i)) % 0x5E + 32];
-      [v10 replaceCharactersInRange:i withString:{1, v13}];
+      mutableString2 = [(NSMutableAttributedString *)self->_attributedString mutableString];
+      v13 = [v11 stringWithFormat:@"%c", (v7 ^ objc_msgSend(mutableString2, "characterAtIndex:", i)) % 0x5E + 32];
+      [mutableString replaceCharactersInRange:i withString:{1, v13}];
     }
   }
 
@@ -2740,35 +2740,35 @@ void __50__TTMergeableString_checkTimestampLogStyleErrors___block_invoke(uint64_
     for (j = 0; j != v15; ++j)
     {
       v17 = v14;
-      v18 = [v14[19] mutableString];
+      mutableString3 = [v14[19] mutableString];
       v19 = MEMORY[0x1E696AEC0];
-      v20 = [v17[19] mutableString];
-      v21 = [v19 stringWithFormat:@"%c", (v7 ^ objc_msgSend(v20, "characterAtIndex:", j)) % 0x5E + 32];
-      [v18 replaceCharactersInRange:j withString:{1, v21}];
+      mutableString4 = [v17[19] mutableString];
+      v21 = [v19 stringWithFormat:@"%c", (v7 ^ objc_msgSend(mutableString4, "characterAtIndex:", j)) % 0x5E + 32];
+      [mutableString3 replaceCharactersInRange:j withString:{1, v21}];
 
       v14 = v38;
     }
   }
 
-  v22 = [(TTMergeableString *)self serialize];
-  v23 = [v14 serialize];
-  v24 = [MEMORY[0x1E696AC08] remcrtt_createTemporaryFileDirectoryURLIfNeeded];
-  v25 = [v24 path];
+  serialize = [(TTMergeableString *)self serialize];
+  serialize2 = [v14 serialize];
+  remcrtt_createTemporaryFileDirectoryURLIfNeeded = [MEMORY[0x1E696AC08] remcrtt_createTemporaryFileDirectoryURLIfNeeded];
+  path = [remcrtt_createTemporaryFileDirectoryURLIfNeeded path];
 
   v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mergeA-%p.data", self];
-  v27 = [v25 stringByAppendingPathComponent:v26];
+  v27 = [path stringByAppendingPathComponent:v26];
 
   v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mergeB-%p.data", self];
-  v29 = [v25 stringByAppendingPathComponent:v28];
+  v29 = [path stringByAppendingPathComponent:v28];
 
-  [v22 writeToFile:v27 atomically:1];
-  [v23 writeToFile:v29 atomically:1];
+  [serialize writeToFile:v27 atomically:1];
+  [serialize2 writeToFile:v29 atomically:1];
   v30 = +[REMLog crdt];
   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
   {
     replicaUUID = self->_replicaUUID;
     *buf = 134218754;
-    v40 = self;
+    selfCopy = self;
     v41 = 2112;
     v42 = replicaUUID;
     v43 = 2112;
@@ -2788,31 +2788,31 @@ void __50__TTMergeableString_checkTimestampLogStyleErrors___block_invoke(uint64_
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)mergeWithString:(id)a3 mergeTimestamps:(BOOL)a4
+- (unint64_t)mergeWithString:(id)string mergeTimestamps:(BOOL)timestamps
 {
-  v97 = a4;
+  timestampsCopy = timestamps;
   v123[1] = *MEMORY[0x1E69E9840];
-  v101 = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"DebugDumpMergeData"];
+  stringCopy = string;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"DebugDumpMergeData"];
 
   if (v6)
   {
-    [(TTMergeableString *)self dumpMergeData:v101];
+    [(TTMergeableString *)self dumpMergeData:stringCopy];
   }
 
   [(TTMergeableString *)self generateIdsForLocalChanges];
-  [v101 generateIdsForLocalChanges];
-  [v101 checkTimestampLogStyleErrors:0];
-  if (![(TTMergeableString *)self canMergeString:v101])
+  [stringCopy generateIdsForLocalChanges];
+  [stringCopy checkTimestampLogStyleErrors:0];
+  if (![(TTMergeableString *)self canMergeString:stringCopy])
   {
     v10 = 0;
     goto LABEL_123;
   }
 
-  v7 = [(TTMergeableString *)self timestamp];
-  v8 = [v101 timestamp];
-  v9 = [v7 compareTo:v8];
+  timestamp = [(TTMergeableString *)self timestamp];
+  timestamp2 = [stringCopy timestamp];
+  v9 = [timestamp compareTo:timestamp2];
 
   if (v9)
   {
@@ -2831,12 +2831,12 @@ void __50__TTMergeableString_checkTimestampLogStyleErrors___block_invoke(uint64_
     v108 = 0u;
     v109 = 1065353216;
     v11 = [(NSMutableAttributedString *)self->_attributedString length];
-    v12 = [v101 isFragment];
+    isFragment = [stringCopy isFragment];
     v96 = v11;
-    v13 = [(TTMergeableString *)self orderedSubstrings];
-    v14 = *v13;
-    v15 = v13[1];
-    if (*v13 != v15)
+    orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+    v14 = *orderedSubstrings;
+    v15 = orderedSubstrings[1];
+    if (*orderedSubstrings != v15)
     {
       v9 = &std::piecewise_construct;
       do
@@ -2844,11 +2844,11 @@ void __50__TTMergeableString_checkTimestampLogStyleErrors___block_invoke(uint64_
         v16 = *v14;
         v103 = v16;
         std::__hash_table<std::__hash_value_type<TopoID,TopoSubstring *>,std::__unordered_map_hasher<TopoID,std::__hash_value_type<TopoID,TopoSubstring *>,std::hash<TopoID>,std::equal_to<TopoID>,true>,std::__unordered_map_equal<TopoID,std::__hash_value_type<TopoID,TopoSubstring *>,std::equal_to<TopoID>,std::hash<TopoID>,true>,std::allocator<std::__hash_value_type<TopoID,TopoSubstring *>>>::__emplace_unique_key_args<TopoID,std::piecewise_construct_t const&,std::tuple<TopoID const&>,std::tuple<>>(v119, v16)[4] = v16;
-        if (v12)
+        if (isFragment)
         {
-          v17 = [v101 startNodes];
-          v18 = *v17;
-          v19 = *(v17 + 8);
+          startNodes = [stringCopy startNodes];
+          v18 = *startNodes;
+          v19 = *(startNodes + 8);
           while (v18 != v19)
           {
             v20 = *v18;
@@ -2873,8 +2873,8 @@ void __50__TTMergeableString_checkTimestampLogStyleErrors___block_invoke(uint64_
       while (v14 != v15);
     }
 
-    v99 = [v101 orderedSubstrings];
-    for (i = *v99; i != v99[1]; i += 8)
+    orderedSubstrings2 = [stringCopy orderedSubstrings];
+    for (i = *orderedSubstrings2; i != orderedSubstrings2[1]; i += 8)
     {
       v24 = *i;
       v25 = std::__hash_table<TopoID,std::hash<TopoID>,std::equal_to<TopoID>,std::allocator<TopoID>>::find<TopoID>(v119, *i);
@@ -2898,7 +2898,7 @@ void __50__TTMergeableString_checkTimestampLogStyleErrors___block_invoke(uint64_
         if (v27 < v28)
         {
           v103 = [(TTMergeableString *)self splitTopoSubstring:v24 atIndex:?];
-          i = std::vector<TopoSubstring *>::insert(v99, i + 8, &v103) - 8;
+          i = std::vector<TopoSubstring *>::insert(orderedSubstrings2, i + 8, &v103) - 8;
         }
       }
 
@@ -2992,7 +2992,7 @@ LABEL_39:
     v98 = 0;
 LABEL_46:
     [(TTMergeableString *)self invalidateCache];
-    if (v98 || (v102 = 0, v48 = [(TTMergeableString *)self check:&v102], v98 = v102, (v48 & 1) == 0))
+    if (v98 || (v102 = 0, timestamp4 = [(TTMergeableString *)self check:&v102], v98 = v102, (timestamp4 & 1) == 0))
     {
       v81 = +[REMLog crdt];
       if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
@@ -3032,36 +3032,36 @@ LABEL_46:
 
       [(TTMergeableString *)self invalidateCache];
       [(TTMergeableString *)self coalesce];
-      [(TTMergeableString *)self dumpMergeData:v101];
+      [(TTMergeableString *)self dumpMergeData:stringCopy];
       v10 = 0;
     }
 
     else
     {
-      v49 = *v99;
-      if (*v99 != v99[1])
+      v49 = *orderedSubstrings2;
+      if (*orderedSubstrings2 != orderedSubstrings2[1])
       {
         v9 = &v116;
         while (1)
         {
-          v48 = *v49;
+          timestamp4 = *v49;
           v50 = std::__hash_table<TopoID,std::hash<TopoID>,std::equal_to<TopoID>,std::allocator<TopoID>>::find<TopoID>(v119, *v49)[4];
           v103 = v50;
           v51 = *(v50 + 32);
-          v52 = *(v48 + 32);
+          v52 = *(timestamp4 + 32);
           if (v51 < v52)
           {
             goto LABEL_51;
           }
 
-          if (v51 == v52 && [*(v50 + 24) TTCompare:*(v48 + 24)] == -1)
+          if (v51 == v52 && [*(v50 + 24) TTCompare:*(timestamp4 + 24)] == -1)
           {
             break;
           }
 
 LABEL_73:
           v49 += 8;
-          if (v49 == v99[1])
+          if (v49 == orderedSubstrings2[1])
           {
             goto LABEL_74;
           }
@@ -3071,10 +3071,10 @@ LABEL_73:
 LABEL_51:
         if (*(v50 + 44))
         {
-          if (*(v48 + 44))
+          if (*(timestamp4 + 44))
           {
 LABEL_61:
-            if ((*(v48 + 44) & 1) == 0)
+            if ((*(timestamp4 + 44) & 1) == 0)
             {
               attributedString = self->_attributedString;
               if (*(v103 + 44))
@@ -3082,50 +3082,50 @@ LABEL_61:
                 v55 = TTBoundedCheckedCastNSUIntegerToUInt32([(NSMutableAttributedString *)self->_attributedString length]);
                 *(v103 + 10) = v55;
                 v56 = self->_attributedString;
-                v57 = [v101 string];
-                if (*(v48 + 44))
+                string = [stringCopy string];
+                if (*(timestamp4 + 44))
                 {
                   v58 = 0;
                 }
 
                 else
                 {
-                  v58 = *(v48 + 16);
+                  v58 = *(timestamp4 + 16);
                 }
 
-                [(NSMutableAttributedString *)v56 ic_appendAttributedSubstring:v57 fromRange:*(v48 + 40), v58];
+                [(NSMutableAttributedString *)v56 ic_appendAttributedSubstring:string fromRange:*(timestamp4 + 40), v58];
               }
 
               else
               {
                 v59 = *(v103 + 10);
                 v60 = *(v103 + 4);
-                v57 = [v101 string];
-                if (*(v48 + 44))
+                string = [stringCopy string];
+                if (*(timestamp4 + 44))
                 {
                   v61 = 0;
                 }
 
                 else
                 {
-                  v61 = *(v48 + 16);
+                  v61 = *(timestamp4 + 16);
                 }
 
-                [(NSMutableAttributedString *)attributedString ic_replaceCharactersInRange:v59 withAttributedSubstring:v60 fromRange:v57, *(v48 + 40), v61];
+                [(NSMutableAttributedString *)attributedString ic_replaceCharactersInRange:v59 withAttributedSubstring:v60 fromRange:string, *(timestamp4 + 40), v61];
               }
             }
 
             v62 = v103;
-            *(v103 + 44) = *(v48 + 44);
-            objc_storeStrong(v62 + 3, *(v48 + 24));
-            *(v62 + 8) = *(v48 + 32);
+            *(v103 + 44) = *(timestamp4 + 44);
+            objc_storeStrong(v62 + 3, *(timestamp4 + 24));
+            *(v62 + 8) = *(timestamp4 + 32);
             goto LABEL_73;
           }
 
           v53 = &v113;
         }
 
-        else if (*(v48 + 44))
+        else if (*(timestamp4 + 44))
         {
           v53 = &v116;
         }
@@ -3142,28 +3142,28 @@ LABEL_61:
 LABEL_74:
       [(TTMergeableString *)self sortSplitNodes];
       [(TTMergeableString *)self invalidateCache];
-      [v101 invalidateCache];
+      [stringCopy invalidateCache];
       [(TTMergeableString *)self updateAttributedStringAfterMerge];
-      if (v97)
+      if (timestampsCopy)
       {
-        v63 = [(TTMergeableString *)self timestamp];
-        v48 = [v101 timestamp];
-        [v63 mergeWithTimestamp:v48];
+        timestamp3 = [(TTMergeableString *)self timestamp];
+        timestamp4 = [stringCopy timestamp];
+        [timestamp3 mergeWithTimestamp:timestamp4];
 
         [(TTMergeableString *)self updateClock];
         [(TTMergeableString *)self checkTimestampLogStyleErrors:1];
       }
 
-      v64 = [(TTMergeableString *)self delegate];
-      v65 = v64;
-      if (v64)
+      delegate = [(TTMergeableString *)self delegate];
+      v65 = delegate;
+      if (delegate)
       {
-        v100 = v64;
-        [v64 beginEditing];
-        v66 = [(TTMergeableString *)self orderedSubstrings];
-        v67 = *v66;
-        v68 = v66[1];
-        if (*v66 != v68)
+        v100 = delegate;
+        [delegate beginEditing];
+        orderedSubstrings3 = [(TTMergeableString *)self orderedSubstrings];
+        v67 = *orderedSubstrings3;
+        v68 = orderedSubstrings3[1];
+        if (*orderedSubstrings3 != v68)
         {
           v69 = 0;
           v70 = 0;
@@ -3185,7 +3185,7 @@ LABEL_74:
 
                 else
                 {
-                  v48 = v69;
+                  timestamp4 = v69;
                   v9 = 0;
                   v75 = 0;
                 }
@@ -3207,7 +3207,7 @@ LABEL_74:
 
                 else
                 {
-                  v48 = v69;
+                  timestamp4 = v69;
                   v77 = 0;
                 }
 
@@ -3228,7 +3228,7 @@ LABEL_74:
 
               else if (v71)
               {
-                [v100 edited:2 range:v48 changeInLength:{v9, v70}];
+                [v100 edited:2 range:timestamp4 changeInLength:{v9, v70}];
                 v69 += v70;
               }
 
@@ -3303,14 +3303,14 @@ void __53__TTMergeableString_mergeWithString_mergeTimestamps___block_invoke_2(ui
   v2 = v3[0];
 }
 
-- (void)traverseUnordered:(id)a3
+- (void)traverseUnordered:(id)unordered
 {
-  v6 = a3;
+  unorderedCopy = unordered;
   begin = self->_startNodes.__begin_;
   end = self->_startNodes.__end_;
   while (begin != end)
   {
-    traverseUnordered(*begin++, v6);
+    traverseUnordered(*begin++, unorderedCopy);
   }
 }
 
@@ -3319,26 +3319,26 @@ void __53__TTMergeableString_mergeWithString_mergeTimestamps___block_invoke_2(ui
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TTMergeableString *)self string];
-  v7 = [v3 stringWithFormat:@"<%@ %p = '%@'>", v5, self, v6];
+  string = [(TTMergeableString *)self string];
+  v7 = [v3 stringWithFormat:@"<%@ %p = '%@'>", v5, self, string];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   attributedString = self->_attributedString;
-  v6 = [v4 attributedString];
-  LOBYTE(attributedString) = [(NSMutableAttributedString *)attributedString isEqual:v6];
+  attributedString = [equalCopy attributedString];
+  LOBYTE(attributedString) = [(NSMutableAttributedString *)attributedString isEqual:attributedString];
 
-  v7 = (attributedString & 1) != 0 && [(TTMergeableString *)self graphIsEqual:v4];
+  v7 = (attributedString & 1) != 0 && [(TTMergeableString *)self graphIsEqual:equalCopy];
   return v7;
 }
 
-- (BOOL)graphIsEqual:(id)a3
+- (BOOL)graphIsEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -3352,7 +3352,7 @@ void __53__TTMergeableString_mergeWithString_mergeTimestamps___block_invoke_2(ui
   memset(v27, 0, sizeof(v27));
   v28 = 1065353216;
   [(TTMergeableString *)self coalesce];
-  [v4 coalesce];
+  [equalCopy coalesce];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __34__TTMergeableString_graphIsEqual___block_invoke;
@@ -3365,7 +3365,7 @@ void __53__TTMergeableString_mergeWithString_mergeTimestamps___block_invoke_2(ui
   v19[3] = &unk_1E7509B90;
   v19[4] = &v21;
   v19[5] = &v29;
-  [v4 traverseUnordered:v19];
+  [equalCopy traverseUnordered:v19];
   if (*(v30 + 24) == 1)
   {
     v5 = v22 + 8;
@@ -3470,16 +3470,16 @@ uint64_t *__34__TTMergeableString_graphIsEqual___block_invoke_2(uint64_t a1, uin
 
 - (unint64_t)hash
 {
-  v2 = [(TTMergeableString *)self attributedString];
-  v3 = [v2 hash];
+  attributedString = [(TTMergeableString *)self attributedString];
+  v3 = [attributedString hash];
 
   return v3;
 }
 
-- (id)dotDescription:(unint64_t)a3
+- (id)dotDescription:(unint64_t)description
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  [v5 appendFormat:@"subgraph cluster_%ld%p_%ld {\n  rankdir=LR;\n", a3, self, a3];
+  [v5 appendFormat:@"subgraph cluster_%ld%p_%ld {\n  rankdir=LR;\n", description, self, description];
   if ([(TTMergeableString *)self isFragment])
   {
     v6 = @"<Fragment>";
@@ -3487,25 +3487,25 @@ uint64_t *__34__TTMergeableString_graphIsEqual___block_invoke_2(uint64_t a1, uin
 
   else
   {
-    v7 = [(TTMergeableString *)self string];
-    v8 = [v7 string];
-    v6 = [v8 description];
+    string = [(TTMergeableString *)self string];
+    v7String = [string string];
+    v6 = [v7String description];
   }
 
   v9 = [(__CFString *)v6 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
 
-  v10 = [(TTMergeableString *)self replicaUUID];
+  replicaUUID = [(TTMergeableString *)self replicaUUID];
   v32 = v9;
-  v11 = [v10 TTShortDescription];
-  [v5 appendFormat:@"  label=%@_%ld (%ld)    '%@'\n", v11, a3, -[TTVectorMultiTimestamp clockForUUID:atIndex:](self->_timestamp, "clockForUUID:atIndex:", self->_replicaUUID, 0), v9];
+  tTShortDescription = [replicaUUID TTShortDescription];
+  [v5 appendFormat:@"  label=%@_%ld (%ld)    '%@'\n", tTShortDescription, description, -[TTVectorMultiTimestamp clockForUUID:atIndex:](self->_timestamp, "clockForUUID:atIndex:", self->_replicaUUID, 0), v9];
 
   [v5 appendFormat:@"  color=lightgrey;\n"];
-  v12 = [(TTMergeableString *)self orderedSubstrings];
-  v13 = *v12;
-  v34 = v12[1];
-  if (*v12 != v34)
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v13 = *orderedSubstrings;
+  v34 = orderedSubstrings[1];
+  if (*orderedSubstrings != v34)
   {
-    v33 = self;
+    selfCopy = self;
     do
     {
       v14 = *v13;
@@ -3540,17 +3540,17 @@ LABEL_12:
 
         if (v21 != v22)
         {
-          v17 = [*v14 TTShortDescription];
-          [v5 appendFormat:@"  N%ld%p [label=End\\n%@, %d];\n", a3, v14, v17, *(v14 + 8)];
+          tTShortDescription2 = [*v14 TTShortDescription];
+          [v5 appendFormat:@"  N%ld%p [label=End\\n%@, %d];\n", description, v14, tTShortDescription2, *(v14 + 8)];
           goto LABEL_25;
         }
 
 LABEL_18:
-        v17 = &stru_1F0D67F00;
+        tTShortDescription2 = &stru_1F0D67F00;
         if ((*(v14 + 44) & 1) == 0)
         {
-          v23 = [(NSMutableAttributedString *)self->_attributedString string];
-          v24 = v23;
+          string2 = [(NSMutableAttributedString *)self->_attributedString string];
+          v24 = string2;
           if (*(v14 + 44))
           {
             v25 = 0;
@@ -3561,25 +3561,25 @@ LABEL_18:
             v25 = *(v14 + 16);
           }
 
-          v17 = [v23 substringWithRange:{*(v14 + 40), v25}];
+          tTShortDescription2 = [string2 substringWithRange:{*(v14 + 40), v25}];
         }
 
-        v20 = [*v14 TTShortDescription];
+        tTShortDescription3 = [*v14 TTShortDescription];
         v26 = *(v14 + 8);
         v27 = *(v14 + 16);
-        v28 = [*(v14 + 24) TTShortDescription];
-        [v5 appendFormat:@"  N%ld%p [label=%@ %@, %d-%u (%@, %d)];\n", a3, v14, v17, v20, v26, (v26 + v27 - 1), v28, *(v14 + 32)];
+        tTShortDescription4 = [*(v14 + 24) TTShortDescription];
+        [v5 appendFormat:@"  N%ld%p [label=%@ %@, %d-%u (%@, %d)];\n", description, v14, tTShortDescription2, tTShortDescription3, v26, (v26 + v27 - 1), tTShortDescription4, *(v14 + 32)];
 
-        self = v33;
+        self = selfCopy;
       }
 
       else
       {
-        v17 = *v14;
+        tTShortDescription2 = *v14;
         v18 = *(v14 + 8);
         v19 = *(v14 + 16);
-        v20 = [(__CFString *)v17 TTShortDescription];
-        [v5 appendFormat:@"  N%ld%p [label=Start\\n%@, %d];\n", a3, v14, v20, (v18 + v19 - 1)];
+        tTShortDescription3 = [(__CFString *)tTShortDescription2 TTShortDescription];
+        [v5 appendFormat:@"  N%ld%p [label=Start\\n%@, %d];\n", description, v14, tTShortDescription3, (v18 + v19 - 1)];
       }
 
 LABEL_25:
@@ -3587,7 +3587,7 @@ LABEL_25:
       v30 = *(v14 + 56);
       while (v29 != v30)
       {
-        [v5 appendFormat:@"  N%ld%p -> N%ld%p;\n", a3, v14, a3, *v29++];
+        [v5 appendFormat:@"  N%ld%p -> N%ld%p;\n", description, v14, description, *v29++];
       }
 
       ++v13;
@@ -3618,17 +3618,17 @@ LABEL_25:
   return self;
 }
 
-- (__n128)deleteSubstrings:(uint64_t)a3 withCharacterRanges:(char)a4
+- (__n128)deleteSubstrings:(uint64_t)substrings withCharacterRanges:(char)ranges
 {
 LABEL_1:
   v9 = a2 - 1;
   v10 = a2 - 2;
   v11 = a2 - 3;
-  v12 = a1;
+  selfCopy = self;
   while (1)
   {
-    a1 = v12;
-    v13 = (a2 - v12) >> 4;
+    self = selfCopy;
+    v13 = (a2 - selfCopy) >> 4;
     if (v13 <= 2)
     {
       if (v13 < 2)
@@ -3640,14 +3640,14 @@ LABEL_1:
       {
         v58 = a2[-1].n128_u64[0];
         v57 = a2 - 1;
-        if (*v12 >= v58)
+        if (*selfCopy >= v58)
         {
           return result;
         }
 
 LABEL_107:
-        v128 = *v12;
-        *v12 = *v57;
+        v128 = *selfCopy;
+        *selfCopy = *v57;
         result = v128;
 LABEL_108:
         *v57 = result;
@@ -3664,21 +3664,21 @@ LABEL_108:
 
     if (v13 == 4)
     {
-      v59 = (v12 + 16);
-      v63 = *(v12 + 16);
-      v64 = (v12 + 32);
-      v65 = *(v12 + 32);
-      if (*v12 >= v63)
+      v59 = (selfCopy + 16);
+      v63 = *(selfCopy + 16);
+      v64 = (selfCopy + 32);
+      v65 = *(selfCopy + 32);
+      if (*selfCopy >= v63)
       {
         if (v63 < v65)
         {
           result = *v59;
           *v59 = *v64;
           *v64 = result;
-          if (*v12 < *(v12 + 16))
+          if (*selfCopy < *(selfCopy + 16))
           {
-            v131 = *v12;
-            *v12 = *v59;
+            v131 = *selfCopy;
+            *selfCopy = *v59;
             result = v131;
             *v59 = v131;
           }
@@ -3689,17 +3689,17 @@ LABEL_108:
       {
         if (v63 < v65)
         {
-          v129 = *v12;
-          *v12 = *v64;
+          v129 = *selfCopy;
+          *selfCopy = *v64;
           result = v129;
           goto LABEL_180;
         }
 
-        v133 = *v12;
-        *v12 = *v59;
+        v133 = *selfCopy;
+        *selfCopy = *v59;
         result = v133;
         *v59 = v133;
-        if (*(v12 + 16) < v65)
+        if (*(selfCopy + 16) < v65)
         {
           result = *v59;
           *v59 = *v64;
@@ -3725,10 +3725,10 @@ LABEL_180:
       *v59 = *v64;
       *v64 = result;
 LABEL_184:
-      if (*v12 < *(v12 + 16))
+      if (*selfCopy < *(selfCopy + 16))
       {
-        v134 = *v12;
-        *v12 = *v59;
+        v134 = *selfCopy;
+        *selfCopy = *v59;
         result = v134;
         *v59 = v134;
       }
@@ -3739,21 +3739,21 @@ LABEL_184:
     if (v13 == 5)
     {
 
-      result.n128_u64[0] = std::__sort5[abi:ne200100]<std::_ClassicAlgPolicy,-[TTMergeableString deleteSubstrings:withCharacterRanges:]::$_1 &,_NSRange *,0>(v12, (v12 + 16), (v12 + 32), (v12 + 48), a2[-1].n128_u64, result).n128_u64[0];
+      result.n128_u64[0] = std::__sort5[abi:ne200100]<std::_ClassicAlgPolicy,-[TTMergeableString deleteSubstrings:withCharacterRanges:]::$_1 &,_NSRange *,0>(selfCopy, (selfCopy + 16), (selfCopy + 32), (selfCopy + 48), a2[-1].n128_u64, result).n128_u64[0];
       return result;
     }
 
 LABEL_9:
     if (v13 <= 23)
     {
-      v66 = (v12 + 16);
-      v68 = v12 == a2 || v66 == a2;
-      if (a4)
+      v66 = (selfCopy + 16);
+      v68 = selfCopy == a2 || v66 == a2;
+      if (ranges)
       {
         if (!v68)
         {
           v69 = 0;
-          v70 = v12;
+          v70 = selfCopy;
           do
           {
             v71 = v66;
@@ -3764,23 +3764,23 @@ LABEL_9:
               v74 = v69;
               while (1)
               {
-                result = *(v12 + v74);
-                *(v12 + v74 + 16) = result;
+                result = *(selfCopy + v74);
+                *(selfCopy + v74 + 16) = result;
                 if (!v74)
                 {
                   break;
                 }
 
-                v75 = *(v12 + v74 - 16);
+                v75 = *(selfCopy + v74 - 16);
                 v74 -= 16;
                 if (v75 >= v72)
                 {
-                  v76 = (v12 + v74 + 16);
+                  v76 = (selfCopy + v74 + 16);
                   goto LABEL_127;
                 }
               }
 
-              v76 = v12;
+              v76 = selfCopy;
 LABEL_127:
               *v76 = v72;
               v76[1] = v73;
@@ -3800,10 +3800,10 @@ LABEL_127:
         do
         {
           v104 = v66;
-          v105 = a1[1].n128_u64[0];
-          if (a1->n128_u64[0] < v105)
+          v105 = self[1].n128_u64[0];
+          if (self->n128_u64[0] < v105)
           {
-            v106 = a1[1].n128_u64[1];
+            v106 = self[1].n128_u64[1];
             v107 = v104;
             do
             {
@@ -3819,7 +3819,7 @@ LABEL_127:
           }
 
           v66 = v104 + 1;
-          a1 = v104;
+          self = v104;
         }
 
         while (&v104[1] != a2);
@@ -3828,9 +3828,9 @@ LABEL_127:
       return result;
     }
 
-    if (!a3)
+    if (!substrings)
     {
-      if (v12 != a2)
+      if (selfCopy != a2)
       {
         v77 = (v13 - 2) >> 1;
         v78 = v77;
@@ -3840,7 +3840,7 @@ LABEL_127:
           if (v77 >= v78)
           {
             v80 = (2 * v78) | 1;
-            v81 = (v12 + 16 * v80);
+            v81 = (selfCopy + 16 * v80);
             v82 = *v81;
             if (2 * v79 + 2 < v13 && v81[2] < v82)
             {
@@ -3849,7 +3849,7 @@ LABEL_127:
               v80 = 2 * v79 + 2;
             }
 
-            v83 = (v12 + 16 * v79);
+            v83 = (selfCopy + 16 * v79);
             v84 = *v83;
             v85 = *v83;
             if (*v83 >= v82)
@@ -3864,7 +3864,7 @@ LABEL_127:
                 }
 
                 v87 = (2 * v80) | 1;
-                v81 = (v12 + 16 * v87);
+                v81 = (selfCopy + 16 * v87);
                 v80 = 2 * v80 + 2;
                 v88 = *v81;
                 if (v80 >= v13)
@@ -3898,8 +3898,8 @@ LABEL_127:
         do
         {
           v89 = 0;
-          v130 = *v12;
-          v90 = v12;
+          v130 = *selfCopy;
+          v90 = selfCopy;
           do
           {
             v91 = &v90[v89];
@@ -3942,13 +3942,13 @@ LABEL_127:
             *v92 = *a2;
             result = v130;
             *a2 = v130;
-            v96 = (&v92[1] - v12) >> 4;
+            v96 = (&v92[1] - selfCopy) >> 4;
             v97 = v96 < 2;
             v98 = v96 - 2;
             if (!v97)
             {
               v99 = v98 >> 1;
-              v100 = (v12 + 16 * v99);
+              v100 = (selfCopy + 16 * v99);
               v101 = v92->n128_u64[0];
               if (v92->n128_u64[0] < v100->n128_u64[0])
               {
@@ -3964,7 +3964,7 @@ LABEL_127:
                   }
 
                   v99 = (v99 - 1) >> 1;
-                  v100 = (v12 + 16 * v99);
+                  v100 = (selfCopy + 16 * v99);
                   v92 = v103;
                 }
 
@@ -3984,23 +3984,23 @@ LABEL_127:
       return result;
     }
 
-    v14 = (v12 + 16 * (v13 >> 1));
+    v14 = (selfCopy + 16 * (v13 >> 1));
     v15 = v14;
     v16 = v9->n128_u64[0];
     if (v13 >= 0x81)
     {
       v17 = v14->n128_u64[0];
-      if (*v12 >= v14->n128_u64[0])
+      if (*selfCopy >= v14->n128_u64[0])
       {
         if (v17 < v16)
         {
           v111 = *v14;
           *v14 = *v9;
           *v9 = v111;
-          if (*v12 < v14->n128_u64[0])
+          if (*selfCopy < v14->n128_u64[0])
           {
-            v112 = *v12;
-            *v12 = *v14;
+            v112 = *selfCopy;
+            *selfCopy = *v14;
             *v14 = v112;
           }
         }
@@ -4010,13 +4010,13 @@ LABEL_127:
       {
         if (v17 < v16)
         {
-          v109 = *v12;
-          *v12 = *v9;
+          v109 = *selfCopy;
+          *selfCopy = *v9;
           goto LABEL_26;
         }
 
-        v115 = *v12;
-        *v12 = *v14;
+        v115 = *selfCopy;
+        *selfCopy = *v14;
         *v14 = v115;
         if (v14->n128_u64[0] < v9->n128_u64[0])
         {
@@ -4027,11 +4027,11 @@ LABEL_26:
         }
       }
 
-      v19 = (v12 + 16);
+      v19 = (selfCopy + 16);
       v20 = v14 - 1;
       v21 = v14[-1].n128_u64[0];
       v22 = v10->n128_u64[0];
-      if (*(v12 + 16) >= v21)
+      if (*(selfCopy + 16) >= v21)
       {
         if (v21 < v22)
         {
@@ -4069,12 +4069,12 @@ LABEL_38:
         }
       }
 
-      v26 = (v12 + 32);
+      v26 = (selfCopy + 32);
       v29 = v14[1].n128_u64[0];
       v27 = v14 + 1;
       v28 = v29;
       v30 = v11->n128_u64[0];
-      if (*(v12 + 32) >= v29)
+      if (*(selfCopy + 32) >= v29)
       {
         if (v28 < v30)
         {
@@ -4151,28 +4151,28 @@ LABEL_56:
         }
       }
 
-      v125 = *v12;
-      *v12 = *v15;
+      v125 = *selfCopy;
+      *selfCopy = *v15;
       result = v125;
       *v15 = v125;
       goto LABEL_58;
     }
 
-    v18 = *v12;
-    if (v14->n128_u64[0] >= *v12)
+    v18 = *selfCopy;
+    if (v14->n128_u64[0] >= *selfCopy)
     {
       if (v18 < v16)
       {
-        v113 = *v12;
-        *v12 = *v9;
+        v113 = *selfCopy;
+        *selfCopy = *v9;
         result = v113;
         *v9 = v113;
-        if (v14->n128_u64[0] < *v12)
+        if (v14->n128_u64[0] < *selfCopy)
         {
           v114 = *v14;
-          *v14 = *v12;
+          *v14 = *selfCopy;
           result = v114;
-          *v12 = v114;
+          *selfCopy = v114;
         }
       }
 
@@ -4190,32 +4190,32 @@ LABEL_35:
     }
 
     v117 = *v14;
-    *v14 = *v12;
+    *v14 = *selfCopy;
     result = v117;
-    *v12 = v117;
-    if (*v12 < v9->n128_u64[0])
+    *selfCopy = v117;
+    if (*selfCopy < v9->n128_u64[0])
     {
-      v110 = *v12;
-      *v12 = *v9;
+      v110 = *selfCopy;
+      *selfCopy = *v9;
       goto LABEL_35;
     }
 
 LABEL_58:
-    --a3;
-    v36 = *v12;
-    if (a4)
+    --substrings;
+    v36 = *selfCopy;
+    if (ranges)
     {
-      v37 = *(v12 + 8);
+      v37 = *(selfCopy + 8);
 LABEL_61:
       v38 = 0;
       do
       {
-        v39 = *(v12 + v38 + 16);
+        v39 = *(selfCopy + v38 + 16);
         v38 += 16;
       }
 
       while (v36 < v39);
-      v40 = v12 + v38;
+      v40 = selfCopy + v38;
       v41 = a2;
       if (v38 == 16)
       {
@@ -4245,20 +4245,20 @@ LABEL_61:
         while (v36 >= v42);
       }
 
-      v12 += v38;
+      selfCopy += v38;
       if (v40 < v41)
       {
         v44 = v41;
         do
         {
-          v126 = *v12;
-          *v12 = *v44;
+          v126 = *selfCopy;
+          *selfCopy = *v44;
           result = v126;
           *v44 = v126;
           do
           {
-            v45 = *(v12 + 16);
-            v12 += 16;
+            v45 = *(selfCopy + 16);
+            selfCopy += 16;
           }
 
           while (v36 < v45);
@@ -4271,27 +4271,27 @@ LABEL_61:
           while (v36 >= v46);
         }
 
-        while (v12 < v44);
+        while (selfCopy < v44);
       }
 
-      v47 = (v12 - 16);
-      if ((v12 - 16) != a1)
+      v47 = (selfCopy - 16);
+      if ((selfCopy - 16) != self)
       {
         result = *v47;
-        *a1 = *v47;
+        *self = *v47;
       }
 
-      *(v12 - 16) = v36;
-      *(v12 - 8) = v37;
+      *(selfCopy - 16) = v36;
+      *(selfCopy - 8) = v37;
       if (v40 < v41)
       {
         goto LABEL_80;
       }
 
-      v48 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[TTMergeableString deleteSubstrings:withCharacterRanges:]::$_1 &,_NSRange *>(a1, (v12 - 16), result);
-      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[TTMergeableString deleteSubstrings:withCharacterRanges:]::$_1 &,_NSRange *>(v12, a2, v49))
+      v48 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[TTMergeableString deleteSubstrings:withCharacterRanges:]::$_1 &,_NSRange *>(self, (selfCopy - 16), result);
+      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[TTMergeableString deleteSubstrings:withCharacterRanges:]::$_1 &,_NSRange *>(selfCopy, a2, v49))
       {
-        a2 = (v12 - 16);
+        a2 = (selfCopy - 16);
         if (!v48)
         {
           goto LABEL_1;
@@ -4303,25 +4303,25 @@ LABEL_61:
       if (!v48)
       {
 LABEL_80:
-        std::__introsort<std::_ClassicAlgPolicy,[TTMergeableString deleteSubstrings:withCharacterRanges:]::$_1 &,_NSRange *,false>(a1, v12 - 16, a3, a4 & 1);
-        a4 = 0;
+        std::__introsort<std::_ClassicAlgPolicy,[TTMergeableString deleteSubstrings:withCharacterRanges:]::$_1 &,_NSRange *,false>(self, selfCopy - 16, substrings, ranges & 1);
+        ranges = 0;
       }
     }
 
     else
     {
-      v37 = *(v12 + 8);
-      if (v36 < *(v12 - 16))
+      v37 = *(selfCopy + 8);
+      if (v36 < *(selfCopy - 16))
       {
         goto LABEL_61;
       }
 
       if (v9->n128_u64[0] >= v36)
       {
-        v51 = v12 + 16;
+        v51 = selfCopy + 16;
         do
         {
-          v12 = v51;
+          selfCopy = v51;
           if (v51 >= a2)
           {
             break;
@@ -4330,22 +4330,22 @@ LABEL_80:
           v51 += 16;
         }
 
-        while (*v12 >= v36);
+        while (*selfCopy >= v36);
       }
 
       else
       {
         do
         {
-          v50 = *(v12 + 16);
-          v12 += 16;
+          v50 = *(selfCopy + 16);
+          selfCopy += 16;
         }
 
         while (v50 >= v36);
       }
 
       v52 = a2;
-      if (v12 < a2)
+      if (selfCopy < a2)
       {
         v52 = a2;
         do
@@ -4357,16 +4357,16 @@ LABEL_80:
         while (v53 < v36);
       }
 
-      while (v12 < v52)
+      while (selfCopy < v52)
       {
-        v127 = *v12;
-        *v12 = *v52;
+        v127 = *selfCopy;
+        *selfCopy = *v52;
         result = v127;
         *v52 = v127;
         do
         {
-          v54 = *(v12 + 16);
-          v12 += 16;
+          v54 = *(selfCopy + 16);
+          selfCopy += 16;
         }
 
         while (v54 >= v36);
@@ -4379,25 +4379,25 @@ LABEL_80:
         while (v55 < v36);
       }
 
-      v56 = (v12 - 16);
-      if ((v12 - 16) != a1)
+      v56 = (selfCopy - 16);
+      if ((selfCopy - 16) != self)
       {
         result = *v56;
-        *a1 = *v56;
+        *self = *v56;
       }
 
-      a4 = 0;
-      *(v12 - 16) = v36;
-      *(v12 - 8) = v37;
+      ranges = 0;
+      *(selfCopy - 16) = v36;
+      *(selfCopy - 8) = v37;
     }
   }
 
-  v59 = (v12 + 16);
-  v60 = *(v12 + 16);
+  v59 = (selfCopy + 16);
+  v60 = *(selfCopy + 16);
   v62 = a2[-1].n128_u64[0];
   v57 = a2 - 1;
   v61 = v62;
-  if (*v12 >= v60)
+  if (*selfCopy >= v60)
   {
     if (v60 >= v61)
     {
@@ -4415,11 +4415,11 @@ LABEL_80:
     goto LABEL_107;
   }
 
-  v132 = *v12;
-  *v12 = *v59;
+  v132 = *selfCopy;
+  *selfCopy = *v59;
   result = v132;
   *v59 = v132;
-  if (*(v12 + 16) < v57->n128_u64[0])
+  if (*(selfCopy + 16) < v57->n128_u64[0])
   {
     result = *v59;
     *v59 = *v57;
@@ -4429,17 +4429,17 @@ LABEL_80:
   return result;
 }
 
-- (TTMergeableString)initWithData:(id)a3 andReplicaID:(id)a4
+- (TTMergeableString)initWithData:(id)data andReplicaID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   topotext::String::String(v13);
-  v8 = [v6 bytes];
-  v9 = TTBoundedCheckedCastNSUIntegerToUInt32([v6 length]);
-  if (google::protobuf::MessageLite::ParseFromArray(v13, v8, v9))
+  bytes = [dataCopy bytes];
+  v9 = TTBoundedCheckedCastNSUIntegerToUInt32([dataCopy length]);
+  if (google::protobuf::MessageLite::ParseFromArray(v13, bytes, v9))
   {
-    self = [(TTMergeableString *)self initWithArchive:v13 andReplicaID:v7];
-    v10 = self;
+    self = [(TTMergeableString *)self initWithArchive:v13 andReplicaID:dCopy];
+    selfCopy = self;
   }
 
   else
@@ -4450,34 +4450,34 @@ LABEL_80:
       [TTMergeableString(TTMergeableStringPersistenceAdditions) initWithData:andReplicaID:];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   topotext::String::~String(v13);
 
-  return v10;
+  return selfCopy;
 }
 
-- (TTMergeableString)initWithArchive:(const void *)a3 andReplicaID:(id)a4 withOrderedSubstrings:(void *)a5 timestamp:(id)a6
+- (TTMergeableString)initWithArchive:(const void *)archive andReplicaID:(id)d withOrderedSubstrings:(void *)substrings timestamp:(id)timestamp
 {
   v56 = *MEMORY[0x1E69E9840];
-  v43 = a4;
-  v44 = a6;
-  v45 = [(TTMergeableString *)self initWithReplicaID:v43 asFragment:1];
+  dCopy = d;
+  timestampCopy = timestamp;
+  v45 = [(TTMergeableString *)self initWithReplicaID:dCopy asFragment:1];
   if (!v45)
   {
     goto LABEL_42;
   }
 
-  if (*(a3 + 32))
+  if (*(archive + 32))
   {
     v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v10 = *(a3 + 5);
+    v10 = *(archive + 5);
     v11 = *(v10 + 23);
     if (v11 < 0)
     {
       v10 = *v10;
-      v11 = *(*(a3 + 5) + 8);
+      v11 = *(*(archive + 5) + 8);
     }
 
     v12 = [v9 initWithBytes:v10 length:v11 encoding:4];
@@ -4488,8 +4488,8 @@ LABEL_80:
       v39 = v13;
       [(TTMergeableString *)v45 setAttributedString:v14];
 
-      v41 = a3;
-      v15 = *(a3 + 14);
+      archiveCopy = archive;
+      v15 = *(archive + 14);
       __p = 0;
       v53 = 0;
       v54 = 0;
@@ -4499,12 +4499,12 @@ LABEL_80:
         operator new();
       }
 
-      v16 = v44;
-      if (!v44)
+      v16 = timestampCopy;
+      if (!timestampCopy)
       {
         v17 = [TTVectorMultiTimestamp alloc];
         v18 = v17;
-        v19 = v41[9];
+        v19 = archiveCopy[9];
         if (!v19)
         {
           v19 = *(topotext::String::default_instance(v17) + 72);
@@ -4514,19 +4514,19 @@ LABEL_80:
       }
 
       [(TTMergeableString *)v45 setTimestamp:v16];
-      if (!v44)
+      if (!timestampCopy)
       {
       }
 
-      v20 = [(TTMergeableString *)v45 timestamp];
-      v40 = [v20 sortedUUIDs];
+      timestamp = [(TTMergeableString *)v45 timestamp];
+      sortedUUIDs = [timestamp sortedUUIDs];
 
-      [v40 count];
+      [sortedUUIDs count];
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v21 = v40;
+      v21 = sortedUUIDs;
       v22 = [v21 countByEnumeratingWithState:&v48 objects:v55 count:16];
       if (v22)
       {
@@ -4541,8 +4541,8 @@ LABEL_80:
             }
 
             v25 = *(*(&v48 + 1) + 8 * i);
-            v26 = [MEMORY[0x1E696AFB0] TTZero];
-            LOBYTE(v25) = [v25 isEqual:v26];
+            tTZero = [MEMORY[0x1E696AFB0] TTZero];
+            LOBYTE(v25) = [v25 isEqual:tTZero];
 
             if (v25)
             {
@@ -4566,8 +4566,8 @@ LABEL_27:
 
       memset(v46, 0, sizeof(v46));
       v47 = 1065353216;
-      v30 = [(TTMergeableString *)v45 attributedString];
-      v31 = [v30 length] == 0;
+      attributedString = [(TTMergeableString *)v45 attributedString];
+      v31 = [attributedString length] == 0;
 
       if (v31)
       {
@@ -4580,9 +4580,9 @@ LABEL_27:
 
           v32 = 1;
 LABEL_36:
-          if (a5 && &__p != a5)
+          if (substrings && &__p != substrings)
           {
-            std::vector<TopoSubstring *>::__assign_with_size[abi:ne200100]<TopoSubstring **,TopoSubstring **>(a5, __p, v53, (v53 - __p) >> 3);
+            std::vector<TopoSubstring *>::__assign_with_size[abi:ne200100]<TopoSubstring **,TopoSubstring **>(substrings, __p, v53, (v53 - __p) >> 3);
           }
 
           std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::~__hash_table(v46);
@@ -4616,8 +4616,8 @@ LABEL_43:
         }
       }
 
-      v34 = [(TTMergeableString *)v45 startNodes];
-      v34[1] = *v34;
+      startNodes = [(TTMergeableString *)v45 startNodes];
+      startNodes[1] = *startNodes;
       v32 = 0;
       goto LABEL_36;
     }
@@ -4636,24 +4636,24 @@ LABEL_44:
   return v29;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   [(TTMergeableString *)self generateIdsForLocalChanges];
   [(TTMergeableString *)self coalesce];
   [(TTMergeableString *)self checkTimestampLogStyleErrors:1];
-  v5 = [(TTMergeableString *)self orderedSubstrings];
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
 
-  [(TTMergeableString *)self saveSubstrings:v5 archiveSet:0 linkSet:0 archivedString:0 toArchive:a3];
+  [(TTMergeableString *)self saveSubstrings:orderedSubstrings archiveSet:0 linkSet:0 archivedString:0 toArchive:archive];
 }
 
-- (void)saveSubstrings:(void *)a3 archiveSet:(void *)a4 linkSet:(void *)a5 archivedString:(id *)a6 toArchive:(void *)a7
+- (void)saveSubstrings:(void *)substrings archiveSet:(void *)set linkSet:(void *)linkSet archivedString:(id *)string toArchive:(void *)archive
 {
-  v57 = a6;
+  stringCopy = string;
   memset(v66, 0, sizeof(v66));
   v67 = 1065353216;
-  v11 = *a3;
-  v12 = *(a3 + 1);
-  if (*a3 != v12)
+  v11 = *substrings;
+  v12 = *(substrings + 1);
+  if (*substrings != v12)
   {
     v13 = 0;
     do
@@ -4668,23 +4668,23 @@ LABEL_44:
   }
 
   v60 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  v14 = [(TTMergeableString *)self timestamp];
-  v63 = [v14 sortedUUIDs];
+  timestamp = [(TTMergeableString *)self timestamp];
+  sortedUUIDs = [timestamp sortedUUIDs];
 
   v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v16 = [MEMORY[0x1E696AFB0] TTZero];
-  [v15 setObject:&unk_1F0D99B50 forKeyedSubscript:v16];
-  v62 = a4;
+  tTZero = [MEMORY[0x1E696AFB0] TTZero];
+  [v15 setObject:&unk_1F0D99B50 forKeyedSubscript:tTZero];
+  setCopy = set;
 
-  v17 = [v63 count];
+  v17 = [sortedUUIDs count];
   if (v17)
   {
     v18 = 0;
     do
     {
       v19 = v18 + 1;
-      v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{v18 + 1, v57}];
-      v21 = [v63 objectAtIndexedSubscript:v18];
+      v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{v18 + 1, stringCopy}];
+      v21 = [sortedUUIDs objectAtIndexedSubscript:v18];
       [v15 setObject:v20 forKeyedSubscript:v21];
 
       v18 = v19;
@@ -4693,27 +4693,27 @@ LABEL_44:
     while (v17 != v19);
   }
 
-  v22 = *a3;
-  v61 = *(a3 + 1);
-  if (*a3 != v61)
+  v22 = *substrings;
+  v61 = *(substrings + 1);
+  if (*substrings != v61)
   {
     while (1)
     {
       v65 = *v22;
-      v23 = *(a7 + 15);
-      v24 = *(a7 + 14);
+      v23 = *(archive + 15);
+      v24 = *(archive + 14);
       if (v24 >= v23)
       {
-        if (v23 == *(a7 + 16))
+        if (v23 == *(archive + 16))
         {
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a7 + 6, v23 + 1);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(archive + 6, v23 + 1);
         }
 
         google::protobuf::internal::GenericTypeHandler<topotext::Substring>::New();
       }
 
-      v25 = *(a7 + 6);
-      *(a7 + 14) = v24 + 1;
+      v25 = *(archive + 6);
+      *(archive + 14) = v24 + 1;
       v26 = *(v25 + 8 * v24);
       *(v26 + 32) |= 1u;
       v27 = *(v26 + 40);
@@ -4722,10 +4722,10 @@ LABEL_44:
         operator new();
       }
 
-      v28 = [v15 objectForKeyedSubscript:{*v65, v57}];
-      v29 = [v28 integerValue];
+      v28 = [v15 objectForKeyedSubscript:{*v65, stringCopy}];
+      integerValue = [v28 integerValue];
       *(v27 + 32) |= 1u;
-      *(v27 + 40) = v29;
+      *(v27 + 40) = integerValue;
 
       *(v26 + 32) |= 1u;
       v30 = *(v26 + 40);
@@ -4737,9 +4737,9 @@ LABEL_44:
       v31 = *(v65 + 8);
       *(v30 + 32) |= 2u;
       *(v30 + 44) = v31;
-      if (v62)
+      if (setCopy)
       {
-        if (!std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::find<TopoSubstring *>(v62, &v65))
+        if (!std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::find<TopoSubstring *>(setCopy, &v65))
         {
           break;
         }
@@ -4753,9 +4753,9 @@ LABEL_44:
       }
 
       v33 = [v15 objectForKeyedSubscript:*(v65 + 24)];
-      v34 = [v33 integerValue];
+      integerValue2 = [v33 integerValue];
       *(v32 + 32) |= 1u;
-      *(v32 + 40) = v34;
+      *(v32 + 40) = integerValue2;
 
       *(v26 + 32) |= 4u;
       v35 = *(v26 + 48);
@@ -4773,8 +4773,8 @@ LABEL_44:
         goto LABEL_29;
       }
 
-      v38 = [(TTMergeableString *)self attributedString];
-      v39 = v38;
+      attributedString = [(TTMergeableString *)self attributedString];
+      v39 = attributedString;
       if (*(v65 + 44))
       {
         v40 = 0;
@@ -4785,7 +4785,7 @@ LABEL_44:
         v40 = *(v65 + 16);
       }
 
-      v43 = [v38 attributedSubstringFromRange:{*(v65 + 40), v40}];
+      v43 = [attributedString attributedSubstringFromRange:{*(v65 + 40), v40}];
       [v60 appendAttributedString:v43];
 
       v42 = *(v26 + 32);
@@ -4799,7 +4799,7 @@ LABEL_32:
       while (v46 != v47)
       {
         v64 = *v46;
-        if (!a5 || std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::find<TopoSubstring *>(a5, &v64))
+        if (!linkSet || std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::find<TopoSubstring *>(linkSet, &v64))
         {
           v68 = &v64;
           v48 = *(std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned int>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned int>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned int>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned int>>>::__emplace_unique_key_args<TopoSubstring *,std::piecewise_construct_t const&,std::tuple<TopoSubstring * const&>,std::tuple<>>(v66, &v64) + 6);
@@ -4844,17 +4844,17 @@ LABEL_29:
   }
 
 LABEL_41:
-  v51 = [v60 string];
-  [v51 UTF8String];
-  v52 = [v60 string];
-  [v52 lengthOfBytesUsingEncoding:4];
-  *(a7 + 8) |= 1u;
+  string = [v60 string];
+  [string UTF8String];
+  string2 = [v60 string];
+  [string2 lengthOfBytesUsingEncoding:4];
+  *(archive + 8) |= 1u;
   if (!google::protobuf::internal::empty_string_)
   {
     __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
   }
 
-  if (*(a7 + 5) == google::protobuf::internal::empty_string_)
+  if (*(archive + 5) == google::protobuf::internal::empty_string_)
   {
     operator new();
   }
@@ -4866,20 +4866,20 @@ LABEL_41:
     *v58 = v60;
   }
 
-  v53 = [(TTMergeableString *)self timestamp];
-  v54 = [v53 isDocumentShared];
+  timestamp2 = [(TTMergeableString *)self timestamp];
+  isDocumentShared = [timestamp2 isDocumentShared];
 
-  if ((v54 & 1) == 0)
+  if ((isDocumentShared & 1) == 0)
   {
-    v55 = [(TTMergeableString *)self timestamp];
-    *(a7 + 8) |= 4u;
-    v56 = *(a7 + 9);
+    timestamp3 = [(TTMergeableString *)self timestamp];
+    *(archive + 8) |= 4u;
+    v56 = *(archive + 9);
     if (!v56)
     {
       operator new();
     }
 
-    [v55 saveToArchive:v56];
+    [timestamp3 saveToArchive:v56];
   }
 
   std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::~__hash_table(v66);
@@ -4890,21 +4890,21 @@ LABEL_41:
   topotext::String::String(v7);
   [(TTMergeableString *)self saveToArchive:v7];
   v3 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:topotext::String::ByteSize(v7)];
-  v4 = [v3 mutableBytes];
+  mutableBytes = [v3 mutableBytes];
   v5 = TTBoundedCheckedCastNSUIntegerToUInt32([v3 length]);
-  google::protobuf::MessageLite::SerializeToArray(v7, v4, v5);
+  google::protobuf::MessageLite::SerializeToArray(v7, mutableBytes, v5);
   topotext::String::~String(v7);
 
   return v3;
 }
 
-- (id)i_saveDeltasSinceTimestamp:(id)a3 toArchive:(void *)a4
+- (id)i_saveDeltasSinceTimestamp:(id)timestamp toArchive:(void *)archive
 {
-  v6 = a3;
+  timestampCopy = timestamp;
   [(TTMergeableString *)self generateIdsForLocalChanges];
   [(TTMergeableString *)self coalesce];
-  v27 = self;
-  v28 = a4;
+  selfCopy = self;
+  archiveCopy = archive;
   v37 = 0;
   v38 = 0;
   v39 = 0;
@@ -4912,9 +4912,9 @@ LABEL_41:
   v36 = 1065353216;
   memset(v33, 0, sizeof(v33));
   v34 = 1065353216;
-  v7 = [(TTMergeableString *)self orderedSubstrings];
-  v9 = *v7;
-  v8 = v7[1];
+  orderedSubstrings = [(TTMergeableString *)self orderedSubstrings];
+  v9 = *orderedSubstrings;
+  v8 = orderedSubstrings[1];
   v29 = v8;
   while (v9 != v8)
   {
@@ -4923,8 +4923,8 @@ LABEL_41:
     v11 = *v10;
     v12 = *(v10 + 8);
     LODWORD(v10) = *(v10 + 16);
-    v13 = [v6 clockForUUID:v11 atIndex:0];
-    v14 = [v6 clockForUUID:v11 atIndex:1];
+    v13 = [timestampCopy clockForUUID:v11 atIndex:0];
+    v14 = [timestampCopy clockForUUID:v11 atIndex:1];
     if (v10 + v12 >= v13 || *(v32 + 32) >= v14)
     {
       std::__hash_table<TopoSubstring *,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,std::allocator<TopoSubstring *>>::__emplace_unique_key_args<TopoSubstring *,TopoSubstring * const&>(v33, &v32);
@@ -4959,8 +4959,8 @@ LABEL_41:
         v18 = **v15;
         v19 = *(v17 + 2);
         v20 = *(v17 + 4);
-        v21 = [v6 clockForUUID:v18 atIndex:0];
-        v22 = [v6 clockForUUID:v18 atIndex:1];
+        v21 = [timestampCopy clockForUUID:v18 atIndex:0];
+        v22 = [timestampCopy clockForUUID:v18 atIndex:1];
         if ((v20 + v19 >= v21 || *(v17 + 8) >= v22) && !std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::find<TopoSubstring *>(v35, &v32))
         {
           std::vector<CRDT::Document_DocObject *>::push_back[abi:ne200100](&v37, &v32);
@@ -4976,7 +4976,7 @@ LABEL_41:
   }
 
   v30 = 0;
-  [(TTMergeableString *)v27 saveSubstrings:&v37 archiveSet:v33 linkSet:v35 archivedString:&v30 toArchive:v28];
+  [(TTMergeableString *)selfCopy saveSubstrings:&v37 archiveSet:v33 linkSet:v35 archivedString:&v30 toArchive:archiveCopy];
   v25 = v30;
   std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::~__hash_table(v33);
   std::__hash_table<std::__hash_value_type<TopoSubstring *,unsigned long>,std::__unordered_map_hasher<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::hash<TopoSubstring *>,std::equal_to<TopoSubstring *>,true>,std::__unordered_map_equal<TopoSubstring *,std::__hash_value_type<TopoSubstring *,unsigned long>,std::equal_to<TopoSubstring *>,std::hash<TopoSubstring *>,true>,std::allocator<std::__hash_value_type<TopoSubstring *,unsigned long>>>::~__hash_table(v35);
@@ -4989,15 +4989,15 @@ LABEL_41:
   return v25;
 }
 
-- (id)serializeDeltaSinceTimestamp:(id)a3
+- (id)serializeDeltaSinceTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   topotext::String::String(v9);
-  [(TTMergeableString *)self saveDeltaSinceTimestamp:v4 toArchive:v9];
+  [(TTMergeableString *)self saveDeltaSinceTimestamp:timestampCopy toArchive:v9];
   v5 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:topotext::String::ByteSize(v9)];
-  v6 = [v5 mutableBytes];
+  mutableBytes = [v5 mutableBytes];
   v7 = TTBoundedCheckedCastNSUIntegerToUInt32([v5 length]);
-  google::protobuf::MessageLite::SerializeToArray(v9, v6, v7);
+  google::protobuf::MessageLite::SerializeToArray(v9, mutableBytes, v7);
   topotext::String::~String(v9);
 
   return v5;

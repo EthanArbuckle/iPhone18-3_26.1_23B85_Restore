@@ -1,19 +1,19 @@
 @interface DIIODaemonDelegate
-+ (id)requestsStatsToNSArrayWithArray:(DIRequestsStatsArray *)a3;
-- (BOOL)createNotificationPortWithError:(id *)a3;
-- (BOOL)setupNewConnection:(id)a3;
-- (BOOL)setupTerminationNotificationWithError:(id *)a3;
-- (BOOL)tryAttachWithParams:(id)a3 error:(id *)a4;
-- (BOOL)validateDeserializationWithParams:(id)a3 reply:(id)a4;
-- (DIIODaemonDelegate)initWithIsRAM:(BOOL)a3;
++ (id)requestsStatsToNSArrayWithArray:(DIRequestsStatsArray *)array;
+- (BOOL)createNotificationPortWithError:(id *)error;
+- (BOOL)setupNewConnection:(id)connection;
+- (BOOL)setupTerminationNotificationWithError:(id *)error;
+- (BOOL)tryAttachWithParams:(id)params error:(id *)error;
+- (BOOL)validateDeserializationWithParams:(id)params reply:(id)reply;
+- (DIIODaemonDelegate)initWithIsRAM:(BOOL)m;
 - (id)serviceName;
-- (void)attachToExistingDeviceWithParams:(id)a3 reply:(id)a4;
-- (void)attachToNewDeviceWithParams:(id)a3 reply:(id)a4;
+- (void)attachToExistingDeviceWithParams:(id)params reply:(id)reply;
+- (void)attachToNewDeviceWithParams:(id)params reply:(id)reply;
 - (void)destroyNotificationPort;
 - (void)exitDaemon;
 - (void)exitWithUnmount;
-- (void)onClientInvalidateWithConnection:(id)a3;
-- (void)retrieveStatsWithParams:(id)a3 reply:(id)a4;
+- (void)onClientInvalidateWithConnection:(id)connection;
+- (void)retrieveStatsWithParams:(id)params reply:(id)reply;
 - (void)runIOmanager;
 - (void)setupExitDaemonWatchdog;
 - (void)setupSigtermHandler;
@@ -24,7 +24,7 @@
 
 @implementation DIIODaemonDelegate
 
-- (DIIODaemonDelegate)initWithIsRAM:(BOOL)a3
+- (DIIODaemonDelegate)initWithIsRAM:(BOOL)m
 {
   v12.receiver = self;
   v12.super_class = DIIODaemonDelegate;
@@ -36,7 +36,7 @@
   }
 
   atomic_store(0, &v4->_unmountStarted);
-  v4->_isRAM = a3;
+  v4->_isRAM = m;
   v6 = objc_alloc_init(NSMutableSet);
   activeConnections = v5->_activeConnections;
   v5->_activeConnections = v6;
@@ -70,8 +70,8 @@ LABEL_5:
 - (void)setupExitDaemonWatchdog
 {
   v3 = dispatch_time(0, 8000000000);
-  v4 = [(DIBaseServiceDelegate *)self dispatchQueue];
-  dispatch_after(v3, v4, &stru_1001F5780);
+  dispatchQueue = [(DIBaseServiceDelegate *)self dispatchQueue];
+  dispatch_after(v3, dispatchQueue, &stru_1001F5780);
 }
 
 - (void)setupSigtermHandler
@@ -114,7 +114,7 @@ LABEL_5:
   }
 }
 
-- (BOOL)createNotificationPortWithError:(id *)a3
+- (BOOL)createNotificationPortWithError:(id *)error
 {
   [(DIIODaemonDelegate *)self setNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
   if ([(DIIODaemonDelegate *)self notificationPort])
@@ -136,16 +136,16 @@ LABEL_5:
     v7 = @"Failed creating notification port";
   }
 
-  return [DIError failWithEnumValue:153 verboseInfo:v7 error:a3];
+  return [DIError failWithEnumValue:153 verboseInfo:v7 error:error];
 }
 
-- (BOOL)setupTerminationNotificationWithError:(id *)a3
+- (BOOL)setupTerminationNotificationWithError:(id *)error
 {
   v5 = IOServiceMatching("AppleDiskImageDevice");
   if (IOServiceAddMatchingNotification(self->_notificationPort, "IOServiceTerminate", v5, sub_100006FFC, self, &self->_notificationIterator))
   {
 
-    return [DIError failWithEnumValue:153 verboseInfo:@"Failed adding matching notification" error:a3];
+    return [DIError failWithEnumValue:153 verboseInfo:@"Failed adding matching notification" error:error];
   }
 
   else
@@ -162,16 +162,16 @@ LABEL_5:
   {
     v5 = sub_1000E957C();
     os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    v6 = [(DIIODaemonDelegate *)self deviceHandle];
-    if (v6)
+    deviceHandle = [(DIIODaemonDelegate *)self deviceHandle];
+    if (deviceHandle)
     {
-      v2 = [(DIIODaemonDelegate *)self deviceHandle];
-      v7 = [v2 BSDName];
+      deviceHandle2 = [(DIIODaemonDelegate *)self deviceHandle];
+      bSDName = [deviceHandle2 BSDName];
     }
 
     else
     {
-      v7 = @"an unprepared device";
+      bSDName = @"an unprepared device";
     }
 
     *buf = 68158210;
@@ -179,11 +179,11 @@ LABEL_5:
     v39 = 2080;
     v40 = "[DIIODaemonDelegate exitDaemon]";
     v41 = 2114;
-    v42 = v7;
+    v42 = bSDName;
     LODWORD(v36) = 28;
     v35 = buf;
     v8 = _os_log_send_and_compose_impl();
-    if (v6)
+    if (deviceHandle)
     {
     }
 
@@ -199,16 +199,16 @@ LABEL_5:
     v9 = sub_1000E957C();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(DIIODaemonDelegate *)self deviceHandle];
-      if (v10)
+      deviceHandle3 = [(DIIODaemonDelegate *)self deviceHandle];
+      if (deviceHandle3)
       {
-        v2 = [(DIIODaemonDelegate *)self deviceHandle];
-        v11 = [v2 BSDName];
+        deviceHandle2 = [(DIIODaemonDelegate *)self deviceHandle];
+        bSDName2 = [deviceHandle2 BSDName];
       }
 
       else
       {
-        v11 = @"an unprepared device";
+        bSDName2 = @"an unprepared device";
       }
 
       *buf = 68158210;
@@ -216,9 +216,9 @@ LABEL_5:
       v39 = 2080;
       v40 = "[DIIODaemonDelegate exitDaemon]";
       v41 = 2114;
-      v42 = v11;
+      v42 = bSDName2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%.*s: IO daemon of %{public}@ is shutting down, stopping IO channels", buf, 0x1Cu);
-      if (v10)
+      if (deviceHandle3)
       {
       }
     }
@@ -226,19 +226,19 @@ LABEL_5:
 
   *__error() = v4;
   [(DIIODaemonDelegate *)self setupExitDaemonWatchdog];
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [(DIBaseServiceDelegate *)v12 listener];
-  [v13 invalidate];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  listener = [(DIBaseServiceDelegate *)selfCopy listener];
+  [listener invalidate];
 
-  v14 = [(DIIODaemonDelegate *)v12 clientDelegate];
-  v15 = v14 == 0;
+  clientDelegate = [(DIIODaemonDelegate *)selfCopy clientDelegate];
+  v15 = clientDelegate == 0;
 
   if (!v15)
   {
-    v21 = [(DIIODaemonDelegate *)v12 clientDelegate];
-    v22 = [v21 listener];
-    [v22 invalidate];
+    clientDelegate2 = [(DIIODaemonDelegate *)selfCopy clientDelegate];
+    listener2 = [clientDelegate2 listener];
+    [listener2 invalidate];
   }
 
   v16 = *__error();
@@ -246,7 +246,7 @@ LABEL_5:
   {
     v17 = sub_1000E957C();
     os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-    v18 = [(DIIODaemonDelegate *)v12 activeConnections:v35];
+    v18 = [(DIIODaemonDelegate *)selfCopy activeConnections:v35];
     v19 = [v18 count];
     *buf = 68158210;
     v38 = 32;
@@ -268,8 +268,8 @@ LABEL_5:
     v23 = sub_1000E957C();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(DIIODaemonDelegate *)v12 activeConnections];
-      v25 = [v24 count];
+      activeConnections = [(DIIODaemonDelegate *)selfCopy activeConnections];
+      v25 = [activeConnections count];
       *buf = 68158210;
       v38 = 32;
       v39 = 2080;
@@ -281,22 +281,22 @@ LABEL_5:
   }
 
   *__error() = v16;
-  [(DIIODaemonDelegate *)v12 destroyNotificationPort];
-  v26 = [(DIIODaemonDelegate *)v12 diskArbDisappear];
-  [v26 stop];
+  [(DIIODaemonDelegate *)selfCopy destroyNotificationPort];
+  diskArbDisappear = [(DIIODaemonDelegate *)selfCopy diskArbDisappear];
+  [diskArbDisappear stop];
 
-  v27 = [(DIIODaemonDelegate *)v12 sigtermHandler];
-  v28 = v27 == 0;
+  sigtermHandler = [(DIIODaemonDelegate *)selfCopy sigtermHandler];
+  v28 = sigtermHandler == 0;
 
   if (!v28)
   {
-    v33 = [(DIIODaemonDelegate *)v12 sigtermHandler];
-    dispatch_source_cancel(v33);
+    sigtermHandler2 = [(DIIODaemonDelegate *)selfCopy sigtermHandler];
+    dispatch_source_cancel(sigtermHandler2);
 
-    [(DIIODaemonDelegate *)v12 setSigtermHandler:0];
+    [(DIIODaemonDelegate *)selfCopy setSigtermHandler:0];
   }
 
-  ioManager = v12->_ioManager;
+  ioManager = selfCopy->_ioManager;
   if (!ioManager)
   {
     v30 = *__error();
@@ -390,9 +390,9 @@ LABEL_5:
 {
   if (getuid())
   {
-    v3 = [(DIIODaemonDelegate *)self isRAM];
+    isRAM = [(DIIODaemonDelegate *)self isRAM];
     v4 = @"com.apple.diskimagesiod";
-    if (v3)
+    if (isRAM)
     {
       v4 = @"com.apple.diskimagesiod.ram";
     }
@@ -410,11 +410,11 @@ LABEL_5:
 
 - (void)unmountAll
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2;
-  v4 = [(DIIODaemonDelegate *)v2 deviceHandle];
-  if (!v4 || (-[DIIODaemonDelegate deviceHandle](v2, "deviceHandle"), v5 = objc_claimAutoreleasedReturnValue(), [v5 BSDName], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, !v6))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy;
+  deviceHandle = [(DIIODaemonDelegate *)selfCopy deviceHandle];
+  if (!deviceHandle || (-[DIIODaemonDelegate deviceHandle](selfCopy, "deviceHandle"), v5 = objc_claimAutoreleasedReturnValue(), [v5 BSDName], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, deviceHandle, !v6))
   {
 LABEL_12:
     objc_sync_exit(v3);
@@ -463,9 +463,9 @@ LABEL_12:
   objc_sync_exit(v3);
 
   v12 = [DIAttachedDeviceInfo alloc];
-  v13 = [(DIIODaemonDelegate *)v3 deviceHandle];
-  v14 = [v13 BSDName];
-  v3 = [(DIAttachedDeviceInfo *)v12 initWithBSDName:v14 error:0];
+  deviceHandle2 = [(DIIODaemonDelegate *)v3 deviceHandle];
+  bSDName = [deviceHandle2 BSDName];
+  v3 = [(DIAttachedDeviceInfo *)v12 initWithBSDName:bSDName error:0];
 
   if (v3)
   {
@@ -717,7 +717,7 @@ LABEL_13:
       exit(0);
     }
 
-    v5 = [(DIBaseServiceDelegate *)self dispatchQueue];
+    dispatchQueue = [(DIBaseServiceDelegate *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100008960;
@@ -725,7 +725,7 @@ LABEL_13:
     block[4] = self;
     v6 = v4;
     v23 = v6;
-    dispatch_async(v5, block);
+    dispatch_async(dispatchQueue, block);
 
     v7 = dispatch_time(0, 30000000000);
     if (dispatch_semaphore_wait(v6, v7))
@@ -771,17 +771,17 @@ LABEL_13:
   }
 }
 
-- (void)onClientInvalidateWithConnection:(id)a3
+- (void)onClientInvalidateWithConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(DIIODaemonDelegate *)v5 activeConnections];
-  [v6 removeObject:v4];
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeConnections = [(DIIODaemonDelegate *)selfCopy activeConnections];
+  [activeConnections removeObject:connectionCopy];
 
-  v7 = [(DIIODaemonDelegate *)v5 deviceHandle];
+  deviceHandle = [(DIIODaemonDelegate *)selfCopy deviceHandle];
 
-  if (!v7)
+  if (!deviceHandle)
   {
     v8 = *__error();
     if (sub_1000E95F0())
@@ -817,10 +817,10 @@ LABEL_13:
     }
 
     *__error() = v8;
-    [(DIIODaemonDelegate *)v5 exitDaemon];
+    [(DIIODaemonDelegate *)selfCopy exitDaemon];
   }
 
-  if (![(DIIODaemonDelegate *)v5 handleRefCount:v28])
+  if (![(DIIODaemonDelegate *)selfCopy handleRefCount:v28])
   {
     v14 = *__error();
     if (!sub_1000E95F0())
@@ -828,8 +828,8 @@ LABEL_13:
       v22 = sub_1000E957C();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(DIIODaemonDelegate *)v5 activeConnections];
-        v24 = [v23 count];
+        activeConnections2 = [(DIIODaemonDelegate *)selfCopy activeConnections];
+        v24 = [activeConnections2 count];
         *buf = 68158210;
         v31 = 55;
         v32 = 2080;
@@ -844,8 +844,8 @@ LABEL_13:
 
     v19 = sub_1000E957C();
     os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
-    v20 = [(DIIODaemonDelegate *)v5 activeConnections];
-    v21 = [v20 count];
+    activeConnections3 = [(DIIODaemonDelegate *)selfCopy activeConnections];
+    v21 = [activeConnections3 count];
     *buf = 68158210;
     v31 = 55;
     v32 = 2080;
@@ -863,13 +863,13 @@ LABEL_13:
 
 LABEL_25:
     *__error() = v14;
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_26;
   }
 
-  v12 = [(DIIODaemonDelegate *)v5 activeConnections];
-  v13 = [v12 count] == 0;
+  activeConnections4 = [(DIIODaemonDelegate *)selfCopy activeConnections];
+  v13 = [activeConnections4 count] == 0;
 
   if (!v13)
   {
@@ -879,8 +879,8 @@ LABEL_25:
       v25 = sub_1000E957C();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(DIIODaemonDelegate *)v5 activeConnections];
-        v27 = [v26 count];
+        activeConnections5 = [(DIIODaemonDelegate *)selfCopy activeConnections];
+        v27 = [activeConnections5 count];
         *buf = 68158210;
         v31 = 55;
         v32 = 2080;
@@ -895,8 +895,8 @@ LABEL_25:
 
     v15 = sub_1000E957C();
     os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    v16 = [(DIIODaemonDelegate *)v5 activeConnections];
-    v17 = [v16 count];
+    activeConnections6 = [(DIIODaemonDelegate *)selfCopy activeConnections];
+    v17 = [activeConnections6 count];
     *buf = 68158210;
     v31 = 55;
     v32 = 2080;
@@ -913,9 +913,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  [(DIIODaemonDelegate *)v5 exitWithUnmount];
+  [(DIIODaemonDelegate *)selfCopy exitWithUnmount];
 LABEL_26:
 }
 
@@ -964,59 +964,59 @@ LABEL_26:
   exit(0);
 }
 
-- (BOOL)tryAttachWithParams:(id)a3 error:(id *)a4
+- (BOOL)tryAttachWithParams:(id)params error:(id *)error
 {
-  v6 = a3;
+  paramsCopy = params;
   objc_initWeak(&location, self);
-  -[DIIODaemonDelegate setHandleRefCount:](self, "setHandleRefCount:", [v6 handleRefCount]);
+  -[DIIODaemonDelegate setHandleRefCount:](self, "setHandleRefCount:", [paramsCopy handleRefCount]);
   if ([(DIIODaemonDelegate *)self handleRefCount])
   {
     v7 = [[DIIOClientDelegate alloc] initWithIODaemon:self];
     [(DIIODaemonDelegate *)self setClientDelegate:v7];
 
-    v8 = [(DIIODaemonDelegate *)self clientDelegate];
-    [v8 startXPClistener];
+    clientDelegate = [(DIIODaemonDelegate *)self clientDelegate];
+    [clientDelegate startXPClistener];
 
     v9 = [DIDeviceHandle alloc];
-    v10 = [v6 regEntryID];
-    v11 = [(DIIODaemonDelegate *)self clientDelegate];
-    v12 = [(DIDeviceHandle *)v11 xpcEndpoint];
-    v13 = [(DIDeviceHandle *)v9 initWithRegEntryID:v10 xpcEndpoint:v12];
+    regEntryID = [paramsCopy regEntryID];
+    clientDelegate2 = [(DIIODaemonDelegate *)self clientDelegate];
+    xpcEndpoint = [(DIDeviceHandle *)clientDelegate2 xpcEndpoint];
+    v13 = [(DIDeviceHandle *)v9 initWithRegEntryID:regEntryID xpcEndpoint:xpcEndpoint];
     [(DIIODaemonDelegate *)self setDeviceHandle:v13];
   }
 
   else
   {
-    v11 = -[DIDeviceHandle initWithRegEntryID:]([DIDeviceHandle alloc], "initWithRegEntryID:", [v6 regEntryID]);
-    [(DIIODaemonDelegate *)self setDeviceHandle:v11];
+    clientDelegate2 = -[DIDeviceHandle initWithRegEntryID:]([DIDeviceHandle alloc], "initWithRegEntryID:", [paramsCopy regEntryID]);
+    [(DIIODaemonDelegate *)self setDeviceHandle:clientDelegate2];
   }
 
-  v14 = [(DIIODaemonDelegate *)self deviceHandle];
-  v25 = +[DIBlockDevice copyUnmatchedDiskImageWithRegEntryID:error:](DIBlockDevice, "copyUnmatchedDiskImageWithRegEntryID:error:", [v14 regEntryID], a4);
+  deviceHandle = [(DIIODaemonDelegate *)self deviceHandle];
+  v25 = +[DIBlockDevice copyUnmatchedDiskImageWithRegEntryID:error:](DIBlockDevice, "copyUnmatchedDiskImageWithRegEntryID:error:", [deviceHandle regEntryID], error);
 
   if (v25)
   {
     IOObjectRetain([v25 ioObj]);
-    if ([(DIIODaemonDelegate *)self setupTerminationNotificationWithError:a4])
+    if ([(DIIODaemonDelegate *)self setupTerminationNotificationWithError:error])
     {
-      v15 = [(DIIODaemonDelegate *)self diskArbDisappear];
-      v16 = [v6 inputStatFS];
-      if (v16)
+      diskArbDisappear = [(DIIODaemonDelegate *)self diskArbDisappear];
+      inputStatFS = [paramsCopy inputStatFS];
+      if (inputStatFS)
       {
-        v4 = [v6 inputStatFS];
-        v17 = [v4 mountedOnURL];
+        inputStatFS2 = [paramsCopy inputStatFS];
+        mountedOnURL = [inputStatFS2 mountedOnURL];
       }
 
       else
       {
-        v17 = 0;
+        mountedOnURL = 0;
       }
 
-      v18 = [v6 shadowChain];
-      v19 = [v18 mountPoints];
-      [v15 addDisappearedCallbackWithMountPoint:v17 shadowMountPoints:v19 delegate:self];
+      shadowChain = [paramsCopy shadowChain];
+      mountPoints = [shadowChain mountPoints];
+      [diskArbDisappear addDisappearedCallbackWithMountPoint:mountedOnURL shadowMountPoints:mountPoints delegate:self];
 
-      if (v16)
+      if (inputStatFS)
       {
       }
 
@@ -1060,27 +1060,27 @@ LABEL_26:
   return 0;
 }
 
-- (BOOL)validateDeserializationWithParams:(id)a3 reply:(id)a4
+- (BOOL)validateDeserializationWithParams:(id)params reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  paramsCopy = params;
+  replyCopy = reply;
   v10 = 0;
-  v7 = [v5 validateDeserializationWithError:&v10];
+  v7 = [paramsCopy validateDeserializationWithError:&v10];
   v8 = v10;
   if ((v7 & 1) == 0)
   {
-    v6[2](v6, 0, v8);
+    replyCopy[2](replyCopy, 0, v8);
   }
 
   return v7;
 }
 
-- (void)attachToNewDeviceWithParams:(id)a3 reply:(id)a4
+- (void)attachToNewDeviceWithParams:(id)params reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  if ([(DIIODaemonDelegate *)self validateDeserializationWithParams:v6 reply:v7])
+  if ([(DIIODaemonDelegate *)self validateDeserializationWithParams:paramsCopy reply:replyCopy])
   {
     v8 = *__error();
     if (sub_1000E95F0())
@@ -1088,16 +1088,16 @@ LABEL_26:
       v23[1] = 0;
       v9 = sub_1000E957C();
       os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-      v10 = [v6 instanceID];
-      v11 = [v6 regEntryID];
+      instanceID = [paramsCopy instanceID];
+      regEntryID = [paramsCopy regEntryID];
       *buf = 68158466;
       v26 = 56;
       v27 = 2080;
       v28 = "[DIIODaemonDelegate attachToNewDeviceWithParams:reply:]";
       v29 = 2114;
-      v30 = v10;
+      v30 = instanceID;
       v31 = 2048;
-      v32 = v11;
+      v32 = regEntryID;
       LODWORD(v19) = 38;
       v18 = buf;
       v12 = _os_log_send_and_compose_impl();
@@ -1114,25 +1114,25 @@ LABEL_26:
       v13 = sub_1000E957C();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v6 instanceID];
-        v15 = [v6 regEntryID];
+        instanceID2 = [paramsCopy instanceID];
+        regEntryID2 = [paramsCopy regEntryID];
         *buf = 68158466;
         v26 = 56;
         v27 = 2080;
         v28 = "[DIIODaemonDelegate attachToNewDeviceWithParams:reply:]";
         v29 = 2114;
-        v30 = v14;
+        v30 = instanceID2;
         v31 = 2048;
-        v32 = v15;
+        v32 = regEntryID2;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%.*s: entry, instance ID = %{public}@, registry entry ID = 0x%llx", buf, 0x26u);
       }
     }
 
     *__error() = v8;
-    if (!getuid() && ([v6 requiresRootDaemon] & 1) == 0)
+    if (!getuid() && ([paramsCopy requiresRootDaemon] & 1) == 0)
     {
       v16 = [DIError errorWithPOSIXCode:1 verboseInfo:@"Root daemon connection denied"];
-      v7[2](v7, 0, v16);
+      replyCopy[2](replyCopy, 0, v16);
       [(DIIODaemonDelegate *)self exitDaemon];
     }
 
@@ -1142,8 +1142,8 @@ LABEL_26:
     block[2] = sub_10000A0C4;
     block[3] = &unk_1001F5820;
     objc_copyWeak(v23, &location);
-    v22 = v7;
-    v21 = v6;
+    v22 = replyCopy;
+    v21 = paramsCopy;
     dispatch_async(v17, block);
 
     objc_destroyWeak(v23);
@@ -1152,26 +1152,26 @@ LABEL_26:
   objc_destroyWeak(&location);
 }
 
-- (void)attachToExistingDeviceWithParams:(id)a3 reply:(id)a4
+- (void)attachToExistingDeviceWithParams:(id)params reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(DIIODaemonDelegate *)self validateDeserializationWithParams:v6 reply:v7])
+  paramsCopy = params;
+  replyCopy = reply;
+  if ([(DIIODaemonDelegate *)self validateDeserializationWithParams:paramsCopy reply:replyCopy])
   {
     v8 = *__error();
     if (sub_1000E95F0())
     {
       v9 = sub_1000E957C();
       os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-      v10 = [v6 instanceID];
+      instanceID = [paramsCopy instanceID];
       *buf = 68158466;
       v38 = 61;
       v39 = 2080;
       v40 = "[DIIODaemonDelegate attachToExistingDeviceWithParams:reply:]";
       v41 = 2114;
-      v42 = v10;
+      v42 = instanceID;
       v43 = 2048;
-      v44 = [v6 regEntryID];
+      regEntryID = [paramsCopy regEntryID];
       LODWORD(v36) = 38;
       v35 = buf;
       v11 = _os_log_send_and_compose_impl();
@@ -1188,49 +1188,49 @@ LABEL_26:
       v12 = sub_1000E957C();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v6 instanceID];
+        instanceID2 = [paramsCopy instanceID];
         *buf = 68158466;
         v38 = 61;
         v39 = 2080;
         v40 = "[DIIODaemonDelegate attachToExistingDeviceWithParams:reply:]";
         v41 = 2114;
-        v42 = v13;
+        v42 = instanceID2;
         v43 = 2048;
-        v44 = [v6 regEntryID];
+        regEntryID = [paramsCopy regEntryID];
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%.*s: entry, instance ID = %{public}@, registry entry ID = 0x%llx", buf, 0x26u);
       }
     }
 
     *__error() = v8;
-    v14 = self;
-    objc_sync_enter(v14);
-    v15 = [(DIIODaemonDelegate *)v14 deviceHandle];
-    v16 = v15 == 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    deviceHandle = [(DIIODaemonDelegate *)selfCopy deviceHandle];
+    v16 = deviceHandle == 0;
 
     if (v16)
     {
       v20 = [DIError errorWithEnumValue:155 verboseInfo:@"A controller XPC service attempted to connect to an existing device, but this daemon instance has no such device yet"];
-      v7[2](v7, 0, v20);
+      replyCopy[2](replyCopy, 0, v20);
     }
 
     else
     {
-      v17 = [v6 regEntryID];
-      v18 = [(DIIODaemonDelegate *)v14 deviceHandle];
-      LOBYTE(v17) = v17 == [v18 regEntryID];
+      regEntryID2 = [paramsCopy regEntryID];
+      deviceHandle2 = [(DIIODaemonDelegate *)selfCopy deviceHandle];
+      LOBYTE(regEntryID2) = regEntryID2 == [deviceHandle2 regEntryID];
 
-      if (v17)
+      if (regEntryID2)
       {
-        v19 = atomic_load(&v14->_unmountStarted);
+        v19 = atomic_load(&selfCopy->_unmountStarted);
         if (v19)
         {
           v20 = [DIError errorWithEnumValue:170 verboseInfo:@"Unmount already started, notifying controller to retry later"];
-          v7[2](v7, 0, v20);
+          replyCopy[2](replyCopy, 0, v20);
         }
 
         else
         {
-          if ([v6 handleRefCount] && !-[DIIODaemonDelegate handleRefCount](v14, "handleRefCount"))
+          if ([paramsCopy handleRefCount] && !-[DIIODaemonDelegate handleRefCount](selfCopy, "handleRefCount"))
           {
             v24 = *__error();
             if (sub_1000E95F0())
@@ -1266,7 +1266,7 @@ LABEL_26:
             *__error() = v24;
           }
 
-          else if (([v6 handleRefCount] & 1) == 0 && -[DIIODaemonDelegate handleRefCount](v14, "handleRefCount"))
+          else if (([paramsCopy handleRefCount] & 1) == 0 && -[DIIODaemonDelegate handleRefCount](selfCopy, "handleRefCount"))
           {
             v21 = *__error();
             if (sub_1000E95F0())
@@ -1300,9 +1300,9 @@ LABEL_26:
             }
 
             *__error() = v21;
-            [(DIIODaemonDelegate *)v14 setHandleRefCount:0];
-            v29 = [(DIIODaemonDelegate *)v14 deviceHandle];
-            [v29 setXpcEndpoint:0];
+            [(DIIODaemonDelegate *)selfCopy setHandleRefCount:0];
+            deviceHandle3 = [(DIIODaemonDelegate *)selfCopy deviceHandle];
+            [deviceHandle3 setXpcEndpoint:0];
           }
 
           v30 = *__error();
@@ -1337,8 +1337,8 @@ LABEL_26:
           }
 
           *__error() = v30;
-          v34 = [(DIIODaemonDelegate *)v14 deviceHandle];
-          (v7)[2](v7, v34, 0);
+          deviceHandle4 = [(DIIODaemonDelegate *)selfCopy deviceHandle];
+          (replyCopy)[2](replyCopy, deviceHandle4, 0);
 
           v20 = 0;
         }
@@ -1347,11 +1347,11 @@ LABEL_26:
       else
       {
         v20 = [DIError errorWithEnumValue:150 verboseInfo:@"Registry entry ID mismatch between controller and daemon"];
-        v7[2](v7, 0, v20);
+        replyCopy[2](replyCopy, 0, v20);
       }
     }
 
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1395,10 +1395,10 @@ LABEL_26:
   }
 }
 
-- (BOOL)setupNewConnection:(id)a3
+- (BOOL)setupNewConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 valueForEntitlement:@"com.apple.diskimages.creator-uc"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.diskimages.creator-uc"];
   if (v5 && (objc_opt_respondsToSelector() & 1) != 0 && ([v5 BOOLValue] & 1) != 0)
   {
     v6 = *__error();
@@ -1433,14 +1433,14 @@ LABEL_26:
 
     *__error() = v6;
     v20 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DIIODaemonProtocol];
-    [v4 setExportedInterface:v20];
+    [connectionCopy setExportedInterface:v20];
 
-    [v4 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     objc_initWeak(&buf, self);
-    objc_initWeak(&location, v4);
-    v21 = self;
-    objc_sync_enter(v21);
-    v22 = atomic_load(&v21->_unmountStarted);
+    objc_initWeak(&location, connectionCopy);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v22 = atomic_load(&selfCopy->_unmountStarted);
     if ((v22 & 1) == 0)
     {
       v31[0] = _NSConcreteStackBlock;
@@ -1449,16 +1449,16 @@ LABEL_26:
       v31[3] = &unk_1001F5848;
       objc_copyWeak(&v32, &buf);
       objc_copyWeak(&v33, &location);
-      [v4 setInterruptionHandler:v31];
+      [connectionCopy setInterruptionHandler:v31];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_10000B64C;
       v28[3] = &unk_1001F5848;
       objc_copyWeak(&v29, &buf);
       objc_copyWeak(&v30, &location);
-      [v4 setInvalidationHandler:v28];
-      v23 = [(DIIODaemonDelegate *)v21 activeConnections];
-      [v23 addObject:v4];
+      [connectionCopy setInvalidationHandler:v28];
+      activeConnections = [(DIIODaemonDelegate *)selfCopy activeConnections];
+      [activeConnections addObject:connectionCopy];
 
       objc_destroyWeak(&v30);
       objc_destroyWeak(&v29);
@@ -1466,7 +1466,7 @@ LABEL_26:
       objc_destroyWeak(&v32);
     }
 
-    objc_sync_exit(v21);
+    objc_sync_exit(selfCopy);
 
     objc_destroyWeak(&location);
     objc_destroyWeak(&buf);
@@ -1506,17 +1506,17 @@ LABEL_26:
     }
 
     *__error() = v9;
-    v13 = self;
-    objc_sync_enter(v13);
-    v14 = [(DIIODaemonDelegate *)v13 deviceHandle];
-    if (v14)
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    deviceHandle = [(DIIODaemonDelegate *)selfCopy2 deviceHandle];
+    if (deviceHandle)
     {
     }
 
     else
     {
-      v15 = [(DIIODaemonDelegate *)v13 activeConnections];
-      v16 = [v15 count] == 0;
+      activeConnections2 = [(DIIODaemonDelegate *)selfCopy2 activeConnections];
+      v16 = [activeConnections2 count] == 0;
 
       if (v16)
       {
@@ -1555,7 +1555,7 @@ LABEL_26:
       }
     }
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy2);
 
     v17 = 0;
   }
@@ -1563,14 +1563,14 @@ LABEL_26:
   return v17;
 }
 
-- (void)retrieveStatsWithParams:(id)a3 reply:(id)a4
+- (void)retrieveStatsWithParams:(id)params reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  replyCopy = reply;
   v18 = 0;
   v19 = 0;
   v16 = 0;
-  v8 = [v6 validateDeserializationWithError:&v16];
+  v8 = [paramsCopy validateDeserializationWithError:&v16];
   v9 = v16;
   if (v8)
   {
@@ -1597,17 +1597,17 @@ LABEL_26:
     v15 = 0;
   }
 
-  v7[2](v7, v15, v9);
+  replyCopy[2](replyCopy, v15, v9);
 }
 
-+ (id)requestsStatsToNSArrayWithArray:(DIRequestsStatsArray *)a3
++ (id)requestsStatsToNSArrayWithArray:(DIRequestsStatsArray *)array
 {
   v15 = objc_alloc_init(NSMutableArray);
-  v14 = a3;
-  if (a3->var1)
+  arrayCopy = array;
+  if (array->var1)
   {
     v4 = 0;
-    p_var3 = &a3->var0[0].var3;
+    p_var3 = &array->var0[0].var3;
     do
     {
       v6 = [[NSNumber alloc] initWithUnsignedInt:*(p_var3 - 4)];
@@ -1623,7 +1623,7 @@ LABEL_26:
       p_var3 += 5;
     }
 
-    while (v4 < v14->var1);
+    while (v4 < arrayCopy->var1);
   }
 
   return v15;

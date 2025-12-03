@@ -1,8 +1,8 @@
 @interface CARDebugTableCellsPanel
-- (CARDebugTableCellsPanel)initWithPanelController:(id)a3;
+- (CARDebugTableCellsPanel)initWithPanelController:(id)controller;
 - (id)cellSpecifier;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -32,11 +32,11 @@
   return cellSpecifier;
 }
 
-- (CARDebugTableCellsPanel)initWithPanelController:(id)a3
+- (CARDebugTableCellsPanel)initWithPanelController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = CARDebugTableCellsPanel;
-  return [(CARSettingsPanel *)&v4 initWithPanelController:a3];
+  return [(CARSettingsPanel *)&v4 initWithPanelController:controller];
 }
 
 - (void)viewDidLoad
@@ -47,92 +47,92 @@
   v3 = [[DebugTableView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(CARDebugTableCellsPanel *)self setTableView:v3];
 
-  v4 = [(CARDebugTableCellsPanel *)self tableView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(CARDebugTableCellsPanel *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(CARDebugTableCellsPanel *)self tableView];
-  [v5 setDelegate:self];
+  tableView2 = [(CARDebugTableCellsPanel *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v6 = [(CARDebugTableCellsPanel *)self tableView];
-  [v6 setDataSource:self];
+  tableView3 = [(CARDebugTableCellsPanel *)self tableView];
+  [tableView3 setDataSource:self];
 
-  v7 = [(CARDebugTableCellsPanel *)self tableView];
+  tableView4 = [(CARDebugTableCellsPanel *)self tableView];
   v8 = objc_opt_class();
   v9 = +[DebugTableViewCell reuseIdentifier];
-  [v7 registerClass:v8 forCellReuseIdentifier:v9];
+  [tableView4 registerClass:v8 forCellReuseIdentifier:v9];
 
-  v10 = [(CARDebugTableCellsPanel *)self view];
-  v11 = [(CARDebugTableCellsPanel *)self tableView];
-  [v10 addSubview:v11];
+  view = [(CARDebugTableCellsPanel *)self view];
+  tableView5 = [(CARDebugTableCellsPanel *)self tableView];
+  [view addSubview:tableView5];
 
-  v32 = [(CARDebugTableCellsPanel *)self tableView];
-  v30 = [v32 topAnchor];
-  v31 = [(CARDebugTableCellsPanel *)self view];
-  v29 = [v31 topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  tableView6 = [(CARDebugTableCellsPanel *)self tableView];
+  topAnchor = [tableView6 topAnchor];
+  view2 = [(CARDebugTableCellsPanel *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v34[0] = v28;
-  v27 = [(CARDebugTableCellsPanel *)self tableView];
-  v25 = [v27 leftAnchor];
-  v26 = [(CARDebugTableCellsPanel *)self view];
-  v24 = [v26 leftAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  tableView7 = [(CARDebugTableCellsPanel *)self tableView];
+  leftAnchor = [tableView7 leftAnchor];
+  view3 = [(CARDebugTableCellsPanel *)self view];
+  leftAnchor2 = [view3 leftAnchor];
+  v23 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v34[1] = v23;
-  v22 = [(CARDebugTableCellsPanel *)self tableView];
-  v12 = [v22 rightAnchor];
-  v13 = [(CARDebugTableCellsPanel *)self view];
-  v14 = [v13 rightAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  tableView8 = [(CARDebugTableCellsPanel *)self tableView];
+  rightAnchor = [tableView8 rightAnchor];
+  view4 = [(CARDebugTableCellsPanel *)self view];
+  rightAnchor2 = [view4 rightAnchor];
+  v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v34[2] = v15;
-  v16 = [(CARDebugTableCellsPanel *)self tableView];
-  v17 = [v16 bottomAnchor];
-  v18 = [(CARDebugTableCellsPanel *)self view];
-  v19 = [v18 bottomAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  tableView9 = [(CARDebugTableCellsPanel *)self tableView];
+  bottomAnchor = [tableView9 bottomAnchor];
+  view5 = [(CARDebugTableCellsPanel *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v34[3] = v20;
   v21 = [NSArray arrayWithObjects:v34 count:4];
   [NSLayoutConstraint activateConstraints:v21];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[DebugTableViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(CARDebugTableCellsPanel *)self tableView];
-  [v10 _sectionContentInset];
+  tableView = [(CARDebugTableCellsPanel *)self tableView];
+  [tableView _sectionContentInset];
   v12 = v11;
-  v13 = [(CARDebugTableCellsPanel *)self platterLeftConstraint];
-  [v13 setConstant:v12];
+  platterLeftConstraint = [(CARDebugTableCellsPanel *)self platterLeftConstraint];
+  [platterLeftConstraint setConstant:v12];
 
-  v14 = [(CARDebugTableCellsPanel *)self tableView];
-  [v14 _sectionContentInset];
+  tableView2 = [(CARDebugTableCellsPanel *)self tableView];
+  [tableView2 _sectionContentInset];
   v16 = -v15;
-  v17 = [(CARDebugTableCellsPanel *)self platterRightConstraint];
-  [v17 setConstant:v16];
+  platterRightConstraint = [(CARDebugTableCellsPanel *)self platterRightConstraint];
+  [platterRightConstraint setConstant:v16];
 
-  v18 = [v6 section];
-  v19 = [v6 row];
+  section = [pathCopy section];
+  v19 = [pathCopy row];
 
-  v20 = [NSString stringWithFormat:@"Section %ld row %ld", v18, v19];
-  v21 = [v9 textLabel];
-  [v21 setText:v20];
+  v20 = [NSString stringWithFormat:@"Section %ld row %ld", section, v19];
+  textLabel = [v9 textLabel];
+  [textLabel setText:v20];
 
   [v9 setAccessoryType:1];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [v7 indexPathForSelectedRow];
+  viewCopy = view;
+  pathCopy = path;
+  indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
 
-  if (v6 == v5)
+  if (indexPathForSelectedRow == pathCopy)
   {
-    [v7 deselectRowAtIndexPath:v5 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 

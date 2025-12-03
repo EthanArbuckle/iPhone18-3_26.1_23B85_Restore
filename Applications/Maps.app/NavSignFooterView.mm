@@ -1,22 +1,22 @@
 @interface NavSignFooterView
-- (NavSignFooterView)initWithFrame:(CGRect)a3 action:(id)a4;
+- (NavSignFooterView)initWithFrame:(CGRect)frame action:(id)action;
 - (double)currentHeight;
 - (double)maximumHeight;
 - (double)minimumHeight;
 - (void)_updateGrabberPosition;
-- (void)setLayoutProgress:(double)a3;
-- (void)setShouldShowEndButton:(BOOL)a3;
-- (void)setShowingSecondaryManeuver:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setLayoutProgress:(double)progress;
+- (void)setShouldShowEndButton:(BOOL)button;
+- (void)setShowingSecondaryManeuver:(BOOL)maneuver;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NavSignFooterView
 
 - (double)minimumHeight
 {
-  v2 = [(NavSignFooterView *)self showingSecondaryManeuver];
+  showingSecondaryManeuver = [(NavSignFooterView *)self showingSecondaryManeuver];
   result = 80.0;
-  if (!v2)
+  if (!showingSecondaryManeuver)
   {
     return 24.0;
   }
@@ -48,9 +48,9 @@
     v3 = 48.0;
   }
 
-  v4 = [(NavSignFooterView *)self shouldShowEndButton];
+  shouldShowEndButton = [(NavSignFooterView *)self shouldShowEndButton];
   v5 = 32.0;
-  if (!v4)
+  if (!shouldShowEndButton)
   {
     v5 = 16.0;
   }
@@ -58,22 +58,22 @@
   return v5 + v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = NavSignFooterView;
-  v4 = a3;
-  [(NavSignFooterView *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NavSignFooterView *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(NavSignFooterView *)self traitCollection:v10.receiver];
-  v6 = sub_100017FE8(v4, v5);
+  v6 = sub_100017FE8(changeCopy, v5);
 
   if (v6)
   {
-    v7 = [(NavSignFooterView *)self traitCollection];
-    v8 = [v7 isLuminanceReduced];
+    traitCollection = [(NavSignFooterView *)self traitCollection];
+    isLuminanceReduced = [traitCollection isLuminanceReduced];
 
     v9 = 0.300000012;
-    if (!v8)
+    if (!isLuminanceReduced)
     {
       v9 = 1.0;
     }
@@ -102,22 +102,22 @@
   [(NSLayoutConstraint *)grabberTopConstraint setConstant:v10];
 }
 
-- (void)setShowingSecondaryManeuver:(BOOL)a3
+- (void)setShowingSecondaryManeuver:(BOOL)maneuver
 {
-  if (self->_showingSecondaryManeuver != a3)
+  if (self->_showingSecondaryManeuver != maneuver)
   {
-    self->_showingSecondaryManeuver = a3;
+    self->_showingSecondaryManeuver = maneuver;
     [(NavSignFooterView *)self _updateGrabberPosition];
   }
 }
 
-- (void)setShouldShowEndButton:(BOOL)a3
+- (void)setShouldShowEndButton:(BOOL)button
 {
-  if (self->_shouldShowEndButton != a3)
+  if (self->_shouldShowEndButton != button)
   {
-    self->_shouldShowEndButton = a3;
+    self->_shouldShowEndButton = button;
     v3 = 0.0;
-    if (a3)
+    if (button)
     {
       v3 = 1.0;
     }
@@ -126,9 +126,9 @@
   }
 }
 
-- (void)setLayoutProgress:(double)a3
+- (void)setLayoutProgress:(double)progress
 {
-  v4 = fmin(fmax(a3, 0.0), 1.0);
+  v4 = fmin(fmax(progress, 0.0), 1.0);
   if (vabdd_f64(self->_layoutProgress, v4) > 2.22044605e-16)
   {
     self->_layoutProgress = v4;
@@ -138,97 +138,97 @@
   }
 }
 
-- (NavSignFooterView)initWithFrame:(CGRect)a3 action:(id)a4
+- (NavSignFooterView)initWithFrame:(CGRect)frame action:(id)action
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  actionCopy = action;
   v53.receiver = self;
   v53.super_class = NavSignFooterView;
-  v10 = [(NavSignFooterView *)&v53 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(NavSignFooterView *)&v53 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [(NavSignFooterView *)v10 setAccessibilityIdentifier:v12];
+    [(NavSignFooterView *)height setAccessibilityIdentifier:v12];
 
-    [(NavSignFooterView *)v10 setClipsToBounds:1];
-    v13 = [(NavSignFooterView *)v10 layer];
-    [v13 setMasksToBounds:1];
+    [(NavSignFooterView *)height setClipsToBounds:1];
+    layer = [(NavSignFooterView *)height layer];
+    [layer setMasksToBounds:1];
 
     v14 = objc_opt_new();
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v14 setUserInteractionEnabled:0];
     [v14 setOverrideUserInterfaceStyle:2];
-    [(NavSignFooterView *)v10 addSubview:v14];
-    grabber = v10->_grabber;
-    v10->_grabber = v14;
+    [(NavSignFooterView *)height addSubview:v14];
+    grabber = height->_grabber;
+    height->_grabber = v14;
     v16 = v14;
 
     v17 = objc_opt_new();
-    contentAreaGuide = v10->_contentAreaGuide;
-    v10->_contentAreaGuide = v17;
+    contentAreaGuide = height->_contentAreaGuide;
+    height->_contentAreaGuide = v17;
 
-    [(NavSignFooterView *)v10 addLayoutGuide:v10->_contentAreaGuide];
-    v19 = [[_TtC4Maps13NavTrayButton alloc] initWithStyle:0 action:v9];
-    endButton = v10->_endButton;
-    v10->_endButton = &v19->super;
+    [(NavSignFooterView *)height addLayoutGuide:height->_contentAreaGuide];
+    v19 = [[_TtC4Maps13NavTrayButton alloc] initWithStyle:0 action:actionCopy];
+    endButton = height->_endButton;
+    height->_endButton = &v19->super;
 
-    [(UIView *)v10->_endButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIView *)v10->_endButton setAlpha:0.0];
-    [(UIView *)v10->_endButton setAccessibilityIdentifier:@"EndButton"];
-    [(NavSignFooterView *)v10 addSubview:v10->_endButton];
+    [(UIView *)height->_endButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIView *)height->_endButton setAlpha:0.0];
+    [(UIView *)height->_endButton setAccessibilityIdentifier:@"EndButton"];
+    [(NavSignFooterView *)height addSubview:height->_endButton];
     v42 = v16;
-    v21 = [v16 topAnchor];
-    v22 = [(NavSignFooterView *)v10 topAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
-    v52 = v9;
-    grabberTopConstraint = v10->_grabberTopConstraint;
-    v10->_grabberTopConstraint = v23;
+    topAnchor = [v16 topAnchor];
+    topAnchor2 = [(NavSignFooterView *)height topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    v52 = actionCopy;
+    grabberTopConstraint = height->_grabberTopConstraint;
+    height->_grabberTopConstraint = v23;
 
-    [(NavSignFooterView *)v10 _updateGrabberPosition];
-    v51 = [v16 centerXAnchor];
-    v50 = [(NavSignFooterView *)v10 centerXAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    [(NavSignFooterView *)height _updateGrabberPosition];
+    centerXAnchor = [v16 centerXAnchor];
+    centerXAnchor2 = [(NavSignFooterView *)height centerXAnchor];
+    v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v54[0] = v49;
-    v54[1] = v10->_grabberTopConstraint;
-    v48 = [(UILayoutGuide *)v10->_contentAreaGuide leadingAnchor];
-    v47 = [(NavSignFooterView *)v10 leadingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    v54[1] = height->_grabberTopConstraint;
+    leadingAnchor = [(UILayoutGuide *)height->_contentAreaGuide leadingAnchor];
+    leadingAnchor2 = [(NavSignFooterView *)height leadingAnchor];
+    v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v54[2] = v46;
-    v45 = [(UILayoutGuide *)v10->_contentAreaGuide trailingAnchor];
-    v44 = [(NavSignFooterView *)v10 trailingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    trailingAnchor = [(UILayoutGuide *)height->_contentAreaGuide trailingAnchor];
+    trailingAnchor2 = [(NavSignFooterView *)height trailingAnchor];
+    v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v54[3] = v43;
-    v41 = [(UILayoutGuide *)v10->_contentAreaGuide topAnchor];
-    v40 = [(NavSignFooterView *)v10 topAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40 constant:16.0];
+    topAnchor3 = [(UILayoutGuide *)height->_contentAreaGuide topAnchor];
+    topAnchor4 = [(NavSignFooterView *)height topAnchor];
+    v39 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:16.0];
     v54[4] = v39;
-    v38 = [(UILayoutGuide *)v10->_contentAreaGuide bottomAnchor];
-    v37 = [(NavSignFooterView *)v10 bottomAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37 constant:-16.0];
+    bottomAnchor = [(UILayoutGuide *)height->_contentAreaGuide bottomAnchor];
+    bottomAnchor2 = [(NavSignFooterView *)height bottomAnchor];
+    v36 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
     v54[5] = v36;
-    v35 = [(UIView *)v10->_endButton leadingAnchor];
-    v25 = [(NavSignFooterView *)v10 leadingAnchor];
-    v26 = [v35 constraintEqualToAnchor:v25 constant:16.0];
+    leadingAnchor3 = [(UIView *)height->_endButton leadingAnchor];
+    leadingAnchor4 = [(NavSignFooterView *)height leadingAnchor];
+    v26 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
     v54[6] = v26;
-    v27 = [(UIView *)v10->_endButton trailingAnchor];
-    v28 = [(NavSignFooterView *)v10 trailingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:-16.0];
+    trailingAnchor3 = [(UIView *)height->_endButton trailingAnchor];
+    trailingAnchor4 = [(NavSignFooterView *)height trailingAnchor];
+    v29 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
     v54[7] = v29;
-    v30 = [(UIView *)v10->_endButton centerYAnchor];
-    v31 = [(UILayoutGuide *)v10->_contentAreaGuide centerYAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    centerYAnchor = [(UIView *)height->_endButton centerYAnchor];
+    centerYAnchor2 = [(UILayoutGuide *)height->_contentAreaGuide centerYAnchor];
+    v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v54[8] = v32;
     v33 = [NSArray arrayWithObjects:v54 count:9];
     [NSLayoutConstraint activateConstraints:v33];
 
-    v9 = v52;
+    actionCopy = v52;
   }
 
-  return v10;
+  return height;
 }
 
 @end

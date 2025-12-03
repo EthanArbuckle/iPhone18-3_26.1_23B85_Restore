@@ -1,37 +1,37 @@
 @interface HDUserDomainConceptAPIObjectManager
-+ (id)allAPIObjectsFromUserDomainConceptsWithProfile:(id)a3 error:(id *)a4;
-+ (id)allUserAnnotatedMedicationsFromUserDomainConceptsWithProfile:(id)a3 predicate:(id)a4 limit:(int64_t)a5 error:(id *)a6;
++ (id)allAPIObjectsFromUserDomainConceptsWithProfile:(id)profile error:(id *)error;
++ (id)allUserAnnotatedMedicationsFromUserDomainConceptsWithProfile:(id)profile predicate:(id)predicate limit:(int64_t)limit error:(id *)error;
 @end
 
 @implementation HDUserDomainConceptAPIObjectManager
 
-+ (id)allUserAnnotatedMedicationsFromUserDomainConceptsWithProfile:(id)a3 predicate:(id)a4 limit:(int64_t)a5 error:(id *)a6
++ (id)allUserAnnotatedMedicationsFromUserDomainConceptsWithProfile:(id)profile predicate:(id)predicate limit:(int64_t)limit error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 daemon];
-  v12 = [v11 userDomainConceptEntityRegistry];
-  v13 = [v12 registeredUserDomainConceptEntityClasses];
+  profileCopy = profile;
+  predicateCopy = predicate;
+  daemon = [profileCopy daemon];
+  userDomainConceptEntityRegistry = [daemon userDomainConceptEntityRegistry];
+  registeredUserDomainConceptEntityClasses = [userDomainConceptEntityRegistry registeredUserDomainConceptEntityClasses];
 
-  v14 = [v13 hk_map:&__block_literal_global_142];
+  v14 = [registeredUserDomainConceptEntityClasses hk_map:&__block_literal_global_142];
   v15 = HDUserDomainConceptEntityPredicateForConceptsWithTypeIdentifiers(v14);
-  v16 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v15 otherPredicate:v10];
+  v16 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v15 otherPredicate:predicateCopy];
 
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v18 = [v9 database];
+  database = [profileCopy database];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __122__HDUserDomainConceptAPIObjectManager_allUserAnnotatedMedicationsFromUserDomainConceptsWithProfile_predicate_limit_error___block_invoke_2;
   v26[3] = &unk_2786145F8;
-  v27 = v9;
+  v27 = profileCopy;
   v28 = v16;
-  v30 = a5;
-  v31 = a1;
+  limitCopy = limit;
+  selfCopy = self;
   v29 = v17;
   v19 = v17;
   v20 = v16;
-  v21 = v9;
-  LODWORD(v17) = [(HDHealthEntity *)HDUserDomainConceptEntity performReadTransactionWithHealthDatabase:v18 error:a6 block:v26];
+  v21 = profileCopy;
+  LODWORD(v17) = [(HDHealthEntity *)HDUserDomainConceptEntity performReadTransactionWithHealthDatabase:database error:error block:v26];
 
   if (v17)
   {
@@ -126,23 +126,23 @@ uint64_t __122__HDUserDomainConceptAPIObjectManager_allUserAnnotatedMedicationsF
   return v17;
 }
 
-+ (id)allAPIObjectsFromUserDomainConceptsWithProfile:(id)a3 error:(id *)a4
++ (id)allAPIObjectsFromUserDomainConceptsWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [v6 database];
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __92__HDUserDomainConceptAPIObjectManager_allAPIObjectsFromUserDomainConceptsWithProfile_error___block_invoke;
   v14[3] = &unk_278614698;
   v16 = v7;
-  v17 = a1;
-  v15 = v6;
+  selfCopy = self;
+  v15 = profileCopy;
   v9 = v7;
-  v10 = v6;
-  LODWORD(a4) = [(HDHealthEntity *)HDUserDomainConceptEntity performReadTransactionWithHealthDatabase:v8 error:a4 block:v14];
+  v10 = profileCopy;
+  LODWORD(error) = [(HDHealthEntity *)HDUserDomainConceptEntity performReadTransactionWithHealthDatabase:database error:error block:v14];
 
-  if (a4)
+  if (error)
   {
     v11 = v9;
   }

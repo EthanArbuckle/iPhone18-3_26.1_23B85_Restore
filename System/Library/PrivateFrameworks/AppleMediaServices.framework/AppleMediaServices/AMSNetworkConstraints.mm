@@ -2,20 +2,20 @@
 + (AMSBagKeySet)bagKeySet;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-+ (id)_networkConstraintsForMediaType:(id)a3 withArray:(id)a4;
++ (id)_networkConstraintsForMediaType:(id)type withArray:(id)array;
 + (id)createBagForSubProfile;
-+ (id)networkConstraintsForMediaType:(id)a3 withBag:(id)a4;
++ (id)networkConstraintsForMediaType:(id)type withBag:(id)bag;
 - (AMSNetworkConstraints)init;
-- (BOOL)hasSizeLimitForNetworkType:(id)a3;
+- (BOOL)hasSizeLimitForNetworkType:(id)type;
 - (BOOL)isAnyNetworkTypeEnabled;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConstraints:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConstraints:(id)constraints;
 - (NSString)description;
-- (id)_initWithStoreConstraintDictionary:(id)a3;
-- (int64_t)_sizeLimitForNetworkType:(id)a3;
+- (id)_initWithStoreConstraintDictionary:(id)dictionary;
+- (int64_t)_sizeLimitForNetworkType:(id)type;
 - (unint64_t)hash;
 - (void)_disableAllNetworkTypes;
-- (void)_setSizeLimit:(int64_t)a3 forNetworkType:(id)a4;
+- (void)_setSizeLimit:(int64_t)limit forNetworkType:(id)type;
 @end
 
 @implementation AMSNetworkConstraints
@@ -34,22 +34,22 @@
   return v3;
 }
 
-+ (id)networkConstraintsForMediaType:(id)a3 withBag:(id)a4
++ (id)networkConstraintsForMediaType:(id)type withBag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  bagCopy = bag;
   v8 = objc_alloc_init(AMSMutablePromise);
-  v9 = [v7 arrayForKey:@"mobile-network-constraints"];
+  v9 = [bagCopy arrayForKey:@"mobile-network-constraints"];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__AMSNetworkConstraints_networkConstraintsForMediaType_withBag___block_invoke;
   v15[3] = &unk_1E73BA348;
   v10 = v8;
-  v17 = v6;
-  v18 = a1;
+  v17 = typeCopy;
+  selfCopy = self;
   v16 = v10;
-  v11 = v6;
+  v11 = typeCopy;
   [v9 valueWithCompletion:v15];
 
   v12 = v17;
@@ -85,10 +85,10 @@ void __64__AMSNetworkConstraints_networkConstraintsForMediaType_withBag___block_
   }
 }
 
-- (id)_initWithStoreConstraintDictionary:(id)a3
+- (id)_initWithStoreConstraintDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(AMSNetworkConstraints *)self init];
   if (v5)
   {
@@ -96,8 +96,8 @@ void __64__AMSNetworkConstraints_networkConstraintsForMediaType_withBag___block_
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v16 = v4;
-    v6 = v4;
+    v16 = dictionaryCopy;
+    v6 = dictionaryCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -117,15 +117,15 @@ void __64__AMSNetworkConstraints_networkConstraintsForMediaType_withBag___block_
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
           {
-            v13 = [v12 longLongValue];
-            if (v13 == 1)
+            longLongValue = [v12 longLongValue];
+            if (longLongValue == 1)
             {
               v14 = -1;
             }
 
             else
             {
-              v14 = v13;
+              v14 = longLongValue;
             }
 
             [(AMSNetworkConstraints *)v5 _setSizeLimit:v14 forNetworkType:v11];
@@ -138,7 +138,7 @@ void __64__AMSNetworkConstraints_networkConstraintsForMediaType_withBag___block_
       while (v8);
     }
 
-    v4 = v16;
+    dictionaryCopy = v16;
   }
 
   return v5;
@@ -147,8 +147,8 @@ void __64__AMSNetworkConstraints_networkConstraintsForMediaType_withBag___block_
 - (BOOL)isAnyNetworkTypeEnabled
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSNetworkConstraints *)self sizeLimits];
-  v4 = [v3 count];
+  sizeLimits = [(AMSNetworkConstraints *)self sizeLimits];
+  v4 = [sizeLimits count];
 
   if (!v4)
   {
@@ -159,8 +159,8 @@ void __64__AMSNetworkConstraints_networkConstraintsForMediaType_withBag___block_
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AMSNetworkConstraints *)self sizeLimits];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  sizeLimits2 = [(AMSNetworkConstraints *)self sizeLimits];
+  v6 = [sizeLimits2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -171,22 +171,22 @@ void __64__AMSNetworkConstraints_networkConstraintsForMediaType_withBag___block_
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sizeLimits2);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(AMSNetworkConstraints *)self sizeLimits];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        sizeLimits3 = [(AMSNetworkConstraints *)self sizeLimits];
+        v12 = [sizeLimits3 objectForKeyedSubscript:v10];
 
-        v13 = [v12 longLongValue];
-        if ((v13 & 0x8000000000000000) == 0)
+        longLongValue = [v12 longLongValue];
+        if ((longLongValue & 0x8000000000000000) == 0)
         {
           v14 = 1;
           goto LABEL_12;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [sizeLimits2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -202,22 +202,22 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)hasSizeLimitForNetworkType:(id)a3
+- (BOOL)hasSizeLimitForNetworkType:(id)type
 {
-  v3 = [(NSMutableDictionary *)self->_sizeLimits objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_sizeLimits objectForKeyedSubscript:type];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)isEqualToConstraints:(id)a3
+- (BOOL)isEqualToConstraints:(id)constraints
 {
-  v5 = a3;
-  v6 = [(AMSNetworkConstraints *)self sizeLimits];
-  if (!v6)
+  constraintsCopy = constraints;
+  sizeLimits = [(AMSNetworkConstraints *)self sizeLimits];
+  if (!sizeLimits)
   {
-    v3 = [v5 sizeLimits];
-    if (!v3)
+    sizeLimits2 = [constraintsCopy sizeLimits];
+    if (!sizeLimits2)
     {
       v9 = 1;
 LABEL_6:
@@ -226,11 +226,11 @@ LABEL_6:
     }
   }
 
-  v7 = [(AMSNetworkConstraints *)self sizeLimits];
-  v8 = [v5 sizeLimits];
-  v9 = [v7 isEqual:v8];
+  sizeLimits3 = [(AMSNetworkConstraints *)self sizeLimits];
+  sizeLimits4 = [constraintsCopy sizeLimits];
+  v9 = [sizeLimits3 isEqual:sizeLimits4];
 
-  if (!v6)
+  if (!sizeLimits)
   {
     goto LABEL_6;
   }
@@ -278,9 +278,9 @@ void __45__AMSNetworkConstraints_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
@@ -344,16 +344,16 @@ void __45__AMSNetworkConstraints_bagSubProfileVersion__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(AMSNetworkConstraints *)self sizeLimits];
-  v3 = [v2 hash];
+  sizeLimits = [(AMSNetworkConstraints *)self sizeLimits];
+  v3 = [sizeLimits hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -361,7 +361,7 @@ void __45__AMSNetworkConstraints_bagSubProfileVersion__block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSNetworkConstraints *)self isEqualToConstraints:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSNetworkConstraints *)self isEqualToConstraints:equalCopy];
   }
 
   return v5;
@@ -415,29 +415,29 @@ void __45__AMSNetworkConstraints_bagSubProfileVersion__block_invoke()
   }
 }
 
-+ (id)_networkConstraintsForMediaType:(id)a3 withArray:(id)a4
++ (id)_networkConstraintsForMediaType:(id)type withArray:(id)array
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  arrayCopy = array;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [arrayCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
     v10 = *v22;
-    v20 = v5;
+    v20 = typeCopy;
     do
     {
       for (i = 0; i != v8; ++i)
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
@@ -446,7 +446,7 @@ void __45__AMSNetworkConstraints_bagSubProfileVersion__block_invoke()
         {
           v13 = [v12 objectForKey:@"kinds"];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 count] && objc_msgSend(v13, "containsObject:", v5))
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 count] && objc_msgSend(v13, "containsObject:", typeCopy))
           {
             v14 = v9;
             v15 = [v12 objectForKey:@"enabled"];
@@ -475,12 +475,12 @@ void __45__AMSNetworkConstraints_bagSubProfileVersion__block_invoke()
             }
 
             v9 = v18;
-            v5 = v20;
+            typeCopy = v20;
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [arrayCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -494,9 +494,9 @@ void __45__AMSNetworkConstraints_bagSubProfileVersion__block_invoke()
   return v9;
 }
 
-- (void)_setSizeLimit:(int64_t)a3 forNetworkType:(id)a4
+- (void)_setSizeLimit:(int64_t)limit forNetworkType:(id)type
 {
-  v9 = a4;
+  typeCopy = type;
   if (!self->_sizeLimits)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -504,25 +504,25 @@ void __45__AMSNetworkConstraints_bagSubProfileVersion__block_invoke()
     self->_sizeLimits = v6;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
-  [(NSMutableDictionary *)self->_sizeLimits setObject:v8 forKeyedSubscript:v9];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:limit];
+  [(NSMutableDictionary *)self->_sizeLimits setObject:v8 forKeyedSubscript:typeCopy];
 }
 
-- (int64_t)_sizeLimitForNetworkType:(id)a3
+- (int64_t)_sizeLimitForNetworkType:(id)type
 {
-  v3 = [(NSMutableDictionary *)self->_sizeLimits objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_sizeLimits objectForKeyedSubscript:type];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 longLongValue];
+    longLongValue = [v3 longLongValue];
   }
 
   else
   {
-    v5 = 0;
+    longLongValue = 0;
   }
 
-  return v5;
+  return longLongValue;
 }
 
 + (AMSBagKeySet)bagKeySet

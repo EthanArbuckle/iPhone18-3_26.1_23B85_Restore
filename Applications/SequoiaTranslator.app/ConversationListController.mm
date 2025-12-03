@@ -1,8 +1,8 @@
 @interface ConversationListController
-- (_TtC17SequoiaTranslator26ConversationListController)initWithCollectionViewLayout:(id)a3;
-- (_TtC17SequoiaTranslator26ConversationListController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17SequoiaTranslator26ConversationListController)initWithCollectionViewLayout:(id)layout;
+- (_TtC17SequoiaTranslator26ConversationListController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dismissKeyboard;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)viewDidLoad;
 @end
 
@@ -20,12 +20,12 @@
 
 - (void)dismissKeyboard
 {
-  v4 = self;
-  v2 = [(ConversationListController *)v4 view];
-  if (v2)
+  selfCopy = self;
+  view = [(ConversationListController *)selfCopy view];
+  if (view)
   {
-    v3 = v2;
-    [v2 endEditing:1];
+    v3 = view;
+    [view endEditing:1];
   }
 
   else
@@ -34,25 +34,25 @@
   }
 }
 
-- (_TtC17SequoiaTranslator26ConversationListController)initWithCollectionViewLayout:(id)a3
+- (_TtC17SequoiaTranslator26ConversationListController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC17SequoiaTranslator26ConversationListController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator26ConversationListController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_100094A14(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_100094A14(scrollCopy);
 }
 
 @end

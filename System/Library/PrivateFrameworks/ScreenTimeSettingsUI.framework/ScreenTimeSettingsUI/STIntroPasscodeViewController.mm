@@ -1,45 +1,45 @@
 @interface STIntroPasscodeViewController
-- (STIntroPasscodeViewController)initWithIntroductionModel:(id)a3 childName:(id)a4 askForRecoveryAppleID:(BOOL)a5 altDSID:(id)a6 isChildOrNotSignedIntoiCloud:(BOOL)a7 continueHandler:(id)a8;
+- (STIntroPasscodeViewController)initWithIntroductionModel:(id)model childName:(id)name askForRecoveryAppleID:(BOOL)d altDSID:(id)iD isChildOrNotSignedIntoiCloud:(BOOL)cloud continueHandler:(id)handler;
 - (id)instructions;
-- (void)_transitionToFirstPasscodePaneWithState:(int64_t)a3;
-- (void)passcodeTypeChanged:(BOOL)a3;
-- (void)userEnteredPasscode:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_transitionToFirstPasscodePaneWithState:(int64_t)state;
+- (void)passcodeTypeChanged:(BOOL)changed;
+- (void)userEnteredPasscode:(id)passcode;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation STIntroPasscodeViewController
 
-- (STIntroPasscodeViewController)initWithIntroductionModel:(id)a3 childName:(id)a4 askForRecoveryAppleID:(BOOL)a5 altDSID:(id)a6 isChildOrNotSignedIntoiCloud:(BOOL)a7 continueHandler:(id)a8
+- (STIntroPasscodeViewController)initWithIntroductionModel:(id)model childName:(id)name askForRecoveryAppleID:(BOOL)d altDSID:(id)iD isChildOrNotSignedIntoiCloud:(BOOL)cloud continueHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  v17 = a6;
+  modelCopy = model;
+  nameCopy = name;
+  handlerCopy = handler;
+  iDCopy = iD;
   v18 = +[STScreenTimeSettingsUIBundle bundle];
   v19 = [v18 localizedStringForKey:@"IntroPasscodeSetupTitle" value:&stru_28766E5A8 table:0];
 
   v29.receiver = self;
   v29.super_class = STIntroPasscodeViewController;
   v20 = [(STIntroPasscodeViewController *)&v29 initWithTitle:v19 detailText:0 symbolName:@"lock.shield.fill" contentLayout:2];
-  v21 = [v17 copy];
+  v21 = [iDCopy copy];
 
   altDSID = v20->_altDSID;
   v20->_altDSID = v21;
 
-  v20->_askForRecoveryAppleID = a5;
+  v20->_askForRecoveryAppleID = d;
   childName = v20->_childName;
-  v20->_childName = v15;
-  v24 = v15;
+  v20->_childName = nameCopy;
+  v24 = nameCopy;
 
-  v20->_childOrNotSignedIntoiCloud = a7;
-  v25 = [v16 copy];
+  v20->_childOrNotSignedIntoiCloud = cloud;
+  v25 = [handlerCopy copy];
 
   continueHandler = v20->_continueHandler;
   v20->_continueHandler = v25;
 
   model = v20->_model;
-  v20->_model = v14;
+  v20->_model = modelCopy;
 
   v20->_passcodeState = 0;
   return v20;
@@ -52,9 +52,9 @@
   [(OBPasscodeViewController *)&v6 viewDidLoad];
   [(OBPasscodeViewController *)self setDelegate:self];
   [(OBPasscodeViewController *)self configureForPasscodeEntry:0 length:4];
-  v3 = [(STIntroPasscodeViewController *)self headerView];
-  v4 = [(STIntroPasscodeViewController *)self instructions];
-  [v3 setDetailText:v4];
+  headerView = [(STIntroPasscodeViewController *)self headerView];
+  instructions = [(STIntroPasscodeViewController *)self instructions];
+  [headerView setDetailText:instructions];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -63,13 +63,13 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = STIntroPasscodeViewController;
   [(OBBaseWelcomeController *)&v6 viewDidAppear:?];
-  [(STIntroPasscodeViewController *)self passcodeTypeChanged:v3];
+  [(STIntroPasscodeViewController *)self passcodeTypeChanged:appearCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
@@ -77,20 +77,20 @@
   }
 }
 
-- (void)passcodeTypeChanged:(BOOL)a3
+- (void)passcodeTypeChanged:(BOOL)changed
 {
-  v3 = a3;
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setRightBarButtonItem:0 animated:v3];
+  changedCopy = changed;
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0 animated:changedCopy];
 }
 
 - (id)instructions
 {
-  v3 = [(STIntroPasscodeViewController *)self passcodeState];
+  passcodeState = [(STIntroPasscodeViewController *)self passcodeState];
   v4 = 0;
-  if (v3 > 1)
+  if (passcodeState > 1)
   {
-    if (v3 == 2)
+    if (passcodeState == 2)
     {
       v5 = +[STScreenTimeSettingsUIBundle bundle];
       v6 = v5;
@@ -99,7 +99,7 @@
 
     else
     {
-      if (v3 != 3)
+      if (passcodeState != 3)
       {
         goto LABEL_14;
       }
@@ -112,9 +112,9 @@
     goto LABEL_12;
   }
 
-  if (v3)
+  if (passcodeState)
   {
-    if (v3 != 1)
+    if (passcodeState != 1)
     {
       goto LABEL_14;
     }
@@ -125,8 +125,8 @@
     goto LABEL_12;
   }
 
-  v8 = [(STIntroPasscodeViewController *)self childName];
-  v9 = [v8 length];
+  childName = [(STIntroPasscodeViewController *)self childName];
+  v9 = [childName length];
 
   if (!v9)
   {
@@ -141,8 +141,8 @@ LABEL_12:
   v10 = MEMORY[0x277CCACA8];
   v6 = +[STScreenTimeSettingsUIBundle bundle];
   v11 = [v6 localizedStringForKey:@"IntroPasscodeSetupInstructionsWithChild" value:&stru_28766E5A8 table:0];
-  v12 = [(STIntroPasscodeViewController *)self childName];
-  v4 = [v10 localizedStringWithFormat:v11, v12];
+  childName2 = [(STIntroPasscodeViewController *)self childName];
+  v4 = [v10 localizedStringWithFormat:v11, childName2];
 
 LABEL_13:
 LABEL_14:
@@ -150,13 +150,13 @@ LABEL_14:
   return v4;
 }
 
-- (void)userEnteredPasscode:(id)a3
+- (void)userEnteredPasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   if ([(STIntroPasscodeViewController *)self passcodeState]== 1)
   {
-    v5 = [(STIntroPasscodeViewController *)self initialPasscode];
-    v6 = [v4 isEqualToString:v5];
+    initialPasscode = [(STIntroPasscodeViewController *)self initialPasscode];
+    v6 = [passcodeCopy isEqualToString:initialPasscode];
 
     if (!v6)
     {
@@ -167,34 +167,34 @@ LABEL_14:
 
     if (![(STIntroPasscodeViewController *)self askForRecoveryAppleID])
     {
-      v15 = [(STIntroPasscodeViewController *)self model];
-      [v15 setParentalControlsPasscode:v4];
+      model = [(STIntroPasscodeViewController *)self model];
+      [model setParentalControlsPasscode:passcodeCopy];
 
-      v16 = [(STIntroPasscodeViewController *)self continueHandler];
-      v16[2]();
+      continueHandler = [(STIntroPasscodeViewController *)self continueHandler];
+      continueHandler[2]();
 
       goto LABEL_9;
     }
 
-    v7 = objc_opt_new();
-    [v7 setIsEphemeral:1];
-    [v7 setAuthenticationType:2];
-    [v7 setShouldPromptForPasswordOnly:1];
-    [v7 _setProxiedAppName:@"ScreenTime"];
-    [v7 setPresentingViewController:self];
-    [v7 setAppProvidedContext:@"setup"];
+    headerView = objc_opt_new();
+    [headerView setIsEphemeral:1];
+    [headerView setAuthenticationType:2];
+    [headerView setShouldPromptForPasswordOnly:1];
+    [headerView _setProxiedAppName:@"ScreenTime"];
+    [headerView setPresentingViewController:self];
+    [headerView setAppProvidedContext:@"setup"];
     v8 = +[STScreenTimeSettingsUIBundle bundle];
     v9 = [v8 localizedStringForKey:@"RecoveryAppleIDAlertTitle" value:&stru_28766E5A8 table:0];
-    [v7 setTitle:v9];
+    [headerView setTitle:v9];
 
     v10 = [v8 localizedStringForKey:@"RecoveryAppleIDAlertReason" value:&stru_28766E5A8 table:0];
-    [v7 setReason:v10];
+    [headerView setReason:v10];
 
     v11 = [v8 localizedStringForKey:@"ConfirmationButtonOK" value:&stru_28766E5A8 table:0];
-    [v7 setDefaultButtonString:v11];
+    [headerView setDefaultButtonString:v11];
 
     v12 = [v8 localizedStringForKey:@"RecoveryAppleIDAlertSkipButton" value:&stru_28766E5A8 table:0];
-    [v7 setCancelButtonString:v12];
+    [headerView setCancelButtonString:v12];
 
     v13 = objc_opt_new();
     v17[0] = MEMORY[0x277D85DD0];
@@ -202,20 +202,20 @@ LABEL_14:
     v17[2] = __53__STIntroPasscodeViewController_userEnteredPasscode___block_invoke;
     v17[3] = &unk_279B7DAD0;
     v17[4] = self;
-    v18 = v4;
+    v18 = passcodeCopy;
     v19 = v8;
-    v14 = v8;
-    [v13 authenticateWithContext:v7 completion:v17];
+    instructions = v8;
+    [v13 authenticateWithContext:headerView completion:v17];
   }
 
   else
   {
-    [(STIntroPasscodeViewController *)self setInitialPasscode:v4];
+    [(STIntroPasscodeViewController *)self setInitialPasscode:passcodeCopy];
     [(STIntroPasscodeViewController *)self setPasscodeState:1];
     [(OBPasscodeViewController *)self clearPasscodeEntry];
-    v7 = [(STIntroPasscodeViewController *)self headerView];
-    v14 = [(STIntroPasscodeViewController *)self instructions];
-    [v7 setDetailText:v14];
+    headerView = [(STIntroPasscodeViewController *)self headerView];
+    instructions = [(STIntroPasscodeViewController *)self instructions];
+    [headerView setDetailText:instructions];
   }
 
 LABEL_9:
@@ -361,14 +361,14 @@ void __53__STIntroPasscodeViewController_userEnteredPasscode___block_invoke_79(u
   v4[2]();
 }
 
-- (void)_transitionToFirstPasscodePaneWithState:(int64_t)a3
+- (void)_transitionToFirstPasscodePaneWithState:(int64_t)state
 {
   [(STIntroPasscodeViewController *)self setInitialPasscode:0];
-  [(STIntroPasscodeViewController *)self setPasscodeState:a3];
+  [(STIntroPasscodeViewController *)self setPasscodeState:state];
   [(OBPasscodeViewController *)self clearPasscodeEntry];
-  v6 = [(STIntroPasscodeViewController *)self headerView];
-  v5 = [(STIntroPasscodeViewController *)self instructions];
-  [v6 setDetailText:v5];
+  headerView = [(STIntroPasscodeViewController *)self headerView];
+  instructions = [(STIntroPasscodeViewController *)self instructions];
+  [headerView setDetailText:instructions];
 }
 
 void __53__STIntroPasscodeViewController_userEnteredPasscode___block_invoke_2_cold_1(uint64_t *a1)

@@ -1,5 +1,5 @@
 @interface WDEDiagnosticFileProvider
-- (id)exportDirectoryAndReturnError:(id *)a3;
+- (id)exportDirectoryAndReturnError:(id *)error;
 - (id)files;
 @end
 
@@ -7,7 +7,7 @@
 
 - (id)files
 {
-  v2 = self;
+  selfCopy = self;
   DiagnosticFileProvider.files()();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -15,13 +15,13 @@
   return v3.super.isa;
 }
 
-- (id)exportDirectoryAndReturnError:(id *)a3
+- (id)exportDirectoryAndReturnError:(id *)error
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   DiagnosticFileProvider.exportDirectory()(v7);
 
   URL._bridgeToObjectiveC()(v9);

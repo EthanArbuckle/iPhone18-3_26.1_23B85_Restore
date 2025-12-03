@@ -6,7 +6,7 @@
 
 - (uint64_t)IDSOffGridDeliveryQueryResult
 {
-  v4 = *__swift_project_boxed_opaque_existential_0((a1 + 32), *(a1 + 56));
+  v4 = *__swift_project_boxed_opaque_existential_0((self + 32), *(self + 56));
   if (a3)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&_ss5Error_pMd, &_ss5Error_pMR);

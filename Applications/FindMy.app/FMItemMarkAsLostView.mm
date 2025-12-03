@@ -7,7 +7,7 @@
 
 - (void)handleAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004FD158();
 }
 
@@ -15,7 +15,7 @@
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = self;
+    selfCopy = self;
     sub_1003A4004();
     swift_unknownObjectRelease();
   }

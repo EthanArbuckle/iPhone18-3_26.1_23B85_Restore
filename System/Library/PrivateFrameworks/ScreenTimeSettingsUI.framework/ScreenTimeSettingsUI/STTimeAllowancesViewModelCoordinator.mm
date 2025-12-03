@@ -1,40 +1,40 @@
 @interface STTimeAllowancesViewModelCoordinator
-+ (BOOL)saveAllowance:(id)a3 forUser:(id)a4 error:(id *)a5;
++ (BOOL)saveAllowance:(id)allowance forUser:(id)user error:(id *)error;
 - (BOOL)isDowntimeActive;
-- (STTimeAllowancesViewModelCoordinator)initWithPersistenceController:(id)a3 userDSID:(id)a4;
+- (STTimeAllowancesViewModelCoordinator)initWithPersistenceController:(id)controller userDSID:(id)d;
 - (double)timeToNextExpectedStateChange;
 - (id)_iCloudAccountPredicate;
 - (int64_t)currentDowntimeState;
 - (void)_registerForPersistentStoreNotifications;
-- (void)deleteAllowance:(id)a3 completionHandler:(id)a4;
-- (void)loadViewModelWithCompletionHandler:(id)a3;
-- (void)respondToAskForTime:(id)a3 withApproval:(BOOL)a4 timeApproved:(id)a5 completionHandler:(id)a6;
-- (void)saveAllAllowancesEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)saveAllowance:(id)a3 completionHandler:(id)a4;
-- (void)saveAlwaysAllowList:(id)a3 completionHandler:(id)a4;
-- (void)saveDefaultAlwaysAllowListWithCompletionHandler:(id)a3;
-- (void)saveDeviceBedtime:(id)a3 completionHandler:(id)a4;
-- (void)toggleDowntimeWithCompletionHandler:(id)a3;
+- (void)deleteAllowance:(id)allowance completionHandler:(id)handler;
+- (void)loadViewModelWithCompletionHandler:(id)handler;
+- (void)respondToAskForTime:(id)time withApproval:(BOOL)approval timeApproved:(id)approved completionHandler:(id)handler;
+- (void)saveAllAllowancesEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)saveAllowance:(id)allowance completionHandler:(id)handler;
+- (void)saveAlwaysAllowList:(id)list completionHandler:(id)handler;
+- (void)saveDefaultAlwaysAllowListWithCompletionHandler:(id)handler;
+- (void)saveDeviceBedtime:(id)bedtime completionHandler:(id)handler;
+- (void)toggleDowntimeWithCompletionHandler:(id)handler;
 @end
 
 @implementation STTimeAllowancesViewModelCoordinator
 
-- (STTimeAllowancesViewModelCoordinator)initWithPersistenceController:(id)a3 userDSID:(id)a4
+- (STTimeAllowancesViewModelCoordinator)initWithPersistenceController:(id)controller userDSID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = STTimeAllowancesViewModelCoordinator;
   v9 = [(STTimeAllowancesViewModelCoordinator *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_persistenceController, a3);
+    objc_storeStrong(&v9->_persistenceController, controller);
     v11 = objc_opt_new();
     askForTimeClient = v10->_askForTimeClient;
     v10->_askForTimeClient = v11;
 
-    v13 = [v8 copy];
+    v13 = [dCopy copy];
     v14 = v13;
     if (v13)
     {
@@ -65,13 +65,13 @@
   return v10;
 }
 
-- (void)saveDefaultAlwaysAllowListWithCompletionHandler:(id)a3
+- (void)saveDefaultAlwaysAllowListWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STTimeAllowancesViewModelCoordinator *)self viewModel];
-  v6 = [v5 alwaysAllowList];
+  handlerCopy = handler;
+  viewModel = [(STTimeAllowancesViewModelCoordinator *)self viewModel];
+  alwaysAllowList = [viewModel alwaysAllowList];
 
-  if (!v6)
+  if (!alwaysAllowList)
   {
     v7 = +[STUILog persistence];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -80,16 +80,16 @@
       _os_log_impl(&dword_264BA2000, v7, OS_LOG_TYPE_DEFAULT, "Always Allow list does not exist. Saving default Always Allow list.", buf, 2u);
     }
 
-    v8 = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
-    v9 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+    userDSID = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
+    persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __88__STTimeAllowancesViewModelCoordinator_saveDefaultAlwaysAllowListWithCompletionHandler___block_invoke;
     v11[3] = &unk_279B7D298;
-    v12 = v8;
-    v13 = v4;
-    v10 = v8;
-    [v9 performBackgroundTask:v11];
+    v12 = userDSID;
+    v13 = handlerCopy;
+    v10 = userDSID;
+    [persistenceController performBackgroundTask:v11];
   }
 }
 
@@ -213,51 +213,51 @@ LABEL_25:
 - (void)_registerForPersistentStoreNotifications
 {
   v3 = MEMORY[0x277D4B928];
-  v4 = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
-  v14 = [v3 fetchResultsRequestsForChangesToBlueprintsForUserWithDSID:v4];
+  userDSID = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
+  v14 = [v3 fetchResultsRequestsForChangesToBlueprintsForUserWithDSID:userDSID];
 
   v5 = MEMORY[0x277D4B9C8];
-  v6 = [MEMORY[0x277D4B910] fetchRequest];
-  v7 = [v5 requestWithFetchRequest:v6];
+  fetchRequest = [MEMORY[0x277D4B910] fetchRequest];
+  v7 = [v5 requestWithFetchRequest:fetchRequest];
 
   v8 = objc_alloc(MEMORY[0x277D4B9D0]);
   v9 = [v14 arrayByAddingObject:v7];
-  v10 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
-  v11 = [v10 viewContext];
-  v12 = [v8 initWithResultsRequests:v9 cacheName:0 managedObjectContext:v11];
+  persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+  viewContext = [persistenceController viewContext];
+  v12 = [v8 initWithResultsRequests:v9 cacheName:0 managedObjectContext:viewContext];
   groupFetchResultsController = self->_groupFetchResultsController;
   self->_groupFetchResultsController = v12;
 
   [(STGroupFetchedResultsController *)self->_groupFetchResultsController setDelegate:self];
 }
 
-- (void)loadViewModelWithCompletionHandler:(id)a3
+- (void)loadViewModelWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STTimeAllowancesViewModelCoordinator *)self viewModel];
-  v6 = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
+  handlerCopy = handler;
+  viewModel = [(STTimeAllowancesViewModelCoordinator *)self viewModel];
+  userDSID = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy__6;
   v19[4] = __Block_byref_object_dispose__6;
-  v20 = [(STTimeAllowancesViewModelCoordinator *)self userObjectID];
+  userObjectID = [(STTimeAllowancesViewModelCoordinator *)self userObjectID];
   objc_initWeak(&location, self);
-  v7 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__STTimeAllowancesViewModelCoordinator_loadViewModelWithCompletionHandler___block_invoke;
   v11[3] = &unk_279B7E3D0;
   v16 = v19;
-  v8 = v6;
+  v8 = userDSID;
   v12 = v8;
-  v9 = v4;
+  v9 = handlerCopy;
   v15 = v9;
-  v13 = self;
-  v10 = v5;
+  selfCopy = self;
+  v10 = viewModel;
   v14 = v10;
   objc_copyWeak(&v17, &location);
-  [v7 performBackgroundTask:v11];
+  [persistenceController performBackgroundTask:v11];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -827,29 +827,29 @@ void __75__STTimeAllowancesViewModelCoordinator_loadViewModelWithCompletionHandl
 - (id)_iCloudAccountPredicate
 {
   v2 = MEMORY[0x277CFBBD8];
-  v3 = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
-  v4 = [v3 stringValue];
-  v5 = [v2 buildWithDSID:v4];
+  userDSID = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
+  stringValue = [userDSID stringValue];
+  v5 = [v2 buildWithDSID:stringValue];
 
   return v5;
 }
 
-- (void)saveDeviceBedtime:(id)a3 completionHandler:(id)a4
+- (void)saveDeviceBedtime:(id)bedtime completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  bedtimeCopy = bedtime;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__STTimeAllowancesViewModelCoordinator_saveDeviceBedtime_completionHandler___block_invoke;
   v11[3] = &unk_279B7E3F8;
   objc_copyWeak(&v14, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v13 = v9;
-  v10 = v6;
+  v10 = bedtimeCopy;
   v12 = v10;
-  [v8 performBackgroundTask:v11];
+  [persistenceController performBackgroundTask:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1006,21 +1006,21 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)toggleDowntimeWithCompletionHandler:(id)a3
+- (void)toggleDowntimeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STTimeAllowancesViewModelCoordinator *)self userObjectID];
-  v6 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+  handlerCopy = handler;
+  userObjectID = [(STTimeAllowancesViewModelCoordinator *)self userObjectID];
+  persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__STTimeAllowancesViewModelCoordinator_toggleDowntimeWithCompletionHandler___block_invoke;
   v9[3] = &unk_279B7D550;
-  v11 = self;
-  v12 = v4;
-  v10 = v5;
-  v7 = v4;
-  v8 = v5;
-  [v6 performBackgroundTask:v9];
+  selfCopy = self;
+  v12 = handlerCopy;
+  v10 = userObjectID;
+  v7 = handlerCopy;
+  v8 = userObjectID;
+  [persistenceController performBackgroundTask:v9];
 }
 
 void __76__STTimeAllowancesViewModelCoordinator_toggleDowntimeWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1128,11 +1128,11 @@ void __76__STTimeAllowancesViewModelCoordinator_toggleDowntimeWithCompletionHand
 - (BOOL)isDowntimeActive
 {
   v3 = objc_alloc(MEMORY[0x277D4BAE0]);
-  v4 = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
-  v5 = [v3 initWithDSID:v4];
+  userDSID = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
+  v5 = [v3 initWithDSID:userDSID];
 
-  v6 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
-  v7 = [v6 viewContext];
+  persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+  viewContext = [persistenceController viewContext];
 
   v15 = 0;
   v16 = &v15;
@@ -1144,14 +1144,14 @@ void __76__STTimeAllowancesViewModelCoordinator_toggleDowntimeWithCompletionHand
   v11[3] = &unk_279B7E0B8;
   v8 = v5;
   v12 = v8;
-  v9 = v7;
+  v9 = viewContext;
   v13 = v9;
   v14 = &v15;
   [v9 performBlockAndWait:v11];
-  LOBYTE(v7) = *(v16 + 24);
+  LOBYTE(viewContext) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v7;
+  return viewContext;
 }
 
 void __56__STTimeAllowancesViewModelCoordinator_isDowntimeActive__block_invoke(void *a1)
@@ -1172,11 +1172,11 @@ void __56__STTimeAllowancesViewModelCoordinator_isDowntimeActive__block_invoke(v
 - (int64_t)currentDowntimeState
 {
   v3 = objc_alloc(MEMORY[0x277D4BAE0]);
-  v4 = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
-  v5 = [v3 initWithDSID:v4];
+  userDSID = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
+  v5 = [v3 initWithDSID:userDSID];
 
-  v6 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
-  v7 = [v6 viewContext];
+  persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+  viewContext = [persistenceController viewContext];
 
   v16 = 0;
   v17 = &v16;
@@ -1189,7 +1189,7 @@ void __56__STTimeAllowancesViewModelCoordinator_isDowntimeActive__block_invoke(v
   v15 = &v16;
   v8 = v5;
   v13 = v8;
-  v9 = v7;
+  v9 = viewContext;
   v14 = v9;
   [v9 performBlockAndWait:v12];
   v10 = v17[3];
@@ -1211,11 +1211,11 @@ void __60__STTimeAllowancesViewModelCoordinator_currentDowntimeState__block_invo
 - (double)timeToNextExpectedStateChange
 {
   v3 = objc_alloc(MEMORY[0x277D4BAE0]);
-  v4 = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
-  v5 = [v3 initWithDSID:v4];
+  userDSID = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
+  v5 = [v3 initWithDSID:userDSID];
 
-  v6 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
-  v7 = [v6 viewContext];
+  persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+  viewContext = [persistenceController viewContext];
 
   v19 = 0;
   v20 = &v19;
@@ -1230,12 +1230,12 @@ void __60__STTimeAllowancesViewModelCoordinator_currentDowntimeState__block_invo
   v18 = &v19;
   v8 = v5;
   v16 = v8;
-  v9 = v7;
+  v9 = viewContext;
   v17 = v9;
   [v9 performBlockAndWait:v15];
   if (v20[5])
   {
-    v10 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     v11 = STLocalDateFromUTCErasedDate();
     [v11 timeIntervalSinceNow];
     v13 = v12;
@@ -1263,21 +1263,21 @@ void __69__STTimeAllowancesViewModelCoordinator_timeToNextExpectedStateChange__b
   *(v7 + 40) = v6;
 }
 
-- (void)saveAllowance:(id)a3 completionHandler:(id)a4
+- (void)saveAllowance:(id)allowance completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+  allowanceCopy = allowance;
+  handlerCopy = handler;
+  persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__STTimeAllowancesViewModelCoordinator_saveAllowance_completionHandler___block_invoke;
   v11[3] = &unk_279B7D550;
-  v12 = v6;
-  v13 = v7;
+  v12 = allowanceCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [v8 performBackgroundTask:v11];
+  v9 = allowanceCopy;
+  v10 = handlerCopy;
+  [persistenceController performBackgroundTask:v11];
 }
 
 void __72__STTimeAllowancesViewModelCoordinator_saveAllowance_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1403,49 +1403,49 @@ LABEL_22:
 LABEL_23:
 }
 
-+ (BOOL)saveAllowance:(id)a3 forUser:(id)a4 error:(id *)a5
++ (BOOL)saveAllowance:(id)allowance forUser:(id)user error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 timeByDay];
-  if (v8)
+  userCopy = user;
+  allowanceCopy = allowance;
+  timeByDay = [allowanceCopy timeByDay];
+  if (timeByDay)
   {
-    v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(timeByDay, "count")}];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __68__STTimeAllowancesViewModelCoordinator_saveAllowance_forUser_error___block_invoke;
     v31[3] = &unk_279B7E448;
     v32 = v9;
     v29 = v9;
-    [v8 enumerateKeysAndObjectsUsingBlock:v31];
+    [timeByDay enumerateKeysAndObjectsUsingBlock:v31];
     v10 = MEMORY[0x277D4B928];
-    v11 = [v7 identifier];
-    v12 = [v7 bundleIdentifiers];
-    v13 = [v7 webDomains];
-    v14 = [v7 categoryIdentifiers];
-    v15 = [v7 allowanceEnabled];
-    v16 = [v7 behaviorType];
+    identifier = [allowanceCopy identifier];
+    bundleIdentifiers = [allowanceCopy bundleIdentifiers];
+    webDomains = [allowanceCopy webDomains];
+    categoryIdentifiers = [allowanceCopy categoryIdentifiers];
+    allowanceEnabled = [allowanceCopy allowanceEnabled];
+    behaviorType = [allowanceCopy behaviorType];
 
-    LOBYTE(v28) = v15;
-    v17 = [v10 saveUsageLimitWithIdentifier:v11 user:v6 bundleIdentifiers:v12 webDomains:v13 categoryIdentifiers:v14 dailyBudgetLimit:v29 budgetLimitByWeekday:0.0 enabled:v28 behaviorType:v16 error:a5];
+    LOBYTE(v28) = allowanceEnabled;
+    v17 = [v10 saveUsageLimitWithIdentifier:identifier user:userCopy bundleIdentifiers:bundleIdentifiers webDomains:webDomains categoryIdentifiers:categoryIdentifiers dailyBudgetLimit:v29 budgetLimitByWeekday:0.0 enabled:v28 behaviorType:behaviorType error:error];
   }
 
   else
   {
-    v18 = [v7 time];
-    [STAllowance timeIntervalForAllowanceDateComponents:v18];
+    time = [allowanceCopy time];
+    [STAllowance timeIntervalForAllowanceDateComponents:time];
     v20 = v19;
 
     v21 = MEMORY[0x277D4B928];
-    v22 = [v7 identifier];
-    v23 = [v7 bundleIdentifiers];
-    v24 = [v7 webDomains];
-    v25 = [v7 categoryIdentifiers];
-    LOBYTE(v18) = [v7 allowanceEnabled];
-    v26 = [v7 behaviorType];
+    identifier2 = [allowanceCopy identifier];
+    bundleIdentifiers2 = [allowanceCopy bundleIdentifiers];
+    webDomains2 = [allowanceCopy webDomains];
+    categoryIdentifiers2 = [allowanceCopy categoryIdentifiers];
+    LOBYTE(time) = [allowanceCopy allowanceEnabled];
+    behaviorType2 = [allowanceCopy behaviorType];
 
-    LOBYTE(v28) = v18;
-    v17 = [v21 saveUsageLimitWithIdentifier:v22 user:v6 bundleIdentifiers:v23 webDomains:v24 categoryIdentifiers:v25 dailyBudgetLimit:0 budgetLimitByWeekday:v20 enabled:v28 behaviorType:v26 error:a5];
+    LOBYTE(v28) = time;
+    v17 = [v21 saveUsageLimitWithIdentifier:identifier2 user:userCopy bundleIdentifiers:bundleIdentifiers2 webDomains:webDomains2 categoryIdentifiers:categoryIdentifiers2 dailyBudgetLimit:0 budgetLimitByWeekday:v20 enabled:v28 behaviorType:behaviorType2 error:error];
   }
 
   return v17;
@@ -1460,23 +1460,23 @@ void __68__STTimeAllowancesViewModelCoordinator_saveAllowance_forUser_error___bl
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (void)deleteAllowance:(id)a3 completionHandler:(id)a4
+- (void)deleteAllowance:(id)allowance completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STTimeAllowancesViewModelCoordinator *)self userObjectID];
-  v9 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+  allowanceCopy = allowance;
+  handlerCopy = handler;
+  userObjectID = [(STTimeAllowancesViewModelCoordinator *)self userObjectID];
+  persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__STTimeAllowancesViewModelCoordinator_deleteAllowance_completionHandler___block_invoke;
   v13[3] = &unk_279B7D550;
-  v15 = v6;
-  v16 = v7;
-  v14 = v8;
-  v10 = v6;
-  v11 = v7;
-  v12 = v8;
-  [v9 performBackgroundTask:v13];
+  v15 = allowanceCopy;
+  v16 = handlerCopy;
+  v14 = userObjectID;
+  v10 = allowanceCopy;
+  v11 = handlerCopy;
+  v12 = userObjectID;
+  [persistenceController performBackgroundTask:v13];
 }
 
 void __74__STTimeAllowancesViewModelCoordinator_deleteAllowance_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1603,26 +1603,26 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)saveAllAllowancesEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)saveAllAllowancesEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(STTimeAllowancesViewModelCoordinator *)self viewModel];
-  [v7 setAllAllowancesEnabled:v4];
+  enabledCopy = enabled;
+  handlerCopy = handler;
+  viewModel = [(STTimeAllowancesViewModelCoordinator *)self viewModel];
+  [viewModel setAllAllowancesEnabled:enabledCopy];
 
-  v8 = [(STTimeAllowancesViewModelCoordinator *)self userObjectID];
-  v9 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+  userObjectID = [(STTimeAllowancesViewModelCoordinator *)self userObjectID];
+  persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__STTimeAllowancesViewModelCoordinator_saveAllAllowancesEnabled_completionHandler___block_invoke;
   v12[3] = &unk_279B7E470;
-  v14 = self;
-  v15 = v6;
-  v16 = v4;
-  v13 = v8;
-  v10 = v6;
-  v11 = v8;
-  [v9 performBackgroundTask:v12];
+  selfCopy = self;
+  v15 = handlerCopy;
+  v16 = enabledCopy;
+  v13 = userObjectID;
+  v10 = handlerCopy;
+  v11 = userObjectID;
+  [persistenceController performBackgroundTask:v12];
 }
 
 void __83__STTimeAllowancesViewModelCoordinator_saveAllAllowancesEnabled_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1740,22 +1740,22 @@ void __83__STTimeAllowancesViewModelCoordinator_saveAllAllowancesEnabled_complet
   }
 }
 
-- (void)saveAlwaysAllowList:(id)a3 completionHandler:(id)a4
+- (void)saveAlwaysAllowList:(id)list completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CBEB98];
-  v8 = a3;
-  v9 = [(STTimeAllowancesViewModelCoordinator *)self viewModel];
-  v10 = [v9 alwaysAllowList];
-  v11 = [v10 allowedBundleIDs];
-  v12 = [v7 setWithArray:v11];
+  listCopy = list;
+  viewModel = [(STTimeAllowancesViewModelCoordinator *)self viewModel];
+  alwaysAllowList = [viewModel alwaysAllowList];
+  allowedBundleIDs = [alwaysAllowList allowedBundleIDs];
+  v12 = [v7 setWithArray:allowedBundleIDs];
 
-  v13 = [v8 allowedBundleIDs];
+  allowedBundleIDs2 = [listCopy allowedBundleIDs];
 
-  v14 = [MEMORY[0x277CBEB98] setWithArray:v13];
+  v14 = [MEMORY[0x277CBEB98] setWithArray:allowedBundleIDs2];
   if ([v12 isEqualToSet:v14])
   {
-    v15 = v6;
+    v15 = handlerCopy;
     if (v15)
     {
       if ([MEMORY[0x277CCACC8] isMainThread])
@@ -1778,20 +1778,20 @@ void __83__STTimeAllowancesViewModelCoordinator_saveAllAllowancesEnabled_complet
 
   else
   {
-    v16 = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
-    v17 = [(STTimeAllowancesViewModelCoordinator *)self userObjectID];
-    v18 = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
+    userDSID = [(STTimeAllowancesViewModelCoordinator *)self userDSID];
+    userObjectID = [(STTimeAllowancesViewModelCoordinator *)self userObjectID];
+    persistenceController = [(STTimeAllowancesViewModelCoordinator *)self persistenceController];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __78__STTimeAllowancesViewModelCoordinator_saveAlwaysAllowList_completionHandler___block_invoke;
     v21[3] = &unk_279B7E498;
-    v22 = v17;
-    v23 = v16;
-    v25 = v6;
-    v24 = v13;
-    v19 = v16;
-    v20 = v17;
-    [v18 performBackgroundTask:v21];
+    v22 = userObjectID;
+    v23 = userDSID;
+    v25 = handlerCopy;
+    v24 = allowedBundleIDs2;
+    v19 = userDSID;
+    v20 = userObjectID;
+    [persistenceController performBackgroundTask:v21];
   }
 }
 
@@ -1946,25 +1946,25 @@ LABEL_19:
 LABEL_30:
 }
 
-- (void)respondToAskForTime:(id)a3 withApproval:(BOOL)a4 timeApproved:(id)a5 completionHandler:(id)a6
+- (void)respondToAskForTime:(id)time withApproval:(BOOL)approval timeApproved:(id)approved completionHandler:(id)handler
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(STTimeAllowancesViewModelCoordinator *)self askForTimeClient];
-  v14 = !v7;
+  approvalCopy = approval;
+  handlerCopy = handler;
+  approvedCopy = approved;
+  timeCopy = time;
+  askForTimeClient = [(STTimeAllowancesViewModelCoordinator *)self askForTimeClient];
+  v14 = !approvalCopy;
   v15 = objc_alloc(MEMORY[0x277CCAD78]);
-  v16 = [v12 identifier];
+  identifier = [timeCopy identifier];
 
-  v17 = [v15 initWithUUIDString:v16];
+  v17 = [v15 initWithUUIDString:identifier];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __104__STTimeAllowancesViewModelCoordinator_respondToAskForTime_withApproval_timeApproved_completionHandler___block_invoke;
   v19[3] = &unk_279B7D270;
-  v20 = v10;
-  v18 = v10;
-  [v13 handleAnswer:v14 requestIdentifier:v17 timeApproved:v11 completionHandler:v19];
+  v20 = handlerCopy;
+  v18 = handlerCopy;
+  [askForTimeClient handleAnswer:v14 requestIdentifier:v17 timeApproved:approvedCopy completionHandler:v19];
 }
 
 void __104__STTimeAllowancesViewModelCoordinator_respondToAskForTime_withApproval_timeApproved_completionHandler___block_invoke(uint64_t a1)

@@ -1,17 +1,17 @@
 @interface DTTimer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (DTTimer)init;
-- (DTTimer)initWithMTAlarm:(id)a3;
-- (DTTimer)initWithMTAlarmID:(id)a3;
-- (DTTimer)initWithMTTimer:(id)a3;
-- (DTTimer)initWithMTTimerID:(id)a3;
+- (DTTimer)initWithMTAlarm:(id)alarm;
+- (DTTimer)initWithMTAlarmID:(id)d;
+- (DTTimer)initWithMTTimer:(id)timer;
+- (DTTimer)initWithMTTimerID:(id)d;
 @end
 
 @implementation DTTimer
 
-- (DTTimer)initWithMTAlarm:(id)a3
+- (DTTimer)initWithMTAlarm:(id)alarm
 {
-  *(&self->super.isa + OBJC_IVAR___DTTimer_mtAlarm) = a3;
+  *(&self->super.isa + OBJC_IVAR___DTTimer_mtAlarm) = alarm;
   v3 = (&self->super.isa + OBJC_IVAR___DTTimer__mtAlarmID);
   *v3 = 0;
   v3[1] = 0;
@@ -21,11 +21,11 @@
   v4[1] = 0;
   v7.receiver = self;
   v7.super_class = DTTimer;
-  v5 = a3;
+  alarmCopy = alarm;
   return [(DTTimer *)&v7 init];
 }
 
-- (DTTimer)initWithMTAlarmID:(id)a3
+- (DTTimer)initWithMTAlarmID:(id)d
 {
   v4 = sub_249076E1C();
   *(&self->super.isa + OBJC_IVAR___DTTimer_mtAlarm) = 0;
@@ -41,23 +41,23 @@
   return [(DTTimer *)&v9 init];
 }
 
-- (DTTimer)initWithMTTimer:(id)a3
+- (DTTimer)initWithMTTimer:(id)timer
 {
   *(&self->super.isa + OBJC_IVAR___DTTimer_mtAlarm) = 0;
   v3 = (&self->super.isa + OBJC_IVAR___DTTimer__mtAlarmID);
   *v3 = 0;
   v3[1] = 0;
-  *(&self->super.isa + OBJC_IVAR___DTTimer_mtTimer) = a3;
+  *(&self->super.isa + OBJC_IVAR___DTTimer_mtTimer) = timer;
   v4 = (&self->super.isa + OBJC_IVAR___DTTimer__mtTimerID);
   *v4 = 0;
   v4[1] = 0;
   v7.receiver = self;
   v7.super_class = DTTimer;
-  v5 = a3;
+  timerCopy = timer;
   return [(DTTimer *)&v7 init];
 }
 
-- (DTTimer)initWithMTTimerID:(id)a3
+- (DTTimer)initWithMTTimerID:(id)d
 {
   v4 = sub_249076E1C();
   *(&self->super.isa + OBJC_IVAR___DTTimer_mtAlarm) = 0;
@@ -73,11 +73,11 @@
   return [(DTTimer *)&v9 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24907702C();
     swift_unknownObjectRelease();
@@ -86,7 +86,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = DTTimer.isEqual(_:)(v8);

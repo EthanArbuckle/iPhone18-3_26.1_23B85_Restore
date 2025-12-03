@@ -1,18 +1,18 @@
 @interface CCUIAlwaysExpandedMenuModuleViewController
-- (CCUIAlwaysExpandedMenuModuleViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (CCUIAlwaysExpandedMenuModuleViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CCUIAlwaysExpandedMenuModuleViewController
 
-- (CCUIAlwaysExpandedMenuModuleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CCUIAlwaysExpandedMenuModuleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = CCUIAlwaysExpandedMenuModuleViewController;
-  v4 = [(CCUIMenuModuleViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(CCUIMenuModuleViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -22,35 +22,35 @@
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CCUIAlwaysExpandedMenuModuleViewController;
-  [(CCUIMenuModuleViewController *)&v4 viewWillAppear:a3];
+  [(CCUIMenuModuleViewController *)&v4 viewWillAppear:appear];
   [(CCUIMenuModuleViewController *)self willTransitionToExpandedContentMode:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CCUIAlwaysExpandedMenuModuleViewController;
-  [(CCUIMenuModuleViewController *)&v4 viewDidAppear:a3];
+  [(CCUIMenuModuleViewController *)&v4 viewDidAppear:appear];
   [(CCUIMenuModuleViewController *)self didTransitionToExpandedContentMode:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CCUIAlwaysExpandedMenuModuleViewController;
-  [(CCUIMenuModuleViewController *)&v4 viewWillDisappear:a3];
+  [(CCUIMenuModuleViewController *)&v4 viewWillDisappear:disappear];
   [(CCUIMenuModuleViewController *)self willTransitionToExpandedContentMode:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CCUIAlwaysExpandedMenuModuleViewController;
-  [(CCUIMenuModuleViewController *)&v4 viewDidDisappear:a3];
+  [(CCUIMenuModuleViewController *)&v4 viewDidDisappear:disappear];
   [(CCUIMenuModuleViewController *)self didTransitionToExpandedContentMode:0];
 }
 

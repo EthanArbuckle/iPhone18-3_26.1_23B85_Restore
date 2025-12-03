@@ -1,14 +1,14 @@
 @interface NCNotificationBannerEventTracker
-+ (void)presentedNotificationRequestAsBanner:(id)a3;
++ (void)presentedNotificationRequestAsBanner:(id)banner;
 @end
 
 @implementation NCNotificationBannerEventTracker
 
-+ (void)presentedNotificationRequestAsBanner:(id)a3
++ (void)presentedNotificationRequestAsBanner:(id)banner
 {
-  v3 = a3;
+  bannerCopy = banner;
   v4 = +[NCNotificationEventTracker sharedInstance];
-  [v4 presentedNotificationRequestAsBanner:v3];
+  [v4 presentedNotificationRequestAsBanner:bannerCopy];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface NNCComplicationDataSource
-+ (id)_oneLineHeadlineTextProviderForResult:(id)a3;
-+ (id)fullColorImageProviderWithName:(id)a3;
++ (id)_oneLineHeadlineTextProviderForResult:(id)result;
++ (id)fullColorImageProviderWithName:(id)name;
 @end
 
 @implementation NNCComplicationDataSource
 
-+ (id)_oneLineHeadlineTextProviderForResult:(id)a3
++ (id)_oneLineHeadlineTextProviderForResult:(id)result
 {
-  if (a3)
+  if (result)
   {
-    v4 = [a3 headlineTitle];
-    v5 = v4;
-    if (v4)
+    headlineTitle = [result headlineTitle];
+    v5 = headlineTitle;
+    if (headlineTitle)
     {
-      v6 = v4;
+      _noNewStoriesShortString = headlineTitle;
     }
 
     else
     {
-      v6 = [a1 _noNewStoriesShortString];
+      _noNewStoriesShortString = [self _noNewStoriesShortString];
     }
 
-    v8 = v6;
+    _loadingStoriesShortString = _noNewStoriesShortString;
 
     v9 = MEMORY[0x277CBBB90];
   }
@@ -29,44 +29,44 @@
   else
   {
     v7 = MEMORY[0x277CBBB90];
-    v8 = [a1 _loadingStoriesShortString];
+    _loadingStoriesShortString = [self _loadingStoriesShortString];
     v9 = v7;
   }
 
-  v10 = [v9 textProviderWithText:v8];
+  v10 = [v9 textProviderWithText:_loadingStoriesShortString];
 
   return v10;
 }
 
-+ (id)fullColorImageProviderWithName:(id)a3
++ (id)fullColorImageProviderWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"complication-%@", v4];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"complication-%@", nameCopy];
   v7 = MEMORY[0x277D755B8];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v9 = [v7 imageNamed:v6 inBundle:v8 compatibleWithTraitCollection:0];
+  v9 = [v7 imageNamed:nameCopy inBundle:v8 compatibleWithTraitCollection:0];
 
   if (v9)
   {
-    v10 = [MEMORY[0x277D75568] preferredFormat];
+    preferredFormat = [MEMORY[0x277D75568] preferredFormat];
     [v9 scale];
-    [v10 setScale:?];
-    [v10 setPreferredRange:2];
+    [preferredFormat setScale:?];
+    [preferredFormat setPreferredRange:2];
     [v9 size];
     v12 = v11;
     v14 = v13;
-    v15 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v10 format:{v11, v13}];
-    v16 = [a1 newsTintColor];
+    v15 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:preferredFormat format:{v11, v13}];
+    newsTintColor = [self newsTintColor];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __60__NNCComplicationDataSource_fullColorImageProviderWithName___block_invoke;
     v21[3] = &unk_2799800B0;
-    v22 = v16;
+    v22 = newsTintColor;
     v24 = v12;
     v25 = v14;
     v23 = v9;
-    v17 = v16;
+    v17 = newsTintColor;
     v18 = [v15 imageWithActions:v21];
     v19 = [MEMORY[0x277CBBB18] providerWithFullColorImage:v18 monochromeFilterType:1];
   }

@@ -1,7 +1,7 @@
 @interface PUVideoPlayerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable;
-- (BOOL)_accessibilitySavePhotoLabel:(id)a3;
+- (BOOL)_accessibilitySavePhotoLabel:(id)label;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityElementStoredUserLabel;
 - (id)_accessibilityPHAssetLocalIdentifier;
@@ -13,12 +13,12 @@
 
 @implementation PUVideoPlayerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUVideoPlayerView"];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"mainFileURL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"isVideo" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUVideoPlayerView"];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"mainFileURL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"isVideo" withFullSignature:{"B", 0}];
 }
 
 - (id)_axPHAsset
@@ -32,86 +32,86 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(PUVideoPlayerViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(PUVideoPlayerViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (!v3)
+  if (!isAccessibilityUserDefinedElement)
   {
     return 1;
   }
 
-  v4 = [(PUVideoPlayerViewAccessibility *)self isAccessibilityUserDefinedElement];
-  v5 = [v4 BOOLValue];
+  isAccessibilityUserDefinedElement2 = [(PUVideoPlayerViewAccessibility *)self isAccessibilityUserDefinedElement];
+  bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
-  v3 = [v2 accessibilityLabel];
+  _axPHAsset = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
+  accessibilityLabel = [_axPHAsset accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityURL
 {
-  v3 = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
-  v4 = [v3 safeValueForKey:@"mainFileURL"];
+  _axPHAsset = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
+  v4 = [_axPHAsset safeValueForKey:@"mainFileURL"];
 
   if (v4)
   {
-    v5 = v4;
+    accessibilityURL = v4;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PUVideoPlayerViewAccessibility;
-    v5 = [(PUVideoPlayerViewAccessibility *)&v8 accessibilityURL];
+    accessibilityURL = [(PUVideoPlayerViewAccessibility *)&v8 accessibilityURL];
   }
 
-  v6 = v5;
+  v6 = accessibilityURL;
 
   return v6;
 }
 
 - (id)_accessibilityPHAssetLocalIdentifier
 {
-  v2 = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityPHAssetLocalIdentifier];
+  _axPHAsset = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
+  _accessibilityPHAssetLocalIdentifier = [_axPHAsset _accessibilityPHAssetLocalIdentifier];
 
-  return v3;
+  return _accessibilityPHAssetLocalIdentifier;
 }
 
 - (id)_accessibilityPhotoLibraryURL
 {
-  v2 = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityPhotoLibraryURL];
+  _axPHAsset = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
+  _accessibilityPhotoLibraryURL = [_axPHAsset _accessibilityPhotoLibraryURL];
 
-  return v3;
+  return _accessibilityPhotoLibraryURL;
 }
 
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable
 {
-  v2 = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityIsPHAssetLocallyAvailable];
+  _axPHAsset = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
+  _accessibilityIsPHAssetLocallyAvailable = [_axPHAsset _accessibilityIsPHAssetLocallyAvailable];
 
-  return v3;
+  return _accessibilityIsPHAssetLocallyAvailable;
 }
 
 - (id)_accessibilityElementStoredUserLabel
 {
-  v3 = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
-  v4 = [v3 safeValueForKey:@"_accessibilityiCloudPhotoLabel"];
+  _axPHAsset = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
+  v4 = [_axPHAsset safeValueForKey:@"_accessibilityiCloudPhotoLabel"];
 
   if (![v4 length])
   {
-    v5 = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
-    v6 = [v5 safeBoolForKey:@"isVideo"];
+    _axPHAsset2 = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
+    v6 = [_axPHAsset2 safeBoolForKey:@"isVideo"];
 
     if (v6)
     {
-      v7 = [(PUVideoPlayerViewAccessibility *)self accessibilityURL];
+      accessibilityURL = [(PUVideoPlayerViewAccessibility *)self accessibilityURL];
       v8 = UIAccessibilityMetadataDescriptionForVideo();
 
       v4 = v8;
@@ -121,11 +121,11 @@
   return v4;
 }
 
-- (BOOL)_accessibilitySavePhotoLabel:(id)a3
+- (BOOL)_accessibilitySavePhotoLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
-  v6 = [v5 _accessibilitySavePhotoLabel:v4];
+  labelCopy = label;
+  _axPHAsset = [(PUVideoPlayerViewAccessibility *)self _axPHAsset];
+  v6 = [_axPHAsset _accessibilitySavePhotoLabel:labelCopy];
 
   return v6;
 }

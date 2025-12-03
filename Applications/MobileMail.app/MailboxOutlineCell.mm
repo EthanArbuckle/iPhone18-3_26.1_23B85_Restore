@@ -6,42 +6,42 @@
 - (BOOL)_isCellEnabledForMailboxes;
 - (BOOL)isCellEnabled;
 - (CGPoint)destinationPointForAnimation;
-- (MailboxOutlineCell)initWithFrame:(CGRect)a3;
+- (MailboxOutlineCell)initWithFrame:(CGRect)frame;
 - (UICellAccessoryCustomView)businessesAccessoryView;
 - (UICellAccessoryCustomView)focusAccessoryView;
 - (UIImage)icon;
 - (double)_verticalPaddingForExpandableTitle;
-- (id)_countQueryLabelForMailboxes:(id)a3;
-- (id)_createMailboxesFromUids:(id)a3;
+- (id)_countQueryLabelForMailboxes:(id)mailboxes;
+- (id)_createMailboxesFromUids:(id)uids;
 - (id)_scriptingInfo;
 - (id)configurationState;
 - (void)_cleanupNotifications;
 - (void)_invalidateIcon;
 - (void)_resetDebouncer;
-- (void)_setMailboxes:(id)a3 observeCount:(BOOL)a4 unreadCountIncludesRead:(BOOL)a5;
-- (void)_setUnreadCountMailboxes:(id)a3 unreadCountIncludesRead:(BOOL)a4;
+- (void)_setMailboxes:(id)mailboxes observeCount:(BOOL)count unreadCountIncludesRead:(BOOL)read;
+- (void)_setUnreadCountMailboxes:(id)mailboxes unreadCountIncludesRead:(BOOL)read;
 - (void)_updateBadgeShowsAllUnreadMessages;
 - (void)_updateIndentationLevel;
 - (void)_updateMailboxName;
 - (void)_updateShouldExcludeBusinessMessages;
-- (void)bucketBarConfigurationController:(id)a3 isHidden:(BOOL)a4 forMailboxes:(id)a5;
-- (void)bucketBarConfigurationControllerRequiresReload:(id)a3;
+- (void)bucketBarConfigurationController:(id)controller isHidden:(BOOL)hidden forMailboxes:(id)mailboxes;
+- (void)bucketBarConfigurationControllerRequiresReload:(id)reload;
 - (void)dealloc;
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5;
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change;
 - (void)prepareForReuse;
-- (void)setBadgeCount:(int64_t)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setFlattenHierarchy:(BOOL)a3;
-- (void)setLegacyMailboxes:(id)a3 showUnreadCount:(BOOL)a4 unreadCountIncludesRead:(BOOL)a5;
-- (void)setMailboxes:(id)a3 observeCount:(BOOL)a4;
-- (void)setShowsDetailDisclosureButton:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setUseDisabledAppearance:(BOOL)a3;
+- (void)setBadgeCount:(int64_t)count;
+- (void)setEditing:(BOOL)editing;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setFlattenHierarchy:(BOOL)hierarchy;
+- (void)setLegacyMailboxes:(id)mailboxes showUnreadCount:(BOOL)count unreadCountIncludesRead:(BOOL)read;
+- (void)setMailboxes:(id)mailboxes observeCount:(BOOL)count;
+- (void)setShowsDetailDisclosureButton:(BOOL)button;
+- (void)setTitle:(id)title;
+- (void)setUseDisabledAppearance:(BOOL)appearance;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAccessories;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation MailboxOutlineCell
@@ -58,7 +58,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000ECA40;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DCFF8 != -1)
   {
     dispatch_once(&qword_1006DCFF8, block);
@@ -75,7 +75,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000ECB60;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD000 != -1)
   {
     dispatch_once(&qword_1006DD000, block);
@@ -84,11 +84,11 @@
   return byte_1006D1C38;
 }
 
-- (MailboxOutlineCell)initWithFrame:(CGRect)a3
+- (MailboxOutlineCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MailboxOutlineCell;
-  v3 = [(MailboxOutlineCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MailboxOutlineCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -97,8 +97,8 @@
     [(MailboxOutlineCell *)v4 setBadgeCount:0];
     [(MailboxOutlineCell *)v4 setShowFocusIcon:0];
     v5 = +[UIApplication sharedApplication];
-    v6 = [v5 bucketBarConfigurationController];
-    [v6 addConfigurationObserver:v4];
+    bucketBarConfigurationController = [v5 bucketBarConfigurationController];
+    [bucketBarConfigurationController addConfigurationObserver:v4];
   }
 
   return v4;
@@ -109,8 +109,8 @@
   [(EFCancelable *)self->_unreadCountToken cancel];
   [(EFDebouncer *)self->_countDebouncer cancel];
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 bucketBarConfigurationController];
-  [v4 removeConfigurationObserver:self];
+  bucketBarConfigurationController = [v3 bucketBarConfigurationController];
+  [bucketBarConfigurationController removeConfigurationObserver:self];
 
   [(MailboxOutlineCell *)self _cleanupNotifications];
   v5.receiver = self;
@@ -189,18 +189,18 @@
 {
   if (EMBlackPearlIsFeatureEnabled())
   {
-    v3 = [(MailboxOutlineCell *)self smartMailbox];
+    smartMailbox = [(MailboxOutlineCell *)self smartMailbox];
     mailboxes = [(MailboxOutlineCell *)self _containsInbox];
     [(MailboxOutlineCell *)self _updateBadgeShowsAllUnreadMessages];
     v5 = +[UIApplication sharedApplication];
-    v6 = [v5 bucketBarConfigurationController];
+    bucketBarConfigurationController = [v5 bucketBarConfigurationController];
 
     if (mailboxes && ![(MailboxOutlineCell *)self badgeShowsAllUnreadMessages])
     {
-      v7 = v3 != 0;
-      if (v3)
+      v7 = smartMailbox != 0;
+      if (smartMailbox)
       {
-        v9 = v3;
+        v9 = smartMailbox;
         mailboxes = [NSArray arrayWithObjects:&v9 count:1];
       }
 
@@ -209,7 +209,7 @@
         mailboxes = self->_mailboxes;
       }
 
-      v8 = [v6 isBucketBarHiddenForMailboxes:mailboxes] ^ 1;
+      v8 = [bucketBarConfigurationController isBucketBarHiddenForMailboxes:mailboxes] ^ 1;
     }
 
     else
@@ -230,9 +230,9 @@
   if ([(MailboxOutlineCell *)self _containsInbox])
   {
     [(MailboxOutlineCell *)self setBadgeShowsAllUnreadMessages:+[MailboxOutlineCell unreadCountIncludesAllMessages]];
-    v3 = [(MailboxOutlineCell *)self unreadCountSettingNotificationToken];
+    unreadCountSettingNotificationToken = [(MailboxOutlineCell *)self unreadCountSettingNotificationToken];
 
-    if (!v3)
+    if (!unreadCountSettingNotificationToken)
     {
       v4 = +[NSNotificationCenter defaultCenter];
       v5 = +[NSOperationQueue mainQueue];
@@ -255,8 +255,8 @@
 
 - (BOOL)_containsInbox
 {
-  v3 = [(MailboxOutlineCell *)self smartMailbox];
-  if ([v3 smartMailboxType] == 8 && (objc_msgSend(v3, "isInboxMailbox") & 1) != 0)
+  smartMailbox = [(MailboxOutlineCell *)self smartMailbox];
+  if ([smartMailbox smartMailboxType] == 8 && (objc_msgSend(smartMailbox, "isInboxMailbox") & 1) != 0)
   {
     v4 = 1;
   }
@@ -269,33 +269,33 @@
   return v4;
 }
 
-- (void)setMailboxes:(id)a3 observeCount:(BOOL)a4
+- (void)setMailboxes:(id)mailboxes observeCount:(BOOL)count
 {
-  v4 = a4;
+  countCopy = count;
   legacyMailboxes = self->_legacyMailboxes;
   self->_legacyMailboxes = 0;
-  v7 = a3;
+  mailboxesCopy = mailboxes;
 
-  [(MailboxOutlineCell *)self _setMailboxes:v7 observeCount:v4 unreadCountIncludesRead:0];
+  [(MailboxOutlineCell *)self _setMailboxes:mailboxesCopy observeCount:countCopy unreadCountIncludesRead:0];
 }
 
-- (void)_setMailboxes:(id)a3 observeCount:(BOOL)a4 unreadCountIncludesRead:(BOOL)a5
+- (void)_setMailboxes:(id)mailboxes observeCount:(BOOL)count unreadCountIncludesRead:(BOOL)read
 {
-  v5 = a5;
-  v6 = a4;
-  v11 = a3;
-  v8 = [v11 copy];
+  readCopy = read;
+  countCopy = count;
+  mailboxesCopy = mailboxes;
+  v8 = [mailboxesCopy copy];
   mailboxes = self->_mailboxes;
   self->_mailboxes = v8;
 
   [(MailboxOutlineCell *)self _cleanupNotifications];
   [(MailboxOutlineCell *)self _updateShouldExcludeBusinessMessages];
   [(MailboxOutlineCell *)self setShouldShowBadgeCountIfNecessary:[(NSArray *)self->_mailboxes count]!= 0];
-  if (v6)
+  if (countCopy)
   {
     if ([(NSArray *)self->_mailboxes count])
     {
-      v10 = v11;
+      v10 = mailboxesCopy;
     }
 
     else
@@ -309,34 +309,34 @@
     v10 = 0;
   }
 
-  [(MailboxOutlineCell *)self _setUnreadCountMailboxes:v10 unreadCountIncludesRead:v5];
+  [(MailboxOutlineCell *)self _setUnreadCountMailboxes:v10 unreadCountIncludesRead:readCopy];
 }
 
-- (void)setLegacyMailboxes:(id)a3 showUnreadCount:(BOOL)a4 unreadCountIncludesRead:(BOOL)a5
+- (void)setLegacyMailboxes:(id)mailboxes showUnreadCount:(BOOL)count unreadCountIncludesRead:(BOOL)read
 {
-  v28 = a5;
-  v5 = a4;
-  v9 = a3;
-  v10 = [v9 isEqualToSet:self->_legacyMailboxes];
+  readCopy = read;
+  countCopy = count;
+  mailboxesCopy = mailboxes;
+  v10 = [mailboxesCopy isEqualToSet:self->_legacyMailboxes];
   if ((v10 & 1) == 0)
   {
     v11 = +[NSNotificationCenter defaultCenter];
     v12 = MFMailboxUidWasRenamedNotification;
     [v11 removeObserver:self name:MFMailboxUidWasRenamedNotification object:0];
 
-    v13 = [(MailboxOutlineCell *)self unreadCountToken];
-    [v13 cancel];
+    unreadCountToken = [(MailboxOutlineCell *)self unreadCountToken];
+    [unreadCountToken cancel];
 
     [(MailboxOutlineCell *)self setUnreadCountToken:0];
-    objc_storeStrong(&self->_legacyMailboxes, a3);
+    objc_storeStrong(&self->_legacyMailboxes, mailboxes);
     if ([(NSSet *)self->_legacyMailboxes count]== 1)
     {
-      v14 = [(NSSet *)self->_legacyMailboxes anyObject];
-      v15 = [v14 icon];
-      [(MailboxOutlineCell *)self setIcon:v15];
+      anyObject = [(NSSet *)self->_legacyMailboxes anyObject];
+      icon = [anyObject icon];
+      [(MailboxOutlineCell *)self setIcon:icon];
 
       v16 = +[NSNotificationCenter defaultCenter];
-      [v16 addObserver:self selector:"_updateMailboxName" name:v12 object:v14];
+      [v16 addObserver:self selector:"_updateMailboxName" name:v12 object:anyObject];
     }
   }
 
@@ -346,18 +346,18 @@
   {
     v19 = objc_opt_class();
     v20 = NSStringFromSelector(a2);
-    v21 = [(MailboxOutlineCell *)self shouldShowBadgeCountIfNecessary];
+    shouldShowBadgeCountIfNecessary = [(MailboxOutlineCell *)self shouldShowBadgeCountIfNecessary];
     v22 = self->_legacyMailboxes != 0;
     *buf = 138544898;
     v30 = v19;
     v31 = 2048;
-    v32 = self;
+    selfCopy = self;
     v33 = 2114;
     v34 = v20;
     v35 = 1024;
-    v36 = v21;
+    v36 = shouldShowBadgeCountIfNecessary;
     v37 = 1024;
-    v38 = v5;
+    v38 = countCopy;
     v39 = 1024;
     v40 = v18;
     v41 = 1024;
@@ -365,14 +365,14 @@
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "<%{public}@ : %p> %{public}@ - shouldShowBadgeCountIfNecessary:(%{BOOL}d, %{BOOL}d) mailboxesChanged:%{BOOL}d has _legacyMailboxes:%{BOOL}d", buf, 0x38u);
   }
 
-  if ([(MailboxOutlineCell *)self shouldShowBadgeCountIfNecessary]^ v5 | v18)
+  if ([(MailboxOutlineCell *)self shouldShowBadgeCountIfNecessary]^ countCopy | v18)
   {
     [(MailboxOutlineCell *)self setBadgeCount:0];
-    [(MailboxOutlineCell *)self setShouldShowBadgeCountIfNecessary:v5];
+    [(MailboxOutlineCell *)self setShouldShowBadgeCountIfNecessary:countCopy];
     if ([(MailboxOutlineCell *)self shouldShowBadgeCountIfNecessary]&& self->_legacyMailboxes)
     {
-      v23 = [v9 allObjects];
-      v24 = [(MailboxOutlineCell *)self _createMailboxesFromUids:v23];
+      allObjects = [mailboxesCopy allObjects];
+      v24 = [(MailboxOutlineCell *)self _createMailboxesFromUids:allObjects];
 
       if (![v24 count])
       {
@@ -380,12 +380,12 @@
         if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
         {
           v26 = +[UIApplication sharedApplication];
-          v27 = [v26 mailboxProvider];
-          sub_100488468(v27, buf, v25, v26);
+          mailboxProvider = [v26 mailboxProvider];
+          sub_100488468(mailboxProvider, buf, v25, v26);
         }
       }
 
-      [(MailboxOutlineCell *)self _setMailboxes:v24 observeCount:1 unreadCountIncludesRead:v28];
+      [(MailboxOutlineCell *)self _setMailboxes:v24 observeCount:1 unreadCountIncludesRead:readCopy];
     }
 
     else
@@ -397,62 +397,62 @@
   [(MailboxOutlineCell *)self _updateMailboxName];
 }
 
-- (id)_createMailboxesFromUids:(id)a3
+- (id)_createMailboxesFromUids:(id)uids
 {
-  v3 = a3;
+  uidsCopy = uids;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 mailboxProvider];
+  mailboxProvider = [v4 mailboxProvider];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000EDB9C;
   v9[3] = &unk_10064FEA8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [v3 ef_compactMap:v9];
+  v10 = mailboxProvider;
+  v6 = mailboxProvider;
+  v7 = [uidsCopy ef_compactMap:v9];
 
   return v7;
 }
 
-- (void)_setUnreadCountMailboxes:(id)a3 unreadCountIncludesRead:(BOOL)a4
+- (void)_setUnreadCountMailboxes:(id)mailboxes unreadCountIncludesRead:(BOOL)read
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [(MailboxOutlineCell *)self unreadCountToken];
-  [v8 cancel];
+  readCopy = read;
+  mailboxesCopy = mailboxes;
+  unreadCountToken = [(MailboxOutlineCell *)self unreadCountToken];
+  [unreadCountToken cancel];
 
   [(MailboxOutlineCell *)self setUnreadCountToken:0];
   [(MailboxOutlineCell *)self _resetDebouncer];
-  if (v7 && [v7 count])
+  if (mailboxesCopy && [mailboxesCopy count])
   {
     v9 = [EMMessageListItemPredicates predicateForMessagesInMailboxes:self->_mailboxes];
     v26 = [NSMutableArray arrayWithObject:v9];
 
-    v10 = [(MailboxOutlineCell *)self shouldExcludeBusinessMessages];
-    if (v10)
+    shouldExcludeBusinessMessages = [(MailboxOutlineCell *)self shouldExcludeBusinessMessages];
+    if (shouldExcludeBusinessMessages)
     {
       v11 = +[EMMessageListItemPredicates predicateForPrimaryMessages];
       [v26 addObject:v11];
     }
 
-    if (!v4)
+    if (!readCopy)
     {
       v12 = +[EMMessageListItemPredicates predicateForUnreadMessages];
       [v26 addObject:v12];
     }
 
     v24 = [NSCompoundPredicate ef_andCompoundPredicateWithSubpredicates:v26];
-    v25 = [(MailboxOutlineCell *)self _countQueryLabelForMailboxes:v7];
+    v25 = [(MailboxOutlineCell *)self _countQueryLabelForMailboxes:mailboxesCopy];
     v13 = [[EMQuery alloc] initWithTargetClass:objc_opt_class() predicate:v24 sortDescriptors:&__NSArray0__struct queryOptions:0 label:v25];
-    if (v10)
+    if (shouldExcludeBusinessMessages)
     {
-      v14 = [v7 ef_filter:&stru_10064FEC8];
+      v14 = [mailboxesCopy ef_filter:&stru_10064FEC8];
       v15 = [v14 ef_mapSelector:"objectID"];
     }
 
     else
     {
-      v15 = [v7 ef_mapSelector:"objectID"];
+      v15 = [mailboxesCopy ef_mapSelector:"objectID"];
     }
 
     if ([v15 count])
@@ -473,7 +473,7 @@
       *buf = 138544642;
       v28 = v18;
       v29 = 2048;
-      v30 = self;
+      selfCopy = self;
       v31 = 2114;
       v32 = v19;
       v33 = 2114;
@@ -481,54 +481,54 @@
       v35 = 2114;
       v36 = v25;
       v37 = 1024;
-      v38 = v10;
+      v38 = shouldExcludeBusinessMessages;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "<%{public}@ : %p> %{public}@ - start counting query with query:%{public}@ label:%{public}@ shouldExcludeBusinessMessages:%{BOOL}d", buf, 0x3Au);
     }
 
-    [(MailboxOutlineCell *)self setCurrentUnreadCountQueryIncludesRead:v4];
+    [(MailboxOutlineCell *)self setCurrentUnreadCountQueryIncludesRead:readCopy];
     v20 = +[UIApplication sharedApplication];
-    v21 = [v20 daemonInterface];
-    v22 = [v21 messageRepository];
-    v23 = [v22 startCountingQuery:v13 includingServerCountsForMailboxScope:v16 withObserver:self];
+    daemonInterface = [v20 daemonInterface];
+    messageRepository = [daemonInterface messageRepository];
+    v23 = [messageRepository startCountingQuery:v13 includingServerCountsForMailboxScope:v16 withObserver:self];
     [(MailboxOutlineCell *)self setUnreadCountToken:v23];
   }
 }
 
-- (id)_countQueryLabelForMailboxes:(id)a3
+- (id)_countQueryLabelForMailboxes:(id)mailboxes
 {
-  v3 = a3;
-  v4 = [v3 firstObject];
-  v5 = [v4 name];
-  if (([v4 descriptionUsesRealName] & 1) == 0)
+  mailboxesCopy = mailboxes;
+  firstObject = [mailboxesCopy firstObject];
+  name = [firstObject name];
+  if (([firstObject descriptionUsesRealName] & 1) == 0)
   {
-    v6 = [EFPrivacy fullyOrPartiallyRedactedStringForString:v5];
+    v6 = [EFPrivacy fullyOrPartiallyRedactedStringForString:name];
 
     v7 = [[NSString alloc] initWithFormat:@"Generic mailbox %@", v6];
-    v5 = v7;
+    name = v7;
   }
 
-  if ([v3 count] < 2)
+  if ([mailboxesCopy count] < 2)
   {
     v8 = &stru_100662A88;
   }
 
   else
   {
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" mailboxes:%lu", [v3 count]);
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" mailboxes:%lu", [mailboxesCopy count]);
   }
 
   v9 = [NSString alloc];
-  v10 = [v4 accountIdentifier];
-  v11 = [v9 initWithFormat:@"%@ (accountID: %@)%@", v5, v10, v8];
+  accountIdentifier = [firstObject accountIdentifier];
+  v11 = [v9 initWithFormat:@"%@ (accountID: %@)%@", name, accountIdentifier, v8];
 
   return v11;
 }
 
-- (void)setBadgeCount:(int64_t)a3
+- (void)setBadgeCount:(int64_t)count
 {
-  if (self->_badgeCount != a3)
+  if (self->_badgeCount != count)
   {
-    self->_badgeCount = a3;
+    self->_badgeCount = count;
     v6 = +[MailboxOutlineCell log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -537,36 +537,36 @@
       *buf = 138544130;
       v13 = v7;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = v8;
       v18 = 2048;
-      v19 = a3;
+      countCopy = count;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@ : %p> %{public}@ - count:%li", buf, 0x2Au);
     }
 
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"UNREAD_COUNT_FORMAT%1$lu" value:&stru_100662A88 table:@"Main"];
-    v11 = [NSString localizedStringWithFormat:v10, a3];
+    v11 = [NSString localizedStringWithFormat:v10, count];
     [(MailboxOutlineCell *)self setAccessibilityValue:v11];
 
     [(MailboxOutlineCell *)self updateAccessories];
   }
 }
 
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change
 {
-  v5 = [EFScheduler mainThreadScheduler:a3];
+  v5 = [EFScheduler mainThreadScheduler:repository];
   [v5 performBlock:&v6];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   v7.receiver = self;
   v7.super_class = MailboxOutlineCell;
   [(MailboxOutlineCell *)&v7 setEditing:?];
-  if (v3)
+  if (editingCopy)
   {
     if (self->_disabledForEditing)
     {
@@ -591,22 +591,22 @@
   [(MailboxOutlineCell *)self setUseDisabledAppearance:v6];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    objc_storeStrong(&self->_title, a3);
-    [(MailboxOutlineCell *)self setAccessibilityLabel:v5];
+    objc_storeStrong(&self->_title, title);
+    [(MailboxOutlineCell *)self setAccessibilityLabel:titleCopy];
   }
 }
 
-- (void)setFlattenHierarchy:(BOOL)a3
+- (void)setFlattenHierarchy:(BOOL)hierarchy
 {
-  if (self->_flattenHierarchy != a3)
+  if (self->_flattenHierarchy != hierarchy)
   {
-    self->_flattenHierarchy = a3;
-    if (a3)
+    self->_flattenHierarchy = hierarchy;
+    if (hierarchy)
     {
       [(MailboxOutlineCell *)self setIndentationLevel:0];
     }
@@ -615,19 +615,19 @@
 
 - (BOOL)_isCellEnabledForMailboxes
 {
-  v3 = [(NSSet *)self->_legacyMailboxes anyObject];
-  if (v3)
+  anyObject = [(NSSet *)self->_legacyMailboxes anyObject];
+  if (anyObject)
   {
-    v4 = [(NSSet *)self->_legacyMailboxes anyObject];
-    v5 = [v4 isStore];
+    anyObject2 = [(NSSet *)self->_legacyMailboxes anyObject];
+    isStore = [anyObject2 isStore];
   }
 
   else
   {
-    v5 = 1;
+    isStore = 1;
   }
 
-  return v5;
+  return isStore;
 }
 
 - (BOOL)isCellEnabled
@@ -643,11 +643,11 @@
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
   v6.receiver = self;
   v6.super_class = MailboxOutlineCell;
-  [(MailboxOutlineCell *)&v6 setExpanded:a3];
+  [(MailboxOutlineCell *)&v6 setExpanded:expanded];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000EE910;
@@ -657,11 +657,11 @@
   [v4 performBlock:v5];
 }
 
-- (void)setUseDisabledAppearance:(BOOL)a3
+- (void)setUseDisabledAppearance:(BOOL)appearance
 {
   useDisabledAppearance = self->_useDisabledAppearance;
-  self->_useDisabledAppearance = a3;
-  if (useDisabledAppearance != a3)
+  self->_useDisabledAppearance = appearance;
+  if (useDisabledAppearance != appearance)
   {
     [(MailboxOutlineCell *)self setNeedsUpdateConfiguration];
   }
@@ -676,11 +676,11 @@
 
   else
   {
-    v4 = [(MailboxOutlineCell *)self createIconBlock];
-    v3 = v4;
-    if (v4)
+    createIconBlock = [(MailboxOutlineCell *)self createIconBlock];
+    v3 = createIconBlock;
+    if (createIconBlock)
     {
-      v5 = (*(v4 + 16))(v4);
+      v5 = (*(createIconBlock + 16))(createIconBlock);
       icon = self->_icon;
       self->_icon = v5;
     }
@@ -698,20 +698,20 @@
   self->_icon = 0;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = MailboxOutlineCell;
-  [(MailboxOutlineCell *)&v5 traitCollectionDidChange:v4];
+  [(MailboxOutlineCell *)&v5 traitCollectionDidChange:changeCopy];
   [(MailboxOutlineCell *)self _invalidateIcon];
 }
 
-- (void)setShowsDetailDisclosureButton:(BOOL)a3
+- (void)setShowsDetailDisclosureButton:(BOOL)button
 {
-  if (self->_showsDetailDisclosureButton != a3)
+  if (self->_showsDetailDisclosureButton != button)
   {
-    self->_showsDetailDisclosureButton = a3;
+    self->_showsDetailDisclosureButton = button;
   }
 }
 
@@ -719,24 +719,24 @@
 {
   v5.receiver = self;
   v5.super_class = MailboxOutlineCell;
-  v3 = [(MailboxOutlineCell *)&v5 configurationState];
-  [v3 setDisabled:{-[MailboxOutlineCell useDisabledAppearance](self, "useDisabledAppearance")}];
+  configurationState = [(MailboxOutlineCell *)&v5 configurationState];
+  [configurationState setDisabled:{-[MailboxOutlineCell useDisabledAppearance](self, "useDisabledAppearance")}];
 
-  return v3;
+  return configurationState;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v31 = a3;
-  v4 = [(MailboxOutlineCell *)self traitCollection];
-  v5 = [v4 mf_useSplitViewStyling];
+  stateCopy = state;
+  traitCollection = [(MailboxOutlineCell *)self traitCollection];
+  mf_useSplitViewStyling = [traitCollection mf_useSplitViewStyling];
 
   if ([(MailboxOutlineCell *)self disclosureType]== 1)
   {
-    v6 = [(MailboxOutlineCell *)self expanded];
+    expanded = [(MailboxOutlineCell *)self expanded];
     v7 = MSAccessibilityIdentifierMailboxListAccountCell;
     v8 = @".isCollapsed";
-    if (v6)
+    if (expanded)
     {
       v8 = @".isExpanded";
     }
@@ -744,10 +744,10 @@
 
   else
   {
-    v9 = [(MailboxOutlineCell *)self expanded];
+    expanded2 = [(MailboxOutlineCell *)self expanded];
     v7 = MSAccessibilityIdentifierMailboxListCell;
     v8 = @".isCollapsed";
-    if (v9)
+    if (expanded2)
     {
       v8 = @".isExpanded";
     }
@@ -758,7 +758,7 @@
 
   if ([(MailboxOutlineCell *)self isExpandable])
   {
-    if (v5)
+    if (mf_useSplitViewStyling)
     {
       +[UIListContentConfiguration sidebarHeaderConfiguration];
     }
@@ -768,15 +768,15 @@
       +[UIListContentConfiguration prominentInsetGroupedHeaderConfiguration];
     }
     v12 = ;
-    v14 = [(MailboxOutlineCell *)self title];
-    [v12 setText:v14];
+    title = [(MailboxOutlineCell *)self title];
+    [v12 setText:title];
 
     v13 = +[UIBackgroundConfiguration listSidebarHeaderConfiguration];
     sub_1000EEA74(self, v12);
     goto LABEL_25;
   }
 
-  if (v5)
+  if (mf_useSplitViewStyling)
   {
     v11 = +[UIListContentConfiguration accompaniedSidebarSubtitleCellConfiguration];
     +[UIBackgroundConfiguration listAccompaniedSidebarCellConfiguration];
@@ -787,65 +787,65 @@
   {
     v12 = +[UIListContentConfiguration subtitleCellConfiguration];
     v13 = +[UIBackgroundConfiguration listGroupedCellConfiguration];
-    if ([v31 isEditing])
+    if ([stateCopy isEditing])
     {
       v15 = +[UIColor tableCellGroupedBackgroundColor];
       [v13 setBackgroundColor:v15];
     }
 
     v16 = +[UIColor secondaryLabelColor];
-    v17 = [v12 secondaryTextProperties];
-    [v17 setColor:v16];
+    secondaryTextProperties = [v12 secondaryTextProperties];
+    [secondaryTextProperties setColor:v16];
   }
 
   sub_1000EEA74(self, v12);
-  v18 = [(MailboxOutlineCell *)self title];
-  [v12 setText:v18];
+  title2 = [(MailboxOutlineCell *)self title];
+  [v12 setText:title2];
 
   if ([(MailboxOutlineCell *)self useTintColor])
   {
-    v19 = [(MailboxOutlineCell *)self tintColor];
-    v20 = [v12 textProperties];
-    [v20 setColor:v19];
+    tintColor = [(MailboxOutlineCell *)self tintColor];
+    textProperties = [v12 textProperties];
+    [textProperties setColor:tintColor];
   }
 
-  v21 = [(MailboxOutlineCell *)self subtitle];
-  [v12 setSecondaryText:v21];
+  subtitle = [(MailboxOutlineCell *)self subtitle];
+  [v12 setSecondaryText:subtitle];
 
-  v22 = [v31 isSelected];
-  v23 = [(MailboxOutlineCell *)self icon];
-  [v12 setImage:v23];
+  isSelected = [stateCopy isSelected];
+  icon = [(MailboxOutlineCell *)self icon];
+  [v12 setImage:icon];
 
-  v24 = [(MailboxOutlineCell *)self selectedIconTintColor];
-  LODWORD(v23) = (v24 != 0) & v22;
+  selectedIconTintColor = [(MailboxOutlineCell *)self selectedIconTintColor];
+  LODWORD(icon) = (selectedIconTintColor != 0) & isSelected;
 
-  if (v23 == 1)
+  if (icon == 1)
   {
-    v25 = [(MailboxOutlineCell *)self selectedIconTintColor];
-    v26 = [v12 imageProperties];
-    [v26 setTintColor:v25];
+    selectedIconTintColor2 = [(MailboxOutlineCell *)self selectedIconTintColor];
+    imageProperties = [v12 imageProperties];
+    [imageProperties setTintColor:selectedIconTintColor2];
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v27 = [(MailboxOutlineCell *)self iconTintColor];
-  v28 = (v27 == 0) | v22;
+  iconTintColor = [(MailboxOutlineCell *)self iconTintColor];
+  v28 = (iconTintColor == 0) | isSelected;
 
   if ((v28 & 1) == 0)
   {
-    v25 = [(MailboxOutlineCell *)self iconTintColor];
-    v26 = [v12 imageProperties];
-    [v26 setTintColor:v25];
+    selectedIconTintColor2 = [(MailboxOutlineCell *)self iconTintColor];
+    imageProperties = [v12 imageProperties];
+    [imageProperties setTintColor:selectedIconTintColor2];
     goto LABEL_23;
   }
 
 LABEL_24:
-  v29 = [v12 imageProperties];
-  [v29 reservedLayoutSize];
+  imageProperties2 = [v12 imageProperties];
+  [imageProperties2 reservedLayoutSize];
 
-  v30 = [v12 imageProperties];
-  [v30 setReservedLayoutSize:{_UIContentViewDefaultSymbolImageReservedLayoutSize, _UIContentViewDefaultSymbolImageReservedLayoutSize}];
+  imageProperties3 = [v12 imageProperties];
+  [imageProperties3 setReservedLayoutSize:{_UIContentViewDefaultSymbolImageReservedLayoutSize, _UIContentViewDefaultSymbolImageReservedLayoutSize}];
 
 LABEL_25:
   [(MailboxOutlineCell *)self setContentConfiguration:v12];
@@ -871,8 +871,8 @@ LABEL_25:
   if ([(MailboxOutlineCell *)self showsSelectionCheckmarkForEditing])
   {
     v4 = objc_alloc_init(UICellAccessoryMultiselect);
-    v5 = [(MailboxOutlineCell *)self multiselectCheckmarkColor];
-    [v4 setTintColor:v5];
+    multiselectCheckmarkColor = [(MailboxOutlineCell *)self multiselectCheckmarkColor];
+    [v4 setTintColor:multiselectCheckmarkColor];
 
     [v4 setDisplayedState:1];
     [v3 addObject:v4];
@@ -897,8 +897,8 @@ LABEL_25:
 
   if ([(MailboxOutlineCell *)self showFocusIcon])
   {
-    v7 = [(MailboxOutlineCell *)self focusAccessoryView];
-    [v3 addObject:v7];
+    focusAccessoryView = [(MailboxOutlineCell *)self focusAccessoryView];
+    [v3 addObject:focusAccessoryView];
 LABEL_7:
 
     goto LABEL_13;
@@ -906,12 +906,12 @@ LABEL_7:
 
   if ([(MailboxOutlineCell *)self shouldShowBadgeCountIfNecessary]&& [(MailboxOutlineCell *)self badgeCount]>= 1 && (![(MailboxOutlineCell *)self isExpandable]|| [(MailboxOutlineCell *)self isExpandable]&& ([(MailboxOutlineCell *)self expanded]& 1) == 0))
   {
-    v13 = [(MailboxOutlineCell *)self hideBadgeCountForEditing];
+    hideBadgeCountForEditing = [(MailboxOutlineCell *)self hideBadgeCountForEditing];
     v14 = [UICellAccessoryLabel alloc];
     v15 = [NSNumberFormatter ef_formatUnsignedInteger:[(MailboxOutlineCell *)self badgeCount] withGrouping:0];
-    v7 = [v14 initWithText:v15];
+    focusAccessoryView = [v14 initWithText:v15];
 
-    if (v13)
+    if (hideBadgeCountForEditing)
     {
       v16 = 2;
     }
@@ -921,16 +921,16 @@ LABEL_7:
       v16 = 0;
     }
 
-    [v7 setDisplayedState:v16];
-    [v3 addObject:v7];
+    [focusAccessoryView setDisplayedState:v16];
+    [v3 addObject:focusAccessoryView];
     goto LABEL_7;
   }
 
 LABEL_13:
-  v8 = [(MailboxOutlineCell *)self traitCollection];
-  v9 = [v8 mf_useSplitViewStyling];
+  traitCollection = [(MailboxOutlineCell *)self traitCollection];
+  mf_useSplitViewStyling = [traitCollection mf_useSplitViewStyling];
 
-  if ((v9 & 1) == 0 && ![(MailboxOutlineCell *)self disclosureType])
+  if ((mf_useSplitViewStyling & 1) == 0 && ![(MailboxOutlineCell *)self disclosureType])
   {
     v10 = objc_alloc_init(UICellAccessoryDisclosureIndicator);
     [v10 setDisplayedState:2];
@@ -1021,21 +1021,21 @@ LABEL_21:
 
 - (CGPoint)destinationPointForAnimation
 {
-  v3 = [(MailboxOutlineCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MailboxOutlineCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 textLabel];
-  [v12 frame];
+  textLabel = [contentView textLabel];
+  [textLabel frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [(MailboxOutlineCell *)self traitCollection];
-  v22 = [v21 horizontalSizeClass];
+  traitCollection = [(MailboxOutlineCell *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v34.origin.x = v5;
   v34.origin.y = v7;
@@ -1048,7 +1048,7 @@ LABEL_21:
   v35.size.height = v20;
   MidX = CGRectGetMidX(v35);
   v25 = 3.0;
-  if (v22 == 1)
+  if (horizontalSizeClass == 1)
   {
     v25 = 2.0;
   }
@@ -1059,7 +1059,7 @@ LABEL_21:
     MidX = v26;
   }
 
-  [(MailboxOutlineCell *)self convertPoint:v3 fromView:MidX, MidY];
+  [(MailboxOutlineCell *)self convertPoint:contentView fromView:MidX, MidY];
   v28 = v27;
   v30 = v29;
 
@@ -1083,9 +1083,9 @@ LABEL_21:
 {
   if ([(NSSet *)self->_legacyMailboxes count]== 1)
   {
-    v5 = [(NSSet *)self->_legacyMailboxes anyObject];
+    anyObject = [(NSSet *)self->_legacyMailboxes anyObject];
     v3 = +[MailChangeManager sharedChangeManager];
-    v4 = [v3 displayNameUsingSpecialNamesForMailbox:v5];
+    v4 = [v3 displayNameUsingSpecialNamesForMailbox:anyObject];
 
     [(MailboxOutlineCell *)self setTitle:v4];
     [(MailboxOutlineCell *)self setNeedsUpdateConfiguration];
@@ -1096,7 +1096,7 @@ LABEL_21:
 {
   if ([(NSSet *)self->_legacyMailboxes count]== 1)
   {
-    v6 = [(NSSet *)self->_legacyMailboxes anyObject];
+    anyObject = [(NSSet *)self->_legacyMailboxes anyObject];
     if ([(MailboxOutlineCell *)self flattenHierarchy])
     {
       v3 = 0;
@@ -1105,7 +1105,7 @@ LABEL_21:
     else
     {
       v4 = +[MailChangeManager sharedChangeManager];
-      v5 = [v4 levelForMailbox:v6];
+      v5 = [v4 levelForMailbox:anyObject];
 
       v3 = v5 & ~(v5 >> 31);
     }
@@ -1118,29 +1118,29 @@ LABEL_21:
 {
   v8.receiver = self;
   v8.super_class = MailboxOutlineCell;
-  v3 = [(MailboxOutlineCell *)&v8 _scriptingInfo];
+  _scriptingInfo = [(MailboxOutlineCell *)&v8 _scriptingInfo];
   if ([(NSSet *)self->_legacyMailboxes count]== 1)
   {
     v4 = +[MailChangeManager sharedChangeManager];
-    v5 = [(NSSet *)self->_legacyMailboxes anyObject];
-    v6 = [v4 displayNameUsingSpecialNamesForMailbox:v5];
+    anyObject = [(NSSet *)self->_legacyMailboxes anyObject];
+    v6 = [v4 displayNameUsingSpecialNamesForMailbox:anyObject];
 
-    [v3 setValue:v6 forKey:@"ID"];
+    [_scriptingInfo setValue:v6 forKey:@"ID"];
   }
 
-  return v3;
+  return _scriptingInfo;
 }
 
-- (void)bucketBarConfigurationController:(id)a3 isHidden:(BOOL)a4 forMailboxes:(id)a5
+- (void)bucketBarConfigurationController:(id)controller isHidden:(BOOL)hidden forMailboxes:(id)mailboxes
 {
-  v8 = self;
-  v5 = a5;
-  v9 = v5;
+  selfCopy = self;
+  mailboxesCopy = mailboxes;
+  v9 = mailboxesCopy;
   v6 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v6 performBlock:&v7];
 }
 
-- (void)bucketBarConfigurationControllerRequiresReload:(id)a3
+- (void)bucketBarConfigurationControllerRequiresReload:(id)reload
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;

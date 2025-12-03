@@ -1,48 +1,48 @@
 @interface ATXSuggestedPagesUtils
-+ (id)_createStackOfSize:(unint64_t)a3;
-+ (id)filterWidgets:(id)a3 bySize:(unint64_t)a4 usedPersonalities:(id)a5;
-+ (id)semanticTypeForSuggestedPageType:(int64_t)a3;
-+ (id)sortWidgetsByDescendingScore:(id)a3 limit:(unint64_t)a4;
-+ (unint64_t)modeForSuggestedPageType:(int64_t)a3;
-+ (void)evenlyDistributeWidgets:(id)a3 inRange:(_NSRange)a4 amongStacks:(id)a5 usedPersonalities:(id)a6 maxWidgetsInStack:(unint64_t)a7;
++ (id)_createStackOfSize:(unint64_t)size;
++ (id)filterWidgets:(id)widgets bySize:(unint64_t)size usedPersonalities:(id)personalities;
++ (id)semanticTypeForSuggestedPageType:(int64_t)type;
++ (id)sortWidgetsByDescendingScore:(id)score limit:(unint64_t)limit;
++ (unint64_t)modeForSuggestedPageType:(int64_t)type;
++ (void)evenlyDistributeWidgets:(id)widgets inRange:(_NSRange)range amongStacks:(id)stacks usedPersonalities:(id)personalities maxWidgetsInStack:(unint64_t)stack;
 @end
 
 @implementation ATXSuggestedPagesUtils
 
-+ (unint64_t)modeForSuggestedPageType:(int64_t)a3
++ (unint64_t)modeForSuggestedPageType:(int64_t)type
 {
-  if (a3 < 0xD)
+  if (type < 0xD)
   {
-    return qword_226872718[a3];
+    return qword_226872718[type];
   }
 
   v5 = __atxlog_handle_modes();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
-    [(ATXSuggestedPagesUtils *)a3 modeForSuggestedPageType:v5];
+    [(ATXSuggestedPagesUtils *)type modeForSuggestedPageType:v5];
   }
 
   return 16;
 }
 
-+ (id)semanticTypeForSuggestedPageType:(int64_t)a3
++ (id)semanticTypeForSuggestedPageType:(int64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     v7 = 7;
     v8 = 8;
     v9 = 9;
-    if (a3 != 12)
+    if (type != 12)
     {
       v9 = 0;
     }
 
-    if (a3 != 11)
+    if (type != 11)
     {
       v8 = v9;
     }
 
-    if (a3 != 10)
+    if (type != 10)
     {
       v7 = v8;
     }
@@ -50,22 +50,22 @@
     v10 = 4;
     v11 = 5;
     v12 = 6;
-    if (a3 != 9)
+    if (type != 9)
     {
       v12 = 0;
     }
 
-    if (a3 != 8)
+    if (type != 8)
     {
       v11 = v12;
     }
 
-    if (a3 != 7)
+    if (type != 7)
     {
       v10 = v11;
     }
 
-    if (a3 <= 9)
+    if (type <= 9)
     {
       v13 = v10;
     }
@@ -76,21 +76,21 @@
     }
   }
 
-  else if (a3 > 3)
+  else if (type > 3)
   {
     v14 = 2;
     v15 = 3;
-    if (a3 != 6)
+    if (type != 6)
     {
       v15 = 0;
     }
 
-    if (a3 != 5)
+    if (type != 5)
     {
       v14 = v15;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       v13 = 1;
     }
@@ -104,13 +104,13 @@
   else
   {
     v5 = 0;
-    if (a3 < 2)
+    if (type < 2)
     {
 
       return v5;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v13 = -1;
     }
@@ -126,28 +126,28 @@
   return v5;
 }
 
-+ (id)_createStackOfSize:(unint64_t)a3
++ (id)_createStackOfSize:(unint64_t)size
 {
   v4 = objc_alloc_init(MEMORY[0x277CEB598]);
-  [v4 setStackLayoutSize:a3];
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
-  [v4 setIdentifier:v6];
+  [v4 setStackLayoutSize:size];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v4 setIdentifier:uUIDString];
 
   return v4;
 }
 
-+ (id)filterWidgets:(id)a3 bySize:(unint64_t)a4 usedPersonalities:(id)a5
++ (id)filterWidgets:(id)widgets bySize:(unint64_t)size usedPersonalities:(id)personalities
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
+  widgetsCopy = widgets;
+  personalitiesCopy = personalities;
   v20 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v6;
+  v8 = widgetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -164,11 +164,11 @@
 
         v13 = *(*(&v22 + 1) + 8 * i);
         v14 = objc_alloc(MEMORY[0x277CEB9B0]);
-        v15 = [v13 extensionBundleId];
-        v16 = [v13 widgetKind];
-        v17 = [v14 initWithExtensionBundleId:v15 kind:v16];
+        extensionBundleId = [v13 extensionBundleId];
+        widgetKind = [v13 widgetKind];
+        v17 = [v14 initWithExtensionBundleId:extensionBundleId kind:widgetKind];
 
-        if (([v7 containsObject:v17] & 1) == 0 && objc_msgSend(v13, "size") == a4)
+        if (([personalitiesCopy containsObject:v17] & 1) == 0 && objc_msgSend(v13, "size") == size)
         {
           [v20 addObject:v13];
         }
@@ -185,24 +185,24 @@
   return v20;
 }
 
-+ (void)evenlyDistributeWidgets:(id)a3 inRange:(_NSRange)a4 amongStacks:(id)a5 usedPersonalities:(id)a6 maxWidgetsInStack:(unint64_t)a7
++ (void)evenlyDistributeWidgets:(id)widgets inRange:(_NSRange)range amongStacks:(id)stacks usedPersonalities:(id)personalities maxWidgetsInStack:(unint64_t)stack
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = a5;
-  v13 = a6;
+  length = range.length;
+  location = range.location;
+  stacksCopy = stacks;
+  personalitiesCopy = personalities;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __106__ATXSuggestedPagesUtils_evenlyDistributeWidgets_inRange_amongStacks_usedPersonalities_maxWidgetsInStack___block_invoke;
   v16[3] = &unk_27859F910;
   v19 = location;
   v20 = length;
-  v21 = a7;
-  v17 = v12;
-  v18 = v13;
-  v14 = v13;
-  v15 = v12;
-  [a3 enumerateObjectsUsingBlock:v16];
+  stackCopy = stack;
+  v17 = stacksCopy;
+  v18 = personalitiesCopy;
+  v14 = personalitiesCopy;
+  v15 = stacksCopy;
+  [widgets enumerateObjectsUsingBlock:v16];
 }
 
 void __106__ATXSuggestedPagesUtils_evenlyDistributeWidgets_inRange_amongStacks_usedPersonalities_maxWidgetsInStack___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -251,29 +251,29 @@ void __106__ATXSuggestedPagesUtils_evenlyDistributeWidgets_inRange_amongStacks_u
   }
 }
 
-+ (id)sortWidgetsByDescendingScore:(id)a3 limit:(unint64_t)a4
++ (id)sortWidgetsByDescendingScore:(id)score limit:(unint64_t)limit
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  scoreCopy = score;
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"score" ascending:0];
   v15[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v8 = [v5 sortedArrayUsingDescriptors:v7];
+  v8 = [scoreCopy sortedArrayUsingDescriptors:v7];
 
-  if (a4)
+  if (limit)
   {
-    v9 = [v5 count];
-    if (v9 >= a4)
+    v9 = [scoreCopy count];
+    if (v9 >= limit)
     {
-      v10 = a4;
+      limitCopy = limit;
     }
 
     else
     {
-      v10 = v9;
+      limitCopy = v9;
     }
 
-    v11 = [v8 subarrayWithRange:{0, v10}];
+    v11 = [v8 subarrayWithRange:{0, limitCopy}];
   }
 
   else

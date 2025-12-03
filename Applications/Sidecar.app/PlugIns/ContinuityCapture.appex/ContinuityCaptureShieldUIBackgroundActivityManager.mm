@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (ContinuityCaptureShieldUIBackgroundActivityManager)init;
 - (id)_currentBackgroundActivityIdentifier;
-- (void)updateState:(int64_t)a3 micOnly:(BOOL)a4 withUserInteractionHandler:(id)a5;
+- (void)updateState:(int64_t)state micOnly:(BOOL)only withUserInteractionHandler:(id)handler;
 @end
 
 @implementation ContinuityCaptureShieldUIBackgroundActivityManager
@@ -46,52 +46,52 @@
   return v2;
 }
 
-- (void)updateState:(int64_t)a3 micOnly:(BOOL)a4 withUserInteractionHandler:(id)a5
+- (void)updateState:(int64_t)state micOnly:(BOOL)only withUserInteractionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  onlyCopy = only;
+  stateCopy = state;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if ((v6 & 0x30) == 0x10)
+  if ((stateCopy & 0x30) == 0x10)
   {
     v9 = CMContinuityCaptureLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ removing background activity", &v23, 0xCu);
     }
 
-    v10 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
-    [v10 enumerateKeysAndObjectsUsingBlock:&stru_100014510];
+    backgroundActivityControllers = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
+    [backgroundActivityControllers enumerateKeysAndObjectsUsingBlock:&stru_100014510];
   }
 
   else
   {
-    if (v5)
+    if (onlyCopy)
     {
-      v11 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
-      v12 = v11;
+      backgroundActivityControllers2 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
+      v12 = backgroundActivityControllers2;
       v13 = @"com.apple.systemstatus.background-activity.continuitycapture.mic-only";
     }
 
-    else if (v6)
+    else if (stateCopy)
     {
-      v11 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
-      v12 = v11;
+      backgroundActivityControllers2 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
+      v12 = backgroundActivityControllers2;
       v13 = @"com.apple.systemstatus.background-activity.continuitycapture.streaming-none";
     }
 
     else
     {
-      v11 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
-      v12 = v11;
-      if ((v6 & 6) == 2)
+      backgroundActivityControllers2 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
+      v12 = backgroundActivityControllers2;
+      if ((stateCopy & 6) == 2)
       {
         v13 = @"com.apple.systemstatus.background-activity.continuitycapture.streaming-audio";
       }
 
-      else if ((v6 & 4) != 0)
+      else if ((stateCopy & 4) != 0)
       {
         v13 = @"com.apple.systemstatus.background-activity.continuitycapture.streaming-video";
       }
@@ -102,18 +102,18 @@
       }
     }
 
-    v10 = [v11 objectForKey:v13];
+    backgroundActivityControllers = [backgroundActivityControllers2 objectForKey:v13];
 
-    v14 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self _currentBackgroundActivityIdentifier];
-    v15 = [v10 backgroundActivityIdentifier];
-    v16 = [v14 isEqualToString:v15];
+    _currentBackgroundActivityIdentifier = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self _currentBackgroundActivityIdentifier];
+    backgroundActivityIdentifier = [backgroundActivityControllers backgroundActivityIdentifier];
+    v16 = [_currentBackgroundActivityIdentifier isEqualToString:backgroundActivityIdentifier];
 
     if ((v16 & 1) == 0)
     {
-      if (v14)
+      if (_currentBackgroundActivityIdentifier)
       {
-        v17 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
-        v18 = [v17 objectForKey:v14];
+        backgroundActivityControllers3 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
+        v18 = [backgroundActivityControllers3 objectForKey:_currentBackgroundActivityIdentifier];
 
         [v18 deactivateBackgroundActivity];
       }
@@ -121,27 +121,27 @@
       v19 = CMContinuityCaptureLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v10 backgroundActivityIdentifier];
+        backgroundActivityIdentifier2 = [backgroundActivityControllers backgroundActivityIdentifier];
         v23 = 138412802;
-        v24 = self;
+        selfCopy3 = self;
         v25 = 2112;
-        v26 = v14;
+        v26 = _currentBackgroundActivityIdentifier;
         v27 = 2112;
-        v28 = v20;
+        v28 = backgroundActivityIdentifier2;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@ updating backgroundActivity %@ -> %@", &v23, 0x20u);
       }
 
-      [v10 activateBackgroundActivityWithUserInteractionHandler:v8];
+      [backgroundActivityControllers activateBackgroundActivityWithUserInteractionHandler:handlerCopy];
       v21 = CMContinuityCaptureLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v10 backgroundActivityIdentifier];
+        backgroundActivityIdentifier3 = [backgroundActivityControllers backgroundActivityIdentifier];
         v23 = 138412802;
-        v24 = self;
+        selfCopy3 = self;
         v25 = 2112;
-        v26 = v14;
+        v26 = _currentBackgroundActivityIdentifier;
         v27 = 2112;
-        v28 = v22;
+        v28 = backgroundActivityIdentifier3;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%@ updated backgroundActivity %@ -> %@", &v23, 0x20u);
       }
     }
@@ -156,13 +156,13 @@
   v9 = sub_100001728;
   v10 = sub_100001738;
   v11 = 0;
-  v2 = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
+  backgroundActivityControllers = [(ContinuityCaptureShieldUIBackgroundActivityManager *)self backgroundActivityControllers];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100001740;
   v5[3] = &unk_100014538;
   v5[4] = &v6;
-  [v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [backgroundActivityControllers enumerateKeysAndObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);

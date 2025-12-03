@@ -1,15 +1,15 @@
 @interface CNPosterOnboardingPrivacyViewModel
 - (_TtC10ContactsUI34CNPosterOnboardingPrivacyViewModel)init;
-- (void)setWithItems:(id)a3;
+- (void)setWithItems:(id)items;
 @end
 
 @implementation CNPosterOnboardingPrivacyViewModel
 
-- (void)setWithItems:(id)a3
+- (void)setWithItems:(id)items
 {
   type metadata accessor for DeviceListServiceDeviceInfo();
   v4 = sub_199DFA0CC();
-  v5 = self;
+  selfCopy = self;
   sub_199A9A668(v4);
 }
 

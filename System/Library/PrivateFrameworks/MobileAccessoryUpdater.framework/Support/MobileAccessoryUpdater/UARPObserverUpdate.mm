@@ -1,5 +1,5 @@
 @interface UARPObserverUpdate
-- (UARPObserverUpdate)initWithRemoteServiceEndpoint:(id)a3;
+- (UARPObserverUpdate)initWithRemoteServiceEndpoint:(id)endpoint;
 - (id)remoteObject;
 - (id)xpcConnectionToRequestor;
 - (void)dealloc;
@@ -7,14 +7,14 @@
 
 @implementation UARPObserverUpdate
 
-- (UARPObserverUpdate)initWithRemoteServiceEndpoint:(id)a3
+- (UARPObserverUpdate)initWithRemoteServiceEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v12.receiver = self;
   v12.super_class = UARPObserverUpdate;
   v6 = [(UARPObserverUpdate *)&v12 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_remoteEndpoint, a3), [(UARPObserverUpdate *)v7 xpcConnectionToRequestor], v8 = objc_claimAutoreleasedReturnValue(), xpcConnection = v7->_xpcConnection, v7->_xpcConnection = v8, xpcConnection, !v7->_xpcConnection))
+  if (v6 && (objc_storeStrong(&v6->_remoteEndpoint, endpoint), [(UARPObserverUpdate *)v7 xpcConnectionToRequestor], v8 = objc_claimAutoreleasedReturnValue(), xpcConnection = v7->_xpcConnection, v7->_xpcConnection = v8, xpcConnection, !v7->_xpcConnection))
   {
     v10 = 0;
   }

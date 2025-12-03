@@ -1,60 +1,60 @@
 @interface TSWPChange
-- (BOOL)canMergeWithKind:(int)a3 session:(id)a4;
-- (BOOL)isEquivalentToObject:(id)a3;
+- (BOOL)canMergeWithKind:(int)kind session:(id)session;
+- (BOOL)isEquivalentToObject:(id)object;
 - (BOOL)isHidden;
 - (BOOL)showsHiddenDeletionMarkup;
 - (BOOL)showsMarkup;
 - (TSUColor)changeAdornmentsColor;
 - (TSUColor)textMarkupColor;
-- (TSWPChange)initWithContext:(id)a3;
-- (TSWPChange)initWithContext:(id)a3 kind:(int)a4 session:(id)a5;
+- (TSWPChange)initWithContext:(id)context;
+- (TSWPChange)initWithContext:(id)context kind:(int)kind session:(id)session;
 - (TSWPStorage)parentStorage;
-- (id)copyWithContext:(id)a3;
-- (void)i_setTextAttributeUUIDString:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)migrateWithDocumentRoot:(id)a3;
-- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)a3 key:(id)a4;
+- (id)copyWithContext:(id)context;
+- (void)i_setTextAttributeUUIDString:(id)string;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)migrateWithDocumentRoot:(id)root;
+- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)root key:(id)key;
 - (void)resetTextAttributeUUIDString;
-- (void)saveToArchiver:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setSession:(id)a3;
+- (void)saveToArchiver:(id)archiver;
+- (void)setDate:(id)date;
+- (void)setSession:(id)session;
 - (void)trackedTextDidChange;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPChange
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v7 = a3;
-  if (self->_session != v7)
+  sessionCopy = session;
+  if (self->_session != sessionCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_session, a3);
+    objc_storeStrong(&self->_session, session);
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
-  if (self->_date != v4)
+  dateCopy = date;
+  if (self->_date != dateCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = dateCopy;
+    objc_msgSend_willModify(self, dateCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_date, v8);
-    v4 = v8;
+    dateCopy = v8;
   }
 }
 
-- (TSWPChange)initWithContext:(id)a3
+- (TSWPChange)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = TSWPChange;
-  v7 = [(TSWPChange *)&v17 initWithContext:v4];
+  v7 = [(TSWPChange *)&v17 initWithContext:contextCopy];
   if (v7)
   {
     v8 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v5, v6);
@@ -67,16 +67,16 @@
   return v7;
 }
 
-- (TSWPChange)initWithContext:(id)a3 kind:(int)a4 session:(id)a5
+- (TSWPChange)initWithContext:(id)context kind:(int)kind session:(id)session
 {
-  v8 = a3;
-  v9 = a5;
-  v11 = objc_msgSend_initWithContext_(self, v10, v8);
+  contextCopy = context;
+  sessionCopy = session;
+  v11 = objc_msgSend_initWithContext_(self, v10, contextCopy);
   v12 = v11;
   if (v11)
   {
-    *(v11 + 72) = a4;
-    objc_storeStrong((v11 + 80), a5);
+    *(v11 + 72) = kind;
+    objc_storeStrong((v11 + 80), session);
     v13 = objc_alloc_init(MEMORY[0x277CBEAA8]);
     date = v12->_date;
     v12->_date = v13;
@@ -87,15 +87,15 @@
 
 - (BOOL)isHidden
 {
-  v3 = self;
+  selfCopy = self;
   v4 = objc_msgSend_documentRoot(self, a2, v2);
   v7 = objc_msgSend_changeVisibility(v4, v5, v6);
 
-  kind = v3->_kind;
-  v11 = objc_msgSend_date(v3->_session, v9, v10);
-  LOBYTE(v3) = objc_msgSend_shouldShowChangeKind_date_(v7, v12, kind, v11);
+  kind = selfCopy->_kind;
+  v11 = objc_msgSend_date(selfCopy->_session, v9, v10);
+  LOBYTE(selfCopy) = objc_msgSend_shouldShowChangeKind_date_(v7, v12, kind, v11);
 
-  return v3 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (BOOL)showsMarkup
@@ -118,9 +118,9 @@
   return v12;
 }
 
-- (void)migrateWithDocumentRoot:(id)a3
+- (void)migrateWithDocumentRoot:(id)root
 {
-  v14 = objc_msgSend_context(a3, a2, a3);
+  v14 = objc_msgSend_context(root, a2, root);
   if (v14)
   {
     v6 = objc_msgSend_session(self, v4, v5);
@@ -187,21 +187,21 @@
   return v9;
 }
 
-- (void)i_setTextAttributeUUIDString:(id)a3
+- (void)i_setTextAttributeUUIDString:(id)string
 {
-  v7 = a3;
-  if (self->_textAttributeUUIDString != v7)
+  stringCopy = string;
+  if (self->_textAttributeUUIDString != stringCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_textAttributeUUIDString, a3);
+    objc_storeStrong(&self->_textAttributeUUIDString, string);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DC408[168]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DC408[168]);
 
   v8 = *(v6 + 16);
   if ((v8 & 8) != 0)
@@ -270,7 +270,7 @@ LABEL_9:
   v29[2] = sub_276E099BC;
   v29[3] = &unk_27A6F4DD0;
   v29[4] = self;
-  v18 = v4;
+  v18 = unarchiverCopy;
   v19 = objc_opt_class();
   objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v18, v20, v17, v19, 0, v29);
 
@@ -297,12 +297,12 @@ LABEL_14:
 LABEL_17:
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276E0A760, off_2812DC408[168]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276E0A760, off_2812DC408[168]);
 
   kind = self->_kind;
   if (kind)
@@ -328,7 +328,7 @@ LABEL_17:
       *(v6 + 32) = v10;
     }
 
-    objc_msgSend_setWeakReference_message_(v4, v7, session, v10);
+    objc_msgSend_setWeakReference_message_(archiverCopy, v7, session, v10);
   }
 
   date = self->_date;
@@ -376,18 +376,18 @@ LABEL_17:
   objc_msgSend_i_setTextAttributeUUIDString_(self, v7, v6);
 }
 
-- (BOOL)isEquivalentToObject:(id)a3
+- (BOOL)isEquivalentToObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (self == objectCopy)
   {
     isEqualToString = 1;
   }
 
   else
   {
-    if (v4)
+    if (objectCopy)
     {
       objc_opt_class();
       v6 = TSUDynamicCast();
@@ -436,15 +436,15 @@ LABEL_13:
   return isEqualToString;
 }
 
-- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)a3 key:(id)a4
+- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)root key:(id)key
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
-  if (v6)
+  rootCopy = root;
+  keyCopy = key;
+  v9 = keyCopy;
+  if (rootCopy)
   {
-    if (objc_msgSend_isEqualToString_(v7, v8, *MEMORY[0x277D805C8]))
+    if (objc_msgSend_isEqualToString_(keyCopy, v8, *MEMORY[0x277D805C8]))
     {
       v12 = [TSWPChangeDetails alloc];
       v15 = objc_msgSend_initWithChange_(v12, v13, self);
@@ -475,7 +475,7 @@ LABEL_8:
     v38 = v30;
     v32 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v31, &v38, &v37, 1);
     v35 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v33, v34);
-    objc_msgSend_postNotificationName_object_userInfo_(v35, v36, *MEMORY[0x277D805B0], v6, v32);
+    objc_msgSend_postNotificationName_object_userInfo_(v35, v36, *MEMORY[0x277D805B0], rootCopy, v32);
 
     goto LABEL_8;
   }
@@ -489,10 +489,10 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v34 = a3;
-  v7 = objc_msgSend_context(v34, v5, v6);
+  rootCopy = root;
+  v7 = objc_msgSend_context(rootCopy, v5, v6);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v8, v7);
 
   v11 = objc_msgSend_parentStorage(self, v9, v10);
@@ -522,22 +522,22 @@ LABEL_9:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33);
   }
 
-  objc_msgSend_p_invalidateAnnotationResultsForDocumentRoot_key_(self, v26, v34, *MEMORY[0x277D805B8]);
+  objc_msgSend_p_invalidateAnnotationResultsForDocumentRoot_key_(self, v26, rootCopy, *MEMORY[0x277D805B8]);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v9 = a3;
-  objc_msgSend_p_invalidateAnnotationResultsForDocumentRoot_key_(self, v4, v9, *MEMORY[0x277D805C8]);
-  v7 = objc_msgSend_context(v9, v5, v6);
+  rootCopy = root;
+  objc_msgSend_p_invalidateAnnotationResultsForDocumentRoot_key_(self, v4, rootCopy, *MEMORY[0x277D805C8]);
+  v7 = objc_msgSend_context(rootCopy, v5, v6);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v8, v7);
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
-  v7 = objc_msgSend_initWithContext_(v5, v6, v4);
+  v7 = objc_msgSend_initWithContext_(v5, v6, contextCopy);
   v8 = v7;
   if (v7)
   {
@@ -556,13 +556,13 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)canMergeWithKind:(int)a3 session:(id)a4
+- (BOOL)canMergeWithKind:(int)kind session:(id)session
 {
-  v6 = a4;
-  v8 = v6;
-  if (self->_kind == a3)
+  sessionCopy = session;
+  v8 = sessionCopy;
+  if (self->_kind == kind)
   {
-    isEqualToSession = objc_msgSend_isEqualToSession_(v6, v7, self->_session);
+    isEqualToSession = objc_msgSend_isEqualToSession_(sessionCopy, v7, self->_session);
   }
 
   else

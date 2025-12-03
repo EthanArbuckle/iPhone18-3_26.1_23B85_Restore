@@ -1,28 +1,28 @@
 @interface CRLUIWindowAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (UIResponder)crlaxFirstResponder;
-- (id)_crlaxCalloutBarSubviewsContainedInView:(id)a3;
-- (id)accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_crlaxCalloutBarSubviewsContainedInView:(id)view;
+- (id)accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CRLUIWindowAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (UIResponder)crlaxFirstResponder
 {
-  v2 = [(CRLUIWindowAccessibility *)self crlaxTarget];
-  v3 = [v2 firstResponder];
+  crlaxTarget = [(CRLUIWindowAccessibility *)self crlaxTarget];
+  firstResponder = [crlaxTarget firstResponder];
 
-  return v3;
+  return firstResponder;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -33,19 +33,19 @@
   [(CRLUIWindowAccessibility *)self crlaxLoadAccessibilityInformation];
 }
 
-- (id)accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v8 = [(CRLUIWindowAccessibility *)self crlaxTarget];
-  v9 = [v8 subviews];
+  crlaxTarget = [(CRLUIWindowAccessibility *)self crlaxTarget];
+  subviews = [crlaxTarget subviews];
 
-  v10 = [v9 countByEnumeratingWithState:&v38 objects:v44 count:16];
+  v10 = [subviews countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v10)
   {
     v11 = v10;
@@ -56,7 +56,7 @@
       {
         if (*v39 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
         v14 = *(*(&v38 + 1) + 8 * i);
@@ -67,8 +67,8 @@
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v15 = [v14 subviews];
-          v16 = [v15 countByEnumeratingWithState:&v34 objects:v43 count:16];
+          subviews2 = [v14 subviews];
+          v16 = [subviews2 countByEnumeratingWithState:&v34 objects:v43 count:16];
           if (v16)
           {
             v17 = v16;
@@ -79,7 +79,7 @@
               {
                 if (*v35 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(subviews2);
                 }
 
                 v20 = *(*(&v34 + 1) + 8 * j);
@@ -137,7 +137,7 @@
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v34 objects:v43 count:16];
+              v17 = [subviews2 countByEnumeratingWithState:&v34 objects:v43 count:16];
               if (v17)
               {
                 continue;
@@ -153,7 +153,7 @@ LABEL_29:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v38 objects:v44 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v38 objects:v44 count:16];
       if (v11)
       {
         continue;
@@ -167,15 +167,15 @@ LABEL_30:
 
   v29.receiver = self;
   v29.super_class = CRLUIWindowAccessibility;
-  v27 = [(CRLUIWindowAccessibility *)&v29 accessibilityHitTest:v7 withEvent:x, y];
+  v27 = [(CRLUIWindowAccessibility *)&v29 accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_31:
 
   return v27;
 }
 
-- (id)_crlaxCalloutBarSubviewsContainedInView:(id)a3
+- (id)_crlaxCalloutBarSubviewsContainedInView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = +[NSMutableArray array];
   v32[0] = NSClassFromString(@"_UIEditMenuListViewCell");
   v32[1] = NSClassFromString(@"_UIEditMenuPageButton");
@@ -184,8 +184,8 @@ LABEL_31:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = v3;
-  obj = [v3 subviews];
+  v19 = viewCopy;
+  obj = [viewCopy subviews];
   v6 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {

@@ -1,36 +1,36 @@
 @interface PKNFCTagReaderSession
-- (PKNFCTagReaderSession)initWithInternalSession:(id)a3 targetQueue:(id)a4;
+- (PKNFCTagReaderSession)initWithInternalSession:(id)session targetQueue:(id)queue;
 - (PKNFCTagReaderSessionDelegate)delegate;
-- (void)readNDEFMessageFromTag:(id)a3 completion:(id)a4;
-- (void)readerSession:(id)a3 didDetectTags:(id)a4;
-- (void)readerSessionDidEndUnexpectedly:(id)a3 reason:(id)a4;
+- (void)readNDEFMessageFromTag:(id)tag completion:(id)completion;
+- (void)readerSession:(id)session didDetectTags:(id)tags;
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly reason:(id)reason;
 @end
 
 @implementation PKNFCTagReaderSession
 
-- (PKNFCTagReaderSession)initWithInternalSession:(id)a3 targetQueue:(id)a4
+- (PKNFCTagReaderSession)initWithInternalSession:(id)session targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 nfSession];
+  sessionCopy = session;
+  queueCopy = queue;
+  nfSession = [sessionCopy nfSession];
   PKGetClassNFReaderSession();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    [v6 endSession];
+    [sessionCopy endSession];
 
-    v6 = 0;
+    sessionCopy = 0;
   }
 
   v14.receiver = self;
   v14.super_class = PKNFCTagReaderSession;
-  v10 = [(PKPaymentSession *)&v14 initWithInternalSession:v6 targetQueue:v7];
+  v10 = [(PKPaymentSession *)&v14 initWithInternalSession:sessionCopy targetQueue:queueCopy];
   v11 = v10;
-  if (v6 && v10)
+  if (sessionCopy && v10)
   {
-    v12 = [v6 nfSession];
-    [v12 setDelegate:v11];
+    nfSession2 = [sessionCopy nfSession];
+    [nfSession2 setDelegate:v11];
   }
 
   return v11;
@@ -86,20 +86,20 @@ void __35__PKNFCTagReaderSession_endSession__block_invoke()
   }
 }
 
-- (void)readNDEFMessageFromTag:(id)a3 completion:(id)a4
+- (void)readNDEFMessageFromTag:(id)tag completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = *(a3 + 1);
+    v7 = *(tag + 1);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __59__PKNFCTagReaderSession_readNDEFMessageFromTag_completion___block_invoke;
     v10[3] = &unk_1E79CC6B0;
     v11 = v7;
-    v12 = v6;
+    v12 = completionCopy;
     v8 = v7;
-    v9 = a3;
+    tagCopy = tag;
     [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v10];
   }
 }
@@ -151,16 +151,16 @@ void __59__PKNFCTagReaderSession_readNDEFMessageFromTag_completion___block_invok
   }
 }
 
-- (void)readerSession:(id)a3 didDetectTags:(id)a4
+- (void)readerSession:(id)session didDetectTags:(id)tags
 {
-  v5 = a4;
+  tagsCopy = tags;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PKNFCTagReaderSession_readerSession_didDetectTags___block_invoke;
   v7[3] = &unk_1E79C7CE0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = tagsCopy;
+  v6 = tagsCopy;
   [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v7];
 }
 
@@ -194,16 +194,16 @@ void __53__PKNFCTagReaderSession_readerSession_didDetectTags___block_invoke_2(ui
   [v2 addObject:v4];
 }
 
-- (void)readerSessionDidEndUnexpectedly:(id)a3 reason:(id)a4
+- (void)readerSessionDidEndUnexpectedly:(id)unexpectedly reason:(id)reason
 {
-  v5 = a4;
+  reasonCopy = reason;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__PKNFCTagReaderSession_readerSessionDidEndUnexpectedly_reason___block_invoke;
   v7[3] = &unk_1E79C7CE0;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = reasonCopy;
+  selfCopy = self;
+  v6 = reasonCopy;
   [(PKPaymentSession *)self performBlockAsyncOnInternalSession:v7];
 }
 

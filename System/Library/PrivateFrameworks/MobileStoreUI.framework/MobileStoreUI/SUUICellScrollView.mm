@@ -1,54 +1,54 @@
 @interface SUUICellScrollView
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SUUICellScrollView
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = self;
+  beganCopy = began;
+  eventCopy = event;
+  selfCopy = self;
   v9 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v9, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v8, a2, v12, v7);
+  (Implementation)(selfCopy, a2, beganCopy, eventCopy);
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = self;
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  selfCopy = self;
   v9 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v9, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v8, a2, v12, v7);
+  (Implementation)(selfCopy, a2, cancelledCopy, eventCopy);
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = self;
+  endedCopy = ended;
+  eventCopy = event;
+  selfCopy = self;
   v9 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v9, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v8, a2, v12, v7);
+  (Implementation)(selfCopy, a2, endedCopy, eventCopy);
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = self;
+  movedCopy = moved;
+  eventCopy = event;
+  selfCopy = self;
   v9 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v9, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v8, a2, v12, v7);
+  (Implementation)(selfCopy, a2, movedCopy, eventCopy);
 }
 
 @end

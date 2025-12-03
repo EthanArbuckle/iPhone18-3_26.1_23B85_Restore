@@ -1,7 +1,7 @@
 @interface NTKParmesanNumeralsEditOption
 + (id)optionsDescription;
 - (NTKParmesanNumeralsEditOption)init;
-- (NTKParmesanNumeralsEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4;
+- (NTKParmesanNumeralsEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device;
 @end
 
 @implementation NTKParmesanNumeralsEditOption
@@ -25,11 +25,11 @@
   return v5;
 }
 
-- (NTKParmesanNumeralsEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4
+- (NTKParmesanNumeralsEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device
 {
-  if (a3)
+  if (representation)
   {
-    v5 = a4;
+    deviceCopy = device;
     swift_unknownObjectRetain();
     sub_23BFFA960();
     swift_unknownObjectRelease();
@@ -38,10 +38,10 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v6 = a4;
+    deviceCopy2 = device;
   }
 
-  return sub_23BF9E7AC(v8, a4);
+  return sub_23BF9E7AC(v8, device);
 }
 
 - (NTKParmesanNumeralsEditOption)init

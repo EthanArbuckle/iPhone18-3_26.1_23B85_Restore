@@ -1,20 +1,20 @@
 @interface VUIFavoriteBannerCollectionViewCell
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUIFavoriteBannerCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUIFavoriteBannerCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBannerView:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setBannerView:(id)view;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation VUIFavoriteBannerCollectionViewCell
 
-- (VUIFavoriteBannerCollectionViewCell)initWithFrame:(CGRect)a3
+- (VUIFavoriteBannerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = VUIFavoriteBannerCollectionViewCell;
-  v3 = [(VUIFocusableCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIFocusableCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,37 +31,37 @@
   return v4;
 }
 
-- (void)setBannerView:(id)a3
+- (void)setBannerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bannerView = self->_bannerView;
-  if (bannerView != v5)
+  if (bannerView != viewCopy)
   {
-    v15 = v5;
+    v15 = viewCopy;
     [(VUIFavoriteBannerView *)bannerView removeFromSuperview];
-    objc_storeStrong(&self->_bannerView, a3);
+    objc_storeStrong(&self->_bannerView, view);
     [(VUIFavoriteBannerView *)self->_bannerView setContentMode:3];
     [(VUIFavoriteBannerView *)self->_bannerView setAutoresizingMask:18];
     v7 = self->_bannerView;
-    v8 = [(VUIFavoriteBannerLayout *)self->_bannerLayout backgroundColor];
-    [(VUIFavoriteBannerView *)v7 setBackgroundColor:v8];
+    backgroundColor = [(VUIFavoriteBannerLayout *)self->_bannerLayout backgroundColor];
+    [(VUIFavoriteBannerView *)v7 setBackgroundColor:backgroundColor];
 
-    v9 = [(VUIFavoriteBannerCollectionViewCell *)self contentView];
-    [v9 addSubview:self->_bannerView];
+    contentView = [(VUIFavoriteBannerCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_bannerView];
 
-    v10 = [(VUIFavoriteBannerCollectionViewCell *)self contentView];
-    v11 = [v10 layer];
+    contentView2 = [(VUIFavoriteBannerCollectionViewCell *)self contentView];
+    layer = [contentView2 layer];
     v12 = MEMORY[0x1E69DF6D0];
     [(VUIFavoriteBannerLayout *)self->_bannerLayout borderRadii];
     [v12 radiusFromCornerRadii:?];
-    [v11 setCornerRadius:?];
+    [layer setCornerRadius:?];
 
-    v13 = [(VUIFavoriteBannerCollectionViewCell *)self contentView];
-    v14 = [v13 layer];
-    [v14 setMasksToBounds:1];
+    contentView3 = [(VUIFavoriteBannerCollectionViewCell *)self contentView];
+    layer2 = [contentView3 layer];
+    [layer2 setMasksToBounds:1];
 
     [(VUIFavoriteBannerCollectionViewCell *)self setNeedsLayout];
-    v5 = v15;
+    viewCopy = v15;
   }
 }
 
@@ -87,27 +87,27 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if (a3.width <= 0.0)
+  if (fits.width <= 0.0)
   {
-    a3.width = self->_width;
+    fits.width = self->_width;
   }
 
-  [(VUIFavoriteBannerView *)self->_bannerView sizeThatFits:a3.width, 0.0];
+  [(VUIFavoriteBannerView *)self->_bannerView sizeThatFits:fits.width, 0.0];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if (objc_opt_respondsToSelector())
   {
     bannerView = self->_bannerView;
 
-    [(VUIFavoriteBannerView *)bannerView setHighlighted:v3];
+    [(VUIFavoriteBannerView *)bannerView setHighlighted:highlightedCopy];
   }
 }
 

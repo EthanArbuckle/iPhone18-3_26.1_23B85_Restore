@@ -1,25 +1,25 @@
 @interface CSLPRFIconFetcher
-- (BOOL)hasPendingRequestsForBundleID:(id)a3;
+- (BOOL)hasPendingRequestsForBundleID:(id)d;
 - (CSLPRFIconFetcher)init;
-- (CSLPRFIconFetcher)initWithIconCache:(id)a3;
+- (CSLPRFIconFetcher)initWithIconCache:(id)cache;
 - (UIImage)genericIcon;
-- (void)_completeLoadForBundleID:(id)a3 image:(id)a4 error:(id)a5;
-- (void)_insertTask:(id)a3 forBundleID:(id)a4;
-- (void)_loadIconForBundleIdentifier:(id)a3 isPhoneApp:(BOOL)a4;
-- (void)_loadNanoIconForBundleIdentifier:(id)a3;
+- (void)_completeLoadForBundleID:(id)d image:(id)image error:(id)error;
+- (void)_insertTask:(id)task forBundleID:(id)d;
+- (void)_loadIconForBundleIdentifier:(id)identifier isPhoneApp:(BOOL)app;
+- (void)_loadNanoIconForBundleIdentifier:(id)identifier;
 @end
 
 @implementation CSLPRFIconFetcher
 
-- (void)_completeLoadForBundleID:(id)a3 image:(id)a4 error:(id)a5
+- (void)_completeLoadForBundleID:(id)d image:(id)image error:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  imageCopy = image;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v11 = [(NSMutableDictionary *)self->_tasksByBundleID objectForKeyedSubscript:v8];
-  [(NSMutableDictionary *)self->_tasksByBundleID setObject:0 forKeyedSubscript:v8];
+  v11 = [(NSMutableDictionary *)self->_tasksByBundleID objectForKeyedSubscript:dCopy];
+  [(NSMutableDictionary *)self->_tasksByBundleID setObject:0 forKeyedSubscript:dCopy];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -40,7 +40,7 @@
           objc_enumerationMutation(v12);
         }
 
-        [*(*(&v18 + 1) + 8 * v16++) completeWithImage:v9 error:{v10, v18}];
+        [*(*(&v18 + 1) + 8 * v16++) completeWithImage:imageCopy error:{errorCopy, v18}];
       }
 
       while (v14 != v16);
@@ -53,38 +53,38 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_insertTask:(id)a3 forBundleID:(id)a4
+- (void)_insertTask:(id)task forBundleID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_tasksByBundleID objectForKeyedSubscript:v6];
-  if (!v7)
+  taskCopy = task;
+  dCopy = d;
+  array = [(NSMutableDictionary *)self->_tasksByBundleID objectForKeyedSubscript:dCopy];
+  if (!array)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
-    [(NSMutableDictionary *)self->_tasksByBundleID setObject:v7 forKeyedSubscript:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    [(NSMutableDictionary *)self->_tasksByBundleID setObject:array forKeyedSubscript:dCopy];
   }
 
-  [v7 addObject:v8];
+  [array addObject:taskCopy];
 }
 
-- (BOOL)hasPendingRequestsForBundleID:(id)a3
+- (BOOL)hasPendingRequestsForBundleID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_tasksByBundleID objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_tasksByBundleID objectForKeyedSubscript:d];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (void)_loadNanoIconForBundleIdentifier:(id)a3
+- (void)_loadNanoIconForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  v6 = [v5 traitCollection];
-  [v6 displayScale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  [traitCollection displayScale];
   v8 = v7;
 
-  v9 = [MEMORY[0x277D2BD60] sharedInstance];
+  mEMORY[0x277D2BD60] = [MEMORY[0x277D2BD60] sharedInstance];
   if (v8 <= 2.0)
   {
     v10 = 47;
@@ -101,9 +101,9 @@
   v13[2] = __54__CSLPRFIconFetcher__loadNanoIconForBundleIdentifier___block_invoke;
   v13[3] = &unk_278744E40;
   objc_copyWeak(&v15, &location);
-  v12 = v4;
+  v12 = identifierCopy;
   v14 = v12;
-  [v9 getIconForBundleID:v12 iconVariant:v10 queue:v11 block:v13 timeout:60.0];
+  [mEMORY[0x277D2BD60] getIconForBundleID:v12 iconVariant:v10 queue:v11 block:v13 timeout:60.0];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -142,16 +142,16 @@ void __54__CSLPRFIconFetcher__loadNanoIconForBundleIdentifier___block_invoke(uin
   }
 }
 
-- (void)_loadIconForBundleIdentifier:(id)a3 isPhoneApp:(BOOL)a4
+- (void)_loadIconForBundleIdentifier:(id)identifier isPhoneApp:(BOOL)app
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  appCopy = app;
+  identifierCopy = identifier;
+  if (appCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:v6];
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    v9 = [v8 traitCollection];
-    [v9 displayScale];
+    v7 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithBundleIdentifier:identifierCopy];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    [traitCollection displayScale];
     v11 = v10;
 
     if (v11 <= 2.0)
@@ -171,13 +171,13 @@ void __54__CSLPRFIconFetcher__loadNanoIconForBundleIdentifier___block_invoke(uin
     v14[3] = &unk_278744838;
     v16 = v12;
     v14[4] = self;
-    v15 = v6;
+    v15 = identifierCopy;
     [v7 getImageForImageDescriptor:v13 completion:v14];
   }
 
   else
   {
-    [(CSLPRFIconFetcher *)self _loadNanoIconForBundleIdentifier:v6];
+    [(CSLPRFIconFetcher *)self _loadNanoIconForBundleIdentifier:identifierCopy];
   }
 }
 
@@ -221,9 +221,9 @@ void __61__CSLPRFIconFetcher__loadIconForBundleIdentifier_isPhoneApp___block_inv
   genericIcon = self->_genericIcon;
   if (!genericIcon)
   {
-    v4 = [MEMORY[0x277D1B1A8] genericApplicationIcon];
+    genericApplicationIcon = [MEMORY[0x277D1B1A8] genericApplicationIcon];
     v5 = [objc_alloc(MEMORY[0x277D1B1C8]) initWithSize:29.0 scale:{29.0, 2.0}];
-    v6 = [v4 CGImageForDescriptor:v5];
+    v6 = [genericApplicationIcon CGImageForDescriptor:v5];
     v7 = objc_alloc(MEMORY[0x277D755B8]);
     [v5 scale];
     v8 = [v7 initWithCGImage:v6 scale:0 orientation:?];
@@ -236,16 +236,16 @@ void __61__CSLPRFIconFetcher__loadIconForBundleIdentifier_isPhoneApp___block_inv
   return genericIcon;
 }
 
-- (CSLPRFIconFetcher)initWithIconCache:(id)a3
+- (CSLPRFIconFetcher)initWithIconCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v11.receiver = self;
   v11.super_class = CSLPRFIconFetcher;
   v6 = [(CSLPRFIconFetcher *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iconCache, a3);
+    objc_storeStrong(&v6->_iconCache, cache);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     tasksByBundleID = v7->_tasksByBundleID;
     v7->_tasksByBundleID = v8;

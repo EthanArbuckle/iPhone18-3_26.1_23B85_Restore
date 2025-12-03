@@ -7,12 +7,12 @@
 
 - (double)mediaControls_untransformedFrame
 {
-  [a1 bounds];
+  [self bounds];
   v3 = v2;
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  [a1 center];
+  [self center];
   v11 = v10;
   v14.origin.x = v3;
   v14.origin.y = v5;
@@ -44,10 +44,10 @@
   v13.origin.y = a3;
   v13.size.width = a4;
   v13.size.height = a5;
-  [a1 setBounds:{0.0, 0.0, Width, CGRectGetHeight(v13)}];
+  [self setBounds:{0.0, 0.0, Width, CGRectGetHeight(v13)}];
   UIRectGetCenter();
 
-  return [a1 setCenter:?];
+  return [self setCenter:?];
 }
 
 @end

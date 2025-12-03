@@ -11,8 +11,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(APWrappingView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [(APWrappingView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,19 +24,19 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(APWrappingView *)self safeAreaLayoutGuide];
-        [v9 frameInView:self];
+        safeAreaLayoutGuide = [(APWrappingView *)self safeAreaLayoutGuide];
+        [safeAreaLayoutGuide frameInView:self];
         [v8 setFrame:?];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

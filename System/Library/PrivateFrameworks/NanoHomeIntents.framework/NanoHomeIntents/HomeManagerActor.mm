@@ -1,10 +1,10 @@
 @interface HomeManagerActor
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HomeManagerActor
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FA3A378, &qword_25B164A58);
   v5 = *(*(v4 - 8) + 64);

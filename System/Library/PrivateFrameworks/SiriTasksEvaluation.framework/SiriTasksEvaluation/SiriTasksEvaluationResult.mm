@@ -1,40 +1,40 @@
 @interface SiriTasksEvaluationResult
-- (SiriTasksEvaluationResult)initWithDictionary:(id)a3;
-- (SiriTasksEvaluationResult)initWithJSONData:(id)a3;
-- (SiriTasksEvaluationResult)initWithTaskId:(id)a3 isEffectiveTask:(BOOL)a4 isSuccessfulTask:(BOOL)a5;
+- (SiriTasksEvaluationResult)initWithDictionary:(id)dictionary;
+- (SiriTasksEvaluationResult)initWithJSONData:(id)data;
+- (SiriTasksEvaluationResult)initWithTaskId:(id)id isEffectiveTask:(BOOL)task isSuccessfulTask:(BOOL)successfulTask;
 - (id)toJSON;
 @end
 
 @implementation SiriTasksEvaluationResult
 
-- (SiriTasksEvaluationResult)initWithTaskId:(id)a3 isEffectiveTask:(BOOL)a4 isSuccessfulTask:(BOOL)a5
+- (SiriTasksEvaluationResult)initWithTaskId:(id)id isEffectiveTask:(BOOL)task isSuccessfulTask:(BOOL)successfulTask
 {
-  v9 = a3;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = SiriTasksEvaluationResult;
   v10 = [(SiriTasksEvaluationResult *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_taskId, a3);
-    v11->_isEffectiveTask = a4;
-    v11->_isSuccessfulTask = a5;
+    objc_storeStrong(&v10->_taskId, id);
+    v11->_isEffectiveTask = task;
+    v11->_isSuccessfulTask = successfulTask;
   }
 
   return v11;
 }
 
-- (SiriTasksEvaluationResult)initWithJSONData:(id)a3
+- (SiriTasksEvaluationResult)initWithJSONData:(id)data
 {
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v10];
   v5 = v10;
   v6 = v5;
   if (!v4)
   {
     NSLog(&cfstr_ErrorDeseriali.isa, v5);
 LABEL_6:
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
@@ -47,31 +47,31 @@ LABEL_6:
   }
 
   self = [(SiriTasksEvaluationResult *)self initWithDictionary:v4];
-  v7 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v7;
+  return selfCopy;
 }
 
-- (SiriTasksEvaluationResult)initWithDictionary:(id)a3
+- (SiriTasksEvaluationResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SiriTasksEvaluationResult;
   v5 = [(SiriTasksEvaluationResult *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"taskId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"taskId"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = [v6 copy];
       [(SiriTasksEvaluationResult *)v5 setTaskId:v7];
 
-      v8 = [v4 objectForKeyedSubscript:@"isEffectiveTask"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"isEffectiveTask"];
       if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         -[SiriTasksEvaluationResult setIsEffectiveTask:](v5, "setIsEffectiveTask:", [v8 BOOLValue]);
-        v9 = [v4 objectForKeyedSubscript:@"isSuccessfulTask"];
+        v9 = [dictionaryCopy objectForKeyedSubscript:@"isSuccessfulTask"];
         if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           -[SiriTasksEvaluationResult setIsSuccessfulTask:](v5, "setIsSuccessfulTask:", [v9 BOOLValue]);

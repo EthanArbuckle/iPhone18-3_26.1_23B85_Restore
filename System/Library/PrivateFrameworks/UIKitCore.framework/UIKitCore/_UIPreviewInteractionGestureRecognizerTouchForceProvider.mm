@@ -1,22 +1,22 @@
 @interface _UIPreviewInteractionGestureRecognizerTouchForceProvider
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGPoint)locationInCoordinateSpace:(id)a3;
-- (_UIPreviewInteractionGestureRecognizerTouchForceProvider)initWithGestureRecognizer:(id)a3;
-- (_UIPreviewInteractionGestureRecognizerTouchForceProvider)initWithView:(id)a3 configuration:(id)a4;
-- (void)_handleGestureRecognizer:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGPoint)locationInCoordinateSpace:(id)space;
+- (_UIPreviewInteractionGestureRecognizerTouchForceProvider)initWithGestureRecognizer:(id)recognizer;
+- (_UIPreviewInteractionGestureRecognizerTouchForceProvider)initWithView:(id)view configuration:(id)configuration;
+- (void)_handleGestureRecognizer:(id)recognizer;
 - (void)cancelInteraction;
 - (void)dealloc;
 @end
 
 @implementation _UIPreviewInteractionGestureRecognizerTouchForceProvider
 
-- (_UIPreviewInteractionGestureRecognizerTouchForceProvider)initWithGestureRecognizer:(id)a3
+- (_UIPreviewInteractionGestureRecognizerTouchForceProvider)initWithGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  if (!v6)
+  recognizerCopy = recognizer;
+  if (!recognizerCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionGestureRecognizerTouchForceProvider.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"gestureRecognizer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionGestureRecognizerTouchForceProvider.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"gestureRecognizer"}];
   }
 
   v11.receiver = self;
@@ -24,9 +24,9 @@
   v7 = [(_UIPreviewInteractionGestureRecognizerTouchForceProvider *)&v11 init];
   if (v7)
   {
-    [v6 addTarget:v7 action:sel__handleGestureRecognizer_];
-    [v6 setDelegate:v7];
-    objc_storeStrong(&v7->_gestureRecognizer, a3);
+    [recognizerCopy addTarget:v7 action:sel__handleGestureRecognizer_];
+    [recognizerCopy setDelegate:v7];
+    objc_storeStrong(&v7->_gestureRecognizer, recognizer);
     if ([(UIGestureRecognizer *)v7->_gestureRecognizer state]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)v7->_gestureRecognizer state]== UIGestureRecognizerStateChanged)
     {
       [(_UIPreviewInteractionGestureRecognizerTouchForceProvider *)v7 setActive:1];
@@ -38,22 +38,22 @@
   return v7;
 }
 
-- (_UIPreviewInteractionGestureRecognizerTouchForceProvider)initWithView:(id)a3 configuration:(id)a4
+- (_UIPreviewInteractionGestureRecognizerTouchForceProvider)initWithView:(id)view configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  viewCopy = view;
+  configurationCopy = configuration;
+  if (!viewCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionGestureRecognizerTouchForceProvider.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"view"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionGestureRecognizerTouchForceProvider.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"view"}];
   }
 
   v9 = objc_alloc_init(UITouchForceGestureRecognizer);
   v10 = [(_UIPreviewInteractionGestureRecognizerTouchForceProvider *)self initWithGestureRecognizer:v9];
   if (v10)
   {
-    [v7 addGestureRecognizer:v9];
-    [(UITouchForceGestureRecognizer *)v9 setConfigurationBlock:v8];
+    [viewCopy addGestureRecognizer:v9];
+    [(UITouchForceGestureRecognizer *)v9 setConfigurationBlock:configurationCopy];
     v11 = v10;
   }
 
@@ -62,24 +62,24 @@
 
 - (void)dealloc
 {
-  v3 = [(UIGestureRecognizer *)self->_gestureRecognizer view];
-  [v3 removeGestureRecognizer:self->_gestureRecognizer];
+  view = [(UIGestureRecognizer *)self->_gestureRecognizer view];
+  [view removeGestureRecognizer:self->_gestureRecognizer];
 
   v4.receiver = self;
   v4.super_class = _UIPreviewInteractionGestureRecognizerTouchForceProvider;
   [(_UIPreviewInteractionGestureRecognizerTouchForceProvider *)&v4 dealloc];
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(UIGestureRecognizer *)self->_gestureRecognizer view];
-  [(UIGestureRecognizer *)self->_gestureRecognizer locationInView:v5];
+  spaceCopy = space;
+  view = [(UIGestureRecognizer *)self->_gestureRecognizer view];
+  [(UIGestureRecognizer *)self->_gestureRecognizer locationInView:view];
   v8 = v6;
   v9 = v7;
-  if (v4 && v5 != v4)
+  if (spaceCopy && view != spaceCopy)
   {
-    [v5 convertPoint:v4 toCoordinateSpace:{v6, v7}];
+    [view convertPoint:spaceCopy toCoordinateSpace:{v6, v7}];
     v8 = v10;
     v9 = v11;
   }
@@ -99,13 +99,13 @@
   [(UIGestureRecognizer *)gestureRecognizer setEnabled:1];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v3 = [a3 view];
-  if (_UIPreviewInteractionAllowedToBeginForView(v3))
+  view = [begin view];
+  if (_UIPreviewInteractionAllowedToBeginForView(view))
   {
-    v4 = [v3 _viewControllerForAncestor];
-    v5 = _UIViewControllerIsChildOfTwoColumnSplitViewController(v4) ^ 1;
+    _viewControllerForAncestor = [view _viewControllerForAncestor];
+    v5 = _UIViewControllerIsChildOfTwoColumnSplitViewController(_viewControllerForAncestor) ^ 1;
   }
 
   else
@@ -116,15 +116,15 @@
   return v5;
 }
 
-- (void)_handleGestureRecognizer:(id)a3
+- (void)_handleGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 1)
   {
     [(_UIPreviewInteractionGestureRecognizerTouchForceProvider *)self setActive:1];
   }
 
-  if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4 || objc_msgSend(v4, "state") == 5)
+  if ([recognizerCopy state] == 3 || objc_msgSend(recognizerCopy, "state") == 4 || objc_msgSend(recognizerCopy, "state") == 5)
   {
     [(_UIPreviewInteractionGestureRecognizerTouchForceProvider *)self setActive:0];
   }

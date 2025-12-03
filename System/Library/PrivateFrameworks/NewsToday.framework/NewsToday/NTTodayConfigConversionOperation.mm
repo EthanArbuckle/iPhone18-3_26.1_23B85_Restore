@@ -1,10 +1,10 @@
 @interface NTTodayConfigConversionOperation
 - (BOOL)validateOperation;
 - (NTTodayConfigConversionOperation)init;
-- (id)_todayConfigWithConfigJSON:(id)a3 error:(id *)a4;
-- (void)_collectRecordIDsReferencedBySectionConfig:(id)a3 withArticleListIDs:(id)a4 articleIDs:(id)a5;
-- (void)_collectRecordIDsReferencedByTodayConfig:(id)a3 withArticleListIDs:(id)a4 articleIDs:(id)a5;
-- (void)operationWillFinishWithError:(id)a3;
+- (id)_todayConfigWithConfigJSON:(id)n error:(id *)error;
+- (void)_collectRecordIDsReferencedBySectionConfig:(id)config withArticleListIDs:(id)ds articleIDs:(id)iDs;
+- (void)_collectRecordIDsReferencedByTodayConfig:(id)config withArticleListIDs:(id)ds articleIDs:(id)iDs;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)validateOperation;
 @end
@@ -20,44 +20,44 @@
 
 - (BOOL)validateOperation
 {
-  v3 = [(NTTodayConfigConversionOperation *)self widgetConfiguration];
+  widgetConfiguration = [(NTTodayConfigConversionOperation *)self widgetConfiguration];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!widgetConfiguration && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayConfigConversionOperation validateOperation];
   }
 
-  v4 = [(NTTodayConfigConversionOperation *)self configuration];
+  configuration = [(NTTodayConfigConversionOperation *)self configuration];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!configuration && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayConfigConversionOperation validateOperation];
   }
 
-  v5 = [(NTTodayConfigConversionOperation *)self context];
+  context = [(NTTodayConfigConversionOperation *)self context];
 
-  if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayConfigConversionOperation validateOperation];
   }
 
-  v6 = [(NTTodayConfigConversionOperation *)self defaultConfigCompletionHandler];
+  defaultConfigCompletionHandler = [(NTTodayConfigConversionOperation *)self defaultConfigCompletionHandler];
 
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!defaultConfigCompletionHandler && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayConfigConversionOperation validateOperation];
   }
 
-  v7 = [(NTTodayConfigConversionOperation *)self singleTagConfigCompletionHandler];
+  singleTagConfigCompletionHandler = [(NTTodayConfigConversionOperation *)self singleTagConfigCompletionHandler];
 
-  if (!v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!singleTagConfigCompletionHandler && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayConfigConversionOperation validateOperation];
   }
 
-  if (v3)
+  if (widgetConfiguration)
   {
-    v8 = v4 == 0;
+    v8 = configuration == 0;
   }
 
   else
@@ -65,12 +65,12 @@
     v8 = 1;
   }
 
-  return !v8 && v5 != 0 && v6 != 0 && v7 != 0;
+  return !v8 && context != 0 && defaultConfigCompletionHandler != 0 && singleTagConfigCompletionHandler != 0;
 }
 
 - (void)performOperation
 {
-  v3 = [(NTTodayConfigConversionOperation *)self widgetConfiguration];
+  widgetConfiguration = [(NTTodayConfigConversionOperation *)self widgetConfiguration];
   v4 = FCAppConfigurationDictionaryValue();
 
   v25 = 0;
@@ -78,7 +78,7 @@
   v20 = v25;
   [(NTTodayConfigConversionOperation *)self setResultDefaultConfig:v5];
   [(NTTodayConfigConversionOperation *)self setDefaultConfigError:v20];
-  v6 = [(NTTodayConfigConversionOperation *)self widgetConfiguration];
+  widgetConfiguration2 = [(NTTodayConfigConversionOperation *)self widgetConfiguration];
   v7 = FCAppConfigurationDictionaryValue();
 
   v24 = 0;
@@ -91,20 +91,20 @@
   [(NTTodayConfigConversionOperation *)self _collectRecordIDsReferencedByTodayConfig:v5 withArticleListIDs:v10 articleIDs:v11];
   [(NTTodayConfigConversionOperation *)self _collectRecordIDsReferencedByTodayConfig:v8 withArticleListIDs:v10 articleIDs:v11];
   v12 = objc_alloc_init(NTWidgetConfigDataOperation);
-  v13 = [(NTTodayConfigConversionOperation *)self context];
-  [(NTWidgetConfigDataOperation *)v12 setContext:v13];
+  context = [(NTTodayConfigConversionOperation *)self context];
+  [(NTWidgetConfigDataOperation *)v12 setContext:context];
 
-  v14 = [(NTTodayConfigConversionOperation *)self configuration];
-  [(NTWidgetConfigDataOperation *)v12 setConfiguration:v14];
+  configuration = [(NTTodayConfigConversionOperation *)self configuration];
+  [(NTWidgetConfigDataOperation *)v12 setConfiguration:configuration];
 
-  v15 = [(NTTodayConfigConversionOperation *)self widgetConfiguration];
-  [(NTWidgetConfigDataOperation *)v12 setWidgetConfiguration:v15];
+  widgetConfiguration3 = [(NTTodayConfigConversionOperation *)self widgetConfiguration];
+  [(NTWidgetConfigDataOperation *)v12 setWidgetConfiguration:widgetConfiguration3];
 
-  v16 = [v11 allObjects];
-  [(NTWidgetConfigDataOperation *)v12 setExpectedArticleIDs:v16];
+  allObjects = [v11 allObjects];
+  [(NTWidgetConfigDataOperation *)v12 setExpectedArticleIDs:allObjects];
 
-  v17 = [v10 allObjects];
-  [(NTWidgetConfigDataOperation *)v12 setExpectedArticleListIDs:v17];
+  allObjects2 = [v10 allObjects];
+  [(NTWidgetConfigDataOperation *)v12 setExpectedArticleListIDs:allObjects2];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -191,54 +191,54 @@ void __52__NTTodayConfigConversionOperation_performOperation__block_invoke(uint6
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(NTTodayConfigConversionOperation *)self defaultConfigCompletionHandler];
-  v6 = [(NTTodayConfigConversionOperation *)self resultDefaultConfig];
-  v7 = [(NTTodayConfigConversionOperation *)self resultHeldRecordsByType];
-  v8 = [(NTTodayConfigConversionOperation *)self defaultConfigError];
-  v9 = v8;
-  if (v8)
+  errorCopy = error;
+  defaultConfigCompletionHandler = [(NTTodayConfigConversionOperation *)self defaultConfigCompletionHandler];
+  resultDefaultConfig = [(NTTodayConfigConversionOperation *)self resultDefaultConfig];
+  resultHeldRecordsByType = [(NTTodayConfigConversionOperation *)self resultHeldRecordsByType];
+  defaultConfigError = [(NTTodayConfigConversionOperation *)self defaultConfigError];
+  v9 = defaultConfigError;
+  if (defaultConfigError)
   {
-    v10 = v8;
+    v10 = defaultConfigError;
   }
 
   else
   {
-    v10 = v4;
+    v10 = errorCopy;
   }
 
-  (v5)[2](v5, v6, v7, v10);
+  (defaultConfigCompletionHandler)[2](defaultConfigCompletionHandler, resultDefaultConfig, resultHeldRecordsByType, v10);
 
-  v16 = [(NTTodayConfigConversionOperation *)self singleTagConfigCompletionHandler];
-  v11 = [(NTTodayConfigConversionOperation *)self resultSingleTagConfig];
-  v12 = [(NTTodayConfigConversionOperation *)self resultHeldRecordsByType];
-  v13 = [(NTTodayConfigConversionOperation *)self singleTagConfigError];
-  v14 = v13;
-  if (v13)
+  singleTagConfigCompletionHandler = [(NTTodayConfigConversionOperation *)self singleTagConfigCompletionHandler];
+  resultSingleTagConfig = [(NTTodayConfigConversionOperation *)self resultSingleTagConfig];
+  resultHeldRecordsByType2 = [(NTTodayConfigConversionOperation *)self resultHeldRecordsByType];
+  singleTagConfigError = [(NTTodayConfigConversionOperation *)self singleTagConfigError];
+  v14 = singleTagConfigError;
+  if (singleTagConfigError)
   {
-    v15 = v13;
+    v15 = singleTagConfigError;
   }
 
   else
   {
-    v15 = v4;
+    v15 = errorCopy;
   }
 
-  v16[2](v16, v11, v12, v15);
+  singleTagConfigCompletionHandler[2](singleTagConfigCompletionHandler, resultSingleTagConfig, resultHeldRecordsByType2, v15);
 }
 
-- (id)_todayConfigWithConfigJSON:(id)a3 error:(id *)a4
+- (id)_todayConfigWithConfigJSON:(id)n error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D30918]];
+  nCopy = n;
+  v7 = [nCopy objectForKeyedSubscript:*MEMORY[0x277D30918]];
   if (v7)
   {
-    v37 = self;
-    v39 = a4;
-    v40 = v6;
+    selfCopy = self;
+    errorCopy = error;
+    v40 = nCopy;
     v8 = objc_opt_new();
     v45 = 0u;
     v46 = 0u;
@@ -260,7 +260,7 @@ void __52__NTTodayConfigConversionOperation_performOperation__block_invoke(uint6
             objc_enumerationMutation(obj);
           }
 
-          v13 = [MEMORY[0x277D35568] sectionConfigWithJSONDictionary:{*(*(&v45 + 1) + 8 * i), v37}];
+          v13 = [MEMORY[0x277D35568] sectionConfigWithJSONDictionary:{*(*(&v45 + 1) + 8 * i), selfCopy}];
           v14 = v13;
           if (v13 && [v13 queueMembershipsCount])
           {
@@ -290,8 +290,8 @@ void __52__NTTodayConfigConversionOperation_performOperation__block_invoke(uint6
       while (v10);
     }
 
-    v18 = [v8 allKeys];
-    v19 = [v18 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [v8 allKeys];
+    v19 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
@@ -301,7 +301,7 @@ void __52__NTTodayConfigConversionOperation_performOperation__block_invoke(uint6
     v44 = v20;
     obja = v19;
     v21 = [v19 fc_arrayByTransformingWithBlock:v43];
-    v6 = v40;
+    nCopy = v40;
     v22 = [v40 objectForKeyedSubscript:*MEMORY[0x277D307C0]];
     v23 = [v40 objectForKeyedSubscript:*MEMORY[0x277D30760]];
     v24 = [v40 objectForKeyedSubscript:*MEMORY[0x277D30758]];
@@ -321,13 +321,13 @@ void __52__NTTodayConfigConversionOperation_performOperation__block_invoke(uint6
       v30 = 0;
     }
 
-    v33 = [(NTTodayConfigConversionOperation *)v37 configuration];
-    v32 = [v33 todayConfigWithIdentifier:v22 queueConfigs:v21 backgroundColorLight:v23 backgroundColorDark:v24 audioIndicatorColor:v25 widgetBannerConfig:v30];
+    configuration = [(NTTodayConfigConversionOperation *)selfCopy configuration];
+    v32 = [configuration todayConfigWithIdentifier:v22 queueConfigs:v21 backgroundColorLight:v23 backgroundColorDark:v24 audioIndicatorColor:v25 widgetBannerConfig:v30];
 
     v31 = 0;
     v7 = v38;
-    a4 = v39;
-    if (v39)
+    error = errorCopy;
+    if (errorCopy)
     {
       goto LABEL_21;
     }
@@ -337,11 +337,11 @@ void __52__NTTodayConfigConversionOperation_performOperation__block_invoke(uint6
   {
     v31 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D309C8] code:13 userInfo:0];
     v32 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_21:
       v34 = v31;
-      *a4 = v31;
+      *error = v31;
     }
   }
 
@@ -389,16 +389,16 @@ id __69__NTTodayConfigConversionOperation__todayConfigWithConfigJSON_error___blo
   return v4;
 }
 
-- (void)_collectRecordIDsReferencedByTodayConfig:(id)a3 withArticleListIDs:(id)a4 articleIDs:(id)a5
+- (void)_collectRecordIDsReferencedByTodayConfig:(id)config withArticleListIDs:(id)ds articleIDs:(id)iDs
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = [a3 todayQueueConfigs];
+  obj = [config todayQueueConfigs];
   v10 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v10)
   {
@@ -419,8 +419,8 @@ id __69__NTTodayConfigConversionOperation__todayConfigWithConfigJSON_error___blo
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v15 = [v14 todaySectionConfigs];
-        v16 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        todaySectionConfigs = [v14 todaySectionConfigs];
+        v16 = [todaySectionConfigs countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v16)
         {
           v17 = v16;
@@ -432,14 +432,14 @@ id __69__NTTodayConfigConversionOperation__todayConfigWithConfigJSON_error___blo
             {
               if (*v23 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(todaySectionConfigs);
               }
 
-              [(NTTodayConfigConversionOperation *)self _collectRecordIDsReferencedBySectionConfig:*(*(&v22 + 1) + 8 * v19++) withArticleListIDs:v8 articleIDs:v9];
+              [(NTTodayConfigConversionOperation *)self _collectRecordIDsReferencedBySectionConfig:*(*(&v22 + 1) + 8 * v19++) withArticleListIDs:dsCopy articleIDs:iDsCopy];
             }
 
             while (v17 != v19);
-            v17 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v17 = [todaySectionConfigs countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v17);
@@ -458,22 +458,22 @@ id __69__NTTodayConfigConversionOperation__todayConfigWithConfigJSON_error___blo
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_collectRecordIDsReferencedBySectionConfig:(id)a3 withArticleListIDs:(id)a4 articleIDs:(id)a5
+- (void)_collectRecordIDsReferencedBySectionConfig:(id)config withArticleListIDs:(id)ds articleIDs:(id)iDs
 {
   v59 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  configCopy = config;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTTodayConfigConversionOperation _collectRecordIDsReferencedBySectionConfig:withArticleListIDs:articleIDs:];
-    if (v9)
+    if (iDsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (iDsCopy)
   {
     goto LABEL_6;
   }
@@ -484,18 +484,18 @@ id __69__NTTodayConfigConversionOperation__todayConfigWithConfigJSON_error___blo
   }
 
 LABEL_6:
-  v10 = [v7 sectionType];
-  if (v10 > 3)
+  sectionType = [configCopy sectionType];
+  if (sectionType > 3)
   {
-    if (v10 == 4)
+    if (sectionType == 4)
     {
-      v12 = [v7 personalizedTodaySectionConfig];
+      personalizedTodaySectionConfig = [configCopy personalizedTodaySectionConfig];
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v27 = [v12 mandatoryArticles];
-      v28 = [v27 countByEnumeratingWithState:&v47 objects:v57 count:16];
+      mandatoryArticles = [personalizedTodaySectionConfig mandatoryArticles];
+      v28 = [mandatoryArticles countByEnumeratingWithState:&v47 objects:v57 count:16];
       if (v28)
       {
         v29 = v28;
@@ -506,14 +506,14 @@ LABEL_6:
           {
             if (*v48 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(mandatoryArticles);
             }
 
-            v32 = [*(*(&v47 + 1) + 8 * i) articleID];
-            [v9 addObject:v32];
+            articleID = [*(*(&v47 + 1) + 8 * i) articleID];
+            [iDsCopy addObject:articleID];
           }
 
-          v29 = [v27 countByEnumeratingWithState:&v47 objects:v57 count:16];
+          v29 = [mandatoryArticles countByEnumeratingWithState:&v47 objects:v57 count:16];
         }
 
         while (v29);
@@ -523,8 +523,8 @@ LABEL_6:
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v18 = [v12 personalizedArticles];
-      v33 = [v18 countByEnumeratingWithState:&v43 objects:v56 count:16];
+      personalizedArticles = [personalizedTodaySectionConfig personalizedArticles];
+      v33 = [personalizedArticles countByEnumeratingWithState:&v43 objects:v56 count:16];
       if (v33)
       {
         v34 = v33;
@@ -535,14 +535,14 @@ LABEL_6:
           {
             if (*v44 != v35)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(personalizedArticles);
             }
 
-            v37 = [*(*(&v43 + 1) + 8 * j) articleID];
-            [v9 addObject:v37];
+            articleID2 = [*(*(&v43 + 1) + 8 * j) articleID];
+            [iDsCopy addObject:articleID2];
           }
 
-          v34 = [v18 countByEnumeratingWithState:&v43 objects:v56 count:16];
+          v34 = [personalizedArticles countByEnumeratingWithState:&v43 objects:v56 count:16];
         }
 
         while (v34);
@@ -551,18 +551,18 @@ LABEL_6:
 
     else
     {
-      if (v10 != 5)
+      if (sectionType != 5)
       {
         goto LABEL_46;
       }
 
-      v12 = [v7 itemsTodaySectionConfig];
+      personalizedTodaySectionConfig = [configCopy itemsTodaySectionConfig];
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v18 = [v12 items];
-      v19 = [v18 countByEnumeratingWithState:&v39 objects:v55 count:16];
+      personalizedArticles = [personalizedTodaySectionConfig items];
+      v19 = [personalizedArticles countByEnumeratingWithState:&v39 objects:v55 count:16];
       if (v19)
       {
         v20 = v19;
@@ -573,19 +573,19 @@ LABEL_6:
           {
             if (*v40 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(personalizedArticles);
             }
 
             v23 = *(*(&v39 + 1) + 8 * k);
             if (![v23 itemType])
             {
-              v24 = [v23 article];
-              v25 = [v24 articleID];
-              [v9 addObject:v25];
+              article = [v23 article];
+              articleID3 = [article articleID];
+              [iDsCopy addObject:articleID3];
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v39 objects:v55 count:16];
+          v20 = [personalizedArticles countByEnumeratingWithState:&v39 objects:v55 count:16];
         }
 
         while (v20);
@@ -596,25 +596,25 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if (!v10)
+  if (!sectionType)
   {
-    v26 = [v7 articleListTodaySectionConfig];
-    v12 = [v26 articleListID];
+    articleListTodaySectionConfig = [configCopy articleListTodaySectionConfig];
+    personalizedTodaySectionConfig = [articleListTodaySectionConfig articleListID];
 
-    [v8 addObject:v12];
+    [dsCopy addObject:personalizedTodaySectionConfig];
     goto LABEL_45;
   }
 
-  if (v10 == 3)
+  if (sectionType == 3)
   {
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v11 = [v7 articleIDsTodaySectionConfig];
-    v12 = [v11 articles];
+    articleIDsTodaySectionConfig = [configCopy articleIDsTodaySectionConfig];
+    personalizedTodaySectionConfig = [articleIDsTodaySectionConfig articles];
 
-    v13 = [v12 countByEnumeratingWithState:&v51 objects:v58 count:16];
+    v13 = [personalizedTodaySectionConfig countByEnumeratingWithState:&v51 objects:v58 count:16];
     if (v13)
     {
       v14 = v13;
@@ -625,14 +625,14 @@ LABEL_45:
         {
           if (*v52 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(personalizedTodaySectionConfig);
           }
 
-          v17 = [*(*(&v51 + 1) + 8 * m) articleID];
-          [v9 addObject:v17];
+          articleID4 = [*(*(&v51 + 1) + 8 * m) articleID];
+          [iDsCopy addObject:articleID4];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v51 objects:v58 count:16];
+        v14 = [personalizedTodaySectionConfig countByEnumeratingWithState:&v51 objects:v58 count:16];
       }
 
       while (v14);

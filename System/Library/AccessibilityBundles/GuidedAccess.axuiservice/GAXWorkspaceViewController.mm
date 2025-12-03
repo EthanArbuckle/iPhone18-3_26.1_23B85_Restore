@@ -1,89 +1,89 @@
 @interface GAXWorkspaceViewController
-- (BOOL)eventStealerView:(id)a3 shouldStealEventAtPoint:(CGPoint)a4;
-- (BOOL)isInterestAreaViewAccessibilityElementWithController:(id)a3;
+- (BOOL)eventStealerView:(id)view shouldStealEventAtPoint:(CGPoint)point;
+- (BOOL)isInterestAreaViewAccessibilityElementWithController:(id)controller;
 - (BOOL)isTouchEnabled;
 - (BOOL)navigationBarNeedsMiniMetricsInitialized;
-- (CGRect)_adjustedBottomChromeViewFrame:(CGRect)a3;
-- (CGRect)_adjustedTopChromeViewFrame:(CGRect)a3;
-- (CGRect)boundsForConstrainingFingerPathInInterestAreaViewController:(id)a3;
+- (CGRect)_adjustedBottomChromeViewFrame:(CGRect)frame;
+- (CGRect)_adjustedTopChromeViewFrame:(CGRect)frame;
+- (CGRect)boundsForConstrainingFingerPathInInterestAreaViewController:(id)controller;
 - (CGSize)_instructionsLabelMaximumSize;
 - (GAXUIServer)userInterfaceServer;
-- (GAXWorkspaceViewController)initWithCoder:(id)a3;
-- (GAXWorkspaceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (GAXWorkspaceViewController)initWithOverlayUserInterfaceViewController:(id)a3;
-- (UIEdgeInsets)_hostedApplicationViewEdgeInsetsForLayoutMode:(int)a3 interfaceOrientation:(int64_t)a4;
+- (GAXWorkspaceViewController)initWithCoder:(id)coder;
+- (GAXWorkspaceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (GAXWorkspaceViewController)initWithOverlayUserInterfaceViewController:(id)controller;
+- (UIEdgeInsets)_hostedApplicationViewEdgeInsetsForLayoutMode:(int)mode interfaceOrientation:(int64_t)orientation;
 - (double)_transitionDuration;
-- (double)scaleForSpecialControlsInInterestAreaViewController:(id)a3;
+- (double)scaleForSpecialControlsInInterestAreaViewController:(id)controller;
 - (double)statusBarHeight;
-- (id)_instructionsLabelTextWhenTouchEnabled:(BOOL)a3;
-- (id)_instructionsLabelWithText:(id)a3;
-- (id)referenceViewForConvertingFromAndToWindowCoordinateSystemForInterestAreaViewController:(id)a3;
-- (id)viewForPresentingOverlayUserInterfaceForFeatureViewController:(id)a3;
-- (id)viewToCoverWithOutOfBoundsDrawingForInterestAreaViewWithController:(id)a3 edgeInsets:(UIEdgeInsets *)a4;
+- (id)_instructionsLabelTextWhenTouchEnabled:(BOOL)enabled;
+- (id)_instructionsLabelWithText:(id)text;
+- (id)referenceViewForConvertingFromAndToWindowCoordinateSystemForInterestAreaViewController:(id)controller;
+- (id)viewForPresentingOverlayUserInterfaceForFeatureViewController:(id)controller;
+- (id)viewToCoverWithOutOfBoundsDrawingForInterestAreaViewWithController:(id)controller edgeInsets:(UIEdgeInsets *)insets;
 - (int64_t)applicationInterfaceOrientation;
-- (void)_getHostedApplicationViewParametersForLayoutMode:(int)a3 scaleFactor:(double *)a4 frame:(CGRect *)a5 targetSize:(CGSize)a6;
-- (void)_handleDismissButtonTapped:(id)a3;
-- (void)_handleStartButtonTapped:(id)a3;
-- (void)_loadHostedApplicationShadowViewWithContainerView:(id)a3;
-- (void)_loadInstructionsLabelWithContainerView:(id)a3;
-- (void)_loadInterestAreaViewWithContainerView:(id)a3;
-- (void)_loadNavigationBarWithContainerView:(id)a3;
-- (void)_loadStatusAndNavigationBarBackgroundViewWithContainerView:(id)a3;
-- (void)_loadStatusBarWithContainerView:(id)a3;
-- (void)_loadSystemFeatureViewWithContainerView:(id)a3;
-- (void)_performOrScheduleTransitionWithType:(int)a3 completion:(id)a4;
-- (void)_performTransitionWithType:(int)a3 completion:(id)a4;
-- (void)_updateEverythingForLayoutMode:(int)a3;
+- (void)_getHostedApplicationViewParametersForLayoutMode:(int)mode scaleFactor:(double *)factor frame:(CGRect *)frame targetSize:(CGSize)size;
+- (void)_handleDismissButtonTapped:(id)tapped;
+- (void)_handleStartButtonTapped:(id)tapped;
+- (void)_loadHostedApplicationShadowViewWithContainerView:(id)view;
+- (void)_loadInstructionsLabelWithContainerView:(id)view;
+- (void)_loadInterestAreaViewWithContainerView:(id)view;
+- (void)_loadNavigationBarWithContainerView:(id)view;
+- (void)_loadStatusAndNavigationBarBackgroundViewWithContainerView:(id)view;
+- (void)_loadStatusBarWithContainerView:(id)view;
+- (void)_loadSystemFeatureViewWithContainerView:(id)view;
+- (void)_performOrScheduleTransitionWithType:(int)type completion:(id)completion;
+- (void)_performTransitionWithType:(int)type completion:(id)completion;
+- (void)_updateEverythingForLayoutMode:(int)mode;
 - (void)_updateHostedApplicationShadowView;
-- (void)_updateHostedApplicationViewWithAnimationDuration:(double)a3 targetSize:(CGSize)a4;
+- (void)_updateHostedApplicationViewWithAnimationDuration:(double)duration targetSize:(CGSize)size;
 - (void)_updateInstructionsLabel;
 - (void)_updateInterestAreaView;
 - (void)_updateNavigationBar;
 - (void)_updateStatusAndNavigationBarBackgroundView;
 - (void)_updateStatusBar;
 - (void)_updateSystemFeatureView;
-- (void)_willBeginTransitionWithType:(int)a3;
-- (void)archiveInterestAreaPathsForStorageInterestAreaViewController:(id)a3;
+- (void)_willBeginTransitionWithType:(int)type;
+- (void)archiveInterestAreaPathsForStorageInterestAreaViewController:(id)controller;
 - (void)dealloc;
-- (void)featureViewController:(id)a3 touchSystemFeatureDidChange:(BOOL)a4;
-- (void)getInterestAreaPathForFingerPath:(id)a3 interestAreaViewController:(id)a4 completion:(id)a5;
-- (void)interestAreaViewController:(id)a3 didRotateFromInterfaceOrientation:(int64_t)a4;
-- (void)interestAreaViewController:(id)a3 willRotateToInterfaceOrientation:(int64_t)a4 duration:(double)a5;
+- (void)featureViewController:(id)controller touchSystemFeatureDidChange:(BOOL)change;
+- (void)getInterestAreaPathForFingerPath:(id)path interestAreaViewController:(id)controller completion:(id)completion;
+- (void)interestAreaViewController:(id)controller didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)interestAreaViewController:(id)controller willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 - (void)loadView;
 - (void)releaseOutlets;
-- (void)setStyleProvider:(id)a3;
-- (void)setUserInterfaceServer:(id)a3;
+- (void)setStyleProvider:(id)provider;
+- (void)setUserInterfaceServer:(id)server;
 - (void)updateViewConstraints;
 - (void)viewDidLayoutSubviews;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation GAXWorkspaceViewController
 
-- (GAXWorkspaceViewController)initWithOverlayUserInterfaceViewController:(id)a3
+- (GAXWorkspaceViewController)initWithOverlayUserInterfaceViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = GAXWorkspaceViewController;
   v5 = [(GAXViewController *)&v10 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (controllerCopy)
     {
       v7 = GAXLocString(@"GUIDED_ACCESS_TITLE");
       [(GAXWorkspaceViewController *)v6 setTitle:v7];
 
-      [(GAXWorkspaceViewController *)v6 setOverlayUserInterfaceViewController:v4];
+      [(GAXWorkspaceViewController *)v6 setOverlayUserInterfaceViewController:controllerCopy];
       v8 = objc_opt_new();
       [v8 setAllowsDimmingInterestAreaPaths:0];
       [v8 setEditing:0];
       [v8 setDelegate:v6];
-      [v4 addChildViewController:v8];
-      [v8 didMoveToParentViewController:v4];
+      [controllerCopy addChildViewController:v8];
+      [v8 didMoveToParentViewController:controllerCopy];
       [(GAXWorkspaceViewController *)v6 setInterestAreaViewController:v8];
     }
 
@@ -97,11 +97,11 @@
   return v6;
 }
 
-- (GAXWorkspaceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GAXWorkspaceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = GAXWorkspaceViewController;
-  v4 = [(GAXViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(GAXViewController *)&v6 initWithNibName:name bundle:bundle];
   if (v4)
   {
   }
@@ -109,11 +109,11 @@
   return 0;
 }
 
-- (GAXWorkspaceViewController)initWithCoder:(id)a3
+- (GAXWorkspaceViewController)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GAXWorkspaceViewController;
-  v3 = [(GAXViewController *)&v5 initWithCoder:a3];
+  v3 = [(GAXViewController *)&v5 initWithCoder:coder];
   if (v3)
   {
   }
@@ -123,62 +123,62 @@
 
 - (void)dealloc
 {
-  v3 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-  [v3 setDelegate:0];
+  interestAreaViewController = [(GAXWorkspaceViewController *)self interestAreaViewController];
+  [interestAreaViewController setDelegate:0];
 
-  v4 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-  if ([v4 isViewLoaded])
+  interestAreaViewController2 = [(GAXWorkspaceViewController *)self interestAreaViewController];
+  if ([interestAreaViewController2 isViewLoaded])
   {
-    v5 = [v4 interestAreaView];
-    [v5 setEventStealerViewDelegate:0];
+    interestAreaView = [interestAreaViewController2 interestAreaView];
+    [interestAreaView setEventStealerViewDelegate:0];
 
-    v6 = [v4 view];
-    [v6 removeFromSuperview];
+    view = [interestAreaViewController2 view];
+    [view removeFromSuperview];
   }
 
-  [v4 willMoveToParentViewController:0];
-  [v4 removeFromParentViewController];
+  [interestAreaViewController2 willMoveToParentViewController:0];
+  [interestAreaViewController2 removeFromParentViewController];
 
   v7.receiver = self;
   v7.super_class = GAXWorkspaceViewController;
   [(GAXViewController *)&v7 dealloc];
 }
 
-- (void)setUserInterfaceServer:(id)a3
+- (void)setUserInterfaceServer:(id)server
 {
-  obj = a3;
+  obj = server;
   WeakRetained = objc_loadWeakRetained(&self->_userInterfaceServer);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_userInterfaceServer, obj);
-    v5 = [(GAXWorkspaceViewController *)self featureViewController];
-    [v5 setUserInterfaceServer:obj];
+    featureViewController = [(GAXWorkspaceViewController *)self featureViewController];
+    [featureViewController setUserInterfaceServer:obj];
 
-    LODWORD(v5) = [(GAXWorkspaceViewController *)self isTouchEnabled];
-    v6 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-    [v6 setBackgroundShouldCoverEverything:v5 ^ 1];
+    LODWORD(featureViewController) = [(GAXWorkspaceViewController *)self isTouchEnabled];
+    interestAreaViewController = [(GAXWorkspaceViewController *)self interestAreaViewController];
+    [interestAreaViewController setBackgroundShouldCoverEverything:featureViewController ^ 1];
   }
 }
 
-- (void)setStyleProvider:(id)a3
+- (void)setStyleProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_styleProvider != v5)
+  providerCopy = provider;
+  if (self->_styleProvider != providerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_styleProvider, a3);
-    v6 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-    [v6 setStyleProvider:v7];
+    v7 = providerCopy;
+    objc_storeStrong(&self->_styleProvider, provider);
+    interestAreaViewController = [(GAXWorkspaceViewController *)self interestAreaViewController];
+    [interestAreaViewController setStyleProvider:v7];
 
-    v5 = v7;
+    providerCopy = v7;
   }
 }
 
 - (double)statusBarHeight
 {
-  v2 = [(GAXWorkspaceViewController *)self statusBar];
-  [v2 bounds];
+  statusBar = [(GAXWorkspaceViewController *)self statusBar];
+  [statusBar bounds];
   Height = CGRectGetHeight(v5);
 
   return Height;
@@ -187,21 +187,21 @@
 - (int64_t)applicationInterfaceOrientation
 {
   v2 = +[AXUIDisplayManager sharedDisplayManager];
-  v3 = [v2 activeInterfaceOrientation];
+  activeInterfaceOrientation = [v2 activeInterfaceOrientation];
 
-  return v3;
+  return activeInterfaceOrientation;
 }
 
 - (BOOL)navigationBarNeedsMiniMetricsInitialized
 {
-  v3 = [(GAXWorkspaceViewController *)self styleProvider];
-  v4 = v3;
-  if (v3)
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  v4 = styleProvider;
+  if (styleProvider)
   {
-    if ([v3 workspaceNavigationBarNeedsMiniMetricsInitialized])
+    if ([styleProvider workspaceNavigationBarNeedsMiniMetricsInitialized])
     {
-      v5 = [(GAXWorkspaceViewController *)self applicationInterfaceOrientation];
-      v6 = (v5 - 1) > 3 || (v5 - 3) < 0xFFFFFFFFFFFFFFFELL;
+      applicationInterfaceOrientation = [(GAXWorkspaceViewController *)self applicationInterfaceOrientation];
+      v6 = (applicationInterfaceOrientation - 1) > 3 || (applicationInterfaceOrientation - 3) < 0xFFFFFFFFFFFFFFFELL;
     }
 
     else
@@ -220,10 +220,10 @@
 
 - (BOOL)isTouchEnabled
 {
-  v2 = [(GAXWorkspaceViewController *)self userInterfaceServer];
-  v3 = [v2 allowsTouch];
+  userInterfaceServer = [(GAXWorkspaceViewController *)self userInterfaceServer];
+  allowsTouch = [userInterfaceServer allowsTouch];
 
-  return v3;
+  return allowsTouch;
 }
 
 - (void)loadView
@@ -253,15 +253,15 @@
   v18 = [[UIView alloc] initWithFrame:{v5, v7, v9, Width}];
   [v18 setAutoresizingMask:18];
   [v18 setUserInteractionEnabled:1];
-  v13 = [v18 layer];
-  [v13 setHitTestsAsOpaque:1];
+  layer = [v18 layer];
+  [layer setHitTestsAsOpaque:1];
 
   [(GAXWorkspaceViewController *)self _loadNavigationBarWithContainerView:v18];
   [(GAXWorkspaceViewController *)self _loadStatusAndNavigationBarBackgroundViewWithContainerView:v18];
-  v14 = [(GAXWorkspaceViewController *)self styleProvider];
-  v15 = [v14 workspaceInstructionsLabelShouldBeDisplayed];
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  workspaceInstructionsLabelShouldBeDisplayed = [styleProvider workspaceInstructionsLabelShouldBeDisplayed];
 
-  if (v15)
+  if (workspaceInstructionsLabelShouldBeDisplayed)
   {
     [(GAXWorkspaceViewController *)self _loadInstructionsLabelWithContainerView:v18];
   }
@@ -269,9 +269,9 @@
   [(GAXWorkspaceViewController *)self _loadSystemFeatureViewWithContainerView:v18];
   [(GAXWorkspaceViewController *)self _loadStatusBarWithContainerView:v18];
   [(GAXWorkspaceViewController *)self _loadHostedApplicationShadowViewWithContainerView:v18];
-  v16 = [(GAXWorkspaceViewController *)self overlayUserInterfaceViewController];
-  v17 = [v16 view];
-  [(GAXWorkspaceViewController *)self _loadInterestAreaViewWithContainerView:v17];
+  overlayUserInterfaceViewController = [(GAXWorkspaceViewController *)self overlayUserInterfaceViewController];
+  view = [overlayUserInterfaceViewController view];
+  [(GAXWorkspaceViewController *)self _loadInterestAreaViewWithContainerView:view];
 
   [(GAXWorkspaceViewController *)self _updateEverythingForLayoutMode:1];
   [(GAXViewController *)self setView:v18];
@@ -285,17 +285,17 @@
   [(GAXWorkspaceViewController *)self setLayoutMode:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = GAXWorkspaceViewController;
-  [(GAXWorkspaceViewController *)&v7 viewWillAppear:a3];
-  v4 = [(GAXWorkspaceViewController *)self applicationInterfaceOrientation];
-  if ((v4 - 1) <= 3)
+  [(GAXWorkspaceViewController *)&v7 viewWillAppear:appear];
+  applicationInterfaceOrientation = [(GAXWorkspaceViewController *)self applicationInterfaceOrientation];
+  if ((applicationInterfaceOrientation - 1) <= 3)
   {
-    v5 = v4;
-    v6 = [(GAXWorkspaceViewController *)self statusBar];
-    [v6 setOrientation:v5];
+    v5 = applicationInterfaceOrientation;
+    statusBar = [(GAXWorkspaceViewController *)self statusBar];
+    [statusBar setOrientation:v5];
   }
 }
 
@@ -309,26 +309,26 @@
   [(GAXWorkspaceViewController *)self _updateInstructionsLabel];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v15.receiver = self;
   v15.super_class = GAXWorkspaceViewController;
-  [(GAXWorkspaceViewController *)&v15 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-  v9 = [v8 view];
+  [(GAXWorkspaceViewController *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  interestAreaViewController = [(GAXWorkspaceViewController *)self interestAreaViewController];
+  view = [interestAreaViewController view];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1EC48;
   v11[3] = &unk_5D998;
   v11[4] = self;
-  v12 = v7;
+  v12 = coordinatorCopy;
   v13 = width;
   v14 = height;
-  v10 = v7;
-  [v10 animateAlongsideTransitionInView:v9 animation:v11 completion:&stru_5D9D8];
+  v10 = coordinatorCopy;
+  [v10 animateAlongsideTransitionInView:view animation:v11 completion:&stru_5D9D8];
 }
 
 - (void)releaseOutlets
@@ -336,8 +336,8 @@
   v4.receiver = self;
   v4.super_class = GAXWorkspaceViewController;
   [(GAXViewController *)&v4 releaseOutlets];
-  v3 = [(GAXWorkspaceViewController *)self featureViewController];
-  [v3 setDelegate:0];
+  featureViewController = [(GAXWorkspaceViewController *)self featureViewController];
+  [featureViewController setDelegate:0];
   [(GAXWorkspaceViewController *)self setFeatureViewController:0];
   [(GAXWorkspaceViewController *)self setStatusBar:0];
   [(GAXWorkspaceViewController *)self setNavigationBar:0];
@@ -346,33 +346,33 @@
   [(GAXWorkspaceViewController *)self setHostedApplicationShadowView:0];
 }
 
-- (void)_handleStartButtonTapped:(id)a3
+- (void)_handleStartButtonTapped:(id)tapped
 {
-  v3 = [(GAXWorkspaceViewController *)self userInterfaceServer];
-  [v3 transitionToMode:2];
+  userInterfaceServer = [(GAXWorkspaceViewController *)self userInterfaceServer];
+  [userInterfaceServer transitionToMode:2];
 }
 
-- (void)_handleDismissButtonTapped:(id)a3
+- (void)_handleDismissButtonTapped:(id)tapped
 {
-  v3 = [(GAXWorkspaceViewController *)self userInterfaceServer];
-  [v3 transitionToMode:0];
+  userInterfaceServer = [(GAXWorkspaceViewController *)self userInterfaceServer];
+  [userInterfaceServer transitionToMode:0];
 }
 
-- (id)_instructionsLabelWithText:(id)a3
+- (id)_instructionsLabelWithText:(id)text
 {
-  v4 = a3;
-  v5 = [(GAXWorkspaceViewController *)self styleProvider];
-  v6 = [v5 workspaceInstructionsLabelFont];
-  v7 = [GAXInterfaceUtilities labelWithText:v4 font:v6 allowMultipleLines:1 styleProvider:v5];
+  textCopy = text;
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  workspaceInstructionsLabelFont = [styleProvider workspaceInstructionsLabelFont];
+  v7 = [GAXInterfaceUtilities labelWithText:textCopy font:workspaceInstructionsLabelFont allowMultipleLines:1 styleProvider:styleProvider];
 
   [v7 setAutoresizingMask:0];
 
   return v7;
 }
 
-- (id)_instructionsLabelTextWhenTouchEnabled:(BOOL)a3
+- (id)_instructionsLabelTextWhenTouchEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = GAXLocString(@"HELP_INTEREST_AREA");
   }
@@ -387,31 +387,31 @@
 
 - (CGSize)_instructionsLabelMaximumSize
 {
-  v3 = [(GAXWorkspaceViewController *)self instructionsLabel];
-  v4 = [v3 superview];
+  instructionsLabel = [(GAXWorkspaceViewController *)self instructionsLabel];
+  superview = [instructionsLabel superview];
 
-  v5 = [(GAXWorkspaceViewController *)self styleProvider];
-  [v5 hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:{-[GAXWorkspaceViewController interfaceOrientation](self, "interfaceOrientation")}];
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  [styleProvider hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:{-[GAXWorkspaceViewController interfaceOrientation](self, "interfaceOrientation")}];
   v7 = v6;
   v9 = v8;
-  [v5 workspaceInstructionsLabelEdgeInsets];
+  [styleProvider workspaceInstructionsLabelEdgeInsets];
   v36 = v11;
   v37 = v10;
   v38 = v13;
   v39 = v12;
-  [v4 bounds];
+  [superview bounds];
   v15 = v14;
   v17 = v16;
-  v18 = [(GAXWorkspaceViewController *)self navigationBar];
-  [v18 frame];
+  navigationBar = [(GAXWorkspaceViewController *)self navigationBar];
+  [navigationBar frame];
   MaxY = CGRectGetMaxY(v43);
 
-  v20 = [(GAXWorkspaceViewController *)self featureViewController];
-  v21 = [v20 view];
-  [v21 frame];
+  featureViewController = [(GAXWorkspaceViewController *)self featureViewController];
+  view = [featureViewController view];
+  [view frame];
   Height = CGRectGetHeight(v44);
 
-  v23 = [v5 workspaceInstructionsLabelFont];
+  workspaceInstructionsLabelFont = [styleProvider workspaceInstructionsLabelFont];
   v40 = [(GAXWorkspaceViewController *)self _instructionsLabelTextWhenTouchEnabled:0];
   v24 = [(GAXWorkspaceViewController *)self _instructionsLabelTextWhenTouchEnabled:1];
   width = CGSizeZero.width;
@@ -423,7 +423,7 @@
   do
   {
     v30 = v29;
-    [GAXInterfaceUtilities labelSizeThatFitsText:*v28 constrainedToSize:v23 font:v5 styleProvider:v15 - v39 - v38, v27];
+    [GAXInterfaceUtilities labelSizeThatFitsText:*v28 constrainedToSize:workspaceInstructionsLabelFont font:styleProvider styleProvider:v15 - v39 - v38, v27];
     v29 = 0;
     if (width < v31)
     {
@@ -450,23 +450,23 @@
   return result;
 }
 
-- (UIEdgeInsets)_hostedApplicationViewEdgeInsetsForLayoutMode:(int)a3 interfaceOrientation:(int64_t)a4
+- (UIEdgeInsets)_hostedApplicationViewEdgeInsetsForLayoutMode:(int)mode interfaceOrientation:(int64_t)orientation
 {
   top = UIEdgeInsetsZero.top;
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v11 = [(GAXWorkspaceViewController *)self styleProvider];
-  v12 = v11;
-  if (a3 == 2 && v11)
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  v12 = styleProvider;
+  if (mode == 2 && styleProvider)
   {
-    [v11 hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:a4];
+    [styleProvider hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:orientation];
     v14 = v13;
     left = v15;
     v17 = v16;
     right = v18;
-    v19 = [(GAXWorkspaceViewController *)self navigationBar];
-    [v19 frame];
+    navigationBar = [(GAXWorkspaceViewController *)self navigationBar];
+    [navigationBar frame];
     MaxY = CGRectGetMaxY(v36);
 
     if ([v12 workspaceInstructionsLabelShouldBeDisplayed])
@@ -480,11 +480,11 @@
     }
 
     top = v14 + MaxY;
-    v26 = [(GAXWorkspaceViewController *)self featureViewController];
-    v27 = [v26 view];
-    v28 = [(GAXWorkspaceViewController *)self viewIfLoaded];
-    [v28 frame];
-    [v27 systemLayoutSizeFittingSize:{v29, 0.0}];
+    featureViewController = [(GAXWorkspaceViewController *)self featureViewController];
+    view = [featureViewController view];
+    viewIfLoaded = [(GAXWorkspaceViewController *)self viewIfLoaded];
+    [viewIfLoaded frame];
+    [view systemLayoutSizeFittingSize:{v29, 0.0}];
     v31 = v30;
 
     bottom = v17 + v31;
@@ -501,14 +501,14 @@
   return result;
 }
 
-- (void)_getHostedApplicationViewParametersForLayoutMode:(int)a3 scaleFactor:(double *)a4 frame:(CGRect *)a5 targetSize:(CGSize)a6
+- (void)_getHostedApplicationViewParametersForLayoutMode:(int)mode scaleFactor:(double *)factor frame:(CGRect *)frame targetSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = *&a3;
-  v33 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-  v12 = [v33 view];
-  [v12 bounds];
+  height = size.height;
+  width = size.width;
+  v10 = *&mode;
+  interestAreaViewController = [(GAXWorkspaceViewController *)self interestAreaViewController];
+  view = [interestAreaViewController view];
+  [view bounds];
   v15 = CGSizeZero.width == width;
   v16 = CGSizeZero.height == height;
   if (v15 && v16)
@@ -533,14 +533,14 @@
 
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
-  v21 = [(GAXWorkspaceViewController *)self styleProvider];
-  if (v21)
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  if (styleProvider)
   {
-    v22 = [v12 window];
-    v23 = [v22 safeValueForKey:@"_toWindowOrientation"];
-    v24 = [v23 intValue];
+    window = [view window];
+    v23 = [window safeValueForKey:@"_toWindowOrientation"];
+    intValue = [v23 intValue];
 
-    [(GAXWorkspaceViewController *)self _hostedApplicationViewEdgeInsetsForLayoutMode:v10 interfaceOrientation:v24];
+    [(GAXWorkspaceViewController *)self _hostedApplicationViewEdgeInsetsForLayoutMode:v10 interfaceOrientation:intValue];
     x = CGRectZero.origin.x + v25;
     y = y + v26;
     v28 = v18 - (v25 + v27);
@@ -562,7 +562,7 @@
 
     v17 = v30;
     v18 = v28;
-    if (a4)
+    if (factor)
     {
       goto LABEL_11;
     }
@@ -571,28 +571,28 @@
   else
   {
     v32 = 1.0;
-    if (a4)
+    if (factor)
     {
 LABEL_11:
-      *a4 = v32;
+      *factor = v32;
     }
   }
 
-  if (a5)
+  if (frame)
   {
-    a5->origin.x = x;
-    a5->origin.y = y;
-    a5->size.width = v18;
-    a5->size.height = v17;
+    frame->origin.x = x;
+    frame->origin.y = y;
+    frame->size.width = v18;
+    frame->size.height = v17;
   }
 }
 
-- (CGRect)_adjustedTopChromeViewFrame:(CGRect)a3
+- (CGRect)_adjustedTopChromeViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(GAXWorkspaceViewController *)self layoutMode]== 1)
   {
     [(GAXWorkspaceViewController *)self _hostedApplicationViewEdgeInsetsForLayoutMode:2 interfaceOrientation:[(GAXWorkspaceViewController *)self interfaceOrientation]];
@@ -610,12 +610,12 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)_adjustedBottomChromeViewFrame:(CGRect)a3
+- (CGRect)_adjustedBottomChromeViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(GAXWorkspaceViewController *)self layoutMode]== 1)
   {
     [(GAXWorkspaceViewController *)self _hostedApplicationViewEdgeInsetsForLayoutMode:2 interfaceOrientation:[(GAXWorkspaceViewController *)self interfaceOrientation]];
@@ -633,19 +633,19 @@ LABEL_11:
   return result;
 }
 
-- (void)_loadStatusBarWithContainerView:(id)a3
+- (void)_loadStatusBarWithContainerView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v5 = [GAXInterfaceUtilities statusBarWithStyle:1 containerViewBounds:?];
-  [v4 addSubview:v5];
+  [viewCopy addSubview:v5];
 
   [(GAXWorkspaceViewController *)self setStatusBar:v5];
 }
 
-- (void)_loadNavigationBarWithContainerView:(id)a3
+- (void)_loadNavigationBarWithContainerView:(id)view
 {
-  v31 = a3;
+  viewCopy = view;
   v4 = [[GAXPassthroughNavigationBar alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(GAXPassthroughNavigationBar *)v4 sizeToFit];
   [(GAXPassthroughNavigationBar *)v4 setAutoresizingMask:34];
@@ -662,25 +662,25 @@ LABEL_11:
     [(GAXPassthroughNavigationBar *)v4 setBackgroundImage:v6 forBarMetrics:1];
   }
 
-  v7 = [(GAXWorkspaceViewController *)self styleProvider];
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
   v32[0] = NSFontAttributeName;
-  v8 = [v7 workspaceNavigationBarTitleFont];
-  v33[0] = v8;
+  workspaceNavigationBarTitleFont = [styleProvider workspaceNavigationBarTitleFont];
+  v33[0] = workspaceNavigationBarTitleFont;
   v32[1] = NSForegroundColorAttributeName;
-  v9 = v7;
-  v10 = [v7 defaultLabelTextColor];
-  v33[1] = v10;
+  v9 = styleProvider;
+  defaultLabelTextColor = [styleProvider defaultLabelTextColor];
+  v33[1] = defaultLabelTextColor;
   v11 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:2];
   [(GAXPassthroughNavigationBar *)v4 setTitleTextAttributes:v11];
 
   v12 = [UINavigationItem alloc];
-  v13 = [(GAXWorkspaceViewController *)self title];
-  v14 = [v12 initWithTitle:v13];
+  title = [(GAXWorkspaceViewController *)self title];
+  v14 = [v12 initWithTitle:title];
 
   [v14 setHidesBackButton:1];
-  v15 = [(GAXWorkspaceViewController *)self usesResumeNavigationTitles];
-  v16 = v15 == 0;
-  if (v15)
+  usesResumeNavigationTitles = [(GAXWorkspaceViewController *)self usesResumeNavigationTitles];
+  v16 = usesResumeNavigationTitles == 0;
+  if (usesResumeNavigationTitles)
   {
     v17 = @"END";
   }
@@ -716,39 +716,39 @@ LABEL_11:
   v22 = +[UIColor darkGrayColor];
   [v21 setTintColor:v22];
 
-  v23 = [v7 workspaceNavigationBarButtonTextAttributes];
-  [v21 setTitleTextAttributes:v23 forState:0];
+  workspaceNavigationBarButtonTextAttributes = [styleProvider workspaceNavigationBarButtonTextAttributes];
+  [v21 setTitleTextAttributes:workspaceNavigationBarButtonTextAttributes forState:0];
 
-  [v7 workspaceNavigationBarDismissButtonMinimumWidth];
+  [styleProvider workspaceNavigationBarDismissButtonMinimumWidth];
   [v21 _setMinimumWidth:?];
   v24 = [[NSArray alloc] initWithObjects:{v21, 0}];
   [v14 setLeftBarButtonItems:v24 animated:0];
   v25 = GAXLocString(v18);
   v26 = [[UIBarButtonItem alloc] initWithTitle:v25 style:2 target:self action:"_handleStartButtonTapped:"];
-  v27 = [v7 workspaceNavigationBarButtonTextAttributes];
-  [v26 setTitleTextAttributes:v27 forState:0];
+  workspaceNavigationBarButtonTextAttributes2 = [styleProvider workspaceNavigationBarButtonTextAttributes];
+  [v26 setTitleTextAttributes:workspaceNavigationBarButtonTextAttributes2 forState:0];
 
   v28 = [[NSArray alloc] initWithObjects:{v26, 0}];
   [v14 setRightBarButtonItems:v28 animated:0];
   v29 = [[NSArray alloc] initWithObjects:{v14, 0}];
   [(GAXPassthroughNavigationBar *)v4 setItems:v29 animated:0];
-  [v31 addSubview:v4];
+  [viewCopy addSubview:v4];
 
   [(GAXWorkspaceViewController *)self setNavigationBar:v4];
 }
 
-- (void)_loadStatusAndNavigationBarBackgroundViewWithContainerView:(id)a3
+- (void)_loadStatusAndNavigationBarBackgroundViewWithContainerView:(id)view
 {
-  v8 = a3;
+  viewCopy = view;
   if ((_UISolariumEnabled() & 1) == 0)
   {
     v4 = [[_UIBackdropView alloc] initWithPrivateStyle:2030];
     [v4 setAutoresizingMask:34];
-    v5 = [(GAXWorkspaceViewController *)self navigationBar];
-    v6 = v8;
-    if (v5 && (v7 = [v8 containsView:v5], v6 = v8, v7))
+    navigationBar = [(GAXWorkspaceViewController *)self navigationBar];
+    v6 = viewCopy;
+    if (navigationBar && (v7 = [viewCopy containsView:navigationBar], v6 = viewCopy, v7))
     {
-      [v8 insertSubview:v4 belowSubview:v5];
+      [viewCopy insertSubview:v4 belowSubview:navigationBar];
     }
 
     else
@@ -760,103 +760,103 @@ LABEL_11:
   }
 }
 
-- (void)_loadHostedApplicationShadowViewWithContainerView:(id)a3
+- (void)_loadHostedApplicationShadowViewWithContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v7 = objc_opt_new();
   [v7 setAutoresizingMask:0];
-  v5 = [(GAXWorkspaceViewController *)self styleProvider];
-  v6 = [v5 hostedApplicationShadowColor];
-  [v7 setBackgroundColor:v6];
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  hostedApplicationShadowColor = [styleProvider hostedApplicationShadowColor];
+  [v7 setBackgroundColor:hostedApplicationShadowColor];
 
   [v7 setAlpha:0.0];
-  [v4 addSubview:v7];
+  [viewCopy addSubview:v7];
 
   [(GAXWorkspaceViewController *)self setHostedApplicationShadowView:v7];
 }
 
-- (void)_loadInterestAreaViewWithContainerView:(id)a3
+- (void)_loadInterestAreaViewWithContainerView:(id)view
 {
-  v4 = a3;
-  v8 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-  v5 = [v8 interestAreaView];
-  [v4 bounds];
-  [v5 setFrame:?];
-  [v5 setAutoresizingMask:0];
-  [v4 bounds];
-  [v5 setContentsBounds:?];
-  v6 = [(GAXWorkspaceViewController *)self styleProvider];
-  [v6 applicationViewRoundedCornerRadius];
-  [v5 setContentsCornerRadius:?];
+  viewCopy = view;
+  interestAreaViewController = [(GAXWorkspaceViewController *)self interestAreaViewController];
+  interestAreaView = [interestAreaViewController interestAreaView];
+  [viewCopy bounds];
+  [interestAreaView setFrame:?];
+  [interestAreaView setAutoresizingMask:0];
+  [viewCopy bounds];
+  [interestAreaView setContentsBounds:?];
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  [styleProvider applicationViewRoundedCornerRadius];
+  [interestAreaView setContentsCornerRadius:?];
 
-  [v5 setShouldStealAllEvents:0];
-  [v5 setEventStealerViewDelegate:self];
-  v7 = [v5 layer];
-  [v7 setHitTestsAsOpaque:1];
+  [interestAreaView setShouldStealAllEvents:0];
+  [interestAreaView setEventStealerViewDelegate:self];
+  layer = [interestAreaView layer];
+  [layer setHitTestsAsOpaque:1];
 
-  [v4 addSubview:v5];
+  [viewCopy addSubview:interestAreaView];
 }
 
-- (void)_loadInstructionsLabelWithContainerView:(id)a3
+- (void)_loadInstructionsLabelWithContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(GAXWorkspaceViewController *)self _instructionsLabelTextWhenTouchEnabled:[(GAXWorkspaceViewController *)self isTouchEnabled]];
   v6 = [(GAXWorkspaceViewController *)self _instructionsLabelWithText:v5];
 
-  [v4 addSubview:v6];
+  [viewCopy addSubview:v6];
   [(GAXWorkspaceViewController *)self setInstructionsLabel:v6];
 }
 
-- (void)_loadSystemFeatureViewWithContainerView:(id)a3
+- (void)_loadSystemFeatureViewWithContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_new();
-  v6 = [(GAXWorkspaceViewController *)self styleProvider];
-  [v5 setStyleProvider:v6];
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  [v5 setStyleProvider:styleProvider];
 
   [v5 setDelegate:self];
-  v7 = [(GAXWorkspaceViewController *)self userInterfaceServer];
-  [v5 setUserInterfaceServer:v7];
+  userInterfaceServer = [(GAXWorkspaceViewController *)self userInterfaceServer];
+  [v5 setUserInterfaceServer:userInterfaceServer];
 
-  v8 = [v5 view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [v5 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   [(GAXWorkspaceViewController *)self addChildViewController:v5];
-  [v4 addSubview:v8];
+  [viewCopy addSubview:view];
   [v5 didMoveToParentViewController:self];
   [(GAXWorkspaceViewController *)self setFeatureViewController:v5];
-  v9 = [(GAXWorkspaceViewController *)self styleProvider];
-  [v9 featureViewControllerHeight];
+  styleProvider2 = [(GAXWorkspaceViewController *)self styleProvider];
+  [styleProvider2 featureViewControllerHeight];
   v11 = v10;
 
-  v12 = [v8 heightAnchor];
-  v13 = [v12 constraintLessThanOrEqualToConstant:v11];
+  heightAnchor = [view heightAnchor];
+  v13 = [heightAnchor constraintLessThanOrEqualToConstant:v11];
 
   v30 = v13;
   LODWORD(v14) = 1132068864;
   [v13 setPriority:v14];
-  v15 = [v8 bottomAnchor];
-  v16 = [v4 bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [(GAXWorkspaceViewController *)self setFeatureVCOnscreenConstraint:v17];
 
-  v18 = [v8 topAnchor];
-  v19 = [v4 bottomAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  topAnchor = [view topAnchor];
+  bottomAnchor3 = [viewCopy bottomAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:bottomAnchor3];
 
   LODWORD(v21) = 1132068864;
   [v20 setPriority:v21];
   v31[0] = v13;
-  v29 = [v8 widthAnchor];
-  v22 = [v4 widthAnchor];
-  v23 = [v29 constraintEqualToAnchor:v22];
+  widthAnchor = [view widthAnchor];
+  widthAnchor2 = [viewCopy widthAnchor];
+  v23 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v31[1] = v23;
-  v24 = [v8 leadingAnchor];
-  v25 = [v4 leadingAnchor];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
 
-  v26 = [v24 constraintEqualToAnchor:v25];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v31[2] = v26;
-  v27 = [(GAXWorkspaceViewController *)self featureVCOnscreenConstraint];
-  v31[3] = v27;
+  featureVCOnscreenConstraint = [(GAXWorkspaceViewController *)self featureVCOnscreenConstraint];
+  v31[3] = featureVCOnscreenConstraint;
   v31[4] = v20;
   v28 = [NSArray arrayWithObjects:v31 count:5];
 
@@ -865,8 +865,8 @@ LABEL_11:
 
 - (void)_updateStatusBar
 {
-  v15 = [(GAXWorkspaceViewController *)self statusBar];
-  [v15 frame];
+  statusBar = [(GAXWorkspaceViewController *)self statusBar];
+  [statusBar frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -882,28 +882,28 @@ LABEL_11:
   v18.size.height = v10;
   if (!CGRectEqualToRect(v17, v18))
   {
-    [v15 setFrame:{x, y, width, height}];
+    [statusBar setFrame:{x, y, width, height}];
   }
 }
 
 - (void)_updateNavigationBar
 {
-  v22 = [(GAXWorkspaceViewController *)self navigationBar];
-  [v22 frame];
+  navigationBar = [(GAXWorkspaceViewController *)self navigationBar];
+  [navigationBar frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(GAXWorkspaceViewController *)self viewIfLoaded];
-  [v11 safeAreaInsets];
+  viewIfLoaded = [(GAXWorkspaceViewController *)self viewIfLoaded];
+  [viewIfLoaded safeAreaInsets];
   v13 = v12 + 0.0;
 
   [(GAXWorkspaceViewController *)self _adjustedTopChromeViewFrame:v4, v13, v8, v10];
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v22 superview];
-  [v20 bounds];
+  superview = [navigationBar superview];
+  [superview bounds];
   Width = CGRectGetWidth(v24);
 
   v25.origin.x = v15;
@@ -916,7 +916,7 @@ LABEL_11:
   v26.size.height = v10;
   if (!CGRectEqualToRect(v25, v26))
   {
-    [v22 setFrame:{v15, v17, Width, v19}];
+    [navigationBar setFrame:{v15, v17, Width, v19}];
   }
 }
 
@@ -924,14 +924,14 @@ LABEL_11:
 {
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v25 = [(GAXWorkspaceViewController *)self navigationBar];
-    [v25 frame];
+    navigationBar = [(GAXWorkspaceViewController *)self navigationBar];
+    [navigationBar frame];
     v4 = v3;
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(GAXWorkspaceViewController *)self statusBar];
-    [v11 frame];
+    statusBar = [(GAXWorkspaceViewController *)self statusBar];
+    [statusBar frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -950,96 +950,96 @@ LABEL_11:
     y = v28.origin.y;
     width = v28.size.width;
     height = v28.size.height;
-    v24 = [(GAXWorkspaceViewController *)self statusAndNavigationBarBackgroundView];
-    [v24 frame];
+    statusAndNavigationBarBackgroundView = [(GAXWorkspaceViewController *)self statusAndNavigationBarBackgroundView];
+    [statusAndNavigationBarBackgroundView frame];
     v31.origin.x = x;
     v31.origin.y = y;
     v31.size.width = width;
     v31.size.height = height;
     if (!CGRectEqualToRect(v29, v31))
     {
-      [v24 setFrame:{x, y, width, height}];
+      [statusAndNavigationBarBackgroundView setFrame:{x, y, width, height}];
     }
   }
 }
 
 - (void)_updateHostedApplicationShadowView
 {
-  v3 = [(GAXWorkspaceViewController *)self hostedApplicationShadowView];
-  [v3 bounds];
+  hostedApplicationShadowView = [(GAXWorkspaceViewController *)self hostedApplicationShadowView];
+  [hostedApplicationShadowView bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [v3 superview];
-  [v8 bounds];
+  superview = [hostedApplicationShadowView superview];
+  [superview bounds];
   v10 = v9;
   v12 = v11;
 
-  [v3 setBounds:{v5, v7, v10, v12}];
-  v13 = [(GAXWorkspaceViewController *)self layoutMode];
+  [hostedApplicationShadowView setBounds:{v5, v7, v10, v12}];
+  layoutMode = [(GAXWorkspaceViewController *)self layoutMode];
   size = CGRectZero.size;
   v20.origin = CGRectZero.origin;
   v20.size = size;
   sx = 1.0;
-  [(GAXWorkspaceViewController *)self _getHostedApplicationViewParametersForLayoutMode:v13 scaleFactor:&sx frame:&v20 targetSize:CGSizeZero.width, CGSizeZero.height];
+  [(GAXWorkspaceViewController *)self _getHostedApplicationViewParametersForLayoutMode:layoutMode scaleFactor:&sx frame:&v20 targetSize:CGSizeZero.width, CGSizeZero.height];
   memset(&v18, 0, sizeof(v18));
   CGAffineTransformMakeScale(&v18, sx, sx);
   MidX = CGRectGetMidX(v20);
-  [v3 setCenter:{MidX, CGRectGetMidY(v20)}];
+  [hostedApplicationShadowView setCenter:{MidX, CGRectGetMidY(v20)}];
   v17 = v18;
-  [v3 setTransform:&v17];
+  [hostedApplicationShadowView setTransform:&v17];
   v16 = 0.0;
-  if (v13 == 2)
+  if (layoutMode == 2)
   {
     v16 = 1.0;
   }
 
-  [v3 setAlpha:v16];
+  [hostedApplicationShadowView setAlpha:v16];
 }
 
 - (void)_updateInterestAreaView
 {
-  v3 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-  v4 = [v3 view];
-  [v4 bounds];
+  interestAreaViewController = [(GAXWorkspaceViewController *)self interestAreaViewController];
+  view = [interestAreaViewController view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 superview];
-  [v9 bounds];
+  superview = [view superview];
+  [superview bounds];
   v11 = v10;
   v13 = v12;
 
-  [v4 setBounds:{v6, v8, v11, v13}];
-  v14 = [(GAXWorkspaceViewController *)self layoutMode];
+  [view setBounds:{v6, v8, v11, v13}];
+  layoutMode = [(GAXWorkspaceViewController *)self layoutMode];
   size = CGRectZero.size;
   v23.origin = CGRectZero.origin;
   v23.size = size;
   sx = 1.0;
-  [(GAXWorkspaceViewController *)self _getHostedApplicationViewParametersForLayoutMode:v14 scaleFactor:&sx frame:&v23 targetSize:CGSizeZero.width, CGSizeZero.height];
+  [(GAXWorkspaceViewController *)self _getHostedApplicationViewParametersForLayoutMode:layoutMode scaleFactor:&sx frame:&v23 targetSize:CGSizeZero.width, CGSizeZero.height];
   memset(&v21, 0, sizeof(v21));
   CGAffineTransformMakeScale(&v21, sx, sx);
   MidX = CGRectGetMidX(v23);
-  [v4 setCenter:{MidX, CGRectGetMidY(v23)}];
+  [view setCenter:{MidX, CGRectGetMidY(v23)}];
   v20 = v21;
-  [v4 setTransform:&v20];
-  [(GAXWorkspaceViewController *)self scaleForSpecialControlsInInterestAreaViewController:v3];
+  [view setTransform:&v20];
+  [(GAXWorkspaceViewController *)self scaleForSpecialControlsInInterestAreaViewController:interestAreaViewController];
   v18 = v17;
-  v19 = [v3 interestAreaView];
-  [v19 setBackgroundPatternScaleFactor:v18];
+  interestAreaView = [interestAreaViewController interestAreaView];
+  [interestAreaView setBackgroundPatternScaleFactor:v18];
 }
 
 - (void)_updateInstructionsLabel
 {
-  v3 = [(GAXWorkspaceViewController *)self instructionsLabel];
-  v4 = [(GAXWorkspaceViewController *)self styleProvider];
-  v5 = v4;
-  if (v3 && v4)
+  instructionsLabel = [(GAXWorkspaceViewController *)self instructionsLabel];
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  v5 = styleProvider;
+  if (instructionsLabel && styleProvider)
   {
     size = CGRectZero.size;
     v40.origin = CGRectZero.origin;
     v40.size = size;
     [(GAXWorkspaceViewController *)self _getHostedApplicationViewParametersForLayoutMode:2 scaleFactor:0 frame:&v40 targetSize:CGSizeZero.width, CGSizeZero.height];
-    v7 = [v3 superview];
-    [v7 bounds];
+    superview = [instructionsLabel superview];
+    [superview bounds];
     v9 = v8;
     v36 = v10;
     v12 = v11;
@@ -1075,9 +1075,9 @@ LABEL_11:
     v44.size.width = width;
     v44.size.height = height;
     v27 = v26 - CGRectGetMinY(v44) - v39;
-    v28 = [(GAXWorkspaceViewController *)self featureViewController];
-    v29 = [v28 view];
-    [v29 frame];
+    featureViewController = [(GAXWorkspaceViewController *)self featureViewController];
+    view = [featureViewController view];
+    [view frame];
     v30 = v27 - CGRectGetHeight(v45);
 
     v46.origin.x = v18;
@@ -1095,10 +1095,10 @@ LABEL_11:
       MidY = MidY + 7.0;
     }
 
-    [v3 sizeThatFits:{v38, v30, *&v35}];
+    [instructionsLabel sizeThatFits:{v38, v30, *&v35}];
     [(GAXWorkspaceViewController *)self _adjustedBottomChromeViewFrame:MidX - v33 * 0.5, MidY - v34 * 0.5, v33];
     v49 = CGRectIntegral(v48);
-    [v3 setFrame:{v49.origin.x, v49.origin.y, v49.size.width, v49.size.height}];
+    [instructionsLabel setFrame:{v49.origin.x, v49.origin.y, v49.size.width, v49.size.height}];
   }
 }
 
@@ -1110,44 +1110,44 @@ LABEL_11:
   [(GAXWorkspaceViewController *)self _updateSystemFeatureView];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = [(GAXWorkspaceViewController *)self view:a3];
+  v4 = [(GAXWorkspaceViewController *)self view:window];
   [v4 setNeedsUpdateConstraints];
 }
 
 - (void)_updateSystemFeatureView
 {
   v3 = [(GAXWorkspaceViewController *)self layoutMode]!= 1;
-  v4 = [(GAXWorkspaceViewController *)self featureVCOnscreenConstraint];
-  [v4 setActive:v3];
+  featureVCOnscreenConstraint = [(GAXWorkspaceViewController *)self featureVCOnscreenConstraint];
+  [featureVCOnscreenConstraint setActive:v3];
 }
 
-- (void)_updateHostedApplicationViewWithAnimationDuration:(double)a3 targetSize:(CGSize)a4
+- (void)_updateHostedApplicationViewWithAnimationDuration:(double)duration targetSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   size = CGRectZero.size;
   v19.origin = CGRectZero.origin;
   v19.size = size;
   v18 = 1.0;
-  [(GAXWorkspaceViewController *)self _getHostedApplicationViewParametersForLayoutMode:[(GAXWorkspaceViewController *)self layoutMode] scaleFactor:&v18 frame:&v19 targetSize:width, a4.height];
+  [(GAXWorkspaceViewController *)self _getHostedApplicationViewParametersForLayoutMode:[(GAXWorkspaceViewController *)self layoutMode] scaleFactor:&v18 frame:&v19 targetSize:width, size.height];
   MidX = CGRectGetMidX(v19);
   MidY = CGRectGetMidY(v19);
-  v10 = [(GAXWorkspaceViewController *)self overlayUserInterfaceViewController];
-  v11 = [v10 view];
+  overlayUserInterfaceViewController = [(GAXWorkspaceViewController *)self overlayUserInterfaceViewController];
+  view = [overlayUserInterfaceViewController view];
 
-  v12 = [v11 window];
-  [v11 convertPoint:v12 toView:{MidX, MidY}];
-  [v12 convertPoint:0 toWindow:?];
+  window = [view window];
+  [view convertPoint:window toView:{MidX, MidY}];
+  [window convertPoint:0 toWindow:?];
   v14 = v13;
   v16 = v15;
-  v17 = [(GAXWorkspaceViewController *)self userInterfaceServer];
-  [v17 updateHostedApplicationStateWithScaleFactor:v18 center:v14 animationDuration:{v16, a3}];
+  userInterfaceServer = [(GAXWorkspaceViewController *)self userInterfaceServer];
+  [userInterfaceServer updateHostedApplicationStateWithScaleFactor:v18 center:v14 animationDuration:{v16, duration}];
 }
 
-- (void)_updateEverythingForLayoutMode:(int)a3
+- (void)_updateEverythingForLayoutMode:(int)mode
 {
-  [(GAXWorkspaceViewController *)self setLayoutMode:*&a3];
+  [(GAXWorkspaceViewController *)self setLayoutMode:*&mode];
   [(GAXWorkspaceViewController *)self _updateStatusBar];
   [(GAXWorkspaceViewController *)self _updateNavigationBar];
   [(GAXWorkspaceViewController *)self _updateStatusAndNavigationBarBackgroundView];
@@ -1158,34 +1158,34 @@ LABEL_11:
   [(GAXWorkspaceViewController *)self _updateSystemFeatureView];
 }
 
-- (void)_willBeginTransitionWithType:(int)a3
+- (void)_willBeginTransitionWithType:(int)type
 {
-  v9 = [(GAXWorkspaceViewController *)self featureViewController];
-  v5 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-  v6 = v5;
-  if (a3 <= 2)
+  featureViewController = [(GAXWorkspaceViewController *)self featureViewController];
+  interestAreaViewController = [(GAXWorkspaceViewController *)self interestAreaViewController];
+  v6 = interestAreaViewController;
+  if (type <= 2)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_10;
       }
 
-      [v9 dismissOptionsAnimated:1];
+      [featureViewController dismissOptionsAnimated:1];
       v7 = [(GAXWorkspaceViewController *)self isTouchEnabled]^ 1;
       v8 = v6;
       goto LABEL_9;
     }
 
 LABEL_7:
-    [v5 transitionIn];
+    [interestAreaViewController transitionIn];
     goto LABEL_10;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
       goto LABEL_10;
     }
@@ -1193,7 +1193,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v9 dismissOptionsAnimated:1];
+  [featureViewController dismissOptionsAnimated:1];
   v8 = v6;
   v7 = 1;
 LABEL_9:
@@ -1203,17 +1203,17 @@ LABEL_10:
 
 - (double)_transitionDuration
 {
-  v2 = [(GAXWorkspaceViewController *)self styleProvider];
-  [v2 defaultAnimationDuration];
+  styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+  [styleProvider defaultAnimationDuration];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_performTransitionWithType:(int)a3 completion:(id)a4
+- (void)_performTransitionWithType:(int)type completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&type;
+  completionCopy = completion;
   if ((v4 - 1) > 3)
   {
     v7 = 0;
@@ -1226,9 +1226,9 @@ LABEL_10:
 
   if (v7 == [(GAXWorkspaceViewController *)self layoutMode])
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -1239,38 +1239,38 @@ LABEL_10:
     v9 = v8;
     if (GAXUserInterfaceIdiomIsPhone())
     {
-      v10 = [(GAXWorkspaceViewController *)self overlayUserInterfaceViewController];
-      v11 = [v10 parentViewController];
+      overlayUserInterfaceViewController = [(GAXWorkspaceViewController *)self overlayUserInterfaceViewController];
+      parentViewController = [overlayUserInterfaceViewController parentViewController];
 
-      if (v11)
+      if (parentViewController)
       {
         do
         {
-          v12 = [v10 parentViewController];
+          parentViewController2 = [overlayUserInterfaceViewController parentViewController];
 
-          v13 = [v12 parentViewController];
+          v12ParentViewController = [parentViewController2 parentViewController];
 
-          v10 = v12;
+          overlayUserInterfaceViewController = parentViewController2;
         }
 
-        while (v13);
+        while (v12ParentViewController);
       }
 
       else
       {
-        v12 = v10;
+        parentViewController2 = overlayUserInterfaceViewController;
       }
 
-      v14 = [v12 interfaceOrientation];
+      interfaceOrientation = [parentViewController2 interfaceOrientation];
       v15 = +[AXUIDisplayManager sharedDisplayManager];
-      v16 = [v15 activeInterfaceOrientation];
+      activeInterfaceOrientation = [v15 activeInterfaceOrientation];
 
-      if (v14 != v16)
+      if (interfaceOrientation != activeInterfaceOrientation)
       {
         v17 = +[AXUIDisplayManager sharedDisplayManager];
-        [v12 setInterfaceOrientation:{objc_msgSend(v17, "activeInterfaceOrientation")}];
+        [parentViewController2 setInterfaceOrientation:{objc_msgSend(v17, "activeInterfaceOrientation")}];
 
-        [v12 setNeedsUpdateOfSupportedInterfaceOrientations];
+        [parentViewController2 setNeedsUpdateOfSupportedInterfaceOrientations];
       }
     }
 
@@ -1286,29 +1286,29 @@ LABEL_10:
     v18[3] = &unk_5DA28;
     v18[4] = self;
     v20 = v4;
-    v19 = v6;
+    v19 = completionCopy;
     [UIView animateWithDuration:v21 animations:v18 completion:v9];
     [(GAXWorkspaceViewController *)self _updateHostedApplicationViewWithAnimationDuration:v9 targetSize:CGSizeZero.width, CGSizeZero.height];
   }
 }
 
-- (void)_performOrScheduleTransitionWithType:(int)a3 completion:(id)a4
+- (void)_performOrScheduleTransitionWithType:(int)type completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&type;
+  completionCopy = completion;
   if ([(GAXWorkspaceViewController *)self isTransitionInProgress])
   {
-    v7 = [(GAXWorkspaceViewController *)self transitionContextQueue];
-    if (!v7)
+    transitionContextQueue = [(GAXWorkspaceViewController *)self transitionContextQueue];
+    if (!transitionContextQueue)
     {
-      v7 = objc_opt_new();
-      [(GAXWorkspaceViewController *)self setTransitionContextQueue:v7];
+      transitionContextQueue = objc_opt_new();
+      [(GAXWorkspaceViewController *)self setTransitionContextQueue:transitionContextQueue];
     }
 
     v8 = objc_opt_new();
     [v8 setType:v4];
-    [v8 setCompletion:v6];
-    [v7 ax_enqueueObject:v8];
+    [v8 setCompletion:completionCopy];
+    [transitionContextQueue ax_enqueueObject:v8];
   }
 
   else
@@ -1319,44 +1319,44 @@ LABEL_10:
     v9[2] = sub_20FD4;
     v9[3] = &unk_5DA50;
     v9[4] = self;
-    v10 = v6;
+    v10 = completionCopy;
     [(GAXWorkspaceViewController *)self _performTransitionWithType:v4 completion:v9];
   }
 }
 
-- (void)featureViewController:(id)a3 touchSystemFeatureDidChange:(BOOL)a4
+- (void)featureViewController:(id)controller touchSystemFeatureDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-  [v6 setBackgroundShouldCoverEverything:v4 ^ 1 animated:1];
+  changeCopy = change;
+  interestAreaViewController = [(GAXWorkspaceViewController *)self interestAreaViewController];
+  [interestAreaViewController setBackgroundShouldCoverEverything:changeCopy ^ 1 animated:1];
 
-  v7 = [(GAXWorkspaceViewController *)self instructionsLabel];
+  instructionsLabel = [(GAXWorkspaceViewController *)self instructionsLabel];
 
-  if (v7)
+  if (instructionsLabel)
   {
-    v8 = [(GAXWorkspaceViewController *)self _instructionsLabelTextWhenTouchEnabled:v4];
-    v9 = [(GAXWorkspaceViewController *)self instructionsLabel];
-    v10 = [v9 text];
-    v11 = [v10 isEqualToString:v8];
+    v8 = [(GAXWorkspaceViewController *)self _instructionsLabelTextWhenTouchEnabled:changeCopy];
+    instructionsLabel2 = [(GAXWorkspaceViewController *)self instructionsLabel];
+    text = [instructionsLabel2 text];
+    v11 = [text isEqualToString:v8];
 
     if ((v11 & 1) == 0)
     {
       v12 = [(GAXWorkspaceViewController *)self _instructionsLabelWithText:v8];
-      v13 = [v9 superview];
-      [v13 insertSubview:v12 belowSubview:v9];
+      superview = [instructionsLabel2 superview];
+      [superview insertSubview:v12 belowSubview:instructionsLabel2];
 
       [(GAXWorkspaceViewController *)self setInstructionsLabel:v12];
       [(GAXWorkspaceViewController *)self _updateInstructionsLabel];
       [v12 setAlpha:0.0];
-      v14 = [(GAXWorkspaceViewController *)self styleProvider];
-      [v14 defaultAnimationDuration];
+      styleProvider = [(GAXWorkspaceViewController *)self styleProvider];
+      [styleProvider defaultAnimationDuration];
       v16 = v15;
 
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_212F4;
       v22[3] = &unk_5CD48;
-      v23 = v9;
+      v23 = instructionsLabel2;
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_21300;
@@ -1370,48 +1370,48 @@ LABEL_10:
   }
 }
 
-- (id)viewForPresentingOverlayUserInterfaceForFeatureViewController:(id)a3
+- (id)viewForPresentingOverlayUserInterfaceForFeatureViewController:(id)controller
 {
-  v3 = [(GAXWorkspaceViewController *)self overlayUserInterfaceViewController];
-  v4 = [v3 view];
+  overlayUserInterfaceViewController = [(GAXWorkspaceViewController *)self overlayUserInterfaceViewController];
+  view = [overlayUserInterfaceViewController view];
 
-  return v4;
+  return view;
 }
 
-- (void)getInterestAreaPathForFingerPath:(id)a3 interestAreaViewController:(id)a4 completion:(id)a5
+- (void)getInterestAreaPathForFingerPath:(id)path interestAreaViewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(GAXWorkspaceViewController *)self view];
+  pathCopy = path;
+  controllerCopy = controller;
+  completionCopy = completion;
+  view = [(GAXWorkspaceViewController *)self view];
   v12 = objc_opt_new();
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_215CC;
   v26[3] = &unk_5DAA0;
-  v13 = v11;
+  v13 = view;
   v27 = v13;
   v28 = v12;
   v14 = v12;
-  [v8 enumerateElementsUsingBlock:v26];
-  v15 = [(GAXWorkspaceViewController *)self userInterfaceServer];
+  [pathCopy enumerateElementsUsingBlock:v26];
+  userInterfaceServer = [(GAXWorkspaceViewController *)self userInterfaceServer];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_2166C;
   v20[3] = &unk_5DAC8;
-  v21 = v9;
-  v22 = v8;
+  v21 = controllerCopy;
+  v22 = pathCopy;
   v23 = v13;
-  v24 = self;
-  v25 = v10;
-  v16 = v10;
+  selfCopy = self;
+  v25 = completionCopy;
+  v16 = completionCopy;
   v17 = v13;
-  v18 = v8;
-  v19 = v9;
-  [v15 getContainedViewsInFrontmostApplicationForFingerPath:v14 completion:v20];
+  v18 = pathCopy;
+  v19 = controllerCopy;
+  [userInterfaceServer getContainedViewsInFrontmostApplicationForFingerPath:v14 completion:v20];
 }
 
-- (double)scaleForSpecialControlsInInterestAreaViewController:(id)a3
+- (double)scaleForSpecialControlsInInterestAreaViewController:(id)controller
 {
   v4 = 1.0;
   [(GAXWorkspaceViewController *)self _getHostedApplicationViewParametersForLayoutMode:[(GAXWorkspaceViewController *)self layoutMode] scaleFactor:&v4 frame:0 targetSize:CGSizeZero.width, CGSizeZero.height];
@@ -1426,20 +1426,20 @@ LABEL_10:
   }
 }
 
-- (CGRect)boundsForConstrainingFingerPathInInterestAreaViewController:(id)a3
+- (CGRect)boundsForConstrainingFingerPathInInterestAreaViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(GAXWorkspaceViewController *)self isViewLoaded])
   {
-    v5 = [(GAXWorkspaceViewController *)self navigationBar];
-    [v5 frame];
+    navigationBar = [(GAXWorkspaceViewController *)self navigationBar];
+    [navigationBar frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(GAXWorkspaceViewController *)self featureViewController];
-    v15 = [v14 view];
-    [v15 frame];
+    featureViewController = [(GAXWorkspaceViewController *)self featureViewController];
+    view = [featureViewController view];
+    [view frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -1455,9 +1455,9 @@ LABEL_10:
     v41.size.width = v21;
     v41.size.height = v23;
     v25 = CGRectGetMinY(v41) - MaxY;
-    v26 = [v5 superview];
-    v27 = [v4 view];
-    [v26 convertRect:v27 toView:{v7, MaxY, v11, v25}];
+    superview = [navigationBar superview];
+    view2 = [controllerCopy view];
+    [superview convertRect:view2 toView:{v7, MaxY, v11, v25}];
     x = v28;
     y = v30;
     width = v32;
@@ -1483,29 +1483,29 @@ LABEL_10:
   return result;
 }
 
-- (id)referenceViewForConvertingFromAndToWindowCoordinateSystemForInterestAreaViewController:(id)a3
+- (id)referenceViewForConvertingFromAndToWindowCoordinateSystemForInterestAreaViewController:(id)controller
 {
   if ([(GAXWorkspaceViewController *)self isViewLoaded])
   {
-    v4 = [(GAXWorkspaceViewController *)self view];
+    view = [(GAXWorkspaceViewController *)self view];
   }
 
   else
   {
-    v4 = 0;
+    view = 0;
   }
 
-  return v4;
+  return view;
 }
 
-- (id)viewToCoverWithOutOfBoundsDrawingForInterestAreaViewWithController:(id)a3 edgeInsets:(UIEdgeInsets *)a4
+- (id)viewToCoverWithOutOfBoundsDrawingForInterestAreaViewWithController:(id)controller edgeInsets:(UIEdgeInsets *)insets
 {
   top = UIEdgeInsetsZero.top;
   bottom = UIEdgeInsetsZero.bottom;
   if (![(GAXWorkspaceViewController *)self isViewLoaded])
   {
-    v8 = 0;
-    if (!a4)
+    view = 0;
+    if (!insets)
     {
       goto LABEL_6;
     }
@@ -1513,78 +1513,78 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  v8 = [(GAXWorkspaceViewController *)self view];
-  v9 = [(GAXWorkspaceViewController *)self navigationBar];
-  [v9 frame];
+  view = [(GAXWorkspaceViewController *)self view];
+  navigationBar = [(GAXWorkspaceViewController *)self navigationBar];
+  [navigationBar frame];
   top = UIEdgeInsetsZero.top + CGRectGetMaxY(v17);
 
-  [v8 bounds];
+  [view bounds];
   MaxY = CGRectGetMaxY(v18);
-  v11 = [(GAXWorkspaceViewController *)self featureViewController];
-  v12 = [v11 view];
-  [v12 frame];
+  featureViewController = [(GAXWorkspaceViewController *)self featureViewController];
+  view2 = [featureViewController view];
+  [view2 frame];
   bottom = bottom + MaxY - CGRectGetMinY(v19);
 
-  if (a4)
+  if (insets)
   {
 LABEL_5:
     left = UIEdgeInsetsZero.left;
     right = UIEdgeInsetsZero.right;
-    a4->top = top;
-    a4->left = left;
-    a4->bottom = bottom;
-    a4->right = right;
+    insets->top = top;
+    insets->left = left;
+    insets->bottom = bottom;
+    insets->right = right;
   }
 
 LABEL_6:
 
-  return v8;
+  return view;
 }
 
-- (BOOL)isInterestAreaViewAccessibilityElementWithController:(id)a3
+- (BOOL)isInterestAreaViewAccessibilityElementWithController:(id)controller
 {
-  v3 = [(GAXWorkspaceViewController *)self userInterfaceServer];
-  v4 = [v3 isInWorkspace];
+  userInterfaceServer = [(GAXWorkspaceViewController *)self userInterfaceServer];
+  isInWorkspace = [userInterfaceServer isInWorkspace];
 
-  return v4;
+  return isInWorkspace;
 }
 
-- (void)interestAreaViewController:(id)a3 willRotateToInterfaceOrientation:(int64_t)a4 duration:(double)a5
+- (void)interestAreaViewController:(id)controller willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v8 = a3;
-  v9 = [(GAXWorkspaceViewController *)self userInterfaceServer];
-  [v9 interestAreaViewController:v8 willRotateToInterfaceOrientation:a4 duration:a5];
+  controllerCopy = controller;
+  userInterfaceServer = [(GAXWorkspaceViewController *)self userInterfaceServer];
+  [userInterfaceServer interestAreaViewController:controllerCopy willRotateToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)interestAreaViewController:(id)a3 didRotateFromInterfaceOrientation:(int64_t)a4
+- (void)interestAreaViewController:(id)controller didRotateFromInterfaceOrientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = [(GAXWorkspaceViewController *)self userInterfaceServer];
-  [v7 interestAreaViewController:v6 didRotateFromInterfaceOrientation:a4];
+  controllerCopy = controller;
+  userInterfaceServer = [(GAXWorkspaceViewController *)self userInterfaceServer];
+  [userInterfaceServer interestAreaViewController:controllerCopy didRotateFromInterfaceOrientation:orientation];
 }
 
-- (void)archiveInterestAreaPathsForStorageInterestAreaViewController:(id)a3
+- (void)archiveInterestAreaPathsForStorageInterestAreaViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(GAXWorkspaceViewController *)self userInterfaceServer];
-  [v5 archiveInterestAreaPathsForStorageInterestAreaViewController:v4];
+  controllerCopy = controller;
+  userInterfaceServer = [(GAXWorkspaceViewController *)self userInterfaceServer];
+  [userInterfaceServer archiveInterestAreaPathsForStorageInterestAreaViewController:controllerCopy];
 }
 
-- (BOOL)eventStealerView:(id)a3 shouldStealEventAtPoint:(CGPoint)a4
+- (BOOL)eventStealerView:(id)view shouldStealEventAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(GAXWorkspaceViewController *)self interestAreaViewController];
-  if ([v8 isViewLoaded])
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  interestAreaViewController = [(GAXWorkspaceViewController *)self interestAreaViewController];
+  if ([interestAreaViewController isViewLoaded])
   {
-    [(GAXWorkspaceViewController *)self boundsForConstrainingFingerPathInInterestAreaViewController:v8];
+    [(GAXWorkspaceViewController *)self boundsForConstrainingFingerPathInInterestAreaViewController:interestAreaViewController];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [v8 view];
-    [v17 convertPoint:v7 fromView:{x, y}];
+    view = [interestAreaViewController view];
+    [view convertPoint:viewCopy fromView:{x, y}];
     v22.x = v18;
     v22.y = v19;
     v23.origin.x = v10;

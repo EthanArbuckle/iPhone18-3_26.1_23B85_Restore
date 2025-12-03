@@ -1,19 +1,19 @@
 @interface GKDashboardPlayerPhotoView
 - (BOOL)hasImage;
-- (GKDashboardPlayerPhotoView)initWithCoder:(id)a3;
-- (GKDashboardPlayerPhotoView)initWithFrame:(CGRect)a3;
+- (GKDashboardPlayerPhotoView)initWithCoder:(id)coder;
+- (GKDashboardPlayerPhotoView)initWithFrame:(CGRect)frame;
 - (GKPlayerAvatarViewDelegate)delegate;
 - (void)commonInit;
 - (void)invalidatePhoto;
 - (void)layoutSubviews;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)refreshImageWithCompletionHandler:(id)a3;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setDimmed:(BOOL)a3;
-- (void)setPlayer:(id)a3 completionHandler:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)refreshImageWithCompletionHandler:(id)handler;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setDimmed:(BOOL)dimmed;
+- (void)setPlayer:(id)player completionHandler:(id)handler;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation GKDashboardPlayerPhotoView
@@ -24,22 +24,22 @@
   v3 = objc_opt_new();
   [(GKDashboardPlayerPhotoView *)self setAvatarImageView:v3];
 
-  v4 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
-  [v4 setAccessibilityIdentifier:@"UIA.GameCenter.GKDashboardPlayerPhotoView.avatarImageView"];
+  avatarImageView = [(GKDashboardPlayerPhotoView *)self avatarImageView];
+  [avatarImageView setAccessibilityIdentifier:@"UIA.GameCenter.GKDashboardPlayerPhotoView.avatarImageView"];
 
-  v5 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
-  [(GKDashboardPlayerPhotoView *)self addSubview:v5];
+  avatarImageView2 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
+  [(GKDashboardPlayerPhotoView *)self addSubview:avatarImageView2];
 
   [(GKDashboardPlayerPhotoView *)self setAvatarSize:65537];
 
   [(GKDashboardPlayerPhotoView *)self setFocusable:0];
 }
 
-- (GKDashboardPlayerPhotoView)initWithCoder:(id)a3
+- (GKDashboardPlayerPhotoView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = GKDashboardPlayerPhotoView;
-  v3 = [(GKDashboardPlayerPhotoView *)&v6 initWithCoder:a3];
+  v3 = [(GKDashboardPlayerPhotoView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -49,11 +49,11 @@
   return v4;
 }
 
-- (GKDashboardPlayerPhotoView)initWithFrame:(CGRect)a3
+- (GKDashboardPlayerPhotoView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = GKDashboardPlayerPhotoView;
-  v3 = [(GKDashboardPlayerPhotoView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKDashboardPlayerPhotoView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -73,50 +73,50 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  avatarImageView = [(GKDashboardPlayerPhotoView *)self avatarImageView];
+  [avatarImageView setFrame:{v4, v6, v8, v10}];
 
   [(GKDashboardPlayerPhotoView *)self bounds];
   v13 = v12 * 0.5;
-  v14 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
-  v15 = [v14 layer];
-  [v15 setCornerRadius:v13];
+  avatarImageView2 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
+  layer = [avatarImageView2 layer];
+  [layer setCornerRadius:v13];
 
   [(GKDashboardPlayerPhotoView *)self bounds];
   [(GKDashboardPlayerPhotoView *)self _setCornerRadius:v16 * 0.5];
   [(GKDashboardPlayerPhotoView *)self setClipsToBounds:1];
-  v17 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
-  [v17 setClipsToBounds:1];
+  avatarImageView3 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
+  [avatarImageView3 setClipsToBounds:1];
 
-  v18 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
-  v19 = [v18 layer];
-  [v19 setMasksToBounds:1];
+  avatarImageView4 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
+  layer2 = [avatarImageView4 layer];
+  [layer2 setMasksToBounds:1];
 
-  v20 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
-  [v20 setContentMode:2];
+  avatarImageView5 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
+  [avatarImageView5 setContentMode:2];
 }
 
 - (BOOL)hasImage
 {
-  v2 = [(GKDashboardPlayerPhotoView *)self player];
-  v3 = [v2 hasPhoto];
+  player = [(GKDashboardPlayerPhotoView *)self player];
+  hasPhoto = [player hasPhoto];
 
-  return v3;
+  return hasPhoto;
 }
 
-- (void)setPlayer:(id)a3 completionHandler:(id)a4
+- (void)setPlayer:(id)player completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(GKPlayer *)self->_player internal];
-  v10 = [v9 playerID];
-  v11 = [v7 internal];
-  v12 = [v11 playerID];
+  playerCopy = player;
+  handlerCopy = handler;
+  internal = [(GKPlayer *)self->_player internal];
+  playerID = [internal playerID];
+  internal2 = [playerCopy internal];
+  playerID2 = [internal2 playerID];
 
-  if (v10 != v12)
+  if (playerID != playerID2)
   {
-    objc_storeStrong(&self->_player, a3);
-    if (v7)
+    objc_storeStrong(&self->_player, player);
+    if (playerCopy)
     {
       v13 = dispatch_get_global_queue(0, 0);
       v15[0] = MEMORY[0x277D85DD0];
@@ -124,15 +124,15 @@
       v15[2] = __58__GKDashboardPlayerPhotoView_setPlayer_completionHandler___block_invoke;
       v15[3] = &unk_27966A958;
       v15[4] = self;
-      v16 = v8;
+      v16 = handlerCopy;
       dispatch_async(v13, v15);
     }
   }
 
   if (!self->_player)
   {
-    v14 = [(GKDashboardPlayerPhotoView *)self avatarImageView];
-    [v14 setImage:0];
+    avatarImageView = [(GKDashboardPlayerPhotoView *)self avatarImageView];
+    [avatarImageView setImage:0];
   }
 }
 
@@ -158,20 +158,20 @@ uint64_t __58__GKDashboardPlayerPhotoView_setPlayer_completionHandler___block_in
   return result;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
   v6.receiver = self;
   v6.super_class = GKDashboardPlayerPhotoView;
-  v4 = a3;
-  [(GKDashboardPlayerPhotoView *)&v6 setAccessibilityLabel:v4];
+  labelCopy = label;
+  [(GKDashboardPlayerPhotoView *)&v6 setAccessibilityLabel:labelCopy];
   v5 = [(GKDashboardPlayerPhotoView *)self avatarImageView:v6.receiver];
-  [v5 setAccessibilityLabel:v4];
+  [v5 setAccessibilityLabel:labelCopy];
 }
 
-- (void)setDimmed:(BOOL)a3
+- (void)setDimmed:(BOOL)dimmed
 {
-  self->_dimmed = a3;
-  if (a3)
+  self->_dimmed = dimmed;
+  if (dimmed)
   {
     v3 = 0.5;
   }
@@ -181,14 +181,14 @@ uint64_t __58__GKDashboardPlayerPhotoView_setPlayer_completionHandler___block_in
     v3 = 1.0;
   }
 
-  v5 = [(GKDashboardPlayerPhotoView *)self layer];
+  layer = [(GKDashboardPlayerPhotoView *)self layer];
   *&v4 = v3;
-  [v5 setOpacity:v4];
+  [layer setOpacity:v4];
 }
 
-- (void)refreshImageWithCompletionHandler:(id)a3
+- (void)refreshImageWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277D0C2A0];
   v6 = *MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
@@ -206,9 +206,9 @@ uint64_t __58__GKDashboardPlayerPhotoView_setPlayer_completionHandler___block_in
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKDashboardPlayerPhotoView.m", 143, "-[GKDashboardPlayerPhotoView refreshImageWithCompletionHandler:]"];
   v17 = [v15 dispatchGroupWithName:v16];
 
-  v18 = [(GKDashboardPlayerPhotoView *)self player];
-  v19 = [v18 internal];
-  v20 = [v19 playerID];
+  player = [(GKDashboardPlayerPhotoView *)self player];
+  internal = [player internal];
+  playerID = [internal playerID];
 
   objc_initWeak(&location, self);
   v31[0] = MEMORY[0x277D85DD0];
@@ -217,7 +217,7 @@ uint64_t __58__GKDashboardPlayerPhotoView_setPlayer_completionHandler___block_in
   v31[3] = &unk_27966AAF0;
   objc_copyWeak(&v34, &location);
   v31[4] = self;
-  v21 = v20;
+  v21 = playerID;
   v32 = v21;
   v22 = v17;
   v33 = v22;
@@ -228,10 +228,10 @@ uint64_t __58__GKDashboardPlayerPhotoView_setPlayer_completionHandler___block_in
   v26[3] = &unk_27966AB18;
   v23 = v22;
   v27 = v23;
-  v28 = self;
+  selfCopy = self;
   v24 = v21;
   v29 = v24;
-  v25 = v4;
+  v25 = handlerCopy;
   v30 = v25;
   [v23 notifyOnMainQueueWithBlock:v26];
 
@@ -396,9 +396,9 @@ LABEL_11:
 
 - (void)invalidatePhoto
 {
-  v3 = [(GKDashboardPlayerPhotoView *)self player];
+  player = [(GKDashboardPlayerPhotoView *)self player];
 
-  if (v3)
+  if (player)
   {
     v4 = MEMORY[0x277D0C2A0];
     v5 = *MEMORY[0x277D0C2A0];
@@ -417,13 +417,13 @@ LABEL_11:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if ([(GKDashboardPlayerPhotoView *)self isUserInteractionEnabled:a3])
+  if ([(GKDashboardPlayerPhotoView *)self isUserInteractionEnabled:began])
   {
-    v5 = [(GKDashboardPlayerPhotoView *)self delegate];
+    delegate = [(GKDashboardPlayerPhotoView *)self delegate];
 
-    if (v5)
+    if (delegate)
     {
       v6 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
       [(GKDashboardPlayerPhotoView *)self setTintColor:v6];
@@ -431,34 +431,34 @@ LABEL_11:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(GKDashboardPlayerPhotoView *)self isUserInteractionEnabled:a3])
+  if ([(GKDashboardPlayerPhotoView *)self isUserInteractionEnabled:ended])
   {
-    v5 = [(GKDashboardPlayerPhotoView *)self delegate];
+    delegate = [(GKDashboardPlayerPhotoView *)self delegate];
 
-    if (v5)
+    if (delegate)
     {
       [(GKDashboardPlayerPhotoView *)self setTintColor:0];
-      v6 = [(GKDashboardPlayerPhotoView *)self delegate];
+      delegate2 = [(GKDashboardPlayerPhotoView *)self delegate];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
       {
-        v8 = [(GKDashboardPlayerPhotoView *)self delegate];
-        [v8 didSelectPlayerAvatarView:self];
+        delegate3 = [(GKDashboardPlayerPhotoView *)self delegate];
+        [delegate3 didSelectPlayerAvatarView:self];
       }
     }
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if ([(GKDashboardPlayerPhotoView *)self isUserInteractionEnabled:a3])
+  if ([(GKDashboardPlayerPhotoView *)self isUserInteractionEnabled:cancelled])
   {
-    v5 = [(GKDashboardPlayerPhotoView *)self delegate];
+    delegate = [(GKDashboardPlayerPhotoView *)self delegate];
 
-    if (v5)
+    if (delegate)
     {
 
       [(GKDashboardPlayerPhotoView *)self setTintColor:0];
@@ -466,18 +466,18 @@ LABEL_11:
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  endedCopy = ended;
   v19.receiver = self;
   v19.super_class = GKDashboardPlayerPhotoView;
-  [(GKDashboardPlayerPhotoView *)&v19 pressesEnded:v6 withEvent:a4];
+  [(GKDashboardPlayerPhotoView *)&v19 pressesEnded:endedCopy withEvent:event];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v6;
+  v7 = endedCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v8)
   {
@@ -496,13 +496,13 @@ LABEL_11:
         {
           if ([(GKDashboardPlayerPhotoView *)self isUserInteractionEnabled])
           {
-            v12 = [(GKDashboardPlayerPhotoView *)self delegate];
+            delegate = [(GKDashboardPlayerPhotoView *)self delegate];
             v13 = objc_opt_respondsToSelector();
 
             if (v13)
             {
-              v14 = [(GKDashboardPlayerPhotoView *)self delegate];
-              [v14 didSelectPlayerAvatarView:self];
+              delegate2 = [(GKDashboardPlayerPhotoView *)self delegate];
+              [delegate2 didSelectPlayerAvatarView:self];
             }
           }
 

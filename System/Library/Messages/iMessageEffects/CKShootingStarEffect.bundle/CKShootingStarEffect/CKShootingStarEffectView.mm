@@ -1,36 +1,36 @@
 @interface CKShootingStarEffectView
 - (CGPoint)focusPoint;
 - (CGRect)messageRect;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)startAnimation;
 - (void)stopAnimation;
 @end
 
 @implementation CKShootingStarEffectView
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v10 = a3;
-  v5 = [v10 valueForKey:@"startLensFlareBehavior"];
+  stopCopy = stop;
+  v5 = [stopCopy valueForKey:@"startLensFlareBehavior"];
   if ([v5 isEqualToString:@"start"])
   {
-    v6 = [(CKShootingStarEffectView *)self lensBurst];
-    [v6 setEnabled:1];
+    lensBurst = [(CKShootingStarEffectView *)self lensBurst];
+    [lensBurst setEnabled:1];
 
-    v7 = [(CKShootingStarEffectView *)self lensEmitter];
-    [v7 reloadValueForKeyPath:@"emitterCells"];
+    lensEmitter = [(CKShootingStarEffectView *)self lensEmitter];
+    [lensEmitter reloadValueForKeyPath:@"emitterCells"];
   }
 
   else
   {
-    v7 = [v10 valueForKey:@"stopLensFlareBehavior"];
-    if ([v7 isEqualToString:@"stop"])
+    lensEmitter = [stopCopy valueForKey:@"stopLensFlareBehavior"];
+    if ([lensEmitter isEqualToString:@"stop"])
     {
-      v8 = [(CKShootingStarEffectView *)self lensBurst];
-      [v8 setEnabled:0];
+      lensBurst2 = [(CKShootingStarEffectView *)self lensBurst];
+      [lensBurst2 setEnabled:0];
 
-      v9 = [(CKShootingStarEffectView *)self lensEmitter];
-      [v9 reloadValueForKeyPath:@"emitterCells"];
+      lensEmitter2 = [(CKShootingStarEffectView *)self lensEmitter];
+      [lensEmitter2 reloadValueForKeyPath:@"emitterCells"];
     }
   }
 }
@@ -41,35 +41,35 @@
   v183 = [v3 URLForResource:@"ShootingStar" withExtension:@"ca"];
 
   v182 = [CAPackage packageWithContentsOfURL:v183 type:kCAPackageTypeCAMLBundle options:0 error:0];
-  v181 = [&off_85E8 stringValue];
-  v4 = [v182 publishedObjectWithName:v181];
-  v5 = [v4 sublayers];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  stringValue = [&off_85E8 stringValue];
+  v4 = [v182 publishedObjectWithName:stringValue];
+  sublayers = [v4 sublayers];
+  v6 = [sublayers objectAtIndexedSubscript:0];
 
-  v7 = [v4 sublayers];
-  v8 = [v7 objectAtIndexedSubscript:1];
+  sublayers2 = [v4 sublayers];
+  v8 = [sublayers2 objectAtIndexedSubscript:1];
 
-  v9 = [v4 sublayers];
-  v10 = [v9 objectAtIndexedSubscript:2];
+  sublayers3 = [v4 sublayers];
+  v10 = [sublayers3 objectAtIndexedSubscript:2];
 
   [v8 setUpdateInterval:0.0166666667];
   [v10 setUpdateInterval:0.0166666667];
-  v11 = [v4 sublayers];
-  v12 = [v11 objectAtIndexedSubscript:3];
+  sublayers4 = [v4 sublayers];
+  v12 = [sublayers4 objectAtIndexedSubscript:3];
   [(CKShootingStarEffectView *)self setLensEmitter:v12];
 
-  v13 = [(CKShootingStarEffectView *)self lensEmitter];
-  v14 = [v13 emitterBehaviors];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  lensEmitter = [(CKShootingStarEffectView *)self lensEmitter];
+  emitterBehaviors = [lensEmitter emitterBehaviors];
+  v15 = [emitterBehaviors objectAtIndexedSubscript:0];
   [(CKShootingStarEffectView *)self setLensBurst:v15];
 
   [v10 setValue:kCAEmitterCellPoint forKeyPath:@"emitterCells.cell1.particleType"];
   [(CKShootingStarEffectView *)self bounds];
   v17 = v16;
   v19 = v18;
-  v193 = self;
-  v20 = [(CKShootingStarEffectView *)self layer];
-  [v20 convertTime:0 fromLayer:CACurrentMediaTime()];
+  selfCopy = self;
+  layer = [(CKShootingStarEffectView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   [v4 setBeginTime:?];
 
   [v4 setPosition:{v17 * 0.5, v19 * 0.5}];
@@ -81,8 +81,8 @@
   [v4 setGeometryFlipped:1];
   v190 = v10;
   [v10 setTimeOffset:-0.600000024];
-  v21 = [(CKShootingStarEffectView *)self lensEmitter];
-  [v21 setTimeOffset:-0.600000024];
+  lensEmitter2 = [(CKShootingStarEffectView *)self lensEmitter];
+  [lensEmitter2 setTimeOffset:-0.600000024];
 
   v22 = [NSNumber numberWithDouble:v17 + 100.0];
   [v8 setValue:v22 forKeyPath:@"emitterSize.width"];
@@ -178,8 +178,8 @@
 
   [v44 setDelegate:self];
   [v44 setValue:@"start" forKey:@"startLensFlareBehavior"];
-  v46 = [(CKShootingStarEffectView *)self lensEmitter];
-  [v46 addAnimation:v44 forKey:0];
+  lensEmitter3 = [(CKShootingStarEffectView *)self lensEmitter];
+  [lensEmitter3 addAnimation:v44 forKey:0];
 
   v47 = +[CABasicAnimation animation];
   [v47 setFrameInterval:0.0166666667];
@@ -194,8 +194,8 @@
 
   [v47 setDelegate:self];
   [v47 setValue:@"stop" forKey:@"stopLensFlareBehavior"];
-  v50 = [(CKShootingStarEffectView *)self lensEmitter];
-  [v50 addAnimation:v47 forKey:0];
+  lensEmitter4 = [(CKShootingStarEffectView *)self lensEmitter];
+  [lensEmitter4 addAnimation:v47 forKey:0];
 
   v51 = +[CAKeyframeAnimation animation];
   [v51 setFrameInterval:0.0166666667];
@@ -209,8 +209,8 @@
   v169 = v51;
   [v51 setTimingFunction:v53];
 
-  v54 = [(CKShootingStarEffectView *)self lensEmitter];
-  [v54 addAnimation:v51 forKey:@"position"];
+  lensEmitter5 = [(CKShootingStarEffectView *)self lensEmitter];
+  [lensEmitter5 addAnimation:v51 forKey:@"position"];
 
   v55 = [CAKeyframeAnimation animationWithKeyPath:@"emitterCells.cell1.birthRate"];
   LODWORD(v56) = 1125187584;
@@ -235,12 +235,12 @@
   [v55 setDuration:2.0999999];
   v165 = v55;
   [v55 setBeginTimeMode:v52];
-  v65 = [(CKShootingStarEffectView *)self lensEmitter];
+  lensEmitter6 = [(CKShootingStarEffectView *)self lensEmitter];
   v66 = [NSNumber numberWithFloat:0.0];
-  [v65 setValue:v66 forKeyPath:@"emitterCells.cell1.birthRate"];
+  [lensEmitter6 setValue:v66 forKeyPath:@"emitterCells.cell1.birthRate"];
 
-  v67 = [(CKShootingStarEffectView *)self lensEmitter];
-  [v67 addAnimation:v55 forKey:0];
+  lensEmitter7 = [(CKShootingStarEffectView *)self lensEmitter];
+  [lensEmitter7 addAnimation:v55 forKey:0];
 
   v185 = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale.x"];
   v184 = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale.y"];
@@ -312,11 +312,11 @@
   [v184 setTimingFunctions:v186];
   [v184 setDuration:3.0];
   [v184 setBeginTimeMode:v192];
-  v115 = [(CKShootingStarEffectView *)v193 lensEmitter];
-  [v115 addAnimation:v185 forKey:@"transform.scale.x"];
+  lensEmitter8 = [(CKShootingStarEffectView *)selfCopy lensEmitter];
+  [lensEmitter8 addAnimation:v185 forKey:@"transform.scale.x"];
 
-  v116 = [(CKShootingStarEffectView *)v193 lensEmitter];
-  [v116 addAnimation:v184 forKey:@"transform.scale.y"];
+  lensEmitter9 = [(CKShootingStarEffectView *)selfCopy lensEmitter];
+  [lensEmitter9 addAnimation:v184 forKey:@"transform.scale.y"];
 
   v117 = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
   v118 = [NSNumber numberWithFloat:0.0];
@@ -387,14 +387,14 @@
   v154 = *&CATransform3DIdentity.m43;
   v199 = *&CATransform3DIdentity.m41;
   v200 = v154;
-  v155 = [(CKShootingStarEffectView *)v193 layer];
+  layer2 = [(CKShootingStarEffectView *)selfCopy layer];
   v198 = (v17 * v19 + -1000500.0) / 6117724.0 * 0.000298844721 + -0.000839537354;
-  [v155 setSublayerTransform:v196];
+  [layer2 setSublayerTransform:v196];
 
-  v156 = [(CKShootingStarEffectView *)v193 layer];
-  [v156 addSublayer:v180];
+  layer3 = [(CKShootingStarEffectView *)selfCopy layer];
+  [layer3 addSublayer:v180];
 
-  objc_storeStrong(&v193->_shootingStarLayer, v180);
+  objc_storeStrong(&selfCopy->_shootingStarLayer, v180);
   v157 = dispatch_time(0, 5000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

@@ -1,22 +1,22 @@
 @interface AXSettings.Magnifier
 - (BOOL)magnifierEnabled;
-- (void)setMagnifierEnabled:(BOOL)a3;
+- (void)setMagnifierEnabled:(BOOL)enabled;
 @end
 
 @implementation AXSettings.Magnifier
 
 - (BOOL)magnifierEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.Magnifier.enabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setMagnifierEnabled:(BOOL)a3
+- (void)setMagnifierEnabled:(BOOL)enabled
 {
-  v4 = self;
-  AXSettings.Magnifier.enabled.setter(a3);
+  selfCopy = self;
+  AXSettings.Magnifier.enabled.setter(enabled);
 }
 
 @end

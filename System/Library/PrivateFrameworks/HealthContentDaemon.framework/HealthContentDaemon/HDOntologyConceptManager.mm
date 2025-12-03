@@ -1,55 +1,55 @@
 @interface HDOntologyConceptManager
-+ (BOOL)_conceptRelationshipFromGraphRelationship:(void *)a3 relationshipOut:(uint64_t)a4 options:(void *)a5 transaction:(uint64_t)a6 error:;
-+ (BOOL)_inflateRelationshipsIfPossibleForConcept:(unint64_t)a3 maximumDepth:(void *)a4 attributesPredicate:(void *)a5 relationshipsPredicate:(void *)a6 cache:(void *)a7 ontologyTransaction:(uint64_t)a8 error:;
-+ (BOOL)enumerateConceptsMatchingPredicate:(id)a3 options:(unint64_t)a4 limit:(unint64_t)a5 transaction:(id)a6 error:(id *)a7 enumerationHandler:(id)a8;
-+ (BOOL)enumerateConceptsMatchingPredicate:(id)a3 profile:(id)a4 error:(id *)a5 enumerationHandler:(id)a6;
-+ (BOOL)enumerateRelationshipsMatchingPredicate:(id)a3 options:(unint64_t)a4 transaction:(id)a5 error:(id *)a6 enumerationHandler:(id)a7;
-+ (BOOL)followRelationshipsWithTypes:(id)a3 startingIdentifier:(id)a4 options:(unint64_t)a5 ontologyTransaction:(id)a6 conceptOut:(id *)a7 deletedRelationshipVersionOut:(int64_t *)a8 error:(id *)a9;
-+ (id)_adHocConceptForCodingCollection:(uint64_t)a3 options:(void *)a4 transaction:(void *)a5 error:;
-+ (id)_attributesPredicateForAttributeTypes:(uint64_t)a1;
-+ (id)_conceptForNode:(void *)a3 attributesPredicate:(void *)a4 cache:(void *)a5 ontologyTransaction:(uint64_t)a6 error:;
-+ (id)_conceptFromGraphNode:(unint64_t)a3 options:(void *)a4 transaction:(uint64_t)a5 error:;
-+ (id)_findConceptForCoding:(unint64_t)a3 options:(void *)a4 transaction:(uint64_t)a5 error:;
-+ (id)_relationshipPredicateForRelationshipTypes:(uint64_t)a1;
-+ (id)_relationshipsForConceptWithIdentifier:(unint64_t)a3 options:(void *)a4 transaction:(uint64_t)a5 error:;
-+ (id)_resolveMercuryConceptForCodings:(void *)a3 configuration:(void *)a4 transaction:(void *)a5 error:;
-+ (id)_subgraphPopulatedRelationshipForRelationship:(uint64_t)a3 maximumDepth:(void *)a4 attributesPredicate:(void *)a5 relationshipsPredicate:(void *)a6 cache:(void *)a7 ontologyTransaction:(uint64_t)a8 error:;
-+ (id)conceptForCodingCollection:(id)a3 configuration:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)inflateGraphWithRootConceptsPredicate:(id)a3 limit:(int64_t)a4 maximumDepth:(int64_t)a5 attributeTypes:(id)a6 relationshipTypes:(id)a7 ontologyTransaction:(id)a8 error:(id *)a9;
-+ (id)predicateForConceptsFollowingRelationshipOfTypes:(id)a3 fromSubjectId:(id)a4;
-+ (id)predicateForRelationshipsWithTypes:(id)a3 onConceptId:(id)a4;
-+ (id)predicateMatchingConceptWithID:(id)a3;
-+ (id)predicateMatchingConceptsWithAttributeType:(int64_t)a3 beingsWithAttributeValue:(id)a4;
-+ (id)predicateMatchingConceptsWithAttributeType:(int64_t)a3 likeAttributeValue:(id)a4;
-+ (id)predicateMatchingConceptsWithRelationshipType:(int64_t)a3 withObjectId:(id)a4;
-+ (id)predicateMatchingConceptsWithRelationshipType:(int64_t)a3 withSubjectId:(id)a4;
-+ (id)predicateMatchingRelationshipsWithSubjectId:(id)a3 relationshipType:(int64_t)a4;
++ (BOOL)_conceptRelationshipFromGraphRelationship:(void *)relationship relationshipOut:(uint64_t)out options:(void *)options transaction:(uint64_t)transaction error:;
++ (BOOL)_inflateRelationshipsIfPossibleForConcept:(unint64_t)concept maximumDepth:(void *)depth attributesPredicate:(void *)predicate relationshipsPredicate:(void *)relationshipsPredicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:;
++ (BOOL)enumerateConceptsMatchingPredicate:(id)predicate options:(unint64_t)options limit:(unint64_t)limit transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)enumerateConceptsMatchingPredicate:(id)predicate profile:(id)profile error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)enumerateRelationshipsMatchingPredicate:(id)predicate options:(unint64_t)options transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)followRelationshipsWithTypes:(id)types startingIdentifier:(id)identifier options:(unint64_t)options ontologyTransaction:(id)transaction conceptOut:(id *)out deletedRelationshipVersionOut:(int64_t *)versionOut error:(id *)error;
++ (id)_adHocConceptForCodingCollection:(uint64_t)collection options:(void *)options transaction:(void *)transaction error:;
++ (id)_attributesPredicateForAttributeTypes:(uint64_t)types;
++ (id)_conceptForNode:(void *)node attributesPredicate:(void *)predicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:;
++ (id)_conceptFromGraphNode:(unint64_t)node options:(void *)options transaction:(uint64_t)transaction error:;
++ (id)_findConceptForCoding:(unint64_t)coding options:(void *)options transaction:(uint64_t)transaction error:;
++ (id)_relationshipPredicateForRelationshipTypes:(uint64_t)types;
++ (id)_relationshipsForConceptWithIdentifier:(unint64_t)identifier options:(void *)options transaction:(uint64_t)transaction error:;
++ (id)_resolveMercuryConceptForCodings:(void *)codings configuration:(void *)configuration transaction:(void *)transaction error:;
++ (id)_subgraphPopulatedRelationshipForRelationship:(uint64_t)relationship maximumDepth:(void *)depth attributesPredicate:(void *)predicate relationshipsPredicate:(void *)relationshipsPredicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:;
++ (id)conceptForCodingCollection:(id)collection configuration:(id)configuration profile:(id)profile error:(id *)error;
++ (id)inflateGraphWithRootConceptsPredicate:(id)predicate limit:(int64_t)limit maximumDepth:(int64_t)depth attributeTypes:(id)types relationshipTypes:(id)relationshipTypes ontologyTransaction:(id)transaction error:(id *)error;
++ (id)predicateForConceptsFollowingRelationshipOfTypes:(id)types fromSubjectId:(id)id;
++ (id)predicateForRelationshipsWithTypes:(id)types onConceptId:(id)id;
++ (id)predicateMatchingConceptWithID:(id)d;
++ (id)predicateMatchingConceptsWithAttributeType:(int64_t)type beingsWithAttributeValue:(id)value;
++ (id)predicateMatchingConceptsWithAttributeType:(int64_t)type likeAttributeValue:(id)value;
++ (id)predicateMatchingConceptsWithRelationshipType:(int64_t)type withObjectId:(id)id;
++ (id)predicateMatchingConceptsWithRelationshipType:(int64_t)type withSubjectId:(id)id;
++ (id)predicateMatchingRelationshipsWithSubjectId:(id)id relationshipType:(int64_t)type;
 + (id)predicateToExcludeSentinel;
-+ (id)relationshipsForConceptWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (uint64_t)_conceptWithIdentifier:(unint64_t)a3 options:(void *)a4 transaction:(void *)a5 conceptOut:(uint64_t)a6 error:;
-+ (uint64_t)_consistentGrouperForConcept:(uint64_t *)a3 grouperIDInOut:(void *)a4 transaction:(uint64_t)a5 error:;
-+ (uint64_t)_enumerateAttributesForNode:(void *)a3 attributesPredicate:(void *)a4 ontologyTransaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:;
-+ (uint64_t)_enumerateConceptsWithIdentifiers:(unint64_t)a3 options:(void *)a4 transaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:;
-+ (uint64_t)_enumerateDatabaseRelationshipsForConcept:(void *)a3 relationshipsPredicate:(void *)a4 ontologyTransaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:;
-+ (uint64_t)_enumerateRelationshipsForConcept:(uint64_t)a3 maximumDepth:(void *)a4 attributesPredicate:(void *)a5 relationshipsPredicate:(void *)a6 cache:(void *)a7 ontologyTransaction:(uint64_t)a8 error:(void *)a9 enumerationHandler:;
-+ (uint64_t)_grouperConceptIDForConcept:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (uint64_t)_inflateConcept:(void *)a3 rootNode:(unint64_t)a4 maximumDepth:(void *)a5 attributesPredicate:(void *)a6 relationshipsPredicate:(void *)a7 cache:(void *)a8 ontologyTransaction:(uint64_t)a9 error:;
-+ (uint64_t)_prioritizedSystemIdentifiersForConfiguration:(uint64_t)a1;
-+ (uint64_t)_priorityComparisionForConfiguration:(void *)a3 resolvedConcept:(void *)a4 resolvedConceptCode:(void *)a5 newConcept:(void *)a6 newConceptCode:;
-+ (void)_inflateGraphWithRootConceptsPredicate:(uint64_t)a3 limit:(uint64_t)a4 maximumDepth:(void *)a5 attributeTypes:(void *)a6 relationshipTypes:(void *)a7 ontologyTransaction:(uint64_t)a8 error:;
-+ (void)_subgraphPopulatedRelationshipsForConcept:(uint64_t)a3 maximumDepth:(void *)a4 attributesPredicate:(void *)a5 relationshipsPredicate:(void *)a6 cache:(void *)a7 ontologyTransaction:(uint64_t)a8 error:;
++ (id)relationshipsForConceptWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (uint64_t)_conceptWithIdentifier:(unint64_t)identifier options:(void *)options transaction:(void *)transaction conceptOut:(uint64_t)out error:;
++ (uint64_t)_consistentGrouperForConcept:(uint64_t *)concept grouperIDInOut:(void *)out transaction:(uint64_t)transaction error:;
++ (uint64_t)_enumerateAttributesForNode:(void *)node attributesPredicate:(void *)predicate ontologyTransaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
++ (uint64_t)_enumerateConceptsWithIdentifiers:(unint64_t)identifiers options:(void *)options transaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
++ (uint64_t)_enumerateDatabaseRelationshipsForConcept:(void *)concept relationshipsPredicate:(void *)predicate ontologyTransaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
++ (uint64_t)_enumerateRelationshipsForConcept:(uint64_t)concept maximumDepth:(void *)depth attributesPredicate:(void *)predicate relationshipsPredicate:(void *)relationshipsPredicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
++ (uint64_t)_grouperConceptIDForConcept:(void *)concept transaction:(uint64_t)transaction error:;
++ (uint64_t)_inflateConcept:(void *)concept rootNode:(unint64_t)node maximumDepth:(void *)depth attributesPredicate:(void *)predicate relationshipsPredicate:(void *)relationshipsPredicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:;
++ (uint64_t)_prioritizedSystemIdentifiersForConfiguration:(uint64_t)configuration;
++ (uint64_t)_priorityComparisionForConfiguration:(void *)configuration resolvedConcept:(void *)concept resolvedConceptCode:(void *)code newConcept:(void *)newConcept newConceptCode:;
++ (void)_inflateGraphWithRootConceptsPredicate:(uint64_t)predicate limit:(uint64_t)limit maximumDepth:(void *)depth attributeTypes:(void *)types relationshipTypes:(void *)relationshipTypes ontologyTransaction:(uint64_t)transaction error:;
++ (void)_subgraphPopulatedRelationshipsForConcept:(uint64_t)concept maximumDepth:(void *)depth attributesPredicate:(void *)predicate relationshipsPredicate:(void *)relationshipsPredicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:;
 - (BOOL)unitTesting_attributeIdentifierByCodingSystemURNMapIsReady;
 - (HDOntologyConceptManager)init;
-- (HDOntologyConceptManager)initWithProfile:(id)a3;
-- (id)attributeIdentifierForCodingSystem:(id)a3;
-- (id)conceptForIdentifier:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)conceptForIdentifier:(id)a3 options:(unint64_t)a4 transaction:(id)a5 error:(id *)a6;
-- (id)conceptsForIdentifiers:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)conceptsForIdentifiers:(id)a3 options:(unint64_t)a4 transaction:(id)a5 error:(id *)a6;
+- (HDOntologyConceptManager)initWithProfile:(id)profile;
+- (id)attributeIdentifierForCodingSystem:(id)system;
+- (id)conceptForIdentifier:(id)identifier options:(unint64_t)options error:(id *)error;
+- (id)conceptForIdentifier:(id)identifier options:(unint64_t)options transaction:(id)transaction error:(id *)error;
+- (id)conceptsForIdentifiers:(id)identifiers options:(unint64_t)options error:(id *)error;
+- (id)conceptsForIdentifiers:(id)identifiers options:(unint64_t)options transaction:(id)transaction error:(id *)error;
 - (void)_populateAttributeIdentifierMap;
 - (void)_resetAttributeIdentifierMap;
-- (void)daemonReady:(id)a3;
-- (void)ontologyShardImporter:(id)a3 didImportEntry:(id)a4;
+- (void)daemonReady:(id)ready;
+- (void)ontologyShardImporter:(id)importer didImportEntry:(id)entry;
 @end
 
 @implementation HDOntologyConceptManager
@@ -64,16 +64,16 @@
   return 0;
 }
 
-- (HDOntologyConceptManager)initWithProfile:(id)a3
+- (HDOntologyConceptManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v16.receiver = self;
   v16.super_class = HDOntologyConceptManager;
   v5 = [(HDOntologyConceptManager *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277D106C0]);
     v8 = [(HDOntologyConceptManager *)v6 hk_classNameWithTag:@"concepts"];
     v9 = [v7 initWithName:v8 cacheScope:1];
@@ -86,50 +86,50 @@
 
     v6->_attributeIdentifierByCodingSystemURNLock._os_unfair_lock_opaque = 0;
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v14 = [WeakRetained daemon];
-    [v14 registerForDaemonReady:v6];
+    daemon = [WeakRetained daemon];
+    [daemon registerForDaemonReady:v6];
   }
 
   return v6;
 }
 
-- (id)conceptForIdentifier:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)conceptForIdentifier:(id)identifier options:(unint64_t)options error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  identifierCopy = identifier;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a3;
-  v10 = [v8 arrayWithObjects:&v15 count:1];
+  identifierCopy2 = identifier;
+  v10 = [v8 arrayWithObjects:&identifierCopy count:1];
 
-  v11 = [(HDOntologyConceptManager *)self conceptsForIdentifiers:v10 options:a4 error:a5, v15, v16];
-  v12 = [v11 firstObject];
+  v11 = [(HDOntologyConceptManager *)self conceptsForIdentifiers:v10 options:options error:error, identifierCopy, v16];
+  firstObject = [v11 firstObject];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)conceptForIdentifier:(id)a3 options:(unint64_t)a4 transaction:(id)a5 error:(id *)a6
+- (id)conceptForIdentifier:(id)identifier options:(unint64_t)options transaction:(id)transaction error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v18 = a3;
+  identifierCopy = identifier;
   v10 = MEMORY[0x277CBEA60];
-  v11 = a5;
-  v12 = a3;
-  v13 = [v10 arrayWithObjects:&v18 count:1];
+  transactionCopy = transaction;
+  identifierCopy2 = identifier;
+  v13 = [v10 arrayWithObjects:&identifierCopy count:1];
 
-  v14 = [(HDOntologyConceptManager *)self conceptsForIdentifiers:v13 options:a4 transaction:v11 error:a6, v18, v19];
+  v14 = [(HDOntologyConceptManager *)self conceptsForIdentifiers:v13 options:options transaction:transactionCopy error:error, identifierCopy, v19];
 
-  v15 = [v14 firstObject];
+  firstObject = [v14 firstObject];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
-- (id)conceptsForIdentifiers:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)conceptsForIdentifiers:(id)identifiers options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  identifiersCopy = identifiers;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -137,19 +137,19 @@
   v23 = __Block_byref_object_dispose__3;
   v24 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [WeakRetained ontologyDatabase];
+  ontologyDatabase = [WeakRetained ontologyDatabase];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__HDOntologyConceptManager_conceptsForIdentifiers_options_error___block_invoke;
   v15[3] = &unk_2796B9140;
   v17 = &v19;
   v15[4] = self;
-  v11 = v8;
+  v11 = identifiersCopy;
   v16 = v11;
-  v18 = a4;
-  LODWORD(a5) = [v10 performTransactionWithError:a5 transactionHandler:v15];
+  optionsCopy = options;
+  LODWORD(error) = [ontologyDatabase performTransactionWithError:error transactionHandler:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -176,17 +176,17 @@ BOOL __65__HDOntologyConceptManager_conceptsForIdentifiers_options_error___block
   return *(*(*(a1 + 48) + 8) + 40) != 0;
 }
 
-- (id)conceptsForIdentifiers:(id)a3 options:(unint64_t)a4 transaction:(id)a5 error:(id *)a6
+- (id)conceptsForIdentifiers:(id)identifiers options:(unint64_t)options transaction:(id)transaction error:(id *)error
 {
   v72 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  transactionCopy = transaction;
   obj = objc_alloc_init(MEMORY[0x277CBEB18]);
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v10 = v8;
+  v10 = identifiersCopy;
   v11 = [v10 countByEnumeratingWithState:&v65 objects:v71 count:16];
   if (v11)
   {
@@ -203,16 +203,16 @@ BOOL __65__HDOntologyConceptManager_conceptsForIdentifiers_options_error___block
 
         v15 = *(*(&v65 + 1) + 8 * i);
         conceptsByIdentifier = self->_conceptsByIdentifier;
-        v17 = [v9 databaseTransaction];
-        v63 = a4;
+        databaseTransaction = [transactionCopy databaseTransaction];
+        optionsCopy = options;
         v64 = 0;
         v61[0] = MEMORY[0x277D85DD0];
         v61[1] = 3221225472;
         v61[2] = __77__HDOntologyConceptManager_conceptsForIdentifiers_options_transaction_error___block_invoke;
         v61[3] = &unk_2796B9168;
         v61[4] = v15;
-        v62 = v9;
-        v18 = [(HDDatabaseValueCache *)conceptsByIdentifier fetchObjectForKey:v15 transaction:v17 error:&v64 faultHandler:v61];
+        v62 = transactionCopy;
+        v18 = [(HDDatabaseValueCache *)conceptsByIdentifier fetchObjectForKey:v15 transaction:databaseTransaction error:&v64 faultHandler:v61];
         v19 = v64;
 
         if (v18)
@@ -222,10 +222,10 @@ BOOL __65__HDOntologyConceptManager_conceptsForIdentifiers_options_error___block
 
         else if (v19)
         {
-          if (a6)
+          if (error)
           {
             v42 = v19;
-            *a6 = v19;
+            *error = v19;
           }
 
           else
@@ -250,7 +250,7 @@ BOOL __65__HDOntologyConceptManager_conceptsForIdentifiers_options_error___block
     }
   }
 
-  if (a4)
+  if (options)
   {
     v47 = v10;
     v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -275,7 +275,7 @@ BOOL __65__HDOntologyConceptManager_conceptsForIdentifiers_options_error___block
           }
 
           v27 = *(*(&v57 + 1) + 8 * j);
-          if ((a4 & ~[v27 options]) != 0)
+          if ((options & ~[v27 options]) != 0)
           {
             v28 = v21;
           }
@@ -315,9 +315,9 @@ BOOL __65__HDOntologyConceptManager_conceptsForIdentifiers_options_error___block
           }
 
           v34 = *(*(&v53 + 1) + 8 * k);
-          v35 = [v34 identifier];
+          identifier = [v34 identifier];
           v52 = 0;
-          v36 = [HDOntologyConceptManager _conceptWithIdentifier:v35 options:a4 transaction:v9 conceptOut:&v52 error:a6];
+          v36 = [HDOntologyConceptManager _conceptWithIdentifier:identifier options:options transaction:transactionCopy conceptOut:&v52 error:error];
           v37 = v52;
 
           if (!v36)
@@ -331,9 +331,9 @@ BOOL __65__HDOntologyConceptManager_conceptsForIdentifiers_options_error___block
 
           [v29 hk_addNonNilObject:v37];
           v38 = self->_conceptsByIdentifier;
-          v39 = [v34 identifier];
-          v40 = [v9 databaseTransaction];
-          [(HDDatabaseValueCache *)v38 setObject:v37 forKey:v39 transaction:v40];
+          identifier2 = [v34 identifier];
+          databaseTransaction2 = [transactionCopy databaseTransaction];
+          [(HDDatabaseValueCache *)v38 setObject:v37 forKey:identifier2 transaction:databaseTransaction2];
         }
 
         v31 = [obja countByEnumeratingWithState:&v53 objects:v69 count:16];
@@ -388,11 +388,11 @@ void *__77__HDOntologyConceptManager_conceptsForIdentifiers_options_transaction_
   return v10;
 }
 
-+ (uint64_t)_conceptWithIdentifier:(unint64_t)a3 options:(void *)a4 transaction:(void *)a5 conceptOut:(uint64_t)a6 error:
++ (uint64_t)_conceptWithIdentifier:(unint64_t)identifier options:(void *)options transaction:(void *)transaction conceptOut:(uint64_t)out error:
 {
   v24[1] = *MEMORY[0x277D85DE8];
   v10 = a2;
-  v11 = a4;
+  optionsCopy = options;
   v12 = objc_opt_self();
   v18 = 0;
   v19 = &v18;
@@ -407,11 +407,11 @@ void *__77__HDOntologyConceptManager_conceptsForIdentifiers_options_transaction_
   v17[2] = __88__HDOntologyConceptManager__conceptWithIdentifier_options_transaction_conceptOut_error___block_invoke;
   v17[3] = &unk_2796B8990;
   v17[4] = &v18;
-  v14 = [(HDOntologyConceptManager *)v12 _enumerateConceptsWithIdentifiers:v13 options:a3 transaction:v11 error:a6 enumerationHandler:v17];
+  v14 = [(HDOntologyConceptManager *)v12 _enumerateConceptsWithIdentifiers:v13 options:identifier transaction:optionsCopy error:out enumerationHandler:v17];
 
-  if (a5)
+  if (transaction)
   {
-    *a5 = v19[5];
+    *transaction = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -420,42 +420,42 @@ void *__77__HDOntologyConceptManager_conceptsForIdentifiers_options_transaction_
   return v14;
 }
 
-+ (id)conceptForCodingCollection:(id)a3 configuration:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)conceptForCodingCollection:(id)collection configuration:(id)configuration profile:(id)profile error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  collectionCopy = collection;
+  configurationCopy = configuration;
+  profileCopy = profile;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__3;
   v39 = __Block_byref_object_dispose__3;
   v40 = 0;
-  v13 = [v12 daemon];
-  v14 = [v13 ontologyConfigurationProvider];
-  v15 = [v11 countryCode];
-  v16 = [v14 ontologyConfigurationForCountryCode:v15];
+  daemon = [profileCopy daemon];
+  ontologyConfigurationProvider = [daemon ontologyConfigurationProvider];
+  countryCode = [configurationCopy countryCode];
+  v16 = [ontologyConfigurationProvider ontologyConfigurationForCountryCode:countryCode];
 
-  v17 = [v12 database];
-  v18 = [MEMORY[0x277D106B8] contextForWritingProtectedData];
+  database = [profileCopy database];
+  contextForWritingProtectedData = [MEMORY[0x277D106B8] contextForWritingProtectedData];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __83__HDOntologyConceptManager_conceptForCodingCollection_configuration_profile_error___block_invoke;
   v28[3] = &unk_2796B91E0;
-  v19 = v12;
+  v19 = profileCopy;
   v29 = v19;
   v20 = v16;
   v30 = v20;
-  v21 = v10;
+  v21 = collectionCopy;
   v31 = v21;
   v33 = &v35;
-  v22 = v11;
+  v22 = configurationCopy;
   v32 = v22;
-  v34 = a1;
-  LOBYTE(a6) = [v17 performTransactionWithContext:v18 error:a6 block:v28 inaccessibilityHandler:0];
+  selfCopy = self;
+  LOBYTE(error) = [database performTransactionWithContext:contextForWritingProtectedData error:error block:v28 inaccessibilityHandler:0];
 
-  if (a6)
+  if (error)
   {
     v23 = v36[5];
   }
@@ -569,12 +569,12 @@ uint64_t __83__HDOntologyConceptManager_conceptForCodingCollection_configuration
   return v4;
 }
 
-+ (id)_resolveMercuryConceptForCodings:(void *)a3 configuration:(void *)a4 transaction:(void *)a5 error:
++ (id)_resolveMercuryConceptForCodings:(void *)codings configuration:(void *)configuration transaction:(void *)transaction error:
 {
   v52 = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a3;
-  v44 = a4;
+  codingsCopy = codings;
+  configurationCopy = configuration;
   v10 = objc_opt_self();
   v50 = 0;
   v46 = 0u;
@@ -587,15 +587,15 @@ uint64_t __83__HDOntologyConceptManager_conceptForCodingCollection_configuration
   {
 
     v41 = 0;
-    v15 = v44;
+    v15 = configurationCopy;
     goto LABEL_24;
   }
 
   v13 = v12;
-  v39 = a5;
+  transactionCopy = transaction;
   v40 = 0;
   v14 = *v47;
-  v15 = v44;
+  v15 = configurationCopy;
   v41 = 0;
   v42 = *v47;
   while (2)
@@ -610,9 +610,9 @@ uint64_t __83__HDOntologyConceptManager_conceptForCodingCollection_configuration
       }
 
       v17 = *(*(&v46 + 1) + 8 * v16);
-      v18 = [v9 options];
+      options = [codingsCopy options];
       v45 = 0;
-      v19 = [(HDOntologyConceptManager *)v10 _findConceptForCoding:v17 options:v18 transaction:v15 error:&v45];
+      v19 = [(HDOntologyConceptManager *)v10 _findConceptForCoding:v17 options:options transaction:v15 error:&v45];
       v20 = v45;
       v21 = v20;
       if (v19)
@@ -623,31 +623,31 @@ uint64_t __83__HDOntologyConceptManager_conceptForCodingCollection_configuration
         }
 
         v22 = v11;
-        v23 = [v19 validInRegions];
-        v24 = v9;
-        v25 = [v9 countryCode];
-        v26 = [v23 containsObject:v25];
+        validInRegions = [v19 validInRegions];
+        v24 = codingsCopy;
+        countryCode = [codingsCopy countryCode];
+        v26 = [validInRegions containsObject:countryCode];
 
         if (v26)
         {
-          v15 = v44;
-          if (([(HDOntologyConceptManager *)v10 _consistentGrouperForConcept:v19 grouperIDInOut:&v50 transaction:v44 error:v39]& 1) == 0)
+          v15 = configurationCopy;
+          if (([(HDOntologyConceptManager *)v10 _consistentGrouperForConcept:v19 grouperIDInOut:&v50 transaction:configurationCopy error:transactionCopy]& 1) == 0)
           {
-            v9 = v24;
+            codingsCopy = v24;
             v38 = v24;
             v11 = v22;
-            [MEMORY[0x277CCA9B8] hk_assignError:v39 code:1002 format:{@"Inconsistent grouper concepts encountered. Unable to resolve concept for codings: %@, configuration: %@", v22, v38}];
+            [MEMORY[0x277CCA9B8] hk_assignError:transactionCopy code:1002 format:{@"Inconsistent grouper concepts encountered. Unable to resolve concept for codings: %@, configuration: %@", v22, v38}];
             goto LABEL_32;
           }
 
-          v9 = v24;
+          codingsCopy = v24;
           v27 = [(HDOntologyConceptManager *)v10 _priorityComparisionForConfiguration:v24 resolvedConcept:v40 resolvedConceptCode:v41 newConcept:v19 newConceptCode:v17];
           if (v27 != -1)
           {
             v11 = v22;
             if (!v27)
             {
-              [MEMORY[0x277CCA9B8] hk_assignError:v39 code:1002 format:{@"Multiple concepts of equal priority encountered. Unable to resolve concept for codings: %@, configuration: %@", v22, v9}];
+              [MEMORY[0x277CCA9B8] hk_assignError:transactionCopy code:1002 format:{@"Multiple concepts of equal priority encountered. Unable to resolve concept for codings: %@, configuration: %@", v22, codingsCopy}];
 LABEL_32:
               v31 = v40;
 LABEL_33:
@@ -668,10 +668,10 @@ LABEL_33:
 
         else
         {
-          v9 = v24;
+          codingsCopy = v24;
         }
 
-        v15 = v44;
+        v15 = configurationCopy;
         v11 = v22;
 LABEL_18:
         v14 = v42;
@@ -686,10 +686,10 @@ LABEL_18:
         v31 = v40;
         if (v33)
         {
-          if (v39)
+          if (transactionCopy)
           {
             v35 = v33;
-            *v39 = v34;
+            *transactionCopy = v34;
           }
 
           else
@@ -716,12 +716,12 @@ LABEL_19:
     break;
   }
 
-  a5 = v39;
+  transaction = transactionCopy;
   v30 = v40;
   if (!v40)
   {
 LABEL_24:
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:118 format:{@"Unable to find valid concept for codings: %@, configuration: %@", v11, v9}];
+    [MEMORY[0x277CCA9B8] hk_assignError:transaction code:118 format:{@"Unable to find valid concept for codings: %@, configuration: %@", v11, codingsCopy}];
     v30 = 0;
   }
 
@@ -734,15 +734,15 @@ LABEL_34:
   return v32;
 }
 
-+ (id)_adHocConceptForCodingCollection:(uint64_t)a3 options:(void *)a4 transaction:(void *)a5 error:
++ (id)_adHocConceptForCodingCollection:(uint64_t)collection options:(void *)options transaction:(void *)transaction error:
 {
   v8 = a2;
-  v9 = a4;
+  optionsCopy = options;
   objc_opt_self();
-  v10 = [v9 profile];
+  profile = [optionsCopy profile];
 
   v19 = 0;
-  v11 = [MEMORY[0x277D10590] adHocConceptForCodingCollection:v8 options:a3 profile:v10 error:&v19];
+  v11 = [MEMORY[0x277D10590] adHocConceptForCodingCollection:v8 options:collection profile:profile error:&v19];
   v12 = v19;
   v13 = v12;
   if (v11)
@@ -755,17 +755,17 @@ LABEL_5:
 
   if ([v12 hk_isHealthKitErrorWithCode:118])
   {
-    v14 = [MEMORY[0x277D10590] generateAdHocConceptForCodingCollection:v8 options:a3 profile:v10 error:a5];
+    v14 = [MEMORY[0x277D10590] generateAdHocConceptForCodingCollection:v8 options:collection profile:profile error:transaction];
     goto LABEL_5;
   }
 
   v17 = v13;
   if (v17)
   {
-    if (a5)
+    if (transaction)
     {
       v18 = v17;
-      *a5 = v17;
+      *transaction = v17;
     }
 
     else
@@ -780,28 +780,28 @@ LABEL_6:
   return v15;
 }
 
-+ (id)relationshipsForConceptWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)relationshipsForConceptWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__3;
   v23 = __Block_byref_object_dispose__3;
   v24 = 0;
-  v10 = [v9 ontologyDatabase];
+  ontologyDatabase = [profileCopy ontologyDatabase];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__HDOntologyConceptManager_relationshipsForConceptWithIdentifier_profile_error___block_invoke;
   v15[3] = &unk_2796B9208;
   v17 = &v19;
-  v18 = a1;
-  v11 = v8;
+  selfCopy = self;
+  v11 = identifierCopy;
   v16 = v11;
-  LODWORD(a5) = [v10 performTransactionWithError:a5 transactionHandler:v15];
+  LODWORD(error) = [ontologyDatabase performTransactionWithError:error transactionHandler:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -828,29 +828,29 @@ BOOL __80__HDOntologyConceptManager_relationshipsForConceptWithIdentifier_profil
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-+ (id)_relationshipsForConceptWithIdentifier:(unint64_t)a3 options:(void *)a4 transaction:(uint64_t)a5 error:
++ (id)_relationshipsForConceptWithIdentifier:(unint64_t)identifier options:(void *)options transaction:(uint64_t)transaction error:
 {
-  v8 = a4;
+  optionsCopy = options;
   v9 = a2;
   v10 = objc_opt_self();
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v12 = (a3 >> 3) & 1;
-  v13 = [v8 graphDatabase];
-  v14 = [v9 rawIdentifier];
+  v12 = (identifier >> 3) & 1;
+  graphDatabase = [optionsCopy graphDatabase];
+  rawIdentifier = [v9 rawIdentifier];
 
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __93__HDOntologyConceptManager__relationshipsForConceptWithIdentifier_options_transaction_error___block_invoke;
   v22 = &unk_2796B9398;
   v25 = v10;
-  v26 = a3;
-  v23 = v8;
+  identifierCopy = identifier;
+  v23 = optionsCopy;
   v15 = v11;
   v24 = v15;
-  v16 = v8;
-  LODWORD(a5) = [v13 enumerateRelationshipsWithSubjectID:v14 includeDeleted:v12 error:a5 enumerationHandler:&v19];
+  v16 = optionsCopy;
+  LODWORD(transaction) = [graphDatabase enumerateRelationshipsWithSubjectID:rawIdentifier includeDeleted:v12 error:transaction enumerationHandler:&v19];
 
-  if (a5)
+  if (transaction)
   {
     v17 = [v15 copy];
   }
@@ -863,26 +863,26 @@ BOOL __80__HDOntologyConceptManager_relationshipsForConceptWithIdentifier_profil
   return v17;
 }
 
-+ (BOOL)enumerateRelationshipsMatchingPredicate:(id)a3 options:(unint64_t)a4 transaction:(id)a5 error:(id *)a6 enumerationHandler:(id)a7
++ (BOOL)enumerateRelationshipsMatchingPredicate:(id)predicate options:(unint64_t)options transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v12 = a5;
-  v13 = a7;
-  v14 = (a4 >> 3) & 1;
-  v15 = a3;
-  v16 = [v12 graphDatabase];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v14 = (options >> 3) & 1;
+  predicateCopy = predicate;
+  graphDatabase = [transactionCopy graphDatabase];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __113__HDOntologyConceptManager_enumerateRelationshipsMatchingPredicate_options_transaction_error_enumerationHandler___block_invoke;
   v20[3] = &unk_2796B9230;
-  v23 = a1;
-  v24 = a4;
-  v21 = v12;
-  v22 = v13;
-  v17 = v13;
-  v18 = v12;
-  LOBYTE(a6) = [v16 enumerateRelationshipsForPredicate:v15 includeDeleted:v14 error:a6 enumerationHandler:v20];
+  selfCopy = self;
+  optionsCopy = options;
+  v21 = transactionCopy;
+  v22 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = transactionCopy;
+  LOBYTE(error) = [graphDatabase enumerateRelationshipsForPredicate:predicateCopy includeDeleted:v14 error:error enumerationHandler:v20];
 
-  return a6;
+  return error;
 }
 
 uint64_t __113__HDOntologyConceptManager_enumerateRelationshipsMatchingPredicate_options_transaction_error_enumerationHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -912,27 +912,27 @@ uint64_t __113__HDOntologyConceptManager_enumerateRelationshipsMatchingPredicate
   return v7;
 }
 
-+ (BOOL)_conceptRelationshipFromGraphRelationship:(void *)a3 relationshipOut:(uint64_t)a4 options:(void *)a5 transaction:(uint64_t)a6 error:
++ (BOOL)_conceptRelationshipFromGraphRelationship:(void *)relationship relationshipOut:(uint64_t)out options:(void *)options transaction:(uint64_t)transaction error:
 {
   v10 = a2;
-  v11 = a5;
+  optionsCopy = options;
   v12 = objc_opt_self();
-  v13 = [v11 graphDatabase];
-  v14 = [v13 nodeForID:objc_msgSend(v10 error:{"objectID"), a6}];
+  graphDatabase = [optionsCopy graphDatabase];
+  v14 = [graphDatabase nodeForID:objc_msgSend(v10 error:{"objectID"), transaction}];
 
   if (v14)
   {
-    if ((a4 & 2) != 0 || ([v14 isDeleted] & 1) == 0)
+    if ((out & 2) != 0 || ([v14 isDeleted] & 1) == 0)
     {
-      v16 = [(HDOntologyConceptManager *)v12 _conceptFromGraphNode:v14 options:a4 & 0xFFFFFFFFFFFFFFFELL transaction:v11 error:a6];
+      v16 = [(HDOntologyConceptManager *)v12 _conceptFromGraphNode:v14 options:out & 0xFFFFFFFFFFFFFFFELL transaction:optionsCopy error:transaction];
       v15 = v16 != 0;
       if (v16)
       {
         v17 = [objc_alloc(MEMORY[0x277CCD1D8]) initWithType:objc_msgSend(v10 destination:"type") version:v16 deleted:{objc_msgSend(v10, "version"), objc_msgSend(v10, "isDeleted")}];
-        if (a3)
+        if (relationship)
         {
           v17 = v17;
-          *a3 = v17;
+          *relationship = v17;
         }
       }
     }
@@ -951,44 +951,44 @@ uint64_t __113__HDOntologyConceptManager_enumerateRelationshipsMatchingPredicate
   return v15;
 }
 
-+ (BOOL)enumerateConceptsMatchingPredicate:(id)a3 profile:(id)a4 error:(id *)a5 enumerationHandler:(id)a6
++ (BOOL)enumerateConceptsMatchingPredicate:(id)predicate profile:(id)profile error:(id *)error enumerationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a4 ontologyDatabase];
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  ontologyDatabase = [profile ontologyDatabase];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __96__HDOntologyConceptManager_enumerateConceptsMatchingPredicate_profile_error_enumerationHandler___block_invoke;
   v16[3] = &unk_2796B9258;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a5) = [v12 performTransactionWithError:a5 transactionHandler:v16];
+  v18 = handlerCopy;
+  selfCopy = self;
+  v17 = predicateCopy;
+  v13 = handlerCopy;
+  v14 = predicateCopy;
+  LOBYTE(error) = [ontologyDatabase performTransactionWithError:error transactionHandler:v16];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)enumerateConceptsMatchingPredicate:(id)a3 options:(unint64_t)a4 limit:(unint64_t)a5 transaction:(id)a6 error:(id *)a7 enumerationHandler:(id)a8
++ (BOOL)enumerateConceptsMatchingPredicate:(id)predicate options:(unint64_t)options limit:(unint64_t)limit transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v13 = a6;
-  v14 = a8;
-  v15 = (a4 >> 1) & 1;
-  v16 = a3;
-  v17 = [v13 graphDatabase];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v15 = (options >> 1) & 1;
+  predicateCopy = predicate;
+  graphDatabase = [transactionCopy graphDatabase];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __114__HDOntologyConceptManager_enumerateConceptsMatchingPredicate_options_limit_transaction_error_enumerationHandler___block_invoke;
   v21[3] = &unk_2796B9280;
-  v23 = v14;
-  v24 = a4;
-  v22 = v13;
-  v18 = v14;
-  v19 = v13;
-  LOBYTE(a7) = [v17 enumerateNodesForPredicate:v16 includeDeleted:v15 limit:a5 error:a7 enumerationHandler:v21];
+  v23 = handlerCopy;
+  optionsCopy = options;
+  v22 = transactionCopy;
+  v18 = handlerCopy;
+  v19 = transactionCopy;
+  LOBYTE(error) = [graphDatabase enumerateNodesForPredicate:predicateCopy includeDeleted:v15 limit:limit error:error enumerationHandler:v21];
 
-  return a7;
+  return error;
 }
 
 uint64_t __114__HDOntologyConceptManager_enumerateConceptsMatchingPredicate_options_limit_transaction_error_enumerationHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -999,10 +999,10 @@ uint64_t __114__HDOntologyConceptManager_enumerateConceptsMatchingPredicate_opti
   return v5;
 }
 
-+ (id)_conceptFromGraphNode:(unint64_t)a3 options:(void *)a4 transaction:(uint64_t)a5 error:
++ (id)_conceptFromGraphNode:(unint64_t)node options:(void *)options transaction:(uint64_t)transaction error:
 {
   v8 = a2;
-  v9 = a4;
+  optionsCopy = options;
   v10 = objc_opt_self();
   if (!v8)
   {
@@ -1010,15 +1010,15 @@ uint64_t __114__HDOntologyConceptManager_enumerateConceptsMatchingPredicate_opti
   }
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v12 = [v9 graphDatabase];
-  v13 = [v8 rowID];
+  graphDatabase = [optionsCopy graphDatabase];
+  rowID = [v8 rowID];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __76__HDOntologyConceptManager__conceptFromGraphNode_options_transaction_error___block_invoke;
   v20[3] = &unk_2796B9320;
   v14 = v11;
   v21 = v14;
-  v15 = [v12 enumerateAttributesForNodeWithID:v13 includeDeleted:(a3 >> 2) & 1 error:a5 enumerationHandler:v20];
+  v15 = [graphDatabase enumerateAttributesForNodeWithID:rowID includeDeleted:(node >> 2) & 1 error:transaction enumerationHandler:v20];
 
   if (!v15)
   {
@@ -1027,9 +1027,9 @@ uint64_t __114__HDOntologyConceptManager_enumerateConceptsMatchingPredicate_opti
   }
 
   v16 = [objc_alloc(MEMORY[0x277CCD1D0]) initWithRawIdentifier:{objc_msgSend(v8, "rowID")}];
-  if (a3)
+  if (node)
   {
-    v17 = [(HDOntologyConceptManager *)v10 _relationshipsForConceptWithIdentifier:v16 options:a3 transaction:v9 error:a5];
+    v17 = [(HDOntologyConceptManager *)v10 _relationshipsForConceptWithIdentifier:v16 options:node transaction:optionsCopy error:transaction];
     if (!v17)
     {
       v18 = 0;
@@ -1042,7 +1042,7 @@ uint64_t __114__HDOntologyConceptManager_enumerateConceptsMatchingPredicate_opti
     v17 = 0;
   }
 
-  v18 = [objc_alloc(MEMORY[0x277CCD1B0]) initWithIdentifier:v16 attributes:v14 relationships:v17 version:objc_msgSend(v8 deleted:"version") options:{objc_msgSend(v8, "isDeleted"), a3}];
+  v18 = [objc_alloc(MEMORY[0x277CCD1B0]) initWithIdentifier:v16 attributes:v14 relationships:v17 version:objc_msgSend(v8 deleted:"version") options:{objc_msgSend(v8, "isDeleted"), node}];
 
 LABEL_9:
 LABEL_10:
@@ -1050,24 +1050,24 @@ LABEL_10:
   return v18;
 }
 
-+ (BOOL)followRelationshipsWithTypes:(id)a3 startingIdentifier:(id)a4 options:(unint64_t)a5 ontologyTransaction:(id)a6 conceptOut:(id *)a7 deletedRelationshipVersionOut:(int64_t *)a8 error:(id *)a9
++ (BOOL)followRelationshipsWithTypes:(id)types startingIdentifier:(id)identifier options:(unint64_t)options ontologyTransaction:(id)transaction conceptOut:(id *)out deletedRelationshipVersionOut:(int64_t *)versionOut error:(id *)error
 {
-  v26 = a7;
+  outCopy = out;
   v45 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v32 = a6;
-  if (![v11 count])
+  typesCopy = types;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
+  if (![typesCopy count])
   {
     +[HDOntologyConceptManager followRelationshipsWithTypes:startingIdentifier:options:ontologyTransaction:conceptOut:deletedRelationshipVersionOut:error:];
   }
 
-  v27 = v12;
+  v27 = identifierCopy;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v11;
+  obj = typesCopy;
   v13 = 0;
   v14 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v14)
@@ -1095,7 +1095,7 @@ LABEL_5:
       v33[2] = __151__HDOntologyConceptManager_followRelationshipsWithTypes_startingIdentifier_options_ontologyTransaction_conceptOut_deletedRelationshipVersionOut_error___block_invoke;
       v33[3] = &unk_2796B92A8;
       v33[4] = &v34;
-      if ([HDOntologyConceptManager enumerateRelationshipsMatchingPredicate:v18 options:a5 & 0xFFFFFFFFFFFFFFFELL transaction:v32 error:a9 enumerationHandler:v33])
+      if ([HDOntologyConceptManager enumerateRelationshipsMatchingPredicate:v18 options:options & 0xFFFFFFFFFFFFFFFELL transaction:transactionCopy error:error enumerationHandler:v33])
       {
         v19 = v35[5];
         if (!v19)
@@ -1105,20 +1105,20 @@ LABEL_5:
 
         if (![v19 isDeleted])
         {
-          v21 = [v35[5] destination];
+          destination = [v35[5] destination];
 
-          v22 = [v21 identifier];
+          identifier = [destination identifier];
 
           v20 = 1;
-          v16 = v22;
-          v13 = v21;
+          v16 = identifier;
+          v13 = destination;
           goto LABEL_17;
         }
 
-        if (a8)
+        if (versionOut)
         {
           v20 = 0;
-          *a8 = [v35[5] version];
+          *versionOut = [v35[5] version];
         }
 
         else
@@ -1161,10 +1161,10 @@ LABEL_17:
   v16 = v27;
 LABEL_23:
 
-  if (v26)
+  if (outCopy)
   {
     v23 = v13;
-    *v26 = v13;
+    *outCopy = v13;
   }
 
   v30 = 1;
@@ -1174,64 +1174,64 @@ LABEL_26:
   return v30 & 1;
 }
 
-+ (id)inflateGraphWithRootConceptsPredicate:(id)a3 limit:(int64_t)a4 maximumDepth:(int64_t)a5 attributeTypes:(id)a6 relationshipTypes:(id)a7 ontologyTransaction:(id)a8 error:(id *)a9
++ (id)inflateGraphWithRootConceptsPredicate:(id)predicate limit:(int64_t)limit maximumDepth:(int64_t)depth attributeTypes:(id)types relationshipTypes:(id)relationshipTypes ontologyTransaction:(id)transaction error:(id *)error
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (a4 < 0)
+  predicateCopy = predicate;
+  typesCopy = types;
+  relationshipTypesCopy = relationshipTypes;
+  transactionCopy = transaction;
+  if (limit < 0)
   {
     +[HDOntologyConceptManager inflateGraphWithRootConceptsPredicate:limit:maximumDepth:attributeTypes:relationshipTypes:ontologyTransaction:error:];
-    if ((a5 & 0x8000000000000000) == 0)
+    if ((depth & 0x8000000000000000) == 0)
     {
       goto LABEL_3;
     }
   }
 
-  else if ((a5 & 0x8000000000000000) == 0)
+  else if ((depth & 0x8000000000000000) == 0)
   {
     goto LABEL_3;
   }
 
   +[HDOntologyConceptManager inflateGraphWithRootConceptsPredicate:limit:maximumDepth:attributeTypes:relationshipTypes:ontologyTransaction:error:];
 LABEL_3:
-  v19 = [(HDOntologyConceptManager *)a1 _inflateGraphWithRootConceptsPredicate:v15 limit:a4 maximumDepth:a5 attributeTypes:v16 relationshipTypes:v17 ontologyTransaction:v18 error:a9];
+  v19 = [(HDOntologyConceptManager *)self _inflateGraphWithRootConceptsPredicate:predicateCopy limit:limit maximumDepth:depth attributeTypes:typesCopy relationshipTypes:relationshipTypesCopy ontologyTransaction:transactionCopy error:error];
 
   return v19;
 }
 
-+ (void)_inflateGraphWithRootConceptsPredicate:(uint64_t)a3 limit:(uint64_t)a4 maximumDepth:(void *)a5 attributeTypes:(void *)a6 relationshipTypes:(void *)a7 ontologyTransaction:(uint64_t)a8 error:
++ (void)_inflateGraphWithRootConceptsPredicate:(uint64_t)predicate limit:(uint64_t)limit maximumDepth:(void *)depth attributeTypes:(void *)types relationshipTypes:(void *)relationshipTypes ontologyTransaction:(uint64_t)transaction error:
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
+  relationshipTypesCopy = relationshipTypes;
+  typesCopy = types;
+  depthCopy = depth;
   v16 = a2;
   v17 = objc_opt_self();
-  v18 = [(HDOntologyConceptManager *)v17 _attributesPredicateForAttributeTypes:v15];
+  v18 = [(HDOntologyConceptManager *)v17 _attributesPredicateForAttributeTypes:depthCopy];
 
-  v19 = [(HDOntologyConceptManager *)v17 _relationshipPredicateForRelationshipTypes:v14];
+  v19 = [(HDOntologyConceptManager *)v17 _relationshipPredicateForRelationshipTypes:typesCopy];
 
   v20 = objc_alloc_init(_HDOntologyGraphInflationCache);
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v22 = [v13 graphDatabase];
+  graphDatabase = [relationshipTypesCopy graphDatabase];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __145__HDOntologyConceptManager__inflateGraphWithRootConceptsPredicate_limit_maximumDepth_attributeTypes_relationshipTypes_ontologyTransaction_error___block_invoke;
   v32[3] = &unk_2796B93C0;
   v38 = v17;
-  v39 = a4;
+  limitCopy = limit;
   v33 = v18;
   v34 = v19;
   v35 = v20;
-  v36 = v13;
+  v36 = relationshipTypesCopy;
   v37 = v21;
   v23 = v21;
-  v24 = v13;
+  v24 = relationshipTypesCopy;
   v25 = v20;
   v26 = v19;
   v27 = v18;
-  LODWORD(v21) = [v22 enumerateNodesForPredicate:v16 includeDeleted:0 limit:a3 error:a8 enumerationHandler:v32];
+  LODWORD(v21) = [graphDatabase enumerateNodesForPredicate:v16 includeDeleted:0 limit:predicate error:transaction enumerationHandler:v32];
 
   if (v21)
   {
@@ -1248,20 +1248,20 @@ LABEL_3:
   return v28;
 }
 
-+ (id)predicateMatchingConceptWithID:(id)a3
++ (id)predicateMatchingConceptWithID:(id)d
 {
-  v3 = [a3 rawIdentifier];
+  rawIdentifier = [d rawIdentifier];
 
-  return HDSimpleGraphDatabaseNodeEntityPredicateForIdentifier(v3, 1);
+  return HDSimpleGraphDatabaseNodeEntityPredicateForIdentifier(rawIdentifier, 1);
 }
 
-+ (id)predicateMatchingConceptsWithRelationshipType:(int64_t)a3 withSubjectId:(id)a4
++ (id)predicateMatchingConceptsWithRelationshipType:(int64_t)type withSubjectId:(id)id
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D10B20];
-  v6 = HDSimpleGraphDatabaseNodeEntityPredicateForNodesRelatedToSubjectID([a4 rawIdentifier]);
+  v6 = HDSimpleGraphDatabaseNodeEntityPredicateForNodesRelatedToSubjectID([id rawIdentifier]);
   v12[0] = v6;
-  v7 = HDSimpleGraphDatabaseNodeEntityPredicateForNodesWithRelationshipType(a3);
+  v7 = HDSimpleGraphDatabaseNodeEntityPredicateForNodesWithRelationshipType(type);
   v12[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   v9 = [v5 predicateMatchingAllPredicates:v8];
@@ -1271,13 +1271,13 @@ LABEL_3:
   return v9;
 }
 
-+ (id)predicateMatchingConceptsWithRelationshipType:(int64_t)a3 withObjectId:(id)a4
++ (id)predicateMatchingConceptsWithRelationshipType:(int64_t)type withObjectId:(id)id
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D10B20];
-  v6 = HDSimpleGraphDatabaseNodeEntityPredicateForNodesRelatedToObjectID([a4 rawIdentifier]);
+  v6 = HDSimpleGraphDatabaseNodeEntityPredicateForNodesRelatedToObjectID([id rawIdentifier]);
   v12[0] = v6;
-  v7 = HDSimpleGraphDatabaseNodeEntityPredicateForNodesWithRelationshipType(a3);
+  v7 = HDSimpleGraphDatabaseNodeEntityPredicateForNodesWithRelationshipType(type);
   v12[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   v9 = [v5 predicateMatchingAllPredicates:v8];
@@ -1287,59 +1287,59 @@ LABEL_3:
   return v9;
 }
 
-+ (id)predicateMatchingRelationshipsWithSubjectId:(id)a3 relationshipType:(int64_t)a4
++ (id)predicateMatchingRelationshipsWithSubjectId:(id)id relationshipType:(int64_t)type
 {
-  v5 = [a3 rawIdentifier];
+  rawIdentifier = [id rawIdentifier];
 
-  return HDSimpleGraphRelationshipEntityPredicateForSubject(v5, a4);
+  return HDSimpleGraphRelationshipEntityPredicateForSubject(rawIdentifier, type);
 }
 
-+ (id)predicateMatchingConceptsWithAttributeType:(int64_t)a3 likeAttributeValue:(id)a4
++ (id)predicateMatchingConceptsWithAttributeType:(int64_t)type likeAttributeValue:(id)value
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%%%@%%", a4];
+  value = [MEMORY[0x277CCACA8] stringWithFormat:@"%%%@%%", value];
   v5 = HDSimpleGraphDatabaseNodeEntityPredicateForAttributeType(960, 1);
-  v6 = HDSimpleGraphDatabaseNodeEntityPredicateForAttributeValue(v4, 8);
+  v6 = HDSimpleGraphDatabaseNodeEntityPredicateForAttributeValue(value, 8);
   v7 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v5 otherPredicate:v6];
 
   return v7;
 }
 
-+ (id)predicateMatchingConceptsWithAttributeType:(int64_t)a3 beingsWithAttributeValue:(id)a4
++ (id)predicateMatchingConceptsWithAttributeType:(int64_t)type beingsWithAttributeValue:(id)value
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%%", a4];
+  value = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%%", value];
   v5 = HDSimpleGraphDatabaseNodeEntityPredicateForAttributeType(960, 1);
-  v6 = HDSimpleGraphDatabaseNodeEntityPredicateForAttributeValue(v4, 8);
+  v6 = HDSimpleGraphDatabaseNodeEntityPredicateForAttributeValue(value, 8);
   v7 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v5 otherPredicate:v6];
 
   return v7;
 }
 
-+ (id)predicateForConceptsFollowingRelationshipOfTypes:(id)a3 fromSubjectId:(id)a4
++ (id)predicateForConceptsFollowingRelationshipOfTypes:(id)types fromSubjectId:(id)id
 {
-  v5 = a4;
-  v6 = a3;
+  idCopy = id;
+  typesCopy = types;
   v7 = [(HDSQLiteSchemaEntity *)HDSimpleGraphDatabaseRelationshipEntity disambiguatedSQLForProperty:@"relationship_type"];
   v8 = [(HDSQLiteSchemaEntity *)HDSimpleGraphDatabaseRelationshipEntity disambiguatedSQLForProperty:@"subject_id"];
-  v9 = [MEMORY[0x277D10B28] containsPredicateWithProperty:v7 values:v6];
+  v9 = [MEMORY[0x277D10B28] containsPredicateWithProperty:v7 values:typesCopy];
 
   v10 = MEMORY[0x277D10B18];
-  v11 = [v5 numberRepresentation];
+  numberRepresentation = [idCopy numberRepresentation];
 
-  v12 = [v10 predicateWithProperty:v8 equalToValue:v11];
+  v12 = [v10 predicateWithProperty:v8 equalToValue:numberRepresentation];
 
   v13 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v9 otherPredicate:v12];
 
   return v13;
 }
 
-+ (id)predicateForRelationshipsWithTypes:(id)a3 onConceptId:(id)a4
++ (id)predicateForRelationshipsWithTypes:(id)types onConceptId:(id)id
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D10B20];
-  v6 = a3;
-  v7 = HDSimpleGraphRelationshipEntityPredicateForSubjectID([a4 rawIdentifier]);
+  typesCopy = types;
+  v7 = HDSimpleGraphRelationshipEntityPredicateForSubjectID([id rawIdentifier]);
   v13[0] = v7;
-  v8 = [MEMORY[0x277D10B28] containsPredicateWithProperty:@"relationship_type" values:v6];
+  v8 = [MEMORY[0x277D10B28] containsPredicateWithProperty:@"relationship_type" values:typesCopy];
 
   v13[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
@@ -1359,10 +1359,10 @@ LABEL_3:
   return v4;
 }
 
-+ (id)_findConceptForCoding:(unint64_t)a3 options:(void *)a4 transaction:(uint64_t)a5 error:
++ (id)_findConceptForCoding:(unint64_t)coding options:(void *)options transaction:(uint64_t)transaction error:
 {
   v8 = a2;
-  v9 = a4;
+  optionsCopy = options;
   v10 = objc_opt_self();
   v28 = 0;
   v29 = &v28;
@@ -1370,38 +1370,38 @@ LABEL_3:
   v31 = __Block_byref_object_copy__3;
   v32 = __Block_byref_object_dispose__3;
   v33 = 0;
-  v11 = [v9 profile];
-  v12 = [v11 ontologyConceptManager];
-  v13 = [v8 codingSystem];
-  v14 = [v12 attributeIdentifierForCodingSystem:v13];
+  profile = [optionsCopy profile];
+  ontologyConceptManager = [profile ontologyConceptManager];
+  codingSystem = [v8 codingSystem];
+  v14 = [ontologyConceptManager attributeIdentifierForCodingSystem:codingSystem];
 
   if (v14)
   {
-    v15 = [v14 longLongValue];
-    v16 = [v8 code];
-    v17 = HDSimpleGraphDatabaseNodeEntityPredicateForAttribute(v15, v16);
+    longLongValue = [v14 longLongValue];
+    code = [v8 code];
+    v17 = HDSimpleGraphDatabaseNodeEntityPredicateForAttribute(longLongValue, code);
 
-    v18 = [v9 graphDatabase];
+    graphDatabase = [optionsCopy graphDatabase];
     v19 = *MEMORY[0x277D10C08];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __76__HDOntologyConceptManager__findConceptForCoding_options_transaction_error___block_invoke;
     v27[3] = &unk_2796B92D0;
     v27[4] = &v28;
-    v20 = [v18 enumerateNodesForPredicate:v17 includeDeleted:(a3 >> 1) & 1 limit:v19 error:a5 enumerationHandler:v27];
+    v20 = [graphDatabase enumerateNodesForPredicate:v17 includeDeleted:(coding >> 1) & 1 limit:v19 error:transaction enumerationHandler:v27];
 
     if (v20)
     {
       v21 = v29[5];
       if (v21)
       {
-        v22 = [(HDOntologyConceptManager *)v10 _conceptFromGraphNode:v21 options:a3 transaction:v9 error:a5];
+        v22 = [(HDOntologyConceptManager *)v10 _conceptFromGraphNode:v21 options:coding transaction:optionsCopy error:transaction];
         goto LABEL_8;
       }
 
       v24 = MEMORY[0x277CCA9B8];
       v25 = HKSensitiveLogItem();
-      [v24 hk_assignError:a5 code:118 format:{@"Failed to find concept for coding %@.", v25}];
+      [v24 hk_assignError:transaction code:118 format:{@"Failed to find concept for coding %@.", v25}];
     }
   }
 
@@ -1409,7 +1409,7 @@ LABEL_3:
   {
     v23 = MEMORY[0x277CCA9B8];
     v17 = HKSensitiveLogItem();
-    [v23 hk_assignError:a5 code:118 format:{@"Failed to find concept for coding %@ (attribute identifier not found).", v17}];
+    [v23 hk_assignError:transaction code:118 format:{@"Failed to find concept for coding %@ (attribute identifier not found).", v17}];
   }
 
   v22 = 0;
@@ -1420,21 +1420,21 @@ LABEL_8:
   return v22;
 }
 
-+ (uint64_t)_consistentGrouperForConcept:(uint64_t *)a3 grouperIDInOut:(void *)a4 transaction:(uint64_t)a5 error:
++ (uint64_t)_consistentGrouperForConcept:(uint64_t *)concept grouperIDInOut:(void *)out transaction:(uint64_t)transaction error:
 {
-  v8 = a4;
+  outCopy = out;
   v9 = a2;
   v10 = objc_opt_self();
-  v11 = [(HDOntologyConceptManager *)v10 _grouperConceptIDForConcept:v9 transaction:v8 error:a5];
+  v11 = [(HDOntologyConceptManager *)v10 _grouperConceptIDForConcept:v9 transaction:outCopy error:transaction];
 
   if (!v11)
   {
     return 0;
   }
 
-  if (*a3)
+  if (*concept)
   {
-    if (v11 != *a3)
+    if (v11 != *concept)
     {
       return 0;
     }
@@ -1442,25 +1442,25 @@ LABEL_8:
 
   else
   {
-    *a3 = v11;
+    *concept = v11;
   }
 
   return 1;
 }
 
-+ (uint64_t)_priorityComparisionForConfiguration:(void *)a3 resolvedConcept:(void *)a4 resolvedConceptCode:(void *)a5 newConcept:(void *)a6 newConceptCode:
++ (uint64_t)_priorityComparisionForConfiguration:(void *)configuration resolvedConcept:(void *)concept resolvedConceptCode:(void *)code newConcept:(void *)newConcept newConceptCode:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  configurationCopy = configuration;
+  conceptCopy = concept;
+  codeCopy = code;
+  newConceptCopy = newConcept;
   v15 = objc_opt_self();
   v16 = -1;
-  if (v11 && v12)
+  if (configurationCopy && conceptCopy)
   {
     v17 = v15;
-    if ([v13 isEqual:v11])
+    if ([codeCopy isEqual:configurationCopy])
     {
       v16 = 1;
     }
@@ -1468,13 +1468,13 @@ LABEL_8:
     else
     {
       v18 = [(HDOntologyConceptManager *)v17 _prioritizedSystemIdentifiersForConfiguration:v10];
-      v19 = [v12 codingSystem];
-      v20 = [v19 identifier];
-      [v18 indexOfObject:v20];
+      codingSystem = [conceptCopy codingSystem];
+      identifier = [codingSystem identifier];
+      [v18 indexOfObject:identifier];
 
-      v21 = [v14 codingSystem];
-      v22 = [v21 identifier];
-      [v18 indexOfObject:v22];
+      codingSystem2 = [newConceptCopy codingSystem];
+      identifier2 = [codingSystem2 identifier];
+      [v18 indexOfObject:identifier2];
 
       v23 = HKCompareIntegers();
       if (v23)
@@ -1484,18 +1484,18 @@ LABEL_8:
 
       else
       {
-        v24 = [v11 preferredName];
-        [v24 length];
-        v25 = [v13 preferredName];
-        [v25 length];
+        preferredName = [configurationCopy preferredName];
+        [preferredName length];
+        preferredName2 = [codeCopy preferredName];
+        [preferredName2 length];
         v16 = HKCompareIntegers();
 
         if (!v16)
         {
-          v26 = [v13 identifier];
-          [v26 rawIdentifier];
-          v27 = [v11 identifier];
-          [v27 rawIdentifier];
+          identifier3 = [codeCopy identifier];
+          [identifier3 rawIdentifier];
+          identifier4 = [configurationCopy identifier];
+          [identifier4 rawIdentifier];
           v16 = HKCompareIntegers();
         }
       }
@@ -1505,10 +1505,10 @@ LABEL_8:
   return v16;
 }
 
-+ (uint64_t)_grouperConceptIDForConcept:(void *)a3 transaction:(uint64_t)a4 error:
++ (uint64_t)_grouperConceptIDForConcept:(void *)concept transaction:(uint64_t)transaction error:
 {
   v6 = a2;
-  v7 = a3;
+  conceptCopy = concept;
   objc_opt_self();
   v20 = 0;
   v21 = &v20;
@@ -1516,22 +1516,22 @@ LABEL_8:
   v23 = 0x7FFFFFFFFFFFFFFFLL;
   v8 = MEMORY[0x277D10B70];
   v9 = MEMORY[0x277D10B18];
-  v10 = [v6 identifier];
-  v11 = [v10 numberRepresentation];
-  v12 = [v9 predicateWithProperty:@"subject_id" equalToValue:v11];
+  identifier = [v6 identifier];
+  numberRepresentation = [identifier numberRepresentation];
+  v12 = [v9 predicateWithProperty:@"subject_id" equalToValue:numberRepresentation];
   v13 = HDSimpleGraphRelationshipEntityPredicateForRelationshipType(1013);
   v14 = [v8 compoundPredicateWithPredicate:v12 otherPredicate:v13];
 
-  v15 = [v7 graphDatabase];
-  v16 = [v15 underlyingDatabase];
+  graphDatabase = [conceptCopy graphDatabase];
+  underlyingDatabase = [graphDatabase underlyingDatabase];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __74__HDOntologyConceptManager__grouperConceptIDForConcept_transaction_error___block_invoke;
   v19[3] = &unk_2796B92F8;
   v19[4] = &v20;
-  LOBYTE(a4) = [HDSimpleGraphDatabaseRelationshipEntity enumerateRelationshipsWithPredicate:v14 skipDeleted:1 database:v16 error:a4 enumerationHandler:v19];
+  LOBYTE(transaction) = [HDSimpleGraphDatabaseRelationshipEntity enumerateRelationshipsWithPredicate:v14 skipDeleted:1 database:underlyingDatabase error:transaction enumerationHandler:v19];
 
-  if (a4)
+  if (transaction)
   {
     v17 = v21[3];
   }
@@ -1545,20 +1545,20 @@ LABEL_8:
   return v17;
 }
 
-+ (uint64_t)_prioritizedSystemIdentifiersForConfiguration:(uint64_t)a1
++ (uint64_t)_prioritizedSystemIdentifiersForConfiguration:(uint64_t)configuration
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 recordCategoryType];
+  recordCategoryType = [v2 recordCategoryType];
 
-  if ((v3 - 1) > 9)
+  if ((recordCategoryType - 1) > 9)
   {
     return MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    return qword_2796B9480[v3 - 1];
+    return qword_2796B9480[recordCategoryType - 1];
   }
 }
 
@@ -1578,12 +1578,12 @@ uint64_t __76__HDOntologyConceptManager__conceptFromGraphNode_options_transactio
   return 1;
 }
 
-+ (uint64_t)_enumerateConceptsWithIdentifiers:(unint64_t)a3 options:(void *)a4 transaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:
++ (uint64_t)_enumerateConceptsWithIdentifiers:(unint64_t)identifiers options:(void *)options transaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
   v46 = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a4;
-  v10 = a6;
+  optionsCopy = options;
+  errorCopy = error;
   v30 = objc_opt_self();
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1607,9 +1607,9 @@ uint64_t __76__HDOntologyConceptManager__conceptFromGraphNode_options_transactio
         }
 
         v18 = *(*(&v41 + 1) + 8 * i);
-        v19 = [v18 isAdHoc];
-        v20 = [v18 numberRepresentation];
-        if (v19)
+        isAdHoc = [v18 isAdHoc];
+        numberRepresentation = [v18 numberRepresentation];
+        if (isAdHoc)
         {
           v21 = v12;
         }
@@ -1619,7 +1619,7 @@ uint64_t __76__HDOntologyConceptManager__conceptFromGraphNode_options_transactio
           v21 = v11;
         }
 
-        [v21 addObject:v20];
+        [v21 addObject:numberRepresentation];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v41 objects:v45 count:16];
@@ -1634,13 +1634,13 @@ uint64_t __76__HDOntologyConceptManager__conceptFromGraphNode_options_transactio
   }
 
   v22 = MEMORY[0x277D10590];
-  v23 = [v9 profile];
+  profile = [optionsCopy profile];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __107__HDOntologyConceptManager__enumerateConceptsWithIdentifiers_options_transaction_error_enumerationHandler___block_invoke;
   v39[3] = &unk_2796B9348;
-  v40 = v10;
-  LODWORD(v22) = [v22 enumerateAdHocConceptWithRawIdentifiers:v12 options:a3 profile:v23 error:a5 enumerationHandler:v39];
+  v40 = errorCopy;
+  LODWORD(v22) = [v22 enumerateAdHocConceptWithRawIdentifiers:v12 options:identifiers profile:profile error:transaction enumerationHandler:v39];
 
   if (!v22)
   {
@@ -1652,7 +1652,7 @@ uint64_t __76__HDOntologyConceptManager__conceptFromGraphNode_options_transactio
 LABEL_20:
     if ([v11 count])
     {
-      v24 = [v9 graphDatabase];
+      graphDatabase = [optionsCopy graphDatabase];
       v25 = HDSimpleGraphDatabaseNodeEntityPredicateForIdentifiers(v11);
       v26 = *MEMORY[0x277D10C08];
       v34[0] = MEMORY[0x277D85DD0];
@@ -1660,10 +1660,10 @@ LABEL_20:
       v34[2] = __107__HDOntologyConceptManager__enumerateConceptsWithIdentifiers_options_transaction_error_enumerationHandler___block_invoke_2;
       v34[3] = &unk_2796B9370;
       v37 = v31;
-      v38 = a3;
-      v35 = v9;
-      v36 = v10;
-      v27 = [v24 enumerateNodesForPredicate:v25 includeDeleted:(a3 >> 1) & 1 limit:v26 error:a5 enumerationHandler:v34];
+      identifiersCopy = identifiers;
+      v35 = optionsCopy;
+      v36 = errorCopy;
+      v27 = [graphDatabase enumerateNodesForPredicate:v25 includeDeleted:(identifiers >> 1) & 1 limit:v26 error:transaction enumerationHandler:v34];
     }
 
     else
@@ -1705,7 +1705,7 @@ BOOL __93__HDOntologyConceptManager__relationshipsForConceptWithIdentifier_optio
   return v4;
 }
 
-+ (id)_attributesPredicateForAttributeTypes:(uint64_t)a1
++ (id)_attributesPredicateForAttributeTypes:(uint64_t)types
 {
   v2 = a2;
   objc_opt_self();
@@ -1721,24 +1721,24 @@ BOOL __93__HDOntologyConceptManager__relationshipsForConceptWithIdentifier_optio
       v8 = v3;
       v4 = v3;
       [v2 enumerateIntegersUsingBlock:v7];
-      v5 = [MEMORY[0x277D10B28] containsPredicateWithProperty:@"attribute_type" values:v4];
+      falsePredicate = [MEMORY[0x277D10B28] containsPredicateWithProperty:@"attribute_type" values:v4];
     }
 
     else
     {
-      v5 = [MEMORY[0x277D10B70] falsePredicate];
+      falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
     }
   }
 
   else
   {
-    v5 = 0;
+    falsePredicate = 0;
   }
 
-  return v5;
+  return falsePredicate;
 }
 
-+ (id)_relationshipPredicateForRelationshipTypes:(uint64_t)a1
++ (id)_relationshipPredicateForRelationshipTypes:(uint64_t)types
 {
   v2 = a2;
   objc_opt_self();
@@ -1754,21 +1754,21 @@ BOOL __93__HDOntologyConceptManager__relationshipsForConceptWithIdentifier_optio
       v8 = v3;
       v4 = v3;
       [v2 enumerateIntegersUsingBlock:v7];
-      v5 = [MEMORY[0x277D10B28] containsPredicateWithProperty:@"relationship_type" values:v4];
+      falsePredicate = [MEMORY[0x277D10B28] containsPredicateWithProperty:@"relationship_type" values:v4];
     }
 
     else
     {
-      v5 = [MEMORY[0x277D10B70] falsePredicate];
+      falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
     }
   }
 
   else
   {
-    v5 = 0;
+    falsePredicate = 0;
   }
 
-  return v5;
+  return falsePredicate;
 }
 
 uint64_t __145__HDOntologyConceptManager__inflateGraphWithRootConceptsPredicate_limit_maximumDepth_attributeTypes_relationshipTypes_ontologyTransaction_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1790,19 +1790,19 @@ uint64_t __145__HDOntologyConceptManager__inflateGraphWithRootConceptsPredicate_
   return v10;
 }
 
-+ (uint64_t)_inflateConcept:(void *)a3 rootNode:(unint64_t)a4 maximumDepth:(void *)a5 attributesPredicate:(void *)a6 relationshipsPredicate:(void *)a7 cache:(void *)a8 ontologyTransaction:(uint64_t)a9 error:
++ (uint64_t)_inflateConcept:(void *)concept rootNode:(unint64_t)node maximumDepth:(void *)depth attributesPredicate:(void *)predicate relationshipsPredicate:(void *)relationshipsPredicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a3;
+  depthCopy = depth;
+  predicateCopy = predicate;
+  relationshipsPredicateCopy = relationshipsPredicate;
+  cacheCopy = cache;
+  conceptCopy = concept;
   v20 = objc_opt_self();
-  v21 = [(HDOntologyConceptManager *)v20 _conceptForNode:v19 attributesPredicate:v15 cache:v17 ontologyTransaction:v18 error:a9];
+  v21 = [(HDOntologyConceptManager *)v20 _conceptForNode:conceptCopy attributesPredicate:depthCopy cache:relationshipsPredicateCopy ontologyTransaction:cacheCopy error:transaction];
 
   if (v21)
   {
-    v24 = [(HDOntologyConceptManager *)v20 _inflateRelationshipsIfPossibleForConcept:v21 maximumDepth:a4 attributesPredicate:v15 relationshipsPredicate:v16 cache:v17 ontologyTransaction:v18 error:a9];
+    v24 = [(HDOntologyConceptManager *)v20 _inflateRelationshipsIfPossibleForConcept:v21 maximumDepth:node attributesPredicate:depthCopy relationshipsPredicate:predicateCopy cache:relationshipsPredicateCopy ontologyTransaction:cacheCopy error:transaction];
     v22 = v24;
     if (a2 && v24)
     {
@@ -1834,12 +1834,12 @@ void __71__HDOntologyConceptManager__relationshipPredicateForRelationshipTypes__
   [v2 addObject:v3];
 }
 
-+ (void)_subgraphPopulatedRelationshipsForConcept:(uint64_t)a3 maximumDepth:(void *)a4 attributesPredicate:(void *)a5 relationshipsPredicate:(void *)a6 cache:(void *)a7 ontologyTransaction:(uint64_t)a8 error:
++ (void)_subgraphPopulatedRelationshipsForConcept:(uint64_t)concept maximumDepth:(void *)depth attributesPredicate:(void *)predicate relationshipsPredicate:(void *)relationshipsPredicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
+  cacheCopy = cache;
+  relationshipsPredicateCopy = relationshipsPredicate;
+  predicateCopy = predicate;
+  depthCopy = depth;
   v18 = a2;
   v19 = objc_opt_self();
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1849,9 +1849,9 @@ void __71__HDOntologyConceptManager__relationshipPredicateForRelationshipTypes__
   v25[3] = &unk_2796B9410;
   v26 = v20;
   v21 = v20;
-  LODWORD(a8) = [(HDOntologyConceptManager *)v19 _enumerateRelationshipsForConcept:v18 maximumDepth:a3 attributesPredicate:v17 relationshipsPredicate:v16 cache:v15 ontologyTransaction:v14 error:a8 enumerationHandler:v25];
+  LODWORD(transaction) = [(HDOntologyConceptManager *)v19 _enumerateRelationshipsForConcept:v18 maximumDepth:concept attributesPredicate:depthCopy relationshipsPredicate:predicateCopy cache:relationshipsPredicateCopy ontologyTransaction:cacheCopy error:transaction enumerationHandler:v25];
 
-  if (a8)
+  if (transaction)
   {
     v22 = v21;
   }
@@ -1882,40 +1882,40 @@ uint64_t __96__HDOntologyConceptManager__conceptForNode_attributesPredicate_cach
   return 1;
 }
 
-+ (uint64_t)_enumerateAttributesForNode:(void *)a3 attributesPredicate:(void *)a4 ontologyTransaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:
++ (uint64_t)_enumerateAttributesForNode:(void *)node attributesPredicate:(void *)predicate ontologyTransaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
   v24[2] = *MEMORY[0x277D85DE8];
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nodeCopy = node;
+  predicateCopy = predicate;
+  errorCopy = error;
   objc_opt_self();
-  if (v11)
+  if (nodeCopy)
   {
     v14 = MEMORY[0x277D10B20];
     v15 = HDSimpleGraphAttributeEntityPredicateForNodeID([v10 rowID], 1);
     v24[0] = v15;
-    v24[1] = v11;
+    v24[1] = nodeCopy;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-    v17 = [v14 predicateMatchingAllPredicates:v16];
+    graphDatabase2 = [v14 predicateMatchingAllPredicates:v16];
 
-    v18 = [v12 graphDatabase];
-    v19 = [v18 underlyingDatabase];
-    v20 = [HDSimpleGraphDatabaseAttributeEntity enumerateAttributesWithPredicate:v17 skipDeleted:1 database:v19 error:a5 enumerationHandler:v13];
+    graphDatabase = [predicateCopy graphDatabase];
+    underlyingDatabase = [graphDatabase underlyingDatabase];
+    v20 = [HDSimpleGraphDatabaseAttributeEntity enumerateAttributesWithPredicate:graphDatabase2 skipDeleted:1 database:underlyingDatabase error:transaction enumerationHandler:errorCopy];
   }
 
   else
   {
-    v21 = [MEMORY[0x277D10B70] falsePredicate];
+    falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
 
-    if (!v21)
+    if (!falsePredicate)
     {
       v20 = 1;
       goto LABEL_6;
     }
 
-    v17 = [v12 graphDatabase];
-    v20 = [v17 enumerateAttributesForNodeWithID:objc_msgSend(v10 error:"rowID") enumerationHandler:{a5, v13}];
+    graphDatabase2 = [predicateCopy graphDatabase];
+    v20 = [graphDatabase2 enumerateAttributesForNodeWithID:objc_msgSend(v10 error:"rowID") enumerationHandler:{transaction, errorCopy}];
   }
 
 LABEL_6:
@@ -1923,69 +1923,69 @@ LABEL_6:
   return v20;
 }
 
-+ (uint64_t)_enumerateRelationshipsForConcept:(uint64_t)a3 maximumDepth:(void *)a4 attributesPredicate:(void *)a5 relationshipsPredicate:(void *)a6 cache:(void *)a7 ontologyTransaction:(uint64_t)a8 error:(void *)a9 enumerationHandler:
++ (uint64_t)_enumerateRelationshipsForConcept:(uint64_t)concept maximumDepth:(void *)depth attributesPredicate:(void *)predicate relationshipsPredicate:(void *)relationshipsPredicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
   v60 = *MEMORY[0x277D85DE8];
   v13 = a2;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  depthCopy = depth;
+  predicateCopy = predicate;
+  relationshipsPredicateCopy = relationshipsPredicate;
+  cacheCopy = cache;
+  errorCopy = error;
   v19 = objc_opt_self();
-  v20 = [v13 relationships];
-  v21 = [v20 count];
+  relationships = [v13 relationships];
+  v21 = [relationships count];
 
   if (v21)
   {
-    v22 = v18;
+    v22 = errorCopy;
     v23 = v19;
     v24 = v13;
     v25 = v22;
-    v26 = v16;
+    v26 = relationshipsPredicateCopy;
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v27 = [v24 relationships];
-    v28 = [v27 countByEnumeratingWithState:&v55 objects:v59 count:16];
+    relationships2 = [v24 relationships];
+    v28 = [relationships2 countByEnumeratingWithState:&v55 objects:v59 count:16];
     if (v28)
     {
       v29 = v28;
-      v43 = v17;
+      v43 = cacheCopy;
       v44 = v26;
       v41 = v25;
-      v42 = v15;
+      v42 = predicateCopy;
       v30 = *v56;
       v40 = v24;
-      v31 = a3;
+      conceptCopy2 = concept;
       while (2)
       {
         for (i = 0; i != v29; ++i)
         {
           if (*v56 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(relationships2);
           }
 
           v33 = *(*(&v55 + 1) + 8 * i);
-          v34 = [v33 destination];
-          v35 = v14;
-          v36 = [(HDOntologyConceptManager *)v23 _inflateRelationshipsIfPossibleForConcept:v34 maximumDepth:v31 attributesPredicate:v14 relationshipsPredicate:v42 cache:v44 ontologyTransaction:v43 error:a8];
+          destination = [v33 destination];
+          v35 = depthCopy;
+          v36 = [(HDOntologyConceptManager *)v23 _inflateRelationshipsIfPossibleForConcept:destination maximumDepth:conceptCopy2 attributesPredicate:depthCopy relationshipsPredicate:v42 cache:v44 ontologyTransaction:v43 error:transaction];
 
-          if (!v36 || !v41[2](v41, v33, a8))
+          if (!v36 || !v41[2](v41, v33, transaction))
           {
             v37 = 0;
             v24 = v40;
-            v14 = v35;
+            depthCopy = v35;
             goto LABEL_14;
           }
 
-          v14 = v35;
-          v31 = a3;
+          depthCopy = v35;
+          conceptCopy2 = concept;
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v55 objects:v59 count:16];
+        v29 = [relationships2 countByEnumeratingWithState:&v55 objects:v59 count:16];
         if (v29)
         {
           continue;
@@ -1997,16 +1997,16 @@ LABEL_6:
       v37 = 1;
       v24 = v40;
 LABEL_14:
-      v15 = v42;
-      v17 = v43;
+      predicateCopy = v42;
+      cacheCopy = v43;
       v26 = v44;
-      v18 = v41;
+      errorCopy = v41;
     }
 
     else
     {
       v37 = 1;
-      v18 = v25;
+      errorCopy = v25;
     }
   }
 
@@ -2017,16 +2017,16 @@ LABEL_14:
     v47[2] = __169__HDOntologyConceptManager__enumerateRelationshipsForConcept_maximumDepth_attributesPredicate_relationshipsPredicate_cache_ontologyTransaction_error_enumerationHandler___block_invoke;
     v47[3] = &unk_2796B9438;
     v53 = v19;
-    v54 = a3;
-    v48 = v14;
-    v49 = v15;
-    v26 = v16;
-    v50 = v16;
-    v51 = v17;
-    v52 = v18;
-    v37 = [(HDOntologyConceptManager *)v19 _enumerateDatabaseRelationshipsForConcept:v13 relationshipsPredicate:v49 ontologyTransaction:v51 error:a8 enumerationHandler:v47];
+    conceptCopy3 = concept;
+    v48 = depthCopy;
+    v49 = predicateCopy;
+    v26 = relationshipsPredicateCopy;
+    v50 = relationshipsPredicateCopy;
+    v51 = cacheCopy;
+    v52 = errorCopy;
+    v37 = [(HDOntologyConceptManager *)v19 _enumerateDatabaseRelationshipsForConcept:v13 relationshipsPredicate:v49 ontologyTransaction:v51 error:transaction enumerationHandler:v47];
 
-    v27 = v48;
+    relationships2 = v48;
     v24 = v13;
   }
 
@@ -2050,21 +2050,21 @@ uint64_t __169__HDOntologyConceptManager__enumerateRelationshipsForConcept_maxim
   return v5;
 }
 
-+ (id)_subgraphPopulatedRelationshipForRelationship:(uint64_t)a3 maximumDepth:(void *)a4 attributesPredicate:(void *)a5 relationshipsPredicate:(void *)a6 cache:(void *)a7 ontologyTransaction:(uint64_t)a8 error:
++ (id)_subgraphPopulatedRelationshipForRelationship:(uint64_t)relationship maximumDepth:(void *)depth attributesPredicate:(void *)predicate relationshipsPredicate:(void *)relationshipsPredicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:
 {
   v14 = a2;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  depthCopy = depth;
+  predicateCopy = predicate;
+  relationshipsPredicateCopy = relationshipsPredicate;
+  cacheCopy = cache;
   v19 = objc_opt_self();
-  v20 = [v18 graphDatabase];
-  v21 = [v20 nodeForID:objc_msgSend(v14 error:{"objectID"), a8}];
+  graphDatabase = [cacheCopy graphDatabase];
+  v21 = [graphDatabase nodeForID:objc_msgSend(v14 error:{"objectID"), transaction}];
 
   if (v21)
   {
     v36 = 0;
-    v22 = [(HDOntologyConceptManager *)v19 _inflateConcept:v21 rootNode:a3 maximumDepth:v15 attributesPredicate:v16 relationshipsPredicate:v17 cache:v18 ontologyTransaction:a8 error:?];
+    v22 = [(HDOntologyConceptManager *)v19 _inflateConcept:v21 rootNode:relationship maximumDepth:depthCopy attributesPredicate:predicateCopy relationshipsPredicate:relationshipsPredicateCopy cache:cacheCopy ontologyTransaction:transaction error:?];
     v23 = v36;
     v24 = v23;
     v25 = 0;
@@ -2072,9 +2072,9 @@ uint64_t __169__HDOntologyConceptManager__enumerateRelationshipsForConcept_maxim
     {
       if (v23)
       {
-        if (v17)
+        if (relationshipsPredicateCopy)
         {
-          v26 = v17[2];
+          v26 = relationshipsPredicateCopy[2];
         }
 
         else
@@ -2083,21 +2083,21 @@ uint64_t __169__HDOntologyConceptManager__enumerateRelationshipsForConcept_maxim
         }
 
         v27 = v26;
-        v28 = [v24 identifier];
-        v35 = [v27 containsObject:v28];
+        identifier = [v24 identifier];
+        v35 = [v27 containsObject:identifier];
 
         v29 = objc_alloc(MEMORY[0x277CCD1D8]);
-        v30 = [v14 type];
-        v31 = [v14 version];
-        v32 = [v14 isDeleted];
+        type = [v14 type];
+        version = [v14 version];
+        isDeleted = [v14 isDeleted];
         if (v35)
         {
-          v33 = [v29 initWithType:v30 weakDestination:v24 version:v31 deleted:v32];
+          v33 = [v29 initWithType:type weakDestination:v24 version:version deleted:isDeleted];
         }
 
         else
         {
-          v33 = [v29 initWithType:v30 destination:v24 version:v31 deleted:v32];
+          v33 = [v29 initWithType:type destination:v24 version:version deleted:isDeleted];
         }
 
         v25 = v33;
@@ -2105,7 +2105,7 @@ uint64_t __169__HDOntologyConceptManager__enumerateRelationshipsForConcept_maxim
 
       else
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a8 code:118 format:{@"No destination found for node %@", v21}];
+        [MEMORY[0x277CCA9B8] hk_assignError:transaction code:118 format:{@"No destination found for node %@", v21}];
         v25 = 0;
       }
     }
@@ -2119,42 +2119,42 @@ uint64_t __169__HDOntologyConceptManager__enumerateRelationshipsForConcept_maxim
   return v25;
 }
 
-+ (uint64_t)_enumerateDatabaseRelationshipsForConcept:(void *)a3 relationshipsPredicate:(void *)a4 ontologyTransaction:(uint64_t)a5 error:(void *)a6 enumerationHandler:
++ (uint64_t)_enumerateDatabaseRelationshipsForConcept:(void *)concept relationshipsPredicate:(void *)predicate ontologyTransaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  conceptCopy = concept;
+  predicateCopy = predicate;
+  errorCopy = error;
   v13 = a2;
   objc_opt_self();
-  v14 = [v13 identifier];
+  identifier = [v13 identifier];
 
-  v15 = [v14 rawIdentifier];
-  if (v10)
+  rawIdentifier = [identifier rawIdentifier];
+  if (conceptCopy)
   {
     v16 = MEMORY[0x277D10B20];
-    v17 = HDSimpleGraphRelationshipEntityPredicateForSubjectID(v15);
+    v17 = HDSimpleGraphRelationshipEntityPredicateForSubjectID(rawIdentifier);
     v25[0] = v17;
-    v25[1] = v10;
+    v25[1] = conceptCopy;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
-    v19 = [v16 predicateMatchingAllPredicates:v18];
+    graphDatabase2 = [v16 predicateMatchingAllPredicates:v18];
 
-    v20 = [v11 graphDatabase];
-    v21 = [v20 enumerateRelationshipsForPredicate:v19 error:a5 enumerationHandler:v12];
+    graphDatabase = [predicateCopy graphDatabase];
+    v21 = [graphDatabase enumerateRelationshipsForPredicate:graphDatabase2 error:transaction enumerationHandler:errorCopy];
   }
 
   else
   {
-    v22 = [MEMORY[0x277D10B70] falsePredicate];
+    falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
 
-    if (!v22)
+    if (!falsePredicate)
     {
       v21 = 1;
       goto LABEL_6;
     }
 
-    v19 = [v11 graphDatabase];
-    v21 = [v19 enumerateRelationshipsWithSubjectID:v15 includeDeleted:0 error:a5 enumerationHandler:v12];
+    graphDatabase2 = [predicateCopy graphDatabase];
+    v21 = [graphDatabase2 enumerateRelationshipsWithSubjectID:rawIdentifier includeDeleted:0 error:transaction enumerationHandler:errorCopy];
   }
 
 LABEL_6:
@@ -2162,11 +2162,11 @@ LABEL_6:
   return v21;
 }
 
-- (id)attributeIdentifierForCodingSystem:(id)a3
+- (id)attributeIdentifierForCodingSystem:(id)system
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  systemCopy = system;
+  if (!systemCopy)
   {
     [HDOntologyConceptManager attributeIdentifierForCodingSystem:];
   }
@@ -2181,11 +2181,11 @@ LABEL_6:
 
   os_unfair_lock_lock(&self->_attributeIdentifierByCodingSystemURNLock);
   attributeIdentifierByCodingSystemURN = self->_attributeIdentifierByCodingSystemURN;
-  v7 = [v4 identifier];
-  v8 = v7;
-  if (v7)
+  identifier = [systemCopy identifier];
+  v8 = identifier;
+  if (identifier)
   {
-    v9 = v7;
+    v9 = identifier;
   }
 
   else
@@ -2193,10 +2193,10 @@ LABEL_6:
     v9 = &stru_28636E7C8;
   }
 
-  v10 = [(NSMutableDictionary *)attributeIdentifierByCodingSystemURN objectForKeyedSubscript:v9];
+  ontology_hasCodingSystemAttributeIdentifier = [(NSMutableDictionary *)attributeIdentifierByCodingSystemURN objectForKeyedSubscript:v9];
 
   os_unfair_lock_unlock(&self->_attributeIdentifierByCodingSystemURNLock);
-  if (!v10)
+  if (!ontology_hasCodingSystemAttributeIdentifier)
   {
     _HKInitializeLogging();
     v11 = HKLogHealthOntology();
@@ -2204,14 +2204,14 @@ LABEL_6:
     {
       v12 = HKSensitiveLogItem();
       v18 = 138543618;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
       v21 = v12;
       _os_log_impl(&dword_2514A1000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: no attribute identifier found for %{public}@", &v18, 0x16u);
     }
 
-    v10 = [v4 ontology_hasCodingSystemAttributeIdentifier];
-    if (v10)
+    ontology_hasCodingSystemAttributeIdentifier = [systemCopy ontology_hasCodingSystemAttributeIdentifier];
+    if (ontology_hasCodingSystemAttributeIdentifier)
     {
       _HKInitializeLogging();
       v13 = HKLogHealthOntology();
@@ -2219,19 +2219,19 @@ LABEL_6:
       {
         v14 = HKSensitiveLogItem();
         v18 = 138543618;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 2114;
         v21 = v14;
         _os_log_impl(&dword_2514A1000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: attribute identifier found in fallback mapping for coding system %{public}@", &v18, 0x16u);
       }
 
-      v15 = v10;
+      v15 = ontology_hasCodingSystemAttributeIdentifier;
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return ontology_hasCodingSystemAttributeIdentifier;
 }
 
 BOOL __59__HDOntologyConceptManager__populateAttributeIdentifierMap__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2271,19 +2271,19 @@ uint64_t __59__HDOntologyConceptManager__populateAttributeIdentifierMap__block_i
   return attributeIdentifierByCodingSystemURNIsReady;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 ontologyUpdateCoordinator];
-  v6 = [v5 importer];
-  [v6 addOntologyShardImporterObserver:self queue:0];
+  daemon = [WeakRetained daemon];
+  ontologyUpdateCoordinator = [daemon ontologyUpdateCoordinator];
+  importer = [ontologyUpdateCoordinator importer];
+  [importer addOntologyShardImporterObserver:self queue:0];
 }
 
-- (void)ontologyShardImporter:(id)a3 didImportEntry:(id)a4
+- (void)ontologyShardImporter:(id)importer didImportEntry:(id)entry
 {
-  v5 = [a4 identifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CCC608]];
+  identifier = [entry identifier];
+  v6 = [identifier isEqualToString:*MEMORY[0x277CCC608]];
 
   if (v6)
   {
@@ -2291,16 +2291,16 @@ uint64_t __59__HDOntologyConceptManager__populateAttributeIdentifierMap__block_i
   }
 }
 
-+ (id)_conceptForNode:(void *)a3 attributesPredicate:(void *)a4 cache:(void *)a5 ontologyTransaction:(uint64_t)a6 error:
++ (id)_conceptForNode:(void *)node attributesPredicate:(void *)predicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  nodeCopy = node;
+  predicateCopy = predicate;
+  cacheCopy = cache;
   v14 = objc_opt_self();
-  if (v12)
+  if (predicateCopy)
   {
-    v15 = v12[1];
+    v15 = predicateCopy[1];
   }
 
   else
@@ -2327,17 +2327,17 @@ uint64_t __59__HDOntologyConceptManager__populateAttributeIdentifierMap__block_i
     v32[3] = &unk_2796B9320;
     v22 = v21;
     v33 = v22;
-    if ([(HDOntologyConceptManager *)v14 _enumerateAttributesForNode:v10 attributesPredicate:v11 ontologyTransaction:v13 error:a6 enumerationHandler:v32])
+    if ([(HDOntologyConceptManager *)v14 _enumerateAttributesForNode:v10 attributesPredicate:nodeCopy ontologyTransaction:cacheCopy error:transaction enumerationHandler:v32])
     {
       v23 = objc_alloc(MEMORY[0x277CCD1B0]);
       v24 = [objc_alloc(MEMORY[0x277CCD1D0]) initWithRawIdentifier:{objc_msgSend(v10, "rowID")}];
-      v25 = [v10 version];
-      v26 = [v10 isDeleted];
-      v20 = [v23 initWithIdentifier:v24 attributes:v22 relationships:MEMORY[0x277CBEBF8] version:v25 deleted:v26 options:0];
+      version = [v10 version];
+      isDeleted = [v10 isDeleted];
+      v20 = [v23 initWithIdentifier:v24 attributes:v22 relationships:MEMORY[0x277CBEBF8] version:version deleted:isDeleted options:0];
 
-      if (v12)
+      if (predicateCopy)
       {
-        v27 = v12[1];
+        v27 = predicateCopy[1];
       }
 
       else
@@ -2346,9 +2346,9 @@ uint64_t __59__HDOntologyConceptManager__populateAttributeIdentifierMap__block_i
       }
 
       v28 = v27;
-      v29 = [v20 identifier];
-      v30 = [v29 numberRepresentation];
-      [v28 setObject:v20 forKeyedSubscript:v30];
+      identifier = [v20 identifier];
+      numberRepresentation = [identifier numberRepresentation];
+      [v28 setObject:v20 forKeyedSubscript:numberRepresentation];
     }
 
     else
@@ -2360,17 +2360,17 @@ uint64_t __59__HDOntologyConceptManager__populateAttributeIdentifierMap__block_i
   return v20;
 }
 
-+ (BOOL)_inflateRelationshipsIfPossibleForConcept:(unint64_t)a3 maximumDepth:(void *)a4 attributesPredicate:(void *)a5 relationshipsPredicate:(void *)a6 cache:(void *)a7 ontologyTransaction:(uint64_t)a8 error:
++ (BOOL)_inflateRelationshipsIfPossibleForConcept:(unint64_t)concept maximumDepth:(void *)depth attributesPredicate:(void *)predicate relationshipsPredicate:(void *)relationshipsPredicate cache:(void *)cache ontologyTransaction:(uint64_t)transaction error:
 {
   v14 = a2;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  depthCopy = depth;
+  predicateCopy = predicate;
+  relationshipsPredicateCopy = relationshipsPredicate;
+  cacheCopy = cache;
   v19 = objc_opt_self();
-  if (v17)
+  if (relationshipsPredicateCopy)
   {
-    v20 = v17[2];
+    v20 = relationshipsPredicateCopy[2];
   }
 
   else
@@ -2379,8 +2379,8 @@ uint64_t __59__HDOntologyConceptManager__populateAttributeIdentifierMap__block_i
   }
 
   v21 = v20;
-  v22 = [v14 identifier];
-  if ([v21 containsObject:v22])
+  identifier = [v14 identifier];
+  if ([v21 containsObject:identifier])
   {
 
 LABEL_5:
@@ -2388,10 +2388,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v31 = a8;
-  if (v17)
+  transactionCopy = transaction;
+  if (relationshipsPredicateCopy)
   {
-    v24 = v17[2];
+    v24 = relationshipsPredicateCopy[2];
   }
 
   else
@@ -2401,15 +2401,15 @@ LABEL_5:
 
   v25 = [v24 count];
 
-  if (v25 >= a3)
+  if (v25 >= concept)
   {
     v23 = 1;
     goto LABEL_18;
   }
 
-  if (v17)
+  if (relationshipsPredicateCopy)
   {
-    v26 = v17[2];
+    v26 = relationshipsPredicateCopy[2];
   }
 
   else
@@ -2418,13 +2418,13 @@ LABEL_5:
   }
 
   v27 = v26;
-  v28 = [v14 identifier];
-  [v27 addObject:v28];
+  identifier2 = [v14 identifier];
+  [v27 addObject:identifier2];
 
-  v21 = [(HDOntologyConceptManager *)v19 _subgraphPopulatedRelationshipsForConcept:v14 maximumDepth:a3 attributesPredicate:v15 relationshipsPredicate:v16 cache:v17 ontologyTransaction:v18 error:v31];
-  if (v17)
+  v21 = [(HDOntologyConceptManager *)v19 _subgraphPopulatedRelationshipsForConcept:v14 maximumDepth:concept attributesPredicate:depthCopy relationshipsPredicate:predicateCopy cache:relationshipsPredicateCopy ontologyTransaction:cacheCopy error:transactionCopy];
+  if (relationshipsPredicateCopy)
   {
-    v29 = v17[2];
+    v29 = relationshipsPredicateCopy[2];
   }
 
   else
@@ -2453,21 +2453,21 @@ LABEL_18:
 - (void)_populateAttributeIdentifierMap
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v2 = HKLogHealthOntology();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = a1;
+      selfCopy2 = self;
       _os_log_impl(&dword_2514A1000, v2, OS_LOG_TYPE_DEFAULT, "%{public}@ will now populate the attribute identifier map", buf, 0xCu);
     }
 
-    os_unfair_lock_assert_not_owner((a1 + 32));
+    os_unfair_lock_assert_not_owner((self + 32));
     v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v5 = [WeakRetained ontologyDatabase];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    ontologyDatabase = [WeakRetained ontologyDatabase];
     v16 = 0;
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
@@ -2475,22 +2475,22 @@ LABEL_18:
     v14 = &unk_2796B9460;
     v6 = v3;
     v15 = v6;
-    v7 = [v5 performTransactionWithError:&v16 transactionHandler:&v11];
+    v7 = [ontologyDatabase performTransactionWithError:&v16 transactionHandler:&v11];
     v8 = v16;
 
     if (v7)
     {
-      os_unfair_lock_lock((a1 + 32));
-      [*(a1 + 24) removeAllObjects];
-      [*(a1 + 24) addEntriesFromDictionary:v6];
-      *(a1 + 36) = 1;
-      os_unfair_lock_unlock((a1 + 32));
+      os_unfair_lock_lock((self + 32));
+      [*(self + 24) removeAllObjects];
+      [*(self + 24) addEntriesFromDictionary:v6];
+      *(self + 36) = 1;
+      os_unfair_lock_unlock((self + 32));
       _HKInitializeLogging();
       v9 = HKLogHealthOntology();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v18 = a1;
+        selfCopy2 = self;
         _os_log_impl(&dword_2514A1000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ did populate the attribute identifier map", buf, 0xCu);
       }
     }
@@ -2502,7 +2502,7 @@ LABEL_18:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543362;
-        v18 = v8;
+        selfCopy2 = v8;
         _os_log_fault_impl(&dword_2514A1000, v9, OS_LOG_TYPE_FAULT, "HDOntologyConceptManager failed to populate the attribute identifier map. Error: %{public}@", buf, 0xCu);
       }
     }
@@ -2513,14 +2513,14 @@ LABEL_18:
 
 - (void)_resetAttributeIdentifierMap
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v2 = *(a1 + 36);
-    *(a1 + 36) = 0;
-    [*(a1 + 24) removeAllObjects];
-    os_unfair_lock_unlock((a1 + 32));
-    v3 = MEMORY[0x253078050](*(a1 + 40));
+    os_unfair_lock_lock((self + 32));
+    v2 = *(self + 36);
+    *(self + 36) = 0;
+    [*(self + 24) removeAllObjects];
+    os_unfair_lock_unlock((self + 32));
+    v3 = MEMORY[0x253078050](*(self + 40));
     if (v3)
     {
       v4 = v3;

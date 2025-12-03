@@ -10,42 +10,42 @@
 
 - (UIImage)imageValue
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 imageValue];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  imageValue = [objectInternal imageValue];
 
-  return v3;
+  return imageValue;
 }
 
 - (UIImage)unpaddedImageValue
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 unpaddedImageValue];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  unpaddedImageValue = [objectInternal unpaddedImageValue];
 
-  return v3;
+  return unpaddedImageValue;
 }
 
 - (NSArray)vertices
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 vertices];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  vertices = [objectInternal vertices];
 
-  return v3;
+  return vertices;
 }
 
 - (NSArray)targetVertices
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 targetVertices];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  targetVertices = [objectInternal targetVertices];
 
-  return v3;
+  return targetVertices;
 }
 
 - (NSString)capturePath
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 capturePath];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  capturePath = [objectInternal capturePath];
 
-  return v3;
+  return capturePath;
 }
 
 @end

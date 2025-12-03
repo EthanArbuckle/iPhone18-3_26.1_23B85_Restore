@@ -1,30 +1,30 @@
 @interface NUChannelData
-+ (id)BOOLean:(BOOL)a3;
-+ (id)aggregateDataWithFormat:(id)a3 components:(id)a4 error:(id *)a5;
++ (id)BOOLean:(BOOL)lean;
++ (id)aggregateDataWithFormat:(id)format components:(id)components error:(id *)error;
 + (id)null;
-+ (id)number:(double)a3;
-+ (id)rect:(id *)a3;
++ (id)number:(double)number;
++ (id)rect:(id *)rect;
 - (NUChannelData)init;
-- (NUChannelData)initWithFormat:(id)a3;
+- (NUChannelData)initWithFormat:(id)format;
 - (id)debugDescription;
 - (id)description;
-- (id)subdataAtIndex:(unint64_t)a3 error:(id *)a4;
-- (id)subdataForChannel:(id)a3 error:(id *)a4;
+- (id)subdataAtIndex:(unint64_t)index error:(id *)error;
+- (id)subdataForChannel:(id)channel error:(id *)error;
 - (id)value;
 - (int64_t)type;
 @end
 
 @implementation NUChannelData
 
-- (id)subdataAtIndex:(unint64_t)a3 error:(id *)a4
+- (id)subdataAtIndex:(unint64_t)index error:(id *)error
 {
-  *a4 = [NUError unsupportedError:@"Abstract data" object:self];
+  *error = [NUError unsupportedError:@"Abstract data" object:self];
   return 0;
 }
 
-- (id)subdataForChannel:(id)a3 error:(id *)a4
+- (id)subdataForChannel:(id)channel error:(id *)error
 {
-  *a4 = [NUError unsupportedError:@"Abstract data" object:self];
+  *error = [NUError unsupportedError:@"Abstract data" object:self];
   return 0;
 }
 
@@ -32,8 +32,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUChannelData *)self format];
-  v6 = [v3 stringWithFormat:@"<%@:%p format:%@>", v4, self, v5];
+  format = [(NUChannelData *)self format];
+  v6 = [v3 stringWithFormat:@"<%@:%p format:%@>", v4, self, format];
 
   return v6;
 }
@@ -41,8 +41,8 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NUChannelData *)self format];
-  v4 = [v2 stringWithFormat:@"data=%@", v3];
+  format = [(NUChannelData *)self format];
+  v4 = [v2 stringWithFormat:@"data=%@", format];
 
   return v4;
 }
@@ -92,8 +92,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -109,8 +109,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -126,20 +126,20 @@ LABEL_14:
 
 - (int64_t)type
 {
-  v2 = [(NUChannelData *)self format];
-  v3 = [v2 channelType];
+  format = [(NUChannelData *)self format];
+  channelType = [format channelType];
 
-  return v3;
+  return channelType;
 }
 
-- (NUChannelData)initWithFormat:(id)a3
+- (NUChannelData)initWithFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v8.receiver = self;
   v8.super_class = NUChannelData;
   v5 = [(NUChannelData *)&v8 init];
   format = v5->_format;
-  v5->_format = v4;
+  v5->_format = formatCopy;
 
   return v5;
 }
@@ -190,8 +190,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -207,8 +207,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -224,12 +224,12 @@ LABEL_14:
   _NUAssertFailHandler("[NUChannelData init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1930, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-+ (id)aggregateDataWithFormat:(id)a3 components:(id)a4 error:(id *)a5
++ (id)aggregateDataWithFormat:(id)format components:(id)components error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  formatCopy = format;
+  componentsCopy = components;
+  if (!formatCopy)
   {
     v13 = NUAssertLogger_4187();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -250,8 +250,8 @@ LABEL_14:
         v20 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v20;
         v31 = 2114;
@@ -262,8 +262,8 @@ LABEL_14:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -272,26 +272,26 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelData aggregateDataWithFormat:components:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2016, @"Invalid parameter not satisfying: %s", v25, v26, v27, v28, "format != nil");
   }
 
-  v9 = v8;
-  if ([v7 channelType] == 1)
+  v9 = componentsCopy;
+  if ([formatCopy channelType] == 1)
   {
-    v10 = v7;
+    v10 = formatCopy;
     if ([v10 mediaType] == 4)
     {
-      v11 = [NUChannelMediaData containerMediaDataWithFormat:v10 components:v9 error:a5];
+      v11 = [NUChannelMediaData containerMediaDataWithFormat:v10 components:v9 error:error];
     }
 
     else
     {
       [NUError unsupportedError:@"Cannot aggregate media data" object:v10];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
     }
   }
 
   else
   {
-    [NUError unsupportedError:@"Cannot aggregate channel data" object:v7];
-    *a5 = v11 = 0;
+    [NUError unsupportedError:@"Cannot aggregate channel data" object:formatCopy];
+    *error = v11 = 0;
   }
 
   return v11;
@@ -304,11 +304,11 @@ LABEL_14:
   return v2;
 }
 
-+ (id)rect:(id *)a3
++ (id)rect:(id *)rect
 {
   v4 = objc_alloc_init(NURectSetting);
-  var1 = a3->var1;
-  v9[0] = a3->var0;
+  var1 = rect->var1;
+  v9[0] = rect->var0;
   v9[1] = var1;
   v6 = [MEMORY[0x1E696B098] nu_valueWithPixelRect:v9];
   v7 = [NUChannelControlData controlDataWithSetting:v4 value:v6];
@@ -316,25 +316,25 @@ LABEL_14:
   return v7;
 }
 
-+ (id)BOOLean:(BOOL)a3
++ (id)BOOLean:(BOOL)lean
 {
-  v3 = a3;
+  leanCopy = lean;
   v4 = [NUBoolSetting alloc];
   v5 = [(NUModel *)v4 initWithAttributes:MEMORY[0x1E695E0F8]];
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:leanCopy];
   v7 = [NUChannelControlData controlDataWithSetting:v5 value:v6];
 
   return v7;
 }
 
-+ (id)number:(double)a3
++ (id)number:(double)number
 {
   v4 = [NUNumberSetting alloc];
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:number];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:number];
   v7 = [(NUNumberSetting *)v4 initWithMinimum:v5 maximum:v6 attributes:MEMORY[0x1E695E0F8]];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:number];
   v9 = [NUChannelControlData controlDataWithSetting:v7 value:v8];
 
   return v9;

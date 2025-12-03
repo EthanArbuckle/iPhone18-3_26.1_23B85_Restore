@@ -1,62 +1,62 @@
 @interface CVNLPCTCTextDecoder
-- (CVNLPCTCTextDecoder)initWithLanguageResourceBundle:(id)a3;
-- (id)decodingResultForKBestPaths:(unint64_t)a3 withBeamWidth:(unint64_t)a4;
-- (id)decodingResultForKBestPaths:(unint64_t)a3 withBeamWidth:(unint64_t)a4 context:(id)a5;
-- (id)decodingResultWithConfiguration:(id)a3 withContext:(id)a4;
-- (id)greedyDecodingResultWithConfiguration:(id)a3;
+- (CVNLPCTCTextDecoder)initWithLanguageResourceBundle:(id)bundle;
+- (id)decodingResultForKBestPaths:(unint64_t)paths withBeamWidth:(unint64_t)width;
+- (id)decodingResultForKBestPaths:(unint64_t)paths withBeamWidth:(unint64_t)width context:(id)context;
+- (id)decodingResultWithConfiguration:(id)configuration withContext:(id)context;
+- (id)greedyDecodingResultWithConfiguration:(id)configuration;
 @end
 
 @implementation CVNLPCTCTextDecoder
 
-- (CVNLPCTCTextDecoder)initWithLanguageResourceBundle:(id)a3
+- (CVNLPCTCTextDecoder)initWithLanguageResourceBundle:(id)bundle
 {
   v4.receiver = self;
   v4.super_class = CVNLPCTCTextDecoder;
-  return [(CVNLPTextDecoder *)&v4 initWithLanguageResourceBundle:a3];
+  return [(CVNLPTextDecoder *)&v4 initWithLanguageResourceBundle:bundle];
 }
 
-- (id)decodingResultForKBestPaths:(unint64_t)a3 withBeamWidth:(unint64_t)a4
+- (id)decodingResultForKBestPaths:(unint64_t)paths withBeamWidth:(unint64_t)width
 {
-  v7 = objc_msgSend_defaultWhitespaceCommitActionBehavior(CVNLPTextDecodingConfiguration, a2, a3, a4);
+  v7 = objc_msgSend_defaultWhitespaceCommitActionBehavior(CVNLPTextDecodingConfiguration, a2, paths, width);
   v11 = objc_msgSend_languageResourceBundle(self, v8, v9, v10);
   v14 = objc_msgSend_defaultPathScoringFunctionForLanguageResourceBundle_(CVNLPTextDecodingPath, v12, v11, v13);
 
   v15 = [CVNLPTextDecodingBeamSearchConfiguration alloc];
-  v17 = objc_msgSend_initWithCommitActionBehavior_scoringFunction_beamWidth_pathCount_(v15, v16, v7, v14, a4, a3);
+  v17 = objc_msgSend_initWithCommitActionBehavior_scoringFunction_beamWidth_pathCount_(v15, v16, v7, v14, width, paths);
   v19 = objc_msgSend_decodingResultWithConfiguration_withContext_(self, v18, v17, 0);
 
   return v19;
 }
 
-- (id)decodingResultForKBestPaths:(unint64_t)a3 withBeamWidth:(unint64_t)a4 context:(id)a5
+- (id)decodingResultForKBestPaths:(unint64_t)paths withBeamWidth:(unint64_t)width context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v12 = objc_msgSend_defaultWhitespaceCommitActionBehavior(CVNLPTextDecodingConfiguration, v9, v10, v11);
   v16 = objc_msgSend_languageResourceBundle(self, v13, v14, v15);
   v19 = objc_msgSend_defaultPathScoringFunctionForLanguageResourceBundle_(CVNLPTextDecodingPath, v17, v16, v18);
 
   v20 = [CVNLPTextDecodingBeamSearchConfiguration alloc];
-  v22 = objc_msgSend_initWithCommitActionBehavior_scoringFunction_beamWidth_pathCount_(v20, v21, v12, v19, a4, a3);
-  v24 = objc_msgSend_decodingResultWithConfiguration_withContext_(self, v23, v22, v8);
+  v22 = objc_msgSend_initWithCommitActionBehavior_scoringFunction_beamWidth_pathCount_(v20, v21, v12, v19, width, paths);
+  v24 = objc_msgSend_decodingResultWithConfiguration_withContext_(self, v23, v22, contextCopy);
 
   return v24;
 }
 
-- (id)decodingResultWithConfiguration:(id)a3 withContext:(id)a4
+- (id)decodingResultWithConfiguration:(id)configuration withContext:(id)context
 {
   v261 = *MEMORY[0x1E69E9840];
-  v224 = a3;
-  v222 = a4;
-  v227 = self;
+  configurationCopy = configuration;
+  contextCopy = context;
+  selfCopy = self;
   v223 = objc_msgSend_domainType(self->_activationMatrix, v6, v7, v8) == 0;
   v9 = 0x1EECD0000uLL;
   v226 = objc_alloc_init(CVNLPCTCBeamState);
   v225 = objc_alloc_init(CVNLPCTCBeamState);
-  v16 = objc_msgSend_scoringFunction(v224, v10, v11, v12);
+  v16 = objc_msgSend_scoringFunction(configurationCopy, v10, v11, v12);
   if (!v16)
   {
     v17 = objc_msgSend_languageResourceBundle(self, v13, v14, v15);
-    v21 = objc_msgSend_pruneProblematicMixedScriptWordPaths(v224, v18, v19, v20);
+    v21 = objc_msgSend_pruneProblematicMixedScriptWordPaths(configurationCopy, v18, v19, v20);
     v16 = objc_msgSend_defaultPathScoringFunctionForLanguageResourceBundle_pruneProblematicMixedScriptWordPaths_(CVNLPTextDecodingPath, v22, v17, v21);
   }
 
@@ -67,14 +67,14 @@
 
   if (v31 == 2)
   {
-    v35 = objc_msgSend_languageResourceBundle(v227, v32, v33, v34);
+    v35 = objc_msgSend_languageResourceBundle(selfCopy, v32, v33, v34);
     v39 = objc_msgSend_characterLanguageModel(v35, v36, v37, v38);
     v43 = objc_msgSend_languageModel(v39, v40, v41, v42);
     v44 = CVNLPLanguageModelWithStateCreate(v43);
 
-    if (v222)
+    if (contextCopy)
     {
-      v48 = objc_msgSend_history(v222, v45, v46, v47);
+      v48 = objc_msgSend_history(contextCopy, v45, v46, v47);
       CVNLPLanguageModelWithStateUpdateWithContext(v44, v48);
     }
 
@@ -84,9 +84,9 @@
 
   else
   {
-    v50 = objc_msgSend_languageResourceBundle(v227, v32, v33, v34);
+    v50 = objc_msgSend_languageResourceBundle(selfCopy, v32, v33, v34);
     v54 = objc_msgSend_characterLanguageModel(v50, v51, v52, v53);
-    v60 = objc_msgSend_history(v222, v55, v56, v57);
+    v60 = objc_msgSend_history(contextCopy, v55, v56, v57);
     if (v54)
     {
       objc_msgSend_characterTokenIDsForString_(v54, v58, v60, v59);
@@ -107,12 +107,12 @@
     v44 = 0;
   }
 
-  v61 = objc_msgSend_languageResourceBundle(v227, v45, v46, v47);
+  v61 = objc_msgSend_languageResourceBundle(selfCopy, v45, v46, v47);
   v65 = objc_msgSend_wordLanguageModel(v61, v62, v63, v64);
   v69 = v65;
-  if (v222 && v65)
+  if (contextCopy && v65)
   {
-    v70 = objc_msgSend_history(v222, v66, v67, v68);
+    v70 = objc_msgSend_history(contextCopy, v66, v67, v68);
     v74 = objc_msgSend_length(v70, v71, v72, v73) == 0;
 
     if (v74)
@@ -122,8 +122,8 @@
       goto LABEL_21;
     }
 
-    v61 = objc_msgSend_inactiveSubstring(v222, v75, v76, v77);
-    v81 = objc_msgSend_languageResourceBundle(v227, v78, v79, v80);
+    v61 = objc_msgSend_inactiveSubstring(contextCopy, v75, v76, v77);
+    v81 = objc_msgSend_languageResourceBundle(selfCopy, v78, v79, v80);
     v85 = objc_msgSend_wordLanguageModel(v81, v82, v83, v84);
     v87 = v85;
     if (v85)
@@ -152,9 +152,9 @@
   }
 
 LABEL_21:
-  shouldOptimizeAlignment = objc_msgSend_shouldOptimizeAlignment(v224, v75, v76, v77);
+  shouldOptimizeAlignment = objc_msgSend_shouldOptimizeAlignment(configurationCopy, v75, v76, v77);
   v90 = [CVNLPCTCTextDecodingPath alloc];
-  v95 = objc_msgSend_languageResourceBundle(v227, v91, v92, v93);
+  v95 = objc_msgSend_languageResourceBundle(selfCopy, v91, v92, v93);
   v257 = 0;
   v258 = 0;
   v259 = 0;
@@ -181,7 +181,7 @@ LABEL_21:
     sub_1D9D84AB0();
   }
 
-  hasContext = objc_msgSend_initWithLanguageResourceBundle_scoringFunction_initialCharacterLMState_characterTokenIDs_wordTokenIDs_optimizingAlignment_hasContext_(v90, v94, v95, v220, v44, &v257, &__p, shouldOptimizeAlignment, v222 != 0);
+  hasContext = objc_msgSend_initWithLanguageResourceBundle_scoringFunction_initialCharacterLMState_characterTokenIDs_wordTokenIDs_optimizingAlignment_hasContext_(v90, v94, v95, v220, v44, &v257, &__p, shouldOptimizeAlignment, contextCopy != 0);
   if (__p)
   {
     v255 = __p;
@@ -201,16 +201,16 @@ LABEL_21:
 
   objc_msgSend_setBlankLogProbability_(hasContext, v96, v97, v98, 0.0);
   objc_msgSend_setNonBlankLogProbability_(hasContext, v99, v100, v101, -1022.0);
-  v105 = objc_msgSend_languageResourceBundle(v227, v102, v103, v104);
-  v108 = objc_msgSend_packagedLexiconCursorsUsingContext_(v105, v106, v222, v107);
+  v105 = objc_msgSend_languageResourceBundle(selfCopy, v102, v103, v104);
+  v108 = objc_msgSend_packagedLexiconCursorsUsingContext_(v105, v106, contextCopy, v107);
   objc_msgSend_setCursors_(hasContext, v109, v108, v110);
 
   objc_msgSend_addPath_(v226, v111, hasContext, v112);
-  for (i = 0; i < objc_msgSend_timestepCount(v227->_activationMatrix, v113, v114, v115); ++i)
+  for (i = 0; i < objc_msgSend_timestepCount(selfCopy->_activationMatrix, v113, v114, v115); ++i)
   {
     v120 = objc_autoreleasePoolPush();
     v121 = objc_alloc_init((v9 + 2392));
-    objc_msgSend_logProbabilityForBlankAtTimestep_(v227->_activationMatrix, v122, i, v123);
+    objc_msgSend_logProbabilityForBlankAtTimestep_(selfCopy->_activationMatrix, v122, i, v123);
     v125 = v124;
     v126 = v9;
     v245 = 0;
@@ -222,7 +222,7 @@ LABEL_21:
     v252 = 0;
     v253 = 0;
     v251 = 0;
-    activationMatrix = v227->_activationMatrix;
+    activationMatrix = selfCopy->_activationMatrix;
     v243[0] = MEMORY[0x1E69E9820];
     v243[1] = 3221225472;
     v243[2] = sub_1D9DD0458;
@@ -236,19 +236,19 @@ LABEL_21:
     v235[2] = sub_1D9DD0608;
     v235[3] = &unk_1E858E4F8;
     v241 = i;
-    v235[4] = v227;
+    v235[4] = selfCopy;
     v242 = v129;
     v130 = v121;
     v236 = v130;
     v240 = &v245;
-    v131 = v224;
+    v131 = configurationCopy;
     v237 = v131;
     v132 = v226;
     v238 = v132;
     v133 = v225;
     v239 = v133;
     objc_msgSend_enumeratePathsWithBlock_(v132, v134, v235, v135);
-    if (objc_msgSend_shouldApplyWordLMToLastWord(v131, v136, v137, v138) && i == objc_msgSend_timestepCount(v227->_activationMatrix, v139, v140, v141) - 1)
+    if (objc_msgSend_shouldApplyWordLMToLastWord(v131, v136, v137, v138) && i == objc_msgSend_timestepCount(selfCopy->_activationMatrix, v139, v140, v141) - 1)
     {
       objc_msgSend_applyWordLanguageModelProbabilityToPaths(v130, v139, v140, v141);
     }
@@ -289,7 +289,7 @@ LABEL_21:
 
   objc_msgSend_mergePathsWithTrailingWhitespaces(v226, v117, v118, v119);
   v232 = 0;
-  v151 = objc_msgSend_pathCount(v224, v148, v149, v150);
+  v151 = objc_msgSend_pathCount(configurationCopy, v148, v149, v150);
   objc_msgSend_kBest_discarded_k_shouldUpdateLMState_(v226, v152, &v232, 0, v151, 0);
   v153 = v232;
   v157 = objc_msgSend_sortedKeys(v153, v154, v155, v156);
@@ -315,7 +315,7 @@ LABEL_21:
         }
 
         v173 = objc_msgSend_pathForString_(v153, v168, *(*(&v228 + 1) + 8 * j), v169);
-        v177 = objc_msgSend_timestepCount(v227->_activationMatrix, v174, v175, v176);
+        v177 = objc_msgSend_timestepCount(selfCopy->_activationMatrix, v174, v175, v176);
         v179 = objc_msgSend_tokensWithTimestep_isFinalTimestep_(v173, v178, v177 - 1, 1);
         v180 = [CVNLPTextDecodingResultCandidate alloc];
         objc_msgSend_normalizedTotalLogProbability(v173, v181, v182, v183);
@@ -335,14 +335,14 @@ LABEL_21:
   }
 
   v201 = objc_msgSend_count(v165, v198, v199, v200);
-  if (v201 <= objc_msgSend_pathCount(v224, v202, v203, v204))
+  if (v201 <= objc_msgSend_pathCount(configurationCopy, v202, v203, v204))
   {
     v210 = v165;
   }
 
   else
   {
-    v208 = objc_msgSend_pathCount(v224, v205, v206, v207);
+    v208 = objc_msgSend_pathCount(configurationCopy, v205, v206, v207);
     v210 = objc_msgSend_subarrayWithRange_(v165, v209, 0, v208);
   }
 
@@ -365,10 +365,10 @@ LABEL_21:
   return v215;
 }
 
-- (id)greedyDecodingResultWithConfiguration:(id)a3
+- (id)greedyDecodingResultWithConfiguration:(id)configuration
 {
   v142[1] = *MEMORY[0x1E69E9840];
-  v138 = a3;
+  configurationCopy = configuration;
   v7 = objc_msgSend_characterObservations(self->_activationMatrix, v4, v5, v6);
   v11 = objc_msgSend_blankIndex(self->_activationMatrix, v8, v9, v10);
   v14 = objc_msgSend_objectAtIndexedSubscript_(v7, v12, v11, v13);
@@ -387,7 +387,7 @@ LABEL_21:
 
   else
   {
-    if (v138)
+    if (configurationCopy)
     {
       v28 = 0;
       v29 = 0;
@@ -415,10 +415,10 @@ LABEL_21:
           v32 = v141 + v32;
           if ((isEqualToString & 1) == 0)
           {
-            v44 = objc_msgSend_commitActionBlock(v138, v41, v42, v43);
+            v44 = objc_msgSend_commitActionBlock(configurationCopy, v41, v42, v43);
             v45 = v44 == 0;
 
-            if (!v45 && (objc_msgSend_commitActionBlock(v138, v46, v47, v48), v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend_string(v139, v50, v51, v52), v53 = objc_claimAutoreleasedReturnValue(), v54 = (v49)[2](v49, v53, v34), v53, v49, v54) && objc_msgSend_length(v140, v46, v55, v48))
+            if (!v45 && (objc_msgSend_commitActionBlock(configurationCopy, v46, v47, v48), v49 = objc_claimAutoreleasedReturnValue(), objc_msgSend_string(v139, v50, v51, v52), v53 = objc_claimAutoreleasedReturnValue(), v54 = (v49)[2](v49, v53, v34), v53, v49, v54) && objc_msgSend_length(v140, v46, v55, v48))
             {
               if (v136)
               {

@@ -1,33 +1,33 @@
 @interface _TVCollectionView
 - (BOOL)canBecomeFocused;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGRect)_visibleBounds;
 - (UIEdgeInsets)_gradientBoundsInsets;
-- (_TVCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (void)_getGradientMaskBounds:(CGRect *)a3 startInsets:(UIEdgeInsets *)a4 endInsets:(UIEdgeInsets *)a5 intensities:(UIEdgeInsets *)a6;
-- (void)_longPressAction:(id)a3;
+- (_TVCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (void)_getGradientMaskBounds:(CGRect *)bounds startInsets:(UIEdgeInsets *)insets endInsets:(UIEdgeInsets *)endInsets intensities:(UIEdgeInsets *)intensities;
+- (void)_longPressAction:(id)action;
 - (void)_notifyDidScroll;
-- (void)_performBlockWithFocusedCellIndexPath:(id)a3;
-- (void)_performBlockWithLongPressedCellIndexPath:(id)a3;
-- (void)_performWithoutLayoutBelow:(id)a3;
-- (void)_playButtonAction:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)_performBlockWithFocusedCellIndexPath:(id)path;
+- (void)_performBlockWithLongPressedCellIndexPath:(id)path;
+- (void)_performWithoutLayoutBelow:(id)below;
+- (void)_playButtonAction:(id)action;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutBelowIfNeeded;
 - (void)reloadData;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setDelegate:(id)a3;
-- (void)setScrollEnabled:(BOOL)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setDelegate:(id)delegate;
+- (void)setScrollEnabled:(BOOL)enabled;
 @end
 
 @implementation _TVCollectionView
 
-- (_TVCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TVCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   v8.receiver = self;
   v8.super_class = _TVCollectionView;
-  v4 = [(_TVCollectionView *)&v8 initWithFrame:a4 collectionViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(_TVCollectionView *)&v8 initWithFrame:layout collectionViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v4 action:sel__longPressAction_];
@@ -43,14 +43,14 @@
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    if ([v6 numberOfTouches] || objc_msgSend(v7, "numberOfTouches"))
+    if ([recognizerCopy numberOfTouches] || objc_msgSend(gestureRecognizerCopy, "numberOfTouches"))
     {
       v8 = 1;
     }
@@ -79,20 +79,20 @@
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
-  v7 = (objc_opt_isKindOfClass() & 1) != 0 && ([v5 numberOfTouches] || objc_msgSend(v6, "numberOfTouches"));
+  v7 = (objc_opt_isKindOfClass() & 1) != 0 && ([recognizerCopy numberOfTouches] || objc_msgSend(gestureRecognizerCopy, "numberOfTouches"));
 
   return v7;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (self->_longPressRecognizer == v4)
+  beginCopy = begin;
+  if (self->_longPressRecognizer == beginCopy)
   {
     if ((*&self->_delegateFlags & 2) != 0)
     {
@@ -100,7 +100,7 @@
       v12 = &v11;
       v13 = 0x2020000000;
       v14 = 0;
-      v6 = [(_TVCollectionView *)self delegate];
+      delegate = [(_TVCollectionView *)self delegate];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
@@ -128,28 +128,28 @@
   {
     v9.receiver = self;
     v9.super_class = _TVCollectionView;
-    v5 = [(_TVCollectionView *)&v9 gestureRecognizerShouldBegin:v4];
+    v5 = [(_TVCollectionView *)&v9 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v5 & 1;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = _TVCollectionView;
-  [(_TVCollectionView *)&v22 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedView];
-  if ([v7 isDescendantOfView:self])
+  [(_TVCollectionView *)&v22 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedView = [contextCopy nextFocusedView];
+  if ([nextFocusedView isDescendantOfView:self])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [(_TVCollectionView *)self indexPathsForVisibleItems];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    indexPathsForVisibleItems = [(_TVCollectionView *)self indexPathsForVisibleItems];
+    v9 = [indexPathsForVisibleItems countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -160,19 +160,19 @@ LABEL_4:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v13 = *(*(&v18 + 1) + 8 * v12);
         v14 = [(_TVCollectionView *)self cellForItemAtIndexPath:v13];
-        if ([v7 isDescendantOfView:v14])
+        if ([nextFocusedView isDescendantOfView:v14])
         {
           break;
         }
 
         if (v10 == ++v12)
         {
-          v10 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
+          v10 = [indexPathsForVisibleItems countByEnumeratingWithState:&v18 objects:v23 count:16];
           if (v10)
           {
             goto LABEL_4;
@@ -193,7 +193,7 @@ LABEL_4:
       indexPathForLastFocusedItem = self->_indexPathForLastFocusedItem;
       self->_indexPathForLastFocusedItem = v16;
 
-      v8 = v15;
+      indexPathsForVisibleItems = v15;
     }
 
 LABEL_13:
@@ -206,8 +206,8 @@ LABEL_14:
 {
   if ((*&self->_delegateFlags & 4) != 0)
   {
-    v4 = [(_TVCollectionView *)self delegate];
-    v5 = [v4 collectionViewCanBecomeFocused:self];
+    delegate = [(_TVCollectionView *)self delegate];
+    v5 = [delegate collectionViewCanBecomeFocused:self];
 
     return v5;
   }
@@ -230,11 +230,11 @@ LABEL_14:
   [(_TVCollectionView *)&v4 reloadData];
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
   v3.receiver = self;
   v3.super_class = _TVCollectionView;
-  [(_TVCollectionView *)&v3 setScrollEnabled:a3];
+  [(_TVCollectionView *)&v3 setScrollEnabled:enabled];
 }
 
 - (void)_notifyDidScroll
@@ -242,16 +242,16 @@ LABEL_14:
   v4.receiver = self;
   v4.super_class = _TVCollectionView;
   [(_TVCollectionView *)&v4 _notifyDidScroll];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"TVCollectionViewDidScrollNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TVCollectionViewDidScrollNotification" object:self];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = _TVCollectionView;
-  v4 = a3;
-  [(_TVCollectionView *)&v8 setDelegate:v4];
+  delegateCopy = delegate;
+  [(_TVCollectionView *)&v8 setDelegate:delegateCopy];
   *&self->_delegateFlags = *&self->_delegateFlags & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -279,7 +279,7 @@ LABEL_14:
   *&self->_delegateFlags = *&self->_delegateFlags & 0xFB | v7;
 }
 
-- (void)_playButtonAction:(id)a3
+- (void)_playButtonAction:(id)action
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -289,9 +289,9 @@ LABEL_14:
   [(_TVCollectionView *)self _performBlockWithFocusedCellIndexPath:v3];
 }
 
-- (void)_longPressAction:(id)a3
+- (void)_longPressAction:(id)action
 {
-  if ([a3 state] == 1)
+  if ([action state] == 1)
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
@@ -302,14 +302,14 @@ LABEL_14:
   }
 }
 
-- (void)_performBlockWithFocusedCellIndexPath:(id)a3
+- (void)_performBlockWithFocusedCellIndexPath:(id)path
 {
-  v9 = a3;
-  v4 = [(_TVCollectionView *)self window];
-  v5 = [v4 screen];
-  v6 = [v5 focusedView];
+  pathCopy = path;
+  window = [(_TVCollectionView *)self window];
+  screen = [window screen];
+  focusedView = [screen focusedView];
 
-  if (v6)
+  if (focusedView)
   {
     while (1)
     {
@@ -319,43 +319,43 @@ LABEL_14:
         break;
       }
 
-      v7 = [v6 superview];
+      superview = [focusedView superview];
 
-      v6 = v7;
-      if (!v7)
+      focusedView = superview;
+      if (!superview)
       {
         goto LABEL_8;
       }
     }
 
-    v8 = [(_TVCollectionView *)self indexPathForCell:v6];
+    v8 = [(_TVCollectionView *)self indexPathForCell:focusedView];
     if (v8)
     {
-      v9[2](v9, v8);
+      pathCopy[2](pathCopy, v8);
     }
   }
 
 LABEL_8:
 }
 
-- (void)_performBlockWithLongPressedCellIndexPath:(id)a3
+- (void)_performBlockWithLongPressedCellIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   [(UILongPressGestureRecognizer *)self->_longPressRecognizer locationInView:self];
   v4 = [(_TVCollectionView *)self indexPathForItemAtPoint:?];
   if (v4)
   {
-    v5[2](v5, v4);
+    pathCopy[2](pathCopy, v4);
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __37___TVCollectionView_setContentInset___block_invoke;
   v3[3] = &unk_279D6EAB8;
-  v4 = a3;
+  insetCopy = inset;
   v3[4] = self;
   [(_TVCollectionView *)self _performWithoutLayoutBelow:v3];
 }
@@ -370,18 +370,18 @@ LABEL_8:
   }
 }
 
-- (void)_performWithoutLayoutBelow:(id)a3
+- (void)_performWithoutLayoutBelow:(id)below
 {
   flags = self->_flags;
   *&self->_flags = flags | 1;
-  (*(a3 + 2))(a3, a2);
+  (*(below + 2))(below, a2);
   *&self->_flags = *&self->_flags & 0xFE | flags & 1;
 }
 
 - (CGRect)_visibleBounds
 {
-  v3 = [(_TVCollectionView *)self window];
-  if (v3 && (bottomPadding = self->_bottomPadding, v3, bottomPadding != 0.0))
+  window = [(_TVCollectionView *)self window];
+  if (window && (bottomPadding = self->_bottomPadding, window, bottomPadding != 0.0))
   {
     [(_TVCollectionView *)self bounds];
     v8 = self->_bottomPadding + v9;
@@ -414,20 +414,20 @@ LABEL_8:
   return result;
 }
 
-- (void)_getGradientMaskBounds:(CGRect *)a3 startInsets:(UIEdgeInsets *)a4 endInsets:(UIEdgeInsets *)a5 intensities:(UIEdgeInsets *)a6
+- (void)_getGradientMaskBounds:(CGRect *)bounds startInsets:(UIEdgeInsets *)insets endInsets:(UIEdgeInsets *)endInsets intensities:(UIEdgeInsets *)intensities
 {
   v14.receiver = self;
   v14.super_class = _TVCollectionView;
-  [(_TVCollectionView *)&v14 _getGradientMaskBounds:a3 startInsets:a4 endInsets:a5 intensities:a6];
+  [(_TVCollectionView *)&v14 _getGradientMaskBounds:bounds startInsets:insets endInsets:endInsets intensities:intensities];
   [(_TVCollectionView *)self _gradientBoundsInsets];
-  if (a3)
+  if (bounds)
   {
     v12.f64[0] = v9;
     v12.f64[1] = v8;
-    a3->origin = vaddq_f64(v12, a3->origin);
-    v13 = a3->size.height - (v8 + v10);
-    a3->size.width = a3->size.width - (v9 + v11);
-    a3->size.height = v13;
+    bounds->origin = vaddq_f64(v12, bounds->origin);
+    v13 = bounds->size.height - (v8 + v10);
+    bounds->size.width = bounds->size.width - (v9 + v11);
+    bounds->size.height = v13;
   }
 }
 

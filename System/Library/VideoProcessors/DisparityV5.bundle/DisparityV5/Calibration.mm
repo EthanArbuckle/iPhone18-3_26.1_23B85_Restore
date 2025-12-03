@@ -4,16 +4,16 @@
 - (CalModel)correctedCalibration;
 - (CalModel)initialCalibration;
 - (Calibration)init;
-- (DistortionModel)distModelFor:(SEL)a3;
-- (DistortionModel)undistModelFor:(SEL)a3;
+- (DistortionModel)distModelFor:(SEL)for;
+- (DistortionModel)undistModelFor:(SEL)for;
 - (__n128)auxiliaryPaddingHInv;
 - (__n128)rectReferenceToAuxiliary;
 - (__n128)rectReferenceToReference;
 - (__n128)referenceToRectReference;
 - (float)_computeCanonicalDisparityScaleFactor;
 - (float)referenceMagnification;
-- (int)_allocateResourcesForMaxNumOfTransposedPoints:(unsigned int)a3;
-- (int)_checkADCStatus:(AdaptiveCorrectionStatus *)a3;
+- (int)_allocateResourcesForMaxNumOfTransposedPoints:(unsigned int)points;
+- (int)_checkADCStatus:(AdaptiveCorrectionStatus *)status;
 - (int)_computeCalibrationWithoutDistortion;
 - (int)_computeCenteredRectificationHomographies;
 - (int)_computePaddedAuxiliaryRectificationHomography;
@@ -21,12 +21,12 @@
 - (int)computeAuxiliaryImageShiftForKeypoints:(Calibration *)self;
 - (int)computeCalibration;
 - (int)computeInitialCalibration;
-- (int)extractParametersFromReferenceMetadata:(id)a3 auxiliaryMetadata:(id)a4 options:(id)a5 adaptiveCorrectionConfig:(AdaptiveCorrectionConfig *)a6 useReferenceFrame:(BOOL)a7;
+- (int)extractParametersFromReferenceMetadata:(id)metadata auxiliaryMetadata:(id)auxiliaryMetadata options:(id)options adaptiveCorrectionConfig:(AdaptiveCorrectionConfig *)config useReferenceFrame:(BOOL)frame;
 - (void)_releaseResourcesForTransformedPoints;
 - (void)dealloc;
 - (void)releaseResources;
-- (void)setKeypointsForReference:(double *)a3 auxiliary:(double *)a4 keypointCount:(unsigned int)a5;
-- (void)setReferenceBufferDimensions:(id)a3 auxillaryBufferDimensions:(id)a4 normalizedReferenceFinalCropRect:(CGRect)a5;
+- (void)setKeypointsForReference:(double *)reference auxiliary:(double *)auxiliary keypointCount:(unsigned int)count;
+- (void)setReferenceBufferDimensions:(id)dimensions auxillaryBufferDimensions:(id)bufferDimensions normalizedReferenceFinalCropRect:(CGRect)rect;
 @end
 
 @implementation Calibration
@@ -70,15 +70,15 @@
   [(Calibration *)&v10 dealloc];
 }
 
-- (int)extractParametersFromReferenceMetadata:(id)a3 auxiliaryMetadata:(id)a4 options:(id)a5 adaptiveCorrectionConfig:(AdaptiveCorrectionConfig *)a6 useReferenceFrame:(BOOL)a7
+- (int)extractParametersFromReferenceMetadata:(id)metadata auxiliaryMetadata:(id)auxiliaryMetadata options:(id)options adaptiveCorrectionConfig:(AdaptiveCorrectionConfig *)config useReferenceFrame:(BOOL)frame
 {
-  v7 = a7;
-  v13 = a3;
-  v14 = a4;
-  v21 = a5;
-  v429 = self;
+  frameCopy = frame;
+  metadataCopy = metadata;
+  auxiliaryMetadataCopy = auxiliaryMetadata;
+  optionsCopy = options;
+  selfCopy = self;
   self->_rectificationFocalLengthFactor = 1.0;
-  if (!v13)
+  if (!metadataCopy)
   {
     sub_295768D34(__dst);
 LABEL_76:
@@ -86,25 +86,25 @@ LABEL_76:
     goto LABEL_71;
   }
 
-  if (!v14)
+  if (!auxiliaryMetadataCopy)
   {
     sub_295768C88(__dst);
     goto LABEL_76;
   }
 
-  v398 = a6;
-  v23 = objc_msgSend_objectForKeyedSubscript_(v13, v15, @"PortType", v16, v17, v18, v19, v20, v22);
+  configCopy = config;
+  v23 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v15, @"PortType", v16, v17, v18, v19, v20, v22);
   v24 = self->_portTypeName[0];
   self->_portTypeName[0] = v23;
 
-  v32 = objc_msgSend_objectForKeyedSubscript_(v14, v25, @"PortType", v26, v27, v28, v29, v30, v31);
+  v32 = objc_msgSend_objectForKeyedSubscript_(auxiliaryMetadataCopy, v25, @"PortType", v26, v27, v28, v29, v30, v31);
   v33 = self->_portTypeName[1];
   self->_portTypeName[1] = v32;
 
   metadata = self->_metadata;
-  objc_storeStrong(self->_metadata, a3);
-  objc_storeStrong(&self->_metadata[1], a4);
-  if (v7)
+  objc_storeStrong(self->_metadata, metadata);
+  objc_storeStrong(&self->_metadata[1], auxiliaryMetadata);
+  if (frameCopy)
   {
     v42 = 0;
     v43 = 1;
@@ -127,22 +127,22 @@ LABEL_76:
     while ((v44 & 1) != 0);
   }
 
-  if (!v21)
+  if (!optionsCopy)
   {
     sub_295768BDC(__dst);
     goto LABEL_76;
   }
 
-  v422 = objc_msgSend_objectForKeyedSubscript_(v21, v35, *MEMORY[0x29EDC0288], v36, v37, v38, v39, v40, v41);
+  v422 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v35, *MEMORY[0x29EDC0288], v36, v37, v38, v39, v40, v41);
   if (!v422)
   {
     sub_295768B30(__dst);
     goto LABEL_76;
   }
 
-  v399 = v21;
-  v400 = v14;
-  v401 = v13;
+  v399 = optionsCopy;
+  v400 = auxiliaryMetadataCopy;
+  v401 = metadataCopy;
   p_adaptiveCorrectionConfig = &self->_adaptiveCorrectionConfig;
   portTypeName = self->_portTypeName;
   v421 = objc_msgSend_dictionary(MEMORY[0x29EDB8E00], v48, v49, v50, v51, v52, v53, v54, v55);
@@ -218,7 +218,7 @@ LABEL_76:
     v228 = &pixelBufferDimensions[v57];
     v441 = v181;
     v430 = v228;
-    if (v429->_pixelBufferScalingEnabled)
+    if (selfCopy->_pixelBufferScalingEnabled)
     {
       v229 = v212;
       v230 = v151;
@@ -284,7 +284,7 @@ LABEL_28:
         v301 = v300 = v189;
 
         objc_msgSend_objectForKeyedSubscript_(v437, v302, v426, v303, v304, v305, v306, v307, v308);
-        v309 = metadata;
+        metadataCopy2 = metadata;
         v311 = v310 = v120;
 
         v319 = objc_msgSend_objectForKeyedSubscript_(v437, v312, v425, v313, v314, v315, v316, v317, v318);
@@ -296,7 +296,7 @@ LABEL_28:
         v436 = v301;
         v441 = v311;
         v120 = v310;
-        metadata = v309;
+        metadata = metadataCopy2;
         v189 = v319;
         v235 = v433;
         v267 = v439;
@@ -428,7 +428,7 @@ LABEL_59:
     *&pixelBufferScalingFactor[8 * v57] = __PAIR64__(LODWORD(v382), LODWORD(v380));
     if (v434)
     {
-      v429->_referenceCalibrationScalingFactor = (((v380 + v382) * 0.5) + ((v380 + v382) * 0.5)) / v111;
+      selfCopy->_referenceCalibrationScalingFactor = (((v380 + v382) * 0.5) + ((v380 + v382) * 0.5)) / v111;
       v383 = *&pixelBufferScalingFactor[8 * v57];
     }
 
@@ -467,9 +467,9 @@ LABEL_49:
     if ((v386 & 1) == 0)
     {
 
-      v14 = v400;
-      v13 = v401;
-      v21 = v399;
+      auxiliaryMetadataCopy = v400;
+      metadataCopy = v401;
+      optionsCopy = v399;
       goto LABEL_70;
     }
 
@@ -479,57 +479,57 @@ LABEL_49:
   }
 
   while ((v434 & 1) != 0);
-  staticParametersByPortType = v429->_staticParametersByPortType;
-  v429->_staticParametersByPortType = v421;
+  staticParametersByPortType = selfCopy->_staticParametersByPortType;
+  selfCopy->_staticParametersByPortType = v421;
   v388 = v421;
 
-  scaleTuningWithDigitalZoomByFactor = v398->scaleTuningWithDigitalZoomByFactor;
+  scaleTuningWithDigitalZoomByFactor = configCopy->scaleTuningWithDigitalZoomByFactor;
   if (scaleTuningWithDigitalZoomByFactor <= 0.0)
   {
-    v14 = v400;
-    v13 = v401;
-    v21 = v399;
-    v440 = *&v398->epErrorLimitWidePix_FirstPass;
-    v442 = *&v398->rangePFL_T;
-    v444 = *&v398->rangeOCxT;
-    v446 = *&v398->rangeOCyT;
+    auxiliaryMetadataCopy = v400;
+    metadataCopy = v401;
+    optionsCopy = v399;
+    v440 = *&configCopy->epErrorLimitWidePix_FirstPass;
+    v442 = *&configCopy->rangePFL_T;
+    v444 = *&configCopy->rangeOCxT;
+    v446 = *&configCopy->rangeOCyT;
   }
 
   else
   {
-    v390 = ((scaleTuningWithDigitalZoomByFactor * (v429->_referenceCalibrationScalingFactor + -1.0)) + 1.0);
-    v442 = vmulq_n_f64(*&v398->rangePFL_T, v390);
-    v444 = vmulq_n_f64(*&v398->rangeOCxT, v390);
-    v446 = vmulq_n_f64(*&v398->rangeOCyT, v390);
-    v440 = vmulq_n_f64(*&v398->epErrorLimitWidePix_FirstPass, v390);
-    v14 = v400;
-    v13 = v401;
-    v21 = v399;
+    v390 = ((scaleTuningWithDigitalZoomByFactor * (selfCopy->_referenceCalibrationScalingFactor + -1.0)) + 1.0);
+    v442 = vmulq_n_f64(*&configCopy->rangePFL_T, v390);
+    v444 = vmulq_n_f64(*&configCopy->rangeOCxT, v390);
+    v446 = vmulq_n_f64(*&configCopy->rangeOCyT, v390);
+    v440 = vmulq_n_f64(*&configCopy->epErrorLimitWidePix_FirstPass, v390);
+    auxiliaryMetadataCopy = v400;
+    metadataCopy = v401;
+    optionsCopy = v399;
   }
 
-  v391 = *&v398->runAnalyticalPreconditioning;
-  v450 = *&v398->errorVal_LessThanExtremeMacro;
+  v391 = *&configCopy->runAnalyticalPreconditioning;
+  v450 = *&configCopy->errorVal_LessThanExtremeMacro;
   v451 = v391;
-  v452 = *&v398->keypointOutliersPercentile;
-  temporalInitializationFactor = v398->temporalInitializationFactor;
-  v392 = *&v398->minPointsForAdjustment;
-  v448 = *&v398->intermediateMacroDistMM;
+  v452 = *&configCopy->keypointOutliersPercentile;
+  temporalInitializationFactor = configCopy->temporalInitializationFactor;
+  v392 = *&configCopy->minPointsForAdjustment;
+  v448 = *&configCopy->intermediateMacroDistMM;
   v449 = v392;
-  memcpy(__dst, &v398->overrideConfigPass1, sizeof(__dst));
+  memcpy(__dst, &configCopy->overrideConfigPass1, sizeof(__dst));
   *&p_adaptiveCorrectionConfig->epErrorLimitWidePix_FirstPass = v440;
   *&p_adaptiveCorrectionConfig->rangePFL_T = v442;
   *&p_adaptiveCorrectionConfig->rangeOCxT = v444;
   *&p_adaptiveCorrectionConfig->rangeOCyT = v446;
   v393 = v451;
-  *&v429->_adaptiveCorrectionConfig.errorVal_LessThanExtremeMacro = v450;
-  *&v429->_adaptiveCorrectionConfig.runAnalyticalPreconditioning = v393;
-  *&v429->_adaptiveCorrectionConfig.keypointOutliersPercentile = v452;
-  v429->_adaptiveCorrectionConfig.temporalInitializationFactor = temporalInitializationFactor;
+  *&selfCopy->_adaptiveCorrectionConfig.errorVal_LessThanExtremeMacro = v450;
+  *&selfCopy->_adaptiveCorrectionConfig.runAnalyticalPreconditioning = v393;
+  *&selfCopy->_adaptiveCorrectionConfig.keypointOutliersPercentile = v452;
+  selfCopy->_adaptiveCorrectionConfig.temporalInitializationFactor = temporalInitializationFactor;
   v394 = v449;
-  *&v429->_adaptiveCorrectionConfig.intermediateMacroDistMM = v448;
-  *&v429->_adaptiveCorrectionConfig.minPointsForAdjustment = v394;
-  v429->_adaptiveCorrectionConfig.scaleTuningWithDigitalZoomByFactor = scaleTuningWithDigitalZoomByFactor;
-  memcpy(&v429->_adaptiveCorrectionConfig.overrideConfigPass1, __dst, 0x168uLL);
+  *&selfCopy->_adaptiveCorrectionConfig.intermediateMacroDistMM = v448;
+  *&selfCopy->_adaptiveCorrectionConfig.minPointsForAdjustment = v394;
+  selfCopy->_adaptiveCorrectionConfig.scaleTuningWithDigitalZoomByFactor = scaleTuningWithDigitalZoomByFactor;
+  memcpy(&selfCopy->_adaptiveCorrectionConfig.overrideConfigPass1, __dst, 0x168uLL);
 
 LABEL_70:
   v395 = v402;
@@ -545,7 +545,7 @@ LABEL_71:
   v18 = v17;
   v27 = objc_msgSend_bytes(v18, v19, v20, v21, v22, v23, v24, v25, v26);
 
-  v178 = self;
+  selfCopy = self;
   v35 = objc_msgSend_objectForKeyedSubscript_(self->_staticParametersByPortType, v28, self->_portTypeName[0], v29, v30, v31, v32, v33, v34);
   v43 = objc_msgSend_objectForKeyedSubscript_(v35, v36, @"CameraViewMatrix", v37, v38, v39, v40, v41, v42);
   v44 = v43;
@@ -651,7 +651,7 @@ LABEL_71:
         opticalCenterX[v82] = (*v92 + -1.0) * 0.5 + (*p_x - v90) * *&v94;
         v97 = v96 + (v95 - v91) * *(&v94 + 1);
         opticalCenterY[v82] = v97;
-        v98 = objc_msgSend_objectForKeyedSubscript_(v178->_staticParametersByPortType, v64, portTypeName[v82], v65, v66, v67, v68, v69, *&v97);
+        v98 = objc_msgSend_objectForKeyedSubscript_(selfCopy->_staticParametersByPortType, v64, portTypeName[v82], v65, v66, v67, v68, v69, *&v97);
         v106 = objc_msgSend_objectForKeyedSubscript_(v98, v99, @"pixelSizeMicrometers", v100, v101, v102, v103, v104, v105);
         objc_msgSend_floatValue(v106, v107, v108, v109, v110, v111, v112, v113, v114);
         v116 = v115;
@@ -1130,14 +1130,14 @@ LABEL_14:
   return result;
 }
 
-- (void)setKeypointsForReference:(double *)a3 auxiliary:(double *)a4 keypointCount:(unsigned int)a5
+- (void)setKeypointsForReference:(double *)reference auxiliary:(double *)auxiliary keypointCount:(unsigned int)count
 {
-  self->_adaptiveCorrectionKeypointsDistorted[0] = a3;
-  self->_adaptiveCorrectionKeypointsDistorted[1] = a4;
-  self->_keypointsCount = a5;
+  self->_adaptiveCorrectionKeypointsDistorted[0] = reference;
+  self->_adaptiveCorrectionKeypointsDistorted[1] = auxiliary;
+  self->_keypointsCount = count;
 }
 
-- (DistortionModel)distModelFor:(SEL)a3
+- (DistortionModel)distModelFor:(SEL)for
 {
   v4 = &self[a4];
   v5 = *&v4[2].polyBase[6];
@@ -1158,7 +1158,7 @@ LABEL_14:
   return self;
 }
 
-- (DistortionModel)undistModelFor:(SEL)a3
+- (DistortionModel)undistModelFor:(SEL)for
 {
   v4 = &self[a4];
   v5 = *&v4[4].polyBase[6];
@@ -1332,17 +1332,17 @@ LABEL_18:
   return v107;
 }
 
-- (void)setReferenceBufferDimensions:(id)a3 auxillaryBufferDimensions:(id)a4 normalizedReferenceFinalCropRect:(CGRect)a5
+- (void)setReferenceBufferDimensions:(id)dimensions auxillaryBufferDimensions:(id)bufferDimensions normalizedReferenceFinalCropRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  var0 = a3.var0;
-  var1 = a3.var1;
-  self->_pixelBufferDimensions[0] = a3;
-  self->_pixelBufferDimensions[1] = a4;
-  IsNull = CGRectIsNull(a5);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  var0 = dimensions.var0;
+  var1 = dimensions.var1;
+  self->_pixelBufferDimensions[0] = dimensions;
+  self->_pixelBufferDimensions[1] = bufferDimensions;
+  IsNull = CGRectIsNull(rect);
   v13 = 1.0;
   v14 = 0.0;
   if (IsNull)
@@ -1377,45 +1377,45 @@ LABEL_18:
   self->_referenceFinalCropRect.size.height = v13 * var1;
 }
 
-- (int)_checkADCStatus:(AdaptiveCorrectionStatus *)a3
+- (int)_checkADCStatus:(AdaptiveCorrectionStatus *)status
 {
-  if (!a3->var1)
+  if (!status->var1)
   {
     sub_29576960C();
     return 1;
   }
 
-  if (!a3->var4)
+  if (!status->var4)
   {
     sub_295769684();
     return 1;
   }
 
-  if (!a3->var9)
+  if (!status->var9)
   {
     sub_2957696FC();
     return 2;
   }
 
-  if (!a3->var13)
+  if (!status->var13)
   {
     sub_295769774();
     return 1;
   }
 
-  if (!a3->var19)
+  if (!status->var19)
   {
     sub_2957697EC();
     return 2;
   }
 
-  if (!a3->var25)
+  if (!status->var25)
   {
     sub_295769864();
     return 1;
   }
 
-  if (!a3->var28)
+  if (!status->var28)
   {
     sub_2957698DC();
     return 2;
@@ -1424,9 +1424,9 @@ LABEL_18:
   return 0;
 }
 
-- (int)_allocateResourcesForMaxNumOfTransposedPoints:(unsigned int)a3
+- (int)_allocateResourcesForMaxNumOfTransposedPoints:(unsigned int)points
 {
-  v4 = 16 * a3;
+  v4 = 16 * points;
   v5 = malloc_type_malloc(v4, 0x100004000313F17uLL);
   self->_transposedKeypoints.xyPointsTeleTransposed = v5;
   if (v5)
@@ -2202,33 +2202,33 @@ LABEL_18:
 
 - (__n128)auxiliaryPaddingHInv
 {
-  result = *(a1 + 1664);
-  v2 = *(a1 + 1680);
-  v3 = *(a1 + 1696);
+  result = *(self + 1664);
+  v2 = *(self + 1680);
+  v3 = *(self + 1696);
   return result;
 }
 
 - (__n128)rectReferenceToReference
 {
-  result = *(a1 + 1712);
-  v2 = *(a1 + 1728);
-  v3 = *(a1 + 1744);
+  result = *(self + 1712);
+  v2 = *(self + 1728);
+  v3 = *(self + 1744);
   return result;
 }
 
 - (__n128)rectReferenceToAuxiliary
 {
-  result = *(a1 + 1760);
-  v2 = *(a1 + 1776);
-  v3 = *(a1 + 1792);
+  result = *(self + 1760);
+  v2 = *(self + 1776);
+  v3 = *(self + 1792);
   return result;
 }
 
 - (__n128)referenceToRectReference
 {
-  result = *(a1 + 1808);
-  v2 = *(a1 + 1824);
-  v3 = *(a1 + 1840);
+  result = *(self + 1808);
+  v2 = *(self + 1824);
+  v3 = *(self + 1840);
   return result;
 }
 

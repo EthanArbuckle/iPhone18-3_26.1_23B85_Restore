@@ -12,7 +12,7 @@
   v12[1] = 3221225472;
   v12[2] = __66__NSCoder_ICUserIdentity__ic_encodeUserIdentity_withStore_forKey___block_invoke;
   v12[3] = &unk_1E7BFA178;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = v8;
   v14 = v9;
   v10 = v9;

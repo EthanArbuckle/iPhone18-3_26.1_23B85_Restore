@@ -1,18 +1,18 @@
 @interface FCEditorialTopicEventMappingProperty
-- (FCEditorialTopicEventMappingProperty)initWithDictionary:(id)a3;
+- (FCEditorialTopicEventMappingProperty)initWithDictionary:(id)dictionary;
 @end
 
 @implementation FCEditorialTopicEventMappingProperty
 
-- (FCEditorialTopicEventMappingProperty)initWithDictionary:(id)a3
+- (FCEditorialTopicEventMappingProperty)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = FCEditorialTopicEventMappingProperty;
   v5 = [(FCEditorialTopicEventMappingProperty *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"mappingType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"mappingType"];
     if (!v6)
     {
       v8 = 0;

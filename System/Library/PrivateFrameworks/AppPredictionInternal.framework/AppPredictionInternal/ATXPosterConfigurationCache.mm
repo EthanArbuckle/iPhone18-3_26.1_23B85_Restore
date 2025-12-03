@@ -1,13 +1,13 @@
 @interface ATXPosterConfigurationCache
 + (ATXPosterConfigurationCache)sharedInstance;
 - (ATXPosterConfigurationCache)init;
-- (ATXPosterConfigurationCache)initWithPath:(id)a3;
+- (ATXPosterConfigurationCache)initWithPath:(id)path;
 - (NSArray)configurations;
-- (id)_fetchConfigurationsReadingFromCacheIfNecessaryWithGuardedData:(id)a3;
-- (void)_updateLastActiveDatesWithConfigurations:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updateConfigurations:(id)a3 completion:(id)a4;
+- (id)_fetchConfigurationsReadingFromCacheIfNecessaryWithGuardedData:(id)data;
+- (void)_updateLastActiveDatesWithConfigurations:(id)configurations;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
+- (void)updateConfigurations:(id)configurations completion:(id)completion;
 @end
 
 @implementation ATXPosterConfigurationCache
@@ -35,25 +35,25 @@ uint64_t __45__ATXPosterConfigurationCache_sharedInstance__block_invoke()
 
 - (ATXPosterConfigurationCache)init
 {
-  v3 = [MEMORY[0x277CEBCB0] posterConfigurationCacheFilePath];
-  v4 = [(ATXPosterConfigurationCache *)self initWithPath:v3];
+  posterConfigurationCacheFilePath = [MEMORY[0x277CEBCB0] posterConfigurationCacheFilePath];
+  v4 = [(ATXPosterConfigurationCache *)self initWithPath:posterConfigurationCacheFilePath];
 
   return v4;
 }
 
-- (ATXPosterConfigurationCache)initWithPath:(id)a3
+- (ATXPosterConfigurationCache)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = ATXPosterConfigurationCache;
   v5 = [(ATXPosterConfigurationCache *)&v18 init];
   if (v5)
   {
-    if (v4)
+    if (pathCopy)
     {
       v6 = objc_alloc(MEMORY[0x277CEBC68]);
       v7 = __atxlog_handle_lock_screen();
-      v8 = [v6 initWithCacheFilePath:v4 loggingHandle:v7 debugName:@"Poster configuration cache"];
+      v8 = [v6 initWithCacheFilePath:pathCopy loggingHandle:v7 debugName:@"Poster configuration cache"];
       fileCache = v5->_fileCache;
       v5->_fileCache = v8;
     }
@@ -112,20 +112,20 @@ uint64_t __45__ATXPosterConfigurationCache_configurations__block_invoke(uint64_t
   return MEMORY[0x2821F96F8](v8, v10);
 }
 
-- (void)updateConfigurations:(id)a3 completion:(id)a4
+- (void)updateConfigurations:(id)configurations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationsCopy = configurations;
+  completionCopy = completion;
   lock = self->_lock;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__ATXPosterConfigurationCache_updateConfigurations_completion___block_invoke;
   v11[3] = &unk_27859F5D8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configurationsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = configurationsCopy;
   [(_PASLock *)lock runWithLockAcquired:v11];
 }
 
@@ -206,10 +206,10 @@ void __63__ATXPosterConfigurationCache_updateConfigurations_completion___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchConfigurationsReadingFromCacheIfNecessaryWithGuardedData:(id)a3
+- (id)_fetchConfigurationsReadingFromCacheIfNecessaryWithGuardedData:(id)data
 {
-  v4 = a3;
-  v5 = v4[1];
+  dataCopy = data;
+  v5 = dataCopy[1];
   if (v5)
   {
     v6 = [v5 copy];
@@ -229,39 +229,39 @@ void __63__ATXPosterConfigurationCache_updateConfigurations_completion___block_i
   return v6;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__ATXPosterConfigurationCache_registerObserver___block_invoke;
   v7[3] = &unk_27859F600;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ATXPosterConfigurationCache_unregisterObserver___block_invoke;
   v7[3] = &unk_27859F600;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (void)_updateLastActiveDatesWithConfigurations:(id)a3
+- (void)_updateLastActiveDatesWithConfigurations:(id)configurations
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  configurationsCopy = configurations;
   v4 = objc_alloc(MEMORY[0x277CBEB98]);
-  v35 = v3;
-  v5 = [v3 _pas_mappedArrayWithTransform:&__block_literal_global_35_3];
+  v35 = configurationsCopy;
+  v5 = [configurationsCopy _pas_mappedArrayWithTransform:&__block_literal_global_35_3];
   v6 = [v4 initWithArray:v5];
 
   v7 = objc_alloc(MEMORY[0x277CBEBD0]);
@@ -283,16 +283,16 @@ void __63__ATXPosterConfigurationCache_updateConfigurations_completion___block_i
 
   v13 = v12;
 
-  v14 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v15 = objc_opt_new();
-  v16 = [v14 dateByAddingUnit:16 value:-7 toDate:v15 options:0];
+  v16 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:v15 options:0];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v17 = [v13 allKeys];
-  v18 = [v17 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  allKeys = [v13 allKeys];
+  v18 = [allKeys countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v18)
   {
     v19 = v18;
@@ -303,7 +303,7 @@ void __63__ATXPosterConfigurationCache_updateConfigurations_completion___block_i
       {
         if (*v43 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allKeys);
         }
 
         v22 = *(*(&v42 + 1) + 8 * i);
@@ -325,7 +325,7 @@ void __63__ATXPosterConfigurationCache_updateConfigurations_completion___block_i
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      v19 = [allKeys countByEnumeratingWithState:&v42 objects:v47 count:16];
     }
 
     while (v19);
@@ -354,8 +354,8 @@ void __63__ATXPosterConfigurationCache_updateConfigurations_completion___block_i
         if ([v31 isActive])
         {
           v32 = objc_opt_new();
-          v33 = [v31 posterUUID];
-          [v13 setObject:v32 forKeyedSubscript:v33];
+          posterUUID = [v31 posterUUID];
+          [v13 setObject:v32 forKeyedSubscript:posterUUID];
         }
       }
 

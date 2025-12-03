@@ -1,34 +1,34 @@
 @interface AMSDMultiUserMetrics
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-+ (id)_eventWithTopic:(id)a3;
-+ (id)_metricsInstanceWithBag:(id)a3;
++ (id)_eventWithTopic:(id)topic;
++ (id)_metricsInstanceWithBag:(id)bag;
 + (id)createBagForSubProfile;
 - (AMSDMultiUserMetrics)init;
-- (AMSDMultiUserMetrics)initWithBag:(id)a3;
-- (BOOL)_isTopicDefined:(id)a3;
-- (id)_clampTimeStampValue:(id)a3;
-- (id)_durationSinceDate:(id)a3;
-- (id)_enqueueEventWithTopic:(id)a3 properties:(id)a4;
-- (id)_enqueueEvents:(id)a3;
-- (id)_enqueueProperties:(id)a3 account:(id)a4;
+- (AMSDMultiUserMetrics)initWithBag:(id)bag;
+- (BOOL)_isTopicDefined:(id)defined;
+- (id)_clampTimeStampValue:(id)value;
+- (id)_durationSinceDate:(id)date;
+- (id)_enqueueEventWithTopic:(id)topic properties:(id)properties;
+- (id)_enqueueEvents:(id)events;
+- (id)_enqueueProperties:(id)properties account:(id)account;
 - (id)_eventTime;
 - (id)_topicFromBag;
-- (id)_userIdForBagNamespace:(id)a3;
+- (id)_userIdForBagNamespace:(id)namespace;
 - (id)enqueueCloudKitFetchBeganEvent;
-- (id)enqueueCloudKitFetchFinishEventWithError:(id)a3;
+- (id)enqueueCloudKitFetchFinishEventWithError:(id)error;
 - (id)enqueueCloudKitSaveReceivedEvent;
 - (id)enqueueCloudKitSaveRecordEvent;
-- (id)enqueueCloudKitSaveRecordFinishEventWithError:(id)a3;
+- (id)enqueueCloudKitSaveRecordFinishEventWithError:(id)error;
 - (id)enqueueGenerateMultiUserTokenBeginEvent;
-- (id)enqueueGenerateMultiUserTokenFinishEventWithError:(id)a3;
+- (id)enqueueGenerateMultiUserTokenFinishEventWithError:(id)error;
 - (id)enqueueHomeKitChangedReceivedEvent;
-- (id)enqueueHomeKitRepairRequestCompletedFinishEventWithError:(id)a3;
+- (id)enqueueHomeKitRepairRequestCompletedFinishEventWithError:(id)error;
 - (id)enqueueHomeKitRepairRequestReceivedEvent;
-- (id)enqueueHomeKitRepairRequestSentEventForAccount:(id)a3;
-- (id)enqueueMultiUserAuthenticationTokenFetchBeginEventForAccount:(id)a3;
-- (id)enqueueMultiUserAuthenticationTokenFetchFinishEventForAccount:(id)a3 error:(id)a4;
-- (id)enqueueMultiUserRefreshBeginEventWithOptions:(id)a3;
+- (id)enqueueHomeKitRepairRequestSentEventForAccount:(id)account;
+- (id)enqueueMultiUserAuthenticationTokenFetchBeginEventForAccount:(id)account;
+- (id)enqueueMultiUserAuthenticationTokenFetchFinishEventForAccount:(id)account error:(id)error;
+- (id)enqueueMultiUserRefreshBeginEventWithOptions:(id)options;
 - (void)flushEvents;
 - (void)homeKitRepairRequestUpdateTokenBegin;
 @end
@@ -37,30 +37,30 @@
 
 - (AMSDMultiUserMetrics)init
 {
-  v3 = [objc_opt_class() createBagForSubProfile];
-  v4 = [(AMSDMultiUserMetrics *)self initWithBag:v3];
+  createBagForSubProfile = [objc_opt_class() createBagForSubProfile];
+  v4 = [(AMSDMultiUserMetrics *)self initWithBag:createBagForSubProfile];
 
   return v4;
 }
 
-- (AMSDMultiUserMetrics)initWithBag:(id)a3
+- (AMSDMultiUserMetrics)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v14.receiver = self;
   v14.super_class = AMSDMultiUserMetrics;
   v6 = [(AMSDMultiUserMetrics *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
+    objc_storeStrong(&v6->_bag, bag);
     v8 = [AMSDMultiUserMetrics _metricsInstanceWithBag:v7->_bag];
     metrics = v7->_metrics;
     v7->_metrics = v8;
 
     v10 = +[NSUUID UUID];
-    v11 = [v10 UUIDString];
+    uUIDString = [v10 UUIDString];
     metricsIdentifier = v7->_metricsIdentifier;
-    v7->_metricsIdentifier = v11;
+    v7->_metricsIdentifier = uUIDString;
   }
 
   return v7;
@@ -68,14 +68,14 @@
 
 - (void)flushEvents
 {
-  v3 = [(AMSDMultiUserMetrics *)self metrics];
-  v4 = [v3 flush];
+  metrics = [(AMSDMultiUserMetrics *)self metrics];
+  flush = [metrics flush];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006B2D0;
   v5[3] = &unk_1002B1318;
   v5[4] = self;
-  [v4 addFinishBlock:v5];
+  [flush addFinishBlock:v5];
 }
 
 - (id)enqueueCloudKitFetchBeganEvent
@@ -91,20 +91,20 @@
   return v5;
 }
 
-- (id)enqueueCloudKitFetchFinishEventWithError:(id)a3
+- (id)enqueueCloudKitFetchFinishEventWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v12 = @"duration";
-  v5 = [(AMSDMultiUserMetrics *)self cloudKitFetchBeginDate];
-  v6 = [(AMSDMultiUserMetrics *)self _durationSinceDate:v5];
+  cloudKitFetchBeginDate = [(AMSDMultiUserMetrics *)self cloudKitFetchBeginDate];
+  v6 = [(AMSDMultiUserMetrics *)self _durationSinceDate:cloudKitFetchBeginDate];
   v13 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v8 = [NSMutableDictionary dictionaryWithDictionary:v7];
 
-  if (v4)
+  if (errorCopy)
   {
     [v8 setObject:@"MultiUserTokenFetchCloudKitFailure" forKey:@"eventType"];
-    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
+    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v8 setObject:v9 forKey:@"errorCode"];
   }
 
@@ -131,20 +131,20 @@
   return v5;
 }
 
-- (id)enqueueCloudKitSaveRecordFinishEventWithError:(id)a3
+- (id)enqueueCloudKitSaveRecordFinishEventWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v12 = @"duration";
-  v5 = [(AMSDMultiUserMetrics *)self cloudKitSaveBeginDate];
-  v6 = [(AMSDMultiUserMetrics *)self _durationSinceDate:v5];
+  cloudKitSaveBeginDate = [(AMSDMultiUserMetrics *)self cloudKitSaveBeginDate];
+  v6 = [(AMSDMultiUserMetrics *)self _durationSinceDate:cloudKitSaveBeginDate];
   v13 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v8 = [NSMutableDictionary dictionaryWithDictionary:v7];
 
-  if (v4)
+  if (errorCopy)
   {
     [v8 setObject:@"MultiUserTokenGenerationCloudKitSaveFailed" forKey:@"eventType"];
-    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
+    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v8 setObject:v9 forKey:@"errorCode"];
   }
 
@@ -181,20 +181,20 @@
   return v5;
 }
 
-- (id)enqueueGenerateMultiUserTokenFinishEventWithError:(id)a3
+- (id)enqueueGenerateMultiUserTokenFinishEventWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v12 = @"duration";
-  v5 = [(AMSDMultiUserMetrics *)self multiUserGenerateTokenBeginDate];
-  v6 = [(AMSDMultiUserMetrics *)self _durationSinceDate:v5];
+  multiUserGenerateTokenBeginDate = [(AMSDMultiUserMetrics *)self multiUserGenerateTokenBeginDate];
+  v6 = [(AMSDMultiUserMetrics *)self _durationSinceDate:multiUserGenerateTokenBeginDate];
   v13 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v8 = [NSMutableDictionary dictionaryWithDictionary:v7];
 
-  if (v4)
+  if (errorCopy)
   {
     [v8 setObject:@"MultiUserTokenGenerationFailure" forKey:@"eventType"];
-    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
+    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v8 setObject:v9 forKey:@"errorCode"];
   }
 
@@ -228,20 +228,20 @@
   return v4;
 }
 
-- (id)enqueueHomeKitRepairRequestCompletedFinishEventWithError:(id)a3
+- (id)enqueueHomeKitRepairRequestCompletedFinishEventWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v12 = @"duration";
-  v5 = [(AMSDMultiUserMetrics *)self homeKitRepairRequestBeginDate];
-  v6 = [(AMSDMultiUserMetrics *)self _durationSinceDate:v5];
+  homeKitRepairRequestBeginDate = [(AMSDMultiUserMetrics *)self homeKitRepairRequestBeginDate];
+  v6 = [(AMSDMultiUserMetrics *)self _durationSinceDate:homeKitRepairRequestBeginDate];
   v13 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v8 = [NSMutableDictionary dictionaryWithDictionary:v7];
 
-  if (v4)
+  if (errorCopy)
   {
     [v8 setObject:@"HomeKitRepairRequestCompletedFailure" forKey:@"eventType"];
-    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
+    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v8 setObject:v9 forKey:@"errorCode"];
   }
 
@@ -255,15 +255,15 @@
   return v10;
 }
 
-- (id)enqueueHomeKitRepairRequestSentEventForAccount:(id)a3
+- (id)enqueueHomeKitRepairRequestSentEventForAccount:(id)account
 {
   v9 = @"eventType";
   v10 = @"HomeKitRepairRequestSend";
-  v4 = a3;
+  accountCopy = account;
   v5 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v6 = [NSMutableDictionary dictionaryWithDictionary:v5];
 
-  v7 = [(AMSDMultiUserMetrics *)self _enqueueProperties:v6 account:v4];
+  v7 = [(AMSDMultiUserMetrics *)self _enqueueProperties:v6 account:accountCopy];
 
   return v7;
 }
@@ -274,35 +274,35 @@
   [(AMSDMultiUserMetrics *)self setHomeKitRepairRequestBeginDate:v3];
 }
 
-- (id)enqueueMultiUserAuthenticationTokenFetchBeginEventForAccount:(id)a3
+- (id)enqueueMultiUserAuthenticationTokenFetchBeginEventForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[NSDate date];
   [(AMSDMultiUserMetrics *)self setMultiUserAuthBeginDate:v5];
 
   v9 = @"eventType";
   v10 = @"MultiUserTokenFetchBegin";
   v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  v7 = [(AMSDMultiUserMetrics *)self _enqueueProperties:v6 account:v4];
+  v7 = [(AMSDMultiUserMetrics *)self _enqueueProperties:v6 account:accountCopy];
 
   return v7;
 }
 
-- (id)enqueueMultiUserAuthenticationTokenFetchFinishEventForAccount:(id)a3 error:(id)a4
+- (id)enqueueMultiUserAuthenticationTokenFetchFinishEventForAccount:(id)account error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v16 = @"duration";
-  v7 = a3;
-  v8 = [(AMSDMultiUserMetrics *)self multiUserAuthBeginDate];
-  v9 = [(AMSDMultiUserMetrics *)self _durationSinceDate:v8];
+  accountCopy = account;
+  multiUserAuthBeginDate = [(AMSDMultiUserMetrics *)self multiUserAuthBeginDate];
+  v9 = [(AMSDMultiUserMetrics *)self _durationSinceDate:multiUserAuthBeginDate];
   v17 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v11 = [NSMutableDictionary dictionaryWithDictionary:v10];
 
-  if (v6)
+  if (errorCopy)
   {
     [v11 setObject:@"MultiUserTokenFetchFailure" forKey:@"eventType"];
-    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 code]);
+    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v11 setObject:v12 forKey:@"errorCode"];
   }
 
@@ -312,17 +312,17 @@
   }
 
   v13 = [v11 copy];
-  v14 = [(AMSDMultiUserMetrics *)self _enqueueProperties:v13 account:v7];
+  v14 = [(AMSDMultiUserMetrics *)self _enqueueProperties:v13 account:accountCopy];
 
   return v14;
 }
 
-- (id)enqueueMultiUserRefreshBeginEventWithOptions:(id)a3
+- (id)enqueueMultiUserRefreshBeginEventWithOptions:(id)options
 {
   v8[0] = @"eventType";
   v8[1] = @"refreshReason";
   v9[0] = @"MultiUserRefreshBegin";
-  v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [a3 reasonType]);
+  v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [options reasonType]);
   v9[1] = v4;
   v5 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2];
 
@@ -357,28 +357,28 @@
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-- (id)_clampTimeStampValue:(id)a3
+- (id)_clampTimeStampValue:(id)value
 {
-  v3 = [a3 longLongValue];
-  v4 = v3 / qword_1002D9DA0 * qword_1002D9DA0;
+  longLongValue = [value longLongValue];
+  v4 = longLongValue / qword_1002D9DA0 * qword_1002D9DA0;
 
   return [NSNumber numberWithLongLong:v4];
 }
 
-- (id)_durationSinceDate:(id)a3
+- (id)_durationSinceDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v4 = a3;
+    dateCopy = date;
     v5 = +[NSDate date];
-    [v5 timeIntervalSinceDate:v4];
+    [v5 timeIntervalSinceDate:dateCopy];
     v7 = v6;
 
     v8 = [NSNumber numberWithDouble:v7];
@@ -392,14 +392,14 @@
   return v8;
 }
 
-- (id)_enqueueEventWithTopic:(id)a3 properties:(id)a4
+- (id)_enqueueEventWithTopic:(id)topic properties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  topicCopy = topic;
+  propertiesCopy = properties;
+  v8 = propertiesCopy;
+  if (topicCopy && propertiesCopy)
   {
-    v9 = [objc_opt_class() _eventWithTopic:v6];
+    v9 = [objc_opt_class() _eventWithTopic:topicCopy];
     [v9 addPropertiesWithDictionary:v8];
     v26 = v9;
     v10 = [NSArray arrayWithObjects:&v26 count:1];
@@ -414,8 +414,8 @@
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = AMSLogKey();
@@ -425,10 +425,10 @@
       v20 = 2114;
       v21 = v15;
       v22 = 2114;
-      v23 = v6;
+      v23 = topicCopy;
       v24 = 2114;
       v25 = v16;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempted to enqueue event without topic or properties. topic = %{public}@ properties = %{public}@", &v18, 0x2Au);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempted to enqueue event without topic or properties. topic = %{public}@ properties = %{public}@", &v18, 0x2Au);
     }
 
     v9 = AMSError();
@@ -438,22 +438,22 @@
   return v11;
 }
 
-- (id)_enqueueEvents:(id)a3
+- (id)_enqueueEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(AMSDMultiUserMetrics *)self metrics];
-  v6 = [v5 promiseForEnqueueingEvents:v4];
+  eventsCopy = events;
+  metrics = [(AMSDMultiUserMetrics *)self metrics];
+  v6 = [metrics promiseForEnqueueingEvents:eventsCopy];
 
   return v6;
 }
 
-- (id)_enqueueProperties:(id)a3 account:(id)a4
+- (id)_enqueueProperties:(id)properties account:(id)account
 {
-  v6 = a4;
-  if (a3)
+  accountCopy = account;
+  if (properties)
   {
-    v7 = [a3 mutableCopy];
-    if ([(AMSDMultiUserMetrics *)self _accountIsSecondaryHomeUser:v6])
+    v7 = [properties mutableCopy];
+    if ([(AMSDMultiUserMetrics *)self _accountIsSecondaryHomeUser:accountCopy])
     {
       v8 = @"authPerformanceSecondary";
     }
@@ -463,8 +463,8 @@
       v8 = @"authPerformance";
     }
 
-    v9 = [(AMSDMultiUserMetrics *)self metricsIdentifier];
-    [v7 setObject:v9 forKey:@"multiUserIdentifier"];
+    metricsIdentifier = [(AMSDMultiUserMetrics *)self metricsIdentifier];
+    [v7 setObject:metricsIdentifier forKey:@"multiUserIdentifier"];
 
     v10 = +[AMSLogConfig sharedAccountsConfig];
     if (!v10)
@@ -472,8 +472,8 @@
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -487,22 +487,22 @@
       v37 = v14;
       v38 = 2114;
       v39 = v15;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating Event with properties = %{public}@ using account = %{public}@", buf, 0x2Au);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating Event with properties = %{public}@ using account = %{public}@", buf, 0x2Au);
     }
 
     v16 = objc_alloc_init(AMSMutableBinaryPromise);
-    v17 = [(AMSDMultiUserMetrics *)self _topicFromBag];
+    _topicFromBag = [(AMSDMultiUserMetrics *)self _topicFromBag];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_10006CBE4;
     v27[3] = &unk_1002B1380;
     v18 = v16;
     v28 = v18;
-    v29 = self;
+    selfCopy = self;
     v30 = v8;
     v31 = v7;
     v19 = v7;
-    [v17 resultWithCompletion:v27];
+    [_topicFromBag resultWithCompletion:v27];
 
     v20 = v31;
     v21 = v18;
@@ -516,8 +516,8 @@
       v22 = +[AMSLogConfig sharedConfig];
     }
 
-    v23 = [v22 OSLogObject];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v24 = objc_opt_class();
       v25 = AMSLogKey();
@@ -525,7 +525,7 @@
       v33 = v24;
       v34 = 2114;
       v35 = v25;
-      _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempted to enqueue event without properties.", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempted to enqueue event without properties.", buf, 0x16u);
     }
 
     v19 = AMSError();
@@ -544,20 +544,20 @@
   return v5;
 }
 
-+ (id)_eventWithTopic:(id)a3
++ (id)_eventWithTopic:(id)topic
 {
-  v3 = a3;
-  v4 = [[AMSMetricsEvent alloc] initWithTopic:v3];
+  topicCopy = topic;
+  v4 = [[AMSMetricsEvent alloc] initWithTopic:topicCopy];
 
   [v4 setCheckDiagnosticsAndUsageSetting:1];
 
   return v4;
 }
 
-- (BOOL)_isTopicDefined:(id)a3
+- (BOOL)_isTopicDefined:(id)defined
 {
-  v4 = [a3 isEqualToString:@"_topic_not_defined_"] ^ 1;
-  if (a3)
+  v4 = [defined isEqualToString:@"_topic_not_defined_"] ^ 1;
+  if (defined)
   {
     return v4;
   }
@@ -568,10 +568,10 @@
   }
 }
 
-+ (id)_metricsInstanceWithBag:(id)a3
++ (id)_metricsInstanceWithBag:(id)bag
 {
-  v3 = a3;
-  v4 = [[AMSMetrics alloc] initWithContainerID:@"com.apple.AppleMediaServices" bag:v3];
+  bagCopy = bag;
+  v4 = [[AMSMetrics alloc] initWithContainerID:@"com.apple.AppleMediaServices" bag:bagCopy];
 
   return v4;
 }
@@ -591,16 +591,16 @@
 
   v6 = [(AMSDMultiUserMetrics *)self bag];
   v7 = [v6 stringForKey:@"authPerfTopicName"];
-  v8 = [v7 valuePromise];
+  valuePromise = [v7 valuePromise];
 
-  return v8;
+  return valuePromise;
 }
 
-- (id)_userIdForBagNamespace:(id)a3
+- (id)_userIdForBagNamespace:(id)namespace
 {
-  v4 = a3;
+  namespaceCopy = namespace;
   v5 = [(AMSDMultiUserMetrics *)self bag];
-  v6 = [AMSMetricsIdentifierStore identifierForAccount:0 bag:v5 bagNamespace:v4 keyName:@"userId"];
+  v6 = [AMSMetricsIdentifierStore identifierForAccount:0 bag:v5 bagNamespace:namespaceCopy keyName:@"userId"];
 
   return v6;
 }

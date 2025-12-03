@@ -1,117 +1,117 @@
 @interface COMutableStateClientInfo
-- (COMutableStateClientInfo)initWithSuite:(id)a3 clusters:(id)a4 state:(id)a5 observers:(id)a6;
-- (void)addObserverWithPredicate:(id)a3;
-- (void)removeKeyPath:(id)a3 cluster:(id)a4;
-- (void)removeObserverWithPredicate:(id)a3;
-- (void)setValue:(id)a3 forKeyPath:(id)a4 cluster:(id)a5;
+- (COMutableStateClientInfo)initWithSuite:(id)suite clusters:(id)clusters state:(id)state observers:(id)observers;
+- (void)addObserverWithPredicate:(id)predicate;
+- (void)removeKeyPath:(id)path cluster:(id)cluster;
+- (void)removeObserverWithPredicate:(id)predicate;
+- (void)setValue:(id)value forKeyPath:(id)path cluster:(id)cluster;
 @end
 
 @implementation COMutableStateClientInfo
 
-- (COMutableStateClientInfo)initWithSuite:(id)a3 clusters:(id)a4 state:(id)a5 observers:(id)a6
+- (COMutableStateClientInfo)initWithSuite:(id)suite clusters:(id)clusters state:(id)state observers:(id)observers
 {
-  v11 = a5;
-  v12 = a6;
+  stateCopy = state;
+  observersCopy = observers;
   v16.receiver = self;
   v16.super_class = COMutableStateClientInfo;
-  v13 = [(COStateClientInfo *)&v16 initWithSuite:a3 clusters:a4];
+  v13 = [(COStateClientInfo *)&v16 initWithSuite:suite clusters:clusters];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->super._state, a5);
-    objc_storeStrong(&v14->super._observers, a6);
+    objc_storeStrong(&v13->super._state, state);
+    objc_storeStrong(&v14->super._observers, observers);
   }
 
   return v14;
 }
 
-- (void)removeKeyPath:(id)a3 cluster:(id)a4
+- (void)removeKeyPath:(id)path cluster:(id)cluster
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(COMutableStateClientInfo *)self state];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  pathCopy = path;
+  clusterCopy = cluster;
+  state = [(COMutableStateClientInfo *)self state];
+  v8 = [state objectForKeyedSubscript:clusterCopy];
   v9 = [v8 mutableCopy];
 
   if (v9)
   {
-    [v9 removeObjectForKey:v12];
-    v10 = [(COMutableStateClientInfo *)self state];
-    v11 = [v10 mutableCopy];
+    [v9 removeObjectForKey:pathCopy];
+    state2 = [(COMutableStateClientInfo *)self state];
+    v11 = [state2 mutableCopy];
 
-    [v11 setObject:v9 forKey:v6];
+    [v11 setObject:v9 forKey:clusterCopy];
     [(COMutableStateClientInfo *)self setState:v11];
   }
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4 cluster:(id)a5
+- (void)setValue:(id)value forKeyPath:(id)path cluster:(id)cluster
 {
-  v17 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(COMutableStateClientInfo *)self state];
-  v11 = [v10 objectForKeyedSubscript:v17];
+  clusterCopy = cluster;
+  pathCopy = path;
+  valueCopy = value;
+  state = [(COMutableStateClientInfo *)self state];
+  v11 = [state objectForKeyedSubscript:clusterCopy];
   if (v11)
   {
-    v12 = [(COMutableStateClientInfo *)self state];
-    v13 = [v12 objectForKeyedSubscript:v17];
-    v14 = [v13 mutableCopy];
+    state2 = [(COMutableStateClientInfo *)self state];
+    v13 = [state2 objectForKeyedSubscript:clusterCopy];
+    dictionary = [v13 mutableCopy];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  [v14 setObject:v9 forKey:v8];
-  v15 = [(COMutableStateClientInfo *)self state];
-  v16 = [v15 mutableCopy];
+  [dictionary setObject:valueCopy forKey:pathCopy];
+  state3 = [(COMutableStateClientInfo *)self state];
+  v16 = [state3 mutableCopy];
 
-  [v16 setObject:v14 forKey:v17];
+  [v16 setObject:dictionary forKey:clusterCopy];
   [(COMutableStateClientInfo *)self setState:v16];
 }
 
-- (void)addObserverWithPredicate:(id)a3
+- (void)addObserverWithPredicate:(id)predicate
 {
-  v8 = a3;
-  v4 = [(COMutableStateClientInfo *)self observers];
-  v5 = [v4 mutableCopy];
+  predicateCopy = predicate;
+  observers = [(COMutableStateClientInfo *)self observers];
+  v5 = [observers mutableCopy];
 
-  v6 = [v5 objectForKey:v8];
-  [v8 allowEvaluation];
+  v6 = [v5 objectForKey:predicateCopy];
+  [predicateCopy allowEvaluation];
   if (v6)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v6, "intValue") + 1}];
-    [v5 setObject:v7 forKey:v8];
+    [v5 setObject:v7 forKey:predicateCopy];
   }
 
   else
   {
-    [v5 setObject:&unk_2857C88B0 forKey:v8];
+    [v5 setObject:&unk_2857C88B0 forKey:predicateCopy];
   }
 
   [(COMutableStateClientInfo *)self setObservers:v5];
 }
 
-- (void)removeObserverWithPredicate:(id)a3
+- (void)removeObserverWithPredicate:(id)predicate
 {
-  v9 = a3;
-  v4 = [(COMutableStateClientInfo *)self observers];
-  v5 = [v4 mutableCopy];
+  predicateCopy = predicate;
+  observers = [(COMutableStateClientInfo *)self observers];
+  v5 = [observers mutableCopy];
 
-  v6 = [v5 objectForKey:v9];
+  v6 = [v5 objectForKey:predicateCopy];
   v7 = v6;
   if (v6)
   {
     if ([v6 intValue] == 1)
     {
-      [v5 removeObjectForKey:v9];
+      [v5 removeObjectForKey:predicateCopy];
     }
 
     else
     {
       v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "intValue") - 1}];
-      [v5 setObject:v8 forKey:v9];
+      [v5 setObject:v8 forKey:predicateCopy];
     }
 
     [(COMutableStateClientInfo *)self setObservers:v5];

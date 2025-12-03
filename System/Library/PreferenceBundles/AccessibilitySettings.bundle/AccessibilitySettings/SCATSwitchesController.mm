@@ -1,22 +1,22 @@
 @interface SCATSwitchesController
-+ (id)switchSpecifiersForSwitchesWithTarget:(id)a3 get:(SEL)a4;
-+ (id)switchSpecifiersForSwitchesWithTarget:(id)a3 get:(SEL)a4 isEnabled:(id)a5;
++ (id)switchSpecifiersForSwitchesWithTarget:(id)target get:(SEL)get;
++ (id)switchSpecifiersForSwitchesWithTarget:(id)target get:(SEL)get isEnabled:(id)enabled;
 - (BOOL)_shouldAllowEditing;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (id)_disabledSwitchSpecifiers;
 - (id)_switchSpecifiers;
-- (id)actionStringForSpecifier:(id)a3;
-- (id)ignoreInvalidSwitchConfiguration:(id)a3;
+- (id)actionStringForSpecifier:(id)specifier;
+- (id)ignoreInvalidSwitchConfiguration:(id)configuration;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_allowUSBRM;
 - (void)_clearSCUSBRMDisabler;
 - (void)_reloadSpecifiers;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIgnoreInvalidSwitchConfiguration:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setIgnoreInvalidSwitchConfiguration:(id)configuration specifier:(id)specifier;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SCATSwitchesController
@@ -24,8 +24,8 @@
 - (BOOL)_shouldAllowEditing
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchSwitches];
-  v4 = [v3 count] != 0;
+  assistiveTouchSwitches = [v2 assistiveTouchSwitches];
+  v4 = [assistiveTouchSwitches count] != 0;
 
   return v4;
 }
@@ -57,38 +57,38 @@ int64_t __40__SCATSwitchesController__sortSwitches___block_invoke(id a1, PSSpeci
   return v9;
 }
 
-+ (id)switchSpecifiersForSwitchesWithTarget:(id)a3 get:(SEL)a4
++ (id)switchSpecifiersForSwitchesWithTarget:(id)target get:(SEL)get
 {
   v5 = objc_opt_class();
 
-  return [v5 switchSpecifiersForSwitchesWithTarget:a1 get:"actionStringForSpecifier:" isEnabled:0];
+  return [v5 switchSpecifiersForSwitchesWithTarget:self get:"actionStringForSpecifier:" isEnabled:0];
 }
 
-+ (id)switchSpecifiersForSwitchesWithTarget:(id)a3 get:(SEL)a4 isEnabled:(id)a5
++ (id)switchSpecifiersForSwitchesWithTarget:(id)target get:(SEL)get isEnabled:(id)enabled
 {
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  enabledCopy = enabled;
   v37 = +[AXSettings sharedInstance];
-  v10 = [v37 assistiveTouchSwitches];
-  v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+  assistiveTouchSwitches = [v37 assistiveTouchSwitches];
+  v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [assistiveTouchSwitches count]);
   +[NSMutableDictionary dictionary];
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = __78__SCATSwitchesController_switchSpecifiersForSwitchesWithTarget_get_isEnabled___block_invoke;
   v12 = v47[3] = &unk_259368;
   v48 = v12;
-  v35 = v8;
+  v35 = targetCopy;
   v49 = v35;
-  v52 = a4;
-  v53 = a1;
-  v33 = v9;
+  getCopy = get;
+  selfCopy = self;
+  v33 = enabledCopy;
   v50 = v33;
   v13 = v11;
   v51 = v13;
-  v36 = v10;
-  [v10 enumerateObjectsUsingBlock:v47];
+  v36 = assistiveTouchSwitches;
+  [assistiveTouchSwitches enumerateObjectsUsingBlock:v47];
   v34 = v13;
-  [a1 _sortSwitches:v13];
+  [self _sortSwitches:v13];
   v14 = +[NSMutableArray array];
   v43 = 0u;
   v44 = 0u;
@@ -294,12 +294,12 @@ LABEL_20:
 LABEL_31:
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v18.receiver = self;
   v18.super_class = SCATSwitchesController;
-  [(SCATSwitchesController *)&v18 setEditing:a3 animated:a4];
+  [(SCATSwitchesController *)&v18 setEditing:editing animated:animated];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -324,7 +324,7 @@ LABEL_31:
         }
 
         v12 = [(SCATSwitchesController *)self specifierForID:*(*(&v14 + 1) + 8 * v11)];
-        v13 = [NSNumber numberWithInt:!v4];
+        v13 = [NSNumber numberWithInt:!editingCopy];
         [v12 setProperty:v13 forKey:v10];
 
         [(SCATSwitchesController *)self reloadSpecifier:v12];
@@ -350,21 +350,21 @@ LABEL_31:
     v7 = [PSSpecifier groupSpecifierWithID:@"EnabledSwitchesGroupIdentifier" name:v6];
 
     [(SCATSwitchesController *)self setEnabledSwitchesSpecifierGroup:v7];
-    v8 = [(SCATSwitchesController *)self _switchSpecifiers];
-    if ([v8 count])
+    _switchSpecifiers = [(SCATSwitchesController *)self _switchSpecifiers];
+    if ([_switchSpecifiers count])
     {
       [v5 addObject:v7];
-      [v5 addObjectsFromArray:v8];
+      [v5 addObjectsFromArray:_switchSpecifiers];
     }
 
-    v30 = v8;
+    v30 = _switchSpecifiers;
     v31 = v7;
     v9 = [PSSpecifier groupSpecifierWithID:@"AddSwitchGroupIdentifier"];
     [(SCATSwitchesController *)self setAddSwitchesSpecifierGroup:v9];
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 switchControlScanningStyle];
+    switchControlScanningStyle = [v10 switchControlScanningStyle];
 
-    if (v11 > 2)
+    if (switchControlScanningStyle > 2)
     {
       v12 = 0;
     }
@@ -387,11 +387,11 @@ LABEL_31:
     v15 = AXParameterizedLocalizedString();
     v16 = [PSSpecifier groupSpecifierWithID:@"DisabledSwitchesGroupIdentifier" name:v15];
 
-    v17 = [(SCATSwitchesController *)self _disabledSwitchSpecifiers];
-    if ([v17 count])
+    _disabledSwitchSpecifiers = [(SCATSwitchesController *)self _disabledSwitchSpecifiers];
+    if ([_disabledSwitchSpecifiers count])
     {
       [v5 addObject:v16];
-      [v5 addObjectsFromArray:v17];
+      [v5 addObjectsFromArray:_disabledSwitchSpecifiers];
     }
 
     v18 = +[PSSpecifier emptyGroupSpecifier];
@@ -426,28 +426,28 @@ LABEL_31:
 - (void)_reloadSpecifiers
 {
   [(SCATSwitchesController *)self beginUpdates];
-  v3 = [(SCATSwitchesController *)self _switchSpecifiers];
-  v4 = [v3 count];
+  _switchSpecifiers = [(SCATSwitchesController *)self _switchSpecifiers];
+  v4 = [_switchSpecifiers count];
 
   if (v4)
   {
     v5 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
-    v6 = [(SCATSwitchesController *)self enabledSwitchesSpecifierGroup];
-    LOBYTE(v5) = [v5 containsObject:v6];
+    enabledSwitchesSpecifierGroup = [(SCATSwitchesController *)self enabledSwitchesSpecifierGroup];
+    LOBYTE(v5) = [v5 containsObject:enabledSwitchesSpecifierGroup];
 
     if (v5)
     {
       goto LABEL_6;
     }
 
-    v7 = [(SCATSwitchesController *)self enabledSwitchesSpecifierGroup];
-    [(SCATSwitchesController *)self insertSpecifier:v7 atIndex:0];
+    enabledSwitchesSpecifierGroup2 = [(SCATSwitchesController *)self enabledSwitchesSpecifierGroup];
+    [(SCATSwitchesController *)self insertSpecifier:enabledSwitchesSpecifierGroup2 atIndex:0];
   }
 
   else
   {
-    v7 = [(SCATSwitchesController *)self enabledSwitchesSpecifierGroup];
-    [(SCATSwitchesController *)self removeSpecifier:v7 animated:1];
+    enabledSwitchesSpecifierGroup2 = [(SCATSwitchesController *)self enabledSwitchesSpecifierGroup];
+    [(SCATSwitchesController *)self removeSpecifier:enabledSwitchesSpecifierGroup2 animated:1];
   }
 
 LABEL_6:
@@ -455,14 +455,14 @@ LABEL_6:
   [(SCATSwitchesController *)self endUpdates];
 }
 
-- (void)setIgnoreInvalidSwitchConfiguration:(id)a3 specifier:(id)a4
+- (void)setIgnoreInvalidSwitchConfiguration:(id)configuration specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [configuration BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setSwitchControlIgnoreInvalidSwitchConfiguration:v4];
+  [v5 setSwitchControlIgnoreInvalidSwitchConfiguration:bOOLValue];
 }
 
-- (id)ignoreInvalidSwitchConfiguration:(id)a3
+- (id)ignoreInvalidSwitchConfiguration:(id)configuration
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 switchControlIgnoreInvalidSwitchConfiguration]);
@@ -470,41 +470,41 @@ LABEL_6:
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SCATSwitchesController;
-  [(SCATSwitchesController *)&v6 viewWillAppear:a3];
+  [(SCATSwitchesController *)&v6 viewWillAppear:appear];
   if ([(SCATSwitchesController *)self _shouldAllowEditing])
   {
-    v4 = [(SCATSwitchesController *)self editButtonItem];
-    v5 = [(SCATSwitchesController *)self navigationItem];
-    [v5 setRightBarButtonItem:v4];
+    editButtonItem = [(SCATSwitchesController *)self editButtonItem];
+    navigationItem = [(SCATSwitchesController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:editButtonItem];
   }
 
   [(SCATSwitchesController *)self reloadSpecifiers];
 }
 
-- (id)actionStringForSpecifier:(id)a3
+- (id)actionStringForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"SwitchKey"];
-  v5 = [v4 hasLongPressAction];
-  if ((v5 & 1) == 0)
+  v4 = [specifier propertyForKey:@"SwitchKey"];
+  hasLongPressAction = [v4 hasLongPressAction];
+  if ((hasLongPressAction & 1) == 0)
   {
-    v3 = [v4 longPressShortcutIdentifier];
-    if (!v3)
+    longPressShortcutIdentifier = [v4 longPressShortcutIdentifier];
+    if (!longPressShortcutIdentifier)
     {
       goto LABEL_5;
     }
   }
 
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 assistiveTouchLongPressEnabled];
+  assistiveTouchLongPressEnabled = [v6 assistiveTouchLongPressEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((hasLongPressAction & 1) == 0)
   {
 
-    if ((v7 & 1) == 0)
+    if ((assistiveTouchLongPressEnabled & 1) == 0)
     {
       goto LABEL_5;
     }
@@ -514,20 +514,20 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (v7)
+  if (assistiveTouchLongPressEnabled)
   {
     goto LABEL_8;
   }
 
 LABEL_5:
-  v8 = [v4 shortcutIdentifier];
+  shortcutIdentifier = [v4 shortcutIdentifier];
 
-  if (v8)
+  if (shortcutIdentifier)
   {
     v9 = +[AXSiriShortcutsManager sharedManager];
-    v10 = [v4 shortcutIdentifier];
-    v11 = [v9 shortcutForIdentifier:v10];
-    v12 = [v11 shortcutName];
+    shortcutIdentifier2 = [v4 shortcutIdentifier];
+    v11 = [v9 shortcutForIdentifier:shortcutIdentifier2];
+    shortcutName = [v11 shortcutName];
 
     goto LABEL_11;
   }
@@ -535,48 +535,48 @@ LABEL_5:
   [v4 action];
   v13 = SCATLocStringForAction();
 LABEL_10:
-  v12 = v13;
+  shortcutName = v13;
 LABEL_11:
 
-  return v12;
+  return shortcutName;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(SCATSwitchesController *)self specifierForIndexPath:a4];
+  v4 = [(SCATSwitchesController *)self specifierForIndexPath:path];
   v5 = [v4 propertyForKey:@"SwitchKey"];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (style == 1)
   {
-    v10 = [(SCATSwitchesController *)self specifierForIndexPath:v9];
+    v10 = [(SCATSwitchesController *)self specifierForIndexPath:pathCopy];
     v11 = [v10 propertyForKey:@"SwitchKey"];
-    v12 = [v11 source];
-    v13 = [v12 isEqual:SCATSwitchSourceMFI];
+    source = [v11 source];
+    v13 = [source isEqual:SCATSwitchSourceMFI];
 
     v14 = +[AXSettings sharedInstance];
-    v26 = [v14 assistiveTouchSwitches];
-    v15 = [v26 mutableCopy];
+    assistiveTouchSwitches = [v14 assistiveTouchSwitches];
+    v15 = [assistiveTouchSwitches mutableCopy];
     [v15 removeObject:v11];
     [v14 setAssistiveTouchSwitches:v15];
     v30 = 0;
     v31 = &v30;
     v32 = 0x2020000000;
     v33 = 0;
-    v16 = [v14 assistiveTouchSwitches];
+    assistiveTouchSwitches2 = [v14 assistiveTouchSwitches];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = __73__SCATSwitchesController_tableView_commitEditingStyle_forRowAtIndexPath___block_invoke;
     v29[3] = &unk_258D20;
     v29[4] = &v30;
-    [v16 enumerateObjectsUsingBlock:v29];
+    [assistiveTouchSwitches2 enumerateObjectsUsingBlock:v29];
 
     [(SCATSwitchesController *)self removeSpecifier:v10 animated:1];
     if (![(SCATSwitchesController *)self _shouldAllowEditing])
@@ -667,25 +667,25 @@ id __73__SCATSwitchesController_tableView_commitEditingStyle_forRowAtIndexPath__
   [v2 setBoolValue:1 forSetting:MCFeatureUSBRestrictedModeAllowed];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCATSwitchesController *)self specifierForIndexPath:v7];
-  v9 = [v8 identifier];
-  if ([v9 isEqualToString:@"AddSwitchIdentifier"])
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SCATSwitchesController *)self specifierForIndexPath:pathCopy];
+  identifier = [v8 identifier];
+  if ([identifier isEqualToString:@"AddSwitchIdentifier"])
   {
     v10 = objc_opt_new();
     [v10 setParentController:self];
-    v11 = [(SCATSwitchesController *)self rootController];
-    [v10 setRootController:v11];
+    rootController = [(SCATSwitchesController *)self rootController];
+    [v10 setRootController:rootController];
 
     v12 = AXParameterizedLocalizedString();
     v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:0 cell:-1 edit:0];
     [v10 setSpecifier:v13];
 
     [(SCATSwitchesController *)self showController:v10 animate:1];
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 
   else
@@ -696,22 +696,22 @@ id __73__SCATSwitchesController_tableView_commitEditingStyle_forRowAtIndexPath__
     {
       v16.receiver = self;
       v16.super_class = SCATSwitchesController;
-      [(SCATSwitchesController *)&v16 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(SCATSwitchesController *)&v16 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
       goto LABEL_6;
     }
 
     v10 = [v8 propertyForKey:@"SwitchKey"];
     v15 = [SCATSwitchDetailsViewController switchDetailsViewControllerWithSwitch:v10 parentController:self];
     [(SCATSwitchesController *)self showController:v15 animate:1];
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 
 LABEL_6:
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(SCATSwitchesController *)self specifierForIndexPath:a4];
+  v4 = [(SCATSwitchesController *)self specifierForIndexPath:path];
   v5 = [v4 propertyForKey:@"SwitchKey"];
   v6 = v5 != 0;
 

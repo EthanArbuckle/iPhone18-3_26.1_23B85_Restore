@@ -1,74 +1,74 @@
 @interface SBIconLegibilityLabelView
-- (SBIconLegibilityLabelView)initWithSettings:(id)a3;
-- (SBIconLegibilityLabelView)initWithSettings:(id)a3 legibilityEngine:(id)a4;
+- (SBIconLegibilityLabelView)initWithSettings:(id)settings;
+- (SBIconLegibilityLabelView)initWithSettings:(id)settings legibilityEngine:(id)engine;
 - (SBIconView)iconView;
-- (void)updateIconLabelWithSettings:(id)a3 imageParameters:(id)a4;
+- (void)updateIconLabelWithSettings:(id)settings imageParameters:(id)parameters;
 @end
 
 @implementation SBIconLegibilityLabelView
 
-- (SBIconLegibilityLabelView)initWithSettings:(id)a3
+- (SBIconLegibilityLabelView)initWithSettings:(id)settings
 {
   v4 = MEMORY[0x1E69D4580];
-  v5 = a3;
-  v6 = [v4 defaultEngine];
-  v7 = [(SBIconLegibilityLabelView *)self initWithSettings:v5 legibilityEngine:v6];
+  settingsCopy = settings;
+  defaultEngine = [v4 defaultEngine];
+  v7 = [(SBIconLegibilityLabelView *)self initWithSettings:settingsCopy legibilityEngine:defaultEngine];
 
   return v7;
 }
 
-- (SBIconLegibilityLabelView)initWithSettings:(id)a3 legibilityEngine:(id)a4
+- (SBIconLegibilityLabelView)initWithSettings:(id)settings legibilityEngine:(id)engine
 {
-  v5 = a4;
+  engineCopy = engine;
   v6 = [(SBIconLegibilityLabelView *)self init];
   v7 = v6;
   if (v6)
   {
-    [(SBUILegibilityView *)v6 setLegibilityEngine:v5];
+    [(SBUILegibilityView *)v6 setLegibilityEngine:engineCopy];
   }
 
   return v7;
 }
 
-- (void)updateIconLabelWithSettings:(id)a3 imageParameters:(id)a4
+- (void)updateIconLabelWithSettings:(id)settings imageParameters:(id)parameters
 {
-  v24 = a3;
-  v6 = a4;
-  v7 = [(SBIconLegibilityLabelView *)self imageParameters];
-  v8 = v7;
-  if ((v6 != 0) == (v7 != 0) && [v7 isEqual:v6] && (-[SBUILegibilityView image](self, "image"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  settingsCopy = settings;
+  parametersCopy = parameters;
+  imageParameters = [(SBIconLegibilityLabelView *)self imageParameters];
+  v8 = imageParameters;
+  if ((parametersCopy != 0) == (imageParameters != 0) && [imageParameters isEqual:parametersCopy] && (-[SBUILegibilityView image](self, "image"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [(SBUILegibilityView *)self image];
+    image = [(SBUILegibilityView *)self image];
   }
 
-  else if (v6)
+  else if (parametersCopy)
   {
-    v11 = [(SBIconLegibilityLabelView *)self iconView];
-    v10 = [v11 labelImageWithParameters:v6];
-    if (!v10)
+    iconView = [(SBIconLegibilityLabelView *)self iconView];
+    image = [iconView labelImageWithParameters:parametersCopy];
+    if (!image)
     {
-      v10 = [SBIconLabelImage imageWithParameters:v6];
+      image = [SBIconLabelImage imageWithParameters:parametersCopy];
     }
 
-    [(SBIconLegibilityLabelView *)self setImageParameters:v6];
+    [(SBIconLegibilityLabelView *)self setImageParameters:parametersCopy];
   }
 
   else
   {
-    v10 = 0;
+    image = 0;
   }
 
-  if ([v6 containsEmoji])
+  if ([parametersCopy containsEmoji])
   {
-    v12 = [v24 style];
-    v13 = v24;
-    v14 = 2 * (v12 != 2);
+    style = [settingsCopy style];
+    v13 = settingsCopy;
+    v14 = 2 * (style != 2);
   }
 
   else
   {
     v14 = 2;
-    v13 = v24;
+    v13 = settingsCopy;
   }
 
   +[SBHLegibilitySettings legibilityStrengthForLegibilityStyle:](SBHLegibilitySettings, "legibilityStrengthForLegibilityStyle:", [v13 style]);
@@ -78,12 +78,12 @@
 
   if (v18)
   {
-    v19 = [(SBUILegibilityView *)self userInfo];
-    v20 = [v6 text];
-    v21 = v20;
-    if (v20)
+    userInfo = [(SBUILegibilityView *)self userInfo];
+    text = [parametersCopy text];
+    v21 = text;
+    if (text)
     {
-      v22 = v20;
+      v22 = text;
     }
 
     else
@@ -91,11 +91,11 @@
       v22 = @"(Undefined)";
     }
 
-    [v19 setObject:v22 forKey:@"underlyingText"];
+    [userInfo setObject:v22 forKey:@"underlyingText"];
   }
 
-  v23 = [v24 _UILegibilitySettings];
-  [(SBUILegibilityView *)self updateForChangedSettings:v23 options:v14 image:v10 strength:v16];
+  _UILegibilitySettings = [settingsCopy _UILegibilitySettings];
+  [(SBUILegibilityView *)self updateForChangedSettings:_UILegibilitySettings options:v14 image:image strength:v16];
 }
 
 - (SBIconView)iconView

@@ -1,19 +1,19 @@
 @interface MPChangeLanguageOptionCommandEvent
-- (MPChangeLanguageOptionCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5;
+- (MPChangeLanguageOptionCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options;
 @end
 
 @implementation MPChangeLanguageOptionCommandEvent
 
-- (MPChangeLanguageOptionCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5
+- (MPChangeLanguageOptionCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options
 {
-  v5 = *&a4;
-  v8 = a5;
+  v5 = *&type;
+  optionsCopy = options;
   v19.receiver = self;
   v19.super_class = MPChangeLanguageOptionCommandEvent;
-  v9 = [(MPRemoteCommandEvent *)&v19 initWithCommand:a3 mediaRemoteType:v5 options:v8];
+  v9 = [(MPRemoteCommandEvent *)&v19 initWithCommand:command mediaRemoteType:v5 options:optionsCopy];
   if (v9)
   {
-    v10 = [v8 objectForKey:*MEMORY[0x1E69B1148]];
+    v10 = [optionsCopy objectForKey:*MEMORY[0x1E69B1148]];
     if (v10)
     {
       v11 = MRLanguageOptionCreateFromExternalRepresentation();
@@ -28,11 +28,11 @@
       }
     }
 
-    v15 = [v8 objectForKey:*MEMORY[0x1E69B10A0]];
-    v16 = [v15 intValue];
+    v15 = [optionsCopy objectForKey:*MEMORY[0x1E69B10A0]];
+    intValue = [v15 intValue];
 
-    v17 = 2 * (v16 == 2);
-    if (v16 == 1)
+    v17 = 2 * (intValue == 2);
+    if (intValue == 1)
     {
       v17 = 1;
     }

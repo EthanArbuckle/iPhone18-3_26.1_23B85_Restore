@@ -1,17 +1,17 @@
 @interface NotificationCoreServiceConnection
 - (_TtC21UserNotificationsCore33NotificationCoreServiceConnection)init;
-- (id)badgeNumberForBundleIdentifier:(id)a3;
-- (id)categoryForIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (id)notificationRecordForIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (void)categoryRepositoryDidChangeCategoriesForBundleIdentifier:(id)a3;
+- (id)badgeNumberForBundleIdentifier:(id)identifier;
+- (id)categoryForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (id)notificationRecordForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (void)categoryRepositoryDidChangeCategoriesForBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)notificationRepositoryDidPerformUpdates:(id)a3 forBundleIdentifier:(id)a4;
-- (void)removeNotificationRecordsForIdentifiers:(id)a3 bundleIdentifier:(id)a4;
-- (void)saveNotificationRecord:(id)a3 targetRevisionNumber:(id)a4 shouldRepost:(id)a5 forBundleIdentifier:(id)a6 completionHandler:(id)a7;
-- (void)saveNotificationRequest:(id)a3 shouldRepost:(id)a4 apsMessageTimestamp:(id)a5 forBundleIdentifier:(id)a6;
-- (void)setBadgeCount:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setBadgeNumber:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setBadgeString:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)notificationRepositoryDidPerformUpdates:(id)updates forBundleIdentifier:(id)identifier;
+- (void)removeNotificationRecordsForIdentifiers:(id)identifiers bundleIdentifier:(id)identifier;
+- (void)saveNotificationRecord:(id)record targetRevisionNumber:(id)number shouldRepost:(id)repost forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)saveNotificationRequest:(id)request shouldRepost:(id)repost apsMessageTimestamp:(id)timestamp forBundleIdentifier:(id)identifier;
+- (void)setBadgeCount:(id)count forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setBadgeNumber:(id)number forBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setBadgeString:(id)string forBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation NotificationCoreServiceConnection
@@ -19,9 +19,9 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_connection);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for NotificationCoreServiceConnection();
   [(NotificationCoreServiceConnection *)&v4 dealloc];
 }
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (void)notificationRepositoryDidPerformUpdates:(id)a3 forBundleIdentifier:(id)a4
+- (void)notificationRepositoryDidPerformUpdates:(id)updates forBundleIdentifier:(id)identifier
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_notificationRepository);
   objc_opt_self();
@@ -41,20 +41,20 @@
   if (v7)
   {
 
-    [v7 notifyDidPerformUpdates:a3 forBundleIdentifier:a4];
+    [v7 notifyDidPerformUpdates:updates forBundleIdentifier:identifier];
   }
 }
 
-- (id)notificationRecordForIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (id)notificationRecordForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v4 = [*(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_notificationRepository) notificationRecordForIdentifier:a3 bundleIdentifier:a4];
+  v4 = [*(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_notificationRepository) notificationRecordForIdentifier:identifier bundleIdentifier:bundleIdentifier];
 
   return v4;
 }
 
-- (void)saveNotificationRecord:(id)a3 targetRevisionNumber:(id)a4 shouldRepost:(id)a5 forBundleIdentifier:(id)a6 completionHandler:(id)a7
+- (void)saveNotificationRecord:(id)record targetRevisionNumber:(id)number shouldRepost:(id)repost forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v11 = _Block_copy(a7);
+  v11 = _Block_copy(handler);
   v12 = sub_1DA940A14();
   v14 = v13;
   if (v11)
@@ -69,15 +69,15 @@
     v15 = 0;
   }
 
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = self;
-  sub_1DA91A814(v16, a4, v18, v12, v14, v11, v15);
+  recordCopy = record;
+  numberCopy = number;
+  repostCopy = repost;
+  selfCopy = self;
+  sub_1DA91A814(recordCopy, number, repostCopy, v12, v14, v11, v15);
   sub_1DA7B5220(v11);
 }
 
-- (void)saveNotificationRequest:(id)a3 shouldRepost:(id)a4 apsMessageTimestamp:(id)a5 forBundleIdentifier:(id)a6
+- (void)saveNotificationRequest:(id)request shouldRepost:(id)repost apsMessageTimestamp:(id)timestamp forBundleIdentifier:(id)identifier
 {
   v10 = sub_1DA93FAF4();
   v11 = *(v10 - 8);
@@ -86,40 +86,40 @@
   v14 = &v22 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1DA93FAB4();
   v15 = *(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_notificationRepository);
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = self;
-  v20 = [v17 BOOLValue];
+  requestCopy = request;
+  repostCopy = repost;
+  identifierCopy = identifier;
+  selfCopy = self;
+  bOOLValue = [repostCopy BOOLValue];
   v21 = sub_1DA93FA44();
-  [v15 saveNotificationRequest:v16 shouldRepost:v20 apsMessageTimestamp:v21 forBundleIdentifier:v18];
+  [v15 saveNotificationRequest:requestCopy shouldRepost:bOOLValue apsMessageTimestamp:v21 forBundleIdentifier:identifierCopy];
 
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)removeNotificationRecordsForIdentifiers:(id)a3 bundleIdentifier:(id)a4
+- (void)removeNotificationRecordsForIdentifiers:(id)identifiers bundleIdentifier:(id)identifier
 {
   v6 = sub_1DA940BE4();
   v7 = *(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_notificationRepository);
-  v10 = a4;
-  v8 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_1DA8AD06C(v6);
 
   v9 = sub_1DA940E84();
 
-  [v7 removeNotificationRecordsForIdentifiers:v9 bundleIdentifier:v10];
+  [v7 removeNotificationRecordsForIdentifiers:v9 bundleIdentifier:identifierCopy];
 }
 
-- (id)badgeNumberForBundleIdentifier:(id)a3
+- (id)badgeNumberForBundleIdentifier:(id)identifier
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_notificationRepository) badgeNumberForBundleIdentifier_];
+  badgeNumberForBundleIdentifier_ = [*(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_notificationRepository) badgeNumberForBundleIdentifier_];
 
-  return v3;
+  return badgeNumberForBundleIdentifier_;
 }
 
-- (void)setBadgeNumber:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setBadgeNumber:(id)number forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_1DA940A14();
   v10 = v9;
   if (v7)
@@ -134,15 +134,15 @@
     v11 = 0;
   }
 
-  v12 = a3;
-  v13 = self;
-  sub_1DA91AE94(a3, v8, v10, v7, v11);
+  numberCopy = number;
+  selfCopy = self;
+  sub_1DA91AE94(number, v8, v10, v7, v11);
   sub_1DA7B5220(v7);
 }
 
-- (void)setBadgeCount:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setBadgeCount:(id)count forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_1DA940A14();
   v10 = v9;
   if (v7)
@@ -157,19 +157,19 @@
     v11 = 0;
   }
 
-  v12 = a3;
-  v13 = self;
-  sub_1DA91B070(v12, v8, v10, v7, v11);
+  countCopy = count;
+  selfCopy = self;
+  sub_1DA91B070(countCopy, v8, v10, v7, v11);
   sub_1DA7B5220(v7);
 }
 
-- (void)setBadgeString:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setBadgeString:(id)string forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
-  if (a3)
+  v7 = _Block_copy(handler);
+  if (string)
   {
     v8 = sub_1DA940A14();
-    a3 = v9;
+    string = v9;
   }
 
   else
@@ -191,12 +191,12 @@
     v13 = 0;
   }
 
-  v14 = self;
-  sub_1DA91B25C(v8, a3, v10, v12, v7, v13);
+  selfCopy = self;
+  sub_1DA91B25C(v8, string, v10, v12, v7, v13);
   sub_1DA7B5220(v7);
 }
 
-- (void)categoryRepositoryDidChangeCategoriesForBundleIdentifier:(id)a3
+- (void)categoryRepositoryDidChangeCategoriesForBundleIdentifier:(id)identifier
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_categoryRepository);
   objc_opt_self();
@@ -208,9 +208,9 @@
   }
 }
 
-- (id)categoryForIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (id)categoryForIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v4 = [*(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_categoryRepository) categoryWithIdentifier:a3 bundleIdentifier:a4];
+  v4 = [*(&self->super.isa + OBJC_IVAR____TtC21UserNotificationsCore33NotificationCoreServiceConnection_categoryRepository) categoryWithIdentifier:identifier bundleIdentifier:bundleIdentifier];
 
   return v4;
 }

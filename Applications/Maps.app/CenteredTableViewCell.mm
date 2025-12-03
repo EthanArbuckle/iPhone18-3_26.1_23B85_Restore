@@ -1,18 +1,18 @@
 @interface CenteredTableViewCell
-- (CenteredTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CenteredTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CenteringCellLayoutManager)centeringLayoutManager;
 - (UIEdgeInsets)minimumHorizontalMargins;
 - (double)maximumContentWidth;
-- (void)setMaximumContentWidth:(double)a3;
-- (void)setMinimumHorizontalMargins:(UIEdgeInsets)a3;
+- (void)setMaximumContentWidth:(double)width;
+- (void)setMinimumHorizontalMargins:(UIEdgeInsets)margins;
 @end
 
 @implementation CenteredTableViewCell
 
 - (UIEdgeInsets)minimumHorizontalMargins
 {
-  v2 = [(CenteredTableViewCell *)self centeringLayoutManager];
-  [v2 minimumHorizontalMargins];
+  centeringLayoutManager = [(CenteredTableViewCell *)self centeringLayoutManager];
+  [centeringLayoutManager minimumHorizontalMargins];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -29,23 +29,23 @@
   return result;
 }
 
-- (void)setMinimumHorizontalMargins:(UIEdgeInsets)a3
+- (void)setMinimumHorizontalMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(CenteredTableViewCell *)self centeringLayoutManager];
-  [v7 setMinimumHorizontalMargins:{top, left, bottom, right}];
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
+  centeringLayoutManager = [(CenteredTableViewCell *)self centeringLayoutManager];
+  [centeringLayoutManager setMinimumHorizontalMargins:{top, left, bottom, right}];
 }
 
 - (double)maximumContentWidth
 {
-  v2 = [(CenteredTableViewCell *)self centeringLayoutManager];
-  v3 = v2;
-  if (v2)
+  centeringLayoutManager = [(CenteredTableViewCell *)self centeringLayoutManager];
+  v3 = centeringLayoutManager;
+  if (centeringLayoutManager)
   {
-    [v2 maximumCellContentWidth];
+    [centeringLayoutManager maximumCellContentWidth];
     v5 = v4;
   }
 
@@ -57,39 +57,39 @@
   return v5;
 }
 
-- (void)setMaximumContentWidth:(double)a3
+- (void)setMaximumContentWidth:(double)width
 {
-  v4 = [(CenteredTableViewCell *)self centeringLayoutManager];
-  [v4 setMaximumCellContentWidth:a3];
+  centeringLayoutManager = [(CenteredTableViewCell *)self centeringLayoutManager];
+  [centeringLayoutManager setMaximumCellContentWidth:width];
 }
 
 - (CenteringCellLayoutManager)centeringLayoutManager
 {
-  v3 = [(CenteredTableViewCell *)self layoutManager];
+  layoutManager = [(CenteredTableViewCell *)self layoutManager];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CenteredTableViewCell *)self layoutManager];
+    layoutManager2 = [(CenteredTableViewCell *)self layoutManager];
   }
 
   else
   {
-    v5 = 0;
+    layoutManager2 = 0;
   }
 
-  return v5;
+  return layoutManager2;
 }
 
-- (CenteredTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CenteredTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = CenteredTableViewCell;
-  v5 = [(CenteredTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v5 = [(CenteredTableViewCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v5)
   {
-    v6 = [CenteringCellLayoutManager layoutManagerForTableViewCellStyle:a3];
+    v6 = [CenteringCellLayoutManager layoutManagerForTableViewCellStyle:style];
     [(CenteredTableViewCell *)v5 setLayoutManager:v6];
 
     [(CenteredTableViewCell *)v5 setMaximumContentWidth:1.79769313e308];

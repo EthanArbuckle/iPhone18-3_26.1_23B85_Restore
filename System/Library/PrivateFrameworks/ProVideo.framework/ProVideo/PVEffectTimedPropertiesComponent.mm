@@ -1,28 +1,28 @@
 @interface PVEffectTimedPropertiesComponent
-- (BOOL)addTimedPropertiesToDict:(id)a3 time:(id *)a4;
-- (BOOL)applyTimedPropertiesForTime:(id *)a3;
-- (BOOL)hasTimedPropertiesDelegate:(id)a3;
+- (BOOL)addTimedPropertiesToDict:(id)dict time:(id *)time;
+- (BOOL)applyTimedPropertiesForTime:(id *)time;
+- (BOOL)hasTimedPropertiesDelegate:(id)delegate;
 - (BOOL)hasTimedPropertiesDelegates;
-- (PVEffectTimedPropertiesComponent)initWithEffect:(id)a3;
+- (PVEffectTimedPropertiesComponent)initWithEffect:(id)effect;
 - (id)delegateWrappers;
 - (id)timedPropertiesDelegates;
-- (id)userContextForTimedPropertiesDelegate:(id)a3;
-- (void)addTimedPropertiesDelegate:(id)a3 userContext:(id)a4;
-- (void)addTimedPropertiesDelegateWrapper:(id)a3;
-- (void)effectDidLoad:(id)a3 isReady:(BOOL)a4;
-- (void)effectDidUnload:(id)a3;
+- (id)userContextForTimedPropertiesDelegate:(id)delegate;
+- (void)addTimedPropertiesDelegate:(id)delegate userContext:(id)context;
+- (void)addTimedPropertiesDelegateWrapper:(id)wrapper;
+- (void)effectDidLoad:(id)load isReady:(BOOL)ready;
+- (void)effectDidUnload:(id)unload;
 - (void)removeAllTimedPropertiesDelegates;
-- (void)removeTimedPropertiesDelegate:(id)a3;
+- (void)removeTimedPropertiesDelegate:(id)delegate;
 @end
 
 @implementation PVEffectTimedPropertiesComponent
 
-- (PVEffectTimedPropertiesComponent)initWithEffect:(id)a3
+- (PVEffectTimedPropertiesComponent)initWithEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v6.receiver = self;
   v6.super_class = PVEffectTimedPropertiesComponent;
-  if ([(PVEffectComponent *)&v6 initWithEffect:v4])
+  if ([(PVEffectComponent *)&v6 initWithEffect:effectCopy])
   {
     operator new();
   }
@@ -30,11 +30,11 @@
   return 0;
 }
 
-- (void)addTimedPropertiesDelegateWrapper:(id)a3
+- (void)addTimedPropertiesDelegateWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  wrapperCopy = wrapper;
+  v5 = wrapperCopy;
+  if (wrapperCopy)
   {
     ptr = self->_delegateCollectionLock.__ptr_;
     v7[0] = MEMORY[0x277D85DD0];
@@ -42,30 +42,30 @@
     v7[2] = __70__PVEffectTimedPropertiesComponent_addTimedPropertiesDelegateWrapper___block_invoke;
     v7[3] = &unk_279AA4E00;
     v7[4] = self;
-    v8 = v4;
+    v8 = wrapperCopy;
     dispatch_sync(*ptr, v7);
   }
 }
 
-- (BOOL)applyTimedPropertiesForTime:(id *)a3
+- (BOOL)applyTimedPropertiesForTime:(id *)time
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(PVEffectComponent *)self effect];
+  effect = [(PVEffectComponent *)self effect];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = *"";
   v7[2] = __64__PVEffectTimedPropertiesComponent_applyTimedPropertiesForTime___block_invoke;
   v7[3] = &unk_279AA7CD8;
   v7[4] = self;
   v7[5] = &v9;
-  v8 = *a3;
-  [v5 runWithInspectableProperties:v7];
+  v8 = *time;
+  [effect runWithInspectableProperties:v7];
 
-  LOBYTE(v5) = *(v10 + 24);
+  LOBYTE(effect) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v5;
+  return effect;
 }
 
 void __64__PVEffectTimedPropertiesComponent_applyTimedPropertiesForTime___block_invoke(uint64_t a1, void *a2)
@@ -77,30 +77,30 @@ void __64__PVEffectTimedPropertiesComponent_applyTimedPropertiesForTime___block_
   *(*(*(a1 + 40) + 8) + 24) = [v4 addTimedPropertiesToDict:v3 time:&v5];
 }
 
-- (void)addTimedPropertiesDelegate:(id)a3 userContext:(id)a4
+- (void)addTimedPropertiesDelegate:(id)delegate userContext:(id)context
 {
-  v11 = a3;
-  v6 = a4;
+  delegateCopy = delegate;
+  contextCopy = context;
   v7 = [PVEffectTimedPropertiesDelegateWrapper alloc];
-  v8 = [(PVEffectComponent *)self effect];
-  v9 = [v11 supportedTimedPropertyGroupsForEffect:v8];
-  v10 = [(PVEffectTimedPropertiesDelegateWrapper *)v7 initWithTimedPropertiesDelegate:v11 supportedTimedPropertyGroups:v9 userContext:v6];
+  effect = [(PVEffectComponent *)self effect];
+  v9 = [delegateCopy supportedTimedPropertyGroupsForEffect:effect];
+  v10 = [(PVEffectTimedPropertiesDelegateWrapper *)v7 initWithTimedPropertiesDelegate:delegateCopy supportedTimedPropertyGroups:v9 userContext:contextCopy];
 
   [(PVEffectTimedPropertiesComponent *)self addTimedPropertiesDelegateWrapper:v10];
 }
 
-- (void)removeTimedPropertiesDelegate:(id)a3
+- (void)removeTimedPropertiesDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   ptr = self->_delegateCollectionLock.__ptr_;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = *"";
   v8[2] = __66__PVEffectTimedPropertiesComponent_removeTimedPropertiesDelegate___block_invoke;
   v8[3] = &unk_279AA4E00;
   v8[4] = self;
-  v9 = v4;
+  v9 = delegateCopy;
   v6 = *ptr;
-  v7 = v4;
+  v7 = delegateCopy;
   dispatch_sync(v6, v8);
 }
 
@@ -242,9 +242,9 @@ void __63__PVEffectTimedPropertiesComponent_hasTimedPropertiesDelegates__block_i
   }
 }
 
-- (BOOL)hasTimedPropertiesDelegate:(id)a3
+- (BOOL)hasTimedPropertiesDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -254,11 +254,11 @@ void __63__PVEffectTimedPropertiesComponent_hasTimedPropertiesDelegates__block_i
   block[1] = *"";
   block[2] = __63__PVEffectTimedPropertiesComponent_hasTimedPropertiesDelegate___block_invoke;
   block[3] = &unk_279AA7B68;
-  v10 = v4;
+  v10 = delegateCopy;
   v11 = &v12;
   block[4] = self;
   v6 = *ptr;
-  v7 = v4;
+  v7 = delegateCopy;
   dispatch_sync(v6, block);
   LOBYTE(v6) = *(v13 + 24);
 
@@ -273,9 +273,9 @@ uint64_t __63__PVEffectTimedPropertiesComponent_hasTimedPropertiesDelegate___blo
   return result;
 }
 
-- (id)userContextForTimedPropertiesDelegate:(id)a3
+- (id)userContextForTimedPropertiesDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -287,11 +287,11 @@ uint64_t __63__PVEffectTimedPropertiesComponent_hasTimedPropertiesDelegate___blo
   block[1] = *"";
   block[2] = __74__PVEffectTimedPropertiesComponent_userContextForTimedPropertiesDelegate___block_invoke;
   block[3] = &unk_279AA7B68;
-  v11 = v4;
+  v11 = delegateCopy;
   v12 = &v13;
   block[4] = self;
   v6 = *ptr;
-  v7 = v4;
+  v7 = delegateCopy;
   dispatch_sync(v6, block);
   v8 = v14[5];
 
@@ -309,31 +309,31 @@ void __74__PVEffectTimedPropertiesComponent_userContextForTimedPropertiesDelegat
   *(v3 + 40) = v2;
 }
 
-- (BOOL)addTimedPropertiesToDict:(id)a3 time:(id *)a4
+- (BOOL)addTimedPropertiesToDict:(id)dict time:(id *)time
 {
-  v6 = a3;
+  dictCopy = dict;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v7 = [(PVEffectComponent *)self effect];
-  v8 = [(PVEffectTimedPropertiesComponent *)self delegateWrappers];
+  effect = [(PVEffectComponent *)self effect];
+  delegateWrappers = [(PVEffectTimedPropertiesComponent *)self delegateWrappers];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = *"";
   v12[2] = __66__PVEffectTimedPropertiesComponent_addTimedPropertiesToDict_time___block_invoke;
   v12[3] = &unk_279AA7D78;
-  v9 = v7;
-  v16 = *a4;
+  v9 = effect;
+  v16 = *time;
   v13 = v9;
   v15 = &v17;
-  v10 = v6;
+  v10 = dictCopy;
   v14 = v10;
-  [v8 enumerateObjectsUsingBlock:v12];
+  [delegateWrappers enumerateObjectsUsingBlock:v12];
 
-  LOBYTE(v6) = *(v18 + 24);
+  LOBYTE(dictCopy) = *(v18 + 24);
   _Block_object_dispose(&v17, 8);
 
-  return v6;
+  return dictCopy;
 }
 
 void __66__PVEffectTimedPropertiesComponent_addTimedPropertiesToDict_time___block_invoke(uint64_t a1, void *a2)
@@ -380,17 +380,17 @@ void __66__PVEffectTimedPropertiesComponent_addTimedPropertiesToDict_time___bloc
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)effectDidLoad:(id)a3 isReady:(BOOL)a4
+- (void)effectDidLoad:(id)load isReady:(BOOL)ready
 {
-  v5 = a3;
-  v6 = [(PVEffectTimedPropertiesComponent *)self delegateWrappers];
+  loadCopy = load;
+  delegateWrappers = [(PVEffectTimedPropertiesComponent *)self delegateWrappers];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = *"";
   v8[2] = __58__PVEffectTimedPropertiesComponent_effectDidLoad_isReady___block_invoke;
   v8[3] = &unk_279AA7D00;
-  v7 = v5;
+  v7 = loadCopy;
   v9 = v7;
-  [v6 enumerateObjectsUsingBlock:v8];
+  [delegateWrappers enumerateObjectsUsingBlock:v8];
 }
 
 void __58__PVEffectTimedPropertiesComponent_effectDidLoad_isReady___block_invoke(uint64_t a1, void *a2)
@@ -408,17 +408,17 @@ void __58__PVEffectTimedPropertiesComponent_effectDidLoad_isReady___block_invoke
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)effectDidUnload:(id)a3
+- (void)effectDidUnload:(id)unload
 {
-  v4 = a3;
-  v5 = [(PVEffectTimedPropertiesComponent *)self delegateWrappers];
+  unloadCopy = unload;
+  delegateWrappers = [(PVEffectTimedPropertiesComponent *)self delegateWrappers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = *"";
   v7[2] = __52__PVEffectTimedPropertiesComponent_effectDidUnload___block_invoke;
   v7[3] = &unk_279AA7D00;
-  v6 = v4;
+  v6 = unloadCopy;
   v8 = v6;
-  [v5 enumerateObjectsUsingBlock:v7];
+  [delegateWrappers enumerateObjectsUsingBlock:v7];
 }
 
 void __52__PVEffectTimedPropertiesComponent_effectDidUnload___block_invoke(uint64_t a1, void *a2)

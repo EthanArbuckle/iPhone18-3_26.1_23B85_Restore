@@ -1,18 +1,18 @@
 @interface HAP2AccessoryServerControllerTimedWriteOperation
-- (HAP2AccessoryServerControllerTimedWriteOperation)initWithName:(id)a3 controller:(id)a4 encoding:(id)a5 transport:(id)a6 prepareRequest:(id)a7 executeRequest:(id)a8 endpoint:(id)a9 mimeType:(id)a10 timeout:(double)a11 options:(unint64_t)a12 dscpPriority:(int64_t)a13;
+- (HAP2AccessoryServerControllerTimedWriteOperation)initWithName:(id)name controller:(id)controller encoding:(id)encoding transport:(id)transport prepareRequest:(id)request executeRequest:(id)executeRequest endpoint:(id)endpoint mimeType:(id)self0 timeout:(double)self1 options:(unint64_t)self2 dscpPriority:(int64_t)self3;
 - (void)_cleanUp;
-- (void)_parseExecuteResponseData:(id)a3;
-- (void)_parsePrepareResponseData:(id)a3;
-- (void)_parseResponseData:(id)a3;
+- (void)_parseExecuteResponseData:(id)data;
+- (void)_parsePrepareResponseData:(id)data;
+- (void)_parseResponseData:(id)data;
 - (void)_sendExecuteRequest;
 - (void)_sendPrepareRequest;
 @end
 
 @implementation HAP2AccessoryServerControllerTimedWriteOperation
 
-- (void)_parseExecuteResponseData:(id)a3
+- (void)_parseExecuteResponseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (![(HAP2AsynchronousOperation *)self isCancelled])
   {
     if (self)
@@ -29,7 +29,7 @@
 
     v7 = request;
     v10 = 0;
-    v8 = [(HAP2AccessoryServerEncoding *)v5 responseForRequest:v7 bodyData:v4 error:&v10];
+    v8 = [(HAP2AccessoryServerEncoding *)v5 responseForRequest:v7 bodyData:dataCopy error:&v10];
     v9 = v10;
 
     if (v8)
@@ -50,8 +50,8 @@
   v20 = *MEMORY[0x277D85DE8];
   if (![(HAP2AsynchronousOperation *)self isCancelled])
   {
-    v3 = [(HAP2AccessoryServerControllerTimedWriteOperation *)self executeRequest];
-    [(HAP2AccessoryServerControllerOperation *)self setRequest:v3];
+    executeRequest = [(HAP2AccessoryServerControllerTimedWriteOperation *)self executeRequest];
+    [(HAP2AccessoryServerControllerOperation *)self setRequest:executeRequest];
 
     if (self)
     {
@@ -64,7 +64,7 @@
     }
 
     v5 = request;
-    v6 = [(HAP2EncodedRequest *)v5 serialize];
+    serialize = [(HAP2EncodedRequest *)v5 serialize];
 
     v7 = [HAP2AccessoryServerTransportRequest alloc];
     if (self)
@@ -81,7 +81,7 @@
       dscpPriority = 0;
     }
 
-    v11 = [(HAP2AccessoryServerTransportRequest *)v7 initForWritingWithEndpoint:v8 data:v6 encrypted:1 mimeType:v9 dscpPriority:dscpPriority];
+    v11 = [(HAP2AccessoryServerTransportRequest *)v7 initForWritingWithEndpoint:v8 data:serialize encrypted:1 mimeType:v9 dscpPriority:dscpPriority];
 
     if (self)
     {
@@ -101,7 +101,7 @@
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22AADC000, v13, OS_LOG_TYPE_INFO, "%@ Executing timed write", buf, 0xCu);
     }
 
@@ -162,9 +162,9 @@ void __71__HAP2AccessoryServerControllerTimedWriteOperation__sendExecuteRequest_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_parsePrepareResponseData:(id)a3
+- (void)_parsePrepareResponseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (![(HAP2AsynchronousOperation *)self isCancelled])
   {
     if (self)
@@ -181,7 +181,7 @@ void __71__HAP2AccessoryServerControllerTimedWriteOperation__sendExecuteRequest_
 
     v7 = request;
     v10 = 0;
-    v8 = [(HAP2AccessoryServerEncoding *)v5 responseForRequest:v7 bodyData:v4 error:&v10];
+    v8 = [(HAP2AccessoryServerEncoding *)v5 responseForRequest:v7 bodyData:dataCopy error:&v10];
     v9 = v10;
 
     if (v8)
@@ -212,7 +212,7 @@ void __71__HAP2AccessoryServerControllerTimedWriteOperation__sendExecuteRequest_
     }
 
     v4 = request;
-    v5 = [(HAP2EncodedRequest *)v4 serialize];
+    serialize = [(HAP2EncodedRequest *)v4 serialize];
 
     v6 = [HAP2AccessoryServerTransportRequest alloc];
     if (self)
@@ -229,7 +229,7 @@ void __71__HAP2AccessoryServerControllerTimedWriteOperation__sendExecuteRequest_
       dscpPriority = 0;
     }
 
-    v10 = [(HAP2AccessoryServerTransportRequest *)v6 initForWritingWithEndpoint:v7 data:v5 encrypted:1 mimeType:v8 dscpPriority:dscpPriority];
+    v10 = [(HAP2AccessoryServerTransportRequest *)v6 initForWritingWithEndpoint:v7 data:serialize encrypted:1 mimeType:v8 dscpPriority:dscpPriority];
 
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -240,7 +240,7 @@ void __71__HAP2AccessoryServerControllerTimedWriteOperation__sendExecuteRequest_
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%@ Sending prepare timed write", buf, 0xCu);
     }
 
@@ -312,9 +312,9 @@ void __71__HAP2AccessoryServerControllerTimedWriteOperation__sendPrepareRequest_
   [(HAP2AccessoryServerControllerOperation *)&v3 _cleanUp];
 }
 
-- (void)_parseResponseData:(id)a3
+- (void)_parseResponseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -326,16 +326,16 @@ void __71__HAP2AccessoryServerControllerTimedWriteOperation__sendPrepareRequest_
   objc_exception_throw(v10);
 }
 
-- (HAP2AccessoryServerControllerTimedWriteOperation)initWithName:(id)a3 controller:(id)a4 encoding:(id)a5 transport:(id)a6 prepareRequest:(id)a7 executeRequest:(id)a8 endpoint:(id)a9 mimeType:(id)a10 timeout:(double)a11 options:(unint64_t)a12 dscpPriority:(int64_t)a13
+- (HAP2AccessoryServerControllerTimedWriteOperation)initWithName:(id)name controller:(id)controller encoding:(id)encoding transport:(id)transport prepareRequest:(id)request executeRequest:(id)executeRequest endpoint:(id)endpoint mimeType:(id)self0 timeout:(double)self1 options:(unint64_t)self2 dscpPriority:(int64_t)self3
 {
-  v21 = a8;
+  executeRequestCopy = executeRequest;
   v25.receiver = self;
   v25.super_class = HAP2AccessoryServerControllerTimedWriteOperation;
-  v22 = [(HAP2AccessoryServerControllerOperation *)&v25 initWithName:a3 controller:a4 encoding:a5 transport:a6 request:a7 endpoint:a9 mimeType:a11 timeout:a10 options:a12 dscpPriority:a13];
+  v22 = [(HAP2AccessoryServerControllerOperation *)&v25 initWithName:name controller:controller encoding:encoding transport:transport request:request endpoint:endpoint mimeType:timeout timeout:type options:options dscpPriority:priority];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_executeRequest, a8);
+    objc_storeStrong(&v22->_executeRequest, executeRequest);
   }
 
   return v23;

@@ -1,70 +1,70 @@
 @interface CollectionListViewModel
 - (BOOL)hasCollections;
 - (BOOL)isChecklistFeatured;
-- (BOOL)shouldDisplayBadgeFor:(id)a3;
-- (BOOL)shouldDisplayCheckmarkFor:(id)a3;
+- (BOOL)shouldDisplayBadgeFor:(id)for;
+- (BOOL)shouldDisplayCheckmarkFor:(id)for;
 - (NSArray)userGuides;
 - (TPSAssetsInfo)featuredCollectionAssetsInfo;
 - (TPSChecklistViewModel)checklistViewModel;
 - (id)actionHandler;
-- (id)assetsInfoFor:(id)a3;
-- (id)assetsInfoFor:(id)a3 userInterfaceStyle:(int64_t)a4;
+- (id)assetsInfoFor:(id)for;
+- (id)assetsInfoFor:(id)for userInterfaceStyle:(int64_t)style;
 - (id)checklistHandler;
 - (id)supportFlowHandler;
-- (id)titleFor:(id)a3;
+- (id)titleFor:(id)for;
 - (id)userGuideHandler;
-- (int64_t)tipCountFor:(id)a3;
+- (int64_t)tipCountFor:(id)for;
 - (void)resetChecklist;
-- (void)setActionHandler:(id)a3;
-- (void)setChecklistCollection:(id)a3;
-- (void)setChecklistHandler:(id)a3;
-- (void)setChecklistViewModel:(id)a3;
-- (void)setCurrentCollectionID:(id)a3;
-- (void)setSelectedCollectionID:(id)a3;
-- (void)setSelectedItemID:(id)a3;
-- (void)setSupportFlowHandler:(id)a3;
-- (void)setUserGuideHandler:(id)a3;
-- (void)setUserGuides:(id)a3;
+- (void)setActionHandler:(id)handler;
+- (void)setChecklistCollection:(id)collection;
+- (void)setChecklistHandler:(id)handler;
+- (void)setChecklistViewModel:(id)model;
+- (void)setCurrentCollectionID:(id)d;
+- (void)setSelectedCollectionID:(id)d;
+- (void)setSelectedItemID:(id)d;
+- (void)setSupportFlowHandler:(id)handler;
+- (void)setUserGuideHandler:(id)handler;
+- (void)setUserGuides:(id)guides;
 @end
 
 @implementation CollectionListViewModel
 
-- (void)setCurrentCollectionID:(id)a3
+- (void)setCurrentCollectionID:(id)d
 {
-  if (a3)
+  if (d)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = v4;
+  v5 = selfCopy;
   static Published.subscript.setter();
   sub_10002E098(v6, v7);
 }
 
-- (void)setSelectedItemID:(id)a3
+- (void)setSelectedItemID:(id)d
 {
-  if (a3)
+  if (d)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
   sub_10002E43C();
 }
 
-- (void)setSelectedCollectionID:(id)a3
+- (void)setSelectedCollectionID:(id)d
 {
-  if (a3)
+  if (d)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v5 = v4;
@@ -77,7 +77,7 @@
 
   swift_getKeyPath();
   swift_getKeyPath();
-  v6 = self;
+  selfCopy = self;
   static Published.subscript.setter();
   swift_getKeyPath();
   swift_getKeyPath();
@@ -87,19 +87,19 @@
   {
     swift_getKeyPath();
     swift_getKeyPath();
-    v6;
+    selfCopy;
     static Published.subscript.setter();
     sub_10002E43C();
   }
 }
 
-- (void)setChecklistCollection:(id)a3
+- (void)setChecklistCollection:(id)collection
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
-  v7 = v5;
+  collectionCopy = collection;
+  selfCopy = self;
+  v7 = collectionCopy;
   static Published.subscript.setter();
   sub_10002ECBC();
 }
@@ -108,18 +108,18 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setChecklistViewModel:(id)a3
+- (void)setChecklistViewModel:(id)model
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  modelCopy = model;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
@@ -127,7 +127,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   type metadata accessor for UserGuide();
@@ -136,19 +136,19 @@
   return v4.super.isa;
 }
 
-- (void)setUserGuides:(id)a3
+- (void)setUserGuides:(id)guides
 {
   type metadata accessor for UserGuide();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
 - (BOOL)isChecklistFeatured
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002F6BC();
 
   return v3 & 1;
@@ -176,9 +176,9 @@
   return v3;
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -197,7 +197,7 @@
   v9 = *(self + OBJC_IVAR___CollectionListViewModel_actionHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10001E970(v8);
 }
 
@@ -223,9 +223,9 @@
   return v3;
 }
 
-- (void)setChecklistHandler:(id)a3
+- (void)setChecklistHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -244,7 +244,7 @@
   v9 = *(self + OBJC_IVAR___CollectionListViewModel_checklistHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10001E970(v8);
 }
 
@@ -270,9 +270,9 @@
   return v3;
 }
 
-- (void)setUserGuideHandler:(id)a3
+- (void)setUserGuideHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -291,7 +291,7 @@
   v9 = *(self + OBJC_IVAR___CollectionListViewModel_userGuideHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10001E970(v8);
 }
 
@@ -317,9 +317,9 @@
   return v3;
 }
 
-- (void)setSupportFlowHandler:(id)a3
+- (void)setSupportFlowHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -338,13 +338,13 @@
   v9 = *(self + OBJC_IVAR___CollectionListViewModel_supportFlowHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10001E970(v8);
 }
 
 - (BOOL)hasCollections
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002FFE4();
 
   return v3 & 1;
@@ -354,7 +354,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   sub_100024DD8(0, 0);
@@ -363,20 +363,20 @@
 
 - (TPSAssetsInfo)featuredCollectionAssetsInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100031874();
 
   return v3;
 }
 
-- (id)titleFor:(id)a3
+- (id)titleFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 title];
-  if (v6)
+  forCopy = for;
+  selfCopy = self;
+  title = [forCopy title];
+  if (title)
   {
-    v7 = v6;
+    v7 = title;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
@@ -389,47 +389,47 @@
   return v8;
 }
 
-- (int64_t)tipCountFor:(id)a3
+- (int64_t)tipCountFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100031B44(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_100031B44(forCopy);
 
   return v6;
 }
 
-- (BOOL)shouldDisplayBadgeFor:(id)a3
+- (BOOL)shouldDisplayBadgeFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100031D54(v4);
+  forCopy = for;
+  selfCopy = self;
+  LOBYTE(self) = sub_100031D54(forCopy);
 
   return self & 1;
 }
 
-- (BOOL)shouldDisplayCheckmarkFor:(id)a3
+- (BOOL)shouldDisplayCheckmarkFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100031F14(v4);
+  forCopy = for;
+  selfCopy = self;
+  LOBYTE(self) = sub_100031F14(forCopy);
 
   return self & 1;
 }
 
-- (id)assetsInfoFor:(id)a3
+- (id)assetsInfoFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100032050(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_100032050(forCopy);
 
   return v6;
 }
 
-- (id)assetsInfoFor:(id)a3 userInterfaceStyle:(int64_t)a4
+- (id)assetsInfoFor:(id)for userInterfaceStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_100032390(v6, a4);
+  forCopy = for;
+  selfCopy = self;
+  v8 = sub_100032390(forCopy, style);
 
   return v8;
 }

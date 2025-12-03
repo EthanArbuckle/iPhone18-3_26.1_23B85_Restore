@@ -11,7 +11,7 @@
   if (v6)
   {
     v9 = v6;
-    v6 = [a1 setObject:v6 forKey:a4];
+    v6 = [self setObject:v6 forKey:a4];
     v7 = v9;
   }
 

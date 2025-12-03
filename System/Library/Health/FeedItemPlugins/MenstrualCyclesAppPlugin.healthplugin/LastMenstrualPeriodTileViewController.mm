@@ -1,23 +1,23 @@
 @interface LastMenstrualPeriodTileViewController
 - (NSString)title;
-- (_TtC24MenstrualCyclesAppPlugin37LastMenstrualPeriodTileViewController)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin37LastMenstrualPeriodTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC24MenstrualCyclesAppPlugin37LastMenstrualPeriodTileViewController)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin37LastMenstrualPeriodTileViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation LastMenstrualPeriodTileViewController
 
-- (_TtC24MenstrualCyclesAppPlugin37LastMenstrualPeriodTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin37LastMenstrualPeriodTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
     v8 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin37LastMenstrualPeriodTileViewController_context;
     *v8 = 0u;
     *(v8 + 1) = 0u;
     *(v8 + 4) = 0;
-    v9 = a4;
-    a3 = sub_29E2C33A4();
+    bundleCopy = bundle;
+    name = sub_29E2C33A4();
   }
 
   else
@@ -26,17 +26,17 @@
     *v10 = 0u;
     *(v10 + 1) = 0u;
     *(v10 + 4) = 0;
-    v11 = a4;
+    bundleCopy2 = bundle;
   }
 
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(LastMenstrualPeriodViewController *)&v14 initWithNibName:a3 bundle:a4];
+  v12 = [(LastMenstrualPeriodViewController *)&v14 initWithNibName:name bundle:bundle];
 
   return v12;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin37LastMenstrualPeriodTileViewController)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin37LastMenstrualPeriodTileViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin37LastMenstrualPeriodTileViewController_context;
@@ -45,8 +45,8 @@
   *(v6 + 4) = 0;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(LastMenstrualPeriodViewController *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(LastMenstrualPeriodViewController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

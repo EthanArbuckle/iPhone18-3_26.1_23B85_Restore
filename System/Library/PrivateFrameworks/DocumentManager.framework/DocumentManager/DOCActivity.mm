@@ -1,36 +1,36 @@
 @interface DOCActivity
-+ (BOOL)isDestructiveActionIdentifier:(id)a3;
-+ (id)_activityWithIdentifier:(id)a3 forBrowserAction:(id)a4 actionPerformerProxy:(id)a5;
-+ (id)_imageNameForActivityIdentifier:(id)a3;
-+ (id)_titleForActivityIdentifier:(id)a3;
-+ (id)activityForBrowserAction:(id)a3 actionPerformerProxy:(id)a4;
-- (BOOL)canPerformWithActivityItems:(id)a3;
-- (DOCActivity)initWithIdentifier:(id)a3 actionPerformer:(id)a4 forBrowserAction:(id)a5;
++ (BOOL)isDestructiveActionIdentifier:(id)identifier;
++ (id)_activityWithIdentifier:(id)identifier forBrowserAction:(id)action actionPerformerProxy:(id)proxy;
++ (id)_imageNameForActivityIdentifier:(id)identifier;
++ (id)_titleForActivityIdentifier:(id)identifier;
++ (id)activityForBrowserAction:(id)action actionPerformerProxy:(id)proxy;
+- (BOOL)canPerformWithActivityItems:(id)items;
+- (DOCActivity)initWithIdentifier:(id)identifier actionPerformer:(id)performer forBrowserAction:(id)action;
 - (void)performActivity;
 - (void)validate;
 @end
 
 @implementation DOCActivity
 
-+ (id)activityForBrowserAction:(id)a3 actionPerformerProxy:(id)a4
++ (id)activityForBrowserAction:(id)action actionPerformerProxy:(id)proxy
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 identifier];
-  v9 = [a1 _activityWithIdentifier:v8 forBrowserAction:v7 actionPerformerProxy:v6];
+  proxyCopy = proxy;
+  actionCopy = action;
+  identifier = [actionCopy identifier];
+  v9 = [self _activityWithIdentifier:identifier forBrowserAction:actionCopy actionPerformerProxy:proxyCopy];
 
   return v9;
 }
 
-+ (id)_activityWithIdentifier:(id)a3 forBrowserAction:(id)a4 actionPerformerProxy:(id)a5
++ (id)_activityWithIdentifier:(id)identifier forBrowserAction:(id)action actionPerformerProxy:(id)proxy
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 identifier];
-  v12 = [a1 _activityStyleForActivityIdentifier:v11];
+  identifierCopy = identifier;
+  actionCopy = action;
+  proxyCopy = proxy;
+  identifier = [actionCopy identifier];
+  v12 = [self _activityStyleForActivityIdentifier:identifier];
 
-  if (v12 == 1 || v9 && [v9 actionStyle] == 1)
+  if (v12 == 1 || actionCopy && [actionCopy actionStyle] == 1)
   {
     v13 = off_1E8781CC8;
   }
@@ -40,59 +40,59 @@
     v13 = off_1E8781CA8;
   }
 
-  v14 = [objc_alloc(*v13) initWithIdentifier:v8 actionPerformer:v10 forBrowserAction:v9];
+  v14 = [objc_alloc(*v13) initWithIdentifier:identifierCopy actionPerformer:proxyCopy forBrowserAction:actionCopy];
 
   return v14;
 }
 
-+ (BOOL)isDestructiveActionIdentifier:(id)a3
++ (BOOL)isDestructiveActionIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
   v7 = @"com.apple.DocumentManager.action.trash";
   v8 = @"com.apple.DocumentManager.action.mixedDelete";
   v9 = @"com.apple.DocumentManager.action.delete";
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [v3 arrayWithObjects:&v7 count:3];
-  LOBYTE(v3) = [v5 containsObject:{v4, v7, v8, v9, v10}];
+  LOBYTE(v3) = [v5 containsObject:{identifierCopy, v7, v8, v9, v10}];
 
   return v3;
 }
 
-+ (id)_imageNameForActivityIdentifier:(id)a3
++ (id)_imageNameForActivityIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (@"com.apple.DocumentManager.action.copySharedLink" == v3)
+  identifierCopy = identifier;
+  if (@"com.apple.DocumentManager.action.copySharedLink" == identifierCopy)
   {
     v5 = @"square.and.arrow.up";
   }
 
-  else if (@"com.apple.DocumentManager.action.copy" == v3)
+  else if (@"com.apple.DocumentManager.action.copy" == identifierCopy)
   {
     v5 = @"doc.on.doc";
   }
 
-  else if (@"com.apple.DocumentManager.action.archive" == v3 || @"com.apple.DocumentManager.action.unarchive" == v3)
+  else if (@"com.apple.DocumentManager.action.archive" == identifierCopy || @"com.apple.DocumentManager.action.unarchive" == identifierCopy)
   {
     v5 = @"archivebox";
   }
 
-  else if (@"com.apple.DocumentManager.action.rename" == v3)
+  else if (@"com.apple.DocumentManager.action.rename" == identifierCopy)
   {
     v5 = @"pencil";
   }
 
-  else if (@"com.apple.DocumentManager.action.duplicate" == v3)
+  else if (@"com.apple.DocumentManager.action.duplicate" == identifierCopy)
   {
     v5 = @"plus.square.on.square";
   }
 
-  else if (@"com.apple.DocumentManager.action.move" == v3)
+  else if (@"com.apple.DocumentManager.action.move" == identifierCopy)
   {
     v5 = @"folder";
   }
 
-  else if (@"com.apple.DocumentManager.action.trash" == v3)
+  else if (@"com.apple.DocumentManager.action.trash" == identifierCopy)
   {
     v5 = @"trash";
   }
@@ -105,11 +105,11 @@
   return v5;
 }
 
-+ (id)_titleForActivityIdentifier:(id)a3
++ (id)_titleForActivityIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (@"com.apple.DocumentManager.action.copySharedLink" == v3)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (@"com.apple.DocumentManager.action.copySharedLink" == identifierCopy)
   {
     v6 = _DocumentManagerBundle();
     v7 = v6;
@@ -117,7 +117,7 @@
     v9 = @"Copy Link";
   }
 
-  else if (@"com.apple.DocumentManager.action.copy" == v3)
+  else if (@"com.apple.DocumentManager.action.copy" == identifierCopy)
   {
     v6 = _DocumentManagerBundle();
     v7 = v6;
@@ -125,7 +125,7 @@
     v9 = @"Copy";
   }
 
-  else if (@"com.apple.DocumentManager.action.archive" == v3)
+  else if (@"com.apple.DocumentManager.action.archive" == identifierCopy)
   {
     v6 = _DocumentManagerBundle();
     v7 = v6;
@@ -133,7 +133,7 @@
     v9 = @"Compress";
   }
 
-  else if (@"com.apple.DocumentManager.action.unarchive" == v3)
+  else if (@"com.apple.DocumentManager.action.unarchive" == identifierCopy)
   {
     v6 = _DocumentManagerBundle();
     v7 = v6;
@@ -141,7 +141,7 @@
     v9 = @"Uncompress";
   }
 
-  else if (@"com.apple.DocumentManager.action.rename" == v3)
+  else if (@"com.apple.DocumentManager.action.rename" == identifierCopy)
   {
     v6 = _DocumentManagerBundle();
     v7 = v6;
@@ -149,7 +149,7 @@
     v9 = @"Rename";
   }
 
-  else if (@"com.apple.DocumentManager.action.duplicate" == v3)
+  else if (@"com.apple.DocumentManager.action.duplicate" == identifierCopy)
   {
     v6 = _DocumentManagerBundle();
     v7 = v6;
@@ -157,7 +157,7 @@
     v9 = @"Duplicate";
   }
 
-  else if (@"com.apple.DocumentManager.action.move" == v3)
+  else if (@"com.apple.DocumentManager.action.move" == identifierCopy)
   {
     v6 = _DocumentManagerBundle();
     v7 = v6;
@@ -167,7 +167,7 @@
 
   else
   {
-    if (@"com.apple.DocumentManager.action.trash" != v3)
+    if (@"com.apple.DocumentManager.action.trash" != identifierCopy)
     {
       v5 = 0;
       goto LABEL_19;
@@ -186,14 +186,14 @@ LABEL_19:
   return v5;
 }
 
-- (DOCActivity)initWithIdentifier:(id)a3 actionPerformer:(id)a4 forBrowserAction:(id)a5
+- (DOCActivity)initWithIdentifier:(id)identifier actionPerformer:(id)performer forBrowserAction:(id)action
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10)
+  identifierCopy = identifier;
+  performerCopy = performer;
+  actionCopy = action;
+  if (performerCopy)
   {
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -202,7 +202,7 @@ LABEL_19:
   else
   {
     [DOCActivity initWithIdentifier:a2 actionPerformer:self forBrowserAction:?];
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -216,34 +216,34 @@ LABEL_3:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_actionPerformerProxy, a4);
-    if (v11)
+    objc_storeStrong(&v12->_actionPerformerProxy, performer);
+    if (actionCopy)
     {
-      v14 = [v11 identifier];
-      v15 = [v14 copy];
+      identifier = [actionCopy identifier];
+      v15 = [identifier copy];
       identifier = v13->_identifier;
       v13->_identifier = v15;
     }
 
     else
     {
-      v17 = v9;
-      v14 = v13->_identifier;
+      v17 = identifierCopy;
+      identifier = v13->_identifier;
       v13->_identifier = v17;
     }
 
-    v18 = [objc_opt_class() _imageNameForActivityIdentifier:v9];
+    v18 = [objc_opt_class() _imageNameForActivityIdentifier:identifierCopy];
     imageName = v13->_imageName;
     v13->_imageName = v18;
 
-    if (v11 && !v13->_imageName)
+    if (actionCopy && !v13->_imageName)
     {
-      v20 = [v11 image];
-      v21 = [MEMORY[0x1E69DCEB0] mainScreen];
-      v22 = [v21 traitCollection];
-      v23 = [v22 preferredContentSizeCategory];
+      image = [actionCopy image];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      traitCollection = [mainScreen traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v23);
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
       v25 = *MEMORY[0x1E69DDCF8];
       if (IsAccessibilityCategory)
       {
@@ -264,21 +264,21 @@ LABEL_3:
         v32 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:*MEMORY[0x1E69DDE40]];
       }
 
-      v33 = [v20 imageWithConfiguration:v32];
+      v33 = [image imageWithConfiguration:v32];
       image = v13->_image;
       v13->_image = v33;
     }
 
-    v35 = [objc_opt_class() _titleForActivityIdentifier:v9];
+    v35 = [objc_opt_class() _titleForActivityIdentifier:identifierCopy];
     localizedTitle = v13->_localizedTitle;
     v13->_localizedTitle = v35;
 
     v37 = [(NSString *)v13->_localizedTitle length];
-    if (v11 && !v37)
+    if (actionCopy && !v37)
     {
-      v38 = [v11 localizedTitle];
+      localizedTitle = [actionCopy localizedTitle];
       v39 = v13->_localizedTitle;
-      v13->_localizedTitle = v38;
+      v13->_localizedTitle = localizedTitle;
     }
 
     [(DOCActivity *)v13 validate];
@@ -290,21 +290,21 @@ LABEL_3:
 - (void)validate
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 152);
+  v2 = *(self + 152);
   v3 = 138412290;
   v4 = v2;
   _os_log_debug_impl(&dword_1E57D8000, a2, OS_LOG_TYPE_DEBUG, "Unable to get localized title for activity with identifier %@", &v3, 0xCu);
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  itemsCopy = items;
+  v4 = [itemsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -315,7 +315,7 @@ LABEL_3:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         objc_opt_class();
@@ -326,7 +326,7 @@ LABEL_3:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -345,14 +345,14 @@ LABEL_11:
 - (void)performActivity
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = self;
-  v4 = [(DOCActivity *)self items];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  selfCopy = self;
+  items = [(DOCActivity *)self items];
+  v5 = [items countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -364,7 +364,7 @@ LABEL_11:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v18 + 1) + 8 * v8);
@@ -373,7 +373,7 @@ LABEL_11:
         v11 = v17;
         if (v10)
         {
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
 
         else
@@ -399,20 +399,20 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v6 = [items countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v6);
   }
 
-  v13 = [(DOCActivity *)v15 actionPerformerProxy];
-  v14 = [(DOCActivity *)v15 activityType];
+  actionPerformerProxy = [(DOCActivity *)selfCopy actionPerformerProxy];
+  activityType = [(DOCActivity *)selfCopy activityType];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __30__DOCActivity_performActivity__block_invoke;
   v16[3] = &unk_1E87839B8;
-  v16[4] = v15;
-  [v13 performAction:v14 withURLs:v3 completionHandler:v16];
+  v16[4] = selfCopy;
+  [actionPerformerProxy performAction:activityType withURLs:array completionHandler:v16];
 }
 
 - (void)initWithIdentifier:(uint64_t)a1 actionPerformer:(uint64_t)a2 forBrowserAction:.cold.1(uint64_t a1, uint64_t a2)

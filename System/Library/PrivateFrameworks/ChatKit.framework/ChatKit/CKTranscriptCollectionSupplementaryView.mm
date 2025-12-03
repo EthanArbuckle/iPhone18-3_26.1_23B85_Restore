@@ -1,17 +1,17 @@
 @interface CKTranscriptCollectionSupplementaryView
-+ (id)supplementaryViewKindForGUID:(id)a3;
++ (id)supplementaryViewKindForGUID:(id)d;
 @end
 
 @implementation CKTranscriptCollectionSupplementaryView
 
-+ (id)supplementaryViewKindForGUID:(id)a3
++ (id)supplementaryViewKindForGUID:(id)d
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 supplementaryViewKindPrefix];
-  v7 = [v4 stringWithFormat:@"%@%@", v6, v5];
+  dCopy = d;
+  supplementaryViewKindPrefix = [self supplementaryViewKindPrefix];
+  dCopy = [v4 stringWithFormat:@"%@%@", supplementaryViewKindPrefix, dCopy];
 
-  return v7;
+  return dCopy;
 }
 
 @end

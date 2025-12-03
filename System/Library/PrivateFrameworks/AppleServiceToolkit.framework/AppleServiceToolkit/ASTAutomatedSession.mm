@@ -1,77 +1,77 @@
 @interface ASTAutomatedSession
-+ (id)sessionWithIdentity:(id)a3 profile:(id)a4 tests:(id)a5 authInfoHandler:(id)a6;
-+ (id)sessionWithSerialNumber:(id)a3 profile:(id)a4 tests:(id)a5 authInfoHandler:(id)a6;
-+ (void)sessionExistsForIdentities:(id)a3 ticketNumber:(id)a4 completionHandler:(id)a5;
-+ (void)sessionExistsForSerialNumbers:(id)a3 ticketNumber:(id)a4 completionHandler:(id)a5;
-- (ASTAutomatedSession)initWithIdentity:(id)a3 profile:(id)a4 tests:(id)a5 authInfoHandler:(id)a6;
++ (id)sessionWithIdentity:(id)identity profile:(id)profile tests:(id)tests authInfoHandler:(id)handler;
++ (id)sessionWithSerialNumber:(id)number profile:(id)profile tests:(id)tests authInfoHandler:(id)handler;
++ (void)sessionExistsForIdentities:(id)identities ticketNumber:(id)number completionHandler:(id)handler;
++ (void)sessionExistsForSerialNumbers:(id)numbers ticketNumber:(id)number completionHandler:(id)handler;
+- (ASTAutomatedSession)initWithIdentity:(id)identity profile:(id)profile tests:(id)tests authInfoHandler:(id)handler;
 - (void)end;
-- (void)executeWithCompletion:(id)a3;
-- (void)session:(id)a3 didEndWithError:(id)a4;
-- (void)session:(id)a3 generateAuthInfoWithNonce:(id)a4;
-- (void)session:(id)a3 profile:(id)a4 filteredByComponents:(id)a5;
-- (void)session:(id)a3 startTest:(id)a4 parameters:(id)a5 testResult:(id)a6;
+- (void)executeWithCompletion:(id)completion;
+- (void)session:(id)session didEndWithError:(id)error;
+- (void)session:(id)session generateAuthInfoWithNonce:(id)nonce;
+- (void)session:(id)session profile:(id)profile filteredByComponents:(id)components;
+- (void)session:(id)session startTest:(id)test parameters:(id)parameters testResult:(id)result;
 @end
 
 @implementation ASTAutomatedSession
 
-+ (id)sessionWithSerialNumber:(id)a3 profile:(id)a4 tests:(id)a5 authInfoHandler:(id)a6
++ (id)sessionWithSerialNumber:(id)number profile:(id)profile tests:(id)tests authInfoHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [ASTIdentity identityWithSerialNumber:a3];
-  v14 = [[a1 alloc] initWithIdentity:v13 profile:v12 tests:v11 authInfoHandler:v10];
+  handlerCopy = handler;
+  testsCopy = tests;
+  profileCopy = profile;
+  v13 = [ASTIdentity identityWithSerialNumber:number];
+  v14 = [[self alloc] initWithIdentity:v13 profile:profileCopy tests:testsCopy authInfoHandler:handlerCopy];
 
   return v14;
 }
 
-- (ASTAutomatedSession)initWithIdentity:(id)a3 profile:(id)a4 tests:(id)a5 authInfoHandler:(id)a6
+- (ASTAutomatedSession)initWithIdentity:(id)identity profile:(id)profile tests:(id)tests authInfoHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identityCopy = identity;
+  profileCopy = profile;
+  testsCopy = tests;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = ASTAutomatedSession;
   v15 = [(ASTAutomatedSession *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identity, a3);
-    v17 = MEMORY[0x245CD5130](v14);
+    objc_storeStrong(&v15->_identity, identity);
+    v17 = MEMORY[0x245CD5130](handlerCopy);
     authInfoHandler = v16->_authInfoHandler;
     v16->_authInfoHandler = v17;
 
-    objc_storeStrong(&v16->_profile, a4);
-    objc_storeStrong(&v16->_tests, a5);
+    objc_storeStrong(&v16->_profile, profile);
+    objc_storeStrong(&v16->_tests, tests);
   }
 
   return v16;
 }
 
-+ (id)sessionWithIdentity:(id)a3 profile:(id)a4 tests:(id)a5 authInfoHandler:(id)a6
++ (id)sessionWithIdentity:(id)identity profile:(id)profile tests:(id)tests authInfoHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithIdentity:v13 profile:v12 tests:v11 authInfoHandler:v10];
+  handlerCopy = handler;
+  testsCopy = tests;
+  profileCopy = profile;
+  identityCopy = identity;
+  v14 = [[self alloc] initWithIdentity:identityCopy profile:profileCopy tests:testsCopy authInfoHandler:handlerCopy];
 
   return v14;
 }
 
-+ (void)sessionExistsForSerialNumbers:(id)a3 ticketNumber:(id)a4 completionHandler:(id)a5
++ (void)sessionExistsForSerialNumbers:(id)numbers ticketNumber:(id)number completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  numbersCopy = numbers;
+  numberCopy = number;
+  handlerCopy = handler;
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(numbersCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = v8;
+  v12 = numbersCopy;
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
@@ -100,37 +100,37 @@
     while (v14);
   }
 
-  [a1 sessionExistsForIdentities:v11 ticketNumber:v9 completionHandler:v10];
+  [self sessionExistsForIdentities:v11 ticketNumber:numberCopy completionHandler:handlerCopy];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sessionExistsForIdentities:(id)a3 ticketNumber:(id)a4 completionHandler:(id)a5
++ (void)sessionExistsForIdentities:(id)identities ticketNumber:(id)number completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__ASTAutomatedSession_sessionExistsForIdentities_ticketNumber_completionHandler___block_invoke;
   v9[3] = &unk_278CBCF68;
-  v10 = v7;
-  v8 = v7;
-  [(ASTSession *)ASTRemoteServerSession sessionStatusForIdentities:a3 ticketNumber:a4 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(ASTSession *)ASTRemoteServerSession sessionStatusForIdentities:identities ticketNumber:number completionHandler:v9];
 }
 
-- (void)executeWithCompletion:(id)a3
+- (void)executeWithCompletion:(id)completion
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__1;
   v25 = __Block_byref_object_dispose__1;
   v26 = 0;
-  [(ASTAutomatedSession *)self setCompletion:v4];
+  [(ASTAutomatedSession *)self setCompletion:completionCopy];
   v5 = dispatch_semaphore_create(0);
   v6 = objc_opt_class();
-  v7 = [(ASTAutomatedSession *)self identity];
-  v27[0] = v7;
+  identity = [(ASTAutomatedSession *)self identity];
+  v27[0] = identity;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
@@ -144,7 +144,7 @@
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   if (v22[5])
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -153,11 +153,11 @@
     v11 = [ASTRemoteServerSession sessionWithIdentity:v10];
     [(ASTAutomatedSession *)self setSession:v11];
 
-    v12 = [(ASTAutomatedSession *)self session];
-    [v12 setDelegate:self];
+    session = [(ASTAutomatedSession *)self session];
+    [session setDelegate:self];
 
-    v13 = [(ASTAutomatedSession *)self session];
-    [v13 start];
+    session2 = [(ASTAutomatedSession *)self session];
+    [session2 start];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -181,84 +181,84 @@ intptr_t __45__ASTAutomatedSession_executeWithCompletion___block_invoke(uint64_t
 
 - (void)end
 {
-  v3 = [(ASTAutomatedSession *)self session];
+  session = [(ASTAutomatedSession *)self session];
 
-  if (v3)
+  if (session)
   {
-    v4 = [(ASTAutomatedSession *)self session];
-    [v4 end];
+    session2 = [(ASTAutomatedSession *)self session];
+    [session2 end];
   }
 }
 
-- (void)session:(id)a3 startTest:(id)a4 parameters:(id)a5 testResult:(id)a6
+- (void)session:(id)session startTest:(id)test parameters:(id)parameters testResult:(id)result
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [(ASTAutomatedSession *)self tests];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  testCopy = test;
+  resultCopy = result;
+  tests = [(ASTAutomatedSession *)self tests];
+  v11 = [tests objectForKeyedSubscript:testCopy];
 
   if (v11)
   {
-    v12 = [v11 files];
-    if (v12 && (v13 = v12, [v11 files], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v13, v15))
+    files = [v11 files];
+    if (files && (v13 = files, [v11 files], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v13, v15))
     {
-      v16 = [v11 files];
-      [v9 sealWithSealableFiles:v16];
+      files2 = [v11 files];
+      [resultCopy sealWithSealableFiles:files2];
     }
 
     else
     {
-      v16 = [v11 payload];
-      v17 = [v11 signature];
-      [v9 sealWithPayload:v16 signature:v17];
+      files2 = [v11 payload];
+      signature = [v11 signature];
+      [resultCopy sealWithPayload:files2 signature:signature];
     }
   }
 
   else
   {
-    v16 = ASTLogHandleForCategory(0);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    files2 = ASTLogHandleForCategory(0);
+    if (os_log_type_enabled(files2, OS_LOG_TYPE_ERROR))
     {
-      [ASTAutomatedSession session:v8 startTest:v16 parameters:? testResult:?];
+      [ASTAutomatedSession session:testCopy startTest:files2 parameters:? testResult:?];
     }
   }
 
-  v18 = [(ASTAutomatedSession *)self session];
-  [v18 sendTestResult:v9 error:0];
+  session = [(ASTAutomatedSession *)self session];
+  [session sendTestResult:resultCopy error:0];
 }
 
-- (void)session:(id)a3 profile:(id)a4 filteredByComponents:(id)a5
+- (void)session:(id)session profile:(id)profile filteredByComponents:(id)components
 {
-  v6 = a3;
-  v7 = [(ASTAutomatedSession *)self profile];
-  [v6 sendProfileResult:v7 error:0];
+  sessionCopy = session;
+  profile = [(ASTAutomatedSession *)self profile];
+  [sessionCopy sendProfileResult:profile error:0];
 }
 
-- (void)session:(id)a3 didEndWithError:(id)a4
+- (void)session:(id)session didEndWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(ASTAutomatedSession *)self completion];
-  (v6)[2](v6, v5);
+  errorCopy = error;
+  completion = [(ASTAutomatedSession *)self completion];
+  (completion)[2](completion, errorCopy);
 
   [(ASTAutomatedSession *)self setSession:0];
 
   [(ASTAutomatedSession *)self setCompletion:0];
 }
 
-- (void)session:(id)a3 generateAuthInfoWithNonce:(id)a4
+- (void)session:(id)session generateAuthInfoWithNonce:(id)nonce
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  nonceCopy = nonce;
   v8 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ASTAutomatedSession_session_generateAuthInfoWithNonce___block_invoke;
   block[3] = &unk_278CBCF40;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = nonceCopy;
+  v13 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = nonceCopy;
   dispatch_async(v8, block);
 }
 

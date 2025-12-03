@@ -1,16 +1,16 @@
 @interface PLComputeCachePolicyConfiguration
-- (PLComputeCachePolicyConfiguration)initWithConfigurationDictionary:(id)a3;
-- (void)configurationValueForKey:(id)a3 configurationDictionary:(id)a4 valueBlock:(id)a5;
+- (PLComputeCachePolicyConfiguration)initWithConfigurationDictionary:(id)dictionary;
+- (void)configurationValueForKey:(id)key configurationDictionary:(id)dictionary valueBlock:(id)block;
 @end
 
 @implementation PLComputeCachePolicyConfiguration
 
-- (void)configurationValueForKey:(id)a3 configurationDictionary:(id)a4 valueBlock:(id)a5
+- (void)configurationValueForKey:(id)key configurationDictionary:(id)dictionary valueBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 objectForKeyedSubscript:v7];
+  keyCopy = key;
+  blockCopy = block;
+  v9 = [dictionary objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -20,7 +20,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = 138543618;
-        v12 = v7;
+        v12 = keyCopy;
         v13 = 2114;
         v14 = v9;
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "ComputeCachePolicy: Configuration override for key %{public}@ with value %{public}@", &v11, 0x16u);
@@ -34,12 +34,12 @@
     v9 = 0;
   }
 
-  v8[2](v8, v9);
+  blockCopy[2](blockCopy, v9);
 }
 
-- (PLComputeCachePolicyConfiguration)initWithConfigurationDictionary:(id)a3
+- (PLComputeCachePolicyConfiguration)initWithConfigurationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = PLComputeCachePolicyConfiguration;
   v5 = [(PLComputeCachePolicyConfiguration *)&v29 init];
@@ -48,7 +48,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = dictionaryCopy;
     }
 
     else

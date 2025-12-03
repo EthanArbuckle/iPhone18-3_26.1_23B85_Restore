@@ -1,22 +1,22 @@
 @interface VSSAMLAuthenticationToken
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (NSDate)expirationDate;
 - (NSString)body;
 - (NSString)description;
-- (VSSAMLAuthenticationToken)initWithSerializedData:(id)a3;
+- (VSSAMLAuthenticationToken)initWithSerializedData:(id)data;
 - (unint64_t)hash;
 - (void)body;
 - (void)expirationDate;
-- (void)setBody:(id)a3;
+- (void)setBody:(id)body;
 @end
 
 @implementation VSSAMLAuthenticationToken
 
-- (VSSAMLAuthenticationToken)initWithSerializedData:(id)a3
+- (VSSAMLAuthenticationToken)initWithSerializedData:(id)data
 {
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The serializedData parameter must not be nil."];
   }
@@ -24,7 +24,7 @@
   v5 = [(VSSAMLAuthenticationToken *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     serializedData = v5->_serializedData;
     v5->_serializedData = v6;
   }
@@ -35,14 +35,14 @@
 - (NSDate)expirationDate
 {
   v3 = VSSharedSAMLParserController();
-  v4 = [(VSSAMLAuthenticationToken *)self body];
+  body = [(VSSAMLAuthenticationToken *)self body];
   v10 = 0;
-  v5 = [v3 parseCachedResponse:v4 error:&v10];
+  v5 = [v3 parseCachedResponse:body error:&v10];
   v6 = v10;
 
   if (v5)
   {
-    v7 = [v5 authenticationTTL];
+    authenticationTTL = [v5 authenticationTTL];
   }
 
   else
@@ -53,23 +53,23 @@
       [VSSAMLAuthenticationToken expirationDate];
     }
 
-    v7 = 0;
+    authenticationTTL = 0;
   }
 
-  return v7;
+  return authenticationTTL;
 }
 
 - (BOOL)isValid
 {
   v3 = VSSharedSAMLParserController();
-  v4 = [(VSSAMLAuthenticationToken *)self body];
+  body = [(VSSAMLAuthenticationToken *)self body];
   v10 = 0;
-  v5 = [v3 parseCachedResponse:v4 error:&v10];
+  v5 = [v3 parseCachedResponse:body error:&v10];
   v6 = v10;
 
   if (v5)
   {
-    v7 = [v5 hasValidAuthentication];
+    hasValidAuthentication = [v5 hasValidAuthentication];
   }
 
   else
@@ -80,24 +80,24 @@
       [VSSAMLAuthenticationToken expirationDate];
     }
 
-    v7 = 0;
+    hasValidAuthentication = 0;
   }
 
-  return v7;
+  return hasValidAuthentication;
 }
 
 - (NSString)body
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(VSSAMLAuthenticationToken *)self serializedData];
-  v5 = [v3 initWithData:v4 encoding:4];
+  serializedData = [(VSSAMLAuthenticationToken *)self serializedData];
+  v5 = [v3 initWithData:serializedData encoding:4];
 
   v6 = [VSOptional optionalWithObject:v5];
   v7 = [v6 unwrapWithFallback:&stru_284DD5B48];
 
-  v8 = [(VSSAMLAuthenticationToken *)self simulatedExpirationDate];
+  simulatedExpirationDate = [(VSSAMLAuthenticationToken *)self simulatedExpirationDate];
 
-  if (v8)
+  if (simulatedExpirationDate)
   {
     v9 = VSDefaultLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -120,8 +120,8 @@
     {
       v13 = MEMORY[0x277CBEAA8];
       v14 = v11;
-      v15 = [v13 distantPast];
-      [v14 setAuthenticationTTL:v15];
+      distantPast = [v13 distantPast];
+      [v14 setAuthenticationTTL:distantPast];
 
       v16 = [v14 xmlString:0];
 
@@ -144,15 +144,15 @@ LABEL_12:
   return v18;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v4 = a3;
-  if (!v4)
+  bodyCopy = body;
+  if (!bodyCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The body parameter must not be nil."];
   }
 
-  v5 = [v4 dataUsingEncoding:4];
+  v5 = [bodyCopy dataUsingEncoding:4];
   v6 = [VSOptional optionalWithObject:v5];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -164,24 +164,24 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v2 = [(VSSAMLAuthenticationToken *)self serializedData];
-  v3 = [v2 hash];
+  serializedData = [(VSSAMLAuthenticationToken *)self serializedData];
+  v3 = [serializedData hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -196,10 +196,10 @@ LABEL_12:
       }
 
       v11 = v6;
-      v12 = [(VSSAMLAuthenticationToken *)self serializedData];
-      v13 = [(VSSAMLAuthenticationToken *)v11 serializedData];
+      serializedData = [(VSSAMLAuthenticationToken *)self serializedData];
+      serializedData2 = [(VSSAMLAuthenticationToken *)v11 serializedData];
 
-      v14 = [v12 isEqual:v13];
+      v14 = [serializedData isEqual:serializedData2];
     }
 
     else
@@ -221,8 +221,8 @@ LABEL_12:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(VSSAMLAuthenticationToken *)self expirationDate];
-  v7 = [v3 stringWithFormat:@"<%@ %@=%@>", v5, @"expirationDate", v6];
+  expirationDate = [(VSSAMLAuthenticationToken *)self expirationDate];
+  v7 = [v3 stringWithFormat:@"<%@ %@=%@>", v5, @"expirationDate", expirationDate];
 
   return v7;
 }

@@ -1,39 +1,39 @@
 @interface ClarityOnboardingNavigationWrapperController
-- (ClarityOnboardingNavigationWrapperController)initWithController:(id)a3 shouldPresentWithAnimation:(BOOL)a4;
+- (ClarityOnboardingNavigationWrapperController)initWithController:(id)controller shouldPresentWithAnimation:(BOOL)animation;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_updateForController;
-- (void)setController:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setController:(id)controller;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ClarityOnboardingNavigationWrapperController
 
-- (ClarityOnboardingNavigationWrapperController)initWithController:(id)a3 shouldPresentWithAnimation:(BOOL)a4
+- (ClarityOnboardingNavigationWrapperController)initWithController:(id)controller shouldPresentWithAnimation:(BOOL)animation
 {
-  v7 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = ClarityOnboardingNavigationWrapperController;
   v8 = [(ClarityOnboardingNavigationWrapperController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_controller, a3);
-    v9->_shouldPresentWithAnimation = a4;
+    objc_storeStrong(&v8->_controller, controller);
+    v9->_shouldPresentWithAnimation = animation;
     [(ClarityOnboardingNavigationWrapperController *)v9 _updateForController];
   }
 
   return v9;
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  v5 = a3;
-  if (self->_controller != v5)
+  controllerCopy = controller;
+  if (self->_controller != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_controller, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_controller, controller);
     [(ClarityOnboardingNavigationWrapperController *)self _updateForController];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
@@ -47,11 +47,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ClarityOnboardingNavigationWrapperController;
-  [(ClarityOnboardingNavigationWrapperController *)&v5 viewWillAppear:a3];
+  [(ClarityOnboardingNavigationWrapperController *)&v5 viewWillAppear:appear];
   setUpNavigationController = self->_setUpNavigationController;
   if (setUpNavigationController)
   {
@@ -62,9 +62,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 30;
   }

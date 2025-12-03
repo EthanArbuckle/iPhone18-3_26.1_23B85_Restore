@@ -1,13 +1,13 @@
 @interface SBMotionDetectionWakeController
 - (SBMotionDetectionWakeControllerDelegate)delegate;
-- (id)acquireMotionDetectionWakeAssertionForReason:(id)a3;
+- (id)acquireMotionDetectionWakeAssertionForReason:(id)reason;
 - (void)_evaluateEnablement;
-- (void)_setEnabled:(BOOL)a3;
-- (void)_setMotionDetected:(BOOL)a3;
-- (void)_setRequested:(BOOL)a3;
+- (void)_setEnabled:(BOOL)enabled;
+- (void)_setMotionDetected:(BOOL)detected;
+- (void)_setRequested:(BOOL)requested;
 - (void)dealloc;
-- (void)motionDetectionManager:(id)a3 didUpdateMotionDetectionTriggerState:(unint64_t)a4;
-- (void)setRequireScreenOff:(BOOL)a3;
+- (void)motionDetectionManager:(id)manager didUpdateMotionDetectionTriggerState:(unint64_t)state;
+- (void)setRequireScreenOff:(BOOL)off;
 @end
 
 @implementation SBMotionDetectionWakeController
@@ -20,9 +20,9 @@
   [(SBMotionDetectionWakeController *)&v3 dealloc];
 }
 
-- (id)acquireMotionDetectionWakeAssertionForReason:(id)a3
+- (id)acquireMotionDetectionWakeAssertionForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   enablementAssertions = self->_enablementAssertions;
   if (!enablementAssertions)
   {
@@ -42,7 +42,7 @@
     enablementAssertions = self->_enablementAssertions;
   }
 
-  v9 = [(BSCompoundAssertion *)enablementAssertions acquireForReason:v4, v11, v12, v13, v14];
+  v9 = [(BSCompoundAssertion *)enablementAssertions acquireForReason:reasonCopy, v11, v12, v13, v14];
 
   return v9;
 }
@@ -56,23 +56,23 @@ void __80__SBMotionDetectionWakeController_acquireMotionDetectionWakeAssertionFo
   [WeakRetained _setRequested:v4];
 }
 
-- (void)setRequireScreenOff:(BOOL)a3
+- (void)setRequireScreenOff:(BOOL)off
 {
-  if (self->_requireScreenOff != a3)
+  if (self->_requireScreenOff != off)
   {
-    self->_requireScreenOff = a3;
+    self->_requireScreenOff = off;
     [(SBMotionDetectionWakeController *)self _evaluateEnablement];
   }
 }
 
-- (void)_setRequested:(BOOL)a3
+- (void)_setRequested:(BOOL)requested
 {
-  if (self->_requested != a3)
+  if (self->_requested != requested)
   {
     v11 = v3;
-    self->_requested = a3;
+    self->_requested = requested;
     backlightController = self->_backlightController;
-    if (a3)
+    if (requested)
     {
       if (!backlightController)
       {
@@ -97,20 +97,20 @@ void __80__SBMotionDetectionWakeController_acquireMotionDetectionWakeAssertionFo
 
 - (void)_evaluateEnablement
 {
-  v3 = [(SBMotionDetectionWakeController *)self _isRequested];
-  v4 = [(SBBacklightController *)self->_backlightController screenIsOn];
-  v5 = v3 && (!self->_requireScreenOff || !v4);
+  _isRequested = [(SBMotionDetectionWakeController *)self _isRequested];
+  screenIsOn = [(SBBacklightController *)self->_backlightController screenIsOn];
+  v5 = _isRequested && (!self->_requireScreenOff || !screenIsOn);
 
   [(SBMotionDetectionWakeController *)self _setEnabled:v5];
 }
 
-- (void)_setEnabled:(BOOL)a3
+- (void)_setEnabled:(BOOL)enabled
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    if (a3 && !self->_triggerManager)
+    self->_enabled = enabled;
+    if (enabled && !self->_triggerManager)
     {
       v4 = objc_alloc_init(MEMORY[0x277CEA5E8]);
       triggerManager = self->_triggerManager;
@@ -144,41 +144,41 @@ void __80__SBMotionDetectionWakeController_acquireMotionDetectionWakeAssertionFo
   }
 }
 
-- (void)_setMotionDetected:(BOOL)a3
+- (void)_setMotionDetected:(BOOL)detected
 {
-  if (self->_motionDetected != a3)
+  if (self->_motionDetected != detected)
   {
-    self->_motionDetected = a3;
-    v5 = [(SBMotionDetectionWakeController *)self delegate];
-    [v5 motionDetectionWakeController:self motionDetectStateChanged:self->_motionDetected];
+    self->_motionDetected = detected;
+    delegate = [(SBMotionDetectionWakeController *)self delegate];
+    [delegate motionDetectionWakeController:self motionDetectStateChanged:self->_motionDetected];
   }
 }
 
-- (void)motionDetectionManager:(id)a3 didUpdateMotionDetectionTriggerState:(unint64_t)a4
+- (void)motionDetectionManager:(id)manager didUpdateMotionDetectionTriggerState:(unint64_t)state
 {
   v10 = *MEMORY[0x277D85DE8];
   v6 = SBLogBacklight();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = a4;
+    stateCopy = state;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "didUpdateMotionDetectionTriggerState: 0x%llx", &v8, 0xCu);
   }
 
   if ([(SBMotionDetectionWakeController *)self _isEnabled])
   {
-    if ((a4 & 0xFFFFFFFFFFFFFE31) != 0)
+    if ((state & 0xFFFFFFFFFFFFFE31) != 0)
     {
       v7 = SBLogBacklight();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [SBMotionDetectionWakeController motionDetectionManager:a4 didUpdateMotionDetectionTriggerState:v7];
+        [SBMotionDetectionWakeController motionDetectionManager:state didUpdateMotionDetectionTriggerState:v7];
       }
     }
 
     else
     {
-      [(SBMotionDetectionWakeController *)self _setMotionDetected:a4 != 0];
+      [(SBMotionDetectionWakeController *)self _setMotionDetected:state != 0];
     }
   }
 }

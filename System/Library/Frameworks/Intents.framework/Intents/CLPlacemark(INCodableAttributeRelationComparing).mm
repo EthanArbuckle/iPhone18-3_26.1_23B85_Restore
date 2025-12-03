@@ -32,9 +32,9 @@
 
     v12 = v8;
 
-    v13 = [v12 name];
+    name = [v12 name];
 LABEL_16:
-    v11 = v13;
+    v11 = name;
 
     goto LABEL_17;
   }
@@ -64,14 +64,14 @@ LABEL_16:
 
     v12 = v10;
 
-    v13 = [v12 if_flatMap:&__block_literal_global_34337];
+    name = [v12 if_flatMap:&__block_literal_global_34337];
     goto LABEL_16;
   }
 
   v11 = 0;
 LABEL_17:
-  v14 = [a1 name];
-  v15 = [v14 _intents_compareValue:v11 relation:a4];
+  name2 = [self name];
+  v15 = [name2 _intents_compareValue:v11 relation:a4];
 
   return v15;
 }

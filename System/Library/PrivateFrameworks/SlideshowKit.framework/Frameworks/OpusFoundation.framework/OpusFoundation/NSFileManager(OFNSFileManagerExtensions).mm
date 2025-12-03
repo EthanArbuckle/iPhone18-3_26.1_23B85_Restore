@@ -40,19 +40,19 @@
   }
 
   v10 = 1;
-  if (![a1 fileExistsAtPath:objc_msgSend(a3 isDirectory:{"stringByDeletingLastPathComponent"), &v10}] || v10 != 1)
+  if (![self fileExistsAtPath:objc_msgSend(a3 isDirectory:{"stringByDeletingLastPathComponent"), &v10}] || v10 != 1)
   {
     return 0;
   }
 
-  v7 = [a1 URLForDirectory:99 inDomain:1 appropriateForURL:objc_msgSend(MEMORY[0x277CBEBC0] create:"fileURLWithPath:" error:{objc_msgSend(a3, "stringByDeletingLastPathComponent")), 1, v6}];
+  v7 = [self URLForDirectory:99 inDomain:1 appropriateForURL:objc_msgSend(MEMORY[0x277CBEBC0] create:"fileURLWithPath:" error:{objc_msgSend(a3, "stringByDeletingLastPathComponent")), 1, v6}];
   if (!*v6 && v7)
   {
     return [v7 path];
   }
 
   *v6 = 0;
-  v7 = [a1 URLForDirectory:99 inDomain:1 appropriateForURL:objc_msgSend(MEMORY[0x277CBEBC0] create:"fileURLWithPath:" error:{@"/", 1, v6}];
+  v7 = [self URLForDirectory:99 inDomain:1 appropriateForURL:objc_msgSend(MEMORY[0x277CBEBC0] create:"fileURLWithPath:" error:{@"/", 1, v6}];
   v8 = 0;
   if (!*v6)
   {
@@ -68,7 +68,7 @@
 - (uint64_t)incrementalPathInDirectory:()OFNSFileManagerExtensions withFilename:andExtension:
 {
   v9 = [objc_msgSend(a3 stringByAppendingPathComponent:{a4), "stringByAppendingPathExtension:", a5}];
-  if ([a1 fileExistsAtPath:v9])
+  if ([self fileExistsAtPath:v9])
   {
     v10 = 2;
     do
@@ -76,7 +76,7 @@
       v9 = [a3 stringByAppendingPathComponent:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@ %lu.%@", a4, v10++, a5)}];
     }
 
-    while (([a1 fileExistsAtPath:v9] & 1) != 0);
+    while (([self fileExistsAtPath:v9] & 1) != 0);
   }
 
   return v9;
@@ -85,7 +85,7 @@
 - (void)incrementalURLInDirectory:()OFNSFileManagerExtensions withFilename:andExtension:
 {
   v9 = [objc_msgSend(a3 URLByAppendingPathComponent:{a4), "URLByAppendingPathExtension:", a5}];
-  if ([a1 fileExistsAtPath:{objc_msgSend(v9, "path")}])
+  if ([self fileExistsAtPath:{objc_msgSend(v9, "path")}])
   {
     v10 = 2;
     do
@@ -93,7 +93,7 @@
       v9 = [objc_msgSend(a3 URLByAppendingPathComponent:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@ %lu.%@", a4, v10++, a5)), "standardizedURL"}];
     }
 
-    while (([a1 fileExistsAtPath:{objc_msgSend(v9, "path")}] & 1) != 0);
+    while (([self fileExistsAtPath:{objc_msgSend(v9, "path")}] & 1) != 0);
   }
 
   return v9;
@@ -193,7 +193,7 @@
   (*(a5 + 16))(a5, &v42, 0.0);
   if ((v42 & 1) == 0)
   {
-    if (([a1 createDirectoryAtPath:a4 withIntermediateDirectories:1 attributes:0 error:&v41] & 1) == 0)
+    if (([self createDirectoryAtPath:a4 withIntermediateDirectories:1 attributes:0 error:&v41] & 1) == 0)
     {
       if (OFLoggerLevel >= 4)
       {
@@ -204,7 +204,7 @@
     }
 
     v11 = [a4 stringByAppendingPathComponent:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @".%@", objc_msgSend(MEMORY[0x277CCACA8], "generateUUID"))}];
-    if (([a1 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v41] & 1) == 0)
+    if (([self createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v41] & 1) == 0)
     {
       if (OFLoggerLevel >= 4)
       {
@@ -241,12 +241,12 @@
       {
         if (v16 == 1)
         {
-          v22 = [a1 contentsOfDirectoryAtPath:v11 error:&v41];
+          v22 = [self contentsOfDirectoryAtPath:v11 error:&v41];
           if (!v41)
           {
             v30 = v11;
             v23 = v22;
-            v13 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             v33 = 0u;
             v34 = 0u;
             v35 = 0u;
@@ -267,19 +267,19 @@
 
                   v25 = *(*(&v33 + 1) + 8 * j);
                   v32 = [v30 stringByAppendingPathComponent:v25];
-                  v26 = [a1 incrementalPathInDirectory:a4 withFilename:objc_msgSend(v25 andExtension:{"stringByDeletingPathExtension"), objc_msgSend(v25, "pathExtension")}];
-                  if (([a1 moveItemAtPath:v32 toPath:v26 error:&v41] & 1) == 0)
+                  v26 = [self incrementalPathInDirectory:a4 withFilename:objc_msgSend(v25 andExtension:{"stringByDeletingPathExtension"), objc_msgSend(v25, "pathExtension")}];
+                  if (([self moveItemAtPath:v32 toPath:v26 error:&v41] & 1) == 0)
                   {
                     if (OFLoggerLevel >= 4)
                     {
                       [OFLogger logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Extensions/OFNSFileManagerExtensions.m" line:342 andFormat:@"%@ cannot be unarchived: Failed to move file %@ to %@", a3, v32, v26];
                     }
 
-                    v13 = 0;
+                    array = 0;
                     goto LABEL_68;
                   }
 
-                  [v13 addObject:v26];
+                  [array addObject:v26];
                 }
 
                 v29 = [obj countByEnumeratingWithState:&v33 objects:v43 count:16];
@@ -397,14 +397,14 @@ LABEL_40:
       break;
     }
 
-    v13 = 0;
+    array = 0;
 LABEL_42:
     archive_read_close();
     archive_read_finish();
     archive_write_close();
     archive_write_finish();
-    [a1 removeItemAtPath:v11 error:0];
-    return v13;
+    [self removeItemAtPath:v11 error:0];
+    return array;
   }
 
   return 0;

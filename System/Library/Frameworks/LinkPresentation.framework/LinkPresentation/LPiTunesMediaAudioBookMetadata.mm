@@ -1,53 +1,53 @@
 @interface LPiTunesMediaAudioBookMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPiTunesMediaAudioBookMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (id)storeIdentifierForTransformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPiTunesMediaAudioBookMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (id)storeIdentifierForTransformer:(id)transformer;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPiTunesMediaAudioBookMetadata
 
-- (LPiTunesMediaAudioBookMetadata)initWithCoder:(id)a3
+- (LPiTunesMediaAudioBookMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = LPiTunesMediaAudioBookMetadata;
   v5 = [(LPiTunesMediaAudioBookMetadata *)&v24 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"storeFrontIdentifier");
+    v6 = decodeStringForKey(coderCopy, @"storeFrontIdentifier");
     storeFrontIdentifier = v5->_storeFrontIdentifier;
     v5->_storeFrontIdentifier = v6;
 
-    v8 = decodeStringForKey(v4, @"storeIdentifier");
+    v8 = decodeStringForKey(coderCopy, @"storeIdentifier");
     storeIdentifier = v5->_storeIdentifier;
     v5->_storeIdentifier = v8;
 
-    v10 = decodeStringForKey(v4, @"name");
+    v10 = decodeStringForKey(coderCopy, @"name");
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = decodeStringForKey(v4, @"author");
+    v12 = decodeStringForKey(coderCopy, @"author");
     author = v5->_author;
     v5->_author = v12;
 
-    v14 = decodeStringForKey(v4, @"narrator");
+    v14 = decodeStringForKey(coderCopy, @"narrator");
     narrator = v5->_narrator;
     v5->_narrator = v14;
 
-    v16 = [v4 _lp_strictlyDecodeLPImageForKey:@"artwork"];
+    v16 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"artwork"];
     artwork = v5->_artwork;
     v5->_artwork = v16;
 
-    v18 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"artworkMetadata"];
+    v18 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"artworkMetadata"];
     artworkMetadata = v5->_artworkMetadata;
     v5->_artworkMetadata = v18;
 
-    v20 = decodeURLForKey(v4, @"previewURL");
+    v20 = decodeURLForKey(coderCopy, @"previewURL");
     previewURL = v5->_previewURL;
     v5->_previewURL = v20;
 
@@ -57,47 +57,47 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_storeFrontIdentifier forKey:@"storeFrontIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_storeIdentifier forKey:@"storeIdentifier"];
-  [v4 _lp_encodeStringIfNotNil:self->_name forKey:@"name"];
-  [v4 _lp_encodeStringIfNotNil:self->_author forKey:@"author"];
-  [v4 _lp_encodeStringIfNotNil:self->_narrator forKey:@"narrator"];
-  [v4 _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artwork"];
-  [v4 _lp_encodeObjectIfNotNil:self->_artworkMetadata forKey:@"artworkMetadata"];
-  [v4 _lp_encodeURLIfNotNilOrLocalFile:self->_previewURL forKey:@"previewURL"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_storeFrontIdentifier forKey:@"storeFrontIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_storeIdentifier forKey:@"storeIdentifier"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_name forKey:@"name"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_author forKey:@"author"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_narrator forKey:@"narrator"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artwork"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_artworkMetadata forKey:@"artworkMetadata"];
+  [coderCopy _lp_encodeURLIfNotNilOrLocalFile:self->_previewURL forKey:@"previewURL"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPiTunesMediaAudioBookMetadata allocWithZone:a3];
+  v4 = [LPiTunesMediaAudioBookMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPiTunesMediaAudioBookMetadata *)self storeFrontIdentifier];
-    [(LPiTunesMediaAudioBookMetadata *)v4 setStoreFrontIdentifier:v5];
+    storeFrontIdentifier = [(LPiTunesMediaAudioBookMetadata *)self storeFrontIdentifier];
+    [(LPiTunesMediaAudioBookMetadata *)v4 setStoreFrontIdentifier:storeFrontIdentifier];
 
-    v6 = [(LPiTunesMediaAudioBookMetadata *)self storeIdentifier];
-    [(LPiTunesMediaAudioBookMetadata *)v4 setStoreIdentifier:v6];
+    storeIdentifier = [(LPiTunesMediaAudioBookMetadata *)self storeIdentifier];
+    [(LPiTunesMediaAudioBookMetadata *)v4 setStoreIdentifier:storeIdentifier];
 
-    v7 = [(LPiTunesMediaAudioBookMetadata *)self name];
-    [(LPiTunesMediaAudioBookMetadata *)v4 setName:v7];
+    name = [(LPiTunesMediaAudioBookMetadata *)self name];
+    [(LPiTunesMediaAudioBookMetadata *)v4 setName:name];
 
-    v8 = [(LPiTunesMediaAudioBookMetadata *)self author];
-    [(LPiTunesMediaAudioBookMetadata *)v4 setAuthor:v8];
+    author = [(LPiTunesMediaAudioBookMetadata *)self author];
+    [(LPiTunesMediaAudioBookMetadata *)v4 setAuthor:author];
 
-    v9 = [(LPiTunesMediaAudioBookMetadata *)self narrator];
-    [(LPiTunesMediaAudioBookMetadata *)v4 setNarrator:v9];
+    narrator = [(LPiTunesMediaAudioBookMetadata *)self narrator];
+    [(LPiTunesMediaAudioBookMetadata *)v4 setNarrator:narrator];
 
-    v10 = [(LPiTunesMediaAudioBookMetadata *)self previewURL];
-    [(LPiTunesMediaAudioBookMetadata *)v4 setPreviewURL:v10];
+    previewURL = [(LPiTunesMediaAudioBookMetadata *)self previewURL];
+    [(LPiTunesMediaAudioBookMetadata *)v4 setPreviewURL:previewURL];
 
-    v11 = [(LPiTunesMediaAudioBookMetadata *)self artwork];
-    [(LPiTunesMediaAudioBookMetadata *)v4 setArtwork:v11];
+    artwork = [(LPiTunesMediaAudioBookMetadata *)self artwork];
+    [(LPiTunesMediaAudioBookMetadata *)v4 setArtwork:artwork];
 
-    v12 = [(LPiTunesMediaAudioBookMetadata *)self artworkMetadata];
-    [(LPiTunesMediaAudioBookMetadata *)v4 setArtworkMetadata:v12];
+    artworkMetadata = [(LPiTunesMediaAudioBookMetadata *)self artworkMetadata];
+    [(LPiTunesMediaAudioBookMetadata *)v4 setArtworkMetadata:artworkMetadata];
 
     v13 = v4;
   }
@@ -105,12 +105,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPiTunesMediaAudioBookMetadata;
-  if ([(LPiTunesMediaAudioBookMetadata *)&v8 isEqual:v4])
+  if ([(LPiTunesMediaAudioBookMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -120,7 +120,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(v6[2], self->_storeFrontIdentifier) & 1) != 0 && objectsAreEqual_0(v6[3], self->_storeIdentifier) && objectsAreEqual_0(v6[4], self->_name) && objectsAreEqual_0(v6[5], self->_author) && objectsAreEqual_0(v6[6], self->_narrator) && objectsAreEqual_0(v6[7], self->_artwork) && objectsAreEqual_0(v6[8], self->_artworkMetadata))
       {
         v5 = objectsAreEqual_0(v6[9], self->_previewURL);
@@ -141,27 +141,27 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v5 = a3;
-  v6 = [v5 commonPresentationPropertiesForStyle:14];
+  transformerCopy = transformer;
+  v6 = [transformerCopy commonPresentationPropertiesForStyle:14];
   v7 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v6 setCaptionBar:v7];
 
-  v8 = [(LPiTunesMediaAudioBookMetadata *)self name];
-  v9 = [(LPiTunesMediaAudioBookMetadata *)self author];
+  name = [(LPiTunesMediaAudioBookMetadata *)self name];
+  author = [(LPiTunesMediaAudioBookMetadata *)self author];
   v10 = LPLocalizedString(@" Books");
-  populateCaptionBar(v6, v8, v9, v10, 1, v5);
+  populateCaptionBar(v6, name, author, v10, 1, transformerCopy);
 
-  v11 = [(LPiTunesMediaAudioBookMetadata *)self artwork];
-  [v5 _populateProperties:v6 withPrimaryImage:v11];
+  artwork = [(LPiTunesMediaAudioBookMetadata *)self artwork];
+  [transformerCopy _populateProperties:v6 withPrimaryImage:artwork];
 
   v12 = objc_alloc_init(LPImagePresentationProperties);
   [(LPImagePresentationProperties *)v12 setFilter:11];
   [v6 setImageProperties:v12];
   if (TCCAccessPreflight())
   {
-    v13 = 0;
+    stringValue = 0;
   }
 
   else
@@ -184,10 +184,10 @@
 
     v15 = v14;
     _Block_object_dispose(&v43, 8);
-    v16 = [v14 audiobooksQuery];
+    audiobooksQuery = [v14 audiobooksQuery];
     v17 = MEMORY[0x1E696AE88];
-    v18 = [(LPiTunesMediaAudioBookMetadata *)self storeIdentifier];
-    v19 = [v17 scannerWithString:v18];
+    storeIdentifier = [(LPiTunesMediaAudioBookMetadata *)self storeIdentifier];
+    v19 = [v17 scannerWithString:storeIdentifier];
 
     v37 = 0;
     if ([v19 scanUnsignedLongLong:&v37])
@@ -233,51 +233,51 @@
       _Block_object_dispose(&v43, 8);
       if (!v23)
       {
-        v35 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPMediaItemPropertyStorePlaylistID(void)"];
-        [v35 handleFailureInFunction:v36 file:@"LPiTunesMediaTransformers.m" lineNumber:43 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v36 file:@"LPiTunesMediaTransformers.m" lineNumber:43 description:{@"%s", dlerror()}];
 
         __break(1u);
         return result;
       }
 
       v26 = [v20 predicateWithValue:v22 forProperty:*v23];
-      [v16 addFilterPredicate:v26];
+      [audiobooksQuery addFilterPredicate:v26];
 
-      v27 = [v16 items];
-      v3 = [v27 firstObject];
+      items = [audiobooksQuery items];
+      firstObject = [items firstObject];
 
-      if (v3)
+      if (firstObject)
       {
-        v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v3, "persistentID")}];
-        v13 = [v28 stringValue];
+        v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(firstObject, "persistentID")}];
+        stringValue = [v28 stringValue];
       }
 
       else
       {
-        v13 = 0;
+        stringValue = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      stringValue = 0;
     }
   }
 
-  v29 = [(LPiTunesMediaAudioBookMetadata *)self storeIdentifier];
-  v30 = [(LPiTunesMediaAudioBookMetadata *)self storeFrontIdentifier];
-  v31 = v30;
-  if (!v30)
+  storeIdentifier2 = [(LPiTunesMediaAudioBookMetadata *)self storeIdentifier];
+  storeFrontIdentifier = [(LPiTunesMediaAudioBookMetadata *)self storeFrontIdentifier];
+  v31 = storeFrontIdentifier;
+  if (!storeFrontIdentifier)
   {
-    v3 = [v5 canonicalURL];
-    v31 = storefrontIdentifierFromURL(v3);
+    firstObject = [transformerCopy canonicalURL];
+    v31 = storefrontIdentifierFromURL(firstObject);
   }
 
-  v32 = [(LPiTunesMediaAudioBookMetadata *)self previewURL];
-  v33 = [LPInlineMediaPlaybackInformation audioBookPlaybackInformationWithStoreIdentifier:v29 storefrontIdentifier:v31 previewURL:v32 persistentIdentifier:v13];
+  previewURL = [(LPiTunesMediaAudioBookMetadata *)self previewURL];
+  v33 = [LPInlineMediaPlaybackInformation audioBookPlaybackInformationWithStoreIdentifier:storeIdentifier2 storefrontIdentifier:v31 previewURL:previewURL persistentIdentifier:stringValue];
 
-  if (!v30)
+  if (!storeFrontIdentifier)
   {
   }
 
@@ -286,34 +286,34 @@
   return v6;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = LPLocalizedString(@"Audiobook: %@ – %@");
-  v6 = [(LPiTunesMediaAudioBookMetadata *)self name];
-  v7 = [(LPiTunesMediaAudioBookMetadata *)self author];
-  v8 = [v4 localizedStringWithFormat:v5, v6, v7];
+  name = [(LPiTunesMediaAudioBookMetadata *)self name];
+  author = [(LPiTunesMediaAudioBookMetadata *)self author];
+  v8 = [v4 localizedStringWithFormat:v5, name, author];
 
   return v8;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v8 = a3;
-  v4 = [(LPiTunesMediaAudioBookMetadata *)self name];
-  v5 = [(LPiTunesMediaAudioBookMetadata *)self author];
-  v6 = joinedByEmDash(v4, v5);
-  [v8 setTitle:v6];
+  compatibilityCopy = compatibility;
+  name = [(LPiTunesMediaAudioBookMetadata *)self name];
+  author = [(LPiTunesMediaAudioBookMetadata *)self author];
+  v6 = joinedByEmDash(name, author);
+  [compatibilityCopy setTitle:v6];
 
-  v7 = [(LPiTunesMediaAudioBookMetadata *)self artwork];
-  [v8 setImage:v7];
+  artwork = [(LPiTunesMediaAudioBookMetadata *)self artwork];
+  [compatibilityCopy setImage:artwork];
 }
 
-- (id)storeIdentifierForTransformer:(id)a3
+- (id)storeIdentifierForTransformer:(id)transformer
 {
-  v3 = [(LPiTunesMediaAudioBookMetadata *)self storeIdentifier];
+  storeIdentifier = [(LPiTunesMediaAudioBookMetadata *)self storeIdentifier];
 
-  return v3;
+  return storeIdentifier;
 }
 
 @end

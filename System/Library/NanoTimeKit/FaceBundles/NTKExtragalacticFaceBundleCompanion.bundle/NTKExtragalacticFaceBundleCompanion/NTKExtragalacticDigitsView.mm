@@ -1,33 +1,33 @@
 @interface NTKExtragalacticDigitsView
-- (NTKExtragalacticDigitsView)initWithFrame:(CGRect)a3 device:(id)a4 digitNumbers:(id)a5;
+- (NTKExtragalacticDigitsView)initWithFrame:(CGRect)frame device:(id)device digitNumbers:(id)numbers;
 - (void)_setupShapeLayers;
-- (void)setDigitNumbers:(id)a3;
+- (void)setDigitNumbers:(id)numbers;
 @end
 
 @implementation NTKExtragalacticDigitsView
 
-- (NTKExtragalacticDigitsView)initWithFrame:(CGRect)a3 device:(id)a4 digitNumbers:(id)a5
+- (NTKExtragalacticDigitsView)initWithFrame:(CGRect)frame device:(id)device digitNumbers:(id)numbers
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
+  numbersCopy = numbers;
   v20.receiver = self;
   v20.super_class = NTKExtragalacticDigitsView;
-  v14 = [(NTKExtragalacticDigitsView *)&v20 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(NTKExtragalacticDigitsView *)&v20 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    objc_storeStrong(&v14->_device, a4);
-    v15->_lineWidth = sub_23BE52760(v16, v12);
-    v17 = [[NTKExtragalacticDigitLoader alloc] initWithDevice:v12];
+    objc_storeStrong(&height->_device, device);
+    v15->_lineWidth = sub_23BE52760(v16, deviceCopy);
+    v17 = [[NTKExtragalacticDigitLoader alloc] initWithDevice:deviceCopy];
     digitLoader = v15->_digitLoader;
     v15->_digitLoader = v17;
 
     [(NTKExtragalacticDigitsView *)v15 _setupShapeLayers];
-    [(NTKExtragalacticDigitsView *)v15 setDigitNumbers:v13];
+    [(NTKExtragalacticDigitsView *)v15 setDigitNumbers:numbersCopy];
   }
 
   return v15;
@@ -42,26 +42,26 @@
   }
 
   v2 = qword_27E1DC288;
-  v3 = [MEMORY[0x277CD9ED0] layer];
+  layer = [MEMORY[0x277CD9ED0] layer];
   fillContainerLayer = self->_fillContainerLayer;
-  self->_fillContainerLayer = v3;
+  self->_fillContainerLayer = layer;
 
   [(NTKExtragalacticDigitsView *)self bounds];
   [(CALayer *)self->_fillContainerLayer setFrame:?];
   [(CALayer *)self->_fillContainerLayer setActions:v2];
-  v5 = [(NTKExtragalacticDigitsView *)self layer];
-  [v5 addSublayer:self->_fillContainerLayer];
+  layer2 = [(NTKExtragalacticDigitsView *)self layer];
+  [layer2 addSublayer:self->_fillContainerLayer];
 
-  v6 = [MEMORY[0x277CD9ED0] layer];
+  layer3 = [MEMORY[0x277CD9ED0] layer];
   strokeContainerLayer = self->_strokeContainerLayer;
-  self->_strokeContainerLayer = v6;
+  self->_strokeContainerLayer = layer3;
 
   [(NTKExtragalacticDigitsView *)self bounds];
   [(CALayer *)self->_strokeContainerLayer setFrame:?];
   [(CALayer *)self->_strokeContainerLayer setOpacity:0.0];
   [(CALayer *)self->_strokeContainerLayer setActions:v2];
-  v8 = [(NTKExtragalacticDigitsView *)self layer];
-  [v8 addSublayer:self->_strokeContainerLayer];
+  layer4 = [(NTKExtragalacticDigitsView *)self layer];
+  [layer4 addSublayer:self->_strokeContainerLayer];
 
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
@@ -114,9 +114,9 @@
 
         v41 = *(*(&v50 + 1) + 8 * v15);
         v42 = v15;
-        v16 = [v41 unsignedIntegerValue];
+        unsignedIntegerValue = [v41 unsignedIntegerValue];
         [(NTKExtragalacticDigitsView *)self bounds];
-        [NTKExtragalacticLayoutHelper frameForCorner:v16 screenBounds:?];
+        [NTKExtragalacticLayoutHelper frameForCorner:unsignedIntegerValue screenBounds:?];
         v18 = v17;
         v20 = v19;
         v22 = v21;
@@ -141,14 +141,14 @@
                 objc_enumerationMutation(&unk_284E9BC00);
               }
 
-              v31 = [*(*(&v46 + 1) + 8 * i) unsignedIntegerValue];
-              v32 = [NTKExtragalacticColors identityColorForGlyphColor:v31];
+              unsignedIntegerValue2 = [*(*(&v46 + 1) + 8 * i) unsignedIntegerValue];
+              v32 = [NTKExtragalacticColors identityColorForGlyphColor:unsignedIntegerValue2];
               v33 = (v44)[2](v44, v32, v18, v20, v22, v24);
               [(CALayer *)self->_fillContainerLayer addSublayer:v33];
-              [v25 setShapeLayer:v33 atGlyphColor:v31];
+              [v25 setShapeLayer:v33 atGlyphColor:unsignedIntegerValue2];
               v34 = (v43)[2](v43, v32, v18, v20, v22, v24);
               [(CALayer *)self->_strokeContainerLayer addSublayer:v34];
-              [v26 setShapeLayer:v34 atGlyphColor:v31];
+              [v26 setShapeLayer:v34 atGlyphColor:unsignedIntegerValue2];
             }
 
             v28 = [&unk_284E9BC00 countByEnumeratingWithState:&v46 objects:v60 count:16];
@@ -173,12 +173,12 @@
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDigitNumbers:(id)a3
+- (void)setDigitNumbers:(id)numbers
 {
   v68[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v52 = self;
-  if (self->_digitNumbers == v4)
+  numbersCopy = numbers;
+  selfCopy = self;
+  if (self->_digitNumbers == numbersCopy)
   {
     goto LABEL_37;
   }
@@ -189,7 +189,7 @@
   }
 
   v46 = qword_27E1DC298;
-  v5 = [(NSMutableDictionary *)v4 objectForKeyedSubscript:&unk_284E9B950];
+  v5 = [(NSMutableDictionary *)numbersCopy objectForKeyedSubscript:&unk_284E9B950];
   v6 = [v5 isEqual:&unk_284E9B980];
 
   if (v6)
@@ -212,14 +212,14 @@
     goto LABEL_13;
   }
 
-  v8 = [(NSMutableDictionary *)v4 objectForKeyedSubscript:&unk_284E9B950];
+  v8 = [(NSMutableDictionary *)numbersCopy objectForKeyedSubscript:&unk_284E9B950];
   if (([v8 isEqual:&unk_284E9B998] & 1) == 0)
   {
 
     goto LABEL_12;
   }
 
-  v9 = [(NSMutableDictionary *)v4 objectForKeyedSubscript:&unk_284E9B968];
+  v9 = [(NSMutableDictionary *)numbersCopy objectForKeyedSubscript:&unk_284E9B968];
   v10 = [v9 isEqual:&unk_284E9B9B0];
 
   if (!v10)
@@ -246,7 +246,7 @@ LABEL_13:
   if (v48)
   {
     v47 = *v60;
-    v44 = v4;
+    v44 = numbersCopy;
     do
     {
       for (i = 0; i != v48; ++i)
@@ -257,44 +257,44 @@ LABEL_13:
         }
 
         v12 = *(*(&v59 + 1) + 8 * i);
-        v13 = [(NSMutableDictionary *)v52->_digitNumbers objectForKeyedSubscript:v12];
-        v14 = [(NSMutableDictionary *)v4 objectForKeyedSubscript:v12];
+        v13 = [(NSMutableDictionary *)selfCopy->_digitNumbers objectForKeyedSubscript:v12];
+        v14 = [(NSMutableDictionary *)numbersCopy objectForKeyedSubscript:v12];
 
         if (v13 != v14)
         {
           v50 = i;
-          v15 = [v12 unsignedIntegerValue];
-          [(NTKExtragalacticDigitsView *)v52 bounds];
-          [NTKExtragalacticLayoutHelper frameForCorner:v15 screenBounds:?];
-          v16 = [(NSMutableDictionary *)v4 objectForKeyedSubscript:v12];
-          [(NSMutableDictionary *)v52->_digitNumbers setObject:v16 forKeyedSubscript:v12];
+          unsignedIntegerValue = [v12 unsignedIntegerValue];
+          [(NTKExtragalacticDigitsView *)selfCopy bounds];
+          [NTKExtragalacticLayoutHelper frameForCorner:unsignedIntegerValue screenBounds:?];
+          v16 = [(NSMutableDictionary *)numbersCopy objectForKeyedSubscript:v12];
+          [(NSMutableDictionary *)selfCopy->_digitNumbers setObject:v16 forKeyedSubscript:v12];
           v17 = [v46 objectForKeyedSubscript:v12];
-          v18 = [v17 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v17 unsignedIntegerValue];
 
           v49 = v16;
-          v19 = [(NTKExtragalacticDigitLoader *)v52->_digitLoader digitDrawInfoForNumber:v16 style:v18];
+          v19 = [(NTKExtragalacticDigitLoader *)selfCopy->_digitLoader digitDrawInfoForNumber:v16 style:unsignedIntegerValue2];
           v20 = v19;
           if (v19)
           {
             [v19 unifiedGlyphSize];
-            [NTKExtragalacticLayoutHelper digitCenterPositionForCorner:"digitCenterPositionForCorner:unifiedGlyphSize:cornerFrame:" unifiedGlyphSize:v15 cornerFrame:?];
+            [NTKExtragalacticLayoutHelper digitCenterPositionForCorner:"digitCenterPositionForCorner:unifiedGlyphSize:cornerFrame:" unifiedGlyphSize:unsignedIntegerValue cornerFrame:?];
             v22 = v21;
             v24 = v23;
-            v25 = [(NSMutableDictionary *)v52->_glyphFillLayers objectForKeyedSubscript:v12];
+            v25 = [(NSMutableDictionary *)selfCopy->_glyphFillLayers objectForKeyedSubscript:v12];
             [v25 removeAllPaths];
 
-            v26 = [(NSMutableDictionary *)v52->_glyphStrokeLayers objectForKeyedSubscript:v12];
+            v26 = [(NSMutableDictionary *)selfCopy->_glyphStrokeLayers objectForKeyedSubscript:v12];
             [v26 removeAllPaths];
 
             v57 = 0u;
             v58 = 0u;
             v55 = 0u;
             v56 = 0u;
-            v27 = [v20 paths];
-            v28 = [v27 allKeys];
+            paths = [v20 paths];
+            allKeys = [paths allKeys];
 
-            v51 = v28;
-            v29 = [v28 countByEnumeratingWithState:&v55 objects:v63 count:16];
+            v51 = allKeys;
+            v29 = [allKeys countByEnumeratingWithState:&v55 objects:v63 count:16];
             if (v29)
             {
               v30 = v29;
@@ -309,31 +309,31 @@ LABEL_13:
                   }
 
                   v32 = *(*(&v55 + 1) + 8 * j);
-                  v33 = [v32 unsignedIntegerValue];
-                  v34 = [v20 paths];
-                  v35 = [v34 objectForKeyedSubscript:v32];
+                  unsignedIntegerValue3 = [v32 unsignedIntegerValue];
+                  paths2 = [v20 paths];
+                  v35 = [paths2 objectForKeyedSubscript:v32];
 
                   if ([v12 isEqual:&unk_284E9B950] && v53)
                   {
                     v36 = [v53 objectForKeyedSubscript:v32];
-                    v37 = [v20 paths];
-                    v38 = [v37 objectForKeyedSubscript:v36];
+                    paths3 = [v20 paths];
+                    v38 = [paths3 objectForKeyedSubscript:v36];
 
                     v35 = v38;
                   }
 
                   if (v35)
                   {
-                    v39 = [(NSMutableDictionary *)v52->_glyphFillLayers objectForKeyedSubscript:v12];
-                    [v39 setPath:v35 forGlyphColor:v33];
+                    v39 = [(NSMutableDictionary *)selfCopy->_glyphFillLayers objectForKeyedSubscript:v12];
+                    [v39 setPath:v35 forGlyphColor:unsignedIntegerValue3];
 
-                    v40 = [(NSMutableDictionary *)v52->_glyphFillLayers objectForKeyedSubscript:v12];
+                    v40 = [(NSMutableDictionary *)selfCopy->_glyphFillLayers objectForKeyedSubscript:v12];
                     [v40 setPosition:{v22, v24}];
 
-                    v41 = [(NSMutableDictionary *)v52->_glyphStrokeLayers objectForKeyedSubscript:v12];
-                    [v41 setPath:v35 forGlyphColor:v33];
+                    v41 = [(NSMutableDictionary *)selfCopy->_glyphStrokeLayers objectForKeyedSubscript:v12];
+                    [v41 setPath:v35 forGlyphColor:unsignedIntegerValue3];
 
-                    v42 = [(NSMutableDictionary *)v52->_glyphStrokeLayers objectForKeyedSubscript:v12];
+                    v42 = [(NSMutableDictionary *)selfCopy->_glyphStrokeLayers objectForKeyedSubscript:v12];
                     [v42 setPosition:{v22, v24}];
                   }
                 }
@@ -344,7 +344,7 @@ LABEL_13:
               while (v30);
             }
 
-            v4 = v44;
+            numbersCopy = v44;
           }
 
           i = v50;

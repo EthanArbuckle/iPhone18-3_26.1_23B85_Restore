@@ -1,15 +1,15 @@
 @interface AWDPowerBBLQMDataTransferMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)lQMTransitionCntBucketsAtIndex:(unint64_t)a3;
-- (void)addLQMBytes:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)lQMTransitionCntBucketsAtIndex:(unint64_t)index;
+- (void)addLQMBytes:(id)bytes;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPowerBBLQMDataTransferMetrics
@@ -23,7 +23,7 @@
   [(AWDPowerBBLQMDataTransferMetrics *)&v3 dealloc];
 }
 
-- (void)addLQMBytes:(id)a3
+- (void)addLQMBytes:(id)bytes
 {
   lQMBytes = self->_lQMBytes;
   if (!lQMBytes)
@@ -32,19 +32,19 @@
     self->_lQMBytes = lQMBytes;
   }
 
-  [(NSMutableArray *)lQMBytes addObject:a3];
+  [(NSMutableArray *)lQMBytes addObject:bytes];
 }
 
-- (unsigned)lQMTransitionCntBucketsAtIndex:(unint64_t)a3
+- (unsigned)lQMTransitionCntBucketsAtIndex:(unint64_t)index
 {
   p_lQMTransitionCntBuckets = &self->_lQMTransitionCntBuckets;
   count = self->_lQMTransitionCntBuckets.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_lQMTransitionCntBuckets->list[a3];
+  return p_lQMTransitionCntBuckets->list[index];
 }
 
 - (id)description
@@ -57,10 +57,10 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ([(NSMutableArray *)self->_lQMBytes count])
@@ -94,15 +94,15 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"LQMBytes"];
+    [dictionary setObject:v4 forKey:@"LQMBytes"];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"LQMTransitionCntBuckets"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"LQMTransitionCntBuckets"];
   v10 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -157,47 +157,47 @@
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 4) = self->_timestamp;
-    *(a3 + 48) |= 1u;
+    *(to + 4) = self->_timestamp;
+    *(to + 48) |= 1u;
   }
 
   if ([(AWDPowerBBLQMDataTransferMetrics *)self lQMBytesCount])
   {
-    [a3 clearLQMBytes];
-    v5 = [(AWDPowerBBLQMDataTransferMetrics *)self lQMBytesCount];
-    if (v5)
+    [to clearLQMBytes];
+    lQMBytesCount = [(AWDPowerBBLQMDataTransferMetrics *)self lQMBytesCount];
+    if (lQMBytesCount)
     {
-      v6 = v5;
+      v6 = lQMBytesCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addLQMBytes:{-[AWDPowerBBLQMDataTransferMetrics lQMBytesAtIndex:](self, "lQMBytesAtIndex:", i)}];
+        [to addLQMBytes:{-[AWDPowerBBLQMDataTransferMetrics lQMBytesAtIndex:](self, "lQMBytesAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDPowerBBLQMDataTransferMetrics *)self lQMTransitionCntBucketsCount])
   {
-    [a3 clearLQMTransitionCntBuckets];
-    v8 = [(AWDPowerBBLQMDataTransferMetrics *)self lQMTransitionCntBucketsCount];
-    if (v8)
+    [to clearLQMTransitionCntBuckets];
+    lQMTransitionCntBucketsCount = [(AWDPowerBBLQMDataTransferMetrics *)self lQMTransitionCntBucketsCount];
+    if (lQMTransitionCntBucketsCount)
     {
-      v9 = v8;
+      v9 = lQMTransitionCntBucketsCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addLQMTransitionCntBuckets:{-[AWDPowerBBLQMDataTransferMetrics lQMTransitionCntBucketsAtIndex:](self, "lQMTransitionCntBucketsAtIndex:", j)}];
+        [to addLQMTransitionCntBuckets:{-[AWDPowerBBLQMDataTransferMetrics lQMTransitionCntBucketsAtIndex:](self, "lQMTransitionCntBucketsAtIndex:", j)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -224,7 +224,7 @@
           objc_enumerationMutation(lQMBytes);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v15 + 1) + 8 * i) copyWithZone:zone];
         [v6 addLQMBytes:v12];
       }
 
@@ -239,29 +239,29 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 48);
+  v5 = *(equal + 48);
   if (*&self->_has)
   {
-    if ((*(a3 + 48) & 1) == 0 || self->_timestamp != *(a3 + 4))
+    if ((*(equal + 48) & 1) == 0 || self->_timestamp != *(equal + 4))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 48))
+  else if (*(equal + 48))
   {
     return 0;
   }
 
   lQMBytes = self->_lQMBytes;
-  if (lQMBytes | *(a3 + 5) && ![(NSMutableArray *)lQMBytes isEqual:?])
+  if (lQMBytes | *(equal + 5) && ![(NSMutableArray *)lQMBytes isEqual:?])
   {
     return 0;
   }
@@ -285,12 +285,12 @@
   return v3 ^ v2 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 48))
+  if (*(from + 48))
   {
-    self->_timestamp = *(a3 + 4);
+    self->_timestamp = *(from + 4);
     *&self->_has |= 1u;
   }
 
@@ -298,7 +298,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = *(a3 + 5);
+  v5 = *(from + 5);
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -322,13 +322,13 @@
     while (v7);
   }
 
-  v10 = [a3 lQMTransitionCntBucketsCount];
-  if (v10)
+  lQMTransitionCntBucketsCount = [from lQMTransitionCntBucketsCount];
+  if (lQMTransitionCntBucketsCount)
   {
-    v11 = v10;
+    v11 = lQMTransitionCntBucketsCount;
     for (j = 0; j != v11; ++j)
     {
-      -[AWDPowerBBLQMDataTransferMetrics addLQMTransitionCntBuckets:](self, "addLQMTransitionCntBuckets:", [a3 lQMTransitionCntBucketsAtIndex:j]);
+      -[AWDPowerBBLQMDataTransferMetrics addLQMTransitionCntBuckets:](self, "addLQMTransitionCntBuckets:", [from lQMTransitionCntBucketsAtIndex:j]);
     }
   }
 

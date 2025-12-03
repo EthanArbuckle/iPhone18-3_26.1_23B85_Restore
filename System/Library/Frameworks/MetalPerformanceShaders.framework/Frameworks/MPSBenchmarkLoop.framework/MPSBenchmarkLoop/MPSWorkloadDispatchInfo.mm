@@ -1,8 +1,8 @@
 @interface MPSWorkloadDispatchInfo
 - (MPSWorkloadDispatchInfo)init;
 - (void)dealloc;
-- (void)setThreadgroupsPerGrid:(id *)a3;
-- (void)setThreadsPerThreadgroup:(id *)a3;
+- (void)setThreadgroupsPerGrid:(id *)grid;
+- (void)setThreadsPerThreadgroup:(id *)threadgroup;
 @end
 
 @implementation MPSWorkloadDispatchInfo
@@ -24,17 +24,17 @@
   [(MPSWorkloadDispatchInfo *)&v3 dealloc];
 }
 
-- (void)setThreadgroupsPerGrid:(id *)a3
+- (void)setThreadgroupsPerGrid:(id *)grid
 {
-  v3 = *&a3->var0;
-  self->_threadgroupsPerGrid.depth = a3->var2;
+  v3 = *&grid->var0;
+  self->_threadgroupsPerGrid.depth = grid->var2;
   *&self->_threadgroupsPerGrid.width = v3;
 }
 
-- (void)setThreadsPerThreadgroup:(id *)a3
+- (void)setThreadsPerThreadgroup:(id *)threadgroup
 {
-  v3 = *&a3->var0;
-  self->_threadsPerThreadgroup.depth = a3->var2;
+  v3 = *&threadgroup->var0;
+  self->_threadsPerThreadgroup.depth = threadgroup->var2;
   *&self->_threadsPerThreadgroup.width = v3;
 }
 

@@ -1,13 +1,13 @@
 @interface CAMTimelapseCaptureRateCommand
 - (CAMTimelapseCaptureRateCommand)initWithDefaultTimelapseCaptureRate;
-- (CAMTimelapseCaptureRateCommand)initWithTimelapseCaptureRate:(float)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMTimelapseCaptureRateCommand)initWithTimelapseCaptureRate:(float)rate;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMTimelapseCaptureRateCommand
 
-- (CAMTimelapseCaptureRateCommand)initWithTimelapseCaptureRate:(float)a3
+- (CAMTimelapseCaptureRateCommand)initWithTimelapseCaptureRate:(float)rate
 {
   v8.receiver = self;
   v8.super_class = CAMTimelapseCaptureRateCommand;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->__captureRate = a3;
+    v4->__captureRate = rate;
     v6 = v4;
   }
 
@@ -33,25 +33,25 @@
   return [(CAMTimelapseCaptureRateCommand *)self initWithTimelapseCaptureRate:v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CAMTimelapseCaptureRateCommand;
-  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:zone];
   [(CAMTimelapseCaptureRateCommand *)self _captureRate];
   v4[6] = v5;
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(CAMTimelapseCaptureRateCommand *)self _captureRate];
   v6 = v5;
-  v8 = [v4 currentStillImageOutput];
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
 
   LODWORD(v7) = v6;
-  [v8 setTimeLapseCaptureRate:v7];
+  [currentStillImageOutput setTimeLapseCaptureRate:v7];
 }
 
 @end

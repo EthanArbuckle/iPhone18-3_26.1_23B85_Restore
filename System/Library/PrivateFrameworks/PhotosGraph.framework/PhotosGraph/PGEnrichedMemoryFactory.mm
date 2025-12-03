@@ -1,33 +1,33 @@
 @interface PGEnrichedMemoryFactory
-+ (double)notificationScoreForNotificationLevel:(int64_t)a3 electionScore:(double)a4;
-+ (int64_t)notificationLevelForTriggeredMemory:(id)a3 withLocalDate:(id)a4 graph:(id)a5;
-+ (void)requestFlexMusicCurationForEnrichedMemories:(id)a3 context:(id)a4 photoLibrary:(id)a5 graph:(id)a6 progressReporter:(id)a7 resultHandler:(id)a8;
-+ (void)requestMusicCurationForEnrichedMemories:(id)a3 context:(id)a4 graph:(id)a5 progressReporter:(id)a6 resultHandler:(id)a7;
-- (PGEnrichedMemoryFactory)initWithMemoryCurationSession:(id)a3 graph:(id)a4 serviceManager:(id)a5;
-- (id)_curatedAssetsWithFeeder:(id)a3 options:(id)a4 progressBlock:(id)a5;
-- (id)_extendedCuratedAssetsWithFeeder:(id)a3 options:(id)a4 progressBlock:(id)a5;
-- (id)_keyAssetWithFeeder:(id)a3 options:(id)a4 progressBlock:(id)a5;
-- (id)_memoryEnricherFromTriggeredMemory:(id)a3;
-- (id)debugEnrichedMemoryWithTriggeredMemory:(id)a3 withConfiguration:(id)a4 progressReporter:(id)a5;
-- (id)enrichedMemoryWithTriggeredMemory:(id)a3 withConfiguration:(id)a4 progressReporter:(id)a5 debug:(BOOL)a6;
-- (unint64_t)_numberOfGuestAssetInAssets:(id)a3;
++ (double)notificationScoreForNotificationLevel:(int64_t)level electionScore:(double)score;
++ (int64_t)notificationLevelForTriggeredMemory:(id)memory withLocalDate:(id)date graph:(id)graph;
++ (void)requestFlexMusicCurationForEnrichedMemories:(id)memories context:(id)context photoLibrary:(id)library graph:(id)graph progressReporter:(id)reporter resultHandler:(id)handler;
++ (void)requestMusicCurationForEnrichedMemories:(id)memories context:(id)context graph:(id)graph progressReporter:(id)reporter resultHandler:(id)handler;
+- (PGEnrichedMemoryFactory)initWithMemoryCurationSession:(id)session graph:(id)graph serviceManager:(id)manager;
+- (id)_curatedAssetsWithFeeder:(id)feeder options:(id)options progressBlock:(id)block;
+- (id)_extendedCuratedAssetsWithFeeder:(id)feeder options:(id)options progressBlock:(id)block;
+- (id)_keyAssetWithFeeder:(id)feeder options:(id)options progressBlock:(id)block;
+- (id)_memoryEnricherFromTriggeredMemory:(id)memory;
+- (id)debugEnrichedMemoryWithTriggeredMemory:(id)memory withConfiguration:(id)configuration progressReporter:(id)reporter;
+- (id)enrichedMemoryWithTriggeredMemory:(id)memory withConfiguration:(id)configuration progressReporter:(id)reporter debug:(BOOL)debug;
+- (unint64_t)_numberOfGuestAssetInAssets:(id)assets;
 @end
 
 @implementation PGEnrichedMemoryFactory
 
-+ (double)notificationScoreForNotificationLevel:(int64_t)a3 electionScore:(double)a4
++ (double)notificationScoreForNotificationLevel:(int64_t)level electionScore:(double)score
 {
-  if ((a3 - 2) > 2)
+  if ((level - 2) > 2)
   {
     v4 = MEMORY[0x277CD9C38];
   }
 
   else
   {
-    v4 = qword_278884EF0[a3 - 2];
+    v4 = qword_278884EF0[level - 2];
   }
 
-  v5 = fmax(a4, 0.0);
+  v5 = fmax(score, 0.0);
   if (v5 > 1.0)
   {
     v5 = 1.0;
@@ -36,19 +36,19 @@
   return v5 * *MEMORY[0x277CD9C48] + *v4;
 }
 
-+ (int64_t)notificationLevelForTriggeredMemory:(id)a3 withLocalDate:(id)a4 graph:(id)a5
++ (int64_t)notificationLevelForTriggeredMemory:(id)memory withLocalDate:(id)date graph:(id)graph
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  memoryCopy = memory;
+  dateCopy = date;
+  graphCopy = graph;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 1;
-  v10 = [v7 memoryFeatureNodes];
-  v11 = [v7 memoryMomentNodes];
-  v12 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:v10];
-  v13 = [v12 labels];
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
+  v12 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:memoryFeatureNodes];
+  labels = [v12 labels];
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v15 = +[PGGraph stellarMeanings];
@@ -60,21 +60,21 @@
   v38 = v16;
   [v15 enumerateIndexesUsingBlock:v37];
 
-  v17 = [v7 triggerTypes];
+  triggerTypes = [memoryCopy triggerTypes];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __97__PGEnrichedMemoryFactory_Notification__notificationLevelForTriggeredMemory_withLocalDate_graph___block_invoke_2;
   v31[3] = &unk_278884ED0;
   v36 = &v39;
-  v18 = v7;
+  v18 = memoryCopy;
   v32 = v18;
-  v19 = v13;
+  v19 = labels;
   v33 = v19;
   v20 = v16;
   v34 = v20;
-  v21 = v11;
+  v21 = memoryMomentNodes;
   v35 = v21;
-  [v17 enumerateIndexesUsingBlock:v31];
+  [triggerTypes enumerateIndexesUsingBlock:v31];
 
   if (v40[3] != 4)
   {
@@ -102,11 +102,11 @@
         goto LABEL_7;
       case 5:
       case 6:
-        v25 = [v18 memoryFeatureNodes];
-        v26 = [(PGGraphNodeCollection *)PGGraphSocialGroupNodeCollection subsetInCollection:v25];
-        v24 = [v26 anyNode];
+        memoryFeatureNodes2 = [v18 memoryFeatureNodes];
+        v26 = [(PGGraphNodeCollection *)PGGraphSocialGroupNodeCollection subsetInCollection:memoryFeatureNodes2];
+        anyNode = [v26 anyNode];
 
-        if ([v24 rankInGraph:v9] > 1)
+        if ([anyNode rankInGraph:graphCopy] > 1)
         {
           goto LABEL_9;
         }
@@ -137,8 +137,8 @@
         if ([v19 containsObject:@"Birthday"])
         {
 LABEL_7:
-          v24 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v10];
-          if ([PGPeopleInferencesConveniences anyPersonNodes:v24 belongToBestSocialGroupsInGraph:v9])
+          anyNode = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
+          if ([PGPeopleInferencesConveniences anyPersonNodes:anyNode belongToBestSocialGroupsInGraph:graphCopy])
           {
 LABEL_8:
             v40[3] = 3;
@@ -149,7 +149,7 @@ LABEL_9:
 
         else
         {
-          v29 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection subsetInCollection:v10];
+          v29 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection subsetInCollection:memoryFeatureNodes];
           v30 = [v29 count];
 
           if (v30)
@@ -274,37 +274,37 @@ LABEL_9:
   }
 }
 
-+ (void)requestMusicCurationForEnrichedMemories:(id)a3 context:(id)a4 graph:(id)a5 progressReporter:(id)a6 resultHandler:(id)a7
++ (void)requestMusicCurationForEnrichedMemories:(id)memories context:(id)context graph:(id)graph progressReporter:(id)reporter resultHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v13;
-  v44 = v15;
-  v37 = [MEMORY[0x277CBEAA8] date];
-  v40 = v11;
-  v39 = [v11 count];
+  memoriesCopy = memories;
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  handlerCopy = handler;
+  v16 = graphCopy;
+  v44 = handlerCopy;
+  date = [MEMORY[0x277CBEAA8] date];
+  v40 = memoriesCopy;
+  v39 = [memoriesCopy count];
   if (v39)
   {
     v17 = 0;
     v18 = v39;
-    v38 = v14;
+    v38 = reporterCopy;
     v19 = &unk_2810A4000;
-    v36 = v13;
+    v36 = graphCopy;
     while (1)
     {
       v20 = objc_autoreleasePoolPush();
-      if ([v14 isCancelled])
+      if ([reporterCopy isCancelled])
       {
         break;
       }
 
       v21 = (v17 + 0.5) / v18;
       v22 = [v40 objectAtIndexedSubscript:v17];
-      v23 = [v14 childProgressReporterFromStart:v17 / v18 toEnd:v21];
-      v24 = [objc_opt_class() appleMusicFeatureExtractionContextWithCuratorContext:v12];
+      v23 = [reporterCopy childProgressReporterFromStart:v17 / v18 toEnd:v21];
+      v24 = [objc_opt_class() appleMusicFeatureExtractionContextWithCuratorContext:contextCopy];
       v46 = 0;
       v25 = [v19 + 3160 extractMusicCurationFeaturesForEnrichedMemory:v22 graph:v16 context:v24 progressReporter:v23 error:&v46];
       v26 = v46;
@@ -313,16 +313,16 @@ LABEL_9:
         v41 = v26;
         v42 = v23;
         context = v20;
-        v27 = [v14 childProgressReporterFromStart:v21 toEnd:++v17 / v18];
+        v27 = [reporterCopy childProgressReporterFromStart:v21 toEnd:++v17 / v18];
         v28 = v19;
         v29 = v27;
         v45 = 0;
-        v30 = [v28 + 3160 curateMusicForFeatures:v25 context:v12 progressReporter:v27 error:&v45];
+        v30 = [v28 + 3160 curateMusicForFeatures:v25 context:contextCopy progressReporter:v27 error:&v45];
         v31 = v45;
         if (v30)
         {
-          v32 = [v12 recentlyUsedSongs];
-          [v32 addMusicCuration:v30 date:v37];
+          recentlyUsedSongs = [contextCopy recentlyUsedSongs];
+          [recentlyUsedSongs addMusicCuration:v30 date:date];
 
           v16 = v36;
         }
@@ -330,7 +330,7 @@ LABEL_9:
         v44[2]();
 
         objc_autoreleasePoolPop(context);
-        v14 = v38;
+        reporterCopy = v38;
         v19 = &unk_2810A4000;
       }
 
@@ -350,12 +350,12 @@ LABEL_9:
     }
 
     v34 = +[PGLogging sharedLogging];
-    v35 = [v34 loggingConnection];
+    loggingConnection = [v34 loggingConnection];
 
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F0FC000, v35, OS_LOG_TYPE_ERROR, "[PGEnrichedMemoryFactory] (MemoriesMusic) Cancelling Apple Music curation for enriched memories.", buf, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGEnrichedMemoryFactory] (MemoriesMusic) Cancelling Apple Music curation for enriched memories.", buf, 2u);
     }
 
     objc_autoreleasePoolPop(v20);
@@ -365,21 +365,21 @@ LABEL_9:
 LABEL_14:
 }
 
-+ (void)requestFlexMusicCurationForEnrichedMemories:(id)a3 context:(id)a4 photoLibrary:(id)a5 graph:(id)a6 progressReporter:(id)a7 resultHandler:(id)a8
++ (void)requestFlexMusicCurationForEnrichedMemories:(id)memories context:(id)context photoLibrary:(id)library graph:(id)graph progressReporter:(id)reporter resultHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v50 = a6;
-  v16 = a7;
-  v54 = a8;
-  v52 = v13;
-  v17 = [v13 count];
-  v45 = v16;
-  v53 = [v16 progressReportersForParallelOperationsWithCount:v17];
-  v46 = v15;
-  v18 = [PGMusicCurationRecentlyUsedSongs recentlyUsedFlexMusicSongsFromPhotoLibrary:v15];
-  v47 = [MEMORY[0x277CBEAA8] date];
+  memoriesCopy = memories;
+  contextCopy = context;
+  libraryCopy = library;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  handlerCopy = handler;
+  v52 = memoriesCopy;
+  v17 = [memoriesCopy count];
+  v45 = reporterCopy;
+  v53 = [reporterCopy progressReportersForParallelOperationsWithCount:v17];
+  v46 = libraryCopy;
+  v18 = [PGMusicCurationRecentlyUsedSongs recentlyUsedFlexMusicSongsFromPhotoLibrary:libraryCopy];
+  date = [MEMORY[0x277CBEAA8] date];
   v51 = v17;
   if (!v17)
   {
@@ -389,7 +389,7 @@ LABEL_14:
   v19 = 0;
   v20 = v17;
   v48 = v18;
-  v49 = v14;
+  v49 = contextCopy;
   while (1)
   {
     v21 = objc_autoreleasePoolPush();
@@ -405,17 +405,17 @@ LABEL_14:
     v26 = v25 / v20;
     v27 = [v22 childProgressReporterFromStart:v24 toEnd:v25 / v20];
     v28 = v27;
-    if (!v14)
+    if (!contextCopy)
     {
       if ([v27 isCancelledWithProgress:1.0])
       {
         v43 = +[PGLogging sharedLogging];
-        v44 = [v43 loggingConnection];
+        loggingConnection = [v43 loggingConnection];
 
-        if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          _os_log_error_impl(&dword_22F0FC000, v44, OS_LOG_TYPE_ERROR, "[PGEnrichedMemoryFactory] (MemoriesMusic) Cancelling Flex Music curation for enriched memories.", buf, 2u);
+          _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGEnrichedMemoryFactory] (MemoriesMusic) Cancelling Flex Music curation for enriched memories.", buf, 2u);
         }
 
         goto LABEL_20;
@@ -427,9 +427,9 @@ LABEL_14:
       goto LABEL_9;
     }
 
-    v29 = [objc_opt_class() flexMusicFeatureExtractionContextWithCuratorContext:v14];
+    v29 = [objc_opt_class() flexMusicFeatureExtractionContextWithCuratorContext:contextCopy];
     v59 = 0;
-    v30 = [PGMusicCurator extractMusicCurationFeaturesForEnrichedMemory:v23 graph:v50 context:v29 progressReporter:v28 error:&v59];
+    v30 = [PGMusicCurator extractMusicCurationFeaturesForEnrichedMemory:v23 graph:graphCopy context:v29 progressReporter:v28 error:&v59];
     v31 = v59;
     v32 = v31;
     if (v30)
@@ -442,32 +442,32 @@ LABEL_9:
       v56 = v22;
       v32 = [v22 childProgressReporterFromStart:v26 toEnd:v19 / v20];
       v33 = [PGFlexMusicCurationParameters alloc];
-      v34 = [v23 suggestedMood];
+      suggestedMood = [v23 suggestedMood];
       [v23 legacyMoodKeywords];
       v36 = v35 = v23;
-      v37 = [v35 uniqueMemoryIdentifier];
-      v38 = [(PGFlexMusicCurationParameters *)v33 initWithMood:v34 moodKeywords:v36 recentlyUsedSongs:v48 entityUUID:v37 useMoodKeywords:0 features:v29 musicCuratorContext:v14];
+      uniqueMemoryIdentifier = [v35 uniqueMemoryIdentifier];
+      v38 = [(PGFlexMusicCurationParameters *)v33 initWithMood:suggestedMood moodKeywords:v36 recentlyUsedSongs:v48 entityUUID:uniqueMemoryIdentifier useMoodKeywords:0 features:v29 musicCuratorContext:contextCopy];
 
       v58 = 0;
       v39 = [PGFlexMusicCurator curateFlexMusicWithCurationParameters:v38 progressReporter:v32 error:&v58];
       v40 = v58;
       if (v39)
       {
-        [v48 addFlexMusicCuration:v39 date:v47];
+        [v48 addFlexMusicCuration:v39 date:date];
       }
 
-      v54[2]();
+      handlerCopy[2]();
       v18 = v48;
       v23 = v35;
 
-      v14 = v49;
+      contextCopy = v49;
       v22 = v56;
       v21 = v57;
       v28 = v55;
       goto LABEL_13;
     }
 
-    (v54[2])(v54, v23, 0, v31);
+    (handlerCopy[2])(handlerCopy, v23, 0, v31);
 LABEL_13:
 
     objc_autoreleasePoolPop(v21);
@@ -478,13 +478,13 @@ LABEL_13:
   }
 
   v41 = +[PGLogging sharedLogging];
-  v42 = [v41 loggingConnection];
+  loggingConnection2 = [v41 loggingConnection];
 
-  v23 = v42;
-  if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+  v23 = loggingConnection2;
+  if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_22F0FC000, v42, OS_LOG_TYPE_ERROR, "[PGEnrichedMemoryFactory] (MemoriesMusic) Cancelling Flex Music curation for enriched memories.", buf, 2u);
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PGEnrichedMemoryFactory] (MemoriesMusic) Cancelling Flex Music curation for enriched memories.", buf, 2u);
   }
 
 LABEL_20:
@@ -493,13 +493,13 @@ LABEL_20:
 LABEL_21:
 }
 
-- (id)_extendedCuratedAssetsWithFeeder:(id)a3 options:(id)a4 progressBlock:(id)a5
+- (id)_extendedCuratedAssetsWithFeeder:(id)feeder options:(id)options progressBlock:(id)block
 {
   v62 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = _Block_copy(v10);
+  feederCopy = feeder;
+  optionsCopy = options;
+  blockCopy = block;
+  v11 = _Block_copy(blockCopy);
   v54 = 0;
   v55 = &v54;
   v56 = 0x2020000000;
@@ -508,19 +508,19 @@ LABEL_21:
   v51 = &v50;
   v52 = 0x2020000000;
   v53 = 0;
-  v38 = v8;
+  v38 = feederCopy;
   if (!v11 || (v12 = CFAbsoluteTimeGetCurrent(), v12 - v51[3] < 0.01) || (v51[3] = v12, v49 = 0, (*(v11 + 2))(v11, &v49, 0.0), v13 = *(v55 + 24) | v49, *(v55 + 24) = v13, (v13 & 1) == 0))
   {
-    v15 = [v8 allItems];
-    if (![v15 count])
+    allItems = [feederCopy allItems];
+    if (![allItems count])
     {
-      v14 = v15;
+      v14 = allItems;
 LABEL_27:
 
       goto LABEL_28;
     }
 
-    v37 = [(PGMemoryCurationSession *)self->_memoryCurationSession photoLibrary];
+    photoLibrary = [(PGMemoryCurationSession *)self->_memoryCurationSession photoLibrary];
     v16 = [[PGDejunkerDeduper_PHAsset alloc] initWithSimilarityModelClass:objc_opt_class()];
     [(PGDejunkerDeduper *)v16 setLoggingConnection:self->_loggingConnection];
     v44[0] = MEMORY[0x277D85DD0];
@@ -532,7 +532,7 @@ LABEL_27:
     v46 = &v50;
     v47 = &v54;
     v48 = 0x3F847AE147AE147BLL;
-    v18 = [(PGDejunkerDeduper_PHAsset *)v16 dejunkedDedupedAssetsInAssets:v15 options:v9 debugInfo:0 progressBlock:v44];
+    v18 = [(PGDejunkerDeduper_PHAsset *)v16 dejunkedDedupedAssetsInAssets:allItems options:optionsCopy debugInfo:0 progressBlock:v44];
     if (*(v55 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -552,21 +552,21 @@ LABEL_11:
       v20 = [PGCurationManager maximumNumberOfItemsForDuration:10 withTotalNumberOfItems:-1];
       if ([v18 count] > v20)
       {
-        v36 = -[PGCurationOptions initWithDuration:]([PGCurationOptions alloc], "initWithDuration:", [v9 duration]);
+        v36 = -[PGCurationOptions initWithDuration:]([PGCurationOptions alloc], "initWithDuration:", [optionsCopy duration]);
         [(PGCurationOptions *)v36 setLastPassMovieAdditionEnabled:0];
-        v21 = [v9 identifiersOfRequiredItems];
-        [(PGCurationOptions *)v36 setUuidsOfRequiredAssets:v21];
+        identifiersOfRequiredItems = [optionsCopy identifiersOfRequiredItems];
+        [(PGCurationOptions *)v36 setUuidsOfRequiredAssets:identifiersOfRequiredItems];
 
-        v34 = v9;
+        v34 = optionsCopy;
         v22 = objc_alloc(MEMORY[0x277CD98D0]);
         v23 = MEMORY[0x277CBEB98];
         v24 = +[PGCurationManager assetPropertySetsForCuration];
         v25 = [v23 setWithArray:v24];
-        v35 = [v22 initWithObjects:v18 photoLibrary:v37 fetchType:0 fetchPropertySets:v25 identifier:0 registerIfNeeded:0];
+        v35 = [v22 initWithObjects:v18 photoLibrary:photoLibrary fetchType:0 fetchPropertySets:v25 identifier:0 registerIfNeeded:0];
 
         v26 = objc_alloc(MEMORY[0x277D27710]);
-        v27 = [(PGMemoryCurationSession *)self->_memoryCurationSession curationContext];
-        v28 = [v26 initWithAssetFetchResult:v35 curationContext:v27];
+        curationContext = [(PGMemoryCurationSession *)self->_memoryCurationSession curationContext];
+        v28 = [v26 initWithAssetFetchResult:v35 curationContext:curationContext];
 
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
@@ -578,7 +578,7 @@ LABEL_11:
         v43 = 0x3F847AE147AE147BLL;
         v29 = [(PGEnrichedMemoryFactory *)self _curatedAssetsWithFeeder:v28 options:v36 progressBlock:v39];
 
-        v9 = v34;
+        optionsCopy = v34;
         if (*(v55 + 24) == 1)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -679,60 +679,60 @@ void __82__PGEnrichedMemoryFactory__extendedCuratedAssetsWithFeeder_options_prog
   }
 }
 
-- (id)_curatedAssetsWithFeeder:(id)a3 options:(id)a4 progressBlock:(id)a5
+- (id)_curatedAssetsWithFeeder:(id)feeder options:(id)options progressBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  optionsCopy = options;
+  feederCopy = feeder;
   v11 = objc_alloc_init(PGCurator_PHAsset);
   [(PGCurator *)v11 setLoggingConnection:self->_loggingConnection];
-  v12 = [(PGCurator_PHAsset *)v11 bestAssetsForFeeder:v10 options:v9 debugInfo:0 progressBlock:v8];
+  v12 = [(PGCurator_PHAsset *)v11 bestAssetsForFeeder:feederCopy options:optionsCopy debugInfo:0 progressBlock:blockCopy];
 
   return v12;
 }
 
-- (id)_keyAssetWithFeeder:(id)a3 options:(id)a4 progressBlock:(id)a5
+- (id)_keyAssetWithFeeder:(id)feeder options:(id)options progressBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PGMemoryCurationSession *)self->_memoryCurationSession curationManager];
-  v12 = [v9 referencePersonLocalIdentifiers];
-  v13 = [v12 count];
+  feederCopy = feeder;
+  optionsCopy = options;
+  blockCopy = block;
+  curationManager = [(PGMemoryCurationSession *)self->_memoryCurationSession curationManager];
+  referencePersonLocalIdentifiers = [optionsCopy referencePersonLocalIdentifiers];
+  v13 = [referencePersonLocalIdentifiers count];
 
   if (v13)
   {
-    v14 = [v8 allItems];
-    v15 = [v9 referencePersonLocalIdentifiers];
-    v16 = [v9 minimumNumberOfReferencePersons];
-    v17 = [v9 allowGuestAsset];
-    LOBYTE(v22) = [v9 wantsGoodSquareCropScore];
-    [v11 bestAssetInAssets:v14 forReferencePersonLocalIdentifiers:v15 requiredMinimumNumberOfReferencePersons:v16 forMemories:1 forSocialGroup:0 allowGuestAsset:v17 wantsGoodSquareCropScore:v22];
+    allItems = [feederCopy allItems];
+    referencePersonLocalIdentifiers2 = [optionsCopy referencePersonLocalIdentifiers];
+    minimumNumberOfReferencePersons = [optionsCopy minimumNumberOfReferencePersons];
+    allowGuestAsset = [optionsCopy allowGuestAsset];
+    LOBYTE(v22) = [optionsCopy wantsGoodSquareCropScore];
+    [curationManager bestAssetInAssets:allItems forReferencePersonLocalIdentifiers:referencePersonLocalIdentifiers2 requiredMinimumNumberOfReferencePersons:minimumNumberOfReferencePersons forMemories:1 forSocialGroup:0 allowGuestAsset:allowGuestAsset wantsGoodSquareCropScore:v22];
   }
 
   else
   {
     v18 = [PGKeyCurator_PHAsset alloc];
-    v19 = [v11 curationCriteriaFactory];
-    v14 = [(PGKeyCurator *)v18 initWithCurationCriteriaFactory:v19];
+    curationCriteriaFactory = [curationManager curationCriteriaFactory];
+    allItems = [(PGKeyCurator *)v18 initWithCurationCriteriaFactory:curationCriteriaFactory];
 
-    v15 = [v9 curationCriteria];
-    [(PGKeyCurator_PHAsset *)v14 keyAssetWithFeeder:v8 options:v9 criteria:v15 debugInfo:0 progressBlock:v10];
+    referencePersonLocalIdentifiers2 = [optionsCopy curationCriteria];
+    [(PGKeyCurator_PHAsset *)allItems keyAssetWithFeeder:feederCopy options:optionsCopy criteria:referencePersonLocalIdentifiers2 debugInfo:0 progressBlock:blockCopy];
   }
   v20 = ;
 
   return v20;
 }
 
-- (unint64_t)_numberOfGuestAssetInAssets:(id)a3
+- (unint64_t)_numberOfGuestAssetInAssets:(id)assets
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [assetsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -744,7 +744,7 @@ void __82__PGEnrichedMemoryFactory__extendedCuratedAssetsWithFeeder_options_prog
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(assetsCopy);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) sourceType] == 32)
@@ -753,7 +753,7 @@ void __82__PGEnrichedMemoryFactory__extendedCuratedAssetsWithFeeder_options_prog
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [assetsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -791,13 +791,13 @@ uint64_t __155__PGEnrichedMemoryFactory_curatedAssetUUIDsWithTriggeredMemory_key
   return result;
 }
 
-- (id)enrichedMemoryWithTriggeredMemory:(id)a3 withConfiguration:(id)a4 progressReporter:(id)a5 debug:(BOOL)a6
+- (id)enrichedMemoryWithTriggeredMemory:(id)memory withConfiguration:(id)configuration progressReporter:(id)reporter debug:(BOOL)debug
 {
-  v264 = a6;
+  debugCopy = debug;
   v302 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v269 = a5;
+  memoryCopy = memory;
+  configurationCopy = configuration;
+  reporterCopy = reporter;
   v11 = self->_loggingConnection;
   v12 = os_signpost_id_generate(v11);
   v13 = v11;
@@ -811,18 +811,18 @@ uint64_t __155__PGEnrichedMemoryFactory_curatedAssetUUIDsWithTriggeredMemory_key
   info = 0;
   mach_timebase_info(&info);
   v262 = mach_absolute_time();
-  v15 = [[PGEnrichedMemory alloc] initWithTriggeredMemory:v9];
-  if ([v10 skipEnrichment])
+  v15 = [[PGEnrichedMemory alloc] initWithTriggeredMemory:memoryCopy];
+  if ([configurationCopy skipEnrichment])
   {
     v16 = v15;
     goto LABEL_72;
   }
 
-  v259 = [v10 allowGuestAsset];
-  v268 = [(PGEnrichedMemoryFactory *)self _memoryEnricherFromTriggeredMemory:v9];
+  allowGuestAsset = [configurationCopy allowGuestAsset];
+  v268 = [(PGEnrichedMemoryFactory *)self _memoryEnricherFromTriggeredMemory:memoryCopy];
   v17 = objc_opt_class();
   v263 = NSStringFromClass(v17);
-  v18 = v269;
+  v18 = reporterCopy;
   *buf = 0;
   v295 = buf;
   v296 = 0x2020000000;
@@ -860,7 +860,7 @@ uint64_t __155__PGEnrichedMemoryFactory_curatedAssetUUIDsWithTriggeredMemory_key
   v293 = 0;
   mach_timebase_info(&v293);
   v24 = mach_absolute_time();
-  v25 = [v268 relevantFeederForTriggeredMemory:v9 inGraph:self->_graph allowGuestAsset:v259 progressReporter:v267];
+  v25 = [v268 relevantFeederForTriggeredMemory:memoryCopy inGraph:self->_graph allowGuestAsset:allowGuestAsset progressReporter:v267];
   v261 = v25;
   if (v25)
   {
@@ -888,7 +888,7 @@ LABEL_19:
       goto LABEL_21;
     }
 
-    v257 = [v268 relevantCurationFeederForTriggeredMemory:v9 relevantFeeder:v261 inGraph:self->_graph allowGuestAsset:v259 progressReporter:v267];
+    v257 = [v268 relevantCurationFeederForTriggeredMemory:memoryCopy relevantFeeder:v261 inGraph:self->_graph allowGuestAsset:allowGuestAsset progressReporter:v267];
     if (!v257)
     {
       v257 = v261;
@@ -918,7 +918,7 @@ LABEL_35:
       goto LABEL_35;
     }
 
-    v256 = [v268 relevantKeyCurationFeederForTriggeredMemory:v9 inGraph:self->_graph allowGuestAsset:v259 progressReporter:v267];
+    v256 = [v268 relevantKeyCurationFeederForTriggeredMemory:memoryCopy inGraph:self->_graph allowGuestAsset:allowGuestAsset progressReporter:v267];
     if (!v256)
     {
       v256 = v257;
@@ -996,8 +996,8 @@ LABEL_43:
     v292 = 0;
     mach_timebase_info(&v292);
     v248 = mach_absolute_time();
-    v47 = [v268 keyAssetCurationOptionsWithTriggeredMemory:v9 inGraph:self->_graph];
-    [v47 setAllowGuestAsset:v259];
+    v47 = [v268 keyAssetCurationOptionsWithTriggeredMemory:memoryCopy inGraph:self->_graph];
+    [v47 setAllowGuestAsset:allowGuestAsset];
     v289[0] = MEMORY[0x277D85DD0];
     v289[1] = 3221225472;
     v289[2] = __102__PGEnrichedMemoryFactory_enrichedMemoryWithTriggeredMemory_withConfiguration_progressReporter_debug___block_invoke;
@@ -1029,7 +1029,7 @@ LABEL_64:
       goto LABEL_61;
     }
 
-    if ([v255 clsAvoidIfPossibleAsKeyItemForMemories:1 allowGuestAsset:v259])
+    if ([v255 clsAvoidIfPossibleAsKeyItemForMemories:1 allowGuestAsset:allowGuestAsset])
     {
       if (v295[24])
       {
@@ -1064,11 +1064,11 @@ LABEL_61:
         if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
         {
           *v299 = 138412290;
-          *v300 = v9;
+          *v300 = memoryCopy;
           _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PGEnrichedMemoryFactory] No viable key asset found, returning nil enrichedMemory for %@", v299, 0xCu);
         }
 
-        if (v264)
+        if (debugCopy)
         {
           [(PGEnrichedMemory *)v15 setFailureReason:3];
           v16 = v15;
@@ -1081,8 +1081,8 @@ LABEL_61:
       goto LABEL_62;
     }
 
-    v52 = [v255 uuid];
-    [(PGEnrichedMemory *)v15 setKeyAssetUUID:v52];
+    uuid = [v255 uuid];
+    [(PGEnrichedMemory *)v15 setKeyAssetUUID:uuid];
 
     v246 = mach_absolute_time();
     v54 = v292.numer;
@@ -1099,17 +1099,17 @@ LABEL_61:
     v57 = v56;
     if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
     {
-      v58 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
+      v263 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
       *v299 = 136315650;
       *v300 = "KeyAsset";
       *&v300[8] = 2112;
-      *&v300[10] = v58;
+      *&v300[10] = v263;
       *&v300[18] = 2048;
       v301 = ((((v246 - v248) * v54) / v53) / 1000000.0);
       _os_log_impl(&dword_22F0FC000, v57, OS_LOG_TYPE_INFO, "[Performance] %s - %@: %f ms", v299, 0x20u);
     }
 
-    v249 = [v268 uuidsOfRequiredAssetsWithKeyAsset:v255 triggeredMemory:v9 inGraph:self->_graph progressReporter:v250];
+    v249 = [v268 uuidsOfRequiredAssetsWithKeyAsset:v255 triggeredMemory:memoryCopy inGraph:self->_graph progressReporter:v250];
     v59 = self->_loggingConnection;
     v60 = os_signpost_id_generate(v59);
     v61 = v59;
@@ -1128,7 +1128,7 @@ LABEL_61:
     mach_timebase_info(&v288);
     v235 = mach_absolute_time();
     context = objc_autoreleasePoolPush();
-    v63 = [v268 extendedCurationOptionsWithRequiredAssetUUIDs:v249 triggeredMemory:v9];
+    v63 = [v268 extendedCurationOptionsWithRequiredAssetUUIDs:v249 triggeredMemory:memoryCopy];
     v285[0] = MEMORY[0x277D85DD0];
     v285[1] = 3221225472;
     v285[2] = __102__PGEnrichedMemoryFactory_enrichedMemoryWithTriggeredMemory_withConfiguration_progressReporter_debug___block_invoke_262;
@@ -1158,7 +1158,7 @@ LABEL_61:
     else
     {
       v66 = [PGMemoryGenerationHelper assetUUIDsFromAssets:v64];
-      v251 = [v268 extendedCurationOptionsWithRequiredAssetUUIDs:v66 triggeredMemory:v9];
+      v251 = [v268 extendedCurationOptionsWithRequiredAssetUUIDs:v66 triggeredMemory:memoryCopy];
     }
 
     objc_autoreleasePoolPop(context);
@@ -1228,8 +1228,8 @@ LABEL_128:
     }
 
     v243 = [PGMemoryGenerationHelper assetUUIDsFromAssets:contexta];
-    v74 = [v243 allObjects];
-    [(PGEnrichedMemory *)v15 setExtendedCuratedAssetUUIDs:v74];
+    allObjects = [v243 allObjects];
+    [(PGEnrichedMemory *)v15 setExtendedCuratedAssetUUIDs:allObjects];
 
     v75 = mach_absolute_time();
     v76 = v288.numer;
@@ -1271,7 +1271,7 @@ LABEL_128:
     v281 = 0;
     mach_timebase_info(&v281);
     spida = mach_absolute_time();
-    v239 = [v268 curationOptionsWithRequiredAssetUUIDs:v249 eligibleAssetUUIDs:v243 triggeredMemory:v9];
+    v239 = [v268 curationOptionsWithRequiredAssetUUIDs:v249 eligibleAssetUUIDs:v243 triggeredMemory:memoryCopy];
     if (v295[24])
     {
       v295[24] = 1;
@@ -1327,8 +1327,8 @@ LABEL_117:
     }
 
     v90 = [PGMemoryGenerationHelper assetUUIDsFromAssets:v230];
-    v91 = [v90 allObjects];
-    [(PGEnrichedMemory *)v15 setCuratedAssetUUIDs:v91];
+    allObjects2 = [v90 allObjects];
+    [(PGEnrichedMemory *)v15 setCuratedAssetUUIDs:allObjects2];
 
     v92 = mach_absolute_time();
     v93 = v281.numer;
@@ -1345,20 +1345,20 @@ LABEL_117:
     v97 = v96;
     if (os_log_type_enabled(v97, OS_LOG_TYPE_INFO))
     {
-      v98 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
+      v2632 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
       *v299 = 136315650;
       *v300 = "CuratedAsset";
       *&v300[8] = 2112;
-      *&v300[10] = v98;
+      *&v300[10] = v2632;
       *&v300[18] = 2048;
       v301 = ((((v92 - spida) * v93) / v94) / 1000000.0);
       _os_log_impl(&dword_22F0FC000, v97, OS_LOG_TYPE_INFO, "[Performance] %s - %@: %f ms", v299, 0x20u);
     }
 
     v99 = [v230 count];
-    v100 = [v10 minimumNumberOfCuratedAssets];
-    v101 = v100;
-    if (v99 < v100)
+    minimumNumberOfCuratedAssets = [configurationCopy minimumNumberOfCuratedAssets];
+    v101 = minimumNumberOfCuratedAssets;
+    if (v99 < minimumNumberOfCuratedAssets)
     {
       if (v295[24])
       {
@@ -1399,11 +1399,11 @@ LABEL_143:
         *&v300[4] = 1024;
         *&v300[6] = v101;
         *&v300[10] = 2112;
-        *&v300[12] = v9;
+        *&v300[12] = memoryCopy;
         _os_log_impl(&dword_22F0FC000, v133, OS_LOG_TYPE_DEFAULT, "[PGEnrichedMemoryFactory] Not enough curated assets, found %d but require at least %d, returning nil enrichedMemory for %@", v299, 0x18u);
       }
 
-      if (!v264)
+      if (!debugCopy)
       {
         goto LABEL_125;
       }
@@ -1414,10 +1414,10 @@ LABEL_174:
       goto LABEL_126;
     }
 
-    if (v259)
+    if (allowGuestAsset)
     {
       v102 = [(PGEnrichedMemoryFactory *)self _numberOfGuestAssetInAssets:v230];
-      [v10 maximumRatioOfGuestAssets];
+      [configurationCopy maximumRatioOfGuestAssets];
       v103 = v102 / v99;
       if (v103 > v104)
       {
@@ -1436,7 +1436,7 @@ LABEL_174:
             if (os_log_type_enabled(v138, OS_LOG_TYPE_DEFAULT))
             {
               *v299 = 138412802;
-              *v300 = v9;
+              *v300 = memoryCopy;
               *&v300[8] = 2048;
               *&v300[10] = v102;
               *&v300[18] = 2048;
@@ -1444,7 +1444,7 @@ LABEL_174:
               _os_log_impl(&dword_22F0FC000, v138, OS_LOG_TYPE_DEFAULT, "[PGEnrichedMemoryFactory] Too many guest assets featured for %@: %lu > %lu", v299, 0x20u);
             }
 
-            if (!v264)
+            if (!debugCopy)
             {
               goto LABEL_125;
             }
@@ -1489,7 +1489,7 @@ LABEL_174:
     v277 = 0;
     mach_timebase_info(&v277);
     v227 = mach_absolute_time();
-    v110 = [v261 allItems];
+    allItems = [v261 allItems];
     v274[0] = MEMORY[0x277D85DD0];
     v274[1] = 3221225472;
     v274[2] = __102__PGEnrichedMemoryFactory_enrichedMemoryWithTriggeredMemory_withConfiguration_progressReporter_debug___block_invoke_269;
@@ -1497,7 +1497,7 @@ LABEL_174:
     v276 = buf;
     v225 = v224;
     v275 = v225;
-    v237 = [PGCurationManager representativeAssetsForAssets:v110 extendedCuratedAssets:contexta progressBlock:v274];
+    v237 = [PGCurationManager representativeAssetsForAssets:allItems extendedCuratedAssets:contexta progressBlock:v274];
 
     if (v295[24] == 1)
     {
@@ -1515,8 +1515,8 @@ LABEL_174:
     }
 
     v111 = [PGMemoryGenerationHelper assetUUIDsFromAssets:v237];
-    v112 = [v111 allObjects];
-    [(PGEnrichedMemory *)v15 setRepresentativeAssetUUIDs:v112];
+    allObjects3 = [v111 allObjects];
+    [(PGEnrichedMemory *)v15 setRepresentativeAssetUUIDs:allObjects3];
 
     v113 = mach_absolute_time();
     v114 = v277.numer;
@@ -1533,11 +1533,11 @@ LABEL_174:
     v118 = v117;
     if (os_log_type_enabled(v118, OS_LOG_TYPE_INFO))
     {
-      v119 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
+      v2633 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
       *v299 = 136315650;
       *v300 = "RepresentativeAssets";
       *&v300[8] = 2112;
-      *&v300[10] = v119;
+      *&v300[10] = v2633;
       *&v300[18] = 2048;
       v301 = ((((v113 - v227) * v114) / v115) / 1000000.0);
       _os_log_impl(&dword_22F0FC000, v118, OS_LOG_TYPE_INFO, "[Performance] %s - %@: %f ms", v299, 0x20u);
@@ -1557,22 +1557,22 @@ LABEL_174:
     v273 = 0;
     mach_timebase_info(&v273);
     v214 = mach_absolute_time();
-    spidc = [v268 titleGeneratorForTriggeredMemory:v9 withKeyAsset:v255 curatedAssets:v230 extendedCuratedAssets:contexta titleGenerationContext:self->_titleGenerationContext inGraph:self->_graph];
+    spidc = [v268 titleGeneratorForTriggeredMemory:memoryCopy withKeyAsset:v255 curatedAssets:v230 extendedCuratedAssets:contexta titleGenerationContext:self->_titleGenerationContext inGraph:self->_graph];
     if (spidc)
     {
-      v222 = [spidc title];
-      v123 = [v222 stringValue];
-      v223 = [v123 stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
+      title = [spidc title];
+      stringValue = [title stringValue];
+      v223 = [stringValue stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
 
       if ([v223 length])
       {
         [(PGEnrichedMemory *)v15 setTitle:v223];
-        v218 = [spidc subtitle];
-        v124 = [v218 stringValue];
-        [(PGEnrichedMemory *)v15 setSubtitle:v124];
+        subtitle = [spidc subtitle];
+        stringValue2 = [subtitle stringValue];
+        [(PGEnrichedMemory *)v15 setSubtitle:stringValue2];
 
-        v125 = [(PGEnrichedMemory *)v15 subtitle];
-        v126 = [v125 length] == 0;
+        subtitle2 = [(PGEnrichedMemory *)v15 subtitle];
+        v126 = [subtitle2 length] == 0;
 
         if (v126)
         {
@@ -1591,11 +1591,11 @@ LABEL_174:
               if (os_log_type_enabled(v162, OS_LOG_TYPE_ERROR))
               {
                 *v299 = 138412290;
-                *v300 = v9;
+                *v300 = memoryCopy;
                 _os_log_error_impl(&dword_22F0FC000, v162, OS_LOG_TYPE_ERROR, "[PGEnrichedMemoryFactory] No subtitle generated, returning nil enrichedMemory for %@", v299, 0xCu);
               }
 
-              if (v264)
+              if (debugCopy)
               {
                 [(PGEnrichedMemory *)v15 setFailureReason:8];
                 v16 = v15;
@@ -1626,7 +1626,7 @@ LABEL_211:
           goto LABEL_212;
         }
 
-        -[PGEnrichedMemory setTitleCategory:](v15, "setTitleCategory:", [v222 category]);
+        -[PGEnrichedMemory setTitleCategory:](v15, "setTitleCategory:", [title category]);
         v265 = mach_absolute_time();
         v127 = v273.numer;
         v128 = v273.denom;
@@ -1642,11 +1642,11 @@ LABEL_211:
         v131 = v130;
         if (os_log_type_enabled(v131, OS_LOG_TYPE_INFO))
         {
-          v132 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
+          v2634 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
           *v299 = 136315650;
           *v300 = "TitleGeneration";
           *&v300[8] = 2112;
-          *&v300[10] = v132;
+          *&v300[10] = v2634;
           *&v300[18] = 2048;
           v301 = ((((v265 - v214) * v127) / v128) / 1000000.0);
           _os_log_impl(&dword_22F0FC000, v131, OS_LOG_TYPE_INFO, "[Performance] %s - %@: %f ms", v299, 0x20u);
@@ -1692,11 +1692,11 @@ LABEL_196:
         v272 = 0;
         mach_timebase_info(&v272);
         v215 = mach_absolute_time();
-        v266 = [v268 chapterTitleGeneratorForTriggeredMemory:v9 curatedAssets:v230 extendedCuratedAssets:contexta titleGenerationContext:self->_titleGenerationContext inGraph:self->_graph];
+        v266 = [v268 chapterTitleGeneratorForTriggeredMemory:memoryCopy curatedAssets:v230 extendedCuratedAssets:contexta titleGenerationContext:self->_titleGenerationContext inGraph:self->_graph];
         if (v266)
         {
-          v154 = [v266 generateChapterTitles];
-          [(PGEnrichedMemory *)v15 setChapterTitles:v154];
+          generateChapterTitles = [v266 generateChapterTitles];
+          [(PGEnrichedMemory *)v15 setChapterTitles:generateChapterTitles];
         }
 
         v155 = mach_absolute_time();
@@ -1714,11 +1714,11 @@ LABEL_196:
         v221 = v159;
         if (os_log_type_enabled(v221, OS_LOG_TYPE_INFO))
         {
-          v160 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
+          v2635 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
           *v299 = 136315650;
           *v300 = "ChapterTitleGeneration";
           *&v300[8] = 2112;
-          *&v300[10] = v160;
+          *&v300[10] = v2635;
           *&v300[18] = 2048;
           v301 = ((((v155 - v215) * v156) / v157) / 1000000.0);
           _os_log_impl(&dword_22F0FC000, v221, OS_LOG_TYPE_INFO, "[Performance] %s - %@: %f ms", v299, 0x20u);
@@ -1756,13 +1756,13 @@ LABEL_240:
         }
 
         v166 = objc_opt_class();
-        v167 = [v10 localDate];
-        -[PGEnrichedMemory setNotificationLevel:](v15, "setNotificationLevel:", [v166 notificationLevelForTriggeredMemory:v9 withLocalDate:v167 graph:self->_graph]);
+        localDate = [configurationCopy localDate];
+        -[PGEnrichedMemory setNotificationLevel:](v15, "setNotificationLevel:", [v166 notificationLevelForTriggeredMemory:memoryCopy withLocalDate:localDate graph:self->_graph]);
 
         v168 = objc_opt_class();
-        v169 = [(PGEnrichedMemory *)v15 notificationLevel];
+        notificationLevel = [(PGEnrichedMemory *)v15 notificationLevel];
         [(PGEnrichedMemory *)v15 electionScore];
-        [v168 notificationScoreForNotificationLevel:v169 electionScore:?];
+        [v168 notificationScoreForNotificationLevel:notificationLevel electionScore:?];
         [(PGEnrichedMemory *)v15 setScore:?];
         if (v295[24])
         {
@@ -1802,7 +1802,7 @@ LABEL_246:
         v271 = 0;
         mach_timebase_info(&v271);
         v216 = mach_absolute_time();
-        [v268 generateMoodForEnrichedMemory:v15 extendedCuratedAssets:contexta configuration:v10 inGraph:self->_graph];
+        [v268 generateMoodForEnrichedMemory:v15 extendedCuratedAssets:contexta configuration:configurationCopy inGraph:self->_graph];
         v212 = mach_absolute_time();
         v176 = v271;
         v177 = v175;
@@ -1817,11 +1817,11 @@ LABEL_246:
         v164 = v178;
         if (os_log_type_enabled(v164, OS_LOG_TYPE_INFO))
         {
-          v179 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
+          v2636 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v263];
           *v299 = 136315650;
           *v300 = "MoodGenerator";
           *&v300[8] = 2112;
-          *&v300[10] = v179;
+          *&v300[10] = v2636;
           *&v300[18] = 2048;
           v301 = ((((v212 - v216) * v176.numer) / v176.denom) / 1000000.0);
           _os_log_impl(&dword_22F0FC000, v164, OS_LOG_TYPE_INFO, "[Performance] %s - %@: %f ms", v299, 0x20u);
@@ -1867,10 +1867,10 @@ LABEL_259:
         mach_timebase_info(&v270);
         v208 = mach_absolute_time();
         moodKeywordComputer = self->_moodKeywordComputer;
-        v211 = [(PGEnrichedMemory *)v15 suggestedMood];
+        suggestedMood = [(PGEnrichedMemory *)v15 suggestedMood];
         graph = self->_graph;
-        v186 = [(PGMemoryCurationSession *)self->_memoryCurationSession locationHelper];
-        v187 = [(PGMoodKeywordComputer *)moodKeywordComputer moodKeywordsForTriggeredMemory:v9 suggestedMood:v211 inGraph:graph locationHelper:v186];
+        locationHelper = [(PGMemoryCurationSession *)self->_memoryCurationSession locationHelper];
+        v187 = [(PGMoodKeywordComputer *)moodKeywordComputer moodKeywordsForTriggeredMemory:memoryCopy suggestedMood:suggestedMood inGraph:graph locationHelper:locationHelper];
         [(PGEnrichedMemory *)v15 setLegacyMoodKeywords:v187];
 
         v188 = mach_absolute_time();
@@ -2001,11 +2001,11 @@ LABEL_276:
           if (os_log_type_enabled(v161, OS_LOG_TYPE_ERROR))
           {
             *v299 = 138412290;
-            *v300 = v9;
+            *v300 = memoryCopy;
             _os_log_error_impl(&dword_22F0FC000, v161, OS_LOG_TYPE_ERROR, "[PGEnrichedMemoryFactory] No title generated, returning nil enrichedMemory for %@", v299, 0xCu);
           }
 
-          if (v264)
+          if (debugCopy)
           {
             [(PGEnrichedMemory *)v15 setFailureReason:7];
             v16 = v15;
@@ -2049,11 +2049,11 @@ LABEL_214:
         if (os_log_type_enabled(v145, OS_LOG_TYPE_DEFAULT))
         {
           *v299 = 138412290;
-          *v300 = v9;
+          *v300 = memoryCopy;
           _os_log_impl(&dword_22F0FC000, v145, OS_LOG_TYPE_DEFAULT, "[PGEnrichedMemoryFactory] Nil titleGenerator, returning nil enrichedMemory for %@", v299, 0xCu);
         }
 
-        if (v264)
+        if (debugCopy)
         {
           [(PGEnrichedMemory *)v15 setFailureReason:6];
           v16 = v15;
@@ -2118,7 +2118,7 @@ LABEL_23:
     _os_log_impl(&dword_22F0FC000, v29, OS_LOG_TYPE_DEFAULT, "[PGEnrichedMemoryFactory] nil feeder for triggered memory from enricher %@", v299, 0xCu);
   }
 
-  if (v264)
+  if (debugCopy)
   {
     [(PGEnrichedMemory *)v15 setFailureReason:2];
     v16 = v15;
@@ -2255,10 +2255,10 @@ uint64_t __102__PGEnrichedMemoryFactory_enrichedMemoryWithTriggeredMemory_withCo
   return result;
 }
 
-- (id)debugEnrichedMemoryWithTriggeredMemory:(id)a3 withConfiguration:(id)a4 progressReporter:(id)a5
+- (id)debugEnrichedMemoryWithTriggeredMemory:(id)memory withConfiguration:(id)configuration progressReporter:(id)reporter
 {
-  v8 = a3;
-  v9 = [(PGEnrichedMemoryFactory *)self enrichedMemoryWithTriggeredMemory:v8 withConfiguration:a4 progressReporter:a5 debug:1];
+  memoryCopy = memory;
+  v9 = [(PGEnrichedMemoryFactory *)self enrichedMemoryWithTriggeredMemory:memoryCopy withConfiguration:configuration progressReporter:reporter debug:1];
   if (!v9)
   {
     loggingConnection = self->_loggingConnection;
@@ -2268,22 +2268,22 @@ uint64_t __102__PGEnrichedMemoryFactory_enrichedMemoryWithTriggeredMemory_withCo
       _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGEnrichedMemoryFactory] A non nil enrichedMemory with a failure reason should be specified when enriching triggered memory if debug = YES", v12, 2u);
     }
 
-    v9 = [[PGEnrichedMemory alloc] initWithTriggeredMemory:v8];
+    v9 = [[PGEnrichedMemory alloc] initWithTriggeredMemory:memoryCopy];
     [(PGEnrichedMemory *)v9 setFailureReason:1];
   }
 
   return v9;
 }
 
-- (id)_memoryEnricherFromTriggeredMemory:(id)a3
+- (id)_memoryEnricherFromTriggeredMemory:(id)memory
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  memoryCopy = memory;
   v5 = [[PGMemoryGenerator alloc] initWithMemoryCurationSession:self->_memoryCurationSession loggingConnection:self->_loggingConnection];
-  v6 = [v4 memoryCategory];
-  if (v6 > 200)
+  memoryCategory = [memoryCopy memoryCategory];
+  if (memoryCategory > 200)
   {
-    if ((v6 - 201) < 0x15 || (v6 - 301) < 2 || v6 == 401)
+    if ((memoryCategory - 201) < 0x15 || (memoryCategory - 301) < 2 || memoryCategory == 401)
     {
 LABEL_5:
       loggingConnection = self->_loggingConnection;
@@ -2291,7 +2291,7 @@ LABEL_5:
       {
         v9 = loggingConnection;
         v13 = 134217984;
-        v14 = [v4 memoryCategory];
+        memoryCategory2 = [memoryCopy memoryCategory];
         _os_log_error_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_ERROR, "+[PGEnrichedMemoryFactory memoryGeneratorClassFromTriggeredMemory:] is not compatible with legacy category: %lu", &v13, 0xCu);
       }
 
@@ -2301,7 +2301,7 @@ LABEL_5:
 
   else
   {
-    switch(v6)
+    switch(memoryCategory)
     {
       case 1:
         v7 = PGSingleMomentMemoryGenerator;
@@ -2393,7 +2393,7 @@ LABEL_38:
         v5 = v10;
         break;
       default:
-        if ((v6 - 101) < 2)
+        if ((memoryCategory - 101) < 2)
         {
           goto LABEL_5;
         }
@@ -2407,11 +2407,11 @@ LABEL_38:
   return v5;
 }
 
-- (PGEnrichedMemoryFactory)initWithMemoryCurationSession:(id)a3 graph:(id)a4 serviceManager:(id)a5
+- (PGEnrichedMemoryFactory)initWithMemoryCurationSession:(id)session graph:(id)graph serviceManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  graphCopy = graph;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = PGEnrichedMemoryFactory;
   v12 = [(PGEnrichedMemoryFactory *)&v20 init];
@@ -2421,16 +2421,16 @@ LABEL_38:
     loggingConnection = v12->_loggingConnection;
     v12->_loggingConnection = v13;
 
-    objc_storeStrong(&v12->_memoryCurationSession, a3);
+    objc_storeStrong(&v12->_memoryCurationSession, session);
     v15 = objc_alloc_init(PGMoodKeywordComputer);
     moodKeywordComputer = v12->_moodKeywordComputer;
     v12->_moodKeywordComputer = v15;
 
-    v17 = [[PGTitleGenerationContext alloc] initWithGraph:v10 serviceManager:v11];
+    v17 = [[PGTitleGenerationContext alloc] initWithGraph:graphCopy serviceManager:managerCopy];
     titleGenerationContext = v12->_titleGenerationContext;
     v12->_titleGenerationContext = v17;
 
-    objc_storeStrong(&v12->_graph, a4);
+    objc_storeStrong(&v12->_graph, graph);
   }
 
   return v12;

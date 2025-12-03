@@ -1,8 +1,8 @@
 @interface AvailableUnitRanks
 + (AvailableUnitRanks)shared;
 - (AvailableUnitRanks)init;
-- (AvailableUnitRanks)ranksWithLocales:(id)a3 cachedOnly:(BOOL)a4;
-- (id)conversionVerbsWithLocalization:(id)a3 from:(BOOL)a4;
+- (AvailableUnitRanks)ranksWithLocales:(id)locales cachedOnly:(BOOL)only;
+- (id)conversionVerbsWithLocalization:(id)localization from:(BOOL)from;
 - (id)ranks;
 @end
 
@@ -51,14 +51,14 @@ uint64_t __28__AvailableUnitRanks_shared__block_invoke()
   return v2;
 }
 
-- (id)conversionVerbsWithLocalization:(id)a3 from:(BOOL)a4
+- (id)conversionVerbsWithLocalization:(id)localization from:(BOOL)from
 {
-  v4 = a4;
-  v5 = [Localize localizedStringForKey:@"CONVERSION_SYNTAX" value:0 table:@"Localizable" localization:a3];
+  fromCopy = from;
+  v5 = [Localize localizedStringForKey:@"CONVERSION_SYNTAX" value:0 table:@"Localizable" localization:localization];
   v6 = [CalculateTokenizer prepareString:v5];
 
   v7 = @"_unit_to_";
-  if (v4)
+  if (fromCopy)
   {
     v8 = @"_unit_to_";
   }
@@ -68,7 +68,7 @@ uint64_t __28__AvailableUnitRanks_shared__block_invoke()
     v8 = @"_number_and_unit_from_";
   }
 
-  if (v4)
+  if (fromCopy)
   {
     v7 = @"_number_and_unit_from_";
   }
@@ -88,21 +88,21 @@ uint64_t __28__AvailableUnitRanks_shared__block_invoke()
   return v12;
 }
 
-- (AvailableUnitRanks)ranksWithLocales:(id)a3 cachedOnly:(BOOL)a4
+- (AvailableUnitRanks)ranksWithLocales:(id)locales cachedOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v44[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (![v6 count])
+  localesCopy = locales;
+  if (![localesCopy count])
   {
     v7 = +[Localize systemLocale];
     v44[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:1];
 
-    v6 = v8;
+    localesCopy = v8;
   }
 
-  v9 = [Localize keyForLocales:v6];
+  v9 = [Localize keyForLocales:localesCopy];
   [(NSLock *)self->_lock lock];
   v10 = [(NSCache *)self->_availableRanks objectForKey:v9];
   if (v10)
@@ -112,7 +112,7 @@ uint64_t __28__AvailableUnitRanks_shared__block_invoke()
 
   else
   {
-    v11 = !v4;
+    v11 = !onlyCopy;
   }
 
   if (v11)
@@ -155,9 +155,9 @@ uint64_t __28__AvailableUnitRanks_shared__block_invoke()
     v35 = v36;
     v21 = v15;
     v33 = v21;
-    [Localize enumerateLocales:v6 withBlock:v32];
+    [Localize enumerateLocales:localesCopy withBlock:v32];
     [CalculateTokenizer addSymbols:v21];
-    [CalculateTokenizer addLocalizedSymbols:v21 locales:v6];
+    [CalculateTokenizer addLocalizedSymbols:v21 locales:localesCopy];
     [CalculateTokenizer addUnits:v21 builtIn:0];
     v30 = 0u;
     v31 = 0u;

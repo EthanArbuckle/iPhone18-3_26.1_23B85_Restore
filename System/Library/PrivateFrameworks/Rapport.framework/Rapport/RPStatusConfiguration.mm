@@ -1,23 +1,23 @@
 @interface RPStatusConfiguration
-- (RPStatusConfiguration)initWithStatusID:(id)a3 leeway:(double)a4 configurationFlags:(unint64_t)a5 statusUpdateHandler:(id)a6;
+- (RPStatusConfiguration)initWithStatusID:(id)d leeway:(double)leeway configurationFlags:(unint64_t)flags statusUpdateHandler:(id)handler;
 @end
 
 @implementation RPStatusConfiguration
 
-- (RPStatusConfiguration)initWithStatusID:(id)a3 leeway:(double)a4 configurationFlags:(unint64_t)a5 statusUpdateHandler:(id)a6
+- (RPStatusConfiguration)initWithStatusID:(id)d leeway:(double)leeway configurationFlags:(unint64_t)flags statusUpdateHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
+  dCopy = d;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = RPStatusConfiguration;
   v13 = [(RPStatusConfiguration *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_statusID, a3);
-    v14->_leeway = a4;
-    v14->_flags = a5;
-    v15 = _Block_copy(v12);
+    objc_storeStrong(&v13->_statusID, d);
+    v14->_leeway = leeway;
+    v14->_flags = flags;
+    v15 = _Block_copy(handlerCopy);
     handler = v14->_handler;
     v14->_handler = v15;
 

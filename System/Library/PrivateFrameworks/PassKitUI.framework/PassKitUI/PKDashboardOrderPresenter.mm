@@ -1,12 +1,12 @@
 @interface PKDashboardOrderPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardOrderPresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (id)searchHistoryStringForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (void)_updateCell:(id)a3 withOrderItem:(id)a4;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (id)searchHistoryStringForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (void)_updateCell:(id)cell withOrderItem:(id)item;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardOrderPresenter
@@ -37,24 +37,24 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(PKDashboardOrderPresenter *)self _identifierForItem:v8];
-  v12 = [v10 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v9];
+  itemCopy = item;
+  pathCopy = path;
+  viewCopy = view;
+  v11 = [(PKDashboardOrderPresenter *)self _identifierForItem:itemCopy];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  [(PKDashboardOrderPresenter *)self _updateCell:v12 withOrderItem:v8];
+  [(PKDashboardOrderPresenter *)self _updateCell:v12 withOrderItem:itemCopy];
 
   return v12;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  [(PKDashboardOrderPresenter *)self _updateCell:self->_sampleSearchResultCell withOrderItem:a3, a6];
+  [(PKDashboardOrderPresenter *)self _updateCell:self->_sampleSearchResultCell withOrderItem:item, path];
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  v9 = a5 + v8 * -2.0;
+  v9 = width + v8 * -2.0;
   [(PKDashboardSearchResultCell *)self->_sampleSearchResultCell sizeThatFits:v9, 1.79769313e308];
   v11 = v10;
   [(PKDashboardSearchResultCell *)self->_sampleSearchResultCell prepareForReuse];
@@ -65,34 +65,34 @@
   return result;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v14 = a6;
+  controllerCopy = controller;
   v8 = getFKOrderDetailsViewControllerProviderClass[0];
-  v9 = a3;
+  itemCopy = item;
   v10 = v8();
-  v11 = [v9 orderTypeIdentifier];
-  v12 = [v9 orderIdentifier];
+  orderTypeIdentifier = [itemCopy orderTypeIdentifier];
+  orderIdentifier = [itemCopy orderIdentifier];
 
-  v13 = [(objc_class *)v10 makeViewControllerWithOrderTypeIdentifier:v11 orderIdentifier:v12 fulfillmentIdentifier:0];
+  v13 = [(objc_class *)v10 makeViewControllerWithOrderTypeIdentifier:orderTypeIdentifier orderIdentifier:orderIdentifier fulfillmentIdentifier:0];
 
   if (v13)
   {
-    [v14 presentViewController:v13 animated:1 completion:0];
+    [controllerCopy presentViewController:v13 animated:1 completion:0];
   }
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [PKDashboardSearchResultCell alloc];
@@ -104,32 +104,32 @@
   }
 }
 
-- (id)searchHistoryStringForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)searchHistoryStringForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v5 = [a4 cellForItemAtIndexPath:a5];
-  v6 = [v5 title];
+  v5 = [view cellForItemAtIndexPath:path];
+  title = [v5 title];
 
-  return v6;
+  return title;
 }
 
-- (void)_updateCell:(id)a3 withOrderItem:(id)a4
+- (void)_updateCell:(id)cell withOrderItem:(id)item
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = [v5 displayName];
-  [v12 setTitle:v6];
+  cellCopy = cell;
+  itemCopy = item;
+  displayName = [itemCopy displayName];
+  [cellCopy setTitle:displayName];
 
-  v7 = [v5 contentDescription];
-  [v12 setSubtitle:v7];
+  contentDescription = [itemCopy contentDescription];
+  [cellCopy setSubtitle:contentDescription];
 
-  v8 = [v5 thumbnailData];
-  if (v8)
+  thumbnailData = [itemCopy thumbnailData];
+  if (thumbnailData)
   {
     v9 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v10 = [v5 thumbnailData];
-    v11 = [v9 initWithData:v10];
+    thumbnailData2 = [itemCopy thumbnailData];
+    v11 = [v9 initWithData:thumbnailData2];
 
-    [v12 setThumbnail:v11];
+    [cellCopy setThumbnail:v11];
   }
 }
 

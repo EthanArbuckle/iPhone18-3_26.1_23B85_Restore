@@ -1,41 +1,41 @@
 @interface GTMTLReplayActivity
-- (GTMTLReplayActivity)initWithType:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTMTLReplayActivity)initWithType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonObject;
-- (void)outputToLog:(id)a3;
-- (void)signpostIntervalBegin:(unint64_t)a3;
+- (void)outputToLog:(id)log;
+- (void)signpostIntervalBegin:(unint64_t)begin;
 @end
 
 @implementation GTMTLReplayActivity
 
-- (void)signpostIntervalBegin:(unint64_t)a3
+- (void)signpostIntervalBegin:(unint64_t)begin
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = g_signpostLog;
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (begin - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
-    v7 = [(GTMTLReplayActivity *)self messageSerial];
+    messageSerial = [(GTMTLReplayActivity *)self messageSerial];
     activityType = self->_activityType;
     v10[0] = 67109378;
-    v10[1] = v7;
+    v10[1] = messageSerial;
     v11 = 2112;
     v12 = activityType;
-    _os_signpost_emit_with_name_impl(&dword_24D764000, v6, OS_SIGNPOST_INTERVAL_BEGIN, a3, "Replayer-3-commandQueue", "%u. %@", v10, 0x12u);
+    _os_signpost_emit_with_name_impl(&dword_24D764000, v6, OS_SIGNPOST_INTERVAL_BEGIN, begin, "Replayer-3-commandQueue", "%u. %@", v10, 0x12u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)outputToLog:(id)a3
+- (void)outputToLog:(id)log
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     activityType = self->_activityType;
     v7 = 138543362;
     v8 = activityType;
-    _os_log_impl(&dword_24D764000, a3, OS_LOG_TYPE_INFO, "%{public}@", &v7, 0xCu);
+    _os_log_impl(&dword_24D764000, log, OS_LOG_TYPE_INFO, "%{public}@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -59,7 +59,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   v6 = v5;
@@ -68,7 +68,7 @@
     objc_storeStrong(v5 + 1, self->_activityType);
     v6[2] = self->_activityStartTime;
     v6[3] = self->_activityEndTime;
-    v7 = [(GTMTLReplayActivity *)self->_previousActivity copyWithZone:a3];
+    v7 = [(GTMTLReplayActivity *)self->_previousActivity copyWithZone:zone];
     v8 = v6[4];
     v6[4] = v7;
   }
@@ -76,16 +76,16 @@
   return v6;
 }
 
-- (GTMTLReplayActivity)initWithType:(id)a3
+- (GTMTLReplayActivity)initWithType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v10.receiver = self;
   v10.super_class = GTMTLReplayActivity;
   v6 = [(GTMTLReplayActivity *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activityType, a3);
+    objc_storeStrong(&v6->_activityType, type);
     v8 = mach_absolute_time();
     v7->_activityStartTime = v8;
     v7->_activityEndTime = v8;

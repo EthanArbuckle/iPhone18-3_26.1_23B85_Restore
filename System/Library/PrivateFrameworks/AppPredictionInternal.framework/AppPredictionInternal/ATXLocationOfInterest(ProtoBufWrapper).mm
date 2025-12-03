@@ -16,24 +16,24 @@
     v4 = a3;
     v5 = [[ATXPBPredictionLocationOfInterest alloc] initWithData:v4];
 
-    a1 = [a1 initWithProto:v5];
-    v6 = a1;
+    self = [self initWithProto:v5];
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v1 = [a1 proto];
-  v2 = [v1 data];
+  proto = [self proto];
+  data = [proto data];
 
-  return v2;
+  return data;
 }
 
 - (id)initWithProto:()ProtoBufWrapper
@@ -42,7 +42,7 @@
   if (!v4)
   {
 LABEL_7:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -52,7 +52,7 @@ LABEL_7:
     v16 = __atxlog_handle_default();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      [(ATXLocationOfInterest(ProtoBufWrapper) *)a1 initWithProto:v16];
+      [(ATXLocationOfInterest(ProtoBufWrapper) *)self initWithProto:v16];
     }
 
     goto LABEL_7;
@@ -61,34 +61,34 @@ LABEL_7:
   v5 = MEMORY[0x277CCAD78];
   v6 = v4;
   v7 = [v5 alloc];
-  v8 = [v6 uuid];
-  v9 = [v7 initWithUUIDString:v8];
+  uuid = [v6 uuid];
+  v9 = [v7 initWithUUIDString:uuid];
 
   [v6 latitude];
   v11 = v10;
   [v6 longitude];
   v13 = CLLocationCoordinate2DMake(v11, v12);
-  v14 = [v6 type];
+  type = [v6 type];
 
-  a1 = [a1 initWithUUID:v9 visits:0 coordinate:objc_msgSend(a1 type:{"_routineLOITypeFromProtoLOIType:", v14), v13.latitude, v13.longitude}];
-  v15 = a1;
+  self = [self initWithUUID:v9 visits:0 coordinate:objc_msgSend(self type:{"_routineLOITypeFromProtoLOIType:", type), v13.latitude, v13.longitude}];
+  selfCopy = self;
 LABEL_8:
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v2 = objc_opt_new();
-  v3 = [a1 uuid];
-  v4 = [v3 UUIDString];
-  [v2 setUuid:v4];
+  uuid = [self uuid];
+  uUIDString = [uuid UUIDString];
+  [v2 setUuid:uUIDString];
 
-  [a1 coordinate];
+  [self coordinate];
   [v2 setLatitude:?];
-  [a1 coordinate];
+  [self coordinate];
   [v2 setLongitude:v5];
-  [v2 setType:{objc_msgSend(a1, "_protoLOITypeFromRoutineLOIType:", objc_msgSend(a1, "type"))}];
+  [v2 setType:{objc_msgSend(self, "_protoLOITypeFromRoutineLOIType:", objc_msgSend(self, "type"))}];
 
   return v2;
 }
@@ -103,7 +103,7 @@ LABEL_8:
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [(ATXLocationOfInterest(ProtoBufWrapper) *)a1 _routineLOITypeFromProtoLOIType:a3, v6];
+    [(ATXLocationOfInterest(ProtoBufWrapper) *)self _routineLOITypeFromProtoLOIType:a3, v6];
   }
 
   v7 = MEMORY[0x277CBEAD8];

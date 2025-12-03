@@ -1,57 +1,57 @@
 @interface RTLearnedVisit
-+ (id)createWithLearnedLocationOfInterestVisitMO:(id)a3;
-+ (id)createWithLearnedVisitMO:(id)a3;
-+ (id)createWithManagedObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)createWithLearnedLocationOfInterestVisitMO:(id)o;
++ (id)createWithLearnedVisitMO:(id)o;
++ (id)createWithManagedObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RTLearnedVisit)initWithIdentifier:(id)a3 location:(id)a4 entryDate:(id)a5 exitDate:(id)a6 creationDate:(id)a7 expirationDate:(id)a8 placeConfidence:(double)a9 placeSource:(unint64_t)a10;
-- (RTLearnedVisit)initWithVisit:(id)a3 locationOfInterest:(id)a4 creationDate:(id)a5 expirationDate:(id)a6;
-- (id)managedObjectWithContext:(id)a3;
+- (RTLearnedVisit)initWithIdentifier:(id)identifier location:(id)location entryDate:(id)date exitDate:(id)exitDate creationDate:(id)creationDate expirationDate:(id)expirationDate placeConfidence:(double)confidence placeSource:(unint64_t)self0;
+- (RTLearnedVisit)initWithVisit:(id)visit locationOfInterest:(id)interest creationDate:(id)date expirationDate:(id)expirationDate;
+- (id)managedObjectWithContext:(id)context;
 - (unint64_t)hash;
-- (void)updateManagedObject:(id)a3;
+- (void)updateManagedObject:(id)object;
 @end
 
 @implementation RTLearnedVisit
 
-- (RTLearnedVisit)initWithVisit:(id)a3 locationOfInterest:(id)a4 creationDate:(id)a5 expirationDate:(id)a6
+- (RTLearnedVisit)initWithVisit:(id)visit locationOfInterest:(id)interest creationDate:(id)date expirationDate:(id)expirationDate
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 identifier];
-  v12 = v11;
-  if (!v11)
+  expirationDateCopy = expirationDate;
+  dateCopy = date;
+  visitCopy = visit;
+  identifier = [visitCopy identifier];
+  uUID = identifier;
+  if (!identifier)
   {
-    v12 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
   }
 
   v13 = [RTLearnedLocation alloc];
-  v14 = [v10 location];
-  v15 = [(RTLearnedLocation *)v13 initWithLocation:v14 dataPointCount:30 type:1];
-  v16 = [v10 entryDate];
-  v17 = [v10 exitDate];
-  [v10 locationOfInterestConfidence];
+  location = [visitCopy location];
+  v15 = [(RTLearnedLocation *)v13 initWithLocation:location dataPointCount:30 type:1];
+  entryDate = [visitCopy entryDate];
+  exitDate = [visitCopy exitDate];
+  [visitCopy locationOfInterestConfidence];
   v19 = v18;
-  v20 = [v10 locationOfInterestSource];
+  locationOfInterestSource = [visitCopy locationOfInterestSource];
 
-  v21 = [(RTLearnedVisit *)self initWithIdentifier:v12 location:v15 entryDate:v16 exitDate:v17 creationDate:v9 expirationDate:v8 placeConfidence:v19 placeSource:v20];
-  if (!v11)
+  v21 = [(RTLearnedVisit *)self initWithIdentifier:uUID location:v15 entryDate:entryDate exitDate:exitDate creationDate:dateCopy expirationDate:expirationDateCopy placeConfidence:v19 placeSource:locationOfInterestSource];
+  if (!identifier)
   {
   }
 
   return v21;
 }
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = objectCopy;
       v5 = [objc_opt_class() createWithLearnedVisitMO:v4];
 LABEL_6:
       v6 = v5;
@@ -62,7 +62,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = objectCopy;
       v5 = [objc_opt_class() createWithLearnedLocationOfInterestVisitMO:v4];
       goto LABEL_6;
     }
@@ -71,7 +71,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412802;
-      v10 = v3;
+      v10 = objectCopy;
       v11 = 2080;
       v12 = "+[RTLearnedVisit(RTCoreDataTransformable) createWithManagedObject:]";
       v13 = 1024;
@@ -86,14 +86,14 @@ LABEL_11:
   return v6;
 }
 
-+ (id)createWithLearnedVisitMO:(id)a3
++ (id)createWithLearnedVisitMO:(id)o
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  oCopy = o;
+  v4 = oCopy;
+  if (!oCopy)
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_15;
     }
@@ -102,16 +102,16 @@ LABEL_11:
     v42 = "Invalid parameter not satisfying: learnedVisitMO";
     v43 = &v50;
 LABEL_20:
-    _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, v42, v43, 2u);
+    _os_log_error_impl(&dword_2304B3000, managedObjectContext2, OS_LOG_TYPE_ERROR, v42, v43, 2u);
     goto LABEL_15;
   }
 
-  v5 = [v3 identifier];
+  identifier = [oCopy identifier];
 
-  if (!v5)
+  if (!identifier)
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_15;
     }
@@ -122,14 +122,14 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v6 = [v4 managedObjectContext];
+  managedObjectContext = [v4 managedObjectContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 managedObjectContext];
-    if ((-[NSObject allowTombstones](v8, "allowTombstones") & 1) != 0 || ([v4 flags] & 1) == 0)
+    managedObjectContext2 = [v4 managedObjectContext];
+    if ((-[NSObject allowTombstones](managedObjectContext2, "allowTombstones") & 1) != 0 || ([v4 flags] & 1) == 0)
     {
 
       goto LABEL_7;
@@ -144,50 +144,50 @@ LABEL_15:
 LABEL_7:
   v47 = [RTLearnedLocation alloc];
   v9 = objc_alloc(MEMORY[0x277D01160]);
-  v46 = [v4 locationLatitude];
-  [v46 doubleValue];
+  locationLatitude = [v4 locationLatitude];
+  [locationLatitude doubleValue];
   v11 = v10;
-  v45 = [v4 locationLongitude];
-  [v45 doubleValue];
+  locationLongitude = [v4 locationLongitude];
+  [locationLongitude doubleValue];
   v13 = v12;
-  v14 = [v4 locationHorizontalUncertainty];
-  [v14 doubleValue];
+  locationHorizontalUncertainty = [v4 locationHorizontalUncertainty];
+  [locationHorizontalUncertainty doubleValue];
   v16 = v15;
-  v17 = [v4 locationAltitude];
-  [v17 doubleValue];
+  locationAltitude = [v4 locationAltitude];
+  [locationAltitude doubleValue];
   v19 = v18;
-  v20 = [v4 locationVerticalUncertainty];
-  [v20 doubleValue];
+  locationVerticalUncertainty = [v4 locationVerticalUncertainty];
+  [locationVerticalUncertainty doubleValue];
   v22 = v21;
-  v23 = [v4 locationReferenceFrame];
-  v24 = [v23 intValue];
-  v25 = [v4 locationSourceAccuracy];
-  v26 = [v9 initWithLatitude:0 longitude:v24 horizontalUncertainty:objc_msgSend(v25 altitude:"intValue") verticalUncertainty:v11 date:v13 referenceFrame:v16 speed:v19 sourceAccuracy:{v22, 0.0}];
-  v27 = [v4 dataPointCount];
-  v28 = [v27 unsignedIntegerValue];
-  v29 = [v4 confidence];
-  [v29 doubleValue];
-  v48 = [(RTLearnedLocation *)v47 initWithLocation:v26 dataPointCount:v28 confidence:?];
+  locationReferenceFrame = [v4 locationReferenceFrame];
+  intValue = [locationReferenceFrame intValue];
+  locationSourceAccuracy = [v4 locationSourceAccuracy];
+  v26 = [v9 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v11 date:v13 referenceFrame:v16 speed:v19 sourceAccuracy:{v22, 0.0}];
+  dataPointCount = [v4 dataPointCount];
+  unsignedIntegerValue = [dataPointCount unsignedIntegerValue];
+  confidence = [v4 confidence];
+  [confidence doubleValue];
+  v48 = [(RTLearnedLocation *)v47 initWithLocation:v26 dataPointCount:unsignedIntegerValue confidence:?];
 
   v30 = [RTLearnedVisit alloc];
-  v31 = [v4 identifier];
-  v32 = [v4 entryDate];
-  v33 = [v4 exitDate];
-  v34 = [v4 creationDate];
-  v35 = v34;
-  if (!v34)
+  identifier2 = [v4 identifier];
+  entryDate = [v4 entryDate];
+  exitDate = [v4 exitDate];
+  creationDate = [v4 creationDate];
+  distantPast = creationDate;
+  if (!creationDate)
   {
-    v35 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v36 = [v4 expirationDate];
-  v37 = [v4 placeConfidence];
-  [v37 doubleValue];
+  expirationDate = [v4 expirationDate];
+  placeConfidence = [v4 placeConfidence];
+  [placeConfidence doubleValue];
   v39 = v38;
-  v40 = [v4 placeSource];
-  v41 = -[RTLearnedVisit initWithIdentifier:location:entryDate:exitDate:creationDate:expirationDate:placeConfidence:placeSource:](v30, "initWithIdentifier:location:entryDate:exitDate:creationDate:expirationDate:placeConfidence:placeSource:", v31, v48, v32, v33, v35, v36, v39, [v40 unsignedIntegerValue]);
+  placeSource = [v4 placeSource];
+  v41 = -[RTLearnedVisit initWithIdentifier:location:entryDate:exitDate:creationDate:expirationDate:placeConfidence:placeSource:](v30, "initWithIdentifier:location:entryDate:exitDate:creationDate:expirationDate:placeConfidence:placeSource:", identifier2, v48, entryDate, exitDate, distantPast, expirationDate, v39, [placeSource unsignedIntegerValue]);
 
-  if (!v34)
+  if (!creationDate)
   {
   }
 
@@ -196,11 +196,11 @@ LABEL_16:
   return v41;
 }
 
-+ (id)createWithLearnedLocationOfInterestVisitMO:(id)a3
++ (id)createWithLearnedLocationOfInterestVisitMO:(id)o
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  oCopy = o;
+  v4 = oCopy;
+  if (!oCopy)
   {
     v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -219,9 +219,9 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  v5 = [v3 identifier];
+  identifier = [oCopy identifier];
 
-  if (!v5)
+  if (!identifier)
   {
     v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -236,53 +236,53 @@ LABEL_16:
   }
 
   v6 = objc_alloc(MEMORY[0x277D01160]);
-  v7 = [v4 locationLatitude];
-  [v7 doubleValue];
+  locationLatitude = [v4 locationLatitude];
+  [locationLatitude doubleValue];
   v9 = v8;
-  v10 = [v4 locationLongitude];
-  [v10 doubleValue];
+  locationLongitude = [v4 locationLongitude];
+  [locationLongitude doubleValue];
   v12 = v11;
-  v13 = [v4 locationHorizontalUncertainty];
-  [v13 doubleValue];
+  locationHorizontalUncertainty = [v4 locationHorizontalUncertainty];
+  [locationHorizontalUncertainty doubleValue];
   v15 = v14;
-  v16 = [v4 locationAltitude];
-  [v16 doubleValue];
+  locationAltitude = [v4 locationAltitude];
+  [locationAltitude doubleValue];
   v18 = v17;
-  v19 = [v4 locationVerticalUncertainty];
-  [v19 doubleValue];
+  locationVerticalUncertainty = [v4 locationVerticalUncertainty];
+  [locationVerticalUncertainty doubleValue];
   v21 = v20;
-  v22 = [v4 locationReferenceFrame];
-  v23 = [v22 intValue];
-  v24 = [v4 locationSourceAccuracy];
-  v25 = [v6 initWithLatitude:0 longitude:v23 horizontalUncertainty:objc_msgSend(v24 altitude:"intValue") verticalUncertainty:v9 date:v12 referenceFrame:v15 speed:v18 sourceAccuracy:{v21, 0.0}];
+  locationReferenceFrame = [v4 locationReferenceFrame];
+  intValue = [locationReferenceFrame intValue];
+  locationSourceAccuracy = [v4 locationSourceAccuracy];
+  v25 = [v6 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v9 date:v12 referenceFrame:v15 speed:v18 sourceAccuracy:{v21, 0.0}];
 
   v26 = [RTLearnedLocation alloc];
-  v27 = [v4 dataPointCount];
-  v28 = [v27 unsignedIntegerValue];
-  v29 = [v4 confidence];
-  [v29 doubleValue];
+  dataPointCount = [v4 dataPointCount];
+  unsignedIntegerValue = [dataPointCount unsignedIntegerValue];
+  confidence = [v4 confidence];
+  [confidence doubleValue];
   v46 = v25;
-  v47 = [(RTLearnedLocation *)v26 initWithLocation:v25 dataPointCount:v28 confidence:?];
+  v47 = [(RTLearnedLocation *)v26 initWithLocation:v25 dataPointCount:unsignedIntegerValue confidence:?];
 
   v30 = [RTLearnedVisit alloc];
-  v31 = [v4 identifier];
-  v32 = [v4 entryDate];
-  v33 = [v4 exitDate];
-  v34 = [v4 creationDate];
-  v35 = v34;
-  if (!v34)
+  identifier2 = [v4 identifier];
+  entryDate = [v4 entryDate];
+  exitDate = [v4 exitDate];
+  creationDate = [v4 creationDate];
+  distantPast = creationDate;
+  if (!creationDate)
   {
-    v35 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v36 = [v4 expirationDate];
-  v37 = [v4 locationOfInterestConfidence];
-  [v37 doubleValue];
+  expirationDate = [v4 expirationDate];
+  locationOfInterestConfidence = [v4 locationOfInterestConfidence];
+  [locationOfInterestConfidence doubleValue];
   v39 = v38;
-  v40 = [v4 locationOfInterestSource];
-  v41 = -[RTLearnedVisit initWithIdentifier:location:entryDate:exitDate:creationDate:expirationDate:placeConfidence:placeSource:](v30, "initWithIdentifier:location:entryDate:exitDate:creationDate:expirationDate:placeConfidence:placeSource:", v31, v47, v32, v33, v35, v36, v39, [v40 unsignedIntegerValue]);
+  locationOfInterestSource = [v4 locationOfInterestSource];
+  v41 = -[RTLearnedVisit initWithIdentifier:location:entryDate:exitDate:creationDate:expirationDate:placeConfidence:placeSource:](v30, "initWithIdentifier:location:entryDate:exitDate:creationDate:expirationDate:placeConfidence:placeSource:", identifier2, v47, entryDate, exitDate, distantPast, expirationDate, v39, [locationOfInterestSource unsignedIntegerValue]);
 
-  if (!v34)
+  if (!creationDate)
   {
   }
 
@@ -291,11 +291,11 @@ LABEL_12:
   return v41;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTLearnedVisitMO managedObjectWithVisit:self inManagedObjectContext:a3];
+    v3 = [RTLearnedVisitMO managedObjectWithVisit:self inManagedObjectContext:context];
   }
 
   else
@@ -313,25 +313,25 @@ LABEL_12:
   return v3;
 }
 
-- (void)updateManagedObject:(id)a3
+- (void)updateManagedObject:(id)object
 {
-  v6 = a3;
-  v4 = [v6 managedObjectContext];
-  v5 = [RTLearnedVisitMO managedObjectWithVisit:self finerGranularityInferredMapItem:0 place:0 managedObject:v6 inManagedObjectContext:v4];
+  objectCopy = object;
+  managedObjectContext = [objectCopy managedObjectContext];
+  v5 = [RTLearnedVisitMO managedObjectWithVisit:self finerGranularityInferredMapItem:0 place:0 managedObject:objectCopy inManagedObjectContext:managedObjectContext];
 }
 
-- (RTLearnedVisit)initWithIdentifier:(id)a3 location:(id)a4 entryDate:(id)a5 exitDate:(id)a6 creationDate:(id)a7 expirationDate:(id)a8 placeConfidence:(double)a9 placeSource:(unint64_t)a10
+- (RTLearnedVisit)initWithIdentifier:(id)identifier location:(id)location entryDate:(id)date exitDate:(id)exitDate creationDate:(id)creationDate expirationDate:(id)expirationDate placeConfidence:(double)confidence placeSource:(unint64_t)self0
 {
   v55 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  if (v17)
+  identifierCopy = identifier;
+  locationCopy = location;
+  dateCopy = date;
+  exitDateCopy = exitDate;
+  creationDateCopy = creationDate;
+  expirationDateCopy = expirationDate;
+  if (identifierCopy)
   {
-    if (v18)
+    if (locationCopy)
     {
       goto LABEL_3;
     }
@@ -349,10 +349,10 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier (in %s:%d)", buf, 0x12u);
     }
 
-    if (v18)
+    if (locationCopy)
     {
 LABEL_3:
-      if (v19)
+      if (dateCopy)
       {
         goto LABEL_4;
       }
@@ -371,10 +371,10 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location (in %s:%d)", buf, 0x12u);
   }
 
-  if (v19)
+  if (dateCopy)
   {
 LABEL_4:
-    if (v20)
+    if (exitDateCopy)
     {
       goto LABEL_5;
     }
@@ -393,10 +393,10 @@ LABEL_14:
     _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: entryDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (v20)
+  if (exitDateCopy)
   {
 LABEL_5:
-    if (v21)
+    if (creationDateCopy)
     {
       goto LABEL_6;
     }
@@ -415,10 +415,10 @@ LABEL_17:
     _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: exitDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (v21)
+  if (creationDateCopy)
   {
 LABEL_6:
-    if (v22)
+    if (expirationDateCopy)
     {
       goto LABEL_26;
     }
@@ -437,7 +437,7 @@ LABEL_20:
     _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: creationDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v22)
+  if (!expirationDateCopy)
   {
 LABEL_23:
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -452,7 +452,7 @@ LABEL_23:
   }
 
 LABEL_26:
-  if (a9 < 0.0 || a9 > 1.0)
+  if (confidence < 0.0 || confidence > 1.0)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -465,143 +465,143 @@ LABEL_26:
     }
   }
 
-  v30 = 0;
-  if (v17 && v18 && v19 && v20 && v21 && v22)
+  selfCopy = 0;
+  if (identifierCopy && locationCopy && dateCopy && exitDateCopy && creationDateCopy && expirationDateCopy)
   {
-    if ([v19 compare:v20] == 1)
+    if ([dateCopy compare:exitDateCopy] == 1)
     {
       v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        v44 = [v19 stringFromDate];
-        v45 = [v20 stringFromDate];
+        stringFromDate = [dateCopy stringFromDate];
+        stringFromDate2 = [exitDateCopy stringFromDate];
         *buf = 138413058;
-        v48 = v44;
+        v48 = stringFromDate;
         v49 = 2112;
         v51 = 2080;
-        v50 = v45;
+        v50 = stringFromDate2;
         v52 = "[RTLearnedVisit initWithIdentifier:location:entryDate:exitDate:creationDate:expirationDate:placeConfidence:placeSource:]";
         v53 = 1024;
         v54 = 75;
         _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "entry, %@, postdates exit, %@ (in %s:%d)", buf, 0x26u);
       }
 
-      v30 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v30 = 0;
-      if (a9 >= 0.0 && a9 <= 1.0)
+      selfCopy = 0;
+      if (confidence >= 0.0 && confidence <= 1.0)
       {
         v46.receiver = self;
         v46.super_class = RTLearnedVisit;
         v32 = [(RTLearnedVisit *)&v46 init];
         if (v32)
         {
-          v33 = [v17 copy];
+          v33 = [identifierCopy copy];
           identifier = v32->_identifier;
           v32->_identifier = v33;
 
-          objc_storeStrong(&v32->_location, a4);
-          v35 = [v19 copy];
+          objc_storeStrong(&v32->_location, location);
+          v35 = [dateCopy copy];
           entryDate = v32->_entryDate;
           v32->_entryDate = v35;
 
-          v37 = [v20 copy];
+          v37 = [exitDateCopy copy];
           exitDate = v32->_exitDate;
           v32->_exitDate = v37;
 
-          v39 = [v21 copy];
+          v39 = [creationDateCopy copy];
           creationDate = v32->_creationDate;
           v32->_creationDate = v39;
 
-          v41 = [v22 copy];
+          v41 = [expirationDateCopy copy];
           expirationDate = v32->_expirationDate;
           v32->_expirationDate = v41;
 
-          v32->_placeConfidence = a9;
-          v32->_placeSource = a10;
+          v32->_placeConfidence = confidence;
+          v32->_placeSource = source;
         }
 
         self = v32;
-        v30 = self;
+        selfCopy = self;
       }
     }
   }
 
-  return v30;
+  return selfCopy;
 }
 
 - (NSString)description
 {
   v17 = MEMORY[0x277CCACA8];
-  v19 = [(RTLearnedVisit *)self identifier];
-  v15 = [v19 UUIDString];
-  v3 = [(RTLearnedVisit *)self location];
-  v18 = [(RTLearnedVisit *)self entryDate];
-  v4 = [v18 stringFromDate];
-  v16 = [(RTLearnedVisit *)self exitDate];
-  v5 = [v16 stringFromDate];
-  v6 = [(RTLearnedVisit *)self creationDate];
-  v7 = [v6 stringFromDate];
-  v8 = [(RTLearnedVisit *)self expirationDate];
-  v9 = [v8 stringFromDate];
+  identifier = [(RTLearnedVisit *)self identifier];
+  uUIDString = [identifier UUIDString];
+  location = [(RTLearnedVisit *)self location];
+  entryDate = [(RTLearnedVisit *)self entryDate];
+  stringFromDate = [entryDate stringFromDate];
+  exitDate = [(RTLearnedVisit *)self exitDate];
+  stringFromDate2 = [exitDate stringFromDate];
+  creationDate = [(RTLearnedVisit *)self creationDate];
+  stringFromDate3 = [creationDate stringFromDate];
+  expirationDate = [(RTLearnedVisit *)self expirationDate];
+  stringFromDate4 = [expirationDate stringFromDate];
   [(RTLearnedVisit *)self placeConfidence];
   v11 = v10;
   v12 = [MEMORY[0x277D011A0] sourceToString:{-[RTLearnedVisit placeSource](self, "placeSource")}];
-  v13 = [v17 stringWithFormat:@"identifier, %@, location, %@, entryDate, %@, exitDate, %@, creationDate, %@, expirationDate, %@, placeConfidence, %.3f, placeSource, %@", v15, v3, v4, v5, v7, v9, v11, v12];
+  v13 = [v17 stringWithFormat:@"identifier, %@, location, %@, entryDate, %@, exitDate, %@, creationDate, %@, expirationDate, %@, placeConfidence, %.3f, placeSource, %@", uUIDString, location, stringFromDate, stringFromDate2, stringFromDate3, stringFromDate4, v11, v12];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 == self)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v6)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v8 = v7;
-        v9 = [(RTLearnedVisit *)self identifier];
-        if (v9 || ([(RTLearnedVisit *)v8 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(RTLearnedVisit *)self identifier];
+        if (identifier || ([(RTLearnedVisit *)v8 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v4 = [(RTLearnedVisit *)self identifier];
-          v10 = [(RTLearnedVisit *)v8 identifier];
-          v11 = [v4 isEqual:v10];
+          identifier2 = [(RTLearnedVisit *)self identifier];
+          identifier3 = [(RTLearnedVisit *)v8 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v9)
+          if (identifier)
           {
 LABEL_12:
 
-            v13 = [(RTLearnedVisit *)self expirationDate];
-            if (v13 || ([(RTLearnedVisit *)v8 expirationDate], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+            expirationDate = [(RTLearnedVisit *)self expirationDate];
+            if (expirationDate || ([(RTLearnedVisit *)v8 expirationDate], (identifier2 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v14 = [(RTLearnedVisit *)self expirationDate];
-              v15 = [(RTLearnedVisit *)v8 expirationDate];
-              v16 = [v14 isEqual:v15];
+              expirationDate2 = [(RTLearnedVisit *)self expirationDate];
+              expirationDate3 = [(RTLearnedVisit *)v8 expirationDate];
+              v16 = [expirationDate2 isEqual:expirationDate3];
 
-              if (v13)
+              if (expirationDate)
               {
 LABEL_18:
 
-                v17 = [(RTLearnedVisit *)self creationDate];
-                if (v17 || ([(RTLearnedVisit *)v8 creationDate], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+                creationDate = [(RTLearnedVisit *)self creationDate];
+                if (creationDate || ([(RTLearnedVisit *)v8 creationDate], (identifier2 = objc_claimAutoreleasedReturnValue()) != 0))
                 {
-                  v18 = [(RTLearnedVisit *)self creationDate];
-                  v19 = [(RTLearnedVisit *)v8 creationDate];
-                  v20 = [v18 isEqual:v19];
+                  creationDate2 = [(RTLearnedVisit *)self creationDate];
+                  creationDate3 = [(RTLearnedVisit *)v8 creationDate];
+                  v20 = [creationDate2 isEqual:creationDate3];
 
-                  if (v17)
+                  if (creationDate)
                   {
 LABEL_24:
 
@@ -647,12 +647,12 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(RTLearnedVisit *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(RTLearnedVisit *)self expirationDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RTLearnedVisit *)self creationDate];
-  v8 = [v7 hash];
+  identifier = [(RTLearnedVisit *)self identifier];
+  v4 = [identifier hash];
+  expirationDate = [(RTLearnedVisit *)self expirationDate];
+  v6 = [expirationDate hash] ^ v4;
+  creationDate = [(RTLearnedVisit *)self creationDate];
+  v8 = [creationDate hash];
 
   return v6 ^ v8;
 }

@@ -1,25 +1,25 @@
 @interface CRKShareTargetBrowser
-- (BOOL)isClientInvalidationError:(id)a3;
-- (CRKShareTargetBrowser)initWithDelegate:(id)a3 queue:(id)a4;
-- (id)makeShareTargetsWithDictionaries:(id)a3 taskClient:(id)a4;
+- (BOOL)isClientInvalidationError:(id)error;
+- (CRKShareTargetBrowser)initWithDelegate:(id)delegate queue:(id)queue;
+- (id)makeShareTargetsWithDictionaries:(id)dictionaries taskClient:(id)client;
 - (void)acquireStudentActivityAssertion;
-- (void)acquireStudentActivityAssertionOperationDidFail:(id)a3;
-- (void)browseForInstructorTargetsOperationDidFail:(id)a3;
-- (void)browseForStudentTargetsOperationDidFail:(id)a3;
-- (void)client:(id)a3 didInterruptWithError:(id)a4;
-- (void)clientDidConnect:(id)a3;
+- (void)acquireStudentActivityAssertionOperationDidFail:(id)fail;
+- (void)browseForInstructorTargetsOperationDidFail:(id)fail;
+- (void)browseForStudentTargetsOperationDidFail:(id)fail;
+- (void)client:(id)client didInterruptWithError:(id)error;
+- (void)clientDidConnect:(id)connect;
 - (void)connectToInstructord;
 - (void)connectToStudentd;
 - (void)dealloc;
-- (void)delegateDidFindTargets:(id)a3;
-- (void)delegateDidInterruptWithError:(id)a3;
-- (void)delegateDidRemoveTargets:(id)a3;
-- (void)invalidateClient:(id)a3;
+- (void)delegateDidFindTargets:(id)targets;
+- (void)delegateDidInterruptWithError:(id)error;
+- (void)delegateDidRemoveTargets:(id)targets;
+- (void)invalidateClient:(id)client;
 - (void)resume;
 - (void)startBrowsingForInstructorTargets;
 - (void)startBrowsingForStudentTargets;
 - (void)suspend;
-- (void)taskOperation:(id)a3 didPostNotificationWithName:(id)a4 userInfo:(id)a5;
+- (void)taskOperation:(id)operation didPostNotificationWithName:(id)name userInfo:(id)info;
 - (void)tearDownInstructorClient;
 - (void)tearDownStudentClient;
 @end
@@ -34,14 +34,14 @@
   [(CRKShareTargetBrowser *)&v3 dealloc];
 }
 
-- (CRKShareTargetBrowser)initWithDelegate:(id)a3 queue:(id)a4
+- (CRKShareTargetBrowser)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  v8 = queueCopy;
+  if (delegateCopy)
   {
-    if (v7)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -65,8 +65,8 @@ LABEL_3:
   if (v9)
   {
     v9->mIsValid = 1;
-    objc_storeWeak(&v9->mDelegate, v6);
-    objc_storeStrong(&v10->mDelegateQueue, a4);
+    objc_storeWeak(&v9->mDelegate, delegateCopy);
+    objc_storeStrong(&v10->mDelegateQueue, queue);
     v11 = objc_opt_new();
     mOperationQueue = v10->mOperationQueue;
     v10->mOperationQueue = v11;
@@ -88,7 +88,7 @@ LABEL_3:
 - (void)resume
 {
   OUTLINED_FUNCTION_1_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -104,7 +104,7 @@ LABEL_3:
 - (void)connectToStudentd
 {
   OUTLINED_FUNCTION_1_0();
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v1 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -161,26 +161,26 @@ LABEL_12:
 
 - (void)acquireStudentActivityAssertion
 {
-  v3 = [(CRKShareTargetBrowser *)self studentClient];
+  studentClient = [(CRKShareTargetBrowser *)self studentClient];
   v4 = objc_opt_new();
-  v5 = [v3 prepareTaskOperationForRequest:v4];
+  v5 = [studentClient prepareTaskOperationForRequest:v4];
 
   [v5 addTarget:self selector:sel_acquireStudentActivityAssertionOperationDidFail_ forOperationEvents:4];
   [(CATOperationQueue *)self->mOperationQueue addOperation:v5];
 }
 
-- (void)acquireStudentActivityAssertionOperationDidFail:(id)a3
+- (void)acquireStudentActivityAssertionOperationDidFail:(id)fail
 {
-  v4 = [a3 error];
-  if (![(CRKShareTargetBrowser *)self isClientInvalidationError:v4])
+  error = [fail error];
+  if (![(CRKShareTargetBrowser *)self isClientInvalidationError:error])
   {
     v5 = _CRKLogGeneral_5();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [CRKShareTargetBrowser acquireStudentActivityAssertionOperationDidFail:v4];
+      [CRKShareTargetBrowser acquireStudentActivityAssertionOperationDidFail:error];
     }
 
-    [(CRKShareTargetBrowser *)self delegateDidInterruptWithError:v4];
+    [(CRKShareTargetBrowser *)self delegateDidInterruptWithError:error];
   }
 }
 
@@ -193,34 +193,34 @@ LABEL_12:
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_DEFAULT, "Classroom: Share target browser starting to browse for student targets", v7, 2u);
   }
 
-  v4 = [(CRKShareTargetBrowser *)self studentClient];
+  studentClient = [(CRKShareTargetBrowser *)self studentClient];
   v5 = objc_opt_new();
-  v6 = [v4 prepareTaskOperationForRequest:v5];
+  v6 = [studentClient prepareTaskOperationForRequest:v5];
 
   [v6 addTarget:self selector:sel_browseForStudentTargetsOperationDidFail_ forOperationEvents:4];
   [v6 setNotificationDelegate:self];
   [(CATOperationQueue *)self->mOperationQueue addOperation:v6];
 }
 
-- (void)browseForStudentTargetsOperationDidFail:(id)a3
+- (void)browseForStudentTargetsOperationDidFail:(id)fail
 {
-  v4 = [a3 error];
-  if (![(CRKShareTargetBrowser *)self isClientInvalidationError:v4])
+  error = [fail error];
+  if (![(CRKShareTargetBrowser *)self isClientInvalidationError:error])
   {
     v5 = _CRKLogGeneral_5();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [CRKShareTargetBrowser browseForStudentTargetsOperationDidFail:v4];
+      [CRKShareTargetBrowser browseForStudentTargetsOperationDidFail:error];
     }
 
-    [(CRKShareTargetBrowser *)self delegateDidInterruptWithError:v4];
+    [(CRKShareTargetBrowser *)self delegateDidInterruptWithError:error];
   }
 }
 
 - (void)connectToInstructord
 {
   OUTLINED_FUNCTION_1_0();
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v1 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -284,36 +284,36 @@ LABEL_12:
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_DEFAULT, "Classroom: Share target browser starting to browse for instructor targets", v7, 2u);
   }
 
-  v4 = [(CRKShareTargetBrowser *)self instructorClient];
+  instructorClient = [(CRKShareTargetBrowser *)self instructorClient];
   v5 = objc_opt_new();
-  v6 = [v4 prepareTaskOperationForRequest:v5];
+  v6 = [instructorClient prepareTaskOperationForRequest:v5];
 
   [v6 addTarget:self selector:sel_browseForInstructorTargetsOperationDidFail_ forOperationEvents:4];
   [v6 setNotificationDelegate:self];
   [(CATOperationQueue *)self->mOperationQueue addOperation:v6];
 }
 
-- (void)browseForInstructorTargetsOperationDidFail:(id)a3
+- (void)browseForInstructorTargetsOperationDidFail:(id)fail
 {
-  v4 = [a3 error];
-  if (![(CRKShareTargetBrowser *)self isClientInvalidationError:v4])
+  error = [fail error];
+  if (![(CRKShareTargetBrowser *)self isClientInvalidationError:error])
   {
     v5 = _CRKLogGeneral_5();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [CRKShareTargetBrowser browseForInstructorTargetsOperationDidFail:v4];
+      [CRKShareTargetBrowser browseForInstructorTargetsOperationDidFail:error];
     }
 
-    [(CRKShareTargetBrowser *)self delegateDidInterruptWithError:v4];
+    [(CRKShareTargetBrowser *)self delegateDidInterruptWithError:error];
   }
 }
 
-- (void)clientDidConnect:(id)a3
+- (void)clientDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = [(CRKShareTargetBrowser *)self studentClient];
+  connectCopy = connect;
+  studentClient = [(CRKShareTargetBrowser *)self studentClient];
 
-  if (v5 == v4)
+  if (studentClient == connectCopy)
   {
     v8 = _CRKLogGeneral_5();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -328,9 +328,9 @@ LABEL_12:
 
   else
   {
-    v6 = [(CRKShareTargetBrowser *)self instructorClient];
+    instructorClient = [(CRKShareTargetBrowser *)self instructorClient];
 
-    if (v6 == v4)
+    if (instructorClient == connectCopy)
     {
       v7 = _CRKLogGeneral_5();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -344,30 +344,30 @@ LABEL_12:
   }
 }
 
-- (void)client:(id)a3 didInterruptWithError:(id)a4
+- (void)client:(id)client didInterruptWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 domain];
-  if (![v8 isEqualToString:*MEMORY[0x277CF9518]])
+  clientCopy = client;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:*MEMORY[0x277CF9518]])
   {
 
     goto LABEL_6;
   }
 
-  v9 = [v7 code];
+  code = [errorCopy code];
 
-  if (v9 != 302 || ([v7 userInfo], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", @"kCATErrorMessageNameKey"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"CATTaskMessageProgressUpdate"), v11, v10, (v12 & 1) == 0))
+  if (code != 302 || ([errorCopy userInfo], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", @"kCATErrorMessageNameKey"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"CATTaskMessageProgressUpdate"), v11, v10, (v12 & 1) == 0))
   {
 LABEL_6:
-    v13 = [(CRKShareTargetBrowser *)self studentClient];
+    studentClient = [(CRKShareTargetBrowser *)self studentClient];
 
-    if (v13 == v6)
+    if (studentClient == clientCopy)
     {
       v16 = _CRKLogGeneral_5();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [CRKShareTargetBrowser client:v7 didInterruptWithError:?];
+        [CRKShareTargetBrowser client:errorCopy didInterruptWithError:?];
       }
 
       [(CRKShareTargetBrowser *)self tearDownStudentClient];
@@ -375,9 +375,9 @@ LABEL_6:
 
     else
     {
-      v14 = [(CRKShareTargetBrowser *)self instructorClient];
+      instructorClient = [(CRKShareTargetBrowser *)self instructorClient];
 
-      if (v14 != v6)
+      if (instructorClient != clientCopy)
       {
         goto LABEL_15;
       }
@@ -385,13 +385,13 @@ LABEL_6:
       v15 = _CRKLogGeneral_5();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [CRKShareTargetBrowser client:v7 didInterruptWithError:?];
+        [CRKShareTargetBrowser client:errorCopy didInterruptWithError:?];
       }
 
       [(CRKShareTargetBrowser *)self tearDownInstructorClient];
     }
 
-    [(CRKShareTargetBrowser *)self delegateDidInterruptWithError:v7];
+    [(CRKShareTargetBrowser *)self delegateDidInterruptWithError:errorCopy];
   }
 
 LABEL_15:
@@ -399,9 +399,9 @@ LABEL_15:
 
 - (void)tearDownStudentClient
 {
-  v3 = [(CRKShareTargetBrowser *)self studentClient];
+  studentClient = [(CRKShareTargetBrowser *)self studentClient];
 
-  if (v3)
+  if (studentClient)
   {
     v4 = _CRKLogGeneral_5();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -410,20 +410,20 @@ LABEL_15:
       _os_log_impl(&dword_243550000, v4, OS_LOG_TYPE_DEFAULT, "Classroom: Share target browser is tearing down studentd task client", v7, 2u);
     }
 
-    v5 = [(CRKShareTargetBrowser *)self shareTargetCollector];
-    [v5 studentTargetsDidChange:MEMORY[0x277CBEBF8]];
+    shareTargetCollector = [(CRKShareTargetBrowser *)self shareTargetCollector];
+    [shareTargetCollector studentTargetsDidChange:MEMORY[0x277CBEBF8]];
 
-    v6 = [(CRKShareTargetBrowser *)self studentClient];
+    studentClient2 = [(CRKShareTargetBrowser *)self studentClient];
     [(CRKShareTargetBrowser *)self setStudentClient:0];
-    [(CRKShareTargetBrowser *)self invalidateClient:v6];
+    [(CRKShareTargetBrowser *)self invalidateClient:studentClient2];
   }
 }
 
 - (void)tearDownInstructorClient
 {
-  v3 = [(CRKShareTargetBrowser *)self instructorClient];
+  instructorClient = [(CRKShareTargetBrowser *)self instructorClient];
 
-  if (v3)
+  if (instructorClient)
   {
     v4 = _CRKLogGeneral_5();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -432,52 +432,52 @@ LABEL_15:
       _os_log_impl(&dword_243550000, v4, OS_LOG_TYPE_DEFAULT, "Classroom: Share target browser is tearing down instructord task client", v7, 2u);
     }
 
-    v5 = [(CRKShareTargetBrowser *)self shareTargetCollector];
-    [v5 instructorTargetsDidChange:MEMORY[0x277CBEBF8]];
+    shareTargetCollector = [(CRKShareTargetBrowser *)self shareTargetCollector];
+    [shareTargetCollector instructorTargetsDidChange:MEMORY[0x277CBEBF8]];
 
-    v6 = [(CRKShareTargetBrowser *)self instructorClient];
+    instructorClient2 = [(CRKShareTargetBrowser *)self instructorClient];
     [(CRKShareTargetBrowser *)self setInstructorClient:0];
-    [(CRKShareTargetBrowser *)self invalidateClient:v6];
+    [(CRKShareTargetBrowser *)self invalidateClient:instructorClient2];
   }
 }
 
-- (void)invalidateClient:(id)a3
+- (void)invalidateClient:(id)client
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  [v3 invalidate];
+  clientCopy = client;
+  [clientCopy setDelegate:0];
+  [clientCopy invalidate];
 }
 
-- (void)taskOperation:(id)a3 didPostNotificationWithName:(id)a4 userInfo:(id)a5
+- (void)taskOperation:(id)operation didPostNotificationWithName:(id)name userInfo:(id)info
 {
-  v15 = a3;
-  v8 = a5;
-  if ([a4 isEqualToString:@"CRKShareTargetsDidChangeNotificationName"])
+  operationCopy = operation;
+  infoCopy = info;
+  if ([name isEqualToString:@"CRKShareTargetsDidChangeNotificationName"])
   {
-    v9 = [v15 client];
-    v10 = [v8 objectForKeyedSubscript:@"ShareTargets"];
-    v11 = [(CRKShareTargetBrowser *)self makeShareTargetsWithDictionaries:v10 taskClient:v9];
-    v12 = [(CRKShareTargetBrowser *)self studentClient];
+    client = [operationCopy client];
+    v10 = [infoCopy objectForKeyedSubscript:@"ShareTargets"];
+    v11 = [(CRKShareTargetBrowser *)self makeShareTargetsWithDictionaries:v10 taskClient:client];
+    studentClient = [(CRKShareTargetBrowser *)self studentClient];
 
-    if (v9 == v12)
+    if (client == studentClient)
     {
-      v14 = [(CRKShareTargetBrowser *)self shareTargetCollector];
-      [v14 studentTargetsDidChange:v11];
+      shareTargetCollector = [(CRKShareTargetBrowser *)self shareTargetCollector];
+      [shareTargetCollector studentTargetsDidChange:v11];
     }
 
     else
     {
-      v13 = [(CRKShareTargetBrowser *)self instructorClient];
+      instructorClient = [(CRKShareTargetBrowser *)self instructorClient];
 
-      if (v9 != v13)
+      if (client != instructorClient)
       {
 LABEL_7:
 
         goto LABEL_8;
       }
 
-      v14 = [(CRKShareTargetBrowser *)self shareTargetCollector];
-      [v14 instructorTargetsDidChange:v11];
+      shareTargetCollector = [(CRKShareTargetBrowser *)self shareTargetCollector];
+      [shareTargetCollector instructorTargetsDidChange:v11];
     }
 
     goto LABEL_7;
@@ -486,16 +486,16 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)makeShareTargetsWithDictionaries:(id)a3 taskClient:(id)a4
+- (id)makeShareTargetsWithDictionaries:(id)dictionaries taskClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__CRKShareTargetBrowser_makeShareTargetsWithDictionaries_taskClient___block_invoke;
   v9[3] = &unk_278DC2420;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 crk_mapUsingBlock:v9];
+  v10 = clientCopy;
+  v6 = clientCopy;
+  v7 = [dictionaries crk_mapUsingBlock:v9];
 
   return v7;
 }
@@ -510,13 +510,13 @@ CRKShareTarget *__69__CRKShareTargetBrowser_makeShareTargetsWithDictionaries_tas
   return v4;
 }
 
-- (BOOL)isClientInvalidationError:(id)a3
+- (BOOL)isClientInvalidationError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CF9518]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CF9518]])
   {
-    v5 = [v3 code] == 503;
+    v5 = [errorCopy code] == 503;
   }
 
   else
@@ -527,17 +527,17 @@ CRKShareTarget *__69__CRKShareTargetBrowser_makeShareTargetsWithDictionaries_tas
   return v5;
 }
 
-- (void)delegateDidInterruptWithError:(id)a3
+- (void)delegateDidInterruptWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   mDelegateQueue = self->mDelegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__CRKShareTargetBrowser_delegateDidInterruptWithError___block_invoke;
   v7[3] = &unk_278DC1320;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(mDelegateQueue, v7);
 }
 
@@ -547,17 +547,17 @@ void __55__CRKShareTargetBrowser_delegateDidInterruptWithError___block_invoke(ui
   [WeakRetained shareTargetBrowser:*(a1 + 32) didInterruptWithError:*(a1 + 40)];
 }
 
-- (void)delegateDidFindTargets:(id)a3
+- (void)delegateDidFindTargets:(id)targets
 {
-  v4 = a3;
+  targetsCopy = targets;
   mDelegateQueue = self->mDelegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__CRKShareTargetBrowser_delegateDidFindTargets___block_invoke;
   v7[3] = &unk_278DC1320;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = targetsCopy;
+  v6 = targetsCopy;
   dispatch_async(mDelegateQueue, v7);
 }
 
@@ -567,17 +567,17 @@ void __48__CRKShareTargetBrowser_delegateDidFindTargets___block_invoke(uint64_t 
   [WeakRetained shareTargetBrowser:*(a1 + 32) didFindTargets:*(a1 + 40)];
 }
 
-- (void)delegateDidRemoveTargets:(id)a3
+- (void)delegateDidRemoveTargets:(id)targets
 {
-  v4 = a3;
+  targetsCopy = targets;
   mDelegateQueue = self->mDelegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__CRKShareTargetBrowser_delegateDidRemoveTargets___block_invoke;
   v7[3] = &unk_278DC1320;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = targetsCopy;
+  v6 = targetsCopy;
   dispatch_async(mDelegateQueue, v7);
 }
 

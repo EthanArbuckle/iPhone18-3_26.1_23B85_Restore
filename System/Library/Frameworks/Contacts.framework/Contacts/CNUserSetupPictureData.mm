@@ -1,11 +1,11 @@
 @interface CNUserSetupPictureData
 + (id)log;
-+ (id)userSetupPictureDataFromData:(id)a3;
++ (id)userSetupPictureDataFromData:(id)data;
 - (CGRect)cropRect;
-- (CNUserSetupPictureData)initWithCoder:(id)a3;
-- (CNUserSetupPictureData)initWithImageData:(id)a3 thumbnailImageData:(id)a4 cropRect:(CGRect)a5 memojiMetadata:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CNUserSetupPictureData)initWithCoder:(id)coder;
+- (CNUserSetupPictureData)initWithImageData:(id)data thumbnailImageData:(id)imageData cropRect:(CGRect)rect memojiMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNUserSetupPictureData
@@ -31,14 +31,14 @@ uint64_t __29__CNUserSetupPictureData_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)userSetupPictureDataFromData:(id)a3
++ (id)userSetupPictureDataFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x1E696ACD0];
-    v4 = a3;
+    dataCopy = data;
     v9 = 0;
-    v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v9];
+    v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
 
     v6 = v9;
     if (!v5)
@@ -59,38 +59,38 @@ uint64_t __29__CNUserSetupPictureData_log__block_invoke()
   return v5;
 }
 
-- (CNUserSetupPictureData)initWithImageData:(id)a3 thumbnailImageData:(id)a4 cropRect:(CGRect)a5 memojiMetadata:(id)a6
+- (CNUserSetupPictureData)initWithImageData:(id)data thumbnailImageData:(id)imageData cropRect:(CGRect)rect memojiMetadata:(id)metadata
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  imageDataCopy = imageData;
+  metadataCopy = metadata;
   v21.receiver = self;
   v21.super_class = CNUserSetupPictureData;
   v17 = [(CNUserSetupPictureData *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_imageData, a3);
-    objc_storeStrong(&v18->_thumbnailImageData, a4);
+    objc_storeStrong(&v17->_imageData, data);
+    objc_storeStrong(&v18->_thumbnailImageData, imageData);
     v18->_cropRect.origin.x = x;
     v18->_cropRect.origin.y = y;
     v18->_cropRect.size.width = width;
     v18->_cropRect.size.height = height;
-    objc_storeStrong(&v18->_memojiMetadata, a6);
+    objc_storeStrong(&v18->_memojiMetadata, metadata);
     v19 = v18;
   }
 
   return v18;
 }
 
-- (CNUserSetupPictureData)initWithCoder:(id)a3
+- (CNUserSetupPictureData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"version"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"version"];
   if (v5 >= 2)
   {
     v15 = v5;
@@ -100,58 +100,58 @@ uint64_t __29__CNUserSetupPictureData_log__block_invoke()
       [(CNUserSetupPictureData *)v15 initWithCoder:v16];
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailImageData"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cropRect"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailImageData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cropRect"];
     v18 = NSRectFromString(v8);
     x = v18.origin.x;
     y = v18.origin.y;
     width = v18.size.width;
     height = v18.size.height;
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"memojiMetadata"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"memojiMetadata"];
     self = [(CNUserSetupPictureData *)self initWithImageData:v6 thumbnailImageData:v7 cropRect:v13 memojiMetadata:x, y, width, height];
 
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:1 forKey:@"version"];
-  v5 = [(CNUserSetupPictureData *)self imageData];
-  [v4 encodeObject:v5 forKey:@"imageData"];
+  coderCopy = coder;
+  [coderCopy encodeInt:1 forKey:@"version"];
+  imageData = [(CNUserSetupPictureData *)self imageData];
+  [coderCopy encodeObject:imageData forKey:@"imageData"];
 
-  v6 = [(CNUserSetupPictureData *)self thumbnailImageData];
-  [v4 encodeObject:v6 forKey:@"thumbnailImageData"];
+  thumbnailImageData = [(CNUserSetupPictureData *)self thumbnailImageData];
+  [coderCopy encodeObject:thumbnailImageData forKey:@"thumbnailImageData"];
 
   [(CNUserSetupPictureData *)self cropRect];
   v7 = NSStringFromRect(v10);
-  [v4 encodeObject:v7 forKey:@"cropRect"];
+  [coderCopy encodeObject:v7 forKey:@"cropRect"];
 
-  v8 = [(CNUserSetupPictureData *)self memojiMetadata];
-  [v4 encodeObject:v8 forKey:@"memojiMetadata"];
+  memojiMetadata = [(CNUserSetupPictureData *)self memojiMetadata];
+  [coderCopy encodeObject:memojiMetadata forKey:@"memojiMetadata"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNUserSetupPictureData alloc];
-  v5 = [(CNUserSetupPictureData *)self imageData];
-  v6 = [(CNUserSetupPictureData *)self thumbnailImageData];
+  imageData = [(CNUserSetupPictureData *)self imageData];
+  thumbnailImageData = [(CNUserSetupPictureData *)self thumbnailImageData];
   [(CNUserSetupPictureData *)self cropRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CNUserSetupPictureData *)self memojiMetadata];
-  v16 = [(CNUserSetupPictureData *)v4 initWithImageData:v5 thumbnailImageData:v6 cropRect:v15 memojiMetadata:v8, v10, v12, v14];
+  memojiMetadata = [(CNUserSetupPictureData *)self memojiMetadata];
+  v16 = [(CNUserSetupPictureData *)v4 initWithImageData:imageData thumbnailImageData:thumbnailImageData cropRect:memojiMetadata memojiMetadata:v8, v10, v12, v14];
 
   return v16;
 }

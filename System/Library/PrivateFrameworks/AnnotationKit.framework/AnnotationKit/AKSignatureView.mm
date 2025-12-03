@@ -1,6 +1,6 @@
 @interface AKSignatureView
-- (AKSignatureView)initWithCoder:(id)a3;
-- (AKSignatureView)initWithFrame:(CGRect)a3;
+- (AKSignatureView)initWithCoder:(id)coder;
+- (AKSignatureView)initWithFrame:(CGRect)frame;
 - (AKSignatureViewLiveDelegate)liveDelegate;
 - (CGPath)copyStrokedInterpolatedPath;
 - (CGPoint)strokeLastLocation;
@@ -8,32 +8,32 @@
 - (CGRect)aggregateInvalid;
 - (CGRect)unionDrawingRect;
 - (double)_windowBackingScaleFactor;
-- (double)weightForTouch:(id)a3;
-- (double)weightForValue:(double)a3;
+- (double)weightForTouch:(id)touch;
+- (double)weightForValue:(double)value;
 - (void)_commonInit;
 - (void)clear;
 - (void)continueStroke:(AKSignatureView *)self;
 - (void)continueStrokeWithoutSmoothing:(AKSignatureView *)self;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)handleCoalescedTouches:(id)a3 forTouch:(id)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)handleCoalescedTouches:(id)touches forTouch:(id)touch;
+- (void)setFrame:(CGRect)frame;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
 - (void)startStroke:(AKSignatureView *)self;
 - (void)teardown;
 - (void)terminateStroke;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation AKSignatureView
 
-- (AKSignatureView)initWithFrame:(CGRect)a3
+- (AKSignatureView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AKSignatureView;
-  v3 = [(AKSignatureView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AKSignatureView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -43,11 +43,11 @@
   return v4;
 }
 
-- (AKSignatureView)initWithCoder:(id)a3
+- (AKSignatureView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AKSignatureView;
-  v3 = [(AKSignatureView *)&v6 initWithCoder:a3];
+  v3 = [(AKSignatureView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -62,8 +62,8 @@
   [(AKSignatureView *)self setClearsContextBeforeDrawing:0];
   [(AKSignatureView *)self setOpaque:1];
   [(AKSignatureView *)self setContentMode:3];
-  v3 = [MEMORY[0x277D75348] blackColor];
-  [(AKSignatureView *)self setStrokeColor:v3];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(AKSignatureView *)self setStrokeColor:blackColor];
 
   [(AKSignatureView *)self setCurrentWeight:2.0];
   v4 = *(MEMORY[0x277CBF398] + 16);
@@ -120,8 +120,8 @@
 
 - (void)teardown
 {
-  v3 = [(AKSignatureView *)self bitmapFifo];
-  [v3 teardown];
+  bitmapFifo = [(AKSignatureView *)self bitmapFifo];
+  [bitmapFifo teardown];
 
   [(AKSignatureView *)self setBitmapFifo:0];
   [(AKSignatureView *)self setInterpolatingFIFO:0];
@@ -133,39 +133,39 @@
 
 - (CGPath)copyStrokedInterpolatedPath
 {
-  v2 = [(AKSignatureView *)self bitmapFifo];
-  v3 = [v2 newPathFromCurrentBitmap];
+  bitmapFifo = [(AKSignatureView *)self bitmapFifo];
+  newPathFromCurrentBitmap = [bitmapFifo newPathFromCurrentBitmap];
 
-  return v3;
+  return newPathFromCurrentBitmap;
 }
 
 - (double)_windowBackingScaleFactor
 {
-  v3 = [(AKSignatureView *)self window];
-  v4 = [v3 screen];
+  window = [(AKSignatureView *)self window];
+  screen = [window screen];
 
-  if (v4)
+  if (screen)
   {
-    v5 = [(AKSignatureView *)self window];
-    v6 = [v5 screen];
-    [v6 scale];
+    window2 = [(AKSignatureView *)self window];
+    screen2 = [window2 screen];
+    [screen2 scale];
     v8 = v7;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 scale];
+    window2 = [MEMORY[0x277D759A0] mainScreen];
+    [window2 scale];
     v8 = v9;
   }
 
   return v8;
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
   p_accumulatedSignatureDirtyRect = &self->_accumulatedSignatureDirtyRect;
-  self->_accumulatedSignatureDirtyRect = CGRectUnion(self->_accumulatedSignatureDirtyRect, a3);
+  self->_accumulatedSignatureDirtyRect = CGRectUnion(self->_accumulatedSignatureDirtyRect, rect);
   Current = CFAbsoluteTimeGetCurrent();
   if (Current - self->_lastSetNeedsDisplayCallToSuperTime > 0.0166666667)
   {
@@ -179,28 +179,28 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(AKSignatureView *)self totalPointsAdded])
   {
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSaveGState(CurrentContext);
     CGContextSetFillColorWithColor(CurrentContext, [(UIColor *)self->_strokeColor CGColor]);
-    v9 = [(AKSignatureView *)self bitmapFifo];
-    v10 = [v9 currentBitmap];
+    bitmapFifo = [(AKSignatureView *)self bitmapFifo];
+    currentBitmap = [bitmapFifo currentBitmap];
 
-    if (v10)
+    if (currentBitmap)
     {
       memset(&v25, 0, sizeof(v25));
-      v11 = [(AKSignatureView *)self bitmapFifo];
-      v12 = v11;
-      if (v11)
+      bitmapFifo2 = [(AKSignatureView *)self bitmapFifo];
+      v12 = bitmapFifo2;
+      if (bitmapFifo2)
       {
-        [v11 viewToBitmapTransform];
+        [bitmapFifo2 viewToBitmapTransform];
       }
 
       else
@@ -213,8 +213,8 @@
       CGAffineTransformInvert(&v24, &v23);
       v23 = v24;
       CGContextConcatCTM(CurrentContext, &v23);
-      v13 = [(AKSignatureView *)self bitmapFifo];
-      [v13 bitmapRectInView];
+      bitmapFifo3 = [(AKSignatureView *)self bitmapFifo];
+      [bitmapFifo3 bitmapRectInView];
       v23 = v25;
       v27 = CGRectApplyAffineTransform(v26, &v23);
       v14 = v27.origin.x;
@@ -236,7 +236,7 @@
       v29.origin.y = v15;
       v29.size.width = v16;
       v29.size.height = v17;
-      CGContextClipToMask(CurrentContext, v29, v10);
+      CGContextClipToMask(CurrentContext, v29, currentBitmap);
       v30.origin.x = v18;
       v30.origin.y = v19;
       v30.size.width = v20;
@@ -245,8 +245,8 @@
     }
 
     CGContextRestoreGState(CurrentContext);
-    v22 = [(AKSignatureView *)self bitmapFifo];
-    [v22 resetDirtyRect];
+    bitmapFifo4 = [(AKSignatureView *)self bitmapFifo];
+    [bitmapFifo4 resetDirtyRect];
   }
 }
 
@@ -259,11 +259,11 @@
   [WeakRetained signatureViewSignatureUpdated:self];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = AKSignatureView;
-  [(AKSignatureView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AKSignatureView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AKSignatureView *)self setNeedsDisplay];
 }
 
@@ -292,8 +292,8 @@
 - (void)continueStrokeWithoutSmoothing:(AKSignatureView *)self
 {
   [(AKSignatureView *)self setIsAddingPointWithoutSmoothing:1, v2];
-  v4 = [(CHQuadCurvePointFIFO *)self->_interpolatingFIFO emissionHandler];
-  (v4)[2](v4, &v5, 1, 0, 0);
+  emissionHandler = [(CHQuadCurvePointFIFO *)self->_interpolatingFIFO emissionHandler];
+  (emissionHandler)[2](emissionHandler, &v5, 1, 0, 0);
 
   [(AKSignatureView *)self setIsAddingPointWithoutSmoothing:0];
 }
@@ -344,7 +344,7 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (double)weightForValue:(double)a3
+- (double)weightForValue:(double)value
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -357,10 +357,10 @@
   }
 
   v4 = (*&qword_27E39B5E0 - *&qword_27E39B5D8) / (*&qword_27E39B5D0 - *&qword_27E39B5C8);
-  v5 = *&qword_27E39B5D8 + v4 * (a3 - *&qword_27E39B5C8);
+  v5 = *&qword_27E39B5D8 + v4 * (value - *&qword_27E39B5C8);
   if (v5 <= *&qword_27E39B5E0)
   {
-    v6 = *&qword_27E39B5D8 + v4 * (a3 - *&qword_27E39B5C8);
+    v6 = *&qword_27E39B5D8 + v4 * (value - *&qword_27E39B5C8);
   }
 
   else
@@ -379,15 +379,15 @@
   }
 }
 
-- (double)weightForTouch:(id)a3
+- (double)weightForTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   v5 = 2.0;
-  if ([(AKSignatureView *)self ak_forceAvailableForTouch:v4])
+  if ([(AKSignatureView *)self ak_forceAvailableForTouch:touchCopy])
   {
-    [v4 force];
+    [touchCopy force];
     v7 = v6;
-    [v4 maximumPossibleForce];
+    [touchCopy maximumPossibleForce];
     [(AKSignatureView *)self weightForValue:v7 / v8];
     v5 = v9;
   }
@@ -395,35 +395,35 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v11 = [a3 anyObject];
-  [v11 locationInView:self];
+  anyObject = [began anyObject];
+  [anyObject locationInView:self];
   v6 = v5;
   v8 = v7;
-  [(AKSignatureView *)self weightForTouch:v11];
+  [(AKSignatureView *)self weightForTouch:anyObject];
   [(AKSignatureView *)self setCurrentWeight:?];
   *&v9 = v6;
   *&v10 = v8;
   [(AKSignatureView *)self startStroke:COERCE_DOUBLE(__PAIR64__(v10, v9))];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v14 = a4;
-  v6 = [a3 anyObject];
-  [v6 locationInView:self];
+  eventCopy = event;
+  anyObject = [moved anyObject];
+  [anyObject locationInView:self];
   v8 = v7;
   v10 = v9;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v14 coalescedTouchesForTouch:v6];
-    [(AKSignatureView *)self handleCoalescedTouches:v11 forTouch:v6];
+    v11 = [eventCopy coalescedTouchesForTouch:anyObject];
+    [(AKSignatureView *)self handleCoalescedTouches:v11 forTouch:anyObject];
   }
 
   else
   {
-    [(AKSignatureView *)self weightForTouch:v6];
+    [(AKSignatureView *)self weightForTouch:anyObject];
     [(AKSignatureView *)self setCurrentWeight:?];
     *&v12 = v8;
     *&v13 = v10;
@@ -431,22 +431,22 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v14 = a4;
-  v6 = [a3 anyObject];
-  [v6 locationInView:self];
+  eventCopy = event;
+  anyObject = [ended anyObject];
+  [anyObject locationInView:self];
   v8 = v7;
   v10 = v9;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v14 coalescedTouchesForTouch:v6];
-    [(AKSignatureView *)self handleCoalescedTouches:v11 forTouch:v6];
+    v11 = [eventCopy coalescedTouchesForTouch:anyObject];
+    [(AKSignatureView *)self handleCoalescedTouches:v11 forTouch:anyObject];
   }
 
   else
   {
-    [(AKSignatureView *)self weightForTouch:v6];
+    [(AKSignatureView *)self weightForTouch:anyObject];
     [(AKSignatureView *)self setCurrentWeight:?];
     *&v12 = v8;
     *&v13 = v10;
@@ -456,15 +456,15 @@
   [(AKSignatureView *)self terminateStroke];
 }
 
-- (void)handleCoalescedTouches:(id)a3 forTouch:(id)a4
+- (void)handleCoalescedTouches:(id)touches forTouch:(id)touch
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  touchesCopy = touches;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [touchesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -475,7 +475,7 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(touchesCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -489,7 +489,7 @@
         [(AKSignatureView *)self continueStroke:COERCE_DOUBLE(__PAIR64__(v16, v15))];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [touchesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);

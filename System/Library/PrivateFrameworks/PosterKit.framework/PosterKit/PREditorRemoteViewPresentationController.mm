@@ -7,8 +7,8 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(PREditorRemoteViewPresentationController *)self presentedViewController];
-  [v3 preferredContentSize];
+  presentedViewController = [(PREditorRemoteViewPresentationController *)self presentedViewController];
+  [presentedViewController preferredContentSize];
   if (v5 >= 50.0)
   {
     v6 = v5;
@@ -29,9 +29,9 @@
     v7 = 400.0;
   }
 
-  v8 = [(PREditorRemoteViewPresentationController *)self presentingViewController];
-  v9 = [v8 view];
-  [v9 bounds];
+  presentingViewController = [(PREditorRemoteViewPresentationController *)self presentingViewController];
+  view = [presentingViewController view];
+  [view bounds];
   x = v20.origin.x;
   y = v20.origin.y;
   width = v20.size.width;
@@ -59,9 +59,9 @@
   v4.receiver = self;
   v4.super_class = PREditorRemoteViewPresentationController;
   [(PREditorRemoteViewPresentationController *)&v4 containerViewDidLayoutSubviews];
-  v3 = [(PREditorRemoteViewPresentationController *)self presentedView];
+  presentedView = [(PREditorRemoteViewPresentationController *)self presentedView];
   [(PREditorRemoteViewPresentationController *)self frameOfPresentedViewInContainerView];
-  [v3 setFrame:?];
+  [presentedView setFrame:?];
 }
 
 @end

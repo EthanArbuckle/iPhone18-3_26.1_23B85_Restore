@@ -2,17 +2,17 @@
 + (id)defaultHost;
 - (NSDictionary)hostInfoPlist;
 - (PKHost)init;
-- (PKHost)initWithDaemon:(id)a3 externalProviders:(id)a4;
-- (id)activatePlugIn:(id)a3;
-- (id)activePlugInForIdentifier:(id)a3;
-- (id)continuouslyDiscoverPlugInsForAttributes:(id)a3 flags:(unint64_t)a4 found:(id)a5;
-- (id)findPlugInByUUID:(id)a3 withError:(id *)a4;
-- (id)rewriteDiscoveryAttributes:(id)a3 flags:(unint64_t)a4;
-- (void)deactivatePlugIn:(id)a3;
-- (void)discoverPlugInsForAttributes:(id)a3 flags:(unint64_t)a4 found:(id)a5;
-- (void)findPlugInByPathURL:(id)a3 reply:(id)a4;
-- (void)setElection:(int64_t)a3 forPlugIn:(id)a4;
-- (void)setExtensionState:(id)a3 forPlugIn:(id)a4;
+- (PKHost)initWithDaemon:(id)daemon externalProviders:(id)providers;
+- (id)activatePlugIn:(id)in;
+- (id)activePlugInForIdentifier:(id)identifier;
+- (id)continuouslyDiscoverPlugInsForAttributes:(id)attributes flags:(unint64_t)flags found:(id)found;
+- (id)findPlugInByUUID:(id)d withError:(id *)error;
+- (id)rewriteDiscoveryAttributes:(id)attributes flags:(unint64_t)flags;
+- (void)deactivatePlugIn:(id)in;
+- (void)discoverPlugInsForAttributes:(id)attributes flags:(unint64_t)flags found:(id)found;
+- (void)findPlugInByPathURL:(id)l reply:(id)reply;
+- (void)setElection:(int64_t)election forPlugIn:(id)in;
+- (void)setExtensionState:(id)state forPlugIn:(id)in;
 @end
 
 @implementation PKHost
@@ -38,10 +38,10 @@
   return v5;
 }
 
-- (PKHost)initWithDaemon:(id)a3 externalProviders:(id)a4
+- (PKHost)initWithDaemon:(id)daemon externalProviders:(id)providers
 {
-  v6 = a3;
-  v7 = a4;
+  daemonCopy = daemon;
+  providersCopy = providers;
   v15.receiver = self;
   v15.super_class = PKHost;
   v8 = [(PKHost *)&v15 init];
@@ -54,22 +54,22 @@
     v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:100];
     [(PKHost *)v8 setActivePlugIns:v11];
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    [(PKHost *)v8 setActiveOneShots:v12];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(PKHost *)v8 setActiveOneShots:dictionary];
 
-    v13 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
-    [(PKHost *)v8 setDiscoveryMap:v13];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    [(PKHost *)v8 setDiscoveryMap:strongToWeakObjectsMapTable];
 
-    [(PKHost *)v8 setDaemon:v6];
-    objc_storeStrong(&v8->_external, a4);
+    [(PKHost *)v8 setDaemon:daemonCopy];
+    objc_storeStrong(&v8->_external, providers);
   }
 
   return v8;
 }
 
-- (id)findPlugInByUUID:(id)a3 withError:(id *)a4
+- (id)findPlugInByUUID:(id)d withError:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -88,10 +88,10 @@
   v9[3] = &unk_1E827F6E8;
   v9[4] = &v10;
   v9[5] = &v16;
-  [(PKHost *)self _findPlugInByUUID:v6 synchronously:1 reply:v9];
-  if (a4)
+  [(PKHost *)self _findPlugInByUUID:dCopy synchronously:1 reply:v9];
+  if (error)
   {
-    *a4 = v11[5];
+    *error = v11[5];
   }
 
   v7 = v17[5];
@@ -102,61 +102,61 @@
   return v7;
 }
 
-- (void)findPlugInByPathURL:(id)a3 reply:(id)a4
+- (void)findPlugInByPathURL:(id)l reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKHost *)self daemon];
+  replyCopy = reply;
+  lCopy = l;
+  daemon = [(PKHost *)self daemon];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1C68A1244;
   v10[3] = &unk_1E827F6C0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 findPlugInByPathURL:v7 reply:v10];
+  v11 = replyCopy;
+  v9 = replyCopy;
+  [daemon findPlugInByPathURL:lCopy reply:v10];
 }
 
-- (void)discoverPlugInsForAttributes:(id)a3 flags:(unint64_t)a4 found:(id)a5
+- (void)discoverPlugInsForAttributes:(id)attributes flags:(unint64_t)flags found:(id)found
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AFB0] UUID];
+  attributesCopy = attributes;
+  foundCopy = found;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v11 = _os_activity_create(&dword_1C6892000, "discovery", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1C68A1780;
   block[3] = &unk_1E827F760;
-  v16 = v8;
-  v17 = self;
-  v19 = v9;
-  v20 = a4;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = attributesCopy;
+  selfCopy = self;
+  v19 = foundCopy;
+  flagsCopy = flags;
+  v18 = uUID;
+  v12 = foundCopy;
+  v13 = uUID;
+  v14 = attributesCopy;
   os_activity_apply(v11, block);
 }
 
-- (id)rewriteDiscoveryAttributes:(id)a3 flags:(unint64_t)a4
+- (id)rewriteDiscoveryAttributes:(id)attributes flags:(unint64_t)flags
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"NSExtensionPointName"];
+  attributesCopy = attributes;
+  v5 = [attributesCopy objectForKeyedSubscript:@"NSExtensionPointName"];
 
   if (v5)
   {
-    v6 = v4;
+    v6 = attributesCopy;
     goto LABEL_23;
   }
 
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(attributesCopy, "count")}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v26 = v4;
-  v7 = v4;
+  v26 = attributesCopy;
+  v7 = attributesCopy;
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
@@ -237,7 +237,7 @@ LABEL_12:
     while (v8);
   }
 
-  v4 = v26;
+  attributesCopy = v26;
 LABEL_23:
 
   v24 = *MEMORY[0x1E69E9840];
@@ -245,48 +245,48 @@ LABEL_23:
   return v6;
 }
 
-- (id)continuouslyDiscoverPlugInsForAttributes:(id)a3 flags:(unint64_t)a4 found:(id)a5
+- (id)continuouslyDiscoverPlugInsForAttributes:(id)attributes flags:(unint64_t)flags found:(id)found
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[PKDiscoveryDriver alloc] initWithAttributes:v9 flags:a4 host:self report:v8];
+  foundCopy = found;
+  attributesCopy = attributes;
+  v10 = [[PKDiscoveryDriver alloc] initWithAttributes:attributesCopy flags:flags host:self report:foundCopy];
 
   [(PKDiscoveryDriver *)v10 performWithPreviousResults:0 forceNotify:1];
 
   return v10;
 }
 
-- (void)setElection:(int64_t)a3 forPlugIn:(id)a4
+- (void)setElection:(int64_t)election forPlugIn:(id)in
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  inCopy = in;
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:election];
   [v7 setObject:v8 forKeyedSubscript:@"election"];
 
-  v9 = [v6 bootInstance];
-  [v7 setObject:v9 forKeyedSubscript:@"bootuuid"];
+  bootInstance = [inCopy bootInstance];
+  [v7 setObject:bootInstance forKeyedSubscript:@"bootuuid"];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "annotationTimestamp")}];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(inCopy, "annotationTimestamp")}];
   [v7 setObject:v10 forKeyedSubscript:@"timestamp"];
 
-  v11 = [(PKHost *)self daemon];
-  v12 = [v6 uuid];
+  daemon = [(PKHost *)self daemon];
+  uuid = [inCopy uuid];
 
-  v15[0] = v12;
+  v15[0] = uuid;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  [v11 setPluginAnnotations:v13 annotations:v7 reply:&unk_1F4639228];
+  [daemon setPluginAnnotations:v13 annotations:v7 reply:&unk_1F4639228];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setExtensionState:(id)a3 forPlugIn:(id)a4
+- (void)setExtensionState:(id)state forPlugIn:(id)in
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  stateCopy = state;
+  if (stateCopy)
   {
-    v7 = v6;
+    v7 = stateCopy;
   }
 
   else
@@ -294,29 +294,29 @@ LABEL_23:
     v7 = MEMORY[0x1E695E0F8];
   }
 
-  v8 = a4;
+  inCopy = in;
   v9 = objc_opt_new();
   [v9 setObject:v7 forKeyedSubscript:@"extension"];
-  v10 = [v8 bootInstance];
-  [v9 setObject:v10 forKeyedSubscript:@"bootuuid"];
+  bootInstance = [inCopy bootInstance];
+  [v9 setObject:bootInstance forKeyedSubscript:@"bootuuid"];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v8, "annotationTimestamp")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(inCopy, "annotationTimestamp")}];
   [v9 setObject:v11 forKeyedSubscript:@"timestamp"];
 
-  v12 = [(PKHost *)self daemon];
-  v13 = [v8 uuid];
+  daemon = [(PKHost *)self daemon];
+  uuid = [inCopy uuid];
 
-  v16[0] = v13;
+  v16[0] = uuid;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  [v12 setPluginAnnotations:v14 annotations:v9 reply:&unk_1F4639248];
+  [daemon setPluginAnnotations:v14 annotations:v9 reply:&unk_1F4639248];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)activePlugInForIdentifier:(id)a3
+- (id)activePlugInForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"activePlugInForIdentifier: nil not allowed"];
   }
@@ -327,16 +327,16 @@ LABEL_23:
   v15 = sub_1C68936B4;
   v16 = sub_1C689455C;
   v17 = 0;
-  v5 = [(PKHost *)self hostQueue];
+  hostQueue = [(PKHost *)self hostQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1C68A30E8;
   block[3] = &unk_1E827F698;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(hostQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -344,26 +344,26 @@ LABEL_23:
   return v7;
 }
 
-- (id)activatePlugIn:(id)a3
+- (id)activatePlugIn:(id)in
 {
-  v5 = a3;
+  inCopy = in;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_1C68936B4;
   v18 = sub_1C689455C;
   v19 = 0;
-  v6 = [(PKHost *)self hostQueue];
+  hostQueue = [(PKHost *)self hostQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1C68A32CC;
   v10[3] = &unk_1E827F7F8;
   v10[4] = self;
-  v11 = v5;
+  v11 = inCopy;
   v12 = &v14;
   v13 = a2;
-  v7 = v5;
-  dispatch_sync(v6, v10);
+  v7 = inCopy;
+  dispatch_sync(hostQueue, v10);
 
   v8 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -371,19 +371,19 @@ LABEL_23:
   return v8;
 }
 
-- (void)deactivatePlugIn:(id)a3
+- (void)deactivatePlugIn:(id)in
 {
-  v5 = a3;
-  v6 = [(PKHost *)self hostQueue];
+  inCopy = in;
+  hostQueue = [(PKHost *)self hostQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1C68A36F4;
   block[3] = &unk_1E827F820;
-  v9 = v5;
-  v10 = self;
+  v9 = inCopy;
+  selfCopy = self;
   v11 = a2;
-  v7 = v5;
-  dispatch_sync(v6, block);
+  v7 = inCopy;
+  dispatch_sync(hostQueue, block);
 }
 
 - (NSDictionary)hostInfoPlist
@@ -395,9 +395,9 @@ LABEL_23:
   block[4] = self;
   if (qword_1EC1D1D40 != -1)
   {
-    v3 = self;
+    selfCopy = self;
     dispatch_once(&qword_1EC1D1D40, block);
-    self = v3;
+    self = selfCopy;
   }
 
   return self->_hostInfoPlist;

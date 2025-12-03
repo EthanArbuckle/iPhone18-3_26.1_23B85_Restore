@@ -1,9 +1,9 @@
 @interface FAFamilyMegadomeSuggester
 - (FAFamilyMegadomeSuggester)init;
-- (FAFamilyMegadomeSuggester)initWithRecommendationLoader:(id)a3;
-- (id)getFamilyRecommendationsWithContext:(id *)a3 error:(id *)a4;
-- (id)peopleNotAlreadyInFamilyInPersonArray:(id)a3;
-- (id)recommendedFamilyMembersForMegadomeResults:(id)a3;
+- (FAFamilyMegadomeSuggester)initWithRecommendationLoader:(id)loader;
+- (id)getFamilyRecommendationsWithContext:(id *)context error:(id *)error;
+- (id)peopleNotAlreadyInFamilyInPersonArray:(id)array;
+- (id)recommendedFamilyMembersForMegadomeResults:(id)results;
 @end
 
 @implementation FAFamilyMegadomeSuggester
@@ -16,22 +16,22 @@
   return v4;
 }
 
-- (FAFamilyMegadomeSuggester)initWithRecommendationLoader:(id)a3
+- (FAFamilyMegadomeSuggester)initWithRecommendationLoader:(id)loader
 {
-  v5 = a3;
+  loaderCopy = loader;
   v9.receiver = self;
   v9.super_class = FAFamilyMegadomeSuggester;
   v6 = [(FAFamilyMegadomeSuggester *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recommendationLoader, a3);
+    objc_storeStrong(&v6->_recommendationLoader, loader);
   }
 
   return v7;
 }
 
-- (id)getFamilyRecommendationsWithContext:(id *)a3 error:(id *)a4
+- (id)getFamilyRecommendationsWithContext:(id *)context error:(id *)error
 {
   v7 = _FASignpostLogSystem();
   v8 = _FASignpostCreate(v7);
@@ -57,8 +57,8 @@
   aBlock[3] = &__block_descriptor_64_e54_v24__0__NSError_8__FAFamilySuggesterFeedbackContext_16l;
   aBlock[4] = v8;
   aBlock[5] = v10;
-  aBlock[6] = a3;
-  aBlock[7] = a4;
+  aBlock[6] = context;
+  aBlock[7] = error;
   v14 = _Block_copy(aBlock);
   v15 = _FALogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -67,23 +67,23 @@
     _os_log_impl(&dword_1B70B0000, v15, OS_LOG_TYPE_DEFAULT, "Attempting to get Family suggestions from Megadome", buf, 2u);
   }
 
-  v16 = [(FAFamilyMegadomeSuggester *)self recommendationLoader];
+  recommendationLoader = [(FAFamilyMegadomeSuggester *)self recommendationLoader];
   v32 = 0;
-  v17 = [v16 peopleViewWithError:&v32];
+  v17 = [recommendationLoader peopleViewWithError:&v32];
   v18 = v32;
 
   if (v17)
   {
-    v19 = [(FAFamilyMegadomeSuggester *)self recommendationLoader];
+    recommendationLoader2 = [(FAFamilyMegadomeSuggester *)self recommendationLoader];
     v31 = 0;
-    v20 = [v19 megadomeResultsForFamilyTagWithError:&v31];
+    v20 = [recommendationLoader2 megadomeResultsForFamilyTagWithError:&v31];
     v21 = v31;
 
     if (v20)
     {
-      v22 = [(FAFamilyMegadomeSuggester *)self recommendationLoader];
-      v23 = [v20 scoredEntities];
-      v24 = [v22 megadomePeopleFromScoredEntities:v23 inVisualIdentifierView:v17];
+      recommendationLoader3 = [(FAFamilyMegadomeSuggester *)self recommendationLoader];
+      scoredEntities = [v20 scoredEntities];
+      v24 = [recommendationLoader3 megadomePeopleFromScoredEntities:scoredEntities inVisualIdentifierView:v17];
 
       v25 = [(FAFamilyMegadomeSuggester *)self peopleNotAlreadyInFamilyInPersonArray:v24];
       v26 = [(FAFamilyMegadomeSuggester *)self recommendedFamilyMembersForMegadomeResults:v25];
@@ -152,22 +152,22 @@ void __71__FAFamilyMegadomeSuggester_getFamilyRecommendationsWithContext_error__
   }
 }
 
-- (id)peopleNotAlreadyInFamilyInPersonArray:(id)a3
+- (id)peopleNotAlreadyInFamilyInPersonArray:(id)array
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FAFamilyMegadomeSuggester *)self recommendationLoader];
-  v6 = [v5 familyHandles];
+  arrayCopy = array;
+  recommendationLoader = [(FAFamilyMegadomeSuggester *)self recommendationLoader];
+  familyHandles = [recommendationLoader familyHandles];
 
-  if ([v6 count])
+  if ([familyHandles count])
   {
     v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v27 = v4;
-    obj = v4;
+    v27 = arrayCopy;
+    obj = arrayCopy;
     v7 = [obj countByEnumeratingWithState:&v35 objects:v44 count:16];
     if (v7)
     {
@@ -184,11 +184,11 @@ void __71__FAFamilyMegadomeSuggester_getFamilyRecommendationsWithContext_error__
 
           v10 = *(*(&v35 + 1) + 8 * i);
           v11 = MEMORY[0x1E695DF70];
-          v12 = [v10 emails];
-          v13 = [v11 arrayWithArray:v12];
+          emails = [v10 emails];
+          v13 = [v11 arrayWithArray:emails];
 
-          v14 = [v10 phoneNumbers];
-          v15 = [FAMegadomeRecommendationsLoader normalizedPhoneNumbersForPhoneNumbers:v14];
+          phoneNumbers = [v10 phoneNumbers];
+          v15 = [FAMegadomeRecommendationsLoader normalizedPhoneNumbersForPhoneNumbers:phoneNumbers];
 
           [v13 addObjectsFromArray:v15];
           v33 = 0u;
@@ -211,7 +211,7 @@ void __71__FAFamilyMegadomeSuggester_getFamilyRecommendationsWithContext_error__
                 }
 
                 v21 = *(*(&v31 + 1) + 8 * j);
-                if ([v6 containsObject:v21])
+                if ([familyHandles containsObject:v21])
                 {
                   v22 = _FALogSystem();
                   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -248,7 +248,7 @@ LABEL_19:
     }
 
     v23 = [v28 copy];
-    v4 = v27;
+    arrayCopy = v27;
   }
 
   else
@@ -261,7 +261,7 @@ LABEL_19:
       _os_log_impl(&dword_1B70B0000, v24, OS_LOG_TYPE_DEFAULT, "No Family handles. Returning early from %s.", buf, 0xCu);
     }
 
-    v23 = v4;
+    v23 = arrayCopy;
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -269,16 +269,16 @@ LABEL_19:
   return v23;
 }
 
-- (id)recommendedFamilyMembersForMegadomeResults:(id)a3
+- (id)recommendedFamilyMembersForMegadomeResults:(id)results
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = resultsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -296,7 +296,7 @@ LABEL_19:
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [FARecommendedFamilyMember alloc];
         v12 = [(FARecommendedFamilyMember *)v11 initWithMegadomeRecommendation:v10, v16];
-        [v4 addObject:v12];
+        [array addObject:v12];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -305,7 +305,7 @@ LABEL_19:
     while (v7);
   }
 
-  v13 = [v4 copy];
+  v13 = [array copy];
   v14 = *MEMORY[0x1E69E9840];
 
   return v13;

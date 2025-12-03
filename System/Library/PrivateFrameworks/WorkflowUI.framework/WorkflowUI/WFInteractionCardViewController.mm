@@ -1,17 +1,17 @@
 @interface WFInteractionCardViewController
 + (void)initialize;
 - (UIActivityIndicatorView)activityIndicatorView;
-- (WFInteractionCardViewController)initWithInteraction:(id)a3;
+- (WFInteractionCardViewController)initWithInteraction:(id)interaction;
 - (WFInteractionCardViewControllerDelegate)delegate;
-- (double)contentHeightForWidth:(double)a3;
-- (id)cardRequestForInteraction:(id)a3;
+- (double)contentHeightForWidth:(double)width;
+- (id)cardRequestForInteraction:(id)interaction;
 - (id)cardViewController;
-- (void)buttonOverlayWasTouchedUpInside:(id)a3;
-- (void)cardViewControllerDidLoad:(id)a3;
+- (void)buttonOverlayWasTouchedUpInside:(id)inside;
+- (void)cardViewControllerDidLoad:(id)load;
 - (void)loadView;
 - (void)updateCardViewSize;
-- (void)updateWithInteraction:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateWithInteraction:(id)interaction;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation WFInteractionCardViewController
@@ -30,64 +30,64 @@
   return WeakRetained;
 }
 
-- (void)buttonOverlayWasTouchedUpInside:(id)a3
+- (void)buttonOverlayWasTouchedUpInside:(id)inside
 {
-  v4 = a3;
-  v5 = [(WFInteractionCardViewController *)self delegate];
-  [v5 interactionCardViewControllerDidRequestPunchout:self];
+  insideCopy = inside;
+  delegate = [(WFInteractionCardViewController *)self delegate];
+  [delegate interactionCardViewControllerDidRequestPunchout:self];
 
   v6 = dispatch_time(0, 100000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__WFInteractionCardViewController_buttonOverlayWasTouchedUpInside___block_invoke;
   block[3] = &unk_279EE8A78;
-  v9 = v4;
-  v7 = v4;
+  v9 = insideCopy;
+  v7 = insideCopy;
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }
 
-- (void)cardViewControllerDidLoad:(id)a3
+- (void)cardViewControllerDidLoad:(id)load
 {
-  v4 = [(WFInteractionCardViewController *)self delegate];
-  [v4 interactionCardViewControllerDidLoad:self];
+  delegate = [(WFInteractionCardViewController *)self delegate];
+  [delegate interactionCardViewControllerDidLoad:self];
 
   [(WFInteractionCardViewController *)self updateCardViewSize];
 }
 
 - (void)updateCardViewSize
 {
-  v3 = [(WFInteractionCardViewController *)self delegate];
-  [v3 interactionCardViewControllerDidInvalidateSize:self];
+  delegate = [(WFInteractionCardViewController *)self delegate];
+  [delegate interactionCardViewControllerDidInvalidateSize:self];
 }
 
-- (double)contentHeightForWidth:(double)a3
+- (double)contentHeightForWidth:(double)width
 {
-  v5 = [(WFInteractionCardViewController *)self cardViewController];
+  cardViewController = [(WFInteractionCardViewController *)self cardViewController];
 
-  if (!v5)
+  if (!cardViewController)
   {
     return 98.0;
   }
 
-  v6 = [(WFInteractionCardViewController *)self cardViewController];
-  [v6 contentHeightForWidth:a3];
+  cardViewController2 = [(WFInteractionCardViewController *)self cardViewController];
+  [cardViewController2 contentHeightForWidth:width];
   v8 = v7;
 
   return v8;
 }
 
-- (void)updateWithInteraction:(id)a3
+- (void)updateWithInteraction:(id)interaction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  interactionCopy = interaction;
+  if (!interactionCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFInteractionCardViewController.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"interaction"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInteractionCardViewController.m" lineNumber:179 description:{@"Invalid parameter not satisfying: %@", @"interaction"}];
   }
 
-  objc_storeStrong(&self->_interaction, a3);
-  v7 = [(WFInteractionCardViewController *)self cardRequestForInteraction:v6];
+  objc_storeStrong(&self->_interaction, interaction);
+  v7 = [(WFInteractionCardViewController *)self cardRequestForInteraction:interactionCopy];
   v8 = getWFDialogLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -96,7 +96,7 @@
     v13 = 2112;
     v14 = v7;
     v15 = 2114;
-    v16 = v6;
+    v16 = interactionCopy;
     _os_log_impl(&dword_274719000, v8, OS_LOG_TYPE_DEFAULT, "%s Updating existing card; sending CardKit request: %@, for interaction: %{public}@", buf, 0x20u);
   }
 
@@ -144,16 +144,16 @@ void __57__WFInteractionCardViewController_updateWithInteraction___block_invoke_
 
 - (id)cardViewController
 {
-  v2 = [(WFInteractionCardViewController *)self cardPresentation];
-  v3 = [v2 cardViewController];
+  cardPresentation = [(WFInteractionCardViewController *)self cardPresentation];
+  cardViewController = [cardPresentation cardViewController];
 
-  return v3;
+  return cardViewController;
 }
 
-- (id)cardRequestForInteraction:(id)a3
+- (id)cardRequestForInteraction:(id)interaction
 {
   v3 = getAPUIActionCardViewConfigClass;
-  v4 = a3;
+  interactionCopy = interaction;
   v5 = objc_alloc_init(v3());
   [v5 setStyle:0];
   [v5 setShowThumbnailImage:1];
@@ -161,25 +161,25 @@ void __57__WFInteractionCardViewController_updateWithInteraction___block_invoke_
   [v5 setShowAppFootnote:0];
   v6 = [objc_alloc(getAPUIActionCardRequestClass()) initWithCardViewConfig:v5];
   [v6 setFormat:1];
-  [v6 setContent:v4];
+  [v6 setContent:interactionCopy];
 
   [v6 setLoadsBundleServices:0];
 
   return v6;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = WFInteractionCardViewController;
-  [(WFInteractionCardViewController *)&v6 viewDidAppear:a3];
-  v4 = [(WFInteractionCardViewController *)self unlockService];
+  [(WFInteractionCardViewController *)&v6 viewDidAppear:appear];
+  unlockService = [(WFInteractionCardViewController *)self unlockService];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __49__WFInteractionCardViewController_viewDidAppear___block_invoke;
   v5[3] = &unk_279EE8868;
   v5[4] = self;
-  [v4 requestUnlockIfNeeded:v5];
+  [unlockService requestUnlockIfNeeded:v5];
 }
 
 void __49__WFInteractionCardViewController_viewDidAppear___block_invoke(uint64_t a1, char a2)
@@ -326,38 +326,38 @@ void __49__WFInteractionCardViewController_viewDidAppear___block_invoke_179(uint
   v16.receiver = self;
   v16.super_class = WFInteractionCardViewController;
   [(WFInteractionCardViewController *)&v16 loadView];
-  v3 = [(WFInteractionCardViewController *)self view];
-  [v3 setClipsToBounds:1];
+  view = [(WFInteractionCardViewController *)self view];
+  [view setClipsToBounds:1];
 
   v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(WFInteractionCardViewController *)self view];
-  [v5 addSubview:v4];
+  view2 = [(WFInteractionCardViewController *)self view];
+  [view2 addSubview:v4];
 
   [v4 startAnimating];
   [(WFInteractionCardViewController *)self setActivityIndicatorView:v4];
   v15 = MEMORY[0x277CCAAD0];
-  v6 = [v4 centerXAnchor];
-  v7 = [(WFInteractionCardViewController *)self view];
-  v8 = [v7 centerXAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  centerXAnchor = [v4 centerXAnchor];
+  view3 = [(WFInteractionCardViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v17[0] = v9;
-  v10 = [v4 centerYAnchor];
-  v11 = [(WFInteractionCardViewController *)self view];
-  v12 = [v11 centerYAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  centerYAnchor = [v4 centerYAnchor];
+  view4 = [(WFInteractionCardViewController *)self view];
+  centerYAnchor2 = [view4 centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v17[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   [v15 activateConstraints:v14];
 }
 
-- (WFInteractionCardViewController)initWithInteraction:(id)a3
+- (WFInteractionCardViewController)initWithInteraction:(id)interaction
 {
-  v6 = a3;
-  if (!v6)
+  interactionCopy = interaction;
+  if (!interactionCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFInteractionCardViewController.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"interaction"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInteractionCardViewController.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"interaction"}];
   }
 
   v14.receiver = self;
@@ -366,7 +366,7 @@ void __49__WFInteractionCardViewController_viewDidAppear___block_invoke_179(uint
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_interaction, a3);
+    objc_storeStrong(&v7->_interaction, interaction);
     v9 = objc_opt_new();
     unlockService = v8->_unlockService;
     v8->_unlockService = v9;
@@ -385,7 +385,7 @@ void __49__WFInteractionCardViewController_viewDidAppear___block_invoke_179(uint
   block[1] = 3221225472;
   block[2] = __45__WFInteractionCardViewController_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken != -1)
   {
     dispatch_once(&initialize_onceToken, block);

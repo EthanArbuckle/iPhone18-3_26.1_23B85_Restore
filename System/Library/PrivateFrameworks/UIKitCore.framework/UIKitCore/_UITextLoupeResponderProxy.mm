@@ -1,6 +1,6 @@
 @interface _UITextLoupeResponderProxy
-+ (id)_proxyWithResponder:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
++ (id)_proxyWithResponder:(id)responder;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (UIResponder)responder;
 - (_UITextLoupeResponderProxyDelegate)delegate;
 - (id)nextResponder;
@@ -8,11 +8,11 @@
 
 @implementation _UITextLoupeResponderProxy
 
-+ (id)_proxyWithResponder:(id)a3
++ (id)_proxyWithResponder:(id)responder
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  objc_storeWeak(v5 + 2, v4);
+  responderCopy = responder;
+  v5 = objc_alloc_init(self);
+  objc_storeWeak(v5 + 2, responderCopy);
 
   return v5;
 }
@@ -24,13 +24,13 @@
   return WeakRetained;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(_UITextLoupeResponderProxy *)self delegate];
-  LOBYTE(a3) = [v7 canPerformAction:a3 withSender:v6];
+  senderCopy = sender;
+  delegate = [(_UITextLoupeResponderProxy *)self delegate];
+  LOBYTE(action) = [delegate canPerformAction:action withSender:senderCopy];
 
-  return a3;
+  return action;
 }
 
 - (UIResponder)responder

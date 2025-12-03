@@ -1,14 +1,14 @@
 @interface MSKeyValueStore
-+ (id)valueForKey:(id)a3;
-- (void)_simulateServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5;
-- (void)_valueForKey:(id)a3 handler:(id)a4;
++ (id)valueForKey:(id)key;
+- (void)_simulateServicesMethod:(id)method arguments:(id)arguments callback:(id)callback;
+- (void)_valueForKey:(id)key handler:(id)handler;
 @end
 
 @implementation MSKeyValueStore
 
-+ (id)valueForKey:(id)a3
++ (id)valueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_alloc_init(MSKeyValueStore);
   [(MSMailDefaultService *)v4 setShouldLaunchMobileMail:1];
   v14 = 0;
@@ -22,7 +22,7 @@
   v10[1] = 3221225472;
   v10[2] = __31__MSKeyValueStore_valueForKey___block_invoke;
   v10[3] = &unk_1E855EC90;
-  v6 = v3;
+  v6 = keyCopy;
   v12 = v5;
   v13 = &v14;
   v11 = v6;
@@ -65,16 +65,16 @@ void __31__MSKeyValueStore_valueForKey___block_invoke(uint64_t a1, void *a2, voi
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_valueForKey:(id)a3 handler:(id)a4
+- (void)_valueForKey:(id)key handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x1E695DF20] dictionaryWithObject:a3 forKey:@"key"];
+  v8 = [MEMORY[0x1E695DF20] dictionaryWithObject:key forKey:@"key"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__MSKeyValueStore__valueForKey_handler___block_invoke;
   v10[3] = &unk_1E855E998;
-  v9 = v6;
+  v9 = handlerCopy;
   v11 = v9;
   [(MSService *)self _callServicesMethod:@"MailValueForKey" arguments:v8 callback:v10];
 
@@ -88,15 +88,15 @@ void __40__MSKeyValueStore__valueForKey_handler___block_invoke(uint64_t a1, void
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_simulateServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5
+- (void)_simulateServicesMethod:(id)method arguments:(id)arguments callback:(id)callback
 {
   v22[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"MailValueForKey"])
+  methodCopy = method;
+  argumentsCopy = arguments;
+  callbackCopy = callback;
+  if ([methodCopy isEqualToString:@"MailValueForKey"])
   {
-    v11 = [v9 objectForKey:@"key"];
+    v11 = [argumentsCopy objectForKey:@"key"];
     v21[0] = @"SignatureKey";
     v21[1] = @"UseAccountSignatures";
     v22[0] = @"Sent from my iPhone Simulator";
@@ -121,14 +121,14 @@ void __40__MSKeyValueStore__valueForKey_handler___block_invoke(uint64_t a1, void
       v16 = 0;
     }
 
-    v10[2](v10, v16, 0);
+    callbackCopy[2](callbackCopy, v16, 0);
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = MSKeyValueStore;
-    [(MSService *)&v18 _simulateServicesMethod:v8 arguments:v9 callback:v10];
+    [(MSService *)&v18 _simulateServicesMethod:methodCopy arguments:argumentsCopy callback:callbackCopy];
   }
 
   v17 = *MEMORY[0x1E69E9840];

@@ -1,8 +1,8 @@
 @interface MADResult
 - ($1C75447F214D9465CD650DD956230C7F)timerange;
 - (MADResult)init;
-- (MADResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MADResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADResult
@@ -24,41 +24,41 @@
   return result;
 }
 
-- (MADResult)initWithCoder:(id)a3
+- (MADResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MADResult;
   v5 = [(MADResult *)&v7 init];
   if (v5)
   {
-    v5->_timerange.start.value = [v4 decodeInt64ForKey:@"TimeRangeStartValue"];
-    v5->_timerange.start.timescale = [v4 decodeInt32ForKey:@"TimeRangeStartTimescale"];
-    v5->_timerange.start.flags = [v4 decodeInt32ForKey:@"TimeRangeStartFlags"];
-    v5->_timerange.start.epoch = [v4 decodeInt64ForKey:@"TimeRangeStartEpoch"];
-    v5->_timerange.duration.value = [v4 decodeInt64ForKey:@"TimeRangeDurationValue"];
-    v5->_timerange.duration.timescale = [v4 decodeInt32ForKey:@"TimeRangeDurationTimescale"];
-    v5->_timerange.duration.flags = [v4 decodeInt32ForKey:@"TimeRangeDurationFlags"];
-    v5->_timerange.duration.epoch = [v4 decodeInt64ForKey:@"TimeRangeDurationEpoch"];
-    v5->_executionNanoseconds = [v4 decodeInt64ForKey:@"ExecutionNanoseconds"];
+    v5->_timerange.start.value = [coderCopy decodeInt64ForKey:@"TimeRangeStartValue"];
+    v5->_timerange.start.timescale = [coderCopy decodeInt32ForKey:@"TimeRangeStartTimescale"];
+    v5->_timerange.start.flags = [coderCopy decodeInt32ForKey:@"TimeRangeStartFlags"];
+    v5->_timerange.start.epoch = [coderCopy decodeInt64ForKey:@"TimeRangeStartEpoch"];
+    v5->_timerange.duration.value = [coderCopy decodeInt64ForKey:@"TimeRangeDurationValue"];
+    v5->_timerange.duration.timescale = [coderCopy decodeInt32ForKey:@"TimeRangeDurationTimescale"];
+    v5->_timerange.duration.flags = [coderCopy decodeInt32ForKey:@"TimeRangeDurationFlags"];
+    v5->_timerange.duration.epoch = [coderCopy decodeInt64ForKey:@"TimeRangeDurationEpoch"];
+    v5->_executionNanoseconds = [coderCopy decodeInt64ForKey:@"ExecutionNanoseconds"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   value = self->_timerange.start.value;
-  v5 = a3;
-  [v5 encodeInt64:value forKey:@"TimeRangeStartValue"];
-  [v5 encodeInt32:self->_timerange.start.timescale forKey:@"TimeRangeStartTimescale"];
-  [v5 encodeInt32:self->_timerange.start.flags forKey:@"TimeRangeStartFlags"];
-  [v5 encodeInt64:self->_timerange.start.epoch forKey:@"TimeRangeStartEpoch"];
-  [v5 encodeInt64:self->_timerange.duration.value forKey:@"TimeRangeDurationValue"];
-  [v5 encodeInt32:self->_timerange.duration.timescale forKey:@"TimeRangeDurationTimescale"];
-  [v5 encodeInt32:self->_timerange.duration.flags forKey:@"TimeRangeDurationFlags"];
-  [v5 encodeInt64:self->_timerange.duration.epoch forKey:@"TimeRangeDurationEpoch"];
-  [v5 encodeInt64:self->_executionNanoseconds forKey:@"ExecutionNanoseconds"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:value forKey:@"TimeRangeStartValue"];
+  [coderCopy encodeInt32:self->_timerange.start.timescale forKey:@"TimeRangeStartTimescale"];
+  [coderCopy encodeInt32:self->_timerange.start.flags forKey:@"TimeRangeStartFlags"];
+  [coderCopy encodeInt64:self->_timerange.start.epoch forKey:@"TimeRangeStartEpoch"];
+  [coderCopy encodeInt64:self->_timerange.duration.value forKey:@"TimeRangeDurationValue"];
+  [coderCopy encodeInt32:self->_timerange.duration.timescale forKey:@"TimeRangeDurationTimescale"];
+  [coderCopy encodeInt32:self->_timerange.duration.flags forKey:@"TimeRangeDurationFlags"];
+  [coderCopy encodeInt64:self->_timerange.duration.epoch forKey:@"TimeRangeDurationEpoch"];
+  [coderCopy encodeInt64:self->_executionNanoseconds forKey:@"ExecutionNanoseconds"];
 }
 
 - ($1C75447F214D9465CD650DD956230C7F)timerange

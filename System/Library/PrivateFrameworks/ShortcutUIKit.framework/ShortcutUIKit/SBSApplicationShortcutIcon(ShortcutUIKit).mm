@@ -19,13 +19,13 @@
 
 - (id)scui_iconImageWithAssetProvider:()ShortcutUIKit
 {
-  v1 = [a1 _scui_iconImageWithAssetProvider:?];
-  if (!v1)
+  _scui_defaultImage = [self _scui_iconImageWithAssetProvider:?];
+  if (!_scui_defaultImage)
   {
-    v1 = [objc_opt_class() _scui_defaultImage];
+    _scui_defaultImage = [objc_opt_class() _scui_defaultImage];
   }
 
-  return v1;
+  return _scui_defaultImage;
 }
 
 @end

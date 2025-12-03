@@ -1,33 +1,33 @@
 @interface EXHeaderFooter
-+ (id)edHeaderFooterFromXmlHeaderFooterElement:(_xmlNode *)a3 state:(id)a4;
++ (id)edHeaderFooterFromXmlHeaderFooterElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation EXHeaderFooter
 
-+ (id)edHeaderFooterFromXmlHeaderFooterElement:(_xmlNode *)a3 state:(id)a4
++ (id)edHeaderFooterFromXmlHeaderFooterElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = objc_alloc_init(EDHeaderFooter);
-  if (a3)
+  if (element)
   {
     v16 = 0;
-    CXOptionalBoolAttribute(a3, CXNoNamespace, "differentFirst", &v16);
+    CXOptionalBoolAttribute(element, CXNoNamespace, "differentFirst", &v16);
     if (v16)
     {
-      v7 = [v5 EXSpreadsheetMLNamespace];
-      v8 = OCXFindChild(a3, v7, "firstHeader");
+      eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+      v8 = OCXFindChild(element, eXSpreadsheetMLNamespace, "firstHeader");
 
-      v9 = [v5 EXSpreadsheetMLNamespace];
-      v10 = OCXFindChild(a3, v9, "firstFooter");
+      eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+      v10 = OCXFindChild(element, eXSpreadsheetMLNamespace2, "firstFooter");
     }
 
     else
     {
-      v11 = [v5 EXSpreadsheetMLNamespace];
-      v8 = OCXFindChild(a3, v11, "oddHeader");
+      eXSpreadsheetMLNamespace3 = [stateCopy EXSpreadsheetMLNamespace];
+      v8 = OCXFindChild(element, eXSpreadsheetMLNamespace3, "oddHeader");
 
-      v9 = [v5 EXSpreadsheetMLNamespace];
-      v10 = OCXFindChild(a3, v9, "oddFooter");
+      eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+      v10 = OCXFindChild(element, eXSpreadsheetMLNamespace2, "oddFooter");
     }
 
     v12 = v10;

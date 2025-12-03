@@ -1,24 +1,24 @@
 @interface STRootViewControllerProvider
-+ (id)rootViewControllerForDSID:(id)a3;
-+ (void)requestRootViewControllerForDSID:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5;
++ (id)rootViewControllerForDSID:(id)d;
++ (void)requestRootViewControllerForDSID:(id)d presentingViewController:(id)controller completionHandler:(id)handler;
 @end
 
 @implementation STRootViewControllerProvider
 
-+ (id)rootViewControllerForDSID:(id)a3
++ (id)rootViewControllerForDSID:(id)d
 {
-  v3 = a3;
-  v4 = [[STRootViewModelCoordinator alloc] initWithUserDSID:v3 deviceIdentifier:0 usageReportType:0 usageContext:0];
+  dCopy = d;
+  v4 = [[STRootViewModelCoordinator alloc] initWithUserDSID:dCopy deviceIdentifier:0 usageReportType:0 usageContext:0];
 
-  v5 = [(STRootViewModelCoordinator *)v4 viewModel];
-  v6 = [v5 me];
+  viewModel = [(STRootViewModelCoordinator *)v4 viewModel];
+  v6 = [viewModel me];
   if ([v6 isRemoteUser])
   {
-    v7 = [(STRootViewModelCoordinator *)v4 viewModel];
-    v8 = [v7 me];
-    v9 = [v8 isManaged];
+    viewModel2 = [(STRootViewModelCoordinator *)v4 viewModel];
+    v8 = [viewModel2 me];
+    isManaged = [v8 isManaged];
 
-    if ((v9 & 1) == 0)
+    if ((isManaged & 1) == 0)
     {
       v10 = objc_opt_new();
       goto LABEL_6;
@@ -36,64 +36,64 @@ LABEL_6:
   return v11;
 }
 
-+ (void)requestRootViewControllerForDSID:(id)a3 presentingViewController:(id)a4 completionHandler:(id)a5
++ (void)requestRootViewControllerForDSID:(id)d presentingViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [STUsageDetailsViewModelCoordinator defaultDeviceIdentifierForChild:v9];
-  v11 = [STUsageDetailsViewModelCoordinator defaultUsageReportTypeForChild:v9];
-  v12 = [[STRootViewModelCoordinator alloc] initWithUserDSID:v9 deviceIdentifier:v10 usageReportType:v11 usageContext:0];
+  controllerCopy = controller;
+  handlerCopy = handler;
+  dCopy = d;
+  v10 = [STUsageDetailsViewModelCoordinator defaultDeviceIdentifierForChild:dCopy];
+  v11 = [STUsageDetailsViewModelCoordinator defaultUsageReportTypeForChild:dCopy];
+  v12 = [[STRootViewModelCoordinator alloc] initWithUserDSID:dCopy deviceIdentifier:v10 usageReportType:v11 usageContext:0];
 
   v13 = [[STRootViewController alloc] initWithRootViewModelCoordinator:v12];
-  v14 = [(STRootViewModelCoordinator *)v12 viewModel];
-  v15 = [v14 me];
+  viewModel = [(STRootViewModelCoordinator *)v12 viewModel];
+  v15 = [viewModel me];
   if (([v15 isRemoteUser] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v16 = [(STRootViewModelCoordinator *)v12 viewModel];
-  [v16 me];
+  viewModel2 = [(STRootViewModelCoordinator *)v12 viewModel];
+  [viewModel2 me];
   v17 = v12;
   v18 = v13;
-  v19 = v8;
+  v19 = handlerCopy;
   v20 = v11;
   v21 = v10;
-  v23 = v22 = v7;
-  v28 = [v23 isManaged];
+  v23 = v22 = controllerCopy;
+  isManaged = [v23 isManaged];
 
-  v7 = v22;
+  controllerCopy = v22;
   v10 = v21;
   v11 = v20;
-  v8 = v19;
+  handlerCopy = v19;
   v13 = v18;
   v12 = v17;
 
-  if (v28)
+  if (isManaged)
   {
 LABEL_5:
-    v8[2](v8, v13);
+    handlerCopy[2](handlerCopy, v13);
     goto LABEL_6;
   }
 
   [(STRootViewModelCoordinator *)v17 setHasShownMiniBuddy:1];
   v24 = [[STIntroductionController alloc] initWithNewUserRootViewModelCoordinator:v17];
-  v25 = [(STRootViewModelCoordinator *)v17 viewModel];
-  v26 = [v25 me];
-  v27 = [v26 isRemoteUser];
+  viewModel3 = [(STRootViewModelCoordinator *)v17 viewModel];
+  v26 = [viewModel3 me];
+  isRemoteUser = [v26 isRemoteUser];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __108__STRootViewControllerProvider_requestRootViewControllerForDSID_presentingViewController_completionHandler___block_invoke;
   v29[3] = &unk_279B7E978;
   v30 = v12;
-  v32 = v8;
-  v33 = v27;
+  v32 = handlerCopy;
+  v33 = isRemoteUser;
   v31 = v13;
   [(STIntroductionController *)v24 setCompletionBlock:v29];
-  [(STIntroductionController *)v24 presentOverViewController:v7];
+  [(STIntroductionController *)v24 presentOverViewController:controllerCopy];
 
 LABEL_6:
 }

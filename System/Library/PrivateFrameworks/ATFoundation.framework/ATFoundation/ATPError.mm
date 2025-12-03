@@ -1,45 +1,45 @@
 @interface ATPError
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATPError
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(ATPError *)self setDomain:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_domainCode = *(v4 + 1);
+    self->_domainCode = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_code = *(v4 + 4);
+    self->_code = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ATPError *)self setErrorDescription:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -70,16 +70,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_errorDescription hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   domain = self->_domain;
-  if (domain | *(v4 + 3))
+  if (domain | *(equalCopy + 3))
   {
     if (![(NSString *)domain isEqual:?])
     {
@@ -87,16 +87,16 @@ LABEL_3:
     }
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_domainCode != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_domainCode != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_16:
     v8 = 0;
@@ -105,19 +105,19 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_code != *(v4 + 4))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_code != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   errorDescription = self->_errorDescription;
-  if (errorDescription | *(v4 + 4))
+  if (errorDescription | *(equalCopy + 4))
   {
     v8 = [(NSString *)errorDescription isEqual:?];
   }
@@ -132,10 +132,10 @@ LABEL_17:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -153,52 +153,52 @@ LABEL_17:
     *(v5 + 40) |= 2u;
   }
 
-  v9 = [(NSString *)self->_errorDescription copyWithZone:a3];
+  v9 = [(NSString *)self->_errorDescription copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_domain)
   {
-    [v4 setDomain:?];
-    v4 = v6;
+    [toCopy setDomain:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_domainCode;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_domainCode;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_code;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 4) = self->_code;
+    *(toCopy + 40) |= 2u;
   }
 
   if (self->_errorDescription)
   {
     [v6 setErrorDescription:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -206,7 +206,7 @@ LABEL_17:
   {
     domainCode = self->_domainCode;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -214,24 +214,24 @@ LABEL_17:
   {
     code = self->_code;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_errorDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   has = self->_has;
@@ -264,15 +264,15 @@ LABEL_17:
   v8.receiver = self;
   v8.super_class = ATPError;
   v4 = [(ATPError *)&v8 description];
-  v5 = [(ATPError *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATPError *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasCode:(BOOL)a3
+- (void)setHasCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }

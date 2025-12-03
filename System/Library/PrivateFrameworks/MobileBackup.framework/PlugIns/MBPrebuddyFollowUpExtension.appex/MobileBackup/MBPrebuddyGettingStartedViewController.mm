@@ -1,24 +1,24 @@
 @interface MBPrebuddyGettingStartedViewController
 + (id)_phoneTransferImage;
-- (CGSize)_normalizeSize:(CGSize)a3 to:(CGSize)a4 scale:(double)a5;
-- (MBPrebuddyGettingStartedViewController)initWithFlow:(id)a3 entryPoint:(int64_t)a4 deepLinkURL:(id)a5 needsAccountSignIn:(BOOL)a6 altDSIDForHSA2Upgrade:(id)a7;
+- (CGSize)_normalizeSize:(CGSize)size to:(CGSize)to scale:(double)scale;
+- (MBPrebuddyGettingStartedViewController)initWithFlow:(id)flow entryPoint:(int64_t)point deepLinkURL:(id)l needsAccountSignIn:(BOOL)in altDSIDForHSA2Upgrade:(id)upgrade;
 - (MBViewControllerFlow)flow;
-- (id)_iconOfSystemImageName:(id)a3 glyphScale:(double)a4 nudge:(CGPoint)a5 colored:(id)a6 backgroundGradientStart:(id)a7 backgroundGradientEnd:(id)a8 sized:(double)a9;
+- (id)_iconOfSystemImageName:(id)name glyphScale:(double)scale nudge:(CGPoint)nudge colored:(id)colored backgroundGradientStart:(id)start backgroundGradientEnd:(id)end sized:(double)sized;
 - (id)_xpcQueue;
-- (void)_checkEligibility:(id)a3;
-- (void)_checkEligibilityAndUpgradeHSA2IfNeeded:(id)a3;
+- (void)_checkEligibility:(id)eligibility;
+- (void)_checkEligibilityAndUpgradeHSA2IfNeeded:(id)needed;
 - (void)_configureButtonTray;
-- (void)_enableBackupIfNeeded:(id)a3;
+- (void)_enableBackupIfNeeded:(id)needed;
 - (void)_hideLoadingStatusView;
-- (void)_presentError:(id)a3 completion:(id)a4;
+- (void)_presentError:(id)error completion:(id)completion;
 - (void)_setUp;
 - (void)_showLoadingStatusView;
-- (void)_signInAccountIfNeeded:(id)a3;
-- (void)_upgradeHSA2IfNeeded:(id)a3;
-- (void)didTapCancelBarButtonItem:(id)a3;
-- (void)didTapPrimaryButton:(id)a3;
-- (void)didTapSecondaryButton:(id)a3;
-- (void)signInControllerDidCancel:(id)a3;
+- (void)_signInAccountIfNeeded:(id)needed;
+- (void)_upgradeHSA2IfNeeded:(id)needed;
+- (void)didTapCancelBarButtonItem:(id)item;
+- (void)didTapPrimaryButton:(id)button;
+- (void)didTapSecondaryButton:(id)button;
+- (void)signInControllerDidCancel:(id)cancel;
 - (void)viewDidLoad;
 @end
 
@@ -27,35 +27,35 @@
 + (id)_phoneTransferImage
 {
   v3 = +[MBPrebuddyManager twoDeviceImageName];
-  v4 = [NSBundle bundleForClass:a1];
+  v4 = [NSBundle bundleForClass:self];
   v5 = [UIImage imageNamed:v3 inBundle:v4];
   v6 = [v5 imageWithRenderingMode:2];
 
   return v6;
 }
 
-- (MBPrebuddyGettingStartedViewController)initWithFlow:(id)a3 entryPoint:(int64_t)a4 deepLinkURL:(id)a5 needsAccountSignIn:(BOOL)a6 altDSIDForHSA2Upgrade:(id)a7
+- (MBPrebuddyGettingStartedViewController)initWithFlow:(id)flow entryPoint:(int64_t)point deepLinkURL:(id)l needsAccountSignIn:(BOOL)in altDSIDForHSA2Upgrade:(id)upgrade
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  flowCopy = flow;
+  lCopy = l;
+  upgradeCopy = upgrade;
   v15 = MBLocalizedStringFromTable();
   v16 = MBLocalizedStringFromTable();
-  v17 = [objc_opt_class() _phoneTransferImage];
+  _phoneTransferImage = [objc_opt_class() _phoneTransferImage];
   v26.receiver = self;
   v26.super_class = MBPrebuddyGettingStartedViewController;
-  v18 = [(MBPrebuddyGettingStartedViewController *)&v26 initWithTitle:v15 detailText:v16 icon:v17];
+  v18 = [(MBPrebuddyGettingStartedViewController *)&v26 initWithTitle:v15 detailText:v16 icon:_phoneTransferImage];
 
   if (v18)
   {
-    objc_storeWeak(&v18->_flow, v12);
-    v18->_entryPoint = a4;
-    v19 = [v13 copy];
+    objc_storeWeak(&v18->_flow, flowCopy);
+    v18->_entryPoint = point;
+    v19 = [lCopy copy];
     deepLinkURL = v18->_deepLinkURL;
     v18->_deepLinkURL = v19;
 
-    v18->_needsAccountSignIn = a6;
-    objc_storeStrong(&v18->_altDSIDForHSA2Upgrade, a7);
+    v18->_needsAccountSignIn = in;
+    objc_storeStrong(&v18->_altDSIDForHSA2Upgrade, upgrade);
     v21 = [MBLoadingStatusView alloc];
     v22 = MBLocalizedStringFromTable();
     v23 = [(MBLoadingStatusView *)v21 initWithStatusText:v22 backgroundColor:0];
@@ -84,8 +84,8 @@
   v4.super_class = MBPrebuddyGettingStartedViewController;
   [(MBPrebuddyGettingStartedViewController *)&v4 viewDidLoad];
   [(MBPrebuddyGettingStartedViewController *)self _setUp];
-  v3 = [(MBPrebuddyGettingStartedViewController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(MBPrebuddyGettingStartedViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
 - (void)_setUp
@@ -107,44 +107,44 @@
   v8 = [UIImage systemImageNamed:@"arrow.3.trianglepath"];
   [(MBPrebuddyGettingStartedViewController *)self addBulletedListItemWithTitle:v6 description:v7 image:v8];
 
-  v9 = [(MBPrebuddyGettingStartedViewController *)self view];
-  v10 = [(MBPrebuddyGettingStartedViewController *)self statusView];
-  [v9 addSubview:v10];
+  view = [(MBPrebuddyGettingStartedViewController *)self view];
+  statusView = [(MBPrebuddyGettingStartedViewController *)self statusView];
+  [view addSubview:statusView];
 
-  v36 = [(MBPrebuddyGettingStartedViewController *)self statusView];
-  v34 = [v36 leadingAnchor];
-  v35 = [(MBPrebuddyGettingStartedViewController *)self view];
-  v33 = [v35 leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  statusView2 = [(MBPrebuddyGettingStartedViewController *)self statusView];
+  leadingAnchor = [statusView2 leadingAnchor];
+  view2 = [(MBPrebuddyGettingStartedViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v38[0] = v32;
-  v31 = [(MBPrebuddyGettingStartedViewController *)self statusView];
-  v29 = [v31 topAnchor];
-  v30 = [(MBPrebuddyGettingStartedViewController *)self view];
-  v28 = [v30 topAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  statusView3 = [(MBPrebuddyGettingStartedViewController *)self statusView];
+  topAnchor = [statusView3 topAnchor];
+  view3 = [(MBPrebuddyGettingStartedViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[1] = v27;
-  v26 = [(MBPrebuddyGettingStartedViewController *)self statusView];
-  v25 = [v26 trailingAnchor];
-  v11 = [(MBPrebuddyGettingStartedViewController *)self view];
-  v12 = [v11 trailingAnchor];
-  v13 = [v25 constraintEqualToAnchor:v12];
+  statusView4 = [(MBPrebuddyGettingStartedViewController *)self statusView];
+  trailingAnchor = [statusView4 trailingAnchor];
+  view4 = [(MBPrebuddyGettingStartedViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v38[2] = v13;
-  v14 = [(MBPrebuddyGettingStartedViewController *)self statusView];
-  v15 = [v14 bottomAnchor];
-  v16 = [(MBPrebuddyGettingStartedViewController *)self view];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  statusView5 = [(MBPrebuddyGettingStartedViewController *)self statusView];
+  bottomAnchor = [statusView5 bottomAnchor];
+  view5 = [(MBPrebuddyGettingStartedViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v38[3] = v18;
   v19 = [NSArray arrayWithObjects:v38 count:4];
   [NSLayoutConstraint activateConstraints:v19];
 
-  v20 = [(MBPrebuddyGettingStartedViewController *)self navigationItem];
-  [v20 _setBackgroundHidden:1];
+  navigationItem = [(MBPrebuddyGettingStartedViewController *)self navigationItem];
+  [navigationItem _setBackgroundHidden:1];
 
-  v21 = [(MBPrebuddyGettingStartedViewController *)self navigationController];
-  v22 = [v21 navigationBar];
-  v23 = [v22 backItem];
-  if (v23)
+  navigationController = [(MBPrebuddyGettingStartedViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  backItem = [navigationBar backItem];
+  if (backItem)
   {
 
 LABEL_7:
@@ -155,9 +155,9 @@ LABEL_7:
 
   if (v24)
   {
-    v21 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"didTapCancelBarButtonItem:"];
-    v22 = [(MBPrebuddyGettingStartedViewController *)self navigationItem];
-    [v22 setLeftBarButtonItem:v21];
+    navigationController = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"didTapCancelBarButtonItem:"];
+    navigationBar = [(MBPrebuddyGettingStartedViewController *)self navigationItem];
+    [navigationBar setLeftBarButtonItem:navigationController];
     goto LABEL_7;
   }
 
@@ -171,54 +171,54 @@ LABEL_8:
   [v12 setTitle:v3 forState:0];
 
   [v12 addTarget:self action:"didTapPrimaryButton:" forEvents:0x2000];
-  v4 = [v12 titleLabel];
+  titleLabel = [v12 titleLabel];
   LODWORD(v5) = 1036831949;
-  [v4 _setHyphenationFactor:v5];
+  [titleLabel _setHyphenationFactor:v5];
 
-  v6 = [(MBPrebuddyGettingStartedViewController *)self buttonTray];
-  [v6 addButton:v12];
+  buttonTray = [(MBPrebuddyGettingStartedViewController *)self buttonTray];
+  [buttonTray addButton:v12];
 
   v7 = +[OBLinkTrayButton linkButton];
   v8 = MBLocalizedStringFromTable();
   [v7 setTitle:v8 forState:0];
 
   [v7 addTarget:self action:"didTapSecondaryButton:" forEvents:0x2000];
-  v9 = [v7 titleLabel];
+  titleLabel2 = [v7 titleLabel];
   LODWORD(v10) = 1036831949;
-  [v9 _setHyphenationFactor:v10];
+  [titleLabel2 _setHyphenationFactor:v10];
 
-  v11 = [(MBPrebuddyGettingStartedViewController *)self buttonTray];
-  [v11 addButton:v7];
+  buttonTray2 = [(MBPrebuddyGettingStartedViewController *)self buttonTray];
+  [buttonTray2 addButton:v7];
 }
 
 - (void)_showLoadingStatusView
 {
-  v3 = [(MBPrebuddyGettingStartedViewController *)self navigationController];
-  v4 = [v3 view];
-  [v4 setUserInteractionEnabled:0];
+  navigationController = [(MBPrebuddyGettingStartedViewController *)self navigationController];
+  view = [navigationController view];
+  [view setUserInteractionEnabled:0];
 
-  v5 = [(MBPrebuddyGettingStartedViewController *)self statusView];
-  [v5 startAnimating];
+  statusView = [(MBPrebuddyGettingStartedViewController *)self statusView];
+  [statusView startAnimating];
 
-  v6 = [(MBPrebuddyGettingStartedViewController *)self buttonTray];
-  [v6 removeAllButtons];
+  buttonTray = [(MBPrebuddyGettingStartedViewController *)self buttonTray];
+  [buttonTray removeAllButtons];
 }
 
 - (void)_hideLoadingStatusView
 {
-  v3 = [(MBPrebuddyGettingStartedViewController *)self statusView];
-  [v3 stopAnimating];
+  statusView = [(MBPrebuddyGettingStartedViewController *)self statusView];
+  [statusView stopAnimating];
 
-  v4 = [(MBPrebuddyGettingStartedViewController *)self buttonTray];
-  [v4 removeAllButtons];
+  buttonTray = [(MBPrebuddyGettingStartedViewController *)self buttonTray];
+  [buttonTray removeAllButtons];
 
   [(MBPrebuddyGettingStartedViewController *)self _configureButtonTray];
-  v6 = [(MBPrebuddyGettingStartedViewController *)self navigationController];
-  v5 = [v6 view];
-  [v5 setUserInteractionEnabled:1];
+  navigationController = [(MBPrebuddyGettingStartedViewController *)self navigationController];
+  view = [navigationController view];
+  [view setUserInteractionEnabled:1];
 }
 
-- (void)didTapPrimaryButton:(id)a3
+- (void)didTapPrimaryButton:(id)button
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -228,17 +228,17 @@ LABEL_8:
   [(MBPrebuddyGettingStartedViewController *)self _signInAccountIfNeeded:v3];
 }
 
-- (void)didTapSecondaryButton:(id)a3
+- (void)didTapSecondaryButton:(id)button
 {
-  v4 = [(MBPrebuddyGettingStartedViewController *)self navigationController];
-  v5 = [v4 view];
-  [v5 setUserInteractionEnabled:0];
+  navigationController = [(MBPrebuddyGettingStartedViewController *)self navigationController];
+  view = [navigationController view];
+  [view setUserInteractionEnabled:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_flow);
   [WeakRetained mb_didTapCancelFromViewController:self];
 }
 
-- (void)didTapCancelBarButtonItem:(id)a3
+- (void)didTapCancelBarButtonItem:(id)item
 {
   v4 = +[MBPrebuddyManager sharedManager];
   [v4 cancelPrebuddy];
@@ -247,10 +247,10 @@ LABEL_8:
   [WeakRetained mb_didTapCancelFromViewController:self];
 }
 
-- (void)_enableBackupIfNeeded:(id)a3
+- (void)_enableBackupIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
+  neededCopy = needed;
+  v5 = neededCopy;
   if (self->_needsBackupEnabled)
   {
     v6 = MBLocalizedStringFromTable();
@@ -274,13 +274,13 @@ LABEL_8:
     v18 = 3221225472;
     v19 = sub_100006944;
     v20 = &unk_10001C8C0;
-    v21 = self;
+    selfCopy = self;
     v22 = v10;
     v23 = v11;
     v14 = v10;
     v15 = [UIAlertAction actionWithTitle:v13 style:1 handler:&v17];
 
-    [v14 addAction:{v12, v17, v18, v19, v20, v21}];
+    [v14 addAction:{v12, v17, v18, v19, v20, selfCopy}];
     [v14 addAction:v15];
     [v14 setPreferredAction:v12];
     v16 = MBPrebuddyAlertIcon();
@@ -291,68 +291,68 @@ LABEL_8:
 
   else
   {
-    (*(v4 + 2))(v4, 1);
+    (*(neededCopy + 2))(neededCopy, 1);
   }
 }
 
-- (id)_iconOfSystemImageName:(id)a3 glyphScale:(double)a4 nudge:(CGPoint)a5 colored:(id)a6 backgroundGradientStart:(id)a7 backgroundGradientEnd:(id)a8 sized:(double)a9
+- (id)_iconOfSystemImageName:(id)name glyphScale:(double)scale nudge:(CGPoint)nudge colored:(id)colored backgroundGradientStart:(id)start backgroundGradientEnd:(id)end sized:(double)sized
 {
-  y = a5.y;
-  x = a5.x;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a3;
-  v34.width = a9;
-  v34.height = a9;
+  y = nudge.y;
+  x = nudge.x;
+  endCopy = end;
+  startCopy = start;
+  coloredCopy = colored;
+  nameCopy = name;
+  v34.width = sized;
+  v34.height = sized;
   UIGraphicsBeginImageContextWithOptions(v34, 0, 1.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   v35.origin.x = 0.0;
   v35.origin.y = 0.0;
-  v35.size.width = a9;
-  v35.size.height = a9;
+  v35.size.width = sized;
+  v35.size.height = sized;
   v36 = CGRectInset(v35, 1.0, 1.0);
   CGContextAddEllipseInRect(CurrentContext, v36);
   CGContextClip(CurrentContext);
   v22 = +[CAGradientLayer layer];
-  [v22 setFrame:{0.0, 0.0, a9, a9}];
-  v23 = [v18 CGColor];
+  [v22 setFrame:{0.0, 0.0, sized, sized}];
+  cGColor = [startCopy CGColor];
 
-  v32[0] = v23;
-  v24 = [v17 CGColor];
+  v32[0] = cGColor;
+  cGColor2 = [endCopy CGColor];
 
-  v32[1] = v24;
+  v32[1] = cGColor2;
   v25 = [NSArray arrayWithObjects:v32 count:2];
   [v22 setColors:v25];
 
   [v22 renderInContext:CurrentContext];
-  v26 = [UIImage systemImageNamed:v20];
+  v26 = [UIImage systemImageNamed:nameCopy];
 
-  v27 = [v26 imageWithTintColor:v19];
+  v27 = [v26 imageWithTintColor:coloredCopy];
 
   [v27 size];
   [MBPrebuddyGettingStartedViewController _normalizeSize:"_normalizeSize:to:scale:" to:? scale:?];
-  [v27 drawInRect:{(a9 - v28) * 0.5 + x * a4, (a9 - v29) * 0.5 + y * a4, v28}];
+  [v27 drawInRect:{(sized - v28) * 0.5 + x * scale, (sized - v29) * 0.5 + y * scale, v28}];
   v30 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v30;
 }
 
-- (CGSize)_normalizeSize:(CGSize)a3 to:(CGSize)a4 scale:(double)a5
+- (CGSize)_normalizeSize:(CGSize)size to:(CGSize)to scale:(double)scale
 {
-  v5 = fmin(a4.width, a4.height) * a5 / fmax(a3.width, a3.height);
-  v6 = a3.width * v5;
-  v7 = a3.height * v5;
+  v5 = fmin(to.width, to.height) * scale / fmax(size.width, size.height);
+  v6 = size.width * v5;
+  v7 = size.height * v5;
   result.height = v7;
   result.width = v6;
   return result;
 }
 
-- (void)_signInAccountIfNeeded:(id)a3
+- (void)_signInAccountIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
+  neededCopy = needed;
+  v5 = neededCopy;
   if (self->_needsAccountSignIn && !self->_didSignIn)
   {
     v6 = objc_alloc_init(AAUISignInController);
@@ -373,40 +373,40 @@ LABEL_8:
 
   else
   {
-    (*(v4 + 2))(v4, 1);
+    (*(neededCopy + 2))(neededCopy, 1);
   }
 }
 
-- (void)_checkEligibilityAndUpgradeHSA2IfNeeded:(id)a3
+- (void)_checkEligibilityAndUpgradeHSA2IfNeeded:(id)needed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100007170;
   v4[3] = &unk_10001C8E8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(MBPrebuddyGettingStartedViewController *)v5 _checkEligibility:v4];
+  selfCopy = self;
+  neededCopy = needed;
+  v3 = neededCopy;
+  [(MBPrebuddyGettingStartedViewController *)selfCopy _checkEligibility:v4];
 }
 
-- (void)_upgradeHSA2IfNeeded:(id)a3
+- (void)_upgradeHSA2IfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   altDSIDForHSA2Upgrade = self->_altDSIDForHSA2Upgrade;
   if (altDSIDForHSA2Upgrade && !self->_didHSA2Upgrade)
   {
     if ([(NSString *)altDSIDForHSA2Upgrade length])
     {
-      v6 = [[CDPUIDeviceToDeviceEncryptionFlowContext alloc] initWithAltDSID:self->_altDSIDForHSA2Upgrade];
-      [v6 setPresentingViewController:self];
-      [v6 setDeviceToDeviceEncryptionUpgradeUIStyle:1];
-      v7 = [[CDPUIDeviceToDeviceEncryptionHelper alloc] initWithContext:v6];
+      flow = [[CDPUIDeviceToDeviceEncryptionFlowContext alloc] initWithAltDSID:self->_altDSIDForHSA2Upgrade];
+      [flow setPresentingViewController:self];
+      [flow setDeviceToDeviceEncryptionUpgradeUIStyle:1];
+      v7 = [[CDPUIDeviceToDeviceEncryptionHelper alloc] initWithContext:flow];
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_1000073D8;
       v11[3] = &unk_10001C910;
       v11[4] = self;
-      v12 = v4;
+      v12 = neededCopy;
       [v7 performDeviceToDeviceEncryptionStateRepairWithCompletion:v11];
     }
 
@@ -420,29 +420,29 @@ LABEL_8:
         _MBLog();
       }
 
-      (*(v4 + 2))(v4, 0);
-      v9 = [(MBPrebuddyGettingStartedViewController *)self navigationController];
-      v10 = [v9 view];
-      [v10 setUserInteractionEnabled:0];
+      (*(neededCopy + 2))(neededCopy, 0);
+      navigationController = [(MBPrebuddyGettingStartedViewController *)self navigationController];
+      view = [navigationController view];
+      [view setUserInteractionEnabled:0];
 
-      v6 = [(MBPrebuddyGettingStartedViewController *)self flow];
-      [v6 mb_didTapCancelFromViewController:self];
+      flow = [(MBPrebuddyGettingStartedViewController *)self flow];
+      [flow mb_didTapCancelFromViewController:self];
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1);
+    (*(neededCopy + 2))(neededCopy, 1);
   }
 }
 
-- (void)_checkEligibility:(id)a3
+- (void)_checkEligibility:(id)eligibility
 {
-  v4 = a3;
+  eligibilityCopy = eligibility;
   [(MBPrebuddyGettingStartedViewController *)self _showLoadingStatusView];
   v5 = objc_alloc_init(MBManager);
   v6 = [v5 isBackupEnabled] ^ 1;
-  v7 = [v5 backupDeviceUUID];
+  backupDeviceUUID = [v5 backupDeviceUUID];
   v8 = objc_alloc_init(MBMegaBackupEligibilityManager);
   entryPoint = self->_entryPoint;
   deepLinkURL = self->_deepLinkURL;
@@ -452,25 +452,25 @@ LABEL_8:
   v12[3] = &unk_10001C938;
   v14 = v6;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
-  [(MBMegaBackupEligibilityManager *)v8 checkMegaBackupEligibility:entryPoint deepLinkURL:deepLinkURL backupDeviceUUID:v7 queue:&_dispatch_main_q completion:v12];
+  v13 = eligibilityCopy;
+  v11 = eligibilityCopy;
+  [(MBMegaBackupEligibilityManager *)v8 checkMegaBackupEligibility:entryPoint deepLinkURL:deepLinkURL backupDeviceUUID:backupDeviceUUID queue:&_dispatch_main_q completion:v12];
 }
 
-- (void)_presentError:(id)a3 completion:(id)a4
+- (void)_presentError:(id)error completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   v8 = MBLocalizedStringFromTable();
   v9 = MBLocalizedStringFromTable();
   v10 = MBLocalizedStringFromTable();
-  v11 = [v6 domain];
+  domain = [errorCopy domain];
   v12 = _ICQMegaBackupErrorDomain;
-  if ([v11 isEqualToString:_ICQMegaBackupErrorDomain])
+  if ([domain isEqualToString:_ICQMegaBackupErrorDomain])
   {
-    v13 = [v6 code];
+    code = [errorCopy code];
 
-    if (v13 == 5)
+    if (code == 5)
     {
       v14 = MGGetBoolAnswer();
       v15 = @"WIFI";
@@ -483,7 +483,7 @@ LABEL_8:
       v17 = MBLocalizedStringFromTable();
 
       v18 = 0;
-      v19 = v9;
+      domain5 = v9;
       v8 = v17;
       v9 = 0;
       goto LABEL_26;
@@ -494,12 +494,12 @@ LABEL_8:
   {
   }
 
-  v20 = [v6 domain];
-  if ([v20 isEqualToString:v12])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:v12])
   {
-    v21 = [v6 code];
+    code2 = [errorCopy code];
 
-    if (v21 == 6)
+    if (code2 == 6)
     {
 LABEL_24:
       v24 = MBLocalizedStringFromTable();
@@ -508,7 +508,7 @@ LABEL_24:
 
       v26 = MBLocalizedStringFromTable();
       v18 = 0;
-      v19 = v10;
+      domain5 = v10;
       goto LABEL_25;
     }
   }
@@ -517,19 +517,19 @@ LABEL_24:
   {
   }
 
-  v22 = [v6 domain];
-  if ([v22 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
+  domain3 = [errorCopy domain];
+  if ([domain3 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
   {
-    v23 = [v6 code];
+    code3 = [errorCopy code];
 
-    if (v23 == 6)
+    if (code3 == 6)
     {
       v24 = MBLocalizedStringFromTable();
 
       v25 = MBLocalizedStringFromTable();
 
       v26 = MBLocalizedStringFromTable();
-      v19 = v10;
+      domain5 = v10;
       v18 = 1;
 LABEL_25:
       v10 = v26;
@@ -543,12 +543,12 @@ LABEL_25:
   {
   }
 
-  v27 = [v6 domain];
-  if ([v27 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
+  domain4 = [errorCopy domain];
+  if ([domain4 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
   {
-    v28 = [v6 code];
+    code4 = [errorCopy code];
 
-    if (v28 == 2)
+    if (code4 == 2)
     {
       goto LABEL_24;
     }
@@ -558,18 +558,18 @@ LABEL_25:
   {
   }
 
-  v19 = [v6 domain];
-  if ([v19 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
+  domain5 = [errorCopy domain];
+  if ([domain5 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
   {
-    if ([v6 code] == 3)
+    if ([errorCopy code] == 3)
     {
     }
 
     else
     {
-      v29 = [v6 code];
+      code5 = [errorCopy code];
 
-      if (v29 != 4)
+      if (code5 != 4)
       {
         v18 = 0;
         goto LABEL_27;
@@ -592,16 +592,16 @@ LABEL_27:
   v34[2] = sub_100007F00;
   v34[3] = &unk_10001C960;
   v36 = v18;
-  v35 = v7;
-  v32 = v7;
+  v35 = completionCopy;
+  v32 = completionCopy;
   v33 = [UIAlertAction actionWithTitle:v10 style:0 handler:v34];
   [v30 addAction:v33];
   [(MBPrebuddyGettingStartedViewController *)self presentViewController:v30 animated:1 completion:0];
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
-  v3 = a3;
+  cancelCopy = cancel;
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -610,7 +610,7 @@ LABEL_27:
     _MBLog();
   }
 
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  [cancelCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (MBViewControllerFlow)flow

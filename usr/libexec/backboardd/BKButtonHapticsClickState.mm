@@ -1,26 +1,26 @@
 @interface BKButtonHapticsClickState
-+ (id)clickStateWithState:(unint64_t)a3;
-+ (void)inspectChangesFromState:(id)a3 toState:(id)a4 withBlock:(id)a5;
++ (id)clickStateWithState:(unint64_t)state;
++ (void)inspectChangesFromState:(id)state toState:(id)toState withBlock:(id)block;
 - (BKButtonHapticsClickState)init;
 - (BOOL)isEnabled;
 - (BOOL)shouldUseHaptic;
 - (double)maximumTimeInterval;
 - (double)minimumTimeInterval;
 - (id)_baseConfigDictionary;
-- (id)_initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)fastConfigDictionaryForHAButtonHapticType:(int64_t)a3;
-- (id)normalConfigDictionaryForHAButtonHapticType:(int64_t)a3;
-- (id)slowConfigDictionaryForHAButtonHapticType:(int64_t)a3;
+- (id)fastConfigDictionaryForHAButtonHapticType:(int64_t)type;
+- (id)normalConfigDictionaryForHAButtonHapticType:(int64_t)type;
+- (id)slowConfigDictionaryForHAButtonHapticType:(int64_t)type;
 - (int64_t)assetType;
 - (int64_t)hapticClickCount;
 - (unint64_t)clickState;
-- (void)_applyGainForHapticType:(int64_t)a3 toConfigDictionary:(id)a4 clickSpeed:(unint64_t)a5;
-- (void)setAssetType:(int64_t)a3;
-- (void)setClickState:(unint64_t)a3;
-- (void)setMaximumTimeInterval:(double)a3;
-- (void)setMinimumTimeInterval:(double)a3;
+- (void)_applyGainForHapticType:(int64_t)type toConfigDictionary:(id)dictionary clickSpeed:(unint64_t)speed;
+- (void)setAssetType:(int64_t)type;
+- (void)setClickState:(unint64_t)state;
+- (void)setMaximumTimeInterval:(double)interval;
+- (void)setMinimumTimeInterval:(double)interval;
 @end
 
 @implementation BKButtonHapticsClickState
@@ -28,15 +28,15 @@
 - (BOOL)isEnabled
 {
   v2 = [(BSMutableSettings *)self->_settings objectForSetting:2];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setMaximumTimeInterval:(double)a3
+- (void)setMaximumTimeInterval:(double)interval
 {
   settings = self->_settings;
-  v4 = [NSNumber numberWithDouble:a3];
+  v4 = [NSNumber numberWithDouble:interval];
   [(BSMutableSettings *)settings setObject:v4 forSetting:4];
 }
 
@@ -49,10 +49,10 @@
   return v4;
 }
 
-- (void)setMinimumTimeInterval:(double)a3
+- (void)setMinimumTimeInterval:(double)interval
 {
   settings = self->_settings;
-  v4 = [NSNumber numberWithDouble:a3];
+  v4 = [NSNumber numberWithDouble:interval];
   [(BSMutableSettings *)settings setObject:v4 forSetting:5];
 }
 
@@ -80,95 +80,95 @@
 
 - (BOOL)shouldUseHaptic
 {
-  v3 = [(BKButtonHapticsClickState *)self clickState];
+  clickState = [(BKButtonHapticsClickState *)self clickState];
 
-  return [(BKButtonHapticsClickState *)self _shouldUseHapticForClickState:v3];
+  return [(BKButtonHapticsClickState *)self _shouldUseHapticForClickState:clickState];
 }
 
-- (void)setAssetType:(int64_t)a3
+- (void)setAssetType:(int64_t)type
 {
   settings = self->_settings;
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:type];
   [(BSMutableSettings *)settings setObject:v4 forSetting:3];
 }
 
 - (int64_t)assetType
 {
   v2 = [(BSMutableSettings *)self->_settings objectForSetting:3];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setClickState:(unint64_t)a3
+- (void)setClickState:(unint64_t)state
 {
   settings = self->_settings;
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:state];
   [(BSMutableSettings *)settings setObject:v4 forSetting:1];
 }
 
 - (unint64_t)clickState
 {
   v2 = [(BSMutableSettings *)self->_settings objectForSetting:1];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (id)fastConfigDictionaryForHAButtonHapticType:(int64_t)a3
+- (id)fastConfigDictionaryForHAButtonHapticType:(int64_t)type
 {
-  v5 = [(BKButtonHapticsClickState *)self _baseConfigDictionary];
-  [(BKButtonHapticsClickState *)self _applyGainForHapticType:a3 toConfigDictionary:v5 clickSpeed:2];
-  [v5 setObject:&off_1001078E0 forKey:BRConfigSpeedKey];
+  _baseConfigDictionary = [(BKButtonHapticsClickState *)self _baseConfigDictionary];
+  [(BKButtonHapticsClickState *)self _applyGainForHapticType:type toConfigDictionary:_baseConfigDictionary clickSpeed:2];
+  [_baseConfigDictionary setObject:&off_1001078E0 forKey:BRConfigSpeedKey];
 
-  return v5;
+  return _baseConfigDictionary;
 }
 
-- (id)normalConfigDictionaryForHAButtonHapticType:(int64_t)a3
+- (id)normalConfigDictionaryForHAButtonHapticType:(int64_t)type
 {
-  v5 = [(BKButtonHapticsClickState *)self _baseConfigDictionary];
-  [(BKButtonHapticsClickState *)self _applyGainForHapticType:a3 toConfigDictionary:v5 clickSpeed:1];
-  [v5 setObject:&off_1001078C8 forKey:BRConfigSpeedKey];
+  _baseConfigDictionary = [(BKButtonHapticsClickState *)self _baseConfigDictionary];
+  [(BKButtonHapticsClickState *)self _applyGainForHapticType:type toConfigDictionary:_baseConfigDictionary clickSpeed:1];
+  [_baseConfigDictionary setObject:&off_1001078C8 forKey:BRConfigSpeedKey];
 
-  return v5;
+  return _baseConfigDictionary;
 }
 
-- (id)slowConfigDictionaryForHAButtonHapticType:(int64_t)a3
+- (id)slowConfigDictionaryForHAButtonHapticType:(int64_t)type
 {
-  v5 = [(BKButtonHapticsClickState *)self _baseConfigDictionary];
-  [(BKButtonHapticsClickState *)self _applyGainForHapticType:a3 toConfigDictionary:v5 clickSpeed:0];
-  [v5 setObject:&off_1001078B0 forKey:BRConfigSpeedKey];
+  _baseConfigDictionary = [(BKButtonHapticsClickState *)self _baseConfigDictionary];
+  [(BKButtonHapticsClickState *)self _applyGainForHapticType:type toConfigDictionary:_baseConfigDictionary clickSpeed:0];
+  [_baseConfigDictionary setObject:&off_1001078B0 forKey:BRConfigSpeedKey];
 
-  return v5;
+  return _baseConfigDictionary;
 }
 
-- (void)_applyGainForHapticType:(int64_t)a3 toConfigDictionary:(id)a4 clickSpeed:(unint64_t)a5
+- (void)_applyGainForHapticType:(int64_t)type toConfigDictionary:(id)dictionary clickSpeed:(unint64_t)speed
 {
-  v10 = a4;
-  v7 = [(BKButtonHapticsClickState *)self clickState];
-  if ([(BKButtonHapticsClickState *)self _shouldUseHapticForClickState:v7])
+  dictionaryCopy = dictionary;
+  clickState = [(BKButtonHapticsClickState *)self clickState];
+  if ([(BKButtonHapticsClickState *)self _shouldUseHapticForClickState:clickState])
   {
     v8 = +[HAButtonHapticsLoader sharedInstance];
-    if ([(BKButtonHapticsClickState *)self _shouldUseSplitGainForClickState:v7])
+    if ([(BKButtonHapticsClickState *)self _shouldUseSplitGainForClickState:clickState])
     {
-      if ([(BKButtonHapticsClickState *)self _isUpClickStateType:v7])
+      if ([(BKButtonHapticsClickState *)self _isUpClickStateType:clickState])
       {
-        [v8 defaultUpGainForType:a3];
+        [v8 defaultUpGainForType:type];
       }
 
       else
       {
-        [v8 defaultDownGainForType:a3];
+        [v8 defaultDownGainForType:type];
       }
     }
 
     else
     {
-      [v8 hapticGainForType:a3];
+      [v8 hapticGainForType:type];
     }
 
     v9 = [NSNumber numberWithFloat:?];
-    [v10 setObject:v9 forKey:BRConfigGainKey];
+    [dictionaryCopy setObject:v9 forKey:BRConfigGainKey];
   }
 }
 
@@ -192,9 +192,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   settings = self->_settings;
 
   return [v4 _initWithSettings:settings];
@@ -215,9 +215,9 @@
   v10 = [v3 appendDouble:@"minimumTimeInterval" withName:2 decimalPrecision:?];
   [(BKButtonHapticsClickState *)self maximumTimeInterval];
   v11 = [v3 appendDouble:@"maximumTimeInterval" withName:2 decimalPrecision:?];
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
 - (BKButtonHapticsClickState)init
@@ -228,17 +228,17 @@
   return v4;
 }
 
-- (id)_initWithSettings:(id)a3
+- (id)_initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v11.receiver = self;
   v11.super_class = BKButtonHapticsClickState;
   v5 = [(BKButtonHapticsClickState *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (settingsCopy)
     {
-      v6 = [v4 mutableCopy];
+      v6 = [settingsCopy mutableCopy];
       settings = v5->_settings;
       v5->_settings = v6;
     }
@@ -256,27 +256,27 @@
   return v5;
 }
 
-+ (void)inspectChangesFromState:(id)a3 toState:(id)a4 withBlock:(id)a5
++ (void)inspectChangesFromState:(id)state toState:(id)toState withBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 settings];
-  v10 = [v8 settings];
+  blockCopy = block;
+  toStateCopy = toState;
+  settings = [state settings];
+  settings2 = [toStateCopy settings];
 
-  v11 = [BSSettingsDiff diffFromSettings:v9 toSettings:v10];
+  v11 = [BSSettingsDiff diffFromSettings:settings toSettings:settings2];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100025784;
   v13[3] = &unk_1000FA610;
-  v14 = v7;
-  v12 = v7;
+  v14 = blockCopy;
+  v12 = blockCopy;
   [v11 inspectChangesWithBlock:v13];
 }
 
-+ (id)clickStateWithState:(unint64_t)a3
++ (id)clickStateWithState:(unint64_t)state
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setClickState:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setClickState:state];
 
   return v4;
 }

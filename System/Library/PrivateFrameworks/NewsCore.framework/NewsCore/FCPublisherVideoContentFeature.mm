@@ -1,7 +1,7 @@
 @interface FCPublisherVideoContentFeature
 - (FCPublisherVideoContentFeature)init;
-- (FCPublisherVideoContentFeature)initWithPersonalizationIdentifier:(id)a3;
-- (FCPublisherVideoContentFeature)initWithPublisherTagID:(id)a3;
+- (FCPublisherVideoContentFeature)initWithPersonalizationIdentifier:(id)identifier;
+- (FCPublisherVideoContentFeature)initWithPublisherTagID:(id)d;
 @end
 
 @implementation FCPublisherVideoContentFeature
@@ -33,42 +33,42 @@
   objc_exception_throw(v6);
 }
 
-- (FCPublisherVideoContentFeature)initWithPublisherTagID:(id)a3
+- (FCPublisherVideoContentFeature)initWithPublisherTagID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = FCPublisherVideoContentFeature;
   v6 = [(FCPersonalizationFeature *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->super._tagID, a3);
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"f9", @"+", v5];
+    objc_storeStrong(&v6->super._tagID, d);
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"f9", @"+", dCopy];
     personalizationIdentifier = v7->super._personalizationIdentifier;
-    v7->super._personalizationIdentifier = v8;
+    v7->super._personalizationIdentifier = dCopy;
   }
 
   return v7;
 }
 
-- (FCPublisherVideoContentFeature)initWithPersonalizationIdentifier:(id)a3
+- (FCPublisherVideoContentFeature)initWithPersonalizationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 rangeOfString:@"+"];
+  identifierCopy = identifier;
+  v5 = [identifierCopy rangeOfString:@"+"];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v8 = [v4 substringWithRange:{v5 + v6, objc_msgSend(v4, "length") - (v5 + v6)}];
+    v8 = [identifierCopy substringWithRange:{v5 + v6, objc_msgSend(identifierCopy, "length") - (v5 + v6)}];
     self = [(FCPublisherVideoContentFeature *)self initWithPublisherTagID:v8];
 
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

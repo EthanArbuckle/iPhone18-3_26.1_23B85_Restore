@@ -17,18 +17,18 @@
 - (id)trackTitle;
 - (int)playerId;
 - (int64_t)playbackState;
-- (unint64_t)_getEncodingForMimeType:(id)a3;
+- (unint64_t)_getEncodingForMimeType:(id)type;
 - (unint64_t)_trackHash;
 - (unint64_t)trackId;
-- (void)_activeOriginDidChange:(void *)a3;
-- (void)_appDidChange:(id)a3;
-- (void)_appIsPlayingDidChangeNotification:(id)a3;
-- (void)_infoDidChange:(id)a3;
+- (void)_activeOriginDidChange:(void *)change;
+- (void)_appDidChange:(id)change;
+- (void)_appIsPlayingDidChangeNotification:(id)notification;
+- (void)_infoDidChange:(id)change;
 - (void)_initializeState;
 - (void)_playbackQueueDidChange;
 - (void)_playbackStateDidChange;
-- (void)_settingsDidChange:(id)a3;
-- (void)_supportedCommandsDidChange:(id)a3;
+- (void)_settingsDidChange:(id)change;
+- (void)_supportedCommandsDidChange:(id)change;
 - (void)_trackDidChange;
 - (void)dealloc;
 @end
@@ -86,15 +86,15 @@
 {
   v3 = dispatch_get_global_queue(2, 0);
   v4 = objc_alloc_init(BTAVRCP_Syncifier);
-  v5 = [(BTAVRCP_Syncifier *)v4 createSwitcher];
+  createSwitcher = [(BTAVRCP_Syncifier *)v4 createSwitcher];
   MRMediaRemoteGetNowPlayingInfoWithOptionalArtwork();
-  v6 = [(BTAVRCP_Syncifier *)v4 createSwitcher];
+  createSwitcher2 = [(BTAVRCP_Syncifier *)v4 createSwitcher];
   MRMediaRemoteGetNowPlayingApplicationDisplayID();
-  v7 = [(BTAVRCP_Syncifier *)v4 createSwitcher];
+  createSwitcher3 = [(BTAVRCP_Syncifier *)v4 createSwitcher];
   MRMediaRemoteGetNowPlayingApplicationIsPlaying();
-  v8 = [(BTAVRCP_Syncifier *)v4 createSwitcher];
+  createSwitcher4 = [(BTAVRCP_Syncifier *)v4 createSwitcher];
   MRMediaRemoteGetActiveOrigin();
-  v9 = [(BTAVRCP_Syncifier *)v4 createSwitcher];
+  createSwitcher5 = [(BTAVRCP_Syncifier *)v4 createSwitcher];
   MRMediaRemoteCopySupportedCommands();
   if (![(BTAVRCP_Syncifier *)v4 wait:3.0, _NSConcreteStackBlock, 3221225472, sub_10000C090, &unk_100018D10, self])
   {
@@ -126,15 +126,15 @@
   [(BTAVRCP_NowPlayingInfo *)&v3 dealloc];
 }
 
-- (unint64_t)_getEncodingForMimeType:(id)a3
+- (unint64_t)_getEncodingForMimeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"image/jpeg"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"image/jpeg"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"image/png"])
+  else if ([typeCopy isEqualToString:@"image/png"])
   {
     v4 = 2;
   }
@@ -147,36 +147,36 @@
   return v4;
 }
 
-- (void)_appIsPlayingDidChangeNotification:(id)a3
+- (void)_appIsPlayingDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:kMRMediaRemoteNowPlayingApplicationIsPlayingUserInfoKey];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingApplicationIsPlayingUserInfoKey];
+  bOOLValue = [v5 BOOLValue];
 
-  [(BTAVRCP_NowPlayingInfo *)self _appIsPlayingDidChange:v6];
+  [(BTAVRCP_NowPlayingInfo *)self _appIsPlayingDidChange:bOOLValue];
 }
 
-- (void)_infoDidChange:(id)a3
+- (void)_infoDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (os_log_type_enabled(qword_10001EFD0, OS_LOG_TYPE_DEBUG))
   {
     sub_10000EBCC();
   }
 
-  [(BTAVRCP_NowPlayingInfo *)self setMrInfo:v4];
+  [(BTAVRCP_NowPlayingInfo *)self setMrInfo:changeCopy];
   [(BTAVRCP_NowPlayingInfo *)self _playbackStateDidChange];
   [(BTAVRCP_NowPlayingInfo *)self _trackDidChange];
 }
 
-- (void)_appDidChange:(id)a3
+- (void)_appDidChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
+  changeCopy = change;
+  v5 = changeCopy;
   v6 = off_10001EE50;
-  if (v4)
+  if (changeCopy)
   {
-    v6 = v4;
+    v6 = changeCopy;
   }
 
   v7 = v6;
@@ -185,14 +185,14 @@
     sub_10000EC3C();
   }
 
-  v8 = [(BTAVRCP_NowPlayingInfo *)self mrAppIdentifier];
-  v9 = [(__CFString *)v7 isEqualToString:v8];
+  mrAppIdentifier = [(BTAVRCP_NowPlayingInfo *)self mrAppIdentifier];
+  v9 = [(__CFString *)v7 isEqualToString:mrAppIdentifier];
 
   if ((v9 & 1) == 0)
   {
     [(BTAVRCP_NowPlayingInfo *)self setMrAppIdentifier:v7];
-    v10 = [(BTAVRCP_NowPlayingInfo *)self delegate];
-    [v10 playerDidChange:{-[BTAVRCP_NowPlayingInfo playerId](self, "playerId")}];
+    delegate = [(BTAVRCP_NowPlayingInfo *)self delegate];
+    [delegate playerDidChange:{-[BTAVRCP_NowPlayingInfo playerId](self, "playerId")}];
   }
 }
 
@@ -203,26 +203,26 @@
     sub_10000ED38();
   }
 
-  v3 = [(BTAVRCP_NowPlayingInfo *)self delegate];
-  [v3 playbackQueueDidChange];
+  delegate = [(BTAVRCP_NowPlayingInfo *)self delegate];
+  [delegate playbackQueueDidChange];
 }
 
-- (void)_activeOriginDidChange:(void *)a3
+- (void)_activeOriginDidChange:(void *)change
 {
   v5 = qword_10001EFD0;
   if (os_log_type_enabled(qword_10001EFD0, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000ED78(v5, a3);
+    sub_10000ED78(v5, change);
   }
 
-  if ([(BTAVRCP_NowPlayingInfo *)self mrActiveOrigin]!= a3)
+  if ([(BTAVRCP_NowPlayingInfo *)self mrActiveOrigin]!= change)
   {
     if ([(BTAVRCP_NowPlayingInfo *)self mrActiveOrigin])
     {
       CFRelease([(BTAVRCP_NowPlayingInfo *)self mrActiveOrigin]);
     }
 
-    [(BTAVRCP_NowPlayingInfo *)self setMrActiveOrigin:a3];
+    [(BTAVRCP_NowPlayingInfo *)self setMrActiveOrigin:change];
     if ([(BTAVRCP_NowPlayingInfo *)self mrActiveOrigin])
     {
       CFRetain([(BTAVRCP_NowPlayingInfo *)self mrActiveOrigin]);
@@ -230,22 +230,22 @@
   }
 }
 
-- (void)_supportedCommandsDidChange:(id)a3
+- (void)_supportedCommandsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (os_log_type_enabled(qword_10001EFD0, OS_LOG_TYPE_DEBUG))
   {
     sub_10000EE18();
   }
 
-  if ([v4 count])
+  if ([changeCopy count])
   {
     v5 = 0;
     IntegerValueForKey = 1;
     v7 = 1;
     do
     {
-      [v4 objectAtIndex:v5];
+      [changeCopy objectAtIndex:v5];
       Command = MRMediaRemoteCommandInfoGetCommand();
       if (Command == 26)
       {
@@ -260,7 +260,7 @@
       ++v5;
     }
 
-    while (v5 < [v4 count]);
+    while (v5 < [changeCopy count]);
     v9 = v7 | (IntegerValueForKey << 32);
   }
 
@@ -274,21 +274,21 @@
 
 - (id)trackTitle
 {
-  v2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTitle];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v3 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTitle];
 
   return v3;
 }
 
 - (id)trackAlbum
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v4 = [v3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoAlbum];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v4 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoAlbum];
 
   if (!v4)
   {
-    v5 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v4 = [v5 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoRadioStationName];
+    mrInfo2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v4 = [mrInfo2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoRadioStationName];
   }
 
   return v4;
@@ -296,24 +296,24 @@
 
 - (id)trackArtist
 {
-  v2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoArtist];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v3 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoArtist];
 
   return v3;
 }
 
 - (id)trackGenre
 {
-  v2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoGenre];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v3 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoGenre];
 
   return v3;
 }
 
 - (id)trackQueueIndex
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v4 = [v3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoQueueIndex];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v4 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoQueueIndex];
 
   if (v4)
   {
@@ -322,8 +322,8 @@
 
   else
   {
-    v6 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v5 = [v6 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTrackNumber];
+    mrInfo2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v5 = [mrInfo2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTrackNumber];
   }
 
   return v5;
@@ -331,26 +331,26 @@
 
 - (id)trackQueueCount
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v4 = [v3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoQueueIndex];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v4 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoQueueIndex];
 
-  v5 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v6 = v5;
+  mrInfo2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v6 = mrInfo2;
   v7 = &kMRMediaRemoteNowPlayingInfoTotalTrackCount;
   if (v4)
   {
     v7 = &kMRMediaRemoteNowPlayingInfoTotalQueueCount;
   }
 
-  v8 = [v5 objectForKeyedSubscript:*v7];
+  v8 = [mrInfo2 objectForKeyedSubscript:*v7];
 
   return v8;
 }
 
 - (id)trackDuration
 {
-  v2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDuration];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v3 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDuration];
 
   if (v3)
   {
@@ -368,13 +368,13 @@
 
 - (id)trackPosition
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v4 = [v3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTimestamp];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v4 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTimestamp];
 
   if (v4)
   {
-    v5 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v6 = [v5 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoElapsedTime];
+    mrInfo2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v6 = [mrInfo2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoElapsedTime];
 
     if (v6)
     {
@@ -411,8 +411,8 @@
 
 - (id)trackImageHandle
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v4 = [v3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoArtworkIdentifier];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v4 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoArtworkIdentifier];
 
   if (v4)
   {
@@ -424,7 +424,7 @@
       objc_storeStrong(p_currentArtworkIdentifier, v4);
     }
 
-    v7 = [NSString stringWithFormat:@"%tu", qword_10001EF88];
+    qword_10001EF88 = [NSString stringWithFormat:@"%tu", qword_10001EF88];
   }
 
   else
@@ -435,17 +435,17 @@
       sub_10000EE88(self, v8);
     }
 
-    v7 = 0;
+    qword_10001EF88 = 0;
   }
 
-  return v7;
+  return qword_10001EF88;
 }
 
 - (BOOL)isBrowsablePlayer
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self browsablePlayers];
-  v4 = [(BTAVRCP_NowPlayingInfo *)self mrAppIdentifier];
-  v5 = [v3 containsObject:v4];
+  browsablePlayers = [(BTAVRCP_NowPlayingInfo *)self browsablePlayers];
+  mrAppIdentifier = [(BTAVRCP_NowPlayingInfo *)self mrAppIdentifier];
+  v5 = [browsablePlayers containsObject:mrAppIdentifier];
 
   return v5;
 }
@@ -465,29 +465,29 @@
 
 - (id)playerName
 {
-  v2 = [(BTAVRCP_NowPlayingInfo *)self mrAppIdentifier];
-  v3 = [LSApplicationProxy applicationProxyForIdentifier:v2];
+  mrAppIdentifier = [(BTAVRCP_NowPlayingInfo *)self mrAppIdentifier];
+  v3 = [LSApplicationProxy applicationProxyForIdentifier:mrAppIdentifier];
 
-  v4 = [v3 localizedName];
+  localizedName = [v3 localizedName];
 
-  if (v4)
+  if (localizedName)
   {
-    v5 = [v3 localizedName];
+    localizedName2 = [v3 localizedName];
   }
 
   else
   {
     v6 = +[NSBundle mobileBluetoothBundle];
-    v5 = [v6 localizedStringForKey:@"UNKNOWN_MEDIA_PLAYER" value:@"Unknown Media Player" table:0];
+    localizedName2 = [v6 localizedStringForKey:@"UNKNOWN_MEDIA_PLAYER" value:@"Unknown Media Player" table:0];
   }
 
-  return v5;
+  return localizedName2;
 }
 
 - (float)_playbackRate
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v4 = [v3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoPlaybackRate];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v4 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoPlaybackRate];
 
   if (v4)
   {
@@ -510,8 +510,8 @@
 
 - (float)_defaultPlaybackRate
 {
-  v2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v3 = [v2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDefaultPlaybackRate];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v3 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDefaultPlaybackRate];
 
   if (v3)
   {
@@ -560,47 +560,47 @@
 
 - (void)_playbackStateDidChange
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self playbackState];
-  if (v3 != [(BTAVRCP_NowPlayingInfo *)self currentPlaybackState])
+  playbackState = [(BTAVRCP_NowPlayingInfo *)self playbackState];
+  if (playbackState != [(BTAVRCP_NowPlayingInfo *)self currentPlaybackState])
   {
-    [(BTAVRCP_NowPlayingInfo *)self setCurrentPlaybackState:v3];
-    v4 = [(BTAVRCP_NowPlayingInfo *)self delegate];
-    [v4 playbackStateDidChange:v3];
+    [(BTAVRCP_NowPlayingInfo *)self setCurrentPlaybackState:playbackState];
+    delegate = [(BTAVRCP_NowPlayingInfo *)self delegate];
+    [delegate playbackStateDidChange:playbackState];
   }
 }
 
 - (unint64_t)_trackHash
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
 
-  if (v3)
+  if (mrInfo)
   {
-    v31 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v30 = [v31 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoAlbum];
+    mrInfo2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v30 = [mrInfo2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoAlbum];
     v4 = [v30 hash];
-    v29 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v28 = [v29 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoArtist];
+    mrInfo3 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v28 = [mrInfo3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoArtist];
     v5 = [v28 hash] ^ v4;
-    v27 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v26 = [v27 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTitle];
+    mrInfo4 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v26 = [mrInfo4 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTitle];
     v6 = [v26 hash];
-    v25 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v24 = [v25 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoGenre];
+    mrInfo5 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v24 = [mrInfo5 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoGenre];
     v7 = v5 ^ v6 ^ [v24 hash];
-    v23 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v22 = [v23 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoQueueIndex];
+    mrInfo6 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v22 = [mrInfo6 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoQueueIndex];
     v8 = [v22 hash];
-    v21 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v9 = [v21 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTotalQueueCount];
+    mrInfo7 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v9 = [mrInfo7 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTotalQueueCount];
     v10 = v8 ^ [v9 hash];
-    v11 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v12 = [v11 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTrackNumber];
+    mrInfo8 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v12 = [mrInfo8 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTrackNumber];
     v13 = v7 ^ v10 ^ [v12 hash];
-    v14 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v15 = [v14 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTotalTrackCount];
+    mrInfo9 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v15 = [mrInfo9 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoTotalTrackCount];
     v16 = [v15 hash];
-    v17 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v18 = [v17 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDuration];
+    mrInfo10 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v18 = [mrInfo10 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoDuration];
     v19 = v13 ^ v16 ^ [v18 hash];
   }
 
@@ -619,36 +619,36 @@
 
 - (unint64_t)trackId
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self isBrowsablePlayer];
-  v4 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-  v5 = v4;
-  if (v3)
+  isBrowsablePlayer = [(BTAVRCP_NowPlayingInfo *)self isBrowsablePlayer];
+  mrInfo = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+  v5 = mrInfo;
+  if (isBrowsablePlayer)
   {
-    v6 = [v4 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoUniqueIdentifier];
+    v6 = [mrInfo objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoUniqueIdentifier];
 
     if (v6)
     {
       goto LABEL_7;
     }
 
-    v7 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v6 = [v7 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoiTunesStoreIdentifier];
+    mrInfo2 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v6 = [mrInfo2 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoiTunesStoreIdentifier];
 
     if (v6)
     {
       goto LABEL_7;
     }
 
-    v8 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v6 = [v8 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoExternalContentIdentifier];
+    mrInfo3 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v6 = [mrInfo3 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoExternalContentIdentifier];
 
     if (v6)
     {
       goto LABEL_7;
     }
 
-    v9 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
-    v6 = [v9 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoiTunesStoreSubscriptionAdamIdentifier];
+    mrInfo4 = [(BTAVRCP_NowPlayingInfo *)self mrInfo];
+    v6 = [mrInfo4 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoiTunesStoreSubscriptionAdamIdentifier];
 
     if (v6 || (-[BTAVRCP_NowPlayingInfo mrInfo](self, "mrInfo"), v10 = objc_claimAutoreleasedReturnValue(), [v10 objectForKeyedSubscript:kMRMediaRemoteNowPlayingInfoRadioStationIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v10, v6))
     {
@@ -656,15 +656,15 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v6 unsignedLongLongValue];
+        unsignedLongLongValue = [v6 unsignedLongLongValue];
       }
 
       else
       {
-        v11 = [v6 hash];
+        unsignedLongLongValue = [v6 hash];
       }
 
-      v12 = v11;
+      v12 = unsignedLongLongValue;
     }
 
     else
@@ -673,7 +673,7 @@ LABEL_7:
     }
   }
 
-  else if (v4)
+  else if (mrInfo)
   {
 
     return 0;
@@ -689,29 +689,29 @@ LABEL_7:
 
 - (void)_trackDidChange
 {
-  v3 = [(BTAVRCP_NowPlayingInfo *)self _trackHash];
-  if (v3 != [(BTAVRCP_NowPlayingInfo *)self currentTrackHash])
+  _trackHash = [(BTAVRCP_NowPlayingInfo *)self _trackHash];
+  if (_trackHash != [(BTAVRCP_NowPlayingInfo *)self currentTrackHash])
   {
-    [(BTAVRCP_NowPlayingInfo *)self setCurrentTrackHash:v3];
-    v4 = [(BTAVRCP_NowPlayingInfo *)self delegate];
-    [v4 trackDidChange:{-[BTAVRCP_NowPlayingInfo trackId](self, "trackId")}];
+    [(BTAVRCP_NowPlayingInfo *)self setCurrentTrackHash:_trackHash];
+    delegate = [(BTAVRCP_NowPlayingInfo *)self delegate];
+    [delegate trackDidChange:{-[BTAVRCP_NowPlayingInfo trackId](self, "trackId")}];
   }
 }
 
-- (void)_settingsDidChange:(id)a3
+- (void)_settingsDidChange:(id)change
 {
-  if (a3.var0 != [(BTAVRCP_NowPlayingInfo *)self currentSettings]|| ([(BTAVRCP_NowPlayingInfo *)self currentSettings]^ *&a3) >> 32)
+  if (change.var0 != [(BTAVRCP_NowPlayingInfo *)self currentSettings]|| ([(BTAVRCP_NowPlayingInfo *)self currentSettings]^ *&change) >> 32)
   {
-    [(BTAVRCP_NowPlayingInfo *)self setCurrentSettings:a3];
-    v5 = [(BTAVRCP_NowPlayingInfo *)self delegate];
-    [v5 settingsDidChange:{-[BTAVRCP_NowPlayingInfo currentSettings](self, "currentSettings")}];
+    [(BTAVRCP_NowPlayingInfo *)self setCurrentSettings:change];
+    delegate = [(BTAVRCP_NowPlayingInfo *)self delegate];
+    [delegate settingsDidChange:{-[BTAVRCP_NowPlayingInfo currentSettings](self, "currentSettings")}];
   }
 }
 
 - (BOOL)isMusicApp
 {
-  v2 = [(BTAVRCP_NowPlayingInfo *)self mrAppIdentifier];
-  v3 = [v2 isEqualToString:off_10001EE50];
+  mrAppIdentifier = [(BTAVRCP_NowPlayingInfo *)self mrAppIdentifier];
+  v3 = [mrAppIdentifier isEqualToString:off_10001EE50];
 
   return v3;
 }

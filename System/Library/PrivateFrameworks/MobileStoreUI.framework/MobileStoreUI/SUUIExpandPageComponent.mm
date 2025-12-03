@@ -1,29 +1,29 @@
 @interface SUUIExpandPageComponent
-- (SUUIExpandPageComponent)initWithViewElement:(id)a3;
+- (SUUIExpandPageComponent)initWithViewElement:(id)element;
 @end
 
 @implementation SUUIExpandPageComponent
 
-- (SUUIExpandPageComponent)initWithViewElement:(id)a3
+- (SUUIExpandPageComponent)initWithViewElement:(id)element
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  elementCopy = element;
   v22.receiver = self;
   v22.super_class = SUUIExpandPageComponent;
-  v6 = [(SUUIPageComponent *)&v22 initWithViewElement:v5];
+  v6 = [(SUUIPageComponent *)&v22 initWithViewElement:elementCopy];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     childComponents = v6->_childComponents;
     v6->_childComponents = v7;
 
-    objc_storeStrong(&v6->_viewElement, a3);
+    objc_storeStrong(&v6->_viewElement, element);
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v5 flattenedChildren];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    flattenedChildren = [elementCopy flattenedChildren];
+    v10 = [flattenedChildren countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -34,7 +34,7 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(flattenedChildren);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
@@ -49,7 +49,7 @@
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v11 = [flattenedChildren countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v11);

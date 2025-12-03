@@ -1,9 +1,9 @@
 @interface DMCBacktraceLogger
-+ (BOOL)_copyFrameInformation:(unint64_t)a3 destination:(unint64_t)a4 size:(unint64_t)a5;
-+ (BOOL)dumpStackshotToPath:(id)a3 fileName:(id)a4;
-+ (__darwin_arm_thread_state64)_getThreadStateForThread:(SEL)a3;
++ (BOOL)_copyFrameInformation:(unint64_t)information destination:(unint64_t)destination size:(unint64_t)size;
++ (BOOL)dumpStackshotToPath:(id)path fileName:(id)name;
++ (__darwin_arm_thread_state64)_getThreadStateForThread:(SEL)thread;
 + (id)callerOfCurrentMethod;
-+ (void)_symbolicateBuffer:(const unint64_t *)a3 symbolsBuffer:(dl_info *)a4 count:(int)a5;
++ (void)_symbolicateBuffer:(const unint64_t *)buffer symbolsBuffer:(dl_info *)symbolsBuffer count:(int)count;
 - (id)getBacktraceFromTrackedThread;
 - (void)trackCurrentThread;
 @end
@@ -12,10 +12,10 @@
 
 + (id)callerOfCurrentMethod
 {
-  v2 = [MEMORY[0x1E696AF00] callStackSymbols];
-  if ([v2 count] >= 3)
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  if ([callStackSymbols count] >= 3)
   {
-    v4 = [v2 objectAtIndexedSubscript:2];
+    v4 = [callStackSymbols objectAtIndexedSubscript:2];
     v3 = [v4 dmc_substringWithPattern:@".*0x[a-f0-9]*\\s(.*)\\s\\+.*"];
   }
 
@@ -27,21 +27,21 @@
   return v3;
 }
 
-+ (BOOL)dumpStackshotToPath:(id)a3 fileName:(id)a4
++ (BOOL)dumpStackshotToPath:(id)path fileName:(id)name
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  nameCopy = name;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [a1 callerOfCurrentMethod];
-  v10 = [v8 stringWithFormat:@"Requested by: %@", v9];
+  callerOfCurrentMethod = [self callerOfCurrentMethod];
+  v10 = [v8 stringWithFormat:@"Requested by: %@", callerOfCurrentMethod];
   v11 = WriteStackshotReport();
 
   if (v11)
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v44 = 0;
-    v13 = [v12 contentsOfDirectoryAtPath:@"/private/var/mobile/Library/Logs/CrashReporter" error:&v44];
+    v13 = [defaultManager contentsOfDirectoryAtPath:@"/private/var/mobile/Library/Logs/CrashReporter" error:&v44];
     v14 = v44;
     v15 = v14 == 0;
     if (v14)
@@ -71,8 +71,8 @@
       v19 = v18;
       v34 = v13;
       v35 = v14 == 0;
-      v36 = v12;
-      v37 = v6;
+      v36 = defaultManager;
+      v37 = pathCopy;
       v20 = 0;
       v21 = *v41;
       do
@@ -106,23 +106,23 @@
 
       if (!v20)
       {
-        v6 = v37;
-        v12 = v36;
+        pathCopy = v37;
+        defaultManager = v36;
         v15 = v35;
         v14 = 0;
         v13 = v34;
         goto LABEL_23;
       }
 
-      v12 = v36;
-      v6 = v37;
+      defaultManager = v36;
+      pathCopy = v37;
       v14 = 0;
       if (([v36 fileExistsAtPath:v37 isDirectory:0] & 1) == 0)
       {
         [v36 createDirectoryAtPath:v37 withIntermediateDirectories:1 attributes:0 error:0];
       }
 
-      v29 = [v37 stringByAppendingPathComponent:v7];
+      v29 = [v37 stringByAppendingPathComponent:nameCopy];
       v30 = [@"/private/var/mobile/Library/Logs/CrashReporter" stringByAppendingPathComponent:v20];
       DMCSafelyCopyItemAtPathToDestinationPathFM(v36, v30, v29, 0);
 
@@ -165,12 +165,12 @@ LABEL_25:
 
 - (id)getBacktraceFromTrackedThread
 {
-  v2 = [(DMCBacktraceLogger *)self trackedThread];
+  trackedThread = [(DMCBacktraceLogger *)self trackedThread];
 
-  return [DMCBacktraceLogger _getBacktraceFromThread:v2 bufferSize:15];
+  return [DMCBacktraceLogger _getBacktraceFromThread:trackedThread bufferSize:15];
 }
 
-+ (__darwin_arm_thread_state64)_getThreadStateForThread:(SEL)a3
++ (__darwin_arm_thread_state64)_getThreadStateForThread:(SEL)thread
 {
   *&retstr->__lr = 0u;
   *&retstr->__pc = 0u;
@@ -205,18 +205,18 @@ LABEL_25:
   return result;
 }
 
-+ (BOOL)_copyFrameInformation:(unint64_t)a3 destination:(unint64_t)a4 size:(unint64_t)a5
++ (BOOL)_copyFrameInformation:(unint64_t)information destination:(unint64_t)destination size:(unint64_t)size
 {
   v15 = *MEMORY[0x1E69E9840];
   outsize = 0;
-  v6 = vm_read_overwrite(*MEMORY[0x1E69E9A60], a3, a5, a4, &outsize);
+  v6 = vm_read_overwrite(*MEMORY[0x1E69E9A60], information, size, destination, &outsize);
   if (v6)
   {
     v7 = *DMCLogObjects();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v12 = a3;
+      informationCopy = information;
       v13 = 1024;
       v14 = v6;
       _os_log_impl(&dword_1B1630000, v7, OS_LOG_TYPE_ERROR, "Failed to copy frame information from 0x%lx, result: %d", buf, 0x12u);
@@ -228,30 +228,30 @@ LABEL_25:
   return result;
 }
 
-+ (void)_symbolicateBuffer:(const unint64_t *)a3 symbolsBuffer:(dl_info *)a4 count:(int)a5
++ (void)_symbolicateBuffer:(const unint64_t *)buffer symbolsBuffer:(dl_info *)symbolsBuffer count:(int)count
 {
-  if (a5 >= 1)
+  if (count >= 1)
   {
     v7 = 0;
-    v8 = 8 * a5;
-    v9 = a4;
+    v8 = 8 * count;
+    symbolsBufferCopy = symbolsBuffer;
     do
     {
       if (v7)
       {
-        v10 = ((a3[v7 / 8] & 0xFFFFFFFFFFFFFFFCLL) - 1);
-        v11 = v9;
+        v10 = ((buffer[v7 / 8] & 0xFFFFFFFFFFFFFFFCLL) - 1);
+        symbolsBufferCopy2 = symbolsBufferCopy;
       }
 
       else
       {
-        v10 = *a3;
-        v11 = a4;
+        v10 = *buffer;
+        symbolsBufferCopy2 = symbolsBuffer;
       }
 
-      dladdr(v10, v11);
+      dladdr(v10, symbolsBufferCopy2);
       v7 += 8;
-      ++v9;
+      ++symbolsBufferCopy;
     }
 
     while (v8 != v7);

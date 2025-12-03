@@ -7,19 +7,19 @@
 
 - (id)mf_conversationReference
 {
-  v2 = [(MFMessage *)self conversationID];
+  conversationID = [(MFMessage *)self conversationID];
 
-  return sub_1000B0948(v2);
+  return sub_1000B0948(conversationID);
 }
 
 - (id)mf_documentReference
 {
-  v2 = [(MFMessage *)self documentID];
-  v3 = [v2 UUIDString];
+  documentID = [(MFMessage *)self documentID];
+  uUIDString = [documentID UUIDString];
 
-  if (v3)
+  if (uUIDString)
   {
-    v4 = sub_1000B09E8(v3);
+    v4 = sub_1000B09E8(uUIDString);
   }
 
   else

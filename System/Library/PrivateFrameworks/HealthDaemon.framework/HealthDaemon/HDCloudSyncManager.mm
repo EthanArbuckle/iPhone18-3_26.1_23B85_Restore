@@ -1,103 +1,103 @@
 @interface HDCloudSyncManager
-+ (void)_containerIdentifiersWithEncryptionSupportEnabled:(BOOL)a3 accountManateeEnabled:(BOOL)a4 resultHandler:(id)a5;
-- (BOOL)canPerformCloudSyncWithError:(id *)a3;
-- (BOOL)persistRestoreCompletionDate:(id)a3 error:(id *)a4;
-- (BOOL)setShareOwnerParticipant:(id)a3 error:(id *)a4;
-- (HDCloudSyncManager)initWithProfile:(id)a3;
++ (void)_containerIdentifiersWithEncryptionSupportEnabled:(BOOL)enabled accountManateeEnabled:(BOOL)manateeEnabled resultHandler:(id)handler;
+- (BOOL)canPerformCloudSyncWithError:(id *)error;
+- (BOOL)persistRestoreCompletionDate:(id)date error:(id *)error;
+- (BOOL)setShareOwnerParticipant:(id)participant error:(id *)error;
+- (HDCloudSyncManager)initWithProfile:(id)profile;
 - (HDCloudSyncStatus)status;
 - (HDProfile)profile;
-- (id)_containerWithIdentifier:(id)a3 client:(id)a4 error:(id *)a5;
+- (id)_containerWithIdentifier:(id)identifier client:(id)client error:(id *)error;
 - (id)_errorForNilProfile;
-- (id)_gatherAttachmentAnalyticsForZoneID:(id)a3 repository:(id)a4 error:(id *)a5;
-- (id)assetDownloadStagingManagerWithAssertion:(id)a3;
-- (id)disableAndDeleteAllSyncDataWithCompletion:(id)a3;
-- (id)fetchShareParticipantsForSharingType:(unint64_t)a3 completion:(id)a4;
-- (id)fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)a3 completion:(id)a4;
+- (id)_gatherAttachmentAnalyticsForZoneID:(id)d repository:(id)repository error:(id *)error;
+- (id)assetDownloadStagingManagerWithAssertion:(id)assertion;
+- (id)disableAndDeleteAllSyncDataWithCompletion:(id)completion;
+- (id)fetchShareParticipantsForSharingType:(unint64_t)type completion:(id)completion;
+- (id)fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)address completion:(id)completion;
 - (id)lastPushForwardProgressDate;
-- (id)leaveSharesWithCompletion:(id)a3;
-- (id)lookupParticipantWithIdentityLookUpInfo:(id)a3 completion:(id)a4;
-- (id)prepareForSharingWithCompletion:(id)a3;
-- (id)removeAllParticipantsForSharingType:(unint64_t)a3 completion:(id)a4;
-- (id)removeParticipants:(id)a3 fromSharesWithCompletion:(id)a4;
-- (id)resetWithContext:(id)a3 completion:(id)a4;
-- (id)restoreCompletionDateWithError:(id *)a3;
-- (id)shareOwnerParticipantWithError:(id *)a3;
-- (id)syncMedicalIDDataWithContext:(id)a3 completion:(id)a4;
-- (id)syncSessionForSyncStore:(id)a3 reason:(id)a4 delegate:(id)a5 accessibilityAssertion:(id)a6 excludedStores:(id)a7 excludedSyncIdentities:(id)a8;
-- (id)syncWithContext:(id)a3 completion:(id)a4;
-- (uint64_t)_isValidOwnerParticipant:(uint64_t)a1;
-- (void)_persistErrorRequiringUserAction:(uint64_t)a1;
-- (void)_primaryContainerIdentifiersForCurrentAccountWithCompletion:(void *)a1;
-- (void)_queue_considerStartingBackstopSyncForThreshold:(uint64_t)a1;
+- (id)leaveSharesWithCompletion:(id)completion;
+- (id)lookupParticipantWithIdentityLookUpInfo:(id)info completion:(id)completion;
+- (id)prepareForSharingWithCompletion:(id)completion;
+- (id)removeAllParticipantsForSharingType:(unint64_t)type completion:(id)completion;
+- (id)removeParticipants:(id)participants fromSharesWithCompletion:(id)completion;
+- (id)resetWithContext:(id)context completion:(id)completion;
+- (id)restoreCompletionDateWithError:(id *)error;
+- (id)shareOwnerParticipantWithError:(id *)error;
+- (id)syncMedicalIDDataWithContext:(id)context completion:(id)completion;
+- (id)syncSessionForSyncStore:(id)store reason:(id)reason delegate:(id)delegate accessibilityAssertion:(id)assertion excludedStores:(id)stores excludedSyncIdentities:(id)identities;
+- (id)syncWithContext:(id)context completion:(id)completion;
+- (uint64_t)_isValidOwnerParticipant:(uint64_t)participant;
+- (void)_persistErrorRequiringUserAction:(uint64_t)action;
+- (void)_primaryContainerIdentifiersForCurrentAccountWithCompletion:(void *)completion;
+- (void)_queue_considerStartingBackstopSyncForThreshold:(uint64_t)threshold;
 - (void)_queue_updateAccessibilityAssertion;
 - (void)_scheduleResetReceivedCloudSyncAnchorsAndRebaseForHFDRecovery;
-- (void)_subscribeToSubscriptions:(void *)a3 completion:;
-- (void)_tinkerContainerIdentifiersWithCompletion:(void *)a1;
-- (void)_workoutSamplesAssociated:(id)a3;
-- (void)acceptShare:(id)a3 completion:(id)a4;
-- (void)accountDeviceToDeviceEncryptionAvailabilityStatusWithCompletion:(id)a3;
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4;
-- (void)cloudSyncRepositoriesForClient:(id)a3 completion:(id)a4;
-- (void)configureForShareSetupMetadata:(id)a3 acceptedShares:(id)a4 completion:(id)a5;
-- (void)containerIdentifiersForCurrentAccountWithCompletion:(id)a3;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)_subscribeToSubscriptions:(void *)subscriptions completion:;
+- (void)_tinkerContainerIdentifiersWithCompletion:(void *)completion;
+- (void)_workoutSamplesAssociated:(id)associated;
+- (void)acceptShare:(id)share completion:(id)completion;
+- (void)accountDeviceToDeviceEncryptionAvailabilityStatusWithCompletion:(id)completion;
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated;
+- (void)cloudSyncRepositoriesForClient:(id)client completion:(id)completion;
+- (void)configureForShareSetupMetadata:(id)metadata acceptedShares:(id)shares completion:(id)completion;
+- (void)containerIdentifiersForCurrentAccountWithCompletion:(id)completion;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)didCompleteSuccessfulLitePushWithDate:(id)a3;
-- (void)didCompleteSuccessfulPullOfUpdateWithDate:(id)a3;
-- (void)didCompleteSuccessfulPullWithDate:(id)a3;
-- (void)didCompleteSuccessfulPushWithDate:(id)a3;
-- (void)fetchCloudKitAccountInfoWithCompletion:(id)a3;
-- (void)fetchServerPreferredPushEnvironmentWithCompletion:(id)a3;
-- (void)fetchSyncStatusWithCompletion:(id)a3;
+- (void)didCompleteSuccessfulLitePushWithDate:(id)date;
+- (void)didCompleteSuccessfulPullOfUpdateWithDate:(id)date;
+- (void)didCompleteSuccessfulPullWithDate:(id)date;
+- (void)didCompleteSuccessfulPushWithDate:(id)date;
+- (void)fetchCloudKitAccountInfoWithCompletion:(id)completion;
+- (void)fetchServerPreferredPushEnvironmentWithCompletion:(id)completion;
+- (void)fetchSyncStatusWithCompletion:(id)completion;
 - (void)invalidateAndWait;
-- (void)modifyRecordsWithContext:(id)a3 recordsToCreate:(id)a4 recordsToDelete:(id)a5 completion:(id)a6;
+- (void)modifyRecordsWithContext:(id)context recordsToCreate:(id)create recordsToDelete:(id)delete completion:(id)completion;
 - (void)prepareForPeriodicSync;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4;
-- (void)requestDataUploadWithCompletion:(id)a3;
-- (void)subscribeToDataAvailableNotificationsWithCompletion:(id)a3;
-- (void)subscribeToDataUploadRequestsWithCompletion:(id)a3;
-- (void)syncWithRequest:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)updateDataUploadRequestStatus:(int64_t)a3;
-- (void)updateErrorRequiringUserAction:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion;
+- (void)requestDataUploadWithCompletion:(id)completion;
+- (void)subscribeToDataAvailableNotificationsWithCompletion:(id)completion;
+- (void)subscribeToDataUploadRequestsWithCompletion:(id)completion;
+- (void)syncWithRequest:(id)request reason:(id)reason completion:(id)completion;
+- (void)updateDataUploadRequestStatus:(int64_t)status;
+- (void)updateErrorRequiringUserAction:(id)action;
 @end
 
 @implementation HDCloudSyncManager
 
-- (HDCloudSyncManager)initWithProfile:(id)a3
+- (HDCloudSyncManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v33.receiver = self;
   v33.super_class = HDCloudSyncManager;
   v5 = [(HDCloudSyncManager *)&v33 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     v7 = HKCreateSerialUtilityDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
 
-    v9 = [v4 daemon];
-    v10 = [v9 behavior];
-    v6->_supportsRebase = [v10 isAppleWatch] ^ 1;
+    daemon = [profileCopy daemon];
+    behavior = [daemon behavior];
+    v6->_supportsRebase = [behavior isAppleWatch] ^ 1;
 
     v11 = 0;
     if (v6->_supportsRebase)
     {
-      v11 = [v4 profileType] != 3;
+      v11 = [profileCopy profileType] != 3;
     }
 
     v6->_supportsRebase = v11;
-    v12 = [v4 daemon];
-    v13 = [v12 behavior];
-    if ([v13 isAppleWatch])
+    daemon2 = [profileCopy daemon];
+    behavior2 = [daemon2 behavior];
+    if ([behavior2 isAppleWatch])
     {
-      v14 = [v4 daemon];
-      v15 = [v14 behavior];
-      v6->_isChild = [v15 tinkerModeEnabled] ^ 1;
+      daemon3 = [profileCopy daemon];
+      behavior3 = [daemon3 behavior];
+      v6->_isChild = [behavior3 tinkerModeEnabled] ^ 1;
     }
 
     else
@@ -116,11 +116,11 @@
     ownerIdentifierManager = v6->_ownerIdentifierManager;
     v6->_ownerIdentifierManager = v21;
 
-    v23 = [[HDCloudSyncSharedSummaryManager alloc] initWithProfile:v4];
+    v23 = [[HDCloudSyncSharedSummaryManager alloc] initWithProfile:profileCopy];
     sharedSummaryManager = v6->_sharedSummaryManager;
     v6->_sharedSummaryManager = v23;
 
-    v25 = [[HDCloudSyncContextSyncManager alloc] initWithProfile:v4];
+    v25 = [[HDCloudSyncContextSyncManager alloc] initWithProfile:profileCopy];
     contextSyncManager = v6->_contextSyncManager;
     v6->_contextSyncManager = v25;
 
@@ -129,13 +129,13 @@
     v6->_assertionManager = v27;
 
     [(HDAssertionManager *)v6->_assertionManager addObserver:v6 forAssertionIdentifier:@"HDCloudSyncDownloadDirectoryAssertionIdentifier" queue:v6->_queue];
-    v29 = [v4 directoryPath];
-    v30 = [v29 stringByAppendingPathComponent:@"InProgressCloudDownload"];
+    directoryPath = [profileCopy directoryPath];
+    v30 = [directoryPath stringByAppendingPathComponent:@"InProgressCloudDownload"];
     inProgressDownloadDirectoryPath = v6->_inProgressDownloadDirectoryPath;
     v6->_inProgressDownloadDirectoryPath = v30;
 
     v6->_inProgressDownloadDirectoryLock._os_unfair_lock_opaque = 0;
-    [v4 registerProfileReadyObserver:v6 queue:v6->_queue];
+    [profileCopy registerProfileReadyObserver:v6 queue:v6->_queue];
   }
 
   return v6;
@@ -153,33 +153,33 @@
 
 - (void)invalidateAndWait
 {
-  v3 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
-  [v3 invalidate];
+  preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+  [preparedDatabaseAccessibilityAssertion invalidate];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 analyticsSubmissionCoordinator];
-  [v6 removeObserver:self];
+  daemon = [WeakRetained daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator removeObserver:self];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self name:@"HDHealthStoreServerDidAssociateWorkoutSamples" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"HDHealthStoreServerDidAssociateWorkoutSamples" object:0];
 }
 
-- (void)_workoutSamplesAssociated:(id)a3
+- (void)_workoutSamplesAssociated:(id)associated
 {
   v17 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 behavior];
-  v7 = [v6 supportsBackgroundSyncRequests];
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  supportsBackgroundSyncRequests = [behavior supportsBackgroundSyncRequests];
 
-  if (v7)
+  if (supportsBackgroundSyncRequests)
   {
     v14 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:0 lite:1];
     v8 = objc_loadWeakRetained(&self->_profile);
-    v9 = [v8 cloudSyncManager];
+    cloudSyncManager = [v8 cloudSyncManager];
     v10 = [objc_alloc(MEMORY[0x277CCD140]) initWithChangesSyncRequest:v14];
-    [v9 syncWithRequest:v10 reason:@"Workout samples associated" completion:&__block_literal_global_115];
+    [cloudSyncManager syncWithRequest:v10 reason:@"Workout samples associated" completion:&__block_literal_global_115];
 
     v11 = *MEMORY[0x277D85DE8];
   }
@@ -191,7 +191,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Sync requests disabled by behavior", buf, 0xCu);
     }
 
@@ -268,19 +268,19 @@ void __48__HDCloudSyncManager__workoutSamplesAssociated___block_invoke(uint64_t 
   return v8;
 }
 
-- (void)didCompleteSuccessfulPullWithDate:(id)a3
+- (void)didCompleteSuccessfulPullWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   lock_lastSuccessfulPullDate = self->_lock_lastSuccessfulPullDate;
-  if (lock_lastSuccessfulPullDate == v5 || v5 && [(NSDate *)lock_lastSuccessfulPullDate isEqual:v5])
+  if (lock_lastSuccessfulPullDate == dateCopy || dateCopy && [(NSDate *)lock_lastSuccessfulPullDate isEqual:dateCopy])
   {
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    objc_storeStrong(&self->_lock_lastSuccessfulPullDate, a3);
+    objc_storeStrong(&self->_lock_lastSuccessfulPullDate, date);
     os_unfair_lock_unlock(&self->_lock);
     observers = self->_observers;
     v8[0] = MEMORY[0x277D85DD0];
@@ -288,38 +288,38 @@ void __48__HDCloudSyncManager__workoutSamplesAssociated___block_invoke(uint64_t 
     v8[2] = __56__HDCloudSyncManager_didCompleteSuccessfulPullWithDate___block_invoke;
     v8[3] = &unk_2786223D0;
     v8[4] = self;
-    v9 = v5;
+    v9 = dateCopy;
     [(HKObserverSet *)observers notifyObservers:v8];
   }
 }
 
-- (void)didCompleteSuccessfulPullOfUpdateWithDate:(id)a3
+- (void)didCompleteSuccessfulPullOfUpdateWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HDCloudSyncManager_didCompleteSuccessfulPullOfUpdateWithDate___block_invoke;
   v7[3] = &unk_2786223D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   [(HKObserverSet *)observers notifyObservers:v7];
 }
 
-- (void)didCompleteSuccessfulPushWithDate:(id)a3
+- (void)didCompleteSuccessfulPushWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   lock_lastSuccessfulPushDate = self->_lock_lastSuccessfulPushDate;
-  if (lock_lastSuccessfulPushDate == v5 || v5 && [(NSDate *)lock_lastSuccessfulPushDate isEqual:v5])
+  if (lock_lastSuccessfulPushDate == dateCopy || dateCopy && [(NSDate *)lock_lastSuccessfulPushDate isEqual:dateCopy])
   {
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    objc_storeStrong(&self->_lock_lastSuccessfulPushDate, a3);
+    objc_storeStrong(&self->_lock_lastSuccessfulPushDate, date);
     os_unfair_lock_unlock(&self->_lock);
     observers = self->_observers;
     v8[0] = MEMORY[0x277D85DD0];
@@ -327,24 +327,24 @@ void __48__HDCloudSyncManager__workoutSamplesAssociated___block_invoke(uint64_t 
     v8[2] = __56__HDCloudSyncManager_didCompleteSuccessfulPushWithDate___block_invoke;
     v8[3] = &unk_2786223D0;
     v8[4] = self;
-    v9 = v5;
+    v9 = dateCopy;
     [(HKObserverSet *)observers notifyObservers:v8];
   }
 }
 
-- (void)didCompleteSuccessfulLitePushWithDate:(id)a3
+- (void)didCompleteSuccessfulLitePushWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   lock_lastSuccessfulLitePushDate = self->_lock_lastSuccessfulLitePushDate;
-  if (lock_lastSuccessfulLitePushDate == v5 || v5 && [(NSDate *)lock_lastSuccessfulLitePushDate isEqual:v5])
+  if (lock_lastSuccessfulLitePushDate == dateCopy || dateCopy && [(NSDate *)lock_lastSuccessfulLitePushDate isEqual:dateCopy])
   {
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    objc_storeStrong(&self->_lock_lastSuccessfulLitePushDate, a3);
+    objc_storeStrong(&self->_lock_lastSuccessfulLitePushDate, date);
     os_unfair_lock_unlock(&self->_lock);
     observers = self->_observers;
     v8[0] = MEMORY[0x277D85DD0];
@@ -352,18 +352,18 @@ void __48__HDCloudSyncManager__workoutSamplesAssociated___block_invoke(uint64_t 
     v8[2] = __60__HDCloudSyncManager_didCompleteSuccessfulLitePushWithDate___block_invoke;
     v8[3] = &unk_2786223D0;
     v8[4] = self;
-    v9 = v5;
+    v9 = dateCopy;
     [(HKObserverSet *)observers notifyObservers:v8];
   }
 }
 
-- (id)assetDownloadStagingManagerWithAssertion:(id)a3
+- (id)assetDownloadStagingManagerWithAssertion:(id)assertion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   if (self)
   {
-    [(HDAssertionManager *)self->_assertionManager takeAssertion:v4];
+    [(HDAssertionManager *)self->_assertionManager takeAssertion:assertionCopy];
     os_unfair_lock_lock(&self->_inProgressDownloadDirectoryLock);
     v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->_inProgressDownloadDirectoryPath isDirectory:1];
     v6 = objc_alloc_init(MEMORY[0x277CCAA00]);
@@ -384,7 +384,7 @@ void __48__HDCloudSyncManager__workoutSamplesAssociated___block_invoke(uint64_t 
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v20 = self;
+        selfCopy = self;
         v21 = 2114;
         v22 = v8;
         _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "%{public}@ Unable to create in progress download directory, %{public}@", buf, 0x16u);
@@ -435,10 +435,10 @@ void __48__HDCloudSyncManager__workoutSamplesAssociated___block_invoke(uint64_t 
   v8[3] = &unk_278613968;
   v8[4] = self;
   v4 = [HDMaintenanceOperation maintenanceOperationWithName:@"Reset Received Cloud Sync Anchors" queue:queue synchronousBlock:v8];
-  v5 = [(HDCloudSyncManager *)self profile];
-  v6 = [v5 daemon];
-  v7 = [v6 maintenanceWorkCoordinator];
-  [v7 enqueueMaintenanceOperation:v4];
+  profile = [(HDCloudSyncManager *)self profile];
+  daemon = [profile daemon];
+  maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+  [maintenanceWorkCoordinator enqueueMaintenanceOperation:v4];
 }
 
 void __83__HDCloudSyncManager__scheduleResetReceivedCloudSyncAnchorsAndRebaseForHFDRecovery__block_invoke(uint64_t a1)
@@ -542,14 +542,14 @@ uint64_t __83__HDCloudSyncManager__scheduleResetReceivedCloudSyncAnchorsAndRebas
   return [v2 numberWithLongLong:v3];
 }
 
-- (BOOL)canPerformCloudSyncWithError:(id *)a3
+- (BOOL)canPerformCloudSyncWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 cloudSyncCoordinator];
-  LOBYTE(a3) = [v6 canPerformCloudSyncWithError:a3];
+  daemon = [WeakRetained daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  LOBYTE(error) = [cloudSyncCoordinator canPerformCloudSyncWithError:error];
 
-  return a3;
+  return error;
 }
 
 - (void)prepareForPeriodicSync
@@ -566,25 +566,25 @@ uint64_t __83__HDCloudSyncManager__scheduleResetReceivedCloudSyncAnchorsAndRebas
 - (void)_queue_updateAccessibilityAssertion
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 120));
-    WeakRetained = objc_loadWeakRetained((a1 + 104));
-    v3 = [WeakRetained database];
+    dispatch_assert_queue_V2(*(self + 120));
+    WeakRetained = objc_loadWeakRetained((self + 104));
+    database = [WeakRetained database];
     v11 = 0;
-    v4 = [v3 takeAccessibilityAssertionWithOwnerIdentifier:@"HDCloudSyncManager Sync Preparation" timeout:&v11 error:600.0];
+    v4 = [database takeAccessibilityAssertionWithOwnerIdentifier:@"HDCloudSyncManager Sync Preparation" timeout:&v11 error:600.0];
     v5 = v11;
 
     if (v4)
     {
-      v6 = [a1 preparedDatabaseAccessibilityAssertion];
-      v8 = v6;
-      if (v6)
+      preparedDatabaseAccessibilityAssertion = [self preparedDatabaseAccessibilityAssertion];
+      v8 = preparedDatabaseAccessibilityAssertion;
+      if (preparedDatabaseAccessibilityAssertion)
       {
-        [v6 invalidate];
+        [preparedDatabaseAccessibilityAssertion invalidate];
       }
 
-      objc_setProperty_atomic(a1, v7, v4, 8);
+      objc_setProperty_atomic(self, v7, v4, 8);
     }
 
     else
@@ -594,7 +594,7 @@ uint64_t __83__HDCloudSyncManager__scheduleResetReceivedCloudSyncAnchorsAndRebas
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v13 = a1;
+        selfCopy = self;
         v14 = 2114;
         v15 = v5;
         _os_log_error_impl(&dword_228986000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Failed to take database accessibility assertion during sync preparation: %{public}@", buf, 0x16u);
@@ -605,36 +605,36 @@ uint64_t __83__HDCloudSyncManager__scheduleResetReceivedCloudSyncAnchorsAndRebas
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)syncSessionForSyncStore:(id)a3 reason:(id)a4 delegate:(id)a5 accessibilityAssertion:(id)a6 excludedStores:(id)a7 excludedSyncIdentities:(id)a8
+- (id)syncSessionForSyncStore:(id)store reason:(id)reason delegate:(id)delegate accessibilityAssertion:(id)assertion excludedStores:(id)stores excludedSyncIdentities:(id)identities
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(HDSyncSession *)[HDCloudSyncSession alloc] initWithSyncStore:v18 reason:v17 delegate:v16];
+  identitiesCopy = identities;
+  storesCopy = stores;
+  assertionCopy = assertion;
+  delegateCopy = delegate;
+  reasonCopy = reason;
+  storeCopy = store;
+  v19 = [(HDSyncSession *)[HDCloudSyncSession alloc] initWithSyncStore:storeCopy reason:reasonCopy delegate:delegateCopy];
 
-  [(HDSyncSession *)v19 setDatabaseAccessibilityAssertion:v15];
-  [(HDCloudSyncSession *)v19 setExcludedSyncStores:v14];
+  [(HDSyncSession *)v19 setDatabaseAccessibilityAssertion:assertionCopy];
+  [(HDCloudSyncSession *)v19 setExcludedSyncStores:storesCopy];
 
-  [(HDCloudSyncSession *)v19 setExcludedSyncIdentities:v13];
+  [(HDCloudSyncSession *)v19 setExcludedSyncIdentities:identitiesCopy];
 
   return v19;
 }
 
-- (void)syncWithRequest:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)syncWithRequest:(id)request reason:(id)reason completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  reasonCopy = reason;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained daemon];
-  v13 = [v12 behavior];
-  v14 = [v13 supportsBackgroundSyncRequests];
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  supportsBackgroundSyncRequests = [behavior supportsBackgroundSyncRequests];
 
-  if (v14)
+  if (supportsBackgroundSyncRequests)
   {
     queue = self->_queue;
     v19[0] = MEMORY[0x277D85DD0];
@@ -642,9 +642,9 @@ uint64_t __83__HDCloudSyncManager__scheduleResetReceivedCloudSyncAnchorsAndRebas
     v19[2] = __56__HDCloudSyncManager_syncWithRequest_reason_completion___block_invoke;
     v19[3] = &unk_278613680;
     v19[4] = self;
-    v20 = v8;
-    v21 = v9;
-    v22 = v10;
+    v20 = requestCopy;
+    v21 = reasonCopy;
+    v22 = completionCopy;
     dispatch_async(queue, v19);
   }
 
@@ -655,12 +655,12 @@ uint64_t __83__HDCloudSyncManager__scheduleResetReceivedCloudSyncAnchorsAndRebas
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Sync requests disabled by behavior", buf, 0xCu);
     }
 
     v17 = [MEMORY[0x277CCA9B8] hk_error:111 description:@"Sync requests disabled by behavior"];
-    (*(v10 + 2))(v10, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -699,12 +699,12 @@ void __56__HDCloudSyncManager_syncWithRequest_reason_completion___block_invoke(u
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)syncWithContext:(id)a3 completion:(id)a4
+- (id)syncWithContext:(id)context completion:(id)completion
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  contextCopy = context;
+  completionCopy = completion;
+  v8 = contextCopy;
   v9 = v8;
   if (!self)
   {
@@ -713,12 +713,12 @@ void __56__HDCloudSyncManager_syncWithRequest_reason_completion___block_invoke(u
     goto LABEL_32;
   }
 
-  v10 = [(HDCloudSyncManager *)self profile];
-  v11 = [v10 daemon];
-  v12 = [v11 behavior];
-  v13 = [v12 supportsPeriodicFullCloudSync];
+  profile = [(HDCloudSyncManager *)self profile];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  supportsPeriodicFullCloudSync = [behavior supportsPeriodicFullCloudSync];
 
-  if (v13)
+  if (supportsPeriodicFullCloudSync)
   {
 LABEL_3:
 
@@ -746,27 +746,27 @@ LABEL_22:
     v52[4] = self;
     [(HKObserverSet *)observers notifyObservers:v52];
     v37 = [HDCloudSyncManagerSyncTask alloc];
-    v38 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+    preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
     v47 = MEMORY[0x277D85DD0];
     v48 = 3221225472;
     v49 = __49__HDCloudSyncManager_syncWithContext_completion___block_invoke_2;
     v50 = &unk_278622420;
-    v51 = v7;
-    v39 = [(HDCloudSyncManagerPipelineTask *)v37 initWithManager:self context:v9 accessibilityAssertion:v38 completion:&v47];
+    v51 = completionCopy;
+    v39 = [(HDCloudSyncManagerPipelineTask *)v37 initWithManager:self context:v9 accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:&v47];
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v41 = [WeakRetained daemon];
-    v42 = [v41 cloudSyncCoordinator];
-    [v42 addManagerTask:v39];
+    daemon2 = [WeakRetained daemon];
+    cloudSyncCoordinator = [daemon2 cloudSyncCoordinator];
+    [cloudSyncCoordinator addManagerTask:v39];
 
-    v43 = [(HDCloudSyncManagerTask *)v39 progress];
+    progress = [(HDCloudSyncManagerTask *)v39 progress];
 
     goto LABEL_28;
   }
 
-  v15 = [v9 syncRequest];
+  syncRequest = [v9 syncRequest];
 
-  if (!v15)
+  if (!syncRequest)
   {
     v29 = v9;
     if (([v29 options] & 0x80) != 0)
@@ -793,49 +793,49 @@ LABEL_17:
     {
       v33 = v32;
       v31 = 0;
-      v23 = v30;
-      v22 = v30;
+      changesSyncRequest3 = v30;
+      syncRequest4 = v30;
     }
 
     else
     {
-      v23 = 0;
-      v22 = 0;
+      changesSyncRequest3 = 0;
+      syncRequest4 = 0;
       v31 = 0;
     }
 
     goto LABEL_20;
   }
 
-  v16 = [v9 syncRequest];
-  v17 = [v16 changesSyncRequest];
+  syncRequest2 = [v9 syncRequest];
+  changesSyncRequest = [syncRequest2 changesSyncRequest];
 
-  if (!v17)
+  if (!changesSyncRequest)
   {
     goto LABEL_3;
   }
 
   v18 = v9;
-  v19 = [v18 syncRequest];
-  v20 = [v19 changesSyncRequest];
-  v21 = [v20 lite];
+  syncRequest3 = [v18 syncRequest];
+  changesSyncRequest2 = [syncRequest3 changesSyncRequest];
+  lite = [changesSyncRequest2 lite];
 
-  if ((v21 & 1) == 0)
+  if ((lite & 1) == 0)
   {
     v27 = MEMORY[0x277CCA9B8];
     v28 = @"Sync request incorrectly setup, device can only perform lite sync.";
     goto LABEL_17;
   }
 
-  v22 = [v18 syncRequest];
-  v23 = [v22 changesSyncRequest];
-  if ([v23 lite])
+  syncRequest4 = [v18 syncRequest];
+  changesSyncRequest3 = [syncRequest4 changesSyncRequest];
+  if ([changesSyncRequest3 lite])
   {
-    v24 = [v18 syncRequest];
-    v25 = [v24 changesSyncRequest];
-    v26 = [v25 pull];
+    syncRequest5 = [v18 syncRequest];
+    changesSyncRequest4 = [syncRequest5 changesSyncRequest];
+    pull = [changesSyncRequest4 pull];
 
-    if (v26)
+    if (pull)
     {
       v27 = MEMORY[0x277CCA9B8];
       v28 = @"Sync request incorrectly setup, device cannot perform lite sync pull.";
@@ -865,7 +865,7 @@ LABEL_32:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v54 = self;
+    selfCopy = self;
     v55 = 2114;
     v56 = v9;
     v57 = 2114;
@@ -873,13 +873,13 @@ LABEL_32:
     _os_log_impl(&dword_228986000, v46, OS_LOG_TYPE_DEFAULT, "%{public}@: Failed to validate cloud sync context %{public}@ with error %{public}@", buf, 0x20u);
   }
 
-  (*(v7 + 2))(v7, 0, v14);
-  v43 = [MEMORY[0x277CCAC48] hk_finishedDiscreteProgressWithTotalUnitCount:1];
+  (*(completionCopy + 2))(completionCopy, 0, v14);
+  progress = [MEMORY[0x277CCAC48] hk_finishedDiscreteProgressWithTotalUnitCount:1];
 LABEL_28:
 
   v44 = *MEMORY[0x277D85DE8];
 
-  return v43;
+  return progress;
 }
 
 void __49__HDCloudSyncManager_syncWithContext_completion___block_invoke(uint64_t a1, void *a2)
@@ -896,28 +896,28 @@ void __49__HDCloudSyncManager_syncWithContext_completion___block_invoke(uint64_t
   [v4 cloudSyncManager:*(a1 + 32) didUpdateSyncEnabled:v8];
 }
 
-- (id)resetWithContext:(id)a3 completion:(id)a4
+- (id)resetWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = [HDCloudSyncManagerResetTask alloc];
-  v9 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+  preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __50__HDCloudSyncManager_resetWithContext_completion___block_invoke;
   v17[3] = &unk_278622420;
-  v18 = v6;
-  v10 = v6;
-  v11 = [(HDCloudSyncManagerPipelineTask *)v8 initWithManager:self context:v7 accessibilityAssertion:v9 completion:v17];
+  v18 = completionCopy;
+  v10 = completionCopy;
+  v11 = [(HDCloudSyncManagerPipelineTask *)v8 initWithManager:self context:contextCopy accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:v17];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v13 = [WeakRetained daemon];
-  v14 = [v13 cloudSyncCoordinator];
-  [v14 addManagerTask:v11];
+  daemon = [WeakRetained daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  [cloudSyncCoordinator addManagerTask:v11];
 
-  v15 = [(HDCloudSyncManagerTask *)v11 progress];
+  progress = [(HDCloudSyncManagerTask *)v11 progress];
 
-  return v15;
+  return progress;
 }
 
 void __90__HDCloudSyncManager_fetchDescriptionWithContext_updateCacheAndPrepareForSync_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -928,46 +928,46 @@ void __90__HDCloudSyncManager_fetchDescriptionWithContext_updateCacheAndPrepareF
   (*(v5 + 16))(v5, v7, v6);
 }
 
-- (void)modifyRecordsWithContext:(id)a3 recordsToCreate:(id)a4 recordsToDelete:(id)a5 completion:(id)a6
+- (void)modifyRecordsWithContext:(id)context recordsToCreate:(id)create recordsToDelete:(id)delete completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  deleteCopy = delete;
+  createCopy = create;
+  contextCopy = context;
   v14 = [HDCloudSyncManagerRecordTask alloc];
-  v15 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+  preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __90__HDCloudSyncManager_modifyRecordsWithContext_recordsToCreate_recordsToDelete_completion___block_invoke;
   v21[3] = &unk_278622420;
-  v22 = v10;
-  v16 = v10;
-  v17 = [(HDCloudSyncManagerRecordTask *)v14 initWithManager:self context:v13 accessibilityAssertion:v15 recordsToCreate:v12 recordsToDelete:v11 completion:v21];
+  v22 = completionCopy;
+  v16 = completionCopy;
+  v17 = [(HDCloudSyncManagerRecordTask *)v14 initWithManager:self context:contextCopy accessibilityAssertion:preparedDatabaseAccessibilityAssertion recordsToCreate:createCopy recordsToDelete:deleteCopy completion:v21];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v19 = [WeakRetained daemon];
-  v20 = [v19 cloudSyncCoordinator];
-  [v20 addManagerTask:v17];
+  daemon = [WeakRetained daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  [cloudSyncCoordinator addManagerTask:v17];
 }
 
-- (void)fetchSyncStatusWithCompletion:(id)a3
+- (void)fetchSyncStatusWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = MEMORY[0x277CCC328];
   v6 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting fetch cloud sync status task", buf, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained profileType];
+  profileType = [WeakRetained profileType];
 
-  if (v8 != 3)
+  if (profileType != 3)
   {
     goto LABEL_6;
   }
@@ -979,7 +979,7 @@ void __90__HDCloudSyncManager_fetchDescriptionWithContext_updateCacheAndPrepareF
   {
 
 LABEL_6:
-    v10 = [[HDCloudSyncManagerStatusTask alloc] initWithManager:self completion:v4];
+    v10 = [[HDCloudSyncManagerStatusTask alloc] initWithManager:self completion:completionCopy];
     [(HDCloudSyncManagerTask *)v10 startWithCompletion:&__block_literal_global_398];
     goto LABEL_7;
   }
@@ -989,32 +989,32 @@ LABEL_6:
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_ERROR))
   {
     v16 = v12;
-    v17 = [(HDCloudSyncManager *)self profile];
+    profile = [(HDCloudSyncManager *)self profile];
     *buf = 138543618;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2114;
-    v22 = v17;
+    v22 = profile;
     _os_log_error_impl(&dword_228986000, v16, OS_LOG_TYPE_ERROR, "%{public}@: Sync unavailable before setting a source share participant for profile %{public}@", buf, 0x16u);
   }
 
   v13 = MEMORY[0x277CCA9B8];
-  v14 = [(HDCloudSyncManager *)self profile];
-  v15 = [v13 hk_error:729 format:{@"Sync unavailable before setting a source share participant for profile: %@", v14}];
-  v4[2](v4, 0, v15);
+  profile2 = [(HDCloudSyncManager *)self profile];
+  v15 = [v13 hk_error:729 format:{@"Sync unavailable before setting a source share participant for profile: %@", profile2}];
+  completionCopy[2](completionCopy, 0, v15);
 
 LABEL_7:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchCloudKitAccountInfoWithCompletion:(id)a3
+- (void)fetchCloudKitAccountInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__HDCloudSyncManager_fetchCloudKitAccountInfoWithCompletion___block_invoke;
   v6[3] = &unk_27861BB88;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(HDCloudSyncManager *)self cloudSyncRepositoriesForClient:0 completion:v6];
 }
 
@@ -1061,35 +1061,35 @@ void __61__HDCloudSyncManager_fetchCloudKitAccountInfoWithCompletion___block_inv
   }
 }
 
-- (id)disableAndDeleteAllSyncDataWithCompletion:(id)a3
+- (id)disableAndDeleteAllSyncDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[HDCloudSyncContext alloc] initForPurpose:5 options:64 reason:6];
   v6 = [HDCloudSyncManagerDisableAndDeleteTask alloc];
-  v7 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+  preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__HDCloudSyncManager_disableAndDeleteAllSyncDataWithCompletion___block_invoke;
   v15[3] = &unk_278622420;
-  v16 = v4;
-  v8 = v4;
-  v9 = [(HDCloudSyncManagerPipelineTask *)v6 initWithManager:self context:v5 accessibilityAssertion:v7 completion:v15];
+  v16 = completionCopy;
+  v8 = completionCopy;
+  v9 = [(HDCloudSyncManagerPipelineTask *)v6 initWithManager:self context:v5 accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:v15];
 
   [(HDCloudSyncManagerRepositoryTask *)v9 setRunWhenSyncProhibited:1];
   [(HDCloudSyncManagerTask *)v9 setPriority:100];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained daemon];
-  v12 = [v11 cloudSyncCoordinator];
-  [v12 addManagerTask:v9];
+  daemon = [WeakRetained daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  [cloudSyncCoordinator addManagerTask:v9];
 
-  v13 = [(HDCloudSyncManagerTask *)v9 progress];
+  progress = [(HDCloudSyncManagerTask *)v9 progress];
 
-  return v13;
+  return progress;
 }
 
-- (void)accountDeviceToDeviceEncryptionAvailabilityStatusWithCompletion:(id)a3
+- (void)accountDeviceToDeviceEncryptionAvailabilityStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9 = 0;
   v5 = [(HDCloudSyncManager *)self _containerWithIdentifier:@"com.apple.health.sync" client:0 error:&v9];
   v6 = v9;
@@ -1100,13 +1100,13 @@ void __61__HDCloudSyncManager_fetchCloudKitAccountInfoWithCompletion___block_inv
     v7[2] = __86__HDCloudSyncManager_accountDeviceToDeviceEncryptionAvailabilityStatusWithCompletion___block_invoke;
     v7[3] = &unk_278622498;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [v5 accountInfoWithCompletionHandler:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 }
 
@@ -1151,33 +1151,33 @@ void __86__HDCloudSyncManager_accountDeviceToDeviceEncryptionAvailabilityStatusW
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)syncMedicalIDDataWithContext:(id)a3 completion:(id)a4
+- (id)syncMedicalIDDataWithContext:(id)context completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [WeakRetained daemon];
-  v10 = [v9 behavior];
-  v11 = [v10 supportsBackgroundSyncRequests];
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  supportsBackgroundSyncRequests = [behavior supportsBackgroundSyncRequests];
 
-  if (v11)
+  if (supportsBackgroundSyncRequests)
   {
     v12 = [HDCloudSyncManagerMedicalIDSyncTask alloc];
-    v13 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+    preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __62__HDCloudSyncManager_syncMedicalIDDataWithContext_completion___block_invoke;
     v23[3] = &unk_278622420;
-    v24 = v7;
-    v14 = [(HDCloudSyncManagerPipelineTask *)v12 initWithManager:self context:v6 accessibilityAssertion:v13 completion:v23];
+    v24 = completionCopy;
+    v14 = [(HDCloudSyncManagerPipelineTask *)v12 initWithManager:self context:contextCopy accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:v23];
 
     v15 = objc_loadWeakRetained(&self->_profile);
-    v16 = [v15 daemon];
-    v17 = [v16 cloudSyncCoordinator];
-    [v17 addManagerTask:v14];
+    daemon2 = [v15 daemon];
+    cloudSyncCoordinator = [daemon2 cloudSyncCoordinator];
+    [cloudSyncCoordinator addManagerTask:v14];
 
-    v18 = [(HDCloudSyncManagerTask *)v14 progress];
+    progress = [(HDCloudSyncManagerTask *)v14 progress];
 
     v19 = v24;
   }
@@ -1189,30 +1189,30 @@ void __86__HDCloudSyncManager_accountDeviceToDeviceEncryptionAvailabilityStatusW
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v26 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: Sync requests disabled by behavior", buf, 0xCu);
     }
 
     v19 = [MEMORY[0x277CCA9B8] hk_error:111 description:@"Sync requests disabled by behavior"];
-    (*(v7 + 2))(v7, 0, v19);
-    v18 = [MEMORY[0x277CCAC48] hk_finishedDiscreteProgressWithTotalUnitCount:1];
+    (*(completionCopy + 2))(completionCopy, 0, v19);
+    progress = [MEMORY[0x277CCAC48] hk_finishedDiscreteProgressWithTotalUnitCount:1];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return progress;
 }
 
-- (void)cloudSyncRepositoriesForClient:(id)a3 completion:(id)a4
+- (void)cloudSyncRepositoriesForClient:(id)client completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v9 = WeakRetained;
   if (!WeakRetained)
   {
-    v19 = [(HDCloudSyncManager *)self _errorForNilProfile];
-    v7[2](v7, 0, v19);
+    _errorForNilProfile = [(HDCloudSyncManager *)self _errorForNilProfile];
+    completionCopy[2](completionCopy, 0, _errorForNilProfile);
 
     goto LABEL_15;
   }
@@ -1222,7 +1222,7 @@ void __86__HDCloudSyncManager_accountDeviceToDeviceEncryptionAvailabilityStatusW
   if (!self)
   {
     v18 = 0;
-    v17 = 0;
+    hd_syncCircleIdentifier = 0;
     goto LABEL_11;
   }
 
@@ -1241,27 +1241,27 @@ void __86__HDCloudSyncManager_accountDeviceToDeviceEncryptionAvailabilityStatusW
     if (v14)
     {
       v20 = v14;
-      v17 = 0;
+      hd_syncCircleIdentifier = 0;
       v18 = v15;
       goto LABEL_10;
     }
 
-    v22 = [v11 profileType];
-    if ((v22 - 1) >= 3)
+    profileType = [v11 profileType];
+    if ((profileType - 1) >= 3)
     {
-      if (v22 == 4)
+      if (profileType == 4)
       {
-        v23 = [v11 profileIdentifier];
-        v17 = [v23 hd_syncCircleIdentifier];
+        profileIdentifier = [v11 profileIdentifier];
+        hd_syncCircleIdentifier = [profileIdentifier hd_syncCircleIdentifier];
 
         goto LABEL_6;
       }
 
-      if (v22 != 100)
+      if (profileType != 100)
       {
-        v17 = sel__syncCircleIdentifierForProfile_error_;
-        v24 = [MEMORY[0x277CCA890] currentHandler];
-        [v24 handleFailureInMethod:sel__syncCircleIdentifierForProfile_error_ object:self file:@"HDCloudSyncManager.m" lineNumber:784 description:{@"Unhandled profile type %ld", objc_msgSend(v11, "profileType")}];
+        hd_syncCircleIdentifier = sel__syncCircleIdentifierForProfile_error_;
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel__syncCircleIdentifierForProfile_error_ object:self file:@"HDCloudSyncManager.m" lineNumber:784 description:{@"Unhandled profile type %ld", objc_msgSend(v11, "profileType")}];
 
         v18 = 0;
         goto LABEL_10;
@@ -1271,30 +1271,30 @@ void __86__HDCloudSyncManager_accountDeviceToDeviceEncryptionAvailabilityStatusW
     v16 = @"PrimarySyncCircle";
   }
 
-  v17 = v16;
+  hd_syncCircleIdentifier = v16;
 LABEL_6:
   v18 = 0;
 LABEL_10:
 
 LABEL_11:
   v21 = v18;
-  if (v17)
+  if (hd_syncCircleIdentifier)
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __64__HDCloudSyncManager_cloudSyncRepositoriesForClient_completion___block_invoke;
     v25[3] = &unk_2786224E8;
-    v29 = v7;
+    v29 = completionCopy;
     v25[4] = self;
     v26 = v11;
-    v27 = v6;
-    v28 = v17;
+    v27 = clientCopy;
+    v28 = hd_syncCircleIdentifier;
     [(HDCloudSyncManager *)self containerIdentifiersForCurrentAccountWithCompletion:v25];
   }
 
   else
   {
-    v7[2](v7, 0, v21);
+    completionCopy[2](completionCopy, 0, v21);
   }
 
 LABEL_15:
@@ -1302,13 +1302,13 @@ LABEL_15:
 
 - (id)_errorForNilProfile
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"profile is nil"];
+    self = [MEMORY[0x277CCA9B8] hk_error:100 description:@"profile is nil"];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __64__HDCloudSyncManager_cloudSyncRepositoriesForClient_completion___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4)
@@ -1459,24 +1459,24 @@ LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_containerIdentifiersWithEncryptionSupportEnabled:(BOOL)a3 accountManateeEnabled:(BOOL)a4 resultHandler:(id)a5
++ (void)_containerIdentifiersWithEncryptionSupportEnabled:(BOOL)enabled accountManateeEnabled:(BOOL)manateeEnabled resultHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  manateeEnabledCopy = manateeEnabled;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109376;
-    v12[1] = v6;
+    v12[1] = enabledCopy;
     v13 = 1024;
-    v14 = v5;
+    v14 = manateeEnabledCopy;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "Setting container identifiers. CloudKitSupportsDeviceToDeviceEncryption=%{BOOL}d, CKDeviceToDeviceEncryptionStatusSupportedByAccount=%{BOOL}d", v12, 0xEu);
   }
 
-  if (v6 || v5)
+  if (enabledCopy || manateeEnabledCopy)
   {
     v9 = @"com.apple.health.sync.secure";
   }
@@ -1486,7 +1486,7 @@ LABEL_13:
     v9 = @"com.apple.health.sync";
   }
 
-  if (v6 || v5)
+  if (enabledCopy || manateeEnabledCopy)
   {
     v10 = @"com.apple.health.sync";
   }
@@ -1496,102 +1496,102 @@ LABEL_13:
     v10 = @"com.apple.health.sync.secure";
   }
 
-  v7[2](v7, v9, v10);
+  handlerCopy[2](handlerCopy, v9, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_containerWithIdentifier:(id)a3 client:(id)a4 error:(id *)a5
+- (id)_containerWithIdentifier:(id)identifier client:(id)client error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  clientCopy = client;
   if ([MEMORY[0x277CBC218] currentProcessCanUseCloudKit])
   {
-    v10 = [MEMORY[0x277CBC218] containerWithIdentifier:v8];
-    v11 = [v10 options];
-    [v11 setUseZoneWidePCS:1];
+    v10 = [MEMORY[0x277CBC218] containerWithIdentifier:identifierCopy];
+    options = [v10 options];
+    [options setUseZoneWidePCS:1];
 
-    v12 = [v10 options];
-    [v12 setApplicationBundleIdentifierOverride:*MEMORY[0x277CCE3A8]];
+    options2 = [v10 options];
+    [options2 setApplicationBundleIdentifierOverride:*MEMORY[0x277CCE3A8]];
 
-    if (v9)
+    if (clientCopy)
     {
-      v13 = [v9 process];
-      v14 = [v13 valueForEntitlement:*MEMORY[0x277CCBB60]];
+      process = [clientCopy process];
+      options5 = [process valueForEntitlement:*MEMORY[0x277CCBB60]];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v10 options];
-        [v15 setApplicationBundleIdentifierOverrideForNetworkAttribution:v14];
+        options3 = [v10 options];
+        [options3 setApplicationBundleIdentifierOverrideForNetworkAttribution:options5];
       }
 
       else
       {
-        v15 = [v9 process];
-        v16 = [v15 bundleIdentifier];
-        v17 = [v10 options];
-        [v17 setApplicationBundleIdentifierOverrideForNetworkAttribution:v16];
+        options3 = [clientCopy process];
+        bundleIdentifier = [options3 bundleIdentifier];
+        options4 = [v10 options];
+        [options4 setApplicationBundleIdentifierOverrideForNetworkAttribution:bundleIdentifier];
       }
     }
 
     else
     {
-      v14 = [v10 options];
-      [v14 setApplicationBundleIdentifierOverrideForNetworkAttribution:*MEMORY[0x277CCE408]];
+      options5 = [v10 options];
+      [options5 setApplicationBundleIdentifierOverrideForNetworkAttribution:*MEMORY[0x277CCE408]];
     }
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 format:{@"%@: Process cannot use CloudKit", self}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"%@: Process cannot use CloudKit", self}];
     v10 = 0;
   }
 
   return v10;
 }
 
-- (void)containerIdentifiersForCurrentAccountWithCompletion:(id)a3
+- (void)containerIdentifiersForCurrentAccountWithCompletion:(id)completion
 {
-  v17 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v5 = WeakRetained;
   if (!WeakRetained)
   {
-    v7 = [(HDCloudSyncManager *)self _errorForNilProfile];
-    (*(v17 + 2))(v17, 0, 0, 0, v7);
+    _errorForNilProfile = [(HDCloudSyncManager *)self _errorForNilProfile];
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, _errorForNilProfile);
 
     goto LABEL_19;
   }
 
-  v6 = [WeakRetained profileType];
-  if (v6 > 2)
+  profileType = [WeakRetained profileType];
+  if (profileType > 2)
   {
-    if (v6 == 3)
+    if (profileType == 3)
     {
 LABEL_14:
-      [(HDCloudSyncManager *)self _tinkerContainerIdentifiersWithCompletion:v17];
+      [(HDCloudSyncManager *)self _tinkerContainerIdentifiersWithCompletion:completionCopy];
       goto LABEL_19;
     }
 
-    if (v6 == 4)
+    if (profileType == 4)
     {
 LABEL_15:
-      [(HDCloudSyncManager *)self _primaryContainerIdentifiersForCurrentAccountWithCompletion:v17];
+      [(HDCloudSyncManager *)self _primaryContainerIdentifiersForCurrentAccountWithCompletion:completionCopy];
       goto LABEL_19;
     }
 
-    if (v6 != 100)
+    if (profileType != 100)
     {
       goto LABEL_19;
     }
 
 LABEL_13:
-    v14 = [v5 daemon];
-    v15 = [v14 behavior];
-    v16 = [v15 tinkerModeEnabled];
+    daemon = [v5 daemon];
+    behavior = [daemon behavior];
+    tinkerModeEnabled = [behavior tinkerModeEnabled];
 
-    if (v16)
+    if (tinkerModeEnabled)
     {
       goto LABEL_14;
     }
@@ -1599,14 +1599,14 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if (v6 == 1)
+  if (profileType == 1)
   {
     goto LABEL_13;
   }
 
-  if (v6 == 2)
+  if (profileType == 2)
   {
-    v8 = v17;
+    v8 = completionCopy;
     if (self)
     {
       v18 = 0;
@@ -1633,14 +1633,14 @@ LABEL_13:
 LABEL_19:
 }
 
-- (void)_tinkerContainerIdentifiersWithCompletion:(void *)a1
+- (void)_tinkerContainerIdentifiersWithCompletion:(void *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     v4 = @"com.apple.health.sync.secure";
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v6 = [v5 BOOLForKey:*MEMORY[0x277CCBC18]];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v6 = [standardUserDefaults BOOLForKey:*MEMORY[0x277CCBC18]];
 
     if (v6)
     {
@@ -1656,7 +1656,7 @@ LABEL_19:
     }
 
     v14 = 0;
-    v9 = [a1 _containerWithIdentifier:v4 client:0 error:&v14];
+    v9 = [completion _containerWithIdentifier:v4 client:0 error:&v14];
     v10 = v14;
     if (v9)
     {
@@ -1676,13 +1676,13 @@ LABEL_19:
   }
 }
 
-- (void)_primaryContainerIdentifiersForCurrentAccountWithCompletion:(void *)a1
+- (void)_primaryContainerIdentifiersForCurrentAccountWithCompletion:(void *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     v8 = 0;
-    v4 = [a1 _containerWithIdentifier:@"com.apple.health.sync" client:0 error:&v8];
+    v4 = [completion _containerWithIdentifier:@"com.apple.health.sync" client:0 error:&v8];
     v5 = v8;
     if (v4)
     {
@@ -1690,7 +1690,7 @@ LABEL_19:
       v6[1] = 3221225472;
       v6[2] = __82__HDCloudSyncManager__primaryContainerIdentifiersForCurrentAccountWithCompletion___block_invoke;
       v6[3] = &unk_278622498;
-      v6[4] = a1;
+      v6[4] = completion;
       v7 = v3;
       [v4 accountInfoWithCompletionHandler:v6];
     }
@@ -1761,31 +1761,31 @@ void __82__HDCloudSyncManager__primaryContainerIdentifiersForCurrentAccountWithC
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateErrorRequiringUserAction:(id)a3
+- (void)updateErrorRequiringUserAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = [a3 hd_cloudKitErrorRequiringUserAction];
-    if (v4)
+    hd_cloudKitErrorRequiringUserAction = [action hd_cloudKitErrorRequiringUserAction];
+    if (hd_cloudKitErrorRequiringUserAction)
     {
-      v10 = v4;
-      if (![v4 hk_isHealthKitErrorWithCode:706])
+      v10 = hd_cloudKitErrorRequiringUserAction;
+      if (![hd_cloudKitErrorRequiringUserAction hk_isHealthKitErrorWithCode:706])
       {
         goto LABEL_5;
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v6 = [WeakRetained daemon];
-      v7 = [v6 cloudSyncCoordinator];
-      v8 = [v7 accountProvider];
-      v9 = [v8 isAccountInManateeUnavailableCFUState];
+      daemon = [WeakRetained daemon];
+      cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+      accountProvider = [cloudSyncCoordinator accountProvider];
+      isAccountInManateeUnavailableCFUState = [accountProvider isAccountInManateeUnavailableCFUState];
 
-      v4 = v10;
-      if (v9)
+      hd_cloudKitErrorRequiringUserAction = v10;
+      if (isAccountInManateeUnavailableCFUState)
       {
 LABEL_5:
         [(HDCloudSyncManager *)self _persistErrorRequiringUserAction:v10];
-        v4 = v10;
+        hd_cloudKitErrorRequiringUserAction = v10;
       }
     }
   }
@@ -1797,37 +1797,37 @@ LABEL_5:
   }
 }
 
-- (void)_persistErrorRequiringUserAction:(uint64_t)a1
+- (void)_persistErrorRequiringUserAction:(uint64_t)action
 {
   v3 = a2;
-  if (a1)
+  if (action)
   {
     v16 = 0;
     v17 = &v16;
     v18 = 0x2020000000;
     v19 = 0;
-    WeakRetained = objc_loadWeakRetained((a1 + 104));
-    v5 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((action + 104));
+    database = [WeakRetained database];
     v15 = 0;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __55__HDCloudSyncManager__persistErrorRequiringUserAction___block_invoke;
     v12[3] = &unk_278615F88;
-    v12[4] = a1;
+    v12[4] = action;
     v6 = v3;
     v13 = v6;
     v14 = &v16;
-    v7 = [(HDHealthEntity *)HDUnprotectedKeyValueEntity performWriteTransactionWithHealthDatabase:v5 error:&v15 block:v12];
+    v7 = [(HDHealthEntity *)HDUnprotectedKeyValueEntity performWriteTransactionWithHealthDatabase:database error:&v15 block:v12];
     v8 = v15;
 
     if (v7 && *(v17 + 24) == 1)
     {
-      v9 = *(a1 + 88);
+      v9 = *(action + 88);
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __55__HDCloudSyncManager__persistErrorRequiringUserAction___block_invoke_455;
       v10[3] = &unk_2786223D0;
-      v10[4] = a1;
+      v10[4] = action;
       v11 = v6;
       [v9 notifyObservers:v10];
     }
@@ -1941,12 +1941,12 @@ LABEL_19:
   return v15;
 }
 
-- (BOOL)persistRestoreCompletionDate:(id)a3 error:(id *)a4
+- (BOOL)persistRestoreCompletionDate:(id)date error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDCloudSyncManager *)self profile];
-  v8 = HDCloudSyncKeyValueDomainWithProfile(v7);
+  dateCopy = date;
+  profile = [(HDCloudSyncManager *)self profile];
+  v8 = HDCloudSyncKeyValueDomainWithProfile(profile);
 
   v9 = @"HKCloudSyncObserverRestoreCompletionDate";
   _HKInitializeLogging();
@@ -1957,14 +1957,14 @@ LABEL_19:
     v12 = v11;
     v13 = HKDiagnosticStringFromDate();
     *buf = 138543618;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2114;
     v28 = v13;
     _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_INFO, "%{public}@: Set cloud sync restore completion date: %{public}@", buf, 0x16u);
   }
 
   v24 = 0;
-  v14 = [v8 setDate:v6 forKey:v9 error:&v24];
+  v14 = [v8 setDate:dateCopy forKey:v9 error:&v24];
   v15 = v24;
   if (v14)
   {
@@ -1974,7 +1974,7 @@ LABEL_19:
     v22[2] = __57__HDCloudSyncManager_persistRestoreCompletionDate_error___block_invoke;
     v22[3] = &unk_2786223D0;
     v22[4] = self;
-    v23 = v6;
+    v23 = dateCopy;
     [(HKObserverSet *)observers notifyObservers:v22];
   }
 
@@ -1985,7 +1985,7 @@ LABEL_19:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = v15;
       _os_log_error_impl(&dword_228986000, v17, OS_LOG_TYPE_ERROR, "%{public}@: Failed to record cloud sync restore completion date: %{public}@.", buf, 0x16u);
@@ -1994,10 +1994,10 @@ LABEL_19:
     v18 = v15;
     if (v18)
     {
-      if (a4)
+      if (error)
       {
         v19 = v18;
-        *a4 = v18;
+        *error = v18;
       }
 
       else
@@ -2011,33 +2011,33 @@ LABEL_19:
   return v14;
 }
 
-- (id)restoreCompletionDateWithError:(id *)a3
+- (id)restoreCompletionDateWithError:(id *)error
 {
-  v4 = [(HDCloudSyncManager *)self profile];
-  v5 = HDCloudSyncKeyValueDomainWithProfile(v4);
+  profile = [(HDCloudSyncManager *)self profile];
+  v5 = HDCloudSyncKeyValueDomainWithProfile(profile);
 
-  v6 = [v5 dateForKey:@"HKCloudSyncObserverRestoreCompletionDate" error:a3];
+  v6 = [v5 dateForKey:@"HKCloudSyncObserverRestoreCompletionDate" error:error];
 
   return v6;
 }
 
-- (void)updateDataUploadRequestStatus:(int64_t)a3
+- (void)updateDataUploadRequestStatus:(int64_t)status
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_uploadRequestStatus = a3;
-  if (a3 == 1)
+  self->_lock_uploadRequestStatus = status;
+  if (status == 1)
   {
     v5 = 48;
     goto LABEL_5;
   }
 
-  if (a3 == 4)
+  if (status == 4)
   {
     v5 = 56;
 LABEL_5:
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v7 = *(&self->super.isa + v5);
-    *(&self->super.isa + v5) = v6;
+    *(&self->super.isa + v5) = date;
   }
 
   v8 = self->_lock_lastDataUploadRequestStartDate;
@@ -2050,53 +2050,53 @@ LABEL_5:
   v13[4] = self;
   v14 = v8;
   v15 = v9;
-  v16 = a3;
+  statusCopy = status;
   v11 = v9;
   v12 = v8;
   [(HKObserverSet *)observers notifyObservers:v13];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
-  [v5 addProtectedDataObserver:self queue:self->_queue];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self queue:self->_queue];
 
   v6 = objc_loadWeakRetained(&self->_profile);
-  v7 = [v6 daemon];
-  v8 = [v7 analyticsSubmissionCoordinator];
-  [v8 addObserver:self queue:self->_queue];
+  daemon = [v6 daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator addObserver:self queue:self->_queue];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel__workoutSamplesAssociated_ name:@"HDHealthStoreServerDidAssociateWorkoutSamples" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__workoutSamplesAssociated_ name:@"HDHealthStoreServerDidAssociateWorkoutSamples" object:0];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (availableCopy)
   {
 
     [(HDCloudSyncManager *)self _queue_considerStartingBackstopSyncForThreshold:?];
   }
 }
 
-- (void)_queue_considerStartingBackstopSyncForThreshold:(uint64_t)a1
+- (void)_queue_considerStartingBackstopSyncForThreshold:(uint64_t)threshold
 {
   v59 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (threshold)
   {
-    dispatch_assert_queue_V2(*(a1 + 120));
-    v4 = [a1 profile];
-    v5 = [v4 daemon];
-    v6 = [v5 behavior];
-    v7 = [v6 supportsPeriodicFullCloudSync];
+    dispatch_assert_queue_V2(*(threshold + 120));
+    profile = [threshold profile];
+    daemon = [profile daemon];
+    behavior = [daemon behavior];
+    supportsPeriodicFullCloudSync = [behavior supportsPeriodicFullCloudSync];
 
-    if (v7)
+    if (supportsPeriodicFullCloudSync)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 104));
+      WeakRetained = objc_loadWeakRetained((threshold + 104));
       v9 = WeakRetained;
       if (!WeakRetained)
       {
@@ -2105,10 +2105,10 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v10 = [WeakRetained daemon];
-      v11 = [v10 cloudSyncCoordinator];
+      daemon2 = [WeakRetained daemon];
+      cloudSyncCoordinator = [daemon2 cloudSyncCoordinator];
       v52 = 0;
-      v12 = [v11 canPerformCloudSyncWithError:&v52];
+      v12 = [cloudSyncCoordinator canPerformCloudSyncWithError:&v52];
       v13 = v52;
 
       if ((v12 & 1) == 0)
@@ -2122,7 +2122,7 @@ LABEL_28:
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v54 = a1;
+              thresholdCopy9 = threshold;
               v55 = 2114;
               v56 = *&v13;
               _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Failed to check sync enablement status during backstop consideration: %{public}@", buf, 0x16u);
@@ -2135,15 +2135,15 @@ LABEL_28:
           goto LABEL_27;
         }
 
-        v14 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v14 postNotificationName:@"HDBackstopSyncRefusedNotification" object:a1];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:@"HDBackstopSyncRefusedNotification" object:threshold];
 LABEL_26:
 
 LABEL_27:
         goto LABEL_28;
       }
 
-      v14 = [MEMORY[0x277CBEAA8] date];
+      defaultCenter = [MEMORY[0x277CBEAA8] date];
       v15 = HDCloudSyncKeyValueDomainWithProfile(v9);
       v51 = v13;
       [v15 dateForKey:@"HDBackstopSyncLastConsiderationDateKey" error:&v51];
@@ -2157,7 +2157,7 @@ LABEL_27:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v54 = a1;
+          thresholdCopy9 = threshold;
           v55 = 2114;
           v56 = *&v17;
           _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "%{public}@: Failed to get last backstop reconsideration date: %{public}@", buf, 0x16u);
@@ -2175,7 +2175,7 @@ LABEL_25:
 
         [MEMORY[0x277CCAB98] defaultCenter];
         v25 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        [*&v25 postNotificationName:@"HDBackstopSyncRefusedNotification" object:a1];
+        [*&v25 postNotificationName:@"HDBackstopSyncRefusedNotification" object:threshold];
 LABEL_23:
 
         goto LABEL_24;
@@ -2183,14 +2183,14 @@ LABEL_23:
 
       if (v16 == 0.0)
       {
-        v22 = [MEMORY[0x277CBEAA8] distantPast];
-        [v14 timeIntervalSinceDate:v22];
+        distantPast = [MEMORY[0x277CBEAA8] distantPast];
+        [defaultCenter timeIntervalSinceDate:distantPast];
         v21 = v23;
       }
 
       else
       {
-        [v14 timeIntervalSinceDate:*&v16];
+        [defaultCenter timeIntervalSinceDate:*&v16];
         v21 = v20;
       }
 
@@ -2201,7 +2201,7 @@ LABEL_23:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
         {
           *buf = 138543874;
-          v54 = a1;
+          thresholdCopy9 = threshold;
           v55 = 2048;
           v56 = v21;
           v57 = 2114;
@@ -2213,13 +2213,13 @@ LABEL_23:
       }
 
       v50 = v17;
-      v27 = [v15 setDate:v14 forKey:@"HDBackstopSyncLastConsiderationDateKey" error:&v50];
+      v27 = [v15 setDate:defaultCenter forKey:@"HDBackstopSyncLastConsiderationDateKey" error:&v50];
       v13 = v50;
 
       if ((v27 & 1) == 0 && (_HKInitializeLogging(), v28 = *MEMORY[0x277CCC328], os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR)))
       {
         *buf = 138543618;
-        v54 = a1;
+        thresholdCopy9 = threshold;
         v55 = 2114;
         v56 = *&v13;
         _os_log_error_impl(&dword_228986000, v28, OS_LOG_TYPE_ERROR, "%{public}@: Failed to update last backstop reconsideration date: %{public}@", buf, 0x16u);
@@ -2249,7 +2249,7 @@ LABEL_23:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v54 = a1;
+            thresholdCopy9 = threshold;
             v55 = 2114;
             v56 = *&v17;
             _os_log_error_impl(&dword_228986000, v29, OS_LOG_TYPE_ERROR, "%{public}@: Failed to check last successful push date: %{public}@", buf, 0x16u);
@@ -2257,8 +2257,8 @@ LABEL_23:
 
           if (_HDIsUnitTesting)
           {
-            v30 = [MEMORY[0x277CCAB98] defaultCenter];
-            [v30 postNotificationName:@"HDBackstopSyncRefusedNotification" object:a1];
+            defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+            [defaultCenter2 postNotificationName:@"HDBackstopSyncRefusedNotification" object:threshold];
           }
 
           v25 = 0.0;
@@ -2268,14 +2268,14 @@ LABEL_23:
         {
           if (v25 == 0.0)
           {
-            v33 = [MEMORY[0x277CBEAA8] distantPast];
-            [v14 timeIntervalSinceDate:v33];
+            distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+            [defaultCenter timeIntervalSinceDate:distantPast2];
             v32 = v34;
           }
 
           else
           {
-            [v14 timeIntervalSinceDate:*&v25];
+            [defaultCenter timeIntervalSinceDate:*&v25];
             v32 = v31;
           }
 
@@ -2288,7 +2288,7 @@ LABEL_23:
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
-              v54 = a1;
+              thresholdCopy9 = threshold;
               v55 = 2048;
               v56 = v32;
               v57 = 2048;
@@ -2296,26 +2296,26 @@ LABEL_23:
               _os_log_impl(&dword_228986000, v36, OS_LOG_TYPE_DEFAULT, "%{public}@: Scheduling backstop sync; time since last successful push (%0.2lfs) is greater than threshold %0.2lfs", buf, 0x20u);
             }
 
-            [(HDCloudSyncManager *)a1 _queue_updateAccessibilityAssertion];
-            v39 = [a1 preparedDatabaseAccessibilityAssertion];
+            [(HDCloudSyncManager *)threshold _queue_updateAccessibilityAssertion];
+            preparedDatabaseAccessibilityAssertion = [threshold preparedDatabaseAccessibilityAssertion];
 
-            if (v39)
+            if (preparedDatabaseAccessibilityAssertion)
             {
-              v40 = [v9 daemon];
-              v41 = [v40 analyticsSubmissionCoordinator];
-              [v41 cloudSync_reportPeriodicSyncStartForType:1];
+              daemon3 = [v9 daemon];
+              analyticsSubmissionCoordinator = [daemon3 analyticsSubmissionCoordinator];
+              [analyticsSubmissionCoordinator cloudSync_reportPeriodicSyncStartForType:1];
 
               Current = CFAbsoluteTimeGetCurrent();
               v48[0] = MEMORY[0x277D85DD0];
               v48[1] = 3221225472;
               v48[2] = __70__HDCloudSyncManager__queue_considerStartingBackstopSyncForThreshold___block_invoke;
               v48[3] = &unk_278622588;
-              v48[4] = a1;
+              v48[4] = threshold;
               *&v48[5] = Current;
               v43 = [HDMaintenanceOperation maintenanceOperationWithName:@"Backstop Cloud Sync" asynchronousBlock:v48];
-              v44 = [v9 daemon];
-              v45 = [v44 maintenanceWorkCoordinator];
-              [v45 enqueueMaintenanceOperation:v43];
+              daemon4 = [v9 daemon];
+              maintenanceWorkCoordinator = [daemon4 maintenanceWorkCoordinator];
+              [maintenanceWorkCoordinator enqueueMaintenanceOperation:v43];
             }
 
             else
@@ -2325,7 +2325,7 @@ LABEL_23:
               if (os_log_type_enabled(*v35, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v54 = a1;
+                thresholdCopy9 = threshold;
                 _os_log_impl(&dword_228986000, v47, OS_LOG_TYPE_DEFAULT, "%{public}@: Unable to take database accessibility assertion.", buf, 0xCu);
               }
             }
@@ -2336,7 +2336,7 @@ LABEL_23:
             if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
             {
               *buf = 138543874;
-              v54 = a1;
+              thresholdCopy9 = threshold;
               v55 = 2048;
               v56 = v32;
               v57 = 2114;
@@ -2346,8 +2346,8 @@ LABEL_23:
 
             if (_HDIsUnitTesting)
             {
-              v38 = [MEMORY[0x277CCAB98] defaultCenter];
-              [v38 postNotificationName:@"HDBackstopSyncRefusedNotification" object:a1];
+              defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+              [defaultCenter3 postNotificationName:@"HDBackstopSyncRefusedNotification" object:threshold];
             }
           }
         }
@@ -2361,7 +2361,7 @@ LABEL_54:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v54 = a1;
+        thresholdCopy9 = threshold;
         _os_log_impl(&dword_228986000, v46, OS_LOG_TYPE_DEFAULT, "%{public}@: First backstop reconsideration; setting date and not syncing.", buf, 0xCu);
       }
 
@@ -2372,7 +2372,7 @@ LABEL_54:
 
       [MEMORY[0x277CCAB98] defaultCenter];
       v25 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      [*&v25 postNotificationName:@"HDBackstopSyncRefusedNotification" object:a1];
+      [*&v25 postNotificationName:@"HDBackstopSyncRefusedNotification" object:threshold];
       v17 = v13;
       goto LABEL_23;
     }
@@ -2382,10 +2382,10 @@ LABEL_29:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (a3 == 3)
+  if (changed == 3)
   {
 
     [(HDCloudSyncManager *)self _queue_considerStartingBackstopSyncForThreshold:?];
@@ -2486,15 +2486,15 @@ void __70__HDCloudSyncManager__queue_considerStartingBackstopSyncForThreshold___
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)shareOwnerParticipantWithError:(id *)a3
+- (id)shareOwnerParticipantWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v5 = HDCloudSyncKeyValueDomainWithProfile(WeakRetained);
 
-  v6 = [v5 dataForKey:@"HDCloudSyncShareOwnerParticipantKey" error:a3];
+  v6 = [v5 dataForKey:@"HDCloudSyncShareOwnerParticipantKey" error:error];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:a3];
+    v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:error];
   }
 
   else
@@ -2505,18 +2505,18 @@ void __70__HDCloudSyncManager__queue_considerStartingBackstopSyncForThreshold___
   return v7;
 }
 
-- (BOOL)setShareOwnerParticipant:(id)a3 error:(id *)a4
+- (BOOL)setShareOwnerParticipant:(id)participant error:(id *)error
 {
-  v6 = a3;
-  if (([(HDCloudSyncManager *)self _isValidOwnerParticipant:v6]& 1) != 0)
+  participantCopy = participant;
+  if (([(HDCloudSyncManager *)self _isValidOwnerParticipant:participantCopy]& 1) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
     v8 = HDCloudSyncKeyValueDomainWithProfile(WeakRetained);
 
-    v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:a4];
+    v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:participantCopy requiringSecureCoding:1 error:error];
     if (v9)
     {
-      v10 = [v8 setData:v9 forKey:@"HDCloudSyncShareOwnerParticipantKey" error:a4];
+      v10 = [v8 setData:v9 forKey:@"HDCloudSyncShareOwnerParticipantKey" error:error];
     }
 
     else
@@ -2527,26 +2527,26 @@ void __70__HDCloudSyncManager__queue_considerStartingBackstopSyncForThreshold___
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Owner participant is not valid; will not save."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Owner participant is not valid; will not save."];
     v10 = 0;
   }
 
   return v10;
 }
 
-- (uint64_t)_isValidOwnerParticipant:(uint64_t)a1
+- (uint64_t)_isValidOwnerParticipant:(uint64_t)participant
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (participant && v3)
   {
-    v6 = [v3 userIdentity];
-    v7 = [v6 userRecordID];
-    v8 = [v7 recordName];
+    userIdentity = [v3 userIdentity];
+    userRecordID = [userIdentity userRecordID];
+    recordName = [userRecordID recordName];
 
-    if (v8)
+    if (recordName)
     {
       v5 = 1;
     }
@@ -2559,7 +2559,7 @@ void __70__HDCloudSyncManager__queue_considerStartingBackstopSyncForThreshold___
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543618;
-        v13 = a1;
+        participantCopy = participant;
         v14 = 2114;
         v15 = v4;
         _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Participant record has nil record name; ignoring invalid participant: %{public}@", &v12, 0x16u);
@@ -2572,18 +2572,18 @@ void __70__HDCloudSyncManager__queue_considerStartingBackstopSyncForThreshold___
   return v5;
 }
 
-- (void)configureForShareSetupMetadata:(id)a3 acceptedShares:(id)a4 completion:(id)a5
+- (void)configureForShareSetupMetadata:(id)metadata acceptedShares:(id)shares completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  sharesCopy = shares;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v12 = HDCloudSyncKeyValueDomainWithProfile(WeakRetained);
 
-  v13 = [v8 syncCircleIdentifier];
+  syncCircleIdentifier = [metadataCopy syncCircleIdentifier];
   v35 = 0;
-  v14 = [v12 setString:v13 forKey:@"HDCloudSyncCircleIdentifier" error:&v35];
+  v14 = [v12 setString:syncCircleIdentifier forKey:@"HDCloudSyncCircleIdentifier" error:&v35];
   v15 = v35;
 
   if (v14)
@@ -2599,7 +2599,7 @@ void __70__HDCloudSyncManager__queue_considerStartingBackstopSyncForThreshold___
       aBlock[2] = __79__HDCloudSyncManager_configureForShareSetupMetadata_acceptedShares_completion___block_invoke;
       aBlock[3] = &unk_2786225B0;
       aBlock[4] = self;
-      v19 = v10;
+      v19 = completionCopy;
       v33 = v19;
       v22 = _Block_copy(aBlock);
       *buf = 0;
@@ -2607,8 +2607,8 @@ void __70__HDCloudSyncManager__queue_considerStartingBackstopSyncForThreshold___
       *&buf[16] = 0x3032000000;
       v37 = __Block_byref_object_copy__106;
       v38 = __Block_byref_object_dispose__106;
-      v20 = [v9 firstObject];
-      v39 = [v20 owner];
+      firstObject = [sharesCopy firstObject];
+      owner = [firstObject owner];
 
       if ([(HDCloudSyncManager *)self _isValidOwnerParticipant:?])
       {
@@ -2622,8 +2622,8 @@ void __70__HDCloudSyncManager__queue_considerStartingBackstopSyncForThreshold___
         v25[2] = __79__HDCloudSyncManager_configureForShareSetupMetadata_acceptedShares_completion___block_invoke_467;
         v25[3] = &unk_278622628;
         v28 = v19;
-        v26 = v8;
-        v27 = self;
+        v26 = metadataCopy;
+        selfCopy = self;
         v30 = buf;
         v29 = v22;
         v31 = a2;
@@ -2646,13 +2646,13 @@ void __70__HDCloudSyncManager__queue_considerStartingBackstopSyncForThreshold___
         _os_log_impl(&dword_228986000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ Participant already set up for profile, skipping configuring share setup metadata. %{public}@", buf, 0x16u);
       }
 
-      (*(v10 + 2))(v10, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -2782,29 +2782,29 @@ void __79__HDCloudSyncManager_configureForShareSetupMetadata_acceptedShares_comp
   }
 }
 
-- (id)prepareForSharingWithCompletion:(id)a3
+- (id)prepareForSharingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[HDCloudSyncContext alloc] initForPurpose:17 options:64 reason:19];
   v6 = [HDCloudSyncManagerPrepareForSharingTask alloc];
-  v7 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+  preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __54__HDCloudSyncManager_prepareForSharingWithCompletion___block_invoke;
   v15[3] = &unk_278622650;
-  v16 = v4;
-  v8 = v4;
-  v9 = [(HDCloudSyncManagerPipelineTask *)v6 initWithManager:self context:v5 accessibilityAssertion:v7 completion:v15];
+  v16 = completionCopy;
+  v8 = completionCopy;
+  v9 = [(HDCloudSyncManagerPipelineTask *)v6 initWithManager:self context:v5 accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:v15];
 
   [(HDCloudSyncManagerTask *)v9 setPriority:100];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained daemon];
-  v12 = [v11 cloudSyncCoordinator];
-  [v12 addManagerTask:v9];
+  daemon = [WeakRetained daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  [cloudSyncCoordinator addManagerTask:v9];
 
-  v13 = [(HDCloudSyncManagerTask *)v9 progress];
+  progress = [(HDCloudSyncManagerTask *)v9 progress];
 
-  return v13;
+  return progress;
 }
 
 void __127__HDCloudSyncManager_setupSharingToAccountWithIdentityLookupInfo_requireExistingRelationship_requireZoneDeviceMode_completion___block_invoke(uint64_t a1, void *a2, int a3, uint64_t a4)
@@ -2825,11 +2825,11 @@ void __127__HDCloudSyncManager_setupSharingToAccountWithIdentityLookupInfo_requi
   }
 }
 
-- (id)removeParticipants:(id)a3 fromSharesWithCompletion:(id)a4
+- (id)removeParticipants:(id)participants fromSharesWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  participantsCopy = participants;
+  completionCopy = completion;
   if (self)
   {
     _HKInitializeLogging();
@@ -2837,7 +2837,7 @@ void __127__HDCloudSyncManager_setupSharingToAccountWithIdentityLookupInfo_requi
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v6 description];
+      v10 = [participantsCopy description];
       *v20 = 138543618;
       *&v20[4] = self;
       *&v20[12] = 2114;
@@ -2847,19 +2847,19 @@ void __127__HDCloudSyncManager_setupSharingToAccountWithIdentityLookupInfo_requi
 
     v11 = [[HDCloudSyncContext alloc] initForPurpose:11 options:64 reason:11];
     v12 = [HDCloudSyncManagerRemoveParticipantsTask alloc];
-    v13 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+    preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
     *v20 = MEMORY[0x277D85DD0];
     *&v20[8] = 3221225472;
     *&v20[16] = __67__HDCloudSyncManager__removeParticipants_fromSharesWithCompletion___block_invoke;
     v21 = &unk_2786226A0;
-    v22 = v7;
-    v14 = [(HDCloudSyncManagerRemoveParticipantsTask *)v12 initWithManager:self context:v11 removeAllParticipants:v6 == 0 participantsToRemove:v6 accessibilityAssertion:v13 completion:v20];
+    v22 = completionCopy;
+    v14 = [(HDCloudSyncManagerRemoveParticipantsTask *)v12 initWithManager:self context:v11 removeAllParticipants:participantsCopy == 0 participantsToRemove:participantsCopy accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:v20];
 
     [(HDCloudSyncManagerTask *)v14 setPriority:100];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v16 = [WeakRetained daemon];
-    v17 = [v16 cloudSyncCoordinator];
-    [v17 addManagerTask:v14];
+    daemon = [WeakRetained daemon];
+    cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+    [cloudSyncCoordinator addManagerTask:v14];
 
     self = [(HDCloudSyncManagerTask *)v14 progress];
   }
@@ -2869,18 +2869,18 @@ void __127__HDCloudSyncManager_setupSharingToAccountWithIdentityLookupInfo_requi
   return self;
 }
 
-- (id)removeAllParticipantsForSharingType:(unint64_t)a3 completion:(id)a4
+- (id)removeAllParticipantsForSharingType:(unint64_t)type completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Removing All Participants of Sharing Type: %lu", buf, 0x16u);
   }
 
@@ -2889,12 +2889,12 @@ void __127__HDCloudSyncManager_setupSharingToAccountWithIdentityLookupInfo_requi
   v16[1] = 3221225472;
   v16[2] = __69__HDCloudSyncManager_removeAllParticipantsForSharingType_completion___block_invoke;
   v16[3] = &unk_2786226C8;
-  v18 = v6;
+  v18 = completionCopy;
   v16[4] = self;
   v9 = v8;
   v17 = v9;
-  v10 = v6;
-  v11 = [(HDCloudSyncManager *)self fetchShareParticipantsForSharingType:a3 completion:v16];
+  v10 = completionCopy;
+  v11 = [(HDCloudSyncManager *)self fetchShareParticipantsForSharingType:type completion:v16];
   v12 = v17;
   v13 = v9;
 
@@ -2939,30 +2939,30 @@ void __69__HDCloudSyncManager_removeAllParticipantsForSharingType_completion___b
   }
 }
 
-- (id)fetchShareParticipantsForSharingType:(unint64_t)a3 completion:(id)a4
+- (id)fetchShareParticipantsForSharingType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = [[HDCloudSyncContext alloc] initForPurpose:16 options:64 reason:12];
   v8 = [HDCloudSyncManagerFetchShareParticipantsTask alloc];
-  v9 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+  preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __70__HDCloudSyncManager_fetchShareParticipantsForSharingType_completion___block_invoke;
   v20 = &unk_2786226F0;
-  v21 = v6;
-  v22 = a3;
-  v10 = v6;
-  v11 = [(HDCloudSyncManagerFetchShareParticipantsTask *)v8 initWithManager:self context:v7 fetchAllShares:0 accessibilityAssertion:v9 completion:&v17];
+  v21 = completionCopy;
+  typeCopy = type;
+  v10 = completionCopy;
+  v11 = [(HDCloudSyncManagerFetchShareParticipantsTask *)v8 initWithManager:self context:v7 fetchAllShares:0 accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:&v17];
 
   [(HDCloudSyncManagerTask *)v11 setPriority:100, v17, v18, v19, v20];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v13 = [WeakRetained daemon];
-  v14 = [v13 cloudSyncCoordinator];
-  [v14 addManagerTask:v11];
+  daemon = [WeakRetained daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  [cloudSyncCoordinator addManagerTask:v11];
 
-  v15 = [(HDCloudSyncManagerTask *)v11 progress];
+  progress = [(HDCloudSyncManagerTask *)v11 progress];
 
-  return v15;
+  return progress;
 }
 
 void __70__HDCloudSyncManager_fetchShareParticipantsForSharingType_completion___block_invoke(uint64_t a1, void *a2, int a3)
@@ -3031,32 +3031,32 @@ LABEL_14:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)a3 completion:(id)a4
+- (id)fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v8 = [[HDCloudSyncContext alloc] initForPurpose:16 options:64 reason:12];
   v9 = [HDCloudSyncManagerFetchShareParticipantsTask alloc];
-  v10 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+  preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __90__HDCloudSyncManager_fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress_completion___block_invoke;
   v22 = &unk_278622718;
-  v23 = v6;
-  v24 = v7;
-  v11 = v6;
-  v12 = v7;
-  v13 = [(HDCloudSyncManagerFetchShareParticipantsTask *)v9 initWithManager:self context:v8 fetchAllShares:1 accessibilityAssertion:v10 completion:&v19];
+  v23 = addressCopy;
+  v24 = completionCopy;
+  v11 = addressCopy;
+  v12 = completionCopy;
+  v13 = [(HDCloudSyncManagerFetchShareParticipantsTask *)v9 initWithManager:self context:v8 fetchAllShares:1 accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:&v19];
 
   [(HDCloudSyncManagerTask *)v13 setPriority:100, v19, v20, v21, v22];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained daemon];
-  v16 = [v15 cloudSyncCoordinator];
-  [v16 addManagerTask:v13];
+  daemon = [WeakRetained daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  [cloudSyncCoordinator addManagerTask:v13];
 
-  v17 = [(HDCloudSyncManagerTask *)v13 progress];
+  progress = [(HDCloudSyncManagerTask *)v13 progress];
 
-  return v17;
+  return progress;
 }
 
 void __90__HDCloudSyncManager_fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress_completion___block_invoke(uint64_t a1, void *a2, int a3)
@@ -3167,30 +3167,30 @@ LABEL_23:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lookupParticipantWithIdentityLookUpInfo:(id)a3 completion:(id)a4
+- (id)lookupParticipantWithIdentityLookUpInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  infoCopy = info;
   v8 = [[HDCloudSyncContext alloc] initForPurpose:16 options:0 reason:12];
   v9 = [HDCloudSyncManagerLookupTask alloc];
-  v10 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+  preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __73__HDCloudSyncManager_lookupParticipantWithIdentityLookUpInfo_completion___block_invoke;
   v18[3] = &unk_278622740;
-  v19 = v6;
-  v11 = v6;
-  v12 = [(HDCloudSyncManagerLookupTask *)v9 initWithManager:self context:v8 lookupInfo:v7 accessibilityAssertion:v10 completion:v18];
+  v19 = completionCopy;
+  v11 = completionCopy;
+  v12 = [(HDCloudSyncManagerLookupTask *)v9 initWithManager:self context:v8 lookupInfo:infoCopy accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:v18];
 
   [(HDCloudSyncManagerTask *)v12 setPriority:100];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [WeakRetained daemon];
-  v15 = [v14 cloudSyncCoordinator];
-  [v15 addManagerTask:v12];
+  daemon = [WeakRetained daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  [cloudSyncCoordinator addManagerTask:v12];
 
-  v16 = [(HDCloudSyncManagerTask *)v12 progress];
+  progress = [(HDCloudSyncManagerTask *)v12 progress];
 
-  return v16;
+  return progress;
 }
 
 void __73__HDCloudSyncManager_lookupParticipantWithIdentityLookUpInfo_completion___block_invoke(uint64_t a1, void *a2, int a3, uint64_t a4)
@@ -3211,46 +3211,46 @@ void __73__HDCloudSyncManager_lookupParticipantWithIdentityLookUpInfo_completion
   }
 }
 
-- (id)leaveSharesWithCompletion:(id)a3
+- (id)leaveSharesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[HDCloudSyncContext alloc] initForPurpose:16 options:64 reason:13];
   v6 = [HDCloudSyncManagerLeaveSharesTask alloc];
-  v7 = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
+  preparedDatabaseAccessibilityAssertion = [(HDCloudSyncManager *)self preparedDatabaseAccessibilityAssertion];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __48__HDCloudSyncManager_leaveSharesWithCompletion___block_invoke;
   v15[3] = &unk_278622768;
-  v16 = v4;
-  v8 = v4;
-  v9 = [(HDCloudSyncManagerPipelineTask *)v6 initWithManager:self context:v5 accessibilityAssertion:v7 completion:v15];
+  v16 = completionCopy;
+  v8 = completionCopy;
+  v9 = [(HDCloudSyncManagerPipelineTask *)v6 initWithManager:self context:v5 accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:v15];
 
   [(HDCloudSyncManagerTask *)v9 setPriority:100];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v11 = [WeakRetained daemon];
-  v12 = [v11 cloudSyncCoordinator];
-  [v12 addManagerTask:v9];
+  daemon = [WeakRetained daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  [cloudSyncCoordinator addManagerTask:v9];
 
-  v13 = [(HDCloudSyncManagerTask *)v9 progress];
+  progress = [(HDCloudSyncManagerTask *)v9 progress];
 
-  return v13;
+  return progress;
 }
 
-- (void)acceptShare:(id)a3 completion:(id)a4
+- (void)acceptShare:(id)share completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  shareCopy = share;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [WeakRetained database];
+  database = [WeakRetained database];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
   v27 = 0;
-  v12 = [v9 takeAccessibilityAssertionWithOwnerIdentifier:v11 timeout:&v27 error:300.0];
+  v12 = [database takeAccessibilityAssertionWithOwnerIdentifier:v11 timeout:&v27 error:300.0];
   v13 = v27;
 
   v14 = objc_loadWeakRetained(&self->_profile);
-  v15 = [v14 cloudSyncManager];
-  [v15 prepareForPeriodicSync];
+  cloudSyncManager = [v14 cloudSyncManager];
+  [cloudSyncManager prepareForPeriodicSync];
 
   v16 = [[HDCloudSyncContext alloc] initForPurpose:13 options:64 reason:10];
   v17 = [HDCloudSyncManagerAcceptSharesTask alloc];
@@ -3259,16 +3259,16 @@ void __73__HDCloudSyncManager_lookupParticipantWithIdentityLookUpInfo_completion
   v24[2] = __45__HDCloudSyncManager_acceptShare_completion___block_invoke;
   v24[3] = &unk_278622790;
   v25 = v12;
-  v26 = v6;
-  v18 = v6;
+  v26 = completionCopy;
+  v18 = completionCopy;
   v19 = v12;
-  v20 = [(HDCloudSyncManagerAcceptSharesTask *)v17 initWithManager:self context:v16 shareSetupMetadata:v7 accessibilityAssertion:v19 completion:v24];
+  v20 = [(HDCloudSyncManagerAcceptSharesTask *)v17 initWithManager:self context:v16 shareSetupMetadata:shareCopy accessibilityAssertion:v19 completion:v24];
 
   [(HDCloudSyncManagerTask *)v20 setPriority:100];
   v21 = objc_loadWeakRetained(&self->_profile);
-  v22 = [v21 daemon];
-  v23 = [v22 cloudSyncCoordinator];
-  [v23 addManagerTask:v20];
+  daemon = [v21 daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  [cloudSyncCoordinator addManagerTask:v20];
 }
 
 void __45__HDCloudSyncManager_acceptShare_completion___block_invoke(uint64_t a1, void *a2, int a3, void *a4)
@@ -3289,62 +3289,62 @@ void __45__HDCloudSyncManager_acceptShare_completion___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_subscribeToSubscriptions:(void *)a3 completion:
+- (void)_subscribeToSubscriptions:(void *)subscriptions completion:
 {
-  v5 = a3;
-  if (a1)
+  subscriptionsCopy = subscriptions;
+  if (self)
   {
     v6 = a2;
     v7 = [[HDCloudSyncContext alloc] initForPurpose:14 options:64 reason:22];
     v8 = [HDCloudSyncManagerSubscriptionTask alloc];
-    v9 = [a1 preparedDatabaseAccessibilityAssertion];
+    preparedDatabaseAccessibilityAssertion = [self preparedDatabaseAccessibilityAssertion];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __59__HDCloudSyncManager__subscribeToSubscriptions_completion___block_invoke;
     v14[3] = &unk_2786227B8;
-    v15 = v5;
-    v10 = [(HDCloudSyncManagerSubscriptionTask *)v8 initWithManager:a1 context:v7 subscriptions:v6 accessibilityAssertion:v9 completion:v14];
+    v15 = subscriptionsCopy;
+    v10 = [(HDCloudSyncManagerSubscriptionTask *)v8 initWithManager:self context:v7 subscriptions:v6 accessibilityAssertion:preparedDatabaseAccessibilityAssertion completion:v14];
 
-    WeakRetained = objc_loadWeakRetained(a1 + 13);
-    v12 = [WeakRetained daemon];
-    v13 = [v12 cloudSyncCoordinator];
-    [v13 addManagerTask:v10];
+    WeakRetained = objc_loadWeakRetained(self + 13);
+    daemon = [WeakRetained daemon];
+    cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+    [cloudSyncCoordinator addManagerTask:v10];
   }
 }
 
-- (void)subscribeToDataUploadRequestsWithCompletion:(id)a3
+- (void)subscribeToDataUploadRequestsWithCompletion:(id)completion
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDCloudSyncManager *)self profile];
-  v6 = [v5 profileType];
+  completionCopy = completion;
+  profile = [(HDCloudSyncManager *)self profile];
+  profileType = [profile profileType];
 
-  if (v6 == 1)
+  if (profileType == 1)
   {
     v9 = HDCloudSyncPrimaryProfileDataRequestedSubscriptionIdentifier;
     v10[0] = @"CloudSyncDataUploadRequestRecord";
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    [(HDCloudSyncManager *)&self->super.isa _subscribeToSubscriptions:v7 completion:v4];
+    [(HDCloudSyncManager *)&self->super.isa _subscribeToSubscriptions:v7 completion:completionCopy];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeToDataAvailableNotificationsWithCompletion:(id)a3
+- (void)subscribeToDataAvailableNotificationsWithCompletion:(id)completion
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDCloudSyncManager *)self profile];
-  v6 = [v5 profileType];
+  completionCopy = completion;
+  profile = [(HDCloudSyncManager *)self profile];
+  profileType = [profile profileType];
 
-  if (v6 > 2)
+  if (profileType > 2)
   {
-    if (v6 == 3)
+    if (profileType == 3)
     {
       v15[0] = HDCloudSyncTinkerProfileDataAvailableForDownloadSubscriptionIdentifier;
       v15[1] = HDCloudSyncTinkerMedicalIDDataAvailableForDownloadSubscriptionIdentifier;
@@ -3356,13 +3356,13 @@ void __45__HDCloudSyncManager_acceptShare_completion___block_invoke(uint64_t a1,
       goto LABEL_11;
     }
 
-    if (v6 == 4)
+    if (profileType == 4)
     {
-      v4[2](v4, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
       goto LABEL_13;
     }
 
-    if (v6 != 100)
+    if (profileType != 100)
     {
       goto LABEL_13;
     }
@@ -3380,12 +3380,12 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v6 == 1)
+  if (profileType == 1)
   {
     goto LABEL_9;
   }
 
-  if (v6 == 2)
+  if (profileType == 2)
   {
     v13 = HDCloudSyncSharedSummaryDataAvailableForDownloadSubscriptionIdentifier;
     v14 = @"SharedSummaryTransactionRecordType";
@@ -3395,7 +3395,7 @@ LABEL_11:
     v10 = 1;
 LABEL_12:
     v11 = [v7 dictionaryWithObjects:v8 forKeys:v9 count:v10];
-    [(HDCloudSyncManager *)&self->super.isa _subscribeToSubscriptions:v11 completion:v4];
+    [(HDCloudSyncManager *)&self->super.isa _subscribeToSubscriptions:v11 completion:completionCopy];
   }
 
 LABEL_13:
@@ -3403,18 +3403,18 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestDataUploadWithCompletion:(id)a3
+- (void)requestDataUploadWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(HDCloudSyncManager *)self updateDataUploadRequestStatus:1];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HDCloudSyncManager_requestDataUploadWithCompletion___block_invoke;
   v7[3] = &unk_278622808;
   v7[4] = self;
-  v8 = v5;
+  v8 = completionCopy;
   v9 = a2;
-  v6 = v5;
+  v6 = completionCopy;
   [(HDCloudSyncManager *)self cloudSyncRepositoriesForClient:0 completion:v7];
 }
 
@@ -3490,17 +3490,17 @@ void __54__HDCloudSyncManager_requestDataUploadWithCompletion___block_invoke_2(u
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchServerPreferredPushEnvironmentWithCompletion:(id)a3
+- (void)fetchServerPreferredPushEnvironmentWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__HDCloudSyncManager_fetchServerPreferredPushEnvironmentWithCompletion___block_invoke;
   v7[3] = &unk_278622830;
-  v8 = v5;
+  v8 = completionCopy;
   v9 = a2;
   v7[4] = self;
-  v6 = v5;
+  v6 = completionCopy;
   [(HDCloudSyncManager *)self cloudSyncRepositoriesForClient:0 completion:v7];
 }
 
@@ -3527,11 +3527,11 @@ void __72__HDCloudSyncManager_fetchServerPreferredPushEnvironmentWithCompletion_
   }
 }
 
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(self->_queue);
   v8 = [(HDAssertionManager *)self->_assertionManager activeAssertionsForIdentifier:@"HDCloudSyncDownloadDirectoryAssertionIdentifier"];
   v9 = [v8 count];
@@ -3543,7 +3543,7 @@ void __72__HDCloudSyncManager_fetchServerPreferredPushEnvironmentWithCompletion_
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2050;
       v29 = v9;
       _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Active assertions count: %{public}lu", buf, 0x16u);
@@ -3574,7 +3574,7 @@ void __72__HDCloudSyncManager_fetchServerPreferredPushEnvironmentWithCompletion_
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v27 = self;
+        selfCopy3 = self;
         v28 = 2114;
         v29 = v15;
         _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "%{public}@ Unable to remove in progress download directory, %{public}@", buf, 0x16u);
@@ -3598,7 +3598,7 @@ void __72__HDCloudSyncManager_fetchServerPreferredPushEnvironmentWithCompletion_
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v27 = self;
+        selfCopy3 = self;
         v28 = 2114;
         v29 = v11;
         _os_log_error_impl(&dword_228986000, v21, OS_LOG_TYPE_ERROR, "%{public}@: Failed to delete in progress download directory, %{public}@", buf, 0x16u);
@@ -3606,12 +3606,12 @@ void __72__HDCloudSyncManager_fetchServerPreferredPushEnvironmentWithCompletion_
     }
   }
 
-  v22 = [(HDCloudSyncManager *)self unitTest_assertionInvalidatedHandler];
+  unitTest_assertionInvalidatedHandler = [(HDCloudSyncManager *)self unitTest_assertionInvalidatedHandler];
 
-  if (v22)
+  if (unitTest_assertionInvalidatedHandler)
   {
-    v23 = [(HDCloudSyncManager *)self unitTest_assertionInvalidatedHandler];
-    (v23)[2](v23, v6, v7);
+    unitTest_assertionInvalidatedHandler2 = [(HDCloudSyncManager *)self unitTest_assertionInvalidatedHandler];
+    (unitTest_assertionInvalidatedHandler2)[2](unitTest_assertionInvalidatedHandler2, managerCopy, invalidatedCopy);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -3624,45 +3624,45 @@ void __72__HDCloudSyncManager_fetchServerPreferredPushEnvironmentWithCompletion_
   return WeakRetained;
 }
 
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(HDCloudSyncManager *)self profile];
-  if (v7)
+  completionCopy = completion;
+  profile = [(HDCloudSyncManager *)self profile];
+  if (profile)
   {
     v8 = objc_alloc(MEMORY[0x277D10AC8]);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __80__HDCloudSyncManager_Analytics__reportDailyAnalyticsWithCoordinator_completion___block_invoke;
     v22[3] = &unk_27861A120;
-    v23 = v6;
+    v23 = completionCopy;
     v9 = [v8 initWithDescription:@"Report Daily Analytics" completion:v22];
-    v10 = [(HDCloudSyncManager *)self queue];
+    queue = [(HDCloudSyncManager *)self queue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __80__HDCloudSyncManager_Analytics__reportDailyAnalyticsWithCoordinator_completion___block_invoke_2;
     v20[3] = &unk_278617958;
     v20[4] = self;
-    v11 = v7;
+    v11 = profile;
     v21 = v11;
-    [v9 addTaskOnQueue:v10 task:v20];
+    [v9 addTaskOnQueue:queue task:v20];
 
-    v12 = [(HDCloudSyncManager *)self queue];
+    queue2 = [(HDCloudSyncManager *)self queue];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __80__HDCloudSyncManager_Analytics__reportDailyAnalyticsWithCoordinator_completion___block_invoke_314;
     v16 = &unk_278627A98;
     v17 = v11;
-    v18 = self;
+    selfCopy = self;
     v19 = a2;
-    [v9 addTaskOnQueue:v12 task:&v13];
+    [v9 addTaskOnQueue:queue2 task:&v13];
 
     [v9 begin];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
@@ -4464,11 +4464,11 @@ uint64_t __80__HDCloudSyncManager_Analytics__reportDailyAnalyticsWithCoordinator
   return 1;
 }
 
-- (id)_gatherAttachmentAnalyticsForZoneID:(id)a3 repository:(id)a4 error:(id *)a5
+- (id)_gatherAttachmentAnalyticsForZoneID:(id)d repository:(id)repository error:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  repositoryCopy = repository;
   v71 = 0;
   v72 = &v71;
   v73 = 0x2020000000;
@@ -4485,11 +4485,11 @@ uint64_t __80__HDCloudSyncManager_Analytics__reportDailyAnalyticsWithCoordinator
   v60 = &v59;
   v61 = 0x2020000000;
   v62 = 0;
-  v8 = [[HDCloudSyncCachedZone alloc] initForZoneIdentifier:v6 repository:v7 accessibilityAssertion:0];
+  v8 = [[HDCloudSyncCachedZone alloc] initForZoneIdentifier:dCopy repository:repositoryCopy accessibilityAssertion:0];
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v42 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v39 = v6;
-  v40 = v7;
+  v39 = dCopy;
+  v40 = repositoryCopy;
   v41 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v10 = objc_opt_class();
   v54[0] = MEMORY[0x277D85DD0];
@@ -4501,20 +4501,20 @@ uint64_t __80__HDCloudSyncManager_Analytics__reportDailyAnalyticsWithCoordinator
   v58 = 0;
   v11 = v9;
   v55 = v11;
-  LOBYTE(a4) = [v8 recordsForClass:v10 epoch:0 error:&v58 enumerationHandler:v54];
+  LOBYTE(repository) = [v8 recordsForClass:v10 epoch:0 error:&v58 enumerationHandler:v54];
   v12 = v58;
   v13 = v12;
-  if ((a4 & 1) == 0)
+  if ((repository & 1) == 0)
   {
     v30 = v12;
     v31 = v30;
     if (v30)
     {
-      if (a5)
+      if (error)
       {
         v32 = v30;
         v29 = 0;
-        *a5 = v31;
+        *error = v31;
       }
 
       else
@@ -4554,11 +4554,11 @@ uint64_t __80__HDCloudSyncManager_Analytics__reportDailyAnalyticsWithCoordinator
     v28 = v37;
     if (v28)
     {
-      if (a5)
+      if (error)
       {
 LABEL_21:
         v33 = v28;
-        *a5 = v28;
+        *error = v28;
         goto LABEL_22;
       }
 
@@ -4594,9 +4594,9 @@ LABEL_22:
         }
 
         v24 = [v16 objectForKeyedSubscript:*(*(&v45 + 1) + 8 * i)];
-        v25 = [v24 integerValue];
+        integerValue = [v24 integerValue];
 
-        v20 += v25;
+        v20 += integerValue;
       }
 
       v21 = [v19 countByEnumeratingWithState:&v45 objects:v75 count:16];
@@ -4620,7 +4620,7 @@ LABEL_22:
     v28 = v28;
     if (v28)
     {
-      if (!a5)
+      if (!error)
       {
         _HKLogDroppedError();
         goto LABEL_22;

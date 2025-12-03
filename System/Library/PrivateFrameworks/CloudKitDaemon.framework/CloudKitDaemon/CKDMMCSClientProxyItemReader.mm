@@ -1,20 +1,20 @@
 @interface CKDMMCSClientProxyItemReader
-- (BOOL)readBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesRead:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)writeBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesWritten:(unint64_t *)a6 error:(id *)a7;
-- (CKDMMCSClientProxyItemReader)initWithMMCSItem:(id)a3 MMCSRequest:(id)a4;
-- (id)getFileMetadataWithError:(id *)a3;
+- (BOOL)readBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesRead:(unint64_t *)read error:(id *)error;
+- (BOOL)writeBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesWritten:(unint64_t *)written error:(id *)error;
+- (CKDMMCSClientProxyItemReader)initWithMMCSItem:(id)item MMCSRequest:(id)request;
+- (id)getFileMetadataWithError:(id *)error;
 @end
 
 @implementation CKDMMCSClientProxyItemReader
 
-- (CKDMMCSClientProxyItemReader)initWithMMCSItem:(id)a3 MMCSRequest:(id)a4
+- (CKDMMCSClientProxyItemReader)initWithMMCSItem:(id)item MMCSRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = v9;
-  if (v8)
+  itemCopy = item;
+  requestCopy = request;
+  v12 = requestCopy;
+  if (itemCopy)
   {
-    if (v9)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
@@ -32,7 +32,7 @@
   }
 
   v18 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11);
-  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v18, v19, a2, self, @"CKDMMCSClientProxyItemReader.m", 29, @"Expected non-nil MMCS request for %@", v8);
+  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v18, v19, a2, self, @"CKDMMCSClientProxyItemReader.m", 29, @"Expected non-nil MMCS request for %@", itemCopy);
 
 LABEL_3:
   v20.receiver = self;
@@ -41,16 +41,16 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_MMCSItem, a3);
-    objc_storeStrong(&v14->_MMCSRequest, a4);
+    objc_storeStrong(&v13->_MMCSItem, item);
+    objc_storeStrong(&v14->_MMCSRequest, request);
   }
 
   return v14;
 }
 
-- (id)getFileMetadataWithError:(id *)a3
+- (id)getFileMetadataWithError:(id *)error
 {
-  v7 = objc_msgSend_MMCSItem(self, a2, a3);
+  v7 = objc_msgSend_MMCSItem(self, a2, error);
   if (!v7)
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v5, v6);
@@ -67,10 +67,10 @@ LABEL_3:
   return v19;
 }
 
-- (BOOL)readBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesRead:(unint64_t *)a6 error:(id *)a7
+- (BOOL)readBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesRead:(unint64_t *)read error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v14 = objc_msgSend_MMCSRequest(self, a2, a3);
+  v14 = objc_msgSend_MMCSRequest(self, a2, offset);
   v17 = objc_msgSend_operation(v14, v15, v16);
   v22 = objc_msgSend_MMCSItem(self, v18, v19);
   if (!v22)
@@ -82,7 +82,7 @@ LABEL_3:
   objc_msgSend_setIsReaderReadFrom_(v22, v20, 1);
   v25 = objc_msgSend_container(v17, v23, v24);
   v47 = 0;
-  v27 = objc_msgSend_readBytesOfInMemoryAssetContentWithContainer_offset_length_error_(v22, v26, v25, a3, a5, &v47);
+  v27 = objc_msgSend_readBytesOfInMemoryAssetContentWithContainer_offset_length_error_(v22, v26, v25, offset, length, &v47);
   v28 = v47;
 
   if (!v27)
@@ -106,38 +106,38 @@ LABEL_3:
       v53 = v28;
       _os_log_error_impl(&dword_22506F000, v38, OS_LOG_TYPE_ERROR, "Failed to read bytes itemID:%llu, operationID:%{public}@: %@", buf, 0x20u);
 
-      if (!a7)
+      if (!error)
       {
         goto LABEL_14;
       }
     }
 
-    else if (!a7)
+    else if (!error)
     {
       goto LABEL_14;
     }
 
     v35 = v28;
-    *a7 = v28;
+    *error = v28;
     goto LABEL_14;
   }
 
   v31 = objc_msgSend_length(v27, v29, v30);
-  if (v31 >= a5)
+  if (v31 >= length)
   {
-    v33 = a5;
-    objc_msgSend_getBytes_length_(v27, v32, a4, a5);
+    lengthCopy = length;
+    objc_msgSend_getBytes_length_(v27, v32, bytes, length);
   }
 
   else
   {
-    v33 = v31;
-    objc_msgSend_getBytes_length_(v27, v32, a4, v31);
+    lengthCopy = v31;
+    objc_msgSend_getBytes_length_(v27, v32, bytes, v31);
   }
 
-  if (a6)
+  if (read)
   {
-    *a6 = v33;
+    *read = lengthCopy;
   }
 
 LABEL_14:
@@ -146,14 +146,14 @@ LABEL_14:
   return v27 != 0;
 }
 
-- (BOOL)writeBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesWritten:(unint64_t *)a6 error:(id *)a7
+- (BOOL)writeBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesWritten:(unint64_t *)written error:(id *)error
 {
-  v10 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, a3, a4, a5, a6);
+  v10 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], a2, offset, bytes, length, written);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CKDMMCSClientProxyItemReader.m", 80, @"Writing not supported");
 
-  if (a7)
+  if (error)
   {
-    *a7 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v12, *MEMORY[0x277CBC120], 3001, @"Writing not supported");
+    *error = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v12, *MEMORY[0x277CBC120], 3001, @"Writing not supported");
   }
 
   return 0;

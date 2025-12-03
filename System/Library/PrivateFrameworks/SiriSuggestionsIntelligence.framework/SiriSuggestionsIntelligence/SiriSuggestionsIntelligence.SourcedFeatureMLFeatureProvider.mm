@@ -1,6 +1,6 @@
 @interface SiriSuggestionsIntelligence.SourcedFeatureMLFeatureProvider
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation SiriSuggestionsIntelligence.SourcedFeatureMLFeatureProvider
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_1DA421B94();
   v5 = v4;

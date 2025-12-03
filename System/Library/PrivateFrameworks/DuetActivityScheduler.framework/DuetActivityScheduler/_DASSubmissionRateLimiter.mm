@@ -1,12 +1,12 @@
 @interface _DASSubmissionRateLimiter
 + (id)sharedLimiter;
-- (BOOL)limitedActivity:(id)a3 withLimitsResponses:(id)a4;
-- (BOOL)limitsApplyToActivity:(id)a3;
-- (BOOL)trackActivity:(id)a3;
+- (BOOL)limitedActivity:(id)activity withLimitsResponses:(id)responses;
+- (BOOL)limitsApplyToActivity:(id)activity;
+- (BOOL)trackActivity:(id)activity;
 - (_DASSubmissionRateLimiter)init;
-- (id)shouldLimitActivityAtSubmission:(id)a3;
-- (void)addToPenaltyBox:(id)a3;
-- (void)addToTracker:(id)a3;
+- (id)shouldLimitActivityAtSubmission:(id)submission;
+- (void)addToPenaltyBox:(id)box;
+- (void)addToTracker:(id)tracker;
 - (void)init;
 - (void)removeAll;
 - (void)removeAllFromActivityTracker;
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __42___DASSubmissionRateLimiter_sharedLimiter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedLimiter_onceToken != -1)
   {
     dispatch_once(&sharedLimiter_onceToken, block);
@@ -125,7 +125,7 @@
 - (void)timerHandler
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 32);
+  v2 = *(self + 32);
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_1B6E2F000, a2, OS_LOG_TYPE_DEBUG, "Removing all from penalty tracker %@ ", &v4, 0xCu);
@@ -140,45 +140,45 @@
   objc_sync_exit(obj);
 }
 
-- (BOOL)limitsApplyToActivity:(id)a3
+- (BOOL)limitsApplyToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 schedulingPriority];
-  if (v4 > _DASSchedulingPriorityDefault)
+  activityCopy = activity;
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority > _DASSchedulingPriorityDefault)
   {
     goto LABEL_11;
   }
 
-  v5 = [v3 groupName];
-  if (v5)
+  groupName = [activityCopy groupName];
+  if (groupName)
   {
-    v6 = v5;
-    v7 = [v3 isPartOfCustomGroup];
+    v6 = groupName;
+    isPartOfCustomGroup = [activityCopy isPartOfCustomGroup];
 
-    if (v7)
+    if (isPartOfCustomGroup)
     {
       goto LABEL_11;
     }
   }
 
-  v8 = [v3 rateLimitConfigurationName];
-  v9 = [v8 isEqualToString:@"CloudKitConfiguration"];
+  rateLimitConfigurationName = [activityCopy rateLimitConfigurationName];
+  v9 = [rateLimitConfigurationName isEqualToString:@"CloudKitConfiguration"];
 
   if (v9)
   {
     goto LABEL_11;
   }
 
-  v10 = [v3 rateLimitConfigurationName];
-  v11 = [v10 isEqualToString:@"PECConfiguration"];
+  rateLimitConfigurationName2 = [activityCopy rateLimitConfigurationName];
+  v11 = [rateLimitConfigurationName2 isEqualToString:@"PECConfiguration"];
 
   if (v11)
   {
     goto LABEL_11;
   }
 
-  v12 = [v3 rateLimitConfigurationName];
-  v13 = [v12 isEqualToString:@"BirdConfiguration"];
+  rateLimitConfigurationName3 = [activityCopy rateLimitConfigurationName];
+  v13 = [rateLimitConfigurationName3 isEqualToString:@"BirdConfiguration"];
 
   if (v13)
   {
@@ -186,45 +186,45 @@
   }
 
   v14 = +[_DASPlistParser sharedInstance];
-  v15 = [v14 containsOverrideForActivity:v3 withLimitation:@"ActivityRate"];
+  v15 = [v14 containsOverrideForActivity:activityCopy withLimitation:@"ActivityRate"];
 
   if (v15)
   {
     goto LABEL_11;
   }
 
-  v16 = [v3 name];
+  name = [activityCopy name];
 
-  if (v16)
+  if (name)
   {
-    v17 = [v3 userInfo];
-    v18 = [v17 objectForKeyedSubscript:@"com.apple.das.overrideRateLimiting"];
-    v19 = [v18 BOOLValue];
+    userInfo = [activityCopy userInfo];
+    v18 = [userInfo objectForKeyedSubscript:@"com.apple.das.overrideRateLimiting"];
+    bOOLValue = [v18 BOOLValue];
 
-    if (v19 & 1) != 0 || ([v3 userInfo], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "objectForKeyedSubscript:", @"com.apple.das.overrideRateLimiting"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "BOOLValue"), v21, v20, (v22))
+    if (bOOLValue & 1) != 0 || ([activityCopy userInfo], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "objectForKeyedSubscript:", @"com.apple.das.overrideRateLimiting"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "BOOLValue"), v21, v20, (v22))
     {
 LABEL_11:
-      LOBYTE(v16) = 0;
+      LOBYTE(name) = 0;
       goto LABEL_12;
     }
 
-    if ([v3 requestsApplicationLaunch])
+    if ([activityCopy requestsApplicationLaunch])
     {
-      v16 = [v3 launchReason];
-      v24 = [v16 isEqualToString:@"com.apple.das.launchreason.push"];
+      name = [activityCopy launchReason];
+      v24 = [name isEqualToString:@"com.apple.das.launchreason.push"];
 
-      LOBYTE(v16) = v24 ^ 1;
+      LOBYTE(name) = v24 ^ 1;
     }
 
     else
     {
-      LOBYTE(v16) = 1;
+      LOBYTE(name) = 1;
     }
   }
 
 LABEL_12:
 
-  return v16 & 1;
+  return name & 1;
 }
 
 - (void)removeAll
@@ -242,27 +242,27 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_penaltyLock);
 }
 
-- (void)addToTracker:(id)a3
+- (void)addToTracker:(id)tracker
 {
-  v7 = a3;
+  trackerCopy = tracker;
   if ([(_DASSubmissionRateLimiter *)self limitsApplyToActivity:?])
   {
     v4 = self->_submittedActivityTracker;
     objc_sync_enter(v4);
     submittedActivityTracker = self->_submittedActivityTracker;
-    v6 = [v7 name];
-    [(NSCountedSet *)submittedActivityTracker addObject:v6];
+    name = [trackerCopy name];
+    [(NSCountedSet *)submittedActivityTracker addObject:name];
 
     objc_sync_exit(v4);
-    [(_DASSubmissionRateLimiter *)self addToPenaltyBox:v7];
+    [(_DASSubmissionRateLimiter *)self addToPenaltyBox:trackerCopy];
   }
 }
 
-- (void)addToPenaltyBox:(id)a3
+- (void)addToPenaltyBox:(id)box
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(_DASSubmissionRateLimiter *)self limitsApplyToActivity:v4])
+  boxCopy = box;
+  if (![(_DASSubmissionRateLimiter *)self limitsApplyToActivity:boxCopy])
   {
     goto LABEL_42;
   }
@@ -271,8 +271,8 @@ LABEL_12:
   minorPenaltyActivities = self->_minorPenaltyActivities;
   if (minorPenaltyActivities)
   {
-    v6 = [v4 name];
-    v7 = [(NSMutableArray *)minorPenaltyActivities containsObject:v6];
+    name = [boxCopy name];
+    v7 = [(NSMutableArray *)minorPenaltyActivities containsObject:name];
   }
 
   else
@@ -281,13 +281,13 @@ LABEL_12:
   }
 
   os_unfair_lock_unlock(&self->_penaltyLock);
-  v8 = self->_submittedActivityTracker;
-  objc_sync_enter(v8);
+  name6 = self->_submittedActivityTracker;
+  objc_sync_enter(name6);
   if (v7)
   {
     penaltyTracker = self->_penaltyTracker;
-    v10 = [v4 name];
-    v11 = [(NSCountedSet *)penaltyTracker countForObject:v10];
+    name2 = [boxCopy name];
+    v11 = [(NSCountedSet *)penaltyTracker countForObject:name2];
 
     if (v11 >= 0x13)
     {
@@ -295,40 +295,40 @@ LABEL_12:
       majorPenaltyActivities = self->_majorPenaltyActivities;
       if (!majorPenaltyActivities)
       {
-        v13 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v14 = self->_majorPenaltyActivities;
-        self->_majorPenaltyActivities = v13;
+        self->_majorPenaltyActivities = array;
 
         majorPenaltyActivities = self->_majorPenaltyActivities;
       }
 
-      v15 = [v4 name];
-      [(NSMutableArray *)majorPenaltyActivities addObject:v15];
+      name3 = [boxCopy name];
+      [(NSMutableArray *)majorPenaltyActivities addObject:name3];
 
       v16 = self->_minorPenaltyActivities;
-      v17 = [v4 name];
-      [(NSMutableArray *)v16 removeObject:v17];
+      name4 = [boxCopy name];
+      [(NSMutableArray *)v16 removeObject:name4];
 
       os_unfair_lock_unlock(&self->_penaltyLock);
       v18 = self->_log;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v4 name];
+        name5 = [boxCopy name];
         v51 = 138412290;
-        v52 = v19;
+        v52 = name5;
         _os_log_impl(&dword_1B6E2F000, v18, OS_LOG_TYPE_DEFAULT, "%@ added to major penalty", &v51, 0xCu);
       }
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(name6);
 
   os_unfair_lock_lock(&self->_penaltyLock);
   v20 = self->_minorPenaltyActivities;
   if (v20)
   {
-    v8 = [v4 name];
-    if (([(NSMutableArray *)v20 containsObject:v8]& 1) != 0)
+    name6 = [boxCopy name];
+    if (([(NSMutableArray *)v20 containsObject:name6]& 1) != 0)
     {
       v21 = 1;
 LABEL_22:
@@ -345,8 +345,8 @@ LABEL_22:
 
 LABEL_18:
     v23 = v20 == 0;
-    v24 = [v4 name];
-    v21 = [(NSMutableArray *)v22 containsObject:v24];
+    name7 = [boxCopy name];
+    v21 = [(NSMutableArray *)v22 containsObject:name7];
 
     if (v23)
     {
@@ -367,7 +367,7 @@ LABEL_23:
   os_unfair_lock_unlock(&self->_penaltyLock);
   v25 = self->_submittedActivityTracker;
   objc_sync_enter(v25);
-  if ([v4 isIntensive] && (objc_msgSend(v4, "requiresPlugin") & 1) != 0)
+  if ([boxCopy isIntensive] && (objc_msgSend(boxCopy, "requiresPlugin") & 1) != 0)
   {
     v26 = 2;
     if (v21)
@@ -377,8 +377,8 @@ LABEL_23:
 
 LABEL_28:
     submittedActivityTracker = self->_submittedActivityTracker;
-    v28 = [v4 name];
-    LODWORD(submittedActivityTracker) = [(NSCountedSet *)submittedActivityTracker countForObject:v28]> v26;
+    name8 = [boxCopy name];
+    LODWORD(submittedActivityTracker) = [(NSCountedSet *)submittedActivityTracker countForObject:name8]> v26;
 
     if (submittedActivityTracker)
     {
@@ -386,23 +386,23 @@ LABEL_28:
       v29 = self->_minorPenaltyActivities;
       if (!v29)
       {
-        v30 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v31 = self->_minorPenaltyActivities;
-        self->_minorPenaltyActivities = v30;
+        self->_minorPenaltyActivities = array2;
 
         v29 = self->_minorPenaltyActivities;
       }
 
-      v32 = [v4 name];
-      [(NSMutableArray *)v29 addObject:v32];
+      name9 = [boxCopy name];
+      [(NSMutableArray *)v29 addObject:name9];
 
       os_unfair_lock_unlock(&self->_penaltyLock);
       v33 = self->_log;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [v4 name];
+        name10 = [boxCopy name];
         v51 = 138412290;
-        v52 = v34;
+        v52 = name10;
         _os_log_impl(&dword_1B6E2F000, v33, OS_LOG_TYPE_DEFAULT, "%@ added to minor penalty", &v51, 0xCu);
       }
     }
@@ -419,18 +419,18 @@ LABEL_28:
 LABEL_34:
   objc_sync_exit(v25);
 
-  v35 = [(_DASSubmissionRateLimiter *)self shouldLimitActivityAtSubmission:v4];
+  v35 = [(_DASSubmissionRateLimiter *)self shouldLimitActivityAtSubmission:boxCopy];
   if ([_DASLimiterResponse queryActivityDecision:2 fromResponses:v35])
   {
     v36 = [v35 objectAtIndexedSubscript:0];
     [v36 validityDuration];
     v38 = v37;
     v39 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:?];
-    v40 = [v4 startAfter];
-    v41 = v40;
-    if (!v40 || ([v40 earlierDate:v39], v42 = objc_claimAutoreleasedReturnValue(), v43 = v42 == v41, v42, v43))
+    startAfter = [boxCopy startAfter];
+    v41 = startAfter;
+    if (!startAfter || ([startAfter earlierDate:v39], v42 = objc_claimAutoreleasedReturnValue(), v43 = v42 == v41, v42, v43))
     {
-      [v4 setStartAfter:v39];
+      [boxCopy setStartAfter:v39];
     }
 
     log = self->_log;
@@ -440,7 +440,7 @@ LABEL_34:
       v46 = log;
       v47 = [v45 numberWithDouble:v38 / 60.0];
       v51 = 138412546;
-      v52 = v4;
+      v52 = boxCopy;
       v53 = 2112;
       v54 = v47;
       _os_log_impl(&dword_1B6E2F000, v46, OS_LOG_TYPE_DEFAULT, "%@ is rate limited by submission rate limiter by %@ min from now", &v51, 0x16u);
@@ -448,34 +448,34 @@ LABEL_34:
 
     os_unfair_lock_lock(&self->_penaltyLock);
     v48 = self->_penaltyTracker;
-    v49 = [v4 name];
-    [(NSCountedSet *)v48 addObject:v49];
+    name11 = [boxCopy name];
+    [(NSCountedSet *)v48 addObject:name11];
 
     os_unfair_lock_unlock(&self->_penaltyLock);
-    [(_DASSubmissionRateLimiter *)self limitedActivity:v4 withLimitsResponses:v35];
+    [(_DASSubmissionRateLimiter *)self limitedActivity:boxCopy withLimitsResponses:v35];
   }
 
 LABEL_42:
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)trackActivity:(id)a3
+- (BOOL)trackActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(_DASSubmissionRateLimiter *)self limitsApplyToActivity:v4];
+  activityCopy = activity;
+  v5 = [(_DASSubmissionRateLimiter *)self limitsApplyToActivity:activityCopy];
   if (v5)
   {
-    [(_DASSubmissionRateLimiter *)self addToTracker:v4];
+    [(_DASSubmissionRateLimiter *)self addToTracker:activityCopy];
   }
 
   return v5;
 }
 
-- (id)shouldLimitActivityAtSubmission:(id)a3
+- (id)shouldLimitActivityAtSubmission:(id)submission
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(_DASSubmissionRateLimiter *)self limitsApplyToActivity:v4])
+  submissionCopy = submission;
+  if (![(_DASSubmissionRateLimiter *)self limitsApplyToActivity:submissionCopy])
   {
     v11 = 0;
     goto LABEL_26;
@@ -483,7 +483,7 @@ LABEL_42:
 
   os_unfair_lock_lock(&self->_penaltyLock);
   minorPenaltyActivities = self->_minorPenaltyActivities;
-  if (minorPenaltyActivities && ([v4 name], v6 = objc_claimAutoreleasedReturnValue(), v7 = -[NSMutableArray containsObject:](minorPenaltyActivities, "containsObject:", v6), v6, (v7 & 1) != 0))
+  if (minorPenaltyActivities && ([submissionCopy name], v6 = objc_claimAutoreleasedReturnValue(), v7 = -[NSMutableArray containsObject:](minorPenaltyActivities, "containsObject:", v6), v6, (v7 & 1) != 0))
   {
     majorPenaltyActivities = self->_majorPenaltyActivities;
     if (!majorPenaltyActivities)
@@ -498,7 +498,7 @@ LABEL_20:
         if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v24 = v4;
+          v24 = submissionCopy;
           _os_log_impl(&dword_1B6E2F000, log, OS_LOG_TYPE_DEFAULT, "Overriding submission rate limits for activity %@", buf, 0xCu);
         }
 
@@ -534,8 +534,8 @@ LABEL_20:
     v9 = &stru_1F2EC9F10;
   }
 
-  v12 = [v4 name];
-  v13 = [(NSMutableArray *)majorPenaltyActivities containsObject:v12];
+  name = [submissionCopy name];
+  v13 = [(NSMutableArray *)majorPenaltyActivities containsObject:name];
 
   os_unfair_lock_unlock(&self->_penaltyLock);
   if (v13)
@@ -572,13 +572,13 @@ LABEL_26:
   return v11;
 }
 
-- (BOOL)limitedActivity:(id)a3 withLimitsResponses:(id)a4
+- (BOOL)limitedActivity:(id)activity withLimitsResponses:(id)responses
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(_DASSubmissionRateLimiter *)self limitsApplyToActivity:v6]&& [_DASLimiterResponse queryActivityDecision:2 fromResponses:v7])
+  activityCopy = activity;
+  responsesCopy = responses;
+  if ([(_DASSubmissionRateLimiter *)self limitsApplyToActivity:activityCopy]&& [_DASLimiterResponse queryActivityDecision:2 fromResponses:responsesCopy])
   {
-    [_DASLimiterResponse updateActivity:v6 withLimitResponse:v7];
+    [_DASLimiterResponse updateActivity:activityCopy withLimitResponse:responsesCopy];
     v8 = 1;
   }
 
@@ -593,7 +593,7 @@ LABEL_26:
 - (void)init
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*a1];
+  v1 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*self];
   OUTLINED_FUNCTION_1(&dword_1B6E2F000, v2, v3, "Initialized testing state to %@", v4, v5, v6, v7, 2u);
 
   v8 = *MEMORY[0x1E69E9840];

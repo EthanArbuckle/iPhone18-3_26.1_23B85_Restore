@@ -1,21 +1,21 @@
 @interface ASCodableCloudKitRelationshipEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDate:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDate:(BOOL)date;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableCloudKitRelationshipEvent
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDate:(BOOL)a3
+- (void)setHasDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = ASCodableCloudKitRelationshipEvent;
   v4 = [(ASCodableCloudKitRelationshipEvent *)&v8 description];
-  v5 = [(ASCodableCloudKitRelationshipEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableCloudKitRelationshipEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_anchor];
-    [v3 setObject:v7 forKey:@"anchor"];
+    [dictionary setObject:v7 forKey:@"anchor"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -83,30 +83,30 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_type];
-  [v3 setObject:v8 forKey:@"type"];
+  [dictionary setObject:v8 forKey:@"type"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_date];
-    [v3 setObject:v5 forKey:@"date"];
+    [dictionary setObject:v5 forKey:@"date"];
   }
 
 LABEL_5:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     anchor = self->_anchor;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -127,26 +127,26 @@ LABEL_3:
 
   type = self->_type;
   PBDataWriterWriteInt64Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     date = self->_date;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_anchor;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_anchor;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -165,21 +165,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_type;
-  *(v4 + 32) |= 4u;
+  toCopy[3] = self->_type;
+  *(toCopy + 32) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    v4[2] = *&self->_date;
-    *(v4 + 32) |= 2u;
+    toCopy[2] = *&self->_date;
+    *(toCopy + 32) |= 2u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -216,23 +216,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_anchor != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_anchor != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_16:
     v5 = 0;
@@ -241,21 +241,21 @@ LABEL_16:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_type != *(v4 + 3))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_type != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 32) & 2) == 0;
+  v5 = (*(equalCopy + 32) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_date != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_date != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
@@ -332,15 +332,15 @@ LABEL_4:
   return v5 ^ v4 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if (v5)
   {
-    self->_anchor = *(v4 + 1);
+    self->_anchor = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -353,17 +353,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 4) == 0)
+  else if ((*(fromCopy + 32) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_type = *(v4 + 3);
+  self->_type = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
 LABEL_4:
-    self->_date = *(v4 + 2);
+    self->_date = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 

@@ -1,33 +1,33 @@
 @interface MRGroupSessionToken
-+ (id)tokenForJoinURLString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MRGroupSessionToken)initWithCoder:(id)a3;
-- (MRGroupSessionToken)initWithData:(id)a3;
-- (MRGroupSessionToken)initWithDeviceInfo:(id)a3;
-- (MRGroupSessionToken)initWithDiscoveredSession:(id)a3 autoConnect:(BOOL)a4;
-- (MRGroupSessionToken)initWithHostInfo:(id)a3 invitationData:(id)a4 sharedSecret:(id)a5 sessionIdentifier:(id)a6 equivalentMediaIdentifier:(id)a7 version:(id)a8;
-- (MRGroupSessionToken)initWithProtobuf:(id)a3;
++ (id)tokenForJoinURLString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (MRGroupSessionToken)initWithCoder:(id)coder;
+- (MRGroupSessionToken)initWithData:(id)data;
+- (MRGroupSessionToken)initWithDeviceInfo:(id)info;
+- (MRGroupSessionToken)initWithDiscoveredSession:(id)session autoConnect:(BOOL)connect;
+- (MRGroupSessionToken)initWithHostInfo:(id)info invitationData:(id)data sharedSecret:(id)secret sessionIdentifier:(id)identifier equivalentMediaIdentifier:(id)mediaIdentifier version:(id)version;
+- (MRGroupSessionToken)initWithProtobuf:(id)protobuf;
 - (NSString)effectiveIdentifier;
 - (NSString)hostDisplayName;
 - (NSString)joinContinuitySingURLString;
 - (NSString)joinURLString;
 - (NSString)localizedSessionName;
 - (_MRGroupSessionTokenProtobuf)protobuf;
-- (id)_groupSessionComponentsWithScheme:(id)a3 host:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_groupSessionComponentsWithScheme:(id)scheme host:(id)host;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (unsigned)routeType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRGroupSessionToken
 
-+ (id)tokenForJoinURLString:(id)a3
++ (id)tokenForJoinURLString:(id)string
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+  stringCopy = string;
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
   v5 = v4;
   if (!v4)
   {
@@ -35,15 +35,15 @@
     goto LABEL_56;
   }
 
-  v6 = [v4 host];
-  if ([v6 isEqual:@"music.apple.com"])
+  host = [v4 host];
+  if ([host isEqual:@"music.apple.com"])
   {
   }
 
   else
   {
-    v8 = [v5 scheme];
-    v9 = [v8 isEqual:@"ContinuitySing"];
+    scheme = [v5 scheme];
+    v9 = [scheme isEqual:@"ContinuitySing"];
 
     if ((v9 & 1) == 0)
     {
@@ -57,8 +57,8 @@
     }
   }
 
-  v10 = [v5 lastPathComponent];
-  v11 = [v10 isEqual:@"join"];
+  lastPathComponent = [v5 lastPathComponent];
+  v11 = [lastPathComponent isEqual:@"join"];
 
   if ((v11 & 1) == 0)
   {
@@ -73,13 +73,13 @@ LABEL_37:
     goto LABEL_55;
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:v3];
+  v12 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:stringCopy];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v13 = [v12 queryItems];
-  v14 = [v13 countByEnumeratingWithState:&v48 objects:v52 count:16];
+  queryItems = [v12 queryItems];
+  v14 = [queryItems countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (!v14)
   {
 
@@ -99,7 +99,7 @@ LABEL_40:
 
   v15 = v14;
   v44 = v12;
-  v45 = v3;
+  v45 = stringCopy;
   v46 = 0;
   v47 = 0;
   v16 = 0;
@@ -112,61 +112,61 @@ LABEL_40:
     {
       if (*v49 != v18)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(queryItems);
       }
 
       v20 = *(*(&v48 + 1) + 8 * v19);
-      v21 = [v20 name];
-      v22 = [v21 isEqual:@"v"];
+      name = [v20 name];
+      v22 = [name isEqual:@"v"];
 
       if (v22)
       {
-        v23 = [v20 value];
+        value = [v20 value];
         v24 = v17;
-        v17 = v23;
+        v17 = value;
 LABEL_19:
 
         goto LABEL_20;
       }
 
-      v25 = [v20 name];
-      v26 = [v25 isEqualToString:@"p"];
+      name2 = [v20 name];
+      v26 = [name2 isEqualToString:@"p"];
 
       if (v26)
       {
-        v27 = [v20 value];
+        value2 = [v20 value];
         v24 = v16;
         v28 = 1;
 LABEL_18:
         v47 = v28;
-        v16 = v27;
+        v16 = value2;
         goto LABEL_19;
       }
 
-      v29 = [v20 name];
-      v30 = [v29 isEqualToString:@"d"];
+      name3 = [v20 name];
+      v30 = [name3 isEqualToString:@"d"];
 
       if (v30)
       {
-        v27 = [v20 value];
+        value2 = [v20 value];
         v24 = v16;
         v28 = 2;
         goto LABEL_18;
       }
 
-      v31 = [v20 name];
-      v32 = [v31 isEqualToString:@"h"];
+      name4 = [v20 name];
+      v32 = [name4 isEqualToString:@"h"];
 
       if (v32)
       {
         v33 = +[MRSharedSettings currentSettings];
-        v34 = [v33 supportGroupSessionHome];
+        supportGroupSessionHome = [v33 supportGroupSessionHome];
 
-        if (v34)
+        if (supportGroupSessionHome)
         {
-          v35 = [v20 value];
+          value3 = [v20 value];
           v24 = v46;
-          v46 = v35;
+          v46 = value3;
           goto LABEL_19;
         }
       }
@@ -176,7 +176,7 @@ LABEL_20:
     }
 
     while (v15 != v19);
-    v36 = [v13 countByEnumeratingWithState:&v48 objects:v52 count:16];
+    v36 = [queryItems countByEnumeratingWithState:&v48 objects:v52 count:16];
     v15 = v36;
   }
 
@@ -184,14 +184,14 @@ LABEL_20:
 
   if (!v16)
   {
-    v3 = v45;
+    stringCopy = v45;
     v12 = v44;
     v38 = v46;
     goto LABEL_40;
   }
 
   v37 = [MEMORY[0x1E695DEF0] tu_dataForURLSafeBase64EncodedString:v16];
-  v3 = v45;
+  stringCopy = v45;
   v38 = v46;
   if (!v37)
   {
@@ -249,117 +249,117 @@ LABEL_56:
   return v7;
 }
 
-- (MRGroupSessionToken)initWithProtobuf:(id)a3
+- (MRGroupSessionToken)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = [MRGroupSessionHostInfo alloc];
-  v6 = [v4 routeType];
-  v7 = [v4 displayName];
-  v8 = [(MRGroupSessionHostInfo *)v5 initWithRouteType:v6 displayName:v7];
+  routeType = [protobufCopy routeType];
+  displayName = [protobufCopy displayName];
+  v8 = [(MRGroupSessionHostInfo *)v5 initWithRouteType:routeType displayName:displayName];
 
-  v9 = [v4 invitationData];
-  v10 = [v4 sharedSecret];
-  v11 = [v4 sessionIdentifier];
-  v12 = [v4 equivalentMediaIdentifier];
-  if ([v4 hasVersion])
+  invitationData = [protobufCopy invitationData];
+  sharedSecret = [protobufCopy sharedSecret];
+  sessionIdentifier = [protobufCopy sessionIdentifier];
+  equivalentMediaIdentifier = [protobufCopy equivalentMediaIdentifier];
+  if ([protobufCopy hasVersion])
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v4, "version")}];
-    v14 = [(MRGroupSessionToken *)self initWithHostInfo:v8 invitationData:v9 sharedSecret:v10 sessionIdentifier:v11 equivalentMediaIdentifier:v12 version:v13];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(protobufCopy, "version")}];
+    v14 = [(MRGroupSessionToken *)self initWithHostInfo:v8 invitationData:invitationData sharedSecret:sharedSecret sessionIdentifier:sessionIdentifier equivalentMediaIdentifier:equivalentMediaIdentifier version:v13];
   }
 
   else
   {
-    v14 = [(MRGroupSessionToken *)self initWithHostInfo:v8 invitationData:v9 sharedSecret:v10 sessionIdentifier:v11 equivalentMediaIdentifier:v12 version:0];
+    v14 = [(MRGroupSessionToken *)self initWithHostInfo:v8 invitationData:invitationData sharedSecret:sharedSecret sessionIdentifier:sessionIdentifier equivalentMediaIdentifier:equivalentMediaIdentifier version:0];
   }
 
   return v14;
 }
 
-- (MRGroupSessionToken)initWithHostInfo:(id)a3 invitationData:(id)a4 sharedSecret:(id)a5 sessionIdentifier:(id)a6 equivalentMediaIdentifier:(id)a7 version:(id)a8
+- (MRGroupSessionToken)initWithHostInfo:(id)info invitationData:(id)data sharedSecret:(id)secret sessionIdentifier:(id)identifier equivalentMediaIdentifier:(id)mediaIdentifier version:(id)version
 {
-  v15 = a3;
-  v16 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v17 = a8;
-  v18 = 0;
-  v26 = v16;
-  if (v15 && v16)
+  infoCopy = info;
+  dataCopy = data;
+  secretCopy = secret;
+  identifierCopy = identifier;
+  mediaIdentifierCopy = mediaIdentifier;
+  versionCopy = version;
+  selfCopy = 0;
+  v26 = dataCopy;
+  if (infoCopy && dataCopy)
   {
-    v19 = v17;
+    v19 = versionCopy;
     v27.receiver = self;
     v27.super_class = MRGroupSessionToken;
-    v20 = [(MRGroupSessionToken *)&v27 init:v23];
+    v20 = [(MRGroupSessionToken *)&v27 init:mediaIdentifierCopy];
     p_isa = &v20->super.isa;
     if (v20)
     {
-      objc_storeStrong(&v20->_invitationData, a4);
-      objc_storeStrong(p_isa + 2, a3);
-      objc_storeStrong(p_isa + 7, a5);
-      objc_storeStrong(p_isa + 4, a6);
-      objc_storeStrong(p_isa + 5, a7);
-      objc_storeStrong(p_isa + 3, a8);
+      objc_storeStrong(&v20->_invitationData, data);
+      objc_storeStrong(p_isa + 2, info);
+      objc_storeStrong(p_isa + 7, secret);
+      objc_storeStrong(p_isa + 4, identifier);
+      objc_storeStrong(p_isa + 5, mediaIdentifier);
+      objc_storeStrong(p_isa + 3, version);
     }
 
     self = p_isa;
-    v18 = self;
-    v17 = v19;
+    selfCopy = self;
+    versionCopy = v19;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (MRGroupSessionToken)initWithDiscoveredSession:(id)a3 autoConnect:(BOOL)a4
+- (MRGroupSessionToken)initWithDiscoveredSession:(id)session autoConnect:(BOOL)connect
 {
-  v7 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = MRGroupSessionToken;
   v8 = [(MRGroupSessionToken *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_discoveredSession, a3);
-    v9->_autoConnect = a4;
+    objc_storeStrong(&v8->_discoveredSession, session);
+    v9->_autoConnect = connect;
   }
 
   return v9;
 }
 
-- (MRGroupSessionToken)initWithDeviceInfo:(id)a3
+- (MRGroupSessionToken)initWithDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v18.receiver = self;
   v18.super_class = MRGroupSessionToken;
   v5 = [(MRGroupSessionToken *)&v18 init];
   if (v5)
   {
-    v6 = [v4 modelID];
-    v7 = MRGroupSessionRouteTypeFromModelIdentifier(v6);
+    modelID = [infoCopy modelID];
+    v7 = MRGroupSessionRouteTypeFromModelIdentifier(modelID);
 
     v8 = [MRGroupSessionHostInfo alloc];
-    v9 = [v4 name];
-    v10 = [v4 modelID];
-    v11 = [(MRGroupSessionHostInfo *)v8 initWithRouteType:v7 displayName:v9 modelIdentifier:v10 color:0];
+    name = [infoCopy name];
+    modelID2 = [infoCopy modelID];
+    v11 = [(MRGroupSessionHostInfo *)v8 initWithRouteType:v7 displayName:name modelIdentifier:modelID2 color:0];
     hostInfo = v5->_hostInfo;
     v5->_hostInfo = v11;
 
-    v13 = [v4 deviceUID];
+    deviceUID = [infoCopy deviceUID];
     sessionIdentifier = v5->_sessionIdentifier;
-    v5->_sessionIdentifier = v13;
+    v5->_sessionIdentifier = deviceUID;
 
-    v15 = [v4 deviceUID];
+    deviceUID2 = [infoCopy deviceUID];
     equivalentMediaIdentifier = v5->_equivalentMediaIdentifier;
-    v5->_equivalentMediaIdentifier = v15;
+    v5->_equivalentMediaIdentifier = deviceUID2;
   }
 
   return v5;
 }
 
-- (MRGroupSessionToken)initWithData:(id)a3
+- (MRGroupSessionToken)initWithData:(id)data
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = MSVPropertyListDataClasses();
   v6 = [v5 mutableCopy];
 
@@ -370,7 +370,7 @@ LABEL_56:
   [v6 addObjectsFromArray:v7];
 
   v13 = 0;
-  v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v6 fromData:v4 error:&v13];
+  v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v6 fromData:dataCopy error:&v13];
 
   v9 = v13;
   if (v9)
@@ -386,39 +386,39 @@ LABEL_56:
   return v8;
 }
 
-- (MRGroupSessionToken)initWithCoder:(id)a3
+- (MRGroupSessionToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = MRGroupSessionToken;
   v5 = [(MRGroupSessionToken *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ds"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ds"];
     discoveredSession = v5->_discoveredSession;
     v5->_discoveredSession = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inv"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inv"];
     invitationData = v5->_invitationData;
     v5->_invitationData = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hi"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hi"];
     hostInfo = v5->_hostInfo;
     v5->_hostInfo = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ss"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ss"];
     sharedSecret = v5->_sharedSecret;
     v5->_sharedSecret = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"si"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"si"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"emi"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"emi"];
     equivalentMediaIdentifier = v5->_equivalentMediaIdentifier;
     v5->_equivalentMediaIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"v"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"v"];
     version = v5->_version;
     v5->_version = v18;
   }
@@ -429,45 +429,45 @@ LABEL_56:
 - (_MRGroupSessionTokenProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRGroupSessionTokenProtobuf);
-  v4 = [(MRGroupSessionToken *)self invitationData];
-  [(_MRGroupSessionTokenProtobuf *)v3 setInvitationData:v4];
+  invitationData = [(MRGroupSessionToken *)self invitationData];
+  [(_MRGroupSessionTokenProtobuf *)v3 setInvitationData:invitationData];
 
-  v5 = [(MRGroupSessionToken *)self sharedSecret];
-  [(_MRGroupSessionTokenProtobuf *)v3 setSharedSecret:v5];
+  sharedSecret = [(MRGroupSessionToken *)self sharedSecret];
+  [(_MRGroupSessionTokenProtobuf *)v3 setSharedSecret:sharedSecret];
 
-  v6 = [(MRGroupSessionToken *)self sessionIdentifier];
-  [(_MRGroupSessionTokenProtobuf *)v3 setSessionIdentifier:v6];
+  sessionIdentifier = [(MRGroupSessionToken *)self sessionIdentifier];
+  [(_MRGroupSessionTokenProtobuf *)v3 setSessionIdentifier:sessionIdentifier];
 
-  v7 = [(MRGroupSessionToken *)self equivalentMediaIdentifier];
-  [(_MRGroupSessionTokenProtobuf *)v3 setEquivalentMediaIdentifier:v7];
+  equivalentMediaIdentifier = [(MRGroupSessionToken *)self equivalentMediaIdentifier];
+  [(_MRGroupSessionTokenProtobuf *)v3 setEquivalentMediaIdentifier:equivalentMediaIdentifier];
 
-  v8 = [(MRGroupSessionToken *)self hostInfo];
-  -[_MRGroupSessionTokenProtobuf setRouteType:](v3, "setRouteType:", [v8 routeType]);
+  hostInfo = [(MRGroupSessionToken *)self hostInfo];
+  -[_MRGroupSessionTokenProtobuf setRouteType:](v3, "setRouteType:", [hostInfo routeType]);
 
-  v9 = [(MRGroupSessionToken *)self hostInfo];
-  v10 = [v9 displayName];
-  [(_MRGroupSessionTokenProtobuf *)v3 setDisplayName:v10];
+  hostInfo2 = [(MRGroupSessionToken *)self hostInfo];
+  displayName = [hostInfo2 displayName];
+  [(_MRGroupSessionTokenProtobuf *)v3 setDisplayName:displayName];
 
-  v11 = [(MRGroupSessionToken *)self version];
-  -[_MRGroupSessionTokenProtobuf setVersion:](v3, "setVersion:", [v11 unsignedIntValue]);
+  version = [(MRGroupSessionToken *)self version];
+  -[_MRGroupSessionTokenProtobuf setVersion:](v3, "setVersion:", [version unsignedIntValue]);
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   discoveredSession = self->_discoveredSession;
-  v5 = a3;
-  [v5 encodeObject:discoveredSession forKey:@"ds"];
-  [v5 encodeObject:self->_invitationData forKey:@"inv"];
-  [v5 encodeObject:self->_hostInfo forKey:@"hi"];
-  [v5 encodeObject:self->_sharedSecret forKey:@"ss"];
-  [v5 encodeObject:self->_sessionIdentifier forKey:@"si"];
-  [v5 encodeObject:self->_equivalentMediaIdentifier forKey:@"emi"];
-  [v5 encodeObject:self->_version forKey:@"v"];
+  coderCopy = coder;
+  [coderCopy encodeObject:discoveredSession forKey:@"ds"];
+  [coderCopy encodeObject:self->_invitationData forKey:@"inv"];
+  [coderCopy encodeObject:self->_hostInfo forKey:@"hi"];
+  [coderCopy encodeObject:self->_sharedSecret forKey:@"ss"];
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:@"si"];
+  [coderCopy encodeObject:self->_equivalentMediaIdentifier forKey:@"emi"];
+  [coderCopy encodeObject:self->_version forKey:@"v"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   discoveredSession = self->_discoveredSession;
   v5 = [MRGroupSessionToken alloc];
@@ -494,29 +494,29 @@ LABEL_56:
 {
   v2 = [(MRGroupSessionToken *)self _groupSessionComponentsWithScheme:@"https" host:@"music.apple.com"];
   v3 = [v2 URL];
-  v4 = [v3 absoluteString];
+  absoluteString = [v3 absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (NSString)joinContinuitySingURLString
 {
   v2 = [(MRGroupSessionToken *)self _groupSessionComponentsWithScheme:@"ContinuitySing" host:@"connect"];
   v3 = [v2 URL];
-  v4 = [v3 absoluteString];
+  absoluteString = [v3 absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
-- (id)_groupSessionComponentsWithScheme:(id)a3 host:(id)a4
+- (id)_groupSessionComponentsWithScheme:(id)scheme host:(id)host
 {
   v6 = MEMORY[0x1E696AF20];
-  v7 = a4;
-  v8 = a3;
+  hostCopy = host;
+  schemeCopy = scheme;
   v9 = objc_alloc_init(v6);
-  [v9 setScheme:v8];
+  [v9 setScheme:schemeCopy];
 
-  [v9 setHost:v7];
+  [v9 setHost:hostCopy];
   if (self->_storefrontCountryCode)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@/%@", self->_storefrontCountryCode, @"join"];
@@ -530,40 +530,40 @@ LABEL_56:
   [v9 setPath:v10];
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = [(MRGroupSessionToken *)self equivalentMediaIdentifier];
+  equivalentMediaIdentifier = [(MRGroupSessionToken *)self equivalentMediaIdentifier];
 
-  if (v12)
+  if (equivalentMediaIdentifier)
   {
     v13 = MEMORY[0x1E696AF60];
-    v14 = [(MRGroupSessionToken *)self equivalentMediaIdentifier];
-    v15 = [v13 queryItemWithName:@"h" value:v14];
+    equivalentMediaIdentifier2 = [(MRGroupSessionToken *)self equivalentMediaIdentifier];
+    v15 = [v13 queryItemWithName:@"h" value:equivalentMediaIdentifier2];
     [v11 addObject:v15];
   }
 
-  v16 = [(MRGroupSessionToken *)self invitationData];
+  invitationData = [(MRGroupSessionToken *)self invitationData];
 
-  if (v16)
+  if (invitationData)
   {
-    v17 = [(MRGroupSessionToken *)self invitationData];
-    v18 = [v17 tu_URLSafeBase64EncodedString];
+    invitationData2 = [(MRGroupSessionToken *)self invitationData];
+    tu_URLSafeBase64EncodedString = [invitationData2 tu_URLSafeBase64EncodedString];
 
-    v19 = [MEMORY[0x1E696AF60] queryItemWithName:@"p" value:v18];
+    v19 = [MEMORY[0x1E696AF60] queryItemWithName:@"p" value:tu_URLSafeBase64EncodedString];
     [v11 addObject:v19];
 
     v20 = MEMORY[0x1E696AF60];
-    v21 = [(MRGroupSessionToken *)self version];
-    v22 = [v21 stringValue];
-    v23 = [v20 queryItemWithName:@"v" value:v22];
+    version = [(MRGroupSessionToken *)self version];
+    stringValue = [version stringValue];
+    v23 = [v20 queryItemWithName:@"v" value:stringValue];
     [v11 addObject:v23];
   }
 
   else
   {
-    v24 = [(MRGroupSessionToken *)self discoveredSession];
-    v25 = [v24 data];
-    v18 = [v25 tu_URLSafeBase64EncodedString];
+    discoveredSession = [(MRGroupSessionToken *)self discoveredSession];
+    data = [discoveredSession data];
+    tu_URLSafeBase64EncodedString = [data tu_URLSafeBase64EncodedString];
 
-    v26 = [MEMORY[0x1E696AF60] queryItemWithName:@"d" value:v18];
+    v26 = [MEMORY[0x1E696AF60] queryItemWithName:@"d" value:tu_URLSafeBase64EncodedString];
     [v11 addObject:v26];
 
     if (![(MRGroupSessionToken *)self autoConnect])
@@ -571,8 +571,8 @@ LABEL_56:
       goto LABEL_11;
     }
 
-    v21 = [MEMORY[0x1E696AF60] queryItemWithName:@"a" value:@"true"];
-    [v11 addObject:v21];
+    version = [MEMORY[0x1E696AF60] queryItemWithName:@"a" value:@"true"];
+    [v11 addObject:version];
   }
 
 LABEL_11:
@@ -588,31 +588,31 @@ LABEL_11:
   return v4 ^ [(NSString *)self->_sharedSecret hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 invitationData];
-    v7 = [(MRGroupSessionToken *)self invitationData];
-    if (v6 == v7 || [v6 isEqual:v7])
+    v5 = equalCopy;
+    invitationData = [v5 invitationData];
+    invitationData2 = [(MRGroupSessionToken *)self invitationData];
+    if (invitationData == invitationData2 || [invitationData isEqual:invitationData2])
     {
-      v8 = [v5 discoveredSession];
-      v9 = v8;
-      if (v8 == self->_discoveredSession || [(MRDiscoveredGroupSession *)v8 isEqual:?])
+      discoveredSession = [v5 discoveredSession];
+      v9 = discoveredSession;
+      if (discoveredSession == self->_discoveredSession || [(MRDiscoveredGroupSession *)discoveredSession isEqual:?])
       {
-        v10 = [v5 version];
-        v11 = [(MRGroupSessionToken *)self version];
-        if (v10 == v11)
+        version = [v5 version];
+        version2 = [(MRGroupSessionToken *)self version];
+        if (version == version2)
         {
           v12 = 1;
         }
 
         else
         {
-          v12 = [v10 isEqual:v11];
+          v12 = [version isEqual:version2];
         }
       }
 
@@ -685,16 +685,16 @@ LABEL_11:
   hostInfo = self->_hostInfo;
   if (hostInfo)
   {
-    v4 = [(MRGroupSessionHostInfo *)hostInfo displayName];
+    displayName = [(MRGroupSessionHostInfo *)hostInfo displayName];
   }
 
   else
   {
-    v5 = [(MRDiscoveredGroupSession *)self->_discoveredSession hostInfo];
-    v4 = [v5 displayName];
+    hostInfo = [(MRDiscoveredGroupSession *)self->_discoveredSession hostInfo];
+    displayName = [hostInfo displayName];
   }
 
-  return v4;
+  return displayName;
 }
 
 - (unsigned)routeType
@@ -708,36 +708,36 @@ LABEL_11:
 
   else
   {
-    v6 = [(MRDiscoveredGroupSession *)self->_discoveredSession hostInfo];
-    v7 = [v6 routeType];
+    hostInfo = [(MRDiscoveredGroupSession *)self->_discoveredSession hostInfo];
+    routeType = [hostInfo routeType];
 
-    return v7;
+    return routeType;
   }
 }
 
 - (NSString)localizedSessionName
 {
-  v3 = [(MRGroupSessionToken *)self hostDisplayName];
-  v4 = MRGroupSessionRouteMakeName(v3, [(MRGroupSessionToken *)self routeType]);
+  hostDisplayName = [(MRGroupSessionToken *)self hostDisplayName];
+  v4 = MRGroupSessionRouteMakeName(hostDisplayName, [(MRGroupSessionToken *)self routeType]);
 
   return v4;
 }
 
 - (NSString)effectiveIdentifier
 {
-  v3 = [(MRGroupSessionToken *)self equivalentMediaIdentifier];
-  v4 = v3;
-  if (v3)
+  equivalentMediaIdentifier = [(MRGroupSessionToken *)self equivalentMediaIdentifier];
+  v4 = equivalentMediaIdentifier;
+  if (equivalentMediaIdentifier)
   {
-    v5 = v3;
+    sessionIdentifier = equivalentMediaIdentifier;
   }
 
   else
   {
-    v5 = [(MRGroupSessionToken *)self sessionIdentifier];
+    sessionIdentifier = [(MRGroupSessionToken *)self sessionIdentifier];
   }
 
-  v6 = v5;
+  v6 = sessionIdentifier;
 
   return v6;
 }

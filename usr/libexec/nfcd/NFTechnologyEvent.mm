@@ -1,102 +1,102 @@
 @interface NFTechnologyEvent
-- (NFTechnologyEvent)initWithCoder:(id)a3;
-- (NFTechnologyEvent)initWithDictionary:(id)a3;
-- (NFTechnologyEvent)initWithFieldNotification:(id)a3;
-- (NFTechnologyEvent)initWithTechnology:(unsigned int)a3 andValueAddedServiceMode:(unsigned int)a4;
-- (NFTechnologyEvent)initWithTechnology:(unsigned int)a3 andValueAddedServiceMode:(unsigned int)a4 andSystemCode:(unsigned __int16)a5;
+- (NFTechnologyEvent)initWithCoder:(id)coder;
+- (NFTechnologyEvent)initWithDictionary:(id)dictionary;
+- (NFTechnologyEvent)initWithFieldNotification:(id)notification;
+- (NFTechnologyEvent)initWithTechnology:(unsigned int)technology andValueAddedServiceMode:(unsigned int)mode;
+- (NFTechnologyEvent)initWithTechnology:(unsigned int)technology andValueAddedServiceMode:(unsigned int)mode andSystemCode:(unsigned __int16)code;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFTechnologyEvent
 
-- (NFTechnologyEvent)initWithTechnology:(unsigned int)a3 andValueAddedServiceMode:(unsigned int)a4 andSystemCode:(unsigned __int16)a5
+- (NFTechnologyEvent)initWithTechnology:(unsigned int)technology andValueAddedServiceMode:(unsigned int)mode andSystemCode:(unsigned __int16)code
 {
-  v6 = a4;
+  modeCopy = mode;
   v9.receiver = self;
   v9.super_class = NFTechnologyEvent;
   result = [(NFTechnologyEvent *)&v9 init];
   if (result)
   {
-    result->_technology = a3;
-    result->_valueAddedServiceMode = v6;
-    result->_systemCode = a5;
+    result->_technology = technology;
+    result->_valueAddedServiceMode = modeCopy;
+    result->_systemCode = code;
   }
 
   return result;
 }
 
-- (NFTechnologyEvent)initWithDictionary:(id)a3
+- (NFTechnologyEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = NFTechnologyEvent;
   v5 = [(NFTechnologyEvent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"technologyMask"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"technologyMask"];
     v5->_technology = [v6 unsignedIntegerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"valueAddedServiceMode"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"valueAddedServiceMode"];
     v5->_valueAddedServiceMode = [v7 unsignedIntegerValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"systemCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"systemCode"];
     v5->_systemCode = [v8 unsignedIntegerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"vasSupported"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"vasSupported"];
     v5->_vasSupported = [v9 BOOLValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"terminalType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"terminalType"];
     v5->_terminalType = [v10 unsignedIntegerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"touchIDRequired"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"touchIDRequired"];
     v5->_touchIDRequired = [v11 BOOLValue];
   }
 
   return v5;
 }
 
-- (NFTechnologyEvent)initWithTechnology:(unsigned int)a3 andValueAddedServiceMode:(unsigned int)a4
+- (NFTechnologyEvent)initWithTechnology:(unsigned int)technology andValueAddedServiceMode:(unsigned int)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v7.receiver = self;
   v7.super_class = NFTechnologyEvent;
   result = [(NFTechnologyEvent *)&v7 init];
   if (result)
   {
-    result->_technology = a3;
-    result->_valueAddedServiceMode = v4;
+    result->_technology = technology;
+    result->_valueAddedServiceMode = modeCopy;
   }
 
   return result;
 }
 
-- (NFTechnologyEvent)initWithFieldNotification:(id)a3
+- (NFTechnologyEvent)initWithFieldNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v9.receiver = self;
   v9.super_class = NFTechnologyEvent;
   v5 = [(NFTechnologyEvent *)&v9 init];
   if (v5)
   {
-    if ([v4 notificationType] == 1)
+    if ([notificationCopy notificationType] == 1)
     {
-      v5->_technology = [v4 rfTechnology];
+      v5->_technology = [notificationCopy rfTechnology];
       v5->_valueAddedServiceMode = 4;
-      v5->_systemCode = [v4 typeFSystemCode];
+      v5->_systemCode = [notificationCopy typeFSystemCode];
     }
 
-    else if ([v4 notificationType] == 2)
+    else if ([notificationCopy notificationType] == 2)
     {
-      v6 = v4;
+      v6 = notificationCopy;
       v5->_technology = [v6 rfTechnology];
       v5->_valueAddedServiceMode = [v6 terminalMode];
       v5->_systemCode = [v6 typeFSystemCode];
       v5->_vasSupported = [v6 terminalMode] != 4;
       v5->_touchIDRequired = [v6 odaRequired];
-      v7 = [v6 terminalType];
+      terminalType = [v6 terminalType];
 
-      v5->_terminalType = v7;
+      v5->_terminalType = terminalType;
     }
 
     else
@@ -177,35 +177,35 @@
   return v22;
 }
 
-- (NFTechnologyEvent)initWithCoder:(id)a3
+- (NFTechnologyEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NFTechnologyEvent;
   v5 = [(NFTechnologyEvent *)&v7 init];
   if (v5)
   {
-    v5->_technology = [v4 decodeInt32ForKey:@"technologyMask"];
-    v5->_valueAddedServiceMode = [v4 decodeInt32ForKey:@"valueAddedServiceMode"];
-    v5->_systemCode = [v4 decodeInt32ForKey:@"systemCode"];
-    v5->_vasSupported = [v4 decodeBoolForKey:@"vasSupported"];
-    v5->_touchIDRequired = [v4 decodeBoolForKey:@"touchIDRequired"];
-    v5->_terminalType = [v4 decodeInt32ForKey:@"terminalType"];
+    v5->_technology = [coderCopy decodeInt32ForKey:@"technologyMask"];
+    v5->_valueAddedServiceMode = [coderCopy decodeInt32ForKey:@"valueAddedServiceMode"];
+    v5->_systemCode = [coderCopy decodeInt32ForKey:@"systemCode"];
+    v5->_vasSupported = [coderCopy decodeBoolForKey:@"vasSupported"];
+    v5->_touchIDRequired = [coderCopy decodeBoolForKey:@"touchIDRequired"];
+    v5->_terminalType = [coderCopy decodeInt32ForKey:@"terminalType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   technology = self->_technology;
-  v5 = a3;
-  [v5 encodeInt32:technology forKey:@"technologyMask"];
-  [v5 encodeInt32:self->_valueAddedServiceMode forKey:@"valueAddedServiceMode"];
-  [v5 encodeInt32:self->_systemCode forKey:@"systemCode"];
-  [v5 encodeBool:self->_vasSupported forKey:@"vasSupported"];
-  [v5 encodeBool:self->_touchIDRequired forKey:@"touchIDRequired"];
-  [v5 encodeInt32:self->_terminalType forKey:@"terminalType"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:technology forKey:@"technologyMask"];
+  [coderCopy encodeInt32:self->_valueAddedServiceMode forKey:@"valueAddedServiceMode"];
+  [coderCopy encodeInt32:self->_systemCode forKey:@"systemCode"];
+  [coderCopy encodeBool:self->_vasSupported forKey:@"vasSupported"];
+  [coderCopy encodeBool:self->_touchIDRequired forKey:@"touchIDRequired"];
+  [coderCopy encodeInt32:self->_terminalType forKey:@"terminalType"];
 }
 
 @end

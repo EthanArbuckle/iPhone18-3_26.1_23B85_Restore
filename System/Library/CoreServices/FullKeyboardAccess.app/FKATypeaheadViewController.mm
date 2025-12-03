@@ -1,11 +1,11 @@
 @interface FKATypeaheadViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (FKATypeaheadViewControllerDelegate)delegate;
 - (NSString)queryString;
 - (void)dealloc;
 - (void)loadView;
-- (void)sendDidChangeQueryString:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (void)sendDidChangeQueryString:(id)string;
+- (void)setState:(unint64_t)state;
 - (void)startTypeaheadStringClearCacheTimer;
 - (void)toggleTypeaheadState;
 @end
@@ -18,17 +18,17 @@
   [(FKATypeaheadViewController *)self setView:v3];
 
   v4 = [FKATypeaheadPresenter alloc];
-  v6 = [(FKATypeaheadViewController *)self view];
-  v5 = [(FKATypeaheadPresenter *)v4 initWithContainingView:v6];
+  view = [(FKATypeaheadViewController *)self view];
+  v5 = [(FKATypeaheadPresenter *)v4 initWithContainingView:view];
   [(FKATypeaheadViewController *)self setTypeaheadPresenter:v5];
 }
 
 - (void)toggleTypeaheadState
 {
-  v3 = [(FKATypeaheadViewController *)self state];
-  if (v3)
+  state = [(FKATypeaheadViewController *)self state];
+  if (state)
   {
-    if (v3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -44,56 +44,56 @@
   [(FKATypeaheadViewController *)self setState:v4];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    if (a3)
+    self->_state = state;
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
-        v4 = [(FKATypeaheadViewController *)self clearCachedTypeaheadStringTimer];
-        [v4 invalidate];
+        clearCachedTypeaheadStringTimer = [(FKATypeaheadViewController *)self clearCachedTypeaheadStringTimer];
+        [clearCachedTypeaheadStringTimer invalidate];
 
         [(FKATypeaheadViewController *)self setClearCachedTypeaheadStringTimer:0];
-        v5 = [(FKATypeaheadViewController *)self delegate];
-        [v5 typeaheadViewControllerWillAppear:self];
+        delegate = [(FKATypeaheadViewController *)self delegate];
+        [delegate typeaheadViewControllerWillAppear:self];
 
-        v6 = [(FKATypeaheadViewController *)self typeaheadPresenter];
-        [v6 setAlignedEdge:15];
+        typeaheadPresenter = [(FKATypeaheadViewController *)self typeaheadPresenter];
+        [typeaheadPresenter setAlignedEdge:15];
 
-        v7 = [(FKATypeaheadViewController *)self typeaheadPresenter];
-        [v7 presentTypeaheadView];
+        typeaheadPresenter2 = [(FKATypeaheadViewController *)self typeaheadPresenter];
+        [typeaheadPresenter2 presentTypeaheadView];
 
-        v8 = [(FKATypeaheadViewController *)self typeaheadPresenter];
-        v9 = [v8 typeaheadView];
-        v10 = [v9 typeaheadTextField];
-        [v10 becomeFirstResponder];
+        typeaheadPresenter3 = [(FKATypeaheadViewController *)self typeaheadPresenter];
+        typeaheadView = [typeaheadPresenter3 typeaheadView];
+        typeaheadTextField = [typeaheadView typeaheadTextField];
+        [typeaheadTextField becomeFirstResponder];
 
-        v11 = [(FKATypeaheadViewController *)self typeaheadPresenter];
-        v12 = [v11 typeaheadView];
-        v13 = [v12 typeaheadTextField];
-        [v13 setDelegate:self];
+        typeaheadPresenter4 = [(FKATypeaheadViewController *)self typeaheadPresenter];
+        typeaheadView2 = [typeaheadPresenter4 typeaheadView];
+        typeaheadTextField2 = [typeaheadView2 typeaheadTextField];
+        [typeaheadTextField2 setDelegate:self];
 
-        v14 = [(FKATypeaheadViewController *)self cachedTypeaheadString];
-        v15 = [v14 length];
+        cachedTypeaheadString = [(FKATypeaheadViewController *)self cachedTypeaheadString];
+        v15 = [cachedTypeaheadString length];
 
         if (v15)
         {
-          v16 = [(FKATypeaheadViewController *)self cachedTypeaheadString];
-          v17 = [(FKATypeaheadViewController *)self typeaheadPresenter];
-          v18 = [v17 typeaheadView];
-          v19 = [v18 typeaheadTextField];
-          [v19 setText:v16];
+          cachedTypeaheadString2 = [(FKATypeaheadViewController *)self cachedTypeaheadString];
+          typeaheadPresenter5 = [(FKATypeaheadViewController *)self typeaheadPresenter];
+          typeaheadView3 = [typeaheadPresenter5 typeaheadView];
+          typeaheadTextField3 = [typeaheadView3 typeaheadTextField];
+          [typeaheadTextField3 setText:cachedTypeaheadString2];
 
           v24[0] = _NSConcreteStackBlock;
           v24[1] = 3221225472;
           v24[2] = sub_10000B198;
           v24[3] = &unk_100028790;
           v24[4] = self;
-          v25 = v16;
-          v20 = v16;
+          v25 = cachedTypeaheadString2;
+          v20 = cachedTypeaheadString2;
           dispatch_async(&_dispatch_main_q, v24);
         }
       }
@@ -101,75 +101,75 @@
 
     else
     {
-      v21 = [(FKATypeaheadViewController *)self queryString];
-      [(FKATypeaheadViewController *)self setCachedTypeaheadString:v21];
+      queryString = [(FKATypeaheadViewController *)self queryString];
+      [(FKATypeaheadViewController *)self setCachedTypeaheadString:queryString];
 
-      v22 = [(FKATypeaheadViewController *)self typeaheadPresenter];
-      [v22 dismissFloatingView];
+      typeaheadPresenter6 = [(FKATypeaheadViewController *)self typeaheadPresenter];
+      [typeaheadPresenter6 dismissFloatingView];
 
-      v23 = [(FKATypeaheadViewController *)self delegate];
-      [v23 typeaheadViewControllerWillDismiss:self];
+      delegate2 = [(FKATypeaheadViewController *)self delegate];
+      [delegate2 typeaheadViewControllerWillDismiss:self];
 
       [(FKATypeaheadViewController *)self startTypeaheadStringClearCacheTimer];
     }
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v9 isEqualToString:@"\n"];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  fieldCopy = field;
+  v11 = [stringCopy isEqualToString:@"\n"];
   if (v11)
   {
-    [v10 setText:0];
+    [fieldCopy setText:0];
 
-    v12 = [(FKATypeaheadViewController *)self delegate];
-    [v12 typeaheadViewControllerDidTypeReturn:self];
+    delegate = [(FKATypeaheadViewController *)self delegate];
+    [delegate typeaheadViewControllerDidTypeReturn:self];
   }
 
   else
   {
-    v13 = [v10 text];
+    text = [fieldCopy text];
 
-    v12 = [v13 stringByReplacingCharactersInRange:location withString:{length, v9}];
+    delegate = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
-    [(FKATypeaheadViewController *)self sendDidChangeQueryString:v12];
+    [(FKATypeaheadViewController *)self sendDidChangeQueryString:delegate];
   }
 
   return v11 ^ 1;
 }
 
-- (void)sendDidChangeQueryString:(id)a3
+- (void)sendDidChangeQueryString:(id)string
 {
-  v4 = a3;
-  v5 = [(FKATypeaheadViewController *)self delegate];
-  [v5 typeaheadViewController:self didChangeQueryString:v4];
+  stringCopy = string;
+  delegate = [(FKATypeaheadViewController *)self delegate];
+  [delegate typeaheadViewController:self didChangeQueryString:stringCopy];
 }
 
 - (NSString)queryString
 {
-  v2 = [(FKATypeaheadViewController *)self typeaheadPresenter];
-  v3 = [v2 typeaheadView];
-  v4 = [v3 typeaheadTextField];
-  v5 = [v4 text];
+  typeaheadPresenter = [(FKATypeaheadViewController *)self typeaheadPresenter];
+  typeaheadView = [typeaheadPresenter typeaheadView];
+  typeaheadTextField = [typeaheadView typeaheadTextField];
+  text = [typeaheadTextField text];
 
-  return v5;
+  return text;
 }
 
 - (void)startTypeaheadStringClearCacheTimer
 {
-  v3 = [(FKATypeaheadViewController *)self clearCachedTypeaheadStringTimer];
-  if (v3)
+  clearCachedTypeaheadStringTimer = [(FKATypeaheadViewController *)self clearCachedTypeaheadStringTimer];
+  if (clearCachedTypeaheadStringTimer)
   {
   }
 
   else
   {
-    v4 = [(FKATypeaheadViewController *)self cachedTypeaheadString];
-    v5 = [v4 length];
+    cachedTypeaheadString = [(FKATypeaheadViewController *)self cachedTypeaheadString];
+    v5 = [cachedTypeaheadString length];
 
     if (v5)
     {
@@ -190,8 +190,8 @@
 
 - (void)dealloc
 {
-  v3 = [(FKATypeaheadViewController *)self clearCachedTypeaheadStringTimer];
-  [v3 invalidate];
+  clearCachedTypeaheadStringTimer = [(FKATypeaheadViewController *)self clearCachedTypeaheadStringTimer];
+  [clearCachedTypeaheadStringTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = FKATypeaheadViewController;

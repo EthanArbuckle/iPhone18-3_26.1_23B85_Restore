@@ -1,10 +1,10 @@
 @interface IDSDSessionActiveParticipantsCache
 + (IDSDSessionActiveParticipantsCache)sharedInstance;
 - (IDSDSessionActiveParticipantsCache)init;
-- (id)participantsForSessionID:(id)a3;
-- (id)vendTokenListForSessionID:(id)a3;
-- (void)removeParticipantsForSessionID:(id)a3;
-- (void)updateParticipants:(id)a3 forSessionID:(id)a4;
+- (id)participantsForSessionID:(id)d;
+- (id)vendTokenListForSessionID:(id)d;
+- (void)removeParticipantsForSessionID:(id)d;
+- (void)updateParticipants:(id)participants forSessionID:(id)d;
 @end
 
 @implementation IDSDSessionActiveParticipantsCache
@@ -34,71 +34,71 @@
   return result;
 }
 
-- (void)updateParticipants:(id)a3 forSessionID:(id)a4
+- (void)updateParticipants:(id)participants forSessionID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 __imSetByApplyingBlock:&stru_100BE22A8];
+  dCopy = d;
+  v7 = [participants __imSetByApplyingBlock:&stru_100BE22A8];
   v8 = v7;
-  if (v6 && [v7 count])
+  if (dCopy && [v7 count])
   {
     os_unfair_lock_lock(&self->_lock);
     v9 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v6;
+      v17 = dCopy;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "IDSDSessionActiveParticipantsCache adding sessionID %@ participants %@", &v16, 0x16u);
     }
 
-    v10 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
+    cachedTokensBySessionID = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
 
-    if (!v10)
+    if (!cachedTokensBySessionID)
     {
       v11 = objc_alloc_init(NSMutableDictionary);
       [(IDSDSessionActiveParticipantsCache *)self setCachedTokensBySessionID:v11];
     }
 
-    v12 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
-    v13 = [v12 objectForKeyedSubscript:v6];
+    cachedTokensBySessionID2 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
+    v13 = [cachedTokensBySessionID2 objectForKeyedSubscript:dCopy];
 
     if (v13)
     {
-      v14 = [v13 setByAddingObjectsFromSet:v8];
-      v15 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
-      [v15 setObject:v14 forKeyedSubscript:v6];
+      cachedTokensBySessionID4 = [v13 setByAddingObjectsFromSet:v8];
+      cachedTokensBySessionID3 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
+      [cachedTokensBySessionID3 setObject:cachedTokensBySessionID4 forKeyedSubscript:dCopy];
     }
 
     else
     {
-      v14 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
-      [v14 setObject:v8 forKeyedSubscript:v6];
+      cachedTokensBySessionID4 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
+      [cachedTokensBySessionID4 setObject:v8 forKeyedSubscript:dCopy];
     }
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)removeParticipantsForSessionID:(id)a3
+- (void)removeParticipantsForSessionID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = +[IDSFoundationLog IDSDSession];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = dCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "IDSDSessionActiveParticipantsCache removing sessionID %@", &v9, 0xCu);
     }
 
     os_unfair_lock_lock(&self->_lock);
-    v6 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
-    [v6 setObject:0 forKeyedSubscript:v4];
+    cachedTokensBySessionID = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
+    [cachedTokensBySessionID setObject:0 forKeyedSubscript:dCopy];
 
-    v7 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
-    v8 = [v7 count];
+    cachedTokensBySessionID2 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
+    v8 = [cachedTokensBySessionID2 count];
 
     if (!v8)
     {
@@ -109,14 +109,14 @@
   }
 }
 
-- (id)participantsForSessionID:(id)a3
+- (id)participantsForSessionID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    cachedTokensBySessionID = [(IDSDSessionActiveParticipantsCache *)self cachedTokensBySessionID];
+    v6 = [cachedTokensBySessionID objectForKeyedSubscript:dCopy];
     v7 = [v6 copy];
 
     os_unfair_lock_unlock(&self->_lock);
@@ -141,10 +141,10 @@
   return v9;
 }
 
-- (id)vendTokenListForSessionID:(id)a3
+- (id)vendTokenListForSessionID:(id)d
 {
-  v4 = a3;
-  v5 = [[IDSParticipantsCacheEntryPointer alloc] initWithCache:self sessionID:v4];
+  dCopy = d;
+  v5 = [[IDSParticipantsCacheEntryPointer alloc] initWithCache:self sessionID:dCopy];
 
   return v5;
 }

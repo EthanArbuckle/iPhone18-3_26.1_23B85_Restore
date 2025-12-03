@@ -1,7 +1,7 @@
 @interface BKSHIDEventUnitTestableProvenance
 + (id)invalid;
 + (id)valid;
-+ (id)validWithTimestamp:(unint64_t)a3;
++ (id)validWithTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation BKSHIDEventUnitTestableProvenance
@@ -14,11 +14,11 @@
   return v2;
 }
 
-+ (id)validWithTimestamp:(unint64_t)a3
++ (id)validWithTimestamp:(unint64_t)timestamp
 {
   v4 = objc_alloc_init(BKSHIDEventUnitTestableProvenance);
   v4->_authentic = 1;
-  v4->_timetamp = a3;
+  v4->_timetamp = timestamp;
 
   return v4;
 }

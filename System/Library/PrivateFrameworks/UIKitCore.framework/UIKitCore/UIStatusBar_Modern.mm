@@ -1,93 +1,93 @@
 @interface UIStatusBar_Modern
-+ (double)_heightForStyle:(int64_t)a3 orientation:(int64_t)a4 forStatusBarFrame:(BOOL)a5 inWindow:(id)a6 isAzulBLinked:(BOOL)a7;
-+ (int64_t)_defaultStyleForRequestedStyle:(int64_t)a3 styleOverrides:(unint64_t)a4 activeStyleOverride:(unint64_t *)a5;
-- (CGRect)frameForPartWithIdentifier:(id)a3;
++ (double)_heightForStyle:(int64_t)style orientation:(int64_t)orientation forStatusBarFrame:(BOOL)frame inWindow:(id)window isAzulBLinked:(BOOL)linked;
++ (int64_t)_defaultStyleForRequestedStyle:(int64_t)style styleOverrides:(unint64_t)overrides activeStyleOverride:(unint64_t *)override;
+- (CGRect)frameForPartWithIdentifier:(id)identifier;
 - (CGSize)intrinsicContentSize;
-- (UIOffset)offsetForPartWithIdentifier:(id)a3;
-- (id)_dataFromLegacyData:(id *)a3;
-- (id)_effectiveDataFromData:(id)a3 activeOverride:(unint64_t)a4 canUpdateBackgroundActivity:(BOOL)a5;
-- (id)_initWithFrame:(CGRect)a3 showForegroundView:(BOOL)a4 wantsServer:(BOOL)a5 inProcessStateProvider:(id)a6;
+- (UIOffset)offsetForPartWithIdentifier:(id)identifier;
+- (id)_dataFromLegacyData:(id *)data;
+- (id)_effectiveDataFromData:(id)data activeOverride:(unint64_t)override canUpdateBackgroundActivity:(BOOL)activity;
+- (id)_initWithFrame:(CGRect)frame showForegroundView:(BOOL)view wantsServer:(BOOL)server inProcessStateProvider:(id)provider;
 - (id)clockFont;
-- (int64_t)_effectiveStyleFromStyle:(int64_t)a3;
+- (int64_t)_effectiveStyleFromStyle:(int64_t)style;
 - (int64_t)currentStyle;
-- (unint64_t)_implicitStyleOverrideForStyle:(int64_t)a3;
-- (void)_requestStyle:(int64_t)a3 partStyles:(id)a4 animationParameters:(id)a5 forced:(BOOL)a6;
-- (void)_requestStyle:(int64_t)a3 partStyles:(id)a4 legibilityStyle:(int64_t)a5 foregroundColor:(id)a6 animationParameters:(id)a7 forced:(BOOL)a8;
-- (void)_updateSemanticContentAttributeFromLegacyData:(id *)a3;
-- (void)_updateWithData:(id)a3 force:(BOOL)a4;
-- (void)forceUpdate:(BOOL)a3;
-- (void)forceUpdateData:(BOOL)a3;
+- (unint64_t)_implicitStyleOverrideForStyle:(int64_t)style;
+- (void)_requestStyle:(int64_t)style partStyles:(id)styles animationParameters:(id)parameters forced:(BOOL)forced;
+- (void)_requestStyle:(int64_t)style partStyles:(id)styles legibilityStyle:(int64_t)legibilityStyle foregroundColor:(id)color animationParameters:(id)parameters forced:(BOOL)forced;
+- (void)_updateSemanticContentAttributeFromLegacyData:(id *)data;
+- (void)_updateWithData:(id)data force:(BOOL)force;
+- (void)forceUpdate:(BOOL)update;
+- (void)forceUpdateData:(BOOL)data;
 - (void)jiggleLockIcon;
 - (void)layoutSubviews;
-- (void)setAvoidanceFrame:(CGRect)a3 animationSettings:(id)a4 options:(unint64_t)a5;
-- (void)setForegroundAlpha:(double)a3 animationParameters:(id)a4;
-- (void)setForegroundColor:(id)a3 animationParameters:(id)a4;
-- (void)setLegibilityStyle:(int64_t)a3 animationParameters:(id)a4;
-- (void)setMode:(int64_t)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setStyleRequest:(id)a3 animationParameters:(id)a4;
-- (void)statusBarServer:(id)a3 didReceiveStatusBarData:(id *)a4 withActions:(int)a5;
-- (void)statusBarServer:(id)a3 didReceiveStyleOverrides:(unint64_t)a4;
-- (void)statusBarStateProvider:(id)a3 didPostStatusBarData:(id *)a4 withActions:(int)a5;
+- (void)setAvoidanceFrame:(CGRect)frame animationSettings:(id)settings options:(unint64_t)options;
+- (void)setForegroundAlpha:(double)alpha animationParameters:(id)parameters;
+- (void)setForegroundColor:(id)color animationParameters:(id)parameters;
+- (void)setLegibilityStyle:(int64_t)style animationParameters:(id)parameters;
+- (void)setMode:(int64_t)mode;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setStyleRequest:(id)request animationParameters:(id)parameters;
+- (void)statusBarServer:(id)server didReceiveStatusBarData:(id *)data withActions:(int)actions;
+- (void)statusBarServer:(id)server didReceiveStyleOverrides:(unint64_t)overrides;
+- (void)statusBarStateProvider:(id)provider didPostStatusBarData:(id *)data withActions:(int)actions;
 @end
 
 @implementation UIStatusBar_Modern
 
-- (id)_initWithFrame:(CGRect)a3 showForegroundView:(BOOL)a4 wantsServer:(BOOL)a5 inProcessStateProvider:(id)a6
+- (id)_initWithFrame:(CGRect)frame showForegroundView:(BOOL)view wantsServer:(BOOL)server inProcessStateProvider:(id)provider
 {
-  v6 = a5;
-  v7 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a6;
+  serverCopy = server;
+  viewCopy = view;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  providerCopy = provider;
   v23.receiver = self;
   v23.super_class = UIStatusBar_Modern;
-  v14 = [(UIStatusBar_Base *)&v23 _initWithFrame:v7 showForegroundView:v6 wantsServer:v13 inProcessStateProvider:x, y, width, height];
-  if (v14)
+  height = [(UIStatusBar_Base *)&v23 _initWithFrame:viewCopy showForegroundView:serverCopy wantsServer:providerCopy inProcessStateProvider:x, y, width, height];
+  if (height)
   {
     v15 = [[_UIStatusBar alloc] initWithStyle:0];
-    [v14 addSubview:v15];
-    [v14 _setRequestedStyle:0];
-    objc_initWeak(&location, v14);
+    [height addSubview:v15];
+    [height _setRequestedStyle:0];
+    objc_initWeak(&location, height);
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __91__UIStatusBar_Modern__initWithFrame_showForegroundView_wantsServer_inProcessStateProvider___block_invoke;
     v20 = &unk_1E7122730;
     objc_copyWeak(&v21, &location);
     [(_UIStatusBar *)v15 setRegionActionValidationBlock:&v17];
-    [v14 setStatusBar:{v15, v17, v18, v19, v20}];
-    [v14 _evaluateServerRegistration];
-    [v14 setNeedsLayout];
+    [height setStatusBar:{v15, v17, v18, v19, v20}];
+    [height _evaluateServerRegistration];
+    [height setNeedsLayout];
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
 
-  return v14;
+  return height;
 }
 
-+ (double)_heightForStyle:(int64_t)a3 orientation:(int64_t)a4 forStatusBarFrame:(BOOL)a5 inWindow:(id)a6 isAzulBLinked:(BOOL)a7
++ (double)_heightForStyle:(int64_t)style orientation:(int64_t)orientation forStatusBarFrame:(BOOL)frame inWindow:(id)window isAzulBLinked:(BOOL)linked
 {
-  v7 = a7;
-  v10 = [objc_opt_self() mainScreen];
-  [_UIStatusBar intrinsicContentSizeForTargetScreen:v10 orientation:a4 onLockScreen:a3 == 306 isAzulBLinked:v7];
+  linkedCopy = linked;
+  mainScreen = [objc_opt_self() mainScreen];
+  [_UIStatusBar intrinsicContentSizeForTargetScreen:mainScreen orientation:orientation onLockScreen:style == 306 isAzulBLinked:linkedCopy];
   v12 = v11;
 
   return v12;
 }
 
-+ (int64_t)_defaultStyleForRequestedStyle:(int64_t)a3 styleOverrides:(unint64_t)a4 activeStyleOverride:(unint64_t *)a5
++ (int64_t)_defaultStyleForRequestedStyle:(int64_t)style styleOverrides:(unint64_t)overrides activeStyleOverride:(unint64_t *)override
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___UIStatusBar_Modern;
-  objc_msgSendSuper2(&v7, sel__defaultStyleForRequestedStyle_styleOverrides_activeStyleOverride_, a3, a4, a5);
-  return a3;
+  objc_msgSendSuper2(&v7, sel__defaultStyleForRequestedStyle_styleOverrides_activeStyleOverride_, style, overrides, override);
+  return style;
 }
 
-- (void)_updateSemanticContentAttributeFromLegacyData:(id *)a3
+- (void)_updateSemanticContentAttributeFromLegacyData:(id *)data
 {
-  if ((*(a3 + 2536) & 2) != 0)
+  if ((*(data + 2536) & 2) != 0)
   {
     v3 = 4;
   }
@@ -100,50 +100,50 @@
   [(_UIStatusBar *)self->_statusBar setSemanticContentAttribute:v3];
 }
 
-- (id)_dataFromLegacyData:(id *)a3
+- (id)_dataFromLegacyData:(id *)data
 {
   v10 = *MEMORY[0x1E69E9840];
   if ([(UIStatusBar_Base *)self localDataOverrides])
   {
     memset(&v9[30], 0, 32);
-    [UIStatusBar getData:v9 forRequestedData:a3 withOverrides:[(UIStatusBar_Base *)self localDataOverrides:0]];
-    v5 = [(_UIStatusBar *)self->_statusBar currentData];
-    v6 = v9;
+    [UIStatusBar getData:v9 forRequestedData:data withOverrides:[(UIStatusBar_Base *)self localDataOverrides:0]];
+    currentData = [(_UIStatusBar *)self->_statusBar currentData];
+    dataCopy = v9;
   }
 
   else
   {
-    v5 = [(_UIStatusBar *)self->_statusBar currentData];
-    v6 = a3;
+    currentData = [(_UIStatusBar *)self->_statusBar currentData];
+    dataCopy = data;
   }
 
-  v7 = [_UIStatusBarDataConverter convertData:v6 fromReferenceData:v5];
+  v7 = [_UIStatusBarDataConverter convertData:dataCopy fromReferenceData:currentData];
 
   return v7;
 }
 
-- (int64_t)_effectiveStyleFromStyle:(int64_t)a3
+- (int64_t)_effectiveStyleFromStyle:(int64_t)style
 {
-  if (a3 > 108)
+  if (style > 108)
   {
-    if (a3 <= 301)
+    if (style <= 301)
     {
-      if (a3 <= 299)
+      if (style <= 299)
       {
-        if (a3 == 109)
+        if (style == 109)
         {
           return 3;
         }
 
-        if (a3 != 110)
+        if (style != 110)
         {
           goto LABEL_28;
         }
 
-        return a3;
+        return style;
       }
 
-      if (a3 != 300)
+      if (style != 300)
       {
         return 1;
       }
@@ -151,14 +151,14 @@
 
     else
     {
-      if (a3 <= 303)
+      if (style <= 303)
       {
         return 1;
       }
 
-      if (a3 != 304 && a3 != 305)
+      if (style != 304 && style != 305)
       {
-        if (a3 != 306)
+        if (style != 306)
         {
           goto LABEL_28;
         }
@@ -170,11 +170,11 @@
     return 0;
   }
 
-  if (a3 > 102)
+  if (style > 102)
   {
-    if (a3 <= 106)
+    if (style <= 106)
     {
-      if (a3 != 103 && a3 != 106)
+      if (style != 103 && style != 106)
       {
         goto LABEL_28;
       }
@@ -182,14 +182,14 @@
       return 1;
     }
 
-    return a3 != 107;
+    return style != 107;
   }
 
-  if (a3 <= 0x33)
+  if (style <= 0x33)
   {
-    if (((1 << a3) & 0xB) == 0)
+    if (((1 << style) & 0xB) == 0)
     {
-      if (((1 << a3) & 0x8000000000004) == 0)
+      if (((1 << style) & 0x8000000000004) == 0)
       {
         goto LABEL_28;
       }
@@ -197,36 +197,36 @@
       return 1;
     }
 
-    return a3;
+    return style;
   }
 
 LABEL_28:
-  v6 = [(_UIStatusBar *)self->_statusBar style];
+  style = [(_UIStatusBar *)self->_statusBar style];
 
-  return _UIStatusBarStyleFromResolvedStyle(v6);
+  return _UIStatusBarStyleFromResolvedStyle(style);
 }
 
-- (id)_effectiveDataFromData:(id)a3 activeOverride:(unint64_t)a4 canUpdateBackgroundActivity:(BOOL)a5
+- (id)_effectiveDataFromData:(id)data activeOverride:(unint64_t)override canUpdateBackgroundActivity:(BOOL)activity
 {
-  v5 = a5;
-  v8 = a3;
+  activityCopy = activity;
+  dataCopy = data;
   v9 = objc_alloc_init(_UIStatusBarDataBackgroundActivityEntry);
   v10 = v9;
-  if (a4 >= 0x200000)
+  if (override >= 0x200000)
   {
-    if (a4 <= 0x7FFFFFFF)
+    if (override <= 0x7FFFFFFF)
     {
-      if (a4 <= 0x3FFFFFF)
+      if (override <= 0x3FFFFFF)
       {
-        if (a4 < 0x800000)
+        if (override < 0x800000)
         {
-          if (a4 == 0x200000)
+          if (override == 0x200000)
           {
             v11 = 31;
             goto LABEL_96;
           }
 
-          if (a4 == 0x400000)
+          if (override == 0x400000)
           {
             v11 = 27;
             goto LABEL_96;
@@ -235,7 +235,7 @@ LABEL_28:
 
         else
         {
-          switch(a4)
+          switch(override)
           {
             case 0x800000uLL:
               v11 = 28;
@@ -252,15 +252,15 @@ LABEL_28:
         goto LABEL_113;
       }
 
-      if (a4 <= 0xFFFFFFF)
+      if (override <= 0xFFFFFFF)
       {
-        if (a4 == 0x4000000)
+        if (override == 0x4000000)
         {
           v11 = 13;
           goto LABEL_96;
         }
 
-        if (a4 == 0x8000000)
+        if (override == 0x8000000)
         {
           v11 = 2;
           goto LABEL_96;
@@ -269,13 +269,13 @@ LABEL_28:
         goto LABEL_113;
       }
 
-      if (a4 == 0x10000000)
+      if (override == 0x10000000)
       {
         v11 = 3;
         goto LABEL_96;
       }
 
-      if (a4 == 0x20000000)
+      if (override == 0x20000000)
       {
         v11 = 0;
         goto LABEL_96;
@@ -286,11 +286,11 @@ LABEL_28:
 
     else
     {
-      if (a4 > 0xFFFFFFFFFLL)
+      if (override > 0xFFFFFFFFFLL)
       {
-        if (a4 > 0x7FFFFFFFFFLL)
+        if (override > 0x7FFFFFFFFFLL)
         {
-          switch(a4)
+          switch(override)
           {
             case 0x8000000000uLL:
               v11 = 5;
@@ -306,7 +306,7 @@ LABEL_28:
 
         else
         {
-          switch(a4)
+          switch(override)
           {
             case 0x1000000000uLL:
               v11 = 8;
@@ -325,17 +325,17 @@ LABEL_96:
         goto LABEL_113;
       }
 
-      if (a4 > 0x1FFFFFFFFLL)
+      if (override > 0x1FFFFFFFFLL)
       {
-        if (a4 != 0x200000000)
+        if (override != 0x200000000)
         {
-          if (a4 == 0x400000000)
+          if (override == 0x400000000)
           {
             v11 = 22;
             goto LABEL_96;
           }
 
-          if (a4 == 0x800000000)
+          if (override == 0x800000000)
           {
             v11 = 1;
             goto LABEL_96;
@@ -349,7 +349,7 @@ LABEL_73:
         goto LABEL_96;
       }
 
-      if (a4 == 0x80000000)
+      if (override == 0x80000000)
       {
         goto LABEL_73;
       }
@@ -357,7 +357,7 @@ LABEL_73:
       v12 = 0x100000000;
     }
 
-    if (a4 == v12)
+    if (override == v12)
     {
       v11 = 19;
       goto LABEL_96;
@@ -366,19 +366,19 @@ LABEL_73:
     goto LABEL_113;
   }
 
-  if (a4 > 2047)
+  if (override > 2047)
   {
-    if (a4 >= 0x10000)
+    if (override >= 0x10000)
     {
-      if (a4 < 0x40000)
+      if (override < 0x40000)
       {
-        if (a4 == 0x10000)
+        if (override == 0x10000)
         {
           v11 = 36;
           goto LABEL_96;
         }
 
-        if (a4 == 0x20000)
+        if (override == 0x20000)
         {
           v11 = 10;
           goto LABEL_96;
@@ -387,7 +387,7 @@ LABEL_73:
 
       else
       {
-        switch(a4)
+        switch(override)
         {
           case 0x40000uLL:
             v11 = 35;
@@ -402,15 +402,15 @@ LABEL_73:
       }
     }
 
-    else if (a4 < 0x2000)
+    else if (override < 0x2000)
     {
-      if (a4 == 2048)
+      if (override == 2048)
       {
         v11 = 15;
         goto LABEL_96;
       }
 
-      if (a4 == 4096)
+      if (override == 4096)
       {
         v11 = 32;
         goto LABEL_96;
@@ -419,7 +419,7 @@ LABEL_73:
 
     else
     {
-      switch(a4)
+      switch(override)
       {
         case 0x2000uLL:
           v11 = 29;
@@ -434,11 +434,11 @@ LABEL_73:
     }
   }
 
-  else if (a4 > 63)
+  else if (override > 63)
   {
-    if (a4 <= 255)
+    if (override <= 255)
     {
-      if (a4 == 64 || a4 == 128)
+      if (override == 64 || override == 128)
       {
         v11 = 14;
         goto LABEL_96;
@@ -447,7 +447,7 @@ LABEL_73:
 
     else
     {
-      switch(a4)
+      switch(override)
       {
         case 0x100uLL:
           v11 = 33;
@@ -462,15 +462,15 @@ LABEL_73:
     }
   }
 
-  else if (a4 <= 7)
+  else if (override <= 7)
   {
-    if (a4 == 1)
+    if (override == 1)
     {
       v11 = 6;
       goto LABEL_96;
     }
 
-    if (a4 == 4)
+    if (override == 4)
     {
       v11 = 17;
       goto LABEL_96;
@@ -479,7 +479,7 @@ LABEL_73:
 
   else
   {
-    switch(a4)
+    switch(override)
     {
       case 8uLL:
         v11 = 34;
@@ -498,7 +498,7 @@ LABEL_113:
 LABEL_97:
   if ([(_UIStatusBarDataEntry *)v10 isEnabled])
   {
-    v13 = [UIStatusBarServer getDoubleHeightStatusStringForStyle:[(UIStatusBar_Base *)UIStatusBar _defaultStyleForRequestedStyle:0 styleOverrides:a4 activeStyleOverride:0]];
+    v13 = [UIStatusBarServer getDoubleHeightStatusStringForStyle:[(UIStatusBar_Base *)UIStatusBar _defaultStyleForRequestedStyle:0 styleOverrides:override activeStyleOverride:0]];
     [(_UIStatusBarDataBackgroundActivityEntry *)v10 setDetailString:v13];
 
     if ([_effectiveDataFromData_activeOverride_canUpdateBackgroundActivity__lastBackgroundActivityEntry isEnabled] && (v14 = -[_UIStatusBarDataBackgroundActivityEntry type](v10, "type"), v14 == objc_msgSend(_effectiveDataFromData_activeOverride_canUpdateBackgroundActivity__lastBackgroundActivityEntry, "type")))
@@ -514,20 +514,20 @@ LABEL_97:
     [(_UIStatusBarDataBackgroundActivityEntry *)v10 setDisplayStartDate:v15];
   }
 
-  if (v5)
+  if (activityCopy)
   {
     objc_storeStrong(&_effectiveDataFromData_activeOverride_canUpdateBackgroundActivity__lastBackgroundActivityEntry, v10);
   }
 
-  v16 = [(_UIStatusBar *)self->_statusBar currentData];
-  v17 = [v16 backgroundActivityEntry];
+  currentData = [(_UIStatusBar *)self->_statusBar currentData];
+  backgroundActivityEntry = [currentData backgroundActivityEntry];
 
-  v18 = v8;
-  if (![(_UIStatusBarDataBackgroundActivityEntry *)v10 isEqual:v17])
+  v18 = dataCopy;
+  if (![(_UIStatusBarDataBackgroundActivityEntry *)v10 isEqual:backgroundActivityEntry])
   {
-    if (v8)
+    if (dataCopy)
     {
-      v18 = [(_UIStatusBarData *)v8 copy];
+      v18 = [(_UIStatusBarData *)dataCopy copy];
     }
 
     else
@@ -541,12 +541,12 @@ LABEL_97:
   return v18;
 }
 
-- (unint64_t)_implicitStyleOverrideForStyle:(int64_t)a3
+- (unint64_t)_implicitStyleOverrideForStyle:(int64_t)style
 {
-  if (a3 > 113)
+  if (style > 113)
   {
     result = 0x20000000;
-    switch(a3)
+    switch(style)
     {
       case 200:
 LABEL_18:
@@ -654,7 +654,7 @@ LABEL_30:
         result = 0x20000000000;
         break;
       default:
-        switch(a3)
+        switch(style)
         {
           case 1001:
             goto LABEL_12;
@@ -706,7 +706,7 @@ LABEL_30:
           case 1027:
             goto LABEL_30;
           default:
-            if (a3 != 114)
+            if (style != 114)
             {
               return 0;
             }
@@ -719,14 +719,14 @@ LABEL_30:
     }
   }
 
-  else if (a3 <= 110)
+  else if (style <= 110)
   {
-    if (a3 == 104)
+    if (style == 104)
     {
       return 32;
     }
 
-    else if (a3 == 105)
+    else if (style == 105)
     {
       return 256;
     }
@@ -737,12 +737,12 @@ LABEL_30:
     }
   }
 
-  else if (a3 == 111)
+  else if (style == 111)
   {
     return 0x100000;
   }
 
-  else if (a3 == 112)
+  else if (style == 112)
   {
     return 4096;
   }
@@ -755,27 +755,27 @@ LABEL_30:
   return result;
 }
 
-- (void)_updateWithData:(id)a3 force:(BOOL)a4
+- (void)_updateWithData:(id)data force:(BOOL)force
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  forceCopy = force;
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v7 = [(_UIStatusBar *)self->_statusBar currentData];
+    currentData = [(_UIStatusBar *)self->_statusBar currentData];
 
-    if (!v7)
+    if (!currentData)
     {
       goto LABEL_11;
     }
   }
 
-  v12 = 0;
-  v8 = [(UIStatusBar_Base *)self styleDelegate];
+  styleOverrides = 0;
+  styleDelegate = [(UIStatusBar_Base *)self styleDelegate];
 
-  if (!v8)
+  if (!styleDelegate)
   {
-    v12 = [(UIStatusBar_Base *)self styleOverrides];
-    if (v12)
+    styleOverrides = [(UIStatusBar_Base *)self styleOverrides];
+    if (styleOverrides)
     {
       goto LABEL_6;
     }
@@ -783,20 +783,20 @@ LABEL_30:
     goto LABEL_5;
   }
 
-  [(UIStatusBar_Base *)self _getStyle:0 andActiveOverride:&v12 forRequestedStyle:_UIStatusBarStyleFromResolvedStyle([(_UIStatusBar *)self->_statusBar style])];
-  if (!v12)
+  [(UIStatusBar_Base *)self _getStyle:0 andActiveOverride:&styleOverrides forRequestedStyle:_UIStatusBarStyleFromResolvedStyle([(_UIStatusBar *)self->_statusBar style])];
+  if (!styleOverrides)
   {
 LABEL_5:
-    v12 = [(UIStatusBar_Modern *)self _implicitStyleOverrideForStyle:[(UIStatusBar_Base *)self _requestStyle]];
+    styleOverrides = [(UIStatusBar_Modern *)self _implicitStyleOverrideForStyle:[(UIStatusBar_Base *)self _requestStyle]];
   }
 
 LABEL_6:
   [(UIStatusBar_Base *)self setActiveStyleOverride:?];
-  v9 = [(UIStatusBar_Base *)self activeStyleOverride];
-  v10 = [(UIStatusBar_Base *)self styleDelegate];
-  v11 = [(UIStatusBar_Modern *)self _effectiveDataFromData:v6 activeOverride:v9 canUpdateBackgroundActivity:v10 != 0];
+  activeStyleOverride = [(UIStatusBar_Base *)self activeStyleOverride];
+  styleDelegate2 = [(UIStatusBar_Base *)self styleDelegate];
+  v11 = [(UIStatusBar_Modern *)self _effectiveDataFromData:dataCopy activeOverride:activeStyleOverride canUpdateBackgroundActivity:styleDelegate2 != 0];
 
-  if (v11 || v4)
+  if (v11 || forceCopy)
   {
     if (!v11)
     {
@@ -809,17 +809,17 @@ LABEL_6:
 LABEL_11:
 }
 
-- (void)_requestStyle:(int64_t)a3 partStyles:(id)a4 legibilityStyle:(int64_t)a5 foregroundColor:(id)a6 animationParameters:(id)a7 forced:(BOOL)a8
+- (void)_requestStyle:(int64_t)style partStyles:(id)styles legibilityStyle:(int64_t)legibilityStyle foregroundColor:(id)color animationParameters:(id)parameters forced:(BOOL)forced
 {
-  v8 = a8;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(UIStatusBar_Base *)self manager];
-  if (!v17 || (v18 = v17, -[UIStatusBar_Base manager](self, "manager"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 statusBar:self shouldRequestStyle:a3 animationParameters:v16 forced:v8], v19, v18, v20))
+  forcedCopy = forced;
+  stylesCopy = styles;
+  colorCopy = color;
+  parametersCopy = parameters;
+  manager = [(UIStatusBar_Base *)self manager];
+  if (!manager || (v18 = manager, -[UIStatusBar_Base manager](self, "manager"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 statusBar:self shouldRequestStyle:style animationParameters:parametersCopy forced:forcedCopy], v19, v18, v20))
   {
-    v21 = [(UIStatusBar_Base *)self styleForRequestedStyle:[(UIStatusBar_Modern *)self _effectiveStyleFromStyle:a3]];
-    if (a5 == 1)
+    v21 = [(UIStatusBar_Base *)self styleForRequestedStyle:[(UIStatusBar_Modern *)self _effectiveStyleFromStyle:style]];
+    if (legibilityStyle == 1)
     {
       v22 = 1;
     }
@@ -829,12 +829,12 @@ LABEL_11:
       v22 = -1;
     }
 
-    if (a5 == 2)
+    if (legibilityStyle == 2)
     {
       v22 = 3;
     }
 
-    if (!a5)
+    if (!legibilityStyle)
     {
       v22 = v21;
     }
@@ -853,144 +853,144 @@ LABEL_11:
       v23 = 2 * (v22 == 3);
     }
 
-    v27 = a3;
+    styleCopy = style;
     v28 = v23;
     v24[4] = self;
-    v25 = v15;
-    v26 = v14;
-    [(UIStatusBar_Base *)self _performAnimations:v24 withParameters:v16 completion:0];
+    v25 = colorCopy;
+    v26 = stylesCopy;
+    [(UIStatusBar_Base *)self _performAnimations:v24 withParameters:parametersCopy completion:0];
   }
 }
 
-- (void)_requestStyle:(int64_t)a3 partStyles:(id)a4 animationParameters:(id)a5 forced:(BOOL)a6
+- (void)_requestStyle:(int64_t)style partStyles:(id)styles animationParameters:(id)parameters forced:(BOOL)forced
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(UIStatusBar_Base *)self legibilityStyle];
-  v13 = [(UIStatusBar_Base *)self foregroundColor];
-  [(UIStatusBar_Modern *)self _requestStyle:a3 partStyles:v11 legibilityStyle:v12 foregroundColor:v13 animationParameters:v10 forced:v6];
+  forcedCopy = forced;
+  parametersCopy = parameters;
+  stylesCopy = styles;
+  legibilityStyle = [(UIStatusBar_Base *)self legibilityStyle];
+  foregroundColor = [(UIStatusBar_Base *)self foregroundColor];
+  [(UIStatusBar_Modern *)self _requestStyle:style partStyles:stylesCopy legibilityStyle:legibilityStyle foregroundColor:foregroundColor animationParameters:parametersCopy forced:forcedCopy];
 }
 
 - (int64_t)currentStyle
 {
-  v2 = [(_UIStatusBar *)self->_statusBar style];
+  style = [(_UIStatusBar *)self->_statusBar style];
 
-  return _UIStatusBarStyleFromResolvedStyle(v2);
+  return _UIStatusBarStyleFromResolvedStyle(style);
 }
 
-- (void)setStyleRequest:(id)a3 animationParameters:(id)a4
+- (void)setStyleRequest:(id)request animationParameters:(id)parameters
 {
   v11.receiver = self;
   v11.super_class = UIStatusBar_Modern;
-  v6 = a4;
-  v7 = a3;
-  [(UIStatusBar_Base *)&v11 setStyleRequest:v7 animationParameters:v6];
-  v8 = [v7 style];
-  v9 = [v7 legibilityStyle];
-  v10 = [v7 foregroundColor];
+  parametersCopy = parameters;
+  requestCopy = request;
+  [(UIStatusBar_Base *)&v11 setStyleRequest:requestCopy animationParameters:parametersCopy];
+  style = [requestCopy style];
+  legibilityStyle = [requestCopy legibilityStyle];
+  foregroundColor = [requestCopy foregroundColor];
 
-  [(UIStatusBar_Modern *)self _requestStyle:v8 partStyles:0 legibilityStyle:v9 foregroundColor:v10 animationParameters:v6 forced:0];
+  [(UIStatusBar_Modern *)self _requestStyle:style partStyles:0 legibilityStyle:legibilityStyle foregroundColor:foregroundColor animationParameters:parametersCopy forced:0];
 }
 
-- (void)setForegroundColor:(id)a3 animationParameters:(id)a4
+- (void)setForegroundColor:(id)color animationParameters:(id)parameters
 {
   v8.receiver = self;
   v8.super_class = UIStatusBar_Modern;
-  v6 = a4;
-  v7 = a3;
-  [(UIStatusBar_Base *)&v8 setForegroundColor:v7 animationParameters:v6];
-  [(UIStatusBar_Modern *)self _requestStyle:[(UIStatusBar_Base *)self _requestStyle:v8.receiver] partStyles:0 legibilityStyle:[(UIStatusBar_Base *)self legibilityStyle] foregroundColor:v7 animationParameters:v6 forced:0];
+  parametersCopy = parameters;
+  colorCopy = color;
+  [(UIStatusBar_Base *)&v8 setForegroundColor:colorCopy animationParameters:parametersCopy];
+  [(UIStatusBar_Modern *)self _requestStyle:[(UIStatusBar_Base *)self _requestStyle:v8.receiver] partStyles:0 legibilityStyle:[(UIStatusBar_Base *)self legibilityStyle] foregroundColor:colorCopy animationParameters:parametersCopy forced:0];
 }
 
-- (void)setForegroundAlpha:(double)a3 animationParameters:(id)a4
+- (void)setForegroundAlpha:(double)alpha animationParameters:(id)parameters
 {
   v8.receiver = self;
   v8.super_class = UIStatusBar_Modern;
-  v6 = a4;
-  [(UIStatusBar_Base *)&v8 setForegroundAlpha:v6 animationParameters:a3];
+  parametersCopy = parameters;
+  [(UIStatusBar_Base *)&v8 setForegroundAlpha:parametersCopy animationParameters:alpha];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__UIStatusBar_Modern_setForegroundAlpha_animationParameters___block_invoke;
   v7[3] = &unk_1E70F32F0;
   v7[4] = self;
-  *&v7[5] = a3;
-  [(UIStatusBar_Base *)self _performAnimations:v7 withParameters:v6 completion:0];
+  *&v7[5] = alpha;
+  [(UIStatusBar_Base *)self _performAnimations:v7 withParameters:parametersCopy completion:0];
 }
 
-- (void)setLegibilityStyle:(int64_t)a3 animationParameters:(id)a4
+- (void)setLegibilityStyle:(int64_t)style animationParameters:(id)parameters
 {
   v9.receiver = self;
   v9.super_class = UIStatusBar_Modern;
-  v6 = a4;
-  [(UIStatusBar_Base *)&v9 setLegibilityStyle:a3 animationParameters:v6];
+  parametersCopy = parameters;
+  [(UIStatusBar_Base *)&v9 setLegibilityStyle:style animationParameters:parametersCopy];
   v7 = [(UIStatusBar_Base *)self _requestStyle:v9.receiver];
-  v8 = [(UIStatusBar_Base *)self foregroundColor];
-  [(UIStatusBar_Modern *)self _requestStyle:v7 partStyles:0 legibilityStyle:a3 foregroundColor:v8 animationParameters:v6 forced:0];
+  foregroundColor = [(UIStatusBar_Base *)self foregroundColor];
+  [(UIStatusBar_Modern *)self _requestStyle:v7 partStyles:0 legibilityStyle:style foregroundColor:foregroundColor animationParameters:parametersCopy forced:0];
 }
 
-- (void)setAvoidanceFrame:(CGRect)a3 animationSettings:(id)a4 options:(unint64_t)a5
+- (void)setAvoidanceFrame:(CGRect)frame animationSettings:(id)settings options:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = UIStatusBar_Modern;
-  v11 = a4;
-  [(UIStatusBar_Base *)&v12 setAvoidanceFrame:v11 animationSettings:a5 options:x, y, width, height];
-  [(_UIStatusBar *)self->_statusBar setAvoidanceFrame:v11 animationSettings:a5 options:x, y, width, height, v12.receiver, v12.super_class];
+  settingsCopy = settings;
+  [(UIStatusBar_Base *)&v12 setAvoidanceFrame:settingsCopy animationSettings:options options:x, y, width, height];
+  [(_UIStatusBar *)self->_statusBar setAvoidanceFrame:settingsCopy animationSettings:options options:x, y, width, height, v12.receiver, v12.super_class];
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = UIStatusBar_Modern;
   [(UIStatusBar_Base *)&v5 setMode:?];
-  [(_UIStatusBar *)self->_statusBar setMode:a3];
+  [(_UIStatusBar *)self->_statusBar setMode:mode];
 }
 
 - (id)clockFont
 {
-  v2 = [(_UIStatusBar *)self->_statusBar visualProvider];
-  v3 = [v2 clockFont];
+  visualProvider = [(_UIStatusBar *)self->_statusBar visualProvider];
+  clockFont = [visualProvider clockFont];
 
-  return v3;
+  return clockFont;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v5.receiver = self;
   v5.super_class = UIStatusBar_Modern;
   [(UIStatusBar_Base *)&v5 setOrientation:?];
-  [(_UIStatusBar *)self->_statusBar setOrientation:a3];
+  [(_UIStatusBar *)self->_statusBar setOrientation:orientation];
 }
 
 - (void)jiggleLockIcon
 {
   v6 = objc_alloc_init(_UIStatusBarData);
-  v3 = [(_UIStatusBar *)self->_statusBar currentData];
-  v4 = [v3 lockEntry];
-  v5 = [v4 copy];
+  currentData = [(_UIStatusBar *)self->_statusBar currentData];
+  lockEntry = [currentData lockEntry];
+  v5 = [lockEntry copy];
 
   [v5 setUnlockFailureCount:{objc_msgSend(v5, "unlockFailureCount") + 1}];
   [(_UIStatusBarData *)v6 setLockEntry:v5];
   [(_UIStatusBar *)self->_statusBar updateWithData:v6];
 }
 
-- (UIOffset)offsetForPartWithIdentifier:(id)a3
+- (UIOffset)offsetForPartWithIdentifier:(id)identifier
 {
-  [(_UIStatusBar *)self->_statusBar offsetForPartWithIdentifier:a3];
+  [(_UIStatusBar *)self->_statusBar offsetForPartWithIdentifier:identifier];
   result.vertical = v4;
   result.horizontal = v3;
   return result;
 }
 
-- (CGRect)frameForPartWithIdentifier:(id)a3
+- (CGRect)frameForPartWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(UIView *)self layoutIfNeeded];
-  [(_UIStatusBar *)self->_statusBar frameForPartWithIdentifier:v4];
+  [(_UIStatusBar *)self->_statusBar frameForPartWithIdentifier:identifierCopy];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1015,9 +1015,9 @@ LABEL_11:
   [(UIView *)statusBar setFrame:?];
 }
 
-- (void)forceUpdate:(BOOL)a3
+- (void)forceUpdate:(BOOL)update
 {
-  if (a3)
+  if (update)
   {
 
     [(UIStatusBar_Modern *)self _updateWithData:0 force:1];
@@ -1036,9 +1036,9 @@ LABEL_11:
   }
 }
 
-- (void)forceUpdateData:(BOOL)a3
+- (void)forceUpdateData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   v5 = +[UIStatusBarServer getStatusBarData];
   if (v5)
   {
@@ -1055,7 +1055,7 @@ LABEL_11:
     [(UIStatusBar_Modern *)self _updateSemanticContentAttributeFromLegacyData:v5];
     v8 = [(UIStatusBar_Modern *)self _dataFromLegacyData:v6];
     v9 = v8;
-    if (v3)
+    if (dataCopy)
     {
       [(UIStatusBar_Modern *)self _updateWithData:v8 force:0];
     }
@@ -1073,24 +1073,24 @@ LABEL_11:
   }
 }
 
-- (void)statusBarServer:(id)a3 didReceiveStatusBarData:(id *)a4 withActions:(int)a5
+- (void)statusBarServer:(id)server didReceiveStatusBarData:(id *)data withActions:(int)actions
 {
-  [(UIStatusBar_Modern *)self _updateSemanticContentAttributeFromLegacyData:a4];
-  v7 = [(UIStatusBar_Modern *)self _dataFromLegacyData:a4];
+  [(UIStatusBar_Modern *)self _updateSemanticContentAttributeFromLegacyData:data];
+  v7 = [(UIStatusBar_Modern *)self _dataFromLegacyData:data];
   [(UIStatusBar_Modern *)self _updateWithData:v7 force:0];
 }
 
-- (void)statusBarServer:(id)a3 didReceiveStyleOverrides:(unint64_t)a4
+- (void)statusBarServer:(id)server didReceiveStyleOverrides:(unint64_t)overrides
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(UIStatusBar_Base *)self styleOverrides]== a4)
+  serverCopy = server;
+  if ([(UIStatusBar_Base *)self styleOverrides]== overrides)
   {
     v7 = _UIStatusBar_Log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v10 = a4;
+      overridesCopy = overrides;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "Duplicate StatusBar_Modern overrides receieved: %llu", buf, 0xCu);
     }
   }
@@ -1099,15 +1099,15 @@ LABEL_11:
   {
     v8.receiver = self;
     v8.super_class = UIStatusBar_Modern;
-    [(UIStatusBar_Base *)&v8 statusBarServer:v6 didReceiveStyleOverrides:a4];
+    [(UIStatusBar_Base *)&v8 statusBarServer:serverCopy didReceiveStyleOverrides:overrides];
     [(UIStatusBar_Modern *)self forceUpdate:1];
   }
 }
 
-- (void)statusBarStateProvider:(id)a3 didPostStatusBarData:(id *)a4 withActions:(int)a5
+- (void)statusBarStateProvider:(id)provider didPostStatusBarData:(id *)data withActions:(int)actions
 {
-  [(UIStatusBar_Modern *)self _updateSemanticContentAttributeFromLegacyData:a4];
-  v7 = [(UIStatusBar_Modern *)self _dataFromLegacyData:a4];
+  [(UIStatusBar_Modern *)self _updateSemanticContentAttributeFromLegacyData:data];
+  v7 = [(UIStatusBar_Modern *)self _dataFromLegacyData:data];
   [(UIStatusBar_Modern *)self _updateWithData:v7 force:0];
 }
 

@@ -1,13 +1,13 @@
 @interface PPInternalClient
 + (id)sharedInstance;
-- (BOOL)trialOverridePath:(id)a3 namespaceName:(id)a4 factorName:(id)a5 error:(id *)a6;
+- (BOOL)trialOverridePath:(id)path namespaceName:(id)name factorName:(id)factorName error:(id *)error;
 - (PPInternalClient)init;
-- (id)sysdiagnoseInformationWithError:(id *)a3;
+- (id)sysdiagnoseInformationWithError:(id *)error;
 @end
 
 @implementation PPInternalClient
 
-- (id)sysdiagnoseInformationWithError:(id *)a3
+- (id)sysdiagnoseInformationWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -37,9 +37,9 @@
   v7 = [(PPInternalClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v5];
   [v7 sysdiagnoseInformationWithCompletion:v6];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v19[5];
+    *error = v19[5];
   }
 
   v8 = v13[5];
@@ -64,15 +64,15 @@ void __52__PPInternalClient_sysdiagnoseInformationWithError___block_invoke_2(uin
   *(v9 + 40) = v6;
 }
 
-- (BOOL)trialOverridePath:(id)a3 namespaceName:(id)a4 factorName:(id)a5 error:(id *)a6
+- (BOOL)trialOverridePath:(id)path namespaceName:(id)name factorName:(id)factorName error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (v12)
+  pathCopy = path;
+  nameCopy = name;
+  factorNameCopy = factorName;
+  v14 = factorNameCopy;
+  if (nameCopy)
   {
-    if (v13)
+    if (factorNameCopy)
     {
       goto LABEL_3;
     }
@@ -80,8 +80,8 @@ void __52__PPInternalClient_sysdiagnoseInformationWithError___block_invoke_2(uin
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PPInternalClient.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPInternalClient.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"namespaceName"}];
 
     if (v14)
     {
@@ -89,8 +89,8 @@ void __52__PPInternalClient_sysdiagnoseInformationWithError___block_invoke_2(uin
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"PPInternalClient.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"factorName"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPInternalClient.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"factorName"}];
 
 LABEL_3:
   v28 = 0;
@@ -117,11 +117,11 @@ LABEL_3:
   v22[5] = &v28;
   v16 = MEMORY[0x1AC568040](v22);
   v17 = [(PPInternalClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v15];
-  [v17 trialOverridePath:v11 namespaceName:v12 factorName:v14 completion:v16];
+  [v17 trialOverridePath:pathCopy namespaceName:nameCopy factorName:v14 completion:v16];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v29[5];
+    *error = v29[5];
   }
 
   v18 = *(v25 + 24);
@@ -154,7 +154,7 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __34__PPInternalClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2, block);

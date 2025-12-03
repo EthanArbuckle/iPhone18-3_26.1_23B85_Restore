@@ -1,22 +1,22 @@
 @interface NWURLSessionResponseConsumerDataDelegate
 - (NSURLResponse)response;
 - (NWURLError)error;
-- (id)prepareNextRequest:(id)a3 forTask:(id)a4 error:(id *)a5;
+- (id)prepareNextRequest:(id)request forTask:(id)task error:(id *)error;
 - (int64_t)countOfBytesReceived;
-- (void)task:(id)a3 deliverData:(id)a4 complete:(BOOL)a5 error:(id)a6 completionHandler:(id)a7;
-- (void)task:(id)a3 deliverResponse:(id)a4 completionHandler:(id)a5;
+- (void)task:(id)task deliverData:(id)data complete:(BOOL)complete error:(id)error completionHandler:(id)handler;
+- (void)task:(id)task deliverResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation NWURLSessionResponseConsumerDataDelegate
 
-- (id)prepareNextRequest:(id)a3 forTask:(id)a4 error:(id *)a5
+- (id)prepareNextRequest:(id)request forTask:(id)task error:(id *)error
 {
-  v8 = a3;
-  v10 = a4;
+  requestCopy = request;
+  taskCopy = task;
   if (self && objc_getProperty(self, v9, 16, 1))
   {
     v11 = [NWURLError alloc];
-    v12 = v10;
+    v12 = taskCopy;
     if (v11)
     {
       v13 = [(NWURLError *)v11 initWithErrorCode:-1];
@@ -27,15 +27,15 @@
       }
     }
 
-    v14 = *a5;
-    *a5 = v11;
+    v14 = *error;
+    *error = v11;
 
     v15 = 0;
   }
 
   else
   {
-    v15 = v8;
+    v15 = requestCopy;
   }
 
   return v15;
@@ -73,40 +73,40 @@
   return self;
 }
 
-- (void)task:(id)a3 deliverData:(id)a4 complete:(BOOL)a5 error:(id)a6 completionHandler:(id)a7
+- (void)task:(id)task deliverData:(id)data complete:(BOOL)complete error:(id)error completionHandler:(id)handler
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
+  completeCopy = complete;
+  taskCopy = task;
+  dataCopy = data;
+  errorCopy = error;
+  handlerCopy = handler;
+  v16 = handlerCopy;
   if (self)
   {
     if (self->_hasCompleted)
     {
-      (*(v15 + 2))(v15);
+      (*(handlerCopy + 2))(handlerCopy);
       goto LABEL_10;
     }
 
-    self->_hasCompleted = v9;
+    self->_hasCompleted = completeCopy;
   }
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __94__NWURLSessionResponseConsumerDataDelegate_task_deliverData_complete_error_completionHandler___block_invoke;
   v22[3] = &unk_1E6A356A8;
-  v23 = v13;
-  v24 = self;
-  v17 = v12;
+  v23 = dataCopy;
+  selfCopy = self;
+  v17 = taskCopy;
   v25 = v17;
-  v28 = v9;
-  v18 = v14;
+  v28 = completeCopy;
+  v18 = errorCopy;
   v26 = v18;
   v27 = v16;
   v19 = _Block_copy(v22);
   v21 = v19;
-  if (v9)
+  if (completeCopy)
   {
     if (self)
     {
@@ -330,27 +330,27 @@ LABEL_27:
   v45();
 }
 
-- (void)task:(id)a3 deliverResponse:(id)a4 completionHandler:(id)a5
+- (void)task:(id)task deliverResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   if (self)
   {
-    objc_setProperty_atomic(self, v10, v9, 16);
+    objc_setProperty_atomic(self, v10, responseCopy, 16);
   }
 
-  v12 = countOfBytesExpectedToReceive(v9);
-  [(NWURLSessionTask *)v8 setCountOfBytesExpectedToReceive:v12];
-  if (v8)
+  v12 = countOfBytesExpectedToReceive(responseCopy);
+  [(NWURLSessionTask *)taskCopy setCountOfBytesExpectedToReceive:v12];
+  if (taskCopy)
   {
     v13 = 31;
-    if (!v8[31])
+    if (!taskCopy[31])
     {
       v13 = 30;
     }
 
-    v14 = v8[v13];
+    v14 = taskCopy[v13];
   }
 
   else
@@ -362,21 +362,21 @@ LABEL_27:
   v33[1] = 3221225472;
   v34 = __83__NWURLSessionResponseConsumerDataDelegate_task_deliverResponse_completionHandler___block_invoke;
   v35 = &unk_1E6A35680;
-  v36 = v11;
-  v15 = v11;
-  v16 = v8;
-  v17 = v9;
+  v36 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = taskCopy;
+  v17 = responseCopy;
   v19 = v33;
   if (v14)
   {
-    v20 = [(NWURLSessionDelegateWrapper *)v14 delegateFor_didReceiveResponse];
-    if (v20)
+    delegateFor_didReceiveResponse = [(NWURLSessionDelegateWrapper *)v14 delegateFor_didReceiveResponse];
+    if (delegateFor_didReceiveResponse)
     {
       v31 = v14[5];
       v21 = v14[6];
       v22 = [NWURLSessionDelegateDeallocBomb alloc];
       v23 = *(v14 + 16);
-      v24 = v20;
+      v24 = delegateFor_didReceiveResponse;
       v32 = v15;
       if (v22)
       {
@@ -386,7 +386,7 @@ LABEL_27:
         v22 = v25;
         if (v25)
         {
-          objc_storeStrong(&v25->_currentResponse, v20);
+          objc_storeStrong(&v25->_currentResponse, delegateFor_didReceiveResponse);
           if (sel_dataTask_didReceiveResponse_completionHandler_)
           {
             v26 = sel_dataTask_didReceiveResponse_completionHandler_;

@@ -1,18 +1,18 @@
 @interface ATXPBMissedNotificationRankingLoggingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)eventTypeAsString:(int)a3;
-- (id)initFromJSON:(id)a3;
+- (id)eventTypeAsString:(int)string;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
-- (int)StringAsEventType:(id)a3;
+- (int)StringAsEventType:(id)type;
 - (int)eventType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEventType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBMissedNotificationRankingLoggingEvent
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -45,60 +45,60 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)eventTypeAsString:(int)a3
+- (id)eventTypeAsString:(int)string
 {
-  if (a3 >= 8)
+  if (string >= 8)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C2710[a3];
+    v4 = off_1E80C2710[string];
   }
 
   return v4;
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ExpandedView"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ExpandedView"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CollapsedView"])
+  else if ([typeCopy isEqualToString:@"CollapsedView"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UpcomingExpandedView"])
+  else if ([typeCopy isEqualToString:@"UpcomingExpandedView"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DeliveredExpandedView"])
+  else if ([typeCopy isEqualToString:@"DeliveredExpandedView"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UpcomingCollapsedView"])
+  else if ([typeCopy isEqualToString:@"UpcomingCollapsedView"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"DeliveredCollapsedView"])
+  else if ([typeCopy isEqualToString:@"DeliveredCollapsedView"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Removed"])
+  else if ([typeCopy isEqualToString:@"Removed"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([typeCopy isEqualToString:@"Total"])
   {
     v4 = 7;
   }
@@ -117,20 +117,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBMissedNotificationRankingLoggingEvent;
   v4 = [(ATXPBMissedNotificationRankingLoggingEvent *)&v8 description];
-  v5 = [(ATXPBMissedNotificationRankingLoggingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBMissedNotificationRankingLoggingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   missedNotificationRanking = self->_missedNotificationRanking;
   if (missedNotificationRanking)
   {
-    v5 = [(ATXPBMissedNotificationRanking *)missedNotificationRanking dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"missedNotificationRanking"];
+    dictionaryRepresentation = [(ATXPBMissedNotificationRanking *)missedNotificationRanking dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"missedNotificationRanking"];
   }
 
   has = self->_has;
@@ -147,7 +147,7 @@
       v8 = off_1E80C2710[eventType];
     }
 
-    [v3 setObject:v8 forKey:@"eventType"];
+    [dictionary setObject:v8 forKey:@"eventType"];
 
     has = self->_has;
   }
@@ -155,66 +155,66 @@
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestamp];
-    [v3 setObject:v9 forKey:@"timestamp"];
+    [dictionary setObject:v9 forKey:@"timestamp"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_missedNotificationRanking)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_missedNotificationRanking)
   {
-    v6 = v4;
-    [v4 setMissedNotificationRanking:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setMissedNotificationRanking:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_eventType;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 4) = self->_eventType;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_timestamp;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = *&self->_timestamp;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ATXPBMissedNotificationRanking *)self->_missedNotificationRanking copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ATXPBMissedNotificationRanking *)self->_missedNotificationRanking copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -235,16 +235,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   missedNotificationRanking = self->_missedNotificationRanking;
-  if (missedNotificationRanking | *(v4 + 3))
+  if (missedNotificationRanking | *(equalCopy + 3))
   {
     if (![(ATXPBMissedNotificationRanking *)missedNotificationRanking isEqual:?])
     {
@@ -254,23 +254,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_eventType != *(v4 + 4))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_eventType != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 32) & 1) == 0;
+  v6 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
@@ -334,11 +334,11 @@ LABEL_3:
   return v6 ^ v3 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   missedNotificationRanking = self->_missedNotificationRanking;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (missedNotificationRanking)
   {
     if (!v6)
@@ -346,7 +346,7 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     missedNotificationRanking = [(ATXPBMissedNotificationRanking *)missedNotificationRanking mergeFrom:?];
   }
 
@@ -357,39 +357,39 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     missedNotificationRanking = [(ATXPBMissedNotificationRankingLoggingEvent *)self setMissedNotificationRanking:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 32);
+  v7 = *(fromCopy + 32);
   if ((v7 & 2) != 0)
   {
-    self->_eventType = *(v4 + 4);
+    self->_eventType = *(fromCopy + 4);
     *&self->_has |= 2u;
-    v7 = *(v4 + 32);
+    v7 = *(fromCopy + 32);
   }
 
   if (v7)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  MEMORY[0x1EEE66BB8](missedNotificationRanking, v4);
+  MEMORY[0x1EEE66BB8](missedNotificationRanking, fromCopy);
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = [(ATXPBMissedNotificationRankingLoggingEvent *)self init];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = nCopy;
       v7 = [ATXPBMissedNotificationRanking alloc];
       v8 = [v6 objectForKeyedSubscript:@"missedNotificationRanking"];
       v9 = [(ATXPBMissedNotificationRanking *)v7 initFromJSON:v8];
@@ -455,8 +455,8 @@ LABEL_7:
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"missedNotificationRanking";
-  v3 = [(ATXPBMissedNotificationRanking *)self->_missedNotificationRanking jsonRepresentation];
-  v4 = [ATXJSONHelper wrapObject:v3];
+  jsonRepresentation = [(ATXPBMissedNotificationRanking *)self->_missedNotificationRanking jsonRepresentation];
+  v4 = [ATXJSONHelper wrapObject:jsonRepresentation];
   v13[0] = v4;
   v12[1] = @"eventType";
   eventType = self->_eventType;

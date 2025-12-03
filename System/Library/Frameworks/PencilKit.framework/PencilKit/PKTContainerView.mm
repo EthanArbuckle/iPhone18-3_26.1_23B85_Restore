@@ -1,14 +1,14 @@
 @interface PKTContainerView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PKTContainerView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -19,7 +19,7 @@
     WeakRetained = 0;
   }
 
-  v9 = [WeakRetained containerView:self hitTest:v7 withEvent:{x, y}];
+  v9 = [WeakRetained containerView:self hitTest:eventCopy withEvent:{x, y}];
 
   return v9;
 }

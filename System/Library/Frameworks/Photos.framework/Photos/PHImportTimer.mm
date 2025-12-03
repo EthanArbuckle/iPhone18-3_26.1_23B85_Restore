@@ -1,5 +1,5 @@
 @interface PHImportTimer
-- (PHImportTimer)initWithType:(unsigned __int8)a3 subtype:(unsigned __int8)a4;
+- (PHImportTimer)initWithType:(unsigned __int8)type subtype:(unsigned __int8)subtype;
 - (id)description;
 - (void)start;
 - (void)stop;
@@ -38,15 +38,15 @@
       _os_signpost_emit_with_name_impl(&dword_19C86F000, v5, OS_SIGNPOST_INTERVAL_END, signpostId, "PHImportTimer", "%lu-%lu", buf, 0x16u);
     }
 
-    v9 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     endTime = self->_endTime;
-    self->_endTime = v9;
+    self->_endTime = date;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PHImportTimer.m" lineNumber:166 description:@"Trying to stop a timer that is either not running or already done running."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHImportTimer.m" lineNumber:166 description:@"Trying to stop a timer that is either not running or already done running."];
   }
 }
 
@@ -55,8 +55,8 @@
   v16 = *MEMORY[0x1E69E9840];
   if (self->_startTime)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PHImportTimer.m" lineNumber:156 description:@"Trying to start a timer that is already running."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHImportTimer.m" lineNumber:156 description:@"Trying to start a timer that is already running."];
   }
 
   else
@@ -75,13 +75,13 @@
       _os_signpost_emit_with_name_impl(&dword_19C86F000, v5, OS_SIGNPOST_INTERVAL_BEGIN, signpostId, "PHImportTimer", "%lu-%lu", buf, 0x16u);
     }
 
-    v9 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     startTime = self->_startTime;
-    self->_startTime = v9;
+    self->_startTime = date;
   }
 }
 
-- (PHImportTimer)initWithType:(unsigned __int8)a3 subtype:(unsigned __int8)a4
+- (PHImportTimer)initWithType:(unsigned __int8)type subtype:(unsigned __int8)subtype
 {
   if (initWithType_subtype__onceToken != -1)
   {
@@ -92,8 +92,8 @@
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v7->_subtype = a4;
+    v7->_type = type;
+    v7->_subtype = subtype;
     v7->_signpostId = os_signpost_id_make_with_pointer(importPerfLog, v7);
   }
 

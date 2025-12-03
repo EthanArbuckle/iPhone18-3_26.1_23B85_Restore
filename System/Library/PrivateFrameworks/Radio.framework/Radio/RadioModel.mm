@@ -14,56 +14,56 @@
 - (NSArray)userStations;
 - (NSString)globalHash;
 - (RadioModel)init;
-- (id)_arrayByReplacingManagedObjectsInArray:(id)a3;
-- (id)_databasePropertyValueForKey:(id)a3;
+- (id)_arrayByReplacingManagedObjectsInArray:(id)array;
+- (id)_databasePropertyValueForKey:(id)key;
 - (id)_init;
-- (id)_initBackgroundModelWithPersistentStoreCoordinator:(id)a3;
-- (id)_setByReplacingManagedObjectsInSet:(id)a3;
-- (id)convertObject:(id)a3;
-- (id)convertObjects:(id)a3;
-- (id)convertObjectsInSet:(id)a3;
-- (id)newFeaturedStationWithDictionary:(id)a3;
-- (id)newPreviewStationWithDictionary:(id)a3;
-- (id)newStationWithDictionary:(id)a3;
-- (id)stationWithHash:(id)a3;
-- (id)stationWithID:(int64_t)a3;
-- (id)stationWithPersistentID:(int64_t)a3;
-- (id)stationWithStationStringID:(id)a3;
+- (id)_initBackgroundModelWithPersistentStoreCoordinator:(id)coordinator;
+- (id)_setByReplacingManagedObjectsInSet:(id)set;
+- (id)convertObject:(id)object;
+- (id)convertObjects:(id)objects;
+- (id)convertObjectsInSet:(id)set;
+- (id)newFeaturedStationWithDictionary:(id)dictionary;
+- (id)newPreviewStationWithDictionary:(id)dictionary;
+- (id)newStationWithDictionary:(id)dictionary;
+- (id)stationWithHash:(id)hash;
+- (id)stationWithID:(int64_t)d;
+- (id)stationWithPersistentID:(int64_t)d;
+- (id)stationWithStationStringID:(id)d;
 - (int64_t)databaseVersion;
-- (unint64_t)_numberOfSkipsUsedWithSkipTimestamps:(id)a3 currentTimestamp:(double)a4 skipInterval:(double)a5 returningEarliestSkipTimestamp:(double *)a6;
+- (unint64_t)_numberOfSkipsUsedWithSkipTimestamps:(id)timestamps currentTimestamp:(double)timestamp skipInterval:(double)interval returningEarliestSkipTimestamp:(double *)skipTimestamp;
 - (unint64_t)authenticatedAccountIdentifier;
 - (unint64_t)globalVersion;
 - (void)_beginBackgroundTaskAssertion;
-- (void)_contextDidSaveNotification:(id)a3;
+- (void)_contextDidSaveNotification:(id)notification;
 - (void)_createRadioDirectoryAndDatabaseIfNecessary;
 - (void)_defaultRadioModelInitialization;
 - (void)_endBackgroundTaskAssertion;
-- (void)_performTransactionAndSave:(BOOL)a3 withBlock:(id)a4;
-- (void)_postContextDidChangeNotification:(id)a3;
+- (void)_performTransactionAndSave:(BOOL)save withBlock:(id)block;
+- (void)_postContextDidChangeNotification:(id)notification;
 - (void)_prepareModel;
 - (void)_resetModel;
-- (void)_setDatabasePropertyValue:(id)a3 forKey:(id)a4;
+- (void)_setDatabasePropertyValue:(id)value forKey:(id)key;
 - (void)dealloc;
 - (void)deleteAllData;
-- (void)deleteStation:(id)a3;
-- (void)deleteStationWithID:(int64_t)a3;
-- (void)setAuthenticatedAccountIdentifier:(unint64_t)a3;
-- (void)setDatabaseVersion:(int64_t)a3;
-- (void)setGlobalVersion:(unint64_t)a3;
-- (void)setReportProblemIssueTypes:(id)a3;
-- (void)setStationSortOrdering:(id)a3;
-- (void)setTrackPlaybackDescriptorQueue:(id)a3 forStation:(id)a4;
+- (void)deleteStation:(id)station;
+- (void)deleteStationWithID:(int64_t)d;
+- (void)setAuthenticatedAccountIdentifier:(unint64_t)identifier;
+- (void)setDatabaseVersion:(int64_t)version;
+- (void)setGlobalVersion:(unint64_t)version;
+- (void)setReportProblemIssueTypes:(id)types;
+- (void)setStationSortOrdering:(id)ordering;
+- (void)setTrackPlaybackDescriptorQueue:(id)queue forStation:(id)station;
 @end
 
 @implementation RadioModel
 
-- (void)_setDatabasePropertyValue:(id)a3 forKey:(id)a4
+- (void)_setDatabasePropertyValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  valueCopy = value;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v7, @"key", 0}];
+    v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{keyCopy, @"key", 0}];
     v9 = [(NSManagedObjectModel *)self->_model fetchRequestFromTemplateWithName:@"DatabasePropertyKeyToProperty" substitutionVariables:v8];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -71,8 +71,8 @@
     v11[3] = &unk_279AEA948;
     v11[4] = self;
     v12 = v9;
-    v13 = v7;
-    v14 = v6;
+    v13 = keyCopy;
+    v14 = valueCopy;
     v10 = v9;
     [(RadioModel *)self performWriteTransactionWithBlock:v11];
   }
@@ -116,18 +116,18 @@ void __47__RadioModel__setDatabasePropertyValue_forKey___block_invoke(void *a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_setByReplacingManagedObjectsInSet:(id)a3
+- (id)_setByReplacingManagedObjectsInSet:(id)set
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  setCopy = set;
+  if ([setCopy count])
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(setCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = setCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -183,8 +183,8 @@ void __47__RadioModel__setDatabasePropertyValue_forKey___block_invoke(void *a1)
   stationFetchRequest = self->_stationFetchRequest;
   self->_stationFetchRequest = 0;
 
-  v5 = [(NSPersistentStoreCoordinator *)self->_storeCoordinator persistentStores];
-  v6 = [v5 copy];
+  persistentStores = [(NSPersistentStoreCoordinator *)self->_storeCoordinator persistentStores];
+  v6 = [persistentStores copy];
 
   v15 = 0u;
   v16 = 0u;
@@ -280,10 +280,10 @@ uint64_t __27__RadioModel__prepareModel__block_invoke(uint64_t a1)
   return [v6 setPersistentStoreCoordinator:v7];
 }
 
-- (void)_postContextDidChangeNotification:(id)a3
+- (void)_postContextDidChangeNotification:(id)notification
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.radio", "Model");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -292,8 +292,8 @@ uint64_t __27__RadioModel__prepareModel__block_invoke(uint64_t a1)
     _os_log_impl(&dword_261792000, v5, OS_LOG_TYPE_INFO, "[RadioModel] Posting '%@'", buf, 0xCu);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 mutableCopy];
+  userInfo = [notificationCopy userInfo];
+  v7 = [userInfo mutableCopy];
 
   v8 = [v7 objectForKey:@"inserted"];
   v9 = [(RadioModel *)self convertObjectsInSet:v8];
@@ -322,8 +322,8 @@ uint64_t __27__RadioModel__prepareModel__block_invoke(uint64_t a1)
     [v7 setObject:v16 forKey:@"deleted"];
   }
 
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v17 postNotificationName:@"RadioModelDidChangeNotification" object:self userInfo:v7];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RadioModelDidChangeNotification" object:self userInfo:v7];
 
   if (self->_modelChangedTokenIsValid)
   {
@@ -429,18 +429,18 @@ LABEL_29:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performTransactionAndSave:(BOOL)a3 withBlock:(id)a4
+- (void)_performTransactionAndSave:(BOOL)save withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   context = self->_context;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__RadioModel__performTransactionAndSave_withBlock___block_invoke;
   v9[3] = &unk_279AEA920;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = blockCopy;
+  saveCopy = save;
+  v8 = blockCopy;
   [(NSManagedObjectContext *)context performBlockAndWait:v9];
 }
 
@@ -589,12 +589,12 @@ void __41__RadioModel__endBackgroundTaskAssertion__block_invoke_2(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_databasePropertyValueForKey:(id)a3
+- (id)_databasePropertyValueForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v4, @"key", 0}];
+    v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{keyCopy, @"key", 0}];
     v6 = [(NSManagedObjectModel *)self->_model fetchRequestFromTemplateWithName:@"DatabasePropertyKeyToProperty" substitutionVariables:v5];
     v13 = 0;
     v14 = &v13;
@@ -654,8 +654,8 @@ void __43__RadioModel__databasePropertyValueForKey___block_invoke(void *a1)
 
       if (!v5)
       {
-        v62 = [MEMORY[0x277CCA890] currentHandler];
-        [v62 handleFailureInMethod:a2 object:self file:@"RadioModel.m" lineNumber:1092 description:@"unable to find model"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"RadioModel.m" lineNumber:1092 description:@"unable to find model"];
       }
 
       v65 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5 isDirectory:0];
@@ -663,8 +663,8 @@ void __43__RadioModel__databasePropertyValueForKey___block_invoke(void *a1)
       model = self->_model;
       self->_model = v6;
 
-      v8 = [(NSManagedObjectModel *)self->_model entitiesByName];
-      v9 = [v8 objectForKey:@"Station"];
+      entitiesByName = [(NSManagedObjectModel *)self->_model entitiesByName];
+      v9 = [entitiesByName objectForKey:@"Station"];
 
       v10 = objc_alloc_init(MEMORY[0x277CBE428]);
       [v10 setEntity:v9];
@@ -696,8 +696,8 @@ void __43__RadioModel__databasePropertyValueForKey___block_invoke(void *a1)
 
       [(NSManagedObjectModel *)self->_model setFetchRequestTemplate:v16 forName:@"StationStringIDToStation"];
       v19 = objc_alloc_init(MEMORY[0x277CBE428]);
-      v20 = [(NSManagedObjectModel *)self->_model entitiesByName];
-      v21 = [v20 objectForKey:@"SkipHistory"];
+      entitiesByName2 = [(NSManagedObjectModel *)self->_model entitiesByName];
+      v21 = [entitiesByName2 objectForKey:@"SkipHistory"];
       [v19 setEntity:v21];
 
       v22 = [MEMORY[0x277CCAC30] predicateWithFormat:@"skip_identifier == $skipIdentifier"];
@@ -706,8 +706,8 @@ void __43__RadioModel__databasePropertyValueForKey___block_invoke(void *a1)
       [v19 setPropertiesToFetch:&unk_2874055F0];
       [(NSManagedObjectModel *)self->_model setFetchRequestTemplate:v19 forName:@"SkipIdentifierToSkipHistory"];
       v23 = objc_alloc_init(MEMORY[0x277CBE428]);
-      v24 = [(NSManagedObjectModel *)self->_model entitiesByName];
-      v25 = [v24 objectForKey:@"SkipHistory"];
+      entitiesByName3 = [(NSManagedObjectModel *)self->_model entitiesByName];
+      v25 = [entitiesByName3 objectForKey:@"SkipHistory"];
       [v23 setEntity:v25];
 
       v26 = [MEMORY[0x277CCAC30] predicateWithFormat:@"station_hash == $stationHash"];
@@ -716,8 +716,8 @@ void __43__RadioModel__databasePropertyValueForKey___block_invoke(void *a1)
       [v23 setPropertiesToFetch:&unk_287405608];
       [(NSManagedObjectModel *)self->_model setFetchRequestTemplate:v23 forName:@"StationHashToSkipHistory"];
       v27 = objc_alloc_init(MEMORY[0x277CBE428]);
-      v28 = [(NSManagedObjectModel *)self->_model entitiesByName];
-      v29 = [v28 objectForKey:@"SkipHistory"];
+      entitiesByName4 = [(NSManagedObjectModel *)self->_model entitiesByName];
+      v29 = [entitiesByName4 objectForKey:@"SkipHistory"];
       [v27 setEntity:v29];
 
       v30 = [MEMORY[0x277CCAC30] predicateWithFormat:@"station_id == $stationID"];
@@ -726,8 +726,8 @@ void __43__RadioModel__databasePropertyValueForKey___block_invoke(void *a1)
       [v27 setPropertiesToFetch:&unk_287405620];
       [(NSManagedObjectModel *)self->_model setFetchRequestTemplate:v27 forName:@"StationIDToSkipHistory"];
       v31 = objc_alloc_init(MEMORY[0x277CBE428]);
-      v32 = [(NSManagedObjectModel *)self->_model entitiesByName];
-      v33 = [v32 objectForKey:@"DatabaseProperty"];
+      entitiesByName5 = [(NSManagedObjectModel *)self->_model entitiesByName];
+      v33 = [entitiesByName5 objectForKey:@"DatabaseProperty"];
       [v31 setEntity:v33];
 
       v34 = [MEMORY[0x277CCAC30] predicateWithFormat:@"key == $key"];
@@ -741,26 +741,26 @@ void __43__RadioModel__databasePropertyValueForKey___block_invoke(void *a1)
     self->_storeCoordinator = v35;
   }
 
-  v37 = [objc_opt_class() _radioDirectoryPath];
+  _radioDirectoryPath = [objc_opt_class() _radioDirectoryPath];
   v38 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v39 = [MEMORY[0x277CCA8D8] mainBundle];
-  v40 = [v39 bundleIdentifier];
-  v41 = [&unk_287405638 containsObject:v40];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v41 = [&unk_287405638 containsObject:bundleIdentifier];
 
   v68 = 0;
-  if ([v38 fileExistsAtPath:v37 isDirectory:&v68])
+  if ([v38 fileExistsAtPath:_radioDirectoryPath isDirectory:&v68])
   {
     if (v68)
     {
       goto LABEL_16;
     }
 
-    [v38 removeItemAtPath:v37 error:0];
+    [v38 removeItemAtPath:_radioDirectoryPath error:0];
   }
 
-  if ((v41 & 1) != 0 || ([v37 stringByDeletingLastPathComponent], v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v38, "isWritableFileAtPath:", v42), v42, v43))
+  if ((v41 & 1) != 0 || ([_radioDirectoryPath stringByDeletingLastPathComponent], v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v38, "isWritableFileAtPath:", v42), v42, v43))
   {
-    [v38 createDirectoryAtPath:v37 withIntermediateDirectories:1 attributes:0 error:0];
+    [v38 createDirectoryAtPath:_radioDirectoryPath withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   else
@@ -768,26 +768,26 @@ void __43__RadioModel__databasePropertyValueForKey___block_invoke(void *a1)
     v44 = os_log_create("com.apple.amp.radio", "Model");
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      v45 = [v37 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [_radioDirectoryPath stringByDeletingLastPathComponent];
       *buf = 138412290;
-      v70 = v45;
+      v70 = stringByDeletingLastPathComponent;
       _os_log_impl(&dword_261792000, v44, OS_LOG_TYPE_ERROR, "[RadioModel] Error: Unable to write to '%@' to create database", buf, 0xCu);
     }
   }
 
 LABEL_16:
-  v46 = [objc_opt_class() _radioDatabasePath];
-  v47 = [MEMORY[0x277CBEBC0] fileURLWithPath:v46 isDirectory:0];
+  _radioDatabasePath = [objc_opt_class() _radioDatabasePath];
+  v47 = [MEMORY[0x277CBEBC0] fileURLWithPath:_radioDatabasePath isDirectory:0];
   v48 = [(NSPersistentStoreCoordinator *)self->_storeCoordinator persistentStoreForURL:v47];
 
   if (!v48)
   {
-    v49 = [objc_opt_class() _persistentStoreConfigurationOptions];
+    _persistentStoreConfigurationOptions = [objc_opt_class() _persistentStoreConfigurationOptions];
     v50 = *MEMORY[0x277CBE2E8];
-    v51 = [(NSPersistentStoreCoordinator *)self->_storeCoordinator addPersistentStoreWithType:*MEMORY[0x277CBE2E8] configuration:0 URL:v47 options:v49 error:0];
+    v51 = [(NSPersistentStoreCoordinator *)self->_storeCoordinator addPersistentStoreWithType:*MEMORY[0x277CBE2E8] configuration:0 URL:v47 options:_persistentStoreConfigurationOptions error:0];
     if (!v51)
     {
-      if (v41 & 1) != 0 || ([v38 isWritableFileAtPath:v46])
+      if (v41 & 1) != 0 || ([v38 isWritableFileAtPath:_radioDatabasePath])
       {
         v52 = os_log_create("com.apple.amp.radio", "Model");
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -797,9 +797,9 @@ LABEL_16:
         }
 
         v53 = self->_storeCoordinator;
-        v54 = [objc_opt_class() _persistentStoreConfigurationOptions];
+        _persistentStoreConfigurationOptions2 = [objc_opt_class() _persistentStoreConfigurationOptions];
         v67 = 0;
-        v55 = [(NSPersistentStoreCoordinator *)v53 _destroyPersistentStoreAtURL:v47 withType:v50 options:v54 error:&v67];
+        v55 = [(NSPersistentStoreCoordinator *)v53 _destroyPersistentStoreAtURL:v47 withType:v50 options:_persistentStoreConfigurationOptions2 error:&v67];
         v56 = v67;
 
         v57 = os_log_create("com.apple.amp.radio", "Model");
@@ -820,7 +820,7 @@ LABEL_16:
 
         v59 = self->_storeCoordinator;
         v66 = 0;
-        v51 = [(NSPersistentStoreCoordinator *)v59 addPersistentStoreWithType:v50 configuration:0 URL:v47 options:v49 error:&v66];
+        v51 = [(NSPersistentStoreCoordinator *)v59 addPersistentStoreWithType:v50 configuration:0 URL:v47 options:_persistentStoreConfigurationOptions error:&v66];
         v60 = v66;
         if (!v51)
         {
@@ -847,20 +847,20 @@ LABEL_16:
   v61 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_numberOfSkipsUsedWithSkipTimestamps:(id)a3 currentTimestamp:(double)a4 skipInterval:(double)a5 returningEarliestSkipTimestamp:(double *)a6
+- (unint64_t)_numberOfSkipsUsedWithSkipTimestamps:(id)timestamps currentTimestamp:(double)timestamp skipInterval:(double)interval returningEarliestSkipTimestamp:(double *)skipTimestamp
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  timestampsCopy = timestamps;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v10 = [timestampsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v10)
   {
     v12 = 0;
     v14 = 1.79769313e308;
-    if (!a6)
+    if (!skipTimestamp)
     {
       goto LABEL_16;
     }
@@ -878,7 +878,7 @@ LABEL_16:
     {
       if (*v22 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(timestampsCopy);
       }
 
       [*(*(&v21 + 1) + 8 * i) doubleValue];
@@ -887,27 +887,27 @@ LABEL_16:
         v14 = v16;
       }
 
-      if (a4 - v16 < a5)
+      if (timestamp - v16 < interval)
       {
         ++v12;
       }
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v11 = [timestampsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   }
 
   while (v11);
-  if (a6)
+  if (skipTimestamp)
   {
 LABEL_13:
-    v17 = [v9 count];
+    v17 = [timestampsCopy count];
     v18 = 0.0;
     if (v17)
     {
       v18 = v14;
     }
 
-    *a6 = v18;
+    *skipTimestamp = v18;
   }
 
 LABEL_16:
@@ -937,8 +937,8 @@ LABEL_16:
   v6 = notify_register_dispatch("com.apple.Radio.model-deleted", &self->_modelDeletedToken, v5, v8);
 
   self->_modelDeletedTokenIsValid = v6 == 0;
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__contextDidSaveNotification_ name:*MEMORY[0x277CBE1A8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contextDidSaveNotification_ name:*MEMORY[0x277CBE1A8] object:0];
 }
 
 void __46__RadioModel__defaultRadioModelInitialization__block_invoke(uint64_t a1, int token)
@@ -1167,18 +1167,18 @@ void __43__RadioModel__beginBackgroundTaskAssertion__block_invoke(uint64_t a1)
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_arrayByReplacingManagedObjectsInArray:(id)a3
+- (id)_arrayByReplacingManagedObjectsInArray:(id)array
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = arrayCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -1224,18 +1224,18 @@ void __43__RadioModel__beginBackgroundTaskAssertion__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setDatabaseVersion:(int64_t)a3
+- (void)setDatabaseVersion:(int64_t)version
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lli", a3];
-  [(RadioModel *)self _setDatabasePropertyValue:v4 forKey:@"databaseVersion"];
+  version = [MEMORY[0x277CCACA8] stringWithFormat:@"%lli", version];
+  [(RadioModel *)self _setDatabasePropertyValue:version forKey:@"databaseVersion"];
 }
 
 - (int64_t)databaseVersion
 {
   v2 = [(RadioModel *)self _databasePropertyValueForKey:@"databaseVersion"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (NSArray)userStations
@@ -1328,12 +1328,12 @@ void __26__RadioModel_userStations__block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)stationWithStationStringID:(id)a3
+- (id)stationWithStationStringID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v4, @"stationStringID", 0}];
+    v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{dCopy, @"stationStringID", 0}];
     v6 = [(NSManagedObjectModel *)self->_model fetchRequestFromTemplateWithName:@"StationStringIDToStation" substitutionVariables:v5];
     v13 = 0;
     v14 = &v13;
@@ -1377,14 +1377,14 @@ void __41__RadioModel_stationWithStationStringID___block_invoke(void *a1)
   }
 }
 
-- (id)stationWithPersistentID:(int64_t)a3
+- (id)stationWithPersistentID:(int64_t)d
 {
   v5 = objc_alloc_init(MEMORY[0x277CBE428]);
-  v6 = [(NSManagedObjectModel *)self->_model entitiesByName];
-  v7 = [v6 objectForKey:@"Station"];
+  entitiesByName = [(NSManagedObjectModel *)self->_model entitiesByName];
+  v7 = [entitiesByName objectForKey:@"Station"];
   [v5 setEntity:v7];
 
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"persistent_id == %lli", a3];
+  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"persistent_id == %lli", d];
   [v5 setPredicate:v8];
 
   v9 = +[RadioManagedStation defaultPropertiesToFetch];
@@ -1444,10 +1444,10 @@ void __38__RadioModel_stationWithPersistentID___block_invoke(void *a1)
   }
 }
 
-- (id)stationWithID:(int64_t)a3
+- (id)stationWithID:(int64_t)d
 {
   v5 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v7 = [v5 initWithObjectsAndKeys:{v6, @"stationID", 0}];
 
   v8 = [(NSManagedObjectModel *)self->_model fetchRequestFromTemplateWithName:@"StationIDToStation" substitutionVariables:v7];
@@ -1487,12 +1487,12 @@ void __28__RadioModel_stationWithID___block_invoke(void *a1)
   }
 }
 
-- (id)stationWithHash:(id)a3
+- (id)stationWithHash:(id)hash
 {
-  v4 = a3;
-  if (v4)
+  hashCopy = hash;
+  if (hashCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v4, @"stationHash", 0}];
+    v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{hashCopy, @"stationHash", 0}];
     v6 = [(NSManagedObjectModel *)self->_model fetchRequestFromTemplateWithName:@"StationHashToStation" substitutionVariables:v5];
     v13 = 0;
     v14 = &v13;
@@ -1540,15 +1540,15 @@ void __30__RadioModel_stationWithHash___block_invoke(void *a1)
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(RadioModel *)self userStations];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  userStations = [(RadioModel *)self userStations];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(userStations, "count")}];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(RadioModel *)self userStations];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  userStations2 = [(RadioModel *)self userStations];
+  v7 = [userStations2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1559,14 +1559,14 @@ void __30__RadioModel_stationWithHash___block_invoke(void *a1)
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(userStations2);
         }
 
         v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(*(*(&v14 + 1) + 8 * i), "stationID")}];
         [v5 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [userStations2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -1577,25 +1577,25 @@ void __30__RadioModel_stationWithHash___block_invoke(void *a1)
   return v5;
 }
 
-- (void)setTrackPlaybackDescriptorQueue:(id)a3 forStation:(id)a4
+- (void)setTrackPlaybackDescriptorQueue:(id)queue forStation:(id)station
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 model];
+  queueCopy = queue;
+  stationCopy = station;
+  model = [stationCopy model];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__RadioModel_setTrackPlaybackDescriptorQueue_forStation___block_invoke;
   v10[3] = &unk_279AEACA0;
-  v11 = v6;
-  v12 = v5;
-  v8 = v5;
-  v9 = v6;
-  [v7 performWriteTransactionWithBlock:v10];
+  v11 = stationCopy;
+  v12 = queueCopy;
+  v8 = queueCopy;
+  v9 = stationCopy;
+  [model performWriteTransactionWithBlock:v10];
 }
 
-- (void)setStationSortOrdering:(id)a3
+- (void)setStationSortOrdering:(id)ordering
 {
-  v4 = a3;
+  orderingCopy = ordering;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__RadioModel_setStationSortOrdering___block_invoke;
@@ -1607,8 +1607,8 @@ void __30__RadioModel_stationWithHash___block_invoke(void *a1)
   v6[2] = __37__RadioModel_setStationSortOrdering___block_invoke_2;
   v6[3] = &unk_279AEACA0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = orderingCopy;
+  v5 = orderingCopy;
   [(RadioModel *)self performWriteTransactionWithBlock:v6];
 }
 
@@ -1707,11 +1707,11 @@ uint64_t __37__RadioModel_setStationSortOrdering___block_invoke_3(uint64_t a1, v
   return v7;
 }
 
-- (void)setReportProblemIssueTypes:(id)a3
+- (void)setReportProblemIssueTypes:(id)types
 {
-  if (a3)
+  if (types)
   {
-    v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:0 error:0];
+    v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:types options:0 error:0];
     v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v5 encoding:4];
     [(RadioModel *)self _setDatabasePropertyValue:v4 forKey:@"reportProblemIssueTypes"];
   }
@@ -1723,20 +1723,20 @@ uint64_t __37__RadioModel_setStationSortOrdering___block_invoke_3(uint64_t a1, v
   }
 }
 
-- (void)setGlobalVersion:(unint64_t)a3
+- (void)setGlobalVersion:(unint64_t)version
 {
-  if ([(RadioModel *)self globalVersion]!= a3)
+  if ([(RadioModel *)self globalVersion]!= version)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lli", a3];
-    [(RadioModel *)self _setDatabasePropertyValue:v5 forKey:@"globalVersion"];
+    version = [MEMORY[0x277CCACA8] stringWithFormat:@"%lli", version];
+    [(RadioModel *)self _setDatabasePropertyValue:version forKey:@"globalVersion"];
   }
 }
 
-- (void)setAuthenticatedAccountIdentifier:(unint64_t)a3
+- (void)setAuthenticatedAccountIdentifier:(unint64_t)identifier
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lli", a3];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%lli", identifier];
   [RadioModel _setDatabasePropertyValue:"_setDatabasePropertyValue:forKey:" forKey:?];
-  if (!a3)
+  if (!identifier)
   {
     [objc_opt_class() _postAccountDidDeauthenticateNotification];
   }
@@ -1900,31 +1900,31 @@ void __29__RadioModel_previewStations__block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)newStationWithDictionary:(id)a3
+- (id)newStationWithDictionary:(id)dictionary
 {
   v165 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = os_log_create("com.apple.amp.radio", "Model");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = dictionaryCopy;
     _os_log_impl(&dword_261792000, v4, OS_LOG_TYPE_INFO, "[RadioModel] Adding/updating station with dictionary: %@", &buf, 0xCu);
   }
 
-  v109 = [v3 objectForKey:@"station-id"];
+  v109 = [dictionaryCopy objectForKey:@"station-id"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v107 = [v109 longLongValue];
+    longLongValue = [v109 longLongValue];
   }
 
   else
   {
-    v107 = 0;
+    longLongValue = 0;
   }
 
-  v110 = [v3 objectForKey:@"station-hash"];
+  v110 = [dictionaryCopy objectForKey:@"station-hash"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1932,7 +1932,7 @@ void __29__RadioModel_previewStations__block_invoke(uint64_t a1)
     v110 = 0;
   }
 
-  v111 = [v3 objectForKey:@"radio-station-id"];
+  v111 = [dictionaryCopy objectForKey:@"radio-station-id"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1940,13 +1940,13 @@ void __29__RadioModel_previewStations__block_invoke(uint64_t a1)
     v111 = 0;
   }
 
-  if (!v107 && !v110 && !v111)
+  if (!longLongValue && !v110 && !v111)
   {
     v5 = os_log_create("com.apple.amp.radio", "Model");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v3;
+      *(&buf + 4) = dictionaryCopy;
       _os_log_impl(&dword_261792000, v5, OS_LOG_TYPE_ERROR, "Missing station-id/station-hash/radio-station-id in dictionary: %@", &buf, 0xCu);
     }
 
@@ -1955,7 +1955,7 @@ void __29__RadioModel_previewStations__block_invoke(uint64_t a1)
   }
 
   v158 = 0;
-  v100 = [v3 objectForKey:@"persistent-id"];
+  v100 = [dictionaryCopy objectForKey:@"persistent-id"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1963,19 +1963,19 @@ void __29__RadioModel_previewStations__block_invoke(uint64_t a1)
     sscanf([v100 UTF8String], "%llx", &v158);
   }
 
-  v93 = [v3 objectForKey:@"adam-id"];
+  v93 = [dictionaryCopy objectForKey:@"adam-id"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v71 = [v93 longLongValue];
+    longLongValue2 = [v93 longLongValue];
   }
 
   else
   {
-    v71 = 0;
+    longLongValue2 = 0;
   }
 
-  v8 = [v3 objectForKey:@"name"];
+  v8 = [dictionaryCopy objectForKey:@"name"];
   v103 = [v8 copy];
 
   objc_opt_class();
@@ -1985,7 +1985,7 @@ void __29__RadioModel_previewStations__block_invoke(uint64_t a1)
     v103 = 0;
   }
 
-  v9 = [v3 objectForKey:@"description"];
+  v9 = [dictionaryCopy objectForKey:@"description"];
   v101 = [v9 copy];
 
   objc_opt_class();
@@ -1995,7 +1995,7 @@ void __29__RadioModel_previewStations__block_invoke(uint64_t a1)
     v101 = 0;
   }
 
-  v10 = [v3 objectForKey:@"core-seed-name"];
+  v10 = [dictionaryCopy objectForKey:@"core-seed-name"];
   v98 = [v10 copy];
 
   objc_opt_class();
@@ -2005,7 +2005,7 @@ void __29__RadioModel_previewStations__block_invoke(uint64_t a1)
     v98 = 0;
   }
 
-  v96 = [v3 objectForKey:@"seeds"];
+  v96 = [dictionaryCopy objectForKey:@"seeds"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2013,20 +2013,20 @@ void __29__RadioModel_previewStations__block_invoke(uint64_t a1)
     v96 = 0;
   }
 
-  v92 = [v3 objectForKey:@"mix-type"];
+  v92 = [dictionaryCopy objectForKey:@"mix-type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v92 intValue];
+    intValue = [v92 intValue];
   }
 
   else
   {
-    v11 = 1;
+    intValue = 1;
   }
 
-  v70 = v11;
-  v12 = [v3 objectForKey:@"skip-identifier"];
+  v70 = intValue;
+  v12 = [dictionaryCopy objectForKey:@"skip-identifier"];
   v95 = [v12 copy];
 
   objc_opt_class();
@@ -2036,19 +2036,19 @@ void __29__RadioModel_previewStations__block_invoke(uint64_t a1)
     v95 = 0;
   }
 
-  v106 = [v3 objectForKey:@"rules"];
+  v106 = [dictionaryCopy objectForKey:@"rules"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = [v106 objectForKey:@"edit-enabled"];
     if (objc_opt_respondsToSelector())
     {
-      v69 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
     }
 
     else
     {
-      v69 = 1;
+      bOOLValue = 1;
     }
 
     v94 = [v106 objectForKey:@"edit-fields"];
@@ -2103,23 +2103,23 @@ LABEL_51:
     v21 = [v106 objectForKey:@"like-enabled"];
     if (objc_opt_respondsToSelector())
     {
-      v68 = [v21 BOOLValue];
+      bOOLValue2 = [v21 BOOLValue];
     }
 
     else
     {
-      v68 = 0;
+      bOOLValue2 = 0;
     }
 
     v22 = [v106 objectForKey:@"skip-enabled"];
     if (objc_opt_respondsToSelector())
     {
-      v67 = [v22 BOOLValue];
+      bOOLValue3 = [v22 BOOLValue];
     }
 
     else
     {
-      v67 = 1;
+      bOOLValue3 = 1;
     }
 
     v23 = [v106 objectForKey:@"skip-rules"];
@@ -2128,55 +2128,55 @@ LABEL_51:
     if (isKindOfClass)
     {
       v24 = [v23 objectForKey:@"interval-in-seconds"];
-      v15 = 0.0;
+      intValue2 = 0.0;
       if (objc_opt_respondsToSelector())
       {
-        v15 = [v24 intValue];
+        intValue2 = [v24 intValue];
       }
 
       v25 = [v23 objectForKey:@"frequency"];
       if (objc_opt_respondsToSelector())
       {
-        v66 = [v25 intValue];
+        intValue3 = [v25 intValue];
       }
 
       else
       {
-        v66 = 0;
+        intValue3 = 0;
       }
     }
 
     else
     {
-      v66 = 0;
-      v15 = 0.0;
+      intValue3 = 0;
+      intValue2 = 0.0;
     }
 
     v26 = [v106 objectForKey:@"sharing-enabled"];
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v26 BOOLValue];
+      bOOLValue4 = [v26 BOOLValue];
     }
 
     else
     {
-      v14 = 0;
+      bOOLValue4 = 0;
     }
   }
 
   else
   {
     isKindOfClass = 0;
-    v14 = 0;
+    bOOLValue4 = 0;
     v94 = 0;
-    v66 = 0;
-    v67 = 1;
-    v15 = 0.0;
-    v68 = 0;
-    v69 = 1;
+    intValue3 = 0;
+    bOOLValue3 = 1;
+    intValue2 = 0.0;
+    bOOLValue2 = 0;
+    bOOLValue = 1;
   }
 
-  v27 = [v3 objectForKey:@"artwork"];
+  v27 = [dictionaryCopy objectForKey:@"artwork"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2197,7 +2197,7 @@ LABEL_74:
 
   v29 = 0;
 LABEL_75:
-  v91 = [v3 objectForKey:@"artwork-url"];
+  v91 = [dictionaryCopy objectForKey:@"artwork-url"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2209,19 +2209,19 @@ LABEL_75:
     v30 = 0;
   }
 
-  v90 = [v3 objectForKey:@"virtual-play"];
+  v90 = [dictionaryCopy objectForKey:@"virtual-play"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v65 = [v90 BOOLValue];
+    bOOLValue5 = [v90 BOOLValue];
   }
 
   else
   {
-    v65 = 1;
+    bOOLValue5 = 1;
   }
 
-  v89 = [v3 objectForKey:@"ad-data"];
+  v89 = [dictionaryCopy objectForKey:@"ad-data"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2236,7 +2236,7 @@ LABEL_75:
   v74 = v31;
   if (![v31 length])
   {
-    v32 = [v3 objectForKey:@"iAd-data"];
+    v32 = [dictionaryCopy objectForKey:@"iAd-data"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2251,99 +2251,99 @@ LABEL_75:
     }
   }
 
-  v88 = [v3 objectForKey:@"is-explicit"];
+  v88 = [dictionaryCopy objectForKey:@"is-explicit"];
   if (objc_opt_respondsToSelector())
   {
-    v64 = [v88 BOOLValue];
+    bOOLValue6 = [v88 BOOLValue];
   }
 
   else
   {
-    v64 = 0;
+    bOOLValue6 = 0;
   }
 
-  v87 = [v3 objectForKey:@"is-featured"];
+  v87 = [dictionaryCopy objectForKey:@"is-featured"];
   objc_opt_class();
   v75 = objc_opt_isKindOfClass();
   if (v75)
   {
-    v63 = [v87 BOOLValue];
+    bOOLValue7 = [v87 BOOLValue];
   }
 
   else
   {
-    v63 = 0;
+    bOOLValue7 = 0;
   }
 
-  v86 = [v3 objectForKey:@"is-iad-gateway-video-enabled"];
+  v86 = [dictionaryCopy objectForKey:@"is-iad-gateway-video-enabled"];
   if (objc_opt_respondsToSelector())
   {
-    v62 = [v86 BOOLValue];
+    bOOLValue8 = [v86 BOOLValue];
   }
 
   else
   {
-    v62 = 0;
+    bOOLValue8 = 0;
   }
 
-  v85 = [v3 objectForKey:@"is-sponsored"];
+  v85 = [dictionaryCopy objectForKey:@"is-sponsored"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v61 = [v85 BOOLValue];
+    bOOLValue9 = [v85 BOOLValue];
   }
 
   else
   {
-    v61 = 0;
+    bOOLValue9 = 0;
   }
 
-  v84 = [v3 objectForKey:@"impression-threshold"];
+  v84 = [dictionaryCopy objectForKey:@"impression-threshold"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v60 = [v84 unsignedIntegerValue];
+    unsignedIntegerValue = [v84 unsignedIntegerValue];
   }
 
   else
   {
-    v60 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v83 = [v3 objectForKey:@"is-premium-placement"];
+  v83 = [dictionaryCopy objectForKey:@"is-premium-placement"];
   if (objc_opt_respondsToSelector())
   {
-    v59 = [v83 BOOLValue];
+    bOOLValue10 = [v83 BOOLValue];
   }
 
   else
   {
-    v59 = 0;
+    bOOLValue10 = 0;
   }
 
-  v82 = [v3 objectForKey:@"preview-only"];
+  v82 = [dictionaryCopy objectForKey:@"preview-only"];
   if (objc_opt_respondsToSelector())
   {
-    v58 = [v82 BOOLValue];
+    bOOLValue11 = [v82 BOOLValue];
   }
 
   else
   {
-    v58 = 0;
+    bOOLValue11 = 0;
   }
 
-  v81 = [v3 objectForKey:@"requires-subscription"];
+  v81 = [dictionaryCopy objectForKey:@"requires-subscription"];
   if (objc_opt_respondsToSelector())
   {
-    v57 = [v81 BOOLValue];
+    bOOLValue12 = [v81 BOOLValue];
   }
 
   else
   {
-    v57 = 0;
+    bOOLValue12 = 0;
   }
 
-  v33 = [v3 objectForKey:@"stream-url"];
+  v33 = [dictionaryCopy objectForKey:@"stream-url"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2355,7 +2355,7 @@ LABEL_75:
     v56 = 0;
   }
 
-  v80 = [v3 objectForKey:@"stream-key-cert-url"];
+  v80 = [dictionaryCopy objectForKey:@"stream-key-cert-url"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2367,7 +2367,7 @@ LABEL_75:
     v55 = 0;
   }
 
-  v79 = [v3 objectForKey:@"stream-key-server-url"];
+  v79 = [dictionaryCopy objectForKey:@"stream-key-server-url"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2379,43 +2379,43 @@ LABEL_75:
     v54 = 0;
   }
 
-  v78 = [v3 objectForKey:@"is-shared"];
+  v78 = [dictionaryCopy objectForKey:@"is-shared"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v53 = [v78 BOOLValue];
+    bOOLValue13 = [v78 BOOLValue];
   }
 
   else
   {
-    v53 = 0;
+    bOOLValue13 = 0;
   }
 
-  v77 = [v3 objectForKey:@"is-subscribed"];
+  v77 = [dictionaryCopy objectForKey:@"is-subscribed"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v52 = [v77 BOOLValue];
+    bOOLValue14 = [v77 BOOLValue];
   }
 
   else
   {
-    v52 = 0;
+    bOOLValue14 = 0;
   }
 
-  v76 = [v3 objectForKey:@"subscriber-count"];
+  v76 = [dictionaryCopy objectForKey:@"subscriber-count"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v34 = [v76 intValue];
+    intValue4 = [v76 intValue];
   }
 
   else
   {
-    v34 = 0;
+    intValue4 = 0;
   }
 
-  v35 = [v3 objectForKey:@"share-token"];
+  v35 = [dictionaryCopy objectForKey:@"share-token"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2423,7 +2423,7 @@ LABEL_75:
     v35 = 0;
   }
 
-  v36 = [v3 objectForKey:@"debug-dict"];
+  v36 = [dictionaryCopy objectForKey:@"debug-dict"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2436,7 +2436,7 @@ LABEL_75:
   v160 = 0x3032000000;
   v161 = __Block_byref_object_copy__124;
   v162 = __Block_byref_object_dispose__125;
-  if (!v107)
+  if (!longLongValue)
   {
     v37 = 0;
     v163 = 0;
@@ -2475,9 +2475,9 @@ LABEL_141:
   v112[3] = &unk_279AEA838;
   p_buf = &buf;
   v112[4] = self;
-  v130 = v107;
+  v130 = longLongValue;
   v113 = v110;
-  v131 = v71;
+  v131 = longLongValue2;
   v72 = v30;
   v114 = v72;
   v51 = v29;
@@ -2490,29 +2490,29 @@ LABEL_141:
   v118 = v50;
   v97 = v96;
   v119 = v97;
-  v138 = v69;
+  v138 = bOOLValue;
   v102 = v94;
   v120 = v102;
   v139 = isKindOfClass & 1;
-  v140 = v68;
-  v141 = v57;
-  v142 = v67;
-  v136 = v66;
+  v140 = bOOLValue2;
+  v141 = bOOLValue12;
+  v142 = bOOLValue3;
+  v136 = intValue3;
   v99 = v95;
   v121 = v99;
-  v132 = v15;
-  v143 = v65;
+  v132 = intValue2;
+  v143 = bOOLValue5;
   v133 = v70;
   v144 = v75 & 1;
-  v145 = v63;
-  v146 = v64;
-  v147 = v62;
-  v148 = v61;
+  v145 = bOOLValue7;
+  v146 = bOOLValue6;
+  v147 = bOOLValue8;
+  v148 = bOOLValue9;
   v104 = v74;
   v122 = v104;
-  v134 = v60;
-  v149 = v59;
-  v150 = v58;
+  v134 = unsignedIntegerValue;
+  v149 = bOOLValue10;
+  v150 = bOOLValue11;
   v123 = v111;
   v108 = v56;
   v124 = v108;
@@ -2520,12 +2520,12 @@ LABEL_141:
   v125 = v42;
   v43 = v54;
   v126 = v43;
-  v151 = v53;
-  v152 = v52;
-  v137 = v34;
+  v151 = bOOLValue13;
+  v152 = bOOLValue14;
+  v137 = intValue4;
   v44 = v35;
   v127 = v44;
-  v153 = v14;
+  v153 = bOOLValue4;
   v45 = v36;
   v128 = v45;
   v135 = v158;
@@ -2612,9 +2612,9 @@ uint64_t __39__RadioModel_newStationWithDictionary___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)newPreviewStationWithDictionary:(id)a3
+- (id)newPreviewStationWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2627,7 +2627,7 @@ uint64_t __39__RadioModel_newStationWithDictionary___block_invoke(uint64_t a1)
   v8[3] = &unk_279AEA880;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = dictionaryCopy;
   v9 = v5;
   [(RadioModel *)self performWriteTransactionWithBlock:v8];
   v6 = v12[5];
@@ -2649,9 +2649,9 @@ uint64_t __46__RadioModel_newPreviewStationWithDictionary___block_invoke(uint64_
   return [v5 setSortOrder:0];
 }
 
-- (id)newFeaturedStationWithDictionary:(id)a3
+- (id)newFeaturedStationWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2664,7 +2664,7 @@ uint64_t __46__RadioModel_newPreviewStationWithDictionary___block_invoke(uint64_
   v8[3] = &unk_279AEA880;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = dictionaryCopy;
   v9 = v5;
   [(RadioModel *)self performWriteTransactionWithBlock:v8];
   v6 = v12[5];
@@ -2694,9 +2694,9 @@ uint64_t __47__RadioModel_newFeaturedStationWithDictionary___block_invoke(uint64
 - (unint64_t)globalVersion
 {
   v2 = [(RadioModel *)self _databasePropertyValueForKey:@"globalVersion"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (NSString)globalHash
@@ -2797,28 +2797,28 @@ void __30__RadioModel_featuredStations__block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteStation:(id)a3
+- (void)deleteStation:(id)station
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  stationCopy = station;
+  if (stationCopy)
   {
     v5 = os_log_create("com.apple.amp.radio", "Model");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = stationCopy;
       _os_log_impl(&dword_261792000, v5, OS_LOG_TYPE_INFO, "[RadioModel] Deleting station: %@", buf, 0xCu);
     }
 
-    v6 = [v4 model];
+    model = [stationCopy model];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __28__RadioModel_deleteStation___block_invoke;
     v8[3] = &unk_279AEACA0;
     v8[4] = self;
-    v9 = v4;
-    [v6 performWriteTransactionWithBlock:v8];
+    v9 = stationCopy;
+    [model performWriteTransactionWithBlock:v8];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -2831,14 +2831,14 @@ void __28__RadioModel_deleteStation___block_invoke(uint64_t a1)
   [v1 deleteObject:v2];
 }
 
-- (void)deleteStationWithID:(int64_t)a3
+- (void)deleteStationWithID:(int64_t)d
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __34__RadioModel_deleteStationWithID___block_invoke;
   v3[3] = &unk_279AEAC78;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = d;
   [(RadioModel *)self performWriteTransactionWithBlock:v3];
 }
 
@@ -2856,15 +2856,15 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
   [v2 deleteAllData];
 }
 
-- (id)convertObjectsInSet:(id)a3
+- (id)convertObjectsInSet:(id)set
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [setCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2876,7 +2876,7 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(setCopy);
         }
 
         v10 = [(RadioModel *)self convertObject:*(*(&v13 + 1) + 8 * i)];
@@ -2891,7 +2891,7 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [setCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -2907,15 +2907,15 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)convertObjects:(id)a3
+- (id)convertObjects:(id)objects
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectsCopy = objects;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [objectsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2927,7 +2927,7 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectsCopy);
         }
 
         v10 = [(RadioModel *)self convertObject:*(*(&v13 + 1) + 8 * i)];
@@ -2942,7 +2942,7 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [objectsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -2958,9 +2958,9 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)convertObject:(id)a3
+- (id)convertObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -2970,17 +2970,17 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 managedObjectContext];
-    v7 = v6;
-    if (v6 && ![v6 isEqual:self->_context])
+    managedObjectContext = [objectCopy managedObjectContext];
+    v7 = managedObjectContext;
+    if (managedObjectContext && ![managedObjectContext isEqual:self->_context])
     {
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __28__RadioModel_convertObject___block_invoke;
       v33[3] = &unk_279AEA880;
-      v35 = self;
+      selfCopy = self;
       v36 = &v37;
-      v34 = v5;
+      v34 = objectCopy;
       [(RadioModel *)self performTransactionWithBlock:v33];
       v10 = v34;
     }
@@ -2988,15 +2988,15 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
     else
     {
       v8 = v38;
-      v9 = v5;
+      v9 = objectCopy;
       v10 = v8[5];
       v8[5] = v9;
     }
   }
 
-  else if ([v5 conformsToProtocol:&unk_287408FB8])
+  else if ([objectCopy conformsToProtocol:&unk_287408FB8])
   {
-    if ([v5 isDatabaseBacked])
+    if ([objectCopy isDatabaseBacked])
     {
       v27 = 0;
       v28 = &v27;
@@ -3004,16 +3004,16 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
       v30 = __Block_byref_object_copy__124;
       v31 = __Block_byref_object_dispose__125;
       v32 = 0;
-      v11 = [v5 managedObject];
-      v12 = v11;
-      if (v11)
+      managedObject = [objectCopy managedObject];
+      v12 = managedObject;
+      if (managedObject)
       {
-        v13 = [v11 managedObjectContext];
-        v14 = [v13 isEqual:self->_context];
+        managedObjectContext2 = [managedObject managedObjectContext];
+        v14 = [managedObjectContext2 isEqual:self->_context];
 
         if (v14)
         {
-          objc_storeStrong(v38 + 5, a3);
+          objc_storeStrong(v38 + 5, object);
         }
 
         else
@@ -3023,13 +3023,13 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
           v22 = __28__RadioModel_convertObject___block_invoke_2;
           v23 = &unk_279AEA880;
           v26 = &v27;
-          v24 = self;
+          selfCopy2 = self;
           v25 = v12;
           [(RadioModel *)self performTransactionWithBlock:&v20];
           if (v28[5])
           {
             v17 = objc_alloc(objc_opt_class());
-            v18 = [v17 initWithModel:self managedObject:{v28[5], v20, v21, v22, v23, v24}];
+            v18 = [v17 initWithModel:self managedObject:{v28[5], v20, v21, v22, v23, selfCopy2}];
             v19 = v38[5];
             v38[5] = v18;
           }
@@ -3041,7 +3041,7 @@ void __34__RadioModel_deleteStationWithID___block_invoke(uint64_t a1)
 
     else
     {
-      objc_storeStrong(v38 + 5, a3);
+      objc_storeStrong(v38 + 5, object);
     }
   }
 
@@ -3073,9 +3073,9 @@ void __28__RadioModel_convertObject___block_invoke_2(uint64_t a1)
 - (unint64_t)authenticatedAccountIdentifier
 {
   v2 = [(RadioModel *)self _databasePropertyValueForKey:@"accountIdentifier"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (NSArray)allStations
@@ -3135,17 +3135,17 @@ void __25__RadioModel_allStations__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_contextDidSaveNotification:(id)a3
+- (void)_contextDidSaveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(NSManagedObjectContext *)v5 persistentStoreCoordinator];
-  v7 = [v6 isEqual:self->_storeCoordinator];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  persistentStoreCoordinator = [(NSManagedObjectContext *)object persistentStoreCoordinator];
+  v7 = [persistentStoreCoordinator isEqual:self->_storeCoordinator];
 
   if (v7)
   {
     context = self->_context;
-    if (v5 == context)
+    if (object == context)
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
@@ -3153,7 +3153,7 @@ void __25__RadioModel_allStations__block_invoke(uint64_t a1)
       v10[3] = &unk_279AEACA0;
       v10[4] = self;
       v9 = &v11;
-      v11 = v4;
+      v11 = notificationCopy;
       dispatch_async(MEMORY[0x277D85CD0], v10);
     }
 
@@ -3165,7 +3165,7 @@ void __25__RadioModel_allStations__block_invoke(uint64_t a1)
       v12[3] = &unk_279AEACA0;
       v12[4] = self;
       v9 = &v13;
-      v13 = v4;
+      v13 = notificationCopy;
       [(NSManagedObjectContext *)context performBlock:v12];
     }
   }
@@ -3186,8 +3186,8 @@ void __42__RadioModel__contextDidSaveNotification___block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE1A8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE1A8] object:0];
   [(NSOperationQueue *)self->_backgroundCleanupQueue cancelAllOperations];
   backgroundTaskInvalidateTimerSource = self->_backgroundTaskInvalidateTimerSource;
   if (backgroundTaskInvalidateTimerSource)
@@ -3213,9 +3213,9 @@ void __42__RadioModel__contextDidSaveNotification___block_invoke(uint64_t a1)
   [(RadioModel *)&v5 dealloc];
 }
 
-- (id)_initBackgroundModelWithPersistentStoreCoordinator:(id)a3
+- (id)_initBackgroundModelWithPersistentStoreCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = RadioModel;
   v6 = [(RadioModel *)&v11 init];
@@ -3224,10 +3224,10 @@ void __42__RadioModel__contextDidSaveNotification___block_invoke(uint64_t a1)
   {
     [(RadioModel *)v6 _defaultRadioModelInitialization];
     v7->_isBackgroundModel = 1;
-    objc_storeStrong(&v7->_storeCoordinator, a3);
-    v8 = [(NSPersistentStoreCoordinator *)v7->_storeCoordinator managedObjectModel];
+    objc_storeStrong(&v7->_storeCoordinator, coordinator);
+    managedObjectModel = [(NSPersistentStoreCoordinator *)v7->_storeCoordinator managedObjectModel];
     model = v7->_model;
-    v7->_model = v8;
+    v7->_model = managedObjectModel;
 
     [(RadioModel *)v7 _prepareModel];
   }
@@ -3278,8 +3278,8 @@ uint64_t __33__RadioModel__radioDirectoryPath__block_invoke()
 
 + (id)_radioDatabasePath
 {
-  v2 = [a1 _radioDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"Radio.db"];
+  _radioDirectoryPath = [self _radioDirectoryPath];
+  v3 = [_radioDirectoryPath stringByAppendingPathComponent:@"Radio.db"];
 
   return v3;
 }
@@ -3322,17 +3322,17 @@ uint64_t __33__RadioModel__radioDirectoryPath__block_invoke()
 
   v4 = +[RadioModel sharedModel];
   v5 = +[RadioModel backgroundModel];
-  v6 = [v4 context];
+  context = [v4 context];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __27__RadioModel_deleteAllData__block_invoke;
   v10[3] = &unk_279AEA810;
   v11 = v5;
   v12 = v4;
-  v13 = a1;
+  selfCopy = self;
   v7 = v4;
   v8 = v5;
-  [v6 performBlockAndWait:v10];
+  [context performBlockAndWait:v10];
 
   v9 = +[RadioRequest defaultURLCache];
   [v9 removeAllCachedResponses];
@@ -3476,7 +3476,7 @@ uint64_t __25__RadioModel_sharedModel__block_invoke()
   block[1] = 3221225472;
   block[2] = __29__RadioModel_backgroundModel__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (backgroundModel___once != -1)
   {
     dispatch_once(&backgroundModel___once, block);

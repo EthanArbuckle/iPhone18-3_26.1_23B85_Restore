@@ -1,12 +1,12 @@
 @interface MPRemoteCommandCenter
 + (MPRemoteCommandCenter)sharedCommandCenter;
-+ (id)commandCenterForPlayerID:(id)a3;
-+ (id)commandCenterForPlayerPath:(id)a3;
-+ (void)getPendingCommandTypesWithCompletion:(id)a3;
-+ (void)updateLaunchCommandsWithConfigurationHandler:(id)a3;
++ (id)commandCenterForPlayerID:(id)d;
++ (id)commandCenterForPlayerPath:(id)path;
++ (void)getPendingCommandTypesWithCompletion:(id)completion;
++ (void)updateLaunchCommandsWithConfigurationHandler:(id)handler;
 - (BOOL)canBeNowPlayingApplication;
 - (BOOL)commandHandlersRegistered;
-- (BOOL)containsCommand:(id)a3;
+- (BOOL)containsCommand:(id)command;
 - (BOOL)isInvalidated;
 - (MPAdvanceRepeatModeCommand)advanceRepeatModeCommand;
 - (MPAdvanceShuffleModeCommand)advanceShuffleModeCommand;
@@ -48,8 +48,8 @@
 - (MPRemoteCommand)specialSeekForwardCommand;
 - (MPRemoteCommand)stopCommand;
 - (MPRemoteCommand)togglePlayPauseCommand;
-- (MPRemoteCommandCenter)initWithPlayerID:(id)a3;
-- (MPRemoteCommandCenter)initWithPlayerPath:(id)a3;
+- (MPRemoteCommandCenter)initWithPlayerID:(id)d;
+- (MPRemoteCommandCenter)initWithPlayerPath:(id)path;
 - (MPRemoteCommandCenterDelegate)delegate;
 - (MPReorderQueueCommand)reorderQueueCommand;
 - (MPSetPlaybackQueueCommand)setPlaybackQueueCommand;
@@ -62,31 +62,31 @@
 - (MPVocalsControlCommand)vocalsControlCommand;
 - (NSString)playerID;
 - (id)_activeCommands;
-- (id)_createRemoteCommandWithConcreteClass:(Class)a3 mediaRemoteType:(unsigned int)a4;
+- (id)_createRemoteCommandWithConcreteClass:(Class)class mediaRemoteType:(unsigned int)type;
 - (id)_debugCommandDescriptions;
 - (id)_stateDictionary;
-- (void)_commandTargetsDidChangeNotification:(id)a3;
-- (void)_dispatchMediaRemoteCommand:(unsigned int)a3 withOptions:(id)a4 completion:(id)a5;
+- (void)_commandTargetsDidChangeNotification:(id)notification;
+- (void)_dispatchMediaRemoteCommand:(unsigned int)command withOptions:(id)options completion:(id)completion;
 - (void)_flushEventQueue;
 - (void)_locked_reevaluateCanBeNowPlayingApplication;
 - (void)_locked_stopMediaRemoteSync;
-- (void)_scheduleSupportedCommandsChanged:(BOOL)a3;
+- (void)_scheduleSupportedCommandsChanged:(BOOL)changed;
 - (void)_startMediaRemoteSync;
 - (void)dealloc;
-- (void)dispatchCommandEvent:(id)a3 completion:(id)a4;
-- (void)getPendingCommandTypesWithCompletion:(id)a3;
+- (void)dispatchCommandEvent:(id)event completion:(id)completion;
+- (void)getPendingCommandTypesWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)remoteCommandDidMutatePropagatableProperty:(id)a3;
-- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)a3;
+- (void)remoteCommandDidMutatePropagatableProperty:(id)property;
+- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)playing;
 @end
 
 @implementation MPRemoteCommandCenter
 
 - (NSString)playerID
 {
-  v2 = [(MRPlayerPath *)self->_playerPath player];
-  v3 = [v2 identifier];
-  v4 = [v3 copy];
+  player = [(MRPlayerPath *)self->_playerPath player];
+  identifier = [player identifier];
+  v4 = [identifier copy];
 
   return v4;
 }
@@ -115,20 +115,20 @@ void __44__MPRemoteCommandCenter_sharedCommandCenter__block_invoke()
   v20 = *MEMORY[0x1E69E9840];
   if (self->_mediaRemoteCommandHandler)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPRemoteCommandCenter.m" lineNumber:157 description:@"_startMediaRemoteSync should only be called from -initWithPlayerPath:"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPRemoteCommandCenter.m" lineNumber:157 description:@"_startMediaRemoteSync should only be called from -initWithPlayerPath:"];
   }
 
   objc_initWeak(&location, self);
   v3 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MPRemoteCommandCenter *)self playerID];
+    playerID = [(MPRemoteCommandCenter *)self playerID];
     playerPath = self->_playerPath;
     *buf = 134218498;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v4;
+    v17 = playerID;
     v18 = 2114;
     v19 = playerPath;
     _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _startMediaRemoteSync | MRMediaRemoteAddCommandHandlerForPlayer [] playerPath=%{public}@", buf, 0x20u);
@@ -140,8 +140,8 @@ void __44__MPRemoteCommandCenter_sharedCommandCenter__block_invoke()
   mediaRemoteCommandHandler = self->_mediaRemoteCommandHandler;
   self->_mediaRemoteCommandHandler = v6;
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:self selector:sel__commandTargetsDidChangeNotification_ name:@"MPRemoteCommandTargetsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__commandTargetsDidChangeNotification_ name:@"MPRemoteCommandTargetsDidChangeNotification" object:0];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -257,11 +257,11 @@ void __44__MPRemoteCommandCenter_sharedCommandCenter__block_invoke()
   v3 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MPRemoteCommandCenter *)self playerID];
+    playerID = [(MPRemoteCommandCenter *)self playerID];
     *buf = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v4;
+    v11 = playerID;
     _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] invalidate", buf, 0x16u);
   }
 
@@ -543,11 +543,11 @@ void __44__MPRemoteCommandCenter_sharedCommandCenter__block_invoke()
   v3 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MPRemoteCommandCenter *)self playerID];
+    playerID = [(MPRemoteCommandCenter *)self playerID];
     *buf = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v4;
+    v11 = playerID;
     _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] dealloc", buf, 0x16u);
   }
 
@@ -633,8 +633,8 @@ void __44__MPRemoteCommandCenter_sharedCommandCenter__block_invoke()
 
 - (id)_debugCommandDescriptions
 {
-  v2 = [(MPRemoteCommandCenter *)self _activeCommands];
-  v3 = [v2 msv_map:&__block_literal_global_112_56398];
+  _activeCommands = [(MPRemoteCommandCenter *)self _activeCommands];
+  v3 = [_activeCommands msv_map:&__block_literal_global_112_56398];
 
   return v3;
 }
@@ -943,13 +943,13 @@ id __50__MPRemoteCommandCenter__debugCommandDescriptions__block_invoke(uint64_t 
   return WeakRetained;
 }
 
-- (void)_scheduleSupportedCommandsChanged:(BOOL)a3
+- (void)_scheduleSupportedCommandsChanged:(BOOL)changed
 {
-  if (!self->_scheduledSupportedCommandsChangedNotification || a3)
+  if (!self->_scheduledSupportedCommandsChangedNotification || changed)
   {
     aBlock[7] = v3;
     aBlock[8] = v4;
-    v6 = a3;
+    changedCopy = changed;
     self->_scheduledSupportedCommandsChangedNotification = 1;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -957,7 +957,7 @@ id __50__MPRemoteCommandCenter__debugCommandDescriptions__block_invoke(uint64_t 
     aBlock[3] = &unk_1E7682518;
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
-    if (v6)
+    if (changedCopy)
     {
       dispatch_async(MEMORY[0x1E69E96A0], v7);
     }
@@ -1064,15 +1064,15 @@ id __59__MPRemoteCommandCenter__scheduleSupportedCommandsChanged___block_invoke_
   return v5;
 }
 
-- (BOOL)containsCommand:(id)a3
+- (BOOL)containsCommand:(id)command
 {
-  v4 = [a3 commandCenter];
-  LOBYTE(self) = v4 == self;
+  commandCenter = [command commandCenter];
+  LOBYTE(self) = commandCenter == self;
 
   return self;
 }
 
-- (void)_commandTargetsDidChangeNotification:(id)a3
+- (void)_commandTargetsDidChangeNotification:(id)notification
 {
   v15 = *MEMORY[0x1E69E9840];
   if (![(MPRemoteCommandCenter *)self isInvalidated])
@@ -1139,14 +1139,14 @@ void __62__MPRemoteCommandCenter__commandTargetsDidChangeNotification___block_in
   [v2 postNotificationName:@"MPRemoteCommandCenterCommandHandlersRegisteredNotification" object:*(a1 + 32) userInfo:0];
 }
 
-- (id)_createRemoteCommandWithConcreteClass:(Class)a3 mediaRemoteType:(unsigned int)a4
+- (id)_createRemoteCommandWithConcreteClass:(Class)class mediaRemoteType:(unsigned int)type
 {
-  v4 = *&a4;
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  v4 = *&type;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    v14 = NSStringFromClass(a3);
-    [v13 handleFailureInMethod:a2 object:self file:@"MPRemoteCommandCenter.m" lineNumber:590 description:{@"Attempted to create remote command object of unknown class %@", v14}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v14 = NSStringFromClass(class);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPRemoteCommandCenter.m" lineNumber:590 description:{@"Attempted to create remote command object of unknown class %@", v14}];
   }
 
   os_unfair_lock_lock_with_options();
@@ -1161,12 +1161,12 @@ void __62__MPRemoteCommandCenter__commandTargetsDidChangeNotification___block_in
   v15[1] = 3221225472;
   v15[2] = __79__MPRemoteCommandCenter__createRemoteCommandWithConcreteClass_mediaRemoteType___block_invoke_2;
   v15[3] = &__block_descriptor_44_e32_B32__0__MPRemoteCommand_8Q16_B24lu32l8;
-  v15[4] = a3;
+  v15[4] = class;
   v16 = v4;
   v10 = [(NSMutableArray *)activeCommands indexOfObjectPassingTest:v15];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [[a3 alloc] initWithMediaRemoteCommandType:v4];
+    v11 = [[class alloc] initWithMediaRemoteCommandType:v4];
     [v11 setCommandCenter:self];
     [(NSMutableArray *)self->_activeCommands addObject:v11];
   }
@@ -1348,22 +1348,22 @@ BOOL __40__MPRemoteCommandCenter__activeCommands__block_invoke_2(uint64_t a1, vo
   return enableLanguageOptionCommand;
 }
 
-- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)a3
+- (void)setDisableAutomaticCanBeNowPlaying:(BOOL)playing
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_disableAutomaticCanBeNowPlaying = a3;
+  self->_disableAutomaticCanBeNowPlaying = playing;
   [(MPRemoteCommandCenter *)self _locked_reevaluateCanBeNowPlayingApplication];
   os_unfair_lock_unlock(&self->_lock);
 
   [(MPRemoteCommandCenter *)self _scheduleSupportedCommandsChanged:1];
 }
 
-- (void)getPendingCommandTypesWithCompletion:(id)a3
+- (void)getPendingCommandTypesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   MRNowPlayingPlayerPathGetPlayer();
   v4 = MRMediaRemoteCopyPendingCommands();
-  v3[2](v3, v4, 0);
+  completionCopy[2](completionCopy, v4, 0);
 }
 
 - (void)_flushEventQueue
@@ -1374,12 +1374,12 @@ BOOL __40__MPRemoteCommandCenter__activeCommands__block_invoke_2(uint64_t a1, vo
   v4 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MPRemoteCommandCenter *)self playerID];
+    playerID = [(MPRemoteCommandCenter *)self playerID];
     v6 = [(NSMutableArray *)self->_eventQueue count];
     *buf = 134218498;
-    v26 = self;
+    selfCopy7 = self;
     v27 = 2114;
-    v28 = v5;
+    v28 = playerID;
     v29 = 2048;
     v30 = v6;
     _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _flushEventQueue | start [] events.count=%ld", buf, 0x20u);
@@ -1391,12 +1391,12 @@ BOOL __40__MPRemoteCommandCenter__activeCommands__block_invoke_2(uint64_t a1, vo
     v8 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(MPRemoteCommandCenter *)self playerID];
+      playerID2 = [(MPRemoteCommandCenter *)self playerID];
       v10 = [(NSMutableArray *)self->_eventQueue count];
       *buf = 134218754;
-      v26 = self;
+      selfCopy7 = self;
       v27 = 2114;
-      v28 = v9;
+      v28 = playerID2;
       v29 = 2048;
       v30 = v10;
       v31 = 2114;
@@ -1409,20 +1409,20 @@ BOOL __40__MPRemoteCommandCenter__activeCommands__block_invoke_2(uint64_t a1, vo
   os_unfair_lock_unlock(&self->_lock);
   if (v11)
   {
-    v12 = [(_MPRemoteCommandEventDispatch *)v11 state];
+    state = [(_MPRemoteCommandEventDispatch *)v11 state];
     v13 = v11[5];
-    if (v12 > 99)
+    if (state > 99)
     {
-      if ((v12 - 100) < 2 || (v12 - 200) < 2)
+      if ((state - 100) < 2 || (state - 200) < 2)
       {
         v17 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [(MPRemoteCommandCenter *)self playerID];
+          playerID3 = [(MPRemoteCommandCenter *)self playerID];
           *buf = 134218498;
-          v26 = self;
+          selfCopy7 = self;
           v27 = 2114;
-          v28 = v18;
+          v28 = playerID3;
           v29 = 2114;
           v30 = v13;
           _os_log_impl(&dword_1A238D000, v17, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _flushEventQueue | recursing [nextEvent was finalized] event=%{public}@", buf, 0x20u);
@@ -1432,36 +1432,36 @@ BOOL __40__MPRemoteCommandCenter__activeCommands__block_invoke_2(uint64_t a1, vo
       }
     }
 
-    else if (v12 < 2)
+    else if (state < 2)
     {
       v19 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(MPRemoteCommandCenter *)self playerID];
+        playerID4 = [(MPRemoteCommandCenter *)self playerID];
         *buf = 134218498;
-        v26 = self;
+        selfCopy7 = self;
         v27 = 2114;
-        v28 = v20;
+        v28 = playerID4;
         v29 = 2114;
         v30 = v13;
         _os_log_impl(&dword_1A238D000, v19, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _flushEventQueue | asserting [nextEvent not delivered] event=%{public}@", buf, 0x20u);
       }
 
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = v11[5];
-      [v21 handleFailureInMethod:a2 object:self file:@"MPRemoteCommandCenter.m" lineNumber:402 description:{@"_flushEventQueue found nextEvent with unexpected state: %@ -> %ld", v22, v12}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPRemoteCommandCenter.m" lineNumber:402 description:{@"_flushEventQueue found nextEvent with unexpected state: %@ -> %ld", v22, state}];
     }
 
-    else if (v12 == 2)
+    else if (state == 2)
     {
       v23 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(MPRemoteCommandCenter *)self playerID];
+        playerID5 = [(MPRemoteCommandCenter *)self playerID];
         *buf = 134218498;
-        v26 = self;
+        selfCopy7 = self;
         v27 = 2114;
-        v28 = v24;
+        v28 = playerID5;
         v29 = 2114;
         v30 = v13;
         _os_log_impl(&dword_1A238D000, v23, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _flushEventQueue | dispatching [] event=%{public}@", buf, 0x20u);
@@ -1470,19 +1470,19 @@ BOOL __40__MPRemoteCommandCenter__activeCommands__block_invoke_2(uint64_t a1, vo
       [(_MPRemoteCommandEventDispatch *)v11 dispatch];
     }
 
-    else if (v12 == 3)
+    else if (state == 3)
     {
-      v14 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      playerID7 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
+      if (os_log_type_enabled(playerID7, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(MPRemoteCommandCenter *)self playerID];
+        playerID6 = [(MPRemoteCommandCenter *)self playerID];
         *buf = 134218498;
-        v26 = self;
+        selfCopy7 = self;
         v27 = 2114;
-        v28 = v15;
+        v28 = playerID6;
         v29 = 2114;
         v30 = v13;
-        _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _flushEventQueue | waiting [nextEvent already dispatched] event=%{public}@", buf, 0x20u);
+        _os_log_impl(&dword_1A238D000, playerID7, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _flushEventQueue | waiting [nextEvent already dispatched] event=%{public}@", buf, 0x20u);
       }
 
       goto LABEL_16;
@@ -1494,12 +1494,12 @@ BOOL __40__MPRemoteCommandCenter__activeCommands__block_invoke_2(uint64_t a1, vo
     v13 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(MPRemoteCommandCenter *)self playerID];
+      playerID7 = [(MPRemoteCommandCenter *)self playerID];
       v16 = [(NSMutableArray *)self->_eventQueue count];
       *buf = 134218498;
-      v26 = self;
+      selfCopy7 = self;
       v27 = 2114;
-      v28 = v14;
+      v28 = playerID7;
       v29 = 2048;
       v30 = v16;
       _os_log_impl(&dword_1A238D000, v13, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _flushEventQueue | empty [no next event] events.count=%ld", buf, 0x20u);
@@ -1508,38 +1508,38 @@ LABEL_16:
   }
 }
 
-- (void)dispatchCommandEvent:(id)a3 completion:(id)a4
+- (void)dispatchCommandEvent:(id)event completion:(id)completion
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if ([(MPRemoteCommandCenter *)self isInvalidated])
   {
     v8 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(MPRemoteCommandCenter *)self playerID];
+      playerID = [(MPRemoteCommandCenter *)self playerID];
       *buf = 134218242;
-      v43 = self;
+      selfCopy6 = self;
       v44 = 2114;
-      v45 = v9;
+      v45 = playerID;
       _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] dispatchCommandEvent | undeliverable [command center invalidated]", buf, 0x16u);
     }
 
-    v10 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPErrorDomain" code:5 debugDescription:{@"Undeliverable command event [invalidated] %@", v6}];
+    v10 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPErrorDomain" code:5 debugDescription:{@"Undeliverable command event [invalidated] %@", eventCopy}];
     v11 = [MPRemoteCommandStatus statusWithCode:404 error:v10];
     v49[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:1];
-    v7[2](v7, v12);
+    completionCopy[2](completionCopy, v12);
   }
 
-  else if (v6)
+  else if (eventCopy)
   {
-    v13 = [v6 command];
-    v14 = [v13 skipSerializedEventDelivery];
+    command = [eventCopy command];
+    skipSerializedEventDelivery = [command skipSerializedEventDelivery];
 
-    if (v14)
+    if (skipSerializedEventDelivery)
     {
       v15 = [_MPRemoteCommandEventDispatch alloc];
       v39[0] = MEMORY[0x1E69E9820];
@@ -1547,18 +1547,18 @@ LABEL_16:
       v39[2] = __57__MPRemoteCommandCenter_dispatchCommandEvent_completion___block_invoke;
       v39[3] = &unk_1E7681F50;
       v39[4] = self;
-      v16 = v6;
+      v16 = eventCopy;
       v40 = v16;
-      v41 = v7;
+      v41 = completionCopy;
       v17 = [(_MPRemoteCommandEventDispatch *)&v15->super.isa initWithEvent:v16 continuation:v39];
       v18 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(MPRemoteCommandCenter *)self playerID];
+        playerID2 = [(MPRemoteCommandCenter *)self playerID];
         *buf = 134218498;
-        v43 = self;
+        selfCopy6 = self;
         v44 = 2114;
-        v45 = v19;
+        v45 = playerID2;
         v46 = 2114;
         v47 = v16;
         _os_log_impl(&dword_1A238D000, v18, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] dispatchCommandEvent | delivering event [non-serialized] event=%{public}@", buf, 0x20u);
@@ -1568,11 +1568,11 @@ LABEL_16:
       v20 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(MPRemoteCommandCenter *)self playerID];
+        playerID3 = [(MPRemoteCommandCenter *)self playerID];
         *buf = 134218498;
-        v43 = self;
+        selfCopy6 = self;
         v44 = 2114;
-        v45 = v21;
+        v45 = playerID3;
         v46 = 2114;
         v47 = v16;
         _os_log_impl(&dword_1A238D000, v20, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] dispatchCommandEvent | dispatching event [non-serialized] event=%{public}@", buf, 0x20u);
@@ -1590,20 +1590,20 @@ LABEL_16:
       v34[2] = __57__MPRemoteCommandCenter_dispatchCommandEvent_completion___block_invoke_68;
       v34[3] = &unk_1E7681FC8;
       objc_copyWeak(&v37, &location);
-      v28 = v6;
+      v28 = eventCopy;
       v35 = v28;
-      v36 = v7;
+      v36 = completionCopy;
       v29 = [(_MPRemoteCommandEventDispatch *)&v27->super.isa initWithEvent:v28 continuation:v34];
       os_unfair_lock_lock(&self->_lock);
       [(NSMutableArray *)self->_eventQueue addObject:v29];
       v30 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [(MPRemoteCommandCenter *)self playerID];
+        playerID4 = [(MPRemoteCommandCenter *)self playerID];
         *buf = 134218498;
-        v43 = self;
+        selfCopy6 = self;
         v44 = 2114;
-        v45 = v31;
+        v45 = playerID4;
         v46 = 2114;
         v47 = v28;
         _os_log_impl(&dword_1A238D000, v30, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] dispatchCommandEvent | delivering event [] event=%{public}@", buf, 0x20u);
@@ -1614,11 +1614,11 @@ LABEL_16:
       v32 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [(MPRemoteCommandCenter *)self playerID];
+        playerID5 = [(MPRemoteCommandCenter *)self playerID];
         *buf = 134218242;
-        v43 = self;
+        selfCopy6 = self;
         v44 = 2114;
-        v45 = v33;
+        v45 = playerID5;
         _os_log_impl(&dword_1A238D000, v32, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] dispatchCommandEvent | flushing event queue [event added]", buf, 0x16u);
       }
 
@@ -1633,11 +1633,11 @@ LABEL_16:
     v22 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(MPRemoteCommandCenter *)self playerID];
+      playerID6 = [(MPRemoteCommandCenter *)self playerID];
       *buf = 134218242;
-      v43 = self;
+      selfCopy6 = self;
       v44 = 2114;
-      v45 = v23;
+      v45 = playerID6;
       _os_log_impl(&dword_1A238D000, v22, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] dispatchCommandEvent | undeliverable [missing command event]", buf, 0x16u);
     }
 
@@ -1645,7 +1645,7 @@ LABEL_16:
     v25 = [MPRemoteCommandStatus statusWithCode:404 error:v24];
     v48 = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
-    v7[2](v7, v26);
+    completionCopy[2](completionCopy, v26);
   }
 }
 
@@ -1724,12 +1724,12 @@ uint64_t __57__MPRemoteCommandCenter_dispatchCommandEvent_completion___block_inv
   return [*(a1 + 32) _flushEventQueue];
 }
 
-- (void)_dispatchMediaRemoteCommand:(unsigned int)a3 withOptions:(id)a4 completion:(id)a5
+- (void)_dispatchMediaRemoteCommand:(unsigned int)command withOptions:(id)options completion:(id)completion
 {
-  v6 = *&a3;
+  v6 = *&command;
   v42[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
   if ((v6 - 100) > 5)
   {
     if (v6 == 11)
@@ -1757,24 +1757,24 @@ uint64_t __57__MPRemoteCommandCenter_dispatchCommandEvent_completion___block_inv
     v10 = 110;
   }
 
-  v11 = [(MPRemoteCommandCenter *)self _activeCommands];
+  _activeCommands = [(MPRemoteCommandCenter *)self _activeCommands];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __76__MPRemoteCommandCenter__dispatchMediaRemoteCommand_withOptions_completion___block_invoke;
   v31[3] = &__block_descriptor_36_e25_B16__0__MPRemoteCommand_8l;
   v32 = v10;
-  v12 = [v11 msv_firstWhere:v31];
+  v12 = [_activeCommands msv_firstWhere:v31];
   v13 = v12;
   if (!v12)
   {
     v17 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(MPRemoteCommandCenter *)self playerID];
+      playerID = [(MPRemoteCommandCenter *)self playerID];
       *buf = 134218498;
-      v35 = self;
+      selfCopy3 = self;
       v36 = 2114;
-      v37 = v18;
+      v37 = playerID;
       v38 = 2048;
       v39 = v10;
       _os_log_impl(&dword_1A238D000, v17, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _dispatchMediaRemoteCommand | undeliverable [no registered command] mediaRemoteCommandType=%ld", buf, 0x20u);
@@ -1782,7 +1782,7 @@ uint64_t __57__MPRemoteCommandCenter_dispatchCommandEvent_completion___block_inv
 
     v19 = MEMORY[0x1E696ABC0];
     v20 = MRMediaRemoteCopyCommandDescription();
-    v21 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B10B0]];
+    v21 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B10B0]];
     v14 = [v19 msv_errorWithDomain:@"MPErrorDomain" code:5 debugDescription:{@"Undeliverable command [never supported] %@: %@", v20, v21}];
 
     v22 = [MPRemoteCommandStatus statusWithCode:404 error:v14];
@@ -1797,11 +1797,11 @@ uint64_t __57__MPRemoteCommandCenter_dispatchCommandEvent_completion___block_inv
     v25 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(MPRemoteCommandCenter *)self playerID];
+      playerID2 = [(MPRemoteCommandCenter *)self playerID];
       *buf = 134218754;
-      v35 = self;
+      selfCopy3 = self;
       v36 = 2114;
-      v37 = v26;
+      v37 = playerID2;
       v38 = 2048;
       v39 = v10;
       v40 = 2114;
@@ -1811,7 +1811,7 @@ uint64_t __57__MPRemoteCommandCenter_dispatchCommandEvent_completion___block_inv
 
     v27 = MEMORY[0x1E696ABC0];
     v28 = MRMediaRemoteCopyCommandDescription();
-    v29 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B10B0]];
+    v29 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E69B10B0]];
     v14 = [v27 msv_errorWithDomain:@"MPErrorDomain" code:5 debugDescription:{@"Undeliverable command [unsupported] %@: %@", v28, v29}];
 
     v22 = [MPRemoteCommandStatus statusWithCode:404 error:v14];
@@ -1820,20 +1820,20 @@ uint64_t __57__MPRemoteCommandCenter_dispatchCommandEvent_completion___block_inv
     v24 = &v33;
 LABEL_20:
     v30 = [v23 arrayWithObjects:v24 count:1];
-    v9[2](v9, v30);
+    completionCopy[2](completionCopy, v30);
 
     goto LABEL_21;
   }
 
-  v14 = [v13 newCommandEventWithCommandType:v6 options:v8];
+  v14 = [v13 newCommandEventWithCommandType:v6 options:optionsCopy];
   v15 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(MPRemoteCommandCenter *)self playerID];
+    playerID3 = [(MPRemoteCommandCenter *)self playerID];
     *buf = 134218754;
-    v35 = self;
+    selfCopy3 = self;
     v36 = 2114;
-    v37 = v16;
+    v37 = playerID3;
     v38 = 2048;
     v39 = v10;
     v40 = 2114;
@@ -1841,26 +1841,26 @@ LABEL_20:
     _os_log_impl(&dword_1A238D000, v15, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _dispatchMediaRemoteCommand | dispatching [] mediaRemoteCommandType=%ld event=%{public}@", buf, 0x2Au);
   }
 
-  [(MPRemoteCommandCenter *)self dispatchCommandEvent:v14 completion:v9];
+  [(MPRemoteCommandCenter *)self dispatchCommandEvent:v14 completion:completionCopy];
 LABEL_21:
 }
 
-- (void)remoteCommandDidMutatePropagatableProperty:(id)a3
+- (void)remoteCommandDidMutatePropagatableProperty:(id)property
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertyCopy = property;
   if ([(MPRemoteCommandCenter *)self isInvalidated])
   {
     v5 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(MPRemoteCommandCenter *)self playerID];
+      playerID = [(MPRemoteCommandCenter *)self playerID];
       v7 = 134218498;
-      v8 = self;
+      selfCopy = self;
       v9 = 2114;
-      v10 = v6;
+      v10 = playerID;
       v11 = 2114;
-      v12 = v4;
+      v12 = propertyCopy;
       _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_ERROR, "[RCC:%p:%{public}@] remoteCommandDidMutatePropagatableProperty | ignoring [command center invalidated] command=%{public}@", &v7, 0x20u);
     }
   }
@@ -1877,14 +1877,14 @@ LABEL_21:
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_mediaRemoteCommandHandler)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"MPRemoteCommandCenter.m" lineNumber:212 description:@"_stopMediaRemoteSync should only be called from -invalidate"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPRemoteCommandCenter.m" lineNumber:212 description:@"_stopMediaRemoteSync should only be called from -invalidate"];
   }
 
-  v33 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v33 removeObserver:self name:@"MPRemoteCommandTargetsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"MPRemoteCommandTargetsDidChangeNotification" object:0];
   v4 = [(NSMutableArray *)self->_eventQueue copy];
-  v34 = self;
+  selfCopy = self;
   [(NSMutableArray *)self->_eventQueue removeAllObjects];
   v38 = 0u;
   v39 = 0u;
@@ -1916,8 +1916,8 @@ LABEL_21:
           os_unfair_lock_lock_with_options();
           if (*(v13 + 80) >= 101)
           {
-            v23 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v23 handleFailureInMethod:sel_cancel object:v13 file:@"_MPRemoteCommandEventDispatch.m" lineNumber:253 description:{@"Cannot cancel an already finished command event: %@ state:%ld", *(v13 + 40), *(v13 + 80)}];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:sel_cancel object:v13 file:@"_MPRemoteCommandEventDispatch.m" lineNumber:253 description:{@"Cannot cancel an already finished command event: %@ state:%ld", *(v13 + 40), *(v13 + 80)}];
           }
 
           os_unfair_lock_unlock((v13 + 32));
@@ -1963,33 +1963,33 @@ LABEL_21:
   v24 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [(MPRemoteCommandCenter *)v34 playerID];
-    playerPath = v34->_playerPath;
+    playerID = [(MPRemoteCommandCenter *)selfCopy playerID];
+    playerPath = selfCopy->_playerPath;
     *buf = 134218498;
-    *&buf[4] = v34;
+    *&buf[4] = selfCopy;
     v41 = 2114;
-    v42 = v25;
+    v42 = playerID;
     v43 = 2114;
     v44 = playerPath;
     _os_log_impl(&dword_1A238D000, v24, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _stopMediaRemoteSync | MRMediaRemoteRemoveCommandHandlerBlockForPlayer [] playerPath=%{public}@", buf, 0x20u);
   }
 
   MRMediaRemoteRemoveCommandHandlerBlockForPlayer();
-  mediaRemoteCommandHandler = v34->_mediaRemoteCommandHandler;
-  v34->_mediaRemoteCommandHandler = 0;
+  mediaRemoteCommandHandler = selfCopy->_mediaRemoteCommandHandler;
+  selfCopy->_mediaRemoteCommandHandler = 0;
 
-  v28 = [MPNowPlayingInfoCenter infoCenterForPlayerPath:v34->_playerPath];
+  v28 = [MPNowPlayingInfoCenter infoCenterForPlayerPath:selfCopy->_playerPath];
   if (!v28)
   {
     v29 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(MPRemoteCommandCenter *)v34 playerID];
-      v31 = v34->_playerPath;
+      playerID2 = [(MPRemoteCommandCenter *)selfCopy playerID];
+      v31 = selfCopy->_playerPath;
       *buf = 134218498;
-      *&buf[4] = v34;
+      *&buf[4] = selfCopy;
       v41 = 2114;
-      v42 = v30;
+      v42 = playerID2;
       v43 = 2114;
       v44 = v31;
       _os_log_impl(&dword_1A238D000, v29, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] _stopMediaRemoteSync | MRMediaRemoteRemovePlayer [infoCenter does not exist] playerPath=%{public}@", buf, 0x20u);
@@ -2072,10 +2072,10 @@ void __46__MPRemoteCommandCenter__startMediaRemoteSync__block_invoke_36(uint64_t
   (*(*(a1 + 48) + 16))();
 }
 
-- (MPRemoteCommandCenter)initWithPlayerPath:(id)a3
+- (MPRemoteCommandCenter)initWithPlayerPath:(id)path
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathCopy = path;
   v27.receiver = self;
   v27.super_class = MPRemoteCommandCenter;
   v6 = [(MPRemoteCommandCenter *)&v27 init];
@@ -2094,7 +2094,7 @@ void __46__MPRemoteCommandCenter__startMediaRemoteSync__block_invoke_36(uint64_t
   if (initWithPlayerPath__onceToken_56527 != -1)
   {
     dispatch_once(&initWithPlayerPath__onceToken_56527, block);
-    if (v5)
+    if (pathCopy)
     {
       goto LABEL_5;
     }
@@ -2102,26 +2102,26 @@ void __46__MPRemoteCommandCenter__startMediaRemoteSync__block_invoke_36(uint64_t
     goto LABEL_4;
   }
 
-  if (!v5)
+  if (!pathCopy)
   {
 LABEL_4:
-    v5 = [MEMORY[0x1E69B0AD0] localPlayerPath];
+    pathCopy = [MEMORY[0x1E69B0AD0] localPlayerPath];
   }
 
 LABEL_5:
-  v9 = [v5 copy];
+  v9 = [pathCopy copy];
   playerPath = v8->_playerPath;
   v8->_playerPath = v9;
 
   v11 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(MPRemoteCommandCenter *)v8 playerID];
+    playerID = [(MPRemoteCommandCenter *)v8 playerID];
     v13 = v8->_playerPath;
     *buf = 134218498;
     v29 = v8;
     v30 = 2114;
-    v31 = v12;
+    v31 = playerID;
     v32 = 2114;
     v33 = v13;
     _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] initWithPlayerPath:%{public}@", buf, 0x20u);
@@ -2132,8 +2132,8 @@ LABEL_5:
 
   if (!v15)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:v8 file:@"MPRemoteCommandCenter.m" lineNumber:135 description:{@"Cannot have two MPRemoteCommandCenters for the same playerPath: %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v8 file:@"MPRemoteCommandCenter.m" lineNumber:135 description:{@"Cannot have two MPRemoteCommandCenters for the same playerPath: %@", pathCopy}];
   }
 
   v16 = objc_opt_class();
@@ -2142,13 +2142,13 @@ LABEL_5:
   objc_sync_exit(v16);
 
   v8->_lock._os_unfair_lock_opaque = 0;
-  v17 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   activeCommands = v8->_activeCommands;
-  v8->_activeCommands = v17;
+  v8->_activeCommands = array;
 
-  v19 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   eventQueue = v8->_eventQueue;
-  v8->_eventQueue = v19;
+  v8->_eventQueue = array2;
 
   [(MPRemoteCommandCenter *)v8 _startMediaRemoteSync];
   v23[0] = MEMORY[0x1E69E9820];
@@ -2214,90 +2214,90 @@ uint64_t __44__MPRemoteCommandCenter_initWithPlayerPath___block_invoke_2(uint64_
   return v9;
 }
 
-- (MPRemoteCommandCenter)initWithPlayerID:(id)a3
+- (MPRemoteCommandCenter)initWithPlayerID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69B0AC8]) initWithIdentifier:v4 displayName:v4];
+    defaultPlayer = [objc_alloc(MEMORY[0x1E69B0AC8]) initWithIdentifier:dCopy displayName:dCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69B0AC8] defaultPlayer];
+    defaultPlayer = [MEMORY[0x1E69B0AC8] defaultPlayer];
   }
 
-  v6 = v5;
+  v6 = defaultPlayer;
   v7 = objc_alloc(MEMORY[0x1E69B0AD0]);
-  v8 = [MEMORY[0x1E69B0AA0] localOrigin];
-  v9 = [MEMORY[0x1E69B09D8] localClient];
-  v10 = [v7 initWithOrigin:v8 client:v9 player:v6];
+  localOrigin = [MEMORY[0x1E69B0AA0] localOrigin];
+  localClient = [MEMORY[0x1E69B09D8] localClient];
+  v10 = [v7 initWithOrigin:localOrigin client:localClient player:v6];
 
   v11 = [(MPRemoteCommandCenter *)self initWithPlayerPath:v10];
   return v11;
 }
 
-+ (void)getPendingCommandTypesWithCompletion:(id)a3
++ (void)getPendingCommandTypesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = MRMediaRemoteCopyPendingCommands();
-  v3[2](v3, v4, 0);
+  completionCopy[2](completionCopy, v4, 0);
 }
 
-+ (id)commandCenterForPlayerPath:(id)a3
++ (id)commandCenterForPlayerPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
-  v5 = [__commandCenterMap objectForKey:v3];
+  v5 = [__commandCenterMap objectForKey:pathCopy];
   objc_sync_exit(v4);
 
   return v5;
 }
 
-+ (id)commandCenterForPlayerID:(id)a3
++ (id)commandCenterForPlayerID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E69B0AC8]) initWithIdentifier:v3 displayName:v3];
+    defaultPlayer = [objc_alloc(MEMORY[0x1E69B0AC8]) initWithIdentifier:dCopy displayName:dCopy];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69B0AC8] defaultPlayer];
+    defaultPlayer = [MEMORY[0x1E69B0AC8] defaultPlayer];
   }
 
-  v5 = v4;
+  v5 = defaultPlayer;
   v6 = objc_alloc(MEMORY[0x1E69B0AD0]);
-  v7 = [MEMORY[0x1E69B0AA0] localOrigin];
-  v8 = [MEMORY[0x1E69B09D8] localClient];
-  v9 = [v6 initWithOrigin:v7 client:v8 player:v5];
+  localOrigin = [MEMORY[0x1E69B0AA0] localOrigin];
+  localClient = [MEMORY[0x1E69B09D8] localClient];
+  v9 = [v6 initWithOrigin:localOrigin client:localClient player:v5];
 
   v10 = [objc_opt_class() commandCenterForPlayerPath:v9];
 
   return v10;
 }
 
-+ (void)updateLaunchCommandsWithConfigurationHandler:(id)a3
++ (void)updateLaunchCommandsWithConfigurationHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_autoreleasePoolPush();
   v5 = [(MPRemoteCommandCenter *)[_MPRemoteLaunchCommandCenter alloc] initWithPlayerID:@"LaunchCommandBuilder"];
-  v3[2](v3, v5);
-  v6 = [(MPRemoteCommandCenter *)v5 _activeCommands];
-  v7 = [v6 msv_flatMap:&__block_literal_global_56550];
+  handlerCopy[2](handlerCopy, v5);
+  _activeCommands = [(MPRemoteCommandCenter *)v5 _activeCommands];
+  v7 = [_activeCommands msv_flatMap:&__block_literal_global_56550];
   v8 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MPRemoteCommandCenter *)v5 playerID];
+    playerID = [(MPRemoteCommandCenter *)v5 playerID];
     *buf = 134218498;
     v13 = v5;
     v14 = 2114;
-    v15 = v9;
+    v15 = playerID;
     v16 = 2114;
-    v17 = v6;
+    v17 = _activeCommands;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "[RCC:%p:%{public}@] updateLaunchCommands | MRMediaRemoteSetDefaultSupportedCommands [] commands=%{public}@", buf, 0x20u);
   }
 

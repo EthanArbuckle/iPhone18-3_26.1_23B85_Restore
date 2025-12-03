@@ -1,7 +1,7 @@
 @interface NDAppConfigAnalyticsPayloadAssemblerConfigProvider
 - (NDAppConfigAnalyticsPayloadAssemblerConfigProvider)init;
-- (NDAppConfigAnalyticsPayloadAssemblerConfigProvider)initWithAppConfigurationManager:(id)a3;
-- (void)fetchConfigWithCompletion:(id)a3;
+- (NDAppConfigAnalyticsPayloadAssemblerConfigProvider)initWithAppConfigurationManager:(id)manager;
+- (void)fetchConfigWithCompletion:(id)completion;
 @end
 
 @implementation NDAppConfigAnalyticsPayloadAssemblerConfigProvider
@@ -32,10 +32,10 @@
   objc_exception_throw(v6);
 }
 
-- (NDAppConfigAnalyticsPayloadAssemblerConfigProvider)initWithAppConfigurationManager:(id)a3
+- (NDAppConfigAnalyticsPayloadAssemblerConfigProvider)initWithAppConfigurationManager:(id)manager
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAppConfigAnalyticsPayloadAssemblerConfigProvider initWithAppConfigurationManager:];
   }
@@ -46,28 +46,28 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appConfigurationManager, a3);
+    objc_storeStrong(&v6->_appConfigurationManager, manager);
   }
 
   return v7;
 }
 
-- (void)fetchConfigWithCompletion:(id)a3
+- (void)fetchConfigWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAppConfigAnalyticsPayloadAssemblerConfigProvider fetchConfigWithCompletion:];
   }
 
-  v5 = [(NDAppConfigAnalyticsPayloadAssemblerConfigProvider *)self appConfigurationManager];
+  appConfigurationManager = [(NDAppConfigAnalyticsPayloadAssemblerConfigProvider *)self appConfigurationManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__NDAppConfigAnalyticsPayloadAssemblerConfigProvider_fetchConfigWithCompletion___block_invoke;
   v7[3] = &unk_27997AB48;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchAppConfigurationIfNeededWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [appConfigurationManager fetchAppConfigurationIfNeededWithCompletion:v7];
 }
 
 void __80__NDAppConfigAnalyticsPayloadAssemblerConfigProvider_fetchConfigWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3)

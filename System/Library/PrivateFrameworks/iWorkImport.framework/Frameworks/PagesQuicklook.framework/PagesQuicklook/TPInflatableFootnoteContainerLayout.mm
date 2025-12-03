@@ -23,11 +23,11 @@
 {
   v42.receiver = self;
   v42.super_class = TPInflatableFootnoteContainerLayout;
-  v3 = [(TPFootnoteContainerLayout *)&v42 computeLayoutGeometry];
+  computeLayoutGeometry = [(TPFootnoteContainerLayout *)&v42 computeLayoutGeometry];
   v10 = objc_msgSend_pageLayout(self, v4, v5, v6, v7, v8);
   if (v10)
   {
-    objc_msgSend_frame(v3, v9, v11, v12, v13, v14);
+    objc_msgSend_frame(computeLayoutGeometry, v9, v11, v12, v13, v14);
     v16 = v15;
     v18 = v17;
     v20 = v19.n128_f64[0];
@@ -56,11 +56,11 @@
       v38.n128_f64[0] = v33;
       v40 = objc_msgSend_initWithFrame_(v34, v39, v35, v36, v37, v38);
 
-      v3 = v40;
+      computeLayoutGeometry = v40;
     }
   }
 
-  return v3;
+  return computeLayoutGeometry;
 }
 
 @end

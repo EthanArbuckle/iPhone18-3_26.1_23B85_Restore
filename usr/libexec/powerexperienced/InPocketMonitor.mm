@@ -1,22 +1,22 @@
 @interface InPocketMonitor
-+ (InPocketMonitor)initWithQueue:(id)a3;
-- (InPocketMonitor)initWithQueue:(id)a3;
-- (void)addDelegate:(id)a3;
++ (InPocketMonitor)initWithQueue:(id)queue;
+- (InPocketMonitor)initWithQueue:(id)queue;
+- (void)addDelegate:(id)delegate;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
 
 @implementation InPocketMonitor
 
-+ (InPocketMonitor)initWithQueue:(id)a3
++ (InPocketMonitor)initWithQueue:(id)queue
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100011298;
   block[3] = &unk_10002C738;
-  v9 = a3;
+  queueCopy = queue;
   v3 = qword_100036C58;
-  v4 = v9;
+  v4 = queueCopy;
   if (v3 != -1)
   {
     dispatch_once(&qword_100036C58, block);
@@ -28,16 +28,16 @@
   return v5;
 }
 
-- (InPocketMonitor)initWithQueue:(id)a3
+- (InPocketMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = InPocketMonitor;
   v6 = [(InPocketMonitor *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = os_log_create("com.apple.powerexperienced", "inpocketmonitor");
     log = v7->_log;
     v7->_log = v8;
@@ -77,8 +77,8 @@
   suppressionQueue = self->_suppressionQueue;
   self->_suppressionQueue = v5;
 
-  v7 = [(InPocketMonitor *)self queue];
-  [(NSOperationQueue *)self->_suppressionQueue setUnderlyingQueue:v7];
+  queue = [(InPocketMonitor *)self queue];
+  [(NSOperationQueue *)self->_suppressionQueue setUnderlyingQueue:queue];
 
   [(NSOperationQueue *)self->_suppressionQueue setMaxConcurrentOperationCount:1];
   suppresionManager = self->_suppresionManager;
@@ -103,13 +103,13 @@
   [(CMSuppressionManager *)self->_suppresionManager stopSuppressionUpdates];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
-    v5 = [(InPocketMonitor *)self delegates];
-    [v5 addObject:v4];
+    delegateCopy = delegate;
+    delegates = [(InPocketMonitor *)self delegates];
+    [delegates addObject:delegateCopy];
   }
 }
 

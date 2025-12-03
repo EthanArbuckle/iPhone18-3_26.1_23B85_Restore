@@ -1,69 +1,69 @@
 @interface PKRendererTile
-+ (double)layerFrameForLevel:(uint64_t)a3 offset:(uint64_t)a4;
-+ (void)drawingFrameForLayerFrame:(CGFloat)a3 drawingTransform:(CGFloat)a4 contentScale:(double)a5;
++ (double)layerFrameForLevel:(uint64_t)level offset:(uint64_t)offset;
++ (void)drawingFrameForLayerFrame:(CGFloat)frame drawingTransform:(CGFloat)transform contentScale:(double)scale;
 - (PKRendererTileProperties)properties;
 - (double)tileLayer;
 - (double)tileMultiplyLayer;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)framebuffer;
-- (id)initWithLevel:(__int128 *)a3 offset:(char)a4 drawingTransform:(char)a5 contentsScale:(char)a6 sixChannelMode:(double)a7 transparentBlending:(double)a8 wantsExtendedDynamicRangeContent:(double)a9;
+- (id)initWithLevel:(__int128 *)level offset:(char)offset drawingTransform:(char)transform contentsScale:(char)scale sixChannelMode:(double)mode transparentBlending:(double)blending wantsExtendedDynamicRangeContent:(double)content;
 - (id)multiplyFramebuffer;
 - (uint64_t)_clearFramebuffers;
-- (uint64_t)_lockAndSetFramebuffer:(uint64_t)a1;
-- (uint64_t)_lockAndSetMultiplyFramebuffer:(uint64_t)a1;
+- (uint64_t)_lockAndSetFramebuffer:(uint64_t)framebuffer;
+- (uint64_t)_lockAndSetMultiplyFramebuffer:(uint64_t)framebuffer;
 - (uint64_t)hasContents;
-- (uint64_t)lockAndSetFramebufferThreadSafe:(uint64_t)a1;
-- (uint64_t)lockAndSetMultiplyFramebufferThreadSafe:(uint64_t)a1;
+- (uint64_t)lockAndSetFramebufferThreadSafe:(uint64_t)safe;
+- (uint64_t)lockAndSetMultiplyFramebufferThreadSafe:(uint64_t)safe;
 - (uint64_t)recreatePurgedTileLayersIfPossible;
 - (void)clearFramebuffersThreadSafe;
 - (void)dealloc;
 - (void)purgeTileLayers;
-- (void)updateDisableTransactionActions:(int)a3 reloadContents:;
+- (void)updateDisableTransactionActions:(int)actions reloadContents:;
 - (void)updateLastUsedTimestamp;
 @end
 
 @implementation PKRendererTile
 
-- (id)initWithLevel:(__int128 *)a3 offset:(char)a4 drawingTransform:(char)a5 contentsScale:(char)a6 sixChannelMode:(double)a7 transparentBlending:(double)a8 wantsExtendedDynamicRangeContent:(double)a9
+- (id)initWithLevel:(__int128 *)level offset:(char)offset drawingTransform:(char)transform contentsScale:(char)scale sixChannelMode:(double)mode transparentBlending:(double)blending wantsExtendedDynamicRangeContent:(double)content
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v40.receiver = a1;
+  v40.receiver = self;
   v40.super_class = PKRendererTile;
   v17 = objc_msgSendSuper2(&v40, sel_init);
   v18 = v17;
   if (v17)
   {
-    v19 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v20 = *(v17 + 15);
-    *(v17 + 15) = v19;
+    *(v17 + 15) = uUID;
 
-    *(v17 + 21) = a7;
-    *(v17 + 22) = a8;
+    *(v17 + 21) = mode;
+    *(v17 + 22) = blending;
     v21 = *(v17 + 17);
     v22 = MEMORY[0x1E695E0F0];
     *(v17 + 16) = a2;
     *(v17 + 17) = v22;
 
-    *(v17 + 82) = a4;
-    *(v17 + 83) = a5;
-    v23 = *a3;
-    v24 = a3[2];
-    *(v17 + 3) = a3[1];
+    *(v17 + 82) = offset;
+    *(v17 + 83) = transform;
+    v23 = *level;
+    v24 = level[2];
+    *(v17 + 3) = level[1];
     *(v17 + 4) = v24;
     *(v17 + 2) = v23;
-    *(v17 + 84) = a6;
-    *(v17 + 19) = a9;
-    atomic_store(*&a9, v17 + 1);
-    [*(v17 + 11) setContentsScale:a9];
-    [*(v17 + 12) setContentsScale:a9];
-    v37 = *a3;
-    v38 = a3[1];
-    v39 = a3[2];
+    *(v17 + 84) = scale;
+    *(v17 + 19) = content;
+    atomic_store(*&content, v17 + 1);
+    [*(v17 + 11) setContentsScale:content];
+    [*(v17 + 12) setContentsScale:content];
+    v37 = *level;
+    v38 = level[1];
+    v39 = level[2];
     v25 = [(PKRendererTile *)*(v17 + 21) layerFrameForLevel:PKRendererTile offset:*(v17 + 16)];
     v27 = v26;
     v29 = v28;
@@ -98,11 +98,11 @@
 
 - (void)updateLastUsedTimestamp
 {
-  if (a1)
+  if (self)
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
-    atomic_store(v2, (a1 + 24));
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
+    atomic_store(v2, (self + 24));
   }
 }
 
@@ -178,7 +178,7 @@ void __25__PKRendererTile_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PKRendererTile alloc];
   level = self->_level;
@@ -213,34 +213,34 @@ void __25__PKRendererTile_dealloc__block_invoke(uint64_t a1)
 
 - (PKRendererTileProperties)properties
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     v3 = [PKRendererTileProperties alloc];
-    a = v2[1]._drawingTransform.a;
-    ty = v2[1]._drawingTransform.ty;
-    v6 = *&v2[2].super.isa;
-    v7 = *&v2->_drawingTransform.b;
-    v9[0] = *&v2->_offset.y;
+    a = selfCopy[1]._drawingTransform.a;
+    ty = selfCopy[1]._drawingTransform.ty;
+    v6 = *&selfCopy[2].super.isa;
+    v7 = *&selfCopy->_drawingTransform.b;
+    v9[0] = *&selfCopy->_offset.y;
     v9[1] = v7;
-    v9[2] = *&v2->_drawingTransform.d;
-    a1 = [(PKRendererTileProperties *)v3 initWithLevel:*&a offset:v9 drawingTransform:BYTE2(v2->_drawingTransform.ty) sixChannelMode:BYTE3(v2->_drawingTransform.ty) transparentBlending:BYTE4(v2->_drawingTransform.ty) extendedDynamicRange:ty, v6];
+    v9[2] = *&selfCopy->_drawingTransform.d;
+    self = [(PKRendererTileProperties *)v3 initWithLevel:*&a offset:v9 drawingTransform:BYTE2(selfCopy->_drawingTransform.ty) sixChannelMode:BYTE3(selfCopy->_drawingTransform.ty) transparentBlending:BYTE4(selfCopy->_drawingTransform.ty) extendedDynamicRange:ty, v6];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-+ (double)layerFrameForLevel:(uint64_t)a3 offset:(uint64_t)a4
++ (double)layerFrameForLevel:(uint64_t)level offset:(uint64_t)offset
 {
   objc_opt_self();
   objc_opt_self();
-  v7 = round(exp2(a4) * 256.0);
+  v7 = round(exp2(offset) * 256.0);
 
-  return DKDRoundedRectForScale(a1 * v7, a2 * v7, v7, v7, 1.0);
+  return DKDRoundedRectForScale(self * v7, a2 * v7, v7, v7, 1.0);
 }
 
-+ (void)drawingFrameForLayerFrame:(CGFloat)a3 drawingTransform:(CGFloat)a4 contentScale:(double)a5
++ (void)drawingFrameForLayerFrame:(CGFloat)frame drawingTransform:(CGFloat)transform contentScale:(double)scale
 {
   objc_opt_self();
   v13 = a7[1];
@@ -248,68 +248,68 @@ void __25__PKRendererTile_dealloc__block_invoke(uint64_t a1)
   *&v14.c = v13;
   *&v14.tx = a7[2];
   CGAffineTransformInvert(&v15, &v14);
-  v16.origin.x = a1;
+  v16.origin.x = self;
   v16.origin.y = a2;
-  v16.size.width = a3;
-  v16.size.height = a4;
+  v16.size.width = frame;
+  v16.size.height = transform;
   v17 = CGRectApplyAffineTransform(v16, &v15);
-  DKDRoundedRectForScale(v17.origin.x, v17.origin.y, v17.size.width, v17.size.height, a5);
+  DKDRoundedRectForScale(v17.origin.x, v17.origin.y, v17.size.width, v17.size.height, scale);
 }
 
-- (void)updateDisableTransactionActions:(int)a3 reloadContents:
+- (void)updateDisableTransactionActions:(int)actions reloadContents:
 {
-  if (a1)
+  if (self)
   {
     [MEMORY[0x1E6979518] begin];
-    if ((*(a1 + 86) & 1) != 0 || a2)
+    if ((*(self + 86) & 1) != 0 || a2)
     {
       [MEMORY[0x1E6979518] setDisableActions:1];
     }
 
-    if (a3)
+    if (actions)
     {
-      [*(a1 + 88) reloadValueForKeyPath:@"contents"];
-      [*(a1 + 96) reloadValueForKeyPath:@"contents"];
+      [*(self + 88) reloadValueForKeyPath:@"contents"];
+      [*(self + 96) reloadValueForKeyPath:@"contents"];
     }
 
-    *(a1 + 160) = 0x3FF0000000000000;
+    *(self + 160) = 0x3FF0000000000000;
     LODWORD(v6) = 1.0;
-    [*(a1 + 88) setOpacity:v6];
+    [*(self + 88) setOpacity:v6];
     LODWORD(v7) = 1.0;
-    [*(a1 + 96) setOpacity:v7];
+    [*(self + 96) setOpacity:v7];
     [MEMORY[0x1E6979518] commit];
 
-    [(PKRendererTile *)a1 updateLastUsedTimestamp];
+    [(PKRendererTile *)self updateLastUsedTimestamp];
   }
 }
 
 - (double)tileLayer
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = *(a1 + 11);
+    selfCopy = self;
+    v2 = *(self + 11);
     if (v2)
     {
 LABEL_20:
-      a1 = v2;
+      self = v2;
       goto LABEL_21;
     }
 
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     v3 = objc_alloc_init(MEMORY[0x1E6979398]);
-    v4 = *(v1 + 11);
-    *(v1 + 11) = v3;
+    v4 = *(selfCopy + 11);
+    *(selfCopy + 11) = v3;
 
-    [*(v1 + 11) setFrame:{v1[27], v1[28], v1[29], v1[30]}];
-    [*(v1 + 11) setContentsScale:v1[19]];
-    [*(v1 + 11) setHidden:*(v1 + 86)];
-    v5 = v1[20];
+    [*(selfCopy + 11) setFrame:{selfCopy[27], selfCopy[28], selfCopy[29], selfCopy[30]}];
+    [*(selfCopy + 11) setContentsScale:selfCopy[19]];
+    [*(selfCopy + 11) setHidden:*(selfCopy + 86)];
+    v5 = selfCopy[20];
     *&v5 = v5;
-    [*(v1 + 11) setOpacity:v5];
-    [*(v1 + 11) setAllowsGroupOpacity:0];
-    if (*(v1 + 84))
+    [*(selfCopy + 11) setOpacity:v5];
+    [*(selfCopy + 11) setAllowsGroupOpacity:0];
+    if (*(selfCopy + 84))
     {
       v6 = MEMORY[0x1E69792D8];
     }
@@ -319,15 +319,15 @@ LABEL_20:
       v6 = MEMORY[0x1E69792D0];
     }
 
-    [*(v1 + 11) setToneMapMode:*v6];
+    [*(selfCopy + 11) setToneMapMode:*v6];
     v7 = 0.0;
-    if (*(v1 + 84))
+    if (*(selfCopy + 84))
     {
       v7 = 4.0;
     }
 
-    [*(v1 + 11) setContentsHeadroom:v7];
-    if (*(v1 + 84))
+    [*(selfCopy + 11) setContentsHeadroom:v7];
+    if (*(selfCopy + 84))
     {
       v8 = MEMORY[0x1E69792A0];
     }
@@ -337,23 +337,23 @@ LABEL_20:
       v8 = MEMORY[0x1E69792A8];
     }
 
-    [*(v1 + 11) setPreferredDynamicRange:*v8];
-    v9 = *(v1 + 13);
-    if (!v9 || *(v1 + 80) != 1)
+    [*(selfCopy + 11) setPreferredDynamicRange:*v8];
+    v9 = *(selfCopy + 13);
+    if (!v9 || *(selfCopy + 80) != 1)
     {
 LABEL_19:
       [MEMORY[0x1E6979518] commit];
-      v2 = *(v1 + 11);
+      v2 = *(selfCopy + 11);
       goto LABEL_20;
     }
 
-    if (*(v1 + 82))
+    if (*(selfCopy + 82))
     {
       v10 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979C58]];
-      [*(v1 + 11) setCompositingFilter:v10];
+      [*(selfCopy + 11) setCompositingFilter:v10];
 
-      v9 = *(v1 + 13);
-      v11 = *(v1 + 11);
+      v9 = *(selfCopy + 13);
+      v11 = *(selfCopy + 11);
       if (!v9)
       {
         v12 = 0;
@@ -365,7 +365,7 @@ LABEL_18:
 
     else
     {
-      v11 = *(v1 + 11);
+      v11 = *(selfCopy + 11);
     }
 
     v12 = *(v9 + 56);
@@ -374,7 +374,7 @@ LABEL_18:
 
 LABEL_21:
 
-  return a1;
+  return self;
 }
 
 - (id)description
@@ -405,49 +405,49 @@ LABEL_21:
 
 - (uint64_t)hasContents
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [*(a1 + 88) contents];
-    if (v2)
+    contents = [*(self + 88) contents];
+    if (contents)
     {
-      v1 = 1;
+      selfCopy = 1;
     }
 
     else
     {
-      v3 = [*(v1 + 96) contents];
-      v1 = v3 != 0;
+      contents2 = [*(selfCopy + 96) contents];
+      selfCopy = contents2 != 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (double)tileMultiplyLayer
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = *(a1 + 12);
+    selfCopy = self;
+    v2 = *(self + 12);
     if (!v2)
     {
-      if (*(a1 + 82) == 1)
+      if (*(self + 82) == 1)
       {
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
         v3 = objc_alloc_init(MEMORY[0x1E6979398]);
-        v4 = *(v1 + 12);
-        *(v1 + 12) = v3;
+        v4 = *(selfCopy + 12);
+        *(selfCopy + 12) = v3;
 
-        [*(v1 + 12) setFrame:{v1[27], v1[28], v1[29], v1[30]}];
-        [*(v1 + 12) setContentsScale:v1[19]];
-        [*(v1 + 12) setHidden:*(v1 + 86)];
-        v5 = v1[20];
+        [*(selfCopy + 12) setFrame:{selfCopy[27], selfCopy[28], selfCopy[29], selfCopy[30]}];
+        [*(selfCopy + 12) setContentsScale:selfCopy[19]];
+        [*(selfCopy + 12) setHidden:*(selfCopy + 86)];
+        v5 = selfCopy[20];
         *&v5 = v5;
-        [*(v1 + 12) setOpacity:v5];
-        [*(v1 + 12) setAllowsGroupOpacity:0];
-        if (*(v1 + 84))
+        [*(selfCopy + 12) setOpacity:v5];
+        [*(selfCopy + 12) setAllowsGroupOpacity:0];
+        if (*(selfCopy + 84))
         {
           v6 = MEMORY[0x1E69792A0];
         }
@@ -457,21 +457,21 @@ LABEL_21:
           v6 = MEMORY[0x1E69792A8];
         }
 
-        [*(v1 + 12) setPreferredDynamicRange:*v6];
-        [*(v1 + 12) setToneMapMode:*MEMORY[0x1E69792E0]];
+        [*(selfCopy + 12) setPreferredDynamicRange:*v6];
+        [*(selfCopy + 12) setToneMapMode:*MEMORY[0x1E69792E0]];
         v7 = 0.0;
-        if (*(v1 + 84))
+        if (*(selfCopy + 84))
         {
           v7 = 4.0;
         }
 
-        [*(v1 + 12) setContentsHeadroom:v7];
-        if (*(v1 + 14) && *(v1 + 81) == 1)
+        [*(selfCopy + 12) setContentsHeadroom:v7];
+        if (*(selfCopy + 14) && *(selfCopy + 81) == 1)
         {
           v8 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CA8]];
-          [*(v1 + 12) setCompositingFilter:v8];
+          [*(selfCopy + 12) setCompositingFilter:v8];
 
-          v9 = *(v1 + 14);
+          v9 = *(selfCopy + 14);
           if (v9)
           {
             v10 = *(v9 + 56);
@@ -482,11 +482,11 @@ LABEL_21:
             v10 = 0;
           }
 
-          [*(v1 + 12) setContents:v10];
+          [*(selfCopy + 12) setContents:v10];
         }
 
         [MEMORY[0x1E6979518] commit];
-        v2 = *(v1 + 12);
+        v2 = *(selfCopy + 12);
       }
 
       else
@@ -495,43 +495,43 @@ LABEL_21:
       }
     }
 
-    a1 = v2;
+    self = v2;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)_lockAndSetFramebuffer:(uint64_t)a1
+- (uint64_t)_lockAndSetFramebuffer:(uint64_t)framebuffer
 {
   v4 = a2;
-  if (a1)
+  if (framebuffer)
   {
-    v5 = *(a1 + 104);
+    v5 = *(framebuffer + 104);
     if (v5 == v4)
     {
-      if (*(a1 + 80))
+      if (*(framebuffer + 80))
       {
-        LOBYTE(a1) = 1;
+        LOBYTE(framebuffer) = 1;
         goto LABEL_14;
       }
     }
 
-    else if (*(a1 + 80))
+    else if (*(framebuffer + 80))
     {
       [(PKMetalFramebuffer *)v5 decrementNonPurgeableCount];
-      v6 = *(a1 + 104);
-      *(a1 + 104) = 0;
+      v6 = *(framebuffer + 104);
+      *(framebuffer + 104) = 0;
 
-      *(a1 + 80) = 0;
-      v5 = *(a1 + 104);
+      *(framebuffer + 80) = 0;
+      v5 = *(framebuffer + 104);
     }
 
-    *(a1 + 104) = 0;
+    *(framebuffer + 104) = 0;
 
     if ([(PKMetalFramebuffer *)v4 incrementNonPurgeableCount])
     {
-      objc_storeStrong((a1 + 104), a2);
-      *(a1 + 80) = 1;
+      objc_storeStrong((framebuffer + 104), a2);
+      *(framebuffer + 80) = 1;
       if (v4)
       {
         v7 = v4[7];
@@ -542,59 +542,59 @@ LABEL_21:
         v7 = 0;
       }
 
-      [*(a1 + 88) setContents:v7];
-      if (*(a1 + 82) == 1)
+      [*(framebuffer + 88) setContents:v7];
+      if (*(framebuffer + 82) == 1)
       {
         v8 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979C58]];
-        [*(a1 + 88) setCompositingFilter:v8];
+        [*(framebuffer + 88) setCompositingFilter:v8];
       }
     }
 
     else
     {
-      [*(a1 + 88) setContents:0];
-      [*(a1 + 88) setCompositingFilter:0];
+      [*(framebuffer + 88) setContents:0];
+      [*(framebuffer + 88) setCompositingFilter:0];
     }
 
-    LOBYTE(a1) = *(a1 + 80);
+    LOBYTE(framebuffer) = *(framebuffer + 80);
   }
 
 LABEL_14:
 
-  return a1 & 1;
+  return framebuffer & 1;
 }
 
-- (uint64_t)_lockAndSetMultiplyFramebuffer:(uint64_t)a1
+- (uint64_t)_lockAndSetMultiplyFramebuffer:(uint64_t)framebuffer
 {
   v4 = a2;
-  if (a1)
+  if (framebuffer)
   {
-    v5 = *(a1 + 112);
+    v5 = *(framebuffer + 112);
     if (v5 == v4)
     {
-      if (*(a1 + 81))
+      if (*(framebuffer + 81))
       {
-        LOBYTE(a1) = 1;
+        LOBYTE(framebuffer) = 1;
         goto LABEL_13;
       }
     }
 
-    else if (*(a1 + 81))
+    else if (*(framebuffer + 81))
     {
       [(PKMetalFramebuffer *)v5 decrementNonPurgeableCount];
-      v6 = *(a1 + 112);
-      *(a1 + 112) = 0;
+      v6 = *(framebuffer + 112);
+      *(framebuffer + 112) = 0;
 
-      *(a1 + 81) = 0;
-      v5 = *(a1 + 112);
+      *(framebuffer + 81) = 0;
+      v5 = *(framebuffer + 112);
     }
 
-    *(a1 + 112) = 0;
+    *(framebuffer + 112) = 0;
 
     if ([(PKMetalFramebuffer *)v4 incrementNonPurgeableCount])
     {
-      objc_storeStrong((a1 + 112), a2);
-      *(a1 + 81) = 1;
+      objc_storeStrong((framebuffer + 112), a2);
+      *(framebuffer + 81) = 1;
       if (v4)
       {
         v7 = v4[7];
@@ -605,29 +605,29 @@ LABEL_14:
         v7 = 0;
       }
 
-      [*(a1 + 96) setContents:v7];
+      [*(framebuffer + 96) setContents:v7];
       v8 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CA8]];
-      [*(a1 + 96) setCompositingFilter:v8];
+      [*(framebuffer + 96) setCompositingFilter:v8];
     }
 
     else
     {
-      [*(a1 + 96) setCompositingFilter:0];
-      [*(a1 + 96) setContents:0];
+      [*(framebuffer + 96) setCompositingFilter:0];
+      [*(framebuffer + 96) setContents:0];
     }
 
-    LOBYTE(a1) = *(a1 + 81);
+    LOBYTE(framebuffer) = *(framebuffer + 81);
   }
 
 LABEL_13:
 
-  return a1 & 1;
+  return framebuffer & 1;
 }
 
-- (uint64_t)lockAndSetFramebufferThreadSafe:(uint64_t)a1
+- (uint64_t)lockAndSetFramebufferThreadSafe:(uint64_t)safe
 {
   v3 = a2;
-  if (a1)
+  if (safe)
   {
     v9 = 0;
     v10 = &v9;
@@ -637,7 +637,7 @@ LABEL_13:
     {
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
-      v4 = [(PKRendererTile *)a1 _lockAndSetFramebuffer:v3];
+      v4 = [(PKRendererTile *)safe _lockAndSetFramebuffer:v3];
       *(v10 + 24) = v4;
       [MEMORY[0x1E6979518] commit];
     }
@@ -649,16 +649,16 @@ LABEL_13:
       block[2] = __50__PKRendererTile_lockAndSetFramebufferThreadSafe___block_invoke;
       block[3] = &unk_1E82DBFB8;
       v8 = &v9;
-      block[4] = a1;
+      block[4] = safe;
       v7 = v3;
       dispatch_sync(MEMORY[0x1E69E96A0], block);
     }
 
-    LOBYTE(a1) = *(v10 + 24);
+    LOBYTE(safe) = *(v10 + 24);
     _Block_object_dispose(&v9, 8);
   }
 
-  return a1 & 1;
+  return safe & 1;
 }
 
 uint64_t __50__PKRendererTile_lockAndSetFramebufferThreadSafe___block_invoke(uint64_t a1)
@@ -671,10 +671,10 @@ uint64_t __50__PKRendererTile_lockAndSetFramebufferThreadSafe___block_invoke(uin
   return [v2 commit];
 }
 
-- (uint64_t)lockAndSetMultiplyFramebufferThreadSafe:(uint64_t)a1
+- (uint64_t)lockAndSetMultiplyFramebufferThreadSafe:(uint64_t)safe
 {
   v3 = a2;
-  if (a1)
+  if (safe)
   {
     v9 = 0;
     v10 = &v9;
@@ -684,7 +684,7 @@ uint64_t __50__PKRendererTile_lockAndSetFramebufferThreadSafe___block_invoke(uin
     {
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
-      v4 = [(PKRendererTile *)a1 _lockAndSetMultiplyFramebuffer:v3];
+      v4 = [(PKRendererTile *)safe _lockAndSetMultiplyFramebuffer:v3];
       *(v10 + 24) = v4;
       [MEMORY[0x1E6979518] commit];
     }
@@ -696,16 +696,16 @@ uint64_t __50__PKRendererTile_lockAndSetFramebufferThreadSafe___block_invoke(uin
       block[2] = __58__PKRendererTile_lockAndSetMultiplyFramebufferThreadSafe___block_invoke;
       block[3] = &unk_1E82DBFB8;
       v8 = &v9;
-      block[4] = a1;
+      block[4] = safe;
       v7 = v3;
       dispatch_sync(MEMORY[0x1E69E96A0], block);
     }
 
-    LOBYTE(a1) = *(v10 + 24);
+    LOBYTE(safe) = *(v10 + 24);
     _Block_object_dispose(&v9, 8);
   }
 
-  return a1 & 1;
+  return safe & 1;
 }
 
 uint64_t __58__PKRendererTile_lockAndSetMultiplyFramebufferThreadSafe___block_invoke(uint64_t a1)
@@ -754,12 +754,12 @@ uint64_t __58__PKRendererTile_lockAndSetMultiplyFramebufferThreadSafe___block_in
 
 - (void)clearFramebuffersThreadSafe
 {
-  if (a1)
+  if (self)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
 
-      [(PKRendererTile *)a1 _clearFramebuffers];
+      [(PKRendererTile *)self _clearFramebuffers];
     }
 
     else
@@ -768,7 +768,7 @@ uint64_t __58__PKRendererTile_lockAndSetMultiplyFramebufferThreadSafe___block_in
       block[1] = 3221225472;
       block[2] = __45__PKRendererTile_clearFramebuffersThreadSafe__block_invoke;
       block[3] = &unk_1E82D6388;
-      block[4] = a1;
+      block[4] = self;
       dispatch_sync(MEMORY[0x1E69E96A0], block);
     }
   }
@@ -786,115 +786,115 @@ uint64_t __45__PKRendererTile_clearFramebuffersThreadSafe__block_invoke(uint64_t
 
 - (id)framebuffer
 {
-  if (!a1)
+  if (!self)
   {
 LABEL_4:
 
-    return a1;
+    return self;
   }
 
-  if (*(a1 + 80) == 1)
+  if (*(self + 80) == 1)
   {
-    a1 = a1[13];
+    self = self[13];
     goto LABEL_4;
   }
 
-  a1 = 0;
+  self = 0;
 
-  return a1;
+  return self;
 }
 
 - (id)multiplyFramebuffer
 {
-  if (!a1)
+  if (!self)
   {
 LABEL_4:
 
-    return a1;
+    return self;
   }
 
-  if (*(a1 + 81) == 1)
+  if (*(self + 81) == 1)
   {
-    a1 = a1[14];
+    self = self[14];
     goto LABEL_4;
   }
 
-  a1 = 0;
+  self = 0;
 
-  return a1;
+  return self;
 }
 
 - (void)purgeTileLayers
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 80) == 1)
+    if (*(self + 80) == 1)
     {
-      [(PKMetalFramebuffer *)*(a1 + 104) decrementNonPurgeableCount];
-      *(a1 + 80) = 0;
+      [(PKMetalFramebuffer *)*(self + 104) decrementNonPurgeableCount];
+      *(self + 80) = 0;
     }
 
-    if (*(a1 + 81) == 1)
+    if (*(self + 81) == 1)
     {
-      [(PKMetalFramebuffer *)*(a1 + 112) decrementNonPurgeableCount];
-      *(a1 + 81) = 0;
+      [(PKMetalFramebuffer *)*(self + 112) decrementNonPurgeableCount];
+      *(self + 81) = 0;
     }
 
-    [*(a1 + 88) removeFromSuperlayer];
-    [*(a1 + 88) setContents:0];
-    v2 = *(a1 + 88);
-    *(a1 + 88) = 0;
+    [*(self + 88) removeFromSuperlayer];
+    [*(self + 88) setContents:0];
+    v2 = *(self + 88);
+    *(self + 88) = 0;
 
-    [*(a1 + 96) removeFromSuperlayer];
-    [*(a1 + 96) setContents:0];
-    v3 = *(a1 + 96);
-    *(a1 + 96) = 0;
+    [*(self + 96) removeFromSuperlayer];
+    [*(self + 96) setContents:0];
+    v3 = *(self + 96);
+    *(self + 96) = 0;
   }
 }
 
 - (uint64_t)recreatePurgedTileLayersIfPossible
 {
-  if (!a1)
+  if (!self)
   {
     LOBYTE(v6) = 0;
     return v6 & 1;
   }
 
-  if (*(a1 + 88) && (*(a1 + 96) || *(a1 + 82) != 1))
+  if (*(self + 88) && (*(self + 96) || *(self + 82) != 1))
   {
 LABEL_22:
     LOBYTE(v6) = 1;
     return v6 & 1;
   }
 
-  v2 = *(a1 + 104);
-  if (v2 && (*(a1 + 80) & 1) == 0 && [(PKMetalFramebuffer *)v2 incrementNonPurgeableCount])
+  v2 = *(self + 104);
+  if (v2 && (*(self + 80) & 1) == 0 && [(PKMetalFramebuffer *)v2 incrementNonPurgeableCount])
   {
-    *(a1 + 80) = 1;
+    *(self + 80) = 1;
   }
 
-  v3 = *(a1 + 112);
-  if (v3 && (*(a1 + 81) & 1) == 0 && [(PKMetalFramebuffer *)v3 incrementNonPurgeableCount])
+  v3 = *(self + 112);
+  if (v3 && (*(self + 81) & 1) == 0 && [(PKMetalFramebuffer *)v3 incrementNonPurgeableCount])
   {
-    *(a1 + 81) = 1;
+    *(self + 81) = 1;
   }
 
-  if (!*(a1 + 104) || *(a1 + 80) == 1)
+  if (!*(self + 104) || *(self + 80) == 1)
   {
-    v4 = [(PKRendererTile *)a1 tileLayer];
+    tileLayer = [(PKRendererTile *)self tileLayer];
   }
 
-  if (*(a1 + 82) == 1 && (!*(a1 + 112) || *(a1 + 81) == 1))
+  if (*(self + 82) == 1 && (!*(self + 112) || *(self + 81) == 1))
   {
-    v5 = [(PKRendererTile *)a1 tileMultiplyLayer];
+    tileMultiplyLayer = [(PKRendererTile *)self tileMultiplyLayer];
   }
 
-  v6 = *(a1 + 88);
+  v6 = *(self + 88);
   if (v6)
   {
-    if (!*(a1 + 96))
+    if (!*(self + 96))
     {
-      LOBYTE(v6) = *(a1 + 82) ^ 1;
+      LOBYTE(v6) = *(self + 82) ^ 1;
       return v6 & 1;
     }
 

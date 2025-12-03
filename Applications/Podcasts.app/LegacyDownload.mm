@@ -3,11 +3,11 @@
 - (NSString)episodeUuid;
 - (NSString)podcastUuid;
 - (id)downloadDescription;
-- (void)setEpisodeGuid:(id)a3;
-- (void)setEpisodeUuid:(id)a3;
-- (void)setPodcastUuid:(id)a3;
-- (void)setStoreCollectionIdentifier:(id)a3;
-- (void)setStoreItemId:(id)a3;
+- (void)setEpisodeGuid:(id)guid;
+- (void)setEpisodeUuid:(id)uuid;
+- (void)setPodcastUuid:(id)uuid;
+- (void)setStoreCollectionIdentifier:(id)identifier;
+- (void)setStoreItemId:(id)id;
 @end
 
 @implementation LegacyDownload
@@ -28,9 +28,9 @@
   return v2;
 }
 
-- (void)setEpisodeGuid:(id)a3
+- (void)setEpisodeGuid:(id)guid
 {
-  if (a3)
+  if (guid)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -45,18 +45,18 @@
   *(self + 3) = v5;
 }
 
-- (void)setStoreCollectionIdentifier:(id)a3
+- (void)setStoreCollectionIdentifier:(id)identifier
 {
   v4 = *(self + 4);
-  *(self + 4) = a3;
-  v3 = a3;
+  *(self + 4) = identifier;
+  identifierCopy = identifier;
 }
 
-- (void)setStoreItemId:(id)a3
+- (void)setStoreItemId:(id)id
 {
   v4 = *(self + 5);
-  *(self + 5) = a3;
-  v3 = a3;
+  *(self + 5) = id;
+  idCopy = id;
 }
 
 - (NSString)podcastUuid
@@ -75,9 +75,9 @@
   return v2;
 }
 
-- (void)setPodcastUuid:(id)a3
+- (void)setPodcastUuid:(id)uuid
 {
-  if (a3)
+  if (uuid)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -108,9 +108,9 @@
   return v2;
 }
 
-- (void)setEpisodeUuid:(id)a3
+- (void)setEpisodeUuid:(id)uuid
 {
-  if (a3)
+  if (uuid)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }

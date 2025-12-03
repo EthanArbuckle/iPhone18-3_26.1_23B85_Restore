@@ -1,10 +1,10 @@
 @interface VSAccountInfoViewController
-- (VSAccountInfoViewController)initWithAccount:(id)a3 identityProvider:(id)a4 storage:(id)a5 restrictionsCenter:(id)a6;
-- (VSAccountInfoViewController)initWithCoder:(id)a3;
-- (VSAccountInfoViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (VSAccountInfoViewController)initWithAccount:(id)account identityProvider:(id)provider storage:(id)storage restrictionsCenter:(id)center;
+- (VSAccountInfoViewController)initWithCoder:(id)coder;
+- (VSAccountInfoViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (VSAccountInfoViewControllerDelegate)delegate;
-- (id)_isAppAllowedAccountAccessWithSpecifier:(id)a3;
-- (id)_specifierForAppSettingsViewModel:(id)a3 modifier:(id)a4;
+- (id)_isAppAllowedAccountAccessWithSpecifier:(id)specifier;
+- (id)_specifierForAppSettingsViewModel:(id)model modifier:(id)modifier;
 - (id)createAccountFooterSpecifier;
 - (id)createAppSpecifiers;
 - (id)createDecidedSpecifiers;
@@ -16,24 +16,24 @@
 - (id)loadingSpecifier;
 - (id)loadingTitleSpecifier;
 - (id)specifiers;
-- (void)_aboutPrivacyLinkTapped:(id)a3;
-- (void)_accountUsernameButtonTapped:(id)a3;
-- (void)_appsDidChange:(id)a3;
-- (void)_revokeVoucher:(id)a3;
-- (void)_seeMoreAppsLinkButtonTapped:(id)a3;
-- (void)_setAppAllowedAccess:(id)a3 withSpecifier:(id)a4;
-- (void)_setIdentityProvider:(id)a3;
+- (void)_aboutPrivacyLinkTapped:(id)tapped;
+- (void)_accountUsernameButtonTapped:(id)tapped;
+- (void)_appsDidChange:(id)change;
+- (void)_revokeVoucher:(id)voucher;
+- (void)_seeMoreAppsLinkButtonTapped:(id)tapped;
+- (void)_setAppAllowedAccess:(id)access withSpecifier:(id)specifier;
+- (void)_setIdentityProvider:(id)provider;
 - (void)dealloc;
 - (void)disableAccountSignOutButton;
-- (void)enqueueEvent:(id)a3;
-- (void)handleDestination:(id)a3 completion:(id)a4;
-- (void)handleSignOutSupportedTVProviderDestinationWithCompletion:(id)a3;
-- (void)handleSignOutUnsupportedTVProviderDestinationWithCompletion:(id)a3;
-- (void)prefetchLockupRequestsWithCompletionBlock:(id)a3;
-- (void)scrollToSignOutButtonWithCompletion:(id)a3;
-- (void)scrollToSpecifier:(id)a3 withCompletion:(id)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)setIdentityProvider:(id)a3;
+- (void)enqueueEvent:(id)event;
+- (void)handleDestination:(id)destination completion:(id)completion;
+- (void)handleSignOutSupportedTVProviderDestinationWithCompletion:(id)completion;
+- (void)handleSignOutUnsupportedTVProviderDestinationWithCompletion:(id)completion;
+- (void)prefetchLockupRequestsWithCompletionBlock:(id)block;
+- (void)scrollToSignOutButtonWithCompletion:(id)completion;
+- (void)scrollToSpecifier:(id)specifier withCompletion:(id)completion;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)setIdentityProvider:(id)provider;
 - (void)showMVPDIfNeeded;
 - (void)transitionToLoadedproviderState;
 - (void)transitionToLoadedproviderandappsState;
@@ -41,7 +41,7 @@
 
 @implementation VSAccountInfoViewController
 
-- (VSAccountInfoViewController)initWithCoder:(id)a3
+- (VSAccountInfoViewController)initWithCoder:(id)coder
 {
   v4 = NSStringFromSelector(a2);
   [NSException raise:NSInvalidArgumentException format:@"The %@ initializer is not available.", v4];
@@ -49,7 +49,7 @@
   return 0;
 }
 
-- (VSAccountInfoViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VSAccountInfoViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = NSStringFromSelector(a2);
   [NSException raise:NSInvalidArgumentException format:@"The %@ initializer is not available.", v5];
@@ -57,23 +57,23 @@
   return 0;
 }
 
-- (VSAccountInfoViewController)initWithAccount:(id)a3 identityProvider:(id)a4 storage:(id)a5 restrictionsCenter:(id)a6
+- (VSAccountInfoViewController)initWithAccount:(id)account identityProvider:(id)provider storage:(id)storage restrictionsCenter:(id)center
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accountCopy = account;
+  providerCopy = provider;
+  storageCopy = storage;
+  centerCopy = center;
   VSRequireMainThread();
-  if (v11)
+  if (accountCopy)
   {
-    if (v13)
+    if (storageCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [NSException raise:NSInvalidArgumentException format:@"The storage parameter must not be nil."];
-    if (v14)
+    if (centerCopy)
     {
       goto LABEL_4;
     }
@@ -82,13 +82,13 @@ LABEL_8:
   }
 
   [NSException raise:NSInvalidArgumentException format:@"The account parameter must not be nil."];
-  if (!v13)
+  if (!storageCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (centerCopy)
   {
     goto LABEL_4;
   }
@@ -102,10 +102,10 @@ LABEL_4:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_account, a3);
-    objc_storeStrong(&v16->_identityProvider, a4);
-    objc_storeStrong(&v16->_storage, a5);
-    objc_storeStrong(&v16->_restrictionsCenter, a6);
+    objc_storeStrong(&v15->_account, account);
+    objc_storeStrong(&v16->_identityProvider, provider);
+    objc_storeStrong(&v16->_storage, storage);
+    objc_storeStrong(&v16->_restrictionsCenter, center);
     v17 = objc_alloc_init(VSOnboardingInfoCenter);
     onboardingInfoCenter = v16->_onboardingInfoCenter;
     v16->_onboardingInfoCenter = v17;
@@ -134,13 +134,13 @@ LABEL_4:
     [(VSStateMachine *)v16->_stateMachine setDestinationState:@"LoadedProviderAndApps" forEvent:@"AppsDidChange" inState:@"LoadedProvider"];
     [(VSStateMachine *)v16->_stateMachine setIgnoresUnassignedEvents:1];
     [(VSStateMachine *)v16->_stateMachine activateWithState:@"Empty"];
-    v28 = [[VSAppSettingsFacade alloc] initWithStorage:v13 restrictionsCenter:v14];
+    v28 = [[VSAppSettingsFacade alloc] initWithStorage:storageCopy restrictionsCenter:centerCopy];
     facade = v16->_facade;
     v16->_facade = v28;
 
     v30 = +[NSNotificationCenter defaultCenter];
     [v30 addObserver:v16 selector:"_appsDidChange:" name:VSAppSettingsFacadeAppsDidChangeNotification object:v16->_facade];
-    [(VSAccountInfoViewController *)v16 _setIdentityProvider:v12];
+    [(VSAccountInfoViewController *)v16 _setIdentityProvider:providerCopy];
   }
 
   return v16;
@@ -157,48 +157,48 @@ LABEL_4:
   [(VSAccountInfoViewController *)&v4 dealloc];
 }
 
-- (void)setIdentityProvider:(id)a3
+- (void)setIdentityProvider:(id)provider
 {
-  if (self->_identityProvider != a3)
+  if (self->_identityProvider != provider)
   {
     [(VSAccountInfoViewController *)self _setIdentityProvider:?];
   }
 }
 
-- (void)_setIdentityProvider:(id)a3
+- (void)_setIdentityProvider:(id)provider
 {
-  v12 = a3;
-  objc_storeStrong(&self->_identityProvider, a3);
-  v5 = [(VSAccountInfoViewController *)self facade];
-  [v5 setIdentityProvider:v12];
+  providerCopy = provider;
+  objc_storeStrong(&self->_identityProvider, provider);
+  facade = [(VSAccountInfoViewController *)self facade];
+  [facade setIdentityProvider:providerCopy];
 
-  v6 = [v12 displayName];
-  v7 = [v6 forceUnwrapObject];
+  displayName = [providerCopy displayName];
+  forceUnwrapObject = [displayName forceUnwrapObject];
 
-  if (![v7 length])
+  if (![forceUnwrapObject length])
   {
-    v8 = [(VSAccountInfoViewController *)self account];
-    v9 = [v8 optionalIdentityProviderDisplayName];
-    v10 = [v9 forceUnwrapObject];
+    account = [(VSAccountInfoViewController *)self account];
+    optionalIdentityProviderDisplayName = [account optionalIdentityProviderDisplayName];
+    forceUnwrapObject2 = [optionalIdentityProviderDisplayName forceUnwrapObject];
 
-    v7 = v10;
+    forceUnwrapObject = forceUnwrapObject2;
   }
 
-  [(VSAccountInfoViewController *)self setTitle:v7];
-  if (v12)
+  [(VSAccountInfoViewController *)self setTitle:forceUnwrapObject];
+  if (providerCopy)
   {
-    v11 = [(VSAccountInfoViewController *)self stateMachine];
-    [v11 enqueueEvent:@"LoadProvider"];
+    stateMachine = [(VSAccountInfoViewController *)self stateMachine];
+    [stateMachine enqueueEvent:@"LoadProvider"];
 
     [(VSAccountInfoViewController *)self showMVPDIfNeeded];
   }
 }
 
-- (void)enqueueEvent:(id)a3
+- (void)enqueueEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(VSAccountInfoViewController *)self stateMachine];
-  v6 = [v5 enqueueEvent:v4];
+  eventCopy = event;
+  stateMachine = [(VSAccountInfoViewController *)self stateMachine];
+  v6 = [stateMachine enqueueEvent:eventCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -208,59 +208,59 @@ LABEL_4:
   }
 }
 
-- (void)_aboutPrivacyLinkTapped:(id)a3
+- (void)_aboutPrivacyLinkTapped:(id)tapped
 {
-  v4 = [(VSAccountInfoViewController *)self onboardingInfoCenter];
-  [v4 presentDetailsFromViewController:self];
+  onboardingInfoCenter = [(VSAccountInfoViewController *)self onboardingInfoCenter];
+  [onboardingInfoCenter presentDetailsFromViewController:self];
 }
 
-- (void)_accountUsernameButtonTapped:(id)a3
+- (void)_accountUsernameButtonTapped:(id)tapped
 {
-  v6 = [(VSAccountInfoViewController *)self delegate];
-  v4 = [(VSAccountInfoViewController *)self account];
-  v5 = [(VSAccountInfoViewController *)self identityProvider];
-  [v6 accountInfoViewController:self didSelectEditAccountForAccount:v4 identityProvider:v5];
+  delegate = [(VSAccountInfoViewController *)self delegate];
+  account = [(VSAccountInfoViewController *)self account];
+  identityProvider = [(VSAccountInfoViewController *)self identityProvider];
+  [delegate accountInfoViewController:self didSelectEditAccountForAccount:account identityProvider:identityProvider];
 }
 
-- (void)_seeMoreAppsLinkButtonTapped:(id)a3
+- (void)_seeMoreAppsLinkButtonTapped:(id)tapped
 {
   [VSMetricsManagerObjC recordClickEventWithPage:VSMetricPageSettingsAccountInfo pageType:VSMetricPageTypeSettings target:VSMetricClickTargetFindMoreApps];
-  v4 = [(VSAccountInfoViewController *)self delegate];
-  [v4 accountInfoViewControllerWantsMoreApps:self];
+  delegate = [(VSAccountInfoViewController *)self delegate];
+  [delegate accountInfoViewControllerWantsMoreApps:self];
 }
 
 - (void)showMVPDIfNeeded
 {
-  v6 = [(VSAccountInfoViewController *)self delegate];
-  if ([v6 accountInfoViewControllerShouldShowMVPDAppInstallPrompt:self])
+  delegate = [(VSAccountInfoViewController *)self delegate];
+  if ([delegate accountInfoViewControllerShouldShowMVPDAppInstallPrompt:self])
   {
-    v3 = [(VSAccountInfoViewController *)self facade];
-    v4 = [v3 shouldShowMVPDAppInstallPrompt];
+    facade = [(VSAccountInfoViewController *)self facade];
+    shouldShowMVPDAppInstallPrompt = [facade shouldShowMVPDAppInstallPrompt];
 
-    if (v4)
+    if (shouldShowMVPDAppInstallPrompt)
     {
-      v5 = [(VSAccountInfoViewController *)self facade];
-      [v5 presentMVPDAppInstallPromptFromViewController:self animated:1 completion:0];
+      facade2 = [(VSAccountInfoViewController *)self facade];
+      [facade2 presentMVPDAppInstallPromptFromViewController:self animated:1 completion:0];
 
-      [v6 accountInfoViewControllerDidShowMVPDAppInstallPrompt];
+      [delegate accountInfoViewControllerDidShowMVPDAppInstallPrompt];
     }
   }
 }
 
-- (void)_appsDidChange:(id)a3
+- (void)_appsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(VSAccountInfoViewController *)self facade];
-  v6 = [v5 appSections];
-  v7 = [v6 objectForKeyedSubscript:@"subscribed"];
+  changeCopy = change;
+  facade = [(VSAccountInfoViewController *)self facade];
+  appSections = [facade appSections];
+  v7 = [appSections objectForKeyedSubscript:@"subscribed"];
 
-  v8 = [(VSAccountInfoViewController *)self facade];
-  v9 = [v8 appSections];
-  v10 = [v9 objectForKeyedSubscript:@"available"];
+  facade2 = [(VSAccountInfoViewController *)self facade];
+  appSections2 = [facade2 appSections];
+  v10 = [appSections2 objectForKeyedSubscript:@"available"];
 
-  v11 = [(VSAccountInfoViewController *)self facade];
-  v12 = [v11 appSections];
-  v13 = [v12 objectForKeyedSubscript:@"upgrade"];
+  facade3 = [(VSAccountInfoViewController *)self facade];
+  appSections3 = [facade3 appSections];
+  v13 = [appSections3 objectForKeyedSubscript:@"upgrade"];
 
   if (v7 || v13 || v10)
   {
@@ -278,14 +278,14 @@ LABEL_4:
 - (id)createLockupRequests
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(VSAccountInfoViewController *)self facade];
-  v5 = [v4 appSections];
+  facade = [(VSAccountInfoViewController *)self facade];
+  appSections = [facade appSections];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v5;
+  v6 = appSections;
   v19 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v19)
   {
@@ -319,8 +319,8 @@ LABEL_4:
                 objc_enumerationMutation(v9);
               }
 
-              v14 = [*(*(&v20 + 1) + 8 * j) adamID];
-              v15 = [ASCLockupRequest tvProviderLockupRequestWithAdamID:v14];
+              adamID = [*(*(&v20 + 1) + 8 * j) adamID];
+              v15 = [ASCLockupRequest tvProviderLockupRequestWithAdamID:adamID];
               [v3 addObject:v15];
             }
 
@@ -342,18 +342,18 @@ LABEL_4:
   return v16;
 }
 
-- (void)prefetchLockupRequestsWithCompletionBlock:(id)a3
+- (void)prefetchLockupRequestsWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(VSAccountInfoViewController *)self group];
-  v6 = [(VSAccountInfoViewController *)self createLockupRequests];
+  blockCopy = block;
+  group = [(VSAccountInfoViewController *)self group];
+  createLockupRequests = [(VSAccountInfoViewController *)self createLockupRequests];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_27A8;
   v8[3] = &unk_18710;
-  v9 = v4;
-  v7 = v4;
-  [v5 _cacheLockupsWithRequests:v6 withCompletionBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [group _cacheLockupsWithRequests:createLockupRequests withCompletionBlock:v8];
 }
 
 - (void)transitionToLoadedproviderState
@@ -384,21 +384,21 @@ LABEL_4:
   v4 = +[NSBundle vs_frameworkBundle];
   v5 = [v4 localizedStringForKey:@"AUTHENTICATED_SETTINGS_HEADER_FORMAT" value:0 table:0];
 
-  v6 = [(VSAccountInfoViewController *)self onboardingInfoCenter];
-  v7 = [v6 localizedButtonTitle];
+  onboardingInfoCenter = [(VSAccountInfoViewController *)self onboardingInfoCenter];
+  localizedButtonTitle = [onboardingInfoCenter localizedButtonTitle];
 
-  v8 = [(VSAccountInfoViewController *)self account];
-  v9 = [v8 identityProviderDisplayName];
+  account = [(VSAccountInfoViewController *)self account];
+  identityProviderDisplayName = [account identityProviderDisplayName];
 
-  v10 = [NSString stringWithFormat:v5, v9];
-  v11 = [NSString stringWithFormat:@"%@ %@", v10, v7];
+  v10 = [NSString stringWithFormat:v5, identityProviderDisplayName];
+  v11 = [NSString stringWithFormat:@"%@ %@", v10, localizedButtonTitle];
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   [v3 setProperty:v13 forKey:PSFooterCellClassGroupKey];
 
   [v3 setProperty:v11 forKey:PSFooterHyperlinkViewTitleKey];
-  v19.location = [v11 rangeOfString:v7];
+  v19.location = [v11 rangeOfString:localizedButtonTitle];
   v14 = NSStringFromRange(v19);
   [v3 setProperty:v14 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
@@ -426,15 +426,15 @@ LABEL_4:
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    createLoadingTitleSpecifier = v3;
   }
 
   else
   {
-    v5 = [(VSAccountInfoViewController *)self createLoadingTitleSpecifier];
+    createLoadingTitleSpecifier = [(VSAccountInfoViewController *)self createLoadingTitleSpecifier];
   }
 
-  v6 = v5;
+  v6 = createLoadingTitleSpecifier;
 
   return v6;
 }
@@ -454,15 +454,15 @@ LABEL_4:
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    createLoadingSpecifier = v3;
   }
 
   else
   {
-    v5 = [(VSAccountInfoViewController *)self createLoadingSpecifier];
+    createLoadingSpecifier = [(VSAccountInfoViewController *)self createLoadingSpecifier];
   }
 
-  v6 = v5;
+  v6 = createLoadingSpecifier;
 
   return v6;
 }
@@ -470,9 +470,9 @@ LABEL_4:
 - (id)createDecidedSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(VSAccountInfoViewController *)self facade];
-  v5 = [v4 appSections];
-  v6 = [v5 objectForKeyedSubscript:@"decided"];
+  facade = [(VSAccountInfoViewController *)self facade];
+  appSections = [facade appSections];
+  v6 = [appSections objectForKeyedSubscript:@"decided"];
 
   if ([v6 count])
   {
@@ -517,13 +517,13 @@ LABEL_4:
 - (id)createAppSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(VSAccountInfoViewController *)self facade];
-  v5 = [v4 appSections];
-  v6 = [v5 objectForKeyedSubscript:@"available"];
+  facade = [(VSAccountInfoViewController *)self facade];
+  appSections = [facade appSections];
+  v6 = [appSections objectForKeyedSubscript:@"available"];
 
-  v7 = [(VSAccountInfoViewController *)self facade];
-  v8 = [v7 appSections];
-  v9 = [v8 objectForKeyedSubscript:@"subscribed"];
+  facade2 = [(VSAccountInfoViewController *)self facade];
+  appSections2 = [facade2 appSections];
+  v9 = [appSections2 objectForKeyedSubscript:@"subscribed"];
 
   v36 = v9;
   v37 = v6;
@@ -588,9 +588,9 @@ LABEL_4:
     v12 = v16;
   }
 
-  v23 = [(VSAccountInfoViewController *)self facade];
-  v24 = [v23 appSections];
-  v25 = [v24 objectForKeyedSubscript:@"upgrade"];
+  facade3 = [(VSAccountInfoViewController *)self facade];
+  appSections3 = [facade3 appSections];
+  v25 = [appSections3 objectForKeyedSubscript:@"upgrade"];
 
   if ([v25 count])
   {
@@ -637,47 +637,47 @@ LABEL_4:
 - (id)createAccountFooterSpecifier
 {
   v3 = [PSSpecifier groupSpecifierWithID:@"accountGroup"];
-  v4 = [(VSAccountInfoViewController *)self account];
-  v5 = [v4 identityProviderDisplayName];
+  account = [(VSAccountInfoViewController *)self account];
+  identityProviderDisplayName = [account identityProviderDisplayName];
 
-  v6 = [(VSAccountInfoViewController *)self identityProvider];
-  v7 = [v6 isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
+  identityProvider = [(VSAccountInfoViewController *)self identityProvider];
+  v7 = [identityProvider isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
 
   if (v7)
   {
-    v8 = [(VSAccountInfoViewController *)self account];
-    v9 = [v8 username];
+    account2 = [(VSAccountInfoViewController *)self account];
+    username = [account2 username];
 
-    v10 = [(VSAccountInfoViewController *)self account];
-    v11 = [v10 isSynchronizable];
+    account3 = [(VSAccountInfoViewController *)self account];
+    isSynchronizable = [account3 isSynchronizable];
 
     v12 = +[NSBundle vs_frameworkBundle];
-    v13 = [v12 localizedStringForKey:@"SETTINGS_FOOTER_SYNCHRONIZABLE_NOTE" value:0 table:0];
+    account4 = [v12 localizedStringForKey:@"SETTINGS_FOOTER_SYNCHRONIZABLE_NOTE" value:0 table:0];
 
-    if ((v11 & 1) == 0)
+    if ((isSynchronizable & 1) == 0)
     {
       v14 = +[NSBundle vs_frameworkBundle];
       v15 = [v14 localizedStringForKey:@"SETTINGS_FOOTER_NOT_SYNCHRONIZABLE_NOTE_FORMAT" value:0 table:0];
 
-      v13 = v15;
+      account4 = v15;
     }
 
-    v16 = [NSString stringWithFormat:v13, v5];
-    v17 = [v9 length];
+    identityProviderDisplayName2 = [NSString stringWithFormat:account4, identityProviderDisplayName];
+    v17 = [username length];
     v18 = +[NSBundle vs_frameworkBundle];
     v19 = v18;
     if (v17)
     {
-      v20 = [v18 localizedStringForKey:@"SETTINGS_CHANGE_PROVIDER_FOOTER_FORMAT" value:0 table:0];
+      account5 = [v18 localizedStringForKey:@"SETTINGS_CHANGE_PROVIDER_FOOTER_FORMAT" value:0 table:0];
 
-      [NSString stringWithFormat:v20, v5, v9, v16];
+      [NSString stringWithFormat:account5, identityProviderDisplayName, username, identityProviderDisplayName2];
     }
 
     else
     {
-      v20 = [v18 localizedStringForKey:@"SETTINGS_CHANGE_PROVIDER_ANONYMOUS_FOOTER_FORMAT" value:0 table:0];
+      account5 = [v18 localizedStringForKey:@"SETTINGS_CHANGE_PROVIDER_ANONYMOUS_FOOTER_FORMAT" value:0 table:0];
 
-      [NSString stringWithFormat:v20, v5, v16, v25];
+      [NSString stringWithFormat:account5, identityProviderDisplayName, identityProviderDisplayName2, v25];
     }
     v23 = ;
   }
@@ -685,13 +685,13 @@ LABEL_4:
   else
   {
     v21 = +[NSBundle vs_frameworkBundle];
-    v9 = [v21 localizedStringForKey:@"SETTINGS_CHANGE_PROVIDER_UNSUPPORTED_FOOTER_FORMAT" value:0 table:0];
+    username = [v21 localizedStringForKey:@"SETTINGS_CHANGE_PROVIDER_UNSUPPORTED_FOOTER_FORMAT" value:0 table:0];
 
-    v13 = [(VSAccountInfoViewController *)self account];
-    v16 = [v13 identityProviderDisplayName];
-    v20 = [(VSAccountInfoViewController *)self account];
-    v22 = [v20 identityProviderDisplayName];
-    v23 = [NSString stringWithFormat:v9, v16, v22];
+    account4 = [(VSAccountInfoViewController *)self account];
+    identityProviderDisplayName2 = [account4 identityProviderDisplayName];
+    account5 = [(VSAccountInfoViewController *)self account];
+    identityProviderDisplayName3 = [account5 identityProviderDisplayName];
+    v23 = [NSString stringWithFormat:username, identityProviderDisplayName2, identityProviderDisplayName3];
   }
 
   [v3 setProperty:v23 forKey:PSFooterTextGroupKey];
@@ -701,8 +701,8 @@ LABEL_4:
 
 - (id)createSignOutButtonSpecifier
 {
-  v3 = [(VSAccountInfoViewController *)self identityProvider];
-  v4 = [v3 isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
+  identityProvider = [(VSAccountInfoViewController *)self identityProvider];
+  v4 = [identityProvider isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
 
   v5 = +[NSBundle vs_frameworkBundle];
   v6 = v5;
@@ -727,36 +727,36 @@ LABEL_4:
 
 - (void)disableAccountSignOutButton
 {
-  v2 = [(VSAccountInfoViewController *)self specifiers];
-  v3 = [v2 specifierForID:@"AccountUsername"];
+  specifiers = [(VSAccountInfoViewController *)self specifiers];
+  v3 = [specifiers specifierForID:@"AccountUsername"];
 
   [v3 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
 }
 
-- (id)_specifierForAppSettingsViewModel:(id)a3 modifier:(id)a4
+- (id)_specifierForAppSettingsViewModel:(id)model modifier:(id)modifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 displayName];
-  if ([v8 length])
+  modelCopy = model;
+  modifierCopy = modifier;
+  displayName = [modelCopy displayName];
+  if ([displayName length])
   {
     v9 = +[VSAppInstallCell specifier];
-    v10 = [v6 bundleID];
-    v11 = [NSString stringWithFormat:@"app:%@:%@", v7, v10];
+    bundleID = [modelCopy bundleID];
+    v11 = [NSString stringWithFormat:@"app:%@:%@", modifierCopy, bundleID];
     [v9 setProperty:v11 forKey:PSIDKey];
 
-    v12 = [(VSAccountInfoViewController *)self group];
-    [v9 setProperty:v12 forKey:@"VSAppInstallCellLockupGroupKey"];
+    group = [(VSAccountInfoViewController *)self group];
+    [v9 setProperty:group forKey:@"VSAppInstallCellLockupGroupKey"];
 
     v13 = [ASCAdamID alloc];
-    v14 = [v6 adamID];
-    v15 = [v13 initWithStringValue:v14];
+    adamID = [modelCopy adamID];
+    v15 = [v13 initWithStringValue:adamID];
 
-    v16 = [(VSAccountInfoViewController *)self cachedLockupRequests];
-    v17 = [v16 objectForKeyedSubscript:v15];
+    cachedLockupRequests = [(VSAccountInfoViewController *)self cachedLockupRequests];
+    v17 = [cachedLockupRequests objectForKeyedSubscript:v15];
 
     [v9 setProperty:v17 forKey:@"VSAppInstallCellCachedRequestKey"];
-    [v9 setProperty:v6 forKey:@"VSAppSettingsViewModel"];
+    [v9 setProperty:modelCopy forKey:@"VSAppSettingsViewModel"];
   }
 
   else
@@ -767,28 +767,28 @@ LABEL_4:
   return v9;
 }
 
-- (void)_revokeVoucher:(id)a3
+- (void)_revokeVoucher:(id)voucher
 {
-  v3 = [a3 propertyForKey:@"VSAppSettingsViewModel"];
+  v3 = [voucher propertyForKey:@"VSAppSettingsViewModel"];
   [v3 revokeVoucher];
 }
 
-- (id)_isAppAllowedAccountAccessWithSpecifier:(id)a3
+- (id)_isAppAllowedAccountAccessWithSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"VSAppSettingsViewModel"];
+  v3 = [specifier propertyForKey:@"VSAppSettingsViewModel"];
   v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 privacyState] == &dword_0 + 1);
 
   return v4;
 }
 
-- (void)_setAppAllowedAccess:(id)a3 withSpecifier:(id)a4
+- (void)_setAppAllowedAccess:(id)access withSpecifier:(id)specifier
 {
-  v8 = a3;
-  v5 = [a4 propertyForKey:@"VSAppSettingsViewModel"];
-  v6 = [v5 privacyState];
-  if (v6 == &dword_0 + 2)
+  accessCopy = access;
+  v5 = [specifier propertyForKey:@"VSAppSettingsViewModel"];
+  privacyState = [v5 privacyState];
+  if (privacyState == &dword_0 + 2)
   {
-    if ([v8 BOOLValue])
+    if ([accessCopy BOOLValue])
     {
       goto LABEL_8;
     }
@@ -797,7 +797,7 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  if (v6 == &dword_0 + 1 && ([v8 BOOLValue] & 1) != 0)
+  if (privacyState == &dword_0 + 1 && ([accessCopy BOOLValue] & 1) != 0)
   {
     v7 = 0;
 LABEL_7:
@@ -810,61 +810,61 @@ LABEL_8:
 - (id)specifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(VSAccountInfoViewController *)self stateMachine];
-  v5 = [v4 currentState];
-  v6 = [v5 forceUnwrapObject];
+  stateMachine = [(VSAccountInfoViewController *)self stateMachine];
+  currentState = [stateMachine currentState];
+  forceUnwrapObject = [currentState forceUnwrapObject];
 
-  if ([v6 isEqualToString:@"Empty"])
+  if ([forceUnwrapObject isEqualToString:@"Empty"])
   {
-    v7 = [(VSAccountInfoViewController *)self createHeaderSpecifier];
-    [v3 addObject:v7];
+    createHeaderSpecifier = [(VSAccountInfoViewController *)self createHeaderSpecifier];
+    [v3 addObject:createHeaderSpecifier];
 
-    v8 = [(VSAccountInfoViewController *)self createDecidedSpecifiers];
-    [v3 addObjectsFromArray:v8];
+    createDecidedSpecifiers = [(VSAccountInfoViewController *)self createDecidedSpecifiers];
+    [v3 addObjectsFromArray:createDecidedSpecifiers];
 
-    v9 = [(VSAccountInfoViewController *)self createLoadingTitleSpecifier];
-    [v3 addObject:v9];
+    createLoadingTitleSpecifier = [(VSAccountInfoViewController *)self createLoadingTitleSpecifier];
+    [v3 addObject:createLoadingTitleSpecifier];
 
-    v10 = [(VSAccountInfoViewController *)self createLoadingSpecifier];
+    createLoadingSpecifier = [(VSAccountInfoViewController *)self createLoadingSpecifier];
 LABEL_8:
-    v18 = v10;
-    [v3 addObject:v10];
+    v18 = createLoadingSpecifier;
+    [v3 addObject:createLoadingSpecifier];
 
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"LoadedProvider"])
+  if ([forceUnwrapObject isEqualToString:@"LoadedProvider"])
   {
-    v11 = [(VSAccountInfoViewController *)self createHeaderSpecifier];
-    [v3 addObject:v11];
+    createHeaderSpecifier2 = [(VSAccountInfoViewController *)self createHeaderSpecifier];
+    [v3 addObject:createHeaderSpecifier2];
 
-    v12 = [(VSAccountInfoViewController *)self createDecidedSpecifiers];
-    [v3 addObjectsFromArray:v12];
+    createDecidedSpecifiers2 = [(VSAccountInfoViewController *)self createDecidedSpecifiers];
+    [v3 addObjectsFromArray:createDecidedSpecifiers2];
 
-    v13 = [(VSAccountInfoViewController *)self createLoadingTitleSpecifier];
-    [v3 addObject:v13];
+    createLoadingTitleSpecifier2 = [(VSAccountInfoViewController *)self createLoadingTitleSpecifier];
+    [v3 addObject:createLoadingTitleSpecifier2];
 
-    v14 = [(VSAccountInfoViewController *)self createLoadingSpecifier];
-    [v3 addObject:v14];
+    createLoadingSpecifier2 = [(VSAccountInfoViewController *)self createLoadingSpecifier];
+    [v3 addObject:createLoadingSpecifier2];
 LABEL_7:
 
-    v17 = [(VSAccountInfoViewController *)self createAccountFooterSpecifier];
-    [v3 addObject:v17];
+    createAccountFooterSpecifier = [(VSAccountInfoViewController *)self createAccountFooterSpecifier];
+    [v3 addObject:createAccountFooterSpecifier];
 
-    v10 = [(VSAccountInfoViewController *)self createSignOutButtonSpecifier];
+    createLoadingSpecifier = [(VSAccountInfoViewController *)self createSignOutButtonSpecifier];
     goto LABEL_8;
   }
 
-  if ([v6 isEqualToString:@"LoadedProviderAndApps"])
+  if ([forceUnwrapObject isEqualToString:@"LoadedProviderAndApps"])
   {
-    v15 = [(VSAccountInfoViewController *)self createHeaderSpecifier];
-    [v3 addObject:v15];
+    createHeaderSpecifier3 = [(VSAccountInfoViewController *)self createHeaderSpecifier];
+    [v3 addObject:createHeaderSpecifier3];
 
-    v16 = [(VSAccountInfoViewController *)self createDecidedSpecifiers];
-    [v3 addObjectsFromArray:v16];
+    createDecidedSpecifiers3 = [(VSAccountInfoViewController *)self createDecidedSpecifiers];
+    [v3 addObjectsFromArray:createDecidedSpecifiers3];
 
-    v14 = [(VSAccountInfoViewController *)self createAppSpecifiers];
-    [v3 addObjectsFromArray:v14];
+    createLoadingSpecifier2 = [(VSAccountInfoViewController *)self createAppSpecifiers];
+    [v3 addObjectsFromArray:createLoadingSpecifier2];
     goto LABEL_7;
   }
 
@@ -880,26 +880,26 @@ LABEL_9:
   return v22;
 }
 
-- (void)handleDestination:(id)a3 completion:(id)a4
+- (void)handleDestination:(id)destination completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VSAccountInfoViewController *)self identityProvider];
-  v9 = [v8 isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
+  completionCopy = completion;
+  destinationCopy = destination;
+  identityProvider = [(VSAccountInfoViewController *)self identityProvider];
+  v9 = [identityProvider isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
 
-  v10 = [v7 isEqual:@"signOut"];
+  v10 = [destinationCopy isEqual:@"signOut"];
   if (v9)
   {
     if (v10)
     {
-      [(VSAccountInfoViewController *)self handleSignOutSupportedTVProviderDestinationWithCompletion:v6];
+      [(VSAccountInfoViewController *)self handleSignOutSupportedTVProviderDestinationWithCompletion:completionCopy];
       goto LABEL_9;
     }
   }
 
   else if (v10)
   {
-    [(VSAccountInfoViewController *)self handleSignOutUnsupportedTVProviderDestinationWithCompletion:v6];
+    [(VSAccountInfoViewController *)self handleSignOutUnsupportedTVProviderDestinationWithCompletion:completionCopy];
     goto LABEL_9;
   }
 
@@ -912,16 +912,16 @@ LABEL_9:
   }
 
   v12 = VSDestinationError();
-  v6[2](v6, 0, v12);
+  completionCopy[2](completionCopy, 0, v12);
 
 LABEL_9:
 }
 
-- (void)handleSignOutSupportedTVProviderDestinationWithCompletion:(id)a3
+- (void)handleSignOutSupportedTVProviderDestinationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VSAccountInfoViewController *)self identityProvider];
-  v6 = [v5 isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
+  completionCopy = completion;
+  identityProvider = [(VSAccountInfoViewController *)self identityProvider];
+  v6 = [identityProvider isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
 
   if (v6)
   {
@@ -930,27 +930,27 @@ LABEL_9:
     v8[2] = sub_4140;
     v8[3] = &unk_18760;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     [(VSAccountInfoViewController *)self scrollToSignOutButtonWithCompletion:v8];
   }
 
   else
   {
     v7 = VSDestinationError();
-    (*(v4 + 2))(v4, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 }
 
-- (void)handleSignOutUnsupportedTVProviderDestinationWithCompletion:(id)a3
+- (void)handleSignOutUnsupportedTVProviderDestinationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VSAccountInfoViewController *)self identityProvider];
-  v6 = [v5 isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
+  completionCopy = completion;
+  identityProvider = [(VSAccountInfoViewController *)self identityProvider];
+  v6 = [identityProvider isFullySupportedForRequestsExpectingAuthenticationSchemes:0];
 
   if (v6)
   {
     v7 = VSDestinationError();
-    v4[2](v4, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
   }
 
   else
@@ -960,54 +960,54 @@ LABEL_9:
     v8[2] = sub_42D0;
     v8[3] = &unk_18760;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     [(VSAccountInfoViewController *)self scrollToSignOutButtonWithCompletion:v8];
   }
 }
 
-- (void)scrollToSignOutButtonWithCompletion:(id)a3
+- (void)scrollToSignOutButtonWithCompletion:(id)completion
 {
-  v11 = a3;
+  completionCopy = completion;
   v4 = [(VSAccountInfoViewController *)self specifierForID:@"AccountUsername"];
   v5 = PSEnabledKey;
   v6 = [v4 propertyForKey:PSEnabledKey];
   if (v6 && (v7 = v6, [v4 propertyForKey:v5], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "BOOLValue"), v8, v7, (v9 & 1) == 0))
   {
     v10 = VSDestinationError();
-    v11[2](v11, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
   }
 
   else
   {
-    [(VSAccountInfoViewController *)self scrollToSpecifier:v4 withCompletion:v11];
+    [(VSAccountInfoViewController *)self scrollToSpecifier:v4 withCompletion:completionCopy];
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v3 = [(VSAccountInfoViewController *)self table];
-  [v3 vs_scrollViewDidEndScrollingAnimation];
+  table = [(VSAccountInfoViewController *)self table];
+  [table vs_scrollViewDidEndScrollingAnimation];
 }
 
-- (void)scrollToSpecifier:(id)a3 withCompletion:(id)a4
+- (void)scrollToSpecifier:(id)specifier withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(VSAccountInfoViewController *)self indexPathForSpecifier:a3];
+  completionCopy = completion;
+  v7 = [(VSAccountInfoViewController *)self indexPathForSpecifier:specifier];
   if (v7)
   {
-    v8 = [(VSAccountInfoViewController *)self table];
+    table = [(VSAccountInfoViewController *)self table];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_4590;
     v10[3] = &unk_18788;
-    v11 = v6;
-    [v8 vs_scrollToIndexPath:v7 atScrollPosition:1 animated:1 withCompletion:v10];
+    v11 = completionCopy;
+    [table vs_scrollToIndexPath:v7 atScrollPosition:1 animated:1 withCompletion:v10];
   }
 
   else
   {
     v9 = VSDestinationError();
-    (*(v6 + 2))(v6, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 

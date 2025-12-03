@@ -1,19 +1,19 @@
 @interface VCStreamInputVideo
-- (VCStreamInputVideo)initWithStreamInputID:(id)a3 format:(opaqueCMFormatDescription *)a4 delegate:(id)a5 delegateQueue:(id)a6 remoteQueue:(id)a7;
-- (unsigned)addSink:(id)a3;
-- (unsigned)removeSink:(id)a3;
+- (VCStreamInputVideo)initWithStreamInputID:(id)d format:(opaqueCMFormatDescription *)format delegate:(id)delegate delegateQueue:(id)queue remoteQueue:(id)remoteQueue;
+- (unsigned)addSink:(id)sink;
+- (unsigned)removeSink:(id)sink;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation VCStreamInputVideo
 
-- (VCStreamInputVideo)initWithStreamInputID:(id)a3 format:(opaqueCMFormatDescription *)a4 delegate:(id)a5 delegateQueue:(id)a6 remoteQueue:(id)a7
+- (VCStreamInputVideo)initWithStreamInputID:(id)d format:(opaqueCMFormatDescription *)format delegate:(id)delegate delegateQueue:(id)queue remoteQueue:(id)remoteQueue
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = VCStreamInputVideo;
-  v7 = [(VCStreamInput *)&v12 initWithStreamInputID:a3 format:a4 delegate:a5 delegateQueue:a6 remoteQueue:a7];
+  v7 = [(VCStreamInput *)&v12 initWithStreamInputID:d format:format delegate:delegate delegateQueue:queue remoteQueue:remoteQueue];
   v8 = v7;
   if (v7)
   {
@@ -62,7 +62,7 @@
   [(VCStreamInput *)&v3 invalidate];
 }
 
-- (unsigned)addSink:(id)a3
+- (unsigned)addSink:(id)sink
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -76,7 +76,7 @@
     v6[1] = 3221225472;
     v6[2] = __30__VCStreamInputVideo_addSink___block_invoke;
     v6[3] = &unk_1E85F3E08;
-    v6[5] = a3;
+    v6[5] = sink;
     v6[6] = &v7;
     v6[4] = self;
     dispatch_sync(streamInputQueue, v6);
@@ -99,7 +99,7 @@ uint64_t __30__VCStreamInputVideo_addSink___block_invoke(void *a1)
   return result;
 }
 
-- (unsigned)removeSink:(id)a3
+- (unsigned)removeSink:(id)sink
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -113,7 +113,7 @@ uint64_t __30__VCStreamInputVideo_addSink___block_invoke(void *a1)
     v6[1] = 3221225472;
     v6[2] = __33__VCStreamInputVideo_removeSink___block_invoke;
     v6[3] = &unk_1E85F3E08;
-    v6[5] = a3;
+    v6[5] = sink;
     v6[6] = &v7;
     v6[4] = self;
     dispatch_sync(streamInputQueue, v6);

@@ -1,26 +1,26 @@
 @interface CRLiOSWindowWrapper
-+ (id)windowWrapperForView:(id)a3 assert:(BOOL)a4;
++ (id)windowWrapperForView:(id)view assert:(BOOL)assert;
 - (BOOL)isInSplitViewMode;
-- (CRLiOSWindowWrapper)initWithWindow:(id)a3;
+- (CRLiOSWindowWrapper)initWithWindow:(id)window;
 - (UIWindow)window;
 - (id)beginIgnoringUserInteraction;
 - (id)newWrapperBeginningIgnoringUserInteractionSafely;
 - (int64_t)interfaceOrientation;
-- (void)endIgnoringUserInteractionWithToken:(id)a3;
+- (void)endIgnoringUserInteractionWithToken:(id)token;
 @end
 
 @implementation CRLiOSWindowWrapper
 
-- (CRLiOSWindowWrapper)initWithWindow:(id)a3
+- (CRLiOSWindowWrapper)initWithWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v10.receiver = self;
   v10.super_class = CRLiOSWindowWrapper;
   v5 = [(CRLiOSWindowWrapper *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_window, v4);
+    objc_storeWeak(&v5->_window, windowCopy);
     v7 = [[CRLTraceableResource alloc] initWithName:@"CRLiOSWindowWrapper.UserInteraction" logContext:0];
     userInteractionIgnoredTraceableResource = v6->_userInteractionIgnoredTraceableResource;
     v6->_userInteractionIgnoredTraceableResource = v7;
@@ -29,10 +29,10 @@
   return v6;
 }
 
-+ (id)windowWrapperForView:(id)a3 assert:(BOOL)a4
++ (id)windowWrapperForView:(id)view assert:(BOOL)assert
 {
-  v4 = a4;
-  v5 = a3;
+  assertCopy = assert;
+  viewCopy = view;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -62,12 +62,12 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:33 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  v9 = [v5 window];
-  if (!v9)
+  window = [viewCopy window];
+  if (!window)
   {
     v10 = 0;
 LABEL_18:
-    if (v4)
+    if (assertCopy)
     {
       v11 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -78,7 +78,7 @@ LABEL_18:
       v12 = off_1019EDA68;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_101324A20(v5, v11, v12);
+        sub_101324A20(viewCopy, v11, v12);
       }
 
       if (qword_101AD5A10 != -1)
@@ -94,11 +94,11 @@ LABEL_18:
 
       v14 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLiOSWindowWrapper windowWrapperForView:assert:]");
       v15 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLiOSWindowWrapper.m"];
-      if (v5)
+      if (viewCopy)
       {
         v16 = objc_opt_class();
         v17 = NSStringFromClass(v16);
-        [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:53 isFatal:0 description:"Could not find scene wrapper for view <%{public}@: %{public}p>", v17, v5];
+        [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:53 isFatal:0 description:"Could not find scene wrapper for view <%{public}@: %{public}p>", v17, viewCopy];
       }
 
       else
@@ -117,11 +117,11 @@ LABEL_18:
     sub_1013249D0();
   }
 
-  v10 = [qword_101A34758 objectForKey:v9];
+  v10 = [qword_101A34758 objectForKey:window];
   if (!v10)
   {
-    v10 = [[CRLiOSWindowWrapper alloc] initWithWindow:v9];
-    [qword_101A34758 setObject:v10 forKey:v9];
+    v10 = [[CRLiOSWindowWrapper alloc] initWithWindow:window];
+    [qword_101A34758 setObject:v10 forKey:window];
     if (!v10)
     {
       goto LABEL_18;
@@ -175,10 +175,10 @@ LABEL_31:
 
     else
     {
-      v8 = [(CRLiOSWindowWrapper *)self window];
-      v9 = [v8 isUserInteractionEnabled];
+      window = [(CRLiOSWindowWrapper *)self window];
+      isUserInteractionEnabled = [window isUserInteractionEnabled];
 
-      if ((v9 & 1) == 0)
+      if ((isUserInteractionEnabled & 1) == 0)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -207,8 +207,8 @@ LABEL_31:
         [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:67 isFatal:0 description:"userInteraction should be enabled when _userInteractionEnabledCount = 0"];
       }
 
-      v13 = [(CRLiOSWindowWrapper *)self window];
-      [v13 setUserInteractionEnabled:0];
+      window2 = [(CRLiOSWindowWrapper *)self window];
+      [window2 setUserInteractionEnabled:0];
 
       userInteractionIgnoredCount = self->_userInteractionIgnoredCount;
     }
@@ -220,9 +220,9 @@ LABEL_31:
   return v6;
 }
 
-- (void)endIgnoringUserInteractionWithToken:(id)a3
+- (void)endIgnoringUserInteractionWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -260,8 +260,8 @@ LABEL_31:
     if (!v9)
     {
 LABEL_13:
-      v10 = [(CRLiOSWindowWrapper *)self window];
-      [v10 setUserInteractionEnabled:1];
+      window = [(CRLiOSWindowWrapper *)self window];
+      [window setUserInteractionEnabled:1];
     }
   }
 
@@ -299,26 +299,26 @@ LABEL_13:
     }
   }
 
-  [(CRLTraceableResource *)self->_userInteractionIgnoredTraceableResource didRelinquishResourceWithToken:v4];
+  [(CRLTraceableResource *)self->_userInteractionIgnoredTraceableResource didRelinquishResourceWithToken:tokenCopy];
 }
 
 - (id)newWrapperBeginningIgnoringUserInteractionSafely
 {
-  v3 = [(CRLiOSWindowWrapper *)self beginIgnoringUserInteraction];
-  v4 = [[CRLiOSWindowIgnoreUserInteractionSafeWrapper alloc] initWithWindowWrapper:self token:v3];
+  beginIgnoringUserInteraction = [(CRLiOSWindowWrapper *)self beginIgnoringUserInteraction];
+  v4 = [[CRLiOSWindowIgnoreUserInteractionSafeWrapper alloc] initWithWindowWrapper:self token:beginIgnoringUserInteraction];
 
   return v4;
 }
 
 - (BOOL)isInSplitViewMode
 {
-  v3 = [(CRLiOSWindowWrapper *)self window];
-  v4 = [v3 screen];
-  [v4 bounds];
+  window = [(CRLiOSWindowWrapper *)self window];
+  screen = [window screen];
+  [screen bounds];
   Width = CGRectGetWidth(v9);
 
-  v6 = [(CRLiOSWindowWrapper *)self window];
-  [v6 bounds];
+  window2 = [(CRLiOSWindowWrapper *)self window];
+  [window2 bounds];
   v7 = CGRectGetWidth(v10);
 
   return Width - v7 >= 100.0;
@@ -326,9 +326,9 @@ LABEL_13:
 
 - (int64_t)interfaceOrientation
 {
-  v2 = [(CRLiOSWindowWrapper *)self window];
-  v3 = [v2 screen];
-  [v3 bounds];
+  window = [(CRLiOSWindowWrapper *)self window];
+  screen = [window screen];
+  [screen bounds];
   v5 = v4;
   v7 = v6;
 

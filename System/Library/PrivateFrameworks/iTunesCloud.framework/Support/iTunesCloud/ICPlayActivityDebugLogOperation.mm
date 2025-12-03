@@ -6,8 +6,8 @@
 
 - (void)main
 {
-  v2 = [(ICPlayActivityDebugLogOperation *)self playActivityEvents];
-  if ([v2 count])
+  playActivityEvents = [(ICPlayActivityDebugLogOperation *)self playActivityEvents];
+  if ([playActivityEvents count])
   {
     v3 = NSTemporaryDirectory();
     v4 = [v3 stringByAppendingPathComponent:@"com.apple.PlayActivityFeed"];
@@ -21,18 +21,18 @@
     v6 = [@"\n-----------------------------------------\n" dataUsingEncoding:4];
     v7 = objc_alloc_init(ICPlayActivityFeedSerialization);
     v8 = +[ICUserIdentityStore defaultIdentityStore];
-    v9 = [v8 localStoreAccountProperties];
+    localStoreAccountProperties = [v8 localStoreAccountProperties];
 
-    v17 = v9;
-    v10 = [v9 storefrontIdentifier];
-    [(ICPlayActivityFeedSerialization *)v7 setCurrentStoreFrontID:v10];
+    v17 = localStoreAccountProperties;
+    storefrontIdentifier = [localStoreAccountProperties storefrontIdentifier];
+    [(ICPlayActivityFeedSerialization *)v7 setCurrentStoreFrontID:storefrontIdentifier];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v21 = v2;
-    v11 = v2;
+    v21 = playActivityEvents;
+    v11 = playActivityEvents;
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
@@ -65,7 +65,7 @@
     }
 
     [v5 close];
-    v2 = v21;
+    playActivityEvents = v21;
   }
 }
 

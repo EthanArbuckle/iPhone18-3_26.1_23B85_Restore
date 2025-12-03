@@ -1,9 +1,9 @@
 @interface DEMTileCoordinates
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC24NanoCompassComplications18DEMTileCoordinates)init;
-- (_TtC24NanoCompassComplications18DEMTileCoordinates)initWithLocation:(id)a3;
-- (id)copyWithZone:(void *)a3;
+- (_TtC24NanoCompassComplications18DEMTileCoordinates)initWithLocation:(id)location;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (_TtC24NanoCompassComplications18DEMTileCoordinates)initWithLocation:(id)a3
+- (_TtC24NanoCompassComplications18DEMTileCoordinates)initWithLocation:(id)location
 {
-  v3 = a3;
-  sub_23BD650C4(v3);
+  locationCopy = location;
+  sub_23BD650C4(locationCopy);
   v5 = v4;
 
   return v5;
@@ -34,7 +34,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   DEMTileCoordinates.description.getter();
 
   v3 = sub_23BD67CD4();
@@ -50,11 +50,11 @@
   return sub_23BD67D94();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23BD67D24();
     swift_unknownObjectRelease();
@@ -63,7 +63,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = DEMTileCoordinates.isEqual(_:)(v8);
@@ -72,7 +72,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC24NanoCompassComplications18DEMTileCoordinates_x);
   v4 = *(&self->super.isa + OBJC_IVAR____TtC24NanoCompassComplications18DEMTileCoordinates_y);

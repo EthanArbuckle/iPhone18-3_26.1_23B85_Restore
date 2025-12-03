@@ -1,23 +1,23 @@
 @interface DownloadHandlerSession
 - (BOOL)blocksOtherDownloads;
 - (BOOL)canBePaused;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsPowerAssertion;
 - (DownloadHandlerSession)init;
-- (DownloadHandlerSession)initWithSessionProperties:(id)a3;
+- (DownloadHandlerSession)initWithSessionProperties:(id)properties;
 - (float)percentComplete;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueForSessionProperty:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueForSessionProperty:(id)property;
 - (int64_t)sessionState;
 - (void)dealloc;
-- (void)setBlocksOtherDownloads:(BOOL)a3;
-- (void)setCanBePaused:(BOOL)a3;
-- (void)setNeedsPowerAssertion:(BOOL)a3;
-- (void)setPercentComplete:(float)a3;
-- (void)setSessionPropertyValues:(id)a3;
-- (void)setSessionState:(int64_t)a3;
-- (void)setStatusDescription:(id)a3;
-- (void)setValue:(id)a3 forSessionProperty:(id)a4;
+- (void)setBlocksOtherDownloads:(BOOL)downloads;
+- (void)setCanBePaused:(BOOL)paused;
+- (void)setNeedsPowerAssertion:(BOOL)assertion;
+- (void)setPercentComplete:(float)complete;
+- (void)setSessionPropertyValues:(id)values;
+- (void)setSessionState:(int64_t)state;
+- (void)setStatusDescription:(id)description;
+- (void)setValue:(id)value forSessionProperty:(id)property;
 @end
 
 @implementation DownloadHandlerSession
@@ -39,12 +39,12 @@
   return v3;
 }
 
-- (DownloadHandlerSession)initWithSessionProperties:(id)a3
+- (DownloadHandlerSession)initWithSessionProperties:(id)properties
 {
   v4 = [(DownloadHandlerSession *)self init];
   if (v4)
   {
-    v4->_sessionProperties = [a3 copy];
+    v4->_sessionProperties = [properties copy];
   }
 
   return v4;
@@ -93,35 +93,35 @@
   return [v2 integerValue];
 }
 
-- (void)setBlocksOtherDownloads:(BOOL)a3
+- (void)setBlocksOtherDownloads:(BOOL)downloads
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:downloads];
 
   [(DownloadHandlerSession *)self setValue:v4 forSessionProperty:@"blocks"];
 }
 
-- (void)setCanBePaused:(BOOL)a3
+- (void)setCanBePaused:(BOOL)paused
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:paused];
 
   [(DownloadHandlerSession *)self setValue:v4 forSessionProperty:@"pausable"];
 }
 
-- (void)setNeedsPowerAssertion:(BOOL)a3
+- (void)setNeedsPowerAssertion:(BOOL)assertion
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:assertion];
 
   [(DownloadHandlerSession *)self setValue:v4 forSessionProperty:@"needspowerassert"];
 }
 
-- (void)setPercentComplete:(float)a3
+- (void)setPercentComplete:(float)complete
 {
   v4 = [NSNumber numberWithFloat:?];
 
   [(DownloadHandlerSession *)self setValue:v4 forSessionProperty:@"percent"];
 }
 
-- (void)setSessionPropertyValues:(id)a3
+- (void)setSessionPropertyValues:(id)values
 {
   propertyValues = self->_propertyValues;
   if (!propertyValues)
@@ -130,23 +130,23 @@
     self->_propertyValues = propertyValues;
   }
 
-  [(NSMutableDictionary *)propertyValues addEntriesFromDictionary:a3];
+  [(NSMutableDictionary *)propertyValues addEntriesFromDictionary:values];
 }
 
-- (void)setSessionState:(int64_t)a3
+- (void)setSessionState:(int64_t)state
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:state];
 
   [(DownloadHandlerSession *)self setValue:v4 forSessionProperty:@"state"];
 }
 
-- (void)setStatusDescription:(id)a3
+- (void)setStatusDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   [(DownloadHandlerSession *)self setValue:v4 forSessionProperty:@"status"];
 }
 
-- (void)setValue:(id)a3 forSessionProperty:(id)a4
+- (void)setValue:(id)value forSessionProperty:(id)property
 {
   propertyValues = self->_propertyValues;
   if (!propertyValues)
@@ -155,17 +155,17 @@
     self->_propertyValues = propertyValues;
   }
 
-  [(NSMutableDictionary *)propertyValues setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)propertyValues setObject:value forKey:property];
 }
 
-- (id)valueForSessionProperty:(id)a3
+- (id)valueForSessionProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_propertyValues objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_propertyValues objectForKey:property];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -173,21 +173,21 @@
     return 0;
   }
 
-  v7 = [(DownloadHandlerSession *)self sessionID];
-  return v7 == [a3 sessionID];
+  sessionID = [(DownloadHandlerSession *)self sessionID];
+  return sessionID == [equal sessionID];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 1) = self->_activeHandlerIdentifier;
   *(v5 + 4) = self->_sessionID;
 
-  *(v5 + 2) = [(NSError *)self->_error copyWithZone:a3];
-  *(v5 + 3) = [(NSMutableDictionary *)self->_propertyValues mutableCopyWithZone:a3];
+  *(v5 + 2) = [(NSError *)self->_error copyWithZone:zone];
+  *(v5 + 3) = [(NSMutableDictionary *)self->_propertyValues mutableCopyWithZone:zone];
 
-  *(v5 + 5) = [(DownloadSessionProperties *)self->_sessionProperties copyWithZone:a3];
-  *(v5 + 6) = [(NSURLCredential *)self->_urlCredential copyWithZone:a3];
+  *(v5 + 5) = [(DownloadSessionProperties *)self->_sessionProperties copyWithZone:zone];
+  *(v5 + 6) = [(NSURLCredential *)self->_urlCredential copyWithZone:zone];
   return v5;
 }
 

@@ -1,29 +1,29 @@
 @interface APNSManager.PushDelegateTrampoline
 - (_TtCC19FindMyDaemonSupport11APNSManagerP33_69672C9E20C2D053F65B88CE8A65B96022PushDelegateTrampoline)init;
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4;
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forInfo:(id)a5;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)connectionDidReconnect:(id)a3;
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures;
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forInfo:(id)info;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)connectionDidReconnect:(id)reconnect;
 @end
 
 @implementation APNSManager.PushDelegateTrampoline
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v21 = self;
+  selfCopy = self;
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFBE620, &qword_24AE860B0);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x28223BE20](v6 - 8);
   v9 = &v20 - v8;
-  v10 = a3;
-  v11 = v21;
-  if (a4)
+  connectionCopy = connection;
+  v11 = selfCopy;
+  if (token)
   {
-    v12 = a4;
-    a4 = sub_24AE83E40();
+    tokenCopy = token;
+    token = sub_24AE83E40();
     v14 = v13;
   }
 
@@ -48,37 +48,37 @@
       v19[2] = 0;
       v19[3] = 0;
       v19[4] = v16;
-      v19[5] = a4;
+      v19[5] = token;
       v19[6] = v14;
-      sub_24AE60350(a4, v14);
+      sub_24AE60350(token, v14);
       sub_24AE6E000(0, 0, v9, &unk_24AE86408, v19);
 
-      sub_24AE60200(a4, v14);
+      sub_24AE60200(token, v14);
     }
   }
 
   else
   {
-    sub_24AE60200(a4, v14);
+    sub_24AE60200(token, v14);
 
-    v17 = v21;
+    v17 = selfCopy;
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v8 = a4;
-  if (a4)
+  tokenCopy = token;
+  if (token)
   {
-    v10 = a3;
-    v11 = a5;
-    v12 = a6;
-    v13 = self;
-    v14 = v8;
-    v8 = sub_24AE83E40();
+    connectionCopy = connection;
+    topicCopy = topic;
+    identifierCopy = identifier;
+    selfCopy = self;
+    v14 = tokenCopy;
+    tokenCopy = sub_24AE83E40();
     v16 = v15;
 
-    if (a5)
+    if (topic)
     {
       goto LABEL_3;
     }
@@ -86,7 +86,7 @@
 LABEL_6:
     v17 = 0;
     v19 = 0;
-    if (a6)
+    if (identifier)
     {
       goto LABEL_4;
     }
@@ -94,12 +94,12 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v23 = a3;
-  v24 = a5;
-  v25 = a6;
-  v26 = self;
+  connectionCopy2 = connection;
+  topicCopy2 = topic;
+  identifierCopy2 = identifier;
+  selfCopy2 = self;
   v16 = 0xF000000000000000;
-  if (!a5)
+  if (!topic)
   {
     goto LABEL_6;
   }
@@ -108,7 +108,7 @@ LABEL_3:
   v17 = sub_24AE83FB0();
   v19 = v18;
 
-  if (a6)
+  if (identifier)
   {
 LABEL_4:
     v20 = sub_24AE83FB0();
@@ -121,45 +121,45 @@ LABEL_7:
   v20 = 0;
   v22 = 0;
 LABEL_8:
-  sub_24AE5FA1C(v8, v16, v17, v19, v20, v22);
+  sub_24AE5FA1C(tokenCopy, v16, v17, v19, v20, v22);
 
-  sub_24AE60200(v8, v16);
+  sub_24AE60200(tokenCopy, v16);
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forInfo:(id)a5
+- (void)connection:(id)connection didReceiveToken:(id)token forInfo:(id)info
 {
-  if (a4)
+  if (token)
   {
-    v8 = a3;
-    v9 = a5;
-    v10 = self;
-    v11 = a4;
+    connectionCopy = connection;
+    infoCopy = info;
+    selfCopy = self;
+    tokenCopy = token;
     v12 = sub_24AE83E40();
     v14 = v13;
   }
 
   else
   {
-    v15 = a3;
-    v16 = a5;
-    v17 = self;
+    connectionCopy2 = connection;
+    infoCopy2 = info;
+    selfCopy2 = self;
     v12 = 0;
     v14 = 0xF000000000000000;
   }
 
-  sub_24AE5FBD0(v12, v14, a5);
+  sub_24AE5FBD0(v12, v14, info);
   sub_24AE60200(v12, v14);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_24AE5FD48(a4);
+  connectionCopy = connection;
+  messageCopy = message;
+  selfCopy = self;
+  sub_24AE5FD48(message);
 }
 
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFBE620, &qword_24AE860B0);
   v6 = *(*(v5 - 8) + 64);
@@ -175,12 +175,12 @@ LABEL_8:
     *(v12 + 16) = 0;
     *(v12 + 24) = 0;
     *(v12 + 32) = v10;
-    *(v12 + 40) = a4;
+    *(v12 + 40) = status;
     sub_24AE6E000(0, 0, v8, &unk_24AE863A0, v12);
   }
 }
 
-- (void)connectionDidReconnect:(id)a3
+- (void)connectionDidReconnect:(id)reconnect
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EFBE620, &qword_24AE860B0);
   v4 = *(*(v3 - 8) + 64);
@@ -200,16 +200,16 @@ LABEL_8:
   }
 }
 
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures
 {
-  if (a4)
+  if (failures)
   {
     sub_24AE5FF5C(0, &unk_27EFBE828, 0x277CEEA08);
     sub_24AE840A0();
   }
 
-  v6 = a3;
-  v7 = self;
+  connectionCopy = connection;
+  selfCopy = self;
   sub_24AE5FE6C("NOT IMPLEMENTED: channelSubscriptionsFailedWith:");
 }
 

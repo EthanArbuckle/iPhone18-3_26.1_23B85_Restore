@@ -1,40 +1,40 @@
 @interface PMTableMapper
-- (PMTableMapper)initWithOadTable:(id)a3 bounds:(id)a4 parent:(id)a5;
-- (float)columnWidthAtIndex:(unint64_t)a3 state:(id)a4;
+- (PMTableMapper)initWithOadTable:(id)table bounds:(id)bounds parent:(id)parent;
+- (float)columnWidthAtIndex:(unint64_t)index state:(id)state;
 - (id)cellStyle;
-- (id)defaultCellFillForRow:(unint64_t)a3 withState:(id)a4;
-- (id)defaultCellFillWithState:(id)a3;
+- (id)defaultCellFillForRow:(unint64_t)row withState:(id)state;
+- (id)defaultCellFillWithState:(id)state;
 - (id)tableBorderStyle;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapColumnGridAt:(id)a3 withState:(id)a4;
-- (void)mapTablePropertiesWithState:(id)a3;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapColumnGridAt:(id)at withState:(id)state;
+- (void)mapTablePropertiesWithState:(id)state;
 @end
 
 @implementation PMTableMapper
 
 - (id)tableBorderStyle
 {
-  v2 = [(OADTable *)self->mTable tableProperties];
-  v3 = [v2 style];
-  v4 = [v3 wholeTableStyle];
-  v5 = [v4 cellStyle];
-  v6 = [v5 borderStyle];
+  tableProperties = [(OADTable *)self->mTable tableProperties];
+  style = [tableProperties style];
+  wholeTableStyle = [style wholeTableStyle];
+  cellStyle = [wholeTableStyle cellStyle];
+  borderStyle = [cellStyle borderStyle];
 
-  return v6;
+  return borderStyle;
 }
 
-- (PMTableMapper)initWithOadTable:(id)a3 bounds:(id)a4 parent:(id)a5
+- (PMTableMapper)initWithOadTable:(id)table bounds:(id)bounds parent:(id)parent
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tableCopy = table;
+  boundsCopy = bounds;
+  parentCopy = parent;
   v19.receiver = self;
   v19.super_class = PMTableMapper;
-  v12 = [(CMMapper *)&v19 initWithParent:v11];
+  v12 = [(CMMapper *)&v19 initWithParent:parentCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->mTable, a3);
+    objc_storeStrong(&v12->mTable, table);
     v14 = objc_alloc_init(CMTableGridInfo);
     mGrid = v13->mGrid;
     v13->mGrid = v14;
@@ -43,43 +43,43 @@
     mStyle = v13->mStyle;
     v13->mStyle = v16;
 
-    objc_storeStrong(&v13->mBounds, a4);
+    objc_storeStrong(&v13->mBounds, bounds);
   }
 
   return v13;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v12 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   v7 = [OIXMLElement elementWithType:18];
-  [v12 addChild:v7];
+  [atCopy addChild:v7];
   mStyle = self->mStyle;
   [(OADOrientedBounds *)self->mBounds bounds];
   [(CMDrawableStyle *)mStyle addPositionProperties:?];
-  [(PMTableMapper *)self mapTablePropertiesWithState:v6];
-  [(PMTableMapper *)self mapColumnGridAt:v7 withState:v6];
-  v9 = [(OADTable *)self->mTable rowCount];
-  if (v9)
+  [(PMTableMapper *)self mapTablePropertiesWithState:stateCopy];
+  [(PMTableMapper *)self mapColumnGridAt:v7 withState:stateCopy];
+  rowCount = [(OADTable *)self->mTable rowCount];
+  if (rowCount)
   {
-    for (i = 0; i != v9; ++i)
+    for (i = 0; i != rowCount; ++i)
     {
       v11 = [[PMTableRowMapper alloc] initWithOadTable:self->mTable rowIndex:i parent:self];
-      [(PMTableRowMapper *)v11 mapAt:v7 withState:v6];
+      [(PMTableRowMapper *)v11 mapAt:v7 withState:stateCopy];
     }
   }
 
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v7 style:self->mStyle];
 }
 
-- (float)columnWidthAtIndex:(unint64_t)a3 state:(id)a4
+- (float)columnWidthAtIndex:(unint64_t)index state:(id)state
 {
-  v5 = [(OADTable *)self->mTable grid:a3];
+  v5 = [(OADTable *)self->mTable grid:index];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 columnAtIndex:a3];
+    v7 = [v5 columnAtIndex:index];
     [v7 width];
     v9 = v8;
   }
@@ -92,15 +92,15 @@
   return v9;
 }
 
-- (id)defaultCellFillWithState:(id)a3
+- (id)defaultCellFillWithState:(id)state
 {
-  v4 = a3;
-  v5 = [(PMTableMapper *)self cellStyle];
-  v6 = v5;
-  if (v5)
+  stateCopy = state;
+  cellStyle = [(PMTableMapper *)self cellStyle];
+  v6 = cellStyle;
+  if (cellStyle)
   {
-    v7 = [v5 fill];
-    v8 = [CMColorProperty nsColorFromOADFill:v7 state:v4];
+    fill = [cellStyle fill];
+    v8 = [CMColorProperty nsColorFromOADFill:fill state:stateCopy];
   }
 
   else
@@ -111,28 +111,28 @@
   return v8;
 }
 
-- (id)defaultCellFillForRow:(unint64_t)a3 withState:(id)a4
+- (id)defaultCellFillForRow:(unint64_t)row withState:(id)state
 {
-  v6 = a4;
-  v7 = [(OADTable *)self->mTable tableProperties];
-  v8 = [v7 style];
-  v9 = v8;
-  if (!v8)
+  stateCopy = state;
+  tableProperties = [(OADTable *)self->mTable tableProperties];
+  style = [tableProperties style];
+  v9 = style;
+  if (!style)
   {
     v16 = 0;
     goto LABEL_24;
   }
 
-  v10 = [v8 background];
-  v11 = [v10 fill];
+  background = [style background];
+  fill = [background fill];
 
-  if (!v11)
+  if (!fill)
   {
-    if (a3 || ![v7 firstRow])
+    if (row || ![tableProperties firstRow])
     {
-      if ([v7 bandRow])
+      if ([tableProperties bandRow])
       {
-        if ([v7 firstRow] == (a3 & 1))
+        if ([tableProperties firstRow] == (row & 1))
         {
           [v9 band1HorzStyle];
         }
@@ -141,47 +141,47 @@
         {
           [v9 wholeTableStyle];
         }
-        v31 = ;
-        v32 = [v31 cellStyle];
-        v33 = [v32 fill];
+        wholeTableStyle = ;
+        cellStyle = [wholeTableStyle cellStyle];
+        fill2 = [cellStyle fill];
       }
 
       else
       {
-        v31 = [v9 wholeTableStyle];
-        v32 = [v31 cellStyle];
-        v33 = [v32 fill];
+        wholeTableStyle = [v9 wholeTableStyle];
+        cellStyle = [wholeTableStyle cellStyle];
+        fill2 = [cellStyle fill];
       }
 
-      v14 = v33;
+      fill3 = fill2;
 
-      v15 = [CMColorProperty nsColorFromOADFill:v14 state:v6];
+      v15 = [CMColorProperty nsColorFromOADFill:fill3 state:stateCopy];
       goto LABEL_22;
     }
 
     goto LABEL_5;
   }
 
-  if (!a3 && [v7 firstRow])
+  if (!row && [tableProperties firstRow])
   {
 LABEL_5:
-    v12 = [v9 firstRowStyle];
-    v13 = [v12 cellStyle];
-    v14 = [v13 fill];
+    firstRowStyle = [v9 firstRowStyle];
+    cellStyle2 = [firstRowStyle cellStyle];
+    fill3 = [cellStyle2 fill];
 
-    v15 = [CMColorProperty nsColorFromOADFill:v14 state:v6];
+    v15 = [CMColorProperty nsColorFromOADFill:fill3 state:stateCopy];
 LABEL_22:
     v16 = v15;
 
     goto LABEL_23;
   }
 
-  if ([v7 bandRow])
+  if ([tableProperties bandRow])
   {
-    v17 = [v7 firstRow];
-    v18 = [CMColorProperty nsColorFromOADFill:v11 state:v6];
-    v14 = v18;
-    if ((v17 ^ a3))
+    firstRow = [tableProperties firstRow];
+    v18 = [CMColorProperty nsColorFromOADFill:fill state:stateCopy];
+    fill3 = v18;
+    if ((firstRow ^ row))
     {
       v19 = 0.2;
     }
@@ -193,11 +193,11 @@ LABEL_22:
 
     [v18 redComponent];
     v21 = v20;
-    [v14 greenComponent];
+    [fill3 greenComponent];
     v23 = v22;
-    [v14 blueComponent];
+    [fill3 blueComponent];
     v25 = v24;
-    [v14 alphaComponent];
+    [fill3 alphaComponent];
     v26 = v21;
     v27 = v23;
     v28 = v25;
@@ -206,7 +206,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v16 = [CMColorProperty nsColorFromOADFill:v11 state:v6];
+  v16 = [CMColorProperty nsColorFromOADFill:fill state:stateCopy];
 LABEL_23:
 
 LABEL_24:
@@ -214,19 +214,19 @@ LABEL_24:
   return v16;
 }
 
-- (void)mapTablePropertiesWithState:(id)a3
+- (void)mapTablePropertiesWithState:(id)state
 {
-  v10 = a3;
-  v4 = [(OADTable *)self->mTable tableProperties];
-  v5 = [v4 style];
-  v6 = [v5 background];
+  stateCopy = state;
+  tableProperties = [(OADTable *)self->mTable tableProperties];
+  style = [tableProperties style];
+  background = [style background];
 
-  v7 = [v6 fill];
+  fill = [background fill];
 
-  if (v7)
+  if (fill)
   {
-    v8 = [v6 fill];
-    v9 = [CMColorProperty nsColorFromOADFill:v8 state:v10];
+    fill2 = [background fill];
+    v9 = [CMColorProperty nsColorFromOADFill:fill2 state:stateCopy];
 
     if (v9)
     {
@@ -239,57 +239,57 @@ LABEL_24:
   [(CMStyle *)self->mStyle appendPropertyForName:0x286F07D30 intValue:0];
 }
 
-- (void)mapColumnGridAt:(id)a3 withState:(id)a4
+- (void)mapColumnGridAt:(id)at withState:(id)state
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(OADTable *)self->mTable grid];
-  for (i = 0; i < [v7 columnCount]; ++i)
+  atCopy = at;
+  stateCopy = state;
+  grid = [(OADTable *)self->mTable grid];
+  for (i = 0; i < [grid columnCount]; ++i)
   {
     v9 = [OIXMLElement elementWithType:2];
     v10 = objc_alloc_init(CMStyle);
-    [(PMTableMapper *)self columnWidthAtIndex:i state:v6];
+    [(PMTableMapper *)self columnWidthAtIndex:i state:stateCopy];
     [(CMStyle *)v10 appendPropertyForName:0x286EEA530 length:1 unit:v11];
     [(CMMapper *)self addStyleUsingGlobalCacheTo:v9 style:v10 embedStyle:1];
-    [v12 addChild:v9];
+    [atCopy addChild:v9];
   }
 }
 
 - (id)cellStyle
 {
-  v2 = [(OADTable *)self->mTable tableProperties];
-  v3 = v2;
-  if (v2)
+  tableProperties = [(OADTable *)self->mTable tableProperties];
+  v3 = tableProperties;
+  if (tableProperties)
   {
-    v4 = [v2 style];
-    v5 = v4;
-    if (v4)
+    style = [tableProperties style];
+    v5 = style;
+    if (style)
     {
-      v6 = [v4 wholeTableStyle];
-      v7 = v6;
-      if (v6)
+      wholeTableStyle = [style wholeTableStyle];
+      v7 = wholeTableStyle;
+      if (wholeTableStyle)
       {
-        v8 = [v6 cellStyle];
+        cellStyle = [wholeTableStyle cellStyle];
       }
 
       else
       {
-        v8 = 0;
+        cellStyle = 0;
       }
     }
 
     else
     {
-      v8 = 0;
+      cellStyle = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    cellStyle = 0;
   }
 
-  return v8;
+  return cellStyle;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface _DKSyncCompositeOperation
 - (BOOL)isReady;
-- (_DKSyncCompositeOperation)initWithParent:(id)a3;
+- (_DKSyncCompositeOperation)initWithParent:(id)parent;
 - (void)_shutdownOperation;
 - (void)cancel;
-- (void)childOperation:(id)a3 didEndWithErrors:(id)a4;
-- (void)childOperationWasAdded:(id)a3;
+- (void)childOperation:(id)operation didEndWithErrors:(id)errors;
+- (void)childOperationWasAdded:(id)added;
 - (void)dealloc;
 - (void)endOperation;
-- (void)setReadyToStart:(BOOL)a3;
+- (void)setReadyToStart:(BOOL)start;
 @end
 
 @implementation _DKSyncCompositeOperation
 
-- (_DKSyncCompositeOperation)initWithParent:(id)a3
+- (_DKSyncCompositeOperation)initWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v23.receiver = self;
   v23.super_class = _DKSyncCompositeOperation;
   v5 = [(_DKSyncOperation *)&v23 init];
@@ -22,25 +22,25 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     children = v6->_children;
-    v6->_children = v7;
+    v6->_children = weakObjectsHashTable;
 
     v9 = objc_opt_new();
     errors = v6->_errors;
     v6->_errors = v9;
 
-    if (v4)
+    if (parentCopy)
     {
-      objc_storeWeak(&v6->_parent, v4);
-      [v4 childOperationWasAdded:v6];
+      objc_storeWeak(&v6->_parent, parentCopy);
+      [parentCopy childOperationWasAdded:v6];
       v11 = +[_CDObservationCenter sharedInstance];
       v12 = +[_DKSyncSerializer underlyingQueue];
       v17 = MEMORY[0x1E69E9820];
       v18 = 3221225472;
       v19 = __44___DKSyncCompositeOperation_initWithParent___block_invoke;
       v20 = &unk_1E7368C38;
-      v13 = v4;
+      v13 = parentCopy;
       v21 = v13;
       v14 = v6;
       v22 = v14;
@@ -55,15 +55,15 @@
       {
         if ([v13 isExecuting])
         {
-          v15 = 1;
+          isFinished = 1;
         }
 
         else
         {
-          v15 = [v13 isFinished];
+          isFinished = [v13 isFinished];
         }
 
-        [(_DKSyncCompositeOperation *)v14 setReadyToStart:v15];
+        [(_DKSyncCompositeOperation *)v14 setReadyToStart:isFinished];
       }
     }
 
@@ -84,10 +84,10 @@
   [(_DKSyncOperation *)&v3 dealloc];
 }
 
-- (void)setReadyToStart:(BOOL)a3
+- (void)setReadyToStart:(BOOL)start
 {
   [(_DKSyncCompositeOperation *)self willChangeValueForKey:@"isReady"];
-  atomic_store(a3, &self->_isReadyToStart);
+  atomic_store(start, &self->_isReadyToStart);
 
   [(_DKSyncCompositeOperation *)self didChangeValueForKey:@"isReady"];
 }
@@ -108,27 +108,27 @@
   }
 }
 
-- (void)childOperationWasAdded:(id)a3
+- (void)childOperationWasAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_children addObject:v4];
+  [(NSHashTable *)self->_children addObject:addedCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)childOperation:(id)a3 didEndWithErrors:(id)a4
+- (void)childOperation:(id)operation didEndWithErrors:(id)errors
 {
-  v9 = a4;
-  v6 = a3;
+  errorsCopy = errors;
+  operationCopy = operation;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_children removeObject:v6];
+  [(NSHashTable *)self->_children removeObject:operationCopy];
 
   v7 = [(NSHashTable *)self->_children count];
-  if ([v9 count])
+  if ([errorsCopy count])
   {
-    v8 = [(_DKSyncCompositeOperation *)self errors];
-    [v8 addObjectsFromArray:v9];
+    errors = [(_DKSyncCompositeOperation *)self errors];
+    [errors addObjectsFromArray:errorsCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -148,8 +148,8 @@
     os_unfair_lock_unlock(&self->_lock);
     v3 = +[_CDObservationCenter sharedInstance];
     [v3 removeObserver:self name:@"_DKSyncOperationStateDidChangeNotification" sender:WeakRetained];
-    v4 = [(_DKSyncCompositeOperation *)self errors];
-    [WeakRetained childOperation:self didEndWithErrors:v4];
+    errors = [(_DKSyncCompositeOperation *)self errors];
+    [WeakRetained childOperation:self didEndWithErrors:errors];
   }
 
   else

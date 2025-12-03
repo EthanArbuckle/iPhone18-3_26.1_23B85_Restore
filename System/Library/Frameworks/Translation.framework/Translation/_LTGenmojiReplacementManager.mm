@@ -1,7 +1,7 @@
 @interface _LTGenmojiReplacementManager
 - (_LTGenmojiReplacementManager)init;
-- (id)replacementInfoForRequestID:(id)a3;
-- (void)addReplacementInfo:(id)a3;
+- (id)replacementInfoForRequestID:(id)d;
+- (void)addReplacementInfo:(id)info;
 @end
 
 @implementation _LTGenmojiReplacementManager
@@ -13,9 +13,9 @@
   v2 = [(_LTGenmojiReplacementManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     infoMap = v2->_infoMap;
-    v2->_infoMap = v3;
+    v2->_infoMap = dictionary;
 
     v5 = v2;
   }
@@ -23,28 +23,28 @@
   return v2;
 }
 
-- (void)addReplacementInfo:(id)a3
+- (void)addReplacementInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   infoMap = self->_infoMap;
-  v10 = v4;
-  v6 = [v4 requestUniqueID];
-  v7 = [(NSMutableDictionary *)infoMap objectForKeyedSubscript:v6];
+  v10 = infoCopy;
+  requestUniqueID = [infoCopy requestUniqueID];
+  array = [(NSMutableDictionary *)infoMap objectForKeyedSubscript:requestUniqueID];
 
-  if (!v7)
+  if (!array)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v8 = self->_infoMap;
-    v9 = [v10 requestUniqueID];
-    [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v9];
+    requestUniqueID2 = [v10 requestUniqueID];
+    [(NSMutableDictionary *)v8 setObject:array forKeyedSubscript:requestUniqueID2];
   }
 
-  [v7 addObject:v10];
+  [array addObject:v10];
 }
 
-- (id)replacementInfoForRequestID:(id)a3
+- (id)replacementInfoForRequestID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_infoMap objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_infoMap objectForKeyedSubscript:d];
   v4 = v3;
   if (v3)
   {

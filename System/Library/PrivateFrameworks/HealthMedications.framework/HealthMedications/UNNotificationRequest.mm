@@ -1,45 +1,45 @@
 @interface UNNotificationRequest
-+ (id)_bodyForCategory:(uint64_t)a3 argument:(void *)a4 identifier:;
-+ (id)_contentByAddingCommonUserInfoTo:(uint64_t)a1;
-+ (id)_contentForNotification:(uint64_t)a1;
-+ (id)_requestIDForNotification:(uint64_t)a1;
++ (id)_bodyForCategory:(uint64_t)category argument:(void *)argument identifier:;
++ (id)_contentByAddingCommonUserInfoTo:(uint64_t)to;
++ (id)_contentForNotification:(uint64_t)notification;
++ (id)_requestIDForNotification:(uint64_t)notification;
 + (id)_timeZoneContent;
 + (id)_timeZoneUserInfo;
 @end
 
 @implementation UNNotificationRequest
 
-+ (id)_requestIDForNotification:(uint64_t)a1
++ (id)_requestIDForNotification:(uint64_t)notification
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 scheduleItemIdentifier];
-  v4 = [v2 dueDate];
-  v5 = [HKMedicationScheduleItem isScheduleItemIdentifier:v3 matchingDateTime:v4];
+  scheduleItemIdentifier = [v2 scheduleItemIdentifier];
+  dueDate = [v2 dueDate];
+  v5 = [HKMedicationScheduleItem isScheduleItemIdentifier:scheduleItemIdentifier matchingDateTime:dueDate];
 
-  v6 = [v2 scheduleItemIdentifier];
+  scheduleItemIdentifier2 = [v2 scheduleItemIdentifier];
   if (!v5)
   {
-    v7 = [v2 dueDate];
-    [v7 timeIntervalSinceReferenceDate];
-    v9 = [v6 stringByAppendingFormat:@"-%f", v8];
+    dueDate2 = [v2 dueDate];
+    [dueDate2 timeIntervalSinceReferenceDate];
+    v9 = [scheduleItemIdentifier2 stringByAppendingFormat:@"-%f", v8];
 
-    v6 = v9;
+    scheduleItemIdentifier2 = v9;
   }
 
-  return v6;
+  return scheduleItemIdentifier2;
 }
 
-+ (id)_contentForNotification:(uint64_t)a1
++ (id)_contentForNotification:(uint64_t)notification
 {
   v2 = a2;
   v3 = objc_opt_self();
   v4 = objc_alloc_init(MEMORY[0x277CE1F60]);
-  v5 = [v2 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"MedicationsNotificationIsFollowUpKey"];
-  v7 = [v6 BOOLValue];
+  userInfo = [v2 userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"MedicationsNotificationIsFollowUpKey"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = @"MEDICATIONS_NOTIFICATION_TITLE_NOT_MISSED_FOLLOW_UP";
   }
@@ -52,38 +52,38 @@
   v9 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:v8 arguments:0];
   [v4 setTitle:v9];
 
-  v10 = [v2 category];
-  v11 = [v2 argument];
-  v12 = [v2 scheduleItemIdentifier];
-  v14 = [(UNNotificationRequest *)v3 _bodyForCategory:v10 argument:v13 identifier:v12];
+  category = [v2 category];
+  argument = [v2 argument];
+  scheduleItemIdentifier = [v2 scheduleItemIdentifier];
+  v14 = [(UNNotificationRequest *)v3 _bodyForCategory:category argument:v13 identifier:scheduleItemIdentifier];
   [v4 setBody:v14];
 
-  v15 = [v2 userInfo];
-  v16 = [v15 objectForKeyedSubscript:@"MedicationsNotificationIsCriticalKey"];
-  LOBYTE(v12) = [v16 BOOLValue];
+  userInfo2 = [v2 userInfo];
+  v16 = [userInfo2 objectForKeyedSubscript:@"MedicationsNotificationIsCriticalKey"];
+  LOBYTE(scheduleItemIdentifier) = [v16 BOOLValue];
 
-  v17 = [v2 category];
-  [v4 setCategoryIdentifier:v17];
+  category2 = [v2 category];
+  [v4 setCategoryIdentifier:category2];
 
-  v18 = [v2 scheduleItemIdentifier];
-  [v4 setThreadIdentifier:v18];
+  scheduleItemIdentifier2 = [v2 scheduleItemIdentifier];
+  [v4 setThreadIdentifier:scheduleItemIdentifier2];
 
-  if (v12)
+  if (scheduleItemIdentifier)
   {
-    v19 = [MEMORY[0x277CE1FE0] defaultCriticalSound];
+    defaultCriticalSound = [MEMORY[0x277CE1FE0] defaultCriticalSound];
     v20 = 3;
   }
 
   else
   {
-    v19 = [MEMORY[0x277CE1FE0] soundWithAlertType:25];
+    defaultCriticalSound = [MEMORY[0x277CE1FE0] soundWithAlertType:25];
     v20 = 2;
   }
 
-  [v4 setSound:v19];
+  [v4 setSound:defaultCriticalSound];
 
-  v21 = [v2 userInfo];
-  [v4 setUserInfo:v21];
+  userInfo3 = [v2 userInfo];
+  [v4 setUserInfo:userInfo3];
 
   [v4 setInterruptionLevel:v20];
   v22 = [(UNNotificationRequest *)v3 _contentByAddingCommonUserInfoTo:v4];
@@ -113,11 +113,11 @@
   return v0;
 }
 
-+ (id)_bodyForCategory:(uint64_t)a3 argument:(void *)a4 identifier:
++ (id)_bodyForCategory:(uint64_t)category argument:(void *)argument identifier:
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a4;
+  argumentCopy = argument;
   objc_opt_self();
   if ([v5 isEqualToString:@"MedicationsHealthAppPlugin.BeforeFirstUnlock"])
   {
@@ -131,7 +131,7 @@ LABEL_3:
   if ([MEMORY[0x277CE1FC0] isNotMissedCategory:v5])
   {
     v10 = MEMORY[0x277CBEAA8];
-    [v6 doubleValue];
+    [argumentCopy doubleValue];
     v11 = [v10 dateWithTimeIntervalSinceReferenceDate:?];
     v12 = [MEMORY[0x277CCA968] localizedStringFromDate:v11 dateStyle:0 timeStyle:1];
     v13 = [MEMORY[0x277CCA968] hm_localizableTimeStringKeyWithPrefix:@"MEDICATIONS_NOTIFICATION_BODY_NOT_MISSED" date:v11];
@@ -160,14 +160,14 @@ LABEL_9:
   return v9;
 }
 
-+ (id)_contentByAddingCommonUserInfoTo:(uint64_t)a1
++ (id)_contentByAddingCommonUserInfoTo:(uint64_t)to
 {
   v2 = a2;
   objc_opt_self();
   v3 = [v2 mutableCopy];
-  v4 = [v2 userInfo];
+  userInfo = [v2 userInfo];
 
-  v5 = [v4 mutableCopy];
+  v5 = [userInfo mutableCopy];
   [v5 setObject:&unk_2863B6B98 forKeyedSubscript:*MEMORY[0x277CCE4D0]];
   v6 = [v5 copy];
   [v3 setUserInfo:v6];

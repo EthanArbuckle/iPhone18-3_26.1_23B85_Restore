@@ -1,23 +1,23 @@
 @interface TestTelemetry
-+ (id)testTelemetryWithInfo:(id)a3;
-- (TestTelemetry)initWithInfo:(id)a3;
++ (id)testTelemetryWithInfo:(id)info;
+- (TestTelemetry)initWithInfo:(id)info;
 - (id)description;
 - (unint64_t)deletes;
-- (void)addDeletes:(unint64_t)a3;
-- (void)addRemoveFailure:(id)a3;
-- (void)addTerminationFailure:(id)a3;
+- (void)addDeletes:(unint64_t)deletes;
+- (void)addRemoveFailure:(id)failure;
+- (void)addTerminationFailure:(id)failure;
 @end
 
 @implementation TestTelemetry
 
-- (TestTelemetry)initWithInfo:(id)a3
+- (TestTelemetry)initWithInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"CACHE_DELETE_TEST_PARAMETERS"];
+    v6 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_TEST_PARAMETERS"];
     v7 = v6;
     if (v6)
     {
@@ -62,7 +62,7 @@
         }
 
         self = v12;
-        v18 = self;
+        selfCopy = self;
       }
 
       else
@@ -75,7 +75,7 @@
           _os_log_error_impl(&dword_1BA7F1000, v19, OS_LOG_TYPE_ERROR, "Invalid test parameters: %@", buf, 0xCu);
         }
 
-        v18 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -89,23 +89,23 @@
         _os_log_error_impl(&dword_1BA7F1000, v9, OS_LOG_TYPE_ERROR, "[%s] no test parameters in info", buf, 0xCu);
       }
 
-      v18 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
   v20 = *MEMORY[0x1E69E9840];
-  return v18;
+  return selfCopy;
 }
 
-+ (id)testTelemetryWithInfo:(id)a3
++ (id)testTelemetryWithInfo:(id)info
 {
-  v3 = a3;
-  v4 = [[TestTelemetry alloc] initWithInfo:v3];
+  infoCopy = info;
+  v4 = [[TestTelemetry alloc] initWithInfo:infoCopy];
 
   return v4;
 }
@@ -115,46 +115,46 @@
   v3 = MEMORY[0x1E696AEC0];
   [(TestTelemetry *)self termination_threshold];
   v5 = v4;
-  v6 = [(TestTelemetry *)self terminationFailures];
+  terminationFailures = [(TestTelemetry *)self terminationFailures];
   [(TestTelemetry *)self remove_threshold];
   v8 = v7;
-  v9 = [(TestTelemetry *)self removeFailures];
-  v10 = [v3 stringWithFormat:@"termination threshold: %f -- failures: %@, remove threshold: %f -- failures: %@", v5, v6, v8, v9];
+  removeFailures = [(TestTelemetry *)self removeFailures];
+  v10 = [v3 stringWithFormat:@"termination threshold: %f -- failures: %@, remove threshold: %f -- failures: %@", v5, terminationFailures, v8, removeFailures];
 
   return v10;
 }
 
-- (void)addRemoveFailure:(id)a3
+- (void)addRemoveFailure:(id)failure
 {
-  v4 = a3;
-  v5 = [(TestTelemetry *)self removeFailures];
+  failureCopy = failure;
+  removeFailures = [(TestTelemetry *)self removeFailures];
 
-  if (!v5)
+  if (!removeFailures)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
-    [(TestTelemetry *)self setRemoveFailures:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    [(TestTelemetry *)self setRemoveFailures:array];
   }
 
-  v7 = [(TestTelemetry *)self removeFailures];
-  [v7 addObject:v4];
+  removeFailures2 = [(TestTelemetry *)self removeFailures];
+  [removeFailures2 addObject:failureCopy];
 }
 
-- (void)addTerminationFailure:(id)a3
+- (void)addTerminationFailure:(id)failure
 {
-  v4 = a3;
-  v5 = [(TestTelemetry *)self terminationFailures];
+  failureCopy = failure;
+  terminationFailures = [(TestTelemetry *)self terminationFailures];
 
-  if (!v5)
+  if (!terminationFailures)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
-    [(TestTelemetry *)self setTerminationFailures:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    [(TestTelemetry *)self setTerminationFailures:array];
   }
 
-  v7 = [(TestTelemetry *)self terminationFailures];
-  [v7 addObject:v4];
+  terminationFailures2 = [(TestTelemetry *)self terminationFailures];
+  [terminationFailures2 addObject:failureCopy];
 }
 
-- (void)addDeletes:(unint64_t)a3
+- (void)addDeletes:(unint64_t)deletes
 {
   v5 = [(TestTelemetry *)self q];
   v6[0] = MEMORY[0x1E69E9820];
@@ -162,7 +162,7 @@
   v6[2] = __28__TestTelemetry_addDeletes___block_invoke;
   v6[3] = &unk_1E7F02D90;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = deletes;
   dispatch_sync(v5, v6);
 }
 

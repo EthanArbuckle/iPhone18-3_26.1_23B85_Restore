@@ -1,10 +1,10 @@
 @interface MPSImageLanczosScale
 - (MPSImageLanczosScale)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageLanczosScale)initWithDevice:(id)device;
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageLanczosScale
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSImageLanczosScale;
-  return [(MPSImageScale *)&v5 copyWithZone:a3 device:a4];
+  return [(MPSImageScale *)&v5 copyWithZone:zone device:device];
 }
 
 - (MPSImageLanczosScale)initWithCoder:(NSCoder *)aDecoder device:(id)device
@@ -72,12 +72,12 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v3.receiver = self;
   v3.super_class = MPSImageLanczosScale;
-  [(MPSImageScale *)&v3 encodeWithCoder:a3];
+  [(MPSImageScale *)&v3 encodeWithCoder:coder];
 }
 
 - (void)dealloc
@@ -91,7 +91,7 @@
   [(MPSKernel *)&v4 dealloc];
 }
 
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size
 {
   v36.receiver = self;
   v36.super_class = MPSImageLanczosScale;

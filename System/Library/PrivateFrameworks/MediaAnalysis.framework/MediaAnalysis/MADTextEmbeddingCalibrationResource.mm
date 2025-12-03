@@ -18,9 +18,9 @@
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     queue = v2->_queue;
     v2->_queue = v7;
   }
@@ -37,7 +37,7 @@
   v8[1] = 3221225472;
   v8[2] = __53__MADTextEmbeddingCalibrationResource_sharedResource__block_invoke;
   v8[3] = &__block_descriptor_40_e5__8__0l;
-  v8[4] = a1;
+  v8[4] = self;
   v6 = [v3 sharedInstanceWithIdentifier:v5 andCreationBlock:v8];
 
   return v6;

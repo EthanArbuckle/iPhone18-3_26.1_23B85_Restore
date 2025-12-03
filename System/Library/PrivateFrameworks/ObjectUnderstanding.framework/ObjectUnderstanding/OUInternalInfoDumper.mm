@@ -1,19 +1,19 @@
 @interface OUInternalInfoDumper
-+ (id)serailizeARFrameMeta:(id)a3;
++ (id)serailizeARFrameMeta:(id)meta;
 - (OUInternalInfoDumper)init;
-- (id)encodeDepthPng:(__CVBuffer *)a3;
-- (id)encodePng:(__CVBuffer *)a3;
-- (id)encodeRGBPng:(__CVBuffer *)a3 withWidth:(unint64_t)a4 Height:(unint64_t)a5;
-- (id)getDebugInfoWithConfig:(id)a3 OnlineDebug:(id)a4;
-- (void)createDirectory:(id)a3;
-- (void)dumpARFrame:(__n128)a3 withKeyFrames:(__n128)a4 withCameraPose:(__n128)a5;
+- (id)encodeDepthPng:(__CVBuffer *)png;
+- (id)encodePng:(__CVBuffer *)png;
+- (id)encodeRGBPng:(__CVBuffer *)png withWidth:(unint64_t)width Height:(unint64_t)height;
+- (id)getDebugInfoWithConfig:(id)config OnlineDebug:(id)debug;
+- (void)createDirectory:(id)directory;
+- (void)dumpARFrame:(__n128)frame withKeyFrames:(__n128)frames withCameraPose:(__n128)pose;
 - (void)dumpLastARFrameImage;
-- (void)dumpObjects:(id)a3;
-- (void)logMemory:(unint64_t)a3;
+- (void)dumpObjects:(id)objects;
+- (void)logMemory:(unint64_t)memory;
 - (void)reset;
-- (void)setFirstARFrame:(id)a3;
-- (void)setLastARFrame:(__n128)a3 withCameraPose:(__n128)a4;
-- (void)setUpInternalDumpWithLogDir:(id)a3 enable:(BOOL)a4;
+- (void)setFirstARFrame:(id)frame;
+- (void)setLastARFrame:(__n128)frame withCameraPose:(__n128)pose;
+- (void)setUpInternalDumpWithLogDir:(id)dir enable:(BOOL)enable;
 @end
 
 @implementation OUInternalInfoDumper
@@ -40,32 +40,32 @@
   return v3;
 }
 
-- (void)createDirectory:(id)a3
+- (void)createDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v7 = 0;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3 isDirectory:&v7];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:directoryCopy isDirectory:&v7];
 
   if (!v5 || (v7 & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    [v6 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:0];
   }
 }
 
-- (void)setUpInternalDumpWithLogDir:(id)a3 enable:(BOOL)a4
+- (void)setUpInternalDumpWithLogDir:(id)dir enable:(BOOL)enable
 {
-  v8 = a3;
-  objc_storeStrong(&self->_loggingDirectory, a3);
-  v6 = v8;
+  dirCopy = dir;
+  objc_storeStrong(&self->_loggingDirectory, dir);
+  v6 = dirCopy;
   self->_enableLiveDump = 1;
-  if (v8)
+  if (dirCopy)
   {
-    v7 = [v8 stringByAppendingPathComponent:@"Live"];
+    v7 = [dirCopy stringByAppendingPathComponent:@"Live"];
     [(OUInternalInfoDumper *)self createDirectory:v7];
 
-    v6 = v8;
+    v6 = dirCopy;
   }
 }
 
@@ -184,39 +184,39 @@ void __45__OUInternalInfoDumper_logKeyFrame_WithSkip___block_invoke(uint64_t a1)
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFirstARFrame:(id)a3
+- (void)setFirstARFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   if (self->_enableLiveDump && self->_firstARFrameTime == 0.0)
   {
-    v6 = v4;
-    [v4 timestamp];
+    v6 = frameCopy;
+    [frameCopy timestamp];
     self->_firstARFrameTime = v5;
-    v4 = v6;
+    frameCopy = v6;
   }
 }
 
-+ (id)serailizeARFrameMeta:(id)a3
++ (id)serailizeARFrameMeta:(id)meta
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  metaCopy = meta;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = MEMORY[0x277CCABB0];
-  [v3 timestamp];
+  [metaCopy timestamp];
   v6 = [v5 numberWithDouble:?];
-  [v4 setObject:v6 forKeyedSubscript:@"timestamp"];
+  [dictionary setObject:v6 forKeyedSubscript:@"timestamp"];
 
-  v7 = [v3 sceneCamera];
-  [v7 transform];
+  sceneCamera = [metaCopy sceneCamera];
+  [sceneCamera transform];
   v25 = v8;
   v26 = v9;
   v27 = v10;
   v28 = v11;
 
   v12 = [MEMORY[0x277CBEA90] dataWithBytes:&v25 length:64];
-  [v4 setObject:v12 forKeyedSubscript:@"cameraTransform"];
+  [dictionary setObject:v12 forKeyedSubscript:@"cameraTransform"];
 
-  v13 = [v3 sceneCamera];
-  [v13 intrinsics];
+  sceneCamera2 = [metaCopy sceneCamera];
+  [sceneCamera2 intrinsics];
   DWORD2(v22) = v14;
   DWORD2(v23) = v15;
   *&v22 = v16;
@@ -225,39 +225,39 @@ void __45__OUInternalInfoDumper_logKeyFrame_WithSkip___block_invoke(uint64_t a1)
   *&v24 = v19;
 
   v20 = [MEMORY[0x277CBEA90] dataWithBytes:&v22 length:48];
-  [v4 setObject:v20 forKeyedSubscript:{@"intrinsics", v22, v23, v24}];
+  [dictionary setObject:v20 forKeyedSubscript:{@"intrinsics", v22, v23, v24}];
 
-  return v4;
+  return dictionary;
 }
 
-- (void)setLastARFrame:(__n128)a3 withCameraPose:(__n128)a4
+- (void)setLastARFrame:(__n128)frame withCameraPose:(__n128)pose
 {
   v9 = a7;
-  if (*(a1 + 177) == 1)
+  if (*(self + 177) == 1)
   {
     v10 = v9;
-    objc_storeStrong((a1 + 104), a7);
+    objc_storeStrong((self + 104), a7);
     v9 = v10;
-    *(a1 + 112) = a2;
-    *(a1 + 128) = a3;
-    *(a1 + 144) = a4;
-    *(a1 + 160) = a5;
+    *(self + 112) = a2;
+    *(self + 128) = frame;
+    *(self + 144) = pose;
+    *(self + 160) = a5;
   }
 }
 
-- (id)encodePng:(__CVBuffer *)a3
+- (id)encodePng:(__CVBuffer *)png
 {
-  v4 = [MEMORY[0x277CBEB28] data];
-  v5 = CGImageDestinationCreateWithData(v4, @"public.png", 1uLL, 0);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  data = [MEMORY[0x277CBEB28] data];
+  v5 = CGImageDestinationCreateWithData(data, @"public.png", 1uLL, 0);
+  CVPixelBufferLockBaseAddress(png, 1uLL);
+  BaseAddress = CVPixelBufferGetBaseAddress(png);
+  Width = CVPixelBufferGetWidth(png);
+  Height = CVPixelBufferGetHeight(png);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(png);
   if (PixelFormatType == 1647392359)
   {
     DeviceGray = CGColorSpaceCreateDeviceGray();
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(png);
     v12 = CGBitmapContextCreate(BaseAddress, Width, Height, 0x10uLL, BytesPerRow, DeviceGray, 0x1000u);
     CGColorSpaceRelease(DeviceGray);
   }
@@ -265,7 +265,7 @@ void __45__OUInternalInfoDumper_logKeyFrame_WithSkip___block_invoke(uint64_t a1)
   else if (PixelFormatType == 32)
   {
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
-    v11 = CVPixelBufferGetBytesPerRow(a3);
+    v11 = CVPixelBufferGetBytesPerRow(png);
     v12 = CGBitmapContextCreate(BaseAddress, Width, Height, 8uLL, v11, DeviceRGB, 6u);
     CGColorSpaceRelease(DeviceRGB);
   }
@@ -275,7 +275,7 @@ void __45__OUInternalInfoDumper_logKeyFrame_WithSkip___block_invoke(uint64_t a1)
     v12 = 0;
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(png, 1uLL);
   if (v12)
   {
     Image = CGBitmapContextCreateImage(v12);
@@ -302,22 +302,22 @@ void __45__OUInternalInfoDumper_logKeyFrame_WithSkip___block_invoke(uint64_t a1)
 LABEL_14:
   CGImageRelease(Image);
 
-  return v4;
+  return data;
 }
 
-- (id)encodeRGBPng:(__CVBuffer *)a3 withWidth:(unint64_t)a4 Height:(unint64_t)a5
+- (id)encodeRGBPng:(__CVBuffer *)png withWidth:(unint64_t)width Height:(unint64_t)height
 {
   v15[1] = *MEMORY[0x277D85DE8];
   pixelBufferOut = 0;
   pixelTransferSessionOut = 0;
-  if (VTPixelTransferSessionCreate(0, &pixelTransferSessionOut) || (v14 = *MEMORY[0x277CC4DE8], v15[0] = MEMORY[0x277CBEC10], CVPixelBufferCreate(0, a4, a5, 0x20u, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1], &pixelBufferOut)) || !pixelBufferOut)
+  if (VTPixelTransferSessionCreate(0, &pixelTransferSessionOut) || (v14 = *MEMORY[0x277CC4DE8], v15[0] = MEMORY[0x277CBEC10], CVPixelBufferCreate(0, width, height, 0x20u, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1], &pixelBufferOut)) || !pixelBufferOut)
   {
     v9 = 0;
   }
 
   else
   {
-    VTPixelTransferSessionTransferImage(pixelTransferSessionOut, a3, pixelBufferOut);
+    VTPixelTransferSessionTransferImage(pixelTransferSessionOut, png, pixelBufferOut);
     VTPixelTransferSessionInvalidate(pixelTransferSessionOut);
     CFRelease(pixelTransferSessionOut);
     v9 = [(OUInternalInfoDumper *)self encodePng:pixelBufferOut];
@@ -329,21 +329,21 @@ LABEL_14:
   return v9;
 }
 
-- (id)encodeDepthPng:(__CVBuffer *)a3
+- (id)encodeDepthPng:(__CVBuffer *)png
 {
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  src.width = CVPixelBufferGetWidth(a3);
-  src.height = CVPixelBufferGetHeight(a3);
-  src.rowBytes = CVPixelBufferGetBytesPerRow(a3);
+  CVPixelBufferLockBaseAddress(png, 1uLL);
+  Width = CVPixelBufferGetWidth(png);
+  Height = CVPixelBufferGetHeight(png);
+  src.width = CVPixelBufferGetWidth(png);
+  src.height = CVPixelBufferGetHeight(png);
+  src.rowBytes = CVPixelBufferGetBytesPerRow(png);
   dest.height = Height;
   dest.width = Width;
   dest.rowBytes = 32 * Width;
-  src.data = CVPixelBufferGetBaseAddress(a3);
+  src.data = CVPixelBufferGetBaseAddress(png);
   dest.data = malloc_type_malloc(32 * Width * Height, 0x1000040E0EAB150uLL);
   vImageConvert_FTo16U(&src, &dest, 0.0, 0.001, 0);
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(png, 1uLL);
   texture = 0;
   if (CVPixelBufferCreateWithBytes(*MEMORY[0x277CBECE8], Width, Height, 0x62313667u, dest.data, dest.rowBytes, 0, 0, 0, &texture))
   {
@@ -392,7 +392,7 @@ LABEL_14:
   v19 = v30;
   v20 = v31;
   v27 = v9;
-  v23 = self;
+  selfCopy = self;
   v12 = v10;
   v13 = v5;
   v14 = v3;
@@ -527,9 +527,9 @@ void __44__OUInternalInfoDumper_dumpLastARFrameImage__block_invoke(uint64_t a1)
   dispatch_group_leave(*(a1 + 120));
 }
 
-- (void)dumpObjects:(id)a3
+- (void)dumpObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   if (__PAIR64__(self->_enableLiveDump, self->_enableARFrameDump) == 0x100000001)
   {
     loggingDirectory = self->_loggingDirectory;
@@ -544,8 +544,8 @@ void __44__OUInternalInfoDumper_dumpLastARFrameImage__block_invoke(uint64_t a1)
       v11[2] = __36__OUInternalInfoDumper_dumpObjects___block_invoke;
       v11[3] = &unk_2799C41C0;
       v12 = v6;
-      v13 = v4;
-      v14 = self;
+      v13 = objectsCopy;
+      selfCopy = self;
       v15 = v7;
       v9 = v7;
       v10 = v6;
@@ -606,29 +606,29 @@ void __36__OUInternalInfoDumper_dumpObjects___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dumpARFrame:(__n128)a3 withKeyFrames:(__n128)a4 withCameraPose:(__n128)a5
+- (void)dumpARFrame:(__n128)frame withKeyFrames:(__n128)frames withCameraPose:(__n128)pose
 {
   v10 = a7;
   v11 = a8;
   if ([v10 sceneDepthBuffer])
   {
-    [a1 setLastARFrame:v10 withCameraPose:{a2.n128_f64[0], a3.n128_f64[0], a4.n128_f64[0], a5.n128_f64[0]}];
+    [self setLastARFrame:v10 withCameraPose:{a2.n128_f64[0], frame.n128_f64[0], frames.n128_f64[0], pose.n128_f64[0]}];
   }
 
-  NSLog(&cfstr_Enablelivedump.isa, *(a1 + 177));
-  NSLog(&cfstr_Enablearframed.isa, *(a1 + 176));
-  NSLog(&cfstr_Loggingdirecto.isa, *(a1 + 24));
-  if (*(a1 + 177) == 1 && *(a1 + 176) == 1)
+  NSLog(&cfstr_Enablelivedump.isa, *(self + 177));
+  NSLog(&cfstr_Enablearframed.isa, *(self + 176));
+  NSLog(&cfstr_Loggingdirecto.isa, *(self + 24));
+  if (*(self + 177) == 1 && *(self + 176) == 1)
   {
-    v12 = *(a1 + 24);
+    v12 = *(self + 24);
     if (v12)
     {
       v13 = [v12 stringByAppendingPathComponent:@"Live"];
-      v14 = *(a1 + 72);
-      v15 = *(a1 + 16);
+      v14 = *(self + 72);
+      v15 = *(self + 16);
       v16 = [v11 count];
       dispatch_group_enter(v15);
-      v17 = *(a1 + 8);
+      v17 = *(self + 8);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __65__OUInternalInfoDumper_dumpARFrame_withKeyFrames_withCameraPose___block_invoke;
@@ -636,11 +636,11 @@ void __36__OUInternalInfoDumper_dumpObjects___block_invoke(uint64_t a1)
       v29 = v13;
       v34 = v14;
       v25 = a2;
-      v26 = a3;
-      v27 = a4;
-      v28 = a5;
+      frameCopy = frame;
+      framesCopy = frames;
+      poseCopy = pose;
       v30 = v10;
-      v31 = a1;
+      selfCopy = self;
       v32 = v15;
       v33 = v16;
       v18 = v15;
@@ -678,14 +678,14 @@ void __65__OUInternalInfoDumper_dumpARFrame_withKeyFrames_withCameraPose___block
   dispatch_group_leave(*(a1 + 120));
 }
 
-- (void)logMemory:(unint64_t)a3
+- (void)logMemory:(unint64_t)memory
 {
   v11[2] = *MEMORY[0x277D85DE8];
   if (self->_enableLiveDump && self->_lastARFrame)
   {
     sysDebug = self->_sysDebug;
     v10[0] = @"avail_mem";
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:memory];
     v10[1] = @"time_stamp";
     v11[0] = v5;
     v6 = MEMORY[0x277CCABB0];
@@ -699,15 +699,15 @@ void __65__OUInternalInfoDumper_dumpARFrame_withKeyFrames_withCameraPose___block
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getDebugInfoWithConfig:(id)a3 OnlineDebug:(id)a4
+- (id)getDebugInfoWithConfig:(id)config OnlineDebug:(id)debug
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  configCopy = config;
+  debugCopy = debug;
+  v8 = debugCopy;
   if (self->_enableLiveDump)
   {
-    v9 = [v7 objectForKeyedSubscript:@"floorPlanDebug"];
+    v9 = [debugCopy objectForKeyedSubscript:@"floorPlanDebug"];
     v10 = [(NSMutableArray *)self->_floorPlanDebug count];
     if (v10 != [v9 count] - 1)
     {
@@ -718,17 +718,17 @@ void __65__OUInternalInfoDumper_dumpARFrame_withKeyFrames_withCameraPose___block
       }
     }
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     for (i = 0; i < [(NSMutableArray *)self->_floorPlanDebug count]; ++i)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v15 = [(NSMutableArray *)self->_floorPlanDebug objectAtIndexedSubscript:i];
-      [v14 addEntriesFromDictionary:v15];
+      [dictionary addEntriesFromDictionary:v15];
 
       v16 = [v9 objectAtIndexedSubscript:i];
-      [v14 addEntriesFromDictionary:v16];
+      [dictionary addEntriesFromDictionary:v16];
 
-      [v12 addObject:v14];
+      [array addObject:dictionary];
     }
 
     save_group = self->_save_group;
@@ -737,9 +737,9 @@ void __65__OUInternalInfoDumper_dumpARFrame_withKeyFrames_withCameraPose___block
     v24[0] = @"config";
     v24[1] = @"keyframeDebug";
     keyframesDebug = self->_keyframesDebug;
-    v25[0] = v6;
+    v25[0] = configCopy;
     v25[1] = keyframesDebug;
-    v25[2] = v12;
+    v25[2] = array;
     v24[2] = @"floorPlanDebug";
     v24[3] = @"coachingDebug";
     v26 = *&self->_coachingDebug;
@@ -764,29 +764,29 @@ void __65__OUInternalInfoDumper_dumpARFrame_withKeyFrames_withCameraPose___block
 
 - (void)reset
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   keyframesDebug = self->_keyframesDebug;
-  self->_keyframesDebug = v3;
+  self->_keyframesDebug = array;
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   floorPlanDebug = self->_floorPlanDebug;
-  self->_floorPlanDebug = v5;
+  self->_floorPlanDebug = array2;
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   coachingDebug = self->_coachingDebug;
-  self->_coachingDebug = v7;
+  self->_coachingDebug = array3;
 
-  v9 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   driftDebug = self->_driftDebug;
-  self->_driftDebug = v9;
+  self->_driftDebug = array4;
 
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   keyframeMeta = self->_keyframeMeta;
-  self->_keyframeMeta = v11;
+  self->_keyframeMeta = dictionary;
 
-  v13 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
   sysDebug = self->_sysDebug;
-  self->_sysDebug = v13;
+  self->_sysDebug = array5;
 
   *&self->_enableARFrameRGB = 257;
   self->_enableARFrameDump = 1;

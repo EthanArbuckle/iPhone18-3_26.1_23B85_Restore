@@ -1,7 +1,7 @@
 @interface MKDiscoverabilitySignals
 - (MKDiscoverabilitySignals)init;
-- (void)addSignalsForClient:(id)a3;
-- (void)addSignalsForMigrator:(id)a3;
+- (void)addSignalsForClient:(id)client;
+- (void)addSignalsForMigrator:(id)migrator;
 - (void)donateSignals;
 @end
 
@@ -21,29 +21,29 @@
   return v2;
 }
 
-- (void)addSignalsForClient:(id)a3
+- (void)addSignalsForClient:(id)client
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   v5 = MEMORY[0x277CBEAF8];
-  v6 = [v4 locale];
-  v7 = [v5 localeWithLocaleIdentifier:v6];
+  locale = [clientCopy locale];
+  v7 = [v5 localeWithLocaleIdentifier:locale];
 
-  v8 = [(MKDiscoverabilitySignals *)self signals];
-  v9 = [v7 languageCode];
-  [v8 setValue:v9 forKey:@"device_language"];
+  signals = [(MKDiscoverabilitySignals *)self signals];
+  languageCode = [v7 languageCode];
+  [signals setValue:languageCode forKey:@"device_language"];
 
-  v10 = [(MKDiscoverabilitySignals *)self signals];
-  v11 = [v7 regionCode];
-  [v10 setValue:v11 forKey:@"device_region"];
+  signals2 = [(MKDiscoverabilitySignals *)self signals];
+  regionCode = [v7 regionCode];
+  [signals2 setValue:regionCode forKey:@"device_region"];
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [v4 inputMethodLanguages];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  inputMethodLanguages = [clientCopy inputMethodLanguages];
+  v14 = [inputMethodLanguages countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
     v15 = v14;
@@ -55,7 +55,7 @@
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(inputMethodLanguages);
         }
 
         v18 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:*(*(&v21 + 1) + 8 * v17)];
@@ -65,65 +65,65 @@
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v15 = [inputMethodLanguages countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v15);
   }
 
-  v19 = [(MKDiscoverabilitySignals *)self signals];
-  [v19 setValue:v12 forKey:@"input_method_languages"];
+  signals3 = [(MKDiscoverabilitySignals *)self signals];
+  [signals3 setValue:v12 forKey:@"input_method_languages"];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSignalsForMigrator:(id)a3
+- (void)addSignalsForMigrator:(id)migrator
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 <= 10)
+  migratorCopy = migrator;
+  type = [migratorCopy type];
+  if (type <= 10)
   {
-    if (v5 == 5)
+    if (type == 5)
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "importCount") != 0}];
-      v11 = [(MKDiscoverabilitySignals *)self signals];
-      v12 = v11;
+      v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(migratorCopy, "importCount") != 0}];
+      signals = [(MKDiscoverabilitySignals *)self signals];
+      v12 = signals;
       v13 = @"contacts_imported";
     }
 
     else
     {
-      if (v5 != 10)
+      if (type != 10)
       {
         goto LABEL_16;
       }
 
-      v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "importCount") != 0}];
-      v11 = [(MKDiscoverabilitySignals *)self signals];
-      v12 = v11;
+      v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(migratorCopy, "importCount") != 0}];
+      signals = [(MKDiscoverabilitySignals *)self signals];
+      v12 = signals;
       v13 = @"messages_imported";
     }
 
-    [v11 setValue:v10 forKey:v13];
+    [signals setValue:v10 forKey:v13];
 
     goto LABEL_16;
   }
 
-  if ((v5 - 11) >= 2)
+  if ((type - 11) >= 2)
   {
-    if (v5 == 16)
+    if (type == 16)
     {
-      v14 = [v4 aggregatedActivatedCellularPlansCount];
-      v15 = [(MKDiscoverabilitySignals *)self signals];
-      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
-      [v15 setValue:v16 forKey:@"cellular_plans"];
+      aggregatedActivatedCellularPlansCount = [migratorCopy aggregatedActivatedCellularPlansCount];
+      signals2 = [(MKDiscoverabilitySignals *)self signals];
+      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:aggregatedActivatedCellularPlansCount];
+      [signals2 setValue:v16 forKey:@"cellular_plans"];
 
       v17 = +[MKLog log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v21 = 134217984;
-        v22 = v14;
+        v22 = aggregatedActivatedCellularPlansCount;
         _os_log_impl(&dword_2592D2000, v17, OS_LOG_TYPE_INFO, "did set a signal. aggregated_activated_sims_count=%ld", &v21, 0xCu);
       }
     }
@@ -131,15 +131,15 @@
 
   else
   {
-    v6 = [(MKDiscoverabilitySignals *)self signals];
-    v7 = [v6 objectForKey:@"photo_library_imported"];
+    signals3 = [(MKDiscoverabilitySignals *)self signals];
+    v7 = [signals3 objectForKey:@"photo_library_imported"];
 
     v8 = MEMORY[0x277CCABB0];
-    v9 = ([v7 BOOLValue] & 1) != 0 || objc_msgSend(v4, "importCount") != 0;
+    v9 = ([v7 BOOLValue] & 1) != 0 || objc_msgSend(migratorCopy, "importCount") != 0;
     v18 = [v8 numberWithInt:v9];
 
-    v19 = [(MKDiscoverabilitySignals *)self signals];
-    [v19 setValue:v18 forKey:@"photo_library_imported"];
+    signals4 = [(MKDiscoverabilitySignals *)self signals];
+    [signals4 setValue:v18 forKey:@"photo_library_imported"];
   }
 
 LABEL_16:
@@ -151,15 +151,15 @@ LABEL_16:
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAAA0];
-  v4 = [(MKDiscoverabilitySignals *)self signals];
+  signals = [(MKDiscoverabilitySignals *)self signals];
   v16 = 0;
-  v5 = [v3 dataWithJSONObject:v4 options:0 error:&v16];
+  v5 = [v3 dataWithJSONObject:signals options:0 error:&v16];
   v6 = v16;
 
   if (v6)
   {
-    v7 = +[MKLog log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    signals2 = +[MKLog log];
+    if (os_log_type_enabled(signals2, OS_LOG_TYPE_ERROR))
     {
       [(MKDiscoverabilitySignals *)self donateSignals];
     }
@@ -168,24 +168,24 @@ LABEL_16:
   else
   {
     v8 = BiomeLibrary();
-    v9 = [v8 Discoverability];
-    v7 = [v9 Signals];
+    discoverability = [v8 Discoverability];
+    signals2 = [discoverability Signals];
 
     v10 = [objc_alloc(MEMORY[0x277CF1168]) initWithContentIdentifier:@"com.apple.migrationkit.signals" context:0 osBuild:0 userInfo:v5];
     v11 = +[MKLog log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(MKDiscoverabilitySignals *)self signals];
-      v13 = [v12 count];
+      signals3 = [(MKDiscoverabilitySignals *)self signals];
+      v13 = [signals3 count];
       *buf = 138412546;
-      v18 = self;
+      selfCopy = self;
       v19 = 2048;
       v20 = v13;
       _os_log_impl(&dword_2592D2000, v11, OS_LOG_TYPE_INFO, "%@ will donate %lu signals", buf, 0x16u);
     }
 
-    v14 = [v7 source];
-    [v14 sendEvent:v10];
+    source = [signals2 source];
+    [source sendEvent:v10];
   }
 
   v15 = *MEMORY[0x277D85DE8];

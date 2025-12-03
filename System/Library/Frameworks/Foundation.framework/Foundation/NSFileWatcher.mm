@@ -1,10 +1,10 @@
 @interface NSFileWatcher
-- (NSFileWatcher)initWithQueue:(id)a3 auditToken:(id *)a4;
+- (NSFileWatcher)initWithQueue:(id)queue auditToken:(id *)token;
 - (void)_coalesceSubitemObservations;
 - (void)dealloc;
-- (void)handleFSEventPath:(id)a3 flags:(unsigned int)a4 id:(unint64_t)a5;
-- (void)setObserver:(id)a3;
-- (void)setURL:(id)a3;
+- (void)handleFSEventPath:(id)path flags:(unsigned int)flags id:(unint64_t)id;
+- (void)setObserver:(id)observer;
+- (void)setURL:(id)l;
 - (void)settle;
 - (void)stop;
 - (void)unsettle;
@@ -45,8 +45,8 @@
 
   if ([(NSURL *)self->_url isFileURL])
   {
-    v5 = [(NSURL *)self->_url path];
-    if (v5)
+    path = [(NSURL *)self->_url path];
+    if (path)
     {
       v26 = 0;
       v27 = &v26;
@@ -77,11 +77,11 @@
       v17[8] = &v18;
       v6 = [v17 copy];
       *(*(&buf + 1) + 40) = v6;
-      self->_eventSource = (*(v6 + 16))(v6, v5, 0);
+      self->_eventSource = (*(v6 + 16))(v6, path, 0);
 
       if (*(v23 + 24) == 1)
       {
-        v7 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v5, 0}];
+        v7 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{path, 0}];
         *&v34 = 0;
         *(&v34 + 1) = self;
         v35 = MEMORY[0x1E695D7C8];
@@ -96,7 +96,7 @@
           {
             lastObservedEventID = self->_lastObservedEventID;
             *v30 = 138478083;
-            v31 = v5;
+            v31 = path;
             v32 = 2048;
             v33 = lastObservedEventID;
             _os_log_debug_impl(&dword_18075C000, v8, OS_LOG_TYPE_DEBUG, "#fsevents Starting stream for %{private}@ with event ID %llx", v30, 0x16u);
@@ -118,7 +118,7 @@
           }
 
           *v30 = 138477827;
-          v31 = v5;
+          v31 = path;
           v13 = "#fsevents FSEventStreamStart() returned NO. Path: %{private}@";
         }
 
@@ -131,7 +131,7 @@
           }
 
           *v30 = 138477827;
-          v31 = v5;
+          v31 = path;
           v13 = "#fsevents FSEventStreamCreate() returned NULL. Path: %{private}@";
         }
 
@@ -145,7 +145,7 @@ LABEL_20:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           LODWORD(v34) = 138477827;
-          *(&v34 + 4) = v5;
+          *(&v34 + 4) = path;
           _os_log_error_impl(&dword_18075C000, v14, OS_LOG_TYPE_ERROR, "Using fileReferenceURL for  FSEventStreamCreate() returned NULL. Path: %{private}@", &v34, 0xCu);
         }
 
@@ -326,7 +326,7 @@ uint64_t __26__NSFileWatcher_watchItem__block_invoke_79(uint64_t a1)
   return result;
 }
 
-- (NSFileWatcher)initWithQueue:(id)a3 auditToken:(id *)a4
+- (NSFileWatcher)initWithQueue:(id)queue auditToken:(id *)token
 {
   v12 = *MEMORY[0x1E69E9840];
   if (initializeFSEvents_predicate != -1)
@@ -340,10 +340,10 @@ uint64_t __26__NSFileWatcher_watchItem__block_invoke_79(uint64_t a1)
   v8 = v7;
   if (v7)
   {
-    v7->_queue = a3;
-    dispatch_retain(a3);
-    v9 = *&a4->var0[4];
-    *v8->_auditToken.val = *a4->var0;
+    v7->_queue = queue;
+    dispatch_retain(queue);
+    v9 = *&token->var0[4];
+    *v8->_auditToken.val = *token->var0;
     *&v8->_auditToken.val[4] = v9;
     v8->_lastObservedEventID = -1;
   }
@@ -387,21 +387,21 @@ uint64_t __26__NSFileWatcher_watchItem__block_invoke_79(uint64_t a1)
   [(NSFileWatcher *)&v7 dealloc];
 }
 
-- (void)handleFSEventPath:(id)a3 flags:(unsigned int)a4 id:(unint64_t)a5
+- (void)handleFSEventPath:(id)path flags:(unsigned int)flags id:(unint64_t)id
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a4 & 0xFF80FFFF;
+  v9 = flags & 0xFF80FFFF;
   v10 = _NSFCFSEventsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138478595;
-    v17 = a3;
+    pathCopy = path;
     v18 = 1024;
     v19 = v9;
     v20 = 1024;
-    v21 = a4 & 0x7F0000;
+    v21 = flags & 0x7F0000;
     v22 = 2048;
-    v23 = a5;
+    idCopy = id;
     _os_log_debug_impl(&dword_18075C000, v10, OS_LOG_TYPE_DEBUG, "#fsevents path: %{private}@, flags: %x (ignored: %x), id: %llx", &v16, 0x22u);
   }
 
@@ -416,7 +416,7 @@ uint64_t __26__NSFileWatcher_watchItem__block_invoke_79(uint64_t a1)
       }
     }
 
-    else if (!v9 || (a4 & 0x10) != 0 || lastObservedEventID >= a5)
+    else if (!v9 || (flags & 0x10) != 0 || lastObservedEventID >= id)
     {
       return;
     }
@@ -428,7 +428,7 @@ uint64_t __26__NSFileWatcher_watchItem__block_invoke_79(uint64_t a1)
       {
         url = self->_url;
         v16 = 138477827;
-        v17 = url;
+        pathCopy = url;
         _os_log_debug_impl(&dword_18075C000, v12, OS_LOG_TYPE_DEBUG, "Unsettling watcher for %{private}@ in response to event", &v16, 0xCu);
       }
 
@@ -437,7 +437,7 @@ uint64_t __26__NSFileWatcher_watchItem__block_invoke_79(uint64_t a1)
 
     if (self->_eventsAreAboutDirectory)
     {
-      v13 = [(NSMutableDictionary *)self->_subitemObservationsByEventPath objectForKey:a3];
+      v13 = [(NSMutableDictionary *)self->_subitemObservationsByEventPath objectForKey:path];
       if (!v13)
       {
         if (!self->_subitemObservationsByEventPath)
@@ -446,8 +446,8 @@ uint64_t __26__NSFileWatcher_watchItem__block_invoke_79(uint64_t a1)
           (*(self->_observer + 2))();
         }
 
-        v13 = [[NSFileWatcherObservations alloc] initWithPath:a3];
-        [(NSMutableDictionary *)self->_subitemObservationsByEventPath setObject:v13 forKey:a3];
+        v13 = [[NSFileWatcherObservations alloc] initWithPath:path];
+        [(NSMutableDictionary *)self->_subitemObservationsByEventPath setObject:v13 forKey:path];
       }
 
       [(NSFileWatcherObservations *)v13 addContentsChange];
@@ -466,7 +466,7 @@ uint64_t __26__NSFileWatcher_watchItem__block_invoke_79(uint64_t a1)
       [(NSFileWatcherObservations *)itemObservations addAttributeChange];
     }
 
-    self->_lastObservedEventID = a5;
+    self->_lastObservedEventID = id;
   }
 }
 
@@ -600,16 +600,16 @@ void __26__NSFileWatcher_watchItem__block_invoke_81(uint64_t a1)
   v3 = *(*(*(a1 + 48) + 8) + 40);
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v4 = [a3 filePathURL];
+  filePathURL = [l filePathURL];
   url = self->_url;
-  if (v4 != url)
+  if (filePathURL != url)
   {
-    v6 = v4;
+    v6 = filePathURL;
     if (self->_isUnsettled)
     {
-      [(NSFileWatcherObservations *)self->_itemObservations addAnnouncedMoveToPath:[(NSURL *)v4 path]];
+      [(NSFileWatcherObservations *)self->_itemObservations addAnnouncedMoveToPath:[(NSURL *)filePathURL path]];
       url = self->_url;
       if (!self->_formerURL)
       {
@@ -627,13 +627,13 @@ void __26__NSFileWatcher_watchItem__block_invoke_81(uint64_t a1)
   }
 }
 
-- (void)setObserver:(id)a3
+- (void)setObserver:(id)observer
 {
   observer = self->_observer;
-  if (observer != a3)
+  if (observer != observer)
   {
 
-    self->_observer = [a3 copy];
+    self->_observer = [observer copy];
   }
 }
 
@@ -757,15 +757,15 @@ LABEL_15:
 
         self->_itemObservations = 0;
         [(NSFileWatcher *)self _coalesceSubitemObservations];
-        v10 = [(NSURL *)self->_url path];
-        v11 = [(NSURL *)self->_formerURL path];
+        path = [(NSURL *)self->_url path];
+        path2 = [(NSURL *)self->_formerURL path];
         subitemObservationsByEventPath = self->_subitemObservationsByEventPath;
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __23__NSFileWatcher_settle__block_invoke_90;
         v16[3] = &unk_1E69FA100;
-        v16[4] = v10;
-        v16[5] = v11;
+        v16[4] = path;
+        v16[5] = path2;
         v16[6] = @"/private";
         v16[7] = self;
         [(NSMutableDictionary *)subitemObservationsByEventPath enumerateKeysAndObjectsUsingBlock:v16];
@@ -779,10 +779,10 @@ LABEL_15:
       }
 
       CFURLClearResourcePropertyCache(fileReferenceURL);
-      v6 = [(NSURL *)self->_fileReferenceURL path];
+      path3 = [(NSURL *)self->_fileReferenceURL path];
       v7 = _NSFCFSEventsLog();
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-      if (v6)
+      if (path3)
       {
         if (v8)
         {
@@ -790,13 +790,13 @@ LABEL_15:
           *buf = 138478083;
           v20 = v14;
           v21 = 2113;
-          v22 = v6;
+          v22 = path3;
           _os_log_debug_impl(&dword_18075C000, v7, OS_LOG_TYPE_DEBUG, "#filereference Detected move from %{private}@ to %{private}@", buf, 0x16u);
         }
 
-        if (([v6 isEqualToString:self->_formerPath] & 1) == 0)
+        if (([path3 isEqualToString:self->_formerPath] & 1) == 0)
         {
-          [(NSFileWatcherObservations *)self->_itemObservations addDetectedMoveToPath:v6];
+          [(NSFileWatcherObservations *)self->_itemObservations addDetectedMoveToPath:path3];
           LOBYTE(formerPath) = 1;
           goto LABEL_15;
         }

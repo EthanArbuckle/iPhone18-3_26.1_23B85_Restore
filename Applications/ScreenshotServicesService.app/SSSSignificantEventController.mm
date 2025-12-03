@@ -1,12 +1,12 @@
 @interface SSSSignificantEventController
 + (id)sharedSignificantEventController;
-- (id)_runPPTServiceRequestForScreenshot:(id)a3;
-- (id)_runPPTServiceRequestForScreenshots:(id)a3;
-- (void)_finishRunPPTServiceRequest:(id)a3;
-- (void)screenshotAppearAnimationBeganForScreenshot:(id)a3;
-- (void)screenshotAppearAnimationEndedForScreenshot:(id)a3 userInterface:(id)a4;
-- (void)screenshotUIWithScreenshots:(id)a3 beganStateChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)screenshotUIWithScreenshots:(id)a3 endedStateChangeFromState:(unint64_t)a4 toState:(unint64_t)a5 userInterface:(id)a6;
+- (id)_runPPTServiceRequestForScreenshot:(id)screenshot;
+- (id)_runPPTServiceRequestForScreenshots:(id)screenshots;
+- (void)_finishRunPPTServiceRequest:(id)request;
+- (void)screenshotAppearAnimationBeganForScreenshot:(id)screenshot;
+- (void)screenshotAppearAnimationEndedForScreenshot:(id)screenshot userInterface:(id)interface;
+- (void)screenshotUIWithScreenshots:(id)screenshots beganStateChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)screenshotUIWithScreenshots:(id)screenshots endedStateChangeFromState:(unint64_t)state toState:(unint64_t)toState userInterface:(id)interface;
 @end
 
 @implementation SSSSignificantEventController
@@ -23,34 +23,34 @@
   return v3;
 }
 
-- (id)_runPPTServiceRequestForScreenshot:(id)a3
+- (id)_runPPTServiceRequestForScreenshot:(id)screenshot
 {
-  v3 = [a3 environmentDescription];
-  v4 = [v3 appleInternalOptions];
-  v5 = [v4 runPPTServiceRequest];
+  environmentDescription = [screenshot environmentDescription];
+  appleInternalOptions = [environmentDescription appleInternalOptions];
+  runPPTServiceRequest = [appleInternalOptions runPPTServiceRequest];
+
+  return runPPTServiceRequest;
+}
+
+- (id)_runPPTServiceRequestForScreenshots:(id)screenshots
+{
+  firstObject = [screenshots firstObject];
+  v5 = [(SSSSignificantEventController *)self _runPPTServiceRequestForScreenshot:firstObject];
 
   return v5;
 }
 
-- (id)_runPPTServiceRequestForScreenshots:(id)a3
+- (void)_finishRunPPTServiceRequest:(id)request
 {
-  v4 = [a3 firstObject];
-  v5 = [(SSSSignificantEventController *)self _runPPTServiceRequestForScreenshot:v4];
-
-  return v5;
-}
-
-- (void)_finishRunPPTServiceRequest:(id)a3
-{
-  v4 = a3;
+  requestCopy = request;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v4 testName];
+  testName = [requestCopy testName];
 
-  [v5 finishedIPTest:v6];
+  [v5 finishedIPTest:testName];
   self->_isRunningScreenshotPPT = 0;
 }
 
-- (void)screenshotAppearAnimationBeganForScreenshot:(id)a3
+- (void)screenshotAppearAnimationBeganForScreenshot:(id)screenshot
 {
   v3 = _SSSignpostLog();
   if (os_signpost_enabled(v3))
@@ -81,10 +81,10 @@
   }
 }
 
-- (void)screenshotAppearAnimationEndedForScreenshot:(id)a3 userInterface:(id)a4
+- (void)screenshotAppearAnimationEndedForScreenshot:(id)screenshot userInterface:(id)interface
 {
-  v6 = a4;
-  v7 = a3;
+  interfaceCopy = interface;
+  screenshotCopy = screenshot;
   v8 = _SSSignpostLog();
   if (os_signpost_enabled(v8))
   {
@@ -99,12 +99,12 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "END ScreenshotAnimation", buf, 2u);
   }
 
-  v10 = [(SSSSignificantEventController *)self _runPPTServiceRequestForScreenshot:v7];
+  v10 = [(SSSSignificantEventController *)self _runPPTServiceRequestForScreenshot:screenshotCopy];
 
   if (v10)
   {
-    v11 = [v10 testName];
-    v12 = [v11 isEqualToString:@"TakeScreenshot"];
+    testName = [v10 testName];
+    v12 = [testName isEqualToString:@"TakeScreenshot"];
 
     if (v12)
     {
@@ -112,23 +112,23 @@
       goto LABEL_17;
     }
 
-    v13 = [v10 testName];
-    v14 = [v13 isEqualToString:@"ExpandToFullscreen"];
+    testName2 = [v10 testName];
+    v14 = [testName2 isEqualToString:@"ExpandToFullscreen"];
 
     if (v14)
     {
       [(SSSSignificantEventController *)self _startRunPPTServiceRequest:v10];
-      [v6 significantEventControllerRequestsTransitionToStateForTest:1];
+      [interfaceCopy significantEventControllerRequestsTransitionToStateForTest:1];
       goto LABEL_17;
     }
 
-    v15 = [v10 testName];
-    v16 = [v15 isEqualToString:@"GlitchFreeHero"];
+    testName3 = [v10 testName];
+    v16 = [testName3 isEqualToString:@"GlitchFreeHero"];
 
     if (!v16)
     {
-      v19 = [v10 testName];
-      v20 = [v19 isEqualToString:@"CropAndZoom"];
+      testName4 = [v10 testName];
+      v20 = [testName4 isEqualToString:@"CropAndZoom"];
 
       if (!v20)
       {
@@ -151,8 +151,8 @@ LABEL_16:
 
     if (!self->_isRunningScreenshotPPT)
     {
-      v17 = [v6 numberOfScreenshots];
-      if (v17 >= [v10 numberOfRequiredScreenshots])
+      numberOfScreenshots = [interfaceCopy numberOfScreenshots];
+      if (numberOfScreenshots >= [v10 numberOfRequiredScreenshots])
       {
         [(SSSSignificantEventController *)self _startRunPPTServiceRequest:v10];
         v23[0] = _NSConcreteStackBlock;
@@ -171,12 +171,12 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)screenshotUIWithScreenshots:(id)a3 beganStateChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)screenshotUIWithScreenshots:(id)screenshots beganStateChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = a3;
-  if (a4 != a5)
+  screenshotsCopy = screenshots;
+  if (state != toState)
   {
-    if (a4 == 1)
+    if (state == 1)
     {
       v13 = _SSSignpostLog();
       if (os_signpost_enabled(v13))
@@ -197,7 +197,7 @@ LABEL_17:
       goto LABEL_12;
     }
 
-    if (!a4)
+    if (!state)
     {
       v8 = +[SSStatisticsManager sharedStatisticsManager];
       [v8 pipExpanded];
@@ -225,13 +225,13 @@ LABEL_13:
   }
 }
 
-- (void)screenshotUIWithScreenshots:(id)a3 endedStateChangeFromState:(unint64_t)a4 toState:(unint64_t)a5 userInterface:(id)a6
+- (void)screenshotUIWithScreenshots:(id)screenshots endedStateChangeFromState:(unint64_t)state toState:(unint64_t)toState userInterface:(id)interface
 {
-  v10 = a3;
-  v11 = a6;
-  if (a4 != a5)
+  screenshotsCopy = screenshots;
+  interfaceCopy = interface;
+  if (state != toState)
   {
-    if (a4 == 1)
+    if (state == 1)
     {
       v17 = _SSSignpostLog();
       if (os_signpost_enabled(v17))
@@ -250,7 +250,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (!a4)
+    if (!state)
     {
       v12 = _SSSignpostLog();
       if (os_signpost_enabled(v12))
@@ -266,9 +266,9 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "END ScreenshotPIPExpand", v20, 2u);
       }
 
-      v14 = [(SSSSignificantEventController *)self _runPPTServiceRequestForScreenshots:v10];
-      v15 = [v14 testName];
-      v16 = [v15 isEqualToString:@"ExpandToFullscreen"];
+      v14 = [(SSSSignificantEventController *)self _runPPTServiceRequestForScreenshots:screenshotsCopy];
+      testName = [v14 testName];
+      v16 = [testName isEqualToString:@"ExpandToFullscreen"];
 
       if (v16)
       {

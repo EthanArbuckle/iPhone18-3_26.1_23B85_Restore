@@ -1,6 +1,6 @@
 @interface QueueAwareOperation
 - (NSOperationQueue)operationQueue;
-- (QueueAwareOperation)initWithArtworkImporter:(id)a3 clientIdentity:(id)a4 operationQueue:(id)a5 artistPersistentIDsToUpdate:(id)a6 albumArtistPersistentIDsToUpdate:(id)a7;
+- (QueueAwareOperation)initWithArtworkImporter:(id)importer clientIdentity:(id)identity operationQueue:(id)queue artistPersistentIDsToUpdate:(id)update albumArtistPersistentIDsToUpdate:(id)toUpdate;
 @end
 
 @implementation QueueAwareOperation
@@ -12,32 +12,32 @@
   return WeakRetained;
 }
 
-- (QueueAwareOperation)initWithArtworkImporter:(id)a3 clientIdentity:(id)a4 operationQueue:(id)a5 artistPersistentIDsToUpdate:(id)a6 albumArtistPersistentIDsToUpdate:(id)a7
+- (QueueAwareOperation)initWithArtworkImporter:(id)importer clientIdentity:(id)identity operationQueue:(id)queue artistPersistentIDsToUpdate:(id)update albumArtistPersistentIDsToUpdate:(id)toUpdate
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  importerCopy = importer;
+  queueCopy = queue;
+  updateCopy = update;
+  toUpdateCopy = toUpdate;
   v24.receiver = self;
   v24.super_class = QueueAwareOperation;
   v16 = [(QueueAwareOperation *)&v24 init];
   if (v16)
   {
-    v17 = [v12 musicLibrary];
+    musicLibrary = [importerCopy musicLibrary];
     musicLibrary = v16->_musicLibrary;
-    v16->_musicLibrary = v17;
+    v16->_musicLibrary = musicLibrary;
 
-    v19 = [v12 configuration];
-    v20 = [v19 userIdentity];
+    configuration = [importerCopy configuration];
+    userIdentity = [configuration userIdentity];
     userIdentity = v16->_userIdentity;
-    v16->_userIdentity = v20;
+    v16->_userIdentity = userIdentity;
 
-    objc_storeStrong(&v16->_artworkImporter, a3);
-    objc_storeWeak(&v16->_operationQueue, v13);
-    v22 = [v14 count];
-    v16->_shouldProcessSpecificArtists = [v15 count] + v22 != 0;
-    objc_storeStrong(&v16->_artistPersistentIDsToUpdate, a6);
-    objc_storeStrong(&v16->_albumArtistPersistentIDsToUpdate, a7);
+    objc_storeStrong(&v16->_artworkImporter, importer);
+    objc_storeWeak(&v16->_operationQueue, queueCopy);
+    v22 = [updateCopy count];
+    v16->_shouldProcessSpecificArtists = [toUpdateCopy count] + v22 != 0;
+    objc_storeStrong(&v16->_artistPersistentIDsToUpdate, update);
+    objc_storeStrong(&v16->_albumArtistPersistentIDsToUpdate, toUpdate);
   }
 
   return v16;

@@ -59,11 +59,11 @@
 
 - (void)_pkTiledViewIfEnabled
 {
-  v1 = [a1 _drawingInfo];
-  v2 = v1;
-  if (v1)
+  _drawingInfo = [self _drawingInfo];
+  v2 = _drawingInfo;
+  if (_drawingInfo)
   {
-    v3 = *(v1 + 24);
+    v3 = *(_drawingInfo + 24);
   }
 
   else
@@ -78,11 +78,11 @@
 
 - (id)drawingDelegate
 {
-  v1 = [a1 _drawingInfo];
-  v2 = v1;
-  if (v1)
+  _drawingInfo = [self _drawingInfo];
+  v2 = _drawingInfo;
+  if (_drawingInfo)
   {
-    WeakRetained = objc_loadWeakRetained((v1 + 32));
+    WeakRetained = objc_loadWeakRetained((_drawingInfo + 32));
   }
 
   else
@@ -95,15 +95,15 @@
 
 - (BOOL)isStylusDrawingEnabled
 {
-  v1 = [a1 _pkTiledViewIfEnabled];
-  v2 = v1 != 0;
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  v2 = _pkTiledViewIfEnabled != 0;
 
   return v2;
 }
 
 - (id)_drawingInfoCreateIfNecessary
 {
-  v2 = objc_getAssociatedObject(a1, "/Library/Caches/com.apple.xbs/Sources/PencilKit/PencilKit/Text/UITextView_PencilKit.m");
+  v2 = objc_getAssociatedObject(self, "/Library/Caches/com.apple.xbs/Sources/PencilKit/PencilKit/Text/UITextView_PencilKit.m");
   if (!v2)
   {
     v3 = [UITextViewDrawingInfo alloc];
@@ -111,13 +111,13 @@
     {
       v8.receiver = v3;
       v8.super_class = UITextViewDrawingInfo;
-      v4 = a1;
+      selfCopy = self;
       v2 = objc_msgSendSuper2(&v8, sel_init);
-      objc_storeWeak((v2 + 16), v4);
+      objc_storeWeak((v2 + 16), selfCopy);
 
-      v5 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v6 = *(v2 + 48);
-      *(v2 + 48) = v5;
+      *(v2 + 48) = dictionary;
     }
 
     else
@@ -125,7 +125,7 @@
       v2 = 0;
     }
 
-    objc_setAssociatedObject(a1, "/Library/Caches/com.apple.xbs/Sources/PencilKit/PencilKit/Text/UITextView_PencilKit.m", v2, 1);
+    objc_setAssociatedObject(self, "/Library/Caches/com.apple.xbs/Sources/PencilKit/PencilKit/Text/UITextView_PencilKit.m", v2, 1);
   }
 
   return v2;
@@ -133,19 +133,19 @@
 
 - (void)_updateDrawingBackgroundColor
 {
-  v2 = [a1 paperTexture];
-  if (!v2)
+  paperTexture = [self paperTexture];
+  if (!paperTexture)
   {
-    if ([a1 isPaperEnabled])
+    if ([self isPaperEnabled])
     {
       return;
     }
 
-    v8 = [a1 backgroundColor];
-    [v8 alphaComponent];
+    backgroundColor = [self backgroundColor];
+    [backgroundColor alphaComponent];
     v4 = v3;
-    v5 = [a1 _pkTiledViewIfEnabled];
-    v6 = [v5 canvasView];
+    _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+    canvasView = [_pkTiledViewIfEnabled canvasView];
     if (v4 <= 0.0)
     {
       v7 = 0;
@@ -153,35 +153,35 @@
 
     else
     {
-      v7 = v8;
+      v7 = backgroundColor;
     }
 
-    [v6 setCanvasBackgroundColor:v7];
+    [canvasView setCanvasBackgroundColor:v7];
 
-    v2 = v8;
+    paperTexture = backgroundColor;
   }
 }
 
 - (id)paperTexture
 {
-  v1 = [a1 _pkTiledViewIfEnabled];
-  v2 = [v1 paperTexture];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  paperTexture = [_pkTiledViewIfEnabled paperTexture];
 
-  return v2;
+  return paperTexture;
 }
 
 - (BOOL)isPaperEnabled
 {
-  if (![a1 isStylusDrawingEnabled])
+  if (![self isStylusDrawingEnabled])
   {
     return 0;
   }
 
-  v2 = [a1 _drawingInfo];
-  v3 = v2;
-  if (v2)
+  _drawingInfo = [self _drawingInfo];
+  v3 = _drawingInfo;
+  if (_drawingInfo)
   {
-    v4 = *(v2 + 40);
+    v4 = *(_drawingInfo + 40);
   }
 
   else
@@ -196,8 +196,8 @@
 
 - (id)ink
 {
-  v1 = [a1 _pkTiledViewIfEnabled];
-  v2 = [v1 ink];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  v2 = [_pkTiledViewIfEnabled ink];
 
   return v2;
 }
@@ -205,13 +205,13 @@
 - (void)setInk:()UITextViewDrawing
 {
   v4 = a3;
-  v5 = [a1 _pkTiledViewIfEnabled];
-  [v5 setInk:v4];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  [_pkTiledViewIfEnabled setInk:v4];
 }
 
 - (id)_tool
 {
-  v1 = [a1 ink];
+  v1 = [self ink];
   if (v1)
   {
     v2 = [PKTool _toolWithInk:v1];
@@ -228,95 +228,95 @@
 - (void)_setTool:()UITextViewDrawing
 {
   v5 = [a3 ink];
-  v4 = [a1 _pkTiledViewIfEnabled];
-  [v4 setInk:v5];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  [_pkTiledViewIfEnabled setInk:v5];
 }
 
 - (void)_setSelectedInkColor:()UITextViewDrawing
 {
   v5 = a3;
-  v4 = [a1 _pkTiledViewIfEnabled];
-  if ([v4 _hasSelection])
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  if ([_pkTiledViewIfEnabled _hasSelection])
   {
-    [v4 setSelectedStrokesColor:v5];
+    [_pkTiledViewIfEnabled setSelectedStrokesColor:v5];
   }
 }
 
 - (uint64_t)_isHandwritingToolSelected
 {
-  v1 = [a1 ink];
+  v1 = [self ink];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 _isHandwritingInk];
+    _isHandwritingInk = [v1 _isHandwritingInk];
   }
 
   else
   {
-    v3 = 0;
+    _isHandwritingInk = 0;
   }
 
-  return v3;
+  return _isHandwritingInk;
 }
 
 - (void)setRulerEnabled:()UITextViewDrawing
 {
-  v4 = [a1 _pkTiledViewIfEnabled];
-  [v4 setRulerEnabled:a3];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  [_pkTiledViewIfEnabled setRulerEnabled:a3];
 }
 
 - (uint64_t)isRulerEnabled
 {
-  v1 = [a1 _pkTiledViewIfEnabled];
-  v2 = [v1 rulerEnabled];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  rulerEnabled = [_pkTiledViewIfEnabled rulerEnabled];
 
-  return v2;
+  return rulerEnabled;
 }
 
 - (id)linedPaper
 {
-  v1 = [a1 _pkTiledViewIfEnabled];
-  v2 = [v1 linedPaper];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  linedPaper = [_pkTiledViewIfEnabled linedPaper];
 
-  return v2;
+  return linedPaper;
 }
 
 - (void)setLinedPaper:()UITextViewDrawing
 {
   v4 = a3;
-  v5 = [a1 _pkTiledViewIfEnabled];
-  [v5 setLinedPaper:v4];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  [_pkTiledViewIfEnabled setLinedPaper:v4];
 }
 
 - (uint64_t)_cropDrawingAttachmentsWhenViewIsSmaller
 {
-  v1 = [a1 _pkTiledViewIfEnabled];
-  v2 = [v1 cropDrawingAttachmentsWhenViewIsSmaller];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  cropDrawingAttachmentsWhenViewIsSmaller = [_pkTiledViewIfEnabled cropDrawingAttachmentsWhenViewIsSmaller];
 
-  return v2;
+  return cropDrawingAttachmentsWhenViewIsSmaller;
 }
 
 - (void)_setCropDrawingAttachmentsWhenViewIsSmaller:()UITextViewDrawing
 {
-  v4 = [a1 _pkTiledViewIfEnabled];
-  [v4 setCropDrawingAttachmentsWhenViewIsSmaller:a3];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  [_pkTiledViewIfEnabled setCropDrawingAttachmentsWhenViewIsSmaller:a3];
 }
 
 - (void)setPaperTexture:()UITextViewDrawing
 {
   v4 = a3;
-  v5 = [a1 _pkTiledViewIfEnabled];
-  [v5 setPaperTexture:v4];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  [_pkTiledViewIfEnabled setPaperTexture:v4];
 }
 
 - (void)setDrawingDelegate:()UITextViewDrawing
 {
   obj = a3;
-  v4 = [a1 _drawingInfo];
-  v5 = v4;
-  if (v4)
+  _drawingInfo = [self _drawingInfo];
+  v5 = _drawingInfo;
+  if (_drawingInfo)
   {
-    objc_storeWeak((v4 + 32), obj);
+    objc_storeWeak((_drawingInfo + 32), obj);
   }
 }
 
@@ -324,95 +324,95 @@
 {
   v5 = objc_opt_class();
 
-  return [a1 setStylusDrawingEnabled:a3 drawingClass:v5 sixChannelBlending:0];
+  return [self setStylusDrawingEnabled:a3 drawingClass:v5 sixChannelBlending:0];
 }
 
 - (void)setStylusDrawingEnabled:()UITextViewDrawing drawingClass:sixChannelBlending:
 {
   if (a3)
   {
-    v8 = [a1 _drawingInfo];
+    _drawingInfo = [self _drawingInfo];
     v9 = objc_opt_class();
 
     if (v9 == a4)
     {
-      v10 = 0;
+      _pkTiledViewIfEnabled = 0;
       obj = 0;
     }
 
     else
     {
-      v10 = [a1 _pkTiledViewIfEnabled];
-      obj = [a1 drawingDelegate];
-      v11 = [a1 _pkTiledViewIfEnabled];
-      [v11 removeFromSuperview];
+      _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+      obj = [self drawingDelegate];
+      _pkTiledViewIfEnabled2 = [self _pkTiledViewIfEnabled];
+      [_pkTiledViewIfEnabled2 removeFromSuperview];
 
-      [a1 _clearDrawingInfo];
+      [self _clearDrawingInfo];
     }
 
-    if ([a1 isStylusDrawingEnabled])
+    if ([self isStylusDrawingEnabled])
     {
-      [a1 isStylusDrawingEnabled];
+      [self isStylusDrawingEnabled];
     }
 
     else
     {
-      v13 = [a1 window];
-      v14 = [v13 screen];
-      v15 = [v14 displayIdentity];
-      v16 = [v15 expectsSecureRendering];
+      window = [self window];
+      screen = [window screen];
+      displayIdentity = [screen displayIdentity];
+      expectsSecureRendering = [displayIdentity expectsSecureRendering];
 
       v17 = dispatch_get_global_queue(25, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __89__UITextView_UITextViewDrawing__setStylusDrawingEnabled_drawingClass_sixChannelBlending___block_invoke;
       block[3] = &__block_descriptor_33_e5_v8__0l;
-      v36 = v16;
+      v36 = expectsSecureRendering;
       dispatch_async(v17, block);
 
       +[PKTextAttachmentDrawingViewProvider registerViewProviderClassIfNecessary];
-      v18 = [a1 _drawingInfoCreateIfNecessary];
-      v19 = [objc_alloc(+[PKTextAttachmentDrawingViewProvider tiledViewClassForDrawingClass:](PKTextAttachmentDrawingViewProvider tiledViewClassForDrawingClass:{a4)), "initInScrollView:sixChannelBlending:defaultDrawingClass:", a1, a5, a4}];
-      if (v18)
+      _drawingInfoCreateIfNecessary = [self _drawingInfoCreateIfNecessary];
+      v19 = [objc_alloc(+[PKTextAttachmentDrawingViewProvider tiledViewClassForDrawingClass:](PKTextAttachmentDrawingViewProvider tiledViewClassForDrawingClass:{a4)), "initInScrollView:sixChannelBlending:defaultDrawingClass:", self, a5, a4}];
+      if (_drawingInfoCreateIfNecessary)
       {
-        objc_storeStrong((v18 + 24), v19);
+        objc_storeStrong((_drawingInfoCreateIfNecessary + 24), v19);
 
         v20 = a4;
-        v19 = *(v18 + 40);
-        *(v18 + 40) = v20;
+        v19 = *(_drawingInfoCreateIfNecessary + 40);
+        *(_drawingInfoCreateIfNecessary + 40) = v20;
       }
 
-      if (v10)
+      if (_pkTiledViewIfEnabled)
       {
-        v21 = [v10 ink];
-        v22 = v18 ? *(v18 + 24) : 0;
+        v21 = [_pkTiledViewIfEnabled ink];
+        v22 = _drawingInfoCreateIfNecessary ? *(_drawingInfoCreateIfNecessary + 24) : 0;
         [v22 setInk:v21];
 
-        v23 = [v10 cropDrawingAttachmentsWhenViewIsSmaller];
-        v24 = v18 ? *(v18 + 24) : 0;
-        [v24 setCropDrawingAttachmentsWhenViewIsSmaller:v23];
-        v25 = [v10 linedPaper];
-        v26 = v18 ? *(v18 + 24) : 0;
-        [v26 setLinedPaper:v25];
+        cropDrawingAttachmentsWhenViewIsSmaller = [_pkTiledViewIfEnabled cropDrawingAttachmentsWhenViewIsSmaller];
+        v24 = _drawingInfoCreateIfNecessary ? *(_drawingInfoCreateIfNecessary + 24) : 0;
+        [v24 setCropDrawingAttachmentsWhenViewIsSmaller:cropDrawingAttachmentsWhenViewIsSmaller];
+        linedPaper = [_pkTiledViewIfEnabled linedPaper];
+        v26 = _drawingInfoCreateIfNecessary ? *(_drawingInfoCreateIfNecessary + 24) : 0;
+        [v26 setLinedPaper:linedPaper];
 
-        v27 = [v10 rulerEnabled];
-        if (v18)
+        rulerEnabled = [_pkTiledViewIfEnabled rulerEnabled];
+        if (_drawingInfoCreateIfNecessary)
         {
-          [*(v18 + 24) setRulerEnabled:v27];
-          objc_storeWeak((v18 + 32), obja);
+          [*(_drawingInfoCreateIfNecessary + 24) setRulerEnabled:rulerEnabled];
+          objc_storeWeak((_drawingInfoCreateIfNecessary + 32), obja);
         }
 
         else
         {
-          [0 setRulerEnabled:v27];
+          [0 setRulerEnabled:rulerEnabled];
         }
 
-        if ([v10 overrideUserInterfaceStyle])
+        if ([_pkTiledViewIfEnabled overrideUserInterfaceStyle])
         {
-          v28 = [v10 overrideUserInterfaceStyle];
-          if (v18)
+          overrideUserInterfaceStyle = [_pkTiledViewIfEnabled overrideUserInterfaceStyle];
+          if (_drawingInfoCreateIfNecessary)
           {
-            v29 = *(v18 + 24);
+            v29 = *(_drawingInfoCreateIfNecessary + 24);
           }
 
           else
@@ -420,25 +420,25 @@
             v29 = 0;
           }
 
-          [v29 setOverrideUserInterfaceStyle:v28];
+          [v29 setOverrideUserInterfaceStyle:overrideUserInterfaceStyle];
         }
       }
 
-      [a1 _updateDrawingBackgroundColor];
-      if ([a1 isPaperEnabled])
+      [self _updateDrawingBackgroundColor];
+      if ([self isPaperEnabled])
       {
-        if (v18)
+        if (_drawingInfoCreateIfNecessary)
         {
-          v30 = [*(v18 + 24) canvasView];
-          [v30 setOpaque:0];
+          canvasView = [*(_drawingInfoCreateIfNecessary + 24) canvasView];
+          [canvasView setOpaque:0];
 
-          v31 = *(v18 + 24);
+          v31 = *(_drawingInfoCreateIfNecessary + 24);
         }
 
         else
         {
-          v32 = [0 canvasView];
-          [v32 setOpaque:0];
+          canvasView2 = [0 canvasView];
+          [canvasView2 setOpaque:0];
 
           v31 = 0;
         }
@@ -450,14 +450,14 @@
 
   else
   {
-    [a1 isStylusDrawingEnabled];
-    if ([a1 isStylusDrawingEnabled])
+    [self isStylusDrawingEnabled];
+    if ([self isStylusDrawingEnabled])
     {
-      [a1 _setContentScrollInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
-      v12 = [a1 _pkTiledViewIfEnabled];
-      [v12 removeFromSuperview];
+      [self _setContentScrollInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+      _pkTiledViewIfEnabled3 = [self _pkTiledViewIfEnabled];
+      [_pkTiledViewIfEnabled3 removeFromSuperview];
 
-      [a1 _clearDrawingInfo];
+      [self _clearDrawingInfo];
     }
   }
 }
@@ -467,18 +467,18 @@
   v5 = PKIsSixChannelBlendEnabledInPaper();
   v6 = +[PKDrawing drawingClassForPaper];
 
-  return [a1 setStylusDrawingEnabled:a3 drawingClass:v6 sixChannelBlending:v5 & a3];
+  return [self setStylusDrawingEnabled:a3 drawingClass:v6 sixChannelBlending:v5 & a3];
 }
 
 - (uint64_t)isFingerDrawingEnabled
 {
-  result = [a1 isStylusDrawingEnabled];
+  result = [self isStylusDrawingEnabled];
   if (result)
   {
-    v3 = [a1 _pkTiledViewIfEnabled];
-    v4 = [v3 allowsFingerDrawing];
+    _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+    allowsFingerDrawing = [_pkTiledViewIfEnabled allowsFingerDrawing];
 
-    return v4;
+    return allowsFingerDrawing;
   }
 
   return result;
@@ -486,23 +486,23 @@
 
 - (void)_willBeginInteractiveResize
 {
-  v1 = [a1 _pkTiledViewIfEnabled];
-  [v1 _willBeginInteractiveResize];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  [_pkTiledViewIfEnabled _willBeginInteractiveResize];
 }
 
 - (void)_didEndInteractiveResize
 {
-  v1 = [a1 _pkTiledViewIfEnabled];
-  [v1 _didEndInteractiveResize];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  [_pkTiledViewIfEnabled _didEndInteractiveResize];
 }
 
 - (double)_boundsForDrawingTextAttachment:()UITextViewDrawing characterIndex:layoutManager:
 {
-  v3 = [a3 viewProviderForParentView:a1 characterIndex:? layoutManager:?];
-  v4 = [v3 view];
+  v3 = [a3 viewProviderForParentView:self characterIndex:? layoutManager:?];
+  view = [v3 view];
   if (objc_opt_respondsToSelector())
   {
-    [v4 drawingTextAttachmentBounds];
+    [view drawingTextAttachmentBounds];
     v6 = v5;
   }
 
@@ -519,20 +519,20 @@
   v6 = a3;
   if ([v6 pkInserting])
   {
-    v7 = [a1 textLayoutManager];
+    textLayoutManager = [self textLayoutManager];
 
-    if (!v7)
+    if (!textLayoutManager)
     {
       v11 = *MEMORY[0x1E695F050];
       goto LABEL_10;
     }
   }
 
-  v8 = [a1 _pk_viewProviderForAttachment:v6 atCharacterIndex:a4 createIfNeeded:1];
-  v9 = [v8 view];
+  v8 = [self _pk_viewProviderForAttachment:v6 atCharacterIndex:a4 createIfNeeded:1];
+  view = [v8 view];
   if (objc_opt_respondsToSelector())
   {
-    [v9 drawingTextAttachmentBoundsForContainerView:a1];
+    [view drawingTextAttachmentBoundsForContainerView:self];
   }
 
   else
@@ -543,7 +543,7 @@
       goto LABEL_9;
     }
 
-    [v9 drawingTextAttachmentBounds];
+    [view drawingTextAttachmentBounds];
   }
 
   v11 = v10;
@@ -555,65 +555,65 @@ LABEL_10:
 
 - (id)_textRangeFromRange:()UITextViewDrawing
 {
-  v7 = [a1 beginningOfDocument];
-  v8 = [a1 positionFromPosition:v7 offset:a3];
+  beginningOfDocument = [self beginningOfDocument];
+  v8 = [self positionFromPosition:beginningOfDocument offset:a3];
 
-  v9 = [a1 positionFromPosition:v8 offset:a4];
-  v10 = [a1 textRangeFromPosition:v8 toPosition:v9];
+  v9 = [self positionFromPosition:v8 offset:a4];
+  v10 = [self textRangeFromPosition:v8 toPosition:v9];
 
   return v10;
 }
 
 - (id)_insertEmptyDrawingAttachmentAtLocation:()UITextViewDrawing
 {
-  if ([a1 _canAddDrawingAtIndex:?] && (objc_msgSend(a1, "textStorage"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ([self _canAddDrawingAtIndex:?] && (objc_msgSend(self, "textStorage"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [a1 _drawingInfo];
-    v7 = v6;
-    if (v6)
+    _drawingInfo = [self _drawingInfo];
+    v7 = _drawingInfo;
+    if (_drawingInfo)
     {
-      v6 = v6[5];
+      _drawingInfo = _drawingInfo[5];
     }
 
-    v8 = [v6 fileType];
+    fileType = [_drawingInfo fileType];
 
-    v9 = [a1 drawingDelegate];
+    drawingDelegate = [self drawingDelegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [a1 drawingDelegate];
-      [v11 textView:a1 willAddDrawingAtIndex:a3];
+      drawingDelegate2 = [self drawingDelegate];
+      [drawingDelegate2 textView:self willAddDrawingAtIndex:a3];
     }
 
-    v12 = [a1 drawingDelegate];
+    drawingDelegate3 = [self drawingDelegate];
     v13 = objc_opt_respondsToSelector();
 
-    if ((v13 & 1) == 0 || ([a1 drawingDelegate], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "textView:newAttachmentForFileType:", a1, v8), v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
+    if ((v13 & 1) == 0 || ([self drawingDelegate], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "textView:newAttachmentForFileType:", self, fileType), v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
     {
-      v16 = [MEMORY[0x1E69DB7F0] textAttachmentClassForFileType:v8];
+      v16 = [MEMORY[0x1E69DB7F0] textAttachmentClassForFileType:fileType];
       if (!v16)
       {
         v16 = objc_opt_class();
       }
 
       v17 = [v16 alloc];
-      v18 = [MEMORY[0x1E695DEF0] data];
-      v15 = [v17 initWithData:v18 ofType:v8];
+      data = [MEMORY[0x1E695DEF0] data];
+      v15 = [v17 initWithData:data ofType:fileType];
     }
 
-    [a1 contentOffset];
-    [a1 setContentOffset:?];
-    [a1 resignFirstResponder];
-    [a1 bounds];
+    [self contentOffset];
+    [self setContentOffset:?];
+    [self resignFirstResponder];
+    [self bounds];
     [v15 setBounds:{0.0, 0.0}];
     [v15 setPkInserting:1];
     v19 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v15];
-    v20 = [a1 selectedRange];
+    selectedRange = [self selectedRange];
     v22 = v21;
-    [a1 setSelectedRange:{a3, 0}];
-    [a1 _pasteAttributedString:v19 pasteAsRichText:1];
-    [a1 setSelectedRange:{v20, v22}];
+    [self setSelectedRange:{a3, 0}];
+    [self _pasteAttributedString:v19 pasteAsRichText:1];
+    [self setSelectedRange:{selectedRange, v22}];
   }
 
   else
@@ -628,21 +628,21 @@ LABEL_10:
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 textStorage];
+  textStorage = [self textStorage];
   v11 = *MEMORY[0x1E69DB5F8];
-  v12 = [a1 textStorage];
-  v13 = [v12 length];
+  textStorage2 = [self textStorage];
+  v13 = [textStorage2 length];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __79__UITextView_UITextViewDrawing___removeDrawingAttachment_withView_forDeletion___block_invoke;
   v16[3] = &unk_1E82DC2D8;
   v20 = a5;
   v17 = v8;
-  v18 = a1;
+  selfCopy = self;
   v19 = v9;
   v14 = v9;
   v15 = v8;
-  [v10 enumerateAttribute:v11 inRange:0 options:v13 usingBlock:{0, v16}];
+  [textStorage enumerateAttribute:v11 inRange:0 options:v13 usingBlock:{0, v16}];
 }
 
 - (BOOL)_growView:()UITextViewDrawing textAttachment:atCharacterIndex:step:stop:
@@ -662,7 +662,7 @@ LABEL_10:
     v19[3] = &unk_1E82DC300;
     v24 = a2;
     v20 = v11;
-    v21 = a1;
+    selfCopy = self;
     v22 = v15;
     v25 = a6;
     v23 = v12;
@@ -675,29 +675,29 @@ LABEL_10:
 - (void)_undoDrawingBounds:()UITextViewDrawing viewBounds:ofAttachmentUUID:
 {
   v20 = a11;
-  v21 = [a1 textContainer];
-  v22 = [v21 textLayoutManager];
-  if (v22)
+  textContainer = [self textContainer];
+  textLayoutManager = [textContainer textLayoutManager];
+  if (textLayoutManager)
   {
-    v23 = 0;
+    layoutManager = 0;
   }
 
   else
   {
-    v23 = [a1 layoutManager];
+    layoutManager = [self layoutManager];
   }
 
-  v24 = [a1 textStorage];
+  textStorage = [self textStorage];
   v25 = *MEMORY[0x1E69DB5F8];
-  v26 = [a1 textStorage];
-  v27 = [v26 length];
+  textStorage2 = [self textStorage];
+  v27 = [textStorage2 length];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __80__UITextView_UITextViewDrawing___undoDrawingBounds_viewBounds_ofAttachmentUUID___block_invoke;
   v31[3] = &unk_1E82DC328;
-  v32 = v23;
-  v33 = a1;
-  v34 = v22;
+  v32 = layoutManager;
+  selfCopy = self;
+  v34 = textLayoutManager;
   v35 = v20;
   v36 = a2;
   v37 = a3;
@@ -708,69 +708,69 @@ LABEL_10:
   v42 = a8;
   v43 = a9;
   v28 = v20;
-  v29 = v22;
-  v30 = v23;
-  [v24 enumerateAttribute:v25 inRange:0 options:v27 usingBlock:{0, v31}];
+  v29 = textLayoutManager;
+  v30 = layoutManager;
+  [textStorage enumerateAttribute:v25 inRange:0 options:v27 usingBlock:{0, v31}];
 }
 
 - (void)_upgradeDrawingAtCharacterIndex:()UITextViewDrawing itemProviders:insertionLocationInDrawing:
 {
   v13 = a6;
-  v10 = [a1 drawingDelegate];
+  drawingDelegate = [self drawingDelegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [a1 drawingDelegate];
-    [v12 textView:a1 upgradeDrawingAtIndex:a5 itemProviders:v13 insertionLocationInDrawing:{a2, a3}];
+    drawingDelegate2 = [self drawingDelegate];
+    [drawingDelegate2 textView:self upgradeDrawingAtIndex:a5 itemProviders:v13 insertionLocationInDrawing:{a2, a3}];
   }
 }
 
 - (void)_canvasViewWillCreateSnapshot
 {
-  v3 = [a1 superview];
-  v2 = [a1 _pkTiledViewIfEnabled];
-  [v2 setContentSnapshottingView:v3];
+  superview = [self superview];
+  _pkTiledViewIfEnabled = [self _pkTiledViewIfEnabled];
+  [_pkTiledViewIfEnabled setContentSnapshottingView:superview];
 }
 
 - (void)_willBeginNewStrokeForTouch:()UITextViewDrawing
 {
   v10 = a3;
-  [a1 _updateDrawingBackgroundColor];
-  v4 = [a1 drawingDelegate];
+  [self _updateDrawingBackgroundColor];
+  drawingDelegate = [self drawingDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [a1 drawingDelegate];
-    [v6 textViewWillBeginStroke:a1];
+    drawingDelegate2 = [self drawingDelegate];
+    [drawingDelegate2 textViewWillBeginStroke:self];
   }
 
-  v7 = [a1 drawingDelegate];
+  drawingDelegate3 = [self drawingDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [a1 drawingDelegate];
-    [v9 textViewWillBeginStroke:a1 forTouch:v10];
+    drawingDelegate4 = [self drawingDelegate];
+    [drawingDelegate4 textViewWillBeginStroke:self forTouch:v10];
   }
 }
 
 - (void)_didEndStroke
 {
-  v2 = [a1 drawingDelegate];
+  drawingDelegate = [self drawingDelegate];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
   {
-    v4 = [a1 drawingDelegate];
-    [v4 textViewDidEndStroke:a1];
+    drawingDelegate2 = [self drawingDelegate];
+    [drawingDelegate2 textViewDidEndStroke:self];
   }
 }
 
 - (uint64_t)_canAddStroke
 {
-  v2 = [a1 drawingDelegate];
+  drawingDelegate = [self drawingDelegate];
   v3 = objc_opt_respondsToSelector();
 
   if ((v3 & 1) == 0)
@@ -778,15 +778,15 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [a1 drawingDelegate];
-  v5 = [v4 textViewCanAddStroke:a1];
+  drawingDelegate2 = [self drawingDelegate];
+  v5 = [drawingDelegate2 textViewCanAddStroke:self];
 
   return v5;
 }
 
 - (uint64_t)_canAddDrawingAtIndex:()UITextViewDrawing
 {
-  v5 = [a1 drawingDelegate];
+  drawingDelegate = [self drawingDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -794,29 +794,29 @@ LABEL_10:
     return 1;
   }
 
-  v7 = [a1 drawingDelegate];
-  v8 = [v7 textView:a1 canAddDrawingAtIndex:a3];
+  drawingDelegate2 = [self drawingDelegate];
+  v8 = [drawingDelegate2 textView:self canAddDrawingAtIndex:a3];
 
   return v8;
 }
 
 - (uint64_t)_canInsertDrawing
 {
-  v3 = [a1 selectedRange];
+  selectedRange = [self selectedRange];
 
-  return [a1 _canInsertDrawingInRange:{v3, v2}];
+  return [self _canInsertDrawingInRange:{selectedRange, v2}];
 }
 
 - (BOOL)_canInsertDrawingInRange:()UITextViewDrawing
 {
   v7 = 0;
-  if ([a1 isStylusDrawingEnabled] && !a4)
+  if ([self isStylusDrawingEnabled] && !a4)
   {
-    v8 = [a1 textStorage];
-    if ([v8 length])
+    textStorage = [self textStorage];
+    if ([textStorage length])
     {
-      v9 = [a1 textStorage];
-      v7 = a3 < [v9 length] - 1;
+      textStorage2 = [self textStorage];
+      v7 = a3 < [textStorage2 length] - 1;
     }
 
     else
@@ -830,10 +830,10 @@ LABEL_10:
 
 - (id)_insertDrawing:()UITextViewDrawing
 {
-  result = [a1 selectedRange];
+  result = [self selectedRange];
   if (result != 0x7FFFFFFFFFFFFFFFLL)
   {
-    return [a1 _insertEmptyDrawingAttachmentAtLocation:result];
+    return [self _insertEmptyDrawingAttachmentAtLocation:result];
   }
 
   return result;
@@ -841,7 +841,7 @@ LABEL_10:
 
 - (uint64_t)_canSelectDrawing
 {
-  v2 = [a1 drawingDelegate];
+  drawingDelegate = [self drawingDelegate];
   v3 = objc_opt_respondsToSelector();
 
   if ((v3 & 1) == 0)
@@ -849,8 +849,8 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [a1 drawingDelegate];
-  v5 = [v4 textViewCanSelectDrawing:a1];
+  drawingDelegate2 = [self drawingDelegate];
+  v5 = [drawingDelegate2 textViewCanSelectDrawing:self];
 
   return v5;
 }
@@ -858,9 +858,9 @@ LABEL_10:
 - (id)_pk_textRangeFromCharacterRange:()UITextViewDrawing textLayoutManager:
 {
   v7 = a5;
-  v8 = [v7 documentRange];
-  v9 = [v8 location];
-  v10 = [v7 locationFromLocation:v9 withOffset:a3];
+  documentRange = [v7 documentRange];
+  location = [documentRange location];
+  v10 = [v7 locationFromLocation:location withOffset:a3];
 
   v11 = [v7 locationFromLocation:v10 withOffset:a4];
 
@@ -872,9 +872,9 @@ LABEL_10:
 - (void)_pk_invalidateLayoutForCharacterRange:()UITextViewDrawing invalidateDisplay:ensureLayout:
 {
   v23 = *MEMORY[0x1E69E9840];
-  v11 = [a1 textContainer];
-  v12 = [v11 textLayoutManager];
-  if (v12 || ([a1 layoutManager], (v18 = objc_claimAutoreleasedReturnValue()) == 0))
+  textContainer = [self textContainer];
+  textLayoutManager = [textContainer textLayoutManager];
+  if (textLayoutManager || ([self layoutManager], (v18 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v13 = os_log_create("com.apple.pencilkit", "NSTextAttachmentViewProvider");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -889,12 +889,12 @@ LABEL_10:
       _os_log_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_DEFAULT, "invalidateLayoutFor: %@, ensureLayout: %{BOOL}d", &v19, 0x12u);
     }
 
-    v15 = [a1 _pk_textRangeFromCharacterRange:a3 textLayoutManager:{a4, v12}];
-    [v12 invalidateLayoutForRange:v15];
+    v15 = [self _pk_textRangeFromCharacterRange:a3 textLayoutManager:{a4, textLayoutManager}];
+    [textLayoutManager invalidateLayoutForRange:v15];
     if (a6)
     {
-      v16 = [v12 textViewportLayoutController];
-      [v16 layoutViewport];
+      textViewportLayoutController = [textLayoutManager textViewportLayoutController];
+      [textViewportLayoutController layoutViewport];
     }
 
     v17 = 0;
@@ -919,9 +919,9 @@ LABEL_10:
 - (void)_pk_ensureLayoutForCharacterRange:()UITextViewDrawing
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = [a1 textContainer];
-  v8 = [v7 textLayoutManager];
-  if (v8 || ([a1 layoutManager], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+  textContainer = [self textContainer];
+  textLayoutManager = [textContainer textLayoutManager];
+  if (textLayoutManager || ([self layoutManager], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9 = os_log_create("com.apple.pencilkit", "NSTextAttachmentViewProvider");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -934,10 +934,10 @@ LABEL_10:
       _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "ensureLayoutFor: %@", &v14, 0xCu);
     }
 
-    v11 = [a1 _pk_textRangeFromCharacterRange:a3 textLayoutManager:{a4, v8}];
-    [v8 invalidateLayoutForRange:v11];
-    v12 = [v8 textViewportLayoutController];
-    [v12 layoutViewport];
+    v11 = [self _pk_textRangeFromCharacterRange:a3 textLayoutManager:{a4, textLayoutManager}];
+    [textLayoutManager invalidateLayoutForRange:v11];
+    textViewportLayoutController = [textLayoutManager textViewportLayoutController];
+    [textViewportLayoutController layoutViewport];
   }
 
   else
@@ -949,15 +949,15 @@ LABEL_10:
 
 - (double)_pk_lineFragmentRectForGlyphAtCharacterIndex:()UITextViewDrawing
 {
-  v5 = [a1 textContainer];
-  v6 = [v5 textLayoutManager];
-  if (v6 || ([a1 layoutManager], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+  textContainer = [self textContainer];
+  textLayoutManager = [textContainer textLayoutManager];
+  if (textLayoutManager || ([self layoutManager], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [v6 documentRange];
-    v8 = [v7 location];
-    v9 = [v6 locationFromLocation:v8 withOffset:a3];
+    documentRange = [textLayoutManager documentRange];
+    location = [documentRange location];
+    v9 = [textLayoutManager locationFromLocation:location withOffset:a3];
 
-    v10 = [v6 textLayoutFragmentForLocation:v9];
+    v10 = [textLayoutManager textLayoutFragmentForLocation:v9];
     [v10 layoutFragmentFrame];
     v12 = v11;
   }
@@ -976,24 +976,24 @@ LABEL_10:
 {
   v25 = *MEMORY[0x1E69E9840];
   v8 = a3;
-  v9 = [a1 textContainer];
-  v10 = [v9 textLayoutManager];
-  if (!v10)
+  textContainer = [self textContainer];
+  textLayoutManager = [textContainer textLayoutManager];
+  if (!textLayoutManager)
   {
-    v17 = [a1 layoutManager];
-    if (v17)
+    layoutManager = [self layoutManager];
+    if (layoutManager)
     {
-      v13 = v17;
-      v14 = [v8 viewProviderForParentView:a1 characterIndex:a4 layoutManager:v17];
+      v13 = layoutManager;
+      v14 = [v8 viewProviderForParentView:self characterIndex:a4 layoutManager:layoutManager];
       goto LABEL_11;
     }
   }
 
-  v11 = [v10 documentRange];
-  v12 = [v11 location];
-  v13 = [v10 locationFromLocation:v12 withOffset:a4];
+  documentRange = [textLayoutManager documentRange];
+  location = [documentRange location];
+  v13 = [textLayoutManager locationFromLocation:location withOffset:a4];
 
-  v14 = [v10 viewProviderForTextAttachment:v8 location:v13];
+  v14 = [textLayoutManager viewProviderForTextAttachment:v8 location:v13];
   if (v14 || !a5)
   {
 LABEL_11:
@@ -1006,7 +1006,7 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  v15 = [a1 _cachedViewProviderForTextAttachment:v8];
+  v15 = [self _cachedViewProviderForTextAttachment:v8];
   if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v16 = os_log_create("com.apple.pencilkit", "NSTextAttachmentViewProvider");
@@ -1025,7 +1025,7 @@ LABEL_11:
 
   else
   {
-    v14 = [v8 viewProviderForParentView:a1 location:v13 textContainer:v9];
+    v14 = [v8 viewProviderForParentView:self location:v13 textContainer:textContainer];
 
     v18 = os_log_create("com.apple.pencilkit", "NSTextAttachmentViewProvider");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1054,12 +1054,12 @@ LABEL_11:
     _os_log_impl(&dword_1C7CCA000, v19, OS_LOG_TYPE_DEFAULT, "Set viewProvider (%p) at %lu", &v21, 0x16u);
   }
 
-  [v10 setViewProvider:v14 forTextAttachment:v8 location:v13];
+  [textLayoutManager setViewProvider:v14 forTextAttachment:v8 location:v13];
 LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 _setCachedViewProvider:v14 textAttachment:v8];
+    [self _setCachedViewProvider:v14 textAttachment:v8];
   }
 
 LABEL_22:
@@ -1072,20 +1072,20 @@ LABEL_22:
   v3 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _paperIdentifier];
+    _paperIdentifier = [v3 _paperIdentifier];
 LABEL_3:
-    v5 = v4;
+    v5 = _paperIdentifier;
     goto LABEL_9;
   }
 
-  v6 = [v3 fileType];
-  if ([v6 isEqualToString:@"com.apple.drawing"])
+  fileType = [v3 fileType];
+  if ([fileType isEqualToString:@"com.apple.drawing"])
   {
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v4 = [v3 viewIdentifier];
+      _paperIdentifier = [v3 viewIdentifier];
       goto LABEL_3;
     }
   }
@@ -1103,22 +1103,22 @@ LABEL_9:
 - (void)_setCachedViewProvider:()UITextViewDrawing textAttachment:
 {
   v9 = a3;
-  v6 = [a1 _cacheIdentifierForTextAttachment:a4];
+  v6 = [self _cacheIdentifierForTextAttachment:a4];
   if (v6)
   {
-    v7 = [a1 _drawingInfo];
-    v8 = v7;
-    if (v7)
+    _drawingInfo = [self _drawingInfo];
+    v8 = _drawingInfo;
+    if (_drawingInfo)
     {
-      [*(v7 + 48) setObject:v9 forKeyedSubscript:v6];
+      [*(_drawingInfo + 48) setObject:v9 forKeyedSubscript:v6];
     }
   }
 }
 
 - (id)_cachedViewProviderForTextAttachment:()UITextViewDrawing
 {
-  v2 = [a1 _cacheIdentifierForTextAttachment:?];
-  if (v2 && ([a1 _drawingInfo], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  v2 = [self _cacheIdentifierForTextAttachment:?];
+  if (v2 && ([self _drawingInfo], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
     v5 = [*(v3 + 48) objectForKeyedSubscript:v2];
@@ -1135,27 +1135,27 @@ LABEL_9:
 - (void)_cleanupStaleCachedViewProviders
 {
   v21 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _drawingInfo];
-  if (v2)
+  _drawingInfo = [self _drawingInfo];
+  if (_drawingInfo)
   {
     v3 = [MEMORY[0x1E695DFA8] set];
-    v4 = [a1 textStorage];
+    textStorage = [self textStorage];
     v5 = *MEMORY[0x1E69DB5F8];
-    v6 = [v4 length];
+    v6 = [textStorage length];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __65__UITextView_UITextViewDrawing___cleanupStaleCachedViewProviders__block_invoke;
     v18[3] = &unk_1E82DC350;
-    v18[4] = a1;
+    v18[4] = self;
     v7 = v3;
     v19 = v7;
-    [v4 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, v18}];
+    [textStorage enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0, v18}];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [v2[6] allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v20 count:16];
+    allKeys = [_drawingInfo[6] allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1166,17 +1166,17 @@ LABEL_9:
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v14 + 1) + 8 * i);
           if (([v7 containsObject:v13] & 1) == 0)
           {
-            [v2[6] removeObjectForKey:v13];
+            [_drawingInfo[6] removeObjectForKey:v13];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v20 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v14 objects:v20 count:16];
       }
 
       while (v10);
@@ -1188,26 +1188,26 @@ LABEL_9:
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 textContainer];
-  v8 = [v7 textLayoutManager];
-  if (v8)
+  textContainer = [self textContainer];
+  textLayoutManager = [textContainer textLayoutManager];
+  if (textLayoutManager)
   {
-    v9 = [a1 _pk_textRangeFromCharacterRange:a4 textLayoutManager:{1, v8}];
+    v9 = [self _pk_textRangeFromCharacterRange:a4 textLayoutManager:{1, textLayoutManager}];
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v10 = [v9 location];
+    location = [v9 location];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __94__UITextView_UITextViewDrawing___pk_checkForTK2LostViewProviderInAttachment_atCharacterIndex___block_invoke;
     v14[3] = &unk_1E82DC378;
     v14[4] = &v15;
-    v11 = [v8 enumerateTextLayoutFragmentsFromLocation:v10 options:0 usingBlock:v14];
+    v11 = [textLayoutManager enumerateTextLayoutFragmentsFromLocation:location options:0 usingBlock:v14];
 
     if (*(v16 + 24) == 1)
     {
-      v12 = [a1 _cachedViewProviderForTextAttachment:v6];
+      v12 = [self _cachedViewProviderForTextAttachment:v6];
       v13 = os_log_create("com.apple.pencilkit", "NSTextAttachmentViewProvider");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {

@@ -1,16 +1,16 @@
 @interface ImageProcessor_VSA
-- (BOOL)shouldCropOutputFrame:(__CVBuffer *)a3;
-- (BOOL)useScalerForPostprocessOutput:(__CVBuffer *)a3;
-- (int64_t)postprocessFrameWithScaler:(__CVBuffer *)a3 output:(__CVBuffer *)a4 waitForCompletion:(BOOL)a5;
+- (BOOL)shouldCropOutputFrame:(__CVBuffer *)frame;
+- (BOOL)useScalerForPostprocessOutput:(__CVBuffer *)output;
+- (int64_t)postprocessFrameWithScaler:(__CVBuffer *)scaler output:(__CVBuffer *)output waitForCompletion:(BOOL)completion;
 @end
 
 @implementation ImageProcessor_VSA
 
-- (BOOL)shouldCropOutputFrame:(__CVBuffer *)a3
+- (BOOL)shouldCropOutputFrame:(__CVBuffer *)frame
 {
-  Width = CVPixelBufferGetWidth(a3);
+  Width = CVPixelBufferGetWidth(frame);
   v11 = Width;
-  Height = CVPixelBufferGetHeight(a3);
+  Height = CVPixelBufferGetHeight(frame);
   if (Width < Height)
   {
     swapWidthAndHeight(&v11, &Height);
@@ -30,14 +30,14 @@
   return v7 < [(ImageProcessor_Ext *)&v8 height];
 }
 
-- (BOOL)useScalerForPostprocessOutput:(__CVBuffer *)a3
+- (BOOL)useScalerForPostprocessOutput:(__CVBuffer *)output
 {
-  v4 = [(ImageProcessor_VSA *)self shouldCropOutputFrame:a3];
+  v4 = [(ImageProcessor_VSA *)self shouldCropOutputFrame:output];
   v10.receiver = self;
   v10.super_class = ImageProcessor_VSA;
-  v5 = [(ImageProcessor_Ext *)&v10 isYUV];
+  isYUV = [(ImageProcessor_Ext *)&v10 isYUV];
   result = 1;
-  if ((v5 & 1) == 0 && !v4)
+  if ((isYUV & 1) == 0 && !v4)
   {
     v9.receiver = self;
     v9.super_class = ImageProcessor_VSA;
@@ -64,24 +64,24 @@
   return result;
 }
 
-- (int64_t)postprocessFrameWithScaler:(__CVBuffer *)a3 output:(__CVBuffer *)a4 waitForCompletion:(BOOL)a5
+- (int64_t)postprocessFrameWithScaler:(__CVBuffer *)scaler output:(__CVBuffer *)output waitForCompletion:(BOOL)completion
 {
   result = 12;
-  if (a3 && a4)
+  if (scaler && output)
   {
-    v8 = a5;
-    if ([(ImageProcessor_VSA *)self useScalerForPostprocessOutput:a4])
+    completionCopy = completion;
+    if ([(ImageProcessor_VSA *)self useScalerForPostprocessOutput:output])
     {
       v15.receiver = self;
       v15.super_class = ImageProcessor_VSA;
-      v10 = [(ImageProcessor_Ext *)&v15 scaler];
+      scaler = [(ImageProcessor_Ext *)&v15 scaler];
       v14.receiver = self;
       v14.super_class = ImageProcessor_VSA;
-      v11 = [(ImageProcessor_Ext *)&v14 inputScaling];
+      inputScaling = [(ImageProcessor_Ext *)&v14 inputScaling];
       v13.receiver = self;
       v13.super_class = ImageProcessor_VSA;
-      v12 = [(ImageProcessor_Ext *)&v13 secondRotation];
-      [v10 upScaleAndCropFrameSource:a3 destination:a4 upscale:v11 rotate:getReverseRotation(v12) waitForCompletion:v8];
+      secondRotation = [(ImageProcessor_Ext *)&v13 secondRotation];
+      [scaler upScaleAndCropFrameSource:scaler destination:output upscale:inputScaling rotate:getReverseRotation(secondRotation) waitForCompletion:completionCopy];
     }
 
     return 0;

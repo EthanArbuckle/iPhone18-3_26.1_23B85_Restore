@@ -1,13 +1,13 @@
 @interface ServiceDelegate
-- (void)sendMessageWith:(id)a3 completion:(id)a4;
+- (void)sendMessageWith:(id)with completion:(id)completion;
 @end
 
 @implementation ServiceDelegate
 
-- (void)sendMessageWith:(id)a3 completion:(id)a4
+- (void)sendMessageWith:(id)with completion:(id)completion
 {
-  v5 = _Block_copy(a4);
-  v6 = a3;
+  v5 = _Block_copy(completion);
+  withCopy = with;
 
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;

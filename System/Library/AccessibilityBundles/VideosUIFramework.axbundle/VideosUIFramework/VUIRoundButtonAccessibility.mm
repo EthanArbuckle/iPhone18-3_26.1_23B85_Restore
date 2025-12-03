@@ -1,5 +1,5 @@
 @interface VUIRoundButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,11 +7,11 @@
 
 @implementation VUIRoundButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIRoundButton" hasInstanceMethod:@"textLabels" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIRoundButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIRoundButton" hasInstanceMethod:@"textLabels" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIRoundButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

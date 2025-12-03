@@ -1,64 +1,64 @@
 @interface AKDeviceListDeltaMessagePayload
-- (AKDeviceListDeltaMessagePayload)initWithResponseBody:(id)a3;
-- (id)_timestampFromPayloadValue:(id)a3;
-- (int64_t)_removalReasonFromPayloadValue:(id)a3;
-- (unint64_t)_operationFromPayloadValue:(id)a3;
+- (AKDeviceListDeltaMessagePayload)initWithResponseBody:(id)body;
+- (id)_timestampFromPayloadValue:(id)value;
+- (int64_t)_removalReasonFromPayloadValue:(id)value;
+- (unint64_t)_operationFromPayloadValue:(id)value;
 @end
 
 @implementation AKDeviceListDeltaMessagePayload
 
-- (AKDeviceListDeltaMessagePayload)initWithResponseBody:(id)a3
+- (AKDeviceListDeltaMessagePayload)initWithResponseBody:(id)body
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, body);
   if (location[0])
   {
-    v3 = v26;
-    v26 = 0;
+    v3 = selfCopy;
+    selfCopy = 0;
     v23.receiver = v3;
     v23.super_class = AKDeviceListDeltaMessagePayload;
-    v26 = [(AKDeviceListDeltaMessagePayload *)&v23 init];
-    objc_storeStrong(&v26, v26);
-    if (v26)
+    selfCopy = [(AKDeviceListDeltaMessagePayload *)&v23 init];
+    objc_storeStrong(&selfCopy, selfCopy);
+    if (selfCopy)
     {
       v4 = [location[0] objectForKeyedSubscript:@"altDSID"];
-      v5 = *(v26 + 1);
-      *(v26 + 1) = v4;
+      v5 = *(selfCopy + 1);
+      *(selfCopy + 1) = v4;
       MEMORY[0x1E69E5920](v5);
-      v17 = v26;
+      v17 = selfCopy;
       v18 = [location[0] objectForKeyedSubscript:@"ts"];
       v6 = [v17 _timestampFromPayloadValue:?];
-      v7 = *(v26 + 6);
-      *(v26 + 6) = v6;
+      v7 = *(selfCopy + 6);
+      *(selfCopy + 6) = v6;
       MEMORY[0x1E69E5920](v7);
       MEMORY[0x1E69E5920](v18);
       v8 = [location[0] objectForKeyedSubscript:@"mid"];
-      v9 = *(v26 + 3);
-      *(v26 + 3) = v8;
+      v9 = *(selfCopy + 3);
+      *(selfCopy + 3) = v8;
       MEMORY[0x1E69E5920](v9);
       v10 = [location[0] objectForKeyedSubscript:@"mids"];
-      v11 = *(v26 + 4);
-      *(v26 + 4) = v10;
+      v11 = *(selfCopy + 4);
+      *(selfCopy + 4) = v10;
       MEMORY[0x1E69E5920](v11);
       v12 = [location[0] objectForKeyedSubscript:@"sn"];
-      v13 = *(v26 + 5);
-      *(v26 + 5) = v12;
+      v13 = *(selfCopy + 5);
+      *(selfCopy + 5) = v12;
       MEMORY[0x1E69E5920](v13);
-      v19 = v26;
+      v19 = selfCopy;
       v20 = [location[0] objectForKeyedSubscript:@"op"];
       v14 = [v19 _operationFromPayloadValue:?];
-      *(v26 + 2) = v14;
+      *(selfCopy + 2) = v14;
       MEMORY[0x1E69E5920](v20);
-      v21 = v26;
+      v21 = selfCopy;
       v22 = [location[0] objectForKeyedSubscript:@"rn"];
       v15 = [v21 _removalReasonFromPayloadValue:?];
-      *(v26 + 7) = v15;
+      *(selfCopy + 7) = v15;
       MEMORY[0x1E69E5920](v22);
     }
 
-    v27 = MEMORY[0x1E69E5928](v26);
+    v27 = MEMORY[0x1E69E5928](selfCopy);
     v24 = 1;
   }
 
@@ -69,16 +69,16 @@
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v26, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v27;
 }
 
-- (id)_timestampFromPayloadValue:(id)a3
+- (id)_timestampFromPayloadValue:(id)value
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -111,12 +111,12 @@
   return v4;
 }
 
-- (unint64_t)_operationFromPayloadValue:(id)a3
+- (unint64_t)_operationFromPayloadValue:(id)value
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   if (location[0])
   {
     v3 = objc_opt_class();
@@ -177,27 +177,27 @@
   return v18;
 }
 
-- (int64_t)_removalReasonFromPayloadValue:(id)a3
+- (int64_t)_removalReasonFromPayloadValue:(id)value
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   if (location[0])
   {
     v3 = objc_opt_class();
     v5 = _AKSafeCast_1(v3, location[0]);
-    v7 = [v5 integerValue];
+    integerValue = [v5 integerValue];
     MEMORY[0x1E69E5920](v5);
   }
 
   else
   {
-    v7 = -1;
+    integerValue = -1;
   }
 
   objc_storeStrong(location, 0);
-  return v7;
+  return integerValue;
 }
 
 @end

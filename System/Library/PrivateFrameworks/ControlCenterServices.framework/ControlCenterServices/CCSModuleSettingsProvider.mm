@@ -6,9 +6,9 @@
 + (id)_defaultFixedModuleIdentifiers;
 + (id)_defaultUserEnabledFixedModuleIdentifiers;
 + (id)_defaultUserEnabledModuleIdentifiers;
-+ (id)_readSettingsWithVersion:(unint64_t *)a3;
++ (id)_readSettingsWithVersion:(unint64_t *)version;
 + (id)sharedProvider;
-+ (void)_writeOrderedIdentifiers:(id)a3 userEnabledFixedIdentifiers:(id)a4 userDisabledIdentifiers:(id)a5;
++ (void)_writeOrderedIdentifiers:(id)identifiers userEnabledFixedIdentifiers:(id)fixedIdentifiers userDisabledIdentifiers:(id)disabledIdentifiers;
 - (CCSModuleSettingsProvider)init;
 - (NSArray)orderedFixedModuleIdentifiers;
 - (NSArray)orderedUserEnabledFixedModuleIdentifiers;
@@ -16,27 +16,27 @@
 - (NSArray)userDisabledModuleIdentifiers;
 - (void)_queue_handleConfigurationFileUpdate;
 - (void)_queue_loadSettings;
-- (void)_queue_runBlockOnListeners:(id)a3;
+- (void)_queue_runBlockOnListeners:(id)listeners;
 - (void)_queue_saveSettings;
 - (void)_queue_sendConfigurationFileUpdateMessageToObservers;
-- (void)_queue_setAndSaveOrderedUserEnabledModuleIdentifiers:(id)a3 previousOrderedUserEnabledModuleIdentifiers:(id)a4;
+- (void)_queue_setAndSaveOrderedUserEnabledModuleIdentifiers:(id)identifiers previousOrderedUserEnabledModuleIdentifiers:(id)moduleIdentifiers;
 - (void)_queue_startMonitoringConfigurationUpdates;
 - (void)_queue_stopMonitoringConfigurationUpdates;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)legacyModuleMigration:(BOOL *)a3 versionNumber:(unint64_t)a4;
-- (void)removeObserver:(id)a3;
-- (void)setAndSaveOrderedUserEnabledFixedModuleIdentifiers:(id)a3;
-- (void)setAndSaveOrderedUserEnabledModuleIdentifiers:(id)a3;
-- (void)setAndSaveOrderedUserEnabledModuleIdentifiers:(id)a3 previousOrderedUserEnabledModuleIdentifiers:(id)a4;
+- (void)legacyModuleMigration:(BOOL *)migration versionNumber:(unint64_t)number;
+- (void)removeObserver:(id)observer;
+- (void)setAndSaveOrderedUserEnabledFixedModuleIdentifiers:(id)identifiers;
+- (void)setAndSaveOrderedUserEnabledModuleIdentifiers:(id)identifiers;
+- (void)setAndSaveOrderedUserEnabledModuleIdentifiers:(id)identifiers previousOrderedUserEnabledModuleIdentifiers:(id)moduleIdentifiers;
 @end
 
 @implementation CCSModuleSettingsProvider
 
 + (BOOL)_continuousExposeEnabled
 {
-  v2 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v3 = [v2 deviceClass] == 2;
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  v3 = [mEMORY[0x277CF0CA8] deviceClass] == 2;
 
   return v3;
 }
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __43__CCSModuleSettingsProvider_sharedProvider__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedProvider_onceToken != -1)
   {
     dispatch_once(&sharedProvider_onceToken, block);
@@ -76,9 +76,9 @@ uint64_t __43__CCSModuleSettingsProvider_sharedProvider__block_invoke(uint64_t a
     observers = v2->_observers;
     v2->_observers = v3;
 
-    v5 = [objc_opt_class() _defaultFixedModuleIdentifiers];
+    _defaultFixedModuleIdentifiers = [objc_opt_class() _defaultFixedModuleIdentifiers];
     orderedFixedModuleIdentifiers = v2->_orderedFixedModuleIdentifiers;
-    v2->_orderedFixedModuleIdentifiers = v5;
+    v2->_orderedFixedModuleIdentifiers = _defaultFixedModuleIdentifiers;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.ControlCenter.ModuleSettingsProvider", v7);
@@ -252,58 +252,58 @@ uint64_t __58__CCSModuleSettingsProvider_userDisabledModuleIdentifiers__block_in
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setAndSaveOrderedUserEnabledModuleIdentifiers:(id)a3
+- (void)setAndSaveOrderedUserEnabledModuleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__CCSModuleSettingsProvider_setAndSaveOrderedUserEnabledModuleIdentifiers___block_invoke;
   v7[3] = &unk_278E0F680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)setAndSaveOrderedUserEnabledModuleIdentifiers:(id)a3 previousOrderedUserEnabledModuleIdentifiers:(id)a4
+- (void)setAndSaveOrderedUserEnabledModuleIdentifiers:(id)identifiers previousOrderedUserEnabledModuleIdentifiers:(id)moduleIdentifiers
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  moduleIdentifiersCopy = moduleIdentifiers;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __119__CCSModuleSettingsProvider_setAndSaveOrderedUserEnabledModuleIdentifiers_previousOrderedUserEnabledModuleIdentifiers___block_invoke;
   block[3] = &unk_278E0F6A8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  v13 = moduleIdentifiersCopy;
+  v9 = moduleIdentifiersCopy;
+  v10 = identifiersCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)_queue_setAndSaveOrderedUserEnabledModuleIdentifiers:(id)a3 previousOrderedUserEnabledModuleIdentifiers:(id)a4
+- (void)_queue_setAndSaveOrderedUserEnabledModuleIdentifiers:(id)identifiers previousOrderedUserEnabledModuleIdentifiers:(id)moduleIdentifiers
 {
-  v18 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  moduleIdentifiersCopy = moduleIdentifiers;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v7 = [MEMORY[0x277CBEB98] setWithArray:v6];
-    v8 = [MEMORY[0x277CBEB98] setWithArray:v18];
+    v7 = [MEMORY[0x277CBEB98] setWithArray:moduleIdentifiersCopy];
+    v8 = [MEMORY[0x277CBEB98] setWithArray:identifiersCopy];
     v9 = [v7 mutableCopy];
     [v9 minusSet:v8];
     v10 = [v8 mutableCopy];
     [v10 minusSet:v7];
     v11 = [(NSArray *)self->_userDisabledModuleIdentifiers mutableCopy];
-    v12 = [v10 allObjects];
-    [v11 removeObjectsInArray:v12];
+    allObjects = [v10 allObjects];
+    [v11 removeObjectsInArray:allObjects];
 
-    v13 = [v9 allObjects];
-    [v11 addObjectsFromArray:v13];
+    allObjects2 = [v9 allObjects];
+    [v11 addObjectsFromArray:allObjects2];
 
     [v11 sortUsingSelector:sel_caseInsensitiveCompare_];
-    v14 = [v18 copy];
+    v14 = [identifiersCopy copy];
     orderedUserEnabledModuleIdentifiers = self->_orderedUserEnabledModuleIdentifiers;
     self->_orderedUserEnabledModuleIdentifiers = v14;
 
@@ -318,17 +318,17 @@ uint64_t __58__CCSModuleSettingsProvider_userDisabledModuleIdentifiers__block_in
   }
 }
 
-- (void)setAndSaveOrderedUserEnabledFixedModuleIdentifiers:(id)a3
+- (void)setAndSaveOrderedUserEnabledFixedModuleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__CCSModuleSettingsProvider_setAndSaveOrderedUserEnabledFixedModuleIdentifiers___block_invoke;
   v7[3] = &unk_278E0F680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -369,10 +369,10 @@ void __80__CCSModuleSettingsProvider_setAndSaveOrderedUserEnabledFixedModuleIden
   }
 }
 
-+ (id)_readSettingsWithVersion:(unint64_t *)a3
++ (id)_readSettingsWithVersion:(unint64_t *)version
 {
-  v4 = [objc_opt_class() _configurationFileURL];
-  v5 = [MEMORY[0x277CBEAE0] inputStreamWithURL:v4];
+  _configurationFileURL = [objc_opt_class() _configurationFileURL];
+  v5 = [MEMORY[0x277CBEAE0] inputStreamWithURL:_configurationFileURL];
   v6 = v5;
   if (v5)
   {
@@ -416,38 +416,38 @@ void __80__CCSModuleSettingsProvider_setAndSaveOrderedUserEnabledFixedModuleIden
       v14 = v13;
 
       v15 = [v14 bs_safeNumberForKey:@"version"];
-      v16 = [v15 unsignedIntegerValue];
+      unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-      if (a3)
+      if (version)
       {
-        *a3 = v16;
+        *version = unsignedIntegerValue;
       }
 
-      if (v16 - 1 > 2)
+      if (unsignedIntegerValue - 1 > 2)
       {
         if (os_log_type_enabled(CCSLogModuleSettings, OS_LOG_TYPE_ERROR))
         {
           +[CCSModuleSettingsProvider _readSettingsWithVersion:];
         }
 
-        v17 = 0;
+        dictionary = 0;
       }
 
       else
       {
-        v17 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v24 = [v14 bs_safeArrayForKey:@"module-identifiers"];
         v23 = [v24 bs_mapNoNulls:&__block_literal_global_3];
-        [v17 bs_setSafeObject:v23 forKey:@"module-identifiers"];
+        [dictionary bs_setSafeObject:v23 forKey:@"module-identifiers"];
         v18 = [v14 bs_safeArrayForKey:@"userenabled-fixed-module-identifiers"];
         v19 = [v18 bs_mapNoNulls:&__block_literal_global_58];
-        [v17 bs_setSafeObject:v19 forKey:@"userenabled-fixed-module-identifiers"];
+        [dictionary bs_setSafeObject:v19 forKey:@"userenabled-fixed-module-identifiers"];
         v20 = [v14 bs_safeArrayForKey:@"disabled-module-identifiers"];
         v21 = [v20 bs_mapNoNulls:&__block_literal_global_60];
-        [v17 bs_setSafeObject:v21 forKey:@"disabled-module-identifiers"];
+        [dictionary bs_setSafeObject:v21 forKey:@"disabled-module-identifiers"];
       }
 
-      v9 = v17;
+      v9 = dictionary;
     }
   }
 
@@ -456,7 +456,7 @@ void __80__CCSModuleSettingsProvider_setAndSaveOrderedUserEnabledFixedModuleIden
     v10 = CCSLogModuleSettings;
     if (os_log_type_enabled(CCSLogModuleSettings, OS_LOG_TYPE_ERROR))
     {
-      [(CCSModuleSettingsProvider *)v4 _readSettingsWithVersion:v10];
+      [(CCSModuleSettingsProvider *)_configurationFileURL _readSettingsWithVersion:v10];
     }
 
     v9 = 0;
@@ -534,22 +534,22 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
   return v3;
 }
 
-+ (void)_writeOrderedIdentifiers:(id)a3 userEnabledFixedIdentifiers:(id)a4 userDisabledIdentifiers:(id)a5
++ (void)_writeOrderedIdentifiers:(id)identifiers userEnabledFixedIdentifiers:(id)fixedIdentifiers userDisabledIdentifiers:(id)disabledIdentifiers
 {
   v26[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_opt_class() _configurationDirectoryURL];
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v10 path];
-  v13 = [v11 fileExistsAtPath:v12];
+  identifiersCopy = identifiers;
+  fixedIdentifiersCopy = fixedIdentifiers;
+  disabledIdentifiersCopy = disabledIdentifiers;
+  _configurationDirectoryURL = [objc_opt_class() _configurationDirectoryURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [_configurationDirectoryURL path];
+  v13 = [defaultManager fileExistsAtPath:path];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v24 = 0;
-    v15 = [v14 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v24];
+    v15 = [defaultManager2 createDirectoryAtURL:_configurationDirectoryURL withIntermediateDirectories:1 attributes:0 error:&v24];
     v16 = v24;
 
     if ((v15 & 1) == 0 && os_log_type_enabled(CCSLogModuleSettings, OS_LOG_TYPE_ERROR))
@@ -558,19 +558,19 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     }
   }
 
-  v17 = [objc_opt_class() _configurationFileURL];
+  _configurationFileURL = [objc_opt_class() _configurationFileURL];
   v25[0] = @"version";
   v25[1] = @"module-identifiers";
   v26[0] = &unk_2857A45A0;
-  v26[1] = v7;
+  v26[1] = identifiersCopy;
   v25[2] = @"userenabled-fixed-module-identifiers";
   v25[3] = @"disabled-module-identifiers";
-  v26[2] = v8;
-  v26[3] = v9;
+  v26[2] = fixedIdentifiersCopy;
+  v26[3] = disabledIdentifiersCopy;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:4];
   v19 = [MEMORY[0x277CCAC58] dataWithPropertyList:v18 format:100 options:0 error:0];
   v23 = 0;
-  v20 = [v19 writeToURL:v17 options:268435457 error:&v23];
+  v20 = [v19 writeToURL:_configurationFileURL options:268435457 error:&v23];
   v21 = v23;
   if ((v20 & 1) == 0 && os_log_type_enabled(CCSLogModuleSettings, OS_LOG_TYPE_ERROR))
   {
@@ -580,7 +580,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)legacyModuleMigration:(BOOL *)a3 versionNumber:(unint64_t)a4
+- (void)legacyModuleMigration:(BOOL *)migration versionNumber:(unint64_t)number
 {
   v42 = *MEMORY[0x277D85DE8];
   if ([(NSArray *)self->_userDisabledModuleIdentifiers containsObject:@"com.apple.control-center.CarModeModule"])
@@ -590,7 +590,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     userDisabledModuleIdentifiers = self->_userDisabledModuleIdentifiers;
     self->_userDisabledModuleIdentifiers = v7;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   p_orderedUserEnabledModuleIdentifiers = &self->_orderedUserEnabledModuleIdentifiers;
@@ -601,7 +601,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v11 = *p_orderedUserEnabledModuleIdentifiers;
     *p_orderedUserEnabledModuleIdentifiers = v10;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   if ([(NSArray *)self->_userDisabledModuleIdentifiers containsObject:@"com.apple.sleep.controlcenter.sleepmode"])
@@ -611,7 +611,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v13 = self->_userDisabledModuleIdentifiers;
     self->_userDisabledModuleIdentifiers = v12;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   if ([(NSArray *)*p_orderedUserEnabledModuleIdentifiers containsObject:@"com.apple.sleep.controlcenter.sleepmode"])
@@ -621,7 +621,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v15 = *p_orderedUserEnabledModuleIdentifiers;
     *p_orderedUserEnabledModuleIdentifiers = v14;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   if ([(NSArray *)*p_orderedUserEnabledModuleIdentifiers containsObject:@"com.apple.Home.ControlCenter"])
@@ -644,7 +644,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
       self->_orderedUserEnabledFixedModuleIdentifiers = v18;
     }
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   if (![(NSArray *)self->_userDisabledModuleIdentifiers containsObject:@"com.apple.BarcodeSupport.NFCControlCenterModule"]&& ![(NSArray *)*p_orderedUserEnabledModuleIdentifiers containsObject:@"com.apple.BarcodeSupport.NFCControlCenterModule"])
@@ -654,19 +654,19 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v21 = *p_orderedUserEnabledModuleIdentifiers;
     *p_orderedUserEnabledModuleIdentifiers = v20;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
-  v22 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v23 = [v22 deviceClass];
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  deviceClass = [mEMORY[0x277CF0CA8] deviceClass];
 
-  if (a4 <= 1 && !v23 && [(NSArray *)self->_userDisabledModuleIdentifiers containsObject:@"com.apple.control-center.MuteModule"])
+  if (number <= 1 && !deviceClass && [(NSArray *)self->_userDisabledModuleIdentifiers containsObject:@"com.apple.control-center.MuteModule"])
   {
     v24 = CCSLogModuleSettings;
     if (os_log_type_enabled(CCSLogModuleSettings, OS_LOG_TYPE_DEFAULT))
     {
       v40 = 134217984;
-      v41 = a4;
+      numberCopy = number;
       _os_log_impl(&dword_24427F000, v24, OS_LOG_TYPE_DEFAULT, "Migrating mute module out of user-disabled list from settings with version: %lu", &v40, 0xCu);
     }
 
@@ -675,7 +675,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v26 = self->_userDisabledModuleIdentifiers;
     self->_userDisabledModuleIdentifiers = v25;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   if (![(NSArray *)self->_orderedFixedModuleIdentifiers containsObject:@"com.apple.control-center.MuteModule"]&& ![(NSArray *)self->_userDisabledModuleIdentifiers containsObject:@"com.apple.control-center.MuteModule"]&& ![(NSArray *)*p_orderedUserEnabledModuleIdentifiers containsObject:@"com.apple.control-center.MuteModule"])
@@ -685,7 +685,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v28 = *p_orderedUserEnabledModuleIdentifiers;
     *p_orderedUserEnabledModuleIdentifiers = v27;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   if ([(NSArray *)self->_orderedFixedModuleIdentifiers containsObject:@"com.apple.control-center.MuteModule"]&& [(NSArray *)*p_orderedUserEnabledModuleIdentifiers containsObject:@"com.apple.control-center.MuteModule"])
@@ -695,7 +695,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v30 = *p_orderedUserEnabledModuleIdentifiers;
     *p_orderedUserEnabledModuleIdentifiers = v29;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   if (![(NSArray *)self->_orderedFixedModuleIdentifiers containsObject:@"com.apple.mediaremote.controlcenter.airplaymirroring"]&& ![(NSArray *)self->_userDisabledModuleIdentifiers containsObject:@"com.apple.mediaremote.controlcenter.airplaymirroring"]&& ![(NSArray *)*p_orderedUserEnabledModuleIdentifiers containsObject:@"com.apple.mediaremote.controlcenter.airplaymirroring"])
@@ -705,7 +705,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v32 = *p_orderedUserEnabledModuleIdentifiers;
     *p_orderedUserEnabledModuleIdentifiers = v31;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   if ([(NSArray *)self->_orderedFixedModuleIdentifiers containsObject:@"com.apple.mediaremote.controlcenter.airplaymirroring"]&& [(NSArray *)*p_orderedUserEnabledModuleIdentifiers containsObject:@"com.apple.mediaremote.controlcenter.airplaymirroring"])
@@ -715,7 +715,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v34 = *p_orderedUserEnabledModuleIdentifiers;
     *p_orderedUserEnabledModuleIdentifiers = v33;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   if (((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl()) && ![(NSArray *)self->_userDisabledModuleIdentifiers containsObject:@"com.apple.springboard.SensitiveUIModule"]&& ![(NSArray *)*p_orderedUserEnabledModuleIdentifiers containsObject:@"com.apple.springboard.SensitiveUIModule"])
@@ -725,7 +725,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v36 = *p_orderedUserEnabledModuleIdentifiers;
     *p_orderedUserEnabledModuleIdentifiers = v35;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   if ([objc_opt_class() _continuousExposeEnabled] && !-[NSArray containsObject:](self->_userDisabledModuleIdentifiers, "containsObject:", @"com.apple.springboard.ContinuousExposeModule") && !-[NSArray containsObject:](*p_orderedUserEnabledModuleIdentifiers, "containsObject:", @"com.apple.springboard.ContinuousExposeModule"))
@@ -735,7 +735,7 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
     v38 = *p_orderedUserEnabledModuleIdentifiers;
     *p_orderedUserEnabledModuleIdentifiers = v37;
 
-    *a3 = 1;
+    *migration = 1;
   }
 
   v39 = *MEMORY[0x277D85DE8];
@@ -762,9 +762,9 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
   v8 = self->_orderedUserEnabledFixedModuleIdentifiers;
   if (!v8)
   {
-    v9 = [objc_opt_class() _defaultUserEnabledFixedModuleIdentifiers];
+    _defaultUserEnabledFixedModuleIdentifiers = [objc_opt_class() _defaultUserEnabledFixedModuleIdentifiers];
     v10 = self->_orderedUserEnabledFixedModuleIdentifiers;
-    self->_orderedUserEnabledFixedModuleIdentifiers = v9;
+    self->_orderedUserEnabledFixedModuleIdentifiers = _defaultUserEnabledFixedModuleIdentifiers;
   }
 
   v11 = [v3 objectForKey:@"module-identifiers"];
@@ -773,9 +773,9 @@ void *__54__CCSModuleSettingsProvider__readSettingsWithVersion___block_invoke_3(
 
   if (!self->_orderedUserEnabledModuleIdentifiers)
   {
-    v13 = [objc_opt_class() _defaultUserEnabledModuleIdentifiers];
+    _defaultUserEnabledModuleIdentifiers = [objc_opt_class() _defaultUserEnabledModuleIdentifiers];
     v14 = self->_orderedUserEnabledModuleIdentifiers;
-    self->_orderedUserEnabledModuleIdentifiers = v13;
+    self->_orderedUserEnabledModuleIdentifiers = _defaultUserEnabledModuleIdentifiers;
 
 LABEL_9:
     [(CCSModuleSettingsProvider *)self _queue_saveSettings];
@@ -803,8 +803,8 @@ LABEL_10:
 - (void)_queue_startMonitoringConfigurationUpdates
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [objc_opt_class() _configurationFileURL];
-  v4 = open([v3 fileSystemRepresentation], 0x8000);
+  _configurationFileURL = [objc_opt_class() _configurationFileURL];
+  v4 = open([_configurationFileURL fileSystemRepresentation], 0x8000);
   v5 = dispatch_source_create(MEMORY[0x277D85D48], v4, 1uLL, self->_queue);
   configurationChangedSource = self->_configurationChangedSource;
   self->_configurationChangedSource = v5;
@@ -867,48 +867,48 @@ void __71__CCSModuleSettingsProvider__queue_startMonitoringConfigurationUpdates_
   [(CCSModuleSettingsProvider *)self _queue_runBlockOnListeners:v2];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__CCSModuleSettingsProvider_addObserver___block_invoke;
   v7[3] = &unk_278E0F680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__CCSModuleSettingsProvider_removeObserver___block_invoke;
   v7[3] = &unk_278E0F680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_queue_runBlockOnListeners:(id)a3
+- (void)_queue_runBlockOnListeners:(id)listeners
 {
-  v4 = a3;
+  listenersCopy = listeners;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   callOutQueue = self->_callOutQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__CCSModuleSettingsProvider__queue_runBlockOnListeners___block_invoke;
   v9[3] = &unk_278E0F3B8;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = allObjects;
+  v11 = listenersCopy;
+  v7 = listenersCopy;
+  v8 = allObjects;
   dispatch_sync(callOutQueue, v9);
 }
 
@@ -918,7 +918,7 @@ void __71__CCSModuleSettingsProvider__queue_startMonitoringConfigurationUpdates_
   block[1] = 3221225472;
   block[2] = __55__CCSModuleSettingsProvider__defaultEnabledModuleOrder__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_defaultEnabledModuleOrder_onceToken != -1)
   {
     dispatch_once(&_defaultEnabledModuleOrder_onceToken, block);
@@ -1033,32 +1033,32 @@ void __55__CCSModuleSettingsProvider__defaultEnabledModuleOrder__block_invoke(ui
 
 + (id)_configurationFileURL
 {
-  v2 = [objc_opt_class() _configurationDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"ModuleConfiguration.plist"];
+  _configurationDirectoryURL = [objc_opt_class() _configurationDirectoryURL];
+  v3 = [_configurationDirectoryURL URLByAppendingPathComponent:@"ModuleConfiguration.plist"];
 
   return v3;
 }
 
 + (id)_defaultFixedModuleIdentifiers
 {
-  v2 = [objc_opt_class() _defaultEnabledModuleOrder];
-  v3 = [v2 objectForKey:@"fixed"];
+  _defaultEnabledModuleOrder = [objc_opt_class() _defaultEnabledModuleOrder];
+  v3 = [_defaultEnabledModuleOrder objectForKey:@"fixed"];
 
   return v3;
 }
 
 + (id)_defaultUserEnabledFixedModuleIdentifiers
 {
-  v2 = [objc_opt_class() _defaultEnabledModuleOrder];
-  v3 = [v2 objectForKey:@"user-enabled-fixed"];
+  _defaultEnabledModuleOrder = [objc_opt_class() _defaultEnabledModuleOrder];
+  v3 = [_defaultEnabledModuleOrder objectForKey:@"user-enabled-fixed"];
 
   return v3;
 }
 
 + (id)_defaultUserEnabledModuleIdentifiers
 {
-  v2 = [objc_opt_class() _defaultEnabledModuleOrder];
-  v3 = [v2 objectForKey:@"user-enabled"];
+  _defaultEnabledModuleOrder = [objc_opt_class() _defaultEnabledModuleOrder];
+  v3 = [_defaultEnabledModuleOrder objectForKey:@"user-enabled"];
 
   return v3;
 }

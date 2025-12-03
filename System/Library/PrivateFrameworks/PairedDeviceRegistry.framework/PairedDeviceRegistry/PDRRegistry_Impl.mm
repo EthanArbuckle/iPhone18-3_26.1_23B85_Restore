@@ -2,30 +2,30 @@
 + (BOOL)supportsWatch;
 + (id)sharedInstance;
 - (BOOL)isPaired;
-- (BOOL)removeDelegate:(id)a3;
+- (BOOL)removeDelegate:(id)delegate;
 - (OS_dispatch_queue)callbackQueue;
 - (PDRDeviceCollectionFilter)devices;
-- (id)failsafeUnpairWithOptions:(id)a3;
+- (id)failsafeUnpairWithOptions:(id)options;
 - (id)getActiveDevice;
 - (id)getActivePairedDeviceExcludingAltAccount;
 - (id)getActivePairedDeviceIncludingAltAccount;
-- (id)getDevicesExcluding:(unint64_t)a3;
+- (id)getDevicesExcluding:(unint64_t)excluding;
 - (id)pairingID;
 - (id)pairingStorePath;
-- (id)unpairWithDevice:(id)a3 withOptions:(id)a4;
+- (id)unpairWithDevice:(id)device withOptions:(id)options;
 - (int64_t)compatibilityState;
 - (int64_t)lastSyncSwitchIndex;
-- (int64_t)migrationCountForPairingID:(id)a3;
+- (int64_t)migrationCountForPairingID:(id)d;
 - (int64_t)switchIndex;
-- (void)addDelegate:(id)a3;
-- (void)completeRTCPairingMetricForMetricID:(id)a3 withSuccess:(id)a4;
-- (void)getSwitchEventsAfterIndex:(unsigned int)a3 process:(id)a4;
-- (void)pairingClientSetAltAccountName:(id)a3 altDSID:(id)a4 forDevice:(id)a5 completion:(id)a6;
-- (void)setActivePairedDevice:(id)a3 resultsCallback:(id)a4;
-- (void)setCallbackQueue:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)completeRTCPairingMetricForMetricID:(id)d withSuccess:(id)success;
+- (void)getSwitchEventsAfterIndex:(unsigned int)index process:(id)process;
+- (void)pairingClientSetAltAccountName:(id)name altDSID:(id)d forDevice:(id)device completion:(id)completion;
+- (void)setActivePairedDevice:(id)device resultsCallback:(id)callback;
+- (void)setCallbackQueue:(id)queue;
 - (void)start;
 - (void)stop;
-- (void)waitForPairingExtendedMetadataForAdvertisedName:(id)a3 completion:(id)a4;
+- (void)waitForPairingExtendedMetadataForAdvertisedName:(id)name completion:(id)completion;
 @end
 
 @implementation PDRRegistry_Impl
@@ -37,12 +37,12 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20]();
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
-  v9 = [(PDRRegistry_Impl *)v8 getActiveDevice];
-  if (v9)
+  selfCopy = self;
+  getActiveDevice = [(PDRRegistry_Impl *)selfCopy getActiveDevice];
+  if (getActiveDevice)
   {
-    v10 = v9;
-    v11 = [v9 pairingID];
+    v10 = getActiveDevice;
+    pairingID = [getActiveDevice pairingID];
 
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v12.super.isa = UUID._bridgeToObjectiveC()().super.isa;
@@ -60,15 +60,15 @@
 
 - (id)getActiveDevice
 {
-  v2 = self;
+  selfCopy = self;
   active = Registry_Impl.getActivePairedDeviceIncludingAltAccount()(6);
 
   return active;
 }
 
-- (id)getDevicesExcluding:(unint64_t)a3
+- (id)getDevicesExcluding:(unint64_t)excluding
 {
-  specialized Registry_Impl.getDevicesExcluding(_:)(a3);
+  specialized Registry_Impl.getDevicesExcluding(_:)(excluding);
   type metadata accessor for PDRDevice();
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
 
@@ -77,9 +77,9 @@
 
 - (id)pairingStorePath
 {
-  v2 = self;
-  v3 = [(PDRRegistry_Impl *)v2 getActiveDevice];
-  if (v3 && (v4 = v3, v5 = [v3 pairingStorePath], v4, v5))
+  selfCopy = self;
+  getActiveDevice = [(PDRRegistry_Impl *)selfCopy getActiveDevice];
+  if (getActiveDevice && (v4 = getActiveDevice, v5 = [getActiveDevice pairingStorePath], v4, v5))
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -122,11 +122,11 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   Registry_Impl.start()();
 }
 
-- (void)setCallbackQueue:(id)a3
+- (void)setCallbackQueue:(id)queue
 {
   if (*(&self->super.super.isa + OBJC_IVAR___PDRRegistry_Impl_amSingleton) == 1)
   {
@@ -138,15 +138,15 @@
   {
     v4.receiver = self;
     v4.super_class = type metadata accessor for Registry_Impl();
-    [(PDRRegistry *)&v4 setCallbackQueue:a3];
+    [(PDRRegistry *)&v4 setCallbackQueue:queue];
   }
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR___PDRRegistry_Impl_delegates);
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
 
   specialized WeakCollection.append(_:)();
 
@@ -157,14 +157,14 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for Registry_Impl();
-  v2 = [(PDRRegistry *)&v4 callbackQueue];
+  callbackQueue = [(PDRRegistry *)&v4 callbackQueue];
 
-  return v2;
+  return callbackQueue;
 }
 
 - (int64_t)compatibilityState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = Registry_Impl.computeCompatibilityState()();
 
   return v3;
@@ -172,14 +172,14 @@
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   Registry_Impl.stop()();
 }
 
 - (PDRDeviceCollectionFilter)devices
 {
-  v2 = self;
-  v3 = [(PDRRegistry_Impl *)v2 getDevicesExcluding:0];
+  selfCopy = self;
+  v3 = [(PDRRegistry_Impl *)selfCopy getDevicesExcluding:0];
   type metadata accessor for PDRDevice();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -200,7 +200,7 @@
 
 - (id)getActivePairedDeviceIncludingAltAccount
 {
-  v2 = self;
+  selfCopy = self;
   active = Registry_Impl.getActivePairedDeviceIncludingAltAccount()(7);
 
   return active;
@@ -208,7 +208,7 @@
 
 - (id)getActivePairedDeviceExcludingAltAccount
 {
-  v2 = self;
+  selfCopy = self;
   active = Registry_Impl.getActivePairedDeviceIncludingAltAccount()(39);
 
   return active;
@@ -216,8 +216,8 @@
 
 - (BOOL)isPaired
 {
-  v2 = self;
-  v3 = [(PDRRegistry_Impl *)v2 getDevicesExcluding:1];
+  selfCopy = self;
+  v3 = [(PDRRegistry_Impl *)selfCopy getDevicesExcluding:1];
   type metadata accessor for PDRDevice();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -244,11 +244,11 @@
   return v5 != 0;
 }
 
-- (BOOL)removeDelegate:(id)a3
+- (BOOL)removeDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = Registry_Impl.remove(delegate:)(a3);
+  selfCopy = self;
+  v6 = Registry_Impl.remove(delegate:)(delegate);
   swift_unknownObjectRelease();
 
   return v6 & 1;
@@ -256,8 +256,8 @@
 
 - (int64_t)switchIndex
 {
-  v2 = self;
-  if ([(PDRRegistry_Impl *)v2 isPaired])
+  selfCopy = self;
+  if ([(PDRRegistry_Impl *)selfCopy isPaired])
   {
     if (one-time initialization token for instance != -1)
     {
@@ -275,17 +275,17 @@
   return v3;
 }
 
-- (void)getSwitchEventsAfterIndex:(unsigned int)a3 process:(id)a4
+- (void)getSwitchEventsAfterIndex:(unsigned int)index process:(id)process
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(process);
   _Block_copy(v6);
-  v7 = self;
-  specialized Registry_Impl.getSwitchEvents(after:process:)(a3, v7, v6);
+  selfCopy = self;
+  specialized Registry_Impl.getSwitchEvents(after:process:)(index, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (id)unpairWithDevice:(id)a3 withOptions:(id)a4
+- (id)unpairWithDevice:(id)device withOptions:(id)options
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -294,13 +294,13 @@
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = one-time initialization token for instance;
-  v11 = a3;
+  deviceCopy = device;
   if (v10 != -1)
   {
     swift_once();
   }
 
-  v12 = [v11 pairingID];
+  pairingID = [deviceCopy pairingID];
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
 
   v13 = RegistryCrux.unpair(pairingID:options:)();
@@ -319,7 +319,7 @@
   return v14;
 }
 
-- (id)failsafeUnpairWithOptions:(id)a3
+- (id)failsafeUnpairWithOptions:(id)options
 {
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   if (one-time initialization token for instance != -1)
@@ -342,13 +342,13 @@
   return v4;
 }
 
-- (void)setActivePairedDevice:(id)a3 resultsCallback:(id)a4
+- (void)setActivePairedDevice:(id)device resultsCallback:(id)callback
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(callback);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  specialized Registry_Impl.setActive(device:results:)(v7, v6);
+  deviceCopy = device;
+  selfCopy = self;
+  specialized Registry_Impl.setActive(device:results:)(deviceCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
@@ -365,7 +365,7 @@
   return v2;
 }
 
-- (int64_t)migrationCountForPairingID:(id)a3
+- (int64_t)migrationCountForPairingID:(id)d
 {
   v3 = type metadata accessor for UUID();
   v4 = *(v3 - 8);
@@ -384,21 +384,21 @@
   return v8;
 }
 
-- (void)waitForPairingExtendedMetadataForAdvertisedName:(id)a3 completion:(id)a4
+- (void)waitForPairingExtendedMetadataForAdvertisedName:(id)name completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
+  selfCopy = self;
   specialized Registry_Impl.waitForPairingExtendedMetadata(advertisedName:results:)(v6, v8, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)completeRTCPairingMetricForMetricID:(id)a3 withSuccess:(id)a4
+- (void)completeRTCPairingMetricForMetricID:(id)d withSuccess:(id)success
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(success);
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   if (one-time initialization token for instance != -1)
@@ -424,21 +424,21 @@
   _Block_release(v4);
 }
 
-- (void)pairingClientSetAltAccountName:(id)a3 altDSID:(id)a4 forDevice:(id)a5 completion:(id)a6
+- (void)pairingClientSetAltAccountName:(id)name altDSID:(id)d forDevice:(id)device completion:(id)completion
 {
-  v7 = _Block_copy(a6);
+  v7 = _Block_copy(completion);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   v14 = one-time initialization token for instance;
-  v15 = a5;
+  deviceCopy = device;
   if (v14 != -1)
   {
     swift_once();
   }
 
-  v16 = RegistryCrux.pairingClientSetAltAccount(name:altDSID:device:)(v8, v10, v11, v13, v15);
+  v16 = RegistryCrux.pairingClientSetAltAccount(name:altDSID:device:)(v8, v10, v11, v13, deviceCopy);
 
   if (v16)
   {

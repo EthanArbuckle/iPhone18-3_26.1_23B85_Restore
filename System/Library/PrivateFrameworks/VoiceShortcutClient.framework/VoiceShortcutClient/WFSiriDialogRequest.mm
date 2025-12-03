@@ -1,30 +1,30 @@
 @interface WFSiriDialogRequest
-- (WFSiriDialogRequest)initWithCoder:(id)a3;
-- (WFSiriDialogRequest)initWithDialogRequest:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFSiriDialogRequest)initWithCoder:(id)coder;
+- (WFSiriDialogRequest)initWithDialogRequest:(id)request;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFSiriDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFSiriDialogRequest;
-  v4 = a3;
-  [(WFSiriActionRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFSiriActionRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFSiriDialogRequest *)self dialogRequest:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"dialogRequest"];
+  [coderCopy encodeObject:v5 forKey:@"dialogRequest"];
 }
 
-- (WFSiriDialogRequest)initWithCoder:(id)a3
+- (WFSiriDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFSiriDialogRequest;
-  v5 = [(WFSiriActionRequest *)&v10 initWithCoder:v4];
+  v5 = [(WFSiriActionRequest *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dialogRequest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dialogRequest"];
     dialogRequest = v5->_dialogRequest;
     v5->_dialogRequest = v6;
 
@@ -34,16 +34,16 @@
   return v5;
 }
 
-- (WFSiriDialogRequest)initWithDialogRequest:(id)a3
+- (WFSiriDialogRequest)initWithDialogRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = WFSiriDialogRequest;
   v6 = [(WFSiriActionRequest *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dialogRequest, a3);
+    objc_storeStrong(&v6->_dialogRequest, request);
     v8 = v7;
   }
 

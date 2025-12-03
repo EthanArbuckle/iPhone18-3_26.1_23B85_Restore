@@ -1,11 +1,11 @@
 @interface SSRecommendedCarrierAppCell
 + (id)sharedLockupViewGroup;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (SSRecommendedCarrierAppCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (SSRecommendedCarrierAppCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_dummyArtwork;
 - (id)_dummyLockup;
 - (void)prepareForReuse;
-- (void)setLockupRequest:(id)a3 withDelegate:(id)a4;
+- (void)setLockupRequest:(id)request withDelegate:(id)delegate;
 @end
 
 @implementation SSRecommendedCarrierAppCell
@@ -29,46 +29,46 @@ uint64_t __52__SSRecommendedCarrierAppCell_sharedLockupViewGroup__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (SSRecommendedCarrierAppCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SSRecommendedCarrierAppCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v18.receiver = self;
   v18.super_class = SSRecommendedCarrierAppCell;
-  v4 = [(SSRecommendedCarrierAppCell *)&v18 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SSRecommendedCarrierAppCell *)&v18 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(SSRecommendedCarrierAppCell *)v4 setBackgroundView:0];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(SSRecommendedCarrierAppCell *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SSRecommendedCarrierAppCell *)v5 setBackgroundColor:clearColor];
 
     v7 = objc_alloc(MEMORY[0x277CEC298]);
-    v8 = [(SSRecommendedCarrierAppCell *)v5 contentView];
-    [v8 bounds];
+    contentView = [(SSRecommendedCarrierAppCell *)v5 contentView];
+    [contentView bounds];
     v9 = [v7 initWithFrame:?];
 
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [objc_opt_class() sharedLockupViewGroup];
-    [v9 setGroup:v10];
+    sharedLockupViewGroup = [objc_opt_class() sharedLockupViewGroup];
+    [v9 setGroup:sharedLockupViewGroup];
 
-    v11 = [(SSRecommendedCarrierAppCell *)v5 contentView];
-    [v11 addSubview:v9];
+    contentView2 = [(SSRecommendedCarrierAppCell *)v5 contentView];
+    [contentView2 addSubview:v9];
 
     [(SSRecommendedCarrierAppCell *)v5 setLockupView:v9];
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [(SSRecommendedCarrierAppCell *)v5 contentView];
+    contentView3 = [(SSRecommendedCarrierAppCell *)v5 contentView];
     LODWORD(v14) = 1148846080;
-    v15 = [v9 _maps_constraintsEqualToEdgesOfView:v13 insets:10.0 priority:{16.0, 10.0, 16.0, v14}];
-    v16 = [v15 allConstraints];
-    [v12 activateConstraints:v16];
+    v15 = [v9 _maps_constraintsEqualToEdgesOfView:contentView3 insets:10.0 priority:{16.0, 10.0, 16.0, v14}];
+    allConstraints = [v15 allConstraints];
+    [v12 activateConstraints:allConstraints];
   }
 
   return v5;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
-  v6 = [(SSRecommendedCarrierAppCell *)self lockupView:a3.width];
+  width = size.width;
+  v6 = [(SSRecommendedCarrierAppCell *)self lockupView:size.width];
   [v6 sizeThatFits:{width, 1.79769313e308}];
   v8 = v7;
 
@@ -85,8 +85,8 @@ uint64_t __52__SSRecommendedCarrierAppCell_sharedLockupViewGroup__block_invoke()
   self->_request = 0;
 
   [(ASCLockupView *)self->_lockupView setRequest:0];
-  v4 = [(SSRecommendedCarrierAppCell *)self _dummyLockup];
-  [(ASCLockupView *)self->_lockupView setLockup:v4];
+  _dummyLockup = [(SSRecommendedCarrierAppCell *)self _dummyLockup];
+  [(ASCLockupView *)self->_lockupView setLockup:_dummyLockup];
 
   [(ASCLockupView *)self->_lockupView setAutomaticallyPresentsProductDetails:0];
   v5.receiver = self;
@@ -94,19 +94,19 @@ uint64_t __52__SSRecommendedCarrierAppCell_sharedLockupViewGroup__block_invoke()
   [(SSRecommendedCarrierAppCell *)&v5 prepareForReuse];
 }
 
-- (void)setLockupRequest:(id)a3 withDelegate:(id)a4
+- (void)setLockupRequest:(id)request withDelegate:(id)delegate
 {
-  v7 = a3;
-  if (v7)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v9 = v7;
-    objc_storeStrong(&self->_request, a3);
-    v8 = a4;
+    v9 = requestCopy;
+    objc_storeStrong(&self->_request, request);
+    delegateCopy = delegate;
     [(ASCLockupView *)self->_lockupView setRequest:self->_request];
     [(ASCLockupView *)self->_lockupView setAutomaticallyPresentsProductDetails:1];
-    [(ASCLockupView *)self->_lockupView setDelegate:v8];
+    [(ASCLockupView *)self->_lockupView setDelegate:delegateCopy];
 
-    v7 = v9;
+    requestCopy = v9;
   }
 }
 
@@ -115,8 +115,8 @@ uint64_t __52__SSRecommendedCarrierAppCell_sharedLockupViewGroup__block_invoke()
   v3 = objc_alloc(MEMORY[0x277CEC280]);
   v4 = [objc_alloc(MEMORY[0x277CEC258]) initWithInt64:0];
   v5 = *MEMORY[0x277CEC230];
-  v6 = [(SSRecommendedCarrierAppCell *)self _dummyArtwork];
-  v7 = [v3 initWithID:v4 kind:v5 metrics:0 icon:v6 heading:0 title:0 subtitle:0 ageRating:0 offer:0];
+  _dummyArtwork = [(SSRecommendedCarrierAppCell *)self _dummyArtwork];
+  v7 = [v3 initWithID:v4 kind:v5 metrics:0 icon:_dummyArtwork heading:0 title:0 subtitle:0 ageRating:0 offer:0];
 
   return v7;
 }

@@ -1,22 +1,22 @@
 @interface JSDrivenViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)accessibilityUpdateForHeaderItemChange;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation JSDrivenViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.JSDrivenViewController" hasInstanceMethod:@"accessibilityContextBarButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.JSDrivenViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MusicApplication.JSDrivenViewController" hasInstanceMethod:@"accessibilityUpdateForHeaderItemChange" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MusicApplication.JSDrivenViewController" hasInstanceMethod:@"traitCollectionDidChange:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MusicApplication.JSDrivenViewController" hasInstanceMethod:@"preferredContentSizeDidChangeForChildContentContainer:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.JSDrivenViewController" hasInstanceMethod:@"accessibilityContextBarButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.JSDrivenViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MusicApplication.JSDrivenViewController" hasInstanceMethod:@"accessibilityUpdateForHeaderItemChange" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MusicApplication.JSDrivenViewController" hasInstanceMethod:@"traitCollectionDidChange:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.JSDrivenViewController" hasInstanceMethod:@"preferredContentSizeDidChangeForChildContentContainer:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -45,19 +45,19 @@
   [(JSDrivenViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = JSDrivenViewControllerAccessibility;
-  [(JSDrivenViewControllerAccessibility *)&v4 traitCollectionDidChange:a3];
+  [(JSDrivenViewControllerAccessibility *)&v4 traitCollectionDidChange:change];
   [(JSDrivenViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v4.receiver = self;
   v4.super_class = JSDrivenViewControllerAccessibility;
-  [(JSDrivenViewControllerAccessibility *)&v4 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(JSDrivenViewControllerAccessibility *)&v4 preferredContentSizeDidChangeForChildContentContainer:container];
   [(JSDrivenViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

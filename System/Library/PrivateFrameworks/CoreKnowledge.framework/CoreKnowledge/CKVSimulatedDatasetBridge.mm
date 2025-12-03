@@ -1,15 +1,15 @@
 @interface CKVSimulatedDatasetBridge
-- (BOOL)_processDataset:(id)a3;
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)_processDataset:(id)dataset;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
 - (CKVSimulatedDatasetBridge)init;
-- (CKVSimulatedDatasetBridge)initWithDataset:(id)a3;
+- (CKVSimulatedDatasetBridge)initWithDataset:(id)dataset;
 @end
 
 @implementation CKVSimulatedDatasetBridge
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -19,7 +19,7 @@
   v9[1] = 3221225472;
   v9[2] = __64__CKVSimulatedDatasetBridge_enumerateItemsWithError_usingBlock___block_invoke;
   v9[3] = &unk_1E831E1B8;
-  v7 = v5;
+  v7 = blockCopy;
   v10 = v7;
   v11 = &v12;
   [(NSArray *)items enumerateObjectsUsingBlock:v9];
@@ -41,11 +41,11 @@ uint64_t __64__CKVSimulatedDatasetBridge_enumerateItemsWithError_usingBlock___bl
   return result;
 }
 
-- (BOOL)_processDataset:(id)a3
+- (BOOL)_processDataset:(id)dataset
 {
   v32 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  datasetCopy = dataset;
   v6 = [[v4 alloc] initWithCapacity:{-[KVDatasetInfo itemCount](self->_datasetInfo, "itemCount")}];
   v25 = 0;
   v23[0] = MEMORY[0x1E69E9820];
@@ -54,7 +54,7 @@ uint64_t __64__CKVSimulatedDatasetBridge_enumerateItemsWithError_usingBlock___bl
   v23[3] = &unk_1E831E190;
   v7 = v6;
   v24 = v7;
-  [v5 enumerateItemsWithError:&v25 usingBlock:v23];
+  [datasetCopy enumerateItemsWithError:&v25 usingBlock:v23];
 
   v8 = v25;
   if (!v8)
@@ -77,15 +77,15 @@ uint64_t __64__CKVSimulatedDatasetBridge_enumerateItemsWithError_usingBlock___bl
       goto LABEL_4;
     }
 
-    v12 = [(NSArray *)self->_items firstObject];
+    firstObject = [(NSArray *)self->_items firstObject];
     v22 = 0;
-    v13 = [v12 toCascadeItem:&v22];
+    v13 = [firstObject toCascadeItem:&v22];
     v9 = v22;
 
     v11 = v13 != 0;
     if (v13)
     {
-      v14 = [v13 content];
+      content = [v13 content];
       self->_cascadeItemType = [objc_opt_class() itemType];
     }
 
@@ -98,15 +98,15 @@ uint64_t __64__CKVSimulatedDatasetBridge_enumerateItemsWithError_usingBlock___bl
       }
 
       items = self->_items;
-      v14 = v16;
-      v21 = [(NSArray *)items firstObject];
+      content = v16;
+      firstObject2 = [(NSArray *)items firstObject];
       *buf = 136315650;
       v27 = "[CKVSimulatedDatasetBridge _processDataset:]";
       v28 = 2112;
-      v29 = v21;
+      v29 = firstObject2;
       v30 = 2112;
       v31 = v9;
-      _os_log_error_impl(&dword_1C8683000, v14, OS_LOG_TYPE_ERROR, "%s Failed to convert first item: %@ error: %@", buf, 0x20u);
+      _os_log_error_impl(&dword_1C8683000, content, OS_LOG_TYPE_ERROR, "%s Failed to convert first item: %@ error: %@", buf, 0x20u);
     }
 
 LABEL_13:
@@ -140,13 +140,13 @@ LABEL_14:
   objc_exception_throw(v2);
 }
 
-- (CKVSimulatedDatasetBridge)initWithDataset:(id)a3
+- (CKVSimulatedDatasetBridge)initWithDataset:(id)dataset
 {
-  v4 = a3;
+  datasetCopy = dataset;
   v10.receiver = self;
   v10.super_class = CKVSimulatedDatasetBridge;
   v5 = [(CKVSimulatedDatasetBridge *)&v10 init];
-  if (v5 && ([v4 datasetInfo], v6 = objc_claimAutoreleasedReturnValue(), datasetInfo = v5->_datasetInfo, v5->_datasetInfo = v6, datasetInfo, !-[CKVSimulatedDatasetBridge _processDataset:](v5, "_processDataset:", v4)))
+  if (v5 && ([datasetCopy datasetInfo], v6 = objc_claimAutoreleasedReturnValue(), datasetInfo = v5->_datasetInfo, v5->_datasetInfo = v6, datasetInfo, !-[CKVSimulatedDatasetBridge _processDataset:](v5, "_processDataset:", datasetCopy)))
   {
     v8 = 0;
   }

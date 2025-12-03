@@ -1,22 +1,22 @@
 @interface _UISceneLayerTargetWithContext
-- (BOOL)isEqual:(id)a3;
-- (_UISceneLayerTargetWithContext)initWithContext:(id)a3 equalityType:(unint64_t)a4 matchingBlock:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UISceneLayerTargetWithContext)initWithContext:(id)context equalityType:(unint64_t)type matchingBlock:(id)block;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
 
 @implementation _UISceneLayerTargetWithContext
 
-- (_UISceneLayerTargetWithContext)initWithContext:(id)a3 equalityType:(unint64_t)a4 matchingBlock:(id)a5
+- (_UISceneLayerTargetWithContext)initWithContext:(id)context equalityType:(unint64_t)type matchingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  contextCopy = context;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (contextCopy)
   {
-    if (v11)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -24,8 +24,8 @@
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UISceneLayerTargetWithContext.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneLayerTargetWithContext.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
     if (v12)
     {
@@ -33,8 +33,8 @@
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"_UISceneLayerTargetWithContext.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UISceneLayerTargetWithContext.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
 LABEL_3:
   v20.receiver = self;
@@ -43,8 +43,8 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_context, a3);
-    v14->_equalityType = a4;
+    objc_storeStrong(&v13->_context, context);
+    v14->_equalityType = type;
     v15 = _Block_copy(v12);
     block = v14->_block;
     v14->_block = v15;
@@ -68,10 +68,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -82,7 +82,7 @@ LABEL_3:
     if (objc_opt_isKindOfClass())
     {
       context = self->_context;
-      v6 = v4->_context;
+      v6 = equalCopy->_context;
       if (self->_equalityType == 1)
       {
         v7 = [context isEqual:v6];
@@ -105,30 +105,30 @@ LABEL_3:
 
 - (id)succinctDescription
 {
-  v2 = [(_UISceneLayerTargetWithContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UISceneLayerTargetWithContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UISceneLayerTargetWithContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UISceneLayerTargetWithContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_UISceneLayerTargetWithContext *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(_UISceneLayerTargetWithContext *)self succinctDescriptionBuilder];
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 stringWithFormat:@"<%@:%p>", v7, self->_context];
-  v9 = [v4 appendObject:v8 withName:@"context"];
+  v9 = [succinctDescriptionBuilder appendObject:v8 withName:@"context"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

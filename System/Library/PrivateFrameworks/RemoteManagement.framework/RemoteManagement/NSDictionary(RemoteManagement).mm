@@ -8,7 +8,7 @@
 {
   v6 = a3;
   v13 = 0;
-  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:a1 format:100 options:0 error:&v13];
+  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:self format:100 options:0 error:&v13];
   v8 = v13;
   if (v7)
   {

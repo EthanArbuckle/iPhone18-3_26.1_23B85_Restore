@@ -1,19 +1,19 @@
 @interface HKClinicalGatewayEndpointSchemaParameter
-+ (id)parameterFromDefinition:(id)a3 error:(id *)a4;
-+ (id)parametersFromDefinitions:(id)a3 error:(id *)a4;
++ (id)parameterFromDefinition:(id)definition error:(id *)error;
++ (id)parametersFromDefinitions:(id)definitions error:(id *)error;
 @end
 
 @implementation HKClinicalGatewayEndpointSchemaParameter
 
-+ (id)parametersFromDefinitions:(id)a3 error:(id *)a4
++ (id)parametersFromDefinitions:(id)definitions error:(id *)error
 {
-  v5 = a3;
+  definitionsCopy = definitions;
   objc_opt_class();
   v6 = HKSafeObject();
 
   if (v6)
   {
-    v7 = [v6 hk_map:&stru_108248 error:a4];
+    v7 = [v6 hk_map:&stru_108248 error:error];
   }
 
   else
@@ -24,9 +24,9 @@
   return v7;
 }
 
-+ (id)parameterFromDefinition:(id)a3 error:(id *)a4
++ (id)parameterFromDefinition:(id)definition error:(id *)error
 {
-  v5 = a3;
+  definitionCopy = definition;
   objc_opt_class();
   v6 = HKSafeObject();
 
@@ -58,7 +58,7 @@
           v11 = v18;
           if (v17 || !v18)
           {
-            v20 = [v17 hk_map:&stru_108268 error:a4];
+            v20 = [v17 hk_map:&stru_108268 error:error];
             if (v20 || ![v17 count])
             {
               v13 = [[HKClinicalGatewayEndpointSchemaParameter alloc] initWithParam:v8 literal:v9 variable:v14 mode:v20];
@@ -70,11 +70,11 @@
             }
           }
 
-          else if (a4)
+          else if (error)
           {
             v19 = v18;
             v13 = 0;
-            *a4 = v11;
+            *error = v11;
           }
 
           else
@@ -84,11 +84,11 @@
           }
         }
 
-        else if (a4)
+        else if (error)
         {
           v16 = v15;
           v13 = 0;
-          *a4 = v11;
+          *error = v11;
         }
 
         else
@@ -98,11 +98,11 @@
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         v12 = v10;
         v13 = 0;
-        *a4 = v11;
+        *error = v11;
       }
 
       else

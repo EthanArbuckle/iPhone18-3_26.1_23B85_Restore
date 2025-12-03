@@ -1,8 +1,8 @@
 @interface VNImageSourceManager
-- (CGImageSource)_cgImageSourceAtAddress:(CGImageSource *)a3 forSubSampleFactor:(unsigned int)a4 protectedWithUnfairLock:(os_unfair_lock_s *)a5 operatingInLowPriority:(BOOL)a6 error:(id *)a7;
-- (VNImageSourceManager)initWithImageData:(id)a3;
-- (VNImageSourceManager)initWithImageURL:(id)a3;
-- (id)ciImageWithSubSampleFactor:(int)a3 useLowPriority:(void *)a4 error:;
+- (CGImageSource)_cgImageSourceAtAddress:(CGImageSource *)address forSubSampleFactor:(unsigned int)factor protectedWithUnfairLock:(os_unfair_lock_s *)lock operatingInLowPriority:(BOOL)priority error:(id *)error;
+- (VNImageSourceManager)initWithImageData:(id)data;
+- (VNImageSourceManager)initWithImageURL:(id)l;
+- (id)ciImageWithSubSampleFactor:(int)factor useLowPriority:(void *)priority error:;
 - (unsigned)exifOrientation;
 - (void)dealloc;
 @end
@@ -23,10 +23,10 @@
       v6 = v5;
       if (v5)
       {
-        v7 = [v5 intValue];
-        if (v7 - 1 <= 7)
+        intValue = [v5 intValue];
+        if (intValue - 1 <= 7)
         {
-          self->_orientation = v7;
+          self->_orientation = intValue;
         }
       }
     }
@@ -36,14 +36,14 @@
   return self->_orientation;
 }
 
-- (CGImageSource)_cgImageSourceAtAddress:(CGImageSource *)a3 forSubSampleFactor:(unsigned int)a4 protectedWithUnfairLock:(os_unfair_lock_s *)a5 operatingInLowPriority:(BOOL)a6 error:(id *)a7
+- (CGImageSource)_cgImageSourceAtAddress:(CGImageSource *)address forSubSampleFactor:(unsigned int)factor protectedWithUnfairLock:(os_unfair_lock_s *)lock operatingInLowPriority:(BOOL)priority error:(id *)error
 {
-  v8 = a6;
-  v10 = *&a4;
-  [VNError VNAssert:a3 != 0 log:@"Internal error: image source cannot be NULL"];
-  os_unfair_lock_lock(a5);
-  v13 = *a3;
-  if (!*a3)
+  priorityCopy = priority;
+  v10 = *&factor;
+  [VNError VNAssert:address != 0 log:@"Internal error: image source cannot be NULL"];
+  os_unfair_lock_lock(lock);
+  v13 = *address;
+  if (!*address)
   {
     v14 = objc_alloc(MEMORY[0x1E695DF90]);
     v15 = [MEMORY[0x1E696AD98] numberWithBool:v10 < 2];
@@ -52,7 +52,7 @@
 
     if (v10 >= 2)
     {
-      v18 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+      v18 = [MEMORY[0x1E696AD98] numberWithBool:priorityCopy];
       [v17 setObject:v18 forKeyedSubscript:*MEMORY[0x1E695F990]];
     }
 
@@ -67,13 +67,13 @@
       imageData = self->_imageData;
       if (!imageData)
       {
-        v13 = *a3;
-        if (a7)
+        v13 = *address;
+        if (error)
         {
 LABEL_9:
           if (!v13)
           {
-            *a7 = [VNError errorForInternalErrorWithLocalizedDescription:@"Internal error: cannot create image source"];
+            *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Internal error: cannot create image source"];
           }
         }
 
@@ -86,8 +86,8 @@ LABEL_11:
     }
 
     v13 = v20;
-    *a3 = v20;
-    if (a7)
+    *address = v20;
+    if (error)
     {
       goto LABEL_9;
     }
@@ -96,7 +96,7 @@ LABEL_11:
   }
 
 LABEL_12:
-  os_unfair_lock_unlock(a5);
+  os_unfair_lock_unlock(lock);
   return v13;
 }
 
@@ -135,10 +135,10 @@ LABEL_12:
   [(VNImageSourceManager *)&v7 dealloc];
 }
 
-- (VNImageSourceManager)initWithImageData:(id)a3
+- (VNImageSourceManager)initWithImageData:(id)data
 {
-  v5 = a3;
-  if (v5 && (v11.receiver = self, v11.super_class = VNImageSourceManager, v6 = [(VNImageSourceManager *)&v11 init], (self = v6) != 0))
+  dataCopy = data;
+  if (dataCopy && (v11.receiver = self, v11.super_class = VNImageSourceManager, v6 = [(VNImageSourceManager *)&v11 init], (self = v6) != 0))
   {
     *&v6->_getOrientationLock._os_unfair_lock_opaque = 0;
     *&v6->_loadSubSample2Lock._os_unfair_lock_opaque = 0;
@@ -152,23 +152,23 @@ LABEL_12:
     self->_imageData = 0;
 
     self->_orientation = 0;
-    objc_storeStrong(&self->_imageData, a3);
+    objc_storeStrong(&self->_imageData, data);
     self = self;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (VNImageSourceManager)initWithImageURL:(id)a3
+- (VNImageSourceManager)initWithImageURL:(id)l
 {
-  v5 = a3;
-  if (v5 && (v11.receiver = self, v11.super_class = VNImageSourceManager, v6 = [(VNImageSourceManager *)&v11 init], (self = v6) != 0))
+  lCopy = l;
+  if (lCopy && (v11.receiver = self, v11.super_class = VNImageSourceManager, v6 = [(VNImageSourceManager *)&v11 init], (self = v6) != 0))
   {
     *&v6->_getOrientationLock._os_unfair_lock_opaque = 0;
     *&v6->_loadSubSample2Lock._os_unfair_lock_opaque = 0;
@@ -182,24 +182,24 @@ LABEL_12:
     self->_imageData = 0;
 
     self->_orientation = 0;
-    objc_storeStrong(&self->_imageURL, a3);
+    objc_storeStrong(&self->_imageURL, l);
     self = self;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)ciImageWithSubSampleFactor:(int)a3 useLowPriority:(void *)a4 error:
+- (id)ciImageWithSubSampleFactor:(int)factor useLowPriority:(void *)priority error:
 {
-  v4 = a1;
+  selfCopy = self;
   v19[5] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (a2 < 2)
     {
@@ -218,7 +218,7 @@ LABEL_12:
       v6 = *MEMORY[0x1E695F990];
       v18[0] = *MEMORY[0x1E696E0A8];
       v18[1] = v6;
-      if (a3)
+      if (factor)
       {
         v7 = MEMORY[0x1E695E118];
       }
@@ -243,30 +243,30 @@ LABEL_12:
       v11 = v10;
     }
 
-    v13 = v4[8];
+    v13 = selfCopy[8];
     if (v13)
     {
-      [MEMORY[0x1E695F658] imageWithContentsOfURL:v4[8] options:v11];
+      [MEMORY[0x1E695F658] imageWithContentsOfURL:selfCopy[8] options:v11];
     }
 
     else
     {
-      [MEMORY[0x1E695F658] imageWithData:v4[9] options:v11];
+      [MEMORY[0x1E695F658] imageWithData:selfCopy[9] options:v11];
     }
-    v4 = ;
+    selfCopy = ;
 
-    if (v4)
+    if (selfCopy)
     {
-      v14 = v4;
+      v14 = selfCopy;
     }
 
-    else if (a4)
+    else if (priority)
     {
-      *a4 = [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot obtain a CIImage from the image source"];
+      *priority = [VNError errorForInternalErrorWithLocalizedDescription:@"Cannot obtain a CIImage from the image source"];
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

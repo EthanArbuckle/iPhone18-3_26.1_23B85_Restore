@@ -1,16 +1,16 @@
 @interface MTPlaybackQueueFactory
-+ (BOOL)_isContinuousPlaybackEnabledForLimit:(int64_t)a3;
-+ (id)_episodeToPlayForPodcastUuid:(id)a3 playbackOrder:(int64_t)a4 excludeExplicit:(int64_t)a5 ctx:(id)a6;
-+ (id)_latestOrOldestEpisodeForPodcastUuid:(id)a3 restrictToUserEpisodes:(BOOL)a4 excludeExplicit:(int64_t)a5 latest:(BOOL)a6 ctx:(id)a7;
++ (BOOL)_isContinuousPlaybackEnabledForLimit:(int64_t)limit;
++ (id)_episodeToPlayForPodcastUuid:(id)uuid playbackOrder:(int64_t)order excludeExplicit:(int64_t)explicit ctx:(id)ctx;
++ (id)_latestOrOldestEpisodeForPodcastUuid:(id)uuid restrictToUserEpisodes:(BOOL)episodes excludeExplicit:(int64_t)explicit latest:(BOOL)latest ctx:(id)ctx;
 + (id)_manifestForPlayMyLatestPodcasts;
 + (id)_manifestForPlayMyOldestPodcasts;
 + (id)_manifestForPlayMyPodcasts;
-+ (id)_uuidForEpisode:(id)a3;
-+ (id)playEpisodeUuid:(id)a3 context:(int64_t)a4 sortType:(int64_t)a5 limit:(int64_t)a6 pubDateLimit:(int64_t)a7;
++ (id)_uuidForEpisode:(id)episode;
++ (id)playEpisodeUuid:(id)uuid context:(int64_t)context sortType:(int64_t)type limit:(int64_t)limit pubDateLimit:(int64_t)dateLimit;
 + (id)playListenNow;
-+ (id)playMyPodcastsWithOrder:(int64_t)a3;
-+ (id)playPodcastUuid:(id)a3 order:(int64_t)a4 limit:(int64_t)a5 error:(int64_t *)a6;
-+ (id)playStationUuid:(id)a3 episodeUuid:(id)a4 limit:(int64_t)a5;
++ (id)playMyPodcastsWithOrder:(int64_t)order;
++ (id)playPodcastUuid:(id)uuid order:(int64_t)order limit:(int64_t)limit error:(int64_t *)error;
++ (id)playStationUuid:(id)uuid episodeUuid:(id)episodeUuid limit:(int64_t)limit;
 @end
 
 @implementation MTPlaybackQueueFactory
@@ -25,83 +25,83 @@
   v19 = 0;
   v3 = +[MTEpisode sortDescriptorsForListenNow];
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 mainOrPrivateContext];
+  mainOrPrivateContext = [v4 mainOrPrivateContext];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100148628;
   v10[3] = &unk_1004D87E8;
-  v6 = v5;
+  v6 = mainOrPrivateContext;
   v11 = v6;
   v7 = v3;
   v12 = v7;
   v13 = &v14;
   [v6 performBlockAndWait:v10];
-  v8 = [a1 playEpisodeUuid:v15[5]];
+  v8 = [self playEpisodeUuid:v15[5]];
 
   _Block_object_dispose(&v14, 8);
 
   return v8;
 }
 
-+ (id)playMyPodcastsWithOrder:(int64_t)a3
++ (id)playMyPodcastsWithOrder:(int64_t)order
 {
-  if (a3 == 2)
+  if (order == 2)
   {
-    v3 = [a1 _manifestForPlayMyOldestPodcasts];
+    _manifestForPlayMyOldestPodcasts = [self _manifestForPlayMyOldestPodcasts];
   }
 
   else
   {
-    if (a3 == 1)
+    if (order == 1)
     {
-      [a1 _manifestForPlayMyLatestPodcasts];
+      [self _manifestForPlayMyLatestPodcasts];
     }
 
     else
     {
-      [a1 _manifestForPlayMyPodcasts];
+      [self _manifestForPlayMyPodcasts];
     }
-    v3 = ;
+    _manifestForPlayMyOldestPodcasts = ;
   }
 
-  return v3;
+  return _manifestForPlayMyOldestPodcasts;
 }
 
-+ (id)playPodcastUuid:(id)a3 order:(int64_t)a4 limit:(int64_t)a5 error:(int64_t *)a6
++ (id)playPodcastUuid:(id)uuid order:(int64_t)order limit:(int64_t)limit error:(int64_t *)error
 {
-  v10 = a3;
+  uuidCopy = uuid;
   v11 = +[MTDB sharedInstance];
-  v12 = [v11 mainOrPrivateContext];
+  mainOrPrivateContext = [v11 mainOrPrivateContext];
 
-  v13 = [a1 _episodeToPlayForPodcastUuid:v10 playbackOrder:a4 excludeExplicit:0 ctx:v12];
+  v13 = [self _episodeToPlayForPodcastUuid:uuidCopy playbackOrder:order excludeExplicit:0 ctx:mainOrPrivateContext];
   v14 = v13;
-  if (!a4 && !v13)
+  if (!order && !v13)
   {
-    v14 = [a1 _episodeToPlayForPodcastUuid:v10 playbackOrder:1 excludeExplicit:0 ctx:v12];
+    v14 = [self _episodeToPlayForPodcastUuid:uuidCopy playbackOrder:1 excludeExplicit:0 ctx:mainOrPrivateContext];
   }
 
   if (v14)
   {
-    a6 = [a1 playEpisodeUuid:v14 limit:a5];
+    error = [self playEpisodeUuid:v14 limit:limit];
     goto LABEL_17;
   }
 
-  if (a6)
+  if (error)
   {
     v24 = 0;
     v25 = &v24;
     v26 = 0x2020000000;
     v27 = 0;
-    if ([v10 length])
+    if ([uuidCopy length])
     {
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_100148994;
       v20[3] = &unk_1004D87E8;
-      v15 = v12;
+      v15 = mainOrPrivateContext;
       v21 = v15;
-      v16 = v10;
+      v16 = uuidCopy;
       v22 = v16;
       v23 = &v24;
       [v15 performBlockAndWait:v20];
@@ -110,21 +110,21 @@
       {
         if ((+[PFRestrictionsController isExplicitContentAllowed]& 1) == 0)
         {
-          v17 = [a1 _episodeToPlayForPodcastUuid:v16 playbackOrder:a4 excludeExplicit:2 ctx:v15];
+          v17 = [self _episodeToPlayForPodcastUuid:v16 playbackOrder:order excludeExplicit:2 ctx:v15];
           if (v17)
           {
-            *a6 = 3;
+            *error = 3;
 
 LABEL_16:
             _Block_object_dispose(&v24, 8);
-            a6 = 0;
+            error = 0;
             goto LABEL_17;
           }
         }
 
         v18 = 2;
 LABEL_15:
-        *a6 = v18;
+        *error = v18;
         goto LABEL_16;
       }
     }
@@ -140,23 +140,23 @@ LABEL_15:
 
 LABEL_17:
 
-  return a6;
+  return error;
 }
 
-+ (id)playStationUuid:(id)a3 episodeUuid:(id)a4 limit:(int64_t)a5
++ (id)playStationUuid:(id)uuid episodeUuid:(id)episodeUuid limit:(int64_t)limit
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 length] && objc_msgSend(a1, "_isContinuousPlaybackEnabledForLimit:", a5))
+  uuidCopy = uuid;
+  episodeUuidCopy = episodeUuid;
+  if ([uuidCopy length] && objc_msgSend(self, "_isContinuousPlaybackEnabledForLimit:", limit))
   {
-    v10 = [[MTPlaylistManifest alloc] initWithPlaylistUuid:v8 initialEpisodeUuid:v9];
+    v10 = [[MTPlaylistManifest alloc] initWithPlaylistUuid:uuidCopy initialEpisodeUuid:episodeUuidCopy];
   }
 
   else
   {
-    if (![v9 length])
+    if (![episodeUuidCopy length])
     {
-      if ([v8 length])
+      if ([uuidCopy length])
       {
         v21 = 0;
         v22 = &v21;
@@ -165,15 +165,15 @@ LABEL_17:
         v25 = sub_10003B5C4;
         v26 = 0;
         v13 = +[MTDB sharedInstance];
-        v14 = [v13 mainOrPrivateContext];
+        mainOrPrivateContext = [v13 mainOrPrivateContext];
 
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_100148C40;
         v17[3] = &unk_1004D87E8;
-        v15 = v14;
+        v15 = mainOrPrivateContext;
         v18 = v15;
-        v19 = v8;
+        v19 = uuidCopy;
         v20 = &v21;
         [v15 performBlockAndWait:v17];
         if ([v22[5] length])
@@ -198,7 +198,7 @@ LABEL_17:
       goto LABEL_7;
     }
 
-    v10 = [[MTEpisodeManifest alloc] initWithEpisodeUuid:v9];
+    v10 = [[MTEpisodeManifest alloc] initWithEpisodeUuid:episodeUuidCopy];
   }
 
   v11 = v10;
@@ -207,29 +207,29 @@ LABEL_7:
   return v11;
 }
 
-+ (id)playEpisodeUuid:(id)a3 context:(int64_t)a4 sortType:(int64_t)a5 limit:(int64_t)a6 pubDateLimit:(int64_t)a7
++ (id)playEpisodeUuid:(id)uuid context:(int64_t)context sortType:(int64_t)type limit:(int64_t)limit pubDateLimit:(int64_t)dateLimit
 {
-  v12 = a3;
-  if (![v12 length])
+  uuidCopy = uuid;
+  if (![uuidCopy length])
   {
     v15 = 0;
     goto LABEL_48;
   }
 
-  if (![a1 _isContinuousPlaybackEnabledForLimit:a6])
+  if (![self _isContinuousPlaybackEnabledForLimit:limit])
   {
-    v15 = [[MTEpisodeManifest alloc] initWithEpisodeUuid:v12];
+    v15 = [[MTEpisodeManifest alloc] initWithEpisodeUuid:uuidCopy];
     goto LABEL_48;
   }
 
   v13 = 0;
-  if (a5 > 4)
+  if (type > 4)
   {
-    if (a5 > 7)
+    if (type > 7)
     {
-      if (a5 != 8)
+      if (type != 8)
       {
-        if (a5 != 9)
+        if (type != 9)
         {
           goto LABEL_29;
         }
@@ -249,7 +249,7 @@ LABEL_7:
 
     else
     {
-      if (a5 == 5)
+      if (type == 5)
       {
         v19 = 1;
 LABEL_24:
@@ -257,7 +257,7 @@ LABEL_24:
         goto LABEL_28;
       }
 
-      if (a5 != 7)
+      if (type != 7)
       {
         goto LABEL_29;
       }
@@ -269,9 +269,9 @@ LABEL_24:
     goto LABEL_28;
   }
 
-  if (a5 > 2)
+  if (type > 2)
   {
-    if (a5 == 3)
+    if (type == 3)
     {
       v18 = +[MTEpisode sortDescriptorsForTitle];
       goto LABEL_28;
@@ -281,9 +281,9 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (a5 >= 2)
+  if (type >= 2)
   {
-    if (a5 != 2)
+    if (type != 2)
     {
       goto LABEL_29;
     }
@@ -299,14 +299,14 @@ LABEL_20:
 LABEL_28:
   v13 = v18;
 LABEL_29:
-  if (a4 > 7)
+  if (context > 7)
   {
-    if (a4 != 8)
+    if (context != 8)
     {
-      if (a4 == 9)
+      if (context == 9)
       {
         v38 = +[MTDB sharedInstance];
-        v39 = [v38 mainOrPrivateContext];
+        mainOrPrivateContext = [v38 mainOrPrivateContext];
 
         *buf = 0;
         v55 = buf;
@@ -318,9 +318,9 @@ LABEL_29:
         v50[1] = 3221225472;
         v50[2] = sub_100149324;
         v50[3] = &unk_1004D87E8;
-        v20 = v39;
+        v20 = mainOrPrivateContext;
         v51 = v20;
-        v40 = v12;
+        v40 = uuidCopy;
         v52 = v40;
         v53 = buf;
         [v20 performBlockAndWait:v50];
@@ -334,7 +334,7 @@ LABEL_29:
         goto LABEL_46;
       }
 
-      if (a4 != 10)
+      if (context != 10)
       {
         goto LABEL_39;
       }
@@ -347,7 +347,7 @@ LABEL_29:
       v29 = +[MTEpisode sortDescriptorsForRecentlyPlayed];
       [v20 setSortDescriptors:v29];
 
-      v30 = [[MTPredicateManifest alloc] initWithInitialEpisodeUuid:v12 fetchRequest:v20];
+      v30 = [[MTPredicateManifest alloc] initWithInitialEpisodeUuid:uuidCopy fetchRequest:v20];
 LABEL_44:
       v15 = v30;
       goto LABEL_46;
@@ -356,15 +356,15 @@ LABEL_44:
     v31 = +[MTEpisode predicateForBookmarkedEpisodes];
 LABEL_43:
     v20 = v31;
-    v30 = [[MTPredicateManifest alloc] initWithInitialEpisodeUuid:v12 predicateToTrack:v31 sortDescriptors:v13];
+    v30 = [[MTPredicateManifest alloc] initWithInitialEpisodeUuid:uuidCopy predicateToTrack:v31 sortDescriptors:v13];
     goto LABEL_44;
   }
 
-  if (a4 != 2)
+  if (context != 2)
   {
-    if (a4 != 3)
+    if (context != 3)
     {
-      if (a4 == 7)
+      if (context == 7)
       {
         goto LABEL_33;
       }
@@ -375,21 +375,21 @@ LABEL_39:
       v56 = 0x2020000000;
       v57 = 9;
       v32 = +[MTDB sharedInstance];
-      v33 = [v32 mainOrPrivateContext];
+      mainOrPrivateContext2 = [v32 mainOrPrivateContext];
 
       v45[0] = _NSConcreteStackBlock;
       v45[1] = 3221225472;
       v45[2] = sub_100149390;
       v45[3] = &unk_1004DC790;
-      v34 = v33;
+      v34 = mainOrPrivateContext2;
       v46 = v34;
-      v35 = v12;
+      v35 = uuidCopy;
       v47 = v35;
       v48 = buf;
-      v49 = a4;
+      contextCopy = context;
       [v34 performBlockAndWait:v45];
       v36 = off_1004D1B00;
-      if (a4 != 6)
+      if (context != 6)
       {
         v36 = off_1004D1B50;
       }
@@ -406,7 +406,7 @@ LABEL_39:
   }
 
 LABEL_33:
-  v20 = [MTEpisode predicateForPubDateLimit:a7];
+  v20 = [MTEpisode predicateForPubDateLimit:dateLimit];
   v21 = +[MTEpisode predicateForListenNowLatestEpisodes];
   v22 = [MTEpisode predicateForVisuallyPlayed:0];
   v23 = [v21 AND:v22];
@@ -416,7 +416,7 @@ LABEL_33:
   v26 = [v25 initWithEntityName:kMTEpisodeEntityName];
   [v26 setPredicate:v24];
   [v26 setSortDescriptors:v13];
-  v15 = [[MTPredicateManifest alloc] initWithInitialEpisodeUuid:v12 fetchRequest:v26];
+  v15 = [[MTPredicateManifest alloc] initWithInitialEpisodeUuid:uuidCopy fetchRequest:v26];
 
 LABEL_46:
 LABEL_47:
@@ -428,11 +428,11 @@ LABEL_48:
 
 + (id)_manifestForPlayMyPodcasts
 {
-  v2 = [a1 playListenNow];
-  v3 = v2;
-  if (v2)
+  playListenNow = [self playListenNow];
+  v3 = playListenNow;
+  if (playListenNow)
   {
-    v4 = v2;
+    v4 = playListenNow;
 LABEL_5:
     v5 = v4;
     goto LABEL_6;
@@ -472,63 +472,63 @@ LABEL_6:
   return v2;
 }
 
-+ (BOOL)_isContinuousPlaybackEnabledForLimit:(int64_t)a3
++ (BOOL)_isContinuousPlaybackEnabledForLimit:(int64_t)limit
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (limit == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 1;
   }
 
-  if (a3 == 1)
+  if (limit == 1)
   {
     return 0;
   }
 
-  return _MTPlaybackContinuousPlaybackEnabled(a1, a2);
+  return _MTPlaybackContinuousPlaybackEnabled(self, a2);
 }
 
-+ (id)_episodeToPlayForPodcastUuid:(id)a3 playbackOrder:(int64_t)a4 excludeExplicit:(int64_t)a5 ctx:(id)a6
++ (id)_episodeToPlayForPodcastUuid:(id)uuid playbackOrder:(int64_t)order excludeExplicit:(int64_t)explicit ctx:(id)ctx
 {
-  v10 = a3;
-  v11 = a6;
+  uuidCopy = uuid;
+  ctxCopy = ctx;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = sub_100008BDC;
   v27 = sub_10003B5C4;
   v28 = 0;
-  if (a4 == 2)
+  if (order == 2)
   {
-    v12 = [a1 _oldestEpisodeForPodcastUuid:v10 restrictToUserEpisodes:1 excludeExplicit:a5 ctx:v11];
-    v13 = [v12 uuid];
+    v12 = [self _oldestEpisodeForPodcastUuid:uuidCopy restrictToUserEpisodes:1 excludeExplicit:explicit ctx:ctxCopy];
+    uuid = [v12 uuid];
   }
 
   else
   {
-    if (a4 == 1)
+    if (order == 1)
     {
-      v12 = [a1 _latestEpisodeForPodcastUuid:v10 restrictToUserEpisodes:0 excludeExplicit:a5 ctx:v11];
+      v12 = [self _latestEpisodeForPodcastUuid:uuidCopy restrictToUserEpisodes:0 excludeExplicit:explicit ctx:ctxCopy];
       [v12 uuid];
     }
 
     else
     {
-      v12 = [MTRecencyUtil upNextForPodcastUuid:v10 excludeExplicit:a5 ctx:v11];
+      v12 = [MTRecencyUtil upNextForPodcastUuid:uuidCopy excludeExplicit:explicit ctx:ctxCopy];
       [v12 episodeUuid];
     }
-    v13 = ;
+    uuid = ;
   }
 
   v14 = v24[5];
-  v24[5] = v13;
+  v24[5] = uuid;
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1001497DC;
   v19[3] = &unk_1004D87E8;
-  v15 = v11;
+  v15 = ctxCopy;
   v20 = v15;
-  v16 = v10;
+  v16 = uuidCopy;
   v21 = v16;
   v22 = &v23;
   [v15 performBlockAndWait:v19];
@@ -539,11 +539,11 @@ LABEL_6:
   return v17;
 }
 
-+ (id)_latestOrOldestEpisodeForPodcastUuid:(id)a3 restrictToUserEpisodes:(BOOL)a4 excludeExplicit:(int64_t)a5 latest:(BOOL)a6 ctx:(id)a7
++ (id)_latestOrOldestEpisodeForPodcastUuid:(id)uuid restrictToUserEpisodes:(BOOL)episodes excludeExplicit:(int64_t)explicit latest:(BOOL)latest ctx:(id)ctx
 {
-  v11 = a3;
-  v12 = a7;
-  if ([v11 length])
+  uuidCopy = uuid;
+  ctxCopy = ctx;
+  if ([uuidCopy length])
   {
     v22 = 0;
     v23 = &v22;
@@ -555,12 +555,12 @@ LABEL_6:
     v15[1] = 3221225472;
     v15[2] = sub_1001499E4;
     v15[3] = &unk_1004DDC18;
-    v16 = v12;
-    v20 = a4;
-    v17 = v11;
+    v16 = ctxCopy;
+    episodesCopy = episodes;
+    v17 = uuidCopy;
     v18 = &v22;
-    v21 = a6;
-    v19 = a5;
+    latestCopy = latest;
+    explicitCopy = explicit;
     [v16 performBlockAndWait:v15];
     v13 = v23[5];
 
@@ -575,24 +575,24 @@ LABEL_6:
   return v13;
 }
 
-+ (id)_uuidForEpisode:(id)a3
++ (id)_uuidForEpisode:(id)episode
 {
-  v3 = a3;
+  episodeCopy = episode;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = sub_100008BDC;
   v15 = sub_10003B5C4;
   v16 = 0;
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [episodeCopy managedObjectContext];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100149BE0;
   v8[3] = &unk_1004D9068;
   v10 = &v11;
-  v5 = v3;
+  v5 = episodeCopy;
   v9 = v5;
-  [v4 performBlockAndWait:v8];
+  [managedObjectContext performBlockAndWait:v8];
 
   v6 = v12[5];
   _Block_object_dispose(&v11, 8);

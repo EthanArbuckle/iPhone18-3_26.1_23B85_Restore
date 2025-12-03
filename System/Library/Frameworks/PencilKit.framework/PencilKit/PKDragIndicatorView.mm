@@ -2,8 +2,8 @@
 - (CGSize)intrinsicContentSize;
 - (PKDragIndicatorView)init;
 - (void)layoutSubviews;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setScalingFactor:(double)a3;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setScalingFactor:(double)factor;
 @end
 
 @implementation PKDragIndicatorView
@@ -18,8 +18,8 @@
   {
     v2->_scalingFactor = 1.0;
     v4 = *MEMORY[0x1E69796E8];
-    v5 = [(PKDragIndicatorView *)v2 layer];
-    [v5 setCornerCurve:v4];
+    layer = [(PKDragIndicatorView *)v2 layer];
+    [layer setCornerCurve:v4];
   }
 
   return v3;
@@ -44,35 +44,35 @@
   }
 
   v7 = v6 * 0.5;
-  v8 = [(PKDragIndicatorView *)self layer];
-  [v8 setCornerRadius:v7];
+  layer = [(PKDragIndicatorView *)self layer];
+  [layer setCornerRadius:v7];
 
-  v9 = [MEMORY[0x1E69DC888] pk_paletteButtonBackgroundColor];
-  [(PKDragIndicatorView *)self setBackgroundColor:v9];
+  pk_paletteButtonBackgroundColor = [MEMORY[0x1E69DC888] pk_paletteButtonBackgroundColor];
+  [(PKDragIndicatorView *)self setBackgroundColor:pk_paletteButtonBackgroundColor];
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
-  if (self->_edgeLocation != a3)
+  if (self->_edgeLocation != location)
   {
-    self->_edgeLocation = a3;
+    self->_edgeLocation = location;
     [(PKDragIndicatorView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
-  if (self->_scalingFactor != a3)
+  if (self->_scalingFactor != factor)
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKDragIndicatorView *)self invalidateIntrinsicContentSize];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PKDragIndicatorView *)self edgeLocation];
-  v5 = v3 == 2 || v3 == 8;
+  edgeLocation = [(PKDragIndicatorView *)self edgeLocation];
+  v5 = edgeLocation == 2 || edgeLocation == 8;
   v6 = PKPaletteDragHandleSize(v5);
   v8 = v7;
   [(PKDragIndicatorView *)self scalingFactor];

@@ -1,28 +1,28 @@
 @interface WLKBasicSportingEventMetadata
-- (WLKBasicSportingEventMetadata)initWithDictionary:(id)a3;
+- (WLKBasicSportingEventMetadata)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WLKBasicSportingEventMetadata
 
-- (WLKBasicSportingEventMetadata)initWithDictionary:(id)a3
+- (WLKBasicSportingEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = WLKBasicSportingEventMetadata;
-  v5 = [(WLKBasicContentMetadata *)&v16 initWithDictionary:v4];
+  v5 = [(WLKBasicContentMetadata *)&v16 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 wlk_dateFromMillisecondsSince1970ForKey:@"startGameTime"];
+    v6 = [dictionaryCopy wlk_dateFromMillisecondsSince1970ForKey:@"startGameTime"];
     v7 = [v6 copy];
     startGameTime = v5->_startGameTime;
     v5->_startGameTime = v7;
 
-    v9 = [v4 wlk_stringForKey:@"leagueName"];
+    v9 = [dictionaryCopy wlk_stringForKey:@"leagueName"];
     v10 = [v9 copy];
     leagueName = v5->_leagueName;
     v5->_leagueName = v10;
 
-    v12 = [v4 wlk_stringForKey:@"leagueShortName"];
+    v12 = [dictionaryCopy wlk_stringForKey:@"leagueShortName"];
     v13 = [v12 copy];
     leagueShortName = v5->_leagueShortName;
     v5->_leagueShortName = v13;

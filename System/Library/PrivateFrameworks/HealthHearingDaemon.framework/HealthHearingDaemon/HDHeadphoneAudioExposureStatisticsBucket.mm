@@ -1,59 +1,59 @@
 @interface HDHeadphoneAudioExposureStatisticsBucket
-+ (id)_currentDoseStringForEndDate:(id)a3 earliestStartDate:(id)a4 profile:(id)a5;
-+ (id)_makeBucketsForNowDate:(id)a3 earliestStartDate:(id)a4 profile:(id)a5;
-+ (id)_makeDataSourceWithProfile:(id)a3;
++ (id)_currentDoseStringForEndDate:(id)date earliestStartDate:(id)startDate profile:(id)profile;
++ (id)_makeBucketsForNowDate:(id)date earliestStartDate:(id)startDate profile:(id)profile;
++ (id)_makeDataSourceWithProfile:(id)profile;
 + (id)_makeJournaledCalculator;
 + (id)_makePrimaryCalculator;
-+ (id)_makeSourceOrderProviderWithProfile:(id)a3;
-+ (id)bucketForArchivedRepresentation:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)makeBucketsForProfile:(id)a3 earliestStartDate:(id)a4;
++ (id)_makeSourceOrderProviderWithProfile:(id)profile;
++ (id)bucketForArchivedRepresentation:(id)representation profile:(id)profile error:(id *)error;
++ (id)makeBucketsForProfile:(id)profile earliestStartDate:(id)date;
 - (BOOL)hasPreviousStatistics;
 - (BOOL)includesJournaledSamples;
-- (BOOL)isExpiredForNowDate:(id)a3;
+- (BOOL)isExpiredForNowDate:(id)date;
 - (NSDateInterval)dateInterval;
-- (id)_initWithProfile:(id)a3 primaryCalculator:(id)a4 journaledCalculator:(id)a5 startDate:(id)a6 earliestStartDate:(id)a7 boundedInterval:(BOOL)a8 anchor:(id)a9 previousStatistics:(id)a10 includesPrunableData:(BOOL)a11;
-- (id)_lock_addQuantitySamples:(id)a3 anchor:(id)a4 error:(id *)a5;
-- (id)_lock_archivedRepresentationWithError:(id *)a3;
-- (id)_lock_copyWithEarliestStartDate:(id)a3 resetDoseToZero:(BOOL)a4 error:(id *)a5;
-- (id)_lock_currentStatisticsWithError:(id *)a3;
+- (id)_initWithProfile:(id)profile primaryCalculator:(id)calculator journaledCalculator:(id)journaledCalculator startDate:(id)date earliestStartDate:(id)startDate boundedInterval:(BOOL)interval anchor:(id)anchor previousStatistics:(id)self0 includesPrunableData:(BOOL)self1;
+- (id)_lock_addQuantitySamples:(id)samples anchor:(id)anchor error:(id *)error;
+- (id)_lock_archivedRepresentationWithError:(id *)error;
+- (id)_lock_copyWithEarliestStartDate:(id)date resetDoseToZero:(BOOL)zero error:(id *)error;
+- (id)_lock_currentStatisticsWithError:(id *)error;
 - (id)_lock_dateInterval;
-- (id)_lock_fetchIncludesPrunableDataWithError:(id *)a3;
-- (id)_lock_journalQuantitySamples:(id)a3 error:(id *)a4;
-- (id)_lock_queryForInitialStatisticsWithError:(id *)a3;
-- (id)archivedRepresentationWithError:(id *)a3;
-- (id)queryForInitialStatisticsWithError:(id *)a3;
-- (id)snapshotStatisticsWithError:(id *)a3;
-- (id)updateWithSampleBatch:(id)a3 error:(id *)a4;
-- (void)unitTesting_setIncludesPrunableData:(BOOL)a3;
-- (void)unitTesting_setPreviousStatistics:(id)a3;
+- (id)_lock_fetchIncludesPrunableDataWithError:(id *)error;
+- (id)_lock_journalQuantitySamples:(id)samples error:(id *)error;
+- (id)_lock_queryForInitialStatisticsWithError:(id *)error;
+- (id)archivedRepresentationWithError:(id *)error;
+- (id)queryForInitialStatisticsWithError:(id *)error;
+- (id)snapshotStatisticsWithError:(id *)error;
+- (id)updateWithSampleBatch:(id)batch error:(id *)error;
+- (void)unitTesting_setIncludesPrunableData:(BOOL)data;
+- (void)unitTesting_setPreviousStatistics:(id)statistics;
 @end
 
 @implementation HDHeadphoneAudioExposureStatisticsBucket
 
-+ (id)makeBucketsForProfile:(id)a3 earliestStartDate:(id)a4
++ (id)makeBucketsForProfile:(id)profile earliestStartDate:(id)date
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = a3;
+  dateCopy = date;
+  profileCopy = profile;
   v9 = [v6 now];
-  v10 = [a1 _makeBucketsForNowDate:v9 earliestStartDate:v7 profile:v8];
+  v10 = [self _makeBucketsForNowDate:v9 earliestStartDate:dateCopy profile:profileCopy];
 
   return v10;
 }
 
-+ (id)_makeBucketsForNowDate:(id)a3 earliestStartDate:(id)a4 profile:(id)a5
++ (id)_makeBucketsForNowDate:(id)date earliestStartDate:(id)startDate profile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  startDateCopy = startDate;
+  profileCopy = profile;
   v10 = 5;
   v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:5];
-  v12 = [v7 dateByAddingTimeInterval:-604800.0];
+  v12 = [dateCopy dateByAddingTimeInterval:-604800.0];
   v13 = 0;
   do
   {
     v14 = [v12 dateByAddingTimeInterval:3600.0 * v13];
-    v15 = [[HDHeadphoneAudioExposureStatisticsBucket alloc] _initWithProfile:v9 startDate:v14 earliestStartDate:v8 boundedInterval:--v10 != 0];
+    v15 = [[HDHeadphoneAudioExposureStatisticsBucket alloc] _initWithProfile:profileCopy startDate:v14 earliestStartDate:startDateCopy boundedInterval:--v10 != 0];
     [v11 addObject:v15];
 
     ++v13;
@@ -65,12 +65,12 @@
   return v16;
 }
 
-+ (id)_currentDoseStringForEndDate:(id)a3 earliestStartDate:(id)a4 profile:(id)a5
++ (id)_currentDoseStringForEndDate:(id)date earliestStartDate:(id)startDate profile:(id)profile
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 dateByAddingTimeInterval:-604800.0];
-  v11 = [[a1 alloc] _initWithProfile:v8 startDate:v10 earliestStartDate:v9 boundedInterval:1];
+  profileCopy = profile;
+  startDateCopy = startDate;
+  v10 = [date dateByAddingTimeInterval:-604800.0];
+  v11 = [[self alloc] _initWithProfile:profileCopy startDate:v10 earliestStartDate:startDateCopy boundedInterval:1];
 
   v26 = 0;
   v12 = [v11 queryForInitialStatisticsWithError:&v26];
@@ -83,9 +83,9 @@
     v16 = v25;
     if (v15)
     {
-      v17 = [v15 statistics];
+      statistics = [v15 statistics];
       v24 = 0;
-      v18 = [v17 hk_hearingSevenDayDosePercentageWithError:&v24];
+      v18 = [statistics hk_hearingSevenDayDosePercentageWithError:&v24];
       v19 = v24;
 
       v20 = MEMORY[0x277CCACA8];
@@ -145,110 +145,110 @@
   return v4;
 }
 
-+ (id)_makeDataSourceWithProfile:(id)a3
++ (id)_makeDataSourceWithProfile:(id)profile
 {
   v3 = MEMORY[0x277D108A0];
-  v4 = a3;
+  profileCopy = profile;
   v5 = [v3 alloc];
   v6 = HKHeadphoneAudioExposureType();
-  v7 = [v5 initForProfile:v4 quantityType:v6 predicate:0 restrictedSourceEntities:0];
+  v7 = [v5 initForProfile:profileCopy quantityType:v6 predicate:0 restrictedSourceEntities:0];
 
   [v7 setIncludeUnfrozenSeries:1];
 
   return v7;
 }
 
-+ (id)_makeSourceOrderProviderWithProfile:(id)a3
++ (id)_makeSourceOrderProviderWithProfile:(id)profile
 {
   v3 = MEMORY[0x277D108A8];
-  v4 = a3;
+  profileCopy = profile;
   v5 = [v3 alloc];
   v6 = HKHeadphoneAudioExposureType();
-  v7 = [v5 initWithProfile:v4 quantityType:v6];
+  v7 = [v5 initWithProfile:profileCopy quantityType:v6];
 
   return v7;
 }
 
-- (id)_initWithProfile:(id)a3 primaryCalculator:(id)a4 journaledCalculator:(id)a5 startDate:(id)a6 earliestStartDate:(id)a7 boundedInterval:(BOOL)a8 anchor:(id)a9 previousStatistics:(id)a10 includesPrunableData:(BOOL)a11
+- (id)_initWithProfile:(id)profile primaryCalculator:(id)calculator journaledCalculator:(id)journaledCalculator startDate:(id)date earliestStartDate:(id)startDate boundedInterval:(BOOL)interval anchor:(id)anchor previousStatistics:(id)self0 includesPrunableData:(BOOL)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v44 = a6;
-  obj = a7;
-  v43 = a7;
-  v42 = a9;
-  v41 = a10;
-  if (!v17)
+  profileCopy = profile;
+  calculatorCopy = calculator;
+  journaledCalculatorCopy = journaledCalculator;
+  dateCopy = date;
+  obj = startDate;
+  startDateCopy = startDate;
+  anchorCopy = anchor;
+  statisticsCopy = statistics;
+  if (!calculatorCopy)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _initWithProfile:primaryCalculator:journaledCalculator:startDate:earliestStartDate:boundedInterval:anchor:previousStatistics:includesPrunableData:];
   }
 
-  v19 = [v17 quantityType];
-  v20 = [v19 code];
+  quantityType = [calculatorCopy quantityType];
+  code = [quantityType code];
 
-  if (v20 != 173)
+  if (code != 173)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _initWithProfile:primaryCalculator:journaledCalculator:startDate:earliestStartDate:boundedInterval:anchor:previousStatistics:includesPrunableData:];
   }
 
-  v21 = [v17 dateInterval];
+  dateInterval = [calculatorCopy dateInterval];
 
-  if (!v21)
+  if (!dateInterval)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _initWithProfile:primaryCalculator:journaledCalculator:startDate:earliestStartDate:boundedInterval:anchor:previousStatistics:includesPrunableData:];
   }
 
-  v22 = [v17 dataSource];
+  dataSource = [calculatorCopy dataSource];
 
-  if (v22)
+  if (dataSource)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _initWithProfile:primaryCalculator:journaledCalculator:startDate:earliestStartDate:boundedInterval:anchor:previousStatistics:includesPrunableData:];
   }
 
-  v23 = [v17 sourceOrderProvider];
+  sourceOrderProvider = [calculatorCopy sourceOrderProvider];
 
-  if (v23)
+  if (sourceOrderProvider)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _initWithProfile:primaryCalculator:journaledCalculator:startDate:earliestStartDate:boundedInterval:anchor:previousStatistics:includesPrunableData:];
-    if (!v18)
+    if (!journaledCalculatorCopy)
     {
       goto LABEL_19;
     }
   }
 
-  else if (!v18)
+  else if (!journaledCalculatorCopy)
   {
     goto LABEL_19;
   }
 
-  v24 = [v18 quantityType];
-  v25 = [v24 code];
+  quantityType2 = [journaledCalculatorCopy quantityType];
+  code2 = [quantityType2 code];
 
-  if (v25 != 173)
+  if (code2 != 173)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _initWithProfile:primaryCalculator:journaledCalculator:startDate:earliestStartDate:boundedInterval:anchor:previousStatistics:includesPrunableData:];
   }
 
-  v26 = [v18 dateInterval];
-  v27 = [v17 dateInterval];
-  v28 = [v26 isEqualToDateInterval:v27];
+  dateInterval2 = [journaledCalculatorCopy dateInterval];
+  dateInterval3 = [calculatorCopy dateInterval];
+  v28 = [dateInterval2 isEqualToDateInterval:dateInterval3];
 
   if ((v28 & 1) == 0)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _initWithProfile:primaryCalculator:journaledCalculator:startDate:earliestStartDate:boundedInterval:anchor:previousStatistics:includesPrunableData:];
   }
 
-  v29 = [v18 dataSource];
+  dataSource2 = [journaledCalculatorCopy dataSource];
 
-  if (v29)
+  if (dataSource2)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _initWithProfile:primaryCalculator:journaledCalculator:startDate:earliestStartDate:boundedInterval:anchor:previousStatistics:includesPrunableData:];
   }
 
-  v30 = [v18 sourceOrderProvider];
+  sourceOrderProvider2 = [journaledCalculatorCopy sourceOrderProvider];
 
-  if (v30)
+  if (sourceOrderProvider2)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _initWithProfile:primaryCalculator:journaledCalculator:startDate:earliestStartDate:boundedInterval:anchor:previousStatistics:includesPrunableData:];
   }
@@ -259,25 +259,25 @@ LABEL_19:
   v31 = [(HDHeadphoneAudioExposureStatisticsBucket *)&v45 init];
   if (v31)
   {
-    v32 = [objc_opt_class() _makeDataSourceWithProfile:v16];
-    v33 = [objc_opt_class() _makeSourceOrderProviderWithProfile:v16];
-    [v17 setDataSource:v32];
-    [v17 setSourceOrderProvider:v33];
-    if (v18)
+    v32 = [objc_opt_class() _makeDataSourceWithProfile:profileCopy];
+    v33 = [objc_opt_class() _makeSourceOrderProviderWithProfile:profileCopy];
+    [calculatorCopy setDataSource:v32];
+    [calculatorCopy setSourceOrderProvider:v33];
+    if (journaledCalculatorCopy)
     {
-      [v18 setDataSource:v32];
-      [v18 setSourceOrderProvider:v33];
+      [journaledCalculatorCopy setDataSource:v32];
+      [journaledCalculatorCopy setSourceOrderProvider:v33];
     }
 
     v31->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v31->_primaryCalculator, a4);
-    objc_storeStrong(&v31->_journaledCalculator, a5);
-    objc_storeStrong(&v31->_startDate, a6);
+    objc_storeStrong(&v31->_primaryCalculator, calculator);
+    objc_storeStrong(&v31->_journaledCalculator, journaledCalculator);
+    objc_storeStrong(&v31->_startDate, date);
     objc_storeStrong(&v31->_earliestStartDate, obj);
-    v31->_boundedInterval = a8;
-    objc_storeStrong(&v31->_anchor, a9);
-    objc_storeStrong(&v31->_previousStatistics, a10);
-    v31->_includesPrunableData = a11;
+    v31->_boundedInterval = interval;
+    objc_storeStrong(&v31->_anchor, anchor);
+    objc_storeStrong(&v31->_previousStatistics, statistics);
+    v31->_includesPrunableData = data;
     dataSource = v31->_dataSource;
     v31->_dataSource = v32;
     v35 = v32;
@@ -291,12 +291,12 @@ LABEL_19:
   return v31;
 }
 
-- (id)_lock_copyWithEarliestStartDate:(id)a3 resetDoseToZero:(BOOL)a4 error:(id *)a5
+- (id)_lock_copyWithEarliestStartDate:(id)date resetDoseToZero:(BOOL)zero error:(id *)error
 {
-  v8 = a3;
+  dateCopy = date;
   os_unfair_lock_assert_owner(&self->_lock);
-  v9 = [(NSDate *)self->_startDate hk_isAfterDate:v8];
-  startDate = v8;
+  v9 = [(NSDate *)self->_startDate hk_isAfterDate:dateCopy];
+  startDate = dateCopy;
   if ((v9 & 1) == 0)
   {
     startDate = self->_startDate;
@@ -304,18 +304,18 @@ LABEL_19:
 
   v11 = startDate;
   v12 = objc_alloc(objc_opt_class());
-  v13 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self->_dataSource profile];
-  v14 = [v12 _initWithProfile:v13 startDate:v11 earliestStartDate:v8 boundedInterval:self->_boundedInterval];
+  profile = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self->_dataSource profile];
+  v14 = [v12 _initWithProfile:profile startDate:v11 earliestStartDate:dateCopy boundedInterval:self->_boundedInterval];
 
   v15 = *(v14 + 56);
   *(v14 + 56) = 0;
 
-  if (a4)
+  if (zero)
   {
     goto LABEL_6;
   }
 
-  v16 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_currentStatisticsWithError:a5];
+  v16 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_currentStatisticsWithError:error];
   if (v16)
   {
     v17 = *(v14 + 64);
@@ -333,16 +333,16 @@ LABEL_7:
   return v18;
 }
 
-- (id)archivedRepresentationWithError:(id *)a3
+- (id)archivedRepresentationWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_archivedRepresentationWithError:a3];
+  v5 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_archivedRepresentationWithError:error];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)_lock_archivedRepresentationWithError:(id *)a3
+- (id)_lock_archivedRepresentationWithError:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_lock);
   v4 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
@@ -370,17 +370,17 @@ LABEL_7:
   [v4 encodeBool:self->_includesPrunableData forKey:@"includesPrunableData"];
   [v4 encodeObject:self->_anchor forKey:@"anchor"];
   [v4 finishEncoding];
-  v8 = [v4 encodedData];
+  encodedData = [v4 encodedData];
 
-  return v8;
+  return encodedData;
 }
 
-+ (id)bucketForArchivedRepresentation:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)bucketForArchivedRepresentation:(id)representation profile:(id)profile error:(id *)error
 {
-  v7 = a4;
+  profileCopy = profile;
   v8 = MEMORY[0x277CCAAC8];
-  v9 = a3;
-  v10 = [[v8 alloc] initForReadingFromData:v9 error:a5];
+  representationCopy = representation;
+  v10 = [[v8 alloc] initForReadingFromData:representationCopy error:error];
 
   if (!v10)
   {
@@ -391,13 +391,13 @@ LABEL_7:
   v11 = [v10 decodeObjectOfClass:objc_opt_class() forKey:@"primaryCalculator"];
   if (!v11 || ([v10 error], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v13 = [v10 error];
-    if (v13)
+    error = [v10 error];
+    if (error)
     {
-      if (a5)
+      if (error)
       {
-        v14 = v13;
-        *a5 = v13;
+        v14 = error;
+        *error = error;
       }
 
       else
@@ -412,17 +412,17 @@ LABEL_7:
   }
 
   v16 = [v10 decodeObjectOfClass:objc_opt_class() forKey:@"journaledCalculator"];
-  v17 = [v10 error];
+  error2 = [v10 error];
 
-  if (v17)
+  if (error2)
   {
-    v18 = [v10 error];
-    if (v18)
+    error3 = [v10 error];
+    if (error3)
     {
-      if (a5)
+      if (error)
       {
-        v19 = v18;
-        *a5 = v18;
+        v19 = error3;
+        *error = error3;
       }
 
       else
@@ -439,13 +439,13 @@ LABEL_7:
   v20 = [v10 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
   if (!v20 || ([v10 error], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
   {
-    v22 = [v10 error];
-    if (v22)
+    error4 = [v10 error];
+    if (error4)
     {
-      if (a5)
+      if (error)
       {
-        v23 = v22;
-        *a5 = v22;
+        v23 = error4;
+        *error = error4;
       }
 
       else
@@ -460,17 +460,17 @@ LABEL_7:
   }
 
   v24 = [v10 decodeObjectOfClass:objc_opt_class() forKey:@"earliestStartDate"];
-  v25 = [v10 error];
+  error5 = [v10 error];
 
-  if (v25 || (v26 = [v10 decodeBoolForKey:@"boundedInterval"], objc_msgSend(v10, "error"), v27 = objc_claimAutoreleasedReturnValue(), v27, v27))
+  if (error5 || (v26 = [v10 decodeBoolForKey:@"boundedInterval"], objc_msgSend(v10, "error"), v27 = objc_claimAutoreleasedReturnValue(), v27, v27))
   {
-    v28 = [v10 error];
-    if (v28)
+    error6 = [v10 error];
+    if (error6)
     {
-      if (a5)
+      if (error)
       {
-        v29 = v28;
-        *a5 = v28;
+        v29 = error6;
+        *error = error6;
       }
 
       else
@@ -485,17 +485,17 @@ LABEL_7:
   }
 
   v44 = [v10 decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
-  v31 = [v10 error];
+  error7 = [v10 error];
 
-  if (v31)
+  if (error7)
   {
-    v32 = [v10 error];
-    if (v32)
+    error8 = [v10 error];
+    if (error8)
     {
-      if (a5)
+      if (error)
       {
-        v33 = v32;
-        *a5 = v32;
+        v33 = error8;
+        *error = error8;
       }
 
       else
@@ -511,20 +511,20 @@ LABEL_7:
   }
 
   v43 = [v10 decodeObjectOfClass:objc_opt_class() forKey:@"previousStatistics"];
-  v34 = [v10 error];
+  error9 = [v10 error];
 
-  if (v34)
+  if (error9)
   {
     v35 = v10;
 LABEL_46:
-    v38 = [v35 error];
+    error10 = [v35 error];
     v39 = v43;
-    if (v38)
+    if (error10)
     {
-      if (a5)
+      if (error)
       {
-        v40 = v38;
-        *a5 = v38;
+        v40 = error10;
+        *error = error10;
       }
 
       else
@@ -540,10 +540,10 @@ LABEL_46:
   }
 
   v42 = [v10 decodeBoolForKey:@"includesPrunableData"];
-  v37 = [v10 error];
+  error11 = [v10 error];
 
   v35 = v10;
-  if (v37)
+  if (error11)
   {
     goto LABEL_46;
   }
@@ -552,7 +552,7 @@ LABEL_46:
   LOBYTE(v41) = v42;
   v39 = v43;
   v36 = v44;
-  v15 = [objc_alloc(objc_opt_class()) _initWithProfile:v7 primaryCalculator:v11 journaledCalculator:v16 startDate:v20 earliestStartDate:v24 boundedInterval:v26 anchor:v44 previousStatistics:v43 includesPrunableData:v41];
+  v15 = [objc_alloc(objc_opt_class()) _initWithProfile:profileCopy primaryCalculator:v11 journaledCalculator:v16 startDate:v20 earliestStartDate:v24 boundedInterval:v26 anchor:v44 previousStatistics:v43 includesPrunableData:v41];
 LABEL_51:
 
 LABEL_52:
@@ -570,10 +570,10 @@ LABEL_34:
 - (NSDateInterval)dateInterval
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
+  _lock_dateInterval = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_dateInterval;
 }
 
 - (BOOL)includesJournaledSamples
@@ -601,11 +601,11 @@ LABEL_34:
   return v3;
 }
 
-- (id)snapshotStatisticsWithError:(id *)a3
+- (id)snapshotStatisticsWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   includesPrunableData = self->_includesPrunableData;
-  v6 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_currentStatisticsWithError:a3];
+  v6 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_currentStatisticsWithError:error];
   os_unfair_lock_unlock(&self->_lock);
   if (v6)
   {
@@ -620,13 +620,13 @@ LABEL_34:
   return v7;
 }
 
-- (id)_lock_currentStatisticsWithError:(id *)a3
+- (id)_lock_currentStatisticsWithError:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator currentStatistics];
-  if (!v5)
+  currentStatistics = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator currentStatistics];
+  if (!currentStatistics)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 description:@"unable compute primary statistics"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"unable compute primary statistics"];
     v7 = 0;
     goto LABEL_14;
   }
@@ -634,7 +634,7 @@ LABEL_34:
   previousStatistics = self->_previousStatistics;
   if (previousStatistics)
   {
-    v7 = [(HKStatistics *)previousStatistics statisticsByCombiningWithNoiseLevelStatistics:v5 error:a3];
+    v7 = [(HKStatistics *)previousStatistics statisticsByCombiningWithNoiseLevelStatistics:currentStatistics error:error];
     if (!v7)
     {
       goto LABEL_14;
@@ -643,16 +643,16 @@ LABEL_34:
 
   else
   {
-    v7 = v5;
+    v7 = currentStatistics;
   }
 
   journaledCalculator = self->_journaledCalculator;
   if (journaledCalculator)
   {
-    v9 = [(HDStatisticsCollectionCalculator *)journaledCalculator currentStatistics];
-    if (v9)
+    currentStatistics2 = [(HDStatisticsCollectionCalculator *)journaledCalculator currentStatistics];
+    if (currentStatistics2)
     {
-      v10 = [v7 statisticsByCombiningWithNoiseLevelStatistics:v9 error:a3];
+      v10 = [v7 statisticsByCombiningWithNoiseLevelStatistics:currentStatistics2 error:error];
 
       v7 = v10;
       v11 = v7;
@@ -660,7 +660,7 @@ LABEL_34:
 
     else
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 description:@"unable compute journaled statistics"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"unable compute journaled statistics"];
       _HKInitializeLogging();
       v12 = *MEMORY[0x277CCC2C8];
       if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_FAULT))
@@ -679,45 +679,45 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)isExpiredForNowDate:(id)a3
+- (BOOL)isExpiredForNowDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HDHeadphoneAudioExposureStatisticsBucket *)self dateInterval];
-  v6 = [v5 endDate];
-  v7 = [v6 hk_isBeforeDate:v4];
+  dateCopy = date;
+  dateInterval = [(HDHeadphoneAudioExposureStatisticsBucket *)self dateInterval];
+  endDate = [dateInterval endDate];
+  v7 = [endDate hk_isBeforeDate:dateCopy];
 
   return v7;
 }
 
-- (id)queryForInitialStatisticsWithError:(id *)a3
+- (id)queryForInitialStatisticsWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_queryForInitialStatisticsWithError:a3];
+  v5 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_queryForInitialStatisticsWithError:error];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)updateWithSampleBatch:(id)a3 error:(id *)a4
+- (id)updateWithSampleBatch:(id)batch error:(id *)error
 {
-  v6 = a3;
+  batchCopy = batch;
   os_unfair_lock_lock(&self->_lock);
-  if ([v6 isJournaled])
+  if ([batchCopy isJournaled])
   {
-    v7 = [v6 samples];
-    v8 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_journalQuantitySamples:v7 error:a4];
+    samples = [batchCopy samples];
+    v8 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_journalQuantitySamples:samples error:error];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v9 = [v6 anchor];
+  anchor = [batchCopy anchor];
 
-  if (v9)
+  if (anchor)
   {
-    v7 = [v6 samples];
-    v10 = [v6 anchor];
-    v8 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_addQuantitySamples:v7 anchor:v10 error:a4];
+    samples = [batchCopy samples];
+    anchor2 = [batchCopy anchor];
+    v8 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_addQuantitySamples:samples anchor:anchor2 error:error];
 
     goto LABEL_5;
   }
@@ -726,15 +726,15 @@ LABEL_5:
   v13 = *MEMORY[0x277CCC2C8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_FAULT))
   {
-    [HDHeadphoneAudioExposureStatisticsBucket updateWithSampleBatch:v13 error:v6];
+    [HDHeadphoneAudioExposureStatisticsBucket updateWithSampleBatch:v13 error:batchCopy];
   }
 
   v8 = 0;
 LABEL_6:
   if (!self->_includesPrunableData)
   {
-    v11 = [v6 samples];
-    self->_includesPrunableData = [v11 hk_containsObjectPassingTest:&__block_literal_global_3];
+    samples2 = [batchCopy samples];
+    self->_includesPrunableData = [samples2 hk_containsObjectPassingTest:&__block_literal_global_3];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -771,20 +771,20 @@ uint64_t __72__HDHeadphoneAudioExposureStatisticsBucket_updateWithSampleBatch_er
   return v8;
 }
 
-- (void)unitTesting_setPreviousStatistics:(id)a3
+- (void)unitTesting_setPreviousStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   os_unfair_lock_lock(&self->_lock);
   previousStatistics = self->_previousStatistics;
-  self->_previousStatistics = v4;
+  self->_previousStatistics = statisticsCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unitTesting_setIncludesPrunableData:(BOOL)a3
+- (void)unitTesting_setIncludesPrunableData:(BOOL)data
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_includesPrunableData = a3;
+  self->_includesPrunableData = data;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -797,34 +797,34 @@ uint64_t __72__HDHeadphoneAudioExposureStatisticsBucket_updateWithSampleBatch_er
   return [(HDStatisticsCollectionCalculator *)primaryCalculator dateInterval];
 }
 
-- (id)_lock_journalQuantitySamples:(id)a3 error:(id *)a4
+- (id)_lock_journalQuantitySamples:(id)samples error:(id *)error
 {
-  v6 = a3;
+  samplesCopy = samples;
   os_unfair_lock_assert_owner(&self->_lock);
   v7 = self->_journaledCalculator;
   if (v7)
   {
-    v8 = v7;
+    _makeJournaledCalculator = v7;
   }
 
   else
   {
-    v8 = [objc_opt_class() _makeJournaledCalculator];
-    [v8 setDataSource:self->_dataSource];
-    [v8 setSourceOrderProvider:self->_sourceOrderProvider];
-    v9 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
-    [v8 setDateInterval:v9];
+    _makeJournaledCalculator = [objc_opt_class() _makeJournaledCalculator];
+    [_makeJournaledCalculator setDataSource:self->_dataSource];
+    [_makeJournaledCalculator setSourceOrderProvider:self->_sourceOrderProvider];
+    _lock_dateInterval = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
+    [_makeJournaledCalculator setDateInterval:_lock_dateInterval];
 
-    if (!v8)
+    if (!_makeJournaledCalculator)
     {
       goto LABEL_6;
     }
   }
 
-  if ([(HDStatisticsCollectionCalculatorDefaultDataSource *)self->_dataSource addValuesForQuantitySamples:v6 calculator:v8 includeSeries:0 error:a4])
+  if ([(HDStatisticsCollectionCalculatorDefaultDataSource *)self->_dataSource addValuesForQuantitySamples:samplesCopy calculator:_makeJournaledCalculator includeSeries:0 error:error])
   {
-    objc_storeStrong(&self->_journaledCalculator, v8);
-    v10 = [HDHeadphoneExposureStatisticUpdateResult resultForSamplesJournaled:v6];
+    objc_storeStrong(&self->_journaledCalculator, _makeJournaledCalculator);
+    v10 = [HDHeadphoneExposureStatisticUpdateResult resultForSamplesJournaled:samplesCopy];
     goto LABEL_7;
   }
 
@@ -835,11 +835,11 @@ LABEL_7:
   return v10;
 }
 
-- (id)_lock_addQuantitySamples:(id)a3 anchor:(id)a4 error:(id *)a5
+- (id)_lock_addQuantitySamples:(id)samples anchor:(id)anchor error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  samplesCopy = samples;
+  anchorCopy = anchor;
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_primaryCalculator)
   {
@@ -848,20 +848,20 @@ LABEL_7:
     v12 = MEMORY[0x277CCC2C8];
     if (anchor)
     {
-      v13 = [(NSNumber *)anchor longLongValue];
-      if (v13 > [(NSNumber *)v9 longLongValue])
+      longLongValue = [(NSNumber *)anchor longLongValue];
+      if (longLongValue > [(NSNumber *)anchorCopy longLongValue])
       {
         _HKInitializeLogging();
         v14 = *v12;
         if (os_log_type_enabled(*v12, OS_LOG_TYPE_ERROR))
         {
           v28 = v14;
-          v29 = [v8 count];
+          v29 = [samplesCopy count];
           v30 = *p_anchor;
           v31 = 134218498;
           v32 = v29;
           v33 = 2114;
-          v34 = v9;
+          v34 = anchorCopy;
           v35 = 2114;
           v36 = v30;
           _os_log_error_impl(&dword_251764000, v28, OS_LOG_TYPE_ERROR, "[Warning] Adding %lu samples with anchor (%{public}@) below currentAnchor (%{public}@).", &v31, 0x20u);
@@ -874,18 +874,18 @@ LABEL_7:
     if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v8 count];
+      v17 = [samplesCopy count];
       v18 = *p_anchor;
       v31 = 134218498;
       v32 = v17;
       v33 = 2114;
       v34 = v18;
       v35 = 2114;
-      v36 = v9;
+      v36 = anchorCopy;
       _os_log_impl(&dword_251764000, v16, OS_LOG_TYPE_DEFAULT, "Added %lu sample(s) to primary calculator (anchor: %{public}@ -> %{public}@)", &v31, 0x20u);
     }
 
-    v19 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self->_dataSource hearing_addQuantitySamples:v8 calculator:self->_primaryCalculator error:a5];
+    v19 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self->_dataSource hearing_addQuantitySamples:samplesCopy calculator:self->_primaryCalculator error:error];
     if (v19)
     {
       if (self->_journaledCalculator)
@@ -895,14 +895,14 @@ LABEL_7:
         if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEFAULT))
         {
           v21 = v20;
-          v22 = [v8 count];
+          v22 = [samplesCopy count];
           v23 = *p_anchor;
           v31 = 134218498;
           v32 = v22;
           v33 = 2114;
           v34 = v23;
           v35 = 2114;
-          v36 = v9;
+          v36 = anchorCopy;
           _os_log_impl(&dword_251764000, v21, OS_LOG_TYPE_DEFAULT, "Invalidated journaled calculator on %lu samples added (anchor: %{public}@ -> %{public}@)", &v31, 0x20u);
         }
 
@@ -910,14 +910,14 @@ LABEL_7:
         self->_journaledCalculator = 0;
       }
 
-      objc_storeStrong(&self->_anchor, a4);
+      objc_storeStrong(&self->_anchor, anchor);
       v25 = v19;
     }
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"unable to add samples without primary caclulator"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"unable to add samples without primary caclulator"];
     v19 = 0;
   }
 
@@ -926,7 +926,7 @@ LABEL_7:
   return v19;
 }
 
-- (id)_lock_queryForInitialStatisticsWithError:(id *)a3
+- (id)_lock_queryForInitialStatisticsWithError:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
@@ -935,18 +935,18 @@ LABEL_7:
     [HDHeadphoneAudioExposureStatisticsBucket _lock_queryForInitialStatisticsWithError:];
   }
 
-  v5 = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator dataSource];
+  dataSource = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator dataSource];
   dataSource = self->_dataSource;
 
-  if (v5 != dataSource)
+  if (dataSource != dataSource)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _lock_queryForInitialStatisticsWithError:];
   }
 
-  v7 = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator sourceOrderProvider];
+  sourceOrderProvider = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator sourceOrderProvider];
   sourceOrderProvider = self->_sourceOrderProvider;
 
-  if (v7 != sourceOrderProvider)
+  if (sourceOrderProvider != sourceOrderProvider)
   {
     [HDHeadphoneAudioExposureStatisticsBucket _lock_queryForInitialStatisticsWithError:];
   }
@@ -957,13 +957,13 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
-    v13 = [v12 startDate];
-    [v13 timeIntervalSince1970];
+    _lock_dateInterval = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
+    startDate = [_lock_dateInterval startDate];
+    [startDate timeIntervalSince1970];
     v15 = v14;
-    v16 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
-    v17 = [v16 endDate];
-    [v17 timeIntervalSince1970];
+    _lock_dateInterval2 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
+    endDate = [_lock_dateInterval2 endDate];
+    [endDate timeIntervalSince1970];
     *buf = 134218240;
     v47 = v15;
     v48 = 2048;
@@ -986,16 +986,16 @@ LABEL_7:
       [HDHeadphoneAudioExposureStatisticsBucket _lock_queryForInitialStatisticsWithError:v39];
     }
 
-    v40 = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator dateInterval];
-    [(HDStatisticsCollectionCalculator *)self->_primaryCalculator setDateInterval:v40];
+    dateInterval = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator dateInterval];
+    [(HDStatisticsCollectionCalculator *)self->_primaryCalculator setDateInterval:dateInterval];
 
     v41 = v21;
     if (v41)
     {
-      if (a3)
+      if (error)
       {
         v42 = v41;
-        *a3 = v41;
+        *error = v41;
       }
 
       else
@@ -1009,7 +1009,7 @@ LABEL_7:
 
   if (!self->_previousStatistics || !self->_includesPrunableData)
   {
-    v22 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_fetchIncludesPrunableDataWithError:a3];
+    v22 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_fetchIncludesPrunableDataWithError:error];
     if (!v22)
     {
 LABEL_26:
@@ -1021,20 +1021,20 @@ LABEL_26:
     self->_includesPrunableData = [v22 BOOLValue];
   }
 
-  v24 = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator currentStatistics];
+  currentStatistics = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator currentStatistics];
 
-  if (!v24)
+  if (!currentStatistics)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 description:@"Something went wrong with the calculator and we were unable to compute current statistics."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Something went wrong with the calculator and we were unable to compute current statistics."];
     goto LABEL_26;
   }
 
   journaledCalculator = self->_journaledCalculator;
   self->_journaledCalculator = 0;
 
-  v26 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self->_dataSource anchor];
+  anchor = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self->_dataSource anchor];
   anchor = self->_anchor;
-  self->_anchor = v26;
+  self->_anchor = anchor;
 
   _HKInitializeLogging();
   v28 = *v9;
@@ -1042,13 +1042,13 @@ LABEL_26:
   {
     v29 = self->_anchor;
     v30 = v28;
-    v31 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
-    v32 = [v31 startDate];
-    [v32 timeIntervalSince1970];
+    _lock_dateInterval3 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
+    startDate2 = [_lock_dateInterval3 startDate];
+    [startDate2 timeIntervalSince1970];
     v34 = v33;
-    v35 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
-    v36 = [v35 endDate];
-    [v36 timeIntervalSince1970];
+    _lock_dateInterval4 = [(HDHeadphoneAudioExposureStatisticsBucket *)self _lock_dateInterval];
+    endDate2 = [_lock_dateInterval4 endDate];
+    [endDate2 timeIntervalSince1970];
     *buf = 138543874;
     v47 = v29;
     v48 = 2048;
@@ -1066,21 +1066,21 @@ LABEL_27:
   return v38;
 }
 
-- (id)_lock_fetchIncludesPrunableDataWithError:(id *)a3
+- (id)_lock_fetchIncludesPrunableDataWithError:(id *)error
 {
   v27[3] = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
-  v4 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self->_dataSource profile];
+  profile = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self->_dataSource profile];
   v5 = HKHeadphoneAudioExposureType();
   v6 = MEMORY[0x277D10B20];
   v7 = HDSampleEntityPredicateForDataType();
   v27[0] = v7;
-  v8 = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator dateInterval];
+  dateInterval = [(HDStatisticsCollectionCalculator *)self->_primaryCalculator dateInterval];
   v9 = HDSampleEntityPredicateForDateInterval();
   v27[1] = v9;
-  v10 = [v4 metadataManager];
+  metadataManager = [profile metadataManager];
   v11 = [MEMORY[0x277CBEB98] setWithObject:MEMORY[0x277CBEC38]];
-  v12 = [v10 predicateWithMetadataKey:*MEMORY[0x277CCDFF8] allowedValues:v11];
+  v12 = [metadataManager predicateWithMetadataKey:*MEMORY[0x277CCDFF8] allowedValues:v11];
   v27[2] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:3];
   v14 = [v6 predicateMatchingAllPredicates:v13];
@@ -1091,7 +1091,7 @@ LABEL_27:
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
   v26 = 0;
-  v15 = [MEMORY[0x277D10810] entityEnumeratorWithType:v5 profile:v4];
+  v15 = [MEMORY[0x277D10810] entityEnumeratorWithType:v5 profile:profile];
   [v15 setIgnoreEntityClassAdditionalPredicateForEnumeration:1];
   [v15 setPredicate:v14];
   [v15 setLimitCount:1];
@@ -1100,7 +1100,7 @@ LABEL_27:
   v20[2] = __85__HDHeadphoneAudioExposureStatisticsBucket__lock_fetchIncludesPrunableDataWithError___block_invoke;
   v20[3] = &unk_2796C6510;
   v20[4] = &v21;
-  [v15 enumerateWithError:a3 handler:v20];
+  [v15 enumerateWithError:error handler:v20];
   v16 = [MEMORY[0x277CCABB0] numberWithInt:v22[5] != 0];
 
   _Block_object_dispose(&v21, 8);

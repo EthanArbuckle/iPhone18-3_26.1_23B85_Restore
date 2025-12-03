@@ -45,8 +45,8 @@
 
 - (id)br_errorDescription
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695E620]];
+  userInfo = [self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695E620]];
   v4 = v3;
   if (v3)
   {
@@ -55,7 +55,7 @@
 
   else
   {
-    v5 = [a1 description];
+    v5 = [self description];
   }
 
   v6 = v5;
@@ -174,10 +174,10 @@
 
 - (BOOL)br_isCKErrorCode:()BRAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:*MEMORY[0x1E695B740]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E695B740]])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -190,16 +190,16 @@
 
 - (BOOL)br_isCKErrorCode:()BRAdditions underlyingErrorCode:
 {
-  if (![a1 br_isCKErrorCode:?])
+  if (![self br_isCKErrorCode:?])
   {
     return 0;
   }
 
-  v6 = [a1 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"NSUnderlyingError"];
+  userInfo = [self userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"NSUnderlyingError"];
 
-  v8 = [v7 domain];
-  if ([v8 isEqualToString:*MEMORY[0x1E695B838]])
+  domain = [v7 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E695B838]])
   {
     v9 = [v7 code] == a4;
   }
@@ -214,10 +214,10 @@
 
 - (BOOL)br_isPOSIXErrorCode:()BRAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -230,10 +230,10 @@
 
 - (BOOL)br_isCocoaErrorCode:()BRAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -246,10 +246,10 @@
 
 - (BOOL)br_isNSXPCConnectionError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v3 = [a1 code] == 4099 || objc_msgSend(a1, "code") == 4097;
+    v3 = [self code] == 4099 || objc_msgSend(self, "code") == 4097;
   }
 
   else
@@ -262,10 +262,10 @@
 
 - (BOOL)br_isCloudDocsErrorCode:()BRAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:@"BRCloudDocsErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"BRCloudDocsErrorDomain"])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -278,10 +278,10 @@
 
 - (BOOL)br_isFileProviderErrorCode:()BRAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:*MEMORY[0x1E6967188]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E6967188]])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -294,10 +294,10 @@
 
 - (BOOL)br_isNSURLErrorCode:()BRAdditions
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:*MEMORY[0x1E696A978]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A978]])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -310,25 +310,25 @@
 
 - (id)br_underlyingPOSIXError
 {
-  v2 = [a1 domain];
+  domain = [self domain];
   v3 = *MEMORY[0x1E696A798];
-  v4 = [v2 isEqualToString:*MEMORY[0x1E696A798]];
+  v4 = [domain isEqualToString:*MEMORY[0x1E696A798]];
 
   if (v4)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [a1 userInfo];
-    v5 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [self userInfo];
+    selfCopy = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-    v7 = [v5 domain];
-    [v7 isEqualToString:v3];
+    domain2 = [selfCopy domain];
+    [domain2 isEqualToString:v3];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 + (id)brc_errorLoggedOutWithUnderlyingError:()BRAdditions
@@ -455,12 +455,12 @@
   v5 = *MEMORY[0x1E696A368];
   v13[0] = v4;
   v13[1] = v5;
-  v6 = [a3 path];
-  v7 = v6;
+  path = [a3 path];
+  v7 = path;
   v8 = @"nil";
-  if (v6)
+  if (path)
   {
-    v8 = v6;
+    v8 = path;
   }
 
   v14[1] = v8;
@@ -507,12 +507,12 @@
   v5 = *MEMORY[0x1E696A368];
   v13[0] = v4;
   v13[1] = v5;
-  v6 = [a3 path];
-  v7 = v6;
+  path = [a3 path];
+  v7 = path;
   v8 = @"nil";
-  if (v6)
+  if (path)
   {
-    v8 = v6;
+    v8 = path;
   }
 
   v14[1] = v8;
@@ -606,12 +606,12 @@
   v16[0] = v6;
   v16[1] = v7;
   v8 = a4;
-  v9 = [a3 path];
-  v10 = v9;
+  path = [a3 path];
+  v10 = path;
   v11 = @"nil";
-  if (v9)
+  if (path)
   {
-    v11 = v9;
+    v11 = path;
   }
 
   v16[2] = *MEMORY[0x1E696AA08];
@@ -664,12 +664,12 @@
   v10 = *MEMORY[0x1E696A368];
   v17[0] = v9;
   v17[1] = v10;
-  v11 = [v6 path];
+  path = [v6 path];
 
   v12 = @"nil";
-  if (v11)
+  if (path)
   {
-    v12 = v11;
+    v12 = path;
   }
 
   v18[1] = v12;
@@ -793,8 +793,8 @@
   {
     v13 = MEMORY[0x1E696ABC0];
     v18 = @"BRPartialErrorsByURLKey";
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    v19[0] = v11;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v19[0] = dictionary;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v10 = [v13 errorWithDomain:@"BRCloudDocsErrorDomain" code:21 userInfo:v12];
 LABEL_6:
@@ -805,19 +805,19 @@ LABEL_6:
   v10 = v9;
   if ([v9 code] != 21)
   {
-    v11 = brc_bread_crumbs("+[NSError(BRAdditions) brc_addPartialError:forURL:toError:]", 477);
+    dictionary = brc_bread_crumbs("+[NSError(BRAdditions) brc_addPartialError:forURL:toError:]", 477);
     v12 = brc_default_log(0, 0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
-      [NSError(BRAdditions) brc_addPartialError:v11 forURL:v12 toError:?];
+      [NSError(BRAdditions) brc_addPartialError:dictionary forURL:v12 toError:?];
     }
 
     goto LABEL_6;
   }
 
 LABEL_7:
-  v14 = [v10 userInfo];
-  v15 = [v14 objectForKeyedSubscript:@"BRPartialErrorsByURLKey"];
+  userInfo = [v10 userInfo];
+  v15 = [userInfo objectForKeyedSubscript:@"BRPartialErrorsByURLKey"];
 
   if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -883,10 +883,10 @@ LABEL_7:
 {
   v3 = MEMORY[0x1E696ABC0];
   v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 reason];
+  name = [v4 name];
+  reason = [v4 reason];
 
-  v7 = [v3 br_errorWithDomain:@"BRCloudDocsErrorDomain" code:143 description:{@"%@ - %@", v5, v6}];
+  v7 = [v3 br_errorWithDomain:@"BRCloudDocsErrorDomain" code:143 description:{@"%@ - %@", name, reason}];
 
   return v7;
 }

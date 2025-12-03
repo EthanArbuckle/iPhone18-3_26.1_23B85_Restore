@@ -1,7 +1,7 @@
 @interface SBDashBoardPolicyBasedBehaviorProvider
 - (NSString)coverSheetIdentifier;
-- (SBDashBoardPolicyBasedBehaviorProvider)initWithCoverSheetViewController:(id)a3 policyAggregator:(id)a4;
-- (unint64_t)_restrictedCapability:(unint64_t)a3 forAggregatorCapability:(int64_t)a4;
+- (SBDashBoardPolicyBasedBehaviorProvider)initWithCoverSheetViewController:(id)controller policyAggregator:(id)aggregator;
+- (unint64_t)_restrictedCapability:(unint64_t)capability forAggregatorCapability:(int64_t)aggregatorCapability;
 - (unint64_t)restrictedCapabilities;
 - (void)dealloc;
 @end
@@ -29,27 +29,27 @@
   return NSStringFromClass(v2);
 }
 
-- (SBDashBoardPolicyBasedBehaviorProvider)initWithCoverSheetViewController:(id)a3 policyAggregator:(id)a4
+- (SBDashBoardPolicyBasedBehaviorProvider)initWithCoverSheetViewController:(id)controller policyAggregator:(id)aggregator
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  aggregatorCopy = aggregator;
   v18.receiver = self;
   v18.super_class = SBDashBoardPolicyBasedBehaviorProvider;
   v9 = [(SBDashBoardPolicyBasedBehaviorProvider *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_coverSheetViewController, a3);
+    objc_storeStrong(&v9->_coverSheetViewController, controller);
     [(CSCoverSheetViewController *)v10->_coverSheetViewController registerExternalBehaviorProvider:v10];
-    objc_storeStrong(&v10->_policyAggregator, a4);
+    objc_storeStrong(&v10->_policyAggregator, aggregator);
     objc_initWeak(&location, v10);
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __92__SBDashBoardPolicyBasedBehaviorProvider_initWithCoverSheetViewController_policyAggregator___block_invoke;
     v15[3] = &unk_2783AFD98;
     objc_copyWeak(&v16, &location);
-    v12 = [v11 addObserverForName:@"SBPolicyAggregatorCapabilitiesChangedNotification" object:v8 queue:0 usingBlock:v15];
+    v12 = [defaultCenter addObserverForName:@"SBPolicyAggregatorCapabilitiesChangedNotification" object:aggregatorCopy queue:0 usingBlock:v15];
     notificationToken = v10->_notificationToken;
     v10->_notificationToken = v12;
 
@@ -69,24 +69,24 @@ void __92__SBDashBoardPolicyBasedBehaviorProvider_initWithCoverSheetViewControll
 - (void)dealloc
 {
   [(CSCoverSheetViewController *)self->_coverSheetViewController unregisterExternalBehaviorProvider:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_notificationToken];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_notificationToken];
 
   v4.receiver = self;
   v4.super_class = SBDashBoardPolicyBasedBehaviorProvider;
   [(SBDashBoardPolicyBasedBehaviorProvider *)&v4 dealloc];
 }
 
-- (unint64_t)_restrictedCapability:(unint64_t)a3 forAggregatorCapability:(int64_t)a4
+- (unint64_t)_restrictedCapability:(unint64_t)capability forAggregatorCapability:(int64_t)aggregatorCapability
 {
-  if ([(SBMainDisplayPolicyAggregator *)self->_policyAggregator allowsCapability:a4])
+  if ([(SBMainDisplayPolicyAggregator *)self->_policyAggregator allowsCapability:aggregatorCapability])
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return capability;
   }
 }
 

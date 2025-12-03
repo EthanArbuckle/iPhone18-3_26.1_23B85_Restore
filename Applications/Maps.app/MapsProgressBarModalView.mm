@@ -1,6 +1,6 @@
 @interface MapsProgressBarModalView
-- (MapsProgressBarModalView)initWithCoder:(id)a3;
-- (MapsProgressBarModalView)initWithFrame:(CGRect)a3;
+- (MapsProgressBarModalView)initWithCoder:(id)coder;
+- (MapsProgressBarModalView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 @end
 
@@ -38,67 +38,67 @@
   [(MapsProgressBarModalView *)self addSubview:self->_contentView];
   [(UIView *)self->_contentView addSubview:self->_progressLabel];
   [(UIView *)self->_contentView addSubview:self->_progressView];
-  v55 = [(UILabel *)self->_progressLabel topAnchor];
-  v54 = [(UIView *)self->_contentView topAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  topAnchor = [(UILabel *)self->_progressLabel topAnchor];
+  topAnchor2 = [(UIView *)self->_contentView topAnchor];
+  v53 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v56[0] = v53;
-  v52 = [(UILabel *)self->_progressLabel bottomAnchor];
-  v51 = [(UIProgressView *)self->_progressView topAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  bottomAnchor = [(UILabel *)self->_progressLabel bottomAnchor];
+  topAnchor3 = [(UIProgressView *)self->_progressView topAnchor];
+  v50 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   v56[1] = v50;
-  v49 = [(UIProgressView *)self->_progressView bottomAnchor];
-  v48 = [(UIView *)self->_contentView bottomAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  bottomAnchor2 = [(UIProgressView *)self->_progressView bottomAnchor];
+  bottomAnchor3 = [(UIView *)self->_contentView bottomAnchor];
+  v47 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v56[2] = v47;
-  v46 = [(UILabel *)self->_progressLabel leadingAnchor];
-  v45 = [(UIView *)self->_contentView leadingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  leadingAnchor = [(UILabel *)self->_progressLabel leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_contentView leadingAnchor];
+  v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v56[3] = v44;
-  v43 = [(UILabel *)self->_progressLabel trailingAnchor];
-  v42 = [(UIView *)self->_contentView trailingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  trailingAnchor = [(UILabel *)self->_progressLabel trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_contentView trailingAnchor];
+  v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v56[4] = v41;
-  v40 = [(UIProgressView *)self->_progressView leadingAnchor];
-  v39 = [(UIView *)self->_contentView leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  leadingAnchor3 = [(UIProgressView *)self->_progressView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_contentView leadingAnchor];
+  v38 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v56[5] = v38;
-  v37 = [(UIProgressView *)self->_progressView trailingAnchor];
-  v36 = [(UIView *)self->_contentView trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  trailingAnchor3 = [(UIProgressView *)self->_progressView trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_contentView trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v56[6] = v35;
-  v34 = [(UIView *)self->_contentView centerYAnchor];
-  v33 = [(MapsProgressBarModalView *)self centerYAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  centerYAnchor = [(UIView *)self->_contentView centerYAnchor];
+  centerYAnchor2 = [(MapsProgressBarModalView *)self centerYAnchor];
+  v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v56[7] = v32;
-  v31 = [(UIView *)self->_contentView topAnchor];
-  v30 = [(MapsProgressBarModalView *)self topAnchor];
-  v29 = [v31 constraintGreaterThanOrEqualToAnchor:v30];
+  topAnchor4 = [(UIView *)self->_contentView topAnchor];
+  topAnchor5 = [(MapsProgressBarModalView *)self topAnchor];
+  v29 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5];
   v56[8] = v29;
-  v28 = [(UIView *)self->_contentView bottomAnchor];
-  v27 = [(MapsProgressBarModalView *)self bottomAnchor];
-  v26 = [v28 constraintLessThanOrEqualToAnchor:v27];
+  bottomAnchor4 = [(UIView *)self->_contentView bottomAnchor];
+  bottomAnchor5 = [(MapsProgressBarModalView *)self bottomAnchor];
+  v26 = [bottomAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor5];
   v56[9] = v26;
-  v16 = [(UIView *)self->_contentView centerXAnchor];
-  v17 = [(MapsProgressBarModalView *)self centerXAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerXAnchor = [(UIView *)self->_contentView centerXAnchor];
+  centerXAnchor2 = [(MapsProgressBarModalView *)self centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v56[10] = v18;
-  v19 = [(UIView *)self->_contentView leadingAnchor];
-  v20 = [(MapsProgressBarModalView *)self leadingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:8.0];
+  leadingAnchor5 = [(UIView *)self->_contentView leadingAnchor];
+  leadingAnchor6 = [(MapsProgressBarModalView *)self leadingAnchor];
+  v21 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:8.0];
   v56[11] = v21;
-  v22 = [(UIView *)self->_contentView trailingAnchor];
-  v23 = [(MapsProgressBarModalView *)self trailingAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:-8.0];
+  trailingAnchor5 = [(UIView *)self->_contentView trailingAnchor];
+  trailingAnchor6 = [(MapsProgressBarModalView *)self trailingAnchor];
+  v24 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-8.0];
   v56[12] = v24;
   v25 = [NSArray arrayWithObjects:v56 count:13];
   [NSLayoutConstraint activateConstraints:v25];
 }
 
-- (MapsProgressBarModalView)initWithCoder:(id)a3
+- (MapsProgressBarModalView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MapsProgressBarModalView;
-  v3 = [(MapsProgressBarModalView *)&v6 initWithCoder:a3];
+  v3 = [(MapsProgressBarModalView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -108,11 +108,11 @@
   return v4;
 }
 
-- (MapsProgressBarModalView)initWithFrame:(CGRect)a3
+- (MapsProgressBarModalView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MapsProgressBarModalView;
-  v3 = [(MapsProgressBarModalView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsProgressBarModalView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

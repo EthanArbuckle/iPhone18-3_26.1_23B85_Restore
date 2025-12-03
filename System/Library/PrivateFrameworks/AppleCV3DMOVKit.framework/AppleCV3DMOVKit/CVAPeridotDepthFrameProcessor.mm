@@ -1,13 +1,13 @@
 @interface CVAPeridotDepthFrameProcessor
-- (CVAPeridotDepthFrameProcessor)initWithCalibrationDict:(id)a3;
-- (id)process:(__CVBuffer *)a3;
+- (CVAPeridotDepthFrameProcessor)initWithCalibrationDict:(id)dict;
+- (id)process:(__CVBuffer *)process;
 @end
 
 @implementation CVAPeridotDepthFrameProcessor
 
-- (CVAPeridotDepthFrameProcessor)initWithCalibrationDict:(id)a3
+- (CVAPeridotDepthFrameProcessor)initWithCalibrationDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v10.receiver = self;
   v10.super_class = CVAPeridotDepthFrameProcessor;
   v5 = [(CVAPeridotDepthFrameProcessor *)&v10 init];
@@ -16,7 +16,7 @@
     goto LABEL_4;
   }
 
-  v6 = [MEMORY[0x277D3A158] calibrationDataWithPeridotCalibDataDictionary:v4];
+  v6 = [MEMORY[0x277D3A158] calibrationDataWithPeridotCalibDataDictionary:dictCopy];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277D3A148]) initWithSystemCalibrationData:v6];
@@ -30,27 +30,27 @@ LABEL_4:
   return v6;
 }
 
-- (id)process:(__CVBuffer *)a3
+- (id)process:(__CVBuffer *)process
 {
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  Width = CVPixelBufferGetWidth(a3);
+  CVPixelBufferLockBaseAddress(process, 1uLL);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(process);
+  Width = CVPixelBufferGetWidth(process);
   if (BytesPerRow == Width)
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    v8 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:BaseAddress length:CVPixelBufferGetDataSize(a3) freeWhenDone:0];
+    BaseAddress = CVPixelBufferGetBaseAddress(process);
+    v8 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:BaseAddress length:CVPixelBufferGetDataSize(process) freeWhenDone:0];
     v9 = [(PDDepthProcessor *)self->_pdProc generatePointCloudFromRawFrame:v8];
 
     v10 = v9;
 LABEL_13:
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferUnlockBaseAddress(process, 1uLL);
     v22 = 0;
     goto LABEL_15;
   }
 
   v11 = Width;
   v12 = objc_autoreleasePoolPush();
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(process);
   if (PixelFormatType == 1278226488)
   {
     v14 = 1;
@@ -68,16 +68,16 @@ LABEL_13:
     v14 = 2;
   }
 
-  Height = CVPixelBufferGetHeight(a3);
-  v16 = CVPixelBufferGetBaseAddress(a3);
+  Height = CVPixelBufferGetHeight(process);
+  v16 = CVPixelBufferGetBaseAddress(process);
   v17 = v14 * v11;
-  v18 = [MEMORY[0x277CBEB28] dataWithLength:v17 * Height];
+  height = [MEMORY[0x277CBEB28] dataWithLength:v17 * Height];
   if (Height)
   {
     v19 = 0;
     do
     {
-      memcpy(([v18 mutableBytes] + v19), v16, v17);
+      memcpy(([height mutableBytes] + v19), v16, v17);
       v16 += BytesPerRow;
       v19 += v17;
       --Height;
@@ -86,7 +86,7 @@ LABEL_13:
     while (Height);
   }
 
-  v20 = [(PDDepthProcessor *)self->_pdProc generatePointCloudFromRawFrame:v18];
+  v20 = [(PDDepthProcessor *)self->_pdProc generatePointCloudFromRawFrame:height];
 
   v21 = 1;
   v10 = v20;

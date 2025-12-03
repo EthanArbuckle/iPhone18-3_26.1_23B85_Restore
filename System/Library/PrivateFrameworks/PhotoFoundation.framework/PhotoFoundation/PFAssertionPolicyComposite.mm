@@ -1,20 +1,20 @@
 @interface PFAssertionPolicyComposite
 - (PFAssertionPolicyComposite)init;
-- (void)notifyAssertion:(id)a3;
+- (void)notifyAssertion:(id)assertion;
 @end
 
 @implementation PFAssertionPolicyComposite
 
-- (void)notifyAssertion:(id)a3
+- (void)notifyAssertion:(id)assertion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PFAssertionPolicyComposite *)self policies];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  policies = [(PFAssertionPolicyComposite *)self policies];
+  v6 = [policies countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -26,14 +26,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(policies);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) notifyAssertion:v4];
+        [*(*(&v11 + 1) + 8 * v9++) notifyAssertion:assertionCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [policies countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);

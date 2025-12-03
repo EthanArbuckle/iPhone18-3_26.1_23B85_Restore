@@ -1,22 +1,22 @@
 @interface NFCSession
-- (NFCSession)initWithMachServiceName:(id)a3 remoteObjectInterface:(id)a4 exportedObjectInterface:(id)a5 exportedObject:(id)a6 delegate:(id)a7;
+- (NFCSession)initWithMachServiceName:(id)name remoteObjectInterface:(id)interface exportedObjectInterface:(id)objectInterface exportedObject:(id)object delegate:(id)delegate;
 - (id)_connectIfNeeded;
 - (id)_exportedObjectClassName;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_invalidate;
 - (void)dealloc;
 @end
 
 @implementation NFCSession
 
-- (NFCSession)initWithMachServiceName:(id)a3 remoteObjectInterface:(id)a4 exportedObjectInterface:(id)a5 exportedObject:(id)a6 delegate:(id)a7
+- (NFCSession)initWithMachServiceName:(id)name remoteObjectInterface:(id)interface exportedObjectInterface:(id)objectInterface exportedObject:(id)object delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  interfaceCopy = interface;
+  objectInterfaceCopy = objectInterface;
+  objectCopy = object;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = NFCSession;
   v17 = [(NFCSession *)&v26 init];
@@ -32,14 +32,14 @@
     *(v17 + 4) = v21;
 
     dispatch_queue_set_specific(*(v17 + 4), *MEMORY[0x277D82BB0], 1, 0);
-    objc_storeStrong(v17 + 5, a4);
-    objc_storeStrong(v17 + 6, a5);
-    objc_storeWeak(v17 + 8, v15);
-    v23 = [v12 copy];
+    objc_storeStrong(v17 + 5, interface);
+    objc_storeStrong(v17 + 6, objectInterface);
+    objc_storeWeak(v17 + 8, objectCopy);
+    v23 = [nameCopy copy];
     v24 = *(v17 + 7);
     *(v17 + 7) = v23;
 
-    objc_storeWeak(v17 + 9, v16);
+    objc_storeWeak(v17 + 9, delegateCopy);
     *(v17 + 3) = 0;
   }
 
@@ -54,15 +54,15 @@
   [(NFCSession *)&v3 dealloc];
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NFCSession *)self _connection];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  _connection = [(NFCSession *)self _connection];
+  v6 = _connection;
+  if (_connection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    v7 = [_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
@@ -74,7 +74,7 @@
     v16[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v12 = [v8 initWithDomain:v9 code:7 userInfo:v11];
-    v4[2](v4, v12);
+    handlerCopy[2](handlerCopy, v12);
 
     v7 = 0;
   }
@@ -84,15 +84,15 @@
   return v7;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NFCSession *)self _connection];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  _connection = [(NFCSession *)self _connection];
+  v6 = _connection;
+  if (_connection)
   {
-    v7 = [v5 remoteObjectProxyWithErrorHandler:v4];
+    v7 = [_connection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
@@ -104,7 +104,7 @@
     v16[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v12 = [v8 initWithDomain:v9 code:7 userInfo:v11];
-    v4[2](v4, v12);
+    handlerCopy[2](handlerCopy, v12);
 
     v7 = 0;
   }

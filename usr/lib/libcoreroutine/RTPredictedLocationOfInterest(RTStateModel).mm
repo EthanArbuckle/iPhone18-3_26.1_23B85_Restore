@@ -13,8 +13,8 @@
   v13 = [v10 modeOfTransportationFromMotionActivityType:a6];
   v14 = objc_alloc(MEMORY[0x277D01270]);
   v15 = objc_alloc(MEMORY[0x277D012A8]);
-  v16 = [v12 identifier];
-  v17 = [v15 initWithIdentifier:v16];
+  identifier = [v12 identifier];
+  v17 = [v15 initWithIdentifier:identifier];
   v21[0] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   v19 = [v14 initWithLocationOfInterest:v12 confidence:v11 nextEntryTime:v13 modeOfTransportation:v18 sources:a2];

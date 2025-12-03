@@ -1,32 +1,32 @@
 @interface SBKeyboardHomeAffordanceAssertion
-+ (id)assertionForGestureWindow:(id)a3;
-- (SBKeyboardHomeAffordanceAssertion)initWithGestureWindow:(id)a3;
++ (id)assertionForGestureWindow:(id)window;
+- (SBKeyboardHomeAffordanceAssertion)initWithGestureWindow:(id)window;
 - (UIWindow)sourceWindow;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setAdditionalEdgeMargin:(double)a3;
+- (void)setAdditionalEdgeMargin:(double)margin;
 @end
 
 @implementation SBKeyboardHomeAffordanceAssertion
 
-+ (id)assertionForGestureWindow:(id)a3
++ (id)assertionForGestureWindow:(id)window
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithGestureWindow:v4];
+  windowCopy = window;
+  v5 = [[self alloc] initWithGestureWindow:windowCopy];
 
   return v5;
 }
 
-- (SBKeyboardHomeAffordanceAssertion)initWithGestureWindow:(id)a3
+- (SBKeyboardHomeAffordanceAssertion)initWithGestureWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v9.receiver = self;
   v9.super_class = SBKeyboardHomeAffordanceAssertion;
   v5 = [(SBKeyboardHomeAffordanceAssertion *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sourceWindow, v4);
+    objc_storeWeak(&v5->_sourceWindow, windowCopy);
     v7 = +[SBKeyboardHomeAffordanceController sharedInstance];
     [v7 registerAssertion:v6];
   }
@@ -50,11 +50,11 @@
   [v3 unregisterAssertion:self];
 }
 
-- (void)setAdditionalEdgeMargin:(double)a3
+- (void)setAdditionalEdgeMargin:(double)margin
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_additionalEdgeMargin = a3;
+    self->_additionalEdgeMargin = margin;
     v5 = +[SBKeyboardHomeAffordanceController sharedInstance];
     [v5 _didChangeAdditionalEdgeMarginForAssertion:self];
   }

@@ -1,7 +1,7 @@
 @interface CRLWPShapeRepAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-- (BOOL)crlaxCanBeOccludedForConnectionKnobDraggingByRep:(id)a3;
-- (BOOL)crlaxCanBeginEditingChildRepOnDoubleTap:(id)a3;
++ (id)crlaxCastFrom:(id)from;
+- (BOOL)crlaxCanBeOccludedForConnectionKnobDraggingByRep:(id)rep;
+- (BOOL)crlaxCanBeginEditingChildRepOnDoubleTap:(id)tap;
 - (BOOL)crlaxCanOccludeConnectionKnobDragging;
 - (BOOL)crlaxIsEditingChildRep;
 - (BOOL)crlaxIsTextboxRep;
@@ -23,47 +23,47 @@
 - (id)crlaxFocusedElement;
 - (id)crlaxSummaryDescription;
 - (void)crlaxBeginEditingAtEnd;
-- (void)crlaxLoadChildrenIntoCollection:(id)a3;
-- (void)crlaxShapeRepWillBeginEditingContainedRep:(id)a3;
-- (void)willBeginEditingContainedInfo:(id)a3;
+- (void)crlaxLoadChildrenIntoCollection:(id)collection;
+- (void)crlaxShapeRepWillBeginEditingContainedRep:(id)rep;
+- (void)willBeginEditingContainedInfo:(id)info;
 @end
 
 @implementation CRLWPShapeRepAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (BOOL)crlaxIsTextboxRep
 {
-  v2 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v3 = [v2 info];
-  v4 = [v3 isAutogrowingTextBox];
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
+  isAutogrowingTextBox = [info isAutogrowingTextBox];
 
-  return v4;
+  return isAutogrowingTextBox;
 }
 
 - (NSString)crlaxLabel
 {
-  v3 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v4 = [v3 info];
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
 
   if ([(CRLWPShapeRepAccessibility *)self crlaxIsTextboxRep])
   {
-    [v4 localizedName];
+    [info localizedName];
   }
 
   else
   {
-    [v4 crlaxLocalizedName];
+    [info crlaxLocalizedName];
   }
   v5 = ;
-  v14 = [v4 accessibilityDescription];
+  accessibilityDescription = [info accessibilityDescription];
   v12 = __CRLAccessibilityStringForVariables(1, 0, v6, v7, v8, v9, v10, v11, v5);
 
   return v12;
@@ -71,17 +71,17 @@
 
 - (id)accessibilityUserInputLabels
 {
-  v3 = [(CRLWPShapeRepAccessibility *)self crlaxLabel];
-  v11 = v3;
+  crlaxLabel = [(CRLWPShapeRepAccessibility *)self crlaxLabel];
+  v11 = crlaxLabel;
   v4 = [NSArray arrayWithObjects:&v11 count:1];
 
-  v5 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v6 = [v5 info];
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
 
-  if ([v6 isLine])
+  if ([info isLine])
   {
-    v7 = [v6 crlaxLocalizedName];
-    v10 = v7;
+    crlaxLocalizedName = [info crlaxLocalizedName];
+    v10 = crlaxLocalizedName;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
 
     v4 = v8;
@@ -94,77 +94,77 @@
 {
   v36.receiver = self;
   v36.super_class = CRLWPShapeRepAccessibility;
-  v3 = [(CRLCanvasRepAccessibility *)&v36 accessibilityCustomContent];
-  v4 = [v3 mutableCopy];
+  accessibilityCustomContent = [(CRLCanvasRepAccessibility *)&v36 accessibilityCustomContent];
+  v4 = [accessibilityCustomContent mutableCopy];
 
-  v5 = [(CRLWPShapeRepAccessibility *)self crlaxFillColorDescription];
-  if ([v5 length])
+  crlaxFillColorDescription = [(CRLWPShapeRepAccessibility *)self crlaxFillColorDescription];
+  if ([crlaxFillColorDescription length])
   {
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Fill color" value:0 table:0];
-    v8 = [AXCustomContent customContentWithLabel:v7 value:v5];
+    v8 = [AXCustomContent customContentWithLabel:v7 value:crlaxFillColorDescription];
     [v4 addObject:v8];
   }
 
-  v9 = [(CRLWPShapeRepAccessibility *)self crlaxStrokeDescription];
-  if ([v9 length])
+  crlaxStrokeDescription = [(CRLWPShapeRepAccessibility *)self crlaxStrokeDescription];
+  if ([crlaxStrokeDescription length])
   {
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:@"Stroke" value:0 table:0];
-    v12 = [AXCustomContent customContentWithLabel:v11 value:v9];
+    v12 = [AXCustomContent customContentWithLabel:v11 value:crlaxStrokeDescription];
     [v4 addObject:v12];
   }
 
-  v13 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v14 = [v13 info];
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
 
-  if ([v14 isLine])
+  if ([info isLine])
   {
     v15 = objc_opt_class();
-    v16 = [v14 tailLineEnd];
-    v17 = __CRLAccessibilityCastAsSafeCategory(v15, v16, 0, 0);
+    tailLineEnd = [info tailLineEnd];
+    v17 = __CRLAccessibilityCastAsSafeCategory(v15, tailLineEnd, 0, 0);
 
     if (v17)
     {
-      v18 = [v17 crlaxStyleInfoDescription];
-      if ([v18 length])
+      crlaxStyleInfoDescription = [v17 crlaxStyleInfoDescription];
+      if ([crlaxStyleInfoDescription length])
       {
         +[NSBundle mainBundle];
-        v20 = v19 = v5;
+        v20 = v19 = crlaxFillColorDescription;
         v21 = [v20 localizedStringForKey:@"Tail line end" value:0 table:0];
-        v22 = [AXCustomContent customContentWithLabel:v21 value:v18];
+        v22 = [AXCustomContent customContentWithLabel:v21 value:crlaxStyleInfoDescription];
         [v4 addObject:v22];
 
-        v5 = v19;
+        crlaxFillColorDescription = v19;
       }
     }
 
     v23 = objc_opt_class();
-    v24 = [v14 headLineEnd];
-    v25 = __CRLAccessibilityCastAsSafeCategory(v23, v24, 0, 0);
+    headLineEnd = [info headLineEnd];
+    v25 = __CRLAccessibilityCastAsSafeCategory(v23, headLineEnd, 0, 0);
 
     if (v25)
     {
-      v26 = [v25 crlaxStyleInfoDescription];
-      if ([v26 length])
+      crlaxStyleInfoDescription2 = [v25 crlaxStyleInfoDescription];
+      if ([crlaxStyleInfoDescription2 length])
       {
-        v35 = v5;
+        v35 = crlaxFillColorDescription;
         v27 = +[NSBundle mainBundle];
         v28 = [v27 localizedStringForKey:@"Head line end" value:0 table:0];
-        v29 = [AXCustomContent customContentWithLabel:v28 value:v26];
+        v29 = [AXCustomContent customContentWithLabel:v28 value:crlaxStyleInfoDescription2];
         [v4 addObject:v29];
 
-        v5 = v35;
+        crlaxFillColorDescription = v35;
       }
     }
   }
 
-  v30 = [(CRLWPShapeRepAccessibility *)self _crlaxDescriptionForVerticalAlignment];
-  if ([v30 length])
+  _crlaxDescriptionForVerticalAlignment = [(CRLWPShapeRepAccessibility *)self _crlaxDescriptionForVerticalAlignment];
+  if ([_crlaxDescriptionForVerticalAlignment length])
   {
     v31 = +[NSBundle mainBundle];
     v32 = [v31 localizedStringForKey:@"Vertical text alignment" value:0 table:0];
-    v33 = [AXCustomContent customContentWithLabel:v32 value:v30];
+    v33 = [AXCustomContent customContentWithLabel:v32 value:_crlaxDescriptionForVerticalAlignment];
     [v4 addObject:v33];
   }
 
@@ -174,11 +174,11 @@
 - (CRLWPShapeItemAccessibility)crlaxInfo
 {
   v8 = 0;
-  v2 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v3 = [v2 info];
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  info = [crlaxTarget info];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, info, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -192,11 +192,11 @@
 - (CRLTextRepAccessibility)crlaxContainedRep
 {
   v8 = 0;
-  v2 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v3 = [v2 textRep];
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  textRep = [crlaxTarget textRep];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, textRep, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -209,89 +209,89 @@
 
 - (BOOL)crlaxIsEditingChildRep
 {
-  v3 = [(CRLWPShapeRepAccessibility *)self crlaxContainedRep];
+  crlaxContainedRep = [(CRLWPShapeRepAccessibility *)self crlaxContainedRep];
 
-  if (!v3)
+  if (!crlaxContainedRep)
   {
     return 0;
   }
 
-  v4 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v5 = [v4 isEditingChildRep];
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  isEditingChildRep = [crlaxTarget isEditingChildRep];
 
-  return v5;
+  return isEditingChildRep;
 }
 
 - (NSString)crlaxFillColorDescription
 {
   v14 = 0;
-  v2 = [(CRLCanvasRepAccessibility *)self crlaxLayout];
-  v3 = [v2 crlaxTarget];
+  crlaxLayout = [(CRLCanvasRepAccessibility *)self crlaxLayout];
+  crlaxTarget = [crlaxLayout crlaxTarget];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsClass(v4, v3, 1, &v14);
-  if (v14 == 1 || (v6 = v5, v3, v13 = 0, [v6 fill], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_class(), __CRLAccessibilityCastAsSafeCategory(v8, v7, 1, &v13), v9 = objc_claimAutoreleasedReturnValue(), v13 == 1))
+  v5 = __CRLAccessibilityCastAsClass(v4, crlaxTarget, 1, &v14);
+  if (v14 == 1 || (v6 = v5, crlaxTarget, v13 = 0, [v6 fill], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_class(), __CRLAccessibilityCastAsSafeCategory(v8, v7, 1, &v13), v9 = objc_claimAutoreleasedReturnValue(), v13 == 1))
   {
     abort();
   }
 
   v10 = v9;
 
-  v11 = [v10 crlaxColorFillNameWithOpacity];
+  crlaxColorFillNameWithOpacity = [v10 crlaxColorFillNameWithOpacity];
 
-  return v11;
+  return crlaxColorFillNameWithOpacity;
 }
 
 - (NSString)crlaxStrokeDescription
 {
   v15 = 0;
-  v2 = [(CRLCanvasRepAccessibility *)self crlaxLayout];
-  v3 = [v2 crlaxTarget];
+  crlaxLayout = [(CRLCanvasRepAccessibility *)self crlaxLayout];
+  crlaxTarget = [crlaxLayout crlaxTarget];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsClass(v4, v3, 1, &v15);
-  if (v15 == 1 || (v6 = v5, v3, v14 = 0, [v6 styledInfo], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "stroke"), v8 = objc_claimAutoreleasedReturnValue(), v7, v9 = objc_opt_class(), __CRLAccessibilityCastAsSafeCategory(v9, v8, 1, &v14), v10 = objc_claimAutoreleasedReturnValue(), v14 == 1))
+  v5 = __CRLAccessibilityCastAsClass(v4, crlaxTarget, 1, &v15);
+  if (v15 == 1 || (v6 = v5, crlaxTarget, v14 = 0, [v6 styledInfo], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "stroke"), v8 = objc_claimAutoreleasedReturnValue(), v7, v9 = objc_opt_class(), __CRLAccessibilityCastAsSafeCategory(v9, v8, 1, &v14), v10 = objc_claimAutoreleasedReturnValue(), v14 == 1))
   {
     abort();
   }
 
   v11 = v10;
 
-  v12 = [v11 crlaxStrokeFullDescription];
+  crlaxStrokeFullDescription = [v11 crlaxStrokeFullDescription];
 
-  return v12;
+  return crlaxStrokeFullDescription;
 }
 
 - (NSString)crlaxContainedRepText
 {
-  v2 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v3 = [v2 containedRep];
-  v4 = [v3 storage];
-  v5 = [v4 crlaxString];
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  containedRep = [crlaxTarget containedRep];
+  storage = [containedRep storage];
+  crlaxString = [storage crlaxString];
 
-  return v5;
+  return crlaxString;
 }
 
 - (BOOL)crlaxCanOccludeConnectionKnobDragging
 {
-  v2 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v3 = [v2 parentRep];
-  v4 = v3 == 0;
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  parentRep = [crlaxTarget parentRep];
+  v4 = parentRep == 0;
 
   return v4;
 }
 
-- (BOOL)crlaxCanBeOccludedForConnectionKnobDraggingByRep:(id)a3
+- (BOOL)crlaxCanBeOccludedForConnectionKnobDraggingByRep:(id)rep
 {
-  v4 = a3;
-  v5 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v6 = [v5 containedRep];
-  v7 = [v4 crlaxTarget];
+  repCopy = rep;
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  containedRep = [crlaxTarget containedRep];
+  crlaxTarget2 = [repCopy crlaxTarget];
 
-  return v6 != v7;
+  return containedRep != crlaxTarget2;
 }
 
-- (BOOL)crlaxCanBeginEditingChildRepOnDoubleTap:(id)a3
+- (BOOL)crlaxCanBeginEditingChildRepOnDoubleTap:(id)tap
 {
   v9 = 0;
   v10 = &v9;
@@ -303,8 +303,8 @@
   v6[3] = &unk_10183DE60;
   v8 = &v9;
   v6[4] = self;
-  v3 = a3;
-  v7 = v3;
+  tapCopy = tap;
+  v7 = tapCopy;
   if (__CRLAccessibilityPerformSafeBlock(v6))
   {
     abort();
@@ -316,11 +316,11 @@
   return v4;
 }
 
-- (void)willBeginEditingContainedInfo:(id)a3
+- (void)willBeginEditingContainedInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = CRLWPShapeRepAccessibility;
-  [(CRLWPShapeRepAccessibility *)&v4 willBeginEditingContainedInfo:a3];
+  [(CRLWPShapeRepAccessibility *)&v4 willBeginEditingContainedInfo:info];
   if ([(CRLWPShapeRepAccessibility *)self crlaxRespondsToSelector:"crlaxShapeRepWillBeginEditingContainedRep:" fromOptionalExtrasProtocol:&OBJC_PROTOCOL___CRLWPShapeRepAccessibilityExtras])
   {
     [(CRLWPShapeRepAccessibility *)self crlaxShapeRepWillBeginEditingContainedRep:self];
@@ -329,40 +329,40 @@
 
 - (void)crlaxBeginEditingAtEnd
 {
-  v3 = [(CRLWPShapeRepAccessibility *)self crlaxContainedRep];
-  v4 = [v3 crlaxStorage];
-  v15 = [v4 crlaxTarget];
+  crlaxContainedRep = [(CRLWPShapeRepAccessibility *)self crlaxContainedRep];
+  crlaxStorage = [crlaxContainedRep crlaxStorage];
+  crlaxTarget = [crlaxStorage crlaxTarget];
 
-  v5 = [v15 range];
+  range = [crlaxTarget range];
   v7 = v6;
-  v8 = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
-  v9 = [v8 crlaxTarget];
-  v10 = [v9 selectionModelTranslator];
-  v11 = [v10 selectionPathForRange:&v5[v7] onStorage:{0, v15}];
+  crlaxInteractiveCanvasController = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxTarget2 = [crlaxInteractiveCanvasController crlaxTarget];
+  selectionModelTranslator = [crlaxTarget2 selectionModelTranslator];
+  v11 = [selectionModelTranslator selectionPathForRange:&range[v7] onStorage:{0, crlaxTarget}];
 
-  v12 = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
-  v13 = [v12 crlaxEditorController];
-  v14 = [v13 crlaxTarget];
-  [v14 setSelectionPath:v11 withFlags:6];
+  crlaxInteractiveCanvasController2 = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxEditorController = [crlaxInteractiveCanvasController2 crlaxEditorController];
+  crlaxTarget3 = [crlaxEditorController crlaxTarget];
+  [crlaxTarget3 setSelectionPath:v11 withFlags:6];
 }
 
 - (id)crlaxSummaryDescription
 {
-  v3 = [(CRLWPShapeRepAccessibility *)self crlaxIsTextboxRep];
+  crlaxIsTextboxRep = [(CRLWPShapeRepAccessibility *)self crlaxIsTextboxRep];
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (crlaxIsTextboxRep)
   {
     v6 = [v4 localizedStringForKey:@"Text box: %1$@" value:0 table:0];
-    v7 = [(CRLWPShapeRepAccessibility *)self crlaxContainedRep];
-    [v7 crlaxSummaryDescription];
+    crlaxContainedRep = [(CRLWPShapeRepAccessibility *)self crlaxContainedRep];
+    [crlaxContainedRep crlaxSummaryDescription];
   }
 
   else
   {
     v6 = [v4 localizedStringForKey:@"%1$@ shape" value:0 table:0];
-    v7 = [(CRLShapeRepAccessibility *)self crlaxShapeInfo];
-    [v7 crlaxShapeTypeLabel];
+    crlaxContainedRep = [(CRLShapeRepAccessibility *)self crlaxShapeInfo];
+    [crlaxContainedRep crlaxShapeTypeLabel];
   }
   v8 = ;
   v9 = [NSString stringWithFormat:v6, v8];
@@ -374,31 +374,31 @@
 {
   v8.receiver = self;
   v8.super_class = CRLWPShapeRepAccessibility;
-  v3 = [(CRLCanvasRepAccessibility *)&v8 crlaxCollaboratorDescription];
-  v4 = [(CRLWPShapeRepAccessibility *)self crlaxContainedRep];
-  v5 = [v4 crlaxCollaboratorDescriptionDirect];
+  crlaxCollaboratorDescription = [(CRLCanvasRepAccessibility *)&v8 crlaxCollaboratorDescription];
+  crlaxContainedRep = [(CRLWPShapeRepAccessibility *)self crlaxContainedRep];
+  crlaxCollaboratorDescriptionDirect = [crlaxContainedRep crlaxCollaboratorDescriptionDirect];
 
-  if ([v5 length])
+  if ([crlaxCollaboratorDescriptionDirect length])
   {
-    v6 = v5;
+    v6 = crlaxCollaboratorDescriptionDirect;
 
-    v3 = v6;
+    crlaxCollaboratorDescription = v6;
   }
 
-  return v3;
+  return crlaxCollaboratorDescription;
 }
 
 - (id)_crlaxDescriptionForVerticalAlignment
 {
-  v2 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v3 = [v2 layoutsForChildReps];
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  layoutsForChildReps = [crlaxTarget layoutsForChildReps];
 
-  if ([v3 count] == 1)
+  if ([layoutsForChildReps count] == 1)
   {
     v10 = 0;
-    v4 = [v3 firstObject];
+    firstObject = [layoutsForChildReps firstObject];
     v5 = objc_opt_class();
-    v6 = __CRLAccessibilityCastAsClass(v5, v4, 1, &v10);
+    v6 = __CRLAccessibilityCastAsClass(v5, firstObject, 1, &v10);
     if (v10 == 1)
     {
       abort();
@@ -427,39 +427,39 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v5 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v6 = [v5 shapeLayout];
-  v7 = [v6 pathIsOpen];
-  if (v7)
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  shapeLayout = [crlaxTarget shapeLayout];
+  pathIsOpen = [shapeLayout pathIsOpen];
+  if (pathIsOpen)
   {
-    v2 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-    v8 = [v2 containedRep];
-    if (!v8)
+    crlaxTarget2 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+    containedRep = [crlaxTarget2 containedRep];
+    if (!containedRep)
     {
 
       return 1;
     }
 
-    v3 = v8;
+    v3 = containedRep;
   }
 
-  v9 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v10 = [v9 shapeLayout];
-  v11 = [v10 pathIsLineSegment];
+  crlaxTarget3 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  shapeLayout2 = [crlaxTarget3 shapeLayout];
+  pathIsLineSegment = [shapeLayout2 pathIsLineSegment];
 
-  if (v7)
+  if (pathIsOpen)
   {
   }
 
-  if (v11)
+  if (pathIsLineSegment)
   {
     return 1;
   }
 
-  v12 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v13 = [v12 containedRep];
+  crlaxTarget4 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  containedRep2 = [crlaxTarget4 containedRep];
 
-  if (v13)
+  if (containedRep2)
   {
     return 0;
   }
@@ -469,19 +469,19 @@
   return [(CRLShapeRepAccessibility *)&v15 isAccessibilityElement];
 }
 
-- (void)crlaxLoadChildrenIntoCollection:(id)a3
+- (void)crlaxLoadChildrenIntoCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v6.receiver = self;
   v6.super_class = CRLWPShapeRepAccessibility;
-  [(CRLCanvasRepAccessibility *)&v6 crlaxLoadChildrenIntoCollection:v4];
+  [(CRLCanvasRepAccessibility *)&v6 crlaxLoadChildrenIntoCollection:collectionCopy];
   v5 = -1;
   do
   {
     ++v5;
   }
 
-  while (v5 < [v4 count]);
+  while (v5 < [collectionCopy count]);
 }
 
 - (id)crlaxFocusedElement
@@ -499,35 +499,35 @@
 
   if (v6)
   {
-    v7 = v6;
+    crlaxFocusedElement = v6;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = CRLWPShapeRepAccessibility;
-    v7 = [(CRLCanvasRepAccessibility *)&v10 crlaxFocusedElement];
+    crlaxFocusedElement = [(CRLCanvasRepAccessibility *)&v10 crlaxFocusedElement];
   }
 
-  v8 = v7;
+  v8 = crlaxFocusedElement;
 
   return v8;
 }
 
 - (BOOL)crlaxShouldCreateKnobs
 {
-  v2 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-  v3 = [v2 textRep];
+  crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+  textRep = [crlaxTarget textRep];
 
-  return v3 == 0;
+  return textRep == 0;
 }
 
 - (BOOL)crlaxNeedsFormatEditOperation
 {
   if ([(CRLCanvasRepAccessibility *)self crlaxIsSelected]|| [(CRLCanvasRepAccessibility *)self crlaxIsSelectedIgnoringLocking])
   {
-    v3 = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
-    if ([v3 isEditingChildRep])
+    crlaxTarget = [(CRLWPShapeRepAccessibility *)self crlaxTarget];
+    if ([crlaxTarget isEditingChildRep])
     {
       LOBYTE(v4) = 0;
     }
@@ -549,16 +549,16 @@
 - (id)crlaxDescriptionForConnections
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(CRLCanvasRepAccessibility *)self accessibilityLabel];
-  if ([v4 length])
+  accessibilityLabel = [(CRLCanvasRepAccessibility *)self accessibilityLabel];
+  if ([accessibilityLabel length])
   {
-    [v3 addObject:v4];
+    [v3 addObject:accessibilityLabel];
   }
 
-  v5 = [(CRLWPShapeRepAccessibility *)self crlaxContainedRepText];
-  if ([v5 length])
+  crlaxContainedRepText = [(CRLWPShapeRepAccessibility *)self crlaxContainedRepText];
+  if ([crlaxContainedRepText length])
   {
-    [v3 addObject:v5];
+    [v3 addObject:crlaxContainedRepText];
   }
 
   if ([v3 count])
@@ -574,19 +574,19 @@
   return v6;
 }
 
-- (void)crlaxShapeRepWillBeginEditingContainedRep:(id)a3
+- (void)crlaxShapeRepWillBeginEditingContainedRep:(id)rep
 {
-  v4 = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
-  v3 = [v4 crlaxCanvasViewController];
-  [v3 crlaxCancelEyeDropperMode];
+  crlaxInteractiveCanvasController = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxCanvasViewController = [crlaxInteractiveCanvasController crlaxCanvasViewController];
+  [crlaxCanvasViewController crlaxCancelEyeDropperMode];
 }
 
 - (id)accessibilityCustomActions
 {
   v6.receiver = self;
   v6.super_class = CRLWPShapeRepAccessibility;
-  v2 = [(CRLCanvasRepAccessibility *)&v6 accessibilityCustomActions];
-  v3 = [v2 mutableCopy];
+  accessibilityCustomActions = [(CRLCanvasRepAccessibility *)&v6 accessibilityCustomActions];
+  v3 = [accessibilityCustomActions mutableCopy];
 
   v4 = [v3 copy];
 

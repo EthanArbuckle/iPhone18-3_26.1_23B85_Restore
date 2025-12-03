@@ -1,16 +1,16 @@
 @interface SiriConversationPublisher
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
 - (NSArray)bookmarkableUpstreams;
 - (_TtC26AIMLInstrumentationStreams25SiriConversationPublisher)init;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation SiriConversationPublisher
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_23C632EF8();
   swift_unknownObjectRelease();
 }
@@ -29,11 +29,11 @@
   return v5;
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E1F9DF0, &qword_23C87BE00);
   v6 = sub_23C8718A4();
-  v7 = a3;
+  publisherCopy = publisher;
   swift_unknownObjectRetain();
   v8 = sub_23C64B80C(v6);
 

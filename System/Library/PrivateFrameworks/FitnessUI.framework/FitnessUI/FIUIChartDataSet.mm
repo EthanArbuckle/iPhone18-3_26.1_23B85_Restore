@@ -32,9 +32,9 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) maxYValue];
-        v9 = v8;
-        if (!v5 || [v8 compare:v5] == 1)
+        maxYValue = [*(*(&v12 + 1) + 8 * i) maxYValue];
+        v9 = maxYValue;
+        if (!v5 || [maxYValue compare:v5] == 1)
         {
           v10 = v9;
 
@@ -79,9 +79,9 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) minYValue];
-        v9 = v8;
-        if (!v5 || [v8 compare:v5] == -1)
+        minYValue = [*(*(&v12 + 1) + 8 * i) minYValue];
+        v9 = minYValue;
+        if (!v5 || [minYValue compare:v5] == -1)
         {
           v10 = v9;
 
@@ -126,9 +126,9 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) xValue];
-        v9 = v8;
-        if (!v5 || [v8 hk_isAfterDate:v5])
+        xValue = [*(*(&v12 + 1) + 8 * i) xValue];
+        v9 = xValue;
+        if (!v5 || [xValue hk_isAfterDate:v5])
         {
           v10 = v9;
 
@@ -173,9 +173,9 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) xValue];
-        v9 = v8;
-        if (!v5 || [v8 hk_isBeforeDate:v5])
+        xValue = [*(*(&v12 + 1) + 8 * i) xValue];
+        v9 = xValue;
+        if (!v5 || [xValue hk_isBeforeDate:v5])
         {
           v10 = v9;
 

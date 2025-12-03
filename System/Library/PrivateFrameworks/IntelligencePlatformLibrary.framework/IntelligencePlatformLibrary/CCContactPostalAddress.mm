@@ -1,7 +1,7 @@
 @interface CCContactPostalAddress
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCContactPostalAddress)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCContactPostalAddress)initWithLabel:(id)a3 street:(id)a4 subLocality:(id)a5 city:(id)a6 subAdministrativeArea:(id)a7 state:(id)a8 postalCode:(id)a9 country:(id)a10 ISOCountryCode:(id)a11 error:(id *)a12;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCContactPostalAddress)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCContactPostalAddress)initWithLabel:(id)label street:(id)street subLocality:(id)locality city:(id)city subAdministrativeArea:(id)area state:(id)state postalCode:(id)code country:(id)self0 ISOCountryCode:(id)self1 error:(id *)self2;
 - (NSString)ISOCountryCode;
 - (NSString)city;
 - (NSString)country;
@@ -12,30 +12,30 @@
 - (NSString)subAdministrativeArea;
 - (NSString)subLocality;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCContactPostalAddress
 
-- (CCContactPostalAddress)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCContactPostalAddress)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v18 = [v6 objectForKeyedSubscript:@"label"];
-    v9 = [v6 objectForKeyedSubscript:@"street"];
-    v19 = [v6 objectForKeyedSubscript:@"subLocality"];
-    v10 = [v6 objectForKeyedSubscript:@"city"];
-    v11 = [v6 objectForKeyedSubscript:@"subAdministrativeArea"];
-    v12 = [v6 objectForKeyedSubscript:@"state"];
-    [v6 objectForKeyedSubscript:@"postalCode"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"label"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"street"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"subLocality"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"city"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"subAdministrativeArea"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"state"];
+    [dictionaryCopy objectForKeyedSubscript:@"postalCode"];
     v17 = v20 = self;
-    v13 = [v6 objectForKeyedSubscript:@"country"];
-    v14 = [v6 objectForKeyedSubscript:@"ISOCountryCode"];
-    v15 = [[CCContactPostalAddress alloc] initWithLabel:v18 street:v9 subLocality:v19 city:v10 subAdministrativeArea:v11 state:v12 postalCode:v17 country:v13 ISOCountryCode:v14 error:a4];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"country"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"ISOCountryCode"];
+    v15 = [[CCContactPostalAddress alloc] initWithLabel:v18 street:v9 subLocality:v19 city:v10 subAdministrativeArea:v11 state:v12 postalCode:v17 country:v13 ISOCountryCode:v14 error:error];
 
     self = v20;
   }
@@ -54,56 +54,56 @@
   v3 = objc_opt_new();
   if (self->_label)
   {
-    v4 = [(CCContactPostalAddress *)self label];
-    [v3 setObject:v4 forKeyedSubscript:@"label"];
+    label = [(CCContactPostalAddress *)self label];
+    [v3 setObject:label forKeyedSubscript:@"label"];
   }
 
   if (self->_street)
   {
-    v5 = [(CCContactPostalAddress *)self street];
-    [v3 setObject:v5 forKeyedSubscript:@"street"];
+    street = [(CCContactPostalAddress *)self street];
+    [v3 setObject:street forKeyedSubscript:@"street"];
   }
 
   if (self->_subLocality)
   {
-    v6 = [(CCContactPostalAddress *)self subLocality];
-    [v3 setObject:v6 forKeyedSubscript:@"subLocality"];
+    subLocality = [(CCContactPostalAddress *)self subLocality];
+    [v3 setObject:subLocality forKeyedSubscript:@"subLocality"];
   }
 
   if (self->_city)
   {
-    v7 = [(CCContactPostalAddress *)self city];
-    [v3 setObject:v7 forKeyedSubscript:@"city"];
+    city = [(CCContactPostalAddress *)self city];
+    [v3 setObject:city forKeyedSubscript:@"city"];
   }
 
   if (self->_subAdministrativeArea)
   {
-    v8 = [(CCContactPostalAddress *)self subAdministrativeArea];
-    [v3 setObject:v8 forKeyedSubscript:@"subAdministrativeArea"];
+    subAdministrativeArea = [(CCContactPostalAddress *)self subAdministrativeArea];
+    [v3 setObject:subAdministrativeArea forKeyedSubscript:@"subAdministrativeArea"];
   }
 
   if (self->_state)
   {
-    v9 = [(CCContactPostalAddress *)self state];
-    [v3 setObject:v9 forKeyedSubscript:@"state"];
+    state = [(CCContactPostalAddress *)self state];
+    [v3 setObject:state forKeyedSubscript:@"state"];
   }
 
   if (self->_postalCode)
   {
-    v10 = [(CCContactPostalAddress *)self postalCode];
-    [v3 setObject:v10 forKeyedSubscript:@"postalCode"];
+    postalCode = [(CCContactPostalAddress *)self postalCode];
+    [v3 setObject:postalCode forKeyedSubscript:@"postalCode"];
   }
 
   if (self->_country)
   {
-    v11 = [(CCContactPostalAddress *)self country];
-    [v3 setObject:v11 forKeyedSubscript:@"country"];
+    country = [(CCContactPostalAddress *)self country];
+    [v3 setObject:country forKeyedSubscript:@"country"];
   }
 
   if (self->_ISOCountryCode)
   {
-    v12 = [(CCContactPostalAddress *)self ISOCountryCode];
-    [v3 setObject:v12 forKeyedSubscript:@"ISOCountryCode"];
+    iSOCountryCode = [(CCContactPostalAddress *)self ISOCountryCode];
+    [v3 setObject:iSOCountryCode forKeyedSubscript:@"ISOCountryCode"];
   }
 
   v13 = [v3 copy];
@@ -111,64 +111,64 @@
   return v13;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v15 = a3;
+  blockCopy = block;
   if (self->_label)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19749 stringValue:self->_label];
-    v15[2](v15, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_street)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19750 stringValue:self->_street];
-    v15[2](v15, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_subLocality)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19751 stringValue:self->_subLocality];
-    v15[2](v15, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_city)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19752 stringValue:self->_city];
-    v15[2](v15, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_subAdministrativeArea)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19753 stringValue:self->_subAdministrativeArea];
-    v15[2](v15, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_state)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19754 stringValue:self->_state];
-    v15[2](v15, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_postalCode)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19755 stringValue:self->_postalCode];
-    v15[2](v15, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_country)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19756 stringValue:self->_country];
-    v15[2](v15, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
-  v13 = v15;
+  v13 = blockCopy;
   if (self->_ISOCountryCode)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19757 stringValue:self->_ISOCountryCode];
-    v15[2](v15, v14);
+    blockCopy[2](blockCopy, v14);
 
-    v13 = v15;
+    v13 = blockCopy;
   }
 }
 
@@ -235,10 +235,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -452,20 +452,20 @@ LABEL_55:
   return v31;
 }
 
-- (CCContactPostalAddress)initWithLabel:(id)a3 street:(id)a4 subLocality:(id)a5 city:(id)a6 subAdministrativeArea:(id)a7 state:(id)a8 postalCode:(id)a9 country:(id)a10 ISOCountryCode:(id)a11 error:(id *)a12
+- (CCContactPostalAddress)initWithLabel:(id)label street:(id)street subLocality:(id)locality city:(id)city subAdministrativeArea:(id)area state:(id)state postalCode:(id)code country:(id)self0 ISOCountryCode:(id)self1 error:(id *)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v45 = a8;
-  v44 = a9;
-  v43 = a10;
-  v42 = a11;
+  labelCopy = label;
+  streetCopy = street;
+  localityCopy = locality;
+  cityCopy = city;
+  areaCopy = area;
+  stateCopy = state;
+  codeCopy = code;
+  countryCopy = country;
+  countryCodeCopy = countryCode;
   v22 = objc_opt_new();
   v23 = 0x1E696A000uLL;
-  if (v17)
+  if (labelCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -476,18 +476,18 @@ LABEL_55:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v18)
+    if (!streetCopy)
     {
 LABEL_4:
       v26 = v25;
-      if (v19)
+      if (localityCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_13:
       v25 = v26;
-      if (!v20)
+      if (!cityCopy)
       {
         goto LABEL_7;
       }
@@ -504,7 +504,7 @@ LABEL_14:
 
       CCPBDataWriterWriteStringField();
       v23 = 0x1E696A000;
-      if (v21)
+      if (areaCopy)
       {
         goto LABEL_8;
       }
@@ -518,7 +518,7 @@ LABEL_16:
   else
   {
     v25 = 0;
-    if (!v18)
+    if (!streetCopy)
     {
       goto LABEL_4;
     }
@@ -535,7 +535,7 @@ LABEL_16:
 
   CCPBDataWriterWriteStringField();
   v23 = 0x1E696A000uLL;
-  if (!v19)
+  if (!localityCopy)
   {
     goto LABEL_13;
   }
@@ -552,14 +552,14 @@ LABEL_5:
 
   CCPBDataWriterWriteStringField();
   v23 = 0x1E696A000uLL;
-  if (v20)
+  if (cityCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_7:
   v26 = v25;
-  if (!v21)
+  if (!areaCopy)
   {
     goto LABEL_16;
   }
@@ -577,7 +577,7 @@ LABEL_8:
 
   CCPBDataWriterWriteStringField();
 LABEL_17:
-  if (v45)
+  if (stateCopy)
   {
     objc_opt_class();
     v32 = CCValidateIsInstanceOfExpectedClass();
@@ -596,7 +596,7 @@ LABEL_17:
     v26 = v25;
   }
 
-  if (!v44)
+  if (!codeCopy)
   {
     v25 = v26;
     goto LABEL_25;
@@ -616,7 +616,7 @@ LABEL_33:
 
   CCPBDataWriterWriteStringField();
 LABEL_25:
-  if (!v43)
+  if (!countryCopy)
   {
     v26 = v25;
     goto LABEL_30;
@@ -630,7 +630,7 @@ LABEL_25:
   {
     CCPBDataWriterWriteStringField();
 LABEL_30:
-    if (!v42)
+    if (!countryCodeCopy)
     {
       v25 = v26;
       goto LABEL_37;
@@ -644,11 +644,11 @@ LABEL_30:
     {
       CCPBDataWriterWriteStringField();
 LABEL_37:
-      v39 = self;
-      v40 = [v22 immutableData];
-      v37 = [(CCItemMessage *)v39 initWithData:v40 error:a12];
+      selfCopy = self;
+      immutableData = [v22 immutableData];
+      selfCopy2 = [(CCItemMessage *)selfCopy initWithData:immutableData error:error];
 
-      v35 = v37;
+      v35 = selfCopy2;
       goto LABEL_35;
     }
 
@@ -660,7 +660,7 @@ LABEL_28:
   v35 = 0;
   v25 = v26;
 LABEL_34:
-  v37 = self;
+  selfCopy2 = self;
 LABEL_35:
 
   return v35;

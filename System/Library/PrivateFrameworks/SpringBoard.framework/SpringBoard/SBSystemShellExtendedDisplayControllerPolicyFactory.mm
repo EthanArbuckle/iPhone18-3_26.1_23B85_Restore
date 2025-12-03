@@ -1,27 +1,27 @@
 @interface SBSystemShellExtendedDisplayControllerPolicyFactory
-- (SBSystemShellExtendedDisplayControllerPolicyFactory)initWithExternalDisplayService:(id)a3 externalDisplayDefaults:(id)a4 appSwitcherDefaults:(id)a5 mousePointerManager:(id)a6 runtimeAvailabilitySettings:(id)a7 sceneManager:(id)a8 windowSceneManager:(id)a9;
-- (id)policyForConnectingDisplay:(id)a3;
-- (void)transformDisplayConfiguration:(id)a3 forControllersWithBuilder:(id)a4;
+- (SBSystemShellExtendedDisplayControllerPolicyFactory)initWithExternalDisplayService:(id)service externalDisplayDefaults:(id)defaults appSwitcherDefaults:(id)switcherDefaults mousePointerManager:(id)manager runtimeAvailabilitySettings:(id)settings sceneManager:(id)sceneManager windowSceneManager:(id)windowSceneManager;
+- (id)policyForConnectingDisplay:(id)display;
+- (void)transformDisplayConfiguration:(id)configuration forControllersWithBuilder:(id)builder;
 @end
 
 @implementation SBSystemShellExtendedDisplayControllerPolicyFactory
 
-- (SBSystemShellExtendedDisplayControllerPolicyFactory)initWithExternalDisplayService:(id)a3 externalDisplayDefaults:(id)a4 appSwitcherDefaults:(id)a5 mousePointerManager:(id)a6 runtimeAvailabilitySettings:(id)a7 sceneManager:(id)a8 windowSceneManager:(id)a9
+- (SBSystemShellExtendedDisplayControllerPolicyFactory)initWithExternalDisplayService:(id)service externalDisplayDefaults:(id)defaults appSwitcherDefaults:(id)switcherDefaults mousePointerManager:(id)manager runtimeAvailabilitySettings:(id)settings sceneManager:(id)sceneManager windowSceneManager:(id)windowSceneManager
 {
-  v16 = a3;
-  v17 = a4;
-  obj = a5;
-  v18 = a5;
-  v27 = a6;
-  v19 = a6;
-  v28 = a7;
-  v20 = a7;
-  v29 = a8;
-  v30 = a8;
-  v21 = a9;
-  if (v16)
+  serviceCopy = service;
+  defaultsCopy = defaults;
+  obj = switcherDefaults;
+  switcherDefaultsCopy = switcherDefaults;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  settingsCopy = settings;
+  settingsCopy2 = settings;
+  sceneManagerCopy = sceneManager;
+  sceneManagerCopy2 = sceneManager;
+  windowSceneManagerCopy = windowSceneManager;
+  if (serviceCopy)
   {
-    if (v17)
+    if (defaultsCopy)
     {
       goto LABEL_3;
     }
@@ -30,10 +30,10 @@
   else
   {
     [SBSystemShellExtendedDisplayControllerPolicyFactory initWithExternalDisplayService:externalDisplayDefaults:appSwitcherDefaults:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
-    if (v17)
+    if (defaultsCopy)
     {
 LABEL_3:
-      if (v18)
+      if (switcherDefaultsCopy)
       {
         goto LABEL_4;
       }
@@ -43,10 +43,10 @@ LABEL_3:
   }
 
   [SBSystemShellExtendedDisplayControllerPolicyFactory initWithExternalDisplayService:externalDisplayDefaults:appSwitcherDefaults:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
-  if (v18)
+  if (switcherDefaultsCopy)
   {
 LABEL_4:
-    if (v19)
+    if (managerCopy2)
     {
       goto LABEL_5;
     }
@@ -56,17 +56,17 @@ LABEL_4:
 
 LABEL_12:
   [SBSystemShellExtendedDisplayControllerPolicyFactory initWithExternalDisplayService:externalDisplayDefaults:appSwitcherDefaults:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
-  if (v19)
+  if (managerCopy2)
   {
 LABEL_5:
-    if (v20)
+    if (settingsCopy2)
     {
       goto LABEL_6;
     }
 
 LABEL_14:
     [SBSystemShellExtendedDisplayControllerPolicyFactory initWithExternalDisplayService:externalDisplayDefaults:appSwitcherDefaults:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
-    if (v21)
+    if (windowSceneManagerCopy)
     {
       goto LABEL_7;
     }
@@ -76,13 +76,13 @@ LABEL_14:
 
 LABEL_13:
   [SBSystemShellExtendedDisplayControllerPolicyFactory initWithExternalDisplayService:externalDisplayDefaults:appSwitcherDefaults:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:];
-  if (!v20)
+  if (!settingsCopy2)
   {
     goto LABEL_14;
   }
 
 LABEL_6:
-  if (v21)
+  if (windowSceneManagerCopy)
   {
     goto LABEL_7;
   }
@@ -96,31 +96,31 @@ LABEL_7:
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_externalDisplayService, a3);
-    objc_storeStrong(&v23->_externalDisplayDefaults, a4);
+    objc_storeStrong(&v22->_externalDisplayService, service);
+    objc_storeStrong(&v23->_externalDisplayDefaults, defaults);
     objc_storeStrong(&v23->_appSwitcherDefaults, obj);
-    objc_storeStrong(&v23->_mousePointerManager, v27);
-    objc_storeStrong(&v23->_runtimeAvailabilitySettings, v28);
-    objc_storeStrong(&v23->_sceneManager, v29);
-    objc_storeStrong(&v23->_windowSceneManager, a9);
+    objc_storeStrong(&v23->_mousePointerManager, managerCopy);
+    objc_storeStrong(&v23->_runtimeAvailabilitySettings, settingsCopy);
+    objc_storeStrong(&v23->_sceneManager, sceneManagerCopy);
+    objc_storeStrong(&v23->_windowSceneManager, windowSceneManager);
   }
 
   return v23;
 }
 
-- (id)policyForConnectingDisplay:(id)a3
+- (id)policyForConnectingDisplay:(id)display
 {
   v3 = [[SBSystemShellExtendedDisplayControllerPolicy alloc] initWithExternalDisplayDefaults:self->_externalDisplayDefaults appSwitcherDefaults:self->_appSwitcherDefaults externalDisplayService:self->_externalDisplayService mousePointerManager:self->_mousePointerManager runtimeAvailabilitySettings:self->_runtimeAvailabilitySettings sceneManager:self->_sceneManager windowSceneManager:self->_windowSceneManager];
 
   return v3;
 }
 
-- (void)transformDisplayConfiguration:(id)a3 forControllersWithBuilder:(id)a4
+- (void)transformDisplayConfiguration:(id)configuration forControllersWithBuilder:(id)builder
 {
-  v4 = a4;
-  [v4 setUniqueIdentifier:@"com.apple.springboard.shellui"];
-  [v4 setUIKitMainLike];
-  [v4 setCloningSupported:0];
+  builderCopy = builder;
+  [builderCopy setUniqueIdentifier:@"com.apple.springboard.shellui"];
+  [builderCopy setUIKitMainLike];
+  [builderCopy setCloningSupported:0];
 }
 
 - (void)initWithExternalDisplayService:externalDisplayDefaults:appSwitcherDefaults:mousePointerManager:runtimeAvailabilitySettings:sceneManager:windowSceneManager:.cold.1()

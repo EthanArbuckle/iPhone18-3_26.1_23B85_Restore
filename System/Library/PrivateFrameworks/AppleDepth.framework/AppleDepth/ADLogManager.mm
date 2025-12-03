@@ -1,90 +1,90 @@
 @interface ADLogManager
-+ (id)defaultLoggerWithName:(id)a3;
++ (id)defaultLoggerWithName:(id)name;
 + (id)defaults;
-- (ADLogManager)initWithHandlers:(id)a3;
+- (ADLogManager)initWithHandlers:(id)handlers;
 - (id)visualLoggerPrefices;
-- (int64_t)addHandler:(id)a3;
-- (int64_t)setHostName:(id)a3;
-- (int64_t)setLogFolder:(id)a3;
-- (uint64_t)logMatrix4x3:(__n128)a3 name:(__n128)a4 priority:(__n128)a5;
-- (uint64_t)logMatrix4x4:(__n128)a3 name:(__n128)a4 priority:(__n128)a5;
-- (void)applyConfigurationToNewHandler:(id)a3;
-- (void)disable:(id)a3;
+- (int64_t)addHandler:(id)handler;
+- (int64_t)setHostName:(id)name;
+- (int64_t)setLogFolder:(id)folder;
+- (uint64_t)logMatrix4x3:(__n128)matrix4x3 name:(__n128)name priority:(__n128)priority;
+- (uint64_t)logMatrix4x4:(__n128)matrix4x4 name:(__n128)name priority:(__n128)priority;
+- (void)applyConfigurationToNewHandler:(id)handler;
+- (void)disable:(id)disable;
 - (void)disableAll;
 - (void)disableFileLogging;
 - (void)disableVisualLogging;
-- (void)enable:(id)a3;
+- (void)enable:(id)enable;
 - (void)enableAll;
 - (void)enableFileLogging;
 - (void)enableVisualLogging;
-- (void)logCalibration:(id)a3 name:(const char *)a4 priority:(unint64_t)a5;
-- (void)logCalibration:(id)a3 name:(const char *)a4 priority:(unint64_t)a5 timestamp:(double)a6;
-- (void)logDictionary:(id)a3 name:(const char *)a4 priority:(unint64_t)a5;
-- (void)logDictionary:(id)a3 name:(const char *)a4 priority:(unint64_t)a5 timestamp:(double)a6;
-- (void)logMatrix4x3:(double)a3 name:(double)a4 priority:(double)a5 timestamp:(double)a6;
-- (void)logMatrix4x4:(__n128)a3 name:(__n128)a4 priority:(__n128)a5 timestamp:(double)a6;
-- (void)logPixelBuffer:(__CVBuffer *)a3 name:(const char *)a4 priority:(unint64_t)a5;
-- (void)logPixelBuffer:(__CVBuffer *)a3 name:(const char *)a4 priority:(unint64_t)a5 timestamp:(double)a6;
-- (void)logPointCloud:(id)a3 name:(const char *)a4 priority:(unint64_t)a5;
-- (void)logPointCloud:(id)a3 name:(const char *)a4 priority:(unint64_t)a5 timestamp:(double)a6;
-- (void)logRawBuffer:(void *)a3 size:(unint64_t)a4 name:(const char *)a5 priority:(unint64_t)a6;
-- (void)logRawBuffer:(void *)a3 size:(unint64_t)a4 name:(const char *)a5 priority:(unint64_t)a6 timestamp:(double)a7;
-- (void)logString:(id)a3 name:(const char *)a4 priority:(unint64_t)a5;
-- (void)logString:(id)a3 name:(const char *)a4 priority:(unint64_t)a5 timestamp:(double)a6;
-- (void)processConfigurationChange:(id)a3;
-- (void)setHumanReadableFormat:(BOOL)a3;
-- (void)toggleByClass:(Class)a3 enable:(BOOL)a4;
-- (void)toggleHandler:(id)a3 enable:(BOOL)a4;
-- (void)updateTimestampWithOverride:(double *)a3;
+- (void)logCalibration:(id)calibration name:(const char *)name priority:(unint64_t)priority;
+- (void)logCalibration:(id)calibration name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp;
+- (void)logDictionary:(id)dictionary name:(const char *)name priority:(unint64_t)priority;
+- (void)logDictionary:(id)dictionary name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp;
+- (void)logMatrix4x3:(double)matrix4x3 name:(double)name priority:(double)priority timestamp:(double)timestamp;
+- (void)logMatrix4x4:(__n128)matrix4x4 name:(__n128)name priority:(__n128)priority timestamp:(double)timestamp;
+- (void)logPixelBuffer:(__CVBuffer *)buffer name:(const char *)name priority:(unint64_t)priority;
+- (void)logPixelBuffer:(__CVBuffer *)buffer name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp;
+- (void)logPointCloud:(id)cloud name:(const char *)name priority:(unint64_t)priority;
+- (void)logPointCloud:(id)cloud name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp;
+- (void)logRawBuffer:(void *)buffer size:(unint64_t)size name:(const char *)name priority:(unint64_t)priority;
+- (void)logRawBuffer:(void *)buffer size:(unint64_t)size name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp;
+- (void)logString:(id)string name:(const char *)name priority:(unint64_t)priority;
+- (void)logString:(id)string name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp;
+- (void)processConfigurationChange:(id)change;
+- (void)setHumanReadableFormat:(BOOL)format;
+- (void)toggleByClass:(Class)class enable:(BOOL)enable;
+- (void)toggleHandler:(id)handler enable:(BOOL)enable;
+- (void)updateTimestampWithOverride:(double *)override;
 @end
 
 @implementation ADLogManager
 
-- (void)applyConfigurationToNewHandler:(id)a3
+- (void)applyConfigurationToNewHandler:(id)handler
 {
-  v6 = a3;
-  if (-[NSSet containsObject:](self->_enabledLoggerOverrideSet, "containsObject:", @"vz") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || -[NSSet containsObject:](self->_enabledLoggerOverrideSet, "containsObject:", @"fl") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (enabledLoggerOverrideSet = self->_enabledLoggerOverrideSet, [v6 name], v5 = objc_claimAutoreleasedReturnValue(), LODWORD(enabledLoggerOverrideSet) = -[NSSet containsObject:](enabledLoggerOverrideSet, "containsObject:", v5), v5, enabledLoggerOverrideSet))
+  handlerCopy = handler;
+  if (-[NSSet containsObject:](self->_enabledLoggerOverrideSet, "containsObject:", @"vz") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || -[NSSet containsObject:](self->_enabledLoggerOverrideSet, "containsObject:", @"fl") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (enabledLoggerOverrideSet = self->_enabledLoggerOverrideSet, [handlerCopy name], v5 = objc_claimAutoreleasedReturnValue(), LODWORD(enabledLoggerOverrideSet) = -[NSSet containsObject:](enabledLoggerOverrideSet, "containsObject:", v5), v5, enabledLoggerOverrideSet))
   {
-    [(ADLogManager *)self toggleHandler:v6 enable:1];
+    [(ADLogManager *)self toggleHandler:handlerCopy enable:1];
   }
 }
 
-- (void)processConfigurationChange:(id)a3
+- (void)processConfigurationChange:(id)change
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([v4 isEqualToString:kADDeviceConfigurationKeyLoggingHostName])
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([changeCopy isEqualToString:kADDeviceConfigurationKeyLoggingHostName])
   {
-    v6 = [objc_opt_class() defaults];
-    v7 = [v6 stringForKey:v4];
-    [(ADLogManager *)v5 setHostName:v7];
+    defaults = [objc_opt_class() defaults];
+    v7 = [defaults stringForKey:changeCopy];
+    [(ADLogManager *)selfCopy setHostName:v7];
   }
 
-  if ([v4 isEqualToString:kADDeviceConfigurationKeyLogFolder])
+  if ([changeCopy isEqualToString:kADDeviceConfigurationKeyLogFolder])
   {
-    v8 = [objc_opt_class() defaults];
-    v9 = [v8 stringForKey:v4];
-    [(ADLogManager *)v5 setLogFolder:v9];
+    defaults2 = [objc_opt_class() defaults];
+    v9 = [defaults2 stringForKey:changeCopy];
+    [(ADLogManager *)selfCopy setLogFolder:v9];
   }
 
-  if ([v4 isEqualToString:kADDeviceConfigurationKeyLoggingPriorityForceAll])
+  if ([changeCopy isEqualToString:kADDeviceConfigurationKeyLoggingPriorityForceAll])
   {
-    v10 = [objc_opt_class() defaults];
-    v5->_forceAllPriorities = [v10 BOOLForKey:kADDeviceConfigurationKeyLoggingPriorityForceAll];
+    defaults3 = [objc_opt_class() defaults];
+    selfCopy->_forceAllPriorities = [defaults3 BOOLForKey:kADDeviceConfigurationKeyLoggingPriorityForceAll];
   }
 
-  if ([v4 isEqualToString:kADDeviceConfigurationKeyLoggingForceCounterAsTimestamp])
+  if ([changeCopy isEqualToString:kADDeviceConfigurationKeyLoggingForceCounterAsTimestamp])
   {
-    v11 = [objc_opt_class() defaults];
-    v5->_forceCounterAsTimestamp = [v11 BOOLForKey:kADDeviceConfigurationKeyLoggingForceCounterAsTimestamp];
+    defaults4 = [objc_opt_class() defaults];
+    selfCopy->_forceCounterAsTimestamp = [defaults4 BOOLForKey:kADDeviceConfigurationKeyLoggingForceCounterAsTimestamp];
   }
 
-  if ([v4 isEqualToString:kADDeviceConfigurationKeyEnabledLoggers])
+  if ([changeCopy isEqualToString:kADDeviceConfigurationKeyEnabledLoggers])
   {
-    v12 = [objc_opt_class() defaults];
-    v13 = [v12 listForKey:v4];
+    defaults5 = [objc_opt_class() defaults];
+    v13 = [defaults5 listForKey:changeCopy];
 
     if (v13)
     {
@@ -96,16 +96,16 @@
       [MEMORY[0x277CBEB98] set];
     }
     v14 = ;
-    v15 = [(NSSet *)v5->_enabledLoggerOverrideSet mutableCopy];
+    v15 = [(NSSet *)selfCopy->_enabledLoggerOverrideSet mutableCopy];
     [v15 minusSet:v14];
     if ([v15 containsObject:@"vz"])
     {
-      [(ADLogManager *)v5 disableVisualLogging];
+      [(ADLogManager *)selfCopy disableVisualLogging];
     }
 
     if ([v15 containsObject:@"fl"])
     {
-      [(ADLogManager *)v5 disableFileLogging];
+      [(ADLogManager *)selfCopy disableFileLogging];
     }
 
     else
@@ -128,7 +128,7 @@
               objc_enumerationMutation(v16);
             }
 
-            [(ADLogManager *)v5 disable:*(*(&v30 + 1) + 8 * i)];
+            [(ADLogManager *)selfCopy disable:*(*(&v30 + 1) + 8 * i)];
           }
 
           v17 = [v16 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -139,15 +139,15 @@
     }
 
     v20 = [(NSSet *)v14 mutableCopy];
-    [v20 minusSet:v5->_enabledLoggerOverrideSet];
+    [v20 minusSet:selfCopy->_enabledLoggerOverrideSet];
     if ([v20 containsObject:@"vz"])
     {
-      [(ADLogManager *)v5 enableVisualLogging];
+      [(ADLogManager *)selfCopy enableVisualLogging];
     }
 
     if ([v20 containsObject:@"fl"])
     {
-      [(ADLogManager *)v5 enableFileLogging];
+      [(ADLogManager *)selfCopy enableFileLogging];
     }
 
     else
@@ -170,7 +170,7 @@
               objc_enumerationMutation(v21);
             }
 
-            [(ADLogManager *)v5 enable:*(*(&v26 + 1) + 8 * j), v26];
+            [(ADLogManager *)selfCopy enable:*(*(&v26 + 1) + 8 * j), v26];
           }
 
           v22 = [v21 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -180,25 +180,25 @@
       }
     }
 
-    enabledLoggerOverrideSet = v5->_enabledLoggerOverrideSet;
-    v5->_enabledLoggerOverrideSet = v14;
+    enabledLoggerOverrideSet = selfCopy->_enabledLoggerOverrideSet;
+    selfCopy->_enabledLoggerOverrideSet = v14;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)logMatrix4x4:(__n128)a3 name:(__n128)a4 priority:(__n128)a5 timestamp:(double)a6
+- (void)logMatrix4x4:(__n128)matrix4x4 name:(__n128)name priority:(__n128)priority timestamp:(double)timestamp
 {
   v26 = *MEMORY[0x277D85DE8];
-  v24 = a6;
-  if (*(a1 + 8) >= 1 && (*(a1 + 80) >= a9 || *(a1 + 48) == 1))
+  timestampCopy = timestamp;
+  if (*(self + 8) >= 1 && (*(self + 80) >= a9 || *(self + 48) == 1))
   {
-    [a1 updateTimestampWithOverride:{&v24, *&a2, *&a3, *&a4, *&a5}];
+    [self updateTimestampWithOverride:{&timestampCopy, *&a2, *&matrix4x4, *&name, *&priority}];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = *(a1 + 16);
+    v11 = *(self + 16);
     v12 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v12)
     {
@@ -215,7 +215,7 @@
           v15 = *(*(&v20 + 1) + 8 * i);
           if ([v15 active])
           {
-            [v15 logMatrix4x4:a8 name:v16 timestamp:{v17, v18, v19, v24}];
+            [v15 logMatrix4x4:a8 name:v16 timestamp:{v17, v18, v19, timestampCopy}];
           }
         }
 
@@ -227,23 +227,23 @@
   }
 }
 
-- (void)logMatrix4x3:(double)a3 name:(double)a4 priority:(double)a5 timestamp:(double)a6
+- (void)logMatrix4x3:(double)matrix4x3 name:(double)name priority:(double)priority timestamp:(double)timestamp
 {
-  if (*(a1 + 2) >= 1 && (*(a1 + 10) >= a8 || *(a1 + 48) == 1))
+  if (*(self + 2) >= 1 && (*(self + 10) >= a8 || *(self + 48) == 1))
   {
-    return [a1 logMatrix4x4:a3 name:a4 priority:a5 timestamp:a6];
+    return [self logMatrix4x4:matrix4x3 name:name priority:priority timestamp:timestamp];
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)logMatrix4x3:(__n128)a3 name:(__n128)a4 priority:(__n128)a5
+- (uint64_t)logMatrix4x3:(__n128)matrix4x3 name:(__n128)name priority:(__n128)priority
 {
   if (*(result + 8) >= 1 && (*(result + 80) >= a8 || *(result + 48) == 1))
   {
     v8 = result;
-    v11 = [MEMORY[0x277CCAC38] processInfo];
-    [v11 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v13 = v12;
 
     return [v8 logMatrix4x3:a7 name:a8 priority:v14 timestamp:{v15, v16, v17, v13}];
@@ -252,13 +252,13 @@
   return result;
 }
 
-- (uint64_t)logMatrix4x4:(__n128)a3 name:(__n128)a4 priority:(__n128)a5
+- (uint64_t)logMatrix4x4:(__n128)matrix4x4 name:(__n128)name priority:(__n128)priority
 {
   if (*(result + 8) >= 1 && (*(result + 80) >= a8 || *(result + 48) == 1))
   {
     v8 = result;
-    v11 = [MEMORY[0x277CCAC38] processInfo];
-    [v11 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v13 = v12;
 
     return [v8 logMatrix4x4:a7 name:a8 priority:v14 timestamp:{v15, v16, v17, v13}];
@@ -267,14 +267,14 @@
   return result;
 }
 
-- (void)logDictionary:(id)a3 name:(const char *)a4 priority:(unint64_t)a5 timestamp:(double)a6
+- (void)logDictionary:(id)dictionary name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v20 = a6;
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a5 || self->_forceAllPriorities))
+  dictionaryCopy = dictionary;
+  timestampCopy = timestamp;
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    [(ADLogManager *)self updateTimestampWithOverride:&v20];
+    [(ADLogManager *)self updateTimestampWithOverride:&timestampCopy];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -296,7 +296,7 @@
           v15 = *(*(&v16 + 1) + 8 * i);
           if ([v15 active])
           {
-            [v15 logDictionary:v10 name:a4 timestamp:v20];
+            [v15 logDictionary:dictionaryCopy name:name timestamp:timestampCopy];
           }
         }
 
@@ -308,27 +308,27 @@
   }
 }
 
-- (void)logDictionary:(id)a3 name:(const char *)a4 priority:(unint64_t)a5
+- (void)logDictionary:(id)dictionary name:(const char *)name priority:(unint64_t)priority
 {
-  v11 = a3;
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a5 || self->_forceAllPriorities))
+  dictionaryCopy = dictionary;
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    v8 = [MEMORY[0x277CCAC38] processInfo];
-    [v8 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v10 = v9;
 
-    [(ADLogManager *)self logDictionary:v11 name:a4 priority:a5 timestamp:v10];
+    [(ADLogManager *)self logDictionary:dictionaryCopy name:name priority:priority timestamp:v10];
   }
 }
 
-- (void)logCalibration:(id)a3 name:(const char *)a4 priority:(unint64_t)a5 timestamp:(double)a6
+- (void)logCalibration:(id)calibration name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v20 = a6;
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a5 || self->_forceAllPriorities))
+  calibrationCopy = calibration;
+  timestampCopy = timestamp;
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    [(ADLogManager *)self updateTimestampWithOverride:&v20];
+    [(ADLogManager *)self updateTimestampWithOverride:&timestampCopy];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -350,7 +350,7 @@
           v15 = *(*(&v16 + 1) + 8 * i);
           if ([v15 active])
           {
-            [v15 logCalibration:v10 name:a4 timestamp:v20];
+            [v15 logCalibration:calibrationCopy name:name timestamp:timestampCopy];
           }
         }
 
@@ -362,26 +362,26 @@
   }
 }
 
-- (void)logCalibration:(id)a3 name:(const char *)a4 priority:(unint64_t)a5
+- (void)logCalibration:(id)calibration name:(const char *)name priority:(unint64_t)priority
 {
-  v11 = a3;
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a5 || self->_forceAllPriorities))
+  calibrationCopy = calibration;
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    v8 = [MEMORY[0x277CCAC38] processInfo];
-    [v8 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v10 = v9;
 
-    [(ADLogManager *)self logCalibration:v11 name:a4 priority:a5 timestamp:v10];
+    [(ADLogManager *)self logCalibration:calibrationCopy name:name priority:priority timestamp:v10];
   }
 }
 
-- (void)logRawBuffer:(void *)a3 size:(unint64_t)a4 name:(const char *)a5 priority:(unint64_t)a6 timestamp:(double)a7
+- (void)logRawBuffer:(void *)buffer size:(unint64_t)size name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20 = a7;
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a6 || self->_forceAllPriorities))
+  timestampCopy = timestamp;
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    [(ADLogManager *)self updateTimestampWithOverride:&v20];
+    [(ADLogManager *)self updateTimestampWithOverride:&timestampCopy];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -403,7 +403,7 @@
           v15 = *(*(&v16 + 1) + 8 * i);
           if ([v15 active])
           {
-            [v15 logRawBuffer:a3 size:a4 name:a5 timestamp:v20];
+            [v15 logRawBuffer:buffer size:size name:name timestamp:timestampCopy];
           }
         }
 
@@ -415,26 +415,26 @@
   }
 }
 
-- (void)logRawBuffer:(void *)a3 size:(unint64_t)a4 name:(const char *)a5 priority:(unint64_t)a6
+- (void)logRawBuffer:(void *)buffer size:(unint64_t)size name:(const char *)name priority:(unint64_t)priority
 {
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a6 || self->_forceAllPriorities))
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    v11 = [MEMORY[0x277CCAC38] processInfo];
-    [v11 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v13 = v12;
 
-    [(ADLogManager *)self logRawBuffer:a3 size:a4 name:a5 priority:a6 timestamp:v13];
+    [(ADLogManager *)self logRawBuffer:buffer size:size name:name priority:priority timestamp:v13];
   }
 }
 
-- (void)logString:(id)a3 name:(const char *)a4 priority:(unint64_t)a5 timestamp:(double)a6
+- (void)logString:(id)string name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v20 = a6;
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a5 || self->_forceAllPriorities))
+  stringCopy = string;
+  timestampCopy = timestamp;
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    [(ADLogManager *)self updateTimestampWithOverride:&v20];
+    [(ADLogManager *)self updateTimestampWithOverride:&timestampCopy];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -456,7 +456,7 @@
           v15 = *(*(&v16 + 1) + 8 * i);
           if ([v15 active])
           {
-            [v15 logString:v10 name:a4 timestamp:v20];
+            [v15 logString:stringCopy name:name timestamp:timestampCopy];
           }
         }
 
@@ -468,27 +468,27 @@
   }
 }
 
-- (void)logString:(id)a3 name:(const char *)a4 priority:(unint64_t)a5
+- (void)logString:(id)string name:(const char *)name priority:(unint64_t)priority
 {
-  v11 = a3;
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a5 || self->_forceAllPriorities))
+  stringCopy = string;
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    v8 = [MEMORY[0x277CCAC38] processInfo];
-    [v8 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v10 = v9;
 
-    [(ADLogManager *)self logString:v11 name:a4 priority:a5 timestamp:v10];
+    [(ADLogManager *)self logString:stringCopy name:name priority:priority timestamp:v10];
   }
 }
 
-- (void)logPointCloud:(id)a3 name:(const char *)a4 priority:(unint64_t)a5 timestamp:(double)a6
+- (void)logPointCloud:(id)cloud name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v20 = a6;
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a5 || self->_forceAllPriorities))
+  cloudCopy = cloud;
+  timestampCopy = timestamp;
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    [(ADLogManager *)self updateTimestampWithOverride:&v20];
+    [(ADLogManager *)self updateTimestampWithOverride:&timestampCopy];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -510,7 +510,7 @@
           v15 = *(*(&v16 + 1) + 8 * i);
           if ([v15 active])
           {
-            [v15 logPointCloud:v10 name:a4 timestamp:v20];
+            [v15 logPointCloud:cloudCopy name:name timestamp:timestampCopy];
           }
         }
 
@@ -522,26 +522,26 @@
   }
 }
 
-- (void)logPointCloud:(id)a3 name:(const char *)a4 priority:(unint64_t)a5
+- (void)logPointCloud:(id)cloud name:(const char *)name priority:(unint64_t)priority
 {
-  v11 = a3;
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a5 || self->_forceAllPriorities))
+  cloudCopy = cloud;
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    v8 = [MEMORY[0x277CCAC38] processInfo];
-    [v8 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v10 = v9;
 
-    [(ADLogManager *)self logPointCloud:v11 name:a4 priority:a5 timestamp:v10];
+    [(ADLogManager *)self logPointCloud:cloudCopy name:name priority:priority timestamp:v10];
   }
 }
 
-- (void)logPixelBuffer:(__CVBuffer *)a3 name:(const char *)a4 priority:(unint64_t)a5 timestamp:(double)a6
+- (void)logPixelBuffer:(__CVBuffer *)buffer name:(const char *)name priority:(unint64_t)priority timestamp:(double)timestamp
 {
   v20 = *MEMORY[0x277D85DE8];
-  v18 = a6;
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a5 || self->_forceAllPriorities))
+  timestampCopy = timestamp;
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    [(ADLogManager *)self updateTimestampWithOverride:&v18];
+    [(ADLogManager *)self updateTimestampWithOverride:&timestampCopy];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
@@ -563,7 +563,7 @@
           v13 = *(*(&v14 + 1) + 8 * i);
           if ([v13 active])
           {
-            [v13 logPixelBuffer:a3 name:a4 timestamp:v18];
+            [v13 logPixelBuffer:buffer name:name timestamp:timestampCopy];
           }
         }
 
@@ -575,15 +575,15 @@
   }
 }
 
-- (void)logPixelBuffer:(__CVBuffer *)a3 name:(const char *)a4 priority:(unint64_t)a5
+- (void)logPixelBuffer:(__CVBuffer *)buffer name:(const char *)name priority:(unint64_t)priority
 {
-  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= a5 || self->_forceAllPriorities))
+  if (self->_activeHandlersCounter >= 1 && (self->_loggingPriority >= priority || self->_forceAllPriorities))
   {
-    v9 = [MEMORY[0x277CCAC38] processInfo];
-    [v9 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v11 = v10;
 
-    [(ADLogManager *)self logPixelBuffer:a3 name:a4 priority:a5 timestamp:v11];
+    [(ADLogManager *)self logPixelBuffer:buffer name:name priority:priority timestamp:v11];
   }
 }
 
@@ -617,17 +617,17 @@
   [(ADLogManager *)self toggleByClass:v3 enable:1];
 }
 
-- (void)disable:(id)a3
+- (void)disable:(id)disable
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  disableCopy = disable;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5->_handlers;
+  v6 = selfCopy->_handlers;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -642,12 +642,12 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v4 isEqualToString:v11];
+        name = [v10 name];
+        v12 = [disableCopy isEqualToString:name];
 
         if (v12)
         {
-          [(ADLogManager *)v5 toggleHandler:v10 enable:0];
+          [(ADLogManager *)selfCopy toggleHandler:v10 enable:0];
         }
       }
 
@@ -657,20 +657,20 @@
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)enable:(id)a3
+- (void)enable:(id)enable
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  enableCopy = enable;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5->_handlers;
+  v6 = selfCopy->_handlers;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -685,18 +685,18 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v4 isEqualToString:v11];
+        name = [v10 name];
+        v12 = [enableCopy isEqualToString:name];
 
         if (v12)
         {
-          [(ADLogManager *)v5 toggleHandler:v10 enable:1];
+          [(ADLogManager *)selfCopy toggleHandler:v10 enable:1];
         }
 
         else
         {
-          v13 = [v10 name];
-          v14 = [v4 hasPrefix:v13];
+          name2 = [v10 name];
+          v14 = [enableCopy hasPrefix:name2];
 
           if (v14)
           {
@@ -704,7 +704,7 @@
             if (objc_opt_isKindOfClass())
             {
               [v10 setActive:1];
-              ++v5->_activeHandlersCounter;
+              ++selfCopy->_activeHandlersCounter;
             }
           }
         }
@@ -716,19 +716,19 @@
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)disableAll
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = 0u;
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v3 = v2->_handlers;
+  v3 = selfCopy->_handlers;
   v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v4)
   {
@@ -743,7 +743,7 @@
           objc_enumerationMutation(v3);
         }
 
-        [(ADLogManager *)v2 toggleHandler:*(*(&v7 + 1) + 8 * v6++) enable:0, v7];
+        [(ADLogManager *)selfCopy toggleHandler:*(*(&v7 + 1) + 8 * v6++) enable:0, v7];
       }
 
       while (v4 != v6);
@@ -753,19 +753,19 @@
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)enableAll
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = 0u;
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v3 = v2->_handlers;
+  v3 = selfCopy->_handlers;
   v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v4)
   {
@@ -780,7 +780,7 @@
           objc_enumerationMutation(v3);
         }
 
-        [(ADLogManager *)v2 toggleHandler:*(*(&v7 + 1) + 8 * v6++) enable:1, v7];
+        [(ADLogManager *)selfCopy toggleHandler:*(*(&v7 + 1) + 8 * v6++) enable:1, v7];
       }
 
       while (v4 != v6);
@@ -790,20 +790,20 @@
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)toggleByClass:(Class)a3 enable:(BOOL)a4
+- (void)toggleByClass:(Class)class enable:(BOOL)enable
 {
-  v4 = a4;
+  enableCopy = enable;
   v16 = *MEMORY[0x277D85DE8];
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v5->_handlers;
+  v6 = selfCopy->_handlers;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -821,7 +821,7 @@
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_isKindOfClass())
         {
-          [(ADLogManager *)v5 toggleHandler:v10 enable:v4, v11];
+          [(ADLogManager *)selfCopy toggleHandler:v10 enable:enableCopy, v11];
         }
 
         ++v9;
@@ -834,41 +834,41 @@
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)toggleHandler:(id)a3 enable:(BOOL)a4
+- (void)toggleHandler:(id)handler enable:(BOOL)enable
 {
-  v4 = a4;
+  enableCopy = enable;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v4)
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (enableCopy)
   {
-    if (([v6 active] & 1) == 0)
+    if (([handlerCopy active] & 1) == 0)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [v6 name];
+        name = [handlerCopy name];
         v16 = 138412290;
-        v17 = v8;
+        v17 = name;
         _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "enabling logger handler %@", &v16, 0xCu);
       }
 
-      ++v7->_activeHandlersCounter;
+      ++selfCopy->_activeHandlersCounter;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        logFolder = v7->_logFolder;
-        v10 = [v6 name];
+        logFolder = selfCopy->_logFolder;
+        name2 = [handlerCopy name];
         v16 = 138412546;
         v17 = logFolder;
         v18 = 2112;
-        v19 = v10;
+        v19 = name2;
         _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "setting log folder %@ for logger handler %@", &v16, 0x16u);
       }
 
-      if ([v6 setLogFolder:v7->_logFolder])
+      if ([handlerCopy setLogFolder:selfCopy->_logFolder])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -884,19 +884,19 @@ LABEL_20:
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          hostName = v7->_hostName;
-          v15 = [v6 name];
+          hostName = selfCopy->_hostName;
+          name3 = [handlerCopy name];
           v16 = 138412546;
           v17 = hostName;
           v18 = 2112;
-          v19 = v15;
+          v19 = name3;
           _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "setting host name %@ for logger handler %@", &v16, 0x16u);
         }
 
-        if (![v6 setHostName:v7->_hostName])
+        if (![handlerCopy setHostName:selfCopy->_hostName])
         {
-          [v6 preEnable];
-          [v6 setActive:1];
+          [handlerCopy preEnable];
+          [handlerCopy setActive:1];
           goto LABEL_14;
         }
 
@@ -911,37 +911,37 @@ LABEL_20:
     }
   }
 
-  else if ([v6 active])
+  else if ([handlerCopy active])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 name];
+      name4 = [handlerCopy name];
       v16 = 138412290;
-      v17 = v13;
+      v17 = name4;
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "disabling logger handler %@", &v16, 0xCu);
     }
 
-    --v7->_activeHandlersCounter;
-    [v6 setActive:0];
-    [v6 postDisable];
+    --selfCopy->_activeHandlersCounter;
+    [handlerCopy setActive:0];
+    [handlerCopy postDisable];
   }
 
 LABEL_14:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (int64_t)setHostName:(id)a3
+- (int64_t)setHostName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  objc_storeStrong(&v6->_hostName, a3);
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_hostName, name);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6->_handlers;
+  v7 = selfCopy->_handlers;
   v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -958,7 +958,7 @@ LABEL_14:
         v11 = *(*(&v13 + 1) + 8 * i);
         if ([v11 active])
         {
-          [v11 setHostName:v6->_hostName];
+          [v11 setHostName:selfCopy->_hostName];
         }
       }
 
@@ -968,22 +968,22 @@ LABEL_14:
     while (v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   return 0;
 }
 
-- (int64_t)setLogFolder:(id)a3
+- (int64_t)setLogFolder:(id)folder
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  objc_storeStrong(&v6->_logFolder, a3);
+  folderCopy = folder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_logFolder, folder);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6->_handlers;
+  v7 = selfCopy->_handlers;
   v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -1000,7 +1000,7 @@ LABEL_14:
         v11 = *(*(&v13 + 1) + 8 * i);
         if ([v11 active])
         {
-          [v11 setLogFolder:v6->_logFolder];
+          [v11 setLogFolder:selfCopy->_logFolder];
         }
       }
 
@@ -1010,7 +1010,7 @@ LABEL_14:
     while (v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   return 0;
 }
 
@@ -1047,8 +1047,8 @@ LABEL_14:
           }
         }
 
-        v9 = [v8 name];
-        [v3 addObject:v9];
+        name = [v8 name];
+        [v3 addObject:name];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1060,22 +1060,22 @@ LABEL_14:
   return v3;
 }
 
-- (int64_t)addHandler:(id)a3
+- (int64_t)addHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    [v4 setHumanReadableFormat:v5->_humanReadableFormat];
-    [(NSMutableArray *)v5->_handlers addObject:v4];
-    [(ADLogManager *)v5 applyConfigurationToNewHandler:v4];
-    if ([v4 active])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [handlerCopy setHumanReadableFormat:selfCopy->_humanReadableFormat];
+    [(NSMutableArray *)selfCopy->_handlers addObject:handlerCopy];
+    [(ADLogManager *)selfCopy applyConfigurationToNewHandler:handlerCopy];
+    if ([handlerCopy active])
     {
-      ++v5->_activeHandlersCounter;
+      ++selfCopy->_activeHandlersCounter;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v6 = 0;
   }
@@ -1088,18 +1088,18 @@ LABEL_14:
   return v6;
 }
 
-- (ADLogManager)initWithHandlers:(id)a3
+- (ADLogManager)initWithHandlers:(id)handlers
 {
   v17[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlersCopy = handlers;
   v16.receiver = self;
   v16.super_class = ADLogManager;
   v5 = [(ADLogManager *)&v16 init];
   if (v5)
   {
-    if (v4)
+    if (handlersCopy)
     {
-      v6 = [MEMORY[0x277CBEB18] arrayWithArray:v4];
+      v6 = [MEMORY[0x277CBEB18] arrayWithArray:handlersCopy];
     }
 
     else
@@ -1125,13 +1125,13 @@ LABEL_14:
     v17[4] = kADDeviceConfigurationKeyLoggingForceCounterAsTimestamp;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:5];
     objc_initWeak(&location, v5);
-    v11 = [objc_opt_class() defaults];
+    defaults = [objc_opt_class() defaults];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __33__ADLogManager_initWithHandlers___block_invoke;
     v13[3] = &unk_278CA1688;
     objc_copyWeak(&v14, &location);
-    [v11 registerUpdateHandlerForKeys:v10 invokeOnRegistration:1 scopeObject:v5 handlerBlock:v13];
+    [defaults registerUpdateHandlerForKeys:v10 invokeOnRegistration:1 scopeObject:v5 handlerBlock:v13];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -1147,10 +1147,10 @@ void __33__ADLogManager_initWithHandlers___block_invoke(uint64_t a1, void *a2)
   [WeakRetained processConfigurationChange:v3];
 }
 
-- (void)setHumanReadableFormat:(BOOL)a3
+- (void)setHumanReadableFormat:(BOOL)format
 {
   v13 = *MEMORY[0x277D85DE8];
-  self->_humanReadableFormat = a3;
+  self->_humanReadableFormat = format;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
@@ -1181,11 +1181,11 @@ void __33__ADLogManager_initWithHandlers___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)updateTimestampWithOverride:(double *)a3
+- (void)updateTimestampWithOverride:(double *)override
 {
   if (self->_forceCounterAsTimestamp)
   {
-    if (*a3 <= self->_lastTimestamp)
+    if (*override <= self->_lastTimestamp)
     {
       counterTimestamp = self->_counterTimestamp;
     }
@@ -1193,11 +1193,11 @@ void __33__ADLogManager_initWithHandlers___block_invoke(uint64_t a1, void *a2)
     else
     {
       counterTimestamp = self->_counterTimestamp + 0.001;
-      self->_lastTimestamp = *a3;
+      self->_lastTimestamp = *override;
       self->_counterTimestamp = counterTimestamp;
     }
 
-    *a3 = counterTimestamp;
+    *override = counterTimestamp;
   }
 }
 
@@ -1207,14 +1207,14 @@ void __33__ADLogManager_initWithHandlers___block_invoke(uint64_t a1, void *a2)
   p_vtable = &OBJC_METACLASS___ADStereoV2Pipeline.vtable;
   {
     v9[0] = kADDeviceConfigurationKeyEnabledLoggers;
-    v5 = [MEMORY[0x277CBEB68] null];
-    v10[0] = v5;
+    null = [MEMORY[0x277CBEB68] null];
+    v10[0] = null;
     v9[1] = kADDeviceConfigurationKeyLoggingHostName;
-    v6 = [MEMORY[0x277CBEB68] null];
-    v10[1] = v6;
+    null2 = [MEMORY[0x277CBEB68] null];
+    v10[1] = null2;
     v9[2] = kADDeviceConfigurationKeyLogFolder;
-    v7 = [MEMORY[0x277CBEB68] null];
-    v10[2] = v7;
+    null3 = [MEMORY[0x277CBEB68] null];
+    v10[2] = null3;
     v10[3] = MEMORY[0x277CBEC28];
     v9[3] = kADDeviceConfigurationKeyLoggingPriorityForceAll;
     v9[4] = kADDeviceConfigurationKeyLoggingForceCounterAsTimestamp;
@@ -1230,14 +1230,14 @@ void __33__ADLogManager_initWithHandlers___block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-+ (id)defaultLoggerWithName:(id)a3
++ (id)defaultLoggerWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_opt_new();
-  v5 = [[ADVisualLoggerHandler alloc] initWithName:v3];
+  v5 = [[ADVisualLoggerHandler alloc] initWithName:nameCopy];
   [v4 addHandler:v5];
 
-  v6 = [[ADFileLoggerHandler alloc] initWithName:v3];
+  v6 = [[ADFileLoggerHandler alloc] initWithName:nameCopy];
   [v4 addHandler:v6];
 
   return v4;

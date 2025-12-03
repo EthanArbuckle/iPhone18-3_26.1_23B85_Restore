@@ -1,33 +1,33 @@
 @interface TRLegacyAnisetteDataRequest
-- (TRLegacyAnisetteDataRequest)initWithCoder:(id)a3;
+- (TRLegacyAnisetteDataRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRLegacyAnisetteDataRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = TRLegacyAnisetteDataRequest;
-  [(TRMessage *)&v6 encodeWithCoder:v4];
+  [(TRMessage *)&v6 encodeWithCoder:coderCopy];
   dsid = self->_dsid;
   if (dsid)
   {
-    [v4 encodeObject:dsid forKey:@"TRAnisetteDataMessages_d"];
+    [coderCopy encodeObject:dsid forKey:@"TRAnisetteDataMessages_d"];
   }
 }
 
-- (TRLegacyAnisetteDataRequest)initWithCoder:(id)a3
+- (TRLegacyAnisetteDataRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRLegacyAnisetteDataRequest;
-  v5 = [(TRMessage *)&v9 initWithCoder:v4];
+  v5 = [(TRMessage *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TRAnisetteDataMessages_d"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TRAnisetteDataMessages_d"];
     dsid = v5->_dsid;
     v5->_dsid = v6;
   }

@@ -1,5 +1,5 @@
 @interface VCVirtualAVCaptureDeviceInput
-- (VCVirtualAVCaptureDeviceInput)initWithDevice:(id)a3 error:(id *)a4;
+- (VCVirtualAVCaptureDeviceInput)initWithDevice:(id)device error:(id *)error;
 - (id)ports;
 - (void)dealloc;
 - (void)disconnect;
@@ -7,7 +7,7 @@
 
 @implementation VCVirtualAVCaptureDeviceInput
 
-- (VCVirtualAVCaptureDeviceInput)initWithDevice:(id)a3 error:(id *)a4
+- (VCVirtualAVCaptureDeviceInput)initWithDevice:(id)device error:(id *)error
 {
   v6 = [VCVirtualAVCaptureInputPort alloc];
   v7 = [(VCVirtualAVCaptureInputPort *)v6 initWithDevice:self mediaType:*MEMORY[0x1E6987608]];
@@ -28,15 +28,15 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = a3;
-  self->_device = v9;
-  if (!v9)
+  deviceCopy = device;
+  self->_device = deviceCopy;
+  if (!deviceCopy)
   {
     [VCVirtualAVCaptureDeviceInput initWithDevice:error:];
     goto LABEL_9;
   }
 
-  [(VCVirtualAVCaptureDevice *)v9 addDeviceInput:self];
+  [(VCVirtualAVCaptureDevice *)deviceCopy addDeviceInput:self];
   self->_stateLock._os_unfair_lock_opaque = 0;
   return self;
 }

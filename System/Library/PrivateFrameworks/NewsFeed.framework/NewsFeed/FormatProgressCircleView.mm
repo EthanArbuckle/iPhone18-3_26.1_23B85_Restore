@@ -10,11 +10,11 @@
   v6.super_class = swift_getObjectType();
   v2 = v6.receiver;
   [(FormatProgressCircleView *)&v6 layoutSubviews];
-  v3 = [v2 layer];
-  v4 = [objc_opt_self() clearColor];
-  v5 = [v4 CGColor];
+  layer = [v2 layer];
+  clearColor = [objc_opt_self() clearColor];
+  cGColor = [clearColor CGColor];
 
-  [v3 setBackgroundColor_];
+  [layer setBackgroundColor_];
 }
 
 @end

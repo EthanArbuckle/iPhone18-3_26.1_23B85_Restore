@@ -4,43 +4,43 @@
 - (BOOL)_shouldShowOtherLanguagesHeader;
 - (BOOL)controllerNeedsToRun;
 - (BOOL)shouldShowSafetyAndHandlingSection;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (BYBuddySafetyAndHandlingBundleLocalizationProvider)safetyAndHandlingLocalizationProvider;
 - (BYBuddySafetyAndHandlingViewControllerProvider)safetyAndHandlingViewControllerProvider;
 - (BuddyLanguageLocaleSelectionReceiver)selectionReceiver;
 - (BuddyLocaleController)init;
-- (double)_heightForHeaderInSection:(int64_t)a3 inTableView:(id)a4;
-- (double)_solarium_heightForHeaderInSection:(int64_t)a3 inTableView:(id)a4;
+- (double)_heightForHeaderInSection:(int64_t)section inTableView:(id)view;
+- (double)_solarium_heightForHeaderInSection:(int64_t)section inTableView:(id)view;
 - (double)_topPaddingForSectionHeader;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_micaAssetName;
-- (id)_micaAssetNameForRegion:(int64_t)a3;
-- (id)_solarium_viewForHeaderInSection:(int64_t)a3 inTableView:(id)a4;
-- (id)_viewForHeaderInSection:(int64_t)a3 inTableView:(id)a4;
-- (id)countryAtIndexPath:(id)a3;
+- (id)_micaAssetNameForRegion:(int64_t)region;
+- (id)_solarium_viewForHeaderInSection:(int64_t)section inTableView:(id)view;
+- (id)_viewForHeaderInSection:(int64_t)section inTableView:(id)view;
+- (id)countryAtIndexPath:(id)path;
 - (id)headerTitle;
 - (id)internalMenuActions;
 - (id)otherCountriesSectionTitle;
 - (id)safetyAndHandlingCountryCode;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_loadSavedStatePostLanguageReboot;
-- (void)_updateChromelessBar:(id)a3;
+- (void)_updateChromelessBar:(id)bar;
 - (void)controllerWasPopped;
 - (void)loadView;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)selectCountry:(id)a3;
-- (void)setLocaleComposite:(id)a3;
-- (void)setShowLocalizedNames:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)selectCountry:(id)country;
+- (void)setLocaleComposite:(id)composite;
+- (void)setShowLocalizedNames:(BOOL)names;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BuddyLocaleController
@@ -59,132 +59,132 @@
 
 - (void)loadView
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = BuddyLocaleController;
   [(BuddyLocaleController *)&v3 loadView];
-  v2 = [(BuddyLocaleController *)v5 navigationItem];
-  [v2 _setManualScrollEdgeAppearanceEnabled:1];
+  navigationItem = [(BuddyLocaleController *)selfCopy navigationItem];
+  [navigationItem _setManualScrollEdgeAppearanceEnabled:1];
 }
 
 - (void)viewDidLoad
 {
-  v43 = self;
+  selfCopy = self;
   v42 = a2;
   v41.receiver = self;
   v41.super_class = BuddyLocaleController;
   [(BuddyLocaleController *)&v41 viewDidLoad];
   v2 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [(BuddyLocaleController *)v43 setBuddyLocaleTableView:v2];
+  [(BuddyLocaleController *)selfCopy setBuddyLocaleTableView:v2];
 
-  v3 = [(BuddyLocaleController *)v43 buddyLocaleTableView];
-  [(UITableView *)v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
+  buddyLocaleTableView = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [(UITableView *)buddyLocaleTableView registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
 
-  v4 = [(BuddyLocaleController *)v43 buddyLocaleTableView];
-  [(UITableView *)v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"SafetyAndHandlingCell"];
+  buddyLocaleTableView2 = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [(UITableView *)buddyLocaleTableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"SafetyAndHandlingCell"];
 
   *&v39 = sub_1000D6A40();
   *(&v39 + 1) = v5;
   *&v40 = v6;
   *(&v40 + 1) = v7;
-  v8 = [(BuddyLocaleController *)v43 buddyLocaleTableView];
+  buddyLocaleTableView3 = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
   v38 = v40;
   v37 = v39;
-  [(UITableView *)v8 setDirectionalLayoutMargins:v39, v40];
+  [(UITableView *)buddyLocaleTableView3 setDirectionalLayoutMargins:v39, v40];
 
-  v9 = v43;
-  v10 = [(BuddyLocaleController *)v43 buddyLocaleTableView];
-  [(UITableView *)v10 setDelegate:v9];
+  v9 = selfCopy;
+  buddyLocaleTableView4 = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [(UITableView *)buddyLocaleTableView4 setDelegate:v9];
 
-  v11 = v43;
-  v12 = [(BuddyLocaleController *)v43 buddyLocaleTableView];
-  [(UITableView *)v12 setDataSource:v11];
+  v11 = selfCopy;
+  buddyLocaleTableView5 = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [(UITableView *)buddyLocaleTableView5 setDataSource:v11];
 
-  v13 = [(BuddyLocaleController *)v43 buddyLocaleTableView];
-  [(UITableView *)v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buddyLocaleTableView6 = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [(UITableView *)buddyLocaleTableView6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(BuddyLocaleController *)v43 buddyLocaleTableView];
-  [(UITableView *)v14 _setDrawsSeparatorAtTopOfSections:1];
+  buddyLocaleTableView7 = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [(UITableView *)buddyLocaleTableView7 _setDrawsSeparatorAtTopOfSections:1];
 
-  v15 = [(BuddyLocaleController *)v43 view];
-  v16 = [(BuddyLocaleController *)v43 buddyLocaleTableView];
-  [v15 addSubview:v16];
+  view = [(BuddyLocaleController *)selfCopy view];
+  buddyLocaleTableView8 = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [view addSubview:buddyLocaleTableView8];
 
-  [(BuddyLocaleController *)v43 _loadSavedStatePostLanguageReboot];
-  v17 = v43;
-  v18 = [(BuddyLocaleController *)v43 buddyLocaleTableView];
-  [(BuddyLocaleController *)v17 setTableView:v18];
+  [(BuddyLocaleController *)selfCopy _loadSavedStatePostLanguageReboot];
+  v17 = selfCopy;
+  buddyLocaleTableView9 = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [(BuddyLocaleController *)v17 setTableView:buddyLocaleTableView9];
 
-  if ([(BuddyLocaleController *)v43 isResumingFromLanguageReboot])
+  if ([(BuddyLocaleController *)selfCopy isResumingFromLanguageReboot])
   {
     v19 = [[OBAnimationState alloc] initWithStateName:@"State 2" darkStateName:@"Dark 2" transitionDuration:1.0 transitionSpeed:0.5];
     v44 = v19;
     location = [NSArray arrayWithObjects:&v44 count:1];
 
-    v20 = v43;
-    v21 = [(BuddyLocaleController *)v43 _micaAssetName];
-    v22 = [(BuddyLocaleController *)v20 buddy_animationController:v21 animatedStates:location startAtFirstState:1];
-    [(BuddyLocaleController *)v43 setAnimationController:v22];
+    v20 = selfCopy;
+    _micaAssetName = [(BuddyLocaleController *)selfCopy _micaAssetName];
+    v22 = [(BuddyLocaleController *)v20 buddy_animationController:_micaAssetName animatedStates:location startAtFirstState:1];
+    [(BuddyLocaleController *)selfCopy setAnimationController:v22];
 
     objc_storeStrong(&location, 0);
   }
 
   else
   {
-    v23 = v43;
-    v24 = [(BuddyLocaleController *)v43 _micaAssetName];
-    v25 = [(BuddyLocaleController *)v23 buddy_animationController:v24];
-    [(BuddyLocaleController *)v43 setAnimationController:v25];
+    v23 = selfCopy;
+    _micaAssetName2 = [(BuddyLocaleController *)selfCopy _micaAssetName];
+    v25 = [(BuddyLocaleController *)v23 buddy_animationController:_micaAssetName2];
+    [(BuddyLocaleController *)selfCopy setAnimationController:v25];
   }
 
-  v26 = v43;
-  v27 = [(BuddyLocaleController *)v43 buddyLocaleTableView];
-  [(UITableView *)v27 setDelegate:v26];
+  v26 = selfCopy;
+  buddyLocaleTableView10 = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [(UITableView *)buddyLocaleTableView10 setDelegate:v26];
 
-  v28 = [(BuddyLocaleController *)v43 headerView];
-  v29 = [(BuddyLocaleController *)v43 headerTitle];
-  [v28 setTitle:v29];
+  headerView = [(BuddyLocaleController *)selfCopy headerView];
+  headerTitle = [(BuddyLocaleController *)selfCopy headerTitle];
+  [headerView setTitle:headerTitle];
 
-  v30 = [(BuddyLocaleController *)v43 headerView];
-  v31 = [(BuddyLocaleController *)v43 language];
-  [v30 setLanguage:v31];
+  headerView2 = [(BuddyLocaleController *)selfCopy headerView];
+  language = [(BuddyLocaleController *)selfCopy language];
+  [headerView2 setLanguage:language];
 
-  v32 = [(BuddyLocaleController *)v43 language];
-  v33 = [NSParagraphStyle defaultWritingDirectionForLanguage:v32];
+  language2 = [(BuddyLocaleController *)selfCopy language];
+  v33 = [NSParagraphStyle defaultWritingDirectionForLanguage:language2];
 
   if (v33 == NSWritingDirectionRightToLeft)
   {
-    v34 = [(BuddyLocaleController *)v43 view];
-    [v34 buddy_setSemanticContentAttributeRecursively:4];
+    view2 = [(BuddyLocaleController *)selfCopy view];
+    [view2 buddy_setSemanticContentAttributeRecursively:4];
   }
 
   else
   {
-    v34 = [(BuddyLocaleController *)v43 view];
-    [v34 buddy_setSemanticContentAttributeRecursively:3];
+    view2 = [(BuddyLocaleController *)selfCopy view];
+    [view2 buddy_setSemanticContentAttributeRecursively:3];
   }
 
-  if ([(BuddyLocaleController *)v43 shouldShowSafetyAndHandlingSection])
+  if ([(BuddyLocaleController *)selfCopy shouldShowSafetyAndHandlingSection])
   {
-    v35 = [(BuddyLocaleController *)v43 safetyAndHandlingManager];
-    [(BYBuddySafetyAndHandlingManager *)v35 registerUserWasPresentedWithSafetyAndHandlingCard];
+    safetyAndHandlingManager = [(BuddyLocaleController *)selfCopy safetyAndHandlingManager];
+    [(BYBuddySafetyAndHandlingManager *)safetyAndHandlingManager registerUserWasPresentedWithSafetyAndHandlingCard];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  appearCopy = appear;
   v12.receiver = self;
   v12.super_class = BuddyLocaleController;
-  [(BuddyLocaleController *)&v12 viewWillAppear:a3];
+  [(BuddyLocaleController *)&v12 viewWillAppear:appear];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1000D6C4C;
   v10 = &unk_10032B0D0;
-  v11 = v15;
+  v11 = selfCopy;
   v17 = &unk_1003A70A8;
   location = 0;
   objc_storeStrong(&location, &v7);
@@ -194,56 +194,56 @@
   }
 
   objc_storeStrong(&location, 0);
-  v3 = [(BuddyLocaleController *)v15 navigationItem:v7];
+  v3 = [(BuddyLocaleController *)selfCopy navigationItem:v7];
   [v3 _setManualScrollEdgeAppearanceProgress:0.0];
 
-  v4 = v15;
-  v5 = [(BuddyLocaleController *)v15 buddyLocaleTableView];
-  [(BuddyLocaleController *)v4 _updateChromelessBar:v5];
+  v4 = selfCopy;
+  buddyLocaleTableView = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [(BuddyLocaleController *)v4 _updateChromelessBar:buddyLocaleTableView];
 
-  if (![(BuddyLocaleController *)v15 isResumingFromLanguageReboot])
+  if (![(BuddyLocaleController *)selfCopy isResumingFromLanguageReboot])
   {
-    v6 = [(BuddyLocaleController *)v15 animationController];
-    [(OBAnimationController *)v6 startAnimation];
+    animationController = [(BuddyLocaleController *)selfCopy animationController];
+    [(OBAnimationController *)animationController startAnimation];
   }
 
   objc_storeStrong(&v11, 0);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v26 = a3;
-  v25 = self;
+  sizeCopy = size;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v23.receiver = v25;
+  objc_storeStrong(location, coordinator);
+  v23.receiver = selfCopy;
   v23.super_class = BuddyLocaleController;
-  [(BuddyLocaleController *)&v23 viewWillTransitionToSize:location[0] withTransitionCoordinator:v26.width, v26.height];
-  v4 = [(BuddyLocaleController *)v25 buddyLocaleTableView];
-  v5 = [(BuddyLocaleController *)v25 view];
-  [v5 center];
+  [(BuddyLocaleController *)&v23 viewWillTransitionToSize:location[0] withTransitionCoordinator:sizeCopy.width, sizeCopy.height];
+  buddyLocaleTableView = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  view = [(BuddyLocaleController *)selfCopy view];
+  [view center];
   v21[3] = v6;
   v21[4] = v7;
-  v8 = [(BuddyLocaleController *)v25 buddyLocaleTableView];
-  [(UITableView *)v8 contentOffset];
+  buddyLocaleTableView2 = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+  [(UITableView *)buddyLocaleTableView2 contentOffset];
   v21[1] = v9;
   v21[2] = v10;
   sub_1000D6FBC();
   v21[5] = v11;
   v21[6] = v12;
-  v22 = [(UITableView *)v4 indexPathForRowAtPoint:*&v11, *&v12];
+  v22 = [(UITableView *)buddyLocaleTableView indexPathForRowAtPoint:*&v11, *&v12];
 
   v13 = location[0];
-  v14 = [(BuddyLocaleController *)v25 view];
+  view2 = [(BuddyLocaleController *)selfCopy view];
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
   v17 = 0;
   v18 = sub_1000D7038;
   v19 = &unk_10032C750;
-  v20 = v25;
+  v20 = selfCopy;
   v21[0] = v22;
-  [v13 animateAlongsideTransitionInView:v14 animation:&stru_10032C728 completion:&v15];
+  [v13 animateAlongsideTransitionInView:view2 animation:&stru_10032C728 completion:&v15];
 
   objc_storeStrong(v21, 0);
   objc_storeStrong(&v20, 0);
@@ -253,13 +253,13 @@
 
 - (id)headerTitle
 {
-  v2 = [(BuddyLocaleController *)self language];
-  v3 = [(NSString *)v2 length];
+  language = [(BuddyLocaleController *)self language];
+  v3 = [(NSString *)language length];
 
   v4 = +[NSBundle mainBundle];
   if (v3)
   {
-    v5 = [(BuddyLocaleController *)self language];
+    language2 = [(BuddyLocaleController *)self language];
     v8 = SFLocalizedStringFromTableInBundleForLanguage();
   }
 
@@ -273,13 +273,13 @@
 
 - (id)otherCountriesSectionTitle
 {
-  v2 = [(BuddyLocaleController *)self language];
-  v3 = [(NSString *)v2 length];
+  language = [(BuddyLocaleController *)self language];
+  v3 = [(NSString *)language length];
 
   v4 = +[NSBundle mainBundle];
   if (v3)
   {
-    v5 = [(BuddyLocaleController *)self language];
+    language2 = [(BuddyLocaleController *)self language];
     v8 = SFLocalizedStringFromTableInBundleForLanguage();
   }
 
@@ -291,11 +291,11 @@
   return v8;
 }
 
-- (void)setShowLocalizedNames:(BOOL)a3
+- (void)setShowLocalizedNames:(BOOL)names
 {
-  self->_showLocalizedNames = a3;
-  v3 = [(BuddyLocaleController *)self buddyLocaleTableView];
-  [(UITableView *)v3 reloadData];
+  self->_showLocalizedNames = names;
+  buddyLocaleTableView = [(BuddyLocaleController *)self buddyLocaleTableView];
+  [(UITableView *)buddyLocaleTableView reloadData];
 }
 
 - (BOOL)_postLanguageReboot
@@ -311,28 +311,28 @@
 {
   if ([(BuddyLocaleController *)self _postLanguageReboot])
   {
-    v2 = [(BuddyLocaleController *)self buddyLocaleTableView];
-    [(UITableView *)v2 reloadData];
+    buddyLocaleTableView = [(BuddyLocaleController *)self buddyLocaleTableView];
+    [(UITableView *)buddyLocaleTableView reloadData];
 
-    v3 = [(BuddyLocaleController *)self buddyLocaleTableView];
-    v4 = [(BuddyLocaleController *)self localeComposite];
-    [(BuddyLocaleComposite *)v4 scrollOffset];
+    buddyLocaleTableView2 = [(BuddyLocaleController *)self buddyLocaleTableView];
+    localeComposite = [(BuddyLocaleController *)self localeComposite];
+    [(BuddyLocaleComposite *)localeComposite scrollOffset];
     sub_1000D6FBC();
-    [(UITableView *)v3 setContentOffset:0 animated:v5, v6, *&v5, *&v6];
+    [(UITableView *)buddyLocaleTableView2 setContentOffset:0 animated:v5, v6, *&v5, *&v6];
   }
 }
 
-- (void)_updateChromelessBar:(id)a3
+- (void)_updateChromelessBar:(id)bar
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bar);
   [location[0] contentOffset];
   if (v3 <= 0.0)
   {
-    v6 = [(BuddyLocaleController *)v9 navigationItem];
-    [v6 _setManualScrollEdgeAppearanceProgress:0.0];
+    navigationItem = [(BuddyLocaleController *)selfCopy navigationItem];
+    [navigationItem _setManualScrollEdgeAppearanceProgress:0.0];
   }
 
   else
@@ -341,55 +341,55 @@
     v11 = v4 * 10.0;
     v10 = 0x4059000000000000;
     v7 = fmin(v4 * 10.0, 100.0) / 100.0;
-    v6 = [(BuddyLocaleController *)v9 navigationItem:v5];
-    [v6 _setManualScrollEdgeAppearanceProgress:v7];
+    navigationItem = [(BuddyLocaleController *)selfCopy navigationItem:v5];
+    [navigationItem _setManualScrollEdgeAppearanceProgress:v7];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)selectCountry:(id)a3
+- (void)selectCountry:(id)country
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, country);
   if (location[0])
   {
-    v15 = [(BuddyLocaleController *)v18 language];
-    if (!v15)
+    language = [(BuddyLocaleController *)selfCopy language];
+    if (!language)
     {
       v3 = +[NSLocale preferredLanguages];
-      v15 = [(NSArray *)v3 firstObject];
+      language = [(NSArray *)v3 firstObject];
     }
 
-    v14 = [location[0] code];
-    if ([v15 length] && objc_msgSend(v14, "length"))
+    code = [location[0] code];
+    if ([language length] && objc_msgSend(code, "length"))
     {
-      v4 = [IntlUtility languageIdentifierFromIdentifier:v15 withRegion:v14];
-      v5 = v15;
-      v15 = v4;
+      v4 = [IntlUtility languageIdentifierFromIdentifier:language withRegion:code];
+      v5 = language;
+      language = v4;
     }
 
     v6 = +[NSUserDefaults standardUserDefaults];
     [(NSUserDefaults *)v6 setBool:1 forKey:@"UserChoseLanguage"];
 
-    v7 = [(BuddyLocaleController *)v18 buddyPreferencesExcludedFromBackup];
-    [(BYPreferencesController *)v7 setObject:v14 forKey:@"UserLastSelectedLocale" persistImmediately:1];
+    buddyPreferencesExcludedFromBackup = [(BuddyLocaleController *)selfCopy buddyPreferencesExcludedFromBackup];
+    [(BYPreferencesController *)buddyPreferencesExcludedFromBackup setObject:code forKey:@"UserLastSelectedLocale" persistImmediately:1];
 
-    v8 = [(BuddyLocaleController *)v18 selectionReceiver];
-    v9 = [(BuddyLocaleController *)v18 buddyLocaleTableView];
-    [(UITableView *)v9 contentOffset];
-    v12 = [(BuddyLanguageLocaleSelectionReceiver *)v8 userSelectedLanguageWithLocale:v15 countryCode:v14 localePaneScrollOffset:v11, v10, *&v11]^ 1;
+    selectionReceiver = [(BuddyLocaleController *)selfCopy selectionReceiver];
+    buddyLocaleTableView = [(BuddyLocaleController *)selfCopy buddyLocaleTableView];
+    [(UITableView *)buddyLocaleTableView contentOffset];
+    v12 = [(BuddyLanguageLocaleSelectionReceiver *)selectionReceiver userSelectedLanguageWithLocale:language countryCode:code localePaneScrollOffset:v11, v10, *&v11]^ 1;
 
     if (v12)
     {
-      WeakRetained = objc_loadWeakRetained(&v18->_delegate);
-      [WeakRetained flowItemDone:v18];
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+      [WeakRetained flowItemDone:selfCopy];
     }
 
-    objc_storeStrong(&v14, 0);
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&code, 0);
+    objc_storeStrong(&language, 0);
     v16 = 0;
   }
 
@@ -401,21 +401,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)countryAtIndexPath:(id)a3
+- (id)countryAtIndexPath:(id)path
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v14 = 0;
-  v13 = [location[0] section];
-  if (v13)
+  section = [location[0] section];
+  if (section)
   {
-    if (v13 == 2)
+    if (section == 2)
     {
-      v7 = [(BuddyLocaleController *)v16 localeComposite];
-      v8 = [(BuddyLocaleComposite *)v7 dataSource];
-      v9 = -[BYLocaleDataSource otherLocaleAtIndex:](v8, "otherLocaleAtIndex:", [location[0] row]);
+      localeComposite = [(BuddyLocaleController *)selfCopy localeComposite];
+      dataSource = [(BuddyLocaleComposite *)localeComposite dataSource];
+      v9 = -[BYLocaleDataSource otherLocaleAtIndex:](dataSource, "otherLocaleAtIndex:", [location[0] row]);
       v10 = v14;
       v14 = v9;
     }
@@ -423,9 +423,9 @@
 
   else
   {
-    v3 = [(BuddyLocaleController *)v16 localeComposite];
-    v4 = [(BuddyLocaleComposite *)v3 dataSource];
-    v5 = -[BYLocaleDataSource recommendedLocaleAtIndex:](v4, "recommendedLocaleAtIndex:", [location[0] row]);
+    localeComposite2 = [(BuddyLocaleController *)selfCopy localeComposite];
+    dataSource2 = [(BuddyLocaleComposite *)localeComposite2 dataSource];
+    v5 = -[BYLocaleDataSource recommendedLocaleAtIndex:](dataSource2, "recommendedLocaleAtIndex:", [location[0] row]);
     v6 = v14;
     v14 = v5;
   }
@@ -436,45 +436,45 @@
   return v11;
 }
 
-- (void)setLocaleComposite:(id)a3
+- (void)setLocaleComposite:(id)composite
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v5->_localeComposite, location[0]);
-  v3 = [location[0] language];
-  [(BuddyLocaleController *)v5 setLanguage:v3];
+  objc_storeStrong(location, composite);
+  objc_storeStrong(&selfCopy->_localeComposite, location[0]);
+  language = [location[0] language];
+  [(BuddyLocaleController *)selfCopy setLanguage:language];
 
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
-  v2 = [(BuddyLocaleController *)self language];
+  language = [(BuddyLocaleController *)self language];
 
-  if (v2)
+  if (language)
   {
     v13 = 1;
   }
 
-  else if ([(BuddyLocaleController *)v12 isResumingFromLanguageReboot])
+  else if ([(BuddyLocaleController *)selfCopy isResumingFromLanguageReboot])
   {
     v13 = 1;
   }
 
   else
   {
-    v3 = [(BuddyLocaleController *)v12 buddyPreferences];
-    v11[0] = [(BYPreferencesController *)v3 objectForKey:@"LockdownSetLanguage"];
+    buddyPreferences = [(BuddyLocaleController *)selfCopy buddyPreferences];
+    v11[0] = [(BYPreferencesController *)buddyPreferences objectForKey:@"LockdownSetLanguage"];
 
-    v4 = [(BuddyLocaleController *)v12 buddyPreferences];
-    location = [(BYPreferencesController *)v4 objectForKey:@"Locale"];
+    buddyPreferences2 = [(BuddyLocaleController *)selfCopy buddyPreferences];
+    location = [(BYPreferencesController *)buddyPreferences2 objectForKey:@"Locale"];
 
-    v5 = [(BuddyLocaleController *)v12 buddyPreferences];
-    v9 = [(BYPreferencesController *)v5 objectForKey:@"Language"];
+    buddyPreferences3 = [(BuddyLocaleController *)selfCopy buddyPreferences];
+    v9 = [(BYPreferencesController *)buddyPreferences3 objectForKey:@"Language"];
 
     v6 = 0;
     if (!location)
@@ -499,87 +499,87 @@
 
 - (void)controllerWasPopped
 {
-  v2 = [(BuddyLocaleController *)self buddyPreferences];
-  [(BYPreferencesController *)v2 removeObjectForKey:@"Locale"];
+  buddyPreferences = [(BuddyLocaleController *)self buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences removeObjectForKey:@"Locale"];
 
-  v3 = [(BuddyLocaleController *)self safetyAndHandlingManager];
-  [(BYBuddySafetyAndHandlingManager *)v3 resetState];
+  safetyAndHandlingManager = [(BuddyLocaleController *)self safetyAndHandlingManager];
+  [(BYBuddySafetyAndHandlingManager *)safetyAndHandlingManager resetState];
 
-  v4 = [(BuddyLocaleController *)self safetyAndHandlingManager];
-  [(BYBuddySafetyAndHandlingManager *)v4 setCountryCode:0];
+  safetyAndHandlingManager2 = [(BuddyLocaleController *)self safetyAndHandlingManager];
+  [(BYBuddySafetyAndHandlingManager *)safetyAndHandlingManager2 setCountryCode:0];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyLocaleController *)v4 _updateChromelessBar:location[0]];
+  objc_storeStrong(location, scroll);
+  [(BuddyLocaleController *)selfCopy _updateChromelessBar:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 3;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4)
+  objc_storeStrong(location, view);
+  if (section)
   {
-    if (a4 == 1)
+    if (section == 1)
     {
-      v12 = [(BuddyLocaleController *)v11 shouldShowSafetyAndHandlingSection];
+      shouldShowSafetyAndHandlingSection = [(BuddyLocaleController *)selfCopy shouldShowSafetyAndHandlingSection];
     }
 
-    else if (a4 == 2)
+    else if (section == 2)
     {
-      v7 = [(BuddyLocaleController *)v11 localeComposite];
-      v8 = [(BuddyLocaleComposite *)v7 dataSource];
-      v12 = [(BYLocaleDataSource *)v8 numberOfOtherLocales];
+      localeComposite = [(BuddyLocaleController *)selfCopy localeComposite];
+      dataSource = [(BuddyLocaleComposite *)localeComposite dataSource];
+      shouldShowSafetyAndHandlingSection = [(BYLocaleDataSource *)dataSource numberOfOtherLocales];
     }
 
     else
     {
-      v12 = 0;
+      shouldShowSafetyAndHandlingSection = 0;
     }
   }
 
   else
   {
-    v5 = [(BuddyLocaleController *)v11 localeComposite];
-    v6 = [(BuddyLocaleComposite *)v5 dataSource];
-    v12 = [(BYLocaleDataSource *)v6 numberOfRecommendedLocales];
+    localeComposite2 = [(BuddyLocaleController *)selfCopy localeComposite];
+    dataSource2 = [(BuddyLocaleComposite *)localeComposite2 dataSource];
+    shouldShowSafetyAndHandlingSection = [(BYLocaleDataSource *)dataSource2 numberOfRecommendedLocales];
   }
 
   objc_storeStrong(location, 0);
-  return v12;
+  return shouldShowSafetyAndHandlingSection;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, path);
   if ([v42 section] == 1)
   {
     v41 = [location[0] dequeueReusableCellWithIdentifier:@"SafetyAndHandlingCell" forIndexPath:v42];
     v5 = [BuddyLanguageLocaleSafetyAndHandlingCellViewModel alloc];
-    v6 = [(BuddyLocaleController *)v44 safetyAndHandlingLocalizationProvider];
-    v40 = [(BuddyLanguageLocaleSafetyAndHandlingCellViewModel *)v5 initWithLocalizationProvider:v6];
+    safetyAndHandlingLocalizationProvider = [(BuddyLocaleController *)selfCopy safetyAndHandlingLocalizationProvider];
+    v40 = [(BuddyLanguageLocaleSafetyAndHandlingCellViewModel *)v5 initWithLocalizationProvider:safetyAndHandlingLocalizationProvider];
 
     [v41 configureCellWithViewModel:v40];
     v7 = v41;
@@ -588,7 +588,7 @@
     v36 = 0;
     v37 = sub_1000D8384;
     v38 = &unk_10032C778;
-    v39 = v44;
+    v39 = selfCopy;
     v8 = [UIAction actionWithHandler:&v34];
     [v7 setLearnMoreAction:v8];
 
@@ -607,22 +607,22 @@
     v31 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     [v31 pointSize];
     v9 = [UIFont boldSystemFontOfSize:?];
-    v10 = [v32 titleLabel];
-    [v10 setFont:v9];
+    titleLabel = [v32 titleLabel];
+    [titleLabel setFont:v9];
 
-    v30 = [(BuddyLocaleController *)v44 countryAtIndexPath:v42];
-    v29 = [v30 name];
-    v11 = [(BuddyLocaleController *)v44 language];
-    v28 = sub_1001961E0(v29, v11);
+    v30 = [(BuddyLocaleController *)selfCopy countryAtIndexPath:v42];
+    name = [v30 name];
+    language = [(BuddyLocaleController *)selfCopy language];
+    v28 = sub_1001961E0(name, language);
 
-    if ([(BuddyLocaleController *)v44 showLocalizedNames])
+    if ([(BuddyLocaleController *)selfCopy showLocalizedNames])
     {
       v12 = +[NSLocale currentLocale];
-      v13 = [v30 code];
-      v27 = [(NSLocale *)v12 localizedStringForRegion:v13 context:4 short:1];
+      code = [v30 code];
+      v27 = [(NSLocale *)v12 localizedStringForRegion:code context:4 short:1];
 
-      v14 = [v30 code];
-      v26 = [NSString stringWithFormat:@" (%@ - %@)", v14, v27];
+      code2 = [v30 code];
+      v26 = [NSString stringWithFormat:@" (%@ - %@)", code2, v27];
 
       v25 = [v28 mutableCopy];
       v15 = [[NSAttributedString alloc] initWithString:v26];
@@ -638,11 +638,11 @@
     }
 
     v18 = v28;
-    v19 = [v32 titleLabel];
-    [v19 setAttributedText:v18];
+    titleLabel2 = [v32 titleLabel];
+    [titleLabel2 setAttributedText:v18];
 
-    v20 = [(BuddyLocaleController *)v44 language];
-    if ([NSParagraphStyle defaultWritingDirectionForLanguage:v20]== 1)
+    language2 = [(BuddyLocaleController *)selfCopy language];
+    if ([NSParagraphStyle defaultWritingDirectionForLanguage:language2]== 1)
     {
       v21 = 2;
     }
@@ -652,13 +652,13 @@
       v21 = 0;
     }
 
-    v22 = [v32 titleLabel];
-    [v22 setTextAlignment:v21];
+    titleLabel3 = [v32 titleLabel];
+    [titleLabel3 setTextAlignment:v21];
 
     v45 = v32;
     v33 = 1;
     objc_storeStrong(&v28, 0);
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&name, 0);
     objc_storeStrong(&v30, 0);
     objc_storeStrong(&v31, 0);
     objc_storeStrong(&v32, 0);
@@ -671,19 +671,19 @@
   return v23;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, path);
   if ([v7 section] != 1)
   {
     [location[0] deselectRowAtIndexPath:v7 animated:1];
-    v5 = v9;
-    v6 = [(BuddyLocaleController *)v9 countryAtIndexPath:v7];
+    v5 = selfCopy;
+    v6 = [(BuddyLocaleController *)selfCopy countryAtIndexPath:v7];
     [(BuddyLocaleController *)v5 selectCountry:v6];
   }
 
@@ -691,44 +691,44 @@
   objc_storeStrong(location, 0);
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 0.0;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v5 = [(BuddyLocaleController *)v11 featureFlags];
-  v6 = [(BuddyFeatureFlags *)v5 isSolariumEnabled];
+  objc_storeStrong(location, view);
+  sectionCopy = section;
+  featureFlags = [(BuddyLocaleController *)selfCopy featureFlags];
+  isSolariumEnabled = [(BuddyFeatureFlags *)featureFlags isSolariumEnabled];
 
-  if (v6)
+  if (isSolariumEnabled)
   {
-    v12 = [(BuddyLocaleController *)v11 _solarium_viewForHeaderInSection:v9 inTableView:location[0]];
+    v12 = [(BuddyLocaleController *)selfCopy _solarium_viewForHeaderInSection:sectionCopy inTableView:location[0]];
   }
 
   else
   {
-    v12 = [(BuddyLocaleController *)v11 _viewForHeaderInSection:v9 inTableView:location[0]];
+    v12 = [(BuddyLocaleController *)selfCopy _viewForHeaderInSection:sectionCopy inTableView:location[0]];
   }
 
   objc_storeStrong(location, 0);
@@ -737,21 +737,21 @@
   return v7;
 }
 
-- (id)_solarium_viewForHeaderInSection:(int64_t)a3 inTableView:(id)a4
+- (id)_solarium_viewForHeaderInSection:(int64_t)section inTableView:(id)view
 {
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
+  sectionCopy = section;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v31 == 2 && [(BuddyLocaleController *)v33 _shouldShowOtherLanguagesHeader])
+  objc_storeStrong(&location, view);
+  if (sectionCopy == 2 && [(BuddyLocaleController *)selfCopy _shouldShowOtherLanguagesHeader])
   {
-    v4 = [(BuddyLocaleController *)v33 otherLanguagesSectionHeader];
-    v5 = v4 == 0;
+    otherLanguagesSectionHeader = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
+    v5 = otherLanguagesSectionHeader == 0;
 
     if (v5)
     {
-      [(BuddyLocaleController *)v33 _topPaddingForSectionHeader];
+      [(BuddyLocaleController *)selfCopy _topPaddingForSectionHeader];
       v29[5] = v6;
       v7 = [BuddyTableSectionHeaderView alloc];
       sub_1000D8BD4();
@@ -760,18 +760,18 @@
       v29[3] = v10;
       v29[4] = v11;
       v12 = [(BuddyTableSectionHeaderView *)v7 initWithPadding:*&v8, *&v9, *&v10, *&v11];
-      [(BuddyLocaleController *)v33 setOtherLanguagesSectionHeader:v12];
+      [(BuddyLocaleController *)selfCopy setOtherLanguagesSectionHeader:v12];
     }
 
-    v13 = [(BuddyLocaleController *)v33 otherLanguagesSectionHeader];
-    v14 = [(BuddyTableSectionHeaderView *)v13 sectionLabel];
-    [(UILabel *)v14 setLineBreakMode:0];
+    otherLanguagesSectionHeader2 = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
+    sectionLabel = [(BuddyTableSectionHeaderView *)otherLanguagesSectionHeader2 sectionLabel];
+    [(UILabel *)sectionLabel setLineBreakMode:0];
 
     v29[0] = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleTitle3 addingSymbolicTraits:2 options:0];
     v28 = [UIFont fontWithDescriptor:v29[0] size:0.0];
-    v27 = [(BuddyLocaleController *)v33 otherCountriesSectionTitle];
-    v15 = [(BuddyLocaleController *)v33 language];
-    v16 = sub_1001961E0(v27, v15);
+    otherCountriesSectionTitle = [(BuddyLocaleController *)selfCopy otherCountriesSectionTitle];
+    language = [(BuddyLocaleController *)selfCopy language];
+    v16 = sub_1001961E0(otherCountriesSectionTitle, language);
     v26 = [v16 mutableCopy];
 
     v17 = [v26 length];
@@ -780,60 +780,60 @@
     v37 = 0;
     v38 = v17;
     [v26 addAttribute:NSFontAttributeName value:v28 range:{0, v17}];
-    v18 = [(BuddyLocaleController *)v33 otherLanguagesSectionHeader];
-    v19 = [(BuddyTableSectionHeaderView *)v18 sectionLabel];
-    [(UILabel *)v19 setAttributedText:v26];
+    otherLanguagesSectionHeader3 = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
+    sectionLabel2 = [(BuddyTableSectionHeaderView *)otherLanguagesSectionHeader3 sectionLabel];
+    [(UILabel *)sectionLabel2 setAttributedText:v26];
 
-    v20 = [(BuddyLocaleController *)v33 language];
-    v21 = [NSParagraphStyle defaultWritingDirectionForLanguage:v20];
+    language2 = [(BuddyLocaleController *)selfCopy language];
+    v21 = [NSParagraphStyle defaultWritingDirectionForLanguage:language2];
 
     if (v21 == NSWritingDirectionRightToLeft)
     {
-      v22 = [(BuddyLocaleController *)v33 otherLanguagesSectionHeader];
-      v23 = [(BuddyTableSectionHeaderView *)v22 sectionLabel];
-      [(UILabel *)v23 setTextAlignment:2];
+      otherLanguagesSectionHeader4 = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
+      sectionLabel3 = [(BuddyTableSectionHeaderView *)otherLanguagesSectionHeader4 sectionLabel];
+      [(UILabel *)sectionLabel3 setTextAlignment:2];
     }
 
     else
     {
-      v22 = [(BuddyLocaleController *)v33 otherLanguagesSectionHeader];
-      v23 = [(BuddyTableSectionHeaderView *)v22 sectionLabel];
-      [(UILabel *)v23 setTextAlignment:0];
+      otherLanguagesSectionHeader4 = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
+      sectionLabel3 = [(BuddyTableSectionHeaderView *)otherLanguagesSectionHeader4 sectionLabel];
+      [(UILabel *)sectionLabel3 setTextAlignment:0];
     }
 
-    v34 = [(BuddyLocaleController *)v33 otherLanguagesSectionHeader];
+    otherLanguagesSectionHeader5 = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
     objc_storeStrong(&v26, 0);
-    objc_storeStrong(&v27, 0);
+    objc_storeStrong(&otherCountriesSectionTitle, 0);
     objc_storeStrong(&v28, 0);
     objc_storeStrong(v29, 0);
   }
 
   else
   {
-    v34 = 0;
+    otherLanguagesSectionHeader5 = 0;
   }
 
   objc_storeStrong(&location, 0);
-  v24 = v34;
+  v24 = otherLanguagesSectionHeader5;
 
   return v24;
 }
 
-- (id)_viewForHeaderInSection:(int64_t)a3 inTableView:(id)a4
+- (id)_viewForHeaderInSection:(int64_t)section inTableView:(id)view
 {
-  v36 = self;
+  selfCopy = self;
   v35 = a2;
-  v34 = a3;
+  sectionCopy = section;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v34 == 2)
+  objc_storeStrong(&location, view);
+  if (sectionCopy == 2)
   {
-    v4 = [(BuddyLocaleController *)v36 otherLanguagesSectionHeader];
-    v5 = v4 == 0;
+    otherLanguagesSectionHeader = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
+    v5 = otherLanguagesSectionHeader == 0;
 
     if (v5)
     {
-      [(BuddyLocaleController *)v36 _topPaddingForSectionHeader];
+      [(BuddyLocaleController *)selfCopy _topPaddingForSectionHeader];
       v32[5] = v6;
       v7 = [BuddyTableSectionHeaderView alloc];
       sub_1000D8BD4();
@@ -842,7 +842,7 @@
       v32[3] = v10;
       v32[4] = v11;
       v12 = [(BuddyTableSectionHeaderView *)v7 initWithPadding:*&v8, *&v9, *&v10, *&v11];
-      [(BuddyLocaleController *)v36 setOtherLanguagesSectionHeader:v12];
+      [(BuddyLocaleController *)selfCopy setOtherLanguagesSectionHeader:v12];
     }
 
     v32[0] = UIFontTextStyleTitle2;
@@ -854,15 +854,15 @@
       objc_storeStrong(v32, UIFontTextStyleTitle3);
     }
 
-    v15 = [(BuddyLocaleController *)v36 otherLanguagesSectionHeader];
-    v16 = [(BuddyTableSectionHeaderView *)v15 sectionLabel];
-    [(UILabel *)v16 setLineBreakMode:0];
+    otherLanguagesSectionHeader2 = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
+    sectionLabel = [(BuddyTableSectionHeaderView *)otherLanguagesSectionHeader2 sectionLabel];
+    [(UILabel *)sectionLabel setLineBreakMode:0];
 
     v31 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:v32[0] addingSymbolicTraits:2 options:0];
     v30 = [UIFont fontWithDescriptor:v31 size:0.0];
-    v29 = [(BuddyLocaleController *)v36 otherCountriesSectionTitle];
-    v17 = [(BuddyLocaleController *)v36 language];
-    v18 = sub_1001961E0(v29, v17);
+    otherCountriesSectionTitle = [(BuddyLocaleController *)selfCopy otherCountriesSectionTitle];
+    language = [(BuddyLocaleController *)selfCopy language];
+    v18 = sub_1001961E0(otherCountriesSectionTitle, language);
     v28 = [v18 mutableCopy];
 
     v19 = [v28 length];
@@ -871,30 +871,30 @@
     v40 = 0;
     v41 = v19;
     [v28 addAttribute:NSFontAttributeName value:v30 range:{0, v19}];
-    v20 = [(BuddyLocaleController *)v36 otherLanguagesSectionHeader];
-    v21 = [(BuddyTableSectionHeaderView *)v20 sectionLabel];
-    [(UILabel *)v21 setAttributedText:v28];
+    otherLanguagesSectionHeader3 = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
+    sectionLabel2 = [(BuddyTableSectionHeaderView *)otherLanguagesSectionHeader3 sectionLabel];
+    [(UILabel *)sectionLabel2 setAttributedText:v28];
 
-    v22 = [(BuddyLocaleController *)v36 language];
-    v23 = [NSParagraphStyle defaultWritingDirectionForLanguage:v22];
+    language2 = [(BuddyLocaleController *)selfCopy language];
+    v23 = [NSParagraphStyle defaultWritingDirectionForLanguage:language2];
 
     if (v23 == NSWritingDirectionRightToLeft)
     {
-      v24 = [(BuddyLocaleController *)v36 otherLanguagesSectionHeader];
-      v25 = [(BuddyTableSectionHeaderView *)v24 sectionLabel];
-      [(UILabel *)v25 setTextAlignment:2];
+      otherLanguagesSectionHeader4 = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
+      sectionLabel3 = [(BuddyTableSectionHeaderView *)otherLanguagesSectionHeader4 sectionLabel];
+      [(UILabel *)sectionLabel3 setTextAlignment:2];
     }
 
     else
     {
-      v24 = [(BuddyLocaleController *)v36 otherLanguagesSectionHeader];
-      v25 = [(BuddyTableSectionHeaderView *)v24 sectionLabel];
-      [(UILabel *)v25 setTextAlignment:0];
+      otherLanguagesSectionHeader4 = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
+      sectionLabel3 = [(BuddyTableSectionHeaderView *)otherLanguagesSectionHeader4 sectionLabel];
+      [(UILabel *)sectionLabel3 setTextAlignment:0];
     }
 
-    v37 = [(BuddyLocaleController *)v36 otherLanguagesSectionHeader];
+    otherLanguagesSectionHeader5 = [(BuddyLocaleController *)selfCopy otherLanguagesSectionHeader];
     objc_storeStrong(&v28, 0);
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&otherCountriesSectionTitle, 0);
     objc_storeStrong(&v30, 0);
     objc_storeStrong(&v31, 0);
     objc_storeStrong(v32, 0);
@@ -902,33 +902,33 @@
 
   else
   {
-    v37 = 0;
+    otherLanguagesSectionHeader5 = 0;
   }
 
   objc_storeStrong(&location, 0);
-  v26 = v37;
+  v26 = otherLanguagesSectionHeader5;
 
   return v26;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v5 = [(BuddyLocaleController *)v11 featureFlags];
-  v6 = [(BuddyFeatureFlags *)v5 isSolariumEnabled];
+  objc_storeStrong(location, view);
+  sectionCopy = section;
+  featureFlags = [(BuddyLocaleController *)selfCopy featureFlags];
+  isSolariumEnabled = [(BuddyFeatureFlags *)featureFlags isSolariumEnabled];
 
-  if (v6)
+  if (isSolariumEnabled)
   {
-    [(BuddyLocaleController *)v11 _solarium_heightForHeaderInSection:v9 inTableView:location[0]];
+    [(BuddyLocaleController *)selfCopy _solarium_heightForHeaderInSection:sectionCopy inTableView:location[0]];
   }
 
   else
   {
-    [(BuddyLocaleController *)v11 _heightForHeaderInSection:v9 inTableView:location[0]];
+    [(BuddyLocaleController *)selfCopy _heightForHeaderInSection:sectionCopy inTableView:location[0]];
   }
 
   v12 = v7;
@@ -936,16 +936,16 @@
   return v12;
 }
 
-- (double)_solarium_heightForHeaderInSection:(int64_t)a3 inTableView:(id)a4
+- (double)_solarium_heightForHeaderInSection:(int64_t)section inTableView:(id)view
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  sectionCopy = section;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v12 == 2 && [(BuddyLocaleController *)v14 _shouldShowOtherLanguagesHeader])
+  objc_storeStrong(&location, view);
+  if (sectionCopy == 2 && [(BuddyLocaleController *)selfCopy _shouldShowOtherLanguagesHeader])
   {
-    v10 = [(BuddyLocaleController *)v14 tableView:location viewForHeaderInSection:v12];
+    v10 = [(BuddyLocaleController *)selfCopy tableView:location viewForHeaderInSection:sectionCopy];
     [location bounds];
     [location layoutMargins];
     [location layoutMargins];
@@ -957,7 +957,7 @@
     objc_storeStrong(&v10, 0);
   }
 
-  else if (v12 == 1 && [(BuddyLocaleController *)v14 shouldShowSafetyAndHandlingSection])
+  else if (sectionCopy == 1 && [(BuddyLocaleController *)selfCopy shouldShowSafetyAndHandlingSection])
   {
     v15 = 16.0;
   }
@@ -971,16 +971,16 @@
   return v15;
 }
 
-- (double)_heightForHeaderInSection:(int64_t)a3 inTableView:(id)a4
+- (double)_heightForHeaderInSection:(int64_t)section inTableView:(id)view
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  sectionCopy = section;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v12 == 2)
+  objc_storeStrong(&location, view);
+  if (sectionCopy == 2)
   {
-    v10 = [(BuddyLocaleController *)v14 tableView:location viewForHeaderInSection:2];
+    v10 = [(BuddyLocaleController *)selfCopy tableView:location viewForHeaderInSection:2];
     [location bounds];
     [location layoutMargins];
     [location layoutMargins];
@@ -992,7 +992,7 @@
     objc_storeStrong(&v10, 0);
   }
 
-  else if (v12 == 1 && [(BuddyLocaleController *)v14 shouldShowSafetyAndHandlingSection])
+  else if (sectionCopy == 1 && [(BuddyLocaleController *)selfCopy shouldShowSafetyAndHandlingSection])
   {
     v15 = 16.0;
   }
@@ -1006,30 +1006,30 @@
   return v15;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  LOBYTE(a4) = [v6 section] != 1;
+  objc_storeStrong(&v6, path);
+  LOBYTE(path) = [v6 section] != 1;
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
-  return a4 & 1;
+  return path & 1;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, cell);
   v7 = 0;
-  objc_storeStrong(&v7, a5);
+  objc_storeStrong(&v7, path);
   [v8 setSeparatorStyle:1];
   [v8 _setShouldHaveFullLengthTopSeparator:0];
   [v8 _setShouldHaveFullLengthBottomSeparator:0];
@@ -1040,7 +1040,7 @@
 
 - (id)internalMenuActions
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   if ([(BuddyLocaleController *)self showLocalizedNames])
   {
@@ -1049,7 +1049,7 @@
     v13 = 0;
     v14 = sub_1000D97D0;
     v15 = &unk_10032B598;
-    v16[0] = v17;
+    v16[0] = selfCopy;
     v2 = [UIAlertAction actionWithTitle:@"Hide Translated Languages/Countries" style:0 handler:&v11];
     v20 = v2;
     v18 = [NSArray arrayWithObjects:&v20 count:1];
@@ -1063,7 +1063,7 @@
     v7 = 3221225472;
     v8 = sub_1000D9824;
     v9 = &unk_10032B598;
-    v10 = v17;
+    v10 = selfCopy;
     v3 = [UIAlertAction actionWithTitle:@"Show Translated Languages/Countries" style:0 handler:&v6];
     v19 = v3;
     v18 = [NSArray arrayWithObjects:&v19 count:1, v6, v7, v8, v9];
@@ -1078,7 +1078,7 @@
 
 - (double)_topPaddingForSectionHeader
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v14 = 37.0;
   location = +[BYDevice currentDevice];
@@ -1171,40 +1171,40 @@ LABEL_25:
 
 - (id)_micaAssetName
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
-  v2 = [(BuddyLocaleController *)self language];
-  v3 = [NSLocale localeWithLocaleIdentifier:v2];
+  language = [(BuddyLocaleController *)self language];
+  v3 = [NSLocale localeWithLocaleIdentifier:language];
   v19[0] = [(NSLocale *)v3 countryCode];
 
-  v4 = [(BuddyLocaleController *)v20 localeComposite];
-  v5 = [(BuddyLocaleComposite *)v4 dataSource];
-  v6 = [(BYLocaleDataSource *)v5 numberOfRecommendedLocales];
+  localeComposite = [(BuddyLocaleController *)selfCopy localeComposite];
+  dataSource = [(BuddyLocaleComposite *)localeComposite dataSource];
+  numberOfRecommendedLocales = [(BYLocaleDataSource *)dataSource numberOfRecommendedLocales];
 
-  if (v6)
+  if (numberOfRecommendedLocales)
   {
-    v7 = [(BuddyLocaleController *)v20 localeComposite];
-    v8 = [(BuddyLocaleComposite *)v7 dataSource];
-    v9 = [(BYLocaleDataSource *)v8 recommendedLocaleAtIndex:0];
-    v10 = [v9 code];
+    localeComposite2 = [(BuddyLocaleController *)selfCopy localeComposite];
+    dataSource2 = [(BuddyLocaleComposite *)localeComposite2 dataSource];
+    v9 = [(BYLocaleDataSource *)dataSource2 recommendedLocaleAtIndex:0];
+    code = [v9 code];
     v11 = v19[0];
-    v19[0] = v10;
+    v19[0] = code;
   }
 
   v12 = [NSLocale containingRegionOfRegion:v19[0]];
-  v13 = [v12 integerValue];
+  integerValue = [v12 integerValue];
 
-  location[1] = v13;
-  location[0] = [(BuddyLocaleController *)v20 _micaAssetNameForRegion:v13];
+  location[1] = integerValue;
+  location[0] = [(BuddyLocaleController *)selfCopy _micaAssetNameForRegion:integerValue];
   if (!location[0])
   {
     v14 = [NSLocale containingContinentOfRegion:v19[0]];
-    v15 = [v14 integerValue];
+    integerValue2 = [v14 integerValue];
 
-    location[0] = [(BuddyLocaleController *)v20 _micaAssetNameForRegion:v15, v15];
+    location[0] = [(BuddyLocaleController *)selfCopy _micaAssetNameForRegion:integerValue2, integerValue2];
     if (!location[0])
     {
-      location[0] = [(BuddyLocaleController *)v20 _micaAssetNameForRegion:19];
+      location[0] = [(BuddyLocaleController *)selfCopy _micaAssetNameForRegion:19];
     }
   }
 
@@ -1216,33 +1216,33 @@ LABEL_25:
   return v16;
 }
 
-- (id)_micaAssetNameForRegion:(int64_t)a3
+- (id)_micaAssetNameForRegion:(int64_t)region
 {
-  if (a3 == 2)
+  if (region == 2)
   {
 LABEL_12:
     v4 = @"GlobeEUAfrica";
     goto LABEL_14;
   }
 
-  if (a3 == 9)
+  if (region == 9)
   {
 LABEL_10:
     v4 = @"GlobeAsiaOceania";
     goto LABEL_14;
   }
 
-  if (a3 != 10 && a3 != 19)
+  if (region != 10 && region != 19)
   {
-    if (a3 == 34)
+    if (region == 34)
     {
       v4 = @"GlobeSouthAsia";
       goto LABEL_14;
     }
 
-    if (a3 != 142)
+    if (region != 142)
     {
-      if (a3 != 150)
+      if (region != 150)
       {
         v4 = 0;
         goto LABEL_14;
@@ -1263,41 +1263,41 @@ LABEL_14:
 - (BOOL)_shouldShowOtherLanguagesHeader
 {
   v2 = [(BuddyLocaleController *)self localeComposite:a2];
-  v3 = [(BuddyLocaleComposite *)v2 dataSource];
-  v4 = [(BYLocaleDataSource *)v3 numberOfRecommendedLocales]!= 0;
+  dataSource = [(BuddyLocaleComposite *)v2 dataSource];
+  v4 = [(BYLocaleDataSource *)dataSource numberOfRecommendedLocales]!= 0;
 
   return v4;
 }
 
 - (BOOL)shouldShowSafetyAndHandlingSection
 {
-  v2 = [(BuddyLocaleController *)self localeComposite];
-  v3 = [(BuddyLocaleComposite *)v2 dataSource];
-  v4 = [(BYLocaleDataSource *)v3 numberOfRecommendedLocales];
+  localeComposite = [(BuddyLocaleController *)self localeComposite];
+  dataSource = [(BuddyLocaleComposite *)localeComposite dataSource];
+  numberOfRecommendedLocales = [(BYLocaleDataSource *)dataSource numberOfRecommendedLocales];
 
-  if (v4 != 1)
+  if (numberOfRecommendedLocales != 1)
   {
     return 0;
   }
 
-  v5 = [(BuddyLocaleController *)self safetyAndHandlingManager];
-  v6 = [(BuddyLocaleController *)self safetyAndHandlingViewControllerProvider];
-  v9 = [(BYBuddySafetyAndHandlingManager *)v5 canShowShowSafetyAndHandlingCardUsing:v6];
+  safetyAndHandlingManager = [(BuddyLocaleController *)self safetyAndHandlingManager];
+  safetyAndHandlingViewControllerProvider = [(BuddyLocaleController *)self safetyAndHandlingViewControllerProvider];
+  v9 = [(BYBuddySafetyAndHandlingManager *)safetyAndHandlingManager canShowShowSafetyAndHandlingCardUsing:safetyAndHandlingViewControllerProvider];
 
   return v9;
 }
 
 - (id)safetyAndHandlingCountryCode
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [NSIndexPath indexPathForRow:0 inSection:0];
-  v2 = [(BuddyLocaleController *)v7 countryAtIndexPath:location[0]];
-  v3 = [v2 code];
+  v2 = [(BuddyLocaleController *)selfCopy countryAtIndexPath:location[0]];
+  code = [v2 code];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 
-  return v3;
+  return code;
 }
 
 - (BYBuddySafetyAndHandlingBundleLocalizationProvider)safetyAndHandlingLocalizationProvider
@@ -1305,8 +1305,8 @@ LABEL_14:
   if (!self->_safetyAndHandlingLocalizationProvider)
   {
     v2 = [BYBuddySafetyAndHandlingBundleLocalizationProvider alloc];
-    v3 = [(BuddyLocaleController *)self safetyAndHandlingLanguageCode];
-    v4 = [(BYBuddySafetyAndHandlingBundleLocalizationProvider *)v2 initWithLanguageCode:v3];
+    safetyAndHandlingLanguageCode = [(BuddyLocaleController *)self safetyAndHandlingLanguageCode];
+    v4 = [(BYBuddySafetyAndHandlingBundleLocalizationProvider *)v2 initWithLanguageCode:safetyAndHandlingLanguageCode];
     safetyAndHandlingLocalizationProvider = self->_safetyAndHandlingLocalizationProvider;
     self->_safetyAndHandlingLocalizationProvider = v4;
   }
@@ -1321,9 +1321,9 @@ LABEL_14:
   if (!self->_safetyAndHandlingViewControllerProvider)
   {
     v2 = [BYBuddySafetyAndHandlingViewControllerProvider alloc];
-    v3 = [(BuddyLocaleController *)self safetyAndHandlingLanguageCode];
-    v4 = [(BuddyLocaleController *)self safetyAndHandlingCountryCode];
-    v5 = [(BYBuddySafetyAndHandlingViewControllerProvider *)v2 initWithLanguageCode:v3 regionCode:v4];
+    safetyAndHandlingLanguageCode = [(BuddyLocaleController *)self safetyAndHandlingLanguageCode];
+    safetyAndHandlingCountryCode = [(BuddyLocaleController *)self safetyAndHandlingCountryCode];
+    v5 = [(BYBuddySafetyAndHandlingViewControllerProvider *)v2 initWithLanguageCode:safetyAndHandlingLanguageCode regionCode:safetyAndHandlingCountryCode];
     safetyAndHandlingViewControllerProvider = self->_safetyAndHandlingViewControllerProvider;
     self->_safetyAndHandlingViewControllerProvider = v5;
   }

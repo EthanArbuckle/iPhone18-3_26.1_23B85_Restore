@@ -1,8 +1,8 @@
 @interface GRLResourceGroupObserver
-- (GRLResourceGroupObserver)initWithResourceProvider:(void *)a3;
+- (GRLResourceGroupObserver)initWithResourceProvider:(void *)provider;
 - (id).cxx_construct;
 - (void)clearProvider;
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3;
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group;
 @end
 
 @implementation GRLResourceGroupObserver
@@ -25,7 +25,7 @@
   std::mutex::unlock((self + 16));
 }
 
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group
 {
   std::mutex::lock((self + 16));
   v4 = *(self + 1);
@@ -37,14 +37,14 @@
   std::mutex::unlock((self + 16));
 }
 
-- (GRLResourceGroupObserver)initWithResourceProvider:(void *)a3
+- (GRLResourceGroupObserver)initWithResourceProvider:(void *)provider
 {
   v5.receiver = self;
   v5.super_class = GRLResourceGroupObserver;
   result = [(GRLResourceGroupObserver *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = provider;
   }
 
   return result;

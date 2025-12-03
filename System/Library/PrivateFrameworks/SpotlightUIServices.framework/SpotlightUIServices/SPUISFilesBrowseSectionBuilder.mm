@@ -1,5 +1,5 @@
 @interface SPUISFilesBrowseSectionBuilder
-+ (BOOL)supportsSection:(id)a3 queryContext:(id)a4;
++ (BOOL)supportsSection:(id)section queryContext:(id)context;
 + (BOOL)useWiderBrowseView;
 - (id)buildSection;
 @end
@@ -14,9 +14,9 @@
   return v3;
 }
 
-+ (BOOL)supportsSection:(id)a3 queryContext:(id)a4
++ (BOOL)supportsSection:(id)section queryContext:(id)context
 {
-  if ([a4 queryKind] != 12)
+  if ([context queryKind] != 12)
   {
     return 0;
   }
@@ -26,9 +26,9 @@
 
 - (id)buildSection
 {
-  v3 = [(SPUISSectionBuilder *)self queryContext];
-  v4 = [(SPUISSectionBuilder *)self section];
-  if ([v3 displayAllResultsAsIcons])
+  queryContext = [(SPUISSectionBuilder *)self queryContext];
+  section = [(SPUISSectionBuilder *)self section];
+  if ([queryContext displayAllResultsAsIcons])
   {
     v5 = 0;
   }
@@ -38,9 +38,9 @@
     v5 = 3;
   }
 
-  v6 = [v4 resultSet];
-  v7 = [v6 array];
-  v8 = [(SPUISBrowseSectionBuilder *)SPUISFilesBrowseSectionBuilder sectionWithTitle:&stru_287C50EE8 identifier:@"com.apple.spotlight.zkw.files" style:v5 results:v7];
+  resultSet = [section resultSet];
+  array = [resultSet array];
+  v8 = [(SPUISBrowseSectionBuilder *)SPUISFilesBrowseSectionBuilder sectionWithTitle:&stru_287C50EE8 identifier:@"com.apple.spotlight.zkw.files" style:v5 results:array];
 
   return v8;
 }

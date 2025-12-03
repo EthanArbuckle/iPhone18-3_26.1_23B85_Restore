@@ -1,9 +1,9 @@
 @interface PLKLegibilityForegroundContentDescriptor
-+ (id)contentDescriptorForPrimaryColor:(id)a3 secondaryColor:(id)a4;
++ (id)contentDescriptorForPrimaryColor:(id)color secondaryColor:(id)secondaryColor;
 + (id)defaultContentDescriptor;
-- (BOOL)isEqual:(id)a3;
-- (PLKLegibilityForegroundContentDescriptor)initWithPrimaryColor:(id)a3 secondaryColor:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PLKLegibilityForegroundContentDescriptor)initWithPrimaryColor:(id)color secondaryColor:(id)secondaryColor;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation PLKLegibilityForegroundContentDescriptor
@@ -30,33 +30,33 @@ void __68__PLKLegibilityForegroundContentDescriptor_defaultContentDescriptor__bl
   defaultContentDescriptor_defaultForegroundContentDescriptor = v2;
 }
 
-+ (id)contentDescriptorForPrimaryColor:(id)a3 secondaryColor:(id)a4
++ (id)contentDescriptorForPrimaryColor:(id)color secondaryColor:(id)secondaryColor
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithPrimaryColor:v6 secondaryColor:v5];
+  secondaryColorCopy = secondaryColor;
+  colorCopy = color;
+  v7 = [objc_alloc(objc_opt_class()) initWithPrimaryColor:colorCopy secondaryColor:secondaryColorCopy];
 
   return v7;
 }
 
-- (PLKLegibilityForegroundContentDescriptor)initWithPrimaryColor:(id)a3 secondaryColor:(id)a4
+- (PLKLegibilityForegroundContentDescriptor)initWithPrimaryColor:(id)color secondaryColor:(id)secondaryColor
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  secondaryColorCopy = secondaryColor;
   v12.receiver = self;
   v12.super_class = PLKLegibilityForegroundContentDescriptor;
-  v8 = [(PLKLegibilityContentDescriptor *)&v12 initWithContentColor:v6];
+  v8 = [(PLKLegibilityContentDescriptor *)&v12 initWithContentColor:colorCopy];
   v9 = v8;
   if (v8)
   {
-    if (v7)
+    if (secondaryColorCopy)
     {
-      v10 = v7;
+      v10 = secondaryColorCopy;
     }
 
     else
     {
-      v10 = v6;
+      v10 = colorCopy;
     }
 
     objc_storeStrong(&v8->_secondaryColor, v10);
@@ -65,10 +65,10 @@ void __68__PLKLegibilityForegroundContentDescriptor_defaultContentDescriptor__bl
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -77,10 +77,10 @@ void __68__PLKLegibilityForegroundContentDescriptor_defaultContentDescriptor__bl
   {
     v13.receiver = self;
     v13.super_class = PLKLegibilityForegroundContentDescriptor;
-    if ([(PLKLegibilityContentDescriptor *)&v13 isEqual:v4])
+    if ([(PLKLegibilityContentDescriptor *)&v13 isEqual:equalCopy])
     {
       v5 = objc_opt_class();
-      v6 = v4;
+      v6 = equalCopy;
       if (v5)
       {
         if (objc_opt_isKindOfClass())
@@ -101,10 +101,10 @@ void __68__PLKLegibilityForegroundContentDescriptor_defaultContentDescriptor__bl
 
       v9 = v7;
 
-      v10 = [(PLKLegibilityForegroundContentDescriptor *)v9 secondaryColor];
+      secondaryColor = [(PLKLegibilityForegroundContentDescriptor *)v9 secondaryColor];
 
-      v11 = [(PLKLegibilityForegroundContentDescriptor *)self secondaryColor];
-      v8 = [v10 isEqual:v11];
+      secondaryColor2 = [(PLKLegibilityForegroundContentDescriptor *)self secondaryColor];
+      v8 = [secondaryColor isEqual:secondaryColor2];
     }
 
     else
@@ -116,11 +116,11 @@ void __68__PLKLegibilityForegroundContentDescriptor_defaultContentDescriptor__bl
   return v8;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = PLKLegibilityForegroundContentDescriptor;
-  v4 = [(PLKLegibilityContentDescriptor *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(PLKLegibilityContentDescriptor *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendObject:self->_secondaryColor withName:@"_secondaryColor" skipIfNil:1];
 
   return v4;

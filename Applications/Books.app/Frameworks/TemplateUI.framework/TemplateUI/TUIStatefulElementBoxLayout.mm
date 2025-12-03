@@ -2,17 +2,17 @@
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth;
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentHeight;
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentWidth;
-- (BOOL)collectImpressionsForChild:(id)a3;
-- (BOOL)collectLinkEntitiesForChild:(id)a3;
+- (BOOL)collectImpressionsForChild:(id)child;
+- (BOOL)collectLinkEntitiesForChild:(id)child;
 - (BOOL)groupedContainingIsGrouped;
 - (CGRect)computedErasableBoundsPrimitive;
 - (UIEdgeInsets)groupedContainingInsets;
-- (id)axModelTreeWithCustomActionsCollector:(id)a3 scrollAncestorLayout:(id)a4 scrollAncestorTranslation:(CGPoint)a5 liveTransformAncestorLayout:(id)a6;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)axModelTreeWithCustomActionsCollector:(id)collector scrollAncestorLayout:(id)layout scrollAncestorTranslation:(CGPoint)translation liveTransformAncestorLayout:(id)ancestorLayout;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)_updateSpecifiedWidth;
 - (void)computeLayout;
 - (void)onChildrenUpdated;
-- (void)onSpecifiedWidthChangedForChild:(id)a3;
+- (void)onSpecifiedWidthChangedForChild:(id)child;
 @end
 
 @implementation TUIStatefulElementBoxLayout
@@ -22,13 +22,13 @@
   __p = 0;
   v8 = 0;
   v9 = 0;
-  v3 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+  stateNameToLayout = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_E46CC;
   v6[3] = &unk_2618B0;
   v6[4] = &__p;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [stateNameToLayout enumerateKeysAndObjectsUsingBlock:v6];
 
   v4 = TUILengthCombine(__p, (v8 - __p) >> 4);
   if (__p)
@@ -51,12 +51,12 @@
   v16 = nullsub_5;
   v17 = "";
   v18 = CGSizeZero;
-  v5 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
-  v6 = [v5 count];
+  stateNameToLayout = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+  v6 = [stateNameToLayout count];
 
   if (v6)
   {
-    v7 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+    stateNameToLayout2 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_E4994;
@@ -64,7 +64,7 @@
     *&v11[6] = v4;
     v11[4] = self;
     v11[5] = &v12;
-    [v7 enumerateKeysAndObjectsUsingBlock:v11];
+    [stateNameToLayout2 enumerateKeysAndObjectsUsingBlock:v11];
 
     v4 = v13[6];
     v8 = v13[7];
@@ -85,44 +85,44 @@
 
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentWidth
 {
-  v4 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
-  v5 = [v4 objectForKeyedSubscript:@"default"];
+  stateNameToLayout = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+  v5 = [stateNameToLayout objectForKeyedSubscript:@"default"];
 
   if (v5)
   {
-    v6 = [v5 computedWidth];
+    computedWidth = [v5 computedWidth];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TUIStatefulElementBoxLayout;
-    v6 = [($E297CC25127479E857BE23A4F8632EA4 *)&v9 computedContentWidth];
+    computedWidth = [($E297CC25127479E857BE23A4F8632EA4 *)&v9 computedContentWidth];
   }
 
-  v7 = v6;
+  v7 = computedWidth;
 
   return v7;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computedContentHeight
 {
-  v4 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
-  v5 = [v4 objectForKeyedSubscript:@"default"];
+  stateNameToLayout = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+  v5 = [stateNameToLayout objectForKeyedSubscript:@"default"];
 
   if (v5)
   {
-    v6 = [v5 computedHeight];
+    computedHeight = [v5 computedHeight];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TUIStatefulElementBoxLayout;
-    v6 = [($E297CC25127479E857BE23A4F8632EA4 *)&v9 computedContentWidth];
+    computedHeight = [($E297CC25127479E857BE23A4F8632EA4 *)&v9 computedContentWidth];
   }
 
-  v7 = v6;
+  v7 = computedHeight;
 
   return v7;
 }
@@ -137,12 +137,12 @@
   width = v7;
   height = v9;
   v11 = [(TUILayout *)self box];
-  v12 = [v11 focusStyle];
+  focusStyle = [v11 focusStyle];
 
-  if (v12)
+  if (focusStyle)
   {
     [(TUILayout *)self computedBounds];
-    [v12 erasableBoundsWithBounds:?];
+    [focusStyle erasableBoundsWithBounds:?];
     v25.origin.x = v13;
     v25.origin.y = v14;
     v25.size.width = v15;
@@ -180,41 +180,41 @@
   self->_stateNameToLayout = v3;
 
   v5 = [(TUILayout *)self box];
-  v6 = [v5 stateMap];
+  stateMap = [v5 stateMap];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_E4E14;
   v7[3] = &unk_261900;
   v7[4] = self;
-  [v6 enumerateKeysAndObjectsUsingBlock:v7];
+  [stateMap enumerateKeysAndObjectsUsingBlock:v7];
 
   [(TUIStatefulElementBoxLayout *)self _updateSpecifiedWidth];
 }
 
-- (BOOL)collectImpressionsForChild:(id)a3
+- (BOOL)collectImpressionsForChild:(id)child
 {
-  v4 = a3;
-  v5 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
-  v6 = [v5 objectForKeyedSubscript:@"default"];
-  v7 = v6 == v4;
+  childCopy = child;
+  stateNameToLayout = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+  v6 = [stateNameToLayout objectForKeyedSubscript:@"default"];
+  v7 = v6 == childCopy;
 
   return v7;
 }
 
-- (BOOL)collectLinkEntitiesForChild:(id)a3
+- (BOOL)collectLinkEntitiesForChild:(id)child
 {
-  v4 = a3;
-  v5 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
-  v6 = [v5 objectForKeyedSubscript:@"default"];
-  v7 = v6 == v4;
+  childCopy = child;
+  stateNameToLayout = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+  v6 = [stateNameToLayout objectForKeyedSubscript:@"default"];
+  v7 = v6 == childCopy;
 
   return v7;
 }
 
 - (void)_updateSpecifiedWidth
 {
-  v3 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
-  v10 = [v3 objectForKeyedSubscript:@"default"];
+  stateNameToLayout = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+  v10 = [stateNameToLayout objectForKeyedSubscript:@"default"];
 
   v4 = [(TUILayout *)self box];
   [v4 width];
@@ -233,25 +233,25 @@
   [(TUILayout *)self setSpecifiedWidthComputeInherited:v9];
 }
 
-- (void)onSpecifiedWidthChangedForChild:(id)a3
+- (void)onSpecifiedWidthChangedForChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   v5.receiver = self;
   v5.super_class = TUIStatefulElementBoxLayout;
-  [(TUILayout *)&v5 onSpecifiedWidthChangedForChild:v4];
+  [(TUILayout *)&v5 onSpecifiedWidthChangedForChild:childCopy];
   [(TUIStatefulElementBoxLayout *)self _updateSpecifiedWidth];
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v6 = a4;
-  v46 = v6;
-  if (a3 < 4)
+  contextCopy = context;
+  v46 = contextCopy;
+  if (kind < 4)
   {
-    if (a3 == 3)
+    if (kind == 3)
     {
-      v24 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
-      v25 = [v24 objectForKeyedSubscript:@"default"];
+      stateNameToLayout = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+      v25 = [stateNameToLayout objectForKeyedSubscript:@"default"];
 
       if (v25)
       {
@@ -259,21 +259,21 @@
         [(TUILayout *)self computedNaturalSize];
         memset(&v51, 0, sizeof(v51));
         CGAffineTransformMakeTranslation(&v51, v26 * 0.5, v27 * 0.5);
-        v28 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
-        v29 = [v28 objectForKeyedSubscript:@"default"];
+        stateNameToLayout2 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+        v29 = [stateNameToLayout2 objectForKeyedSubscript:@"default"];
         v50 = v51;
-        [v29 appendRenderModelCompatibleWithKind:3 context:v6 transform:&v50 toModels:v45];
+        [v29 appendRenderModelCompatibleWithKind:3 context:contextCopy transform:&v50 toModels:v45];
 
         v30 = [[TUIContainerLayerConfig alloc] initWithSize:CGSizeZero.width, CGSizeZero.height];
         v31 = [TUIRenderModelLayer alloc];
         v32 = [v45 copy];
         v33 = [(TUIRenderModelLayer *)v31 initWithSubmodels:v32 config:v30 erasableInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
 
-        [(TUILayout *)self renderModelSizeWithContext:v6];
+        [(TUILayout *)self renderModelSizeWithContext:contextCopy];
         [(TUIRenderModelLayer *)v33 setSize:?];
         v34 = [(TUILayout *)self box];
-        v35 = [v34 identifier];
-        [(TUIRenderModelLayer *)v33 setIdentifier:v35];
+        identifier = [v34 identifier];
+        [(TUIRenderModelLayer *)v33 setIdentifier:identifier];
 
         goto LABEL_19;
       }
@@ -285,41 +285,41 @@ LABEL_15:
   }
 
   v7 = [(TUILayout *)self box];
-  v8 = [v7 renderModelBlock];
+  renderModelBlock = [v7 renderModelBlock];
 
-  if (!v8)
+  if (!renderModelBlock)
   {
     goto LABEL_15;
   }
 
   v41 = objc_opt_new();
   v9 = [(TUILayout *)self box];
-  v10 = [v9 pointer];
+  pointer = [v9 pointer];
   v56[0] = _NSConcreteStackBlock;
   v56[1] = 3221225472;
   v56[2] = sub_E58E8;
   v56[3] = &unk_261950;
-  v49 = self;
+  selfCopy = self;
   v56[4] = self;
-  v57 = v6;
+  v57 = contextCopy;
   v44 = v41;
   v58 = v44;
   v42 = v57;
-  [v57 evaluateWithPointer:v10 block:v56];
+  [v57 evaluateWithPointer:pointer block:v56];
 
   v11 = [(TUILayout *)self box];
-  v12 = [v11 menuContainer];
-  v43 = [v12 imageModelsToLoad];
+  menuContainer = [v11 menuContainer];
+  imageModelsToLoad = [menuContainer imageModelsToLoad];
 
-  if ([v43 count])
+  if ([imageModelsToLoad count])
   {
-    v48 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v43 count]);
+    v48 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [imageModelsToLoad count]);
     [v42 contentsScale];
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    obj = v43;
+    obj = imageModelsToLoad;
     v13 = [obj countByEnumeratingWithState:&v52 objects:v59 count:16];
     if (v13)
     {
@@ -334,16 +334,16 @@ LABEL_15:
           }
 
           v16 = *(*(&v52 + 1) + 8 * i);
-          v17 = [(TUILayout *)v49 controller];
-          v18 = [v17 manager];
-          v19 = [v18 imageResourceCache];
-          v20 = [v16 urlString];
-          v21 = [v16 baseURL];
+          controller = [(TUILayout *)selfCopy controller];
+          manager = [controller manager];
+          imageResourceCache = [manager imageResourceCache];
+          urlString = [v16 urlString];
+          baseURL = [v16 baseURL];
           [v16 size];
-          v22 = [v19 imageResourceForTemplatedURL:v20 baseURL:v21 naturalSize:? contentsScale:?];
+          v22 = [imageResourceCache imageResourceForTemplatedURL:urlString baseURL:baseURL naturalSize:? contentsScale:?];
 
-          v23 = [v16 identifier];
-          [v48 setObject:v22 forKeyedSubscript:v23];
+          identifier2 = [v16 identifier];
+          [v48 setObject:v22 forKeyedSubscript:identifier2];
         }
 
         v13 = [obj countByEnumeratingWithState:&v52 objects:v59 count:16];
@@ -352,7 +352,7 @@ LABEL_15:
       while (v13);
     }
 
-    self = v49;
+    self = selfCopy;
   }
 
   else
@@ -361,35 +361,35 @@ LABEL_15:
   }
 
   v36 = [(TUILayout *)self box];
-  v37 = [v36 renderModelBlock];
+  renderModelBlock2 = [v36 renderModelBlock];
   v38 = [(TUILayout *)self box];
-  v39 = [v38 animationGroups];
-  v33 = (v37)[2](v37, self, v44, v48, v39);
+  animationGroups = [v38 animationGroups];
+  v33 = (renderModelBlock2)[2](renderModelBlock2, self, v44, v48, animationGroups);
 
-  [(TUILayout *)v49 renderModelSizeWithContext:v42];
+  [(TUILayout *)selfCopy renderModelSizeWithContext:v42];
   [(TUIRenderModelLayer *)v33 setSize:?];
 
 LABEL_19:
   return v33;
 }
 
-- (id)axModelTreeWithCustomActionsCollector:(id)a3 scrollAncestorLayout:(id)a4 scrollAncestorTranslation:(CGPoint)a5 liveTransformAncestorLayout:(id)a6
+- (id)axModelTreeWithCustomActionsCollector:(id)collector scrollAncestorLayout:(id)layout scrollAncestorTranslation:(CGPoint)translation liveTransformAncestorLayout:(id)ancestorLayout
 {
-  y = a5.y;
-  x = a5.x;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  y = translation.y;
+  x = translation.x;
+  collectorCopy = collector;
+  layoutCopy = layout;
+  ancestorLayoutCopy = ancestorLayout;
   v35.receiver = self;
   v35.super_class = TUIStatefulElementBoxLayout;
-  v15 = [(TUILayout *)&v35 axModelTreeWithCustomActionsCollector:v12 scrollAncestorLayout:v13 scrollAncestorTranslation:v14 liveTransformAncestorLayout:x, y];
+  v15 = [(TUILayout *)&v35 axModelTreeWithCustomActionsCollector:collectorCopy scrollAncestorLayout:layoutCopy scrollAncestorTranslation:ancestorLayoutCopy liveTransformAncestorLayout:x, y];
   [v15 setIsControl:1];
   v16 = [(TUILayout *)self box];
   [v15 setIsEditableControl:{objc_msgSend(v16, "isEditableControl")}];
 
   v17 = [(TUILayout *)self box];
-  v18 = [v17 triggerHandler];
-  v19 = [v18 hasActionForTrigger:@"context-menu"];
+  triggerHandler = [v17 triggerHandler];
+  v19 = [triggerHandler hasActionForTrigger:@"context-menu"];
   if (v19)
   {
     v6 = [(TUILayout *)self box];
@@ -406,22 +406,22 @@ LABEL_19:
   {
   }
 
-  v21 = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
+  stateNameToLayout = [(TUIStatefulElementBoxLayout *)self stateNameToLayout];
   v29 = _NSConcreteStackBlock;
   v30 = 3221225472;
   v31 = sub_E5D1C;
   v32 = &unk_261928;
-  v33 = self;
+  selfCopy = self;
   v22 = v15;
   v34 = v22;
-  [v21 enumerateKeysAndObjectsUsingBlock:&v29];
+  [stateNameToLayout enumerateKeysAndObjectsUsingBlock:&v29];
 
-  if (v12)
+  if (collectorCopy)
   {
     v23 = [(TUILayout *)self box:v29];
-    v24 = [v23 triggerHandler];
-    v25 = [v22 identifier];
-    [v12 addActionTriggerHandler:v24 controlIdentifier:v25];
+    triggerHandler2 = [v23 triggerHandler];
+    identifier = [v22 identifier];
+    [collectorCopy addActionTriggerHandler:triggerHandler2 controlIdentifier:identifier];
   }
 
   v26 = v34;
@@ -433,9 +433,9 @@ LABEL_19:
 - (BOOL)groupedContainingIsGrouped
 {
   v2 = [(TUILayout *)self box];
-  v3 = [v2 grouped];
+  grouped = [v2 grouped];
 
-  return v3;
+  return grouped;
 }
 
 - (UIEdgeInsets)groupedContainingInsets

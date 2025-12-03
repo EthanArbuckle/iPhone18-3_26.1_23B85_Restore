@@ -1,19 +1,19 @@
 @interface ICBearSearchAction
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7;
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler;
 @end
 
 @implementation ICBearSearchAction
 
-- (void)performActionWithInput:(id)a3 parameters:(id)a4 userInterface:(id)a5 successHandler:(id)a6 errorHandler:(id)a7
+- (void)performActionWithInput:(id)input parameters:(id)parameters userInterface:(id)interface successHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v15 objectForKey:@"BearTag"];
-  v18 = [v15 objectForKey:@"BearTerm"];
-  v19 = [v15 mutableCopy];
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
+  interfaceCopy = interface;
+  parametersCopy = parameters;
+  inputCopy = input;
+  v17 = [parametersCopy objectForKey:@"BearTag"];
+  v18 = [parametersCopy objectForKey:@"BearTerm"];
+  v19 = [parametersCopy mutableCopy];
 
   if ([v18 length])
   {
@@ -34,7 +34,7 @@
   [v19 setObject:v20 forKey:@"BearAction"];
   v21.receiver = self;
   v21.super_class = ICBearSearchAction;
-  [(WFInterchangeSchemeAction *)&v21 performActionWithInput:v16 parameters:v19 userInterface:v14 successHandler:v13 errorHandler:v12];
+  [(WFInterchangeSchemeAction *)&v21 performActionWithInput:inputCopy parameters:v19 userInterface:interfaceCopy successHandler:handlerCopy errorHandler:errorHandlerCopy];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface SOAuthorizationResultCore
 - (SOAuthorizationResultCore)init;
-- (SOAuthorizationResultCore)initWithHTTPAuthorizationHeaders:(id)a3;
-- (SOAuthorizationResultCore)initWithHTTPResponse:(id)a3 httpBody:(id)a4;
+- (SOAuthorizationResultCore)initWithHTTPAuthorizationHeaders:(id)headers;
+- (SOAuthorizationResultCore)initWithHTTPResponse:(id)response httpBody:(id)body;
 @end
 
 @implementation SOAuthorizationResultCore
@@ -13,47 +13,47 @@
   v2 = [(SOAuthorizationResultCore *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     privateKeys = v2->_privateKeys;
-    v2->_privateKeys = v3;
+    v2->_privateKeys = array;
   }
 
   return v2;
 }
 
-- (SOAuthorizationResultCore)initWithHTTPAuthorizationHeaders:(id)a3
+- (SOAuthorizationResultCore)initWithHTTPAuthorizationHeaders:(id)headers
 {
-  v5 = a3;
+  headersCopy = headers;
   v11.receiver = self;
   v11.super_class = SOAuthorizationResultCore;
   v6 = [(SOAuthorizationResultCore *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_httpAuthorizationHeaders, a3);
-    v8 = [MEMORY[0x1E695DEC8] array];
+    objc_storeStrong(&v6->_httpAuthorizationHeaders, headers);
+    array = [MEMORY[0x1E695DEC8] array];
     privateKeys = v7->_privateKeys;
-    v7->_privateKeys = v8;
+    v7->_privateKeys = array;
   }
 
   return v7;
 }
 
-- (SOAuthorizationResultCore)initWithHTTPResponse:(id)a3 httpBody:(id)a4
+- (SOAuthorizationResultCore)initWithHTTPResponse:(id)response httpBody:(id)body
 {
-  v7 = a3;
-  v8 = a4;
+  responseCopy = response;
+  bodyCopy = body;
   v14.receiver = self;
   v14.super_class = SOAuthorizationResultCore;
   v9 = [(SOAuthorizationResultCore *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_httpResponse, a3);
-    objc_storeStrong(&v10->_httpBody, a4);
-    v11 = [MEMORY[0x1E695DEC8] array];
+    objc_storeStrong(&v9->_httpResponse, response);
+    objc_storeStrong(&v10->_httpBody, body);
+    array = [MEMORY[0x1E695DEC8] array];
     privateKeys = v10->_privateKeys;
-    v10->_privateKeys = v11;
+    v10->_privateKeys = array;
   }
 
   return v10;

@@ -1,7 +1,7 @@
 @interface RangePillView
 - (CGRect)bounds;
-- (_TtC15HealthRecordsUI13RangePillView)initWithFrame:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
+- (_TtC15HealthRecordsUI13RangePillView)initWithFrame:(CGRect)frame;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation RangePillView
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for RangePillView();
   v7 = v9.receiver;
@@ -42,7 +42,7 @@
   }
 }
 
-- (_TtC15HealthRecordsUI13RangePillView)initWithFrame:(CGRect)a3
+- (_TtC15HealthRecordsUI13RangePillView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

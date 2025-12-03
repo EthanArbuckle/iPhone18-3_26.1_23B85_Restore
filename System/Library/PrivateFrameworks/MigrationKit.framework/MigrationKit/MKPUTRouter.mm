@@ -13,10 +13,10 @@
   if (v2)
   {
     v3 = objc_alloc_init(MKDevice);
-    v4 = [(MKDevice *)v3 type];
+    type = [(MKDevice *)v3 type];
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    if (v4 == 1)
+    if (type == 1)
     {
       v6 = [MEMORY[0x277CCABB0] numberWithInteger:6];
       [v5 setObject:v6 forKey:@"application/vnd.com.apple.migrationkit.placeholder.v1.1+json"];
@@ -75,8 +75,8 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v22 = [v5 allKeys];
-    v23 = [v22 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    allKeys = [v5 allKeys];
+    v23 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v23)
     {
       v24 = v23;
@@ -88,14 +88,14 @@
         {
           if (*v30 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(allKeys);
           }
 
           [(NSMutableArray *)v2->_supportedContentTypes addObject:*(*(&v29 + 1) + 8 * v26++)];
         }
 
         while (v24 != v26);
-        v24 = [v22 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v24 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v24);

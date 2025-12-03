@@ -1,19 +1,19 @@
 @interface CVAVideoPipelineProperties_Impl
-- (BOOL)validateWithError:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForVideoPipelineDevice:(unint64_t)a3;
+- (BOOL)validateWithError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForVideoPipelineDevice:(unint64_t)device;
 @end
 
 @implementation CVAVideoPipelineProperties_Impl
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   centerDeltaCanonicalDisparity = self->_centerDeltaCanonicalDisparity;
   v6 = self->_minDeltaCanonicalDisparity > centerDeltaCanonicalDisparity || centerDeltaCanonicalDisparity > self->_maxDeltaCanonicalDisparity;
   v7 = MEMORY[0x1E696AEC0];
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Expected centerDeltaCanonicalDisparity <= centerDeltaCanonicalDisparity <= maxDeltaCanonicalDisparity"];
   v9 = [v7 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAVideoPipelineProperties_Impl validateWithError:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipelineProperties.mm", 1584, v8];
-  sub_1DED25D64(v6, a3, 4294944393, v9);
+  sub_1DED25D64(v6, error, 4294944393, v9);
 
   if (v6)
   {
@@ -41,11 +41,11 @@
   v14 = *(&self->super.isa + v11);
   outputDisparityPixelBufferWidth = self->_outputDisparityPixelBufferWidth;
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Input/output disparity pixel buffers must have the same aspect ratio: %zu x %zu != %zu x %zu", v13, outputDisparityPixelBufferHeight, v14, outputDisparityPixelBufferWidth];
-  v18 = [v16 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAVideoPipelineProperties_Impl validateWithError:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipelineProperties.mm", 1602, v17];
+  outputDisparityPixelBufferWidth = [MEMORY[0x1E696AEC0] stringWithFormat:@"Input/output disparity pixel buffers must have the same aspect ratio: %zu x %zu != %zu x %zu", v13, outputDisparityPixelBufferHeight, v14, outputDisparityPixelBufferWidth];
+  v18 = [v16 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAVideoPipelineProperties_Impl validateWithError:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipelineProperties.mm", 1602, outputDisparityPixelBufferWidth];
   v19 = outputDisparityPixelBufferHeight * v13;
   v20 = outputDisparityPixelBufferWidth * v14;
-  sub_1DED25D64(v19 != v20, a3, 4294944393, v18);
+  sub_1DED25D64(v19 != v20, error, 4294944393, v18);
 
   if (v19 != v20)
   {
@@ -58,7 +58,7 @@
   v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"outputDisparityPixelBufferWidth not in [2 + depthPixelBufferXReplication, inf"]);
   v25 = [v23 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAVideoPipelineProperties_Impl validateWithError:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipelineProperties.mm", 1616, v24];
   depthPixelBufferXReplication += 2;
-  sub_1DED25D64(v22 < depthPixelBufferXReplication, a3, 4294944393, v25);
+  sub_1DED25D64(v22 < depthPixelBufferXReplication, error, 4294944393, v25);
 
   if (v22 < depthPixelBufferXReplication)
   {
@@ -71,7 +71,7 @@
   v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"outputDisparityPixelBufferHeight not in [2 + depthPixelBufferYReplication, inf"]);
   v30 = [v28 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAVideoPipelineProperties_Impl validateWithError:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipelineProperties.mm", 1630, v29];
   depthPixelBufferYReplication += 2;
-  sub_1DED25D64(v27 < depthPixelBufferYReplication, a3, 4294944393, v30);
+  sub_1DED25D64(v27 < depthPixelBufferYReplication, error, 4294944393, v30);
 
   if (v27 < depthPixelBufferYReplication)
   {
@@ -88,7 +88,7 @@
   v34 = MEMORY[0x1E696AEC0];
   v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"depthPixelBufferXPadding not in [0, inputDisparityPixelBufferWidth"]);
   v36 = [v34 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAVideoPipelineProperties_Impl validateWithError:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipelineProperties.mm", 1643, v35];
-  sub_1DED25D64(v33, a3, 4294944393, v36);
+  sub_1DED25D64(v33, error, 4294944393, v36);
 
   if (v33)
   {
@@ -100,14 +100,14 @@
   v39 = MEMORY[0x1E696AEC0];
   v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"depthPixelBufferYPadding not in [0, inputDisparityPixelBufferHeight"]);
   v41 = [v39 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAVideoPipelineProperties_Impl validateWithError:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipelineProperties.mm", 1654, v40];
-  sub_1DED25D64(v38, a3, 4294944393, v41);
+  sub_1DED25D64(v38, error, 4294944393, v41);
 
   return !v38;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 360) = self->_colorPixelBufferWidth;
   *(v4 + 368) = self->_colorPixelBufferHeight;
   objc_storeStrong((v4 + 376), self->_supportedColorPixelBufferPixelFormats);
@@ -221,9 +221,9 @@
   return v4;
 }
 
-- (id)initForVideoPipelineDevice:(unint64_t)a3
+- (id)initForVideoPipelineDevice:(unint64_t)device
 {
-  MEMORY[0x1EEE9AC00](self, a2, a3);
+  MEMORY[0x1EEE9AC00](self, a2, device);
   v7 = *MEMORY[0x1E69E9840];
   v6[2] = v3;
   v6[1] = 0;

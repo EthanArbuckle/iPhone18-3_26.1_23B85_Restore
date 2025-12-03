@@ -1,15 +1,15 @@
 @interface ScreentimePasscodeListener
 - (_TtC14FamilyCircleUI26ScreentimePasscodeListener)init;
-- (void)handleRestrictionsPINNotification:(id)a3;
+- (void)handleRestrictionsPINNotification:(id)notification;
 @end
 
 @implementation ScreentimePasscodeListener
 
-- (void)handleRestrictionsPINNotification:(id)a3
+- (void)handleRestrictionsPINNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_21BD9BC74(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_21BD9BC74(notificationCopy);
 }
 
 - (_TtC14FamilyCircleUI26ScreentimePasscodeListener)init

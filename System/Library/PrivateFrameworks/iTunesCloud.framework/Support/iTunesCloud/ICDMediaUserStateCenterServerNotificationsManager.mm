@@ -1,14 +1,14 @@
 @interface ICDMediaUserStateCenterServerNotificationsManager
-- (ICDMediaUserStateCenterServerNotificationsManager)initWithDelegate:(id)a3;
+- (ICDMediaUserStateCenterServerNotificationsManager)initWithDelegate:(id)delegate;
 - (ICDMediaUserStateCenterServerNotificationsManagerDelegate)delegate;
-- (void)_handleActiveUserIdentityDidChangeNotification:(id)a3;
+- (void)_handleActiveUserIdentityDidChangeNotification:(id)notification;
 - (void)_handleCloudAuthenticationDidChangeNotification;
-- (void)_handleHomeUserSettingsDidChangeNotification:(id)a3;
-- (void)_handleLibraryAuthServiceTokenDidChangeNotification:(id)a3;
-- (void)_handleLocalStoreAccountPropertiesDidChangeNotification:(id)a3;
+- (void)_handleHomeUserSettingsDidChangeNotification:(id)notification;
+- (void)_handleLibraryAuthServiceTokenDidChangeNotification:(id)notification;
+- (void)_handleLocalStoreAccountPropertiesDidChangeNotification:(id)notification;
 - (void)_handleMusicSettingsChangedNotification;
-- (void)_handleSubscriptionStatusDidChangeNotification:(id)a3;
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3;
+- (void)_handleSubscriptionStatusDidChangeNotification:(id)notification;
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification;
 - (void)_setupNotifications;
 @end
 
@@ -27,12 +27,12 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling delegate to update user state, music settings changed", &v5, 0xCu);
   }
 
-  v4 = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
-  [v4 notificationsManager:self didReceiveNotificationChangingUserState:0];
+  delegate = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveNotificationChangingUserState:0];
 }
 
 - (void)_handleCloudAuthenticationDidChangeNotification
@@ -41,102 +41,102 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling delegate to update user state, cloud authentication changed", &v5, 0xCu);
   }
 
-  v4 = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
-  [v4 notificationsManager:self didReceiveNotificationChangingUserState:0];
+  delegate = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveNotificationChangingUserState:0];
 }
 
-- (void)_handleActiveUserIdentityDidChangeNotification:(id)a3
+- (void)_handleActiveUserIdentityDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "UserState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling delegate to update user state, active user identity changed", &v7, 0xCu);
   }
 
-  v6 = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveNotificationChangingUserState:v4];
+  delegate = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveNotificationChangingUserState:notificationCopy];
 }
 
-- (void)_handleSubscriptionStatusDidChangeNotification:(id)a3
+- (void)_handleSubscriptionStatusDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "UserState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling delegate to update user state, subscription status changed", &v7, 0xCu);
   }
 
-  v6 = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveNotificationChangingUserState:v4];
+  delegate = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveNotificationChangingUserState:notificationCopy];
 }
 
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "UserState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling delegate to update user state, identity store changed", &v7, 0xCu);
   }
 
-  v6 = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveNotificationChangingUserState:v4];
+  delegate = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveNotificationChangingUserState:notificationCopy];
 }
 
-- (void)_handleLocalStoreAccountPropertiesDidChangeNotification:(id)a3
+- (void)_handleLocalStoreAccountPropertiesDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "UserState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling delegate to update user state, store account properties changed", &v7, 0xCu);
   }
 
-  v6 = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveNotificationChangingUserState:v4];
+  delegate = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveNotificationChangingUserState:notificationCopy];
 }
 
-- (void)_handleLibraryAuthServiceTokenDidChangeNotification:(id)a3
+- (void)_handleLibraryAuthServiceTokenDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "UserState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling delegate to update user state, library authentication token changed", &v7, 0xCu);
   }
 
-  v6 = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveNotificationChangingUserState:v4];
+  delegate = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveNotificationChangingUserState:notificationCopy];
 }
 
-- (void)_handleHomeUserSettingsDidChangeNotification:(id)a3
+- (void)_handleHomeUserSettingsDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "UserState");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Calling delegate to update user state, home user settings changed", &v7, 0xCu);
   }
 
-  v6 = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveNotificationChangingUserState:v4];
+  delegate = [(ICDMediaUserStateCenterServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveNotificationChangingUserState:notificationCopy];
 }
 
 - (void)_setupNotifications
@@ -219,16 +219,16 @@ LABEL_8:
   __break(1u);
 }
 
-- (ICDMediaUserStateCenterServerNotificationsManager)initWithDelegate:(id)a3
+- (ICDMediaUserStateCenterServerNotificationsManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = ICDMediaUserStateCenterServerNotificationsManager;
   v5 = [(ICDMediaUserStateCenterServerNotificationsManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(ICDMediaUserStateCenterServerNotificationsManager *)v6 _setupNotifications];
   }
 

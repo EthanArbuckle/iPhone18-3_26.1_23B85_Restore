@@ -1,12 +1,12 @@
 @interface NEKPBCalendarIdentifier
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NEKPBCalendarIdentifier
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = NEKPBCalendarIdentifier;
   v3 = [(NEKPBCalendarIdentifier *)&v7 description];
-  v4 = [(NEKPBCalendarIdentifier *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NEKPBCalendarIdentifier *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -41,45 +41,45 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     isDefaultLocalCalendar = self->_isDefaultLocalCalendar;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
-    v5 = v4;
-    [v4 setIdentifier:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setIdentifier:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[16] = self->_isDefaultLocalCalendar;
-    v4[20] |= 1u;
+    toCopy[16] = self->_isDefaultLocalCalendar;
+    toCopy[20] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -92,16 +92,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 1))
+  if (identifier | *(equalCopy + 1))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -109,10 +109,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
 LABEL_6:
       v6 = 0;
@@ -121,13 +121,13 @@ LABEL_6:
 
     if (self->_isDefaultLocalCalendar)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_6;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_6;
     }
@@ -156,19 +156,19 @@ LABEL_7:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(NEKPBCalendarIdentifier *)self setIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[20])
+  if (fromCopy[20])
   {
-    self->_isDefaultLocalCalendar = v4[16];
+    self->_isDefaultLocalCalendar = fromCopy[16];
     *&self->_has |= 1u;
   }
 }

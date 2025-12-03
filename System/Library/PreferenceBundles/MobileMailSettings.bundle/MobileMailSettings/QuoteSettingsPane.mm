@@ -1,23 +1,23 @@
 @interface QuoteSettingsPane
-- (id)indentQuoteLevel:(id)a3;
+- (id)indentQuoteLevel:(id)level;
 - (id)specifiers;
-- (void)setIndentQuoteLevel:(id)a3 withSpecifier:(id)a4;
+- (void)setIndentQuoteLevel:(id)level withSpecifier:(id)specifier;
 @end
 
 @implementation QuoteSettingsPane
 
-- (void)setIndentQuoteLevel:(id)a3 withSpecifier:(id)a4
+- (void)setIndentQuoteLevel:(id)level withSpecifier:(id)specifier
 {
-  v8 = a3;
-  v5 = [v8 BOOLValue];
+  levelCopy = level;
+  bOOLValue = [levelCopy BOOLValue];
   v6 = +[NSUserDefaults em_userDefaults];
-  [v6 setBool:v5 ^ 1 forKey:@"DisableQuoteIncrease"];
+  [v6 setBool:bOOLValue ^ 1 forKey:@"DisableQuoteIncrease"];
 
-  v7 = [(QuoteSettingsPane *)self parentController];
-  [v7 reloadSpecifier:*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier]];
+  parentController = [(QuoteSettingsPane *)self parentController];
+  [parentController reloadSpecifier:*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier]];
 }
 
-- (id)indentQuoteLevel:(id)a3
+- (id)indentQuoteLevel:(id)level
 {
   v3 = +[NSUserDefaults em_userDefaults];
   v4 = [v3 valueForKey:@"DisableQuoteIncrease"];

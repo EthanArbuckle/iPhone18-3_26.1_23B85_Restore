@@ -1,17 +1,17 @@
 @interface NFStorageServer
-- (void)delete:(id)a3 withCompletion:(id)a4;
-- (void)fetch:(id)a3 withCompletion:(id)a4;
-- (void)runService:(id)a3 callback:(id)a4;
-- (void)update:(id)a3 params:(id)a4 withCompletion:(id)a5;
+- (void)delete:(id)delete withCompletion:(id)completion;
+- (void)fetch:(id)fetch withCompletion:(id)completion;
+- (void)runService:(id)service callback:(id)callback;
+- (void)update:(id)update params:(id)params withCompletion:(id)completion;
 @end
 
 @implementation NFStorageServer
 
-- (void)fetch:(id)a3 withCompletion:(id)a4
+- (void)fetch:(id)fetch withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"Express"])
+  fetchCopy = fetch;
+  completionCopy = completion;
+  if ([fetchCopy isEqualToString:@"Express"])
   {
     v7 = objc_opt_new();
     v14 = 0;
@@ -25,7 +25,7 @@
       v11 = &v19;
 LABEL_9:
       v12 = [NSDictionary dictionaryWithObjects:v10 forKeys:v11 count:1];
-      v6[2](v6, v12, 0);
+      completionCopy[2](completionCopy, v12, 0);
 
       goto LABEL_10;
     }
@@ -33,7 +33,7 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  if ([v5 isEqualToString:@"Applets"])
+  if ([fetchCopy isEqualToString:@"Applets"])
   {
     v7 = objc_opt_new();
     v13 = 0;
@@ -49,7 +49,7 @@ LABEL_9:
     }
 
 LABEL_6:
-    (v6)[2](v6, 0, v9);
+    (completionCopy)[2](completionCopy, 0, v9);
 LABEL_10:
 
     goto LABEL_11;
@@ -59,16 +59,16 @@ LABEL_10:
   v16 = @"Unknown model";
   v9 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
   v8 = [NSError errorWithDomain:@"NFStorageServer" code:3 userInfo:v9];
-  (v6)[2](v6, 0, v8);
+  (completionCopy)[2](completionCopy, 0, v8);
 LABEL_11:
 }
 
-- (void)update:(id)a3 params:(id)a4 withCompletion:(id)a5
+- (void)update:(id)update params:(id)params withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 isEqualToString:@"Express"])
+  updateCopy = update;
+  paramsCopy = params;
+  completionCopy = completion;
+  if ([updateCopy isEqualToString:@"Express"])
   {
     v10 = objc_opt_new();
     objc_opt_class();
@@ -78,7 +78,7 @@ LABEL_11:
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v11 = v8;
+      v11 = paramsCopy;
       v12 = [v11 countByEnumeratingWithState:&v21 objects:v31 count:16];
       if (v12)
       {
@@ -102,7 +102,7 @@ LABEL_11:
               v30 = @"Unknown config";
               v19 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1, v21];
               v20 = [NSError errorWithDomain:@"NFStorageServer" code:4 userInfo:v19];
-              v9[2](v9, 0, v20);
+              completionCopy[2](completionCopy, 0, v20);
 
               v18 = v11;
               goto LABEL_19;
@@ -123,7 +123,7 @@ LABEL_11:
       }
 
       [v10 updateESEExpressEntitiesWithConfig:{v11, v21}];
-      v9[2](v9, 0, 0);
+      completionCopy[2](completionCopy, 0, 0);
     }
 
     else
@@ -132,22 +132,22 @@ LABEL_11:
       v33 = @"Unknown config";
       v18 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
       v11 = [NSError errorWithDomain:@"NFStorageServer" code:4 userInfo:v18];
-      v9[2](v9, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
 LABEL_19:
 
       v11 = v18;
     }
   }
 
-  else if ([v7 isEqualToString:@"Applets"])
+  else if ([updateCopy isEqualToString:@"Applets"])
   {
     v10 = objc_opt_new();
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v8;
+      v17 = paramsCopy;
       v11 = [v10 updateAppletEntitiesWithConfig:v17];
-      v9[2](v9, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
     }
 
     else
@@ -156,7 +156,7 @@ LABEL_19:
       v28 = @"Unknown config";
       v11 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
       v17 = [NSError errorWithDomain:@"NFStorageServer" code:4 userInfo:v11];
-      v9[2](v9, 0, v17);
+      completionCopy[2](completionCopy, 0, v17);
     }
   }
 
@@ -166,15 +166,15 @@ LABEL_19:
     v26 = @"Unknown model";
     v10 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v11 = [NSError errorWithDomain:@"NFStorageServer" code:3 userInfo:v10];
-    v9[2](v9, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 }
 
-- (void)delete:(id)a3 withCompletion:(id)a4
+- (void)delete:(id)delete withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"Express"])
+  deleteCopy = delete;
+  completionCopy = completion;
+  if ([deleteCopy isEqualToString:@"Express"])
   {
     v7 = objc_opt_new();
     [v7 deleteAllESEExpressEntities];
@@ -182,13 +182,13 @@ LABEL_19:
 
   else
   {
-    if (![v5 isEqualToString:@"Applets"])
+    if (![deleteCopy isEqualToString:@"Applets"])
     {
       v10 = NSLocalizedDescriptionKey;
       v11 = @"Unknown model";
       v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
       v9 = [NSError errorWithDomain:@"NFStorageServer" code:3 userInfo:v8];
-      v6[2](v6, 0, v9);
+      completionCopy[2](completionCopy, 0, v9);
 
       goto LABEL_7;
     }
@@ -197,17 +197,17 @@ LABEL_19:
     [v7 deleteAllAppletEntities];
   }
 
-  v6[2](v6, 0, 0);
+  completionCopy[2](completionCopy, 0, 0);
 
 LABEL_7:
 }
 
-- (void)runService:(id)a3 callback:(id)a4
+- (void)runService:(id)service callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"Operation"];
-  v10 = [v7 objectForKeyedSubscript:@"Model"];
+  serviceCopy = service;
+  callbackCopy = callback;
+  v9 = [serviceCopy objectForKeyedSubscript:@"Operation"];
+  v10 = [serviceCopy objectForKeyedSubscript:@"Model"];
   v11 = v10;
   if (!v9 || !v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -270,14 +270,14 @@ LABEL_7:
   {
     if ([v9 isEqualToString:@"Update"])
     {
-      v21 = [v7 objectForKeyedSubscript:@"Config"];
-      [(NFStorageServer *)self update:v11 params:v21 withCompletion:v8];
+      v21 = [serviceCopy objectForKeyedSubscript:@"Config"];
+      [(NFStorageServer *)self update:v11 params:v21 withCompletion:callbackCopy];
       goto LABEL_18;
     }
 
     if ([v9 isEqualToString:@"DeleteAll"])
     {
-      [(NFStorageServer *)self delete:v11 withCompletion:v8];
+      [(NFStorageServer *)self delete:v11 withCompletion:callbackCopy];
       goto LABEL_19;
     }
 
@@ -287,13 +287,13 @@ LABEL_7:
     v22 = 3;
 LABEL_17:
     v23 = [NSError errorWithDomain:@"NFStorageServer" code:v22 userInfo:v21];
-    v8[2](v8, 0, v23);
+    callbackCopy[2](callbackCopy, 0, v23);
 
 LABEL_18:
     goto LABEL_19;
   }
 
-  [(NFStorageServer *)self fetch:v11 withCompletion:v8];
+  [(NFStorageServer *)self fetch:v11 withCompletion:callbackCopy];
 LABEL_19:
 }
 

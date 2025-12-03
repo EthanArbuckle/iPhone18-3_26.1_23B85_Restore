@@ -1,44 +1,44 @@
 @interface TransparencyCloudDevice
-- (TransparencyCloudDevice)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (TransparencyCloudDevice)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TransparencyCloudDevice
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TransparencyCloudDevice *)self loggableData];
-  [v4 encodeObject:v5 forKey:@"loggableData"];
+  coderCopy = coder;
+  loggableData = [(TransparencyCloudDevice *)self loggableData];
+  [coderCopy encodeObject:loggableData forKey:@"loggableData"];
 
-  v6 = [(TransparencyCloudDevice *)self state];
-  [v4 encodeObject:v6 forKey:@"state"];
+  state = [(TransparencyCloudDevice *)self state];
+  [coderCopy encodeObject:state forKey:@"state"];
 
-  v7 = [(TransparencyCloudDevice *)self serialNumber];
-  [v4 encodeObject:v7 forKey:@"sn"];
+  serialNumber = [(TransparencyCloudDevice *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"sn"];
 
-  v8 = [(TransparencyCloudDevice *)self uploadedToCKAt];
-  [v4 encodeObject:v8 forKey:@"uploadedToCKAt"];
+  uploadedToCKAt = [(TransparencyCloudDevice *)self uploadedToCKAt];
+  [coderCopy encodeObject:uploadedToCKAt forKey:@"uploadedToCKAt"];
 }
 
-- (TransparencyCloudDevice)initWithCoder:(id)a3
+- (TransparencyCloudDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TransparencyCloudDevice;
   v5 = [(TransparencyCloudDevice *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loggableData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loggableData"];
     [(TransparencyCloudDevice *)v5 setLoggableData:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     [(TransparencyCloudDevice *)v5 setState:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sn"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sn"];
     [(TransparencyCloudDevice *)v5 setSerialNumber:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uploadedToCKAt"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uploadedToCKAt"];
     [(TransparencyCloudDevice *)v5 setUploadedToCKAt:v9];
 
     v10 = v5;

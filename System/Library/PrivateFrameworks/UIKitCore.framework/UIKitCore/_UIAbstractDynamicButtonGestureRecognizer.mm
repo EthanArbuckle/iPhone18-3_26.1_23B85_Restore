@@ -1,21 +1,21 @@
 @interface _UIAbstractDynamicButtonGestureRecognizer
-- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)a3;
-- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)a3;
-- (BOOL)_shouldReceiveDynamicButton:(id)a3;
-- (BOOL)_shouldReceiveEvent:(id)a3;
-- (_UIAbstractDynamicButtonGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)setCancelsTouchesInView:(BOOL)a3;
-- (void)setDelaysTouchesBegan:(BOOL)a3;
-- (void)setDelaysTouchesEnded:(BOOL)a3;
+- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)recognizer;
+- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)recognizer;
+- (BOOL)_shouldReceiveDynamicButton:(id)button;
+- (BOOL)_shouldReceiveEvent:(id)event;
+- (_UIAbstractDynamicButtonGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)setCancelsTouchesInView:(BOOL)view;
+- (void)setDelaysTouchesBegan:(BOOL)began;
+- (void)setDelaysTouchesEnded:(BOOL)ended;
 @end
 
 @implementation _UIAbstractDynamicButtonGestureRecognizer
 
-- (_UIAbstractDynamicButtonGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIAbstractDynamicButtonGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = _UIAbstractDynamicButtonGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v8 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -30,10 +30,10 @@
   return v5;
 }
 
-- (void)setDelaysTouchesBegan:(BOOL)a3
+- (void)setDelaysTouchesBegan:(BOOL)began
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (began)
   {
     v4 = *(__UILogGetCategoryCachedImpl("DynamicButton", &setDelaysTouchesBegan____s_category) + 8);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -41,19 +41,19 @@
       if (self)
       {
         v5 = MEMORY[0x1E696AEC0];
-        v6 = self;
+        selfCopy = self;
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
-        v9 = [v5 stringWithFormat:@"<%@: %p>", v8, v6];
+        selfCopy = [v5 stringWithFormat:@"<%@: %p>", v8, selfCopy];
       }
 
       else
       {
-        v9 = @"(nil)";
+        selfCopy = @"(nil)";
       }
 
       *buf = 138412290;
-      v12 = v9;
+      v12 = selfCopy;
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_ERROR, "delaysTouchesBegan was called on %@ with an unsupported value of true. This gesture currently does not support delaying touches. This value will be ignored.", buf, 0xCu);
     }
   }
@@ -66,10 +66,10 @@
   }
 }
 
-- (void)setDelaysTouchesEnded:(BOOL)a3
+- (void)setDelaysTouchesEnded:(BOOL)ended
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (ended)
   {
     v4 = *(__UILogGetCategoryCachedImpl("DynamicButton", &setDelaysTouchesEnded____s_category) + 8);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -77,19 +77,19 @@
       if (self)
       {
         v5 = MEMORY[0x1E696AEC0];
-        v6 = self;
+        selfCopy = self;
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
-        v9 = [v5 stringWithFormat:@"<%@: %p>", v8, v6];
+        selfCopy = [v5 stringWithFormat:@"<%@: %p>", v8, selfCopy];
       }
 
       else
       {
-        v9 = @"(nil)";
+        selfCopy = @"(nil)";
       }
 
       *buf = 138412290;
-      v12 = v9;
+      v12 = selfCopy;
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_ERROR, "delaysTouchesEnded was called on %@ with an unsupported value of true. This gesture currently does not support delaying touches. This value will be ignored.", buf, 0xCu);
     }
   }
@@ -102,10 +102,10 @@
   }
 }
 
-- (void)setCancelsTouchesInView:(BOOL)a3
+- (void)setCancelsTouchesInView:(BOOL)view
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (view)
   {
     v4 = *(__UILogGetCategoryCachedImpl("DynamicButton", &setCancelsTouchesInView____s_category) + 8);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -113,19 +113,19 @@
       if (self)
       {
         v5 = MEMORY[0x1E696AEC0];
-        v6 = self;
+        selfCopy = self;
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
-        v9 = [v5 stringWithFormat:@"<%@: %p>", v8, v6];
+        selfCopy = [v5 stringWithFormat:@"<%@: %p>", v8, selfCopy];
       }
 
       else
       {
-        v9 = @"(nil)";
+        selfCopy = @"(nil)";
       }
 
       *buf = 138412290;
-      v12 = v9;
+      v12 = selfCopy;
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_ERROR, "cancelsTouchesInView was called on %@ with an unsupported value of true. This gesture currently does not support cancelling touches. This value will be ignored.", buf, 0xCu);
     }
   }
@@ -138,29 +138,29 @@
   }
 }
 
-- (BOOL)_shouldReceiveEvent:(id)a3
+- (BOOL)_shouldReceiveEvent:(id)event
 {
-  if ([a3 type] != 16)
+  if ([event type] != 16)
   {
     return 0;
   }
 
-  return [(UIGestureRecognizer *)self shouldReceiveEvent:a3];
+  return [(UIGestureRecognizer *)self shouldReceiveEvent:event];
 }
 
-- (BOOL)_shouldReceiveDynamicButton:(id)a3
+- (BOOL)_shouldReceiveDynamicButton:(id)button
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIAbstractDynamicButtonGestureRecognizer.m" lineNumber:97 description:@"Must be overridden by subclasses"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAbstractDynamicButtonGestureRecognizer.m" lineNumber:97 description:@"Must be overridden by subclasses"];
 
   return 0;
 }
 
-- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)a3
+- (BOOL)_acceptsBeingFailureRequirementForGestureRecognizer:(id)recognizer
 {
-  if (a3)
+  if (recognizer)
   {
-    if ((*(a3 + 1) & 0x8000000000000000) != 0)
+    if ((*(recognizer + 1) & 0x8000000000000000) != 0)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -180,11 +180,11 @@
   return isKindOfClass & 1;
 }
 
-- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)a3
+- (BOOL)_acceptsBeingFailureDependentOnGestureRecognizer:(id)recognizer
 {
-  if (a3)
+  if (recognizer)
   {
-    if ((*(a3 + 1) & 0x8000000000000000) != 0)
+    if ((*(recognizer + 1) & 0x8000000000000000) != 0)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();

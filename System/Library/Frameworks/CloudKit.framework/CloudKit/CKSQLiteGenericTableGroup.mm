@@ -1,20 +1,20 @@
 @interface CKSQLiteGenericTableGroup
-+ (id)copyOfTableGroup:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-+ (id)groupEntryInDatabase:(id)a3 withGroupName:(id)a4 error:(id *)a5;
-+ (id)tableGroupInDatabase:(id)a3 withName:(id)a4 options:(unint64_t)a5 error:(id *)a6;
++ (id)copyOfTableGroup:(id)group options:(unint64_t)options error:(id *)error;
++ (id)groupEntryInDatabase:(id)database withGroupName:(id)name error:(id *)error;
++ (id)tableGroupInDatabase:(id)database withName:(id)name options:(unint64_t)options error:(id *)error;
 - (void)createTables;
 @end
 
 @implementation CKSQLiteGenericTableGroup
 
-+ (id)groupEntryInDatabase:(id)a3 withGroupName:(id)a4 error:(id *)a5
++ (id)groupEntryInDatabase:(id)database withGroupName:(id)name error:(id *)error
 {
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___CKSQLiteGenericTableGroup;
-  v6 = objc_msgSendSuper2(&v14, sel_groupEntryInDatabase_withGroupName_error_, a3, a4, a5);
+  v6 = objc_msgSendSuper2(&v14, sel_groupEntryInDatabase_withGroupName_error_, database, name, error);
   if (v6)
   {
-    v7 = NSStringFromClass(a1);
+    v7 = NSStringFromClass(self);
     objc_msgSend_setCreatingClass_(v6, v8, v7);
 
     v11 = objc_msgSend_date(MEMORY[0x1E695DF00], v9, v10);
@@ -24,23 +24,23 @@
   return v6;
 }
 
-+ (id)tableGroupInDatabase:(id)a3 withName:(id)a4 options:(unint64_t)a5 error:(id *)a6
++ (id)tableGroupInDatabase:(id)database withName:(id)name options:(unint64_t)options error:(id *)error
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___CKSQLiteGenericTableGroup;
-  v6 = objc_msgSendSuper2(&v8, sel_tableGroupInDatabase_withName_options_error_, a3, a4, a5 | 0x80000, a6);
+  v6 = objc_msgSendSuper2(&v8, sel_tableGroupInDatabase_withName_options_error_, database, name, options | 0x80000, error);
 
   return v6;
 }
 
-+ (id)copyOfTableGroup:(id)a3 options:(unint64_t)a4 error:(id *)a5
++ (id)copyOfTableGroup:(id)group options:(unint64_t)options error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v11 = v8;
-  if (v8)
+  groupCopy = group;
+  v11 = groupCopy;
+  if (groupCopy)
   {
-    v12 = objc_msgSend_groupID(v8, v9, v10);
+    v12 = objc_msgSend_groupID(groupCopy, v9, v10);
     objc_msgSend_unsignedLongLongValue(v12, v13, v14);
     v15 = off_1EE3DEA10();
     *v15 = v16;
@@ -50,11 +50,11 @@
     v22 = objc_msgSend_stringWithFormat_(v17, v21, @"Copy of %@", v20);
 
     v25 = objc_msgSend_db(v11, v23, v24);
-    v27 = objc_msgSend_tableGroupInDatabase_withName_options_error_(a1, v26, v25, v22, a4 | 0x100000, a5);
+    v27 = objc_msgSend_tableGroupInDatabase_withName_options_error_(self, v26, v25, v22, options | 0x100000, error);
 
     if (v27)
     {
-      v50 = a5;
+      errorCopy = error;
       v51 = v22;
       v52 = v15;
       v56 = 0u;
@@ -91,11 +91,11 @@
             {
 
               v46 = objc_msgSend_purgeGroup_(CKSQLiteTableGroup, v45, v27);
-              if (a5)
+              if (error)
               {
                 v47 = v43;
                 v44 = 0;
-                *v50 = v43;
+                *errorCopy = v43;
               }
 
               else

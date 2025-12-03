@@ -8,43 +8,43 @@
 - (id)predictions;
 - (id)predictionsError;
 - (id)trainingProgress;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (void)anchorPowerCostToLinkQuality;
-- (void)setConsiderAlternate:(int64_t)a3;
-- (void)setConsiderAlternateUpdate:(id)a3;
-- (void)setDiscretionaryTrafficInvited:(BOOL)a3;
-- (void)setInterfaceClass:(int64_t)a3;
-- (void)setIsTrafficEligible:(BOOL)a3;
-- (void)setLinkQuality:(int64_t)a3;
-- (void)setPowerCostDL:(int64_t)a3;
-- (void)setPowerCostUL:(int64_t)a3;
-- (void)setPredictions:(id)a3;
-- (void)setPredictionsGeneratedAt:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
-- (void)setWillGetDiscretionaryTrafficInvites:(BOOL)a3;
+- (void)setConsiderAlternate:(int64_t)alternate;
+- (void)setConsiderAlternateUpdate:(id)update;
+- (void)setDiscretionaryTrafficInvited:(BOOL)invited;
+- (void)setInterfaceClass:(int64_t)class;
+- (void)setIsTrafficEligible:(BOOL)eligible;
+- (void)setLinkQuality:(int64_t)quality;
+- (void)setPowerCostDL:(int64_t)l;
+- (void)setPowerCostUL:(int64_t)l;
+- (void)setPredictions:(id)predictions;
+- (void)setPredictionsGeneratedAt:(id)at;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
+- (void)setWillGetDiscretionaryTrafficInvites:(BOOL)invites;
 @end
 
 @implementation SFNetworkOfInterest
 
-- (void)setIsTrafficEligible:(BOOL)a3
+- (void)setIsTrafficEligible:(BOOL)eligible
 {
   v3 = *MEMORY[0x277D6B478];
-  if (*(&self->super.super.isa + v3) != a3)
+  if (*(&self->super.super.isa + v3) != eligible)
   {
     [(SFNetworkOfInterest *)self willChangeValueForKey:@"isTrafficEligible"];
-    *(&self->super.super.isa + v3) = a3;
+    *(&self->super.super.isa + v3) = eligible;
 
     [(SFNetworkOfInterest *)self didChangeValueForKey:@"isTrafficEligible"];
   }
 }
 
-- (void)setWillGetDiscretionaryTrafficInvites:(BOOL)a3
+- (void)setWillGetDiscretionaryTrafficInvites:(BOOL)invites
 {
   v3 = *MEMORY[0x277D6B4B0];
-  if (*(&self->super.super.isa + v3) != a3)
+  if (*(&self->super.super.isa + v3) != invites)
   {
     [(SFNetworkOfInterest *)self willChangeValueForKey:@"willGetDiscretionaryTrafficInvites"];
-    *(&self->super.super.isa + v3) = a3;
+    *(&self->super.super.isa + v3) = invites;
 
     [(SFNetworkOfInterest *)self didChangeValueForKey:@"willGetDiscretionaryTrafficInvites"];
   }
@@ -52,8 +52,8 @@
 
 - (BOOL)_newDistroSlot
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v9 = v4;
   tm_hour = gmtime(&v9)->tm_hour;
   lastHour = self->lastHour;
@@ -67,16 +67,16 @@
   return v7;
 }
 
-- (void)setDiscretionaryTrafficInvited:(BOOL)a3
+- (void)setDiscretionaryTrafficInvited:(BOOL)invited
 {
   v3 = *MEMORY[0x277D6B438];
-  if (*(&self->super.super.isa + v3) != a3)
+  if (*(&self->super.super.isa + v3) != invited)
   {
-    v4 = a3;
-    v6 = [(SFNetworkOfInterest *)self hasForegroundActivity];
-    v7 = [v6 BOOLValue];
+    invitedCopy = invited;
+    hasForegroundActivity = [(SFNetworkOfInterest *)self hasForegroundActivity];
+    bOOLValue = [hasForegroundActivity BOOLValue];
 
-    if (!v4)
+    if (!invitedCopy)
     {
       goto LABEL_13;
     }
@@ -91,9 +91,9 @@
       dispatch_once(&setDiscretionaryTrafficInvited__onceToken, block);
     }
 
-    v8 = [(SFNetworkOfInterest *)self _newDistroSlot];
+    _newDistroSlot = [(SFNetworkOfInterest *)self _newDistroSlot];
     allInvitesHourly = self->allInvitesHourly;
-    if (v8)
+    if (_newDistroSlot)
     {
       v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
       [(NSMutableArray *)allInvitesHourly insertObject:v10 atIndex:0];
@@ -104,7 +104,7 @@
       }
 
       bgInvitesHourly = self->bgInvitesHourly;
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 ^ 1u];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:bOOLValue ^ 1u];
       [(NSMutableArray *)bgInvitesHourly insertObject:v12 atIndex:0];
 
       if ([(NSMutableArray *)self->bgInvitesHourly count]>= 0x19)
@@ -116,26 +116,26 @@
     else
     {
       v13 = [(NSMutableArray *)self->allInvitesHourly objectAtIndexedSubscript:0];
-      v14 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14 + 1];
+      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
       [(NSMutableArray *)self->allInvitesHourly setObject:v15 atIndexedSubscript:0];
 
-      if ((v7 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v16 = [(NSMutableArray *)self->bgInvitesHourly objectAtIndexedSubscript:0];
-        v17 = [v16 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-        v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17 + 1];
+        v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2 + 1];
         [(NSMutableArray *)self->bgInvitesHourly setObject:v18 atIndexedSubscript:0];
       }
     }
 
-    if ((((*(&self->super.super.isa + *MEMORY[0x277D6B440]) & 1) == 0) & v7) == 0)
+    if ((((*(&self->super.super.isa + *MEMORY[0x277D6B440]) & 1) == 0) & bOOLValue) == 0)
     {
 LABEL_13:
       [(SFNetworkOfInterest *)self willChangeValueForKey:@"discretionaryTrafficInvited"];
-      *(&self->super.super.isa + v3) = v4;
+      *(&self->super.super.isa + v3) = invitedCopy;
       [(SFNetworkOfInterest *)self didChangeValueForKey:@"discretionaryTrafficInvited"];
     }
   }
@@ -165,109 +165,109 @@ void __54__SFNetworkOfInterest_setDiscretionaryTrafficInvited___block_invoke(uin
   }
 }
 
-- (void)setInterfaceClass:(int64_t)a3
+- (void)setInterfaceClass:(int64_t)class
 {
   v3 = *MEMORY[0x277D6B458];
-  if (*(&self->super.super.isa + v3) != a3)
+  if (*(&self->super.super.isa + v3) != class)
   {
     [(SFNetworkOfInterest *)self willChangeValueForKey:@"interfaceClass"];
-    *(&self->super.super.isa + v3) = a3;
+    *(&self->super.super.isa + v3) = class;
 
     [(SFNetworkOfInterest *)self didChangeValueForKey:@"interfaceClass"];
   }
 }
 
-- (void)setConsiderAlternate:(int64_t)a3
+- (void)setConsiderAlternate:(int64_t)alternate
 {
   v3 = *MEMORY[0x277D6B420];
-  if (*(&self->super.super.isa + v3) != a3)
+  if (*(&self->super.super.isa + v3) != alternate)
   {
     [(SFNetworkOfInterest *)self willChangeValueForKey:@"considerAlternate"];
-    *(&self->super.super.isa + v3) = a3;
+    *(&self->super.super.isa + v3) = alternate;
 
     [(SFNetworkOfInterest *)self didChangeValueForKey:@"considerAlternate"];
   }
 }
 
-- (void)setConsiderAlternateUpdate:(id)a3
+- (void)setConsiderAlternateUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   v6 = *MEMORY[0x277D6B428];
-  if (*(&self->super.super.isa + v6) != v5)
+  if (*(&self->super.super.isa + v6) != updateCopy)
   {
-    v8 = v5;
+    v8 = updateCopy;
     [(SFNetworkOfInterest *)self willChangeValueForKey:@"considerAlternateUpdate"];
-    v7 = self;
-    objc_sync_enter(v7);
-    objc_storeStrong((&self->super.super.isa + v6), a3);
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong((&self->super.super.isa + v6), update);
+    objc_sync_exit(selfCopy);
 
-    [(SFNetworkOfInterest *)v7 didChangeValueForKey:@"considerAlternateUpdate"];
-    v5 = v8;
+    [(SFNetworkOfInterest *)selfCopy didChangeValueForKey:@"considerAlternateUpdate"];
+    updateCopy = v8;
   }
 }
 
-- (void)setLinkQuality:(int64_t)a3
+- (void)setLinkQuality:(int64_t)quality
 {
   v3 = *MEMORY[0x277D6B480];
-  if (*(&self->super.super.isa + v3) != a3)
+  if (*(&self->super.super.isa + v3) != quality)
   {
     [(SFNetworkOfInterest *)self willChangeValueForKey:@"linkQuality"];
-    *(&self->super.super.isa + v3) = a3;
+    *(&self->super.super.isa + v3) = quality;
 
     [(SFNetworkOfInterest *)self didChangeValueForKey:@"linkQuality"];
   }
 }
 
-- (void)setPowerCostDL:(int64_t)a3
+- (void)setPowerCostDL:(int64_t)l
 {
   v3 = *MEMORY[0x277D6B488];
-  if (*(&self->super.super.isa + v3) != a3)
+  if (*(&self->super.super.isa + v3) != l)
   {
     [(SFNetworkOfInterest *)self willChangeValueForKey:@"powerCostDL"];
-    *(&self->super.super.isa + v3) = a3;
+    *(&self->super.super.isa + v3) = l;
 
     [(SFNetworkOfInterest *)self didChangeValueForKey:@"powerCostDL"];
   }
 }
 
-- (void)setPowerCostUL:(int64_t)a3
+- (void)setPowerCostUL:(int64_t)l
 {
   v3 = *MEMORY[0x277D6B490];
-  if (*(&self->super.super.isa + v3) != a3)
+  if (*(&self->super.super.isa + v3) != l)
   {
     [(SFNetworkOfInterest *)self willChangeValueForKey:@"powerCostUL"];
-    *(&self->super.super.isa + v3) = a3;
+    *(&self->super.super.isa + v3) = l;
 
     [(SFNetworkOfInterest *)self didChangeValueForKey:@"powerCostUL"];
   }
 }
 
-- (void)setPredictionsGeneratedAt:(id)a3
+- (void)setPredictionsGeneratedAt:(id)at
 {
-  v4 = a3;
+  atCopy = at;
   if (*(&self->super.super.isa + *MEMORY[0x277D6B460]) == 1)
   {
-    if (!v4)
+    if (!atCopy)
     {
-      v4 = +[NetworkAnalyticsModel modelGeneratedAt];
+      atCopy = +[NetworkAnalyticsModel modelGeneratedAt];
     }
 
     v5 = *MEMORY[0x277D6B4A0];
-    if (v4 != *(&self->super.super.isa + v5))
+    if (atCopy != *(&self->super.super.isa + v5))
     {
-      obj = v4;
+      obj = atCopy;
       [(SFNetworkOfInterest *)self willChangeValueForKey:@"predictionsGeneratedAt"];
-      v6 = self;
-      objc_sync_enter(v6);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       objc_storeStrong((&self->super.super.isa + v5), obj);
       v7 = *MEMORY[0x277D6B498];
-      v8 = *(&v6->super.super.isa + v7);
-      *(&v6->super.super.isa + v7) = 0;
+      v8 = *(&selfCopy->super.super.isa + v7);
+      *(&selfCopy->super.super.isa + v7) = 0;
 
-      objc_sync_exit(v6);
-      [(SFNetworkOfInterest *)v6 didChangeValueForKey:@"predictionsGeneratedAt"];
-      v4 = obj;
+      objc_sync_exit(selfCopy);
+      [(SFNetworkOfInterest *)selfCopy didChangeValueForKey:@"predictionsGeneratedAt"];
+      atCopy = obj;
     }
   }
 }
@@ -281,7 +281,7 @@ void __54__SFNetworkOfInterest_setDiscretionaryTrafficInvited___block_invoke(uin
     goto LABEL_87;
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = *MEMORY[0x277D6B498];
   if (*(&self->super.super.isa + v4))
   {
@@ -289,35 +289,35 @@ void __54__SFNetworkOfInterest_setDiscretionaryTrafficInvited___block_invoke(uin
     if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v129 = v3;
+      v129 = selfCopy;
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "%p (cached predictions)", buf, 0xCu);
     }
 
 LABEL_86:
-    v2 = *(&v3->super.super.isa + v4);
+    v2 = *(&selfCopy->super.super.isa + v4);
     goto LABEL_87;
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = *(&v3->super.super.isa + *MEMORY[0x277D6B450]);
-  v8 = *(&v3->super.super.isa + *MEMORY[0x277D6B460]);
-  v9 = *(&v3->super.super.isa + *MEMORY[0x277D6B468]);
-  v10 = *(&v3->super.super.isa + *MEMORY[0x277D6B4A8]);
-  v11 = *(&v3->super.super.isa + *MEMORY[0x277D6B430]);
+  v7 = *(&selfCopy->super.super.isa + *MEMORY[0x277D6B450]);
+  v8 = *(&selfCopy->super.super.isa + *MEMORY[0x277D6B460]);
+  v9 = *(&selfCopy->super.super.isa + *MEMORY[0x277D6B468]);
+  v10 = *(&selfCopy->super.super.isa + *MEMORY[0x277D6B4A8]);
+  v11 = *(&selfCopy->super.super.isa + *MEMORY[0x277D6B430]);
   v125 = 0;
   v2 = [NetworkAnalyticsModel fetchPredictionsForInterfaceType:v7 isAny:v8 isBuiltin:v9 scopedToLOI:v10 hasCustomSignature:v11 error:&v125];
   v12 = v125;
   if (v12)
   {
     v13 = v12;
-    v14 = [v12 code];
+    code = [v12 code];
     v15 = noiLogHandle;
-    if (v14 == 22)
+    if (code == 22)
     {
       if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_INFO))
       {
         *buf = 134218242;
-        v129 = v3;
+        v129 = selfCopy;
         v130 = 2112;
         v131 = v13;
         v16 = v15;
@@ -330,7 +330,7 @@ LABEL_44:
     else if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v129 = v3;
+      v129 = selfCopy;
       v130 = 2112;
       v131 = v13;
       v16 = v15;
@@ -343,30 +343,30 @@ LABEL_44:
   }
 
   obj = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v18 = [MEMORY[0x277CBEAA8] date];
-  v19 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
-  v20 = [MEMORY[0x277CBEAA8] date];
-  v21 = [v19 dateBySettingHour:0 minute:0 second:0 ofDate:v20 options:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v21 = [autoupdatingCurrentCalendar dateBySettingHour:0 minute:0 second:0 ofDate:date2 options:0];
 
-  v107 = v19;
-  v22 = [v19 components:512 fromDate:v21];
+  v107 = autoupdatingCurrentCalendar;
+  v22 = [autoupdatingCurrentCalendar components:512 fromDate:v21];
   [v22 setDay:{1 - objc_msgSend(v22, "weekday")}];
   [v22 setWeekday:0];
-  v23 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v105 = v22;
   v106 = v21;
-  v24 = [v23 dateByAddingComponents:v22 toDate:v21 options:0];
+  v24 = [currentCalendar dateByAddingComponents:v22 toDate:v21 options:0];
 
-  v25 = [MEMORY[0x277CBEBB0] localTimeZone];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
   v113 = v24;
-  v26 = [v25 secondsFromGMTForDate:v24];
-  v108 = v18;
-  v27 = [v25 secondsFromGMTForDate:v18];
+  v26 = [localTimeZone secondsFromGMTForDate:v24];
+  v108 = date;
+  v27 = [localTimeZone secondsFromGMTForDate:date];
   v28 = noiLogHandle;
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v129 = v3;
+    v129 = selfCopy;
     v130 = 2112;
     v131 = v24;
     v132 = 2112;
@@ -375,7 +375,7 @@ LABEL_44:
   }
 
   v111 = 60 * +[NetworkAnalyticsModel modelResolution];
-  v104 = v25;
+  v104 = localTimeZone;
   if (v111)
   {
     v103 = v4;
@@ -425,7 +425,7 @@ LABEL_44:
       if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218754;
-        v129 = v3;
+        v129 = selfCopy;
         v130 = 2112;
         v131 = v36;
         v132 = 2048;
@@ -496,7 +496,7 @@ LABEL_44:
       if (v66)
       {
         v67 = v66;
-        v98 = v3;
+        v98 = selfCopy;
         v63 = 0;
         v68 = (2 * v34) | 1;
         v69 = *v118;
@@ -518,9 +518,9 @@ LABEL_44:
             {
               if (v68 != v114)
               {
-                v74 = [v73 offset];
+                offset = [v73 offset];
                 v75 = [v73 length];
-                v76 = v74 > v68 || v68 - v74 >= v75;
+                v76 = offset > v68 || v68 - offset >= v75;
                 if (v76)
                 {
                   v77 = objc_alloc(MEMORY[0x277D6B3F8]);
@@ -532,22 +532,22 @@ LABEL_44:
                 }
               }
 
-              v80 = [v73 offset];
-              if (v80 >= v116 && v80 - v116 < v115)
+              offset2 = [v73 offset];
+              if (offset2 >= v116 && offset2 - v116 < v115)
               {
                 v82 = objc_alloc(MEMORY[0x277D6B3F8]);
                 v83 = [v113 dateByAddingTimeInterval:{(v111 * objc_msgSend(v73, "offset") - v110)}];
-                v84 = [v73 level];
+                level = [v73 level];
                 [v73 confidence];
-                v85 = [v82 initWithSpec:v83 toQuality:v84 withConfidence:v111 resolutionSeconds:?];
+                v85 = [v82 initWithSpec:v83 toQuality:level withConfidence:v111 resolutionSeconds:?];
 
                 v71 = v109;
                 [obj addObject:v85];
                 v63 = v85;
               }
 
-              v86 = [v73 offset];
-              v68 = [v73 length] + v86;
+              offset3 = [v73 offset];
+              v68 = [v73 length] + offset3;
               [v73 confidence];
               v70 = v87;
             }
@@ -560,7 +560,7 @@ LABEL_44:
 
         if (v68 == v114)
         {
-          v3 = v98;
+          selfCopy = v98;
           v88 = v99;
           v2 = v101;
           v6 = v102;
@@ -569,7 +569,7 @@ LABEL_44:
         else
         {
           v89 = v68;
-          v3 = v98;
+          selfCopy = v98;
           v88 = v99;
           v2 = v101;
           v6 = v102;
@@ -606,7 +606,7 @@ LABEL_44:
       if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v129 = v3;
+        v129 = selfCopy;
         _os_log_impl(&dword_23255B000, v64, OS_LOG_TYPE_DEFAULT, "%p predictions indicate no change", buf, 0xCu);
       }
 
@@ -614,15 +614,15 @@ LABEL_44:
       v4 = v103;
     }
 
-    v93 = v3;
+    v93 = selfCopy;
     objc_sync_enter(v93);
-    objc_storeStrong((&v3->super.super.isa + v4), obj);
+    objc_storeStrong((&selfCopy->super.super.isa + v4), obj);
     objc_sync_exit(v93);
 
     v94 = noiLogHandle;
     if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
     {
-      v95 = *(&v3->super.super.isa + v4);
+      v95 = *(&selfCopy->super.super.isa + v4);
       *buf = 134218498;
       v129 = v93;
       v130 = 2112;
@@ -659,14 +659,14 @@ LABEL_87:
   return v2;
 }
 
-- (void)setPredictions:(id)a3
+- (void)setPredictions:(id)predictions
 {
-  v4 = a3;
+  predictionsCopy = predictions;
   obj = self;
   objc_sync_enter(obj);
   v5 = *MEMORY[0x277D6B498];
   v6 = *(&obj->super.super.isa + v5);
-  *(&obj->super.super.isa + v5) = v4;
+  *(&obj->super.super.isa + v5) = predictionsCopy;
 
   objc_sync_exit(obj);
 }
@@ -684,22 +684,22 @@ LABEL_87:
   v18 = *MEMORY[0x277D85DE8];
   v3 = +[AppStateMonitor hasAnyForegroundApp];
   v4 = [NetworkStateRelay getStateRelayFor:*(&self->super.super.isa + *MEMORY[0x277D6B448])];
-  v5 = [v4 primary];
+  primary = [v4 primary];
   v6 = noiLogHandle;
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218754;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
     v13 = v3;
     v14 = 1024;
-    v15 = v5;
+    v15 = primary;
     v16 = 2112;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "%p foreground: %d primary: %d for noi: %@", &v10, 0x22u);
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:v3 & v5];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:v3 & primary];
 
   v8 = *MEMORY[0x277D85DE8];
 
@@ -718,9 +718,9 @@ LABEL_87:
     if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_ERROR))
     {
       v10 = 134218242;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "%p attempting to set default powerCost value on wrong noi %@", &v10, 0x16u);
     }
   }
@@ -744,17 +744,17 @@ LABEL_87:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = noiLogHandle;
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = keyCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "%p attempt to fetch inexistent property %@", &v8, 0x16u);
   }
 
@@ -762,17 +762,17 @@ LABEL_87:
   return 0;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  keyCopy = key;
   v6 = noiLogHandle;
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = keyCopy;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "%p attempt to set inexistent property %@, drop request", &v8, 0x16u);
   }
 
@@ -788,7 +788,7 @@ LABEL_87:
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218240;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = v4;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "%p: error %f", &v9, 0x16u);
@@ -811,7 +811,7 @@ LABEL_87:
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v5;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "%p: dayOfWeek %@", &v9, 0x16u);
@@ -831,7 +831,7 @@ LABEL_87:
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218240;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = v4;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "%p: training progress %f", &v9, 0x16u);
@@ -928,7 +928,7 @@ void __48__SFNetworkOfInterest_invitesHourlyDistribution__block_invoke(uint64_t 
   if (os_log_type_enabled(noiLogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v4;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_INFO, "%p: interfaceTimeline found: %@", buf, 0x16u);

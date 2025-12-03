@@ -1,8 +1,8 @@
 @interface AccessibilitySettingsMiniFlowController
 + (BOOL)controllerNeedsToRun;
 - (id)viewController;
-- (void)miniFlowStepComplete:(id)a3;
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4;
+- (void)miniFlowStepComplete:(id)complete;
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class;
 @end
 
 @implementation AccessibilitySettingsMiniFlowController
@@ -11,9 +11,9 @@
 {
   v2 = accessibilityGetActiveDevice();
   v3 = [v2 valueForProperty:NRDevicePropertyIsAltAccount];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     return 0;
   }
@@ -26,33 +26,33 @@
 
 - (id)viewController
 {
-  v3 = [(AccessibilitySettingsMiniFlowController *)self accessibilitySettingsViewController];
+  accessibilitySettingsViewController = [(AccessibilitySettingsMiniFlowController *)self accessibilitySettingsViewController];
 
-  if (!v3)
+  if (!accessibilitySettingsViewController)
   {
-    v4 = [(AccessibilitySettingsMiniFlowController *)self delegate];
-    v5 = [v4 activePairingDevice];
+    delegate = [(AccessibilitySettingsMiniFlowController *)self delegate];
+    activePairingDevice = [delegate activePairingDevice];
 
     v6 = accessibilityActiveAccessibilityFeaturesOnCompanion();
-    v7 = [[AccessibilitySettingsViewController alloc] initWithAccessibilityOptions:v6 device:v5];
+    v7 = [[AccessibilitySettingsViewController alloc] initWithAccessibilityOptions:v6 device:activePairingDevice];
     [(AccessibilitySettingsMiniFlowController *)self setAccessibilitySettingsViewController:v7];
 
-    v8 = [(AccessibilitySettingsMiniFlowController *)self accessibilitySettingsViewController];
-    [v8 setMiniFlowDelegate:self];
+    accessibilitySettingsViewController2 = [(AccessibilitySettingsMiniFlowController *)self accessibilitySettingsViewController];
+    [accessibilitySettingsViewController2 setMiniFlowDelegate:self];
   }
 
   return [(AccessibilitySettingsMiniFlowController *)self accessibilitySettingsViewController];
 }
 
-- (void)miniFlowStepComplete:(id)a3
+- (void)miniFlowStepComplete:(id)complete
 {
-  v4 = [(AccessibilitySettingsMiniFlowController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(AccessibilitySettingsMiniFlowController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class
 {
-  v5 = objc_alloc_init(a4);
+  v5 = objc_alloc_init(class);
   [v5 setMiniFlowDelegate:self];
   [(AccessibilitySettingsMiniFlowController *)self pushController:v5 animated:1];
 }

@@ -1,5 +1,5 @@
 @interface CKRichActionFooterChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (UIEdgeInsets)contentInsets;
 - (char)transcriptOrientation;
 - (id)transcriptText;
@@ -9,10 +9,10 @@
 
 - (char)transcriptOrientation
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isFromMe];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isFromMe = [iMChatItem isFromMe];
 
-  if (v3)
+  if (isFromMe)
   {
     return 2;
   }
@@ -38,10 +38,10 @@
 
 - (id)transcriptText
 {
-  v3 = [(CKRichActionFooterChatItem *)self transcriptOrientation];
+  transcriptOrientation = [(CKRichActionFooterChatItem *)self transcriptOrientation];
   v4 = +[CKUIBehavior sharedBehaviors];
   v5 = v4;
-  if (v3)
+  if (transcriptOrientation)
   {
     [v4 rightStatusTranscriptTextAttributes];
   }
@@ -52,34 +52,34 @@
   }
   v6 = ;
 
-  v7 = [(CKChatItem *)self IMChatItem];
-  v8 = [v7 handle];
-  v9 = [v8 brand];
-  v10 = [v9 name];
-  v11 = [(CKChatItem *)self IMChatItem];
-  v12 = [v11 handle];
-  v13 = v12;
-  if (v10)
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  handle = [iMChatItem handle];
+  brand = [handle brand];
+  name = [brand name];
+  iMChatItem2 = [(CKChatItem *)self IMChatItem];
+  handle2 = [iMChatItem2 handle];
+  v13 = handle2;
+  if (name)
   {
-    v14 = [v12 brand];
-    v15 = [v14 name];
+    brand2 = [handle2 brand];
+    name2 = [brand2 name];
   }
 
   else
   {
-    v15 = [v12 displayID];
+    name2 = [handle2 displayID];
   }
 
   v16 = objc_alloc(MEMORY[0x1E696AD40]);
   v17 = MEMORY[0x1E696AEC0];
   v18 = CKFrameworkBundle();
   v19 = [v18 localizedStringForKey:@"SELECTED_ACTIONS_FOOTER_TEXT" value:&stru_1F04268F8 table:@"ChatKit"];
-  v20 = [v17 stringWithFormat:v19, v15];
+  v20 = [v17 stringWithFormat:v19, name2];
 
-  v21 = [MEMORY[0x1E69DC668] sharedApplication];
-  v22 = [v21 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v22 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v23 = @"\u200F";
   }
@@ -96,26 +96,26 @@
   return v25;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v8 = +[CKUIBehavior sharedBehaviors];
   v9 = v8;
-  if (a4)
+  if (insets)
   {
     [v8 transcriptBoldTextAlignmentInsets];
-    a4->top = v10;
-    a4->left = v11;
-    a4->bottom = v12;
-    a4->right = v13;
+    insets->top = v10;
+    insets->left = v11;
+    insets->bottom = v12;
+    insets->right = v13;
   }
 
-  v14 = [(objc_class *)[(CKRichActionFooterChatItem *)self cellClass] createStampLabelView];
-  v15 = [(CKRichActionFooterChatItem *)self transcriptText];
-  [v14 setAttributedText:v15];
+  createStampLabelView = [(objc_class *)[(CKRichActionFooterChatItem *)self cellClass] createStampLabelView];
+  transcriptText = [(CKRichActionFooterChatItem *)self transcriptText];
+  [createStampLabelView setAttributedText:transcriptText];
 
-  [v14 sizeThatFits:{width, height}];
+  [createStampLabelView sizeThatFits:{width, height}];
   v17 = v16;
 
   v18 = 0.0;

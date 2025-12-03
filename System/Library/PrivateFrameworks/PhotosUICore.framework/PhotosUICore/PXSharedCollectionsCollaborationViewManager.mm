@@ -1,15 +1,15 @@
 @interface PXSharedCollectionsCollaborationViewManager
 + (id)sharedInstance;
 - (PXSharedCollectionsCollaborationViewManager)init;
-- (id)cachedCollaborationViewFor:(id)a3;
-- (id)collaborationViewForAssetCollection:(id)a3;
-- (id)createCollaborationViewFor:(id)a3;
-- (void)cacheCollaborationView:(id)a3 for:(id)a4;
+- (id)cachedCollaborationViewFor:(id)for;
+- (id)collaborationViewForAssetCollection:(id)collection;
+- (id)createCollaborationViewFor:(id)for;
+- (void)cacheCollaborationView:(id)view for:(id)for;
 - (void)dealloc;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)setObservedPhotoLibraries:(id)a3;
-- (void)startObservingChangesFor:(id)a3;
-- (void)updateCollaborationView:(id)a3 with:(id)a4;
+- (void)photoLibraryDidChange:(id)change;
+- (void)setObservedPhotoLibraries:(id)libraries;
+- (void)startObservingChangesFor:(id)for;
+- (void)updateCollaborationView:(id)view with:(id)with;
 @end
 
 @implementation PXSharedCollectionsCollaborationViewManager
@@ -35,28 +35,28 @@
 - (void)dealloc
 {
   v2 = *(self + OBJC_IVAR___PXSharedCollectionsCollaborationViewManager_collaborationViewsById);
-  v3 = self;
+  selfCopy = self;
   [v2 removeAllObjects];
-  *(v3 + OBJC_IVAR___PXSharedCollectionsCollaborationViewManager_observedPhotoLibraries) = MEMORY[0x1E69E7CC0];
+  *(selfCopy + OBJC_IVAR___PXSharedCollectionsCollaborationViewManager_observedPhotoLibraries) = MEMORY[0x1E69E7CC0];
 
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = PXSharedCollectionsCollaborationViewManager;
   [(PXSharedCollectionsCollaborationViewManager *)&v4 dealloc];
 }
 
-- (id)collaborationViewForAssetCollection:(id)a3
+- (id)collaborationViewForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(PXSharedCollectionsCollaborationViewManager *)v5 cachedCollaborationViewFor:v4];
+  collectionCopy = collection;
+  selfCopy = self;
+  v6 = [(PXSharedCollectionsCollaborationViewManager *)selfCopy cachedCollaborationViewFor:collectionCopy];
   if (!v6)
   {
-    v7 = [(PXSharedCollectionsCollaborationViewManager *)v5 createCollaborationViewFor:v4];
+    v7 = [(PXSharedCollectionsCollaborationViewManager *)selfCopy createCollaborationViewFor:collectionCopy];
     if (v7)
     {
       v6 = v7;
-      [(PXSharedCollectionsCollaborationViewManager *)v5 cacheCollaborationView:v6 for:v4];
-      [(PXSharedCollectionsCollaborationViewManager *)v5 startObservingChangesFor:v4];
+      [(PXSharedCollectionsCollaborationViewManager *)selfCopy cacheCollaborationView:v6 for:collectionCopy];
+      [(PXSharedCollectionsCollaborationViewManager *)selfCopy startObservingChangesFor:collectionCopy];
     }
 
     else
@@ -68,58 +68,58 @@
   return v6;
 }
 
-- (id)createCollaborationViewFor:(id)a3
+- (id)createCollaborationViewFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1A4892CD8(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_1A4892CD8(forCopy);
 
   return v6;
 }
 
-- (void)updateCollaborationView:(id)a3 with:(id)a4
+- (void)updateCollaborationView:(id)view with:(id)with
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1A48950F8(v6, v7);
+  viewCopy = view;
+  withCopy = with;
+  selfCopy = self;
+  sub_1A48950F8(viewCopy, withCopy);
 }
 
-- (void)setObservedPhotoLibraries:(id)a3
+- (void)setObservedPhotoLibraries:(id)libraries
 {
   sub_1A3C52C70(0, &qword_1EB144298);
   *(self + OBJC_IVAR___PXSharedCollectionsCollaborationViewManager_observedPhotoLibraries) = sub_1A524CA34();
 }
 
-- (id)cachedCollaborationViewFor:(id)a3
+- (id)cachedCollaborationViewFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1A4893710(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_1A4893710(forCopy);
 
   return v6;
 }
 
-- (void)cacheCollaborationView:(id)a3 for:(id)a4
+- (void)cacheCollaborationView:(id)view for:(id)for
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1A4893D64(v6, v7);
+  viewCopy = view;
+  forCopy = for;
+  selfCopy = self;
+  sub_1A4893D64(viewCopy, forCopy);
 }
 
-- (void)startObservingChangesFor:(id)a3
+- (void)startObservingChangesFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A4894040(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_1A4894040(forCopy);
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  PXSharedCollectionsCollaborationViewManager.photoLibraryDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  PXSharedCollectionsCollaborationViewManager.photoLibraryDidChange(_:)(changeCopy);
 }
 
 @end

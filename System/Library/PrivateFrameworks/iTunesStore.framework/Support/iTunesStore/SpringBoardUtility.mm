@@ -1,43 +1,43 @@
 @interface SpringBoardUtility
 + (id)sharedInstance;
-+ (void)_sendUnentitledResponseToMessage:(id)a3 connection:(id)a4;
-+ (void)dequeueAlertWithMessage:(id)a3 connection:(id)a4;
-+ (void)observeXPCServer:(id)a3;
-+ (void)registerPluginConnectionWithMessage:(id)a3 connection:(id)a4;
-+ (void)restartApplicationWithMessage:(id)a3 connection:(id)a4;
-+ (void)testBadgingWithMessage:(id)a3 connection:(id)a4;
-+ (void)testLockscreenAccountSheetWithMessage:(id)a3 connection:(id)a4;
-+ (void)testPluginAlertWithMessage:(id)a3 connection:(id)a4;
-- (BOOL)_getProcessID:(int *)a3 forApplicationIdentifier:(id)a4;
++ (void)_sendUnentitledResponseToMessage:(id)message connection:(id)connection;
++ (void)dequeueAlertWithMessage:(id)message connection:(id)connection;
++ (void)observeXPCServer:(id)server;
++ (void)registerPluginConnectionWithMessage:(id)message connection:(id)connection;
++ (void)restartApplicationWithMessage:(id)message connection:(id)connection;
++ (void)testBadgingWithMessage:(id)message connection:(id)connection;
++ (void)testLockscreenAccountSheetWithMessage:(id)message connection:(id)connection;
++ (void)testPluginAlertWithMessage:(id)message connection:(id)connection;
+- (BOOL)_getProcessID:(int *)d forApplicationIdentifier:(id)identifier;
 - (BOOL)isScreenLocked;
-- (BOOL)launchApplicationWithIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
+- (BOOL)launchApplicationWithIdentifier:(id)identifier options:(id)options error:(id *)error;
 - (NSString)frontmostClientIdentifier;
 - (SpringBoardUtility)init;
 - (id)_applicationStateMonitor;
-- (id)_getApplicationInfoForIdentifier:(id)a3 key:(id)a4;
-- (id)copyBundleInfoValueForKey:(id)a3 PID:(int)a4;
-- (unsigned)applicationStateForIdentifier:(id)a3;
-- (unsigned)mostElevatedApplicationStateForPID:(int)a3;
-- (void)_dequeueAlertWithMessage:(id)a3 connection:(id)a4;
-- (void)_disconnectPluginConnection:(id)a3;
-- (void)_fireDeferredPluginBlocksWithConnection:(id)a3;
-- (void)_registerPluginConnectionWithMessage:(id)a3;
-- (void)_requestPluginConnectionWithCompletionBlock:(id)a3;
-- (void)_setApplicationState:(unsigned int)a3 forClientID:(id)a4;
-- (void)_setApplicationStatesWithDictionary:(id)a3;
+- (id)_getApplicationInfoForIdentifier:(id)identifier key:(id)key;
+- (id)copyBundleInfoValueForKey:(id)key PID:(int)d;
+- (unsigned)applicationStateForIdentifier:(id)identifier;
+- (unsigned)mostElevatedApplicationStateForPID:(int)d;
+- (void)_dequeueAlertWithMessage:(id)message connection:(id)connection;
+- (void)_disconnectPluginConnection:(id)connection;
+- (void)_fireDeferredPluginBlocksWithConnection:(id)connection;
+- (void)_registerPluginConnectionWithMessage:(id)message;
+- (void)_requestPluginConnectionWithCompletionBlock:(id)block;
+- (void)_setApplicationState:(unsigned int)state forClientID:(id)d;
+- (void)_setApplicationStatesWithDictionary:(id)dictionary;
 - (void)_timeoutPluginConnection;
-- (void)activateAlertWithDescription:(id)a3 options:(id)a4 completionBlock:(id)a5;
-- (void)beginGeneratingStateChangeNotificationsForIdentifiers:(id)a3;
-- (void)beginGeneratingStateChangeNotificationsWithCompletionBlock:(id)a3;
+- (void)activateAlertWithDescription:(id)description options:(id)options completionBlock:(id)block;
+- (void)beginGeneratingStateChangeNotificationsForIdentifiers:(id)identifiers;
+- (void)beginGeneratingStateChangeNotificationsWithCompletionBlock:(id)block;
 - (void)dealloc;
 - (void)endGeneratingStateChangeNotifications;
-- (void)endGeneratingStateChangeNotificationsForIdentifiers:(id)a3;
-- (void)removeDefaultPNGSnapshotsForIdentifier:(id)a3;
+- (void)endGeneratingStateChangeNotificationsForIdentifiers:(id)identifiers;
+- (void)removeDefaultPNGSnapshotsForIdentifier:(id)identifier;
 - (void)resetEnabledRemoteNotificationTypes;
-- (void)sendPluginMessage:(id)a3;
-- (void)sendPluginMessage:(id)a3 withReplyBlock:(id)a4;
-- (void)setBadgeValue:(id)a3 forIdentifier:(id)a4;
-- (void)wakeAppUsingRequest:(id)a3;
+- (void)sendPluginMessage:(id)message;
+- (void)sendPluginMessage:(id)message withReplyBlock:(id)block;
+- (void)setBadgeValue:(id)value forIdentifier:(id)identifier;
+- (void)wakeAppUsingRequest:(id)request;
 @end
 
 @implementation SpringBoardUtility
@@ -48,7 +48,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001B7CD4;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100384068 != -1)
   {
     dispatch_once(&qword_100384068, block);
@@ -127,29 +127,29 @@
   [(SpringBoardUtility *)&v4 dealloc];
 }
 
-- (void)activateAlertWithDescription:(id)a3 options:(id)a4 completionBlock:(id)a5
+- (void)activateAlertWithDescription:(id)description options:(id)options completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptionCopy = description;
+  optionsCopy = options;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001B7E00;
   v15[3] = &unk_10032B1E8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = optionsCopy;
+  v17 = descriptionCopy;
+  v18 = blockCopy;
+  v12 = descriptionCopy;
+  v13 = optionsCopy;
+  v14 = blockCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (unsigned)applicationStateForIdentifier:(id)a3
+- (unsigned)applicationStateForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -160,9 +160,9 @@
   block[2] = sub_1001B83B8;
   block[3] = &unk_10032B210;
   block[4] = self;
-  v9 = v4;
+  v9 = identifierCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(dispatchQueue, block);
   LODWORD(dispatchQueue) = *(v12 + 6);
 
@@ -170,37 +170,37 @@
   return dispatchQueue;
 }
 
-- (void)beginGeneratingStateChangeNotificationsWithCompletionBlock:(id)a3
+- (void)beginGeneratingStateChangeNotificationsWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B85B0;
   v7[3] = &unk_1003271C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)beginGeneratingStateChangeNotificationsForIdentifiers:(id)a3
+- (void)beginGeneratingStateChangeNotificationsForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B8938;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (id)copyBundleInfoValueForKey:(id)a3 PID:(int)a4
+- (id)copyBundleInfoValueForKey:(id)key PID:(int)d
 {
-  v6 = a3;
+  keyCopy = key;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -212,11 +212,11 @@
   v12 = 3221225472;
   v13 = sub_1001B8CF8;
   v14 = &unk_10032B288;
-  v15 = self;
+  selfCopy = self;
   v17 = &v19;
-  v8 = v6;
+  v8 = keyCopy;
   v16 = v8;
-  v18 = a4;
+  dCopy = d;
   dispatch_sync(springBoardQueue, &v11);
   v9 = [v20[5] copy];
 
@@ -235,17 +235,17 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)endGeneratingStateChangeNotificationsForIdentifiers:(id)a3
+- (void)endGeneratingStateChangeNotificationsForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B8FCC;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -278,10 +278,10 @@
   return 0;
 }
 
-- (BOOL)launchApplicationWithIdentifier:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)launchApplicationWithIdentifier:(id)identifier options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -297,30 +297,30 @@
   v23 = &v24;
   v11 = v9;
   v22 = v11;
-  [v10 openApplication:v7 options:v8 withResult:&v18];
+  [v10 openApplication:identifierCopy options:optionsCopy withResult:&v18];
 
   v12 = dispatch_time(0, 30000000000);
   dispatch_semaphore_wait(v11, v12);
-  v13 = [v25[5] domain];
-  v14 = [v13 isEqualToString:FBSOpenApplicationErrorDomain];
+  domain = [v25[5] domain];
+  v14 = [domain isEqualToString:FBSOpenApplicationErrorDomain];
 
-  v15 = v25[5];
+  code = v25[5];
   if (v14)
   {
-    v15 = [v15 code];
+    code = [code code];
   }
 
-  v16 = v15 == 0;
-  if (a5 && v15)
+  v16 = code == 0;
+  if (error && code)
   {
-    *a5 = v25[5];
+    *error = v25[5];
   }
 
   _Block_object_dispose(&v24, 8);
   return v16;
 }
 
-- (unsigned)mostElevatedApplicationStateForPID:(int)a3
+- (unsigned)mostElevatedApplicationStateForPID:(int)d
 {
   v8 = 0;
   v9 = &v8;
@@ -333,26 +333,26 @@
   block[3] = &unk_10032B300;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  dCopy = d;
   dispatch_sync(springBoardQueue, block);
   v4 = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
   return v4;
 }
 
-- (void)removeDefaultPNGSnapshotsForIdentifier:(id)a3
+- (void)removeDefaultPNGSnapshotsForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"com.apple.MobileStore"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"com.apple.AppStore"))
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"com.apple.MobileStore"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.AppStore"))
   {
-    v4 = CPSharedResourcesDirectory();
-    if (!v4)
+    path = CPSharedResourcesDirectory();
+    if (!path)
     {
       goto LABEL_20;
     }
 
 LABEL_6:
-    v8 = [[NSArray alloc] initWithObjects:{v4, @"Library", @"Caches", @"Snapshots", v3, 0}];
+    v8 = [[NSArray alloc] initWithObjects:{path, @"Library", @"Caches", @"Snapshots", identifierCopy, 0}];
     v9 = [NSString pathWithComponents:v8];
     if (!v9)
     {
@@ -367,19 +367,19 @@ LABEL_19:
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
+    shouldLog = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
-    v13 = [v10 OSLogObject];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    oSLogObject = [v10 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v12 &= 2u;
     }
@@ -404,7 +404,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v13 = [NSString stringWithCString:v15 encoding:4, &v18, v17];
+      oSLogObject = [NSString stringWithCString:v15 encoding:4, &v18, v17];
       free(v15);
       SSFileLog();
     }
@@ -413,12 +413,12 @@ LABEL_18:
   }
 
   v5 = objc_autoreleasePoolPush();
-  v6 = [LSApplicationProxy applicationProxyForIdentifier:v3];
-  v7 = [v6 bundleContainerURL];
-  v4 = [v7 path];
+  v6 = [LSApplicationProxy applicationProxyForIdentifier:identifierCopy];
+  bundleContainerURL = [v6 bundleContainerURL];
+  path = [bundleContainerURL path];
 
   objc_autoreleasePoolPop(v5);
-  if (v4)
+  if (path)
   {
     goto LABEL_6;
   }
@@ -437,10 +437,10 @@ LABEL_20:
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)setBadgeValue:(id)a3 forIdentifier:(id)a4
+- (void)setBadgeValue:(id)value forIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  identifierCopy = identifier;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -449,7 +449,7 @@ LABEL_20:
     {
       v8 = objc_alloc_init(NSNumberFormatter);
       [v8 setNumberStyle:1];
-      v7 = [v8 stringFromNumber:v5];
+      v7 = [v8 stringFromNumber:valueCopy];
 
       goto LABEL_17;
     }
@@ -460,19 +460,19 @@ LABEL_20:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v11 &= 2u;
     }
@@ -482,9 +482,9 @@ LABEL_20:
       *v18 = 138412802;
       *&v18[4] = objc_opt_class();
       *&v18[12] = 2112;
-      *&v18[14] = v6;
+      *&v18[14] = identifierCopy;
       *&v18[22] = 2112;
-      v19 = v5;
+      v19 = valueCopy;
       v13 = *&v18[4];
       LODWORD(v17) = 32;
       v14 = _os_log_send_and_compose_impl();
@@ -497,7 +497,7 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v12 = [NSString stringWithCString:v14 encoding:4, v18, v17, *v18, *&v18[16], v19];
+      oSLogObject = [NSString stringWithCString:v14 encoding:4, v18, v17, *v18, *&v18[16], v19];
       free(v14);
       SSFileLog();
     }
@@ -505,18 +505,18 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v7 = v5;
+  v7 = valueCopy;
 LABEL_17:
   v15 = objc_alloc_init(ISSetApplicationBadgeOperation);
   [v15 setBadgeValue:v7];
-  [v15 setBundleIdentifier:v6];
+  [v15 setBundleIdentifier:identifierCopy];
   v16 = +[ISOperationQueue mainQueue];
   [v16 addOperation:v15];
 }
 
-- (void)wakeAppUsingRequest:(id)a3
+- (void)wakeAppUsingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[Daemon daemon];
   [v5 takeKeepAliveAssertion:@"AppWakeup"];
   springBoardQueue = self->_springBoardQueue;
@@ -524,90 +524,90 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = sub_1001B9EF0;
   block[3] = &unk_1003281A0;
-  v10 = v4;
-  v11 = self;
+  v10 = requestCopy;
+  selfCopy = self;
   v12 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = requestCopy;
   dispatch_async(springBoardQueue, block);
 }
 
-- (void)_dequeueAlertWithMessage:(id)a3 connection:(id)a4
+- (void)_dequeueAlertWithMessage:(id)message connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001BA8F8;
   block[3] = &unk_1003281A0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  selfCopy = self;
+  v14 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = messageCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-+ (void)dequeueAlertWithMessage:(id)a3 connection:(id)a4
++ (void)dequeueAlertWithMessage:(id)message connection:(id)connection
 {
-  original = a3;
-  v6 = a4;
+  original = message;
+  connectionCopy = connection;
   if (SSXPCConnectionHasEntitlement())
   {
-    reply = [a1 sharedInstance];
-    [reply _dequeueAlertWithMessage:original connection:v6];
+    reply = [self sharedInstance];
+    [reply _dequeueAlertWithMessage:original connection:connectionCopy];
   }
 
   else
   {
     reply = xpc_dictionary_create_reply(original);
-    xpc_connection_send_message(v6, reply);
+    xpc_connection_send_message(connectionCopy, reply);
   }
 }
 
-+ (void)observeXPCServer:(id)a3
++ (void)observeXPCServer:(id)server
 {
-  v4 = a3;
-  [v4 addObserver:a1 selector:"dequeueAlertWithMessage:connection:" forMessage:142];
-  [v4 addObserver:a1 selector:"registerPluginConnectionWithMessage:connection:" forMessage:2000];
-  [v4 addObserver:a1 selector:"testBadgingWithMessage:connection:" forMessage:752];
-  [v4 addObserver:a1 selector:"testLockscreenAccountSheetWithMessage:connection:" forMessage:750];
-  [v4 addObserver:a1 selector:"testPluginAlertWithMessage:connection:" forMessage:751];
-  [v4 addObserver:a1 selector:"restartApplicationWithMessage:connection:" forMessage:165];
+  serverCopy = server;
+  [serverCopy addObserver:self selector:"dequeueAlertWithMessage:connection:" forMessage:142];
+  [serverCopy addObserver:self selector:"registerPluginConnectionWithMessage:connection:" forMessage:2000];
+  [serverCopy addObserver:self selector:"testBadgingWithMessage:connection:" forMessage:752];
+  [serverCopy addObserver:self selector:"testLockscreenAccountSheetWithMessage:connection:" forMessage:750];
+  [serverCopy addObserver:self selector:"testPluginAlertWithMessage:connection:" forMessage:751];
+  [serverCopy addObserver:self selector:"restartApplicationWithMessage:connection:" forMessage:165];
 }
 
-+ (void)restartApplicationWithMessage:(id)a3 connection:(id)a4
++ (void)restartApplicationWithMessage:(id)message connection:(id)connection
 {
-  original = a3;
-  v6 = a4;
-  v7 = [[XPCClient alloc] initWithInputConnection:v6];
-  if ([a1 _hasEntitlements:v6])
+  original = message;
+  connectionCopy = connection;
+  v7 = [[XPCClient alloc] initWithInputConnection:connectionCopy];
+  if ([self _hasEntitlements:connectionCopy])
   {
-    v8 = [(XPCClient *)v7 clientIdentifier];
+    clientIdentifier = [(XPCClient *)v7 clientIdentifier];
     v9 = objc_alloc_init(BKSSystemService);
-    [v9 terminateApplication:v8 forReason:5 andReport:0 withDescription:0];
-    [v9 openApplication:v8 options:0 withResult:0];
+    [v9 terminateApplication:clientIdentifier forReason:5 andReport:0 withDescription:0];
+    [v9 openApplication:clientIdentifier options:0 withResult:0];
     reply = xpc_dictionary_create_reply(original);
-    xpc_connection_send_message(v6, reply);
+    xpc_connection_send_message(connectionCopy, reply);
   }
 
   else
   {
-    [a1 _sendUnentitledResponseToMessage:original connection:v6];
+    [self _sendUnentitledResponseToMessage:original connection:connectionCopy];
   }
 }
 
-+ (void)registerPluginConnectionWithMessage:(id)a3 connection:(id)a4
++ (void)registerPluginConnectionWithMessage:(id)message connection:(id)connection
 {
-  v5 = a3;
-  v6 = [a1 sharedInstance];
-  [v6 _registerPluginConnectionWithMessage:v5];
+  messageCopy = message;
+  sharedInstance = [self sharedInstance];
+  [sharedInstance _registerPluginConnectionWithMessage:messageCopy];
 }
 
-+ (void)testBadgingWithMessage:(id)a3 connection:(id)a4
++ (void)testBadgingWithMessage:(id)message connection:(id)connection
 {
-  v5 = a3;
+  messageCopy = message;
   objc_opt_class();
   v6 = SSXPCDictionaryCopyObjectWithClass();
   objc_opt_class();
@@ -619,19 +619,19 @@ LABEL_17:
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  v11 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v8 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v10 &= 2u;
   }
@@ -653,24 +653,24 @@ LABEL_17:
 
   if (v13)
   {
-    v11 = [NSString stringWithCString:v13 encoding:4, v16, v15, *v16, *&v16[16], v17];
+    oSLogObject = [NSString stringWithCString:v13 encoding:4, v16, v15, *v16, *&v16[16], v17];
     free(v13);
     SSFileLog();
 LABEL_11:
   }
 
-  v14 = [a1 sharedInstance];
-  [v14 setBadgeValue:v7 forIdentifier:v6];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance setBadgeValue:v7 forIdentifier:v6];
 }
 
-+ (void)testLockscreenAccountSheetWithMessage:(id)a3 connection:(id)a4
++ (void)testLockscreenAccountSheetWithMessage:(id)message connection:(id)connection
 {
   v6 = SSXPCCreateMessageDictionary();
-  v5 = [a1 sharedInstance];
-  [v5 sendPluginMessage:v6];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance sendPluginMessage:v6];
 }
 
-+ (void)testPluginAlertWithMessage:(id)a3 connection:(id)a4
++ (void)testPluginAlertWithMessage:(id)message connection:(id)connection
 {
   v4 = objc_alloc_init(NSMutableDictionary);
   [v4 setObject:@"ServiceTouchIDAlertViewController" forKey:SBSUIRemoteAlertOptionViewControllerClass];
@@ -685,51 +685,51 @@ LABEL_11:
   [v5 setButtons:v8];
 
   v9 = +[SpringBoardUtility sharedInstance];
-  v10 = [v5 dialogDictionary];
-  [v9 activateAlertWithDescription:v4 options:v10 completionBlock:0];
+  dialogDictionary = [v5 dialogDictionary];
+  [v9 activateAlertWithDescription:v4 options:dialogDictionary completionBlock:0];
 }
 
-- (void)sendPluginMessage:(id)a3
+- (void)sendPluginMessage:(id)message
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001BB290;
   v5[3] = &unk_10032B350;
-  v6 = a3;
-  v4 = v6;
+  messageCopy = message;
+  v4 = messageCopy;
   [(SpringBoardUtility *)self _requestPluginConnectionWithCompletionBlock:v5];
 }
 
-- (void)sendPluginMessage:(id)a3 withReplyBlock:(id)a4
+- (void)sendPluginMessage:(id)message withReplyBlock:(id)block
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001BB35C;
   v8[3] = &unk_10032B3A0;
-  v9 = a3;
-  v10 = a4;
-  v6 = v9;
-  v7 = v10;
+  messageCopy = message;
+  blockCopy = block;
+  v6 = messageCopy;
+  v7 = blockCopy;
   [(SpringBoardUtility *)self _requestPluginConnectionWithCompletionBlock:v8];
 }
 
-- (void)_disconnectPluginConnection:(id)a3
+- (void)_disconnectPluginConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001BB514;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_fireDeferredPluginBlocksWithConnection:(id)a3
+- (void)_fireDeferredPluginBlocksWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   pluginConnectionTimeout = self->_pluginConnectionTimeout;
   if (pluginConnectionTimeout)
   {
@@ -746,34 +746,34 @@ LABEL_11:
   v11[2] = sub_1001BB7BC;
   v11[3] = &unk_100327238;
   v12 = v7;
-  v13 = v4;
-  v9 = v4;
+  v13 = connectionCopy;
+  v9 = connectionCopy;
   v10 = v7;
   dispatch_async(notificationQueue, v11);
 }
 
-- (id)_getApplicationInfoForIdentifier:(id)a3 key:(id)a4
+- (id)_getApplicationInfoForIdentifier:(id)identifier key:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  keyCopy = key;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_1001B8CE0;
   v23 = sub_1001B8CF0;
   v24 = 0;
-  v8 = [(SpringBoardUtility *)self _applicationStateMonitor];
+  _applicationStateMonitor = [(SpringBoardUtility *)self _applicationStateMonitor];
   v9 = dispatch_semaphore_create(0);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001BBA60;
   v15[3] = &unk_10032B3F0;
   v18 = &v19;
-  v10 = v7;
+  v10 = keyCopy;
   v16 = v10;
   v11 = v9;
   v17 = v11;
-  [v8 applicationInfoForApplication:v6 completion:v15];
+  [_applicationStateMonitor applicationInfoForApplication:identifierCopy completion:v15];
   v12 = dispatch_time(0, 30000000000);
   dispatch_semaphore_wait(v11, v12);
   v13 = v20[5];
@@ -783,70 +783,70 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)_getProcessID:(int *)a3 forApplicationIdentifier:(id)a4
+- (BOOL)_getProcessID:(int *)d forApplicationIdentifier:(id)identifier
 {
-  v5 = [(SpringBoardUtility *)self _getApplicationInfoForIdentifier:a4 key:BKSApplicationStateProcessIDKey];
+  v5 = [(SpringBoardUtility *)self _getApplicationInfoForIdentifier:identifier key:BKSApplicationStateProcessIDKey];
   v6 = objc_opt_respondsToSelector();
   v7 = v6;
-  if (a3 && (v6 & 1) != 0)
+  if (d && (v6 & 1) != 0)
   {
-    *a3 = [v5 intValue];
+    *d = [v5 intValue];
   }
 
   return v7 & 1;
 }
 
-- (void)_registerPluginConnectionWithMessage:(id)a3
+- (void)_registerPluginConnectionWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001BBC0C;
   v7[3] = &unk_100327238;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_requestPluginConnectionWithCompletionBlock:(id)a3
+- (void)_requestPluginConnectionWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001BC024;
   v7[3] = &unk_1003271C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-+ (void)_sendUnentitledResponseToMessage:(id)a3 connection:(id)a4
++ (void)_sendUnentitledResponseToMessage:(id)message connection:(id)connection
 {
-  v5 = a4;
-  v6 = a3;
+  connectionCopy = connection;
+  messageCopy = message;
   v7 = +[SSLogConfig sharedDaemonConfig];
   if (!v7)
   {
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v9 &= 2u;
   }
@@ -864,45 +864,45 @@ LABEL_11:
 
   if (v12)
   {
-    v10 = [NSString stringWithCString:v12 encoding:4, &v16, v15, v16];
+    oSLogObject = [NSString stringWithCString:v12 encoding:4, &v16, v15, v16];
     free(v12);
     SSFileLog();
 LABEL_11:
   }
 
-  reply = xpc_dictionary_create_reply(v6);
+  reply = xpc_dictionary_create_reply(messageCopy);
   v14 = SSError();
   SSXPCDictionarySetCFObject();
   SSXPCDictionarySetCFObject();
-  xpc_connection_send_message(v5, reply);
+  xpc_connection_send_message(connectionCopy, reply);
 }
 
-- (void)_setApplicationState:(unsigned int)a3 forClientID:(id)a4
+- (void)_setApplicationState:(unsigned int)state forClientID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001BC6B0;
   block[3] = &unk_10032B418;
-  v11 = a3;
+  stateCopy = state;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = dCopy;
+  v8 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_setApplicationStatesWithDictionary:(id)a3
+- (void)_setApplicationStatesWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001BC8CC;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -914,19 +914,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -948,7 +948,7 @@ LABEL_11:
 
   if (v10)
   {
-    v6 = [NSString stringWithCString:v10 encoding:4, v12, v11, *v12, *&v12[16]];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, v12, v11, *v12, *&v12[16]];
     free(v10);
     SSFileLog();
 LABEL_11:

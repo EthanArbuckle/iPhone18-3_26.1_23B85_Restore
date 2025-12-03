@@ -1,6 +1,6 @@
 @interface _NSOperationQueueProgress
 - (id)initWithQueue:(id)result;
-- (void)setTotalUnitCount:(int64_t)a3;
+- (void)setTotalUnitCount:(int64_t)count;
 @end
 
 @implementation _NSOperationQueueProgress
@@ -23,12 +23,12 @@
   return result;
 }
 
-- (void)setTotalUnitCount:(int64_t)a3
+- (void)setTotalUnitCount:(int64_t)count
 {
   v5 = *MEMORY[0x1E69E9840];
   v4.receiver = self;
   v4.super_class = _NSOperationQueueProgress;
-  [(NSProgress *)&v4 setTotalUnitCount:a3];
+  [(NSProgress *)&v4 setTotalUnitCount:count];
   os_unfair_lock_lock(&self->_queueLock);
   atomic_store(1u, &self->_queue->_iqp.__progressReporting);
   os_unfair_lock_unlock(&self->_queueLock);

@@ -1,17 +1,17 @@
 @interface _NSTextViewportLayoutObserver
-- (BOOL)isEqual:(id)a3;
-- (_NSTextViewportLayoutObserver)initWithWeakObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_NSTextViewportLayoutObserver)initWithWeakObject:(id)object;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation _NSTextViewportLayoutObserver
 
-- (_NSTextViewportLayoutObserver)initWithWeakObject:(id)a3
+- (_NSTextViewportLayoutObserver)initWithWeakObject:(id)object
 {
   v4 = [(_NSTextViewportLayoutObserver *)self init];
   v5 = v4;
-  if (v4 && !objc_storeWeakOrNil(&v4->location, a3))
+  if (v4 && !objc_storeWeakOrNil(&v4->location, object))
   {
     [(_NSTextViewportLayoutObserver *)v5 dealloc];
     return 0;
@@ -28,9 +28,9 @@
   [(_NSTextViewportLayoutObserver *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -41,19 +41,19 @@
     return 0;
   }
 
-  v5 = [a3 object];
-  v6 = [(_NSTextViewportLayoutObserver *)self object];
-  v7 = [v5 isEqual:v6];
+  object = [equal object];
+  object2 = [(_NSTextViewportLayoutObserver *)self object];
+  v7 = [object isEqual:object2];
 
   return v7;
 }
 
 - (id)description
 {
-  v2 = [(_NSTextViewportLayoutObserver *)self object];
+  object = [(_NSTextViewportLayoutObserver *)self object];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 description];
+    v3 = [object description];
   }
 
   else

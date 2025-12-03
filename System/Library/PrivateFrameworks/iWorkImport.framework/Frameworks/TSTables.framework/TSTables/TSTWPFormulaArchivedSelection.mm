@@ -1,17 +1,17 @@
 @interface TSTWPFormulaArchivedSelection
-- (TSTWPFormulaArchivedSelection)initWithContext:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (TSTWPFormulaArchivedSelection)initWithContext:(id)context;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSTWPFormulaArchivedSelection
 
-- (TSTWPFormulaArchivedSelection)initWithContext:(id)a3
+- (TSTWPFormulaArchivedSelection)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = TSTWPFormulaArchivedSelection;
-  v5 = [(TSWPArchivedSelection *)&v20 initWithContext:v4];
+  v5 = [(TSWPArchivedSelection *)&v20 initWithContext:contextCopy];
   v10 = v5;
   if (v5)
   {
@@ -23,13 +23,13 @@
   return v10;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v25.receiver = self;
   v25.super_class = TSTWPFormulaArchivedSelection;
-  [(TSWPArchivedSelection *)&v25 loadFromUnarchiver:v4];
-  v5 = v4;
+  [(TSWPArchivedSelection *)&v25 loadFromUnarchiver:unarchiverCopy];
+  v5 = unarchiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v9 = objc_msgSend_messageWithDescriptor_(v5, v6, off_2812E4498[290], v7, v8);
 
@@ -49,12 +49,12 @@
   objc_msgSend_setSelection_(self, v22, v18, v23, v24);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v25.receiver = self;
   v25.super_class = TSTWPFormulaArchivedSelection;
-  [(TSWPArchivedSelection *)&v25 saveToArchiver:v4];
+  [(TSWPArchivedSelection *)&v25 saveToArchiver:archiverCopy];
   objc_opt_class();
   v9 = objc_msgSend_selection(self, v5, v6, v7, v8);
   v10 = TSUDynamicCast();
@@ -62,7 +62,7 @@
   if (v10 && objc_msgSend_activeTokenCharIndex(v10, v11, v12, v13, v14) != 0x7FFFFFFFFFFFFFFFLL)
   {
     active = objc_msgSend_activeTokenCharIndex(v10, v15, v16, v17, v18);
-    v20 = v4;
+    v20 = archiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v23 = objc_msgSend_messageWithNewFunction_descriptor_(v20, v21, sub_2212007B0, off_2812E4498[290], v22);
 

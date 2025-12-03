@@ -1,21 +1,21 @@
 @interface THWViewportInfo
 - (CGSize)canvasSize;
 - (CGSize)frameViewSize;
-- (THWViewportInfo)initWithContext:(id)a3 geometry:(id)a4;
+- (THWViewportInfo)initWithContext:(id)context geometry:(id)geometry;
 - (UIEdgeInsets)frameCanvasContentInsets;
 - (void)dealloc;
-- (void)setBackgroundShape:(id)a3;
-- (void)setStroke:(id)a3;
-- (void)updateBackgroundColor:(id)a3;
+- (void)setBackgroundShape:(id)shape;
+- (void)setStroke:(id)stroke;
+- (void)updateBackgroundColor:(id)color;
 @end
 
 @implementation THWViewportInfo
 
-- (THWViewportInfo)initWithContext:(id)a3 geometry:(id)a4
+- (THWViewportInfo)initWithContext:(id)context geometry:(id)geometry
 {
   v7.receiver = self;
   v7.super_class = THWViewportInfo;
-  v4 = [(THWViewportInfo *)&v7 initWithContext:a3 geometry:a4];
+  v4 = [(THWViewportInfo *)&v7 initWithContext:context geometry:geometry];
   if (v4)
   {
     v5 = objc_alloc_init(TSWPopoverTheme);
@@ -44,12 +44,12 @@
   [(THWViewportInfo *)&v3 dealloc];
 }
 
-- (void)setBackgroundShape:(id)a3
+- (void)setBackgroundShape:(id)shape
 {
-  v5 = a3;
+  shapeCopy = shape;
 
-  self->_backgroundShape = a3;
-  if (a3)
+  self->_backgroundShape = shape;
+  if (shape)
   {
     objc_opt_class();
     [-[TSDShapeInfo style](self->_backgroundShape "style")];
@@ -59,26 +59,26 @@
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v7 = [v6 color];
+    color = [v6 color];
     popoverTheme = self->_popoverTheme;
 
-    [(TSWPopoverTheme *)popoverTheme setPopoverBackgroundColor:v7];
+    [(TSWPopoverTheme *)popoverTheme setPopoverBackgroundColor:color];
   }
 }
 
-- (void)setStroke:(id)a3
+- (void)setStroke:(id)stroke
 {
-  v5 = a3;
+  strokeCopy = stroke;
 
-  self->_stroke = a3;
+  self->_stroke = stroke;
   popoverTheme = self->_popoverTheme;
 
-  [(TSWPopoverTheme *)popoverTheme setPopoverStroke:a3];
+  [(TSWPopoverTheme *)popoverTheme setPopoverStroke:stroke];
 }
 
-- (void)updateBackgroundColor:(id)a3
+- (void)updateBackgroundColor:(id)color
 {
-  if (a3)
+  if (color)
   {
 LABEL_2:
     popoverTheme = self->_popoverTheme;
@@ -118,9 +118,9 @@ LABEL_2:
 
 - (CGSize)frameViewSize
 {
-  v2 = [(TSDShapeInfo *)[(THWViewportInfo *)self backgroundShape] geometry];
+  geometry = [(TSDShapeInfo *)[(THWViewportInfo *)self backgroundShape] geometry];
 
-  [v2 size];
+  [geometry size];
   result.height = v4;
   result.width = v3;
   return result;

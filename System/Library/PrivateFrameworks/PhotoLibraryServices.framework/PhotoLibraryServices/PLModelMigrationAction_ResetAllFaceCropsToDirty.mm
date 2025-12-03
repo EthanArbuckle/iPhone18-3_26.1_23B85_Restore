@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_ResetAllFaceCropsToDirty
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetAllFaceCropsToDirty
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v66[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D560];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLFaceCrop entityName];
   v8 = [v5 batchUpdateRequestWithEntityName:v7];
 
@@ -22,7 +22,7 @@
   [v8 setPredicate:v10];
 
   v30 = 0;
-  v11 = [v6 executeRequest:v8 error:&v30];
+  v11 = [contextCopy executeRequest:v8 error:&v30];
 
   v12 = v30;
   v13 = PLMigrationGetLog();
@@ -32,9 +32,9 @@
   {
     if (v14)
     {
-      v15 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v15)
+      if (logger)
       {
         v63 = 0u;
         v64 = 0u;
@@ -70,9 +70,9 @@
         *buf = 0u;
         v16 = PLMigrationGetLog();
         os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-        v17 = [v11 result];
+        result = [v11 result];
         v31 = 138412290;
-        v32 = v17;
+        v32 = result;
         LODWORD(v29) = 12;
         v18 = _os_log_send_and_compose_impl();
 
@@ -90,9 +90,9 @@
         v24 = PLMigrationGetLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v11 result];
+          result2 = [v11 result];
           *buf = 138412290;
-          *&buf[4] = v25;
+          *&buf[4] = result2;
           _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEFAULT, "Updated %@ face crops", buf, 0xCu);
         }
       }
@@ -105,9 +105,9 @@
   {
     if (v14)
     {
-      v20 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v20)
+      if (logger2)
       {
         v63 = 0u;
         v64 = 0u;

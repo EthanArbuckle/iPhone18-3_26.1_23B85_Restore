@@ -6,26 +6,26 @@
 - (unint64_t)_accNavUnitType;
 - (unint64_t)firstIndex_RouteGuidanceManeuverCurrentList;
 - (void)_updateManeuverState;
-- (void)setCurrentRoadName:(id)a3;
-- (void)setDestinationName:(id)a3;
-- (void)setDistanceRemaining:(id)a3;
-- (void)setDistanceRemainingToNextManeuver:(id)a3;
-- (void)setLaneGuidanceCurrentIndex:(id)a3;
-- (void)setLaneGuidanceTotalCount:(id)a3;
-- (void)setManeuverRoadClass:(int)a3;
-- (void)setRouteGuidanceState:(unsigned __int16)a3;
-- (void)updateNavAnnouncementStage:(unint64_t)a3;
-- (void)updateRemainingDistance:(double)a3;
-- (void)updateRemainingTime:(double)a3 estimatedTimeOfArrival:(double)a4;
+- (void)setCurrentRoadName:(id)name;
+- (void)setDestinationName:(id)name;
+- (void)setDistanceRemaining:(id)remaining;
+- (void)setDistanceRemainingToNextManeuver:(id)maneuver;
+- (void)setLaneGuidanceCurrentIndex:(id)index;
+- (void)setLaneGuidanceTotalCount:(id)count;
+- (void)setManeuverRoadClass:(int)class;
+- (void)setRouteGuidanceState:(unsigned __int16)state;
+- (void)updateNavAnnouncementStage:(unint64_t)stage;
+- (void)updateRemainingDistance:(double)distance;
+- (void)updateRemainingTime:(double)time estimatedTimeOfArrival:(double)arrival;
 @end
 
 @implementation CarClusterUpdateRouteGuidance
 
-- (void)setLaneGuidanceTotalCount:(id)a3
+- (void)setLaneGuidanceTotalCount:(id)count
 {
-  if (a3)
+  if (count)
   {
-    v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [a3 unsignedIntegerValue]);
+    v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [count unsignedIntegerValue]);
     self->_laneGuidanceTotalCount = v4;
   }
 
@@ -35,11 +35,11 @@
   }
 }
 
-- (void)setLaneGuidanceCurrentIndex:(id)a3
+- (void)setLaneGuidanceCurrentIndex:(id)index
 {
-  if (a3)
+  if (index)
   {
-    v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [a3 unsignedIntegerValue]);
+    v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [index unsignedIntegerValue]);
     self->_laneGuidanceCurrentIndex = v4;
   }
 
@@ -49,11 +49,11 @@
   }
 }
 
-- (void)setDistanceRemainingToNextManeuver:(id)a3
+- (void)setDistanceRemainingToNextManeuver:(id)maneuver
 {
-  if (a3)
+  if (maneuver)
   {
-    v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 integerValue]);
+    v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [maneuver integerValue]);
   }
 
   else
@@ -71,36 +71,36 @@
 {
   if ([(CarClusterUpdateRouteGuidance *)self smartGuidanceActive])
   {
-    v3 = [(CarClusterUpdateRouteGuidance *)self distanceRemainingToNextManeuver];
+    distanceRemainingToNextManeuver = [(CarClusterUpdateRouteGuidance *)self distanceRemainingToNextManeuver];
 
-    if (v3)
+    if (distanceRemainingToNextManeuver)
     {
       if (qword_10195DEC8 != -1)
       {
         dispatch_once(&qword_10195DEC8, &stru_101630350);
       }
 
-      v4 = [(CarClusterUpdateRouteGuidance *)self _accNavManeuverRoadClass];
-      v5 = [(CarClusterUpdateRouteGuidance *)self _accNavUnitType];
+      _accNavManeuverRoadClass = [(CarClusterUpdateRouteGuidance *)self _accNavManeuverRoadClass];
+      _accNavUnitType = [(CarClusterUpdateRouteGuidance *)self _accNavUnitType];
       v6 = qword_10195DEC0;
-      v7 = [NSNumber numberWithUnsignedInteger:v4];
+      v7 = [NSNumber numberWithUnsignedInteger:_accNavManeuverRoadClass];
       v8 = [v6 objectForKeyedSubscript:v7];
-      v9 = [NSNumber numberWithUnsignedInteger:v5];
+      v9 = [NSNumber numberWithUnsignedInteger:_accNavUnitType];
       v10 = [v8 objectForKeyedSubscript:v9];
 
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v11 = [v10 allKeys];
-      v12 = [v11 sortedArrayUsingSelector:"compare:"];
+      allKeys = [v10 allKeys];
+      v12 = [allKeys sortedArrayUsingSelector:"compare:"];
 
       obj = v12;
       v13 = [v12 countByEnumeratingWithState:&v25 objects:v35 count:16];
       if (v13)
       {
-        v22 = v5;
-        v23 = v4;
+        v22 = _accNavUnitType;
+        v23 = _accNavManeuverRoadClass;
         v14 = *v26;
         while (2)
         {
@@ -113,11 +113,11 @@
 
             v16 = *(*(&v25 + 1) + 8 * i);
             v17 = [v10 objectForKeyedSubscript:v16];
-            v18 = [(CarClusterUpdateRouteGuidance *)self distanceRemainingToNextManeuver];
-            v19 = [v18 integerValue];
-            v20 = [v17 integerValue];
+            distanceRemainingToNextManeuver2 = [(CarClusterUpdateRouteGuidance *)self distanceRemainingToNextManeuver];
+            integerValue = [distanceRemainingToNextManeuver2 integerValue];
+            integerValue2 = [v17 integerValue];
 
-            if (v19 >= v20)
+            if (integerValue >= integerValue2)
             {
               LOWORD(v13) = [v16 integerValue];
 
@@ -135,17 +135,17 @@
         }
 
 LABEL_15:
-        v5 = v22;
-        v4 = v23;
+        _accNavUnitType = v22;
+        _accNavManeuverRoadClass = v23;
       }
 
       v21 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218496;
-        v30 = v4;
+        v30 = _accNavManeuverRoadClass;
         v31 = 2048;
-        v32 = v5;
+        v32 = _accNavUnitType;
         v33 = 2048;
         v34 = v13;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "roadClass=%lu unitType=%lu maneuverState=%lu", buf, 0x20u);
@@ -190,32 +190,32 @@ LABEL_15:
   }
 }
 
-- (void)setDistanceRemaining:(id)a3
+- (void)setDistanceRemaining:(id)remaining
 {
-  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 integerValue]);
+  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [remaining integerValue]);
   distanceRemaining = self->_distanceRemaining;
   self->_distanceRemaining = v4;
 }
 
-- (void)setDestinationName:(id)a3
+- (void)setDestinationName:(id)name
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+  v4 = [name stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
   destinationName = self->_destinationName;
   self->_destinationName = v4;
 }
 
-- (void)setCurrentRoadName:(id)a3
+- (void)setCurrentRoadName:(id)name
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+  v4 = [name stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
   currentRoadName = self->_currentRoadName;
   self->_currentRoadName = v4;
 }
 
-- (void)setRouteGuidanceState:(unsigned __int16)a3
+- (void)setRouteGuidanceState:(unsigned __int16)state
 {
-  if (self->_routeGuidanceState != a3)
+  if (self->_routeGuidanceState != state)
   {
-    if (a3)
+    if (state)
     {
       v5 = +[NSBundle mainBundle];
       v6 = [v5 localizedStringForKey:@"Apple Maps [iAP Metadata]" value:@"localized string not found" table:0];
@@ -227,62 +227,62 @@ LABEL_15:
       [(CarClusterUpdate *)self resetProperties];
     }
 
-    self->_routeGuidanceState = a3;
+    self->_routeGuidanceState = state;
   }
 }
 
-- (void)setManeuverRoadClass:(int)a3
+- (void)setManeuverRoadClass:(int)class
 {
-  if (self->_maneuverRoadClass != a3)
+  if (self->_maneuverRoadClass != class)
   {
-    self->_maneuverRoadClass = a3;
+    self->_maneuverRoadClass = class;
   }
 }
 
 - (unint64_t)firstIndex_RouteGuidanceManeuverCurrentList
 {
-  v2 = [(CarClusterUpdateRouteGuidance *)self routeGuidanceManeuverCurrentList];
-  v3 = [v2 firstObject];
+  routeGuidanceManeuverCurrentList = [(CarClusterUpdateRouteGuidance *)self routeGuidanceManeuverCurrentList];
+  firstObject = [routeGuidanceManeuverCurrentList firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [firstObject unsignedIntegerValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)updateNavAnnouncementStage:(unint64_t)a3
+- (void)updateNavAnnouncementStage:(unint64_t)stage
 {
-  v4 = [CarClusterUpdate _accNavManeuverStateForGEONavigationAnnouncementStage:a3];
+  v4 = [CarClusterUpdate _accNavManeuverStateForGEONavigationAnnouncementStage:stage];
 
   [(CarClusterUpdateRouteGuidance *)self setManeuverState:v4];
 }
 
-- (void)updateRemainingDistance:(double)a3
+- (void)updateRemainingDistance:(double)distance
 {
   v5 = [NSNumber numberWithDouble:?];
   [(CarClusterUpdateRouteGuidance *)self setDistanceRemaining:v5];
 
   v8 = 0;
   v7 = 0;
-  [CarClusterUpdateRouteGuidance getStringValue:&v7 displayUnits:&v8 forRemainingDistance:a3];
+  [CarClusterUpdateRouteGuidance getStringValue:&v7 displayUnits:&v8 forRemainingDistance:distance];
   v6 = v7;
   [(CarClusterUpdateRouteGuidance *)self setDistanceRemainingDisplayString:v6];
   [(CarClusterUpdateRouteGuidance *)self setDistanceRemainingDisplayUnits:v8];
 }
 
-- (void)updateRemainingTime:(double)a3 estimatedTimeOfArrival:(double)a4
+- (void)updateRemainingTime:(double)time estimatedTimeOfArrival:(double)arrival
 {
-  v6 = [NSNumber numberWithDouble:a3];
+  v6 = [NSNumber numberWithDouble:time];
   [(CarClusterUpdateRouteGuidance *)self setTimeRemainingToDestination:v6];
 
-  v7 = [NSNumber numberWithDouble:a4];
+  v7 = [NSNumber numberWithDouble:arrival];
   [(CarClusterUpdateRouteGuidance *)self setEstimatedTimeOfArrival:v7];
 }
 

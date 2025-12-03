@@ -9,10 +9,10 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)hk_removeObjectsPassingTest:()HealthKit
@@ -24,8 +24,8 @@
   v7[3] = &unk_1E7381FE0;
   v8 = v4;
   v5 = v4;
-  v6 = [a1 objectsPassingTest:v7];
-  [a1 minusSet:v6];
+  v6 = [self objectsPassingTest:v7];
+  [self minusSet:v6];
 }
 
 @end

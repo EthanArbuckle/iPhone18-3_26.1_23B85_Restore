@@ -1,5 +1,5 @@
 @interface NSManagedObjectModelReference
-- (BOOL)resolve:(id *)a3;
+- (BOOL)resolve:(id *)resolve;
 - (NSManagedObjectModelReference)initWithEntityVersionHashes:(NSDictionary *)versionHash inBundle:(NSBundle *)bundle versionChecksum:(NSString *)versionChecksum;
 - (NSManagedObjectModelReference)initWithFileURL:(NSURL *)fileURL versionChecksum:(NSString *)versionChecksum;
 - (NSManagedObjectModelReference)initWithModel:(NSManagedObjectModel *)model versionChecksum:(NSString *)versionChecksum;
@@ -33,15 +33,15 @@
     v8->_entityVersionHashes = [(NSDictionary *)versionHash copy];
     if (bundle)
     {
-      v9 = bundle;
+      mainBundle = bundle;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E696AAE8] mainBundle];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
     }
 
-    v8->_bundle = v9;
+    v8->_bundle = mainBundle;
     v8->_versionChecksum = [(NSString *)versionChecksum copy];
   }
 
@@ -58,15 +58,15 @@
     v8->_modelName = [(NSString *)modelName copy];
     if (bundle)
     {
-      v9 = bundle;
+      mainBundle = bundle;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E696AAE8] mainBundle];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
     }
 
-    v8->_bundle = v9;
+    v8->_bundle = mainBundle;
     v8->_versionChecksum = [(NSString *)versionChecksum copy];
   }
 
@@ -104,7 +104,7 @@
   [(NSManagedObjectModelReference *)&v3 dealloc];
 }
 
-- (BOOL)resolve:(id *)a3
+- (BOOL)resolve:(id *)resolve
 {
   v50 = *MEMORY[0x1E69E9840];
   if (self->_resolvedModel)
@@ -290,9 +290,9 @@ LABEL_49:
 
 LABEL_10:
   v8 = v42;
-  if (a3 && v42)
+  if (resolve && v42)
   {
-    *a3 = v42;
+    *resolve = v42;
     v8 = v42;
   }
 

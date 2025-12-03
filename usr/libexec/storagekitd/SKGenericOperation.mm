@@ -6,8 +6,8 @@
 
 - (BOOL)run
 {
-  v3 = [(SKGenericOperation *)self completionBlock];
-  v3[2]();
+  completionBlock = [(SKGenericOperation *)self completionBlock];
+  completionBlock[2]();
 
   [(SKManagerOperation *)self finished];
   return 1;

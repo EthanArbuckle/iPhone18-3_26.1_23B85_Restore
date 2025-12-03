@@ -1,42 +1,42 @@
 @interface HFAccessorySettingDataAnalyticsAdapter
-- (BOOL)shouldShowSettingsEntity:(id)a3;
-- (HFAccessorySettingDataAnalyticsAdapter)initWithHomeKitSettingsVendor:(id)a3 mode:(unint64_t)a4;
-- (id)customizeSections:(id)a3 forEntity:(id)a4;
+- (BOOL)shouldShowSettingsEntity:(id)entity;
+- (HFAccessorySettingDataAnalyticsAdapter)initWithHomeKitSettingsVendor:(id)vendor mode:(unint64_t)mode;
+- (id)customizeSections:(id)sections forEntity:(id)entity;
 @end
 
 @implementation HFAccessorySettingDataAnalyticsAdapter
 
-- (HFAccessorySettingDataAnalyticsAdapter)initWithHomeKitSettingsVendor:(id)a3 mode:(unint64_t)a4
+- (HFAccessorySettingDataAnalyticsAdapter)initWithHomeKitSettingsVendor:(id)vendor mode:(unint64_t)mode
 {
-  v7 = a3;
-  if (a4)
+  vendorCopy = vendor;
+  if (mode)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingDataAnalyticsAdapter.m" lineNumber:21 description:@"Data Analytics adapter does not do what you think it does."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingDataAnalyticsAdapter.m" lineNumber:21 description:@"Data Analytics adapter does not do what you think it does."];
   }
 
   v8 = [MEMORY[0x277CBEB98] set];
   v12.receiver = self;
   v12.super_class = HFAccessorySettingDataAnalyticsAdapter;
-  v9 = [(HFAccessorySettingAdapter *)&v12 initWithHomeKitSettingsVendor:v7 keyPaths:v8 mode:a4 updateHandler:0];
+  v9 = [(HFAccessorySettingAdapter *)&v12 initWithHomeKitSettingsVendor:vendorCopy keyPaths:v8 mode:mode updateHandler:0];
 
   return v9;
 }
 
-- (BOOL)shouldShowSettingsEntity:(id)a3
+- (BOOL)shouldShowSettingsEntity:(id)entity
 {
-  v4 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-  if ([v4 isItemGroup])
+  homeKitSettingsVendor = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+  if ([homeKitSettingsVendor isItemGroup])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
-    if ([v6 conformsToProtocol:&unk_282584A38])
+    homeKitSettingsVendor2 = [(HFAccessorySettingAdapter *)self homeKitSettingsVendor];
+    if ([homeKitSettingsVendor2 conformsToProtocol:&unk_282584A38])
     {
-      v7 = v6;
+      v7 = homeKitSettingsVendor2;
     }
 
     else
@@ -54,16 +54,16 @@
   return v5;
 }
 
-- (id)customizeSections:(id)a3 forEntity:(id)a4
+- (id)customizeSections:(id)sections forEntity:(id)entity
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 keyPath];
-  v8 = [v7 isEqualToString:@"root.general.analytics"];
+  sectionsCopy = sections;
+  entityCopy = entity;
+  keyPath = [entityCopy keyPath];
+  v8 = [keyPath isEqualToString:@"root.general.analytics"];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v22 = 0;
     v23 = &v22;
     v24 = 0x3032000000;
@@ -74,10 +74,10 @@
     v17 = 3221225472;
     v18 = __70__HFAccessorySettingDataAnalyticsAdapter_customizeSections_forEntity___block_invoke;
     v19 = &unk_277DF4B98;
-    v10 = v9;
+    v10 = array;
     v20 = v10;
     v21 = &v22;
-    [v5 na_each:&v16];
+    [sectionsCopy na_each:&v16];
     if (v23[5])
     {
       v11 = [HFMutableItemSection alloc];
@@ -91,10 +91,10 @@
     v14 = v10;
 
     _Block_object_dispose(&v22, 8);
-    v5 = v14;
+    sectionsCopy = v14;
   }
 
-  return v5;
+  return sectionsCopy;
 }
 
 void __70__HFAccessorySettingDataAnalyticsAdapter_customizeSections_forEntity___block_invoke(uint64_t a1, void *a2)

@@ -1,43 +1,43 @@
 @interface MPSGraphSampleGridDataGradientOp
-- (MPSGraphSampleGridDataGradientOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 normalizeCoordinates:(BOOL)a6 relativeCoordinates:(BOOL)a7 paddingMode:(int64_t)a8 samplingMode:(unint64_t)a9 name:(id)a10;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphSampleGridDataGradientOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates paddingMode:(int64_t)mode samplingMode:(unint64_t)samplingMode name:(id)self0;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphSampleGridDataGradientOp
 
-- (MPSGraphSampleGridDataGradientOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 normalizeCoordinates:(BOOL)a6 relativeCoordinates:(BOOL)a7 paddingMode:(int64_t)a8 samplingMode:(unint64_t)a9 name:(id)a10
+- (MPSGraphSampleGridDataGradientOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies normalizeCoordinates:(BOOL)coordinates relativeCoordinates:(BOOL)relativeCoordinates paddingMode:(int64_t)mode samplingMode:(unint64_t)samplingMode name:(id)self0
 {
-  if (a8 == 4)
+  if (mode == 4)
   {
-    v10 = 0;
+    modeCopy = 0;
   }
 
   else
   {
-    v10 = a8;
+    modeCopy = mode;
   }
 
-  self->_relativeCoordinates = a6;
-  *(&self->_relativeCoordinates + 1) = a7;
-  self->_paddingMode = v10;
-  self->_samplingMode = a9;
-  return [(MPSGraphOperation *)self initWithGraph:a3 inputTensors:a4 controlDependencies:a5 name:a10];
+  self->_relativeCoordinates = coordinates;
+  *(&self->_relativeCoordinates + 1) = relativeCoordinates;
+  self->_paddingMode = modeCopy;
+  self->_samplingMode = samplingMode;
+  return [(MPSGraphOperation *)self initWithGraph:graph inputTensors:tensors controlDependencies:dependencies name:name];
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v37[38] = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphSampleGridDataGradientOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphSampleGrid.mm", __p);
-  v12 = MPSSymbolTable::getLocationByInsertingOp<mlir::mps::SampleGridOp>(a4, a3, __p, 0x99u, v11);
+  v12 = MPSSymbolTable::getLocationByInsertingOp<mlir::mps::SampleGridOp>(table, builder, __p, 0x99u, nameCopy);
   if (v30 < 0)
   {
     operator delete(__p[0]);
   }
 
-  v14 = *a5;
-  v13 = *(a5 + 1);
-  v15 = v13 - *a5;
+  v14 = *values;
+  v13 = *(values + 1);
+  v15 = v13 - *values;
   if (v15 == 16 || v13 == v14 || v15 <= 8)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
@@ -59,8 +59,8 @@
   }
 
   mlir::OperationState::OperationState(v37, v12, v21);
-  mlir::mps::SampleGridDataGradientOp::build(a3, v37, *v14, v14[1], v14[2], self->_relativeCoordinates, *(&self->_relativeCoordinates + 1), paddingMode, samplingMode);
-  v23 = mlir::OpBuilder::create(a3, v37);
+  mlir::mps::SampleGridDataGradientOp::build(builder, v37, *v14, v14[1], v14[2], self->_relativeCoordinates, *(&self->_relativeCoordinates + 1), paddingMode, samplingMode);
+  v23 = mlir::OpBuilder::create(builder, v37);
   v24 = *(*(v23 + 48) + 16);
   mlir::OperationState::~OperationState(v37);
   if (v24 == &mlir::detail::TypeIDResolver<mlir::mps::SampleGridDataGradientOp,void>::id)

@@ -1,15 +1,15 @@
 @interface DOCTagDotView
-- (DOCTagDotView)initWithDefaultTagDimension:(double)a3 adjustsSizeForContentSizeCategory:(BOOL)a4;
+- (DOCTagDotView)initWithDefaultTagDimension:(double)dimension adjustsSizeForContentSizeCategory:(BOOL)category;
 - (void)_updateLayoutOfLayers;
-- (void)_withoutAnimations:(id)a3;
+- (void)_withoutAnimations:(id)animations;
 - (void)dealloc;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
 - (void)loadItemTagImageIfNecessary;
-- (void)setChecked:(BOOL)a3;
-- (void)setItemTag:(id)a3;
-- (void)setItemTagImage:(id)a3;
-- (void)setRenderedTagVariant:(unint64_t)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setItemTag:(id)tag;
+- (void)setItemTagImage:(id)image;
+- (void)setRenderedTagVariant:(unint64_t)variant;
 - (void)updateContents;
 - (void)updateForChangedTraitsAffectingFonts;
 - (void)updateLayoutOfLayers;
@@ -17,9 +17,9 @@
 
 @implementation DOCTagDotView
 
-- (DOCTagDotView)initWithDefaultTagDimension:(double)a3 adjustsSizeForContentSizeCategory:(BOOL)a4
+- (DOCTagDotView)initWithDefaultTagDimension:(double)dimension adjustsSizeForContentSizeCategory:(BOOL)category
 {
-  v4 = a4;
+  categoryCopy = category;
   v38[1] = *MEMORY[0x277D85DE8];
   v37.receiver = self;
   v37.super_class = DOCTagDotView;
@@ -28,8 +28,8 @@
   if (v6)
   {
     v6->_renderedTagVariant = 0;
-    v6->_defaultTagDimension = a3;
-    v6->_adjustsSizeForContentSizeCategory = v4;
+    v6->_defaultTagDimension = dimension;
+    v6->_adjustsSizeForContentSizeCategory = categoryCopy;
     v8 = objc_alloc_init(MEMORY[0x277D755E8]);
     dotView = v7->_dotView;
     v7->_dotView = v8;
@@ -47,41 +47,41 @@
     [(CALayer *)v7->_checkmarkLayer setMask:v12];
     [(DOCTagDotView *)v7 updateLayoutOfLayers];
     [(DOCTagDotView *)v7 addSubview:v7->_dotView];
-    v15 = [(DOCTagDotView *)v7 layer];
-    v16 = [(DOCTagDotView *)v7 checkmarkLayer];
-    [v15 addSublayer:v16];
+    layer = [(DOCTagDotView *)v7 layer];
+    checkmarkLayer = [(DOCTagDotView *)v7 checkmarkLayer];
+    [layer addSublayer:checkmarkLayer];
 
     [(DOCTagDotView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [(DOCTagDotView *)v7 heightAnchor];
-    v18 = [v17 constraintEqualToConstant:a3];
+    heightAnchor = [(DOCTagDotView *)v7 heightAnchor];
+    v18 = [heightAnchor constraintEqualToConstant:dimension];
     tagDimensionConstraint = v7->_tagDimensionConstraint;
     v7->_tagDimensionConstraint = v18;
 
-    v20 = [(DOCTagDotView *)v7 widthAnchor];
-    v21 = [(DOCTagDotView *)v7 heightAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    widthAnchor = [(DOCTagDotView *)v7 widthAnchor];
+    heightAnchor2 = [(DOCTagDotView *)v7 heightAnchor];
+    v22 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
     [v22 setActive:1];
 
     [(DOCTagDotView *)v7 updateForChangedTraitsAffectingFonts];
     [(NSLayoutConstraint *)v7->_tagDimensionConstraint setActive:1];
     objc_initWeak(&location, v7);
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    v24 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v31 = MEMORY[0x277D85DD0];
     v32 = 3221225472;
     v33 = __79__DOCTagDotView_initWithDefaultTagDimension_adjustsSizeForContentSizeCategory___block_invoke;
     v34 = &unk_278FA1C58;
     objc_copyWeak(&v35, &location);
-    v25 = [v23 addObserverForName:*MEMORY[0x277D76448] object:0 queue:v24 usingBlock:&v31];
+    v25 = [defaultCenter addObserverForName:*MEMORY[0x277D76448] object:0 queue:mainQueue usingBlock:&v31];
     v38[0] = v25;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:{1, v31, v32, v33, v34}];
     notificationObservances = v7->_notificationObservances;
     v7->_notificationObservances = v26;
 
-    if (v4)
+    if (categoryCopy)
     {
-      v28 = [MEMORY[0x277D75C80] doc_traitsAffectingFonts];
-      v29 = [(DOCTagDotView *)v7 registerForTraitChanges:v28 withAction:sel_updateForChangedTraitsAffectingFonts];
+      doc_traitsAffectingFonts = [MEMORY[0x277D75C80] doc_traitsAffectingFonts];
+      v29 = [(DOCTagDotView *)v7 registerForTraitChanges:doc_traitsAffectingFonts withAction:sel_updateForChangedTraitsAffectingFonts];
     }
 
     objc_destroyWeak(&v35);
@@ -99,14 +99,14 @@ void __79__DOCTagDotView_initWithDefaultTagDimension_adjustsSizeForContentSizeCa
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   notificationObservances = self->_notificationObservances;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __24__DOCTagDotView_dealloc__block_invoke;
   v7[3] = &unk_278FA24E8;
-  v8 = v3;
-  v5 = v3;
+  v8 = defaultCenter;
+  v5 = defaultCenter;
   [(NSArray *)notificationObservances enumerateObjectsUsingBlock:v7];
 
   v6.receiver = self;
@@ -120,11 +120,11 @@ void __79__DOCTagDotView_initWithDefaultTagDimension_adjustsSizeForContentSizeCa
   v4 = v3;
   if ([(DOCTagDotView *)self adjustsSizeForContentSizeCategory])
   {
-    v5 = [MEMORY[0x277D75520] defaultMetrics];
+    defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
     [(DOCTagDotView *)self defaultTagDimension];
     v7 = v6;
-    v8 = [(DOCTagDotView *)self traitCollection];
-    [v5 scaledValueForValue:v8 compatibleWithTraitCollection:v7];
+    traitCollection = [(DOCTagDotView *)self traitCollection];
+    [defaultMetrics scaledValueForValue:traitCollection compatibleWithTraitCollection:v7];
     v4 = v9;
   }
 
@@ -137,31 +137,31 @@ void __79__DOCTagDotView_initWithDefaultTagDimension_adjustsSizeForContentSizeCa
   }
 }
 
-- (void)setItemTag:(id)a3
+- (void)setItemTag:(id)tag
 {
-  v5 = a3;
-  if (self->_itemTag != v5)
+  tagCopy = tag;
+  if (self->_itemTag != tagCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_itemTag, a3);
+    v6 = tagCopy;
+    objc_storeStrong(&self->_itemTag, tag);
     [(DOCTagDotView *)self setNeedsItemTagImageUpdate];
     [(DOCTagDotView *)self updateContents];
-    v5 = v6;
+    tagCopy = v6;
   }
 }
 
-- (void)setItemTagImage:(id)a3
+- (void)setItemTagImage:(id)image
 {
-  v5 = a3;
-  if (self->_itemTagImage != v5)
+  imageCopy = image;
+  if (self->_itemTagImage != imageCopy)
   {
-    objc_storeStrong(&self->_itemTagImage, a3);
+    objc_storeStrong(&self->_itemTagImage, image);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __33__DOCTagDotView_setItemTagImage___block_invoke;
     v6[3] = &unk_278FA1E80;
     v6[4] = self;
-    v7 = v5;
+    v7 = imageCopy;
     [(DOCTagDotView *)self _withoutAnimations:v6];
   }
 }
@@ -173,16 +173,16 @@ void __33__DOCTagDotView_setItemTagImage___block_invoke(uint64_t a1)
   [v2 setImage:v1];
 }
 
-- (void)_withoutAnimations:(id)a3
+- (void)_withoutAnimations:(id)animations
 {
-  v3 = a3;
+  animationsCopy = animations;
   v4 = MEMORY[0x277D75D18];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__DOCTagDotView__withoutAnimations___block_invoke;
   v6[3] = &unk_278FA1EA8;
-  v7 = v3;
-  v5 = v3;
+  v7 = animationsCopy;
+  v5 = animationsCopy;
   [v4 performWithoutAnimation:v6];
 }
 
@@ -196,22 +196,22 @@ uint64_t __36__DOCTagDotView__withoutAnimations___block_invoke(uint64_t a1)
   return [v2 commit];
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if (self->_checked != a3)
+  if (self->_checked != checked)
   {
-    v4 = a3;
-    self->_checked = a3;
-    v5 = [(DOCTagDotView *)self checkmarkLayer];
-    [v5 setHidden:!v4];
+    checkedCopy = checked;
+    self->_checked = checked;
+    checkmarkLayer = [(DOCTagDotView *)self checkmarkLayer];
+    [checkmarkLayer setHidden:!checkedCopy];
   }
 }
 
-- (void)setRenderedTagVariant:(unint64_t)a3
+- (void)setRenderedTagVariant:(unint64_t)variant
 {
-  if (self->_renderedTagVariant != a3)
+  if (self->_renderedTagVariant != variant)
   {
-    self->_renderedTagVariant = a3;
+    self->_renderedTagVariant = variant;
     [(DOCTagDotView *)self setNeedsItemTagImageUpdate];
   }
 }
@@ -224,15 +224,15 @@ uint64_t __36__DOCTagDotView__withoutAnimations___block_invoke(uint64_t a1)
   [(DOCTagDotView *)&v3 layoutSubviews];
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v6.receiver = self;
   v6.super_class = DOCTagDotView;
-  v4 = a3;
-  [(DOCTagDotView *)&v6 layoutSublayersOfLayer:v4];
+  layerCopy = layer;
+  [(DOCTagDotView *)&v6 layoutSublayersOfLayer:layerCopy];
   v5 = [(DOCTagDotView *)self layer:v6.receiver];
 
-  if (v5 == v4)
+  if (v5 == layerCopy)
   {
     [(DOCTagDotView *)self updateLayoutOfLayers];
   }
@@ -244,12 +244,12 @@ uint64_t __36__DOCTagDotView__withoutAnimations___block_invoke(uint64_t a1)
   if (([(DOCTagDotView *)self needsItemTagImageUpdate]|| !itemTagImage) && self->_itemTag)
   {
     self->_needsItemTagImageUpdate = 0;
-    v4 = [(DOCTagDotView *)self tagDimensionConstraint];
-    [v4 constant];
+    tagDimensionConstraint = [(DOCTagDotView *)self tagDimensionConstraint];
+    [tagDimensionConstraint constant];
     v6 = v5;
 
-    v7 = [(DOCTagDotView *)self itemTag];
-    v10 = [DOCTagRenderingRequest requestForTag:v7 tagDimension:self->_renderedTagVariant variant:v6];
+    itemTag = [(DOCTagDotView *)self itemTag];
+    v10 = [DOCTagRenderingRequest requestForTag:itemTag tagDimension:self->_renderedTagVariant variant:v6];
 
     [v10 setAllowUnsizedSymbolImages:1];
     v8 = +[DOCTagRenderer shared];
@@ -262,10 +262,10 @@ uint64_t __36__DOCTagDotView__withoutAnimations___block_invoke(uint64_t a1)
 - (void)updateContents
 {
   [(DOCTagDotView *)self loadItemTagImageIfNecessary];
-  v3 = [(DOCTagDotView *)self itemTag];
-  v7 = [v3 tagColorIfNotClear];
+  itemTag = [(DOCTagDotView *)self itemTag];
+  tagColorIfNotClear = [itemTag tagColorIfNotClear];
 
-  if (v7)
+  if (tagColorIfNotClear)
   {
     [MEMORY[0x277D75348] whiteColor];
   }
@@ -275,9 +275,9 @@ uint64_t __36__DOCTagDotView__withoutAnimations___block_invoke(uint64_t a1)
     [MEMORY[0x277D06260] nonClearNoneTagColor];
   }
   v4 = ;
-  v5 = [v4 CGColor];
-  v6 = [(DOCTagDotView *)self checkmarkLayer];
-  [v6 setBackgroundColor:v5];
+  cGColor = [v4 CGColor];
+  checkmarkLayer = [(DOCTagDotView *)self checkmarkLayer];
+  [checkmarkLayer setBackgroundColor:cGColor];
 }
 
 - (void)updateLayoutOfLayers
@@ -297,8 +297,8 @@ uint64_t __36__DOCTagDotView__withoutAnimations___block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(DOCTagDotView *)self dotView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  dotView = [(DOCTagDotView *)self dotView];
+  [dotView setFrame:{v4, v6, v8, v10}];
 
   v39 = +[DOCTagCheckmarkView checkmarkImage];
   [v39 size];
@@ -336,18 +336,18 @@ uint64_t __36__DOCTagDotView__withoutAnimations___block_invoke(uint64_t a1)
   y = v44.origin.y;
   width = v44.size.width;
   height = v44.size.height;
-  v27 = [(DOCTagDotView *)self checkmarkLayer];
-  [v27 setFrame:{x, y, width, height}];
+  checkmarkLayer = [(DOCTagDotView *)self checkmarkLayer];
+  [checkmarkLayer setFrame:{x, y, width, height}];
 
-  v28 = [(DOCTagDotView *)self checkmarkLayer];
-  [v28 bounds];
+  checkmarkLayer2 = [(DOCTagDotView *)self checkmarkLayer];
+  [checkmarkLayer2 bounds];
   v30 = v29;
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  v37 = [(DOCTagDotView *)self checkmarkLayer];
-  v38 = [v37 mask];
-  [v38 setFrame:{v30, v32, v34, v36}];
+  checkmarkLayer3 = [(DOCTagDotView *)self checkmarkLayer];
+  mask = [checkmarkLayer3 mask];
+  [mask setFrame:{v30, v32, v34, v36}];
 }
 
 @end

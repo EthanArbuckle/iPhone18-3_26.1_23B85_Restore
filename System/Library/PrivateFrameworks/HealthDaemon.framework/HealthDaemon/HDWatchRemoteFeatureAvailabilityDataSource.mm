@@ -2,7 +2,7 @@
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)iOSVersion;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)watchAtrialFibrillationDetectionVersion;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)watchOSVersion;
-- (HDWatchRemoteFeatureAvailabilityDataSource)initWithDevice:(id)a3;
+- (HDWatchRemoteFeatureAvailabilityDataSource)initWithDevice:(id)device;
 - (id)currentDeviceClass;
 - (id)iOSBuildVersion;
 - (id)watchBuildType;
@@ -15,16 +15,16 @@
 
 @implementation HDWatchRemoteFeatureAvailabilityDataSource
 
-- (HDWatchRemoteFeatureAvailabilityDataSource)initWithDevice:(id)a3
+- (HDWatchRemoteFeatureAvailabilityDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = HDWatchRemoteFeatureAvailabilityDataSource;
   v6 = [(HDWatchRemoteFeatureAvailabilityDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
@@ -32,10 +32,10 @@
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)iOSVersion
 {
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v6)
+  if (isAppleWatch)
   {
     result = self->_device;
     if (result)
@@ -60,12 +60,12 @@
 
   else
   {
-    v11 = [MEMORY[0x277CCDD30] sharedBehavior];
-    if (v11)
+    mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    if (mEMORY[0x277CCDD30]2)
     {
-      v13 = v11;
-      [v11 currentOSVersionStruct];
-      v11 = v13;
+      v13 = mEMORY[0x277CCDD30]2;
+      [mEMORY[0x277CCDD30]2 currentOSVersionStruct];
+      mEMORY[0x277CCDD30]2 = v13;
     }
 
     else
@@ -81,10 +81,10 @@
 
 - (id)iOSBuildVersion
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v4)
+  if (isAppleWatch)
   {
     if (self)
     {
@@ -96,24 +96,24 @@
       device = 0;
     }
 
-    v6 = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BC08]];
+    currentOSBuild = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BC08]];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v6 = [v7 currentOSBuild];
+    mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    currentOSBuild = [mEMORY[0x277CCDD30]2 currentOSBuild];
   }
 
-  return v6;
+  return currentOSBuild;
 }
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)watchOSVersion
 {
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v6)
+  if (isAppleWatch)
   {
     result = NRWatchOSVersionForLocalDevice();
     if (!self)
@@ -148,13 +148,13 @@ LABEL_8:
 
 - (id)watchRegion
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v4)
+  if (isAppleWatch)
   {
-    v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v6 = [v5 currentDeviceRegionCode];
+    mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    currentDeviceRegionCode = [mEMORY[0x277CCDD30]2 currentDeviceRegionCode];
   }
 
   else
@@ -169,21 +169,21 @@ LABEL_8:
       device = 0;
     }
 
-    v6 = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BBC8]];
+    currentDeviceRegionCode = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BBC8]];
   }
 
-  return v6;
+  return currentDeviceRegionCode;
 }
 
 - (id)watchRegionInfo
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v4)
+  if (isAppleWatch)
   {
-    v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v6 = [v5 currentDeviceRegionInfo];
+    mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    currentDeviceRegionInfo = [mEMORY[0x277CCDD30]2 currentDeviceRegionInfo];
   }
 
   else
@@ -198,18 +198,18 @@ LABEL_8:
       device = 0;
     }
 
-    v6 = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BBD0]];
+    currentDeviceRegionInfo = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BBD0]];
   }
 
-  return v6;
+  return currentDeviceRegionInfo;
 }
 
 - (id)watchModelNumber
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v4)
+  if (isAppleWatch)
   {
     v5 = MGGetStringAnswer();
   }
@@ -234,12 +234,12 @@ LABEL_8:
 
 - (id)watchBuildType
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v4)
+  if (isAppleWatch)
   {
-    v5 = [MEMORY[0x277CCDD30] currentDeviceReleaseType];
+    currentDeviceReleaseType = [MEMORY[0x277CCDD30] currentDeviceReleaseType];
   }
 
   else
@@ -254,21 +254,21 @@ LABEL_8:
       device = 0;
     }
 
-    v5 = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BAA0]];
+    currentDeviceReleaseType = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BAA0]];
   }
 
-  return v5;
+  return currentDeviceReleaseType;
 }
 
 - (id)watchProductType
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v4)
+  if (isAppleWatch)
   {
-    v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v6 = [v5 currentDeviceProductType];
+    mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    currentDeviceProductType = [mEMORY[0x277CCDD30]2 currentDeviceProductType];
   }
 
   else
@@ -283,21 +283,21 @@ LABEL_8:
       device = 0;
     }
 
-    v6 = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BBC0]];
+    currentDeviceProductType = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BBC0]];
   }
 
-  return v6;
+  return currentDeviceProductType;
 }
 
 - (id)watchOSBuildVersion
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v4)
+  if (isAppleWatch)
   {
-    v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v6 = [v5 currentOSBuild];
+    mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    currentOSBuild = [mEMORY[0x277CCDD30]2 currentOSBuild];
   }
 
   else
@@ -312,26 +312,26 @@ LABEL_8:
       device = 0;
     }
 
-    v6 = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BC08]];
+    currentOSBuild = [(NRDevice *)device valueForProperty:*MEMORY[0x277D2BC08]];
   }
 
-  return v6;
+  return currentOSBuild;
 }
 
 - (id)currentDeviceClass
 {
-  v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v3 = [v2 currentDeviceClass];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  currentDeviceClass = [mEMORY[0x277CCDD30] currentDeviceClass];
 
-  return v3;
+  return currentDeviceClass;
 }
 
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)watchAtrialFibrillationDetectionVersion
 {
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 isCompanionCapable];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isCompanionCapable = [mEMORY[0x277CCDD30] isCompanionCapable];
 
-  if (v6)
+  if (isCompanionCapable)
   {
     if (self)
     {

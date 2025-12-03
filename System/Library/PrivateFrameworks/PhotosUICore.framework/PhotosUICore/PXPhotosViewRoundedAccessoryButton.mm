@@ -1,11 +1,11 @@
 @interface PXPhotosViewRoundedAccessoryButton
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
 - (CGPoint)menuOffset;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXPhotosViewRoundedAccessoryButton)initWithCoder:(id)a3;
-- (PXPhotosViewRoundedAccessoryButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXPhotosViewRoundedAccessoryButton)initWithCoder:(id)coder;
+- (PXPhotosViewRoundedAccessoryButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setMenuOffset:(CGPoint)a3;
+- (void)setMenuOffset:(CGPoint)offset;
 @end
 
 @implementation PXPhotosViewRoundedAccessoryButton
@@ -21,23 +21,23 @@
   return result;
 }
 
-- (void)setMenuOffset:(CGPoint)a3
+- (void)setMenuOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v5 = (self + OBJC_IVAR___PXPhotosViewRoundedAccessoryButton_menuOffset);
   swift_beginAccess();
   *v5 = x;
   v5[1] = y;
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
   v18.receiver = self;
   v18.super_class = type metadata accessor for PhotosViewRoundedAccessoryButton();
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = v18.receiver;
-  v6 = [(PXPhotosViewRoundedAccessoryButton *)&v18 menuAttachmentPointForConfiguration:v4];
+  v6 = [(PXPhotosViewRoundedAccessoryButton *)&v18 menuAttachmentPointForConfiguration:configurationCopy];
   v8 = v7;
   v9 = *((*MEMORY[0x1E69E7D40] & *v5) + 0x78);
   v11 = v10 + v9(v6);
@@ -51,11 +51,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1A4113858(width, height);
   v7 = v6;
   v9 = v8;
@@ -69,16 +69,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A4113D98();
 }
 
-- (PXPhotosViewRoundedAccessoryButton)initWithFrame:(CGRect)a3
+- (PXPhotosViewRoundedAccessoryButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (&self->super.super.super.super.super.isa + OBJC_IVAR___PXPhotosViewRoundedAccessoryButton_symbolName);
   *v8 = 0;
   v8[1] = 0;
@@ -91,7 +91,7 @@
   return [(PXPhotosViewRoundedAccessoryButton *)&v12 initWithFrame:x, y, width, height];
 }
 
-- (PXPhotosViewRoundedAccessoryButton)initWithCoder:(id)a3
+- (PXPhotosViewRoundedAccessoryButton)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.super.isa + OBJC_IVAR___PXPhotosViewRoundedAccessoryButton_symbolName);
   *v4 = 0;
@@ -101,8 +101,8 @@
   v5[1] = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for PhotosViewRoundedAccessoryButton();
-  v6 = a3;
-  v7 = [(PXPhotosViewRoundedAccessoryButton *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(PXPhotosViewRoundedAccessoryButton *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

@@ -1,22 +1,22 @@
 @interface IOGPUMetalDeviceAssertion
-- (IOGPUMetalDeviceAssertion)initWithDevice:(id)a3 assertionType:(unint64_t)a4 options:(unint64_t)a5;
+- (IOGPUMetalDeviceAssertion)initWithDevice:(id)device assertionType:(unint64_t)type options:(unint64_t)options;
 - (void)dealloc;
 @end
 
 @implementation IOGPUMetalDeviceAssertion
 
-- (IOGPUMetalDeviceAssertion)initWithDevice:(id)a3 assertionType:(unint64_t)a4 options:(unint64_t)a5
+- (IOGPUMetalDeviceAssertion)initWithDevice:(id)device assertionType:(unint64_t)type options:(unint64_t)options
 {
-  v9 = a3;
+  deviceCopy = device;
   if (objc_opt_respondsToSelector())
   {
-    v9 = [a3 originalObject];
+    deviceCopy = [device originalObject];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (IOGPUDeviceCreateDeviceAssertion([v9 deviceRef], a4, a5, &self->fSendRight.mrs_name))
+    if (IOGPUDeviceCreateDeviceAssertion([deviceCopy deviceRef], type, options, &self->fSendRight.mrs_name))
     {
 
       return 0;
@@ -24,8 +24,8 @@
 
     else
     {
-      self->fAssertionType = a4;
-      self->fAssertionOptions = a5;
+      self->fAssertionType = type;
+      self->fAssertionOptions = options;
     }
   }
 

@@ -1,29 +1,29 @@
 @interface FCNewsPersonalizationArticleEmbeddingsFittingConfiguration
-- (FCNewsPersonalizationArticleEmbeddingsFittingConfiguration)initWithDictionary:(id)a3;
+- (FCNewsPersonalizationArticleEmbeddingsFittingConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsPersonalizationArticleEmbeddingsFittingConfiguration
 
-- (FCNewsPersonalizationArticleEmbeddingsFittingConfiguration)initWithDictionary:(id)a3
+- (FCNewsPersonalizationArticleEmbeddingsFittingConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = FCNewsPersonalizationArticleEmbeddingsFittingConfiguration;
   v5 = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)&v21 init];
   if (v5)
   {
-    v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"articleReadRequirements", 0);
+    v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"articleReadRequirements", 0);
     v7 = [[FCNewsPersonalizationArticleEmbeddingsFittingRequirements alloc] initWithDictionary:v6];
     articleReadRequirements = v5->_articleReadRequirements;
     v5->_articleReadRequirements = v7;
 
-    v9 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"articleSeenRequirements", 0);
+    v9 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"articleSeenRequirements", 0);
     v10 = [[FCNewsPersonalizationArticleEmbeddingsFittingRequirements alloc] initWithDictionary:v9];
     articleSeenRequirements = v5->_articleSeenRequirements;
     v5->_articleSeenRequirements = v10;
 
-    v12 = FCAppConfigurationNumberValue(v4, @"maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings", &unk_1F2E70560);
+    v12 = FCAppConfigurationNumberValue(dictionaryCopy, @"maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings", &unk_1F2E70560);
     maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings = v5->_maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings;
     v5->_maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings = v12;
 
@@ -31,7 +31,7 @@
     v19[1] = 3221225472;
     v19[2] = __81__FCNewsPersonalizationArticleEmbeddingsFittingConfiguration_initWithDictionary___block_invoke;
     v19[3] = &unk_1E7C3F068;
-    v14 = v4;
+    v14 = dictionaryCopy;
     v20 = v14;
     v5->_embeddingType = __81__FCNewsPersonalizationArticleEmbeddingsFittingConfiguration_initWithDictionary___block_invoke(v19);
     v15 = FCAppConfigurationDictionaryValueWithDefaultValue(v14, @"logisticRegressionClassifierConfiguration", 0);
@@ -57,25 +57,25 @@ uint64_t __81__FCNewsPersonalizationArticleEmbeddingsFittingConfiguration_initWi
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self articleReadRequirements];
-  [v3 appendFormat:@"; articleReadRequirements: %@", v4];
+  articleReadRequirements = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self articleReadRequirements];
+  [v3 appendFormat:@"; articleReadRequirements: %@", articleReadRequirements];
 
-  v5 = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self articleSeenRequirements];
-  [v3 appendFormat:@"; articleSeenRequirements: %@", v5];
+  articleSeenRequirements = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self articleSeenRequirements];
+  [v3 appendFormat:@"; articleSeenRequirements: %@", articleSeenRequirements];
 
-  v6 = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings];
-  [v3 appendFormat:@"; maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings: %@", v6];
+  maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings];
+  [v3 appendFormat:@"; maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings: %@", maximumRatioOfArticleSeenEmbeddingsToArticleReadEmbeddings];
 
-  v7 = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self embeddingType];
+  embeddingType = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self embeddingType];
   v8 = @"title";
-  if (v7 == 1)
+  if (embeddingType == 1)
   {
     v8 = @"body";
   }
 
   [v3 appendFormat:@"; embeddingType: %@", v8];
-  v9 = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self logisticRegressionClassifierConfiguration];
-  [v3 appendFormat:@"; logisticRegressionClassifierConfiguration: %@", v9];
+  logisticRegressionClassifierConfiguration = [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self logisticRegressionClassifierConfiguration];
+  [v3 appendFormat:@"; logisticRegressionClassifierConfiguration: %@", logisticRegressionClassifierConfiguration];
 
   [(FCNewsPersonalizationArticleEmbeddingsFittingConfiguration *)self earliestAllowedEmbeddingEventTimestamp];
   [v3 appendFormat:@"; earliestAllowedEmbeddingEventTimestamp: %f", v10];

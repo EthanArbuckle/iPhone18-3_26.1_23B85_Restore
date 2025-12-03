@@ -1,13 +1,13 @@
 @interface VUITransactionOffer
 - (NSString)buyParams;
-- (VUITransactionOffer)initWithDictionary:(id)a3;
+- (VUITransactionOffer)initWithDictionary:(id)dictionary;
 @end
 
 @implementation VUITransactionOffer
 
-- (VUITransactionOffer)initWithDictionary:(id)a3
+- (VUITransactionOffer)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = VUITransactionOffer;
   v6 = [(VUITransactionOffer *)&v34 init];
@@ -16,21 +16,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v6->_transactionOfferDict, a3);
-      v7 = [v5 vui_arrayForKey:@"videosPlayables"];
-      v8 = [v5 vui_dictionaryForKey:@"contentMetadata"];
+      objc_storeStrong(&v6->_transactionOfferDict, dictionary);
+      v7 = [dictionaryCopy vui_arrayForKey:@"videosPlayables"];
+      v8 = [dictionaryCopy vui_dictionaryForKey:@"contentMetadata"];
       v9 = [VUIVideosPlayable videosPlayablesFromDictionaries:v7 andMetadataDictionary:v8];
       v10 = [v9 copy];
       videosPlayables = v6->_videosPlayables;
       v6->_videosPlayables = v10;
 
-      v12 = [v5 vui_dictionaryForKey:@"offer"];
+      v12 = [dictionaryCopy vui_dictionaryForKey:@"offer"];
       v13 = [v12 copy];
       offer = v6->_offer;
       v6->_offer = v13;
 
-      v6->_initiateFamilySetup = [v5 vui_BOOLForKey:@"initiateFamilySetup" defaultValue:0];
-      v15 = [v5 vui_URLForKey:@"sharedWatchUrl"];
+      v6->_initiateFamilySetup = [dictionaryCopy vui_BOOLForKey:@"initiateFamilySetup" defaultValue:0];
+      v15 = [dictionaryCopy vui_URLForKey:@"sharedWatchUrl"];
       sharedWatchUrl = v6->_sharedWatchUrl;
       v6->_sharedWatchUrl = v15;
 
@@ -51,31 +51,31 @@
 
       if (![v21 count] && -[NSArray count](v6->_videosPlayables, "count"))
       {
-        v22 = [(NSArray *)v6->_videosPlayables firstObject];
-        v23 = [v22 metadata];
-        v24 = [v23 showCanonicalId];
-        v25 = [v24 length];
+        firstObject = [(NSArray *)v6->_videosPlayables firstObject];
+        metadata = [firstObject metadata];
+        showCanonicalId = [metadata showCanonicalId];
+        v25 = [showCanonicalId length];
 
         if (v25)
         {
-          v26 = [v22 metadata];
-          v27 = [v26 showCanonicalId];
-          [v21 addObject:v27];
+          metadata2 = [firstObject metadata];
+          showCanonicalId2 = [metadata2 showCanonicalId];
+          [v21 addObject:showCanonicalId2];
         }
 
-        v28 = [v22 canonicalID];
-        v29 = [v28 length];
+        canonicalID = [firstObject canonicalID];
+        v29 = [canonicalID length];
 
         if (v29)
         {
-          v30 = [v22 canonicalID];
-          [v21 addObject:v30];
+          canonicalID2 = [firstObject canonicalID];
+          [v21 addObject:canonicalID2];
         }
       }
 
-      v31 = [v21 allObjects];
+      allObjects = [v21 allObjects];
       canonicalIDs = v6->_canonicalIDs;
-      v6->_canonicalIDs = v31;
+      v6->_canonicalIDs = allObjects;
     }
   }
 
@@ -88,8 +88,8 @@
   v4 = v3;
   if (!v3 || ![v3 length])
   {
-    v5 = [(VUITransactionOffer *)self offer];
-    v6 = [v5 vui_stringForKey:@"buyParams"];
+    offer = [(VUITransactionOffer *)self offer];
+    v6 = [offer vui_stringForKey:@"buyParams"];
 
     v4 = v6;
   }

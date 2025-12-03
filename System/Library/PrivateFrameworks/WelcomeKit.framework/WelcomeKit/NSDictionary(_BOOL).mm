@@ -6,19 +6,19 @@
 
 - (uint64_t)wl_BOOLForKey:()_BOOL
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

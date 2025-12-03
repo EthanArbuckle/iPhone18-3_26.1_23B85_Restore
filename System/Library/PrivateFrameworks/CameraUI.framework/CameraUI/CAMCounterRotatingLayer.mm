@@ -1,16 +1,16 @@
 @interface CAMCounterRotatingLayer
-- (void)addAnimation:(id)a3 forKey:(id)a4;
+- (void)addAnimation:(id)animation forKey:(id)key;
 @end
 
 @implementation CAMCounterRotatingLayer
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"transform"])
+  animationCopy = animation;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"transform"])
   {
-    v8 = v6;
+    v8 = animationCopy;
     if ([v8 isAdditive])
     {
       v20 = 0u;
@@ -21,11 +21,11 @@
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v9 = [v8 fromValue];
-      v10 = v9;
-      if (v9)
+      fromValue = [v8 fromValue];
+      v10 = fromValue;
+      if (fromValue)
       {
-        [v9 CATransform3DValue];
+        [fromValue CATransform3DValue];
       }
 
       else
@@ -51,7 +51,7 @@
 
   v13.receiver = self;
   v13.super_class = CAMCounterRotatingLayer;
-  [(CAMCounterRotatingLayer *)&v13 addAnimation:v6 forKey:v7];
+  [(CAMCounterRotatingLayer *)&v13 addAnimation:animationCopy forKey:keyCopy];
 }
 
 @end

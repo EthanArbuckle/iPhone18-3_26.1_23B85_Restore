@@ -1,74 +1,74 @@
 @interface EDSearchableIndexQueryTransformer
-+ (id)transformSearchableIndexPredicate:(id)a3 suggestion:(id)a4 searchableIndexManager:(id)a5;
-- (EDSearchableIndexQueryTransformer)initWithSearchableIndexManager:(id)a3;
-- (id)persistenceQueryForSearchableIndexQuery:(id)a3;
++ (id)transformSearchableIndexPredicate:(id)predicate suggestion:(id)suggestion searchableIndexManager:(id)manager;
+- (EDSearchableIndexQueryTransformer)initWithSearchableIndexManager:(id)manager;
+- (id)persistenceQueryForSearchableIndexQuery:(id)query;
 @end
 
 @implementation EDSearchableIndexQueryTransformer
 
-- (EDSearchableIndexQueryTransformer)initWithSearchableIndexManager:(id)a3
+- (EDSearchableIndexQueryTransformer)initWithSearchableIndexManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = EDSearchableIndexQueryTransformer;
   v6 = [(EDSearchableIndexQueryTransformer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchableIndexManager, a3);
+    objc_storeStrong(&v6->_searchableIndexManager, manager);
   }
 
   return v7;
 }
 
-- (id)persistenceQueryForSearchableIndexQuery:(id)a3
+- (id)persistenceQueryForSearchableIndexQuery:(id)query
 {
-  v4 = a3;
-  v5 = [v4 predicate];
-  v6 = [v4 suggestion];
-  v7 = [(EDSearchableIndexQueryTransformer *)self searchableIndexManager];
-  v8 = [v5 ed_transformSearchableIndexPredicateWithSuggestion:v6 searchableIndexManager:v7];
+  queryCopy = query;
+  predicate = [queryCopy predicate];
+  suggestion = [queryCopy suggestion];
+  searchableIndexManager = [(EDSearchableIndexQueryTransformer *)self searchableIndexManager];
+  v8 = [predicate ed_transformSearchableIndexPredicateWithSuggestion:suggestion searchableIndexManager:searchableIndexManager];
 
   v9 = objc_alloc(MEMORY[0x1E699AE28]);
-  v10 = [v4 targetClass];
-  v11 = [v4 sortDescriptors];
-  v12 = [v9 initWithTargetClass:v10 predicate:v8 sortDescriptors:v11];
+  targetClass = [queryCopy targetClass];
+  sortDescriptors = [queryCopy sortDescriptors];
+  v12 = [v9 initWithTargetClass:targetClass predicate:v8 sortDescriptors:sortDescriptors];
 
   return v12;
 }
 
-+ (id)transformSearchableIndexPredicate:(id)a3 suggestion:(id)a4 searchableIndexManager:(id)a5
++ (id)transformSearchableIndexPredicate:(id)predicate suggestion:(id)suggestion searchableIndexManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 index];
-  v11 = [v10 searchableIndexBundleID];
+  predicateCopy = predicate;
+  suggestionCopy = suggestion;
+  managerCopy = manager;
+  index = [managerCopy index];
+  searchableIndexBundleID = [index searchableIndexBundleID];
   v23 = 0;
-  v12 = [EDSearchableIndexExpressionGenerator expressionForPredicate:v7 suggestion:v8 bundleID:v11 nonSpotlightPredicates:&v23];
+  v12 = [EDSearchableIndexExpressionGenerator expressionForPredicate:predicateCopy suggestion:suggestionCopy bundleID:searchableIndexBundleID nonSpotlightPredicates:&v23];
   v13 = v23;
 
   v14 = [objc_opt_class() searchableItemResultForExpression:v12];
-  v15 = [v14 snippetData];
-  v16 = [MEMORY[0x1E696AF00] currentThread];
-  v17 = [v16 threadDictionary];
-  [v17 setObject:v15 forKeyedSubscript:@"EDSearchableIndexQueryTransformer.snippetHints"];
+  snippetData = [v14 snippetData];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  [threadDictionary setObject:snippetData forKeyedSubscript:@"EDSearchableIndexQueryTransformer.snippetHints"];
 
-  v18 = [v14 identifiers];
-  v19 = [v18 count];
+  identifiers = [v14 identifiers];
+  v19 = [identifiers count];
 
   if (v19)
   {
-    v20 = [v14 identifiers];
-    v21 = [EDMessageListItemPredicates predicateForMessagesWithPersistentIDs:v20];
+    identifiers2 = [v14 identifiers];
+    ef_matchNothingPredicate = [EDMessageListItemPredicates predicateForMessagesWithPersistentIDs:identifiers2];
   }
 
   else
   {
-    v21 = [MEMORY[0x1E696AE18] ef_matchNothingPredicate];
+    ef_matchNothingPredicate = [MEMORY[0x1E696AE18] ef_matchNothingPredicate];
   }
 
-  return v21;
+  return ef_matchNothingPredicate;
 }
 
 @end

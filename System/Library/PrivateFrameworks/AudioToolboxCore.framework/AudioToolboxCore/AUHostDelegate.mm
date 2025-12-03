@@ -1,9 +1,9 @@
 @interface AUHostDelegate
 - (AUAudioUnit)audioUnit;
 - (AUHostDelegate)init;
-- (void)propertiesChanged:(id)a3;
-- (void)speechSynthesisMetadataAvailable:(id)a3 speechRequest:(id)a4;
-- (void)syncParameter:(unint64_t)a3 value:(float)a4 extOriginator:(unint64_t)a5 hostTime:(unint64_t)a6 eventType:(unsigned int)a7;
+- (void)propertiesChanged:(id)changed;
+- (void)speechSynthesisMetadataAvailable:(id)available speechRequest:(id)request;
+- (void)syncParameter:(unint64_t)parameter value:(float)value extOriginator:(unint64_t)originator hostTime:(unint64_t)time eventType:(unsigned int)type;
 @end
 
 @implementation AUHostDelegate
@@ -15,7 +15,7 @@
   return WeakRetained;
 }
 
-- (void)syncParameter:(unint64_t)a3 value:(float)a4 extOriginator:(unint64_t)a5 hostTime:(unint64_t)a6 eventType:(unsigned int)a7
+- (void)syncParameter:(unint64_t)parameter value:(float)value extOriginator:(unint64_t)originator hostTime:(unint64_t)time eventType:(unsigned int)type
 {
   mParameterQueue = self->mParameterQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -23,11 +23,11 @@
   block[2] = __71__AUHostDelegate_syncParameter_value_extOriginator_hostTime_eventType___block_invoke;
   block[3] = &unk_1E72C0F30;
   block[4] = self;
-  block[5] = a3;
-  v15 = a4;
-  block[6] = a5;
-  block[7] = a6;
-  v16 = a7;
+  block[5] = parameter;
+  valueCopy = value;
+  block[6] = originator;
+  block[7] = time;
+  typeCopy = type;
   dispatch_async(mParameterQueue, block);
 }
 
@@ -41,25 +41,25 @@ void __71__AUHostDelegate_syncParameter_value_extOriginator_hostTime_eventType__
   v5 = objc_loadWeakRetained((*(a1 + 32) + 16));
 }
 
-- (void)speechSynthesisMetadataAvailable:(id)a3 speechRequest:(id)a4
+- (void)speechSynthesisMetadataAvailable:(id)available speechRequest:(id)request
 {
-  v11 = a3;
-  v6 = a4;
+  availableCopy = available;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_audioUnit);
-  v8 = [WeakRetained speechSynthesisOutputMetadataBlock];
+  speechSynthesisOutputMetadataBlock = [WeakRetained speechSynthesisOutputMetadataBlock];
 
-  if (v8)
+  if (speechSynthesisOutputMetadataBlock)
   {
     v9 = objc_loadWeakRetained(&self->_audioUnit);
-    v10 = [v9 speechSynthesisOutputMetadataBlock];
-    (v10)[2](v10, v11, v6);
+    speechSynthesisOutputMetadataBlock2 = [v9 speechSynthesisOutputMetadataBlock];
+    (speechSynthesisOutputMetadataBlock2)[2](speechSynthesisOutputMetadataBlock2, availableCopy, requestCopy);
   }
 }
 
-- (void)propertiesChanged:(id)a3
+- (void)propertiesChanged:(id)changed
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_audioUnit);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -67,7 +67,7 @@ void __71__AUHostDelegate_syncParameter_value_extOriginator_hostTime_eventType__
   if (isKindOfClass)
   {
     v7 = objc_loadWeakRetained(&self->_audioUnit);
-    [v7 propertiesChanged:v4];
+    [v7 propertiesChanged:changedCopy];
   }
 
   else
@@ -76,7 +76,7 @@ void __71__AUHostDelegate_syncParameter_value_extOriginator_hostTime_eventType__
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v4;
+    v8 = changedCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {

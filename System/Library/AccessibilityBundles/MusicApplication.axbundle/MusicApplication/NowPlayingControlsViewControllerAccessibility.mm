@@ -1,9 +1,9 @@
 @interface NowPlayingControlsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityLeftbuttonValueString;
 - (id)_accessibilityResponseTracklist;
 - (id)_accessibilityResponseTracklistPlayingItem;
-- (id)_axLikedBannedValueForState:(int64_t)a3;
+- (id)_axLikedBannedValueForState:(int64_t)state;
 - (id)_axUpNextBadgeValue;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
@@ -11,32 +11,32 @@
 
 @implementation NowPlayingControlsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"contextButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"leftButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"playPauseStopButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"rightButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"subtitleButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"dismissButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPCPlayerResponseItem" hasInstanceMethod:@"likeCommand" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPCPlayerResponseItem" hasInstanceMethod:@"dislikeCommand" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"MPCPlayerFeedbackCommand" hasRequiredInstanceMethod:@"value"];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"accessibilityNowPlayingResponse" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"setControlsHidden:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"tracklist" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"accessibilityLyricsButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"accessibilityQueueButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"shuffleType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"repeatType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"playingItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPCPlayerResponseItem" hasInstanceMethod:@"isAutoPlay" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"actionAtQueueEnd" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasSwiftField:@"areControlsHidden" withSwiftType:"Bool"];
-  [v3 validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"accessibilityPlayingItemAudioTraitButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"contextButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"leftButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"playPauseStopButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"rightButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"subtitleButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"dismissButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponseItem" hasInstanceMethod:@"likeCommand" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponseItem" hasInstanceMethod:@"dislikeCommand" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"MPCPlayerFeedbackCommand" hasRequiredInstanceMethod:@"value"];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"accessibilityNowPlayingResponse" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"setControlsHidden:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"tracklist" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"accessibilityLyricsButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"accessibilityQueueButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"shuffleType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"repeatType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"playingItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponseItem" hasInstanceMethod:@"isAutoPlay" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"actionAtQueueEnd" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasSwiftField:@"areControlsHidden" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"MusicNowPlayingControlsViewController" hasInstanceMethod:@"accessibilityPlayingItemAudioTraitButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -188,16 +188,16 @@ id __91__NowPlayingControlsViewControllerAccessibility__accessibilityLoadAccessi
   return v2;
 }
 
-- (id)_axLikedBannedValueForState:(int64_t)a3
+- (id)_axLikedBannedValueForState:(int64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityMusicLocalizedString(off_29F2DDB28[a3]);
+    v4 = accessibilityMusicLocalizedString(off_29F2DDB28[state]);
   }
 
   return v4;
@@ -213,11 +213,11 @@ id __91__NowPlayingControlsViewControllerAccessibility__accessibilityLoadAccessi
 
 - (id)_accessibilityLeftbuttonValueString
 {
-  v3 = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseTracklistPlayingItem];
-  v4 = [v3 safeValueForKey:@"likeCommand"];
+  _accessibilityResponseTracklistPlayingItem = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseTracklistPlayingItem];
+  v4 = [_accessibilityResponseTracklistPlayingItem safeValueForKey:@"likeCommand"];
 
-  v5 = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseTracklistPlayingItem];
-  v6 = [v5 safeValueForKey:@"dislikeCommand"];
+  _accessibilityResponseTracklistPlayingItem2 = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseTracklistPlayingItem];
+  v6 = [_accessibilityResponseTracklistPlayingItem2 safeValueForKey:@"dislikeCommand"];
 
   if (v4 | v6)
   {
@@ -252,9 +252,9 @@ id __91__NowPlayingControlsViewControllerAccessibility__accessibilityLoadAccessi
 
 - (id)_axUpNextBadgeValue
 {
-  v3 = [MEMORY[0x29EDBA0F8] string];
-  v4 = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseTracklist];
-  v5 = [v4 safeIntegerForKey:@"repeatType"];
+  string = [MEMORY[0x29EDBA0F8] string];
+  _accessibilityResponseTracklist = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseTracklist];
+  v5 = [_accessibilityResponseTracklist safeIntegerForKey:@"repeatType"];
   if (v5 == 2)
   {
     v6 = @"repeat.all";
@@ -279,11 +279,11 @@ id __91__NowPlayingControlsViewControllerAccessibility__accessibilityLoadAccessi
     v18 = v23 = @"__AXStringForVariablesSentinel";
     v9 = __UIAXStringForVariables();
 
-    v3 = v9;
+    string = v9;
   }
 
 LABEL_7:
-  if (([v4 safeIntegerForKey:{@"shuffleType", v18, v20, v23}] - 1) <= 1)
+  if (([_accessibilityResponseTracklist safeIntegerForKey:{@"shuffleType", v18, v20, v23}] - 1) <= 1)
   {
     v10 = accessibilityMusicLocalizedString(@"shuffle.on");
     if (v10)
@@ -294,37 +294,37 @@ LABEL_7:
       v19 = v24 = @"__AXStringForVariablesSentinel";
       v12 = __UIAXStringForVariables();
 
-      v3 = v12;
+      string = v12;
     }
   }
 
   v13 = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseTracklistPlayingItem:v19];
   v14 = [v13 safeValueForKey:@"isAutoPlay"];
 
-  if (v14 && [v4 safeIntegerForKey:@"actionAtQueueEnd"] == 3)
+  if (v14 && [_accessibilityResponseTracklist safeIntegerForKey:@"actionAtQueueEnd"] == 3)
   {
     v15 = accessibilityMusicLocalizedString(@"autoplay.button");
     v22 = accessibilityMusicLocalizedString(@"autoplay.on");
     v16 = __UIAXStringForVariables();
 
-    v3 = v16;
+    string = v16;
   }
 
-  return v3;
+  return string;
 }
 
 - (id)_accessibilityResponseTracklist
 {
-  v2 = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseForViewController];
-  v3 = [v2 safeValueForKey:@"tracklist"];
+  _accessibilityResponseForViewController = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseForViewController];
+  v3 = [_accessibilityResponseForViewController safeValueForKey:@"tracklist"];
 
   return v3;
 }
 
 - (id)_accessibilityResponseTracklistPlayingItem
 {
-  v2 = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseTracklist];
-  v3 = [v2 safeValueForKey:@"playingItem"];
+  _accessibilityResponseTracklist = [(NowPlayingControlsViewControllerAccessibility *)self _accessibilityResponseTracklist];
+  v3 = [_accessibilityResponseTracklist safeValueForKey:@"playingItem"];
 
   return v3;
 }

@@ -1,15 +1,15 @@
 @interface SUUILockupItemCollectionViewCell
-- (SUUILockupItemCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)configureForItem:(id)a3 clientContext:(id)a4;
+- (SUUILockupItemCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)configureForItem:(id)item clientContext:(id)context;
 @end
 
 @implementation SUUILockupItemCollectionViewCell
 
-- (SUUILockupItemCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUILockupItemCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUILockupItemCollectionViewCell;
-  v3 = [(SUUICollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[SUUILockupItemCellLayout alloc] initWithCollectionViewCell:v3];
@@ -20,65 +20,65 @@
   return v3;
 }
 
-- (void)configureForItem:(id)a3 clientContext:(id)a4
+- (void)configureForItem:(id)item clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  contextCopy = context;
   layout = self->_layout;
-  v9 = [v6 artistName];
-  [(SUUILockupItemCellLayout *)layout setArtistName:v9];
+  artistName = [itemCopy artistName];
+  [(SUUILockupItemCellLayout *)layout setArtistName:artistName];
 
   v10 = self->_layout;
-  v11 = [v6 categoryName];
-  [(SUUILockupItemCellLayout *)v10 setCategoryString:v11];
+  categoryName = [itemCopy categoryName];
+  [(SUUILockupItemCellLayout *)v10 setCategoryString:categoryName];
 
   v12 = self->_layout;
-  v13 = SUUILockupItemCountString(v6, v7);
+  v13 = SUUILockupItemCountString(itemCopy, contextCopy);
   [(SUUILockupItemCellLayout *)v12 setItemCountString:v13];
 
-  -[SUUILockupItemCellLayout setNumberOfUserRatings:](self->_layout, "setNumberOfUserRatings:", [v6 numberOfUserRatings]);
+  -[SUUILockupItemCellLayout setNumberOfUserRatings:](self->_layout, "setNumberOfUserRatings:", [itemCopy numberOfUserRatings]);
   v14 = self->_layout;
-  v15 = [v6 title];
-  [(SUUILockupItemCellLayout *)v14 setTitle:v15];
+  title = [itemCopy title];
+  [(SUUILockupItemCellLayout *)v14 setTitle:title];
 
   v16 = self->_layout;
-  [v6 userRating];
+  [itemCopy userRating];
   *&v18 = v17 / 5.0;
   [(SUUILockupItemCellLayout *)v16 setUserRating:v18];
   v19 = self->_layout;
-  v20 = [v6 editorialBadge];
-  [(SUUILockupItemCellLayout *)v19 setEditorialBadgeString:v20];
+  editorialBadge = [itemCopy editorialBadge];
+  [(SUUILockupItemCellLayout *)v19 setEditorialBadgeString:editorialBadge];
 
-  if ([v6 itemKind] == 12)
+  if ([itemCopy itemKind] == 12)
   {
     v21 = self->_layout;
-    v22 = [v6 primaryItemOffer];
-    [(SUUIItemCellLayout *)v21 setItemOffer:v22];
+    primaryItemOffer = [itemCopy primaryItemOffer];
+    [(SUUIItemCellLayout *)v21 setItemOffer:primaryItemOffer];
 
-    v23 = [(SUUIItemCellLayout *)self->_layout itemOfferButton];
-    [v23 setUniversal:{SUUIItemDeviceFamilyIsUniversal(objc_msgSend(v6, "deviceFamilies"))}];
+    itemOfferButton = [(SUUIItemCellLayout *)self->_layout itemOfferButton];
+    [itemOfferButton setUniversal:{SUUIItemDeviceFamilyIsUniversal(objc_msgSend(itemCopy, "deviceFamilies"))}];
 
-    if ([v6 hasInAppPurchases])
+    if ([itemCopy hasInAppPurchases])
     {
-      v24 = [v7 valueForConfigurationKey:@"inappnote"];
+      itemOfferButton2 = [contextCopy valueForConfigurationKey:@"inappnote"];
     }
 
     else
     {
-      v24 = 0;
+      itemOfferButton2 = 0;
     }
 
-    [(SUUIItemCellLayout *)self->_layout setItemOfferNoticeString:v24];
+    [(SUUIItemCellLayout *)self->_layout setItemOfferNoticeString:itemOfferButton2];
   }
 
   else
   {
-    if (v6 && !configureForItem_clientContext__sViewOffer_1)
+    if (itemCopy && !configureForItem_clientContext__sViewOffer_1)
     {
       v25 = [SUUIItemOffer alloc];
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"VIEW_BUTTON"];
+        [contextCopy localizedStringForKey:@"VIEW_BUTTON"];
       }
 
       else
@@ -93,13 +93,13 @@
 
     [(SUUIItemCellLayout *)self->_layout setItemOffer:?];
     [(SUUIItemCellLayout *)self->_layout setItemOfferNoticeString:0];
-    v24 = [(SUUIItemCellLayout *)self->_layout itemOfferButton];
-    [v24 setUniversal:0];
+    itemOfferButton2 = [(SUUIItemCellLayout *)self->_layout itemOfferButton];
+    [itemOfferButton2 setUniversal:0];
   }
 
   v29.receiver = self;
   v29.super_class = SUUILockupItemCollectionViewCell;
-  [(SUUIItemCollectionViewCell *)&v29 configureForItem:v6 clientContext:v7];
+  [(SUUIItemCollectionViewCell *)&v29 configureForItem:itemCopy clientContext:contextCopy];
 }
 
 @end

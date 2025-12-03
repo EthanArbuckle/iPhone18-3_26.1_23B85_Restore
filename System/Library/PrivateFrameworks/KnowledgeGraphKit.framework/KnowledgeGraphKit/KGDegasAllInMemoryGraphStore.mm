@@ -1,27 +1,27 @@
 @interface KGDegasAllInMemoryGraphStore
-- (BOOL)addEdges:(id)a3 error:(id *)a4;
-- (BOOL)addNodes:(id)a3 error:(id *)a4;
-- (BOOL)beginTransactionWithError:(id *)a3;
-- (BOOL)commitTransactionWithError:(id *)a3;
-- (BOOL)openWithMode:(unint64_t)a3 error:(id *)a4;
-- (BOOL)rollbackTransactionWithError:(id *)a3;
-- (BOOL)updateEdgeForIdentifier:(unint64_t)a3 withProperties:(id)a4 error:(id *)a5;
-- (BOOL)updateNodeForIdentifier:(unint64_t)a3 withProperties:(id)a4 error:(id *)a5;
-- (KGDegasAllInMemoryGraphStore)initWithURL:(id)a3;
-- (void)enumerateModelEdgesWithBlock:(id)a3;
-- (void)enumerateModelNodesWithBlock:(id)a3;
+- (BOOL)addEdges:(id)edges error:(id *)error;
+- (BOOL)addNodes:(id)nodes error:(id *)error;
+- (BOOL)beginTransactionWithError:(id *)error;
+- (BOOL)commitTransactionWithError:(id *)error;
+- (BOOL)openWithMode:(unint64_t)mode error:(id *)error;
+- (BOOL)rollbackTransactionWithError:(id *)error;
+- (BOOL)updateEdgeForIdentifier:(unint64_t)identifier withProperties:(id)properties error:(id *)error;
+- (BOOL)updateNodeForIdentifier:(unint64_t)identifier withProperties:(id)properties error:(id *)error;
+- (KGDegasAllInMemoryGraphStore)initWithURL:(id)l;
+- (void)enumerateModelEdgesWithBlock:(id)block;
+- (void)enumerateModelNodesWithBlock:(id)block;
 @end
 
 @implementation KGDegasAllInMemoryGraphStore
 
-- (BOOL)addEdges:(id)a3 error:(id *)a4
+- (BOOL)addEdges:(id)edges error:(id *)error
 {
-  v6 = a3;
+  edgesCopy = edges;
   v9.receiver = self;
   v9.super_class = KGDegasAllInMemoryGraphStore;
-  if ([(KGMemoryGraphStore *)&v9 addEdges:v6 error:a4])
+  if ([(KGMemoryGraphStore *)&v9 addEdges:edgesCopy error:error])
   {
-    v7 = [(KGDatabase *)self->_database addEdges:v6 error:a4];
+    v7 = [(KGDatabase *)self->_database addEdges:edgesCopy error:error];
   }
 
   else
@@ -32,14 +32,14 @@
   return v7;
 }
 
-- (BOOL)addNodes:(id)a3 error:(id *)a4
+- (BOOL)addNodes:(id)nodes error:(id *)error
 {
-  v6 = a3;
+  nodesCopy = nodes;
   v9.receiver = self;
   v9.super_class = KGDegasAllInMemoryGraphStore;
-  if ([(KGMemoryGraphStore *)&v9 addNodes:v6 error:a4])
+  if ([(KGMemoryGraphStore *)&v9 addNodes:nodesCopy error:error])
   {
-    v7 = [(KGDatabase *)self->_database addNodes:v6 error:a4];
+    v7 = [(KGDatabase *)self->_database addNodes:nodesCopy error:error];
   }
 
   else
@@ -50,14 +50,14 @@
   return v7;
 }
 
-- (BOOL)updateEdgeForIdentifier:(unint64_t)a3 withProperties:(id)a4 error:(id *)a5
+- (BOOL)updateEdgeForIdentifier:(unint64_t)identifier withProperties:(id)properties error:(id *)error
 {
-  v8 = a4;
-  if ([(KGDatabase *)self->_database setEdgeProperties:v8 forIdentifier:a3 error:a5])
+  propertiesCopy = properties;
+  if ([(KGDatabase *)self->_database setEdgeProperties:propertiesCopy forIdentifier:identifier error:error])
   {
     v11.receiver = self;
     v11.super_class = KGDegasAllInMemoryGraphStore;
-    v9 = [(KGMemoryGraphStore *)&v11 updateEdgeForIdentifier:a3 withProperties:v8 error:a5];
+    v9 = [(KGMemoryGraphStore *)&v11 updateEdgeForIdentifier:identifier withProperties:propertiesCopy error:error];
   }
 
   else
@@ -68,14 +68,14 @@
   return v9;
 }
 
-- (BOOL)updateNodeForIdentifier:(unint64_t)a3 withProperties:(id)a4 error:(id *)a5
+- (BOOL)updateNodeForIdentifier:(unint64_t)identifier withProperties:(id)properties error:(id *)error
 {
-  v8 = a4;
-  if ([(KGDatabase *)self->_database setNodeProperties:v8 forIdentifier:a3 error:a5])
+  propertiesCopy = properties;
+  if ([(KGDatabase *)self->_database setNodeProperties:propertiesCopy forIdentifier:identifier error:error])
   {
     v11.receiver = self;
     v11.super_class = KGDegasAllInMemoryGraphStore;
-    v9 = [(KGMemoryGraphStore *)&v11 updateNodeForIdentifier:a3 withProperties:v8 error:a5];
+    v9 = [(KGMemoryGraphStore *)&v11 updateNodeForIdentifier:identifier withProperties:propertiesCopy error:error];
   }
 
   else
@@ -86,33 +86,33 @@
   return v9;
 }
 
-- (void)enumerateModelEdgesWithBlock:(id)a3
+- (void)enumerateModelEdgesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   database = self->_database;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__KGDegasAllInMemoryGraphStore_enumerateModelEdgesWithBlock___block_invoke;
   v7[3] = &unk_2797FEBA8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(KGDatabase *)database enumerateEdgesWithIdentifiers:0 block:v7];
 }
 
-- (void)enumerateModelNodesWithBlock:(id)a3
+- (void)enumerateModelNodesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   database = self->_database;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__KGDegasAllInMemoryGraphStore_enumerateModelNodesWithBlock___block_invoke;
   v7[3] = &unk_2797FEB80;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(KGDatabase *)database enumerateNodesWithIdentifiers:0 block:v7];
 }
 
-- (BOOL)rollbackTransactionWithError:(id *)a3
+- (BOOL)rollbackTransactionWithError:(id *)error
 {
   v5 = self->_transactionCounter - 1;
   self->_transactionCounter = v5;
@@ -126,17 +126,17 @@
     }
   }
 
-  return [(KGDatabase *)self->_database rollbackTransactionWithError:a3];
+  return [(KGDatabase *)self->_database rollbackTransactionWithError:error];
 }
 
-- (BOOL)commitTransactionWithError:(id *)a3
+- (BOOL)commitTransactionWithError:(id *)error
 {
   v3 = self->_transactionCounter - 1;
   self->_transactionCounter = v3;
-  return v3 || [(KGDatabase *)self->_database commitTransactionWithError:a3];
+  return v3 || [(KGDatabase *)self->_database commitTransactionWithError:error];
 }
 
-- (BOOL)beginTransactionWithError:(id *)a3
+- (BOOL)beginTransactionWithError:(id *)error
 {
   transactionCounter = self->_transactionCounter;
   if (transactionCounter)
@@ -146,7 +146,7 @@
 
   else
   {
-    result = [(KGDatabase *)self->_database beginTransactionWithError:a3];
+    result = [(KGDatabase *)self->_database beginTransactionWithError:error];
     transactionCounter = self->_transactionCounter;
   }
 
@@ -154,14 +154,14 @@
   return result;
 }
 
-- (BOOL)openWithMode:(unint64_t)a3 error:(id *)a4
+- (BOOL)openWithMode:(unint64_t)mode error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v7 = [[KGDatabase alloc] initWithURL:self->_url];
   database = self->_database;
   self->_database = v7;
 
-  v9 = [(KGDatabase *)self->_database openWithMode:a3 error:a4];
+  v9 = [(KGDatabase *)self->_database openWithMode:mode error:error];
   if (v9)
   {
     v10 = objc_autoreleasePoolPush();
@@ -245,16 +245,16 @@ id __51__KGDegasAllInMemoryGraphStore_openWithMode_error___block_invoke_2(uint64
   return [*(a1 + 32) insertEdgeWithIdentifier:? labels:? properties:? sourceNodeIdentifier:? targetNodeIdentifier:? error:?];
 }
 
-- (KGDegasAllInMemoryGraphStore)initWithURL:(id)a3
+- (KGDegasAllInMemoryGraphStore)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = KGDegasAllInMemoryGraphStore;
-  v6 = [(KGMemoryGraphStore *)&v9 initForSubclasses];
-  v7 = v6;
-  if (v6)
+  initForSubclasses = [(KGMemoryGraphStore *)&v9 initForSubclasses];
+  v7 = initForSubclasses;
+  if (initForSubclasses)
   {
-    objc_storeStrong(v6 + 15, a3);
+    objc_storeStrong(initForSubclasses + 15, l);
   }
 
   return v7;

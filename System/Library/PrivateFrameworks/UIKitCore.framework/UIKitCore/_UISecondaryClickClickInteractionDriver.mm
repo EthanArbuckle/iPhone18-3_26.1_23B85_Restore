@@ -1,14 +1,14 @@
 @interface _UISecondaryClickClickInteractionDriver
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (CGPoint)locationInCoordinateSpace:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (CGPoint)locationInCoordinateSpace:(id)space;
 - (UIView)view;
 - (_UIClickInteractionDriverDelegate)delegate;
 - (_UISecondaryClickClickInteractionDriver)init;
 - (unint64_t)inputPrecision;
 - (void)_attemptSecondaryClick;
-- (void)_handleGestureRecognizer:(id)a3;
+- (void)_handleGestureRecognizer:(id)recognizer;
 - (void)cancelInteraction;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 @end
 
 @implementation _UISecondaryClickClickInteractionDriver
@@ -35,24 +35,24 @@
   return WeakRetained;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
-    v6 = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
-    v7 = [v6 view];
-    [v7 removeGestureRecognizer:v6];
+    gestureRecognizer = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
+    view = [gestureRecognizer view];
+    [view removeGestureRecognizer:gestureRecognizer];
 
     v8 = objc_storeWeak(&self->_view, obj);
     if (obj)
     {
       self->_currentState = 1;
       v9 = objc_loadWeakRetained(&self->_view);
-      [v9 addGestureRecognizer:v6];
+      [v9 addGestureRecognizer:gestureRecognizer];
     }
 
     v5 = obj;
@@ -61,25 +61,25 @@
 
 - (void)cancelInteraction
 {
-  v3 = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
-  [v3 setEnabled:0];
+  gestureRecognizer = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer setEnabled:0];
 
-  v4 = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
-  [v4 setEnabled:1];
+  gestureRecognizer2 = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
+  [gestureRecognizer2 setEnabled:1];
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UISecondaryClickClickInteractionDriver *)self view];
-  if (v5)
+  spaceCopy = space;
+  view = [(_UISecondaryClickClickInteractionDriver *)self view];
+  if (view)
   {
-    v6 = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
-    [v6 locationInView:v5];
+    gestureRecognizer = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
+    [gestureRecognizer locationInView:view];
     v8 = v7;
     v10 = v9;
 
-    [v5 convertPoint:v4 toCoordinateSpace:{v8, v10}];
+    [view convertPoint:spaceCopy toCoordinateSpace:{v8, v10}];
     v12 = v11;
     v14 = v13;
   }
@@ -99,10 +99,10 @@
 
 - (unint64_t)inputPrecision
 {
-  v2 = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
-  if (v2)
+  gestureRecognizer = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
+  if (gestureRecognizer)
   {
-    v3 = v2[24];
+    v3 = gestureRecognizer[24];
   }
 
   else
@@ -113,24 +113,24 @@
   return v3;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  gestureRecognizer = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
 
-  if (v8 == v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (gestureRecognizer == recognizerCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v6 view];
-    v10 = [v7 view];
-    if (v9 == v10)
+    view = [recognizerCopy view];
+    view2 = [gestureRecognizerCopy view];
+    if (view == view2)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = [v9 isDescendantOfView:v10];
+      v11 = [view isDescendantOfView:view2];
     }
   }
 
@@ -142,18 +142,18 @@
   return v11;
 }
 
-- (void)_handleGestureRecognizer:(id)a3
+- (void)_handleGestureRecognizer:(id)recognizer
 {
-  v4 = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
-  v5 = [v4 state];
+  gestureRecognizer = [(_UISecondaryClickClickInteractionDriver *)self gestureRecognizer];
+  state = [gestureRecognizer state];
 
-  if (v5 == 1)
+  if (state == 1)
   {
 
     [(_UISecondaryClickClickInteractionDriver *)self _attemptSecondaryClick];
   }
 
-  else if (v5 == 4)
+  else if (state == 4)
   {
     currentState = self->_currentState;
 
@@ -163,13 +163,13 @@
 
 - (void)_attemptSecondaryClick
 {
-  v3 = [(_UISecondaryClickClickInteractionDriver *)self delegate];
+  delegate = [(_UISecondaryClickClickInteractionDriver *)self delegate];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __65___UISecondaryClickClickInteractionDriver__attemptSecondaryClick__block_invoke;
   v4[3] = &unk_1E7105EF8;
   v4[4] = self;
-  [v3 clickDriver:self shouldBegin:v4];
+  [delegate clickDriver:self shouldBegin:v4];
 }
 
 - (UIView)view

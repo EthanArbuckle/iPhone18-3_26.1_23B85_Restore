@@ -1,27 +1,27 @@
 @interface NIServerFindingRangingProviderPeerInfo
-- (NIServerFindingRangingProviderPeerInfo)initWithAdvertisement:(id)a3 OOBRangingParameters:(const OOBRangingParameters *)a4;
+- (NIServerFindingRangingProviderPeerInfo)initWithAdvertisement:(id)advertisement OOBRangingParameters:(const OOBRangingParameters *)parameters;
 - (id).cxx_construct;
 - (optional<rose::finding::FindeeData>)getAlgorithmAidingData;
 - (optional<rose::finding::SignallingData>)getSignallingData;
 - (void)resetAlgorithmAidingData;
 - (void)resetSignallingData;
-- (void)setAlgorithmAidingData:(const void *)a3;
-- (void)setSignallingData:(const void *)a3;
+- (void)setAlgorithmAidingData:(const void *)data;
+- (void)setSignallingData:(const void *)data;
 @end
 
 @implementation NIServerFindingRangingProviderPeerInfo
 
-- (NIServerFindingRangingProviderPeerInfo)initWithAdvertisement:(id)a3 OOBRangingParameters:(const OOBRangingParameters *)a4
+- (NIServerFindingRangingProviderPeerInfo)initWithAdvertisement:(id)advertisement OOBRangingParameters:(const OOBRangingParameters *)parameters
 {
-  v7 = a3;
+  advertisementCopy = advertisement;
   v11.receiver = self;
   v11.super_class = NIServerFindingRangingProviderPeerInfo;
   v8 = [(NIServerFindingRangingProviderPeerInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_advertisement, a3);
-    v9->_OOBRangingParameters = *a4;
+    objc_storeStrong(&v8->_advertisement, advertisement);
+    v9->_OOBRangingParameters = *parameters;
     if (v9->_algorithmAidingData.__engaged_)
     {
       v9->_algorithmAidingData.__engaged_ = 0;
@@ -38,26 +38,26 @@
   return v9;
 }
 
-- (void)setAlgorithmAidingData:(const void *)a3
+- (void)setAlgorithmAidingData:(const void *)data
 {
-  v3 = *a3;
-  v4 = *(a3 + 2);
+  v3 = *data;
+  v4 = *(data + 2);
   if (self->_algorithmAidingData.__engaged_)
   {
-    *&self->_algorithmAidingData.var0.__val_.bounded_displacement.__engaged_ = *(a3 + 1);
+    *&self->_algorithmAidingData.var0.__val_.bounded_displacement.__engaged_ = *(data + 1);
     *&self->_algorithmAidingData.var0.__val_.measured_displacement.var0.__val_.applicabilityTimestamp = v4;
     *&self->_algorithmAidingData.var0.__null_state_ = v3;
-    v5 = *(a3 + 3);
-    v6 = *(a3 + 4);
-    v7 = *(a3 + 6);
-    *&self->_algorithmAidingData.var0.__val_.measured_velocity_change.var0.__null_state_ = *(a3 + 5);
+    v5 = *(data + 3);
+    v6 = *(data + 4);
+    v7 = *(data + 6);
+    *&self->_algorithmAidingData.var0.__val_.measured_velocity_change.var0.__null_state_ = *(data + 5);
     *&self->_algorithmAidingData.var0.__val_.measured_velocity_change.var0.__val_.velocityChangeH1 = v7;
     *&self->_algorithmAidingData.var0.__val_.measured_displacement.var0.__val_.displacementH1 = v5;
     *&self->_algorithmAidingData.var0.__val_.measured_displacement.var0.__val_.displacementV = v6;
-    v8 = *(a3 + 7);
-    v9 = *(a3 + 8);
-    v10 = *(a3 + 9);
-    *(&self->_algorithmAidingData.var0.__val_.location_data.var0.__val_.uncertainty + 2) = *(a3 + 154);
+    v8 = *(data + 7);
+    v9 = *(data + 8);
+    v10 = *(data + 9);
+    *(&self->_algorithmAidingData.var0.__val_.location_data.var0.__val_.uncertainty + 2) = *(data + 154);
     *&self->_algorithmAidingData.var0.__val_.mach_absolute_receipt_timestamp.__engaged_ = v9;
     *&self->_algorithmAidingData.var0.__val_.location_data.var0.__val_.easterlyOffsetM = v10;
     *&self->_algorithmAidingData.var0.__val_.measured_velocity_change.__engaged_ = v8;
@@ -65,20 +65,20 @@
 
   else
   {
-    *&self->_algorithmAidingData.var0.__val_.bounded_displacement.__engaged_ = *(a3 + 1);
+    *&self->_algorithmAidingData.var0.__val_.bounded_displacement.__engaged_ = *(data + 1);
     *&self->_algorithmAidingData.var0.__val_.measured_displacement.var0.__val_.applicabilityTimestamp = v4;
     *&self->_algorithmAidingData.var0.__null_state_ = v3;
-    v11 = *(a3 + 3);
-    v12 = *(a3 + 4);
-    v13 = *(a3 + 6);
-    *&self->_algorithmAidingData.var0.__val_.measured_velocity_change.var0.__null_state_ = *(a3 + 5);
+    v11 = *(data + 3);
+    v12 = *(data + 4);
+    v13 = *(data + 6);
+    *&self->_algorithmAidingData.var0.__val_.measured_velocity_change.var0.__null_state_ = *(data + 5);
     *&self->_algorithmAidingData.var0.__val_.measured_velocity_change.var0.__val_.velocityChangeH1 = v13;
     *&self->_algorithmAidingData.var0.__val_.measured_displacement.var0.__val_.displacementH1 = v11;
     *&self->_algorithmAidingData.var0.__val_.measured_displacement.var0.__val_.displacementV = v12;
-    v14 = *(a3 + 7);
-    v15 = *(a3 + 8);
-    v16 = *(a3 + 10);
-    *&self->_algorithmAidingData.var0.__val_.location_data.var0.__val_.easterlyOffsetM = *(a3 + 9);
+    v14 = *(data + 7);
+    v15 = *(data + 8);
+    v16 = *(data + 10);
+    *&self->_algorithmAidingData.var0.__val_.location_data.var0.__val_.easterlyOffsetM = *(data + 9);
     *&self->_algorithmAidingData.var0.__val_.location_data.__engaged_ = v16;
     *&self->_algorithmAidingData.var0.__val_.measured_velocity_change.__engaged_ = v14;
     *&self->_algorithmAidingData.var0.__val_.mach_absolute_receipt_timestamp.__engaged_ = v15;
@@ -116,11 +116,11 @@
   return self;
 }
 
-- (void)setSignallingData:(const void *)a3
+- (void)setSignallingData:(const void *)data
 {
   engaged = self->_signallingData.__engaged_;
-  v4 = *(a3 + 8);
-  *&self->_signallingData.var0.__null_state_ = *a3;
+  v4 = *(data + 8);
+  *&self->_signallingData.var0.__null_state_ = *data;
   self->_signallingData.var0.__val_.isPhone = v4;
   if (!engaged)
   {

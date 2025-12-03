@@ -1,28 +1,28 @@
 @interface PXFileNameUniquifier
-- (BOOL)_fileExistsAtPath:(id)a3;
-- (PXFileNameUniquifier)initWithExistingFileSources:(id)a3;
-- (id)_uniqueFileSystemName:(id)a3 inDirectory:(id)a4 rememberResult:(BOOL)a5;
-- (id)ensureUniqueFileURL:(id)a3;
-- (id)ensureUniquePath:(id)a3;
-- (id)ensureUniquePath:(id)a3 alternateExtensions:(id)a4;
-- (id)ensureUniquePath:(id)a3 andAlternateExtension:(id)a4;
-- (id)uniqueFileSystemNameForPath:(id)a3 withAlternateExtension:(id)a4;
-- (id)uniqueFileSystemNameForPath:(id)a3 withAlternateExtensions:(id)a4;
-- (void)_rememberUniquifiedPath:(id)a3;
+- (BOOL)_fileExistsAtPath:(id)path;
+- (PXFileNameUniquifier)initWithExistingFileSources:(id)sources;
+- (id)_uniqueFileSystemName:(id)name inDirectory:(id)directory rememberResult:(BOOL)result;
+- (id)ensureUniqueFileURL:(id)l;
+- (id)ensureUniquePath:(id)path;
+- (id)ensureUniquePath:(id)path alternateExtensions:(id)extensions;
+- (id)ensureUniquePath:(id)path andAlternateExtension:(id)extension;
+- (id)uniqueFileSystemNameForPath:(id)path withAlternateExtension:(id)extension;
+- (id)uniqueFileSystemNameForPath:(id)path withAlternateExtensions:(id)extensions;
+- (void)_rememberUniquifiedPath:(id)path;
 @end
 
 @implementation PXFileNameUniquifier
 
-- (void)_rememberUniquifiedPath:(id)a3
+- (void)_rememberUniquifiedPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(PXFileNameUniquifier *)self existingFileSources];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  existingFileSources = [(PXFileNameUniquifier *)self existingFileSources];
+  v6 = [existingFileSources countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -34,30 +34,30 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(existingFileSources);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) rememberUniquifiedFilePath:v4];
+        [*(*(&v10 + 1) + 8 * v9++) rememberUniquifiedFilePath:pathCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [existingFileSources countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)_fileExistsAtPath:(id)a3
+- (BOOL)_fileExistsAtPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(PXFileNameUniquifier *)self existingFileSources];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  existingFileSources = [(PXFileNameUniquifier *)self existingFileSources];
+  v6 = [existingFileSources countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -67,17 +67,17 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(existingFileSources);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) fileExistsAtPath:v4])
+        if ([*(*(&v10 + 1) + 8 * i) fileExistsAtPath:pathCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [existingFileSources countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -92,66 +92,66 @@ LABEL_11:
   return v6;
 }
 
-- (id)ensureUniqueFileURL:(id)a3
+- (id)ensureUniqueFileURL:(id)l
 {
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [a3 path];
-  v6 = [(PXFileNameUniquifier *)self ensureUniquePath:v5];
+  path = [l path];
+  v6 = [(PXFileNameUniquifier *)self ensureUniquePath:path];
   v7 = [v4 fileURLWithPath:v6];
 
   return v7;
 }
 
-- (id)ensureUniquePath:(id)a3 alternateExtensions:(id)a4
+- (id)ensureUniquePath:(id)path alternateExtensions:(id)extensions
 {
-  v6 = a4;
+  extensionsCopy = extensions;
   v7 = objc_autoreleasePoolPush();
-  v8 = a3;
-  v9 = [v8 stringByExpandingTildeInPath];
-  v10 = [v9 stringByDeletingLastPathComponent];
+  pathCopy = path;
+  stringByExpandingTildeInPath = [pathCopy stringByExpandingTildeInPath];
+  stringByDeletingLastPathComponent = [stringByExpandingTildeInPath stringByDeletingLastPathComponent];
 
-  v11 = [(PXFileNameUniquifier *)self uniqueFileSystemNameForPath:v8 withAlternateExtensions:v6];
+  v11 = [(PXFileNameUniquifier *)self uniqueFileSystemNameForPath:pathCopy withAlternateExtensions:extensionsCopy];
 
-  v12 = [v10 stringByAppendingPathComponent:v11];
+  v12 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v11];
 
   objc_autoreleasePoolPop(v7);
 
   return v12;
 }
 
-- (id)ensureUniquePath:(id)a3 andAlternateExtension:(id)a4
+- (id)ensureUniquePath:(id)path andAlternateExtension:(id)extension
 {
-  v6 = a4;
+  extensionCopy = extension;
   v7 = objc_autoreleasePoolPush();
-  v8 = a3;
-  v9 = [v8 stringByExpandingTildeInPath];
-  v10 = [v9 stringByDeletingLastPathComponent];
+  pathCopy = path;
+  stringByExpandingTildeInPath = [pathCopy stringByExpandingTildeInPath];
+  stringByDeletingLastPathComponent = [stringByExpandingTildeInPath stringByDeletingLastPathComponent];
 
-  v11 = [(PXFileNameUniquifier *)self uniqueFileSystemNameForPath:v8 withAlternateExtension:v6];
+  v11 = [(PXFileNameUniquifier *)self uniqueFileSystemNameForPath:pathCopy withAlternateExtension:extensionCopy];
 
-  v12 = [v10 stringByAppendingPathComponent:v11];
+  v12 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v11];
 
   objc_autoreleasePoolPop(v7);
 
   return v12;
 }
 
-- (id)ensureUniquePath:(id)a3
+- (id)ensureUniquePath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 stringByExpandingTildeInPath];
-  v6 = [(PXFileNameUniquifier *)self _fileExistsAtPath:v5];
+  pathCopy = path;
+  stringByExpandingTildeInPath = [pathCopy stringByExpandingTildeInPath];
+  v6 = [(PXFileNameUniquifier *)self _fileExistsAtPath:stringByExpandingTildeInPath];
 
-  v7 = v4;
+  v7 = pathCopy;
   if (v6)
   {
-    v8 = [v4 stringByExpandingTildeInPath];
-    v9 = [v8 stringByDeletingLastPathComponent];
+    stringByExpandingTildeInPath2 = [pathCopy stringByExpandingTildeInPath];
+    stringByDeletingLastPathComponent = [stringByExpandingTildeInPath2 stringByDeletingLastPathComponent];
 
-    v10 = [v4 lastPathComponent];
-    v11 = [(PXFileNameUniquifier *)self _uniqueFileSystemName:v10 inDirectory:v9 rememberResult:0];
+    lastPathComponent = [pathCopy lastPathComponent];
+    v11 = [(PXFileNameUniquifier *)self _uniqueFileSystemName:lastPathComponent inDirectory:stringByDeletingLastPathComponent rememberResult:0];
 
-    v7 = [v9 stringByAppendingPathComponent:v11];
+    v7 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v11];
   }
 
   [(PXFileNameUniquifier *)self _rememberUniquifiedPath:v7];
@@ -159,23 +159,23 @@ LABEL_11:
   return v7;
 }
 
-- (id)uniqueFileSystemNameForPath:(id)a3 withAlternateExtensions:(id)a4
+- (id)uniqueFileSystemNameForPath:(id)path withAlternateExtensions:(id)extensions
 {
   v94 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  extensionsCopy = extensions;
   context = objc_autoreleasePoolPush();
-  v58 = [v6 lastPathComponent];
-  v8 = [v58 stringByDeletingPathExtension];
-  v9 = [v6 pathExtension];
-  v61 = v6;
-  v10 = [v6 stringByDeletingLastPathComponent];
+  lastPathComponent = [pathCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  pathExtension = [pathCopy pathExtension];
+  v61 = pathCopy;
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
   v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  obj = v7;
+  obj = extensionsCopy;
   v12 = [obj countByEnumeratingWithState:&v85 objects:v93 count:16];
   if (v12)
   {
@@ -190,8 +190,8 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v16 = [*(*(&v85 + 1) + 8 * i) lowercaseString];
-        [v11 addObject:v16];
+        lowercaseString = [*(*(&v85 + 1) + 8 * i) lowercaseString];
+        [v11 addObject:lowercaseString];
       }
 
       v13 = [obj countByEnumeratingWithState:&v85 objects:v93 count:16];
@@ -200,13 +200,13 @@ LABEL_11:
     while (v13);
   }
 
-  v17 = [v9 lowercaseString];
-  v18 = [v11 containsObject:v17];
+  lowercaseString2 = [pathExtension lowercaseString];
+  v18 = [v11 containsObject:lowercaseString2];
 
   if ((v18 & 1) == 0)
   {
-    v19 = [v9 lowercaseString];
-    [v11 addObject:v19];
+    lowercaseString3 = [pathExtension lowercaseString];
+    [v11 addObject:lowercaseString3];
   }
 
   v20 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -231,7 +231,7 @@ LABEL_11:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [v8 stringByAppendingPathExtension:*(*(&v81 + 1) + 8 * j)];
+        v28 = [stringByDeletingPathExtension stringByAppendingPathExtension:*(*(&v81 + 1) + 8 * j)];
         [v22 addObject:v28];
       }
 
@@ -241,8 +241,8 @@ LABEL_11:
     while (v25);
   }
 
-  v62 = v9;
-  v59 = v8;
+  v62 = pathExtension;
+  v59 = stringByDeletingPathExtension;
   v65 = v23;
 
   v29 = 0;
@@ -262,8 +262,8 @@ LABEL_11:
     v33 = 0;
 LABEL_29:
 
-    v67 = [(PXFileNameUniquifier *)self _uniqueFileSystemName:v33 inDirectory:v10 rememberResult:0];
-    v39 = [v67 stringByDeletingPathExtension];
+    v67 = [(PXFileNameUniquifier *)self _uniqueFileSystemName:v33 inDirectory:stringByDeletingLastPathComponent rememberResult:0];
+    stringByDeletingPathExtension2 = [v67 stringByDeletingPathExtension];
 
     [v30 removeAllObjects];
     v75 = 0u;
@@ -285,7 +285,7 @@ LABEL_29:
             objc_enumerationMutation(v40);
           }
 
-          v45 = [v39 stringByAppendingPathExtension:*(*(&v73 + 1) + 8 * m)];
+          v45 = [stringByDeletingPathExtension2 stringByAppendingPathExtension:*(*(&v73 + 1) + 8 * m)];
           [v30 addObject:v45];
         }
 
@@ -295,7 +295,7 @@ LABEL_29:
       while (v42);
     }
 
-    v29 = v39;
+    v29 = stringByDeletingPathExtension2;
   }
 
   v32 = v31;
@@ -315,7 +315,7 @@ LABEL_29:
 
       v33 = *(*(&v77 + 1) + 8 * v35);
 
-      v37 = [v10 stringByAppendingPathComponent:v33];
+      v37 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v33];
       v38 = [(PXFileNameUniquifier *)self _fileExistsAtPath:v37];
 
       if (v38)
@@ -334,12 +334,12 @@ LABEL_29:
 
   while (v32);
 
-  v46 = [v30 anyObject];
-  v47 = [v46 stringByDeletingPathExtension];
-  v48 = [v47 stringByAppendingPathExtension:v62];
+  anyObject = [v30 anyObject];
+  stringByDeletingPathExtension3 = [anyObject stringByDeletingPathExtension];
+  v48 = [stringByDeletingPathExtension3 stringByAppendingPathExtension:v62];
 
   v64 = v48;
-  v49 = [v48 stringByDeletingPathExtension];
+  stringByDeletingPathExtension4 = [v48 stringByDeletingPathExtension];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
@@ -359,8 +359,8 @@ LABEL_29:
           objc_enumerationMutation(v50);
         }
 
-        v55 = [v49 stringByAppendingPathExtension:*(*(&v69 + 1) + 8 * n)];
-        v56 = [v10 stringByAppendingPathComponent:v55];
+        v55 = [stringByDeletingPathExtension4 stringByAppendingPathExtension:*(*(&v69 + 1) + 8 * n)];
+        v56 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v55];
 
         [(PXFileNameUniquifier *)self _rememberUniquifiedPath:v56];
       }
@@ -376,39 +376,39 @@ LABEL_29:
   return v64;
 }
 
-- (id)uniqueFileSystemNameForPath:(id)a3 withAlternateExtension:(id)a4
+- (id)uniqueFileSystemNameForPath:(id)path withAlternateExtension:(id)extension
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a3;
-  v8 = [v6 setWithObject:a4];
-  v9 = [(PXFileNameUniquifier *)self uniqueFileSystemNameForPath:v7 withAlternateExtensions:v8];
+  pathCopy = path;
+  v8 = [v6 setWithObject:extension];
+  v9 = [(PXFileNameUniquifier *)self uniqueFileSystemNameForPath:pathCopy withAlternateExtensions:v8];
 
   return v9;
 }
 
-- (id)_uniqueFileSystemName:(id)a3 inDirectory:(id)a4 rememberResult:(BOOL)a5
+- (id)_uniqueFileSystemName:(id)name inDirectory:(id)directory rememberResult:(BOOL)result
 {
-  v5 = a5;
+  resultCopy = result;
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8 || !v9)
+  nameCopy = name;
+  directoryCopy = directory;
+  v10 = directoryCopy;
+  if (!nameCopy || !directoryCopy)
   {
     goto LABEL_25;
   }
 
   v11 = objc_autoreleasePoolPush();
-  v55 = [v8 pathExtension];
-  v12 = [v55 length];
-  v13 = v8;
+  pathExtension = [nameCopy pathExtension];
+  v12 = [pathExtension length];
+  v13 = nameCopy;
   v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:@"1"];
   v15 = [v10 stringByAppendingPathComponent:v13];
   if (v12)
   {
-    v16 = [v13 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [v13 stringByDeletingPathExtension];
 LABEL_5:
-    v54 = v16;
+    v54 = stringByDeletingPathExtension;
 
     goto LABEL_6;
   }
@@ -419,16 +419,16 @@ LABEL_5:
     v54 = v13;
     if ([v13 characterAtIndex:{objc_msgSend(v13, "length") - 1}] == 46)
     {
-      v16 = [v13 substringToIndex:{objc_msgSend(v13, "length") - 1}];
+      stringByDeletingPathExtension = [v13 substringToIndex:{objc_msgSend(v13, "length") - 1}];
       goto LABEL_5;
     }
   }
 
 LABEL_6:
   v53 = v13;
-  v58 = self;
+  selfCopy = self;
   context = v11;
-  v51 = v5;
+  v51 = resultCopy;
   if ([(PXFileNameUniquifier *)self _fileExistsAtPath:v15])
   {
     v17 = [v54 length];
@@ -459,8 +459,8 @@ LABEL_6:
         while (v44 != v43)
         {
           v45 = [v54 characterAtIndex:v43];
-          v46 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-          LOBYTE(v45) = [v46 characterIsMember:v45];
+          decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+          LOBYTE(v45) = [decimalDigitCharacterSet characterIsMember:v45];
 
           ++v43;
           if ((v45 & 1) == 0)
@@ -492,7 +492,7 @@ LABEL_6:
         }
 
 LABEL_42:
-        self = v58;
+        self = selfCopy;
       }
     }
   }
@@ -508,7 +508,7 @@ LABEL_42:
       do
       {
         v27 = [v54 stringByAppendingString:v24];
-        v28 = [v27 stringByAppendingPathExtension:v55];
+        v28 = [v27 stringByAppendingPathExtension:pathExtension];
 
         v29 = [v10 stringByAppendingPathComponent:v28];
 
@@ -517,7 +517,7 @@ LABEL_42:
         v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lu", v26];
 
         v34 = v32;
-        self = v58;
+        self = selfCopy;
         [v24 replaceCharactersInRange:v30 withString:{v34, v33}];
 
         v14 = v33;
@@ -526,7 +526,7 @@ LABEL_42:
         v15 = v29;
       }
 
-      while ([(PXFileNameUniquifier *)v58 _fileExistsAtPath:v29]);
+      while ([(PXFileNameUniquifier *)selfCopy _fileExistsAtPath:v29]);
       goto LABEL_22;
     }
   }
@@ -544,7 +544,7 @@ LABEL_42:
       v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lu", v35];
 
       v40 = v37;
-      self = v58;
+      self = selfCopy;
       [v24 replaceCharactersInRange:v40 withString:{v39, v33}];
 
       v14 = v33;
@@ -553,7 +553,7 @@ LABEL_42:
       v15 = v29;
     }
 
-    while ([(PXFileNameUniquifier *)v58 _fileExistsAtPath:v29]);
+    while ([(PXFileNameUniquifier *)selfCopy _fileExistsAtPath:v29]);
     goto LABEL_22;
   }
 
@@ -566,21 +566,21 @@ LABEL_22:
     [(PXFileNameUniquifier *)self _rememberUniquifiedPath:v29];
   }
 
-  v8 = [v29 lastPathComponent];
+  nameCopy = [v29 lastPathComponent];
 
   objc_autoreleasePoolPop(context);
 LABEL_25:
 
-  return v8;
+  return nameCopy;
 }
 
-- (PXFileNameUniquifier)initWithExistingFileSources:(id)a3
+- (PXFileNameUniquifier)initWithExistingFileSources:(id)sources
 {
-  v5 = a3;
-  if (![v5 count])
+  sourcesCopy = sources;
+  if (![sourcesCopy count])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXFileNameUniquifier.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"sources.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFileNameUniquifier.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"sources.count"}];
   }
 
   v11.receiver = self;
@@ -588,7 +588,7 @@ LABEL_25:
   v6 = [(PXFileNameUniquifier *)&v11 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [sourcesCopy copy];
     existingFileSources = v6->_existingFileSources;
     v6->_existingFileSources = v7;
   }

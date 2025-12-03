@@ -1,35 +1,35 @@
 @interface USOASRAlternative
-- (USOASRAlternative)initWithCoder:(id)a3;
-- (USOASRAlternative)initWithValue:(id)a3;
-- (USOASRAlternative)initWithValue:(id)a3 probability:(float)a4;
-- (void)encodeWithCoder:(id)a3;
+- (USOASRAlternative)initWithCoder:(id)coder;
+- (USOASRAlternative)initWithValue:(id)value;
+- (USOASRAlternative)initWithValue:(id)value probability:(float)probability;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation USOASRAlternative
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(USOASRAlternative *)self value];
-  [v4 encodeObject:v5 forKey:@"value"];
+  coderCopy = coder;
+  value = [(USOASRAlternative *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v6 = [(USOASRAlternative *)self probability];
-  [v4 encodeObject:v6 forKey:@"probability"];
+  probability = [(USOASRAlternative *)self probability];
+  [coderCopy encodeObject:probability forKey:@"probability"];
 }
 
-- (USOASRAlternative)initWithCoder:(id)a3
+- (USOASRAlternative)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = USOASRAlternative;
   v5 = [(USOASRAlternative *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"probability"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"probability"];
     probability = v5->_probability;
     v5->_probability = v8;
   }
@@ -37,17 +37,17 @@
   return v5;
 }
 
-- (USOASRAlternative)initWithValue:(id)a3 probability:(float)a4
+- (USOASRAlternative)initWithValue:(id)value probability:(float)probability
 {
-  v7 = a3;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = USOASRAlternative;
   v8 = [(USOASRAlternative *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_value, a3);
-    *&v10 = a4;
+    objc_storeStrong(&v8->_value, value);
+    *&v10 = probability;
     v11 = [MEMORY[0x1E696AD98] numberWithFloat:v10];
     probability = v9->_probability;
     v9->_probability = v11;
@@ -56,16 +56,16 @@
   return v9;
 }
 
-- (USOASRAlternative)initWithValue:(id)a3
+- (USOASRAlternative)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = USOASRAlternative;
   v6 = [(USOASRAlternative *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, value);
   }
 
   return v7;

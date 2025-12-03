@@ -1,59 +1,59 @@
 @interface RenderBundleICBWithResources
-- (RenderBundleICBWithResources)initWithICB:(id)a3 containerBuffer:(id)a4 pipelineState:(id)a5 depthStencilState:(id)a6 cullMode:(unint64_t)a7 frontFace:(unint64_t)a8 depthClipMode:(unint64_t)a9 depthBias:(float)a10 depthBiasSlopeScale:(float)a11 depthBiasClamp:(float)a12 fragmentDynamicOffsetsBuffer:(id)a13 pipeline:(const void *)a14 minVertexCounts:(void *)a15 outOfBoundsReadFlag:(id)a16;
+- (RenderBundleICBWithResources)initWithICB:(id)b containerBuffer:(id)buffer pipelineState:(id)state depthStencilState:(id)stencilState cullMode:(unint64_t)mode frontFace:(unint64_t)face depthClipMode:(unint64_t)clipMode depthBias:(float)self0 depthBiasSlopeScale:(float)self1 depthBiasClamp:(float)self2 fragmentDynamicOffsetsBuffer:(id)self3 pipeline:(const void *)self4 minVertexCounts:(void *)self5 outOfBoundsReadFlag:(id)self6;
 - (WeakPtr<WebGPU::RenderPipeline,)pipeline;
 - (id).cxx_construct;
 @end
 
 @implementation RenderBundleICBWithResources
 
-- (RenderBundleICBWithResources)initWithICB:(id)a3 containerBuffer:(id)a4 pipelineState:(id)a5 depthStencilState:(id)a6 cullMode:(unint64_t)a7 frontFace:(unint64_t)a8 depthClipMode:(unint64_t)a9 depthBias:(float)a10 depthBiasSlopeScale:(float)a11 depthBiasClamp:(float)a12 fragmentDynamicOffsetsBuffer:(id)a13 pipeline:(const void *)a14 minVertexCounts:(void *)a15 outOfBoundsReadFlag:(id)a16
+- (RenderBundleICBWithResources)initWithICB:(id)b containerBuffer:(id)buffer pipelineState:(id)state depthStencilState:(id)stencilState cullMode:(unint64_t)mode frontFace:(unint64_t)face depthClipMode:(unint64_t)clipMode depthBias:(float)self0 depthBiasSlopeScale:(float)self1 depthBiasClamp:(float)self2 fragmentDynamicOffsetsBuffer:(id)self3 pipeline:(const void *)self4 minVertexCounts:(void *)self5 outOfBoundsReadFlag:(id)self6
 {
-  v26 = a3;
-  v50 = a4;
-  v49 = a5;
-  v48 = a6;
-  v47 = a13;
-  v46 = a16;
+  bCopy = b;
+  bufferCopy = buffer;
+  stateCopy = state;
+  stencilStateCopy = stencilState;
+  offsetsBufferCopy = offsetsBuffer;
+  flagCopy = flag;
   v51.receiver = self;
   v51.super_class = RenderBundleICBWithResources;
   v27 = [(RenderBundleICBWithResources *)&v51 init];
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_outOfBoundsReadFlag, a16);
-    objc_storeStrong(&v28->_indirectCommandBuffer, a3);
-    objc_storeStrong(&v28->_indirectCommandBufferContainer, a4);
-    objc_storeStrong(&v28->_currentPipelineState, a5);
-    objc_storeStrong(&v28->_depthStencilState, a6);
-    v28->_cullMode = a7;
-    v28->_frontFace = a8;
-    v28->_depthClipMode = a9;
-    v28->_depthBias = a10;
-    v28->_depthBiasSlopeScale = a11;
-    v28->_depthBiasClamp = a12;
-    objc_storeStrong(&v28->_fragmentDynamicOffsetsBuffer, a13);
-    if (!a14)
+    objc_storeStrong(&v27->_outOfBoundsReadFlag, flag);
+    objc_storeStrong(&v28->_indirectCommandBuffer, b);
+    objc_storeStrong(&v28->_indirectCommandBufferContainer, buffer);
+    objc_storeStrong(&v28->_currentPipelineState, state);
+    objc_storeStrong(&v28->_depthStencilState, stencilState);
+    v28->_cullMode = mode;
+    v28->_frontFace = face;
+    v28->_depthClipMode = clipMode;
+    v28->_depthBias = bias;
+    v28->_depthBiasSlopeScale = scale;
+    v28->_depthBiasClamp = clamp;
+    objc_storeStrong(&v28->_fragmentDynamicOffsetsBuffer, offsetsBuffer);
+    if (!pipeline)
     {
       v30 = 0;
       goto LABEL_9;
     }
 
-    v30 = *a14;
-    if (!*a14)
+    v30 = *pipeline;
+    if (!*pipeline)
     {
       v30 = WTF::fastCompactMalloc(0x10);
       *v30 = 1;
-      *(v30 + 8) = a14;
-      v31 = *a14;
-      *a14 = v30;
+      *(v30 + 8) = pipeline;
+      v31 = *pipeline;
+      *pipeline = v30;
       if (v31)
       {
         if (atomic_fetch_add(v31, 0xFFFFFFFF) == 1)
         {
           atomic_store(1u, v31);
           WTF::fastFree(v31, v29);
-          v30 = *a14;
-          if (!*a14)
+          v30 = *pipeline;
+          if (!*pipeline)
           {
             goto LABEL_9;
           }
@@ -61,8 +61,8 @@
 
         else
         {
-          v30 = *a14;
-          if (!*a14)
+          v30 = *pipeline;
+          if (!*pipeline)
           {
 LABEL_9:
             m_ptr = v28->_pipeline.m_impl.m_ptr;
@@ -71,8 +71,8 @@ LABEL_9:
             {
               atomic_store(1u, m_ptr);
               WTF::fastFree(m_ptr, v29);
-              v45 = *a15;
-              *a15 = 0;
+              v45 = *counts;
+              *counts = 0;
               m_table = v28->_minVertexCountForDrawCommand.m_impl.m_table;
               v28->_minVertexCountForDrawCommand.m_impl.m_table = v45;
               if (m_table)
@@ -83,8 +83,8 @@ LABEL_9:
 
             else
             {
-              v33 = *a15;
-              *a15 = 0;
+              v33 = *counts;
+              *counts = 0;
               m_table = v28->_minVertexCountForDrawCommand.m_impl.m_table;
               v28->_minVertexCountForDrawCommand.m_impl.m_table = v33;
               if (m_table)

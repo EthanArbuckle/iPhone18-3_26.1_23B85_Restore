@@ -1,16 +1,16 @@
 @interface PHQuestion
 + (id)entityKeyMap;
-+ (id)fetchAnsweredQuestionCountsWithOptions:(id)a3;
-+ (id)fetchAnsweredQuestionsWithOptions:(id)a3 validQuestionsOnly:(BOOL)a4;
-+ (id)fetchAnsweredYesOrNoQuestionsWithOptions:(id)a3 validQuestionsOnly:(BOOL)a4;
-+ (id)fetchQuestionsWithLocalIdentifiers:(id)a3 options:(id)a4 validQuestionsOnly:(BOOL)a5;
-+ (id)fetchQuestionsWithOptions:(id)a3 validQuestionsOnly:(BOOL)a4;
-+ (id)fetchUnansweredQuestionsWithOptions:(id)a3 validQuestionsOnly:(BOOL)a4;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)questionsWithValidEntitiesFromQuestions:(id)a3 photoLibrary:(id)a4;
-+ (id)stringForQuestionType:(unsigned __int16)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-- (PHQuestion)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
++ (id)fetchAnsweredQuestionCountsWithOptions:(id)options;
++ (id)fetchAnsweredQuestionsWithOptions:(id)options validQuestionsOnly:(BOOL)only;
++ (id)fetchAnsweredYesOrNoQuestionsWithOptions:(id)options validQuestionsOnly:(BOOL)only;
++ (id)fetchQuestionsWithLocalIdentifiers:(id)identifiers options:(id)options validQuestionsOnly:(BOOL)only;
++ (id)fetchQuestionsWithOptions:(id)options validQuestionsOnly:(BOOL)only;
++ (id)fetchUnansweredQuestionsWithOptions:(id)options validQuestionsOnly:(BOOL)only;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)questionsWithValidEntitiesFromQuestions:(id)questions photoLibrary:(id)library;
++ (id)stringForQuestionType:(unsigned __int16)type;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
+- (PHQuestion)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)description;
 @end
 
@@ -27,79 +27,79 @@
   return v5;
 }
 
-- (PHQuestion)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHQuestion)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PHQuestion;
-  v9 = [(PHObject *)&v24 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v24 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"entityIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"entityIdentifier"];
     entityIdentifier = v9->_entityIdentifier;
     v9->_entityIdentifier = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"type"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v9->_type = [v12 unsignedIntegerValue];
 
-    v13 = [v8 objectForKeyedSubscript:@"state"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"state"];
     v9->_state = [v13 unsignedIntegerValue];
 
-    v14 = [v8 objectForKeyedSubscript:@"entityType"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"entityType"];
     v9->_entityType = [v14 unsignedIntegerValue];
 
-    v15 = [v8 objectForKeyedSubscript:@"displayType"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"displayType"];
     v9->_displayType = [v15 unsignedIntegerValue];
 
-    v16 = [v8 objectForKeyedSubscript:@"score"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     [v16 doubleValue];
     v9->_score = v17;
 
-    v18 = [v8 objectForKeyedSubscript:@"additionalInfo"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"additionalInfo"];
     additionalInfo = v9->_additionalInfo;
     v9->_additionalInfo = v18;
 
-    v20 = [v8 objectForKeyedSubscript:@"creationDate"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"creationDate"];
     creationDate = v9->_creationDate;
     v9->_creationDate = v20;
 
-    v22 = [v8 objectForKeyedSubscript:@"questionVersion"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"questionVersion"];
     v9->_questionVersion = [v22 shortValue];
   }
 
   return v9;
 }
 
-+ (id)stringForQuestionType:(unsigned __int16)a3
++ (id)stringForQuestionType:(unsigned __int16)type
 {
-  if ((a3 - 1) > 0x1D)
+  if ((type - 1) > 0x1D)
   {
     return @"PHQuestionTypeNone";
   }
 
   else
   {
-    return off_1E75AB120[(a3 - 1)];
+    return off_1E75AB120[(type - 1)];
   }
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__PHQuestion_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_53550 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_53550, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_53551 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_53551 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -129,29 +129,29 @@ void __50__PHQuestion_transformValueExpression_forKeyPath___block_invoke()
   transformValueExpression_forKeyPath___passThroughSet_53551 = v2;
 }
 
-+ (id)questionsWithValidEntitiesFromQuestions:(id)a3 photoLibrary:(id)a4
++ (id)questionsWithValidEntitiesFromQuestions:(id)questions photoLibrary:(id)library
 {
   v302 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v192 = a4;
-  v205 = [MEMORY[0x1E695DF90] dictionary];
-  v197 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v207 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v208 = [MEMORY[0x1E695DF90] dictionary];
-  v206 = [MEMORY[0x1E695DF90] dictionary];
-  v195 = [MEMORY[0x1E695DF70] array];
-  v193 = [MEMORY[0x1E695DF90] dictionary];
-  v213 = [MEMORY[0x1E695DF70] array];
+  questionsCopy = questions;
+  libraryCopy = library;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary7 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary8 = [MEMORY[0x1E695DF90] dictionary];
+  array2 = [MEMORY[0x1E695DF70] array];
   v275 = 0u;
   v276 = 0u;
   v277 = 0u;
   v278 = 0u;
-  obj = v5;
+  obj = questionsCopy;
   v8 = [obj countByEnumeratingWithState:&v275 objects:v301 count:16];
-  v198 = v6;
-  v194 = v7;
+  v198 = dictionary3;
+  v194 = dictionary5;
   if (v8)
   {
     v9 = v8;
@@ -167,25 +167,25 @@ void __50__PHQuestion_transformValueExpression_forKeyPath___block_invoke()
         }
 
         v12 = *(*(&v275 + 1) + 8 * v11);
-        v13 = [v12 entityIdentifier];
-        v14 = [v12 entityType];
-        if (v14 <= 3)
+        entityIdentifier = [v12 entityIdentifier];
+        entityType = [v12 entityType];
+        if (entityType <= 3)
         {
-          if (v14 > 1)
+          if (entityType > 1)
           {
-            if (v14 != 2)
+            if (entityType != 2)
             {
-              v15 = [(PHObject *)PHAsset localIdentifierWithUUID:v13];
-              v19 = [v7 objectForKeyedSubscript:v15];
+              v15 = [(PHObject *)PHAsset localIdentifierWithUUID:entityIdentifier];
+              v19 = [dictionary5 objectForKeyedSubscript:v15];
 
               if (v19)
               {
-                v18 = v7;
+                v18 = dictionary5;
                 goto LABEL_33;
               }
 
               v26 = [MEMORY[0x1E695DF70] arrayWithObject:v12];
-              v27 = v7;
+              v27 = dictionary5;
 LABEL_39:
               [v27 setObject:v26 forKeyedSubscript:v15];
 LABEL_40:
@@ -194,102 +194,102 @@ LABEL_41:
               goto LABEL_42;
             }
 
-            v22 = [(PHObject *)PHMemory localIdentifierWithUUID:v13];
-            v23 = [v207 objectForKeyedSubscript:v22];
+            v22 = [(PHObject *)PHMemory localIdentifierWithUUID:entityIdentifier];
+            v23 = [dictionary4 objectForKeyedSubscript:v22];
 
             if (v23)
             {
-              v24 = [v207 objectForKeyedSubscript:v22];
+              v24 = [dictionary4 objectForKeyedSubscript:v22];
               [v24 addObject:v12];
             }
 
             else
             {
               v24 = [MEMORY[0x1E695DF70] arrayWithObject:v12];
-              [v207 setObject:v24 forKeyedSubscript:v22];
+              [dictionary4 setObject:v24 forKeyedSubscript:v22];
             }
 
-            v7 = v194;
+            dictionary5 = v194;
           }
 
           else
           {
-            if (v14)
+            if (entityType)
             {
-              if (v14 != 1)
+              if (entityType != 1)
               {
                 goto LABEL_42;
               }
 
-              v15 = [(PHObject *)PHPerson localIdentifierWithUUID:v13];
-              v17 = [v6 objectForKeyedSubscript:v15];
+              v15 = [(PHObject *)PHPerson localIdentifierWithUUID:entityIdentifier];
+              v17 = [dictionary3 objectForKeyedSubscript:v15];
 
               if (v17)
               {
-                v18 = v6;
+                v18 = dictionary3;
                 goto LABEL_33;
               }
 
               v26 = [MEMORY[0x1E695DF70] arrayWithObject:v12];
-              v27 = v6;
+              v27 = dictionary3;
               goto LABEL_39;
             }
 
             if ([v12 type] == 18)
             {
-              v21 = [v197 objectForKeyedSubscript:v13];
+              v21 = [dictionary2 objectForKeyedSubscript:entityIdentifier];
 
               if (v21)
               {
-                v15 = [v197 objectForKeyedSubscript:v13];
+                v15 = [dictionary2 objectForKeyedSubscript:entityIdentifier];
                 [v15 addObject:v12];
               }
 
               else
               {
                 v15 = [MEMORY[0x1E695DF70] arrayWithObject:v12];
-                [v197 setObject:v15 forKeyedSubscript:v13];
+                [dictionary2 setObject:v15 forKeyedSubscript:entityIdentifier];
               }
 
               goto LABEL_41;
             }
 
-            v28 = [(PHObject *)PHAsset localIdentifierWithUUID:v13];
-            v29 = [v205 objectForKeyedSubscript:v28];
+            v28 = [(PHObject *)PHAsset localIdentifierWithUUID:entityIdentifier];
+            v29 = [dictionary objectForKeyedSubscript:v28];
 
             if (v29)
             {
-              v30 = [v205 objectForKeyedSubscript:v28];
+              v30 = [dictionary objectForKeyedSubscript:v28];
               [v30 addObject:v12];
             }
 
             else
             {
               v30 = [MEMORY[0x1E695DF70] arrayWithObject:v12];
-              [v205 setObject:v30 forKeyedSubscript:v28];
+              [dictionary setObject:v30 forKeyedSubscript:v28];
             }
 
-            v6 = v198;
+            dictionary3 = v198;
           }
         }
 
         else
         {
-          if (v14 > 5)
+          if (entityType > 5)
           {
-            switch(v14)
+            switch(entityType)
             {
               case 6:
-                v15 = [(PHObject *)PHAssetCollection localIdentifierWithUUID:v13];
-                v16 = v208;
+                v15 = [(PHObject *)PHAssetCollection localIdentifierWithUUID:entityIdentifier];
+                v16 = dictionary6;
                 break;
               case 7:
-                v15 = [(PHObject *)PHMoment localIdentifierWithUUID:v13];
-                v16 = v206;
+                v15 = [(PHObject *)PHMoment localIdentifierWithUUID:entityIdentifier];
+                v16 = dictionary7;
                 break;
               case 8:
-                v15 = [(PHObject *)PHAsset localIdentifierWithUUID:v13];
-                v16 = v193;
+                v15 = [(PHObject *)PHAsset localIdentifierWithUUID:entityIdentifier];
+                v16 = dictionary8;
                 break;
               default:
                 goto LABEL_42;
@@ -311,14 +311,14 @@ LABEL_33:
             goto LABEL_40;
           }
 
-          if (v14 == 4)
+          if (entityType == 4)
           {
-            v20 = v213;
+            v20 = array2;
           }
 
           else
           {
-            v20 = v195;
+            v20 = array;
           }
 
           [v20 addObject:v12];
@@ -337,16 +337,16 @@ LABEL_42:
     while (v31);
   }
 
-  if ([v205 count])
+  if ([dictionary count])
   {
-    v32 = [v192 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
     v300 = @"PHAssetPropertySetIdentifier";
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v300 count:1];
-    [v32 setFetchPropertySets:v33];
+    [librarySpecificFetchOptions setFetchPropertySets:v33];
 
-    v34 = [v205 allKeys];
-    v191 = v32;
-    v35 = [PHAsset fetchAssetsWithLocalIdentifiers:v34 options:v32];
+    allKeys = [dictionary allKeys];
+    v191 = librarySpecificFetchOptions;
+    v35 = [PHAsset fetchAssetsWithLocalIdentifiers:allKeys options:librarySpecificFetchOptions];
 
     v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -370,8 +370,8 @@ LABEL_42:
           }
 
           v209 = v38;
-          v39 = [*(*(&v271 + 1) + 8 * v38) localIdentifier];
-          v40 = [v205 objectForKeyedSubscript:v39];
+          localIdentifier = [*(*(&v271 + 1) + 8 * v38) localIdentifier];
+          v40 = [dictionary objectForKeyedSubscript:localIdentifier];
 
           v270 = 0u;
           v269 = 0u;
@@ -395,18 +395,18 @@ LABEL_42:
                 v46 = *(*(&v267 + 1) + 8 * i);
                 if ([v46 type] == 29)
                 {
-                  v47 = [v46 additionalInfo];
-                  v48 = [v47 objectForKeyedSubscript:@"momentLocalIdentifiers"];
+                  additionalInfo = [v46 additionalInfo];
+                  v48 = [additionalInfo objectForKeyedSubscript:@"momentLocalIdentifiers"];
 
-                  v49 = [v48 allObjects];
-                  [v36 addObjectsFromArray:v49];
+                  allObjects = [v48 allObjects];
+                  [v36 addObjectsFromArray:allObjects];
 
                   [v37 addObject:v46];
                 }
 
                 else
                 {
-                  [v213 addObject:v46];
+                  [array2 addObject:v46];
                 }
               }
 
@@ -428,7 +428,7 @@ LABEL_42:
 
     if ([v36 count])
     {
-      v203 = [v192 librarySpecificFetchOptions];
+      librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
       v50 = [(PHAssetCollection *)PHMoment fetchAssetCollectionsWithLocalIdentifiers:v36 options:?];
       v51 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v263 = 0u;
@@ -450,8 +450,8 @@ LABEL_42:
               objc_enumerationMutation(v52);
             }
 
-            v57 = [*(*(&v263 + 1) + 8 * j) localIdentifier];
-            [v51 addObject:v57];
+            localIdentifier2 = [*(*(&v263 + 1) + 8 * j) localIdentifier];
+            [v51 addObject:localIdentifier2];
           }
 
           v54 = [v52 countByEnumeratingWithState:&v263 objects:v297 count:16];
@@ -482,12 +482,12 @@ LABEL_42:
             }
 
             v62 = *(*(&v259 + 1) + 8 * k);
-            v63 = [v62 additionalInfo];
-            v64 = [v63 objectForKeyedSubscript:@"momentLocalIdentifiers"];
+            additionalInfo2 = [v62 additionalInfo];
+            v64 = [additionalInfo2 objectForKeyedSubscript:@"momentLocalIdentifiers"];
 
             if ([v64 isSubsetOfSet:v51])
             {
-              [v213 addObject:v62];
+              [array2 addObject:v62];
             }
           }
 
@@ -498,12 +498,12 @@ LABEL_42:
       }
     }
 
-    v6 = v198;
-    v7 = v194;
+    dictionary3 = v198;
+    dictionary5 = v194;
   }
 
-  v65 = v208;
-  if ([v197 count])
+  v65 = dictionary6;
+  if ([dictionary2 count])
   {
     v258 = 0;
     v66 = [PHPhotoLibrary openPhotoLibraryWithWellKnownIdentifier:3 error:&v258];
@@ -512,16 +512,16 @@ LABEL_42:
     if (v66)
     {
       v211 = v67;
-      v69 = [v66 librarySpecificFetchOptions];
+      librarySpecificFetchOptions3 = [v66 librarySpecificFetchOptions];
       v295[0] = @"PHAssetPropertySetSceneAnalysis";
       v295[1] = @"PHAssetPropertySetMediaAnalysis";
       v295[2] = @"PHAssetPropertySetCuration";
       v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v295 count:3];
-      [v69 setFetchPropertySets:v70];
+      [librarySpecificFetchOptions3 setFetchPropertySets:v70];
 
-      [v69 setIncludeGuestAssets:1];
-      v71 = [v197 allKeys];
-      v72 = [PHAsset fetchAssetsWithSyndicationIdentifiers:v71 options:v69];
+      [librarySpecificFetchOptions3 setIncludeGuestAssets:1];
+      allKeys2 = [dictionary2 allKeys];
+      v72 = [PHAsset fetchAssetsWithSyndicationIdentifiers:allKeys2 options:librarySpecificFetchOptions3];
 
       v256 = 0u;
       v257 = 0u;
@@ -543,14 +543,14 @@ LABEL_42:
             }
 
             v78 = *(*(&v254 + 1) + 8 * m);
-            v79 = [v78 curationProperties];
-            v80 = [v79 syndicationIdentifier];
-            v81 = [v197 objectForKeyedSubscript:v80];
+            curationProperties = [v78 curationProperties];
+            syndicationIdentifier = [curationProperties syndicationIdentifier];
+            v81 = [dictionary2 objectForKeyedSubscript:syndicationIdentifier];
 
-            v82 = [v78 syndicationEligibility];
+            syndicationEligibility = [v78 syndicationEligibility];
             if ([v81 count])
             {
-              v83 = (v82 + 4) > 0xFFFFFFFFFFFFFFFDLL;
+              v83 = (syndicationEligibility + 4) > 0xFFFFFFFFFFFFFFFDLL;
             }
 
             else
@@ -560,10 +560,10 @@ LABEL_42:
 
             if (!v83)
             {
-              [v213 addObjectsFromArray:v81];
+              [array2 addObjectsFromArray:v81];
             }
 
-            v6 = v198;
+            dictionary3 = v198;
           }
 
           v75 = [v73 countByEnumeratingWithState:&v254 objects:v294 count:16];
@@ -572,30 +572,30 @@ LABEL_42:
         while (v75);
       }
 
-      v7 = v194;
-      v65 = v208;
+      dictionary5 = v194;
+      v65 = dictionary6;
       v68 = v211;
     }
 
     else
     {
-      v69 = PLBackendGetLog();
-      if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+      librarySpecificFetchOptions3 = PLBackendGetLog();
+      if (os_log_type_enabled(librarySpecificFetchOptions3, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v293 = v68;
-        _os_log_impl(&dword_19C86F000, v69, OS_LOG_TYPE_ERROR, "PHQuestion: Failed to open syndicated library: %@", buf, 0xCu);
+        _os_log_impl(&dword_19C86F000, librarySpecificFetchOptions3, OS_LOG_TYPE_ERROR, "PHQuestion: Failed to open syndicated library: %@", buf, 0xCu);
       }
     }
   }
 
-  v84 = v207;
-  if ([v6 count])
+  v84 = dictionary4;
+  if ([dictionary3 count])
   {
-    v85 = [v192 librarySpecificFetchOptions];
-    [v85 setIncludedDetectionTypes:&unk_1F102E480];
-    v86 = [v6 allKeys];
-    v87 = [PHPerson fetchPersonsWithLocalIdentifiers:v86 options:v85];
+    librarySpecificFetchOptions4 = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions4 setIncludedDetectionTypes:&unk_1F102E480];
+    allKeys3 = [dictionary3 allKeys];
+    v87 = [PHPerson fetchPersonsWithLocalIdentifiers:allKeys3 options:librarySpecificFetchOptions4];
 
     v252 = 0u;
     v253 = 0u;
@@ -616,12 +616,12 @@ LABEL_42:
             objc_enumerationMutation(v88);
           }
 
-          v93 = [*(*(&v250 + 1) + 8 * n) localIdentifier];
-          v94 = [v6 objectForKeyedSubscript:v93];
+          localIdentifier3 = [*(*(&v250 + 1) + 8 * n) localIdentifier];
+          v94 = [dictionary3 objectForKeyedSubscript:localIdentifier3];
 
           if ([v94 count])
           {
-            [v213 addObjectsFromArray:v94];
+            [array2 addObjectsFromArray:v94];
           }
         }
 
@@ -631,19 +631,19 @@ LABEL_42:
       while (v90);
     }
 
-    v65 = v208;
+    v65 = dictionary6;
   }
 
-  if ([v195 count])
+  if ([array count])
   {
-    v95 = [v192 librarySpecificFetchOptions];
-    [v95 setPersonContext:1];
+    librarySpecificFetchOptions5 = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions5 setPersonContext:1];
     v290 = @"PHPersonPropertySetIdentifier";
     v96 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v290 count:1];
-    [v95 setFetchPropertySets:v96];
+    [librarySpecificFetchOptions5 setFetchPropertySets:v96];
 
-    v212 = v95;
-    v97 = [PHPerson fetchPersonsWithOptions:v95];
+    v212 = librarySpecificFetchOptions5;
+    v97 = [PHPerson fetchPersonsWithOptions:librarySpecificFetchOptions5];
     v98 = [MEMORY[0x1E695DFA8] set];
     v246 = 0u;
     v247 = 0u;
@@ -665,13 +665,13 @@ LABEL_42:
           }
 
           v104 = *(*(&v246 + 1) + 8 * ii);
-          v105 = [v104 uuid];
-          v106 = [v105 length];
+          uuid = [v104 uuid];
+          v106 = [uuid length];
 
           if (v106)
           {
-            v107 = [v104 uuid];
-            [v98 addObject:v107];
+            uuid2 = [v104 uuid];
+            [v98 addObject:uuid2];
           }
         }
 
@@ -687,7 +687,7 @@ LABEL_42:
     v245 = 0u;
     v242 = 0u;
     v243 = 0u;
-    v108 = v195;
+    v108 = array;
     v109 = [v108 countByEnumeratingWithState:&v242 objects:v288 count:16];
     if (v109)
     {
@@ -703,18 +703,18 @@ LABEL_42:
           }
 
           v113 = *(*(&v242 + 1) + 8 * jj);
-          v114 = [v113 additionalInfo];
-          v115 = [v114 objectForKeyedSubscript:@"personUUIDs"];
+          additionalInfo3 = [v113 additionalInfo];
+          v115 = [additionalInfo3 objectForKeyedSubscript:@"personUUIDs"];
 
           v116 = [MEMORY[0x1E695DFA8] setWithArray:v115];
           [v116 intersectSet:v98];
           v117 = [v116 count];
           if (v117 == [v115 count])
           {
-            [v213 addObject:v113];
+            [array2 addObject:v113];
           }
 
-          v84 = v207;
+          v84 = dictionary4;
         }
 
         v110 = [v108 countByEnumeratingWithState:&v242 objects:v288 count:16];
@@ -723,16 +723,16 @@ LABEL_42:
       while (v110);
     }
 
-    v6 = v198;
-    v65 = v208;
-    v7 = v194;
+    dictionary3 = v198;
+    v65 = dictionary6;
+    dictionary5 = v194;
   }
 
   if ([v84 count])
   {
-    v118 = [v192 librarySpecificFetchOptions];
-    v119 = [v84 allKeys];
-    v120 = [PHAssetCollection fetchAssetCollectionsWithType:4 localIdentifiers:v119 options:v118];
+    librarySpecificFetchOptions6 = [libraryCopy librarySpecificFetchOptions];
+    allKeys4 = [v84 allKeys];
+    v120 = [PHAssetCollection fetchAssetCollectionsWithType:4 localIdentifiers:allKeys4 options:librarySpecificFetchOptions6];
 
     v240 = 0u;
     v241 = 0u;
@@ -753,12 +753,12 @@ LABEL_42:
             objc_enumerationMutation(v121);
           }
 
-          v126 = [*(*(&v238 + 1) + 8 * kk) localIdentifier];
-          v127 = [v84 objectForKeyedSubscript:v126];
+          localIdentifier4 = [*(*(&v238 + 1) + 8 * kk) localIdentifier];
+          v127 = [v84 objectForKeyedSubscript:localIdentifier4];
 
           if ([v127 count])
           {
-            [v213 addObjectsFromArray:v127];
+            [array2 addObjectsFromArray:v127];
           }
         }
 
@@ -768,22 +768,22 @@ LABEL_42:
       while (v123);
     }
 
-    v65 = v208;
+    v65 = dictionary6;
   }
 
-  if ([v7 count])
+  if ([dictionary5 count])
   {
-    v128 = [v192 librarySpecificFetchOptions];
+    librarySpecificFetchOptions7 = [libraryCopy librarySpecificFetchOptions];
     v286 = @"PHAssetPropertySetIdentifier";
     v129 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v286 count:1];
-    [v128 setFetchPropertySets:v129];
+    [librarySpecificFetchOptions7 setFetchPropertySets:v129];
 
-    v130 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    v130 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dictionary5, "count")}];
     v234 = 0u;
     v235 = 0u;
     v236 = 0u;
     v237 = 0u;
-    v131 = v7;
+    v131 = dictionary5;
     v132 = [v131 countByEnumeratingWithState:&v234 objects:v285 count:16];
     if (v132)
     {
@@ -811,10 +811,10 @@ LABEL_42:
       while (v133);
     }
 
-    v137 = [MEMORY[0x1E696AE18] predicateWithFormat:@"highlightBeingAssets.type = %d && uuid in %@", 5, v130];
-    [v128 setInternalPredicate:v137];
+    v130 = [MEMORY[0x1E696AE18] predicateWithFormat:@"highlightBeingAssets.type = %d && uuid in %@", 5, v130];
+    [librarySpecificFetchOptions7 setInternalPredicate:v130];
 
-    [PHAsset fetchAssetsWithOptions:v128];
+    [PHAsset fetchAssetsWithOptions:librarySpecificFetchOptions7];
     v230 = 0u;
     v231 = 0u;
     v232 = 0u;
@@ -833,12 +833,12 @@ LABEL_42:
             objc_enumerationMutation(v138);
           }
 
-          v143 = [*(*(&v230 + 1) + 8 * nn) localIdentifier];
-          v144 = [v131 objectForKeyedSubscript:v143];
+          localIdentifier5 = [*(*(&v230 + 1) + 8 * nn) localIdentifier];
+          v144 = [v131 objectForKeyedSubscript:localIdentifier5];
 
           if ([v144 count])
           {
-            [v213 addObjectsFromArray:v144];
+            [array2 addObjectsFromArray:v144];
           }
         }
 
@@ -848,16 +848,16 @@ LABEL_42:
       while (v140);
     }
 
-    v6 = v198;
-    v7 = v194;
-    v65 = v208;
+    dictionary3 = v198;
+    dictionary5 = v194;
+    v65 = dictionary6;
   }
 
   if ([v65 count])
   {
-    v145 = [v192 librarySpecificFetchOptions];
-    v146 = [v208 allKeys];
-    v147 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v146 options:v145];
+    librarySpecificFetchOptions8 = [libraryCopy librarySpecificFetchOptions];
+    allKeys5 = [dictionary6 allKeys];
+    v147 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:allKeys5 options:librarySpecificFetchOptions8];
 
     v228 = 0u;
     v229 = 0u;
@@ -879,12 +879,12 @@ LABEL_42:
           }
 
           v153 = *(*(&v226 + 1) + 8 * i1);
-          v154 = [v153 localIdentifier];
-          v155 = [v208 objectForKeyedSubscript:v154];
+          localIdentifier6 = [v153 localIdentifier];
+          v155 = [dictionary6 objectForKeyedSubscript:localIdentifier6];
 
           if ([v153 approximateCount] && objc_msgSend(v155, "count"))
           {
-            [v213 addObjectsFromArray:v155];
+            [array2 addObjectsFromArray:v155];
           }
         }
 
@@ -894,14 +894,14 @@ LABEL_42:
       while (v150);
     }
 
-    v6 = v198;
+    dictionary3 = v198;
   }
 
-  if ([v206 count])
+  if ([dictionary7 count])
   {
-    v156 = [v192 librarySpecificFetchOptions];
-    v157 = [v206 allKeys];
-    v158 = [(PHAssetCollection *)PHMoment fetchAssetCollectionsWithLocalIdentifiers:v157 options:v156];
+    librarySpecificFetchOptions9 = [libraryCopy librarySpecificFetchOptions];
+    allKeys6 = [dictionary7 allKeys];
+    v158 = [(PHAssetCollection *)PHMoment fetchAssetCollectionsWithLocalIdentifiers:allKeys6 options:librarySpecificFetchOptions9];
 
     v224 = 0u;
     v225 = 0u;
@@ -922,12 +922,12 @@ LABEL_42:
             objc_enumerationMutation(v159);
           }
 
-          v164 = [*(*(&v222 + 1) + 8 * i2) localIdentifier];
-          v165 = [v206 objectForKeyedSubscript:v164];
+          localIdentifier7 = [*(*(&v222 + 1) + 8 * i2) localIdentifier];
+          v165 = [dictionary7 objectForKeyedSubscript:localIdentifier7];
 
           if ([v165 count])
           {
-            [v213 addObjectsFromArray:v165];
+            [array2 addObjectsFromArray:v165];
           }
         }
 
@@ -938,15 +938,15 @@ LABEL_42:
     }
   }
 
-  v166 = v193;
-  if ([v193 count])
+  v166 = dictionary8;
+  if ([dictionary8 count])
   {
-    v167 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v193, "count")}];
+    v167 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dictionary8, "count")}];
     v218 = 0u;
     v219 = 0u;
     v220 = 0u;
     v221 = 0u;
-    v168 = v193;
+    v168 = dictionary8;
     v169 = [v168 countByEnumeratingWithState:&v218 objects:v281 count:16];
     if (v169)
     {
@@ -974,15 +974,15 @@ LABEL_42:
       while (v170);
     }
 
-    v174 = [v192 librarySpecificFetchOptions];
+    librarySpecificFetchOptions10 = [libraryCopy librarySpecificFetchOptions];
     v280 = @"PHAssetPropertySetIdentifier";
     v175 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v280 count:1];
-    [v174 setFetchPropertySets:v175];
+    [librarySpecificFetchOptions10 setFetchPropertySets:v175];
 
-    v176 = [MEMORY[0x1E696AE18] predicateWithFormat:@"highlightBeingAssets.kind = %d && uuid in %@", 0, v167];
-    [v174 setInternalPredicate:v176];
+    v167 = [MEMORY[0x1E696AE18] predicateWithFormat:@"highlightBeingAssets.kind = %d && uuid in %@", 0, v167];
+    [librarySpecificFetchOptions10 setInternalPredicate:v167];
 
-    [PHAsset fetchAssetsWithOptions:v174];
+    [PHAsset fetchAssetsWithOptions:librarySpecificFetchOptions10];
     v214 = 0u;
     v215 = 0u;
     v216 = 0u;
@@ -1001,12 +1001,12 @@ LABEL_42:
             objc_enumerationMutation(v177);
           }
 
-          v182 = [*(*(&v214 + 1) + 8 * i4) localIdentifier];
-          v183 = [v168 objectForKeyedSubscript:v182];
+          localIdentifier8 = [*(*(&v214 + 1) + 8 * i4) localIdentifier];
+          v183 = [v168 objectForKeyedSubscript:localIdentifier8];
 
           if ([v183 count])
           {
-            [v213 addObjectsFromArray:v183];
+            [array2 addObjectsFromArray:v183];
           }
         }
 
@@ -1016,15 +1016,15 @@ LABEL_42:
       while (v179);
     }
 
-    v6 = v198;
-    v166 = v193;
+    dictionary3 = v198;
+    v166 = dictionary8;
   }
 
   v184 = [PHManualFetchResult alloc];
-  v185 = [obj photoLibrary];
-  v186 = [obj fetchType];
-  v187 = [obj fetchPropertySets];
-  v188 = [(PHManualFetchResult *)v184 initWithObjects:v213 photoLibrary:v185 fetchType:v186 fetchPropertySets:v187 identifier:0 registerIfNeeded:0];
+  photoLibrary = [obj photoLibrary];
+  fetchType = [obj fetchType];
+  fetchPropertySets = [obj fetchPropertySets];
+  v188 = [(PHManualFetchResult *)v184 initWithObjects:array2 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:0 registerIfNeeded:0];
 
   v189 = v188;
   return v188;
@@ -1038,15 +1038,15 @@ id __51__PHQuestion_fetchInvalidatedQuestionsWithOptions___block_invoke(uint64_t
   return v3;
 }
 
-+ (id)fetchUnansweredQuestionsWithOptions:(id)a3 validQuestionsOnly:(BOOL)a4
++ (id)fetchUnansweredQuestionsWithOptions:(id)options validQuestionsOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:&__block_literal_global_83];
-  if (v4)
+  onlyCopy = only;
+  optionsCopy = options;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_83];
+  if (onlyCopy)
   {
-    v8 = [v6 photoLibrary];
-    v9 = [a1 questionsWithValidEntitiesFromQuestions:v7 photoLibrary:v8];
+    photoLibrary = [optionsCopy photoLibrary];
+    v9 = [self questionsWithValidEntitiesFromQuestions:v7 photoLibrary:photoLibrary];
 
     v7 = v9;
   }
@@ -1062,15 +1062,15 @@ id __69__PHQuestion_fetchUnansweredQuestionsWithOptions_validQuestionsOnly___blo
   return v3;
 }
 
-+ (id)fetchAnsweredQuestionsWithOptions:(id)a3 validQuestionsOnly:(BOOL)a4
++ (id)fetchAnsweredQuestionsWithOptions:(id)options validQuestionsOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:&__block_literal_global_81];
-  if (v4)
+  onlyCopy = only;
+  optionsCopy = options;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_81];
+  if (onlyCopy)
   {
-    v8 = [v6 photoLibrary];
-    v9 = [a1 questionsWithValidEntitiesFromQuestions:v7 photoLibrary:v8];
+    photoLibrary = [optionsCopy photoLibrary];
+    v9 = [self questionsWithValidEntitiesFromQuestions:v7 photoLibrary:photoLibrary];
 
     v7 = v9;
   }
@@ -1086,15 +1086,15 @@ id __67__PHQuestion_fetchAnsweredQuestionsWithOptions_validQuestionsOnly___block
   return v3;
 }
 
-+ (id)fetchAnsweredYesOrNoQuestionsWithOptions:(id)a3 validQuestionsOnly:(BOOL)a4
++ (id)fetchAnsweredYesOrNoQuestionsWithOptions:(id)options validQuestionsOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:&__block_literal_global_79];
-  if (v4)
+  onlyCopy = only;
+  optionsCopy = options;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_79];
+  if (onlyCopy)
   {
-    v8 = [v6 photoLibrary];
-    v9 = [a1 questionsWithValidEntitiesFromQuestions:v7 photoLibrary:v8];
+    photoLibrary = [optionsCopy photoLibrary];
+    v9 = [self questionsWithValidEntitiesFromQuestions:v7 photoLibrary:photoLibrary];
 
     v7 = v9;
   }
@@ -1110,22 +1110,22 @@ id __74__PHQuestion_fetchAnsweredYesOrNoQuestionsWithOptions_validQuestionsOnly_
   return v3;
 }
 
-+ (id)fetchQuestionsWithLocalIdentifiers:(id)a3 options:(id)a4 validQuestionsOnly:(BOOL)a5
++ (id)fetchQuestionsWithLocalIdentifiers:(id)identifiers options:(id)options validQuestionsOnly:(BOOL)only
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  onlyCopy = only;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__PHQuestion_fetchQuestionsWithLocalIdentifiers_options_validQuestionsOnly___block_invoke;
   v15[3] = &unk_1E75AB0E0;
-  v16 = v8;
-  v10 = v8;
-  v11 = [PHObject authorizationAwareFetchResultWithOptions:v9 fetchBlock:v15];
-  if (v5)
+  v16 = identifiersCopy;
+  v10 = identifiersCopy;
+  v11 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:v15];
+  if (onlyCopy)
   {
-    v12 = [v9 photoLibrary];
-    v13 = [a1 questionsWithValidEntitiesFromQuestions:v11 photoLibrary:v12];
+    photoLibrary = [optionsCopy photoLibrary];
+    v13 = [self questionsWithValidEntitiesFromQuestions:v11 photoLibrary:photoLibrary];
 
     v11 = v13;
   }
@@ -1141,15 +1141,15 @@ id __76__PHQuestion_fetchQuestionsWithLocalIdentifiers_options_validQuestionsOnl
   return v3;
 }
 
-+ (id)fetchQuestionsWithOptions:(id)a3 validQuestionsOnly:(BOOL)a4
++ (id)fetchQuestionsWithOptions:(id)options validQuestionsOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:&__block_literal_global_76];
-  if (v4)
+  onlyCopy = only;
+  optionsCopy = options;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_76];
+  if (onlyCopy)
   {
-    v8 = [v6 photoLibrary];
-    v9 = [a1 questionsWithValidEntitiesFromQuestions:v7 photoLibrary:v8];
+    photoLibrary = [optionsCopy photoLibrary];
+    v9 = [self questionsWithValidEntitiesFromQuestions:v7 photoLibrary:photoLibrary];
 
     v7 = v9;
   }
@@ -1165,12 +1165,12 @@ id __59__PHQuestion_fetchQuestionsWithOptions_validQuestionsOnly___block_invoke(
   return v3;
 }
 
-+ (id)fetchAnsweredQuestionCountsWithOptions:(id)a3
++ (id)fetchAnsweredQuestionCountsWithOptions:(id)options
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [a1 fetchAnsweredQuestionsWithOptions:v4 validQuestionsOnly:1];
+  v6 = [self fetchAnsweredQuestionsWithOptions:optionsCopy validQuestionsOnly:1];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1273,7 +1273,7 @@ void __26__PHQuestion_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_16_53589 = v10;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   pl_dispatch_once();
   v3 = propertiesToFetchWithHint__pl_once_object_15_53603;

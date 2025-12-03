@@ -1,8 +1,8 @@
 @interface WCAFetchSQLiteRequest
-- (WCAFetchSQLiteRequest)initWithCoder:(id)a3;
+- (WCAFetchSQLiteRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParameters:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParameters:(id)parameters;
 @end
 
 @implementation WCAFetchSQLiteRequest
@@ -23,17 +23,17 @@
   return v6;
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  parametersCopy = parameters;
+  v5 = parametersCopy;
+  if (parametersCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v13 = 0u;
-    v6 = [(NSDictionary *)v4 allValues:0];
+    v6 = [(NSDictionary *)parametersCopy allValues:0];
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
@@ -64,46 +64,46 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WCAFetchSQLiteRequest;
-  v4 = a3;
-  [(WCAFetchRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_parameters forKey:{@"_parameters", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_tableName forKey:@"_tableName"];
-  [v4 encodeObject:self->_columnNames forKey:@"_columnNames"];
-  [v4 encodeInteger:self->_limit forKey:@"_limit"];
+  coderCopy = coder;
+  [(WCAFetchRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_parameters forKey:{@"_parameters", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_tableName forKey:@"_tableName"];
+  [coderCopy encodeObject:self->_columnNames forKey:@"_columnNames"];
+  [coderCopy encodeInteger:self->_limit forKey:@"_limit"];
 }
 
-- (WCAFetchSQLiteRequest)initWithCoder:(id)a3
+- (WCAFetchSQLiteRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = WCAFetchSQLiteRequest;
-  v5 = [(WCAFetchRequest *)&v20 initWithCoder:v4];
+  v5 = [(WCAFetchRequest *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_parameters"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_parameters"];
     parameters = v5->_parameters;
     v5->_parameters = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_tableName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_tableName"];
     tableName = v5->_tableName;
     v5->_tableName = v12;
 
     v14 = MEMORY[0x277CBEB98];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"_columnNames"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"_columnNames"];
     columnNames = v5->_columnNames;
     v5->_columnNames = v17;
 
-    v5->_limit = [v4 decodeIntegerForKey:@"_limit"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"_limit"];
   }
 
   return v5;

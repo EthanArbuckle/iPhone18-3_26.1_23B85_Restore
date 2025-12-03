@@ -1,16 +1,16 @@
 @interface OrganDonationRegisteredHeaderCell
-- (_TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation OrganDonationRegisteredHeaderCell
 
-- (_TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell_organDonationLogoImage;
   *(&self->super.super.super.super.super.isa + v8) = sub_1BA2E9B04();
   v9 = OBJC_IVAR____TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell_title;
@@ -24,13 +24,13 @@
   *(v11 + 4) = 0;
   v15.receiver = self;
   v15.super_class = v12;
-  v13 = [(OrganDonationRegisteredHeaderCell *)&v15 initWithFrame:x, y, width, height];
+  height = [(OrganDonationRegisteredHeaderCell *)&v15 initWithFrame:x, y, width, height];
   sub_1BA2EA0B4();
 
-  return v13;
+  return height;
 }
 
-- (_TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18HealthExperienceUI33OrganDonationRegisteredHeaderCell_organDonationLogoImage;
   *(&self->super.super.super.super.super.isa + v4) = sub_1BA2E9B04();

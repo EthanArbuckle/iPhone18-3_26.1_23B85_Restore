@@ -1,21 +1,21 @@
 @interface RadioCarManager
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carIsConfigured:(id)a3;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carIsConfigured:(id)configured;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
 - (void)dismissSettingsModal;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)nowPlayingTapped;
-- (void)session:(id)a3 didUpdateConfiguration:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidUpdateCarCapabilities:(id)a3;
-- (void)showSoundSettingsWithOverrideDark:(BOOL)a3;
+- (void)session:(id)session didUpdateConfiguration:(id)configuration;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidUpdateCarCapabilities:(id)capabilities;
+- (void)showSoundSettingsWithOverrideDark:(BOOL)dark;
 @end
 
 @implementation RadioCarManager
 
 - (void)nowPlayingTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100010040();
 }
 
@@ -28,50 +28,50 @@
   }
 }
 
-- (void)showSoundSettingsWithOverrideDark:(BOOL)a3
+- (void)showSoundSettingsWithOverrideDark:(BOOL)dark
 {
-  v4 = self;
-  sub_100010424(a3);
+  selfCopy = self;
+  sub_100010424(dark);
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000114B8(v4);
+  accessoriesCopy = accessories;
+  selfCopy = self;
+  sub_1000114B8(accessoriesCopy);
 }
 
-- (void)carIsConfigured:(id)a3
+- (void)carIsConfigured:(id)configured
 {
-  v4 = a3;
-  v5 = self;
-  sub_100010900(v4);
+  configuredCopy = configured;
+  selfCopy = self;
+  sub_100010900(configuredCopy);
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1000115F4(a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  sub_1000115F4(car);
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_100011798(v8);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_100011798(viewControllerCopy);
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  sub_100010BB0(v4);
+  connectCopy = connect;
+  selfCopy = self;
+  sub_100010BB0(connectCopy);
 }
 
-- (void)session:(id)a3 didUpdateConfiguration:(id)a4
+- (void)session:(id)session didUpdateConfiguration:(id)configuration
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC5Media15RadioCarManager_nowPlayingViewController);
   if (v4)
@@ -80,7 +80,7 @@
   }
 }
 
-- (void)sessionDidUpdateCarCapabilities:(id)a3
+- (void)sessionDidUpdateCarCapabilities:(id)capabilities
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC5Media15RadioCarManager_nowPlayingViewController);
   if (v3)

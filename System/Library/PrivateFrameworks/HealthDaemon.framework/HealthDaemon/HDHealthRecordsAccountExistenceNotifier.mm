@@ -1,13 +1,13 @@
 @interface HDHealthRecordsAccountExistenceNotifier
 - (BOOL)isCurrentCountryCodeSupportingCHR;
 - (HDHealthRecordsAccountExistenceNotifier)init;
-- (HDHealthRecordsAccountExistenceNotifier)initWithProfile:(id)a3;
+- (HDHealthRecordsAccountExistenceNotifier)initWithProfile:(id)profile;
 - (HDProfile)profile;
 - (const)_updateAndReturnState;
 - (int64_t)ontologyEnablingHealthRecordsAccountState;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)setUnitTesting_profileReadyCompleteHandler:(id)a3;
-- (void)unitTesting_setOntologyEnablingHealthRecordsAccountExists:(BOOL)a3;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)setUnitTesting_profileReadyCompleteHandler:(id)handler;
+- (void)unitTesting_setOntologyEnablingHealthRecordsAccountExists:(BOOL)exists;
 @end
 
 @implementation HDHealthRecordsAccountExistenceNotifier
@@ -22,16 +22,16 @@
   return 0;
 }
 
-- (HDHealthRecordsAccountExistenceNotifier)initWithProfile:(id)a3
+- (HDHealthRecordsAccountExistenceNotifier)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDHealthRecordsAccountExistenceNotifier;
   v5 = [(HDHealthRecordsAccountExistenceNotifier *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277CCD738]);
     v8 = [v7 initWithName:@"HDHealthRecordsAccountExistenceObservers" loggingCategory:*MEMORY[0x277CCC2C0]];
     observers = v6->_observers;
@@ -63,32 +63,32 @@
 
 - (const)_updateAndReturnState
 {
-  v1 = a1;
+  selfCopy = self;
   v22 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_not_owner(a1 + 6);
-    os_unfair_lock_lock(&v1[6]);
-    os_unfair_lock_opaque_low = LOBYTE(v1[12]._os_unfair_lock_opaque);
-    os_unfair_lock_unlock(&v1[6]);
+    os_unfair_lock_assert_not_owner(self + 6);
+    os_unfair_lock_lock(&selfCopy[6]);
+    os_unfair_lock_opaque_low = LOBYTE(selfCopy[12]._os_unfair_lock_opaque);
+    os_unfair_lock_unlock(&selfCopy[6]);
     if (os_unfair_lock_opaque_low == 1)
     {
       v14 = 0;
       v15 = &v14;
       v16 = 0x2020000000;
       v17 = 0;
-      WeakRetained = objc_loadWeakRetained(&v1[14]);
-      v4 = [WeakRetained database];
+      WeakRetained = objc_loadWeakRetained(&selfCopy[14]);
+      database = [WeakRetained database];
       v5 = +[HDDatabaseTransactionContext highPriorityContext];
-      v6 = [v5 copyForReadingProtectedData];
+      copyForReadingProtectedData = [v5 copyForReadingProtectedData];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __64__HDHealthRecordsAccountExistenceNotifier__queryForAccountState__block_invoke;
       v12[3] = &unk_278614110;
-      v12[4] = v1;
+      v12[4] = selfCopy;
       v12[5] = &v14;
       v13 = 0;
-      v7 = [v4 performTransactionWithContext:v6 error:&v13 block:v12 inaccessibilityHandler:0];
+      v7 = [database performTransactionWithContext:copyForReadingProtectedData error:&v13 block:v12 inaccessibilityHandler:0];
       v8 = v13;
 
       if ((v7 & 1) == 0 && (HKIsUnitTesting() & 1) == 0)
@@ -98,41 +98,41 @@
         if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v19 = v1;
+          v19 = selfCopy;
           v20 = 2114;
           v21 = v8;
           _os_log_error_impl(&dword_228986000, v9, OS_LOG_TYPE_ERROR, "%{public}@ Failed to determine if profile has health records accounts: %{public}@", buf, 0x16u);
         }
       }
 
-      v1 = v15[3];
+      selfCopy = v15[3];
       _Block_object_dispose(&v14, 8);
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)isCurrentCountryCodeSupportingCHR
 {
-  v2 = [(HDHealthRecordsAccountExistenceNotifier *)self profile];
-  v3 = [v2 daemon];
-  v4 = [v3 ontologyConfigurationProvider];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v4 isCountrySupported:v5];
+  profile = [(HDHealthRecordsAccountExistenceNotifier *)self profile];
+  daemon = [profile daemon];
+  ontologyConfigurationProvider = [daemon ontologyConfigurationProvider];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v6 = [ontologyConfigurationProvider isCountrySupported:currentLocale];
 
   return v6;
 }
 
-- (void)unitTesting_setOntologyEnablingHealthRecordsAccountExists:(BOOL)a3
+- (void)unitTesting_setOntologyEnablingHealthRecordsAccountExists:(BOOL)exists
 {
-  if (a3)
+  if (exists)
   {
     v4 = 2;
   }
@@ -149,9 +149,9 @@
   [(HDHealthRecordsAccountExistenceNotifier *)self _updateAndReturnState];
 }
 
-- (void)setUnitTesting_profileReadyCompleteHandler:(id)a3
+- (void)setUnitTesting_profileReadyCompleteHandler:(id)handler
 {
-  unitTesting_profileReadyCompleteHandler = a3;
+  unitTesting_profileReadyCompleteHandler = handler;
   os_unfair_lock_lock(&self->_lock);
   if (self->_isProfileReady)
   {
@@ -169,12 +169,12 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v5 = [WeakRetained profileExtensionsConformingToProtocol:&unk_283D71148];
-  v6 = [v5 firstObject];
-  objc_storeWeak(&self->_healthRecordsProfileExtension, v6);
+  firstObject = [v5 firstObject];
+  objc_storeWeak(&self->_healthRecordsProfileExtension, firstObject);
 
   v7 = objc_loadWeakRetained(&self->_healthRecordsProfileExtension);
   [v7 addAccountEventObserver:self];

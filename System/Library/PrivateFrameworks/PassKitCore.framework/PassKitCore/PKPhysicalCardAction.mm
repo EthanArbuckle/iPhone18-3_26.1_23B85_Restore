@@ -1,56 +1,56 @@
 @interface PKPhysicalCardAction
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPhysicalCardAction:(id)a3;
-- (PKPhysicalCardAction)initWithActionType:(unint64_t)a3;
-- (PKPhysicalCardAction)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPhysicalCardAction:(id)action;
+- (PKPhysicalCardAction)initWithActionType:(unint64_t)type;
+- (PKPhysicalCardAction)initWithCoder:(id)coder;
 - (id)_shippingAddressJSONRepresentation;
 - (id)jsonRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPhysicalCardAction
 
-- (PKPhysicalCardAction)initWithActionType:(unint64_t)a3
+- (PKPhysicalCardAction)initWithActionType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PKPhysicalCardAction;
   result = [(PKPhysicalCardAction *)&v5 init];
   if (result)
   {
-    result->_actionType = a3;
+    result->_actionType = type;
   }
 
   return result;
 }
 
-- (PKPhysicalCardAction)initWithCoder:(id)a3
+- (PKPhysicalCardAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKPhysicalCardAction;
   v5 = [(PKPhysicalCardAction *)&v17 init];
   if (v5)
   {
-    v5->_actionType = [v4 decodeIntegerForKey:@"action"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activationCode"];
+    v5->_actionType = [coderCopy decodeIntegerForKey:@"action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activationCode"];
     activationCode = v5->_activationCode;
     v5->_activationCode = v6;
 
-    v5->_reason = [v4 decodeIntegerForKey:@"reason"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"artworkIdentifier"];
+    v5->_reason = [coderCopy decodeIntegerForKey:@"reason"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artworkIdentifier"];
     artworkIdentifier = v5->_artworkIdentifier;
     v5->_artworkIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingAddress"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingAddress"];
     shippingAddress = v5->_shippingAddress;
     v5->_shippingAddress = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     nameOnCard = v5->_nameOnCard;
     v5->_nameOnCard = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"priceOption"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"priceOption"];
     priceOption = v5->_priceOption;
     v5->_priceOption = v14;
   }
@@ -58,40 +58,40 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   actionType = self->_actionType;
-  v5 = a3;
-  [v5 encodeInteger:actionType forKey:@"action"];
-  [v5 encodeObject:self->_activationCode forKey:@"activationCode"];
-  [v5 encodeInteger:self->_reason forKey:@"reason"];
-  [v5 encodeObject:self->_artworkIdentifier forKey:@"artworkIdentifier"];
-  [v5 encodeObject:self->_shippingAddress forKey:@"shippingAddress"];
-  [v5 encodeObject:self->_nameOnCard forKey:@"name"];
-  [v5 encodeObject:self->_priceOption forKey:@"priceOption"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:actionType forKey:@"action"];
+  [coderCopy encodeObject:self->_activationCode forKey:@"activationCode"];
+  [coderCopy encodeInteger:self->_reason forKey:@"reason"];
+  [coderCopy encodeObject:self->_artworkIdentifier forKey:@"artworkIdentifier"];
+  [coderCopy encodeObject:self->_shippingAddress forKey:@"shippingAddress"];
+  [coderCopy encodeObject:self->_nameOnCard forKey:@"name"];
+  [coderCopy encodeObject:self->_priceOption forKey:@"priceOption"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPhysicalCardAction *)self isEqualToPhysicalCardAction:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPhysicalCardAction *)self isEqualToPhysicalCardAction:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPhysicalCardAction:(id)a3
+- (BOOL)isEqualToPhysicalCardAction:(id)action
 {
-  v4 = a3;
-  v5 = v4[2];
+  actionCopy = action;
+  v5 = actionCopy[2];
   v6 = self->_activationCode;
   v7 = v5;
   v8 = v7;
@@ -124,7 +124,7 @@
     }
   }
 
-  v11 = v4[4];
+  v11 = actionCopy[4];
   v6 = self->_artworkIdentifier;
   v12 = v11;
   v8 = v12;
@@ -149,7 +149,7 @@ LABEL_14:
 
 LABEL_18:
   shippingAddress = self->_shippingAddress;
-  v17 = v4[5];
+  v17 = actionCopy[5];
   if (shippingAddress && v17)
   {
     if (([(CNPostalAddress *)shippingAddress isEqual:?]& 1) == 0)
@@ -164,7 +164,7 @@ LABEL_18:
   }
 
   nameOnCard = self->_nameOnCard;
-  v19 = v4[6];
+  v19 = actionCopy[6];
   if (nameOnCard && v19)
   {
     if (([(NSString *)nameOnCard isEqual:?]& 1) == 0)
@@ -179,7 +179,7 @@ LABEL_18:
   }
 
   priceOption = self->_priceOption;
-  v21 = v4[7];
+  v21 = actionCopy[7];
   if (priceOption && v21)
   {
     if (![(PKPhysicalCardPriceOption *)priceOption isEqual:?])
@@ -193,9 +193,9 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  if (self->_actionType == v4[1])
+  if (self->_actionType == actionCopy[1])
   {
-    v14 = self->_reason == v4[3];
+    v14 = self->_reason == actionCopy[3];
     goto LABEL_16;
   }
 
@@ -244,12 +244,12 @@ LABEL_16:
     [v4 setObject:v8 forKeyedSubscript:@"reason"];
 
     [v4 setObject:self->_artworkIdentifier forKeyedSubscript:@"artworkIdentifier"];
-    v9 = [(PKPhysicalCardAction *)self _shippingAddressJSONRepresentation];
-    [v4 setObject:v9 forKeyedSubscript:@"shippingAddress"];
+    _shippingAddressJSONRepresentation = [(PKPhysicalCardAction *)self _shippingAddressJSONRepresentation];
+    [v4 setObject:_shippingAddressJSONRepresentation forKeyedSubscript:@"shippingAddress"];
 
     [v4 setObject:self->_nameOnCard forKeyedSubscript:@"name"];
-    v10 = [(PKPhysicalCardPriceOption *)self->_priceOption jsonDictionaryRepresentation];
-    [v4 setObject:v10 forKeyedSubscript:@"priceOption"];
+    jsonDictionaryRepresentation = [(PKPhysicalCardPriceOption *)self->_priceOption jsonDictionaryRepresentation];
+    [v4 setObject:jsonDictionaryRepresentation forKeyedSubscript:@"priceOption"];
   }
 
   else if (actionType == 4)
@@ -267,12 +267,12 @@ LABEL_16:
   if (self->_shippingAddress)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v4 = [(CNPostalAddress *)self->_shippingAddress street];
-    v5 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+    street = [(CNPostalAddress *)self->_shippingAddress street];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v6 = [street componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
-    v7 = [v6 firstObject];
-    [v3 setObject:v7 forKeyedSubscript:@"addressLine1"];
+    firstObject = [v6 firstObject];
+    [v3 setObject:firstObject forKeyedSubscript:@"addressLine1"];
 
     if ([v6 count] >= 2)
     {
@@ -280,17 +280,17 @@ LABEL_16:
       [v3 setObject:v8 forKeyedSubscript:@"addressLine2"];
     }
 
-    v9 = [(CNPostalAddress *)self->_shippingAddress city];
-    [v3 setObject:v9 forKeyedSubscript:@"city"];
+    city = [(CNPostalAddress *)self->_shippingAddress city];
+    [v3 setObject:city forKeyedSubscript:@"city"];
 
-    v10 = [(CNPostalAddress *)self->_shippingAddress state];
-    [v3 setObject:v10 forKeyedSubscript:@"state"];
+    state = [(CNPostalAddress *)self->_shippingAddress state];
+    [v3 setObject:state forKeyedSubscript:@"state"];
 
-    v11 = [(CNPostalAddress *)self->_shippingAddress postalCode];
-    [v3 setObject:v11 forKeyedSubscript:@"postalCode"];
+    postalCode = [(CNPostalAddress *)self->_shippingAddress postalCode];
+    [v3 setObject:postalCode forKeyedSubscript:@"postalCode"];
 
-    v12 = [(CNPostalAddress *)self->_shippingAddress ISOCountryCode];
-    [v3 setObject:v12 forKeyedSubscript:@"countryCode"];
+    iSOCountryCode = [(CNPostalAddress *)self->_shippingAddress ISOCountryCode];
+    [v3 setObject:iSOCountryCode forKeyedSubscript:@"countryCode"];
 
     v13 = [v3 copy];
   }

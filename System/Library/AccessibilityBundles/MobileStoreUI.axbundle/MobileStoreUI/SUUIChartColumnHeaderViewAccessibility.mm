@@ -1,16 +1,16 @@
 @interface SUUIChartColumnHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation SUUIChartColumnHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIChartColumnHeaderView" hasInstanceVariable:@"_buttons" withType:"NSArray"];
-  [v3 validateClass:@"SUUIChartColumnHeaderView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIChartColumnHeaderView" hasInstanceVariable:@"_buttons" withType:"NSArray"];
+  [validationsCopy validateClass:@"SUUIChartColumnHeaderView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

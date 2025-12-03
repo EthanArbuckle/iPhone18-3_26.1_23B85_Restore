@@ -1,20 +1,20 @@
 @interface HKCodableDateInterval
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableDateInterval
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableDateInterval;
   v4 = [(HKCodableDateInterval *)&v8 description];
-  v5 = [(HKCodableDateInterval *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableDateInterval *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startDate];
-    [v3 setObject:v5 forKey:@"startDate"];
+    [dictionary setObject:v5 forKey:@"startDate"];
 
     has = self->_has;
   }
@@ -54,52 +54,52 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endDate];
-    [v3 setObject:v6 forKey:@"endDate"];
+    [dictionary setObject:v6 forKey:@"endDate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_startDate;
-    *(v4 + 24) |= 2u;
+    toCopy[2] = *&self->_startDate;
+    *(toCopy + 24) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[1] = *&self->_endDate;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = *&self->_endDate;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -117,33 +117,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_startDate != *(v4 + 2))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_startDate != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 24) & 1) == 0;
+  v5 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_endDate != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_endDate != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
@@ -228,20 +228,20 @@ LABEL_12:
   return v8 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) != 0)
   {
-    self->_startDate = *(v4 + 2);
+    self->_startDate = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
   }
 
   if (v5)
   {
-    self->_endDate = *(v4 + 1);
+    self->_endDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

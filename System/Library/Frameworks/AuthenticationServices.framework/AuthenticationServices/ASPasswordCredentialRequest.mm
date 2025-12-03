@@ -1,8 +1,8 @@
 @interface ASPasswordCredentialRequest
 + (ASPasswordCredentialRequest)requestWithCredentialIdentity:(ASPasswordCredentialIdentity *)credentialIdentity;
-- (ASPasswordCredentialRequest)initWithCoder:(id)a3;
+- (ASPasswordCredentialRequest)initWithCoder:(id)coder;
 - (ASPasswordCredentialRequest)initWithCredentialIdentity:(ASPasswordCredentialIdentity *)credentialIdentity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASPasswordCredentialRequest
@@ -28,15 +28,15 @@
 + (ASPasswordCredentialRequest)requestWithCredentialIdentity:(ASPasswordCredentialIdentity *)credentialIdentity
 {
   v4 = credentialIdentity;
-  v5 = [[a1 alloc] initWithCredentialIdentity:v4];
+  v5 = [[self alloc] initWithCredentialIdentity:v4];
 
   return v5;
 }
 
-- (ASPasswordCredentialRequest)initWithCoder:(id)a3
+- (ASPasswordCredentialRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentity"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentity"];
 
   v6 = [(ASPasswordCredentialRequest *)self initWithCredentialIdentity:v5];
   v7 = v6;
@@ -48,9 +48,9 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ASPasswordCredentialRequest allocWithZone:a3];
+  v4 = [ASPasswordCredentialRequest allocWithZone:zone];
   credentialIdentity = self->_credentialIdentity;
 
   return [(ASPasswordCredentialRequest *)v4 initWithCredentialIdentity:credentialIdentity];

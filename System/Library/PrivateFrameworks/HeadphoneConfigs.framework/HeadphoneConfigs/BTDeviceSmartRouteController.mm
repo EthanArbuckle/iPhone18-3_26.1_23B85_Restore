@@ -1,22 +1,22 @@
 @interface BTDeviceSmartRouteController
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation BTDeviceSmartRouteController
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v8;
-    v6 = [v5 titleLabel];
-    [v6 setLineBreakMode:0];
+    v5 = cellCopy;
+    titleLabel = [v5 titleLabel];
+    [titleLabel setLineBreakMode:0];
 
-    v7 = [v5 titleLabel];
+    titleLabel2 = [v5 titleLabel];
 
-    [v7 setNumberOfLines:0];
+    [titleLabel2 setNumberOfLines:0];
   }
 }
 

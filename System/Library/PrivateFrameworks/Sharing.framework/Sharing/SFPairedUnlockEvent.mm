@@ -36,11 +36,11 @@
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[SFPairedUnlockEvent retriedWithEscrowRecord](self, "retriedWithEscrowRecord")}];
   v27[8] = v4;
   v26[9] = @"watchSoftwareVersion";
-  v5 = [(SFPairedUnlockEvent *)self watchSoftwareVersion];
-  v6 = v5;
-  if (v5)
+  watchSoftwareVersion = [(SFPairedUnlockEvent *)self watchSoftwareVersion];
+  v6 = watchSoftwareVersion;
+  if (watchSoftwareVersion)
   {
-    v7 = v5;
+    v7 = watchSoftwareVersion;
   }
 
   else
@@ -50,11 +50,11 @@
 
   v27[9] = v7;
   v26[10] = @"watchHardwareModel";
-  v8 = [(SFPairedUnlockEvent *)self watchHardwareModel];
-  v9 = v8;
-  if (v8)
+  watchHardwareModel = [(SFPairedUnlockEvent *)self watchHardwareModel];
+  v9 = watchHardwareModel;
+  if (watchHardwareModel)
   {
-    v10 = v8;
+    v10 = watchHardwareModel;
   }
 
   else
@@ -88,8 +88,8 @@
 - (void)submitEvent
 {
   v4 = +[SFPairedUnlockEvent eventName];
-  v3 = [(SFPairedUnlockEvent *)self eventPayload];
-  SFMetricsLog(v4, v3);
+  eventPayload = [(SFPairedUnlockEvent *)self eventPayload];
+  SFMetricsLog(v4, eventPayload);
 }
 
 @end

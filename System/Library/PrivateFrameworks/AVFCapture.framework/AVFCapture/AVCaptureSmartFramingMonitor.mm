@@ -1,33 +1,33 @@
 @interface AVCaptureSmartFramingMonitor
 + (void)initialize;
 - (AVCaptureFraming)recommendedFraming;
-- (AVCaptureSmartFramingMonitor)initWithDevice:(id)a3 smartFramingZoomFactorsByFieldOfView:(id)a4;
+- (AVCaptureSmartFramingMonitor)initWithDevice:(id)device smartFramingZoomFactorsByFieldOfView:(id)view;
 - (BOOL)isMonitoring;
-- (BOOL)startMonitoring:(id *)a3;
-- (BOOL)startMonitoringWithError:(id *)a3;
+- (BOOL)startMonitoring:(id *)monitoring;
+- (BOOL)startMonitoringWithError:(id *)error;
 - (NSArray)enabledFramings;
 - (NSArray)supportedFramings;
 - (id)description;
 - (id)enabledSmartFramings;
 - (id)recommendedSmartFraming;
 - (id)supportedSmartFramings;
-- (void)_handleChangedActiveFormat:(id)a3;
-- (void)_populatePhotoModeSmartFramingsAndFieldsOfViewFromZoomFactorsByFieldOfView:(id)a3;
-- (void)_updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForFramings:(id)a3;
-- (void)_updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForSmartFramings:(id)a3;
+- (void)_handleChangedActiveFormat:(id)format;
+- (void)_populatePhotoModeSmartFramingsAndFieldsOfViewFromZoomFactorsByFieldOfView:(id)view;
+- (void)_updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForFramings:(id)framings;
+- (void)_updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForSmartFramings:(id)framings;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setEnabledFramings:(id)a3;
-- (void)setEnabledSmartFramings:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setEnabledFramings:(id)framings;
+- (void)setEnabledSmartFramings:(id)framings;
 - (void)stopMonitoring;
-- (void)updateRecommendedSmartFramingWithFieldOfView:(id)a3;
+- (void)updateRecommendedSmartFramingWithFieldOfView:(id)view;
 @end
 
 @implementation AVCaptureSmartFramingMonitor
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -36,22 +36,22 @@
   }
 }
 
-- (AVCaptureSmartFramingMonitor)initWithDevice:(id)a3 smartFramingZoomFactorsByFieldOfView:(id)a4
+- (AVCaptureSmartFramingMonitor)initWithDevice:(id)device smartFramingZoomFactorsByFieldOfView:(id)view
 {
   v9.receiver = self;
   v9.super_class = AVCaptureSmartFramingMonitor;
   v6 = [(AVCaptureSmartFramingMonitor *)&v9 init];
   if (v6)
   {
-    if ([a3 isSmartFramingMonitoringSupported])
+    if ([device isSmartFramingMonitoringSupported])
     {
       v6->_monitorWeakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v6];
-      v6->_deviceWeakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a3];
+      v6->_deviceWeakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:device];
       v6->_framingsLock._os_unfair_lock_opaque = 0;
       v6->_isMonitoringLock._os_unfair_lock_opaque = 0;
-      [(AVCaptureSmartFramingMonitor *)v6 _populatePhotoModeSmartFramingsAndFieldsOfViewFromZoomFactorsByFieldOfView:a4];
+      [(AVCaptureSmartFramingMonitor *)v6 _populatePhotoModeSmartFramingsAndFieldsOfViewFromZoomFactorsByFieldOfView:view];
       v6->_enabledFramings = objc_alloc_init(MEMORY[0x1E695DEC8]);
-      [a3 addObserver:v6 forKeyPath:@"activeFormat" options:7 context:AVCaptureSmartFramingMonitorActiveFormatChangedContext];
+      [device addObserver:v6 forKeyPath:@"activeFormat" options:7 context:AVCaptureSmartFramingMonitorActiveFormatChangedContext];
       v6->_observationRegistrar = objc_alloc_init(AVCaptureSmartFramingMonitorObservationRegistrar);
     }
 
@@ -74,8 +74,8 @@
 
 - (void)dealloc
 {
-  v3 = [(AVWeakReference *)self->_deviceWeakReference referencedObject];
-  [v3 removeObserver:self forKeyPath:@"activeFormat" context:AVCaptureSmartFramingMonitorActiveFormatChangedContext];
+  referencedObject = [(AVWeakReference *)self->_deviceWeakReference referencedObject];
+  [referencedObject removeObserver:self forKeyPath:@"activeFormat" context:AVCaptureSmartFramingMonitorActiveFormatChangedContext];
 
   v4.receiver = self;
   v4.super_class = AVCaptureSmartFramingMonitor;
@@ -89,70 +89,70 @@
   return [v3 stringWithFormat:@"<%@: %p %@>", NSStringFromClass(v4), self, -[AVCaptureSmartFramingMonitor debugDescription](self, "debugDescription")];
 }
 
-- (void)_populatePhotoModeSmartFramingsAndFieldsOfViewFromZoomFactorsByFieldOfView:(id)a3
+- (void)_populatePhotoModeSmartFramingsAndFieldsOfViewFromZoomFactorsByFieldOfView:(id)view
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [a3 objectForKeyedSubscript:@"FieldOfViewPortrait"];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  v7 = [view objectForKeyedSubscript:@"FieldOfViewPortrait"];
   v8 = 0x1E786C000;
   if (v7)
   {
     v9 = v7;
     [v7 floatValue];
-    [v4 addObject:{+[AVCaptureFraming framingWithAspectRatio:zoomFactor:](AVCaptureFraming, "framingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio4x3"}];
+    [array addObject:{+[AVCaptureFraming framingWithAspectRatio:zoomFactor:](AVCaptureFraming, "framingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio4x3"}];
     [v9 floatValue];
     v8 = 0x1E786C000;
-    [v5 addObject:{+[AVCaptureSmartFraming smartFramingWithAspectRatio:zoomFactor:](AVCaptureSmartFraming, "smartFramingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio4x3"}];
-    [v6 addObject:@"FieldOfViewPortrait"];
+    [array2 addObject:{+[AVCaptureSmartFraming smartFramingWithAspectRatio:zoomFactor:](AVCaptureSmartFraming, "smartFramingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio4x3"}];
+    [array3 addObject:@"FieldOfViewPortrait"];
   }
 
-  v10 = [a3 objectForKeyedSubscript:@"FieldOfViewZoomedOutPortrait"];
+  v10 = [view objectForKeyedSubscript:@"FieldOfViewZoomedOutPortrait"];
   if (v10)
   {
     v11 = v10;
     [v10 floatValue];
-    [v4 addObject:{+[AVCaptureFraming framingWithAspectRatio:zoomFactor:](AVCaptureFraming, "framingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio4x3"}];
+    [array addObject:{+[AVCaptureFraming framingWithAspectRatio:zoomFactor:](AVCaptureFraming, "framingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio4x3"}];
     [v11 floatValue];
     v8 = 0x1E786C000;
-    [v5 addObject:{+[AVCaptureSmartFraming smartFramingWithAspectRatio:zoomFactor:](AVCaptureSmartFraming, "smartFramingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio4x3"}];
-    [v6 addObject:@"FieldOfViewZoomedOutPortrait"];
+    [array2 addObject:{+[AVCaptureSmartFraming smartFramingWithAspectRatio:zoomFactor:](AVCaptureSmartFraming, "smartFramingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio4x3"}];
+    [array3 addObject:@"FieldOfViewZoomedOutPortrait"];
   }
 
-  v12 = [a3 objectForKeyedSubscript:@"FieldOfViewLandscape"];
+  v12 = [view objectForKeyedSubscript:@"FieldOfViewLandscape"];
   if (v12)
   {
     v13 = v12;
     [v12 floatValue];
-    [v4 addObject:{+[AVCaptureFraming framingWithAspectRatio:zoomFactor:](AVCaptureFraming, "framingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio3x4"}];
+    [array addObject:{+[AVCaptureFraming framingWithAspectRatio:zoomFactor:](AVCaptureFraming, "framingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio3x4"}];
     [v13 floatValue];
     v8 = 0x1E786C000uLL;
-    [v5 addObject:{+[AVCaptureSmartFraming smartFramingWithAspectRatio:zoomFactor:](AVCaptureSmartFraming, "smartFramingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio3x4"}];
-    [v6 addObject:@"FieldOfViewLandscape"];
+    [array2 addObject:{+[AVCaptureSmartFraming smartFramingWithAspectRatio:zoomFactor:](AVCaptureSmartFraming, "smartFramingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio3x4"}];
+    [array3 addObject:@"FieldOfViewLandscape"];
   }
 
-  v14 = [a3 objectForKeyedSubscript:@"FieldOfViewZoomedOutLandscape"];
+  v14 = [view objectForKeyedSubscript:@"FieldOfViewZoomedOutLandscape"];
   if (v14)
   {
     v15 = v14;
     v16 = *(v8 + 392);
     [v14 floatValue];
-    [v4 addObject:{objc_msgSend(v16, "framingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio3x4"}];
+    [array addObject:{objc_msgSend(v16, "framingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio3x4"}];
     [v15 floatValue];
-    [v5 addObject:{+[AVCaptureSmartFraming smartFramingWithAspectRatio:zoomFactor:](AVCaptureSmartFraming, "smartFramingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio3x4"}];
-    [v6 addObject:@"FieldOfViewZoomedOutLandscape"];
+    [array2 addObject:{+[AVCaptureSmartFraming smartFramingWithAspectRatio:zoomFactor:](AVCaptureSmartFraming, "smartFramingWithAspectRatio:zoomFactor:", @"AVCaptureAspectRatio3x4"}];
+    [array3 addObject:@"FieldOfViewZoomedOutLandscape"];
   }
 
-  self->_photoModeFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v4];
-  self->_photoModeSmartFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v5];
-  self->_photoModeFieldsOfView = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v6];
+  self->_photoModeFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array];
+  self->_photoModeSmartFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array2];
+  self->_photoModeFieldsOfView = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array3];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = [a5 objectForKeyedSubscript:{*MEMORY[0x1E696A500], a4}];
-  v10 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-  if (AVCaptureSmartFramingMonitorActiveFormatChangedContext == a6 && v9 != v10)
+  v9 = [change objectForKeyedSubscript:{*MEMORY[0x1E696A500], object}];
+  v10 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  if (AVCaptureSmartFramingMonitorActiveFormatChangedContext == context && v9 != v10)
   {
     v12 = v10;
     if ([MEMORY[0x1E696AF00] isMainThread])
@@ -174,10 +174,10 @@
   }
 }
 
-- (void)_handleChangedActiveFormat:(id)a3
+- (void)_handleChangedActiveFormat:(id)format
 {
-  v5 = [a3 supportedDynamicAspectRatios];
-  if ([a3 isSmartFramingSupported] && objc_msgSend(v5, "containsObject:", @"AVCaptureAspectRatio4x3") && objc_msgSend(v5, "containsObject:", @"AVCaptureAspectRatio3x4"))
+  supportedDynamicAspectRatios = [format supportedDynamicAspectRatios];
+  if ([format isSmartFramingSupported] && objc_msgSend(supportedDynamicAspectRatios, "containsObject:", @"AVCaptureAspectRatio4x3") && objc_msgSend(supportedDynamicAspectRatios, "containsObject:", @"AVCaptureAspectRatio3x4"))
   {
     photoModeFramings = self->_photoModeFramings;
     photoModeSmartFramings = self->_photoModeSmartFramings;
@@ -193,13 +193,13 @@
   {
     [(AVCaptureSmartFramingMonitor *)self willChangeValueForKey:@"supportedFramings"];
     [(AVCaptureSmartFramingMonitorObservationRegistrar *)self->_observationRegistrar willChangeValueFor:@"supportedFramings" on:self];
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [(AVCaptureSmartFramingMonitor *)self enabledFramings];
+    array = [MEMORY[0x1E695DF70] array];
+    enabledFramings = [(AVCaptureSmartFramingMonitor *)self enabledFramings];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v10 = [(NSArray *)v9 countByEnumeratingWithState:&v34 objects:v33 count:16];
+    v10 = [(NSArray *)enabledFramings countByEnumeratingWithState:&v34 objects:v33 count:16];
     if (v10)
     {
       v11 = v10;
@@ -210,30 +210,30 @@
         {
           if (*v35 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(enabledFramings);
           }
 
           v14 = *(*(&v34 + 1) + 8 * i);
           if ([(NSArray *)photoModeFramings containsObject:v14])
           {
-            [v8 addObject:v14];
+            [array addObject:v14];
           }
         }
 
-        v11 = [(NSArray *)v9 countByEnumeratingWithState:&v34 objects:v33 count:16];
+        v11 = [(NSArray *)enabledFramings countByEnumeratingWithState:&v34 objects:v33 count:16];
       }
 
       while (v11);
     }
 
-    v15 = [v8 isEqual:v9];
+    v15 = [array isEqual:enabledFramings];
     if ((v15 & 1) == 0)
     {
       [(AVCaptureSmartFramingMonitor *)self willChangeValueForKey:@"enabledFramings"];
       [(AVCaptureSmartFramingMonitorObservationRegistrar *)self->_observationRegistrar willChangeValueFor:@"enabledFramings" on:self];
     }
 
-    v16 = [v8 containsObject:{-[AVCaptureSmartFramingMonitor recommendedFraming](self, "recommendedFraming")}];
+    v16 = [array containsObject:{-[AVCaptureSmartFramingMonitor recommendedFraming](self, "recommendedFraming")}];
     if ((v16 & 1) == 0)
     {
       [(AVCaptureSmartFramingMonitor *)self willChangeValueForKey:@"recommendedFraming"];
@@ -247,7 +247,7 @@
     if ((v15 & 1) == 0)
     {
 
-      self->_enabledFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v8];
+      self->_enabledFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array];
     }
 
     if (v16)
@@ -277,7 +277,7 @@ LABEL_27:
 
     [(AVCaptureSmartFramingMonitorObservationRegistrar *)self->_observationRegistrar didChangeValueFor:@"enabledFramings" on:self];
     [(AVCaptureSmartFramingMonitor *)self didChangeValueForKey:@"enabledFramings"];
-    [(AVCaptureSmartFramingMonitor *)self _updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForFramings:v8];
+    [(AVCaptureSmartFramingMonitor *)self _updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForFramings:array];
     goto LABEL_27;
   }
 
@@ -288,13 +288,13 @@ LABEL_28:
   }
 
   [(AVCaptureSmartFramingMonitor *)self willChangeValueForKey:@"supportedSmartFramings"];
-  v18 = [MEMORY[0x1E695DF70] array];
-  v19 = [(AVCaptureSmartFramingMonitor *)self enabledSmartFramings];
+  array2 = [MEMORY[0x1E695DF70] array];
+  enabledSmartFramings = [(AVCaptureSmartFramingMonitor *)self enabledSmartFramings];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v20 = [v19 countByEnumeratingWithState:&v29 objects:v28 count:16];
+  v20 = [enabledSmartFramings countByEnumeratingWithState:&v29 objects:v28 count:16];
   if (v20)
   {
     v21 = v20;
@@ -305,29 +305,29 @@ LABEL_28:
       {
         if (*v30 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(enabledSmartFramings);
         }
 
         v24 = *(*(&v29 + 1) + 8 * j);
         if ([(NSArray *)photoModeSmartFramings containsObject:v24])
         {
-          [v18 addObject:v24];
+          [array2 addObject:v24];
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v29 objects:v28 count:16];
+      v21 = [enabledSmartFramings countByEnumeratingWithState:&v29 objects:v28 count:16];
     }
 
     while (v21);
   }
 
-  v25 = [v18 isEqual:v19];
+  v25 = [array2 isEqual:enabledSmartFramings];
   if ((v25 & 1) == 0)
   {
     [(AVCaptureSmartFramingMonitor *)self willChangeValueForKey:@"enabledSmartFramings"];
   }
 
-  v26 = [v18 containsObject:{-[AVCaptureSmartFramingMonitor recommendedSmartFraming](self, "recommendedSmartFraming")}];
+  v26 = [array2 containsObject:{-[AVCaptureSmartFramingMonitor recommendedSmartFraming](self, "recommendedSmartFraming")}];
   if ((v26 & 1) == 0)
   {
     [(AVCaptureSmartFramingMonitor *)self willChangeValueForKey:@"recommendedSmartFraming"];
@@ -340,7 +340,7 @@ LABEL_28:
   if ((v25 & 1) == 0)
   {
 
-    self->_enabledSmartFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v18];
+    self->_enabledSmartFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array2];
   }
 
   if (v26)
@@ -361,23 +361,23 @@ LABEL_28:
   {
 LABEL_48:
     [(AVCaptureSmartFramingMonitor *)self didChangeValueForKey:@"enabledSmartFramings"];
-    [(AVCaptureSmartFramingMonitor *)self _updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForSmartFramings:v18];
+    [(AVCaptureSmartFramingMonitor *)self _updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForSmartFramings:array2];
   }
 
 LABEL_49:
   [(AVCaptureSmartFramingMonitor *)self didChangeValueForKey:@"supportedSmartFramings"];
 }
 
-- (void)_updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForFramings:(id)a3
+- (void)_updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForFramings:(id)framings
 {
-  v17 = [(AVWeakReference *)self->_deviceWeakReference referencedObject];
-  v18 = [MEMORY[0x1E695DF70] array];
+  referencedObject = [(AVWeakReference *)self->_deviceWeakReference referencedObject];
+  array = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = a3;
-  v6 = [a3 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  framingsCopy = framings;
+  v6 = [framings countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -388,7 +388,7 @@ LABEL_49:
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(framingsCopy);
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
@@ -425,29 +425,29 @@ LABEL_49:
 
         else
         {
-          [v18 addObject:{-[NSArray objectAtIndexedSubscript:](self->_photoModeFieldsOfView, "objectAtIndexedSubscript:", v11)}];
+          [array addObject:{-[NSArray objectAtIndexedSubscript:](self->_photoModeFieldsOfView, "objectAtIndexedSubscript:", v11)}];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v25 count:16];
+      v7 = [framingsCopy countByEnumeratingWithState:&v26 objects:v25 count:16];
     }
 
     while (v7);
   }
 
-  [v17 _setEnabledSmartFramingFieldsOfView:{v18, v15, v16}];
+  [referencedObject _setEnabledSmartFramingFieldsOfView:{array, v15, v16}];
 }
 
-- (void)_updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForSmartFramings:(id)a3
+- (void)_updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForSmartFramings:(id)framings
 {
-  v17 = [(AVWeakReference *)self->_deviceWeakReference referencedObject];
-  v18 = [MEMORY[0x1E695DF70] array];
+  referencedObject = [(AVWeakReference *)self->_deviceWeakReference referencedObject];
+  array = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = a3;
-  v6 = [a3 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  framingsCopy = framings;
+  v6 = [framings countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -458,7 +458,7 @@ LABEL_49:
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(framingsCopy);
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
@@ -495,26 +495,26 @@ LABEL_49:
 
         else
         {
-          [v18 addObject:{-[NSArray objectAtIndexedSubscript:](self->_photoModeFieldsOfView, "objectAtIndexedSubscript:", v11)}];
+          [array addObject:{-[NSArray objectAtIndexedSubscript:](self->_photoModeFieldsOfView, "objectAtIndexedSubscript:", v11)}];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v25 count:16];
+      v7 = [framingsCopy countByEnumeratingWithState:&v26 objects:v25 count:16];
     }
 
     while (v7);
   }
 
-  [v17 _setEnabledSmartFramingFieldsOfView:{v18, v15, v16}];
+  [referencedObject _setEnabledSmartFramingFieldsOfView:{array, v15, v16}];
 }
 
-- (void)updateRecommendedSmartFramingWithFieldOfView:(id)a3
+- (void)updateRecommendedSmartFramingWithFieldOfView:(id)view
 {
   if ([(AVCaptureSmartFramingMonitor *)self isMonitoring])
   {
-    if (a3 && ([a3 isEqualToString:@"FieldOfViewNone"] & 1) == 0)
+    if (view && ([view isEqualToString:@"FieldOfViewNone"] & 1) == 0)
     {
-      v9 = [(NSArray *)self->_photoModeFieldsOfView indexOfObject:a3];
+      v9 = [(NSArray *)self->_photoModeFieldsOfView indexOfObject:view];
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
         os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -574,9 +574,9 @@ LABEL_49:
   return v4;
 }
 
-- (void)setEnabledFramings:(id)a3
+- (void)setEnabledFramings:(id)framings
 {
-  if (a3)
+  if (framings)
   {
     v5 = [MEMORY[0x1E695DFD8] setWithArray:?];
     if ([v5 isSubsetOfSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", -[AVCaptureSmartFramingMonitor supportedFramings](self, "supportedFramings"))}])
@@ -584,11 +584,11 @@ LABEL_49:
       [(AVCaptureSmartFramingMonitorObservationRegistrar *)self->_observationRegistrar willChangeValueFor:@"enabledFramings" on:self];
       os_unfair_lock_lock(&self->_framingsLock);
 
-      self->_enabledFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:a3];
+      self->_enabledFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:framings];
       os_unfair_lock_unlock(&self->_framingsLock);
       [(AVCaptureSmartFramingMonitorObservationRegistrar *)self->_observationRegistrar didChangeValueFor:@"enabledFramings" on:self];
 
-      [(AVCaptureSmartFramingMonitor *)self _updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForFramings:a3];
+      [(AVCaptureSmartFramingMonitor *)self _updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForFramings:framings];
       return;
     }
 
@@ -622,7 +622,7 @@ LABEL_49:
   return v4;
 }
 
-- (BOOL)startMonitoringWithError:(id *)a3
+- (BOOL)startMonitoringWithError:(id *)error
 {
   v5 = [(NSArray *)[(AVCaptureSmartFramingMonitor *)self enabledFramings] count];
   if (v5)
@@ -640,9 +640,9 @@ LABEL_49:
     [-[AVWeakReference referencedObject](self->_deviceWeakReference "referencedObject")];
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = AVLocalizedError();
+    *error = AVLocalizedError();
   }
 
   return v5 != 0;
@@ -691,19 +691,19 @@ LABEL_49:
   return v4;
 }
 
-- (void)setEnabledSmartFramings:(id)a3
+- (void)setEnabledSmartFramings:(id)framings
 {
-  if (a3)
+  if (framings)
   {
     v5 = [MEMORY[0x1E695DFD8] setWithArray:?];
     if ([v5 isSubsetOfSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", -[AVCaptureSmartFramingMonitor supportedSmartFramings](self, "supportedSmartFramings"))}])
     {
       os_unfair_lock_lock(&self->_framingsLock);
 
-      self->_enabledSmartFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:a3];
+      self->_enabledSmartFramings = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:framings];
       os_unfair_lock_unlock(&self->_framingsLock);
 
-      [(AVCaptureSmartFramingMonitor *)self _updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForSmartFramings:a3];
+      [(AVCaptureSmartFramingMonitor *)self _updateFigCaptureSourceEnabledSmartFramingFieldsOfViewForSmartFramings:framings];
       return;
     }
 
@@ -736,7 +736,7 @@ LABEL_49:
   return v4;
 }
 
-- (BOOL)startMonitoring:(id *)a3
+- (BOOL)startMonitoring:(id *)monitoring
 {
   v5 = [-[AVCaptureSmartFramingMonitor enabledSmartFramings](self "enabledSmartFramings")];
   if (v5)
@@ -754,9 +754,9 @@ LABEL_49:
     [-[AVWeakReference referencedObject](self->_deviceWeakReference "referencedObject")];
   }
 
-  else if (a3)
+  else if (monitoring)
   {
-    *a3 = AVLocalizedError();
+    *monitoring = AVLocalizedError();
   }
 
   return v5 != 0;

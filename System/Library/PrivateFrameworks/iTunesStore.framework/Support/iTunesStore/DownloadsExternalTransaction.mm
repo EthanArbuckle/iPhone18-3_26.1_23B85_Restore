@@ -1,9 +1,9 @@
 @interface DownloadsExternalTransaction
-- (DownloadsExternalTransaction)initWithSessionDescriptor:(id)a3;
+- (DownloadsExternalTransaction)initWithSessionDescriptor:(id)descriptor;
 - (void)dealloc;
-- (void)setExternalPropertyValues:(id)a3 forAssetWithID:(int64_t)a4;
-- (void)setExternalPropertyValues:(id)a3 forDownloadWithID:(int64_t)a4;
-- (void)unionChangeset:(id)a3;
+- (void)setExternalPropertyValues:(id)values forAssetWithID:(int64_t)d;
+- (void)setExternalPropertyValues:(id)values forDownloadWithID:(int64_t)d;
+- (void)unionChangeset:(id)changeset;
 @end
 
 @implementation DownloadsExternalTransaction
@@ -15,7 +15,7 @@
   [(DownloadsSession *)&v3 dealloc];
 }
 
-- (DownloadsExternalTransaction)initWithSessionDescriptor:(id)a3
+- (DownloadsExternalTransaction)initWithSessionDescriptor:(id)descriptor
 {
   v6.receiver = self;
   v6.super_class = DownloadsExternalTransaction;
@@ -23,19 +23,19 @@
   if (v4)
   {
     v4->_changeset = objc_alloc_init(DownloadsChangeset);
-    v4->_externalState = [a3 externalState];
+    v4->_externalState = [descriptor externalState];
   }
 
   return v4;
 }
 
-- (void)setExternalPropertyValues:(id)a3 forAssetWithID:(int64_t)a4
+- (void)setExternalPropertyValues:(id)values forAssetWithID:(int64_t)d
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [values countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -47,28 +47,28 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(values);
         }
 
-        -[DownloadsExternalTransaction setValue:forExternalProperty:ofAssetID:](self, "setValue:forExternalProperty:ofAssetID:", [a3 objectForKey:*(*(&v11 + 1) + 8 * v10)], *(*(&v11 + 1) + 8 * v10), a4);
+        -[DownloadsExternalTransaction setValue:forExternalProperty:ofAssetID:](self, "setValue:forExternalProperty:ofAssetID:", [values objectForKey:*(*(&v11 + 1) + 8 * v10)], *(*(&v11 + 1) + 8 * v10), d);
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [values countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)setExternalPropertyValues:(id)a3 forDownloadWithID:(int64_t)a4
+- (void)setExternalPropertyValues:(id)values forDownloadWithID:(int64_t)d
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [values countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -80,24 +80,24 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(values);
         }
 
-        -[DownloadsExternalTransaction setValue:forExternalProperty:ofDownloadID:](self, "setValue:forExternalProperty:ofDownloadID:", [a3 objectForKey:*(*(&v11 + 1) + 8 * v10)], *(*(&v11 + 1) + 8 * v10), a4);
+        -[DownloadsExternalTransaction setValue:forExternalProperty:ofDownloadID:](self, "setValue:forExternalProperty:ofDownloadID:", [values objectForKey:*(*(&v11 + 1) + 8 * v10)], *(*(&v11 + 1) + 8 * v10), d);
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [values countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)unionChangeset:(id)a3
+- (void)unionChangeset:(id)changeset
 {
-  if (a3)
+  if (changeset)
   {
     [(DownloadsChangeset *)self->_changeset unionChangeset:?];
   }

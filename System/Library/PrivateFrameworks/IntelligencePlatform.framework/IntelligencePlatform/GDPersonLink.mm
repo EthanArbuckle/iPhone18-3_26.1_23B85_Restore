@@ -1,13 +1,13 @@
 @interface GDPersonLink
-- (GDPersonLink)initWithRelationshipIdTriplesIterator:(id)a3;
+- (GDPersonLink)initWithRelationshipIdTriplesIterator:(id)iterator;
 @end
 
 @implementation GDPersonLink
 
-- (GDPersonLink)initWithRelationshipIdTriplesIterator:(id)a3
+- (GDPersonLink)initWithRelationshipIdTriplesIterator:(id)iterator
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iteratorCopy = iterator;
   v30.receiver = self;
   v30.super_class = GDPersonLink;
   v5 = [(GDPersonLink *)&v30 init];
@@ -22,8 +22,8 @@ LABEL_18:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v25 = v4;
-  v6 = v4;
+  v25 = iteratorCopy;
+  v6 = iteratorCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (!v7)
   {
@@ -46,23 +46,23 @@ LABEL_18:
       if (!v5->_relationshipIdentifier)
       {
         v12 = [GDRelationshipIdentifier alloc];
-        v13 = [v11 relationshipId];
-        v14 = [(GDRelationshipIdentifier *)v12 initWithString:v13];
+        relationshipId = [v11 relationshipId];
+        v14 = [(GDRelationshipIdentifier *)v12 initWithString:relationshipId];
         relationshipIdentifier = v5->_relationshipIdentifier;
         v5->_relationshipIdentifier = v14;
       }
 
-      v16 = [v11 relationshipPredicate];
-      if ([v16 isEqual:@"nm_relationshipLabel"])
+      relationshipPredicate = [v11 relationshipPredicate];
+      if ([relationshipPredicate isEqual:@"nm_relationshipLabel"])
       {
-        v17 = [v11 object];
+        object = [v11 object];
         relationshipLabel = v5->_relationshipLabel;
-        v5->_relationshipLabel = v17;
+        v5->_relationshipLabel = object;
       }
 
       else
       {
-        if (![v16 isEqual:@"nm_personIdentifier"])
+        if (![relationshipPredicate isEqual:@"nm_personIdentifier"])
         {
           goto LABEL_14;
         }
@@ -87,7 +87,7 @@ LABEL_16:
 
   if (v5->_relationshipIdentifier)
   {
-    v4 = v25;
+    iteratorCopy = v25;
     if (v5->_linkedPersonEntityIdentifier)
     {
       goto LABEL_18;
@@ -99,7 +99,7 @@ LABEL_16:
   else
   {
     v22 = 0;
-    v4 = v25;
+    iteratorCopy = v25;
   }
 
 LABEL_21:

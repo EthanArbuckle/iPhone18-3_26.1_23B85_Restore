@@ -1,19 +1,19 @@
 @interface VNDetectionprintMLFeatureProvider
-+ (id)VNDetectionprintTensorKeyForFeatureName:(id)a3;
++ (id)VNDetectionprintTensorKeyForFeatureName:(id)name;
 - (NSSet)featureNames;
-- (VNDetectionprintMLFeatureProvider)initWithDetectionprint:(id)a3 featureDescriptions:(id)a4 originalFeatureProvider:(id)a5;
-- (id)featureValueForName:(id)a3;
+- (VNDetectionprintMLFeatureProvider)initWithDetectionprint:(id)detectionprint featureDescriptions:(id)descriptions originalFeatureProvider:(id)provider;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation VNDetectionprintMLFeatureProvider
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_detectionprintFeatureDescriptions objectForKey:v4];
+  nameCopy = name;
+  v5 = [(NSDictionary *)self->_detectionprintFeatureDescriptions objectForKey:nameCopy];
   if (v5)
   {
-    v6 = [objc_opt_class() VNDetectionprintTensorKeyForFeatureName:v4];
+    v6 = [objc_opt_class() VNDetectionprintTensorKeyForFeatureName:nameCopy];
     if (v6)
     {
       detectionprint = self->_detectionprint;
@@ -22,10 +22,10 @@
       v9 = v32;
       if (v8)
       {
-        v10 = [v5 multiArrayConstraint];
+        multiArrayConstraint = [v5 multiArrayConstraint];
         v31 = 0;
-        v11 = [v8 VNEspressoModelImageprintMLMultiArrayWithConstraint:v10 error:&v31];
-        v12 = v31;
+        v11 = [v8 VNEspressoModelImageprintMLMultiArrayWithConstraint:multiArrayConstraint error:&v31];
+        localizedDescription2 = v31;
 
         if (v11)
         {
@@ -35,10 +35,10 @@
         else
         {
           v21 = [v5 description];
-          v22 = [v21 UTF8String];
-          v23 = [v12 localizedDescription];
-          [v23 UTF8String];
-          VNValidatedLog(4, @"Unable to create detectionprint %s - %s", v24, v25, v26, v27, v28, v29, v22);
+          uTF8String = [v21 UTF8String];
+          localizedDescription = [localizedDescription2 localizedDescription];
+          [localizedDescription UTF8String];
+          VNValidatedLog(4, @"Unable to create detectionprint %s - %s", v24, v25, v26, v27, v28, v29, uTF8String);
 
           v13 = 0;
         }
@@ -46,10 +46,10 @@
 
       else
       {
-        v14 = [v6 UTF8String];
-        v12 = [v9 localizedDescription];
-        [v12 UTF8String];
-        VNValidatedLog(4, @"Unable to obtain detection print tensor %s - %s", v15, v16, v17, v18, v19, v20, v14);
+        uTF8String2 = [v6 UTF8String];
+        localizedDescription2 = [v9 localizedDescription];
+        [localizedDescription2 UTF8String];
+        VNValidatedLog(4, @"Unable to obtain detection print tensor %s - %s", v15, v16, v17, v18, v19, v20, uTF8String2);
         v13 = 0;
       }
     }
@@ -62,7 +62,7 @@
 
   else
   {
-    v13 = [(MLFeatureProvider *)self->_originalFeatureProvider featureValueForName:v4];
+    v13 = [(MLFeatureProvider *)self->_originalFeatureProvider featureValueForName:nameCopy];
   }
 
   return v13;
@@ -71,50 +71,50 @@
 - (NSSet)featureNames
 {
   v3 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v4 = [(NSDictionary *)self->_detectionprintFeatureDescriptions allKeys];
-  v5 = [v3 initWithArray:v4];
+  allKeys = [(NSDictionary *)self->_detectionprintFeatureDescriptions allKeys];
+  v5 = [v3 initWithArray:allKeys];
 
   originalFeatureProvider = self->_originalFeatureProvider;
   if (originalFeatureProvider)
   {
-    v7 = [(MLFeatureProvider *)originalFeatureProvider featureNames];
-    [v5 unionSet:v7];
+    featureNames = [(MLFeatureProvider *)originalFeatureProvider featureNames];
+    [v5 unionSet:featureNames];
   }
 
   return v5;
 }
 
-- (VNDetectionprintMLFeatureProvider)initWithDetectionprint:(id)a3 featureDescriptions:(id)a4 originalFeatureProvider:(id)a5
+- (VNDetectionprintMLFeatureProvider)initWithDetectionprint:(id)detectionprint featureDescriptions:(id)descriptions originalFeatureProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  detectionprintCopy = detectionprint;
+  descriptionsCopy = descriptions;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = VNDetectionprintMLFeatureProvider;
   v12 = [(VNDetectionprintMLFeatureProvider *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_detectionprint, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_detectionprint, detectionprint);
+    v14 = [descriptionsCopy copy];
     detectionprintFeatureDescriptions = v13->_detectionprintFeatureDescriptions;
     v13->_detectionprintFeatureDescriptions = v14;
 
-    objc_storeStrong(&v13->_originalFeatureProvider, a5);
+    objc_storeStrong(&v13->_originalFeatureProvider, provider);
   }
 
   return v13;
 }
 
-+ (id)VNDetectionprintTensorKeyForFeatureName:(id)a3
++ (id)VNDetectionprintTensorKeyForFeatureName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (+[VNDetectionprintMLFeatureProvider VNDetectionprintTensorKeyForFeatureName:]::onceToken != -1)
   {
     dispatch_once(&+[VNDetectionprintMLFeatureProvider VNDetectionprintTensorKeyForFeatureName:]::onceToken, &__block_literal_global_127_22857);
   }
 
-  v4 = [+[VNDetectionprintMLFeatureProvider VNDetectionprintTensorKeyForFeatureName:]::tensorKeyForFeatureName objectForKey:v3];
+  v4 = [+[VNDetectionprintMLFeatureProvider VNDetectionprintTensorKeyForFeatureName:]::tensorKeyForFeatureName objectForKey:nameCopy];
 
   return v4;
 }

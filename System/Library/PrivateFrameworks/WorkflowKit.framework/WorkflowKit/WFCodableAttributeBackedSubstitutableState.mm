@@ -2,32 +2,32 @@
 + (id)processingValueClasses;
 - (NSString)readableSubtitle;
 - (NSString)readableTitle;
-- (WFCodableAttributeBackedSubstitutableState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFCodableAttributeBackedSubstitutableState)initWithValue:(id)a3 codableAttribute:(id)a4 stringLocalizer:(id)a5;
+- (WFCodableAttributeBackedSubstitutableState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFCodableAttributeBackedSubstitutableState)initWithValue:(id)value codableAttribute:(id)attribute stringLocalizer:(id)localizer;
 - (id)serializedRepresentation;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
-- (void)resizeDisplayImageIfNecessary:(id)a3;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
+- (void)resizeDisplayImageIfNecessary:(id)necessary;
 @end
 
 @implementation WFCodableAttributeBackedSubstitutableState
 
-- (void)resizeDisplayImageIfNecessary:(id)a3
+- (void)resizeDisplayImageIfNecessary:(id)necessary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 displayImage];
-  if (v4)
+  necessaryCopy = necessary;
+  displayImage = [necessaryCopy displayImage];
+  if (displayImage)
   {
-    v5 = [v3 displayImage];
-    v6 = [v5 _imageData];
-    v7 = [v6 length];
+    displayImage2 = [necessaryCopy displayImage];
+    _imageData = [displayImage2 _imageData];
+    v7 = [_imageData length];
 
     if (v7)
     {
-      v8 = [v3 displayImage];
-      v9 = [v8 _imageData];
+      displayImage3 = [necessaryCopy displayImage];
+      _imageData2 = [displayImage3 _imageData];
 
-      v10 = CGImageSourceCreateWithData(v9, 0);
+      v10 = CGImageSourceCreateWithData(_imageData2, 0);
       if (v10)
       {
         v11 = v10;
@@ -49,11 +49,11 @@
               v17 = [MEMORY[0x1E69E0AF8] typeWithUTType:v14];
               v18 = WFResizedImageFromImageSource();
 
-              v19 = [v18 data];
-              if ([v19 length])
+              data = [v18 data];
+              if ([data length])
               {
-                v20 = [MEMORY[0x1E696E868] imageWithImageData:v19];
-                [v3 setDisplayImage:v20];
+                v20 = [MEMORY[0x1E696E868] imageWithImageData:data];
+                [necessaryCopy setDisplayImage:v20];
               }
 
               else
@@ -78,47 +78,47 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 parameter];
-  v12 = [v11 codableAttribute];
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  parameter = [contextCopy parameter];
+  codableAttribute = [parameter codableAttribute];
 
-  v13 = [(WFVariableSubstitutableParameterState *)self variable];
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v13)
+  if (variable)
   {
-    v14 = [(WFVariableSubstitutableParameterState *)self variable];
-    if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+    if (variable2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v15 = [v14 prompt];
-      v9[2](v9, v15, 0);
+      prompt = [variable2 prompt];
+      handlerCopy[2](handlerCopy, prompt, 0);
     }
 
     else
     {
 
-      v16 = [(WFVariableSubstitutableParameterState *)self variable];
+      variable3 = [(WFVariableSubstitutableParameterState *)self variable];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __103__WFCodableAttributeBackedSubstitutableState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
       v18[3] = &unk_1E837DAB0;
-      v20 = v10;
-      v19 = v12;
-      [v16 getContentWithContext:v8 completionHandler:v18];
+      v20 = valueHandlerCopy;
+      v19 = codableAttribute;
+      [variable3 getContentWithContext:contextCopy completionHandler:v18];
 
-      v14 = v20;
+      variable2 = v20;
     }
   }
 
   else
   {
-    v17 = [(WFVariableSubstitutableParameterState *)self value];
-    v14 = [v12 wf_processedParameterValueForValue:v17];
+    value = [(WFVariableSubstitutableParameterState *)self value];
+    variable2 = [codableAttribute wf_processedParameterValueForValue:value];
 
-    (*(v10 + 2))(v10, v14, 0);
+    (*(valueHandlerCopy + 2))(valueHandlerCopy, variable2, 0);
   }
 }
 
@@ -209,54 +209,54 @@ void __103__WFCodableAttributeBackedSubstitutableState_processWithContext_userIn
 
 - (id)serializedRepresentation
 {
-  v3 = [(WFVariableSubstitutableParameterState *)self variable];
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v3)
+  if (variable)
   {
-    v4 = [(WFVariableSubstitutableParameterState *)self variable];
-    v5 = WFSerializedVariableObject(v4);
+    variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+    v5 = WFSerializedVariableObject(variable2);
   }
 
   else
   {
-    v6 = [(WFVariableSubstitutableParameterState *)self value];
-    if (v6)
+    value = [(WFVariableSubstitutableParameterState *)self value];
+    if (value)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(WFCodableAttributeBackedSubstitutableState *)self resizeDisplayImageIfNecessary:v6];
+        [(WFCodableAttributeBackedSubstitutableState *)self resizeDisplayImageIfNecessary:value];
       }
     }
 
-    v4 = objc_alloc_init(MEMORY[0x1E696E8D0]);
-    v7 = [(WFVariableSubstitutableParameterState *)self value];
-    v8 = [(WFCodableAttributeBackedSubstitutableState *)self codableAttribute];
-    v5 = [v4 encodeObject:v7 withCodableAttribute:v8];
+    variable2 = objc_alloc_init(MEMORY[0x1E696E8D0]);
+    value2 = [(WFVariableSubstitutableParameterState *)self value];
+    codableAttribute = [(WFCodableAttributeBackedSubstitutableState *)self codableAttribute];
+    v5 = [variable2 encodeObject:value2 withCodableAttribute:codableAttribute];
   }
 
   return v5;
 }
 
-- (WFCodableAttributeBackedSubstitutableState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFCodableAttributeBackedSubstitutableState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = WFDeserializedVariableObject(v8, v9, v10);
+    codableAttribute = WFDeserializedVariableObject(representationCopy, providerCopy, parameterCopy);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self = [(WFVariableSubstitutableParameterState *)self initWithVariable:v11];
-      v12 = self;
+      self = [(WFVariableSubstitutableParameterState *)self initWithVariable:codableAttribute];
+      selfCopy2 = self;
       goto LABEL_14;
     }
   }
 
-  v13 = v10;
+  v13 = parameterCopy;
   v14 = v13;
   if (v13)
   {
@@ -278,38 +278,38 @@ void __103__WFCodableAttributeBackedSubstitutableState_processWithContext_userIn
 
   v16 = v15;
 
-  v11 = [v16 codableAttribute];
-  v17 = [v16 stringLocalizer];
+  codableAttribute = [v16 codableAttribute];
+  stringLocalizer = [v16 stringLocalizer];
 
   v18 = objc_alloc_init(MEMORY[0x1E696E8C8]);
-  v19 = [v18 decodeWithCodableAttribute:v11 from:v8];
+  v19 = [v18 decodeWithCodableAttribute:codableAttribute from:representationCopy];
   if (v19)
   {
-    self = [(WFCodableAttributeBackedSubstitutableState *)self initWithValue:v19 codableAttribute:v11 stringLocalizer:v17];
-    v12 = self;
+    self = [(WFCodableAttributeBackedSubstitutableState *)self initWithValue:v19 codableAttribute:codableAttribute stringLocalizer:stringLocalizer];
+    selfCopy2 = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy2 = 0;
   }
 
 LABEL_14:
-  return v12;
+  return selfCopy2;
 }
 
-- (WFCodableAttributeBackedSubstitutableState)initWithValue:(id)a3 codableAttribute:(id)a4 stringLocalizer:(id)a5
+- (WFCodableAttributeBackedSubstitutableState)initWithValue:(id)value codableAttribute:(id)attribute stringLocalizer:(id)localizer
 {
-  v9 = a4;
-  v10 = a5;
+  attributeCopy = attribute;
+  localizerCopy = localizer;
   v15.receiver = self;
   v15.super_class = WFCodableAttributeBackedSubstitutableState;
-  v11 = [(WFVariableSubstitutableParameterState *)&v15 initWithValue:a3];
+  v11 = [(WFVariableSubstitutableParameterState *)&v15 initWithValue:value];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_codableAttribute, a4);
-    objc_storeStrong(&v12->_stringLocalizer, a5);
+    objc_storeStrong(&v11->_codableAttribute, attribute);
+    objc_storeStrong(&v12->_stringLocalizer, localizer);
     v13 = v12;
   }
 
@@ -321,21 +321,21 @@ LABEL_14:
   readableSubtitle = self->_readableSubtitle;
   if (!readableSubtitle)
   {
-    v4 = [(WFVariableSubstitutableParameterState *)self value];
-    v5 = [(WFCodableAttributeBackedSubstitutableState *)self stringLocalizer];
-    v6 = v5;
-    if (!v5)
+    value = [(WFVariableSubstitutableParameterState *)self value];
+    stringLocalizer = [(WFCodableAttributeBackedSubstitutableState *)self stringLocalizer];
+    v6 = stringLocalizer;
+    if (!stringLocalizer)
     {
       v6 = [MEMORY[0x1E696EA80] localizerForLanguage:0];
     }
 
-    v7 = [(WFCodableAttributeBackedSubstitutableState *)self codableAttribute];
-    v8 = [v7 metadata];
-    v9 = [v4 _intents_readableSubtitleWithLocalizer:v6 metadata:v8];
+    codableAttribute = [(WFCodableAttributeBackedSubstitutableState *)self codableAttribute];
+    metadata = [codableAttribute metadata];
+    v9 = [value _intents_readableSubtitleWithLocalizer:v6 metadata:metadata];
     v10 = self->_readableSubtitle;
     self->_readableSubtitle = v9;
 
-    if (!v5)
+    if (!stringLocalizer)
     {
     }
 
@@ -350,21 +350,21 @@ LABEL_14:
   readableTitle = self->_readableTitle;
   if (!readableTitle)
   {
-    v4 = [(WFVariableSubstitutableParameterState *)self value];
-    v5 = [(WFCodableAttributeBackedSubstitutableState *)self stringLocalizer];
-    v6 = v5;
-    if (!v5)
+    value = [(WFVariableSubstitutableParameterState *)self value];
+    stringLocalizer = [(WFCodableAttributeBackedSubstitutableState *)self stringLocalizer];
+    v6 = stringLocalizer;
+    if (!stringLocalizer)
     {
       v6 = [MEMORY[0x1E696EA80] localizerForLanguage:0];
     }
 
-    v7 = [(WFCodableAttributeBackedSubstitutableState *)self codableAttribute];
-    v8 = [v7 metadata];
-    v9 = [v4 _intents_readableTitleWithLocalizer:v6 metadata:v8];
+    codableAttribute = [(WFCodableAttributeBackedSubstitutableState *)self codableAttribute];
+    metadata = [codableAttribute metadata];
+    v9 = [value _intents_readableTitleWithLocalizer:v6 metadata:metadata];
     v10 = self->_readableTitle;
     self->_readableTitle = v9;
 
-    if (!v5)
+    if (!stringLocalizer)
     {
     }
 

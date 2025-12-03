@@ -1,50 +1,50 @@
 @interface TSDExteriorTextWrap
-+ (TSDExteriorTextWrap)exteriorTextWrapWithIsHTMLWrap:(BOOL)a3 type:(int)a4 direction:(int)a5 fitType:(int)a6 margin:(double)a7 alphaThreshold:(double)a8;
++ (TSDExteriorTextWrap)exteriorTextWrapWithIsHTMLWrap:(BOOL)wrap type:(int)type direction:(int)direction fitType:(int)fitType margin:(double)margin alphaThreshold:(double)threshold;
 + (id)exteriorTextWrap;
-- (BOOL)isEqual:(id)a3;
-- (TSDExteriorTextWrap)initWithIsHTMLWrap:(BOOL)a3 type:(int)a4 direction:(int)a5 fitType:(int)a6 margin:(double)a7 alphaThreshold:(double)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSDExteriorTextWrap)initWithIsHTMLWrap:(BOOL)wrap type:(int)type direction:(int)direction fitType:(int)fitType margin:(double)margin alphaThreshold:(double)threshold;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSDExteriorTextWrap
 
 + (id)exteriorTextWrap
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (TSDExteriorTextWrap)exteriorTextWrapWithIsHTMLWrap:(BOOL)a3 type:(int)a4 direction:(int)a5 fitType:(int)a6 margin:(double)a7 alphaThreshold:(double)a8
++ (TSDExteriorTextWrap)exteriorTextWrapWithIsHTMLWrap:(BOOL)wrap type:(int)type direction:(int)direction fitType:(int)fitType margin:(double)margin alphaThreshold:(double)threshold
 {
-  v8 = [[a1 alloc] initWithIsHTMLWrap:a3 type:*&a4 direction:*&a5 fitType:*&a6 margin:a7 alphaThreshold:a8];
+  v8 = [[self alloc] initWithIsHTMLWrap:wrap type:*&type direction:*&direction fitType:*&fitType margin:margin alphaThreshold:threshold];
 
   return v8;
 }
 
-- (TSDExteriorTextWrap)initWithIsHTMLWrap:(BOOL)a3 type:(int)a4 direction:(int)a5 fitType:(int)a6 margin:(double)a7 alphaThreshold:(double)a8
+- (TSDExteriorTextWrap)initWithIsHTMLWrap:(BOOL)wrap type:(int)type direction:(int)direction fitType:(int)fitType margin:(double)margin alphaThreshold:(double)threshold
 {
   v15.receiver = self;
   v15.super_class = TSDExteriorTextWrap;
   result = [(TSDExteriorTextWrap *)&v15 init];
   if (result)
   {
-    result->_isHTMLWrap = a3;
-    result->_type = a4;
-    result->_direction = a5;
-    result->_fitType = a6;
-    result->_margin = a7;
-    result->_alphaThreshold = a8;
+    result->_isHTMLWrap = wrap;
+    result->_type = type;
+    result->_direction = direction;
+    result->_fitType = fitType;
+    result->_margin = margin;
+    result->_alphaThreshold = threshold;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   isHTMLWrap = self->_isHTMLWrap;
   type = self->_type;
   direction = self->_direction;
@@ -55,9 +55,9 @@
   return [v4 initWithIsHTMLWrap:isHTMLWrap type:type direction:direction fitType:fitType margin:margin alphaThreshold:alphaThreshold];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDMutableExteriorTextWrap allocWithZone:a3];
+  v4 = [TSDMutableExteriorTextWrap allocWithZone:zone];
   isHTMLWrap = self->_isHTMLWrap;
   type = self->_type;
   direction = self->_direction;
@@ -68,22 +68,22 @@
   return [(TSDExteriorTextWrap *)v4 initWithIsHTMLWrap:isHTMLWrap type:type direction:direction fitType:fitType margin:margin alphaThreshold:alphaThreshold];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = a3 == self;
-  LOBYTE(self) = a3 == self;
-  if (a3)
+  selfCopy = self;
+  v4 = equal == self;
+  LOBYTE(self) = equal == self;
+  if (equal)
   {
     if (!v4)
     {
-      LODWORD(self) = [a3 isMemberOfClass:objc_opt_class()];
+      LODWORD(self) = [equal isMemberOfClass:objc_opt_class()];
       if (self)
       {
-        if (*(a3 + 8) == v3->_isHTMLWrap && *(a3 + 3) == v3->_type && *(a3 + 4) == v3->_direction && *(a3 + 5) == v3->_fitType && ((v6 = *(a3 + 3), margin = v3->_margin, v6 == margin) || vabdd_f64(v6, margin) < fabs(margin * 0.000000999999997)))
+        if (*(equal + 8) == selfCopy->_isHTMLWrap && *(equal + 3) == selfCopy->_type && *(equal + 4) == selfCopy->_direction && *(equal + 5) == selfCopy->_fitType && ((v6 = *(equal + 3), margin = selfCopy->_margin, v6 == margin) || vabdd_f64(v6, margin) < fabs(margin * 0.000000999999997)))
         {
-          v8 = *(a3 + 4);
-          alphaThreshold = v3->_alphaThreshold;
+          v8 = *(equal + 4);
+          alphaThreshold = selfCopy->_alphaThreshold;
           LOBYTE(self) = v8 == alphaThreshold || vabdd_f64(v8, alphaThreshold) < fabs(alphaThreshold * 0.000000999999997);
         }
 
@@ -101,32 +101,32 @@
 - (id)description
 {
   isHTMLWrap = self->_isHTMLWrap;
-  v4 = [(TSDExteriorTextWrap *)self type];
-  if (v4 > 5)
+  type = [(TSDExteriorTextWrap *)self type];
+  if (type > 5)
   {
     v5 = &stru_287D36338;
   }
 
   else
   {
-    v5 = off_279D48DC8[v4];
+    v5 = off_279D48DC8[type];
   }
 
-  v6 = [(TSDExteriorTextWrap *)self direction];
+  direction = [(TSDExteriorTextWrap *)self direction];
   v7 = &stru_287D36338;
-  if (v6 <= 2)
+  if (direction <= 2)
   {
-    v7 = off_279D48DF8[v6];
+    v7 = off_279D48DF8[direction];
   }
 
-  v8 = [(TSDExteriorTextWrap *)self fitType];
+  fitType = [(TSDExteriorTextWrap *)self fitType];
   v9 = @"Contour";
-  if (v8 != 1)
+  if (fitType != 1)
   {
     v9 = &stru_287D36338;
   }
 
-  if (v8)
+  if (fitType)
   {
     v10 = v9;
   }

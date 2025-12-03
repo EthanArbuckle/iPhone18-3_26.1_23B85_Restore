@@ -1,44 +1,44 @@
 @interface FLOWSchemaFLOWStep
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWStep)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWStep)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWStep)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWStep)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addDomainContext:(id)a3;
-- (void)addPlatformContext:(id)a3;
-- (void)setHasTimestampMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDomainContext:(id)context;
+- (void)addPlatformContext:(id)context;
+- (void)setHasTimestampMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWStep
 
-- (FLOWSchemaFLOWStep)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWStep)initWithDictionary:(id)dictionary
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v45.receiver = self;
   v45.super_class = FLOWSchemaFLOWStep;
   v5 = [(FLOWSchemaFLOWStep *)&v45 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sequenceNum"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sequenceNum"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWStep setSequenceNum:](v5, "setSequenceNum:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"timestampMs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"timestampMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWStep setTimestampMs:](v5, "setTimestampMs:", [v7 longLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"flowState"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"flowState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(FLOWSchemaFLOWStep *)v5 setFlowState:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"appContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"appContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       [(FLOWSchemaFLOWStep *)v5 setAppContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"domainContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"domainContext"];
     objc_opt_class();
     v36 = v12;
     v34 = v7;
@@ -102,7 +102,7 @@
       v8 = v33;
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"platformContext"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"platformContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -146,7 +146,7 @@
       v8 = v33;
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"platformRelatedContext"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"platformRelatedContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -160,30 +160,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWStep)initWithJSON:(id)a3
+- (FLOWSchemaFLOWStep)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWStep *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWStep *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWStep *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -197,26 +197,26 @@
 - (id)dictionaryRepresentation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appContext)
   {
-    v4 = [(FLOWSchemaFLOWStep *)self appContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    appContext = [(FLOWSchemaFLOWStep *)self appContext];
+    dictionaryRepresentation = [appContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"appContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"appContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"appContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"appContext"];
     }
   }
 
   if ([(NSArray *)self->_domainContexts count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -236,16 +236,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -255,28 +255,28 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"domainContext"];
+    [dictionary setObject:array forKeyedSubscript:@"domainContext"];
   }
 
   if (self->_flowState)
   {
-    v15 = [(FLOWSchemaFLOWStep *)self flowState];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    flowState = [(FLOWSchemaFLOWStep *)self flowState];
+    dictionaryRepresentation3 = [flowState dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"flowState"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"flowState"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"flowState"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"flowState"];
     }
   }
 
   if ([(NSArray *)self->_platformContexts count])
   {
-    v18 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -296,16 +296,16 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
-          if (v24)
+          dictionaryRepresentation4 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v18 addObject:v24];
+            [array2 addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v25 = [MEMORY[0x1E695DFB0] null];
-            [v18 addObject:v25];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null4];
           }
         }
 
@@ -315,22 +315,22 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"platformContext"];
+    [dictionary setObject:array2 forKeyedSubscript:@"platformContext"];
   }
 
   if (self->_platformRelatedContext)
   {
-    v26 = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
-    v27 = [v26 dictionaryRepresentation];
-    if (v27)
+    platformRelatedContext = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
+    dictionaryRepresentation5 = [platformRelatedContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v27 forKeyedSubscript:@"platformRelatedContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"platformRelatedContext"];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v28 forKeyedSubscript:@"platformRelatedContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"platformRelatedContext"];
     }
   }
 
@@ -338,7 +338,7 @@
   if (has)
   {
     v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWStep sequenceNum](self, "sequenceNum")}];
-    [v3 setObject:v30 forKeyedSubscript:@"sequenceNum"];
+    [dictionary setObject:v30 forKeyedSubscript:@"sequenceNum"];
 
     has = self->_has;
   }
@@ -346,12 +346,12 @@
   if ((has & 2) != 0)
   {
     v31 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[FLOWSchemaFLOWStep timestampMs](self, "timestampMs")}];
-    [v3 setObject:v31 forKeyedSubscript:@"timestampMs"];
+    [dictionary setObject:v31 forKeyedSubscript:@"timestampMs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v33];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v33];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -385,16 +385,16 @@ LABEL_6:
   return v7 ^ v8 ^ [(FLOWSchemaFLOWPlatformContext *)self->_platformRelatedContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   has = self->_has;
-  v6 = v4[64];
+  v6 = equalCopy[64];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_34;
@@ -403,13 +403,13 @@ LABEL_6:
   if (*&has)
   {
     sequenceNum = self->_sequenceNum;
-    if (sequenceNum != [v4 sequenceNum])
+    if (sequenceNum != [equalCopy sequenceNum])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -421,26 +421,26 @@ LABEL_6:
   if (v8)
   {
     timestampMs = self->_timestampMs;
-    if (timestampMs != [v4 timestampMs])
+    if (timestampMs != [equalCopy timestampMs])
     {
       goto LABEL_34;
     }
   }
 
-  v10 = [(FLOWSchemaFLOWStep *)self flowState];
-  v11 = [v4 flowState];
-  if ((v10 != 0) == (v11 == 0))
+  flowState = [(FLOWSchemaFLOWStep *)self flowState];
+  flowState2 = [equalCopy flowState];
+  if ((flowState != 0) == (flowState2 == 0))
   {
     goto LABEL_33;
   }
 
-  v12 = [(FLOWSchemaFLOWStep *)self flowState];
-  if (v12)
+  flowState3 = [(FLOWSchemaFLOWStep *)self flowState];
+  if (flowState3)
   {
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWStep *)self flowState];
-    v15 = [v4 flowState];
-    v16 = [v14 isEqual:v15];
+    v13 = flowState3;
+    flowState4 = [(FLOWSchemaFLOWStep *)self flowState];
+    flowState5 = [equalCopy flowState];
+    v16 = [flowState4 isEqual:flowState5];
 
     if (!v16)
     {
@@ -452,20 +452,20 @@ LABEL_6:
   {
   }
 
-  v10 = [(FLOWSchemaFLOWStep *)self appContext];
-  v11 = [v4 appContext];
-  if ((v10 != 0) == (v11 == 0))
+  flowState = [(FLOWSchemaFLOWStep *)self appContext];
+  flowState2 = [equalCopy appContext];
+  if ((flowState != 0) == (flowState2 == 0))
   {
     goto LABEL_33;
   }
 
-  v17 = [(FLOWSchemaFLOWStep *)self appContext];
-  if (v17)
+  appContext = [(FLOWSchemaFLOWStep *)self appContext];
+  if (appContext)
   {
-    v18 = v17;
-    v19 = [(FLOWSchemaFLOWStep *)self appContext];
-    v20 = [v4 appContext];
-    v21 = [v19 isEqual:v20];
+    v18 = appContext;
+    appContext2 = [(FLOWSchemaFLOWStep *)self appContext];
+    appContext3 = [equalCopy appContext];
+    v21 = [appContext2 isEqual:appContext3];
 
     if (!v21)
     {
@@ -477,20 +477,20 @@ LABEL_6:
   {
   }
 
-  v10 = [(FLOWSchemaFLOWStep *)self domainContexts];
-  v11 = [v4 domainContexts];
-  if ((v10 != 0) == (v11 == 0))
+  flowState = [(FLOWSchemaFLOWStep *)self domainContexts];
+  flowState2 = [equalCopy domainContexts];
+  if ((flowState != 0) == (flowState2 == 0))
   {
     goto LABEL_33;
   }
 
-  v22 = [(FLOWSchemaFLOWStep *)self domainContexts];
-  if (v22)
+  domainContexts = [(FLOWSchemaFLOWStep *)self domainContexts];
+  if (domainContexts)
   {
-    v23 = v22;
-    v24 = [(FLOWSchemaFLOWStep *)self domainContexts];
-    v25 = [v4 domainContexts];
-    v26 = [v24 isEqual:v25];
+    v23 = domainContexts;
+    domainContexts2 = [(FLOWSchemaFLOWStep *)self domainContexts];
+    domainContexts3 = [equalCopy domainContexts];
+    v26 = [domainContexts2 isEqual:domainContexts3];
 
     if (!v26)
     {
@@ -502,20 +502,20 @@ LABEL_6:
   {
   }
 
-  v10 = [(FLOWSchemaFLOWStep *)self platformContexts];
-  v11 = [v4 platformContexts];
-  if ((v10 != 0) == (v11 == 0))
+  flowState = [(FLOWSchemaFLOWStep *)self platformContexts];
+  flowState2 = [equalCopy platformContexts];
+  if ((flowState != 0) == (flowState2 == 0))
   {
     goto LABEL_33;
   }
 
-  v27 = [(FLOWSchemaFLOWStep *)self platformContexts];
-  if (v27)
+  platformContexts = [(FLOWSchemaFLOWStep *)self platformContexts];
+  if (platformContexts)
   {
-    v28 = v27;
-    v29 = [(FLOWSchemaFLOWStep *)self platformContexts];
-    v30 = [v4 platformContexts];
-    v31 = [v29 isEqual:v30];
+    v28 = platformContexts;
+    platformContexts2 = [(FLOWSchemaFLOWStep *)self platformContexts];
+    platformContexts3 = [equalCopy platformContexts];
+    v31 = [platformContexts2 isEqual:platformContexts3];
 
     if (!v31)
     {
@@ -527,12 +527,12 @@ LABEL_6:
   {
   }
 
-  v10 = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
-  v11 = [v4 platformRelatedContext];
-  if ((v10 != 0) != (v11 == 0))
+  flowState = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
+  flowState2 = [equalCopy platformRelatedContext];
+  if ((flowState != 0) != (flowState2 == 0))
   {
-    v32 = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
-    if (!v32)
+    platformRelatedContext = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
+    if (!platformRelatedContext)
     {
 
 LABEL_37:
@@ -540,10 +540,10 @@ LABEL_37:
       goto LABEL_35;
     }
 
-    v33 = v32;
-    v34 = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
-    v35 = [v4 platformRelatedContext];
-    v36 = [v34 isEqual:v35];
+    v33 = platformRelatedContext;
+    platformRelatedContext2 = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
+    platformRelatedContext3 = [equalCopy platformRelatedContext];
+    v36 = [platformRelatedContext2 isEqual:platformRelatedContext3];
 
     if (v36)
     {
@@ -563,10 +563,10 @@ LABEL_35:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -579,19 +579,19 @@ LABEL_35:
     PBDataWriterWriteInt64Field();
   }
 
-  v6 = [(FLOWSchemaFLOWStep *)self flowState];
+  flowState = [(FLOWSchemaFLOWStep *)self flowState];
 
-  if (v6)
+  if (flowState)
   {
-    v7 = [(FLOWSchemaFLOWStep *)self flowState];
+    flowState2 = [(FLOWSchemaFLOWStep *)self flowState];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(FLOWSchemaFLOWStep *)self appContext];
+  appContext = [(FLOWSchemaFLOWStep *)self appContext];
 
-  if (v8)
+  if (appContext)
   {
-    v9 = [(FLOWSchemaFLOWStep *)self appContext];
+    appContext2 = [(FLOWSchemaFLOWStep *)self appContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -651,54 +651,54 @@ LABEL_35:
     while (v17);
   }
 
-  v20 = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
+  platformRelatedContext = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
 
-  if (v20)
+  if (platformRelatedContext)
   {
-    v21 = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
+    platformRelatedContext2 = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addPlatformContext:(id)a3
+- (void)addPlatformContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   platformContexts = self->_platformContexts;
-  v8 = v4;
+  v8 = contextCopy;
   if (!platformContexts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_platformContexts;
-    self->_platformContexts = v6;
+    self->_platformContexts = array;
 
-    v4 = v8;
+    contextCopy = v8;
     platformContexts = self->_platformContexts;
   }
 
-  [(NSArray *)platformContexts addObject:v4];
+  [(NSArray *)platformContexts addObject:contextCopy];
 }
 
-- (void)addDomainContext:(id)a3
+- (void)addDomainContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   domainContexts = self->_domainContexts;
-  v8 = v4;
+  v8 = contextCopy;
   if (!domainContexts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_domainContexts;
-    self->_domainContexts = v6;
+    self->_domainContexts = array;
 
-    v4 = v8;
+    contextCopy = v8;
     domainContexts = self->_domainContexts;
   }
 
-  [(NSArray *)domainContexts addObject:v4];
+  [(NSArray *)domainContexts addObject:contextCopy];
 }
 
-- (void)setHasTimestampMs:(BOOL)a3
+- (void)setHasTimestampMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -711,43 +711,43 @@ LABEL_35:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v20.receiver = self;
   v20.super_class = FLOWSchemaFLOWStep;
-  v5 = [(SISchemaInstrumentationMessage *)&v20 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWStep *)self flowState];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v20 applySensitiveConditionsPolicy:policyCopy];
+  flowState = [(FLOWSchemaFLOWStep *)self flowState];
+  v7 = [flowState applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWStep *)self deleteFlowState];
   }
 
-  v9 = [(FLOWSchemaFLOWStep *)self appContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  appContext = [(FLOWSchemaFLOWStep *)self appContext];
+  v10 = [appContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWStep *)self deleteAppContext];
   }
 
-  v12 = [(FLOWSchemaFLOWStep *)self domainContexts];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  domainContexts = [(FLOWSchemaFLOWStep *)self domainContexts];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:domainContexts underConditions:policyCopy];
   [(FLOWSchemaFLOWStep *)self setDomainContexts:v13];
 
-  v14 = [(FLOWSchemaFLOWStep *)self platformContexts];
-  v15 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v14 underConditions:v4];
+  platformContexts = [(FLOWSchemaFLOWStep *)self platformContexts];
+  v15 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:platformContexts underConditions:policyCopy];
   [(FLOWSchemaFLOWStep *)self setPlatformContexts:v15];
 
-  v16 = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
-  v17 = [v16 applySensitiveConditionsPolicy:v4];
-  v18 = [v17 suppressMessage];
+  platformRelatedContext = [(FLOWSchemaFLOWStep *)self platformRelatedContext];
+  v17 = [platformRelatedContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v17 suppressMessage];
 
-  if (v18)
+  if (suppressMessage3)
   {
     [(FLOWSchemaFLOWStep *)self deletePlatformRelatedContext];
   }

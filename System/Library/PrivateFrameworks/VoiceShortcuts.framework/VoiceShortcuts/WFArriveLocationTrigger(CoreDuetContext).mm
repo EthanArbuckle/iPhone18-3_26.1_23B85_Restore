@@ -6,15 +6,15 @@
 
 - (id)contextStorePredicate
 {
-  v1 = [a1 region];
+  region = [self region];
   v2 = objc_alloc(MEMORY[0x277CBFCD8]);
-  [v1 center];
+  [region center];
   v4 = v3;
   v6 = v5;
-  [v1 radius];
+  [region radius];
   v8 = v7;
-  v9 = [v1 identifier];
-  v10 = [v2 initWithCenter:v9 radius:v4 identifier:{v6, v8}];
+  identifier = [region identifier];
+  v10 = [v2 initWithCenter:identifier radius:v4 identifier:{v6, v8}];
 
   if (v10)
   {

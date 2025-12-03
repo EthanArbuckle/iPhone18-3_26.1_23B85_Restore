@@ -2,7 +2,7 @@
 - (void)_willAppearInRemoteViewController;
 - (void)dismissSheetAndDismissAlert;
 - (void)handleHomeButtonPressed;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -10,40 +10,40 @@
 
 - (void)viewDidLoad
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = TrustMeRotatingViewController;
   [(TrustMeRotatingViewController *)&v5 viewDidLoad];
-  v2 = [UIApp _getSpringBoardOrientation];
-  v7->_mask = 1 << v2;
+  _getSpringBoardOrientation = [UIApp _getSpringBoardOrientation];
+  selfCopy->_mask = 1 << _getSpringBoardOrientation;
   v3 = +[UIApplication sharedApplication];
-  v4 = [(UIApplication *)v3 delegate];
+  delegate = [(UIApplication *)v3 delegate];
 
-  [v4 setCurrentRemoteAlertController:v7];
-  objc_storeStrong(&v4, 0);
+  [delegate setCurrentRemoteAlertController:selfCopy];
+  objc_storeStrong(&delegate, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = TrustMeRotatingViewController;
-  [(TrustMeRotatingViewController *)&v6 viewDidAppear:a3];
+  [(TrustMeRotatingViewController *)&v6 viewDidAppear:appear];
   v3 = +[UIApplication sharedApplication];
-  v5 = [(UIApplication *)v3 delegate];
+  delegate = [(UIApplication *)v3 delegate];
 
-  v4 = [v5 trustControllerToBePresentedByRemoteAlertViewController];
+  trustControllerToBePresentedByRemoteAlertViewController = [delegate trustControllerToBePresentedByRemoteAlertViewController];
   if (sub_1000023DC() == UIUserInterfaceIdiomPad)
   {
-    [v4 setModalPresentationStyle:2];
+    [trustControllerToBePresentedByRemoteAlertViewController setModalPresentationStyle:2];
   }
 
-  [(TrustMeRotatingViewController *)v9 presentViewController:v4 animated:1 completion:?];
-  objc_storeStrong(&v4, 0);
-  objc_storeStrong(&v5, 0);
+  [(TrustMeRotatingViewController *)selfCopy presentViewController:trustControllerToBePresentedByRemoteAlertViewController animated:1 completion:?];
+  objc_storeStrong(&trustControllerToBePresentedByRemoteAlertViewController, 0);
+  objc_storeStrong(&delegate, 0);
 }
 
 - (void)handleHomeButtonPressed
@@ -59,17 +59,17 @@
 
 - (void)_willAppearInRemoteViewController
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = TrustMeRotatingViewController;
   [(TrustMeRotatingViewController *)&v3 _willAppearInRemoteViewController];
-  v2 = [(TrustMeRotatingViewController *)v5 _remoteViewControllerProxy];
-  [v2 setDesiredHardwareButtonEvents:16];
-  [v2 setSwipeDismissalStyle:1];
-  [v2 setSupportedInterfaceOrientationOverride:v5->_mask];
-  [v2 setShouldDisableFadeInAnimation:1];
-  objc_storeStrong(&v2, 0);
+  _remoteViewControllerProxy = [(TrustMeRotatingViewController *)selfCopy _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:1];
+  [_remoteViewControllerProxy setSupportedInterfaceOrientationOverride:selfCopy->_mask];
+  [_remoteViewControllerProxy setShouldDisableFadeInAnimation:1];
+  objc_storeStrong(&_remoteViewControllerProxy, 0);
 }
 
 - (void)dismissSheetAndDismissAlert

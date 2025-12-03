@@ -1,7 +1,7 @@
 @interface SAVolumeSizeInfo
 - (SAVolumeSizeInfo)init;
-- (SAVolumeSizeInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SAVolumeSizeInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SAVolumeSizeInfo
@@ -23,33 +23,33 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   used = self->_used;
-  v5 = a3;
-  [v5 encodeInt64:used forKey:@"usedSize"];
-  [v5 encodeInt64:self->_purgeableSize forKey:@"purgeableSize"];
-  [v5 encodeInt64:self->_rawUsed forKey:@"rawUsedSize"];
-  [v5 encodeObject:self->_mountedOn forKey:@"mountedOnPath"];
-  [v5 encodeInt64:self->_capacity forKey:@"capacitySize"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:used forKey:@"usedSize"];
+  [coderCopy encodeInt64:self->_purgeableSize forKey:@"purgeableSize"];
+  [coderCopy encodeInt64:self->_rawUsed forKey:@"rawUsedSize"];
+  [coderCopy encodeObject:self->_mountedOn forKey:@"mountedOnPath"];
+  [coderCopy encodeInt64:self->_capacity forKey:@"capacitySize"];
 }
 
-- (SAVolumeSizeInfo)initWithCoder:(id)a3
+- (SAVolumeSizeInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SAVolumeSizeInfo;
   v5 = [(SAVolumeSizeInfo *)&v9 init];
   if (v5)
   {
-    v5->_used = [v4 decodeInt64ForKey:@"usedSize"];
-    v5->_purgeableSize = [v4 decodeInt64ForKey:@"purgeableSize"];
-    v5->_rawUsed = [v4 decodeInt64ForKey:@"rawUsedSize"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mountedOnPath"];
+    v5->_used = [coderCopy decodeInt64ForKey:@"usedSize"];
+    v5->_purgeableSize = [coderCopy decodeInt64ForKey:@"purgeableSize"];
+    v5->_rawUsed = [coderCopy decodeInt64ForKey:@"rawUsedSize"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mountedOnPath"];
     mountedOn = v5->_mountedOn;
     v5->_mountedOn = v6;
 
-    v5->_capacity = [v4 decodeInt64ForKey:@"capacitySize"];
+    v5->_capacity = [coderCopy decodeInt64ForKey:@"capacitySize"];
   }
 
   return v5;

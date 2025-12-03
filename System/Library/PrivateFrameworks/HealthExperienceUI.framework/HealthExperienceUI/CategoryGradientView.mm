@@ -1,7 +1,7 @@
 @interface CategoryGradientView
 + (Class)layerClass;
-- (_TtC18HealthExperienceUI20CategoryGradientView)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI20CategoryGradientView)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI20CategoryGradientView)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI20CategoryGradientView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CategoryGradientView
@@ -13,27 +13,27 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC18HealthExperienceUI20CategoryGradientView)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI20CategoryGradientView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = type metadata accessor for CategoryGradientView();
-  v7 = [(CategoryGradientView *)&v11 initWithFrame:x, y, width, height];
-  v8 = [(CategoryGradientView *)v7 layer];
+  height = [(CategoryGradientView *)&v11 initWithFrame:x, y, width, height];
+  layer = [(CategoryGradientView *)height layer];
   objc_opt_self();
   [swift_dynamicCastObjCClassUnconditional() setStartPoint_];
 
-  v9 = [(CategoryGradientView *)v7 layer];
+  layer2 = [(CategoryGradientView *)height layer];
   objc_opt_self();
   [swift_dynamicCastObjCClassUnconditional() setEndPoint_];
 
-  return v7;
+  return height;
 }
 
-- (_TtC18HealthExperienceUI20CategoryGradientView)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI20CategoryGradientView)initWithCoder:(id)coder
 {
   result = sub_1BA4A8018();
   __break(1u);

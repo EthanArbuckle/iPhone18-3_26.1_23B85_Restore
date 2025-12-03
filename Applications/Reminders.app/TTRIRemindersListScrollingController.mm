@@ -1,10 +1,10 @@
 @interface TTRIRemindersListScrollingController
 - (_TtC9Reminders36TTRIRemindersListScrollingController)init;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 @end
 
 @implementation TTRIRemindersListScrollingController
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
@@ -24,39 +24,39 @@
     v5 = Strong;
     if ([Strong respondsToSelector:"scrollViewWillBeginDragging:"])
     {
-      [v5 scrollViewWillBeginDragging:a3];
+      [v5 scrollViewWillBeginDragging:dragging];
     }
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1005CA044();
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v3 = self;
+  selfCopy = self;
   sub_1005CA044();
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   sub_1005CAEB4();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_1005CAFE8();
 }
 

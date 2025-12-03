@@ -1,68 +1,68 @@
 @interface TSPAbstractMutableLargeArraySegment
 - (NSArray)allObjects;
 - (NSMutableArray)mutableArrayWrapper;
-- (TSPAbstractMutableLargeArraySegment)initWithArray:(id)a3 context:(id)a4;
-- (TSPAbstractMutableLargeArraySegment)initWithArray:(id)a3 delegate:(id)a4 shouldDelayArchiving:(BOOL)a5 context:(id)a6;
-- (TSPAbstractMutableLargeArraySegment)initWithContext:(id)a3;
-- (TSPAbstractMutableLargeArraySegment)initWithDelegate:(id)a3 shouldDelayArchiving:(BOOL)a4 context:(id)a5;
+- (TSPAbstractMutableLargeArraySegment)initWithArray:(id)array context:(id)context;
+- (TSPAbstractMutableLargeArraySegment)initWithArray:(id)array delegate:(id)delegate shouldDelayArchiving:(BOOL)archiving context:(id)context;
+- (TSPAbstractMutableLargeArraySegment)initWithContext:(id)context;
+- (TSPAbstractMutableLargeArraySegment)initWithDelegate:(id)delegate shouldDelayArchiving:(BOOL)archiving context:(id)context;
 - (TSPMutableLargeArraySegmentDelegate)delegate;
-- (id)bisectAtIndex:(unint64_t)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)estimatedByteSizeOfElement:(id)a3;
+- (id)bisectAtIndex:(unint64_t)index;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)estimatedByteSizeOfElement:(id)element;
 - (unsigned)delayedArchivingPriority;
-- (void)addObject:(id)a3;
-- (void)addObject:(id)a3 willModify:(BOOL)a4;
-- (void)addObjectsFromArray:(id)a3;
+- (void)addObject:(id)object;
+- (void)addObject:(id)object willModify:(BOOL)modify;
+- (void)addObjectsFromArray:(id)array;
 - (void)commonInit;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)loadFromLargeArraySegmentMessage:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)loadStoreOutsideObjectArchiveFromUnarchiver:(id)a3;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)loadFromLargeArraySegmentMessage:(const void *)message unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)loadStoreOutsideObjectArchiveFromUnarchiver:(id)unarchiver;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)removeObjectsAtIndexes:(id)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)saveToLargeArraySegmentMessage:(void *)a3 archiver:(id)a4;
-- (void)setPackageLocator:(id)a3;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)removeObjectsAtIndexes:(id)indexes;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
+- (void)saveToArchiver:(id)archiver;
+- (void)saveToLargeArraySegmentMessage:(void *)message archiver:(id)archiver;
+- (void)setPackageLocator:(id)locator;
 @end
 
 @implementation TSPAbstractMutableLargeArraySegment
 
-- (TSPAbstractMutableLargeArraySegment)initWithContext:(id)a3
+- (TSPAbstractMutableLargeArraySegment)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSPAbstractMutableLargeArraySegment;
-  return [(TSPObject *)&v4 initWithContext:a3];
+  return [(TSPObject *)&v4 initWithContext:context];
 }
 
-- (TSPAbstractMutableLargeArraySegment)initWithDelegate:(id)a3 shouldDelayArchiving:(BOOL)a4 context:(id)a5
+- (TSPAbstractMutableLargeArraySegment)initWithDelegate:(id)delegate shouldDelayArchiving:(BOOL)archiving context:(id)context
 {
-  v8 = a3;
-  v10 = objc_msgSend_initWithContext_(self, v9, a5);
+  delegateCopy = delegate;
+  v10 = objc_msgSend_initWithContext_(self, v9, context);
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak((v10 + 112), v8);
-    v11->_shouldDelayArchiving = a4;
+    objc_storeWeak((v10 + 112), delegateCopy);
+    v11->_shouldDelayArchiving = archiving;
   }
 
   return v11;
 }
 
-- (TSPAbstractMutableLargeArraySegment)initWithArray:(id)a3 context:(id)a4
+- (TSPAbstractMutableLargeArraySegment)initWithArray:(id)array context:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = objc_msgSend_initWithContext_(self, v7, a4);
+  arrayCopy = array;
+  v8 = objc_msgSend_initWithContext_(self, v7, context);
   if (v8)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = v6;
+    v9 = arrayCopy;
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v17, v21, 16);
     if (v12)
     {
@@ -92,15 +92,15 @@
   return v8;
 }
 
-- (TSPAbstractMutableLargeArraySegment)initWithArray:(id)a3 delegate:(id)a4 shouldDelayArchiving:(BOOL)a5 context:(id)a6
+- (TSPAbstractMutableLargeArraySegment)initWithArray:(id)array delegate:(id)delegate shouldDelayArchiving:(BOOL)archiving context:(id)context
 {
-  v10 = a4;
-  v12 = objc_msgSend_initWithArray_context_(self, v11, a3, a6);
+  delegateCopy = delegate;
+  v12 = objc_msgSend_initWithArray_context_(self, v11, array, context);
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak((v12 + 112), v10);
-    v13->_shouldDelayArchiving = a5;
+    objc_storeWeak((v12 + 112), delegateCopy);
+    v13->_shouldDelayArchiving = archiving;
   }
 
   return v13;
@@ -116,9 +116,9 @@
   self->_backingStore = v3;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v3 = objc_msgSend_objectAtIndex_(self->_backingStore, a2, a3);
+  v3 = objc_msgSend_objectAtIndex_(self->_backingStore, a2, index);
   v6 = objc_msgSend_null(MEMORY[0x277CBEB68], v4, v5);
   if (v3 == v6)
   {
@@ -135,35 +135,35 @@
   return v7;
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v14 = a3;
+  objectCopy = object;
   objc_msgSend_willModify(self, v6, v7);
   ++self->_mutations;
   backingStore = self->_backingStore;
-  v11 = v14;
-  if (!v14)
+  v11 = objectCopy;
+  if (!objectCopy)
   {
     v11 = objc_msgSend_null(MEMORY[0x277CBEB68], v8, v9);
   }
 
-  objc_msgSend_insertObject_atIndex_(backingStore, v8, v11, a4);
-  v12 = v14;
-  if (!v14)
+  objc_msgSend_insertObject_atIndex_(backingStore, v8, v11, index);
+  v12 = objectCopy;
+  if (!objectCopy)
   {
 
     v12 = 0;
   }
 
   self->_estimatedByteSize += objc_msgSend_estimatedByteSizeOfElement_(self, v12, v12);
-  self->_estimatedCost += objc_msgSend_estimatedCostOfElement_(self, v13, v14);
+  self->_estimatedCost += objc_msgSend_estimatedCostOfElement_(self, v13, objectCopy);
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  objc_msgSend_willModify(self, a2, a3);
+  objc_msgSend_willModify(self, a2, index);
   ++self->_mutations;
-  v6 = objc_msgSend_objectAtIndexedSubscript_(self->_backingStore, v5, a3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(self->_backingStore, v5, index);
   v8 = objc_msgSend_estimatedByteSizeOfElement_(self, v7, v6);
 
   estimatedByteSize = self->_estimatedByteSize;
@@ -175,7 +175,7 @@
   }
 
   self->_estimatedByteSize = v12;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(self->_backingStore, v9, a3);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(self->_backingStore, v9, index);
   v15 = objc_msgSend_estimatedCostOfElement_(self, v14, v13);
 
   estimatedCost = self->_estimatedCost;
@@ -189,15 +189,15 @@
   self->_estimatedCost = v18;
   backingStore = self->_backingStore;
 
-  objc_msgSend_removeObjectAtIndex_(backingStore, v16, a3);
+  objc_msgSend_removeObjectAtIndex_(backingStore, v16, index);
 }
 
-- (void)removeObjectsAtIndexes:(id)a3
+- (void)removeObjectsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6))
+  indexesCopy = indexes;
+  if (objc_msgSend_count(indexesCopy, v5, v6))
   {
-    Index = objc_msgSend_firstIndex(v4, v7, v8);
+    Index = objc_msgSend_firstIndex(indexesCopy, v7, v8);
     if (Index < objc_msgSend_count(self->_backingStore, v10, v11))
     {
       objc_msgSend_willModify(self, v12, v13);
@@ -212,7 +212,7 @@
       v64[3] = &unk_27A6E3C58;
       v64[4] = self;
       v64[5] = &v65;
-      objc_msgSend_enumerateIndexesUsingBlock_(v4, v14, v64);
+      objc_msgSend_enumerateIndexesUsingBlock_(indexesCopy, v14, v64);
       v17 = v66[3];
       estimatedByteSize = self->_estimatedByteSize;
       v19 = estimatedByteSize >= v17;
@@ -223,12 +223,12 @@
       }
 
       self->_estimatedByteSize = v20;
-      v21 = objc_msgSend_count(v4, v15, v16);
-      v24 = objc_msgSend_count(v4, v22, v23);
+      v21 = objc_msgSend_count(indexesCopy, v15, v16);
+      v24 = objc_msgSend_count(indexesCopy, v22, v23);
       v27 = objc_msgSend_count(self->_backingStore, v25, v26);
-      if (v24 * v21 <= (v27 - objc_msgSend_firstIndex(v4, v28, v29)))
+      if (v24 * v21 <= (v27 - objc_msgSend_firstIndex(indexesCopy, v28, v29)))
       {
-        objc_msgSend_removeObjectsAtIndexes_(self->_backingStore, v30, v4);
+        objc_msgSend_removeObjectsAtIndexes_(self->_backingStore, v30, indexesCopy);
       }
 
       else
@@ -255,7 +255,7 @@
         v51[7] = &v56;
         v51[4] = self;
         v51[5] = v62;
-        objc_msgSend_enumerateRangesUsingBlock_(v4, v30, v51);
+        objc_msgSend_enumerateRangesUsingBlock_(indexesCopy, v30, v51);
         if (v53[3] == 0x7FFFFFFFFFFFFFFFLL)
         {
           v33 = MEMORY[0x277D81150];
@@ -294,45 +294,45 @@
   }
 }
 
-- (void)addObject:(id)a3 willModify:(BOOL)a4
+- (void)addObject:(id)object willModify:(BOOL)modify
 {
-  v4 = a4;
-  v12 = a3;
-  if (v4)
+  modifyCopy = modify;
+  objectCopy = object;
+  if (modifyCopy)
   {
     objc_msgSend_willModify(self, v6, v7);
   }
 
   ++self->_mutations;
   backingStore = self->_backingStore;
-  v9 = v12;
-  if (!v12)
+  v9 = objectCopy;
+  if (!objectCopy)
   {
     v9 = objc_msgSend_null(MEMORY[0x277CBEB68], v6, v7);
   }
 
   objc_msgSend_addObject_(backingStore, v6, v9);
-  v10 = v12;
-  if (!v12)
+  v10 = objectCopy;
+  if (!objectCopy)
   {
 
     v10 = 0;
   }
 
   self->_estimatedByteSize += objc_msgSend_estimatedByteSizeOfElement_(self, v10, v10);
-  self->_estimatedCost += objc_msgSend_estimatedCostOfElement_(self, v11, v12);
+  self->_estimatedCost += objc_msgSend_estimatedCostOfElement_(self, v11, objectCopy);
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v6 = a3;
-  v8 = v6;
-  if (!v6)
+  objectCopy = object;
+  v8 = objectCopy;
+  if (!objectCopy)
   {
-    v6 = objc_msgSend_null(MEMORY[0x277CBEB68], v4, v5);
+    objectCopy = objc_msgSend_null(MEMORY[0x277CBEB68], v4, v5);
   }
 
-  objc_msgSend_addObject_willModify_(self, v4, v6, 1);
+  objc_msgSend_addObject_willModify_(self, v4, objectCopy, 1);
   v7 = v8;
   if (!v8)
   {
@@ -341,18 +341,18 @@
   }
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   objc_msgSend_willModify(self, v5, v6);
   ++self->_mutations;
-  objc_msgSend_addObjectsFromArray_(self->_backingStore, v7, v4);
+  objc_msgSend_addObjectsFromArray_(self->_backingStore, v7, arrayCopy);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v4;
+  v8 = arrayCopy;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v17, v21, 16);
   if (v11)
   {
@@ -416,12 +416,12 @@
   }
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v36 = a4;
+  objectCopy = object;
   objc_msgSend_willModify(self, v6, v7);
   ++self->_mutations;
-  v9 = objc_msgSend_objectAtIndexedSubscript_(self->_backingStore, v8, a3);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(self->_backingStore, v8, index);
   v11 = objc_msgSend_estimatedByteSizeOfElement_(self, v10, v9);
 
   estimatedByteSize = self->_estimatedByteSize;
@@ -438,18 +438,18 @@
   }
 
   self->_estimatedByteSize = v17;
-  v18 = v36;
-  if (!v36)
+  v18 = objectCopy;
+  if (!objectCopy)
   {
     v18 = objc_msgSend_null(MEMORY[0x277CBEB68], v12, v13);
   }
 
   self->_estimatedByteSize = objc_msgSend_estimatedByteSizeOfElement_(self, v12, v18) + v17;
-  if (!v36)
+  if (!objectCopy)
   {
   }
 
-  v20 = objc_msgSend_objectAtIndexedSubscript_(self->_backingStore, v19, a3);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(self->_backingStore, v19, index);
   v22 = objc_msgSend_estimatedCostOfElement_(self, v21, v20);
 
   estimatedCost = self->_estimatedCost;
@@ -466,15 +466,15 @@
   }
 
   self->_estimatedCost = v27;
-  v28 = v36;
-  if (!v36)
+  v28 = objectCopy;
+  if (!objectCopy)
   {
     v28 = objc_msgSend_null(MEMORY[0x277CBEB68], v23, v24);
   }
 
   self->_estimatedCost = objc_msgSend_estimatedCostOfElement_(self, v23, v28) + v27;
-  v30 = v36;
-  if (v36)
+  v30 = objectCopy;
+  if (objectCopy)
   {
     backingStore = self->_backingStore;
   }
@@ -487,54 +487,54 @@
   }
 
   v34 = v30;
-  objc_msgSend_replaceObjectAtIndex_withObject_(backingStore, v29, a3, v30);
-  v35 = v36;
-  if (!v36)
+  objc_msgSend_replaceObjectAtIndex_withObject_(backingStore, v29, index, v30);
+  v35 = objectCopy;
+  if (!objectCopy)
   {
 
     v35 = 0;
   }
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
-    a3->var2 = &self->_mutations;
+    state->var2 = &self->_mutations;
   }
 
-  v10 = objc_msgSend_count(self, a2, a3);
+  v10 = objc_msgSend_count(self, a2, state);
   if (v10 <= var0)
   {
     return 0;
   }
 
-  if (v10 - var0 < a5)
+  if (v10 - var0 < count)
   {
-    a5 = v10 - var0;
+    count = v10 - var0;
   }
 
-  if (a5)
+  if (count)
   {
     v12 = var0;
-    v13 = a4;
-    v14 = a5;
+    objectsCopy = objects;
+    countCopy = count;
     do
     {
       v15 = objc_msgSend_objectAtIndex_(self, v11, v12);
-      *v13++ = v15;
+      *objectsCopy++ = v15;
 
       ++v12;
-      --v14;
+      --countCopy;
     }
 
-    while (v14);
+    while (countCopy);
   }
 
-  a3->var0 = a5 + var0;
-  a3->var1 = a4;
-  return a5;
+  state->var0 = count + var0;
+  state->var1 = objects;
+  return count;
 }
 
 - (NSArray)allObjects
@@ -553,20 +553,20 @@
   return v5;
 }
 
-- (id)bisectAtIndex:(unint64_t)a3
+- (id)bisectAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   v45[2] = *MEMORY[0x277D85DE8];
-  objc_msgSend_willModify(self, a2, a3);
+  objc_msgSend_willModify(self, a2, index);
   ++self->_mutations;
-  if (objc_msgSend_count(self, v5, v6) < v3)
+  if (objc_msgSend_count(self, v5, v6) < indexCopy)
   {
-    v3 = objc_msgSend_count(self, v7, v8);
+    indexCopy = objc_msgSend_count(self, v7, v8);
   }
 
   v9 = objc_msgSend_allObjects(self, v7, v8);
   v12 = objc_msgSend_count(self, v10, v11);
-  v14 = objc_msgSend_subarrayWithRange_(v9, v13, v3, v12 - v3);
+  v14 = objc_msgSend_subarrayWithRange_(v9, v13, indexCopy, v12 - indexCopy);
 
   v15 = objc_alloc(objc_opt_class());
   v18 = objc_msgSend_delegate(self, v16, v17);
@@ -578,7 +578,7 @@
   objc_msgSend_setStoreOutsideObjectArchive_(shouldDelayArchiving_context, v30, v29);
   v33 = objc_msgSend_delayedArchivingPriority(self, v31, v32);
   objc_msgSend_setDelayedArchivingPriority_(shouldDelayArchiving_context, v34, v33);
-  while (objc_msgSend_count(self, v35, v36) > v3)
+  while (objc_msgSend_count(self, v35, v36) > indexCopy)
   {
     objc_msgSend_removeLastObject(self, v37, v38);
   }
@@ -587,16 +587,16 @@
   v45[0] = self;
   v45[1] = shouldDelayArchiving_context;
   v41 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v40, v45, 2);
-  objc_msgSend_largeArraySegmentDidBisectAtIndex_segments_(v39, v42, v3, v41);
+  objc_msgSend_largeArraySegmentDidBisectAtIndex_segments_(v39, v42, indexCopy, v41);
 
   v43 = *MEMORY[0x277D85DE8];
 
   return shouldDelayArchiving_context;
 }
 
-- (unint64_t)estimatedByteSizeOfElement:(id)a3
+- (unint64_t)estimatedByteSizeOfElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSPAbstractMutableLargeArraySegment estimatedByteSizeOfElement:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPAbstractMutableLargeArraySegment.mm");
@@ -629,11 +629,11 @@
   return delayedArchivingPriority;
 }
 
-- (void)setPackageLocator:(id)a3
+- (void)setPackageLocator:(id)locator
 {
-  v4 = a3;
+  locatorCopy = locator;
   packageLocator = self->_packageLocator;
-  v6 = v4;
+  v6 = locatorCopy;
   v14 = v6;
   if (packageLocator == v6)
   {
@@ -663,28 +663,28 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812FC248[64]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812FC248[64]);
 
-  objc_msgSend_loadFromLargeArraySegmentMessage_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromLargeArraySegmentMessage_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors(&descriptor_table_TSPMessages_2eproto, 0);
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_2769DD7F0, off_2812FC248[64]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2769DD7F0, off_2812FC248[64]);
 
-  objc_msgSend_saveToLargeArraySegmentMessage_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToLargeArraySegmentMessage_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)loadStoreOutsideObjectArchiveFromUnarchiver:(id)a3
+- (void)loadStoreOutsideObjectArchiveFromUnarchiver:(id)unarchiver
 {
-  v12 = a3;
-  v6 = objc_msgSend_delegate(v12, v4, v5);
+  unarchiverCopy = unarchiver;
+  v6 = objc_msgSend_delegate(unarchiverCopy, v4, v5);
   if (objc_opt_respondsToSelector())
   {
     v9 = objc_msgSend_component(v6, v7, v8);
@@ -692,20 +692,20 @@ LABEL_10:
   }
 }
 
-- (void)saveToLargeArraySegmentMessage:(void *)a3 archiver:(id)a4
+- (void)saveToLargeArraySegmentMessage:(void *)message archiver:(id)archiver
 {
-  if (objc_msgSend_shouldDelayArchiving(self, a2, a3, a4))
+  if (objc_msgSend_shouldDelayArchiving(self, a2, message, archiver))
   {
     shouldDelayArchiving = objc_msgSend_shouldDelayArchiving(self, v6, v7);
-    *(a3 + 4) |= 2u;
-    *(a3 + 32) = shouldDelayArchiving;
+    *(message + 4) |= 2u;
+    *(message + 32) = shouldDelayArchiving;
   }
 
   if (objc_msgSend_shouldDelayArchiving(self, v6, v7) && objc_msgSend_delayedArchivingPriority(self, v9, v10) != 500)
   {
     v11 = objc_msgSend_delayedArchivingPriority(self, v9, v10);
-    *(a3 + 4) |= 4u;
-    *(a3 + 9) = v11;
+    *(message + 4) |= 4u;
+    *(message + 9) = v11;
   }
 
   v12 = objc_msgSend_packageLocator(self, v9, v10);
@@ -714,30 +714,30 @@ LABEL_10:
   {
     v18 = objc_msgSend_packageLocator(self, v13, v14);
     v17 = objc_msgSend_tsp_protobufString(v18, v15, v16);
-    sub_2769DD4F8(a3, v17);
+    sub_2769DD4F8(message, v17);
   }
 }
 
-- (void)loadFromLargeArraySegmentMessage:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromLargeArraySegmentMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v11 = a4;
-  objc_msgSend_loadStoreOutsideObjectArchiveFromUnarchiver_(self, v6, v11);
-  v8 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  objc_msgSend_loadStoreOutsideObjectArchiveFromUnarchiver_(self, v6, unarchiverCopy);
+  v8 = *(message + 4);
   if ((v8 & 2) != 0)
   {
-    objc_msgSend_setShouldDelayArchiving_(self, v7, *(a3 + 32));
-    v8 = *(a3 + 4);
+    objc_msgSend_setShouldDelayArchiving_(self, v7, *(message + 32));
+    v8 = *(message + 4);
   }
 
   if ((v8 & 4) != 0)
   {
-    objc_msgSend_setDelayedArchivingPriority_(self, v7, *(a3 + 9));
-    v8 = *(a3 + 4);
+    objc_msgSend_setDelayedArchivingPriority_(self, v7, *(message + 9));
+    v8 = *(message + 4);
   }
 
   if (v8)
   {
-    v9 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v7, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v9 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v7, *(message + 3) & 0xFFFFFFFFFFFFFFFELL);
     objc_msgSend_setPackageLocator_(self, v10, v9);
   }
 }

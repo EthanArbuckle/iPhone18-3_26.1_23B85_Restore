@@ -3,9 +3,9 @@
 - (NSUndoManager)undoManager;
 - (VSAccountSerializationCenter)init;
 - (VSPersistentStorage)storage;
-- (id)exportDataWithCompletionHandler:(id)a3;
-- (id)importData:(id)a3 withCompletionHandler:(id)a4;
-- (void)setUndoManager:(id)a3;
+- (id)exportDataWithCompletionHandler:(id)handler;
+- (id)importData:(id)data withCompletionHandler:(id)handler;
+- (void)setUndoManager:(id)manager;
 @end
 
 @implementation VSAccountSerializationCenter
@@ -49,16 +49,16 @@ uint64_t __58__VSAccountSerializationCenter_defaultSerializationCenter__block_in
 
 - (VSPersistentStorage)storage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_storage;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_storage;
   if (!v3)
   {
     v3 = objc_alloc_init(VSPersistentStorage);
-    objc_storeStrong(&v2->_storage, v3);
+    objc_storeStrong(&selfCopy->_storage, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -70,40 +70,40 @@ uint64_t __58__VSAccountSerializationCenter_defaultSerializationCenter__block_in
 
 - (NSUndoManager)undoManager
 {
-  v2 = [(VSAccountSerializationCenter *)self storage];
-  v3 = [v2 channelsCenter];
-  v4 = [v3 undoManager];
+  storage = [(VSAccountSerializationCenter *)self storage];
+  channelsCenter = [storage channelsCenter];
+  undoManager = [channelsCenter undoManager];
 
-  return v4;
+  return undoManager;
 }
 
-- (void)setUndoManager:(id)a3
+- (void)setUndoManager:(id)manager
 {
-  v4 = a3;
-  v6 = [(VSAccountSerializationCenter *)self storage];
-  v5 = [v6 channelsCenter];
-  [v5 setUndoManager:v4];
+  managerCopy = manager;
+  storage = [(VSAccountSerializationCenter *)self storage];
+  channelsCenter = [storage channelsCenter];
+  [channelsCenter setUndoManager:managerCopy];
 }
 
-- (id)exportDataWithCompletionHandler:(id)a3
+- (id)exportDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The completionHandler parameter must not be nil."];
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CCAC48]);
-  v6 = [(VSAccountSerializationCenter *)self storage];
-  v7 = [v6 channelsCenter];
+  storage = [(VSAccountSerializationCenter *)self storage];
+  channelsCenter = [storage channelsCenter];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__VSAccountSerializationCenter_exportDataWithCompletionHandler___block_invoke;
   v10[3] = &unk_278B739B0;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  [v7 fetchAccountChannelsWithCompletionHandler:v10];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  [channelsCenter fetchAccountChannelsWithCompletionHandler:v10];
 
   return v5;
 }
@@ -258,14 +258,14 @@ void __64__VSAccountSerializationCenter_exportDataWithCompletionHandler___block_
   VSPerformCompletionHandler(v6);
 }
 
-- (id)importData:(id)a3 withCompletionHandler:(id)a4
+- (id)importData:(id)data withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dataCopy = data;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (dataCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -283,10 +283,10 @@ void __64__VSAccountSerializationCenter_exportDataWithCompletionHandler___block_
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The completionHandler parameter must not be nil."];
 LABEL_3:
   v9 = objc_alloc_init(MEMORY[0x277CCAC48]);
-  if ([v6 length])
+  if ([dataCopy length])
   {
     v10 = [MEMORY[0x277CCAE68] valueTransformerForName:@"VSDataCompressionValueTransformer"];
-    v11 = [v10 reverseTransformedValue:v6];
+    v11 = [v10 reverseTransformedValue:dataCopy];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __65__VSAccountSerializationCenter_importData_withCompletionHandler___block_invoke;

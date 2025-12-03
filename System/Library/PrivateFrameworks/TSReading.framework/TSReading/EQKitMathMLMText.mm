@@ -1,21 +1,21 @@
 @interface EQKitMathMLMText
-- (EQKitMathMLMText)initWithContent:(id)a3;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (EQKitMathMLMText)initWithContent:(id)content;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMText
 
-- (EQKitMathMLMText)initWithContent:(id)a3
+- (EQKitMathMLMText)initWithContent:(id)content
 {
-  if (a3)
+  if (content)
   {
     v6.receiver = self;
     v6.super_class = EQKitMathMLMText;
     v4 = [(EQKitMathMLMText *)&v6 init];
     if (v4)
     {
-      v4->mContent = a3;
+      v4->mContent = content;
     }
   }
 
@@ -35,9 +35,9 @@
   [(EQKitMathMLMText *)&v3 dealloc];
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v5 = [a4 parseChildrenAsTokenContentFromXMLNode:a3];
+  v5 = [parser parseChildrenAsTokenContentFromXMLNode:node];
 
   return [(EQKitMathMLMText *)self initWithContent:v5];
 }

@@ -1,22 +1,22 @@
 @interface ENUIMultilineCell
-- (ENUIMultilineCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ENUIMultilineCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation ENUIMultilineCell
 
-- (ENUIMultilineCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ENUIMultilineCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = ENUIMultilineCell;
-  v4 = [(ENUIMultilineCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(ENUIMultilineCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(ENUIMultilineCell *)v4 textLabel];
-    [v6 setNumberOfLines:0];
+    textLabel = [(ENUIMultilineCell *)v4 textLabel];
+    [textLabel setNumberOfLines:0];
 
-    v7 = [(ENUIMultilineCell *)v5 detailTextLabel];
-    [v7 setNumberOfLines:0];
+    detailTextLabel = [(ENUIMultilineCell *)v5 detailTextLabel];
+    [detailTextLabel setNumberOfLines:0];
   }
 
   return v5;

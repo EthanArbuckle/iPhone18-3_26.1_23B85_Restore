@@ -1,9 +1,9 @@
 @interface AVCMediaStreamNegotiatorSettings
-+ (id)negotiatorSettingsForMode:(int64_t)a3 deviceRole:(unsigned __int8)a4 options:(id)a5 errorString:(id *)a6;
-+ (id)newFilterVideoRuleCollection:(id)a3 forDirection:(int64_t)a4;
-+ (unint64_t)hdrModeWithNegotiatorInitOptions:(id)a3;
-- (AVCMediaStreamNegotiatorSettings)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 defaultDirection:(int64_t)a5 error:(id *)a6;
-- (BOOL)setUpDirection:(int64_t)a3 withOptions:(id)a4;
++ (id)negotiatorSettingsForMode:(int64_t)mode deviceRole:(unsigned __int8)role options:(id)options errorString:(id *)string;
++ (id)newFilterVideoRuleCollection:(id)collection forDirection:(int64_t)direction;
++ (unint64_t)hdrModeWithNegotiatorInitOptions:(id)options;
+- (AVCMediaStreamNegotiatorSettings)initWithOptions:(id)options deviceRole:(unsigned __int8)role defaultDirection:(int64_t)direction error:(id *)error;
+- (BOOL)setUpDirection:(int64_t)direction withOptions:(id)options;
 - (NSDictionary)featureListString;
 - (int64_t)preferredAudioCodecType;
 - (void)dealloc;
@@ -11,12 +11,12 @@
 
 @implementation AVCMediaStreamNegotiatorSettings
 
-- (AVCMediaStreamNegotiatorSettings)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 defaultDirection:(int64_t)a5 error:(id *)a6
+- (AVCMediaStreamNegotiatorSettings)initWithOptions:(id)options deviceRole:(unsigned __int8)role defaultDirection:(int64_t)direction error:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = AVCMediaStreamNegotiatorSettings;
-  v8 = [(AVCMediaStreamNegotiatorSettings *)&v11 init:a3];
+  v8 = [(AVCMediaStreamNegotiatorSettings *)&v11 init:options];
   v9 = v8;
   if (!v8)
   {
@@ -26,7 +26,7 @@ LABEL_7:
     return 0;
   }
 
-  if (![(AVCMediaStreamNegotiatorSettings *)v8 setUpDirection:a5 withOptions:a3])
+  if (![(AVCMediaStreamNegotiatorSettings *)v8 setUpDirection:direction withOptions:options])
   {
     [AVCMediaStreamNegotiatorSettings initWithOptions:v9 deviceRole:? defaultDirection:? error:?];
     goto LABEL_7;
@@ -48,11 +48,11 @@ LABEL_7:
   [(AVCMediaStreamNegotiatorSettings *)&v3 dealloc];
 }
 
-- (BOOL)setUpDirection:(int64_t)a3 withOptions:(id)a4
+- (BOOL)setUpDirection:(int64_t)direction withOptions:(id)options
 {
   v10 = *MEMORY[0x1E69E9840];
-  self->_mediaStreamDirection = a3;
-  v5 = [a4 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorDirection"];
+  self->_mediaStreamDirection = direction;
+  v5 = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorDirection"];
   if (v5)
   {
     v6 = v5;
@@ -75,12 +75,12 @@ LABEL_7:
   return [AVCMediaStreamNegotiatorSettings isValidDirection:mediaStreamDirection];
 }
 
-+ (id)newFilterVideoRuleCollection:(id)a3 forDirection:(int64_t)a4
++ (id)newFilterVideoRuleCollection:(id)collection forDirection:(int64_t)direction
 {
-  v5 = [a3 copy];
+  v5 = [collection copy];
   v6 = v5;
-  v7 = a4 & 0xFFFFFFFFFFFFFFFDLL;
-  v8 = a4 & 0xFFFFFFFFFFFFFFFELL;
+  v7 = direction & 0xFFFFFFFFFFFFFFFDLL;
+  v8 = direction & 0xFFFFFFFFFFFFFFFELL;
   if (v7 != 1)
   {
     [v5 removeVideoRulesForEncodingType:1];
@@ -101,9 +101,9 @@ LABEL_7:
     return self->_preferredAudioCodecType;
   }
 
-  v4 = [(AVCMediaStreamNegotiatorSettings *)self preferredAudioCodec];
+  preferredAudioCodec = [(AVCMediaStreamNegotiatorSettings *)self preferredAudioCodec];
 
-  return [VCPayloadUtils codecTypeForPayload:v4];
+  return [VCPayloadUtils codecTypeForPayload:preferredAudioCodec];
 }
 
 - (NSDictionary)featureListString
@@ -113,17 +113,17 @@ LABEL_7:
   return v2;
 }
 
-+ (id)negotiatorSettingsForMode:(int64_t)a3 deviceRole:(unsigned __int8)a4 options:(id)a5 errorString:(id *)a6
++ (id)negotiatorSettingsForMode:(int64_t)mode deviceRole:(unsigned __int8)role options:(id)options errorString:(id *)string
 {
-  if ((a3 - 1) >= 0xF)
+  if ((mode - 1) >= 0xF)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to init AVCMediaStreamNegotiatorSettings for mode=%ld", a4, a5, a3];
+    mode = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to init AVCMediaStreamNegotiatorSettings for mode=%ld", role, options, mode];
   }
 
   else
   {
-    v8 = [objc_alloc(*off_1E85F8028[a3 - 1]) initWithOptions:a5 deviceRole:a4 error:a6];
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to init AVCMediaStreamNegotiatorSettings for mode=%ld", a3];
+    v8 = [objc_alloc(*off_1E85F8028[mode - 1]) initWithOptions:options deviceRole:role error:string];
+    mode = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to init AVCMediaStreamNegotiatorSettings for mode=%ld", mode];
     if (v8)
     {
       goto LABEL_6;
@@ -131,23 +131,23 @@ LABEL_7:
   }
 
   v8 = 0;
-  *a6 = v9;
+  *string = mode;
 LABEL_6:
 
   return v8;
 }
 
-+ (unint64_t)hdrModeWithNegotiatorInitOptions:(id)a3
++ (unint64_t)hdrModeWithNegotiatorInitOptions:(id)options
 {
-  if (!a3)
+  if (!options)
   {
     return 0;
   }
 
-  result = [a3 objectForKeyedSubscript:@"AVCMediaStreamNegotiatorHDRMode"];
+  result = [options objectForKeyedSubscript:@"AVCMediaStreamNegotiatorHDRMode"];
   if (result)
   {
-    return [objc_msgSend(a3 objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorHDRMode", "unsignedIntValue"}];
+    return [objc_msgSend(options objectForKeyedSubscript:{@"AVCMediaStreamNegotiatorHDRMode", "unsignedIntValue"}];
   }
 
   return result;

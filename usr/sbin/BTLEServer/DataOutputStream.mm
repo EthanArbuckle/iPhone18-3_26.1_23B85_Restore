@@ -1,20 +1,20 @@
 @interface DataOutputStream
 + (id)outputStream;
-+ (id)outputStreamWithByteOrder:(int64_t)a3;
-- (DataOutputStream)initWithByteOrder:(int64_t)a3;
-- (void)writeBytes:(const void *)a3 length:(unint64_t)a4;
-- (void)writeData:(id)a3;
-- (void)writeString:(id)a3;
-- (void)writeUint16:(unsigned __int16)a3;
-- (void)writeUint24:(unsigned int)a3;
-- (void)writeUint32:(unsigned int)a3;
-- (void)writeUint40:(unint64_t)a3;
-- (void)writeUint8:(unsigned __int8)a3;
++ (id)outputStreamWithByteOrder:(int64_t)order;
+- (DataOutputStream)initWithByteOrder:(int64_t)order;
+- (void)writeBytes:(const void *)bytes length:(unint64_t)length;
+- (void)writeData:(id)data;
+- (void)writeString:(id)string;
+- (void)writeUint16:(unsigned __int16)uint16;
+- (void)writeUint24:(unsigned int)uint24;
+- (void)writeUint32:(unsigned int)uint32;
+- (void)writeUint40:(unint64_t)uint40;
+- (void)writeUint8:(unsigned __int8)uint8;
 @end
 
 @implementation DataOutputStream
 
-- (DataOutputStream)initWithByteOrder:(int64_t)a3
+- (DataOutputStream)initWithByteOrder:(int64_t)order
 {
   v8.receiver = self;
   v8.super_class = DataOutputStream;
@@ -25,7 +25,7 @@
     stream = v4->_stream;
     v4->_stream = v5;
 
-    v4->_byteOrder = a3;
+    v4->_byteOrder = order;
   }
 
   return v4;
@@ -38,138 +38,138 @@
   return v2;
 }
 
-+ (id)outputStreamWithByteOrder:(int64_t)a3
++ (id)outputStreamWithByteOrder:(int64_t)order
 {
-  v3 = [[DataOutputStream alloc] initWithByteOrder:a3];
+  v3 = [[DataOutputStream alloc] initWithByteOrder:order];
 
   return v3;
 }
 
-- (void)writeUint8:(unsigned __int8)a3
+- (void)writeUint8:(unsigned __int8)uint8
 {
-  v4 = a3;
-  v3 = [(DataOutputStream *)self stream];
-  [v3 appendBytes:&v4 length:1];
+  uint8Copy = uint8;
+  stream = [(DataOutputStream *)self stream];
+  [stream appendBytes:&uint8Copy length:1];
 }
 
-- (void)writeUint16:(unsigned __int16)a3
+- (void)writeUint16:(unsigned __int16)uint16
 {
-  v3 = a3;
-  v5 = [(DataOutputStream *)self byteOrder];
-  v6 = __rev16(v3);
-  if (v5 == 1)
+  uint16Copy = uint16;
+  byteOrder = [(DataOutputStream *)self byteOrder];
+  v6 = __rev16(uint16Copy);
+  if (byteOrder == 1)
   {
-    v6 = v3;
+    v6 = uint16Copy;
   }
 
   v8 = v6;
-  v7 = [(DataOutputStream *)self stream];
-  [v7 appendBytes:&v8 length:2];
+  stream = [(DataOutputStream *)self stream];
+  [stream appendBytes:&v8 length:2];
 }
 
-- (void)writeUint32:(unsigned int)a3
+- (void)writeUint32:(unsigned int)uint32
 {
-  v5 = [(DataOutputStream *)self byteOrder];
-  v6 = bswap32(a3);
-  if (v5 == 1)
+  byteOrder = [(DataOutputStream *)self byteOrder];
+  uint32Copy = bswap32(uint32);
+  if (byteOrder == 1)
   {
-    v6 = a3;
+    uint32Copy = uint32;
   }
 
-  v8 = v6;
-  v7 = [(DataOutputStream *)self stream];
-  [v7 appendBytes:&v8 length:4];
+  v8 = uint32Copy;
+  stream = [(DataOutputStream *)self stream];
+  [stream appendBytes:&v8 length:4];
 }
 
-- (void)writeUint24:(unsigned int)a3
+- (void)writeUint24:(unsigned int)uint24
 {
-  v5 = [(DataOutputStream *)self byteOrder];
-  v6 = HIWORD(a3);
-  if (v5 == 1)
+  byteOrder = [(DataOutputStream *)self byteOrder];
+  v6 = HIWORD(uint24);
+  if (byteOrder == 1)
   {
-    v7 = a3;
+    uint24Copy = uint24;
   }
 
   else
   {
-    v7 = BYTE2(a3);
+    uint24Copy = BYTE2(uint24);
   }
 
-  if (v5 != 1)
+  if (byteOrder != 1)
   {
-    LOBYTE(v6) = a3;
+    LOBYTE(v6) = uint24;
   }
 
-  v9[0] = v7;
-  v9[1] = BYTE1(a3);
+  v9[0] = uint24Copy;
+  v9[1] = BYTE1(uint24);
   v9[2] = v6;
-  v8 = [(DataOutputStream *)self stream];
-  [v8 appendBytes:v9 length:3];
+  stream = [(DataOutputStream *)self stream];
+  [stream appendBytes:v9 length:3];
 }
 
-- (void)writeUint40:(unint64_t)a3
+- (void)writeUint40:(unint64_t)uint40
 {
-  v5 = [(DataOutputStream *)self byteOrder];
-  v6 = a3 >> 24;
-  v7 = HIDWORD(a3);
-  if (v5 == 1)
+  byteOrder = [(DataOutputStream *)self byteOrder];
+  v6 = uint40 >> 24;
+  v7 = HIDWORD(uint40);
+  if (byteOrder == 1)
   {
-    LOBYTE(v8) = a3;
+    LOBYTE(v8) = uint40;
   }
 
   else
   {
-    v8 = HIDWORD(a3);
+    v8 = HIDWORD(uint40);
   }
 
   v11[0] = v8;
-  if (v5 == 1)
+  if (byteOrder == 1)
   {
-    v9 = a3 >> 8;
+    v9 = uint40 >> 8;
   }
 
   else
   {
-    v9 = a3 >> 24;
+    v9 = uint40 >> 24;
   }
 
-  if (v5 != 1)
+  if (byteOrder != 1)
   {
-    v6 = a3 >> 8;
+    v6 = uint40 >> 8;
   }
 
   v11[1] = v9;
-  v11[2] = BYTE2(a3);
-  if (v5 != 1)
+  v11[2] = BYTE2(uint40);
+  if (byteOrder != 1)
   {
-    LOBYTE(v7) = a3;
+    LOBYTE(v7) = uint40;
   }
 
   v11[3] = v6;
   v11[4] = v7;
-  v10 = [(DataOutputStream *)self stream];
-  [v10 appendBytes:v11 length:5];
+  stream = [(DataOutputStream *)self stream];
+  [stream appendBytes:v11 length:5];
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  v4 = a3;
-  v5 = [(DataOutputStream *)self stream];
-  [v5 appendData:v4];
+  dataCopy = data;
+  stream = [(DataOutputStream *)self stream];
+  [stream appendData:dataCopy];
 }
 
-- (void)writeBytes:(const void *)a3 length:(unint64_t)a4
+- (void)writeBytes:(const void *)bytes length:(unint64_t)length
 {
-  v6 = [(DataOutputStream *)self stream];
-  [v6 appendBytes:a3 length:a4];
+  stream = [(DataOutputStream *)self stream];
+  [stream appendBytes:bytes length:length];
 }
 
-- (void)writeString:(id)a3
+- (void)writeString:(id)string
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  v7 = [(DataOutputStream *)self stream];
-  [v7 appendBytes:v6 length:strlen(v6) + 1];
+  stringCopy = string;
+  uTF8String = [string UTF8String];
+  stream = [(DataOutputStream *)self stream];
+  [stream appendBytes:uTF8String length:strlen(uTF8String) + 1];
 }
 
 @end

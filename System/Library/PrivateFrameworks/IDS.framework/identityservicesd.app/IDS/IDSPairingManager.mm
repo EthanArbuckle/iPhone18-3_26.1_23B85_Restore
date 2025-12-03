@@ -1,25 +1,25 @@
 @interface IDSPairingManager
 + (IDSPairingManager)sharedInstance;
-+ (void)devicePairingProtocolVersion:(unsigned int *)a3 minCompatibilityVersion:(unsigned int *)a4 maxCompatibilityVersion:(unsigned int *)a5;
++ (void)devicePairingProtocolVersion:(unsigned int *)version minCompatibilityVersion:(unsigned int *)compatibilityVersion maxCompatibilityVersion:(unsigned int *)maxCompatibilityVersion;
 - (BOOL)_hasAllEncryptionKeys;
-- (BOOL)_isPairedToDevice:(id)a3;
-- (BOOL)_markSecuredEncryptionKeysAsRegenerated:(BOOL)a3;
+- (BOOL)_isPairedToDevice:(id)device;
+- (BOOL)_markSecuredEncryptionKeysAsRegenerated:(BOOL)regenerated;
 - (BOOL)_purgeSecuredEncryptionKeysForAllPairedDevices;
-- (BOOL)activePairedDeviceHasPairingType:(int64_t)a3;
-- (BOOL)addLocalPairedDevice:(id)a3 BTOutOfBandKey:(id)a4 shouldPairDirectlyOverIPsec:(BOOL)a5 pairingType:(int64_t)a6 bluetoothMACAddress:(id)a7;
+- (BOOL)activePairedDeviceHasPairingType:(int64_t)type;
+- (BOOL)addLocalPairedDevice:(id)device BTOutOfBandKey:(id)key shouldPairDirectlyOverIPsec:(BOOL)psec pairingType:(int64_t)type bluetoothMACAddress:(id)address;
 - (BOOL)isCurrentDevicePairedOrPairing;
-- (BOOL)isMissingAnyPublicKeyForPairedDeviceWithCBUUID:(id)a3;
+- (BOOL)isMissingAnyPublicKeyForPairedDeviceWithCBUUID:(id)d;
 - (BOOL)isPaired;
 - (BOOL)isTraditionalDevicePairedOrPairing;
-- (BOOL)removeLocalPairedDevice:(id)a3;
-- (BOOL)setPairedDeviceInfo:(id)a3;
-- (BOOL)shouldUseIPsecLinkForDefaultPairedDeviceAndLogQuery:(BOOL)a3;
-- (BOOL)updateLocalPairedDevice:(id)a3 pairingType:(int64_t)a4;
-- (BOOL)updatePairedDeviceBuildVersion:(id)a3 productVersion:(id)a4 productName:(id)a5 pairingProtocolVersion:(unsigned int)a6 minCompatibilityVersion:(unsigned int)a7 maxCompatibilityVersion:(unsigned int)a8 serviceMinCompatibilityVersion:(unsigned __int16)a9 capabilityFlags:(unint64_t)a10 deviceUniqueID:(id)a11;
-- (BOOL)updatePairedDeviceWithCBUUID:(id)a3 supportIPsec:(BOOL)a4;
-- (BOOL)updatePairedDeviceiCloudURIs:(id)a3 pushToken:(id)a4;
+- (BOOL)removeLocalPairedDevice:(id)device;
+- (BOOL)setPairedDeviceInfo:(id)info;
+- (BOOL)shouldUseIPsecLinkForDefaultPairedDeviceAndLogQuery:(BOOL)query;
+- (BOOL)updateLocalPairedDevice:(id)device pairingType:(int64_t)type;
+- (BOOL)updatePairedDeviceBuildVersion:(id)version productVersion:(id)productVersion productName:(id)name pairingProtocolVersion:(unsigned int)protocolVersion minCompatibilityVersion:(unsigned int)compatibilityVersion maxCompatibilityVersion:(unsigned int)maxCompatibilityVersion serviceMinCompatibilityVersion:(unsigned __int16)minCompatibilityVersion capabilityFlags:(unint64_t)self0 deviceUniqueID:(id)self1;
+- (BOOL)updatePairedDeviceWithCBUUID:(id)d supportIPsec:(BOOL)psec;
+- (BOOL)updatePairedDeviceiCloudURIs:(id)is pushToken:(id)token;
 - (IDSPairingManager)init;
-- (IDSPairingManager)initWithNRDeviceManager:(id)a3 pairedDeviceRepository:(id)a4;
+- (IDSPairingManager)initWithNRDeviceManager:(id)manager pairedDeviceRepository:(id)repository;
 - (NSData)pairedDevicePublicClassAKey;
 - (NSData)pairedDevicePublicClassCKey;
 - (NSData)pairedDevicePublicKey;
@@ -34,52 +34,52 @@
 - (NSString)pairedDeviceProductVersion;
 - (NSString)pairedDeviceUniqueID;
 - (id)_activePairedDeviceCBUUID;
-- (id)_cbuuidsWithIsPairingValue:(BOOL)a3;
-- (id)_createRegistrationProperties:(BOOL)a3 maxCompatibilityVersion:(id)a4 BTOutOfBandKey:(id)a5 supportsIPsecWithSPPLink:(BOOL)a6 bluetoothMACAddress:(id)a7;
-- (id)_identityDataErrorPairForDataProtectionClass:(unsigned int)a3;
+- (id)_cbuuidsWithIsPairingValue:(BOOL)value;
+- (id)_createRegistrationProperties:(BOOL)properties maxCompatibilityVersion:(id)version BTOutOfBandKey:(id)key supportsIPsecWithSPPLink:(BOOL)link bluetoothMACAddress:(id)address;
+- (id)_identityDataErrorPairForDataProtectionClass:(unsigned int)class;
 - (id)_localDevicePrivateData;
-- (id)_nrDeviceIdentifierWithCBUUID:(id)a3;
-- (id)allPairedDevicesWithType:(int64_t)a3;
+- (id)_nrDeviceIdentifierWithCBUUID:(id)d;
+- (id)allPairedDevicesWithType:(int64_t)type;
 - (id)localDeviceRecord;
 - (id)pairedDeviceBuildVersion;
-- (id)pairedDeviceForUniqueID:(id)a3;
-- (id)pairedDeviceHandlesWithPairingType:(int64_t)a3;
+- (id)pairedDeviceForUniqueID:(id)d;
+- (id)pairedDeviceHandlesWithPairingType:(int64_t)type;
 - (id)pairedDeviceProductName;
 - (id)pairedDeviceRecords;
 - (id)pairedDeviceiCloudURIs;
 - (id)uniqueIDToCbuuidsOfPairingDevicesDictionary;
 - (int64_t)_migrateSecuredEncryptionKeys;
-- (int64_t)activatePairedDeviceWithCBUUID:(id)a3;
+- (int64_t)activatePairedDeviceWithCBUUID:(id)d;
 - (int64_t)pairedDevicePairingType;
 - (unint64_t)_hasRegeneratedSecuredEncryptionKeys;
 - (unsigned)pairedDeviceMaxCompatibilityVersion;
 - (unsigned)pairedDeviceMinCompatibilityVersion;
 - (unsigned)pairedDevicePairingProtocolVersion;
 - (unsigned)pairedDeviceServiceMinCompatibilityVersion;
-- (void)_callPairedDeviceDidConnectBlocksForUniqueID:(id)a3 withError:(id)a4;
-- (void)_clearPairedDeviceDidConnectBlocksForUniqueID:(id)a3;
+- (void)_callPairedDeviceDidConnectBlocksForUniqueID:(id)d withError:(id)error;
+- (void)_clearPairedDeviceDidConnectBlocksForUniqueID:(id)d;
 - (void)_loadPairedDevicePropertiesIfNeeded;
-- (void)_networkRelayRegisterDeviceWithCBUUID:(id)a3 properties:(id)a4 shouldPairDirectlyOverIPsec:(BOOL)a5;
-- (void)_networkRelayRegisterDeviceWithCBUUID:(id)a3 wasInitiallySetupUsingIDSPairing:(BOOL)a4 maxCompatibilityVersion:(id)a5 BTOutOfBandKey:(id)a6 supportsIPsecWithSPPLink:(BOOL)a7 bluetoothMACAddress:(id)a8;
-- (void)_notifyDelegatesDevicePairedToDevice:(id)a3;
-- (void)_notifyDelegatesDeviceUnpairedFromDevice:(id)a3;
-- (void)_notifyDelegatesWithBlock:(id)a3;
+- (void)_networkRelayRegisterDeviceWithCBUUID:(id)d properties:(id)properties shouldPairDirectlyOverIPsec:(BOOL)psec;
+- (void)_networkRelayRegisterDeviceWithCBUUID:(id)d wasInitiallySetupUsingIDSPairing:(BOOL)pairing maxCompatibilityVersion:(id)version BTOutOfBandKey:(id)key supportsIPsecWithSPPLink:(BOOL)link bluetoothMACAddress:(id)address;
+- (void)_notifyDelegatesDevicePairedToDevice:(id)device;
+- (void)_notifyDelegatesDeviceUnpairedFromDevice:(id)device;
+- (void)_notifyDelegatesWithBlock:(id)block;
 - (void)_regenerateSecuredEncryptionKeys;
 - (void)_requestPairedDeviceInfo;
-- (void)_suspendOTRSessionsWithProtectionClass:(unsigned int)a3;
-- (void)_updateActiveStateForAllPairedDevices:(BOOL)a3;
-- (void)_updatePairedState:(BOOL)a3;
-- (void)addDelegate:(id)a3;
+- (void)_suspendOTRSessionsWithProtectionClass:(unsigned int)class;
+- (void)_updateActiveStateForAllPairedDevices:(BOOL)devices;
+- (void)_updatePairedState:(BOOL)state;
+- (void)addDelegate:(id)delegate;
 - (void)deactivatePairedDevices;
 - (void)dealloc;
-- (void)deliveryController:(id)a3 foundNearbyIPsecCapableDeviceWithUniqueID:(id)a4;
+- (void)deliveryController:(id)controller foundNearbyIPsecCapableDeviceWithUniqueID:(id)d;
 - (void)disconnectActivePairedDevice;
 - (void)ensureCommunicationWithActivePairedDeviceIsPossible;
-- (void)gatherLocalDeviceInfoWithCompletionBlock:(id)a3;
+- (void)gatherLocalDeviceInfoWithCompletionBlock:(id)block;
 - (void)refreshPairedDeviceEncryptionKeys;
-- (void)registerPairedDeviceWithUniqueID:(id)a3 didConnectBlock:(id)a4;
-- (void)removeDelegate:(id)a3;
-- (void)setBTOutOfBandKey:(id)a3 forCBUUID:(id)a4;
+- (void)registerPairedDeviceWithUniqueID:(id)d didConnectBlock:(id)block;
+- (void)removeDelegate:(id)delegate;
+- (void)setBTOutOfBandKey:(id)key forCBUUID:(id)d;
 - (void)updateNetworkRelayStateForAllPairedDevices;
 @end
 
@@ -87,11 +87,11 @@
 
 - (NSString)pairedDeviceUniqueID
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 uniqueID];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  uniqueID = [activePairedDevice uniqueID];
 
-  return v4;
+  return uniqueID;
 }
 
 + (IDSPairingManager)sharedInstance
@@ -114,8 +114,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v6 = [v5 allPairedDevicesWithType:0];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v6 = [pairedDeviceRepository allPairedDevicesWithType:0];
 
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
@@ -134,8 +134,8 @@
         v11 = *(*(&v14 + 1) + 8 * i);
         if ([(IDSPairingManager *)self _isPairedToDevice:v11])
         {
-          v12 = [v11 uniqueID];
-          [v4 addObject:v12];
+          uniqueID = [v11 uniqueID];
+          [v4 addObject:uniqueID];
         }
       }
 
@@ -152,19 +152,19 @@
 
 - (BOOL)isPaired
 {
-  v2 = self;
-  v3 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v4 = [v3 activePairedDevice];
-  LOBYTE(v2) = [(IDSPairingManager *)v2 _isPairedToDevice:v4];
+  selfCopy = self;
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  LOBYTE(selfCopy) = [(IDSPairingManager *)selfCopy _isPairedToDevice:activePairedDevice];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)uniqueIDToCbuuidsOfPairingDevicesDictionary
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v5 = [v4 pairedDevicesWithIsPairingValue:0];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v5 = [pairedDeviceRepository pairedDevicesWithIsPairingValue:0];
 
   v21 = 0u;
   v22 = 0u;
@@ -186,17 +186,17 @@
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 cbuuid];
-        if (v12)
+        cbuuid = [v11 cbuuid];
+        if (cbuuid)
         {
-          v13 = v12;
-          v14 = [v11 uniqueID];
+          v13 = cbuuid;
+          uniqueID = [v11 uniqueID];
 
-          if (v14)
+          if (uniqueID)
           {
-            v15 = [v11 cbuuid];
-            v16 = [v11 uniqueID];
-            [v3 setValue:v15 forKey:v16];
+            cbuuid2 = [v11 cbuuid];
+            uniqueID2 = [v11 uniqueID];
+            [v3 setValue:cbuuid2 forKey:uniqueID2];
           }
         }
       }
@@ -214,82 +214,82 @@
 
 - (NSData)pairedDevicePushToken
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 pushToken];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  pushToken = [activePairedDevice pushToken];
 
-  return v4;
+  return pushToken;
 }
 
 - (NSDictionary)pairedDevice
 {
   if ([(IDSPairingManager *)self isPaired])
   {
-    v3 = [(IDSPairingManager *)self pairedDeviceRepository];
-    v4 = [v3 activePairedDevice];
-    v5 = [v4 dictionaryRepresentation];
+    pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+    activePairedDevice = [pairedDeviceRepository activePairedDevice];
+    dictionaryRepresentation = [activePairedDevice dictionaryRepresentation];
   }
 
   else
   {
-    v5 = 0;
+    dictionaryRepresentation = 0;
   }
 
-  return v5;
+  return dictionaryRepresentation;
 }
 
 - (unsigned)pairedDeviceMinCompatibilityVersion
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 minCompatibilityVersion];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  minCompatibilityVersion = [activePairedDevice minCompatibilityVersion];
 
-  return v4;
+  return minCompatibilityVersion;
 }
 
 - (unsigned)pairedDevicePairingProtocolVersion
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 pairingProtocolVersion];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  pairingProtocolVersion = [activePairedDevice pairingProtocolVersion];
 
-  return v4;
+  return pairingProtocolVersion;
 }
 
 - (unsigned)pairedDeviceMaxCompatibilityVersion
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 maxCompatibilityVersion];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  maxCompatibilityVersion = [activePairedDevice maxCompatibilityVersion];
 
-  return v4;
+  return maxCompatibilityVersion;
 }
 
 - (unsigned)pairedDeviceServiceMinCompatibilityVersion
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 serviceMinCompatibilityVersion];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  serviceMinCompatibilityVersion = [activePairedDevice serviceMinCompatibilityVersion];
 
-  return v4;
+  return serviceMinCompatibilityVersion;
 }
 
 - (id)_activePairedDeviceCBUUID
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 cbuuid];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  cbuuid = [activePairedDevice cbuuid];
 
-  return v4;
+  return cbuuid;
 }
 
 - (NSDictionary)pairedDevicePrivateData
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 privateData];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  privateData = [activePairedDevice privateData];
 
-  return v4;
+  return privateData;
 }
 
 - (NSSet)allPairedUniqueIDs
@@ -299,10 +299,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v5 = [v4 allPairedDevices];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  allPairedDevices = [pairedDeviceRepository allPairedDevices];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allPairedDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -313,18 +313,18 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allPairedDevices);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([(IDSPairingManager *)self _isPairedToDevice:v10])
         {
-          v11 = [v10 uniqueID];
-          [v3 addObject:v11];
+          uniqueID = [v10 uniqueID];
+          [v3 addObject:uniqueID];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allPairedDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -333,9 +333,9 @@
   return v3;
 }
 
-- (void)_notifyDelegatesWithBlock:(id)a3
+- (void)_notifyDelegatesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -365,7 +365,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v11));
+        blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v11));
         v11 = v11 + 1;
       }
 
@@ -377,9 +377,9 @@
   }
 }
 
-- (void)_notifyDelegatesDevicePairedToDevice:(id)a3
+- (void)_notifyDelegatesDevicePairedToDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -392,11 +392,11 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Notifying all IDS accounts device paired to: %@", buf, 0xCu);
   }
 
-  [v4 dictionaryRepresentation];
+  [deviceCopy dictionaryRepresentation];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100497954;
@@ -405,9 +405,9 @@
   [(IDSPairingManager *)self _notifyDelegatesWithBlock:v8];
 }
 
-- (void)_notifyDelegatesDeviceUnpairedFromDevice:(id)a3
+- (void)_notifyDelegatesDeviceUnpairedFromDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -420,11 +420,11 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Notifying all IDS accounts device unpaired from: %@", buf, 0xCu);
   }
 
-  [v4 dictionaryRepresentation];
+  [deviceCopy dictionaryRepresentation];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100497B44;
@@ -443,8 +443,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &buf, 0xCu);
   }
 
-  v4 = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
-  v5 = [v4 length] == 0;
+  _activePairedDeviceCBUUID = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
+  v5 = [_activePairedDeviceCBUUID length] == 0;
 
   if (v5)
   {
@@ -520,10 +520,10 @@ LABEL_7:
   return v4;
 }
 
-- (IDSPairingManager)initWithNRDeviceManager:(id)a3 pairedDeviceRepository:(id)a4
+- (IDSPairingManager)initWithNRDeviceManager:(id)manager pairedDeviceRepository:(id)repository
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  repositoryCopy = repository;
   v22.receiver = self;
   v22.super_class = IDSPairingManager;
   v9 = [(IDSPairingManager *)&v22 init];
@@ -540,8 +540,8 @@ LABEL_7:
     registeredPairedDeviceDidConnectBlockPairs = v10->_registeredPairedDeviceDidConnectBlockPairs;
     v10->_registeredPairedDeviceDidConnectBlockPairs = 0;
 
-    objc_storeStrong(&v10->_pairedDeviceRepository, a4);
-    objc_storeStrong(&v10->_nrDeviceManager, a3);
+    objc_storeStrong(&v10->_pairedDeviceRepository, repository);
+    objc_storeStrong(&v10->_nrDeviceManager, manager);
     v15 = +[IMSystemMonitor sharedInstance];
     [v15 setActive:1];
 
@@ -560,8 +560,8 @@ LABEL_7:
 
     if (!v19)
     {
-      v20 = [(IDSPairingManager *)v10 pairedDeviceUUIDString];
-      if (v20)
+      pairedDeviceUUIDString = [(IDSPairingManager *)v10 pairedDeviceUUIDString];
+      if (pairedDeviceUUIDString)
       {
         IMSetDomainValueForKey();
       }
@@ -584,15 +584,15 @@ LABEL_7:
   return v6;
 }
 
-- (void)setBTOutOfBandKey:(id)a3 forCBUUID:(id)a4
+- (void)setBTOutOfBandKey:(id)key forCBUUID:(id)d
 {
-  v12 = a3;
-  v6 = a4;
-  if (v6)
+  keyCopy = key;
+  dCopy = d;
+  if (dCopy)
   {
     cbuuidToBTOutOfBandKeyDictionary = self->_cbuuidToBTOutOfBandKeyDictionary;
-    v8 = v12;
-    if (v12)
+    v8 = keyCopy;
+    if (keyCopy)
     {
       if (!cbuuidToBTOutOfBandKeyDictionary)
       {
@@ -600,16 +600,16 @@ LABEL_7:
         v10 = self->_cbuuidToBTOutOfBandKeyDictionary;
         self->_cbuuidToBTOutOfBandKeyDictionary = v9;
 
-        v8 = v12;
+        v8 = keyCopy;
         cbuuidToBTOutOfBandKeyDictionary = self->_cbuuidToBTOutOfBandKeyDictionary;
       }
 
-      [(NSMutableDictionary *)cbuuidToBTOutOfBandKeyDictionary setObject:v8 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)cbuuidToBTOutOfBandKeyDictionary setObject:v8 forKeyedSubscript:dCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)cbuuidToBTOutOfBandKeyDictionary setObject:0 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)cbuuidToBTOutOfBandKeyDictionary setObject:0 forKeyedSubscript:dCopy];
       if (![(NSMutableDictionary *)self->_cbuuidToBTOutOfBandKeyDictionary count])
       {
         v11 = self->_cbuuidToBTOutOfBandKeyDictionary;
@@ -623,22 +623,22 @@ LABEL_7:
 {
   if (!self->_hasLoadedPairedDevices)
   {
-    v3 = [(IDSPairingManager *)self pairedDeviceRepository];
-    self->_hasLoadedPairedDevices = [v3 loadPairedDevicesFromStorage];
+    pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+    self->_hasLoadedPairedDevices = [pairedDeviceRepository loadPairedDevicesFromStorage];
 
     if (self->_hasLoadedPairedDevices)
     {
       [(IDSPairingManager *)self _migrateSecuredEncryptionKeys];
       [(IDSPairingManager *)self _requestPairedDeviceInfoAfterDelay:10.0];
-      v4 = [(IDSPairingManager *)self pairedDevice];
-      v5 = v4;
-      if (v4)
+      pairedDevice = [(IDSPairingManager *)self pairedDevice];
+      v5 = pairedDevice;
+      if (pairedDevice)
       {
         v6[0] = _NSConcreteStackBlock;
         v6[1] = 3221225472;
         v6[2] = sub_1004984A0;
         v6[3] = &unk_100BDD768;
-        v7 = v4;
+        v7 = pairedDevice;
         [(IDSPairingManager *)self _notifyDelegatesWithBlock:v6];
       }
     }
@@ -648,15 +648,15 @@ LABEL_7:
 - (int64_t)_migrateSecuredEncryptionKeys
 {
   v2 = +[IDSRegistrationKeyManager sharedInstance];
-  v3 = [v2 isUsingSecureStorageForClassA];
-  v4 = [v2 isUsingSecureStorageForClassC];
-  v5 = v4;
-  if (!v3 || (v4 & 1) == 0)
+  isUsingSecureStorageForClassA = [v2 isUsingSecureStorageForClassA];
+  isUsingSecureStorageForClassC = [v2 isUsingSecureStorageForClassC];
+  v5 = isUsingSecureStorageForClassC;
+  if (!isUsingSecureStorageForClassA || (isUsingSecureStorageForClassC & 1) == 0)
   {
     v7 = +[IMSystemMonitor sharedInstance];
-    v8 = [v7 isUnderDataProtectionLock];
+    isUnderDataProtectionLock = [v7 isUnderDataProtectionLock];
 
-    if (v8)
+    if (isUnderDataProtectionLock)
     {
       v9 = +[IMRGLog migration];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -669,12 +669,12 @@ LABEL_7:
       goto LABEL_24;
     }
 
-    if ((v3 & 1) == 0)
+    if ((isUsingSecureStorageForClassA & 1) == 0)
     {
-      v10 = [v2 migrateToSecureStorageForClassA];
+      migrateToSecureStorageForClassA = [v2 migrateToSecureStorageForClassA];
       v11 = +[IMRGLog migration];
       v9 = v11;
-      if (!v10)
+      if (!migrateToSecureStorageForClassA)
       {
         if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
         {
@@ -701,10 +701,10 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v12 = [v2 migrateToSecureStorageForClassC];
+    migrateToSecureStorageForClassC = [v2 migrateToSecureStorageForClassC];
     v13 = +[IMRGLog migration];
     v9 = v13;
-    if (v12)
+    if (migrateToSecureStorageForClassC)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -812,9 +812,9 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)_markSecuredEncryptionKeysAsRegenerated:(BOOL)a3
+- (BOOL)_markSecuredEncryptionKeysAsRegenerated:(BOOL)regenerated
 {
-  if (a3)
+  if (regenerated)
   {
     v3 = [@"regenerated" dataUsingEncoding:4];
     *v9 = 0;
@@ -884,9 +884,9 @@ LABEL_21:
   [v5 regeneratePairingIdentitiesIncludingClassD:0];
 }
 
-- (void)_suspendOTRSessionsWithProtectionClass:(unsigned int)a3
+- (void)_suspendOTRSessionsWithProtectionClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   v4 = +[IDSOTRController sharedInstance];
   v5 = +[IDSOTRKeyStorage sharedInstance];
   v21 = sub_100572108(0, v3);
@@ -949,14 +949,14 @@ LABEL_21:
 
 - (BOOL)_purgeSecuredEncryptionKeysForAllPairedDevices
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 purgeSecuredEncryptionKeysForAllPairedDevices];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  purgeSecuredEncryptionKeysForAllPairedDevices = [pairedDeviceRepository purgeSecuredEncryptionKeysForAllPairedDevices];
 
   v4 = +[IMRGLog regeneration];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (purgeSecuredEncryptionKeysForAllPairedDevices)
     {
       v5 = @"YES";
     }
@@ -966,7 +966,7 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Purged encryption keys for all paired devices. Success: %@", &v7, 0xCu);
   }
 
-  return v3;
+  return purgeSecuredEncryptionKeysForAllPairedDevices;
 }
 
 - (NSDictionary)localDevice
@@ -983,46 +983,46 @@ LABEL_21:
   v5 = objc_alloc_init(NSMutableDictionary);
   v6 = +[IDSCurrentDevice sharedInstance];
   v7 = +[FTDeviceSupport sharedInstance];
-  v8 = [v6 deviceIdentifier];
-  if (v8)
+  deviceIdentifier = [v6 deviceIdentifier];
+  if (deviceIdentifier)
   {
-    CFDictionarySetValue(v5, IDSDevicePropertyIdentifier, v8);
+    CFDictionarySetValue(v5, IDSDevicePropertyIdentifier, deviceIdentifier);
   }
 
-  v9 = [v6 encryptionClassAKey];
-  if (v9)
+  encryptionClassAKey = [v6 encryptionClassAKey];
+  if (encryptionClassAKey)
   {
-    CFDictionarySetValue(v5, IDSDevicePropertyEncryptionClassAKey, v9);
+    CFDictionarySetValue(v5, IDSDevicePropertyEncryptionClassAKey, encryptionClassAKey);
   }
 
-  v10 = [v6 encryptionClassCKey];
-  if (v10)
+  encryptionClassCKey = [v6 encryptionClassCKey];
+  if (encryptionClassCKey)
   {
-    CFDictionarySetValue(v5, IDSDevicePropertyEncryptionClassCKey, v10);
+    CFDictionarySetValue(v5, IDSDevicePropertyEncryptionClassCKey, encryptionClassCKey);
   }
 
-  v11 = [v6 encryptionClassDKey];
-  if (v11)
+  encryptionClassDKey = [v6 encryptionClassDKey];
+  if (encryptionClassDKey)
   {
-    CFDictionarySetValue(v5, IDSDevicePropertyEncryptionKey, v11);
+    CFDictionarySetValue(v5, IDSDevicePropertyEncryptionKey, encryptionClassDKey);
   }
 
-  v12 = [(IDSPairingManager *)self _localDevicePrivateData];
-  if (v12)
+  _localDevicePrivateData = [(IDSPairingManager *)self _localDevicePrivateData];
+  if (_localDevicePrivateData)
   {
-    CFDictionarySetValue(v5, IDSDevicePropertyPrivateDeviceData, v12);
+    CFDictionarySetValue(v5, IDSDevicePropertyPrivateDeviceData, _localDevicePrivateData);
   }
 
-  v13 = [v7 deviceName];
-  if (v13)
+  deviceName = [v7 deviceName];
+  if (deviceName)
   {
-    CFDictionarySetValue(v5, IDSDevicePropertyName, v13);
+    CFDictionarySetValue(v5, IDSDevicePropertyName, deviceName);
   }
 
-  v14 = [v7 model];
-  if (v14)
+  model = [v7 model];
+  if (model)
   {
-    CFDictionarySetValue(v5, IDSDevicePropertyHardwareVersion, v14);
+    CFDictionarySetValue(v5, IDSDevicePropertyHardwareVersion, model);
   }
 
   objc_autoreleasePoolPop(v4);
@@ -1034,11 +1034,11 @@ LABEL_21:
 {
   v2 = objc_alloc_init(NSMutableDictionary);
   v3 = +[FTDeviceSupport sharedInstance];
-  v4 = [v3 supportsSMS];
-  v5 = [v3 supportsMMS];
-  v6 = [v3 supportsApplePay];
-  v7 = [v3 supportsHandoff];
-  v8 = [v3 supportsTethering];
+  supportsSMS = [v3 supportsSMS];
+  supportsMMS = [v3 supportsMMS];
+  supportsApplePay = [v3 supportsApplePay];
+  supportsHandoff = [v3 supportsHandoff];
+  supportsTethering = [v3 supportsTethering];
   v9 = +[IDSCTAdapter sharedInstance];
   if ([v9 supportsIdentification])
   {
@@ -1052,70 +1052,70 @@ LABEL_21:
   }
 
   v12 = _IDSPrivateDeviceDataVersionNumber();
-  v13 = [v12 stringValue];
-  [v2 setObject:v13 forKeyedSubscript:IDSPrivateDeviceDataVersion];
+  stringValue = [v12 stringValue];
+  [v2 setObject:stringValue forKeyedSubscript:IDSPrivateDeviceDataVersion];
 
-  v14 = [NSNumber numberWithBool:v6];
-  v15 = [v14 stringValue];
-  [v2 setObject:v15 forKeyedSubscript:IDSPrivateDeviceDataSupportsApplePay];
+  v14 = [NSNumber numberWithBool:supportsApplePay];
+  stringValue2 = [v14 stringValue];
+  [v2 setObject:stringValue2 forKeyedSubscript:IDSPrivateDeviceDataSupportsApplePay];
 
-  v16 = [NSNumber numberWithBool:v7];
-  v17 = [v16 stringValue];
-  [v2 setObject:v17 forKeyedSubscript:IDSPrivateDeviceDataSupportsHandoff];
+  v16 = [NSNumber numberWithBool:supportsHandoff];
+  stringValue3 = [v16 stringValue];
+  [v2 setObject:stringValue3 forKeyedSubscript:IDSPrivateDeviceDataSupportsHandoff];
 
-  v18 = [NSNumber numberWithBool:v8];
-  v19 = [v18 stringValue];
-  [v2 setObject:v19 forKeyedSubscript:IDSPrivateDeviceDataSupportsTethering];
+  v18 = [NSNumber numberWithBool:supportsTethering];
+  stringValue4 = [v18 stringValue];
+  [v2 setObject:stringValue4 forKeyedSubscript:IDSPrivateDeviceDataSupportsTethering];
 
-  v20 = [NSNumber numberWithBool:v4];
-  v21 = [v20 stringValue];
-  [v2 setObject:v21 forKeyedSubscript:IDSPrivateDeviceDataSupportsSMSRelay];
+  v20 = [NSNumber numberWithBool:supportsSMS];
+  stringValue5 = [v20 stringValue];
+  [v2 setObject:stringValue5 forKeyedSubscript:IDSPrivateDeviceDataSupportsSMSRelay];
 
-  v22 = [NSNumber numberWithBool:v5];
-  v23 = [v22 stringValue];
-  [v2 setObject:v23 forKeyedSubscript:IDSPrivateDeviceDataSupportsMMSRelay];
+  v22 = [NSNumber numberWithBool:supportsMMS];
+  stringValue6 = [v22 stringValue];
+  [v2 setObject:stringValue6 forKeyedSubscript:IDSPrivateDeviceDataSupportsMMSRelay];
 
   v24 = [NSNumber numberWithBool:v11];
-  v25 = [v24 stringValue];
-  [v2 setObject:v25 forKeyedSubscript:IDSPrivateDeviceDataSupportsPhoneCalls];
+  stringValue7 = [v24 stringValue];
+  [v2 setObject:stringValue7 forKeyedSubscript:IDSPrivateDeviceDataSupportsPhoneCalls];
 
   v26 = +[IMDeviceSupport sharedInstance];
-  v27 = [v26 productBuildVersion];
-  if (v27)
+  productBuildVersion = [v26 productBuildVersion];
+  if (productBuildVersion)
   {
-    CFDictionarySetValue(v2, IDSPrivateDeviceDataProductBuildVersion, v27);
+    CFDictionarySetValue(v2, IDSPrivateDeviceDataProductBuildVersion, productBuildVersion);
   }
 
-  v28 = [v26 productName];
-  if (v28)
+  productName = [v26 productName];
+  if (productName)
   {
-    CFDictionarySetValue(v2, IDSPrivateDeviceDataProductName, v28);
+    CFDictionarySetValue(v2, IDSPrivateDeviceDataProductName, productName);
   }
 
-  v29 = [v26 productVersion];
-  if (v29)
+  productVersion = [v26 productVersion];
+  if (productVersion)
   {
-    CFDictionarySetValue(v2, IDSPrivateDeviceDataProductVersion, v29);
+    CFDictionarySetValue(v2, IDSPrivateDeviceDataProductVersion, productVersion);
   }
 
-  v30 = [v3 deviceColor];
-  if (v30)
+  deviceColor = [v3 deviceColor];
+  if (deviceColor)
   {
-    CFDictionarySetValue(v2, IDSPrivateDeviceDataColor, v30);
+    CFDictionarySetValue(v2, IDSPrivateDeviceDataColor, deviceColor);
   }
 
-  v31 = [v3 enclosureColor];
-  if (v31)
+  enclosureColor = [v3 enclosureColor];
+  if (enclosureColor)
   {
-    CFDictionarySetValue(v2, IDSPrivateDeviceDataEnclosureColor, v31);
+    CFDictionarySetValue(v2, IDSPrivateDeviceDataEnclosureColor, enclosureColor);
   }
 
   return v2;
 }
 
-- (void)gatherLocalDeviceInfoWithCompletionBlock:(id)a3
+- (void)gatherLocalDeviceInfoWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1124,21 +1124,21 @@ LABEL_21:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", &v30, 0xCu);
   }
 
-  if (v4)
+  if (blockCopy)
   {
-    v6 = [v4 copy];
-    v7 = [(IDSPairingManager *)self localDevice];
-    v8 = [v7 objectForKey:IDSDevicePropertyEncryptionKey];
-    v9 = [v7 objectForKey:IDSDevicePropertyEncryptionClassAKey];
-    v10 = [v7 objectForKey:IDSDevicePropertyEncryptionClassCKey];
-    v11 = [(IDSPairingManager *)self pairedDevicePublicKey];
-    if (v11)
+    v6 = [blockCopy copy];
+    localDevice = [(IDSPairingManager *)self localDevice];
+    v8 = [localDevice objectForKey:IDSDevicePropertyEncryptionKey];
+    v9 = [localDevice objectForKey:IDSDevicePropertyEncryptionClassAKey];
+    v10 = [localDevice objectForKey:IDSDevicePropertyEncryptionClassCKey];
+    pairedDevicePublicKey = [(IDSPairingManager *)self pairedDevicePublicKey];
+    if (pairedDevicePublicKey)
     {
-      v12 = [(IDSPairingManager *)self pairedDevicePublicClassAKey];
-      if (v12)
+      pairedDevicePublicClassAKey = [(IDSPairingManager *)self pairedDevicePublicClassAKey];
+      if (pairedDevicePublicClassAKey)
       {
-        v13 = [(IDSPairingManager *)self pairedDevicePublicClassCKey];
-        v14 = v13 == 0;
+        pairedDevicePublicClassCKey = [(IDSPairingManager *)self pairedDevicePublicClassCKey];
+        v14 = pairedDevicePublicClassCKey == 0;
       }
 
       else
@@ -1161,7 +1161,7 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "We have all the encryption keys, sending device info back", &v30, 2u);
       }
 
-      v6[2](v6, v7);
+      v6[2](v6, localDevice);
       block = self->_block;
       if (block)
       {
@@ -1184,10 +1184,10 @@ LABEL_21:
     }
 
     v18 = +[IMSystemMonitor sharedInstance];
-    v19 = [v18 isUnderDataProtectionLock];
+    isUnderDataProtectionLock = [v18 isUnderDataProtectionLock];
 
     v20 = +[IMSystemMonitor sharedInstance];
-    v21 = [v20 isUnderFirstDataProtectionLock];
+    isUnderFirstDataProtectionLock = [v20 isUnderFirstDataProtectionLock];
 
     v22 = +[IMRGLog pairing];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1195,7 +1195,7 @@ LABEL_21:
       v23 = @"NO";
       v30 = 134219010;
       v31 = v9;
-      if (v19)
+      if (isUnderDataProtectionLock)
       {
         v24 = @"YES";
       }
@@ -1207,7 +1207,7 @@ LABEL_21:
 
       v32 = 2048;
       v33 = v10;
-      if (v21)
+      if (isUnderFirstDataProtectionLock)
       {
         v23 = @"YES";
       }
@@ -1236,7 +1236,7 @@ LABEL_21:
           sub_100921294();
         }
 
-        v6[2](v6, v7);
+        v6[2](v6, localDevice);
         v26 = self->_block;
         if (!v26)
         {
@@ -1288,60 +1288,60 @@ LABEL_44:
 
 - (id)pairedDeviceBuildVersion
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 buildVersion];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  buildVersion = [activePairedDevice buildVersion];
 
-  return v4;
+  return buildVersion;
 }
 
 - (NSString)pairedDeviceProductVersion
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 productVersion];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  productVersion = [activePairedDevice productVersion];
 
-  return v4;
+  return productVersion;
 }
 
 - (id)pairedDeviceProductName
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 productName];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  productName = [activePairedDevice productName];
 
-  return v4;
+  return productName;
 }
 
-- (BOOL)activePairedDeviceHasPairingType:(int64_t)a3
+- (BOOL)activePairedDeviceHasPairingType:(int64_t)type
 {
-  v4 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v5 = [v4 activePairedDevice];
-  LOBYTE(a3) = [v5 pairingType] == a3;
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  LOBYTE(type) = [activePairedDevice pairingType] == type;
 
-  return a3;
+  return type;
 }
 
 - (NSSet)allPairedDevices
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 allPairedDevices];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  allPairedDevices = [pairedDeviceRepository allPairedDevices];
 
-  return v3;
+  return allPairedDevices;
 }
 
-- (id)allPairedDevicesWithType:(int64_t)a3
+- (id)allPairedDevicesWithType:(int64_t)type
 {
-  v4 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v5 = [v4 allPairedDevicesWithType:a3];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v5 = [pairedDeviceRepository allPairedDevicesWithType:type];
 
   return v5;
 }
 
-- (id)pairedDeviceHandlesWithPairingType:(int64_t)a3
+- (id)pairedDeviceHandlesWithPairingType:(int64_t)type
 {
-  v4 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v5 = [v4 allPairedDevicesWithType:a3];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v5 = [pairedDeviceRepository allPairedDevicesWithType:type];
 
   v6 = objc_alloc_init(NSMutableSet);
   v17 = 0u;
@@ -1364,13 +1364,13 @@ LABEL_44:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 iCloudURIs];
-        v14 = [v13 count];
+        iCloudURIs = [v12 iCloudURIs];
+        v14 = [iCloudURIs count];
 
         if (v14)
         {
-          v15 = [v12 iCloudURIs];
-          [v6 addObjectsFromArray:v15];
+          iCloudURIs2 = [v12 iCloudURIs];
+          [v6 addObjectsFromArray:iCloudURIs2];
         }
       }
 
@@ -1385,61 +1385,61 @@ LABEL_44:
 
 - (NSData)pairedDevicePublicKey
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 publicClassDKey];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  publicClassDKey = [activePairedDevice publicClassDKey];
 
-  return v4;
+  return publicClassDKey;
 }
 
 - (NSData)pairedDevicePublicClassAKey
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 publicClassAKey];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  publicClassAKey = [activePairedDevice publicClassAKey];
 
-  return v4;
+  return publicClassAKey;
 }
 
 - (NSData)pairedDevicePublicClassCKey
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 publicClassCKey];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  publicClassCKey = [activePairedDevice publicClassCKey];
 
-  return v4;
+  return publicClassCKey;
 }
 
 - (id)pairedDeviceiCloudURIs
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 iCloudURIs];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  iCloudURIs = [activePairedDevice iCloudURIs];
 
-  return v4;
+  return iCloudURIs;
 }
 
 - (int64_t)pairedDevicePairingType
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 pairingType];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  pairingType = [activePairedDevice pairingType];
 
-  return v4;
+  return pairingType;
 }
 
-- (BOOL)_isPairedToDevice:(id)a3
+- (BOOL)_isPairedToDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 cbuuid];
-  v5 = [v4 length];
+  deviceCopy = device;
+  cbuuid = [deviceCopy cbuuid];
+  v5 = [cbuuid length];
 
-  v6 = [v3 publicClassDKey];
-  v7 = [v6 length];
+  publicClassDKey = [deviceCopy publicClassDKey];
+  v7 = [publicClassDKey length];
 
-  v8 = [v3 uniqueID];
+  uniqueID = [deviceCopy uniqueID];
 
-  v9 = [v8 length];
+  v9 = [uniqueID length];
   if (v5)
   {
     v10 = v9 == 0;
@@ -1453,17 +1453,17 @@ LABEL_44:
   return !v10 && v7 != 0;
 }
 
-- (id)pairedDeviceForUniqueID:(id)a3
+- (id)pairedDeviceForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v6 = [v5 allPairedDevices];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  allPairedDevices = [pairedDeviceRepository allPairedDevices];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [allPairedDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1474,14 +1474,14 @@ LABEL_44:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allPairedDevices);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([(IDSPairingManager *)self _isPairedToDevice:v11])
         {
-          v12 = [v11 uniqueID];
-          v13 = [v12 isEqualToIgnoringCase:v4];
+          uniqueID = [v11 uniqueID];
+          v13 = [uniqueID isEqualToIgnoringCase:dCopy];
 
           if (v13)
           {
@@ -1491,7 +1491,7 @@ LABEL_44:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allPairedDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -1509,17 +1509,17 @@ LABEL_12:
 
 - (BOOL)_hasAllEncryptionKeys
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 activePairedDevice];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
 
-  v4 = [v3 publicClassAKey];
-  v5 = [v4 length];
+  publicClassAKey = [activePairedDevice publicClassAKey];
+  v5 = [publicClassAKey length];
 
-  v6 = [v3 publicClassCKey];
-  v7 = [v6 length];
+  publicClassCKey = [activePairedDevice publicClassCKey];
+  v7 = [publicClassCKey length];
 
-  v8 = [v3 publicClassDKey];
-  v9 = [v8 length];
+  publicClassDKey = [activePairedDevice publicClassDKey];
+  v9 = [publicClassDKey length];
 
   if (v5)
   {
@@ -1536,17 +1536,17 @@ LABEL_12:
   return v12;
 }
 
-- (void)_updatePairedState:(BOOL)a3
+- (void)_updatePairedState:(BOOL)state
 {
-  v3 = a3;
-  notify_set_state(self->_pairingStateToken, a3);
+  stateCopy = state;
+  notify_set_state(self->_pairingStateToken, state);
   v4 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[IDSPairingManager _updatePairedState:]";
     v8 = 2048;
-    v9 = v3;
+    v9 = stateCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Updating notify token state to: isPaired %llu", &v6, 0x16u);
   }
 
@@ -1555,9 +1555,9 @@ LABEL_12:
   notify_post(v5);
 }
 
-- (void)_updateActiveStateForAllPairedDevices:(BOOL)a3
+- (void)_updateActiveStateForAllPairedDevices:(BOOL)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   v5 = +[IMRGLog deviceState];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1565,13 +1565,13 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Update notifier state for paired devices", buf, 2u);
   }
 
-  v6 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v7 = [v6 allPairedDevices];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  allPairedDevices = [pairedDeviceRepository allPairedDevices];
 
   v8 = +[IMRGLog deviceState];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 count]);
+    v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allPairedDevices count]);
     *buf = 138412290;
     v30 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "All devices count: %@", buf, 0xCu);
@@ -1581,7 +1581,7 @@ LABEL_12:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v7;
+  v10 = allPairedDevices;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
@@ -1608,11 +1608,11 @@ LABEL_12:
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Checking %@", buf, 0xCu);
         }
 
-        v18 = [v16 uniqueID];
-        if (v3)
+        uniqueID = [v16 uniqueID];
+        if (devicesCopy)
         {
           v19 = +[IDSDevicePropertiesStateNotifier sharedInstance];
-          [v19 updateStateForDeviceWithUniqueID:v18];
+          [v19 updateStateForDeviceWithUniqueID:uniqueID];
         }
 
         else
@@ -1622,7 +1622,7 @@ LABEL_12:
           block[1] = 3221225472;
           block[2] = sub_10049A6DC;
           block[3] = &unk_100BD6ED0;
-          v23 = v18;
+          v23 = uniqueID;
           dispatch_async(v20, block);
 
           v19 = v23;
@@ -1639,30 +1639,30 @@ LABEL_12:
   }
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   delegateMap = self->_delegateMap;
-  v8 = v4;
+  v8 = delegateCopy;
   if (!delegateMap)
   {
     v6 = +[NSHashTable weakObjectsHashTable];
     v7 = self->_delegateMap;
     self->_delegateMap = v6;
 
-    v4 = v8;
+    delegateCopy = v8;
     delegateMap = self->_delegateMap;
   }
 
-  if (![(NSHashTable *)delegateMap containsObject:v4])
+  if (![(NSHashTable *)delegateMap containsObject:delegateCopy])
   {
     [(NSHashTable *)self->_delegateMap addObject:v8];
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  [(NSHashTable *)self->_delegateMap removeObject:a3];
+  [(NSHashTable *)self->_delegateMap removeObject:delegate];
   if (![(NSHashTable *)self->_delegateMap count])
   {
     delegateMap = self->_delegateMap;
@@ -1670,11 +1670,11 @@ LABEL_12:
   }
 }
 
-- (BOOL)addLocalPairedDevice:(id)a3 BTOutOfBandKey:(id)a4 shouldPairDirectlyOverIPsec:(BOOL)a5 pairingType:(int64_t)a6 bluetoothMACAddress:(id)a7
+- (BOOL)addLocalPairedDevice:(id)device BTOutOfBandKey:(id)key shouldPairDirectlyOverIPsec:(BOOL)psec pairingType:(int64_t)type bluetoothMACAddress:(id)address
 {
-  v8 = a5;
-  v11 = a3;
-  v12 = a4;
+  psecCopy = psec;
+  deviceCopy = device;
+  keyCopy = key;
   v13 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -1683,7 +1683,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (![v11 length])
+  if (![deviceCopy length])
   {
     v17 = +[IMRGLog NRPairing];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -1694,8 +1694,8 @@ LABEL_12:
     goto LABEL_32;
   }
 
-  v14 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v15 = [v14 containsPairedDeviceWithCBUUID:v11];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v15 = [pairedDeviceRepository containsPairedDeviceWithCBUUID:deviceCopy];
 
   if (v15)
   {
@@ -1711,19 +1711,19 @@ LABEL_12:
   }
 
   [(IDSPairingManager *)self _markSecuredEncryptionKeysAsRegenerated:1];
-  [(IDSPairingManager *)self setBTOutOfBandKey:v12 forCBUUID:v11];
-  v19 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v20 = [v19 addPairedDeviceWithCBUUID:v11 pairingType:a6];
+  [(IDSPairingManager *)self setBTOutOfBandKey:keyCopy forCBUUID:deviceCopy];
+  pairedDeviceRepository2 = [(IDSPairingManager *)self pairedDeviceRepository];
+  v20 = [pairedDeviceRepository2 addPairedDeviceWithCBUUID:deviceCopy pairingType:type];
 
   if (v20)
   {
-    v21 = [(IDSPairingManager *)self pairedDeviceRepository];
-    v22 = [v21 activatePairedDeviceWithCBUUID:v11];
+    pairedDeviceRepository3 = [(IDSPairingManager *)self pairedDeviceRepository];
+    v22 = [pairedDeviceRepository3 activatePairedDeviceWithCBUUID:deviceCopy];
 
     if (!v22)
     {
       v16 = 1;
-      if (!v8)
+      if (!psecCopy)
       {
         goto LABEL_19;
       }
@@ -1748,25 +1748,25 @@ LABEL_12:
   }
 
   v16 = 0;
-  if (v8)
+  if (psecCopy)
   {
 LABEL_18:
-    v24 = [[NSUUID alloc] initWithUUIDString:v11];
-    v25 = [(IDSPairingManager *)self _createRegistrationProperties:0 maxCompatibilityVersion:0 BTOutOfBandKey:v12 supportsIPsecWithSPPLink:0 bluetoothMACAddress:0];
-    [v25 setIsAltAccountPairing:a6 == 1];
+    v24 = [[NSUUID alloc] initWithUUIDString:deviceCopy];
+    v25 = [(IDSPairingManager *)self _createRegistrationProperties:0 maxCompatibilityVersion:0 BTOutOfBandKey:keyCopy supportsIPsecWithSPPLink:0 bluetoothMACAddress:0];
+    [v25 setIsAltAccountPairing:type == 1];
     [(IDSPairingManager *)self _networkRelayRegisterDeviceWithCBUUID:v24 properties:v25 shouldPairDirectlyOverIPsec:1];
-    v26 = [(IDSPairingManager *)self pairedDeviceRepository];
-    [v26 updatePairedDeviceWithCBUUID:v11 supportIPsec:1];
+    pairedDeviceRepository4 = [(IDSPairingManager *)self pairedDeviceRepository];
+    [pairedDeviceRepository4 updatePairedDeviceWithCBUUID:deviceCopy supportIPsec:1];
 
-    v27 = [(IDSPairingManager *)self pairedDeviceRepository];
+    pairedDeviceRepository5 = [(IDSPairingManager *)self pairedDeviceRepository];
     LOWORD(v38) = 10;
-    [v27 updatePairedDeviceWithCBUUID:v11 deviceUniqueID:0 buildVersion:0 productVersion:0 productName:0 pairingProtocolVersion:0 minCompatibilityVersion:0 maxCompatibilityVersion:v38 serviceMinCompatibilityVersion:?];
+    [pairedDeviceRepository5 updatePairedDeviceWithCBUUID:deviceCopy deviceUniqueID:0 buildVersion:0 productVersion:0 productName:0 pairingProtocolVersion:0 minCompatibilityVersion:0 maxCompatibilityVersion:v38 serviceMinCompatibilityVersion:?];
   }
 
 LABEL_19:
   [(IDSPairingManager *)self _updateActiveStateForAllPairedDevices];
 LABEL_20:
-  v28 = [(IDSPairingManager *)self isPaired];
+  isPaired = [(IDSPairingManager *)self isPaired];
   v29 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
@@ -1783,13 +1783,13 @@ LABEL_20:
       v31 = @"NO";
     }
 
-    if (v28)
+    if (isPaired)
     {
       v30 = @"YES";
     }
 
     v41 = 2112;
-    v42 = v11;
+    v42 = deviceCopy;
     v43 = 2112;
     v44 = v31;
     v45 = 2112;
@@ -1806,7 +1806,7 @@ LABEL_32:
 
   v32 = +[IMRGLog NRPairing];
   v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
-  if (v28)
+  if (isPaired)
   {
     if (v33)
     {
@@ -1815,8 +1815,8 @@ LABEL_32:
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%s notifying delegate that we are properly paired with a local device", buf, 0xCu);
     }
 
-    v34 = [(IDSPairingManager *)self pairedDeviceRepository];
-    v35 = [v34 pairedDeviceWithCBUUID:v11];
+    pairedDeviceRepository6 = [(IDSPairingManager *)self pairedDeviceRepository];
+    v35 = [pairedDeviceRepository6 pairedDeviceWithCBUUID:deviceCopy];
 
     [(IDSPairingManager *)self _notifyDelegatesDevicePairedToDevice:v35];
   }
@@ -1833,16 +1833,16 @@ LABEL_32:
     [(IDSPairingManager *)self _requestPairedDeviceInfoAfterDelay:10.0];
   }
 
-  [(IDSPairingManager *)self _updatePairedState:v28];
+  [(IDSPairingManager *)self _updatePairedState:isPaired];
   v36 = 1;
 LABEL_37:
 
   return v36;
 }
 
-- (BOOL)removeLocalPairedDevice:(id)a3
+- (BOOL)removeLocalPairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1851,12 +1851,12 @@ LABEL_37:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", &v20, 0xCu);
   }
 
-  if ([v4 length])
+  if ([deviceCopy length])
   {
-    v6 = [(IDSPairingManager *)self pairedDeviceRepository];
-    v7 = [v6 pairedDeviceWithCBUUID:v4];
+    pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+    v7 = [pairedDeviceRepository pairedDeviceWithCBUUID:deviceCopy];
 
-    v8 = [[NSUUID alloc] initWithUUIDString:v4];
+    v8 = [[NSUUID alloc] initWithUUIDString:deviceCopy];
     [(IDSPairingManager *)self _clearPairedDeviceDidConnectBlocksForUniqueID:v8];
     v9 = [(IDSPairingManager *)self _nrDeviceIdentifierWithCBUUID:v8];
     v10 = +[IMRGLog NRPairing];
@@ -1871,12 +1871,12 @@ LABEL_37:
 
     if (v9)
     {
-      v11 = [(IDSPairingManager *)self nrDeviceManager];
-      [v11 unregisterDevice:v9];
+      nrDeviceManager = [(IDSPairingManager *)self nrDeviceManager];
+      [nrDeviceManager unregisterDevice:v9];
     }
 
-    v12 = [(IDSPairingManager *)self pairedDeviceRepository];
-    v13 = [v12 removePairedDeviceWithCBUUID:v4];
+    pairedDeviceRepository2 = [(IDSPairingManager *)self pairedDeviceRepository];
+    v13 = [pairedDeviceRepository2 removePairedDeviceWithCBUUID:deviceCopy];
 
     v14 = +[IMRGLog registration];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1888,16 +1888,16 @@ LABEL_37:
       }
 
       v20 = 138412546;
-      v21 = v4;
+      v21 = deviceCopy;
       v22 = 2112;
       v23 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Removed locally paired device with CBUUID: %@? %@", &v20, 0x16u);
     }
 
-    v16 = [(IDSPairingManager *)self pairedDeviceRepository];
-    v17 = [v16 isEmpty];
+    pairedDeviceRepository3 = [(IDSPairingManager *)self pairedDeviceRepository];
+    isEmpty = [pairedDeviceRepository3 isEmpty];
 
-    if (v17)
+    if (isEmpty)
     {
       v18 = +[IDSRegistrationKeyManager sharedInstance];
       [v18 regeneratePairingIdentitiesIncludingClassD:1];
@@ -1934,9 +1934,9 @@ LABEL_37:
   [(IDSPairingManager *)self _updatePairedState:0];
 }
 
-- (int64_t)activatePairedDeviceWithCBUUID:(id)a3
+- (int64_t)activatePairedDeviceWithCBUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1949,22 +1949,22 @@ LABEL_37:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = dCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Activating a paired device with CBUUID: %@", buf, 0xCu);
   }
 
-  v7 = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
+  _activePairedDeviceCBUUID = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
   v8 = +[IMRGLog watchPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v7;
+    v24 = _activePairedDeviceCBUUID;
     v25 = 2112;
-    v26 = v4;
+    v26 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Switching active paired device from %@ to %@", buf, 0x16u);
   }
 
-  if ([v4 isEqualToIgnoringCase:v7])
+  if ([dCopy isEqualToIgnoringCase:_activePairedDeviceCBUUID])
   {
     v9 = +[IMRGLog watchPairing];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -1977,8 +1977,8 @@ LABEL_37:
 
   else
   {
-    v9 = [[NSUUID alloc] initWithUUIDString:v7];
-    v11 = [[NSUUID alloc] initWithUUIDString:v4];
+    v9 = [[NSUUID alloc] initWithUUIDString:_activePairedDeviceCBUUID];
+    v11 = [[NSUUID alloc] initWithUUIDString:dCopy];
     v12 = [(IDSPairingManager *)self _nrDeviceIdentifierWithCBUUID:v9];
     v13 = [(IDSPairingManager *)self _nrDeviceIdentifierWithCBUUID:v11];
     if (v12)
@@ -1993,8 +1993,8 @@ LABEL_37:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Disabling NetworkRelay device {activeUUID: %{private}@, activeDeviceIdentifier: %{private}@}", buf, 0x16u);
       }
 
-      v15 = [(IDSPairingManager *)self nrDeviceManager];
-      [v15 disableDevice:v12];
+      nrDeviceManager = [(IDSPairingManager *)self nrDeviceManager];
+      [nrDeviceManager disableDevice:v12];
     }
 
     if (v13)
@@ -2009,12 +2009,12 @@ LABEL_37:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Enabling NetworkRelay device {newUUID: %{private}@, newDeviceIdentifier: %{private}@}", buf, 0x16u);
       }
 
-      v17 = [(IDSPairingManager *)self nrDeviceManager];
-      [v17 enableDevice:v13];
+      nrDeviceManager2 = [(IDSPairingManager *)self nrDeviceManager];
+      [nrDeviceManager2 enableDevice:v13];
     }
 
-    v18 = [(IDSPairingManager *)self pairedDeviceRepository];
-    v10 = [v18 activatePairedDeviceWithCBUUID:v4];
+    pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+    v10 = [pairedDeviceRepository activatePairedDeviceWithCBUUID:dCopy];
 
     [(IDSPairingManager *)self _updateActiveStateForAllPairedDevices];
   }
@@ -2034,7 +2034,7 @@ LABEL_37:
 
     v21 = [NSString stringWithFormat:@"%@ (%d)", v20, v10];
     *buf = 138412546;
-    v24 = v4;
+    v24 = dCopy;
     v25 = 2112;
     v26 = v21;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Result of activating a paired device with CBUUID %@ is %@", buf, 0x16u);
@@ -2065,8 +2065,8 @@ LABEL_37:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(IDSPairingManager *)self cbuuidsOfPairedDevices];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  cbuuidsOfPairedDevices = [(IDSPairingManager *)self cbuuidsOfPairedDevices];
+  v6 = [cbuuidsOfPairedDevices countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v6)
   {
     v8 = v6;
@@ -2079,13 +2079,13 @@ LABEL_37:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cbuuidsOfPairedDevices);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = [(IDSPairingManager *)self _nrDeviceIdentifierWithCBUUID:v11, v16];
         v13 = +[IMRGLog NRPairing];
-        v14 = v13;
+        nrDeviceManager = v13;
         if (v12)
         {
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2094,43 +2094,43 @@ LABEL_37:
             v22 = v11;
             v23 = 2113;
             v24 = v12;
-            _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Disabling NetworkRelay device {pairedDeviceUUID: %{private}@, nrIdentifier: %{private}@}", buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, nrDeviceManager, OS_LOG_TYPE_DEFAULT, "Disabling NetworkRelay device {pairedDeviceUUID: %{private}@, nrIdentifier: %{private}@}", buf, 0x16u);
           }
 
-          v14 = [(IDSPairingManager *)self nrDeviceManager];
-          [v14 disableDevice:v12];
+          nrDeviceManager = [(IDSPairingManager *)self nrDeviceManager];
+          [nrDeviceManager disableDevice:v12];
         }
 
         else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           *buf = v16;
           v22 = v11;
-          _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to create IDSNRDeviceIdentifier from pairedDeviceUUID - failed to deactivate device {pairedDeviceUUID: %{private}@}", buf, 0xCu);
+          _os_log_error_impl(&_mh_execute_header, nrDeviceManager, OS_LOG_TYPE_ERROR, "Failed to create IDSNRDeviceIdentifier from pairedDeviceUUID - failed to deactivate device {pairedDeviceUUID: %{private}@}", buf, 0xCu);
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v8 = [cbuuidsOfPairedDevices countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [(IDSPairingManager *)self pairedDeviceRepository];
-  [v15 deactivatePairedDevices];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  [pairedDeviceRepository deactivatePairedDevices];
 
   [(IDSPairingManager *)self _updateActiveStateForAllPairedDevices];
 }
 
 - (void)updateNetworkRelayStateForAllPairedDevices
 {
-  v3 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v4 = [v3 allPairedDevices];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  allPairedDevices = [pairedDeviceRepository allPairedDevices];
 
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v4;
+    v27 = allPairedDevices;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Update registration status with NetworkRelay for active device and disable non-active devices: %@", buf, 0xCu);
   }
 
@@ -2138,7 +2138,7 @@ LABEL_37:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = allPairedDevices;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v7)
   {
@@ -2158,8 +2158,8 @@ LABEL_37:
         v12 = *(*(&v22 + 1) + 8 * i);
         if ([v12 supportIPsec])
         {
-          v13 = [v12 cbuuidUUID];
-          v14 = [(IDSPairingManager *)self _nrDeviceIdentifierWithCBUUID:v13];
+          cbuuidUUID = [v12 cbuuidUUID];
+          v14 = [(IDSPairingManager *)self _nrDeviceIdentifierWithCBUUID:cbuuidUUID];
 
           if (v14)
           {
@@ -2167,17 +2167,17 @@ LABEL_37:
             {
               if ([(IDSPairingManager *)self _isPairedToDevice:v12])
               {
-                v15 = [v12 cbuuidUUID];
+                cbuuidUUID2 = [v12 cbuuidUUID];
                 v16 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v12 maxCompatibilityVersion]);
-                [(IDSPairingManager *)self _networkRelayRegisterDeviceWithCBUUID:v15 wasInitiallySetupUsingIDSPairing:1 maxCompatibilityVersion:v16 BTOutOfBandKey:0 supportsIPsecWithSPPLink:0 bluetoothMACAddress:0];
+                [(IDSPairingManager *)self _networkRelayRegisterDeviceWithCBUUID:cbuuidUUID2 wasInitiallySetupUsingIDSPairing:1 maxCompatibilityVersion:v16 BTOutOfBandKey:0 supportsIPsecWithSPPLink:0 bluetoothMACAddress:0];
               }
 
               else
               {
-                v15 = +[IMRGLog NRPairing];
-                if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+                cbuuidUUID2 = +[IMRGLog NRPairing];
+                if (os_log_type_enabled(cbuuidUUID2, OS_LOG_TYPE_ERROR))
                 {
-                  sub_1009214E4(&v20, v21, v15);
+                  sub_1009214E4(&v20, v21, cbuuidUUID2);
                 }
               }
             }
@@ -2187,23 +2187,23 @@ LABEL_37:
               v17 = +[IMRGLog NRPairing];
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
-                v18 = [v12 cbuuidUUID];
+                cbuuidUUID3 = [v12 cbuuidUUID];
                 *buf = v19;
-                v27 = v18;
+                v27 = cbuuidUUID3;
                 v28 = 2113;
                 v29 = v14;
                 _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Disabling NetworkRelay device {cbuuidUUID: %{private}@, nrIdentifier: %{private}@}", buf, 0x16u);
               }
 
-              v15 = [(IDSPairingManager *)self nrDeviceManager];
-              [v15 disableDevice:v14];
+              cbuuidUUID2 = [(IDSPairingManager *)self nrDeviceManager];
+              [cbuuidUUID2 disableDevice:v14];
             }
           }
 
           else
           {
-            v15 = +[IMRGLog NRPairing];
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+            cbuuidUUID2 = +[IMRGLog NRPairing];
+            if (os_log_type_enabled(cbuuidUUID2, OS_LOG_TYPE_ERROR))
             {
               sub_100921524(v30, v12);
             }
@@ -2237,10 +2237,10 @@ LABEL_37:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v9, 0xCu);
   }
 
-  v4 = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
-  if ([v4 length])
+  _activePairedDeviceCBUUID = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
+  if ([_activePairedDeviceCBUUID length])
   {
-    v5 = [(IDSPairingManager *)self isMissingAnyPublicKeyForPairedDeviceWithCBUUID:v4];
+    v5 = [(IDSPairingManager *)self isMissingAnyPublicKeyForPairedDeviceWithCBUUID:_activePairedDeviceCBUUID];
     v6 = +[IMRGLog watchPairing];
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
     if (v5)
@@ -2277,25 +2277,25 @@ LABEL_37:
 
 - (BOOL)isCurrentDevicePairedOrPairing
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 allPairedDevices];
-  v4 = [v3 count];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  allPairedDevices = [pairedDeviceRepository allPairedDevices];
+  v4 = [allPairedDevices count];
 
   return v4 != 0;
 }
 
 - (BOOL)isTraditionalDevicePairedOrPairing
 {
-  v2 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v3 = [v2 allPairedDevicesWithType:0];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v3 = [pairedDeviceRepository allPairedDevicesWithType:0];
   v4 = [v3 count];
 
   return v4 != 0;
 }
 
-- (id)_identityDataErrorPairForDataProtectionClass:(unsigned int)a3
+- (id)_identityDataErrorPairForDataProtectionClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   v4 = +[IDSRegistrationKeyManager sharedInstance];
   v5 = [v4 fullMessageProtectionIdentityForDataProtectionClass:v3];
 
@@ -2331,8 +2331,8 @@ LABEL_37:
 - (id)pairedDeviceRecords
 {
   v25 = objc_alloc_init(NSMutableDictionary);
-  v3 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v4 = [v3 pairedDevicesWithIsPairingValue:0];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v4 = [pairedDeviceRepository pairedDevicesWithIsPairingValue:0];
 
   v28 = 0u;
   v29 = 0u;
@@ -2356,22 +2356,22 @@ LABEL_37:
 
         v10 = *(*(&v26 + 1) + 8 * v9);
         v11 = [NSUUID alloc];
-        v12 = [v10 cbuuid];
-        v13 = [v11 initWithUUIDString:v12];
+        cbuuid = [v10 cbuuid];
+        v13 = [v11 initWithUUIDString:cbuuid];
 
         if (v13)
         {
           v14 = [IDSLocalPairingIdentityDataErrorPair alloc];
-          v15 = [v10 publicClassAKey];
-          v16 = [v14 initWithIdentityData:v15];
+          publicClassAKey = [v10 publicClassAKey];
+          v16 = [v14 initWithIdentityData:publicClassAKey];
 
           v17 = [IDSLocalPairingIdentityDataErrorPair alloc];
-          v18 = [v10 publicClassCKey];
-          v19 = [v17 initWithIdentityData:v18];
+          publicClassCKey = [v10 publicClassCKey];
+          v19 = [v17 initWithIdentityData:publicClassCKey];
 
           v20 = [IDSLocalPairingIdentityDataErrorPair alloc];
-          v21 = [v10 publicClassDKey];
-          v22 = [v20 initWithIdentityData:v21];
+          publicClassDKey = [v10 publicClassDKey];
+          v22 = [v20 initWithIdentityData:publicClassDKey];
 
           v23 = [[IDSLocalPairingPairedDeviceRecord alloc] initWithCBUUID:v13 publicIdentityDataClassA:v16 classC:v19 classD:v22];
           [v25 setObject:v23 forKeyedSubscript:v13];
@@ -2401,11 +2401,11 @@ LABEL_37:
   return v25;
 }
 
-- (id)_cbuuidsWithIsPairingValue:(BOOL)a3
+- (id)_cbuuidsWithIsPairingValue:(BOOL)value
 {
-  v3 = a3;
-  v4 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v5 = [v4 pairedDevicesWithIsPairingValue:v3];
+  valueCopy = value;
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v5 = [pairedDeviceRepository pairedDevicesWithIsPairingValue:valueCopy];
 
   v6 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
   v16 = 0u;
@@ -2428,12 +2428,12 @@ LABEL_37:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 cbuuidUUID];
+        cbuuidUUID = [v12 cbuuidUUID];
 
-        if (v13)
+        if (cbuuidUUID)
         {
-          v14 = [v12 cbuuidUUID];
-          [v6 addObject:v14];
+          cbuuidUUID2 = [v12 cbuuidUUID];
+          [v6 addObject:cbuuidUUID2];
         }
       }
 
@@ -2446,18 +2446,18 @@ LABEL_37:
   return v6;
 }
 
-- (BOOL)shouldUseIPsecLinkForDefaultPairedDeviceAndLogQuery:(BOOL)a3
+- (BOOL)shouldUseIPsecLinkForDefaultPairedDeviceAndLogQuery:(BOOL)query
 {
-  v3 = a3;
-  v5 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v6 = [v5 shouldUseIPsecLinkForDefaultPairedDevice];
+  queryCopy = query;
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  shouldUseIPsecLinkForDefaultPairedDevice = [pairedDeviceRepository shouldUseIPsecLinkForDefaultPairedDevice];
 
-  if (v3)
+  if (queryCopy)
   {
     v7 = +[IMRGLog NRPairing];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      if (v6)
+      if (shouldUseIPsecLinkForDefaultPairedDevice)
       {
         v8 = @"YES";
       }
@@ -2467,27 +2467,27 @@ LABEL_37:
         v8 = @"NO";
       }
 
-      v9 = [(IDSPairingManager *)self pairedDeviceRepository];
-      v10 = [v9 activePairedDevice];
+      pairedDeviceRepository2 = [(IDSPairingManager *)self pairedDeviceRepository];
+      activePairedDevice = [pairedDeviceRepository2 activePairedDevice];
       v12 = 138412546;
       v13 = v8;
       v14 = 2112;
-      v15 = v10;
+      v15 = activePairedDevice;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Queried shouldUseIPsecLinkForDefaultPairedDevice {shouldUseIPsec: %@, activePairedDevice: %@}", &v12, 0x16u);
     }
   }
 
-  return v6;
+  return shouldUseIPsecLinkForDefaultPairedDevice;
 }
 
-- (void)registerPairedDeviceWithUniqueID:(id)a3 didConnectBlock:(id)a4
+- (void)registerPairedDeviceWithUniqueID:(id)d didConnectBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  dCopy = d;
   v8 = [IMPair alloc];
-  v9 = objc_retainBlock(v6);
+  v9 = objc_retainBlock(blockCopy);
 
-  v10 = [v8 initWithFirst:v7 second:v9];
+  v10 = [v8 initWithFirst:dCopy second:v9];
   v11 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -2503,37 +2503,37 @@ LABEL_37:
     self->_registeredPairedDeviceDidConnectBlockPairs = v12;
   }
 
-  v14 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
-  [v14 addObject:v10];
+  registeredPairedDeviceDidConnectBlockPairs = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
+  [registeredPairedDeviceDidConnectBlockPairs addObject:v10];
 }
 
-- (void)_callPairedDeviceDidConnectBlocksForUniqueID:(id)a3 withError:(id)a4
+- (void)_callPairedDeviceDidConnectBlocksForUniqueID:(id)d withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  errorCopy = error;
   v8 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
+    registeredPairedDeviceDidConnectBlockPairs = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
     *buf = 138412802;
-    v26 = v6;
+    v26 = dCopy;
     v27 = 2112;
-    v28 = v7;
+    v28 = errorCopy;
     v29 = 2112;
-    v30 = v9;
+    v30 = registeredPairedDeviceDidConnectBlockPairs;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Calling didConnectToPairedDeviceBlocks {cbuuid: %@, error: %@, pairs: %@}", buf, 0x20u);
   }
 
-  v10 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
+  registeredPairedDeviceDidConnectBlockPairs2 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
 
-  if (v10)
+  if (registeredPairedDeviceDidConnectBlockPairs2)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    registeredPairedDeviceDidConnectBlockPairs3 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
+    v12 = [registeredPairedDeviceDidConnectBlockPairs3 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -2544,55 +2544,55 @@ LABEL_37:
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(registeredPairedDeviceDidConnectBlockPairs3);
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
-          v17 = [v16 first];
-          v18 = [v17 isEqual:v6];
+          first = [v16 first];
+          v18 = [first isEqual:dCopy];
 
           if (v18)
           {
-            v19 = [v16 second];
-            (v19)[2](v19, v7);
+            second = [v16 second];
+            (second)[2](second, errorCopy);
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [registeredPairedDeviceDidConnectBlockPairs3 countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);
     }
   }
 
-  [(IDSPairingManager *)self _clearPairedDeviceDidConnectBlocksForUniqueID:v6];
+  [(IDSPairingManager *)self _clearPairedDeviceDidConnectBlocksForUniqueID:dCopy];
 }
 
-- (void)_clearPairedDeviceDidConnectBlocksForUniqueID:(id)a3
+- (void)_clearPairedDeviceDidConnectBlocksForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
+    registeredPairedDeviceDidConnectBlockPairs = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
     *buf = 138412546;
-    v25 = v4;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v6;
+    v27 = registeredPairedDeviceDidConnectBlockPairs;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Clearing didConnectToPairedDeviceBlocks {cbuuid: %@, pairs: %@}", buf, 0x16u);
   }
 
-  v7 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
+  registeredPairedDeviceDidConnectBlockPairs2 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
 
-  if (v7)
+  if (registeredPairedDeviceDidConnectBlockPairs2)
   {
     v8 = objc_alloc_init(NSMutableArray);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    registeredPairedDeviceDidConnectBlockPairs3 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
+    v10 = [registeredPairedDeviceDidConnectBlockPairs3 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2603,12 +2603,12 @@ LABEL_37:
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(registeredPairedDeviceDidConnectBlockPairs3);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 first];
-          v16 = [v15 isEqual:v4];
+          first = [v14 first];
+          v16 = [first isEqual:dCopy];
 
           if (v16)
           {
@@ -2616,14 +2616,14 @@ LABEL_37:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [registeredPairedDeviceDidConnectBlockPairs3 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v11);
     }
 
-    v17 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
-    [v17 removeObjectsInArray:v8];
+    registeredPairedDeviceDidConnectBlockPairs4 = [(IDSPairingManager *)self registeredPairedDeviceDidConnectBlockPairs];
+    [registeredPairedDeviceDidConnectBlockPairs4 removeObjectsInArray:v8];
 
     if (![(NSMutableArray *)self->_registeredPairedDeviceDidConnectBlockPairs count])
     {
@@ -2633,24 +2633,24 @@ LABEL_37:
   }
 }
 
-- (BOOL)updatePairedDeviceWithCBUUID:(id)a3 supportIPsec:(BOOL)a4
+- (BOOL)updatePairedDeviceWithCBUUID:(id)d supportIPsec:(BOOL)psec
 {
-  v4 = a4;
-  v6 = [a3 UUIDString];
-  v7 = [(IDSPairingManager *)self pairedDeviceRepository];
-  LOBYTE(v4) = [v7 updatePairedDeviceWithCBUUID:v6 supportIPsec:v4];
+  psecCopy = psec;
+  uUIDString = [d UUIDString];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  LOBYTE(psecCopy) = [pairedDeviceRepository updatePairedDeviceWithCBUUID:uUIDString supportIPsec:psecCopy];
 
-  return v4;
+  return psecCopy;
 }
 
-- (BOOL)updateLocalPairedDevice:(id)a3 pairingType:(int64_t)a4
+- (BOOL)updateLocalPairedDevice:(id)device pairingType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(IDSPairingManager *)self pairedDevicePairingType];
-  v8 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v9 = [v8 updatePairedDeviceWithCBUUID:v6 pairingType:a4];
+  deviceCopy = device;
+  pairedDevicePairingType = [(IDSPairingManager *)self pairedDevicePairingType];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v9 = [pairedDeviceRepository updatePairedDeviceWithCBUUID:deviceCopy pairingType:type];
 
-  if (v9 && v7 != a4)
+  if (v9 && pairedDevicePairingType != type)
   {
     [(IDSPairingManager *)self pairedDevice];
     v12[0] = _NSConcreteStackBlock;
@@ -2664,9 +2664,9 @@ LABEL_37:
   return v9;
 }
 
-- (BOOL)setPairedDeviceInfo:(id)a3
+- (BOOL)setPairedDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2679,14 +2679,14 @@ LABEL_37:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v4;
+    v32 = infoCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received paired device info: %@", buf, 0xCu);
   }
 
-  if (![v4 count])
+  if (![infoCopy count])
   {
-    v10 = +[IMRGLog NRPairing];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    _activePairedDeviceCBUUID = +[IMRGLog NRPairing];
+    if (os_log_type_enabled(_activePairedDeviceCBUUID, OS_LOG_TYPE_FAULT))
     {
       sub_100921600();
     }
@@ -2694,13 +2694,13 @@ LABEL_37:
     goto LABEL_31;
   }
 
-  v7 = [(IDSPairingManager *)self pairedDeviceUUIDString];
-  v8 = [v7 length];
+  pairedDeviceUUIDString = [(IDSPairingManager *)self pairedDeviceUUIDString];
+  v8 = [pairedDeviceUUIDString length];
 
   if (!v8)
   {
-    v10 = +[IMRGLog NRPairing];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    _activePairedDeviceCBUUID = +[IMRGLog NRPairing];
+    if (os_log_type_enabled(_activePairedDeviceCBUUID, OS_LOG_TYPE_FAULT))
     {
       sub_100921580();
     }
@@ -2710,16 +2710,16 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v9 = [(IDSPairingManager *)self isPaired];
-  v10 = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
-  v11 = [(IDSPairingManager *)self isMissingAnyPublicKeyForPairedDeviceWithCBUUID:v10];
-  v12 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v13 = [v12 updatePairedDeviceWithCBUUID:v10 deviceInfoPayload:v4];
+  isPaired = [(IDSPairingManager *)self isPaired];
+  _activePairedDeviceCBUUID = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
+  v11 = [(IDSPairingManager *)self isMissingAnyPublicKeyForPairedDeviceWithCBUUID:_activePairedDeviceCBUUID];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v13 = [pairedDeviceRepository updatePairedDeviceWithCBUUID:_activePairedDeviceCBUUID deviceInfoPayload:infoCopy];
 
   [(IDSPairingManager *)self _updateActiveStateForAllPairedDevices:1];
-  v14 = [(IDSPairingManager *)self isMissingAnyPublicKeyForPairedDeviceWithCBUUID:v10];
-  v15 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v16 = [v15 pairedDeviceWithCBUUID:v10];
+  v14 = [(IDSPairingManager *)self isMissingAnyPublicKeyForPairedDeviceWithCBUUID:_activePairedDeviceCBUUID];
+  pairedDeviceRepository2 = [(IDSPairingManager *)self pairedDeviceRepository];
+  v16 = [pairedDeviceRepository2 pairedDeviceWithCBUUID:_activePairedDeviceCBUUID];
 
   v17 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -2740,17 +2740,17 @@ LABEL_31:
   if (v13)
   {
     v30 = v16;
-    v19 = [(IDSPairingManager *)self isPaired];
-    v29 = v19 ^ 1 | v9;
+    isPaired2 = [(IDSPairingManager *)self isPaired];
+    v29 = isPaired2 ^ 1 | isPaired;
     if ((v29 & 1) == 0)
     {
       [(IDSPairingManager *)self _updatePairedState:1];
     }
 
     v20 = +[IDSCurrentDevice sharedInstance];
-    v21 = [v20 hasAllEncryptionKeys];
+    hasAllEncryptionKeys = [v20 hasAllEncryptionKeys];
 
-    if ((v19 & v11) == 1 && v14 != 1 && v21)
+    if ((isPaired2 & v11) == 1 && v14 != 1 && hasAllEncryptionKeys)
     {
       v22 = +[IMRGLog NRPairing];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -2779,8 +2779,8 @@ LABEL_31:
 
     if ((v29 & 1) == 0)
     {
-      v26 = [(IDSPairingManager *)self pairedDeviceRepository];
-      v27 = [v26 pairedDeviceWithCBUUID:v10];
+      pairedDeviceRepository3 = [(IDSPairingManager *)self pairedDeviceRepository];
+      v27 = [pairedDeviceRepository3 pairedDeviceWithCBUUID:_activePairedDeviceCBUUID];
 
       [(IDSPairingManager *)self _notifyDelegatesDevicePairedToDevice:v27];
     }
@@ -2790,62 +2790,62 @@ LABEL_32:
   return v13;
 }
 
-- (BOOL)isMissingAnyPublicKeyForPairedDeviceWithCBUUID:(id)a3
+- (BOOL)isMissingAnyPublicKeyForPairedDeviceWithCBUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v6 = [v5 pairedDeviceWithCBUUID:v4];
+  dCopy = d;
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  v6 = [pairedDeviceRepository pairedDeviceWithCBUUID:dCopy];
 
-  LOBYTE(v5) = [v6 hasAllPublicKeys];
-  return v5 ^ 1;
+  LOBYTE(pairedDeviceRepository) = [v6 hasAllPublicKeys];
+  return pairedDeviceRepository ^ 1;
 }
 
-- (id)_createRegistrationProperties:(BOOL)a3 maxCompatibilityVersion:(id)a4 BTOutOfBandKey:(id)a5 supportsIPsecWithSPPLink:(BOOL)a6 bluetoothMACAddress:(id)a7
+- (id)_createRegistrationProperties:(BOOL)properties maxCompatibilityVersion:(id)version BTOutOfBandKey:(id)key supportsIPsecWithSPPLink:(BOOL)link bluetoothMACAddress:(id)address
 {
-  v8 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  linkCopy = link;
+  propertiesCopy = properties;
+  versionCopy = version;
+  keyCopy = key;
+  addressCopy = address;
   v14 = objc_alloc_init(NRDevicePairingProperties);
-  if (v11)
+  if (versionCopy)
   {
-    [v14 setPairingProtocolVersion:{objc_msgSend(v11, "unsignedIntegerValue")}];
+    [v14 setPairingProtocolVersion:{objc_msgSend(versionCopy, "unsignedIntegerValue")}];
   }
 
-  [v14 setWasInitiallySetupUsingIDSPairing:v10];
-  if (v10)
+  [v14 setWasInitiallySetupUsingIDSPairing:propertiesCopy];
+  if (propertiesCopy)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = v12;
+    v15 = keyCopy;
   }
 
   [v14 setOutOfBandKey:v15];
-  [v14 setBluetoothMACAddress:v13];
+  [v14 setBluetoothMACAddress:addressCopy];
 
-  [v14 setPairWithSPPLink:v8];
+  [v14 setPairWithSPPLink:linkCopy];
 
   return v14;
 }
 
-- (void)_networkRelayRegisterDeviceWithCBUUID:(id)a3 wasInitiallySetupUsingIDSPairing:(BOOL)a4 maxCompatibilityVersion:(id)a5 BTOutOfBandKey:(id)a6 supportsIPsecWithSPPLink:(BOOL)a7 bluetoothMACAddress:(id)a8
+- (void)_networkRelayRegisterDeviceWithCBUUID:(id)d wasInitiallySetupUsingIDSPairing:(BOOL)pairing maxCompatibilityVersion:(id)version BTOutOfBandKey:(id)key supportsIPsecWithSPPLink:(BOOL)link bluetoothMACAddress:(id)address
 {
-  v9 = a7;
-  v12 = a4;
-  v14 = a3;
-  v15 = [(IDSPairingManager *)self _createRegistrationProperties:v12 maxCompatibilityVersion:a5 BTOutOfBandKey:a6 supportsIPsecWithSPPLink:v9 bluetoothMACAddress:a8];
-  [(IDSPairingManager *)self _networkRelayRegisterDeviceWithCBUUID:v14 properties:v15 shouldPairDirectlyOverIPsec:0];
+  linkCopy = link;
+  pairingCopy = pairing;
+  dCopy = d;
+  v15 = [(IDSPairingManager *)self _createRegistrationProperties:pairingCopy maxCompatibilityVersion:version BTOutOfBandKey:key supportsIPsecWithSPPLink:linkCopy bluetoothMACAddress:address];
+  [(IDSPairingManager *)self _networkRelayRegisterDeviceWithCBUUID:dCopy properties:v15 shouldPairDirectlyOverIPsec:0];
 }
 
-- (void)_networkRelayRegisterDeviceWithCBUUID:(id)a3 properties:(id)a4 shouldPairDirectlyOverIPsec:(BOOL)a5
+- (void)_networkRelayRegisterDeviceWithCBUUID:(id)d properties:(id)properties shouldPairDirectlyOverIPsec:(BOOL)psec
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(IDSPairingManager *)self _nrDeviceIdentifierWithCBUUID:v8];
+  dCopy = d;
+  propertiesCopy = properties;
+  v10 = [(IDSPairingManager *)self _nrDeviceIdentifierWithCBUUID:dCopy];
   v11 = +[IMRGLog NRPairing];
   v12 = v11;
   if (v10)
@@ -2855,23 +2855,23 @@ LABEL_32:
       *buf = 138478339;
       v21 = v10;
       v22 = 2113;
-      v23 = v9;
+      v23 = propertiesCopy;
       v24 = 2113;
-      v25 = v8;
+      v25 = dCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Calling [NRDeviceManager registerDevice:properties:queue:completionBlock:] {nrDeviceIdentifier: %{private}@, properties: %{private}@, cbuuid: %{private}@}", buf, 0x20u);
     }
 
-    v13 = [(IDSPairingManager *)self nrDeviceManager];
+    nrDeviceManager = [(IDSPairingManager *)self nrDeviceManager];
     v14 = im_primary_queue();
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10049D394;
     v15[3] = &unk_100BDD790;
-    v16 = v8;
-    v19 = a5;
+    v16 = dCopy;
+    psecCopy = psec;
     v17 = v10;
-    v18 = self;
-    [v13 registerDevice:v17 properties:v9 queue:v14 completionBlock:v15];
+    selfCopy = self;
+    [nrDeviceManager registerDevice:v17 properties:propertiesCopy queue:v14 completionBlock:v15];
 
     v12 = v16;
   }
@@ -2882,14 +2882,14 @@ LABEL_32:
   }
 }
 
-- (BOOL)updatePairedDeviceBuildVersion:(id)a3 productVersion:(id)a4 productName:(id)a5 pairingProtocolVersion:(unsigned int)a6 minCompatibilityVersion:(unsigned int)a7 maxCompatibilityVersion:(unsigned int)a8 serviceMinCompatibilityVersion:(unsigned __int16)a9 capabilityFlags:(unint64_t)a10 deviceUniqueID:(id)a11
+- (BOOL)updatePairedDeviceBuildVersion:(id)version productVersion:(id)productVersion productName:(id)name pairingProtocolVersion:(unsigned int)protocolVersion minCompatibilityVersion:(unsigned int)compatibilityVersion maxCompatibilityVersion:(unsigned int)maxCompatibilityVersion serviceMinCompatibilityVersion:(unsigned __int16)minCompatibilityVersion capabilityFlags:(unint64_t)self0 deviceUniqueID:(id)self1
 {
-  LODWORD(v83) = a7;
-  HIDWORD(v83) = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v85 = a11;
+  LODWORD(v83) = compatibilityVersion;
+  HIDWORD(v83) = maxCompatibilityVersion;
+  versionCopy = version;
+  productVersionCopy = productVersion;
+  nameCopy = name;
+  dCopy = d;
   v17 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -2904,36 +2904,36 @@ LABEL_32:
     *buf = 136315394;
     *v90 = "[IDSPairingManager updatePairedDeviceBuildVersion:productVersion:productName:pairingProtocolVersion:minCompatibilityVersion:maxCompatibilityVersion:serviceMinCompatibilityVersion:capabilityFlags:deviceUniqueID:]";
     *&v90[8] = 1024;
-    LODWORD(v91) = a6;
+    LODWORD(v91) = protocolVersion;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s setting version %u", buf, 0x12u);
   }
 
-  v19 = [(IDSPairingManager *)self pairedDeviceRepository];
-  v20 = [v19 activePairedDevice];
-  v79 = [v20 supportIPsec];
+  pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+  activePairedDevice = [pairedDeviceRepository activePairedDevice];
+  supportIPsec = [activePairedDevice supportIPsec];
 
-  v21 = [objc_opt_class() _isIPsecSupportedByCapabilityFlags:a10];
-  v80 = [objc_opt_class() _isTinkerPairedInCapabilityFlags:a10];
-  v22 = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
-  v84 = v16;
-  if (v22)
+  v21 = [objc_opt_class() _isIPsecSupportedByCapabilityFlags:flags];
+  v80 = [objc_opt_class() _isTinkerPairedInCapabilityFlags:flags];
+  _activePairedDeviceCBUUID = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
+  v84 = nameCopy;
+  if (_activePairedDeviceCBUUID)
   {
-    v77 = [(IDSPairingManager *)self pairedDeviceUniqueID];
-    v23 = [(IDSPairingManager *)self pairedDeviceBuildVersion];
-    v82 = [(IDSPairingManager *)self pairedDeviceProductVersion];
-    v81 = [(IDSPairingManager *)self pairedDeviceProductName];
-    v72 = [(IDSPairingManager *)self pairedDevicePairingProtocolVersion];
+    pairedDeviceUniqueID = [(IDSPairingManager *)self pairedDeviceUniqueID];
+    pairedDeviceBuildVersion = [(IDSPairingManager *)self pairedDeviceBuildVersion];
+    pairedDeviceProductVersion = [(IDSPairingManager *)self pairedDeviceProductVersion];
+    pairedDeviceProductName = [(IDSPairingManager *)self pairedDeviceProductName];
+    pairedDevicePairingProtocolVersion = [(IDSPairingManager *)self pairedDevicePairingProtocolVersion];
     HIDWORD(v71) = [(IDSPairingManager *)self pairedDeviceMinCompatibilityVersion];
     LODWORD(v71) = [(IDSPairingManager *)self pairedDeviceMaxCompatibilityVersion];
-    v73 = [(IDSPairingManager *)self pairedDeviceServiceMinCompatibilityVersion];
+    pairedDeviceServiceMinCompatibilityVersion = [(IDSPairingManager *)self pairedDeviceServiceMinCompatibilityVersion];
     v75 = [(IDSPairingManager *)self activePairedDeviceHasPairingType:1];
     v24 = +[IMRGLog watchPairing];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v90 = v23;
+      *v90 = pairedDeviceBuildVersion;
       *&v90[8] = 2112;
-      v91 = v14;
+      v91 = versionCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "buildVersion                   %@ vs %@", buf, 0x16u);
     }
 
@@ -2941,21 +2941,21 @@ LABEL_32:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v90 = v82;
+      *v90 = pairedDeviceProductVersion;
       *&v90[8] = 2112;
-      v91 = v15;
+      v91 = productVersionCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "productVersion                 %@ vs %@", buf, 0x16u);
     }
 
-    v76 = v23;
+    v76 = pairedDeviceBuildVersion;
 
     v26 = +[IMRGLog watchPairing];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v90 = v81;
+      *v90 = pairedDeviceProductName;
       *&v90[8] = 2112;
-      v91 = v16;
+      v91 = nameCopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "productName                    %@ vs %@", buf, 0x16u);
     }
 
@@ -2963,9 +2963,9 @@ LABEL_32:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v90 = v72;
+      *v90 = pairedDevicePairingProtocolVersion;
       *&v90[4] = 1024;
-      *&v90[6] = a6;
+      *&v90[6] = protocolVersion;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "pairingProtocolVersion         %d vs %d", buf, 0xEu);
     }
 
@@ -2993,9 +2993,9 @@ LABEL_32:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v90 = v73;
+      *v90 = pairedDeviceServiceMinCompatibilityVersion;
       *&v90[4] = 1024;
-      *&v90[6] = a9;
+      *&v90[6] = minCompatibilityVersion;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "serviceMinCompatibilityVersion %d vs %d", buf, 0xEu);
     }
 
@@ -3003,7 +3003,7 @@ LABEL_32:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       v32 = @"NO";
-      if (v79)
+      if (supportIPsec)
       {
         v33 = @"YES";
       }
@@ -3026,7 +3026,7 @@ LABEL_32:
     }
 
     v34 = +[IMRGLog watchPairing];
-    v35 = v85;
+    v35 = dCopy;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       v36 = @"NO";
@@ -3052,18 +3052,18 @@ LABEL_32:
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "isTinkerPaired                       %@ vs %@", buf, 0x16u);
     }
 
-    v38 = [(IDSPairingManager *)self pairedDeviceRepository];
-    LOWORD(v70) = a9;
-    v39 = [v38 updatePairedDeviceWithCBUUID:v22 deviceUniqueID:v85 buildVersion:v14 productVersion:v15 productName:v16 pairingProtocolVersion:a6 minCompatibilityVersion:v83 maxCompatibilityVersion:v70 serviceMinCompatibilityVersion:?];
+    pairedDeviceRepository2 = [(IDSPairingManager *)self pairedDeviceRepository];
+    LOWORD(v70) = minCompatibilityVersion;
+    v39 = [pairedDeviceRepository2 updatePairedDeviceWithCBUUID:_activePairedDeviceCBUUID deviceUniqueID:dCopy buildVersion:versionCopy productVersion:productVersionCopy productName:nameCopy pairingProtocolVersion:protocolVersion minCompatibilityVersion:v83 maxCompatibilityVersion:v70 serviceMinCompatibilityVersion:?];
 
-    v40 = [[NSUUID alloc] initWithUUIDString:v22];
+    v40 = [[NSUUID alloc] initWithUUIDString:_activePairedDeviceCBUUID];
     v41 = v40;
-    v78 = v15;
+    v78 = productVersionCopy;
     if (!v39)
     {
-      v54 = +[IMRGLog watchPairing];
-      v53 = v77;
-      if (os_log_type_enabled(v54, OS_LOG_TYPE_FAULT))
+      pairedDevice = +[IMRGLog watchPairing];
+      v53 = pairedDeviceUniqueID;
+      if (os_log_type_enabled(pairedDevice, OS_LOG_TYPE_FAULT))
       {
         sub_100921764();
       }
@@ -3072,7 +3072,7 @@ LABEL_32:
     }
 
     v74 = v40;
-    v42 = [(IDSPairingManager *)self isPaired];
+    isPaired = [(IDSPairingManager *)self isPaired];
     if (!(v75 & 1 | ((v80 & 1) == 0)))
     {
       v43 = +[IMRGLog NRPairing];
@@ -3082,14 +3082,14 @@ LABEL_32:
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Device wants Tinker pairing - updating repository", buf, 2u);
       }
 
-      v44 = [(IDSPairingManager *)self pairedDeviceRepository];
-      [v44 updatePairedDeviceWithCBUUID:v22 pairingType:1];
+      pairedDeviceRepository3 = [(IDSPairingManager *)self pairedDeviceRepository];
+      [pairedDeviceRepository3 updatePairedDeviceWithCBUUID:_activePairedDeviceCBUUID pairingType:1];
     }
 
-    v45 = [(IDSPairingManager *)self _isIPSecLinkEnabled];
+    _isIPSecLinkEnabled = [(IDSPairingManager *)self _isIPSecLinkEnabled];
     v46 = +[IMRGLog NRPairing];
     v47 = os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT);
-    if ((v45 & v21) == 1)
+    if ((_isIPSecLinkEnabled & v21) == 1)
     {
       if (v47)
       {
@@ -3097,13 +3097,13 @@ LABEL_32:
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Device supports IPsec - Registering", buf, 2u);
       }
 
-      if ((v79 & 1) == 0)
+      if ((supportIPsec & 1) == 0)
       {
         [(IDSPairingManager *)self setShouldQuickSwitchAfterIPSecConnected:1];
       }
 
-      v48 = [(IDSPairingManager *)self pairedDeviceRepository];
-      [v48 updatePairedDeviceWithCBUUID:v22 supportIPsec:1];
+      pairedDeviceRepository4 = [(IDSPairingManager *)self pairedDeviceRepository];
+      [pairedDeviceRepository4 updatePairedDeviceWithCBUUID:_activePairedDeviceCBUUID supportIPsec:1];
 
       v49 = +[IDSUTunDeliveryController sharedInstance];
       [v49 addConnectivityDelegate:self];
@@ -3112,10 +3112,10 @@ LABEL_32:
       [v50 startIdsNRDeviceBridgeAndPreferenceHandlerWithIdentifier:v74];
 
       cbuuidToBTOutOfBandKeyDictionary = self->_cbuuidToBTOutOfBandKeyDictionary;
-      v35 = v85;
+      v35 = dCopy;
       if (cbuuidToBTOutOfBandKeyDictionary)
       {
-        v52 = [(NSMutableDictionary *)cbuuidToBTOutOfBandKeyDictionary objectForKeyedSubscript:v22];
+        v52 = [(NSMutableDictionary *)cbuuidToBTOutOfBandKeyDictionary objectForKeyedSubscript:_activePairedDeviceCBUUID];
       }
 
       else
@@ -3123,11 +3123,11 @@ LABEL_32:
         v52 = 0;
       }
 
-      v53 = v77;
-      if (v52 != 0 || v42)
+      v53 = pairedDeviceUniqueID;
+      if (v52 != 0 || isPaired)
       {
         v58 = [NSNumber numberWithUnsignedInt:HIDWORD(v83)];
-        [(IDSPairingManager *)self _networkRelayRegisterDeviceWithCBUUID:v74 wasInitiallySetupUsingIDSPairing:v42 maxCompatibilityVersion:v58 BTOutOfBandKey:v52 supportsIPsecWithSPPLink:0 bluetoothMACAddress:0];
+        [(IDSPairingManager *)self _networkRelayRegisterDeviceWithCBUUID:v74 wasInitiallySetupUsingIDSPairing:isPaired maxCompatibilityVersion:v58 BTOutOfBandKey:v52 supportsIPsecWithSPPLink:0 bluetoothMACAddress:0];
       }
 
       else
@@ -3140,7 +3140,7 @@ LABEL_32:
       }
 
       v41 = v74;
-      if (!v42)
+      if (!isPaired)
       {
         goto LABEL_89;
       }
@@ -3151,7 +3151,7 @@ LABEL_32:
       if (v47)
       {
         v55 = @"NO";
-        if (v45)
+        if (_isIPSecLinkEnabled)
         {
           v56 = @"YES";
         }
@@ -3178,27 +3178,27 @@ LABEL_32:
 
       v41 = v74;
       [(IDSPairingManager *)self _callPairedDeviceDidConnectBlocksForUniqueID:v74 withError:0];
-      v35 = v85;
-      v53 = v77;
-      if (!v42)
+      v35 = dCopy;
+      v53 = pairedDeviceUniqueID;
+      if (!isPaired)
       {
         goto LABEL_89;
       }
     }
 
     v59 = [v53 isEqualToIgnoringCase:v35];
-    v60 = [v76 isEqualToIgnoringCase:v14];
-    v61 = [v82 isEqualToIgnoringCase:v78];
-    v62 = [v81 isEqualToIgnoringCase:v84];
+    v60 = [v76 isEqualToIgnoringCase:versionCopy];
+    v61 = [pairedDeviceProductVersion isEqualToIgnoringCase:v78];
+    v62 = [pairedDeviceProductName isEqualToIgnoringCase:v84];
     if (v60 && v61 && (v62 & 1) != 0)
     {
-      v54 = [(IDSPairingManager *)self pairedDevice];
+      pairedDevice = [(IDSPairingManager *)self pairedDevice];
       if (v59)
       {
-        v53 = v77;
+        v53 = pairedDeviceUniqueID;
         if (v80 == v75)
         {
-          if (v72 == a6 && v71 == __PAIR64__(v83, HIDWORD(v83)))
+          if (pairedDevicePairingProtocolVersion == protocolVersion && v71 == __PAIR64__(v83, HIDWORD(v83)))
           {
             goto LABEL_82;
           }
@@ -3207,7 +3207,7 @@ LABEL_32:
           if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *v90 = v54;
+            *v90 = pairedDevice;
             _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "Notifying all IDS accounts protocol information is different: %@", buf, 0xCu);
           }
 
@@ -3218,13 +3218,13 @@ LABEL_32:
 LABEL_81:
           v64[2] = v65;
           v64[3] = &unk_100BDD768;
-          v54 = v54;
-          v64[4] = v54;
+          pairedDevice = pairedDevice;
+          v64[4] = pairedDevice;
           [(IDSPairingManager *)self _notifyDelegatesWithBlock:v64];
 
 LABEL_82:
           v41 = v74;
-          if (a9 >= 3u && v73 != a9)
+          if (minCompatibilityVersion >= 3u && pairedDeviceServiceMinCompatibilityVersion != minCompatibilityVersion)
           {
             v67 = +[IMRGLog watchPairing];
             if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
@@ -3243,7 +3243,7 @@ LABEL_82:
 LABEL_88:
 
 LABEL_89:
-          v15 = v78;
+          productVersionCopy = v78;
           goto LABEL_90;
         }
 
@@ -3252,7 +3252,7 @@ LABEL_78:
         if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v90 = v54;
+          *v90 = pairedDevice;
           _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "Notifying all IDS accounts paired device updated: %@", buf, 0xCu);
         }
 
@@ -3266,15 +3266,15 @@ LABEL_78:
 
     else
     {
-      v54 = [(IDSPairingManager *)self pairedDevice];
+      pairedDevice = [(IDSPairingManager *)self pairedDevice];
     }
 
-    v53 = v77;
+    v53 = pairedDeviceUniqueID;
     goto LABEL_78;
   }
 
   v53 = +[IMRGLog watchPairing];
-  v35 = v85;
+  v35 = dCopy;
   if (os_log_type_enabled(v53, OS_LOG_TYPE_FAULT))
   {
     sub_100921764();
@@ -3286,23 +3286,23 @@ LABEL_90:
   return v39;
 }
 
-- (BOOL)updatePairedDeviceiCloudURIs:(id)a3 pushToken:(id)a4
+- (BOOL)updatePairedDeviceiCloudURIs:(id)is pushToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  isCopy = is;
+  tokenCopy = token;
   if ([(IDSPairingManager *)self activePairedDeviceHasPairingType:1])
   {
-    v8 = [(IDSPairingManager *)self pairedDevicePushToken];
-    v9 = [(IDSPairingManager *)self pairedDeviceiCloudURIs];
-    v10 = [NSSet setWithArray:v9];
+    pairedDevicePushToken = [(IDSPairingManager *)self pairedDevicePushToken];
+    pairedDeviceiCloudURIs = [(IDSPairingManager *)self pairedDeviceiCloudURIs];
+    v10 = [NSSet setWithArray:pairedDeviceiCloudURIs];
 
-    v11 = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
-    v12 = [(IDSPairingManager *)self pairedDeviceRepository];
-    v13 = [v12 updatePairedDeviceWithCBUUID:v11 iCloudURIs:v6 pushToken:v7];
+    _activePairedDeviceCBUUID = [(IDSPairingManager *)self _activePairedDeviceCBUUID];
+    pairedDeviceRepository = [(IDSPairingManager *)self pairedDeviceRepository];
+    v13 = [pairedDeviceRepository updatePairedDeviceWithCBUUID:_activePairedDeviceCBUUID iCloudURIs:isCopy pushToken:tokenCopy];
 
-    if ([v8 isEqualToData:v7])
+    if ([pairedDevicePushToken isEqualToData:tokenCopy])
     {
-      v14 = [NSSet setWithArray:v6];
+      v14 = [NSSet setWithArray:isCopy];
       v15 = [v10 isEqualToSet:v14];
 
       if (!v13)
@@ -3336,8 +3336,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v8 = +[IMRGLog watchPairing];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  pairedDevicePushToken = +[IMRGLog watchPairing];
+  if (os_log_type_enabled(pairedDevicePushToken, OS_LOG_TYPE_ERROR))
   {
     sub_100921834();
   }
@@ -3366,10 +3366,10 @@ LABEL_12:
 
   [(IDSPairingManager *)self _suspendOTRSessionsWithProtectionClass:1];
   [(IDSPairingManager *)self _suspendOTRSessionsWithProtectionClass:0];
-  v5 = [(IDSPairingManager *)self _purgeSecuredEncryptionKeysForAllPairedDevices];
+  _purgeSecuredEncryptionKeysForAllPairedDevices = [(IDSPairingManager *)self _purgeSecuredEncryptionKeysForAllPairedDevices];
   v6 = +[IMRGLog regeneration];
   v7 = v6;
-  if (v5)
+  if (_purgeSecuredEncryptionKeysForAllPairedDevices)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -3392,26 +3392,26 @@ LABEL_12:
   }
 }
 
-+ (void)devicePairingProtocolVersion:(unsigned int *)a3 minCompatibilityVersion:(unsigned int *)a4 maxCompatibilityVersion:(unsigned int *)a5
++ (void)devicePairingProtocolVersion:(unsigned int *)version minCompatibilityVersion:(unsigned int *)compatibilityVersion maxCompatibilityVersion:(unsigned int *)maxCompatibilityVersion
 {
-  *a3 = 0;
-  *a4 = -1;
-  *a5 = -1;
+  *version = 0;
+  *compatibilityVersion = -1;
+  *maxCompatibilityVersion = -1;
   v8 = qword_100CBD4A0;
   if (qword_100CBD4A0 || (v8 = IMWeakLinkClass(), (qword_100CBD4A0 = v8) != 0))
   {
-    v9 = [v8 sharedInstance];
-    *a3 = [v9 pairingCompatibilityVersion];
-    *a4 = [v9 minPairingCompatibilityVersion];
-    *a5 = [v9 maxPairingCompatibilityVersion];
+    sharedInstance = [v8 sharedInstance];
+    *version = [sharedInstance pairingCompatibilityVersion];
+    *compatibilityVersion = [sharedInstance minPairingCompatibilityVersion];
+    *maxCompatibilityVersion = [sharedInstance maxPairingCompatibilityVersion];
   }
 
   v10 = +[IMRGLog pairingProtocolDebug];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = *a3;
-    v12 = *a4;
-    v13 = *a5;
+    v11 = *version;
+    v12 = *compatibilityVersion;
+    v13 = *maxCompatibilityVersion;
     v14 = 136315906;
     v15 = "+[IDSPairingManager devicePairingProtocolVersion:minCompatibilityVersion:maxCompatibilityVersion:]";
     v16 = 1024;
@@ -3424,9 +3424,9 @@ LABEL_12:
   }
 }
 
-- (void)deliveryController:(id)a3 foundNearbyIPsecCapableDeviceWithUniqueID:(id)a4
+- (void)deliveryController:(id)controller foundNearbyIPsecCapableDeviceWithUniqueID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = +[IMRGLog NRPairing];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -3434,27 +3434,27 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PairingManager found nearbyIPsec device", buf, 2u);
   }
 
-  if ([v5 isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID])
+  if ([dCopy isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID])
   {
     v7 = +[IMRGLog NRPairing];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(IDSPairingManager *)self pairedDeviceUUIDString];
+      pairedDeviceUUIDString = [(IDSPairingManager *)self pairedDeviceUUIDString];
       *buf = 138478083;
-      v23 = v5;
+      v23 = dCopy;
       v24 = 2113;
-      v25 = v8;
+      v25 = pairedDeviceUUIDString;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Replacing uniqueID with pairedDeviceUniqueID {uniqueID: %{private}@, pairedDeviceUUIDString: %{private}@}", buf, 0x16u);
     }
 
-    v9 = [(IDSPairingManager *)self pairedDeviceUUIDString];
+    pairedDeviceUUIDString2 = [(IDSPairingManager *)self pairedDeviceUUIDString];
 
-    v5 = v9;
+    dCopy = pairedDeviceUUIDString2;
   }
 
-  v10 = [[NSUUID alloc] initWithUUIDString:v5];
-  v11 = [(IDSPairingManager *)self pairedDeviceUUIDString];
-  v12 = [v11 isEqualToString:v5];
+  v10 = [[NSUUID alloc] initWithUUIDString:dCopy];
+  pairedDeviceUUIDString3 = [(IDSPairingManager *)self pairedDeviceUUIDString];
+  v12 = [pairedDeviceUUIDString3 isEqualToString:dCopy];
 
   if (v12)
   {
@@ -3473,8 +3473,8 @@ LABEL_12:
       v18[1] = 3221225472;
       v18[2] = sub_10049EB7C;
       v18[3] = &unk_100BDD7B8;
-      v19 = v5;
-      v20 = self;
+      v19 = dCopy;
+      selfCopy = self;
       v21 = v10;
       [v14 initiateQuickSwitchToDeviceWithCBUUID:v19 force:1 completionBlock:v18];
     }
@@ -3497,22 +3497,22 @@ LABEL_12:
     v15 = +[IMRGLog NRPairing];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(IDSPairingManager *)self pairedDeviceUniqueID];
+      pairedDeviceUniqueID = [(IDSPairingManager *)self pairedDeviceUniqueID];
       *buf = 138478083;
-      v23 = v16;
+      v23 = pairedDeviceUniqueID;
       v24 = 2113;
-      v25 = v5;
+      v25 = dCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Device found IPsec nearby but is not active paired device -- Ignoring {pairedDeviceUniqueID: %{private}@, uniqueID: %{private}@}", buf, 0x16u);
     }
   }
 }
 
-- (id)_nrDeviceIdentifierWithCBUUID:(id)a3
+- (id)_nrDeviceIdentifierWithCBUUID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
-    v4 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:v3];
+    v4 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:dCopy];
     if (v4)
     {
       goto LABEL_9;

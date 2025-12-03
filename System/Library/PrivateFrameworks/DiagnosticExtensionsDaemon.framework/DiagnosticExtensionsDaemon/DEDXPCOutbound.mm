@@ -1,92 +1,92 @@
 @interface DEDXPCOutbound
-- (DEDXPCOutbound)initWithRemoteObject:(id)a3;
-- (void)addSessionData:(id)a3 withFilename:(id)a4 forSession:(id)a5;
-- (void)adoptFiles:(id)a3 forSession:(id)a4;
-- (void)cancelSession:(id)a3;
-- (void)commitSession:(id)a3;
-- (void)compressionProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5;
-- (void)deviceSupportsDiagnosticExtensions:(id)a3 session:(id)a4;
-- (void)didAdoptFilesWithError:(id)a3 forSession:(id)a4;
-- (void)didCancelSession:(id)a3;
-- (void)didCommitSession:(id)a3;
-- (void)didFinishUploadingWithError:(id)a3 sessionID:(id)a4;
-- (void)didGetState:(int64_t)a3 info:(id)a4 sessionID:(id)a5;
-- (void)didLoadTextDataForExtensions:(id)a3 localization:(id)a4 session:(id)a5;
-- (void)finishedDiagnosticWithIdentifier:(id)a3 result:(id)a4 session:(id)a5;
-- (void)getSessionStateWithSession:(id)a3;
-- (void)getSessionStatusWithSession:(id)a3;
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 inSession:(id)a5;
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 withIdentifiers:(id)a5 inSession:(id)a6;
-- (void)listAvailableExtensionsForSession:(id)a3;
-- (void)loadTextDataForExtensions:(id)a3 localization:(id)a4 sessionID:(id)a5;
-- (void)pingSession:(id)a3;
-- (void)pongSession:(id)a3;
-- (void)scheduleNotificationForSession:(id)a3;
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 session:(id)a6;
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5;
-- (void)syncSessionStatusWithSession:(id)a3;
-- (void)terminateExtension:(id)a3 info:(id)a4 session:(id)a5;
-- (void)unscheduleNotificationForSession:(id)a3;
-- (void)uploadProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5;
+- (DEDXPCOutbound)initWithRemoteObject:(id)object;
+- (void)addSessionData:(id)data withFilename:(id)filename forSession:(id)session;
+- (void)adoptFiles:(id)files forSession:(id)session;
+- (void)cancelSession:(id)session;
+- (void)commitSession:(id)session;
+- (void)compressionProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d;
+- (void)deviceSupportsDiagnosticExtensions:(id)extensions session:(id)session;
+- (void)didAdoptFilesWithError:(id)error forSession:(id)session;
+- (void)didCancelSession:(id)session;
+- (void)didCommitSession:(id)session;
+- (void)didFinishUploadingWithError:(id)error sessionID:(id)d;
+- (void)didGetState:(int64_t)state info:(id)info sessionID:(id)d;
+- (void)didLoadTextDataForExtensions:(id)extensions localization:(id)localization session:(id)session;
+- (void)finishedDiagnosticWithIdentifier:(id)identifier result:(id)result session:(id)session;
+- (void)getSessionStateWithSession:(id)session;
+- (void)getSessionStatusWithSession:(id)session;
+- (void)hasCollected:(id)collected isCollecting:(id)collecting inSession:(id)session;
+- (void)hasCollected:(id)collected isCollecting:(id)collecting withIdentifiers:(id)identifiers inSession:(id)session;
+- (void)listAvailableExtensionsForSession:(id)session;
+- (void)loadTextDataForExtensions:(id)extensions localization:(id)localization sessionID:(id)d;
+- (void)pingSession:(id)session;
+- (void)pongSession:(id)session;
+- (void)scheduleNotificationForSession:(id)session;
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until session:(id)session;
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session;
+- (void)syncSessionStatusWithSession:(id)session;
+- (void)terminateExtension:(id)extension info:(id)info session:(id)session;
+- (void)unscheduleNotificationForSession:(id)session;
+- (void)uploadProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d;
 @end
 
 @implementation DEDXPCOutbound
 
-- (DEDXPCOutbound)initWithRemoteObject:(id)a3
+- (DEDXPCOutbound)initWithRemoteObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = DEDXPCOutbound;
   v5 = [(DEDXPCOutbound *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DEDXPCOutbound *)v5 setRemoteObject:v4];
+    [(DEDXPCOutbound *)v5 setRemoteObject:objectCopy];
   }
 
   return v6;
 }
 
-- (void)pingSession:(id)a3
+- (void)pingSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_pingSession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_pingSession:sessionCopy];
 }
 
-- (void)pongSession:(id)a3
+- (void)pongSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_pongSession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_pongSession:sessionCopy];
 }
 
-- (void)listAvailableExtensionsForSession:(id)a3
+- (void)listAvailableExtensionsForSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_listAvailableExtensionsForSession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_listAvailableExtensionsForSession:sessionCopy];
 }
 
-- (void)getSessionStatusWithSession:(id)a3
+- (void)getSessionStatusWithSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_getSessionStatusWithSession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_getSessionStatusWithSession:sessionCopy];
 }
 
-- (void)syncSessionStatusWithSession:(id)a3
+- (void)syncSessionStatusWithSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_syncSessionStatusWithSession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_syncSessionStatusWithSession:sessionCopy];
 }
 
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 inSession:(id)a5
+- (void)hasCollected:(id)collected isCollecting:(id)collecting inSession:(id)session
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 valueForKeyPath:@"serialize"];
+  sessionCopy = session;
+  collectingCopy = collecting;
+  v10 = [collected valueForKeyPath:@"serialize"];
   v11 = v10;
   v12 = &unk_285B899E8;
   if (v10)
@@ -96,7 +96,7 @@
 
   v13 = v12;
 
-  v14 = [v9 valueForKeyPath:@"serialize"];
+  v14 = [collectingCopy valueForKeyPath:@"serialize"];
 
   v15 = &unk_285B89A00;
   if (v14)
@@ -106,16 +106,16 @@
 
   v16 = v15;
 
-  v17 = [(DEDXPCOutbound *)self remoteObject];
-  [v17 xpc_hasCollected:v13 isCollecting:v16 inSession:v8];
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_hasCollected:v13 isCollecting:v16 inSession:sessionCopy];
 }
 
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 withIdentifiers:(id)a5 inSession:(id)a6
+- (void)hasCollected:(id)collected isCollecting:(id)collecting withIdentifiers:(id)identifiers inSession:(id)session
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 valueForKeyPath:@"serialize"];
+  sessionCopy = session;
+  identifiersCopy = identifiers;
+  collectingCopy = collecting;
+  v13 = [collected valueForKeyPath:@"serialize"];
   v14 = v13;
   v15 = &unk_285B89A18;
   if (v13)
@@ -125,7 +125,7 @@
 
   v16 = v15;
 
-  v17 = [v12 valueForKeyPath:@"serialize"];
+  v17 = [collectingCopy valueForKeyPath:@"serialize"];
 
   v18 = &unk_285B89A30;
   if (v17)
@@ -135,7 +135,7 @@
 
   v19 = v18;
 
-  v20 = [v11 valueForKey:@"stringValue"];
+  v20 = [identifiersCopy valueForKey:@"stringValue"];
 
   v21 = MEMORY[0x277CBEBF8];
   if (v20)
@@ -145,21 +145,21 @@
 
   v22 = v21;
 
-  v23 = [(DEDXPCOutbound *)self remoteObject];
-  [v23 xpc_hasCollected:v16 isCollecting:v19 withIdentifiers:v22 inSession:v10];
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_hasCollected:v16 isCollecting:v19 withIdentifiers:v22 inSession:sessionCopy];
 }
 
-- (void)deviceSupportsDiagnosticExtensions:(id)a3 session:(id)a4
+- (void)deviceSupportsDiagnosticExtensions:(id)extensions session:(id)session
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  extensionsCopy = extensions;
+  sessionCopy = session;
+  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(extensionsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = extensionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -175,8 +175,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * v13) serialize];
-        [v8 addObject:v14];
+        serialize = [*(*(&v17 + 1) + 8 * v13) serialize];
+        [v8 addObject:serialize];
 
         ++v13;
       }
@@ -188,177 +188,177 @@
     while (v11);
   }
 
-  v15 = [(DEDXPCOutbound *)self remoteObject];
-  [v15 xpc_deviceSupportsDiagnosticExtensions:v8 session:v7];
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_deviceSupportsDiagnosticExtensions:v8 session:sessionCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DEDXPCOutbound *)self remoteObject];
-  [v11 xpc_startDiagnosticWithIdentifier:v10 parameters:v9 session:v8];
+  sessionCopy = session;
+  parametersCopy = parameters;
+  identifierCopy = identifier;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_startDiagnosticWithIdentifier:identifierCopy parameters:parametersCopy session:sessionCopy];
 }
 
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 session:(id)a6
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until session:(id)session
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(DEDXPCOutbound *)self remoteObject];
-  [v14 xpc_startDiagnosticWithIdentifier:v13 parameters:v12 deferRunUntil:v11 session:v10];
+  sessionCopy = session;
+  untilCopy = until;
+  parametersCopy = parameters;
+  identifierCopy = identifier;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_startDiagnosticWithIdentifier:identifierCopy parameters:parametersCopy deferRunUntil:untilCopy session:sessionCopy];
 }
 
-- (void)finishedDiagnosticWithIdentifier:(id)a3 result:(id)a4 session:(id)a5
+- (void)finishedDiagnosticWithIdentifier:(id)identifier result:(id)result session:(id)session
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(DEDXPCOutbound *)self remoteObject];
-  v11 = [v9 serialize];
+  sessionCopy = session;
+  resultCopy = result;
+  identifierCopy = identifier;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  serialize = [resultCopy serialize];
 
-  [v12 xpc_finishedDiagnosticWithIdentifier:v10 result:v11 session:v8];
+  [remoteObject xpc_finishedDiagnosticWithIdentifier:identifierCopy result:serialize session:sessionCopy];
 }
 
-- (void)terminateExtension:(id)a3 info:(id)a4 session:(id)a5
+- (void)terminateExtension:(id)extension info:(id)info session:(id)session
 {
-  v8 = MEMORY[0x277CBEC10];
-  if (a4)
+  infoCopy = MEMORY[0x277CBEC10];
+  if (info)
   {
-    v8 = a4;
+    infoCopy = info;
   }
 
-  v9 = v8;
-  v10 = a5;
-  v11 = a3;
-  v12 = [(DEDXPCOutbound *)self remoteObject];
-  [v12 xpc_terminateExtension:v11 info:v9 session:v10];
+  v9 = infoCopy;
+  sessionCopy = session;
+  extensionCopy = extension;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_terminateExtension:extensionCopy info:v9 session:sessionCopy];
 }
 
-- (void)adoptFiles:(id)a3 forSession:(id)a4
+- (void)adoptFiles:(id)files forSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DEDXPCOutbound *)self remoteObject];
-  [v8 xpc_adoptFiles:v7 forSession:v6];
+  sessionCopy = session;
+  filesCopy = files;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_adoptFiles:filesCopy forSession:sessionCopy];
 }
 
-- (void)didAdoptFilesWithError:(id)a3 forSession:(id)a4
+- (void)didAdoptFilesWithError:(id)error forSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DEDXPCOutbound *)self remoteObject];
-  [v8 xpc_didAdoptFilesWithError:v7 forSession:v6];
+  sessionCopy = session;
+  errorCopy = error;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_didAdoptFilesWithError:errorCopy forSession:sessionCopy];
 }
 
-- (void)compressionProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5
+- (void)compressionProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d
 {
-  v8 = a5;
-  v9 = [(DEDXPCOutbound *)self remoteObject];
-  [v9 xpc_compressionProgress:a3 total:a4 session:v8];
+  dCopy = d;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_compressionProgress:progress total:total session:dCopy];
 }
 
-- (void)uploadProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5
+- (void)uploadProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d
 {
-  v8 = a5;
-  v9 = [(DEDXPCOutbound *)self remoteObject];
-  [v9 xpc_uploadProgress:a3 total:a4 session:v8];
+  dCopy = d;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_uploadProgress:progress total:total session:dCopy];
 }
 
-- (void)didFinishUploadingWithError:(id)a3 sessionID:(id)a4
+- (void)didFinishUploadingWithError:(id)error sessionID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DEDXPCOutbound *)self remoteObject];
-  [v8 xpc_didFinishUploadingWithError:v7 sessionID:v6];
+  dCopy = d;
+  errorCopy = error;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_didFinishUploadingWithError:errorCopy sessionID:dCopy];
 }
 
-- (void)commitSession:(id)a3
+- (void)commitSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_commitSession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_commitSession:sessionCopy];
 }
 
-- (void)didCommitSession:(id)a3
+- (void)didCommitSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_didCommitSession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_didCommitSession:sessionCopy];
 }
 
-- (void)cancelSession:(id)a3
+- (void)cancelSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_cancelSession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_cancelSession:sessionCopy];
 }
 
-- (void)scheduleNotificationForSession:(id)a3
+- (void)scheduleNotificationForSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_notifySession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_notifySession:sessionCopy];
 }
 
-- (void)unscheduleNotificationForSession:(id)a3
+- (void)unscheduleNotificationForSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_cancelNotifySession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_cancelNotifySession:sessionCopy];
 }
 
-- (void)getSessionStateWithSession:(id)a3
+- (void)getSessionStateWithSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_getSessionStateWithSession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_getSessionStateWithSession:sessionCopy];
 }
 
-- (void)addSessionData:(id)a3 withFilename:(id)a4 forSession:(id)a5
+- (void)addSessionData:(id)data withFilename:(id)filename forSession:(id)session
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DEDXPCOutbound *)self remoteObject];
-  [v11 xpc_addData:v10 withFilename:v9 forSession:v8];
+  sessionCopy = session;
+  filenameCopy = filename;
+  dataCopy = data;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_addData:dataCopy withFilename:filenameCopy forSession:sessionCopy];
 }
 
-- (void)didCancelSession:(id)a3
+- (void)didCancelSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DEDXPCOutbound *)self remoteObject];
-  [v5 xpc_didCancelSession:v4];
+  sessionCopy = session;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_didCancelSession:sessionCopy];
 }
 
-- (void)didGetState:(int64_t)a3 info:(id)a4 sessionID:(id)a5
+- (void)didGetState:(int64_t)state info:(id)info sessionID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(DEDXPCOutbound *)self remoteObject];
-  [v10 xpc_didGetState:a3 info:v9 sessionID:v8];
+  dCopy = d;
+  infoCopy = info;
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_didGetState:state info:infoCopy sessionID:dCopy];
 }
 
-- (void)loadTextDataForExtensions:(id)a3 localization:(id)a4 sessionID:(id)a5
+- (void)loadTextDataForExtensions:(id)extensions localization:(id)localization sessionID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = [a3 valueForKeyPath:@"serialize"];
-  v10 = [(DEDXPCOutbound *)self remoteObject];
-  [v10 xpc_loadTextDataForExtensions:v11 localization:v9 sessionID:v8];
+  dCopy = d;
+  localizationCopy = localization;
+  v11 = [extensions valueForKeyPath:@"serialize"];
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_loadTextDataForExtensions:v11 localization:localizationCopy sessionID:dCopy];
 }
 
-- (void)didLoadTextDataForExtensions:(id)a3 localization:(id)a4 session:(id)a5
+- (void)didLoadTextDataForExtensions:(id)extensions localization:(id)localization session:(id)session
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = [a3 valueForKeyPath:@"serialize"];
-  v10 = [(DEDXPCOutbound *)self remoteObject];
-  [v10 xpc_didLoadTextDataForExtensions:v11 localization:v9 sessionID:v8];
+  sessionCopy = session;
+  localizationCopy = localization;
+  v11 = [extensions valueForKeyPath:@"serialize"];
+  remoteObject = [(DEDXPCOutbound *)self remoteObject];
+  [remoteObject xpc_didLoadTextDataForExtensions:v11 localization:localizationCopy sessionID:sessionCopy];
 }
 
 @end

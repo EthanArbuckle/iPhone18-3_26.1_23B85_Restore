@@ -5,9 +5,9 @@
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
-- (void)setDstMsgId:(id)a3;
-- (void)setSrcMsgId:(id)a3;
-- (void)setStatus:(id)a3;
+- (void)setDstMsgId:(id)id;
+- (void)setSrcMsgId:(id)id;
+- (void)setStatus:(id)status;
 @end
 
 @implementation ASMovedItem
@@ -21,7 +21,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_32 = v2;
     acceptsTopLevelLeaves___haveChecked_32 = 1;
   }
@@ -38,7 +38,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_32 = v2;
     parsingLeafNode___haveChecked_32 = 1;
   }
@@ -55,7 +55,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_32 = v2;
     parsingWithSubItems___haveChecked_32 = 1;
   }
@@ -72,7 +72,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_32 = v2;
     frontingBasicTypes___haveChecked_32 = 1;
   }
@@ -89,7 +89,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_32 = v2;
     notifyOfUnknownTokens___haveChecked_32 = 1;
   }
@@ -100,7 +100,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -115,43 +115,43 @@
     v5 = [v6 dictionaryWithObjectsAndKeys:{v7, v8, v9, v10, v11, v12, 0}];
 
     v13 = +[ASItem parseRuleCache];
-    v14 = NSStringFromClass(a1);
+    v14 = NSStringFromClass(self);
     [v13 setObject:v5 forKey:v14];
   }
 
   return v5;
 }
 
-- (void)setSrcMsgId:(id)a3
+- (void)setSrcMsgId:(id)id
 {
-  v5 = a3;
-  if (self->_srcMsgId != v5)
+  idCopy = id;
+  if (self->_srcMsgId != idCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_srcMsgId, a3);
-    v5 = v6;
+    v6 = idCopy;
+    objc_storeStrong(&self->_srcMsgId, id);
+    idCopy = v6;
   }
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
-  v5 = a3;
-  if (self->_status != v5)
+  statusCopy = status;
+  if (self->_status != statusCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_status, a3);
-    v5 = v6;
+    v6 = statusCopy;
+    objc_storeStrong(&self->_status, status);
+    statusCopy = v6;
   }
 }
 
-- (void)setDstMsgId:(id)a3
+- (void)setDstMsgId:(id)id
 {
-  v5 = a3;
-  if (self->_dstMsgId != v5)
+  idCopy = id;
+  if (self->_dstMsgId != idCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_dstMsgId, a3);
-    v5 = v6;
+    v6 = idCopy;
+    objc_storeStrong(&self->_dstMsgId, id);
+    idCopy = v6;
   }
 }
 

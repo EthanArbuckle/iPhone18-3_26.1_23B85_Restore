@@ -1,12 +1,12 @@
 @interface SGMIFollowUpAnalyzer
-+ (id)analyzeBody:(id)a3 forLanguage:(id)a4 forDate:(id)a5 withCustomTimeRange:(BOOL)a6;
-+ (id)analyzeFeatureVector:(id)a3;
-+ (id)analyzeForFollowUpMailWithBody:(id)a3 isSent:(BOOL)a4 messageId:(id)a5 date:(id)a6;
-+ (id)analyzeIncomingMailFeatureVector:(id)a3;
-+ (id)analyzeOutgoingMailFeatureVector:(id)a3;
-+ (id)identifyFollowUpWarningFromSubject:(id)a3 body:(id)a4 date:(id)a5;
++ (id)analyzeBody:(id)body forLanguage:(id)language forDate:(id)date withCustomTimeRange:(BOOL)range;
++ (id)analyzeFeatureVector:(id)vector;
++ (id)analyzeForFollowUpMailWithBody:(id)body isSent:(BOOL)sent messageId:(id)id date:(id)date;
++ (id)analyzeIncomingMailFeatureVector:(id)vector;
++ (id)analyzeOutgoingMailFeatureVector:(id)vector;
++ (id)identifyFollowUpWarningFromSubject:(id)subject body:(id)body date:(id)date;
 + (void)logFollowUpStatsAndSetting;
-+ (void)reportUserEngagement:(int64_t)a3 forWarning:(id)a4;
++ (void)reportUserEngagement:(int64_t)engagement forWarning:(id)warning;
 @end
 
 @implementation SGMIFollowUpAnalyzer
@@ -15,8 +15,8 @@
 {
   v24 = *MEMORY[0x277D85DE8];
   v2 = +[SGSqlEntityStore defaultStore];
-  v3 = [v2 sgmiFeatureStore];
-  v4 = [v3 getNSDateForKey:@"lastSGMIFollowUpStatsAndSettingReportingDate"];
+  sgmiFeatureStore = [v2 sgmiFeatureStore];
+  v4 = [sgmiFeatureStore getNSDateForKey:@"lastSGMIFollowUpStatsAndSettingReportingDate"];
   if (v4)
   {
 LABEL_2:
@@ -33,8 +33,8 @@ LABEL_2:
   if (v6)
   {
     v7 = v6;
-    [v3 setNSDate:v6 forKey:@"lastSGMIFollowUpStatsAndSettingReportingDate"];
-    v4 = [v3 getNSDateForKey:@"lastSGMIFollowUpStatsAndSettingReportingDate"];
+    [sgmiFeatureStore setNSDate:v6 forKey:@"lastSGMIFollowUpStatsAndSettingReportingDate"];
+    v4 = [sgmiFeatureStore getNSDateForKey:@"lastSGMIFollowUpStatsAndSettingReportingDate"];
 
     if (!v4)
     {
@@ -47,10 +47,10 @@ LABEL_2:
 
   v4 = 0;
 LABEL_8:
-  v8 = [v2 sgmiFeatureStore];
-  v9 = [v8 followUpWarningStats];
+  sgmiFeatureStore2 = [v2 sgmiFeatureStore];
+  followUpWarningStats = [sgmiFeatureStore2 followUpWarningStats];
 
-  if (v9)
+  if (followUpWarningStats)
   {
     v10 = objc_alloc(MEMORY[0x277CBEBD0]);
     v11 = [v10 initWithSuiteName:*MEMORY[0x277D06D20]];
@@ -58,9 +58,9 @@ LABEL_8:
     v13 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
       v15 = @"disabled";
-      if (v14)
+      if (bOOLValue)
       {
         v15 = @"enabled";
       }
@@ -72,11 +72,11 @@ LABEL_8:
 
     v19 = MEMORY[0x277D85DD0];
     v20 = v12;
-    v21 = v9;
+    v21 = followUpWarningStats;
     v16 = v12;
     AnalyticsSendEventLazy();
-    v17 = [MEMORY[0x277CBEAA8] date];
-    [v3 setNSDate:v17 forKey:@"lastSGMIFollowUpStatsAndSettingReportingDate"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [sgmiFeatureStore setNSDate:date forKey:@"lastSGMIFollowUpStatsAndSettingReportingDate"];
   }
 
 LABEL_15:
@@ -106,10 +106,10 @@ id __50__SGMIFollowUpAnalyzer_logFollowUpStatsAndSetting__block_invoke(uint64_t 
   return v7;
 }
 
-+ (void)reportUserEngagement:(int64_t)a3 forWarning:(id)a4
++ (void)reportUserEngagement:(int64_t)engagement forWarning:(id)warning
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  warningCopy = warning;
   v6 = sgMailIntelligenceLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -120,20 +120,20 @@ id __50__SGMIFollowUpAnalyzer_logFollowUpStatsAndSetting__block_invoke(uint64_t 
     v13[2] = &unk_2847493F8;
     v14[2] = @"no engagement";
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:engagement];
     v9 = [v7 objectForKeyedSubscript:v8];
     *buf = 138412290;
-    v16 = v9;
+    engagementCopy = v9;
     _os_log_impl(&dword_231E60000, v6, OS_LOG_TYPE_DEFAULT, "SGMI received %@ feedback for follow up warning", buf, 0xCu);
   }
 
-  if (a3 > 1)
+  if (engagement > 1)
   {
     v10 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v16 = a3;
+      engagementCopy = engagement;
       _os_log_impl(&dword_231E60000, v10, OS_LOG_TYPE_DEFAULT, "[Follow Up] Engagement type %ld received is not supported.", buf, 0xCu);
     }
   }
@@ -141,49 +141,49 @@ id __50__SGMIFollowUpAnalyzer_logFollowUpStatsAndSetting__block_invoke(uint64_t 
   else
   {
     v10 = +[SGSqlEntityStore defaultStore];
-    v11 = [v10 sgmiFeatureStore];
-    [v11 incrementUserEngagement:a3 == 1 forFollowUpWarning:v5];
+    sgmiFeatureStore = [v10 sgmiFeatureStore];
+    [sgmiFeatureStore incrementUserEngagement:engagement == 1 forFollowUpWarning:warningCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)analyzeIncomingMailFeatureVector:(id)a3
++ (id)analyzeIncomingMailFeatureVector:(id)vector
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vectorCopy = vector;
   v5 = +[SGMIConfig defaultConfig];
-  v6 = [v4 mailMessage];
-  v7 = [v6 textContentLanguageIdentifier];
+  mailMessage = [vectorCopy mailMessage];
+  textContentLanguageIdentifier = [mailMessage textContentLanguageIdentifier];
 
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  v9 = [v8 languageCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
 
-  if (v7 && ([v5 detectors], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", v7), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  if (textContentLanguageIdentifier && ([v5 detectors], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", textContentLanguageIdentifier), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
-    v12 = v7;
+    v12 = textContentLanguageIdentifier;
 
-    v9 = v12;
+    languageCode = v12;
   }
 
-  else if (!v9)
+  else if (!languageCode)
   {
     goto LABEL_7;
   }
 
-  v13 = [v5 detectors];
-  v14 = [v13 objectForKeyedSubscript:v9];
-  v15 = [v14 followUpOnIncomingMails];
-  v16 = [v15 body];
+  detectors = [v5 detectors];
+  v14 = [detectors objectForKeyedSubscript:languageCode];
+  followUpOnIncomingMails = [v14 followUpOnIncomingMails];
+  body = [followUpOnIncomingMails body];
 
-  if (v16)
+  if (body)
   {
     v35 = &unk_2847493B0;
-    v17 = [v5 detectors];
-    v18 = [v17 objectForKeyedSubscript:v9];
-    v19 = [v18 followUpOnIncomingMails];
-    v20 = [v19 body];
-    v36[0] = v20;
+    detectors2 = [v5 detectors];
+    v18 = [detectors2 objectForKeyedSubscript:languageCode];
+    followUpOnIncomingMails2 = [v18 followUpOnIncomingMails];
+    body2 = [followUpOnIncomingMails2 body];
+    v36[0] = body2;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
 
     goto LABEL_8;
@@ -192,57 +192,57 @@ id __50__SGMIFollowUpAnalyzer_logFollowUpStatsAndSetting__block_invoke(uint64_t 
 LABEL_7:
   v21 = MEMORY[0x277CBEC10];
 LABEL_8:
-  v22 = [v5 followUpWarningsParameters];
-  v23 = [v22 objectForKeyedSubscript:v9];
+  followUpWarningsParameters = [v5 followUpWarningsParameters];
+  v23 = [followUpWarningsParameters objectForKeyedSubscript:languageCode];
   v24 = [v23 objectForKeyedSubscript:computeCustomTimeRange];
-  v25 = [v24 BOOLValue];
+  bOOLValue = [v24 BOOLValue];
 
-  v26 = [MEMORY[0x277D02098] followUpComputeCustomTimeRangeForLanguage:v9];
+  v26 = [MEMORY[0x277D02098] followUpComputeCustomTimeRangeForLanguage:languageCode];
 
   if (v26)
   {
-    v27 = [MEMORY[0x277D02098] followUpComputeCustomTimeRangeForLanguage:v9];
-    v25 = [v27 BOOLValue];
+    v27 = [MEMORY[0x277D02098] followUpComputeCustomTimeRangeForLanguage:languageCode];
+    bOOLValue = [v27 BOOLValue];
 
     v28 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [MEMORY[0x277CCABB0] numberWithBool:v25];
+      v29 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
       v33 = 138412290;
       v34 = v29;
       _os_log_impl(&dword_231E60000, v28, OS_LOG_TYPE_DEFAULT, "[Follow Up] CustomTimeRange behavior specified in asset overriden by default setting. Value: %@", &v33, 0xCu);
     }
   }
 
-  v30 = [a1 _analyzeFeatureVector:v4 withRegExpDictionary:v21 forOutgoingMail:0 withDetectedLanguage:v7 withRegExLanguage:v9 withCustomTimeRange:v25];
+  v30 = [self _analyzeFeatureVector:vectorCopy withRegExpDictionary:v21 forOutgoingMail:0 withDetectedLanguage:textContentLanguageIdentifier withRegExLanguage:languageCode withCustomTimeRange:bOOLValue];
 
   v31 = *MEMORY[0x277D85DE8];
 
   return v30;
 }
 
-+ (id)analyzeOutgoingMailFeatureVector:(id)a3
++ (id)analyzeOutgoingMailFeatureVector:(id)vector
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vectorCopy = vector;
   v5 = +[SGMIConfig defaultConfig];
   if (v5)
   {
     v6 = objc_opt_new();
-    v7 = [v4 mailMessage];
-    v8 = [v7 textContentLanguageIdentifier];
+    mailMessage = [vectorCopy mailMessage];
+    textContentLanguageIdentifier = [mailMessage textContentLanguageIdentifier];
 
-    v9 = [MEMORY[0x277CBEAF8] currentLocale];
-    v10 = [v9 languageCode];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    languageCode = [currentLocale languageCode];
 
-    if (v8 && ([v5 detectors], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKeyedSubscript:", v8), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
+    if (textContentLanguageIdentifier && ([v5 detectors], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKeyedSubscript:", textContentLanguageIdentifier), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
     {
-      v13 = v8;
+      v13 = textContentLanguageIdentifier;
 
-      v10 = v13;
+      languageCode = v13;
     }
 
-    else if (!v10)
+    else if (!languageCode)
     {
 LABEL_10:
       v30 = sgMailIntelligenceLogHandle();
@@ -250,67 +250,67 @@ LABEL_10:
       {
         v31 = [v6 description];
         v43 = 138412802;
-        v44 = v8;
+        v44 = textContentLanguageIdentifier;
         v45 = 2112;
-        v46 = v10;
+        v46 = languageCode;
         v47 = 2112;
         v48 = v31;
         _os_log_impl(&dword_231E60000, v30, OS_LOG_TYPE_DEFAULT, "Follow Up. [analyzeOutgoingMailFeatureVector] detectedLanguage: %@ regExLanguage %@ regexes loaded: %@", &v43, 0x20u);
       }
 
-      v32 = [v5 followUpWarningsParameters];
-      v33 = [v32 objectForKeyedSubscript:v10];
+      followUpWarningsParameters = [v5 followUpWarningsParameters];
+      v33 = [followUpWarningsParameters objectForKeyedSubscript:languageCode];
       v34 = [v33 objectForKeyedSubscript:computeCustomTimeRange];
-      v35 = [v34 BOOLValue];
+      bOOLValue = [v34 BOOLValue];
 
-      v36 = [MEMORY[0x277D02098] followUpComputeCustomTimeRangeForLanguage:v10];
+      v36 = [MEMORY[0x277D02098] followUpComputeCustomTimeRangeForLanguage:languageCode];
 
       if (v36)
       {
-        v37 = [MEMORY[0x277D02098] followUpComputeCustomTimeRangeForLanguage:v10];
-        v35 = [v37 BOOLValue];
+        v37 = [MEMORY[0x277D02098] followUpComputeCustomTimeRangeForLanguage:languageCode];
+        bOOLValue = [v37 BOOLValue];
 
         v38 = sgMailIntelligenceLogHandle();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
-          v39 = [MEMORY[0x277CCABB0] numberWithBool:v35];
+          v39 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
           v43 = 138412290;
           v44 = v39;
           _os_log_impl(&dword_231E60000, v38, OS_LOG_TYPE_DEFAULT, "[Follow Up] CustomTimeRange behavior specified in asset overriden by default setting. Value: %@", &v43, 0xCu);
         }
       }
 
-      v40 = [a1 _analyzeFeatureVector:v4 withRegExpDictionary:v6 forOutgoingMail:1 withDetectedLanguage:v8 withRegExLanguage:v10 withCustomTimeRange:v35];
+      v40 = [self _analyzeFeatureVector:vectorCopy withRegExpDictionary:v6 forOutgoingMail:1 withDetectedLanguage:textContentLanguageIdentifier withRegExLanguage:languageCode withCustomTimeRange:bOOLValue];
 
       goto LABEL_20;
     }
 
-    v14 = [v5 detectors];
-    v15 = [v14 objectForKeyedSubscript:v10];
-    v16 = [v15 followUpOnOutgoingMailsQuestions];
-    v17 = [v16 body];
+    detectors = [v5 detectors];
+    v15 = [detectors objectForKeyedSubscript:languageCode];
+    followUpOnOutgoingMailsQuestions = [v15 followUpOnOutgoingMailsQuestions];
+    body = [followUpOnOutgoingMailsQuestions body];
 
-    if (v17)
+    if (body)
     {
-      v18 = [v5 detectors];
-      v19 = [v18 objectForKeyedSubscript:v10];
-      v20 = [v19 followUpOnOutgoingMailsQuestions];
-      v21 = [v20 body];
-      [v6 setObject:v21 forKeyedSubscript:&unk_284749320];
+      detectors2 = [v5 detectors];
+      v19 = [detectors2 objectForKeyedSubscript:languageCode];
+      followUpOnOutgoingMailsQuestions2 = [v19 followUpOnOutgoingMailsQuestions];
+      body2 = [followUpOnOutgoingMailsQuestions2 body];
+      [v6 setObject:body2 forKeyedSubscript:&unk_284749320];
     }
 
-    v22 = [v5 detectors];
-    v23 = [v22 objectForKeyedSubscript:v10];
-    v24 = [v23 followUpOnOutgoingMailsAsks];
-    v25 = [v24 body];
+    detectors3 = [v5 detectors];
+    v23 = [detectors3 objectForKeyedSubscript:languageCode];
+    followUpOnOutgoingMailsAsks = [v23 followUpOnOutgoingMailsAsks];
+    body3 = [followUpOnOutgoingMailsAsks body];
 
-    if (v25)
+    if (body3)
     {
-      v26 = [v5 detectors];
-      v27 = [v26 objectForKeyedSubscript:v10];
-      v28 = [v27 followUpOnOutgoingMailsAsks];
-      v29 = [v28 body];
-      [v6 setObject:v29 forKeyedSubscript:&unk_284749338];
+      detectors4 = [v5 detectors];
+      v27 = [detectors4 objectForKeyedSubscript:languageCode];
+      followUpOnOutgoingMailsAsks2 = [v27 followUpOnOutgoingMailsAsks];
+      body4 = [followUpOnOutgoingMailsAsks2 body];
+      [v6 setObject:body4 forKeyedSubscript:&unk_284749338];
     }
 
     goto LABEL_10;
@@ -331,11 +331,11 @@ LABEL_20:
   return v40;
 }
 
-+ (id)analyzeForFollowUpMailWithBody:(id)a3 isSent:(BOOL)a4 messageId:(id)a5 date:(id)a6
++ (id)analyzeForFollowUpMailWithBody:(id)body isSent:(BOOL)sent messageId:(id)id date:(id)date
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  bodyCopy = body;
+  idCopy = id;
+  dateCopy = date;
   if (analyzeForFollowUpMailWithBody_isSent_messageId_date___pasOnceToken30 != -1)
   {
     dispatch_once(&analyzeForFollowUpMailWithBody_isSent_messageId_date___pasOnceToken30, &__block_literal_global_9529);
@@ -353,13 +353,13 @@ LABEL_20:
   block[2] = __77__SGMIFollowUpAnalyzer_analyzeForFollowUpMailWithBody_isSent_messageId_date___block_invoke_2;
   block[3] = &unk_27894CCD0;
   v31 = &v34;
-  v32 = a1;
-  v14 = v10;
+  selfCopy = self;
+  v14 = bodyCopy;
   v28 = v14;
-  v33 = a4;
-  v15 = v11;
+  sentCopy = sent;
+  v15 = idCopy;
   v29 = v15;
-  v16 = v12;
+  v16 = dateCopy;
   v30 = v16;
   v17 = dispatch_block_create(0, block);
   dispatch_async(v13, v17);
@@ -452,33 +452,33 @@ void __77__SGMIFollowUpAnalyzer_analyzeForFollowUpMailWithBody_isSent_messageId_
   objc_autoreleasePoolPop(v0);
 }
 
-+ (id)identifyFollowUpWarningFromSubject:(id)a3 body:(id)a4 date:(id)a5
++ (id)identifyFollowUpWarningFromSubject:(id)subject body:(id)body date:(id)date
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subjectCopy = subject;
+  bodyCopy = body;
+  dateCopy = date;
   v11 = sgMailIntelligenceLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138740483;
-    v17 = v8;
+    v17 = subjectCopy;
     v18 = 2117;
-    v19 = v9;
+    v19 = bodyCopy;
     v20 = 2117;
-    v21 = v10;
+    v21 = dateCopy;
     _os_log_impl(&dword_231E60000, v11, OS_LOG_TYPE_DEFAULT, "Follow Up. [identifyFollowUpWarningFromSubject:body:date] Computing warning for subject: %{sensitive}@ body:%{sensitive}@ date:%{sensitive}@", &v16, 0x20u);
   }
 
-  if (v10)
+  if (dateCopy)
   {
-    v12 = [a1 analyzeForFollowUpMailWithBody:v9 isSent:1 messageId:&stru_284703F00 date:v10];
+    v12 = [self analyzeForFollowUpMailWithBody:bodyCopy isSent:1 messageId:&stru_284703F00 date:dateCopy];
   }
 
   else
   {
     v13 = [MEMORY[0x277CBEAA8] now];
-    v12 = [a1 analyzeForFollowUpMailWithBody:v9 isSent:1 messageId:&stru_284703F00 date:v13];
+    v12 = [self analyzeForFollowUpMailWithBody:bodyCopy isSent:1 messageId:&stru_284703F00 date:v13];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -924,61 +924,61 @@ void __142__SGMIFollowUpAnalyzer__analyzeFeatureVector_withRegExpDictionary_forO
   }
 }
 
-+ (id)analyzeBody:(id)a3 forLanguage:(id)a4 forDate:(id)a5 withCustomTimeRange:(BOOL)a6
++ (id)analyzeBody:(id)body forLanguage:(id)language forDate:(id)date withCustomTimeRange:(BOOL)range
 {
-  v39 = a6;
+  rangeCopy = range;
   v41[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bodyCopy = body;
+  languageCopy = language;
+  dateCopy = date;
   v11 = +[SGMIConfig defaultConfig];
   v12 = objc_opt_new();
-  v13 = [v11 detectors];
-  v14 = [v13 objectForKeyedSubscript:v9];
-  v15 = [v14 followUpOnOutgoingMailsQuestions];
-  v16 = [v15 body];
+  detectors = [v11 detectors];
+  v14 = [detectors objectForKeyedSubscript:languageCopy];
+  followUpOnOutgoingMailsQuestions = [v14 followUpOnOutgoingMailsQuestions];
+  body = [followUpOnOutgoingMailsQuestions body];
 
-  if (v16)
+  if (body)
   {
-    v17 = [v11 detectors];
-    v18 = [v17 objectForKeyedSubscript:v9];
-    v19 = [v18 followUpOnOutgoingMailsQuestions];
-    v20 = [v19 body];
-    [v12 setObject:v20 forKeyedSubscript:&unk_284749320];
+    detectors2 = [v11 detectors];
+    v18 = [detectors2 objectForKeyedSubscript:languageCopy];
+    followUpOnOutgoingMailsQuestions2 = [v18 followUpOnOutgoingMailsQuestions];
+    body2 = [followUpOnOutgoingMailsQuestions2 body];
+    [v12 setObject:body2 forKeyedSubscript:&unk_284749320];
   }
 
-  v21 = [v11 detectors];
-  v22 = [v21 objectForKeyedSubscript:v9];
-  v23 = [v22 followUpOnOutgoingMailsAsks];
-  v24 = [v23 body];
+  detectors3 = [v11 detectors];
+  v22 = [detectors3 objectForKeyedSubscript:languageCopy];
+  followUpOnOutgoingMailsAsks = [v22 followUpOnOutgoingMailsAsks];
+  body3 = [followUpOnOutgoingMailsAsks body];
 
-  if (v24)
+  if (body3)
   {
-    v25 = [v11 detectors];
-    v26 = [v25 objectForKeyedSubscript:v9];
-    v27 = [v26 followUpOnOutgoingMailsAsks];
-    v28 = [v27 body];
-    [v12 setObject:v28 forKeyedSubscript:&unk_284749338];
+    detectors4 = [v11 detectors];
+    v26 = [detectors4 objectForKeyedSubscript:languageCopy];
+    followUpOnOutgoingMailsAsks2 = [v26 followUpOnOutgoingMailsAsks];
+    body4 = [followUpOnOutgoingMailsAsks2 body];
+    [v12 setObject:body4 forKeyedSubscript:&unk_284749338];
   }
 
   v40[0] = @"body";
   v40[1] = @"isSent";
-  v41[0] = v8;
+  v41[0] = bodyCopy;
   v41[1] = MEMORY[0x277CBEC38];
   v40[2] = @"messageId";
   v40[3] = @"appleMailMessageId";
   v41[2] = &stru_284703F00;
   v41[3] = &stru_284703F00;
   v40[4] = @"date";
-  v29 = v10;
-  if (!v10)
+  v29 = dateCopy;
+  if (!dateCopy)
   {
     v29 = [MEMORY[0x277CBEAA8] now];
   }
 
   v41[4] = v29;
   v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:5];
-  if (!v10)
+  if (!dateCopy)
   {
   }
 
@@ -987,37 +987,37 @@ void __142__SGMIFollowUpAnalyzer__analyzeFeatureVector_withRegExpDictionary_forO
   v33 = +[SGSqlEntityStore defaultStore];
   v34 = [(SGMIFeatureVector *)v32 initWithMessageId:&stru_284703F00 hasHashedMessageId:0 simpleMailMessage:v31 senderConnectionScore:&unk_284749350 biomeMessageSummary:0 store:v33 preLoadedFeatureNames:&unk_28474A588];
 
-  v35 = [a1 _analyzeFeatureVector:v34 withRegExpDictionary:v12 forOutgoingMail:1 withDetectedLanguage:v9 withRegExLanguage:v9 withCustomTimeRange:v39];
+  v35 = [self _analyzeFeatureVector:v34 withRegExpDictionary:v12 forOutgoingMail:1 withDetectedLanguage:languageCopy withRegExLanguage:languageCopy withCustomTimeRange:rangeCopy];
 
   v36 = *MEMORY[0x277D85DE8];
 
   return v35;
 }
 
-+ (id)analyzeFeatureVector:(id)a3
++ (id)analyzeFeatureVector:(id)vector
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  vectorCopy = vector;
   v4 = sgMailIntelligenceLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 messageId];
+    messageId = [vectorCopy messageId];
     v13 = 138412547;
-    v14 = v5;
+    v14 = messageId;
     v15 = 2117;
-    v16 = v3;
+    v16 = vectorCopy;
     _os_log_impl(&dword_231E60000, v4, OS_LOG_TYPE_DEFAULT, "Follow Up. [analyzeFeatureVector] Analyze Feature Vector with messageId %@. Feature Vector: %{sensitive}@", &v13, 0x16u);
   }
 
-  v6 = [v3 mailMessage];
-  if ([v6 isSent])
+  mailMessage = [vectorCopy mailMessage];
+  if ([mailMessage isSent])
   {
-    [SGMIFollowUpAnalyzer analyzeOutgoingMailFeatureVector:v3];
+    [SGMIFollowUpAnalyzer analyzeOutgoingMailFeatureVector:vectorCopy];
   }
 
   else
   {
-    [SGMIFollowUpAnalyzer analyzeIncomingMailFeatureVector:v3];
+    [SGMIFollowUpAnalyzer analyzeIncomingMailFeatureVector:vectorCopy];
   }
   v7 = ;
 
@@ -1030,8 +1030,8 @@ void __142__SGMIFollowUpAnalyzer__analyzeFeatureVector_withRegExpDictionary_forO
   }
 
   v9 = +[SGSqlEntityStore defaultStore];
-  v10 = [v9 sgmiFeatureStore];
-  [v10 updateFollowUpDetectionStatsWithWarning:v7];
+  sgmiFeatureStore = [v9 sgmiFeatureStore];
+  [sgmiFeatureStore updateFollowUpDetectionStatsWithWarning:v7];
 
   v11 = *MEMORY[0x277D85DE8];
 

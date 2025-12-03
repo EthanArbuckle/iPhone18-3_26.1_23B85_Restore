@@ -1,13 +1,13 @@
 @interface ISComponentGroup
 - (ISComponentGroup)init;
-- (ISComponentGroup)initWithEventsBridge:(id)a3;
+- (ISComponentGroup)initWithEventsBridge:(id)bridge;
 - (ISComponentIdentifier)componentIdentifier;
 - (NSArray)events;
 @end
 
 @implementation ISComponentGroup
 
-- (ISComponentGroup)initWithEventsBridge:(id)a3
+- (ISComponentGroup)initWithEventsBridge:(id)bridge
 {
   sub_23C5AE59C();
   *(&self->super.isa + OBJC_IVAR___ISComponentGroup_eventsInternal) = sub_23C8718A4();
@@ -28,7 +28,7 @@
 
 - (ISComponentIdentifier)componentIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_23C5AE33C();
   v4 = v3;
 

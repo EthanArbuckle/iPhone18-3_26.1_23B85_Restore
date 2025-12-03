@@ -3,12 +3,12 @@
 - (BOOL)isOnline;
 - (BOOL)isSubscribed;
 - (VMLegacyAccount)init;
-- (id)allVoicemailsWithFlags:(unint64_t)a3 withoutFlags:(unint64_t)a4;
-- (id)voicemailWithIdentifier:(unint64_t)a3;
+- (id)allVoicemailsWithFlags:(unint64_t)flags withoutFlags:(unint64_t)withoutFlags;
+- (id)voicemailWithIdentifier:(unint64_t)identifier;
 - (unsigned)recentUnreadCount;
 - (unsigned)unreadCount;
-- (void)moveVoicemailFromTrash:(id)a3;
-- (void)moveVoicemailToTrash:(id)a3;
+- (void)moveVoicemailFromTrash:(id)trash;
+- (void)moveVoicemailToTrash:(id)trash;
 @end
 
 @implementation VMLegacyAccount
@@ -30,27 +30,27 @@
 
 - (unsigned)unreadCount
 {
-  v2 = [(VMLegacyAccount *)self voicemailManager];
-  v3 = [v2 countOfVoicemailsPassingTest:&__block_literal_global_6];
+  voicemailManager = [(VMLegacyAccount *)self voicemailManager];
+  v3 = [voicemailManager countOfVoicemailsPassingTest:&__block_literal_global_6];
 
   return v3;
 }
 
 - (unsigned)recentUnreadCount
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v5 = v4 + -86400.0;
 
-  v6 = [(VMLegacyAccount *)self voicemailManager];
+  voicemailManager = [(VMLegacyAccount *)self voicemailManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __36__VMLegacyAccount_recentUnreadCount__block_invoke;
   v8[3] = &__block_descriptor_40_e21_B16__0__VMVoicemail_8l;
   *&v8[4] = v5;
-  LODWORD(v3) = [v6 countOfVoicemailsPassingTest:v8];
+  LODWORD(date) = [voicemailManager countOfVoicemailsPassingTest:v8];
 
-  return v3;
+  return date;
 }
 
 uint64_t __36__VMLegacyAccount_recentUnreadCount__block_invoke(uint64_t a1, void *a2)
@@ -76,60 +76,60 @@ uint64_t __36__VMLegacyAccount_recentUnreadCount__block_invoke(uint64_t a1, void
 
 - (BOOL)isMessageWaiting
 {
-  v2 = [(VMLegacyAccount *)self voicemailManager];
-  v3 = [v2 isMessageWaiting];
+  voicemailManager = [(VMLegacyAccount *)self voicemailManager];
+  isMessageWaiting = [voicemailManager isMessageWaiting];
 
-  return v3;
+  return isMessageWaiting;
 }
 
 - (BOOL)isOnline
 {
-  v2 = [(VMLegacyAccount *)self voicemailManager];
-  v3 = [v2 isOnline];
+  voicemailManager = [(VMLegacyAccount *)self voicemailManager];
+  isOnline = [voicemailManager isOnline];
 
-  return v3;
+  return isOnline;
 }
 
 - (BOOL)isSubscribed
 {
-  v2 = [(VMLegacyAccount *)self voicemailManager];
-  v3 = [v2 isSubscribed];
+  voicemailManager = [(VMLegacyAccount *)self voicemailManager];
+  isSubscribed = [voicemailManager isSubscribed];
 
-  return v3;
+  return isSubscribed;
 }
 
-- (id)voicemailWithIdentifier:(unint64_t)a3
+- (id)voicemailWithIdentifier:(unint64_t)identifier
 {
-  v4 = [(VMLegacyAccount *)self voicemailManager];
-  v5 = [v4 voicemailWithIdentifier:a3];
+  voicemailManager = [(VMLegacyAccount *)self voicemailManager];
+  v5 = [voicemailManager voicemailWithIdentifier:identifier];
 
   return v5;
 }
 
-- (void)moveVoicemailToTrash:(id)a3
+- (void)moveVoicemailToTrash:(id)trash
 {
-  v6 = a3;
-  v4 = [(VMLegacyAccount *)self voicemailManager];
-  v5 = [v4 trashVoicemail:v6];
+  trashCopy = trash;
+  voicemailManager = [(VMLegacyAccount *)self voicemailManager];
+  v5 = [voicemailManager trashVoicemail:trashCopy];
 }
 
-- (void)moveVoicemailFromTrash:(id)a3
+- (void)moveVoicemailFromTrash:(id)trash
 {
-  v6 = a3;
-  v4 = [(VMLegacyAccount *)self voicemailManager];
-  v5 = [v4 removeVoicemailFromTrash:v6];
+  trashCopy = trash;
+  voicemailManager = [(VMLegacyAccount *)self voicemailManager];
+  v5 = [voicemailManager removeVoicemailFromTrash:trashCopy];
 }
 
-- (id)allVoicemailsWithFlags:(unint64_t)a3 withoutFlags:(unint64_t)a4
+- (id)allVoicemailsWithFlags:(unint64_t)flags withoutFlags:(unint64_t)withoutFlags
 {
-  v6 = [(VMLegacyAccount *)self voicemailManager];
+  voicemailManager = [(VMLegacyAccount *)self voicemailManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__VMLegacyAccount_allVoicemailsWithFlags_withoutFlags___block_invoke;
   v9[3] = &__block_descriptor_48_e21_B16__0__VMVoicemail_8l;
-  v9[4] = a3;
-  v9[5] = a4;
-  v7 = [v6 voicemailsPassingTest:v9];
+  v9[4] = flags;
+  v9[5] = withoutFlags;
+  v7 = [voicemailManager voicemailsPassingTest:v9];
 
   return v7;
 }

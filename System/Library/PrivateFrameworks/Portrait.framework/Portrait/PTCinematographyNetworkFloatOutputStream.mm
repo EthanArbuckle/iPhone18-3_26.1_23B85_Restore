@@ -1,21 +1,21 @@
 @interface PTCinematographyNetworkFloatOutputStream
-- (PTCinematographyNetworkFloatOutputStream)initWithDestination:(float *)a3 count:(unint64_t)a4;
+- (PTCinematographyNetworkFloatOutputStream)initWithDestination:(float *)destination count:(unint64_t)count;
 - (unint64_t)remainingCount;
-- (void)writeFloat:(float)a3;
-- (void)writeOneHot:(unint64_t)a3 count:(unint64_t)a4;
+- (void)writeFloat:(float)float;
+- (void)writeOneHot:(unint64_t)hot count:(unint64_t)count;
 @end
 
 @implementation PTCinematographyNetworkFloatOutputStream
 
-- (PTCinematographyNetworkFloatOutputStream)initWithDestination:(float *)a3 count:(unint64_t)a4
+- (PTCinematographyNetworkFloatOutputStream)initWithDestination:(float *)destination count:(unint64_t)count
 {
   v7.receiver = self;
   v7.super_class = PTCinematographyNetworkFloatOutputStream;
   result = [(PTCinematographyNetworkFloatOutputStream *)&v7 init];
   if (result)
   {
-    result->_fp = a3;
-    result->_count = a4;
+    result->_fp = destination;
+    result->_count = count;
     result->_index = 0;
   }
 
@@ -39,23 +39,23 @@
   }
 }
 
-- (void)writeFloat:(float)a3
+- (void)writeFloat:(float)float
 {
   fp = self->_fp;
   index = self->_index;
   self->_index = index + 1;
-  fp[index] = a3;
+  fp[index] = float;
 }
 
-- (void)writeOneHot:(unint64_t)a3 count:(unint64_t)a4
+- (void)writeOneHot:(unint64_t)hot count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
     fp = self->_fp;
     index = self->_index;
     do
     {
-      if (a3)
+      if (hot)
       {
         v6 = 0.0;
       }
@@ -66,11 +66,11 @@
       }
 
       fp[index++] = v6;
-      --a3;
-      --a4;
+      --hot;
+      --count;
     }
 
-    while (a4);
+    while (count);
     self->_index = index;
   }
 }

@@ -1,19 +1,19 @@
 @interface AVNetworkPlaybackPerfHUDLayer
 - (AVNetworkPlaybackPerfHUDLayer)init;
-- (BOOL)valueLoadedForKey:(id)a3 onObject:(id)a4;
-- (float)getScaleFactorForDisplaySize:(CGSize)a3;
+- (BOOL)valueLoadedForKey:(id)key onObject:(id)object;
+- (float)getScaleFactorForDisplaySize:(CGSize)size;
 - (id)displayStringGenerator;
 - (void)_hudUpdateTrigger;
-- (void)copyPropertiesFromStringGenerator:(id)a3;
+- (void)copyPropertiesFromStringGenerator:(id)generator;
 - (void)currentItemChanged;
 - (void)currentItemTracksChanged;
 - (void)dealloc;
 - (void)getHudSetting;
-- (void)readHudSettingsAndCallCompletionHandler:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setColor:(int)a3;
+- (void)readHudSettingsAndCallCompletionHandler:(id)handler;
+- (void)setBounds:(CGRect)bounds;
+- (void)setColor:(int)color;
 - (void)startDispatchTimer;
-- (void)updateHudWithDisplayString:(id)a3;
+- (void)updateHudWithDisplayString:(id)string;
 @end
 
 @implementation AVNetworkPlaybackPerfHUDLayer
@@ -27,8 +27,8 @@
     v10 = 0u;
     v7 = 0u;
     v8 = 0u;
-    v2 = [objc_msgSend(objc_loadWeak(&self->_player) currentItem];
-    v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+    currentItem = [objc_msgSend(objc_loadWeak(&self->_player) currentItem];
+    v3 = [currentItem countByEnumeratingWithState:&v7 objects:v11 count:16];
     if (v3)
     {
       v4 = v3;
@@ -40,14 +40,14 @@
         {
           if (*v8 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(currentItem);
           }
 
           [objc_msgSend(*(*(&v7 + 1) + 8 * v6++) "assetTrack")];
         }
 
         while (v4 != v6);
-        v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+        v4 = [currentItem countByEnumeratingWithState:&v7 objects:v11 count:16];
       }
 
       while (v4);
@@ -76,12 +76,12 @@
   return v2;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   if (!self->_spatialDiagnostics)
   {
-    v4 = a3.size.width - self->_hudXoffset;
-    v5 = a3.size.height - self->_hudYoffset;
+    v4 = bounds.size.width - self->_hudXoffset;
+    v5 = bounds.size.height - self->_hudYoffset;
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [(AVNetworkPlaybackPerfHUDLayer *)self setPosition:self->_hudXoffset, self->_hudYoffset];
@@ -92,20 +92,20 @@
   }
 }
 
-- (void)setColor:(int)a3
+- (void)setColor:(int)color
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3 <= 5)
+  if (color <= 5)
   {
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v6 = DeviceRGB;
     v15 = xmmword_196257520;
     v16 = unk_196257530;
-    if (a3 <= 2)
+    if (color <= 2)
     {
-      if (a3)
+      if (color)
       {
-        if (a3 == 1)
+        if (color == 1)
         {
           v15.i64[1] = 0x3FF0000000000000;
         }
@@ -126,9 +126,9 @@
       goto LABEL_14;
     }
 
-    if (a3 != 3)
+    if (color != 3)
     {
-      if (a3 != 4)
+      if (color != 4)
       {
         v12 = 0x3FE547AE20000000;
         v15 = vdupq_n_s64(0x3FE547AE20000000uLL);
@@ -188,13 +188,13 @@ LABEL_14:
   v7 = CFPreferencesGetAppIntegerValue(@"fontsize", @"com.apple.avfoundation.videoperformancehud", 0);
   if (v7 <= 7)
   {
-    v8 = [MEMORY[0x1E6979328] mainDisplay];
-    if (!v8)
+    mainDisplay = [MEMORY[0x1E6979328] mainDisplay];
+    if (!mainDisplay)
     {
       goto LABEL_16;
     }
 
-    [v8 bounds];
+    [mainDisplay bounds];
     v10 = (v9 * 30.0 / 1280.0);
     self->_fontSizeInt = v10;
     if (v10 >= 8)
@@ -231,14 +231,14 @@ LABEL_16:
   }
 }
 
-- (void)readHudSettingsAndCallCompletionHandler:(id)a3
+- (void)readHudSettingsAndCallCompletionHandler:(id)handler
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __73__AVNetworkPlaybackPerfHUDLayer_readHudSettingsAndCallCompletionHandler___block_invoke;
   v3[3] = &unk_1E74626C8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = handler;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -303,10 +303,10 @@ void *__51__AVNetworkPlaybackPerfHUDLayer_startDispatchTimer__block_invoke(uint6
   [(AVNetworkPlaybackPerfHUDLayer *)&v4 dealloc];
 }
 
-- (float)getScaleFactorForDisplaySize:(CGSize)a3
+- (float)getScaleFactorForDisplaySize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(AVNetworkPlaybackPerfHUDLayer *)self bounds];
   v7 = fmax(v5, v6);
   v8 = fmax(width, height);
@@ -330,20 +330,20 @@ void *__51__AVNetworkPlaybackPerfHUDLayer_startDispatchTimer__block_invoke(uint6
   }
 }
 
-- (BOOL)valueLoadedForKey:(id)a3 onObject:(id)a4
+- (BOOL)valueLoadedForKey:(id)key onObject:(id)object
 {
   v7 = [(NSMutableDictionary *)self->_loadingStatusCache objectForKey:?];
-  v8 = [MEMORY[0x1E696B098] valueWithNonretainedObject:a4];
+  v8 = [MEMORY[0x1E696B098] valueWithNonretainedObject:object];
   if (!v7 || (v9 = [v7 objectForKey:v8]) == 0 || (v10 = objc_msgSend(v9, "unsignedLongValue")) == 0)
   {
-    v10 = [a4 statusOfValueForKey:a3 error:0];
+    v10 = [object statusOfValueForKey:key error:0];
     if (v10 >= 2)
     {
       v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v10];
       if (!v7)
       {
         v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        [(NSMutableDictionary *)self->_loadingStatusCache setObject:v7 forKey:a3];
+        [(NSMutableDictionary *)self->_loadingStatusCache setObject:v7 forKey:key];
       }
 
       [v7 setObject:v11 forKey:v8];
@@ -353,7 +353,7 @@ void *__51__AVNetworkPlaybackPerfHUDLayer_startDispatchTimer__block_invoke(uint6
   return v10 == 2;
 }
 
-- (void)updateHudWithDisplayString:(id)a3
+- (void)updateHudWithDisplayString:(id)string
 {
   v22 = *MEMORY[0x1E69E9840];
   if (self->_updateUISettings)
@@ -388,12 +388,12 @@ void *__51__AVNetworkPlaybackPerfHUDLayer_startDispatchTimer__block_invoke(uint6
     audioSpatializationMode = self->_audioSpatializationMode;
     if (audioSpatializationMode)
     {
-      v9 = [(NSNumber *)audioSpatializationMode integerValue];
+      integerValue = [(NSNumber *)audioSpatializationMode integerValue];
     }
 
     else
     {
-      v9 = -1;
+      integerValue = -1;
     }
 
     [MEMORY[0x1E6979518] begin];
@@ -402,12 +402,12 @@ void *__51__AVNetworkPlaybackPerfHUDLayer_startDispatchTimer__block_invoke(uint6
     [(AVNetworkPlaybackPerfHUDLayer *)self setOpacity:v17];
     [(AVNetworkPlaybackPerfHUDLayer *)self setBackgroundColor:v7];
     [(AVNetworkPlaybackPerfHUDLayer *)self setWrapped:0];
-    if (v9 <= 3)
+    if (integerValue <= 3)
     {
-      [(AVNetworkPlaybackPerfHUDLayer *)self setColor:dword_196257540[v9]];
+      [(AVNetworkPlaybackPerfHUDLayer *)self setColor:dword_196257540[integerValue]];
     }
 
-    [(AVNetworkPlaybackPerfHUDLayer *)self setString:a3];
+    [(AVNetworkPlaybackPerfHUDLayer *)self setString:string];
     [(AVNetworkPlaybackPerfHUDLayer *)self preferredFrameSize];
     if (v18 > 0.0)
     {
@@ -449,7 +449,7 @@ LABEL_9:
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [(AVNetworkPlaybackPerfHUDLayer *)self setFontSize:fontSizeInt];
-    [(AVNetworkPlaybackPerfHUDLayer *)self setString:a3];
+    [(AVNetworkPlaybackPerfHUDLayer *)self setString:string];
     v16 = MEMORY[0x1E6979518];
 
     [v16 commit];
@@ -468,14 +468,14 @@ LABEL_9:
   return v3;
 }
 
-- (void)copyPropertiesFromStringGenerator:(id)a3
+- (void)copyPropertiesFromStringGenerator:(id)generator
 {
-  self->_prevStallCount = [a3 prevStallCount];
-  self->_totalStallCount = [a3 totalStallCount];
-  self->_prevVariantIdx = [a3 prevVariantIdx];
-  self->_displayResolutionHeight = [objc_msgSend(a3 "displayResolutionHeight")];
-  self->_displayResolutionWidth = [objc_msgSend(a3 "displayResolutionWidth")];
-  self->_audioSpatializationMode = [objc_msgSend(a3 "audioSpatializationMode")];
+  self->_prevStallCount = [generator prevStallCount];
+  self->_totalStallCount = [generator totalStallCount];
+  self->_prevVariantIdx = [generator prevVariantIdx];
+  self->_displayResolutionHeight = [objc_msgSend(generator "displayResolutionHeight")];
+  self->_displayResolutionWidth = [objc_msgSend(generator "displayResolutionWidth")];
+  self->_audioSpatializationMode = [objc_msgSend(generator "audioSpatializationMode")];
 }
 
 - (void)_hudUpdateTrigger

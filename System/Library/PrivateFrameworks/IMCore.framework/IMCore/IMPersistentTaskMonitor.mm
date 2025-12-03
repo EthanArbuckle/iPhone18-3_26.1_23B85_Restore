@@ -1,5 +1,5 @@
 @interface IMPersistentTaskMonitor
-- (IMPersistentTaskMonitor)initWithChangeHandler:(id)a3;
+- (IMPersistentTaskMonitor)initWithChangeHandler:(id)handler;
 - (int64_t)remainingChats;
 - (int64_t)remainingMessages;
 - (void)cancel;
@@ -7,9 +7,9 @@
 
 @implementation IMPersistentTaskMonitor
 
-- (IMPersistentTaskMonitor)initWithChangeHandler:(id)a3
+- (IMPersistentTaskMonitor)initWithChangeHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   if (v3)
   {
     v4 = v3;
@@ -28,13 +28,13 @@
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A8486248();
 }
 
 - (int64_t)remainingChats
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A8486B7C();
 
   return v3;
@@ -42,7 +42,7 @@
 
 - (int64_t)remainingMessages
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A8486C44();
 
   return v3;

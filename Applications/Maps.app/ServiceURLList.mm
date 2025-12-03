@@ -1,20 +1,20 @@
 @interface ServiceURLList
 + (id)defaultServiceURLLists;
 - ($6E15C01CA1BE37A4936191A84F7075E2)defaultsKey;
-- (ServiceURLList)initWithName:(id)a3 defaultsKey:(id)a4;
-- (id)URLAtIndex:(unint64_t)a3;
-- (id)infoAtIndex:(unint64_t)a3;
-- (id)nameAtIndex:(unint64_t)a3;
-- (void)addURL:(id)a3 withName:(id)a4 info:(id)a5;
+- (ServiceURLList)initWithName:(id)name defaultsKey:(id)key;
+- (id)URLAtIndex:(unint64_t)index;
+- (id)infoAtIndex:(unint64_t)index;
+- (id)nameAtIndex:(unint64_t)index;
+- (void)addURL:(id)l withName:(id)name info:(id)info;
 @end
 
 @implementation ServiceURLList
 
-- (id)infoAtIndex:(unint64_t)a3
+- (id)infoAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_infos count]>= a3)
+  if ([(NSMutableArray *)self->_infos count]>= index)
   {
-    v6 = [(NSMutableArray *)self->_infos objectAtIndexedSubscript:a3];
+    v6 = [(NSMutableArray *)self->_infos objectAtIndexedSubscript:index];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,11 +35,11 @@
   return v5;
 }
 
-- (id)nameAtIndex:(unint64_t)a3
+- (id)nameAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_names count]>= a3)
+  if ([(NSMutableArray *)self->_names count]>= index)
   {
-    v5 = [(NSMutableArray *)self->_names objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_names objectAtIndexedSubscript:index];
   }
 
   else
@@ -50,11 +50,11 @@
   return v5;
 }
 
-- (id)URLAtIndex:(unint64_t)a3
+- (id)URLAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_urls count]>= a3)
+  if ([(NSMutableArray *)self->_urls count]>= index)
   {
-    v5 = [(NSMutableArray *)self->_urls objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_urls objectAtIndexedSubscript:index];
   }
 
   else
@@ -65,18 +65,18 @@
   return v5;
 }
 
-- (void)addURL:(id)a3 withName:(id)a4 info:(id)a5
+- (void)addURL:(id)l withName:(id)name info:(id)info
 {
-  v12 = a5;
+  infoCopy = info;
   names = self->_names;
-  v9 = a3;
-  [(NSMutableArray *)names addObject:a4];
-  [(NSMutableArray *)self->_urls addObject:v9];
+  lCopy = l;
+  [(NSMutableArray *)names addObject:name];
+  [(NSMutableArray *)self->_urls addObject:lCopy];
 
   infos = self->_infos;
-  if (v12)
+  if (infoCopy)
   {
-    [(NSMutableArray *)self->_infos addObject:v12];
+    [(NSMutableArray *)self->_infos addObject:infoCopy];
   }
 
   else
@@ -95,17 +95,17 @@
   return result;
 }
 
-- (ServiceURLList)initWithName:(id)a3 defaultsKey:(id)a4
+- (ServiceURLList)initWithName:(id)name defaultsKey:(id)key
 {
-  var1 = a4.var0.var1;
-  v5 = *&a4.var0.var0;
-  v7 = a3;
+  var1 = key.var0.var1;
+  v5 = *&key.var0.var0;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = ServiceURLList;
   v8 = [(ServiceURLList *)&v19 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [nameCopy copy];
     serviceName = v8->_serviceName;
     v8->_serviceName = v9;
 

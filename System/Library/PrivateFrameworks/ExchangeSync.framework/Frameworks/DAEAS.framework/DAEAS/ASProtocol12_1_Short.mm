@@ -1,70 +1,70 @@
 @interface ASProtocol12_1_Short
-- (id)requestURLStringWithTask:(id)a3;
+- (id)requestURLStringWithTask:(id)task;
 @end
 
 @implementation ASProtocol12_1_Short
 
-- (id)requestURLStringWithTask:(id)a3
+- (id)requestURLStringWithTask:(id)task
 {
-  v4 = a3;
-  if ([v4 commandCode] == -1)
+  taskCopy = task;
+  if ([taskCopy commandCode] == -1)
   {
     v25.receiver = self;
     v25.super_class = ASProtocol12_1_Short;
-    v18 = [(ASProtocol *)&v25 requestURLStringWithTask:v4];
+    v18 = [(ASProtocol *)&v25 requestURLStringWithTask:taskCopy];
   }
 
   else
   {
-    v5 = [v4 taskManager];
+    taskManager = [taskCopy taskManager];
     v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:64];
-    v24 = [(ASProtocol12_1_Short *)self shortProtocolVersion];
-    [v6 appendBytes:&v24 length:1];
-    v24 = [v4 commandCode];
-    [v6 appendBytes:&v24 length:1];
+    shortProtocolVersion = [(ASProtocol12_1_Short *)self shortProtocolVersion];
+    [v6 appendBytes:&shortProtocolVersion length:1];
+    shortProtocolVersion = [taskCopy commandCode];
+    [v6 appendBytes:&shortProtocolVersion length:1];
     v23 = 1033;
     [v6 appendBytes:&v23 length:2];
-    v7 = [v5 deviceID];
-    v8 = [v7 dataUsingEncoding:4];
+    deviceID = [taskManager deviceID];
+    v8 = [deviceID dataUsingEncoding:4];
 
-    v24 = [v8 length];
-    [v6 appendBytes:&v24 length:1];
+    shortProtocolVersion = [v8 length];
+    [v6 appendBytes:&shortProtocolVersion length:1];
     v21 = v8;
     [v6 appendData:v8];
-    v9 = [v5 policyKey];
-    if (!v9)
+    policyKey = [taskManager policyKey];
+    if (!policyKey)
     {
-      v9 = @"0";
+      policyKey = @"0";
     }
 
-    v20 = v9;
-    v22 = [(__CFString *)v9 longLongValue];
-    v24 = 4;
-    [v6 appendBytes:&v24 length:1];
-    [v6 appendBytes:&v22 length:4];
-    v10 = [v5 deviceType];
-    v11 = [v10 dataUsingEncoding:4];
+    v20 = policyKey;
+    longLongValue = [(__CFString *)policyKey longLongValue];
+    shortProtocolVersion = 4;
+    [v6 appendBytes:&shortProtocolVersion length:1];
+    [v6 appendBytes:&longLongValue length:4];
+    deviceType = [taskManager deviceType];
+    v11 = [deviceType dataUsingEncoding:4];
 
-    v24 = [v11 length];
-    [v6 appendBytes:&v24 length:1];
+    shortProtocolVersion = [v11 length];
+    [v6 appendBytes:&shortProtocolVersion length:1];
     [v6 appendData:v11];
-    v12 = [v5 user];
-    v13 = [(ASProtocol *)self _usernameOnlyPortionOfUserString:v12];
+    user = [taskManager user];
+    v13 = [(ASProtocol *)self _usernameOnlyPortionOfUserString:user];
 
     v14 = [v13 dataUsingEncoding:4];
-    v24 = 8;
-    [v6 appendBytes:&v24 length:1];
-    v24 = [v14 length];
-    [v6 appendBytes:&v24 length:1];
+    shortProtocolVersion = 8;
+    [v6 appendBytes:&shortProtocolVersion length:1];
+    shortProtocolVersion = [v14 length];
+    [v6 appendBytes:&shortProtocolVersion length:1];
     [v6 appendData:v14];
-    v15 = [v4 parameterData];
-    if (v15)
+    parameterData = [taskCopy parameterData];
+    if (parameterData)
     {
-      [v6 appendData:v15];
+      [v6 appendData:parameterData];
     }
 
     v16 = [v6 base64EncodedStringWithOptions:0];
-    v17 = [(ASProtocol *)self _requestLinePrefixWithTask:v4];
+    v17 = [(ASProtocol *)self _requestLinePrefixWithTask:taskCopy];
     v18 = [v17 stringByAppendingString:v16];
   }
 

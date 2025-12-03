@@ -1,27 +1,27 @@
 @interface ASTUploadFilesResult
-+ (id)resultFromSource:(id)a3 andUploadDictionaries:(id)a4;
-- (ASTUploadFilesResult)initWithCoder:(id)a3;
-- (ASTUploadFilesResult)initWithSource:(id)a3 andCerts:(id)a4 andFiles:(id)a5;
++ (id)resultFromSource:(id)source andUploadDictionaries:(id)dictionaries;
+- (ASTUploadFilesResult)initWithCoder:(id)coder;
+- (ASTUploadFilesResult)initWithSource:(id)source andCerts:(id)certs andFiles:(id)files;
 - (BOOL)isEmpty;
 - (id)generatePayload;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASTUploadFilesResult
 
-+ (id)resultFromSource:(id)a3 andUploadDictionaries:(id)a4
++ (id)resultFromSource:(id)source andUploadDictionaries:(id)dictionaries
 {
   v39 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v5 = a4;
+  sourceCopy = source;
+  dictionariesCopy = dictionaries;
   v28 = [MEMORY[0x277CBEB58] set];
-  v27 = [MEMORY[0x277CBEB18] array];
-  v31 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v5;
+  obj = dictionariesCopy;
   v32 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v32)
   {
@@ -52,7 +52,7 @@
               v12 = [v8 objectForKeyedSubscript:@"sigAlgo"];
               v13 = [[ASTUploadFilesCertsEntry alloc] initWithCert:v10 andPubKeyDigest:v11 andSigAlgo:v12];
               [v28 addObject:v10];
-              [v27 addObject:v13];
+              [array addObject:v13];
             }
           }
 
@@ -75,7 +75,7 @@
         v19 = [v7 objectForKeyedSubscript:@"size"];
         v20 = [v7 objectForKeyedSubscript:@"uploadUrl"];
         v21 = [[ASTUploadFilesItemEntry alloc] initWithId:v14 andName:v15 andSig:v16 andPubKeyDigest:v17 andStatus:v18 andSize:v19 andUploadUrl:v20];
-        [v31 addObject:v21];
+        [array2 addObject:v21];
 
         ++v6;
       }
@@ -88,26 +88,26 @@
     while (v22);
   }
 
-  v23 = [[ASTUploadFilesResult alloc] initWithSource:v26 andCerts:v27 andFiles:v31];
+  v23 = [[ASTUploadFilesResult alloc] initWithSource:sourceCopy andCerts:array andFiles:array2];
   v24 = *MEMORY[0x277D85DE8];
 
   return v23;
 }
 
-- (ASTUploadFilesResult)initWithSource:(id)a3 andCerts:(id)a4 andFiles:(id)a5
+- (ASTUploadFilesResult)initWithSource:(id)source andCerts:(id)certs andFiles:(id)files
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  certsCopy = certs;
+  filesCopy = files;
   v15.receiver = self;
   v15.super_class = ASTUploadFilesResult;
   v12 = [(ASTUploadFilesResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_source, a3);
-    objc_storeStrong(&v13->_certs, a4);
-    objc_storeStrong(&v13->_files, a5);
+    objc_storeStrong(&v12->_source, source);
+    objc_storeStrong(&v13->_certs, certs);
+    objc_storeStrong(&v13->_files, files);
   }
 
   return v13;
@@ -116,15 +116,15 @@
 - (id)generatePayload
 {
   v59 = *MEMORY[0x277D85DE8];
-  v35 = [MEMORY[0x277CBEB18] array];
-  v34 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v31 = self;
-  v3 = [(ASTUploadFilesResult *)self certs];
-  v4 = [v3 countByEnumeratingWithState:&v47 objects:v58 count:16];
+  selfCopy = self;
+  certs = [(ASTUploadFilesResult *)self certs];
+  v4 = [certs countByEnumeratingWithState:&v47 objects:v58 count:16];
   if (v4)
   {
     v5 = v4;
@@ -135,12 +135,12 @@
       {
         if (*v48 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(certs);
         }
 
         v8 = *(*(&v47 + 1) + 8 * i);
-        v9 = [v8 sigAlgo];
-        if (v9)
+        sigAlgo = [v8 sigAlgo];
+        if (sigAlgo)
         {
           [v8 sigAlgo];
         }
@@ -152,19 +152,19 @@
         v10 = ;
 
         v56[0] = @"cert";
-        v11 = [v8 certString];
-        v57[0] = v11;
+        certString = [v8 certString];
+        v57[0] = certString;
         v56[1] = @"pubKeyDigest";
-        v12 = [v8 pubKeyDigest];
+        pubKeyDigest = [v8 pubKeyDigest];
         v56[2] = @"sigAlgo";
-        v57[1] = v12;
+        v57[1] = pubKeyDigest;
         v57[2] = v10;
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:3];
 
-        [v35 addObject:v13];
+        [array addObject:v13];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v47 objects:v58 count:16];
+      v5 = [certs countByEnumeratingWithState:&v47 objects:v58 count:16];
     }
 
     while (v5);
@@ -174,7 +174,7 @@
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = [(ASTUploadFilesResult *)v31 files];
+  obj = [(ASTUploadFilesResult *)selfCopy files];
   v36 = [obj countByEnumeratingWithState:&v43 objects:v55 count:16];
   if (v36)
   {
@@ -190,8 +190,8 @@
 
         v15 = *(*(&v43 + 1) + 8 * j);
         v53[0] = @"id";
-        v42 = [v15 uploadId];
-        if (v42)
+        uploadId = [v15 uploadId];
+        if (uploadId)
         {
           [v15 uploadId];
         }
@@ -203,8 +203,8 @@
         v41 = ;
         v54[0] = v41;
         v53[1] = @"name";
-        v40 = [v15 name];
-        if (v40)
+        name = [v15 name];
+        if (name)
         {
           [v15 name];
         }
@@ -229,8 +229,8 @@
         v37 = ;
         v54[2] = v37;
         v53[3] = @"pubKeyDigest";
-        v16 = [v15 pubKeyDigest];
-        if (v16)
+        pubKeyDigest2 = [v15 pubKeyDigest];
+        if (pubKeyDigest2)
         {
           [v15 pubKeyDigest];
         }
@@ -242,8 +242,8 @@
         v17 = ;
         v54[3] = v17;
         v53[4] = @"status";
-        v18 = [v15 status];
-        if (v18)
+        status = [v15 status];
+        if (status)
         {
           [v15 status];
         }
@@ -268,8 +268,8 @@
         v21 = ;
         v54[5] = v21;
         v53[6] = @"uploadUrl";
-        v22 = [v15 uploadUrl];
-        if (v22)
+        uploadUrl = [v15 uploadUrl];
+        if (uploadUrl)
         {
           [v15 uploadUrl];
         }
@@ -282,7 +282,7 @@
         v54[6] = v23;
         v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:7];
 
-        [v34 addObject:v24];
+        [array2 addObject:v24];
       }
 
       v36 = [obj countByEnumeratingWithState:&v43 objects:v55 count:16];
@@ -292,13 +292,13 @@
   }
 
   v51[0] = @"source";
-  v25 = [(ASTUploadFilesResult *)v31 source];
-  v52[0] = v25;
+  source = [(ASTUploadFilesResult *)selfCopy source];
+  v52[0] = source;
   v51[1] = @"certs";
-  v26 = [v35 copy];
+  v26 = [array copy];
   v52[1] = v26;
   v51[2] = @"files";
-  v27 = [v34 copy];
+  v27 = [array2 copy];
   v52[2] = v27;
   v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:3];
 
@@ -309,23 +309,23 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(ASTUploadFilesResult *)self files];
-  v3 = [v2 count] == 0;
+  files = [(ASTUploadFilesResult *)self files];
+  v3 = [files count] == 0;
 
   return v3;
 }
 
-- (ASTUploadFilesResult)initWithCoder:(id)a3
+- (ASTUploadFilesResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASTUploadFilesResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"certs"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"certs"];
     certs = v5->_certs;
     v5->_certs = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"files"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"files"];
     files = v5->_files;
     v5->_files = v8;
   }
@@ -333,14 +333,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASTUploadFilesResult *)self certs];
-  [v4 encodeObject:v5 forKey:@"certs"];
+  coderCopy = coder;
+  certs = [(ASTUploadFilesResult *)self certs];
+  [coderCopy encodeObject:certs forKey:@"certs"];
 
-  v6 = [(ASTUploadFilesResult *)self files];
-  [v4 encodeObject:v6 forKey:@"files"];
+  files = [(ASTUploadFilesResult *)self files];
+  [coderCopy encodeObject:files forKey:@"files"];
 }
 
 @end

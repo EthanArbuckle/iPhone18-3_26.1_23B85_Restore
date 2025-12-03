@@ -1,8 +1,8 @@
 @interface MapsSuggestionsRealBiomeConnector
-- (BOOL)getFindMyStreamsWithHandler:(id)a3;
-- (BOOL)getSmartRepliesStreamsWithHandler:(id)a3;
-- (BOOL)registerForFindMyUpdatesWithHandler:(id)a3;
-- (BOOL)registerForSmartRepliesUpdatesWithHandler:(id)a3;
+- (BOOL)getFindMyStreamsWithHandler:(id)handler;
+- (BOOL)getSmartRepliesStreamsWithHandler:(id)handler;
+- (BOOL)registerForFindMyUpdatesWithHandler:(id)handler;
+- (BOOL)registerForSmartRepliesUpdatesWithHandler:(id)handler;
 - (MapsSuggestionsRealBiomeConnector)init;
 - (void)unregisterFindMyUpdates;
 - (void)unregisterSmartRepliesUpdates;
@@ -37,13 +37,13 @@
   return v2;
 }
 
-- (BOOL)getSmartRepliesStreamsWithHandler:(id)a3
+- (BOOL)getSmartRepliesStreamsWithHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   v6 = v5;
-  if (v4)
+  if (handlerCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -69,7 +69,7 @@
     v15 = v8;
     v17 = buf;
     v18 = v9;
-    v16 = v4;
+    v16 = handlerCopy;
     v11 = v8;
     v6 = v7;
     dispatch_async(queue, block);
@@ -90,7 +90,7 @@
     _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Handler cannot be nil", buf, 0x26u);
   }
 
-  return v4 != 0;
+  return handlerCopy != 0;
 }
 
 void __71__MapsSuggestionsRealBiomeConnector_getSmartRepliesStreamsWithHandler___block_invoke(void *a1)
@@ -195,16 +195,16 @@ void __71__MapsSuggestionsRealBiomeConnector_getSmartRepliesStreamsWithHandler__
   }
 }
 
-- (BOOL)registerForSmartRepliesUpdatesWithHandler:(id)a3
+- (BOOL)registerForSmartRepliesUpdatesWithHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = BiomeLibrary();
-    v6 = [v5 Maps];
-    v7 = [v6 Suggestions];
-    v8 = [v7 RecentConversationsIntent];
+    maps = [v5 Maps];
+    suggestions = [maps Suggestions];
+    recentConversationsIntent = [suggestions RecentConversationsIntent];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -219,10 +219,10 @@ void __71__MapsSuggestionsRealBiomeConnector_getSmartRepliesStreamsWithHandler__
     block[2] = __79__MapsSuggestionsRealBiomeConnector_registerForSmartRepliesUpdatesWithHandler___block_invoke;
     block[3] = &unk_1E81F71B0;
     objc_copyWeak(&v16, &location);
-    v13 = v8;
-    v14 = v4;
+    v13 = recentConversationsIntent;
+    v14 = handlerCopy;
     v15 = buf;
-    v10 = v8;
+    v10 = recentConversationsIntent;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v16);
@@ -247,7 +247,7 @@ void __71__MapsSuggestionsRealBiomeConnector_getSmartRepliesStreamsWithHandler__
     }
   }
 
-  return v4 != 0;
+  return handlerCopy != 0;
 }
 
 void __79__MapsSuggestionsRealBiomeConnector_registerForSmartRepliesUpdatesWithHandler___block_invoke(uint64_t a1)
@@ -404,11 +404,11 @@ void *__66__MapsSuggestionsRealBiomeConnector_unregisterSmartRepliesUpdates__blo
   return result;
 }
 
-- (BOOL)getFindMyStreamsWithHandler:(id)a3
+- (BOOL)getFindMyStreamsWithHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = MapsSuggestionsNowWithOffset(-self->_lookbackDuration);
     v6 = MapsSuggestionsNow();
@@ -435,7 +435,7 @@ void *__66__MapsSuggestionsRealBiomeConnector_unregisterSmartRepliesUpdates__blo
     v16 = v6;
     v18 = v21;
     v19 = maxEvents & ~(maxEvents >> 63);
-    v17 = v4;
+    v17 = handlerCopy;
     v10 = v6;
     v11 = v5;
     dispatch_async(queue, block);
@@ -460,7 +460,7 @@ void *__66__MapsSuggestionsRealBiomeConnector_unregisterSmartRepliesUpdates__blo
     }
   }
 
-  return v4 != 0;
+  return handlerCopy != 0;
 }
 
 void __65__MapsSuggestionsRealBiomeConnector_getFindMyStreamsWithHandler___block_invoke(void *a1)
@@ -564,15 +564,15 @@ void __65__MapsSuggestionsRealBiomeConnector_getFindMyStreamsWithHandler___block
   }
 }
 
-- (BOOL)registerForFindMyUpdatesWithHandler:(id)a3
+- (BOOL)registerForFindMyUpdatesWithHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = BiomeLibrary();
-    v6 = [v5 FindMy];
-    v7 = [v6 ContactActivity];
+    findMy = [v5 FindMy];
+    contactActivity = [findMy ContactActivity];
 
     objc_initWeak(location, self);
     queue = self->_queue;
@@ -581,9 +581,9 @@ void __65__MapsSuggestionsRealBiomeConnector_getFindMyStreamsWithHandler___block
     block[2] = __73__MapsSuggestionsRealBiomeConnector_registerForFindMyUpdatesWithHandler___block_invoke;
     block[3] = &unk_1E81F6A90;
     objc_copyWeak(&v15, location);
-    v13 = v7;
-    v14 = v4;
-    v9 = v7;
+    v13 = contactActivity;
+    v14 = handlerCopy;
+    v9 = contactActivity;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v15);
@@ -607,7 +607,7 @@ void __65__MapsSuggestionsRealBiomeConnector_getFindMyStreamsWithHandler___block
     }
   }
 
-  return v4 != 0;
+  return handlerCopy != 0;
 }
 
 void __73__MapsSuggestionsRealBiomeConnector_registerForFindMyUpdatesWithHandler___block_invoke(id *a1)

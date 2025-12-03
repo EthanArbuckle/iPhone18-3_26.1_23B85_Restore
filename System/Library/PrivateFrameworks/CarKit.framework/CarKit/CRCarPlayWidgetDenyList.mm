@@ -2,8 +2,8 @@
 - (CRCarPlayWidgetDenyList)init;
 - (id)denyListExtensions;
 - (void)_updateDenyListFromPreferences;
-- (void)handleWidgetDenylistChangedNotification:(id)a3;
-- (void)setDenyListExtensions:(id)a3;
+- (void)handleWidgetDenylistChangedNotification:(id)notification;
+- (void)setDenyListExtensions:(id)extensions;
 @end
 
 @implementation CRCarPlayWidgetDenyList
@@ -15,8 +15,8 @@
   v2 = [(CRCarPlayWidgetDenyList *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v3 addObserver:v2 selector:sel_handleWidgetDenylistChangedNotification_ name:@"com.apple.carkit.widget.denylist-changed" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_handleWidgetDenylistChangedNotification_ name:@"com.apple.carkit.widget.denylist-changed" object:0];
 
     [(CRCarPlayWidgetDenyList *)v2 _updateDenyListFromPreferences];
   }
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (void)handleWidgetDenylistChangedNotification:(id)a3
+- (void)handleWidgetDenylistChangedNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -43,21 +43,21 @@
   self->_denyListExtensionsSet = v4;
 }
 
-- (void)setDenyListExtensions:(id)a3
+- (void)setDenyListExtensions:(id)extensions
 {
-  v11 = [MEMORY[0x1E695DFD8] setWithArray:a3];
-  v4 = [(CRCarPlayWidgetDenyList *)self denyListExtensionsSet];
-  if (([v11 isEqualToSet:v4] & 1) == 0)
+  v11 = [MEMORY[0x1E695DFD8] setWithArray:extensions];
+  denyListExtensionsSet = [(CRCarPlayWidgetDenyList *)self denyListExtensionsSet];
+  if (([v11 isEqualToSet:denyListExtensionsSet] & 1) == 0)
   {
     v5 = [v11 copy];
     denyListExtensionsSet = self->_denyListExtensionsSet;
     self->_denyListExtensionsSet = v5;
 
-    v7 = [(NSSet *)self->_denyListExtensionsSet allObjects];
+    allObjects = [(NSSet *)self->_denyListExtensionsSet allObjects];
     v8 = CRCarPlayWidgetDenyListPreferenceKey;
-    if ([v7 count])
+    if ([allObjects count])
     {
-      v9 = v7;
+      v9 = allObjects;
     }
 
     else
@@ -66,8 +66,8 @@
     }
 
     CFPreferencesSetAppValue(v8, v9, CRPreferencesNotMigratedDomain);
-    v10 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v10 postNotificationName:@"com.apple.carkit.widget.denylist-changed" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.carkit.widget.denylist-changed" object:0];
   }
 }
 

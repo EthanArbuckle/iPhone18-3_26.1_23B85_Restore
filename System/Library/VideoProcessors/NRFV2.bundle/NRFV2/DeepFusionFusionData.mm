@@ -1,20 +1,20 @@
 @interface DeepFusionFusionData
-- (int)readPlist:(id)a3;
+- (int)readPlist:(id)plist;
 @end
 
 @implementation DeepFusionFusionData
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"EVM_EV0_motionThreshold", v6);
+  plistCopy = plist;
+  v7 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v5, @"EVM_EV0_motionThreshold", v6);
   objc_msgSend_floatValue(v7, v8, v9, v10);
-  v51 = self;
+  selfCopy = self;
   self->EVM_EV0_motionThreshold = v11;
 
-  v14 = objc_msgSend_objectForKeyedSubscript_(v4, v12, @"SIFRBands", v13);
-  v50 = v4;
-  v52 = objc_msgSend_objectForKeyedSubscript_(v4, v15, @"NoSIFRBands", v16);
+  v14 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v12, @"SIFRBands", v13);
+  v50 = plistCopy;
+  v52 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v15, @"NoSIFRBands", v16);
   v17 = objc_opt_new();
   v18 = objc_opt_new();
   v59 = 0u;
@@ -60,7 +60,7 @@
     }
   }
 
-  objc_storeStrong(&v51->sifrBands, v17);
+  objc_storeStrong(&selfCopy->sifrBands, v17);
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
@@ -105,8 +105,8 @@
 
   v47 = v18;
   v48 = 0;
-  noSifrBands = v51->noSifrBands;
-  v51->noSifrBands = v47;
+  noSifrBands = selfCopy->noSifrBands;
+  selfCopy->noSifrBands = v47;
 LABEL_20:
 
   return v48;

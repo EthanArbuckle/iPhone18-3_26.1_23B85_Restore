@@ -1,13 +1,13 @@
 @interface CLSAssetProcessedSignals_v3
-- (void)setIsNSFWExplicit:(BOOL)a3;
-- (void)setIsPreciselyNSFWExplicit:(BOOL)a3;
+- (void)setIsNSFWExplicit:(BOOL)explicit;
+- (void)setIsPreciselyNSFWExplicit:(BOOL)explicit;
 @end
 
 @implementation CLSAssetProcessedSignals_v3
 
-- (void)setIsNSFWExplicit:(BOOL)a3
+- (void)setIsNSFWExplicit:(BOOL)explicit
 {
-  if (a3)
+  if (explicit)
   {
     v3 = 4;
   }
@@ -20,9 +20,9 @@
   *(self + 8) = *(self + 8) & 0xFB | v3;
 }
 
-- (void)setIsPreciselyNSFWExplicit:(BOOL)a3
+- (void)setIsPreciselyNSFWExplicit:(BOOL)explicit
 {
-  if (a3)
+  if (explicit)
   {
     v3 = 2;
   }

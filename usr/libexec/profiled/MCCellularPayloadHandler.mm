@@ -1,5 +1,5 @@
 @interface MCCellularPayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (void)remove;
 - (void)setAside;
 - (void)unsetAside;
@@ -7,7 +7,7 @@
 
 @implementation MCCellularPayloadHandler
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
   if (MCCTHasCellular())
   {
@@ -17,37 +17,37 @@
     if (v8)
     {
       v9 = MCCellularErrorDomain;
-      v10 = MCErrorArray();
-      v11 = [NSError MCErrorWithDomain:v9 code:36000 descriptionArray:v10 errorType:MCErrorTypeFatal, 0];
+      payload = MCErrorArray();
+      v11 = [NSError MCErrorWithDomain:v9 code:36000 descriptionArray:payload errorType:MCErrorTypeFatal, 0];
     }
 
     else
     {
-      v10 = [(MCNewPayloadHandler *)self payload];
+      payload = [(MCNewPayloadHandler *)self payload];
       v14 = +[NSMutableDictionary dictionary];
-      v15 = [v10 attachAPN];
-      v16 = v15;
-      if (v15)
+      attachAPN = [payload attachAPN];
+      v16 = attachAPN;
+      if (attachAPN)
       {
-        v17 = [v15 telephonyRepresentation];
-        [v14 setObject:v17 forKeyedSubscript:@"AttachAPN"];
+        telephonyRepresentation = [attachAPN telephonyRepresentation];
+        [v14 setObject:telephonyRepresentation forKeyedSubscript:@"AttachAPN"];
       }
 
-      v18 = [v10 APNs];
-      v19 = [v18 count];
+      aPNs = [payload APNs];
+      v19 = [aPNs count];
 
       if (v19)
       {
         v30 = v16;
-        v20 = [v10 APNs];
-        v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v20 count]);
+        aPNs2 = [payload APNs];
+        v21 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [aPNs2 count]);
 
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v22 = [v10 APNs];
-        v23 = [v22 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        aPNs3 = [payload APNs];
+        v23 = [aPNs3 countByEnumeratingWithState:&v33 objects:v38 count:16];
         if (v23)
         {
           v24 = v23;
@@ -58,14 +58,14 @@
             {
               if (*v34 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(aPNs3);
               }
 
-              v27 = [*(*(&v33 + 1) + 8 * i) telephonyRepresentation];
-              [v21 addObject:v27];
+              telephonyRepresentation2 = [*(*(&v33 + 1) + 8 * i) telephonyRepresentation];
+              [v21 addObject:telephonyRepresentation2];
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v33 objects:v38 count:16];
+            v24 = [aPNs3 countByEnumeratingWithState:&v33 objects:v38 count:16];
           }
 
           while (v24);
@@ -81,10 +81,10 @@
     }
 
     v13 = v11 != 0;
-    if (a6 && v11)
+    if (error && v11)
     {
       v28 = v11;
-      *a6 = v11;
+      *error = v11;
       v13 = 1;
     }
   }
@@ -121,9 +121,9 @@
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v7 = v6;
-      v8 = [v5 MCVerboseDescription];
+      mCVerboseDescription = [v5 MCVerboseDescription];
       *buf = 138543362;
-      v10 = v8;
+      v10 = mCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Could not set aside managed cellular settings. Error: %{public}@", buf, 0xCu);
     }
   }
@@ -133,21 +133,21 @@
 
 - (void)unsetAside
 {
-  v3 = [(MCCellularPayloadHandler *)self setAsideDictionary];
+  setAsideDictionary = [(MCCellularPayloadHandler *)self setAsideDictionary];
 
-  if (v3)
+  if (setAsideDictionary)
   {
-    v4 = [(MCCellularPayloadHandler *)self setAsideDictionary];
+    setAsideDictionary2 = [(MCCellularPayloadHandler *)self setAsideDictionary];
     MCCTSetManagedCellularProfile();
   }
 }
 
 - (void)remove
 {
-  v2 = [(MCNewPayloadHandler *)self profileHandler];
-  v3 = [v2 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if ((v3 & 1) == 0)
+  if ((isSetAside & 1) == 0)
   {
     v4 = MCCTClearManagedCellularProfile();
     v5 = 0;
@@ -157,9 +157,9 @@
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
       {
         v7 = v6;
-        v8 = [v5 MCVerboseDescription];
+        mCVerboseDescription = [v5 MCVerboseDescription];
         *buf = 138543362;
-        v10 = v8;
+        v10 = mCVerboseDescription;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Could not clear managed cellular settings. Ignoring. Error: %{public}@", buf, 0xCu);
       }
     }

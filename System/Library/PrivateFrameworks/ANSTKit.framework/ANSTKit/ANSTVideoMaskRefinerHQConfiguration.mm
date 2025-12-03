@@ -1,9 +1,9 @@
 @interface ANSTVideoMaskRefinerHQConfiguration
 + (ANSTVideoMaskRefinerHQConfiguration)new;
 - (ANSTVideoMaskRefinerHQConfiguration)init;
-- (ANSTVideoMaskRefinerHQConfiguration)initWithVersion:(unint64_t)a3;
-- (ANSTVideoMaskRefinerHQConfiguration)initWithVersion:(unint64_t)a3 networkResolution:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
+- (ANSTVideoMaskRefinerHQConfiguration)initWithVersion:(unint64_t)version;
+- (ANSTVideoMaskRefinerHQConfiguration)initWithVersion:(unint64_t)version networkResolution:(int64_t)resolution;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -19,41 +19,41 @@
 
 + (ANSTVideoMaskRefinerHQConfiguration)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTVideoMaskRefinerHQConfiguration)initWithVersion:(unint64_t)a3
+- (ANSTVideoMaskRefinerHQConfiguration)initWithVersion:(unint64_t)version
 {
   result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTVideoMaskRefinerHQConfiguration)initWithVersion:(unint64_t)a3 networkResolution:(int64_t)a4
+- (ANSTVideoMaskRefinerHQConfiguration)initWithVersion:(unint64_t)version networkResolution:(int64_t)resolution
 {
   v6.receiver = self;
   v6.super_class = ANSTVideoMaskRefinerHQConfiguration;
-  result = [(ANSTConfiguration *)&v6 initWithVersion:a3];
+  result = [(ANSTConfiguration *)&v6 initWithVersion:version];
   if (result)
   {
-    result->_networkResolution = a4;
+    result->_networkResolution = resolution;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v9 = objc_msgSend_version(self, v7, v8);

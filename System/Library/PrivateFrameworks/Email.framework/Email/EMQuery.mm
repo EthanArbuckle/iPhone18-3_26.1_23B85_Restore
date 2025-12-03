@@ -1,20 +1,20 @@
 @interface EMQuery
 + (OS_os_log)log;
-+ (uint64_t)_isValidSortDescriptor:(uint64_t)a3 forTargetClass:;
-+ (void)addValidSortDescriptorKeyPaths:(id)a3 forTargetClass:(Class)a4;
-- (BOOL)isEqual:(id)a3;
++ (uint64_t)_isValidSortDescriptor:(uint64_t)descriptor forTargetClass:;
++ (void)addValidSortDescriptorKeyPaths:(id)paths forTargetClass:(Class)class;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (EMQuery)initWithCoder:(id)a3;
-- (EMQuery)initWithTargetClass:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5 builder:(id)a6;
-- (EMQuery)initWithTargetClass:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5 suggestion:(id)a6 limit:(int64_t)a7 queryOptions:(unint64_t)a8 targetClassOptions:(id)a9 label:(id)a10;
-- (EMQuery)queryWithBuilder:(id)a3;
-- (EMQuery)queryWithPredicate:(id)a3;
-- (EMQuery)queryWithTargetClass:(Class)a3 predicate:(id)a4;
+- (EMQuery)initWithCoder:(id)coder;
+- (EMQuery)initWithTargetClass:(Class)class predicate:(id)predicate sortDescriptors:(id)descriptors builder:(id)builder;
+- (EMQuery)initWithTargetClass:(Class)class predicate:(id)predicate sortDescriptors:(id)descriptors suggestion:(id)suggestion limit:(int64_t)limit queryOptions:(unint64_t)options targetClassOptions:(id)classOptions label:(id)self0;
+- (EMQuery)queryWithBuilder:(id)builder;
+- (EMQuery)queryWithPredicate:(id)predicate;
+- (EMQuery)queryWithTargetClass:(Class)class predicate:(id)predicate;
 - (NSString)debugDescription;
-- (uint64_t)_isEqualToQuery:(uint64_t)a1;
+- (uint64_t)_isEqualToQuery:(uint64_t)query;
 - (unint64_t)hash;
-- (void)addTargetClassOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addTargetClassOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMQuery
@@ -25,15 +25,15 @@
   v3 = NSStringFromClass([(EMQuery *)self targetClass]);
   v4 = [v3 hash];
 
-  v5 = [(EMQuery *)self predicate];
-  v6 = hashForPredicate(v5);
+  predicate = [(EMQuery *)self predicate];
+  v6 = hashForPredicate(predicate);
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(EMQuery *)self sortDescriptors];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  sortDescriptors = [(EMQuery *)self sortDescriptors];
+  v8 = [sortDescriptors countByEnumeratingWithState:&v20 objects:v24 count:16];
   v9 = 33 * v4 + v6 + 5859909;
   if (v8)
   {
@@ -45,7 +45,7 @@
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(sortDescriptors);
         }
 
         v12 = *(*(&v20 + 1) + 8 * v11);
@@ -56,23 +56,23 @@
       }
 
       while (v8 != v11);
-      v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [sortDescriptors countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [(EMQuery *)self limit];
-  v15 = [(EMQuery *)self queryOptions];
-  v16 = [(EMQuery *)self suggestion];
-  v17 = [v16 hash];
-  if (v14 < 0)
+  limit = [(EMQuery *)self limit];
+  queryOptions = [(EMQuery *)self queryOptions];
+  suggestion = [(EMQuery *)self suggestion];
+  v17 = [suggestion hash];
+  if (limit < 0)
   {
-    v14 = -v14;
+    limit = -limit;
   }
 
   v18 = *MEMORY[0x1E69E9840];
-  return 33 * (33 * (v14 + 33 * v9) + v15) + v17;
+  return 33 * (33 * (limit + 33 * v9) + queryOptions) + v17;
 }
 
 + (OS_os_log)log
@@ -81,7 +81,7 @@
   block[1] = 3221225472;
   block[2] = __14__EMQuery_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_32 != -1)
   {
     dispatch_once(&log_onceToken_32, block);
@@ -100,36 +100,36 @@ void __14__EMQuery_log__block_invoke(uint64_t a1)
   log_log_32 = v1;
 }
 
-+ (void)addValidSortDescriptorKeyPaths:(id)a3 forTargetClass:(Class)a4
++ (void)addValidSortDescriptorKeyPaths:(id)paths forTargetClass:(Class)class
 {
-  v12 = a3;
+  pathsCopy = paths;
   os_unfair_lock_lock(&sSortDescriptorsLock);
   v5 = sValidSortDescriptorKeyPathsByClass;
   if (!sValidSortDescriptorKeyPathsByClass)
   {
-    v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v7 = sValidSortDescriptorKeyPathsByClass;
-    sValidSortDescriptorKeyPathsByClass = v6;
+    sValidSortDescriptorKeyPathsByClass = weakToStrongObjectsMapTable;
 
     v5 = sValidSortDescriptorKeyPathsByClass;
   }
 
-  v8 = [v5 objectForKey:a4];
+  v8 = [v5 objectForKey:class];
 
   if (!v8)
   {
     v9 = sValidSortDescriptorKeyPathsByClass;
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    [v9 setObject:v10 forKey:a4];
+    [v9 setObject:v10 forKey:class];
   }
 
-  v11 = [sValidSortDescriptorKeyPathsByClass objectForKey:a4];
-  [v11 addObjectsFromArray:v12];
+  v11 = [sValidSortDescriptorKeyPathsByClass objectForKey:class];
+  [v11 addObjectsFromArray:pathsCopy];
 
   os_unfair_lock_unlock(&sSortDescriptorsLock);
 }
 
-+ (uint64_t)_isValidSortDescriptor:(uint64_t)a3 forTargetClass:
++ (uint64_t)_isValidSortDescriptor:(uint64_t)descriptor forTargetClass:
 {
   v4 = a2;
   objc_opt_self();
@@ -138,7 +138,7 @@ void __14__EMQuery_log__block_invoke(uint64_t a1)
   if (v5)
   {
     os_unfair_lock_lock(&sSortDescriptorsLock);
-    v6 = [sValidSortDescriptorKeyPathsByClass objectForKey:a3];
+    v6 = [sValidSortDescriptorKeyPathsByClass objectForKey:descriptor];
     v7 = [v4 key];
     v8 = [v6 containsObject:v7];
 
@@ -153,24 +153,24 @@ void __14__EMQuery_log__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (EMQuery)initWithTargetClass:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5 suggestion:(id)a6 limit:(int64_t)a7 queryOptions:(unint64_t)a8 targetClassOptions:(id)a9 label:(id)a10
+- (EMQuery)initWithTargetClass:(Class)class predicate:(id)predicate sortDescriptors:(id)descriptors suggestion:(id)suggestion limit:(int64_t)limit queryOptions:(unint64_t)options targetClassOptions:(id)classOptions label:(id)self0
 {
-  v16 = a6;
-  v17 = a9;
-  v18 = a10;
+  suggestionCopy = suggestion;
+  classOptionsCopy = classOptions;
+  labelCopy = label;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __112__EMQuery_initWithTargetClass_predicate_sortDescriptors_suggestion_limit_queryOptions_targetClassOptions_label___block_invoke;
   v24[3] = &unk_1E826F238;
-  v28 = a7;
-  v29 = a8;
-  v25 = v16;
-  v26 = v17;
-  v27 = v18;
-  v19 = v18;
-  v20 = v17;
-  v21 = v16;
-  v22 = [(EMQuery *)self initWithTargetClass:a3 predicate:a4 sortDescriptors:a5 builder:v24];
+  limitCopy = limit;
+  optionsCopy = options;
+  v25 = suggestionCopy;
+  v26 = classOptionsCopy;
+  v27 = labelCopy;
+  v19 = labelCopy;
+  v20 = classOptionsCopy;
+  v21 = suggestionCopy;
+  v22 = [(EMQuery *)self initWithTargetClass:class predicate:predicate sortDescriptors:descriptors builder:v24];
 
   return v22;
 }
@@ -187,35 +187,35 @@ void __112__EMQuery_initWithTargetClass_predicate_sortDescriptors_suggestion_lim
   [v4 setLabel:*(a1 + 48)];
 }
 
-- (EMQuery)initWithTargetClass:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5 builder:(id)a6
+- (EMQuery)initWithTargetClass:(Class)class predicate:(id)predicate sortDescriptors:(id)descriptors builder:(id)builder
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  builderCopy = builder;
+  if (!predicateCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"EMQuery.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMQuery.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
   }
 
-  if ([v12 count] >= 3)
+  if ([descriptorsCopy count] >= 3)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"EMQuery.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"sortDescriptors.count <= 2"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"EMQuery.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"sortDescriptors.count <= 2"}];
 
-    if (v13)
+    if (builderCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v13)
+  else if (builderCopy)
   {
     goto LABEL_5;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"EMQuery.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"EMQuery.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
 
 LABEL_5:
   v24.receiver = self;
@@ -224,76 +224,76 @@ LABEL_5:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_targetClass, a3);
-    v16 = [v11 copy];
+    objc_storeStrong(&v14->_targetClass, class);
+    v16 = [predicateCopy copy];
     predicate = v15->_predicate;
     v15->_predicate = v16;
 
-    v18 = [v12 copy];
+    v18 = [descriptorsCopy copy];
     sortDescriptors = v15->_sortDescriptors;
     v15->_sortDescriptors = v18;
 
-    v13[2](v13, v15);
+    builderCopy[2](builderCopy, v15);
   }
 
   return v15;
 }
 
-- (EMQuery)queryWithPredicate:(id)a3
+- (EMQuery)queryWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(EMQuery *)self queryWithTargetClass:[(EMQuery *)self targetClass] predicate:v4];
+  predicateCopy = predicate;
+  v5 = [(EMQuery *)self queryWithTargetClass:[(EMQuery *)self targetClass] predicate:predicateCopy];
 
   return v5;
 }
 
-- (EMQuery)queryWithTargetClass:(Class)a3 predicate:(id)a4
+- (EMQuery)queryWithTargetClass:(Class)class predicate:(id)predicate
 {
-  v6 = a4;
-  v7 = [(EMQuery *)self queryOptions];
+  predicateCopy = predicate;
+  queryOptions = [(EMQuery *)self queryOptions];
   v8 = [EMQuery alloc];
-  v9 = [(EMQuery *)self sortDescriptors];
-  v10 = [(EMQuery *)self suggestion];
-  v11 = [(EMQuery *)self limit];
-  v12 = [(EMQuery *)self targetClassOptions];
-  v13 = [(EMQuery *)self label];
-  v14 = [(EMQuery *)v8 initWithTargetClass:a3 predicate:v6 sortDescriptors:v9 suggestion:v10 limit:v11 queryOptions:v7 & 0xFFFFFFFFFFFFDFFDLL targetClassOptions:v12 label:v13];
+  sortDescriptors = [(EMQuery *)self sortDescriptors];
+  suggestion = [(EMQuery *)self suggestion];
+  limit = [(EMQuery *)self limit];
+  targetClassOptions = [(EMQuery *)self targetClassOptions];
+  label = [(EMQuery *)self label];
+  v14 = [(EMQuery *)v8 initWithTargetClass:class predicate:predicateCopy sortDescriptors:sortDescriptors suggestion:suggestion limit:limit queryOptions:queryOptions & 0xFFFFFFFFFFFFDFFDLL targetClassOptions:targetClassOptions label:label];
 
   return v14;
 }
 
-- (EMQuery)queryWithBuilder:(id)a3
+- (EMQuery)queryWithBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(EMQuery *)self queryOptions];
+  builderCopy = builder;
+  queryOptions = [(EMQuery *)self queryOptions];
   v6 = [EMQuery alloc];
-  v7 = [(EMQuery *)self targetClass];
-  v8 = [(EMQuery *)self predicate];
-  v9 = [(EMQuery *)self sortDescriptors];
-  v10 = [(EMQuery *)self suggestion];
-  v11 = [(EMQuery *)self limit];
-  v12 = [(EMQuery *)self targetClassOptions];
-  v13 = [(EMQuery *)self label];
-  v14 = [(EMQuery *)v6 initWithTargetClass:v7 predicate:v8 sortDescriptors:v9 suggestion:v10 limit:v11 queryOptions:v5 & 0xFFFFFFFFFFFFDFFDLL targetClassOptions:v12 label:v13];
+  targetClass = [(EMQuery *)self targetClass];
+  predicate = [(EMQuery *)self predicate];
+  sortDescriptors = [(EMQuery *)self sortDescriptors];
+  suggestion = [(EMQuery *)self suggestion];
+  limit = [(EMQuery *)self limit];
+  targetClassOptions = [(EMQuery *)self targetClassOptions];
+  label = [(EMQuery *)self label];
+  v14 = [(EMQuery *)v6 initWithTargetClass:targetClass predicate:predicate sortDescriptors:sortDescriptors suggestion:suggestion limit:limit queryOptions:queryOptions & 0xFFFFFFFFFFFFDFFDLL targetClassOptions:targetClassOptions label:label];
 
-  v4[2](v4, v14);
+  builderCopy[2](builderCopy, v14);
 
   return v14;
 }
 
 - (BOOL)isValid
 {
-  v3 = [(EMQuery *)self predicate];
-  v4 = [EMMessageListItemPredicates isValidPredicate:v3 forClass:[(EMQuery *)self targetClass]];
+  predicate = [(EMQuery *)self predicate];
+  v4 = [EMMessageListItemPredicates isValidPredicate:predicate forClass:[(EMQuery *)self targetClass]];
 
   return v4;
 }
 
-- (void)addTargetClassOptions:(id)a3
+- (void)addTargetClassOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   targetClassOptions = self->_targetClassOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (targetClassOptions)
   {
     v6 = [(NSDictionary *)targetClassOptions mutableCopy];
@@ -302,26 +302,26 @@ LABEL_5:
 
   else
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
   }
 
   v7 = self->_targetClassOptions;
   self->_targetClassOptions = v6;
 }
 
-- (EMQuery)initWithCoder:(id)a3
+- (EMQuery)initWithCoder:(id)coder
 {
   v35 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v21 = self;
-  v4 = [v23 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_targetClass"];
+  coderCopy = coder;
+  selfCopy = self;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_targetClass"];
   v5 = NSClassFromString(v4);
 
-  v22 = [v23 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_predicate"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_predicate"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v23 decodeObjectOfClasses:v8 forKey:@"EFPropertyKey_sortDescriptors"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"EFPropertyKey_sortDescriptors"];
 
   if (v9)
   {
@@ -383,9 +383,9 @@ LABEL_5:
   v24[1] = 3221225472;
   v24[2] = __25__EMQuery_initWithCoder___block_invoke;
   v24[3] = &unk_1E826F260;
-  v17 = v23;
+  v17 = coderCopy;
   v25 = v17;
-  v18 = [(EMQuery *)v21 initWithTargetClass:v5 predicate:v22 sortDescriptors:v10 builder:v24];
+  v18 = [(EMQuery *)selfCopy initWithTargetClass:v5 predicate:v22 sortDescriptors:v10 builder:v24];
 
   v19 = *MEMORY[0x1E69E9840];
   return v18;
@@ -415,39 +415,39 @@ void __25__EMQuery_initWithCoder___block_invoke(uint64_t a1, void *a2)
   [v15 setLabel:v14];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
+  coderCopy = coder;
   v4 = NSStringFromClass([(EMQuery *)self targetClass]);
-  [v10 encodeObject:v4 forKey:@"EFPropertyKey_targetClass"];
+  [coderCopy encodeObject:v4 forKey:@"EFPropertyKey_targetClass"];
 
-  v5 = [(EMQuery *)self predicate];
-  [v10 encodeObject:v5 forKey:@"EFPropertyKey_predicate"];
+  predicate = [(EMQuery *)self predicate];
+  [coderCopy encodeObject:predicate forKey:@"EFPropertyKey_predicate"];
 
-  v6 = [(EMQuery *)self sortDescriptors];
-  [v10 encodeObject:v6 forKey:@"EFPropertyKey_sortDescriptors"];
+  sortDescriptors = [(EMQuery *)self sortDescriptors];
+  [coderCopy encodeObject:sortDescriptors forKey:@"EFPropertyKey_sortDescriptors"];
 
-  [v10 encodeInteger:-[EMQuery limit](self forKey:{"limit"), @"EFPropertyKey_limit"}];
-  [v10 encodeInteger:-[EMQuery queryOptions](self forKey:{"queryOptions"), @"EFPropertyKey_queryOptions"}];
-  v7 = [(EMQuery *)self targetClassOptions];
-  [v10 encodeObject:v7 forKey:@"EFPropertyKey_targetClassOptions"];
+  [coderCopy encodeInteger:-[EMQuery limit](self forKey:{"limit"), @"EFPropertyKey_limit"}];
+  [coderCopy encodeInteger:-[EMQuery queryOptions](self forKey:{"queryOptions"), @"EFPropertyKey_queryOptions"}];
+  targetClassOptions = [(EMQuery *)self targetClassOptions];
+  [coderCopy encodeObject:targetClassOptions forKey:@"EFPropertyKey_targetClassOptions"];
 
-  v8 = [(EMQuery *)self label];
-  [v10 encodeObject:v8 forKey:@"EFPropertyKey_label"];
+  label = [(EMQuery *)self label];
+  [coderCopy encodeObject:label forKey:@"EFPropertyKey_label"];
 
-  v9 = [(EMQuery *)self suggestion];
-  [v10 encodeObject:v9 forKey:@"EFPropertyKey_suggestion"];
+  suggestion = [(EMQuery *)self suggestion];
+  [coderCopy encodeObject:suggestion forKey:@"EFPropertyKey_suggestion"];
 }
 
 - (NSString)debugDescription
 {
   v14 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
-  v4 = [(EMQuery *)self label];
-  v5 = v4;
-  if (v4)
+  label = [(EMQuery *)self label];
+  v5 = label;
+  if (label)
   {
-    v6 = v4;
+    v6 = label;
   }
 
   else
@@ -456,58 +456,58 @@ void __25__EMQuery_initWithCoder___block_invoke(uint64_t a1, void *a2)
   }
 
   v15 = NSStringFromClass([(EMQuery *)self targetClass]);
-  v7 = [(EMQuery *)self predicate];
-  v8 = [v7 debugDescription];
-  v9 = [(EMQuery *)self sortDescriptors];
-  v10 = [v9 debugDescription];
-  v11 = [(EMQuery *)self suggestion];
-  v12 = [v14 stringWithFormat:@"<%@: %p> %@ \n\tresult class:%@ \n\tpredicate:%@ \n\tsort descriptors:%@ \n\tsuggestion:%@ \n\tqueryOptions:%lu\n\tlimit:%ld", v3, self, v6, v15, v8, v10, v11, -[EMQuery queryOptions](self, "queryOptions"), -[EMQuery limit](self, "limit")];
+  predicate = [(EMQuery *)self predicate];
+  v8 = [predicate debugDescription];
+  sortDescriptors = [(EMQuery *)self sortDescriptors];
+  v10 = [sortDescriptors debugDescription];
+  suggestion = [(EMQuery *)self suggestion];
+  v12 = [v14 stringWithFormat:@"<%@: %p> %@ \n\tresult class:%@ \n\tpredicate:%@ \n\tsort descriptors:%@ \n\tsuggestion:%@ \n\tqueryOptions:%lu\n\tlimit:%ld", v3, self, v6, v15, v8, v10, suggestion, -[EMQuery queryOptions](self, "queryOptions"), -[EMQuery limit](self, "limit")];
 
   return v12;
 }
 
-- (uint64_t)_isEqualToQuery:(uint64_t)a1
+- (uint64_t)_isEqualToQuery:(uint64_t)query
 {
   v3 = a2;
-  if (a1)
+  if (query)
   {
-    v4 = [a1 targetClass];
-    if (v4 == [v3 targetClass])
+    targetClass = [query targetClass];
+    if (targetClass == [v3 targetClass])
     {
-      v5 = [a1 queryOptions];
-      if (v5 == [v3 queryOptions])
+      queryOptions = [query queryOptions];
+      if (queryOptions == [v3 queryOptions])
       {
-        v6 = [a1 predicate];
-        v7 = [v6 ef_simplifiedPredicate];
-        v8 = [v3 predicate];
-        v9 = [v8 ef_simplifiedPredicate];
-        if (!predicatesAreEqual(v7, v9))
+        predicate = [query predicate];
+        ef_simplifiedPredicate = [predicate ef_simplifiedPredicate];
+        predicate2 = [v3 predicate];
+        ef_simplifiedPredicate2 = [predicate2 ef_simplifiedPredicate];
+        if (!predicatesAreEqual(ef_simplifiedPredicate, ef_simplifiedPredicate2))
         {
-          a1 = 0;
+          query = 0;
 LABEL_19:
 
           goto LABEL_12;
         }
 
-        v10 = [a1 sortDescriptors];
-        v11 = [v3 sortDescriptors];
-        if (![v10 isEqual:v11] || (v12 = objc_msgSend(a1, "limit"), v12 != objc_msgSend(v3, "limit")))
+        sortDescriptors = [query sortDescriptors];
+        sortDescriptors2 = [v3 sortDescriptors];
+        if (![sortDescriptors isEqual:sortDescriptors2] || (v12 = objc_msgSend(query, "limit"), v12 != objc_msgSend(v3, "limit")))
         {
-          a1 = 0;
+          query = 0;
 LABEL_18:
 
           goto LABEL_19;
         }
 
-        v19 = [a1 suggestion];
-        if (v19 || ([v3 suggestion], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+        suggestion = [query suggestion];
+        if (suggestion || ([v3 suggestion], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v13 = [a1 suggestion];
-          v14 = [v3 suggestion];
-          a1 = [v13 isEqual:v14];
+          suggestion2 = [query suggestion];
+          suggestion3 = [v3 suggestion];
+          query = [suggestion2 isEqual:suggestion3];
 
-          v15 = v19;
-          if (v19)
+          v15 = suggestion;
+          if (suggestion)
           {
 LABEL_17:
 
@@ -518,7 +518,7 @@ LABEL_17:
         else
         {
           v18 = 0;
-          a1 = 1;
+          query = 1;
         }
 
         v15 = v18;
@@ -526,18 +526,18 @@ LABEL_17:
       }
     }
 
-    a1 = 0;
+    query = 0;
   }
 
 LABEL_12:
 
-  return a1;
+  return query;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -547,7 +547,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(EMQuery *)self _isEqualToQuery:v4];
+      v5 = [(EMQuery *)self _isEqualToQuery:equalCopy];
     }
 
     else

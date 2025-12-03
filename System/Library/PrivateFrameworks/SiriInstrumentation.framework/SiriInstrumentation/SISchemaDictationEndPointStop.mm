@@ -1,25 +1,25 @@
 @interface SISchemaDictationEndPointStop
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaDictationEndPointStop)initWithDictionary:(id)a3;
-- (SISchemaDictationEndPointStop)initWithJSON:(id)a3;
+- (SISchemaDictationEndPointStop)initWithDictionary:(id)dictionary;
+- (SISchemaDictationEndPointStop)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaDictationEndPointStop
 
-- (SISchemaDictationEndPointStop)initWithDictionary:(id)a3
+- (SISchemaDictationEndPointStop)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SISchemaDictationEndPointStop;
   v5 = [(SISchemaDictationEndPointStop *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dictationEndPointType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dictationEndPointType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (SISchemaDictationEndPointStop)initWithJSON:(id)a3
+- (SISchemaDictationEndPointStop)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaDictationEndPointStop *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaDictationEndPointStop *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaDictationEndPointStop *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,7 +68,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(SISchemaDictationEndPointStop *)self dictationEndPointType]- 1;
@@ -82,12 +82,12 @@
       v5 = off_1E78E4920[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"dictationEndPointType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"dictationEndPointType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -103,15 +103,15 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[12] & 1))
+    if ((*&self->_has & 1) == (equalCopy[12] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (dictationEndPointType = self->_dictationEndPointType, dictationEndPointType == [v4 dictationEndPointType]))
+      if ((*&self->_has & 1) == 0 || (dictationEndPointType = self->_dictationEndPointType, dictationEndPointType == [equalCopy dictationEndPointType]))
       {
         v6 = 1;
       }
@@ -121,7 +121,7 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {

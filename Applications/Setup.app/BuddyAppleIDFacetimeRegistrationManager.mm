@@ -6,7 +6,7 @@
 
 + (void)registerWithAllAliases
 {
-  oslog[2] = a1;
+  oslog[2] = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v9 = OS_LOG_TYPE_DEFAULT;
@@ -19,14 +19,14 @@
   }
 
   objc_storeStrong(oslog, 0);
-  v4 = [sub_10020ED70() sharedInstance];
-  location = [v4 candidateAliases];
+  sharedInstance = [sub_10020ED70() sharedInstance];
+  location = [sharedInstance candidateAliases];
 
-  v5 = [sub_10020ED70() sharedInstance];
-  [v5 setSelectedAliases:location];
+  sharedInstance2 = [sub_10020ED70() sharedInstance];
+  [sharedInstance2 setSelectedAliases:location];
 
-  v6 = [sub_10020ED70() sharedInstance];
-  [v6 beginSetupWithCompletionHandler:&stru_10032F310];
+  sharedInstance3 = [sub_10020ED70() sharedInstance];
+  [sharedInstance3 beginSetupWithCompletionHandler:&stru_10032F310];
 
   objc_storeStrong(&location, 0);
 }

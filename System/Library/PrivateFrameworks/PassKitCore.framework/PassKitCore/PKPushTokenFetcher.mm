@@ -1,10 +1,10 @@
 @interface PKPushTokenFetcher
 - (PKPushTokenFetcher)init;
 - (void)_handleTimeout;
-- (void)_invokeCompletionWithPushToken:(id)a3;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)_invokeCompletionWithPushToken:(id)token;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
-- (void)fetchPushTokenWithTimeout:(double)a3 completion:(id)a4;
+- (void)fetchPushTokenWithTimeout:(double)timeout completion:(id)completion;
 @end
 
 @implementation PKPushTokenFetcher
@@ -58,8 +58,8 @@ void __26__PKPushTokenFetcher_init__block_invoke(uint64_t a1)
 {
   dispatch_source_cancel(self->_timeoutTimer);
   pushConnection = self->_pushConnection;
-  v4 = [MEMORY[0x1E695DEC8] array];
-  [(APSConnection *)pushConnection _setEnabledTopics:v4];
+  array = [MEMORY[0x1E695DEC8] array];
+  [(APSConnection *)pushConnection _setEnabledTopics:array];
 
   [(APSConnection *)self->_pushConnection setDelegate:0];
   v5.receiver = self;
@@ -67,18 +67,18 @@ void __26__PKPushTokenFetcher_init__block_invoke(uint64_t a1)
   [(PKPushTokenFetcher *)&v5 dealloc];
 }
 
-- (void)fetchPushTokenWithTimeout:(double)a3 completion:(id)a4
+- (void)fetchPushTokenWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__PKPushTokenFetcher_fetchPushTokenWithTimeout_completion___block_invoke;
   block[3] = &unk_1E79C4658;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  timeoutCopy = timeout;
+  v8 = completionCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -112,20 +112,20 @@ void __59__PKPushTokenFetcher_fetchPushTokenWithTimeout_completion___block_invok
   }
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_internalQueue);
   v6 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = tokenCopy;
     _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Push token fetcher received public token %@", &v7, 0xCu);
   }
 
-  [(PKPushTokenFetcher *)self _invokeCompletionWithPushToken:v5];
+  [(PKPushTokenFetcher *)self _invokeCompletionWithPushToken:tokenCopy];
 }
 
 - (void)_handleTimeout
@@ -138,28 +138,28 @@ void __59__PKPushTokenFetcher_fetchPushTokenWithTimeout_completion___block_invok
     _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Push token fetcher timed out", v5, 2u);
   }
 
-  v4 = [(APSConnection *)self->_pushConnection publicToken];
-  [(PKPushTokenFetcher *)self _invokeCompletionWithPushToken:v4];
+  publicToken = [(APSConnection *)self->_pushConnection publicToken];
+  [(PKPushTokenFetcher *)self _invokeCompletionWithPushToken:publicToken];
 }
 
-- (void)_invokeCompletionWithPushToken:(id)a3
+- (void)_invokeCompletionWithPushToken:(id)token
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_internalQueue);
   v5 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = tokenCopy;
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Push token fetcher completed with push token %@", buf, 0xCu);
   }
 
   dispatch_source_set_timer(self->_timeoutTimer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
   [(APSConnection *)self->_pushConnection setDelegate:0];
   pushConnection = self->_pushConnection;
-  v7 = [MEMORY[0x1E695DEC8] array];
-  [(APSConnection *)pushConnection _setEnabledTopics:v7];
+  array = [MEMORY[0x1E695DEC8] array];
+  [(APSConnection *)pushConnection _setEnabledTopics:array];
 
   if ([(NSMutableArray *)self->_completionHandlers count])
   {
@@ -168,7 +168,7 @@ void __59__PKPushTokenFetcher_fetchPushTokenWithTimeout_completion___block_invok
     v9[1] = 3221225472;
     v9[2] = __53__PKPushTokenFetcher__invokeCompletionWithPushToken___block_invoke;
     v9[3] = &unk_1E79D4598;
-    v10 = v4;
+    v10 = tokenCopy;
     [(NSMutableArray *)completionHandlers enumerateObjectsUsingBlock:v9];
     [(NSMutableArray *)self->_completionHandlers removeAllObjects];
   }

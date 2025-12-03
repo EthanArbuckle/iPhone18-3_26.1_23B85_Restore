@@ -1,9 +1,9 @@
 @interface BKMousePointerAnimationDriver
-- (BKMousePointerAnimationDriver)initWithRelativeTranslation:(CGPoint)a3;
+- (BKMousePointerAnimationDriver)initWithRelativeTranslation:(CGPoint)translation;
 - (BOOL)isComplete;
 - (CGPoint)currentTranslation;
 - (CGPoint)relativeTranslation;
-- (void)applyForTime:(double)a3;
+- (void)applyForTime:(double)time;
 @end
 
 @implementation BKMousePointerAnimationDriver
@@ -33,17 +33,17 @@
   return 1;
 }
 
-- (void)applyForTime:(double)a3
+- (void)applyForTime:(double)time
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (BKMousePointerAnimationDriver)initWithRelativeTranslation:(CGPoint)a3
+- (BKMousePointerAnimationDriver)initWithRelativeTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = translation.y;
+  x = translation.x;
   v6.receiver = self;
   v6.super_class = BKMousePointerAnimationDriver;
   result = [(BKMousePointerAnimationDriver *)&v6 init];

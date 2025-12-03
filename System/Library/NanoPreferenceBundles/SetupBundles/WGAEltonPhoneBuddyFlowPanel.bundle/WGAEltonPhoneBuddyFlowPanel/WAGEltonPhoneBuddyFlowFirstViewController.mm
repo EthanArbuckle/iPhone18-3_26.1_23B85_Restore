@@ -6,13 +6,13 @@
 - (id)imageResourceBundleIdentifier;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)_avQueuePlayerTryToRemoveObserverForKeyPath:(id)a3;
+- (void)_avQueuePlayerTryToRemoveObserverForKeyPath:(id)path;
 - (void)_handlepplicationDidBecomeActiveNotification;
 - (void)_prepareUIForVideoReadyToPlay;
 - (void)_setupViews;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -27,8 +27,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(WAGEltonPhoneBuddyFlowFirstViewController *)v2 _phoneBuddyFlowPanelLog];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)v2 _phoneBuddyFlowPanelLog];
+    if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
     {
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
@@ -36,7 +36,7 @@
       v11 = v6;
       v12 = 2080;
       v13 = "[WAGEltonPhoneBuddyFlowFirstViewController init]";
-      _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
+      _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
     }
 
     [(WAGEltonPhoneBuddyFlowFirstViewController *)v3 setStyle:2];
@@ -52,8 +52,8 @@
   v6.receiver = self;
   v6.super_class = WAGEltonPhoneBuddyFlowFirstViewController;
   [(WAGEltonPhoneBuddyFlowFirstViewController *)&v6 viewDidLoad];
-  v3 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -61,7 +61,7 @@
     v8 = v5;
     v9 = 2080;
     v10 = "[WAGEltonPhoneBuddyFlowFirstViewController viewDidLoad]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
   }
 
   [(WAGEltonPhoneBuddyFlowFirstViewController *)self _setupViews];
@@ -69,8 +69,8 @@
 
 - (void)dealloc
 {
-  v3 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -78,7 +78,7 @@
     v9 = v5;
     v10 = 2080;
     v11 = "[WAGEltonPhoneBuddyFlowFirstViewController dealloc]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel --  %@ %s", buf, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel --  %@ %s", buf, 0x16u);
   }
 
   [(WAGEltonPhoneBuddyFlowFirstViewController *)self _avQueuePlayerTryToRemoveObserverForKeyPath:@"status"];
@@ -93,8 +93,8 @@
 
 - (void)_setupViews
 {
-  v3 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -102,33 +102,33 @@
     v35 = v5;
     v36 = 2080;
     v37 = "[WAGEltonPhoneBuddyFlowFirstViewController _setupViews]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
   }
 
   v6 = +[UIColor blackColor];
-  v7 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self view];
-  [v7 setBackgroundColor:v6];
+  view = [(WAGEltonPhoneBuddyFlowFirstViewController *)self view];
+  [view setBackgroundColor:v6];
 
   v8 = objc_alloc_init(UIView);
   containerContentView = self->_containerContentView;
   self->_containerContentView = v8;
 
-  v10 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self contentView];
-  [v10 addSubview:self->_containerContentView];
+  contentView = [(WAGEltonPhoneBuddyFlowFirstViewController *)self contentView];
+  [contentView addSubview:self->_containerContentView];
 
   v11 = +[UIColor blackColor];
-  v12 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self contentView];
-  [v12 setBackgroundColor:v11];
+  contentView2 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self contentView];
+  [contentView2 setBackgroundColor:v11];
 
   v13 = [NSBundle bundleForClass:objc_opt_class()];
   v14 = [v13 pathForResource:@"elton_instruction" ofType:@"m4v"];
 
-  v15 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog2 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v35 = v14;
-    _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- file path is %@", buf, 0xCu);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog2, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- file path is %@", buf, 0xCu);
   }
 
   if (v14)
@@ -151,27 +151,27 @@
     self->_playerLayer = v23;
 
     [(AVPlayerLayer *)self->_playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
-    v25 = [(UIView *)self->_containerContentView layer];
-    [v25 addSublayer:self->_playerLayer];
+    layer = [(UIView *)self->_containerContentView layer];
+    [layer addSublayer:self->_playerLayer];
 
-    v26 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+    _phoneBuddyFlowPanelLog3 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+    if (os_log_type_enabled(_phoneBuddyFlowPanelLog3, OS_LOG_TYPE_DEFAULT))
     {
       v27 = self->_avQueuePlayer;
       *buf = 138412290;
       v35 = v27;
-      _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- will add player%@", buf, 0xCu);
+      _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- will add player%@", buf, 0xCu);
     }
   }
 
   v28 = [NSBundle bundleForClass:objc_opt_class()];
   v29 = [UIImage imageNamed:@"elton_first_frame_fpo" inBundle:v28 withConfiguration:0];
 
-  v30 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog4 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- did load statc image.", buf, 2u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog4, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- did load statc image.", buf, 2u);
   }
 
   v31 = [[UIImageView alloc] initWithImage:v29];
@@ -187,8 +187,8 @@
   v22.receiver = self;
   v22.super_class = WAGEltonPhoneBuddyFlowFirstViewController;
   [(WAGEltonPhoneBuddyFlowFirstViewController *)&v22 viewDidLayoutSubviews];
-  v3 = [(UIImageView *)self->_playerPlaceholderImageView image];
-  [v3 size];
+  image = [(UIImageView *)self->_playerPlaceholderImageView image];
+  [image size];
   v5 = v4;
   v7 = v6;
 
@@ -202,16 +202,16 @@
     v9 = v5 / v7;
   }
 
-  v10 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self contentView];
-  [v10 frame];
+  contentView = [(WAGEltonPhoneBuddyFlowFirstViewController *)self contentView];
+  [contentView frame];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self view];
-  [v15 bounds];
+  view = [(WAGEltonPhoneBuddyFlowFirstViewController *)self view];
+  [view bounds];
   v17 = v16;
-  v18 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self view];
-  [v18 bounds];
+  view2 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self view];
+  [view2 bounds];
   v20 = v19 / v9;
 
   v21 = v12 + (v14 - v20) * 0.5;
@@ -222,8 +222,8 @@
 
 - (id)titleString
 {
-  v2 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
@@ -231,7 +231,7 @@
     v9 = v4;
     v10 = 2080;
     v11 = "[WAGEltonPhoneBuddyFlowFirstViewController titleString]";
-    _os_log_impl(&dword_0, v2, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
   }
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -242,8 +242,8 @@
 
 - (id)detailString
 {
-  v2 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
@@ -251,7 +251,7 @@
     v9 = v4;
     v10 = 2080;
     v11 = "[WAGEltonPhoneBuddyFlowFirstViewController detailString]";
-    _os_log_impl(&dword_0, v2, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
   }
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -262,8 +262,8 @@
 
 - (id)suggestedButtonTitle
 {
-  v2 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
@@ -271,7 +271,7 @@
     v9 = v4;
     v10 = 2080;
     v11 = "[WAGEltonPhoneBuddyFlowFirstViewController suggestedButtonTitle]";
-    _os_log_impl(&dword_0, v2, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
   }
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -280,10 +280,10 @@
   return v6;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
@@ -291,27 +291,27 @@
     v9 = v6;
     v10 = 2080;
     v11 = "[WAGEltonPhoneBuddyFlowFirstViewController suggestedButtonPressed:]";
-    _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
   }
 
-  v7 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self miniFlowDelegate];
-  [v7 miniFlowStepComplete:self];
+  miniFlowDelegate = [(WAGEltonPhoneBuddyFlowFirstViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
 - (id)imageResourceBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  objectCopy = object;
+  _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
@@ -319,10 +319,10 @@
     v16 = v12;
     v17 = 2080;
     v18 = "[WAGEltonPhoneBuddyFlowFirstViewController observeValueForKeyPath:ofObject:change:context:]";
-    _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
   }
 
-  if ([v9 isEqual:self->_avQueuePlayer] && objc_msgSend(v8, "isEqualToString:", @"status") && -[AVQueuePlayer status](self->_avQueuePlayer, "status") == &dword_0 + 1)
+  if ([objectCopy isEqual:self->_avQueuePlayer] && objc_msgSend(pathCopy, "isEqualToString:", @"status") && -[AVQueuePlayer status](self->_avQueuePlayer, "status") == &dword_0 + 1)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -332,7 +332,7 @@
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  if ([v9 isEqual:self->_avQueuePlayer] && objc_msgSend(v8, "isEqualToString:", @"timeControlStatus") && -[AVQueuePlayer timeControlStatus](self->_avQueuePlayer, "timeControlStatus") == &dword_0 + 2)
+  if ([objectCopy isEqual:self->_avQueuePlayer] && objc_msgSend(pathCopy, "isEqualToString:", @"timeControlStatus") && -[AVQueuePlayer timeControlStatus](self->_avQueuePlayer, "timeControlStatus") == &dword_0 + 2)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -345,8 +345,8 @@
 
 - (void)_prepareUIForVideoReadyToPlay
 {
-  v3 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -354,12 +354,12 @@
     v8 = v5;
     v9 = 2080;
     v10 = "[WAGEltonPhoneBuddyFlowFirstViewController _prepareUIForVideoReadyToPlay]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v7, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v7, 0x16u);
   }
 
-  v6 = [(UIImageView *)self->_playerPlaceholderImageView superview];
+  superview = [(UIImageView *)self->_playerPlaceholderImageView superview];
 
-  if (v6)
+  if (superview)
   {
     [(AVQueuePlayer *)self->_avQueuePlayer play];
     [(AVQueuePlayer *)self->_avQueuePlayer addObserver:self forKeyPath:@"timeControlStatus" options:0 context:0];
@@ -368,8 +368,8 @@
 
 - (void)_handlepplicationDidBecomeActiveNotification
 {
-  v2 = [(AVPlayerLayer *)self->_playerLayer player];
-  [v2 play];
+  player = [(AVPlayerLayer *)self->_playerLayer player];
+  [player play];
 }
 
 - (id)_phoneBuddyFlowPanelLog
@@ -384,26 +384,26 @@
   return v3;
 }
 
-- (void)_avQueuePlayerTryToRemoveObserverForKeyPath:(id)a3
+- (void)_avQueuePlayerTryToRemoveObserverForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  _phoneBuddyFlowPanelLog = [(WAGEltonPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     avQueuePlayer = self->_avQueuePlayer;
     v8 = 138412546;
-    v9 = v4;
+    v9 = pathCopy;
     v10 = 2112;
     v11 = avQueuePlayer;
-    _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- will attempt to remove observer for keyPath: %@, _avQueuePlayer is:%@", &v8, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- will attempt to remove observer for keyPath: %@, _avQueuePlayer is:%@", &v8, 0x16u);
   }
 
-  if (v4)
+  if (pathCopy)
   {
     v7 = self->_avQueuePlayer;
     if (v7)
     {
-      [(AVQueuePlayer *)v7 removeObserver:self forKeyPath:v4];
+      [(AVQueuePlayer *)v7 removeObserver:self forKeyPath:pathCopy];
     }
   }
 }

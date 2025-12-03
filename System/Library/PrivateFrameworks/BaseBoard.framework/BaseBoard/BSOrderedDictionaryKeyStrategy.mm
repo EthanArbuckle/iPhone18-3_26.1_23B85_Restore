@@ -1,8 +1,8 @@
 @interface BSOrderedDictionaryKeyStrategy
 + (id)new;
 + (id)sortByInsertionOrder;
-+ (id)sortByInsertionOrderWithEntryLimit:(int64_t)a3;
-+ (id)sortUsingComparator:(id)a3;
++ (id)sortByInsertionOrderWithEntryLimit:(int64_t)limit;
++ (id)sortUsingComparator:(id)comparator;
 - (BSOrderedDictionaryKeyStrategy)init;
 - (id)_init;
 @end
@@ -35,7 +35,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = a1;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSOrderedDictionary.m";
     v18 = 1024;
@@ -66,7 +66,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSOrderedDictionary.m";
     v18 = 1024;
@@ -132,18 +132,18 @@ void __54__BSOrderedDictionaryKeyStrategy_sortByInsertionOrder__block_invoke()
   return v3;
 }
 
-+ (id)sortByInsertionOrderWithEntryLimit:(int64_t)a3
++ (id)sortByInsertionOrderWithEntryLimit:(int64_t)limit
 {
-  v4 = [[BSOrderedDictionaryKeyStrategy alloc] _init];
-  [v4 setLimitCount:a3];
+  _init = [[BSOrderedDictionaryKeyStrategy alloc] _init];
+  [_init setLimitCount:limit];
 
-  return v4;
+  return _init;
 }
 
-+ (id)sortUsingComparator:(id)a3
++ (id)sortUsingComparator:(id)comparator
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!comparator)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"comparator != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -156,7 +156,7 @@ void __54__BSOrderedDictionaryKeyStrategy_sortByInsertionOrder__block_invoke()
       v15 = 2114;
       v16 = v11;
       v17 = 2048;
-      v18 = a1;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BSOrderedDictionary.m";
       v21 = 1024;
@@ -172,10 +172,10 @@ void __54__BSOrderedDictionaryKeyStrategy_sortByInsertionOrder__block_invoke()
     JUMPOUT(0x18FF91164);
   }
 
-  v4 = [[BSOrderedDictionaryKeyStrategy alloc] _init];
-  [v4 setKeyComparator:a3];
+  _init = [[BSOrderedDictionaryKeyStrategy alloc] _init];
+  [_init setKeyComparator:comparator];
 
-  return v4;
+  return _init;
 }
 
 @end

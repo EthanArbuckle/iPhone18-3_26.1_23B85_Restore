@@ -1,10 +1,10 @@
 @interface PKPassTileState
-+ (id)_createWithType:(int64_t)a3;
-+ (id)createResolvedStateWithType:(int64_t)a3;
-+ (void)_createForDictionary:(uint64_t)a3 withTileType:(int)a4 isRoot:;
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (BOOL)isEqualToUnresolvedState:(id)a3;
-- (PKPassTileState)initWithCoder:(id)a3;
++ (id)_createWithType:(int64_t)type;
++ (id)createResolvedStateWithType:(int64_t)type;
++ (void)_createForDictionary:(uint64_t)dictionary withTileType:(int)type isRoot:;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (BOOL)isEqualToUnresolvedState:(id)state;
+- (PKPassTileState)initWithCoder:(id)coder;
 - (PKPassTileStateCheckIn)stateTypeCheckIn;
 - (PKPassTileStateDefault)stateTypeDefault;
 - (PKPassTileStateDefaultV2)stateTypeDefaultV2;
@@ -12,15 +12,15 @@
 - (PKPassTileStateGroup)stateTypeGroup;
 - (PKPassTileStatePaymentOfferSelector)stateTypePaymentOfferSelector;
 - (PKPaymentPassAction)action;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createResolvedStateWithBundle:(id)a3 privateBundle:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActions:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createResolvedStateWithBundle:(id)bundle privateBundle:(id)privateBundle;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActions:(id)actions;
 @end
 
 @implementation PKPassTileState
 
-+ (void)_createForDictionary:(uint64_t)a3 withTileType:(int)a4 isRoot:
++ (void)_createForDictionary:(uint64_t)dictionary withTileType:(int)type isRoot:
 {
   v6 = a2;
   objc_opt_self();
@@ -30,7 +30,7 @@
   }
 
   v17 = 0;
-  if ([PKPassTileMetadata isGroupType:a3])
+  if ([PKPassTileMetadata isGroupType:dictionary])
   {
     v17 = 3;
     goto LABEL_5;
@@ -48,12 +48,12 @@ LABEL_10:
 
 LABEL_5:
   v9 = [PKPassTileState _createWithType:?];
-  if (v9 && (+[PKPassTileStateMetadata _createForType:dictionary:](PKPassTileStateMetadata, "_createForType:dictionary:", a3, v6), v10 = objc_claimAutoreleasedReturnValue(), v11 = v9[4], v9[4] = v10, v11, [v9 _setUpWithDictionary:v6]))
+  if (v9 && (+[PKPassTileStateMetadata _createForType:dictionary:](PKPassTileStateMetadata, "_createForType:dictionary:", dictionary, v6), v10 = objc_claimAutoreleasedReturnValue(), v11 = v9[4], v9[4] = v10, v11, [v9 _setUpWithDictionary:v6]))
   {
-    if (a4)
+    if (type)
     {
       v12 = [v6 PKDictionaryForKey:@"actionState"];
-      v13 = [PKPassTileState _createForDictionary:v12 withTileType:a3 isRoot:0];
+      v13 = [PKPassTileState _createForDictionary:v12 withTileType:dictionary isRoot:0];
       v14 = v9[5];
       v9[5] = v13;
     }
@@ -70,15 +70,15 @@ LABEL_13:
   return v15;
 }
 
-+ (id)_createWithType:(int64_t)a3
++ (id)_createWithType:(int64_t)type
 {
-  if (a3 >= 7 || ((0x6Fu >> a3) & 1) == 0)
+  if (type >= 7 || ((0x6Fu >> type) & 1) == 0)
   {
     v5 = 0;
     goto LABEL_7;
   }
 
-  v4 = objc_alloc(*off_1E79CA438[a3]);
+  v4 = objc_alloc(*off_1E79CA438[type]);
   v5 = v4;
   if (!v4)
   {
@@ -93,7 +93,7 @@ LABEL_7:
   v7 = v6;
   if (v6)
   {
-    *(v6 + 3) = a3;
+    *(v6 + 3) = type;
     *(v6 + 18) = 0;
   }
 
@@ -102,15 +102,15 @@ LABEL_8:
   return v7;
 }
 
-+ (id)createResolvedStateWithType:(int64_t)a3
++ (id)createResolvedStateWithType:(int64_t)type
 {
-  if (a3 >= 7 || ((0x6Fu >> a3) & 1) == 0)
+  if (type >= 7 || ((0x6Fu >> type) & 1) == 0)
   {
     v5 = 0;
     goto LABEL_7;
   }
 
-  v4 = objc_alloc(*off_1E79CA438[a3]);
+  v4 = objc_alloc(*off_1E79CA438[type]);
   v5 = v4;
   if (!v4)
   {
@@ -125,7 +125,7 @@ LABEL_7:
   v7 = v6;
   if (v6)
   {
-    *(v6 + 3) = a3;
+    *(v6 + 3) = type;
     v6[18] = 1;
   }
 
@@ -135,25 +135,25 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 PKNumberForKey:@"enabled"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKNumberForKey:@"enabled"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  self->_enabled = v7;
-  self->_selected = [v4 PKBoolForKey:@"selected"];
-  v8 = [v4 PKDictionaryForKey:@"icon"];
+  self->_enabled = bOOLValue;
+  self->_selected = [dictionaryCopy PKBoolForKey:@"selected"];
+  v8 = [dictionaryCopy PKDictionaryForKey:@"icon"];
   if (v8)
   {
     v9 = [PKPassTileImage _createForDictionary:v8];
@@ -161,13 +161,13 @@ LABEL_8:
     self->_icon = v9;
   }
 
-  v11 = [v4 PKArrayContaining:objc_opt_class() forKey:@"actions"];
+  v11 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"actions"];
   actionDictionaries = self->_actionDictionaries;
   self->_actionDictionaries = v11;
 
   if (!self->_actionDictionaries)
   {
-    v13 = [v4 PKDictionaryForKey:@"action"];
+    v13 = [dictionaryCopy PKDictionaryForKey:@"action"];
     v14 = v13;
     if (v13)
     {
@@ -181,7 +181,7 @@ LABEL_8:
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PKPassTileState _createWithType:self->_type];
   objc_storeStrong(v4 + 4, self->_metadata);
@@ -195,10 +195,10 @@ LABEL_8:
   return v4;
 }
 
-- (id)createResolvedStateWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedStateWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  privateBundleCopy = privateBundle;
   if (self->_resolved)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKPassTileState %@ attempting double resolution.", objc_opt_class()}];
@@ -208,11 +208,11 @@ LABEL_8:
   objc_storeStrong(v8 + 4, self->_metadata);
   *(v8 + 16) = self->_enabled;
   *(v8 + 17) = self->_selected;
-  v9 = [(PKPassTileState *)self->_actionState createResolvedStateWithBundle:v6 privateBundle:v7];
+  v9 = [(PKPassTileState *)self->_actionState createResolvedStateWithBundle:bundleCopy privateBundle:privateBundleCopy];
   v10 = v8[5];
   v8[5] = v9;
 
-  v11 = [(PKPassTileImage *)self->_icon createResolvedImageWithBundle:v6 privateBundle:v7];
+  v11 = [(PKPassTileImage *)self->_icon createResolvedImageWithBundle:bundleCopy privateBundle:privateBundleCopy];
   v12 = v8[6];
   v8[6] = v11;
 
@@ -223,7 +223,7 @@ LABEL_8:
     v17[1] = 3221225472;
     v17[2] = __63__PKPassTileState_createResolvedStateWithBundle_privateBundle___block_invoke;
     v17[3] = &unk_1E79CA3E0;
-    v18 = v6;
+    v18 = bundleCopy;
     v14 = [(NSArray *)actionDictionaries pk_createArrayBySafelyApplyingBlock:v17];
     v15 = v8[1];
     v8[1] = v14;
@@ -242,11 +242,11 @@ PKPaymentPassAction *__63__PKPassTileState_createResolvedStateWithBundle_private
   return v4;
 }
 
-- (PKPassTileState)initWithCoder:(id)a3
+- (PKPassTileState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21 = 0;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   v6 = PKPassTileStateTypeFromString(v5, &v21);
 
   if (v6 & 1) != 0 && v21 <= 6 && ((0x6Fu >> v21) & 1) != 0 && objc_opt_class() && (objc_opt_isKindOfClass())
@@ -256,21 +256,21 @@ PKPaymentPassAction *__63__PKPassTileState_createResolvedStateWithBundle_private
       v9 = v8;
       v8->_type = v7;
       v8->_resolved = 1;
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
       metadata = v9->_metadata;
       v9->_metadata = v10;
 
-      v9->_enabled = [v4 decodeBoolForKey:@"enabled"];
-      v9->_selected = [v4 decodeBoolForKey:@"selected"];
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionState"];
+      v9->_enabled = [coderCopy decodeBoolForKey:@"enabled"];
+      v9->_selected = [coderCopy decodeBoolForKey:@"selected"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionState"];
       actionState = v9->_actionState;
       v9->_actionState = v12;
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
       icon = v9->_icon;
       v9->_icon = v14;
 
-      v16 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"actions"];
+      v16 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"actions"];
       actions = v9->_actions;
       v9->_actions = v16;
     }
@@ -281,49 +281,49 @@ PKPaymentPassAction *__63__PKPassTileState_createResolvedStateWithBundle_private
     }
 
     self = v9;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
     v18 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKPassTileState" code:0 userInfo:0];
-    [v4 failWithError:v18];
+    [coderCopy failWithError:v18];
 
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (!self->_resolved)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKPassTileState %@ attempting unresolved XPC transfer.", objc_opt_class()}];
   }
 
   v4 = PKPassTileStateTypeToString(self->_type);
-  [v5 encodeObject:v4 forKey:@"type"];
+  [coderCopy encodeObject:v4 forKey:@"type"];
 
-  [v5 encodeObject:self->_metadata forKey:@"metadata"];
-  [v5 encodeBool:self->_enabled forKey:@"enabled"];
-  [v5 encodeBool:self->_selected forKey:@"selected"];
-  [v5 encodeObject:self->_actionState forKey:@"actionState"];
-  [v5 encodeObject:self->_icon forKey:@"icon"];
-  [v5 encodeObject:self->_actions forKey:@"actions"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeBool:self->_enabled forKey:@"enabled"];
+  [coderCopy encodeBool:self->_selected forKey:@"selected"];
+  [coderCopy encodeObject:self->_actionState forKey:@"actionState"];
+  [coderCopy encodeObject:self->_icon forKey:@"icon"];
+  [coderCopy encodeObject:self->_actions forKey:@"actions"];
 }
 
-- (BOOL)isEqualToUnresolvedState:(id)a3
+- (BOOL)isEqualToUnresolvedState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[18] & 1) != 0 || self->_resolved || *(v4 + 3) != self->_type)
+  stateCopy = state;
+  v5 = stateCopy;
+  if ((stateCopy[18] & 1) != 0 || self->_resolved || *(stateCopy + 3) != self->_type)
   {
     goto LABEL_23;
   }
 
-  v6 = *(v4 + 4);
+  v6 = *(stateCopy + 4);
   metadata = self->_metadata;
   if (v6)
   {
@@ -407,14 +407,14 @@ LABEL_24:
   return actions;
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
-  v5 = a3;
+  actionsCopy = actions;
   if (self->_resolved)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_actions, a3);
-    v5 = v6;
+    v6 = actionsCopy;
+    objc_storeStrong(&self->_actions, actions);
+    actionsCopy = v6;
   }
 }
 

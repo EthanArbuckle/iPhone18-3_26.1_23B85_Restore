@@ -1,5 +1,5 @@
 @interface HardwareOffersViewController
-- (_TtC20AppleMediaServicesUI28HardwareOffersViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20AppleMediaServicesUI28HardwareOffersViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)closeButtonTapped;
 - (void)viewDidLoad;
 @end
@@ -8,19 +8,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BB16E2B0();
 }
 
 - (void)closeButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BB16E78C();
 }
 
-- (_TtC20AppleMediaServicesUI28HardwareOffersViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20AppleMediaServicesUI28HardwareOffersViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1BB1DD378();
     v7 = v6;
@@ -32,8 +32,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1BB16E844(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1BB16E844(v5, v7, bundle);
 }
 
 @end

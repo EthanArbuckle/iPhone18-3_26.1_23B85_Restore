@@ -95,8 +95,8 @@
   v7.receiver = self;
   v7.super_class = RDMutex;
   v3 = [(RDMutex *)&v7 description];
-  v4 = [(RDMutex *)self whoHasTheLock];
-  v5 = [NSString stringWithFormat:@"%@ -- Owner: %@", v3, v4];
+  whoHasTheLock = [(RDMutex *)self whoHasTheLock];
+  v5 = [NSString stringWithFormat:@"%@ -- Owner: %@", v3, whoHasTheLock];
 
   return v5;
 }

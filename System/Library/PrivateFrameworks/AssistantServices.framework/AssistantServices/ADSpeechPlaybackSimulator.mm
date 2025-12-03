@@ -1,28 +1,28 @@
 @interface ADSpeechPlaybackSimulator
-- (ADSpeechPlaybackSimulator)initWithQueue:(id)a3 speechController:(id)a4 audioSessionController:(id)a5 audioPlaybackService:(id)a6 experimentContext:(id)a7;
+- (ADSpeechPlaybackSimulator)initWithQueue:(id)queue speechController:(id)controller audioSessionController:(id)sessionController audioPlaybackService:(id)service experimentContext:(id)context;
 - (id)delegate;
-- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)a3;
-- (void)getLastStartpointTimestampAndCurrentTime:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)startPlaybackWithURL:(id)a3 narrowBand:(BOOL)a4 dictation:(BOOL)a5 completion:(id)a6;
-- (void)stopSpeechCaptureForEvent:(int64_t)a3 suppressAlert:(BOOL)a4 hostTime:(unint64_t)a5;
-- (void)updateEndpointHintForRC:(id)a3 forceAccept:(BOOL)a4 completion:(id)a5;
+- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)alert;
+- (void)getLastStartpointTimestampAndCurrentTime:(id)time;
+- (void)setDelegate:(id)delegate;
+- (void)startPlaybackWithURL:(id)l narrowBand:(BOOL)band dictation:(BOOL)dictation completion:(id)completion;
+- (void)stopSpeechCaptureForEvent:(int64_t)event suppressAlert:(BOOL)alert hostTime:(unint64_t)time;
+- (void)updateEndpointHintForRC:(id)c forceAccept:(BOOL)accept completion:(id)completion;
 @end
 
 @implementation ADSpeechPlaybackSimulator
 
-- (void)startPlaybackWithURL:(id)a3 narrowBand:(BOOL)a4 dictation:(BOOL)a5 completion:(id)a6
+- (void)startPlaybackWithURL:(id)l narrowBand:(BOOL)band dictation:(BOOL)dictation completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
+  dictationCopy = dictation;
+  lCopy = l;
+  completionCopy = completion;
   v62 = 0;
-  v12 = [ADSpeechLog buffersFromSpeechLogAtURL:v10 isNarrowBand:&v62];
+  v12 = [ADSpeechLog buffersFromSpeechLogAtURL:lCopy isNarrowBand:&v62];
   if (v12)
   {
     v13 = v62;
-    v14 = [v10 pathExtension];
-    v15 = [v14 caseInsensitiveCompare:@"opx"] == 0;
+    pathExtension = [lCopy pathExtension];
+    v15 = [pathExtension caseInsensitiveCompare:@"opx"] == 0;
 
     v16 = &SASCodecOPUS_Mono_8000HzValue;
     if (!v15)
@@ -36,7 +36,7 @@
       v17 = &SASCodecSpeex_WB_Quality8Value;
     }
 
-    if ((v13 | a4))
+    if ((v13 | band))
     {
       v18 = v16;
     }
@@ -47,7 +47,7 @@
     }
 
     v43 = *v18;
-    v19 = [[CSSiriRecordingInfo alloc] initWithDictation:v7 codec:v43];
+    v19 = [[CSSiriRecordingInfo alloc] initWithDictation:dictationCopy codec:v43];
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -85,17 +85,17 @@
       v55[4] = self;
       v55[5] = v22;
       dispatch_async(v25, v55);
-      if (v11)
+      if (completionCopy)
       {
-        v11[2](v11);
+        completionCopy[2](completionCopy);
       }
     }
 
     else
     {
-      v28 = [v12 reverseObjectEnumerator];
-      v29 = [v28 allObjects];
-      v30 = [NSMutableArray arrayWithArray:v29];
+      reverseObjectEnumerator = [v12 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      v30 = [NSMutableArray arrayWithArray:allObjects];
 
       v42 = [v30 count];
       *buf = 0;
@@ -134,7 +134,7 @@
       handler[2] = sub_1002DB06C;
       handler[3] = &unk_10051A700;
       v50 = v30;
-      v51 = self;
+      selfCopy = self;
       v37 = v30;
       objc_copyWeak(&v54, v63);
       v53 = buf;
@@ -151,7 +151,7 @@
       objc_copyWeak(v48, v63);
       v39 = v38;
       v45 = v39;
-      v46 = v11;
+      v46 = completionCopy;
       dispatch_source_set_cancel_handler(v39, v44);
       dispatch_resume(v39);
       playbackSource = self->_playbackSource;
@@ -174,7 +174,7 @@
       *buf = 136315394;
       *&buf[4] = "[ADSpeechPlaybackSimulator startPlaybackWithURL:narrowBand:dictation:completion:]";
       *&buf[12] = 2114;
-      *&buf[14] = v10;
+      *&buf[14] = lCopy;
       _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%s Couldn't decode Speex / Opus buffers for speech log at URL %{public}@", buf, 0x16u);
     }
 
@@ -188,23 +188,23 @@
   }
 }
 
-- (void)updateEndpointHintForRC:(id)a3 forceAccept:(BOOL)a4 completion:(id)a5
+- (void)updateEndpointHintForRC:(id)c forceAccept:(BOOL)accept completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 0, 0, 0);
+    (*(completion + 2))(completion, 0, 0, 0);
   }
 }
 
-- (void)getLastStartpointTimestampAndCurrentTime:(id)a3
+- (void)getLastStartpointTimestampAndCurrentTime:(id)time
 {
-  if (a3)
+  if (time)
   {
-    (*(a3 + 2))(a3, 0.0, 0.0);
+    (*(time + 2))(time, 0.0, 0.0);
   }
 }
 
-- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)a3
+- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)alert
 {
   playbackSource = self->_playbackSource;
   if (playbackSource)
@@ -213,7 +213,7 @@
   }
 }
 
-- (void)stopSpeechCaptureForEvent:(int64_t)a3 suppressAlert:(BOOL)a4 hostTime:(unint64_t)a5
+- (void)stopSpeechCaptureForEvent:(int64_t)event suppressAlert:(BOOL)alert hostTime:(unint64_t)time
 {
   playbackSource = self->_playbackSource;
   if (playbackSource)
@@ -229,30 +229,30 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002DB524;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (ADSpeechPlaybackSimulator)initWithQueue:(id)a3 speechController:(id)a4 audioSessionController:(id)a5 audioPlaybackService:(id)a6 experimentContext:(id)a7
+- (ADSpeechPlaybackSimulator)initWithQueue:(id)queue speechController:(id)controller audioSessionController:(id)sessionController audioPlaybackService:(id)service experimentContext:(id)context
 {
-  v9 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = ADSpeechPlaybackSimulator;
   v10 = [(ADSpeechPlaybackSimulator *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queue, a3);
+    objc_storeStrong(&v10->_queue, queue);
   }
 
   return v11;

@@ -1,12 +1,12 @@
 @interface TodayCardChinLockupListIconView
-- (_TtC22SubscribePageExtension31TodayCardChinLockupListIconView)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension31TodayCardChinLockupListIconView)initWithCoder:(id)coder;
 - (void)handleTap;
 - (void)layoutSubviews;
 @end
 
 @implementation TodayCardChinLockupListIconView
 
-- (_TtC22SubscribePageExtension31TodayCardChinLockupListIconView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension31TodayCardChinLockupListIconView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension31TodayCardChinLockupListIconView_artworkView;
   sub_1007433C4();
@@ -31,7 +31,7 @@
 
 - (void)handleTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007386CC();
 }
 

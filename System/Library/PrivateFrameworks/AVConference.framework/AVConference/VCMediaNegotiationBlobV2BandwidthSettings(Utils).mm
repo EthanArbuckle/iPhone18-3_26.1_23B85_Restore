@@ -36,8 +36,8 @@
     return 0;
   }
 
-  v6 = [a3 capWifi];
-  return v6 == [(VCMediaNegotiationBlobV2BandwidthSettings *)self capWifi];
+  capWifi = [a3 capWifi];
+  return capWifi == [(VCMediaNegotiationBlobV2BandwidthSettings *)self capWifi];
 }
 
 - (void)initWithBandwidthConfigurations:()Utils .cold.1()
@@ -100,7 +100,7 @@
   }
 
   *a2 = 0;
-  *a1 = 0;
+  *self = 0;
 }
 
 @end

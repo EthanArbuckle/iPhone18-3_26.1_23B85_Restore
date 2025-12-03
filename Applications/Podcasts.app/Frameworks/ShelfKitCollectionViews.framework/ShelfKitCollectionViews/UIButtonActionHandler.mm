@@ -1,15 +1,15 @@
 @interface UIButtonActionHandler
-- (void)handleAction:(id)a3;
+- (void)handleAction:(id)action;
 @end
 
 @implementation UIButtonActionHandler
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
   v3 = *self->handler;
-  v4 = a3;
+  actionCopy = action;
 
-  v3(v4);
+  v3(actionCopy);
 }
 
 @end

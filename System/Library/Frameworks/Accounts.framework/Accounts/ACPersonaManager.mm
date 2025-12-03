@@ -1,9 +1,9 @@
 @interface ACPersonaManager
 + (ACPersonaManager)sharedInstance;
-+ (BOOL)performWithinPersona:(id)a3 withBlock:(id)a4;
-+ (void)_changePersonaContextUsingPersonaID:(id)a3 withCompletion:(id)a4;
-+ (void)performWithinPersonaForAccount:(id)a3 withBlock:(id)a4;
-+ (void)performWithinPersonaForAccountIdentifier:(id)a3 withBlock:(id)a4;
++ (BOOL)performWithinPersona:(id)persona withBlock:(id)block;
++ (void)_changePersonaContextUsingPersonaID:(id)d withCompletion:(id)completion;
++ (void)performWithinPersonaForAccount:(id)account withBlock:(id)block;
++ (void)performWithinPersonaForAccountIdentifier:(id)identifier withBlock:(id)block;
 - (ACPersonaManager)init;
 - (NSArray)dataSeparatedPersonasUIDs;
 - (NSSet)guestPersonasUIDs;
@@ -67,7 +67,7 @@ uint64_t __34__ACPersonaManager_sharedInstance__block_invoke()
   v4[1] = 3221225472;
   v5 = __38__ACPersonaManager_updatePersonasUIDs__block_invoke;
   v6 = &unk_1E7975AD8;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_personaStorageLock);
   v5(v3);
@@ -84,11 +84,11 @@ uint64_t __34__ACPersonaManager_sharedInstance__block_invoke()
 
 - (id)_cacheURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 URLsForDirectory:5 inDomains:1];
-  v4 = [v3 firstObject];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager URLsForDirectory:5 inDomains:1];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 URLByAppendingPathComponent:@"Accounts" isDirectory:1];
+  v5 = [firstObject URLByAppendingPathComponent:@"Accounts" isDirectory:1];
   v6 = [v5 URLByAppendingPathComponent:@"persona.cache" isDirectory:0];
 
   return v6;
@@ -205,27 +205,27 @@ id __45__ACPersonaManager_dataSeparatedPersonasUIDs__block_invoke(uint64_t a1)
   return store;
 }
 
-+ (void)performWithinPersonaForAccountIdentifier:(id)a3 withBlock:(id)a4
++ (void)performWithinPersonaForAccountIdentifier:(id)identifier withBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  identifierCopy = identifier;
   v7 = +[ACPersonaManager sharedInstance];
-  v8 = [v7 store];
-  v9 = [v8 accountWithIdentifier:v6];
+  store = [v7 store];
+  v9 = [store accountWithIdentifier:identifierCopy];
 
-  [ACPersonaManager performWithinPersonaForAccount:v9 withBlock:v5];
+  [ACPersonaManager performWithinPersonaForAccount:v9 withBlock:blockCopy];
 }
 
-+ (void)performWithinPersonaForAccount:(id)a3 withBlock:(id)a4
++ (void)performWithinPersonaForAccount:(id)account withBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  accountCopy = account;
+  if (!accountCopy)
   {
     v10 = MEMORY[0x1E69DF060];
-    v9 = a4;
-    v11 = [v10 sharedManager];
-    v12 = [v11 currentPersona];
-    v7 = [v12 userPersonaNickName];
+    blockCopy = block;
+    sharedManager = [v10 sharedManager];
+    currentPersona = [sharedManager currentPersona];
+    userPersonaNickName = [currentPersona userPersonaNickName];
 
     v13 = _ACPLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -233,41 +233,41 @@ id __45__ACPersonaManager_dataSeparatedPersonasUIDs__block_invoke(uint64_t a1)
       +[ACPersonaManager performWithinPersonaForAccount:withBlock:];
     }
 
-    v9[2](v9);
+    blockCopy[2](blockCopy);
     goto LABEL_8;
   }
 
-  v6 = a4;
-  v7 = [v5 personaIdentifier];
-  v8 = [objc_opt_class() performWithinPersona:v7 withBlock:v6];
+  blockCopy2 = block;
+  userPersonaNickName = [accountCopy personaIdentifier];
+  v8 = [objc_opt_class() performWithinPersona:userPersonaNickName withBlock:blockCopy2];
 
   if ((v8 & 1) == 0)
   {
-    v9 = _ACPLogSystem();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+    blockCopy = _ACPLogSystem();
+    if (os_log_type_enabled(blockCopy, OS_LOG_TYPE_FAULT))
     {
-      [ACPersonaManager performWithinPersonaForAccount:v5 withBlock:v9];
+      [ACPersonaManager performWithinPersonaForAccount:accountCopy withBlock:blockCopy];
     }
 
 LABEL_8:
   }
 }
 
-+ (BOOL)performWithinPersona:(id)a3 withBlock:(id)a4
++ (BOOL)performWithinPersona:(id)persona withBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DF060] sharedManager];
-  v8 = [v7 currentPersona];
+  personaCopy = persona;
+  blockCopy = block;
+  mEMORY[0x1E69DF060] = [MEMORY[0x1E69DF060] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF060] currentPersona];
 
-  if (v5)
+  if (personaCopy)
   {
-    v9 = [v8 userPersonaUniqueString];
-    v10 = [v9 isEqualToString:v5];
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+    v10 = [userPersonaUniqueString isEqualToString:personaCopy];
 
     if (v10)
     {
-      v11 = 0;
+      personalPersonaUID = 0;
     }
 
     else
@@ -275,21 +275,21 @@ LABEL_8:
       v15 = _ACPLogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        [ACPersonaManager performWithinPersona:v8 withBlock:?];
+        [ACPersonaManager performWithinPersona:currentPersona withBlock:?];
       }
 
-      v11 = v5;
+      personalPersonaUID = personaCopy;
     }
   }
 
-  else if (([v8 isEnterprisePersona] & 1) != 0 || objc_msgSend(v8, "isGuestPersona"))
+  else if (([currentPersona isEnterprisePersona] & 1) != 0 || objc_msgSend(currentPersona, "isGuestPersona"))
   {
     v12 = +[ACPersonaManager sharedInstance];
-    v11 = [v12 personalPersonaUID];
+    personalPersonaUID = [v12 personalPersonaUID];
 
     v13 = _ACPLogSystem();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
-    if (v11)
+    if (personalPersonaUID)
     {
       if (v14)
       {
@@ -304,7 +304,7 @@ LABEL_8:
         +[ACPersonaManager performWithinPersona:withBlock:];
       }
 
-      v11 = 0;
+      personalPersonaUID = 0;
     }
 
     v10 = 0;
@@ -312,7 +312,7 @@ LABEL_8:
 
   else
   {
-    v11 = 0;
+    personalPersonaUID = 0;
     v10 = 1;
   }
 
@@ -320,9 +320,9 @@ LABEL_8:
   v18[1] = 3221225472;
   v18[2] = __51__ACPersonaManager_performWithinPersona_withBlock___block_invoke;
   v18[3] = &unk_1E7976E98;
-  v19 = v6;
-  v16 = v6;
-  [ACPersonaManager _changePersonaContextUsingPersonaID:v11 withCompletion:v18];
+  v19 = blockCopy;
+  v16 = blockCopy;
+  [ACPersonaManager _changePersonaContextUsingPersonaID:personalPersonaUID withCompletion:v18];
 
   return v10;
 }
@@ -359,12 +359,12 @@ void __51__ACPersonaManager_performWithinPersona_withBlock___block_invoke(uint64
   }
 }
 
-+ (void)_changePersonaContextUsingPersonaID:(id)a3 withCompletion:(id)a4
++ (void)_changePersonaContextUsingPersonaID:(id)d withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dCopy = d;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (dCopy)
   {
     v8 = _ACPLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -372,11 +372,11 @@ void __51__ACPersonaManager_performWithinPersona_withBlock___block_invoke(uint64
       +[ACPersonaManager _changePersonaContextUsingPersonaID:withCompletion:];
     }
 
-    v9 = [MEMORY[0x1E69DF060] sharedManager];
-    v10 = [v9 currentPersona];
+    mEMORY[0x1E69DF060] = [MEMORY[0x1E69DF060] sharedManager];
+    currentPersona = [mEMORY[0x1E69DF060] currentPersona];
 
     v21 = 0;
-    v11 = [v10 copyCurrentPersonaContextWithError:&v21];
+    v11 = [currentPersona copyCurrentPersonaContextWithError:&v21];
     v12 = v21;
     if (!v11)
     {
@@ -390,7 +390,7 @@ void __51__ACPersonaManager_performWithinPersona_withBlock___block_invoke(uint64
       goto LABEL_24;
     }
 
-    v13 = [v10 createPersonaContextForBackgroundProcessingWithPersonaUniqueString:v5];
+    v13 = [currentPersona createPersonaContextForBackgroundProcessingWithPersonaUniqueString:dCopy];
 
     if (!v13)
     {
@@ -400,16 +400,16 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v14 = [v13 domain];
+    domain = [v13 domain];
     v15 = *MEMORY[0x1E696A798];
-    if ([v14 isEqualToString:*MEMORY[0x1E696A798]])
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
-      v16 = [v13 code];
+      code = [v13 code];
 
-      if (v16 == 1)
+      if (code == 1)
       {
-        v17 = _ACPLogSystem();
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        domain2 = _ACPLogSystem();
+        if (os_log_type_enabled(domain2, OS_LOG_TYPE_ERROR))
         {
           +[ACPersonaManager _changePersonaContextUsingPersonaID:withCompletion:];
         }
@@ -422,12 +422,12 @@ LABEL_24:
     {
     }
 
-    v17 = [v13 domain];
-    if ([v17 isEqualToString:v15])
+    domain2 = [v13 domain];
+    if ([domain2 isEqualToString:v15])
     {
-      v19 = [v13 code];
+      code2 = [v13 code];
 
-      if (v19 != 22)
+      if (code2 != 22)
       {
 LABEL_21:
         v20 = _ACPLogSystem();
@@ -440,8 +440,8 @@ LABEL_21:
         goto LABEL_24;
       }
 
-      v17 = _ACPLogSystem();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      domain2 = _ACPLogSystem();
+      if (os_log_type_enabled(domain2, OS_LOG_TYPE_ERROR))
       {
         +[ACPersonaManager _changePersonaContextUsingPersonaID:withCompletion:];
       }
@@ -452,7 +452,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  (*(v6 + 2))(v6, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_25:
 }
 

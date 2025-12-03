@@ -1,92 +1,92 @@
 @interface MIOWriterInterface
-+ (BOOL)getSWToWExtrinsics:(id *)a3;
-- (BOOL)preProcessPixelBuffer:(__CVBuffer *)a3 streamID:(id)a4;
-- (BOOL)processCVADepthIR:(id)a3;
-- (BOOL)processPixelBuffer:(__CVBuffer *)a3 withTimeStamp:(id *)a4 beforeAppend:(id)a5 streamID:(id)a6;
-- (BOOL)processPixelBuffer:(__CVBuffer *)a3 withTimeStamp:(id *)a4 intrinsics:(id *)a5 exposureTime:(double)a6 streamID:(id)a7;
-- (BOOL)receivedAllFramesForStreams:(id)a3;
-- (BOOL)setTrackMetadata:(id)a3 forMetadataStream:(id)a4;
-- (MIOWriterInterface)initWithFileURL:(id)a3 expectedFrameRate:(double)a4 fileSummary:(id)a5;
-- (MIOWriterInterface)initWithFileURL:(id)a3 expectedFrameRate:(double)a4 fileSummary:(id)a5 callbackQueue:(id)a6;
++ (BOOL)getSWToWExtrinsics:(id *)extrinsics;
+- (BOOL)preProcessPixelBuffer:(__CVBuffer *)buffer streamID:(id)d;
+- (BOOL)processCVADepthIR:(id)r;
+- (BOOL)processPixelBuffer:(__CVBuffer *)buffer withTimeStamp:(id *)stamp beforeAppend:(id)append streamID:(id)d;
+- (BOOL)processPixelBuffer:(__CVBuffer *)buffer withTimeStamp:(id *)stamp intrinsics:(id *)intrinsics exposureTime:(double)time streamID:(id)d;
+- (BOOL)receivedAllFramesForStreams:(id)streams;
+- (BOOL)setTrackMetadata:(id)metadata forMetadataStream:(id)stream;
+- (MIOWriterInterface)initWithFileURL:(id)l expectedFrameRate:(double)rate fileSummary:(id)summary;
+- (MIOWriterInterface)initWithFileURL:(id)l expectedFrameRate:(double)rate fileSummary:(id)summary callbackQueue:(id)queue;
 - (MIOWriterInterfaceDelegate)interface_delegate;
-- (__CVBuffer)getFirstBufferForStream:(id)a3 withTimestamp:(id *)a4;
-- (id)addCVADepthIRTrackWithDimensions:(id)a3;
+- (__CVBuffer)getFirstBufferForStream:(id)stream withTimestamp:(id *)timestamp;
+- (id)addCVADepthIRTrackWithDimensions:(id)dimensions;
 - (id)addDefaultSummary;
-- (id)addVideoTrack:(opaqueCMFormatDescription *)a3 streamID:(id)a4 encoding:(id)a5;
-- (id)arrayFrom3x3Matrix:(id *)a3;
+- (id)addVideoTrack:(opaqueCMFormatDescription *)track streamID:(id)d encoding:(id)encoding;
+- (id)arrayFrom3x3Matrix:(id *)matrix;
 - (id)createFileMetadata;
-- (id)getSuggestedEncodingOptionsForFormat:(opaqueCMFormatDescription *)a3 streamID:(id)a4;
-- (id)registerALS:(int64_t *)a3;
-- (id)registerAccelerometer:(int64_t *)a3;
-- (id)registerBLE:(int64_t *)a3;
+- (id)getSuggestedEncodingOptionsForFormat:(opaqueCMFormatDescription *)format streamID:(id)d;
+- (id)registerALS:(int64_t *)s;
+- (id)registerAccelerometer:(int64_t *)accelerometer;
+- (id)registerBLE:(int64_t *)e;
 - (id)registerCVAFeatureBuffer;
-- (id)registerCompass:(int64_t *)a3;
-- (id)registerDeviceMotion:(int64_t *)a3;
-- (id)registerGyro:(int64_t *)a3;
-- (id)registerLocation:(int64_t *)a3;
-- (id)registerMetadataID:(id)a3;
-- (id)registerMetadataID:(id)a3 maxBufferSize:(unint64_t)a4;
-- (id)registerMotion:(int64_t *)a3;
-- (id)registerSpuIMU:(int64_t *)a3 version:(int64_t)a4;
-- (id)registerUWB:(int64_t *)a3;
-- (id)registerWiFi:(int64_t *)a3;
-- (void)addFirstBufferForStream:(id)a3 buffer:(__CVBuffer *)a4 withTimestamp:(id *)a5;
-- (void)addFrameMetadata:(id)a3 streamID:(id)a4;
-- (void)addFrameMetadata:(id)a3 value:(id)a4 streamID:(id)a5;
-- (void)addJasperExtrinsics:(id)a3;
-- (void)addMovieMetadataData:(id)a3 rawValue:(id)a4;
-- (void)addMovieMetadataDictionary:(id)a3 value:(id)a4;
-- (void)addMovieMetadataItem:(id)a3;
-- (void)addSWToWExtrinsics:(id)a3;
-- (void)appendAllMetadataWithTimeStamp:(id *)a3;
-- (void)appendMetadata:(id)a3 metadataID:(id)a4 timestamp:(double)a5 enforceMonotonicity:(BOOL)a6;
+- (id)registerCompass:(int64_t *)compass;
+- (id)registerDeviceMotion:(int64_t *)motion;
+- (id)registerGyro:(int64_t *)gyro;
+- (id)registerLocation:(int64_t *)location;
+- (id)registerMetadataID:(id)d;
+- (id)registerMetadataID:(id)d maxBufferSize:(unint64_t)size;
+- (id)registerMotion:(int64_t *)motion;
+- (id)registerSpuIMU:(int64_t *)u version:(int64_t)version;
+- (id)registerUWB:(int64_t *)b;
+- (id)registerWiFi:(int64_t *)fi;
+- (void)addFirstBufferForStream:(id)stream buffer:(__CVBuffer *)buffer withTimestamp:(id *)timestamp;
+- (void)addFrameMetadata:(id)metadata streamID:(id)d;
+- (void)addFrameMetadata:(id)metadata value:(id)value streamID:(id)d;
+- (void)addJasperExtrinsics:(id)extrinsics;
+- (void)addMovieMetadataData:(id)data rawValue:(id)value;
+- (void)addMovieMetadataDictionary:(id)dictionary value:(id)value;
+- (void)addMovieMetadataItem:(id)item;
+- (void)addSWToWExtrinsics:(id)extrinsics;
+- (void)appendAllMetadataWithTimeStamp:(id *)stamp;
+- (void)appendMetadata:(id)metadata metadataID:(id)d timestamp:(double)timestamp enforceMonotonicity:(BOOL)monotonicity;
 - (void)clearAllMetadataBuffers;
-- (void)clearFirstBufferForStream:(id)a3;
+- (void)clearFirstBufferForStream:(id)stream;
 - (void)finishWriting;
-- (void)intelligentlyAppendBuffersForStreams:(id)a3;
+- (void)intelligentlyAppendBuffersForStreams:(id)streams;
 - (void)prepareWriter;
-- (void)processALSData:(id)a3 location:(int64_t *)a4;
-- (void)processAccelerometerData:(id)a3 andAdditionalData:(id)a4 location:(int64_t *)a5;
-- (void)processBLEData:(id)a3 location:(int64_t *)a4;
-- (void)processBarometerData:(id)a3;
-- (void)processCMData:(id)a3;
-- (void)processCVACameraCalibrationData:(id)a3;
-- (void)processCVADepthTOF:(id)a3;
-- (void)processCVAFeatureBuffer:(__CVBuffer *)a3 timestamp:(double)a4 syncTimestamp:(unint64_t)a5 frameId:(unint64_t)a6 streamName:(id)a7;
-- (void)processCVAFeatureBuffer:(id)a3;
-- (void)processCVAPRDevice:(id)a3;
-- (void)processCVATimedValue:(id)a3;
-- (void)processCVAUserEvent:(id)a3;
-- (void)processClass:(id)a3 andAdditionalData:(id)a4 metadataID:(id)a5;
-- (void)processClass:(id)a3 andAdditionalData:(id)a4 metadataID:(id)a5 timestamp:(double)a6;
-- (void)processCompassData:(id)a3 location:(int64_t *)a4;
-- (void)processCoreLocationData:(id)a3 timestamp:(double)a4 andAdditionalData:(id)a5 location:(int64_t *)a6;
-- (void)processDeviceMotionData:(id)a3 andAdditionalData:(id)a4 location:(int64_t *)a5;
-- (void)processDeviceMotionData:(id)a3 location:(int64_t *)a4;
-- (void)processFastPathIMUData:(id)a3 location:(int64_t *)a4;
-- (void)processFastPathIMUData:(id)a3 location:(int64_t *)a4 metadataID:(id)a5;
-- (void)processGyroscopeData:(id)a3 andAdditionalData:(id)a4 location:(int64_t *)a5;
-- (void)processMotionData:(id)a3 location:(int64_t *)a4;
-- (void)processNSCoderObject:(id)a3 metadataID:(id)a4;
-- (void)processNSCoderObject:(id)a3 metadataID:(id)a4 timestamp:(double)a5;
-- (void)processSpuIMUData:(id)a3 location:(int64_t *)a4;
-- (void)processUWBData:(id)a3 location:(int64_t *)a4;
-- (void)processWiFiData:(id)a3 location:(int64_t *)a4;
+- (void)processALSData:(id)data location:(int64_t *)location;
+- (void)processAccelerometerData:(id)data andAdditionalData:(id)additionalData location:(int64_t *)location;
+- (void)processBLEData:(id)data location:(int64_t *)location;
+- (void)processBarometerData:(id)data;
+- (void)processCMData:(id)data;
+- (void)processCVACameraCalibrationData:(id)data;
+- (void)processCVADepthTOF:(id)f;
+- (void)processCVAFeatureBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp syncTimestamp:(unint64_t)syncTimestamp frameId:(unint64_t)id streamName:(id)name;
+- (void)processCVAFeatureBuffer:(id)buffer;
+- (void)processCVAPRDevice:(id)device;
+- (void)processCVATimedValue:(id)value;
+- (void)processCVAUserEvent:(id)event;
+- (void)processClass:(id)class andAdditionalData:(id)data metadataID:(id)d;
+- (void)processClass:(id)class andAdditionalData:(id)data metadataID:(id)d timestamp:(double)timestamp;
+- (void)processCompassData:(id)data location:(int64_t *)location;
+- (void)processCoreLocationData:(id)data timestamp:(double)timestamp andAdditionalData:(id)additionalData location:(int64_t *)location;
+- (void)processDeviceMotionData:(id)data andAdditionalData:(id)additionalData location:(int64_t *)location;
+- (void)processDeviceMotionData:(id)data location:(int64_t *)location;
+- (void)processFastPathIMUData:(id)data location:(int64_t *)location;
+- (void)processFastPathIMUData:(id)data location:(int64_t *)location metadataID:(id)d;
+- (void)processGyroscopeData:(id)data andAdditionalData:(id)additionalData location:(int64_t *)location;
+- (void)processMotionData:(id)data location:(int64_t *)location;
+- (void)processNSCoderObject:(id)object metadataID:(id)d;
+- (void)processNSCoderObject:(id)object metadataID:(id)d timestamp:(double)timestamp;
+- (void)processSpuIMUData:(id)data location:(int64_t *)location;
+- (void)processUWBData:(id)data location:(int64_t *)location;
+- (void)processWiFiData:(id)data location:(int64_t *)location;
 - (void)registerCVADepthIR;
-- (void)registerStreamID:(id)a3 withConfigObject:(id)a4;
-- (void)setMetadataAttachmentTo:(__CVBuffer *)a3 streamID:(id)a4;
-- (void)writerDidFailWithError:(id)a3;
-- (void)writerEncounteredAnError:(id)a3;
+- (void)registerStreamID:(id)d withConfigObject:(id)object;
+- (void)setMetadataAttachmentTo:(__CVBuffer *)to streamID:(id)d;
+- (void)writerDidFailWithError:(id)error;
+- (void)writerEncounteredAnError:(id)error;
 @end
 
 @implementation MIOWriterInterface
 
-- (MIOWriterInterface)initWithFileURL:(id)a3 expectedFrameRate:(double)a4 fileSummary:(id)a5 callbackQueue:(id)a6
+- (MIOWriterInterface)initWithFileURL:(id)l expectedFrameRate:(double)rate fileSummary:(id)summary callbackQueue:(id)queue
 {
   v68 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  summaryCopy = summary;
+  queueCopy = queue;
   if (+[AppleCV3DMOVKitLog debugEnabled])
   {
     v13 = +[AppleCV3DMOVKitLog defaultLog];
@@ -97,11 +97,11 @@
     }
   }
 
-  v14 = [v10 path];
+  path = [lCopy path];
   v65.receiver = self;
   v65.super_class = MIOWriterInterface;
   v66 = 0;
-  v15 = [(MIOWriter *)&v65 initWithFilePath:v14 error:&v66];
+  v15 = [(MIOWriter *)&v65 initWithFilePath:path error:&v66];
   v16 = v66;
 
   if (v15)
@@ -173,24 +173,24 @@
     v40 = *(v15 + 50);
     *(v15 + 50) = v39;
 
-    v41 = [MEMORY[0x277CCA8D8] mainBundle];
-    v42 = [v41 infoDictionary];
-    v43 = [v42 objectForKey:@"CFBundleVersion"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v43 = [infoDictionary objectForKey:@"CFBundleVersion"];
     v44 = *(v15 + 48);
     *(v15 + 48) = v43;
 
-    v45 = [MEMORY[0x277CCA8D8] mainBundle];
-    v46 = [v45 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle2 bundleIdentifier];
     v47 = *(v15 + 47);
-    *(v15 + 47) = v46;
+    *(v15 + 47) = bundleIdentifier;
 
     v63 = 0uLL;
     v64 = 0;
-    v48 = [MEMORY[0x277CCAC38] processInfo];
-    v49 = v48;
-    if (v48)
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v49 = processInfo;
+    if (processInfo)
     {
-      [v48 operatingSystemVersion];
+      [processInfo operatingSystemVersion];
     }
 
     else
@@ -215,7 +215,7 @@
       *(v15 + 53) = v56;
     }
 
-    objc_storeStrong(v15 + 40, a5);
+    objc_storeStrong(v15 + 40, summary);
     [v15 setWarningHandler:&unk_28521AB68];
     objc_initWeak(&location, v15);
     v60[0] = MEMORY[0x277D85DD0];
@@ -225,7 +225,7 @@
     objc_copyWeak(&v61, &location);
     [v15 setFailHandler:v60];
     [v15 setRealTime:1];
-    [v15 setDefaultFrameRate:a4];
+    [v15 setDefaultFrameRate:rate];
     [v15 setBufferCacheMode:256];
     objc_destroyWeak(&v61);
     objc_destroyWeak(&location);
@@ -235,36 +235,36 @@
   return v15;
 }
 
-- (MIOWriterInterface)initWithFileURL:(id)a3 expectedFrameRate:(double)a4 fileSummary:(id)a5
+- (MIOWriterInterface)initWithFileURL:(id)l expectedFrameRate:(double)rate fileSummary:(id)summary
 {
-  v8 = a5;
-  v9 = a3;
+  summaryCopy = summary;
+  lCopy = l;
   v10 = dispatch_queue_create("com.apple.applecv3dmovkit.miowriterinterface.recordercallback", 0);
-  v11 = [(MIOWriterInterface *)self initWithFileURL:v9 expectedFrameRate:v8 fileSummary:v10 callbackQueue:a4];
+  v11 = [(MIOWriterInterface *)self initWithFileURL:lCopy expectedFrameRate:summaryCopy fileSummary:v10 callbackQueue:rate];
 
   return v11;
 }
 
-- (BOOL)setTrackMetadata:(id)a3 forMetadataStream:(id)a4
+- (BOOL)setTrackMetadata:(id)metadata forMetadataStream:(id)stream
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:a4];
+  metadataCopy = metadata;
+  v7 = [(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:stream];
   v8 = v7;
   if (v7)
   {
-    [v7 setCustomMetadata:v6];
+    [v7 setCustomMetadata:metadataCopy];
   }
 
   return v8 != 0;
 }
 
-- (id)registerSpuIMU:(int64_t *)a3 version:(int64_t)a4
+- (id)registerSpuIMU:(int64_t *)u version:(int64_t)version
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = [CVAMetadataWrapperTracks imuTrackName:a3 prefix:self->_spuIMUTrackName];
+  v6 = [CVAMetadataWrapperTracks imuTrackName:u prefix:self->_spuIMUTrackName];
   v7 = [(MIOWriterInterface *)self registerMetadataID:v6];
   v12 = @"com.apple.AppleCV3DMOVKit.fastPathIMUVersion";
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:version];
   v13[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   [(MIOWriterInterface *)self setTrackMetadata:v9 forMetadataStream:v6];
@@ -274,81 +274,81 @@
   return v7;
 }
 
-- (id)registerAccelerometer:(int64_t *)a3
+- (id)registerAccelerometer:(int64_t *)accelerometer
 {
-  v4 = [CVAMetadataWrapperTracks accelerometerTrackName:a3 prefix:self->_accelTrackName];
+  v4 = [CVAMetadataWrapperTracks accelerometerTrackName:accelerometer prefix:self->_accelTrackName];
   v5 = [(MIOWriterInterface *)self registerMetadataID:v4];
 
   return v5;
 }
 
-- (id)registerGyro:(int64_t *)a3
+- (id)registerGyro:(int64_t *)gyro
 {
-  v4 = [CVAMetadataWrapperTracks gyroTrackName:a3 prefix:self->_gyroTrackName];
+  v4 = [CVAMetadataWrapperTracks gyroTrackName:gyro prefix:self->_gyroTrackName];
   v5 = [(MIOWriterInterface *)self registerMetadataID:v4];
 
   return v5;
 }
 
-- (id)registerMotion:(int64_t *)a3
+- (id)registerMotion:(int64_t *)motion
 {
-  v4 = [CVAMetadataWrapperTracks motionTrackName:a3 prefix:self->_motionTrackName];
+  v4 = [CVAMetadataWrapperTracks motionTrackName:motion prefix:self->_motionTrackName];
   v5 = [(MIOWriterInterface *)self registerMetadataID:v4];
 
   return v5;
 }
 
-- (id)registerDeviceMotion:(int64_t *)a3
+- (id)registerDeviceMotion:(int64_t *)motion
 {
-  v4 = [CVAMetadataWrapperTracks deviceMotionTrackName:a3 prefix:self->_deviceMotionTrackName];
+  v4 = [CVAMetadataWrapperTracks deviceMotionTrackName:motion prefix:self->_deviceMotionTrackName];
   v5 = [(MIOWriterInterface *)self registerMetadataID:v4];
 
   return v5;
 }
 
-- (id)registerLocation:(int64_t *)a3
+- (id)registerLocation:(int64_t *)location
 {
-  v4 = [CVAMetadataWrapperTracks locationTrackName:a3 prefix:self->_locationTrackName];
+  v4 = [CVAMetadataWrapperTracks locationTrackName:location prefix:self->_locationTrackName];
   v5 = [(MIOWriterInterface *)self registerMetadataID:v4];
 
   return v5;
 }
 
-- (id)registerALS:(int64_t *)a3
+- (id)registerALS:(int64_t *)s
 {
-  v4 = [CVAMetadataWrapperTracks alsTrackName:a3 prefix:self->_alsTrackName];
+  v4 = [CVAMetadataWrapperTracks alsTrackName:s prefix:self->_alsTrackName];
   v5 = [(MIOWriterInterface *)self registerMetadataID:v4];
 
   return v5;
 }
 
-- (id)registerWiFi:(int64_t *)a3
+- (id)registerWiFi:(int64_t *)fi
 {
-  v4 = [CVAMetadataWrapperTracks wifiTrackName:a3 prefix:self->_wifiTrackName];
+  v4 = [CVAMetadataWrapperTracks wifiTrackName:fi prefix:self->_wifiTrackName];
   v5 = [(MIOWriterInterface *)self registerMetadataID:v4];
 
   return v5;
 }
 
-- (id)registerUWB:(int64_t *)a3
+- (id)registerUWB:(int64_t *)b
 {
-  v4 = [CVAMetadataWrapperTracks uwbTrackName:a3 prefix:self->_uwbTrackName];
+  v4 = [CVAMetadataWrapperTracks uwbTrackName:b prefix:self->_uwbTrackName];
   v5 = [(MIOWriterInterface *)self registerMetadataID:v4];
 
   return v5;
 }
 
-- (id)registerBLE:(int64_t *)a3
+- (id)registerBLE:(int64_t *)e
 {
-  v4 = [CVAMetadataWrapperTracks bleTrackName:a3 prefix:self->_bleTrackName];
+  v4 = [CVAMetadataWrapperTracks bleTrackName:e prefix:self->_bleTrackName];
   v5 = [(MIOWriterInterface *)self registerMetadataID:v4];
 
   return v5;
 }
 
-- (id)registerCompass:(int64_t *)a3
+- (id)registerCompass:(int64_t *)compass
 {
-  v4 = [CVAMetadataWrapperTracks compassTrackName:a3 prefix:self->_compassTrackName];
+  v4 = [CVAMetadataWrapperTracks compassTrackName:compass prefix:self->_compassTrackName];
   v5 = [(MIOWriterInterface *)self registerMetadataID:v4];
 
   return v5;
@@ -369,16 +369,16 @@
   [(MIOWriterInterface *)self registerStreamID:@"com.apple.reality.kind.data.pcam_avdepth" withConfigObject:v3];
 }
 
-- (id)registerMetadataID:(id)a3
+- (id)registerMetadataID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:dCopy];
 
   if (v5)
   {
     v6 = MEMORY[0x277CCA9B8];
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Metadata track already registered: %@", v4];
-    v8 = [v6 mioWriterInterfaceErrorWithMessage:v7 code:2];
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Metadata track already registered: %@", dCopy];
+    v8 = [v6 mioWriterInterfaceErrorWithMessage:dCopy code:2];
     lastError = self->_lastError;
     self->_lastError = v8;
 
@@ -388,9 +388,9 @@
   else
   {
     v11 = objc_opt_new();
-    [(NSMutableDictionary *)self->_metadataAttachmentArrays setObject:v11 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_metadataAttachmentArrays setObject:v11 forKeyedSubscript:dCopy];
 
-    v12 = [objc_alloc(MEMORY[0x277D256A8]) initWithStreamId:v4];
+    v12 = [objc_alloc(MEMORY[0x277D256A8]) initWithStreamId:dCopy];
     v23 = 0;
     [(MIOWriter *)self addInput:v12 error:&v23];
     v13 = v23;
@@ -400,7 +400,7 @@
       v15 = MEMORY[0x277CCA9B8];
       v16 = MEMORY[0x277CCACA8];
       v17 = [v13 description];
-      v18 = [v16 stringWithFormat:@"Cannot add metadata track: %@ %@", v4, v17];
+      v18 = [v16 stringWithFormat:@"Cannot add metadata track: %@ %@", dCopy, v17];
       v19 = [v15 mioWriterInterfaceErrorWithMessage:v18 code:2];
       v20 = self->_lastError;
       self->_lastError = v19;
@@ -410,7 +410,7 @@
 
     else
     {
-      [(NSMutableDictionary *)self->_streamInputs setObject:v12 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_streamInputs setObject:v12 forKeyedSubscript:dCopy];
       v21 = self->_lastError;
       self->_lastError = 0;
 
@@ -421,41 +421,41 @@
   return v10;
 }
 
-- (id)registerMetadataID:(id)a3 maxBufferSize:(unint64_t)a4
+- (id)registerMetadataID:(id)d maxBufferSize:(unint64_t)size
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)self->_metadataMaxBufferSize setObject:v8 forKeyedSubscript:v7];
+  dCopy = d;
+  v8 = [v6 numberWithUnsignedInteger:size];
+  [(NSMutableDictionary *)self->_metadataMaxBufferSize setObject:v8 forKeyedSubscript:dCopy];
 
-  v9 = [(MIOWriterInterface *)self registerMetadataID:v7];
+  v9 = [(MIOWriterInterface *)self registerMetadataID:dCopy];
 
   return v9;
 }
 
-- (void)addMovieMetadataDictionary:(id)a3 value:(id)a4
+- (void)addMovieMetadataDictionary:(id)dictionary value:(id)value
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  valueCopy = value;
   lastError = self->_lastError;
   self->_lastError = 0;
 
-  if ([v6 hasPrefix:@"mdta/"])
+  if ([dictionaryCopy hasPrefix:@"mdta/"])
   {
     v9 = objc_opt_new();
-    [v9 setIdentifier:v6];
+    [v9 setIdentifier:dictionaryCopy];
     [v9 setDataType:*MEMORY[0x277CC0598]];
-    [v9 setValue:v7];
+    [v9 setValue:valueCopy];
     [(NSMutableArray *)self->_movMetadataArray addObject:v9];
     if (+[AppleCV3DMOVKitLog debugEnabled])
     {
       v10 = +[AppleCV3DMOVKitLog defaultLog];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [v9 identifier];
+        identifier = [v9 identifier];
         *buf = 138412290;
-        v18 = v11;
+        v18 = identifier;
         _os_log_impl(&dword_24016D000, v10, OS_LOG_TYPE_DEBUG, "[MIOWriterInterface] Added metadata item with NSDictionary %@", buf, 0xCu);
       }
     }
@@ -464,8 +464,8 @@
   else
   {
     v12 = MEMORY[0x277CCA9B8];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid identifer %@", v6];
-    v14 = [v12 mioWriterInterfaceErrorWithMessage:v13 code:14];
+    dictionaryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid identifer %@", dictionaryCopy];
+    v14 = [v12 mioWriterInterfaceErrorWithMessage:dictionaryCopy code:14];
     v15 = self->_lastError;
     self->_lastError = v14;
   }
@@ -473,29 +473,29 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMovieMetadataData:(id)a3 rawValue:(id)a4
+- (void)addMovieMetadataData:(id)data rawValue:(id)value
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  valueCopy = value;
   lastError = self->_lastError;
   self->_lastError = 0;
 
-  if ([v6 hasPrefix:@"mdta/"])
+  if ([dataCopy hasPrefix:@"mdta/"])
   {
     v9 = objc_opt_new();
-    [v9 setIdentifier:v6];
+    [v9 setIdentifier:dataCopy];
     [v9 setDataType:*MEMORY[0x277CC05B0]];
-    [v9 setValue:v7];
+    [v9 setValue:valueCopy];
     [(NSMutableArray *)self->_movMetadataArray addObject:v9];
     if (+[AppleCV3DMOVKitLog debugEnabled])
     {
       v10 = +[AppleCV3DMOVKitLog defaultLog];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [v9 identifier];
+        identifier = [v9 identifier];
         *buf = 138412290;
-        v18 = v11;
+        v18 = identifier;
         _os_log_impl(&dword_24016D000, v10, OS_LOG_TYPE_DEBUG, "[MIOWriterInterface] Added metadata item with NSData %@", buf, 0xCu);
       }
     }
@@ -504,8 +504,8 @@
   else
   {
     v12 = MEMORY[0x277CCA9B8];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid identifer %@", v6];
-    v14 = [v12 mioWriterInterfaceErrorWithMessage:v13 code:14];
+    dataCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid identifer %@", dataCopy];
+    v14 = [v12 mioWriterInterfaceErrorWithMessage:dataCopy code:14];
     v15 = self->_lastError;
     self->_lastError = v14;
   }
@@ -513,19 +513,19 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMovieMetadataItem:(id)a3
+- (void)addMovieMetadataItem:(id)item
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSMutableArray *)self->_movMetadataArray addObject:v4];
+  itemCopy = item;
+  [(NSMutableArray *)self->_movMetadataArray addObject:itemCopy];
   if (+[AppleCV3DMOVKitLog debugEnabled])
   {
     v5 = +[AppleCV3DMOVKitLog defaultLog];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [v4 identifier];
+      identifier = [itemCopy identifier];
       v8 = 138412290;
-      v9 = v6;
+      v9 = identifier;
       _os_log_impl(&dword_24016D000, v5, OS_LOG_TYPE_DEBUG, "[MIOWriterInterface] Added metadata item %@", &v8, 0xCu);
     }
   }
@@ -601,7 +601,7 @@
   return v4;
 }
 
-+ (BOOL)getSWToWExtrinsics:(id *)a3
++ (BOOL)getSWToWExtrinsics:(id *)extrinsics
 {
   v4 = *MEMORY[0x277CE5EA8];
   v5 = [MEMORY[0x277CE5AC8] defaultDeviceWithDeviceType:*MEMORY[0x277CE5870] mediaType:*MEMORY[0x277CE5EA8] position:1];
@@ -613,7 +613,7 @@
     if (v7)
     {
       v9 = v7;
-      [v7 getBytes:a3 length:64];
+      [v7 getBytes:extrinsics length:64];
     }
   }
 
@@ -625,10 +625,10 @@
   return v8;
 }
 
-- (void)addSWToWExtrinsics:(id)a3
+- (void)addSWToWExtrinsics:(id)extrinsics
 {
   v34[12] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  extrinsicsCopy = extrinsics;
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -673,20 +673,20 @@
     v34[11] = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:12];
 
-    [v3 setObject:v24 forKeyedSubscript:@"extrinsicsSWToW"];
+    [extrinsicsCopy setObject:v24 forKeyedSubscript:@"extrinsicsSWToW"];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addJasperExtrinsics:(id)a3
+- (void)addJasperExtrinsics:(id)extrinsics
 {
   v59 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  extrinsicsCopy = extrinsics;
   v37 = [MEMORY[0x277CE5AC8] defaultDeviceWithDeviceType:*MEMORY[0x277CE5858] mediaType:0 position:1];
   if (v37)
   {
-    v32 = v3;
+    v32 = extrinsicsCopy;
     v4 = objc_opt_new();
     v52 = 0u;
     v53 = 0u;
@@ -810,7 +810,7 @@ LABEL_17:
       while (v40);
     }
 
-    v3 = v32;
+    extrinsicsCopy = v32;
     if ([v4 count])
     {
       [v32 setObject:v4 forKeyedSubscript:@"extrinsicsToJasper"];
@@ -826,8 +826,8 @@ LABEL_17:
   v4 = objc_opt_new();
   [v4 setIdentifier:@"mdta/com.apple.framework.state.MOVKit"];
   [v4 setDataType:*MEMORY[0x277CC0598]];
-  v5 = [(MIOWriterInterface *)self addDefaultSummary];
-  [v4 setValue:v5];
+  addDefaultSummary = [(MIOWriterInterface *)self addDefaultSummary];
+  [v4 setValue:addDefaultSummary];
 
   [v3 addObject:v4];
   if (self->_calibration)
@@ -835,8 +835,8 @@ LABEL_17:
     v6 = objc_opt_new();
     [v6 setIdentifier:@"mdta/com.apple.calibration"];
     [v6 setDataType:*MEMORY[0x277CC05B0]];
-    v7 = [(CVACalibration *)self->_calibration toData];
-    [v6 setValue:v7];
+    toData = [(CVACalibration *)self->_calibration toData];
+    [v6 setValue:toData];
 
     [v3 addObject:v6];
   }
@@ -844,14 +844,14 @@ LABEL_17:
   return v3;
 }
 
-- (void)registerStreamID:(id)a3 withConfigObject:(id)a4
+- (void)registerStreamID:(id)d withConfigObject:(id)object
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  dCopy = d;
+  objectCopy = object;
+  v7 = objectCopy;
+  if (objectCopy)
   {
-    v8 = v6;
+    v8 = objectCopy;
   }
 
   else
@@ -878,25 +878,25 @@ LABEL_17:
   v16 = [v15 numberWithFloat:?];
   [v10 setObject:v16 forKeyedSubscript:@"expectedFPS"];
 
-  v17 = [v9 extraConfigs];
-  [v10 setObject:v17 forKeyedSubscript:@"extraConfigs"];
+  extraConfigs = [v9 extraConfigs];
+  [v10 setObject:extraConfigs forKeyedSubscript:@"extraConfigs"];
 
-  [(NSMutableDictionary *)self->_trackAddedByStream setObject:v10 forKeyedSubscript:v21];
+  [(NSMutableDictionary *)self->_trackAddedByStream setObject:v10 forKeyedSubscript:dCopy];
   v18 = objc_opt_new();
-  [(NSMutableDictionary *)self->_frameMetadataDictionary setObject:v18 forKeyedSubscript:v21];
+  [(NSMutableDictionary *)self->_frameMetadataDictionary setObject:v18 forKeyedSubscript:dCopy];
 
   if (!self->_firstSteamID)
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithString:v21];
+    v19 = [MEMORY[0x277CCACA8] stringWithString:dCopy];
     firstSteamID = self->_firstSteamID;
     self->_firstSteamID = v19;
   }
 }
 
-- (id)addCVADepthIRTrackWithDimensions:(id)a3
+- (id)addCVADepthIRTrackWithDimensions:(id)dimensions
 {
   formatDescriptionOut = 0;
-  if (CMVideoFormatDescriptionCreate(*MEMORY[0x277CBECE8], 0x31332E33u, a3.var0, a3.var1, 0, &formatDescriptionOut))
+  if (CMVideoFormatDescriptionCreate(*MEMORY[0x277CBECE8], 0x31332E33u, dimensions.var0, dimensions.var1, 0, &formatDescriptionOut))
   {
     v4 = [MEMORY[0x277CCA9B8] mioWriterInterfaceErrorWithMessage:@"Failed to create video format description for the depth IR data track" code:2];
     lastError = self->_lastError;
@@ -921,28 +921,28 @@ LABEL_17:
   return v6;
 }
 
-- (void)addFirstBufferForStream:(id)a3 buffer:(__CVBuffer *)a4 withTimestamp:(id *)a5
+- (void)addFirstBufferForStream:(id)stream buffer:(__CVBuffer *)buffer withTimestamp:(id *)timestamp
 {
-  v8 = a3;
-  CVPixelBufferRetain(a4);
+  streamCopy = stream;
+  CVPixelBufferRetain(buffer);
   v9 = [MIOWriterTimedBuffer alloc];
-  v11 = *a5;
-  v10 = [(MIOWriterTimedBuffer *)v9 initWithBuffer:a4 atTimestamp:&v11];
-  [(MIOWriterInterface *)self clearFirstBufferForStream:v8];
-  [(NSMutableDictionary *)self->_firstFrameContainer setObject:v10 forKeyedSubscript:v8];
+  v11 = *timestamp;
+  v10 = [(MIOWriterTimedBuffer *)v9 initWithBuffer:buffer atTimestamp:&v11];
+  [(MIOWriterInterface *)self clearFirstBufferForStream:streamCopy];
+  [(NSMutableDictionary *)self->_firstFrameContainer setObject:v10 forKeyedSubscript:streamCopy];
 }
 
-- (__CVBuffer)getFirstBufferForStream:(id)a3 withTimestamp:(id *)a4
+- (__CVBuffer)getFirstBufferForStream:(id)stream withTimestamp:(id *)timestamp
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:v6];
+  streamCopy = stream;
+  buffer = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:streamCopy];
 
-  if (v7)
+  if (buffer)
   {
-    v8 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:v6];
-    v7 = [v8 buffer];
+    v8 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:streamCopy];
+    buffer = [v8 buffer];
 
-    v9 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:streamCopy];
     v10 = v9;
     if (v9)
     {
@@ -955,22 +955,22 @@ LABEL_17:
       v13 = 0;
     }
 
-    *&a4->var0 = v12;
-    a4->var3 = v13;
+    *&timestamp->var0 = v12;
+    timestamp->var3 = v13;
   }
 
-  return v7;
+  return buffer;
 }
 
-- (BOOL)receivedAllFramesForStreams:(id)a3
+- (BOOL)receivedAllFramesForStreams:(id)streams
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  streamsCopy = streams;
+  v5 = [streamsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -981,7 +981,7 @@ LABEL_17:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(streamsCopy);
         }
 
         v9 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i), v13];
@@ -993,7 +993,7 @@ LABEL_17:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [streamsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -1010,10 +1010,10 @@ LABEL_11:
   return v10;
 }
 
-- (void)intelligentlyAppendBuffersForStreams:(id)a3
+- (void)intelligentlyAppendBuffersForStreams:(id)streams
 {
   v43 = *MEMORY[0x277D85DE8];
-  v34 = a3;
+  streamsCopy = streams;
   [(NSMutableDictionary *)self->_firstFrameContainer keysSortedByValueUsingComparator:&unk_28521AE30];
   v37 = 0u;
   v38 = 0u;
@@ -1026,7 +1026,7 @@ LABEL_11:
     v6 = *v38;
     v7 = 0x278C9A000uLL;
     v8 = 0x27E3C7000uLL;
-    v32 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v5; ++i)
@@ -1034,7 +1034,7 @@ LABEL_11:
         if (*v38 == v6)
         {
           v10 = *(*(&v37 + 1) + 8 * i);
-          if ([v34 containsObject:v10])
+          if ([streamsCopy containsObject:v10])
           {
             goto LABEL_12;
           }
@@ -1044,11 +1044,11 @@ LABEL_11:
         {
           objc_enumerationMutation(obj);
           v10 = *(*(&v37 + 1) + 8 * i);
-          if ([v34 containsObject:v10])
+          if ([streamsCopy containsObject:v10])
           {
 LABEL_12:
             v11 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:v10];
-            v12 = [v11 buffer];
+            buffer = [v11 buffer];
 
             memset(&v36, 0, sizeof(v36));
             v13 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:v10];
@@ -1073,8 +1073,8 @@ LABEL_12:
               }
             }
 
-            v15 = [*(v7 + 3328) defaultLog];
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+            defaultLog = [*(v7 + 3328) defaultLog];
+            if (os_log_type_enabled(defaultLog, OS_LOG_TYPE_DEBUG))
             {
               time = v36;
               Seconds = CMTimeGetSeconds(&time);
@@ -1082,7 +1082,7 @@ LABEL_12:
               *(&time.value + 4) = v10;
               LOWORD(time.flags) = 2048;
               *(&time.flags + 2) = Seconds;
-              _os_log_impl(&dword_24016D000, v15, OS_LOG_TYPE_DEBUG, "[MIOWriterInterface] Adding first frame for stream: %@ for ts: %f", &time, 0x16u);
+              _os_log_impl(&dword_24016D000, defaultLog, OS_LOG_TYPE_DEBUG, "[MIOWriterInterface] Adding first frame for stream: %@ for ts: %f", &time, 0x16u);
             }
 
 LABEL_19:
@@ -1091,9 +1091,9 @@ LABEL_19:
             {
               v35 = 0;
               time = v36;
-              [v17 appendPixelBuffer:v12 pts:&time error:&v35];
+              [v17 appendPixelBuffer:buffer pts:&time error:&v35];
               v18 = v35;
-              v19 = v18;
+              defaultLog2 = v18;
               if (v18)
               {
                 v20 = v5;
@@ -1107,10 +1107,10 @@ LABEL_19:
                 v6 = v22;
                 v7 = v21;
                 v5 = v20;
-                self = v32;
+                self = selfCopy;
                 v28 = [v27 mioWriterInterfaceErrorWithMessage:v26 code:4];
-                lastError = v32->_lastError;
-                v32->_lastError = v28;
+                lastError = selfCopy->_lastError;
+                selfCopy->_lastError = v28;
 
                 v8 = 0x27E3C7000;
               }
@@ -1120,12 +1120,12 @@ LABEL_19:
 
             if ([*(v7 + 3328) debugEnabled])
             {
-              v19 = [*(v7 + 3328) defaultLog];
-              if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+              defaultLog2 = [*(v7 + 3328) defaultLog];
+              if (os_log_type_enabled(defaultLog2, OS_LOG_TYPE_DEBUG))
               {
                 LODWORD(time.value) = 138412290;
                 *(&time.value + 4) = v10;
-                _os_log_impl(&dword_24016D000, v19, OS_LOG_TYPE_DEBUG, "[MIOWriterInterface] Input not ready: %@", &time, 0xCu);
+                _os_log_impl(&dword_24016D000, defaultLog2, OS_LOG_TYPE_DEBUG, "[MIOWriterInterface] Input not ready: %@", &time, 0xCu);
               }
 
 LABEL_5:
@@ -1148,45 +1148,45 @@ LABEL_5:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearFirstBufferForStream:(id)a3
+- (void)clearFirstBufferForStream:(id)stream
 {
-  v7 = a3;
+  streamCopy = stream;
   v4 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:?];
 
   if (v4)
   {
-    v5 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:v7];
-    v6 = [v5 buffer];
+    v5 = [(NSMutableDictionary *)self->_firstFrameContainer objectForKeyedSubscript:streamCopy];
+    buffer = [v5 buffer];
 
-    [(NSMutableDictionary *)self->_firstFrameContainer setObject:0 forKeyedSubscript:v7];
-    CVPixelBufferRelease(v6);
+    [(NSMutableDictionary *)self->_firstFrameContainer setObject:0 forKeyedSubscript:streamCopy];
+    CVPixelBufferRelease(buffer);
   }
 }
 
-- (id)getSuggestedEncodingOptionsForFormat:(opaqueCMFormatDescription *)a3 streamID:(id)a4
+- (id)getSuggestedEncodingOptionsForFormat:(opaqueCMFormatDescription *)format streamID:(id)d
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_trackAddedByStream objectForKeyedSubscript:v6];
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)self->_trackAddedByStream objectForKeyedSubscript:dCopy];
   v8 = [v7 objectForKeyedSubscript:@"lossless"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
   v10 = [v7 objectForKeyedSubscript:@"bitrate"];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
+  MediaSubType = CMFormatDescriptionGetMediaSubType(format);
   if (MediaSubType != 825437747)
   {
     if (MediaSubType == 1278226488)
     {
-      if (v9)
+      if (bOOLValue)
       {
-        v13 = [MEMORY[0x277D256B8] monochrome8bitHEVCLosslessEncoderConfig];
+        monochrome8bitHEVCLosslessEncoderConfig = [MEMORY[0x277D256B8] monochrome8bitHEVCLosslessEncoderConfig];
         goto LABEL_22;
       }
 
-      if (v11)
+      if (integerValue)
       {
-        [MEMORY[0x277D256B8] monochrome8bitHEVCEncoderConfigWithBitrate:v11];
+        [MEMORY[0x277D256B8] monochrome8bitHEVCEncoderConfigWithBitrate:integerValue];
       }
 
       else
@@ -1208,15 +1208,15 @@ LABEL_5:
 
         if (v15)
         {
-          if (v9)
+          if (bOOLValue)
           {
-            v13 = [MEMORY[0x277D256B8] colorHEVCLosslessEncoderConfig];
+            monochrome8bitHEVCLosslessEncoderConfig = [MEMORY[0x277D256B8] colorHEVCLosslessEncoderConfig];
             goto LABEL_22;
           }
 
-          if (v11)
+          if (integerValue)
           {
-            [MEMORY[0x277D256B8] colorHEVCEncoderConfigWithBitrate:v11];
+            [MEMORY[0x277D256B8] colorHEVCEncoderConfigWithBitrate:integerValue];
           }
 
           else
@@ -1228,9 +1228,9 @@ LABEL_5:
         }
       }
 
-      if (v11)
+      if (integerValue)
       {
-        [MEMORY[0x277D256B8] colorH264EncoderConfigWithBitrate:v11];
+        [MEMORY[0x277D256B8] colorH264EncoderConfigWithBitrate:integerValue];
       }
 
       else
@@ -1239,20 +1239,20 @@ LABEL_5:
       }
     }
 
-    v13 = LABEL_20:;
+    monochrome8bitHEVCLosslessEncoderConfig = LABEL_20:;
     goto LABEL_22;
   }
 
-  if ((v9 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v24 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Streams with 13.3 format requires lossless encoding" userInfo:0];
     objc_exception_throw(v24);
   }
 
-  v13 = [MEMORY[0x277D256B8] slimEncoderConfig];
+  monochrome8bitHEVCLosslessEncoderConfig = [MEMORY[0x277D256B8] slimEncoderConfig];
 LABEL_22:
-  v16 = v13;
-  v17 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v13];
+  v16 = monochrome8bitHEVCLosslessEncoderConfig;
+  v17 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:monochrome8bitHEVCLosslessEncoderConfig];
   [v17 setObject:&unk_285225290 forKeyedSubscript:*MEMORY[0x277D256D8]];
   v18 = [v7 objectForKeyedSubscript:@"expectedFPS"];
   [v18 floatValue];
@@ -1270,20 +1270,20 @@ LABEL_22:
   return v17;
 }
 
-- (id)addVideoTrack:(opaqueCMFormatDescription *)a3 streamID:(id)a4 encoding:(id)a5
+- (id)addVideoTrack:(opaqueCMFormatDescription *)track streamID:(id)d encoding:(id)encoding
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  encodingCopy = encoding;
   lastError = self->_lastError;
   self->_lastError = 0;
 
-  if (!v9)
+  if (!encodingCopy)
   {
-    v9 = [(MIOWriterInterface *)self getSuggestedEncodingOptionsForFormat:a3 streamID:v8];
+    encodingCopy = [(MIOWriterInterface *)self getSuggestedEncodingOptionsForFormat:track streamID:dCopy];
   }
 
-  v11 = [objc_alloc(MEMORY[0x277D256B0]) initWithStreamId:v8 format:a3 recordingConfig:v9];
+  v11 = [objc_alloc(MEMORY[0x277D256B0]) initWithStreamId:dCopy format:track recordingConfig:encodingCopy];
   v24 = 0;
   [(MIOWriter *)self addInput:v11 error:&v24];
   v12 = v24;
@@ -1293,7 +1293,7 @@ LABEL_22:
     v14 = MEMORY[0x277CCA9B8];
     v15 = MEMORY[0x277CCACA8];
     v16 = [v12 description];
-    v17 = [v15 stringWithFormat:@"Cannot add track: %@ %@", v8, v16];
+    v17 = [v15 stringWithFormat:@"Cannot add track: %@ %@", dCopy, v16];
     v18 = [v14 mioWriterInterfaceErrorWithMessage:v17 code:2];
     v19 = self->_lastError;
     self->_lastError = v18;
@@ -1309,14 +1309,14 @@ LABEL_22:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v26 = v8;
+        v26 = dCopy;
         v27 = 2112;
-        v28 = a3;
+        trackCopy = track;
         _os_log_impl(&dword_24016D000, v21, OS_LOG_TYPE_DEBUG, "[MIOWriterInterface] Added track %@ : %@", buf, 0x16u);
       }
     }
 
-    [(NSMutableDictionary *)self->_streamInputs setObject:v11 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_streamInputs setObject:v11 forKeyedSubscript:dCopy];
     v20 = v11;
   }
 
@@ -1328,18 +1328,18 @@ LABEL_22:
 - (void)prepareWriter
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(MIOWriterInterface *)self createFileMetadata];
-  [(MIOWriter *)self setCustomMOVMetadata:v3];
+  createFileMetadata = [(MIOWriterInterface *)self createFileMetadata];
+  [(MIOWriter *)self setCustomMOVMetadata:createFileMetadata];
   if (+[AppleCV3DMOVKitLog debugEnabled])
   {
     v4 = +[AppleCV3DMOVKitLog defaultLog];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [(MIOWriter *)self status];
-      *buf = HIBYTE(v5);
-      *&buf[2] = BYTE2(v5);
-      LOWORD(v10) = BYTE1(v5);
-      WORD1(v10) = v5;
+      status = [(MIOWriter *)self status];
+      *buf = HIBYTE(status);
+      *&buf[2] = BYTE2(status);
+      LOWORD(v10) = BYTE1(status);
+      WORD1(v10) = status;
       v6 = [MEMORY[0x277CCACA8] stringWithCharacters:buf length:4];
       *buf = 138412290;
       v10 = v6;
@@ -1357,46 +1357,46 @@ LABEL_22:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)preProcessPixelBuffer:(__CVBuffer *)a3 streamID:(id)a4
+- (BOOL)preProcessPixelBuffer:(__CVBuffer *)buffer streamID:(id)d
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dCopy = d;
   if (!self->_isReady)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    lastError = v7->_lastError;
-    v7->_lastError = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    lastError = selfCopy->_lastError;
+    selfCopy->_lastError = 0;
 
-    obj = v7;
-    v9 = [(NSMutableDictionary *)v7->_trackAddedByStream valueForKey:v7->_firstSteamID];
+    obj = selfCopy;
+    v9 = [(NSMutableDictionary *)selfCopy->_trackAddedByStream valueForKey:selfCopy->_firstSteamID];
 
     if (v9)
     {
-      v10 = [(NSMutableDictionary *)v7->_trackAddedByStream objectForKeyedSubscript:v7->_firstSteamID];
+      v10 = [(NSMutableDictionary *)selfCopy->_trackAddedByStream objectForKeyedSubscript:selfCopy->_firstSteamID];
       v11 = [v10 objectForKeyedSubscript:@"received"];
-      v12 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
     }
 
     else
     {
-      v12 = 0;
+      bOOLValue = 0;
     }
 
-    v31 = v6;
-    v32 = [v6 isEqualToString:v7->_firstSteamID] | v12;
+    v31 = dCopy;
+    v32 = [dCopy isEqualToString:selfCopy->_firstSteamID] | bOOLValue;
     if (v32)
     {
-      v13 = [(NSMutableDictionary *)v7->_trackAddedByStream valueForKey:v6];
+      v13 = [(NSMutableDictionary *)selfCopy->_trackAddedByStream valueForKey:dCopy];
 
-      if (!v13 || (-[NSMutableDictionary objectForKeyedSubscript:](v7->_trackAddedByStream, "objectForKeyedSubscript:", v6), v14 = objc_claimAutoreleasedReturnValue(), [v14 objectForKeyedSubscript:@"received"], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "BOOLValue"), v15, v14, (v16 & 1) == 0))
+      if (!v13 || (-[NSMutableDictionary objectForKeyedSubscript:](selfCopy->_trackAddedByStream, "objectForKeyedSubscript:", dCopy), v14 = objc_claimAutoreleasedReturnValue(), [v14 objectForKeyedSubscript:@"received"], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "BOOLValue"), v15, v14, (v16 & 1) == 0))
       {
-        v17 = [MEMORY[0x277D256B8] formatForPixelBuffer:a3];
-        v18 = [(MIOWriterInterface *)v7 addVideoTrack:v17 streamID:v6 encoding:0];
+        v17 = [MEMORY[0x277D256B8] formatForPixelBuffer:buffer];
+        v18 = [(MIOWriterInterface *)selfCopy addVideoTrack:v17 streamID:dCopy encoding:0];
 
         if (v18)
         {
-          v19 = [(NSMutableDictionary *)v7->_trackAddedByStream objectForKeyedSubscript:v6];
+          v19 = [(NSMutableDictionary *)selfCopy->_trackAddedByStream objectForKeyedSubscript:dCopy];
           [v19 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"received"];
         }
 
@@ -1407,8 +1407,8 @@ LABEL_22:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v20 = [(NSMutableDictionary *)v7->_trackAddedByStream allKeys];
-      v21 = [v20 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      allKeys = [(NSMutableDictionary *)selfCopy->_trackAddedByStream allKeys];
+      v21 = [allKeys countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v21)
       {
         v22 = *v35;
@@ -1419,17 +1419,17 @@ LABEL_22:
           {
             if (*v35 != v22)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(allKeys);
             }
 
             v25 = [(NSMutableDictionary *)obj->_trackAddedByStream objectForKeyedSubscript:*(*(&v34 + 1) + 8 * i)];
             v26 = [v25 objectForKeyedSubscript:@"received"];
-            v27 = [v26 BOOLValue];
+            bOOLValue2 = [v26 BOOLValue];
 
-            v23 &= v27;
+            v23 &= bOOLValue2;
           }
 
-          v21 = [v20 countByEnumeratingWithState:&v34 objects:v38 count:16];
+          v21 = [allKeys countByEnumeratingWithState:&v34 objects:v38 count:16];
         }
 
         while (v21);
@@ -1460,7 +1460,7 @@ LABEL_22:
 LABEL_26:
     objc_sync_exit(obj);
 
-    v6 = v31;
+    dCopy = v31;
     goto LABEL_27;
   }
 
@@ -1471,22 +1471,22 @@ LABEL_27:
   return v32 & 1;
 }
 
-- (BOOL)processPixelBuffer:(__CVBuffer *)a3 withTimeStamp:(id *)a4 beforeAppend:(id)a5 streamID:(id)a6
+- (BOOL)processPixelBuffer:(__CVBuffer *)buffer withTimeStamp:(id *)stamp beforeAppend:(id)append streamID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  if (![(MIOWriterInterface *)self preProcessPixelBuffer:a3 streamID:v11]|| !self->_isReady)
+  appendCopy = append;
+  dCopy = d;
+  if (![(MIOWriterInterface *)self preProcessPixelBuffer:buffer streamID:dCopy]|| !self->_isReady)
   {
     goto LABEL_21;
   }
 
-  if (v10)
+  if (appendCopy)
   {
-    v10[2](v10, a3);
+    appendCopy[2](appendCopy, buffer);
   }
 
-  [(MIOWriterInterface *)self setMetadataAttachmentTo:a3 streamID:v11];
+  [(MIOWriterInterface *)self setMetadataAttachmentTo:buffer streamID:dCopy];
   if (self->_firstFrameContainer)
   {
     if (+[AppleCV3DMOVKitLog debugEnabled])
@@ -1494,20 +1494,20 @@ LABEL_27:
       v12 = +[AppleCV3DMOVKitLog defaultLog];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        time = *a4;
+        time = *stamp;
         Seconds = CMTimeGetSeconds(&time);
         *buf = 138412546;
-        v23 = v11;
+        v23 = dCopy;
         v24 = 2048;
         v25 = Seconds;
         _os_log_impl(&dword_24016D000, v12, OS_LOG_TYPE_DEBUG, "[MIOWriterInterface] First frame received for: %@ at ts: %f", buf, 0x16u);
       }
     }
 
-    time = *a4;
-    [(MIOWriterInterface *)self addFirstBufferForStream:v11 buffer:a3 withTimestamp:&time];
-    v14 = [(NSMutableDictionary *)self->_trackAddedByStream allKeys];
-    v15 = [(MIOWriterInterface *)self receivedAllFramesForStreams:v14];
+    time = *stamp;
+    [(MIOWriterInterface *)self addFirstBufferForStream:dCopy buffer:buffer withTimestamp:&time];
+    allKeys = [(NSMutableDictionary *)self->_trackAddedByStream allKeys];
+    v15 = [(MIOWriterInterface *)self receivedAllFramesForStreams:allKeys];
 
     if (v15)
     {
@@ -1521,8 +1521,8 @@ LABEL_27:
         }
       }
 
-      v17 = [(NSMutableDictionary *)self->_trackAddedByStream allKeys];
-      [(MIOWriterInterface *)self intelligentlyAppendBuffersForStreams:v17];
+      allKeys2 = [(NSMutableDictionary *)self->_trackAddedByStream allKeys];
+      [(MIOWriterInterface *)self intelligentlyAppendBuffersForStreams:allKeys2];
       goto LABEL_17;
     }
 
@@ -1531,14 +1531,14 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v17 = [(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:v11];
-  time = *a4;
-  [v17 appendPixelBuffer:a3 pts:&time error:0];
+  allKeys2 = [(NSMutableDictionary *)self->_streamInputs objectForKeyedSubscript:dCopy];
+  time = *stamp;
+  [allKeys2 appendPixelBuffer:buffer pts:&time error:0];
 LABEL_17:
 
-  if ([(NSString *)self->_firstSteamID isEqualToString:v11]&& self->_writeMetadataTimeInterval <= 0.0)
+  if ([(NSString *)self->_firstSteamID isEqualToString:dCopy]&& self->_writeMetadataTimeInterval <= 0.0)
   {
-    time = *a4;
+    time = *stamp;
     [(MIOWriterInterface *)self appendAllMetadataWithTimeStamp:&time];
   }
 
@@ -1549,29 +1549,29 @@ LABEL_22:
   return v18;
 }
 
-- (BOOL)processPixelBuffer:(__CVBuffer *)a3 withTimeStamp:(id *)a4 intrinsics:(id *)a5 exposureTime:(double)a6 streamID:(id)a7
+- (BOOL)processPixelBuffer:(__CVBuffer *)buffer withTimeStamp:(id *)stamp intrinsics:(id *)intrinsics exposureTime:(double)time streamID:(id)d
 {
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_240186140;
   v9[3] = &unk_278C9B1A0;
   v9[4] = self;
-  v9[5] = a5;
-  *&v9[6] = a6;
-  v8 = *a4;
-  return [(MIOWriterInterface *)self processPixelBuffer:a3 withTimeStamp:&v8 beforeAppend:v9 streamID:a7];
+  v9[5] = intrinsics;
+  *&v9[6] = time;
+  v8 = *stamp;
+  return [(MIOWriterInterface *)self processPixelBuffer:buffer withTimeStamp:&v8 beforeAppend:v9 streamID:d];
 }
 
-- (BOOL)processCVADepthIR:(id)a3
+- (BOOL)processCVADepthIR:(id)r
 {
-  v4 = a3;
-  PixelFormatType = CVPixelBufferGetPixelFormatType([v4 dataBuffer]);
+  rCopy = r;
+  PixelFormatType = CVPixelBufferGetPixelFormatType([rCopy dataBuffer]);
   if (PixelFormatType == 825437747)
   {
-    v5 = [v4 dataBuffer];
-    [v4 timestamp];
+    dataBuffer = [rCopy dataBuffer];
+    [rCopy timestamp];
     [MIOWriterInterface cmTimeFromTimestamp:?];
-    v6 = [(MIOWriterInterface *)self processPixelBuffer:v5 withTimeStamp:v13 beforeAppend:0 streamID:@"com.apple.reality.kind.data.pcam_avdepth"];
+    v6 = [(MIOWriterInterface *)self processPixelBuffer:dataBuffer withTimeStamp:v13 beforeAppend:0 streamID:@"com.apple.reality.kind.data.pcam_avdepth"];
   }
 
   else
@@ -1589,44 +1589,44 @@ LABEL_22:
   return v6;
 }
 
-- (id)arrayFrom3x3Matrix:(id *)a3
+- (id)arrayFrom3x3Matrix:(id *)matrix
 {
-  if (a3)
+  if (matrix)
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:9];
-    LODWORD(v5) = *a3;
+    LODWORD(v5) = *matrix;
     v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
     [v4 addObject:v6];
 
-    LODWORD(v7) = *(a3 + 1);
+    LODWORD(v7) = *(matrix + 1);
     v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
     [v4 addObject:v8];
 
-    LODWORD(v9) = *(a3 + 2);
+    LODWORD(v9) = *(matrix + 2);
     v10 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
     [v4 addObject:v10];
 
-    LODWORD(v11) = *(a3 + 4);
+    LODWORD(v11) = *(matrix + 4);
     v12 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
     [v4 addObject:v12];
 
-    LODWORD(v13) = *(a3 + 5);
+    LODWORD(v13) = *(matrix + 5);
     v14 = [MEMORY[0x277CCABB0] numberWithFloat:v13];
     [v4 addObject:v14];
 
-    LODWORD(v15) = *(a3 + 6);
+    LODWORD(v15) = *(matrix + 6);
     v16 = [MEMORY[0x277CCABB0] numberWithFloat:v15];
     [v4 addObject:v16];
 
-    LODWORD(v17) = *(a3 + 8);
+    LODWORD(v17) = *(matrix + 8);
     v18 = [MEMORY[0x277CCABB0] numberWithFloat:v17];
     [v4 addObject:v18];
 
-    LODWORD(v19) = *(a3 + 9);
+    LODWORD(v19) = *(matrix + 9);
     v20 = [MEMORY[0x277CCABB0] numberWithFloat:v19];
     [v4 addObject:v20];
 
-    LODWORD(v21) = *(a3 + 10);
+    LODWORD(v21) = *(matrix + 10);
     v22 = [MEMORY[0x277CCABB0] numberWithFloat:v21];
     [v4 addObject:v22];
 
@@ -1641,13 +1641,13 @@ LABEL_22:
   return v23;
 }
 
-- (void)setMetadataAttachmentTo:(__CVBuffer *)a3 streamID:(id)a4
+- (void)setMetadataAttachmentTo:(__CVBuffer *)to streamID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)v7->_frameMetadataDictionary objectForKeyedSubscript:v6];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMutableDictionary *)selfCopy->_frameMetadataDictionary objectForKeyedSubscript:dCopy];
   v9 = v8;
   if (v8)
   {
@@ -1670,7 +1670,7 @@ LABEL_22:
             objc_enumerationMutation(v10);
           }
 
-          CVBufferSetAttachment(a3, *(*(&v15 + 1) + 8 * v13), [v10 objectForKey:{*(*(&v15 + 1) + 8 * v13), v15}], kCVAttachmentMode_ShouldPropagate);
+          CVBufferSetAttachment(to, *(*(&v15 + 1) + 8 * v13), [v10 objectForKey:{*(*(&v15 + 1) + 8 * v13), v15}], kCVAttachmentMode_ShouldPropagate);
           ++v13;
         }
 
@@ -1684,7 +1684,7 @@ LABEL_22:
     [v10 removeAllObjects];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -1700,377 +1700,377 @@ LABEL_22:
     }
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_isReady = 0;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_isReady = 0;
+  objc_sync_exit(selfCopy);
 
   memset(buf, 0, sizeof(buf));
   v10 = 0;
   [MIOWriterInterface cmTimeFromTimestamp:CACurrentMediaTime()];
   v7 = *buf;
   v8 = v10;
-  [(MIOWriterInterface *)v4 appendAllMetadataWithTimeStamp:&v7];
-  lastError = v4->_lastError;
-  v4->_lastError = 0;
+  [(MIOWriterInterface *)selfCopy appendAllMetadataWithTimeStamp:&v7];
+  lastError = selfCopy->_lastError;
+  selfCopy->_lastError = 0;
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_2401867FC;
   v6[3] = &unk_278C9B178;
-  v6[4] = v4;
-  [(MIOWriter *)v4 finishWithCompletionHandler:v6];
+  v6[4] = selfCopy;
+  [(MIOWriter *)selfCopy finishWithCompletionHandler:v6];
 }
 
-- (void)writerDidFailWithError:(id)a3
+- (void)writerDidFailWithError:(id)error
 {
-  v13 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = MEMORY[0x277CCA9B8];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v13 description];
+  v7 = [errorCopy description];
   v8 = [v6 stringWithFormat:@"Writer failure: %@", v7];
   v9 = [v5 mioWriterInterfaceErrorWithMessage:v8 code:5];
-  lastError = v4->_lastError;
-  v4->_lastError = v9;
+  lastError = selfCopy->_lastError;
+  selfCopy->_lastError = v9;
 
-  v4->_isReady = 0;
-  objc_sync_exit(v4);
+  selfCopy->_isReady = 0;
+  objc_sync_exit(selfCopy);
 
-  WeakRetained = objc_loadWeakRetained(&v4->_interface_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_interface_delegate);
   LOBYTE(v5) = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v12 = objc_loadWeakRetained(&v4->_interface_delegate);
-    [v12 didFailWithError:v13];
+    v12 = objc_loadWeakRetained(&selfCopy->_interface_delegate);
+    [v12 didFailWithError:errorCopy];
   }
 }
 
-- (void)writerEncounteredAnError:(id)a3
+- (void)writerEncounteredAnError:(id)error
 {
-  v13 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = MEMORY[0x277CCA9B8];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v13 description];
+  v7 = [errorCopy description];
   v8 = [v6 stringWithFormat:@"Writer error: %@", v7];
   v9 = [v5 mioWriterInterfaceErrorWithMessage:v8 code:5];
-  lastError = v4->_lastError;
-  v4->_lastError = v9;
+  lastError = selfCopy->_lastError;
+  selfCopy->_lastError = v9;
 
-  objc_sync_exit(v4);
-  WeakRetained = objc_loadWeakRetained(&v4->_interface_delegate);
+  objc_sync_exit(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_interface_delegate);
   LOBYTE(v5) = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v12 = objc_loadWeakRetained(&v4->_interface_delegate);
-    [v12 didEncounterError:v13];
+    v12 = objc_loadWeakRetained(&selfCopy->_interface_delegate);
+    [v12 didEncounterError:errorCopy];
   }
 }
 
-- (void)addFrameMetadata:(id)a3 value:(id)a4 streamID:(id)a5
+- (void)addFrameMetadata:(id)metadata value:(id)value streamID:(id)d
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(NSMutableDictionary *)v10->_frameMetadataDictionary objectForKeyedSubscript:v9];
+  metadataCopy = metadata;
+  valueCopy = value;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = [(NSMutableDictionary *)selfCopy->_frameMetadataDictionary objectForKeyedSubscript:dCopy];
   v12 = v11;
   if (v11)
   {
-    [v11 setObject:v8 forKeyedSubscript:v13];
+    [v11 setObject:valueCopy forKeyedSubscript:metadataCopy];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addFrameMetadata:(id)a3 streamID:(id)a4
+- (void)addFrameMetadata:(id)metadata streamID:(id)d
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)v7->_frameMetadataDictionary objectForKeyedSubscript:v6];
+  metadataCopy = metadata;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMutableDictionary *)selfCopy->_frameMetadataDictionary objectForKeyedSubscript:dCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 addEntriesFromDictionary:v10];
+    [v8 addEntriesFromDictionary:metadataCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)processFastPathIMUData:(id)a3 location:(int64_t *)a4
+- (void)processFastPathIMUData:(id)data location:(int64_t *)location
 {
-  if (a3)
+  if (data)
   {
-    v7 = a3;
-    v8 = a3;
-    v9 = *([v8 bytes] + 8);
-    v10 = [CVAMetadataWrapperTracks imuTrackName:a4 prefix:self->_spuIMUTrackName];
-    [(MIOWriterInterface *)self appendMetadata:v8 metadataID:v10 timestamp:v9];
+    dataCopy = data;
+    dataCopy2 = data;
+    v9 = *([dataCopy2 bytes] + 8);
+    v10 = [CVAMetadataWrapperTracks imuTrackName:location prefix:self->_spuIMUTrackName];
+    [(MIOWriterInterface *)self appendMetadata:dataCopy2 metadataID:v10 timestamp:v9];
   }
 }
 
-- (void)processFastPathIMUData:(id)a3 location:(int64_t *)a4 metadataID:(id)a5
+- (void)processFastPathIMUData:(id)data location:(int64_t *)location metadataID:(id)d
 {
-  if (a3)
+  if (data)
   {
-    v8 = a5;
-    v9 = a3;
-    [CVASpuFastPathComboAxisData getTimestamp:v9];
+    dCopy = d;
+    dataCopy = data;
+    [CVASpuFastPathComboAxisData getTimestamp:dataCopy];
     v11 = v10;
-    v12 = [CVAMetadataWrapperTracks imuTrackName:a4 prefix:v8];
+    v12 = [CVAMetadataWrapperTracks imuTrackName:location prefix:dCopy];
 
-    [(MIOWriterInterface *)self appendMetadata:v9 metadataID:v12 timestamp:v11];
+    [(MIOWriterInterface *)self appendMetadata:dataCopy metadataID:v12 timestamp:v11];
   }
 }
 
-- (void)processSpuIMUData:(id)a3 location:(int64_t *)a4
+- (void)processSpuIMUData:(id)data location:(int64_t *)location
 {
-  v8 = a3;
-  v6 = [v8 toData];
-  if (v6)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
-    v7 = [CVAMetadataWrapperTracks imuTrackName:a4 prefix:self->_spuIMUTrackName];
-    [v8 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v6 metadataID:v7 timestamp:?];
+    v7 = [CVAMetadataWrapperTracks imuTrackName:location prefix:self->_spuIMUTrackName];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:v7 timestamp:?];
   }
 }
 
-- (void)processAccelerometerData:(id)a3 andAdditionalData:(id)a4 location:(int64_t *)a5
+- (void)processAccelerometerData:(id)data andAdditionalData:(id)additionalData location:(int64_t *)location
 {
-  v10 = a3;
-  v8 = [v10 toData:a4];
+  dataCopy = data;
+  v8 = [dataCopy toData:additionalData];
   if (v8)
   {
-    v9 = [CVAMetadataWrapperTracks accelerometerTrackName:a5 prefix:self->_accelTrackName];
-    [v10 timestamp];
+    v9 = [CVAMetadataWrapperTracks accelerometerTrackName:location prefix:self->_accelTrackName];
+    [dataCopy timestamp];
     [(MIOWriterInterface *)self appendMetadata:v8 metadataID:v9 timestamp:?];
   }
 }
 
-- (void)processGyroscopeData:(id)a3 andAdditionalData:(id)a4 location:(int64_t *)a5
+- (void)processGyroscopeData:(id)data andAdditionalData:(id)additionalData location:(int64_t *)location
 {
-  v10 = a3;
-  v8 = [v10 toData:a4];
+  dataCopy = data;
+  v8 = [dataCopy toData:additionalData];
   if (v8)
   {
-    v9 = [CVAMetadataWrapperTracks gyroTrackName:a5 prefix:self->_gyroTrackName];
-    [v10 timestamp];
+    v9 = [CVAMetadataWrapperTracks gyroTrackName:location prefix:self->_gyroTrackName];
+    [dataCopy timestamp];
     [(MIOWriterInterface *)self appendMetadata:v8 metadataID:v9 timestamp:?];
   }
 }
 
-- (void)processMotionData:(id)a3 location:(int64_t *)a4
+- (void)processMotionData:(id)data location:(int64_t *)location
 {
-  v8 = a3;
-  v6 = [v8 toData];
-  if (v6)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
-    v7 = [CVAMetadataWrapperTracks motionTrackName:a4 prefix:self->_motionTrackName];
-    [v8 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v6 metadataID:v7 timestamp:?];
+    v7 = [CVAMetadataWrapperTracks motionTrackName:location prefix:self->_motionTrackName];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:v7 timestamp:?];
   }
 }
 
-- (void)processALSData:(id)a3 location:(int64_t *)a4
+- (void)processALSData:(id)data location:(int64_t *)location
 {
-  v8 = a3;
-  v6 = [v8 toData];
-  if (v6)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
-    v7 = [CVAMetadataWrapperTracks alsTrackName:a4 prefix:self->_alsTrackName];
-    [v8 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v6 metadataID:v7 timestamp:?];
+    v7 = [CVAMetadataWrapperTracks alsTrackName:location prefix:self->_alsTrackName];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:v7 timestamp:?];
   }
 }
 
-- (void)processWiFiData:(id)a3 location:(int64_t *)a4
+- (void)processWiFiData:(id)data location:(int64_t *)location
 {
-  v8 = a3;
-  v6 = [v8 toData];
-  if (v6)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
-    v7 = [CVAMetadataWrapperTracks wifiTrackName:a4 prefix:self->_wifiTrackName];
-    [v8 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v6 metadataID:v7 timestamp:?];
+    v7 = [CVAMetadataWrapperTracks wifiTrackName:location prefix:self->_wifiTrackName];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:v7 timestamp:?];
   }
 }
 
-- (void)processUWBData:(id)a3 location:(int64_t *)a4
+- (void)processUWBData:(id)data location:(int64_t *)location
 {
-  v8 = a3;
-  v6 = [v8 toData];
-  if (v6)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
-    v7 = [CVAMetadataWrapperTracks uwbTrackName:a4 prefix:self->_uwbTrackName];
-    [v8 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v6 metadataID:v7 timestamp:?];
+    v7 = [CVAMetadataWrapperTracks uwbTrackName:location prefix:self->_uwbTrackName];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:v7 timestamp:?];
   }
 }
 
-- (void)processBLEData:(id)a3 location:(int64_t *)a4
+- (void)processBLEData:(id)data location:(int64_t *)location
 {
-  v8 = a3;
-  v6 = [v8 toData];
-  if (v6)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
-    v7 = [CVAMetadataWrapperTracks bleTrackName:a4 prefix:self->_bleTrackName];
-    [v8 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v6 metadataID:v7 timestamp:?];
+    v7 = [CVAMetadataWrapperTracks bleTrackName:location prefix:self->_bleTrackName];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:v7 timestamp:?];
   }
 }
 
-- (void)processBarometerData:(id)a3
+- (void)processBarometerData:(id)data
 {
-  v6 = a3;
-  v4 = [v6 toData];
-  if (v4)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
     barometerTrackName = self->_barometerTrackName;
-    [v6 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v4 metadataID:barometerTrackName timestamp:?];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:barometerTrackName timestamp:?];
   }
 }
 
-- (void)processCompassData:(id)a3 location:(int64_t *)a4
+- (void)processCompassData:(id)data location:(int64_t *)location
 {
-  v8 = a3;
-  v6 = [v8 toData];
-  if (v6)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
-    v7 = [CVAMetadataWrapperTracks compassTrackName:a4 prefix:self->_compassTrackName];
-    [v8 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v6 metadataID:v7 timestamp:?];
+    v7 = [CVAMetadataWrapperTracks compassTrackName:location prefix:self->_compassTrackName];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:v7 timestamp:?];
   }
 }
 
-- (void)processDeviceMotionData:(id)a3 andAdditionalData:(id)a4 location:(int64_t *)a5
+- (void)processDeviceMotionData:(id)data andAdditionalData:(id)additionalData location:(int64_t *)location
 {
-  v9 = a3;
+  dataCopy = data;
   v7 = [CVAMetadataWrapper encodeDeviceMotionData:"encodeDeviceMotionData:andAdditionalData:" andAdditionalData:?];
   if (v7)
   {
-    v8 = [CVAMetadataWrapperTracks deviceMotionTrackName:a5 prefix:self->_deviceMotionTrackName];
-    [v9 timestamp];
+    v8 = [CVAMetadataWrapperTracks deviceMotionTrackName:location prefix:self->_deviceMotionTrackName];
+    [dataCopy timestamp];
     [(MIOWriterInterface *)self appendMetadata:v7 metadataID:v8 timestamp:?];
   }
 }
 
-- (void)processDeviceMotionData:(id)a3 location:(int64_t *)a4
+- (void)processDeviceMotionData:(id)data location:(int64_t *)location
 {
-  v8 = a3;
-  v6 = [v8 toData];
-  if (v6)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
-    v7 = [CVAMetadataWrapperTracks deviceMotionTrackName:a4 prefix:self->_deviceMotionTrackName];
-    [v8 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v6 metadataID:v7 timestamp:?];
+    v7 = [CVAMetadataWrapperTracks deviceMotionTrackName:location prefix:self->_deviceMotionTrackName];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:v7 timestamp:?];
   }
 }
 
-- (void)processCoreLocationData:(id)a3 timestamp:(double)a4 andAdditionalData:(id)a5 location:(int64_t *)a6
+- (void)processCoreLocationData:(id)data timestamp:(double)timestamp andAdditionalData:(id)additionalData location:(int64_t *)location
 {
-  v9 = [CVAMetadataWrapper encodeCoreLocationData:a3 timestamp:a5 andAdditionalData:?];
+  v9 = [CVAMetadataWrapper encodeCoreLocationData:data timestamp:additionalData andAdditionalData:?];
   if (v9)
   {
     v11 = v9;
-    v10 = [CVAMetadataWrapperTracks locationTrackName:a6 prefix:self->_locationTrackName];
-    [(MIOWriterInterface *)self appendMetadata:v11 metadataID:v10 timestamp:a4];
+    v10 = [CVAMetadataWrapperTracks locationTrackName:location prefix:self->_locationTrackName];
+    [(MIOWriterInterface *)self appendMetadata:v11 metadataID:v10 timestamp:timestamp];
 
     v9 = v11;
   }
 }
 
-- (void)processCMData:(id)a3
+- (void)processCMData:(id)data
 {
-  v5 = a3;
-  v4 = [v5 toData];
-  if (v4)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
-    [v5 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v4 metadataID:@"CMData" timestamp:?];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:@"CMData" timestamp:?];
   }
 }
 
-- (void)processCVAUserEvent:(id)a3
+- (void)processCVAUserEvent:(id)event
 {
-  v5 = a3;
-  v4 = [v5 toData];
-  if (v4)
+  eventCopy = event;
+  toData = [eventCopy toData];
+  if (toData)
   {
-    [v5 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v4 metadataID:@"CVAUserEvent" timestamp:?];
+    [eventCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:@"CVAUserEvent" timestamp:?];
   }
 }
 
-- (void)processCVATimedValue:(id)a3
+- (void)processCVATimedValue:(id)value
 {
-  v5 = a3;
-  v4 = [v5 toData];
-  if (v4)
+  valueCopy = value;
+  toData = [valueCopy toData];
+  if (toData)
   {
-    [v5 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v4 metadataID:@"CVATimedValue" timestamp:?];
+    [valueCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:@"CVATimedValue" timestamp:?];
   }
 }
 
-- (void)processCVAPRDevice:(id)a3
+- (void)processCVAPRDevice:(id)device
 {
-  v5 = a3;
-  v4 = [v5 toData];
-  if (v4)
+  deviceCopy = device;
+  toData = [deviceCopy toData];
+  if (toData)
   {
-    [v5 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v4 metadataID:@"CVAPRDevice" timestamp:?];
+    [deviceCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:@"CVAPRDevice" timestamp:?];
   }
 }
 
-- (void)processCVAFeatureBuffer:(__CVBuffer *)a3 timestamp:(double)a4 syncTimestamp:(unint64_t)a5 frameId:(unint64_t)a6 streamName:(id)a7
+- (void)processCVAFeatureBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp syncTimestamp:(unint64_t)syncTimestamp frameId:(unint64_t)id streamName:(id)name
 {
-  v16 = a7;
+  nameCopy = name;
   v12 = [(NSMutableDictionary *)self->_cvaFeatureBufferCompression objectForKeyedSubscript:?];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [[CVAFeatureBuffer alloc] initWithPixelBufferRef:a3 timestamp:0 streamID:0 reduce:v13 compress:a4];
-  [(CVAFeatureBuffer *)v14 setSyncTimestamp:a5];
-  [(CVAFeatureBuffer *)v14 setFrameId:a6];
-  v15 = [(CVAFeatureBuffer *)v14 toData];
-  if (v15)
+  v14 = [[CVAFeatureBuffer alloc] initWithPixelBufferRef:buffer timestamp:0 streamID:0 reduce:bOOLValue compress:timestamp];
+  [(CVAFeatureBuffer *)v14 setSyncTimestamp:syncTimestamp];
+  [(CVAFeatureBuffer *)v14 setFrameId:id];
+  toData = [(CVAFeatureBuffer *)v14 toData];
+  if (toData)
   {
-    [(MIOWriterInterface *)self appendMetadata:v15 metadataID:v16 timestamp:a4];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:nameCopy timestamp:timestamp];
   }
 }
 
-- (void)processCVAFeatureBuffer:(id)a3
+- (void)processCVAFeatureBuffer:(id)buffer
 {
-  v6 = a3;
-  v4 = [v6 toData];
-  if (v4)
+  bufferCopy = buffer;
+  toData = [bufferCopy toData];
+  if (toData)
   {
     v5 = [CVAFeatureBuffer streamName:0];
-    [v6 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v4 metadataID:v5 timestamp:?];
+    [bufferCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:v5 timestamp:?];
   }
 }
 
-- (void)processCVADepthTOF:(id)a3
+- (void)processCVADepthTOF:(id)f
 {
-  v4 = a3;
-  v5 = [v4 toData];
+  fCopy = f;
+  toData = [fCopy toData];
   lastError = self->_lastError;
   self->_lastError = 0;
 
-  if (v5)
+  if (toData)
   {
     v15 = 0;
-    v7 = [v5 compressedDataUsingAlgorithm:1 error:&v15];
+    v7 = [toData compressedDataUsingAlgorithm:1 error:&v15];
     v8 = v15;
     v9 = v8;
     if (v8)
@@ -2087,130 +2087,130 @@ LABEL_22:
     else
     {
       depthTOFTrackName = self->_depthTOFTrackName;
-      [v4 timestamp];
+      [fCopy timestamp];
       [(MIOWriterInterface *)self appendMetadata:v7 metadataID:depthTOFTrackName timestamp:?];
     }
   }
 }
 
-- (void)processCVACameraCalibrationData:(id)a3
+- (void)processCVACameraCalibrationData:(id)data
 {
-  v5 = a3;
-  v4 = [v5 toData];
-  if (v4)
+  dataCopy = data;
+  toData = [dataCopy toData];
+  if (toData)
   {
-    [v5 timestamp];
-    [(MIOWriterInterface *)self appendMetadata:v4 metadataID:@"CVACameraCalibration" timestamp:0 enforceMonotonicity:?];
+    [dataCopy timestamp];
+    [(MIOWriterInterface *)self appendMetadata:toData metadataID:@"CVACameraCalibration" timestamp:0 enforceMonotonicity:?];
   }
 }
 
-- (void)processClass:(id)a3 andAdditionalData:(id)a4 metadataID:(id)a5
+- (void)processClass:(id)class andAdditionalData:(id)data metadataID:(id)d
 {
-  v9 = a5;
-  v8 = [CVAMetadataWrapper encodeClass:a3 andAdditionalData:a4];
+  dCopy = d;
+  v8 = [CVAMetadataWrapper encodeClass:class andAdditionalData:data];
   if (v8)
   {
-    [(MIOWriterInterface *)self appendMetadata:v8 metadataID:v9];
+    [(MIOWriterInterface *)self appendMetadata:v8 metadataID:dCopy];
   }
 }
 
-- (void)processClass:(id)a3 andAdditionalData:(id)a4 metadataID:(id)a5 timestamp:(double)a6
+- (void)processClass:(id)class andAdditionalData:(id)data metadataID:(id)d timestamp:(double)timestamp
 {
-  v11 = a5;
-  v10 = [CVAMetadataWrapper encodeClass:a3 andAdditionalData:a4];
+  dCopy = d;
+  v10 = [CVAMetadataWrapper encodeClass:class andAdditionalData:data];
   if (v10)
   {
-    [(MIOWriterInterface *)self appendMetadata:v10 metadataID:v11 timestamp:a6];
+    [(MIOWriterInterface *)self appendMetadata:v10 metadataID:dCopy timestamp:timestamp];
   }
 }
 
-- (void)processNSCoderObject:(id)a3 metadataID:(id)a4
+- (void)processNSCoderObject:(id)object metadataID:(id)d
 {
-  v7 = a4;
-  v6 = [CVAMetadataWrapper encodeNSCoderObject:a3];
+  dCopy = d;
+  v6 = [CVAMetadataWrapper encodeNSCoderObject:object];
   if (v6)
   {
-    [(MIOWriterInterface *)self appendMetadata:v6 metadataID:v7];
+    [(MIOWriterInterface *)self appendMetadata:v6 metadataID:dCopy];
   }
 }
 
-- (void)processNSCoderObject:(id)a3 metadataID:(id)a4 timestamp:(double)a5
+- (void)processNSCoderObject:(id)object metadataID:(id)d timestamp:(double)timestamp
 {
-  v9 = a4;
-  v8 = [CVAMetadataWrapper encodeNSCoderObject:a3];
+  dCopy = d;
+  v8 = [CVAMetadataWrapper encodeNSCoderObject:object];
   if (v8)
   {
-    [(MIOWriterInterface *)self appendMetadata:v8 metadataID:v9 timestamp:a5];
+    [(MIOWriterInterface *)self appendMetadata:v8 metadataID:dCopy timestamp:timestamp];
   }
 }
 
-- (void)appendMetadata:(id)a3 metadataID:(id)a4 timestamp:(double)a5 enforceMonotonicity:(BOOL)a6
+- (void)appendMetadata:(id)metadata metadataID:(id)d timestamp:(double)timestamp enforceMonotonicity:(BOOL)monotonicity
 {
-  v6 = a6;
+  monotonicityCopy = monotonicity;
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  objc_sync_enter(v12);
-  if (v12->_isReady)
+  metadataCopy = metadata;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isReady)
   {
-    if (!v6)
+    if (!monotonicityCopy)
     {
       goto LABEL_6;
     }
 
-    lastError = v12->_lastError;
-    v12->_lastError = 0;
+    lastError = selfCopy->_lastError;
+    selfCopy->_lastError = 0;
 
-    v14 = [(NSMutableDictionary *)v12->_metadataLastTimestamp objectForKeyedSubscript:v11];
+    v14 = [(NSMutableDictionary *)selfCopy->_metadataLastTimestamp objectForKeyedSubscript:dCopy];
     v15 = v14;
-    if (!v14 || ([v14 doubleValue], v16 <= a5))
+    if (!v14 || ([v14 doubleValue], v16 <= timestamp))
     {
-      v17 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
-      [(NSMutableDictionary *)v12->_metadataLastTimestamp setObject:v17 forKeyedSubscript:v11];
+      v17 = [MEMORY[0x277CCABB0] numberWithDouble:timestamp];
+      [(NSMutableDictionary *)selfCopy->_metadataLastTimestamp setObject:v17 forKeyedSubscript:dCopy];
 
 LABEL_6:
-      v18 = [(NSMutableDictionary *)v12->_metadataAttachmentArrays objectForKeyedSubscript:v11];
-      [v18 addObject:v10];
-      if (a5 < 0.0)
+      v18 = [(NSMutableDictionary *)selfCopy->_metadataAttachmentArrays objectForKeyedSubscript:dCopy];
+      [v18 addObject:metadataCopy];
+      if (timestamp < 0.0)
       {
 LABEL_29:
 
         goto LABEL_30;
       }
 
-      v19 = [(NSMutableDictionary *)v12->_metadataMaxBufferSize objectForKeyedSubscript:v11];
+      v19 = [(NSMutableDictionary *)selfCopy->_metadataMaxBufferSize objectForKeyedSubscript:dCopy];
       v20 = v19;
-      if (!v19 || (v21 = [v19 unsignedIntValue], objc_msgSend(v18, "count") <= v21) || (v12->_lastAppendMetadata.flags & 1) == 0)
+      if (!v19 || (v21 = [v19 unsignedIntValue], objc_msgSend(v18, "count") <= v21) || (selfCopy->_lastAppendMetadata.flags & 1) == 0)
       {
 LABEL_21:
-        if (v12->_writeMetadataTimeInterval > 0.0)
+        if (selfCopy->_writeMetadataTimeInterval > 0.0)
         {
-          v36 = [(NSMutableDictionary *)v12->_metadataAttachmentArraysTimestamp objectForKeyedSubscript:v11];
+          v36 = [(NSMutableDictionary *)selfCopy->_metadataAttachmentArraysTimestamp objectForKeyedSubscript:dCopy];
           if (!v36)
           {
-            v37 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
-            [(NSMutableDictionary *)v12->_metadataAttachmentArraysTimestamp setObject:v37 forKeyedSubscript:v11];
+            v37 = [MEMORY[0x277CCABB0] numberWithDouble:timestamp];
+            [(NSMutableDictionary *)selfCopy->_metadataAttachmentArraysTimestamp setObject:v37 forKeyedSubscript:dCopy];
           }
 
           memset(&buf, 0, sizeof(buf));
-          [MIOWriterInterface cmTimeFromTimestamp:a5 - v12->_writeMetadataTimeInterval];
-          if ((v12->_lastAppendMetadata.flags & 1) == 0 || (time1 = buf, v38 = *&v12->_lastAppendMetadata.value, time2.epoch = v12->_lastAppendMetadata.epoch, *&time2.value = v38, CMTimeCompare(&time1, &time2) >= 1))
+          [MIOWriterInterface cmTimeFromTimestamp:timestamp - selfCopy->_writeMetadataTimeInterval];
+          if ((selfCopy->_lastAppendMetadata.flags & 1) == 0 || (time1 = buf, v38 = *&selfCopy->_lastAppendMetadata.value, time2.epoch = selfCopy->_lastAppendMetadata.epoch, *&time2.value = v38, CMTimeCompare(&time1, &time2) >= 1))
           {
-            [MIOWriterInterface cmTimeFromTimestamp:a5];
-            [(MIOWriterInterface *)v12 appendAllMetadataWithTimeStamp:&time1];
+            [MIOWriterInterface cmTimeFromTimestamp:timestamp];
+            [(MIOWriterInterface *)selfCopy appendAllMetadataWithTimeStamp:&time1];
           }
         }
 
         goto LABEL_29;
       }
 
-      v22 = [(NSMutableDictionary *)v12->_streamInputs objectForKeyedSubscript:v11];
+      v22 = [(NSMutableDictionary *)selfCopy->_streamInputs objectForKeyedSubscript:dCopy];
       if ([v22 canAppend])
       {
         v40 = [MEMORY[0x277CBEA60] arrayWithArray:v18];
         memset(&buf, 0, sizeof(buf));
-        [MIOWriterInterface cmTimeFromTimestamp:a5];
+        [MIOWriterInterface cmTimeFromTimestamp:timestamp];
         time1 = buf;
         v43 = 0;
         [v22 appendMetadata:v40 withTimeStamp:&time1 error:&v43];
@@ -2223,16 +2223,16 @@ LABEL_21:
           v27 = [v23 description];
           v28 = [v26 stringWithFormat:@"Failed to write metadata buffer: %@", v27];
           v29 = [v25 mioWriterInterfaceErrorWithMessage:v28 code:5];
-          v30 = v12->_lastError;
-          v12->_lastError = v29;
+          v30 = selfCopy->_lastError;
+          selfCopy->_lastError = v29;
         }
 
         else
         {
           [v18 removeAllObjects];
           v35 = *&buf.value;
-          v12->_lastAppendMetadata.epoch = buf.epoch;
-          *&v12->_lastAppendMetadata.value = v35;
+          selfCopy->_lastAppendMetadata.epoch = buf.epoch;
+          *&selfCopy->_lastAppendMetadata.value = v35;
         }
       }
 
@@ -2249,7 +2249,7 @@ LABEL_20:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
           LODWORD(buf.value) = 138412290;
-          *(&buf.value + 4) = v11;
+          *(&buf.value + 4) = dCopy;
           _os_log_impl(&dword_24016D000, v24, OS_LOG_TYPE_DEBUG, "[MIOWriterInterface] Input not ready: %@", &buf, 0xCu);
         }
       }
@@ -2258,14 +2258,14 @@ LABEL_20:
     }
 
     v31 = MEMORY[0x277CCA9B8];
-    v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ timestamp %.6f is older than %.6f", v11, *&a5, *&v16];
+    v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ timestamp %.6f is older than %.6f", dCopy, *&timestamp, *&v16];
     v33 = [v31 mioWriterInterfaceErrorWithMessage:v32 code:0];
-    v34 = v12->_lastError;
-    v12->_lastError = v33;
+    v34 = selfCopy->_lastError;
+    selfCopy->_lastError = v33;
   }
 
 LABEL_30:
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   v39 = *MEMORY[0x277D85DE8];
 }
@@ -2273,13 +2273,13 @@ LABEL_30:
 - (void)clearAllMetadataBuffers
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = v2->_metadataAttachmentArrays;
+  v3 = selfCopy->_metadataAttachmentArrays;
   v4 = [(NSMutableDictionary *)v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
@@ -2294,7 +2294,7 @@ LABEL_30:
           objc_enumerationMutation(v3);
         }
 
-        v7 = [(NSMutableDictionary *)v2->_metadataAttachmentArrays objectForKeyedSubscript:*(*(&v9 + 1) + 8 * v6), v9];
+        v7 = [(NSMutableDictionary *)selfCopy->_metadataAttachmentArrays objectForKeyedSubscript:*(*(&v9 + 1) + 8 * v6), v9];
         [v7 removeAllObjects];
 
         ++v6;
@@ -2307,34 +2307,34 @@ LABEL_30:
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendAllMetadataWithTimeStamp:(id *)a3
+- (void)appendAllMetadataWithTimeStamp:(id *)stamp
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)v3->_metadataAttachmentArrays allKeys];
-  if (v3->_writeMetadataTimeInterval > 0.0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allKeys = [(NSMutableDictionary *)selfCopy->_metadataAttachmentArrays allKeys];
+  if (selfCopy->_writeMetadataTimeInterval > 0.0)
   {
-    v5 = [(NSMutableDictionary *)v3->_metadataAttachmentArrays allKeys];
+    allKeys2 = [(NSMutableDictionary *)selfCopy->_metadataAttachmentArrays allKeys];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = sub_24018896C;
     v31[3] = &unk_278C9B1C8;
-    v31[4] = v3;
-    v6 = [v5 sortedArrayUsingComparator:v31];
+    v31[4] = selfCopy;
+    v6 = [allKeys2 sortedArrayUsingComparator:v31];
 
-    v4 = v6;
+    allKeys = v6;
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = allKeys;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
@@ -2349,13 +2349,13 @@ LABEL_30:
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
-        v10 = [(NSMutableDictionary *)v3->_metadataAttachmentArrays objectForKeyedSubscript:v9];
+        v10 = [(NSMutableDictionary *)selfCopy->_metadataAttachmentArrays objectForKeyedSubscript:v9];
         v11 = [MEMORY[0x277CBEA60] arrayWithArray:v10];
         [v10 removeAllObjects];
         if ([v11 count])
         {
-          v12 = [(NSMutableDictionary *)v3->_metadataAttachmentArraysTimestamp objectForKeyedSubscript:v9];
-          v13 = [(NSMutableDictionary *)v3->_streamInputs objectForKeyedSubscript:v9];
+          v12 = [(NSMutableDictionary *)selfCopy->_metadataAttachmentArraysTimestamp objectForKeyedSubscript:v9];
+          v13 = [(NSMutableDictionary *)selfCopy->_streamInputs objectForKeyedSubscript:v9];
           v14 = v13;
           if (v12)
           {
@@ -2368,14 +2368,14 @@ LABEL_30:
             v24 = 0;
             [v14 appendMetadata:v11 withTimeStamp:&v22 error:&v24];
             v15 = v24;
-            [(NSMutableDictionary *)v3->_metadataAttachmentArraysTimestamp setObject:0 forKeyedSubscript:v9];
+            [(NSMutableDictionary *)selfCopy->_metadataAttachmentArraysTimestamp setObject:0 forKeyedSubscript:v9];
           }
 
           else
           {
             v21 = 0;
-            v25 = *&a3->var0;
-            var3 = a3->var3;
+            v25 = *&stamp->var0;
+            var3 = stamp->var3;
             [v13 appendMetadata:v11 withTimeStamp:&v25 error:&v21];
             v15 = v21;
           }
@@ -2388,11 +2388,11 @@ LABEL_30:
     while (v7);
   }
 
-  v16 = a3->var3;
-  *&v3->_lastAppendMetadata.value = *&a3->var0;
-  v3->_lastAppendMetadata.epoch = v16;
+  v16 = stamp->var3;
+  *&selfCopy->_lastAppendMetadata.value = *&stamp->var0;
+  selfCopy->_lastAppendMetadata.epoch = v16;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x277D85DE8];
 }
 

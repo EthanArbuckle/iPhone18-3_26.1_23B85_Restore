@@ -1,6 +1,6 @@
 @interface AXiTunesStoreGlue
 + (void)accessibilityInitializeBundle;
-- (void)_libraryWeakLoaded:(id)a3;
+- (void)_libraryWeakLoaded:(id)loaded;
 @end
 
 @implementation AXiTunesStoreGlue
@@ -14,19 +14,19 @@
     _Failover = v2;
   }
 
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v4 addObserver:_Failover selector:sel__libraryWeakLoaded_ name:@"ISWeakLibraryLoaded" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:_Failover selector:sel__libraryWeakLoaded_ name:@"ISWeakLibraryLoaded" object:0];
 }
 
-- (void)_libraryWeakLoaded:(id)a3
+- (void)_libraryWeakLoaded:(id)loaded
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:@"Library"];
-  v5 = [v4 intValue];
+  userInfo = [loaded userInfo];
+  v4 = [userInfo objectForKey:@"Library"];
+  intValue = [v4 intValue];
 
-  if (v5 > 7)
+  if (intValue > 7)
   {
-    switch(v5)
+    switch(intValue)
     {
       case 8:
         v6 = @"com.apple.PhotoLibrary";
@@ -42,7 +42,7 @@
 
   else
   {
-    switch(v5)
+    switch(intValue)
     {
       case 2:
         v6 = @"com.apple.ContactsUI";

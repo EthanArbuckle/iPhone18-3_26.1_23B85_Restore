@@ -1,18 +1,18 @@
 @interface HMUserActionPredictionProvider
 + (id)logCategory;
-- (HMUserActionPredictionProvider)initWithWorkQueue:(id)a3 messageDispatcher:(id)a4 UUID:(id)a5 dataSource:(id)a6 predictionDataSource:(id)a7 predictionTransformer:(id)a8 darwinNotificationProvider:(id)a9;
+- (HMUserActionPredictionProvider)initWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher UUID:(id)d dataSource:(id)source predictionDataSource:(id)dataSource predictionTransformer:(id)transformer darwinNotificationProvider:(id)provider;
 - (HMUserActionPredictionProviderDataSource)dataSource;
 - (void)_fetchPredictionsFromBackendAndUpdateHomes;
-- (void)_fetchPredictionsFromBackendAndUpdateHomesWithCompletion:(uint64_t)a1;
+- (void)_fetchPredictionsFromBackendAndUpdateHomesWithCompletion:(uint64_t)completion;
 - (void)_recalculatePredictions;
-- (void)addSubscriber:(id)a3 forHomeIdentifier:(id)a4;
+- (void)addSubscriber:(id)subscriber forHomeIdentifier:(id)identifier;
 - (void)configure;
 - (void)dealloc;
-- (void)fetchPredictionsForHomeWithIdentifier:(id)a3 completion:(id)a4;
-- (void)handleRefreshPredictionsMessage:(id)a3;
-- (void)notifySubscribersOfChangedPredictions:(void *)a3 forHomeWithIdentifier:;
+- (void)fetchPredictionsForHomeWithIdentifier:(id)identifier completion:(id)completion;
+- (void)handleRefreshPredictionsMessage:(id)message;
+- (void)notifySubscribersOfChangedPredictions:(void *)predictions forHomeWithIdentifier:;
 - (void)recalculatePredictions;
-- (void)removeSubscriber:(id)a3 forHomeIdentifier:(id)a4;
+- (void)removeSubscriber:(id)subscriber forHomeIdentifier:(id)identifier;
 @end
 
 @implementation HMUserActionPredictionProvider
@@ -24,22 +24,22 @@
   return WeakRetained;
 }
 
-- (void)fetchPredictionsForHomeWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchPredictionsForHomeWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(HMUserActionPredictionProvider *)self workQueue];
+  workQueue = [(HMUserActionPredictionProvider *)self workQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __83__HMUserActionPredictionProvider_fetchPredictionsForHomeWithIdentifier_completion___block_invoke;
   v11[3] = &unk_1E754C9E8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
+  dispatch_async(workQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -117,27 +117,27 @@ void __83__HMUserActionPredictionProvider_fetchPredictionsForHomeWithIdentifier_
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_fetchPredictionsFromBackendAndUpdateHomesWithCompletion:(uint64_t)a1
+- (void)_fetchPredictionsFromBackendAndUpdateHomesWithCompletion:(uint64_t)completion
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  v4 = [a1 workQueue];
-  dispatch_assert_queue_V2(v4);
+  workQueue = [completion workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [a1 dataSource];
-  v6 = [v5 deviceUnlockedSinceBootForUserActionPredictionProvider:a1];
+  dataSource = [completion dataSource];
+  v6 = [dataSource deviceUnlockedSinceBootForUserActionPredictionProvider:completion];
 
   if (v6)
   {
-    objc_initWeak(&location, a1);
-    v7 = [a1 predictionDataSource];
+    objc_initWeak(&location, completion);
+    predictionDataSource = [completion predictionDataSource];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __91__HMUserActionPredictionProvider__fetchPredictionsFromBackendAndUpdateHomesWithCompletion___block_invoke;
     v20[3] = &unk_1E754C958;
     objc_copyWeak(&v22, &location);
     v21 = v3;
-    [v7 fetchPredictionsFromBackendWithCompletion:v20];
+    [predictionDataSource fetchPredictionsFromBackendWithCompletion:v20];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -146,15 +146,15 @@ void __83__HMUserActionPredictionProvider_fetchPredictionsForHomeWithIdentifier_
   else
   {
     os_unfair_lock_lock_with_options();
-    *(a1 + 24) = 1;
-    os_unfair_lock_unlock((a1 + 8));
-    v8 = [a1 workQueue];
-    dispatch_assert_queue_V2(v8);
+    *(completion + 24) = 1;
+    os_unfair_lock_unlock((completion + 8));
+    workQueue2 = [completion workQueue];
+    dispatch_assert_queue_V2(workQueue2);
 
-    v9 = a1 + 12;
-    v10 = *(a1 + 12) == -1;
+    v9 = completion + 12;
+    v10 = *(completion + 12) == -1;
     v11 = objc_autoreleasePoolPush();
-    v12 = a1;
+    completionCopy = completion;
     v13 = HMFGetOSLogHandle();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
     if (v10)
@@ -168,15 +168,15 @@ void __83__HMUserActionPredictionProvider_fetchPredictionsForHomeWithIdentifier_
       }
 
       objc_autoreleasePoolPop(v11);
-      objc_initWeak(&from, v12);
-      v17 = [v12 darwinNotificationProvider];
-      v18 = [v12 workQueue];
+      objc_initWeak(&from, completionCopy);
+      darwinNotificationProvider = [completionCopy darwinNotificationProvider];
+      workQueue3 = [completionCopy workQueue];
       *&location = MEMORY[0x1E69E9820];
       *(&location + 1) = 3221225472;
       v25 = __53__HMUserActionPredictionProvider__waitForFirstUnlock__block_invoke;
       v26 = &unk_1E754C980;
       objc_copyWeak(v27, &from);
-      [v17 notifyRegisterDispatch:"com.apple.mobile.keybagd.lock_status" outToken:v9 queue:v18 handler:&location];
+      [darwinNotificationProvider notifyRegisterDispatch:"com.apple.mobile.keybagd.lock_status" outToken:v9 queue:workQueue3 handler:&location];
 
       objc_destroyWeak(v27);
       objc_destroyWeak(&from);
@@ -218,19 +218,19 @@ void __91__HMUserActionPredictionProvider__fetchPredictionsFromBackendAndUpdateH
 - (void)_recalculatePredictions
 {
   v78 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = [a1 workQueue];
-    dispatch_assert_queue_V2(v2);
+    selfCopy = self;
+    workQueue = [self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v3 = [v1 predictionDataSource];
-    v4 = [v3 predictions];
+    predictionDataSource = [selfCopy predictionDataSource];
+    predictions = [predictionDataSource predictions];
 
-    v59 = v4;
-    v5 = [v4 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_34];
-    v6 = [v1 dataSource];
-    v7 = [v6 homesForUserActionPredictionProvider:v1];
+    v59 = predictions;
+    v5 = [predictions na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_34];
+    dataSource = [selfCopy dataSource];
+    v7 = [dataSource homesForUserActionPredictionProvider:selfCopy];
 
     v70 = 0u;
     v71 = 0u;
@@ -253,13 +253,13 @@ void __91__HMUserActionPredictionProvider__fetchPredictionsFromBackendAndUpdateH
           }
 
           v11 = *(*(&v68 + 1) + 8 * i);
-          v12 = [v11 uniqueIdentifier];
-          v13 = [v5 objectForKeyedSubscript:v12];
+          uniqueIdentifier = [v11 uniqueIdentifier];
+          v13 = [v5 objectForKeyedSubscript:uniqueIdentifier];
 
           if (v13)
           {
-            v14 = [v11 uniqueIdentifier];
-            v15 = [v5 objectForKeyedSubscript:v14];
+            uniqueIdentifier2 = [v11 uniqueIdentifier];
+            v15 = [v5 objectForKeyedSubscript:uniqueIdentifier2];
 
             v16 = v15;
             v17 = v11;
@@ -285,15 +285,15 @@ void __91__HMUserActionPredictionProvider__fetchPredictionsFromBackendAndUpdateH
             }
           }
 
-          v20 = [v1 workQueue];
-          dispatch_assert_queue_V2(v20);
+          workQueue2 = [selfCopy workQueue];
+          dispatch_assert_queue_V2(workQueue2);
 
-          v21 = [v1 predictionTransformer];
-          v22 = [v21 predictionsWithDuetPredictions:v16 forHome:v11];
+          predictionTransformer = [selfCopy predictionTransformer];
+          v22 = [predictionTransformer predictionsWithDuetPredictions:v16 forHome:v11];
 
-          v23 = [v11 uniqueIdentifier];
+          uniqueIdentifier3 = [v11 uniqueIdentifier];
           v24 = v22;
-          v25 = v23;
+          v25 = uniqueIdentifier3;
           if (!v25)
           {
 LABEL_36:
@@ -312,11 +312,11 @@ LABEL_39:
           }
 
           v26 = v25;
-          v27 = [v1 workQueue];
-          dispatch_assert_queue_V2(v27);
+          workQueue3 = [selfCopy workQueue];
+          dispatch_assert_queue_V2(workQueue3);
 
-          v28 = [v1 lastMappedPredictionsPerHome];
-          v29 = [v28 objectForKeyedSubscript:v26];
+          lastMappedPredictionsPerHome = [selfCopy lastMappedPredictionsPerHome];
+          v29 = [lastMappedPredictionsPerHome objectForKeyedSubscript:v26];
           v30 = v29;
           v31 = MEMORY[0x1E695E0F0];
           if (v29)
@@ -330,10 +330,10 @@ LABEL_39:
           if ((v33 & 1) == 0)
           {
             v34 = [v24 copy];
-            v35 = [v1 lastMappedPredictionsPerHome];
-            [v35 setObject:v34 forKeyedSubscript:v26];
+            lastMappedPredictionsPerHome2 = [selfCopy lastMappedPredictionsPerHome];
+            [lastMappedPredictionsPerHome2 setObject:v34 forKeyedSubscript:v26];
 
-            [(HMUserActionPredictionProvider *)v1 notifySubscribersOfChangedPredictions:v24 forHomeWithIdentifier:v26];
+            [(HMUserActionPredictionProvider *)selfCopy notifySubscribersOfChangedPredictions:v24 forHomeWithIdentifier:v26];
           }
 
           v5 = v63;
@@ -350,15 +350,15 @@ LABEL_39:
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v37 = [v1 lastMappedPredictionsPerHome];
-    v38 = [v37 copy];
+    lastMappedPredictionsPerHome3 = [selfCopy lastMappedPredictionsPerHome];
+    v38 = [lastMappedPredictionsPerHome3 copy];
 
     v39 = [v38 countByEnumeratingWithState:&v64 objects:v72 count:16];
     if (v39)
     {
       v40 = v39;
       v41 = *v65;
-      v60 = v1;
+      v60 = selfCopy;
       do
       {
         for (j = 0; j != v40; ++j)
@@ -378,11 +378,11 @@ LABEL_39:
             }
 
             v45 = v44;
-            v46 = [v1 workQueue];
-            dispatch_assert_queue_V2(v46);
+            workQueue4 = [selfCopy workQueue];
+            dispatch_assert_queue_V2(workQueue4);
 
             v47 = objc_autoreleasePoolPush();
-            v48 = v1;
+            v48 = selfCopy;
             v49 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
             {
@@ -401,15 +401,15 @@ LABEL_39:
               v36 = v52;
               v41 = v51;
               v40 = v50;
-              v1 = v60;
+              selfCopy = v60;
             }
 
             objc_autoreleasePoolPop(v47);
-            v55 = [v48 lastMappedPredictionsPerHome];
-            v56 = [v55 objectForKeyedSubscript:v45];
+            lastMappedPredictionsPerHome4 = [v48 lastMappedPredictionsPerHome];
+            v56 = [lastMappedPredictionsPerHome4 objectForKeyedSubscript:v45];
 
-            v57 = [v48 lastMappedPredictionsPerHome];
-            [v57 setObject:0 forKeyedSubscript:v45];
+            lastMappedPredictionsPerHome5 = [v48 lastMappedPredictionsPerHome];
+            [lastMappedPredictionsPerHome5 setObject:0 forKeyedSubscript:v45];
 
             if ([v56 count])
             {
@@ -428,24 +428,24 @@ LABEL_39:
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifySubscribersOfChangedPredictions:(void *)a3 forHomeWithIdentifier:
+- (void)notifySubscribersOfChangedPredictions:(void *)predictions forHomeWithIdentifier:
 {
   v31 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
+  predictionsCopy = predictions;
   if (!v5)
   {
     _HMFPreconditionFailure();
   }
 
-  v7 = v6;
-  v20 = [MEMORY[0x1E695DF70] array];
+  v7 = predictionsCopy;
+  array = [MEMORY[0x1E695DF70] array];
   os_unfair_lock_lock_with_options();
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = *(a1 + 16);
+  v8 = *(self + 16);
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v9)
   {
@@ -460,12 +460,12 @@ LABEL_39:
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [*(a1 + 16) objectForKey:v12];
+        v13 = [*(self + 16) objectForKey:v12];
         v14 = [v13 containsObject:v7];
 
         if (v14)
         {
-          [v20 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -475,12 +475,12 @@ LABEL_39:
     while (v9);
   }
 
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((self + 8));
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = v20;
+  v15 = array;
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v16)
   {
@@ -568,8 +568,8 @@ void __53__HMUserActionPredictionProvider__waitForFirstUnlock__block_invoke(uint
   if (result)
   {
     v1 = result;
-    v2 = [result workQueue];
-    dispatch_assert_queue_V2(v2);
+    workQueue = [result workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
     return [(HMUserActionPredictionProvider *)v1 _fetchPredictionsFromBackendAndUpdateHomesWithCompletion:?];
   }
@@ -579,24 +579,24 @@ void __53__HMUserActionPredictionProvider__waitForFirstUnlock__block_invoke(uint
 
 - (void)recalculatePredictions
 {
-  v3 = [(HMUserActionPredictionProvider *)self workQueue];
+  workQueue = [(HMUserActionPredictionProvider *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__HMUserActionPredictionProvider_recalculatePredictions__block_invoke;
   block[3] = &unk_1E754E2A8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)handleRefreshPredictionsMessage:(id)a3
+- (void)handleRefreshPredictionsMessage:(id)message
 {
-  v4 = [(HMUserActionPredictionProvider *)self workQueue];
+  workQueue = [(HMUserActionPredictionProvider *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__HMUserActionPredictionProvider_handleRefreshPredictionsMessage___block_invoke;
   block[3] = &unk_1E754E2A8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __66__HMUserActionPredictionProvider_handleRefreshPredictionsMessage___block_invoke(uint64_t a1)
@@ -640,13 +640,13 @@ LABEL_9:
   [(HMUserActionPredictionProvider *)v1 _fetchPredictionsFromBackendAndUpdateHomes];
 }
 
-- (void)removeSubscriber:(id)a3 forHomeIdentifier:(id)a4
+- (void)removeSubscriber:(id)subscriber forHomeIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  subscriberCopy = subscriber;
+  identifierCopy = identifier;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -654,15 +654,15 @@ LABEL_9:
     v25 = 138543874;
     v26 = v11;
     v27 = 2112;
-    v28 = v6;
+    v28 = subscriberCopy;
     v29 = 2112;
-    v30 = v7;
+    v30 = identifierCopy;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Removing subscriber (%@) for predictions in home: %@", &v25, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
   os_unfair_lock_lock_with_options();
-  v12 = [(NSMapTable *)v9->_subscribers objectForKey:v6];
+  v12 = [(NSMapTable *)selfCopy->_subscribers objectForKey:subscriberCopy];
   v13 = v12;
   if (v12)
   {
@@ -676,26 +676,26 @@ LABEL_9:
 
   v15 = v14;
 
-  if ([v15 containsObject:v7])
+  if ([v15 containsObject:identifierCopy])
   {
-    v16 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+    v16 = [MEMORY[0x1E695DFD8] setWithObject:identifierCopy];
     v17 = [v15 na_setByRemovingObjectsFromSet:v16];
 
     v18 = [v17 count];
-    subscribers = v9->_subscribers;
+    subscribers = selfCopy->_subscribers;
     if (v18)
     {
-      [(NSMapTable *)subscribers setObject:v17 forKey:v6];
+      [(NSMapTable *)subscribers setObject:v17 forKey:subscriberCopy];
     }
 
     else
     {
-      [(NSMapTable *)subscribers removeObjectForKey:v6];
+      [(NSMapTable *)subscribers removeObjectForKey:subscriberCopy];
     }
 
-    os_unfair_lock_unlock(&v9->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v20 = objc_autoreleasePoolPush();
-    v21 = v9;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -703,9 +703,9 @@ LABEL_9:
       v25 = 138544130;
       v26 = v23;
       v27 = 2112;
-      v28 = v6;
+      v28 = subscriberCopy;
       v29 = 2112;
-      v30 = v7;
+      v30 = identifierCopy;
       v31 = 2112;
       v32 = v17;
       _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_INFO, "%{public}@Removed subscriber (%@) for predictions in home: %@, and updated subscribed homes to: %@", &v25, 0x2Au);
@@ -717,19 +717,19 @@ LABEL_9:
   else
   {
 
-    os_unfair_lock_unlock(&v9->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSubscriber:(id)a3 forHomeIdentifier:(id)a4
+- (void)addSubscriber:(id)subscriber forHomeIdentifier:(id)identifier
 {
   v30[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  subscriberCopy = subscriber;
+  identifierCopy = identifier;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -737,15 +737,15 @@ LABEL_9:
     *v28 = 138543874;
     *&v28[4] = v11;
     *&v28[12] = 2112;
-    *&v28[14] = v6;
+    *&v28[14] = subscriberCopy;
     *&v28[22] = 2112;
-    v29 = v7;
+    v29 = identifierCopy;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Adding subscriber (%@) for predictions in home: %@", v28, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
   os_unfair_lock_lock_with_options();
-  v12 = [(NSMapTable *)v9->_subscribers objectForKey:v6];
+  v12 = [(NSMapTable *)selfCopy->_subscribers objectForKey:subscriberCopy];
   v13 = v12;
   if (v12)
   {
@@ -759,26 +759,26 @@ LABEL_9:
 
   v15 = v14;
 
-  if ([v15 containsObject:v7])
+  if ([v15 containsObject:identifierCopy])
   {
 
-    os_unfair_lock_unlock(&v9->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v16 = 0;
   }
 
   else
   {
-    v16 = [v15 setByAddingObject:v7];
-    [(NSMapTable *)v9->_subscribers setObject:v16 forKey:v6];
-    shouldRefetchFromBackend = v9->_shouldRefetchFromBackend;
+    v16 = [v15 setByAddingObject:identifierCopy];
+    [(NSMapTable *)selfCopy->_subscribers setObject:v16 forKey:subscriberCopy];
+    shouldRefetchFromBackend = selfCopy->_shouldRefetchFromBackend;
     if (shouldRefetchFromBackend)
     {
-      v9->_shouldRefetchFromBackend = 0;
+      selfCopy->_shouldRefetchFromBackend = 0;
     }
 
-    os_unfair_lock_unlock(&v9->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v18 = objc_autoreleasePoolPush();
-    v19 = v9;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -786,9 +786,9 @@ LABEL_9:
       *v28 = 138544130;
       *&v28[4] = v21;
       *&v28[12] = 2112;
-      *&v28[14] = v6;
+      *&v28[14] = subscriberCopy;
       *&v28[22] = 2112;
-      v29 = v7;
+      v29 = identifierCopy;
       LOWORD(v30[0]) = 2112;
       *(v30 + 2) = v16;
       _os_log_impl(&dword_19BB39000, v20, OS_LOG_TYPE_INFO, "%{public}@Added subscriber (%@) for predictions in home: %@, and updated subscribed homes to: %@", v28, 0x2Au);
@@ -809,13 +809,13 @@ LABEL_9:
       }
 
       objc_autoreleasePoolPop(v22);
-      v26 = [(HMUserActionPredictionProvider *)v23 workQueue];
+      workQueue = [(HMUserActionPredictionProvider *)v23 workQueue];
       *v28 = MEMORY[0x1E69E9820];
       *&v28[8] = 3221225472;
       *&v28[16] = __75__HMUserActionPredictionProvider_fetchPredictionsFromBackendAndUpdateHomes__block_invoke;
       v29 = &unk_1E754E2A8;
       v30[0] = v23;
-      dispatch_async(v26, v28);
+      dispatch_async(workQueue, v28);
     }
   }
 
@@ -824,16 +824,16 @@ LABEL_9:
 
 - (void)configure
 {
-  v3 = [(HMUserActionPredictionProvider *)self workQueue];
+  workQueue = [(HMUserActionPredictionProvider *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__HMUserActionPredictionProvider_configure__block_invoke;
   block[3] = &unk_1E754E2A8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 
-  v4 = [(HMUserActionPredictionProvider *)self messageDispatcher];
-  [v4 registerForMessage:@"HMUserActionPredictionRefreshMessage" receiver:self selector:sel_handleRefreshPredictionsMessage_];
+  messageDispatcher = [(HMUserActionPredictionProvider *)self messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMUserActionPredictionRefreshMessage" receiver:self selector:sel_handleRefreshPredictionsMessage_];
 }
 
 void __43__HMUserActionPredictionProvider_configure__block_invoke(uint64_t a1)
@@ -858,62 +858,62 @@ void __43__HMUserActionPredictionProvider_configure__block_invoke(uint64_t a1)
   [(HMUserActionPredictionProvider *)&v3 dealloc];
 }
 
-- (HMUserActionPredictionProvider)initWithWorkQueue:(id)a3 messageDispatcher:(id)a4 UUID:(id)a5 dataSource:(id)a6 predictionDataSource:(id)a7 predictionTransformer:(id)a8 darwinNotificationProvider:(id)a9
+- (HMUserActionPredictionProvider)initWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher UUID:(id)d dataSource:(id)source predictionDataSource:(id)dataSource predictionTransformer:(id)transformer darwinNotificationProvider:(id)provider
 {
-  v16 = a3;
-  obj = a4;
-  v17 = a4;
-  v34 = a5;
-  v18 = a5;
-  v19 = a6;
-  v35 = a7;
-  v20 = a7;
-  v36 = a8;
-  v21 = a8;
-  v22 = a9;
-  if (!v16)
+  queueCopy = queue;
+  obj = dispatcher;
+  dispatcherCopy = dispatcher;
+  dCopy = d;
+  dCopy2 = d;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  dataSourceCopy2 = dataSource;
+  transformerCopy = transformer;
+  transformerCopy2 = transformer;
+  providerCopy = provider;
+  if (!queueCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v17)
+  if (!dispatcherCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v18)
+  if (!dCopy2)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v20)
+  if (!dataSourceCopy2)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!sourceCopy)
   {
 LABEL_15:
     _HMFPreconditionFailure();
     goto LABEL_16;
   }
 
-  if (!v21)
+  if (!transformerCopy2)
   {
 LABEL_16:
     _HMFPreconditionFailure();
     goto LABEL_17;
   }
 
-  v23 = v22;
-  if (!v22)
+  v23 = providerCopy;
+  if (!providerCopy)
   {
 LABEL_17:
     v31 = _HMFPreconditionFailure();
@@ -926,22 +926,22 @@ LABEL_17:
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_workQueue, a3);
-    objc_storeWeak(&v25->_dataSource, v19);
-    v26 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v24->_workQueue, queue);
+    objc_storeWeak(&v25->_dataSource, sourceCopy);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     lastMappedPredictionsPerHome = v25->_lastMappedPredictionsPerHome;
-    v25->_lastMappedPredictionsPerHome = v26;
+    v25->_lastMappedPredictionsPerHome = dictionary;
 
     objc_storeStrong(&v25->_messageDispatcher, obj);
-    objc_storeStrong(&v25->_uuid, v34);
-    objc_storeStrong(&v25->_predictionDataSource, v35);
-    v28 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    objc_storeStrong(&v25->_uuid, dCopy);
+    objc_storeStrong(&v25->_predictionDataSource, dataSourceCopy);
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     subscribers = v25->_subscribers;
-    v25->_subscribers = v28;
+    v25->_subscribers = weakToStrongObjectsMapTable;
 
-    objc_storeStrong(&v25->_predictionTransformer, v36);
+    objc_storeStrong(&v25->_predictionTransformer, transformerCopy);
     *&v25->_lock._os_unfair_lock_opaque = 0xFFFFFFFF00000000;
-    objc_storeStrong(&v25->_darwinNotificationProvider, a9);
+    objc_storeStrong(&v25->_darwinNotificationProvider, provider);
     v25->_shouldRefetchFromBackend = 1;
   }
 

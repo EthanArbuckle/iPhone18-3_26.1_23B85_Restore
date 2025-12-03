@@ -1,10 +1,10 @@
 @interface SSMetricsLogEvent
-+ (id)_stringFromLogLevel:(unint64_t)a3;
-+ (unint64_t)_logLevelFromString:(id)a3;
++ (id)_stringFromLogLevel:(unint64_t)level;
++ (unint64_t)_logLevelFromString:(id)string;
 - (SSMetricsLogEvent)init;
 - (id)description;
 - (unint64_t)logLevel;
-- (void)setLogLevel:(unint64_t)a3;
+- (void)setLogLevel:(unint64_t)level;
 @end
 
 @implementation SSMetricsLogEvent
@@ -34,9 +34,9 @@
   return v5;
 }
 
-- (void)setLogLevel:(unint64_t)a3
+- (void)setLogLevel:(unint64_t)level
 {
-  v4 = [objc_opt_class() _stringFromLogLevel:a3];
+  v4 = [objc_opt_class() _stringFromLogLevel:level];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"level"];
 }
 
@@ -51,29 +51,29 @@
   v5 = [objc_opt_class() _stringFromLogLevel:{-[SSMetricsLogEvent logLevel](self, "logLevel")}];
   [v3 appendFormat:@"\nlogLevel = %@", v5];
 
-  v6 = [(SSMetricsLogEvent *)self logSubsystem];
-  [v3 appendFormat:@"\nlogSubsystem = %@", v6];
+  logSubsystem = [(SSMetricsLogEvent *)self logSubsystem];
+  [v3 appendFormat:@"\nlogSubsystem = %@", logSubsystem];
 
-  v7 = [(SSMetricsLogEvent *)self message];
-  [v3 appendFormat:@"\nmessage = %@", v7];
+  message = [(SSMetricsLogEvent *)self message];
+  [v3 appendFormat:@"\nmessage = %@", message];
 
   return v3;
 }
 
-+ (unint64_t)_logLevelFromString:(id)a3
++ (unint64_t)_logLevelFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"debug"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"debug"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"error"])
+  else if ([stringCopy isEqualToString:@"error"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"warn"])
+  else if ([stringCopy isEqualToString:@"warn"])
   {
     v4 = 3;
   }
@@ -86,16 +86,16 @@
   return v4;
 }
 
-+ (id)_stringFromLogLevel:(unint64_t)a3
++ (id)_stringFromLogLevel:(unint64_t)level
 {
-  if (a3 > 3)
+  if (level > 3)
   {
     return @"info";
   }
 
   else
   {
-    return off_1E84B3AA8[a3];
+    return off_1E84B3AA8[level];
   }
 }
 

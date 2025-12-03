@@ -1,28 +1,28 @@
 @interface FromLookAroundModeTransitionController
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation FromLookAroundModeTransitionController
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v7 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  [v4 finalFrameForViewController:v6];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v7 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  [transitionCopy finalFrameForViewController:v6];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v6 view];
-  v17 = [v7 view];
-  [v5 insertSubview:v16 belowSubview:v17];
-  [v16 setFrame:{v9, v11, v13, v15}];
-  [v16 layoutIfNeeded];
+  view = [v6 view];
+  view2 = [v7 view];
+  [containerView insertSubview:view belowSubview:view2];
+  [view setFrame:{v9, v11, v13, v15}];
+  [view layoutIfNeeded];
   [v6 lookAroundButtonFrame];
   [v7 setLookAroundButtonFrame:?];
-  [v7 animateFromModeTransition:v4];
+  [v7 animateFromModeTransition:transitionCopy];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100BCA54C;
@@ -36,7 +36,7 @@
   v29[1] = 3221225472;
   v29[2] = sub_100BCA590;
   v29[3] = &unk_101661B18;
-  v21 = v4;
+  v21 = transitionCopy;
   v30 = v21;
   v22 = objc_retainBlock(v29);
   if ([v21 isAnimated])

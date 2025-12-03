@@ -21,9 +21,9 @@
 - (id)settings
 {
   v2 = +[_UIPointerSettingsDomain rootSettings];
-  v3 = [v2 liftEffectSettings];
+  liftEffectSettings = [v2 liftEffectSettings];
 
-  return v3;
+  return liftEffectSettings;
 }
 
 @end

@@ -1,45 +1,45 @@
 @interface CHUISWatchComplicationsWidgetSnapshotMetadataLabelData
-- (BOOL)isEqual:(id)a3;
-- (CHUISWatchComplicationsWidgetSnapshotMetadataLabelData)initWithBSXPCCoder:(id)a3;
-- (CHUISWatchComplicationsWidgetSnapshotMetadataLabelData)initWithData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHUISWatchComplicationsWidgetSnapshotMetadataLabelData)initWithBSXPCCoder:(id)coder;
+- (CHUISWatchComplicationsWidgetSnapshotMetadataLabelData)initWithData:(id)data;
 - (NSData)data;
-- (id)copyForEncodingAtUrlDirectory:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyForEncodingAtUrlDirectory:(id)directory;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CHUISWatchComplicationsWidgetSnapshotMetadataLabelData
 
-- (CHUISWatchComplicationsWidgetSnapshotMetadataLabelData)initWithData:(id)a3
+- (CHUISWatchComplicationsWidgetSnapshotMetadataLabelData)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = CHUISWatchComplicationsWidgetSnapshotMetadataLabelData;
   v6 = [(CHUISWatchComplicationsWidgetSnapshotMetadataLabelData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;
 }
 
-- (id)copyForEncodingAtUrlDirectory:(id)a3
+- (id)copyForEncodingAtUrlDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   if (self->_data)
   {
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v4 URLByAppendingPathComponent:v6];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v7 = [directoryCopy URLByAppendingPathComponent:uUIDString];
 
     data = self->_data;
     v20 = 0;
-    LOBYTE(v6) = [(NSData *)data writeToURL:v7 options:1 error:&v20];
+    LOBYTE(uUIDString) = [(NSData *)data writeToURL:v7 options:1 error:&v20];
     v9 = v20;
-    if (v6)
+    if (uUIDString)
     {
       v19 = v9;
       v10 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:v7 error:&v19];
@@ -50,8 +50,8 @@
         v9 = v11;
         v12 = v10;
 LABEL_12:
-        v14 = [MEMORY[0x1E696AC08] defaultManager];
-        [v14 removeItemAtURL:v7 error:0];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager removeItemAtURL:v7 error:0];
 
         goto LABEL_13;
       }
@@ -101,9 +101,9 @@ LABEL_13:
       goto LABEL_5;
     }
 
-    v5 = [(NSFileHandle *)dataFileHandle readDataToEndOfFile];
+    readDataToEndOfFile = [(NSFileHandle *)dataFileHandle readDataToEndOfFile];
     v6 = self->_data;
-    self->_data = v5;
+    self->_data = readDataToEndOfFile;
 
     v7 = self->_dataFileHandle;
     self->_dataFileHandle = 0;
@@ -119,26 +119,26 @@ LABEL_5:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_data];
-  v5 = [v3 appendObject:self->_dataFileHandle];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_data];
+  v5 = [builder appendObject:self->_dataFileHandle];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builder];
+  equalCopy = equal;
+  builder = [MEMORY[0x1E698E6A0] builder];
   data = self->_data;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __66__CHUISWatchComplicationsWidgetSnapshotMetadataLabelData_isEqual___block_invoke;
   v18[3] = &unk_1E85756F0;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
-  v8 = [v5 appendObject:data counterpart:v18];
+  v8 = [builder appendObject:data counterpart:v18];
   dataFileHandle = self->_dataFileHandle;
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
@@ -146,13 +146,13 @@ LABEL_5:
   v16 = &unk_1E85756F0;
   v10 = v7;
   v17 = v10;
-  v11 = [v5 appendObject:dataFileHandle counterpart:&v13];
-  LOBYTE(v7) = [v5 isEqual];
+  v11 = [builder appendObject:dataFileHandle counterpart:&v13];
+  LOBYTE(v7) = [builder isEqual];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CHUISWatchComplicationsWidgetSnapshotMetadataLabelData allocWithZone:?]];
   objc_storeStrong(&v4->_data, self->_data);
@@ -160,9 +160,9 @@ LABEL_5:
   return v4;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (self->_data)
   {
     v5 = CHUISLogViewController();
@@ -172,18 +172,18 @@ LABEL_5:
     }
   }
 
-  [v4 encodeObject:self->_dataFileHandle forKey:@"dataFileHandle"];
+  [coderCopy encodeObject:self->_dataFileHandle forKey:@"dataFileHandle"];
 }
 
-- (CHUISWatchComplicationsWidgetSnapshotMetadataLabelData)initWithBSXPCCoder:(id)a3
+- (CHUISWatchComplicationsWidgetSnapshotMetadataLabelData)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CHUISWatchComplicationsWidgetSnapshotMetadataLabelData;
   v5 = [(CHUISWatchComplicationsWidgetSnapshotMetadataLabelData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataFileHandle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataFileHandle"];
     dataFileHandle = v5->_dataFileHandle;
     v5->_dataFileHandle = v6;
   }

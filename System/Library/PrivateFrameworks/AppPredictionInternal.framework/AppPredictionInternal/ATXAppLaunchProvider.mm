@@ -1,22 +1,22 @@
 @interface ATXAppLaunchProvider
-- (ATXAppLaunchProvider)initWithLastNDays:(unint64_t)a3;
-- (double)modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLast1DayForMode:(unint64_t)a3;
-- (double)modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLastNDaysForMode:(unint64_t)a3;
-- (unint64_t)modeAppLaunchCountBasedOnGlobalPriorsWithinLast1DayForMode:(unint64_t)a3;
-- (unint64_t)modeAppLaunchCountBasedOnGlobalPriorsWithinLastNDaysForMode:(unint64_t)a3;
+- (ATXAppLaunchProvider)initWithLastNDays:(unint64_t)days;
+- (double)modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLast1DayForMode:(unint64_t)mode;
+- (double)modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLastNDaysForMode:(unint64_t)mode;
+- (unint64_t)modeAppLaunchCountBasedOnGlobalPriorsWithinLast1DayForMode:(unint64_t)mode;
+- (unint64_t)modeAppLaunchCountBasedOnGlobalPriorsWithinLastNDaysForMode:(unint64_t)mode;
 - (void)cacheAppLaunchStreamIfNecessary;
 @end
 
 @implementation ATXAppLaunchProvider
 
-- (ATXAppLaunchProvider)initWithLastNDays:(unint64_t)a3
+- (ATXAppLaunchProvider)initWithLastNDays:(unint64_t)days
 {
   v8.receiver = self;
   v8.super_class = ATXAppLaunchProvider;
   v4 = [(ATXAppLaunchProvider *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(-86400 * a3)];
+    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(-86400 * days)];
     thresholdDateLastNDays = v4->_thresholdDateLastNDays;
     v4->_thresholdDateLastNDays = v5;
   }
@@ -27,7 +27,7 @@
 - (void)cacheAppLaunchStreamIfNecessary
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_2263AA000, a2, OS_LOG_TYPE_ERROR, "ATXAppLaunchProvider: could not fetch app launch stream with error: %@", &v4, 0xCu);
@@ -169,27 +169,27 @@ LABEL_23:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)modeAppLaunchCountBasedOnGlobalPriorsWithinLastNDaysForMode:(unint64_t)a3
+- (unint64_t)modeAppLaunchCountBasedOnGlobalPriorsWithinLastNDaysForMode:(unint64_t)mode
 {
   [(ATXAppLaunchProvider *)self cacheAppLaunchStreamIfNecessary];
   v4 = ATXModeToString();
   v5 = [(NSDictionary *)self->_modeAppLaunchCountBasedOnGlobalPriorsInLastNDays objectForKeyedSubscript:v4];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
-- (unint64_t)modeAppLaunchCountBasedOnGlobalPriorsWithinLast1DayForMode:(unint64_t)a3
+- (unint64_t)modeAppLaunchCountBasedOnGlobalPriorsWithinLast1DayForMode:(unint64_t)mode
 {
   [(ATXAppLaunchProvider *)self cacheAppLaunchStreamIfNecessary];
   v4 = ATXModeToString();
   v5 = [(NSDictionary *)self->_modeAppLaunchCountBasedOnGlobalPriorsInLast1Day objectForKeyedSubscript:v4];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
-- (double)modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLastNDaysForMode:(unint64_t)a3
+- (double)modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLastNDaysForMode:(unint64_t)mode
 {
   [(ATXAppLaunchProvider *)self cacheAppLaunchStreamIfNecessary];
   v4 = ATXModeToString();
@@ -200,7 +200,7 @@ LABEL_23:
   return v7;
 }
 
-- (double)modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLast1DayForMode:(unint64_t)a3
+- (double)modeWeightedAppLaunchPriorsBasedOnGlobalPriorsWithinLast1DayForMode:(unint64_t)mode
 {
   [(ATXAppLaunchProvider *)self cacheAppLaunchStreamIfNecessary];
   v4 = ATXModeToString();

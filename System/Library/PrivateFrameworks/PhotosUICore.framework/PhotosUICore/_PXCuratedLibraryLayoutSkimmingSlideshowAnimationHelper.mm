@@ -1,17 +1,17 @@
 @interface _PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper
-- (_PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper)initWithLayout:(id)a3;
-- (id)animation:(id)a3 doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)a4 rootLayout:(id)a5 presentedGeometries:(id *)a6 styles:(id *)a7 infos:(id *)a8;
-- (void)_adjustGeometries:(id *)a3 styles:(id *)a4 infos:(id *)a5 spriteIndexRange:(_PXGSpriteIndexRange)a6 appearing:(BOOL)a7;
-- (void)setUserData:(id)a3;
+- (_PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper)initWithLayout:(id)layout;
+- (id)animation:(id)animation doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)indexes rootLayout:(id)layout presentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos;
+- (void)_adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos spriteIndexRange:(_PXGSpriteIndexRange)range appearing:(BOOL)appearing;
+- (void)setUserData:(id)data;
 @end
 
 @implementation _PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper
 
-- (void)_adjustGeometries:(id *)a3 styles:(id *)a4 infos:(id *)a5 spriteIndexRange:(_PXGSpriteIndexRange)a6 appearing:(BOOL)a7
+- (void)_adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos spriteIndexRange:(_PXGSpriteIndexRange)range appearing:(BOOL)appearing
 {
-  length = a6.length;
+  length = range.length;
   v8 = &OBJC_IVAR____PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper__fromIndexPath;
-  if (a7)
+  if (appearing)
   {
     v8 = &OBJC_IVAR____PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper__toIndexPath;
   }
@@ -20,10 +20,10 @@
   v10 = v9[1];
   v27 = *v9;
   v28 = v10;
-  if (a6.length)
+  if (range.length)
   {
-    v13 = (self->_userInterfaceDirection == 0) ^ a7;
-    if (a7)
+    v13 = (self->_userInterfaceDirection == 0) ^ appearing;
+    if (appearing)
     {
       v14 = -0.2;
     }
@@ -33,7 +33,7 @@
       v14 = 1.0;
     }
 
-    if (a7)
+    if (appearing)
     {
       v15 = -0.1;
     }
@@ -43,14 +43,14 @@
       v15 = 0.1;
     }
 
-    p_var2 = &a3->var0.var2;
-    p_var1 = &a4->var1;
+    p_var2 = &geometries->var0.var2;
+    p_var1 = &styles->var1;
     do
     {
       v26 = 0;
       v25[0] = v27;
       v25[1] = v28;
-      if ([(_PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper *)self _shoulAnimateSpriteWithInfo:a5 matchingSectionIndexPath:v25 spriteKind:&v26])
+      if ([(_PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper *)self _shoulAnimateSpriteWithInfo:infos matchingSectionIndexPath:v25 spriteKind:&v26])
       {
         if (v26 == 1)
         {
@@ -80,7 +80,7 @@
 
       p_var2 += 4;
       p_var1 += 10;
-      a5 = (a5 + 40);
+      infos = (infos + 40);
       --length;
     }
 
@@ -88,20 +88,20 @@
   }
 }
 
-- (id)animation:(id)a3 doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)a4 rootLayout:(id)a5 presentedGeometries:(id *)a6 styles:(id *)a7 infos:(id *)a8
+- (id)animation:(id)animation doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)indexes rootLayout:(id)layout presentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos
 {
   v10 = MEMORY[0x1E696AD50];
-  v11 = a4;
+  indexesCopy = indexes;
   v12 = objc_alloc_init(v10);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __170___PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper_animation_doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes_rootLayout_presentedGeometries_styles_infos___block_invoke;
   v17[3] = &unk_1E7744440;
   v17[4] = self;
-  v19 = a8;
+  infosCopy = infos;
   v13 = v12;
   v18 = v13;
-  [v11 enumerateIndexesUsingBlock:v17];
+  [indexesCopy enumerateIndexesUsingBlock:v17];
 
   v14 = v18;
   v15 = v13;
@@ -109,26 +109,26 @@
   return v13;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
   v16.receiver = self;
   v16.super_class = _PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper;
-  [(PXCuratedLibraryLayoutAnimationHelper *)&v16 setUserData:a3];
-  v5 = [(PXCuratedLibraryLayoutAnimationHelper *)self userData];
-  if (v5)
+  [(PXCuratedLibraryLayoutAnimationHelper *)&v16 setUserData:data];
+  userData = [(PXCuratedLibraryLayoutAnimationHelper *)self userData];
+  if (userData)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = [v5 px_descriptionForAssertionMessage];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutAnimationHelper.m" lineNumber:190 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.userData", v12, v13}];
+      px_descriptionForAssertionMessage = [userData px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutAnimationHelper.m" lineNumber:190 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.userData", v12, px_descriptionForAssertionMessage}];
     }
   }
 
-  v6 = [v5 objectForKeyedSubscript:@"PXCuratedLibrarySkimmingSlideshowFromSectionKey"];
+  v6 = [userData objectForKeyedSubscript:@"PXCuratedLibrarySkimmingSlideshowFromSectionKey"];
   v7 = v6;
   if (v6)
   {
@@ -144,7 +144,7 @@
   *&self->_fromIndexPath.dataSourceIdentifier = v14;
   *&self->_fromIndexPath.item = v15;
 
-  v8 = [v5 objectForKeyedSubscript:@"PXCuratedLibrarySkimmingSlideshowToSectionKey"];
+  v8 = [userData objectForKeyedSubscript:@"PXCuratedLibrarySkimmingSlideshowToSectionKey"];
   v9 = v8;
   if (v8)
   {
@@ -161,15 +161,15 @@
   *&self->_toIndexPath.item = v15;
 }
 
-- (_PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper)initWithLayout:(id)a3
+- (_PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v7.receiver = self;
   v7.super_class = _PXCuratedLibraryLayoutSkimmingSlideshowAnimationHelper;
-  v5 = [(PXCuratedLibraryLayoutAnimationHelper *)&v7 initWithLayout:v4];
+  v5 = [(PXCuratedLibraryLayoutAnimationHelper *)&v7 initWithLayout:layoutCopy];
   if (v5)
   {
-    v5->_userInterfaceDirection = [v4 userInterfaceDirection];
+    v5->_userInterfaceDirection = [layoutCopy userInterfaceDirection];
   }
 
   return v5;

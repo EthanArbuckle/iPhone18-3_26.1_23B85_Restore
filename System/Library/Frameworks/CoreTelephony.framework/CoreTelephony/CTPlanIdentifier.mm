@@ -1,62 +1,62 @@
 @interface CTPlanIdentifier
-- (BOOL)isEqual:(id)a3;
-- (CTPlanIdentifier)initWithCoder:(id)a3;
-- (CTPlanIdentifier)initWithIccid:(id)a3 carrierName:(id)a4 phoneNumber:(id)a5 countryCode:(id)a6 label:(id)a7 mcc:(id)a8 mnc:(id)a9 gid1:(id)a10 gid2:(id)a11;
+- (BOOL)isEqual:(id)equal;
+- (CTPlanIdentifier)initWithCoder:(id)coder;
+- (CTPlanIdentifier)initWithIccid:(id)iccid carrierName:(id)name phoneNumber:(id)number countryCode:(id)code label:(id)label mcc:(id)mcc mnc:(id)mnc gid1:(id)self0 gid2:(id)self1;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTPlanIdentifier
 
-- (CTPlanIdentifier)initWithIccid:(id)a3 carrierName:(id)a4 phoneNumber:(id)a5 countryCode:(id)a6 label:(id)a7 mcc:(id)a8 mnc:(id)a9 gid1:(id)a10 gid2:(id)a11
+- (CTPlanIdentifier)initWithIccid:(id)iccid carrierName:(id)name phoneNumber:(id)number countryCode:(id)code label:(id)label mcc:(id)mcc mnc:(id)mnc gid1:(id)self0 gid2:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
+  iccidCopy = iccid;
+  nameCopy = name;
+  numberCopy = number;
+  codeCopy = code;
+  labelCopy = label;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  gid1Copy = gid1;
+  gid2Copy = gid2;
   v46.receiver = self;
   v46.super_class = CTPlanIdentifier;
   v26 = [(CTPlanIdentifier *)&v46 init];
   if (v26)
   {
-    v27 = [v17 copy];
+    v27 = [iccidCopy copy];
     iccid = v26->_iccid;
     v26->_iccid = v27;
 
-    v29 = [v18 copy];
+    v29 = [nameCopy copy];
     carrierName = v26->_carrierName;
     v26->_carrierName = v29;
 
-    v31 = [v19 copy];
+    v31 = [numberCopy copy];
     phoneNumber = v26->_phoneNumber;
     v26->_phoneNumber = v31;
 
-    v33 = [v20 copy];
+    v33 = [codeCopy copy];
     countryCode = v26->_countryCode;
     v26->_countryCode = v33;
 
-    v35 = [v21 copy];
+    v35 = [labelCopy copy];
     label = v26->_label;
     v26->_label = v35;
 
-    v37 = [v22 copy];
+    v37 = [mccCopy copy];
     mcc = v26->_mcc;
     v26->_mcc = v37;
 
-    v39 = [v23 copy];
+    v39 = [mncCopy copy];
     mnc = v26->_mnc;
     v26->_mnc = v39;
 
-    v41 = [v24 copy];
+    v41 = [gid1Copy copy];
     gid1 = v26->_gid1;
     v26->_gid1 = v41;
 
-    v43 = [v25 copy];
+    v43 = [gid2Copy copy];
     gid2 = v26->_gid2;
     v26->_gid2 = v43;
   }
@@ -67,20 +67,20 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTPlanIdentifier *)self iccid];
-  [v3 appendFormat:@" iccid=%@", v4];
+  iccid = [(CTPlanIdentifier *)self iccid];
+  [v3 appendFormat:@" iccid=%@", iccid];
 
-  v5 = [(CTPlanIdentifier *)self carrierName];
-  [v3 appendFormat:@" carrierName=%@", v5];
+  carrierName = [(CTPlanIdentifier *)self carrierName];
+  [v3 appendFormat:@" carrierName=%@", carrierName];
 
-  v6 = [(CTPlanIdentifier *)self phoneNumber];
-  [v3 appendFormat:@" phoneNumber=%@", v6];
+  phoneNumber = [(CTPlanIdentifier *)self phoneNumber];
+  [v3 appendFormat:@" phoneNumber=%@", phoneNumber];
 
-  v7 = [(CTPlanIdentifier *)self countryCode];
-  [v3 appendFormat:@" countryCode=%@", v7];
+  countryCode = [(CTPlanIdentifier *)self countryCode];
+  [v3 appendFormat:@" countryCode=%@", countryCode];
 
-  v8 = [(CTPlanIdentifier *)self label];
-  [v3 appendFormat:@" label=%@", v8];
+  label = [(CTPlanIdentifier *)self label];
+  [v3 appendFormat:@" label=%@", label];
 
   v9 = [(CTPlanIdentifier *)self mcc];
   [v3 appendFormat:@" mcc=%@", v9];
@@ -88,21 +88,21 @@
   v10 = [(CTPlanIdentifier *)self mnc];
   [v3 appendFormat:@" mnc=%@", v10];
 
-  v11 = [(CTPlanIdentifier *)self gid1];
-  [v3 appendFormat:@" gid1=%@", v11];
+  gid1 = [(CTPlanIdentifier *)self gid1];
+  [v3 appendFormat:@" gid1=%@", gid1];
 
-  v12 = [(CTPlanIdentifier *)self gid2];
-  [v3 appendFormat:@" gid2=%@", v12];
+  gid2 = [(CTPlanIdentifier *)self gid2];
+  [v3 appendFormat:@" gid2=%@", gid2];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -112,33 +112,33 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(CTPlanIdentifier *)self iccid];
-      v7 = [(CTPlanIdentifier *)v5 iccid];
-      if (v6 != v7)
+      iccid = [(CTPlanIdentifier *)self iccid];
+      iccid2 = [(CTPlanIdentifier *)equalCopy iccid];
+      if (iccid != iccid2)
       {
-        v8 = [(CTPlanIdentifier *)self iccid];
-        v3 = [(CTPlanIdentifier *)v5 iccid];
-        v64 = v8;
-        if (![v8 isEqualToString:v3])
+        iccid3 = [(CTPlanIdentifier *)self iccid];
+        iccid4 = [(CTPlanIdentifier *)equalCopy iccid];
+        v64 = iccid3;
+        if (![iccid3 isEqualToString:iccid4])
         {
           v9 = 0;
           goto LABEL_49;
         }
       }
 
-      v10 = [(CTPlanIdentifier *)self carrierName];
-      v11 = [(CTPlanIdentifier *)v5 carrierName];
-      if (v10 != v11)
+      carrierName = [(CTPlanIdentifier *)self carrierName];
+      carrierName2 = [(CTPlanIdentifier *)equalCopy carrierName];
+      if (carrierName != carrierName2)
       {
-        v12 = [(CTPlanIdentifier *)self carrierName];
-        v13 = [(CTPlanIdentifier *)v5 carrierName];
-        if (![v12 isEqualToString:v13])
+        carrierName3 = [(CTPlanIdentifier *)self carrierName];
+        carrierName4 = [(CTPlanIdentifier *)equalCopy carrierName];
+        if (![carrierName3 isEqualToString:carrierName4])
         {
           v9 = 0;
 LABEL_47:
 
 LABEL_48:
-          if (v6 == v7)
+          if (iccid == iccid2)
           {
 LABEL_50:
 
@@ -150,28 +150,28 @@ LABEL_49:
           goto LABEL_50;
         }
 
-        v61 = v13;
-        v62 = v12;
+        v61 = carrierName4;
+        v62 = carrierName3;
       }
 
-      v14 = [(CTPlanIdentifier *)self phoneNumber];
-      v15 = [(CTPlanIdentifier *)v5 phoneNumber];
-      if (v14 != v15)
+      phoneNumber = [(CTPlanIdentifier *)self phoneNumber];
+      phoneNumber2 = [(CTPlanIdentifier *)equalCopy phoneNumber];
+      if (phoneNumber != phoneNumber2)
       {
-        v16 = v3;
-        v17 = [(CTPlanIdentifier *)self phoneNumber];
-        v58 = [(CTPlanIdentifier *)v5 phoneNumber];
-        v59 = v17;
-        if (![v17 isEqualToString:?])
+        v16 = iccid4;
+        phoneNumber3 = [(CTPlanIdentifier *)self phoneNumber];
+        phoneNumber4 = [(CTPlanIdentifier *)equalCopy phoneNumber];
+        v59 = phoneNumber3;
+        if (![phoneNumber3 isEqualToString:?])
         {
           v9 = 0;
-          v3 = v16;
+          iccid4 = v16;
 LABEL_45:
 
 LABEL_46:
-          v13 = v61;
-          v12 = v62;
-          if (v10 == v11)
+          carrierName4 = v61;
+          carrierName3 = v62;
+          if (carrierName == carrierName2)
           {
             goto LABEL_48;
           }
@@ -179,25 +179,25 @@ LABEL_46:
           goto LABEL_47;
         }
 
-        v3 = v16;
+        iccid4 = v16;
       }
 
-      v18 = [(CTPlanIdentifier *)self countryCode];
-      v60 = [(CTPlanIdentifier *)v5 countryCode];
-      v63 = v18;
-      if (v18 != v60)
+      countryCode = [(CTPlanIdentifier *)self countryCode];
+      countryCode2 = [(CTPlanIdentifier *)equalCopy countryCode];
+      v63 = countryCode;
+      if (countryCode != countryCode2)
       {
-        v19 = [(CTPlanIdentifier *)self countryCode];
-        v54 = [(CTPlanIdentifier *)v5 countryCode];
-        v55 = v19;
-        if (![v19 isEqualToString:?])
+        countryCode3 = [(CTPlanIdentifier *)self countryCode];
+        countryCode4 = [(CTPlanIdentifier *)equalCopy countryCode];
+        v55 = countryCode3;
+        if (![countryCode3 isEqualToString:?])
         {
           v9 = 0;
-          v20 = v60;
+          v20 = countryCode2;
 LABEL_43:
 
 LABEL_44:
-          if (v14 == v15)
+          if (phoneNumber == phoneNumber2)
           {
             goto LABEL_46;
           }
@@ -206,23 +206,23 @@ LABEL_44:
         }
       }
 
-      v21 = [(CTPlanIdentifier *)self label];
-      v56 = [(CTPlanIdentifier *)v5 label];
-      v57 = v21;
-      if (v21 != v56)
+      label = [(CTPlanIdentifier *)self label];
+      label2 = [(CTPlanIdentifier *)equalCopy label];
+      v57 = label;
+      if (label != label2)
       {
-        v22 = [(CTPlanIdentifier *)self label];
-        v50 = [(CTPlanIdentifier *)v5 label];
-        v51 = v22;
-        if (![v22 isEqualToString:?])
+        label3 = [(CTPlanIdentifier *)self label];
+        label4 = [(CTPlanIdentifier *)equalCopy label];
+        v51 = label3;
+        if (![label3 isEqualToString:?])
         {
           v9 = 0;
-          v23 = v56;
+          v23 = label2;
 LABEL_41:
 
 LABEL_42:
-          v20 = v60;
-          if (v63 == v60)
+          v20 = countryCode2;
+          if (v63 == countryCode2)
           {
             goto LABEL_44;
           }
@@ -232,12 +232,12 @@ LABEL_42:
       }
 
       v24 = [(CTPlanIdentifier *)self mcc];
-      v52 = [(CTPlanIdentifier *)v5 mcc];
+      v52 = [(CTPlanIdentifier *)equalCopy mcc];
       v53 = v24;
       if (v24 != v52)
       {
         v25 = [(CTPlanIdentifier *)self mcc];
-        v46 = [(CTPlanIdentifier *)v5 mcc];
+        v46 = [(CTPlanIdentifier *)equalCopy mcc];
         v47 = v25;
         if (![v25 isEqualToString:?])
         {
@@ -246,8 +246,8 @@ LABEL_42:
 LABEL_39:
 
 LABEL_40:
-          v23 = v56;
-          if (v57 == v56)
+          v23 = label2;
+          if (v57 == label2)
           {
             goto LABEL_42;
           }
@@ -257,12 +257,12 @@ LABEL_40:
       }
 
       v27 = [(CTPlanIdentifier *)self mnc];
-      v48 = [(CTPlanIdentifier *)v5 mnc];
+      v48 = [(CTPlanIdentifier *)equalCopy mnc];
       v49 = v27;
       if (v27 != v48)
       {
         v28 = [(CTPlanIdentifier *)self mnc];
-        v42 = [(CTPlanIdentifier *)v5 mnc];
+        v42 = [(CTPlanIdentifier *)equalCopy mnc];
         v43 = v28;
         if (![v28 isEqualToString:?])
         {
@@ -281,14 +281,14 @@ LABEL_38:
         }
       }
 
-      v30 = [(CTPlanIdentifier *)self gid1];
-      v44 = [(CTPlanIdentifier *)v5 gid1];
-      v45 = v30;
-      if (v30 == v44 || (-[CTPlanIdentifier gid1](self, "gid1"), v31 = objc_claimAutoreleasedReturnValue(), -[CTPlanIdentifier gid1](v5, "gid1"), v40 = objc_claimAutoreleasedReturnValue(), v41 = v31, [v31 isEqualToString:?]))
+      gid1 = [(CTPlanIdentifier *)self gid1];
+      gid12 = [(CTPlanIdentifier *)equalCopy gid1];
+      v45 = gid1;
+      if (gid1 == gid12 || (-[CTPlanIdentifier gid1](self, "gid1"), v31 = objc_claimAutoreleasedReturnValue(), -[CTPlanIdentifier gid1](equalCopy, "gid1"), v40 = objc_claimAutoreleasedReturnValue(), v41 = v31, [v31 isEqualToString:?]))
       {
-        v33 = [(CTPlanIdentifier *)self gid2];
-        v34 = [(CTPlanIdentifier *)v5 gid2];
-        if (v33 == v34)
+        gid2 = [(CTPlanIdentifier *)self gid2];
+        gid22 = [(CTPlanIdentifier *)equalCopy gid2];
+        if (gid2 == gid22)
         {
 
           v9 = 1;
@@ -296,15 +296,15 @@ LABEL_38:
 
         else
         {
-          v39 = v34;
-          v37 = [(CTPlanIdentifier *)self gid2];
-          [(CTPlanIdentifier *)v5 gid2];
-          v35 = v38 = v33;
-          v9 = [v37 isEqualToString:v35];
+          v39 = gid22;
+          gid23 = [(CTPlanIdentifier *)self gid2];
+          [(CTPlanIdentifier *)equalCopy gid2];
+          v35 = v38 = gid2;
+          v9 = [gid23 isEqualToString:v35];
         }
 
-        v32 = v44;
-        if (v45 == v44)
+        v32 = gid12;
+        if (v45 == gid12)
         {
 LABEL_36:
 
@@ -321,7 +321,7 @@ LABEL_36:
       else
       {
         v9 = 0;
-        v32 = v44;
+        v32 = gid12;
       }
 
       goto LABEL_36;
@@ -335,47 +335,47 @@ LABEL_51:
   return v9;
 }
 
-- (CTPlanIdentifier)initWithCoder:(id)a3
+- (CTPlanIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = CTPlanIdentifier;
   v5 = [(CTPlanIdentifier *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iccid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iccid"];
     iccid = v5->_iccid;
     v5->_iccid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"carrierName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"carrierName"];
     carrierName = v5->_carrierName;
     v5->_carrierName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mcc"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mcc"];
     mcc = v5->_mcc;
     v5->_mcc = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mnc"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mnc"];
     mnc = v5->_mnc;
     v5->_mnc = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gid1"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gid1"];
     gid1 = v5->_gid1;
     v5->_gid1 = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gid2"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gid2"];
     gid2 = v5->_gid2;
     v5->_gid2 = v22;
   }
@@ -383,19 +383,19 @@ LABEL_51:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   iccid = self->_iccid;
-  v5 = a3;
-  [v5 encodeObject:iccid forKey:@"iccid"];
-  [v5 encodeObject:self->_carrierName forKey:@"carrierName"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
-  [v5 encodeObject:self->_countryCode forKey:@"countryCode"];
-  [v5 encodeObject:self->_label forKey:@"label"];
-  [v5 encodeObject:self->_mcc forKey:@"mcc"];
-  [v5 encodeObject:self->_mnc forKey:@"mnc"];
-  [v5 encodeObject:self->_gid1 forKey:@"gid1"];
-  [v5 encodeObject:self->_gid2 forKey:@"gid2"];
+  coderCopy = coder;
+  [coderCopy encodeObject:iccid forKey:@"iccid"];
+  [coderCopy encodeObject:self->_carrierName forKey:@"carrierName"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"countryCode"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeObject:self->_mcc forKey:@"mcc"];
+  [coderCopy encodeObject:self->_mnc forKey:@"mnc"];
+  [coderCopy encodeObject:self->_gid1 forKey:@"gid1"];
+  [coderCopy encodeObject:self->_gid2 forKey:@"gid2"];
 }
 
 @end

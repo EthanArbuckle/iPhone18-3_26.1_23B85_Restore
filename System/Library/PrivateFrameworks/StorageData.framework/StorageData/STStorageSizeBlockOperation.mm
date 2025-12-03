@@ -1,15 +1,15 @@
 @interface STStorageSizeBlockOperation
-+ (id)operationWithSizeBlock:(id)a3;
++ (id)operationWithSizeBlock:(id)block;
 - (void)main;
 @end
 
 @implementation STStorageSizeBlockOperation
 
-+ (id)operationWithSizeBlock:(id)a3
++ (id)operationWithSizeBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(STStorageSizeBlockOperation);
-  [(STStorageSizeBlockOperation *)v4 setSizeBlock:v3];
+  [(STStorageSizeBlockOperation *)v4 setSizeBlock:blockCopy];
 
   return v4;
 }

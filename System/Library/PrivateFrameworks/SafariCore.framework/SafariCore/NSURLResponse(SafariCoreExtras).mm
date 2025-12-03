@@ -14,8 +14,8 @@
     return 0;
   }
 
-  v2 = [a1 allHeaderFields];
-  v3 = [v2 safari_stringForKey:@"Content-Disposition"];
+  allHeaderFields = [self allHeaderFields];
+  v3 = [allHeaderFields safari_stringForKey:@"Content-Disposition"];
 
   if (v3)
   {
@@ -23,9 +23,9 @@
     if ([v4 count])
     {
       v5 = [v4 objectAtIndex:0];
-      v6 = [v5 safari_stringByTrimmingWhitespace];
+      safari_stringByTrimmingWhitespace = [v5 safari_stringByTrimmingWhitespace];
 
-      v7 = [v6 safari_isCaseInsensitiveEqualToString:@"attachment"];
+      v7 = [safari_stringByTrimmingWhitespace safari_isCaseInsensitiveEqualToString:@"attachment"];
     }
 
     else
@@ -50,14 +50,14 @@
     return 0;
   }
 
-  v2 = [a1 statusCode];
+  statusCode = [self statusCode];
   v3 = 5;
-  if ((v2 - 500) >= 0x64)
+  if ((statusCode - 500) >= 0x64)
   {
     v3 = 0;
   }
 
-  if ((v2 - 400) >= 0x64)
+  if ((statusCode - 400) >= 0x64)
   {
     v4 = v3;
   }
@@ -67,7 +67,7 @@
     v4 = 4;
   }
 
-  if ((v2 - 300) >= 0x64)
+  if ((statusCode - 300) >= 0x64)
   {
     v5 = v4;
   }
@@ -77,7 +77,7 @@
     v5 = 3;
   }
 
-  if ((v2 - 200) >= 0x64)
+  if ((statusCode - 200) >= 0x64)
   {
     v6 = v5;
   }
@@ -87,7 +87,7 @@
     v6 = 2;
   }
 
-  if ((v2 - 100) >= 0x64)
+  if ((statusCode - 100) >= 0x64)
   {
     return v6;
   }
@@ -120,7 +120,7 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if ([a1 safari_statusCodeGroup] != 2)
+  if ([self safari_statusCodeGroup] != 2)
   {
     if (a5)
     {

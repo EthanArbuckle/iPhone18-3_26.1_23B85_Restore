@@ -1,34 +1,34 @@
 @interface BuddyMigrationStateProvider
-+ (id)validateAndResolveMigrationStateUsingPreferences:(id)a3 didCompleteInitialRun:(BOOL)a4;
++ (id)validateAndResolveMigrationStateUsingPreferences:(id)preferences didCompleteInitialRun:(BOOL)run;
 @end
 
 @implementation BuddyMigrationStateProvider
 
-+ (id)validateAndResolveMigrationStateUsingPreferences:(id)a3 didCompleteInitialRun:(BOOL)a4
++ (id)validateAndResolveMigrationStateUsingPreferences:(id)preferences didCompleteInitialRun:(BOOL)run
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, preferences);
+  runCopy = run;
   v24 = [BuddyMigrationState loadFromPreferences:location[0]];
   if (v24)
   {
-    if ([v24 intent] || !v25)
+    if ([v24 intent] || !runCopy)
     {
       v9 = +[BYDeviceConfiguration currentConfiguration];
-      v16 = [v9 buildVersion];
+      buildVersion = [v9 buildVersion];
 
-      v10 = [v24 productBuild];
-      v11 = [v10 isEqualToString:v16] ^ 1;
+      productBuild = [v24 productBuild];
+      v11 = [productBuild isEqualToString:buildVersion] ^ 1;
 
       if (v11)
       {
         v15 = _BYLoggingFacility();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v12 = [v24 productBuild];
-          sub_100078180(v28, v12, v16);
+          productBuild2 = [v24 productBuild];
+          sub_100078180(v28, productBuild2, buildVersion);
           _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "MigrationStateProvider expected update to %@, but currently running %@!", v28, 0x16u);
         }
 
@@ -43,7 +43,7 @@
         v20 = 0;
       }
 
-      objc_storeStrong(&v16, 0);
+      objc_storeStrong(&buildVersion, 0);
       if (!v20)
       {
         v27 = v24;

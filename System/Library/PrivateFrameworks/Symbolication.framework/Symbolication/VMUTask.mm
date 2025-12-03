@@ -1,8 +1,8 @@
 @interface VMUTask
-- (BOOL)hasStartedWithErrorString:(id *)a3;
+- (BOOL)hasStartedWithErrorString:(id *)string;
 - (BOOL)isTranslated;
-- (VMUTask)initWithCorePath:(id)a3 originalBinaryPaths:(id)a4 error:(id *)a5;
-- (VMUTask)initWithTask:(unsigned int)a3;
+- (VMUTask)initWithCorePath:(id)path originalBinaryPaths:(id)paths error:(id *)error;
+- (VMUTask)initWithTask:(unsigned int)task;
 - (_VMURange)taskDyldSharedCacheRange;
 - (id)ioSurfaceDescriptions;
 - (id)processDescription;
@@ -33,7 +33,7 @@
 - (void)dealloc
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v4[0] = 67109378;
   v4[1] = v2;
   v5 = 2080;
@@ -48,8 +48,8 @@
   {
     self->_processDescriptionInitialized = 1;
     v3 = [VMUProcessDescription alloc];
-    v4 = [(VMUTask *)self memoryCache];
-    v5 = [(VMUProcessDescription *)v3 initWithVMUTaskMemoryCache:v4 getBinariesList:1];
+    memoryCache = [(VMUTask *)self memoryCache];
+    v5 = [(VMUProcessDescription *)v3 initWithVMUTaskMemoryCache:memoryCache getBinariesList:1];
     processDescription = self->_processDescription;
     self->_processDescription = v5;
   }
@@ -61,17 +61,17 @@
 
 - (uint64_t)useExtraPointerStripping
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 89) & 1) == 0)
+    if ((*(self + 89) & 1) == 0)
     {
-      v2 = [a1 processDescription];
-      *(a1 + 88) = [v2 targetUsesExtraPointerBits:*(a1 + 8)];
+      processDescription = [self processDescription];
+      *(self + 88) = [processDescription targetUsesExtraPointerBits:*(self + 8)];
 
-      *(a1 + 89) = 1;
+      *(self + 89) = 1;
     }
 
-    v3 = *(a1 + 88);
+    v3 = *(self + 88);
   }
 
   else
@@ -82,7 +82,7 @@
   return v3 & 1;
 }
 
-- (VMUTask)initWithTask:(unsigned int)a3
+- (VMUTask)initWithTask:(unsigned int)task
 {
   v14.receiver = self;
   v14.super_class = VMUTask;
@@ -94,16 +94,16 @@
   }
 
   v4->_taskType = 0;
-  if (a3 - 1 <= 0xFFFFFFFD)
+  if (task - 1 <= 0xFFFFFFFD)
   {
-    if (mach_port_mod_refs(*MEMORY[0x1E69E9A60], a3, 0, 1))
+    if (mach_port_mod_refs(*MEMORY[0x1E69E9A60], task, 0, 1))
     {
 
       v5 = 0;
       goto LABEL_5;
     }
 
-    v5->_liveTask = a3;
+    v5->_liveTask = task;
     v7 = [[VMUTaskMemoryCache alloc] initWithTask:v5->_liveTask];
     taskMemory = v5->_taskMemory;
     v5->_taskMemory = v7;
@@ -164,27 +164,27 @@ LABEL_18:
   return v6;
 }
 
-- (VMUTask)initWithCorePath:(id)a3 originalBinaryPaths:(id)a4 error:(id *)a5
+- (VMUTask)initWithCorePath:(id)path originalBinaryPaths:(id)paths error:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  pathsCopy = paths;
   v31.receiver = self;
   v31.super_class = VMUTask;
   v10 = [(VMUTask *)&v31 init];
   if (v10)
   {
     v30 = 0;
-    if (!a5)
+    if (!error)
     {
-      a5 = &v30;
+      error = &v30;
     }
 
-    v11 = [v8 copy];
+    v11 = [pathCopy copy];
     v12 = *(v10 + 2);
     *(v10 + 2) = v11;
 
-    v13 = [[VMUTaskMemoryCache alloc] initWithCorePath:v8 originalBinaryPaths:v9 error:a5];
+    v13 = [[VMUTaskMemoryCache alloc] initWithCorePath:pathCopy originalBinaryPaths:pathsCopy error:error];
     v14 = *(v10 + 6);
     *(v10 + 6) = v13;
 
@@ -205,9 +205,9 @@ LABEL_18:
       goto LABEL_23;
     }
 
-    v16 = [*(v10 + 6) isKernel];
+    isKernel = [*(v10 + 6) isKernel];
     v17 = 1;
-    if (v16)
+    if (isKernel)
     {
       v17 = 2;
     }
@@ -273,7 +273,7 @@ LABEL_18:
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to get addressing mask for %@ core file.", v21];
     v34[0] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    *a5 = [v23 errorWithDomain:@"VMUTask initialization" code:0 userInfo:v25];
+    *error = [v23 errorWithDomain:@"VMUTask initialization" code:0 userInfo:v25];
 
 LABEL_23:
     v10 = 0;
@@ -287,18 +287,18 @@ LABEL_24:
 
 - (int)pid
 {
-  v2 = [(VMUTask *)self processDescription];
-  v3 = [v2 pid];
+  processDescription = [(VMUTask *)self processDescription];
+  v3 = [processDescription pid];
 
   return v3;
 }
 
 - (BOOL)isTranslated
 {
-  v2 = [(VMUTask *)self processDescription];
-  v3 = [v2 isTranslated];
+  processDescription = [(VMUTask *)self processDescription];
+  isTranslated = [processDescription isTranslated];
 
-  return v3;
+  return isTranslated;
 }
 
 - (_VMURange)taskDyldSharedCacheRange
@@ -310,7 +310,7 @@ LABEL_24:
   return result;
 }
 
-- (BOOL)hasStartedWithErrorString:(id *)a3
+- (BOOL)hasStartedWithErrorString:(id *)string
 {
   if (self->_taskType)
   {
@@ -319,10 +319,10 @@ LABEL_24:
 
   liveTask = self->_liveTask;
   v6 = CSTaskHasNotStarted();
-  if (a3)
+  if (string)
   {
     v6 = v6;
-    *a3 = v6;
+    *string = v6;
   }
 
   v3 = v6 == 0;
@@ -339,7 +339,7 @@ LABEL_24:
 
   else
   {
-    v3 = [MEMORY[0x1E696CDF0] surfaceDescriptions];
+    surfaceDescriptions = [MEMORY[0x1E696CDF0] surfaceDescriptions];
     v4 = objc_opt_new();
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -347,7 +347,7 @@ LABEL_24:
     v6[3] = &unk_1E8278CF8;
     v2 = v4;
     v7 = v2;
-    [v3 enumerateKeysAndObjectsUsingBlock:v6];
+    [surfaceDescriptions enumerateKeysAndObjectsUsingBlock:v6];
   }
 
   return v2;

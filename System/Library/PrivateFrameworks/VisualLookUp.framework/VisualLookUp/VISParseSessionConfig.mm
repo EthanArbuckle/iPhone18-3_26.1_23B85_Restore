@@ -1,18 +1,18 @@
 @interface VISParseSessionConfig
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISParseSessionConfig)initWithDictionary:(id)a3;
-- (VISParseSessionConfig)initWithJSON:(id)a3;
+- (VISParseSessionConfig)initWithDictionary:(id)dictionary;
+- (VISParseSessionConfig)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISParseSessionConfig
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(VISParseSessionConfig *)self enable_object_detection])
   {
     PBDataWriterWriteBOOLField();
@@ -34,13 +34,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (enable_object_detection = self->_enable_object_detection, enable_object_detection == objc_msgSend(v4, "enable_object_detection")) && (enable_object_tracking = self->_enable_object_tracking, enable_object_tracking == objc_msgSend(v4, "enable_object_tracking")) && (enable_text_detection = self->_enable_text_detection, enable_text_detection == objc_msgSend(v4, "enable_text_detection")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (enable_object_detection = self->_enable_object_detection, enable_object_detection == objc_msgSend(equalCopy, "enable_object_detection")) && (enable_object_tracking = self->_enable_object_tracking, enable_object_tracking == objc_msgSend(equalCopy, "enable_object_tracking")) && (enable_text_detection = self->_enable_text_detection, enable_text_detection == objc_msgSend(equalCopy, "enable_text_detection")))
   {
     use_vi_detector = self->_use_vi_detector;
-    v9 = use_vi_detector == [v4 use_vi_detector];
+    v9 = use_vi_detector == [equalCopy use_vi_detector];
   }
 
   else
@@ -94,40 +94,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_enable_object_detection)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISParseSessionConfig enable_object_detection](self, "enable_object_detection")}];
-    [v3 setObject:v4 forKeyedSubscript:@"enableObjectDetection"];
+    [dictionary setObject:v4 forKeyedSubscript:@"enableObjectDetection"];
   }
 
   if (self->_enable_object_tracking)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISParseSessionConfig enable_object_tracking](self, "enable_object_tracking")}];
-    [v3 setObject:v5 forKeyedSubscript:@"enableObjectTracking"];
+    [dictionary setObject:v5 forKeyedSubscript:@"enableObjectTracking"];
   }
 
   if (self->_enable_text_detection)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISParseSessionConfig enable_text_detection](self, "enable_text_detection")}];
-    [v3 setObject:v6 forKeyedSubscript:@"enableTextDetection"];
+    [dictionary setObject:v6 forKeyedSubscript:@"enableTextDetection"];
   }
 
   if (self->_use_vi_detector)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISParseSessionConfig use_vi_detector](self, "use_vi_detector")}];
-    [v3 setObject:v7 forKeyedSubscript:@"useViDetector"];
+    [dictionary setObject:v7 forKeyedSubscript:@"useViDetector"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISParseSessionConfig *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISParseSessionConfig *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -138,54 +138,54 @@
   return v3;
 }
 
-- (VISParseSessionConfig)initWithJSON:(id)a3
+- (VISParseSessionConfig)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISParseSessionConfig *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISParseSessionConfig)initWithDictionary:(id)a3
+- (VISParseSessionConfig)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = VISParseSessionConfig;
   v5 = [(VISParseSessionConfig *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"enableObjectDetection"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"enableObjectDetection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISParseSessionConfig setEnable_object_detection:](v5, "setEnable_object_detection:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"enableObjectTracking"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"enableObjectTracking"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISParseSessionConfig setEnable_object_tracking:](v5, "setEnable_object_tracking:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"enableTextDetection"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"enableTextDetection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISParseSessionConfig setEnable_text_detection:](v5, "setEnable_text_detection:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"useViDetector"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"useViDetector"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

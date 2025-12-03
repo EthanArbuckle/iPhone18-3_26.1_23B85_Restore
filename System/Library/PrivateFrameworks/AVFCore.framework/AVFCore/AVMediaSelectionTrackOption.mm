@@ -1,8 +1,8 @@
 @interface AVMediaSelectionTrackOption
-- (AVMediaSelectionTrackOption)initWithAsset:(id)a3 group:(id)a4 dictionary:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (AVMediaSelectionTrackOption)initWithAsset:(id)asset group:(id)group dictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPlayable;
-- (id)associatedMediaSelectionOptionInMediaSelectionGroup:(id)a3;
+- (id)associatedMediaSelectionOptionInMediaSelectionGroup:(id)group;
 - (id)mediaSubTypes;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -10,30 +10,30 @@
 
 @implementation AVMediaSelectionTrackOption
 
-- (AVMediaSelectionTrackOption)initWithAsset:(id)a3 group:(id)a4 dictionary:(id)a5
+- (AVMediaSelectionTrackOption)initWithAsset:(id)asset group:(id)group dictionary:(id)dictionary
 {
   v13.receiver = self;
   v13.super_class = AVMediaSelectionTrackOption;
-  v8 = [(AVMediaSelectionOption *)&v13 initWithGroup:a4];
+  v8 = [(AVMediaSelectionOption *)&v13 initWithGroup:group];
   v9 = v8;
   if (v8)
   {
-    if (a3 && a4 && a5)
+    if (asset && group && dictionary)
     {
-      v8->_dictionary = [a5 copy];
-      v9->_groupID = [a4 _groupID];
-      v9->_weakReferenceToGroup = [a4 _weakReference];
-      v10 = [a5 objectForKey:*MEMORY[0x1E69737D8]];
-      v11 = [a5 objectForKey:*MEMORY[0x1E69737A0]];
+      v8->_dictionary = [dictionary copy];
+      v9->_groupID = [group _groupID];
+      v9->_weakReferenceToGroup = [group _weakReference];
+      v10 = [dictionary objectForKey:*MEMORY[0x1E69737D8]];
+      v11 = [dictionary objectForKey:*MEMORY[0x1E69737A0]];
       if ([v11 count])
       {
         v10 = [v11 objectAtIndex:0];
       }
 
-      v9->_track = [a3 trackWithTrackID:{objc_msgSend(v10, "intValue")}];
-      v9->_displaysNonForcedSubtitles = [objc_msgSend(a5 objectForKey:{*MEMORY[0x1E6973790]), "BOOLValue"}];
-      v9->_audioCompositionPresetIndex = [objc_msgSend(a5 objectForKey:{*MEMORY[0x1E6973778]), "copy"}];
-      v9->_audioCompositionPresetIndexesForFallbackIDs = [objc_msgSend(a5 objectForKey:{*MEMORY[0x1E6973780]), "copy"}];
+      v9->_track = [asset trackWithTrackID:{objc_msgSend(v10, "intValue")}];
+      v9->_displaysNonForcedSubtitles = [objc_msgSend(dictionary objectForKey:{*MEMORY[0x1E6973790]), "BOOLValue"}];
+      v9->_audioCompositionPresetIndex = [objc_msgSend(dictionary objectForKey:{*MEMORY[0x1E6973778]), "copy"}];
+      v9->_audioCompositionPresetIndexesForFallbackIDs = [objc_msgSend(dictionary objectForKey:{*MEMORY[0x1E6973780]), "copy"}];
     }
 
     else
@@ -53,9 +53,9 @@
   [(AVMediaSelectionOption *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -70,23 +70,23 @@ LABEL_6:
       return v5;
     }
 
-    v5 = -[AVAssetTrack isEqual:](self->_track, "isEqual:", [a3 track]);
+    v5 = -[AVAssetTrack isEqual:](self->_track, "isEqual:", [equal track]);
     if (v5)
     {
       displaysNonForcedSubtitles = self->_displaysNonForcedSubtitles;
-      if (displaysNonForcedSubtitles != [a3 displaysNonForcedSubtitles])
+      if (displaysNonForcedSubtitles != [equal displaysNonForcedSubtitles])
       {
         goto LABEL_6;
       }
 
       audioCompositionPresetIndex = self->_audioCompositionPresetIndex;
-      if (audioCompositionPresetIndex != [a3 _audioCompositionPresetIndex])
+      if (audioCompositionPresetIndex != [equal _audioCompositionPresetIndex])
       {
         goto LABEL_6;
       }
 
       v8 = [-[NSArray firstObject](self->_audioCompositionPresetIndexesForFallbackIDs "firstObject")];
-      LOBYTE(v5) = v8 == [objc_msgSend(objc_msgSend(a3 "_audioCompositionPresetIndexesForFallbackIDs")];
+      LOBYTE(v5) = v8 == [objc_msgSend(objc_msgSend(equal "_audioCompositionPresetIndexesForFallbackIDs")];
     }
   }
 
@@ -96,18 +96,18 @@ LABEL_6:
 - (unint64_t)hash
 {
   v3 = [(AVAssetTrack *)self->_track hash]^ self->_displaysNonForcedSubtitles;
-  v4 = [(NSNumber *)self->_audioCompositionPresetIndex integerValue];
-  return v3 ^ v4 ^ [(NSArray *)self->_audioCompositionPresetIndexesForFallbackIDs hash];
+  integerValue = [(NSNumber *)self->_audioCompositionPresetIndex integerValue];
+  return v3 ^ integerValue ^ [(NSArray *)self->_audioCompositionPresetIndexesForFallbackIDs hash];
 }
 
 - (id)mediaSubTypes
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(AVMediaSelectionOption *)self fallbackIDs];
-  if (v3)
+  fallbackIDs = [(AVMediaSelectionOption *)self fallbackIDs];
+  if (fallbackIDs)
   {
-    v4 = v3;
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
+    v4 = fallbackIDs;
+    formatDescriptions = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -129,7 +129,7 @@ LABEL_6:
           v10 = -[AVAssetTrack formatDescriptions](-[AVAsset trackWithTrackID:](-[AVAssetTrack asset](self->_track, "asset"), "trackWithTrackID:", [*(*(&v24 + 1) + 8 * i) unsignedIntValue]), "formatDescriptions");
           if (v10)
           {
-            [(NSArray *)v5 addObjectsFromArray:v10];
+            [(NSArray *)formatDescriptions addObjectsFromArray:v10];
           }
         }
 
@@ -142,7 +142,7 @@ LABEL_6:
 
   else
   {
-    v5 = [(AVAssetTrack *)self->_track formatDescriptions];
+    formatDescriptions = [(AVAssetTrack *)self->_track formatDescriptions];
   }
 
   v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
@@ -150,7 +150,7 @@ LABEL_6:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [(NSArray *)v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v12 = [(NSArray *)formatDescriptions countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
@@ -161,7 +161,7 @@ LABEL_6:
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(formatDescriptions);
         }
 
         v16 = *(*(&v20 + 1) + 8 * j);
@@ -176,7 +176,7 @@ LABEL_6:
         }
       }
 
-      v13 = [(NSArray *)v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v13 = [(NSArray *)formatDescriptions countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v13);
@@ -226,17 +226,17 @@ LABEL_6:
   return [(AVAssetTrack *)self->_track isPlayable];
 }
 
-- (id)associatedMediaSelectionOptionInMediaSelectionGroup:(id)a3
+- (id)associatedMediaSelectionOptionInMediaSelectionGroup:(id)group
 {
-  if (![a3 isEqual:{-[AVMediaSelectionTrackOption group](self, "group")}])
+  if (![group isEqual:{-[AVMediaSelectionTrackOption group](self, "group")}])
   {
     v8.receiver = self;
     v8.super_class = AVMediaSelectionTrackOption;
-    return [(AVMediaSelectionOption *)&v8 associatedMediaSelectionOptionInMediaSelectionGroup:a3];
+    return [(AVMediaSelectionOption *)&v8 associatedMediaSelectionOptionInMediaSelectionGroup:group];
   }
 
-  v5 = [(AVAssetTrack *)self->_track mediaType];
-  if ([(NSString *)v5 isEqualToString:@"sbtl"])
+  mediaType = [(AVAssetTrack *)self->_track mediaType];
+  if ([(NSString *)mediaType isEqualToString:@"sbtl"])
   {
     if ([(AVMediaSelectionTrackOption *)self displaysNonForcedSubtitles])
     {
@@ -256,7 +256,7 @@ LABEL_6:
     return 0;
   }
 
-  if (![(NSString *)v5 isEqualToString:@"soun"])
+  if (![(NSString *)mediaType isEqualToString:@"soun"])
   {
     return 0;
   }
@@ -270,7 +270,7 @@ LABEL_6:
 LABEL_10:
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(result, "trackID")}];
 
-  return [a3 _optionWithID:v7 displaysNonForcedSubtitles:0 audioCompositionPresetIndex:0];
+  return [group _optionWithID:v7 displaysNonForcedSubtitles:0 audioCompositionPresetIndex:0];
 }
 
 @end

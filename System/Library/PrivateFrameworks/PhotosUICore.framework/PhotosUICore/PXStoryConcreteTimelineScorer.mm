@@ -1,16 +1,16 @@
 @interface PXStoryConcreteTimelineScorer
-- (BOOL)isAcceptableCropWithVisibleAssetRect:(CGFloat)a3 acceptableCropAssetRect:(CGFloat)a4 faceAreaAssetRect:(double)a5;
-- (PXStoryConcreteTimelineScorer)initWithTimelineStyle:(id)a3;
-- (double)_scoreForSplitAsset:(id)a3 inTimeline:(id)a4 segmentTimeRange:(id *)a5;
-- (double)scoreForTimeline:(id)a3;
+- (BOOL)isAcceptableCropWithVisibleAssetRect:(CGFloat)rect acceptableCropAssetRect:(CGFloat)assetRect faceAreaAssetRect:(double)areaAssetRect;
+- (PXStoryConcreteTimelineScorer)initWithTimelineStyle:(id)style;
+- (double)_scoreForSplitAsset:(id)asset inTimeline:(id)timeline segmentTimeRange:(id *)range;
+- (double)scoreForTimeline:(id)timeline;
 @end
 
 @implementation PXStoryConcreteTimelineScorer
 
-- (double)_scoreForSplitAsset:(id)a3 inTimeline:(id)a4 segmentTimeRange:(id *)a5
+- (double)_scoreForSplitAsset:(id)asset inTimeline:(id)timeline segmentTimeRange:(id *)range
 {
-  v6 = a3;
-  [a4 size];
+  assetCopy = asset;
+  [timeline size];
   PXRectWithOriginAndSize();
 }
 
@@ -58,13 +58,13 @@ BOOL __87__PXStoryConcreteTimelineScorer__scoreForClipInfo_inClipFrame_timelineB
   return CGRectContainsRect(*&v10, *&v3);
 }
 
-- (BOOL)isAcceptableCropWithVisibleAssetRect:(CGFloat)a3 acceptableCropAssetRect:(CGFloat)a4 faceAreaAssetRect:(double)a5
+- (BOOL)isAcceptableCropWithVisibleAssetRect:(CGFloat)rect acceptableCropAssetRect:(CGFloat)assetRect faceAreaAssetRect:(double)areaAssetRect
 {
-  *v36 = a5;
+  *v36 = areaAssetRect;
   *&v36[8] = a6;
   *&v36[16] = a7;
   *&v36[24] = a8;
-  v24 = CGRectContainsRect(*&a1, *&a5);
+  v24 = CGRectContainsRect(*&self, *&areaAssetRect);
   v38.origin.x = a9;
   v38.origin.y = a10;
   v38.size.width = a11;
@@ -76,10 +76,10 @@ BOOL __87__PXStoryConcreteTimelineScorer__scoreForClipInfo_inClipFrame_timelineB
     return v26 & 1;
   }
 
-  v39.origin.x = a1;
+  v39.origin.x = self;
   v39.origin.y = a2;
-  v39.size.width = a3;
-  v39.size.height = a4;
+  v39.size.width = rect;
+  v39.size.height = assetRect;
   v41.origin.x = a9;
   v41.origin.y = a10;
   v41.size.width = a11;
@@ -99,22 +99,22 @@ BOOL __87__PXStoryConcreteTimelineScorer__scoreForClipInfo_inClipFrame_timelineB
   y = v40.origin.y;
   width = v40.size.width;
   height = v40.size.height;
-  v32 = a1;
+  selfCopy = self;
   v33 = a2;
-  v34 = a3;
-  v35 = a4;
+  rectCopy = rect;
+  assetRectCopy = assetRect;
 
-  return CGRectContainsRect(*&v32, *&x);
+  return CGRectContainsRect(*&selfCopy, *&x);
 }
 
-- (double)scoreForTimeline:(id)a3
+- (double)scoreForTimeline:(id)timeline
 {
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
   v12[3] = 0;
-  v5 = a3;
-  if (v5)
+  timelineCopy = timeline;
+  if (timelineCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -122,23 +122,23 @@ BOOL __87__PXStoryConcreteTimelineScorer__scoreForClipInfo_inClipFrame_timelineB
       goto LABEL_3;
     }
 
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v8 = NSStringFromClass(v9);
-    v10 = [v5 px_descriptionForAssertionMessage];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:105 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"timeline", v8, v10}];
+    px_descriptionForAssertionMessage = [timelineCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:105 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"timeline", v8, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v6 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:105 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"timeline", v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteTimelineScorer.m" lineNumber:105 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"timeline", v8}];
   }
 
 LABEL_3:
-  [v5 size];
+  [timelineCopy size];
   PXRectWithOriginAndSize();
 }
 
@@ -380,16 +380,16 @@ uint64_t __50__PXStoryConcreteTimelineScorer_scoreForTimeline___block_invoke_3(u
   return result;
 }
 
-- (PXStoryConcreteTimelineScorer)initWithTimelineStyle:(id)a3
+- (PXStoryConcreteTimelineScorer)initWithTimelineStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v18.receiver = self;
   v18.super_class = PXStoryConcreteTimelineScorer;
   v6 = [(PXStoryConcreteTimelineScorer *)&v18 init];
   if (v6)
   {
     v7 = +[PXStorySettings sharedInstance];
-    objc_storeStrong(&v6->_timelineStyle, a3);
+    objc_storeStrong(&v6->_timelineStyle, style);
     v8 = objc_alloc_init(_PXStoryConcreteScorerDisplayAssetsFetchResult);
     segmentDisplayAssets = v6->_segmentDisplayAssets;
     v6->_segmentDisplayAssets = v8;

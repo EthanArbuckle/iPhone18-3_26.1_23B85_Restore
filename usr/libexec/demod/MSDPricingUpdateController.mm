@@ -1,11 +1,11 @@
 @interface MSDPricingUpdateController
 + (id)sharedInstance;
 - (BOOL)completed;
-- (void)pricingUpdateTimeOut:(id)a3;
-- (void)receivedCompletionNotice:(id)a3 fromRequest:(id)a4;
-- (void)receivedHeartBeat:(id)a3 fromRequest:(id)a4;
-- (void)receivedOtherMessages:(id)a3 fromRequest:(id)a4;
-- (void)receivedUpdateRequest:(id)a3 fromRequest:(id)a4;
+- (void)pricingUpdateTimeOut:(id)out;
+- (void)receivedCompletionNotice:(id)notice fromRequest:(id)request;
+- (void)receivedHeartBeat:(id)beat fromRequest:(id)request;
+- (void)receivedOtherMessages:(id)messages fromRequest:(id)request;
+- (void)receivedUpdateRequest:(id)request fromRequest:(id)fromRequest;
 - (void)restartMonitor;
 - (void)stopMonitor;
 @end
@@ -24,12 +24,12 @@
   return v3;
 }
 
-- (void)receivedUpdateRequest:(id)a3 fromRequest:(id)a4
+- (void)receivedUpdateRequest:(id)request fromRequest:(id)fromRequest
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  fromRequestCopy = fromRequest;
   v8 = +[MSDTargetDevice sharedInstance];
-  reply = xpc_dictionary_create_reply(v7);
+  reply = xpc_dictionary_create_reply(fromRequestCopy);
   if (!reply)
   {
     reply = xpc_dictionary_create(0, 0, 0);
@@ -50,7 +50,7 @@
   xpc_dictionary_set_string(reply, "MSDResult", v11);
   objc_sync_exit(v10);
 
-  xpc_connection_send_message(v6, reply);
+  xpc_connection_send_message(requestCopy, reply);
   v12 = sub_100063A54();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -70,12 +70,12 @@
   }
 }
 
-- (void)receivedHeartBeat:(id)a3 fromRequest:(id)a4
+- (void)receivedHeartBeat:(id)beat fromRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  beatCopy = beat;
   v8 = +[MSDTargetDevice sharedInstance];
-  reply = xpc_dictionary_create_reply(v6);
+  reply = xpc_dictionary_create_reply(requestCopy);
 
   if (!reply)
   {
@@ -83,7 +83,7 @@
   }
 
   xpc_dictionary_set_string(reply, "MSDResult", "YES");
-  xpc_connection_send_message(v7, reply);
+  xpc_connection_send_message(beatCopy, reply);
 
   v10 = sub_100063A54();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -98,12 +98,12 @@
   }
 }
 
-- (void)receivedCompletionNotice:(id)a3 fromRequest:(id)a4
+- (void)receivedCompletionNotice:(id)notice fromRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  noticeCopy = notice;
   v8 = +[MSDTargetDevice sharedInstance];
-  reply = xpc_dictionary_create_reply(v6);
+  reply = xpc_dictionary_create_reply(requestCopy);
 
   if (!reply)
   {
@@ -111,7 +111,7 @@
   }
 
   xpc_dictionary_set_string(reply, "MSDResult", "YES");
-  xpc_connection_send_message(v7, reply);
+  xpc_connection_send_message(noticeCopy, reply);
 
   v10 = sub_100063A54();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -128,10 +128,10 @@
   }
 }
 
-- (void)receivedOtherMessages:(id)a3 fromRequest:(id)a4
+- (void)receivedOtherMessages:(id)messages fromRequest:(id)request
 {
-  v5 = a3;
-  reply = xpc_dictionary_create_reply(a4);
+  messagesCopy = messages;
+  reply = xpc_dictionary_create_reply(request);
   if (!reply)
   {
     reply = xpc_dictionary_create(0, 0, 0);
@@ -139,23 +139,23 @@
 
   message = reply;
   xpc_dictionary_set_string(reply, "MSDResult", "YES");
-  xpc_connection_send_message(v5, message);
+  xpc_connection_send_message(messagesCopy, message);
 }
 
 - (BOOL)completed
 {
-  v2 = [(MSDPricingUpdateController *)self state];
-  if (v2 - 2 < 2)
+  state = [(MSDPricingUpdateController *)self state];
+  if (state - 2 < 2)
   {
     return 1;
   }
 
-  if (v2 == 1)
+  if (state == 1)
   {
     return 0;
   }
 
-  if (v2)
+  if (state)
   {
     v7 = sub_100063A54();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -168,8 +168,8 @@
   }
 
   v3 = +[MSDTargetDevice sharedInstance];
-  v4 = [v3 lastRebootTime];
-  [v4 timeIntervalSinceNow];
+  lastRebootTime = [v3 lastRebootTime];
+  [lastRebootTime timeIntervalSinceNow];
   v6 = v5 <= -60.0;
 
   return v6;
@@ -189,9 +189,9 @@
 {
   [(MSDPricingUpdateController *)self stopMonitor];
   v3 = +[MSDTargetDevice sharedInstance];
-  v4 = [v3 aboutToReboot];
+  aboutToReboot = [v3 aboutToReboot];
 
-  if ((v4 & 1) == 0)
+  if ((aboutToReboot & 1) == 0)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -202,7 +202,7 @@
   }
 }
 
-- (void)pricingUpdateTimeOut:(id)a3
+- (void)pricingUpdateTimeOut:(id)out
 {
   v4 = sub_100063A54();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -231,26 +231,26 @@
   if ([(MSDPricingUpdateController *)self switchModeAfterCompletion])
   {
     v8 = +[MSDTestPreferences sharedInstance];
-    v9 = [v8 timeShowingFatalError];
+    timeShowingFatalError = [v8 timeShowingFatalError];
 
-    if (v9)
+    if (timeShowingFatalError)
     {
       v10 = sub_100063A54();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 67109120;
-        v14 = v9;
+        v14 = timeShowingFatalError;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Override MSDTimeShowingFatalError timeout: %u", &v13, 8u);
       }
     }
 
     else
     {
-      v9 = 900;
+      timeShowingFatalError = 900;
     }
 
     v11 = +[MSDDemoUpdateTimeKeeper sharedInstance];
-    v12 = [v11 setCompletionTimeForFatalError:v9];
+    v12 = [v11 setCompletionTimeForFatalError:timeShowingFatalError];
   }
 }
 

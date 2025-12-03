@@ -1,7 +1,7 @@
 @interface _NSBPlistMappedData
-- (BOOL)_getBPlistMarker:(char *)a3 offset:(unint64_t *)a4 trailer:(id *)a5;
-- (_NSBPlistMappedData)initWithBinaryPlistData:(void *)a3 size:(unint64_t)a4 trailer:(id *)a5 offset:(unint64_t)a6 marker:(unsigned __int8)a7;
-- (_NSBPlistMappedData)initWithFileURL:(id)a3 error:(id *)a4;
+- (BOOL)_getBPlistMarker:(char *)marker offset:(unint64_t *)offset trailer:(id *)trailer;
+- (_NSBPlistMappedData)initWithBinaryPlistData:(void *)data size:(unint64_t)size trailer:(id *)trailer offset:(unint64_t)offset marker:(unsigned __int8)marker;
+- (_NSBPlistMappedData)initWithFileURL:(id)l error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -25,7 +25,7 @@
   [(_NSBPlistMappedData *)&v5 dealloc];
 }
 
-- (_NSBPlistMappedData)initWithBinaryPlistData:(void *)a3 size:(unint64_t)a4 trailer:(id *)a5 offset:(unint64_t)a6 marker:(unsigned __int8)a7
+- (_NSBPlistMappedData)initWithBinaryPlistData:(void *)data size:(unint64_t)size trailer:(id *)trailer offset:(unint64_t)offset marker:(unsigned __int8)marker
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -33,27 +33,27 @@
   result = [(_NSBPlistMappedData *)&v14 init];
   if (result)
   {
-    result->ptr = a3;
-    result->size = a4;
+    result->ptr = data;
+    result->size = size;
     result->mappingIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v13 = *&a5->var5;
-    *result->bplistTrailer._unused = *a5->var0;
+    v13 = *&trailer->var5;
+    *result->bplistTrailer._unused = *trailer->var0;
     *&result->bplistTrailer._topObject = v13;
-    result->bplistOffset = a6;
-    result->bplistMarker = a7;
+    result->bplistOffset = offset;
+    result->bplistMarker = marker;
   }
 
   return result;
 }
 
-- (_NSBPlistMappedData)initWithFileURL:(id)a3 error:(id *)a4
+- (_NSBPlistMappedData)initWithFileURL:(id)l error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v9 = 0;
   v10 = 0;
   v8 = 0;
   LOBYTE(v7) = 0;
-  if (([MEMORY[0x1E695DEF0] _readBytesFromPath:objc_msgSend(a3 maxLength:"path") bytes:0x7FFFFFFFFFFFFFFFLL length:&v10 didMap:&v9 options:&v8 reportProgress:8 error:{v7, a4}] & 1) == 0)
+  if (([MEMORY[0x1E695DEF0] _readBytesFromPath:objc_msgSend(l maxLength:"path") bytes:0x7FFFFFFFFFFFFFFFLL length:&v10 didMap:&v9 options:&v8 reportProgress:8 error:{v7, error}] & 1) == 0)
   {
 LABEL_7:
 
@@ -65,11 +65,11 @@ LABEL_7:
   if ((__CFBinaryPlistGetTopLevelInfo() & 1) == 0)
   {
     munmap(v10, v9);
-    if (a4)
+    if (error)
     {
       v14 = @"NSDebugDescription";
       v15[0] = @"File is not binary plist";
-      *a4 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 256, [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1]);
+      *error = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 256, [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1]);
     }
 
     goto LABEL_7;
@@ -85,23 +85,23 @@ LABEL_7:
   return [(_NSBPlistMappedData *)self initWithBinaryPlistData:v10 size:v9 trailer:v11 offset:0 marker:0];
 }
 
-- (BOOL)_getBPlistMarker:(char *)a3 offset:(unint64_t *)a4 trailer:(id *)a5
+- (BOOL)_getBPlistMarker:(char *)marker offset:(unint64_t *)offset trailer:(id *)trailer
 {
-  if (a3)
+  if (marker)
   {
-    *a3 = self->bplistMarker;
+    *marker = self->bplistMarker;
   }
 
-  if (a4)
+  if (offset)
   {
-    *a4 = self->bplistOffset;
+    *offset = self->bplistOffset;
   }
 
-  if (a5)
+  if (trailer)
   {
     v5 = *&self->bplistTrailer._topObject;
-    *a5->var0 = *self->bplistTrailer._unused;
-    *&a5->var5 = v5;
+    *trailer->var0 = *self->bplistTrailer._unused;
+    *&trailer->var5 = v5;
   }
 
   return 1;

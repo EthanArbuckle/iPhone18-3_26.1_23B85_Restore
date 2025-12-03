@@ -1,6 +1,6 @@
 @interface UISplitViewControllerImplFactory
 + (id)sharedInstance;
-- (Class)implClassForSplitViewController:(id)a3;
+- (Class)implClassForSplitViewController:(id)controller;
 - (UISplitViewControllerImplFactory)init;
 @end
 
@@ -34,7 +34,7 @@ void __50__UISplitViewControllerImplFactory_sharedInstance__block_invoke()
   block[1] = 3221225472;
   block[2] = __50__UISplitViewControllerImplFactory_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_1381 != -1)
   {
     dispatch_once(&_MergedGlobals_1381, block);
@@ -45,7 +45,7 @@ void __50__UISplitViewControllerImplFactory_sharedInstance__block_invoke()
   return v2;
 }
 
-- (Class)implClassForSplitViewController:(id)a3
+- (Class)implClassForSplitViewController:(id)controller
 {
   v5 = +[UISplitViewController _forcedImpl];
   if (v5 == 1 || v5 == 2 || v5 == 3)
@@ -55,8 +55,8 @@ void __50__UISplitViewControllerImplFactory_sharedInstance__block_invoke()
 
   else
   {
-    v7 = [(UISplitViewControllerImplFactory *)self implProvider];
-    v6 = [v7 implClassForSplitViewController:a3];
+    implProvider = [(UISplitViewControllerImplFactory *)self implProvider];
+    v6 = [implProvider implClassForSplitViewController:controller];
   }
 
   return v6;

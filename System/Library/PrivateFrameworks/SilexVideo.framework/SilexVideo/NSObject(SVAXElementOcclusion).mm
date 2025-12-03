@@ -6,25 +6,25 @@
 
 - (uint64_t)svax_shouldBeOccluded
 {
-  v2 = [a1 accessibilityContainer];
-  if (!v2)
+  accessibilityContainer = [self accessibilityContainer];
+  if (!accessibilityContainer)
   {
     return 0;
   }
 
-  v3 = v2;
+  v3 = accessibilityContainer;
   while ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v4 = [v3 accessibilityContainer];
+    accessibilityContainer2 = [v3 accessibilityContainer];
 
-    v3 = v4;
-    if (!v4)
+    v3 = accessibilityContainer2;
+    if (!accessibilityContainer2)
     {
       return 0;
     }
   }
 
-  v6 = [v3 shouldOccludeAccessibilityElement:a1];
+  v6 = [v3 shouldOccludeAccessibilityElement:self];
 
   return v6;
 }

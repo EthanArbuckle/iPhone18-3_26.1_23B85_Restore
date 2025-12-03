@@ -6,11 +6,11 @@
 
 - (id)domainFromSADObject
 {
-  v2 = [(SADomainObjectRetrieve *)self identifiers];
-  v3 = [v2 lastObject];
-  v4 = [v3 groupIdentifier];
+  identifiers = [(SADomainObjectRetrieve *)self identifiers];
+  lastObject = [identifiers lastObject];
+  groupIdentifier = [lastObject groupIdentifier];
 
-  return v4;
+  return groupIdentifier;
 }
 
 @end

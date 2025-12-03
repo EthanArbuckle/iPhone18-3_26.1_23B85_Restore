@@ -1,19 +1,19 @@
 @interface CreateNewContactTest
-- (BOOL)prepareForTestWithOptions:(id)a3;
+- (BOOL)prepareForTestWithOptions:(id)options;
 - (void)performTest;
 @end
 
 @implementation CreateNewContactTest
 
-- (BOOL)prepareForTestWithOptions:(id)a3
+- (BOOL)prepareForTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = CreateNewContactTest;
-  v5 = [(ContactsTest *)&v10 prepareForTestWithOptions:v4];
+  v5 = [(ContactsTest *)&v10 prepareForTestWithOptions:optionsCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"iterations"];
+    v6 = [optionsCopy objectForKey:@"iterations"];
     -[CreateNewContactTest setTotalIterations:](self, "setTotalIterations:", [v6 intValue]);
 
     v9[0] = _NSConcreteStackBlock;
@@ -30,12 +30,12 @@
 
 - (void)performTest
 {
-  v3 = [(CreateNewContactTest *)self iterations];
-  if (v3 >= [(CreateNewContactTest *)self totalIterations])
+  iterations = [(CreateNewContactTest *)self iterations];
+  if (iterations >= [(CreateNewContactTest *)self totalIterations])
   {
     v9 = UIApp;
-    v11 = [(ContactsTest *)self testOptions];
-    v10 = [v11 objectForKeyedSubscript:@"testName"];
+    testOptions = [(ContactsTest *)self testOptions];
+    v10 = [testOptions objectForKeyedSubscript:@"testName"];
     [v9 finishedTest:v10];
   }
 
@@ -43,8 +43,8 @@
   {
     [(CreateNewContactTest *)self setIterations:[(CreateNewContactTest *)self iterations]+ 1];
     v4 = UIApp;
-    v5 = [(ContactsTest *)self testOptions];
-    v6 = [v5 objectForKeyedSubscript:@"testName"];
+    testOptions2 = [(ContactsTest *)self testOptions];
+    v6 = [testOptions2 objectForKeyedSubscript:@"testName"];
     v7 = [NSArray arrayWithObject:@"time"];
     [v4 startedSubTest:@"Create New Contact" forTest:v6 withMetrics:v7];
 
@@ -54,8 +54,8 @@
     v12[3] = &unk_1000204D0;
     v12[4] = self;
     [UIApp installCACommitCompletionBlock:v12];
-    v8 = [(ContactsTest *)self contactNavigationController];
-    [v8 addContact:0 animated:0];
+    contactNavigationController = [(ContactsTest *)self contactNavigationController];
+    [contactNavigationController addContact:0 animated:0];
   }
 }
 

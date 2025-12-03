@@ -1,24 +1,24 @@
 @interface _UIGestureRecognizerCompositionDriver
-- (BOOL)shouldReceiveComponent:(id)a3 withEvent:(id)a4;
-- (BOOL)shouldReceiveEvent:(id)a3;
+- (BOOL)shouldReceiveComponent:(id)component withEvent:(id)event;
+- (BOOL)shouldReceiveEvent:(id)event;
 - (NSString)description;
-- (void)_gestureRecognizerDriver:(id)a3 didUpdateState:(int64_t)a4 previousState:(int64_t)a5;
+- (void)_gestureRecognizerDriver:(id)driver didUpdateState:(int64_t)state previousState:(int64_t)previousState;
 - (void)fail;
 - (void)reset;
-- (void)setContext:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)transformChangedWithEvent:(id)a3;
+- (void)setContext:(id)context;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)transformChangedWithEvent:(id)event;
 @end
 
 @implementation _UIGestureRecognizerCompositionDriver
 
-- (void)_gestureRecognizerDriver:(id)a3 didUpdateState:(int64_t)a4 previousState:(int64_t)a5
+- (void)_gestureRecognizerDriver:(id)driver didUpdateState:(int64_t)state previousState:(int64_t)previousState
 {
-  v6 = [(NSArray *)self->_drivers objectAtIndexedSubscript:0, a4, a5];
-  v7 = [v6 state];
+  previousState = [(NSArray *)self->_drivers objectAtIndexedSubscript:0, state, previousState];
+  state = [previousState state];
 
   if ([(NSArray *)self->_drivers count]>= 2)
   {
@@ -27,7 +27,7 @@
     {
       stateCombiner = self->_stateCombiner;
       v10 = [(NSArray *)self->_drivers objectAtIndexedSubscript:v8];
-      v7 = stateCombiner(v7, [v10 state]);
+      state = stateCombiner(state, [v10 state]);
 
       ++v8;
     }
@@ -35,10 +35,10 @@
     while (v8 < [(NSArray *)self->_drivers count]);
   }
 
-  [(_UIGestureRecognizerDriver *)self _setState:v7 notifyDelegate:1];
+  [(_UIGestureRecognizerDriver *)self _setState:state notifyDelegate:1];
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -64,7 +64,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setContext:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) setContext:{context, v10}];
       }
 
       while (v7 != v9);
@@ -149,7 +149,7 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -172,7 +172,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) touchesBegan:a3 withEvent:{a4, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) touchesBegan:began withEvent:{event, v11}];
       }
 
       while (v8 != v10);
@@ -183,7 +183,7 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -206,7 +206,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) touchesMoved:a3 withEvent:{a4, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) touchesMoved:moved withEvent:{event, v11}];
       }
 
       while (v8 != v10);
@@ -217,7 +217,7 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -240,7 +240,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) touchesEnded:a3 withEvent:{a4, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) touchesEnded:ended withEvent:{event, v11}];
       }
 
       while (v8 != v10);
@@ -251,7 +251,7 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -274,7 +274,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) touchesCancelled:a3 withEvent:{a4, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) touchesCancelled:cancelled withEvent:{event, v11}];
       }
 
       while (v8 != v10);
@@ -285,7 +285,7 @@
   }
 }
 
-- (void)transformChangedWithEvent:(id)a3
+- (void)transformChangedWithEvent:(id)event
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
@@ -308,7 +308,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) transformChangedWithEvent:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) transformChangedWithEvent:{event, v9}];
       }
 
       while (v6 != v8);
@@ -319,7 +319,7 @@
   }
 }
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -342,7 +342,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) shouldReceiveEvent:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v8++) shouldReceiveEvent:{event, v10}];
       }
 
       while (v6 != v8);
@@ -355,7 +355,7 @@
   return 0;
 }
 
-- (BOOL)shouldReceiveComponent:(id)a3 withEvent:(id)a4
+- (BOOL)shouldReceiveComponent:(id)component withEvent:(id)event
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -378,7 +378,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v9 |= [*(*(&v13 + 1) + 8 * i) shouldReceiveComponent:a3 withEvent:{a4, v13}];
+        v9 |= [*(*(&v13 + 1) + 8 * i) shouldReceiveComponent:component withEvent:{event, v13}];
       }
 
       v8 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];

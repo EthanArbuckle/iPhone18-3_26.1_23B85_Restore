@@ -1,16 +1,16 @@
 @interface CLSCalculation
-+ (void)calculateStandardDeviationForItems:(id)a3 valueBlock:(id)a4 result:(id)a5;
++ (void)calculateStandardDeviationForItems:(id)items valueBlock:(id)block result:(id)result;
 @end
 
 @implementation CLSCalculation
 
-+ (void)calculateStandardDeviationForItems:(id)a3 valueBlock:(id)a4 result:(id)a5
++ (void)calculateStandardDeviationForItems:(id)items valueBlock:(id)block result:(id)result
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 count];
+  itemsCopy = items;
+  blockCopy = block;
+  resultCopy = result;
+  v10 = [itemsCopy count];
   if (v10)
   {
     v11 = v10;
@@ -18,8 +18,8 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v22 = v7;
-    v12 = v7;
+    v22 = itemsCopy;
+    v12 = itemsCopy;
     v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
@@ -38,7 +38,7 @@
 
           v19 = *(*(&v23 + 1) + 8 * i);
           v20 = objc_autoreleasePoolPush();
-          v21 = v8[2](v8, v19);
+          v21 = blockCopy[2](blockCopy, v19);
           v17 = v17 + v21;
           v16 = v16 + v21 * v21;
           objc_autoreleasePoolPop(v20);
@@ -56,13 +56,13 @@
       v17 = 0.0;
     }
 
-    v9[2](v9, sqrt((v11 * v16 - v17 * v17) / (v11 * v11)), v17 / v11);
-    v7 = v22;
+    resultCopy[2](resultCopy, sqrt((v11 * v16 - v17 * v17) / (v11 * v11)), v17 / v11);
+    itemsCopy = v22;
   }
 
   else
   {
-    v9[2](v9, 0.0, 0.0);
+    resultCopy[2](resultCopy, 0.0, 0.0);
   }
 }
 

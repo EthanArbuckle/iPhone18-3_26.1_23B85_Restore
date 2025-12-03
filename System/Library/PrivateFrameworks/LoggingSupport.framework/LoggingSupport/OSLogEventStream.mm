@@ -1,28 +1,28 @@
 @interface OSLogEventStream
-- (id)_initWithSource:(id)a3 flags:(unint64_t)a4;
-- (void)_activateStreamFromDate:(id)a3 toDate:(id)a4 useMemEffic:(BOOL)a5 catalogCacheSize:(unsigned int)a6 dataCacheSize:(unsigned int)a7;
-- (void)_activateStreamFromTimeIntervalSinceLastBoot:(double)a3;
-- (void)_activateStreamInRange:(os_timesync_range_s *)a3 useMemEffic:(BOOL)a4 catalogCacheSize:(unsigned int)a5 dataCacheSize:(unsigned int)a6;
-- (void)activateStreamFromDate:(id)a3;
-- (void)activateStreamFromPosition:(id)a3;
+- (id)_initWithSource:(id)source flags:(unint64_t)flags;
+- (void)_activateStreamFromDate:(id)date toDate:(id)toDate useMemEffic:(BOOL)effic catalogCacheSize:(unsigned int)size dataCacheSize:(unsigned int)cacheSize;
+- (void)_activateStreamFromTimeIntervalSinceLastBoot:(double)boot;
+- (void)_activateStreamInRange:(os_timesync_range_s *)range useMemEffic:(BOOL)effic catalogCacheSize:(unsigned int)size dataCacheSize:(unsigned int)cacheSize;
+- (void)activateStreamFromDate:(id)date;
+- (void)activateStreamFromPosition:(id)position;
 - (void)dealloc;
-- (void)setFilterPredicate:(id)a3;
+- (void)setFilterPredicate:(id)predicate;
 @end
 
 @implementation OSLogEventStream
 
-- (void)activateStreamFromPosition:(id)a3
+- (void)activateStreamFromPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(OSLogEventStreamBase *)self queue];
+  positionCopy = position;
+  queue = [(OSLogEventStreamBase *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__OSLogEventStream_activateStreamFromPosition___block_invoke;
   v7[3] = &unk_2787AE560;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = positionCopy;
+  v6 = positionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __47__OSLogEventStream_activateStreamFromPosition___block_invoke(uint64_t a1)
@@ -63,16 +63,16 @@ void __47__OSLogEventStream_activateStreamFromPosition___block_invoke(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_activateStreamFromTimeIntervalSinceLastBoot:(double)a3
+- (void)_activateStreamFromTimeIntervalSinceLastBoot:(double)boot
 {
-  v5 = [(OSLogEventStreamBase *)self queue];
+  queue = [(OSLogEventStreamBase *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__OSLogEventStream__activateStreamFromTimeIntervalSinceLastBoot___block_invoke;
   v6[3] = &unk_2787AE538;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_async(v5, v6);
+  *&v6[5] = boot;
+  dispatch_async(queue, v6);
 }
 
 void __65__OSLogEventStream__activateStreamFromTimeIntervalSinceLastBoot___block_invoke(uint64_t a1)
@@ -99,32 +99,32 @@ void __65__OSLogEventStream__activateStreamFromTimeIntervalSinceLastBoot___block
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activateStreamFromDate:(id)a3
+- (void)activateStreamFromDate:(id)date
 {
   source = self->_source;
-  v5 = a3;
-  v6 = [(OSLogEventSource *)source newestDate];
-  [(OSLogEventStream *)self _activateStreamFromDate:v5 toDate:v6 useMemEffic:0 catalogCacheSize:0 dataCacheSize:0];
+  dateCopy = date;
+  newestDate = [(OSLogEventSource *)source newestDate];
+  [(OSLogEventStream *)self _activateStreamFromDate:dateCopy toDate:newestDate useMemEffic:0 catalogCacheSize:0 dataCacheSize:0];
 }
 
-- (void)_activateStreamFromDate:(id)a3 toDate:(id)a4 useMemEffic:(BOOL)a5 catalogCacheSize:(unsigned int)a6 dataCacheSize:(unsigned int)a7
+- (void)_activateStreamFromDate:(id)date toDate:(id)toDate useMemEffic:(BOOL)effic catalogCacheSize:(unsigned int)size dataCacheSize:(unsigned int)cacheSize
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = [(OSLogEventStreamBase *)self queue];
+  dateCopy = date;
+  toDateCopy = toDate;
+  queue = [(OSLogEventStreamBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__OSLogEventStream__activateStreamFromDate_toDate_useMemEffic_catalogCacheSize_dataCacheSize___block_invoke;
   block[3] = &unk_2787AE510;
   block[4] = self;
-  v18 = v12;
-  v19 = v13;
-  v22 = a5;
-  v20 = a6;
-  v21 = a7;
-  v15 = v13;
-  v16 = v12;
-  dispatch_async(v14, block);
+  v18 = dateCopy;
+  v19 = toDateCopy;
+  efficCopy = effic;
+  sizeCopy = size;
+  cacheSizeCopy = cacheSize;
+  v15 = toDateCopy;
+  v16 = dateCopy;
+  dispatch_async(queue, block);
 }
 
 void __94__OSLogEventStream__activateStreamFromDate_toDate_useMemEffic_catalogCacheSize_dataCacheSize___block_invoke(id *a1)
@@ -172,32 +172,32 @@ void __94__OSLogEventStream__activateStreamFromDate_toDate_useMemEffic_catalogCa
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_activateStreamInRange:(os_timesync_range_s *)a3 useMemEffic:(BOOL)a4 catalogCacheSize:(unsigned int)a5 dataCacheSize:(unsigned int)a6
+- (void)_activateStreamInRange:(os_timesync_range_s *)range useMemEffic:(BOOL)effic catalogCacheSize:(unsigned int)size dataCacheSize:(unsigned int)cacheSize
 {
-  v36 = a4;
+  efficCopy = effic;
   v56[2] = *MEMORY[0x277D85DE8];
-  v9 = [(OSLogEventStreamBase *)self streamHandler];
+  streamHandler = [(OSLogEventStreamBase *)self streamHandler];
 
-  if (!v9)
+  if (!streamHandler)
   {
     qword_27DA52778 = "BUG IN CLIENT OF LIBTRACE: OSLogEventStream activated without stream handler";
     __break(1u);
   }
 
-  v35 = [(OSLogEventStreamBase *)self flags];
-  v34 = [(OSLogEventStreamBase *)self flags];
-  v32 = [(OSLogEventStreamBase *)self flags];
-  v31 = [(OSLogEventStreamBase *)self flags];
-  v10 = [(OSLogEventStreamBase *)self flags];
-  v11 = [(OSLogEventStreamBase *)self flags];
-  v12 = [(OSLogEventStreamBase *)self flags];
-  v13 = [(OSLogEventStreamBase *)self flags];
-  v14 = [(OSLogEventStreamBase *)self flags];
-  v15 = [(OSLogEventStreamBase *)self flags];
-  v16 = [(OSLogEventStreamBase *)self flags];
-  v33 = [(OSLogEventStreamBase *)self compiledPredicate];
-  v29 = a5;
-  v30 = a6;
+  flags = [(OSLogEventStreamBase *)self flags];
+  flags2 = [(OSLogEventStreamBase *)self flags];
+  flags3 = [(OSLogEventStreamBase *)self flags];
+  flags4 = [(OSLogEventStreamBase *)self flags];
+  flags5 = [(OSLogEventStreamBase *)self flags];
+  flags6 = [(OSLogEventStreamBase *)self flags];
+  flags7 = [(OSLogEventStreamBase *)self flags];
+  flags8 = [(OSLogEventStreamBase *)self flags];
+  flags9 = [(OSLogEventStreamBase *)self flags];
+  flags10 = [(OSLogEventStreamBase *)self flags];
+  flags11 = [(OSLogEventStreamBase *)self flags];
+  compiledPredicate = [(OSLogEventStreamBase *)self compiledPredicate];
+  sizeCopy = size;
+  cacheSizeCopy = cacheSize;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -211,15 +211,15 @@ void __94__OSLogEventStream__activateStreamFromDate_toDate_useMemEffic_catalogCa
   v46 = 0x2020000000;
   v47 = 0;
   index = self->_index;
-  v18 = [(OSLogEventStream *)self catalogFilter];
-  v19 = v34 & 0x40 | v35 & 0x20 | (4 * (v32 & 1)) | v31 & 2;
-  if ((v10 & 4) == 0)
+  catalogFilter = [(OSLogEventStream *)self catalogFilter];
+  v19 = flags2 & 0x40 | flags & 0x20 | (4 * (flags3 & 1)) | flags4 & 2;
+  if ((flags5 & 4) == 0)
   {
     ++v19;
   }
 
-  v20 = v19 | v11 & 8 | v12 & 0x10 | v13 & 0x80 | v14 & 0x100 | v15 & 0x200 | (2 * v16) & 0x800;
-  if (v36)
+  v20 = v19 | flags6 & 8 | flags7 & 0x10 | flags8 & 0x80 | flags9 & 0x100 | flags10 & 0x200 | (2 * flags11) & 0x800;
+  if (efficCopy)
   {
     v21 = v20 | 0x400;
   }
@@ -233,22 +233,22 @@ void __94__OSLogEventStream__activateStreamFromDate_toDate_useMemEffic_catalogCa
   v38[1] = 3221225472;
   v38[2] = __86__OSLogEventStream__activateStreamInRange_useMemEffic_catalogCacheSize_dataCacheSize___block_invoke;
   v38[3] = &unk_2787AE4E8;
-  v22 = v33;
+  v22 = compiledPredicate;
   v39 = v22;
-  v40 = self;
+  selfCopy = self;
   v41 = &v44;
   v42 = &v52;
   v43 = &v48;
-  [(_OSLogIndex *)index enumerateEntriesInRange:a3 options:v21 usingCatalogFilter:v18 catalogCacheSize:v29 dataCacheSize:v30 usingBlock:v38];
+  [(_OSLogIndex *)index enumerateEntriesInRange:range options:v21 usingCatalogFilter:catalogFilter catalogCacheSize:sizeCopy dataCacheSize:cacheSizeCopy usingBlock:v38];
 
   v56[0] = 0;
   v56[1] = 0;
   v23 = v53[3];
-  v24 = [(OSLogEventSource *)self->_source uniqueIdentifier];
-  [v24 getUUIDBytes:v56];
+  uniqueIdentifier = [(OSLogEventSource *)self->_source uniqueIdentifier];
+  [uniqueIdentifier getUUIDBytes:v56];
 
   v25 = [OSLogEventStreamPosition alloc];
-  v26 = [(OSLogEventStreamPosition *)v25 initWithSource:v56 bootUUID:a3->var3[v23] time:v49[3]];
+  v26 = [(OSLogEventStreamPosition *)v25 initWithSource:v56 bootUUID:range->var3[v23] time:v49[3]];
   v27 = v45[3];
   if (!v27)
   {
@@ -293,15 +293,15 @@ BOOL __86__OSLogEventStream__activateStreamInRange_useMemEffic_catalogCacheSize_
   return v6;
 }
 
-- (void)setFilterPredicate:(id)a3
+- (void)setFilterPredicate:(id)predicate
 {
   v9.receiver = self;
   v9.super_class = OSLogEventStream;
-  [(OSLogEventStreamBase *)&v9 setFilterPredicate:a3];
+  [(OSLogEventStreamBase *)&v9 setFilterPredicate:predicate];
   v4 = [_OSLogCatalogFilter alloc];
-  v5 = [(OSLogEventStreamBase *)self filterPredicate];
+  filterPredicate = [(OSLogEventStreamBase *)self filterPredicate];
   v6 = [(OSLogEventSource *)self->_source lcr];
-  v7 = [(_OSLogCatalogFilter *)v4 initWithPredicate:v5 collection:v6];
+  v7 = [(_OSLogCatalogFilter *)v4 initWithPredicate:filterPredicate collection:v6];
   catalogFilter = self->_catalogFilter;
   self->_catalogFilter = v7;
 }
@@ -319,23 +319,23 @@ BOOL __86__OSLogEventStream__activateStreamInRange_useMemEffic_catalogCacheSize_
   [(OSLogEventStream *)&v4 dealloc];
 }
 
-- (id)_initWithSource:(id)a3 flags:(unint64_t)a4
+- (id)_initWithSource:(id)source flags:(unint64_t)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  sourceCopy = source;
   v8 = [(OSLogEventStreamBase *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_source, a3);
-    v10 = _timesync_db_openat(*[v7 tsdb], ".");
+    objc_storeStrong(&v8->_source, source);
+    v10 = _timesync_db_openat(*[sourceCopy tsdb], ".");
     v9->_tsdb = v10;
     if (v10)
     {
-      v11 = [v7 lcr];
-      v12 = [v7 lesm];
-      v13 = [[_OSLogIndex alloc] initWithCollection:v11 timesync:v9->_tsdb metadata:v12];
+      v11 = [sourceCopy lcr];
+      lesm = [sourceCopy lesm];
+      v13 = [[_OSLogIndex alloc] initWithCollection:v11 timesync:v9->_tsdb metadata:lesm];
       index = v9->_index;
       v9->_index = v13;
 
@@ -343,9 +343,9 @@ BOOL __86__OSLogEventStream__activateStreamInRange_useMemEffic_catalogCacheSize_
       v17[1] = 3221225472;
       v17[2] = __42__OSLogEventStream__initWithSource_flags___block_invoke;
       v17[3] = &unk_2787AE4C0;
-      v19 = v4 & 1;
+      v19 = flagsCopy & 1;
       v18 = v9;
-      [v7 _enumerateIndexFiles:v17];
+      [sourceCopy _enumerateIndexFiles:v17];
     }
   }
 

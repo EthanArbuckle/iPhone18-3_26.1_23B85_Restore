@@ -1,5 +1,5 @@
 @interface ODDPoint
-+ (void)addConnectionToPoint:(id)a3 order:(unint64_t)a4 array:(id *)a5;
++ (void)addConnectionToPoint:(id)point order:(unint64_t)order array:(id *)array;
 - (ODDPoint)init;
 - (id)description;
 @end
@@ -34,25 +34,25 @@
   return v2;
 }
 
-+ (void)addConnectionToPoint:(id)a3 order:(unint64_t)a4 array:(id *)a5
++ (void)addConnectionToPoint:(id)point order:(unint64_t)order array:(id *)array
 {
-  v16 = a3;
-  v7 = *a5;
-  if (!*a5)
+  pointCopy = point;
+  v7 = *array;
+  if (!*array)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    *a5 = v7;
+    *array = v7;
   }
 
   v8 = [v7 count];
-  v9 = a4 - v8;
-  if (a4 > v8)
+  v9 = order - v8;
+  if (order > v8)
   {
     do
     {
-      v10 = *a5;
-      v11 = [MEMORY[0x277CBEB68] null];
-      [v10 addObject:v11];
+      v10 = *array;
+      null = [MEMORY[0x277CBEB68] null];
+      [v10 addObject:null];
 
       --v9;
     }
@@ -60,21 +60,21 @@
     while (v9);
   }
 
-  v12 = [*a5 count];
-  v13 = *a5;
-  if (v12 == a4)
+  v12 = [*array count];
+  v13 = *array;
+  if (v12 == order)
   {
-    [v13 addObject:v16];
+    [v13 addObject:pointCopy];
   }
 
   else
   {
-    v14 = [v13 objectAtIndex:a4];
-    v15 = [MEMORY[0x277CBEB68] null];
+    v14 = [v13 objectAtIndex:order];
+    null2 = [MEMORY[0x277CBEB68] null];
 
-    if (v14 == v15)
+    if (v14 == null2)
     {
-      [*a5 replaceObjectAtIndex:a4 withObject:v16];
+      [*array replaceObjectAtIndex:order withObject:pointCopy];
     }
 
     else

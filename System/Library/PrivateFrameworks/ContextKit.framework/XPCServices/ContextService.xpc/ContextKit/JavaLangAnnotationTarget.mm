@@ -1,19 +1,19 @@
 @interface JavaLangAnnotationTarget
 + (id)__annotations;
-- (JavaLangAnnotationTarget)initWithValue:(id)a3;
+- (JavaLangAnnotationTarget)initWithValue:(id)value;
 - (id)annotationType;
 @end
 
 @implementation JavaLangAnnotationTarget
 
-- (JavaLangAnnotationTarget)initWithValue:(id)a3
+- (JavaLangAnnotationTarget)initWithValue:(id)value
 {
   v6.receiver = self;
   v6.super_class = JavaLangAnnotationTarget;
   v4 = [(JavaLangAnnotationTarget *)&v6 init];
   if (v4)
   {
-    v4->value_ = a3;
+    v4->value_ = value;
   }
 
   return v4;

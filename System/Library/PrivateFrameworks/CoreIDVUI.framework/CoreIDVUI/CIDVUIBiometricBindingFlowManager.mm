@@ -1,10 +1,10 @@
 @interface CIDVUIBiometricBindingFlowManager
 - (CIDVUIBiometricBindingFlowManager)init;
-- (void)deleteBoundACLWithCompletion:(id)a3;
-- (void)evaluateBoundACL:(id)a3;
-- (void)fetchBiometricBindingDetails:(id)a3;
-- (void)globalAuthACLTemplateUUIDsAndBoundCredentialsCountWithCompletion:(id)a3;
-- (void)globalAuthACLTemplateUUIDsWithCompletion:(id)a3;
+- (void)deleteBoundACLWithCompletion:(id)completion;
+- (void)evaluateBoundACL:(id)l;
+- (void)fetchBiometricBindingDetails:(id)details;
+- (void)globalAuthACLTemplateUUIDsAndBoundCredentialsCountWithCompletion:(id)completion;
+- (void)globalAuthACLTemplateUUIDsWithCompletion:(id)completion;
 @end
 
 @implementation CIDVUIBiometricBindingFlowManager
@@ -23,45 +23,45 @@
   return v2;
 }
 
-- (void)evaluateBoundACL:(id)a3
+- (void)evaluateBoundACL:(id)l
 {
-  v4 = a3;
-  v5 = [(CIDVUIBiometricBindingFlowManager *)self bioBindingFlowManager];
-  [v5 evaluateBoundACLWithCompletionHandler:v4];
+  lCopy = l;
+  bioBindingFlowManager = [(CIDVUIBiometricBindingFlowManager *)self bioBindingFlowManager];
+  [bioBindingFlowManager evaluateBoundACLWithCompletionHandler:lCopy];
 }
 
-- (void)deleteBoundACLWithCompletion:(id)a3
+- (void)deleteBoundACLWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CIDVUIBiometricBindingFlowManager *)self bioBindingFlowManager];
-  [v5 deleteBoundACLWithCompletionHandler:v4];
+  completionCopy = completion;
+  bioBindingFlowManager = [(CIDVUIBiometricBindingFlowManager *)self bioBindingFlowManager];
+  [bioBindingFlowManager deleteBoundACLWithCompletionHandler:completionCopy];
 }
 
-- (void)fetchBiometricBindingDetails:(id)a3
+- (void)fetchBiometricBindingDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(CIDVUIBiometricBindingFlowManager *)self bioBindingFlowManager];
-  [v5 fetchBiometricBindingDetailsWithCompletionHandler:v4];
+  detailsCopy = details;
+  bioBindingFlowManager = [(CIDVUIBiometricBindingFlowManager *)self bioBindingFlowManager];
+  [bioBindingFlowManager fetchBiometricBindingDetailsWithCompletionHandler:detailsCopy];
 }
 
-- (void)globalAuthACLTemplateUUIDsWithCompletion:(id)a3
+- (void)globalAuthACLTemplateUUIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CIDVUIBiometricBindingFlowManager *)self bioBindingFlowManager];
+  completionCopy = completion;
+  bioBindingFlowManager = [(CIDVUIBiometricBindingFlowManager *)self bioBindingFlowManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__CIDVUIBiometricBindingFlowManager_globalAuthACLTemplateUUIDsWithCompletion___block_invoke;
   v7[3] = &unk_278E873D0;
-  v8 = v4;
-  v6 = v4;
-  [v5 globalAuthACLTemplateUUIDsWithCompletionHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [bioBindingFlowManager globalAuthACLTemplateUUIDsWithCompletionHandler:v7];
 }
 
-- (void)globalAuthACLTemplateUUIDsAndBoundCredentialsCountWithCompletion:(id)a3
+- (void)globalAuthACLTemplateUUIDsAndBoundCredentialsCountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CIDVUIBiometricBindingFlowManager *)self bioBindingFlowManager];
-  [v5 globalAuthACLTemplateUUIDsWithCompletionHandler:v4];
+  completionCopy = completion;
+  bioBindingFlowManager = [(CIDVUIBiometricBindingFlowManager *)self bioBindingFlowManager];
+  [bioBindingFlowManager globalAuthACLTemplateUUIDsWithCompletionHandler:completionCopy];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface ISShapeCompositorResource
-+ (double)continuousCornerRadiusForSize:(CGSize)a3;
++ (double)continuousCornerRadiusForSize:(CGSize)size;
 + (id)circleShape;
 + (id)continuousRoundedRectShape;
 + (id)tvOSRoundedRectShape;
 - (id)_init;
-- (id)imageForSize:(CGSize)a3 scale:(double)a4;
+- (id)imageForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISShapeCompositorResource
@@ -66,23 +66,23 @@ uint64_t __49__ISShapeCompositorResource_tvOSRoundedRectShape__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (double)continuousCornerRadiusForSize:(CGSize)a3
++ (double)continuousCornerRadiusForSize:(CGSize)size
 {
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
   {
-    height = a3.width;
+    height = size.width;
   }
 
   v4 = +[ISDefaults sharedInstance];
-  v5 = [v4 isSolariumCornerRadiusEnabled];
+  isSolariumCornerRadiusEnabled = [v4 isSolariumCornerRadiusEnabled];
 
   v6 = 0.225;
-  if (v5)
+  if (isSolariumCornerRadiusEnabled)
   {
     v6 = 0.26;
   }
@@ -97,9 +97,9 @@ uint64_t __49__ISShapeCompositorResource_tvOSRoundedRectShape__block_invoke()
   v2 = [(ISShapeCompositorResource *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69A8968] black];
+    black = [MEMORY[0x1E69A8968] black];
     fillColor = v2->_fillColor;
-    v2->_fillColor = v3;
+    v2->_fillColor = black;
 
     lineColor = v2->_lineColor;
     v2->_lineColor = 0;
@@ -109,9 +109,9 @@ uint64_t __49__ISShapeCompositorResource_tvOSRoundedRectShape__block_invoke()
   return v2;
 }
 
-- (id)imageForSize:(CGSize)a3 scale:(double)a4
+- (id)imageForSize:(CGSize)size scale:(double)scale
 {
-  v4 = [MEMORY[0x1E695DF30] exceptionWithName:@"Abstract method called." reason:0 userInfo:{0, a3.width, a3.height, a4}];
+  v4 = [MEMORY[0x1E695DF30] exceptionWithName:@"Abstract method called." reason:0 userInfo:{0, size.width, size.height, scale}];
   objc_exception_throw(v4);
 }
 

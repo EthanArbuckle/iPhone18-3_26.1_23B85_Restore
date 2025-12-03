@@ -1,15 +1,15 @@
 @interface SBApplicationLaunchNotifyInCallAlertItem
-- (SBApplicationLaunchNotifyInCallAlertItem)initWithApplication:(id)a3;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBApplicationLaunchNotifyInCallAlertItem)initWithApplication:(id)application;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBApplicationLaunchNotifyInCallAlertItem
 
-- (SBApplicationLaunchNotifyInCallAlertItem)initWithApplication:(id)a3
+- (SBApplicationLaunchNotifyInCallAlertItem)initWithApplication:(id)application
 {
   v6.receiver = self;
   v6.super_class = SBApplicationLaunchNotifyInCallAlertItem;
-  v3 = [(SBApplicationLaunchNotifyAlertItem *)&v6 initWithApplication:a3];
+  v3 = [(SBApplicationLaunchNotifyAlertItem *)&v6 initWithApplication:application];
   v4 = v3;
   if (v3)
   {
@@ -19,16 +19,16 @@
   return v4;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"IN_CALL_LAUNCH_ALERT" value:&stru_283094718 table:@"SpringBoard"];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"IN_CALL_LAUNCH_ALERT" value:&stru_283094718 table:@"SpringBoard"];
   [v5 setTitle:v7];
 
   v8 = MEMORY[0x277D750F8];
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 localizedStringForKey:@"IN_CALL_LAUNCH_OK" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v10 = [mainBundle2 localizedStringForKey:@"IN_CALL_LAUNCH_OK" value:&stru_283094718 table:@"SpringBoard"];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__SBApplicationLaunchNotifyInCallAlertItem_configure_requirePasscodeForActions___block_invoke;

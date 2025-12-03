@@ -1,12 +1,12 @@
 @interface NNMKProtoInitialMessagesSyncFailure
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoInitialMessagesSyncFailure
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoInitialMessagesSyncFailure;
   v4 = [(NNMKProtoInitialMessagesSyncFailure *)&v8 description];
-  v5 = [(NNMKProtoInitialMessagesSyncFailure *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoInitialMessagesSyncFailure *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   mailboxId = self->_mailboxId;
   if (mailboxId)
   {
-    [v3 setObject:mailboxId forKey:@"mailboxId"];
+    [dictionary setObject:mailboxId forKey:@"mailboxId"];
   }
 
   errorDomain = self->_errorDomain;
@@ -48,61 +48,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_mailboxId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_errorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     errorCode = self->_errorCode;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_mailboxId)
   {
-    [v4 setMailboxId:?];
-    v4 = v5;
+    [toCopy setMailboxId:?];
+    toCopy = v5;
   }
 
   if (self->_errorDomain)
   {
     [v5 setErrorDomain:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_errorCode;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 2) = self->_errorCode;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_mailboxId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_mailboxId copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_errorDomain copyWithZone:a3];
+  v8 = [(NSString *)self->_errorDomain copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -115,16 +115,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   mailboxId = self->_mailboxId;
-  if (mailboxId | *(v4 + 3))
+  if (mailboxId | *(equalCopy + 3))
   {
     if (![(NSString *)mailboxId isEqual:?])
     {
@@ -133,7 +133,7 @@
   }
 
   errorDomain = self->_errorDomain;
-  if (errorDomain | *(v4 + 2))
+  if (errorDomain | *(equalCopy + 2))
   {
     if (![(NSString *)errorDomain isEqual:?])
     {
@@ -141,10 +141,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_errorCode == *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_errorCode == *(equalCopy + 2))
     {
       v7 = 1;
       goto LABEL_11;
@@ -176,25 +176,25 @@ LABEL_11:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(NNMKProtoInitialMessagesSyncFailure *)self setMailboxId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NNMKProtoInitialMessagesSyncFailure *)self setErrorDomain:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
-    self->_errorCode = v4[2];
+    self->_errorCode = fromCopy[2];
     *&self->_has |= 1u;
   }
 }

@@ -1,43 +1,43 @@
 @interface CMSUpdateActivityRequest
 - (NSString)description;
 - (id)cmsCoded;
-- (id)initForActivity:(id)a3 failure:(id)a4 whilePlaying:(id)a5;
-- (id)initForActivity:(id)a3 report:(unint64_t)a4 nowPlaying:(id)a5 previouslyPlaying:(id)a6;
+- (id)initForActivity:(id)activity failure:(id)failure whilePlaying:(id)playing;
+- (id)initForActivity:(id)activity report:(unint64_t)report nowPlaying:(id)playing previouslyPlaying:(id)previouslyPlaying;
 @end
 
 @implementation CMSUpdateActivityRequest
 
-- (id)initForActivity:(id)a3 report:(unint64_t)a4 nowPlaying:(id)a5 previouslyPlaying:(id)a6
+- (id)initForActivity:(id)activity report:(unint64_t)report nowPlaying:(id)playing previouslyPlaying:(id)previouslyPlaying
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  activityCopy = activity;
+  playingCopy = playing;
+  previouslyPlayingCopy = previouslyPlaying;
   v19.receiver = self;
   v19.super_class = CMSUpdateActivityRequest;
   v14 = [(CMSUpdateActivityRequest *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_userActivityDictionary, a3);
-    v16 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&v14->_userActivityDictionary, activity);
+    date = [MEMORY[0x277CBEAA8] date];
     timestamp = v15->_timestamp;
-    v15->_timestamp = v16;
+    v15->_timestamp = date;
 
-    v15->_report = a4;
-    objc_storeStrong(&v15->_nowPlaying, a5);
-    objc_storeStrong(&v15->_previouslyPlaying, a6);
+    v15->_report = report;
+    objc_storeStrong(&v15->_nowPlaying, playing);
+    objc_storeStrong(&v15->_previouslyPlaying, previouslyPlaying);
   }
 
   return v15;
 }
 
-- (id)initForActivity:(id)a3 failure:(id)a4 whilePlaying:(id)a5
+- (id)initForActivity:(id)activity failure:(id)failure whilePlaying:(id)playing
 {
-  v9 = a4;
+  failureCopy = failure;
   if (self)
   {
-    v10 = [(CMSUpdateActivityRequest *)self initForActivity:a3 report:13 nowPlaying:0 previouslyPlaying:a5];
-    objc_storeStrong(v10 + 8, a4);
+    v10 = [(CMSUpdateActivityRequest *)self initForActivity:activity report:13 nowPlaying:0 previouslyPlaying:playing];
+    objc_storeStrong(v10 + 8, failure);
   }
 
   else
@@ -70,8 +70,8 @@
 
 - (NSString)description
 {
-  v2 = [(CMSUpdateActivityRequest *)self cmsCoded];
-  v3 = [v2 description];
+  cmsCoded = [(CMSUpdateActivityRequest *)self cmsCoded];
+  v3 = [cmsCoded description];
 
   return v3;
 }

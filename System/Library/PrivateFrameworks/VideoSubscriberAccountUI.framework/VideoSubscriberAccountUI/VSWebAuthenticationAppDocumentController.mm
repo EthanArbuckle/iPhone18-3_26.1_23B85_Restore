@@ -1,27 +1,27 @@
 @interface VSWebAuthenticationAppDocumentController
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4;
-- (BOOL)_updateWebAuthenticationViewModel:(id)a3 error:(id *)a4;
-- (BOOL)_updateWebAuthenticationViewModel:(id)a3 withTemplate:(id)a4 error:(id *)a5;
-- (VSWebAuthenticationAppDocumentController)initWithAppDocument:(id)a3;
-- (id)_webAuthenticationViewModelWithViewModel:(id)a3;
-- (void)_sendMessage:(id)a3;
-- (void)_startObservingViewModel:(id)a3;
-- (void)_stopObservingViewModel:(id)a3;
-- (void)didAddMessagesToMessageQueue:(id)a3;
-- (void)messagePort:(id)a3 didReceiveMessage:(id)a4;
+- (BOOL)_updateViewModel:(id)model error:(id *)error;
+- (BOOL)_updateWebAuthenticationViewModel:(id)model error:(id *)error;
+- (BOOL)_updateWebAuthenticationViewModel:(id)model withTemplate:(id)template error:(id *)error;
+- (VSWebAuthenticationAppDocumentController)initWithAppDocument:(id)document;
+- (id)_webAuthenticationViewModelWithViewModel:(id)model;
+- (void)_sendMessage:(id)message;
+- (void)_startObservingViewModel:(id)model;
+- (void)_stopObservingViewModel:(id)model;
+- (void)didAddMessagesToMessageQueue:(id)queue;
+- (void)messagePort:(id)port didReceiveMessage:(id)message;
 @end
 
 @implementation VSWebAuthenticationAppDocumentController
 
-- (VSWebAuthenticationAppDocumentController)initWithAppDocument:(id)a3
+- (VSWebAuthenticationAppDocumentController)initWithAppDocument:(id)document
 {
   v12.receiver = self;
   v12.super_class = VSWebAuthenticationAppDocumentController;
-  v3 = [(VSAppDocumentController *)&v12 initWithAppDocument:a3];
+  v3 = [(VSAppDocumentController *)&v12 initWithAppDocument:document];
   v4 = v3;
   if (v3)
   {
-    v5 = [(VSAppDocumentController *)v3 templateElement];
+    templateElement = [(VSAppDocumentController *)v3 templateElement];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,18 +35,18 @@
         [v6 raise:v7 format:{@"Unexpectedly, template was %@, instead of VSWebAuthenticationTemplateElement.", v9}];
       }
 
-      v10 = [v5 messagePort];
-      [v10 setDelegate:v4];
+      messagePort = [templateElement messagePort];
+      [messagePort setDelegate:v4];
     }
   }
 
   return v4;
 }
 
-- (id)_webAuthenticationViewModelWithViewModel:(id)a3
+- (id)_webAuthenticationViewModelWithViewModel:(id)model
 {
-  v3 = a3;
-  if (!v3)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
@@ -61,19 +61,19 @@
     [v4 raise:v5 format:{@"Unexpectedly, viewModel was %@, instead of VSWebAuthenticationViewModel.", v7}];
   }
 
-  return v3;
+  return modelCopy;
 }
 
-- (BOOL)_updateWebAuthenticationViewModel:(id)a3 error:(id *)a4
+- (BOOL)_updateWebAuthenticationViewModel:(id)model error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VSAppDocumentController *)self templateElement];
-  if ([v7 vs_elementType] == 163)
+  modelCopy = model;
+  templateElement = [(VSAppDocumentController *)self templateElement];
+  if ([templateElement vs_elementType] == 163)
   {
     v12 = 0;
-    v8 = [(VSWebAuthenticationAppDocumentController *)self _updateWebAuthenticationViewModel:v6 withTemplate:v7 error:&v12];
+    v8 = [(VSWebAuthenticationAppDocumentController *)self _updateWebAuthenticationViewModel:modelCopy withTemplate:templateElement error:&v12];
     v9 = v12;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -83,11 +83,11 @@
 
   v9 = VSPrivateError();
   v8 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_5:
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_6:
@@ -95,23 +95,23 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)_updateWebAuthenticationViewModel:(id)a3 withTemplate:(id)a4 error:(id *)a5
+- (BOOL)_updateWebAuthenticationViewModel:(id)model withTemplate:(id)template error:(id *)error
 {
-  v7 = a3;
-  v8 = [a4 attributes];
-  v9 = [v8 objectForKey:@"src"];
+  modelCopy = model;
+  attributes = [template attributes];
+  v9 = [attributes objectForKey:@"src"];
 
   if (v9 && (v10 = MEMORY[0x277CBEBC0], v11 = v9, v12 = [[v10 alloc] initWithString:v11], v11, v12))
   {
-    [v7 setSourceURL:v12];
+    [modelCopy setSourceURL:v12];
 
     v13 = 1;
   }
 
-  else if (a5)
+  else if (error)
   {
     VSPrivateError();
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -122,9 +122,9 @@ LABEL_6:
   return v13;
 }
 
-- (void)_sendMessage:(id)a3
+- (void)_sendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -132,7 +132,7 @@ LABEL_6:
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Will dispatch message event.", buf, 2u);
   }
 
-  v6 = [(VSAppDocumentController *)self templateElement];
+  templateElement = [(VSAppDocumentController *)self templateElement];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -140,22 +140,22 @@ LABEL_6:
   {
     v8 = MEMORY[0x277CBEAD8];
     v9 = *MEMORY[0x277CBE660];
-    v10 = [(VSAppDocumentController *)self templateElement];
+    templateElement2 = [(VSAppDocumentController *)self templateElement];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     [v8 raise:v9 format:{@"Unexpectedly, [self templateElement] was %@, instead of VSWebAuthenticationTemplateElement.", v12}];
   }
 
-  v13 = [(VSAppDocumentController *)self templateElement];
-  v14 = [v13 messagePort];
-  v15 = [v14 appContext];
+  templateElement3 = [(VSAppDocumentController *)self templateElement];
+  messagePort = [templateElement3 messagePort];
+  appContext = [messagePort appContext];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __57__VSWebAuthenticationAppDocumentController__sendMessage___block_invoke;
   v18[3] = &unk_279E19CB0;
-  v19 = v4;
-  v16 = v4;
-  [v15 evaluate:v18 completionBlock:&__block_literal_global_14];
+  v19 = messageCopy;
+  v16 = messageCopy;
+  [appContext evaluate:v18 completionBlock:&__block_literal_global_14];
   v17 = VSDefaultLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -181,26 +181,26 @@ void __57__VSWebAuthenticationAppDocumentController__sendMessage___block_invoke_
   }
 }
 
-- (void)messagePort:(id)a3 didReceiveMessage:(id)a4
+- (void)messagePort:(id)port didReceiveMessage:(id)message
 {
-  v5 = a4;
-  v6 = [(VSAppDocumentController *)self viewModel];
+  messageCopy = message;
+  viewModel = [(VSAppDocumentController *)self viewModel];
 
-  if (!v6)
+  if (!viewModel)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self viewModel] parameter must not be nil."];
   }
 
-  v9 = [(VSAppDocumentController *)self viewModel];
-  v7 = [(VSWebAuthenticationAppDocumentController *)self _webAuthenticationViewModelWithViewModel:v9];
-  v8 = [v7 messagesToWeb];
-  [v8 addMessage:v5];
+  viewModel2 = [(VSAppDocumentController *)self viewModel];
+  v7 = [(VSWebAuthenticationAppDocumentController *)self _webAuthenticationViewModelWithViewModel:viewModel2];
+  messagesToWeb = [v7 messagesToWeb];
+  [messagesToWeb addMessage:messageCopy];
 }
 
-- (void)didAddMessagesToMessageQueue:(id)a3
+- (void)didAddMessagesToMessageQueue:(id)queue
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -209,7 +209,7 @@ void __57__VSWebAuthenticationAppDocumentController__sendMessage___block_invoke_
   }
 
   v6 = objc_alloc_init(VSScriptSecurityOrigin);
-  v7 = [(VSAppDocumentController *)self templateElement];
+  templateElement = [(VSAppDocumentController *)self templateElement];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -217,37 +217,37 @@ void __57__VSWebAuthenticationAppDocumentController__sendMessage___block_invoke_
   {
     v9 = MEMORY[0x277CBEAD8];
     v10 = *MEMORY[0x277CBE660];
-    v11 = [(VSAppDocumentController *)self templateElement];
+    templateElement2 = [(VSAppDocumentController *)self templateElement];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     [v9 raise:v10 format:{@"Unexpectedly, [self templateElement] was %@, instead of VSWebAuthenticationTemplateElement.", v13}];
   }
 
-  v36 = [(VSAppDocumentController *)self templateElement];
-  v35 = [v36 messagePort];
-  v14 = [v35 appContext];
+  templateElement3 = [(VSAppDocumentController *)self templateElement];
+  messagePort = [templateElement3 messagePort];
+  appContext = [messagePort appContext];
   v15 = objc_alloc(MEMORY[0x277CCACE0]);
-  v34 = v14;
-  v16 = [v14 app];
-  v17 = [v16 appJSURL];
-  v18 = [v15 initWithURL:v17 resolvingAgainstBaseURL:1];
+  v34 = appContext;
+  v16 = [appContext app];
+  appJSURL = [v16 appJSURL];
+  v18 = [v15 initWithURL:appJSURL resolvingAgainstBaseURL:1];
 
-  v19 = [v18 scheme];
-  [(VSScriptSecurityOrigin *)v6 setScheme:v19];
+  scheme = [v18 scheme];
+  [(VSScriptSecurityOrigin *)v6 setScheme:scheme];
 
-  v20 = [v18 host];
-  [(VSScriptSecurityOrigin *)v6 setHost:v20];
+  host = [v18 host];
+  [(VSScriptSecurityOrigin *)v6 setHost:host];
 
   v33 = v18;
-  v21 = [v18 port];
-  -[VSScriptSecurityOrigin setPort:](v6, "setPort:", [v21 integerValue]);
+  port = [v18 port];
+  -[VSScriptSecurityOrigin setPort:](v6, "setPort:", [port integerValue]);
 
-  v37 = v4;
-  v22 = [v4 removeAllMessages];
+  v37 = queueCopy;
+  removeAllMessages = [queueCopy removeAllMessages];
   v23 = VSDefaultLogObject();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v22 count];
+    v24 = [removeAllMessages count];
     *buf = 134217984;
     v43 = v24;
     _os_log_impl(&dword_270DD4000, v23, OS_LOG_TYPE_DEFAULT, "Will process %lld messages", buf, 0xCu);
@@ -257,7 +257,7 @@ void __57__VSWebAuthenticationAppDocumentController__sendMessage___block_invoke_
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v25 = v22;
+  v25 = removeAllMessages;
   v26 = [v25 countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v26)
   {
@@ -301,47 +301,47 @@ void __57__VSWebAuthenticationAppDocumentController__sendMessage___block_invoke_
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startObservingViewModel:(id)a3
+- (void)_startObservingViewModel:(id)model
 {
   v7.receiver = self;
   v7.super_class = VSWebAuthenticationAppDocumentController;
-  v4 = a3;
-  [(VSAppDocumentController *)&v7 _startObservingViewModel:v4];
-  v5 = [(VSWebAuthenticationAppDocumentController *)self _webAuthenticationViewModelWithViewModel:v4, v7.receiver, v7.super_class];
+  modelCopy = model;
+  [(VSAppDocumentController *)&v7 _startObservingViewModel:modelCopy];
+  v5 = [(VSWebAuthenticationAppDocumentController *)self _webAuthenticationViewModelWithViewModel:modelCopy, v7.receiver, v7.super_class];
 
-  v6 = [v5 messagesFromWeb];
-  [v6 setDelegate:self];
+  messagesFromWeb = [v5 messagesFromWeb];
+  [messagesFromWeb setDelegate:self];
 }
 
-- (void)_stopObservingViewModel:(id)a3
+- (void)_stopObservingViewModel:(id)model
 {
   v7.receiver = self;
   v7.super_class = VSWebAuthenticationAppDocumentController;
-  v4 = a3;
-  [(VSAppDocumentController *)&v7 _stopObservingViewModel:v4];
-  v5 = [(VSWebAuthenticationAppDocumentController *)self _webAuthenticationViewModelWithViewModel:v4, v7.receiver, v7.super_class];
+  modelCopy = model;
+  [(VSAppDocumentController *)&v7 _stopObservingViewModel:modelCopy];
+  v5 = [(VSWebAuthenticationAppDocumentController *)self _webAuthenticationViewModelWithViewModel:modelCopy, v7.receiver, v7.super_class];
 
-  v6 = [v5 messagesFromWeb];
-  [v6 setDelegate:0];
+  messagesFromWeb = [v5 messagesFromWeb];
+  [messagesFromWeb setDelegate:0];
 }
 
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4
+- (BOOL)_updateViewModel:(id)model error:(id *)error
 {
-  v6 = a3;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = VSWebAuthenticationAppDocumentController;
-  [(VSAppDocumentController *)&v14 _updateViewModel:v6 error:a4];
-  v7 = [(VSAppDocumentController *)self appDocument];
-  v8 = [v7 error];
+  [(VSAppDocumentController *)&v14 _updateViewModel:modelCopy error:error];
+  appDocument = [(VSAppDocumentController *)self appDocument];
+  error = [appDocument error];
 
-  if (!v8)
+  if (!error)
   {
-    v12 = [(VSWebAuthenticationAppDocumentController *)self _webAuthenticationViewModelWithViewModel:v6];
+    v12 = [(VSWebAuthenticationAppDocumentController *)self _webAuthenticationViewModelWithViewModel:modelCopy];
     v13 = 0;
     v9 = [(VSWebAuthenticationAppDocumentController *)self _updateWebAuthenticationViewModel:v12 error:&v13];
-    v8 = v13;
+    error = v13;
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -350,11 +350,11 @@ void __57__VSWebAuthenticationAppDocumentController__sendMessage___block_invoke_
   }
 
   v9 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_3:
-    v10 = v8;
-    *a4 = v8;
+    v10 = error;
+    *error = error;
   }
 
 LABEL_4:

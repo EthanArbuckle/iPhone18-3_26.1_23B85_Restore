@@ -1,50 +1,50 @@
 @interface CWFWiFiUserAgent
-- (BOOL)__updateKeychainPassword:(id)a3 network:(id)a4;
-- (CWFWiFiUserAgent)initWithXPCClient:(id)a3 requestParameters:(id)a4;
+- (BOOL)__updateKeychainPassword:(id)password network:(id)network;
+- (CWFWiFiUserAgent)initWithXPCClient:(id)client requestParameters:(id)parameters;
 - (NSArray)nearbyRecommendedNetworks;
 - (id)__loadNearbyRecommendedNetworksFromKVS;
 - (void)__cancelRecommendedNetworkNotificationTimeout;
-- (void)__launchWiFiNetworkSharingAskToShareProxCardForAccessoryID:(id)a3 accessoryName:(id)a4 appBundleID:(id)a5 completion:(id)a6;
-- (void)__launchWiFiNetworkSharingAuthorizationProxCardForAccessoryID:(id)a3 accessoryName:(id)a4 appBundleID:(id)a5 completion:(id)a6;
+- (void)__launchWiFiNetworkSharingAskToShareProxCardForAccessoryID:(id)d accessoryName:(id)name appBundleID:(id)iD completion:(id)completion;
+- (void)__launchWiFiNetworkSharingAuthorizationProxCardForAccessoryID:(id)d accessoryName:(id)name appBundleID:(id)iD completion:(id)completion;
 - (void)__purgeExpiredCaptiveNetworkCredentials;
 - (void)__purgeExpiredNearbyRecommendedNetworks;
-- (void)__receivedNearbyRecommendedNetwork:(id)a3;
-- (void)__receivedNearbySyncableNetwork:(id)a3;
+- (void)__receivedNearbyRecommendedNetwork:(id)network;
+- (void)__receivedNearbySyncableNetwork:(id)network;
 - (void)__scheduleRecommendedNetworkNotificationTimeout;
 - (void)__setupCloudSyncManager;
 - (void)__setupEventHandler;
 - (void)__setupNearbySyncManager;
-- (void)__showWiFiNetworkSharingAskToShareNotificationForClientID:(id)a3 network:(id)a4 accessoryDisplayName:(id)a5 completion:(id)a6;
+- (void)__showWiFiNetworkSharingAskToShareNotificationForClientID:(id)d network:(id)network accessoryDisplayName:(id)name completion:(id)completion;
 - (void)__updateNearbyRecommendedNetworks;
 - (void)__updateNearbyRecommendedNetworksExpirationTimer;
 - (void)activate;
 - (void)invalidate;
-- (void)pickerDidDismiss:(id)a3;
+- (void)pickerDidDismiss:(id)dismiss;
 - (void)pickerDidPresent;
-- (void)setNearbyRecommendedNetworks:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)setNearbyRecommendedNetworks:(id)networks;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation CWFWiFiUserAgent
 
 - (NSArray)nearbyRecommendedNetworks
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSArray *)v2->_nearbyRecommendedNetworks copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSArray *)selfCopy->_nearbyRecommendedNetworks copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setNearbyRecommendedNetworks:(id)a3
+- (void)setNearbyRecommendedNetworks:(id)networks
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  nearbyRecommendedNetworks = v5->_nearbyRecommendedNetworks;
-  if (nearbyRecommendedNetworks != v4 && (!v4 || !nearbyRecommendedNetworks || ([(NSArray *)nearbyRecommendedNetworks isEqual:v4]& 1) == 0))
+  networksCopy = networks;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  nearbyRecommendedNetworks = selfCopy->_nearbyRecommendedNetworks;
+  if (nearbyRecommendedNetworks != networksCopy && (!networksCopy || !nearbyRecommendedNetworks || ([(NSArray *)nearbyRecommendedNetworks isEqual:networksCopy]& 1) == 0))
   {
     v7 = CWFGetOSLog();
     if (v7)
@@ -60,29 +60,29 @@
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v10 = v5->_nearbyRecommendedNetworks;
+      v10 = selfCopy->_nearbyRecommendedNetworks;
       v21 = 138543618;
       v22 = v10;
       v23 = 2114;
-      v24 = v4;
+      v24 = networksCopy;
       LODWORD(v18) = 22;
       v17 = &v21;
       _os_log_send_and_compose_impl();
     }
 
-    v11 = [(NSArray *)v4 copy];
-    v12 = v5->_nearbyRecommendedNetworks;
-    v5->_nearbyRecommendedNetworks = v11;
+    v11 = [(NSArray *)networksCopy copy];
+    v12 = selfCopy->_nearbyRecommendedNetworks;
+    selfCopy->_nearbyRecommendedNetworks = v11;
 
     v13 = objc_alloc_init(CWFXPCEvent);
     [(CWFXPCEvent *)v13 setType:39];
-    v14 = [MEMORY[0x1E695DF00] date];
-    [(CWFXPCEvent *)v13 setTimestamp:v14];
+    date = [MEMORY[0x1E695DF00] date];
+    [(CWFXPCEvent *)v13 setTimestamp:date];
 
-    if (v4)
+    if (networksCopy)
     {
       v19 = @"NearbyRecommendedNetworks";
-      v20 = v4;
+      v20 = networksCopy;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     }
 
@@ -92,14 +92,14 @@
     }
 
     [(CWFXPCEvent *)v13 setInfo:v15, v17, v18];
-    if (v4)
+    if (networksCopy)
     {
     }
 
-    [(CWFInterface *)v5 sendXPCEvent:v13];
+    [(CWFInterface *)selfCopy sendXPCEvent:v13];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -117,18 +117,18 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)__updateKeychainPassword:(id)a3 network:(id)a4
+- (BOOL)__updateKeychainPassword:(id)password network:(id)network
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  passwordCopy = password;
+  networkCopy = network;
+  if (passwordCopy)
   {
-    v8 = [(CWFInterface *)self passwordForKnownNetworkProfile:v7 error:0];
+    v8 = [(CWFInterface *)self passwordForKnownNetworkProfile:networkCopy error:0];
     v9 = v8;
     if (v8)
     {
-      if (v8 == v6 || ([v8 isEqual:v6] & 1) != 0)
+      if (v8 == passwordCopy || ([v8 isEqual:passwordCopy] & 1) != 0)
       {
         v10 = CWFGetOSLog();
         if (v10)
@@ -144,16 +144,16 @@
 
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v7 identifier];
-          v19 = [v7 isSystemMode];
+          identifier = [networkCopy identifier];
+          isSystemMode = [networkCopy isSystemMode];
           v20 = "user";
-          if (v19)
+          if (isSystemMode)
           {
             v20 = "system";
           }
 
           v42 = 138543618;
-          v43 = v18;
+          v43 = identifier;
           v44 = 2082;
           v45 = v20;
           _os_log_send_and_compose_impl();
@@ -177,16 +177,16 @@
 
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v7 identifier];
-        v27 = [v7 isSystemMode];
+        identifier2 = [networkCopy identifier];
+        isSystemMode2 = [networkCopy isSystemMode];
         v28 = "user";
-        if (v27)
+        if (isSystemMode2)
         {
           v28 = "system";
         }
 
         v42 = 138543618;
-        v43 = v26;
+        v43 = identifier2;
         v44 = 2082;
         v45 = v28;
         LODWORD(v39) = 22;
@@ -195,7 +195,7 @@
       }
 
       v41 = 0;
-      v29 = [(CWFInterface *)self setPassword:v6 knownNetworkProfile:v7 error:&v41];
+      v29 = [(CWFInterface *)self setPassword:passwordCopy knownNetworkProfile:networkCopy error:&v41];
       v12 = v41;
       if (v29)
       {
@@ -218,7 +218,7 @@ LABEL_34:
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        if ([v7 isSystemMode])
+        if ([networkCopy isSystemMode])
         {
           v37 = "system";
         }
@@ -228,11 +228,11 @@ LABEL_34:
           v37 = "user";
         }
 
-        v35 = [v7 identifier];
+        identifier3 = [networkCopy identifier];
         v42 = 136315650;
         v43 = v37;
         v44 = 2114;
-        v45 = v35;
+        v45 = identifier3;
         v46 = 2114;
         v47 = v12;
         goto LABEL_49;
@@ -255,7 +255,7 @@ LABEL_34:
 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        if ([v7 isSystemMode])
+        if ([networkCopy isSystemMode])
         {
           v23 = "system";
         }
@@ -265,7 +265,7 @@ LABEL_34:
           v23 = "user";
         }
 
-        [v7 identifier];
+        [networkCopy identifier];
         v42 = 136446466;
         v43 = v23;
         v45 = v44 = 2114;
@@ -273,7 +273,7 @@ LABEL_34:
       }
 
       v40 = 0;
-      v24 = [(CWFInterface *)self setPassword:v6 knownNetworkProfile:v7 error:&v40];
+      v24 = [(CWFInterface *)self setPassword:passwordCopy knownNetworkProfile:networkCopy error:&v40];
       v12 = v40;
       if (v24)
       {
@@ -295,9 +295,9 @@ LABEL_34:
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v35 = [v7 identifier];
+        identifier3 = [networkCopy identifier];
         v42 = 138543618;
-        v43 = v35;
+        v43 = identifier3;
         v44 = 2114;
         v45 = v12;
 LABEL_49:
@@ -320,24 +320,24 @@ LABEL_35:
   return v21;
 }
 
-- (void)__receivedNearbySyncableNetwork:(id)a3
+- (void)__receivedNearbySyncableNetwork:(id)network
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  networkCopy = network;
   v5 = [CWFNetworkProfile alloc];
   recentlyRemovedNetworkKVS = self->_recentlyRemovedNetworkKVS;
-  v7 = [v4 knownNetworkProfile];
-  v8 = [v7 identifier];
-  v9 = [(CWFKeyValueStore *)recentlyRemovedNetworkKVS objectForKey:v8];
+  knownNetworkProfile = [networkCopy knownNetworkProfile];
+  identifier = [knownNetworkProfile identifier];
+  v9 = [(CWFKeyValueStore *)recentlyRemovedNetworkKVS objectForKey:identifier];
   v10 = [(CWFNetworkProfile *)v5 initWithExternalForm:v9];
 
-  v11 = [v4 knownNetworkProfile];
-  v12 = [v11 addedAt];
+  knownNetworkProfile2 = [networkCopy knownNetworkProfile];
+  addedAt = [knownNetworkProfile2 addedAt];
 
-  v13 = [(CWFNetworkProfile *)v10 removedAt];
-  [v12 timeIntervalSinceReferenceDate];
+  removedAt = [(CWFNetworkProfile *)v10 removedAt];
+  [addedAt timeIntervalSinceReferenceDate];
   v15 = v14;
-  [v13 timeIntervalSinceReferenceDate];
+  [removedAt timeIntervalSinceReferenceDate];
   if (v15 <= v16)
   {
     v42 = CWFGetOSLog();
@@ -354,10 +354,10 @@ LABEL_35:
 
     if (os_log_type_enabled(&v31->super, OS_LOG_TYPE_INFO))
     {
-      sub_1E0BCC248(v13);
+      sub_1E0BCC248(removedAt);
       v53 = v52 = 138412546;
       v54 = 2112;
-      v55 = v4;
+      v55 = networkCopy;
       _os_log_send_and_compose_impl();
     }
 
@@ -366,15 +366,15 @@ LABEL_35:
     goto LABEL_16;
   }
 
-  v17 = [v4 knownNetworkProfile];
-  v18 = [v17 copy];
+  knownNetworkProfile3 = [networkCopy knownNetworkProfile];
+  v18 = [knownNetworkProfile3 copy];
 
-  v19 = [v4 password];
+  password = [networkCopy password];
 
-  if (v19)
+  if (password)
   {
-    v20 = [v4 password];
-    v21 = [(CWFWiFiUserAgent *)self __updateKeychainPassword:v20 network:v18];
+    password2 = [networkCopy password];
+    v21 = [(CWFWiFiUserAgent *)self __updateKeychainPassword:password2 network:v18];
 
     v22 = !v21;
   }
@@ -384,8 +384,8 @@ LABEL_35:
     v22 = 1;
   }
 
-  v23 = [v4 knownNetworkProfile];
-  v24 = [(CWFInterface *)self knownNetworkProfileMatchingNetworkProfile:v23];
+  knownNetworkProfile4 = [networkCopy knownNetworkProfile];
+  v24 = [(CWFInterface *)self knownNetworkProfileMatchingNetworkProfile:knownNetworkProfile4];
 
   v25 = CWFGetOSLog();
   v26 = v25;
@@ -405,7 +405,7 @@ LABEL_35:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v52 = 138543362;
-      v53 = v4;
+      v53 = networkCopy;
       _os_log_send_and_compose_impl();
     }
 
@@ -429,9 +429,9 @@ LABEL_35:
 
       if (os_log_type_enabled(&v31->super, OS_LOG_TYPE_ERROR))
       {
-        v48 = [v18 identifier];
+        identifier2 = [v18 identifier];
         v52 = 138543618;
-        v53 = v48;
+        v53 = identifier2;
         v54 = 2114;
         v55 = v30;
         _os_log_send_and_compose_impl();
@@ -445,28 +445,28 @@ LABEL_12:
     [(CWFAutoJoinParameters *)v31 setMode:1];
     [(CWFAutoJoinParameters *)v31 setTrigger:64];
     [(CWFAutoJoinParameters *)v31 setTargetNetworkProfile:v18];
-    v32 = [v4 channel];
-    if (v32)
+    channel = [networkCopy channel];
+    if (channel)
     {
-      [v4 channel];
-      v49 = v4;
-      v33 = self;
+      [networkCopy channel];
+      v49 = networkCopy;
+      selfCopy = self;
       v34 = v18;
       v35 = v30;
-      v36 = v13;
-      v37 = v12;
+      v36 = removedAt;
+      v37 = addedAt;
       v39 = v38 = v10;
       v51 = v39;
       v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1];
       [(CWFAutoJoinParameters *)v31 setPreferredChannels:v40];
 
       v10 = v38;
-      v12 = v37;
-      v13 = v36;
+      addedAt = v37;
+      removedAt = v36;
       v30 = v35;
       v18 = v34;
-      self = v33;
-      v4 = v49;
+      self = selfCopy;
+      networkCopy = v49;
     }
 
     else
@@ -494,7 +494,7 @@ LABEL_16:
   if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
   {
     v52 = 138543362;
-    v53 = v4;
+    v53 = networkCopy;
     _os_log_send_and_compose_impl();
   }
 
@@ -509,24 +509,24 @@ LABEL_17:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__receivedNearbyRecommendedNetwork:(id)a3
+- (void)__receivedNearbyRecommendedNetwork:(id)network
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  networkCopy = network;
   v5 = [CWFNetworkProfile alloc];
   recentlyRemovedNetworkKVS = self->_recentlyRemovedNetworkKVS;
-  v7 = [v4 knownNetworkProfile];
-  v8 = [v7 identifier];
-  v9 = [(CWFKeyValueStore *)recentlyRemovedNetworkKVS objectForKey:v8];
+  knownNetworkProfile = [networkCopy knownNetworkProfile];
+  identifier = [knownNetworkProfile identifier];
+  v9 = [(CWFKeyValueStore *)recentlyRemovedNetworkKVS objectForKey:identifier];
   v10 = [(CWFNetworkProfile *)v5 initWithExternalForm:v9];
 
-  v11 = [v4 knownNetworkProfile];
-  v12 = [v11 addedAt];
+  knownNetworkProfile2 = [networkCopy knownNetworkProfile];
+  addedAt = [knownNetworkProfile2 addedAt];
 
-  v13 = [(CWFNetworkProfile *)v10 removedAt];
-  [v12 timeIntervalSinceReferenceDate];
+  removedAt = [(CWFNetworkProfile *)v10 removedAt];
+  [addedAt timeIntervalSinceReferenceDate];
   v15 = v14;
-  [v13 timeIntervalSinceReferenceDate];
+  [removedAt timeIntervalSinceReferenceDate];
   if (v15 <= v16)
   {
     v35 = CWFGetOSLog();
@@ -543,18 +543,18 @@ LABEL_17:
 
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      sub_1E0BCC248(v13);
+      sub_1E0BCC248(removedAt);
       v45 = v44 = 138543618;
       v46 = 2114;
-      v47 = v4;
+      v47 = networkCopy;
       _os_log_send_and_compose_impl();
     }
   }
 
   else
   {
-    v17 = [v4 knownNetworkProfile];
-    v18 = [(CWFInterface *)self knownNetworkProfileMatchingNetworkProfile:v17];
+    knownNetworkProfile3 = [networkCopy knownNetworkProfile];
+    v18 = [(CWFInterface *)self knownNetworkProfileMatchingNetworkProfile:knownNetworkProfile3];
 
     if (v18)
     {
@@ -573,22 +573,22 @@ LABEL_17:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         v44 = 138543362;
-        v45 = v4;
+        v45 = networkCopy;
         _os_log_send_and_compose_impl();
       }
     }
 
     else
     {
-      v19 = [v4 captivePortalCredentials];
+      captivePortalCredentials = [networkCopy captivePortalCredentials];
 
-      v42 = v13;
-      if (v19)
+      v42 = removedAt;
+      if (captivePortalCredentials)
       {
-        v20 = [v4 captivePortalCredentials];
-        v21 = [v4 knownNetworkProfile];
+        captivePortalCredentials2 = [networkCopy captivePortalCredentials];
+        knownNetworkProfile4 = [networkCopy knownNetworkProfile];
         v43 = 0;
-        v22 = [(CWFInterface *)self setCaptivePortalCredentials:v20 knownNetworkProfile:v21 error:&v43];
+        v22 = [(CWFInterface *)self setCaptivePortalCredentials:captivePortalCredentials2 knownNetworkProfile:knownNetworkProfile4 error:&v43];
         v23 = v43;
 
         if (!v22)
@@ -610,7 +610,7 @@ LABEL_17:
             v44 = 138543618;
             v45 = v23;
             v46 = 2114;
-            v47 = v4;
+            v47 = networkCopy;
             LODWORD(v41) = 22;
             v40 = &v44;
             _os_log_send_and_compose_impl();
@@ -623,24 +623,24 @@ LABEL_17:
         v23 = 0;
       }
 
-      v26 = [v4 password];
+      password = [networkCopy password];
 
-      if (v26)
+      if (password)
       {
-        v27 = [v4 password];
-        v28 = [v4 knownNetworkProfile];
-        [(CWFWiFiUserAgent *)self __updateKeychainPassword:v27 network:v28];
+        password2 = [networkCopy password];
+        knownNetworkProfile5 = [networkCopy knownNetworkProfile];
+        [(CWFWiFiUserAgent *)self __updateKeychainPassword:password2 network:knownNetworkProfile5];
       }
 
       nearbyRecommendedNetworksKVS = self->_nearbyRecommendedNetworksKVS;
-      v30 = [v4 knownNetworkProfile];
-      v31 = [v30 externalForm];
-      v32 = [v4 knownNetworkProfile];
-      v33 = [v32 identifier];
-      [(CWFKeyValueStore *)nearbyRecommendedNetworksKVS setObject:v31 forKey:v33];
+      knownNetworkProfile6 = [networkCopy knownNetworkProfile];
+      externalForm = [knownNetworkProfile6 externalForm];
+      knownNetworkProfile7 = [networkCopy knownNetworkProfile];
+      identifier2 = [knownNetworkProfile7 identifier];
+      [(CWFKeyValueStore *)nearbyRecommendedNetworksKVS setObject:externalForm forKey:identifier2];
 
       [(CWFKeyValueStore *)self->_nearbyRecommendedNetworksKVS synchronize];
-      v13 = v42;
+      removedAt = v42;
     }
   }
 
@@ -707,8 +707,8 @@ LABEL_17:
 - (void)__updateNearbyRecommendedNetworksExpirationTimer
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CWFWiFiUserAgent *)self __loadNearbyRecommendedNetworksFromKVS];
-  v4 = [v3 mutableCopy];
+  __loadNearbyRecommendedNetworksFromKVS = [(CWFWiFiUserAgent *)self __loadNearbyRecommendedNetworksFromKVS];
+  v4 = [__loadNearbyRecommendedNetworksFromKVS mutableCopy];
 
   if ([v4 count])
   {
@@ -753,14 +753,14 @@ LABEL_17:
       v11 = 604800.0;
     }
 
-    v12 = [v4 lastObject];
-    v13 = [v12 receivedFromDeviceAt];
-    [v13 timeIntervalSinceNow];
+    lastObject = [v4 lastObject];
+    receivedFromDeviceAt = [lastObject receivedFromDeviceAt];
+    [receivedFromDeviceAt timeIntervalSinceNow];
     if ((v11 + v14) * 1000000000.0 < 9.22337204e18)
     {
-      v15 = [v4 lastObject];
-      v16 = [v15 receivedFromDeviceAt];
-      [v16 timeIntervalSinceNow];
+      lastObject2 = [v4 lastObject];
+      receivedFromDeviceAt2 = [lastObject2 receivedFromDeviceAt];
+      [receivedFromDeviceAt2 timeIntervalSinceNow];
       v10 = ((v11 + v17) * 1000000000.0);
     }
 
@@ -810,12 +810,12 @@ LABEL_17:
     v27 = 604800;
   }
 
-  v4 = [(CWFWiFiUserAgent *)self __loadNearbyRecommendedNetworksFromKVS];
+  __loadNearbyRecommendedNetworksFromKVS = [(CWFWiFiUserAgent *)self __loadNearbyRecommendedNetworksFromKVS];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  v5 = [__loadNearbyRecommendedNetworksFromKVS countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v5)
   {
     v6 = v5;
@@ -827,15 +827,15 @@ LABEL_17:
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(__loadNearbyRecommendedNetworksFromKVS);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v10 receivedFromDeviceAt];
-        [v11 timeIntervalSinceNow];
+        receivedFromDeviceAt = [v10 receivedFromDeviceAt];
+        [receivedFromDeviceAt timeIntervalSinceNow];
         v13 = v12;
-        v14 = [v10 receivedFromDeviceAt];
-        [v14 timeIntervalSinceNow];
+        receivedFromDeviceAt2 = [v10 receivedFromDeviceAt];
+        [receivedFromDeviceAt2 timeIntervalSinceNow];
         v16 = v15;
         if (v13 < 0.0)
         {
@@ -900,11 +900,11 @@ LABEL_25:
 LABEL_26:
 
         nearbyRecommendedNetworksKVS = self->_nearbyRecommendedNetworksKVS;
-        v23 = [v10 identifier];
-        [(CWFKeyValueStore *)nearbyRecommendedNetworksKVS setObject:0 forKey:v23];
+        identifier = [v10 identifier];
+        [(CWFKeyValueStore *)nearbyRecommendedNetworksKVS setObject:0 forKey:identifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v6 = [__loadNearbyRecommendedNetworksFromKVS countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v6);
@@ -918,26 +918,26 @@ LABEL_26:
 - (void)__updateNearbyRecommendedNetworks
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CWFWiFiUserAgent *)self __loadNearbyRecommendedNetworksFromKVS];
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
-  v4 = v3;
-  if (v2)
+  __loadNearbyRecommendedNetworksFromKVS = [(CWFWiFiUserAgent *)self __loadNearbyRecommendedNetworksFromKVS];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  v4 = orderedSet;
+  if (__loadNearbyRecommendedNetworksFromKVS)
   {
-    [v3 addObjectsFromArray:v2];
+    [orderedSet addObjectsFromArray:__loadNearbyRecommendedNetworksFromKVS];
   }
 
-  v21 = v2;
+  v21 = __loadNearbyRecommendedNetworksFromKVS;
   v20 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:0 comparator:&unk_1F5B899B0];
   v28[0] = v20;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
   [v4 sortUsingDescriptors:v5];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:0 comparator:&unk_1F5B8C180];
-  [v6 addObject:?];
+  [array addObject:?];
   v18 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:0 ascending:0 selector:sel_compareSupportedSecurityTypes_];
-  [v6 addObject:?];
-  [v4 sortUsingDescriptors:v6];
+  [array addObject:?];
+  [v4 sortUsingDescriptors:array];
   v7 = [MEMORY[0x1E695DFA8] set];
   v23 = 0u;
   v24 = 0u;
@@ -948,7 +948,7 @@ LABEL_26:
   if (v9)
   {
     v10 = v9;
-    v11 = 0;
+    orderedSet2 = 0;
     v12 = *v24;
     do
     {
@@ -962,16 +962,16 @@ LABEL_26:
         v14 = *(*(&v23 + 1) + 8 * i);
         if ([v14 isNearbyRecommendable])
         {
-          v15 = [v14 SSID];
-          if (v15 && ([v7 containsObject:v15] & 1) == 0)
+          sSID = [v14 SSID];
+          if (sSID && ([v7 containsObject:sSID] & 1) == 0)
           {
-            [v7 addObject:v15];
-            if (!v11)
+            [v7 addObject:sSID];
+            if (!orderedSet2)
             {
-              v11 = [MEMORY[0x1E695DFA0] orderedSet];
+              orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
             }
 
-            [v11 addObject:v14];
+            [orderedSet2 addObject:v14];
           }
         }
       }
@@ -984,11 +984,11 @@ LABEL_26:
 
   else
   {
-    v11 = 0;
+    orderedSet2 = 0;
   }
 
-  v16 = [v11 array];
-  [(CWFWiFiUserAgent *)self setNearbyRecommendedNetworks:v16];
+  array2 = [orderedSet2 array];
+  [(CWFWiFiUserAgent *)self setNearbyRecommendedNetworks:array2];
 
   [(CWFWiFiUserAgent *)self __updateNearbyRecommendedNetworksExpirationTimer];
   v17 = *MEMORY[0x1E69E9840];
@@ -1072,19 +1072,19 @@ LABEL_26:
 - (id)__loadNearbyRecommendedNetworksFromKVS
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(CWFKeyValueStore *)self->_nearbyRecommendedNetworksKVS dictionaryRepresentation];
-  v3 = [v2 allValues];
+  dictionaryRepresentation = [(CWFKeyValueStore *)self->_nearbyRecommendedNetworksKVS dictionaryRepresentation];
+  allValues = [dictionaryRepresentation allValues];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    array = 0;
     v8 = *v16;
     do
     {
@@ -1100,12 +1100,12 @@ LABEL_26:
         v12 = [(CWFNetworkProfile *)v11 initWithExternalForm:v10, v15];
         if (v12)
         {
-          if (!v7)
+          if (!array)
           {
-            v7 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
-          [v7 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -1117,22 +1117,22 @@ LABEL_26:
 
   else
   {
-    v7 = 0;
+    array = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return array;
 }
 
-- (CWFWiFiUserAgent)initWithXPCClient:(id)a3 requestParameters:(id)a4
+- (CWFWiFiUserAgent)initWithXPCClient:(id)client requestParameters:(id)parameters
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  parametersCopy = parameters;
   v59.receiver = self;
   v59.super_class = CWFWiFiUserAgent;
-  v8 = [(CWFInterface *)&v59 initWithXPCClient:v6 requestParameters:v7];
+  v8 = [(CWFInterface *)&v59 initWithXPCClient:clientCopy requestParameters:parametersCopy];
   if (!v8)
   {
     goto LABEL_71;
@@ -1378,7 +1378,7 @@ LABEL_26:
 
 LABEL_71:
     [(CWFWiFiUserAgent *)v8 invalidate:v55];
-    v52 = v8;
+    userNotificationCenter5 = v8;
     v8 = 0;
     goto LABEL_69;
   }
@@ -1402,21 +1402,21 @@ LABEL_63:
       v47 = [objc_alloc(sub_1E0D39094()) initWithBundleIdentifier:@"com.apple.corewifi.usernotifications"];
       [(CWFWiFiUserAgent *)v8 setUserNotificationCenter:v47];
 
-      v48 = [(CWFWiFiUserAgent *)v8 userNotificationCenter];
+      userNotificationCenter = [(CWFWiFiUserAgent *)v8 userNotificationCenter];
 
-      if (v48)
+      if (userNotificationCenter)
       {
-        v49 = [(CWFWiFiUserAgent *)v8 userNotificationCenter];
-        [v49 setDelegate:v8];
+        userNotificationCenter2 = [(CWFWiFiUserAgent *)v8 userNotificationCenter];
+        [userNotificationCenter2 setDelegate:v8];
 
-        v50 = [(CWFWiFiUserAgent *)v8 userNotificationCenter];
-        [v50 setWantsNotificationResponsesDelivered];
+        userNotificationCenter3 = [(CWFWiFiUserAgent *)v8 userNotificationCenter];
+        [userNotificationCenter3 setWantsNotificationResponsesDelivered];
 
-        v51 = [(CWFWiFiUserAgent *)v8 userNotificationCenter];
-        [v51 requestAuthorizationWithOptions:7 completionHandler:&unk_1F5B8C1A0];
+        userNotificationCenter4 = [(CWFWiFiUserAgent *)v8 userNotificationCenter];
+        [userNotificationCenter4 requestAuthorizationWithOptions:7 completionHandler:&unk_1F5B8C1A0];
 
-        v52 = [(CWFWiFiUserAgent *)v8 userNotificationCenter];
-        [v52 removeAllDeliveredNotifications];
+        userNotificationCenter5 = [(CWFWiFiUserAgent *)v8 userNotificationCenter];
+        [userNotificationCenter5 removeAllDeliveredNotifications];
 LABEL_69:
       }
     }
@@ -1448,46 +1448,46 @@ LABEL_69:
   dispatch_async(internalQueue, block);
 }
 
-- (void)__showWiFiNetworkSharingAskToShareNotificationForClientID:(id)a3 network:(id)a4 accessoryDisplayName:(id)a5 completion:(id)a6
+- (void)__showWiFiNetworkSharingAskToShareNotificationForClientID:(id)d network:(id)network accessoryDisplayName:(id)name completion:(id)completion
 {
   v74[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v58 = a5;
-  v57 = a6;
-  v12 = [(CWFWiFiUserAgent *)self askToShareUserNotificationRequest];
+  dCopy = d;
+  networkCopy = network;
+  nameCopy = name;
+  completionCopy = completion;
+  askToShareUserNotificationRequest = [(CWFWiFiUserAgent *)self askToShareUserNotificationRequest];
 
-  if (v12)
+  if (askToShareUserNotificationRequest)
   {
-    v13 = [(CWFWiFiUserAgent *)self userNotificationCenter];
-    v14 = [(CWFWiFiUserAgent *)self askToShareUserNotificationRequest];
-    v15 = [v14 identifier];
-    v74[0] = v15;
+    userNotificationCenter = [(CWFWiFiUserAgent *)self userNotificationCenter];
+    askToShareUserNotificationRequest2 = [(CWFWiFiUserAgent *)self askToShareUserNotificationRequest];
+    identifier = [askToShareUserNotificationRequest2 identifier];
+    v74[0] = identifier;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:1];
-    [v13 removePendingNotificationRequestsWithIdentifiers:v16];
+    [userNotificationCenter removePendingNotificationRequestsWithIdentifiers:v16];
 
-    v17 = [(CWFWiFiUserAgent *)self userNotificationCenter];
-    v18 = [(CWFWiFiUserAgent *)self askToShareUserNotificationRequest];
-    v19 = [v18 identifier];
-    v73 = v19;
+    userNotificationCenter2 = [(CWFWiFiUserAgent *)self userNotificationCenter];
+    askToShareUserNotificationRequest3 = [(CWFWiFiUserAgent *)self askToShareUserNotificationRequest];
+    identifier2 = [askToShareUserNotificationRequest3 identifier];
+    v73 = identifier2;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v73 count:1];
-    [v17 removeDeliveredNotificationsWithIdentifiers:v20];
+    [userNotificationCenter2 removeDeliveredNotificationsWithIdentifiers:v20];
 
     [(CWFWiFiUserAgent *)self setAskToShareUserNotificationRequest:0];
   }
 
-  v21 = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
+  presentAskToShareUserNotificationCompletionHandler = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
 
-  if (v21)
+  if (presentAskToShareUserNotificationCompletionHandler)
   {
-    v22 = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
+    presentAskToShareUserNotificationCompletionHandler2 = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
     v23 = *MEMORY[0x1E696A798];
     v24 = CWFErrorDescription(*MEMORY[0x1E696A798], 0x59uLL);
     v25 = CWFErrorWithDescription(v23, 89, v24);
-    (v22)[2](v22, v25, 0);
+    (presentAskToShareUserNotificationCompletionHandler2)[2](presentAskToShareUserNotificationCompletionHandler2, v25, 0);
   }
 
-  [(CWFWiFiUserAgent *)self setPresentAskToShareUserNotificationCompletionHandler:v57];
+  [(CWFWiFiUserAgent *)self setPresentAskToShareUserNotificationCompletionHandler:completionCopy];
   v66 = 0;
   v67 = &v66;
   v68 = 0x2050000000;
@@ -1523,10 +1523,10 @@ LABEL_69:
   [v28 setTitle:v30];
 
   v31 = MEMORY[0x1E696AEC0];
-  v72[0] = v58;
-  v32 = [v11 network];
-  v33 = [v32 networkName];
-  v72[1] = v33;
+  v72[0] = nameCopy;
+  network = [networkCopy network];
+  networkName = [network networkName];
+  v72[1] = networkName;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:2];
   v35 = [v31 localizedUserNotificationStringForKey:@"kWiFiLocWiFiNetworkSharingUserNoticationBody" arguments:v34];
   [v28 setBody:v35];
@@ -1551,8 +1551,8 @@ LABEL_69:
 
   v37 = v36;
   _Block_object_dispose(&v66, 8);
-  v38 = [v36 defaultSound];
-  [v28 setSound:v38];
+  defaultSound = [v36 defaultSound];
+  [v28 setSound:defaultSound];
 
   [v28 setCategoryIdentifier:@"wifinetworksharing.asktoshare"];
   v66 = 0;
@@ -1575,28 +1575,28 @@ LABEL_69:
 
   v40 = v39;
   _Block_object_dispose(&v66, 8);
-  v41 = [v10 bundleID];
-  v42 = [v39 iconForApplicationIdentifier:v41];
+  bundleID = [dCopy bundleID];
+  v42 = [v39 iconForApplicationIdentifier:bundleID];
   [v28 setIcon:v42];
 
   v70[0] = @"ClientID";
-  v43 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
+  v43 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dCopy requiringSecureCoding:1 error:0];
   v71[0] = v43;
   v70[1] = @"AskToShareNetwork";
-  v44 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
+  v44 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:networkCopy requiringSecureCoding:1 error:0];
   v71[1] = v44;
   v70[2] = @"AccessoryDisplayName";
-  v71[2] = v58;
+  v71[2] = nameCopy;
   v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:v70 count:3];
   [v28 setUserInfo:v45];
 
   [v28 setShouldBackgroundDefaultAction:1];
   v46 = MEMORY[0x1E696AEC0];
-  v47 = [v10 accessoryID];
-  v48 = [v10 bundleID];
-  v49 = [v11 network];
-  v50 = [v49 wifiNetworkSharingNetworkID];
-  v51 = [v46 stringWithFormat:@"%@/%@/%@", v47, v48, v50];
+  accessoryID = [dCopy accessoryID];
+  bundleID2 = [dCopy bundleID];
+  network2 = [networkCopy network];
+  wifiNetworkSharingNetworkID = [network2 wifiNetworkSharingNetworkID];
+  v51 = [v46 stringWithFormat:@"%@/%@/%@", accessoryID, bundleID2, wifiNetworkSharingNetworkID];
 
   v66 = 0;
   v67 = &v66;
@@ -1621,13 +1621,13 @@ LABEL_69:
   v54 = [v52 requestWithIdentifier:v51 content:v28 trigger:0 destinations:5];
   [(CWFWiFiUserAgent *)self setAskToShareUserNotificationRequest:v54];
   objc_initWeak(&location, self);
-  v55 = [(CWFWiFiUserAgent *)self userNotificationCenter];
+  userNotificationCenter3 = [(CWFWiFiUserAgent *)self userNotificationCenter];
   v59[0] = MEMORY[0x1E69E9820];
   v59[1] = 3221225472;
   v59[2] = sub_1E0D3A030;
   v59[3] = &unk_1E86E99A0;
   objc_copyWeak(&v60, &location);
-  [v55 addNotificationRequest:v54 withCompletionHandler:v59];
+  [userNotificationCenter3 addNotificationRequest:v54 withCompletionHandler:v59];
 
   objc_destroyWeak(&v60);
   objc_destroyWeak(&location);
@@ -1635,10 +1635,10 @@ LABEL_69:
   v56 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__launchWiFiNetworkSharingAuthorizationProxCardForAccessoryID:(id)a3 accessoryName:(id)a4 appBundleID:(id)a5 completion:(id)a6
+- (void)__launchWiFiNetworkSharingAuthorizationProxCardForAccessoryID:(id)d accessoryName:(id)name appBundleID:(id)iD completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a6;
+  completionCopy = completion;
   v8 = [MEMORY[0x1E698F478] interfaceWithIdentifier:@"com.apple.AccessorySetupUI.services.presenter"];
   v9 = [MEMORY[0x1E698E718] protocolForProtocol:&unk_1F5BE84C8];
   [v8 setServer:v9];
@@ -1659,21 +1659,21 @@ LABEL_69:
       v31[2] = sub_1E0D3A69C;
       v31[3] = &unk_1E86E9A10;
       v32 = v8;
-      v33 = self;
+      selfCopy = self;
       [v13 configureConnection:v31];
-      v14 = [(CWFWiFiUserAgent *)self launchAngelConnection];
-      [v14 invalidate];
+      launchAngelConnection = [(CWFWiFiUserAgent *)self launchAngelConnection];
+      [launchAngelConnection invalidate];
 
-      v15 = [(CWFWiFiUserAgent *)self presentAuthorizationProxCardCompletionHandler];
+      presentAuthorizationProxCardCompletionHandler = [(CWFWiFiUserAgent *)self presentAuthorizationProxCardCompletionHandler];
 
-      if (v15)
+      if (presentAuthorizationProxCardCompletionHandler)
       {
-        v16 = [(CWFWiFiUserAgent *)self presentAuthorizationProxCardCompletionHandler];
-        v16[2](v16, 0, 0);
+        presentAuthorizationProxCardCompletionHandler2 = [(CWFWiFiUserAgent *)self presentAuthorizationProxCardCompletionHandler];
+        presentAuthorizationProxCardCompletionHandler2[2](presentAuthorizationProxCardCompletionHandler2, 0, 0);
       }
 
       [(CWFWiFiUserAgent *)self setLaunchAngelConnection:v13];
-      [(CWFWiFiUserAgent *)self setPresentAuthorizationProxCardCompletionHandler:v7];
+      [(CWFWiFiUserAgent *)self setPresentAuthorizationProxCardCompletionHandler:completionCopy];
       [v13 activate];
       v17 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.common" name:@"BasicAngelIPC"];
       v34 = v17;
@@ -1708,7 +1708,7 @@ LABEL_69:
         _os_log_send_and_compose_impl();
       }
 
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_22;
       }
@@ -1716,7 +1716,7 @@ LABEL_69:
       v26 = *MEMORY[0x1E696A798];
       v20 = CWFErrorDescription(*MEMORY[0x1E696A798], 2uLL);
       v27 = CWFErrorWithDescription(v26, 2, v20);
-      v7[2](v7, v27, 0);
+      completionCopy[2](completionCopy, v27, 0);
     }
 
 LABEL_21:
@@ -1748,12 +1748,12 @@ LABEL_22:
     _os_log_send_and_compose_impl();
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v29 = *MEMORY[0x1E696A798];
     v13 = CWFErrorDescription(*MEMORY[0x1E696A798], 2uLL);
     v20 = CWFErrorWithDescription(v29, 2, v13);
-    v7[2](v7, v20, 0);
+    completionCopy[2](completionCopy, v20, 0);
     goto LABEL_21;
   }
 
@@ -1762,10 +1762,10 @@ LABEL_23:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__launchWiFiNetworkSharingAskToShareProxCardForAccessoryID:(id)a3 accessoryName:(id)a4 appBundleID:(id)a5 completion:(id)a6
+- (void)__launchWiFiNetworkSharingAskToShareProxCardForAccessoryID:(id)d accessoryName:(id)name appBundleID:(id)iD completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a6;
+  completionCopy = completion;
   v8 = [MEMORY[0x1E698F478] interfaceWithIdentifier:@"com.apple.AccessorySetupUI.services.presenter"];
   v9 = [MEMORY[0x1E698E718] protocolForProtocol:&unk_1F5BE84C8];
   [v8 setServer:v9];
@@ -1786,21 +1786,21 @@ LABEL_23:
       v31[2] = sub_1E0D3B1B0;
       v31[3] = &unk_1E86E9A10;
       v32 = v8;
-      v33 = self;
+      selfCopy = self;
       [v13 configureConnection:v31];
-      v14 = [(CWFWiFiUserAgent *)self launchAngelConnection];
-      [v14 invalidate];
+      launchAngelConnection = [(CWFWiFiUserAgent *)self launchAngelConnection];
+      [launchAngelConnection invalidate];
 
-      v15 = [(CWFWiFiUserAgent *)self presentAskToShareProxCardCompletionHandler];
+      presentAskToShareProxCardCompletionHandler = [(CWFWiFiUserAgent *)self presentAskToShareProxCardCompletionHandler];
 
-      if (v15)
+      if (presentAskToShareProxCardCompletionHandler)
       {
-        v16 = [(CWFWiFiUserAgent *)self presentAskToShareProxCardCompletionHandler];
-        v16[2](v16, 0, 0, 0);
+        presentAskToShareProxCardCompletionHandler2 = [(CWFWiFiUserAgent *)self presentAskToShareProxCardCompletionHandler];
+        presentAskToShareProxCardCompletionHandler2[2](presentAskToShareProxCardCompletionHandler2, 0, 0, 0);
       }
 
       [(CWFWiFiUserAgent *)self setLaunchAngelConnection:v13];
-      [(CWFWiFiUserAgent *)self setPresentAskToShareProxCardCompletionHandler:v7];
+      [(CWFWiFiUserAgent *)self setPresentAskToShareProxCardCompletionHandler:completionCopy];
       [v13 activate];
       v17 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.common" name:@"BasicAngelIPC"];
       v34 = v17;
@@ -1835,7 +1835,7 @@ LABEL_23:
         _os_log_send_and_compose_impl();
       }
 
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_22;
       }
@@ -1843,7 +1843,7 @@ LABEL_23:
       v26 = *MEMORY[0x1E696A798];
       v20 = CWFErrorDescription(*MEMORY[0x1E696A798], 2uLL);
       v27 = CWFErrorWithDescription(v26, 2, v20);
-      (*(v7 + 2))(v7, v27, 0, 0);
+      (*(completionCopy + 2))(completionCopy, v27, 0, 0);
     }
 
 LABEL_21:
@@ -1875,12 +1875,12 @@ LABEL_22:
     _os_log_send_and_compose_impl();
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v29 = *MEMORY[0x1E696A798];
     v13 = CWFErrorDescription(*MEMORY[0x1E696A798], 2uLL);
     v20 = CWFErrorWithDescription(v29, 2, v13);
-    (*(v7 + 2))(v7, v20, 0, 0);
+    (*(completionCopy + 2))(completionCopy, v20, 0, 0);
     goto LABEL_21;
   }
 
@@ -2005,8 +2005,8 @@ LABEL_23:
     dispatch_source_cancel(wifiNetworkSharingAskToShareNotificationStatusTimer);
   }
 
-  v6 = [(CWFWiFiUserAgent *)self launchAngelConnection];
-  [v6 invalidate];
+  launchAngelConnection = [(CWFWiFiUserAgent *)self launchAngelConnection];
+  [launchAngelConnection invalidate];
 
   v7.receiver = self;
   v7.super_class = CWFWiFiUserAgent;
@@ -2033,10 +2033,10 @@ LABEL_23:
   }
 }
 
-- (void)pickerDidDismiss:(id)a3
+- (void)pickerDidDismiss:(id)dismiss
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dismissCopy = dismiss;
   v4 = CWFGetOSLog();
   if (v4)
   {
@@ -2057,16 +2057,16 @@ LABEL_23:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v90 = *MEMORY[0x1E69E9840];
-  v79 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 notification];
-  v10 = [v9 request];
-  v11 = [v10 content];
-  v81 = [v11 categoryIdentifier];
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
 
   v12 = CWFGetOSLog();
   if (v12)
@@ -2082,44 +2082,44 @@ LABEL_23:
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v7 actionIdentifier];
+    actionIdentifier = [responseCopy actionIdentifier];
     *v87 = 138543618;
-    *&v87[4] = v81;
+    *&v87[4] = categoryIdentifier;
     *&v87[12] = 2114;
-    *&v87[14] = v15;
+    *&v87[14] = actionIdentifier;
     LODWORD(v77) = 22;
     v76 = v87;
     _os_log_send_and_compose_impl();
   }
 
-  if ([v81 isEqualToString:@"wifinetworksharing.asktoshare"])
+  if ([categoryIdentifier isEqualToString:@"wifinetworksharing.asktoshare"])
   {
     [(CWFWiFiUserAgent *)self __cancelRecommendedNetworkNotificationTimeout];
     v16 = MEMORY[0x1E696ACD0];
     v17 = objc_opt_class();
-    v18 = [v7 notification];
-    v19 = [v18 request];
-    v20 = [v19 content];
-    v21 = [v20 userInfo];
-    v22 = [v21 objectForKeyedSubscript:@"AskToShareNetwork"];
+    notification2 = [responseCopy notification];
+    request2 = [notification2 request];
+    content2 = [request2 content];
+    userInfo = [content2 userInfo];
+    v22 = [userInfo objectForKeyedSubscript:@"AskToShareNetwork"];
     v78 = [v16 unarchivedObjectOfClass:v17 fromData:v22 error:0];
 
     v23 = MEMORY[0x1E696ACD0];
     v24 = objc_opt_class();
-    v25 = [v7 notification];
-    v26 = [v25 request];
-    v27 = [v26 content];
-    v28 = [v27 userInfo];
-    v29 = [v28 objectForKeyedSubscript:@"ClientID"];
+    notification3 = [responseCopy notification];
+    request3 = [notification3 request];
+    content3 = [request3 content];
+    userInfo2 = [content3 userInfo];
+    v29 = [userInfo2 objectForKeyedSubscript:@"ClientID"];
     v30 = [v23 unarchivedObjectOfClass:v24 fromData:v29 error:0];
 
-    v31 = [v7 notification];
-    v32 = [v31 request];
-    v33 = [v32 content];
-    v34 = [v33 userInfo];
-    v35 = [v34 objectForKeyedSubscript:@"AccessoryDisplayName"];
+    notification4 = [responseCopy notification];
+    request4 = [notification4 request];
+    content4 = [request4 content];
+    userInfo3 = [content4 userInfo];
+    v35 = [userInfo3 objectForKeyedSubscript:@"AccessoryDisplayName"];
 
-    v36 = [v7 actionIdentifier];
+    actionIdentifier2 = [responseCopy actionIdentifier];
     v83 = 0;
     v84 = &v83;
     v85 = 0x2020000000;
@@ -2142,7 +2142,7 @@ LABEL_23:
     _Block_object_dispose(&v83, 8);
     if (v37)
     {
-      v40 = [v36 isEqualToString:*v37];
+      v40 = [actionIdentifier2 isEqualToString:*v37];
 
       if (v40)
       {
@@ -2160,22 +2160,22 @@ LABEL_23:
 
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v58 = [v78 network];
+          network = [v78 network];
           *v87 = 138543618;
           *&v87[4] = v30;
           *&v87[12] = 2114;
-          *&v87[14] = v58;
+          *&v87[14] = network;
           LODWORD(v77) = 22;
           v76 = v87;
           _os_log_send_and_compose_impl();
         }
 
-        v59 = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
+        presentAskToShareUserNotificationCompletionHandler = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
 
-        if (v59)
+        if (presentAskToShareUserNotificationCompletionHandler)
         {
-          v60 = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
-          v60[2](v60, 0, 2);
+          presentAskToShareUserNotificationCompletionHandler2 = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
+          presentAskToShareUserNotificationCompletionHandler2[2](presentAskToShareUserNotificationCompletionHandler2, 0, 2);
         }
 
 LABEL_30:
@@ -2186,7 +2186,7 @@ LABEL_41:
         goto LABEL_42;
       }
 
-      v43 = [v7 actionIdentifier];
+      actionIdentifier3 = [responseCopy actionIdentifier];
       v83 = 0;
       v84 = &v83;
       v85 = 0x2020000000;
@@ -2209,7 +2209,7 @@ LABEL_41:
       _Block_object_dispose(&v83, 8);
       if (v44)
       {
-        v47 = [v43 isEqualToString:*v44];
+        v47 = [actionIdentifier3 isEqualToString:*v44];
 
         if (v47)
         {
@@ -2227,28 +2227,28 @@ LABEL_41:
 
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
-            v62 = [v78 network];
+            network2 = [v78 network];
             *v87 = 138543618;
             *&v87[4] = v30;
             *&v87[12] = 2114;
-            *&v87[14] = v62;
+            *&v87[14] = network2;
             LODWORD(v77) = 22;
             v76 = v87;
             _os_log_send_and_compose_impl();
           }
 
-          v63 = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
+          presentAskToShareUserNotificationCompletionHandler3 = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
 
-          if (v63)
+          if (presentAskToShareUserNotificationCompletionHandler3)
           {
-            v64 = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
-            v64[2](v64, 0, 2);
+            presentAskToShareUserNotificationCompletionHandler4 = [(CWFWiFiUserAgent *)self presentAskToShareUserNotificationCompletionHandler];
+            presentAskToShareUserNotificationCompletionHandler4[2](presentAskToShareUserNotificationCompletionHandler4, 0, 2);
           }
 
           goto LABEL_30;
         }
 
-        v50 = [v7 actionIdentifier];
+        actionIdentifier4 = [responseCopy actionIdentifier];
         v83 = 0;
         v84 = &v83;
         v85 = 0x2020000000;
@@ -2271,7 +2271,7 @@ LABEL_41:
         _Block_object_dispose(&v83, 8);
         if (v51)
         {
-          v54 = [v50 isEqualToString:*v51];
+          v54 = [actionIdentifier4 isEqualToString:*v51];
 
           if (v54)
           {
@@ -2289,52 +2289,52 @@ LABEL_41:
 
             if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
             {
-              v66 = [v78 network];
+              network3 = [v78 network];
               *v87 = 138543618;
               *&v87[4] = v30;
               *&v87[12] = 2114;
-              *&v87[14] = v66;
+              *&v87[14] = network3;
               _os_log_send_and_compose_impl();
             }
 
-            v67 = [v30 accessoryID];
-            v68 = [v30 bundleID];
+            accessoryID = [v30 accessoryID];
+            bundleID = [v30 bundleID];
             v82[0] = MEMORY[0x1E69E9820];
             v82[1] = 3221225472;
             v82[2] = sub_1E0D3E9E8;
             v82[3] = &unk_1E86E9618;
             v82[4] = self;
-            [(CWFWiFiUserAgent *)self __launchWiFiNetworkSharingAskToShareProxCardForAccessoryID:v67 accessoryName:v35 appBundleID:v68 completion:v82];
+            [(CWFWiFiUserAgent *)self __launchWiFiNetworkSharingAskToShareProxCardForAccessoryID:accessoryID accessoryName:v35 appBundleID:bundleID completion:v82];
           }
 
           goto LABEL_41;
         }
 
-        v74 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v75 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getUNNotificationDefaultActionIdentifier(void)"];
-        [v74 handleFailureInFunction:v75 file:@"CWFWiFiUserAgent.m" lineNumber:70 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v75 file:@"CWFWiFiUserAgent.m" lineNumber:70 description:{@"%s", dlerror()}];
       }
 
       else
       {
-        v72 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v73 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getUNNotificationDismissActionIdentifier(void)"];
-        [v72 handleFailureInFunction:v73 file:@"CWFWiFiUserAgent.m" lineNumber:68 description:{@"%s", dlerror()}];
+        [currentHandler2 handleFailureInFunction:v73 file:@"CWFWiFiUserAgent.m" lineNumber:68 description:{@"%s", dlerror()}];
       }
     }
 
     else
     {
-      v70 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v71 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getUNNotificationSilenceActionIdentifier(void)"];
-      [v70 handleFailureInFunction:v71 file:@"CWFWiFiUserAgent.m" lineNumber:69 description:{@"%s", dlerror()}];
+      [currentHandler3 handleFailureInFunction:v71 file:@"CWFWiFiUserAgent.m" lineNumber:69 description:{@"%s", dlerror()}];
     }
 
     __break(1u);
   }
 
 LABEL_42:
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 
   v69 = *MEMORY[0x1E69E9840];
 }

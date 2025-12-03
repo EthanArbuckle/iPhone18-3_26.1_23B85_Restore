@@ -1,14 +1,14 @@
 @interface RSKeyframeExtended
-- (RSKeyframeExtended)initWithDictionary:(id)a3 withGroupId:(unsigned int)a4;
-- (RSKeyframeExtended)initWithKeyframe:(id)a3;
+- (RSKeyframeExtended)initWithDictionary:(id)dictionary withGroupId:(unsigned int)id;
+- (RSKeyframeExtended)initWithKeyframe:(id)keyframe;
 - (__n128)cameraPose;
-- (__n128)setCameraPose:(__n128)a3;
+- (__n128)setCameraPose:(__n128)pose;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)filterOutPointsBeyondDistance:(float)a3;
-- (void)processWithVoxelize:(BOOL)a3 asPythonApproach:(BOOL)a4 resample:(BOOL)a5 outlierRemove:(BOOL)a6;
-- (void)rotateAlongZAxisRightHand:(float)a3;
-- (void)setPoints:(RSKeyframeExtended *)self semanticLabels:(SEL)a2 semanticVotes:colors:count:;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)filterOutPointsBeyondDistance:(float)distance;
+- (void)processWithVoxelize:(BOOL)voxelize asPythonApproach:(BOOL)approach resample:(BOOL)resample outlierRemove:(BOOL)remove;
+- (void)rotateAlongZAxisRightHand:(float)hand;
+- (void)setPoints:(RSKeyframeExtended *)self semanticLabels:(SEL)labels semanticVotes:colors:count:;
 - (void)translateBy:(RSKeyframeExtended *)self;
 @end
 
@@ -27,10 +27,10 @@
   return self;
 }
 
-- (__n128)setCameraPose:(__n128)a3
+- (__n128)setCameraPose:(__n128)pose
 {
   result[10] = a2;
-  result[11] = a3;
+  result[11] = pose;
   result[12] = a4;
   result[13] = a5;
   return result;
@@ -38,19 +38,19 @@
 
 - (__n128)cameraPose
 {
-  result = *(a1 + 160);
-  v2 = *(a1 + 176);
-  v3 = *(a1 + 192);
-  v4 = *(a1 + 208);
+  result = *(self + 160);
+  v2 = *(self + 176);
+  v3 = *(self + 192);
+  v4 = *(self + 208);
   return result;
 }
 
-- (void)processWithVoxelize:(BOOL)a3 asPythonApproach:(BOOL)a4 resample:(BOOL)a5 outlierRemove:(BOOL)a6
+- (void)processWithVoxelize:(BOOL)voxelize asPythonApproach:(BOOL)approach resample:(BOOL)resample outlierRemove:(BOOL)remove
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  removeCopy = remove;
+  resampleCopy = resample;
+  approachCopy = approach;
+  voxelizeCopy = voxelize;
   sub_2621CD160(__p, (*&self->_anon_20[8] - *self->_anon_20) >> 4);
   v11 = __p[0];
   if (__p[0] != __p[1])
@@ -81,10 +81,10 @@
     while (v15 != v12);
   }
 
-  if (v9)
+  if (voxelizeCopy)
   {
     v19 = *self->_anon_20;
-    if (v8)
+    if (approachCopy)
     {
       sub_2622C606C(v19, __p);
     }
@@ -95,12 +95,12 @@
     }
   }
 
-  if (v7)
+  if (resampleCopy)
   {
     sub_2622C5C44(__p);
   }
 
-  if (v6)
+  if (removeCopy)
   {
     sub_2622C6EA0(*self->_anon_20, __p);
   }
@@ -113,23 +113,23 @@
   }
 }
 
-- (RSKeyframeExtended)initWithKeyframe:(id)a3
+- (RSKeyframeExtended)initWithKeyframe:(id)keyframe
 {
-  v4 = a3;
+  keyframeCopy = keyframe;
   v79.receiver = self;
   v79.super_class = RSKeyframeExtended;
   v5 = [(RSKeyframeExtended *)&v79 init];
-  if (objc_msgSend_count(v4, v6, v7))
+  if (objc_msgSend_count(keyframeCopy, v6, v7))
   {
-    v10 = objc_msgSend_count(v4, v8, v9);
-    v13 = objc_msgSend_points(v4, v11, v12);
-    v16 = objc_msgSend_points(v4, v14, v15);
+    v10 = objc_msgSend_count(keyframeCopy, v8, v9);
+    v13 = objc_msgSend_points(keyframeCopy, v11, v12);
+    v16 = objc_msgSend_points(keyframeCopy, v14, v15);
     sub_26229CC54(v5 + 1, v13, (v16 + 16 * v10), (v16 + 16 * v10 - v13) >> 4);
-    v19 = objc_msgSend_pointsToWorld(v4, v17, v18);
-    v22 = objc_msgSend_pointsToWorld(v4, v20, v21);
+    v19 = objc_msgSend_pointsToWorld(keyframeCopy, v17, v18);
+    v22 = objc_msgSend_pointsToWorld(keyframeCopy, v20, v21);
     sub_26229CA04(v5 + 4, v19, (v22 + 16 * v10), (v22 + 16 * v10 - v19) >> 4);
-    v25 = objc_msgSend_semanticLabels(v4, v23, v24);
-    v30 = objc_msgSend_semanticLabels(v4, v26, v27) + 4 * v10;
+    v25 = objc_msgSend_semanticLabels(keyframeCopy, v23, v24);
+    v30 = objc_msgSend_semanticLabels(keyframeCopy, v26, v27) + 4 * v10;
     v31 = v30 - v25;
     v32 = *(v5 + 9);
     v33 = *(v5 + 7);
@@ -210,8 +210,8 @@
     }
 
     *(v5 + 8) = v42;
-    v43 = objc_msgSend_semanticVotes(v4, v28, v29);
-    v48 = objc_msgSend_semanticVotes(v4, v44, v45) + 8 * v10;
+    v43 = objc_msgSend_semanticVotes(keyframeCopy, v28, v29);
+    v48 = objc_msgSend_semanticVotes(keyframeCopy, v44, v45) + 8 * v10;
     v49 = v48 - v43;
     v50 = *(v5 + 12);
     v51 = *(v5 + 10);
@@ -292,19 +292,19 @@
     }
 
     *(v5 + 11) = v60;
-    v61 = objc_msgSend_colors(v4, v46, v47);
-    v64 = objc_msgSend_colors(v4, v62, v63);
+    v61 = objc_msgSend_colors(keyframeCopy, v46, v47);
+    v64 = objc_msgSend_colors(keyframeCopy, v62, v63);
     sub_26229CA04(v5 + 13, v61, (v64 + 16 * v10), (v64 + 16 * v10 - v61) >> 4);
-    v67 = objc_msgSend_identifier(v4, v65, v66);
+    v67 = objc_msgSend_identifier(keyframeCopy, v65, v66);
     v68 = *(v5 + 17);
     *(v5 + 17) = v67;
 
-    objc_msgSend_cameraPose(v4, v69, v70);
+    objc_msgSend_cameraPose(keyframeCopy, v69, v70);
     *(v5 + 10) = v71;
     *(v5 + 11) = v72;
     *(v5 + 12) = v73;
     *(v5 + 13) = v74;
-    objc_msgSend_timestamp(v4, v75, v76);
+    objc_msgSend_timestamp(keyframeCopy, v75, v76);
     *(v5 + 18) = v77;
     *(v5 + 32) = 0;
   }
@@ -312,7 +312,7 @@
   return v5;
 }
 
-- (void)filterOutPointsBeyondDistance:(float)a3
+- (void)filterOutPointsBeyondDistance:(float)distance
 {
   v5 = *self->_anon_8;
   v4 = *&self->_anon_8[8];
@@ -327,7 +327,7 @@
     v6 = 0;
     v7 = 0;
     v8 = 0;
-    v9 = a3 * a3;
+    v9 = distance * distance;
     do
     {
       v10 = vmulq_f32(*(v5 + 16 * v8), *(v5 + 16 * v8));
@@ -398,9 +398,9 @@
   *&self[1]._anon_20[16] = v3;
 }
 
-- (void)rotateAlongZAxisRightHand:(float)a3
+- (void)rotateAlongZAxisRightHand:(float)hand
 {
-  v6 = __sincosf_stret(a3);
+  v6 = __sincosf_stret(hand);
   *v5.i32 = v6.__cosval;
   *v4.i8 = v6;
   v7 = 0;
@@ -432,7 +432,7 @@
   *&self[1]._anon_20[16] = v17;
 }
 
-- (void)setPoints:(RSKeyframeExtended *)self semanticLabels:(SEL)a2 semanticVotes:colors:count:
+- (void)setPoints:(RSKeyframeExtended *)self semanticLabels:(SEL)labels semanticVotes:colors:count:
 {
   v7 = v6;
   v8 = v5;
@@ -459,19 +459,19 @@
   }
 }
 
-- (RSKeyframeExtended)initWithDictionary:(id)a3 withGroupId:(unsigned int)a4
+- (RSKeyframeExtended)initWithDictionary:(id)dictionary withGroupId:(unsigned int)id
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v142.receiver = self;
   v142.super_class = RSKeyframeExtended;
   v7 = [(RSKeyframeExtended *)&v142 init];
-  v135 = objc_msgSend_objectForKeyedSubscript_(v6, v8, @"identifier");
+  v135 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v8, @"identifier");
   v9 = objc_alloc(MEMORY[0x277CCAD78]);
   v11 = objc_msgSend_initWithUUIDString_(v9, v10, v135);
   v12 = *(v7 + 17);
   *(v7 + 17) = v11;
 
-  v14 = objc_msgSend_objectForKeyedSubscript_(v6, v13, @"cameraPose");
+  v14 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v13, @"cameraPose");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -493,10 +493,10 @@
   *(v7 + 13) = v22;
   *(v7 + 10) = v20;
   *(v7 + 11) = v21;
-  v24 = objc_msgSend_objectForKeyedSubscript_(v6, v23, @"count");
+  v24 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v23, @"count");
   v27 = objc_msgSend_integerValue(v24, v25, v26);
 
-  v29 = objc_msgSend_objectForKeyedSubscript_(v6, v28, @"points");
+  v29 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v28, @"points");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -565,9 +565,9 @@
     operator delete(v39);
   }
 
-  v49 = objc_msgSend_objectForKeyedSubscript_(v6, v40, @"pointsToWorld");
+  v49 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v40, @"pointsToWorld");
   objc_opt_class();
-  v133 = a4;
+  idCopy = id;
   if (objc_opt_isKindOfClass())
   {
     v50 = v49;
@@ -656,7 +656,7 @@
     }
   }
 
-  v73 = objc_msgSend_objectForKeyedSubscript_(v6, v60, @"semanticLabels");
+  v73 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v60, @"semanticLabels");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -718,7 +718,7 @@
     operator delete(v83);
   }
 
-  v89 = objc_msgSend_objectForKeyedSubscript_(v6, v84, @"semanticVotes");
+  v89 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v84, @"semanticVotes");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -780,7 +780,7 @@
     operator delete(v99);
   }
 
-  v105 = objc_msgSend_objectForKeyedSubscript_(v6, v100, @"colors");
+  v105 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v100, @"colors");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -849,16 +849,16 @@
     operator delete(v115);
   }
 
-  v125 = objc_msgSend_objectForKeyedSubscript_(v6, v116, @"timestamp");
+  v125 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v116, @"timestamp");
 
   if (v125)
   {
-    v127 = objc_msgSend_objectForKeyedSubscript_(v6, v126, @"timestamp");
+    v127 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v126, @"timestamp");
     objc_msgSend_doubleValue(v127, v128, v129);
     *(v7 + 18) = v130;
   }
 
-  *(v7 + 32) = v133;
+  *(v7 + 32) = idCopy;
   if (v27 == (*(v7 + 2) - *(v7 + 1)) >> 4 && v27 == (*(v7 + 5) - *(v7 + 4)) >> 4 && v27 == (*(v7 + 11) - *(v7 + 10)) >> 3 && v27 == (*(v7 + 8) - *(v7 + 7)) >> 2 && v27 == (*(v7 + 14) - *(v7 + 13)) >> 4)
   {
     v131 = v7;
@@ -872,7 +872,7 @@
   return v131;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RSKeyframeExtended);
   objc_msgSend_setIdentifier_(v4, v5, self->identifier);

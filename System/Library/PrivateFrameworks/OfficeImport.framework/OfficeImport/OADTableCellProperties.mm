@@ -1,131 +1,131 @@
 @interface OADTableCellProperties
 - (id)description;
-- (id)stroke:(int)a3;
-- (id)strokeNormalToDir:(int)a3 bound:(int)a4;
-- (void)setStrokeOfType:(int)a3 toValue:(id)a4;
+- (id)stroke:(int)stroke;
+- (id)strokeNormalToDir:(int)dir bound:(int)bound;
+- (void)setStrokeOfType:(int)type toValue:(id)value;
 @end
 
 @implementation OADTableCellProperties
 
-- (id)stroke:(int)a3
+- (id)stroke:(int)stroke
 {
-  v4 = 0;
-  if (a3 > 3)
+  bottomStroke = 0;
+  if (stroke > 3)
   {
-    switch(a3)
+    switch(stroke)
     {
       case 4:
-        v4 = [(OADTableCellProperties *)self bottomStroke];
+        bottomStroke = [(OADTableCellProperties *)self bottomStroke];
         break;
       case 7:
-        v4 = [(OADTableCellProperties *)self topLeftToBottomRightStroke];
+        bottomStroke = [(OADTableCellProperties *)self topLeftToBottomRightStroke];
         break;
       case 8:
-        v4 = [(OADTableCellProperties *)self bottomLeftToTopRightStroke];
+        bottomStroke = [(OADTableCellProperties *)self bottomLeftToTopRightStroke];
         break;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(stroke)
     {
       case 1:
-        v4 = [(OADTableCellProperties *)self leftStroke];
+        bottomStroke = [(OADTableCellProperties *)self leftStroke];
         break;
       case 2:
-        v4 = [(OADTableCellProperties *)self rightStroke];
+        bottomStroke = [(OADTableCellProperties *)self rightStroke];
         break;
       case 3:
-        v4 = [(OADTableCellProperties *)self topStroke];
+        bottomStroke = [(OADTableCellProperties *)self topStroke];
         break;
     }
   }
 
-  return v4;
+  return bottomStroke;
 }
 
-- (void)setStrokeOfType:(int)a3 toValue:(id)a4
+- (void)setStrokeOfType:(int)type toValue:(id)value
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 > 3)
+  valueCopy = value;
+  v7 = valueCopy;
+  if (type > 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 4:
-        [(OADTableCellProperties *)self setBottomStroke:v6];
+        [(OADTableCellProperties *)self setBottomStroke:valueCopy];
         break;
       case 7:
-        [(OADTableCellProperties *)self setTopLeftToBottomRightStroke:v6];
+        [(OADTableCellProperties *)self setTopLeftToBottomRightStroke:valueCopy];
         break;
       case 8:
-        [(OADTableCellProperties *)self setBottomLeftToTopRightStroke:v6];
+        [(OADTableCellProperties *)self setBottomLeftToTopRightStroke:valueCopy];
         break;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
-        [(OADTableCellProperties *)self setLeftStroke:v6];
+        [(OADTableCellProperties *)self setLeftStroke:valueCopy];
         break;
       case 2:
-        [(OADTableCellProperties *)self setRightStroke:v6];
+        [(OADTableCellProperties *)self setRightStroke:valueCopy];
         break;
       case 3:
-        [(OADTableCellProperties *)self setTopStroke:v6];
+        [(OADTableCellProperties *)self setTopStroke:valueCopy];
         break;
     }
   }
 }
 
-- (id)strokeNormalToDir:(int)a3 bound:(int)a4
+- (id)strokeNormalToDir:(int)dir bound:(int)bound
 {
-  if (a3 == 1)
+  if (dir == 1)
   {
-    if (a4 != 1)
+    if (bound != 1)
     {
-      if (!a4)
+      if (!bound)
       {
-        v4 = [(OADTableCellProperties *)self leftStroke];
+        leftStroke = [(OADTableCellProperties *)self leftStroke];
         goto LABEL_10;
       }
 
       goto LABEL_9;
     }
 
-    v4 = [(OADTableCellProperties *)self rightStroke];
+    leftStroke = [(OADTableCellProperties *)self rightStroke];
   }
 
   else
   {
-    if (a3)
+    if (dir)
     {
 LABEL_9:
-      v4 = 0;
+      leftStroke = 0;
       goto LABEL_10;
     }
 
-    if (a4 != 1)
+    if (bound != 1)
     {
-      if (!a4)
+      if (!bound)
       {
-        v4 = [(OADTableCellProperties *)self topStroke];
+        leftStroke = [(OADTableCellProperties *)self topStroke];
         goto LABEL_10;
       }
 
       goto LABEL_9;
     }
 
-    v4 = [(OADTableCellProperties *)self bottomStroke];
+    leftStroke = [(OADTableCellProperties *)self bottomStroke];
   }
 
 LABEL_10:
 
-  return v4;
+  return leftStroke;
 }
 
 - (id)description

@@ -1,8 +1,8 @@
 @interface SpotlightReceiverConnectionManager
 + (id)sharedInstantManager;
 + (id)sharedScheduledManager;
-- (SpotlightReceiverConnectionManager)initWithConnectionInfo:(id)a3 configurationInfo:(id)a4;
-- (id)clientConnection:(int64_t)a3;
+- (SpotlightReceiverConnectionManager)initWithConnectionInfo:(id)info configurationInfo:(id)configurationInfo;
+- (id)clientConnection:(int64_t)connection;
 @end
 
 @implementation SpotlightReceiverConnectionManager
@@ -84,11 +84,11 @@ void __60__SpotlightReceiverConnectionManager_sharedScheduledManager__block_invo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (SpotlightReceiverConnectionManager)initWithConnectionInfo:(id)a3 configurationInfo:(id)a4
+- (SpotlightReceiverConnectionManager)initWithConnectionInfo:(id)info configurationInfo:(id)configurationInfo
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  configurationInfoCopy = configurationInfo;
   v45.receiver = self;
   v45.super_class = SpotlightReceiverConnectionManager;
   v8 = [(SpotlightReceiverConnectionManager *)&v45 init];
@@ -98,8 +98,8 @@ void __60__SpotlightReceiverConnectionManager_sharedScheduledManager__block_invo
     state = v8->_state;
     v8->_state = v9;
 
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    if ([v11 BOOLForKey:@"CSDisableReceiverLimit"])
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    if ([standardUserDefaults BOOLForKey:@"CSDisableReceiverLimit"])
     {
       v12 = logForCSLogCategoryDefault();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -119,8 +119,8 @@ void __60__SpotlightReceiverConnectionManager_sharedScheduledManager__block_invo
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v37 = v6;
-    v13 = v6;
+    v37 = infoCopy;
+    v13 = infoCopy;
     v14 = [v13 countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v14)
     {
@@ -137,13 +137,13 @@ void __60__SpotlightReceiverConnectionManager_sharedScheduledManager__block_invo
 
           v18 = *(*(&v40 + 1) + 8 * i);
           v19 = [v13 objectForKeyedSubscript:{v18, v36}];
-          v20 = [v7 objectForKeyedSubscript:v18];
-          v21 = [v18 intValue];
-          if (v21 > 2)
+          v20 = [configurationInfoCopy objectForKeyedSubscript:v18];
+          intValue = [v18 intValue];
+          if (intValue > 2)
           {
-            if (v21 == 3)
+            if (intValue == 3)
             {
-              if ([v11 BOOLForKey:@"CSDisableBackgroundHarvestingForImages"])
+              if ([standardUserDefaults BOOLForKey:@"CSDisableBackgroundHarvestingForImages"])
               {
                 goto LABEL_34;
               }
@@ -154,9 +154,9 @@ void __60__SpotlightReceiverConnectionManager_sharedScheduledManager__block_invo
               goto LABEL_31;
             }
 
-            if (v21 == 4)
+            if (intValue == 4)
             {
-              if ([v11 BOOLForKey:@"CSDisableBackgroundHarvestingForAssets"])
+              if ([standardUserDefaults BOOLForKey:@"CSDisableBackgroundHarvestingForAssets"])
               {
                 goto LABEL_34;
               }
@@ -178,7 +178,7 @@ LABEL_33:
               goto LABEL_34;
             }
 
-            if (v21 == 5 && ([v11 BOOLForKey:@"CSDisableBackgroundHarvestingForTextUnderstanding"] & 1) == 0)
+            if (intValue == 5 && ([standardUserDefaults BOOLForKey:@"CSDisableBackgroundHarvestingForTextUnderstanding"] & 1) == 0)
             {
               v22 = [SpotlightReceiverConnection alloc];
               v23 = v19;
@@ -189,9 +189,9 @@ LABEL_33:
 
           else
           {
-            if (!v21)
+            if (!intValue)
             {
-              if ([v11 BOOLForKey:@"CSDisableBackgroundHarvestingForTest"])
+              if ([standardUserDefaults BOOLForKey:@"CSDisableBackgroundHarvestingForTest"])
               {
                 goto LABEL_34;
               }
@@ -207,9 +207,9 @@ LABEL_24:
               goto LABEL_32;
             }
 
-            if (v21 == 1)
+            if (intValue == 1)
             {
-              if ([v11 BOOLForKey:@"CSDisableBackgroundHarvestingForCoreDuet"])
+              if ([standardUserDefaults BOOLForKey:@"CSDisableBackgroundHarvestingForCoreDuet"])
               {
                 goto LABEL_34;
               }
@@ -222,7 +222,7 @@ LABEL_24:
               goto LABEL_33;
             }
 
-            if (v21 == 2 && ([v11 BOOLForKey:@"CSDisableBackgroundHarvestingForIntelligentSuggestions"] & 1) == 0)
+            if (intValue == 2 && ([standardUserDefaults BOOLForKey:@"CSDisableBackgroundHarvestingForIntelligentSuggestions"] & 1) == 0)
             {
               v22 = [SpotlightReceiverConnection alloc];
               v23 = v19;
@@ -248,23 +248,23 @@ LABEL_34:
     connectionIdentifiers = v36->_connectionIdentifiers;
     v36->_connectionIdentifiers = v39;
 
-    v6 = v37;
+    infoCopy = v37;
   }
 
   v34 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (id)clientConnection:(int64_t)a3
+- (id)clientConnection:(int64_t)connection
 {
   connections = self->_connections;
   if (connections)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:connection];
     connections = [connections objectForKeyedSubscript:v6];
   }
 
-  if ([(SpotlightSenderState *)self->_state clientDisabled:a3])
+  if ([(SpotlightSenderState *)self->_state clientDisabled:connection])
   {
     v7 = 0;
   }

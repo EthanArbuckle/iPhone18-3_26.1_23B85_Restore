@@ -1,37 +1,37 @@
 @interface FCUIOptionsControl
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (FCUIOptionsControl)initWithReferencePointSize:(double)a3 maximumPointSize:(double)a4;
-- (double)_scaledValueForValue:(double)a3;
-- (id)_glyphImageNameForCurrentStateWithControlType:(int64_t)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (FCUIOptionsControl)initWithReferencePointSize:(double)size maximumPointSize:(double)pointSize;
+- (double)_scaledValueForValue:(double)value;
+- (id)_glyphImageNameForCurrentStateWithControlType:(int64_t)type;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (int64_t)_glyphViewVisualStyleForCurrentState;
 - (void)_configureBackgroundViewIfNecessary;
 - (void)_configureGlyphViewIfNecessary;
 - (void)_setNeedsTextAttributesUpdate;
 - (void)_updateTextAttributes;
 - (void)_updateTextAttributesIfNecessary;
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
 - (void)layoutSubviews;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setControlType:(int64_t)a3;
-- (void)setGlyphVisualStylingProvider:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setParentControlHighlighted:(BOOL)a3;
-- (void)setParentControlSelected:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTintColor:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setControlType:(int64_t)type;
+- (void)setGlyphVisualStylingProvider:(id)provider;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setParentControlHighlighted:(BOOL)highlighted;
+- (void)setParentControlSelected:(BOOL)selected;
+- (void)setSelected:(BOOL)selected;
+- (void)setTintColor:(id)color;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation FCUIOptionsControl
 
-- (FCUIOptionsControl)initWithReferencePointSize:(double)a3 maximumPointSize:(double)a4
+- (FCUIOptionsControl)initWithReferencePointSize:(double)size maximumPointSize:(double)pointSize
 {
   v12.receiver = self;
   v12.super_class = FCUIOptionsControl;
@@ -39,12 +39,12 @@
   v7 = v6;
   if (v6)
   {
-    v6->_referencePointSize = a3;
-    v6->_maxPointSize = a4;
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    v6->_referencePointSize = size;
+    v6->_maxPointSize = pointSize;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v9 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(FCUIOptionsControl *)v7 setHitTestInsets:-8.0, -8.0, -8.0, -8.0];
       v10 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:v7];
@@ -55,11 +55,11 @@
   return v7;
 }
 
-- (void)setControlType:(int64_t)a3
+- (void)setControlType:(int64_t)type
 {
-  if (self->_controlType != a3)
+  if (self->_controlType != type)
   {
-    self->_controlType = a3;
+    self->_controlType = type;
     [(UIImageView *)self->_glyphView removeFromSuperview];
     glyphView = self->_glyphView;
     self->_glyphView = 0;
@@ -68,49 +68,49 @@
   }
 }
 
-- (void)setGlyphVisualStylingProvider:(id)a3
+- (void)setGlyphVisualStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_glyphVisualStylingProvider != v5)
+  providerCopy = provider;
+  if (self->_glyphVisualStylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_glyphVisualStylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_glyphVisualStylingProvider, provider);
     [(FCUIOptionsControl *)self setNeedsLayout];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setParentControlHighlighted:(BOOL)a3
+- (void)setParentControlHighlighted:(BOOL)highlighted
 {
-  if (self->_parentControlHighlighted != a3)
+  if (self->_parentControlHighlighted != highlighted)
   {
-    self->_parentControlHighlighted = a3;
+    self->_parentControlHighlighted = highlighted;
     [(FCUIOptionsControl *)self setNeedsLayout];
   }
 }
 
-- (void)setParentControlSelected:(BOOL)a3
+- (void)setParentControlSelected:(BOOL)selected
 {
-  if (self->_parentControlSelected != a3)
+  if (self->_parentControlSelected != selected)
   {
-    self->_parentControlSelected = a3;
+    self->_parentControlSelected = selected;
     [(UIImageView *)self->_glyphView removeFromSuperview];
     glyphView = self->_glyphView;
     self->_glyphView = 0;
 
     if (self->_controlType == 2)
     {
-      v6 = [MEMORY[0x277D75348] systemBlueColor];
-      [(FCUIOptionsControl *)self setTintColor:v6];
+      systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+      [(FCUIOptionsControl *)self setTintColor:systemBlueColor];
     }
 
     [(FCUIOptionsControl *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(FCUIOptionsControl *)self _configureGlyphViewIfNecessary:a3.width];
+  [(FCUIOptionsControl *)self _configureGlyphViewIfNecessary:fits.width];
   [(FCUIOptionsControl *)self _updateTextAttributesIfNecessary];
   [(FCUIOptionsControl *)self _scaledValueForValue:self->_referencePointSize];
 
@@ -140,13 +140,13 @@
   v11[8] = v6;
   [MEMORY[0x277D75D18] performWithoutAnimation:v11];
   backgroundView = self->_backgroundView;
-  v8 = [(FCUIOptionsControl *)self isHighlighted];
+  isHighlighted = [(FCUIOptionsControl *)self isHighlighted];
   v9 = 1.0;
-  if ((v8 & 1) == 0)
+  if ((isHighlighted & 1) == 0)
   {
-    v10 = [(FCUIOptionsControl *)self isSelected];
+    isSelected = [(FCUIOptionsControl *)self isSelected];
     v9 = 0.0;
-    if (v10)
+    if (isSelected)
     {
       v9 = 1.0;
     }
@@ -169,96 +169,96 @@ uint64_t __36__FCUIOptionsControl_layoutSubviews__block_invoke(uint64_t a1)
   return [v2 setFrame:{v3, v4, v5, v6}];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = v5 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 numberOfTouchesRequired] != 1 || objc_msgSend(v4, "numberOfTapsRequired") != 1;
+  beginCopy = begin;
+  view = [beginCopy view];
+  v6 = view == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [beginCopy numberOfTouchesRequired] != 1 || objc_msgSend(beginCopy, "numberOfTapsRequired") != 1;
 
   return v6;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(FCUIOptionsControl *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(FCUIOptionsControl *)self isHighlighted];
   v6.receiver = self;
   v6.super_class = FCUIOptionsControl;
-  [(FCUIOptionsControl *)&v6 setHighlighted:v3];
-  if (v5 != [(FCUIOptionsControl *)self isHighlighted])
+  [(FCUIOptionsControl *)&v6 setHighlighted:highlightedCopy];
+  if (isHighlighted != [(FCUIOptionsControl *)self isHighlighted])
   {
     [(FCUIOptionsControl *)self setNeedsLayout];
     [(FCUIOptionsControl *)self layoutIfNeeded];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(FCUIOptionsControl *)self isSelected];
+  selectedCopy = selected;
+  isSelected = [(FCUIOptionsControl *)self isSelected];
   v6.receiver = self;
   v6.super_class = FCUIOptionsControl;
-  [(FCUIOptionsControl *)&v6 setSelected:v3];
-  if (v5 != [(FCUIOptionsControl *)self isSelected])
+  [(FCUIOptionsControl *)&v6 setSelected:selectedCopy];
+  if (isSelected != [(FCUIOptionsControl *)self isSelected])
   {
     [(FCUIOptionsControl *)self setNeedsLayout];
     [(FCUIOptionsControl *)self layoutIfNeeded];
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(FCUIOptionsControl *)self _setNeedsTextAttributesUpdate];
   }
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(FCUIOptionsControl *)self adjustsFontForContentSizeCategory];
-  if (v3)
+  adjustsFontForContentSizeCategory = [(FCUIOptionsControl *)self adjustsFontForContentSizeCategory];
+  if (adjustsFontForContentSizeCategory)
   {
     [(FCUIOptionsControl *)self _setNeedsTextAttributesUpdate];
   }
 
-  return v3;
+  return adjustsFontForContentSizeCategory;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v13 = a3;
-  v6 = [(FCUIOptionsControl *)self requiredVisualStyleCategories];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  if ([(MTVisualStylingProvider *)v6 containsObject:v7])
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(FCUIOptionsControl *)self requiredVisualStyleCategories];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+  if ([(MTVisualStylingProvider *)requiredVisualStyleCategories containsObject:v7])
   {
     glyphVisualStylingProvider = self->_glyphVisualStylingProvider;
 
-    v9 = v13;
-    if (glyphVisualStylingProvider == v13)
+    v9 = providerCopy;
+    if (glyphVisualStylingProvider == providerCopy)
     {
       goto LABEL_6;
     }
 
     v10 = self->_glyphVisualStylingProvider;
-    v11 = v13;
+    v11 = providerCopy;
     v12 = self->_glyphVisualStylingProvider;
     self->_glyphVisualStylingProvider = v11;
-    v6 = v10;
+    requiredVisualStyleCategories = v10;
 
-    [(FCUIOptionsControl *)self _visualStylingProviderDidChange:self->_glyphVisualStylingProvider forCategory:a4 outgoingProvider:v6];
+    [(FCUIOptionsControl *)self _visualStylingProviderDidChange:self->_glyphVisualStylingProvider forCategory:category outgoingProvider:requiredVisualStyleCategories];
   }
 
   else
   {
   }
 
-  v9 = v13;
+  v9 = providerCopy;
 LABEL_6:
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   if (self->_controlType)
   {
@@ -268,7 +268,7 @@ LABEL_6:
   else
   {
     v8 = MEMORY[0x277D75880];
-    [a5 rect];
+    [region rect];
     UIRectInset();
     v6 = [v8 regionWithRect:0 identifier:?];
   }
@@ -276,7 +276,7 @@ LABEL_6:
   return v6;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc_init(MEMORY[0x277D758D8]);
   v6 = MEMORY[0x277D75208];
@@ -292,27 +292,27 @@ LABEL_6:
   return v11;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __66__FCUIOptionsControl_pointerInteraction_willEnterRegion_animator___block_invoke;
   v5[3] = &unk_27901A470;
   v5[4] = self;
-  [a5 addAnimations:{v5, a4}];
+  [animator addAnimations:{v5, region}];
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __65__FCUIOptionsControl_pointerInteraction_willExitRegion_animator___block_invoke;
   v5[3] = &unk_27901A470;
   v5[4] = self;
-  [a5 addAnimations:{v5, a4}];
+  [animator addAnimations:{v5, region}];
 }
 
-- (double)_scaledValueForValue:(double)a3
+- (double)_scaledValueForValue:(double)value
 {
   referenceFont = self->_referenceFont;
   if (!referenceFont)
@@ -327,7 +327,7 @@ LABEL_6:
     referenceFont = self->_referenceFont;
   }
 
-  [(UIFont *)referenceFont _scaledValueForValue:a3];
+  [(UIFont *)referenceFont _scaledValueForValue:value];
   return result;
 }
 
@@ -341,10 +341,10 @@ LABEL_6:
 
 - (void)_updateTextAttributes
 {
-  v3 = [(FCUIOptionsControl *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(FCUIOptionsControl *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   preferredContentSizeCategory = self->_preferredContentSizeCategory;
-  self->_preferredContentSizeCategory = v4;
+  self->_preferredContentSizeCategory = preferredContentSizeCategory;
 
   glyphView = self->_glyphView;
   v7 = MEMORY[0x277D755D0];
@@ -367,20 +367,20 @@ LABEL_6:
   }
 }
 
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  if (a3)
+  if (view)
   {
-    v9 = a5;
-    v10 = a3;
-    [a6 stopAutomaticallyUpdatingView:v10];
-    [v9 automaticallyUpdateView:v10 withStyle:a4];
+    providerCopy = provider;
+    viewCopy = view;
+    [outgoingProvider stopAutomaticallyUpdatingView:viewCopy];
+    [providerCopy automaticallyUpdateView:viewCopy withStyle:style];
   }
 }
 
-- (id)_glyphImageNameForCurrentStateWithControlType:(int64_t)a3
+- (id)_glyphImageNameForCurrentStateWithControlType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     if (self->_parentControlSelected)
     {
@@ -398,12 +398,12 @@ LABEL_6:
   else
   {
     v4 = @"ellipsis";
-    if (a3)
+    if (type)
     {
       v4 = 0;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v5 = @"chevron.forward";
     }
@@ -430,14 +430,14 @@ LABEL_6:
   }
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
-  if (a4 == 1)
+  if (category == 1)
   {
     glyphView = self->_glyphView;
-    v9 = a5;
-    v10 = a3;
-    [(FCUIOptionsControl *)self _updateVisualStylingOfView:glyphView style:[(FCUIOptionsControl *)self _glyphViewVisualStyleForCurrentState] visualStylingProvider:v10 outgoingProvider:v9];
+    providerCopy = provider;
+    changeCopy = change;
+    [(FCUIOptionsControl *)self _updateVisualStylingOfView:glyphView style:[(FCUIOptionsControl *)self _glyphViewVisualStyleForCurrentState] visualStylingProvider:changeCopy outgoingProvider:providerCopy];
   }
 }
 
@@ -469,33 +469,33 @@ LABEL_6:
     v3 = objc_alloc(MEMORY[0x277D755E8]);
     v4 = MEMORY[0x277D755B8];
     v5 = [(FCUIOptionsControl *)self _glyphImageNameForCurrentStateWithControlType:self->_controlType];
-    v6 = [(FCUIOptionsControl *)self traitCollection];
-    v7 = [v4 systemImageNamed:v5 compatibleWithTraitCollection:v6];
+    traitCollection = [(FCUIOptionsControl *)self traitCollection];
+    v7 = [v4 systemImageNamed:v5 compatibleWithTraitCollection:traitCollection];
     v8 = [v3 initWithImage:v7];
     glyphView = self->_glyphView;
     self->_glyphView = v8;
 
     [(UIImageView *)self->_glyphView setContentMode:4];
     v10 = self->_glyphView;
-    v11 = [(FCUIOptionsControl *)self tintColor];
-    [(UIImageView *)v10 setTintColor:v11];
+    tintColor = [(FCUIOptionsControl *)self tintColor];
+    [(UIImageView *)v10 setTintColor:tintColor];
 
     [(FCUIOptionsControl *)self addSubview:self->_glyphView];
     v12 = self->_glyphView;
-    v13 = [(FCUIOptionsControl *)self _glyphViewVisualStyleForCurrentState];
+    _glyphViewVisualStyleForCurrentState = [(FCUIOptionsControl *)self _glyphViewVisualStyleForCurrentState];
     glyphVisualStylingProvider = self->_glyphVisualStylingProvider;
 
-    [(FCUIOptionsControl *)self _updateVisualStylingOfView:v12 style:v13 visualStylingProvider:glyphVisualStylingProvider outgoingProvider:0];
+    [(FCUIOptionsControl *)self _updateVisualStylingOfView:v12 style:_glyphViewVisualStyleForCurrentState visualStylingProvider:glyphVisualStylingProvider outgoingProvider:0];
   }
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = FCUIOptionsControl;
-  v4 = a3;
-  [(FCUIOptionsControl *)&v5 setTintColor:v4];
-  [(UIImageView *)self->_glyphView setTintColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(FCUIOptionsControl *)&v5 setTintColor:colorCopy];
+  [(UIImageView *)self->_glyphView setTintColor:colorCopy, v5.receiver, v5.super_class];
 }
 
 @end

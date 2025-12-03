@@ -1,31 +1,31 @@
 @interface NUCropNode
 - (BOOL)_canPropagateOriginalAuxiliaryData;
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3;
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data;
 - (BOOL)canPropagateOriginalLivePhotoMetadataTrack;
-- (BOOL)scaledCropOrigin:(CGPoint *)a3 error:(id *)a4;
-- (CGPoint)scaleCropOriginForOriginalVideoSize:(CGSize)a3 originalCleanAperture:(CGRect)a4 renderScale:(double)a5 inputExtent:(id *)a6;
-- (NUCropNode)initWithRect:(id *)a3 input:(id)a4;
-- (NUCropNode)initWithRect:(id *)a3 input:(id)a4 resetCleanAperture:(BOOL)a5 settings:(id)a6;
-- (NUCropNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateAuxiliaryImageForType:(int64_t)a3 error:(id *)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)_evaluateVideoProperties:(id *)a3;
-- (id)_transformWithError:(id *)a3;
+- (BOOL)scaledCropOrigin:(CGPoint *)origin error:(id *)error;
+- (CGPoint)scaleCropOriginForOriginalVideoSize:(CGSize)size originalCleanAperture:(CGRect)aperture renderScale:(double)scale inputExtent:(id *)extent;
+- (NUCropNode)initWithRect:(id *)rect input:(id)input;
+- (NUCropNode)initWithRect:(id *)rect input:(id)input resetCleanAperture:(BOOL)aperture settings:(id)settings;
+- (NUCropNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateAuxiliaryImageForType:(int64_t)type error:(id *)error;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)_evaluateVideoProperties:(id *)properties;
+- (id)_transformWithError:(id *)error;
 - (id)debugQuickLookObject;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 - (id)transformAffine;
 @end
 
 @implementation NUCropNode
 
-- (id)_evaluateAuxiliaryImageForType:(int64_t)a3 error:(id *)a4
+- (id)_evaluateAuxiliaryImageForType:(int64_t)type error:(id *)error
 {
   if ([(NUCropNode *)self _canPropagateOriginalAuxiliaryData])
   {
     v11.receiver = self;
     v11.super_class = NUCropNode;
-    v7 = [(NURenderNode *)&v11 _evaluateAuxiliaryImageForType:a3 error:a4];
+    v7 = [(NURenderNode *)&v11 _evaluateAuxiliaryImageForType:type error:error];
   }
 
   else
@@ -33,7 +33,7 @@
     v8 = [NUError failureError:@"NUCropNode cannot propagate original auxiliary data" object:self];
     v9 = v8;
     v7 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
@@ -105,11 +105,11 @@
   return v7;
 }
 
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data
 {
   v6.receiver = self;
   v6.super_class = NUCropNode;
-  v4 = [(NURenderNode *)&v6 canPropagateOriginalAuxiliaryData:a3];
+  v4 = [(NURenderNode *)&v6 canPropagateOriginalAuxiliaryData:data];
   if (v4)
   {
     LOBYTE(v4) = [(NUCropNode *)self _canPropagateOriginalAuxiliaryData];
@@ -118,10 +118,10 @@
   return v4;
 }
 
-- (id)_evaluateVideoProperties:(id *)a3
+- (id)_evaluateVideoProperties:(id *)properties
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!properties)
   {
     v17 = NUAssertLogger_23019();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -142,8 +142,8 @@
         v24 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v25 = MEMORY[0x1E696AF00];
         v26 = v24;
-        v27 = [v25 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v25 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v24;
         *&buf[12] = 2114;
@@ -154,8 +154,8 @@
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -164,21 +164,21 @@
     _NUAssertFailHandler("[NUCropNode _evaluateVideoProperties:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+Crop.m", 358, @"Invalid parameter not satisfying: %s", v29, v30, v31, v32, "error != NULL");
   }
 
-  v5 = [(NURenderNode *)self inputs];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v6 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-  v7 = [v6 videoProperties:a3];
+  v7 = [v6 videoProperties:properties];
   if (v7)
   {
-    v8 = [(NURenderNode *)self outputImageGeometry:a3];
+    v8 = [(NURenderNode *)self outputImageGeometry:properties];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 scaledSize];
+      scaledSize = [v8 scaledSize];
       v12 = v11;
       if ([(NUCropNode *)self resetCleanAperture])
       {
-        *&v13 = v10;
+        *&v13 = scaledSize;
         *(&v13 + 1) = v12;
         v34 = v13;
         v33 = 0u;
@@ -187,7 +187,7 @@
       else
       {
         [v7 cleanAperture];
-        *&v15 = v10;
+        *&v15 = scaledSize;
         *(&v15 + 1) = v12;
         *buf = 0;
         *&buf[8] = 0;
@@ -203,7 +203,7 @@
       *buf = v33;
       *&buf[16] = v34;
       [(_NUVideoProperties *)v14 setCleanAperture:buf];
-      [(_NUVideoProperties *)v14 setSize:v10, v12];
+      [(_NUVideoProperties *)v14 setSize:scaledSize, v12];
     }
 
     else
@@ -220,7 +220,7 @@
   return v14;
 }
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
   v21 = 0;
   v20.receiver = self;
@@ -235,12 +235,12 @@
 
     v18 = 0uLL;
     v7 = [NUImageGeometry alloc];
-    v8 = [v5 renderScale];
+    renderScale = [v5 renderScale];
     v10 = v9;
-    v11 = [v5 orientation];
+    orientation = [v5 orientation];
     v17[0] = v18;
     v17[1] = v19;
-    v12 = [(NUImageGeometry *)v7 initWithExtent:v17 renderScale:v8 orientation:v10, v11];
+    v12 = [(NUImageGeometry *)v7 initWithExtent:v17 renderScale:renderScale orientation:v10, orientation];
   }
 
   else
@@ -250,7 +250,7 @@
     v15 = v14;
 
     v12 = 0;
-    *a3 = v14;
+    *geometry = v14;
   }
 
   return v12;
@@ -262,16 +262,16 @@
   {
     v5.receiver = self;
     v5.super_class = NUCropNode;
-    v3 = [(NURenderNode *)&v5 debugQuickLookObject];
+    debugQuickLookObject = [(NURenderNode *)&v5 debugQuickLookObject];
   }
 
   else
   {
     v6 = 0;
-    v3 = [(NUCropNode *)self _evaluateImage:&v6];
+    debugQuickLookObject = [(NUCropNode *)self _evaluateImage:&v6];
   }
 
-  return v3;
+  return debugQuickLookObject;
 }
 
 - (BOOL)canPropagateOriginalLivePhotoMetadataTrack
@@ -296,7 +296,7 @@
       {
         v11.receiver = self;
         v11.super_class = NUCropNode;
-        v7 = [(NUTransformNode *)&v11 canPropagateOriginalLivePhotoMetadataTrack];
+        canPropagateOriginalLivePhotoMetadataTrack = [(NUTransformNode *)&v11 canPropagateOriginalLivePhotoMetadataTrack];
 LABEL_17:
 
         goto LABEL_18;
@@ -319,7 +319,7 @@ LABEL_17:
       }
     }
 
-    v7 = 0;
+    canPropagateOriginalLivePhotoMetadataTrack = 0;
     goto LABEL_17;
   }
 
@@ -336,17 +336,17 @@ LABEL_17:
     _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "[NUCropNode] could not evaluate input geometry: %@", buf, 0xCu);
   }
 
-  v7 = 0;
+  canPropagateOriginalLivePhotoMetadataTrack = 0;
   v6 = v4;
 LABEL_18:
 
-  return v7;
+  return canPropagateOriginalLivePhotoMetadataTrack;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v80 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     v41 = NUAssertLogger_23019();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -367,8 +367,8 @@ LABEL_18:
         v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v49 = MEMORY[0x1E696AF00];
         v50 = v48;
-        v51 = [v49 callStackSymbols];
-        v52 = [v51 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v49 callStackSymbols];
+        v52 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v48;
         *&buf[12] = 2114;
@@ -379,8 +379,8 @@ LABEL_18:
 
     else if (v45)
     {
-      v46 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v47 = [v46 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v47 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v47;
       _os_log_error_impl(&dword_1C0184000, v44, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -422,8 +422,8 @@ LABEL_18:
             v64 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
             v65 = MEMORY[0x1E696AF00];
             v66 = v64;
-            v67 = [v65 callStackSymbols];
-            v68 = [v67 componentsJoinedByString:@"\n"];
+            callStackSymbols3 = [v65 callStackSymbols];
+            v68 = [callStackSymbols3 componentsJoinedByString:@"\n"];
             *buf = 138543618;
             *&buf[4] = v64;
             *&buf[12] = 2114;
@@ -434,8 +434,8 @@ LABEL_18:
 
         else if (v61)
         {
-          v62 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v63 = [v62 componentsJoinedByString:@"\n"];
+          callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v63 = [callStackSymbols4 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           *&buf[4] = v63;
           _os_log_error_impl(&dword_1C0184000, v60, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -444,16 +444,16 @@ LABEL_18:
         _NUAssertFailHandler("[NUCropNode _evaluateImage:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+Crop.m", 251, @"Invalid render scale", v69, v70, v71, v72, v73);
       }
 
-      v11 = [(NUCropNode *)self transformAffine];
-      if (v11)
+      transformAffine = [(NUCropNode *)self transformAffine];
+      if (transformAffine)
       {
-        v12 = [v8 renderScale];
-        v74 = NUScaleToDouble(v12, v13);
+        renderScale = [v8 renderScale];
+        v74 = NUScaleToDouble(renderScale, v13);
         v79 = 0u;
         memset(buf, 0, sizeof(buf));
-        [v11 transform];
+        [transformAffine transform];
         v79 = vmulq_n_f64(v79, v74);
-        v14 = [v8 scaledSize];
+        scaledSize = [v8 scaledSize];
         v16 = v15;
         v75[0] = *buf;
         v75[1] = *&buf[16];
@@ -493,9 +493,9 @@ LABEL_18:
           v17 = v36;
         }
 
-        v37 = [v17 imageByClampingToExtent];
+        imageByClampingToExtent = [v17 imageByClampingToExtent];
 
-        v38 = [v37 imageByCroppingToRect:{0.0, 0.0, v14, v16}];
+        v38 = [imageByClampingToExtent imageByCroppingToRect:{0.0, 0.0, scaledSize, v16}];
 
         v6 = v38;
         v39 = v6;
@@ -504,31 +504,31 @@ LABEL_18:
       else
       {
         [NUError errorWithCode:1 reason:@"Could not get the input geometry" object:self underlyingError:v9];
-        *a3 = v39 = 0;
+        *image = v39 = 0;
       }
     }
 
     else
     {
       [NUError errorWithCode:1 reason:@"Could not get the output geometry" object:self underlyingError:v9];
-      *a3 = v39 = 0;
+      *image = v39 = 0;
     }
   }
 
   else
   {
     [NUError errorWithCode:1 reason:@"Could not get the input image" object:self underlyingError:v7];
-    *a3 = v39 = 0;
+    *image = v39 = 0;
     v9 = v7;
   }
 
   return v39;
 }
 
-- (BOOL)scaledCropOrigin:(CGPoint *)a3 error:(id *)a4
+- (BOOL)scaledCropOrigin:(CGPoint *)origin error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!origin)
   {
     v37 = NUAssertLogger_23019();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -549,8 +549,8 @@ LABEL_18:
         v51 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v52 = MEMORY[0x1E696AF00];
         v53 = v51;
-        v54 = [v52 callStackSymbols];
-        v55 = [v54 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v52 callStackSymbols];
+        v55 = [callStackSymbols componentsJoinedByString:@"\n"];
         buf[0].i32[0] = 138543618;
         *(buf[0].i64 + 4) = v51;
         buf[0].i16[6] = 2114;
@@ -561,8 +561,8 @@ LABEL_18:
 
     else if (v41)
     {
-      v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v43 = [v42 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v43 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       buf[0].i32[0] = 138543362;
       *(buf[0].i64 + 4) = v43;
       _os_log_error_impl(&dword_1C0184000, v40, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -571,7 +571,7 @@ LABEL_18:
     _NUAssertFailHandler("[NUCropNode scaledCropOrigin:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+Crop.m", 172, @"Invalid parameter not satisfying: %s", v56, v57, v58, v59, "origin != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v44 = NUAssertLogger_23019();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -592,8 +592,8 @@ LABEL_18:
         v60 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v61 = MEMORY[0x1E696AF00];
         v62 = v60;
-        v63 = [v61 callStackSymbols];
-        v64 = [v63 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v61 callStackSymbols];
+        v64 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         buf[0].i32[0] = 138543618;
         *(buf[0].i64 + 4) = v60;
         buf[0].i16[6] = 2114;
@@ -604,8 +604,8 @@ LABEL_18:
 
     else if (v48)
     {
-      v49 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v50 = [v49 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v50 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       buf[0].i32[0] = 138543362;
       *(buf[0].i64 + 4) = v50;
       _os_log_error_impl(&dword_1C0184000, v47, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -616,18 +616,18 @@ LABEL_18:
 
   memset(buf, 0, sizeof(buf));
   [(NUCropNode *)self cropRect];
-  v7 = [(NURenderNode *)self outputImageGeometry:a4];
+  v7 = [(NURenderNode *)self outputImageGeometry:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 renderScale];
-    v69 = NUScaleToDouble(v9, v10);
-    *a3 = vmulq_n_f64(vcvtq_f64_s64(buf[0]), v69);
-    v11 = [(NURenderNode *)self settings];
-    v12 = [v11 objectForKeyedSubscript:@"projectUsingCleanAperture"];
+    renderScale = [v7 renderScale];
+    v69 = NUScaleToDouble(renderScale, v10);
+    *origin = vmulq_n_f64(vcvtq_f64_s64(buf[0]), v69);
+    settings = [(NURenderNode *)self settings];
+    v12 = [settings objectForKeyedSubscript:@"projectUsingCleanAperture"];
 
-    v13 = [(NURenderNode *)self settings];
-    v14 = [v13 objectForKeyedSubscript:@"projectUsingOriginalSize"];
+    settings2 = [(NURenderNode *)self settings];
+    v14 = [settings2 objectForKeyedSubscript:@"projectUsingOriginalSize"];
 
     if (!(v12 | v14))
     {
@@ -636,7 +636,7 @@ LABEL_18:
     }
 
     v15 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-    v16 = [v15 outputImageGeometry:a4];
+    v16 = [v15 outputImageGeometry:error];
     v17 = v16 != 0;
     if (v16)
     {
@@ -654,8 +654,8 @@ LABEL_18:
         goto LABEL_10;
       }
 
-      v30 = [(NURenderNode *)self settings];
-      v31 = [v30 objectForKeyedSubscript:@"projectUsingEstimatedCleanAperture"];
+      settings3 = [(NURenderNode *)self settings];
+      v31 = [settings3 objectForKeyedSubscript:@"projectUsingEstimatedCleanAperture"];
       [v31 doubleValue];
       v33 = v32;
 
@@ -666,8 +666,8 @@ LABEL_18:
 LABEL_10:
         [v16 extent];
         [(NUCropNode *)self scaleCropOriginForOriginalVideoSize:v70 originalCleanAperture:v19 renderScale:v21 inputExtent:v24, v26, v28, v29, v69];
-        a3->x = v34;
-        a3->y = v35;
+        origin->x = v34;
+        origin->y = v35;
       }
     }
 
@@ -681,28 +681,28 @@ LABEL_15:
   return v17;
 }
 
-- (CGPoint)scaleCropOriginForOriginalVideoSize:(CGSize)a3 originalCleanAperture:(CGRect)a4 renderScale:(double)a5 inputExtent:(id *)a6
+- (CGPoint)scaleCropOriginForOriginalVideoSize:(CGSize)size originalCleanAperture:(CGRect)aperture renderScale:(double)scale inputExtent:(id *)extent
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  r2 = a4.origin.y;
-  rect = a4.origin.x;
-  v9 = a3.height;
-  v10 = a3.width;
+  height = aperture.size.height;
+  width = aperture.size.width;
+  r2 = aperture.origin.y;
+  rect = aperture.origin.x;
+  v9 = size.height;
+  v10 = size.width;
   [(NUCropNode *)self cropRect];
   if (v10 == width && v9 == height)
   {
-    v12 = a5;
+    scaleCopy2 = scale;
     v13 = 0u;
     goto LABEL_8;
   }
 
-  v12 = a5;
+  scaleCopy2 = scale;
   if (width < 1.0)
   {
     v13 = 0u;
 LABEL_8:
-    v14 = vmulq_n_f64(vcvtq_f64_s64(v13), v12);
+    v14 = vmulq_n_f64(vcvtq_f64_s64(v13), scaleCopy2);
     goto LABEL_9;
   }
 
@@ -711,12 +711,12 @@ LABEL_8:
 
   v21.f64[0] = rect;
   v21.f64[1] = r2;
-  recta = vmulq_n_f64(v16, a5);
-  r2a = vsubq_f64(vsubq_f64(vmulq_n_f64(vaddq_f64(vmulq_f64(v16, _Q3), v16), v10 / width * a5), vmulq_n_f64(vdivq_f64(v21, vdupq_lane_s64(COERCE__INT64(v10 / width * a5), 0)), a5)), vmulq_f64(recta, _Q3));
-  v22 = a6->var0.var0 * a5;
-  v23 = a6->var0.var1 * a5;
-  v16.f64[0] = a6->var1.var0 * a5;
-  _Q3.f64[0] = a6->var1.var1 * a5;
+  recta = vmulq_n_f64(v16, scale);
+  r2a = vsubq_f64(vsubq_f64(vmulq_n_f64(vaddq_f64(vmulq_f64(v16, _Q3), v16), v10 / width * scale), vmulq_n_f64(vdivq_f64(v21, vdupq_lane_s64(COERCE__INT64(v10 / width * scale), 0)), scale)), vmulq_f64(recta, _Q3));
+  v22 = extent->var0.var0 * scale;
+  v23 = extent->var0.var1 * scale;
+  v16.f64[0] = extent->var1.var0 * scale;
+  _Q3.f64[0] = extent->var1.var1 * scale;
   v51 = CGRectStandardize(*(&v16 - 1));
   x = v51.origin.x;
   y = v51.origin.y;
@@ -837,10 +837,10 @@ LABEL_9:
   return result;
 }
 
-- (id)_transformWithError:(id *)a3
+- (id)_transformWithError:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!error)
   {
     v4 = NUAssertLogger_23019();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -861,8 +861,8 @@ LABEL_9:
         v11 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v12 = MEMORY[0x1E696AF00];
         v13 = v11;
-        v14 = [v12 callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v12 callStackSymbols];
+        v15 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v21 = v11;
         v22 = 2114;
@@ -873,8 +873,8 @@ LABEL_9:
 
     else if (v8)
     {
-      v9 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v21 = v10;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -888,8 +888,8 @@ LABEL_9:
 
 - (id)transformAffine
 {
-  v3 = [(NUCropNode *)self transform];
-  if (!v3)
+  transform = [(NUCropNode *)self transform];
+  if (!transform)
   {
     v9 = 0u;
     v10 = 0u;
@@ -901,17 +901,17 @@ LABEL_9:
     v5 = [(NUImageTransformAffine *)v4 initWithAffineTransform:&v7];
     [(NUCropNode *)self setTransform:v5];
 
-    v3 = [(NUCropNode *)self transform];
+    transform = [(NUCropNode *)self transform];
   }
 
-  return v3;
+  return transform;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = NUCropNode;
-  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v7 = [(NURenderNode *)&v10 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
   if (v7)
   {
     [(NUCropNode *)self cropRect];
@@ -924,11 +924,11 @@ LABEL_9:
   return v7;
 }
 
-- (NUCropNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUCropNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_23034);
@@ -972,8 +972,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -989,8 +989,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;
@@ -1006,21 +1006,21 @@ LABEL_14:
   _NUAssertFailHandler("[NUCropNode initWithSettings:inputs:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+Crop.m", 60, @"Initializer not available: [%@ %@], use designated initializer instead.", v30, v31, v32, v33, v29);
 }
 
-- (NUCropNode)initWithRect:(id *)a3 input:(id)a4
+- (NUCropNode)initWithRect:(id *)rect input:(id)input
 {
-  var1 = a3->var1;
-  v6[0] = a3->var0;
+  var1 = rect->var1;
+  v6[0] = rect->var0;
   v6[1] = var1;
-  return [(NUCropNode *)self initWithRect:v6 input:a4 resetCleanAperture:0 settings:0];
+  return [(NUCropNode *)self initWithRect:v6 input:input resetCleanAperture:0 settings:0];
 }
 
-- (NUCropNode)initWithRect:(id *)a3 input:(id)a4 resetCleanAperture:(BOOL)a5 settings:(id)a6
+- (NUCropNode)initWithRect:(id *)rect input:(id)input resetCleanAperture:(BOOL)aperture settings:(id)settings
 {
-  v7 = a5;
+  apertureCopy = aperture;
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  if (!v10)
+  inputCopy = input;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v20 = NUAssertLogger_23019();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1041,8 +1041,8 @@ LABEL_14:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v27;
         v41 = 2114;
@@ -1053,8 +1053,8 @@ LABEL_14:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1063,12 +1063,12 @@ LABEL_14:
     _NUAssertFailHandler("[NUCropNode initWithRect:input:resetCleanAperture:settings:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderNode+Crop.m", 33, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "input != nil");
   }
 
-  v12 = v11;
+  v12 = settingsCopy;
   v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
-  v14 = [MEMORY[0x1E695F688] vectorWithCGRect:{a3->var0.var0, a3->var0.var1, a3->var1.var0, a3->var1.var1}];
+  v14 = [MEMORY[0x1E695F688] vectorWithCGRect:{rect->var0.var0, rect->var0.var1, rect->var1.var0, rect->var1.var1}];
   [v13 setObject:v14 forKeyedSubscript:@"inputRectangle"];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v15 = [MEMORY[0x1E696AD98] numberWithBool:apertureCopy];
   [v13 setObject:v15 forKeyedSubscript:@"resetCleanAperture"];
 
   if (v12)
@@ -1077,16 +1077,16 @@ LABEL_14:
   }
 
   v37 = *MEMORY[0x1E695FAB0];
-  v38 = v10;
+  v38 = inputCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
   v36.receiver = self;
   v36.super_class = NUCropNode;
   v17 = [(NURenderNode *)&v36 initWithSettings:v13 inputs:v16];
 
-  var1 = a3->var1;
-  *(v17 + 184) = a3->var0;
+  var1 = rect->var1;
+  *(v17 + 184) = rect->var0;
   *(v17 + 200) = var1;
-  v17[168] = v7;
+  v17[168] = apertureCopy;
 
   return v17;
 }

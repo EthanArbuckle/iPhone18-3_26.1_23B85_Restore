@@ -1,24 +1,24 @@
 @interface VUIEpisodeDetailViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)didMoveToWindow;
 @end
 
 @implementation VUIEpisodeDetailViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"seasonNumberLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"episodeNumberLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"episodeTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"mediaBadgeTagsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"contentDescriptionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"releaseDateLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"mediaItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"imageFrameView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUILibraryEpisodeFrameView" hasInstanceMethod:@"playButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUILibraryEpisodeFrameView" hasInstanceMethod:@"progressView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"seasonNumberLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"episodeNumberLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"episodeTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"mediaBadgeTagsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"contentDescriptionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"releaseDateLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"mediaItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIEpisodeDetailView" hasInstanceMethod:@"imageFrameView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUILibraryEpisodeFrameView" hasInstanceMethod:@"playButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUILibraryEpisodeFrameView" hasInstanceMethod:@"progressView" withFullSignature:{"@", 0}];
 }
 
 - (void)didMoveToWindow
@@ -47,8 +47,8 @@
 
   v10 = [objc_alloc(MEMORY[0x29EDC7318]) initWithAccessibilityContainer:self representedElements:v9];
   v11 = [(VUIEpisodeDetailViewAccessibility *)self safeValueForKey:@"episodeTitleLabel"];
-  v12 = [v11 accessibilityTraits];
-  [v11 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v12];
+  accessibilityTraits = [v11 accessibilityTraits];
+  [v11 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
   v13 = [(VUIEpisodeDetailViewAccessibility *)self safeValueForKey:@"releaseDateLabel"];
   v14 = [(VUIEpisodeDetailViewAccessibility *)self safeValueForKey:@"mediaBadgeTagsView"];
   v15 = [(VUIEpisodeDetailViewAccessibility *)self safeValueForKey:@"contentDescriptionView"];

@@ -2,18 +2,18 @@
 - (BOOL)_shouldRunCompletion;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)reloadDataWithCompletion:(id)a3;
+- (void)reloadDataWithCompletion:(id)completion;
 @end
 
 @implementation CarReloadWithCompletionCollectionView
 
 - (BOOL)_shouldRunCompletion
 {
-  v3 = [(CarReloadWithCompletionCollectionView *)self window];
-  if (v3)
+  window = [(CarReloadWithCompletionCollectionView *)self window];
+  if (window)
   {
-    v4 = [(CarReloadWithCompletionCollectionView *)self reloadDataCompletion];
-    v5 = v4 != 0;
+    reloadDataCompletion = [(CarReloadWithCompletionCollectionView *)self reloadDataCompletion];
+    v5 = reloadDataCompletion != 0;
   }
 
   else
@@ -57,16 +57,16 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "CarReloadWithCompletionCollectionView layoutSubviews reloadDataCompletionBlock", v6, 2u);
     }
 
-    v5 = [(CarReloadWithCompletionCollectionView *)self reloadDataCompletion];
-    v5[2]();
+    reloadDataCompletion = [(CarReloadWithCompletionCollectionView *)self reloadDataCompletion];
+    reloadDataCompletion[2]();
 
     [(CarReloadWithCompletionCollectionView *)self setReloadDataCompletion:0];
   }
 }
 
-- (void)reloadDataWithCompletion:(id)a3
+- (void)reloadDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100799D40();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -74,7 +74,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "CarReloadWithCompletionCollectionView reloadDataWithCompletion", v6, 2u);
   }
 
-  [(CarReloadWithCompletionCollectionView *)self setReloadDataCompletion:v4];
+  [(CarReloadWithCompletionCollectionView *)self setReloadDataCompletion:completionCopy];
   [(CarReloadWithCompletionCollectionView *)self reloadData];
 }
 

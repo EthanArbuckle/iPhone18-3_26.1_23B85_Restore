@@ -1,50 +1,50 @@
 @interface ATXHeroAndClipDefaultSampler
-- (BOOL)_isEventEligibleForSampling:(id)a3;
-- (id)sampleEvents:(id)a3 numToSample:(unint64_t)a4;
+- (BOOL)_isEventEligibleForSampling:(id)sampling;
+- (id)sampleEvents:(id)events numToSample:(unint64_t)sample;
 @end
 
 @implementation ATXHeroAndClipDefaultSampler
 
-- (BOOL)_isEventEligibleForSampling:(id)a3
+- (BOOL)_isEventEligibleForSampling:(id)sampling
 {
-  v3 = a3;
-  v4 = [v3 location];
-  v5 = [MEMORY[0x277D41BF8] sharedInstance];
-  v6 = [v5 isLocationNearKnownTypeLocationOfInterest:v4] ^ 1;
+  samplingCopy = sampling;
+  location = [samplingCopy location];
+  mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+  v6 = [mEMORY[0x277D41BF8] isLocationNearKnownTypeLocationOfInterest:location] ^ 1;
 
   v7 = +[_ATXGlobals sharedInstance];
-  if (([v3 isClip] & 1) == 0)
+  if (([samplingCopy isClip] & 1) == 0)
   {
-    v8 = [v3 bundleId];
-    v9 = [v7 launchAndLocationHarvesterAppBlacklist];
-    v10 = [ATXLaunchAndLocationFilterer appBundleIdIsBlacklisted:v8 blacklist:v9];
+    bundleId = [samplingCopy bundleId];
+    launchAndLocationHarvesterAppBlacklist = [v7 launchAndLocationHarvesterAppBlacklist];
+    v10 = [ATXLaunchAndLocationFilterer appBundleIdIsBlacklisted:bundleId blacklist:launchAndLocationHarvesterAppBlacklist];
 
-    v11 = [v3 bundleId];
-    v12 = [v7 launchAndLocationHarvesterGenreIdBlacklist];
-    v6 &= (v10 | [ATXLaunchAndLocationFilterer genreIdIsBlacklistedGivenAppBundleId:v11 blacklist:v12]) ^ 1;
+    bundleId2 = [samplingCopy bundleId];
+    launchAndLocationHarvesterGenreIdBlacklist = [v7 launchAndLocationHarvesterGenreIdBlacklist];
+    v6 &= (v10 | [ATXLaunchAndLocationFilterer genreIdIsBlacklistedGivenAppBundleId:bundleId2 blacklist:launchAndLocationHarvesterGenreIdBlacklist]) ^ 1;
   }
 
-  v13 = [v4 timestamp];
-  v14 = ![ATXLaunchAndLocationFilterer locationIsStaleOrNotAccurateEnough:v4 now:v13];
+  timestamp = [location timestamp];
+  v14 = ![ATXLaunchAndLocationFilterer locationIsStaleOrNotAccurateEnough:location now:timestamp];
 
   return v6 & v14;
 }
 
-- (id)sampleEvents:(id)a3 numToSample:(unint64_t)a4
+- (id)sampleEvents:(id)events numToSample:(unint64_t)sample
 {
-  v6 = a3;
+  eventsCopy = events;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __57__ATXHeroAndClipDefaultSampler_sampleEvents_numToSample___block_invoke;
   v19[3] = &unk_278598440;
   v19[4] = self;
   v7 = [MEMORY[0x277CCAC30] predicateWithBlock:v19];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  v8 = [eventsCopy filteredArrayUsingPredicate:v7];
 
   v9 = [v8 count];
-  if (v9 < a4)
+  if (v9 < sample)
   {
-    a4 = v9;
+    sample = v9;
   }
 
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
@@ -62,9 +62,9 @@
     while (v11 < [v8 count]);
   }
 
-  v13 = [MEMORY[0x277CEBCC0] sampleWeightedArray:v10 numToSample:a4];
-  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
-  if (a4)
+  v13 = [MEMORY[0x277CEBCC0] sampleWeightedArray:v10 numToSample:sample];
+  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:sample];
+  if (sample)
   {
     v15 = 0;
     do
@@ -76,7 +76,7 @@
       ++v15;
     }
 
-    while (a4 != v15);
+    while (sample != v15);
   }
 
   return v14;

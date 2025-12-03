@@ -1,7 +1,7 @@
 @interface _UIWindowSceneUserInterfaceStyleSettingsDiffAction
 - (UIApplicationSceneSettingsDiffInspector)sceneSettingsUserInterfaceStyleDiffInspector;
-- (void)_animateUserInterfaceStyleChangeInScene:(id)a3 transitionContext:(id)a4 applyChangesBlock:(id)a5;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_animateUserInterfaceStyleChangeInScene:(id)scene transitionContext:(id)context applyChangesBlock:(id)block;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UIWindowSceneUserInterfaceStyleSettingsDiffAction
@@ -22,35 +22,35 @@
   return sceneSettingsUserInterfaceStyleDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
   v39 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a5;
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  contextCopy = context;
+  diffCopy = diff;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 && ([v13 conformsToProtocol:&unk_1EFF0F0C0] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 && ([sceneCopy conformsToProtocol:&unk_1EFF0F0C0] & 1) == 0)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"_UIWindowSceneUserInterfaceStyleSettingsDiffAction.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]] || [uiScene conformsToProtocol:@protocol(_UISceneUIWindowHosting)]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowSceneUserInterfaceStyleSettingsDiffAction.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]] || [uiScene conformsToProtocol:@protocol(_UISceneUIWindowHosting)]"}];
   }
 
   v32 = 0;
-  v17 = [(_UIWindowSceneUserInterfaceStyleSettingsDiffAction *)self sceneSettingsUserInterfaceStyleDiffInspector];
-  [v17 inspectDiff:v16 withContext:&v32];
+  sceneSettingsUserInterfaceStyleDiffInspector = [(_UIWindowSceneUserInterfaceStyleSettingsDiffAction *)self sceneSettingsUserInterfaceStyleDiffInspector];
+  [sceneSettingsUserInterfaceStyleDiffInspector inspectDiff:diffCopy withContext:&v32];
 
   if (v32)
   {
-    v18 = [v15 animationFence];
-    [v13 _synchronizeDrawingWithFence:v18];
+    animationFence = [contextCopy animationFence];
+    [sceneCopy _synchronizeDrawingWithFence:animationFence];
 
-    v19 = [v14 uiSettings];
-    v20 = [v19 userInterfaceStyle];
+    uiSettings = [sSceneCopy uiSettings];
+    userInterfaceStyle = [uiSettings userInterfaceStyle];
     v21 = *(__UILogGetCategoryCachedImpl("InterfaceStyle", &_performActionsForUIScene_withUpdatedFBSScene_settingsDiff_fromSettings_transitionContext_lifecycleActionType____s_category_0) + 8);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = v13;
+      v22 = sceneCopy;
       if (v22)
       {
         v23 = MEMORY[0x1E696AEC0];
@@ -65,13 +65,13 @@
       }
 
       v27 = v26;
-      v28 = [v22 _persistenceIdentifier];
+      _persistenceIdentifier = [v22 _persistenceIdentifier];
       *buf = 134349570;
-      v34 = v20;
+      v34 = userInterfaceStyle;
       v35 = 2114;
       v36 = v26;
       v37 = 2114;
-      v38 = v28;
+      v38 = _persistenceIdentifier;
       _os_log_impl(&dword_188A29000, v21, OS_LOG_TYPE_DEFAULT, "Scene did update interface style to %{public}ld, %{public}@ (%{public}@)", buf, 0x20u);
     }
 
@@ -79,31 +79,31 @@
     v30[1] = 3221225472;
     v30[2] = __164___UIWindowSceneUserInterfaceStyleSettingsDiffAction__performActionsForUIScene_withUpdatedFBSScene_settingsDiff_fromSettings_transitionContext_lifecycleActionType___block_invoke;
     v30[3] = &unk_1E70F3590;
-    v31 = v13;
-    [(_UIWindowSceneUserInterfaceStyleSettingsDiffAction *)self _animateUserInterfaceStyleChangeInScene:v31 transitionContext:v15 applyChangesBlock:v30];
+    v31 = sceneCopy;
+    [(_UIWindowSceneUserInterfaceStyleSettingsDiffAction *)self _animateUserInterfaceStyleChangeInScene:v31 transitionContext:contextCopy applyChangesBlock:v30];
   }
 }
 
-- (void)_animateUserInterfaceStyleChangeInScene:(id)a3 transitionContext:(id)a4 applyChangesBlock:(id)a5
+- (void)_animateUserInterfaceStyleChangeInScene:(id)scene transitionContext:(id)context applyChangesBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 animationSettings];
-  if (!v10 || ([UIApp _isSpringBoard] & 1) != 0 || (_UIApplicationProcessIsDruid() & 1) != 0)
+  sceneCopy = scene;
+  contextCopy = context;
+  blockCopy = block;
+  animationSettings = [contextCopy animationSettings];
+  if (!animationSettings || ([UIApp _isSpringBoard] & 1) != 0 || (_UIApplicationProcessIsDruid() & 1) != 0)
   {
-    v9[2](v9);
+    blockCopy[2](blockCopy);
   }
 
   else
   {
-    v11 = [[_UIWindowSceneUserInterfaceStyleAnimationSnapshotWindow alloc] initWithWindowScene:v7];
+    v11 = [[_UIWindowSceneUserInterfaceStyleAnimationSnapshotWindow alloc] initWithWindowScene:sceneCopy];
     [(UIWindow *)v11 setWindowLevel:15000001.0];
     [(UIView *)v11 bounds];
     v16 = _UISnapshotScreenAtViewRectAfterCommit(v11, 0, v12, v13, v14, v15);
     [(UIView *)v11 addSubview:v16];
     [(UIWindow *)v11 setHidden:0];
-    v9[2](v9);
+    blockCopy[2](blockCopy);
     v17 = MEMORY[0x1E698E608];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -116,7 +116,7 @@
     v19[3] = &unk_1E70F5AC0;
     v20 = v22;
     v18 = v22;
-    [v17 tryAnimatingWithSettings:v10 actions:v21 completion:v19];
+    [v17 tryAnimatingWithSettings:animationSettings actions:v21 completion:v19];
   }
 }
 

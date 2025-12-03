@@ -1,11 +1,11 @@
 @interface HomeCollectionSortItem
-- (BOOL)isEqual:(id)a3;
-- (HomeCollectionSortItem)initWithCollection:(id)a3 delegate:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HomeCollectionSortItem)initWithCollection:(id)collection delegate:(id)delegate;
 - (HomeCollectionSortItemDelegate)delegate;
 - (id)_sortTypes;
-- (id)_titleForCollectionSortType:(int64_t)a3;
-- (id)cellModelWithBackgroundModel:(id)a3;
-- (void)smallDropDownOutlineCell:(id)a3 didSelectItemAtIndex:(int64_t)a4;
+- (id)_titleForCollectionSortType:(int64_t)type;
+- (id)cellModelWithBackgroundModel:(id)model;
+- (void)smallDropDownOutlineCell:(id)cell didSelectItemAtIndex:(int64_t)index;
 @end
 
 @implementation HomeCollectionSortItem
@@ -17,23 +17,23 @@
   return WeakRetained;
 }
 
-- (void)smallDropDownOutlineCell:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)smallDropDownOutlineCell:(id)cell didSelectItemAtIndex:(int64_t)index
 {
-  v6 = [(HomeCollectionSortItem *)self _sortTypes];
-  if ((a4 & 0x8000000000000000) == 0)
+  _sortTypes = [(HomeCollectionSortItem *)self _sortTypes];
+  if ((index & 0x8000000000000000) == 0)
   {
-    v11 = v6;
-    v7 = [v6 count] <= a4;
-    v6 = v11;
+    v11 = _sortTypes;
+    v7 = [_sortTypes count] <= index;
+    _sortTypes = v11;
     if (!v7)
     {
-      v8 = [v11 objectAtIndexedSubscript:a4];
-      v9 = [v8 integerValue];
+      v8 = [v11 objectAtIndexedSubscript:index];
+      integerValue = [v8 integerValue];
 
-      v10 = [(HomeCollectionSortItem *)self delegate];
-      [v10 collectionSortItem:self didSelectSortType:v9];
+      delegate = [(HomeCollectionSortItem *)self delegate];
+      [delegate collectionSortItem:self didSelectSortType:integerValue];
 
-      v6 = v11;
+      _sortTypes = v11;
     }
   }
 }
@@ -45,9 +45,9 @@
   if ([(CollectionHandler *)self->_collection contentType]== 1)
   {
     v4 = +[MKLocationManager sharedLocationManager];
-    v5 = [v4 isAuthorizedForPreciseLocation];
+    isAuthorizedForPreciseLocation = [v4 isAuthorizedForPreciseLocation];
 
-    if (v5)
+    if (isAuthorizedForPreciseLocation)
     {
       [v3 addObject:&off_1016E6B90];
     }
@@ -63,11 +63,11 @@
   return v6;
 }
 
-- (id)_titleForCollectionSortType:(int64_t)a3
+- (id)_titleForCollectionSortType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    v4 = *(&off_1016284B0 + a3);
+    v4 = *(&off_1016284B0 + type);
     v5 = +[NSBundle mainBundle];
     v3 = [v5 localizedStringForKey:v4 value:@"localized string not found" table:0];
   }
@@ -75,16 +75,16 @@
   return v3;
 }
 
-- (id)cellModelWithBackgroundModel:(id)a3
+- (id)cellModelWithBackgroundModel:(id)model
 {
-  v4 = a3;
-  v5 = [(HomeCollectionSortItem *)self _sortTypes];
+  modelCopy = model;
+  _sortTypes = [(HomeCollectionSortItem *)self _sortTypes];
   v6 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = _sortTypes;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -112,37 +112,37 @@
   v13 = [SmallDropDownOutlineCellModel alloc];
   v14 = [(HomeCollectionSortItem *)self _titleForCollectionSortType:[(CollectionHandler *)self->_collection sortType]];
   v15 = [NSNumber numberWithInteger:[(CollectionHandler *)self->_collection sortType]];
-  v16 = -[SmallDropDownOutlineCellModel initWithButtonTitle:dropDownTitles:selectedIndex:delegate:backgroundModel:](v13, "initWithButtonTitle:dropDownTitles:selectedIndex:delegate:backgroundModel:", v14, v6, [v7 indexOfObject:v15], self, v4);
+  v16 = -[SmallDropDownOutlineCellModel initWithButtonTitle:dropDownTitles:selectedIndex:delegate:backgroundModel:](v13, "initWithButtonTitle:dropDownTitles:selectedIndex:delegate:backgroundModel:", v14, v6, [v7 indexOfObject:v15], self, modelCopy);
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(HomeCollectionSortItem *)v6 collection];
-    v8 = v7;
-    if (v7 == self->_collection || [(CollectionHandler *)v7 isEqual:?])
+    collection = [(HomeCollectionSortItem *)v6 collection];
+    v8 = collection;
+    if (collection == self->_collection || [(CollectionHandler *)collection isEqual:?])
     {
-      v9 = [(HomeCollectionSortItem *)v6 delegate];
+      delegate = [(HomeCollectionSortItem *)v6 delegate];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      if (v9 == WeakRetained)
+      if (delegate == WeakRetained)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = [v9 isEqual:WeakRetained];
+        v11 = [delegate isEqual:WeakRetained];
       }
     }
 
@@ -160,18 +160,18 @@
   return v11;
 }
 
-- (HomeCollectionSortItem)initWithCollection:(id)a3 delegate:(id)a4
+- (HomeCollectionSortItem)initWithCollection:(id)collection delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = HomeCollectionSortItem;
   v9 = [(HomeCollectionSortItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collection, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_collection, collection);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

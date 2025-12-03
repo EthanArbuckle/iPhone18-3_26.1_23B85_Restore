@@ -1,19 +1,19 @@
 @interface ICPeerMessageController
 - (ICPeerMessageController)init;
 - (ICPeerMessageControllerDelegate)delegate;
-- (id)deviceRequestsForUUID:(id)a3;
-- (id)sendMessage:(void *)a3 toDevices:(id)a4;
-- (id)sendMessage:(void *)a3 toSource:(id)a4 completionBlock:(id)a5;
-- (id)sendMessage:(void *)a3 toSources:(id)a4;
-- (id)sendNote:(id)a3 toDevices:(id)a4;
-- (void)disconnectedFromSource:(id)a3;
-- (void)handleKeepAliveMessage:(const void *)a3 fromDevice:(id)a4;
-- (void)handleMessage:(id)a3 fromSource:(id)a4;
-- (void)handleNoteMessage:(const void *)a3 fromDevice:(id)a4 data:(id)a5;
-- (void)handleRequestNoteMessage:(const void *)a3 fromDevice:(id)a4;
-- (void)requestNote:(id)a3 from:(id)a4;
+- (id)deviceRequestsForUUID:(id)d;
+- (id)sendMessage:(void *)message toDevices:(id)devices;
+- (id)sendMessage:(void *)message toSource:(id)source completionBlock:(id)block;
+- (id)sendMessage:(void *)message toSources:(id)sources;
+- (id)sendNote:(id)note toDevices:(id)devices;
+- (void)disconnectedFromSource:(id)source;
+- (void)handleKeepAliveMessage:(const void *)message fromDevice:(id)device;
+- (void)handleMessage:(id)message fromSource:(id)source;
+- (void)handleNoteMessage:(const void *)message fromDevice:(id)device data:(id)data;
+- (void)handleRequestNoteMessage:(const void *)message fromDevice:(id)device;
+- (void)requestNote:(id)note from:(id)from;
 - (void)sendKeepAlive;
-- (void)sendMediaURL:(id)a3 toSource:(id)a4;
+- (void)sendMediaURL:(id)l toSource:(id)source;
 @end
 
 @implementation ICPeerMessageController
@@ -41,37 +41,37 @@
   return v2;
 }
 
-- (id)deviceRequestsForUUID:(id)a3
+- (id)deviceRequestsForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_deviceRequests objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_deviceRequests objectForKeyedSubscript:dCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(NSMutableDictionary *)self->_deviceRequests setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_deviceRequests setObject:v5 forKeyedSubscript:dCopy];
   }
 
   return v5;
 }
 
-- (void)requestNote:(id)a3 from:(id)a4
+- (void)requestNote:(id)note from:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  fromCopy = from;
   v8 = os_log_create("com.apple.notes", "networking");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 UUIDString];
-    v10 = v9;
+    uUIDString = [noteCopy UUIDString];
+    v10 = uUIDString;
     v11 = @"(null)";
-    if (v7)
+    if (fromCopy)
     {
-      v11 = v7;
+      v11 = fromCopy;
     }
 
     *buf = 138412546;
-    v20 = v9;
+    v20 = uUIDString;
     v21 = 2112;
     v22 = v11;
     _os_log_impl(&dword_214D51000, v8, OS_LOG_TYPE_INFO, "<< Request note %@ from %@.", buf, 0x16u);
@@ -81,7 +81,7 @@
   v23 |= 1u;
   v25 = 7;
   v18 = 0uLL;
-  [v6 getUUIDBytes:{&v18, v12}];
+  [noteCopy getUUIDBytes:{&v18, v12}];
   v23 |= 4u;
   v13 = v24;
   if (!v24)
@@ -114,9 +114,9 @@
 
   *v14 = v18;
   *(v14 + 16) = 0;
-  if (v7)
+  if (fromCopy)
   {
-    v17 = v7;
+    v17 = fromCopy;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
   }
 
@@ -126,20 +126,20 @@
   }
 
   v16 = [(ICPeerMessageController *)self sendMessage:buf toDevices:v15];
-  if (v7)
+  if (fromCopy)
   {
   }
 
   peernetworking::PeerNetworkMessage::~PeerNetworkMessage(buf);
 }
 
-- (id)sendNote:(id)a3 toDevices:(id)a4
+- (id)sendNote:(id)note toDevices:(id)devices
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && ![v7 count])
+  noteCopy = note;
+  devicesCopy = devices;
+  v8 = devicesCopy;
+  if (devicesCopy && ![devicesCopy count])
   {
     v18 = 0;
   }
@@ -149,9 +149,9 @@
     v9 = os_log_create("com.apple.notes", "networking");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 identifier];
+      identifier = [noteCopy identifier];
       *buf = 138412290;
-      v22 = v10;
+      v22 = identifier;
       _os_log_impl(&dword_214D51000, v9, OS_LOG_TYPE_INFO, "<< Send note %@.", buf, 0xCu);
     }
 
@@ -159,8 +159,8 @@
     v23 |= 1u;
     v25 = 7;
     v20 = 0uLL;
-    v12 = [v6 uuid];
-    [v12 getUUIDBytes:&v20];
+    uuid = [noteCopy uuid];
+    [uuid getUUIDBytes:&v20];
 
     v23 |= 2u;
     v13 = v24;
@@ -194,7 +194,7 @@
 
     *v14 = v20;
     *(v14 + 16) = 0;
-    v15 = [v6 document];
+    document = [noteCopy document];
     v23 |= 2u;
     v16 = v24;
     if (!v24)
@@ -209,7 +209,7 @@
       operator new();
     }
 
-    [v15 saveToArchive:v17];
+    [document saveToArchive:v17];
 
     v18 = [(ICPeerMessageController *)self sendMessage:buf toDevices:v8];
     peernetworking::PeerNetworkMessage::~PeerNetworkMessage(buf);
@@ -218,17 +218,17 @@
   return v18;
 }
 
-- (void)sendMediaURL:(id)a3 toSource:(id)a4
+- (void)sendMediaURL:(id)l toSource:(id)source
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  sourceCopy = source;
   v8 = os_log_create("com.apple.notes", "networking");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 identifier];
+    identifier = [lCopy identifier];
     *buf = 138412290;
-    v30 = v9;
+    v30 = identifier;
     _os_log_impl(&dword_214D51000, v8, OS_LOG_TYPE_INFO, "<< Send media %@.", buf, 0xCu);
   }
 
@@ -241,16 +241,16 @@
     operator new();
   }
 
-  v12 = [v6 identifier];
-  v13 = v12;
-  v14 = [v12 UTF8String];
+  identifier2 = [lCopy identifier];
+  v13 = identifier2;
+  uTF8String = [identifier2 UTF8String];
   *(v11 + 32) |= 1u;
   if (!google::protobuf::internal::empty_string_)
   {
     __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
   }
 
-  v15 = v14;
+  v15 = uTF8String;
   v16 = *(v11 + 40);
   if (v16 == google::protobuf::internal::empty_string_)
   {
@@ -260,8 +260,8 @@
   std::string::__assign_external(v16, v15);
 
   v17 = MEMORY[0x277CBEA90];
-  v18 = [v6 mediaURL];
-  v19 = [v17 dataWithContentsOfURL:v18];
+  mediaURL = [lCopy mediaURL];
+  v19 = [v17 dataWithContentsOfURL:mediaURL];
 
   v31 |= 0x800u;
   v20 = v32;
@@ -271,7 +271,7 @@
   }
 
   v21 = v19;
-  v22 = [v19 bytes];
+  bytes = [v19 bytes];
   v23 = [v19 length];
   *(v20 + 32) |= 2u;
   if (!google::protobuf::internal::empty_string_)
@@ -286,19 +286,19 @@
     operator new();
   }
 
-  std::string::__assign_external(v25, v22, v24);
-  v28 = v7;
+  std::string::__assign_external(v25, bytes, v24);
+  v28 = sourceCopy;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
   v27 = [(ICPeerMessageController *)self sendMessage:buf toSources:v26];
 
   peernetworking::PeerNetworkMessage::~PeerNetworkMessage(buf);
 }
 
-- (void)disconnectedFromSource:(id)a3
+- (void)disconnectedFromSource:(id)source
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_sourceToDevices objectForKeyedSubscript:v4];
+  sourceCopy = source;
+  v5 = [(NSMutableDictionary *)self->_sourceToDevices objectForKeyedSubscript:sourceCopy];
   v6 = os_log_create("com.apple.notes", "networking");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -310,7 +310,7 @@
   if (v5)
   {
     [(NSMutableDictionary *)self->_deviceRequests removeObjectForKey:v5];
-    [(NSMutableDictionary *)self->_sourceToDevices removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_sourceToDevices removeObjectForKey:sourceCopy];
     [(NSMutableDictionary *)self->_deviceUUIDToSource removeObjectForKey:v5];
   }
 }
@@ -325,19 +325,19 @@
     operator new();
   }
 
-  v4 = [(NSMutableDictionary *)self->_deviceUUIDToSource allValues];
-  v5 = [(ICPeerMessageController *)self sendMessage:v6 toSources:v4];
+  allValues = [(NSMutableDictionary *)self->_deviceUUIDToSource allValues];
+  v5 = [(ICPeerMessageController *)self sendMessage:v6 toSources:allValues];
 
   peernetworking::PeerNetworkMessage::~PeerNetworkMessage(v6);
 }
 
-- (void)handleNoteMessage:(const void *)a3 fromDevice:(id)a4 data:(id)a5
+- (void)handleNoteMessage:(const void *)message fromDevice:(id)device data:(id)data
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  dataCopy = data;
   v10 = objc_alloc(MEMORY[0x277CCAD78]);
-  v11 = *(a3 + 5);
+  v11 = *(message + 5);
   if (*(v11 + 23) < 0)
   {
     v11 = *v11;
@@ -346,25 +346,25 @@
   v12 = [v10 initWithUUIDBytes:v11];
   v13 = [ICTTMergeableStringVersionedDocument alloc];
   v14 = v13;
-  v15 = *(a3 + 6);
+  v15 = *(message + 6);
   if (!v15)
   {
     v15 = *(peernetworking::Note::default_instance(v13) + 48);
   }
 
-  v16 = [MEMORY[0x277CCAD78] UUID];
-  v17 = [(ICTTVersionedDocument *)v14 initWithArchive:v15 replicaID:v16];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v17 = [(ICTTVersionedDocument *)v14 initWithArchive:v15 replicaID:uUID];
 
   v18 = +[ICNoteContext sharedContext];
-  v19 = [v18 managedObjectContext];
-  v20 = [ICNote noteWithUUID:v12 context:v19];
+  managedObjectContext = [v18 managedObjectContext];
+  v20 = [ICNote noteWithUUID:v12 context:managedObjectContext];
 
   v21 = os_log_create("com.apple.notes", "networking");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v22 = [v12 UUIDString];
+    uUIDString = [v12 UUIDString];
     *buf = 138412290;
-    v36 = v22;
+    v36 = uUIDString;
     _os_log_impl(&dword_214D51000, v21, OS_LOG_TYPE_INFO, ">> Handle note message %@", buf, 0xCu);
   }
 
@@ -374,9 +374,9 @@
   {
     if (v24)
     {
-      v25 = [v12 UUIDString];
+      uUIDString2 = [v12 UUIDString];
       *buf = 138412290;
-      v36 = v25;
+      v36 = uUIDString2;
       _os_log_impl(&dword_214D51000, v23, OS_LOG_TYPE_INFO, ">> Note update %@.", buf, 0xCu);
     }
 
@@ -399,7 +399,7 @@
 
     else
     {
-      [(ICPeerMessageController *)self requestNote:v12 from:v8, v29, v30, v31, v32];
+      [(ICPeerMessageController *)self requestNote:v12 from:deviceCopy, v29, v30, v31, v32];
     }
   }
 
@@ -407,9 +407,9 @@
   {
     if (v24)
     {
-      v28 = [v12 UUIDString];
+      uUIDString3 = [v12 UUIDString];
       *buf = 138412290;
-      v36 = v28;
+      v36 = uUIDString3;
       _os_log_impl(&dword_214D51000, v23, OS_LOG_TYPE_INFO, "   Ignored note update for non-shared/existant note %@.", buf, 0xCu);
     }
   }
@@ -423,12 +423,12 @@ uint64_t __61__ICPeerMessageController_handleNoteMessage_fromDevice_data___block
   return v3;
 }
 
-- (void)handleRequestNoteMessage:(const void *)a3 fromDevice:(id)a4
+- (void)handleRequestNoteMessage:(const void *)message fromDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  deviceCopy = device;
   v7 = objc_alloc(MEMORY[0x277CCAD78]);
-  v8 = *(a3 + 5);
+  v8 = *(message + 5);
   if (*(v8 + 23) < 0)
   {
     v8 = *v8;
@@ -436,8 +436,8 @@ uint64_t __61__ICPeerMessageController_handleNoteMessage_fromDevice_data___block
 
   v9 = [v7 initWithUUIDBytes:v8];
   v10 = +[ICNoteContext sharedContext];
-  v11 = [v10 managedObjectContext];
-  v12 = [ICNote noteWithUUID:v9 context:v11];
+  managedObjectContext = [v10 managedObjectContext];
+  v12 = [ICNote noteWithUUID:v9 context:managedObjectContext];
 
   v13 = os_log_create("com.apple.notes", "networking");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -447,9 +447,9 @@ uint64_t __61__ICPeerMessageController_handleNoteMessage_fromDevice_data___block
     _os_log_impl(&dword_214D51000, v13, OS_LOG_TYPE_INFO, ">> Peer requested note %@.", buf, 0xCu);
   }
 
-  if (v6)
+  if (deviceCopy)
   {
-    v16 = v6;
+    v16 = deviceCopy;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
   }
 
@@ -459,30 +459,30 @@ uint64_t __61__ICPeerMessageController_handleNoteMessage_fromDevice_data___block
   }
 
   v15 = [(ICPeerMessageController *)self sendNote:v12 toDevices:v14];
-  if (v6)
+  if (deviceCopy)
   {
   }
 }
 
-- (void)handleKeepAliveMessage:(const void *)a3 fromDevice:(id)a4
+- (void)handleKeepAliveMessage:(const void *)message fromDevice:(id)device
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  deviceCopy = device;
   v5 = os_log_create("com.apple.notes", "networking");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = deviceCopy;
     _os_log_impl(&dword_214D51000, v5, OS_LOG_TYPE_INFO, ">> KeepAlive: %@", &v6, 0xCu);
   }
 }
 
-- (void)handleMessage:(id)a3 fromSource:(id)a4
+- (void)handleMessage:(id)message fromSource:(id)source
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_sourceToDevices objectForKeyedSubscript:a4];
+  messageCopy = message;
+  v7 = [(NSMutableDictionary *)self->_sourceToDevices objectForKeyedSubscript:source];
   peernetworking::PeerNetworkMessage::PeerNetworkMessage(v10);
-  v8 = google::protobuf::MessageLite::ParseFromArray(v10, [v6 bytes], objc_msgSend(v6, "length"));
+  v8 = google::protobuf::MessageLite::ParseFromArray(v10, [messageCopy bytes], objc_msgSend(messageCopy, "length"));
   if (v15 == 7)
   {
     if ((v11 & 2) != 0)
@@ -528,16 +528,16 @@ uint64_t __61__ICPeerMessageController_handleNoteMessage_fromDevice_data___block
   peernetworking::PeerNetworkMessage::~PeerNetworkMessage(v10);
 }
 
-- (id)sendMessage:(void *)a3 toDevices:(id)a4
+- (id)sendMessage:(void *)message toDevices:(id)devices
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  devicesCopy = devices;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v6;
+  v8 = devicesCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -564,24 +564,24 @@ uint64_t __61__ICPeerMessageController_handleNoteMessage_fromDevice_data___block
     while (v9);
   }
 
-  v13 = [(ICPeerMessageController *)self sendMessage:a3 toSources:v7];
+  v13 = [(ICPeerMessageController *)self sendMessage:message toSources:v7];
 
   return v13;
 }
 
-- (id)sendMessage:(void *)a3 toSources:(id)a4
+- (id)sendMessage:(void *)message toSources:(id)sources
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:(*(*a3 + 72))(a3)];
-  google::protobuf::MessageLite::SerializeToArray(a3, [v7 mutableBytes], objc_msgSend(v7, "length"));
-  if ([v6 count])
+  sourcesCopy = sources;
+  v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:(*(*message + 72))(message)];
+  google::protobuf::MessageLite::SerializeToArray(message, [v7 mutableBytes], objc_msgSend(v7, "length"));
+  if ([sourcesCopy count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v6;
+    v8 = sourcesCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -596,8 +596,8 @@ uint64_t __61__ICPeerMessageController_handleNoteMessage_fromDevice_data___block
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [(ICPeerMessageController *)self delegate];
-          [v13 sendMessage:v7 toSource:v12 error:0];
+          delegate = [(ICPeerMessageController *)self delegate];
+          [delegate sendMessage:v7 toSource:v12 error:0];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -609,25 +609,25 @@ uint64_t __61__ICPeerMessageController_handleNoteMessage_fromDevice_data___block
 
   else
   {
-    v14 = [(ICPeerMessageController *)self delegate];
-    [v14 sendMessage:v7 toSource:0 error:0];
+    delegate2 = [(ICPeerMessageController *)self delegate];
+    [delegate2 sendMessage:v7 toSource:0 error:0];
   }
 
   return v7;
 }
 
-- (id)sendMessage:(void *)a3 toSource:(id)a4 completionBlock:(id)a5
+- (id)sendMessage:(void *)message toSource:(id)source completionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:(*(*a3 + 72))(a3)];
-  google::protobuf::MessageLite::SerializeToArray(a3, [v10 mutableBytes], objc_msgSend(v10, "length"));
-  v11 = [(ICPeerMessageController *)self delegate];
+  sourceCopy = source;
+  blockCopy = block;
+  v10 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:(*(*message + 72))(message)];
+  google::protobuf::MessageLite::SerializeToArray(message, [v10 mutableBytes], objc_msgSend(v10, "length"));
+  delegate = [(ICPeerMessageController *)self delegate];
   v14 = 0;
-  [v11 sendMessage:v10 toSource:v8 error:&v14];
+  [delegate sendMessage:v10 toSource:sourceCopy error:&v14];
   v12 = v14;
 
-  v9[2](v9, v12);
+  blockCopy[2](blockCopy, v12);
 
   return v10;
 }

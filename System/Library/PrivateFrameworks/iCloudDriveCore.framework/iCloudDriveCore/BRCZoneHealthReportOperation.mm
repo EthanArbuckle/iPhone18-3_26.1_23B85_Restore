@@ -1,36 +1,36 @@
 @interface BRCZoneHealthReportOperation
-- (BRCZoneHealthReportOperation)initWithSessionContext:(id)a3 state:(id)a4;
-- (void)_reportRecords:(id)a3 requestID:(unint64_t)a4;
+- (BRCZoneHealthReportOperation)initWithSessionContext:(id)context state:(id)state;
+- (void)_reportRecords:(id)records requestID:(unint64_t)d;
 - (void)main;
 @end
 
 @implementation BRCZoneHealthReportOperation
 
-- (BRCZoneHealthReportOperation)initWithSessionContext:(id)a3 state:(id)a4
+- (BRCZoneHealthReportOperation)initWithSessionContext:(id)context state:(id)state
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 syncContextProvider];
-  v10 = [v9 zoneHealthSyncContext];
+  stateCopy = state;
+  contextCopy = context;
+  syncContextProvider = [contextCopy syncContextProvider];
+  zoneHealthSyncContext = [syncContextProvider zoneHealthSyncContext];
   v13.receiver = self;
   v13.super_class = BRCZoneHealthReportOperation;
-  v11 = [(_BRCOperation *)&v13 initWithName:@"zone-health-report" syncContext:v10 sessionContext:v8];
+  v11 = [(_BRCOperation *)&v13 initWithName:@"zone-health-report" syncContext:zoneHealthSyncContext sessionContext:contextCopy];
 
   if (v11)
   {
     v11->shouldPerformAnotherBatch = 1;
-    objc_storeStrong(&v11->_state, a4);
+    objc_storeStrong(&v11->_state, state);
   }
 
   return v11;
 }
 
-- (void)_reportRecords:(id)a3 requestID:(unint64_t)a4
+- (void)_reportRecords:(id)records requestID:(unint64_t)d
 {
-  v6 = a3;
-  v21 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:v6 recordIDsToDelete:0];
-  v8 = [MEMORY[0x277CBEA90] dataWithBytes:&v21 length:8];
+  recordsCopy = records;
+  dCopy = d;
+  v7 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:recordsCopy recordIDsToDelete:0];
+  v8 = [MEMORY[0x277CBEA90] dataWithBytes:&dCopy length:8];
   [v7 setClientChangeTokenData:v8];
 
   [v7 setAtomic:1];
@@ -38,8 +38,8 @@
   [v7 setConfiguration:v9];
 
   v10 = *MEMORY[0x277CFADD0];
-  v11 = [v7 configuration];
-  [v11 setSourceApplicationBundleIdentifier:v10];
+  configuration = [v7 configuration];
+  [configuration setSourceApplicationBundleIdentifier:v10];
 
   objc_initWeak(&location, v7);
   v13 = MEMORY[0x277D85DD0];
@@ -47,12 +47,12 @@
   v15 = __57__BRCZoneHealthReportOperation__reportRecords_requestID___block_invoke;
   v16 = &unk_2785077E8;
   objc_copyWeak(v19, &location);
-  v17 = self;
-  v12 = v6;
+  selfCopy = self;
+  v12 = recordsCopy;
   v18 = v12;
-  v19[1] = v21;
+  v19[1] = dCopy;
   [v7 setModifyRecordsCompletionBlock:&v13];
-  [(_BRCOperation *)self addSubOperation:v7, v13, v14, v15, v16, v17];
+  [(_BRCOperation *)self addSubOperation:v7, v13, v14, v15, v16, selfCopy];
 
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
@@ -158,24 +158,24 @@ void __57__BRCZoneHealthReportOperation__reportRecords_requestID___block_invoke_
 - (void)main
 {
   v3 = objc_opt_new();
-  v4 = [(BRCZoneHealthSyncPersistedState *)self->_state allocateNextRequestID];
-  v5 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
-  v6 = [v5 serialQueue];
+  allocateNextRequestID = [(BRCZoneHealthSyncPersistedState *)self->_state allocateNextRequestID];
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+  serialQueue = [clientReadWriteDatabaseFacade serialQueue];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __36__BRCZoneHealthReportOperation_main__block_invoke;
   v14 = &unk_278507838;
-  v15 = v5;
-  v16 = self;
-  v18 = v4;
+  v15 = clientReadWriteDatabaseFacade;
+  selfCopy = self;
+  v18 = allocateNextRequestID;
   v7 = v3;
   v17 = v7;
-  v8 = v5;
-  dispatch_sync(v6, &v11);
+  v8 = clientReadWriteDatabaseFacade;
+  dispatch_sync(serialQueue, &v11);
 
   if ([v7 count])
   {
-    [(BRCZoneHealthReportOperation *)self _reportRecords:v7 requestID:v4];
+    [(BRCZoneHealthReportOperation *)self _reportRecords:v7 requestID:allocateNextRequestID];
   }
 
   else

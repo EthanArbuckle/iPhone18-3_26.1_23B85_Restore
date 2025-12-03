@@ -1,40 +1,40 @@
 @interface TSCH3DMaterialShaderEffect
-+ (id)effectWithPool:(id)a3 material:(id)a4 variables:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DMaterialShaderEffect)initWithPool:(id)a3 material:(id)a4 variables:(id)a5;
++ (id)effectWithPool:(id)pool material:(id)material variables:(id)variables;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DMaterialShaderEffect)initWithPool:(id)pool material:(id)material variables:(id)variables;
 - (id)stateSharingID;
-- (void)addVariables:(id)a3;
-- (void)updateState:(id)a3 effectsStates:(id)a4;
-- (void)uploadData:(id)a3 effectsStates:(id)a4;
+- (void)addVariables:(id)variables;
+- (void)updateState:(id)state effectsStates:(id)states;
+- (void)uploadData:(id)data effectsStates:(id)states;
 @end
 
 @implementation TSCH3DMaterialShaderEffect
 
-+ (id)effectWithPool:(id)a3 material:(id)a4 variables:(id)a5
++ (id)effectWithPool:(id)pool material:(id)material variables:(id)variables
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 alloc];
-  v16 = objc_msgSend_initWithPool_material_variables_(v11, v12, v13, v14, v15, v8, v9, v10);
+  poolCopy = pool;
+  materialCopy = material;
+  variablesCopy = variables;
+  v11 = [self alloc];
+  v16 = objc_msgSend_initWithPool_material_variables_(v11, v12, v13, v14, v15, poolCopy, materialCopy, variablesCopy);
 
   return v16;
 }
 
-- (TSCH3DMaterialShaderEffect)initWithPool:(id)a3 material:(id)a4 variables:(id)a5
+- (TSCH3DMaterialShaderEffect)initWithPool:(id)pool material:(id)material variables:(id)variables
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  poolCopy = pool;
+  materialCopy = material;
+  variablesCopy = variables;
   v21.receiver = self;
   v21.super_class = TSCH3DMaterialShaderEffect;
   v12 = [(TSCH3DMaterialShaderEffect *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_pool, a3);
-    objc_storeStrong(&v13->_material, a4);
-    v18 = objc_msgSend_copy(v11, v14, v15, v16, v17);
+    objc_storeStrong(&v12->_pool, pool);
+    objc_storeStrong(&v13->_material, material);
+    v18 = objc_msgSend_copy(variablesCopy, v14, v15, v16, v17);
     variables = v13->_variables;
     v13->_variables = v18;
   }
@@ -42,14 +42,14 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v25.receiver = self;
   v25.super_class = TSCH3DMaterialShaderEffect;
-  if ([(TSCH3DShaderEffect *)&v25 isEqual:v4])
+  if ([(TSCH3DShaderEffect *)&v25 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (objc_msgSend_isEqual_(self->_pool, v6, v7, v8, v9, *(v5 + 1)) && (v14 = objc_msgSend_textureCount(self->_material, v10, v11, v12, v13), v14 == objc_msgSend_textureCount(*(v5 + 2), v15, v16, v17, v18)))
     {
       isEqual = objc_msgSend_isEqual_(self->_variables, v19, v20, v21, v22, *(v5 + 3));
@@ -88,28 +88,28 @@
   return objc_msgSend_texture(variables, v7, v8, v9, v10);
 }
 
-- (void)addVariables:(id)a3
+- (void)addVariables:(id)variables
 {
-  v36 = a3;
+  variablesCopy = variables;
   v8 = objc_msgSend_factor(self->_variables, v4, v5, v6, v7);
-  objc_msgSend_addUniformVariable_(v36, v9, v10, v11, v12, v8);
+  objc_msgSend_addUniformVariable_(variablesCopy, v9, v10, v11, v12, v8);
 
   v17 = objc_msgSend_resourceForMaterial_(self->_pool, v13, v14, v15, v16, self->_material);
 
   if (v17)
   {
     v22 = objc_msgSend_texture(self->_variables, v18, v19, v20, v21);
-    objc_msgSend_addUniformVariable_(v36, v23, v24, v25, v26, v22);
+    objc_msgSend_addUniformVariable_(variablesCopy, v23, v24, v25, v26, v22);
 
     v31 = objc_msgSend_texcoords(self->_variables, v27, v28, v29, v30);
-    objc_msgSend_addAttributeVariable_(v36, v32, v33, v34, v35, v31);
+    objc_msgSend_addAttributeVariable_(variablesCopy, v32, v33, v34, v35, v31);
   }
 }
 
-- (void)updateState:(id)a3 effectsStates:(id)a4
+- (void)updateState:(id)state effectsStates:(id)states
 {
-  v6 = a3;
-  v8 = a4;
+  stateCopy = state;
+  statesCopy = states;
   v42 = 0;
   material = self->_material;
   if (material)
@@ -135,23 +135,23 @@
     v41[10] = 0;
     *&v41[12] = 0;
     *&v41[17] = 0;
-    v25 = objc_msgSend_texture_resource_attributes_(v6, v21, v22, v23, v24, v20, v16, v41);
+    v25 = objc_msgSend_texture_resource_attributes_(stateCopy, v21, v22, v23, v24, v20, v16, v41);
 
     v42 = v25;
   }
 
   v30 = objc_msgSend_stateSharingID(self, v26, v27, v28, v29);
-  v31 = v8;
+  v31 = statesCopy;
   v36 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x277CCAE60], v32, v33, v34, v35, &v42, "{MaterialShaderState=q{tvec4<float>=(?=fff)(?=fff)(?=fff)(?=fff)}}");
   objc_msgSend_setValueState_forKey_(v31, v37, v38, v39, v40, v36, v30);
 }
 
-- (void)uploadData:(id)a3 effectsStates:(id)a4
+- (void)uploadData:(id)data effectsStates:(id)states
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  statesCopy = states;
   v12 = objc_msgSend_stateSharingID(self, v8, v9, v10, v11);
-  v13 = v7;
+  v13 = statesCopy;
   v18 = objc_msgSend_valueStateForKey_(v13, v14, v15, v16, v17, v12);
 
   if (!v18)
@@ -193,7 +193,7 @@
   }
 
   v81 = objc_msgSend_factor(self->_variables, v77, v78, v79, v80);
-  objc_msgSend_uniform_vec4_(v6, v82, v83, v84, v85, v81, v101);
+  objc_msgSend_uniform_vec4_(dataCopy, v82, v83, v84, v85, v81, v101);
 
   v90 = objc_msgSend_resourceForMaterial_(self->_pool, v86, v87, v88, v89, self->_material);
 
@@ -201,7 +201,7 @@
   {
     v95 = objc_msgSend_texture(self->_variables, v91, v92, v93, v94);
     LODWORD(sizep) = v100;
-    objc_msgSend_uniform_ivec1_(v6, v96, v97, v98, v99, v95, &sizep);
+    objc_msgSend_uniform_ivec1_(dataCopy, v96, v97, v98, v99, v95, &sizep);
   }
 }
 

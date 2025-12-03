@@ -1,36 +1,36 @@
 @interface NBiCloudBackupManager
-+ (BOOL)isDataProtectionError:(id)a3;
-- (BOOL)_shouldCreateDaily:(id)a3;
-- (BOOL)_shouldCreateMonthly:(id)a3;
-- (BOOL)_shouldCreateWeekly:(id)a3;
++ (BOOL)isDataProtectionError:(id)error;
+- (BOOL)_shouldCreateDaily:(id)daily;
+- (BOOL)_shouldCreateMonthly:(id)monthly;
+- (BOOL)_shouldCreateWeekly:(id)weekly;
 - (NBiCloudBackupManager)init;
-- (id)_NBBackupFromNBBackupiCloudModel:(id)a3;
-- (id)_getGestaltNumber:(__CFString *)a3;
-- (id)_getGestaltString:(__CFString *)a3;
+- (id)_NBBackupFromNBBackupiCloudModel:(id)model;
+- (id)_getGestaltNumber:(__CFString *)number;
+- (id)_getGestaltString:(__CFString *)string;
 - (id)connection;
-- (id)dateFromPast:(unint64_t)a3 months:(unint64_t)a4 days:(unint64_t)a5 hours:(unint64_t)a6 seconds:(unint64_t)a7;
+- (id)dateFromPast:(unint64_t)past months:(unint64_t)months days:(unint64_t)days hours:(unint64_t)hours seconds:(unint64_t)seconds;
 - (id)tempDirString;
 - (void)_configureStoreDescriptions;
-- (void)_determineBackupToCreateFromBackupList:(id)a3 withCompletion:(id)a4;
+- (void)_determineBackupToCreateFromBackupList:(id)list withCompletion:(id)completion;
 - (void)_initCoreData;
-- (void)_prune:(id)a3;
-- (void)_pruneBackups:(id)a3 backupsToKeep:(unint64_t)a4 withPruneAction:(id)a5;
-- (void)_seperateBackupListsByType:(id)a3 withCompletion:(id)a4;
-- (void)backupForID:(id)a3 completion:(id)a4;
-- (void)backupList:(id)a3;
-- (void)backupPayloadForID:(id)a3 completion:(id)a4;
-- (void)createBackupsAndPruneAtDate:(id)a3 withPayload:(id)a4 completion:(id)a5;
-- (void)createInitialBackup:(id)a3;
-- (void)createManualBackup:(id)a3;
+- (void)_prune:(id)_prune;
+- (void)_pruneBackups:(id)backups backupsToKeep:(unint64_t)keep withPruneAction:(id)action;
+- (void)_seperateBackupListsByType:(id)type withCompletion:(id)completion;
+- (void)backupForID:(id)d completion:(id)completion;
+- (void)backupList:(id)list;
+- (void)backupPayloadForID:(id)d completion:(id)completion;
+- (void)createBackupsAndPruneAtDate:(id)date withPayload:(id)payload completion:(id)completion;
+- (void)createInitialBackup:(id)backup;
+- (void)createManualBackup:(id)backup;
 - (void)dealloc;
-- (void)deleteAllBackupsWithCompletion:(id)a3;
-- (void)getBackupsWithCompletion:(id)a3;
-- (void)getFaceSanpshotWithCompletionHandler:(id)a3;
-- (void)injectBackups:(int)a3 completion:(id)a4;
-- (void)removeBackupWithID:(id)a3 withCompletion:(id)a4;
-- (void)removeBackups:(id)a3;
-- (void)requestExportWithCompletion:(id)a3;
-- (void)requestImportWithCompletion:(id)a3;
+- (void)deleteAllBackupsWithCompletion:(id)completion;
+- (void)getBackupsWithCompletion:(id)completion;
+- (void)getFaceSanpshotWithCompletionHandler:(id)handler;
+- (void)injectBackups:(int)backups completion:(id)completion;
+- (void)removeBackupWithID:(id)d withCompletion:(id)completion;
+- (void)removeBackups:(id)backups;
+- (void)requestExportWithCompletion:(id)completion;
+- (void)requestImportWithCompletion:(id)completion;
 @end
 
 @implementation NBiCloudBackupManager
@@ -88,11 +88,11 @@
   [(NBiCloudBackupManager *)&v3 dealloc];
 }
 
-- (void)createBackupsAndPruneAtDate:(id)a3 withPayload:(id)a4 completion:(id)a5
+- (void)createBackupsAndPruneAtDate:(id)date withPayload:(id)payload completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  payloadCopy = payload;
+  completionCopy = completion;
   v11 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
@@ -105,45 +105,45 @@
   v15[2] = sub_100013B34;
   v15[3] = &unk_10002D110;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = dateCopy;
+  v17 = payloadCopy;
+  v18 = completionCopy;
+  v12 = payloadCopy;
+  v13 = dateCopy;
+  v14 = completionCopy;
   [(NBiCloudBackupManager *)self getBackupsWithCompletion:v15];
 }
 
-- (void)backupPayloadForID:(id)a3 completion:(id)a4
+- (void)backupPayloadForID:(id)d completion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100014304;
   v6[3] = &unk_10002D138;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(NBiCloudBackupManager *)v7 backupForID:a3 completion:v6];
+  selfCopy = self;
+  completionCopy = completion;
+  v5 = completionCopy;
+  [(NBiCloudBackupManager *)selfCopy backupForID:d completion:v6];
 }
 
-- (void)_prune:(id)a3
+- (void)_prune:(id)_prune
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100014628;
   v3[3] = &unk_10002D188;
   v3[4] = self;
-  [(NBiCloudBackupManager *)self _seperateBackupListsByType:a3 withCompletion:v3];
+  [(NBiCloudBackupManager *)self _seperateBackupListsByType:_prune withCompletion:v3];
 }
 
-- (id)_getGestaltString:(__CFString *)a3
+- (id)_getGestaltString:(__CFString *)string
 {
   v3 = MGCopyAnswer();
 
   return v3;
 }
 
-- (id)_getGestaltNumber:(__CFString *)a3
+- (id)_getGestaltNumber:(__CFString *)number
 {
   v3 = MGCopyAnswer();
 
@@ -154,8 +154,8 @@
 {
   v2 = NSTemporaryDirectory();
   v3 = +[NSUUID UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v2 stringByAppendingPathComponent:v4];
+  uUIDString = [v3 UUIDString];
+  v5 = [v2 stringByAppendingPathComponent:uUIDString];
 
   v6 = +[NSFileManager defaultManager];
   LOBYTE(v3) = [v6 fileExistsAtPath:v5];
@@ -181,20 +181,20 @@
   return v10;
 }
 
-- (void)getFaceSanpshotWithCompletionHandler:(id)a3
+- (void)getFaceSanpshotWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = objc_retainBlock(v4);
+    v7 = objc_retainBlock(handlerCopy);
     *buf = 134217984;
     v18 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "replyBlock(getFaceSanpshotWithCompletionHandler): (%p)", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!handlerCopy)
   {
     [NSException raise:NSInvalidArgumentException format:@"nil replyBlock"];
   }
@@ -216,8 +216,8 @@
   block[2] = sub_100014CDC;
   block[3] = &unk_10002D200;
   objc_copyWeak(&v15, &location);
-  v14 = v4;
-  v12 = v4;
+  v14 = handlerCopy;
+  v12 = handlerCopy;
   dispatch_async(internalQueue, block);
 
   objc_destroyWeak(&v15);
@@ -257,36 +257,36 @@
   return ntkXpcConnection;
 }
 
-- (void)backupList:(id)a3
+- (void)backupList:(id)list
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000156C8;
   v4[3] = &unk_10002C7F8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(NBiCloudBackupManager *)v5 getBackupsWithCompletion:v4];
+  selfCopy = self;
+  listCopy = list;
+  v3 = listCopy;
+  [(NBiCloudBackupManager *)selfCopy getBackupsWithCompletion:v4];
 }
 
-- (void)deleteAllBackupsWithCompletion:(id)a3
+- (void)deleteAllBackupsWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000158D4;
   v4[3] = &unk_10002D268;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(NBiCloudBackupManager *)v5 getBackupsWithCompletion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(NBiCloudBackupManager *)selfCopy getBackupsWithCompletion:v4];
 }
 
-- (id)_NBBackupFromNBBackupiCloudModel:(id)a3
+- (id)_NBBackupFromNBBackupiCloudModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 backupMetaData];
+  modelCopy = model;
+  backupMetaData = [modelCopy backupMetaData];
   v16 = 0;
-  v5 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v4 error:&v16];
+  v5 = [[NSKeyedUnarchiver alloc] initForReadingFromData:backupMetaData error:&v16];
   v6 = v16;
   if (v6)
   {
@@ -296,7 +296,7 @@
       *buf = 138412546;
       v18 = v6;
       v19 = 2112;
-      v20 = v3;
+      v20 = modelCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "_NBBackupFromNBBackupiCloudModel failed with error: %@ - %@", buf, 0x16u);
     }
 
@@ -308,71 +308,71 @@
     v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
     [v5 finishDecoding];
     v9 = [NSUUID alloc];
-    v10 = [v3 backupID];
-    v11 = [v9 initWithUUIDString:v10];
+    backupID = [modelCopy backupID];
+    v11 = [v9 initWithUUIDString:backupID];
     [v8 setUuid:v11];
 
-    v12 = [v3 payload];
-    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 length]);
+    payload = [modelCopy payload];
+    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [payload length]);
     [v8 setSizeInBytes:v13];
 
-    v14 = [v3 dateCreated];
-    [v8 setLastModificationDate:v14];
+    dateCreated = [modelCopy dateCreated];
+    [v8 setLastModificationDate:dateCreated];
   }
 
   return v8;
 }
 
-- (void)_pruneBackups:(id)a3 backupsToKeep:(unint64_t)a4 withPruneAction:(id)a5
+- (void)_pruneBackups:(id)backups backupsToKeep:(unint64_t)keep withPruneAction:(id)action
 {
-  v13 = a3;
-  v7 = a5;
-  if ([v13 count] > a4)
+  backupsCopy = backups;
+  actionCopy = action;
+  if ([backupsCopy count] > keep)
   {
-    v8 = [v13 sortedArrayUsingComparator:&stru_10002D2A8];
-    if ([v8 count] != a4)
+    v8 = [backupsCopy sortedArrayUsingComparator:&stru_10002D2A8];
+    if ([v8 count] != keep)
     {
       v9 = 0;
       v10 = 1;
       do
       {
         v11 = [v8 objectAtIndexedSubscript:v9];
-        v7[2](v7, v11);
+        actionCopy[2](actionCopy, v11);
 
         v9 = v10;
       }
 
-      while ([v8 count] - a4 > v10++);
+      while ([v8 count] - keep > v10++);
     }
   }
 }
 
-- (void)_determineBackupToCreateFromBackupList:(id)a3 withCompletion:(id)a4
+- (void)_determineBackupToCreateFromBackupList:(id)list withCompletion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100015D5C;
   v6[3] = &unk_10002D2D0;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(NBiCloudBackupManager *)v7 _seperateBackupListsByType:a3 withCompletion:v6];
+  selfCopy = self;
+  completionCopy = completion;
+  v5 = completionCopy;
+  [(NBiCloudBackupManager *)selfCopy _seperateBackupListsByType:list withCompletion:v6];
 }
 
-- (BOOL)_shouldCreateMonthly:(id)a3
+- (BOOL)_shouldCreateMonthly:(id)monthly
 {
-  v4 = a3;
-  v5 = [(NBiCloudBackupManager *)self sortBackupsByDate:v4];
-  v6 = [v5 lastObject];
+  monthlyCopy = monthly;
+  v5 = [(NBiCloudBackupManager *)self sortBackupsByDate:monthlyCopy];
+  lastObject = [v5 lastObject];
 
-  v7 = [v4 count];
+  v7 = [monthlyCopy count];
   if (v7)
   {
-    v8 = [v6 dateCreated];
+    dateCreated = [lastObject dateCreated];
     v9 = objc_alloc_init(NSDateComponents);
     [v9 setMonth:1];
     v10 = +[NSCalendar currentCalendar];
-    v11 = [v10 dateByAddingComponents:v9 toDate:v8 options:0];
+    v11 = [v10 dateByAddingComponents:v9 toDate:dateCreated options:0];
     v12 = +[NSDate date];
     v13 = [v11 compare:v12];
 
@@ -387,42 +387,42 @@
   return v14;
 }
 
-- (BOOL)_shouldCreateWeekly:(id)a3
+- (BOOL)_shouldCreateWeekly:(id)weekly
 {
-  v3 = [(NBiCloudBackupManager *)self sortBackupsByDate:a3];
-  v4 = [v3 lastObject];
+  v3 = [(NBiCloudBackupManager *)self sortBackupsByDate:weekly];
+  lastObject = [v3 lastObject];
 
-  v5 = [v4 dateCreated];
+  dateCreated = [lastObject dateCreated];
   v6 = objc_alloc_init(NSDateComponents);
   [v6 setDay:7];
   v7 = +[NSCalendar currentCalendar];
-  v8 = [v7 dateByAddingComponents:v6 toDate:v5 options:0];
+  v8 = [v7 dateByAddingComponents:v6 toDate:dateCreated options:0];
   v9 = +[NSDate date];
   v10 = [v8 compare:v9];
 
   return v10 + 1 < 2;
 }
 
-- (BOOL)_shouldCreateDaily:(id)a3
+- (BOOL)_shouldCreateDaily:(id)daily
 {
-  v3 = [(NBiCloudBackupManager *)self sortBackupsByDate:a3];
-  v4 = [v3 lastObject];
+  v3 = [(NBiCloudBackupManager *)self sortBackupsByDate:daily];
+  lastObject = [v3 lastObject];
 
-  v5 = [v4 dateCreated];
+  dateCreated = [lastObject dateCreated];
   v6 = objc_alloc_init(NSDateComponents);
   [v6 setDay:1];
   v7 = +[NSCalendar currentCalendar];
-  v8 = [v7 dateByAddingComponents:v6 toDate:v5 options:0];
+  v8 = [v7 dateByAddingComponents:v6 toDate:dateCreated options:0];
   v9 = +[NSDate date];
   v10 = [v8 compare:v9];
 
   return v10 + 1 < 2;
 }
 
-- (void)_seperateBackupListsByType:(id)a3 withCompletion:(id)a4
+- (void)_seperateBackupListsByType:(id)type withCompletion:(id)completion
 {
-  v5 = a3;
-  v19 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   v22 = objc_opt_new();
   v21 = objc_opt_new();
   v6 = objc_opt_new();
@@ -433,7 +433,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v5;
+  v9 = typeCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -449,8 +449,8 @@
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 serialNumber];
-        v16 = [v15 isEqualToString:v8];
+        serialNumber = [v14 serialNumber];
+        v16 = [serialNumber isEqualToString:v8];
 
         v17 = v7;
         if (!v16)
@@ -458,13 +458,13 @@
           goto LABEL_14;
         }
 
-        v18 = [v14 backupType];
-        if (v18 > 2)
+        backupType = [v14 backupType];
+        if (backupType > 2)
         {
           v17 = v6;
-          if (v18 != 3)
+          if (backupType != 3)
           {
-            if (v18 != 4)
+            if (backupType != 4)
             {
               continue;
             }
@@ -478,13 +478,13 @@ LABEL_14:
         }
 
         v17 = v22;
-        if (v18 == 1)
+        if (backupType == 1)
         {
           goto LABEL_14;
         }
 
         v17 = v21;
-        if (v18 == 2)
+        if (backupType == 2)
         {
           goto LABEL_14;
         }
@@ -496,18 +496,18 @@ LABEL_14:
     while (v11);
   }
 
-  v19[2](v19, v22, v21, v6, v20, v7);
+  completionCopy[2](completionCopy, v22, v21, v6, v20, v7);
 }
 
-- (void)removeBackups:(id)a3
+- (void)removeBackups:(id)backups
 {
-  v4 = a3;
-  v5 = [(NSPersistentContainer *)self->_persistentContainer viewContext];
+  backupsCopy = backups;
+  viewContext = [(NSPersistentContainer *)self->_persistentContainer viewContext];
   v6 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = backupsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Deleting records: %@", buf, 0xCu);
   }
 
@@ -515,7 +515,7 @@ LABEL_14:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = backupsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -531,7 +531,7 @@ LABEL_14:
           objc_enumerationMutation(v7);
         }
 
-        [v5 deleteObject:*(*(&v16 + 1) + 8 * v11)];
+        [viewContext deleteObject:*(*(&v16 + 1) + 8 * v11)];
         v11 = v11 + 1;
       }
 
@@ -543,7 +543,7 @@ LABEL_14:
   }
 
   v15 = 0;
-  v12 = [v5 save:&v15];
+  v12 = [viewContext save:&v15];
   v13 = v15;
   if ((v12 & 1) == 0)
   {
@@ -557,21 +557,21 @@ LABEL_14:
   }
 }
 
-- (void)removeBackupWithID:(id)a3 withCompletion:(id)a4
+- (void)removeBackupWithID:(id)d withCompletion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000166A8;
   v6[3] = &unk_10002D318;
-  v7 = self;
-  v8 = a4;
-  v5 = v8;
-  [(NBiCloudBackupManager *)v7 backupForID:a3 completion:v6];
+  selfCopy = self;
+  completionCopy = completion;
+  v5 = completionCopy;
+  [(NBiCloudBackupManager *)selfCopy backupForID:d completion:v6];
 }
 
-- (void)createInitialBackup:(id)a3
+- (void)createInitialBackup:(id)backup
 {
-  v4 = a3;
+  backupCopy = backup;
   v5 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
@@ -584,21 +584,21 @@ LABEL_14:
   v7[2] = sub_100016A68;
   v7[3] = &unk_10002D268;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = backupCopy;
+  v6 = backupCopy;
   [(NBiCloudBackupManager *)self getBackupsWithCompletion:v7];
 }
 
-- (void)createManualBackup:(id)a3
+- (void)createManualBackup:(id)backup
 {
-  v4 = a3;
+  backupCopy = backup;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100016EF0;
   v6[3] = &unk_10002D368;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = backupCopy;
   v7 = v5;
   [(NBiCloudBackupManager *)self saveBackup:3 withDate:0 payload:0 withCompletion:v6];
 
@@ -606,22 +606,22 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (void)getBackupsWithCompletion:(id)a3
+- (void)getBackupsWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100017324;
   v4[3] = &unk_10002D390;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(NBiCloudBackupManager *)v5 requestImportWithCompletion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(NBiCloudBackupManager *)selfCopy requestImportWithCompletion:v4];
 }
 
-- (void)backupForID:(id)a3 completion:(id)a4
+- (void)backupForID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
@@ -634,38 +634,38 @@ LABEL_14:
   v11[2] = sub_100017688;
   v11[3] = &unk_10002D3B8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   [(NBiCloudBackupManager *)self requestImportWithCompletion:v11];
 }
 
-- (void)requestExportWithCompletion:(id)a3
+- (void)requestExportWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   icloudQueue = self->_icloudQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100017A9C;
   v7[3] = &unk_10002C740;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(icloudQueue, v7);
 }
 
-- (void)requestImportWithCompletion:(id)a3
+- (void)requestImportWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   icloudQueue = self->_icloudQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100017CDC;
   v7[3] = &unk_10002C740;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(icloudQueue, v7);
 }
 
@@ -678,35 +678,35 @@ LABEL_14:
   [(NBiCloudBackupManager *)self setPersistentContainer:v5];
 
   [(NBiCloudBackupManager *)self _configureStoreDescriptions];
-  v6 = [(NBiCloudBackupManager *)self persistentContainer];
-  [v6 loadPersistentStoresWithCompletionHandler:&stru_10002D438];
+  persistentContainer = [(NBiCloudBackupManager *)self persistentContainer];
+  [persistentContainer loadPersistentStoresWithCompletionHandler:&stru_10002D438];
 }
 
-+ (BOOL)isDataProtectionError:(id)a3
++ (BOOL)isDataProtectionError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  v5 = [v3 domain];
-  if ([v5 isEqualToString:NSSQLiteErrorDomain])
+  errorCopy = error;
+  code = [errorCopy code];
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:NSSQLiteErrorDomain])
   {
-    v6 = [NSNumber numberWithInteger:v4];
+    v6 = [NSNumber numberWithInteger:code];
   }
 
   else
   {
-    v7 = [v3 userInfo];
-    v6 = [v7 objectForKeyedSubscript:NSSQLiteErrorDomain];
+    userInfo = [errorCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:NSSQLiteErrorDomain];
   }
 
-  if ([v5 isEqualToString:NSPOSIXErrorDomain])
+  if ([domain isEqualToString:NSPOSIXErrorDomain])
   {
-    v8 = [NSNumber numberWithInteger:v4];
+    v8 = [NSNumber numberWithInteger:code];
   }
 
   else
   {
-    v9 = [v3 userInfo];
-    v8 = [v9 objectForKeyedSubscript:NSPOSIXErrorDomain];
+    userInfo2 = [errorCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:NSPOSIXErrorDomain];
   }
 
   v10 = [v6 intValue] == 23 || objc_msgSend(v8, "intValue") == 1;
@@ -740,34 +740,34 @@ LABEL_14:
   [(NSPersistentContainer *)self->_persistentContainer setPersistentStoreDescriptions:v13];
 }
 
-- (id)dateFromPast:(unint64_t)a3 months:(unint64_t)a4 days:(unint64_t)a5 hours:(unint64_t)a6 seconds:(unint64_t)a7
+- (id)dateFromPast:(unint64_t)past months:(unint64_t)months days:(unint64_t)days hours:(unint64_t)hours seconds:(unint64_t)seconds
 {
   v12 = +[NSDate date];
   v13 = objc_alloc_init(NSDateComponents);
   v14 = v13;
-  if (a3)
+  if (past)
   {
-    [v13 setYear:-a3];
+    [v13 setYear:-past];
   }
 
-  if (a4)
+  if (months)
   {
-    [v14 setMonth:-a4];
+    [v14 setMonth:-months];
   }
 
-  if (a5)
+  if (days)
   {
-    [v14 setDay:-a5];
+    [v14 setDay:-days];
   }
 
-  if (a6)
+  if (hours)
   {
-    [v14 setHour:-a6];
+    [v14 setHour:-hours];
   }
 
-  if (a7)
+  if (seconds)
   {
-    [v14 setSecond:-a7];
+    [v14 setSecond:-seconds];
   }
 
   v15 = +[NSCalendar currentCalendar];
@@ -776,9 +776,9 @@ LABEL_14:
   return v16;
 }
 
-- (void)injectBackups:(int)a3 completion:(id)a4
+- (void)injectBackups:(int)backups completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(v7, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   testQueue = self->_testQueue;
@@ -795,10 +795,10 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = sub_1000184C8;
   block[3] = &unk_10002D460;
-  v15 = a3;
+  backupsCopy = backups;
   block[4] = self;
-  v14 = v6;
-  v12 = v6;
+  v14 = completionCopy;
+  v12 = completionCopy;
   dispatch_async(testQueue, block);
 }
 

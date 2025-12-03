@@ -1,18 +1,18 @@
 @interface MCPeerID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MCPeerID)init;
-- (MCPeerID)initWithCoder:(id)a3;
+- (MCPeerID)initWithCoder:(id)coder;
 - (MCPeerID)initWithDisplayName:(NSString *)myDisplayName;
-- (MCPeerID)initWithIDString:(id)a3 displayName:(id)a4;
-- (MCPeerID)initWithPID:(unsigned int)a3 displayName:(id)a4;
-- (MCPeerID)initWithSerializedRepresentation:(id)a3;
+- (MCPeerID)initWithIDString:(id)string displayName:(id)name;
+- (MCPeerID)initWithPID:(unsigned int)d displayName:(id)name;
+- (MCPeerID)initWithSerializedRepresentation:(id)representation;
 - (NSString)displayName;
 - (id)description;
 - (id)idString;
 - (id)internalDescription;
 - (id)serializedRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MCPeerID
@@ -45,7 +45,7 @@
   return [v3 stringWithFormat:@"<%@: %p> idString[%@] pid64[%016llX] displayName[%@]", NSStringFromClass(v4), self, -[MCPeerIDInternal idString](self->_internal, "idString"), -[MCPeerIDInternal pid64](self->_internal, "pid64"), -[MCPeerIDInternal displayName](self->_internal, "displayName")];
 }
 
-- (MCPeerID)initWithPID:(unsigned int)a3 displayName:(id)a4
+- (MCPeerID)initWithPID:(unsigned int)d displayName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -53,19 +53,19 @@
   v6 = [(MCPeerID *)&v14 init];
   if (v6)
   {
-    v7 = makebase36string(a3);
+    v7 = makebase36string(d);
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v7];
     free(v7);
-    v6->_internal = [[MCPeerIDInternal alloc] initWithIDString:v8 pid64:a3 displayName:a4];
+    v6->_internal = [[MCPeerIDInternal alloc] initWithIDString:v8 pid64:d displayName:name];
     v9 = mcpid_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(MCPeerID *)v6 idString];
-      v11 = [(MCPeerID *)v6 displayNameAndPID];
+      idString = [(MCPeerID *)v6 idString];
+      displayNameAndPID = [(MCPeerID *)v6 displayNameAndPID];
       *buf = 138412546;
-      v16 = v10;
+      v16 = idString;
       v17 = 2112;
-      v18 = v11;
+      v18 = displayNameAndPID;
       _os_log_impl(&dword_239FB7000, v9, OS_LOG_TYPE_DEFAULT, "Created new peerID with idString [%@], displayNameAndPID [%@].", buf, 0x16u);
     }
   }
@@ -74,28 +74,28 @@
   return v6;
 }
 
-- (MCPeerID)initWithIDString:(id)a3 displayName:(id)a4
+- (MCPeerID)initWithIDString:(id)string displayName:(id)name
 {
   v8.receiver = self;
   v8.super_class = MCPeerID;
   v6 = [(MCPeerID *)&v8 init];
   if (v6)
   {
-    v6->_internal = -[MCPeerIDInternal initWithIDString:pid64:displayName:]([MCPeerIDInternal alloc], "initWithIDString:pid64:displayName:", a3, strtoull([a3 UTF8String], 0, 36), a4);
+    v6->_internal = -[MCPeerIDInternal initWithIDString:pid64:displayName:]([MCPeerIDInternal alloc], "initWithIDString:pid64:displayName:", string, strtoull([string UTF8String], 0, 36), name);
   }
 
   return v6;
 }
 
-- (MCPeerID)initWithCoder:(id)a3
+- (MCPeerID)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = MCPeerID;
   v4 = [(MCPeerID *)&v10 init];
   if (v4)
   {
-    v5 = [a3 decodeInt64ForKey:@"id"];
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v5 = [coder decodeInt64ForKey:@"id"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     v7 = makebase36string(v5);
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v7];
     free(v7);
@@ -105,12 +105,12 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[MCPeerIDInternal displayName](self->_internal forKey:{"displayName"), @"name"}];
-  v5 = [(MCPeerIDInternal *)self->_internal pid64];
+  [coder encodeObject:-[MCPeerIDInternal displayName](self->_internal forKey:{"displayName"), @"name"}];
+  pid64 = [(MCPeerIDInternal *)self->_internal pid64];
 
-  [a3 encodeInt64:v5 forKey:@"id"];
+  [coder encodeInt64:pid64 forKey:@"id"];
 }
 
 - (void)dealloc
@@ -155,12 +155,12 @@
     v13 = mcpid_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(MCPeerID *)v4 idString];
-      v15 = [(MCPeerID *)v4 displayNameAndPID];
+      idString = [(MCPeerID *)v4 idString];
+      displayNameAndPID = [(MCPeerID *)v4 displayNameAndPID];
       *buf = 138412546;
-      v20 = v14;
+      v20 = idString;
       v21 = 2112;
-      v22 = v15;
+      v22 = displayNameAndPID;
       _os_log_impl(&dword_239FB7000, v13, OS_LOG_TYPE_DEFAULT, "Created new peerID with idString [%@], displayNameAndPID [%@].", buf, 0x16u);
     }
   }
@@ -169,7 +169,7 @@
   return v4;
 }
 
-- (MCPeerID)initWithSerializedRepresentation:(id)a3
+- (MCPeerID)initWithSerializedRepresentation:(id)representation
 {
   v34 = *MEMORY[0x277D85DE8];
   v27.receiver = self;
@@ -177,7 +177,7 @@
   v4 = [(MCPeerID *)&v27 init];
   if (v4)
   {
-    v5 = [a3 length];
+    v5 = [representation length];
     v6 = MEMORY[0x277CBE660];
     if (v5 <= 9)
     {
@@ -187,9 +187,9 @@
       [v7 raise:v8 format:{@"Invalid serialized representation passed to %@", NSStringFromClass(v9)}];
     }
 
-    v10 = [a3 bytes];
-    v11 = bswap64(*v10);
-    v12 = *(v10 + 8);
+    bytes = [representation bytes];
+    v11 = bswap64(*bytes);
+    v12 = *(bytes + 8);
     if (v5 < v12 + 9)
     {
       v13 = MEMORY[0x277CBEAD8];
@@ -201,7 +201,7 @@
       [v13 raise:v16 format:{@"Invalid serialized representation passed to %@", v26}];
     }
 
-    v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v10 + 9 length:v12 encoding:4];
+    v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes + 9 length:v12 encoding:4];
     if (v5 < v12 + 9)
     {
       v18 = MEMORY[0x277CBEAD8];
@@ -219,7 +219,7 @@
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v29 = a3;
+      representationCopy = representation;
       v30 = 2112;
       v31 = v22;
       v32 = 2048;
@@ -234,7 +234,7 @@
 
 - (id)serializedRepresentation
 {
-  v3 = [(NSString *)[(MCPeerIDInternal *)self->_internal displayName] UTF8String];
+  uTF8String = [(NSString *)[(MCPeerIDInternal *)self->_internal displayName] UTF8String];
   v4 = [(NSString *)[(MCPeerIDInternal *)self->_internal displayName] lengthOfBytesUsingEncoding:4];
   v5 = malloc_type_malloc(v4 + 9, 0x100004077774924uLL);
   if (!v5)
@@ -252,13 +252,13 @@
   v6[6] = [(MCPeerIDInternal *)self->_internal pid64]>> 8;
   v6[7] = [(MCPeerIDInternal *)self->_internal pid64];
   v6[8] = v4;
-  memcpy(v6 + 9, v3, v4);
+  memcpy(v6 + 9, uTF8String, v4);
   v7 = MEMORY[0x277CBEA90];
 
   return [v7 dataWithBytesNoCopy:v6 length:v4 + 9 freeWhenDone:1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -266,8 +266,8 @@
     return 0;
   }
 
-  v5 = [(MCPeerIDInternal *)self->_internal pid64];
-  return v5 == [*(a3 + 1) pid64];
+  pid64 = [(MCPeerIDInternal *)self->_internal pid64];
+  return pid64 == [*(equal + 1) pid64];
 }
 
 @end

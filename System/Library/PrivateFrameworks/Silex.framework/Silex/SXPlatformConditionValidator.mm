@@ -1,19 +1,19 @@
 @interface SXPlatformConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
-- (SXPlatformConditionValidator)initWithPlatform:(id)a3;
+- (BOOL)validateCondition:(id)condition context:(id)context;
+- (SXPlatformConditionValidator)initWithPlatform:(id)platform;
 @end
 
 @implementation SXPlatformConditionValidator
 
-- (SXPlatformConditionValidator)initWithPlatform:(id)a3
+- (SXPlatformConditionValidator)initWithPlatform:(id)platform
 {
-  v4 = a3;
+  platformCopy = platform;
   v9.receiver = self;
   v9.super_class = SXPlatformConditionValidator;
   v5 = [(SXPlatformConditionValidator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [platformCopy copy];
     platform = v5->_platform;
     v5->_platform = v6;
   }
@@ -21,15 +21,15 @@
   return v5;
 }
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = [a3 platform];
-  if (v5)
+  platform = [condition platform];
+  if (platform)
   {
-    v6 = [(SXPlatformConditionValidator *)self platform];
-    if ([v6 caseInsensitiveCompare:v5])
+    platform2 = [(SXPlatformConditionValidator *)self platform];
+    if ([platform2 caseInsensitiveCompare:platform])
     {
-      v7 = [v5 caseInsensitiveCompare:@"any"] == 0;
+      v7 = [platform caseInsensitiveCompare:@"any"] == 0;
     }
 
     else

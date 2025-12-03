@@ -1,11 +1,11 @@
 @interface WFWorkflowPickerParameter
 - (WFWorkflow)workflow;
-- (WFWorkflowPickerParameter)initWithDefinition:(id)a3;
-- (id)accessoryIconForPossibleState:(id)a3;
-- (id)accessoryImageForPossibleState:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)workflowForState:(id)a3;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
+- (WFWorkflowPickerParameter)initWithDefinition:(id)definition;
+- (id)accessoryIconForPossibleState:(id)state;
+- (id)accessoryImageForPossibleState:(id)state;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)workflowForState:(id)state;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
 @end
 
 @implementation WFWorkflowPickerParameter
@@ -17,21 +17,21 @@
   return WeakRetained;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v5 = [a4 value];
+  value = [state value];
   v6 = +[WFDatabaseProxy defaultDatabase];
-  v7 = [(WFWorkflowPickerParameter *)self workflow];
-  v8 = [v7 reference];
-  v9 = [v5 displayNameWithDatabase:v6 containingWorkflow:v8];
+  workflow = [(WFWorkflowPickerParameter *)self workflow];
+  reference = [workflow reference];
+  v9 = [value displayNameWithDatabase:v6 containingWorkflow:reference];
 
   return v9;
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  handlerCopy = handler;
   v7 = +[WFDatabaseProxy defaultDatabase];
   v15 = 0;
   v8 = [v7 sortedVisibleWorkflowsByNameWithError:&v15];
@@ -57,7 +57,7 @@
   v14[4] = self;
   v11 = [v8 if_map:v14];
   v12 = [objc_alloc(MEMORY[0x1E696E918]) initWithItems:v11];
-  v6[2](v6, v12, 0);
+  handlerCopy[2](handlerCopy, v12, 0);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -76,33 +76,33 @@ WFWorkflowParameterState *__91__WFWorkflowPickerParameter_loadPossibleStatesForE
   return v9;
 }
 
-- (id)accessoryIconForPossibleState:(id)a3
+- (id)accessoryIconForPossibleState:(id)state
 {
-  v3 = [(WFWorkflowPickerParameter *)self workflowForState:a3];
-  v4 = [v3 attributionIcon];
+  v3 = [(WFWorkflowPickerParameter *)self workflowForState:state];
+  attributionIcon = [v3 attributionIcon];
 
-  return v4;
+  return attributionIcon;
 }
 
-- (id)accessoryImageForPossibleState:(id)a3
+- (id)accessoryImageForPossibleState:(id)state
 {
-  v3 = [(WFWorkflowPickerParameter *)self workflowForState:a3];
-  v4 = [MEMORY[0x1E69E0A90] currentDevice];
-  [v4 screenScale];
+  v3 = [(WFWorkflowPickerParameter *)self workflowForState:state];
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  [currentDevice screenScale];
   v6 = [v3 attributionIconWithSize:1 scale:38.0 rounded:{38.0, v5}];
 
   return v6;
 }
 
-- (id)workflowForState:(id)a3
+- (id)workflowForState:(id)state
 {
-  v4 = [a3 value];
-  if (v4)
+  value = [state value];
+  if (value)
   {
     v5 = +[WFDatabaseProxy defaultDatabase];
-    v6 = [(WFWorkflowPickerParameter *)self workflow];
-    v7 = [v6 reference];
-    v8 = [v4 matchingWorkflowInDatabase:v5 containingWorkflow:v7];
+    workflow = [(WFWorkflowPickerParameter *)self workflow];
+    reference = [workflow reference];
+    v8 = [value matchingWorkflowInDatabase:v5 containingWorkflow:reference];
   }
 
   else
@@ -113,11 +113,11 @@ WFWorkflowParameterState *__91__WFWorkflowPickerParameter_loadPossibleStatesForE
   return v8;
 }
 
-- (WFWorkflowPickerParameter)initWithDefinition:(id)a3
+- (WFWorkflowPickerParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFWorkflowPickerParameter;
-  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

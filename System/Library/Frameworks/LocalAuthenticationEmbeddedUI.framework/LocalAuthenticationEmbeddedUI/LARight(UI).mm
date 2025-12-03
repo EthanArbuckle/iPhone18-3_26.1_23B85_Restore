@@ -11,15 +11,15 @@
   v9 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(LARight *)a1 _authOptionsWithLocalizedReason:v9 presentationContext:v11];
+    v10 = [(LARight *)self _authOptionsWithLocalizedReason:v9 presentationContext:v11];
 
-    [a1 authorizeWithOptions:v10 completion:v8];
+    [self authorizeWithOptions:v10 completion:v8];
     v9 = v10;
   }
 
   else
   {
-    [a1 authorizeWithLocalizedReason:v9 completion:v8];
+    [self authorizeWithLocalizedReason:v9 completion:v8];
   }
 }
 

@@ -1,29 +1,29 @@
 @interface MSDStoreInfo
-- (MSDStoreInfo)initWithDict:(id)a3;
-- (id)_buildFullAddress:(id)a3;
-- (id)_buildStoreDescription:(id)a3;
+- (MSDStoreInfo)initWithDict:(id)dict;
+- (id)_buildFullAddress:(id)address;
+- (id)_buildStoreDescription:(id)description;
 - (id)description;
 @end
 
 @implementation MSDStoreInfo
 
-- (MSDStoreInfo)initWithDict:(id)a3
+- (MSDStoreInfo)initWithDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v30.receiver = self;
   v30.super_class = MSDStoreInfo;
   v5 = [(MSDStoreInfo *)&v30 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"hq"];
-    v7 = [v4 objectForKey:@"confirm_store_selection"];
-    v8 = [v4 objectForKey:@"confirmation_code"];
-    v9 = [v4 objectForKey:@"apple_id"];
-    v10 = [v4 objectForKey:@"store_name"];
-    v11 = [v4 objectForKey:@"company_name"];
-    v12 = [v4 objectForKey:@"latitude"];
-    v28 = [v4 objectForKey:@"longitude"];
-    v13 = [v4 objectForKey:@"nearby"];
+    v6 = [dictCopy objectForKey:@"hq"];
+    v7 = [dictCopy objectForKey:@"confirm_store_selection"];
+    v8 = [dictCopy objectForKey:@"confirmation_code"];
+    v9 = [dictCopy objectForKey:@"apple_id"];
+    v10 = [dictCopy objectForKey:@"store_name"];
+    v11 = [dictCopy objectForKey:@"company_name"];
+    v12 = [dictCopy objectForKey:@"latitude"];
+    v28 = [dictCopy objectForKey:@"longitude"];
+    v13 = [dictCopy objectForKey:@"nearby"];
     v29 = v6;
     v14 = v6;
     v15 = v7;
@@ -33,13 +33,13 @@
     objc_storeStrong(&v5->_appleID, v9);
     objc_storeStrong(&v5->_storeName, v10);
     objc_storeStrong(&v5->_companyName, v11);
-    v16 = [(MSDStoreInfo *)v5 _buildFullAddress:v4];
+    v16 = [(MSDStoreInfo *)v5 _buildFullAddress:dictCopy];
     fullAddress = v5->_fullAddress;
     v5->_fullAddress = v16;
 
-    v18 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
     v19 = 0;
-    v5->_isNearby = v18;
+    v5->_isNearby = bOOLValue;
     if (v12)
     {
       v20 = v28;
@@ -60,7 +60,7 @@
     storeLocation = v5->_storeLocation;
     v5->_storeLocation = v19;
 
-    v25 = [(MSDStoreInfo *)v5 _buildStoreDescription:v4];
+    v25 = [(MSDStoreInfo *)v5 _buildStoreDescription:dictCopy];
     storeDescription = v5->_storeDescription;
     v5->_storeDescription = v25;
   }
@@ -73,44 +73,44 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MSDStoreInfo *)self storeName];
-  v7 = [(MSDStoreInfo *)self appleID];
-  v8 = [(MSDStoreInfo *)self storeLocation];
-  [v8 coordinate];
+  storeName = [(MSDStoreInfo *)self storeName];
+  appleID = [(MSDStoreInfo *)self appleID];
+  storeLocation = [(MSDStoreInfo *)self storeLocation];
+  [storeLocation coordinate];
   v10 = v9;
-  v11 = [(MSDStoreInfo *)self storeLocation];
-  [v11 coordinate];
-  v13 = [v3 stringWithFormat:@"<%@: %@%@ (%lf, %lf)>", v5, v6, v7, v10, v12];;
+  storeLocation2 = [(MSDStoreInfo *)self storeLocation];
+  [storeLocation2 coordinate];
+  v13 = [v3 stringWithFormat:@"<%@: %@%@ (%lf, %lf)>", v5, storeName, appleID, v10, v12];;
 
   return v13;
 }
 
-- (id)_buildFullAddress:(id)a3
+- (id)_buildFullAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"address"];
-  v5 = [v3 objectForKey:@"city"];
-  v6 = [v3 objectForKey:@"state"];
-  v7 = [v3 objectForKey:@"country_name"];
-  v8 = [v3 objectForKey:@"country_code"];
-  v9 = [v3 objectForKey:@"zip"];
+  addressCopy = address;
+  v4 = [addressCopy objectForKey:@"address"];
+  v5 = [addressCopy objectForKey:@"city"];
+  v6 = [addressCopy objectForKey:@"state"];
+  v7 = [addressCopy objectForKey:@"country_name"];
+  v8 = [addressCopy objectForKey:@"country_code"];
+  v9 = [addressCopy objectForKey:@"zip"];
 
-  v10 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v11 = [v4 stringByTrimmingCharactersInSet:v10];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v11 = [v4 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  v12 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v13 = [v5 stringByTrimmingCharactersInSet:v12];
+  whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v13 = [v5 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
-  v14 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v15 = [v6 stringByTrimmingCharactersInSet:v14];
+  whitespaceCharacterSet3 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v15 = [v6 stringByTrimmingCharactersInSet:whitespaceCharacterSet3];
 
-  v16 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v17 = [v7 stringByTrimmingCharactersInSet:v16];
+  whitespaceCharacterSet4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v17 = [v7 stringByTrimmingCharactersInSet:whitespaceCharacterSet4];
 
-  v18 = [v9 uppercaseString];
+  uppercaseString = [v9 uppercaseString];
 
-  v19 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v20 = [v18 stringByTrimmingCharactersInSet:v19];
+  whitespaceCharacterSet5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v20 = [uppercaseString stringByTrimmingCharactersInSet:whitespaceCharacterSet5];
 
   v21 = objc_alloc_init(MEMORY[0x277CBDB80]);
   v22 = objc_alloc_init(MEMORY[0x277CBDB60]);
@@ -150,16 +150,16 @@
   return v24;
 }
 
-- (id)_buildStoreDescription:(id)a3
+- (id)_buildStoreDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"address"];
-  v5 = [v3 objectForKey:@"city"];
-  v6 = [v3 objectForKey:@"distance_unit"];
-  v7 = [v3 objectForKey:@"distance_in_unit"];
+  descriptionCopy = description;
+  v4 = [descriptionCopy objectForKey:@"address"];
+  v5 = [descriptionCopy objectForKey:@"city"];
+  v6 = [descriptionCopy objectForKey:@"distance_unit"];
+  v7 = [descriptionCopy objectForKey:@"distance_in_unit"];
 
-  v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v9 = [v4 stringByTrimmingCharactersInSet:v8];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v9 = [v4 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   v10 = objc_opt_new();
   if (v7 && v6)

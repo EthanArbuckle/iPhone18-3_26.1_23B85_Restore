@@ -1,25 +1,25 @@
 @interface PKScratchOutController
-- (_BYTE)nonTextStrokeIntersectionBetweenAllStrokes:(void *)a3 textStrokesToDelete:(void *)a4 textStrokesToKeep:;
-- (id)intersectedStrokesFilteredByCoverageThresholdForStroke:(void *)a3 intersectedStrokes:;
-- (id)intersectedStrokesForStroke:(void *)a3 attachment:(void *)a4 drawing:;
+- (_BYTE)nonTextStrokeIntersectionBetweenAllStrokes:(void *)strokes textStrokesToDelete:(void *)delete textStrokesToKeep:;
+- (id)intersectedStrokesFilteredByCoverageThresholdForStroke:(void *)stroke intersectedStrokes:;
+- (id)intersectedStrokesForStroke:(void *)stroke attachment:(void *)attachment drawing:;
 @end
 
 @implementation PKScratchOutController
 
-- (id)intersectedStrokesForStroke:(void *)a3 attachment:(void *)a4 drawing:
+- (id)intersectedStrokesForStroke:(void *)stroke attachment:(void *)attachment drawing:
 {
   v86 = *MEMORY[0x1E69E9840];
   v73 = a2;
-  v7 = a3;
-  v74 = a4;
-  v71 = v7;
-  if (a1)
+  strokeCopy = stroke;
+  attachmentCopy = attachment;
+  v71 = strokeCopy;
+  if (self)
   {
-    v8 = [v7 strokeSpatialCache];
-    v9 = v8;
-    if (v8)
+    strokeSpatialCache = [strokeCopy strokeSpatialCache];
+    v9 = strokeSpatialCache;
+    if (strokeSpatialCache)
     {
-      v10 = *(v8 + 24);
+      v10 = *(strokeSpatialCache + 24);
     }
 
     else
@@ -38,7 +38,7 @@
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
@@ -65,7 +65,7 @@
           v89.size.height = v22;
           if (CGRectIntersectsRect(v88, v89))
           {
-            [v23 addObject:v28];
+            [array addObject:v28];
           }
         }
 
@@ -75,11 +75,11 @@
       while (v25);
     }
 
-    v29 = [v13 orderedSetWithArray:v23];
+    v29 = [v13 orderedSetWithArray:array];
 
     v30 = [MEMORY[0x1E695DFA8] set];
-    v31 = [v14 path];
-    v32 = [v31 pointAtIndex:0];
+    path = [v14 path];
+    v32 = [path pointAtIndex:0];
     [v32 location];
     v34 = v33;
     v36 = v35;
@@ -104,22 +104,22 @@
       _os_log_impl(&dword_1C7CCA000, v41, OS_LOG_TYPE_INFO, "BEGIN intersectedStrokesForStroke", buf, 2u);
     }
 
-    v42 = [v14 path];
-    v43 = [v42 _pointsCount];
+    path2 = [v14 path];
+    _pointsCount = [path2 _pointsCount];
 
-    if (v43)
+    if (_pointsCount)
     {
       v44 = 0;
       while (1)
       {
-        v45 = [v14 path];
-        v46 = [v45 pointAtIndex:v44];
+        path3 = [v14 path];
+        v46 = [path3 pointAtIndex:v44];
         [v46 location];
         v48 = v47;
         v50 = v49;
 
-        v51 = [v29 array];
-        v52 = [v74 strokesIntersectedByPoint:v51 prevPoint:v48 onscreenVisibleStrokes:{v50, v34, v36}];
+        array2 = [v29 array];
+        v52 = [attachmentCopy strokesIntersectedByPoint:array2 prevPoint:v48 onscreenVisibleStrokes:{v50, v34, v36}];
 
         v77 = 0u;
         v78 = 0u;
@@ -164,7 +164,7 @@
         ++v44;
         v34 = v48;
         v36 = v50;
-        if (v44 == v43)
+        if (v44 == _pointsCount)
         {
           goto LABEL_31;
         }
@@ -237,16 +237,16 @@ LABEL_31:
   return v62;
 }
 
-- (_BYTE)nonTextStrokeIntersectionBetweenAllStrokes:(void *)a3 textStrokesToDelete:(void *)a4 textStrokesToKeep:
+- (_BYTE)nonTextStrokeIntersectionBetweenAllStrokes:(void *)strokes textStrokesToDelete:(void *)delete textStrokesToKeep:
 {
   v24 = *MEMORY[0x1E69E9840];
   v18 = a2;
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  strokesCopy = strokes;
+  deleteCopy = delete;
+  if (self)
   {
-    v9 = [MEMORY[0x1E695DFD8] setWithArray:v7];
-    v10 = [MEMORY[0x1E695DFD8] setWithArray:v8];
+    v9 = [MEMORY[0x1E695DFD8] setWithArray:strokesCopy];
+    v10 = [MEMORY[0x1E695DFD8] setWithArray:deleteCopy];
     [MEMORY[0x1E695DFA8] setWithSet:v18];
     v21 = 0u;
     v22 = 0u;
@@ -281,21 +281,21 @@ LABEL_31:
       v16 = 0.0;
     }
 
-    a1[8] = [v11 count] * 0.7 <= v16;
+    self[8] = [v11 count] * 0.7 <= v16;
     [v11 minusSet:v10];
     [v11 unionSet:v9];
-    a1 = [v11 allObjects];
+    self = [v11 allObjects];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)intersectedStrokesFilteredByCoverageThresholdForStroke:(void *)a3 intersectedStrokes:
+- (id)intersectedStrokesFilteredByCoverageThresholdForStroke:(void *)stroke intersectedStrokes:
 {
   v71 = *MEMORY[0x1E69E9840];
   v43 = a2;
-  v42 = a3;
-  if (a1)
+  strokeCopy = stroke;
+  if (self)
   {
     v5 = _PKSignpostLog();
     v6 = os_signpost_id_generate(v5);
@@ -317,7 +317,7 @@ LABEL_31:
       _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_INFO, "BEGIN intersectedStrokesFilteredByCoverage", buf, 2u);
     }
 
-    v44 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v10 = objc_alloc_init(PKAveragePointGenerator);
     [(PKAveragePointGenerator *)v10 addStroke:v43];
     v68 = 0u;
@@ -326,9 +326,9 @@ LABEL_31:
     v67 = 0u;
     *buf = 0u;
     *lineWidth = 0u;
-    v11 = [v43 path];
-    v12 = [v11 _newPathRepresentation];
-    maskPath = CGPathCreateCopyByStrokingPath(v12, 0, lineWidth[1], kCGLineCapRound, kCGLineJoinRound, 0.0);
+    path = [v43 path];
+    _newPathRepresentation = [path _newPathRepresentation];
+    maskPath = CGPathCreateCopyByStrokingPath(_newPathRepresentation, 0, lineWidth[1], kCGLineCapRound, kCGLineJoinRound, 0.0);
 
     if (maskPath)
     {
@@ -337,7 +337,7 @@ LABEL_31:
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      obj = v42;
+      obj = strokeCopy;
       v13 = [obj countByEnumeratingWithState:&v60 objects:v70 count:16];
       if (v13)
       {
@@ -367,10 +367,10 @@ LABEL_31:
               [v14 transform];
             }
 
-            v15 = [v14 path];
-            v16 = [v15 _newPathRepresentation];
+            path2 = [v14 path];
+            _newPathRepresentation2 = [path2 _newPathRepresentation];
 
-            v17 = CGPathCreateCopyByStrokingPath(v16, &transform, lineWidth[1], kCGLineCapRound, kCGLineJoinRound, 0.0);
+            v17 = CGPathCreateCopyByStrokingPath(_newPathRepresentation2, &transform, lineWidth[1], kCGLineCapRound, kCGLineJoinRound, 0.0);
             CopyByFlattening = CGPathCreateCopyByFlattening(v17, 1.0);
             v19 = CopyByFlattening;
             if (CopyByFlattening)
@@ -414,10 +414,10 @@ LABEL_31:
               CFRelease(v23);
               if (v24 / v20 > 0.03)
               {
-                [v44 addObject:{v14, v24 / v20}];
+                [array addObject:{v14, v24 / v20}];
               }
 
-              CGPathRelease(v16);
+              CGPathRelease(_newPathRepresentation2);
               CGPathRelease(v17);
               CGPathRelease(v19);
               CGPathRelease(CopyByIntersectingPath);
@@ -431,7 +431,7 @@ LABEL_31:
 
             else
             {
-              CGPathRelease(v16);
+              CGPathRelease(_newPathRepresentation2);
               CGPathRelease(v17);
               CGPathRelease(0);
             }
@@ -459,7 +459,7 @@ LABEL_31:
         _os_log_impl(&dword_1C7CCA000, v33, OS_LOG_TYPE_INFO, "END intersectedStrokesFilteredByCoverage", &transform, 2u);
       }
 
-      v34 = [v44 copy];
+      v34 = [array copy];
     }
 
     else

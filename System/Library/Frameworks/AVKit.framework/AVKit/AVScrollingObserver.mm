@@ -1,10 +1,10 @@
 @interface AVScrollingObserver
-- (AVScrollingObserver)initWithView:(id)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (AVScrollingObserver)initWithView:(id)view;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)_updateScrollingStatus;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 - (void)update;
 @end
 
@@ -25,17 +25,17 @@
   }
 
   [(NSTimer *)self->_scrollingDidEndTimer invalidate];
-  v4 = [(AVScrollingObserver *)self isScrolling];
-  v5 = [(AVScrollingObserver *)self isScrollingQuickly];
+  isScrolling = [(AVScrollingObserver *)self isScrolling];
+  isScrollingQuickly = [(AVScrollingObserver *)self isScrollingQuickly];
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v7 = [WeakRetained avkit_isBeingScrolled];
+  avkit_isBeingScrolled = [WeakRetained avkit_isBeingScrolled];
 
   v8 = objc_loadWeakRetained(&self->_view);
-  v9 = [v8 avkit_isBeingScrolledQuickly];
+  avkit_isBeingScrolledQuickly = [v8 avkit_isBeingScrolledQuickly];
 
-  [(AVScrollingObserver *)self setScrolling:v7];
-  [(AVScrollingObserver *)self setScrollingQuickly:v9];
-  if (v4 != [(AVScrollingObserver *)self isScrolling]|| v5 != [(AVScrollingObserver *)self isScrollingQuickly])
+  [(AVScrollingObserver *)self setScrolling:avkit_isBeingScrolled];
+  [(AVScrollingObserver *)self setScrollingQuickly:avkit_isBeingScrolledQuickly];
+  if (isScrolling != [(AVScrollingObserver *)self isScrolling]|| isScrollingQuickly != [(AVScrollingObserver *)self isScrollingQuickly])
   {
     v10 = [(NSHashTable *)self->_delegates copy];
     v16 = 0u;
@@ -70,9 +70,9 @@
   }
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   [(NSTimer *)self->_scrollingDidEndTimer invalidate];
   scrollingDidEndTimer = self->_scrollingDidEndTimer;
   self->_scrollingDidEndTimer = 0;
@@ -128,10 +128,10 @@ void __51__AVScrollingObserver__observeScrollViewDidScroll___block_invoke(uint64
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v5 = _AVLog();
@@ -143,13 +143,13 @@ void __51__AVScrollingObserver__observeScrollViewDidScroll___block_invoke(uint64
     }
   }
 
-  [(NSHashTable *)self->_delegates removeObject:v4];
+  [(NSHashTable *)self->_delegates removeObject:delegateCopy];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v5 = _AVLog();
@@ -161,41 +161,41 @@ void __51__AVScrollingObserver__observeScrollViewDidScroll___block_invoke(uint64
     }
   }
 
-  [(NSHashTable *)self->_delegates addObject:v4];
+  [(NSHashTable *)self->_delegates addObject:delegateCopy];
 }
 
 - (void)update
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v5 = [WeakRetained superview];
+  superview = [WeakRetained superview];
 
-  if (v5)
+  if (superview)
   {
     do
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v5;
-        [(NSHashTable *)v3 addObject:v6];
+        v6 = superview;
+        [(NSHashTable *)weakObjectsHashTable addObject:v6];
         if (([v6 _isScrollViewScrollObserver:self] & 1) == 0)
         {
           [v6 _addScrollViewScrollObserver:self];
         }
       }
 
-      v7 = [v5 superview];
+      v5Superview = [superview superview];
 
-      v5 = v7;
+      superview = v5Superview;
     }
 
-    while (v7);
+    while (v5Superview);
   }
 
   v8 = [(NSHashTable *)self->_observedScrollViews copy];
-  [v8 minusHashTable:v3];
+  [v8 minusHashTable:weakObjectsHashTable];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -227,12 +227,12 @@ void __51__AVScrollingObserver__observeScrollViewDidScroll___block_invoke(uint64
   }
 
   observedScrollViews = self->_observedScrollViews;
-  self->_observedScrollViews = v3;
-  v15 = v3;
+  self->_observedScrollViews = weakObjectsHashTable;
+  v15 = weakObjectsHashTable;
 
-  v16 = [(NSHashTable *)v15 anyObject];
+  anyObject = [(NSHashTable *)v15 anyObject];
 
-  [(AVScrollingObserver *)self _observeScrollViewDidScroll:v16];
+  [(AVScrollingObserver *)self _observeScrollViewDidScroll:anyObject];
 }
 
 - (void)dealloc
@@ -274,23 +274,23 @@ void __51__AVScrollingObserver__observeScrollViewDidScroll___block_invoke(uint64
   [(AVScrollingObserver *)&v9 dealloc];
 }
 
-- (AVScrollingObserver)initWithView:(id)a3
+- (AVScrollingObserver)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = AVScrollingObserver;
   v5 = [(AVScrollingObserver *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observedScrollViews = v5->_observedScrollViews;
-    v5->_observedScrollViews = v6;
+    v5->_observedScrollViews = weakObjectsHashTable;
 
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     delegates = v5->_delegates;
-    v5->_delegates = v8;
+    v5->_delegates = weakObjectsHashTable2;
 
-    objc_storeWeak(&v5->_view, v4);
+    objc_storeWeak(&v5->_view, viewCopy);
   }
 
   return v5;

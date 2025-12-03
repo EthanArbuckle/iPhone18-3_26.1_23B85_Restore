@@ -1,24 +1,24 @@
 @interface CKTranscriptSpeakerBalloonCell
 - (BOOL)isSpeakerHidden;
 - (void)layoutSubviewsForAlignmentContents;
-- (void)setDrawerPercentRevealed:(double)a3;
-- (void)setOrientation:(char)a3;
-- (void)setSpeakerEnabled:(BOOL)a3;
-- (void)setSpeakerHidden:(BOOL)a3;
+- (void)setDrawerPercentRevealed:(double)revealed;
+- (void)setOrientation:(char)orientation;
+- (void)setSpeakerEnabled:(BOOL)enabled;
+- (void)setSpeakerHidden:(BOOL)hidden;
 @end
 
 @implementation CKTranscriptSpeakerBalloonCell
 
-- (void)setOrientation:(char)a3
+- (void)setOrientation:(char)orientation
 {
-  v3 = a3;
-  if ([(CKEditableCollectionViewCell *)self orientation]!= a3)
+  orientationCopy = orientation;
+  if ([(CKEditableCollectionViewCell *)self orientation]!= orientation)
   {
     v6.receiver = self;
     v6.super_class = CKTranscriptSpeakerBalloonCell;
-    [(CKEditableCollectionViewCell *)&v6 setOrientation:v3];
-    v5 = [(CKTranscriptSpeakerBalloonCell *)self speakerButton];
-    [v5 setOrientation:v3];
+    [(CKEditableCollectionViewCell *)&v6 setOrientation:orientationCopy];
+    speakerButton = [(CKTranscriptSpeakerBalloonCell *)self speakerButton];
+    [speakerButton setOrientation:orientationCopy];
 
     [(CKTranscriptSpeakerBalloonCell *)self setNeedsLayout];
   }
@@ -29,12 +29,12 @@
   v19.receiver = self;
   v19.super_class = CKTranscriptSpeakerBalloonCell;
   [(CKTranscriptBalloonCell *)&v19 layoutSubviewsForAlignmentContents];
-  v3 = [(CKTranscriptSpeakerBalloonCell *)self speakerButton];
-  [v3 frame];
+  speakerButton = [(CKTranscriptSpeakerBalloonCell *)self speakerButton];
+  [speakerButton frame];
   v5 = v4;
   v7 = v6;
-  v8 = [(CKTranscriptBalloonCell *)self balloonView];
-  [v8 frame];
+  balloonView = [(CKTranscriptBalloonCell *)self balloonView];
+  [balloonView frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -65,76 +65,76 @@
     v18 = 1.0;
   }
 
-  [v3 setFrame:{v17, floor((v12 + (v16 - v7) * 0.5) * v18) / v18, v5, v7}];
+  [speakerButton setFrame:{v17, floor((v12 + (v16 - v7) * 0.5) * v18) / v18, v5, v7}];
 }
 
-- (void)setSpeakerEnabled:(BOOL)a3
+- (void)setSpeakerEnabled:(BOOL)enabled
 {
-  if (self->_speakerEnabled != a3)
+  if (self->_speakerEnabled != enabled)
   {
-    v4 = a3;
-    self->_speakerEnabled = a3;
-    v5 = [(CKTranscriptSpeakerBalloonCell *)self speakerButton];
-    [v5 setSpeakerEnabled:v4];
+    enabledCopy = enabled;
+    self->_speakerEnabled = enabled;
+    speakerButton = [(CKTranscriptSpeakerBalloonCell *)self speakerButton];
+    [speakerButton setSpeakerEnabled:enabledCopy];
   }
 }
 
-- (void)setSpeakerHidden:(BOOL)a3
+- (void)setSpeakerHidden:(BOOL)hidden
 {
-  if ([(CKTranscriptSpeakerBalloonCell *)self isSpeakerHidden]== a3)
+  if ([(CKTranscriptSpeakerBalloonCell *)self isSpeakerHidden]== hidden)
   {
     return;
   }
 
-  v5 = [(CKTranscriptSpeakerBalloonCell *)self speakerButton];
-  if (a3)
+  speakerButton = [(CKTranscriptSpeakerBalloonCell *)self speakerButton];
+  if (hidden)
   {
-    v8 = v5;
+    v8 = speakerButton;
     v6 = 1;
   }
 
   else
   {
-    if (!v5)
+    if (!speakerButton)
     {
       v8 = [CKSpeakerButton buttonWithType:1];
       [v8 setOrientation:{-[CKEditableCollectionViewCell orientation](self, "orientation")}];
       [v8 setSpeakerEnabled:{-[CKTranscriptSpeakerBalloonCell isSpeakerEnabled](self, "isSpeakerEnabled")}];
       [v8 sizeToFit];
-      v7 = [(CKEditableCollectionViewCell *)self contentView];
-      [v7 addSubview:v8];
+      contentView = [(CKEditableCollectionViewCell *)self contentView];
+      [contentView addSubview:v8];
 
       [(CKTranscriptSpeakerBalloonCell *)self setSpeakerButton:v8];
       [(CKTranscriptSpeakerBalloonCell *)self setNeedsLayout];
       goto LABEL_8;
     }
 
-    v8 = v5;
+    v8 = speakerButton;
     v6 = 0;
   }
 
-  [v5 setHidden:v6];
+  [speakerButton setHidden:v6];
 LABEL_8:
 }
 
 - (BOOL)isSpeakerHidden
 {
-  v2 = [(CKTranscriptSpeakerBalloonCell *)self speakerButton];
-  v3 = v2;
-  if (v2)
+  speakerButton = [(CKTranscriptSpeakerBalloonCell *)self speakerButton];
+  v3 = speakerButton;
+  if (speakerButton)
   {
-    v4 = [v2 isHidden];
+    isHidden = [speakerButton isHidden];
   }
 
   else
   {
-    v4 = 1;
+    isHidden = 1;
   }
 
-  return v4;
+  return isHidden;
 }
 
-- (void)setDrawerPercentRevealed:(double)a3
+- (void)setDrawerPercentRevealed:(double)revealed
 {
   v6.receiver = self;
   v6.super_class = CKTranscriptSpeakerBalloonCell;
@@ -144,9 +144,9 @@ LABEL_8:
     [(CKTranscriptSpeakerBalloonCell *)self setSpeakerEnabledBeforeManualHide:[(CKTranscriptSpeakerBalloonCell *)self isSpeakerHidden]];
   }
 
-  v5 = a3 > 0.3 || [(CKTranscriptSpeakerBalloonCell *)self speakerEnabledBeforeManualHide];
+  v5 = revealed > 0.3 || [(CKTranscriptSpeakerBalloonCell *)self speakerEnabledBeforeManualHide];
   [(CKTranscriptSpeakerBalloonCell *)self setSpeakerHidden:v5];
-  [(CKTranscriptSpeakerBalloonCell *)self setSpeakerIsManuallyHidden:a3 > 0.3];
+  [(CKTranscriptSpeakerBalloonCell *)self setSpeakerIsManuallyHidden:revealed > 0.3];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface CRLSelectionPathAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (NSArray)crlaxOrderedSelections;
 - (id)crlaxMostSpecificCellSelection;
-- (id)crlaxMostSpecificSelectionOfClass:(Class)a3;
+- (id)crlaxMostSpecificSelectionOfClass:(Class)class;
 - (id)crlaxMostSpecificTextSelection;
-- (id)crlaxSelectionPathWithAppendedSelection:(id)a3;
-- (void)crlaxEnumerateSelectionsLeastToMostSpecificInPathUsingBlock:(id)a3;
-- (void)crlaxEnumerateSelectionsMostToLeastSpecificInPathUsingBlock:(id)a3;
+- (id)crlaxSelectionPathWithAppendedSelection:(id)selection;
+- (void)crlaxEnumerateSelectionsLeastToMostSpecificInPathUsingBlock:(id)block;
+- (void)crlaxEnumerateSelectionsMostToLeastSpecificInPathUsingBlock:(id)block;
 @end
 
 @implementation CRLSelectionPathAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -23,11 +23,11 @@
 - (NSArray)crlaxOrderedSelections
 {
   v19 = 0;
-  v2 = [(CRLSelectionPathAccessibility *)self crlaxTarget];
-  v3 = [v2 orderedSelections];
+  crlaxTarget = [(CRLSelectionPathAccessibility *)self crlaxTarget];
+  orderedSelections = [crlaxTarget orderedSelections];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsClass(v4, v3, 1, &v19);
+  v5 = __CRLAccessibilityCastAsClass(v4, orderedSelections, 1, &v19);
   if (v19 == 1)
   {
 LABEL_13:
@@ -89,7 +89,7 @@ LABEL_13:
   return v5;
 }
 
-- (id)crlaxMostSpecificSelectionOfClass:(Class)a3
+- (id)crlaxMostSpecificSelectionOfClass:(Class)class
 {
   v6 = 0;
   v7 = &v6;
@@ -103,7 +103,7 @@ LABEL_13:
   v5[3] = &unk_10186A988;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = class;
   if (__CRLAccessibilityPerformSafeBlock(v5))
   {
     abort();
@@ -115,7 +115,7 @@ LABEL_13:
   return v3;
 }
 
-- (id)crlaxSelectionPathWithAppendedSelection:(id)a3
+- (id)crlaxSelectionPathWithAppendedSelection:(id)selection
 {
   v13 = 0;
   v14 = &v13;
@@ -129,8 +129,8 @@ LABEL_13:
   v10[3] = &unk_10183DE60;
   v12 = &v13;
   v10[4] = self;
-  v3 = a3;
-  v11 = v3;
+  selectionCopy = selection;
+  v11 = selectionCopy;
   if (__CRLAccessibilityPerformSafeBlock(v10) || (v11, v4 = v14[5], _Block_object_dispose(&v13, 8), v18, LOBYTE(v13) = 0, v5 = v4, v6 = objc_opt_class(), __CRLAccessibilityCastAsSafeCategory(v6, v5, 1, &v13), v7 = objc_claimAutoreleasedReturnValue(), v13 == 1))
   {
     abort();
@@ -141,30 +141,30 @@ LABEL_13:
   return v8;
 }
 
-- (void)crlaxEnumerateSelectionsMostToLeastSpecificInPathUsingBlock:(id)a3
+- (void)crlaxEnumerateSelectionsMostToLeastSpecificInPathUsingBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1004FBE94;
   v4[3] = &unk_10183FC10;
   v4[4] = self;
-  v3 = a3;
-  v5 = v3;
+  blockCopy = block;
+  v5 = blockCopy;
   if (__CRLAccessibilityPerformSafeBlock(v4))
   {
     abort();
   }
 }
 
-- (void)crlaxEnumerateSelectionsLeastToMostSpecificInPathUsingBlock:(id)a3
+- (void)crlaxEnumerateSelectionsLeastToMostSpecificInPathUsingBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1004FBF3C;
   v4[3] = &unk_10183FC10;
   v4[4] = self;
-  v3 = a3;
-  v5 = v3;
+  blockCopy = block;
+  v5 = blockCopy;
   if (__CRLAccessibilityPerformSafeBlock(v4))
   {
     abort();

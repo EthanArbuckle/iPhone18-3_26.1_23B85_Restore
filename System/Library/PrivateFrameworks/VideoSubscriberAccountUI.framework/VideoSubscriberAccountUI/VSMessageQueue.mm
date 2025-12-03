@@ -2,8 +2,8 @@
 - (VSMessageQueue)init;
 - (VSMessageQueueDelegate)delegate;
 - (id)removeAllMessages;
-- (void)addMessage:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)addMessage:(id)message;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation VSMessageQueue
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -34,37 +34,37 @@
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Will notify new delegate of messages.", v6, 2u);
   }
 
-  [v4 didAddMessagesToMessageQueue:self];
+  [delegateCopy didAddMessagesToMessageQueue:self];
 }
 
-- (void)addMessage:(id)a3
+- (void)addMessage:(id)message
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v4;
+    v10 = messageCopy;
     v11 = 2112;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Will add message %@ to queue %@", &v9, 0x16u);
   }
 
-  v6 = [(VSMessageQueue *)self messages];
-  [v6 addObject:v4];
+  messages = [(VSMessageQueue *)self messages];
+  [messages addObject:messageCopy];
 
-  v7 = [(VSMessageQueue *)self delegate];
-  [v7 didAddMessagesToMessageQueue:self];
+  delegate = [(VSMessageQueue *)self delegate];
+  [delegate didAddMessagesToMessageQueue:self];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (id)removeAllMessages
 {
-  v2 = [(VSMessageQueue *)self messages];
-  v3 = [v2 copy];
-  [v2 removeAllObjects];
+  messages = [(VSMessageQueue *)self messages];
+  v3 = [messages copy];
+  [messages removeAllObjects];
 
   return v3;
 }

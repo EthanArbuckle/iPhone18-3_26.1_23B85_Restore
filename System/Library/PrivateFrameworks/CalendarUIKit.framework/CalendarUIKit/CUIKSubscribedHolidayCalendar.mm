@@ -1,29 +1,29 @@
 @interface CUIKSubscribedHolidayCalendar
-- (CUIKSubscribedHolidayCalendar)initWithLocale:(id)a3 languageCode:(id)a4 URL:(id)a5;
+- (CUIKSubscribedHolidayCalendar)initWithLocale:(id)locale languageCode:(id)code URL:(id)l;
 - (id)descriptionInLocaleLanguage;
 - (id)localizedDescription;
 @end
 
 @implementation CUIKSubscribedHolidayCalendar
 
-- (CUIKSubscribedHolidayCalendar)initWithLocale:(id)a3 languageCode:(id)a4 URL:(id)a5
+- (CUIKSubscribedHolidayCalendar)initWithLocale:(id)locale languageCode:(id)code URL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  localeCopy = locale;
+  codeCopy = code;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = CUIKSubscribedHolidayCalendar;
   v12 = [(CUIKSubscribedHolidayCalendar *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_locale, a3);
-    objc_storeStrong(&v13->_languageCode, a4);
-    v14 = [v9 countryCode];
+    objc_storeStrong(&v12->_locale, locale);
+    objc_storeStrong(&v13->_languageCode, code);
+    countryCode = [localeCopy countryCode];
     countryCode = v13->_countryCode;
-    v13->_countryCode = v14;
+    v13->_countryCode = countryCode;
 
-    objc_storeStrong(&v13->_URL, a5);
+    objc_storeStrong(&v13->_URL, l);
     v13->_localizedDescriptionCacheLock._os_unfair_lock_opaque = 0;
   }
 
@@ -39,22 +39,22 @@
     v4 = CUIKBundle();
     v5 = [v4 localizedStringForKey:@"Holiday Calendar description format in user's language" value:@"%1$@ (%2$@)" table:0];
 
-    v6 = [MEMORY[0x1E695DF58] currentLocale];
-    v7 = [(CUIKSubscribedHolidayCalendar *)self countryCode];
-    if (v7)
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    countryCode = [(CUIKSubscribedHolidayCalendar *)self countryCode];
+    if (countryCode)
     {
-      v8 = [v6 localizedStringForCountryCode:v7];
+      v8 = [currentLocale localizedStringForCountryCode:countryCode];
     }
 
     else
     {
-      v9 = [(CUIKSubscribedHolidayCalendar *)self locale];
-      v10 = [v9 countryCode];
-      v8 = [v6 localizedStringForCountryCode:v10];
+      locale = [(CUIKSubscribedHolidayCalendar *)self locale];
+      countryCode2 = [locale countryCode];
+      v8 = [currentLocale localizedStringForCountryCode:countryCode2];
     }
 
-    v11 = [(CUIKSubscribedHolidayCalendar *)self languageCode];
-    v12 = [v6 localizedStringForLanguageCode:v11];
+    languageCode = [(CUIKSubscribedHolidayCalendar *)self languageCode];
+    v12 = [currentLocale localizedStringForLanguageCode:languageCode];
 
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:v5, v8, v12];
     v14 = self->_cachedLocalizedDescription;
@@ -78,23 +78,23 @@
     v4 = CUIKBundle();
     v5 = [v4 localizedStringForKey:@"Holiday Calendar description format in calendar's language" value:@"%1$@ (%2$@)" table:0];
 
-    v6 = [(CUIKSubscribedHolidayCalendar *)self locale];
-    v7 = [(CUIKSubscribedHolidayCalendar *)self countryCode];
-    if (v7)
+    locale = [(CUIKSubscribedHolidayCalendar *)self locale];
+    countryCode = [(CUIKSubscribedHolidayCalendar *)self countryCode];
+    if (countryCode)
     {
-      v8 = [v6 localizedStringForCountryCode:v7];
+      v8 = [locale localizedStringForCountryCode:countryCode];
     }
 
     else
     {
-      v9 = [(CUIKSubscribedHolidayCalendar *)self locale];
-      v10 = [v9 countryCode];
-      v8 = [v6 localizedStringForCountryCode:v10];
+      locale2 = [(CUIKSubscribedHolidayCalendar *)self locale];
+      countryCode2 = [locale2 countryCode];
+      v8 = [locale localizedStringForCountryCode:countryCode2];
     }
 
-    v11 = [(CUIKSubscribedHolidayCalendar *)self locale];
-    v12 = [(CUIKSubscribedHolidayCalendar *)self languageCode];
-    v13 = [v11 localizedStringForLanguageCode:v12];
+    locale3 = [(CUIKSubscribedHolidayCalendar *)self locale];
+    languageCode = [(CUIKSubscribedHolidayCalendar *)self languageCode];
+    v13 = [locale3 localizedStringForLanguageCode:languageCode];
 
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:v5, v8, v13];
     v15 = self->_cachedDescriptionInLocaleLanguage;

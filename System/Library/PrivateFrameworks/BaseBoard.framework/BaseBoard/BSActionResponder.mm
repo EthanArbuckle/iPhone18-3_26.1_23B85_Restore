@@ -1,60 +1,60 @@
 @interface BSActionResponder
-+ (id)responderByWrappingResponder:(id)a3 withHandler:(id)a4;
-+ (id)responderWithHandler:(id)a3;
++ (id)responderByWrappingResponder:(id)responder withHandler:(id)handler;
++ (id)responderWithHandler:(id)handler;
 - (BSActionResponder)init;
 - (os_unfair_lock)_lock_underlying;
-- (void)_initWithHandler:(void *)a1;
+- (void)_initWithHandler:(void *)handler;
 - (void)annul;
 - (void)dealloc;
-- (void)setQueue:(id)a3;
-- (void)setTimeout:(unint64_t)a3;
+- (void)setQueue:(id)queue;
+- (void)setTimeout:(unint64_t)timeout;
 @end
 
 @implementation BSActionResponder
 
 - (os_unfair_lock)_lock_underlying
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    os_unfair_lock_assert_owner(a1 + 10);
-    v2 = *&v1[6]._os_unfair_lock_opaque;
+    selfCopy = self;
+    os_unfair_lock_assert_owner(self + 10);
+    v2 = *&selfCopy[6]._os_unfair_lock_opaque;
     if (!v2)
     {
-      v3 = *&v1[2]._os_unfair_lock_opaque;
+      v3 = *&selfCopy[2]._os_unfair_lock_opaque;
       v4 = v3;
       if (!v3)
       {
         v4 = dispatch_get_global_queue(21, 0);
       }
 
-      v5 = [_BSActionResponder originator_responderOnQueue:v4 forHandler:*&v1[4]._os_unfair_lock_opaque];
-      v6 = *&v1[6]._os_unfair_lock_opaque;
-      *&v1[6]._os_unfair_lock_opaque = v5;
+      v5 = [_BSActionResponder originator_responderOnQueue:v4 forHandler:*&selfCopy[4]._os_unfair_lock_opaque];
+      v6 = *&selfCopy[6]._os_unfair_lock_opaque;
+      *&selfCopy[6]._os_unfair_lock_opaque = v5;
 
       if (!v3)
       {
       }
 
-      v7 = *&v1[8]._os_unfair_lock_opaque;
+      v7 = *&selfCopy[8]._os_unfair_lock_opaque;
       if (v7 != -1)
       {
-        [(_BSActionResponder *)*&v1[6]._os_unfair_lock_opaque originator_setTimeout:v7];
+        [(_BSActionResponder *)*&selfCopy[6]._os_unfair_lock_opaque originator_setTimeout:v7];
       }
 
-      v8 = *&v1[2]._os_unfair_lock_opaque;
-      *&v1[2]._os_unfair_lock_opaque = 0;
+      v8 = *&selfCopy[2]._os_unfair_lock_opaque;
+      *&selfCopy[2]._os_unfair_lock_opaque = 0;
 
-      v9 = *&v1[4]._os_unfair_lock_opaque;
-      *&v1[4]._os_unfair_lock_opaque = 0;
+      v9 = *&selfCopy[4]._os_unfair_lock_opaque;
+      *&selfCopy[4]._os_unfair_lock_opaque = 0;
 
-      v2 = *&v1[6]._os_unfair_lock_opaque;
+      v2 = *&selfCopy[6]._os_unfair_lock_opaque;
     }
 
-    a1 = v2;
+    self = v2;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -62,8 +62,8 @@
   os_unfair_lock_lock(&self->_lock);
   if (!self->_lock_underlying)
   {
-    v3 = [(BSActionResponder *)self _lock_underlying];
-    [(_BSActionResponder *)v3 originator_annulWithErrorCode:?];
+    _lock_underlying = [(BSActionResponder *)self _lock_underlying];
+    [(_BSActionResponder *)_lock_underlying originator_annulWithErrorCode:?];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -362,7 +362,7 @@ id __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___bloc
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSAction.m";
     v18 = 1024;
@@ -379,34 +379,34 @@ id __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___bloc
   return result;
 }
 
-- (void)_initWithHandler:(void *)a1
+- (void)_initWithHandler:(void *)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    v8.receiver = a1;
+    v8.receiver = handler;
     v8.super_class = BSActionResponder;
     v4 = objc_msgSendSuper2(&v8, sel_init);
-    a1 = v4;
+    handler = v4;
     if (v4)
     {
       *(v4 + 10) = 0;
       v5 = [v3 copy];
-      v6 = a1[2];
-      a1[2] = v5;
+      v6 = handler[2];
+      handler[2] = v5;
 
-      a1[4] = -1;
+      handler[4] = -1;
     }
   }
 
-  return a1;
+  return handler;
 }
 
-+ (id)responderWithHandler:(id)a3
++ (id)responderWithHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -419,7 +419,7 @@ id __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___bloc
       v15 = 2114;
       v16 = v11;
       v17 = 2048;
-      v18 = a1;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BSAction.m";
       v21 = 1024;
@@ -435,17 +435,17 @@ id __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___bloc
     JUMPOUT(0x18FF81558);
   }
 
-  v6 = [[BSActionResponder alloc] _initWithHandler:v5];
+  v6 = [[BSActionResponder alloc] _initWithHandler:handlerCopy];
 
   return v6;
 }
 
-+ (id)responderByWrappingResponder:(id)a3 withHandler:(id)a4
++ (id)responderByWrappingResponder:(id)responder withHandler:(id)handler
 {
   v58 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  responderCopy = responder;
+  handlerCopy = handler;
+  v9 = responderCopy;
   NSClassFromString(&cfstr_Bsactionrespon_1.isa);
   if (!v9)
   {
@@ -460,7 +460,7 @@ id __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___bloc
       v48 = 2114;
       v49 = v22;
       v50 = 2048;
-      v51 = a1;
+      selfCopy3 = self;
       v52 = 2114;
       v53 = @"BSAction.m";
       v54 = 1024;
@@ -489,7 +489,7 @@ id __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___bloc
       v48 = 2114;
       v49 = v27;
       v50 = 2048;
-      v51 = a1;
+      selfCopy3 = self;
       v52 = 2114;
       v53 = @"BSAction.m";
       v54 = 1024;
@@ -505,7 +505,7 @@ id __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___bloc
     JUMPOUT(0x18FF819CCLL);
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -518,7 +518,7 @@ id __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___bloc
       v48 = 2114;
       v49 = v32;
       v50 = 2048;
-      v51 = a1;
+      selfCopy3 = self;
       v52 = 2114;
       v53 = @"BSAction.m";
       v54 = 1024;
@@ -548,7 +548,7 @@ id __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___bloc
       v48 = 2114;
       v49 = v37;
       v50 = 2048;
-      v51 = v9;
+      selfCopy3 = v9;
       v52 = 2114;
       v53 = @"BSAction.m";
       v54 = 1024;
@@ -572,10 +572,10 @@ id __68___BSActionResponder__descriptionBuilderOfType_withMultilinePrefix___bloc
   v41[1] = 3221225472;
   v41[2] = __62__BSActionResponder_responderByWrappingResponder_withHandler___block_invoke;
   v41[3] = &unk_1E72CC1F8;
-  v13 = v8;
+  v13 = handlerCopy;
   v43 = v13;
   v44 = a2;
-  v45 = a1;
+  selfCopy4 = self;
   v14 = v11;
   v42 = v14;
   v15 = [(BSActionResponder *)v12 _initWithHandler:v41];
@@ -723,11 +723,11 @@ void __62__BSActionResponder_responderByWrappingResponder_withHandler___block_in
   [*(a1 + 40) sendResponse:?];
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"queue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -740,7 +740,7 @@ void __62__BSActionResponder_responderByWrappingResponder_withHandler___block_in
       v19 = 2114;
       v20 = v10;
       v21 = 2048;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2114;
       v24 = @"BSAction.m";
       v25 = 1024;
@@ -770,7 +770,7 @@ void __62__BSActionResponder_responderByWrappingResponder_withHandler___block_in
       v19 = 2114;
       v20 = v15;
       v21 = 2048;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2114;
       v24 = @"BSAction.m";
       v25 = 1024;
@@ -787,12 +787,12 @@ void __62__BSActionResponder_responderByWrappingResponder_withHandler___block_in
   }
 
   lock_queue = self->_lock_queue;
-  self->_lock_queue = v5;
+  self->_lock_queue = queueCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setTimeout:(unint64_t)a3
+- (void)setTimeout:(unint64_t)timeout
 {
   v23 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -809,7 +809,7 @@ void __62__BSActionResponder_responderByWrappingResponder_withHandler___block_in
       v13 = 2114;
       v14 = v9;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSAction.m";
       v19 = 1024;
@@ -825,7 +825,7 @@ void __62__BSActionResponder_responderByWrappingResponder_withHandler___block_in
     JUMPOUT(0x18FF82770);
   }
 
-  self->_lock_timeout = a3;
+  self->_lock_timeout = timeout;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -833,8 +833,8 @@ void __62__BSActionResponder_responderByWrappingResponder_withHandler___block_in
 - (void)annul
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BSActionResponder *)self _lock_underlying];
-  [(_BSActionResponder *)v3 originator_annulWithErrorCode:?];
+  _lock_underlying = [(BSActionResponder *)self _lock_underlying];
+  [(_BSActionResponder *)_lock_underlying originator_annulWithErrorCode:?];
 
   os_unfair_lock_unlock(&self->_lock);
 }

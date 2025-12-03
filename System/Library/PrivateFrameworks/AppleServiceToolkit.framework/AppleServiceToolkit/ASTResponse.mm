@@ -1,26 +1,26 @@
 @interface ASTResponse
-+ (id)responseWithDictionary:(id)a3;
-+ (id)stringFromCommand:(int64_t)a3;
-- (ASTResponse)initWithDictionary:(id)a3;
-- (BOOL)validateResponse:(id)a3 key:(id)a4 expectedClass:(Class)a5;
-- (BOOL)validateTestId:(id)a3 command:(int64_t)a4;
++ (id)responseWithDictionary:(id)dictionary;
++ (id)stringFromCommand:(int64_t)command;
+- (ASTResponse)initWithDictionary:(id)dictionary;
+- (BOOL)validateResponse:(id)response key:(id)key expectedClass:(Class)class;
+- (BOOL)validateTestId:(id)id command:(int64_t)command;
 - (id)description;
-- (id)validateData:(id)a3 command:(int64_t)a4;
+- (id)validateData:(id)data command:(int64_t)command;
 @end
 
 @implementation ASTResponse
 
-- (ASTResponse)initWithDictionary:(id)a3
+- (ASTResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = ASTResponse;
   v5 = [(ASTResponse *)&v24 init];
   if (v5)
   {
-    if ([(ASTResponse *)v5 validateResponse:v4 key:@"statusResponse" expectedClass:objc_opt_class()])
+    if ([(ASTResponse *)v5 validateResponse:dictionaryCopy key:@"statusResponse" expectedClass:objc_opt_class()])
     {
-      v6 = [v4 objectForKeyedSubscript:@"statusResponse"];
+      v6 = [dictionaryCopy objectForKeyedSubscript:@"statusResponse"];
     }
 
     else
@@ -113,28 +113,28 @@ LABEL_21:
   return v5;
 }
 
-+ (id)responseWithDictionary:(id)a3
++ (id)responseWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-+ (id)stringFromCommand:(int64_t)a3
++ (id)stringFromCommand:(int64_t)command
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__ASTResponse_stringFromCommand___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (stringFromCommand__onceToken != -1)
   {
     dispatch_once(&stringFromCommand__onceToken, block);
   }
 
   v4 = stringFromCommand___stringFromCommand;
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:command];
   v6 = [v4 objectForKeyedSubscript:v5];
   v7 = v6;
   if (v6)
@@ -197,28 +197,28 @@ void __33__ASTResponse_stringFromCommand___block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ASTResponse *)self commandString];
-  v5 = [(ASTResponse *)self data];
-  v6 = [(ASTResponse *)self testId];
-  v7 = [(ASTResponse *)self progress];
-  v8 = [v3 stringWithFormat:@"Command: %@, Data: %@, TestId: %@, Progress: %@", v4, v5, v6, v7];
+  commandString = [(ASTResponse *)self commandString];
+  data = [(ASTResponse *)self data];
+  testId = [(ASTResponse *)self testId];
+  progress = [(ASTResponse *)self progress];
+  v8 = [v3 stringWithFormat:@"Command: %@, Data: %@, TestId: %@, Progress: %@", commandString, data, testId, progress];
 
   return v8;
 }
 
-- (BOOL)validateResponse:(id)a3 key:(id)a4 expectedClass:(Class)a5
+- (BOOL)validateResponse:(id)response key:(id)key expectedClass:(Class)class
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:v7];
-  if (v8 && (v9 = v8, [v6 objectForKeyedSubscript:v7], v10 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v10, v9, (isKindOfClass & 1) != 0))
+  responseCopy = response;
+  keyCopy = key;
+  v8 = [responseCopy objectForKeyedSubscript:keyCopy];
+  if (v8 && (v9 = v8, [responseCopy objectForKeyedSubscript:keyCopy], v10 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v10, v9, (isKindOfClass & 1) != 0))
   {
-    v12 = [v6 objectForKeyedSubscript:v7];
+    v12 = [responseCopy objectForKeyedSubscript:keyCopy];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [v6 objectForKeyedSubscript:v7];
+      v14 = [responseCopy objectForKeyedSubscript:keyCopy];
       v15 = [v14 length] != 0;
     }
 
@@ -236,16 +236,16 @@ void __33__ASTResponse_stringFromCommand___block_invoke(uint64_t a1)
   return v15;
 }
 
-- (BOOL)validateTestId:(id)a3 command:(int64_t)a4
+- (BOOL)validateTestId:(id)id command:(int64_t)command
 {
-  if (a3)
+  if (id)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = (a4 - 5) >= 0xFFFFFFFFFFFFFFFELL;
+    v4 = (command - 5) >= 0xFFFFFFFFFFFFFFFELL;
   }
 
   v5 = !v4;
@@ -261,17 +261,17 @@ void __33__ASTResponse_stringFromCommand___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)validateData:(id)a3 command:(int64_t)a4
+- (id)validateData:(id)data command:(int64_t)command
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  dataCopy = data;
+  v7 = dataCopy;
   v8 = MEMORY[0x277CBEC10];
-  if (a4 > 9)
+  if (command > 9)
   {
-    if ((a4 - 11) < 2)
+    if ((command - 11) < 2)
     {
-      if (!v6)
+      if (!dataCopy)
       {
         goto LABEL_74;
       }
@@ -285,14 +285,14 @@ void __33__ASTResponse_stringFromCommand___block_invoke(uint64_t a1)
       goto LABEL_39;
     }
 
-    if (a4 != 10)
+    if (command != 10)
     {
-      if (a4 != 13)
+      if (command != 13)
       {
         goto LABEL_75;
       }
 
-      if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+      if (!dataCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         v20 = ASTLogHandleForCategory(1);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -307,7 +307,7 @@ void __33__ASTResponse_stringFromCommand___block_invoke(uint64_t a1)
       {
         v17 = [v7 objectForKeyedSubscript:@"type"];
         v18 = [v17 isEqualToString:@"Alert"];
-        if (v18 & 1) != 0 || ([v7 objectForKeyedSubscript:@"type"], a4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(a4, "isEqualToString:", @"Query")))
+        if (v18 & 1) != 0 || ([v7 objectForKeyedSubscript:@"type"], command = objc_claimAutoreleasedReturnValue(), (objc_msgSend(command, "isEqualToString:", @"Query")))
         {
           v19 = [(ASTResponse *)self validateResponse:v7 key:@"reference" expectedClass:objc_opt_class()];
           if (v18)
@@ -343,7 +343,7 @@ void __33__ASTResponse_stringFromCommand___block_invoke(uint64_t a1)
       goto LABEL_73;
     }
 
-    if (v6)
+    if (dataCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -372,11 +372,11 @@ void __33__ASTResponse_stringFromCommand___block_invoke(uint64_t a1)
     goto LABEL_67;
   }
 
-  if (a4 > 4)
+  if (command > 4)
   {
-    if (a4 == 5)
+    if (command == 5)
     {
-      if (v6)
+      if (dataCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -405,12 +405,12 @@ void __33__ASTResponse_stringFromCommand___block_invoke(uint64_t a1)
 
     else
     {
-      if (a4 != 6)
+      if (command != 6)
       {
         goto LABEL_75;
       }
 
-      if (v6)
+      if (dataCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -431,9 +431,9 @@ LABEL_67:
     goto LABEL_73;
   }
 
-  if (a4 == 2)
+  if (command == 2)
   {
-    if (v6)
+    if (dataCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -464,12 +464,12 @@ LABEL_39:
     goto LABEL_67;
   }
 
-  if (a4 != 3)
+  if (command != 3)
   {
     goto LABEL_75;
   }
 
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!dataCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v20 = ASTLogHandleForCategory(1);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -489,8 +489,8 @@ LABEL_74:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [v8 allKeys];
-  v10 = [v9 copy];
+  allKeys = [v8 allKeys];
+  v10 = [allKeys copy];
 
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v11)

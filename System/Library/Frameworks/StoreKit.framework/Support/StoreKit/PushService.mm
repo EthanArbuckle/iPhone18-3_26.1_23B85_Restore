@@ -1,15 +1,15 @@
 @interface PushService
-+ (id)_pushHandlerWithBagContract:(id)a3;
++ (id)_pushHandlerWithBagContract:(id)contract;
 + (id)sharedInstance;
-- (PushService)initWithConnection:(id)a3;
-- (void)_flushPendingMessagesWithActionType:(id)a3;
-- (void)_handleBagChangedNotification:(id)a3;
-- (void)_initializeConnectionsAndSkipEnvironmentCheck:(BOOL)a3;
-- (void)_processReceivedMessage:(id)a3 withConnection:(id)a4;
-- (void)_queuePendingMessage:(id)a3 withActionType:(id)a4;
-- (void)pushConnection:(id)a3 didRecieveMessage:(id)a4;
-- (void)registerConsumer:(id)a3 forActionType:(unint64_t)a4;
-- (void)unregisterConsumerForActionType:(unint64_t)a3;
+- (PushService)initWithConnection:(id)connection;
+- (void)_flushPendingMessagesWithActionType:(id)type;
+- (void)_handleBagChangedNotification:(id)notification;
+- (void)_initializeConnectionsAndSkipEnvironmentCheck:(BOOL)check;
+- (void)_processReceivedMessage:(id)message withConnection:(id)connection;
+- (void)_queuePendingMessage:(id)message withActionType:(id)type;
+- (void)pushConnection:(id)connection didRecieveMessage:(id)message;
+- (void)registerConsumer:(id)consumer forActionType:(unint64_t)type;
+- (void)unregisterConsumerForActionType:(unint64_t)type;
 @end
 
 @implementation PushService
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (PushService)initWithConnection:(id)a3
+- (PushService)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v25.receiver = self;
   v25.super_class = PushService;
   v6 = [(PushService *)&v25 init];
@@ -46,10 +46,10 @@
     pendingMessages = v6->_pendingMessages;
     v6->_pendingMessages = v11;
 
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v6->_connection, a3);
-      [v5 setDelegate:v6];
+      objc_storeStrong(&v6->_connection, connection);
+      [connectionCopy setDelegate:v6];
     }
 
     v13 = v6->_dispatchQueue;
@@ -59,7 +59,7 @@
     v22 = &unk_10037F868;
     v14 = v6;
     v23 = v14;
-    v24 = v5;
+    v24 = connectionCopy;
     dispatch_async(v13, &v19);
     if (os_variant_has_internal_content())
     {
@@ -73,22 +73,22 @@
   return v6;
 }
 
-- (void)registerConsumer:(id)a3 forActionType:(unint64_t)a4
+- (void)registerConsumer:(id)consumer forActionType:(unint64_t)type
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006C3F0;
   block[3] = &unk_100381888;
-  v10 = v6;
-  v11 = a4;
+  v10 = consumerCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = consumerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)unregisterConsumerForActionType:(unint64_t)a3
+- (void)unregisterConsumerForActionType:(unint64_t)type
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -96,47 +96,47 @@
   v4[2] = sub_10006C534;
   v4[3] = &unk_10037F7F8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)pushConnection:(id)a3 didRecieveMessage:(id)a4
+- (void)pushConnection:(id)connection didRecieveMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006C6B4;
   block[3] = &unk_1003822A0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = messageCopy;
+  v13 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = messageCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-+ (id)_pushHandlerWithBagContract:(id)a3
++ (id)_pushHandlerWithBagContract:(id)contract
 {
-  v3 = a3;
+  contractCopy = contract;
   v4 = objc_alloc_init(AMSPushConfiguration);
   v5 = [NSSet setWithObjects:@"4", @"22", 0];
   [v4 setEnabledActionTypes:v5];
 
-  v6 = [[AMSPushHandler alloc] initWithConfiguration:v4 bag:v3];
+  v6 = [[AMSPushHandler alloc] initWithConfiguration:v4 bag:contractCopy];
 
   return v6;
 }
 
-- (void)_flushPendingMessagesWithActionType:(id)a3
+- (void)_flushPendingMessagesWithActionType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [(NSMutableDictionary *)self->_pendingMessages objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_pendingMessages objectForKeyedSubscript:typeCopy];
   if (v5)
   {
-    v6 = [(NSMapTable *)self->_consumers objectForKey:v4];
+    v6 = [(NSMapTable *)self->_consumers objectForKey:typeCopy];
     if (v6)
     {
       if (qword_1003D4868 != -1)
@@ -151,11 +151,11 @@
         *buf = 134218242;
         v21 = [v5 count];
         v22 = 2114;
-        v23 = v4;
+        v23 = typeCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Flushing %lu message(s) for action type: %{public}@", buf, 0x16u);
       }
 
-      [(NSMutableDictionary *)self->_pendingMessages setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_pendingMessages setObject:0 forKeyedSubscript:typeCopy];
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
@@ -195,13 +195,13 @@
       v14 = qword_1003D4840;
       if (os_log_type_enabled(qword_1003D4840, OS_LOG_TYPE_ERROR))
       {
-        sub_1002D0DD8(v14, v5, v4);
+        sub_1002D0DD8(v14, v5, typeCopy);
       }
     }
   }
 }
 
-- (void)_handleBagChangedNotification:(id)a3
+- (void)_handleBagChangedNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -212,10 +212,10 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_initializeConnectionsAndSkipEnvironmentCheck:(BOOL)a3
+- (void)_initializeConnectionsAndSkipEnvironmentCheck:(BOOL)check
 {
   v5 = APSEnvironmentProduction;
-  if (a3)
+  if (check)
   {
     if (qword_1003D4868 != -1)
     {
@@ -323,43 +323,43 @@ LABEL_18:
 LABEL_27:
 }
 
-- (void)_processReceivedMessage:(id)a3 withConnection:(id)a4
+- (void)_processReceivedMessage:(id)message withConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v8 = _os_activity_create(&_mh_execute_header, "StoreKit/Push", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006CE04;
   block[3] = &unk_1003822A0;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  v13 = connectionCopy;
+  selfCopy = self;
+  v9 = connectionCopy;
+  v10 = messageCopy;
   os_activity_apply(v8, block);
 }
 
-- (void)_queuePendingMessage:(id)a3 withActionType:(id)a4
+- (void)_queuePendingMessage:(id)message withActionType:(id)type
 {
-  v11 = a4;
+  typeCopy = type;
   dispatchQueue = self->_dispatchQueue;
-  v7 = a3;
+  messageCopy = message;
   dispatch_assert_queue_V2(dispatchQueue);
-  v8 = [(NSMutableDictionary *)self->_pendingMessages objectForKeyedSubscript:v11];
+  v8 = [(NSMutableDictionary *)self->_pendingMessages objectForKeyedSubscript:typeCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 addObject:v7];
+    [v8 addObject:messageCopy];
   }
 
   else
   {
-    v10 = [NSMutableSet setWithObject:v7];
+    v10 = [NSMutableSet setWithObject:messageCopy];
 
-    [(NSMutableDictionary *)self->_pendingMessages setObject:v10 forKeyedSubscript:v11];
-    v7 = v10;
+    [(NSMutableDictionary *)self->_pendingMessages setObject:v10 forKeyedSubscript:typeCopy];
+    messageCopy = v10;
   }
 }
 

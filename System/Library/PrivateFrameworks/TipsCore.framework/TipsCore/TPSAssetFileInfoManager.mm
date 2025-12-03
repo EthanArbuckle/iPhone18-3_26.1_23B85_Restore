@@ -1,39 +1,39 @@
 @interface TPSAssetFileInfoManager
-- (BOOL)isEqual:(id)a3;
-- (TPSAssetFileInfoManager)initWithCoder:(id)a3;
-- (TPSAssetFileInfoManager)initWithDictionary:(id)a3 clientConditions:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TPSAssetFileInfoManager)initWithCoder:(id)coder;
+- (TPSAssetFileInfoManager)initWithDictionary:(id)dictionary clientConditions:(id)conditions;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)fileInfoIdentifierWithMainIdentifier:(id)a3 userInterfaceStyle:(int64_t)a4;
-- (id)fileInfoWithMainIdentifier:(id)a3 userInterfaceStyle:(int64_t)a4 scale:(int64_t)a5;
-- (id)filesFromDictionary:(id)a3;
+- (id)fileInfoIdentifierWithMainIdentifier:(id)identifier userInterfaceStyle:(int64_t)style;
+- (id)fileInfoWithMainIdentifier:(id)identifier userInterfaceStyle:(int64_t)style scale:(int64_t)scale;
+- (id)filesFromDictionary:(id)dictionary;
 - (unint64_t)hash;
-- (void)addNewAssetInfoFromFileMap:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addNewAssetInfoFromFileMap:(id)map;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSAssetFileInfoManager
 
-- (TPSAssetFileInfoManager)initWithDictionary:(id)a3 clientConditions:(id)a4
+- (TPSAssetFileInfoManager)initWithDictionary:(id)dictionary clientConditions:(id)conditions
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  conditionsCopy = conditions;
   v20.receiver = self;
   v20.super_class = TPSAssetFileInfoManager;
-  v8 = [(TPSSerializableObject *)&v20 initWithDictionary:v6];
+  v8 = [(TPSSerializableObject *)&v20 initWithDictionary:dictionaryCopy];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+    v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __63__TPSAssetFileInfoManager_initWithDictionary_clientConditions___block_invoke;
     v16[3] = &unk_1E8102A78;
-    v17 = v7;
+    v17 = conditionsCopy;
     v10 = v8;
     v18 = v10;
     v11 = v9;
     v19 = v11;
-    [v6 enumerateKeysAndObjectsUsingBlock:v16];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v16];
     if (![v11 count])
     {
 
@@ -88,10 +88,10 @@ uint64_t __63__TPSAssetFileInfoManager_initWithDictionary_clientConditions___blo
   return v4;
 }
 
-- (id)filesFromDictionary:(id)a3
+- (id)filesFromDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [a3 TPSSafeArrayForKey:@"files"];
+  v3 = [dictionary TPSSafeArrayForKey:@"files"];
   v4 = [v3 count];
   if (v4 < 1)
   {
@@ -151,23 +151,23 @@ uint64_t __63__TPSAssetFileInfoManager_initWithDictionary_clientConditions___blo
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = TPSAssetFileInfoManager;
-  v4 = [(TPSSerializableObject *)&v7 copyWithZone:a3];
-  v5 = [(TPSAssetFileInfoManager *)self fileMap];
-  [v4 setFileMap:v5];
+  v4 = [(TPSSerializableObject *)&v7 copyWithZone:zone];
+  fileMap = [(TPSAssetFileInfoManager *)self fileMap];
+  [v4 setFileMap:fileMap];
 
   return v4;
 }
 
-- (TPSAssetFileInfoManager)initWithCoder:(id)a3
+- (TPSAssetFileInfoManager)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = TPSAssetFileInfoManager;
-  v5 = [(TPSSerializableObject *)&v14 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -175,7 +175,7 @@ uint64_t __63__TPSAssetFileInfoManager_initWithDictionary_clientConditions___blo
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"fileMap"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"fileMap"];
     fileMap = v5->_fileMap;
     v5->_fileMap = v11;
   }
@@ -183,27 +183,27 @@ uint64_t __63__TPSAssetFileInfoManager_initWithDictionary_clientConditions___blo
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPSAssetFileInfoManager;
-  v4 = a3;
-  [(TPSSerializableObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(TPSAssetFileInfoManager *)self fileMap:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"fileMap"];
+  [coderCopy encodeObject:v5 forKey:@"fileMap"];
 }
 
-- (id)fileInfoIdentifierWithMainIdentifier:(id)a3 userInterfaceStyle:(int64_t)a4
+- (id)fileInfoIdentifierWithMainIdentifier:(id)identifier userInterfaceStyle:(int64_t)style
 {
-  v4 = [(TPSAssetFileInfoManager *)self fileInfoWithMainIdentifier:a3 userInterfaceStyle:a4 scale:0x7FFFFFFFFFFFFFFFLL];
-  v5 = [v4 identifier];
+  v4 = [(TPSAssetFileInfoManager *)self fileInfoWithMainIdentifier:identifier userInterfaceStyle:style scale:0x7FFFFFFFFFFFFFFFLL];
+  identifier = [v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
-- (id)fileInfoWithMainIdentifier:(id)a3 userInterfaceStyle:(int64_t)a4 scale:(int64_t)a5
+- (id)fileInfoWithMainIdentifier:(id)identifier userInterfaceStyle:(int64_t)style scale:(int64_t)scale
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -216,8 +216,8 @@ uint64_t __63__TPSAssetFileInfoManager_initWithDictionary_clientConditions___blo
   v19 = __Block_byref_object_copy__6;
   v20 = __Block_byref_object_dispose__6;
   v21 = 0;
-  v9 = [(TPSAssetFileInfoManager *)self fileMap];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  fileMap = [(TPSAssetFileInfoManager *)self fileMap];
+  v10 = [fileMap objectForKeyedSubscript:identifierCopy];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -225,8 +225,8 @@ uint64_t __63__TPSAssetFileInfoManager_initWithDictionary_clientConditions___blo
   v15[3] = &unk_1E8102AA0;
   v15[4] = &v22;
   v15[5] = &v16;
-  v15[6] = a4;
-  v15[7] = a5;
+  v15[6] = style;
+  v15[7] = scale;
   [v10 enumerateObjectsUsingBlock:v15];
   if (!v23[5])
   {
@@ -235,9 +235,9 @@ uint64_t __63__TPSAssetFileInfoManager_initWithDictionary_clientConditions___blo
     {
       if ([(TPSAssetFileInfoManager *)self allowsFallBack])
       {
-        v11 = [v10 firstObject];
+        firstObject = [v10 firstObject];
         v12 = v23[5];
-        v23[5] = v11;
+        v23[5] = firstObject;
       }
     }
   }
@@ -272,22 +272,22 @@ void __79__TPSAssetFileInfoManager_fileInfoWithMainIdentifier_userInterfaceStyle
   }
 }
 
-- (void)addNewAssetInfoFromFileMap:(id)a3
+- (void)addNewAssetInfoFromFileMap:(id)map
 {
-  v4 = a3;
-  if ([v4 count])
+  mapCopy = map;
+  if ([mapCopy count])
   {
-    v5 = [(TPSAssetFileInfoManager *)self fileMap];
-    v6 = [v5 mutableCopy];
+    fileMap = [(TPSAssetFileInfoManager *)self fileMap];
+    v6 = [fileMap mutableCopy];
 
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __54__TPSAssetFileInfoManager_addNewAssetInfoFromFileMap___block_invoke;
     v15 = &unk_1E8102AC8;
-    v16 = self;
+    selfCopy = self;
     v7 = v6;
     v17 = v7;
-    [v4 enumerateKeysAndObjectsUsingBlock:&v12];
+    [mapCopy enumerateKeysAndObjectsUsingBlock:&v12];
     v8 = [(TPSAssetFileInfoManager *)self fileMap:v12];
     v9 = [v8 count];
     v10 = [v7 count];
@@ -321,13 +321,13 @@ void __54__TPSAssetFileInfoManager_addNewAssetInfoFromFileMap___block_invoke(uin
   v4 = [(TPSSerializableObject *)&v12 debugDescription];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TPSAssetFileInfoManager *)self fileMap];
-  v7 = [v6 debugDescription];
+  fileMap = [(TPSAssetFileInfoManager *)self fileMap];
+  v7 = [fileMap debugDescription];
   [v5 appendFormat:@"\n  %@ = %@", @"fileMap", v7];
 
-  v8 = [(TPSAssetFileInfoManager *)self fileMap];
-  v9 = [v8 allValues];
-  v10 = [v9 debugDescription];
+  fileMap2 = [(TPSAssetFileInfoManager *)self fileMap];
+  allValues = [fileMap2 allValues];
+  v10 = [allValues debugDescription];
   [v5 appendFormat:@"\n  %@ = %@", @"files", v10];
 
   [v5 appendFormat:@"\n  %@ = %d", @"allowsFallBack", -[TPSAssetFileInfoManager allowsFallBack](self, "allowsFallBack")];
@@ -365,19 +365,19 @@ id __38__TPSAssetFileInfoManager_na_identity__block_invoke_3()
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

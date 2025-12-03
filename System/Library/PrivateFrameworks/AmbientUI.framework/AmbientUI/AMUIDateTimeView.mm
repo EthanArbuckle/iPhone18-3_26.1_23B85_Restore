@@ -1,32 +1,32 @@
 @interface AMUIDateTimeView
 + (id)defaultDateFont;
 + (id)defaultTimeFont;
-- (AMUIDateTimeView)initWithFrame:(CGRect)a3;
+- (AMUIDateTimeView)initWithFrame:(CGRect)frame;
 - (void)_updateLabels;
-- (void)setDate:(id)a3;
-- (void)setDateFont:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTimeFont:(id)a3;
+- (void)setDate:(id)date;
+- (void)setDateFont:(id)font;
+- (void)setTextColor:(id)color;
+- (void)setTimeFont:(id)font;
 - (void)updateConstraints;
 @end
 
 @implementation AMUIDateTimeView
 
-- (AMUIDateTimeView)initWithFrame:(CGRect)a3
+- (AMUIDateTimeView)initWithFrame:(CGRect)frame
 {
   v55[2] = *MEMORY[0x277D85DE8];
   v53.receiver = self;
   v53.super_class = AMUIDateTimeView;
-  v3 = [(AMUIDateTimeView *)&v53 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AMUIDateTimeView *)&v53 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [objc_opt_class() defaultTimeFont];
+    defaultTimeFont = [objc_opt_class() defaultTimeFont];
     timeFont = v3->_timeFont;
-    v3->_timeFont = v4;
+    v3->_timeFont = defaultTimeFont;
 
-    v6 = [objc_opt_class() defaultDateFont];
+    defaultDateFont = [objc_opt_class() defaultDateFont];
     dateFont = v3->_dateFont;
-    v3->_dateFont = v6;
+    v3->_dateFont = defaultDateFont;
 
     v8 = objc_alloc(MEMORY[0x277D756B8]);
     v9 = *MEMORY[0x277CBF3A0];
@@ -64,43 +64,43 @@
 
     [(AMUIDateTimeView *)v3 _updateLabels];
     [(UILabel *)v3->_dateLabel setHidden:1];
-    v23 = [(UILabel *)v3->_timeLabel centerYAnchor];
-    v24 = [v17 centerYAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:0.0];
+    centerYAnchor = [(UILabel *)v3->_timeLabel centerYAnchor];
+    centerYAnchor2 = [v17 centerYAnchor];
+    v25 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
     timeLabelYOffsetConstraint = v3->_timeLabelYOffsetConstraint;
     v3->_timeLabelYOffsetConstraint = v25;
 
     [(AMUIDateTimeView *)v3 setNeedsUpdateConstraints];
     v43 = MEMORY[0x277CCAAD0];
-    v52 = [(AMUIDateTimeView *)v3 leadingAnchor];
-    v51 = [v20 leadingAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    leadingAnchor = [(AMUIDateTimeView *)v3 leadingAnchor];
+    leadingAnchor2 = [v20 leadingAnchor];
+    v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v54[0] = v50;
-    v49 = [(AMUIDateTimeView *)v3 trailingAnchor];
-    v48 = [v20 trailingAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    trailingAnchor = [(AMUIDateTimeView *)v3 trailingAnchor];
+    trailingAnchor2 = [v20 trailingAnchor];
+    v47 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v54[1] = v47;
-    v46 = [(AMUIDateTimeView *)v3 topAnchor];
-    v45 = [v20 topAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    topAnchor = [(AMUIDateTimeView *)v3 topAnchor];
+    topAnchor2 = [v20 topAnchor];
+    v44 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v54[2] = v44;
-    v42 = [(AMUIDateTimeView *)v3 bottomAnchor];
-    v40 = [v20 bottomAnchor];
-    v39 = [v42 constraintEqualToAnchor:v40];
+    bottomAnchor = [(AMUIDateTimeView *)v3 bottomAnchor];
+    bottomAnchor2 = [v20 bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v54[3] = v39;
-    v38 = [(UILabel *)v3->_timeLabel centerXAnchor];
-    v37 = [v17 centerXAnchor];
-    v27 = [v38 constraintEqualToAnchor:v37];
+    centerXAnchor = [(UILabel *)v3->_timeLabel centerXAnchor];
+    centerXAnchor2 = [v17 centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v54[4] = v27;
     v54[5] = v3->_timeLabelYOffsetConstraint;
     v41 = v17;
-    v28 = [v17 widthAnchor];
-    v29 = [(UILabel *)v3->_timeLabel widthAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    widthAnchor = [v17 widthAnchor];
+    widthAnchor2 = [(UILabel *)v3->_timeLabel widthAnchor];
+    v30 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v54[6] = v30;
-    v31 = [v17 heightAnchor];
-    v32 = [(UILabel *)v3->_timeLabel heightAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    heightAnchor = [v17 heightAnchor];
+    heightAnchor2 = [(UILabel *)v3->_timeLabel heightAnchor];
+    v33 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v54[7] = v33;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:8];
     [v43 activateConstraints:v34];
@@ -155,16 +155,16 @@ uint64_t __35__AMUIDateTimeView_defaultTimeFont__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)setTimeFont:(id)a3
+- (void)setTimeFont:(id)font
 {
-  v4 = a3;
-  if (!v4)
+  fontCopy = font;
+  if (!fontCopy)
   {
-    v4 = [objc_opt_class() defaultTimeFont];
+    fontCopy = [objc_opt_class() defaultTimeFont];
   }
 
-  v7 = v4;
-  if (([(UIFont *)self->_timeFont isEqual:v4]& 1) == 0)
+  v7 = fontCopy;
+  if (([(UIFont *)self->_timeFont isEqual:fontCopy]& 1) == 0)
   {
     v5 = [v7 copy];
     timeFont = self->_timeFont;
@@ -175,16 +175,16 @@ uint64_t __35__AMUIDateTimeView_defaultTimeFont__block_invoke()
   }
 }
 
-- (void)setDateFont:(id)a3
+- (void)setDateFont:(id)font
 {
-  v4 = a3;
-  if (!v4)
+  fontCopy = font;
+  if (!fontCopy)
   {
-    v4 = [objc_opt_class() defaultDateFont];
+    fontCopy = [objc_opt_class() defaultDateFont];
   }
 
-  v7 = v4;
-  if (([(UIFont *)self->_dateFont isEqual:v4]& 1) == 0)
+  v7 = fontCopy;
+  if (([(UIFont *)self->_dateFont isEqual:fontCopy]& 1) == 0)
   {
     v5 = [v7 copy];
     dateFont = self->_dateFont;
@@ -194,12 +194,12 @@ uint64_t __35__AMUIDateTimeView_defaultTimeFont__block_invoke()
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if (([(NSDate *)self->_date isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     date = self->_date;
     self->_date = v4;
 
@@ -207,11 +207,11 @@ uint64_t __35__AMUIDateTimeView_defaultTimeFont__block_invoke()
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   textColor = self->_textColor;
-  v8 = v4;
+  v8 = colorCopy;
   if ((BSEqualObjects() & 1) == 0)
   {
     v6 = [v8 copy];
@@ -236,8 +236,8 @@ uint64_t __35__AMUIDateTimeView_defaultTimeFont__block_invoke()
 - (void)_updateLabels
 {
   v3 = MEMORY[0x277CF0BF0];
-  v4 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  v14 = [v3 formatterForDateAsTimeNoAMPMWithLocale:v4];
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  v14 = [v3 formatterForDateAsTimeNoAMPMWithLocale:autoupdatingCurrentLocale];
 
   [v14 setTimeZone:0];
   v5 = [v14 stringFromDate:self->_date];
@@ -256,16 +256,16 @@ uint64_t __35__AMUIDateTimeView_defaultTimeFont__block_invoke()
   v7 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v7 setTimeZone:0];
   v8 = MEMORY[0x277CCA968];
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 dateFormatFromTemplate:@"EEEd" options:0 locale:v9];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 dateFormatFromTemplate:@"EEEd" options:0 locale:currentLocale];
   [v7 setDateFormat:v10];
 
   v11 = [v7 stringFromDate:self->_date];
-  v12 = [v11 uppercaseString];
+  uppercaseString = [v11 uppercaseString];
 
   if (self->_date)
   {
-    v13 = v12;
+    v13 = uppercaseString;
   }
 
   else

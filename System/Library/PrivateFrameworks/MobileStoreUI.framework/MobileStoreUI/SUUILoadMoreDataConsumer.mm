@@ -1,14 +1,14 @@
 @interface SUUILoadMoreDataConsumer
-- (id)_itemsWithDictionary:(id)a3;
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)_itemsWithDictionary:(id)dictionary;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SUUILoadMoreDataConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
   v12 = 0;
-  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v12];
+  v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v12];
   v8 = v12;
   objc_opt_class();
   v9 = 0;
@@ -17,21 +17,21 @@
     v9 = [(SUUILoadMoreDataConsumer *)self _itemsWithDictionary:v7];
   }
 
-  if (a5 && !v9)
+  if (error && !v9)
   {
     v10 = v8;
-    *a5 = v8;
+    *error = v8;
   }
 
   return v9;
 }
 
-- (id)_itemsWithDictionary:(id)a3
+- (id)_itemsWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v4 objectForKey:@"charts"];
+  v6 = [dictionaryCopy objectForKey:@"charts"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count])
   {
@@ -44,8 +44,8 @@
       if (objc_opt_isKindOfClass())
       {
         v21 = v7;
-        v22 = v4;
-        v9 = [v4 objectForKey:@"storePlatformData"];
+        v22 = dictionaryCopy;
+        v9 = [dictionaryCopy objectForKey:@"storePlatformData"];
         v10 = objc_opt_class();
         v11 = SUUIStorePageItemsWithStorePlatformDictionary(v9, 0, v10);
         v23 = 0u;
@@ -86,7 +86,7 @@
           while (v14);
         }
 
-        v4 = v22;
+        dictionaryCopy = v22;
         v8 = v20;
         v7 = v21;
       }

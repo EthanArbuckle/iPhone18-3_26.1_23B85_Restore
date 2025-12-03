@@ -1,28 +1,28 @@
 @interface CUIKInviteeDescriptionGenerator
-+ (id)inviteeStringForAttendees:(id)a3;
-+ (id)inviteeStringForEvent:(id)a3;
++ (id)inviteeStringForAttendees:(id)attendees;
++ (id)inviteeStringForEvent:(id)event;
 @end
 
 @implementation CUIKInviteeDescriptionGenerator
 
-+ (id)inviteeStringForEvent:(id)a3
++ (id)inviteeStringForEvent:(id)event
 {
-  v4 = [a3 attendees];
-  v5 = [a1 inviteeStringForAttendees:v4];
+  attendees = [event attendees];
+  v5 = [self inviteeStringForAttendees:attendees];
 
   return v5;
 }
 
-+ (id)inviteeStringForAttendees:(id)a3
++ (id)inviteeStringForAttendees:(id)attendees
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  attendeesCopy = attendees;
+  array = [MEMORY[0x1E695DF70] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = v3;
+  v5 = attendeesCopy;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
@@ -41,32 +41,32 @@
         v10 = *(*(&v27 + 1) + 8 * v9);
         if (([v10 isCurrentUser] & 1) == 0)
         {
-          v11 = [v10 name];
+          name = [v10 name];
 
-          if (v11)
+          if (name)
           {
-            v12 = [v10 name];
+            name2 = [v10 name];
             goto LABEL_11;
           }
 
-          v13 = [v10 emailAddress];
+          emailAddress = [v10 emailAddress];
 
-          if (v13)
+          if (emailAddress)
           {
-            v12 = [v10 emailAddress];
+            name2 = [v10 emailAddress];
 LABEL_11:
-            v14 = v12;
+            v14 = name2;
           }
 
           else
           {
-            v15 = [v10 phoneNumber];
+            phoneNumber = [v10 phoneNumber];
 
-            if (v15)
+            if (phoneNumber)
             {
               v16 = +[CUIKPhoneNumberDescriptionGenerator sharedGenerator];
-              v17 = [v10 phoneNumber];
-              v14 = [v16 formattedStringForPhoneNumber:v17];
+              phoneNumber2 = [v10 phoneNumber];
+              v14 = [v16 formattedStringForPhoneNumber:phoneNumber2];
             }
 
             else
@@ -75,7 +75,7 @@ LABEL_11:
             }
           }
 
-          [v4 addObject:v14];
+          [array addObject:v14];
         }
 
         ++v9;
@@ -89,23 +89,23 @@ LABEL_11:
     while (v18);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    v19 = [v4 count];
+    v19 = [array count];
     v20 = MEMORY[0x1E696AEC0];
     v21 = CUIKBundle();
     v22 = v21;
     if (v19 == 1)
     {
       v23 = [v21 localizedStringForKey:@"Invitees: %@" value:&stru_1F4AA8958 table:0];
-      v24 = [v4 firstObject];
-      v25 = [v20 localizedStringWithFormat:v23, v24];
+      firstObject = [array firstObject];
+      v25 = [v20 localizedStringWithFormat:v23, firstObject];
     }
 
     else
     {
       v23 = [v21 localizedStringForKey:@"%lu Invitees" value:&stru_1F4AA8958 table:0];
-      v25 = [v20 localizedStringWithFormat:v23, objc_msgSend(v4, "count")];
+      v25 = [v20 localizedStringWithFormat:v23, objc_msgSend(array, "count")];
     }
   }
 

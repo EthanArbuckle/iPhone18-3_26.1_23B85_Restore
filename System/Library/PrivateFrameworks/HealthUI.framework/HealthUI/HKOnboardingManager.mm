@@ -1,20 +1,20 @@
 @interface HKOnboardingManager
-- (HKOnboardingManager)initWithOnboardingType:(int64_t)a3 isFirstTimeOnboarding:(BOOL)a4 healthStore:(id)a5 dateCache:(id)a6;
-- (HKOnboardingManager)initWithOnboardingType:(int64_t)a3 isFirstTimeOnboarding:(BOOL)a4 healthStore:(id)a5 dateCache:(id)a6 navigationController:(id)a7;
+- (HKOnboardingManager)initWithOnboardingType:(int64_t)type isFirstTimeOnboarding:(BOOL)onboarding healthStore:(id)store dateCache:(id)cache;
+- (HKOnboardingManager)initWithOnboardingType:(int64_t)type isFirstTimeOnboarding:(BOOL)onboarding healthStore:(id)store dateCache:(id)cache navigationController:(id)controller;
 - (HKOnboardingManagerDataSource)dataSource;
 - (HKOnboardingManagerDelegate)delegate;
 - (HKOnboardingSequence)currentSequence;
 - (NSArray)steps;
 - (id)onboardingNavigationController;
-- (id)viewControllerForPage:(id)a3;
-- (int64_t)upgradingFromAlgorithmVersionForOnboardingType:(int64_t)a3;
+- (id)viewControllerForPage:(id)page;
+- (int64_t)upgradingFromAlgorithmVersionForOnboardingType:(int64_t)type;
 - (void)_didStepBackward;
 - (void)currentSequence;
 - (void)dismissOnboarding;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)onboardingCancelled;
-- (void)pushPageAnimated:(BOOL)a3;
-- (void)setCurrentStepIndex:(int64_t)a3;
+- (void)pushPageAnimated:(BOOL)animated;
+- (void)setCurrentStepIndex:(int64_t)index;
 - (void)stepForward;
 - (void)stepToNextPage;
 - (void)stepToNextState;
@@ -22,38 +22,38 @@
 
 @implementation HKOnboardingManager
 
-- (HKOnboardingManager)initWithOnboardingType:(int64_t)a3 isFirstTimeOnboarding:(BOOL)a4 healthStore:(id)a5 dateCache:(id)a6
+- (HKOnboardingManager)initWithOnboardingType:(int64_t)type isFirstTimeOnboarding:(BOOL)onboarding healthStore:(id)store dateCache:(id)cache
 {
-  v7 = a4;
+  onboardingCopy = onboarding;
   v10 = MEMORY[0x1E69DCCD8];
-  v11 = a6;
-  v12 = a5;
+  cacheCopy = cache;
+  storeCopy = store;
   v13 = objc_alloc_init(v10);
-  v14 = [(HKOnboardingManager *)self initWithOnboardingType:a3 isFirstTimeOnboarding:v7 healthStore:v12 dateCache:v11 navigationController:v13];
+  v14 = [(HKOnboardingManager *)self initWithOnboardingType:type isFirstTimeOnboarding:onboardingCopy healthStore:storeCopy dateCache:cacheCopy navigationController:v13];
 
   return v14;
 }
 
-- (HKOnboardingManager)initWithOnboardingType:(int64_t)a3 isFirstTimeOnboarding:(BOOL)a4 healthStore:(id)a5 dateCache:(id)a6 navigationController:(id)a7
+- (HKOnboardingManager)initWithOnboardingType:(int64_t)type isFirstTimeOnboarding:(BOOL)onboarding healthStore:(id)store dateCache:(id)cache navigationController:(id)controller
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  storeCopy = store;
+  cacheCopy = cache;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = HKOnboardingManager;
   v16 = [(HKOnboardingManager *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    v16->_onboardingType = a3;
-    v16->_firstTimeOnboarding = a4;
-    objc_storeStrong(&v16->_healthStore, a5);
-    objc_storeStrong(&v17->_dateCache, a6);
+    v16->_onboardingType = type;
+    v16->_firstTimeOnboarding = onboarding;
+    objc_storeStrong(&v16->_healthStore, store);
+    objc_storeStrong(&v17->_dateCache, cache);
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
     userInfo = v17->_userInfo;
     v17->_userInfo = v18;
 
-    objc_storeStrong(&v17->_navigationController, a7);
+    objc_storeStrong(&v17->_navigationController, controller);
     [(UINavigationController *)v17->_navigationController setDelegate:v17];
     v17->_currentStepIndex = 0;
     v17->_currentPageIndex = 0;
@@ -67,19 +67,19 @@
 {
   if (!self->_steps)
   {
-    v3 = [(HKOnboardingManager *)self dataSource];
+    dataSource = [(HKOnboardingManager *)self dataSource];
 
-    if (v3)
+    if (dataSource)
     {
-      v4 = [(HKOnboardingManager *)self dataSource];
-      v5 = [v4 availableOnboardingStepsForOnboardingManager:self];
+      dataSource2 = [(HKOnboardingManager *)self dataSource];
+      v5 = [dataSource2 availableOnboardingStepsForOnboardingManager:self];
       steps = self->_steps;
       self->_steps = v5;
     }
 
     else
     {
-      v4 = self->_steps;
+      dataSource2 = self->_steps;
       self->_steps = MEMORY[0x1E695E0F0];
     }
   }
@@ -89,13 +89,13 @@
   return v7;
 }
 
-- (void)setCurrentStepIndex:(int64_t)a3
+- (void)setCurrentStepIndex:(int64_t)index
 {
-  if (self->_currentStepIndex != a3)
+  if (self->_currentStepIndex != index)
   {
     currentSequence = self->_currentSequence;
     self->_currentSequence = 0;
-    self->_currentStepIndex = a3;
+    self->_currentStepIndex = index;
 
     self->_currentPageIndex = 0;
   }
@@ -106,23 +106,23 @@
   currentSequence = self->_currentSequence;
   if (!currentSequence)
   {
-    v5 = [(HKOnboardingManager *)self dataSource];
+    dataSource = [(HKOnboardingManager *)self dataSource];
 
-    if (v5)
+    if (dataSource)
     {
-      v6 = [(HKOnboardingManager *)self steps];
-      v7 = [v6 objectAtIndexedSubscript:{-[HKOnboardingManager currentStepIndex](self, "currentStepIndex")}];
-      v8 = [v7 integerValue];
+      steps = [(HKOnboardingManager *)self steps];
+      v7 = [steps objectAtIndexedSubscript:{-[HKOnboardingManager currentStepIndex](self, "currentStepIndex")}];
+      integerValue = [v7 integerValue];
 
-      v9 = [(HKOnboardingManager *)self dataSource];
-      v10 = [v9 onboardingManager:self sequenceForStep:v8 onboardingType:{-[HKOnboardingManager onboardingType](self, "onboardingType")}];
+      dataSource2 = [(HKOnboardingManager *)self dataSource];
+      v10 = [dataSource2 onboardingManager:self sequenceForStep:integerValue onboardingType:{-[HKOnboardingManager onboardingType](self, "onboardingType")}];
       v11 = self->_currentSequence;
       self->_currentSequence = v10;
     }
 
     else
     {
-      v9 = self->_currentSequence;
+      dataSource2 = self->_currentSequence;
       self->_currentSequence = 0;
     }
 
@@ -145,67 +145,67 @@
 
 - (id)onboardingNavigationController
 {
-  v3 = [(HKOnboardingManager *)self currentSequence];
-  v4 = [v3 pages];
-  v5 = [v4 count];
+  currentSequence = [(HKOnboardingManager *)self currentSequence];
+  pages = [currentSequence pages];
+  v5 = [pages count];
 
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [(HKOnboardingManager *)self setUserInfo:v6];
 
-    v7 = [(HKOnboardingManager *)self delegate];
+    delegate = [(HKOnboardingManager *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(HKOnboardingManager *)self delegate];
-      [v9 didBeginOnboardingForOnboardingManager:self];
+      delegate2 = [(HKOnboardingManager *)self delegate];
+      [delegate2 didBeginOnboardingForOnboardingManager:self];
     }
 
     [(HKOnboardingManager *)self pushPageAnimated:0];
-    v10 = [(HKOnboardingManager *)self navigationController];
+    navigationController = [(HKOnboardingManager *)self navigationController];
   }
 
   else
   {
-    v10 = 0;
+    navigationController = 0;
   }
 
-  return v10;
+  return navigationController;
 }
 
 - (void)dismissOnboarding
 {
   [(HKOnboardingManager *)self setCurrentStepIndex:0];
-  v3 = [(HKOnboardingManager *)self delegate];
+  delegate = [(HKOnboardingManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HKOnboardingManager *)self delegate];
-    [v5 didCompleteOnboardingForOnboardingManager:self];
+    delegate2 = [(HKOnboardingManager *)self delegate];
+    [delegate2 didCompleteOnboardingForOnboardingManager:self];
   }
 
   else
   {
-    v5 = [(HKOnboardingManager *)self navigationController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    delegate2 = [(HKOnboardingManager *)self navigationController];
+    [delegate2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (int64_t)upgradingFromAlgorithmVersionForOnboardingType:(int64_t)a3
+- (int64_t)upgradingFromAlgorithmVersionForOnboardingType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v3 = self;
-    v4 = [self dataSource];
+    selfCopy = self;
+    dataSource = [self dataSource];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [v3 dataSource];
-      v7 = [v6 upgradingFromAlgorithmVersionForOnboardingManager:v3];
+      dataSource2 = [selfCopy dataSource];
+      v7 = [dataSource2 upgradingFromAlgorithmVersionForOnboardingManager:selfCopy];
 
       return v7;
     }
@@ -213,7 +213,7 @@
     return *MEMORY[0x1E696C690];
   }
 
-  if (!a3)
+  if (!type)
   {
     return *MEMORY[0x1E696C690];
   }
@@ -221,15 +221,15 @@
   return self;
 }
 
-- (id)viewControllerForPage:(id)a3
+- (id)viewControllerForPage:(id)page
 {
-  v4 = a3;
-  v5 = [(HKOnboardingManager *)self dataSource];
+  pageCopy = page;
+  dataSource = [(HKOnboardingManager *)self dataSource];
   v6 = objc_opt_respondsToSelector();
 
-  if ((v6 & 1) == 0 || (-[HKOnboardingManager dataSource](self, "dataSource"), v7 = objc_claimAutoreleasedReturnValue(), [v7 onboardingManager:self customViewControllerForPage:v4], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if ((v6 & 1) == 0 || (-[HKOnboardingManager dataSource](self, "dataSource"), v7 = objc_claimAutoreleasedReturnValue(), [v7 onboardingManager:self customViewControllerForPage:pageCopy], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
-    v8 = [objc_alloc(objc_msgSend(v4 "viewControllerClass"))];
+    v8 = [objc_alloc(objc_msgSend(pageCopy "viewControllerClass"))];
   }
 
   [v8 setDelegate:self];
@@ -239,18 +239,18 @@
 
 - (void)stepForward
 {
-  v3 = [(HKOnboardingManager *)self currentPageIndex];
-  v4 = [(HKOnboardingManager *)self currentSequence];
-  v5 = [v4 pages];
-  v6 = [v5 count] - 1;
+  currentPageIndex = [(HKOnboardingManager *)self currentPageIndex];
+  currentSequence = [(HKOnboardingManager *)self currentSequence];
+  pages = [currentSequence pages];
+  v6 = [pages count] - 1;
 
-  if (v3 == v6)
+  if (currentPageIndex == v6)
   {
-    v7 = [(HKOnboardingManager *)self currentStepIndex];
-    v8 = [(HKOnboardingManager *)self steps];
-    v9 = [v8 count] - 1;
+    currentStepIndex = [(HKOnboardingManager *)self currentStepIndex];
+    steps = [(HKOnboardingManager *)self steps];
+    v9 = [steps count] - 1;
 
-    if (v7 == v9)
+    if (currentStepIndex == v9)
     {
       [(HKOnboardingManager *)self dismissOnboarding];
     }
@@ -271,11 +271,11 @@
 
 - (void)stepToNextState
 {
-  v3 = [(HKOnboardingManager *)self currentStepIndex];
-  v4 = [(HKOnboardingManager *)self steps];
-  v5 = [v4 count] - 1;
+  currentStepIndex = [(HKOnboardingManager *)self currentStepIndex];
+  steps = [(HKOnboardingManager *)self steps];
+  v5 = [steps count] - 1;
 
-  if (v3 < v5)
+  if (currentStepIndex < v5)
   {
     v6 = [(HKOnboardingManager *)self currentStepIndex]+ 1;
 
@@ -285,12 +285,12 @@
 
 - (void)stepToNextPage
 {
-  v3 = [(HKOnboardingManager *)self currentPageIndex];
-  v4 = [(HKOnboardingManager *)self currentSequence];
-  v5 = [v4 pages];
-  v6 = [v5 count] - 1;
+  currentPageIndex = [(HKOnboardingManager *)self currentPageIndex];
+  currentSequence = [(HKOnboardingManager *)self currentSequence];
+  pages = [currentSequence pages];
+  v6 = [pages count] - 1;
 
-  if (v3 < v6)
+  if (currentPageIndex < v6)
   {
     v7 = [(HKOnboardingManager *)self currentPageIndex]+ 1;
 
@@ -298,53 +298,53 @@
   }
 }
 
-- (void)pushPageAnimated:(BOOL)a3
+- (void)pushPageAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(HKOnboardingManager *)self currentSequence];
-  v6 = [v5 pages];
-  v11 = [v6 objectAtIndexedSubscript:{-[HKOnboardingManager currentPageIndex](self, "currentPageIndex")}];
+  animatedCopy = animated;
+  currentSequence = [(HKOnboardingManager *)self currentSequence];
+  pages = [currentSequence pages];
+  v11 = [pages objectAtIndexedSubscript:{-[HKOnboardingManager currentPageIndex](self, "currentPageIndex")}];
 
-  v7 = [(HKOnboardingManager *)self delegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  delegate = [(HKOnboardingManager *)self delegate];
+  LOBYTE(pages) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (pages)
   {
-    v8 = [(HKOnboardingManager *)self delegate];
-    [v8 onboardingManager:self willMoveToPage:v11];
+    delegate2 = [(HKOnboardingManager *)self delegate];
+    [delegate2 onboardingManager:self willMoveToPage:v11];
   }
 
   v9 = [(HKOnboardingManager *)self viewControllerForPage:v11];
-  v10 = [(HKOnboardingManager *)self navigationController];
-  [v10 pushViewController:v9 animated:v3];
+  navigationController = [(HKOnboardingManager *)self navigationController];
+  [navigationController pushViewController:v9 animated:animatedCopy];
 }
 
 - (void)onboardingCancelled
 {
-  v3 = [(HKOnboardingManager *)self delegate];
+  delegate = [(HKOnboardingManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HKOnboardingManager *)self delegate];
-    [v5 didCancelOnboardingForOnboardingManager:self];
+    delegate2 = [(HKOnboardingManager *)self delegate];
+    [delegate2 didCancelOnboardingForOnboardingManager:self];
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v10 = a3;
-  v6 = [v10 viewControllers];
-  v7 = [v6 count];
-  v8 = [(HKOnboardingManager *)self presentedPagesCount];
+  controllerCopy = controller;
+  viewControllers = [controllerCopy viewControllers];
+  v7 = [viewControllers count];
+  presentedPagesCount = [(HKOnboardingManager *)self presentedPagesCount];
 
-  if (v7 < v8)
+  if (v7 < presentedPagesCount)
   {
     [(HKOnboardingManager *)self _didStepBackward];
   }
 
-  v9 = [v10 viewControllers];
-  -[HKOnboardingManager setPresentedPagesCount:](self, "setPresentedPagesCount:", [v9 count]);
+  viewControllers2 = [controllerCopy viewControllers];
+  -[HKOnboardingManager setPresentedPagesCount:](self, "setPresentedPagesCount:", [viewControllers2 count]);
 }
 
 - (void)_didStepBackward
@@ -359,9 +359,9 @@
   else if ([(HKOnboardingManager *)self currentStepIndex])
   {
     [(HKOnboardingManager *)self setCurrentStepIndex:[(HKOnboardingManager *)self currentStepIndex]- 1];
-    v5 = [(HKOnboardingManager *)self currentSequence];
-    v4 = [v5 pages];
-    -[HKOnboardingManager setCurrentPageIndex:](self, "setCurrentPageIndex:", [v4 count] - 1);
+    currentSequence = [(HKOnboardingManager *)self currentSequence];
+    pages = [currentSequence pages];
+    -[HKOnboardingManager setCurrentPageIndex:](self, "setCurrentPageIndex:", [pages count] - 1);
   }
 
   else
@@ -391,13 +391,13 @@
   v5 = a2;
   v6 = NSStringFromSelector(a3);
   v7 = 138544130;
-  v8 = a1;
+  selfCopy = self;
   v9 = 2114;
   v10 = v6;
   v11 = 1024;
-  v12 = [a1 currentStepIndex];
+  currentStepIndex = [self currentStepIndex];
   v13 = 1024;
-  v14 = [a1 onboardingType];
+  onboardingType = [self onboardingType];
   _os_log_error_impl(&dword_1C3942000, v5, OS_LOG_TYPE_ERROR, "[%{public}@ %{public}@] Current sequence is nil for step index: %d, onboarding type: %d.", &v7, 0x22u);
 }
 

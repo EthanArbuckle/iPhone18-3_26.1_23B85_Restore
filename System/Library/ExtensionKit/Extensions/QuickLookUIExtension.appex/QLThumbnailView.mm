@@ -1,18 +1,18 @@
 @interface QLThumbnailView
 - (CGRect)unselectedFrame;
-- (QLThumbnailView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
+- (QLThumbnailView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image;
 @end
 
 @implementation QLThumbnailView
 
-- (QLThumbnailView)initWithFrame:(CGRect)a3
+- (QLThumbnailView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = QLThumbnailView;
-  v3 = [(QLThumbnailView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(QLThumbnailView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -22,12 +22,12 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   v26.origin.x = x;
@@ -41,11 +41,11 @@
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(QLThumbnailView *)self image];
-  v24 = v17;
-  if (v17)
+  image = [(QLThumbnailView *)self image];
+  v24 = image;
+  if (image)
   {
-    [v17 size];
+    [image size];
     v20 = v14 * (v19 / v18);
     if (v20 <= v16)
     {
@@ -85,17 +85,17 @@
   CGContextRestoreGState(CurrentContext);
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = QLThumbnailView;
-  [(QLThumbnailView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(QLThumbnailView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(QLThumbnailView *)self setNeedsDisplay];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  objc_storeStrong(&self->_image, a3);
+  objc_storeStrong(&self->_image, image);
 
   [(QLThumbnailView *)self setNeedsDisplay];
 }

@@ -1,26 +1,26 @@
 @interface CPLMemoryAssetList
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAsset:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAsset:(id)asset;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CPLMemoryAssetList
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -46,9 +46,9 @@
     while (v7);
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_version = *(v4 + 4);
+    self->_version = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -71,16 +71,16 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   assets = self->_assets;
-  if (assets | *(v4 + 1))
+  if (assets | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)assets isEqual:?])
     {
@@ -88,10 +88,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_version == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_version == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -106,10 +106,10 @@ LABEL_9:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -130,7 +130,7 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addAsset:v11];
 
         ++v10;
@@ -153,35 +153,35 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(CPLMemoryAssetList *)self assetsCount])
   {
-    [v8 clearAssets];
-    v4 = [(CPLMemoryAssetList *)self assetsCount];
-    if (v4)
+    [toCopy clearAssets];
+    assetsCount = [(CPLMemoryAssetList *)self assetsCount];
+    if (assetsCount)
     {
-      v5 = v4;
+      v5 = assetsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(CPLMemoryAssetList *)self assetAtIndex:i];
-        [v8 addAsset:v7];
+        [toCopy addAsset:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 4) = self->_version;
-    *(v8 + 20) |= 1u;
+    *(toCopy + 4) = self->_version;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -226,7 +226,7 @@ LABEL_9:
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_assets count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_assets, "count")}];
@@ -249,8 +249,8 @@ LABEL_9:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -259,18 +259,18 @@ LABEL_9:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"asset"];
+    [dictionary setObject:v4 forKey:@"asset"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-    [v3 setObject:v11 forKey:@"version"];
+    [dictionary setObject:v11 forKey:@"version"];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -279,28 +279,28 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = CPLMemoryAssetList;
   v4 = [(CPLMemoryAssetList *)&v8 description];
-  v5 = [(CPLMemoryAssetList *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CPLMemoryAssetList *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addAsset:(id)a3
+- (void)addAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   assets = self->_assets;
-  v8 = v4;
+  v8 = assetCopy;
   if (!assets)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_assets;
     self->_assets = v6;
 
-    v4 = v8;
+    assetCopy = v8;
     assets = self->_assets;
   }
 
-  [(NSMutableArray *)assets addObject:v4];
+  [(NSMutableArray *)assets addObject:assetCopy];
 }
 
 @end

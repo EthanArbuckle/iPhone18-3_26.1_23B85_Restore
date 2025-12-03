@@ -1,8 +1,8 @@
 @interface HKLevelCategoryDataSource
-- (id)_chartPointsWithSamples:(id)a3 sourceTimeZone:(id)a4;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (id)_chartPointsWithSamples:(id)samples sourceTimeZone:(id)zone;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryDescription;
 @end
 
@@ -11,24 +11,24 @@
 - (id)queryDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v4 = [v3 localization];
-  v5 = [v4 displayName];
-  v6 = [v2 stringWithFormat:@"HKLevelCategory(%@)", v5];
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  localization = [displayType localization];
+  displayName = [localization displayName];
+  v6 = [v2 stringWithFormat:@"HKLevelCategory(%@)", displayName];
 
   return v6;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E696C378];
-  v8 = a3;
-  v9 = [v8 startDate];
-  v10 = [v8 endDate];
+  requestCopy = request;
+  startDate = [requestCopy startDate];
+  endDate = [requestCopy endDate];
 
-  v11 = [v7 predicateForSamplesWithStartDate:v9 endDate:v10 options:0];
+  v11 = [v7 predicateForSamplesWithStartDate:startDate endDate:endDate options:0];
 
   v12 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:*MEMORY[0x1E696BE38] ascending:1];
   v13 = objc_alloc(MEMORY[0x1E696C3C8]);
@@ -40,8 +40,8 @@
   v20[2] = __65__HKLevelCategoryDataSource_queriesForRequest_completionHandler___block_invoke;
   v20[3] = &unk_1E81B6D10;
   v20[4] = self;
-  v21 = v6;
-  v16 = v6;
+  v21 = handlerCopy;
+  v16 = handlerCopy;
   v17 = [v13 initWithSampleType:sampleType predicate:v11 limit:0 sortDescriptors:v15 resultsHandler:v20];
 
   [v17 setDebugIdentifier:@"charting (level category)"];
@@ -88,17 +88,17 @@ id __65__HKLevelCategoryDataSource_queriesForRequest_completionHandler___block_i
   return v5;
 }
 
-- (id)_chartPointsWithSamples:(id)a3 sourceTimeZone:(id)a4
+- (id)_chartPointsWithSamples:(id)samples sourceTimeZone:(id)zone
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  samplesCopy = samples;
+  zoneCopy = zone;
   v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v6;
+  obj = samplesCopy;
   v8 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v8)
   {
@@ -117,50 +117,50 @@ id __65__HKLevelCategoryDataSource_queriesForRequest_completionHandler___block_i
 
         v12 = *(*(&v40 + 1) + 8 * i);
         v13 = objc_alloc_init(HKLevelCategoryChartPoint);
-        v14 = [v12 hk_integerValue];
-        v15 = [v12 startDate];
-        v16 = [v15 hk_dateFromSourceTimeZone:v7];
+        hk_integerValue = [v12 hk_integerValue];
+        startDate = [v12 startDate];
+        v16 = [startDate hk_dateFromSourceTimeZone:zoneCopy];
         [(HKLevelCategoryChartPoint *)v13 setStartDate:v16];
 
-        v17 = [v12 endDate];
-        v18 = [v17 hk_dateFromSourceTimeZone:v7];
+        endDate = [v12 endDate];
+        v18 = [endDate hk_dateFromSourceTimeZone:zoneCopy];
         [(HKLevelCategoryChartPoint *)v13 setEndDate:v18];
 
-        v19 = [(HKLevelCategoryDataSource *)self valueOrder];
+        valueOrder = [(HKLevelCategoryDataSource *)self valueOrder];
 
         v20 = *(v10 + 3480);
-        if (v19)
+        if (valueOrder)
         {
-          v21 = [(HKLevelCategoryDataSource *)self valueOrder];
-          v22 = [*(v10 + 3480) numberWithInteger:v14];
-          v23 = [v20 numberWithUnsignedInteger:{objc_msgSend(v21, "indexOfObject:", v22)}];
+          valueOrder2 = [(HKLevelCategoryDataSource *)self valueOrder];
+          v22 = [*(v10 + 3480) numberWithInteger:hk_integerValue];
+          v23 = [v20 numberWithUnsignedInteger:{objc_msgSend(valueOrder2, "indexOfObject:", v22)}];
           [(HKLevelCategoryChartPoint *)v13 setYValue:v23];
         }
 
         else
         {
-          v21 = [*(v10 + 3480) numberWithInteger:v14];
-          [(HKLevelCategoryChartPoint *)v13 setYValue:v21];
+          valueOrder2 = [*(v10 + 3480) numberWithInteger:hk_integerValue];
+          [(HKLevelCategoryChartPoint *)v13 setYValue:valueOrder2];
         }
 
         [(HKLevelCategoryChartPoint *)v13 setPointStyle:0];
-        v24 = [(HKLevelCategoryDataSource *)self pointStyleBlock];
+        pointStyleBlock = [(HKLevelCategoryDataSource *)self pointStyleBlock];
 
-        if (v24)
+        if (pointStyleBlock)
         {
-          v25 = [(HKLevelCategoryDataSource *)self pointStyleBlock];
-          [(HKLevelCategoryChartPoint *)v13 setPointStyle:(v25)[2](v25, v12)];
+          pointStyleBlock2 = [(HKLevelCategoryDataSource *)self pointStyleBlock];
+          [(HKLevelCategoryChartPoint *)v13 setPointStyle:(pointStyleBlock2)[2](pointStyleBlock2, v12)];
         }
 
-        v26 = [v12 metadata];
-        v27 = [v26 valueForKey:v37];
-        v28 = [v27 BOOLValue];
+        metadata = [v12 metadata];
+        v27 = [metadata valueForKey:v37];
+        bOOLValue = [v27 BOOLValue];
 
-        v29 = v28;
-        v30 = [(HKLevelCategoryDataSource *)self userInfoCreationBlock];
-        v31 = [v12 startDate];
-        v32 = [v12 endDate];
-        v33 = (v30)[2](v30, v14, v31, v32, v29);
+        v29 = bOOLValue;
+        userInfoCreationBlock = [(HKLevelCategoryDataSource *)self userInfoCreationBlock];
+        startDate2 = [v12 startDate];
+        endDate2 = [v12 endDate];
+        v33 = (userInfoCreationBlock)[2](userInfoCreationBlock, hk_integerValue, startDate2, endDate2, v29);
         [(HKLevelCategoryChartPoint *)v13 setUserInfo:v33];
 
         [v39 addObject:v13];
@@ -179,26 +179,26 @@ id __65__HKLevelCategoryDataSource_queriesForRequest_completionHandler___block_i
   return v34;
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __95__HKLevelCategoryDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
   v25[3] = &unk_1E81B6D38;
-  v26 = v8;
-  v27 = self;
-  v28 = v10;
-  v11 = v10;
-  v12 = v8;
+  v26 = requestCopy;
+  selfCopy = self;
+  v28 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   v13 = [(HKLevelCategoryDataSource *)self queriesForRequest:v12 completionHandler:v25];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __95__HKLevelCategoryDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_314;
   v23[3] = &unk_1E81B6D60;
-  v14 = v9;
+  v14 = storeCopy;
   v24 = v14;
   [v13 enumerateObjectsUsingBlock:v23];
   v20[0] = MEMORY[0x1E69E9820];
@@ -282,14 +282,14 @@ void __95__HKLevelCategoryDataSource_generateSharableQueryDataForRequest_healthS
   [v1 enumerateObjectsUsingBlock:v2];
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
-  v5 = a3;
-  if ([v5 hasTimeZoneName])
+  dataCopy = data;
+  if ([dataCopy hasTimeZoneName])
   {
     v6 = objc_alloc(MEMORY[0x1E695DFE8]);
-    v7 = [v5 timeZoneName];
-    v8 = [v6 initWithName:v7];
+    timeZoneName = [dataCopy timeZoneName];
+    v8 = [v6 initWithName:timeZoneName];
   }
 
   else
@@ -298,11 +298,11 @@ void __95__HKLevelCategoryDataSource_generateSharableQueryDataForRequest_healthS
   }
 
   v9 = [HKCodableSampleDataSourceQueryData alloc];
-  v10 = [v5 queryDataObject];
-  v11 = [(HKCodableSampleDataSourceQueryData *)v9 initWithData:v10];
+  queryDataObject = [dataCopy queryDataObject];
+  v11 = [(HKCodableSampleDataSourceQueryData *)v9 initWithData:queryDataObject];
 
-  v12 = [(HKCodableSampleDataSourceQueryData *)v11 samples];
-  v13 = [v12 hk_map:&__block_literal_global_320_0];
+  samples = [(HKCodableSampleDataSourceQueryData *)v11 samples];
+  v13 = [samples hk_map:&__block_literal_global_320_0];
   v14 = [v13 copy];
 
   v15 = [(HKLevelCategoryDataSource *)self _chartPointsWithSamples:v14 sourceTimeZone:v8];

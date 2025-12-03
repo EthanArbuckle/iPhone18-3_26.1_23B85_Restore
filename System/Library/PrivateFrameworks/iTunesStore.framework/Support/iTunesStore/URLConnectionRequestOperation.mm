@@ -1,36 +1,36 @@
 @interface URLConnectionRequestOperation
-- (BOOL)_shouldSendMachineDataHeadersForProperties:(id)a3;
+- (BOOL)_shouldSendMachineDataHeadersForProperties:(id)properties;
 - (BOOL)sendsResponseForHTTPFailures;
 - (BOOL)shouldMescalSign;
 - (NSURL)destinationFileURL;
 - (SSAuthenticationContext)authenticationContext;
 - (SSURLConnectionResponse)URLResponse;
 - (SSURLRequestProperties)requestProperties;
-- (URLConnectionRequestOperation)initWithRequestProperties:(id)a3;
+- (URLConnectionRequestOperation)initWithRequestProperties:(id)properties;
 - (id)_accountIdentifier;
-- (id)_metricsPageEventWithResponse:(id)a3 performance:(id)a4;
-- (id)_newStoreURLOperationWithProperties:(id)a3;
-- (void)_addKBSyncDataToRequestProperties:(id)a3 forAccountID:(id)a4;
-- (void)_importKeybagFromDictionary:(id)a3;
+- (id)_metricsPageEventWithResponse:(id)response performance:(id)performance;
+- (id)_newStoreURLOperationWithProperties:(id)properties;
+- (void)_addKBSyncDataToRequestProperties:(id)properties forAccountID:(id)d;
+- (void)_importKeybagFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)operation:(id)a3 didAuthenticateWithDSID:(id)a4;
+- (void)operation:(id)operation didAuthenticateWithDSID:(id)d;
 - (void)run;
-- (void)setAuthenticationContext:(id)a3;
-- (void)setDestinationFileURL:(id)a3;
-- (void)setSendsResponseForHTTPFailures:(BOOL)a3;
-- (void)setShouldMescalSign:(BOOL)a3;
+- (void)setAuthenticationContext:(id)context;
+- (void)setDestinationFileURL:(id)l;
+- (void)setSendsResponseForHTTPFailures:(BOOL)failures;
+- (void)setShouldMescalSign:(BOOL)sign;
 @end
 
 @implementation URLConnectionRequestOperation
 
-- (URLConnectionRequestOperation)initWithRequestProperties:(id)a3
+- (URLConnectionRequestOperation)initWithRequestProperties:(id)properties
 {
   v6.receiver = self;
   v6.super_class = URLConnectionRequestOperation;
   v4 = [(URLConnectionRequestOperation *)&v6 init];
   if (v4)
   {
-    v4->_properties = [a3 copy];
+    v4->_properties = [properties copy];
   }
 
   return v4;
@@ -74,44 +74,44 @@
   return sendsResponseForHTTPFailures;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
   [(URLConnectionRequestOperation *)self lock];
   authenticationContext = self->_authenticationContext;
-  if (authenticationContext != a3)
+  if (authenticationContext != context)
   {
 
-    self->_authenticationContext = [a3 copy];
+    self->_authenticationContext = [context copy];
   }
 
   [(URLConnectionRequestOperation *)self unlock];
 }
 
-- (void)setDestinationFileURL:(id)a3
+- (void)setDestinationFileURL:(id)l
 {
   [(URLConnectionRequestOperation *)self lock];
   destinationFileURL = self->_destinationFileURL;
-  if (destinationFileURL != a3)
+  if (destinationFileURL != l)
   {
 
-    self->_destinationFileURL = [a3 copy];
+    self->_destinationFileURL = [l copy];
   }
 
   [(URLConnectionRequestOperation *)self unlock];
 }
 
-- (void)setSendsResponseForHTTPFailures:(BOOL)a3
+- (void)setSendsResponseForHTTPFailures:(BOOL)failures
 {
   [(URLConnectionRequestOperation *)self lock];
-  self->_sendsResponseForHTTPFailures = a3;
+  self->_sendsResponseForHTTPFailures = failures;
 
   [(URLConnectionRequestOperation *)self unlock];
 }
 
-- (void)setShouldMescalSign:(BOOL)a3
+- (void)setShouldMescalSign:(BOOL)sign
 {
   [(URLConnectionRequestOperation *)self lock];
-  self->_shouldMescalSign = a3;
+  self->_shouldMescalSign = sign;
 
   [(URLConnectionRequestOperation *)self unlock];
 }
@@ -135,18 +135,18 @@
 - (void)run
 {
   v20 = 0;
-  v3 = [(URLConnectionRequestOperation *)self destinationFileURL];
-  v4 = v3;
-  if (!v3)
+  destinationFileURL = [(URLConnectionRequestOperation *)self destinationFileURL];
+  v4 = destinationFileURL;
+  if (!destinationFileURL)
   {
     v7 = self->_properties;
     goto LABEL_6;
   }
 
-  v5 = [(NSURL *)v3 isFileURL];
+  isFileURL = [(NSURL *)destinationFileURL isFileURL];
   v6 = self->_properties;
   v7 = v6;
-  if (!v5)
+  if (!isFileURL)
   {
 LABEL_6:
     v8 = 0;
@@ -185,12 +185,12 @@ LABEL_7:
   if (v8)
   {
 LABEL_10:
-    v10 = [(NSURL *)v4 path];
+    path = [(NSURL *)v4 path];
     v11 = objc_alloc_init(NSFileManager);
-    [v11 createDirectoryAtPath:-[NSString stringByDeletingLastPathComponent](v10 withIntermediateDirectories:"stringByDeletingLastPathComponent") attributes:1 error:{0, 0}];
+    [v11 createDirectoryAtPath:-[NSString stringByDeletingLastPathComponent](path withIntermediateDirectories:"stringByDeletingLastPathComponent") attributes:1 error:{0, 0}];
 
     v12 = +[ISHashedDownloadProvider provider];
-    [v12 setLocalFilePath:v10];
+    [v12 setLocalFilePath:path];
     [v9 setDataProvider:v12];
   }
 
@@ -199,10 +199,10 @@ LABEL_11:
   [v9 _setLoadsHTTPFailures:{-[URLConnectionRequestOperation sendsResponseForHTTPFailures](self, "sendsResponseForHTTPFailures")}];
   [v9 setTracksPerformanceMetrics:1];
   v13 = [(URLConnectionRequestOperation *)self runSubOperation:v9 returningError:&v20];
-  v14 = [v9 response];
+  response = [v9 response];
   if (v13)
   {
-    v15 = v14;
+    v15 = response;
     v16 = [objc_msgSend(v9 "dataProvider")];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -253,11 +253,11 @@ LABEL_11:
   [(URLConnectionRequestOperation *)self setSuccess:v13];
 }
 
-- (void)operation:(id)a3 didAuthenticateWithDSID:(id)a4
+- (void)operation:(id)operation didAuthenticateWithDSID:(id)d
 {
-  v6 = [a3 _requestProperties];
+  _requestProperties = [operation _requestProperties];
 
-  [(URLConnectionRequestOperation *)self _addKBSyncDataToRequestProperties:v6 forAccountID:a4];
+  [(URLConnectionRequestOperation *)self _addKBSyncDataToRequestProperties:_requestProperties forAccountID:d];
 }
 
 - (id)_accountIdentifier
@@ -273,12 +273,12 @@ LABEL_11:
   return result;
 }
 
-- (void)_addKBSyncDataToRequestProperties:(id)a3 forAccountID:(id)a4
+- (void)_addKBSyncDataToRequestProperties:(id)properties forAccountID:(id)d
 {
-  v6 = [a3 KBSyncType];
-  if (a4 && v6)
+  kBSyncType = [properties KBSyncType];
+  if (d && kBSyncType)
   {
-    if (v6 == 2)
+    if (kBSyncType == 2)
     {
       v7 = 1;
     }
@@ -288,7 +288,7 @@ LABEL_11:
       v7 = 9;
     }
 
-    v8 = sub_1000B18E8([a4 unsignedLongLongValue], v7);
+    v8 = sub_1000B18E8([d unsignedLongLongValue], v7);
     if ([(__CFData *)v8 length])
     {
       [(__CFData *)v8 bytes];
@@ -303,15 +303,15 @@ LABEL_11:
           v11 = +[SSLogConfig sharedConfig];
         }
 
-        v12 = [v11 shouldLog];
+        shouldLog = [v11 shouldLog];
         if ([v11 shouldLogToDisk])
         {
-          v13 = v12 | 2;
+          v13 = shouldLog | 2;
         }
 
         else
         {
-          v13 = v12;
+          v13 = shouldLog;
         }
 
         if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_INFO))
@@ -324,7 +324,7 @@ LABEL_11:
           v19 = 138413058;
           v20 = objc_opt_class();
           v21 = 2112;
-          v22 = a4;
+          dCopy = d;
           v23 = 2048;
           v24 = v7;
           v25 = 2048;
@@ -342,15 +342,15 @@ LABEL_11:
           }
         }
 
-        [a3 setValue:v10 forRequestParameter:{@"kbsync", v17}];
+        [properties setValue:v10 forRequestParameter:{@"kbsync", v17}];
       }
     }
   }
 }
 
-- (void)_importKeybagFromDictionary:(id)a3
+- (void)_importKeybagFromDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"keybag"];
+  v3 = [dictionary objectForKey:@"keybag"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length])
   {
@@ -359,56 +359,56 @@ LABEL_11:
   }
 }
 
-- (id)_metricsPageEventWithResponse:(id)a3 performance:(id)a4
+- (id)_metricsPageEventWithResponse:(id)response performance:(id)performance
 {
   v6 = objc_alloc_init(SSMetricsPageEvent);
-  [v6 setPageURL:{objc_msgSend(objc_msgSend(a3, "URL"), "absoluteString")}];
-  [a4 startTime];
+  [v6 setPageURL:{objc_msgSend(objc_msgSend(response, "URL"), "absoluteString")}];
+  [performance startTime];
   v8 = v7;
   [+[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate timeIntervalSince1970];
   [v6 setRequestStartTime:?];
-  [a4 receivedResponseInterval];
+  [performance receivedResponseInterval];
   [[NSDate dateWithTimeIntervalSinceReferenceDate:?]];
   [v6 setResponseStartTime:?];
-  [a4 finishInterval];
+  [performance finishInterval];
   [[NSDate dateWithTimeIntervalSinceReferenceDate:?]];
   [v6 setResponseEndTime:?];
-  [a3 allHeaderFields];
+  [response allHeaderFields];
   [v6 setServerApplicationInstance:ISDictionaryValueForCaseInsensitiveString()];
   [v6 setServerTiming:ISDictionaryValueForCaseInsensitiveString()];
 
   return v6;
 }
 
-- (id)_newStoreURLOperationWithProperties:(id)a3
+- (id)_newStoreURLOperationWithProperties:(id)properties
 {
   v5 = objc_alloc_init(ISStoreURLOperation);
-  v6 = [a3 shouldProcessProtocol];
+  shouldProcessProtocol = [properties shouldProcessProtocol];
   v7 = off_1003251E0;
-  if (!v6)
+  if (!shouldProcessProtocol)
   {
     v7 = ISDataProvider_ptr;
   }
 
   [v5 setDataProvider:{objc_msgSend(*v7, "provider")}];
-  if ([a3 shouldSendSecureToken])
+  if ([properties shouldSendSecureToken])
   {
     [v5 setShouldSendXTokenHeader:1];
   }
 
   [v5 setAuthenticationContext:{-[URLConnectionRequestOperation authenticationContext](self, "authenticationContext")}];
-  v8 = [a3 mutableCopy];
+  v8 = [properties mutableCopy];
   [(URLConnectionRequestOperation *)self _addKBSyncDataToRequestProperties:v8 forAccountID:[(URLConnectionRequestOperation *)self _accountIdentifier]];
   if ([(URLConnectionRequestOperation *)self _shouldSendMachineDataHeadersForProperties:v8])
   {
-    v9 = 1;
+    machineDataStyle = 1;
 LABEL_8:
-    [v5 setMachineDataStyle:v9];
+    [v5 setMachineDataStyle:machineDataStyle];
     goto LABEL_9;
   }
 
-  v9 = [v8 machineDataStyle];
-  if (v9)
+  machineDataStyle = [v8 machineDataStyle];
+  if (machineDataStyle)
   {
     goto LABEL_8;
   }
@@ -416,16 +416,16 @@ LABEL_8:
 LABEL_9:
   [v5 setRequestProperties:v8];
 
-  [v5 _setShouldSetCookies:{objc_msgSend(a3, "shouldSetCookies")}];
+  [v5 _setShouldSetCookies:{objc_msgSend(properties, "shouldSetCookies")}];
   return v5;
 }
 
-- (BOOL)_shouldSendMachineDataHeadersForProperties:(id)a3
+- (BOOL)_shouldSendMachineDataHeadersForProperties:(id)properties
 {
-  v4 = [a3 URLBagKey];
-  if (!v4)
+  uRLBagKey = [properties URLBagKey];
+  if (!uRLBagKey)
   {
-    v7 = [objc_msgSend(a3 "URL")];
+    v7 = [objc_msgSend(properties "URL")];
     v6 = 1;
     if ([v7 rangeOfString:@"buyProduct" options:1] == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -439,8 +439,8 @@ LABEL_9:
     return v6;
   }
 
-  v5 = v4;
-  if ([v4 isEqualToString:@"buyProduct"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"redeemCodeSrv"))
+  v5 = uRLBagKey;
+  if ([uRLBagKey isEqualToString:@"buyProduct"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"redeemCodeSrv"))
   {
     return 1;
   }

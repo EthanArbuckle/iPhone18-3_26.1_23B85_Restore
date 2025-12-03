@@ -1,18 +1,18 @@
 @interface AADiagnosticsConsentRequired
 - (AADiagnosticsConsentRequired)init;
-- (AADiagnosticsConsentRequired)initWithData:(id)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (AADiagnosticsConsentRequired)initWithData:(id)data;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation AADiagnosticsConsentRequired
 
-- (AADiagnosticsConsentRequired)initWithData:(id)a3
+- (AADiagnosticsConsentRequired)initWithData:(id)data
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___AADiagnosticsConsentRequired_data) = a3;
+  *(&self->super.isa + OBJC_IVAR___AADiagnosticsConsentRequired_data) = data;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  dataCopy = data;
   return [(AADiagnosticsConsentRequired *)&v8 init];
 }
 
@@ -23,9 +23,9 @@
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B6AAD340(&v8);
   if (v9)
   {

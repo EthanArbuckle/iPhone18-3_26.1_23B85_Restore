@@ -1,5 +1,5 @@
 @interface HKDisplayTypeContextVerticalCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,24 +7,24 @@
 
 @implementation HKDisplayTypeContextVerticalCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HKDisplayTypeContextVerticalCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"UICollectionViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"HKDisplayTypeContextVerticalCollectionViewCell" hasInstanceMethod:@"infoButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKDisplayTypeContextVerticalCollectionViewCell" hasInstanceMethod:@"infoButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HKDisplayTypeContextVerticalCollectionViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKDisplayTypeContextVerticalCollectionViewCell" hasInstanceMethod:@"valueAndUnitLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HKDisplayTypeContextVerticalCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"UICollectionViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"HKDisplayTypeContextVerticalCollectionViewCell" hasInstanceMethod:@"infoButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKDisplayTypeContextVerticalCollectionViewCell" hasInstanceMethod:@"infoButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HKDisplayTypeContextVerticalCollectionViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKDisplayTypeContextVerticalCollectionViewCell" hasInstanceMethod:@"valueAndUnitLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(HKDisplayTypeContextVerticalCollectionViewCellAccessibility *)self safeUIViewForKey:@"titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(HKDisplayTypeContextVerticalCollectionViewCellAccessibility *)self safeUIViewForKey:@"valueAndUnitLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = __UIAXStringForVariables();
 

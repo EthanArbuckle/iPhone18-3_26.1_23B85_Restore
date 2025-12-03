@@ -1,21 +1,21 @@
 @interface APKCommunicationChannel
-- (APKCommunicationChannel)initWithCommunicationChannel:(id)a3;
+- (APKCommunicationChannel)initWithCommunicationChannel:(id)channel;
 - (void)close;
-- (void)communicationChannel:(id)a3 didReceiveData:(id)a4;
-- (void)communicationChannelDidClose:(id)a3;
-- (void)sendData:(id)a3 completionHandler:(id)a4;
+- (void)communicationChannel:(id)channel didReceiveData:(id)data;
+- (void)communicationChannelDidClose:(id)close;
+- (void)sendData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation APKCommunicationChannel
 
-- (APKCommunicationChannel)initWithCommunicationChannel:(id)a3
+- (APKCommunicationChannel)initWithCommunicationChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v6 = [(APKCommunicationChannel *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_channel, a3);
+    objc_storeStrong(&v6->_channel, channel);
     [(AVOutputDeviceCommunicationChannel *)v7->_channel setDelegate:v7];
   }
 
@@ -24,38 +24,38 @@
 
 - (void)close
 {
-  v2 = [(APKCommunicationChannel *)self channel];
-  [v2 close];
+  channel = [(APKCommunicationChannel *)self channel];
+  [channel close];
 }
 
-- (void)sendData:(id)a3 completionHandler:(id)a4
+- (void)sendData:(id)data completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(APKCommunicationChannel *)self channel];
-  [v8 sendData:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dataCopy = data;
+  channel = [(APKCommunicationChannel *)self channel];
+  [channel sendData:dataCopy completionHandler:handlerCopy];
 }
 
-- (void)communicationChannel:(id)a3 didReceiveData:(id)a4
+- (void)communicationChannel:(id)channel didReceiveData:(id)data
 {
-  v7 = a4;
-  v5 = [(APKCommunicationChannel *)self onData];
+  dataCopy = data;
+  onData = [(APKCommunicationChannel *)self onData];
 
-  if (v5)
+  if (onData)
   {
-    v6 = [(APKCommunicationChannel *)self onData];
-    (v6)[2](v6, v7);
+    onData2 = [(APKCommunicationChannel *)self onData];
+    (onData2)[2](onData2, dataCopy);
   }
 }
 
-- (void)communicationChannelDidClose:(id)a3
+- (void)communicationChannelDidClose:(id)close
 {
-  v4 = [(APKCommunicationChannel *)self onClose];
+  onClose = [(APKCommunicationChannel *)self onClose];
 
-  if (v4)
+  if (onClose)
   {
-    v5 = [(APKCommunicationChannel *)self onClose];
-    v5[2]();
+    onClose2 = [(APKCommunicationChannel *)self onClose];
+    onClose2[2]();
   }
 }
 

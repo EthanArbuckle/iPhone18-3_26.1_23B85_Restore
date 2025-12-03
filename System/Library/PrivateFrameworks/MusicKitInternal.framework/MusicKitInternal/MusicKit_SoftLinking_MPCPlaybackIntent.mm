@@ -1,17 +1,17 @@
 @interface MusicKit_SoftLinking_MPCPlaybackIntent
 + (MusicKit_SoftLinking_MPCPlaybackIntent)emptyPlaybackIntent;
 - (MusicKit_SoftLinking_MPCPlaybackIntent)init;
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithLegacyLibraryRequest:(id)a3 allowedIdentifiers:(id)a4 startIdentifierSet:(id)a5 onlyLibraryContent:(BOOL)a6;
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithLegacyModelStationSeeding:(id)a3;
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStationID:(id)a3;
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStationSeedingIdentifierSet:(id)a3;
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStoreIDs:(id)a3 startIdentifierSet:(id)a4;
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStoreSectionedCollection:(id)a3 startIdentifierSet:(id)a4;
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithUnderlyingPlaybackIntent:(id)a3;
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithLegacyLibraryRequest:(id)request allowedIdentifiers:(id)identifiers startIdentifierSet:(id)set onlyLibraryContent:(BOOL)content;
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithLegacyModelStationSeeding:(id)seeding;
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStationID:(id)d;
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStationSeedingIdentifierSet:(id)set;
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStoreIDs:(id)ds startIdentifierSet:(id)set;
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStoreSectionedCollection:(id)collection startIdentifierSet:(id)set;
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithUnderlyingPlaybackIntent:(id)intent;
 - (int64_t)repeatMode;
 - (int64_t)shuffleMode;
-- (void)setRepeatMode:(int64_t)a3;
-- (void)setShuffleMode:(int64_t)a3;
+- (void)setRepeatMode:(int64_t)mode;
+- (void)setShuffleMode:(int64_t)mode;
 @end
 
 @implementation MusicKit_SoftLinking_MPCPlaybackIntent
@@ -32,22 +32,22 @@
   return v2;
 }
 
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStoreIDs:(id)a3 startIdentifierSet:(id)a4
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStoreIDs:(id)ds startIdentifierSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  setCopy = set;
   v14.receiver = self;
   v14.super_class = MusicKit_SoftLinking_MPCPlaybackIntent;
   v8 = [(MusicKit_SoftLinking_MPCPlaybackIntent *)&v14 init];
   if (v8)
   {
     v9 = objc_alloc_init(getMPCModelStorePlaybackItemsRequestClass());
-    [v9 setStoreIDs:v6];
+    [v9 setStoreIDs:dsCopy];
     v10 = objc_alloc_init(getMPCModelPlaybackIntentTracklistTokenClass());
     [v10 setRequest:v9];
-    if (v7)
+    if (setCopy)
     {
-      [v10 setStartItemIdentifiers:v7];
+      [v10 setStartItemIdentifiers:setCopy];
     }
 
     v11 = objc_alloc_init(getMPCPlaybackIntentClass());
@@ -61,25 +61,25 @@
   return v8;
 }
 
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStoreSectionedCollection:(id)a3 startIdentifierSet:(id)a4
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStoreSectionedCollection:(id)collection startIdentifierSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  setCopy = set;
   v15.receiver = self;
   v15.super_class = MusicKit_SoftLinking_MPCPlaybackIntent;
   v8 = [(MusicKit_SoftLinking_MPCPlaybackIntent *)&v15 init];
   if (v8)
   {
     v9 = objc_alloc_init(getMPCModelStorePlaybackItemsRequestClass());
-    v10 = [v6 _underlyingSectionedCollection];
-    [v9 setIdentifiers:v10];
+    _underlyingSectionedCollection = [collectionCopy _underlyingSectionedCollection];
+    [v9 setIdentifiers:_underlyingSectionedCollection];
 
     [v9 setLabel:@"MusicKit_StoreSectionedCollection"];
     v11 = objc_alloc_init(getMPCModelPlaybackIntentTracklistTokenClass());
     [v11 setRequest:v9];
-    if (v7)
+    if (setCopy)
     {
-      [v11 setStartItemIdentifiers:v7];
+      [v11 setStartItemIdentifiers:setCopy];
     }
 
     v12 = objc_alloc_init(getMPCPlaybackIntentClass());
@@ -93,51 +93,51 @@
   return v8;
 }
 
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithLegacyLibraryRequest:(id)a3 allowedIdentifiers:(id)a4 startIdentifierSet:(id)a5 onlyLibraryContent:(BOOL)a6
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithLegacyLibraryRequest:(id)request allowedIdentifiers:(id)identifiers startIdentifierSet:(id)set onlyLibraryContent:(BOOL)content
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  requestCopy = request;
+  identifiersCopy = identifiers;
+  setCopy = set;
   v23.receiver = self;
   v23.super_class = MusicKit_SoftLinking_MPCPlaybackIntent;
   v13 = [(MusicKit_SoftLinking_MPCPlaybackIntent *)&v23 init];
   if (v13)
   {
-    v14 = v10;
-    if ([v11 count])
+    v14 = requestCopy;
+    if ([identifiersCopy count])
     {
-      v15 = [v14 allowedItemIdentifiers];
-      v16 = [v15 count];
+      allowedItemIdentifiers = [v14 allowedItemIdentifiers];
+      v16 = [allowedItemIdentifiers count];
 
       if (!v16)
       {
-        v17 = [v11 msv_map:&__block_literal_global_12];
+        v17 = [identifiersCopy msv_map:&__block_literal_global_12];
         [v14 setAllowedItemIdentifiers:v17];
       }
     }
 
-    v18 = [v14 allowedItemIdentifiers];
-    if ([v18 count] <= 1)
+    allowedItemIdentifiers2 = [v14 allowedItemIdentifiers];
+    if ([allowedItemIdentifiers2 count] <= 1)
     {
     }
 
     else
     {
-      v19 = [v14 sectionKind];
+      sectionKind = [v14 sectionKind];
 
-      if (!v19)
+      if (!sectionKind)
       {
         [v14 setItemSortDescriptors:0];
         [v14 setSortUsingAllowedItemIdentifiers:1];
       }
     }
 
-    if (!a6)
+    if (!content)
     {
       [v14 setFilteringOptions:4];
     }
 
-    v20 = [v14 playbackIntentWithStartItemIdentifiers:v12];
+    v20 = [v14 playbackIntentWithStartItemIdentifiers:setCopy];
     underlyingPlaybackIntent = v13->_underlyingPlaybackIntent;
     v13->_underlyingPlaybackIntent = v20;
   }
@@ -145,19 +145,19 @@
   return v13;
 }
 
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithLegacyModelStationSeeding:(id)a3
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithLegacyModelStationSeeding:(id)seeding
 {
-  v4 = a3;
+  seedingCopy = seeding;
   v11.receiver = self;
   v11.super_class = MusicKit_SoftLinking_MPCPlaybackIntent;
   v5 = [(MusicKit_SoftLinking_MPCPlaybackIntent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 _underlyingModelObject];
+    _underlyingModelObject = [seedingCopy _underlyingModelObject];
     getMPModelAlbumClass_0();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [getMPCPlaybackIntentClass() radioPlaybackIntentFromAlbum:v6];
+      v7 = [getMPCPlaybackIntentClass() radioPlaybackIntentFromAlbum:_underlyingModelObject];
     }
 
     else
@@ -165,7 +165,7 @@
       getMPModelArtistClass();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [getMPCPlaybackIntentClass() radioPlaybackIntentFromArtist:v6];
+        v7 = [getMPCPlaybackIntentClass() radioPlaybackIntentFromArtist:_underlyingModelObject];
       }
 
       else
@@ -173,7 +173,7 @@
         getMPModelSongClass_0();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [getMPCPlaybackIntentClass() radioPlaybackIntentFromSong:v6];
+          v7 = [getMPCPlaybackIntentClass() radioPlaybackIntentFromSong:_underlyingModelObject];
         }
 
         else
@@ -186,7 +186,7 @@ LABEL_11:
             goto LABEL_12;
           }
 
-          v7 = [getMPCPlaybackIntentClass() radioPlaybackIntentWithStation:v6];
+          v7 = [getMPCPlaybackIntentClass() radioPlaybackIntentWithStation:_underlyingModelObject];
         }
       }
     }
@@ -204,17 +204,17 @@ LABEL_12:
   return v5;
 }
 
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStationSeedingIdentifierSet:(id)a3
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStationSeedingIdentifierSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v36.receiver = self;
   v36.super_class = MusicKit_SoftLinking_MPCPlaybackIntent;
   v5 = [(MusicKit_SoftLinking_MPCPlaybackIntent *)&v36 init];
   if (v5)
   {
-    v6 = v4;
-    v7 = [v6 modelKind];
-    v8 = [v7 identityKind];
+    v6 = setCopy;
+    modelKind = [v6 modelKind];
+    identityKind = [modelKind identityKind];
     v42 = 0;
     v43 = &v42;
     v44 = 0x2050000000;
@@ -233,8 +233,8 @@ LABEL_12:
 
     v10 = v9;
     _Block_object_dispose(&v42, 8);
-    v11 = [v9 identityKind];
-    v12 = [v8 isEqual:v11];
+    identityKind2 = [v9 identityKind];
+    v12 = [identityKind isEqual:identityKind2];
 
     if (v12)
     {
@@ -244,8 +244,8 @@ LABEL_12:
 
     else
     {
-      v15 = [v6 modelKind];
-      v16 = [v15 identityKind];
+      modelKind2 = [v6 modelKind];
+      identityKind3 = [modelKind2 identityKind];
       v42 = 0;
       v43 = &v42;
       v44 = 0x2050000000;
@@ -264,8 +264,8 @@ LABEL_12:
 
       v18 = v17;
       _Block_object_dispose(&v42, 8);
-      v19 = [v17 identityKind];
-      v20 = [v16 isEqual:v19];
+      identityKind4 = [v17 identityKind];
+      v20 = [identityKind3 isEqual:identityKind4];
 
       if (v20)
       {
@@ -275,8 +275,8 @@ LABEL_12:
 
       else
       {
-        v21 = [v6 modelKind];
-        v22 = [v21 identityKind];
+        modelKind3 = [v6 modelKind];
+        identityKind5 = [modelKind3 identityKind];
         v42 = 0;
         v43 = &v42;
         v44 = 0x2050000000;
@@ -295,8 +295,8 @@ LABEL_12:
 
         v24 = v23;
         _Block_object_dispose(&v42, 8);
-        v25 = [v23 identityKind];
-        v26 = [v22 isEqual:v25];
+        identityKind6 = [v23 identityKind];
+        v26 = [identityKind5 isEqual:identityKind6];
 
         if (v26)
         {
@@ -306,8 +306,8 @@ LABEL_12:
 
         else
         {
-          v27 = [v6 modelKind];
-          v28 = [v27 identityKind];
+          modelKind4 = [v6 modelKind];
+          identityKind7 = [modelKind4 identityKind];
           v42 = 0;
           v43 = &v42;
           v44 = 0x2050000000;
@@ -326,8 +326,8 @@ LABEL_12:
 
           v30 = v29;
           _Block_object_dispose(&v42, 8);
-          v31 = [v29 identityKind];
-          v32 = [v28 isEqual:v31];
+          identityKind8 = [v29 identityKind];
+          v32 = [identityKind7 isEqual:identityKind8];
 
           if (!v32)
           {
@@ -352,15 +352,15 @@ LABEL_20:
   return v34;
 }
 
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStationID:(id)a3
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithStationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = MusicKit_SoftLinking_MPCPlaybackIntent;
   v5 = [(MusicKit_SoftLinking_MPCPlaybackIntent *)&v9 init];
   if (v5)
   {
-    v6 = [getMPCPlaybackIntentClass() radioPlaybackIntentWithStationStringID:v4];
+    v6 = [getMPCPlaybackIntentClass() radioPlaybackIntentWithStationStringID:dCopy];
     underlyingPlaybackIntent = v5->_underlyingPlaybackIntent;
     v5->_underlyingPlaybackIntent = v6;
   }
@@ -368,16 +368,16 @@ LABEL_20:
   return v5;
 }
 
-- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithUnderlyingPlaybackIntent:(id)a3
+- (MusicKit_SoftLinking_MPCPlaybackIntent)initWithUnderlyingPlaybackIntent:(id)intent
 {
-  v5 = a3;
+  intentCopy = intent;
   v9.receiver = self;
   v9.super_class = MusicKit_SoftLinking_MPCPlaybackIntent;
   v6 = [(MusicKit_SoftLinking_MPCPlaybackIntent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingPlaybackIntent, a3);
+    objc_storeStrong(&v6->_underlyingPlaybackIntent, intent);
   }
 
   return v7;
@@ -392,28 +392,28 @@ LABEL_20:
 
 - (int64_t)repeatMode
 {
-  v2 = [(MPCPlaybackIntent *)self->_underlyingPlaybackIntent repeatMode];
-  if (v2 > 2)
+  repeatMode = [(MPCPlaybackIntent *)self->_underlyingPlaybackIntent repeatMode];
+  if (repeatMode > 2)
   {
     return -1;
   }
 
   else
   {
-    return qword_1D5619C78[v2];
+    return qword_1D5619C78[repeatMode];
   }
 }
 
-- (void)setRepeatMode:(int64_t)a3
+- (void)setRepeatMode:(int64_t)mode
 {
-  if (a3 > 2)
+  if (mode > 2)
   {
     v3 = -1;
   }
 
   else
   {
-    v3 = qword_1D5619C78[a3];
+    v3 = qword_1D5619C78[mode];
   }
 
   [(MPCPlaybackIntent *)self->_underlyingPlaybackIntent setRepeatMode:v3];
@@ -430,14 +430,14 @@ LABEL_20:
   return result;
 }
 
-- (void)setShuffleMode:(int64_t)a3
+- (void)setShuffleMode:(int64_t)mode
 {
-  if (a3 >= 3)
+  if (mode >= 3)
   {
-    a3 = -1;
+    mode = -1;
   }
 
-  [(MPCPlaybackIntent *)self->_underlyingPlaybackIntent setShuffleMode:a3];
+  [(MPCPlaybackIntent *)self->_underlyingPlaybackIntent setShuffleMode:mode];
 }
 
 @end

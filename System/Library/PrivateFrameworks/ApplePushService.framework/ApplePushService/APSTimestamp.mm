@@ -1,18 +1,18 @@
 @interface APSTimestamp
-- (APSTimestamp)initWithValue:(id)a3;
+- (APSTimestamp)initWithValue:(id)value;
 @end
 
 @implementation APSTimestamp
 
-- (APSTimestamp)initWithValue:(id)a3
+- (APSTimestamp)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = APSTimestamp;
   v5 = [(APSTimestamp *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valueCopy copy];
     value = v5->_value;
     v5->_value = v6;
 

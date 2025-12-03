@@ -1,42 +1,42 @@
 @interface CKVTaskManager
 + (id)defaultManager;
-- (BOOL)_didLocalizationChange:(unsigned __int16)a3;
-- (BOOL)_didTriggerMigration:(id)a3 reason:(unsigned __int16)a4;
-- (BOOL)_enumerateLocalInstancesOfSet:(id)a3 priorBookmark:(id)a4 newBookmark:(id *)a5 hasDelta:(BOOL *)a6 addedInstancesBlock:(id)a7;
-- (BOOL)_isClearRequiredForSet:(id)a3 installedAppBundleIds:(id)a4;
-- (BOOL)_isDeleteRequiredForSet:(id)a3 installedAppBundleIds:(id)a4;
-- (BOOL)_isSet:(id)a3 excludedFromInstalledAppBundleIds:(id)a4;
+- (BOOL)_didLocalizationChange:(unsigned __int16)change;
+- (BOOL)_didTriggerMigration:(id)migration reason:(unsigned __int16)reason;
+- (BOOL)_enumerateLocalInstancesOfSet:(id)set priorBookmark:(id)bookmark newBookmark:(id *)newBookmark hasDelta:(BOOL *)delta addedInstancesBlock:(id)block;
+- (BOOL)_isClearRequiredForSet:(id)set installedAppBundleIds:(id)ids;
+- (BOOL)_isDeleteRequiredForSet:(id)set installedAppBundleIds:(id)ids;
+- (BOOL)_isSet:(id)set excludedFromInstalledAppBundleIds:(id)ids;
 - (BOOL)_loadOrCreateTaskInfo;
 - (BOOL)_validateFilesystemState;
 - (BOOL)clearAllState;
-- (BOOL)handleTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 shouldDefer:(id)a5 completion:(id)a6;
-- (CKVTaskManager)initWithManagerName:(id)a3 rootDirectoryURL:(id)a4 setEnumerator:(id)a5 settings:(id)a6;
-- (id)_cleanUpDeletedAppDonationsTaskBlock:(unsigned __int16)a3;
-- (id)_derivativeTaskBlockForTask:(unsigned __int16)a3 reason:(unsigned __int16)a4;
+- (BOOL)handleTask:(unsigned __int16)task reason:(unsigned __int16)reason shouldDefer:(id)defer completion:(id)completion;
+- (CKVTaskManager)initWithManagerName:(id)name rootDirectoryURL:(id)l setEnumerator:(id)enumerator settings:(id)settings;
+- (id)_cleanUpDeletedAppDonationsTaskBlock:(unsigned __int16)block;
+- (id)_derivativeTaskBlockForTask:(unsigned __int16)task reason:(unsigned __int16)reason;
 - (id)_descriptorForSiriLocale;
 - (id)_findContactSet;
 - (id)_findInstalledAppSet;
-- (id)_firstSetWithItemType:(unsigned __int16)a3 matchingDescriptor:(id)a4 inSets:(id)a5;
-- (id)_maintenanceTaskBlockWithReason:(unsigned __int16)a3 shouldDefer:(id)a4;
-- (id)_siriLanguageChangedTaskBlockWithReason:(unsigned __int16)a3;
-- (id)_taskBlockForTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 shouldDefer:(id)a5;
-- (id)_verificationTaskBlockForTask:(unsigned __int16)a3 reason:(unsigned __int16)a4;
-- (id)_wakePodcastsTaskBlockWithReason:(unsigned __int16)a3;
-- (id)_wrapperForTaskBlock:(id)a3 checkingEnablement:(unsigned __int16)a4 reason:(unsigned __int16)a5;
-- (void)_enumerateLocalInstancesOfSet:(id)a3 hasDelta:(BOOL *)a4 fromBookmark:(BOOL *)a5;
-- (void)_postNotification:(const char *)a3 forChangeToItemType:(unsigned __int16)a4;
-- (void)_runInstalledAppDerivativeTasksWithReason:(unsigned __int16)a3;
-- (void)_submitTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 taskBlock:(id)a5 completion:(id)a6;
-- (void)enableSimulatedTasks:(BOOL)a3;
+- (id)_firstSetWithItemType:(unsigned __int16)type matchingDescriptor:(id)descriptor inSets:(id)sets;
+- (id)_maintenanceTaskBlockWithReason:(unsigned __int16)reason shouldDefer:(id)defer;
+- (id)_siriLanguageChangedTaskBlockWithReason:(unsigned __int16)reason;
+- (id)_taskBlockForTask:(unsigned __int16)task reason:(unsigned __int16)reason shouldDefer:(id)defer;
+- (id)_verificationTaskBlockForTask:(unsigned __int16)task reason:(unsigned __int16)reason;
+- (id)_wakePodcastsTaskBlockWithReason:(unsigned __int16)reason;
+- (id)_wrapperForTaskBlock:(id)block checkingEnablement:(unsigned __int16)enablement reason:(unsigned __int16)reason;
+- (void)_enumerateLocalInstancesOfSet:(id)set hasDelta:(BOOL *)delta fromBookmark:(BOOL *)bookmark;
+- (void)_postNotification:(const char *)notification forChangeToItemType:(unsigned __int16)type;
+- (void)_runInstalledAppDerivativeTasksWithReason:(unsigned __int16)reason;
+- (void)_submitTask:(unsigned __int16)task reason:(unsigned __int16)reason taskBlock:(id)block completion:(id)completion;
+- (void)enableSimulatedTasks:(BOOL)tasks;
 @end
 
 @implementation CKVTaskManager
 
-- (id)_derivativeTaskBlockForTask:(unsigned __int16)a3 reason:(unsigned __int16)a4
+- (id)_derivativeTaskBlockForTask:(unsigned __int16)task reason:(unsigned __int16)reason
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3 == 9)
+  reasonCopy = reason;
+  taskCopy = task;
+  if (task == 9)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -44,7 +44,7 @@
     v10[3] = &unk_1E831E9B0;
     v10[4] = self;
     v11 = 9;
-    v12 = a4;
+    reasonCopy2 = reason;
     v7 = _Block_copy(v10);
   }
 
@@ -53,7 +53,7 @@
     v7 = 0;
   }
 
-  v8 = [(CKVTaskManager *)self _wrapperForTaskBlock:v7 checkingEnablement:v5 reason:v4];
+  v8 = [(CKVTaskManager *)self _wrapperForTaskBlock:v7 checkingEnablement:taskCopy reason:reasonCopy];
 
   return v8;
 }
@@ -190,11 +190,11 @@ LABEL_23:
   }
 }
 
-- (id)_verificationTaskBlockForTask:(unsigned __int16)a3 reason:(unsigned __int16)a4
+- (id)_verificationTaskBlockForTask:(unsigned __int16)task reason:(unsigned __int16)reason
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3 == 2)
+  reasonCopy = reason;
+  taskCopy = task;
+  if (task == 2)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -202,7 +202,7 @@ LABEL_23:
     v10[3] = &unk_1E831E9B0;
     v10[4] = self;
     v11 = 2;
-    v12 = a4;
+    reasonCopy2 = reason;
     v7 = _Block_copy(v10);
   }
 
@@ -211,7 +211,7 @@ LABEL_23:
     v7 = 0;
   }
 
-  v8 = [(CKVTaskManager *)self _wrapperForTaskBlock:v7 checkingEnablement:v5 reason:v4];
+  v8 = [(CKVTaskManager *)self _wrapperForTaskBlock:v7 checkingEnablement:taskCopy reason:reasonCopy];
 
   return v8;
 }
@@ -316,20 +316,20 @@ LABEL_13:
   }
 }
 
-- (id)_taskBlockForTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 shouldDefer:(id)a5
+- (id)_taskBlockForTask:(unsigned __int16)task reason:(unsigned __int16)reason shouldDefer:(id)defer
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if ((v6 - 1) <= 0xA)
+  reasonCopy = reason;
+  taskCopy = task;
+  deferCopy = defer;
+  if ((taskCopy - 1) <= 0xA)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __55__CKVTaskManager__taskBlockForTask_reason_shouldDefer___block_invoke;
     v13[3] = &unk_1E831E9B0;
     v13[4] = self;
-    v14 = v6;
-    v15 = v5;
+    v14 = taskCopy;
+    v15 = reasonCopy;
     v9 = _Block_copy(v13);
 LABEL_3:
     v10 = v9;
@@ -337,38 +337,38 @@ LABEL_3:
   }
 
   v10 = 0;
-  if (v6 > 103)
+  if (taskCopy > 103)
   {
-    if (v6 == 104)
+    if (taskCopy == 104)
     {
-      v9 = [(CKVTaskManager *)self _wakePodcastsTaskBlockWithReason:v5];
+      v9 = [(CKVTaskManager *)self _wakePodcastsTaskBlockWithReason:reasonCopy];
       goto LABEL_3;
     }
 
-    if (v6 == 105)
+    if (taskCopy == 105)
     {
-      v9 = [(CKVTaskManager *)self _cleanUpDeletedAppDonationsTaskBlock:v5];
+      v9 = [(CKVTaskManager *)self _cleanUpDeletedAppDonationsTaskBlock:reasonCopy];
       goto LABEL_3;
     }
   }
 
   else
   {
-    if (v6 == 101)
+    if (taskCopy == 101)
     {
-      v9 = [(CKVTaskManager *)self _siriLanguageChangedTaskBlockWithReason:v5];
+      v9 = [(CKVTaskManager *)self _siriLanguageChangedTaskBlockWithReason:reasonCopy];
       goto LABEL_3;
     }
 
-    if (v6 == 102)
+    if (taskCopy == 102)
     {
-      v9 = [(CKVTaskManager *)self _maintenanceTaskBlockWithReason:v5 shouldDefer:v8];
+      v9 = [(CKVTaskManager *)self _maintenanceTaskBlockWithReason:reasonCopy shouldDefer:deferCopy];
       goto LABEL_3;
     }
   }
 
 LABEL_4:
-  v11 = [(CKVTaskManager *)self _wrapperForTaskBlock:v10 checkingEnablement:v6 reason:v5];
+  v11 = [(CKVTaskManager *)self _wrapperForTaskBlock:v10 checkingEnablement:taskCopy reason:reasonCopy];
 
   return v11;
 }
@@ -402,30 +402,30 @@ void __55__CKVTaskManager__taskBlockForTask_reason_shouldDefer___block_invoke(ui
 LABEL_8:
 }
 
-- (void)_postNotification:(const char *)a3 forChangeToItemType:(unsigned __int16)a4
+- (void)_postNotification:(const char *)notification forChangeToItemType:(unsigned __int16)type
 {
-  v4 = a4;
+  typeCopy = type;
   v22 = *MEMORY[0x1E69E9840];
   setEnumerator = self->_setEnumerator;
   v17 = 0;
-  v8 = [(CCSetEnumerator *)setEnumerator allSetsWithItemType:a4 error:&v17];
+  v8 = [(CCSetEnumerator *)setEnumerator allSetsWithItemType:type error:&v17];
   v9 = v17;
   if (v8)
   {
-    v10 = [(CKVTaskManager *)self _firstSetWithItemType:v4 inSets:v8];
+    v10 = [(CKVTaskManager *)self _firstSetWithItemType:typeCopy inSets:v8];
     if (v10)
     {
       v16 = 0;
       [(CKVTaskManager *)self _enumerateLocalInstancesOfSet:v10 hasDelta:&v16 fromBookmark:0];
       if (v16 == 1)
       {
-        notify_post(a3);
+        notify_post(notification);
         v11 = CKLogContextVocabulary;
         if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
         {
           v12 = MEMORY[0x1E696AEC0];
           v13 = v11;
-          v14 = [v12 stringWithUTF8String:a3];
+          v14 = [v12 stringWithUTF8String:notification];
           *buf = 136315394;
           v19 = "[CKVTaskManager _postNotification:forChangeToItemType:]";
           v20 = 2112;
@@ -450,12 +450,12 @@ LABEL_8:
   }
 }
 
-- (BOOL)_enumerateLocalInstancesOfSet:(id)a3 priorBookmark:(id)a4 newBookmark:(id *)a5 hasDelta:(BOOL *)a6 addedInstancesBlock:(id)a7
+- (BOOL)_enumerateLocalInstancesOfSet:(id)set priorBookmark:(id)bookmark newBookmark:(id *)newBookmark hasDelta:(BOOL *)delta addedInstancesBlock:(id)block
 {
   v60 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  setCopy = set;
+  bookmarkCopy = bookmark;
+  blockCopy = block;
   v13 = CKLogContextVocabulary;
   if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
   {
@@ -463,14 +463,14 @@ LABEL_8:
     *buf = 136315650;
     *&buf[4] = "[CKVTaskManager _enumerateLocalInstancesOfSet:priorBookmark:newBookmark:hasDelta:addedInstancesBlock:]";
     *&buf[12] = 2112;
-    if (!v11)
+    if (!bookmarkCopy)
     {
       v14 = @"NO bookmark";
     }
 
     *&buf[14] = v14;
     *&buf[22] = 2112;
-    v57 = v10;
+    v57 = setCopy;
     _os_log_impl(&dword_1C8683000, v13, OS_LOG_TYPE_INFO, "%s Enumerating from %@ for set: %@", buf, 0x20u);
   }
 
@@ -492,13 +492,13 @@ LABEL_8:
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 0;
-  v15 = [v10 changePublisher];
+  changePublisher = [setCopy changePublisher];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __103__CKVTaskManager__enumerateLocalInstancesOfSet_priorBookmark_newBookmark_hasDelta_addedInstancesBlock___block_invoke;
   v32[3] = &unk_1E831E960;
   v34 = buf;
-  v16 = v10;
+  v16 = setCopy;
   v33 = v16;
   v35 = &v44;
   v28[0] = MEMORY[0x1E69E9820];
@@ -507,9 +507,9 @@ LABEL_8:
   v28[3] = &unk_1E831E988;
   v30 = &v40;
   v31 = &v36;
-  v17 = v12;
+  v17 = blockCopy;
   v29 = v17;
-  v18 = [v15 sinkWithBookmark:v11 completion:v32 receiveInput:v28];
+  v18 = [changePublisher sinkWithBookmark:bookmarkCopy completion:v32 receiveInput:v28];
 
   v19 = *(v45 + 24);
   if (v19)
@@ -523,7 +523,7 @@ LABEL_8:
       {
         v23 = *(v37 + 6);
         v24 = @"prior";
-        if (!v11)
+        if (!bookmarkCopy)
         {
           v24 = @"nil";
         }
@@ -541,7 +541,7 @@ LABEL_8:
         _os_log_impl(&dword_1C8683000, v21, OS_LOG_TYPE_INFO, "%s Completed local instance enumeration counting %u adds and %u removes from %@ bookmark for set: %@", v48, 0x2Cu);
       }
 
-      if (!a6)
+      if (!delta)
       {
         goto LABEL_14;
       }
@@ -560,17 +560,17 @@ LABEL_8:
       }
 
       v22 = 0;
-      if (!a6)
+      if (!delta)
       {
         goto LABEL_14;
       }
     }
 
-    *a6 = v22;
+    *delta = v22;
 LABEL_14:
-    if (a5)
+    if (newBookmark)
     {
-      *a5 = *(*&buf[8] + 40);
+      *newBookmark = *(*&buf[8] + 40);
     }
   }
 
@@ -660,21 +660,21 @@ void __103__CKVTaskManager__enumerateLocalInstancesOfSet_priorBookmark_newBookma
   }
 }
 
-- (void)_enumerateLocalInstancesOfSet:(id)a3 hasDelta:(BOOL *)a4 fromBookmark:(BOOL *)a5
+- (void)_enumerateLocalInstancesOfSet:(id)set hasDelta:(BOOL *)delta fromBookmark:(BOOL *)bookmark
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(CKVTaskManagerInfo *)self->_info changeRegistry];
-  v10 = [v9 bookmarkForSet:v8];
+  setCopy = set;
+  changeRegistry = [(CKVTaskManagerInfo *)self->_info changeRegistry];
+  v10 = [changeRegistry bookmarkForSet:setCopy];
   v25 = 0;
-  v11 = [(CKVTaskManager *)self _enumerateLocalInstancesOfSet:v8 priorBookmark:v10 newBookmark:&v25 hasDelta:a4 addedInstancesBlock:0];
+  v11 = [(CKVTaskManager *)self _enumerateLocalInstancesOfSet:setCopy priorBookmark:v10 newBookmark:&v25 hasDelta:delta addedInstancesBlock:0];
   v12 = v25;
   if (!v10 || v11)
   {
     if (!v11)
     {
       v16 = 0;
-      if (!a5)
+      if (!bookmark)
       {
         goto LABEL_17;
       }
@@ -691,12 +691,12 @@ void __103__CKVTaskManager__enumerateLocalInstancesOfSet_priorBookmark_newBookma
       *buf = 136315394;
       v27 = "[CKVTaskManager _enumerateLocalInstancesOfSet:hasDelta:fromBookmark:]";
       v28 = 2112;
-      v29 = v8;
+      v29 = setCopy;
       _os_log_impl(&dword_1C8683000, v13, OS_LOG_TYPE_INFO, "%s Retrying enumeration without a bookmark for set: %@", buf, 0x16u);
     }
 
     v24 = v12;
-    v14 = [(CKVTaskManager *)self _enumerateLocalInstancesOfSet:v8 priorBookmark:0 newBookmark:&v24 hasDelta:0 addedInstancesBlock:0];
+    v14 = [(CKVTaskManager *)self _enumerateLocalInstancesOfSet:setCopy priorBookmark:0 newBookmark:&v24 hasDelta:0 addedInstancesBlock:0];
     v15 = v24;
 
     v10 = 0;
@@ -709,13 +709,13 @@ void __103__CKVTaskManager__enumerateLocalInstancesOfSet_priorBookmark_newBookma
   }
 
   v23 = 0;
-  v17 = [v9 updateBookmark:v12 forSet:v8 error:&v23];
+  v17 = [changeRegistry updateBookmark:v12 forSet:setCopy error:&v23];
   v18 = v23;
   v19 = v18;
   if (v17)
   {
     v22 = v18;
-    v20 = [v9 commitAllBookmarkUpdates:&v22];
+    v20 = [changeRegistry commitAllBookmarkUpdates:&v22];
     v16 = v22;
 
     if (v20)
@@ -735,11 +735,11 @@ void __103__CKVTaskManager__enumerateLocalInstancesOfSet_priorBookmark_newBookma
     *buf = 136315650;
     v27 = "[CKVTaskManager _enumerateLocalInstancesOfSet:hasDelta:fromBookmark:]";
     v28 = 2112;
-    v29 = v8;
+    v29 = setCopy;
     v30 = 2112;
     v31 = v16;
     _os_log_error_impl(&dword_1C8683000, v21, OS_LOG_TYPE_ERROR, "%s Failed to commit registry update for set: %@ error: %@", buf, 0x20u);
-    if (!a5)
+    if (!bookmark)
     {
       goto LABEL_17;
     }
@@ -748,10 +748,10 @@ void __103__CKVTaskManager__enumerateLocalInstancesOfSet_priorBookmark_newBookma
   }
 
 LABEL_15:
-  if (a5)
+  if (bookmark)
   {
 LABEL_16:
-    *a5 = v10 != 0;
+    *bookmark = v10 != 0;
   }
 
 LABEL_17:
@@ -760,15 +760,15 @@ LABEL_17:
 - (id)_descriptorForSiriLocale
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(CKVTaskSettings *)self->_settings localization];
-  v3 = [v2 siriLanguageCode];
+  localization = [(CKVTaskSettings *)self->_settings localization];
+  siriLanguageCode = [localization siriLanguageCode];
 
-  v4 = [CKVLocalization supportedNSLocaleFromLanguageCode:v3];
+  v4 = [CKVLocalization supportedNSLocaleFromLanguageCode:siriLanguageCode];
   v5 = objc_alloc(MEMORY[0x1E6993A78]);
   v6 = *MEMORY[0x1E6993990];
-  v7 = [v4 localeIdentifier];
+  localeIdentifier = [v4 localeIdentifier];
   v12 = 0;
-  v8 = [v5 initWithKey:v6 value:v7 error:&v12];
+  v8 = [v5 initWithKey:v6 value:localeIdentifier error:&v12];
   v9 = v12;
 
   v10 = CKLogContextVocabulary;
@@ -781,7 +781,7 @@ LABEL_17:
       v15 = 2112;
       v16 = v8;
       v17 = 2112;
-      v18 = v3;
+      v18 = siriLanguageCode;
       _os_log_impl(&dword_1C8683000, v10, OS_LOG_TYPE_INFO, "%s Resolved locale descriptor: %@ from siriLanguageCode: %@", buf, 0x20u);
     }
   }
@@ -791,7 +791,7 @@ LABEL_17:
     *buf = 136315650;
     v14 = "[CKVTaskManager _descriptorForSiriLocale]";
     v15 = 2112;
-    v16 = v3;
+    v16 = siriLanguageCode;
     v17 = 2112;
     v18 = v9;
     _os_log_error_impl(&dword_1C8683000, v10, OS_LOG_TYPE_ERROR, "%s Failed to resolve locale descriptor from siriLanguageCode: %@ error: %@", buf, 0x20u);
@@ -800,18 +800,18 @@ LABEL_17:
   return v8;
 }
 
-- (id)_firstSetWithItemType:(unsigned __int16)a3 matchingDescriptor:(id)a4 inSets:(id)a5
+- (id)_firstSetWithItemType:(unsigned __int16)type matchingDescriptor:(id)descriptor inSets:(id)sets
 {
-  v6 = a3;
+  typeCopy = type;
   v81 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  descriptorCopy = descriptor;
+  setsCopy = sets;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v10 = v8;
+  v10 = setsCopy;
   v11 = [v10 countByEnumeratingWithState:&v66 objects:v80 count:16];
   if (v11)
   {
@@ -827,7 +827,7 @@ LABEL_17:
         }
 
         v15 = *(*(&v66 + 1) + 8 * i);
-        if ([v15 itemType] == v6)
+        if ([v15 itemType] == typeCopy)
         {
           [v9 addObject:v15];
         }
@@ -841,7 +841,7 @@ LABEL_17:
 
   if ([v9 count])
   {
-    v16 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     if ([v9 count] < 2)
     {
       if ([v9 count] == 1)
@@ -851,13 +851,13 @@ LABEL_17:
         {
           v39 = MEMORY[0x1E69AA778];
           v40 = v38;
-          v41 = [v39 descriptionForTypeIdentifier:v6];
+          v41 = [v39 descriptionForTypeIdentifier:typeCopy];
           *buf = 136315650;
           v71 = "[CKVTaskManager _firstSetWithItemType:matchingDescriptor:inSets:]";
           v72 = 2112;
           v73 = v41;
           v74 = 2112;
-          v75 = v16;
+          v75 = firstObject;
           _os_log_impl(&dword_1C8683000, v40, OS_LOG_TYPE_INFO, "%s Exactly one set found with itemType: %@ set: %@", buf, 0x20u);
         }
       }
@@ -870,7 +870,7 @@ LABEL_17:
       {
         v18 = MEMORY[0x1E69AA778];
         v19 = v17;
-        v20 = [v18 descriptionForTypeIdentifier:v6];
+        v20 = [v18 descriptionForTypeIdentifier:typeCopy];
         *buf = 136315650;
         v71 = "[CKVTaskManager _firstSetWithItemType:matchingDescriptor:inSets:]";
         v72 = 2112;
@@ -880,9 +880,9 @@ LABEL_17:
         _os_log_impl(&dword_1C8683000, v19, OS_LOG_TYPE_INFO, "%s More than one set with itemType: %@ sets: %@", buf, 0x20u);
       }
 
-      if (v7)
+      if (descriptorCopy)
       {
-        v53 = v16;
+        v53 = firstObject;
         v54 = v10;
         v57 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v62 = 0u;
@@ -910,8 +910,8 @@ LABEL_17:
               v59 = 0u;
               v60 = 0u;
               v61 = 0u;
-              v26 = [v25 descriptors];
-              v27 = [v26 countByEnumeratingWithState:&v58 objects:v78 count:16];
+              descriptors = [v25 descriptors];
+              v27 = [descriptors countByEnumeratingWithState:&v58 objects:v78 count:16];
               if (v27)
               {
                 v28 = v27;
@@ -922,17 +922,17 @@ LABEL_17:
                   {
                     if (*v59 != v29)
                     {
-                      objc_enumerationMutation(v26);
+                      objc_enumerationMutation(descriptors);
                     }
 
-                    if ([*(*(&v58 + 1) + 8 * k) isEqual:v7])
+                    if ([*(*(&v58 + 1) + 8 * k) isEqual:descriptorCopy])
                     {
                       [v57 addObject:v25];
                       goto LABEL_30;
                     }
                   }
 
-                  v28 = [v26 countByEnumeratingWithState:&v58 objects:v78 count:16];
+                  v28 = [descriptors countByEnumeratingWithState:&v58 objects:v78 count:16];
                   if (v28)
                   {
                     continue;
@@ -953,7 +953,7 @@ LABEL_30:
 
         if ([v57 count] == 1)
         {
-          v31 = [v57 firstObject];
+          firstObject2 = [v57 firstObject];
 
           v32 = CKLogContextVocabulary;
           v10 = v54;
@@ -962,15 +962,15 @@ LABEL_30:
           {
             v33 = MEMORY[0x1E69AA778];
             v34 = v32;
-            v35 = [v33 descriptionForTypeIdentifier:v6];
+            v35 = [v33 descriptionForTypeIdentifier:typeCopy];
             *buf = 136315906;
             v71 = "[CKVTaskManager _firstSetWithItemType:matchingDescriptor:inSets:]";
             v72 = 2112;
-            v73 = v31;
+            v73 = firstObject2;
             v74 = 2112;
             v75 = v35;
             v76 = 2112;
-            v77 = v7;
+            v77 = descriptorCopy;
             v36 = "%s Found set: %@ with itemType: %@ and descriptor: %@";
 LABEL_46:
             _os_log_impl(&dword_1C8683000, v34, OS_LOG_TYPE_INFO, v36, buf, 0x2Au);
@@ -988,36 +988,36 @@ LABEL_46:
             {
               v46 = MEMORY[0x1E69AA778];
               v47 = v45;
-              v48 = [v46 descriptionForTypeIdentifier:v6];
+              v48 = [v46 descriptionForTypeIdentifier:typeCopy];
               *buf = 136315906;
               v71 = "[CKVTaskManager _firstSetWithItemType:matchingDescriptor:inSets:]";
               v72 = 2112;
               v73 = v48;
               v74 = 2112;
-              v75 = v7;
+              v75 = descriptorCopy;
               v76 = 2112;
               v77 = obj;
               _os_log_impl(&dword_1C8683000, v47, OS_LOG_TYPE_INFO, "%s No sets have itemType: %@ and descriptor: %@. Arbitrarily selecting the first of sets: %@", buf, 0x2Au);
             }
 
-            v31 = v53;
+            firstObject2 = v53;
             goto LABEL_50;
           }
 
-          v31 = [v57 firstObject];
+          firstObject2 = [v57 firstObject];
 
           v43 = CKLogContextVocabulary;
           if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
           {
             v44 = MEMORY[0x1E69AA778];
             v34 = v43;
-            v35 = [v44 descriptionForTypeIdentifier:v6];
+            v35 = [v44 descriptionForTypeIdentifier:typeCopy];
             *buf = 136315906;
             v71 = "[CKVTaskManager _firstSetWithItemType:matchingDescriptor:inSets:]";
             v72 = 2112;
             v73 = v35;
             v74 = 2112;
-            v75 = v7;
+            v75 = descriptorCopy;
             v76 = 2112;
             v77 = v57;
             v36 = "%s Multiple sets with itemType: %@ have descriptor: %@ arbitrarily selecting the first set: %@";
@@ -1027,7 +1027,7 @@ LABEL_46:
 
 LABEL_50:
 
-        v16 = v31;
+        firstObject = firstObject2;
         goto LABEL_51;
       }
 
@@ -1037,7 +1037,7 @@ LABEL_50:
         *buf = 136315394;
         v71 = "[CKVTaskManager _firstSetWithItemType:matchingDescriptor:inSets:]";
         v72 = 2112;
-        v73 = v16;
+        v73 = firstObject;
         _os_log_impl(&dword_1C8683000, v42, OS_LOG_TYPE_INFO, "%s Arbitratily selecting the first set: %@", buf, 0x16u);
       }
     }
@@ -1050,7 +1050,7 @@ LABEL_50:
     {
       v50 = MEMORY[0x1E69AA778];
       v51 = v37;
-      v52 = [v50 descriptionForTypeIdentifier:v6];
+      v52 = [v50 descriptionForTypeIdentifier:typeCopy];
       *buf = 136315650;
       v71 = "[CKVTaskManager _firstSetWithItemType:matchingDescriptor:inSets:]";
       v72 = 2112;
@@ -1060,26 +1060,26 @@ LABEL_50:
       _os_log_error_impl(&dword_1C8683000, v51, OS_LOG_TYPE_ERROR, "%s No set found with itemType: %@ from sets: %@", buf, 0x20u);
     }
 
-    v16 = 0;
+    firstObject = 0;
   }
 
 LABEL_51:
 
-  return v16;
+  return firstObject;
 }
 
-- (id)_wrapperForTaskBlock:(id)a3 checkingEnablement:(unsigned __int16)a4 reason:(unsigned __int16)a5
+- (id)_wrapperForTaskBlock:(id)block checkingEnablement:(unsigned __int16)enablement reason:(unsigned __int16)reason
 {
-  v8 = a3;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__CKVTaskManager__wrapperForTaskBlock_checkingEnablement_reason___block_invoke;
   aBlock[3] = &unk_1E831E938;
   aBlock[4] = self;
-  v13 = v8;
-  v14 = a4;
-  v15 = a5;
-  v9 = v8;
+  v13 = blockCopy;
+  enablementCopy = enablement;
+  reasonCopy = reason;
+  v9 = blockCopy;
   v10 = _Block_copy(aBlock);
 
   return v10;
@@ -1166,22 +1166,22 @@ LABEL_10:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_submitTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 taskBlock:(id)a5 completion:(id)a6
+- (void)_submitTask:(unsigned __int16)task reason:(unsigned __int16)reason taskBlock:(id)block completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  reasonCopy = reason;
+  taskCopy = task;
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  blockCopy = block;
+  completionCopy = completion;
   v12 = CKLogContextVocabulary;
   if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
   {
     managerName = self->_managerName;
     v14 = MEMORY[0x1E696AD98];
     v15 = v12;
-    v16 = [v14 numberWithUnsignedShort:v8];
-    v17 = CKVTaskIdDescription(v8);
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v7];
+    v16 = [v14 numberWithUnsignedShort:taskCopy];
+    v17 = CKVTaskIdDescription(taskCopy);
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:reasonCopy];
     v19 = 136316162;
     v20 = "[CKVTaskManager _submitTask:reason:taskBlock:completion:]";
     v21 = 2112;
@@ -1195,32 +1195,32 @@ LABEL_10:
     _os_log_impl(&dword_1C8683000, v15, OS_LOG_TYPE_INFO, "%s (%@) Submitting task (%@) %@ with reason (%@)", &v19, 0x34u);
   }
 
-  [(CKVTaskCoalescer *)self->_coalescer submitTaskWithId:v8 taskBlock:v10 completion:v11];
+  [(CKVTaskCoalescer *)self->_coalescer submitTaskWithId:taskCopy taskBlock:blockCopy completion:completionCopy];
 }
 
-- (void)enableSimulatedTasks:(BOOL)a3
+- (void)enableSimulatedTasks:(BOOL)tasks
 {
-  v3 = a3;
+  tasksCopy = tasks;
   [(CKVDonateTaskProvider *)self->_donateTaskProvider enableSimulatedTasks:?];
   settings = self->_settings;
 
-  [(CKVTaskSettings *)settings setTaskCoalescenceDisabled:v3];
+  [(CKVTaskSettings *)settings setTaskCoalescenceDisabled:tasksCopy];
 }
 
-- (BOOL)_isDeleteRequiredForSet:(id)a3 installedAppBundleIds:(id)a4
+- (BOOL)_isDeleteRequiredForSet:(id)set installedAppBundleIds:(id)ids
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 itemType];
+  setCopy = set;
+  idsCopy = ids;
+  itemType = [setCopy itemType];
   v9 = 0;
-  if (v8 > 25882)
+  if (itemType > 25882)
   {
-    if (v8 <= 38250)
+    if (itemType <= 38250)
     {
-      if (v8 > 32964)
+      if (itemType > 32964)
       {
-        if (v8 == 32965 || v8 == 34307)
+        if (itemType == 32965 || itemType == 34307)
         {
           goto LABEL_37;
         }
@@ -1230,7 +1230,7 @@ LABEL_10:
 
       else
       {
-        if (v8 == 25883 || v8 == 26512)
+        if (itemType == 25883 || itemType == 26512)
         {
           goto LABEL_37;
         }
@@ -1239,9 +1239,9 @@ LABEL_10:
       }
     }
 
-    else if (v8 <= 47340)
+    else if (itemType <= 47340)
     {
-      if (v8 == 38251 || v8 == 42611)
+      if (itemType == 38251 || itemType == 42611)
       {
         goto LABEL_37;
       }
@@ -1249,9 +1249,9 @@ LABEL_10:
       v10 = 44935;
     }
 
-    else if (v8 > 61351)
+    else if (itemType > 61351)
     {
-      if (v8 == 63369)
+      if (itemType == 63369)
       {
         goto LABEL_37;
       }
@@ -1261,7 +1261,7 @@ LABEL_10:
 
     else
     {
-      if (v8 == 47341)
+      if (itemType == 47341)
       {
         goto LABEL_37;
       }
@@ -1270,7 +1270,7 @@ LABEL_10:
     }
 
 LABEL_36:
-    if (v8 != v10)
+    if (itemType != v10)
     {
       goto LABEL_42;
     }
@@ -1278,11 +1278,11 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if (v8 <= 12009)
+  if (itemType <= 12009)
   {
-    if (v8 > 7718)
+    if (itemType > 7718)
     {
-      if (v8 == 7719 || v8 == 7822)
+      if (itemType == 7719 || itemType == 7822)
       {
         goto LABEL_37;
       }
@@ -1292,7 +1292,7 @@ LABEL_36:
 
     else
     {
-      if (v8 == 800 || v8 == 3615)
+      if (itemType == 800 || itemType == 3615)
       {
         goto LABEL_37;
       }
@@ -1303,9 +1303,9 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  if (v8 <= 14705)
+  if (itemType <= 14705)
   {
-    if (v8 == 12010 || v8 == 13884)
+    if (itemType == 12010 || itemType == 13884)
     {
       goto LABEL_37;
     }
@@ -1314,9 +1314,9 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  if (v8 > 15571)
+  if (itemType > 15571)
   {
-    if (v8 == 15572)
+    if (itemType == 15572)
     {
       goto LABEL_37;
     }
@@ -1325,35 +1325,35 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  if (v8 != 14706)
+  if (itemType != 14706)
   {
     v10 = 14816;
     goto LABEL_36;
   }
 
 LABEL_37:
-  if (![(CKVTaskManager *)self _isSet:v6 excludedFromInstalledAppBundleIds:v7])
+  if (![(CKVTaskManager *)self _isSet:setCopy excludedFromInstalledAppBundleIds:idsCopy])
   {
 LABEL_41:
     v9 = 0;
     goto LABEL_42;
   }
 
-  v11 = [v6 changePublisher];
-  v12 = [v11 sharedItemCount];
+  changePublisher = [setCopy changePublisher];
+  sharedItemCount = [changePublisher sharedItemCount];
 
   v13 = CKLogContextVocabulary;
   v14 = os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO);
-  if (v12)
+  if (sharedItemCount)
   {
     if (v14)
     {
       v17 = 136315650;
       v18 = "[CKVTaskManager _isDeleteRequiredForSet:installedAppBundleIds:]";
       v19 = 2112;
-      v20 = v6;
+      v20 = setCopy;
       v21 = 1024;
-      v22 = v12;
+      v22 = sharedItemCount;
       _os_log_impl(&dword_1C8683000, v13, OS_LOG_TYPE_INFO, "%s Skipping delete for nonempty set: %@ with %u shared items", &v17, 0x1Cu);
     }
 
@@ -1366,9 +1366,9 @@ LABEL_41:
     v17 = 136315650;
     v18 = "[CKVTaskManager _isDeleteRequiredForSet:installedAppBundleIds:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = setCopy;
     v21 = 1024;
-    v22 = [v7 count];
+    v22 = [idsCopy count];
     v9 = 1;
     _os_log_impl(&dword_1C8683000, v16, OS_LOG_TYPE_INFO, "%s Delete required for empty set: %@ whose sourceIdentifier does not match any of the %u installed appBundleIds", &v17, 0x1Cu);
   }
@@ -1383,16 +1383,16 @@ LABEL_42:
   return v9;
 }
 
-- (BOOL)_isClearRequiredForSet:(id)a3 installedAppBundleIds:(id)a4
+- (BOOL)_isClearRequiredForSet:(id)set installedAppBundleIds:(id)ids
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 itemType];
+  setCopy = set;
+  idsCopy = ids;
+  itemType = [setCopy itemType];
   v9 = 0;
-  if (v8 <= 14024)
+  if (itemType <= 14024)
   {
-    if (v8 == 3615)
+    if (itemType == 3615)
     {
       goto LABEL_8;
     }
@@ -1402,7 +1402,7 @@ LABEL_42:
 
   else
   {
-    if (v8 == 14025 || v8 == 36059)
+    if (itemType == 14025 || itemType == 36059)
     {
       goto LABEL_8;
     }
@@ -1410,31 +1410,31 @@ LABEL_42:
     v10 = 34307;
   }
 
-  if (v8 != v10)
+  if (itemType != v10)
   {
     goto LABEL_15;
   }
 
 LABEL_8:
-  if (![(CKVTaskManager *)self _isSet:v6 excludedFromInstalledAppBundleIds:v7])
+  if (![(CKVTaskManager *)self _isSet:setCopy excludedFromInstalledAppBundleIds:idsCopy])
   {
 LABEL_14:
     v9 = 0;
     goto LABEL_15;
   }
 
-  v11 = [v6 changePublisher];
-  v12 = [v11 localItemInstanceCount];
+  changePublisher = [setCopy changePublisher];
+  localItemInstanceCount = [changePublisher localItemInstanceCount];
 
   v13 = CKLogContextVocabulary;
-  if (!v12)
+  if (!localItemInstanceCount)
   {
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_DEBUG))
     {
       v16 = 136315394;
       v17 = "[CKVTaskManager _isClearRequiredForSet:installedAppBundleIds:]";
       v18 = 2112;
-      v19 = v6;
+      v19 = setCopy;
       _os_log_debug_impl(&dword_1C8683000, v13, OS_LOG_TYPE_DEBUG, "%s Skipping clear for already empty set: %@", &v16, 0x16u);
     }
 
@@ -1448,11 +1448,11 @@ LABEL_14:
     v16 = 136315906;
     v17 = "[CKVTaskManager _isClearRequiredForSet:installedAppBundleIds:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = setCopy;
     v20 = 1024;
-    v21 = v12;
+    v21 = localItemInstanceCount;
     v22 = 1024;
-    v23 = [v7 count];
+    v23 = [idsCopy count];
     _os_log_impl(&dword_1C8683000, v14, OS_LOG_TYPE_INFO, "%s Clear required for set: %@ with %u local item instances whose sourceIdentifier does not match any of the %u installed appBundleIds", &v16, 0x22u);
   }
 
@@ -1461,17 +1461,17 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)_isSet:(id)a3 excludedFromInstalledAppBundleIds:(id)a4
+- (BOOL)_isSet:(id)set excludedFromInstalledAppBundleIds:(id)ids
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 descriptorWithKey:*MEMORY[0x1E6993998]];
-  v8 = [v7 value];
+  setCopy = set;
+  idsCopy = ids;
+  v7 = [setCopy descriptorWithKey:*MEMORY[0x1E6993998]];
+  value = [v7 value];
 
-  if (v8)
+  if (value)
   {
-    if (![v6 containsObject:v8])
+    if (![idsCopy containsObject:value])
     {
       v11 = 1;
       goto LABEL_9;
@@ -1483,9 +1483,9 @@ LABEL_15:
       v13 = 136315650;
       v14 = "[CKVTaskManager _isSet:excludedFromInstalledAppBundleIds:]";
       v15 = 2112;
-      v16 = v5;
+      v16 = setCopy;
       v17 = 2112;
-      v18 = v8;
+      v18 = value;
       _os_log_debug_impl(&dword_1C8683000, v9, OS_LOG_TYPE_DEBUG, "%s No cleanup required for set: %@ which is associated with installed app: %@", &v13, 0x20u);
     }
   }
@@ -1498,7 +1498,7 @@ LABEL_15:
       v13 = 136315394;
       v14 = "[CKVTaskManager _isSet:excludedFromInstalledAppBundleIds:]";
       v15 = 2112;
-      v16 = v5;
+      v16 = setCopy;
       _os_log_impl(&dword_1C8683000, v10, OS_LOG_TYPE_INFO, "%s Skipping cleanup for set: %@ with no sourceIdentifier", &v13, 0x16u);
     }
   }
@@ -1509,7 +1509,7 @@ LABEL_9:
   return v11;
 }
 
-- (id)_cleanUpDeletedAppDonationsTaskBlock:(unsigned __int16)a3
+- (id)_cleanUpDeletedAppDonationsTaskBlock:(unsigned __int16)block
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1829,12 +1829,12 @@ void __55__CKVTaskManager__blockToCollectInstalledAppBundleIds___block_invoke(ui
   }
 }
 
-- (void)_runInstalledAppDerivativeTasksWithReason:(unsigned __int16)a3
+- (void)_runInstalledAppDerivativeTasksWithReason:(unsigned __int16)reason
 {
-  v3 = a3;
-  v5 = [(CKVTaskManager *)self _derivativeTaskBlockForTask:9 reason:a3];
+  reasonCopy = reason;
+  v5 = [(CKVTaskManager *)self _derivativeTaskBlockForTask:9 reason:reason];
   v5[2]();
-  v6 = [(CKVTaskManager *)self _taskBlockForTask:105 reason:v3 shouldDefer:0];
+  v6 = [(CKVTaskManager *)self _taskBlockForTask:105 reason:reasonCopy shouldDefer:0];
 
   v6[2]();
 }
@@ -1896,8 +1896,8 @@ void __55__CKVTaskManager__blockToCollectInstalledAppBundleIds___block_invoke(ui
   v5 = v12;
   if (v4)
   {
-    v6 = [(CKVTaskManager *)self _descriptorForSiriLocale];
-    v7 = [(CKVTaskManager *)self _firstSetWithItemType:36434 matchingDescriptor:v6 inSets:v4];
+    _descriptorForSiriLocale = [(CKVTaskManager *)self _descriptorForSiriLocale];
+    v7 = [(CKVTaskManager *)self _firstSetWithItemType:36434 matchingDescriptor:_descriptorForSiriLocale inSets:v4];
 
     if (v7)
     {
@@ -1936,13 +1936,13 @@ void __55__CKVTaskManager__blockToCollectInstalledAppBundleIds___block_invoke(ui
   return v7;
 }
 
-- (id)_wakePodcastsTaskBlockWithReason:(unsigned __int16)a3
+- (id)_wakePodcastsTaskBlockWithReason:(unsigned __int16)reason
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__CKVTaskManager__wakePodcastsTaskBlockWithReason___block_invoke;
   aBlock[3] = &__block_descriptor_34_e5_v8__0l;
-  v6 = a3;
+  reasonCopy = reason;
   v3 = _Block_copy(aBlock);
 
   return v3;
@@ -1982,14 +1982,14 @@ void __51__CKVTaskManager__wakePodcastsTaskBlockWithReason___block_invoke(uint64
   }
 }
 
-- (id)_siriLanguageChangedTaskBlockWithReason:(unsigned __int16)a3
+- (id)_siriLanguageChangedTaskBlockWithReason:(unsigned __int16)reason
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __58__CKVTaskManager__siriLanguageChangedTaskBlockWithReason___block_invoke;
   v5[3] = &unk_1E831E878;
   v5[4] = self;
-  v6 = a3;
+  reasonCopy = reason;
   v3 = _Block_copy(v5);
 
   return v3;
@@ -2013,14 +2013,14 @@ uint64_t __58__CKVTaskManager__siriLanguageChangedTaskBlockWithReason___block_in
   return [*(a1 + 32) _didLocalizationChange:*(a1 + 40)];
 }
 
-- (id)_maintenanceTaskBlockWithReason:(unsigned __int16)a3 shouldDefer:(id)a4
+- (id)_maintenanceTaskBlockWithReason:(unsigned __int16)reason shouldDefer:(id)defer
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__CKVTaskManager__maintenanceTaskBlockWithReason_shouldDefer___block_invoke;
   v6[3] = &unk_1E831E878;
   v6[4] = self;
-  v7 = a3;
+  reasonCopy = reason;
   v4 = _Block_copy(v6);
 
   return v4;
@@ -2237,21 +2237,21 @@ void __62__CKVTaskManager__maintenanceTaskBlockWithReason_shouldDefer___block_in
   }
 }
 
-- (BOOL)_didLocalizationChange:(unsigned __int16)a3
+- (BOOL)_didLocalizationChange:(unsigned __int16)change
 {
-  v3 = a3;
+  changeCopy = change;
   v46 = *MEMORY[0x1E69E9840];
-  v5 = [(CKVTaskManagerInfo *)self->_info siriLanguageCode];
-  v6 = [(CKVTaskManagerInfo *)self->_info dictationLanguageCodes];
-  v7 = [(CKVTaskSettings *)self->_settings localization];
-  v8 = [v7 siriLanguageCode];
+  siriLanguageCode = [(CKVTaskManagerInfo *)self->_info siriLanguageCode];
+  dictationLanguageCodes = [(CKVTaskManagerInfo *)self->_info dictationLanguageCodes];
+  localization = [(CKVTaskSettings *)self->_settings localization];
+  siriLanguageCode2 = [localization siriLanguageCode];
 
-  v9 = [(CKVTaskSettings *)self->_settings localization];
-  v10 = [v9 dictationLanguageCodes];
+  localization2 = [(CKVTaskSettings *)self->_settings localization];
+  dictationLanguageCodes2 = [localization2 dictationLanguageCodes];
 
-  if (v8 | v5)
+  if (siriLanguageCode2 | siriLanguageCode)
   {
-    v11 = [v8 isEqual:v5] ^ 1;
+    v11 = [siriLanguageCode2 isEqual:siriLanguageCode] ^ 1;
   }
 
   else
@@ -2259,10 +2259,10 @@ void __62__CKVTaskManager__maintenanceTaskBlockWithReason_shouldDefer___block_in
     LOBYTE(v11) = 0;
   }
 
-  LOBYTE(v12) = v10 | v6;
-  if (v10 | v6)
+  LOBYTE(v12) = dictationLanguageCodes2 | dictationLanguageCodes;
+  if (dictationLanguageCodes2 | dictationLanguageCodes)
   {
-    v12 = [v10 isEqual:v6] ^ 1;
+    v12 = [dictationLanguageCodes2 isEqual:dictationLanguageCodes] ^ 1;
   }
 
   v13 = v11 | v12;
@@ -2274,8 +2274,8 @@ void __62__CKVTaskManager__maintenanceTaskBlockWithReason_shouldDefer___block_in
     if (v15)
     {
       v16 = v14;
-      v17 = _localizationDescription(v8, v10);
-      v18 = _localizationDescription(v5, v6);
+      v17 = _localizationDescription(siriLanguageCode2, dictationLanguageCodes2);
+      v18 = _localizationDescription(siriLanguageCode, dictationLanguageCodes);
       *buf = 136315650;
       v41 = "[CKVTaskManager _didLocalizationChange:]";
       v42 = 2112;
@@ -2289,7 +2289,7 @@ void __62__CKVTaskManager__maintenanceTaskBlockWithReason_shouldDefer___block_in
 
     if (v11)
     {
-      v32 = v5;
+      v32 = siriLanguageCode;
       v19 = CKLogContextVocabulary;
       if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
       {
@@ -2302,8 +2302,8 @@ void __62__CKVTaskManager__maintenanceTaskBlockWithReason_shouldDefer___block_in
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v20 = [objc_opt_class() siriLanguageDependentDonateTasks];
-      v21 = [v20 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      siriLanguageDependentDonateTasks = [objc_opt_class() siriLanguageDependentDonateTasks];
+      v21 = [siriLanguageDependentDonateTasks countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v21)
       {
         v22 = v21;
@@ -2314,26 +2314,26 @@ void __62__CKVTaskManager__maintenanceTaskBlockWithReason_shouldDefer___block_in
           {
             if (*v36 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(siriLanguageDependentDonateTasks);
             }
 
-            v25 = -[CKVTaskManager _taskBlockForTask:reason:shouldDefer:](self, "_taskBlockForTask:reason:shouldDefer:", [*(*(&v35 + 1) + 8 * i) unsignedIntValue], v3, 0);
+            v25 = -[CKVTaskManager _taskBlockForTask:reason:shouldDefer:](self, "_taskBlockForTask:reason:shouldDefer:", [*(*(&v35 + 1) + 8 * i) unsignedIntValue], changeCopy, 0);
             v25[2]();
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v35 objects:v39 count:16];
+          v22 = [siriLanguageDependentDonateTasks countByEnumeratingWithState:&v35 objects:v39 count:16];
         }
 
         while (v22);
       }
 
-      v5 = v32;
+      siriLanguageCode = v32;
       v13 = v33;
     }
 
     info = self->_info;
     v34 = 0;
-    v27 = [(CKVTaskManagerInfo *)info updateSiriLanguageCode:v8 dictationLanguageCodes:v10 error:&v34];
+    v27 = [(CKVTaskManagerInfo *)info updateSiriLanguageCode:siriLanguageCode2 dictationLanguageCodes:dictationLanguageCodes2 error:&v34];
     v28 = v34;
     if (!v27)
     {
@@ -2354,7 +2354,7 @@ void __62__CKVTaskManager__maintenanceTaskBlockWithReason_shouldDefer___block_in
   if (v15)
   {
     v28 = v14;
-    v30 = _localizationDescription(v5, v6);
+    v30 = _localizationDescription(siriLanguageCode, dictationLanguageCodes);
     *buf = 136315394;
     v41 = "[CKVTaskManager _didLocalizationChange:]";
     v42 = 2112;
@@ -2367,17 +2367,17 @@ LABEL_25:
   return v13 & 1;
 }
 
-- (BOOL)_didTriggerMigration:(id)a3 reason:(unsigned __int16)a4
+- (BOOL)_didTriggerMigration:(id)migration reason:(unsigned __int16)reason
 {
-  v4 = a4;
+  reasonCopy = reason;
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([(CKVTaskSettings *)self->_settings isTaskEnabled:103 reason:v4])
+  migrationCopy = migration;
+  if ([(CKVTaskSettings *)self->_settings isTaskEnabled:103 reason:reasonCopy])
   {
-    if (v4 == 20)
+    if (reasonCopy == 20)
     {
       v7 = CKLogContextVocabulary;
-      v24 = v6;
+      v24 = migrationCopy;
       if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
       {
         managerName = self->_managerName;
@@ -2392,11 +2392,11 @@ LABEL_25:
       goto LABEL_13;
     }
 
-    v12 = [(CKVTaskManagerInfo *)self->_info shouldRunMigration];
+    shouldRunMigration = [(CKVTaskManagerInfo *)self->_info shouldRunMigration];
     v7 = CKLogContextVocabulary;
-    if (v12)
+    if (shouldRunMigration)
     {
-      v24 = v6;
+      v24 = migrationCopy;
 LABEL_13:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
@@ -2414,8 +2414,8 @@ LABEL_13:
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v15 = [objc_opt_class() migrationDonateTasks];
-      v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      migrationDonateTasks = [objc_opt_class() migrationDonateTasks];
+      v16 = [migrationDonateTasks countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v16)
       {
         v17 = v16;
@@ -2426,20 +2426,20 @@ LABEL_13:
           {
             if (*v31 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(migrationDonateTasks);
             }
 
-            v20 = [*(*(&v30 + 1) + 8 * i) unsignedIntValue];
+            unsignedIntValue = [*(*(&v30 + 1) + 8 * i) unsignedIntValue];
             dispatch_group_enter(v14);
             v28[0] = MEMORY[0x1E69E9820];
             v28[1] = 3221225472;
             v28[2] = __46__CKVTaskManager__didTriggerMigration_reason___block_invoke;
             v28[3] = &unk_1E831E828;
             v29 = v14;
-            [(CKVTaskManager *)self handleTask:v20 reason:1 shouldDefer:0 completion:v28];
+            [(CKVTaskManager *)self handleTask:unsignedIntValue reason:1 shouldDefer:0 completion:v28];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v17 = [migrationDonateTasks countByEnumeratingWithState:&v30 objects:v34 count:16];
         }
 
         while (v17);
@@ -2451,7 +2451,7 @@ LABEL_13:
       block[2] = __46__CKVTaskManager__didTriggerMigration_reason___block_invoke_2;
       block[3] = &unk_1E831E850;
       block[4] = self;
-      v6 = v25;
+      migrationCopy = v25;
       v27 = v25;
       dispatch_group_notify(v14, v21, block);
 
@@ -2487,9 +2487,9 @@ LABEL_7:
     }
   }
 
-  if (v6)
+  if (migrationCopy)
   {
-    v6[2](v6);
+    migrationCopy[2](migrationCopy);
   }
 
   v11 = 0;
@@ -2668,25 +2668,25 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)handleTask:(unsigned __int16)a3 reason:(unsigned __int16)a4 shouldDefer:(id)a5 completion:(id)a6
+- (BOOL)handleTask:(unsigned __int16)task reason:(unsigned __int16)reason shouldDefer:(id)defer completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  reasonCopy = reason;
+  taskCopy = task;
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  if (v8 == 103)
+  deferCopy = defer;
+  completionCopy = completion;
+  if (taskCopy == 103)
   {
-    [(CKVTaskManager *)self _didTriggerMigration:v11 reason:v7];
+    [(CKVTaskManager *)self _didTriggerMigration:completionCopy reason:reasonCopy];
 LABEL_8:
     v13 = 1;
     goto LABEL_9;
   }
 
-  if ((v8 - 106) > 0xFF96u)
+  if ((taskCopy - 106) > 0xFF96u)
   {
-    v14 = [(CKVTaskManager *)self _taskBlockForTask:v8 reason:v7 shouldDefer:v10];
-    [(CKVTaskManager *)self _submitTask:v8 reason:v7 taskBlock:v14 completion:v11];
+    v14 = [(CKVTaskManager *)self _taskBlockForTask:taskCopy reason:reasonCopy shouldDefer:deferCopy];
+    [(CKVTaskManager *)self _submitTask:taskCopy reason:reasonCopy taskBlock:v14 completion:completionCopy];
 
     goto LABEL_8;
   }
@@ -2696,7 +2696,7 @@ LABEL_8:
   {
     v16 = MEMORY[0x1E696AD98];
     v17 = v12;
-    v18 = [v16 numberWithUnsignedShort:v8];
+    v18 = [v16 numberWithUnsignedShort:taskCopy];
     v19 = 136315394;
     v20 = "[CKVTaskManager handleTask:reason:shouldDefer:completion:]";
     v21 = 2112;
@@ -2747,10 +2747,10 @@ LABEL_9:
   if (v3)
   {
     [(CKVTaskManager *)self _loadOrCreateTaskInfo];
-    v5 = [(CKVTaskManagerInfo *)self->_info schemaVersion];
-    if ([&unk_1F48584C8 isEqual:v5])
+    schemaVersion = [(CKVTaskManagerInfo *)self->_info schemaVersion];
+    if ([&unk_1F48584C8 isEqual:schemaVersion])
     {
-      v6 = 1;
+      clearAllState = 1;
     }
 
     else
@@ -2762,9 +2762,9 @@ LABEL_9:
         *buf = 136315650;
         v13 = "[CKVTaskManager _validateFilesystemState]";
         v14 = 2112;
-        if (v5)
+        if (schemaVersion)
         {
-          v9 = v5;
+          v9 = schemaVersion;
         }
 
         v15 = &unk_1F48584C8;
@@ -2773,7 +2773,7 @@ LABEL_9:
         _os_log_impl(&dword_1C8683000, v8, OS_LOG_TYPE_INFO, "%s Current schema (expected: %@) not initialized yet (found: %@)", buf, 0x20u);
       }
 
-      v6 = [(CKVTaskManager *)self clearAllState];
+      clearAllState = [(CKVTaskManager *)self clearAllState];
     }
   }
 
@@ -2792,23 +2792,23 @@ LABEL_9:
       _os_log_error_impl(&dword_1C8683000, v7, OS_LOG_TYPE_ERROR, "%s Failed to resolve / create root directory: %@ error: %@", buf, 0x20u);
     }
 
-    v6 = 0;
+    clearAllState = 0;
   }
 
-  return v6;
+  return clearAllState;
 }
 
-- (CKVTaskManager)initWithManagerName:(id)a3 rootDirectoryURL:(id)a4 setEnumerator:(id)a5 settings:(id)a6
+- (CKVTaskManager)initWithManagerName:(id)name rootDirectoryURL:(id)l setEnumerator:(id)enumerator settings:(id)settings
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  lCopy = l;
+  enumeratorCopy = enumerator;
+  settingsCopy = settings;
   v25.receiver = self;
   v25.super_class = CKVTaskManager;
   v15 = [(CKVTaskManager *)&v25 init];
   v16 = v15;
-  if (!v15 || (objc_storeStrong(&v15->_managerName, a3), objc_storeStrong(&v16->_settings, a6), objc_storeStrong(&v16->_setEnumerator, a5), objc_storeStrong(&v16->_rootDirectoryURL, a4), [(CKVTaskManager *)v16 _validateFilesystemState]) && (v17 = [CKVDonateTaskFactory alloc], [(CKVTaskManagerInfo *)v16->_info donateDirectory], v18 = objc_claimAutoreleasedReturnValue(), v19 = [(CKVDonateTaskFactory *)v17 initWithDirectory:v18 timeout:300.0], donateTaskProvider = v16->_donateTaskProvider, v16->_donateTaskProvider = v19, donateTaskProvider, v18, v16->_donateTaskProvider) && (v21 = [[CKVTaskCoalescer alloc] initWithManagerName:v16->_managerName coalescenceInterval:25 coalescenceDelay:v14 dispatchQoS:10.0 settings:2.0], coalescer = v16->_coalescer, v16->_coalescer = v21, coalescer, v16->_coalescer))
+  if (!v15 || (objc_storeStrong(&v15->_managerName, name), objc_storeStrong(&v16->_settings, settings), objc_storeStrong(&v16->_setEnumerator, enumerator), objc_storeStrong(&v16->_rootDirectoryURL, l), [(CKVTaskManager *)v16 _validateFilesystemState]) && (v17 = [CKVDonateTaskFactory alloc], [(CKVTaskManagerInfo *)v16->_info donateDirectory], v18 = objc_claimAutoreleasedReturnValue(), v19 = [(CKVDonateTaskFactory *)v17 initWithDirectory:v18 timeout:300.0], donateTaskProvider = v16->_donateTaskProvider, v16->_donateTaskProvider = v19, donateTaskProvider, v18, v16->_donateTaskProvider) && (v21 = [[CKVTaskCoalescer alloc] initWithManagerName:v16->_managerName coalescenceInterval:25 coalescenceDelay:settingsCopy dispatchQoS:10.0 settings:2.0], coalescer = v16->_coalescer, v16->_coalescer = v21, coalescer, v16->_coalescer))
   {
     v23 = v16;
   }
@@ -2825,9 +2825,9 @@ LABEL_9:
 {
   v2 = objc_alloc(objc_opt_class());
   v3 = KVTaskManagerRootDirectoryURL();
-  v4 = [MEMORY[0x1E6993A50] setEnumerator];
+  setEnumerator = [MEMORY[0x1E6993A50] setEnumerator];
   v5 = +[CKVTaskSettings defaultSettings];
-  v6 = [v2 initWithManagerName:@"Default" rootDirectoryURL:v3 setEnumerator:v4 settings:v5];
+  v6 = [v2 initWithManagerName:@"Default" rootDirectoryURL:v3 setEnumerator:setEnumerator settings:v5];
 
   return v6;
 }

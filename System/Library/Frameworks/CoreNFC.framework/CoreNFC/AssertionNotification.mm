@@ -15,7 +15,7 @@
   MEMORY[0x28223BE20]();
   v7 = &v9[-v6];
   v9[15] = 0;
-  v8 = self;
+  selfCopy = self;
   sub_23728DDC0(&qword_27DE98A90, &qword_2372D3FA0);
   sub_2372D1154();
 
@@ -30,7 +30,7 @@
   MEMORY[0x28223BE20]();
   v7 = &v9[-v6];
   v9[15] = 1;
-  v8 = self;
+  selfCopy = self;
   sub_23728DDC0(&qword_27DE98A90, &qword_2372D3FA0);
   sub_2372D1154();
   (*(v4 + 8))(v7, v3);
@@ -46,10 +46,10 @@
   MEMORY[0x28223BE20]();
   v8 = &v10 - v7;
   (*(v5 + 16))(&v10 - v7, self + OBJC_IVAR____TtC7CoreNFC21AssertionNotification_eventStreamContinuation, v4);
-  v9 = self;
+  selfCopy = self;
   sub_2372D1164();
   (*(v5 + 8))(v8, v4);
-  v10.receiver = v9;
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
   [(AssertionNotification *)&v10 dealloc];
 }

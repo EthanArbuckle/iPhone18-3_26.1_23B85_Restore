@@ -1,14 +1,14 @@
 @interface SKGUserEdge
-+ (id)edgeFromUser:(id)a3 toNode:(id)a4;
++ (id)edgeFromUser:(id)user toNode:(id)node;
 @end
 
 @implementation SKGUserEdge
 
-+ (id)edgeFromUser:(id)a3 toNode:(id)a4
++ (id)edgeFromUser:(id)user toNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(SKGEdge *)[SKGUserEdge alloc] initWithSourceNode:v5 targetNode:v6];
+  userCopy = user;
+  nodeCopy = node;
+  v7 = [(SKGEdge *)[SKGUserEdge alloc] initWithSourceNode:userCopy targetNode:nodeCopy];
 
   return v7;
 }

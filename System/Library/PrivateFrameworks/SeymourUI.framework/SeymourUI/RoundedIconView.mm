@@ -1,12 +1,12 @@
 @interface RoundedIconView
-- (_TtC9SeymourUI15RoundedIconView)initWithCoder:(id)a3;
+- (_TtC9SeymourUI15RoundedIconView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation RoundedIconView
 
-- (_TtC9SeymourUI15RoundedIconView)initWithCoder:(id)a3
+- (_TtC9SeymourUI15RoundedIconView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9SeymourUI15RoundedIconView_imageView;
   v5 = [objc_allocWithZone(MEMORY[0x277D755E8]) init];
@@ -23,9 +23,9 @@
   v4.super_class = type metadata accessor for RoundedIconView();
   v2 = v4.receiver;
   [(RoundedIconView *)&v4 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
 - (void)tintColorDidChange
@@ -35,7 +35,7 @@
   v2 = v5.receiver;
   [(RoundedIconView *)&v5 tintColorDidChange];
   v3 = *&v2[OBJC_IVAR____TtC9SeymourUI15RoundedIconView_imageView];
-  v4 = [v2 tintColor];
+  tintColor = [v2 tintColor];
   [v3 setTintColor_];
 }
 

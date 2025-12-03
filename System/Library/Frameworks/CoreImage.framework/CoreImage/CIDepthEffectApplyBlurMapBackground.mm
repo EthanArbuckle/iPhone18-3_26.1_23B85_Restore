@@ -1,33 +1,33 @@
 @interface CIDepthEffectApplyBlurMapBackground
 + (id)customAttributes;
 - (id)outputImage;
-- (id)unifiedRenderingOutputImage:(CGImageMetadata *)a3;
+- (id)unifiedRenderingOutputImage:(CGImageMetadata *)image;
 @end
 
 @implementation CIDepthEffectApplyBlurMapBackground
 
 + (id)customAttributes
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___CIDepthEffectApplyBlurMapBackground;
   return objc_msgSendSuper2(&v3, sel_customAttributes);
 }
 
-- (id)unifiedRenderingOutputImage:(CGImageMetadata *)a3
+- (id)unifiedRenderingOutputImage:(CGImageMetadata *)image
 {
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
 
   TypeID = CGImageMetadataGetTypeID();
-  if (TypeID != CFGetTypeID(a3))
+  if (TypeID != CFGetTypeID(image))
   {
     return 0;
   }
 
   inputImage = self->super.inputImage;
-  RenderingParametersFromCGImageMetadata = getRenderingParametersFromCGImageMetadata(a3);
+  RenderingParametersFromCGImageMetadata = getRenderingParametersFromCGImageMetadata(image);
   if (!RenderingParametersFromCGImageMetadata)
   {
     return 0;
@@ -44,29 +44,29 @@
   inputMatteImage = self->super.inputMatteImage;
   inputGainMap = self->super.inputGainMap;
   inputCaptureFolderMiscPath = self->super.inputCaptureFolderMiscPath;
-  v19 = [MEMORY[0x1E695DF90] dictionary];
-  [v19 setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:@"options"];
-  [v19 setObject:v8 forKeyedSubscript:@"metadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:@"options"];
+  [dictionary setObject:v8 forKeyedSubscript:@"metadata"];
   LODWORD(v20) = v10;
-  [v19 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v20), @"simulatedAperture"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v20), @"simulatedAperture"}];
   LODWORD(v21) = 1022739087;
-  [v19 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v21), @"maxBlur"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v21), @"maxBlur"}];
   LODWORD(v22) = v12;
-  [v19 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v22), @"inputScale"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v22), @"inputScale"}];
   LODWORD(v23) = v14;
-  [v19 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v23), @"lumaNoiseAmplitude"}];
-  [v19 setObject:inputBlurMap forKeyedSubscript:@"inputBlurMap"];
-  [v19 setObject:inputMatteImage forKeyedSubscript:@"inputAlpha"];
-  [v19 setObject:inputImage forKeyedSubscript:@"inputImage"];
-  [v19 setObject:0 forKeyedSubscript:@"inputImageLuma"];
-  [v19 setObject:0 forKeyedSubscript:@"inputImageChroma"];
-  [v19 setObject:inputGainMap forKeyedSubscript:@"inputGainMap"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v23), @"lumaNoiseAmplitude"}];
+  [dictionary setObject:inputBlurMap forKeyedSubscript:@"inputBlurMap"];
+  [dictionary setObject:inputMatteImage forKeyedSubscript:@"inputAlpha"];
+  [dictionary setObject:inputImage forKeyedSubscript:@"inputImage"];
+  [dictionary setObject:0 forKeyedSubscript:@"inputImageLuma"];
+  [dictionary setObject:0 forKeyedSubscript:@"inputImageChroma"];
+  [dictionary setObject:inputGainMap forKeyedSubscript:@"inputGainMap"];
   if (inputCaptureFolderMiscPath)
   {
-    [v19 setObject:inputCaptureFolderMiscPath forKeyedSubscript:@"captureFolderMiscPath"];
+    [dictionary setObject:inputCaptureFolderMiscPath forKeyedSubscript:@"captureFolderMiscPath"];
   }
 
-  v24 = [objc_alloc(envCCApplyBlurMapArgsClass()) initWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithDictionary:", v19)}];
+  v24 = [objc_alloc(envCCApplyBlurMapArgsClass()) initWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithDictionary:", dictionary)}];
   if (v24)
   {
     v25 = v24;
@@ -145,23 +145,23 @@
   v10 = MEMORY[0x1E696AD98];
   if (v9)
   {
-    v11 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
   }
 
   else
   {
-    v11 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  v12 = [v10 numberWithUnsignedInteger:v11];
-  v13 = [v12 intValue];
-  if (v13 < +[CIFilter minSDOFRenderingVersionSupported])
+  v12 = [v10 numberWithUnsignedInteger:unsignedIntegerValue];
+  intValue = [v12 intValue];
+  if (intValue < +[CIFilter minSDOFRenderingVersionSupported])
   {
     return 0;
   }
 
-  v14 = [v12 intValue];
-  if (v14 > +[CIFilter maxSDOFRenderingVersionSupported])
+  intValue2 = [v12 intValue];
+  if (intValue2 > +[CIFilter maxSDOFRenderingVersionSupported])
   {
     return 0;
   }

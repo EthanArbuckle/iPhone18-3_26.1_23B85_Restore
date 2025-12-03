@@ -1,20 +1,20 @@
 @interface AKAuthorizationScopeDetailTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation AKAuthorizationScopeDetailTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKAuthorizationScopeDetailTableViewCell" hasInstanceMethod:@"isChecked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AKAuthorizationScopeDetailTableViewCell" hasInstanceMethod:@"scopeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKAuthorizationScopeDetailTableViewCell" hasInstanceMethod:@"mainLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKAuthorizationScopeDetailTableViewCell" hasInstanceMethod:@"mainDetailLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKAuthorizationScopeDetailTableViewCell" hasInstanceMethod:@"checkmarkStyle" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"AKAuthorizationScopeDetailTableViewCell" isKindOfClass:@"UITableViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKAuthorizationScopeDetailTableViewCell" hasInstanceMethod:@"isChecked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AKAuthorizationScopeDetailTableViewCell" hasInstanceMethod:@"scopeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKAuthorizationScopeDetailTableViewCell" hasInstanceMethod:@"mainLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKAuthorizationScopeDetailTableViewCell" hasInstanceMethod:@"mainDetailLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKAuthorizationScopeDetailTableViewCell" hasInstanceMethod:@"checkmarkStyle" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"AKAuthorizationScopeDetailTableViewCell" isKindOfClass:@"UITableViewCell"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -38,16 +38,16 @@
   {
     v6.receiver = self;
     v6.super_class = AKAuthorizationScopeDetailTableViewCellAccessibility;
-    v3 = [(AKAuthorizationScopeDetailTableViewCellAccessibility *)&v6 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(AKAuthorizationScopeDetailTableViewCellAccessibility *)&v6 _accessibilitySupplementaryFooterViews];
   }
 
   else
   {
     v4 = [(AKAuthorizationScopeDetailTableViewCellAccessibility *)self safeValueForKey:@"accessoryView"];
-    v3 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v4}];
+    _accessibilitySupplementaryFooterViews = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v4}];
   }
 
-  return v3;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 @end

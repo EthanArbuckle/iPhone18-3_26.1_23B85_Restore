@@ -1,6 +1,6 @@
 @interface PolicyRequest
 - (PolicyRequest)init;
-- (PolicyRequest)initWithCoder:(id)a3;
+- (PolicyRequest)initWithCoder:(id)coder;
 @end
 
 @implementation PolicyRequest
@@ -12,7 +12,7 @@
   return [(PolicyRequest *)&v3 init];
 }
 
-- (PolicyRequest)initWithCoder:(id)a3
+- (PolicyRequest)initWithCoder:(id)coder
 {
   v4 = objc_alloc_init(PolicyRequest);
 

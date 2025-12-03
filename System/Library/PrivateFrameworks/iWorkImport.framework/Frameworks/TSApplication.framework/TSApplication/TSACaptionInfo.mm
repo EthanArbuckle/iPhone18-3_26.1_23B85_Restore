@@ -5,36 +5,36 @@
 - (BOOL)isLockable;
 - (BOOL)isLocked;
 - (BOOL)preventsChangeTracking;
-- (BOOL)shouldShowOnCanvas:(id)a3;
+- (BOOL)shouldShowOnCanvas:(id)canvas;
 - (BOOL)textStorageAllowsCommentsDisregardingParent;
-- (TSACaptionInfo)initWithContext:(id)a3 geometry:(id)a4;
-- (id)copyDowngradedToShapeWithContext:(id)a3;
+- (TSACaptionInfo)initWithContext:(id)context geometry:(id)geometry;
+- (id)copyDowngradedToShapeWithContext:(id)context;
 - (id)exteriorTextWrap;
 - (id)infoForAlignAndDistribute;
 - (id)instructionalText;
-- (id)objectForProperty:(int)a3;
+- (id)objectForProperty:(int)property;
 - (id)owningAttachment;
-- (id)p_captionPlacementForAnchorLocation:(int64_t)a3;
+- (id)p_captionPlacementForAnchorLocation:(int64_t)location;
 - (int64_t)nestedTextboxDepth;
 - (int64_t)p_anchorLocationForCaptionPlacement;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setChildInfoKind:(int64_t)a3;
-- (void)setLocked:(BOOL)a3;
-- (void)setOwningAttachment:(id)a3;
-- (void)setPlacement:(id)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setChildInfoKind:(int64_t)kind;
+- (void)setLocked:(BOOL)locked;
+- (void)setOwningAttachment:(id)attachment;
+- (void)setPlacement:(id)placement;
 @end
 
 @implementation TSACaptionInfo
 
-- (TSACaptionInfo)initWithContext:(id)a3 geometry:(id)a4
+- (TSACaptionInfo)initWithContext:(id)context geometry:(id)geometry
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  geometryCopy = geometry;
   objc_opt_class();
-  v11 = objc_msgSend_documentObject(v6, v8, v9, v10);
+  v11 = objc_msgSend_documentObject(contextCopy, v8, v9, v10);
   v12 = TSUCheckedDynamicCast();
 
   v16 = objc_msgSend_theme(v12, v13, v14, v15);
@@ -46,29 +46,29 @@
 
   v25 = objc_alloc(MEMORY[0x277D80F28]);
   v29 = objc_msgSend_stylesheet(v24, v26, v27, v28);
-  v31 = objc_msgSend_initWithContext_string_stylesheet_kind_(v25, v30, v6, &stru_288512028, v29, 3);
+  v31 = objc_msgSend_initWithContext_string_stylesheet_kind_(v25, v30, contextCopy, &stru_288512028, v29, 3);
 
   v32 = MEMORY[0x277D80380];
-  objc_msgSend_size(v7, v33, v34, v35);
+  objc_msgSend_size(geometryCopy, v33, v34, v35);
   v38 = objc_msgSend_pathSourceForShapeType_naturalSize_(v32, v36, 0, v37);
   v41.receiver = self;
   v41.super_class = TSACaptionInfo;
-  v39 = [(TSACaptionInfo *)&v41 initWithContext:v6 geometry:v7 style:v24 pathSource:v38 wpStorage:v31];
+  v39 = [(TSACaptionInfo *)&v41 initWithContext:contextCopy geometry:geometryCopy style:v24 pathSource:v38 wpStorage:v31];
 
   return v39;
 }
 
-- (id)copyDowngradedToShapeWithContext:(id)a3
+- (id)copyDowngradedToShapeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8 = objc_msgSend_textStorage(self, v5, v6, v7);
-  v11 = objc_msgSend_copyWithContext_(v8, v9, v4, v10);
+  v11 = objc_msgSend_copyWithContext_(v8, v9, contextCopy, v10);
 
   v12 = objc_alloc(MEMORY[0x277D80F00]);
   v16 = objc_msgSend_geometry(self, v13, v14, v15);
   v20 = objc_msgSend_shapeStyle(self, v17, v18, v19);
   v24 = objc_msgSend_pathSource(self, v21, v22, v23);
-  v26 = objc_msgSend_initWithContext_geometry_style_pathSource_wpStorage_(v12, v25, v4, v16, v20, v24, v11);
+  v26 = objc_msgSend_initWithContext_geometry_style_pathSource_wpStorage_(v12, v25, contextCopy, v16, v20, v24, v11);
 
   v30 = objc_msgSend_parentInfo(self, v27, v28, v29);
   v34 = objc_msgSend_exteriorTextWrap(v30, v31, v32, v33);
@@ -77,26 +77,26 @@
   return v26;
 }
 
-- (void)setChildInfoKind:(int64_t)a3
+- (void)setChildInfoKind:(int64_t)kind
 {
-  if (self->_childInfoKind != a3)
+  if (self->_childInfoKind != kind)
   {
-    objc_msgSend_willModify(self, a2, a3, v3);
-    self->_childInfoKind = a3;
+    objc_msgSend_willModify(self, a2, kind, v3);
+    self->_childInfoKind = kind;
   }
 }
 
-- (void)setPlacement:(id)a3
+- (void)setPlacement:(id)placement
 {
-  v5 = a3;
-  v20 = v5;
-  if (v5)
+  placementCopy = placement;
+  v20 = placementCopy;
+  if (placementCopy)
   {
-    if (self->_placement != v5)
+    if (self->_placement != placementCopy)
     {
       objc_msgSend_willModify(self, v6, v7, v8);
       objc_msgSend_willChangeProperty_(self, v9, 548, v10);
-      objc_storeStrong(&self->_placement, a3);
+      objc_storeStrong(&self->_placement, placement);
     }
   }
 
@@ -139,21 +139,21 @@ LABEL_7:
   return v18;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v8 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v8, v4, off_2812F3500[64], v5);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F3500[64], v5);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v7, v6, v8);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v7, v6, unarchiverCopy);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 3))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -163,26 +163,26 @@ LABEL_7:
 
   v15.receiver = self;
   v15.super_class = TSACaptionInfo;
-  [(TSACaptionInfo *)&v15 loadFromArchive:v7 unarchiver:v6];
-  v8 = *(a3 + 4);
+  [(TSACaptionInfo *)&v15 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  v8 = *(archive + 4);
   if ((v8 & 2) != 0)
   {
-    v9 = *(a3 + 4);
+    v9 = *(archive + 4);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_2760D4150;
     v14[3] = &unk_27A6B0B68;
     v14[4] = self;
-    v10 = v6;
+    v10 = unarchiverCopy;
     v11 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v10, v12, v9, v11, 0, v14);
 
-    v8 = *(a3 + 4);
+    v8 = *(archive + 4);
   }
 
   if ((v8 & 4) != 0)
   {
-    v13 = *(a3 + 10);
+    v13 = *(archive + 10);
     if (v13 == 1)
     {
 LABEL_10:
@@ -200,64 +200,64 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v11 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v11, v4, sub_2760D4F40, off_2812F3500[64]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2760D4F40, off_2812F3500[64]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v11);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
   v10 = objc_msgSend_childInfoKind(self, v7, v8, v9);
   *(v5 + 16) |= 4u;
   *(v5 + 40) = v10;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v8 = a4;
-  *(a3 + 4) |= 1u;
-  v9 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v9 = *(archive + 3);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = MEMORY[0x277C951E0](v10);
-    *(a3 + 3) = v9;
+    *(archive + 3) = v9;
   }
 
   v11 = *MEMORY[0x277D808D0];
-  objc_msgSend_setMessageVersion_(v8, v6, *MEMORY[0x277D808D0], v7);
-  objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v8, v12, *MEMORY[0x277D80990], v11, @"TSACaptions");
+  objc_msgSend_setMessageVersion_(archiverCopy, v6, *MEMORY[0x277D808D0], v7);
+  objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(archiverCopy, v12, *MEMORY[0x277D80990], v11, @"TSACaptions");
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = sub_2760D43F4;
   v26[3] = &unk_27A6AF6C8;
   v29 = v9;
-  v13 = v8;
+  v13 = archiverCopy;
   v27 = v13;
-  v28 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v13, v14, 1, a3, v26);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v13, v14, 1, archive, v26);
   v18 = objc_msgSend_placement(self, v15, v16, v17);
 
   if (v18)
   {
     v23 = objc_msgSend_placement(self, v19, v20, v21);
-    *(a3 + 4) |= 2u;
-    v24 = *(a3 + 4);
+    *(archive + 4) |= 2u;
+    v24 = *(archive + 4);
     if (!v24)
     {
-      v25 = *(a3 + 1);
+      v25 = *(archive + 1);
       if (v25)
       {
         v25 = *(v25 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v24 = MEMORY[0x277C951B0](v25);
-      *(a3 + 4) = v24;
+      *(archive + 4) = v24;
     }
 
     objc_msgSend_setStrongReference_message_(v13, v22, v23, v24);
@@ -272,9 +272,9 @@ LABEL_11:
   return v8;
 }
 
-- (void)setOwningAttachment:(id)a3
+- (void)setOwningAttachment:(id)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   v4 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSACaptionInfo setOwningAttachment:]", v6);
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/application/common/TSACaptionInfo.mm", v9);
@@ -353,9 +353,9 @@ LABEL_11:
   return v6;
 }
 
-- (void)setLocked:(BOOL)a3
+- (void)setLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v4 = MEMORY[0x277D81150];
     v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSACaptionInfo setLocked:]", v3);
@@ -368,11 +368,11 @@ LABEL_11:
   }
 }
 
-- (BOOL)shouldShowOnCanvas:(id)a3
+- (BOOL)shouldShowOnCanvas:(id)canvas
 {
   v4.receiver = self;
   v4.super_class = TSACaptionInfo;
-  return [(TSACaptionInfo *)&v4 shouldShowOnCanvas:a3];
+  return [(TSACaptionInfo *)&v4 shouldShowOnCanvas:canvas];
 }
 
 - (BOOL)textStorageAllowsCommentsDisregardingParent
@@ -449,11 +449,11 @@ LABEL_11:
   return v9;
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  if (a3 == 548)
+  if (property == 548)
   {
-    v5 = objc_msgSend_placement(self, a2, *&a3, v3);
+    v5 = objc_msgSend_placement(self, a2, *&property, v3);
   }
 
   else
@@ -472,16 +472,16 @@ LABEL_11:
   return v8;
 }
 
-- (id)p_captionPlacementForAnchorLocation:(int64_t)a3
+- (id)p_captionPlacementForAnchorLocation:(int64_t)location
 {
   v5 = [TSACaptionPlacement alloc];
   v10 = objc_msgSend_context(self, v6, v7, v8);
-  if (a3 == 7)
+  if (location == 7)
   {
     v11 = objc_msgSend_initWithContext_drawableAnchorLocation_captionAnchorLocation_(v5, v9, v10, 7, 1);
   }
 
-  else if (a3 == 1)
+  else if (location == 1)
   {
     v11 = objc_msgSend_initWithContext_drawableAnchorLocation_captionAnchorLocation_(v5, v9, v10, 1, 7);
   }

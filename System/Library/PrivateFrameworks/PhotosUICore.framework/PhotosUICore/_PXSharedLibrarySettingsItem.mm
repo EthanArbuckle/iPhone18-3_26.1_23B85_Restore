@@ -1,14 +1,14 @@
 @interface _PXSharedLibrarySettingsItem
-+ (id)itemWithTitle:(id)a3;
++ (id)itemWithTitle:(id)title;
 @end
 
 @implementation _PXSharedLibrarySettingsItem
 
-+ (id)itemWithTitle:(id)a3
++ (id)itemWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setTitle:v4];
+  titleCopy = title;
+  v5 = objc_alloc_init(self);
+  [v5 setTitle:titleCopy];
 
   return v5;
 }

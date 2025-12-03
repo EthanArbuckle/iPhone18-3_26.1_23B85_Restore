@@ -1,26 +1,26 @@
 @interface PRSCoreDuet
-- (PRSCoreDuet)initWithStreamName:(id)a3;
-- (id)getRankedCategoriesDictionaryWithPredictionWindow:(double)a3 predictionInterval:(double)a4;
-- (void)addResultCategoryAndGroupToHistory:(id)a3 groupName:(id)a4 error:(id)a5;
+- (PRSCoreDuet)initWithStreamName:(id)name;
+- (id)getRankedCategoriesDictionaryWithPredictionWindow:(double)window predictionInterval:(double)interval;
+- (void)addResultCategoryAndGroupToHistory:(id)history groupName:(id)name error:(id)error;
 @end
 
 @implementation PRSCoreDuet
 
-- (PRSCoreDuet)initWithStreamName:(id)a3
+- (PRSCoreDuet)initWithStreamName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = PRSCoreDuet;
   v5 = [(PRSCoreDuet *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69979A0] knowledgeStore];
+    knowledgeStore = [MEMORY[0x1E69979A0] knowledgeStore];
     knowledgeStore = v5->_knowledgeStore;
-    v5->_knowledgeStore = v6;
+    v5->_knowledgeStore = knowledgeStore;
 
     v8 = MEMORY[0x1E6997970];
-    v9 = [MEMORY[0x1E6997940] type];
-    v10 = [v8 eventStreamWithName:v4 valueType:v9];
+    type = [MEMORY[0x1E6997940] type];
+    v10 = [v8 eventStreamWithName:nameCopy valueType:type];
     spotlightStream = v5->_spotlightStream;
     v5->_spotlightStream = v10;
   }
@@ -28,30 +28,30 @@
   return v5;
 }
 
-- (id)getRankedCategoriesDictionaryWithPredictionWindow:(double)a3 predictionInterval:(double)a4
+- (id)getRankedCategoriesDictionaryWithPredictionWindow:(double)window predictionInterval:(double)interval
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-a4];
-  v6 = [MEMORY[0x1E695DF00] date];
+  v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-interval];
+  date = [MEMORY[0x1E695DF00] date];
   v7 = MEMORY[0x1E6997980];
   spotlightStream = self->_spotlightStream;
-  v29 = v6;
+  v29 = date;
   v30 = v5;
-  v9 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v5 endDate:v6];
+  v9 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v5 endDate:date];
   v10 = [v7 histogramQueryForStream:spotlightStream interval:v9];
 
   v28 = v10;
   v11 = [(_DKKnowledgeStore *)self->_knowledgeStore executeQuery:v10 error:0];
-  v12 = [v11 histogram];
-  v13 = [v12 mutableCopy];
+  histogram = [v11 histogram];
+  v13 = [histogram mutableCopy];
   v27 = v11;
-  v14 = [v11 countOverAllValues];
+  countOverAllValues = [v11 countOverAllValues];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v15 = [v12 allKeys];
-  v16 = [v15 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  allKeys = [histogram allKeys];
+  v16 = [allKeys countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v16)
   {
     v17 = v16;
@@ -62,20 +62,20 @@
       {
         if (*v32 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys);
         }
 
-        if (v14)
+        if (countOverAllValues)
         {
           v20 = *(*(&v31 + 1) + 8 * i);
-          v21 = [v12 objectForKey:v20];
+          v21 = [histogram objectForKey:v20];
           [v21 doubleValue];
-          v23 = [MEMORY[0x1E696AD98] numberWithDouble:v22 / v14];
+          v23 = [MEMORY[0x1E696AD98] numberWithDouble:v22 / countOverAllValues];
           [v13 setValue:v23 forKey:v20];
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v17 = [allKeys countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v17);
@@ -87,26 +87,26 @@
   return v24;
 }
 
-- (void)addResultCategoryAndGroupToHistory:(id)a3 groupName:(id)a4 error:(id)a5
+- (void)addResultCategoryAndGroupToHistory:(id)history groupName:(id)name error:(id)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  historyCopy = history;
+  nameCopy = name;
+  v9 = nameCopy;
+  if (nameCopy)
   {
-    v10 = v8;
+    v10 = nameCopy;
   }
 
   else
   {
-    v10 = v7;
+    v10 = historyCopy;
   }
 
   v11 = MEMORY[0x1E695DF00];
   v12 = v10;
-  v13 = [v11 date];
-  v14 = [MEMORY[0x1E6997960] eventWithStream:self->_spotlightStream startDate:v13 endDate:v13 identifierStringValue:v12 metadata:0];
+  date = [v11 date];
+  v14 = [MEMORY[0x1E6997960] eventWithStream:self->_spotlightStream startDate:date endDate:date identifierStringValue:v12 metadata:0];
 
   knowledgeStore = self->_knowledgeStore;
   v18[0] = v14;

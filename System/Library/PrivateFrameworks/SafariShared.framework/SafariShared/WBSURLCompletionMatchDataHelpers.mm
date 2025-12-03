@@ -1,17 +1,17 @@
 @interface WBSURLCompletionMatchDataHelpers
-+ (BOOL)typedStringMatchesTitleAndURLAutocompleteTriggers:(id)a3 title:(id)a4 urlString:(id)a5 autoCompleteTriggers:(id)a6 isStrengthened:(BOOL)a7;
++ (BOOL)typedStringMatchesTitleAndURLAutocompleteTriggers:(id)triggers title:(id)title urlString:(id)string autoCompleteTriggers:(id)completeTriggers isStrengthened:(BOOL)strengthened;
 @end
 
 @implementation WBSURLCompletionMatchDataHelpers
 
-+ (BOOL)typedStringMatchesTitleAndURLAutocompleteTriggers:(id)a3 title:(id)a4 urlString:(id)a5 autoCompleteTriggers:(id)a6 isStrengthened:(BOOL)a7
++ (BOOL)typedStringMatchesTitleAndURLAutocompleteTriggers:(id)triggers title:(id)title urlString:(id)string autoCompleteTriggers:(id)completeTriggers isStrengthened:(BOOL)strengthened
 {
-  v7 = a7;
+  strengthenedCopy = strengthened;
   v33 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v27 = a4;
-  v12 = a5;
-  v13 = a6;
+  triggersCopy = triggers;
+  titleCopy = title;
+  stringCopy = string;
+  completeTriggersCopy = completeTriggers;
   if (+[WBSURLCompletionMatchDataHelpers typedStringMatchesTitleAndURLAutocompleteTriggers:title:urlString:autoCompleteTriggers:isStrengthened:]::onceToken != -1)
   {
     +[WBSURLCompletionMatchDataHelpers typedStringMatchesTitleAndURLAutocompleteTriggers:title:urlString:autoCompleteTriggers:isStrengthened:];
@@ -21,7 +21,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = v13;
+  v14 = completeTriggersCopy;
   v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v15)
   {
@@ -40,20 +40,20 @@
       }
 
       v18 = *(*(&v28 + 1) + 8 * i);
-      if (([(__CFString *)v18 safari_hasPrefix:v11]& 1) != 0)
+      if (([(__CFString *)v18 safari_hasPrefix:triggersCopy]& 1) != 0)
       {
         goto LABEL_24;
       }
 
-      if ([(NSString *)v11 safari_hasPrefix:v18])
+      if ([(NSString *)triggersCopy safari_hasPrefix:v18])
       {
-        if (!v7 || (typedStringMatchesTitleOrURLWithAutocompleteTrigger(v11, v27, v12, &v18->isa, +[WBSURLCompletionMatchDataHelpers typedStringMatchesTitleAndURLAutocompleteTriggers:title:urlString:autoCompleteTriggers:isStrengthened:]::delimiters) & 1) != 0)
+        if (!strengthenedCopy || (typedStringMatchesTitleOrURLWithAutocompleteTrigger(triggersCopy, titleCopy, stringCopy, &v18->isa, +[WBSURLCompletionMatchDataHelpers typedStringMatchesTitleAndURLAutocompleteTriggers:title:urlString:autoCompleteTriggers:isStrengthened:]::delimiters) & 1) != 0)
         {
           goto LABEL_24;
         }
       }
 
-      else if (!v7)
+      else if (!strengthenedCopy)
       {
         continue;
       }
@@ -70,10 +70,10 @@
         }
       }
 
-      v23 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v24 = [(__CFString *)v18 safari_stringByRemovingCharactersInSet:v23];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v24 = [(__CFString *)v18 safari_stringByRemovingCharactersInSet:whitespaceCharacterSet];
 
-      if ([(NSString *)v11 safari_hasPrefix:v24]&& (typedStringMatchesTitleOrURLWithAutocompleteTrigger(v11, v27, v12, v24, +[WBSURLCompletionMatchDataHelpers typedStringMatchesTitleAndURLAutocompleteTriggers:title:urlString:autoCompleteTriggers:isStrengthened:]::delimiters) & 1) != 0)
+      if ([(NSString *)triggersCopy safari_hasPrefix:v24]&& (typedStringMatchesTitleOrURLWithAutocompleteTrigger(triggersCopy, titleCopy, stringCopy, v24, +[WBSURLCompletionMatchDataHelpers typedStringMatchesTitleAndURLAutocompleteTriggers:title:urlString:autoCompleteTriggers:isStrengthened:]::delimiters) & 1) != 0)
       {
 
 LABEL_24:

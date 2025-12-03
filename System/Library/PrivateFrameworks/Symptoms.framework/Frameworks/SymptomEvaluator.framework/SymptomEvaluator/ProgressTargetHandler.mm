@@ -1,10 +1,10 @@
 @interface ProgressTargetHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (BOOL)noteSymptom:(id)a3;
-- (int)configureInstance:(id)a3;
-- (int)read:(id)a3 returnedValues:(id)a4;
-- (void)doActionsForNetworkType:(int64_t)a3;
+- (BOOL)noteSymptom:(id)symptom;
+- (int)configureInstance:(id)instance;
+- (int)read:(id)read returnedValues:(id)values;
+- (void)doActionsForNetworkType:(int64_t)type;
 - (void)pruneActions;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __39__ProgressTargetHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_17 != -1)
   {
     dispatch_once(&sharedInstance_pred_17, block);
@@ -45,16 +45,16 @@ uint64_t __39__ProgressTargetHandler_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v6, v7);
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[ProgressTargetHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)configureInstance:(id)a3
+- (int)configureInstance:(id)instance
 {
   self->regularMargin = machAbsoluteTimeFromNanoseconds(5000000000);
   self->expeditedMargin = machAbsoluteTimeFromNanoseconds(500000000);
@@ -197,12 +197,12 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)doActionsForNetworkType:(int64_t)a3
+- (void)doActionsForNetworkType:(int64_t)type
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = rnfLogHandle;
   v5 = os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT);
-  if (a3 == 2)
+  if (type == 2)
   {
     if (v5)
     {
@@ -213,7 +213,7 @@ LABEL_12:
     [NetworkAnalyticsEngine relayRebufferState:1];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     if (v5)
     {
@@ -228,7 +228,7 @@ LABEL_12:
   else if (v5)
   {
     v7 = 134217984;
-    v8 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEFAULT, "Progress Target: no action for interface type (%ld)", &v7, 0xCu);
   }
 
@@ -274,14 +274,14 @@ uint64_t __37__ProgressTargetHandler_pruneActions__block_invoke(uint64_t a1, voi
   return v7;
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__ProgressTargetHandler_noteSymptom___block_invoke;
   v6[3] = &unk_27898CAE0;
   v6[4] = self;
-  if ((libnetcoreSymptomTrampoline(a3, 0, 0, 0, MEMORY[0x277D85CD0], v6) & 1) == 0)
+  if ((libnetcoreSymptomTrampoline(symptom, 0, 0, 0, MEMORY[0x277D85CD0], v6) & 1) == 0)
   {
     v3 = rnfLogHandle;
     if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
@@ -418,12 +418,12 @@ LABEL_26:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

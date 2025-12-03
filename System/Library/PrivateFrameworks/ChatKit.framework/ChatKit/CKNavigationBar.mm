@@ -1,23 +1,23 @@
 @interface CKNavigationBar
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation CKNavigationBar
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v12.receiver = self;
   v12.super_class = CKNavigationBar;
-  v7 = [(CKNavigationBar *)&v12 hitTest:a4 withEvent:?];
+  v7 = [(CKNavigationBar *)&v12 hitTest:event withEvent:?];
   if (v7 == self)
   {
     if (objc_opt_respondsToSelector())
     {
       v8 = [(CKNavigationBar *)self backButtonViewAtPoint:x, y];
 
-      v9 = [(CKNavigationBar *)self topItem];
+      topItem = [(CKNavigationBar *)self topItem];
       if (v8)
       {
 LABEL_8:
@@ -28,14 +28,14 @@ LABEL_8:
 
     else
     {
-      v9 = [(CKNavigationBar *)self topItem];
+      topItem = [(CKNavigationBar *)self topItem];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 contentScrollView];
+      contentScrollView = [topItem contentScrollView];
 
-      v7 = v10;
+      v7 = contentScrollView;
     }
 
     goto LABEL_8;

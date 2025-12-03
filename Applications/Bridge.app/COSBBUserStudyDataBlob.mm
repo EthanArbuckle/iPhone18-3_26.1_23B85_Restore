@@ -1,28 +1,28 @@
 @interface COSBBUserStudyDataBlob
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addResults:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDetectedCrownOrientation:(BOOL)a3;
-- (void)setHasDetectedRightWrist:(BOOL)a3;
-- (void)setHasReportedCrownOrientation:(BOOL)a3;
-- (void)setHasReportedRightWrist:(BOOL)a3;
-- (void)setHasUserStudyVersion:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)setHasWatchMaterial:(BOOL)a3;
-- (void)setHasWatchSizeClass:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addResults:(id)results;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDetectedCrownOrientation:(BOOL)orientation;
+- (void)setHasDetectedRightWrist:(BOOL)wrist;
+- (void)setHasReportedCrownOrientation:(BOOL)orientation;
+- (void)setHasReportedRightWrist:(BOOL)wrist;
+- (void)setHasUserStudyVersion:(BOOL)version;
+- (void)setHasVersion:(BOOL)version;
+- (void)setHasWatchMaterial:(BOOL)material;
+- (void)setHasWatchSizeClass:(BOOL)class;
+- (void)writeTo:(id)to;
 @end
 
 @implementation COSBBUserStudyDataBlob
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 64;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasReportedRightWrist:(BOOL)a3
+- (void)setHasReportedRightWrist:(BOOL)wrist
 {
-  if (a3)
+  if (wrist)
   {
     v3 = 16;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasReportedCrownOrientation:(BOOL)a3
+- (void)setHasReportedCrownOrientation:(BOOL)orientation
 {
-  if (a3)
+  if (orientation)
   {
     v3 = 8;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasUserStudyVersion:(BOOL)a3
+- (void)setHasUserStudyVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 32;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasWatchSizeClass:(BOOL)a3
+- (void)setHasWatchSizeClass:(BOOL)class
 {
-  if (a3)
+  if (class)
   {
     v3 = 256;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasWatchMaterial:(BOOL)a3
+- (void)setHasWatchMaterial:(BOOL)material
 {
-  if (a3)
+  if (material)
   {
     v3 = 128;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasDetectedRightWrist:(BOOL)a3
+- (void)setHasDetectedRightWrist:(BOOL)wrist
 {
-  if (a3)
+  if (wrist)
   {
     v3 = 4;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDetectedCrownOrientation:(BOOL)a3
+- (void)setHasDetectedCrownOrientation:(BOOL)orientation
 {
-  if (a3)
+  if (orientation)
   {
     v3 = 2;
   }
@@ -140,22 +140,22 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_results;
     self->_results = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSMutableArray *)results addObject:v4];
+  [(NSMutableArray *)results addObject:resultsCopy];
 }
 
 - (id)description
@@ -163,8 +163,8 @@
   v7.receiver = self;
   v7.super_class = COSBBUserStudyDataBlob;
   v3 = [(COSBBUserStudyDataBlob *)&v7 description];
-  v4 = [(COSBBUserStudyDataBlob *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(COSBBUserStudyDataBlob *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -324,8 +324,8 @@ LABEL_16:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -340,9 +340,9 @@ LABEL_16:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -484,14 +484,14 @@ LABEL_16:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    v4[13] = self->_version;
-    *(v4 + 38) |= 0x40u;
+    toCopy[13] = self->_version;
+    *(toCopy + 38) |= 0x40u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -510,8 +510,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[9] = self->_reportedRightWrist;
-  *(v4 + 38) |= 0x10u;
+  toCopy[9] = self->_reportedRightWrist;
+  *(toCopy + 38) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -525,8 +525,8 @@ LABEL_4:
   }
 
 LABEL_25:
-  v4[8] = self->_reportedCrownOrientation;
-  *(v4 + 38) |= 8u;
+  toCopy[8] = self->_reportedCrownOrientation;
+  *(toCopy + 38) |= 8u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -540,8 +540,8 @@ LABEL_5:
   }
 
 LABEL_26:
-  v4[12] = self->_userStudyVersion;
-  *(v4 + 38) |= 0x20u;
+  toCopy[12] = self->_userStudyVersion;
+  *(toCopy + 38) |= 0x20u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -555,27 +555,27 @@ LABEL_6:
   }
 
 LABEL_27:
-  v4[18] = self->_watchSizeClass;
-  *(v4 + 38) |= 0x100u;
+  toCopy[18] = self->_watchSizeClass;
+  *(toCopy + 38) |= 0x100u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_7:
-    v4[14] = self->_watchMaterial;
-    *(v4 + 38) |= 0x80u;
+    toCopy[14] = self->_watchMaterial;
+    *(toCopy + 38) |= 0x80u;
   }
 
 LABEL_8:
-  v11 = v4;
+  v11 = toCopy;
   if (self->_watchProductType)
   {
-    [v4 setWatchProductType:?];
-    v4 = v11;
+    [toCopy setWatchProductType:?];
+    toCopy = v11;
   }
 
   if (self->_phoneProductType)
   {
     [v11 setPhoneProductType:?];
-    v4 = v11;
+    toCopy = v11;
   }
 
   v6 = self->_has;
@@ -587,8 +587,8 @@ LABEL_8:
     }
 
 LABEL_30:
-    *(v4 + 1) = *&self->_detectedConfidence;
-    *(v4 + 38) |= 1u;
+    *(toCopy + 1) = *&self->_detectedConfidence;
+    *(toCopy + 38) |= 1u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_16;
@@ -597,8 +597,8 @@ LABEL_30:
     goto LABEL_15;
   }
 
-  v4[5] = self->_detectedRightWrist;
-  *(v4 + 38) |= 4u;
+  toCopy[5] = self->_detectedRightWrist;
+  *(toCopy + 38) |= 4u;
   v6 = self->_has;
   if (v6)
   {
@@ -609,18 +609,18 @@ LABEL_14:
   if ((v6 & 2) != 0)
   {
 LABEL_15:
-    v4[4] = self->_detectedCrownOrientation;
-    *(v4 + 38) |= 2u;
+    toCopy[4] = self->_detectedCrownOrientation;
+    *(toCopy + 38) |= 2u;
   }
 
 LABEL_16:
   if ([(COSBBUserStudyDataBlob *)self resultsCount])
   {
     [v11 clearResults];
-    v7 = [(COSBBUserStudyDataBlob *)self resultsCount];
-    if (v7)
+    resultsCount = [(COSBBUserStudyDataBlob *)self resultsCount];
+    if (resultsCount)
     {
-      v8 = v7;
+      v8 = resultsCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(COSBBUserStudyDataBlob *)self resultsAtIndex:i];
@@ -630,9 +630,9 @@ LABEL_16:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x40) != 0)
@@ -712,11 +712,11 @@ LABEL_7:
   }
 
 LABEL_8:
-  v8 = [(NSString *)self->_watchProductType copyWithZone:a3];
+  v8 = [(NSString *)self->_watchProductType copyWithZone:zone];
   v9 = v6[8];
   v6[8] = v8;
 
-  v10 = [(NSString *)self->_phoneProductType copyWithZone:a3];
+  v10 = [(NSString *)self->_phoneProductType copyWithZone:zone];
   v11 = v6[3];
   v6[3] = v10;
 
@@ -772,7 +772,7 @@ LABEL_12:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v18 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v6 addResults:v18];
       }
 
@@ -785,19 +785,19 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   has = self->_has;
-  v6 = *(v4 + 38);
+  v6 = *(equalCopy + 38);
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_version != *(v4 + 13))
+    if ((v6 & 0x40) == 0 || self->_version != *(equalCopy + 13))
     {
       goto LABEL_53;
     }
@@ -812,7 +812,7 @@ LABEL_53:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_reportedRightWrist != *(v4 + 9))
+    if ((v6 & 0x10) == 0 || self->_reportedRightWrist != *(equalCopy + 9))
     {
       goto LABEL_53;
     }
@@ -825,7 +825,7 @@ LABEL_53:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_reportedCrownOrientation != *(v4 + 8))
+    if ((v6 & 8) == 0 || self->_reportedCrownOrientation != *(equalCopy + 8))
     {
       goto LABEL_53;
     }
@@ -838,7 +838,7 @@ LABEL_53:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_userStudyVersion != *(v4 + 12))
+    if ((v6 & 0x20) == 0 || self->_userStudyVersion != *(equalCopy + 12))
     {
       goto LABEL_53;
     }
@@ -851,20 +851,20 @@ LABEL_53:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 38) & 0x100) == 0 || self->_watchSizeClass != *(v4 + 18))
+    if ((*(equalCopy + 38) & 0x100) == 0 || self->_watchSizeClass != *(equalCopy + 18))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 38) & 0x100) != 0)
+  else if ((*(equalCopy + 38) & 0x100) != 0)
   {
     goto LABEL_53;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_watchMaterial != *(v4 + 14))
+    if ((v6 & 0x80) == 0 || self->_watchMaterial != *(equalCopy + 14))
     {
       goto LABEL_53;
     }
@@ -876,13 +876,13 @@ LABEL_53:
   }
 
   watchProductType = self->_watchProductType;
-  if (watchProductType | *(v4 + 8) && ![(NSString *)watchProductType isEqual:?])
+  if (watchProductType | *(equalCopy + 8) && ![(NSString *)watchProductType isEqual:?])
   {
     goto LABEL_53;
   }
 
   phoneProductType = self->_phoneProductType;
-  if (phoneProductType | *(v4 + 3))
+  if (phoneProductType | *(equalCopy + 3))
   {
     if (![(NSString *)phoneProductType isEqual:?])
     {
@@ -891,10 +891,10 @@ LABEL_53:
   }
 
   v9 = self->_has;
-  v10 = *(v4 + 38);
+  v10 = *(equalCopy + 38);
   if ((v9 & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_detectedRightWrist != *(v4 + 5))
+    if ((v10 & 4) == 0 || self->_detectedRightWrist != *(equalCopy + 5))
     {
       goto LABEL_53;
     }
@@ -907,7 +907,7 @@ LABEL_53:
 
   if (v9)
   {
-    if ((v10 & 1) == 0 || self->_detectedConfidence != *(v4 + 1))
+    if ((v10 & 1) == 0 || self->_detectedConfidence != *(equalCopy + 1))
     {
       goto LABEL_53;
     }
@@ -920,7 +920,7 @@ LABEL_53:
 
   if ((v9 & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_detectedCrownOrientation != *(v4 + 4))
+    if ((v10 & 2) == 0 || self->_detectedCrownOrientation != *(equalCopy + 4))
     {
       goto LABEL_53;
     }
@@ -932,7 +932,7 @@ LABEL_53:
   }
 
   results = self->_results;
-  if (results | *(v4 + 5))
+  if (results | *(equalCopy + 5))
   {
     v12 = [(NSMutableArray *)results isEqual:?];
   }
@@ -1090,16 +1090,16 @@ LABEL_22:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v15 ^ v19 ^ v20 ^ [(NSMutableArray *)self->_results hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 38);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 38);
   if ((v6 & 0x40) != 0)
   {
-    self->_version = v4[13];
+    self->_version = fromCopy[13];
     *&self->_has |= 0x40u;
-    v6 = *(v4 + 38);
+    v6 = *(fromCopy + 38);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -1117,9 +1117,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_reportedRightWrist = v4[9];
+  self->_reportedRightWrist = fromCopy[9];
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 38);
+  v6 = *(fromCopy + 38);
   if ((v6 & 8) == 0)
   {
 LABEL_4:
@@ -1132,9 +1132,9 @@ LABEL_4:
   }
 
 LABEL_26:
-  self->_reportedCrownOrientation = v4[8];
+  self->_reportedCrownOrientation = fromCopy[8];
   *&self->_has |= 8u;
-  v6 = *(v4 + 38);
+  v6 = *(fromCopy + 38);
   if ((v6 & 0x20) == 0)
   {
 LABEL_5:
@@ -1147,9 +1147,9 @@ LABEL_5:
   }
 
 LABEL_27:
-  self->_userStudyVersion = v4[12];
+  self->_userStudyVersion = fromCopy[12];
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 38);
+  v6 = *(fromCopy + 38);
   if ((v6 & 0x100) == 0)
   {
 LABEL_6:
@@ -1162,17 +1162,17 @@ LABEL_6:
   }
 
 LABEL_28:
-  self->_watchSizeClass = v4[18];
+  self->_watchSizeClass = fromCopy[18];
   *&self->_has |= 0x100u;
-  if ((v4[19] & 0x80) != 0)
+  if ((fromCopy[19] & 0x80) != 0)
   {
 LABEL_7:
-    self->_watchMaterial = v4[14];
+    self->_watchMaterial = fromCopy[14];
     *&self->_has |= 0x80u;
   }
 
 LABEL_8:
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(COSBBUserStudyDataBlob *)self setWatchProductType:?];
   }

@@ -1,33 +1,33 @@
 @interface CAMSmartStylePreviewViewController
 - (BOOL)didFinishRendering;
-- (CAMSmartStylePreviewViewController)initWithDelegate:(id)a3 gridLayout:(unint64_t)a4 pageIndex:(int64_t)a5;
+- (CAMSmartStylePreviewViewController)initWithDelegate:(id)delegate gridLayout:(unint64_t)layout pageIndex:(int64_t)index;
 - (CAMSmartStylePreviewViewControllerDelegate)delegate;
 - (NSString)description;
 - (unint64_t)expandedItemIndex;
 - (void)loadView;
-- (void)setExpandedItemIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)smartStylePreviewGridView:(id)a3 didChangeAnimatingGrid:(BOOL)a4;
-- (void)smartStylePreviewGridView:(id)a3 didTapItemAtIndex:(unint64_t)a4;
-- (void)smartStylePreviewGridViewDidFinishRendering:(id)a3;
+- (void)setExpandedItemIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)smartStylePreviewGridView:(id)view didChangeAnimatingGrid:(BOOL)grid;
+- (void)smartStylePreviewGridView:(id)view didTapItemAtIndex:(unint64_t)index;
+- (void)smartStylePreviewGridViewDidFinishRendering:(id)rendering;
 - (void)speedUpFadeInAnimations;
 - (void)updateViewsWithLoadResults;
-- (void)updateWithStyle:(id)a3;
+- (void)updateWithStyle:(id)style;
 @end
 
 @implementation CAMSmartStylePreviewViewController
 
-- (CAMSmartStylePreviewViewController)initWithDelegate:(id)a3 gridLayout:(unint64_t)a4 pageIndex:(int64_t)a5
+- (CAMSmartStylePreviewViewController)initWithDelegate:(id)delegate gridLayout:(unint64_t)layout pageIndex:(int64_t)index
 {
-  v8 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = CAMSmartStylePreviewViewController;
   v9 = [(CAMSmartStylePreviewViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    v10->_pageIndex = a5;
-    v10->_gridLayout = a4;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v10->_pageIndex = index;
+    v10->_gridLayout = layout;
   }
 
   return v10;
@@ -66,78 +66,78 @@
     v4 = v3;
     for (i = 0; i != v4; ++i)
     {
-      v6 = [(CAMSmartStylePreviewViewController *)self delegate];
-      v7 = [v6 previewViewController:self requestsLoadResultForGridIndex:i];
+      delegate = [(CAMSmartStylePreviewViewController *)self delegate];
+      v7 = [delegate previewViewController:self requestsLoadResultForGridIndex:i];
 
-      v8 = [(CAMSmartStylePreviewViewController *)self _previewView];
-      [v8 updateGridIndex:i withResourceLoadResult:v7];
+      _previewView = [(CAMSmartStylePreviewViewController *)self _previewView];
+      [_previewView updateGridIndex:i withResourceLoadResult:v7];
     }
   }
 }
 
 - (void)speedUpFadeInAnimations
 {
-  v2 = [(CAMSmartStylePreviewViewController *)self _previewView];
-  [v2 speedUpFadeInAnimations];
+  _previewView = [(CAMSmartStylePreviewViewController *)self _previewView];
+  [_previewView speedUpFadeInAnimations];
 }
 
 - (BOOL)didFinishRendering
 {
-  v2 = [(CAMSmartStylePreviewViewController *)self _previewView];
-  v3 = [v2 didFinishRendering];
+  _previewView = [(CAMSmartStylePreviewViewController *)self _previewView];
+  didFinishRendering = [_previewView didFinishRendering];
 
-  return v3;
+  return didFinishRendering;
 }
 
 - (unint64_t)expandedItemIndex
 {
-  v2 = [(CAMSmartStylePreviewViewController *)self _previewView];
-  v3 = [v2 expandedItemIndex];
+  _previewView = [(CAMSmartStylePreviewViewController *)self _previewView];
+  expandedItemIndex = [_previewView expandedItemIndex];
 
-  return v3;
+  return expandedItemIndex;
 }
 
-- (void)setExpandedItemIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)setExpandedItemIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(CAMSmartStylePreviewViewController *)self _previewView];
-  [v6 setExpandedItemIndex:a3 animated:v4];
+  animatedCopy = animated;
+  _previewView = [(CAMSmartStylePreviewViewController *)self _previewView];
+  [_previewView setExpandedItemIndex:index animated:animatedCopy];
 }
 
-- (void)updateWithStyle:(id)a3
+- (void)updateWithStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CAMSmartStylePreviewViewController *)self _previewView];
-  [v5 setStyle:v4];
+  styleCopy = style;
+  _previewView = [(CAMSmartStylePreviewViewController *)self _previewView];
+  [_previewView setStyle:styleCopy];
 }
 
-- (void)smartStylePreviewGridView:(id)a3 didTapItemAtIndex:(unint64_t)a4
+- (void)smartStylePreviewGridView:(id)view didTapItemAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([v6 expandedItemIndex] == a4)
+  viewCopy = view;
+  if ([viewCopy expandedItemIndex] == index)
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    indexCopy = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v5 = a4;
+    indexCopy = index;
   }
 
-  [v6 setExpandedItemIndex:v5 animated:1];
+  [viewCopy setExpandedItemIndex:indexCopy animated:1];
 }
 
-- (void)smartStylePreviewGridView:(id)a3 didChangeAnimatingGrid:(BOOL)a4
+- (void)smartStylePreviewGridView:(id)view didChangeAnimatingGrid:(BOOL)grid
 {
-  v4 = a4;
-  v6 = [(CAMSmartStylePreviewViewController *)self delegate];
-  [v6 previewViewController:self didChangeAnimatingGrid:v4];
+  gridCopy = grid;
+  delegate = [(CAMSmartStylePreviewViewController *)self delegate];
+  [delegate previewViewController:self didChangeAnimatingGrid:gridCopy];
 }
 
-- (void)smartStylePreviewGridViewDidFinishRendering:(id)a3
+- (void)smartStylePreviewGridViewDidFinishRendering:(id)rendering
 {
-  v4 = [(CAMSmartStylePreviewViewController *)self delegate];
-  [v4 previewViewControllerDidFinishRendering:self];
+  delegate = [(CAMSmartStylePreviewViewController *)self delegate];
+  [delegate previewViewControllerDidFinishRendering:self];
 }
 
 - (CAMSmartStylePreviewViewControllerDelegate)delegate

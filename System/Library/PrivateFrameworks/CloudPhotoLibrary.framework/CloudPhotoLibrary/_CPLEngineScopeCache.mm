@@ -1,66 +1,66 @@
 @interface _CPLEngineScopeCache
 - (_CPLEngineScopeCache)init;
-- (id)scopeWithCloudIndex:(int64_t)a3;
-- (id)scopeWithLocalIndex:(int64_t)a3;
-- (id)scopeWithStableIndex:(int64_t)a3;
-- (void)cacheScope:(id)a3 forScopeStorage:(id)a4;
+- (id)scopeWithCloudIndex:(int64_t)index;
+- (id)scopeWithLocalIndex:(int64_t)index;
+- (id)scopeWithStableIndex:(int64_t)index;
+- (void)cacheScope:(id)scope forScopeStorage:(id)storage;
 @end
 
 @implementation _CPLEngineScopeCache
 
-- (id)scopeWithStableIndex:(int64_t)a3
+- (id)scopeWithStableIndex:(int64_t)index
 {
   scopeByStableIndex = self->_scopeByStableIndex;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   v5 = [(NSMutableDictionary *)scopeByStableIndex objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)scopeWithCloudIndex:(int64_t)a3
+- (id)scopeWithCloudIndex:(int64_t)index
 {
   scopeByCloudIndex = self->_scopeByCloudIndex;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   v5 = [(NSMutableDictionary *)scopeByCloudIndex objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)scopeWithLocalIndex:(int64_t)a3
+- (id)scopeWithLocalIndex:(int64_t)index
 {
   scopeByLocalIndex = self->_scopeByLocalIndex;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   v5 = [(NSMutableDictionary *)scopeByLocalIndex objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)cacheScope:(id)a3 forScopeStorage:(id)a4
+- (void)cacheScope:(id)scope forScopeStorage:(id)storage
 {
-  v17 = a3;
-  v6 = a4;
-  if (v17)
+  scopeCopy = scope;
+  storageCopy = storage;
+  if (scopeCopy)
   {
-    v7 = [v6 flagsForScope:v17];
+    v7 = [storageCopy flagsForScope:scopeCopy];
     v8 = [v7 valueForFlag:16];
 
     if ((v8 & 1) == 0)
     {
       scopeCache = self->_scopeCache;
-      v10 = [v17 scopeIdentifier];
-      [(NSMutableDictionary *)scopeCache setObject:v17 forKeyedSubscript:v10];
+      scopeIdentifier = [scopeCopy scopeIdentifier];
+      [(NSMutableDictionary *)scopeCache setObject:scopeCopy forKeyedSubscript:scopeIdentifier];
 
       scopeByLocalIndex = self->_scopeByLocalIndex;
-      v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v17, "localIndex")}];
-      [(NSMutableDictionary *)scopeByLocalIndex setObject:v17 forKeyedSubscript:v12];
+      v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(scopeCopy, "localIndex")}];
+      [(NSMutableDictionary *)scopeByLocalIndex setObject:scopeCopy forKeyedSubscript:v12];
 
       scopeByCloudIndex = self->_scopeByCloudIndex;
-      v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v17, "cloudIndex")}];
-      [(NSMutableDictionary *)scopeByCloudIndex setObject:v17 forKeyedSubscript:v14];
+      v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(scopeCopy, "cloudIndex")}];
+      [(NSMutableDictionary *)scopeByCloudIndex setObject:scopeCopy forKeyedSubscript:v14];
 
       scopeByStableIndex = self->_scopeByStableIndex;
-      v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v17, "stableIndex")}];
-      [(NSMutableDictionary *)scopeByStableIndex setObject:v17 forKeyedSubscript:v16];
+      v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(scopeCopy, "stableIndex")}];
+      [(NSMutableDictionary *)scopeByStableIndex setObject:scopeCopy forKeyedSubscript:v16];
     }
   }
 }

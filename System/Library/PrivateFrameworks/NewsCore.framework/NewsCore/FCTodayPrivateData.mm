@@ -2,7 +2,7 @@
 - (FCBundleSubscription)bundleSubscription;
 - (FCDerivedPersonalizationData)derivedPersonalizationData;
 - (FCTodayPrivateData)init;
-- (FCTodayPrivateData)initWithDictionary:(id)a3;
+- (FCTodayPrivateData)initWithDictionary:(id)dictionary;
 - (NSArray)autoFavoriteTagIDs;
 - (NSArray)rankedAllSubscribedTagIDs;
 - (NSArray)rankedAllSubscriptionDates;
@@ -14,25 +14,25 @@
 - (NSSet)mutedTagIDs;
 - (NSSet)purchasedTagIDs;
 - (NSString)localNewsTagID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)prepareForUseWithCompletion:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)prepareForUseWithCompletion:(id)completion;
 @end
 
 @implementation FCTodayPrivateData
 
 - (NSSet)purchasedTagIDs
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayWidgetDropboxDataPurchasedTagIDsDataDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayWidgetDropboxDataPurchasedTagIDsDataDictionaryKey"];
 
   return v3;
 }
 
 - (FCBundleSubscription)bundleSubscription
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayPrivateDataBundleSubscriptionDataDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayPrivateDataBundleSubscriptionDataDictionaryKey"];
   v4 = [v3 copy];
 
   return v4;
@@ -64,11 +64,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCTodayPrivateData)initWithDictionary:(id)a3
+- (FCTodayPrivateData)initWithDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "dictionary"];
     *buf = 136315906;
@@ -88,7 +88,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -97,99 +97,99 @@
 
 - (FCDerivedPersonalizationData)derivedPersonalizationData
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayWidgetDropboxDataDerivedPersonalizationDataDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayWidgetDropboxDataDerivedPersonalizationDataDictionaryKey"];
 
   return v3;
 }
 
 - (NSString)localNewsTagID
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayPrivateDataLocalNewsTagIDDataDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayPrivateDataLocalNewsTagIDDataDictionaryKey"];
 
   return v3;
 }
 
 - (NSSet)mutedTagIDs
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayWidgetDropboxDataMutedTagIDsDataDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayWidgetDropboxDataMutedTagIDsDataDictionaryKey"];
 
   return v3;
 }
 
 - (NSArray)autoFavoriteTagIDs
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayPrivateDataAutoFavoriteTagIDsDataDictionaryKey2"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayPrivateDataAutoFavoriteTagIDsDataDictionaryKey2"];
 
   return v3;
 }
 
 - (NSArray)rankedAllSubscribedTagIDs
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayWidgetDropboxDataRankedSubscribedTagIDsDataDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayWidgetDropboxDataRankedSubscribedTagIDsDataDictionaryKey"];
 
   return v3;
 }
 
 - (NSArray)rankedAllSubscriptionDates
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayPrivateDataRankedAllSubscriptionDatesDataDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayPrivateDataRankedAllSubscriptionDatesDataDictionaryKey"];
 
   return v3;
 }
 
 - (NSDictionary)recentlyReadHistoryItems
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayWidgetPrivateDataRecentlyReadHistoryItemsDataDictionaryKey2"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayWidgetPrivateDataRecentlyReadHistoryItemsDataDictionaryKey2"];
 
   return v3;
 }
 
 - (NSArray)recentlySeenHistoryItems
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayWidgetPrivateDataRecentlySeenHistoryItemsDataDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayWidgetPrivateDataRecentlySeenHistoryItemsDataDictionaryKey"];
 
   return v3;
 }
 
 - (NSNumber)onboardingVersion
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayPrivateDataOnboardingVersionDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayPrivateDataOnboardingVersionDictionaryKey"];
 
   return v3;
 }
 
 - (NSData)userEmbeddingData
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayPrivateDataUserEmbeddingDataDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayPrivateDataUserEmbeddingDataDictionaryKey"];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [FCTodayPrivateData allocWithZone:?];
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v7 = [v6 copyWithZone:a3];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v7 = [dictionary copyWithZone:zone];
   v8 = [(FCTodayPrivateData *)v5 initWithDictionary:v7];
 
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [FCMutableTodayPrivateData allocWithZone:?];
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v7 = [v6 mutableCopyWithZone:a3];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v7 = [dictionary mutableCopyWithZone:zone];
   v8 = [(FCMutableTodayPrivateData *)v5 initWithDictionary:v7];
 
   return v8;
@@ -197,17 +197,17 @@
 
 - (NSSet)groupableTagIDs
 {
-  v2 = [(FCTodayPrivateData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCTodayPrivateDataGroupableTagIDsDataDictionaryKey"];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCTodayPrivateDataGroupableTagIDsDataDictionaryKey"];
 
   return v3;
 }
 
-- (void)prepareForUseWithCompletion:(id)a3
+- (void)prepareForUseWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 

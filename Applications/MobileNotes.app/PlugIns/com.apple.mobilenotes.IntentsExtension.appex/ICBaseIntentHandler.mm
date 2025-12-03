@@ -1,12 +1,12 @@
 @interface ICBaseIntentHandler
 - (ICBaseIntentHandler)init;
-- (id)intentNoteForSearchIndexableNote:(id)a3 includeContent:(BOOL)a4;
-- (id)notesWithText:(id)a3 title:(id)a4 fromDate:(id)a5 toDate:(id)a6 dateSearchType:(int64_t)a7 modernFolderID:(id)a8 legacyFolderID:(id)a9;
-- (id)predicateForSearchFromDate:(id)a3 toDate:(id)a4 dateSearchType:(int64_t)a5;
-- (id)searchIndexableNoteForIntentNote:(id)a3;
-- (id)searchableItemsWithText:(id)a3 title:(id)a4 fromDate:(id)a5 toDate:(id)a6 dateSearchType:(int64_t)a7;
-- (id)simpleSearchForNotesWithTitle:(id)a3 fromDate:(id)a4 toDate:(id)a5 dateSearchType:(int64_t)a6 modernFolderID:(id)a7;
-- (void)refreshNotesForCollectionWithId:(id)a3 andContext:(id)a4;
+- (id)intentNoteForSearchIndexableNote:(id)note includeContent:(BOOL)content;
+- (id)notesWithText:(id)text title:(id)title fromDate:(id)date toDate:(id)toDate dateSearchType:(int64_t)type modernFolderID:(id)d legacyFolderID:(id)iD;
+- (id)predicateForSearchFromDate:(id)date toDate:(id)toDate dateSearchType:(int64_t)type;
+- (id)searchIndexableNoteForIntentNote:(id)note;
+- (id)searchableItemsWithText:(id)text title:(id)title fromDate:(id)date toDate:(id)toDate dateSearchType:(int64_t)type;
+- (id)simpleSearchForNotesWithTitle:(id)title fromDate:(id)date toDate:(id)toDate dateSearchType:(int64_t)type modernFolderID:(id)d;
+- (void)refreshNotesForCollectionWithId:(id)id andContext:(id)context;
 @end
 
 @implementation ICBaseIntentHandler
@@ -30,25 +30,25 @@
   return v2;
 }
 
-- (id)searchableItemsWithText:(id)a3 title:(id)a4 fromDate:(id)a5 toDate:(id)a6 dateSearchType:(int64_t)a7
+- (id)searchableItemsWithText:(id)text title:(id)title fromDate:(id)date toDate:(id)toDate dateSearchType:(int64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  textCopy = text;
+  titleCopy = title;
+  dateCopy = date;
+  toDateCopy = toDate;
   v15 = +[NSMutableArray array];
   v16 = +[NSMutableArray array];
   v59 = +[NSMutableArray array];
-  v60 = v14;
+  v60 = toDateCopy;
   v58 = v16;
-  if ([v11 length])
+  if ([textCopy length])
   {
     v17 = v15;
-    v56 = v13;
-    v18 = v12;
-    v19 = [ICSearchQueryOperation prefixMatchingQueryStringForSearchString:v11];
-    v20 = v11;
-    v21 = [ICSpotlightUtilities stringByEscapingSearchString:v11];
+    v56 = dateCopy;
+    v18 = titleCopy;
+    v19 = [ICSearchQueryOperation prefixMatchingQueryStringForSearchString:textCopy];
+    v20 = textCopy;
+    v21 = [ICSpotlightUtilities stringByEscapingSearchString:textCopy];
     v22 = [v21 length];
     v23 = @"cwdt";
     if (!v22)
@@ -77,26 +77,26 @@
       [v59 addObjectsFromArray:v29];
     }
 
-    v12 = v18;
-    v11 = v20;
-    v14 = v60;
+    titleCopy = v18;
+    textCopy = v20;
+    toDateCopy = v60;
     v15 = v17;
-    v13 = v56;
+    dateCopy = v56;
     v16 = v58;
   }
 
-  if ([v12 length])
+  if ([titleCopy length])
   {
     v57 = v15;
-    v30 = [ICSearchQueryOperation exactMatchingQueryStringForTitleSearchString:v12];
+    v30 = [ICSearchQueryOperation exactMatchingQueryStringForTitleSearchString:titleCopy];
     if (v30)
     {
       [v57 addObject:v30];
     }
 
-    if ([v11 length])
+    if ([textCopy length])
     {
-      v31 = [ICSpotlightUtilities stringByEscapingSearchString:v12];
+      v31 = [ICSpotlightUtilities stringByEscapingSearchString:titleCopy];
       v32 = [v31 length];
       v33 = @"cwdt";
       if (!v32)
@@ -116,79 +116,79 @@
 
     v15 = v57;
     v16 = v58;
-    v14 = v60;
+    toDateCopy = v60;
   }
 
-  if (a7)
+  if (type)
   {
-    if (a7 == 3)
+    if (type == 3)
     {
       goto LABEL_30;
     }
 
-    if (a7 != 2)
+    if (type != 2)
     {
       goto LABEL_38;
     }
   }
 
-  if (v13 && v14)
+  if (dateCopy && toDateCopy)
   {
-    [v13 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v37 = v36;
-    [v14 timeIntervalSinceReferenceDate];
+    [toDateCopy timeIntervalSinceReferenceDate];
     [NSString stringWithFormat:@"((contentModificationDate >= %f) && (contentModificationDate <= %f))", v37, v38];
   }
 
-  else if (v13)
+  else if (dateCopy)
   {
-    [v13 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     [NSString stringWithFormat:@"(contentModificationDate >= %f)", v39, v55];
   }
 
   else
   {
-    if (!v14)
+    if (!toDateCopy)
     {
       goto LABEL_29;
     }
 
-    [v14 timeIntervalSinceReferenceDate];
+    [toDateCopy timeIntervalSinceReferenceDate];
     [NSString stringWithFormat:@"(contentModificationDate <= %f)", v40, v55];
   }
   v41 = ;
   [v16 addObject:v41];
 
-  v14 = v60;
+  toDateCopy = v60;
 LABEL_29:
-  if (a7)
+  if (type)
   {
     goto LABEL_38;
   }
 
 LABEL_30:
-  if (v13 && v14)
+  if (dateCopy && toDateCopy)
   {
-    [v13 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v43 = v42;
-    [v14 timeIntervalSinceReferenceDate];
+    [toDateCopy timeIntervalSinceReferenceDate];
     [NSString stringWithFormat:@"((contentCreationDate >= %f) && (contentCreationDate <= %f))", v43, v44];
   }
 
-  else if (v13)
+  else if (dateCopy)
   {
-    [v13 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     [NSString stringWithFormat:@"(contentCreationDate >= %f)", v45, v55];
   }
 
   else
   {
-    if (!v14)
+    if (!toDateCopy)
     {
       goto LABEL_38;
     }
 
-    [v14 timeIntervalSinceReferenceDate];
+    [toDateCopy timeIntervalSinceReferenceDate];
     [NSString stringWithFormat:@"(contentCreationDate <= %f)", v46, v55];
   }
   v47 = ;
@@ -202,18 +202,18 @@ LABEL_38:
       goto LABEL_45;
     }
 
-    v49 = [v16 firstObject];
-    [v15 addObject:v49];
+    firstObject = [v16 firstObject];
+    [v15 addObject:firstObject];
   }
 
   else
   {
     v48 = [v16 componentsJoinedByString:@" || "];
-    v49 = [NSString stringWithFormat:@"(%@)", v48];
+    firstObject = [NSString stringWithFormat:@"(%@)", v48];
 
-    if (v49)
+    if (firstObject)
     {
-      [v15 addObject:v49];
+      [v15 addObject:firstObject];
     }
   }
 
@@ -232,35 +232,35 @@ LABEL_45:
   v52 = [[ICSearchQueryOperation alloc] initWithQueryString:v50 rankingQueries:v59];
   [v51 addOperation:v52];
   [v51 waitUntilAllOperationsAreFinished];
-  v53 = [v52 results];
+  results = [v52 results];
 
-  return v53;
+  return results;
 }
 
-- (id)predicateForSearchFromDate:(id)a3 toDate:(id)a4 dateSearchType:(int64_t)a5
+- (id)predicateForSearchFromDate:(id)date toDate:(id)toDate dateSearchType:(int64_t)type
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  toDateCopy = toDate;
   v9 = +[NSMutableArray array];
-  if (a5)
+  if (type)
   {
-    if (a5 == 3)
+    if (type == 3)
     {
       goto LABEL_14;
     }
 
-    if (a5 != 2)
+    if (type != 2)
     {
       goto LABEL_23;
     }
   }
 
-  if (v7 && v8)
+  if (dateCopy && toDateCopy)
   {
-    v10 = [NSPredicate predicateWithFormat:@"modificationDate >= %@", v7];
-    v11 = [NSPredicate predicateWithFormat:@"modificationDate <= %@", v8];
-    v22[0] = v10;
-    v22[1] = v11;
+    dateCopy = [NSPredicate predicateWithFormat:@"modificationDate >= %@", dateCopy];
+    toDateCopy = [NSPredicate predicateWithFormat:@"modificationDate <= %@", toDateCopy];
+    v22[0] = dateCopy;
+    v22[1] = toDateCopy;
     v12 = [NSArray arrayWithObjects:v22 count:2];
     v13 = [NSCompoundPredicate andPredicateWithSubpredicates:v12];
     [v9 addObject:v13];
@@ -268,37 +268,37 @@ LABEL_45:
 
   else
   {
-    if (v7)
+    if (dateCopy)
     {
-      [NSPredicate predicateWithFormat:@"modificationDate >= %@", v7];
+      [NSPredicate predicateWithFormat:@"modificationDate >= %@", dateCopy];
     }
 
     else
     {
-      if (!v8)
+      if (!toDateCopy)
       {
         goto LABEL_13;
       }
 
-      [NSPredicate predicateWithFormat:@"modificationDate <= %@", v8];
+      [NSPredicate predicateWithFormat:@"modificationDate <= %@", toDateCopy];
     }
-    v10 = ;
-    [v9 addObject:v10];
+    dateCopy = ;
+    [v9 addObject:dateCopy];
   }
 
 LABEL_13:
-  if (a5)
+  if (type)
   {
     goto LABEL_23;
   }
 
 LABEL_14:
-  if (v7 && v8)
+  if (dateCopy && toDateCopy)
   {
-    v14 = [NSPredicate predicateWithFormat:@"creationDate >= %@", v7];
-    v15 = [NSPredicate predicateWithFormat:@"creationDate <= %@", v8];
-    v21[0] = v14;
-    v21[1] = v15;
+    dateCopy2 = [NSPredicate predicateWithFormat:@"creationDate >= %@", dateCopy];
+    toDateCopy2 = [NSPredicate predicateWithFormat:@"creationDate <= %@", toDateCopy];
+    v21[0] = dateCopy2;
+    v21[1] = toDateCopy2;
     v16 = [NSArray arrayWithObjects:v21 count:2];
     v17 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
     [v9 addObject:v17];
@@ -306,36 +306,36 @@ LABEL_14:
 
   else
   {
-    if (v7)
+    if (dateCopy)
     {
-      [NSPredicate predicateWithFormat:@"creationDate >= %@", v7];
+      [NSPredicate predicateWithFormat:@"creationDate >= %@", dateCopy];
     }
 
     else
     {
-      if (!v8)
+      if (!toDateCopy)
       {
         goto LABEL_23;
       }
 
-      [NSPredicate predicateWithFormat:@"creationDate <= %@", v8];
+      [NSPredicate predicateWithFormat:@"creationDate <= %@", toDateCopy];
     }
-    v14 = ;
-    [v9 addObject:v14];
+    dateCopy2 = ;
+    [v9 addObject:dateCopy2];
   }
 
 LABEL_23:
   if ([v9 count] >= 2)
   {
-    v18 = [NSCompoundPredicate orPredicateWithSubpredicates:v9];
+    firstObject = [NSCompoundPredicate orPredicateWithSubpredicates:v9];
 LABEL_27:
-    v19 = v18;
+    v19 = firstObject;
     goto LABEL_29;
   }
 
   if ([v9 count] == 1)
   {
-    v18 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     goto LABEL_27;
   }
 
@@ -345,20 +345,20 @@ LABEL_29:
   return v19;
 }
 
-- (id)simpleSearchForNotesWithTitle:(id)a3 fromDate:(id)a4 toDate:(id)a5 dateSearchType:(int64_t)a6 modernFolderID:(id)a7
+- (id)simpleSearchForNotesWithTitle:(id)title fromDate:(id)date toDate:(id)toDate dateSearchType:(int64_t)type modernFolderID:(id)d
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  titleCopy = title;
+  dateCopy = date;
+  toDateCopy = toDate;
+  dCopy = d;
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x3032000000;
   v41[3] = sub_1000100D0;
   v41[4] = sub_1000100E0;
   v42 = 0;
-  v16 = [(ICBaseIntentHandler *)self noteContext];
-  v17 = [v16 modernManagedObjectContext];
+  noteContext = [(ICBaseIntentHandler *)self noteContext];
+  modernManagedObjectContext = [noteContext modernManagedObjectContext];
 
   v35 = 0;
   v36 = &v35;
@@ -370,17 +370,17 @@ LABEL_29:
   v25[1] = 3221225472;
   v25[2] = sub_1000100E8;
   v25[3] = &unk_100020E00;
-  v18 = v12;
+  v18 = titleCopy;
   v26 = v18;
-  v27 = self;
-  v19 = v13;
+  selfCopy = self;
+  v19 = dateCopy;
   v28 = v19;
-  v20 = v14;
+  v20 = toDateCopy;
   v29 = v20;
-  v34 = a6;
-  v21 = v15;
+  typeCopy = type;
+  v21 = dCopy;
   v30 = v21;
-  v22 = v17;
+  v22 = modernManagedObjectContext;
   v31 = v22;
   v32 = &v35;
   v33 = v41;
@@ -393,38 +393,38 @@ LABEL_29:
   return v23;
 }
 
-- (id)notesWithText:(id)a3 title:(id)a4 fromDate:(id)a5 toDate:(id)a6 dateSearchType:(int64_t)a7 modernFolderID:(id)a8 legacyFolderID:(id)a9
+- (id)notesWithText:(id)text title:(id)title fromDate:(id)date toDate:(id)toDate dateSearchType:(int64_t)type modernFolderID:(id)d legacyFolderID:(id)iD
 {
-  v38 = a3;
-  v37 = a4;
-  v15 = a5;
-  v16 = a6;
-  v35 = a8;
-  v33 = a9;
+  textCopy = text;
+  titleCopy = title;
+  dateCopy = date;
+  toDateCopy = toDate;
+  dCopy = d;
+  iDCopy = iD;
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
   v65 = sub_1000100D0;
   v66 = sub_1000100E0;
   v67 = +[NSMutableArray array];
-  v34 = [(ICBaseIntentHandler *)self predicateForSearchFromDate:v15 toDate:v16 dateSearchType:a7];
-  v17 = [(ICBaseIntentHandler *)self noteContext];
-  v36 = [v17 modernManagedObjectContext];
+  v34 = [(ICBaseIntentHandler *)self predicateForSearchFromDate:dateCopy toDate:toDateCopy dateSearchType:type];
+  noteContext = [(ICBaseIntentHandler *)self noteContext];
+  modernManagedObjectContext = [noteContext modernManagedObjectContext];
 
-  v18 = [(ICBaseIntentHandler *)self noteContext];
-  v19 = [v18 htmlManagedObjectContext];
+  noteContext2 = [(ICBaseIntentHandler *)self noteContext];
+  htmlManagedObjectContext = [noteContext2 htmlManagedObjectContext];
 
   v20 = +[NSCharacterSet whitespaceCharacterSet];
-  v21 = [v38 stringByTrimmingCharactersInSet:v20];
+  v21 = [textCopy stringByTrimmingCharactersInSet:v20];
   v22 = "@<ICFolderObject>16@0:8" + 13;
   if ([v21 length])
   {
 
 LABEL_4:
-    v26 = [(ICBaseIntentHandler *)self searchableItemsWithText:v38 title:v37 fromDate:v15 toDate:v16 dateSearchType:a7];
+    v26 = [(ICBaseIntentHandler *)self searchableItemsWithText:textCopy title:titleCopy fromDate:dateCopy toDate:toDateCopy dateSearchType:type];
     v27 = +[ICSearchIndexer sharedIndexer];
-    v68[0] = v19;
-    v68[1] = v36;
+    v68[0] = htmlManagedObjectContext;
+    v68[1] = modernManagedObjectContext;
     v28 = [NSArray arrayWithObjects:v68 count:2];
     v29 = [v27 objectsForSearchableItems:v26 inContexts:v28];
 
@@ -440,7 +440,7 @@ LABEL_4:
   }
 
   v23 = +[NSCharacterSet whitespaceCharacterSet];
-  v24 = [v37 stringByTrimmingCharactersInSet:v23];
+  v24 = [titleCopy stringByTrimmingCharactersInSet:v23];
   v25 = [v24 length] == 0;
 
   v22 = "ject>16@0:8";
@@ -459,8 +459,8 @@ LABEL_4:
   v48[1] = 3221225472;
   v48[2] = sub_100010A90;
   v48[3] = &unk_100020E50;
-  v49 = v35;
-  v50 = v36;
+  v49 = dCopy;
+  v50 = modernManagedObjectContext;
   v32 = v34;
   v51 = v32;
   v52 = v54;
@@ -471,7 +471,7 @@ LABEL_4:
   v43[2] = sub_100010CC0;
   v43[3] = &unk_100020E78;
   v44 = v32;
-  v45 = v19;
+  v45 = htmlManagedObjectContext;
   v46 = v54;
   v47 = &v62;
   [v45 performBlockAndWait:v43];
@@ -482,8 +482,8 @@ LABEL_4:
 LABEL_5:
   v39 = *(v22 + 41);
   v40 = v34;
-  v41 = v35;
-  v42 = v33;
+  v41 = dCopy;
+  v42 = iDCopy;
   performBlockOnMainThreadAndWait();
   v30 = v63[5];
 
@@ -492,9 +492,9 @@ LABEL_5:
   return v30;
 }
 
-- (id)intentNoteForSearchIndexableNote:(id)a3 includeContent:(BOOL)a4
+- (id)intentNoteForSearchIndexableNote:(id)note includeContent:(BOOL)content
 {
-  v5 = a3;
+  noteCopy = note;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -510,19 +510,19 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 managedObjectContext];
+    v6 = noteCopy;
+    managedObjectContext = [v6 managedObjectContext];
     v8 = v14;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000114E4;
     v14[3] = &unk_100020EA0;
-    v15 = a4;
+    contentCopy = content;
     v14[4] = v6;
     v14[5] = v16;
     v14[6] = &v18;
     v14[7] = 252;
-    [v7 performBlockAndWait:v14];
+    [managedObjectContext performBlockAndWait:v14];
   }
 
   else
@@ -533,19 +533,19 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v9 = v5;
-    v7 = [v9 managedObjectContext];
+    v9 = noteCopy;
+    managedObjectContext = [v9 managedObjectContext];
     v8 = v12;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000117AC;
     v12[3] = &unk_100020EA0;
-    v13 = a4;
+    contentCopy2 = content;
     v12[4] = v9;
     v12[5] = v16;
     v12[6] = &v18;
     v12[7] = 252;
-    [v7 performBlockAndWait:v12];
+    [managedObjectContext performBlockAndWait:v12];
   }
 
 LABEL_6:
@@ -557,17 +557,17 @@ LABEL_6:
   return v10;
 }
 
-- (id)searchIndexableNoteForIntentNote:(id)a3
+- (id)searchIndexableNoteForIntentNote:(id)note
 {
-  v4 = [a3 identifier];
-  if (v4)
+  identifier = [note identifier];
+  if (identifier)
   {
-    v5 = [NSURL URLWithString:v4];
-    v6 = [(ICBaseIntentHandler *)self noteContext];
-    v7 = [v6 modernManagedObjectContext];
-    v8 = [(ICBaseIntentHandler *)self noteContext];
-    v9 = [v8 htmlManagedObjectContext];
-    v10 = [NotesAssistantUtilities searchIndexableNoteForObject:v5 modernNoteContext:v7 htmlNoteContext:v9];
+    v5 = [NSURL URLWithString:identifier];
+    noteContext = [(ICBaseIntentHandler *)self noteContext];
+    modernManagedObjectContext = [noteContext modernManagedObjectContext];
+    noteContext2 = [(ICBaseIntentHandler *)self noteContext];
+    htmlManagedObjectContext = [noteContext2 htmlManagedObjectContext];
+    v10 = [NotesAssistantUtilities searchIndexableNoteForObject:v5 modernNoteContext:modernManagedObjectContext htmlNoteContext:htmlManagedObjectContext];
   }
 
   else
@@ -578,30 +578,30 @@ LABEL_6:
   return v10;
 }
 
-- (void)refreshNotesForCollectionWithId:(id)a3 andContext:(id)a4
+- (void)refreshNotesForCollectionWithId:(id)id andContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  idCopy = id;
+  contextCopy = context;
+  if (!idCopy)
   {
     [ICAssert handleFailedAssertWithCondition:"((void*)0) != collectionId" functionName:"[ICBaseIntentHandler refreshNotesForCollectionWithId:andContext:]" simulateCrash:1 showAlert:0 format:@"Should not pass nil collection ID into refreshNotesForCollectionWithId:."];
   }
 
-  v7 = [v6 collectionForObjectID:v5];
-  v8 = [v7 basicAccountIdentifier];
-  if (([v8 isEqualToString:kLocalAccountIdentifier] & 1) == 0)
+  v7 = [contextCopy collectionForObjectID:idCopy];
+  basicAccountIdentifier = [v7 basicAccountIdentifier];
+  if (([basicAccountIdentifier isEqualToString:kLocalAccountIdentifier] & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v9 = +[DADConnection sharedConnection];
-      v10 = [v9 updateContentsOfAllFoldersForAccountID:v8 andDataclass:32 isUserRequested:1];
+      v10 = [v9 updateContentsOfAllFoldersForAccountID:basicAccountIdentifier andDataclass:32 isUserRequested:1];
 
       v11 = os_log_create("com.apple.notes", "Intents");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138412546;
-        v20 = v8;
+        v20 = basicAccountIdentifier;
         v21 = 1024;
         LODWORD(v22) = v10;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Result of updating all folders for account ID %@: %d", &v19, 0x12u);
@@ -615,19 +615,19 @@ LABEL_6:
       {
         v12 = v7;
         v13 = +[DADConnection sharedConnection];
-        v14 = [v12 externalIdentifier];
-        v25 = v14;
+        externalIdentifier = [v12 externalIdentifier];
+        v25 = externalIdentifier;
         v15 = [NSArray arrayWithObjects:&v25 count:1];
-        v16 = [v13 updateContentsOfFoldersWithKeys:v15 forAccountID:v8 andDataclass:32 isUserRequested:1];
+        v16 = [v13 updateContentsOfFoldersWithKeys:v15 forAccountID:basicAccountIdentifier andDataclass:32 isUserRequested:1];
 
         v17 = os_log_create("com.apple.notes", "Intents");
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v12 externalIdentifier];
+          externalIdentifier2 = [v12 externalIdentifier];
           v19 = 138412802;
-          v20 = v18;
+          v20 = externalIdentifier2;
           v21 = 2112;
-          v22 = v8;
+          v22 = basicAccountIdentifier;
           v23 = 1024;
           v24 = v16;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Result of updating folder with identifier %@ for account ID %@: %d", &v19, 0x1Cu);

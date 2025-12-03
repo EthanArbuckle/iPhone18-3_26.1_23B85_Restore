@@ -1,7 +1,7 @@
 @interface _UINavigationBarTransitionContext
 + (CAMediaTimingFunction)fadeInFunction;
 + (CAMediaTimingFunction)fadeOutFunction;
-+ (id)contextForTransition:(int64_t)a3 withIdiom:(int64_t)a4 completion:(id)a5;
++ (id)contextForTransition:(int64_t)transition withIdiom:(int64_t)idiom completion:(id)completion;
 - (BOOL)shouldPerformTwoPartCrossfadeTransition;
 - (BOOL)shouldSlideBarBackground;
 - (CGPoint)startingContentOffsetForObservedScrollView;
@@ -11,42 +11,42 @@
 - (_UINavigationBarLargeTitleViewLayout)toLargeTitleViewLayout;
 - (uint64_t)_removeAllClippingViews;
 - (unint64_t)_animationOptions;
-- (void)_addClippingView:(uint64_t)a1;
-- (void)_animateAsTwoPartsWithOverlap:(double)a3 partOne:(id)a4 partTwo:(id)a5;
-- (void)_animateAsTwoPartsWithOverlapIfNecessaryPartOne:(id)a3 partTwo:(id)a4;
+- (void)_addClippingView:(uint64_t)view;
+- (void)_animateAsTwoPartsWithOverlap:(double)overlap partOne:(id)one partTwo:(id)two;
+- (void)_animateAsTwoPartsWithOverlapIfNecessaryPartOne:(id)one partTwo:(id)two;
 - (void)_animateBackgroundView;
-- (void)_animateInProcessAsTwoPartsWithKeyframeID:(id)a3 overlap:(double)a4 partOne:(id)a5 partTwo:(id)a6;
-- (void)_animateInProcessAsTwoPartsWithOverlapIfNecessaryWithKeyframeID:(id)a3 fractionComplete:(double)a4 partOne:(id)a5 partTwo:(id)a6;
+- (void)_animateInProcessAsTwoPartsWithKeyframeID:(id)d overlap:(double)overlap partOne:(id)one partTwo:(id)two;
+- (void)_animateInProcessAsTwoPartsWithOverlapIfNecessaryWithKeyframeID:(id)d fractionComplete:(double)complete partOne:(id)one partTwo:(id)two;
 - (void)_animatePalettes;
 - (void)_preparePalettes;
-- (void)_resetContentAndLargeTitleViewCompleted:(BOOL)a3;
+- (void)_resetContentAndLargeTitleViewCompleted:(BOOL)completed;
 - (void)_resetPalettes;
 - (void)_updateIncomingLayoutWidthToMatchOutgoingLayout;
 - (void)cancel;
 - (void)complete;
 - (void)prepare;
-- (void)recordUpdates:(id)a3;
+- (void)recordUpdates:(id)updates;
 - (void)setAllLargeTitleLayoutsVisible;
-- (void)setAllowLargeTitles:(BOOL)a3;
-- (void)setBackgroundView:(id)a3 isBarBackground:(BOOL)a4;
-- (void)setBeginWithLargeTitle:(BOOL)a3;
-- (void)setBeginWithTransparencyAllowed:(BOOL)a3;
-- (void)setCompact:(BOOL)a3;
-- (void)setEndWithLargeTitle:(BOOL)a3;
-- (void)setEndWithTransparencyAllowed:(BOOL)a3;
-- (void)setFromLargeTitleViewLayout:(id)a3;
-- (void)setObservedScrollViewOffsetIsApplicable:(BOOL)a3;
-- (void)setRTL:(BOOL)a3;
-- (void)setSharesContentViewLayouts:(BOOL)a3;
-- (void)setToLargeTitleViewLayout:(id)a3;
-- (void)setTwoPart:(BOOL)a3;
+- (void)setAllowLargeTitles:(BOOL)titles;
+- (void)setBackgroundView:(id)view isBarBackground:(BOOL)background;
+- (void)setBeginWithLargeTitle:(BOOL)title;
+- (void)setBeginWithTransparencyAllowed:(BOOL)allowed;
+- (void)setCompact:(BOOL)compact;
+- (void)setEndWithLargeTitle:(BOOL)title;
+- (void)setEndWithTransparencyAllowed:(BOOL)allowed;
+- (void)setFromLargeTitleViewLayout:(id)layout;
+- (void)setObservedScrollViewOffsetIsApplicable:(BOOL)applicable;
+- (void)setRTL:(BOOL)l;
+- (void)setSharesContentViewLayouts:(BOOL)layouts;
+- (void)setToLargeTitleViewLayout:(id)layout;
+- (void)setTwoPart:(BOOL)part;
 @end
 
 @implementation _UINavigationBarTransitionContext
 
-- (void)setRTL:(BOOL)a3
+- (void)setRTL:(BOOL)l
 {
-  if (a3)
+  if (l)
   {
     v3 = 2;
   }
@@ -59,9 +59,9 @@
   *&self->_flags = *&self->_flags & 0xFFFD | v3;
 }
 
-- (void)setCompact:(BOOL)a3
+- (void)setCompact:(BOOL)compact
 {
-  if (a3)
+  if (compact)
   {
     v3 = 4;
   }
@@ -74,9 +74,9 @@
   *&self->_flags = *&self->_flags & 0xFFFB | v3;
 }
 
-- (void)setAllowLargeTitles:(BOOL)a3
+- (void)setAllowLargeTitles:(BOOL)titles
 {
-  if (a3)
+  if (titles)
   {
     v3 = 8;
   }
@@ -89,9 +89,9 @@
   *&self->_flags = *&self->_flags & 0xFFF7 | v3;
 }
 
-- (void)setTwoPart:(BOOL)a3
+- (void)setTwoPart:(BOOL)part
 {
-  if (a3)
+  if (part)
   {
     v3 = 16;
   }
@@ -104,9 +104,9 @@
   *&self->_flags = *&self->_flags & 0xFFEF | v3;
 }
 
-- (void)setBeginWithLargeTitle:(BOOL)a3
+- (void)setBeginWithLargeTitle:(BOOL)title
 {
-  if (a3)
+  if (title)
   {
     v3 = 32;
   }
@@ -119,9 +119,9 @@
   *&self->_flags = *&self->_flags & 0xFFDF | v3;
 }
 
-- (void)setEndWithLargeTitle:(BOOL)a3
+- (void)setEndWithLargeTitle:(BOOL)title
 {
-  if (a3)
+  if (title)
   {
     v3 = 64;
   }
@@ -134,9 +134,9 @@
   *&self->_flags = *&self->_flags & 0xFFBF | v3;
 }
 
-- (void)setObservedScrollViewOffsetIsApplicable:(BOOL)a3
+- (void)setObservedScrollViewOffsetIsApplicable:(BOOL)applicable
 {
-  if (a3)
+  if (applicable)
   {
     v3 = 128;
   }
@@ -149,9 +149,9 @@
   *&self->_flags = *&self->_flags & 0xFF7F | v3;
 }
 
-- (void)setSharesContentViewLayouts:(BOOL)a3
+- (void)setSharesContentViewLayouts:(BOOL)layouts
 {
-  if (a3)
+  if (layouts)
   {
     v3 = 256;
   }
@@ -164,9 +164,9 @@
   *&self->_flags = *&self->_flags & 0xFEFF | v3;
 }
 
-- (void)setBeginWithTransparencyAllowed:(BOOL)a3
+- (void)setBeginWithTransparencyAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 512;
   }
@@ -179,9 +179,9 @@
   *&self->_flags = *&self->_flags & 0xFDFF | v3;
 }
 
-- (void)setEndWithTransparencyAllowed:(BOOL)a3
+- (void)setEndWithTransparencyAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 1024;
   }
@@ -194,11 +194,11 @@
   *&self->_flags = *&self->_flags & 0xFBFF | v3;
 }
 
-- (void)setBackgroundView:(id)a3 isBarBackground:(BOOL)a4
+- (void)setBackgroundView:(id)view isBarBackground:(BOOL)background
 {
-  v4 = a4;
-  objc_storeStrong(&self->_backgroundView, a3);
-  if (v4)
+  backgroundCopy = background;
+  objc_storeStrong(&self->_backgroundView, view);
+  if (backgroundCopy)
   {
     v6 = 2048;
   }
@@ -231,41 +231,41 @@
 
   else
   {
-    v2 = [(_UINavigationBarTransitionContext *)self navigationBar];
-    v3 = [v2 _shouldCrossFadeBackgroundVisility] ^ 1;
+    navigationBar = [(_UINavigationBarTransitionContext *)self navigationBar];
+    v3 = [navigationBar _shouldCrossFadeBackgroundVisility] ^ 1;
   }
 
   return v3;
 }
 
-+ (id)contextForTransition:(int64_t)a3 withIdiom:(int64_t)a4 completion:(id)a5
++ (id)contextForTransition:(int64_t)transition withIdiom:(int64_t)idiom completion:(id)completion
 {
-  v9 = a5;
-  if (a3 <= 2)
+  completionCopy = completion;
+  if (transition <= 2)
   {
-    if (!a3)
+    if (!transition)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:a1 file:@"_UINavigationBarTransitionContext.m" lineNumber:213 description:@"_UINavigationBarTransitionDefault is not valid as a requested transition"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UINavigationBarTransitionContext.m" lineNumber:213 description:@"_UINavigationBarTransitionDefault is not valid as a requested transition"];
 
 LABEL_12:
       v12 = 0;
       goto LABEL_14;
     }
 
-    if (a3 == 1 || a3 == 2)
+    if (transition == 1 || transition == 2)
     {
       goto LABEL_13;
     }
 
 LABEL_11:
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"_UINavigationBarTransitionContext.m" lineNumber:217 description:{@"Unknown transition %li", a3}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UINavigationBarTransitionContext.m" lineNumber:217 description:{@"Unknown transition %li", transition}];
 
     goto LABEL_12;
   }
 
-  if (a3 > 5 && a3 != 6)
+  if (transition > 5 && transition != 6)
   {
     goto LABEL_11;
   }
@@ -275,49 +275,49 @@ LABEL_13:
 LABEL_14:
   v13 = objc_alloc_init(v12);
   v14 = v13;
-  if (a4 == 6)
+  if (idiom == 6)
   {
     *(v13 + 80) |= 0x10u;
   }
 
   *(v13 + 8) = xmmword_18A678660;
-  [v13 setCompletionHandler:v9];
+  [v13 setCompletionHandler:completionCopy];
 
   return v14;
 }
 
-- (void)recordUpdates:(id)a3
+- (void)recordUpdates:(id)updates
 {
-  v4 = a3;
-  v28 = v4;
+  updatesCopy = updates;
+  v28 = updatesCopy;
   if ((*&self->_flags & 0x100) != 0)
   {
-    v13 = v4;
+    v13 = updatesCopy;
     contentView = self->_contentView;
     if (contentView)
     {
-      v15 = [(_UINavigationBarContentView *)contentView layout];
-      if (!v15)
+      layout = [(_UINavigationBarContentView *)contentView layout];
+      if (!layout)
       {
         fromLayout = self->_fromLayout;
         if (fromLayout && (v17 = fromLayout->_contentViewLayout) != 0 || (toLayout = self->_toLayout) != 0 && (v17 = toLayout->_contentViewLayout) != 0)
         {
-          v15 = v17;
+          layout = v17;
           [(_UINavigationBarContentView *)self->_contentView adoptLayout:v17];
         }
 
         else
         {
           [(_UINavigationBarContentView *)self->_contentView adoptNewLayout];
-          v15 = [(_UINavigationBarContentView *)self->_contentView layout];
+          layout = [(_UINavigationBarContentView *)self->_contentView layout];
         }
       }
 
-      objc_storeStrong(&self->_fromContentLayout, v15);
-      [(_UINavigationBarLayout *)&self->_fromLayout->super.isa setContentViewLayout:v15];
+      objc_storeStrong(&self->_fromContentLayout, layout);
+      [(_UINavigationBarLayout *)&self->_fromLayout->super.isa setContentViewLayout:layout];
       toContentLayout = self->_toContentLayout;
-      self->_toContentLayout = v15;
-      v20 = v15;
+      self->_toContentLayout = layout;
+      v20 = layout;
 
       [(_UINavigationBarLayout *)&self->_toLayout->super.isa setContentViewLayout:v20];
       v13 = v28;
@@ -326,28 +326,28 @@ LABEL_14:
     largeTitleView = self->_largeTitleView;
     if (largeTitleView)
     {
-      v22 = [(_UINavigationBarLargeTitleView *)largeTitleView layout];
-      if (!v22)
+      layout2 = [(_UINavigationBarLargeTitleView *)largeTitleView layout];
+      if (!layout2)
       {
         v23 = self->_fromLayout;
         if (v23 && (v24 = v23->_largeTitleViewLayout) != 0 || (v25 = self->_toLayout) != 0 && (v24 = v25->_largeTitleViewLayout) != 0)
         {
-          v22 = v24;
+          layout2 = v24;
           [(_UINavigationBarLargeTitleView *)self->_largeTitleView adoptLayout:v24];
         }
 
         else
         {
           [(_UINavigationBarLargeTitleView *)self->_largeTitleView adoptNewLayout];
-          v22 = [(_UINavigationBarLargeTitleView *)self->_largeTitleView layout];
+          layout2 = [(_UINavigationBarLargeTitleView *)self->_largeTitleView layout];
         }
       }
 
-      objc_storeStrong(&self->_fromLargeTitleLayout, v22);
-      [(_UINavigationBarLayout *)&self->_fromLayout->super.isa setLargeTitleViewLayout:v22];
+      objc_storeStrong(&self->_fromLargeTitleLayout, layout2);
+      [(_UINavigationBarLayout *)&self->_fromLayout->super.isa setLargeTitleViewLayout:layout2];
       toLargeTitleLayout = self->_toLargeTitleLayout;
-      self->_toLargeTitleLayout = v22;
-      v27 = v22;
+      self->_toLargeTitleLayout = layout2;
+      v27 = layout2;
 
       [(_UINavigationBarLayout *)&self->_toLayout->super.isa setLargeTitleViewLayout:v27];
       v13 = v28;
@@ -460,10 +460,10 @@ LABEL_14:
 
   [(_UINavigationBarLayout *)toLayout setLayoutSize:10000.0];
   v9 = *&self->_flags & 0x48;
-  v10 = [(_UINavigationBarLayout *)self->_toLayout layoutHeights];
+  layoutHeights = [(_UINavigationBarLayout *)self->_toLayout layoutHeights];
   if (v9 == 8)
   {
-    v11 = v10;
+    v11 = layoutHeights;
   }
 
   [(_UINavigationBarLayout *)self->_toLayout setLayoutSize:v11];
@@ -579,10 +579,10 @@ LABEL_13:
   [(_UINavigationBarLargeTitleViewLayout *)fromLargeTitleLayout setContentHidden:0];
 }
 
-- (void)_resetContentAndLargeTitleViewCompleted:(BOOL)a3
+- (void)_resetContentAndLargeTitleViewCompleted:(BOOL)completed
 {
   v4 = 72;
-  if (a3)
+  if (completed)
   {
     v4 = 80;
   }
@@ -626,9 +626,9 @@ LABEL_13:
 
 - (void)_resetPalettes
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 72);
+    v2 = *(self + 72);
     if (v2)
     {
       v2 = v2[32];
@@ -637,7 +637,7 @@ LABEL_13:
     v3 = v2;
     [v3 setTransitioning:0];
 
-    v4 = *(a1 + 72);
+    v4 = *(self + 72);
     if (v4)
     {
       v4 = v4[32];
@@ -646,7 +646,7 @@ LABEL_13:
     v5 = v4;
     [v5 setAlpha:1.0];
 
-    v6 = *(a1 + 72);
+    v6 = *(self + 72);
     if (v6)
     {
       v6 = v6[33];
@@ -655,7 +655,7 @@ LABEL_13:
     v7 = v6;
     [v7 setTransitioning:0];
 
-    v8 = *(a1 + 72);
+    v8 = *(self + 72);
     if (v8)
     {
       v8 = v8[33];
@@ -664,7 +664,7 @@ LABEL_13:
     v9 = v8;
     [v9 setAlpha:1.0];
 
-    v10 = *(a1 + 80);
+    v10 = *(self + 80);
     if (v10)
     {
       v10 = v10[32];
@@ -673,7 +673,7 @@ LABEL_13:
     v11 = v10;
     [v11 setTransitioning:0];
 
-    v12 = *(a1 + 80);
+    v12 = *(self + 80);
     if (v12)
     {
       v12 = v12[32];
@@ -682,7 +682,7 @@ LABEL_13:
     v13 = v12;
     [v13 setAlpha:1.0];
 
-    v14 = *(a1 + 80);
+    v14 = *(self + 80);
     if (v14)
     {
       v14 = v14[33];
@@ -691,7 +691,7 @@ LABEL_13:
     v15 = v14;
     [v15 setTransitioning:0];
 
-    v16 = *(a1 + 80);
+    v16 = *(self + 80);
     if (v16)
     {
       v16 = v16[33];
@@ -739,29 +739,29 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  v3 = [(_UINavigationBarContentViewLayout *)self->_toContentLayout backButton];
-  if (!v3)
+  backButton = [(_UINavigationBarContentViewLayout *)self->_toContentLayout backButton];
+  if (!backButton)
   {
     goto LABEL_6;
   }
 
-  v4 = v3;
-  v5 = [(_UINavigationBarContentViewLayout *)self->_fromContentLayout backButton];
+  v4 = backButton;
+  backButton2 = [(_UINavigationBarContentViewLayout *)self->_fromContentLayout backButton];
 
-  if (v5)
+  if (backButton2)
   {
-    v3 = [(_UINavigationBarContentViewLayout *)self->_toContentLayout backButton];
+    backButton = [(_UINavigationBarContentViewLayout *)self->_toContentLayout backButton];
   }
 
   else
   {
 LABEL_5:
-    v3 = 0;
+    backButton = 0;
   }
 
 LABEL_6:
 
-  return v3;
+  return backButton;
 }
 
 + (CAMediaTimingFunction)fadeInFunction
@@ -788,21 +788,21 @@ LABEL_6:
   return v3;
 }
 
-- (void)_addClippingView:(uint64_t)a1
+- (void)_addClippingView:(uint64_t)view
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (view && v3)
   {
-    v5 = *(a1 + 168);
+    v5 = *(view + 168);
     v8 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v7 = *(a1 + 168);
-      *(a1 + 168) = v6;
+      v7 = *(view + 168);
+      *(view + 168) = v6;
 
-      v5 = *(a1 + 168);
+      v5 = *(view + 168);
     }
 
     [v5 addObject:v8];
@@ -854,81 +854,81 @@ LABEL_6:
 
 - (void)_preparePalettes
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[9];
+    v2 = self[9];
     if (v2)
     {
       v2 = v2[32];
     }
 
     v3 = v2;
-    v4 = a1[10];
+    v4 = self[10];
     if (v4)
     {
       v4 = v4[32];
     }
 
     v5 = v4;
-    [a1 _prepareTransitionFromPalette:v3 toPalette:v5 toPaletteFrame:-[_UINavigationBarLayout topPaletteLayoutFrame](a1[10])];
+    [self _prepareTransitionFromPalette:v3 toPalette:v5 toPaletteFrame:-[_UINavigationBarLayout topPaletteLayoutFrame](self[10])];
 
-    v6 = a1[9];
+    v6 = self[9];
     if (v6)
     {
       v6 = v6[33];
     }
 
     v10 = v6;
-    v7 = a1[10];
+    v7 = self[10];
     if (v7)
     {
       v7 = v7[33];
     }
 
     v8 = v7;
-    v9 = a1[10];
+    v9 = self[10];
     if (v9)
     {
       [v9 _layoutFrameFor:v9[9] withOrder:30];
     }
 
-    [a1 _prepareTransitionFromPalette:v10 toPalette:v8 toPaletteFrame:?];
+    [self _prepareTransitionFromPalette:v10 toPalette:v8 toPaletteFrame:?];
   }
 }
 
 - (void)_animatePalettes
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[9];
+    v2 = self[9];
     if (v2)
     {
       v2 = v2[32];
     }
 
     v3 = v2;
-    v4 = [(_UINavigationBarLayout *)a1[9] topPaletteLayoutFrame];
+    topPaletteLayoutFrame = [(_UINavigationBarLayout *)self[9] topPaletteLayoutFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = a1[10];
+    v11 = self[10];
     if (v11)
     {
       v11 = v11[32];
     }
 
     v12 = v11;
-    v13 = [(_UINavigationBarLayout *)a1[10] topPaletteLayoutFrame];
-    [a1 _animateFromPalette:v3 fromPaletteFrame:v12 toPalette:v4 toPaletteFrame:{v6, v8, v10, v13, v14, v15, v16}];
+    topPaletteLayoutFrame2 = [(_UINavigationBarLayout *)self[10] topPaletteLayoutFrame];
+    [self _animateFromPalette:v3 fromPaletteFrame:v12 toPalette:topPaletteLayoutFrame toPaletteFrame:{v6, v8, v10, topPaletteLayoutFrame2, v14, v15, v16}];
 
-    v17 = a1[9];
+    v17 = self[9];
     if (v17)
     {
       v17 = v17[33];
     }
 
     v38 = v17;
-    v18 = a1[9];
+    v18 = self[9];
     if (v18)
     {
       [v18 _layoutFrameFor:v18[9] withOrder:30];
@@ -946,14 +946,14 @@ LABEL_6:
       v20 = 0.0;
     }
 
-    v27 = a1[10];
+    v27 = self[10];
     if (v27)
     {
       v27 = v27[33];
     }
 
     v28 = v27;
-    v29 = a1[10];
+    v29 = self[10];
     if (v29)
     {
       [v29 _layoutFrameFor:v29[9] withOrder:30];
@@ -971,7 +971,7 @@ LABEL_6:
       v31 = 0.0;
     }
 
-    [a1 _animateFromPalette:v38 fromPaletteFrame:v28 toPalette:v20 toPaletteFrame:{v22, v24, v26, v31, v33, v35, v37}];
+    [self _animateFromPalette:v38 fromPaletteFrame:v28 toPalette:v20 toPaletteFrame:{v22, v24, v26, v31, v33, v35, v37}];
   }
 }
 
@@ -988,89 +988,89 @@ LABEL_6:
   }
 }
 
-- (void)_animateAsTwoPartsWithOverlap:(double)a3 partOne:(id)a4 partTwo:(id)a5
+- (void)_animateAsTwoPartsWithOverlap:(double)overlap partOne:(id)one partTwo:(id)two
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8 | v9)
+  oneCopy = one;
+  twoCopy = two;
+  if (oneCopy | twoCopy)
   {
-    v10 = [(_UINavigationBarTransitionContext *)self _animationOptions];
+    _animationOptions = [(_UINavigationBarTransitionContext *)self _animationOptions];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __83___UINavigationBarTransitionContext__animateAsTwoPartsWithOverlap_partOne_partTwo___block_invoke;
     v11[3] = &unk_1E70F6FE0;
     v11[4] = self;
-    v12 = v8;
-    v14 = a3 * 0.5;
-    v13 = v9;
-    [UIView animateKeyframesWithDuration:v10 delay:v11 options:0 animations:0.0 completion:0.0];
+    v12 = oneCopy;
+    v14 = overlap * 0.5;
+    v13 = twoCopy;
+    [UIView animateKeyframesWithDuration:_animationOptions delay:v11 options:0 animations:0.0 completion:0.0];
   }
 }
 
-- (void)_animateInProcessAsTwoPartsWithKeyframeID:(id)a3 overlap:(double)a4 partOne:(id)a5 partTwo:(id)a6
+- (void)_animateInProcessAsTwoPartsWithKeyframeID:(id)d overlap:(double)overlap partOne:(id)one partTwo:(id)two
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v11 | v12)
+  dCopy = d;
+  oneCopy = one;
+  twoCopy = two;
+  if (oneCopy | twoCopy)
   {
-    v13 = [(_UINavigationBarTransitionContext *)self _animationOptions];
+    _animationOptions = [(_UINavigationBarTransitionContext *)self _animationOptions];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __103___UINavigationBarTransitionContext__animateInProcessAsTwoPartsWithKeyframeID_overlap_partOne_partTwo___block_invoke;
     v14[3] = &unk_1E70F7008;
-    v17 = v11;
-    v15 = v10;
-    v16 = self;
-    v19 = a4 * 0.5;
-    v18 = v12;
-    [UIView _animateInProcessKeyframesAlongsideTransitionWithOptions:v13 animations:v14];
+    v17 = oneCopy;
+    v15 = dCopy;
+    selfCopy = self;
+    v19 = overlap * 0.5;
+    v18 = twoCopy;
+    [UIView _animateInProcessKeyframesAlongsideTransitionWithOptions:_animationOptions animations:v14];
   }
 }
 
-- (void)_animateAsTwoPartsWithOverlapIfNecessaryPartOne:(id)a3 partTwo:(id)a4
+- (void)_animateAsTwoPartsWithOverlapIfNecessaryPartOne:(id)one partTwo:(id)two
 {
-  v7 = a3;
-  v6 = a4;
+  oneCopy = one;
+  twoCopy = two;
   if ((*&self->_flags & 0x10) != 0)
   {
-    [(_UINavigationBarTransitionContext *)self _animateAsTwoPartsWithOverlap:v7 partOne:v6 partTwo:self->_twoPartAnimationOverlapDuration];
+    [(_UINavigationBarTransitionContext *)self _animateAsTwoPartsWithOverlap:oneCopy partOne:twoCopy partTwo:self->_twoPartAnimationOverlapDuration];
   }
 
   else
   {
-    if (v7)
+    if (oneCopy)
     {
-      v7[2](v7);
+      oneCopy[2](oneCopy);
     }
 
-    if (v6)
+    if (twoCopy)
     {
-      v6[2](v6);
+      twoCopy[2](twoCopy);
     }
   }
 }
 
-- (void)_animateInProcessAsTwoPartsWithOverlapIfNecessaryWithKeyframeID:(id)a3 fractionComplete:(double)a4 partOne:(id)a5 partTwo:(id)a6
+- (void)_animateInProcessAsTwoPartsWithOverlapIfNecessaryWithKeyframeID:(id)d fractionComplete:(double)complete partOne:(id)one partTwo:(id)two
 {
-  v12 = a3;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  oneCopy = one;
+  twoCopy = two;
   if ((*&self->_flags & 0x10) != 0)
   {
-    [(_UINavigationBarTransitionContext *)self _animateInProcessAsTwoPartsWithKeyframeID:v12 overlap:v10 partOne:v11 partTwo:self->_twoPartAnimationOverlapDuration];
+    [(_UINavigationBarTransitionContext *)self _animateInProcessAsTwoPartsWithKeyframeID:dCopy overlap:oneCopy partOne:twoCopy partTwo:self->_twoPartAnimationOverlapDuration];
   }
 
   else
   {
-    if (v10)
+    if (oneCopy)
     {
-      v10[2](v10, a4);
+      oneCopy[2](oneCopy, complete);
     }
 
-    if (v11)
+    if (twoCopy)
     {
-      v11[2](v11, a4);
+      twoCopy[2](twoCopy, complete);
     }
   }
 }
@@ -1096,11 +1096,11 @@ LABEL_6:
 
 - (_UINavigationBarLargeTitleViewLayout)fromLargeTitleViewLayout
 {
-  v2 = [(_UINavigationBarTransitionContext *)self fromLayout];
-  v3 = v2;
-  if (v2)
+  fromLayout = [(_UINavigationBarTransitionContext *)self fromLayout];
+  v3 = fromLayout;
+  if (fromLayout)
   {
-    v4 = *(v2 + 168);
+    v4 = *(fromLayout + 168);
   }
 
   else
@@ -1113,20 +1113,20 @@ LABEL_6:
   return v4;
 }
 
-- (void)setFromLargeTitleViewLayout:(id)a3
+- (void)setFromLargeTitleViewLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(_UINavigationBarTransitionContext *)self fromLayout];
-  [(_UINavigationBarLayout *)v5 setLargeTitleViewLayout:v4];
+  layoutCopy = layout;
+  fromLayout = [(_UINavigationBarTransitionContext *)self fromLayout];
+  [(_UINavigationBarLayout *)fromLayout setLargeTitleViewLayout:layoutCopy];
 }
 
 - (_UINavigationBarLargeTitleViewLayout)toLargeTitleViewLayout
 {
-  v2 = [(_UINavigationBarTransitionContext *)self toLayout];
-  v3 = v2;
-  if (v2)
+  toLayout = [(_UINavigationBarTransitionContext *)self toLayout];
+  v3 = toLayout;
+  if (toLayout)
   {
-    v4 = *(v2 + 168);
+    v4 = *(toLayout + 168);
   }
 
   else
@@ -1139,11 +1139,11 @@ LABEL_6:
   return v4;
 }
 
-- (void)setToLargeTitleViewLayout:(id)a3
+- (void)setToLargeTitleViewLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(_UINavigationBarTransitionContext *)self toLayout];
-  [(_UINavigationBarLayout *)v5 setLargeTitleViewLayout:v4];
+  layoutCopy = layout;
+  toLayout = [(_UINavigationBarTransitionContext *)self toLayout];
+  [(_UINavigationBarLayout *)toLayout setLargeTitleViewLayout:layoutCopy];
 }
 
 - (CGPoint)startingContentOffsetForObservedScrollView

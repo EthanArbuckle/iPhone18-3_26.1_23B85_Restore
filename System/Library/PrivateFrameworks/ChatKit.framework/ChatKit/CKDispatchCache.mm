@@ -1,19 +1,19 @@
 @interface CKDispatchCache
-- (BOOL)isGeneratingForKey:(id)a3;
-- (BOOL)waitOnGenerationForKey:(id)a3;
-- (CKDispatchCache)initWithCacheLimit:(unint64_t)a3 dispatchPriority:(int64_t)a4;
+- (BOOL)isGeneratingForKey:(id)key;
+- (BOOL)waitOnGenerationForKey:(id)key;
+- (CKDispatchCache)initWithCacheLimit:(unint64_t)limit dispatchPriority:(int64_t)priority;
 - (IMDispatchQueue)dispatchQueue;
-- (id)cachedObjectForKey:(id)a3;
-- (void)_beginGeneratingForKeyUnlocked:(id)a3;
-- (void)_endGeneratingForKeyUnlocked:(id)a3;
-- (void)beginGeneratingForKey:(id)a3;
+- (id)cachedObjectForKey:(id)key;
+- (void)_beginGeneratingForKeyUnlocked:(id)unlocked;
+- (void)_endGeneratingForKeyUnlocked:(id)unlocked;
+- (void)beginGeneratingForKey:(id)key;
 - (void)clearQueue;
 - (void)dealloc;
-- (void)endGeneratingForKey:(id)a3;
-- (void)enqueueBlock:(id)a3 withPriority:(int64_t)a4;
-- (void)enqueueGenerationBlock:(id)a3 completion:(id)a4 withPriority:(int64_t)a5 forKey:(id)a6;
+- (void)endGeneratingForKey:(id)key;
+- (void)enqueueBlock:(id)block withPriority:(int64_t)priority;
+- (void)enqueueGenerationBlock:(id)block completion:(id)completion withPriority:(int64_t)priority forKey:(id)key;
 - (void)resume;
-- (void)setCachedObject:(id)a3 forKey:(id)a4;
+- (void)setCachedObject:(id)object forKey:(id)key;
 - (void)suspend;
 @end
 
@@ -21,8 +21,8 @@
 
 - (void)resume
 {
-  v2 = [(CKDispatchCache *)self dispatchQueue];
-  [v2 setSuspended:0];
+  dispatchQueue = [(CKDispatchCache *)self dispatchQueue];
+  [dispatchQueue setSuspended:0];
 }
 
 - (IMDispatchQueue)dispatchQueue
@@ -41,15 +41,15 @@
   return dispatchQueue;
 }
 
-- (CKDispatchCache)initWithCacheLimit:(unint64_t)a3 dispatchPriority:(int64_t)a4
+- (CKDispatchCache)initWithCacheLimit:(unint64_t)limit dispatchPriority:(int64_t)priority
 {
   v17.receiver = self;
   v17.super_class = CKDispatchCache;
   v6 = [(CKDispatchCache *)&v17 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E69A6160] sharedInstance];
-    [v7 addListener:v6];
+    mEMORY[0x1E69A6160] = [MEMORY[0x1E69A6160] sharedInstance];
+    [mEMORY[0x1E69A6160] addListener:v6];
 
     v8 = objc_alloc_init(MEMORY[0x1E696AB50]);
     pendingKeys = v6->_pendingKeys;
@@ -59,7 +59,7 @@
     pendingGroups = v6->_pendingGroups;
     v6->_pendingGroups = v10;
 
-    v12 = CKCreateNSCache(a3);
+    v12 = CKCreateNSCache(limit);
     objectCache = v6->_objectCache;
     v6->_objectCache = v12;
 
@@ -67,7 +67,7 @@
     lockQueue = v6->_lockQueue;
     v6->_lockQueue = v14;
 
-    v6->_dispatchPriority = a4;
+    v6->_dispatchPriority = priority;
   }
 
   return v6;
@@ -75,25 +75,25 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69A6160] sharedInstance];
-  [v3 removeListener:self];
+  mEMORY[0x1E69A6160] = [MEMORY[0x1E69A6160] sharedInstance];
+  [mEMORY[0x1E69A6160] removeListener:self];
 
   v4.receiver = self;
   v4.super_class = CKDispatchCache;
   [(CKDispatchCache *)&v4 dealloc];
 }
 
-- (id)cachedObjectForKey:(id)a3
+- (id)cachedObjectForKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  if ([v4 length])
+  if ([keyCopy length])
   {
     lockQueue = self->_lockQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -102,7 +102,7 @@
     block[3] = &unk_1E72EB858;
     v13 = &v14;
     block[4] = self;
-    v6 = v4;
+    v6 = keyCopy;
     v12 = v6;
     dispatch_sync(lockQueue, block);
     if (IMOSLoggingEnabled())
@@ -149,20 +149,20 @@ void __38__CKDispatchCache_cachedObjectForKey___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setCachedObject:(id)a3 forKey:(id)a4
+- (void)setCachedObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  objectCopy = object;
+  keyCopy = key;
+  if ([keyCopy length])
   {
     lockQueue = self->_lockQueue;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __42__CKDispatchCache_setCachedObject_forKey___block_invoke;
     v9[3] = &unk_1E72EB880;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = objectCopy;
+    selfCopy = self;
+    v12 = keyCopy;
     ck_dispatch_isolated(lockQueue, v9);
   }
 }
@@ -183,36 +183,36 @@ void __42__CKDispatchCache_setCachedObject_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)enqueueBlock:(id)a3 withPriority:(int64_t)a4
+- (void)enqueueBlock:(id)block withPriority:(int64_t)priority
 {
-  if (a3)
+  if (block)
   {
-    v6 = a3;
-    v7 = [(CKDispatchCache *)self dispatchQueue];
-    [v7 addBlock:v6 withQueuePriority:a4];
+    blockCopy = block;
+    dispatchQueue = [(CKDispatchCache *)self dispatchQueue];
+    [dispatchQueue addBlock:blockCopy withQueuePriority:priority];
   }
 }
 
-- (void)enqueueGenerationBlock:(id)a3 completion:(id)a4 withPriority:(int64_t)a5 forKey:(id)a6
+- (void)enqueueGenerationBlock:(id)block completion:(id)completion withPriority:(int64_t)priority forKey:(id)key
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (v10 && [v12 length])
+  blockCopy = block;
+  completionCopy = completion;
+  keyCopy = key;
+  v13 = keyCopy;
+  if (blockCopy && [keyCopy length])
   {
     [(CKDispatchCache *)self beginGeneratingForKey:v13];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __73__CKDispatchCache_enqueueGenerationBlock_completion_withPriority_forKey___block_invoke;
     v19 = &unk_1E72EB8A8;
-    v22 = v10;
+    v22 = blockCopy;
     v20 = v13;
-    v21 = self;
-    v23 = v11;
+    selfCopy = self;
+    v23 = completionCopy;
     v14 = _Block_copy(&v16);
     v15 = [(CKDispatchCache *)self dispatchQueue:v16];
-    [v15 addBlock:v14 withQueuePriority:a5];
+    [v15 addBlock:v14 withQueuePriority:priority];
   }
 }
 
@@ -251,14 +251,14 @@ uint64_t __73__CKDispatchCache_enqueueGenerationBlock_completion_withPriority_fo
   return [v3 _endGeneratingForKeyUnlocked:v4];
 }
 
-- (BOOL)isGeneratingForKey:(id)a3
+- (BOOL)isGeneratingForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if ([v4 length])
+  if ([keyCopy length])
   {
     lockQueue = self->_lockQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -267,7 +267,7 @@ uint64_t __73__CKDispatchCache_enqueueGenerationBlock_completion_withPriority_fo
     block[3] = &unk_1E72EB858;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
+    v9 = keyCopy;
     dispatch_sync(lockQueue, block);
   }
 
@@ -283,28 +283,28 @@ void __38__CKDispatchCache_isGeneratingForKey___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v2 containsObject:*(a1 + 40)];
 }
 
-- (void)_beginGeneratingForKeyUnlocked:(id)a3
+- (void)_beginGeneratingForKeyUnlocked:(id)unlocked
 {
-  v9 = a3;
-  v4 = [(CKDispatchCache *)self pendingKeys];
-  v5 = [v4 containsObject:v9];
+  unlockedCopy = unlocked;
+  pendingKeys = [(CKDispatchCache *)self pendingKeys];
+  v5 = [pendingKeys containsObject:unlockedCopy];
 
   if ((v5 & 1) == 0)
   {
     v6 = dispatch_group_create();
     dispatch_group_enter(v6);
-    v7 = [(CKDispatchCache *)self pendingGroups];
-    [v7 setObject:v6 forKey:v9];
+    pendingGroups = [(CKDispatchCache *)self pendingGroups];
+    [pendingGroups setObject:v6 forKey:unlockedCopy];
   }
 
-  v8 = [(CKDispatchCache *)self pendingKeys];
-  [v8 addObject:v9];
+  pendingKeys2 = [(CKDispatchCache *)self pendingKeys];
+  [pendingKeys2 addObject:unlockedCopy];
 }
 
-- (void)beginGeneratingForKey:(id)a3
+- (void)beginGeneratingForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
     lockQueue = self->_lockQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -312,39 +312,39 @@ void __38__CKDispatchCache_isGeneratingForKey___block_invoke(uint64_t a1)
     v6[2] = __41__CKDispatchCache_beginGeneratingForKey___block_invoke;
     v6[3] = &unk_1E72EB8D0;
     v6[4] = self;
-    v7 = v4;
+    v7 = keyCopy;
     ck_dispatch_isolated(lockQueue, v6);
   }
 }
 
-- (void)_endGeneratingForKeyUnlocked:(id)a3
+- (void)_endGeneratingForKeyUnlocked:(id)unlocked
 {
-  v10 = a3;
-  v4 = [(CKDispatchCache *)self pendingKeys];
-  v5 = [v4 countForObject:v10];
+  unlockedCopy = unlocked;
+  pendingKeys = [(CKDispatchCache *)self pendingKeys];
+  v5 = [pendingKeys countForObject:unlockedCopy];
 
-  v6 = [(CKDispatchCache *)self pendingKeys];
-  [v6 removeObject:v10];
+  pendingKeys2 = [(CKDispatchCache *)self pendingKeys];
+  [pendingKeys2 removeObject:unlockedCopy];
 
   if (v5 == 1)
   {
-    v7 = [(CKDispatchCache *)self pendingGroups];
-    v8 = [v7 objectForKey:v10];
+    pendingGroups = [(CKDispatchCache *)self pendingGroups];
+    v8 = [pendingGroups objectForKey:unlockedCopy];
 
     if (v8)
     {
       dispatch_group_leave(v8);
     }
 
-    v9 = [(CKDispatchCache *)self pendingGroups];
-    [v9 removeObjectForKey:v10];
+    pendingGroups2 = [(CKDispatchCache *)self pendingGroups];
+    [pendingGroups2 removeObjectForKey:unlockedCopy];
   }
 }
 
-- (void)endGeneratingForKey:(id)a3
+- (void)endGeneratingForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
     lockQueue = self->_lockQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -352,15 +352,15 @@ void __38__CKDispatchCache_isGeneratingForKey___block_invoke(uint64_t a1)
     v6[2] = __39__CKDispatchCache_endGeneratingForKey___block_invoke;
     v6[3] = &unk_1E72EB8D0;
     v6[4] = self;
-    v7 = v4;
+    v7 = keyCopy;
     ck_dispatch_isolated(lockQueue, v6);
   }
 }
 
-- (BOOL)waitOnGenerationForKey:(id)a3
+- (BOOL)waitOnGenerationForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
     v12 = 0;
     v13 = &v12;
@@ -375,7 +375,7 @@ void __38__CKDispatchCache_isGeneratingForKey___block_invoke(uint64_t a1)
     block[3] = &unk_1E72EB858;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = keyCopy;
     dispatch_sync(lockQueue, block);
     if (v13[5])
     {
@@ -410,20 +410,20 @@ void __42__CKDispatchCache_waitOnGenerationForKey___block_invoke(uint64_t a1)
 
 - (void)suspend
 {
-  v2 = [(CKDispatchCache *)self dispatchQueue];
-  [v2 setSuspended:1];
+  dispatchQueue = [(CKDispatchCache *)self dispatchQueue];
+  [dispatchQueue setSuspended:1];
 }
 
 - (void)clearQueue
 {
-  v3 = [(CKDispatchCache *)self pendingGroups];
-  v6 = [v3 copy];
+  pendingGroups = [(CKDispatchCache *)self pendingGroups];
+  v6 = [pendingGroups copy];
 
-  v4 = [(CKDispatchCache *)self pendingKeys];
-  [v4 removeAllObjects];
+  pendingKeys = [(CKDispatchCache *)self pendingKeys];
+  [pendingKeys removeAllObjects];
 
-  v5 = [(CKDispatchCache *)self pendingGroups];
-  [v5 removeAllObjects];
+  pendingGroups2 = [(CKDispatchCache *)self pendingGroups];
+  [pendingGroups2 removeAllObjects];
 
   [(IMDispatchQueue *)self->_dispatchQueue removeAllOutstandingBlocks];
   [v6 enumerateKeysAndObjectsUsingBlock:&__block_literal_global];

@@ -2,14 +2,14 @@
 + (void)load;
 - (CAFHistoricalNotificationUserAction)historicalNotificationUserActionValue;
 - (id)formattedValue;
-- (void)setHistoricalNotificationUserActionValue:(id)a3;
+- (void)setHistoricalNotificationUserActionValue:(id)value;
 @end
 
 @implementation CAFHistoricalNotificationUserActionCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFHistoricalNotificationUserActionCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -17,22 +17,22 @@
 - (CAFHistoricalNotificationUserAction)historicalNotificationUserActionValue
 {
   v3 = [CAFHistoricalNotificationUserAction alloc];
-  v4 = [(CAFDictionaryCharacteristic *)self dictionaryValue];
-  v5 = [(CAFHistoricalNotificationUserAction *)v3 initWithDictionary:v4];
+  dictionaryValue = [(CAFDictionaryCharacteristic *)self dictionaryValue];
+  v5 = [(CAFHistoricalNotificationUserAction *)v3 initWithDictionary:dictionaryValue];
 
   return v5;
 }
 
-- (void)setHistoricalNotificationUserActionValue:(id)a3
+- (void)setHistoricalNotificationUserActionValue:(id)value
 {
-  v4 = [a3 dictionaryRepresentation];
-  [(CAFDictionaryCharacteristic *)self setDictionaryValue:v4];
+  dictionaryRepresentation = [value dictionaryRepresentation];
+  [(CAFDictionaryCharacteristic *)self setDictionaryValue:dictionaryRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFHistoricalNotificationUserActionCharacteristic *)self historicalNotificationUserActionValue];
-  v3 = [v2 description];
+  historicalNotificationUserActionValue = [(CAFHistoricalNotificationUserActionCharacteristic *)self historicalNotificationUserActionValue];
+  v3 = [historicalNotificationUserActionValue description];
 
   return v3;
 }

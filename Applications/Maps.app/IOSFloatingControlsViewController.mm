@@ -2,8 +2,8 @@
 - (BOOL)_alignStackToBottom;
 - (BOOL)_hideBackgroundForUserProfileItem;
 - (BOOL)_shouldObserveOrientationDidChange;
-- (BOOL)lacksSearchResultsInVenue:(id)a3 forFloorOrdinal:(signed __int16)a4;
-- (BOOL)shouldShow:(int64_t)a3 withControlOptions:(int64_t)a4;
+- (BOOL)lacksSearchResultsInVenue:(id)venue forFloorOrdinal:(signed __int16)ordinal;
+- (BOOL)shouldShow:(int64_t)show withControlOptions:(int64_t)options;
 - (ButtonsContainerViewController)buttonsContainerViewController;
 - (CGRect)floatingButtonsFrame;
 - (LocalSearchViewController)localSearchViewController;
@@ -28,14 +28,14 @@
 - (id)floatingButtonItems;
 - (id)floatingButtonLeadingGuide;
 - (id)macOSStyledFloatingButtonItems;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)venueFloorViewControllerConstraintsForViewWhenOpen:(id)a3;
-- (void)_applyNewVisibleControls:(int64_t)a3 animated:(BOOL)a4;
-- (void)_configureButton:(id)a3 withImage:(id)a4 pointSize:(double)a5 weight:(int64_t)a6;
-- (void)_configureButton:(id)a3 withSymbolImageName:(id)a4;
-- (void)_configureButton:(id)a3 withSymbolImageName:(id)a4 pointSize:(double)a5 weight:(int64_t)a6;
-- (void)_deviceOrientationDidChange:(id)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)venueFloorViewControllerConstraintsForViewWhenOpen:(id)open;
+- (void)_applyNewVisibleControls:(int64_t)controls animated:(BOOL)animated;
+- (void)_configureButton:(id)button withImage:(id)image pointSize:(double)size weight:(int64_t)weight;
+- (void)_configureButton:(id)button withSymbolImageName:(id)name;
+- (void)_configureButton:(id)button withSymbolImageName:(id)name pointSize:(double)size weight:(int64_t)weight;
+- (void)_deviceOrientationDidChange:(id)change;
 - (void)_invalidateConstraints;
 - (void)_presentSettings;
 - (void)_refreshCompassButton;
@@ -46,38 +46,38 @@
 - (void)_updateMapModeButtonAppearance;
 - (void)_updateUserProfileButtonImage;
 - (void)createRadar;
-- (void)didChangeFocusedVenue:(id)a3;
-- (void)enterPedestrianAR:(id)a3;
-- (void)hideControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4;
-- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)a3;
-- (void)localSearchViewShouldBeVisibleDidChange:(id)a3;
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)setBlurGroupName:(id)a3;
-- (void)setMargin:(double)a3;
-- (void)setNonFloorPickerControlsVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setRefreshViewEnable:(BOOL)a3;
-- (void)setSearchSession:(id)a3;
+- (void)didChangeFocusedVenue:(id)venue;
+- (void)enterPedestrianAR:(id)r;
+- (void)hideControlsIfNeeded:(int64_t)needed animated:(BOOL)animated;
+- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)here;
+- (void)localSearchViewShouldBeVisibleDidChange:(id)change;
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)setBlurGroupName:(id)name;
+- (void)setMargin:(double)margin;
+- (void)setNonFloorPickerControlsVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setRefreshViewEnable:(BOOL)enable;
+- (void)setSearchSession:(id)session;
 - (void)setupVenueFloorViewController;
-- (void)showControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4;
+- (void)showControlsIfNeeded:(int64_t)needed animated:(BOOL)animated;
 - (void)toggleSSAO;
-- (void)updateNonFloorPickerControlsVisibleAnimated:(BOOL)a3;
-- (void)updateNonFloorPickerControlsVisibleForFloorPickerHidden:(BOOL)a3 animated:(BOOL)a4;
+- (void)updateNonFloorPickerControlsVisibleAnimated:(BOOL)animated;
+- (void)updateNonFloorPickerControlsVisibleForFloorPickerHidden:(BOOL)hidden animated:(BOOL)animated;
 - (void)updateTheme;
-- (void)venueFloorViewControllerDidChangeConstraints:(id)a3;
-- (void)venueFloorViewControllerDidClose:(id)a3;
-- (void)venueFloorViewControllerDidFinishHiding:(id)a3;
-- (void)venueFloorViewControllerDidFinishShowing:(id)a3;
-- (void)venueFloorViewControllerDidOpen:(id)a3;
-- (void)venueFloorViewControllerDidStartHiding:(id)a3;
-- (void)venueFloorViewControllerDidStartShowing:(id)a3;
-- (void)viewControllerDidSelectBrowseVenue:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)venueFloorViewControllerDidChangeConstraints:(id)constraints;
+- (void)venueFloorViewControllerDidClose:(id)close;
+- (void)venueFloorViewControllerDidFinishHiding:(id)hiding;
+- (void)venueFloorViewControllerDidFinishShowing:(id)showing;
+- (void)venueFloorViewControllerDidOpen:(id)open;
+- (void)venueFloorViewControllerDidStartHiding:(id)hiding;
+- (void)venueFloorViewControllerDidStartShowing:(id)showing;
+- (void)viewControllerDidSelectBrowseVenue:(id)venue;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation IOSFloatingControlsViewController
@@ -99,8 +99,8 @@
       v5 = self->_controlsStackView;
       self->_controlsStackView = v4;
 
-      v6 = [(IOSFloatingControlsViewController *)self view];
-      [v6 addSubview:self->_controlsStackView];
+      view = [(IOSFloatingControlsViewController *)self view];
+      [view addSubview:self->_controlsStackView];
 
       [(IOSFloatingControlsViewController *)self _updateConstraintsIfNeeded];
       controlsStackView = self->_controlsStackView;
@@ -128,27 +128,27 @@
     v3 = objc_alloc_init(UILabel);
     [(IOSFloatingControlsViewController *)self setSizeDebugLabel:v3];
 
-    v4 = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+    sizeDebugLabel = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
+    [sizeDebugLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v5 = +[UIColor blackColor];
-    v6 = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
-    [v6 setBackgroundColor:v5];
+    sizeDebugLabel2 = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
+    [sizeDebugLabel2 setBackgroundColor:v5];
 
     v7 = +[UIColor whiteColor];
-    v8 = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
-    [v8 setTextColor:v7];
+    sizeDebugLabel3 = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
+    [sizeDebugLabel3 setTextColor:v7];
 
-    v9 = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
-    [v9 setText:@"0x0"];
+    sizeDebugLabel4 = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
+    [sizeDebugLabel4 setText:@"0x0"];
 
-    v10 = [(IOSFloatingControlsViewController *)self view];
-    v11 = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
-    [v10 addSubview:v11];
+    view = [(IOSFloatingControlsViewController *)self view];
+    sizeDebugLabel5 = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
+    [view addSubview:sizeDebugLabel5];
   }
 
-  v12 = [(IOSFloatingControlsViewController *)self view];
-  [v12 _mapkit_addPointerInteractionWithDelegate:self];
+  view2 = [(IOSFloatingControlsViewController *)self view];
+  [view2 _mapkit_addPointerInteractionWithDelegate:self];
 }
 
 - (ButtonsContainerViewController)buttonsContainerViewController
@@ -159,18 +159,18 @@
     if (!buttonsContainerViewController)
     {
       v4 = [ButtonsContainerViewController alloc];
-      v5 = [(IOSFloatingControlsViewController *)self _desiredFloatingButtonItems];
-      v6 = [(ButtonsContainerViewController *)v4 initWithFloatingButtonItems:v5];
+      _desiredFloatingButtonItems = [(IOSFloatingControlsViewController *)self _desiredFloatingButtonItems];
+      v6 = [(ButtonsContainerViewController *)v4 initWithFloatingButtonItems:_desiredFloatingButtonItems];
       v7 = self->_buttonsContainerViewController;
       self->_buttonsContainerViewController = v6;
 
-      v8 = [(FloatingControlsViewController *)self blurGroupName];
-      [(ButtonsContainerViewController *)self->_buttonsContainerViewController setBlurGroupName:v8];
+      blurGroupName = [(FloatingControlsViewController *)self blurGroupName];
+      [(ButtonsContainerViewController *)self->_buttonsContainerViewController setBlurGroupName:blurGroupName];
 
       [(IOSFloatingControlsViewController *)self addChildViewController:self->_buttonsContainerViewController];
-      v9 = [(IOSFloatingControlsViewController *)self controlsStackView];
-      v10 = [(ButtonsContainerViewController *)self->_buttonsContainerViewController view];
-      [v9 addArrangedSubview:v10];
+      controlsStackView = [(IOSFloatingControlsViewController *)self controlsStackView];
+      view = [(ButtonsContainerViewController *)self->_buttonsContainerViewController view];
+      [controlsStackView addArrangedSubview:view];
 
       [(ButtonsContainerViewController *)self->_buttonsContainerViewController didMoveToParentViewController:self];
       [(IOSFloatingControlsViewController *)self updateTheme];
@@ -190,22 +190,22 @@
 
 - (void)updateTheme
 {
-  v10 = [(IOSFloatingControlsViewController *)self buttonsContainerViewControllerIfLoaded];
-  if (v10)
+  buttonsContainerViewControllerIfLoaded = [(IOSFloatingControlsViewController *)self buttonsContainerViewControllerIfLoaded];
+  if (buttonsContainerViewControllerIfLoaded)
   {
-    v3 = [(IOSFloatingControlsViewController *)self theme];
-    v4 = [v3 controlTintColor];
-    v5 = [v10 view];
-    [v5 setTintColor:v4];
+    theme = [(IOSFloatingControlsViewController *)self theme];
+    controlTintColor = [theme controlTintColor];
+    view = [buttonsContainerViewControllerIfLoaded view];
+    [view setTintColor:controlTintColor];
   }
 
-  v6 = [(IOSFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
-  if (v6)
+  venueFloorViewControllerIfLoaded = [(IOSFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
+  if (venueFloorViewControllerIfLoaded)
   {
-    v7 = [(IOSFloatingControlsViewController *)self theme];
-    v8 = [v7 controlTintColor];
-    v9 = [v6 view];
-    [v9 setTintColor:v8];
+    theme2 = [(IOSFloatingControlsViewController *)self theme];
+    controlTintColor2 = [theme2 controlTintColor];
+    view2 = [venueFloorViewControllerIfLoaded view];
+    [view2 setTintColor:controlTintColor2];
   }
 }
 
@@ -214,12 +214,12 @@
   userLocationButton = self->_userLocationButton;
   if (userLocationButton)
   {
-    v4 = [(_MapsUserTrackingButton *)userLocationButton mapView];
+    mapView = [(_MapsUserTrackingButton *)userLocationButton mapView];
 
-    if (!v4)
+    if (!mapView)
     {
-      v5 = [(FloatingControlsViewController *)self mapView];
-      [(_MapsUserTrackingButton *)self->_userLocationButton setMapView:v5];
+      mapView2 = [(FloatingControlsViewController *)self mapView];
+      [(_MapsUserTrackingButton *)self->_userLocationButton setMapView:mapView2];
     }
   }
 }
@@ -244,8 +244,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(ButtonsContainerViewController *)self->_buttonsContainerViewController floatingButtonItems];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    floatingButtonItems = [(ButtonsContainerViewController *)self->_buttonsContainerViewController floatingButtonItems];
+    v6 = [floatingButtonItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -256,7 +256,7 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(floatingButtonItems);
           }
 
           v10 = *(*(&v11 + 1) + 8 * i);
@@ -267,7 +267,7 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [floatingButtonItems countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v7)
         {
           continue;
@@ -286,12 +286,12 @@ LABEL_15:
   compassButton = self->_compassButton;
   if (compassButton)
   {
-    v4 = [(MKCompassButton *)compassButton mapView];
+    mapView = [(MKCompassButton *)compassButton mapView];
 
-    if (!v4)
+    if (!mapView)
     {
-      v5 = [(FloatingControlsViewController *)self mapView];
-      [(MKCompassButton *)self->_compassButton setMapView:v5];
+      mapView2 = [(FloatingControlsViewController *)self mapView];
+      [(MKCompassButton *)self->_compassButton setMapView:mapView2];
     }
   }
 }
@@ -301,13 +301,13 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = IOSFloatingControlsViewController;
   [(FloatingControlsViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(FloatingControlsViewController *)self mapView];
-  [v3 bounds];
+  mapView = [(FloatingControlsViewController *)self mapView];
+  [mapView bounds];
   v9.width = v4;
   v9.height = v5;
   v6 = NSStringFromCGSize(v9);
-  v7 = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
-  [v7 setText:v6];
+  sizeDebugLabel = [(IOSFloatingControlsViewController *)self sizeDebugLabel];
+  [sizeDebugLabel setText:v6];
 }
 
 - (BOOL)_shouldObserveOrientationDidChange
@@ -317,8 +317,8 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(IOSFloatingControlsViewController *)self view];
-  v4 = sub_10000FA08(v3) == 0;
+  view = [(IOSFloatingControlsViewController *)self view];
+  v4 = sub_10000FA08(view) == 0;
 
   return v4;
 }
@@ -327,23 +327,23 @@ LABEL_15:
 {
   if ([(IOSFloatingControlsViewController *)self _alignStackToBottom]|| (_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(IOSFloatingControlsViewController *)self floatingButtonItems];
+    floatingButtonItems = [(IOSFloatingControlsViewController *)self floatingButtonItems];
   }
 
   else
   {
-    v3 = [(IOSFloatingControlsViewController *)self macOSStyledFloatingButtonItems];
+    floatingButtonItems = [(IOSFloatingControlsViewController *)self macOSStyledFloatingButtonItems];
   }
 
-  return v3;
+  return floatingButtonItems;
 }
 
 - (BOOL)_alignStackToBottom
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 orientation];
+  orientation = [v3 orientation];
 
-  if (sub_10000FA08(self) || (v4 - 3) >= 2)
+  if (sub_10000FA08(self) || (orientation - 3) >= 2)
   {
     v5 = _UISolariumEnabled();
     if (v5)
@@ -435,27 +435,27 @@ LABEL_15:
 {
   if (!self->_constraints)
   {
-    v3 = [(IOSFloatingControlsViewController *)self _alignStackToBottom];
-    v4 = [(UIStackView *)self->_controlsStackView trailingAnchor];
-    v23 = [(IOSFloatingControlsViewController *)self view];
-    [v23 trailingAnchor];
-    v22 = v24 = v4;
-    v5 = [v4 constraintEqualToAnchor:?];
+    _alignStackToBottom = [(IOSFloatingControlsViewController *)self _alignStackToBottom];
+    trailingAnchor = [(UIStackView *)self->_controlsStackView trailingAnchor];
+    view = [(IOSFloatingControlsViewController *)self view];
+    [view trailingAnchor];
+    v22 = v24 = trailingAnchor;
+    v5 = [trailingAnchor constraintEqualToAnchor:?];
     v21 = v5;
-    if (v3)
+    if (_alignStackToBottom)
     {
       v26[0] = v5;
-      v6 = [(UIStackView *)self->_controlsStackView topAnchor];
-      v7 = [(IOSFloatingControlsViewController *)self view];
-      v8 = [v7 topAnchor];
+      topAnchor = [(UIStackView *)self->_controlsStackView topAnchor];
+      view2 = [(IOSFloatingControlsViewController *)self view];
+      topAnchor2 = [view2 topAnchor];
       v9 = sub_100019A44();
       [(FloatingControlsViewController *)self compassDiameter];
-      v11 = [v6 constraintGreaterThanOrEqualToAnchor:v8 constant:v10 + v9 * 2.0];
+      v11 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:v10 + v9 * 2.0];
       v26[1] = v11;
-      v12 = [(UIStackView *)self->_controlsStackView bottomAnchor];
-      v13 = [(IOSFloatingControlsViewController *)self view];
-      v14 = [v13 bottomAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14];
+      bottomAnchor = [(UIStackView *)self->_controlsStackView bottomAnchor];
+      view3 = [(IOSFloatingControlsViewController *)self view];
+      bottomAnchor2 = [view3 bottomAnchor];
+      v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v26[2] = v15;
       v16 = v26;
     }
@@ -463,17 +463,17 @@ LABEL_15:
     else
     {
       v25[0] = v5;
-      v6 = [(UIStackView *)self->_controlsStackView topAnchor];
-      v7 = [(IOSFloatingControlsViewController *)self view];
-      v8 = [v7 topAnchor];
-      v11 = [v6 constraintEqualToAnchor:v8];
+      topAnchor = [(UIStackView *)self->_controlsStackView topAnchor];
+      view2 = [(IOSFloatingControlsViewController *)self view];
+      topAnchor2 = [view2 topAnchor];
+      v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v25[1] = v11;
-      v12 = [(UIStackView *)self->_controlsStackView bottomAnchor];
-      v13 = [(IOSFloatingControlsViewController *)self view];
-      v14 = [v13 bottomAnchor];
+      bottomAnchor = [(UIStackView *)self->_controlsStackView bottomAnchor];
+      view3 = [(IOSFloatingControlsViewController *)self view];
+      bottomAnchor2 = [view3 bottomAnchor];
       v17 = sub_100019A44();
       [(FloatingControlsViewController *)self compassDiameter];
-      v15 = [v12 constraintLessThanOrEqualToAnchor:v14 constant:-(v18 + v17 * 2.0)];
+      v15 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-(v18 + v17 * 2.0)];
       v25[2] = v15;
       v16 = v25;
     }
@@ -488,26 +488,26 @@ LABEL_15:
 
 - (void)_updateMapModeButtonAppearance
 {
-  v3 = [(FloatingControlsViewController *)self mapView];
+  mapView = [(FloatingControlsViewController *)self mapView];
 
-  if (v3)
+  if (mapView)
   {
-    v7 = [(IOSFloatingControlsViewController *)self _mapModeButtonImageNameForCurrentMapType];
+    _mapModeButtonImageNameForCurrentMapType = [(IOSFloatingControlsViewController *)self _mapModeButtonImageNameForCurrentMapType];
     [(IOSFloatingControlsViewController *)self _mapModeButtonPointSizeForCurrentMapType];
     v5 = v4;
-    v6 = [(IOSFloatingControlsViewController *)self _imageSymbolWeight];
+    _imageSymbolWeight = [(IOSFloatingControlsViewController *)self _imageSymbolWeight];
     [(IOSFloatingControlsViewController *)self _setMapModeButtonAXIdentifier];
-    [(IOSFloatingControlsViewController *)self _configureButton:self->_settingsButton withSymbolImageName:v7 pointSize:v6 weight:v5];
+    [(IOSFloatingControlsViewController *)self _configureButton:self->_settingsButton withSymbolImageName:_mapModeButtonImageNameForCurrentMapType pointSize:_imageSymbolWeight weight:v5];
   }
 }
 
 - (id)_mapModeButtonImageNameForCurrentMapType
 {
-  v3 = [(FloatingControlsViewController *)self mapView];
-  if (v3)
+  mapView = [(FloatingControlsViewController *)self mapView];
+  if (mapView)
   {
-    v4 = v3;
-    [v3 _cartographicConfiguration];
+    v4 = mapView;
+    [mapView _cartographicConfiguration];
 
     if (v10 == 1)
     {
@@ -520,14 +520,14 @@ LABEL_15:
     }
   }
 
-  v5 = [(FloatingControlsViewController *)self mapView];
-  if (!v5)
+  mapView2 = [(FloatingControlsViewController *)self mapView];
+  if (!mapView2)
   {
     return @"map.fill";
   }
 
-  v6 = v5;
-  [v5 _cartographicConfiguration];
+  v6 = mapView2;
+  [mapView2 _cartographicConfiguration];
 
   v7 = @"map.fill";
   if (v9 == 4)
@@ -556,11 +556,11 @@ LABEL_15:
 
   else
   {
-    v4 = [(FloatingControlsViewController *)self mapView];
-    v5 = v4;
-    if (v4)
+    mapView = [(FloatingControlsViewController *)self mapView];
+    v5 = mapView;
+    if (mapView)
     {
-      [v4 _cartographicConfiguration];
+      [mapView _cartographicConfiguration];
       if (v7 == 1)
       {
         v6 = 18.0;
@@ -585,18 +585,18 @@ LABEL_15:
 
 - (void)_setMapModeButtonAXIdentifier
 {
-  v4 = [(IOSFloatingControlsViewController *)self _mapModeAXIdentifierForCurrentMapType];
-  v3 = [@"SettingsButton." stringByAppendingString:v4];
+  _mapModeAXIdentifierForCurrentMapType = [(IOSFloatingControlsViewController *)self _mapModeAXIdentifierForCurrentMapType];
+  v3 = [@"SettingsButton." stringByAppendingString:_mapModeAXIdentifierForCurrentMapType];
   [(UIButton *)self->_settingsButton setAccessibilityIdentifier:v3];
 }
 
 - (id)_mapModeAXIdentifierForCurrentMapType
 {
-  v3 = [(FloatingControlsViewController *)self mapView];
-  if (v3)
+  mapView = [(FloatingControlsViewController *)self mapView];
+  if (mapView)
   {
-    v4 = v3;
-    [v3 _cartographicConfiguration];
+    v4 = mapView;
+    [mapView _cartographicConfiguration];
 
     if (v10 == 1)
     {
@@ -609,14 +609,14 @@ LABEL_15:
     }
   }
 
-  v5 = [(FloatingControlsViewController *)self mapView];
-  if (!v5)
+  mapView2 = [(FloatingControlsViewController *)self mapView];
+  if (!mapView2)
   {
     return @"Explore";
   }
 
-  v6 = v5;
-  [v5 _cartographicConfiguration];
+  v6 = mapView2;
+  [mapView2 _cartographicConfiguration];
 
   v7 = @"Explore";
   if (v9 == 4)
@@ -637,12 +637,12 @@ LABEL_15:
 
 - (CGRect)floatingButtonsFrame
 {
-  v3 = [(IOSFloatingControlsViewController *)self controlsStackViewIfLoaded];
+  controlsStackViewIfLoaded = [(IOSFloatingControlsViewController *)self controlsStackViewIfLoaded];
 
-  if (v3)
+  if (controlsStackViewIfLoaded)
   {
-    v4 = [(IOSFloatingControlsViewController *)self controlsStackViewIfLoaded];
-    [v4 frame];
+    controlsStackViewIfLoaded2 = [(IOSFloatingControlsViewController *)self controlsStackViewIfLoaded];
+    [controlsStackViewIfLoaded2 frame];
     x = v5;
     y = v7;
     width = v9;
@@ -668,10 +668,10 @@ LABEL_15:
   return result;
 }
 
-- (void)_configureButton:(id)a3 withImage:(id)a4 pointSize:(double)a5 weight:(int64_t)a6
+- (void)_configureButton:(id)button withImage:(id)image pointSize:(double)size weight:(int64_t)weight
 {
-  v11 = a3;
-  [v11 setImage:a4 forState:0];
+  buttonCopy = button;
+  [buttonCopy setImage:image forState:0];
   if (_UISolariumEnabled())
   {
     +[_TtC4Maps23MapsDesignConstantsShim defaultButtonTintColor];
@@ -682,26 +682,26 @@ LABEL_15:
     +[MapsTheme floatingControlsTintColor];
   }
   v9 = ;
-  [v11 setTintColor:v9];
+  [buttonCopy setTintColor:v9];
 
-  v10 = [UIImageSymbolConfiguration configurationWithPointSize:a6 weight:a5];
-  [v11 setPreferredSymbolConfiguration:v10 forImageInState:0];
+  v10 = [UIImageSymbolConfiguration configurationWithPointSize:weight weight:size];
+  [buttonCopy setPreferredSymbolConfiguration:v10 forImageInState:0];
 }
 
-- (void)_configureButton:(id)a3 withSymbolImageName:(id)a4 pointSize:(double)a5 weight:(int64_t)a6
+- (void)_configureButton:(id)button withSymbolImageName:(id)name pointSize:(double)size weight:(int64_t)weight
 {
-  v10 = a3;
-  v11 = [UIImage _systemImageNamed:a4];
-  [(IOSFloatingControlsViewController *)self _configureButton:v10 withImage:v11 pointSize:a6 weight:a5];
+  buttonCopy = button;
+  v11 = [UIImage _systemImageNamed:name];
+  [(IOSFloatingControlsViewController *)self _configureButton:buttonCopy withImage:v11 pointSize:weight weight:size];
 }
 
-- (void)_configureButton:(id)a3 withSymbolImageName:(id)a4
+- (void)_configureButton:(id)button withSymbolImageName:(id)name
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(IOSFloatingControlsViewController *)self _imageSymbolWeight];
+  nameCopy = name;
+  buttonCopy = button;
+  _imageSymbolWeight = [(IOSFloatingControlsViewController *)self _imageSymbolWeight];
   [(IOSFloatingControlsViewController *)self _pointSize];
-  [(IOSFloatingControlsViewController *)self _configureButton:v8 withSymbolImageName:v6 pointSize:v7 weight:?];
+  [(IOSFloatingControlsViewController *)self _configureButton:buttonCopy withSymbolImageName:nameCopy pointSize:_imageSymbolWeight weight:?];
 }
 
 - (void)toggleSSAO
@@ -716,10 +716,10 @@ LABEL_15:
   v3 = sub_1008E379C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -727,22 +727,22 @@ LABEL_15:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(IOSFloatingControlsViewController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(IOSFloatingControlsViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Launching TTR from floating control", buf, 0xCu);
   }
 
@@ -767,17 +767,17 @@ LABEL_10:
     [(UIButton *)v6 setAccessibilityLabel:v8];
 
     v9 = self->_ssaoButton;
-    v10 = [(FloatingControlsViewController *)self actionCoordinator];
-    [(UIButton *)v9 addTarget:v10 action:"toggleSSAO" forControlEvents:64];
+    actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+    [(UIButton *)v9 addTarget:actionCoordinator action:"toggleSSAO" forControlEvents:64];
 
     [(IOSFloatingControlsViewController *)self _configureButton:self->_ssaoButton withSymbolImageName:@"s.circle.fill"];
     [(UIButton *)self->_ssaoButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v11 = sub_100035D80(self);
-    v12 = [(UIButton *)self->_ssaoButton heightAnchor];
-    v13 = [v12 constraintEqualToConstant:v11];
+    heightAnchor = [(UIButton *)self->_ssaoButton heightAnchor];
+    v13 = [heightAnchor constraintEqualToConstant:v11];
     v18[0] = v13;
-    v14 = [(UIButton *)self->_ssaoButton widthAnchor];
-    v15 = [v14 constraintEqualToConstant:v11];
+    widthAnchor = [(UIButton *)self->_ssaoButton widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:v11];
     v18[1] = v15;
     v16 = [NSArray arrayWithObjects:v18 count:2];
     [NSLayoutConstraint activateConstraints:v16];
@@ -808,20 +808,20 @@ LABEL_10:
     [(IOSFloatingControlsViewController *)self _configureButton:self->_ttrButton withSymbolImageName:0];
     objc_initWeak(&location, self);
     v9 = self->_ttrButton;
-    v10 = [(IOSFloatingControlsViewController *)self topMostPresentedViewController];
+    topMostPresentedViewController = [(IOSFloatingControlsViewController *)self topMostPresentedViewController];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1008E3CF4;
     v18[3] = &unk_101661B98;
     objc_copyWeak(&v19, &location);
-    [MapsRadarButtonHelper configureWithButton:v9 presentationViewController:v10 actionHandler:v18];
+    [MapsRadarButtonHelper configureWithButton:v9 presentationViewController:topMostPresentedViewController actionHandler:v18];
 
     v11 = sub_100035D80(self);
-    v12 = [(UIButton *)self->_ttrButton heightAnchor];
-    v13 = [v12 constraintEqualToConstant:v11];
+    heightAnchor = [(UIButton *)self->_ttrButton heightAnchor];
+    v13 = [heightAnchor constraintEqualToConstant:v11];
     v21[0] = v13;
-    v14 = [(UIButton *)self->_ttrButton widthAnchor];
-    v15 = [v14 constraintEqualToConstant:v11];
+    widthAnchor = [(UIButton *)self->_ttrButton widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:v11];
     v21[1] = v15;
     v16 = [NSArray arrayWithObjects:v21 count:2];
     [NSLayoutConstraint activateConstraints:v16];
@@ -834,11 +834,11 @@ LABEL_10:
   return ttrButton;
 }
 
-- (void)enterPedestrianAR:(id)a3
+- (void)enterPedestrianAR:(id)r
 {
-  v4 = a3;
-  v5 = [(FloatingControlsViewController *)self actionCoordinator];
-  [v5 enterPedestrianAR:v4];
+  rCopy = r;
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  [actionCoordinator enterPedestrianAR:rCopy];
 
   [GEOAPPortal captureUserAction:126 target:302 value:0];
 }
@@ -862,12 +862,12 @@ LABEL_10:
 
     [(UIButton *)self->_modePedestrianARButton addTarget:self action:"enterPedestrianAR:" forControlEvents:64];
     [(IOSFloatingControlsViewController *)self _configureButton:self->_modePedestrianARButton withSymbolImageName:@"arkit"];
-    v9 = [(UIButton *)self->_modePedestrianARButton heightAnchor];
-    v10 = [v9 constraintEqualToConstant:sub_100035D80(self)];
+    heightAnchor = [(UIButton *)self->_modePedestrianARButton heightAnchor];
+    v10 = [heightAnchor constraintEqualToConstant:sub_100035D80(self)];
     v16[0] = v10;
-    v11 = [(UIButton *)self->_modePedestrianARButton widthAnchor];
-    v12 = [(UIButton *)self->_modePedestrianARButton heightAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    widthAnchor = [(UIButton *)self->_modePedestrianARButton widthAnchor];
+    heightAnchor2 = [(UIButton *)self->_modePedestrianARButton heightAnchor];
+    v13 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
     v16[1] = v13;
     v14 = [NSArray arrayWithObjects:v16 count:2];
     [NSLayoutConstraint activateConstraints:v14];
@@ -895,17 +895,17 @@ LABEL_10:
     [(UIButton *)v6 setAccessibilityLabel:v8];
 
     v9 = self->_mode3DButton;
-    v10 = [(FloatingControlsViewController *)self actionCoordinator];
-    [(UIButton *)v9 addTarget:v10 action:"select3dMode" forControlEvents:64];
+    actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+    [(UIButton *)v9 addTarget:actionCoordinator action:"select3dMode" forControlEvents:64];
 
     [(IOSFloatingControlsViewController *)self _configureButton:self->_mode3DButton withSymbolImageName:@"view.3d"];
     [(UIButton *)self->_mode3DButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v11 = sub_100035D80(self);
-    v12 = [(UIButton *)self->_mode3DButton heightAnchor];
-    v13 = [v12 constraintEqualToConstant:v11];
+    heightAnchor = [(UIButton *)self->_mode3DButton heightAnchor];
+    v13 = [heightAnchor constraintEqualToConstant:v11];
     v18[0] = v13;
-    v14 = [(UIButton *)self->_mode3DButton widthAnchor];
-    v15 = [v14 constraintEqualToConstant:v11];
+    widthAnchor = [(UIButton *)self->_mode3DButton widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:v11];
     v18[1] = v15;
     v16 = [NSArray arrayWithObjects:v18 count:2];
     [NSLayoutConstraint activateConstraints:v16];
@@ -933,17 +933,17 @@ LABEL_10:
     [(UIButton *)v6 setAccessibilityLabel:v8];
 
     v9 = self->_mode2DButton;
-    v10 = [(FloatingControlsViewController *)self actionCoordinator];
-    [(UIButton *)v9 addTarget:v10 action:"exit3dMode" forControlEvents:64];
+    actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+    [(UIButton *)v9 addTarget:actionCoordinator action:"exit3dMode" forControlEvents:64];
 
     [(IOSFloatingControlsViewController *)self _configureButton:self->_mode2DButton withSymbolImageName:@"view.2d"];
     [(UIButton *)self->_mode2DButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v11 = sub_100035D80(self);
-    v12 = [(UIButton *)self->_mode2DButton heightAnchor];
-    v13 = [v12 constraintEqualToConstant:v11];
+    heightAnchor = [(UIButton *)self->_mode2DButton heightAnchor];
+    v13 = [heightAnchor constraintEqualToConstant:v11];
     v18[0] = v13;
-    v14 = [(UIButton *)self->_mode2DButton widthAnchor];
-    v15 = [v14 constraintEqualToConstant:v11];
+    widthAnchor = [(UIButton *)self->_mode2DButton widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:v11];
     v18[1] = v15;
     v16 = [NSArray arrayWithObjects:v18 count:2];
     [NSLayoutConstraint activateConstraints:v16];
@@ -974,23 +974,23 @@ LABEL_10:
 
     [(UIButton *)self->_userProfileButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)self->_userProfileButton setAccessibilityIdentifier:&stru_1016631F0];
-    v6 = [(UIButton *)self->_userProfileButton imageView];
-    [v6 setContentMode:1];
+    imageView = [(UIButton *)self->_userProfileButton imageView];
+    [imageView setContentMode:1];
 
-    v7 = [(UIButton *)self->_userProfileButton imageView];
-    [v7 setClipsToBounds:1];
+    imageView2 = [(UIButton *)self->_userProfileButton imageView];
+    [imageView2 setClipsToBounds:1];
 
     v8 = self->_userProfileButton;
-    v9 = [(FloatingControlsViewController *)self actionCoordinator];
-    [(UIButton *)v8 addTarget:v9 action:"openUserProfile" forEvents:64];
+    actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+    [(UIButton *)v8 addTarget:actionCoordinator action:"openUserProfile" forEvents:64];
 
     [(IOSFloatingControlsViewController *)self _updateUserProfileButtonImage];
     v10 = sub_100035D80(self);
-    v11 = [(UIButton *)self->_userProfileButton heightAnchor];
-    v12 = [v11 constraintEqualToConstant:v10];
+    heightAnchor = [(UIButton *)self->_userProfileButton heightAnchor];
+    v12 = [heightAnchor constraintEqualToConstant:v10];
     v17[0] = v12;
-    v13 = [(UIButton *)self->_userProfileButton widthAnchor];
-    v14 = [v13 constraintEqualToConstant:v10];
+    widthAnchor = [(UIButton *)self->_userProfileButton widthAnchor];
+    v14 = [widthAnchor constraintEqualToConstant:v10];
     v17[1] = v14;
     v15 = [NSArray arrayWithObjects:v17 count:2];
     [NSLayoutConstraint activateConstraints:v15];
@@ -1004,9 +1004,9 @@ LABEL_10:
 - (void)_showLocationServicesAlertIfNeeded
 {
   v2 = +[MKLocationManager sharedLocationManager];
-  v3 = [v2 isLocationServicesAuthorizationNeeded];
+  isLocationServicesAuthorizationNeeded = [v2 isLocationServicesAuthorizationNeeded];
 
-  if (v3)
+  if (isLocationServicesAuthorizationNeeded)
   {
     v4 = sub_1008E379C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1033,13 +1033,13 @@ LABEL_5:
     v9 = sub_1008E379C();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 domain];
-      v11 = [v6 code];
-      v12 = [v6 localizedDescription];
-      v13 = v12;
-      if (v12)
+      domain = [v6 domain];
+      code = [v6 code];
+      localizedDescription = [v6 localizedDescription];
+      v13 = localizedDescription;
+      if (localizedDescription)
       {
-        v14 = v12;
+        v14 = localizedDescription;
       }
 
       else
@@ -1047,18 +1047,18 @@ LABEL_5:
         v14 = @"no description available";
       }
 
-      v15 = [v6 localizedRecoverySuggestion];
-      v16 = v15;
+      localizedRecoverySuggestion = [v6 localizedRecoverySuggestion];
+      v16 = localizedRecoverySuggestion;
       v17 = @"no recovery suggestion available";
       *buf = 138413058;
-      v23 = v10;
-      if (v15)
+      v23 = domain;
+      if (localizedRecoverySuggestion)
       {
-        v17 = v15;
+        v17 = localizedRecoverySuggestion;
       }
 
       v24 = 2048;
-      v25 = v11;
+      v25 = code;
       v26 = 2112;
       v27 = v14;
       v28 = 2112;
@@ -1066,13 +1066,13 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Location Services not available, error domain => %@ code => %ld, description => %@, recovery suggestion => %@", buf, 0x2Au);
     }
 
-    v18 = [v6 domain];
-    v19 = [v18 isEqualToString:MKLocationErrorDomain];
+    domain2 = [v6 domain];
+    v19 = [domain2 isEqualToString:MKLocationErrorDomain];
 
     if (v19)
     {
-      v20 = [v6 code];
-      if (v20 == 2)
+      code2 = [v6 code];
+      if (code2 == 2)
       {
         v5 = +[UIApplication sharedMapsDelegate];
         [v5 showLocationServicesAlertWithError:v6];
@@ -1080,7 +1080,7 @@ LABEL_5:
 
       else
       {
-        if (v20)
+        if (code2)
         {
           goto LABEL_18;
         }
@@ -1098,16 +1098,16 @@ LABEL_18:
 
 - (void)_presentSettings
 {
-  v3 = [(FloatingControlsViewController *)self actionCoordinator];
-  [v3 viewControllerOpenSettings:self];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  [actionCoordinator viewControllerOpenSettings:self];
 
-  v4 = [(FloatingControlsViewController *)self openSettingsDelegate];
+  openSettingsDelegate = [(FloatingControlsViewController *)self openSettingsDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(FloatingControlsViewController *)self openSettingsDelegate];
-    [v6 viewControllerOpenSettings:self];
+    openSettingsDelegate2 = [(FloatingControlsViewController *)self openSettingsDelegate];
+    [openSettingsDelegate2 viewControllerOpenSettings:self];
   }
 }
 
@@ -1127,16 +1127,16 @@ LABEL_18:
     [(UIButton *)v6 setAccessibilityLabel:v8];
 
     [(UIButton *)self->_settingsButton addTarget:self action:"_presentSettings" forControlEvents:64];
-    v9 = [(IOSFloatingControlsViewController *)self _mapModeButtonImageNameForCurrentMapType];
+    _mapModeButtonImageNameForCurrentMapType = [(IOSFloatingControlsViewController *)self _mapModeButtonImageNameForCurrentMapType];
     [(IOSFloatingControlsViewController *)self _mapModeButtonPointSizeForCurrentMapType];
-    [(IOSFloatingControlsViewController *)self _configureButton:self->_settingsButton withSymbolImageName:v9 pointSize:[(IOSFloatingControlsViewController *)self _imageSymbolWeight] weight:v10];
+    [(IOSFloatingControlsViewController *)self _configureButton:self->_settingsButton withSymbolImageName:_mapModeButtonImageNameForCurrentMapType pointSize:[(IOSFloatingControlsViewController *)self _imageSymbolWeight] weight:v10];
     [(UIButton *)self->_settingsButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v11 = sub_100035D80(self);
-    v12 = [(UIButton *)self->_settingsButton heightAnchor];
-    v13 = [v12 constraintEqualToConstant:v11];
+    heightAnchor = [(UIButton *)self->_settingsButton heightAnchor];
+    v13 = [heightAnchor constraintEqualToConstant:v11];
     v18[0] = v13;
-    v14 = [(UIButton *)self->_settingsButton widthAnchor];
-    v15 = [v14 constraintEqualToConstant:v11];
+    widthAnchor = [(UIButton *)self->_settingsButton widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:v11];
     v18[1] = v15;
     v16 = [NSArray arrayWithObjects:v18 count:2];
     [NSLayoutConstraint activateConstraints:v16];
@@ -1152,18 +1152,18 @@ LABEL_18:
   compassButton = self->_compassButton;
   if (!compassButton)
   {
-    v4 = [(FloatingControlsViewController *)self mapView];
-    v5 = [MKCompassButton compassButtonWithMapView:v4];
+    mapView = [(FloatingControlsViewController *)self mapView];
+    v5 = [MKCompassButton compassButtonWithMapView:mapView];
     v6 = self->_compassButton;
     self->_compassButton = v5;
 
     [(MKCompassButton *)self->_compassButton setCompassVisibility:2];
     v7 = sub_100035D80(self);
-    v8 = [(MKCompassButton *)self->_compassButton heightAnchor];
-    v9 = [v8 constraintEqualToConstant:v7];
+    heightAnchor = [(MKCompassButton *)self->_compassButton heightAnchor];
+    v9 = [heightAnchor constraintEqualToConstant:v7];
     v14[0] = v9;
-    v10 = [(MKCompassButton *)self->_compassButton widthAnchor];
-    v11 = [v10 constraintEqualToConstant:v7];
+    widthAnchor = [(MKCompassButton *)self->_compassButton widthAnchor];
+    v11 = [widthAnchor constraintEqualToConstant:v7];
     v14[1] = v11;
     v12 = [NSArray arrayWithObjects:v14 count:2];
     [NSLayoutConstraint activateConstraints:v12];
@@ -1179,8 +1179,8 @@ LABEL_18:
   userLocationButton = self->_userLocationButton;
   if (!userLocationButton)
   {
-    v4 = [(FloatingControlsViewController *)self mapView];
-    v5 = [_MapsUserTrackingButton buttonWithMapView:v4 applyDefaultImageIfNeeded:0];
+    mapView = [(FloatingControlsViewController *)self mapView];
+    v5 = [_MapsUserTrackingButton buttonWithMapView:mapView applyDefaultImageIfNeeded:0];
     v6 = self->_userLocationButton;
     self->_userLocationButton = v5;
 
@@ -1225,11 +1225,11 @@ LABEL_18:
 
     [(_MapsUserTrackingButton *)self->_userLocationButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v21 = sub_100035D80(self);
-    v22 = [(_MapsUserTrackingButton *)self->_userLocationButton heightAnchor];
-    v23 = [v22 constraintEqualToConstant:v21];
+    heightAnchor = [(_MapsUserTrackingButton *)self->_userLocationButton heightAnchor];
+    v23 = [heightAnchor constraintEqualToConstant:v21];
     v28[0] = v23;
-    v24 = [(_MapsUserTrackingButton *)self->_userLocationButton widthAnchor];
-    v25 = [v24 constraintEqualToConstant:v21];
+    widthAnchor = [(_MapsUserTrackingButton *)self->_userLocationButton widthAnchor];
+    v25 = [widthAnchor constraintEqualToConstant:v21];
     v28[1] = v25;
     v26 = [NSArray arrayWithObjects:v28 count:2];
     [NSLayoutConstraint activateConstraints:v26];
@@ -1245,17 +1245,17 @@ LABEL_18:
   localSearchViewController = self->_localSearchViewController;
   if (localSearchViewController)
   {
-    v4 = [(LocalSearchViewController *)localSearchViewController view];
-    v5 = [v4 trailingAnchor];
-    v6 = [(IOSFloatingControlsViewController *)self controlsStackView];
-    v7 = [v6 leadingAnchor];
+    view = [(LocalSearchViewController *)localSearchViewController view];
+    trailingAnchor = [view trailingAnchor];
+    controlsStackView = [(IOSFloatingControlsViewController *)self controlsStackView];
+    leadingAnchor = [controlsStackView leadingAnchor];
     [(FloatingControlsViewController *)self margin];
-    v9 = [v5 constraintEqualToAnchor:v7 constant:-v8];
+    v9 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-v8];
     v16[0] = v9;
-    v10 = [v4 topAnchor];
-    v11 = [(IOSFloatingControlsViewController *)self controlsStackView];
-    v12 = [v11 topAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    topAnchor = [view topAnchor];
+    controlsStackView2 = [(IOSFloatingControlsViewController *)self controlsStackView];
+    topAnchor2 = [controlsStackView2 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v16[1] = v13;
     v14 = [NSArray arrayWithObjects:v16 count:2];
   }
@@ -1284,23 +1284,23 @@ LABEL_18:
   return localSearchViewController;
 }
 
-- (void)localSearchViewShouldBeVisibleDidChange:(id)a3
+- (void)localSearchViewShouldBeVisibleDidChange:(id)change
 {
-  v4 = [(IOSFloatingControlsViewController *)self localSearchViewController];
-  v5 = [v4 view];
-  [v5 alpha];
+  localSearchViewController = [(IOSFloatingControlsViewController *)self localSearchViewController];
+  view = [localSearchViewController view];
+  [view alpha];
   v7 = v6;
 
-  v8 = [(IOSFloatingControlsViewController *)self localSearchViewController];
-  v9 = [v8 shouldBeVisible];
+  localSearchViewController2 = [(IOSFloatingControlsViewController *)self localSearchViewController];
+  shouldBeVisible = [localSearchViewController2 shouldBeVisible];
 
-  if ((((v7 != 1.0) ^ v9) & 1) == 0)
+  if ((((v7 != 1.0) ^ shouldBeVisible) & 1) == 0)
   {
-    if (v9)
+    if (shouldBeVisible)
     {
-      v10 = [(IOSFloatingControlsViewController *)self localSearchViewController];
-      v11 = [v10 view];
-      [v11 layoutIfNeeded];
+      localSearchViewController3 = [(IOSFloatingControlsViewController *)self localSearchViewController];
+      view2 = [localSearchViewController3 view];
+      [view2 layoutIfNeeded];
     }
 
     v12[0] = _NSConcreteStackBlock;
@@ -1308,52 +1308,52 @@ LABEL_18:
     v12[2] = sub_1008E52F8;
     v12[3] = &unk_101661AE0;
     v12[4] = self;
-    v13 = v9;
+    v13 = shouldBeVisible;
     [UIView _animateUsingDefaultTimingWithOptions:0 animations:v12 completion:0];
   }
 }
 
-- (void)viewControllerDidSelectBrowseVenue:(id)a3
+- (void)viewControllerDidSelectBrowseVenue:(id)venue
 {
-  v4 = [(FloatingControlsViewController *)self actionCoordinator];
-  v3 = [v4 venuesManager];
-  [v3 presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:0];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:0];
 }
 
-- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)a3
+- (void)localSearchViewControllerDidSelectRefreshSearchHere:(id)here
 {
-  v4 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v4 shouldShowSearchOverlay];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  shouldShowSearchOverlay = [actionCoordinator shouldShowSearchOverlay];
 
-  if (v5)
+  if (shouldShowSearchOverlay)
   {
-    v6 = [(FloatingControlsViewController *)self actionCoordinator];
-    [v6 refreshCurrentSearch];
+    actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
+    [actionCoordinator2 refreshCurrentSearch];
   }
 }
 
 - (VKVenueFeatureMarker)venueWithFocus
 {
-  v2 = [(FloatingControlsViewController *)self actionCoordinator];
-  v3 = [v2 venuesManager];
-  v4 = [v3 venueWithFocus];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  venueWithFocus = [venuesManager venueWithFocus];
 
-  return v4;
+  return venueWithFocus;
 }
 
-- (void)setSearchSession:(id)a3
+- (void)setSearchSession:(id)session
 {
-  v4 = a3;
-  v6 = [(IOSFloatingControlsViewController *)self localSearchViewController];
-  v5 = [v6 refreshSearchHereBusinessController];
-  [v5 setSearchSession:v4];
+  sessionCopy = session;
+  localSearchViewController = [(IOSFloatingControlsViewController *)self localSearchViewController];
+  refreshSearchHereBusinessController = [localSearchViewController refreshSearchHereBusinessController];
+  [refreshSearchHereBusinessController setSearchSession:sessionCopy];
 }
 
-- (void)setRefreshViewEnable:(BOOL)a3
+- (void)setRefreshViewEnable:(BOOL)enable
 {
-  v3 = a3;
-  v4 = [(IOSFloatingControlsViewController *)self localSearchViewController];
-  [v4 setEnable:v3];
+  enableCopy = enable;
+  localSearchViewController = [(IOSFloatingControlsViewController *)self localSearchViewController];
+  [localSearchViewController setEnable:enableCopy];
 }
 
 - (double)_pointSize
@@ -1375,17 +1375,17 @@ LABEL_18:
   return v3;
 }
 
-- (BOOL)lacksSearchResultsInVenue:(id)a3 forFloorOrdinal:(signed __int16)a4
+- (BOOL)lacksSearchResultsInVenue:(id)venue forFloorOrdinal:(signed __int16)ordinal
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(FloatingControlsViewController *)self actionCoordinator];
-  v8 = [v7 venuesManager];
-  if ([v8 hasSearchResultsInVenueForAnyFloorOrdinal:v6])
+  ordinalCopy = ordinal;
+  venueCopy = venue;
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  if ([venuesManager hasSearchResultsInVenueForAnyFloorOrdinal:venueCopy])
   {
-    v9 = [(FloatingControlsViewController *)self actionCoordinator];
-    v10 = [v9 venuesManager];
-    v11 = [v10 hasSearchResultsInVenue:v6 forFloorOrdinal:v4] ^ 1;
+    actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
+    venuesManager2 = [actionCoordinator2 venuesManager];
+    v11 = [venuesManager2 hasSearchResultsInVenue:venueCopy forFloorOrdinal:ordinalCopy] ^ 1;
   }
 
   else
@@ -1396,57 +1396,57 @@ LABEL_18:
   return v11;
 }
 
-- (id)venueFloorViewControllerConstraintsForViewWhenOpen:(id)a3
+- (id)venueFloorViewControllerConstraintsForViewWhenOpen:(id)open
 {
-  v4 = a3;
-  v32 = [v4 view];
-  v29 = [v32 leadingAnchor];
-  v5 = [(IOSFloatingControlsViewController *)self controlsStackView];
-  v6 = [v5 leadingAnchor];
-  v7 = [v29 constraintEqualToAnchor:v6];
+  openCopy = open;
+  view = [openCopy view];
+  leadingAnchor = [view leadingAnchor];
+  controlsStackView = [(IOSFloatingControlsViewController *)self controlsStackView];
+  leadingAnchor2 = [controlsStackView leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v36[0] = v7;
-  v8 = [v4 view];
-  v9 = [v8 trailingAnchor];
-  v10 = [(IOSFloatingControlsViewController *)self controlsStackView];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  view2 = [openCopy view];
+  trailingAnchor = [view2 trailingAnchor];
+  controlsStackView2 = [(IOSFloatingControlsViewController *)self controlsStackView];
+  trailingAnchor2 = [controlsStackView2 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v36[1] = v12;
   v31 = [NSArray arrayWithObjects:v36 count:2];
 
-  LODWORD(v11) = [(IOSFloatingControlsViewController *)self _alignStackToBottom];
-  v33 = v4;
-  v13 = [v4 view];
-  v30 = v13;
-  if (v11)
+  LODWORD(trailingAnchor2) = [(IOSFloatingControlsViewController *)self _alignStackToBottom];
+  v33 = openCopy;
+  view3 = [openCopy view];
+  v30 = view3;
+  if (trailingAnchor2)
   {
-    v14 = [v13 bottomAnchor];
-    v27 = [(IOSFloatingControlsViewController *)self view];
-    v15 = [v27 bottomAnchor];
-    v28 = v14;
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor = [view3 bottomAnchor];
+    view4 = [(IOSFloatingControlsViewController *)self view];
+    bottomAnchor2 = [view4 bottomAnchor];
+    v28 = bottomAnchor;
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v35[0] = v16;
-    v17 = [v4 view];
-    v18 = [v17 topAnchor];
-    v19 = [(IOSFloatingControlsViewController *)self view];
-    v20 = [v19 topAnchor];
-    v21 = [v18 constraintGreaterThanOrEqualToAnchor:v20];
+    view5 = [openCopy view];
+    topAnchor = [view5 topAnchor];
+    view6 = [(IOSFloatingControlsViewController *)self view];
+    topAnchor2 = [view6 topAnchor];
+    v21 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v35[1] = v21;
     v22 = v35;
   }
 
   else
   {
-    v23 = [v13 topAnchor];
-    v27 = [(IOSFloatingControlsViewController *)self view];
-    v15 = [v27 topAnchor];
-    v28 = v23;
-    v16 = [v23 constraintEqualToAnchor:v15];
+    topAnchor3 = [view3 topAnchor];
+    view4 = [(IOSFloatingControlsViewController *)self view];
+    bottomAnchor2 = [view4 topAnchor];
+    v28 = topAnchor3;
+    v16 = [topAnchor3 constraintEqualToAnchor:bottomAnchor2];
     v34[0] = v16;
-    v17 = [v4 view];
-    v18 = [v17 bottomAnchor];
-    v19 = [(IOSFloatingControlsViewController *)self view];
-    v20 = [v19 bottomAnchor];
-    v21 = [v18 constraintLessThanOrEqualToAnchor:v20];
+    view5 = [openCopy view];
+    topAnchor = [view5 bottomAnchor];
+    view6 = [(IOSFloatingControlsViewController *)self view];
+    topAnchor2 = [view6 bottomAnchor];
+    v21 = [topAnchor constraintLessThanOrEqualToAnchor:topAnchor2];
     v34[1] = v21;
     v22 = v34;
   }
@@ -1457,103 +1457,103 @@ LABEL_18:
   return v25;
 }
 
-- (void)venueFloorViewControllerDidClose:(id)a3
+- (void)venueFloorViewControllerDidClose:(id)close
 {
-  v4 = a3;
+  closeCopy = close;
   [(IOSFloatingControlsViewController *)self updateNonFloorPickerControlsVisibleAnimated:1];
-  v6 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v6 venuesManager];
-  [v5 venueFloorViewControllerDidClose:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidClose:closeCopy];
 }
 
-- (void)venueFloorViewControllerDidOpen:(id)a3
+- (void)venueFloorViewControllerDidOpen:(id)open
 {
-  v4 = a3;
+  openCopy = open;
   [(IOSFloatingControlsViewController *)self updateNonFloorPickerControlsVisibleAnimated:1];
-  v6 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v6 venuesManager];
-  [v5 venueFloorViewControllerDidOpen:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidOpen:openCopy];
 }
 
-- (void)venueFloorViewControllerDidFinishShowing:(id)a3
+- (void)venueFloorViewControllerDidFinishShowing:(id)showing
 {
-  v4 = a3;
+  showingCopy = showing;
   [(IOSFloatingControlsViewController *)self updateNonFloorPickerControlsVisibleAnimated:1];
-  v6 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v6 venuesManager];
-  [v5 venueFloorViewControllerDidFinishShowing:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidFinishShowing:showingCopy];
 }
 
-- (void)venueFloorViewControllerDidStartShowing:(id)a3
+- (void)venueFloorViewControllerDidStartShowing:(id)showing
 {
-  v4 = a3;
-  v5 = [(IOSFloatingControlsViewController *)self view];
-  [v5 layoutIfNeeded];
+  showingCopy = showing;
+  view = [(IOSFloatingControlsViewController *)self view];
+  [view layoutIfNeeded];
 
   [(IOSFloatingControlsViewController *)self updateNonFloorPickerControlsVisibleForFloorPickerHidden:0 animated:1];
-  v7 = [(FloatingControlsViewController *)self actionCoordinator];
-  v6 = [v7 venuesManager];
-  [v6 venueFloorViewControllerDidStartShowing:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidStartShowing:showingCopy];
 }
 
-- (void)venueFloorViewControllerDidFinishHiding:(id)a3
+- (void)venueFloorViewControllerDidFinishHiding:(id)hiding
 {
-  v4 = a3;
-  v5 = [(IOSFloatingControlsViewController *)self _alignStackToBottom];
-  v6 = [(IOSFloatingControlsViewController *)self controlsStackView];
-  v7 = [(IOSFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
-  v8 = [v7 closedPlaceholderView];
-  if (v5)
+  hidingCopy = hiding;
+  _alignStackToBottom = [(IOSFloatingControlsViewController *)self _alignStackToBottom];
+  controlsStackView = [(IOSFloatingControlsViewController *)self controlsStackView];
+  venueFloorViewControllerIfLoaded = [(IOSFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
+  closedPlaceholderView = [venueFloorViewControllerIfLoaded closedPlaceholderView];
+  if (_alignStackToBottom)
   {
-    [v6 insertArrangedSubview:v8 atIndex:0];
+    [controlsStackView insertArrangedSubview:closedPlaceholderView atIndex:0];
   }
 
   else
   {
-    [v6 addArrangedSubview:v8];
+    [controlsStackView addArrangedSubview:closedPlaceholderView];
   }
 
-  v9 = [(IOSFloatingControlsViewController *)self view];
-  [v9 layoutIfNeeded];
+  view = [(IOSFloatingControlsViewController *)self view];
+  [view layoutIfNeeded];
 
   [(IOSFloatingControlsViewController *)self updateNonFloorPickerControlsVisibleAnimated:1];
-  v11 = [(FloatingControlsViewController *)self actionCoordinator];
-  v10 = [v11 venuesManager];
-  [v10 venueFloorViewControllerDidFinishHiding:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidFinishHiding:hidingCopy];
 }
 
-- (void)venueFloorViewControllerDidStartHiding:(id)a3
+- (void)venueFloorViewControllerDidStartHiding:(id)hiding
 {
-  v4 = a3;
-  v5 = [(IOSFloatingControlsViewController *)self controlsStackView];
-  v6 = [(IOSFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
-  v7 = [v6 closedPlaceholderView];
-  [v5 removeArrangedSubview:v7];
+  hidingCopy = hiding;
+  controlsStackView = [(IOSFloatingControlsViewController *)self controlsStackView];
+  venueFloorViewControllerIfLoaded = [(IOSFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
+  closedPlaceholderView = [venueFloorViewControllerIfLoaded closedPlaceholderView];
+  [controlsStackView removeArrangedSubview:closedPlaceholderView];
 
-  v8 = [(IOSFloatingControlsViewController *)self view];
-  [v8 layoutIfNeeded];
+  view = [(IOSFloatingControlsViewController *)self view];
+  [view layoutIfNeeded];
 
   [(IOSFloatingControlsViewController *)self updateNonFloorPickerControlsVisibleForFloorPickerHidden:1 animated:1];
-  v10 = [(FloatingControlsViewController *)self actionCoordinator];
-  v9 = [v10 venuesManager];
-  [v9 venueFloorViewControllerDidStartHiding:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidStartHiding:hidingCopy];
 }
 
-- (void)venueFloorViewControllerDidChangeConstraints:(id)a3
+- (void)venueFloorViewControllerDidChangeConstraints:(id)constraints
 {
-  v4 = a3;
-  v5 = [(IOSFloatingControlsViewController *)self view];
-  [v5 layoutIfNeeded];
+  constraintsCopy = constraints;
+  view = [(IOSFloatingControlsViewController *)self view];
+  [view layoutIfNeeded];
 
-  v7 = [(FloatingControlsViewController *)self actionCoordinator];
-  v6 = [v7 venuesManager];
-  [v6 venueFloorViewControllerDidChangeConstraints:v4];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager venueFloorViewControllerDidChangeConstraints:constraintsCopy];
 }
 
-- (void)updateNonFloorPickerControlsVisibleForFloorPickerHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)updateNonFloorPickerControlsVisibleForFloorPickerHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (hidden)
   {
 
     [(IOSFloatingControlsViewController *)self setNonFloorPickerControlsVisible:1 animated:?];
@@ -1561,54 +1561,54 @@ LABEL_18:
 
   else
   {
-    v6 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
-    -[IOSFloatingControlsViewController setNonFloorPickerControlsVisible:animated:](self, "setNonFloorPickerControlsVisible:animated:", [v6 isOpen] ^ 1, v4);
+    venueFloorViewController = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+    -[IOSFloatingControlsViewController setNonFloorPickerControlsVisible:animated:](self, "setNonFloorPickerControlsVisible:animated:", [venueFloorViewController isOpen] ^ 1, animatedCopy);
   }
 }
 
-- (void)updateNonFloorPickerControlsVisibleAnimated:(BOOL)a3
+- (void)updateNonFloorPickerControlsVisibleAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v6 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
-  if (v6)
+  animatedCopy = animated;
+  venueFloorViewController = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+  if (venueFloorViewController)
   {
-    v5 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
-    -[IOSFloatingControlsViewController updateNonFloorPickerControlsVisibleForFloorPickerHidden:animated:](self, "updateNonFloorPickerControlsVisibleForFloorPickerHidden:animated:", [v5 isHidden], v3);
+    venueFloorViewController2 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+    -[IOSFloatingControlsViewController updateNonFloorPickerControlsVisibleForFloorPickerHidden:animated:](self, "updateNonFloorPickerControlsVisibleForFloorPickerHidden:animated:", [venueFloorViewController2 isHidden], animatedCopy);
   }
 
   else
   {
-    [(IOSFloatingControlsViewController *)self updateNonFloorPickerControlsVisibleForFloorPickerHidden:1 animated:v3];
+    [(IOSFloatingControlsViewController *)self updateNonFloorPickerControlsVisibleForFloorPickerHidden:1 animated:animatedCopy];
   }
 }
 
-- (void)setNonFloorPickerControlsVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setNonFloorPickerControlsVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_nonFloorPickerControlsVisible != a3)
+  if (self->_nonFloorPickerControlsVisible != visible)
   {
     v19 = v4;
     v20 = v5;
-    v6 = a4;
-    v7 = a3;
-    self->_nonFloorPickerControlsVisible = a3;
-    v9 = [(FloatingControlsViewController *)self mapView];
-    [v9 _setCompassSuppressedForFloorPicker:!v7];
+    animatedCopy = animated;
+    visibleCopy = visible;
+    self->_nonFloorPickerControlsVisible = visible;
+    mapView = [(FloatingControlsViewController *)self mapView];
+    [mapView _setCompassSuppressedForFloorPicker:!visibleCopy];
 
     v10 = 0.0;
     v14 = 3221225472;
     v13 = _NSConcreteStackBlock;
     v15 = sub_1008E6090;
     v16 = &unk_101661650;
-    if (v7)
+    if (visibleCopy)
     {
       v10 = 1.0;
     }
 
-    v17 = self;
+    selfCopy = self;
     v18 = v10;
     v11 = objc_retainBlock(&v13);
     v12 = v11;
-    if (v6)
+    if (animatedCopy)
     {
       [UIView _animateUsingDefaultTimingWithOptions:0 animations:v11 completion:0, v13, v14, v15, v16];
     }
@@ -1622,134 +1622,134 @@ LABEL_18:
 
 - (void)setupVenueFloorViewController
 {
-  v3 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+  venueFloorViewController = [(IOSFloatingControlsViewController *)self venueFloorViewController];
 
-  if (!v3)
+  if (!venueFloorViewController)
   {
     v4 = [VenueFloorViewController alloc];
-    v5 = [(FloatingControlsViewController *)self actionCoordinator];
-    v6 = [v5 venuesManager];
-    v7 = [(VenueFloorViewController *)v4 initWithDelegate:self venuesManager:v6 visualEffectDisabled:0];
+    actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+    venuesManager = [actionCoordinator venuesManager];
+    v7 = [(VenueFloorViewController *)v4 initWithDelegate:self venuesManager:venuesManager visualEffectDisabled:0];
     [(IOSFloatingControlsViewController *)self setVenueFloorViewController:v7];
 
-    v8 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
-    v9 = [(FloatingControlsViewController *)self actionCoordinator];
-    v10 = [v9 venuesManager];
-    [v10 setVenueFloorViewController:v8];
+    venueFloorViewController2 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+    actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
+    venuesManager2 = [actionCoordinator2 venuesManager];
+    [venuesManager2 setVenueFloorViewController:venueFloorViewController2];
 
-    v11 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
-    [v11 setForceHidden:1];
+    venueFloorViewController3 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+    [venueFloorViewController3 setForceHidden:1];
 
-    v12 = [(FloatingControlsViewController *)self blurGroupName];
-    v13 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
-    [v13 setBlurGroupName:v12];
+    blurGroupName = [(FloatingControlsViewController *)self blurGroupName];
+    venueFloorViewController4 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+    [venueFloorViewController4 setBlurGroupName:blurGroupName];
 
-    v14 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
-    [(IOSFloatingControlsViewController *)self addChildViewController:v14];
+    venueFloorViewController5 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+    [(IOSFloatingControlsViewController *)self addChildViewController:venueFloorViewController5];
 
-    v15 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+    venueFloorViewController6 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1008E6334;
     v19[3] = &unk_101661B18;
     v19[4] = self;
-    [v15 delayConstraintSetupWhileExecuting:v19];
+    [venueFloorViewController6 delayConstraintSetupWhileExecuting:v19];
 
-    v16 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
-    [v16 didMoveToParentViewController:self];
+    venueFloorViewController7 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+    [venueFloorViewController7 didMoveToParentViewController:self];
 
-    v17 = [(IOSFloatingControlsViewController *)self view];
-    [v17 layoutIfNeeded];
+    view = [(IOSFloatingControlsViewController *)self view];
+    [view layoutIfNeeded];
 
     if (([(FloatingControlsViewController *)self visibleControls]& 0x40) != 0)
     {
-      v18 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
-      [v18 setForceHidden:0 animated:1 completion:0];
+      venueFloorViewController8 = [(IOSFloatingControlsViewController *)self venueFloorViewController];
+      [venueFloorViewController8 setForceHidden:0 animated:1 completion:0];
     }
   }
 }
 
-- (void)didChangeFocusedVenue:(id)a3
+- (void)didChangeFocusedVenue:(id)venue
 {
-  v6 = a3;
-  if (v6)
+  venueCopy = venue;
+  if (venueCopy)
   {
     [(IOSFloatingControlsViewController *)self setupVenueFloorViewController];
   }
 
-  v4 = [(IOSFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-  v5 = [v4 browseVenueBusinessController];
-  [v5 handleVenueWithFocusDidChange:v6];
+  localSearchViewControllerIfLoaded = [(IOSFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+  browseVenueBusinessController = [localSearchViewControllerIfLoaded browseVenueBusinessController];
+  [browseVenueBusinessController handleVenueWithFocusDidChange:venueCopy];
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
+  buttonCopy = button;
+  animatedCopy = animated;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = IOSFloatingControlsViewController;
-  [(FloatingControlsViewController *)&v13 mapView:v10 didChangeUserTrackingMode:a4 animated:v7 fromTrackingButton:v6];
-  if (v6)
+  [(FloatingControlsViewController *)&v13 mapView:viewCopy didChangeUserTrackingMode:mode animated:animatedCopy fromTrackingButton:buttonCopy];
+  if (buttonCopy)
   {
-    if (!a4)
+    if (!mode)
     {
-      v12 = [v10 camera];
-      v11 = [v12 copy];
+      camera = [viewCopy camera];
+      _mapLayer = [camera copy];
 
       [(IOSFloatingControlsViewController *)self yawPriorToHeadingTracking];
-      [v11 setHeading:?];
-      [v10 setCamera:v11 animated:1];
+      [_mapLayer setHeading:?];
+      [viewCopy setCamera:_mapLayer animated:1];
       goto LABEL_6;
     }
 
-    if (a4 == 2)
+    if (mode == 2)
     {
-      v11 = [v10 _mapLayer];
-      [v11 yaw];
+      _mapLayer = [viewCopy _mapLayer];
+      [_mapLayer yaw];
       [(IOSFloatingControlsViewController *)self setYawPriorToHeadingTracking:?];
 LABEL_6:
     }
   }
 }
 
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = IOSFloatingControlsViewController;
-  [(FloatingControlsViewController *)&v7 mapView:a3 didChangeMapType:?];
-  v6 = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
-  [v6 handleMapTypeDidChange:a4];
+  [(FloatingControlsViewController *)&v7 mapView:view didChangeMapType:?];
+  browseVenueBusinessController = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
+  [browseVenueBusinessController handleMapTypeDidChange:type];
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v8.receiver = self;
   v8.super_class = IOSFloatingControlsViewController;
-  v6 = a3;
-  [(FloatingControlsViewController *)&v8 mapView:v6 regionDidChangeAnimated:v4];
+  viewCopy = view;
+  [(FloatingControlsViewController *)&v8 mapView:viewCopy regionDidChangeAnimated:animatedCopy];
   v7 = [(LocalSearchViewController *)self->_localSearchViewController refreshSearchHereBusinessController:v8.receiver];
-  [v7 handleMapViewRegionDidChange:v6];
+  [v7 handleMapViewRegionDidChange:viewCopy];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
-  v6 = [v5 identifier];
+  regionCopy = region;
+  identifier = [regionCopy identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 identifier];
-    v9 = [v8 integerValue];
+    identifier2 = [regionCopy identifier];
+    integerValue = [identifier2 integerValue];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [(ButtonsContainerViewController *)self->_buttonsContainerViewController floatingButtonItems];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    floatingButtonItems = [(ButtonsContainerViewController *)self->_buttonsContainerViewController floatingButtonItems];
+    v11 = [floatingButtonItems countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1760,20 +1760,20 @@ LABEL_6:
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(floatingButtonItems);
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          if ([v15 option] == v9)
+          if ([v15 option] == integerValue)
           {
             v17 = [UITargetedPreview alloc];
-            v18 = [v15 button];
-            v19 = [v17 initWithView:v18];
+            button = [v15 button];
+            v19 = [v17 initWithView:button];
 
             v20 = [UIPointerEffect effectWithPreview:v19];
             +[MapsTheme buttonCornerRadius];
-            v21 = [v15 button];
-            [v21 frame];
+            button2 = [v15 button];
+            [button2 frame];
             v22 = [UIPointerShape shapeWithRoundedRect:"shapeWithRoundedRect:cornerRadius:" cornerRadius:?];
 
             v16 = [UIPointerStyle styleWithEffect:v20 shape:v22];
@@ -1782,7 +1782,7 @@ LABEL_6:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v12 = [floatingButtonItems countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v12)
         {
           continue;
@@ -1804,18 +1804,18 @@ LABEL_13:
   return v16;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
-  v7 = [(IOSFloatingControlsViewController *)self buttonsContainerViewController];
-  v8 = [v7 floatingButtonItems];
+  requestCopy = request;
+  buttonsContainerViewController = [(IOSFloatingControlsViewController *)self buttonsContainerViewController];
+  floatingButtonItems = [buttonsContainerViewController floatingButtonItems];
 
-  v9 = [(FloatingControlsViewController *)self visibleControls];
+  visibleControls = [(FloatingControlsViewController *)self visibleControls];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = v8;
+  v10 = floatingButtonItems;
   v11 = [v10 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v11)
   {
@@ -1831,26 +1831,26 @@ LABEL_13:
         }
 
         v15 = *(*(&v40 + 1) + 8 * i);
-        if (([v15 option] & v9) != 0)
+        if (([v15 option] & visibleControls) != 0)
         {
-          v16 = [v15 button];
+          button = [v15 button];
 
-          if (v16)
+          if (button)
           {
-            v17 = [v15 button];
-            [v17 bounds];
+            button2 = [v15 button];
+            [button2 bounds];
             v19 = v18;
             v21 = v20;
             v23 = v22;
             v25 = v24;
-            v26 = [(IOSFloatingControlsViewController *)self view];
-            [v17 convertRect:v26 toView:{v19, v21, v23, v25}];
+            view = [(IOSFloatingControlsViewController *)self view];
+            [button2 convertRect:view toView:{v19, v21, v23, v25}];
             v28 = v27;
             v30 = v29;
             v32 = v31;
             v34 = v33;
 
-            [v6 location];
+            [requestCopy location];
             v46.x = v35;
             v46.y = v36;
             v47.origin.x = v28;
@@ -1939,13 +1939,13 @@ LABEL_14:
   }
 }
 
-- (void)_deviceOrientationDidChange:(id)a3
+- (void)_deviceOrientationDidChange:(id)change
 {
   [(IOSFloatingControlsViewController *)self _invalidateConstraints];
   [(IOSFloatingControlsViewController *)self _updateConstraintsIfNeeded];
-  v5 = [(IOSFloatingControlsViewController *)self buttonsContainerViewControllerIfLoaded];
-  v4 = [(IOSFloatingControlsViewController *)self _desiredFloatingButtonItems];
-  [v5 updateFloatingButtonItems:v4];
+  buttonsContainerViewControllerIfLoaded = [(IOSFloatingControlsViewController *)self buttonsContainerViewControllerIfLoaded];
+  _desiredFloatingButtonItems = [(IOSFloatingControlsViewController *)self _desiredFloatingButtonItems];
+  [buttonsContainerViewControllerIfLoaded updateFloatingButtonItems:_desiredFloatingButtonItems];
 }
 
 - (double)_spacing
@@ -1969,114 +1969,114 @@ LABEL_14:
   return result;
 }
 
-- (void)setMargin:(double)a3
+- (void)setMargin:(double)margin
 {
   v7.receiver = self;
   v7.super_class = IOSFloatingControlsViewController;
-  [(FloatingControlsViewController *)&v7 setMargin:a3];
+  [(FloatingControlsViewController *)&v7 setMargin:margin];
   [(IOSFloatingControlsViewController *)self _spacing];
   v5 = v4;
-  v6 = [(IOSFloatingControlsViewController *)self controlsStackView];
-  [v6 setSpacing:v5];
+  controlsStackView = [(IOSFloatingControlsViewController *)self controlsStackView];
+  [controlsStackView setSpacing:v5];
 }
 
-- (void)setBlurGroupName:(id)a3
+- (void)setBlurGroupName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   v9.receiver = self;
   v9.super_class = IOSFloatingControlsViewController;
   [(FloatingControlsViewController *)&v9 setBlurGroupName:v4];
 
-  v5 = [(FloatingControlsViewController *)self blurGroupName];
-  v6 = [(IOSFloatingControlsViewController *)self buttonsContainerViewControllerIfLoaded];
-  [v6 setBlurGroupName:v5];
+  blurGroupName = [(FloatingControlsViewController *)self blurGroupName];
+  buttonsContainerViewControllerIfLoaded = [(IOSFloatingControlsViewController *)self buttonsContainerViewControllerIfLoaded];
+  [buttonsContainerViewControllerIfLoaded setBlurGroupName:blurGroupName];
 
-  v7 = [(FloatingControlsViewController *)self blurGroupName];
-  v8 = [(IOSFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
-  [v8 setBlurGroupName:v7];
+  blurGroupName2 = [(FloatingControlsViewController *)self blurGroupName];
+  venueFloorViewControllerIfLoaded = [(IOSFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
+  [venueFloorViewControllerIfLoaded setBlurGroupName:blurGroupName2];
 }
 
 - (id)floatingButtonLeadingGuide
 {
-  v2 = [(IOSFloatingControlsViewController *)self controlsStackViewIfLoaded];
-  v3 = [v2 leadingAnchor];
+  controlsStackViewIfLoaded = [(IOSFloatingControlsViewController *)self controlsStackViewIfLoaded];
+  leadingAnchor = [controlsStackViewIfLoaded leadingAnchor];
 
-  return v3;
+  return leadingAnchor;
 }
 
-- (void)hideControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4
+- (void)hideControlsIfNeeded:(int64_t)needed animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(FloatingControlsViewController *)self visibleControls];
-  if ([(FloatingControlsViewController *)self shouldHide:1 withControlOptions:a3])
+  animatedCopy = animated;
+  visibleControls = [(FloatingControlsViewController *)self visibleControls];
+  if ([(FloatingControlsViewController *)self shouldHide:1 withControlOptions:needed])
   {
-    v7 &= ~1uLL;
+    visibleControls &= ~1uLL;
   }
 
-  if ([(FloatingControlsViewController *)self shouldHide:2 withControlOptions:a3])
+  if ([(FloatingControlsViewController *)self shouldHide:2 withControlOptions:needed])
   {
-    v7 &= ~2uLL;
+    visibleControls &= ~2uLL;
   }
 
-  if ([(FloatingControlsViewController *)self shouldHide:16 withControlOptions:a3])
+  if ([(FloatingControlsViewController *)self shouldHide:16 withControlOptions:needed])
   {
-    v7 &= ~0x10uLL;
+    visibleControls &= ~0x10uLL;
   }
 
-  if ([(FloatingControlsViewController *)self shouldHide:32 withControlOptions:a3])
+  if ([(FloatingControlsViewController *)self shouldHide:32 withControlOptions:needed])
   {
-    v7 &= ~0x20uLL;
+    visibleControls &= ~0x20uLL;
   }
 
-  if ([(FloatingControlsViewController *)self shouldHide:64 withControlOptions:a3])
+  if ([(FloatingControlsViewController *)self shouldHide:64 withControlOptions:needed])
   {
-    v7 &= ~0x40uLL;
+    visibleControls &= ~0x40uLL;
   }
 
-  if ([(FloatingControlsViewController *)self shouldHide:256 withControlOptions:a3])
+  if ([(FloatingControlsViewController *)self shouldHide:256 withControlOptions:needed])
   {
-    v7 &= ~0x100uLL;
+    visibleControls &= ~0x100uLL;
   }
 
-  if ([(FloatingControlsViewController *)self shouldHide:512 withControlOptions:a3])
+  if ([(FloatingControlsViewController *)self shouldHide:512 withControlOptions:needed])
   {
-    v7 &= ~0x200uLL;
+    visibleControls &= ~0x200uLL;
   }
 
-  if ([(FloatingControlsViewController *)self shouldHide:1024 withControlOptions:a3])
+  if ([(FloatingControlsViewController *)self shouldHide:1024 withControlOptions:needed])
   {
-    v7 &= ~0x400uLL;
+    visibleControls &= ~0x400uLL;
   }
 
-  if ([(FloatingControlsViewController *)self shouldHide:4096 withControlOptions:a3])
+  if ([(FloatingControlsViewController *)self shouldHide:4096 withControlOptions:needed])
   {
-    v7 &= ~0x1000uLL;
+    visibleControls &= ~0x1000uLL;
   }
 
-  if ([(FloatingControlsViewController *)self shouldHide:4 withControlOptions:a3])
+  if ([(FloatingControlsViewController *)self shouldHide:4 withControlOptions:needed])
   {
-    v8 = v7 & 0xFFFFFFFFFFFFFFFBLL;
+    v8 = visibleControls & 0xFFFFFFFFFFFFFFFBLL;
   }
 
   else
   {
-    v8 = v7;
+    v8 = visibleControls;
   }
 
-  [(IOSFloatingControlsViewController *)self _applyNewVisibleControls:v8 animated:v4];
+  [(IOSFloatingControlsViewController *)self _applyNewVisibleControls:v8 animated:animatedCopy];
 }
 
-- (void)showControlsIfNeeded:(int64_t)a3 animated:(BOOL)a4
+- (void)showControlsIfNeeded:(int64_t)needed animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(FloatingControlsViewController *)self _sanitizedControlsFromControls:a3];
-  v7 = [(FloatingControlsViewController *)self visibleControls];
+  animatedCopy = animated;
+  v6 = [(FloatingControlsViewController *)self _sanitizedControlsFromControls:needed];
+  visibleControls = [(FloatingControlsViewController *)self visibleControls];
   if ([(IOSFloatingControlsViewController *)self shouldShow:2 withControlOptions:v6])
   {
-    v7 |= 2uLL;
+    visibleControls |= 2uLL;
   }
 
-  v8 = v7 | [(IOSFloatingControlsViewController *)self shouldShow:1 withControlOptions:v6];
+  v8 = visibleControls | [(IOSFloatingControlsViewController *)self shouldShow:1 withControlOptions:v6];
   if ([(IOSFloatingControlsViewController *)self shouldShow:16 withControlOptions:v6])
   {
     v8 |= 0x10uLL;
@@ -2127,13 +2127,13 @@ LABEL_14:
     v9 = v8;
   }
 
-  [(IOSFloatingControlsViewController *)self _applyNewVisibleControls:v9 animated:v4];
+  [(IOSFloatingControlsViewController *)self _applyNewVisibleControls:v9 animated:animatedCopy];
 }
 
-- (BOOL)shouldShow:(int64_t)a3 withControlOptions:(int64_t)a4
+- (BOOL)shouldShow:(int64_t)show withControlOptions:(int64_t)options
 {
-  v7 = [(FloatingControlsViewController *)self visibleControls];
-  v8 = a4 & a3;
+  visibleControls = [(FloatingControlsViewController *)self visibleControls];
+  v8 = options & show;
   if (sub_10000FA08(self) == 5)
   {
     if (v8)
@@ -2145,7 +2145,7 @@ LABEL_3:
     }
   }
 
-  else if (v8 | v7 & a3)
+  else if (v8 | visibleControls & show)
   {
     goto LABEL_3;
   }
@@ -2153,18 +2153,18 @@ LABEL_3:
   return 0;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = IOSFloatingControlsViewController;
-  [(IOSFloatingControlsViewController *)&v9 viewDidDisappear:a3];
-  v4 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v4 venuesManager];
-  [v5 removeChangeObserver:self];
+  [(IOSFloatingControlsViewController *)&v9 viewDidDisappear:disappear];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager removeChangeObserver:self];
 
   v6 = +[UserInformationManager sharedInstance];
-  v7 = [v6 observers];
-  [v7 unregisterObserver:self];
+  observers = [v6 observers];
+  [observers unregisterObserver:self];
 
   if ([(IOSFloatingControlsViewController *)self _shouldObserveOrientationDidChange])
   {
@@ -2173,11 +2173,11 @@ LABEL_3:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = IOSFloatingControlsViewController;
-  [(IOSFloatingControlsViewController *)&v5 viewDidAppear:a3];
+  [(IOSFloatingControlsViewController *)&v5 viewDidAppear:appear];
   if ([(IOSFloatingControlsViewController *)self _shouldObserveOrientationDidChange])
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -2185,43 +2185,43 @@ LABEL_3:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = IOSFloatingControlsViewController;
-  [(FloatingControlsViewController *)&v12 viewWillAppear:a3];
+  [(FloatingControlsViewController *)&v12 viewWillAppear:appear];
   [(IOSFloatingControlsViewController *)self _refreshUserLocationButton];
   [(IOSFloatingControlsViewController *)self _updateUserProfileButtonImage];
   [(IOSFloatingControlsViewController *)self _refreshCompassButton];
-  v4 = [(FloatingControlsViewController *)self actionCoordinator];
-  v5 = [v4 venuesManager];
-  [v5 addChangeObserver:self];
+  actionCoordinator = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager = [actionCoordinator venuesManager];
+  [venuesManager addChangeObserver:self];
 
   v6 = +[UserInformationManager sharedInstance];
-  v7 = [v6 observers];
-  [v7 registerObserver:self queue:&_dispatch_main_q];
+  observers = [v6 observers];
+  [observers registerObserver:self queue:&_dispatch_main_q];
 
-  v8 = [(FloatingControlsViewController *)self actionCoordinator];
-  v9 = [v8 venuesManager];
-  v10 = [v9 venueWithFocus];
-  [(IOSFloatingControlsViewController *)self didChangeFocusedVenue:v10];
+  actionCoordinator2 = [(FloatingControlsViewController *)self actionCoordinator];
+  venuesManager2 = [actionCoordinator2 venuesManager];
+  venueWithFocus = [venuesManager2 venueWithFocus];
+  [(IOSFloatingControlsViewController *)self didChangeFocusedVenue:venueWithFocus];
 
   [(IOSFloatingControlsViewController *)self _updateMapModeButtonAppearance];
   v11 = +[NSNotificationCenter defaultCenter];
   [v11 addObserver:self selector:"_updateMapModeButtonAppearance" name:@"MKMapViewDidChangeMapTypeNotification" object:0];
 }
 
-- (void)_applyNewVisibleControls:(int64_t)a3 animated:(BOOL)a4
+- (void)_applyNewVisibleControls:(int64_t)controls animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = [(IOSFloatingControlsViewController *)self buttonsContainerViewController];
-  v8 = [v7 floatingButtonItems];
+  buttonsContainerViewController = [(IOSFloatingControlsViewController *)self buttonsContainerViewController];
+  floatingButtonItems = [buttonsContainerViewController floatingButtonItems];
 
-  v9 = [v8 countByEnumeratingWithState:&v43 objects:v57 count:16];
+  v9 = [floatingButtonItems countByEnumeratingWithState:&v43 objects:v57 count:16];
   if (!v9)
   {
 LABEL_43:
@@ -2230,7 +2230,7 @@ LABEL_43:
   }
 
   v10 = v9;
-  v41 = v4;
+  v41 = animatedCopy;
   v11 = 0;
   v12 = *v44;
   do
@@ -2240,77 +2240,77 @@ LABEL_43:
     {
       if (*v44 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(floatingButtonItems);
       }
 
       v14 = *(*(&v43 + 1) + 8 * v13);
-      if (([v14 option] & a3) != 0)
+      if (([v14 option] & controls) != 0)
       {
-        v15 = [v14 button];
+        button = [v14 button];
 
-        if (!v15)
+        if (!button)
         {
-          v16 = [v14 option];
+          option = [v14 option];
           v11 = 1;
-          if (v16 <= 255)
+          if (option <= 255)
           {
-            if (v16 > 15)
+            if (option > 15)
             {
-              if (v16 == 16)
+              if (option == 16)
               {
-                v18 = [(IOSFloatingControlsViewController *)self mode2DButton];
+                mode2DButton = [(IOSFloatingControlsViewController *)self mode2DButton];
               }
 
               else
               {
-                if (v16 != 32)
+                if (option != 32)
                 {
                   goto LABEL_29;
                 }
 
-                v18 = [(IOSFloatingControlsViewController *)self mode3DButton];
+                mode2DButton = [(IOSFloatingControlsViewController *)self mode3DButton];
               }
             }
 
-            else if (v16 == 1)
+            else if (option == 1)
             {
-              v18 = [(IOSFloatingControlsViewController *)self userLocationButton];
+              mode2DButton = [(IOSFloatingControlsViewController *)self userLocationButton];
             }
 
             else
             {
-              if (v16 != 2)
+              if (option != 2)
               {
                 goto LABEL_29;
               }
 
-              v18 = [(IOSFloatingControlsViewController *)self settingsButton];
+              mode2DButton = [(IOSFloatingControlsViewController *)self settingsButton];
             }
           }
 
-          else if (v16 <= 1023)
+          else if (option <= 1023)
           {
-            if (v16 == 256)
+            if (option == 256)
             {
-              v18 = [(IOSFloatingControlsViewController *)self modePedestrianARButton];
+              mode2DButton = [(IOSFloatingControlsViewController *)self modePedestrianARButton];
             }
 
             else
             {
-              if (v16 != 512)
+              if (option != 512)
               {
                 goto LABEL_29;
               }
 
-              v18 = [(IOSFloatingControlsViewController *)self ttrButton];
+              mode2DButton = [(IOSFloatingControlsViewController *)self ttrButton];
             }
           }
 
           else
           {
-            if (v16 != 1024)
+            if (option != 1024)
             {
-              if (v16 == 2048)
+              if (option == 2048)
               {
                 if (sub_10000FA08(self) != 5 || (_UISolariumEnabled() & 1) == 0)
                 {
@@ -2344,17 +2344,17 @@ LABEL_43:
                   }
                 }
 
-                v24 = [(IOSFloatingControlsViewController *)self userProfileButton];
-                [v14 setButton:v24];
+                userProfileButton = [(IOSFloatingControlsViewController *)self userProfileButton];
+                [v14 setButton:userProfileButton];
 
                 [v14 setHideBackground:{-[IOSFloatingControlsViewController _hideBackgroundForUserProfileItem](self, "_hideBackgroundForUserProfileItem")}];
                 v11 = 1;
               }
 
-              else if (v16 == 4096)
+              else if (option == 4096)
               {
-                v17 = [(IOSFloatingControlsViewController *)self compassButton];
-                [v14 setButton:v17];
+                compassButton = [(IOSFloatingControlsViewController *)self compassButton];
+                [v14 setButton:compassButton];
 
                 [v14 setHideBackground:_UISolariumEnabled() ^ 1];
               }
@@ -2362,11 +2362,11 @@ LABEL_43:
               goto LABEL_29;
             }
 
-            v18 = [(IOSFloatingControlsViewController *)self ssaoButton];
+            mode2DButton = [(IOSFloatingControlsViewController *)self ssaoButton];
           }
 
-          v19 = v18;
-          [v14 setButton:v18];
+          v19 = mode2DButton;
+          [v14 setButton:mode2DButton];
         }
       }
 
@@ -2375,72 +2375,72 @@ LABEL_29:
     }
 
     while (v10 != v13);
-    v25 = [v8 countByEnumeratingWithState:&v43 objects:v57 count:16];
+    v25 = [floatingButtonItems countByEnumeratingWithState:&v43 objects:v57 count:16];
     v10 = v25;
   }
 
   while (v25);
 
-  v4 = v41;
+  animatedCopy = v41;
   if (v11)
   {
-    v8 = [(IOSFloatingControlsViewController *)self buttonsContainerViewController];
-    [v8 refreshControls];
+    floatingButtonItems = [(IOSFloatingControlsViewController *)self buttonsContainerViewController];
+    [floatingButtonItems refreshControls];
     goto LABEL_43;
   }
 
 LABEL_44:
-  if ([(FloatingControlsViewController *)self visibleControls]!= a3)
+  if ([(FloatingControlsViewController *)self visibleControls]!= controls)
   {
-    [(FloatingControlsViewController *)self setVisibleControls:a3];
-    if ((a3 & 4) != 0 && (-[FloatingControlsViewController actionCoordinator](self, "actionCoordinator"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 shouldShowSearchOverlay], v26, v27))
+    [(FloatingControlsViewController *)self setVisibleControls:controls];
+    if ((controls & 4) != 0 && (-[FloatingControlsViewController actionCoordinator](self, "actionCoordinator"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v26 shouldShowSearchOverlay], v26, v27))
     {
-      v28 = [(IOSFloatingControlsViewController *)self localSearchViewController];
-      v29 = [v28 view];
-      v30 = [v29 superview];
+      localSearchViewController = [(IOSFloatingControlsViewController *)self localSearchViewController];
+      view = [localSearchViewController view];
+      superview = [view superview];
 
-      if (!v30)
+      if (!superview)
       {
         [(IOSFloatingControlsViewController *)self addChildViewController:self->_localSearchViewController];
-        v31 = [(IOSFloatingControlsViewController *)self localSearchViewController];
-        v32 = [v31 view];
-        v33 = [(IOSFloatingControlsViewController *)self _localSearchViewConstraints];
-        [(FloatingControlsViewController *)self _addSubview:v32 withConstraints:v33];
+        localSearchViewController2 = [(IOSFloatingControlsViewController *)self localSearchViewController];
+        view2 = [localSearchViewController2 view];
+        _localSearchViewConstraints = [(IOSFloatingControlsViewController *)self _localSearchViewConstraints];
+        [(FloatingControlsViewController *)self _addSubview:view2 withConstraints:_localSearchViewConstraints];
 
         [(LocalSearchViewController *)self->_localSearchViewController didMoveToParentViewController:self];
       }
 
-      v34 = [(IOSFloatingControlsViewController *)self localSearchViewController];
-      [v34 setEnable:1];
+      localSearchViewController3 = [(IOSFloatingControlsViewController *)self localSearchViewController];
+      [localSearchViewController3 setEnable:1];
     }
 
     else
     {
-      v35 = [(IOSFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-      [v35 setEnable:0];
+      localSearchViewControllerIfLoaded = [(IOSFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+      [localSearchViewControllerIfLoaded setEnable:0];
 
-      v36 = [(IOSFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-      [v36 willMoveToParentViewController:0];
+      localSearchViewControllerIfLoaded2 = [(IOSFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+      [localSearchViewControllerIfLoaded2 willMoveToParentViewController:0];
 
-      v37 = [(IOSFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-      v38 = [v37 viewIfLoaded];
-      [v38 removeFromSuperview];
+      localSearchViewControllerIfLoaded3 = [(IOSFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+      viewIfLoaded = [localSearchViewControllerIfLoaded3 viewIfLoaded];
+      [viewIfLoaded removeFromSuperview];
 
-      v34 = [(IOSFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
-      [v34 removeFromParentViewController];
+      localSearchViewController3 = [(IOSFloatingControlsViewController *)self localSearchViewControllerIfLoaded];
+      [localSearchViewController3 removeFromParentViewController];
     }
 
-    v39 = [(IOSFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
-    [v39 setForceHidden:(a3 & 0x40) == 0];
+    venueFloorViewControllerIfLoaded = [(IOSFloatingControlsViewController *)self venueFloorViewControllerIfLoaded];
+    [venueFloorViewControllerIfLoaded setForceHidden:(controls & 0x40) == 0];
 
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_1008E7CC8;
     v42[3] = &unk_101661650;
     v42[4] = self;
-    v42[5] = a3;
+    v42[5] = controls;
     v40 = objc_retainBlock(v42);
-    if (v4)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:6 delay:v40 options:0 animations:0.25 completion:0.0];
     }

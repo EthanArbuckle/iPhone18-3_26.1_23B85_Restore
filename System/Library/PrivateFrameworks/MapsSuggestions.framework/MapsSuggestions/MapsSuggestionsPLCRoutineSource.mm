@@ -1,14 +1,14 @@
 @interface MapsSuggestionsPLCRoutineSource
 + (BOOL)isEnabled;
-- (BOOL)canProduceEntriesOfType:(int64_t)a3;
-- (MapsSuggestionsPLCRoutineSource)initWithRoutine:(id)a3 delegate:(id)a4 name:(id)a5;
-- (char)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5;
-- (char)suggestionsEntriesAtLocation:(id)a3 period:(id)a4 handler:(id)a5;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
+- (BOOL)canProduceEntriesOfType:(int64_t)type;
+- (MapsSuggestionsPLCRoutineSource)initWithRoutine:(id)routine delegate:(id)delegate name:(id)name;
+- (char)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler;
+- (char)suggestionsEntriesAtLocation:(id)location period:(id)period handler:(id)handler;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
 - (id).cxx_construct;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (uint64_t)_clearedToFetchSuggestionsUsingHandler:(dispatch_queue_t *)a1;
-- (void)_q_updateSuggestionEntriesWithHandler:(uint64_t)a1;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (uint64_t)_clearedToFetchSuggestionsUsingHandler:(dispatch_queue_t *)handler;
+- (void)_q_updateSuggestionEntriesWithHandler:(uint64_t)handler;
 - (void)start;
 - (void)stop;
 @end
@@ -27,16 +27,16 @@
   return BOOL;
 }
 
-- (MapsSuggestionsPLCRoutineSource)initWithRoutine:(id)a3 delegate:(id)a4 name:(id)a5
+- (MapsSuggestionsPLCRoutineSource)initWithRoutine:(id)routine delegate:(id)delegate name:(id)name
 {
-  v9 = a3;
-  v10 = a5;
+  routineCopy = routine;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = MapsSuggestionsPLCRoutineSource;
-  v11 = [(MapsSuggestionsBaseSource *)&v21 initWithDelegate:a4 name:v10];
+  v11 = [(MapsSuggestionsBaseSource *)&v21 initWithDelegate:delegate name:nameCopy];
   if (v11)
   {
-    v12 = [v10 stringByAppendingFormat:@"Queue"];
+    v12 = [nameCopy stringByAppendingFormat:@"Queue"];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     MSg::Queue::Queue(&v19, v12, v13);
     v14 = v19;
@@ -49,18 +49,18 @@
     name = v11->_queue._name;
     v11->_queue._name = v16;
 
-    objc_storeStrong(&v11->_routine, a3);
+    objc_storeStrong(&v11->_routine, routine);
   }
 
   return v11;
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -79,9 +79,9 @@
     goto LABEL_13;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -100,9 +100,9 @@
     goto LABEL_13;
   }
 
-  v9 = [v6 oneRoutine];
+  oneRoutine = [depotCopy oneRoutine];
 
-  if (!v9)
+  if (!oneRoutine)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -120,28 +120,28 @@
 
 LABEL_13:
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v10 = [v6 oneRoutine];
-  v11 = [v6 oneSourceDelegate];
-  self = [(MapsSuggestionsPLCRoutineSource *)self initWithRoutine:v10 delegate:v11 name:v7];
+  oneRoutine2 = [depotCopy oneRoutine];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
+  self = [(MapsSuggestionsPLCRoutineSource *)self initWithRoutine:oneRoutine2 delegate:oneSourceDelegate2 name:nameCopy];
 
-  v12 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v12;
+  return selfCopy;
 }
 
-- (uint64_t)_clearedToFetchSuggestionsUsingHandler:(dispatch_queue_t *)a1
+- (uint64_t)_clearedToFetchSuggestionsUsingHandler:(dispatch_queue_t *)handler
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    dispatch_assert_queue_V2(a1[4]);
-    objc_initWeak(&location, a1);
+    dispatch_assert_queue_V2(handler[4]);
+    objc_initWeak(&location, handler);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __74__MapsSuggestionsPLCRoutineSource__clearedToFetchSuggestionsUsingHandler___block_invoke;
@@ -150,13 +150,13 @@ LABEL_14:
     v18 = v3;
     v4 = _Block_copy(aBlock);
     BOOL = GEOConfigGetBOOL();
-    v6 = [MEMORY[0x1E69B3730] tccPrompted];
-    v7 = [MEMORY[0x1E69B3730] isEligible];
+    tccPrompted = [MEMORY[0x1E69B3730] tccPrompted];
+    isEligible = [MEMORY[0x1E69B3730] isEligible];
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = @"NOT ELIGIBLE";
-      if (v7)
+      if (isEligible)
       {
         v9 = @"ELIGIBLE";
       }
@@ -184,7 +184,7 @@ LABEL_14:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v13 = @"NO";
-      if (v6)
+      if (tccPrompted)
       {
         v13 = @"YES";
       }
@@ -194,9 +194,9 @@ LABEL_14:
       _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "FR TCC Prompted for Route Genius PLC Source? %@", buf, 0xCu);
     }
 
-    v14 = MapsFeature_IsEnabled_LocationIntelligenceMaps() & v7;
+    v14 = MapsFeature_IsEnabled_LocationIntelligenceMaps() & isEligible;
     v15 = 1;
-    if (v14 == 1 && ((BOOL ^ 1 | v6) & 1) != 0)
+    if (v14 == 1 && ((BOOL ^ 1 | tccPrompted) & 1) != 0)
     {
       v15 = v4[2](v4);
     }
@@ -318,25 +318,25 @@ void __74__MapsSuggestionsPLCRoutineSource__clearedToFetchSuggestionsUsingHandle
   }
 }
 
-- (void)_q_updateSuggestionEntriesWithHandler:(uint64_t)a1
+- (void)_q_updateSuggestionEntriesWithHandler:(uint64_t)handler
 {
   v37 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (handler)
   {
-    dispatch_assert_queue_V2(*(a1 + 32));
-    objc_initWeak(&location, a1);
+    dispatch_assert_queue_V2(*(handler + 32));
+    objc_initWeak(&location, handler);
     if (+[MapsSuggestionsSiri isEnabled]&& !MapsSuggestionsIsInCoarseLocation())
     {
-      if (([(MapsSuggestionsPLCRoutineSource *)a1 _clearedToFetchSuggestionsUsingHandler:v3]& 1) != 0)
+      if (([(MapsSuggestionsPLCRoutineSource *)handler _clearedToFetchSuggestionsUsingHandler:v3]& 1) != 0)
       {
         v7 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          v8 = [a1 uniqueName];
+          uniqueName = [handler uniqueName];
           v9 = NSStringFromMapsSuggestionsCurrentBestLocation();
           *buf = 138412802;
-          v32 = v8;
+          v32 = uniqueName;
           v33 = 2112;
           v34 = @"ALL";
           v35 = 2112;
@@ -355,9 +355,9 @@ void __74__MapsSuggestionsPLCRoutineSource__clearedToFetchSuggestionsUsingHandle
           v14 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v15 = [a1 uniqueName];
+            uniqueName2 = [handler uniqueName];
             *buf = 138412546;
-            v32 = v15;
+            v32 = uniqueName2;
             v33 = 2080;
             v34 = "_updateSuggestionEntries";
             _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -370,7 +370,7 @@ void __74__MapsSuggestionsPLCRoutineSource__clearedToFetchSuggestionsUsingHandle
             _os_signpost_emit_with_name_impl(&dword_1C5126000, v16, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_updateSuggestionEntries", "", buf, 2u);
           }
 
-          v17 = *(a1 + 24);
+          v17 = *(handler + 24);
           BOOL = GEOConfigGetBOOL();
           v24[0] = MEMORY[0x1E69E9820];
           v24[1] = 3221225472;
@@ -399,13 +399,13 @@ void __74__MapsSuggestionsPLCRoutineSource__clearedToFetchSuggestionsUsingHandle
           v22 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v23 = [a1 uniqueName];
+            uniqueName3 = [handler uniqueName];
             *buf = 138412290;
-            v32 = v23;
+            v32 = uniqueName3;
             _os_log_impl(&dword_1C5126000, v22, OS_LOG_TYPE_ERROR, "%@ did not have a current location fix to query with.", buf, 0xCu);
           }
 
-          [a1 addOrUpdateMySuggestionEntries:MEMORY[0x1E695E0F0]];
+          [handler addOrUpdateMySuggestionEntries:MEMORY[0x1E695E0F0]];
           if (v3)
           {
             v3[2](v3);
@@ -429,7 +429,7 @@ void __74__MapsSuggestionsPLCRoutineSource__clearedToFetchSuggestionsUsingHandle
         _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "Siri not enabled or Maps doesn't have precise location.", buf, 2u);
       }
 
-      v5 = *(a1 + 32);
+      v5 = *(handler + 32);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __73__MapsSuggestionsPLCRoutineSource__q_updateSuggestionEntriesWithHandler___block_invoke;
@@ -591,9 +591,9 @@ void __73__MapsSuggestionsPLCRoutineSource__q_updateSuggestionEntriesWithHandler
   }
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -605,7 +605,7 @@ void __73__MapsSuggestionsPLCRoutineSource__q_updateSuggestionEntriesWithHandler
   v10[1] = 3221225472;
   v10[2] = __70__MapsSuggestionsPLCRoutineSource_updateSuggestionEntriesWithHandler___block_invoke;
   v10[3] = &unk_1E81F8368;
-  v6 = v4;
+  v6 = handlerCopy;
   v11 = v6;
   MSg::Queue::async<MapsSuggestionsPLCRoutineSource>(&self->_queue, self, v10);
   GEOConfigGetDouble();
@@ -614,9 +614,9 @@ void __73__MapsSuggestionsPLCRoutineSource__q_updateSuggestionEntriesWithHandler
   return v8;
 }
 
-- (char)suggestionsEntriesAtLocation:(id)a3 period:(id)a4 handler:(id)a5
+- (char)suggestionsEntriesAtLocation:(id)location period:(id)period handler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -624,22 +624,22 @@ void __73__MapsSuggestionsPLCRoutineSource__q_updateSuggestionEntriesWithHandler
     _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "suggestionsEntriesAtLocation called", v8, 2u);
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   return 0;
 }
 
-- (BOOL)canProduceEntriesOfType:(int64_t)a3
+- (BOOL)canProduceEntriesOfType:(int64_t)type
 {
-  if ((a3 - 1) < 2)
+  if ((type - 1) < 2)
   {
     return 1;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     return GEOConfigGetBOOL();
   }
@@ -647,9 +647,9 @@ void __73__MapsSuggestionsPLCRoutineSource__q_updateSuggestionEntriesWithHandler
   return 0;
 }
 
-- (char)removeEntry:(id)a3 behavior:(int64_t)a4 handler:(id)a5
+- (char)removeEntry:(id)entry behavior:(int64_t)behavior handler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -657,9 +657,9 @@ void __73__MapsSuggestionsPLCRoutineSource__q_updateSuggestionEntriesWithHandler
     _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "removeEntry called", v8, 2u);
   }
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5);
+    handlerCopy[2](handlerCopy);
   }
 
   return 0;

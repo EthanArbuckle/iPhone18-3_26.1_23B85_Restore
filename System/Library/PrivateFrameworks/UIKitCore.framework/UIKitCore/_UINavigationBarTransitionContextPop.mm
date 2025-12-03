@@ -2,17 +2,17 @@
 - (id)viewUsingEaseInCurve;
 - (void)_animateBackgroundView;
 - (void)_animateContentView;
-- (void)_animateFromPalette:(id)a3 fromPaletteFrame:(CGRect)a4 toPalette:(id)a5 toPaletteFrame:(CGRect)a6;
+- (void)_animateFromPalette:(id)palette fromPaletteFrame:(CGRect)frame toPalette:(id)toPalette toPaletteFrame:(CGRect)paletteFrame;
 - (void)_animateLargeTitleView;
 - (void)_animateScaleTransition;
 - (void)_animateSearchBar;
-- (void)_finishWithFinalLayout:(id)a3 invalidLayout:(id)a4;
+- (void)_finishWithFinalLayout:(id)layout invalidLayout:(id)invalidLayout;
 - (void)_prepareBackgroundView;
 - (void)_prepareContentView;
 - (void)_prepareLargeTitleView;
 - (void)_prepareScaleTransition;
 - (void)_prepareSearchBar;
-- (void)_prepareTransitionFromPalette:(id)a3 toPalette:(id)a4 toPaletteFrame:(CGRect)a5;
+- (void)_prepareTransitionFromPalette:(id)palette toPalette:(id)toPalette toPaletteFrame:(CGRect)frame;
 - (void)animate;
 - (void)cancel;
 - (void)complete;
@@ -25,15 +25,15 @@
 {
   if (_textDiffersBetweenLargeTitleAndBackButtonLayouts(self->super._toLargeTitleLayout, self->super._fromContentLayout))
   {
-    v3 = [(_UINavigationBarLargeTitleViewLayout *)self->super._toLargeTitleLayout titleLabel];
+    titleLabel = [(_UINavigationBarLargeTitleViewLayout *)self->super._toLargeTitleLayout titleLabel];
   }
 
   else
   {
-    v3 = 0;
+    titleLabel = 0;
   }
 
-  return v3;
+  return titleLabel;
 }
 
 - (void)_prepareScaleTransition
@@ -93,30 +93,30 @@
     fromContentLayout = self->super._fromContentLayout;
     v22 = self->super._toLargeTitleLayout;
     v23 = fromContentLayout;
-    v24 = [(_UINavigationBarLargeTitleViewLayout *)v22 title];
-    v25 = [v24 string];
+    title = [(_UINavigationBarLargeTitleViewLayout *)v22 title];
+    string = [title string];
 
-    v26 = [(_UINavigationBarLargeTitleViewLayout *)v22 titleLabel];
+    titleLabel = [(_UINavigationBarLargeTitleViewLayout *)v22 titleLabel];
 
-    _applyStretchTransformForTitleViewAndBackButtonLayout(2, v26, v23);
-    v27 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout backButton];
-    if (v27)
+    _applyStretchTransformForTitleViewAndBackButtonLayout(2, titleLabel, v23);
+    backButton = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout backButton];
+    if (backButton)
     {
-      v28 = v27;
-      v29 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
+      v28 = backButton;
+      backButton2 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
 
-      if (!v29)
+      if (!backButton2)
       {
-        v30 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
-        v31 = [v30 visualProvider];
-        v32 = [v31 backIndicatorView];
+        backButton3 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
+        visualProvider = [backButton3 visualProvider];
+        backIndicatorView = [visualProvider backIndicatorView];
 
-        [v32 setAlpha:1.0];
+        [backIndicatorView setAlpha:1.0];
         v33 = *(MEMORY[0x1E695EFD0] + 16);
         v34[0] = *MEMORY[0x1E695EFD0];
         v34[1] = v33;
         v34[2] = *(MEMORY[0x1E695EFD0] + 32);
-        [v32 setTransform:v34];
+        [backIndicatorView setTransform:v34];
       }
     }
   }
@@ -159,17 +159,17 @@
 
   if (v9)
   {
-    v10 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
-    [v10 setAlpha:0.3];
+    backButton = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
+    [backButton setAlpha:0.3];
   }
 
   [(UIView *)self->super._contentView layoutIfNeeded];
   [(_UINavigationBarContentViewLayout *)self->super._toContentLayout freeze];
   [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout freeze];
-  v11 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
-  v12 = [v11 visualProvider];
-  v13 = [v12 contentView];
-  [v13 frame];
+  backButton2 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
+  visualProvider = [backButton2 visualProvider];
+  contentView = [visualProvider contentView];
+  [contentView frame];
   self->_endingNewBackButtonFrame.origin.x = v14;
   self->_endingNewBackButtonFrame.origin.y = v15;
   self->_endingNewBackButtonFrame.size.width = v16;
@@ -178,8 +178,8 @@
   v18 = self->super._toLayout;
   if (v18 && (v42 = v18->_contentView) != 0)
   {
-    v19 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout titleControl];
-    [v19 frame];
+    titleControl = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout titleControl];
+    [titleControl frame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -194,7 +194,7 @@
       v29 = _distanceFromTitleToBackButton(self->super._toContentLayout, self->super._fromContentLayout, v42, (*&flags >> 1) & 1);
       self->_titleTransitionDistance.width = v29;
       self->_titleTransitionDistance.height = 0.0;
-      [v19 setFrame:{v21 - v29, v23, v25, v27}];
+      [titleControl setFrame:{v21 - v29, v23, v25, v27}];
       _applyStretchTransformForTitleViewAndBackButtonLayouts(1, self->super._toContentLayout, self->super._fromContentLayout);
     }
   }
@@ -204,12 +204,12 @@
     v42 = 0;
   }
 
-  v30 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
-  [v30 setBackButtonMaskEnabled:1];
+  backButton3 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
+  [backButton3 setBackButtonMaskEnabled:1];
 
   _performAdditionalTitleViewClipping(self, self->super._fromContentLayout, self->super._toContentLayout);
-  v31 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
-  [v31 frame];
+  backButton4 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
+  [backButton4 frame];
   Width = CGRectGetWidth(v44);
 
   v33 = fabs(self->_titleTransitionDistance.width);
@@ -219,8 +219,8 @@
   }
 
   v34 = -v33;
-  v35 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
-  _updateBackButtonSpacingForButton(v35, (*&self->super._flags >> 1) & 1, v34, 0.0);
+  backButton5 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
+  _updateBackButtonSpacingForButton(backButton5, (*&self->super._flags >> 1) & 1, v34, 0.0);
 
   v36 = self->super._fromLayout;
   if (v36)
@@ -232,8 +232,8 @@
 
   if (v37)
   {
-    v38 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout augmentedTitleView];
-    [v38 _navigationBarTransitionWillBegin:1 willBeDisplayed:0];
+    augmentedTitleView = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout augmentedTitleView];
+    [augmentedTitleView _navigationBarTransitionWillBegin:1 willBeDisplayed:0];
   }
 
   v39 = self->super._toLayout;
@@ -246,8 +246,8 @@
 
   if (v40)
   {
-    v41 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout augmentedTitleView];
-    [v41 _navigationBarTransitionWillBegin:1 willBeDisplayed:1];
+    augmentedTitleView2 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout augmentedTitleView];
+    [augmentedTitleView2 _navigationBarTransitionWillBegin:1 willBeDisplayed:1];
   }
 
   [(UIView *)self->super._contentView layoutIfNeeded];
@@ -258,10 +258,10 @@
   if ((*&self->super._flags & 0x20) != 0)
   {
     v3 = _slideTransitionFadeMaskImage(0);
-    v4 = [(_UINavigationBarLargeTitleViewLayout *)self->super._fromLargeTitleLayout titleLabel];
+    titleLabel = [(_UINavigationBarLargeTitleViewLayout *)self->super._fromLargeTitleLayout titleLabel];
     [(UIView *)self->super._largeTitleView frame];
     MaxX = CGRectGetMaxX(v21);
-    v6 = _wrapViewInClippingView(v4, 0, v3, 0.0, MaxX);
+    v6 = _wrapViewInClippingView(titleLabel, 0, v3, 0.0, MaxX);
 
     [(_UINavigationBarTransitionContext *)self _addClippingView:v6];
   }
@@ -278,8 +278,8 @@
     {
       [(_UINavigationBarLargeTitleViewLayout *)self->super._toLargeTitleLayout setContentHidden:1];
       toLargeTitleLayout = self->super._toLargeTitleLayout;
-      v19 = [(_UINavigationBarLargeTitleViewLayout *)toLargeTitleLayout titleLabel];
-      [v19 center];
+      titleLabel2 = [(_UINavigationBarLargeTitleViewLayout *)toLargeTitleLayout titleLabel];
+      [titleLabel2 center];
       _updateLargeTitleSpacingForLayout(toLargeTitleLayout, v17, v18, -self->_titleTransitionDistanceExcludingLargeTitleOffset.width, -self->_titleTransitionDistanceExcludingLargeTitleOffset.height);
     }
 
@@ -298,8 +298,8 @@
       }
 
       [(_UINavigationBarLargeTitleViewLayout *)self->super._toLargeTitleLayout layoutViewsWithOffset:1 useRestingTitleHeight:v10, 0.0];
-      v19 = [(_UINavigationBarLargeTitleViewLayout *)self->super._toLargeTitleLayout accessoryView];
-      [v19 setAlpha:0.0];
+      titleLabel2 = [(_UINavigationBarLargeTitleViewLayout *)self->super._toLargeTitleLayout accessoryView];
+      [titleLabel2 setAlpha:0.0];
     }
   }
 
@@ -310,14 +310,14 @@
       largeTitleView = self->super._largeTitleView;
       if (largeTitleView)
       {
-        v12 = [(UIView *)largeTitleView superview];
+        superview = [(UIView *)largeTitleView superview];
         navigationBar = self->super._navigationBar;
 
-        if (v12 == navigationBar)
+        if (superview == navigationBar)
         {
-          v14 = [(_UINavigationBarLargeTitleView *)self->super._largeTitleView layout];
+          layout = [(_UINavigationBarLargeTitleView *)self->super._largeTitleView layout];
           v15 = self->super._toLargeTitleLayout;
-          self->super._toLargeTitleLayout = v14;
+          self->super._toLargeTitleLayout = layout;
         }
       }
     }
@@ -366,19 +366,19 @@
 LABEL_11:
     if ((v6 & 1) == 0)
     {
-      v8 = [(_UINavigationBarLayout *)self->super._toLayout backgroundViewLayoutFrame];
-      v12 = v8;
+      backgroundViewLayoutFrame = [(_UINavigationBarLayout *)self->super._toLayout backgroundViewLayoutFrame];
+      v12 = backgroundViewLayoutFrame;
       v13 = v9;
       v14 = v10;
       v15 = v11;
       if ((flags & 2) != 0)
       {
-        MaxX = CGRectGetMaxX(*&v8);
+        MaxX = CGRectGetMaxX(*&backgroundViewLayoutFrame);
       }
 
       else
       {
-        MinX = CGRectGetMinX(*&v8);
+        MinX = CGRectGetMinX(*&backgroundViewLayoutFrame);
         v26.origin.x = v12;
         v26.origin.y = v13;
         v26.size.width = v14;
@@ -490,7 +490,7 @@ LABEL_24:
       }
 
       v10 = searchBar;
-      v11 = [(UISearchBar *)v10 showsScopeBar];
+      showsScopeBar = [(UISearchBar *)v10 showsScopeBar];
 
       if (v8)
       {
@@ -504,51 +504,51 @@ LABEL_24:
 
       v13 = v12;
 
-      v14 = [(UISearchBar *)v13 showsScopeBar];
-      if (v11 != v14)
+      showsScopeBar2 = [(UISearchBar *)v13 showsScopeBar];
+      if (showsScopeBar != showsScopeBar2)
       {
-        v15 = [(_UINavigationBarLayout *)v5 _scopeBar];
-        [v15 setAlpha:0.0];
+        _scopeBar = [(_UINavigationBarLayout *)v5 _scopeBar];
+        [_scopeBar setAlpha:0.0];
       }
 
-      v16 = [(_UINavigationBarLayout *)v5 _searchController];
-      v17 = [v16 isActive];
+      _searchController = [(_UINavigationBarLayout *)v5 _searchController];
+      isActive = [_searchController isActive];
 
-      v18 = [(_UINavigationBarLayout *)self->super._toLayout searchBarLayoutFrame];
+      searchBarLayoutFrame = [(_UINavigationBarLayout *)self->super._toLayout searchBarLayoutFrame];
       v20 = v19;
       v22 = v21;
       v24 = v23;
-      if (!v17 && [(_UINavigationBarTransitionContext *)self shouldSlideBarBackground])
+      if (!isActive && [(_UINavigationBarTransitionContext *)self shouldSlideBarBackground])
       {
-        v25 = [(_UINavigationBarTransitionContext *)self isRTL];
-        v29.origin.x = v18;
+        isRTL = [(_UINavigationBarTransitionContext *)self isRTL];
+        v29.origin.x = searchBarLayoutFrame;
         v29.origin.y = v20;
         v29.size.width = v22;
         v29.size.height = v24;
         Width = CGRectGetWidth(v29);
-        if (!v25)
+        if (!isRTL)
         {
           Width = -Width;
         }
 
-        v18 = v18 + Width;
+        searchBarLayoutFrame = searchBarLayoutFrame + Width;
       }
 
-      [(_UINavigationBarLayout *)v5 setFrame:v18, v20, v22, v24];
+      [(_UINavigationBarLayout *)v5 setFrame:searchBarLayoutFrame, v20, v22, v24];
     }
   }
 }
 
-- (void)_prepareTransitionFromPalette:(id)a3 toPalette:(id)a4 toPaletteFrame:(CGRect)a5
+- (void)_prepareTransitionFromPalette:(id)palette toPalette:(id)toPalette toPaletteFrame:(CGRect)frame
 {
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
-  if (v10 && v10 != a3)
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  toPaletteCopy = toPalette;
+  if (toPaletteCopy && toPaletteCopy != palette)
   {
-    v14 = v10;
-    [v10 preferredHeight];
+    v14 = toPaletteCopy;
+    [toPaletteCopy preferredHeight];
     v12 = v11;
     v16.origin.x = x;
     v16.origin.y = y;
@@ -563,7 +563,7 @@ LABEL_24:
     [v14 setFrame:{v13, y, width, v12}];
     [v14 layoutIfNeeded];
     [v14 setTransitioning:1];
-    v10 = v14;
+    toPaletteCopy = v14;
   }
 }
 
@@ -604,43 +604,43 @@ LABEL_24:
   {
     height = self->_titleTransitionDistance.height;
     v4 = self->_titleTransitionDistance.width - self->_titleTransitionAdjustment;
-    v5 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout backButton];
-    _updateBackButtonSpacingForButton(v5, 0, v4, height);
+    backButton = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout backButton];
+    _updateBackButtonSpacingForButton(backButton, 0, v4, height);
 
     fromContentLayout = self->super._fromContentLayout;
     v7 = self->super._toLargeTitleLayout;
     v8 = fromContentLayout;
-    v9 = [(_UINavigationBarLargeTitleViewLayout *)v7 title];
-    v10 = [v9 string];
+    title = [(_UINavigationBarLargeTitleViewLayout *)v7 title];
+    string = [title string];
 
-    v11 = [(_UINavigationBarLargeTitleViewLayout *)v7 titleLabel];
+    titleLabel = [(_UINavigationBarLargeTitleViewLayout *)v7 titleLabel];
 
-    _applyStretchTransformForTitleViewAndBackButtonLayout(5, v11, v8);
+    _applyStretchTransformForTitleViewAndBackButtonLayout(5, titleLabel, v8);
     if (_textDiffersBetweenLargeTitleAndBackButtonLayouts(self->super._toLargeTitleLayout, self->super._fromContentLayout))
     {
       [(_UINavigationBarLargeTitleViewLayout *)self->super._toLargeTitleLayout setContentAlpha:0.0];
-      v12 = [(_UINavigationBarTransitionContext *)self _animationOptions];
+      _animationOptions = [(_UINavigationBarTransitionContext *)self _animationOptions];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __63___UINavigationBarTransitionContextPop__animateScaleTransition__block_invoke;
       v36[3] = &unk_1E70F3590;
       v36[4] = self;
-      [UIView animateKeyframesWithDuration:v12 delay:v36 options:0 animations:0.0 completion:0.0];
+      [UIView animateKeyframesWithDuration:_animationOptions delay:v36 options:0 animations:0.0 completion:0.0];
     }
 
-    v13 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout backButton];
-    if (v13)
+    backButton2 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout backButton];
+    if (backButton2)
     {
-      v14 = v13;
-      v15 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
+      v14 = backButton2;
+      backButton3 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
 
-      if (!v15)
+      if (!backButton3)
       {
-        v16 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout backButton];
-        v17 = [v16 visualProvider];
-        v18 = [v17 backIndicatorView];
+        backButton4 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout backButton];
+        visualProvider = [backButton4 visualProvider];
+        backIndicatorView = [visualProvider backIndicatorView];
 
-        [v18 frame];
+        [backIndicatorView frame];
         v22 = v21;
         v24 = v23;
         v25 = -7.0;
@@ -651,18 +651,18 @@ LABEL_24:
 
         v26 = v19 + v25;
         v27 = v20 + 5.0;
-        v28 = [(_UINavigationBarTransitionContext *)self _animationOptions];
+        _animationOptions2 = [(_UINavigationBarTransitionContext *)self _animationOptions];
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = __63___UINavigationBarTransitionContextPop__animateScaleTransition__block_invoke_5;
         v30[3] = &unk_1E70F3B20;
-        v31 = v18;
+        v31 = backIndicatorView;
         v32 = v26;
         v33 = v27;
         v34 = v22;
         v35 = v24;
-        v29 = v18;
-        [UIView animateKeyframesWithDuration:v28 delay:v30 options:0 animations:0.0 completion:0.0];
+        v29 = backIndicatorView;
+        [UIView animateKeyframesWithDuration:_animationOptions2 delay:v30 options:0 animations:0.0 completion:0.0];
       }
     }
   }
@@ -681,13 +681,13 @@ LABEL_24:
   y = self->_endingNewBackButtonFrame.origin.y;
   width = self->_endingNewBackButtonFrame.size.width;
   height = self->_endingNewBackButtonFrame.size.height;
-  v7 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
-  v8 = [v7 visualProvider];
-  v9 = [v8 contentView];
-  [v9 setFrame:{x, y, width, height}];
+  backButton = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout backButton];
+  visualProvider = [backButton visualProvider];
+  contentView = [visualProvider contentView];
+  [contentView setFrame:{x, y, width, height}];
 
-  v10 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout titleControl];
-  [v10 frame];
+  titleControl = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout titleControl];
+  [titleControl frame];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __59___UINavigationBarTransitionContextPop__animateContentView__block_invoke_3;
@@ -697,20 +697,20 @@ LABEL_24:
   v47 = v12;
   v48 = v13;
   v49 = v14;
-  v15 = v10;
+  v15 = titleControl;
   v45 = v15;
   [UIView _animateInProcessAlongsideTransition:v44];
   if ((*&self->super._flags & 0x40) == 0 || self->super._largeTitleTransitionType != 1)
   {
-    v16 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout backButton];
-    _updateBackButtonSpacingForButton(v16, (*&self->super._flags >> 1) & 1, fabs(self->_titleTransitionDistance.width), 0.0);
+    backButton2 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout backButton];
+    _updateBackButtonSpacingForButton(backButton2, (*&self->super._flags >> 1) & 1, fabs(self->_titleTransitionDistance.width), 0.0);
 
     _applyStretchTransformForTitleViewAndBackButtonLayouts(4, self->super._toContentLayout, self->super._fromContentLayout);
   }
 
-  v17 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout titleControl];
+  titleControl2 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout titleControl];
   v18 = +[UIView _hasInProcessProgressAnimator];
-  if (v17)
+  if (titleControl2)
   {
     v19 = v18;
   }
@@ -724,7 +724,7 @@ LABEL_24:
   toContentLayout = self->super._toContentLayout;
   if (v19)
   {
-    v51[0] = v17;
+    v51[0] = titleControl2;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
     [(_UINavigationBarContentViewLayout *)toContentLayout unfreezeExceptViews:v21];
   }
@@ -734,7 +734,7 @@ LABEL_24:
     [(_UINavigationBarContentViewLayout *)self->super._toContentLayout unfreezeExceptViews:0];
   }
 
-  [v17 frame];
+  [titleControl2 frame];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -743,13 +743,13 @@ LABEL_24:
   v37[1] = 3221225472;
   v37[2] = __59___UINavigationBarTransitionContextPop__animateContentView__block_invoke_4;
   v37[3] = &unk_1E70F7058;
-  v30 = v17;
+  v30 = titleControl2;
   v40 = v23;
   v41 = v25;
   v42 = v27;
   v43 = v29;
   v38 = v30;
-  v39 = self;
+  selfCopy = self;
   [UIView _animateInProcessAlongsideTransition:v37];
   fromLayout = self->super._fromLayout;
   if (fromLayout)
@@ -761,8 +761,8 @@ LABEL_24:
 
   if (v32)
   {
-    v33 = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout augmentedTitleView];
-    [v33 _performNavigationBarTransition:1 willBeDisplayed:0];
+    augmentedTitleView = [(_UINavigationBarContentViewLayout *)self->super._fromContentLayout augmentedTitleView];
+    [augmentedTitleView _performNavigationBarTransition:1 willBeDisplayed:0];
   }
 
   toLayout = self->super._toLayout;
@@ -775,8 +775,8 @@ LABEL_24:
 
   if (v35)
   {
-    v36 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout augmentedTitleView];
-    [v36 _performNavigationBarTransition:1 willBeDisplayed:1];
+    augmentedTitleView2 = [(_UINavigationBarContentViewLayout *)self->super._toContentLayout augmentedTitleView];
+    [augmentedTitleView2 _performNavigationBarTransition:1 willBeDisplayed:1];
   }
 }
 
@@ -812,8 +812,8 @@ LABEL_24:
 
   v16 = v15 - (v13 - v9);
   v17 = v8 - v7 + 0.0;
-  v18 = [(_UINavigationBarLargeTitleViewLayout *)self->super._toLargeTitleLayout titleLabel];
-  [v18 center];
+  titleLabel = [(_UINavigationBarLargeTitleViewLayout *)self->super._toLargeTitleLayout titleLabel];
+  [titleLabel center];
   v20 = v19;
   v22 = v21;
 
@@ -938,14 +938,14 @@ LABEL_17:
   }
 
   v29 = v22;
-  v23 = [(_UINavigationBarLayout *)self->super._fromLayout backgroundViewLayoutFrame];
-  v27 = v23;
+  backgroundViewLayoutFrame = [(_UINavigationBarLayout *)self->super._fromLayout backgroundViewLayoutFrame];
+  v27 = backgroundViewLayoutFrame;
   v15 = v24;
   v17 = v25;
   v19 = v26;
   if ((*&self->super._flags & 2) != 0)
   {
-    MinX = CGRectGetMinX(*&v23);
+    MinX = CGRectGetMinX(*&backgroundViewLayoutFrame);
     v32.origin.x = v27;
     v32.origin.y = v15;
     v32.size.width = v17;
@@ -955,7 +955,7 @@ LABEL_17:
 
   else
   {
-    MaxX = CGRectGetMaxX(*&v23);
+    MaxX = CGRectGetMaxX(*&backgroundViewLayoutFrame);
   }
 
 LABEL_22:
@@ -1030,7 +1030,7 @@ LABEL_24:
       }
 
       v13 = searchBar;
-      v14 = [(UISearchBar *)v13 showsScopeBar];
+      showsScopeBar = [(UISearchBar *)v13 showsScopeBar];
 
       if (v11)
       {
@@ -1044,8 +1044,8 @@ LABEL_24:
 
       v16 = v15;
 
-      v17 = [(UISearchBar *)v16 showsScopeBar];
-      if (v14 != v17)
+      showsScopeBar2 = [(UISearchBar *)v16 showsScopeBar];
+      if (showsScopeBar != showsScopeBar2)
       {
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
@@ -1063,29 +1063,29 @@ LABEL_24:
         v18[2] = __57___UINavigationBarTransitionContextPop__animateSearchBar__block_invoke_7;
         v18[3] = &unk_1E70F5C08;
         v19 = v8;
-        v20 = self;
+        selfCopy = self;
         [UIView _animateInProcessAlongsideTransition:v18];
       }
     }
   }
 }
 
-- (void)_animateFromPalette:(id)a3 fromPaletteFrame:(CGRect)a4 toPalette:(id)a5 toPaletteFrame:(CGRect)a6
+- (void)_animateFromPalette:(id)palette fromPaletteFrame:(CGRect)frame toPalette:(id)toPalette toPaletteFrame:(CGRect)paletteFrame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  v16 = a3;
-  v17 = a5;
-  v18 = v17;
-  if (v16 != v17)
+  height = paletteFrame.size.height;
+  width = paletteFrame.size.width;
+  y = paletteFrame.origin.y;
+  x = paletteFrame.origin.x;
+  v11 = frame.size.height;
+  v12 = frame.size.width;
+  v13 = frame.origin.y;
+  v14 = frame.origin.x;
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
+  v18 = toPaletteCopy;
+  if (paletteCopy != toPaletteCopy)
   {
-    if (v16)
+    if (paletteCopy)
     {
       v34.origin.x = v14;
       v34.origin.y = v13;
@@ -1116,7 +1116,7 @@ LABEL_24:
         aBlock[1] = 3221225472;
         aBlock[2] = __102___UINavigationBarTransitionContextPop__animateFromPalette_fromPaletteFrame_toPalette_toPaletteFrame___block_invoke;
         aBlock[3] = &unk_1E70F3590;
-        v33 = v16;
+        v33 = paletteCopy;
         v25 = _Block_copy(aBlock);
       }
 
@@ -1125,8 +1125,8 @@ LABEL_24:
         v25 = 0;
       }
 
-      [v16 setTransitioning:1];
-      [v16 setFrame:{v20, v13, v12, v11}];
+      [paletteCopy setTransitioning:1];
+      [paletteCopy setFrame:{v20, v13, v12, v11}];
       if (v18)
       {
         goto LABEL_11;
@@ -1136,7 +1136,7 @@ LABEL_24:
     else
     {
       v25 = 0;
-      if (v17)
+      if (toPaletteCopy)
       {
 LABEL_11:
         [v18 setFrame:{x, y, width, height}];
@@ -1173,16 +1173,16 @@ LABEL_15:
   [(_UINavigationBarTransitionContext *)self _animatePalettes];
 }
 
-- (void)_finishWithFinalLayout:(id)a3 invalidLayout:(id)a4
+- (void)_finishWithFinalLayout:(id)layout invalidLayout:(id)invalidLayout
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  invalidLayoutCopy = invalidLayout;
   [(_UINavigationBarLayout *)self->super._fromLayout updateLayout];
   [(_UINavigationBarLayout *)self->super._toLayout updateLayout];
-  if (v6)
+  if (layoutCopy)
   {
-    v8 = v6[20];
+    v8 = layoutCopy[20];
   }
 
   else
@@ -1191,9 +1191,9 @@ LABEL_15:
   }
 
   v9 = v8;
-  if (v7)
+  if (invalidLayoutCopy)
   {
-    v10 = v7[20];
+    v10 = invalidLayoutCopy[20];
   }
 
   else
@@ -1202,9 +1202,9 @@ LABEL_15:
   }
 
   v11 = v10;
-  if (v6)
+  if (layoutCopy)
   {
-    v12 = v6[21];
+    v12 = layoutCopy[21];
   }
 
   else
@@ -1213,9 +1213,9 @@ LABEL_15:
   }
 
   v13 = v12;
-  if (v7)
+  if (invalidLayoutCopy)
   {
-    v14 = v7[21];
+    v14 = invalidLayoutCopy[21];
   }
 
   else
@@ -1224,48 +1224,48 @@ LABEL_15:
   }
 
   v15 = v14;
-  v16 = [v9 augmentedTitleView];
-  [v16 _navigationBarTransitionCompleted:1 willBeDisplayed:1];
+  augmentedTitleView = [v9 augmentedTitleView];
+  [augmentedTitleView _navigationBarTransitionCompleted:1 willBeDisplayed:1];
 
-  v17 = [v11 augmentedTitleView];
-  [v17 _navigationBarTransitionCompleted:1 willBeDisplayed:0];
+  augmentedTitleView2 = [v11 augmentedTitleView];
+  [augmentedTitleView2 _navigationBarTransitionCompleted:1 willBeDisplayed:0];
 
-  v18 = [v9 titleControl];
-  v19 = [v18 titleLabel];
+  titleControl = [v9 titleControl];
+  titleLabel = [titleControl titleLabel];
   v64 = *(MEMORY[0x1E695EFD0] + 16);
   v66 = *MEMORY[0x1E695EFD0];
   v65 = v66;
   v67 = v64;
   v68 = *(MEMORY[0x1E695EFD0] + 32);
   v63 = v68;
-  [v19 setTransform:&v66];
+  [titleLabel setTransform:&v66];
 
-  v20 = [v9 backButton];
-  v21 = [v20 visualProvider];
-  v22 = [v21 contentView];
+  backButton = [v9 backButton];
+  visualProvider = [backButton visualProvider];
+  contentView = [visualProvider contentView];
   v66 = v65;
   v67 = v64;
   v68 = v63;
-  [v22 setTransform:&v66];
+  [contentView setTransform:&v66];
 
-  v23 = [v11 titleControl];
-  v24 = [v23 titleLabel];
+  titleControl2 = [v11 titleControl];
+  titleLabel2 = [titleControl2 titleLabel];
   v66 = v65;
   v67 = v64;
   v68 = v63;
-  [v24 setTransform:&v66];
+  [titleLabel2 setTransform:&v66];
 
-  v25 = [v11 backButton];
-  v26 = [v25 visualProvider];
-  v27 = [v26 contentView];
+  backButton2 = [v11 backButton];
+  visualProvider2 = [backButton2 visualProvider];
+  contentView2 = [visualProvider2 contentView];
   v66 = v65;
   v67 = v64;
   v68 = v63;
-  [v27 setTransform:&v66];
+  [contentView2 setTransform:&v66];
 
   [v11 setContentHidden:0];
-  v28 = [v11 backButton];
-  [v28 setBackButtonMaskEnabled:0];
+  backButton3 = [v11 backButton];
+  [backButton3 setBackButtonMaskEnabled:0];
 
   [v11 removeContent];
   [v15 removeContent];
@@ -1276,8 +1276,8 @@ LABEL_15:
   self->_endingNewTitleViewFrame.origin = *MEMORY[0x1E695F058];
   self->_endingNewTitleViewFrame.size = v29;
   [v9 setContentHidden:0];
-  v30 = [v9 backButton];
-  [v30 setBackButtonMaskEnabled:0];
+  backButton4 = [v9 backButton];
+  [backButton4 setBackButtonMaskEnabled:0];
 
   [(UIView *)self->super._largeTitleView setClipsToBounds:1];
   [(UIView *)self->super._contentView setClipsToBounds:1];
@@ -1299,7 +1299,7 @@ LABEL_15:
   v34 = fromLayout;
   [(_UINavigationBarLayout *)v34 setAlpha:1.0];
 
-  v35 = [(_UINavigationBarLayout *)self->super._toLayout searchBarLayoutFrame];
+  searchBarLayoutFrame = [(_UINavigationBarLayout *)self->super._toLayout searchBarLayoutFrame];
   v37 = v36;
   v39 = v38;
   v41 = v40;
@@ -1310,9 +1310,9 @@ LABEL_15:
   }
 
   v43 = v42;
-  [(_UINavigationBarLayout *)v43 setFrame:v35, v37, v39, v41];
+  [(_UINavigationBarLayout *)v43 setFrame:searchBarLayoutFrame, v37, v39, v41];
 
-  v44 = [(_UINavigationBarLayout *)self->super._fromLayout searchBarLayoutFrame];
+  searchBarLayoutFrame2 = [(_UINavigationBarLayout *)self->super._fromLayout searchBarLayoutFrame];
   v46 = v45;
   v48 = v47;
   v50 = v49;
@@ -1323,9 +1323,9 @@ LABEL_15:
   }
 
   v52 = v51;
-  [(_UINavigationBarLayout *)v52 setFrame:v44, v46, v48, v50];
+  [(_UINavigationBarLayout *)v52 setFrame:searchBarLayoutFrame2, v46, v48, v50];
 
-  if (v6)
+  if (layoutCopy)
   {
     v53 = 23;
     if ((*&self->super._flags & 4) == 0)
@@ -1333,7 +1333,7 @@ LABEL_15:
       v53 = 24;
     }
 
-    v54 = v6[v53];
+    v54 = layoutCopy[v53];
   }
 
   else
@@ -1347,15 +1347,15 @@ LABEL_15:
   if (self->_unfreezeTitleControlOnFinish)
   {
     toContentLayout = self->super._toContentLayout;
-    v57 = [(_UINavigationBarContentViewLayout *)toContentLayout titleControl];
-    v69[0] = v57;
+    titleControl3 = [(_UINavigationBarContentViewLayout *)toContentLayout titleControl];
+    v69[0] = titleControl3;
     v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:1];
     [(_UINavigationBarContentViewLayout *)toContentLayout unfreezeOnlyViews:v58];
   }
 
-  if (v6)
+  if (layoutCopy)
   {
-    v59 = v6[30];
+    v59 = layoutCopy[30];
   }
 
   else
@@ -1366,9 +1366,9 @@ LABEL_15:
   v60 = v59;
   [v60 _navigationBarSlideTransitionDidEnd];
 
-  if (v7)
+  if (invalidLayoutCopy)
   {
-    v61 = v7[30];
+    v61 = invalidLayoutCopy[30];
   }
 
   else

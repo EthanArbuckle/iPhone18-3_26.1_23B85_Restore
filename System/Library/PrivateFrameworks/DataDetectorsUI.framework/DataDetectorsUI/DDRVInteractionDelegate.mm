@@ -1,36 +1,36 @@
 @interface DDRVInteractionDelegate
-- (DDRVInteractionDelegate)initWithItem:(id)a3;
-- (void)actionDidFinish:(id)a3;
-- (void)actionWillStart:(id)a3;
+- (DDRVInteractionDelegate)initWithItem:(id)item;
+- (void)actionDidFinish:(id)finish;
+- (void)actionWillStart:(id)start;
 @end
 
 @implementation DDRVInteractionDelegate
 
-- (DDRVInteractionDelegate)initWithItem:(id)a3
+- (DDRVInteractionDelegate)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = DDRVInteractionDelegate;
   v6 = [(DDRVInteractionDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;
 }
 
-- (void)actionWillStart:(id)a3
+- (void)actionWillStart:(id)start
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"kDDRVInteractionWillStartNotification" object:self->_item];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"kDDRVInteractionWillStartNotification" object:self->_item];
 }
 
-- (void)actionDidFinish:(id)a3
+- (void)actionDidFinish:(id)finish
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"kDDRVInteractionDidFinishNotification" object:self->_item];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"kDDRVInteractionDidFinishNotification" object:self->_item];
 }
 
 @end

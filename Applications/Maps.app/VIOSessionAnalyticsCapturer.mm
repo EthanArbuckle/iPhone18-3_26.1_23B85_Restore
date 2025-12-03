@@ -1,28 +1,28 @@
 @interface VIOSessionAnalyticsCapturer
-- (BOOL)hasInFlightEntryWithUsageType:(int)a3;
+- (BOOL)hasInFlightEntryWithUsageType:(int)type;
 - (BOOL)isRecording;
 - (VIOSessionAnalyticsCapturer)init;
 - (VIOSessionStateManager)stateManager;
-- (void)completeInFlightEntriesExcluding:(id)a3 withExitReason:(int)a4;
-- (void)completeInFlightEntriesForUsageType:(int)a3 withExitReason:(int)a4;
-- (void)completeInFlightEntriesWithExitReason:(int)a3;
-- (void)createEntryForUsageType:(int)a3 value:(id)a4;
+- (void)completeInFlightEntriesExcluding:(id)excluding withExitReason:(int)reason;
+- (void)completeInFlightEntriesForUsageType:(int)type withExitReason:(int)reason;
+- (void)completeInFlightEntriesWithExitReason:(int)reason;
+- (void)createEntryForUsageType:(int)type value:(id)value;
 - (void)dealloc;
-- (void)disableEventReceived:(int64_t)a3;
-- (void)disableEventReset:(int64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)disableEventReceived:(int64_t)received;
+- (void)disableEventReset:(int64_t)reset;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pauseRecording;
 - (void)resumeRecording;
-- (void)session:(id)a3 cameraDidChangeTrackingState:(id)a4;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionWasInterrupted:(id)a3;
-- (void)setSession:(id)a3;
-- (void)setStateManager:(id)a3;
+- (void)session:(id)session cameraDidChangeTrackingState:(id)state;
+- (void)session:(id)session didChangeState:(unint64_t)state;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionWasInterrupted:(id)interrupted;
+- (void)setSession:(id)session;
+- (void)setStateManager:(id)manager;
 - (void)startRecording;
 - (void)stopRecording;
-- (void)stopRecordingWithExitReason:(int)a3;
-- (void)throttleDidBeginWithEvent:(int64_t)a3;
+- (void)stopRecordingWithExitReason:(int)reason;
+- (void)throttleDidBeginWithEvent:(int64_t)event;
 - (void)throttleDidEnd;
 @end
 
@@ -35,34 +35,34 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[NSUserDefaults standardUserDefaults];
   v14 = v13;
-  if (v13 != v11)
+  if (v13 != objectCopy)
   {
 
 LABEL_6:
     v18.receiver = self;
     v18.super_class = VIOSessionAnalyticsCapturer;
-    [(VIOSessionAnalyticsCapturer *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VIOSessionAnalyticsCapturer *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_7;
   }
 
-  v15 = [v10 isEqualToString:@"MapsWalkingEnableImageBasedHeading"];
+  v15 = [pathCopy isEqualToString:@"MapsWalkingEnableImageBasedHeading"];
 
   if (!v15)
   {
     goto LABEL_6;
   }
 
-  v16 = [v12 objectForKey:NSKeyValueChangeNewKey];
-  v17 = [v16 BOOLValue];
+  v16 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
+  bOOLValue = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue)
   {
     [(VIOSessionAnalyticsCapturer *)self createEntryForUsageType:5 value:0];
   }
@@ -75,18 +75,18 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100BAB43C;
   v4[3] = &unk_101661650;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = state;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -96,7 +96,7 @@ LABEL_7:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -106,9 +106,9 @@ LABEL_7:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)session:(id)a3 cameraDidChangeTrackingState:(id)a4
+- (void)session:(id)session cameraDidChangeTrackingState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   if ([(VIOSessionAnalyticsCapturer *)self isPaused])
   {
     v7 = sub_10006D178();
@@ -143,12 +143,12 @@ LABEL_7:
   v10[2] = sub_100BAB7AC;
   v10[3] = &unk_101661A90;
   v10[4] = self;
-  v11 = v5;
-  v6 = v5;
+  v11 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(&_dispatch_main_q, v10);
 }
 
-- (void)disableEventReset:(int64_t)a3
+- (void)disableEventReset:(int64_t)reset
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -189,18 +189,18 @@ LABEL_7:
     }
   }
 
-  if ((a3 - 1) > 9)
+  if ((reset - 1) > 9)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = dword_1012154D4[a3 - 1];
+    v8 = dword_1012154D4[reset - 1];
   }
 
-  v9 = [(VIOSessionAnalyticsCapturer *)self stateManager];
-  if ([v9 isDisabled])
+  stateManager = [(VIOSessionAnalyticsCapturer *)self stateManager];
+  if ([stateManager isDisabled])
   {
     v10 = v8;
   }
@@ -211,17 +211,17 @@ LABEL_7:
   }
 
   [(VIOSessionAnalyticsCapturer *)self completeInFlightEntriesForUsageType:v8 withExitReason:v10];
-  v11 = [(VIOSessionAnalyticsCapturer *)self stateManager];
-  v12 = [v11 isDisabled];
+  stateManager2 = [(VIOSessionAnalyticsCapturer *)self stateManager];
+  isDisabled = [stateManager2 isDisabled];
 
-  if ((v12 & 1) == 0)
+  if ((isDisabled & 1) == 0)
   {
     [(VIOSessionAnalyticsCapturer *)self setIsInitializing:1];
     [(VIOSessionAnalyticsCapturer *)self setDidRecordInitializing:0];
   }
 }
 
-- (void)disableEventReceived:(int64_t)a3
+- (void)disableEventReceived:(int64_t)received
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -262,14 +262,14 @@ LABEL_7:
     }
   }
 
-  if ((a3 - 1) > 9)
+  if ((received - 1) > 9)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = dword_1012154D4[a3 - 1];
+    v8 = dword_1012154D4[received - 1];
   }
 
   v9 = [NSNumber numberWithInt:v8];
@@ -317,11 +317,11 @@ LABEL_7:
     }
 
     [(VIOSessionAnalyticsCapturer *)self completeInFlightEntriesExcluding:&off_1016ED670 withExitReason:v13];
-    if (a3 <= 4)
+    if (received <= 4)
     {
-      if (a3 > 1)
+      if (received > 1)
       {
-        if (a3 != 2 && a3 != 3)
+        if (received != 2 && received != 3)
         {
           goto LABEL_33;
         }
@@ -329,9 +329,9 @@ LABEL_7:
         goto LABEL_34;
       }
 
-      if (a3)
+      if (received)
       {
-        if (a3 != 1)
+        if (received != 1)
         {
           return;
         }
@@ -342,9 +342,9 @@ LABEL_7:
 
     else
     {
-      if (a3 <= 7)
+      if (received <= 7)
       {
-        if (a3 != 6)
+        if (received != 6)
         {
           goto LABEL_33;
         }
@@ -357,12 +357,12 @@ LABEL_34:
         return;
       }
 
-      if (a3 == 8 || a3 == 9)
+      if (received == 8 || received == 9)
       {
         goto LABEL_34;
       }
 
-      if (a3 != 10)
+      if (received != 10)
       {
         return;
       }
@@ -429,7 +429,7 @@ LABEL_33:
   [(VIOSessionAnalyticsCapturer *)self setDidRecordInitializing:0];
 }
 
-- (void)throttleDidBeginWithEvent:(int64_t)a3
+- (void)throttleDidBeginWithEvent:(int64_t)event
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -472,7 +472,7 @@ LABEL_33:
 
   GEOConfigGetDouble();
   v9 = v8;
-  if (a3)
+  if (event)
   {
     v10 = 1;
   }
@@ -497,7 +497,7 @@ LABEL_33:
   [(VIOSessionAnalyticsCapturer *)self createEntryForUsageType:v10 value:v12];
 }
 
-- (BOOL)hasInFlightEntryWithUsageType:(int)a3
+- (BOOL)hasInFlightEntryWithUsageType:(int)type
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -542,10 +542,10 @@ LABEL_33:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
-  v9 = [v8 allObjects];
+  recordedEntries = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
+  allObjects = [recordedEntries allObjects];
 
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v10 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -556,18 +556,18 @@ LABEL_33:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        if ([v14 usageType] == a3 && !objc_msgSend(v14, "isComplete"))
+        if ([v14 usageType] == type && !objc_msgSend(v14, "isComplete"))
         {
           v15 = 1;
           goto LABEL_18;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v11)
       {
         continue;
@@ -583,10 +583,10 @@ LABEL_18:
   return v15;
 }
 
-- (void)completeInFlightEntriesExcluding:(id)a3 withExitReason:(int)a4
+- (void)completeInFlightEntriesExcluding:(id)excluding withExitReason:(int)reason
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&reason;
+  excludingCopy = excluding;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v8 = dispatch_queue_get_label(0);
   if (label != v8)
@@ -630,10 +630,10 @@ LABEL_18:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
-  v11 = [v10 allObjects];
+  recordedEntries = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
+  allObjects = [recordedEntries allObjects];
 
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v12 = [allObjects countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
     v14 = v12;
@@ -646,14 +646,14 @@ LABEL_18:
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allObjects);
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
         if (([v17 isComplete] & 1) == 0)
         {
           v18 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v17 usageType]);
-          v19 = [v6 containsObject:v18];
+          v19 = [excludingCopy containsObject:v18];
 
           if ((v19 & 1) == 0)
           {
@@ -669,16 +669,16 @@ LABEL_18:
         }
       }
 
-      v14 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v14 = [allObjects countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)completeInFlightEntriesForUsageType:(int)a3 withExitReason:(int)a4
+- (void)completeInFlightEntriesForUsageType:(int)type withExitReason:(int)reason
 {
-  v4 = *&a4;
+  v4 = *&reason;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v8 = dispatch_queue_get_label(0);
   if (label != v8)
@@ -722,10 +722,10 @@ LABEL_18:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
-  v11 = [v10 allObjects];
+  recordedEntries = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
+  allObjects = [recordedEntries allObjects];
 
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v12 = [allObjects countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
     v14 = v12;
@@ -738,11 +738,11 @@ LABEL_18:
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allObjects);
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        if (([v17 isComplete] & 1) == 0 && objc_msgSend(v17, "usageType") == a3)
+        if (([v17 isComplete] & 1) == 0 && objc_msgSend(v17, "usageType") == type)
         {
           [v17 completeEntryWithReason:v4];
           v18 = sub_100BAC298();
@@ -755,16 +755,16 @@ LABEL_18:
         }
       }
 
-      v14 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v14 = [allObjects countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)completeInFlightEntriesWithExitReason:(int)a3
+- (void)completeInFlightEntriesWithExitReason:(int)reason
 {
-  v3 = *&a3;
+  v3 = *&reason;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -808,10 +808,10 @@ LABEL_18:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
-  v9 = [v8 allObjects];
+  recordedEntries = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
+  allObjects = [recordedEntries allObjects];
 
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v12 = v10;
@@ -824,7 +824,7 @@ LABEL_18:
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
@@ -841,17 +841,17 @@ LABEL_18:
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)createEntryForUsageType:(int)a3 value:(id)a4
+- (void)createEntryForUsageType:(int)type value:(id)value
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&type;
+  valueCopy = value;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v8 = dispatch_queue_get_label(0);
   if (label != v8)
@@ -920,12 +920,12 @@ LABEL_18:
     }
   }
 
-  v10 = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
-  v11 = [v10 count];
+  recordedEntries = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
+  v11 = [recordedEntries count];
 
   if (v11 <= 0xF9)
   {
-    v12 = [[VIOSessionAnalyticsEntry alloc] initWithUsageType:v4 value:v6];
+    v12 = [[VIOSessionAnalyticsEntry alloc] initWithUsageType:v4 value:valueCopy];
     v13 = sub_100BAC298();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -934,8 +934,8 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Creating new entry: %{private}@", buf, 0xCu);
     }
 
-    v14 = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
-    [(__CFString *)v14 addObject:v12];
+    recordedEntries2 = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
+    [(__CFString *)recordedEntries2 addObject:v12];
     goto LABEL_17;
   }
 
@@ -944,18 +944,18 @@ LABEL_18:
   {
     if (v4 >= 0x1A)
     {
-      v14 = [NSString stringWithFormat:@"(unknown: %i)", v4];
+      recordedEntries2 = [NSString stringWithFormat:@"(unknown: %i)", v4];
     }
 
     else
     {
-      v14 = off_10164C4F8[v4];
+      recordedEntries2 = off_10164C4F8[v4];
     }
 
     *buf = 134218242;
     v22 = 250;
     v23 = 2112;
-    v24 = v14;
+    v24 = recordedEntries2;
     _os_log_impl(&_mh_execute_header, &v12->super, OS_LOG_TYPE_DEBUG, "Reached entry limit (%lu) for a single nav session. Ignoring entry of type: %@", buf, 0x16u);
 LABEL_17:
   }
@@ -963,15 +963,15 @@ LABEL_17:
 
 - (BOOL)isRecording
 {
-  v2 = [(VIOSessionAnalyticsCapturer *)self lastRecordingStartDate];
-  v3 = v2 != 0;
+  lastRecordingStartDate = [(VIOSessionAnalyticsCapturer *)self lastRecordingStartDate];
+  v3 = lastRecordingStartDate != 0;
 
   return v3;
 }
 
-- (void)stopRecordingWithExitReason:(int)a3
+- (void)stopRecordingWithExitReason:(int)reason
 {
-  v3 = *&a3;
+  v3 = *&reason;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -1019,27 +1019,27 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s", &v29, 0xCu);
   }
 
-  v9 = [(VIOSessionAnalyticsCapturer *)self session];
-  v10 = [v9 configuration];
-  v11 = [v10 isVLF];
+  session = [(VIOSessionAnalyticsCapturer *)self session];
+  configuration = [session configuration];
+  isVLF = [configuration isVLF];
 
-  v12 = [(VIOSessionAnalyticsCapturer *)self stateManager];
-  [v12 removeObserver:self];
+  stateManager = [(VIOSessionAnalyticsCapturer *)self stateManager];
+  [stateManager removeObserver:self];
 
   [(VIOSessionAnalyticsCapturer *)self setStateManager:0];
-  v13 = [(VIOSessionAnalyticsCapturer *)self session];
-  [v13 _removeObserver:self];
+  session2 = [(VIOSessionAnalyticsCapturer *)self session];
+  [session2 _removeObserver:self];
 
   [(VIOSessionAnalyticsCapturer *)self setSession:0];
-  v14 = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
-  v15 = [v14 count];
+  recordedEntries = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
+  v15 = [recordedEntries count];
 
   if (v15)
   {
     [(VIOSessionAnalyticsCapturer *)self completeInFlightEntriesWithExitReason:v3];
-    v16 = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
-    v17 = [v16 allObjects];
-    v18 = [v17 sortedArrayUsingComparator:&stru_10164C478];
+    recordedEntries2 = [(VIOSessionAnalyticsCapturer *)self recordedEntries];
+    allObjects = [recordedEntries2 allObjects];
+    v18 = [allObjects sortedArrayUsingComparator:&stru_10164C478];
 
     v19 = sub_100BAC298();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -1051,12 +1051,12 @@ LABEL_17:
 
     v20 = sub_100021DB0(v18, &stru_10164C4B8);
     v21 = +[NSDate date];
-    v22 = [(VIOSessionAnalyticsCapturer *)self lastRecordingStartDate];
-    [v21 timeIntervalSinceDate:v22];
+    lastRecordingStartDate = [(VIOSessionAnalyticsCapturer *)self lastRecordingStartDate];
+    [v21 timeIntervalSinceDate:lastRecordingStartDate];
     v24 = ceil(v23);
 
     v25 = [NSNumber numberWithDouble:v24];
-    [GEOAPPortal captureMarcoLiteWithTotalNavTime:v25 usageStates:v20 vioTrigger:v11];
+    [GEOAPPortal captureMarcoLiteWithTotalNavTime:v25 usageStates:v20 vioTrigger:isVLF];
   }
 
   [(VIOSessionAnalyticsCapturer *)self setLastRecordingStartDate:0];
@@ -1239,9 +1239,9 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%s", &v16, 0xCu);
   }
 
-  v7 = [(VIOSessionAnalyticsCapturer *)self lastRecordingStartDate];
+  lastRecordingStartDate = [(VIOSessionAnalyticsCapturer *)self lastRecordingStartDate];
 
-  if (v7)
+  if (lastRecordingStartDate)
   {
     v8 = sub_100BAC298();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1276,9 +1276,9 @@ LABEL_17:
   }
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v7 = dispatch_queue_get_label(0);
   if (label != v7)
@@ -1318,7 +1318,7 @@ LABEL_17:
     }
   }
 
-  if (self->_session != v5)
+  if (self->_session != sessionCopy)
   {
     v9 = sub_100BAC298();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1329,14 +1329,14 @@ LABEL_17:
     }
 
     [(ARSession *)self->_session _removeObserver:self];
-    objc_storeStrong(&self->_session, a3);
+    objc_storeStrong(&self->_session, session);
     [(ARSession *)self->_session _addObserver:self];
   }
 }
 
-- (void)setStateManager:(id)a3
+- (void)setStateManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -1378,7 +1378,7 @@ LABEL_17:
 
   WeakRetained = objc_loadWeakRetained(&self->_stateManager);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != managerCopy)
   {
     v9 = sub_100BAC298();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1391,8 +1391,8 @@ LABEL_17:
     v10 = objc_loadWeakRetained(&self->_stateManager);
     [v10 removeObserver:self];
 
-    v11 = objc_storeWeak(&self->_stateManager, v4);
-    [v4 addObserver:self];
+    v11 = objc_storeWeak(&self->_stateManager, managerCopy);
+    [managerCopy addObserver:self];
 
     if (![(VIOSessionAnalyticsCapturer *)self isRecording])
     {
@@ -1423,14 +1423,14 @@ LABEL_17:
       }
     }
 
-    if ([v4 isDisabled])
+    if ([managerCopy isDisabled])
     {
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v12 = [v4 disableEventReasons];
-      v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      disableEventReasons = [managerCopy disableEventReasons];
+      v13 = [disableEventReasons countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v13)
       {
         v14 = v13;
@@ -1441,20 +1441,20 @@ LABEL_17:
           {
             if (*v27 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(disableEventReasons);
             }
 
             -[VIOSessionAnalyticsCapturer disableEventReceived:](self, "disableEventReceived:", [*(*(&v26 + 1) + 8 * i) integerValue]);
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v14 = [disableEventReasons countByEnumeratingWithState:&v26 objects:v30 count:16];
         }
 
         while (v14);
       }
     }
 
-    if ([v4 isThrottling])
+    if ([managerCopy isThrottling])
     {
       v23 = sub_10006D178();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))

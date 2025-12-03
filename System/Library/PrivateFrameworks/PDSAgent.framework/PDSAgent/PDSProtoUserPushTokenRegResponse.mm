@@ -1,12 +1,12 @@
 @interface PDSProtoUserPushTokenRegResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDSProtoUserPushTokenRegResponse
@@ -17,37 +17,37 @@
   v8.receiver = self;
   v8.super_class = PDSProtoUserPushTokenRegResponse;
   v4 = [(PDSProtoUserPushTokenRegResponse *)&v8 description];
-  v5 = [(PDSProtoUserPushTokenRegResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PDSProtoUserPushTokenRegResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   userPushToken = self->_userPushToken;
   if (userPushToken)
   {
-    v5 = [(PDSProtoUserPushToken *)userPushToken dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"user_push_token"];
+    dictionaryRepresentation = [(PDSProtoUserPushToken *)userPushToken dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"user_push_token"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithInt:self->_status];
-  [v3 setObject:v6 forKey:@"status"];
+  [dictionary setObject:v6 forKey:@"status"];
 
   message = self->_message;
   if (message)
   {
-    [v3 setObject:message forKey:@"message"];
+    [dictionary setObject:message forKey:@"message"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (!self->_userPushToken)
   {
     [PDSProtoUserPushTokenRegResponse writeTo:];
@@ -62,41 +62,41 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setUserPushToken:self->_userPushToken];
-  v4 = v5;
-  v5[4] = self->_status;
+  toCopy = to;
+  [toCopy setUserPushToken:self->_userPushToken];
+  v4 = toCopy;
+  toCopy[4] = self->_status;
   if (self->_message)
   {
-    [v5 setMessage:?];
-    v4 = v5;
+    [toCopy setMessage:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDSProtoUserPushToken *)self->_userPushToken copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDSProtoUserPushToken *)self->_userPushToken copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
   *(v5 + 16) = self->_status;
-  v8 = [(NSString *)self->_message copyWithZone:a3];
+  v8 = [(NSString *)self->_message copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((userPushToken = self->_userPushToken, !(userPushToken | v4[3])) || -[PDSProtoUserPushToken isEqual:](userPushToken, "isEqual:")) && self->_status == *(v4 + 4))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((userPushToken = self->_userPushToken, !(userPushToken | equalCopy[3])) || -[PDSProtoUserPushToken isEqual:](userPushToken, "isEqual:")) && self->_status == *(equalCopy + 4))
   {
     message = self->_message;
-    if (message | v4[1])
+    if (message | equalCopy[1])
     {
       v7 = [(NSString *)message isEqual:?];
     }
@@ -122,12 +122,12 @@
   return v4 ^ v3 ^ [(NSString *)self->_message hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   userPushToken = self->_userPushToken;
-  v6 = *(v4 + 3);
-  v7 = v4;
+  v6 = *(fromCopy + 3);
+  v7 = fromCopy;
   if (userPushToken)
   {
     if (!v6)
@@ -148,10 +148,10 @@
     [(PDSProtoUserPushTokenRegResponse *)self setUserPushToken:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_status = *(v4 + 4);
-  if (*(v4 + 1))
+  self->_status = *(fromCopy + 4);
+  if (*(fromCopy + 1))
   {
     [(PDSProtoUserPushTokenRegResponse *)self setMessage:?];
   }

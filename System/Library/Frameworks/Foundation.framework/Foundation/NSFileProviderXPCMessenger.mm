@@ -1,21 +1,21 @@
 @interface NSFileProviderXPCMessenger
-- (NSFileProviderXPCMessenger)initWithFileProvider:(id)a3 queue:(id)a4;
-- (NSFileProviderXPCMessenger)initWithFileProviderProxy:(id)a3;
-- (void)_makeProvider:(id)a3 provideItemAtURL:(id)a4 withInfo:(id)a5 completionHandler:(id)a6;
-- (void)cancelProvidingItemAtURL:(id)a3 forClaimWithID:(id)a4;
-- (void)collectDebuggingInformationWithCompletionHandler:(id)a3;
+- (NSFileProviderXPCMessenger)initWithFileProvider:(id)provider queue:(id)queue;
+- (NSFileProviderXPCMessenger)initWithFileProviderProxy:(id)proxy;
+- (void)_makeProvider:(id)provider provideItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler;
+- (void)cancelProvidingItemAtURL:(id)l forClaimWithID:(id)d;
+- (void)collectDebuggingInformationWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)movingItemAtURL:(id)a3 withInfo:(id)a4 fileName:(id)a5 completionHandler:(id)a6;
-- (void)observeEndOfWriteAtURL:(id)a3 forClaimWithID:(id)a4 fromProcessWithIdentifier:(int)a5;
-- (void)observePresentationChangeOfKind:(id)a3 forPresenterOfURL:(id)a4 withInfo:(id)a5;
-- (void)provideItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5;
-- (void)providePhysicalItemForURL:(id)a3 completionHandler:(id)a4;
+- (void)movingItemAtURL:(id)l withInfo:(id)info fileName:(id)name completionHandler:(id)handler;
+- (void)observeEndOfWriteAtURL:(id)l forClaimWithID:(id)d fromProcessWithIdentifier:(int)identifier;
+- (void)observePresentationChangeOfKind:(id)kind forPresenterOfURL:(id)l withInfo:(id)info;
+- (void)provideItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler;
+- (void)providePhysicalItemForURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation NSFileProviderXPCMessenger
 
-- (NSFileProviderXPCMessenger)initWithFileProvider:(id)a3 queue:(id)a4
+- (NSFileProviderXPCMessenger)initWithFileProvider:(id)provider queue:(id)queue
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -23,15 +23,15 @@
   v6 = [(NSFileProviderXPCMessenger *)&v8 init];
   if (v6)
   {
-    v6->_fileProvider = a3;
-    v6->_queue = a4;
-    dispatch_retain(a4);
+    v6->_fileProvider = provider;
+    v6->_queue = queue;
+    dispatch_retain(queue);
   }
 
   return v6;
 }
 
-- (NSFileProviderXPCMessenger)initWithFileProviderProxy:(id)a3
+- (NSFileProviderXPCMessenger)initWithFileProviderProxy:(id)proxy
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -39,7 +39,7 @@
   v4 = [(NSFileProviderXPCMessenger *)&v6 init];
   if (v4)
   {
-    v4->_fileProviderProxy = a3;
+    v4->_fileProviderProxy = proxy;
   }
 
   return v4;
@@ -67,38 +67,38 @@
   self->_fileProviderProxy = 0;
 }
 
-- (void)_makeProvider:(id)a3 provideItemAtURL:(id)a4 withInfo:(id)a5 completionHandler:(id)a6
+- (void)_makeProvider:(id)provider provideItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
   v11 = [NSFileAccessArbiterProxy _idForReactor:?];
-  v12 = [a5 readerID];
+  readerID = [info readerID];
   v13 = _NSFCProviderLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543875;
     v18 = v11;
     v19 = 2113;
-    v20 = [a4 path];
+    path = [l path];
     v21 = 2114;
-    v22 = v12;
+    v22 = readerID;
     _os_log_impl(&dword_18075C000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ providing %{private}@ for claim %{public}@", buf, 0x20u);
   }
 
-  v14 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:a3 withDescription:@"Provide"];
-  v15 = [a3 _providedItemsOperationQueue];
+  v14 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:provider withDescription:@"Provide"];
+  _providedItemsOperationQueue = [provider _providedItemsOperationQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __88__NSFileProviderXPCMessenger__makeProvider_provideItemAtURL_withInfo_completionHandler___block_invoke;
   v16[3] = &unk_1E69F9530;
   v16[4] = v11;
   v16[5] = v14;
-  v16[6] = a3;
-  v16[7] = a4;
-  v16[8] = a5;
+  v16[6] = provider;
+  v16[7] = l;
+  v16[8] = info;
   v16[9] = self;
-  v16[10] = v12;
-  v16[11] = a6;
-  [v15 _fc_addUncancellableOperationForReactorID:v11 block:v16];
+  v16[10] = readerID;
+  v16[11] = handler;
+  [_providedItemsOperationQueue _fc_addUncancellableOperationForReactorID:v11 block:v16];
 }
 
 uint64_t __88__NSFileProviderXPCMessenger__makeProvider_provideItemAtURL_withInfo_completionHandler___block_invoke(uint64_t a1)
@@ -276,7 +276,7 @@ uint64_t __88__NSFileProviderXPCMessenger__makeProvider_provideItemAtURL_withInf
   return v4(v2, v3);
 }
 
-- (void)provideItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5
+- (void)provideItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler
 {
   v13[8] = *MEMORY[0x1E69E9840];
   fileProvider = self->_fileProvider;
@@ -287,10 +287,10 @@ uint64_t __88__NSFileProviderXPCMessenger__makeProvider_provideItemAtURL_withInf
     v13[2] = __74__NSFileProviderXPCMessenger_provideItemAtURL_withInfo_completionHandler___block_invoke;
     v13[3] = &unk_1E69F8C70;
     v13[4] = self;
-    v13[5] = a3;
-    v13[6] = a4;
-    v13[7] = a5;
-    [(NSFileProviderXPCMessenger *)self _makeProvider:fileProvider provideItemAtURL:a3 withInfo:a4 completionHandler:v13];
+    v13[5] = l;
+    v13[6] = info;
+    v13[7] = handler;
+    [(NSFileProviderXPCMessenger *)self _makeProvider:fileProvider provideItemAtURL:l withInfo:info completionHandler:v13];
   }
 
   else
@@ -298,20 +298,20 @@ uint64_t __88__NSFileProviderXPCMessenger__makeProvider_provideItemAtURL_withInf
     fileProviderProxy = self->_fileProviderProxy;
     if (fileProviderProxy)
     {
-      v10 = [(NSFileProviderProxy *)fileProviderProxy remoteProvider];
+      remoteProvider = [(NSFileProviderProxy *)fileProviderProxy remoteProvider];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __74__NSFileProviderXPCMessenger_provideItemAtURL_withInfo_completionHandler___block_invoke_3;
       v12[3] = &unk_1E69F3938;
-      v12[4] = a5;
-      [-[NSFileProviderXPCInterface remoteObjectProxyWithErrorHandler:](v10 remoteObjectProxyWithErrorHandler:{v12), "provideItemAtURL:withInfo:completionHandler:", a3, a4, a5}];
+      v12[4] = handler;
+      [-[NSFileProviderXPCInterface remoteObjectProxyWithErrorHandler:](remoteProvider remoteObjectProxyWithErrorHandler:{v12), "provideItemAtURL:withInfo:completionHandler:", l, info, handler}];
     }
 
     else
     {
-      v11 = *(a5 + 2);
+      v11 = *(handler + 2);
 
-      v11(a5, 0);
+      v11(handler, 0);
     }
   }
 }
@@ -389,7 +389,7 @@ uint64_t __74__NSFileProviderXPCMessenger_provideItemAtURL_withInfo_completionHa
   return (*(*(a1 + 32) + 16))(*(a1 + 32), [NSFileProvidingResponse responseWithError:a2]);
 }
 
-- (void)cancelProvidingItemAtURL:(id)a3 forClaimWithID:(id)a4
+- (void)cancelProvidingItemAtURL:(id)l forClaimWithID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->_fileProvider)
@@ -398,12 +398,12 @@ uint64_t __74__NSFileProviderXPCMessenger_provideItemAtURL_withInfo_completionHa
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v13 = a4;
+      dCopy = d;
       _os_log_impl(&dword_18075C000, v7, OS_LOG_TYPE_DEFAULT, "Cancelling providing for claim %{public}@", buf, 0xCu);
     }
 
     v8 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:self->_fileProvider withDescription:@"Provide"];
-    v9 = [(NSFileProvider *)self->_fileProvider _providedItemsOperationQueue];
+    _providedItemsOperationQueue = [(NSFileProvider *)self->_fileProvider _providedItemsOperationQueue];
     v10 = [NSFileAccessArbiterProxy _idForReactor:self->_fileProvider];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -411,9 +411,9 @@ uint64_t __74__NSFileProviderXPCMessenger_provideItemAtURL_withInfo_completionHa
     v11[3] = &unk_1E69F9148;
     v11[4] = v8;
     v11[5] = self;
-    v11[6] = a3;
-    v11[7] = a4;
-    [v9 _fc_addUncancellableOperationForReactorID:v10 block:v11];
+    v11[6] = l;
+    v11[7] = d;
+    [_providedItemsOperationQueue _fc_addUncancellableOperationForReactorID:v10 block:v11];
   }
 }
 
@@ -430,7 +430,7 @@ uint64_t __70__NSFileProviderXPCMessenger_cancelProvidingItemAtURL_forClaimWithI
   return [v2 didEnd];
 }
 
-- (void)providePhysicalItemForURL:(id)a3 completionHandler:(id)a4
+- (void)providePhysicalItemForURL:(id)l completionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self->_fileProvider)
@@ -445,23 +445,23 @@ uint64_t __70__NSFileProviderXPCMessenger_cancelProvidingItemAtURL_forClaimWithI
     }
 
     v9 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:self->_fileProvider withDescription:@"Provide Physical URL"];
-    v10 = [(NSFileProvider *)self->_fileProvider _providedItemsOperationQueue];
+    _providedItemsOperationQueue = [(NSFileProvider *)self->_fileProvider _providedItemsOperationQueue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __74__NSFileProviderXPCMessenger_providePhysicalItemForURL_completionHandler___block_invoke;
     v12[3] = &unk_1E69F9558;
     v12[4] = v9;
     v12[5] = self;
-    v12[6] = a3;
-    v12[7] = a4;
-    [v10 _fc_addUncancellableOperationForReactorID:v7 block:v12];
+    v12[6] = l;
+    v12[7] = handler;
+    [_providedItemsOperationQueue _fc_addUncancellableOperationForReactorID:v7 block:v12];
   }
 
   else
   {
-    v11 = *(a4 + 2);
+    v11 = *(handler + 2);
 
-    v11(a4, 0);
+    v11(handler, 0);
   }
 }
 
@@ -519,26 +519,26 @@ uint64_t __74__NSFileProviderXPCMessenger_providePhysicalItemForURL_completionHa
   return [NSFileCoordinator _performBarrierAsync:v3];
 }
 
-- (void)observePresentationChangeOfKind:(id)a3 forPresenterOfURL:(id)a4 withInfo:(id)a5
+- (void)observePresentationChangeOfKind:(id)kind forPresenterOfURL:(id)l withInfo:(id)info
 {
   v13[10] = *MEMORY[0x1E69E9840];
   if (self->_fileProvider)
   {
     v9 = [+[NSProcessInfo processInfo](NSProcessInfo beginActivityWithOptions:"beginActivityWithOptions:reason:" reason:0x80000000000, @"Sending an NSFileProvider an observePresentationChangeOfKind: message"];
     v10 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:self->_fileProvider withDescription:@"Observe Presentation Change"];
-    v11 = [(NSFileProvider *)self->_fileProvider _providedItemsOperationQueue];
+    _providedItemsOperationQueue = [(NSFileProvider *)self->_fileProvider _providedItemsOperationQueue];
     v12 = [NSFileAccessArbiterProxy _idForReactor:self->_fileProvider];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __89__NSFileProviderXPCMessenger_observePresentationChangeOfKind_forPresenterOfURL_withInfo___block_invoke;
     v13[3] = &unk_1E69F9170;
     v13[4] = v10;
-    v13[5] = a3;
+    v13[5] = kind;
     v13[6] = self;
-    v13[7] = a4;
-    v13[8] = a5;
+    v13[7] = l;
+    v13[8] = info;
     v13[9] = v9;
-    [v11 _fc_addUncancellableOperationForReactorID:v12 block:v13];
+    [_providedItemsOperationQueue _fc_addUncancellableOperationForReactorID:v12 block:v13];
   }
 }
 
@@ -609,7 +609,7 @@ uint64_t __89__NSFileProviderXPCMessenger_observePresentationChangeOfKind_forPre
   return [(NSProcessInfo *)v2 endActivity:v3];
 }
 
-- (void)observeEndOfWriteAtURL:(id)a3 forClaimWithID:(id)a4 fromProcessWithIdentifier:(int)a5
+- (void)observeEndOfWriteAtURL:(id)l forClaimWithID:(id)d fromProcessWithIdentifier:(int)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
   if (self->_fileProvider)
@@ -621,22 +621,22 @@ uint64_t __89__NSFileProviderXPCMessenger_observePresentationChangeOfKind_forPre
       *buf = 138543618;
       v16 = v9;
       v17 = 2114;
-      v18 = a4;
+      dCopy = d;
       _os_log_impl(&dword_18075C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ observing end of writing claim %{public}@", buf, 0x16u);
     }
 
     v11 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:self->_fileProvider withDescription:@"Observe End Of Write"];
-    v12 = [(NSFileProvider *)self->_fileProvider _providedItemsOperationQueue];
+    _providedItemsOperationQueue = [(NSFileProvider *)self->_fileProvider _providedItemsOperationQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __94__NSFileProviderXPCMessenger_observeEndOfWriteAtURL_forClaimWithID_fromProcessWithIdentifier___block_invoke;
     v13[3] = &unk_1E69F9580;
     v13[4] = v11;
     v13[5] = self;
-    v14 = a5;
-    v13[6] = a4;
-    v13[7] = a3;
-    [v12 _fc_addUncancellableOperationForReactorID:v9 block:v13];
+    identifierCopy = identifier;
+    v13[6] = d;
+    v13[7] = l;
+    [_providedItemsOperationQueue _fc_addUncancellableOperationForReactorID:v9 block:v13];
   }
 }
 
@@ -655,7 +655,7 @@ uint64_t __94__NSFileProviderXPCMessenger_observeEndOfWriteAtURL_forClaimWithID_
   return [v2 didEnd];
 }
 
-- (void)movingItemAtURL:(id)a3 withInfo:(id)a4 fileName:(id)a5 completionHandler:(id)a6
+- (void)movingItemAtURL:(id)l withInfo:(id)info fileName:(id)name completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
   if (self->_fileProvider)
@@ -670,27 +670,27 @@ uint64_t __94__NSFileProviderXPCMessenger_observeEndOfWriteAtURL_forClaimWithID_
     }
 
     v13 = [NSFileAccessArbiterProxy _willBeginOperationForReactor:self->_fileProvider withDescription:@"Check Moving Requires Providing"];
-    v14 = [(NSFileProvider *)self->_fileProvider _providedItemsOperationQueue];
+    _providedItemsOperationQueue = [(NSFileProvider *)self->_fileProvider _providedItemsOperationQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __82__NSFileProviderXPCMessenger_movingItemAtURL_withInfo_fileName_completionHandler___block_invoke;
     v17[3] = &unk_1E69F95D0;
     v17[4] = v13;
     v17[5] = v11;
-    v17[9] = a5;
-    v17[10] = a6;
+    v17[9] = name;
+    v17[10] = handler;
     v17[6] = self;
-    v17[7] = a3;
-    v17[8] = a4;
-    [v14 _fc_addUncancellableOperationForReactorID:v11 block:v17];
+    v17[7] = l;
+    v17[8] = info;
+    [_providedItemsOperationQueue _fc_addUncancellableOperationForReactorID:v11 block:v17];
   }
 
   else
   {
-    v15 = [NSFileProviderMovingResponse providingNotRequiredResponseWithSyncRootID:0, a4, a5];
-    v16 = *(a6 + 2);
+    name = [NSFileProviderMovingResponse providingNotRequiredResponseWithSyncRootID:0, info, name];
+    v16 = *(handler + 2);
 
-    v16(a6, v15);
+    v16(handler, name);
   }
 }
 
@@ -780,12 +780,12 @@ uint64_t __82__NSFileProviderXPCMessenger_movingItemAtURL_withInfo_fileName_comp
   return v3();
 }
 
-- (void)collectDebuggingInformationWithCompletionHandler:(id)a3
+- (void)collectDebuggingInformationWithCompletionHandler:(id)handler
 {
   v4 = +[NSFileAccessArbiterProxy _fileReactorDebuggingInformation];
-  v5 = *(a3 + 2);
+  v5 = *(handler + 2);
 
-  v5(a3, v4);
+  v5(handler, v4);
 }
 
 @end

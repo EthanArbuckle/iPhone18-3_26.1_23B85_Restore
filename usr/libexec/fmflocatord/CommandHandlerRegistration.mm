@@ -2,7 +2,7 @@
 - (void)_beginXPCTransaction;
 - (void)_endXPCTransaction;
 - (void)handleCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation CommandHandlerRegistration
@@ -20,12 +20,12 @@
   [(CommandHandler *)self didHandleCommandWithAckData:0];
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(CommandHandler *)self provider];
-  v5 = [(CommandHandler *)self commandParams];
-  [v6 ackRegisterCommand:v5 withCompletion:v4];
+  completionCopy = completion;
+  provider = [(CommandHandler *)self provider];
+  commandParams = [(CommandHandler *)self commandParams];
+  [provider ackRegisterCommand:commandParams withCompletion:completionCopy];
 }
 
 - (void)_beginXPCTransaction

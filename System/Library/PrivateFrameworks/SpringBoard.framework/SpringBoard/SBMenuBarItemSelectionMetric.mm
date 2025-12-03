@@ -1,20 +1,20 @@
 @interface SBMenuBarItemSelectionMetric
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4;
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context;
 @end
 
 @implementation SBMenuBarItemSelectionMetric
 
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context
 {
-  if (a3 == 70)
+  if (event == 70)
   {
-    v5 = [a4 eventPayload];
-    v8 = [v5 objectForKeyedSubscript:*MEMORY[0x277D675E8]];
+    eventPayload = [context eventPayload];
+    v8 = [eventPayload objectForKeyedSubscript:*MEMORY[0x277D675E8]];
     v6 = v8;
     AnalyticsSendEventLazy();
   }
 
-  return a3 == 70;
+  return event == 70;
 }
 
 id __56__SBMenuBarItemSelectionMetric_handleEvent_withContext___block_invoke(uint64_t a1)

@@ -1,36 +1,36 @@
 @interface DevicePickerSceneDelegate
 - (_TtC23NetworkEndpointPickerUI25DevicePickerSceneDelegate)init;
-- (void)devicePickerDidCancelWithReason:(int64_t)a3;
-- (void)didSucceedWithEndpointUUID:(id)a3 agentUUID:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sendClientDebugError:(int64_t)a3;
-- (void)setWindow:(id)a3;
+- (void)devicePickerDidCancelWithReason:(int64_t)reason;
+- (void)didSucceedWithEndpointUUID:(id)d agentUUID:(id)iD;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sendClientDebugError:(int64_t)error;
+- (void)setWindow:(id)window;
 @end
 
 @implementation DevicePickerSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC23NetworkEndpointPickerUI25DevicePickerSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC23NetworkEndpointPickerUI25DevicePickerSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC23NetworkEndpointPickerUI25DevicePickerSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100015928(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100015928(sceneCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_100013CEC(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_100013CEC(disconnectCopy);
 }
 
 - (_TtC23NetworkEndpointPickerUI25DevicePickerSceneDelegate)init
@@ -50,13 +50,13 @@
   return [(DevicePickerSceneDelegate *)&v7 init];
 }
 
-- (void)devicePickerDidCancelWithReason:(int64_t)a3
+- (void)devicePickerDidCancelWithReason:(int64_t)reason
 {
-  v4 = self;
-  sub_1000140DC(a3);
+  selfCopy = self;
+  sub_1000140DC(reason);
 }
 
-- (void)didSucceedWithEndpointUUID:(id)a3 agentUUID:(id)a4
+- (void)didSucceedWithEndpointUUID:(id)d agentUUID:(id)iD
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -72,10 +72,10 @@
   v12(v11, v4);
 }
 
-- (void)sendClientDebugError:(int64_t)a3
+- (void)sendClientDebugError:(int64_t)error
 {
-  v4 = self;
-  sub_100014374(a3);
+  selfCopy = self;
+  sub_100014374(error);
 }
 
 @end

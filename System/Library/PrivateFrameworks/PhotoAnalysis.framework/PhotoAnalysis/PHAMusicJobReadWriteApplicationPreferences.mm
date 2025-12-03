@@ -1,18 +1,18 @@
 @interface PHAMusicJobReadWriteApplicationPreferences
-+ (id)libraryScopedMusicWorkerPreferencesForLibrary:(id)a3;
-+ (void)updateLibraryScopedMusicWorkerPreferencesWithEntriesFromDictionary:(id)a3 keysToRemove:(id)a4 photoLibrary:(id)a5;
++ (id)libraryScopedMusicWorkerPreferencesForLibrary:(id)library;
++ (void)updateLibraryScopedMusicWorkerPreferencesWithEntriesFromDictionary:(id)dictionary keysToRemove:(id)remove photoLibrary:(id)library;
 @end
 
 @implementation PHAMusicJobReadWriteApplicationPreferences
 
-+ (id)libraryScopedMusicWorkerPreferencesForLibrary:(id)a3
++ (id)libraryScopedMusicWorkerPreferencesForLibrary:(id)library
 {
-  v4 = a3;
-  v5 = musicPersistentStorageDirectoryURLForLibrary(v4);
+  libraryCopy = library;
+  v5 = musicPersistentStorageDirectoryURLForLibrary(libraryCopy);
   v6 = [v5 URLByAppendingPathComponent:@"PhotoAnalysisMusicPreferences.plist"];
 
-  v7 = a1;
-  objc_sync_enter(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (v6)
   {
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v6];
@@ -23,45 +23,45 @@
     v8 = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-+ (void)updateLibraryScopedMusicWorkerPreferencesWithEntriesFromDictionary:(id)a3 keysToRemove:(id)a4 photoLibrary:(id)a5
++ (void)updateLibraryScopedMusicWorkerPreferencesWithEntriesFromDictionary:(id)dictionary keysToRemove:(id)remove photoLibrary:(id)library
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = musicPersistentStorageDirectoryURLForLibrary(v10);
+  dictionaryCopy = dictionary;
+  removeCopy = remove;
+  libraryCopy = library;
+  v11 = musicPersistentStorageDirectoryURLForLibrary(libraryCopy);
   v12 = [v11 URLByAppendingPathComponent:@"PhotoAnalysisMusicPreferences.plist"];
 
   if (v12)
   {
-    v13 = a1;
-    objc_sync_enter(v13);
-    v14 = [PHAMusicJobReadWriteApplicationPreferences libraryScopedMusicWorkerPreferencesForLibrary:v10];
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v14 = [PHAMusicJobReadWriteApplicationPreferences libraryScopedMusicWorkerPreferencesForLibrary:libraryCopy];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     if ([v14 count])
     {
-      [v15 addEntriesFromDictionary:v14];
+      [dictionary addEntriesFromDictionary:v14];
     }
 
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
-      [v15 addEntriesFromDictionary:v8];
+      [dictionary addEntriesFromDictionary:dictionaryCopy];
     }
 
-    if ([v9 count])
+    if ([removeCopy count])
     {
-      [v15 removeObjectsForKeys:v9];
+      [dictionary removeObjectsForKeys:removeCopy];
     }
 
-    if (([v15 isEqual:v14] & 1) == 0)
+    if (([dictionary isEqual:v14] & 1) == 0)
     {
       v24 = 0;
-      v16 = [MEMORY[0x277CCAC58] dataWithPropertyList:v15 format:100 options:0 error:&v24];
+      v16 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:100 options:0 error:&v24];
       v17 = v24;
       v18 = v17;
       if (v16)
@@ -113,7 +113,7 @@ LABEL_14:
       }
     }
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
   }
 }
 

@@ -1,41 +1,41 @@
 @interface NSDictionaryMapNode
-- (NSDictionaryMapNode)initWithCoder:(id)a3;
-- (NSDictionaryMapNode)initWithValues:(id *)a3 objectID:(id)a4;
-- (id)valueForKey:(id)a3;
+- (NSDictionaryMapNode)initWithCoder:(id)coder;
+- (NSDictionaryMapNode)initWithValues:(id *)values objectID:(id)d;
+- (id)valueForKey:(id)key;
 - (void)_doAttributeDecoding;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSDictionaryMapNode
 
-- (NSDictionaryMapNode)initWithValues:(id *)a3 objectID:(id)a4
+- (NSDictionaryMapNode)initWithValues:(id *)values objectID:(id)d
 {
   v6.receiver = self;
   v6.super_class = NSDictionaryMapNode;
-  result = [(NSStoreMapNode *)&v6 initWithObjectID:a4];
+  result = [(NSStoreMapNode *)&v6 initWithObjectID:d];
   if (result)
   {
-    result->_attributes = a3;
+    result->_attributes = values;
   }
 
   return result;
 }
 
-- (NSDictionaryMapNode)initWithCoder:(id)a3
+- (NSDictionaryMapNode)initWithCoder:(id)coder
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = NSDictionaryMapNode;
   v4 = [(NSStoreMapNode *)&v9 initWithCoder:?];
-  v5 = [a3 allowedClasses];
+  allowedClasses = [coder allowedClasses];
   v10[0] = objc_opt_class();
   v10[1] = objc_opt_class();
-  v6 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setByAddingObjectsFromArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v10, 2)), @"NSAttributeValues"}];
+  v6 = [coder decodeObjectOfClasses:objc_msgSend(allowedClasses forKey:{"setByAddingObjectsFromArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v10, 2)), @"NSAttributeValues"}];
   v4->_attributesAsEncoded = v6;
   if (!v6)
   {
-    v4->_attributesAsEncoded = [a3 decodeObjectOfClasses:objc_msgSend(a3 forKey:{"allowedClasses"), @"NSAttributes"}];
+    v4->_attributesAsEncoded = [coder decodeObjectOfClasses:objc_msgSend(coder forKey:{"allowedClasses"), @"NSAttributes"}];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -45,34 +45,34 @@
 - (void)_doAttributeDecoding
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1 && a1[7])
+  if (self && self[7])
   {
-    v2 = [objc_msgSend(a1 "entity")];
+    v2 = [objc_msgSend(self "entity")];
     v3 = [v2 length];
     v4 = PF_CALLOC_OBJECT_ARRAY(v3);
-    v5 = [MEMORY[0x1E695DFB0] null];
-    v6 = [a1[7] isNSArray];
-    v27 = a1;
-    v7 = a1[7];
-    if (v6)
+    null = [MEMORY[0x1E695DFB0] null];
+    isNSArray = [self[7] isNSArray];
+    selfCopy = self;
+    v7 = self[7];
+    if (isNSArray)
     {
       [v7 getObjects:v4];
       if (v3)
       {
         for (i = 0; i != v3; ++i)
         {
-          if (v4[i] == v5)
+          if (v4[i] == null)
           {
             v4[i] = 0;
           }
 
           else
           {
-            v9 = -[NSEntityDescription _attributeNamed:]([v27 entity], *(objc_msgSend(objc_msgSend(objc_msgSend(v27, "entity"), "_propertySearchMapping"), "keys") + 8 * i));
+            v9 = -[NSEntityDescription _attributeNamed:]([selfCopy entity], *(objc_msgSend(objc_msgSend(objc_msgSend(selfCopy, "entity"), "_propertySearchMapping"), "keys") + 8 * i));
             if ([v9 attributeType] == 2200)
             {
               v32 = 0;
-              v10 = v27[1];
+              v10 = selfCopy[1];
               if (v10)
               {
                 v11 = v10[1];
@@ -122,13 +122,13 @@
             v18 = *(*(&v28 + 1) + 8 * v17);
             v19 = [v2 fastIndexForKnownKey:v18];
             v20 = [v7 objectForKey:v18];
-            if (v20 != v5)
+            if (v20 != null)
             {
-              v21 = -[NSEntityDescription _attributeNamed:]([v27 entity], v18);
+              v21 = -[NSEntityDescription _attributeNamed:]([selfCopy entity], v18);
               if ([v21 attributeType] == 2200)
               {
                 v32 = 0;
-                v22 = v27[1];
+                v22 = selfCopy[1];
                 if (v22)
                 {
                   v23 = v22[1];
@@ -143,7 +143,7 @@
               }
             }
 
-            if (v20 == v5)
+            if (v20 == null)
             {
               v24 = 0;
             }
@@ -166,14 +166,14 @@
       }
     }
 
-    v27[7] = 0;
-    v27[6] = v4;
+    selfCopy[7] = 0;
+    selfCopy[6] = v4;
   }
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20.receiver = self;
   v20.super_class = NSDictionaryMapNode;
@@ -191,10 +191,10 @@
   }
 
   v7 = malloc_type_zone_malloc(v6, 8 * v5, 0x80040B8603338uLL);
-  v8 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   if (v5)
   {
-    v9 = v8;
+    v9 = null;
     for (i = 0; i != v5; ++i)
     {
       v11 = -[NSEntityDescription _attributeNamed:](-[NSStoreMapNode entity](self, "entity"), *([objc_msgSend(-[NSStoreMapNode entity](self "entity")] + 8 * i));
@@ -229,7 +229,7 @@
   }
 
   malloc_zone_free(v18, v7);
-  [a3 encodeObject:v17 forKey:@"NSAttributeValues"];
+  [coder encodeObject:v17 forKey:@"NSAttributeValues"];
 }
 
 - (void)dealloc
@@ -255,29 +255,29 @@
   [(NSStoreMapNode *)&v6 dealloc];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   if (self->_attributesAsEncoded)
   {
     [(NSDictionaryMapNode *)&self->super.super.isa _doAttributeDecoding];
   }
 
-  v5 = [(NSStoreMapNode *)self entity];
-  v6 = [v5 _propertySearchMapping];
-  v7 = [objc_msgSend(v5 "propertiesByName")];
-  v8 = [v6 indexForKey:a3];
+  entity = [(NSStoreMapNode *)self entity];
+  _propertySearchMapping = [entity _propertySearchMapping];
+  v7 = [objc_msgSend(entity "propertiesByName")];
+  v8 = [_propertySearchMapping indexForKey:key];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 == @"objectID" || [@"objectID" isEqualToString:a3])
+    if (key == @"objectID" || [@"objectID" isEqualToString:key])
     {
-      v9 = [(NSStoreMapNode *)self objectID];
+      objectID = [(NSStoreMapNode *)self objectID];
     }
 
     else
     {
       v19.receiver = self;
       v19.super_class = NSDictionaryMapNode;
-      v9 = [(NSDictionaryMapNode *)&v19 valueForKey:a3];
+      objectID = [(NSDictionaryMapNode *)&v19 valueForKey:key];
     }
 
     goto LABEL_12;
@@ -287,32 +287,32 @@
   if ([*(v7 + 8 * v8) isTransient])
   {
 LABEL_8:
-    v11 = 0;
+    array = 0;
     goto LABEL_13;
   }
 
   if ([*(v7 + 8 * v10) _propertyType] == 2)
   {
-    v11 = self->_attributes[v10];
+    array = self->_attributes[v10];
     goto LABEL_13;
   }
 
   v13 = *(v7 + 8 * v10);
-  v14 = [(NSMutableDictionary *)self->super._relatedNodes valueForKey:a3];
+  v14 = [(NSMutableDictionary *)self->super._relatedNodes valueForKey:key];
   if (![v13 isToMany])
   {
     if ([v14 count])
     {
-      v9 = -[NSPersistentStoreMap dataForKey:](self->super._map, "dataForKey:", [v14 objectAtIndex:0]);
+      objectID = -[NSPersistentStoreMap dataForKey:](self->super._map, "dataForKey:", [v14 objectAtIndex:0]);
 LABEL_12:
-      v11 = v9;
+      array = objectID;
       goto LABEL_13;
     }
 
     goto LABEL_8;
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = [v14 count];
   if (v15)
   {
@@ -322,7 +322,7 @@ LABEL_12:
       v18 = -[NSPersistentStoreMap dataForKey:](self->super._map, "dataForKey:", [v14 objectAtIndex:i]);
       if (v18)
       {
-        [v11 addObject:v18];
+        [array addObject:v18];
       }
     }
   }
@@ -335,7 +335,7 @@ LABEL_13:
 
   else
   {
-    return v11;
+    return array;
   }
 }
 

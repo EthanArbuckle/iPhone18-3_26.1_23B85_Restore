@@ -1,89 +1,89 @@
 @interface PKPaymentSetupFieldLabel
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_commonUpdate;
-- (void)updateWithAttribute:(id)a3;
-- (void)updateWithConfiguration:(id)a3;
+- (void)updateWithAttribute:(id)attribute;
+- (void)updateWithConfiguration:(id)configuration;
 @end
 
 @implementation PKPaymentSetupFieldLabel
 
-- (void)updateWithAttribute:(id)a3
+- (void)updateWithAttribute:(id)attribute
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v6.receiver = self;
   v6.super_class = PKPaymentSetupFieldLabel;
-  [(PKPaymentSetupField *)&v6 updateWithAttribute:v4];
+  [(PKPaymentSetupField *)&v6 updateWithAttribute:attributeCopy];
   [(PKPaymentSetupFieldLabel *)self _commonUpdate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 defaultValue];
+    defaultValue = [attributeCopy defaultValue];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(PKPaymentSetupField *)self setDefaultValue:v5];
+      [(PKPaymentSetupField *)self setDefaultValue:defaultValue];
     }
   }
 }
 
-- (void)updateWithConfiguration:(id)a3
+- (void)updateWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = PKPaymentSetupFieldLabel;
-  [(PKPaymentSetupField *)&v17 updateWithConfiguration:v4];
-  v5 = [v4 PKStringForKey:@"buttonTitle"];
+  [(PKPaymentSetupField *)&v17 updateWithConfiguration:configurationCopy];
+  v5 = [configurationCopy PKStringForKey:@"buttonTitle"];
   if (v5)
   {
     [(PKPaymentSetupFieldLabel *)self setButtonTitle:v5];
   }
 
-  v6 = [v4 PKStringForKey:@"detailTitle"];
+  v6 = [configurationCopy PKStringForKey:@"detailTitle"];
   if (v6)
   {
     [(PKPaymentSetupFieldLabel *)self setDetailTitle:v6];
   }
 
-  v7 = [v4 PKStringForKey:@"detailSubtitle"];
+  v7 = [configurationCopy PKStringForKey:@"detailSubtitle"];
   if (v7)
   {
     [(PKPaymentSetupFieldLabel *)self setDetailSubtitle:v7];
   }
 
-  v8 = [v4 PKStringForKey:@"detailBody"];
+  v8 = [configurationCopy PKStringForKey:@"detailBody"];
   if (v8)
   {
     [(PKPaymentSetupFieldLabel *)self setDetailBody:v8];
   }
 
-  v9 = [v4 PKStringForKey:@"businessChatIdentifier"];
+  v9 = [configurationCopy PKStringForKey:@"businessChatIdentifier"];
   if (v9)
   {
     [(PKPaymentSetupFieldLabel *)self setBusinessChatIdentifier:v9];
   }
 
-  v10 = [v4 PKStringForKey:@"businessChatButtonTitle"];
+  v10 = [configurationCopy PKStringForKey:@"businessChatButtonTitle"];
   if (v10)
   {
     [(PKPaymentSetupFieldLabel *)self setBusinessChatButtonTitle:v10];
   }
 
   v16 = v6;
-  v11 = [v4 PKStringForKey:@"businessChatIntentName"];
+  v11 = [configurationCopy PKStringForKey:@"businessChatIntentName"];
   if (v11)
   {
     [(PKPaymentSetupFieldLabel *)self setBusinessChatIntentName:v11];
   }
 
   v12 = v5;
-  v13 = [v4 PKStringForKey:@"alignment"];
+  v13 = [configurationCopy PKStringForKey:@"alignment"];
   v14 = v13;
   if (v13)
   {
     [(PKPaymentSetupFieldLabel *)self setAlingment:PKPaymentSetupFieldLabelAlignmentFromString(v13)];
   }
 
-  v15 = [v4 PKArrayContaining:objc_opt_class() forKey:@"links"];
+  v15 = [configurationCopy PKArrayContaining:objc_opt_class() forKey:@"links"];
   if (v15)
   {
     [(PKPaymentSetupFieldLabel *)self setLinks:v15];
@@ -103,41 +103,41 @@
   [(PKPaymentSetupField *)self setSubmissionSecurity:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23.receiver = self;
   v23.super_class = PKPaymentSetupFieldLabel;
   v5 = [(PKPaymentSetupField *)&v23 copyWithZone:?];
-  v6 = [(NSString *)self->_buttonTitle copyWithZone:a3];
+  v6 = [(NSString *)self->_buttonTitle copyWithZone:zone];
   v7 = v5[21];
   v5[21] = v6;
 
-  v8 = [(NSString *)self->_detailTitle copyWithZone:a3];
+  v8 = [(NSString *)self->_detailTitle copyWithZone:zone];
   v9 = v5[22];
   v5[22] = v8;
 
-  v10 = [(NSString *)self->_detailSubtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_detailSubtitle copyWithZone:zone];
   v11 = v5[23];
   v5[23] = v10;
 
-  v12 = [(NSString *)self->_detailBody copyWithZone:a3];
+  v12 = [(NSString *)self->_detailBody copyWithZone:zone];
   v13 = v5[24];
   v5[24] = v12;
 
-  v14 = [(NSString *)self->_businessChatButtonTitle copyWithZone:a3];
+  v14 = [(NSString *)self->_businessChatButtonTitle copyWithZone:zone];
   v15 = v5[25];
   v5[25] = v14;
 
-  v16 = [(NSString *)self->_businessChatIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_businessChatIdentifier copyWithZone:zone];
   v17 = v5[26];
   v5[26] = v16;
 
-  v18 = [(NSString *)self->_businessChatIntentName copyWithZone:a3];
+  v18 = [(NSString *)self->_businessChatIntentName copyWithZone:zone];
   v19 = v5[27];
   v5[27] = v18;
 
   v5[28] = self->_alingment;
-  v20 = [(NSArray *)self->_links copyWithZone:a3];
+  v20 = [(NSArray *)self->_links copyWithZone:zone];
   v21 = v5[29];
   v5[29] = v20;
 

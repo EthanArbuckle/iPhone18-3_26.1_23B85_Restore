@@ -1,25 +1,25 @@
 @interface TSUFormatterDictionaryKey
-- (BOOL)isEqual:(id)a3;
-- (TSUFormatterDictionaryKey)initWithTSUFormatFormatStruct:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSUFormatterDictionaryKey)initWithTSUFormatFormatStruct:(id *)struct;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation TSUFormatterDictionaryKey
 
-- (TSUFormatterDictionaryKey)initWithTSUFormatFormatStruct:(id *)a3
+- (TSUFormatterDictionaryKey)initWithTSUFormatFormatStruct:(id *)struct
 {
   v9.receiver = self;
   v9.super_class = TSUFormatterDictionaryKey;
   v4 = [(TSUFormatterDictionaryKey *)&v9 init];
   if (v4)
   {
-    v5 = *&a3->var1.var5.var1;
-    v8[0] = *&a3->var0;
+    v5 = *&struct->var1.var5.var1;
+    v8[0] = *&struct->var0;
     v8[1] = v5;
     sub_2770BB180(v8);
-    v6 = *&a3->var0;
-    *(v4 + 24) = *&a3->var1.var5.var1;
+    v6 = *&struct->var0;
+    *(v4 + 24) = *&struct->var1.var5.var1;
     *(v4 + 8) = v6;
   }
 
@@ -56,10 +56,10 @@
   return sub_2770BB218(v9);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  v6 = TSUSpecificCast(v5, a3);
+  v6 = TSUSpecificCast(v5, equal);
   if (!v6)
   {
     return v6;

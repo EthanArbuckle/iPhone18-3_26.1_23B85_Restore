@@ -1,8 +1,8 @@
 @interface SearchUIShortcutsAppTopHitAsyncSectionLoader
-+ (BOOL)supportsSectionModel:(id)a3;
++ (BOOL)supportsSectionModel:(id)model;
 - (BOOL)supportsFileProviderRecents;
-- (id)buildCardSectionsForFoundItems:(id)a3;
-- (id)buildSearchQueryForBundleIdentifier:(id)a3;
+- (id)buildCardSectionsForFoundItems:(id)items;
+- (id)buildSearchQueryForBundleIdentifier:(id)identifier;
 - (id)fileProviderQueryString;
 - (id)rankingQueriesForFileprovider;
 - (id)rankingQueriesForShortcuts;
@@ -11,19 +11,19 @@
 
 @implementation SearchUIShortcutsAppTopHitAsyncSectionLoader
 
-+ (BOOL)supportsSectionModel:(id)a3
++ (BOOL)supportsSectionModel:(id)model
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___SearchUIShortcutsAppTopHitAsyncSectionLoader;
-  return objc_msgSendSuper2(&v4, sel_supportsSectionModel_, a3);
+  return objc_msgSendSuper2(&v4, sel_supportsSectionModel_, model);
 }
 
-- (id)buildSearchQueryForBundleIdentifier:(id)a3
+- (id)buildSearchQueryForBundleIdentifier:(id)identifier
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
-  v5 = [(SearchUICoreSpotlightAppTopHitAsyncSectionLoader *)self defaultFetchAttributes];
-  [v4 setFetchAttributes:v5];
+  defaultFetchAttributes = [(SearchUICoreSpotlightAppTopHitAsyncSectionLoader *)self defaultFetchAttributes];
+  [v4 setFetchAttributes:defaultFetchAttributes];
 
   [v4 setMaxCount:{objc_msgSend(objc_opt_class(), "maxNumOfTopHitEntities")}];
   [v4 setDisableSemanticSearch:1];
@@ -33,20 +33,20 @@
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
   v9 = [v7 arrayWithArray:v8];
 
-  v10 = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self shortcutsQueryString];
+  shortcutsQueryString = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self shortcutsQueryString];
   if ([(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self supportsFileProviderRecents])
   {
-    v11 = [(SearchUIAsyncSectionLoader *)self delegate];
-    v12 = [v11 deviceIsAuthenticated];
+    delegate = [(SearchUIAsyncSectionLoader *)self delegate];
+    deviceIsAuthenticated = [delegate deviceIsAuthenticated];
 
-    if (v12)
+    if (deviceIsAuthenticated)
     {
       v13 = MEMORY[0x1E696AEC0];
-      v14 = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self fileProviderQueryString];
-      v15 = [v13 stringWithFormat:@"(%@) || (%@)", v10, v14];
+      fileProviderQueryString = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self fileProviderQueryString];
+      v15 = [v13 stringWithFormat:@"(%@) || (%@)", shortcutsQueryString, fileProviderQueryString];
 
-      v16 = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self rankingQueriesForFileprovider];
-      [v6 addObjectsFromArray:v16];
+      rankingQueriesForFileprovider = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self rankingQueriesForFileprovider];
+      [v6 addObjectsFromArray:rankingQueriesForFileprovider];
 
       v17 = *MEMORY[0x1E69D3EE8];
       v26[0] = *MEMORY[0x1E69D3EC0];
@@ -57,33 +57,33 @@
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
       [v9 addObjectsFromArray:v19];
 
-      v10 = v15;
+      shortcutsQueryString = v15;
     }
   }
 
-  v20 = [(SearchUIAsyncSectionLoader *)self delegate];
-  v21 = [v20 deviceIsAuthenticated];
+  delegate2 = [(SearchUIAsyncSectionLoader *)self delegate];
+  deviceIsAuthenticated2 = [delegate2 deviceIsAuthenticated];
 
-  if ((v21 & 1) == 0)
+  if ((deviceIsAuthenticated2 & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@) && (%@ == %@)", v10, *MEMORY[0x1E6964928], *MEMORY[0x1E696A3A8]];
+    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@) && (%@ == %@)", shortcutsQueryString, *MEMORY[0x1E6964928], *MEMORY[0x1E696A3A8]];
 
-    v10 = v22;
+    shortcutsQueryString = v22;
   }
 
-  v23 = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self rankingQueriesForShortcuts];
-  [v6 addObjectsFromArray:v23];
+  rankingQueriesForShortcuts = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self rankingQueriesForShortcuts];
+  [v6 addObjectsFromArray:rankingQueriesForShortcuts];
 
   [v4 setRankingQueries:v6];
   [v4 setBundleIDs:v9];
-  v24 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:v10 queryContext:v4];
+  v24 = [objc_alloc(MEMORY[0x1E6964E68]) initWithQueryString:shortcutsQueryString queryContext:v4];
 
   return v24;
 }
 
-- (id)buildCardSectionsForFoundItems:(id)a3
+- (id)buildCardSectionsForFoundItems:(id)items
 {
-  v4 = [a3 mutableCopy];
+  v4 = [items mutableCopy];
   [v4 sortUsingComparator:&__block_literal_global_37];
   v7.receiver = self;
   v7.super_class = SearchUIShortcutsAppTopHitAsyncSectionLoader;
@@ -235,13 +235,13 @@ void __74__SearchUIShortcutsAppTopHitAsyncSectionLoader_rankingQueriesForShortcu
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = *MEMORY[0x1E6964A20];
-  v5 = [(SearchUIAppTopHitAsyncSectionLoader *)self bundleIdentifier];
-  v6 = [v3 stringWithFormat:@"%@==%@", v4, v5];
+  bundleIdentifier = [(SearchUIAppTopHitAsyncSectionLoader *)self bundleIdentifier];
+  v6 = [v3 stringWithFormat:@"%@==%@", v4, bundleIdentifier];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self appShortcutTopHitFilterQuery];
-  v9 = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self userShortcutFilterQuery];
-  v10 = [v7 stringWithFormat:@"((%@) && ((%@) || (%@)))", v6, v8, v9];
+  appShortcutTopHitFilterQuery = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self appShortcutTopHitFilterQuery];
+  userShortcutFilterQuery = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self userShortcutFilterQuery];
+  v10 = [v7 stringWithFormat:@"((%@) && ((%@) || (%@)))", v6, appShortcutTopHitFilterQuery, userShortcutFilterQuery];
 
   return v10;
 }
@@ -249,8 +249,8 @@ void __74__SearchUIShortcutsAppTopHitAsyncSectionLoader_rankingQueriesForShortcu
 - (BOOL)supportsFileProviderRecents
 {
   v2 = MEMORY[0x1E69D3EA8];
-  v3 = [(SearchUIAppTopHitAsyncSectionLoader *)self bundleIdentifier];
-  v4 = [v2 supportsFileProviderFor:v3];
+  bundleIdentifier = [(SearchUIAppTopHitAsyncSectionLoader *)self bundleIdentifier];
+  v4 = [v2 supportsFileProviderFor:bundleIdentifier];
 
   return v4;
 }
@@ -290,28 +290,28 @@ void __77__SearchUIShortcutsAppTopHitAsyncSectionLoader_rankingQueriesForFilepro
 - (id)fileProviderQueryString
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIAppTopHitAsyncSectionLoader *)self bundleIdentifier];
+  bundleIdentifier = [(SearchUIAppTopHitAsyncSectionLoader *)self bundleIdentifier];
   v4 = DOCContentTypesReadableByApplicationWithBundleIdentifier();
 
   if ([v4 count])
   {
     v5 = [MEMORY[0x1E6982C40] doc_identifiersForContentTypes:v4];
-    v6 = [MEMORY[0x1E69673B0] defaultManager];
-    v7 = [v6 newRecentsCollection];
+    defaultManager = [MEMORY[0x1E69673B0] defaultManager];
+    newRecentsCollection = [defaultManager newRecentsCollection];
 
-    [v7 setAllowedFileTypes:v5];
-    v8 = [*MEMORY[0x1E6982DC8] identifier];
-    v17[0] = v8;
+    [newRecentsCollection setAllowedFileTypes:v5];
+    identifier = [*MEMORY[0x1E6982DC8] identifier];
+    v17[0] = identifier;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-    [v7 setExcludedFileTypes:v9];
+    [newRecentsCollection setExcludedFileTypes:v9];
 
-    v10 = [v7 scopedSearchQuery];
-    v11 = [v10 toSpotlightQueryString];
+    scopedSearchQuery = [newRecentsCollection scopedSearchQuery];
+    toSpotlightQueryString = [scopedSearchQuery toSpotlightQueryString];
 
     v12 = MEMORY[0x1E696AEC0];
     v13 = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self dateRangeQueryForUpToSeconds:1209600];
-    v14 = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self futureDateRangeQuery];
-    v15 = [v12 stringWithFormat:@"(%@) && ((%@) || (%@))", v11, v13, v14];
+    futureDateRangeQuery = [(SearchUIShortcutsAppTopHitAsyncSectionLoader *)self futureDateRangeQuery];
+    v15 = [v12 stringWithFormat:@"(%@) && ((%@) || (%@))", toSpotlightQueryString, v13, futureDateRangeQuery];
   }
 
   else

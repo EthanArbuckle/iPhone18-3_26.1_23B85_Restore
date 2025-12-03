@@ -1,7 +1,7 @@
 @interface NestedHorizontalShelfCollectionViewFlowLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (_TtC22SubscribePageExtension45NestedHorizontalShelfCollectionViewFlowLayout)init;
-- (_TtC22SubscribePageExtension45NestedHorizontalShelfCollectionViewFlowLayout)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension45NestedHorizontalShelfCollectionViewFlowLayout)initWithCoder:(id)coder;
 @end
 
 @implementation NestedHorizontalShelfCollectionViewFlowLayout
@@ -15,20 +15,20 @@
   return v2;
 }
 
-- (_TtC22SubscribePageExtension45NestedHorizontalShelfCollectionViewFlowLayout)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension45NestedHorizontalShelfCollectionViewFlowLayout)initWithCoder:(id)coder
 {
   result = sub_100754644();
   __break(1u);
   return result;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v8 = self;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = offset.y;
+  v7 = offset.x;
+  selfCopy = self;
   sub_100171DE8(v7, v6, x, y);
   v10 = v9;
   v12 = v11;

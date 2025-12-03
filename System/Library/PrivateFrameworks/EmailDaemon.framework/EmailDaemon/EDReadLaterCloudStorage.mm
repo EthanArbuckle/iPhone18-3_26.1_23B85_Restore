@@ -1,28 +1,28 @@
 @interface EDReadLaterCloudStorage
-- (EDReadLaterCloudStorage)initWithHookRegistry:(id)a3;
-- (EDReadLaterCloudStorage)initWithMutableDictionary:(id)a3 hookRegistry:(id)a4;
-- (id)_dateFromDictionary:(id)a3 forKey:(id)a4;
-- (id)_keyForMessage:(id)a3;
-- (id)_messageHashForKey:(id)a3;
-- (id)cloudStorageReadLaterDateForMessage:(id)a3 displayDate:(id *)a4;
-- (void)addEntryForMessage:(id)a3 date:(id)a4;
-- (void)persistedDictionaryDidChangeRemotelyWithChangedItems:(id)a3 deletedItems:(id)a4;
-- (void)persistenceDidChangeReadLaterDate:(id)a3 messages:(id)a4 changeIsRemote:(BOOL)a5 generationWindow:(id)a6;
-- (void)persistenceDidUpdateDisplayDateForMessages:(id)a3 changeIsRemote:(BOOL)a4 generation:(int64_t)a5;
-- (void)removeEntryForMessage:(id)a3;
-- (void)updateDisplayDateForMessage:(id)a3 displayDate:(id)a4;
+- (EDReadLaterCloudStorage)initWithHookRegistry:(id)registry;
+- (EDReadLaterCloudStorage)initWithMutableDictionary:(id)dictionary hookRegistry:(id)registry;
+- (id)_dateFromDictionary:(id)dictionary forKey:(id)key;
+- (id)_keyForMessage:(id)message;
+- (id)_messageHashForKey:(id)key;
+- (id)cloudStorageReadLaterDateForMessage:(id)message displayDate:(id *)date;
+- (void)addEntryForMessage:(id)message date:(id)date;
+- (void)persistedDictionaryDidChangeRemotelyWithChangedItems:(id)items deletedItems:(id)deletedItems;
+- (void)persistenceDidChangeReadLaterDate:(id)date messages:(id)messages changeIsRemote:(BOOL)remote generationWindow:(id)window;
+- (void)persistenceDidUpdateDisplayDateForMessages:(id)messages changeIsRemote:(BOOL)remote generation:(int64_t)generation;
+- (void)removeEntryForMessage:(id)message;
+- (void)updateDisplayDateForMessage:(id)message displayDate:(id)date;
 @end
 
 @implementation EDReadLaterCloudStorage
 
-- (EDReadLaterCloudStorage)initWithMutableDictionary:(id)a3 hookRegistry:(id)a4
+- (EDReadLaterCloudStorage)initWithMutableDictionary:(id)dictionary hookRegistry:(id)registry
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dictionaryCopy = dictionary;
+  registryCopy = registry;
+  if (!dictionaryCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"EDReadLaterCloudStorage.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"dictionary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDReadLaterCloudStorage.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"dictionary"}];
   }
 
   v14.receiver = self;
@@ -31,46 +31,46 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_persistentDictionary, a3);
-    objc_storeStrong(&v11->_hookRegistry, a4);
-    [v9 registerMessageChangeHookResponder:v11];
+    objc_storeStrong(&v10->_persistentDictionary, dictionary);
+    objc_storeStrong(&v11->_hookRegistry, registry);
+    [registryCopy registerMessageChangeHookResponder:v11];
   }
 
   return v11;
 }
 
-- (EDReadLaterCloudStorage)initWithHookRegistry:(id)a3
+- (EDReadLaterCloudStorage)initWithHookRegistry:(id)registry
 {
-  v4 = a3;
+  registryCopy = registry;
   v5 = [objc_alloc(MEMORY[0x1E699AF10]) initWithIdentifier:@"com.apple.mail.remindMe" encrypted:0 delegate:self];
-  v6 = [(EDReadLaterCloudStorage *)self initWithMutableDictionary:v5 hookRegistry:v4];
+  v6 = [(EDReadLaterCloudStorage *)self initWithMutableDictionary:v5 hookRegistry:registryCopy];
 
   return v6;
 }
 
-- (void)addEntryForMessage:(id)a3 date:(id)a4
+- (void)addEntryForMessage:(id)message date:(id)date
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v45 = a4;
-  v47 = v6;
-  v46 = [(EDReadLaterCloudStorage *)self _keyForMessage:v6];
+  messageCopy = message;
+  dateCopy = date;
+  v47 = messageCopy;
+  v46 = [(EDReadLaterCloudStorage *)self _keyForMessage:messageCopy];
   if (v46)
   {
-    [v45 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v8 = v7;
     v9 = EDRemindMeLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = v6;
+      v10 = messageCopy;
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [v10 globalMessageID];
-      v13 = [v10 subject];
-      v14 = [v13 ef_publicDescription];
-      v15 = [v10 displayDate];
-      v16 = [v10 readLater];
-      v17 = [v16 ef_publicDescription];
-      v18 = [v11 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", v12, v14, v15, v17];
+      globalMessageID = [v10 globalMessageID];
+      subject = [v10 subject];
+      ef_publicDescription = [subject ef_publicDescription];
+      displayDate = [v10 displayDate];
+      readLater = [v10 readLater];
+      ef_publicDescription2 = [readLater ef_publicDescription];
+      v18 = [v11 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", globalMessageID, ef_publicDescription, displayDate, ef_publicDescription2];
 
       *buf = 138543874;
       v51 = v18;
@@ -81,8 +81,8 @@
       _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "Adding entry for message: %{public}@, key: %{public}@, date: %f", buf, 0x20u);
     }
 
-    v19 = [v47 messageIDHeader];
-    v20 = [v19 ec_messageIDSubstring];
+    messageIDHeader = [v47 messageIDHeader];
+    ec_messageIDSubstring = [messageIDHeader ec_messageIDSubstring];
 
     v21 = objc_alloc(MEMORY[0x1E695DF90]);
     v48 = EDReadLaterCloudStorageDictionaryKeyDate;
@@ -91,9 +91,9 @@
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
     v24 = [v21 initWithDictionary:v23];
 
-    if (v20)
+    if (ec_messageIDSubstring)
     {
-      [v24 setObject:v20 forKeyedSubscript:EDReadLaterCloudStorageDictionaryKeyMessageID];
+      [v24 setObject:ec_messageIDSubstring forKeyedSubscript:EDReadLaterCloudStorageDictionaryKeyMessageID];
     }
 
     else
@@ -103,13 +103,13 @@
       {
         v36 = v47;
         v37 = MEMORY[0x1E696AEC0];
-        v38 = [v36 globalMessageID];
-        v39 = [v36 subject];
-        v44 = [v39 ef_publicDescription];
-        v43 = [v36 displayDate];
-        v40 = [v36 readLater];
-        v41 = [v40 ef_publicDescription];
-        v42 = [v37 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", v38, v44, v43, v41];
+        globalMessageID2 = [v36 globalMessageID];
+        subject2 = [v36 subject];
+        ef_publicDescription3 = [subject2 ef_publicDescription];
+        displayDate2 = [v36 displayDate];
+        readLater2 = [v36 readLater];
+        ef_publicDescription4 = [readLater2 ef_publicDescription];
+        v42 = [v37 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", globalMessageID2, ef_publicDescription3, displayDate2, ef_publicDescription4];
 
         *buf = 138543362;
         v51 = v42;
@@ -122,54 +122,54 @@
 
   else
   {
-    v20 = EDRemindMeLog();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    ec_messageIDSubstring = EDRemindMeLog();
+    if (os_log_type_enabled(ec_messageIDSubstring, OS_LOG_TYPE_ERROR))
     {
-      v25 = v6;
+      v25 = messageCopy;
       v26 = MEMORY[0x1E696AEC0];
-      v27 = [v25 globalMessageID];
-      v28 = [v25 subject];
-      v29 = [v28 ef_publicDescription];
-      v30 = [v25 displayDate];
-      v31 = [v25 readLater];
-      v32 = [v31 ef_publicDescription];
-      v33 = [v26 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", v27, v29, v30, v32];
+      globalMessageID3 = [v25 globalMessageID];
+      subject3 = [v25 subject];
+      ef_publicDescription5 = [subject3 ef_publicDescription];
+      displayDate3 = [v25 displayDate];
+      readLater3 = [v25 readLater];
+      ef_publicDescription6 = [readLater3 ef_publicDescription];
+      v33 = [v26 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", globalMessageID3, ef_publicDescription5, displayDate3, ef_publicDescription6];
 
       *buf = 138543362;
       v51 = v33;
-      _os_log_error_impl(&dword_1C61EF000, v20, OS_LOG_TYPE_ERROR, "Unable to find key for message: %{public}@", buf, 0xCu);
+      _os_log_error_impl(&dword_1C61EF000, ec_messageIDSubstring, OS_LOG_TYPE_ERROR, "Unable to find key for message: %{public}@", buf, 0xCu);
     }
   }
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateDisplayDateForMessage:(id)a3 displayDate:(id)a4
+- (void)updateDisplayDateForMessage:(id)message displayDate:(id)date
 {
   v64 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v54 = a4;
-  v55 = [(EDReadLaterCloudStorage *)self _keyForMessage:v53];
+  messageCopy = message;
+  dateCopy = date;
+  v55 = [(EDReadLaterCloudStorage *)self _keyForMessage:messageCopy];
   if (v55)
   {
-    [v54 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     v7 = v6;
-    v8 = [v53 dateReceived];
-    v9 = [v8 isEqualToDate:v54];
+    dateReceived = [messageCopy dateReceived];
+    v9 = [dateReceived isEqualToDate:dateCopy];
 
     v10 = EDRemindMeLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v50 = v9;
-      v11 = v53;
+      v11 = messageCopy;
       v12 = MEMORY[0x1E696AEC0];
-      v13 = [v11 globalMessageID];
-      v14 = [v11 subject];
-      v15 = [v14 ef_publicDescription];
-      v16 = [v11 displayDate];
-      v17 = [v11 readLater];
-      v18 = [v17 ef_publicDescription];
-      v19 = [v12 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", v13, v15, v16, v18];
+      globalMessageID = [v11 globalMessageID];
+      subject = [v11 subject];
+      ef_publicDescription = [subject ef_publicDescription];
+      displayDate = [v11 displayDate];
+      readLater = [v11 readLater];
+      ef_publicDescription2 = [readLater ef_publicDescription];
+      v19 = [v12 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", globalMessageID, ef_publicDescription, displayDate, ef_publicDescription2];
 
       *buf = 138544130;
       v57 = v19;
@@ -192,15 +192,15 @@
         v23 = EDRemindMeLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          v24 = v53;
+          v24 = messageCopy;
           v25 = MEMORY[0x1E696AEC0];
-          v26 = [v24 globalMessageID];
-          v48 = [v24 subject];
-          v51 = [v48 ef_publicDescription];
-          v49 = [v24 displayDate];
-          v27 = [v24 readLater];
-          v28 = [v27 ef_publicDescription];
-          v29 = [v25 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", v26, v51, v49, v28];
+          globalMessageID2 = [v24 globalMessageID];
+          subject2 = [v24 subject];
+          ef_publicDescription3 = [subject2 ef_publicDescription];
+          displayDate2 = [v24 displayDate];
+          readLater2 = [v24 readLater];
+          ef_publicDescription4 = [readLater2 ef_publicDescription];
+          v29 = [v25 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", globalMessageID2, ef_publicDescription3, displayDate2, ef_publicDescription4];
 
           *buf = 138543874;
           v57 = v22;
@@ -226,15 +226,15 @@
       v21 = EDRemindMeLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v39 = v53;
+        v39 = messageCopy;
         v40 = MEMORY[0x1E696AEC0];
-        v41 = [v39 globalMessageID];
-        v52 = [v39 subject];
-        v42 = [v52 ef_publicDescription];
-        v43 = [v39 displayDate];
-        v44 = [v39 readLater];
-        v45 = [v44 ef_publicDescription];
-        v46 = [v40 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", v41, v42, v43, v45];
+        globalMessageID3 = [v39 globalMessageID];
+        subject3 = [v39 subject];
+        ef_publicDescription5 = [subject3 ef_publicDescription];
+        displayDate3 = [v39 displayDate];
+        readLater3 = [v39 readLater];
+        ef_publicDescription6 = [readLater3 ef_publicDescription];
+        v46 = [v40 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", globalMessageID3, ef_publicDescription5, displayDate3, ef_publicDescription6];
 
         *buf = 138543618;
         v57 = v46;
@@ -250,15 +250,15 @@
     v20 = EDRemindMeLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v30 = v53;
+      v30 = messageCopy;
       v31 = MEMORY[0x1E696AEC0];
-      v32 = [v30 globalMessageID];
-      v33 = [v30 subject];
-      v34 = [v33 ef_publicDescription];
-      v35 = [v30 displayDate];
-      v36 = [v30 readLater];
-      v37 = [v36 ef_publicDescription];
-      v38 = [v31 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", v32, v34, v35, v37];
+      globalMessageID4 = [v30 globalMessageID];
+      subject4 = [v30 subject];
+      ef_publicDescription7 = [subject4 ef_publicDescription];
+      displayDate4 = [v30 displayDate];
+      readLater4 = [v30 readLater];
+      ef_publicDescription8 = [readLater4 ef_publicDescription];
+      v38 = [v31 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", globalMessageID4, ef_publicDescription7, displayDate4, ef_publicDescription8];
 
       *buf = 138543362;
       v57 = v38;
@@ -269,24 +269,24 @@
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeEntryForMessage:(id)a3
+- (void)removeEntryForMessage:(id)message
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDReadLaterCloudStorage *)self _keyForMessage:v4];
+  messageCopy = message;
+  v5 = [(EDReadLaterCloudStorage *)self _keyForMessage:messageCopy];
   v6 = EDRemindMeLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = v4;
-    v7 = v4;
+    v17 = messageCopy;
+    v7 = messageCopy;
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [v7 globalMessageID];
-    v16 = [v7 subject];
-    v10 = [v16 ef_publicDescription];
-    v11 = [v7 displayDate];
-    v12 = [v7 readLater];
-    v13 = [v12 ef_publicDescription];
-    v14 = [v8 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", v9, v10, v11, v13];
+    globalMessageID = [v7 globalMessageID];
+    subject = [v7 subject];
+    ef_publicDescription = [subject ef_publicDescription];
+    displayDate = [v7 displayDate];
+    readLater = [v7 readLater];
+    ef_publicDescription2 = [readLater ef_publicDescription];
+    v14 = [v8 stringWithFormat:@"<id=%lld, subject=%@, displayDate=%@, readLater=%@>", globalMessageID, ef_publicDescription, displayDate, ef_publicDescription2];
 
     *buf = 138543618;
     v19 = v14;
@@ -294,23 +294,23 @@
     v21 = v5;
     _os_log_impl(&dword_1C61EF000, v6, OS_LOG_TYPE_DEFAULT, "Removing entry for message: %{public}@, key: %{public}@", buf, 0x16u);
 
-    v4 = v17;
+    messageCopy = v17;
   }
 
   [(EMMutableDictionaryProtocol *)self->_persistentDictionary removeObjectForKey:v5];
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cloudStorageReadLaterDateForMessage:(id)a3 displayDate:(id *)a4
+- (id)cloudStorageReadLaterDateForMessage:(id)message displayDate:(id *)date
 {
-  v6 = a3;
-  v7 = [(EDReadLaterCloudStorage *)self _keyForMessage:v6];
+  messageCopy = message;
+  v7 = [(EDReadLaterCloudStorage *)self _keyForMessage:messageCopy];
   v8 = [(EMMutableDictionaryProtocol *)self->_persistentDictionary objectForKey:v7];
   if (v8)
   {
-    if (a4)
+    if (date)
     {
-      *a4 = [(EDReadLaterCloudStorage *)self _dateFromDictionary:v8 forKey:EDReadLaterCloudStorageDictionaryKeyDisplayDate];
+      *date = [(EDReadLaterCloudStorage *)self _dateFromDictionary:v8 forKey:EDReadLaterCloudStorageDictionaryKeyDisplayDate];
     }
 
     v9 = [(EDReadLaterCloudStorage *)self _dateFromDictionary:v8 forKey:EDReadLaterCloudStorageDictionaryKeyDate];
@@ -324,28 +324,28 @@
   return v9;
 }
 
-- (id)_keyForMessage:(id)a3
+- (id)_keyForMessage:(id)message
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 messageIDHeaderHash];
-  v5 = [v3 stringWithFormat:@"%lld", objc_msgSend(v4, "int64Value")];
+  messageIDHeaderHash = [message messageIDHeaderHash];
+  v5 = [v3 stringWithFormat:@"%lld", objc_msgSend(messageIDHeaderHash, "int64Value")];
 
   return v5;
 }
 
-- (void)persistenceDidChangeReadLaterDate:(id)a3 messages:(id)a4 changeIsRemote:(BOOL)a5 generationWindow:(id)a6
+- (void)persistenceDidChangeReadLaterDate:(id)date messages:(id)messages changeIsRemote:(BOOL)remote generationWindow:(id)window
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!a5)
+  dateCopy = date;
+  messagesCopy = messages;
+  v11 = messagesCopy;
+  if (!remote)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = v10;
+    v12 = messagesCopy;
     v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
@@ -361,9 +361,9 @@
           }
 
           v16 = *(*(&v18 + 1) + 8 * v15);
-          if (v9)
+          if (dateCopy)
           {
-            [(EDReadLaterCloudStorage *)self addEntryForMessage:v16 date:v9];
+            [(EDReadLaterCloudStorage *)self addEntryForMessage:v16 date:dateCopy];
           }
 
           else
@@ -385,18 +385,18 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceDidUpdateDisplayDateForMessages:(id)a3 changeIsRemote:(BOOL)a4 generation:(int64_t)a5
+- (void)persistenceDidUpdateDisplayDateForMessages:(id)messages changeIsRemote:(BOOL)remote generation:(int64_t)generation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (!a4)
+  messagesCopy = messages;
+  v8 = messagesCopy;
+  if (!remote)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = v7;
+    v9 = messagesCopy;
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -411,8 +411,8 @@
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          v14 = [v13 displayDate];
-          [(EDReadLaterCloudStorage *)self updateDisplayDateForMessage:v13 displayDate:v14];
+          displayDate = [v13 displayDate];
+          [(EDReadLaterCloudStorage *)self updateDisplayDateForMessage:v13 displayDate:displayDate];
         }
 
         v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -425,10 +425,10 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_dateFromDictionary:(id)a3 forKey:(id)a4
+- (id)_dateFromDictionary:(id)dictionary forKey:(id)key
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  v6 = [dictionary objectForKeyedSubscript:keyCopy];
   v7 = v6;
   if (v6)
   {
@@ -442,20 +442,20 @@
     v9 = 0;
   }
 
-  if (([v5 isEqualToString:EDReadLaterCloudStorageDictionaryKeyDisplayDate] & 1) == 0)
+  if (([keyCopy isEqualToString:EDReadLaterCloudStorageDictionaryKeyDisplayDate] & 1) == 0)
   {
-    v10 = [v9 ef_dateWithTruncatedSeconds];
+    ef_dateWithTruncatedSeconds = [v9 ef_dateWithTruncatedSeconds];
 
-    v9 = v10;
+    v9 = ef_dateWithTruncatedSeconds;
   }
 
   return v9;
 }
 
-- (void)persistedDictionaryDidChangeRemotelyWithChangedItems:(id)a3 deletedItems:(id)a4
+- (void)persistedDictionaryDidChangeRemotelyWithChangedItems:(id)items deletedItems:(id)deletedItems
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  deletedItemsCopy = deletedItems;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -464,15 +464,15 @@
   v13[4] = self;
   v9 = v8;
   v14 = v9;
-  [v6 enumerateKeysAndObjectsUsingBlock:v13];
+  [itemsCopy enumerateKeysAndObjectsUsingBlock:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __93__EDReadLaterCloudStorage_persistedDictionaryDidChangeRemotelyWithChangedItems_deletedItems___block_invoke_2;
   v12[3] = &unk_1E8256328;
   v12[4] = self;
-  v10 = [v7 ef_compactMap:v12];
-  v11 = [(EDReadLaterCloudStorage *)self hookRegistry];
-  [v11 remindMeCloudStorageChangedWithAddedOrChangedItems:v9 deletedItems:v10];
+  v10 = [deletedItemsCopy ef_compactMap:v12];
+  hookRegistry = [(EDReadLaterCloudStorage *)self hookRegistry];
+  [hookRegistry remindMeCloudStorageChangedWithAddedOrChangedItems:v9 deletedItems:v10];
 }
 
 void __93__EDReadLaterCloudStorage_persistedDictionaryDidChangeRemotelyWithChangedItems_deletedItems___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -500,17 +500,17 @@ id __93__EDReadLaterCloudStorage_persistedDictionaryDidChangeRemotelyWithChanged
   return v2;
 }
 
-- (id)_messageHashForKey:(id)a3
+- (id)_messageHashForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (_messageHashForKey__onceToken != -1)
   {
     [EDReadLaterCloudStorage _messageHashForKey:];
   }
 
-  v4 = [_messageHashForKey__formatter numberFromString:v3];
-  v5 = [v4 longLongValue];
-  v6 = [objc_alloc(MEMORY[0x1E699B200]) initWithHash:v5];
+  v4 = [_messageHashForKey__formatter numberFromString:keyCopy];
+  longLongValue = [v4 longLongValue];
+  v6 = [objc_alloc(MEMORY[0x1E699B200]) initWithHash:longLongValue];
 
   return v6;
 }

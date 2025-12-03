@@ -1,7 +1,7 @@
 @interface MPStoreItemMetadataCache
-- (MPStoreItemMetadataCache)initWithCacheSize:(int64_t)a3;
-- (id)addMetadata:(id)a3 forItemIdentifier:(id)a4;
-- (id)metadataForItemIdentifier:(id)a3 ignoreExpiration:(BOOL)a4;
+- (MPStoreItemMetadataCache)initWithCacheSize:(int64_t)size;
+- (id)addMetadata:(id)metadata forItemIdentifier:(id)identifier;
+- (id)metadataForItemIdentifier:(id)identifier ignoreExpiration:(BOOL)expiration;
 - (int64_t)count;
 - (void)removeExpiredMetadata;
 @end
@@ -11,12 +11,12 @@
 - (void)removeExpiredMetadata
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(MSVLRUDictionary *)self->_itemIdentifierToCompositeStoreItemMetadataLRUDictionary allKeys];
+  allKeys = [(MSVLRUDictionary *)self->_itemIdentifierToCompositeStoreItemMetadataLRUDictionary allKeys];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v4)
   {
     v5 = v4;
@@ -27,7 +27,7 @@
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v24 + 1) + 8 * i);
@@ -38,7 +38,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v5);
@@ -83,21 +83,21 @@
   }
 }
 
-- (id)metadataForItemIdentifier:(id)a3 ignoreExpiration:(BOOL)a4
+- (id)metadataForItemIdentifier:(id)identifier ignoreExpiration:(BOOL)expiration
 {
-  v6 = a3;
-  v7 = [(MSVLRUDictionary *)self->_itemIdentifierToCompositeStoreItemMetadataLRUDictionary objectForKey:v6];
+  identifierCopy = identifier;
+  v7 = [(MSVLRUDictionary *)self->_itemIdentifierToCompositeStoreItemMetadataLRUDictionary objectForKey:identifierCopy];
   v8 = v7;
-  if (v7 && (a4 || ([v7 isExpired] & 1) == 0))
+  if (v7 && (expiration || ([v7 isExpired] & 1) == 0))
   {
     v11 = v8;
   }
 
   else
   {
-    v9 = [(NSMapTable *)self->_itemIdentifierToCompositeStoreItemMetadataMapTable objectForKey:v6];
+    v9 = [(NSMapTable *)self->_itemIdentifierToCompositeStoreItemMetadataMapTable objectForKey:identifierCopy];
     v10 = v9;
-    if (v9 && (a4 || ([v9 isExpired] & 1) == 0))
+    if (v9 && (expiration || ([v9 isExpired] & 1) == 0))
     {
       v11 = v10;
     }
@@ -123,13 +123,13 @@
   return result;
 }
 
-- (id)addMetadata:(id)a3 forItemIdentifier:(id)a4
+- (id)addMetadata:(id)metadata forItemIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [(MPStoreItemMetadataCache *)self metadataForItemIdentifier:v7];
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  v8 = metadataCopy;
+  v9 = [(MPStoreItemMetadataCache *)self metadataForItemIdentifier:identifierCopy];
   v10 = v9;
   v11 = v8;
   if (v9)
@@ -142,12 +142,12 @@
   }
 
   v21 = v8;
-  v12 = [v11 childStoreItemMetadatas];
+  childStoreItemMetadatas = [v11 childStoreItemMetadatas];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v13 = [childStoreItemMetadatas countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -158,37 +158,37 @@
       {
         if (*v23 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(childStoreItemMetadatas);
         }
 
         v17 = *(*(&v22 + 1) + 8 * i);
-        v18 = [v17 cacheableItemIdentifier];
-        if ([v18 length])
+        cacheableItemIdentifier = [v17 cacheableItemIdentifier];
+        if ([cacheableItemIdentifier length])
         {
-          v19 = [(MPStoreItemMetadataCache *)self addMetadata:v17 forItemIdentifier:v18];
+          v19 = [(MPStoreItemMetadataCache *)self addMetadata:v17 forItemIdentifier:cacheableItemIdentifier];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v14 = [childStoreItemMetadatas countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v14);
   }
 
-  [(MSVLRUDictionary *)self->_itemIdentifierToCompositeStoreItemMetadataLRUDictionary setObject:v11 forKey:v7];
-  [(NSMapTable *)self->_itemIdentifierToCompositeStoreItemMetadataMapTable setObject:v11 forKey:v7];
+  [(MSVLRUDictionary *)self->_itemIdentifierToCompositeStoreItemMetadataLRUDictionary setObject:v11 forKey:identifierCopy];
+  [(NSMapTable *)self->_itemIdentifierToCompositeStoreItemMetadataMapTable setObject:v11 forKey:identifierCopy];
 
   return v11;
 }
 
-- (MPStoreItemMetadataCache)initWithCacheSize:(int64_t)a3
+- (MPStoreItemMetadataCache)initWithCacheSize:(int64_t)size
 {
   v10.receiver = self;
   v10.super_class = MPStoreItemMetadataCache;
   v4 = [(MPStoreItemMetadataCache *)&v10 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69B1430]) initWithMaximumCapacity:a3];
+    v5 = [objc_alloc(MEMORY[0x1E69B1430]) initWithMaximumCapacity:size];
     itemIdentifierToCompositeStoreItemMetadataLRUDictionary = v4->_itemIdentifierToCompositeStoreItemMetadataLRUDictionary;
     v4->_itemIdentifierToCompositeStoreItemMetadataLRUDictionary = v5;
 

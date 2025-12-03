@@ -1,23 +1,23 @@
 @interface JavaNioSocketChannelImpl_BlockingCheckOutputStream
-- (JavaNioSocketChannelImpl_BlockingCheckOutputStream)initWithJavaIoOutputStream:(id)a3 withJavaNioChannelsSocketChannel:(id)a4;
+- (JavaNioSocketChannelImpl_BlockingCheckOutputStream)initWithJavaIoOutputStream:(id)stream withJavaNioChannelsSocketChannel:(id)channel;
 - (id)checkBlocking;
 - (void)close;
 - (void)dealloc;
-- (void)writeWithByteArray:(id)a3;
+- (void)writeWithByteArray:(id)array;
 @end
 
 @implementation JavaNioSocketChannelImpl_BlockingCheckOutputStream
 
-- (JavaNioSocketChannelImpl_BlockingCheckOutputStream)initWithJavaIoOutputStream:(id)a3 withJavaNioChannelsSocketChannel:(id)a4
+- (JavaNioSocketChannelImpl_BlockingCheckOutputStream)initWithJavaIoOutputStream:(id)stream withJavaNioChannelsSocketChannel:(id)channel
 {
-  JavaIoFilterOutputStream_initWithJavaIoOutputStream_(self, a3);
-  JreStrongAssign(&self->channel_, a4);
+  JavaIoFilterOutputStream_initWithJavaIoOutputStream_(self, stream);
+  JreStrongAssign(&self->channel_, channel);
   return self;
 }
 
 - (id)checkBlocking
 {
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (!v1)
   {
     JreThrowNullPointerException();
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (void)writeWithByteArray:(id)a3
+- (void)writeWithByteArray:(id)array
 {
   [JavaNioSocketChannelImpl_BlockingCheckOutputStream checkBlocking]_0(self);
   out = self->super.out_;
@@ -42,7 +42,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaIoOutputStream *)out writeWithByteArray:a3];
+  [(JavaIoOutputStream *)out writeWithByteArray:array];
 }
 
 - (void)close

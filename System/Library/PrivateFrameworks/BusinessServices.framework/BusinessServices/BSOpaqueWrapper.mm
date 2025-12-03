@@ -1,6 +1,6 @@
 @interface BSOpaqueWrapper
-+ (id)wrapperFor:(id)a3;
-- (BSOpaqueWrapper)initWithThing:(id)a3;
++ (id)wrapperFor:(id)for;
+- (BSOpaqueWrapper)initWithThing:(id)thing;
 - (id)wrappedThing;
 @end
 
@@ -16,23 +16,23 @@
   return [(BSOpaqueWrapper *)self wrappedThing];
 }
 
-+ (id)wrapperFor:(id)a3
++ (id)wrapperFor:(id)for
 {
-  v3 = a3;
-  v4 = [[BSOpaqueWrapper alloc] initWithThing:v3];
+  forCopy = for;
+  v4 = [[BSOpaqueWrapper alloc] initWithThing:forCopy];
 
   return v4;
 }
 
-- (BSOpaqueWrapper)initWithThing:(id)a3
+- (BSOpaqueWrapper)initWithThing:(id)thing
 {
-  v4 = a3;
+  thingCopy = thing;
   v9.receiver = self;
   v9.super_class = BSOpaqueWrapper;
   v5 = [(BSOpaqueWrapper *)&v9 init];
   if (v5)
   {
-    v6 = [[_BSOpaqueWrapper alloc] init:v4];
+    v6 = [[_BSOpaqueWrapper alloc] init:thingCopy];
     opaqueWrapper = v5->_opaqueWrapper;
     v5->_opaqueWrapper = v6;
   }

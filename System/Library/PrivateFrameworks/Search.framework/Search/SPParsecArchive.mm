@@ -1,37 +1,37 @@
 @interface SPParsecArchive
 + (id)archiveBasePath;
-+ (id)archivePathForQuery:(id)a3;
++ (id)archivePathForQuery:(id)query;
 + (void)deleteArchives;
-- (SPParsecArchive)initWithCoder:(id)a3;
-- (SPParsecArchive)initWithQuery:(id)a3 withResults:(id)a4 withSuggestions:(id)a5 withCorrections:(id)a6 suggestionsAreBlended:(BOOL)a7 withStore:(id)a8;
-- (_MDPlistContainer)decodeMDPlistContainerWithCoder:(id)a3 forKey:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SPParsecArchive)initWithCoder:(id)coder;
+- (SPParsecArchive)initWithQuery:(id)query withResults:(id)results withSuggestions:(id)suggestions withCorrections:(id)corrections suggestionsAreBlended:(BOOL)blended withStore:(id)store;
+- (_MDPlistContainer)decodeMDPlistContainerWithCoder:(id)coder forKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPParsecArchive
 
-+ (id)archivePathForQuery:(id)a3
++ (id)archivePathForQuery:(id)query
 {
-  v3 = a3;
-  v4 = [objc_opt_class() archiveBasePath];
+  queryCopy = query;
+  archiveBasePath = [objc_opt_class() archiveBasePath];
   v5 = +[NSFileManager defaultManager];
   v9 = 1;
-  if (([v5 fileExistsAtPath:v4 isDirectory:&v9] & 1) == 0 && v9 == 1)
+  if (([v5 fileExistsAtPath:archiveBasePath isDirectory:&v9] & 1) == 0 && v9 == 1)
   {
     v8 = 0;
-    [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v8];
+    [v5 createDirectoryAtPath:archiveBasePath withIntermediateDirectories:1 attributes:0 error:&v8];
   }
 
-  v6 = [v4 stringByAppendingFormat:@"/%@", v3];
+  queryCopy = [archiveBasePath stringByAppendingFormat:@"/%@", queryCopy];
 
-  return v6;
+  return queryCopy;
 }
 
 + (void)deleteArchives
 {
   v4 = +[NSFileManager defaultManager];
-  v3 = [a1 archiveBasePath];
-  [v4 removeItemAtPath:v3 error:0];
+  archiveBasePath = [self archiveBasePath];
+  [v4 removeItemAtPath:archiveBasePath error:0];
 }
 
 + (id)archiveBasePath
@@ -42,62 +42,62 @@
   return v3;
 }
 
-- (SPParsecArchive)initWithQuery:(id)a3 withResults:(id)a4 withSuggestions:(id)a5 withCorrections:(id)a6 suggestionsAreBlended:(BOOL)a7 withStore:(id)a8
+- (SPParsecArchive)initWithQuery:(id)query withResults:(id)results withSuggestions:(id)suggestions withCorrections:(id)corrections suggestionsAreBlended:(BOOL)blended withStore:(id)store
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  queryCopy = query;
+  resultsCopy = results;
+  suggestionsCopy = suggestions;
+  correctionsCopy = corrections;
+  storeCopy = store;
   v26.receiver = self;
   v26.super_class = SPParsecArchive;
   v19 = [(SPParsecArchive *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    [(SPParsecArchive *)v19 setQuery:v14];
+    [(SPParsecArchive *)v19 setQuery:queryCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SPParsecArchive *)v20 setResultsSections:v15];
+      [(SPParsecArchive *)v20 setResultsSections:resultsCopy];
     }
 
-    objc_storeStrong(&v20->_suggestions, a5);
-    objc_storeStrong(&v20->_corrections, a6);
-    v21 = [v18 cepDictionary];
+    objc_storeStrong(&v20->_suggestions, suggestions);
+    objc_storeStrong(&v20->_corrections, corrections);
+    cepDictionary = [storeCopy cepDictionary];
     cepDictionary = v20->_cepDictionary;
-    v20->_cepDictionary = v21;
+    v20->_cepDictionary = cepDictionary;
 
-    v23 = [v18 cannedCEPValues];
+    cannedCEPValues = [storeCopy cannedCEPValues];
     cannedCEPValues = v20->_cannedCEPValues;
-    v20->_cannedCEPValues = v23;
+    v20->_cannedCEPValues = cannedCEPValues;
 
-    v20->_suggestionsAreBlended = a7;
+    v20->_suggestionsAreBlended = blended;
   }
 
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   query = self->_query;
-  v7 = a3;
-  [v7 encodeObject:query forKey:@"_query"];
-  [v7 encodeObject:self->_resultsSections forKey:@"_resultsSections"];
-  [v7 encodeObject:self->_suggestions forKey:@"_suggestions"];
-  [v7 encodeObject:self->_corrections forKey:@"_corrections"];
+  coderCopy = coder;
+  [coderCopy encodeObject:query forKey:@"_query"];
+  [coderCopy encodeObject:self->_resultsSections forKey:@"_resultsSections"];
+  [coderCopy encodeObject:self->_suggestions forKey:@"_suggestions"];
+  [coderCopy encodeObject:self->_corrections forKey:@"_corrections"];
   [(SSPlistDataReader *)self->_cepDictionary container];
   Bytes = _MDPlistContainerGetBytes();
-  [v7 encodeBytes:Bytes length:_MDPlistContainerGetLength() forKey:@"_cepDictionaryData"];
+  [coderCopy encodeBytes:Bytes length:_MDPlistContainerGetLength() forKey:@"_cepDictionaryData"];
   [(SSPlistDataReader *)self->_cannedCEPValues container];
   v6 = _MDPlistContainerGetBytes();
-  [v7 encodeBytes:v6 length:_MDPlistContainerGetLength() forKey:@"_cannedCEPValuesData"];
+  [coderCopy encodeBytes:v6 length:_MDPlistContainerGetLength() forKey:@"_cannedCEPValuesData"];
 }
 
-- (_MDPlistContainer)decodeMDPlistContainerWithCoder:(id)a3 forKey:(id)a4
+- (_MDPlistContainer)decodeMDPlistContainerWithCoder:(id)coder forKey:(id)key
 {
   size = 0;
-  v4 = [a3 decodeBytesForKey:a4 returnedLength:&size];
+  v4 = [coder decodeBytesForKey:key returnedLength:&size];
   if (size)
   {
     v5 = v4 == 0;
@@ -129,37 +129,37 @@
   return result;
 }
 
-- (SPParsecArchive)initWithCoder:(id)a3
+- (SPParsecArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = SPParsecArchive;
   v5 = [(SPParsecArchive *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_query"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_query"];
     query = v5->_query;
     v5->_query = v6;
 
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_resultsSections"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_resultsSections"];
     resultsSections = v5->_resultsSections;
     v5->_resultsSections = v10;
 
     v12 = objc_opt_class();
     v13 = [NSSet setWithObjects:v12, objc_opt_class(), 0];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_suggestions"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_suggestions"];
     suggestions = v5->_suggestions;
     v5->_suggestions = v14;
 
     v16 = objc_opt_class();
     v17 = [NSSet setWithObjects:v16, objc_opt_class(), 0];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"_corrections"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"_corrections"];
     corrections = v5->_corrections;
     v5->_corrections = v18;
 
-    v20 = [(SPParsecArchive *)v5 decodeMDPlistContainerWithCoder:v4 forKey:@"_cepDictionaryData"];
+    v20 = [(SPParsecArchive *)v5 decodeMDPlistContainerWithCoder:coderCopy forKey:@"_cepDictionaryData"];
     v21 = [[SSPlistDataReader alloc] initWithPlistContainer:v20];
     cepDictionary = v5->_cepDictionary;
     v5->_cepDictionary = v21;
@@ -169,7 +169,7 @@
       CFRelease(v20);
     }
 
-    v23 = [(SPParsecArchive *)v5 decodeMDPlistContainerWithCoder:v4 forKey:@"_cannedCEPValuesData"];
+    v23 = [(SPParsecArchive *)v5 decodeMDPlistContainerWithCoder:coderCopy forKey:@"_cannedCEPValuesData"];
     v24 = [[SSPlistDataReader alloc] initWithPlistContainer:v23];
     cannedCEPValues = v5->_cannedCEPValues;
     v5->_cannedCEPValues = v24;

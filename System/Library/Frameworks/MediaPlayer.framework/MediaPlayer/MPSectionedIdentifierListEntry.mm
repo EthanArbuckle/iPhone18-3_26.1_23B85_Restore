@@ -1,13 +1,13 @@
 @interface MPSectionedIdentifierListEntry
-- (MPSectionedIdentifierListEntry)initWithCoder:(id)a3;
-- (MPSectionedIdentifierListEntry)initWithPositionKey:(id)a3 sectionIdentifier:(id)a4;
+- (MPSectionedIdentifierListEntry)initWithCoder:(id)coder;
+- (MPSectionedIdentifierListEntry)initWithPositionKey:(id)key sectionIdentifier:(id)identifier;
 - (MPSectionedIdentifierListEntry)previousEntry;
 - (NSString)description;
 - (id)_stateDumpObject;
 - (id)itemResult;
 - (id)trackingEntryResult;
-- (void)addBranch:(id)a3 forceBranchDepthIncrease:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)addBranch:(id)branch forceBranchDepthIncrease:(BOOL)increase;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSectionedIdentifierListEntry
@@ -19,58 +19,58 @@
   return WeakRetained;
 }
 
-- (void)addBranch:(id)a3 forceBranchDepthIncrease:(BOOL)a4
+- (void)addBranch:(id)branch forceBranchDepthIncrease:(BOOL)increase
 {
-  v4 = a4;
-  v26 = a3;
-  if (![v26 count])
+  increaseCopy = increase;
+  branchCopy = branch;
+  if (![branchCopy count])
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEntry.m" lineNumber:138 description:@"Cannot add empty branch"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEntry.m" lineNumber:138 description:@"Cannot add empty branch"];
   }
 
-  v7 = [(MPSectionedIdentifierListEntry *)self branchDepth];
+  branchDepth = [(MPSectionedIdentifierListEntry *)self branchDepth];
   v8 = [(NSMutableArray *)self->_nextEntries count];
-  v9 = v7 + v4;
-  if ([v26 count] != 1)
+  v9 = branchDepth + increaseCopy;
+  if ([branchCopy count] != 1)
   {
     v13 = 0;
     do
     {
-      v14 = [v26 objectAtIndexedSubscript:v13];
-      v15 = [v26 objectAtIndexedSubscript:++v13];
+      v14 = [branchCopy objectAtIndexedSubscript:v13];
+      v15 = [branchCopy objectAtIndexedSubscript:++v13];
       [v14 setBranchDepth:v9 + v8];
-      v16 = [v14 nextEntries];
-      v17 = [v16 count];
+      nextEntries = [v14 nextEntries];
+      v17 = [nextEntries count];
 
       if (v17)
       {
-        v18 = [v14 nextEntries];
-        v19 = [v18 count];
+        nextEntries2 = [v14 nextEntries];
+        v19 = [nextEntries2 count];
 
         if (v19 == 1)
         {
-          v20 = [v14 nextEntries];
-          v21 = [v20 firstObject];
+          nextEntries3 = [v14 nextEntries];
+          firstObject = [nextEntries3 firstObject];
 
-          if (v21 != v15)
+          if (firstObject != v15)
           {
-            v24 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v24 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEntry.m" lineNumber:152 description:@"Non-contiguous entries in MPSectionedIdentifierListEntryAddBranch [too many next]"];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEntry.m" lineNumber:152 description:@"Non-contiguous entries in MPSectionedIdentifierListEntryAddBranch [too many next]"];
           }
 
-          v22 = [v15 previousEntry];
-          if (v22 != v14)
+          previousEntry = [v15 previousEntry];
+          if (previousEntry != v14)
           {
-            v23 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v23 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEntry.m" lineNumber:154 description:@"Non-contiguous entries in MPSectionedIdentifierListEntryAddBranch [disconnected previous]"];
+            currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler3 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEntry.m" lineNumber:154 description:@"Non-contiguous entries in MPSectionedIdentifierListEntryAddBranch [disconnected previous]"];
           }
         }
 
         else
         {
-          v22 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v22 handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEntry.m" lineNumber:157 description:@"Non-linear entries in MPSectionedIdentifierListEntryAddBranch"];
+          previousEntry = [MEMORY[0x1E696AAA8] currentHandler];
+          [previousEntry handleFailureInMethod:a2 object:self file:@"MPSectionedIdentifierListEntry.m" lineNumber:157 description:@"Non-linear entries in MPSectionedIdentifierListEntryAddBranch"];
         }
       }
 
@@ -81,74 +81,74 @@
       }
     }
 
-    while (v13 < [v26 count] - 1);
+    while (v13 < [branchCopy count] - 1);
   }
 
-  v10 = [v26 lastObject];
-  [v10 setBranchDepth:v9 + v8];
+  lastObject = [branchCopy lastObject];
+  [lastObject setBranchDepth:v9 + v8];
 
-  v11 = [v26 firstObject];
-  [(MPSectionedIdentifierListEntry *)self addNextEntry:v11];
+  firstObject2 = [branchCopy firstObject];
+  [(MPSectionedIdentifierListEntry *)self addNextEntry:firstObject2];
 
-  v12 = [v26 firstObject];
-  [v12 setPreviousEntry:self];
+  firstObject3 = [branchCopy firstObject];
+  [firstObject3 setPreviousEntry:self];
 }
 
 - (id)trackingEntryResult
 {
   if ([(MPSectionedIdentifierListEntry *)self conformsToProtocol:&unk_1F15507F8])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)itemResult
 {
   if ([(MPSectionedIdentifierListEntry *)self conformsToProtocol:&unk_1F1550A18])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   positionKey = self->_positionKey;
-  v5 = a3;
-  [v5 encodeObject:positionKey forKey:@"pk"];
-  [v5 encodeObject:self->_sectionIdentifier forKey:@"si"];
-  [v5 encodeObject:self->_hostedSectionIdentifier forKey:@"hsi"];
-  [v5 encodeInteger:self->_branchDepth forKey:@"bd"];
-  [v5 encodeBool:self->_dataSourceRemoved forKey:@"dsr"];
+  coderCopy = coder;
+  [coderCopy encodeObject:positionKey forKey:@"pk"];
+  [coderCopy encodeObject:self->_sectionIdentifier forKey:@"si"];
+  [coderCopy encodeObject:self->_hostedSectionIdentifier forKey:@"hsi"];
+  [coderCopy encodeInteger:self->_branchDepth forKey:@"bd"];
+  [coderCopy encodeBool:self->_dataSourceRemoved forKey:@"dsr"];
 }
 
-- (MPSectionedIdentifierListEntry)initWithCoder:(id)a3
+- (MPSectionedIdentifierListEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pk"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"si"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pk"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"si"];
   v7 = [(MPSectionedIdentifierListEntry *)self initWithPositionKey:v5 sectionIdentifier:v6];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hsi"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hsi"];
     hostedSectionIdentifier = v7->_hostedSectionIdentifier;
     v7->_hostedSectionIdentifier = v8;
 
-    v7->_branchDepth = [v4 decodeIntegerForKey:@"bd"];
-    v7->_dataSourceRemoved = [v4 decodeBoolForKey:@"dsr"];
+    v7->_branchDepth = [coderCopy decodeIntegerForKey:@"bd"];
+    v7->_dataSourceRemoved = [coderCopy decodeBoolForKey:@"dsr"];
   }
 
   return v7;
@@ -161,11 +161,11 @@
   v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p>", objc_opt_class(), self];
   v21[0] = v3;
   v20[1] = @"_sectionID";
-  v4 = [(MPSectionedIdentifierListEntry *)self sectionIdentifier];
-  v5 = v4;
-  if (v4)
+  sectionIdentifier = [(MPSectionedIdentifierListEntry *)self sectionIdentifier];
+  v5 = sectionIdentifier;
+  if (sectionIdentifier)
   {
-    v6 = v4;
+    v6 = sectionIdentifier;
   }
 
   else
@@ -175,11 +175,11 @@
 
   v21[1] = v6;
   v20[2] = @"_hostedSectionIdentifier";
-  v7 = [(MPSectionedIdentifierListEntry *)self hostedSectionIdentifier];
-  v8 = v7;
-  if (v7)
+  hostedSectionIdentifier = [(MPSectionedIdentifierListEntry *)self hostedSectionIdentifier];
+  v8 = hostedSectionIdentifier;
+  if (hostedSectionIdentifier)
   {
-    v9 = v7;
+    v9 = hostedSectionIdentifier;
   }
 
   else
@@ -189,8 +189,8 @@
 
   v21[2] = v9;
   v20[3] = @"nextEntries";
-  v10 = [(MPSectionedIdentifierListEntry *)self nextEntries];
-  v11 = [v10 valueForKey:@"description"];
+  nextEntries = [(MPSectionedIdentifierListEntry *)self nextEntries];
+  v11 = [nextEntries valueForKey:@"description"];
   v12 = v11;
   if (v11)
   {
@@ -204,8 +204,8 @@
 
   v21[3] = v13;
   v20[4] = @"previousEntry";
-  v14 = [(MPSectionedIdentifierListEntry *)self previousEntry];
-  v15 = [v14 description];
+  previousEntry = [(MPSectionedIdentifierListEntry *)self previousEntry];
+  v15 = [previousEntry description];
   v16 = v15;
   if (v15)
   {
@@ -227,28 +227,28 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPSectionedIdentifierListEntry *)self sectionIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, v5];
+  sectionIdentifier = [(MPSectionedIdentifierListEntry *)self sectionIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p> %@", v4, self, sectionIdentifier];
 
   return v6;
 }
 
-- (MPSectionedIdentifierListEntry)initWithPositionKey:(id)a3 sectionIdentifier:(id)a4
+- (MPSectionedIdentifierListEntry)initWithPositionKey:(id)key sectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = MPSectionedIdentifierListEntry;
   v9 = [(MPSectionedIdentifierListEntry *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_positionKey, a3);
-    v11 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v9->_positionKey, key);
+    array = [MEMORY[0x1E695DF70] array];
     nextEntries = v10->_nextEntries;
-    v10->_nextEntries = v11;
+    v10->_nextEntries = array;
 
-    v13 = [v8 copy];
+    v13 = [identifierCopy copy];
     sectionIdentifier = v10->_sectionIdentifier;
     v10->_sectionIdentifier = v13;
   }

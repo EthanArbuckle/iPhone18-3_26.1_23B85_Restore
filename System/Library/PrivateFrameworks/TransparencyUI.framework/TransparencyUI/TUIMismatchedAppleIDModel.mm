@@ -1,10 +1,10 @@
 @interface TUIMismatchedAppleIDModel
-- (TUIMismatchedAppleIDModel)initWithFlow:(unint64_t)a3;
+- (TUIMismatchedAppleIDModel)initWithFlow:(unint64_t)flow;
 @end
 
 @implementation TUIMismatchedAppleIDModel
 
-- (TUIMismatchedAppleIDModel)initWithFlow:(unint64_t)a3
+- (TUIMismatchedAppleIDModel)initWithFlow:(unint64_t)flow
 {
   v24.receiver = self;
   v24.super_class = TUIMismatchedAppleIDModel;
@@ -22,7 +22,7 @@
 
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = v10;
-    if (a3 == 2)
+    if (flow == 2)
     {
       v12 = @"MISMATCHED_APPLEID_OPTOUT_ERROR_DETAIL";
     }

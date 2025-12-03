@@ -1,34 +1,34 @@
 @interface WDUnitPreferenceViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation WDUnitPreferenceViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WDUnitPreferenceViewController" hasInstanceVariable:@"_rows" withType:"NSArray"];
-  [v3 validateClass:@"WDUnitPreferenceViewController" hasInstanceVariable:@"_unitController" withType:"HKUnitPreferenceController"];
-  [v3 validateClass:@"_WDUnitPreferenceViewControllerRow" hasInstanceMethod:@"unit" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WDUnitPreferenceViewController" hasInstanceVariable:@"_rows" withType:"NSArray"];
+  [validationsCopy validateClass:@"WDUnitPreferenceViewController" hasInstanceVariable:@"_unitController" withType:"HKUnitPreferenceController"];
+  [validationsCopy validateClass:@"_WDUnitPreferenceViewControllerRow" hasInstanceMethod:@"unit" withFullSignature:{"@", 0}];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v30.receiver = self;
   v30.super_class = WDUnitPreferenceViewControllerAccessibility;
-  v8 = [(WDUnitPreferenceViewControllerAccessibility *)&v30 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(WDUnitPreferenceViewControllerAccessibility *)&v30 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   LOBYTE(v23) = 0;
   v9 = [(WDUnitPreferenceViewControllerAccessibility *)self safeValueForKey:@"_rows"];
   v10 = __UIAccessibilitySafeClass();
 
-  v11 = [v7 row];
+  v11 = [pathCopy row];
   if (v11 < [v10 count])
   {
     LOBYTE(v23) = 0;
-    v12 = [v10 objectAtIndex:{objc_msgSend(v7, "row")}];
+    v12 = [v10 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     v13 = __UIAccessibilitySafeClass();
 
     LOBYTE(v23) = 0;

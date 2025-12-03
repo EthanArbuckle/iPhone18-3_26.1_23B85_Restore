@@ -1,6 +1,6 @@
 @interface CAMScreenLuminanceObserverLayer
 - (CAMScreenLuminanceObserverLayer)init;
-- (void)backdropLayer:(id)a3 didChangeLuma:(double)a4;
+- (void)backdropLayer:(id)layer didChangeLuma:(double)luma;
 @end
 
 @implementation CAMScreenLuminanceObserverLayer
@@ -22,15 +22,15 @@
   return v3;
 }
 
-- (void)backdropLayer:(id)a3 didChangeLuma:(double)a4
+- (void)backdropLayer:(id)layer didChangeLuma:(double)luma
 {
-  v6 = [(CAMScreenLuminanceObserverLayer *)self gainModulationCallback];
+  gainModulationCallback = [(CAMScreenLuminanceObserverLayer *)self gainModulationCallback];
 
-  if (v6)
+  if (gainModulationCallback)
   {
-    self->__interpolatedGainModulation = ((a4 + -0.25) * 4.0 / 0.75 + 0.0) * 0.25 + self->__interpolatedGainModulation * 0.75;
-    v7 = [(CAMScreenLuminanceObserverLayer *)self gainModulationCallback];
-    v7[2](self->__interpolatedGainModulation);
+    self->__interpolatedGainModulation = ((luma + -0.25) * 4.0 / 0.75 + 0.0) * 0.25 + self->__interpolatedGainModulation * 0.75;
+    gainModulationCallback2 = [(CAMScreenLuminanceObserverLayer *)self gainModulationCallback];
+    gainModulationCallback2[2](self->__interpolatedGainModulation);
   }
 }
 

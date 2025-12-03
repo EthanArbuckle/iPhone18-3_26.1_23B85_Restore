@@ -1,15 +1,15 @@
 @interface RTCReportingAVCDeprecatedPeriodic
-- (BOOL)registerPeriodicTaskForModule:(unsigned int)a3 needToUpdate:(BOOL)a4 needToReport:(BOOL)a5 serviceBlock:(id)a6;
-- (BOOL)unregisterPeriodTaskForModule:(unsigned int)a3;
-- (RTCReportingAVCDeprecatedPeriodic)initWithSession:(id)a3;
+- (BOOL)registerPeriodicTaskForModule:(unsigned int)module needToUpdate:(BOOL)update needToReport:(BOOL)report serviceBlock:(id)block;
+- (BOOL)unregisterPeriodTaskForModule:(unsigned int)module;
+- (RTCReportingAVCDeprecatedPeriodic)initWithSession:(id)session;
 - (void)dealloc;
-- (void)startLogTimerWithInterval:(int)a3 reportingMultiplier:(int)a4 category:(unsigned __int16)a5 type:(unsigned __int16)a6;
+- (void)startLogTimerWithInterval:(int)interval reportingMultiplier:(int)multiplier category:(unsigned __int16)category type:(unsigned __int16)type;
 - (void)stopLogTimer;
 @end
 
 @implementation RTCReportingAVCDeprecatedPeriodic
 
-- (RTCReportingAVCDeprecatedPeriodic)initWithSession:(id)a3
+- (RTCReportingAVCDeprecatedPeriodic)initWithSession:(id)session
 {
   v9.receiver = self;
   v9.super_class = RTCReportingAVCDeprecatedPeriodic;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_session = a3;
+    v4->_session = session;
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v5->_queue = dispatch_queue_create("com.apple.AVConference.RTCPeriodicTask", v6);
     v7 = dispatch_queue_attr_make_with_qos_class(MEMORY[0x277D85CD8], QOS_CLASS_USER_INITIATED, 0);
@@ -139,7 +139,7 @@ intptr_t __91__RTCReportingAVCDeprecatedPeriodic__myPeriodicTask_type_intervalMu
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)startLogTimerWithInterval:(int)a3 reportingMultiplier:(int)a4 category:(unsigned __int16)a5 type:(unsigned __int16)a6
+- (void)startLogTimerWithInterval:(int)interval reportingMultiplier:(int)multiplier category:(unsigned __int16)category type:(unsigned __int16)type
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -147,10 +147,10 @@ intptr_t __91__RTCReportingAVCDeprecatedPeriodic__myPeriodicTask_type_intervalMu
   block[2] = __97__RTCReportingAVCDeprecatedPeriodic_startLogTimerWithInterval_reportingMultiplier_category_type___block_invoke;
   block[3] = &unk_2784F12C8;
   block[4] = self;
-  v10 = a5;
-  v11 = a6;
-  v8 = a3;
-  v9 = a4;
+  categoryCopy = category;
+  typeCopy = type;
+  intervalCopy = interval;
+  multiplierCopy = multiplier;
   dispatch_async(queue, block);
 }
 
@@ -226,24 +226,24 @@ void __49__RTCReportingAVCDeprecatedPeriodic_stopLogTimer__block_invoke(uint64_t
   }
 }
 
-- (BOOL)registerPeriodicTaskForModule:(unsigned int)a3 needToUpdate:(BOOL)a4 needToReport:(BOOL)a5 serviceBlock:(id)a6
+- (BOOL)registerPeriodicTaskForModule:(unsigned int)module needToUpdate:(BOOL)update needToReport:(BOOL)report serviceBlock:(id)block
 {
-  if (a6)
+  if (block)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __106__RTCReportingAVCDeprecatedPeriodic_registerPeriodicTaskForModule_needToUpdate_needToReport_serviceBlock___block_invoke;
     block[3] = &unk_2784F1318;
-    v11 = a4;
-    v12 = a5;
+    updateCopy = update;
+    reportCopy = report;
     block[4] = self;
-    block[5] = a6;
-    v10 = a3;
+    block[5] = block;
+    moduleCopy = module;
     dispatch_async(queue, block);
   }
 
-  return a6 != 0;
+  return block != 0;
 }
 
 void __106__RTCReportingAVCDeprecatedPeriodic_registerPeriodicTaskForModule_needToUpdate_needToReport_serviceBlock___block_invoke(uint64_t a1)
@@ -264,7 +264,7 @@ void __106__RTCReportingAVCDeprecatedPeriodic_registerPeriodicTaskForModule_need
   }
 }
 
-- (BOOL)unregisterPeriodTaskForModule:(unsigned int)a3
+- (BOOL)unregisterPeriodTaskForModule:(unsigned int)module
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -272,7 +272,7 @@ void __106__RTCReportingAVCDeprecatedPeriodic_registerPeriodicTaskForModule_need
   v5[2] = __67__RTCReportingAVCDeprecatedPeriodic_unregisterPeriodTaskForModule___block_invoke;
   v5[3] = &unk_2784F1340;
   v5[4] = self;
-  v6 = a3;
+  moduleCopy = module;
   dispatch_sync(queue, v5);
   return 1;
 }

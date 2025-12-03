@@ -1,15 +1,15 @@
 @interface MPSTemporaryMatrix
 + (MPSTemporaryMatrix)temporaryMatrixWithCommandBuffer:(id)commandBuffer matrixDescriptor:(MPSMatrixDescriptor *)matrixDescriptor;
 + (void)prefetchStorageWithCommandBuffer:(id)commandBuffer matrixDescriptorList:(NSArray *)descriptorList;
-- (MPSTemporaryMatrix)initWithCommandBuffer:(id)a3 matrixDescriptor:(id)a4;
+- (MPSTemporaryMatrix)initWithCommandBuffer:(id)buffer matrixDescriptor:(id)descriptor;
 - (void)setReadCount:(NSUInteger)readCount;
 @end
 
 @implementation MPSTemporaryMatrix
 
-- (MPSTemporaryMatrix)initWithCommandBuffer:(id)a3 matrixDescriptor:(id)a4
+- (MPSTemporaryMatrix)initWithCommandBuffer:(id)buffer matrixDescriptor:(id)descriptor
 {
-  if (!a3)
+  if (!buffer)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -19,7 +19,7 @@
     goto LABEL_15;
   }
 
-  if (!a4)
+  if (!descriptor)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -32,7 +32,7 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v8 = objc_msgSend_device(a3, a2, a3, a4, v4);
+  v8 = objc_msgSend_device(buffer, a2, buffer, descriptor, v4);
   MPSDevice = MPSDevice::GetMPSDevice(v8);
   if (!MPSDevice)
   {
@@ -45,7 +45,7 @@ LABEL_10:
 
     v15 = objc_opt_class();
     NSStringFromClass(v15);
-    v20 = objc_msgSend_device(a3, v16, v17, v18, v19);
+    v20 = objc_msgSend_device(buffer, v16, v17, v18, v19);
     objc_msgSend_name(v20, v21, v22, v23, v24);
 LABEL_9:
     MTLReportFailure();
@@ -54,7 +54,7 @@ LABEL_9:
 
   v27.receiver = self;
   v27.super_class = MPSTemporaryMatrix;
-  result = [(MPSMatrix *)&v27 initPrivateWithDescriptor:a4 device:MPSDevice];
+  result = [(MPSMatrix *)&v27 initPrivateWithDescriptor:descriptor device:MPSDevice];
   if (result)
   {
     matrices = result->super._matrices;
@@ -70,7 +70,7 @@ LABEL_9:
     }
 
     v25 = result;
-    MPSAutoBuffer::InitDeferredUsingTextureCache(&result->super._buffer, (rows * matrices), a3, v11, v12);
+    MPSAutoBuffer::InitDeferredUsingTextureCache(&result->super._buffer, (rows * matrices), buffer, v11, v12);
     result = v25;
     v25->super._offset = 0;
     v25->_readCount = 1;
@@ -116,17 +116,17 @@ LABEL_9:
   {
     if (!v3)
     {
-      v5 = self;
+      selfCopy = self;
       v6 = readCount;
       v7 = MTLReportFailureTypeEnabled();
       readCount = v6;
       v8 = v7;
-      self = v5;
+      self = selfCopy;
       if (v8)
       {
         MTLReportFailure();
         readCount = v6;
-        self = v5;
+        self = selfCopy;
       }
     }
 

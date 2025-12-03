@@ -1,31 +1,31 @@
 @interface NowPlayingQueueViewController.CompositionalLayout
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithCoder:(id)a3;
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)a3;
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5;
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSectionProvider:(id)a3;
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)a3 withTargetPosition:(CGPoint)a4;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithCoder:(id)coder;
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)section;
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration;
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSectionProvider:(id)provider;
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)path withTargetPosition:(CGPoint)position;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 @end
 
 @implementation NowPlayingQueueViewController.CompositionalLayout
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  kindCopy = kind;
+  selfCopy = self;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
   v13 = _s19CompositionalLayoutCMa();
-  v16.receiver = v11;
+  v16.receiver = selfCopy;
   v16.super_class = v13;
-  v14 = [(NowPlayingQueueViewController.CompositionalLayout *)&v16 layoutAttributesForSupplementaryViewOfKind:v10 atIndexPath:isa];
+  v14 = [(NowPlayingQueueViewController.CompositionalLayout *)&v16 layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:isa];
 
   if (v14)
   {
@@ -37,13 +37,13 @@
   return v14;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_10056BE24(x, y, width, height);
 
   if (v8)
@@ -60,24 +60,24 @@
   return v9.super.isa;
 }
 
-- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)a3 withTargetPosition:(CGPoint)a4
+- (id)layoutAttributesForInteractivelyMovingItemAtIndexPath:(id)path withTargetPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v16 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = self;
+  selfCopy = self;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
   v13 = _s19CompositionalLayoutCMa();
-  v16.receiver = v11;
+  v16.receiver = selfCopy;
   v16.super_class = v13;
   v14 = [(NowPlayingQueueViewController.CompositionalLayout *)&v16 layoutAttributesForInteractivelyMovingItemAtIndexPath:isa withTargetPosition:x, y];
 
   [v14 frame];
-  if (CGRectGetMinY(v18) < *(&v11->super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController19CompositionalLayout_upNextHeaderMaxY))
+  if (CGRectGetMinY(v18) < *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController19CompositionalLayout_upNextHeaderMaxY))
   {
     [v14 frame];
     [v14 setFrame:?];
@@ -88,27 +88,27 @@
   return v14;
 }
 
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)a3
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)section
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController19CompositionalLayout_upNextHeaderMaxY) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController19CompositionalLayout_dataSource) = 0;
   v5.receiver = self;
   v5.super_class = _s19CompositionalLayoutCMa();
-  return [(NowPlayingQueueViewController.CompositionalLayout *)&v5 initWithSection:a3];
+  return [(NowPlayingQueueViewController.CompositionalLayout *)&v5 initWithSection:section];
 }
 
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)section configuration:(id)configuration
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController19CompositionalLayout_upNextHeaderMaxY) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController19CompositionalLayout_dataSource) = 0;
   v7.receiver = self;
   v7.super_class = _s19CompositionalLayoutCMa();
-  return [(NowPlayingQueueViewController.CompositionalLayout *)&v7 initWithSection:a3 configuration:a4];
+  return [(NowPlayingQueueViewController.CompositionalLayout *)&v7 initWithSection:section configuration:configuration];
 }
 
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSectionProvider:(id)a3
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSectionProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController19CompositionalLayout_upNextHeaderMaxY) = 0;
@@ -129,9 +129,9 @@
   return v7;
 }
 
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(provider);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController19CompositionalLayout_upNextHeaderMaxY) = 0;
@@ -143,24 +143,24 @@
   aBlock[2] = sub_1005A63A8;
   aBlock[3] = &unk_1010B2B98;
   v8 = _Block_copy(aBlock);
-  v9 = a4;
+  configurationCopy = configuration;
 
   v12.receiver = self;
   v12.super_class = _s19CompositionalLayoutCMa();
-  v10 = [(NowPlayingQueueViewController.CompositionalLayout *)&v12 initWithSectionProvider:v8 configuration:v9];
+  v10 = [(NowPlayingQueueViewController.CompositionalLayout *)&v12 initWithSectionProvider:v8 configuration:configurationCopy];
 
   _Block_release(v8);
   return v10;
 }
 
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithCoder:(id)a3
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController19CompositionalLayout_upNextHeaderMaxY) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController19CompositionalLayout_dataSource) = 0;
   v7.receiver = self;
   v7.super_class = _s19CompositionalLayoutCMa();
-  v4 = a3;
-  v5 = [(NowPlayingQueueViewController.CompositionalLayout *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NowPlayingQueueViewController.CompositionalLayout *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -169,9 +169,9 @@
   return v5;
 }
 
-- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)a3 sectionProvider:(id)a4 configuration:(id)a5
+- (_TtCC5Music29NowPlayingQueueViewController19CompositionalLayout)initWithSection:(id)section sectionProvider:(id)provider configuration:(id)configuration
 {
-  v7 = _Block_copy(a4);
+  v7 = _Block_copy(provider);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -184,8 +184,8 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  return sub_10056C808(a3, v7, v8, a5);
+  sectionCopy = section;
+  return sub_10056C808(section, v7, v8, configuration);
 }
 
 @end

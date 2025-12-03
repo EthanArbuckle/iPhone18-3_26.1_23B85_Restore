@@ -10,21 +10,21 @@
   v36 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = a1;
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  selfCopy = self;
+  if (selfCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v10 = [v8 _formatKey];
-    [v9 if_setObjectIfNonNil:v10 forKey:@"formatKey"];
+    _formatKey = [selfCopy _formatKey];
+    [v9 if_setObjectIfNonNil:_formatKey forKey:@"formatKey"];
 
-    v11 = [v8 _table];
-    [v9 if_setObjectIfNonNil:v11 forKey:@"table"];
+    _table = [selfCopy _table];
+    [v9 if_setObjectIfNonNil:_table forKey:@"table"];
 
-    v12 = [v8 _bundleIdentifier];
-    [v9 if_setObjectIfNonNil:v12 forKey:@"bundleIdentifier"];
+    _bundleIdentifier = [selfCopy _bundleIdentifier];
+    [v9 if_setObjectIfNonNil:_bundleIdentifier forKey:@"bundleIdentifier"];
 
-    v13 = [v8 _bundleURL];
-    v14 = [v6 encodeObject:v13];
+    _bundleURL = [selfCopy _bundleURL];
+    v14 = [v6 encodeObject:_bundleURL];
     [v9 if_setObjectIfNonNil:v14 forKey:@"bundleURL"];
 
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -32,8 +32,8 @@
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v16 = [v8 _arguments];
-    v17 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    _arguments = [selfCopy _arguments];
+    v17 = [_arguments countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v17)
     {
       v18 = v17;
@@ -44,14 +44,14 @@
         {
           if (*v32 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(_arguments);
           }
 
           v21 = [v6 encodeObject:*(*(&v31 + 1) + 8 * i)];
           [v15 if_addObjectIfNonNil:v21];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v18 = [_arguments countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v18);
@@ -66,14 +66,14 @@
     v22 = [v15 copy];
 
     [v9 if_setObjectIfNonNil:v22 forKey:@"arguments"];
-    v23 = [v6 _storedConfiguration];
-    v24 = [v23 languageCode];
+    _storedConfiguration = [v6 _storedConfiguration];
+    languageCode = [_storedConfiguration languageCode];
 
-    if (v24)
+    if (languageCode)
     {
-      v25 = [v6 configuration];
-      v26 = [v25 languageCode];
-      v27 = [v8 localizeForLanguage:v26];
+      configuration = [v6 configuration];
+      languageCode2 = [configuration languageCode];
+      v27 = [selfCopy localizeForLanguage:languageCode2];
       [v9 if_setObjectIfNonNil:v27 forKey:@"localizedValue"];
     }
 
@@ -83,7 +83,7 @@
   else
   {
 
-    v28 = v8;
+    v28 = selfCopy;
   }
 
   v29 = *MEMORY[0x1E69E9840];

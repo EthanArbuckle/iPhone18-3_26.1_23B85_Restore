@@ -1,10 +1,10 @@
 @interface MorphunAssetsUtilities
-+ (id)configFileValueForKey:(id)a3;
-+ (id)configurationFromPropertiesFile:(id)a3;
++ (id)configFileValueForKey:(id)key;
++ (id)configurationFromPropertiesFile:(id)file;
 + (id)embeddedLanguages;
 + (id)libmorphunVersion;
 + (id)userSiriXLocales;
-+ (int)compareVersion:(id)a3;
++ (int)compareVersion:(id)version;
 + (void)embeddedLanguages;
 + (void)libmorphunVersion;
 @end
@@ -54,8 +54,8 @@ void __43__MorphunAssetsUtilities_embeddedLanguages__block_invoke()
 + (id)userSiriXLocales
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CEF368] sharedPreferences];
-  v3 = [v2 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
   v4 = MorphunAssetOSLog;
   if (os_log_type_enabled(MorphunAssetOSLog, OS_LOG_TYPE_INFO))
@@ -63,13 +63,13 @@ void __43__MorphunAssetsUtilities_embeddedLanguages__block_invoke()
     *buf = 136315394;
     v12 = "+[MorphunAssetsUtilities userSiriXLocales]";
     v13 = 2114;
-    v14 = v3;
+    v14 = languageCode;
     _os_log_impl(&dword_25AACA000, v4, OS_LOG_TYPE_INFO, "%s AFPreferences returned %{public}@", buf, 0x16u);
   }
 
-  if (v3)
+  if (languageCode)
   {
-    v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v3];
+    v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:languageCode];
     v6 = v5;
     if (v5)
     {
@@ -93,20 +93,20 @@ void __43__MorphunAssetsUtilities_embeddedLanguages__block_invoke()
   return v7;
 }
 
-+ (id)configurationFromPropertiesFile:(id)a3
++ (id)configurationFromPropertiesFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 path];
-  v5 = v4;
-  if (v4)
+  fileCopy = file;
+  path = [fileCopy path];
+  v5 = path;
+  if (path)
   {
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __58__MorphunAssetsUtilities_configurationFromPropertiesFile___block_invoke;
     v13 = &unk_2799224C8;
-    v6 = v4;
+    v6 = path;
     v14 = v6;
-    v15 = v3;
+    v15 = fileCopy;
     if (configurationFromPropertiesFile__oncePredicate != -1)
     {
       dispatch_once(&configurationFromPropertiesFile__oncePredicate, &v10);
@@ -224,18 +224,18 @@ void __58__MorphunAssetsUtilities_configurationFromPropertiesFile___block_invoke
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)configFileValueForKey:(id)a3
++ (id)configFileValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 embeddedPath];
-  v6 = [v5 stringByAppendingPathComponent:@"config.properties"];
+  keyCopy = key;
+  embeddedPath = [self embeddedPath];
+  v6 = [embeddedPath stringByAppendingPathComponent:@"config.properties"];
 
   v7 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v6];
   v8 = [MorphunAssetsUtilities configurationFromPropertiesFile:v7];
   v9 = v8;
   if (v8 && [v8 count])
   {
-    v10 = [v9 objectForKeyedSubscript:v4];
+    v10 = [v9 objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -278,37 +278,37 @@ void __58__MorphunAssetsUtilities_configurationFromPropertiesFile___block_invoke
   return v3;
 }
 
-+ (int)compareVersion:(id)a3
++ (int)compareVersion:(id)version
 {
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"."];
+  versionCopy = version;
+  v4 = [versionCopy componentsSeparatedByString:@"."];
   v5 = +[MorphunAssetsUtilities libmorphunVersion];
   v6 = [v5 componentsSeparatedByString:@"."];
 
   if ([v4 count] >= 2 && objc_msgSend(v6, "count") > 1)
   {
     v10 = [v4 objectAtIndexedSubscript:0];
-    v11 = [v10 intValue];
+    intValue = [v10 intValue];
     v12 = [v6 objectAtIndexedSubscript:0];
-    v13 = [v12 intValue];
+    intValue2 = [v12 intValue];
 
-    if (v11 >= v13)
+    if (intValue >= intValue2)
     {
-      if (v11 == v13)
+      if (intValue == intValue2)
       {
         v14 = [v4 objectAtIndexedSubscript:1];
-        v15 = [v14 intValue];
+        intValue3 = [v14 intValue];
         v16 = [v6 objectAtIndexedSubscript:1];
-        v17 = [v16 intValue];
+        intValue4 = [v16 intValue];
 
-        if (v15 < v17)
+        if (intValue3 < intValue4)
         {
           v8 = -1;
         }
 
         else
         {
-          v8 = v15 != v17;
+          v8 = intValue3 != intValue4;
         }
       }
 
@@ -329,7 +329,7 @@ void __58__MorphunAssetsUtilities_configurationFromPropertiesFile___block_invoke
     v7 = MorphunAssetOSLog;
     if (os_log_type_enabled(MorphunAssetOSLog, OS_LOG_TYPE_ERROR))
     {
-      [(MorphunAssetsUtilities *)v3 compareVersion:v7];
+      [(MorphunAssetsUtilities *)versionCopy compareVersion:v7];
     }
 
     v8 = 0;

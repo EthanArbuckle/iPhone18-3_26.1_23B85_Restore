@@ -1,12 +1,12 @@
 @interface TransactionReceiver
-- (void)receivedTransactions:(id)a3;
+- (void)receivedTransactions:(id)transactions;
 @end
 
 @implementation TransactionReceiver
 
-- (void)receivedTransactions:(id)a3
+- (void)receivedTransactions:(id)transactions
 {
-  if (a3)
+  if (transactions)
   {
     v3 = sub_1B256DC5C();
   }

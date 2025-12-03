@@ -1,17 +1,17 @@
 @interface CNCoreSpotlightSearch
-+ (id)_runQuery:(id)a3 timeout:(double)a4 error:(id *)a5;
-+ (id)executeQuery:(id)a3 protectionClass:(id)a4 bundleID:(id)a5 fetchAttributes:(id)a6 error:(id *)a7;
++ (id)_runQuery:(id)query timeout:(double)timeout error:(id *)error;
++ (id)executeQuery:(id)query protectionClass:(id)class bundleID:(id)d fetchAttributes:(id)attributes error:(id *)error;
 @end
 
 @implementation CNCoreSpotlightSearch
 
-+ (id)executeQuery:(id)a3 protectionClass:(id)a4 bundleID:(id)a5 fetchAttributes:(id)a6 error:(id *)a7
++ (id)executeQuery:(id)query protectionClass:(id)class bundleID:(id)d fetchAttributes:(id)attributes error:(id *)error
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queryCopy = query;
+  classCopy = class;
+  dCopy = d;
+  attributesCopy = attributes;
   v15 = objc_autoreleasePoolPush();
   v35 = 0;
   v36 = &v35;
@@ -32,15 +32,15 @@
   v17 = v16;
   _Block_object_dispose(&v35, 8);
   v18 = objc_opt_new();
-  v40[0] = v12;
+  v40[0] = classCopy;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
   [v18 setProtectionClasses:v19];
 
-  v39 = v13;
+  v39 = dCopy;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
   [v18 setBundleIDs:v20];
 
-  [v18 setFetchAttributes:v14];
+  [v18 setFetchAttributes:attributesCopy];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2050000000;
@@ -59,7 +59,7 @@
 
   v22 = v21;
   _Block_object_dispose(&v35, 8);
-  v23 = [[v21 alloc] initWithQueryString:v11 context:v18];
+  v23 = [[v21 alloc] initWithQueryString:queryCopy context:v18];
   if (v23)
   {
     v29 = 0;
@@ -76,11 +76,11 @@
   objc_autoreleasePoolPop(v15);
   if (v25)
   {
-    if (a7)
+    if (error)
     {
       v26 = v25;
       v27 = 0;
-      *a7 = v25;
+      *error = v25;
     }
 
     else
@@ -97,9 +97,9 @@
   return v27;
 }
 
-+ (id)_runQuery:(id)a3 timeout:(double)a4 error:(id *)a5
++ (id)_runQuery:(id)query timeout:(double)timeout error:(id *)error
 {
-  v7 = a3;
+  queryCopy = query;
   v8 = objc_opt_new();
   v9 = dispatch_group_create();
   v22 = 0;
@@ -114,7 +114,7 @@
   v20[3] = &unk_1E7414D38;
   v10 = v8;
   v21 = v10;
-  [v7 setFoundItemsHandler:v20];
+  [queryCopy setFoundItemsHandler:v20];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __49__CNCoreSpotlightSearch__runQuery_timeout_error___block_invoke_2;
@@ -122,22 +122,22 @@
   v19 = &v22;
   v11 = v9;
   v18 = v11;
-  [v7 setCompletionHandler:v17];
+  [queryCopy setCompletionHandler:v17];
   dispatch_group_enter(v11);
-  [v7 start];
-  v12 = dispatch_time(0, (a4 * 1000000000.0));
+  [queryCopy start];
+  v12 = dispatch_time(0, (timeout * 1000000000.0));
   if (dispatch_group_wait(v11, v12))
   {
-    [v7 cancel];
-    CNSetError(a5, 1001, 0);
+    [queryCopy cancel];
+    CNSetError(error, 1001, 0);
   }
 
-  else if (a5)
+  else if (error)
   {
     v16 = v23[5];
     if (v16)
     {
-      *a5 = [v16 copy];
+      *error = [v16 copy];
     }
   }
 

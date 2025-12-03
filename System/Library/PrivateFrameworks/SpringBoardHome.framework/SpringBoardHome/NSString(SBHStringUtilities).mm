@@ -9,7 +9,7 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 mutableCopy];
+  v8 = [self mutableCopy];
   v9 = [v7 length];
   v10 = [v8 length];
   if (v10)

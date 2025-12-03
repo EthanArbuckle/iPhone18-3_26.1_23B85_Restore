@@ -1,12 +1,12 @@
 @interface BRCMiniCiconia
-- (BOOL)_cleanupOldCiconiaDomains:(id *)a3;
-- (BOOL)_fsRemoveWorkDirectory:(id *)a3;
-- (BOOL)_removeDiagnosticsDirectoryAtURL:(id)a3 withError:(id *)a4;
-- (BOOL)_removeFPDomain:(id)a3 error:(id *)a4;
-- (BOOL)_removeWorkDirectory:(id *)a3;
+- (BOOL)_cleanupOldCiconiaDomains:(id *)domains;
+- (BOOL)_fsRemoveWorkDirectory:(id *)directory;
+- (BOOL)_removeDiagnosticsDirectoryAtURL:(id)l withError:(id *)error;
+- (BOOL)_removeFPDomain:(id)domain error:(id *)error;
+- (BOOL)_removeWorkDirectory:(id *)directory;
 - (BRCMiniCiconia)init;
 - (void)_setupExtensionID;
-- (void)cleanupCiconiaAtURL:(id)a3 diagnosticsURL:(id)a4 completionHandler:(id)a5;
+- (void)cleanupCiconiaAtURL:(id)l diagnosticsURL:(id)rL completionHandler:(id)handler;
 @end
 
 @implementation BRCMiniCiconia
@@ -30,14 +30,14 @@
 
 - (void)_setupExtensionID
 {
-  v3 = [MEMORY[0x277D77BF8] sharedManager];
-  v8 = [v3 currentPersona];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  currentPersona = [mEMORY[0x277D77BF8] currentPersona];
 
-  v4 = [v8 isDataSeparatedPersona];
-  v5 = v4;
+  isDataSeparatedPersona = [currentPersona isDataSeparatedPersona];
+  v5 = isDataSeparatedPersona;
   v6 = @"com.apple.CloudDocs.iCloudDriveFileProvider";
   extensionID = self->_extensionID;
-  if (v4)
+  if (isDataSeparatedPersona)
   {
     v6 = @"com.apple.CloudDocs.iCloudDriveFileProviderManaged";
   }
@@ -47,10 +47,10 @@
   self->_isDataSeparated = v5;
 }
 
-- (BOOL)_removeFPDomain:(id)a3 error:(id *)a4
+- (BOOL)_removeFPDomain:(id)domain error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  domainCopy = domain;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -63,7 +63,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    *v38 = v5;
+    *v38 = domainCopy;
     *&v38[8] = 2112;
     *&v38[10] = v7;
     _os_log_debug_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] Will remove domain: %@%@", buf, 0x16u);
@@ -80,7 +80,7 @@
     v26[2] = __40__BRCMiniCiconia__removeFPDomain_error___block_invoke;
     v26[3] = &unk_278505280;
     v30 = v9;
-    v13 = v5;
+    v13 = domainCopy;
     v27 = v13;
     v29 = &v31;
     v14 = v6;
@@ -96,7 +96,7 @@
         *buf = 67109634;
         *v38 = v9;
         *&v38[4] = 2112;
-        *&v38[6] = v5;
+        *&v38[6] = domainCopy;
         *&v38[14] = 2112;
         *&v38[16] = v16;
         _os_log_impl(&dword_223E7A000, v17, OS_LOG_TYPE_DEFAULT, "[WARNING] %d: removeDomain:%@ timed out%@", buf, 0x1Cu);
@@ -123,9 +123,9 @@
 
 LABEL_13:
   v21 = v32[5];
-  if (a4 && v21)
+  if (error && v21)
   {
-    *a4 = v21;
+    *error = v21;
     v21 = v32[5];
   }
 
@@ -170,7 +170,7 @@ void __40__BRCMiniCiconia__removeFPDomain_error___block_invoke(uint64_t a1, void
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_cleanupOldCiconiaDomains:(id *)a3
+- (BOOL)_cleanupOldCiconiaDomains:(id *)domains
 {
   v59 = *MEMORY[0x277D85DE8];
   v3 = brc_bread_crumbs();
@@ -267,11 +267,11 @@ LABEL_9:
             v21 = brc_default_log();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [v19 fp_prettyDescription];
+              fp_prettyDescription = [v19 fp_prettyDescription];
               *buf = 138412802;
               v53 = v15;
               v54 = 2112;
-              v55 = v22;
+              v55 = fp_prettyDescription;
               v56 = 2112;
               v57 = v20;
               _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_DEFAULT, "[WARNING] Failed to remove old domain %@: %@%@", buf, 0x20u);
@@ -289,10 +289,10 @@ LABEL_9:
   }
 
   v23 = v47[5];
-  if (a3 && v23)
+  if (domains && v23)
   {
     v23 = v23;
-    *a3 = v23;
+    *domains = v23;
   }
 
   v24 = v23 == 0;
@@ -338,26 +338,26 @@ void __44__BRCMiniCiconia__cleanupOldCiconiaDomains___block_invoke(uint64_t a1, 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_removeDiagnosticsDirectoryAtURL:(id)a3 withError:(id *)a4
+- (BOOL)_removeDiagnosticsDirectoryAtURL:(id)l withError:(id *)error
 {
-  v5 = [a3 path];
-  v6 = BRCRecursiveRemove(v5);
+  path = [l path];
+  v6 = BRCRecursiveRemove(path);
 
-  if (a4 && v6 < 0)
+  if (error && v6 < 0)
   {
-    *a4 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:*__error()];
+    *error = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:*__error()];
   }
 
   return v6 >= 0;
 }
 
-- (BOOL)_fsRemoveWorkDirectory:(id *)a3
+- (BOOL)_fsRemoveWorkDirectory:(id *)directory
 {
   v5 = 5;
   while (1)
   {
-    v6 = [(NSURL *)self->_targetURL path];
-    v7 = BRCRemoveFolder(v6, 0, 0, 1);
+    path = [(NSURL *)self->_targetURL path];
+    v7 = BRCRemoveFolder(path, 0, 0, 1);
 
     if ((v7 & 0x80000000) == 0)
     {
@@ -374,9 +374,9 @@ void __44__BRCMiniCiconia__cleanupOldCiconiaDomains___block_invoke(uint64_t a1, 
       }
     }
 
-    if (a3)
+    if (directory)
     {
-      *a3 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:v8];
+      *directory = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:v8];
     }
 
     return v7 >= 0;
@@ -385,7 +385,7 @@ void __44__BRCMiniCiconia__cleanupOldCiconiaDomains___block_invoke(uint64_t a1, 
   return v7 >= 0;
 }
 
-- (BOOL)_removeWorkDirectory:(id *)a3
+- (BOOL)_removeWorkDirectory:(id *)directory
 {
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
@@ -415,8 +415,8 @@ void __44__BRCMiniCiconia__cleanupOldCiconiaDomains___block_invoke(uint64_t a1, 
         [(BRCMiniCiconia *)v13 _removeWorkDirectory:v14, v15];
       }
 
-      v16 = [v13 path];
-      v17 = BRCRemoveFolder(v16, 0, 0, 1);
+      path = [v13 path];
+      v17 = BRCRemoveFolder(path, 0, 0, 1);
 
       if (v17 < 0)
       {
@@ -443,12 +443,12 @@ void __44__BRCMiniCiconia__cleanupOldCiconiaDomains___block_invoke(uint64_t a1, 
     }
   }
 
-  if ([(BRCMiniCiconia *)self _fsRemoveWorkDirectory:a3])
+  if ([(BRCMiniCiconia *)self _fsRemoveWorkDirectory:directory])
   {
     return 1;
   }
 
-  if ([*a3 br_isPOSIXErrorCode:2])
+  if ([*directory br_isPOSIXErrorCode:2])
   {
     return 0;
   }
@@ -462,18 +462,18 @@ void __44__BRCMiniCiconia__cleanupOldCiconiaDomains___block_invoke(uint64_t a1, 
 
   v24 = [(NSURL *)self->_targetURL URLByAppendingPathComponent:@"files"];
   fpfs_enable_fault_handling();
-  v25 = [v24 path];
-  MEMORY[0x22AA49E00]([v25 fileSystemRepresentation], 0);
+  path2 = [v24 path];
+  MEMORY[0x22AA49E00]([path2 fileSystemRepresentation], 0);
 
-  v21 = [(BRCMiniCiconia *)self _fsRemoveWorkDirectory:a3];
+  v21 = [(BRCMiniCiconia *)self _fsRemoveWorkDirectory:directory];
   return v21;
 }
 
-- (void)cleanupCiconiaAtURL:(id)a3 diagnosticsURL:(id)a4 completionHandler:(id)a5
+- (void)cleanupCiconiaAtURL:(id)l diagnosticsURL:(id)rL completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -481,12 +481,12 @@ void __44__BRCMiniCiconia__cleanupOldCiconiaDomains___block_invoke(uint64_t a1, 
   block[2] = __71__BRCMiniCiconia_cleanupCiconiaAtURL_diagnosticsURL_completionHandler___block_invoke;
   block[3] = &unk_2785052D0;
   objc_copyWeak(&v19, &location);
-  v17 = v9;
-  v18 = v10;
-  v16 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v17 = rLCopy;
+  v18 = handlerCopy;
+  v16 = lCopy;
+  v12 = rLCopy;
+  v13 = lCopy;
+  v14 = handlerCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v19);

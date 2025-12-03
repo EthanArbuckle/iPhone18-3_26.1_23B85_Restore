@@ -1,18 +1,18 @@
 @interface SUScriptSectionsController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (SUScriptSection)selectedSection;
 - (SUScriptSectionsController)init;
-- (id)_copySectionWithIdentifier:(id)a3;
+- (id)_copySectionWithIdentifier:(id)identifier;
 - (id)_fixedSelectedIdentifier;
 - (id)scriptAttributeKeys;
-- (id)sectionWithIdentifier:(id)a3;
+- (id)sectionWithIdentifier:(id)identifier;
 - (id)sections;
-- (void)_setSelectedIdentifier:(id)a3;
+- (void)_setSelectedIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)setRootViewController:(id)a3 forSection:(id)a4;
-- (void)setSelectedSection:(id)a3;
+- (void)setRootViewController:(id)controller forSection:(id)section;
+- (void)setSelectedSection:(id)section;
 @end
 
 @implementation SUScriptSectionsController
@@ -38,7 +38,7 @@
   [(SUScriptObject *)&v3 dealloc];
 }
 
-- (id)sectionWithIdentifier:(id)a3
+- (id)sectionWithIdentifier:(id)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -60,15 +60,15 @@
   v3 = v8[5];
   if (v3)
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v7, 8);
   return v5;
 }
@@ -146,15 +146,15 @@ uint64_t __38__SUScriptSectionsController_sections__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -171,15 +171,15 @@ uint64_t __45__SUScriptSectionsController_selectedSection__block_invoke(uint64_t
   return result;
 }
 
-- (void)setSelectedSection:(id)a3
+- (void)setSelectedSection:(id)section
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(a3 "identifier")])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(section "identifier")])
   {
-    v5 = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
-    v6 = [a3 identifier];
+    webThreadMainThreadBatchProxy = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
+    identifier = [section identifier];
 
-    [v5 _setSelectedIdentifier:v6];
+    [webThreadMainThreadBatchProxy _setSelectedIdentifier:identifier];
   }
 
   else
@@ -190,7 +190,7 @@ uint64_t __45__SUScriptSectionsController_selectedSection__block_invoke(uint64_t
   }
 }
 
-- (void)setRootViewController:(id)a3 forSection:(id)a4
+- (void)setRootViewController:(id)controller forSection:(id)section
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -221,15 +221,15 @@ uint64_t __63__SUScriptSectionsController_setRootViewController_forSection___blo
   return result;
 }
 
-- (id)_copySectionWithIdentifier:(id)a3
+- (id)_copySectionWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(SUTabBarController *)[(SUClientInterface *)[(SUScriptObject *)self clientInterface] tabBarController] sections];
+  sections = [(SUTabBarController *)[(SUClientInterface *)[(SUScriptObject *)self clientInterface] tabBarController] sections];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [(NSArray *)sections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -240,11 +240,11 @@ uint64_t __63__SUScriptSectionsController_setRootViewController_forSection___blo
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sections);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([a3 isEqualToString:{objc_msgSend(v10, "identifier")}])
+        if ([identifier isEqualToString:{objc_msgSend(v10, "identifier")}])
         {
           v11 = [[SUScriptSection alloc] initWithNativeSection:v10];
           [(SUScriptObject *)self checkInScriptObject:v11];
@@ -252,7 +252,7 @@ uint64_t __63__SUScriptSectionsController_setRootViewController_forSection___blo
         }
       }
 
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [(NSArray *)sections countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -268,7 +268,7 @@ uint64_t __63__SUScriptSectionsController_setRootViewController_forSection___blo
 - (id)_fixedSelectedIdentifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(SUTabBarController *)[(SUClientInterface *)[(SUScriptObject *)self clientInterface] tabBarController] selectedIdentifier];
+  selectedIdentifier = [(SUTabBarController *)[(SUClientInterface *)[(SUScriptObject *)self clientInterface] tabBarController] selectedIdentifier];
   v4 = [-[SUScriptObject invocationBatch:](self invocationBatch:{0), "copyQueuedInvocationsForObject:", self}];
   v12 = 0u;
   v13 = 0u;
@@ -296,7 +296,7 @@ uint64_t __63__SUScriptSectionsController_setRootViewController_forSection___blo
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v3 = v11;
+            selectedIdentifier = v11;
           }
         }
       }
@@ -307,37 +307,37 @@ uint64_t __63__SUScriptSectionsController_setRootViewController_forSection___blo
     while (v6);
   }
 
-  return v3;
+  return selectedIdentifier;
 }
 
-- (void)_setSelectedIdentifier:(id)a3
+- (void)_setSelectedIdentifier:(id)identifier
 {
-  v4 = [(SUClientInterface *)[(SUScriptObject *)self clientInterface] tabBarController];
+  tabBarController = [(SUClientInterface *)[(SUScriptObject *)self clientInterface] tabBarController];
 
-  [(SUTabBarController *)v4 setSelectedIdentifier:a3];
+  [(SUTabBarController *)tabBarController setSelectedIdentifier:identifier];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_24 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptSectionsController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_19, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_19, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptSectionsController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -347,14 +347,14 @@ uint64_t __63__SUScriptSectionsController_setRootViewController_forSection___blo
 {
   v4.receiver = self;
   v4.super_class = SUScriptSectionsController;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_24 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_24 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_19 = sel_sectionWithIdentifier_;
     *algn_1EBF3AC58 = @"sectionWithIdentifier";

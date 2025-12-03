@@ -1,40 +1,40 @@
 @interface INRelevantShortcutStore
 + (INRelevantShortcutStore)defaultStore;
-- (INRelevantShortcutStore)initWithSearchableIndex:(id)a3;
-- (void)setRelevantShortcuts:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5;
+- (INRelevantShortcutStore)initWithSearchableIndex:(id)index;
+- (void)setRelevantShortcuts:(id)shortcuts forBundleIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation INRelevantShortcutStore
 
-- (void)setRelevantShortcuts:(id)a3 forBundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setRelevantShortcuts:(id)shortcuts forBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] > 0x64)
+  shortcutsCopy = shortcuts;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([shortcutsCopy count] > 0x64)
   {
     NSLog(@"WARNING: Too many INRelevantShortcuts; only using the first %lu", 100);
-    v11 = [v8 subarrayWithRange:{0, 100}];
+    v11 = [shortcutsCopy subarrayWithRange:{0, 100}];
   }
 
   else
   {
-    v11 = v8;
+    v11 = shortcutsCopy;
   }
 
   v12 = v11;
   v13 = dispatch_group_create();
   v14 = objc_opt_new();
-  v15 = [MEMORY[0x1E696AE08] strongObjectsPointerArray];
-  [v15 setCount:{objc_msgSend(v12, "count")}];
+  strongObjectsPointerArray = [MEMORY[0x1E696AE08] strongObjectsPointerArray];
+  [strongObjectsPointerArray setCount:{objc_msgSend(v12, "count")}];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __86__INRelevantShortcutStore_setRelevantShortcuts_forBundleIdentifier_completionHandler___block_invoke;
   v28[3] = &unk_1E727E280;
   v29 = v13;
-  v30 = self;
+  selfCopy = self;
   v31 = v14;
-  v16 = v15;
+  v16 = strongObjectsPointerArray;
   v32 = v16;
   v17 = v14;
   v18 = v13;
@@ -45,11 +45,11 @@
   block[2] = __86__INRelevantShortcutStore_setRelevantShortcuts_forBundleIdentifier_completionHandler___block_invoke_12;
   block[3] = &unk_1E7285680;
   v24 = v16;
-  v25 = self;
-  v26 = v9;
-  v27 = v10;
-  v20 = v10;
-  v21 = v9;
+  selfCopy2 = self;
+  v26 = identifierCopy;
+  v27 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = identifierCopy;
   v22 = v16;
   dispatch_group_notify(v18, v19, block);
 }
@@ -167,16 +167,16 @@ void __86__INRelevantShortcutStore_setRelevantShortcuts_forBundleIdentifier_comp
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (INRelevantShortcutStore)initWithSearchableIndex:(id)a3
+- (INRelevantShortcutStore)initWithSearchableIndex:(id)index
 {
-  v5 = a3;
+  indexCopy = index;
   v10.receiver = self;
   v10.super_class = INRelevantShortcutStore;
   v6 = [(INRelevantShortcutStore *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_index, a3);
+    objc_storeStrong(&v6->_index, index);
     v8 = v7;
   }
 
@@ -189,7 +189,7 @@ void __86__INRelevantShortcutStore_setRelevantShortcuts_forBundleIdentifier_comp
   block[1] = 3221225472;
   block[2] = __39__INRelevantShortcutStore_defaultStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultStore_onceToken != -1)
   {
     dispatch_once(&defaultStore_onceToken, block);

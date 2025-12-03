@@ -9,12 +9,12 @@
 {
   if (a3)
   {
-    [a1 _bezierPathWithPillRect:? cornerRadius:?];
+    [self _bezierPathWithPillRect:? cornerRadius:?];
   }
 
   else
   {
-    [a1 _bezierPathWithArcRoundedRect:? cornerRadius:?];
+    [self _bezierPathWithArcRoundedRect:? cornerRadius:?];
   }
   v3 = ;
 
@@ -34,27 +34,27 @@
   v26 = a8;
   v21 = MaxY - a8;
   v22 = a6;
-  v23 = [a1 bezierPath];
-  [v23 moveToPoint:{a6, 0.0}];
-  [v23 addLineToPoint:{MaxX - a7, 0.0}];
-  [v23 addQuadCurveToPoint:MaxX controlPoint:{a7, MaxX, 0.0}];
+  bezierPath = [self bezierPath];
+  [bezierPath moveToPoint:{a6, 0.0}];
+  [bezierPath addLineToPoint:{MaxX - a7, 0.0}];
+  [bezierPath addQuadCurveToPoint:MaxX controlPoint:{a7, MaxX, 0.0}];
   if (v19 != a7)
   {
-    [v23 addLineToPoint:{MaxX, v19}];
+    [bezierPath addLineToPoint:{MaxX, v19}];
   }
 
-  [v23 addQuadCurveToPoint:v20 controlPoint:{MaxY, MaxX, MaxY, *&a6}];
-  [v23 addLineToPoint:{v26, MaxY}];
-  [v23 addQuadCurveToPoint:0.0 controlPoint:{v21, 0.0, MaxY}];
+  [bezierPath addQuadCurveToPoint:v20 controlPoint:{MaxY, MaxX, MaxY, *&a6}];
+  [bezierPath addLineToPoint:{v26, MaxY}];
+  [bezierPath addQuadCurveToPoint:0.0 controlPoint:{v21, 0.0, MaxY}];
   if (v21 != v22)
   {
-    [v23 addLineToPoint:{0.0, v22}];
+    [bezierPath addLineToPoint:{0.0, v22}];
   }
 
-  [v23 addQuadCurveToPoint:v22 controlPoint:{0.0, 0.0, 0.0}];
-  [v23 setLineJoinStyle:1];
+  [bezierPath addQuadCurveToPoint:v22 controlPoint:{0.0, 0.0, 0.0}];
+  [bezierPath setLineJoinStyle:1];
 
-  return v23;
+  return bezierPath;
 }
 
 @end

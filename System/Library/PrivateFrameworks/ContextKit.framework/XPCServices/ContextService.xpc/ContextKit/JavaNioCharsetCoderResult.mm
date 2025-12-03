@@ -1,6 +1,6 @@
 @interface JavaNioCharsetCoderResult
 + (void)initialize;
-- (JavaNioCharsetCoderResult)initWithInt:(int)a3 withInt:(int)a4;
+- (JavaNioCharsetCoderResult)initWithInt:(int)int withInt:(int)withInt;
 - (id)description;
 - (int)length;
 - (void)throwException;
@@ -8,10 +8,10 @@
 
 @implementation JavaNioCharsetCoderResult
 
-- (JavaNioCharsetCoderResult)initWithInt:(int)a3 withInt:(int)a4
+- (JavaNioCharsetCoderResult)initWithInt:(int)int withInt:(int)withInt
 {
-  self->type_ = a3;
-  self->length_ = a4;
+  self->type_ = int;
+  self->length_ = withInt;
   return self;
 }
 
@@ -101,7 +101,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaNioCharsetCoderResult alloc];
     *&v2->type_ = 1;

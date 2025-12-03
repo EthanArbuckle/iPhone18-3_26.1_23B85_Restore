@@ -1,47 +1,47 @@
 @interface NTKProteusWave
-+ (double)clockwiseDistance:(double)a3 fromStartAngle:(double)a4;
-+ (double)counterclockwiseDistance:(double)a3 fromStartAngle:(double)a4;
-+ (double)distance:(double)a3 fromStartAngle:(double)a4;
++ (double)clockwiseDistance:(double)distance fromStartAngle:(double)angle;
++ (double)counterclockwiseDistance:(double)distance fromStartAngle:(double)angle;
++ (double)distance:(double)distance fromStartAngle:(double)angle;
 + (double)normalizeAngle:(double)result;
-+ (id)waveWithSpeed:(double)a3 easeInDuration:(double)a4 easeOutDuration:(double)a5 direction:(unint64_t)a6;
-- (NTKProteusWave)initWithSpeed:(double)a3 easeInDuration:(double)a4 easeOutDuration:(double)a5 direction:(unint64_t)a6;
-- (double)_distance:(double)a3 fromStartAngle:(double)a4;
-- (double)waveAtAngle:(double)a3 atTime:(double)a4 startAngle:(double)a5 endAngle:(double)a6 startTime:(double)a7 endTime:(double)a8;
++ (id)waveWithSpeed:(double)speed easeInDuration:(double)duration easeOutDuration:(double)outDuration direction:(unint64_t)direction;
+- (NTKProteusWave)initWithSpeed:(double)speed easeInDuration:(double)duration easeOutDuration:(double)outDuration direction:(unint64_t)direction;
+- (double)_distance:(double)_distance fromStartAngle:(double)angle;
+- (double)waveAtAngle:(double)angle atTime:(double)time startAngle:(double)startAngle endAngle:(double)endAngle startTime:(double)startTime endTime:(double)endTime;
 @end
 
 @implementation NTKProteusWave
 
-+ (id)waveWithSpeed:(double)a3 easeInDuration:(double)a4 easeOutDuration:(double)a5 direction:(unint64_t)a6
++ (id)waveWithSpeed:(double)speed easeInDuration:(double)duration easeOutDuration:(double)outDuration direction:(unint64_t)direction
 {
-  v6 = [[NTKProteusWave alloc] initWithSpeed:a6 easeInDuration:a3 easeOutDuration:a4 direction:a5];
+  v6 = [[NTKProteusWave alloc] initWithSpeed:direction easeInDuration:speed easeOutDuration:duration direction:outDuration];
 
   return v6;
 }
 
-- (NTKProteusWave)initWithSpeed:(double)a3 easeInDuration:(double)a4 easeOutDuration:(double)a5 direction:(unint64_t)a6
+- (NTKProteusWave)initWithSpeed:(double)speed easeInDuration:(double)duration easeOutDuration:(double)outDuration direction:(unint64_t)direction
 {
   v11.receiver = self;
   v11.super_class = NTKProteusWave;
   result = [(NTKProteusWave *)&v11 init];
   if (result)
   {
-    result->_propagationSpeed = a3;
-    result->_easeInDuration = a4;
-    result->_easeOutDuration = a5;
-    result->_direction = a6;
+    result->_propagationSpeed = speed;
+    result->_easeInDuration = duration;
+    result->_easeOutDuration = outDuration;
+    result->_direction = direction;
   }
 
   return result;
 }
 
-- (double)waveAtAngle:(double)a3 atTime:(double)a4 startAngle:(double)a5 endAngle:(double)a6 startTime:(double)a7 endTime:(double)a8
+- (double)waveAtAngle:(double)angle atTime:(double)time startAngle:(double)startAngle endAngle:(double)endAngle startTime:(double)startTime endTime:(double)endTime
 {
-  if (a4 < a7 || a4 > a8)
+  if (time < startTime || time > endTime)
   {
     return -0.0;
   }
 
-  [(NTKProteusWave *)self _distance:a3 fromStartAngle:a5];
+  [(NTKProteusWave *)self _distance:angle fromStartAngle:startAngle];
   v15 = v14;
   [(NTKProteusWave *)self propagationSpeed];
   v17 = v15 / v16;
@@ -49,15 +49,15 @@
   v19 = v18;
   [(NTKProteusWave *)self easeOutDuration];
   v21 = v20;
-  v22 = a4 - v17;
+  v22 = time - v17;
   result = 0.0;
-  if (v22 >= a7)
+  if (v22 >= startTime)
   {
-    v23 = v22 - a7;
+    v23 = v22 - startTime;
     [(NTKProteusWave *)self easeInDuration];
     if (v23 >= v24)
     {
-      v27 = a8 - v21 + -3.14159265 / v19;
+      v27 = endTime - v21 + -3.14159265 / v19;
       result = 1.0;
       if (v22 >= v27)
       {
@@ -86,59 +86,59 @@
   return result;
 }
 
-- (double)_distance:(double)a3 fromStartAngle:(double)a4
+- (double)_distance:(double)_distance fromStartAngle:(double)angle
 {
-  v6 = [(NTKProteusWave *)self direction];
-  switch(v6)
+  direction = [(NTKProteusWave *)self direction];
+  switch(direction)
   {
     case 2uLL:
 
-      [NTKProteusWave distance:a3 fromStartAngle:a4];
+      [NTKProteusWave distance:_distance fromStartAngle:angle];
       break;
     case 1uLL:
 
-      [NTKProteusWave counterclockwiseDistance:a3 fromStartAngle:a4];
+      [NTKProteusWave counterclockwiseDistance:_distance fromStartAngle:angle];
       break;
     case 0uLL:
 
-      [NTKProteusWave clockwiseDistance:a3 fromStartAngle:a4];
+      [NTKProteusWave clockwiseDistance:_distance fromStartAngle:angle];
       break;
   }
 
   return result;
 }
 
-+ (double)clockwiseDistance:(double)a3 fromStartAngle:(double)a4
++ (double)clockwiseDistance:(double)distance fromStartAngle:(double)angle
 {
-  if (a3 <= a4)
+  if (distance <= angle)
   {
-    return a4 - a3;
+    return angle - distance;
   }
 
   else
   {
-    return a4 - a3 + 6.28318531;
+    return angle - distance + 6.28318531;
   }
 }
 
-+ (double)counterclockwiseDistance:(double)a3 fromStartAngle:(double)a4
++ (double)counterclockwiseDistance:(double)distance fromStartAngle:(double)angle
 {
-  if (a3 >= a4)
+  if (distance >= angle)
   {
-    return a3 - a4;
+    return distance - angle;
   }
 
   else
   {
-    return a3 - a4 + 6.28318531;
+    return distance - angle + 6.28318531;
   }
 }
 
-+ (double)distance:(double)a3 fromStartAngle:(double)a4
++ (double)distance:(double)distance fromStartAngle:(double)angle
 {
   [NTKProteusWave clockwiseDistance:"clockwiseDistance:fromStartAngle:" fromStartAngle:?];
   v7 = v6;
-  [NTKProteusWave counterclockwiseDistance:a3 fromStartAngle:a4];
+  [NTKProteusWave counterclockwiseDistance:distance fromStartAngle:angle];
   if (v7 < result)
   {
     return v7;

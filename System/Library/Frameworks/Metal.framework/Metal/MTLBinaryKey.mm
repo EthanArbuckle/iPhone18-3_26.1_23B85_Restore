@@ -1,8 +1,8 @@
 @interface MTLBinaryKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToKey:(id)a3;
-- (MTLBinaryKey)initWithHash:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToKey:(id)key;
+- (MTLBinaryKey)initWithHash:(const void *)hash;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -31,7 +31,7 @@
   return [v3 stringByAppendingFormat:@" %@", MTLHashKey::description(self->_id)];
 }
 
-- (MTLBinaryKey)initWithHash:(const void *)a3
+- (MTLBinaryKey)initWithHash:(const void *)hash
 {
   v4.receiver = self;
   v4.super_class = MTLBinaryKey;
@@ -43,15 +43,15 @@
   return 0;
 }
 
-- (BOOL)isEqualToKey:(id)a3
+- (BOOL)isEqualToKey:(id)key
 {
   id = self->_id;
-  v4 = [a3 getFunctionId];
+  getFunctionId = [key getFunctionId];
 
-  return MTLHashKey::operator==(id, v4);
+  return MTLHashKey::operator==(id, getFunctionId);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -59,10 +59,10 @@
     return 0;
   }
 
-  return [(MTLBinaryKey *)self isEqualToKey:a3];
+  return [(MTLBinaryKey *)self isEqualToKey:equal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MTLBinaryKey alloc];
   id = self->_id;

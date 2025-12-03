@@ -1,53 +1,53 @@
 @interface BSUIAudiobookControlView
-+ (id)renderModelWithIdentifier:(id)a3 dynamicProgress:(id)a4 dynamicState:(id)a5;
-- (BSUIAudiobookControlView)initWithFrame:(CGRect)a3;
++ (id)renderModelWithIdentifier:(id)identifier dynamicProgress:(id)progress dynamicState:(id)state;
+- (BSUIAudiobookControlView)initWithFrame:(CGRect)frame;
 - (void)_updatePlayState;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
-- (void)dynamicProgressChanged:(id)a3;
-- (void)togglePlayPause:(id)a3;
+- (void)dynamicProgressChanged:(id)changed;
+- (void)togglePlayPause:(id)pause;
 @end
 
 @implementation BSUIAudiobookControlView
 
-+ (id)renderModelWithIdentifier:(id)a3 dynamicProgress:(id)a4 dynamicState:(id)a5
++ (id)renderModelWithIdentifier:(id)identifier dynamicProgress:(id)progress dynamicState:(id)state
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  stateCopy = state;
+  progressCopy = progress;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(_BSUIAudiobookControlRenderModel);
-  [(_BSUIAudiobookControlRenderModel *)v10 setDynamicAudiobookProgress:v8];
+  [(_BSUIAudiobookControlRenderModel *)v10 setDynamicAudiobookProgress:progressCopy];
 
-  [(_BSUIAudiobookControlRenderModel *)v10 setDynamicState:v7];
-  v11 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"BSUIReuseIdentifierAudiobookControlView" identifier:v9 submodel:v10];
+  [(_BSUIAudiobookControlRenderModel *)v10 setDynamicState:stateCopy];
+  v11 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"BSUIReuseIdentifierAudiobookControlView" identifier:identifierCopy submodel:v10];
 
   return v11;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v18.receiver = self;
   v18.super_class = BSUIAudiobookControlView;
-  [(BSUIAudiobookControlView *)&v18 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
-  v6 = [v5 submodel];
+  [(BSUIAudiobookControlView *)&v18 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
+  submodel = [renderModel submodel];
   renderModel = self->_renderModel;
-  self->_renderModel = v6;
+  self->_renderModel = submodel;
 
-  v8 = [(_BSUIAudiobookControlRenderModel *)self->_renderModel dynamicAudiobookProgress];
+  dynamicAudiobookProgress = [(_BSUIAudiobookControlRenderModel *)self->_renderModel dynamicAudiobookProgress];
   dynamicAudiobookProgress = self->_dynamicAudiobookProgress;
-  self->_dynamicAudiobookProgress = v8;
+  self->_dynamicAudiobookProgress = dynamicAudiobookProgress;
 
-  v10 = [(_BSUIAudiobookControlRenderModel *)self->_renderModel dynamicState];
+  dynamicState = [(_BSUIAudiobookControlRenderModel *)self->_renderModel dynamicState];
   dynamicState = self->_dynamicState;
-  self->_dynamicState = v10;
+  self->_dynamicState = dynamicState;
 
-  v12 = [(BSUIAudiobookControlView *)self dynamicAudiobookProgress];
-  [v12 registerProgressObserver:self];
+  dynamicAudiobookProgress2 = [(BSUIAudiobookControlView *)self dynamicAudiobookProgress];
+  [dynamicAudiobookProgress2 registerProgressObserver:self];
 
   objc_opt_class();
-  v13 = [(BSUIAudiobookControlView *)self dynamicState];
+  dynamicState2 = [(BSUIAudiobookControlView *)self dynamicState];
   v14 = TUIDynamicCast();
   dynamicValue = self->_dynamicValue;
   self->_dynamicValue = v14;
@@ -59,11 +59,11 @@
   [(BSUIAudiobookControlView *)self _updatePlayState];
 }
 
-- (BSUIAudiobookControlView)initWithFrame:(CGRect)a3
+- (BSUIAudiobookControlView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = BSUIAudiobookControlView;
-  v3 = [(BSUIAudiobookControlView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BSUIAudiobookControlView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [BSUIAudiobookControl alloc];
@@ -82,15 +82,15 @@
 
 - (void)dealloc
 {
-  v3 = [(BSUIAudiobookControlView *)self dynamicAudiobookProgress];
-  [v3 unregisterProgressObserver:self];
+  dynamicAudiobookProgress = [(BSUIAudiobookControlView *)self dynamicAudiobookProgress];
+  [dynamicAudiobookProgress unregisterProgressObserver:self];
 
   v4.receiver = self;
   v4.super_class = BSUIAudiobookControlView;
   [(BSUIAudiobookControlView *)&v4 dealloc];
 }
 
-- (void)togglePlayPause:(id)a3
+- (void)togglePlayPause:(id)pause
 {
   if (objc_opt_respondsToSelector())
   {
@@ -110,10 +110,10 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)dynamicProgressChanged:(id)a3
+- (void)dynamicProgressChanged:(id)changed
 {
-  v5 = [a3 progress];
-  [v5 floatValue];
+  progress = [changed progress];
+  [progress floatValue];
   [(BSUIAudiobookControl *)self->_audiobookControl setProgress:v4];
 }
 

@@ -1,14 +1,14 @@
 @interface TSCrossPlatformTargetAuthFlow
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
-- (void)backButtonClicked:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
+- (void)backButtonClicked:(id)clicked;
 - (void)deactiveCrossPlatformTransport;
 - (void)firstViewController;
-- (void)firstViewController:(id)a3;
-- (void)showQRCodePane:(id)a3;
-- (void)transferEventUpdate:(id)a3;
+- (void)firstViewController:(id)controller;
+- (void)showQRCodePane:(id)pane;
+- (void)transferEventUpdate:(id)update;
 - (void)userDidTapCancel;
-- (void)viewControllerDidComplete:(id)a3;
+- (void)viewControllerDidComplete:(id)complete;
 @end
 
 @implementation TSCrossPlatformTargetAuthFlow
@@ -24,11 +24,11 @@
   return 0;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     v5 = +[DCTCodeManager shared];
     [v5 setCode:0];
@@ -46,7 +46,7 @@
 
     [(CrossPlatformTargetQRCodeWarningViewController *)v6 setDelegate:self];
     [(TSSIMSetupFlow *)self setTopViewController:v6];
-    v4[2](v4, v6);
+    controllerCopy[2](controllerCopy, v6);
   }
 
   else
@@ -61,9 +61,9 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showQRCodePane:(id)a3
+- (void)showQRCodePane:(id)pane
 {
-  v4 = a3;
+  paneCopy = pane;
   objc_initWeak(&location, self);
   client = self->_client;
   v7[0] = MEMORY[0x277D85DD0];
@@ -71,7 +71,7 @@
   v7[2] = __48__TSCrossPlatformTargetAuthFlow_showQRCodePane___block_invoke;
   v7[3] = &unk_279B44E30;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = paneCopy;
   v8 = v6;
   [(CoreTelephonyClient *)client activateCrossPlatformTransport:2 completion:v7];
 
@@ -152,9 +152,9 @@ LABEL_7:
   v9();
 }
 
-- (void)backButtonClicked:(id)a3
+- (void)backButtonClicked:(id)clicked
 {
-  v4 = a3;
+  clickedCopy = clicked;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -204,10 +204,10 @@ void __63__TSCrossPlatformTargetAuthFlow_deactiveCrossPlatformTransport__block_i
   [(TSSIMSetupFlow *)&v3 userDidTapCancel];
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -219,7 +219,7 @@ void __63__TSCrossPlatformTargetAuthFlow_deactiveCrossPlatformTransport__block_i
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = fromCopy;
       if ([v6 isOtherButtonTapped])
       {
         v5 = objc_alloc_init(CrossPlatformShowManualDetailsViewController);
@@ -233,8 +233,8 @@ void __63__TSCrossPlatformTargetAuthFlow_deactiveCrossPlatformTransport__block_i
         v18[0] = &unk_287583A48;
         v18[1] = MEMORY[0x277CBEC28];
         v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-        v12 = [v6 navigationController];
-        v5 = [(TSSubFlowViewController *)v10 initWithOptions:v11 navigationController:v12 delegate:self];
+        navigationController = [v6 navigationController];
+        v5 = [(TSSubFlowViewController *)v10 initWithOptions:v11 navigationController:navigationController delegate:self];
       }
     }
 
@@ -249,8 +249,8 @@ void __63__TSCrossPlatformTargetAuthFlow_deactiveCrossPlatformTransport__block_i
         v16[0] = &unk_287583A48;
         v16[1] = MEMORY[0x277CBEC28];
         v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
-        v9 = [v4 navigationController];
-        v5 = [(TSSubFlowViewController *)v7 initWithOptions:v8 navigationController:v9 delegate:self];
+        navigationController2 = [fromCopy navigationController];
+        v5 = [(TSSubFlowViewController *)v7 initWithOptions:v8 navigationController:navigationController2 delegate:self];
       }
 
       else
@@ -265,15 +265,15 @@ void __63__TSCrossPlatformTargetAuthFlow_deactiveCrossPlatformTransport__block_i
   return v5;
 }
 
-- (void)viewControllerDidComplete:(id)a3
+- (void)viewControllerDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) == 0 || (+[DCTCodeManager shared](DCTCodeManager, "shared"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 hasCode], v5, (v6) || self->_client)
   {
     v10.receiver = self;
     v10.super_class = TSCrossPlatformTargetAuthFlow;
-    [(TSSIMSetupFlow *)&v10 viewControllerDidComplete:v4];
+    [(TSSIMSetupFlow *)&v10 viewControllerDidComplete:completeCopy];
   }
 
   else
@@ -288,8 +288,8 @@ void __63__TSCrossPlatformTargetAuthFlow_deactiveCrossPlatformTransport__block_i
     v11[1] = 3221225472;
     v11[2] = __59__TSCrossPlatformTargetAuthFlow_viewControllerDidComplete___block_invoke;
     v11[3] = &unk_279B44E58;
-    v12 = v4;
-    v13 = self;
+    v12 = completeCopy;
+    selfCopy = self;
     [(TSCrossPlatformTargetAuthFlow *)self showQRCodePane:v11];
   }
 }
@@ -307,21 +307,21 @@ id __59__TSCrossPlatformTargetAuthFlow_viewControllerDidComplete___block_invoke(
   return result;
 }
 
-- (void)transferEventUpdate:(id)a3
+- (void)transferEventUpdate:(id)update
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v41 = v4;
+    v41 = updateCopy;
     v42 = 2080;
     v43 = "[TSCrossPlatformTargetAuthFlow transferEventUpdate:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "transfer event : %@ @%s", buf, 0x16u);
   }
 
-  v6 = [v4 objectForKey:@"kCrossTransferEndpoint"];
+  v6 = [updateCopy objectForKey:@"kCrossTransferEndpoint"];
   if (v6)
   {
     objc_opt_class();
@@ -329,10 +329,10 @@ id __59__TSCrossPlatformTargetAuthFlow_viewControllerDidComplete___block_invoke(
     {
       if ([v6 isEqualToString:@"kTarget"])
       {
-        v7 = [v4 objectForKey:@"kCrossTransferConnected"];
+        v7 = [updateCopy objectForKey:@"kCrossTransferConnected"];
         if (!v7)
         {
-          v8 = [v4 objectForKey:@"kCrossTransferDCTCode"];
+          v8 = [updateCopy objectForKey:@"kCrossTransferDCTCode"];
           if (v8)
           {
             objc_opt_class();
@@ -342,33 +342,33 @@ id __59__TSCrossPlatformTargetAuthFlow_viewControllerDidComplete___block_invoke(
               v11 = +[DCTCodeManager shared];
               [v11 setCode:v10];
 
-              v12 = [(TSSIMSetupFlow *)self topViewController];
+              topViewController = [(TSSIMSetupFlow *)self topViewController];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
 
               if (isKindOfClass)
               {
-                v14 = [(TSSIMSetupFlow *)self topViewController];
-                [(TSCrossPlatformTargetAuthFlow *)self viewControllerDidComplete:v14];
+                topViewController2 = [(TSSIMSetupFlow *)self topViewController];
+                [(TSCrossPlatformTargetAuthFlow *)self viewControllerDidComplete:topViewController2];
               }
             }
           }
 
-          v15 = [v4 objectForKey:@"kCrossTransferConnectFailReason"];
-          if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v15 integerValue] == 20)
+          topViewController5 = [updateCopy objectForKey:@"kCrossTransferConnectFailReason"];
+          if (topViewController5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [topViewController5 integerValue] == 20)
           {
-            v16 = [(TSSIMSetupFlow *)self topViewController];
+            topViewController3 = [(TSSIMSetupFlow *)self topViewController];
             v39[0] = MEMORY[0x277D85DD0];
             v39[1] = 3221225472;
             v39[2] = __53__TSCrossPlatformTargetAuthFlow_transferEventUpdate___block_invoke;
             v39[3] = &unk_279B44B38;
             v39[4] = self;
-            [TSFlowHelper showBluetoothOffAlertForCrossPlatformTransfer:v16 withCloseHandler:v39];
+            [TSFlowHelper showBluetoothOffAlertForCrossPlatformTransfer:topViewController3 withCloseHandler:v39];
           }
 
           else
           {
-            v17 = [v4 objectForKey:@"kCrossTransferTimeout"];
+            v17 = [updateCopy objectForKey:@"kCrossTransferTimeout"];
             if (v17)
             {
               objc_opt_class();
@@ -422,7 +422,7 @@ id __59__TSCrossPlatformTargetAuthFlow_viewControllerDidComplete___block_invoke(
         v8 = v7;
         if ([v7 BOOLValue])
         {
-          v9 = [(TSSIMSetupFlow *)self topViewController];
+          topViewController4 = [(TSSIMSetupFlow *)self topViewController];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -436,14 +436,14 @@ LABEL_27:
               _os_log_impl(&dword_262AA8000, v32, OS_LOG_TYPE_DEFAULT, "Target cross transfer devices connected @%s", buf, 0xCu);
             }
 
-            v15 = [(TSSIMSetupFlow *)self topViewController];
-            [(TSCrossPlatformTargetAuthFlow *)self viewControllerDidComplete:v15];
+            topViewController5 = [(TSSIMSetupFlow *)self topViewController];
+            [(TSCrossPlatformTargetAuthFlow *)self viewControllerDidComplete:topViewController5];
 LABEL_30:
 
             goto LABEL_31;
           }
 
-          v30 = [(TSSIMSetupFlow *)self topViewController];
+          topViewController6 = [(TSSIMSetupFlow *)self topViewController];
           objc_opt_class();
           v31 = objc_opt_isKindOfClass();
 

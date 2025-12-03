@@ -1,5 +1,5 @@
 @interface StewieWidgetAvailability
-+ (BOOL)isAnyServiceAllowedForState:(id)a3 includePermittedAtLocation:(BOOL)a4;
++ (BOOL)isAnyServiceAllowedForState:(id)state includePermittedAtLocation:(BOOL)location;
 - (BOOL)shouldAddSkipperComplication;
 @end
 
@@ -75,11 +75,11 @@ LABEL_12:
   return isAnyServiceAllowedForState_includePermittedAtLocation;
 }
 
-+ (BOOL)isAnyServiceAllowedForState:(id)a3 includePermittedAtLocation:(BOOL)a4
++ (BOOL)isAnyServiceAllowedForState:(id)state includePermittedAtLocation:(BOOL)location
 {
-  v4 = a4;
+  locationCopy = location;
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -99,8 +99,8 @@ LABEL_12:
         }
 
         v13 = objc_msgSend_integerValue(*(*(&v26 + 1) + 8 * i), v8, v9);
-        isAllowedService = objc_msgSend_isAllowedService_(v5, v14, v15, v13);
-        isDemoAllowedForService = objc_msgSend_isDemoAllowedForService_(v5, v17, v18, v13);
+        isAllowedService = objc_msgSend_isAllowedService_(stateCopy, v14, v15, v13);
+        isDemoAllowedForService = objc_msgSend_isDemoAllowedForService_(stateCopy, v17, v18, v13);
         if ((isAllowedService & 1) != 0 || isDemoAllowedForService)
         {
           v22 = NTKFoghornFaceBundleLogObject();
@@ -117,8 +117,8 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        objc_msgSend_statusReasonForService_(v5, v20, v21, v13);
-        if (v4 && objc_msgSend_isPermittedAtCurrentLocation_(v5, v8, v9, v13))
+        objc_msgSend_statusReasonForService_(stateCopy, v20, v21, v13);
+        if (locationCopy && objc_msgSend_isPermittedAtCurrentLocation_(stateCopy, v8, v9, v13))
         {
           v22 = NTKFoghornFaceBundleLogObject();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))

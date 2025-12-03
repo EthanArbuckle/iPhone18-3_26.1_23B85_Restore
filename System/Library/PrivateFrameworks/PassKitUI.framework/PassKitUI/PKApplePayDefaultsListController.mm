@@ -1,22 +1,22 @@
 @interface PKApplePayDefaultsListController
-- (id)_passDetailsViewControllerForPass:(id)a3;
+- (id)_passDetailsViewControllerForPass:(id)pass;
 - (id)specifiers;
-- (void)setSpecifier:(id)a3;
-- (void)settingsController:(id)a3 requestsDetailViewControllerForPass:(id)a4 animated:(BOOL)a5;
-- (void)settingsControllerRequestsPresentPrivacyWithPresenter:(id)a3;
+- (void)setSpecifier:(id)specifier;
+- (void)settingsController:(id)controller requestsDetailViewControllerForPass:(id)pass animated:(BOOL)animated;
+- (void)settingsControllerRequestsPresentPrivacyWithPresenter:(id)presenter;
 @end
 
 @implementation PKApplePayDefaultsListController
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (([*(&self->super.super.super.super.super.isa + *MEMORY[0x1E69C5808]) isEqual:v4] & 1) == 0)
+  specifierCopy = specifier;
+  if (([*(&self->super.super.super.super.super.isa + *MEMORY[0x1E69C5808]) isEqual:specifierCopy] & 1) == 0)
   {
     v13.receiver = self;
     v13.super_class = PKApplePayDefaultsListController;
-    [(PKApplePayDefaultsListController *)&v13 setSpecifier:v4];
-    v5 = [v4 objectForKeyedSubscript:@"contextKey"];
+    [(PKApplePayDefaultsListController *)&v13 setSpecifier:specifierCopy];
+    v5 = [specifierCopy objectForKeyedSubscript:@"contextKey"];
     if (!v5)
     {
       v6 = PKLogFacilityTypeGetObject();
@@ -27,8 +27,8 @@
       }
     }
 
-    v7 = [v5 integerValue];
-    v8 = [v4 objectForKeyedSubscript:@"dataSourceKey"];
+    integerValue = [v5 integerValue];
+    v8 = [specifierCopy objectForKeyedSubscript:@"dataSourceKey"];
     v9 = v8;
     if (!v8)
     {
@@ -40,7 +40,7 @@
     {
     }
 
-    v10 = [[PKPassbookSettingsController alloc] initWithDelegate:self dataSource:self->_settingsDataSource context:v7];
+    v10 = [[PKPassbookSettingsController alloc] initWithDelegate:self dataSource:self->_settingsDataSource context:integerValue];
     settingsController = self->_settingsController;
     self->_settingsController = v10;
   }
@@ -52,9 +52,9 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(PKPassbookSettingsController *)self->_settingsController applePayDefaultsSpecifiers];
+    applePayDefaultsSpecifiers = [(PKPassbookSettingsController *)self->_settingsController applePayDefaultsSpecifiers];
     v6 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = applePayDefaultsSpecifiers;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -62,20 +62,20 @@
   return v4;
 }
 
-- (id)_passDetailsViewControllerForPass:(id)a3
+- (id)_passDetailsViewControllerForPass:(id)pass
 {
-  if (a3)
+  if (pass)
   {
     settingsController = self->_settingsController;
-    v5 = a3;
-    v6 = [(PKPassbookSettingsController *)settingsController rendererStateForPaymentPass:v5];
+    passCopy = pass;
+    v6 = [(PKPassbookSettingsController *)settingsController rendererStateForPaymentPass:passCopy];
     v7 = [PKPaymentPassDetailViewController alloc];
-    v8 = [MEMORY[0x1E69B8EF8] sharedService];
-    v9 = [(PKPassbookSettingsDataSource *)self->_settingsDataSource peerPaymentDataSource];
-    v10 = [v9 peerPaymentWebService];
-    v11 = [(PKPassbookSettingsDataSource *)self->_settingsDataSource passLibraryDataProvider];
-    v12 = [(PKPassbookSettingsDataSource *)self->_settingsDataSource paymentDataProvider];
-    v13 = [(PKPaymentPassDetailViewController *)v7 initWithPass:v5 group:0 groupsController:0 webService:v8 peerPaymentWebService:v10 style:1 passLibraryDataProvider:v11 paymentServiceDataProvider:v12 rendererState:v6 context:0];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    peerPaymentDataSource = [(PKPassbookSettingsDataSource *)self->_settingsDataSource peerPaymentDataSource];
+    peerPaymentWebService = [peerPaymentDataSource peerPaymentWebService];
+    passLibraryDataProvider = [(PKPassbookSettingsDataSource *)self->_settingsDataSource passLibraryDataProvider];
+    paymentDataProvider = [(PKPassbookSettingsDataSource *)self->_settingsDataSource paymentDataProvider];
+    v13 = [(PKPaymentPassDetailViewController *)v7 initWithPass:passCopy group:0 groupsController:0 webService:mEMORY[0x1E69B8EF8] peerPaymentWebService:peerPaymentWebService style:1 passLibraryDataProvider:passLibraryDataProvider paymentServiceDataProvider:paymentDataProvider rendererState:v6 context:0];
   }
 
   else
@@ -86,28 +86,28 @@
   return v13;
 }
 
-- (void)settingsController:(id)a3 requestsDetailViewControllerForPass:(id)a4 animated:(BOOL)a5
+- (void)settingsController:(id)controller requestsDetailViewControllerForPass:(id)pass animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = [(PKApplePayDefaultsListController *)self _passDetailsViewControllerForPass:a4];
+  animatedCopy = animated;
+  v7 = [(PKApplePayDefaultsListController *)self _passDetailsViewControllerForPass:pass];
   if (v7)
   {
     v8 = v7;
-    [(PKApplePayDefaultsListController *)self showController:v7 animate:v5];
+    [(PKApplePayDefaultsListController *)self showController:v7 animate:animatedCopy];
     v7 = v8;
   }
 }
 
-- (void)settingsControllerRequestsPresentPrivacyWithPresenter:(id)a3
+- (void)settingsControllerRequestsPresentPrivacyWithPresenter:(id)presenter
 {
-  v4 = a3;
-  [v4 setPresentingViewController:self];
+  presenterCopy = presenter;
+  [presenterCopy setPresentingViewController:self];
   if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
-    [v4 setModalPresentationStyle:2];
+    [presenterCopy setModalPresentationStyle:2];
   }
 
-  [v4 present];
+  [presenterCopy present];
 }
 
 @end

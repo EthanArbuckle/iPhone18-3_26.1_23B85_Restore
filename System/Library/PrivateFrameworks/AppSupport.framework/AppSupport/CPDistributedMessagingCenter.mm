@@ -1,39 +1,39 @@
 @interface CPDistributedMessagingCenter
-- (BOOL)_isTaskEntitled:(id *)a3;
-- (BOOL)_sendMessage:(id)a3 userInfo:(id)a4 receiveReply:(id *)a5 error:(id *)a6 toTarget:(id)a7 selector:(SEL)a8 context:(void *)a9 nonBlocking:(BOOL)a10;
-- (BOOL)_sendMessage:(id)a3 userInfoData:(id)a4 oolKey:(id)a5 oolData:(id)a6 makeServer:(BOOL)a7 receiveReply:(id *)a8 nonBlocking:(BOOL)a9 error:(id *)a10;
+- (BOOL)_isTaskEntitled:(id *)entitled;
+- (BOOL)_sendMessage:(id)message userInfo:(id)info receiveReply:(id *)reply error:(id *)error toTarget:(id)target selector:(SEL)selector context:(void *)context nonBlocking:(BOOL)self0;
+- (BOOL)_sendMessage:(id)message userInfoData:(id)data oolKey:(id)key oolData:(id)oolData makeServer:(BOOL)server receiveReply:(id *)reply nonBlocking:(BOOL)blocking error:(id *)self0;
 - (BOOL)doesServerExist;
 - (id)_initAnonymousServer;
-- (id)_initWithServerName:(id)a3 requireLookupByPID:(BOOL)a4;
+- (id)_initWithServerName:(id)name requireLookupByPID:(BOOL)d;
 - (id)delayReply;
-- (id)sendMessageAndReceiveReplyName:(id)a3 userInfo:(id)a4;
-- (id)sendMessageAndReceiveReplyName:(id)a3 userInfo:(id)a4 error:(id *)a5;
+- (id)sendMessageAndReceiveReplyName:(id)name userInfo:(id)info;
+- (id)sendMessageAndReceiveReplyName:(id)name userInfo:(id)info error:(id *)error;
 - (uint64_t)_setupInvalidationSource;
 - (unsigned)_sendPort;
 - (unsigned)_serverPort;
-- (void)_dispatchMessageNamed:(id)a3 userInfo:(id)a4 reply:(id *)a5 auditToken:(id *)a6;
-- (void)_sendReplyMessage:(id)a3 portPassing:(BOOL)a4 onMachPort:(unsigned int)a5;
-- (void)_setSendPort:(unsigned int)a3;
+- (void)_dispatchMessageNamed:(id)named userInfo:(id)info reply:(id *)reply auditToken:(id *)token;
+- (void)_sendReplyMessage:(id)message portPassing:(BOOL)passing onMachPort:(unsigned int)port;
+- (void)_setSendPort:(unsigned int)port;
 - (void)_setupInvalidationSource;
 - (void)dealloc;
-- (void)registerForMessageName:(id)a3 target:(id)a4 selector:(SEL)a5;
-- (void)runServerOnCurrentThreadProtectedByEntitlement:(id)a3;
-- (void)sendDelayedReply:(id)a3 dictionary:(id)a4;
-- (void)sendMessageAndReceiveReplyName:(id)a3 userInfo:(id)a4 toTarget:(id)a5 selector:(SEL)a6 context:(void *)a7;
+- (void)registerForMessageName:(id)name target:(id)target selector:(SEL)selector;
+- (void)runServerOnCurrentThreadProtectedByEntitlement:(id)entitlement;
+- (void)sendDelayedReply:(id)reply dictionary:(id)dictionary;
+- (void)sendMessageAndReceiveReplyName:(id)name userInfo:(id)info toTarget:(id)target selector:(SEL)selector context:(void *)context;
 - (void)stopServer;
-- (void)unregisterForMessageName:(id)a3;
+- (void)unregisterForMessageName:(id)name;
 @end
 
 @implementation CPDistributedMessagingCenter
 
-- (id)_initWithServerName:(id)a3 requireLookupByPID:(BOOL)a4
+- (id)_initWithServerName:(id)name requireLookupByPID:(BOOL)d
 {
   v6 = [(CPDistributedMessagingCenter *)self init];
   if (v6)
   {
-    v6->_centerName = [a3 copy];
+    v6->_centerName = [name copy];
     v6->_lock = objc_alloc_init(MEMORY[0x1E696AD10]);
-    v6->_requireLookupByPID = a4;
+    v6->_requireLookupByPID = d;
   }
 
   return v6;
@@ -159,7 +159,7 @@ void __56__CPDistributedMessagingCenter__setupInvalidationSource__block_invoke_3
       self->_sendPort = 0;
       requireLookupByPID = self->_requireLookupByPID;
       v5 = *MEMORY[0x1E69E99F8];
-      v6 = [(NSString *)self->_centerName UTF8String];
+      uTF8String = [(NSString *)self->_centerName UTF8String];
       if (requireLookupByPID)
       {
         targetPID = self->_targetPID;
@@ -173,7 +173,7 @@ void __56__CPDistributedMessagingCenter__setupInvalidationSource__block_invoke_3
 
       else
       {
-        bootstrap_look_up(v5, v6, &self->_sendPort);
+        bootstrap_look_up(v5, uTF8String, &self->_sendPort);
       }
 
       [(CPDistributedMessagingCenter *)self _setupInvalidationSource];
@@ -185,7 +185,7 @@ void __56__CPDistributedMessagingCenter__setupInvalidationSource__block_invoke_3
   return v9;
 }
 
-- (void)_setSendPort:(unsigned int)a3
+- (void)_setSendPort:(unsigned int)port
 {
   [(NSLock *)self->_lock lock];
   if (self->_sendPort - 1 <= 0xFFFFFFFD)
@@ -193,33 +193,33 @@ void __56__CPDistributedMessagingCenter__setupInvalidationSource__block_invoke_3
     [(CPDistributedMessagingCenter *)self _setSendPort:a2];
   }
 
-  self->_sendPort = a3;
+  self->_sendPort = port;
   [(CPDistributedMessagingCenter *)self _setupInvalidationSource];
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (id)sendMessageAndReceiveReplyName:(id)a3 userInfo:(id)a4
+- (id)sendMessageAndReceiveReplyName:(id)name userInfo:(id)info
 {
   v5 = 0;
-  [(CPDistributedMessagingCenter *)self _sendMessage:a3 userInfo:a4 receiveReply:&v5 error:0 toTarget:0 selector:0 context:0];
+  [(CPDistributedMessagingCenter *)self _sendMessage:name userInfo:info receiveReply:&v5 error:0 toTarget:0 selector:0 context:0];
   return v5;
 }
 
-- (id)sendMessageAndReceiveReplyName:(id)a3 userInfo:(id)a4 error:(id *)a5
+- (id)sendMessageAndReceiveReplyName:(id)name userInfo:(id)info error:(id *)error
 {
   v6 = 0;
-  [(CPDistributedMessagingCenter *)self _sendMessage:a3 userInfo:a4 receiveReply:&v6 error:a5 toTarget:0 selector:0 context:0];
+  [(CPDistributedMessagingCenter *)self _sendMessage:name userInfo:info receiveReply:&v6 error:error toTarget:0 selector:0 context:0];
   return v6;
 }
 
-- (void)sendMessageAndReceiveReplyName:(id)a3 userInfo:(id)a4 toTarget:(id)a5 selector:(SEL)a6 context:(void *)a7
+- (void)sendMessageAndReceiveReplyName:(id)name userInfo:(id)info toTarget:(id)target selector:(SEL)selector context:(void *)context
 {
-  if (!a5)
+  if (!target)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ target cannont be nil", objc_opt_class()}];
-    if (a6)
+    if (selector)
     {
       goto LABEL_3;
     }
@@ -229,23 +229,23 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!a6)
+  if (!selector)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [(CPDistributedMessagingCenter *)self _sendMessage:a3 userInfo:a4 receiveReply:0 error:0 toTarget:a5 selector:a6 context:a7];
+  [(CPDistributedMessagingCenter *)self _sendMessage:name userInfo:info receiveReply:0 error:0 toTarget:target selector:selector context:context];
 }
 
-- (BOOL)_sendMessage:(id)a3 userInfo:(id)a4 receiveReply:(id *)a5 error:(id *)a6 toTarget:(id)a7 selector:(SEL)a8 context:(void *)a9 nonBlocking:(BOOL)a10
+- (BOOL)_sendMessage:(id)message userInfo:(id)info receiveReply:(id *)reply error:(id *)error toTarget:(id)target selector:(SEL)selector context:(void *)context nonBlocking:(BOOL)self0
 {
-  if (!a3)
+  if (!message)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ message name cannot be nil", objc_opt_class()}];
   }
 
-  if (a4)
+  if (info)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -253,20 +253,20 @@ LABEL_3:
       v16 = MEMORY[0x1E695DF30];
       v17 = *MEMORY[0x1E695D940];
       v18 = objc_opt_class();
-      [v16 raise:v17 format:{@"%@ userInfo is not an NSDictionary: %@ %@", v18, objc_opt_class(), a4}];
+      [v16 raise:v17 format:{@"%@ userInfo is not an NSDictionary: %@ %@", v18, objc_opt_class(), info}];
     }
   }
 
-  v19 = [a4 objectForKey:@"_kCPDistributedMessagingMagicCenterCreationKeyValue"];
+  v19 = [info objectForKey:@"_kCPDistributedMessagingMagicCenterCreationKeyValue"];
   if (v19 == @"_kCPDistributedMessagingMagicCenterCreationKeyValue")
   {
-    a4 = [a4 mutableCopy];
-    [a4 removeObjectForKey:@"_kCPDistributedMessagingMagicCenterCreationKeyValue"];
+    info = [info mutableCopy];
+    [info removeObjectForKey:@"_kCPDistributedMessagingMagicCenterCreationKeyValue"];
   }
 
   v37 = 0;
   v38 = 0;
-  v20 = dictionaryWithoutLargestNSData(a4, &v38, &v37);
+  v20 = dictionaryWithoutLargestNSData(info, &v38, &v37);
   if (v20)
   {
     v21 = v20;
@@ -274,29 +274,29 @@ LABEL_3:
     v22 = [MEMORY[0x1E696AE40] dataWithPropertyList:v20 format:200 options:0 error:&v36];
     if (!v22)
     {
-      v34 = a7;
-      v23 = a6;
+      targetCopy = target;
+      errorCopy = error;
       v24 = MEMORY[0x1E695DF30];
       v25 = *MEMORY[0x1E695D940];
       v32 = objc_opt_class();
       v26 = v24;
-      a6 = v23;
-      a7 = v34;
+      error = errorCopy;
+      target = targetCopy;
       [v26 raise:v25 format:{@"%@ Unable to serialize userInfo: %@ error: %@", v32, v21, v36}];
     }
 
-    if (a7)
+    if (target)
     {
       goto LABEL_12;
     }
 
 LABEL_16:
-    LOBYTE(v31) = a10;
-    return [(CPDistributedMessagingCenter *)self _sendMessage:a3 userInfoData:v22 oolKey:v38 oolData:v37 makeServer:v19 == @"_kCPDistributedMessagingMagicCenterCreationKeyValue" receiveReply:a5 nonBlocking:v31 error:a6];
+    LOBYTE(v31) = blocking;
+    return [(CPDistributedMessagingCenter *)self _sendMessage:message userInfoData:v22 oolKey:v38 oolData:v37 makeServer:v19 == @"_kCPDistributedMessagingMagicCenterCreationKeyValue" receiveReply:reply nonBlocking:v31 error:error];
   }
 
   v22 = 0;
-  if (!a7)
+  if (!target)
   {
     goto LABEL_16;
   }
@@ -313,31 +313,31 @@ LABEL_12:
   [(NSLock *)self->_lock unlock];
   v28 = [CPDistributedMessagingAsyncOperation alloc];
   LOBYTE(v33) = v19 == @"_kCPDistributedMessagingMagicCenterCreationKeyValue";
-  v29 = [(CPDistributedMessagingAsyncOperation *)v28 initWithCenter:self messageName:a3 userInfoData:v22 oolKey:v38 oolData:v37 target:a7 selector:a8 context:a9 makeServer:v33];
+  v29 = [(CPDistributedMessagingAsyncOperation *)v28 initWithCenter:self messageName:message userInfoData:v22 oolKey:v38 oolData:v37 target:target selector:selector context:context makeServer:v33];
   [(NSOperationQueue *)self->_asyncQueue addOperation:v29];
 
   return 0;
 }
 
-- (BOOL)_sendMessage:(id)a3 userInfoData:(id)a4 oolKey:(id)a5 oolData:(id)a6 makeServer:(BOOL)a7 receiveReply:(id *)a8 nonBlocking:(BOOL)a9 error:(id *)a10
+- (BOOL)_sendMessage:(id)message userInfoData:(id)data oolKey:(id)key oolData:(id)oolData makeServer:(BOOL)server receiveReply:(id *)reply nonBlocking:(BOOL)blocking error:(id *)self0
 {
-  v11 = a7;
-  v44 = [(CPDistributedMessagingCenter *)self _sendPort];
-  v43 = a3;
-  v16 = [a3 UTF8String];
-  v17 = strlen(v16);
-  if (a4)
+  serverCopy = server;
+  _sendPort = [(CPDistributedMessagingCenter *)self _sendPort];
+  messageCopy = message;
+  uTF8String = [message UTF8String];
+  v17 = strlen(uTF8String);
+  if (data)
   {
-    v18 = [a4 bytes];
-    v19 = [a4 length];
-    if (a5)
+    bytes = [data bytes];
+    v19 = [data length];
+    if (key)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v20 = 0;
-    if (a6)
+    uTF8String2 = 0;
+    if (oolData)
     {
       goto LABEL_4;
     }
@@ -345,28 +345,28 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v18 = 0;
+  bytes = 0;
   v19 = 0;
-  if (!a5)
+  if (!key)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v20 = [a5 UTF8String];
-  LODWORD(a5) = strlen(v20);
-  if (a6)
+  uTF8String2 = [key UTF8String];
+  LODWORD(key) = strlen(uTF8String2);
+  if (oolData)
   {
 LABEL_4:
-    v21 = [a6 bytes];
-    LODWORD(a6) = [a6 length];
+    bytes2 = [oolData bytes];
+    LODWORD(oolData) = [oolData length];
     goto LABEL_8;
   }
 
 LABEL_7:
-  v21 = 0;
+  bytes2 = 0;
 LABEL_8:
-  if (a8)
+  if (reply)
   {
     v50[0] = 0;
     v49 = 0;
@@ -374,19 +374,19 @@ LABEL_8:
     v47 = 0;
     v46 = 0;
     v45 = 0;
-    if (v11)
+    if (serverCopy)
     {
-      v22 = [[CPDistributedMessagingCenter alloc] _initAnonymousServer];
-      v23 = CPDMTwoWayMessageWithPortPassing(v44, [v22 _serverPort], v16, v17, v18, v19, v50, &v49, v20, a5, v21, a6, &v48, &v47, &v46, &v45);
+      _initAnonymousServer = [[CPDistributedMessagingCenter alloc] _initAnonymousServer];
+      v23 = CPDMTwoWayMessageWithPortPassing(_sendPort, [_initAnonymousServer _serverPort], uTF8String, v17, bytes, v19, v50, &v49, uTF8String2, key, bytes2, oolData, &v48, &v47, &v46, &v45);
     }
 
     else
     {
-      v23 = CPDMTwoWayMessage(v44, v16, v17, v18, v19, v50, &v49, v20, a5, v21, a6, &v48, &v47, &v46, &v45);
-      v22 = 0;
+      v23 = CPDMTwoWayMessage(_sendPort, uTF8String, v17, bytes, v19, v50, &v49, uTF8String2, key, bytes2, oolData, &v48, &v47, &v46, &v45);
+      _initAnonymousServer = 0;
     }
 
-    *a8 = 0;
+    *reply = 0;
     if (!v23 && v49)
     {
       if (v46)
@@ -417,32 +417,32 @@ LABEL_8:
       }
 
       v32 = !v31;
-      v33 = !v31 || v22 != 0;
-      *a8 = [MEMORY[0x1E696AE40] propertyListWithData:v30 options:v33 format:0 error:0];
+      v33 = !v31 || _initAnonymousServer != 0;
+      *reply = [MEMORY[0x1E696AE40] propertyListWithData:v30 options:v33 format:0 error:0];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v34 = objc_opt_class();
-        NSLog(@"%@ ignoring non-dictionary return type in message named %@", v34, v43);
-        *a8 = 0;
+        NSLog(@"%@ ignoring non-dictionary return type in message named %@", v34, messageCopy);
+        *reply = 0;
       }
 
       if (v32)
       {
-        [*a8 setObject:DataFromVMDeallocateBytes forKey:v26];
+        [*reply setObject:DataFromVMDeallocateBytes forKey:v26];
       }
     }
 
-    if (v22)
+    if (_initAnonymousServer)
     {
-      v35 = *a8;
-      if (!*a8)
+      dictionary = *reply;
+      if (!*reply)
       {
-        v35 = [MEMORY[0x1E695DF90] dictionary];
-        *a8 = v35;
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        *reply = dictionary;
       }
 
-      [v35 setObject:v22 forKey:@"_kCPDistributedMessagingMagicCenterCreationKeyValue"];
+      [dictionary setObject:_initAnonymousServer forKey:@"_kCPDistributedMessagingMagicCenterCreationKeyValue"];
     }
 
     v36 = MEMORY[0x1E69E9A60];
@@ -451,7 +451,7 @@ LABEL_8:
       MEMORY[0x19A8C3560](*MEMORY[0x1E69E9A60], v50[0], v49);
     }
 
-    v28 = a10;
+    errorCopy2 = error;
     if (v48)
     {
       MEMORY[0x19A8C3560](*v36, v48, v47);
@@ -465,39 +465,39 @@ LABEL_8:
 
   else
   {
-    if (a9)
+    if (blocking)
     {
-      v24 = CPDMNonBlockingMessage(v44, v16, v17, v18, v19, v20, a5, v21, a6, 0);
+      v24 = CPDMNonBlockingMessage(_sendPort, uTF8String, v17, bytes, v19, uTF8String2, key, bytes2, oolData, 0);
     }
 
     else
     {
-      v24 = CPDMMessage(v44, v16, v17, v18, v19, v20, a5, v21, a6);
+      v24 = CPDMMessage(_sendPort, uTF8String, v17, bytes, v19, uTF8String2, key, bytes2, oolData);
     }
 
     v23 = v24;
-    v28 = a10;
+    errorCopy2 = error;
   }
 
   if (v23)
   {
-    if (v23 != -308 && v23 != 268435459 && (v23 != 268435460 || !a9))
+    if (v23 != -308 && v23 != 268435459 && (v23 != 268435460 || !blocking))
     {
       v37 = objc_opt_class();
       centerName = self->_centerName;
       v39 = mach_error_string(v23);
-      NSLog(@"Unable to send %@ message named %@ to %@: %s", v37, v43, centerName, v39);
+      NSLog(@"Unable to send %@ message named %@ to %@: %s", v37, messageCopy, centerName, v39);
     }
 
-    if (v28)
+    if (errorCopy2)
     {
       v40 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A5A0] code:v23 userInfo:0];
 LABEL_55:
-      *v28 = v40;
+      *errorCopy2 = v40;
     }
   }
 
-  else if (v28)
+  else if (errorCopy2)
   {
     v40 = 0;
     goto LABEL_55;
@@ -524,7 +524,7 @@ LABEL_55:
   return parkedServerPort;
 }
 
-- (void)runServerOnCurrentThreadProtectedByEntitlement:(id)a3
+- (void)runServerOnCurrentThreadProtectedByEntitlement:(id)entitlement
 {
   [(NSLock *)self->_lock lock];
   v5 = MEMORY[0x1E695D940];
@@ -542,7 +542,7 @@ LABEL_55:
     goto LABEL_12;
   }
 
-  v6 = [(NSString *)self->_centerName UTF8String];
+  uTF8String = [(NSString *)self->_centerName UTF8String];
   v7 = MEMORY[0x1E69E99F8];
   if (self->_requireLookupByPID)
   {
@@ -552,7 +552,7 @@ LABEL_55:
     }
   }
 
-  else if (!bootstrap_check_in(*MEMORY[0x1E69E99F8], v6, &sp))
+  else if (!bootstrap_check_in(*MEMORY[0x1E69E99F8], uTF8String, &sp))
   {
     goto LABEL_12;
   }
@@ -590,7 +590,7 @@ LABEL_12:
     self->_serverSource = CPCreateMIGServerSourceWithContext(_CPDMCPDistributedMessaging_subsystem, sp, 0, self);
     Current = CFRunLoopGetCurrent();
     CFRunLoopAddSource(Current, self->_serverSource, *MEMORY[0x1E695E8D0]);
-    self->_requiredEntitlement = [a3 copy];
+    self->_requiredEntitlement = [entitlement copy];
   }
 
   [(NSLock *)self->_lock unlock];
@@ -601,32 +601,32 @@ LABEL_12:
   serverSource = self->_serverSource;
   if (serverSource)
   {
-    v6 = self;
+    selfCopy = self;
     v4 = CPGetMachPortForMIGServerSource(serverSource);
-    CFRunLoopSourceInvalidate(v6->_serverSource);
-    CFRelease(v6->_serverSource);
-    v5 = v6;
-    v6->_serverSource = 0;
+    CFRunLoopSourceInvalidate(selfCopy->_serverSource);
+    CFRelease(selfCopy->_serverSource);
+    v5 = selfCopy;
+    selfCopy->_serverSource = 0;
     if (v4 - 1 <= 0xFFFFFFFD)
     {
       mach_port_mod_refs(*MEMORY[0x1E69E9A60], v4, 1u, -1);
-      v5 = v6;
+      v5 = selfCopy;
     }
   }
 }
 
-- (void)registerForMessageName:(id)a3 target:(id)a4 selector:(SEL)a5
+- (void)registerForMessageName:(id)name target:(id)target selector:(SEL)selector
 {
-  if (a3)
+  if (name)
   {
-    if (a4)
+    if (target)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ target cannont be nil", objc_opt_class()}];
-    if (a5)
+    if (selector)
     {
       goto LABEL_4;
     }
@@ -635,13 +635,13 @@ LABEL_10:
   }
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ message name cannont be nil", objc_opt_class()}];
-  if (!a4)
+  if (!target)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (a5)
+  if (selector)
   {
     goto LABEL_4;
   }
@@ -649,7 +649,7 @@ LABEL_3:
 LABEL_11:
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@ selector cannont be nil", objc_opt_class()}];
 LABEL_4:
-  v10 = [[CPDistributedMessagingCallout alloc] initWithTarget:a4 selector:a5];
+  v10 = [[CPDistributedMessagingCallout alloc] initWithTarget:target selector:selector];
   [(NSLock *)self->_lock lock];
   callouts = self->_callouts;
   if (!callouts)
@@ -658,7 +658,7 @@ LABEL_4:
     self->_callouts = callouts;
   }
 
-  [(NSMutableDictionary *)callouts setObject:v10 forKey:a3];
+  [(NSMutableDictionary *)callouts setObject:v10 forKey:name];
   [(NSLock *)self->_lock unlock];
 }
 
@@ -697,26 +697,26 @@ LABEL_4:
   }
 }
 
-- (void)sendDelayedReply:(id)a3 dictionary:(id)a4
+- (void)sendDelayedReply:(id)reply dictionary:(id)dictionary
 {
-  -[CPDistributedMessagingCenter _sendReplyMessage:portPassing:onMachPort:](self, "_sendReplyMessage:portPassing:onMachPort:", a4, [a3 portPassing], objc_msgSend(a3, "replyPort"));
+  -[CPDistributedMessagingCenter _sendReplyMessage:portPassing:onMachPort:](self, "_sendReplyMessage:portPassing:onMachPort:", dictionary, [reply portPassing], objc_msgSend(reply, "replyPort"));
 
-  [a3 setReplyPort:0];
+  [reply setReplyPort:0];
 }
 
-- (void)unregisterForMessageName:(id)a3
+- (void)unregisterForMessageName:(id)name
 {
   [(NSLock *)self->_lock lock];
   callouts = self->_callouts;
-  if (a3)
+  if (name)
   {
-    v6 = [(NSMutableDictionary *)callouts objectForKey:a3];
-    [(NSMutableDictionary *)self->_callouts removeObjectForKey:a3];
+    v6 = [(NSMutableDictionary *)callouts objectForKey:name];
+    [(NSMutableDictionary *)self->_callouts removeObjectForKey:name];
   }
 
   else
   {
-    v7 = [(NSMutableDictionary *)callouts allValues];
+    allValues = [(NSMutableDictionary *)callouts allValues];
     [(NSMutableDictionary *)self->_callouts removeAllObjects];
   }
 
@@ -727,38 +727,38 @@ LABEL_4:
 
 - (BOOL)doesServerExist
 {
-  v3 = [(CPDistributedMessagingCenter *)self _sendPort];
-  if (v3)
+  _sendPort = [(CPDistributedMessagingCenter *)self _sendPort];
+  if (_sendPort)
   {
-    LOBYTE(v3) = [(CPDistributedMessagingCenter *)self _sendPort]!= -1;
+    LOBYTE(_sendPort) = [(CPDistributedMessagingCenter *)self _sendPort]!= -1;
   }
 
-  return v3;
+  return _sendPort;
 }
 
-- (void)_dispatchMessageNamed:(id)a3 userInfo:(id)a4 reply:(id *)a5 auditToken:(id *)a6
+- (void)_dispatchMessageNamed:(id)named userInfo:(id)info reply:(id *)reply auditToken:(id *)token
 {
   [(NSLock *)self->_lock lock];
-  v15 = [(NSMutableDictionary *)self->_callouts objectForKey:a3];
+  v15 = [(NSMutableDictionary *)self->_callouts objectForKey:named];
   if (!self->_centerName)
   {
-    v11 = self;
+    selfCopy = self;
   }
 
   [(NSLock *)self->_lock unlock];
   if (!v15)
   {
     v13 = objc_opt_class();
-    NSLog(@"%@ ignoring message named %@ since no target and selector are registered", v13, a3);
+    NSLog(@"%@ ignoring message named %@ since no target and selector are registered", v13, named);
     return;
   }
 
   self->_currentCallout = v15;
-  *a5 = [-[CPDistributedMessagingCallout target](v15 "target")];
+  *reply = [-[CPDistributedMessagingCallout target](v15 "target")];
   self->_currentCallout = 0;
   if (self->_delayedReply && ![(CPDistributedMessagingCallout *)v15 returnsVoid])
   {
-    if (*a5)
+    if (*reply)
     {
       v12 = @"%@ ignoring non-nil return from message named %@, which has requested a delayed reply";
       goto LABEL_13;
@@ -770,11 +770,11 @@ LABEL_4:
     if ([(CPDistributedMessagingCallout *)v15 returnsVoid])
     {
 LABEL_14:
-      *a5 = 0;
+      *reply = 0;
       goto LABEL_15;
     }
 
-    if (*a5)
+    if (*reply)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -782,7 +782,7 @@ LABEL_14:
         v12 = @"%@ ignoring non-dictionary return type in message named %@";
 LABEL_13:
         v14 = objc_opt_class();
-        NSLog(v12, v14, a3);
+        NSLog(v12, v14, named);
         goto LABEL_14;
       }
     }
@@ -791,28 +791,28 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)_sendReplyMessage:(id)a3 portPassing:(BOOL)a4 onMachPort:(unsigned int)a5
+- (void)_sendReplyMessage:(id)message portPassing:(BOOL)passing onMachPort:(unsigned int)port
 {
-  v6 = a4;
-  if (a3)
+  passingCopy = passing;
+  if (message)
   {
     v17 = 0;
     v18 = 0;
-    v7 = dictionaryWithoutLargestNSData(a3, &v18, &v17);
+    v7 = dictionaryWithoutLargestNSData(message, &v18, &v17);
     if (v18)
     {
-      v8 = [v18 UTF8String];
-      v9 = strlen(v8);
+      uTF8String = [v18 UTF8String];
+      v9 = strlen(uTF8String);
       v10 = v17;
-      v11 = [v17 bytes];
+      bytes = [v17 bytes];
       v12 = [v10 length];
     }
 
     else
     {
-      v8 = 0;
+      uTF8String = 0;
       v9 = 0;
-      v11 = 0;
+      bytes = 0;
       v12 = 0;
     }
 
@@ -826,35 +826,35 @@ LABEL_15:
 
   else
   {
-    v8 = 0;
+    uTF8String = 0;
     v9 = 0;
-    v11 = 0;
+    bytes = 0;
     v12 = 0;
     v13 = 0;
   }
 
   v14 = [v13 length];
-  v15 = [v13 bytes];
-  if (v6)
+  bytes2 = [v13 bytes];
+  if (passingCopy)
   {
-    CPDMTwoWayMessageReplyWithPortPassing(a5, 0, v15, v14, v8, v9, v11, v12);
+    CPDMTwoWayMessageReplyWithPortPassing(port, 0, bytes2, v14, uTF8String, v9, bytes, v12);
   }
 
   else
   {
-    CPDMTwoWayMessageReply(a5, 0, v15, v14, v8, v9, v11, v12);
+    CPDMTwoWayMessageReply(port, 0, bytes2, v14, uTF8String, v9, bytes, v12);
   }
 }
 
-- (BOOL)_isTaskEntitled:(id *)a3
+- (BOOL)_isTaskEntitled:(id *)entitled
 {
   if (!self->_requiredEntitlement)
   {
     return 1;
   }
 
-  v4 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v4 = *&entitled->var0[4];
+  *token.val = *entitled->var0;
   *&token.val[4] = v4;
   v5 = SecTaskCreateWithAuditToken(0, &token);
   if (v5)
@@ -897,9 +897,9 @@ LABEL_15:
 
 - (uint64_t)_setupInvalidationSource
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-  return [v4 handleFailureInMethod:a1 object:a2 file:@"CPDistributedMessagingCenter.m" lineNumber:316 description:@"unable to monitor server port for invalidation"];
+  return [currentHandler handleFailureInMethod:self object:a2 file:@"CPDistributedMessagingCenter.m" lineNumber:316 description:@"unable to monitor server port for invalidation"];
 }
 
 uint64_t __56__CPDistributedMessagingCenter__setupInvalidationSource__block_invoke_2_cold_1(uint64_t a1, uint64_t *a2)

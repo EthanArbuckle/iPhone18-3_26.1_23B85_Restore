@@ -1,15 +1,15 @@
 @interface MKFileDecoder
-- (id)extractFormatOfAsset:(id)a3;
+- (id)extractFormatOfAsset:(id)asset;
 @end
 
 @implementation MKFileDecoder
 
-- (id)extractFormatOfAsset:(id)a3
+- (id)extractFormatOfAsset:(id)asset
 {
-  v3 = a3;
-  if (v3)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
+    v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:assetCopy];
     if (v4)
     {
       v5 = v4;
@@ -44,7 +44,7 @@ LABEL_9:
       v6 = +[MKLog log];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        [(MKFileDecoder *)v3 extractFormatOfAsset:v7, v6];
+        [(MKFileDecoder *)assetCopy extractFormatOfAsset:v7, v6];
       }
 
       v11 = &stru_286A8E730;

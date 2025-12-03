@@ -9,7 +9,7 @@
 
 - (SFTabSwitcherDropDestination)destination
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18BA8A710();
 
   return v3;

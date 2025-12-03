@@ -1,29 +1,29 @@
 @interface MADProtoSceneClassification
-+ (id)protoFromPhotosSceneClassification:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)protoFromPhotosSceneClassification:(id)classification;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)photosSceneClassification;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MADProtoSceneClassification
 
-+ (id)protoFromPhotosSceneClassification:(id)a3
++ (id)protoFromPhotosSceneClassification:(id)classification
 {
-  v3 = a3;
+  classificationCopy = classification;
   v4 = objc_alloc_init(MADProtoSceneClassification);
-  -[MADProtoSceneClassification setExtendedSceneIdentifier:](v4, "setExtendedSceneIdentifier:", [v3 extendedSceneIdentifier]);
-  [v3 confidence];
+  -[MADProtoSceneClassification setExtendedSceneIdentifier:](v4, "setExtendedSceneIdentifier:", [classificationCopy extendedSceneIdentifier]);
+  [classificationCopy confidence];
   [(MADProtoSceneClassification *)v4 setConfidence:?];
-  [v3 boundingBox];
+  [classificationCopy boundingBox];
   if (!CGRectIsEmpty(v8))
   {
-    [v3 boundingBox];
+    [classificationCopy boundingBox];
     v5 = [VCPProtoBounds boundsWithCGRect:?];
     [(MADProtoSceneClassification *)v4 setBoundingBox:v5];
   }
@@ -33,21 +33,21 @@
 
 - (id)photosSceneClassification
 {
-  v3 = [(MADProtoSceneClassification *)self hasBoundingBox];
+  hasBoundingBox = [(MADProtoSceneClassification *)self hasBoundingBox];
   v4 = objc_alloc(MEMORY[0x1E6978A30]);
-  v5 = [(MADProtoSceneClassification *)self extendedSceneIdentifier];
+  extendedSceneIdentifier = [(MADProtoSceneClassification *)self extendedSceneIdentifier];
   [(MADProtoSceneClassification *)self confidence];
   v7 = v6;
-  if (v3)
+  if (hasBoundingBox)
   {
-    v8 = [(MADProtoSceneClassification *)self boundingBox];
-    [v8 rectValue];
-    v13 = [v4 initWithExtendedSceneIdentifier:v5 confidence:0 boundingBox:v7 startTime:v9 duration:v10 classificationType:{v11, v12, 0.0, 0.0}];
+    boundingBox = [(MADProtoSceneClassification *)self boundingBox];
+    [boundingBox rectValue];
+    v13 = [v4 initWithExtendedSceneIdentifier:extendedSceneIdentifier confidence:0 boundingBox:v7 startTime:v9 duration:v10 classificationType:{v11, v12, 0.0, 0.0}];
   }
 
   else
   {
-    v13 = [v4 initWithExtendedSceneIdentifier:v5 confidence:0 boundingBox:v6 startTime:*MEMORY[0x1E695F050] duration:*(MEMORY[0x1E695F050] + 8) classificationType:{*(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), 0.0, 0.0}];
+    v13 = [v4 initWithExtendedSceneIdentifier:extendedSceneIdentifier confidence:0 boundingBox:v6 startTime:*MEMORY[0x1E695F050] duration:*(MEMORY[0x1E695F050] + 8) classificationType:{*(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), 0.0, 0.0}];
   }
 
   return v13;
@@ -59,34 +59,34 @@
   v8.receiver = self;
   v8.super_class = MADProtoSceneClassification;
   v4 = [(MADProtoSceneClassification *)&v8 description];
-  v5 = [(MADProtoSceneClassification *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MADProtoSceneClassification *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_extendedSceneIdentifier];
-  [v3 setObject:v4 forKey:@"extendedSceneIdentifier"];
+  [dictionary setObject:v4 forKey:@"extendedSceneIdentifier"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_confidence];
-  [v3 setObject:v5 forKey:@"confidence"];
+  [dictionary setObject:v5 forKey:@"confidence"];
 
   boundingBox = self->_boundingBox;
   if (boundingBox)
   {
-    v7 = [(VCPProtoBounds *)boundingBox dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"boundingBox"];
+    dictionaryRepresentation = [(VCPProtoBounds *)boundingBox dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"boundingBox"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteUint64Field();
   PBDataWriterWriteDoubleField();
   if (self->_boundingBox)
@@ -95,36 +95,36 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = self->_extendedSceneIdentifier;
-  *(a3 + 1) = *&self->_confidence;
+  *(to + 2) = self->_extendedSceneIdentifier;
+  *(to + 1) = *&self->_confidence;
   boundingBox = self->_boundingBox;
   if (boundingBox)
   {
-    [a3 setBoundingBox:boundingBox];
+    [to setBoundingBox:boundingBox];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_extendedSceneIdentifier;
   *(v5 + 8) = self->_confidence;
-  v6 = [(VCPProtoBounds *)self->_boundingBox copyWithZone:a3];
+  v6 = [(VCPProtoBounds *)self->_boundingBox copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_extendedSceneIdentifier == v4[2] && self->_confidence == *(v4 + 1))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_extendedSceneIdentifier == equalCopy[2] && self->_confidence == *(equalCopy + 1))
   {
     boundingBox = self->_boundingBox;
-    if (boundingBox | v4[3])
+    if (boundingBox | equalCopy[3])
     {
       v6 = [(VCPProtoBounds *)boundingBox isEqual:?];
     }
@@ -179,13 +179,13 @@
   return v10 ^ v11 ^ [(VCPProtoBounds *)self->_boundingBox hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_extendedSceneIdentifier = *(v4 + 2);
-  self->_confidence = *(v4 + 1);
+  fromCopy = from;
+  self->_extendedSceneIdentifier = *(fromCopy + 2);
+  self->_confidence = *(fromCopy + 1);
   boundingBox = self->_boundingBox;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (boundingBox)
   {
     if (!v6)
@@ -193,7 +193,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoBounds *)boundingBox mergeFrom:?];
   }
 
@@ -204,11 +204,11 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(MADProtoSceneClassification *)self setBoundingBox:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
 }
 

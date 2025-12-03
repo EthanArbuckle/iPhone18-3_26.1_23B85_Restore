@@ -2,14 +2,14 @@
 + (id)allArchivePaths;
 + (id)archiveEntriesFinished;
 + (id)archiveEntriesUnfinished;
-+ (id)archiveEntriesWithComparisons:(id)a3;
-+ (id)archiveForDate:(id)a3;
++ (id)archiveEntriesWithComparisons:(id)comparisons;
++ (id)archiveForDate:(id)date;
 + (id)lastArchivePath;
 + (id)sharedInstance;
 + (id)storageQueue;
 + (id)workQueue;
-+ (void)systemTimeChangedByOffset:(double)a3;
-- (BOOL)eliglibleToVacuumEPSQLForDate:(id)a3;
++ (void)systemTimeChangedByOffset:(double)offset;
+- (BOOL)eliglibleToVacuumEPSQLForDate:(id)date;
 - (BOOL)isInterrupted;
 - (NSDate)lastEPSQLVacuumDate;
 - (PLArchiveManager)init;
@@ -21,18 +21,18 @@
 - (void)deprecateTablesEPSQL;
 - (void)disable;
 - (void)enable;
-- (void)handleFailure:(int64_t)a3 forArchiveEntry:(id)a4;
+- (void)handleFailure:(int64_t)failure forArchiveEntry:(id)entry;
 - (void)migrate;
-- (void)migrateArchive:(id)a3;
+- (void)migrateArchive:(id)archive;
 - (void)recover;
-- (void)registerForArchivingNotificationUsingBlock:(id)a3;
-- (void)runActivityWithLastCompletedDate:(id)a3;
+- (void)registerForArchivingNotificationUsingBlock:(id)block;
+- (void)runActivityWithLastCompletedDate:(id)date;
 - (void)runArchiveJobs;
 - (void)runInitialActivity;
 - (void)scheduleArchiveJobs;
-- (void)setEnabled:(BOOL)a3;
-- (void)setInterrupted:(BOOL)a3;
-- (void)setLastEPSQLVacuumDate:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setInterrupted:(BOOL)interrupted;
+- (void)setLastEPSQLVacuumDate:(id)date;
 - (void)trimBackgroundProcessingLog;
 - (void)trimCleanEnergyLog;
 - (void)trimExtendedPersistenceLog;
@@ -68,13 +68,13 @@ uint64_t __34__PLArchiveManager_sharedInstance__block_invoke()
   if (v2)
   {
     v2->_enabled = 0;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     archiveJobs = v3->_archiveJobs;
-    v3->_archiveJobs = v4;
+    v3->_archiveJobs = array;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     notificationBlocks = v3->_notificationBlocks;
-    v3->_notificationBlocks = v6;
+    v3->_notificationBlocks = array2;
 
     [PLDefaults doubleForKey:@"PLArchiveManager_interval" ifNotSet:86400.0];
     v3->_interval = v8;
@@ -127,22 +127,22 @@ uint64_t __34__PLArchiveManager_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_enabled == v3)
+  if (obj->_enabled == enabledCopy)
   {
     objc_sync_exit(obj);
   }
 
   else
   {
-    obj->_enabled = v3;
+    obj->_enabled = enabledCopy;
     objc_sync_exit(obj);
 
-    if (v3)
+    if (enabledCopy)
     {
 
       [(PLArchiveManager *)obj enable];
@@ -156,14 +156,14 @@ uint64_t __34__PLArchiveManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)setInterrupted:(BOOL)a3
+- (void)setInterrupted:(BOOL)interrupted
 {
-  v3 = a3;
+  interruptedCopy = interrupted;
   obj = self;
   objc_sync_enter(obj);
-  if (obj->_interrupted != v3)
+  if (obj->_interrupted != interruptedCopy)
   {
-    obj->_interrupted = v3;
+    obj->_interrupted = interruptedCopy;
   }
 
   objc_sync_exit(obj);
@@ -179,35 +179,35 @@ uint64_t __34__PLArchiveManager_sharedInstance__block_invoke()
 
 - (id)getArchivingCriteria
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [PLActivityCriterionTime timeCriterionWithInterval:self->_interval];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v5 = +[PLActivityCriterionEntry audioOffCriterion];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   if (+[PLUtilities hasBattery])
   {
     v6 = +[PLActivityCriterionEntry displayOffCriterion];
-    [v3 addObject:v6];
+    [array addObject:v6];
 
     v7 = +[PLActivityCriterionEntry pluggedInCriterion];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  return v3;
+  return array;
 }
 
 - (void)enable
 {
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 storageLocked];
+  storage = [v3 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v5 & 1) == 0)
+  if ((storageLocked & 1) == 0)
   {
     [(PLArchiveManager *)self setInterrupted:0];
-    v6 = [(PLArchiveManager *)self getArchivingCriteria];
+    getArchivingCriteria = [(PLArchiveManager *)self getArchivingCriteria];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __26__PLArchiveManager_enable__block_invoke;
@@ -223,7 +223,7 @@ uint64_t __34__PLArchiveManager_sharedInstance__block_invoke()
     v11[2] = __26__PLArchiveManager_enable__block_invoke_2;
     v11[3] = &unk_1E851AC48;
     v11[4] = self;
-    [v8 scheduleActivityWithIdentifier:@"com.apple.powerlogd.archiver" withCriteria:v6 withMustRunCriterion:v9 withQueue:v10 withInterruptBlock:v7 withActivityBlock:v11];
+    [v8 scheduleActivityWithIdentifier:@"com.apple.powerlogd.archiver" withCriteria:getArchivingCriteria withMustRunCriterion:v9 withQueue:v10 withInterruptBlock:v7 withActivityBlock:v11];
   }
 }
 
@@ -238,10 +238,10 @@ void __26__PLArchiveManager_enable__block_invoke_2(uint64_t a1, void *a2)
 - (void)disable
 {
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 storageLocked];
+  storage = [v3 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v5 & 1) == 0)
+  if ((storageLocked & 1) == 0)
   {
     [(PLArchiveManager *)self setInterrupted:0];
     v6 = +[PLActivityScheduler sharedInstance];
@@ -249,10 +249,10 @@ void __26__PLArchiveManager_enable__block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (void)runActivityWithLastCompletedDate:(id)a3
+- (void)runActivityWithLastCompletedDate:(id)date
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   v5 = PLLogArchiving();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -281,7 +281,7 @@ void __26__PLArchiveManager_enable__block_invoke_2(uint64_t a1, void *a2)
   v25 = v10;
   dispatch_after(v8, v9, block);
 
-  if (v4)
+  if (dateCopy)
   {
     if (![(PLArchiveManager *)self interrupted])
     {
@@ -296,8 +296,8 @@ void __26__PLArchiveManager_enable__block_invoke_2(uint64_t a1, void *a2)
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v12 = [(PLArchiveManager *)self notificationBlocks];
-      v13 = [v12 countByEnumeratingWithState:&v20 objects:v27 count:16];
+      notificationBlocks = [(PLArchiveManager *)self notificationBlocks];
+      v13 = [notificationBlocks countByEnumeratingWithState:&v20 objects:v27 count:16];
       if (v13)
       {
         v14 = v13;
@@ -309,7 +309,7 @@ void __26__PLArchiveManager_enable__block_invoke_2(uint64_t a1, void *a2)
           {
             if (*v21 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(notificationBlocks);
             }
 
             v17 = *(*(&v20 + 1) + 8 * v16);
@@ -322,7 +322,7 @@ void __26__PLArchiveManager_enable__block_invoke_2(uint64_t a1, void *a2)
           }
 
           while (v14 != v16);
-          v14 = [v12 countByEnumeratingWithState:&v20 objects:v27 count:16];
+          v14 = [notificationBlocks countByEnumeratingWithState:&v20 objects:v27 count:16];
         }
 
         while (v14);
@@ -345,10 +345,10 @@ void __26__PLArchiveManager_enable__block_invoke_2(uint64_t a1, void *a2)
 - (void)deprecateTables
 {
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 storageLocked];
+  storage = [v3 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v5 & 1) == 0)
+  if ((storageLocked & 1) == 0)
   {
     [&unk_1F540B830 enumerateObjectsUsingBlock:&__block_literal_global_499_0];
     [(PLArchiveManager *)self deprecateTablesEPSQL];
@@ -370,19 +370,19 @@ void __35__PLArchiveManager_deprecateTables__block_invoke(uint64_t a1, uint64_t 
 - (void)deprecateTablesEPSQL
 {
   v2 = +[PowerlogCore sharedCore];
-  v3 = [v2 storage];
-  v4 = [v3 storageLocked];
+  storage = [v2 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v4 & 1) == 0)
+  if ((storageLocked & 1) == 0)
   {
     v5 = +[PPSCoreStorage sharedSQLStorage];
-    v6 = [v5 EPSQLConnection];
+    ePSQLConnection = [v5 EPSQLConnection];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __40__PLArchiveManager_deprecateTablesEPSQL__block_invoke;
     v8[3] = &unk_1E851AC90;
-    v9 = v6;
-    v7 = v6;
+    v9 = ePSQLConnection;
+    v7 = ePSQLConnection;
     [&unk_1F540B848 enumerateObjectsUsingBlock:v8];
   }
 }
@@ -396,19 +396,19 @@ void __40__PLArchiveManager_deprecateTablesEPSQL__block_invoke(uint64_t a1, uint
 - (void)deprecateTablesBGSQL
 {
   v2 = +[PowerlogCore sharedCore];
-  v3 = [v2 storage];
-  v4 = [v3 storageLocked];
+  storage = [v2 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v4 & 1) == 0)
+  if ((storageLocked & 1) == 0)
   {
     v5 = +[PPSCoreStorage sharedSQLStorage];
-    v6 = [v5 BGSQLConnection];
+    bGSQLConnection = [v5 BGSQLConnection];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __40__PLArchiveManager_deprecateTablesBGSQL__block_invoke;
     v8[3] = &unk_1E851AC90;
-    v9 = v6;
-    v7 = v6;
+    v9 = bGSQLConnection;
+    v7 = bGSQLConnection;
     [&unk_1F540B860 enumerateObjectsUsingBlock:v8];
   }
 }
@@ -421,30 +421,30 @@ void __40__PLArchiveManager_deprecateTablesBGSQL__block_invoke(uint64_t a1, uint
 
 - (BOOL)isInterrupted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  interrupted = v2->_interrupted;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  interrupted = selfCopy->_interrupted;
+  objc_sync_exit(selfCopy);
 
   return interrupted;
 }
 
-- (void)handleFailure:(int64_t)a3 forArchiveEntry:(id)a4
+- (void)handleFailure:(int64_t)failure forArchiveEntry:(id)entry
 {
-  v5 = a4;
+  entryCopy = entry;
   v6 = PLLogArchiving();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [(PLArchiveManager *)a3 handleFailure:v5 forArchiveEntry:v6];
+    [(PLArchiveManager *)failure handleFailure:entryCopy forArchiveEntry:v6];
   }
 
   v7 = +[PowerlogCore sharedCore];
-  v8 = [v7 storage];
-  v9 = [v8 connection];
+  storage = [v7 storage];
+  connection = [storage connection];
 
-  if (a3)
+  if (failure)
   {
-    if (a3 == 1)
+    if (failure == 1)
     {
       v10 = 1004;
     }
@@ -466,12 +466,12 @@ void __40__PLArchiveManager_deprecateTablesBGSQL__block_invoke(uint64_t a1, uint
     v10 = 1003;
   }
 
-  [PLUtilities exitWithReason:v10 connection:v9];
+  [PLUtilities exitWithReason:v10 connection:connection];
 }
 
 - (void)scheduleArchiveJobs
 {
-  v4 = [OUTLINED_FUNCTION_3_3(a1 a2)];
+  v4 = [OUTLINED_FUNCTION_3_3(self a2)];
   *v3 = 138412290;
   *v2 = v4;
   OUTLINED_FUNCTION_4_0(&dword_1D8611000, v5, v6, "PLArchiveManager::scheduleArchiveJobs: scheduled archiveEntry=%@");
@@ -501,18 +501,18 @@ void __34__PLArchiveManager_runArchiveJobs__block_invoke()
     _os_log_impl(&dword_1D8611000, v2, OS_LOG_TYPE_DEFAULT, "PLArchiveManager deleting CESQL", v11, 2u);
   }
 
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = +[PPSFileUtilities containerPath];
   v5 = [v4 stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
   v6 = [v5 stringByAppendingString:@"CleanEnergy/"];
-  v7 = [v3 fileExistsAtPath:v6];
+  v7 = [defaultManager fileExistsAtPath:v6];
 
   if (v7)
   {
     v8 = +[PPSFileUtilities containerPath];
     v9 = [v8 stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
     v10 = [v9 stringByAppendingString:@"CleanEnergy/"];
-    [v3 removeItemAtPath:v10 error:0];
+    [defaultManager removeItemAtPath:v10 error:0];
   }
 }
 
@@ -528,19 +528,19 @@ void __34__PLArchiveManager_runArchiveJobs__block_invoke()
 
   if ([(PLArchiveManager *)self isInterrupted])
   {
-    v4 = PLLogArchiving();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    monotonicDate = PLLogArchiving();
+    if (os_log_type_enabled(monotonicDate, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1D8611000, v4, OS_LOG_TYPE_DEFAULT, "PLArchiveManager::trimEPSQL: interrupted", buf, 2u);
+      _os_log_impl(&dword_1D8611000, monotonicDate, OS_LOG_TYPE_DEFAULT, "PLArchiveManager::trimEPSQL: interrupted", buf, 2u);
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF00] monotonicDate];
+    monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
     [(PLArchiveManager *)self EPSQLDBDuration];
-    v6 = [v4 dateByAddingTimeInterval:-v5];
+    v6 = [monotonicDate dateByAddingTimeInterval:-v5];
     v7 = PLLogArchiving();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -561,7 +561,7 @@ void __34__PLArchiveManager_runArchiveJobs__block_invoke()
     v19 = v11;
     [PLUtilities dispatchSyncIfNotCallerQueue:v9 withBlock:v17];
 
-    if ([(PLArchiveManager *)self eliglibleToVacuumEPSQLForDate:v4]&& ![(PLArchiveManager *)self isInterrupted])
+    if ([(PLArchiveManager *)self eliglibleToVacuumEPSQLForDate:monotonicDate]&& ![(PLArchiveManager *)self isInterrupted])
     {
       v12 = PLLogArchiving();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -578,7 +578,7 @@ void __34__PLArchiveManager_runArchiveJobs__block_invoke()
       v16 = v10;
       [PLUtilities dispatchSyncIfNotCallerQueue:v13 withBlock:v15];
 
-      [(PLArchiveManager *)self setLastEPSQLVacuumDate:v4];
+      [(PLArchiveManager *)self setLastEPSQLVacuumDate:monotonicDate];
     }
   }
 
@@ -611,19 +611,19 @@ void __46__PLArchiveManager_trimExtendedPersistenceLog__block_invoke_546(uint64_
 
   if ([(PLArchiveManager *)self isInterrupted])
   {
-    v4 = PLLogArchiving();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    monotonicDate = PLLogArchiving();
+    if (os_log_type_enabled(monotonicDate, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1D8611000, v4, OS_LOG_TYPE_DEFAULT, "PLArchiveManager::trimBGSQL: interrupted", buf, 2u);
+      _os_log_impl(&dword_1D8611000, monotonicDate, OS_LOG_TYPE_DEFAULT, "PLArchiveManager::trimBGSQL: interrupted", buf, 2u);
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF00] monotonicDate];
+    monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
     [(PLArchiveManager *)self BGSQLDBDuration];
-    v6 = [v4 dateByAddingTimeInterval:-v5];
+    v6 = [monotonicDate dateByAddingTimeInterval:-v5];
     v7 = PLLogArchiving();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -678,12 +678,12 @@ void __47__PLArchiveManager_trimBackgroundProcessingLog__block_invoke_547(uint64
   [v1 vacuum];
 }
 
-- (BOOL)eliglibleToVacuumEPSQLForDate:(id)a3
+- (BOOL)eliglibleToVacuumEPSQLForDate:(id)date
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLArchiveManager *)self lastEPSQLVacuumDate];
-  if (!v5)
+  dateCopy = date;
+  lastEPSQLVacuumDate = [(PLArchiveManager *)self lastEPSQLVacuumDate];
+  if (!lastEPSQLVacuumDate)
   {
     v6 = PLLogArchiving();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -700,17 +700,17 @@ void __47__PLArchiveManager_trimBackgroundProcessingLog__block_invoke_547(uint64
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = dateCopy;
       _os_log_impl(&dword_1D8611000, v6, OS_LOG_TYPE_INFO, "PLArchiveManager::trimEPSQL: Restarting after monotonic reset %@", &v14, 0xCu);
     }
 
 LABEL_7:
 
-    [(PLArchiveManager *)self setLastEPSQLVacuumDate:v4];
+    [(PLArchiveManager *)self setLastEPSQLVacuumDate:dateCopy];
     goto LABEL_8;
   }
 
-  [v4 timeIntervalSinceDate:v5];
+  [dateCopy timeIntervalSinceDate:lastEPSQLVacuumDate];
   v11 = v10;
   [(PLArchiveManager *)self EPSQLVacuumInterval];
   if (v11 >= v12)
@@ -737,10 +737,10 @@ LABEL_9:
 {
   v58 = *MEMORY[0x1E69E9840];
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 storageLocked];
+  storage = [v3 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v5 & 1) == 0)
+  if ((storageLocked & 1) == 0)
   {
     v6 = PLLogArchiving();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -749,12 +749,12 @@ LABEL_9:
       _os_log_impl(&dword_1D8611000, v6, OS_LOG_TYPE_DEFAULT, "PLArchiveManager::cleanup: start", buf, 2u);
     }
 
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v8 = +[PLUtilities containerPath];
     v9 = [v8 stringByAppendingString:@"/Library/BatteryLife/Archives/"];
-    v40 = [v7 contentsOfDirectoryAtPath:v9 error:0];
+    v40 = [defaultManager contentsOfDirectoryAtPath:v9 error:0];
 
-    v10 = [MEMORY[0x1E695DF00] monotonicDate];
+    monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
@@ -765,8 +765,8 @@ LABEL_9:
     {
       v12 = v11;
       v13 = *v51;
-      v38 = v10;
-      v39 = self;
+      v38 = monotonicDate;
+      selfCopy = self;
       v37 = *v51;
       do
       {
@@ -780,8 +780,8 @@ LABEL_9:
           }
 
           v15 = *(*(&v50 + 1) + 8 * v14);
-          v16 = [v15 startDate];
-          [v10 timeIntervalSinceDate:v16];
+          startDate = [v15 startDate];
+          [monotonicDate timeIntervalSinceDate:startDate];
           v18 = v17;
           [(PLArchiveManager *)self archiveRetention];
           v20 = v19;
@@ -792,16 +792,16 @@ LABEL_9:
             v21 = PLLogArchiving();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [v15 uuid];
+              uuid = [v15 uuid];
               *buf = 138412290;
-              v56 = v22;
+              v56 = uuid;
               _os_log_impl(&dword_1D8611000, v21, OS_LOG_TYPE_DEFAULT, "PLArchiveManager::cleanup: removing archiveEntry=%@", buf, 0xCu);
             }
 
             v23 = MEMORY[0x1E696AE18];
             v44 = v15;
-            v24 = [v15 uuid];
-            v25 = [v23 predicateWithFormat:@"SELF CONTAINS %@", v24];
+            uuid2 = [v15 uuid];
+            v25 = [v23 predicateWithFormat:@"SELF CONTAINS %@", uuid2];
 
             v48 = 0u;
             v49 = 0u;
@@ -827,7 +827,7 @@ LABEL_9:
                   v32 = +[PLUtilities containerPath];
                   v33 = [v32 stringByAppendingString:@"/Library/BatteryLife/Archives/"];
                   v34 = [v33 stringByAppendingPathComponent:v31];
-                  [v7 removeItemAtPath:v34 error:0];
+                  [defaultManager removeItemAtPath:v34 error:0];
                 }
 
                 v28 = [v26 countByEnumeratingWithState:&v46 objects:v54 count:16];
@@ -836,10 +836,10 @@ LABEL_9:
               while (v28);
             }
 
-            v10 = v38;
+            monotonicDate = v38;
             [v44 setRemovedDate:v38];
 
-            self = v39;
+            self = selfCopy;
             v13 = v37;
             v12 = v41;
             v14 = v45;
@@ -869,10 +869,10 @@ LABEL_9:
 - (void)recover
 {
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 storageLocked];
+  storage = [v3 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v5 & 1) == 0)
+  if ((storageLocked & 1) == 0)
   {
     v6 = +[PLArchiveManager workQueue];
     block[0] = MEMORY[0x1E69E9820];
@@ -945,19 +945,19 @@ void __27__PLArchiveManager_recover__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)migrateArchive:(id)a3
+- (void)migrateArchive:(id)archive
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [PLUtilities extractDateStringAndUUIDStringFromFilePath:v3];
+  archiveCopy = archive;
+  v4 = [PLUtilities extractDateStringAndUUIDStringFromFilePath:archiveCopy];
   v5 = v4;
   if (!v4 || [v4 count] != 2)
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid archivePath=%@", v3];
+    archiveCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid archivePath=%@", archiveCopy];
     v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLArchiveManager.m"];
-    v21 = [v20 lastPathComponent];
+    lastPathComponent = [v20 lastPathComponent];
     v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLArchiveManager migrateArchive:]"];
-    [PLCoreStorage logMessage:v11 fromFile:v21 fromFunction:v22 fromLineNumber:864];
+    [PLCoreStorage logMessage:archiveCopy fromFile:lastPathComponent fromFunction:v22 fromLineNumber:864];
 
     v19 = PLLogCommon();
     if (os_log_type_enabled(&v19->super.super, OS_LOG_TYPE_DEBUG))
@@ -971,12 +971,12 @@ void __27__PLArchiveManager_recover__block_invoke(uint64_t a1)
   v6 = MEMORY[0x1E696AEC0];
   v7 = +[PLUtilities containerPath];
   v8 = [v7 stringByAppendingString:@"Library/BatteryLife/Archives/powerlog_metadata_%@_%@.txt"];
-  v9 = [v5 firstObject];
-  v10 = [v5 lastObject];
-  v11 = [v6 stringWithFormat:v8, v9, v10];
+  firstObject = [v5 firstObject];
+  lastObject = [v5 lastObject];
+  archiveCopy = [v6 stringWithFormat:v8, firstObject, lastObject];
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
-  LODWORD(v8) = [v12 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LODWORD(v8) = [defaultManager fileExistsAtPath:archiveCopy];
 
   if (v8)
   {
@@ -995,11 +995,11 @@ void __27__PLArchiveManager_recover__block_invoke(uint64_t a1)
 
       if (migrateArchive__classDebugEnabled == 1)
       {
-        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLArchiveManager::migrateArchive: archive with metadata:%@", v3];
+        archiveCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLArchiveManager::migrateArchive: archive with metadata:%@", archiveCopy];
         v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLArchiveManager.m"];
-        v16 = [v15 lastPathComponent];
+        lastPathComponent2 = [v15 lastPathComponent];
         v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLArchiveManager migrateArchive:]"];
-        [PLCoreStorage logMessage:v14 fromFile:v16 fromFunction:v17 fromLineNumber:873];
+        [PLCoreStorage logMessage:archiveCopy2 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:873];
 
         v18 = PLLogCommon();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1009,13 +1009,13 @@ void __27__PLArchiveManager_recover__block_invoke(uint64_t a1)
       }
     }
 
-    v19 = [[PLArchiveEntry alloc] initWithMetadata:v11];
+    v19 = [[PLArchiveEntry alloc] initWithMetadata:archiveCopy];
     goto LABEL_33;
   }
 
   v23 = [PLValueComparison alloc];
-  v24 = [v5 lastObject];
-  v25 = [(PLValueComparison *)v23 initWithKey:@"UUID" withValue:v24 withComparisonOperation:0];
+  lastObject2 = [v5 lastObject];
+  v25 = [(PLValueComparison *)v23 initWithKey:@"UUID" withValue:lastObject2 withComparisonOperation:0];
 
   v57[0] = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:1];
@@ -1045,11 +1045,11 @@ void __27__PLArchiveManager_recover__block_invoke(uint64_t a1)
 
     if (migrateArchive__classDebugEnabled_567 == 1)
     {
-      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLArchiveManager::migrateArchive: archive without metadata:%@", v3];
+      archiveCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLArchiveManager::migrateArchive: archive without metadata:%@", archiveCopy];
       v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLArchiveManager.m"];
-      v31 = [v30 lastPathComponent];
+      lastPathComponent3 = [v30 lastPathComponent];
       v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLArchiveManager migrateArchive:]"];
-      [PLCoreStorage logMessage:v29 fromFile:v31 fromFunction:v32 fromLineNumber:887];
+      [PLCoreStorage logMessage:archiveCopy3 fromFile:lastPathComponent3 fromFunction:v32 fromLineNumber:887];
 
       v33 = PLLogCommon();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -1059,26 +1059,26 @@ void __27__PLArchiveManager_recover__block_invoke(uint64_t a1)
     }
   }
 
-  v34 = [v5 firstObject];
-  v35 = [v34 length];
+  firstObject2 = [v5 firstObject];
+  v35 = [firstObject2 length];
   v36 = [@"yyyy-MM-dd" length];
 
   if (v35 >= v36)
   {
-    v46 = [MEMORY[0x1E695DF00] defaultDateFormatter];
-    v47 = [v5 firstObject];
-    v48 = [v47 substringToIndex:{objc_msgSend(@"yyyy-MM-dd", "length")}];
-    v37 = [v46 dateFromString:v48];
+    defaultDateFormatter = [MEMORY[0x1E695DF00] defaultDateFormatter];
+    firstObject3 = [v5 firstObject];
+    v48 = [firstObject3 substringToIndex:{objc_msgSend(@"yyyy-MM-dd", "length")}];
+    v37 = [defaultDateFormatter dateFromString:v48];
 
     v49 = [v37 dateByAddingTimeInterval:86400.0];
     v38 = v49;
     if (v37 && v49)
     {
       v50 = [PLArchiveEntry alloc];
-      v39 = [v37 convertFromSystemToMonotonic];
-      v43 = [v38 convertFromSystemToMonotonic];
-      v51 = [v5 lastObject];
-      v19 = [(PLArchiveEntry *)v50 initWithStartDate:v39 endDate:v43 andUUID:v51];
+      convertFromSystemToMonotonic = [v37 convertFromSystemToMonotonic];
+      convertFromSystemToMonotonic2 = [v38 convertFromSystemToMonotonic];
+      lastObject3 = [v5 lastObject];
+      v19 = [(PLArchiveEntry *)v50 initWithStartDate:convertFromSystemToMonotonic endDate:convertFromSystemToMonotonic2 andUUID:lastObject3];
 
       v45 = v53;
       v44 = 1;
@@ -1092,14 +1092,14 @@ void __27__PLArchiveManager_recover__block_invoke(uint64_t a1)
     v38 = 0;
   }
 
-  v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid startDate=%@, endDate=%@", v37, v38];
+  convertFromSystemToMonotonic = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid startDate=%@, endDate=%@", v37, v38];
   v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLArchiveManager.m"];
-  v41 = [v40 lastPathComponent];
+  lastPathComponent4 = [v40 lastPathComponent];
   v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLArchiveManager migrateArchive:]"];
-  [PLCoreStorage logMessage:v39 fromFile:v41 fromFunction:v42 fromLineNumber:896];
+  [PLCoreStorage logMessage:convertFromSystemToMonotonic fromFile:lastPathComponent4 fromFunction:v42 fromLineNumber:896];
 
-  v43 = PLLogCommon();
-  if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
+  convertFromSystemToMonotonic2 = PLLogCommon();
+  if (os_log_type_enabled(convertFromSystemToMonotonic2, OS_LOG_TYPE_DEBUG))
   {
     [PLArchiveManager migrateArchive:];
   }
@@ -1137,10 +1137,10 @@ BOOL __35__PLArchiveManager_migrateArchive___block_invoke_568(uint64_t a1)
 - (void)migrate
 {
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 storageLocked];
+  storage = [v3 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v5 & 1) == 0)
+  if ((storageLocked & 1) == 0)
   {
     v6 = +[PLArchiveManager workQueue];
     block[0] = MEMORY[0x1E69E9820];
@@ -1301,14 +1301,14 @@ BOOL __27__PLArchiveManager_migrate__block_invoke_584(uint64_t a1)
   return result;
 }
 
-+ (void)systemTimeChangedByOffset:(double)a3
++ (void)systemTimeChangedByOffset:(double)offset
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = +[PowerlogCore sharedCore];
-  v5 = [v4 storage];
-  v6 = [v5 storageLocked];
+  storage = [v4 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v6 & 1) == 0)
+  if ((storageLocked & 1) == 0)
   {
     v7 = PLLogArchiving();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1337,7 +1337,7 @@ BOOL __27__PLArchiveManager_migrate__block_invoke_584(uint64_t a1)
 
           v13 = *(*(&v17 + 1) + 8 * i);
           [v13 systemTimeOffset];
-          [v13 setSystemTimeOffset:v14 + a3];
+          [v13 setSystemTimeOffset:v14 + offset];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -1358,32 +1358,32 @@ BOOL __27__PLArchiveManager_migrate__block_invoke_584(uint64_t a1)
 
 + (id)lastArchivePath
 {
-  v2 = [a1 archiveEntriesFinished];
-  v3 = v2;
-  if (v2 && [v2 count])
+  archiveEntriesFinished = [self archiveEntriesFinished];
+  v3 = archiveEntriesFinished;
+  if (archiveEntriesFinished && [archiveEntriesFinished count])
   {
-    v4 = [v3 lastObject];
-    v5 = [v4 compressedPath];
+    lastObject = [v3 lastObject];
+    compressedPath = [lastObject compressedPath];
   }
 
   else
   {
-    v5 = 0;
+    compressedPath = 0;
   }
 
-  return v5;
+  return compressedPath;
 }
 
 + (id)allArchivePaths
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a1 archiveEntriesFinished];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  archiveEntriesFinished = [self archiveEntriesFinished];
+  v5 = [archiveEntriesFinished countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1394,14 +1394,14 @@ BOOL __27__PLArchiveManager_migrate__block_invoke_584(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(archiveEntriesFinished);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) compressedPath];
-        [v3 addObject:v9];
+        compressedPath = [*(*(&v12 + 1) + 8 * i) compressedPath];
+        [array addObject:compressedPath];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [archiveEntriesFinished countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1409,7 +1409,7 @@ BOOL __27__PLArchiveManager_migrate__block_invoke_584(uint64_t a1)
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 + (id)archiveEntriesUnfinished
@@ -1442,10 +1442,10 @@ BOOL __27__PLArchiveManager_migrate__block_invoke_584(uint64_t a1)
   return v5;
 }
 
-+ (id)archiveForDate:(id)a3
++ (id)archiveForDate:(id)date
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dateCopy = date;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1466,11 +1466,11 @@ BOOL __27__PLArchiveManager_migrate__block_invoke_584(uint64_t a1)
 
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = objc_alloc(MEMORY[0x1E696AB80]);
-        v10 = [v8 startDate];
-        v11 = [v8 endDate];
-        v12 = [v9 initWithStartDate:v10 endDate:v11];
+        startDate = [v8 startDate];
+        endDate = [v8 endDate];
+        v12 = [v9 initWithStartDate:startDate endDate:endDate];
 
-        if ([v12 containsDate:v3])
+        if ([v12 containsDate:dateCopy])
         {
           v5 = v8;
 
@@ -1495,21 +1495,21 @@ LABEL_11:
   return v5;
 }
 
-+ (id)archiveEntriesWithComparisons:(id)a3
++ (id)archiveEntriesWithComparisons:(id)comparisons
 {
-  v3 = a3;
+  comparisonsCopy = comparisons;
   v4 = +[PowerlogCore sharedCore];
-  v5 = [v4 storage];
+  storage = [v4 storage];
   v6 = +[PLArchiveEntry entryKey];
-  v7 = [v5 entriesForKey:v6 withComparisons:v3];
+  v7 = [storage entriesForKey:v6 withComparisons:comparisonsCopy];
 
   return v7;
 }
 
-- (void)registerForArchivingNotificationUsingBlock:(id)a3
+- (void)registerForArchivingNotificationUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = PLLogArchiving();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1523,7 +1523,7 @@ LABEL_11:
     v7[2] = __63__PLArchiveManager_registerForArchivingNotificationUsingBlock___block_invoke;
     v7[3] = &unk_1E8519400;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async_and_wait(v6, v7);
   }
 }
@@ -1551,11 +1551,11 @@ void __63__PLArchiveManager_registerForArchivingNotificationUsingBlock___block_i
   return v3;
 }
 
-- (void)setLastEPSQLVacuumDate:(id)a3
+- (void)setLastEPSQLVacuumDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSince1970];
+    [date timeIntervalSince1970];
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     [PLDefaults setObject:v4 forKey:@"LastEPSQLVacuumDate" saveToDisk:1];
   }

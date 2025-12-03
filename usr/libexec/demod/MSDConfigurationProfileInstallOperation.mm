@@ -15,24 +15,24 @@
 
 - (BOOL)_installConfigurationProfile
 {
-  v2 = [(MSDOperation *)self context];
+  context = [(MSDOperation *)self context];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v2 stagingRootPath];
-  v5 = [v2 fileHash];
-  v6 = [v4 stringByAppendingPathComponent:v5];
-  v7 = [v2 profileIdentifier];
-  v8 = [[MSDConfigurationProfile alloc] initWithFile:v6 andIdentifier:v7];
+  stagingRootPath = [context stagingRootPath];
+  fileHash = [context fileHash];
+  v6 = [stagingRootPath stringByAppendingPathComponent:fileHash];
+  profileIdentifier = [context profileIdentifier];
+  v8 = [[MSDConfigurationProfile alloc] initWithFile:v6 andIdentifier:profileIdentifier];
   v9 = sub_100063A54();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v2 identifier];
+    identifier = [context identifier];
     *buf = 138543362;
-    v21 = v10;
+    v21 = identifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Installing standalone configuration profile: %{public}@", buf, 0xCu);
   }
 
   v11 = +[MSDContentCacheManager sharedInstance];
-  v12 = [v11 copyFileIfPresentInCache:v5 toLocation:v6 verifyHash:{objc_msgSend(v2, "verifyFileHash")}];
+  v12 = [v11 copyFileIfPresentInCache:fileHash toLocation:v6 verifyHash:{objc_msgSend(context, "verifyFileHash")}];
 
   if (v12)
   {
@@ -45,7 +45,7 @@
     v13 = sub_100063A54();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      sub_1000C57EC(v5, v13);
+      sub_1000C57EC(fileHash, v13);
     }
 
     v14 = 0;

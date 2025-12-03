@@ -1,22 +1,22 @@
 @interface HPSSetting
-+ (HPSSetting)settingWithKeyPath:(id)a3 value:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSetting:(id)a3;
-- (BOOL)isEquivalentToSetting:(id)a3;
-- (HPSSetting)initWithCoder:(id)a3;
-- (HPSSetting)initWithKeyPath:(id)a3 value:(id)a4;
++ (HPSSetting)settingWithKeyPath:(id)path value:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSetting:(id)setting;
+- (BOOL)isEquivalentToSetting:(id)setting;
+- (HPSSetting)initWithCoder:(id)coder;
+- (HPSSetting)initWithKeyPath:(id)path value:(id)value;
 - (NSString)lastModifiedDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HPSSetting
 
-- (HPSSetting)initWithKeyPath:(id)a3 value:(id)a4
+- (HPSSetting)initWithKeyPath:(id)path value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  valueCopy = value;
   v8 = objc_opt_class();
   if (v8 == objc_opt_class())
   {
@@ -28,45 +28,45 @@
   v9 = [(HPSSetting *)&v17 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [pathCopy copy];
     keyPath = v9->_keyPath;
     v9->_keyPath = v10;
 
-    v12 = [v7 copyWithZone:0];
+    v12 = [valueCopy copyWithZone:0];
     value = v9->_value;
     v9->_value = v12;
 
-    v14 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastModifiedDate = v9->_lastModifiedDate;
-    v9->_lastModifiedDate = v14;
+    v9->_lastModifiedDate = distantPast;
   }
 
   return v9;
 }
 
-+ (HPSSetting)settingWithKeyPath:(id)a3 value:(id)a4
++ (HPSSetting)settingWithKeyPath:(id)path value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithKeyPath:v7 value:v6];
+  valueCopy = value;
+  pathCopy = path;
+  v8 = [[self alloc] initWithKeyPath:pathCopy value:valueCopy];
 
   return v8;
 }
 
-- (BOOL)isEquivalentToSetting:(id)a3
+- (BOOL)isEquivalentToSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [(HPSSetting *)self value];
+  settingCopy = setting;
+  value = [(HPSSetting *)self value];
 
-  v6 = [(HPSSetting *)self keyPath];
-  v7 = [v4 keyPath];
-  v8 = [v6 isEqualToString:v7];
-  if (!v5)
+  keyPath = [(HPSSetting *)self keyPath];
+  keyPath2 = [settingCopy keyPath];
+  v8 = [keyPath isEqualToString:keyPath2];
+  if (!value)
   {
     if (v8)
     {
-      v9 = [v4 value];
-      v11 = v9 == 0;
+      value2 = [settingCopy value];
+      v11 = value2 == 0;
       goto LABEL_6;
     }
 
@@ -80,9 +80,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v9 = [(HPSSetting *)self value];
-  v10 = [v4 value];
-  v11 = [v9 isEqual:v10];
+  value2 = [(HPSSetting *)self value];
+  value3 = [settingCopy value];
+  v11 = [value2 isEqual:value3];
 
 LABEL_6:
 LABEL_8:
@@ -90,21 +90,21 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)isEqualToSetting:(id)a3
+- (BOOL)isEqualToSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [(HPSSetting *)self value];
+  settingCopy = setting;
+  value = [(HPSSetting *)self value];
 
-  v6 = [(HPSSetting *)self keyPath];
-  v7 = [v4 keyPath];
-  v8 = [v6 isEqualToString:v7];
-  if (v5)
+  keyPath = [(HPSSetting *)self keyPath];
+  keyPath2 = [settingCopy keyPath];
+  v8 = [keyPath isEqualToString:keyPath2];
+  if (value)
   {
     if (v8)
     {
-      v9 = [(HPSSetting *)self value];
-      v10 = [v4 value];
-      if (![v9 isEqual:v10])
+      value2 = [(HPSSetting *)self value];
+      value3 = [settingCopy value];
+      if (![value2 isEqual:value3])
       {
         v13 = 0;
 LABEL_12:
@@ -112,9 +112,9 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v11 = [(HPSSetting *)self lastModifiedDate];
-      v12 = [v4 lastModifiedDate];
-      v13 = [v11 isEqual:v12];
+      lastModifiedDate = [(HPSSetting *)self lastModifiedDate];
+      lastModifiedDate2 = [settingCopy lastModifiedDate];
+      v13 = [lastModifiedDate isEqual:lastModifiedDate2];
 
 LABEL_11:
       goto LABEL_12;
@@ -123,8 +123,8 @@ LABEL_11:
 
   else if (v8)
   {
-    v9 = [v4 value];
-    if (v9)
+    value2 = [settingCopy value];
+    if (value2)
     {
       v13 = 0;
 LABEL_13:
@@ -132,9 +132,9 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v10 = [(HPSSetting *)self lastModifiedDate];
-    v11 = [v4 lastModifiedDate];
-    v13 = [v10 isEqual:v11];
+    value3 = [(HPSSetting *)self lastModifiedDate];
+    lastModifiedDate = [settingCopy lastModifiedDate];
+    v13 = [value3 isEqual:lastModifiedDate];
     goto LABEL_11;
   }
 
@@ -144,10 +144,10 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -155,7 +155,7 @@ LABEL_14:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HPSSetting *)self isEqualToSetting:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HPSSetting *)self isEqualToSetting:equalCopy];
   }
 
   return v5;
@@ -163,8 +163,8 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v2 = [(HPSSetting *)self keyPath];
-  v3 = [v2 hash];
+  keyPath = [(HPSSetting *)self keyPath];
+  v3 = [keyPath hash];
 
   return v3;
 }
@@ -174,19 +174,19 @@ LABEL_14:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HPSSetting *)self keyPath];
-  v7 = [(HPSSetting *)self value];
-  v8 = [(HPSSetting *)self lastModifiedDescription];
-  v9 = [v3 stringWithFormat:@"<%@: %p, %@ = %@%@>", v5, self, v6, v7, v8];
+  keyPath = [(HPSSetting *)self keyPath];
+  value = [(HPSSetting *)self value];
+  lastModifiedDescription = [(HPSSetting *)self lastModifiedDescription];
+  v9 = [v3 stringWithFormat:@"<%@: %p, %@ = %@%@>", v5, self, keyPath, value, lastModifiedDescription];
 
   return v9;
 }
 
 - (NSString)lastModifiedDescription
 {
-  v3 = [(HPSSetting *)self lastModifiedDate];
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
-  if ([v3 isEqualToDate:v4])
+  lastModifiedDate = [(HPSSetting *)self lastModifiedDate];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  if ([lastModifiedDate isEqualToDate:distantPast])
   {
     v5 = &stru_28664DBD0;
   }
@@ -194,42 +194,42 @@ LABEL_14:
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(HPSSetting *)self lastModifiedDate];
-    v5 = [v6 stringWithFormat:@" (modified: %@)", v7];
+    lastModifiedDate2 = [(HPSSetting *)self lastModifiedDate];
+    v5 = [v6 stringWithFormat:@" (modified: %@)", lastModifiedDate2];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(HPSSetting *)self keyPath];
-  [v9 encodeObject:v4 forKey:@"setting.keypath"];
+  coderCopy = coder;
+  keyPath = [(HPSSetting *)self keyPath];
+  [coderCopy encodeObject:keyPath forKey:@"setting.keypath"];
 
-  v5 = [(HPSSetting *)self value];
-  if (v5)
+  value = [(HPSSetting *)self value];
+  if (value)
   {
     v6 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
     [v6 setRequiresSecureCoding:1];
-    [v6 encodeObject:v5 forKey:@"setting.value"];
-    v7 = [v6 encodedData];
-    [v9 encodeObject:v7 forKey:@"setting.value"];
+    [v6 encodeObject:value forKey:@"setting.value"];
+    encodedData = [v6 encodedData];
+    [coderCopy encodeObject:encodedData forKey:@"setting.value"];
   }
 
-  v8 = [(HPSSetting *)self lastModifiedDate];
-  [v9 encodeObject:v8 forKey:@"setting.lastmodifieddate"];
+  lastModifiedDate = [(HPSSetting *)self lastModifiedDate];
+  [coderCopy encodeObject:lastModifiedDate forKey:@"setting.lastmodifieddate"];
 }
 
-- (HPSSetting)initWithCoder:(id)a3
+- (HPSSetting)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = HPSSetting;
   v5 = [(HPSSetting *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setting.keypath"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setting.keypath"];
     keyPath = v5->_keyPath;
     v5->_keyPath = v6;
 
@@ -238,19 +238,19 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    if ([v4 containsValueForKey:@"setting.value"])
+    if ([coderCopy containsValueForKey:@"setting.value"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setting.value"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setting.value"];
       v24 = 0;
       v9 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v8 error:&v24];
       v10 = v24;
       [v9 setRequiresSecureCoding:1];
       [v9 _enableStrictSecureDecodingMode];
       [v9 setDecodingFailurePolicy:1];
-      v11 = [objc_opt_class() valueClass];
-      if (v11)
+      valueClass = [objc_opt_class() valueClass];
+      if (valueClass)
       {
-        v12 = [v9 decodeObjectOfClass:v11 forKey:@"setting.value"];
+        v12 = [v9 decodeObjectOfClass:valueClass forKey:@"setting.value"];
         value = v5->_value;
         v5->_value = v12;
 
@@ -264,14 +264,14 @@ LABEL_13:
 
       else
       {
-        v14 = [objc_opt_class() valueClasses];
-        if (!v14)
+        valueClasses = [objc_opt_class() valueClasses];
+        if (!valueClasses)
         {
           goto LABEL_13;
         }
 
-        v15 = v14;
-        v16 = [v9 decodeObjectOfClasses:v14 forKey:@"setting.value"];
+        v15 = valueClasses;
+        v16 = [v9 decodeObjectOfClasses:valueClasses forKey:@"setting.value"];
         v17 = v5->_value;
         v5->_value = v16;
 
@@ -288,7 +288,7 @@ LABEL_13:
       v10 = 0;
     }
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setting.lastmodifieddate"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setting.lastmodifieddate"];
     lastModifiedDate = v5->_lastModifiedDate;
     v5->_lastModifiedDate = v19;
 

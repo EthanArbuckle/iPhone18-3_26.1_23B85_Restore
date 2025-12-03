@@ -1,18 +1,18 @@
 @interface NRDDeviceIdentity
-- (BOOL)isEqual:(id)a3;
-- (NRDDeviceIdentity)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDDeviceIdentity)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDDeviceIdentity
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self)
     {
       identity = self->_identity;
@@ -56,26 +56,26 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
-    [a3 encodeObject:self->_identity forKey:@"identity"];
+    [coder encodeObject:self->_identity forKey:@"identity"];
     publicKey = self->_publicKey;
   }
 
   else
   {
-    [a3 encodeObject:0 forKey:@"identity"];
+    [coder encodeObject:0 forKey:@"identity"];
     publicKey = 0;
   }
 
-  [a3 encodeObject:publicKey forKey:@"publicKey"];
+  [coder encodeObject:publicKey forKey:@"publicKey"];
 }
 
-- (NRDDeviceIdentity)initWithCoder:(id)a3
+- (NRDDeviceIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = NRDDeviceIdentity;
   v5 = [(NRDDeviceIdentity *)&v24 init];
@@ -90,8 +90,8 @@
       _NRLogWithArgs();
     }
 
-    v4 = _os_log_pack_size();
-    v6 = (&v23 - ((v4 + 15) & 0xFFFFFFFFFFFFFFF0));
+    coderCopy = _os_log_pack_size();
+    v6 = (&v23 - ((coderCopy + 15) & 0xFFFFFFFFFFFFFFF0));
     v16 = *__error();
     v17 = _os_log_pack_fill();
     *v17 = 136446210;
@@ -115,7 +115,7 @@ LABEL_14:
   }
 
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
   identity = v6->_identity;
   v6->_identity = v7;
 
@@ -124,7 +124,7 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKey"];
   publicKey = v6->_publicKey;
   v6->_publicKey = v9;
 
@@ -148,7 +148,7 @@ LABEL_5:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[NRDDeviceIdentity allocWithZone:](NRDDeviceIdentity init];
   if (self)
@@ -162,7 +162,7 @@ LABEL_5:
   }
 
   v7 = identity;
-  v8 = [(NSUUID *)v7 copyWithZone:a3];
+  v8 = [(NSUUID *)v7 copyWithZone:zone];
   if (v5)
   {
     objc_storeStrong(&v5->_identity, v8);
@@ -179,7 +179,7 @@ LABEL_5:
   }
 
   v10 = publicKey;
-  v11 = [(NSData *)v10 copyWithZone:a3];
+  v11 = [(NSData *)v10 copyWithZone:zone];
   if (v5)
   {
     objc_storeStrong(&v5->_publicKey, v11);

@@ -1,14 +1,14 @@
 @interface AXMVisionFaceNameHelper
 - (BOOL)_isDeviceUnlocked;
-- (BOOL)_loadPersonsModelWithPhotoLibraryURL:(id)a3;
-- (BOOL)_shouldReloadPersonsModelWithPhotoLibraryURL:(id)a3;
-- (BOOL)prepareForLookupWithPhotoLibraryURL:(id)a3;
-- (id)_fetchPersonsForLocalIdentifiers:(id)a3 withPhotoLibraryURL:(id)a4;
-- (id)_fileModificationDateForPath:(id)a3;
-- (id)_filePathForPersonsModelWithPhotoLibraryURL:(id)a3;
-- (id)_photoAuthorizationMessage:(int64_t)a3;
-- (id)nameForFaceObservation:(id)a3;
-- (id)photoLibraryWithURL:(id)a3;
+- (BOOL)_loadPersonsModelWithPhotoLibraryURL:(id)l;
+- (BOOL)_shouldReloadPersonsModelWithPhotoLibraryURL:(id)l;
+- (BOOL)prepareForLookupWithPhotoLibraryURL:(id)l;
+- (id)_fetchPersonsForLocalIdentifiers:(id)identifiers withPhotoLibraryURL:(id)l;
+- (id)_fileModificationDateForPath:(id)path;
+- (id)_filePathForPersonsModelWithPhotoLibraryURL:(id)l;
+- (id)_photoAuthorizationMessage:(int64_t)message;
+- (id)nameForFaceObservation:(id)observation;
+- (id)photoLibraryWithURL:(id)l;
 - (unint64_t)faceprintRequestRevisionForPersonsModel;
 - (void)_resetState;
 @end
@@ -27,18 +27,18 @@
 - (unint64_t)faceprintRequestRevisionForPersonsModel
 {
   VCPMediaAnalyzerClass = getVCPMediaAnalyzerClass();
-  v4 = [(AXMVisionFaceNameHelper *)self _personsModel];
-  v5 = [VCPMediaAnalyzerClass faceprintRevisionForPersonModel:v4];
+  _personsModel = [(AXMVisionFaceNameHelper *)self _personsModel];
+  v5 = [VCPMediaAnalyzerClass faceprintRevisionForPersonModel:_personsModel];
 
   return v5;
 }
 
-- (id)photoLibraryWithURL:(id)a3
+- (id)photoLibraryWithURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [objc_alloc(getPHPhotoLibraryClass_0()) initWithPhotoLibraryURL:v3];
+    v4 = [objc_alloc(getPHPhotoLibraryClass_0()) initWithPhotoLibraryURL:lCopy];
     v11 = 0;
     v5 = [v4 openAndWaitWithUpgrade:0 error:&v11];
     v6 = v11;
@@ -53,7 +53,7 @@
       v9 = AXMediaLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
-        [(AXMVisionFaceNameHelper *)v3 photoLibraryWithURL:v7, v9];
+        [(AXMVisionFaceNameHelper *)lCopy photoLibraryWithURL:v7, v9];
       }
 
       v8 = 0;
@@ -68,9 +68,9 @@
   return v8;
 }
 
-- (id)_filePathForPersonsModelWithPhotoLibraryURL:(id)a3
+- (id)_filePathForPersonsModelWithPhotoLibraryURL:(id)l
 {
-  v3 = [(AXMVisionFaceNameHelper *)self photoLibraryWithURL:a3];
+  v3 = [(AXMVisionFaceNameHelper *)self photoLibraryWithURL:l];
   if (v3)
   {
     v4 = [getVCPMediaAnalyzerClass() personModelFilepathForPhotoLibrary:v3];
@@ -84,12 +84,12 @@
   return v4;
 }
 
-- (BOOL)_loadPersonsModelWithPhotoLibraryURL:(id)a3
+- (BOOL)_loadPersonsModelWithPhotoLibraryURL:(id)l
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   Current = CFAbsoluteTimeGetCurrent();
-  v6 = [(AXMVisionFaceNameHelper *)self _filePathForPersonsModelWithPhotoLibraryURL:v4];
+  v6 = [(AXMVisionFaceNameHelper *)self _filePathForPersonsModelWithPhotoLibraryURL:lCopy];
 
   if (!v6)
   {
@@ -109,8 +109,8 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:v6];
 
   if ((v8 & 1) == 0)
   {
@@ -154,13 +154,13 @@ LABEL_11:
     v14 = AXMediaLogCommon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       *buf = 138412802;
       v22 = *&v6;
       v23 = 2112;
       v24 = v10;
       v25 = 2112;
-      v26 = v18;
+      v26 = callStackSymbols;
       _os_log_impl(&dword_1AE37B000, v14, OS_LOG_TYPE_DEFAULT, "AXMVisionFaceNameHelper: Could not load VNPersonsModel from path %@: %@ %@", buf, 0x20u);
     }
   }
@@ -169,15 +169,15 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)_shouldReloadPersonsModelWithPhotoLibraryURL:(id)a3
+- (BOOL)_shouldReloadPersonsModelWithPhotoLibraryURL:(id)l
 {
-  v4 = a3;
-  v5 = [(AXMVisionFaceNameHelper *)self _personsModel];
+  lCopy = l;
+  _personsModel = [(AXMVisionFaceNameHelper *)self _personsModel];
 
-  if (v5 && (Current = CFAbsoluteTimeGetCurrent(), [(AXMVisionFaceNameHelper *)self _lastFileModificationCheckTime], Current - v7 >= 600.0))
+  if (_personsModel && (Current = CFAbsoluteTimeGetCurrent(), [(AXMVisionFaceNameHelper *)self _lastFileModificationCheckTime], Current - v7 >= 600.0))
   {
     [(AXMVisionFaceNameHelper *)self set_lastFileModificationCheckTime:CFAbsoluteTimeGetCurrent()];
-    v9 = [(AXMVisionFaceNameHelper *)self _filePathForPersonsModelWithPhotoLibraryURL:v4];
+    v9 = [(AXMVisionFaceNameHelper *)self _filePathForPersonsModelWithPhotoLibraryURL:lCopy];
     v10 = [(AXMVisionFaceNameHelper *)self _fileModificationDateForPath:v9];
     if (v10 && (-[AXMVisionFaceNameHelper _personsModelFileModifiedDate](self, "_personsModelFileModifiedDate"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11) && (-[AXMVisionFaceNameHelper _personsModelFileModifiedDate](self, "_personsModelFileModifiedDate"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v10 isEqualToDate:v12], v12, (v13 & 1) == 0))
     {
@@ -205,33 +205,33 @@ LABEL_15:
   return v8;
 }
 
-- (id)_photoAuthorizationMessage:(int64_t)a3
+- (id)_photoAuthorizationMessage:(int64_t)message
 {
-  if (a3 > 2)
+  if (message > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E7A1E480 + a3);
+    return *(&off_1E7A1E480 + message);
   }
 }
 
-- (id)_fileModificationDateForPath:(id)a3
+- (id)_fileModificationDateForPath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v11 = 0;
-    v5 = [v4 attributesOfItemAtPath:v3 error:&v11];
+    v5 = [defaultManager attributesOfItemAtPath:pathCopy error:&v11];
     v6 = v11;
 
     if (v5)
     {
-      v7 = [v5 fileModificationDate];
+      fileModificationDate = [v5 fileModificationDate];
     }
 
     else
@@ -239,43 +239,43 @@ LABEL_15:
       v8 = AXMediaLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 138412802;
-        v13 = v3;
+        v13 = pathCopy;
         v14 = 2112;
         v15 = v6;
         v16 = 2112;
-        v17 = v9;
+        v17 = callStackSymbols;
         _os_log_impl(&dword_1AE37B000, v8, OS_LOG_TYPE_DEFAULT, "AXMVisionFaceNameHelper: Could not load get fileModificationDate from path %@: %@ %@", buf, 0x20u);
       }
 
-      v7 = 0;
+      fileModificationDate = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    fileModificationDate = 0;
   }
 
-  return v7;
+  return fileModificationDate;
 }
 
-- (id)_fetchPersonsForLocalIdentifiers:(id)a3 withPhotoLibraryURL:(id)a4
+- (id)_fetchPersonsForLocalIdentifiers:(id)identifiers withPhotoLibraryURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [(AXMVisionFaceNameHelper *)self photoLibraryWithURL:v7];
+  identifiersCopy = identifiers;
+  lCopy = l;
+  v8 = identifiersCopy;
+  v9 = [(AXMVisionFaceNameHelper *)self photoLibraryWithURL:lCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 librarySpecificFetchOptions];
-    [v11 setIncludeGuestAssets:1];
-    [v11 setMinimumVerifiedFaceCount:0];
-    [v11 setMinimumUnverifiedFaceCount:0];
+    librarySpecificFetchOptions = [v9 librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludeGuestAssets:1];
+    [librarySpecificFetchOptions setMinimumVerifiedFaceCount:0];
+    [librarySpecificFetchOptions setMinimumUnverifiedFaceCount:0];
     v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"verifiedType == %d", 1];
-    [v11 setPredicate:v12];
+    [librarySpecificFetchOptions setPredicate:v12];
 
     v18 = 0;
     v19 = &v18;
@@ -295,7 +295,7 @@ LABEL_15:
 
     v14 = v13;
     _Block_object_dispose(&v18, 8);
-    v15 = [v13 fetchPersonsWithLocalIdentifiers:v8 options:v11];
+    v15 = [v13 fetchPersonsWithLocalIdentifiers:v8 options:librarySpecificFetchOptions];
   }
 
   else
@@ -306,10 +306,10 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)prepareForLookupWithPhotoLibraryURL:(id)a3
+- (BOOL)prepareForLookupWithPhotoLibraryURL:(id)l
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   if (![(AXMVisionFaceNameHelper *)self _isDeviceUnlocked])
   {
     v9 = AXMediaLogCommon();
@@ -329,17 +329,17 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([(AXMVisionFaceNameHelper *)self _shouldReloadPersonsModelWithPhotoLibraryURL:v5])
+  if ([(AXMVisionFaceNameHelper *)self _shouldReloadPersonsModelWithPhotoLibraryURL:lCopy])
   {
     [(AXMVisionFaceNameHelper *)self _resetState];
   }
 
-  v6 = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
+  _personLocalIdentifierToName = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
 
-  if (v6)
+  if (_personLocalIdentifierToName)
   {
-    v7 = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
-    v8 = [v7 count] != 0;
+    _personLocalIdentifierToName2 = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
+    v8 = [_personLocalIdentifierToName2 count] != 0;
 
     goto LABEL_11;
   }
@@ -358,7 +358,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (![(AXMVisionFaceNameHelper *)self _loadPersonsModelWithPhotoLibraryURL:v5])
+  if (![(AXMVisionFaceNameHelper *)self _loadPersonsModelWithPhotoLibraryURL:lCopy])
   {
     v9 = AXMediaLogCommon();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -371,11 +371,11 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v12 = [(AXMVisionFaceNameHelper *)self _personsModel];
+  _personsModel = [(AXMVisionFaceNameHelper *)self _personsModel];
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [(AXMVisionFaceNameHelper *)self set_personLocalIdentifierToName:v13];
 
-  if (![v12 personCount])
+  if (![_personsModel personCount])
   {
     v15 = AXMediaLogCommon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -388,16 +388,16 @@ LABEL_8:
     goto LABEL_39;
   }
 
-  v14 = [v12 personUniqueIdentifiers];
-  v15 = [(AXMVisionFaceNameHelper *)self _fetchPersonsForLocalIdentifiers:v14 withPhotoLibraryURL:v5];
+  personUniqueIdentifiers = [_personsModel personUniqueIdentifiers];
+  v15 = [(AXMVisionFaceNameHelper *)self _fetchPersonsForLocalIdentifiers:personUniqueIdentifiers withPhotoLibraryURL:lCopy];
 
   if (!v15)
   {
     goto LABEL_30;
   }
 
-  v30 = v12;
-  v31 = v5;
+  v30 = _personsModel;
+  v31 = lCopy;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -422,30 +422,30 @@ LABEL_8:
       }
 
       v21 = *(*(&v32 + 1) + 8 * i);
-      v22 = [v21 displayName];
-      if (v22)
+      displayName = [v21 displayName];
+      if (displayName)
       {
-        v3 = [v21 displayName];
-        if (([v3 isEqual:&stru_1F23EA908] & 1) == 0)
+        displayName2 = [v21 displayName];
+        if (([displayName2 isEqual:&stru_1F23EA908] & 1) == 0)
         {
-          v23 = [v21 displayName];
+          displayName3 = [v21 displayName];
 LABEL_26:
 
           goto LABEL_27;
         }
       }
 
-      v23 = [v21 name];
-      if (v22)
+      displayName3 = [v21 name];
+      if (displayName)
       {
         goto LABEL_26;
       }
 
 LABEL_27:
 
-      v24 = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
-      v25 = [v21 localIdentifier];
-      [v24 setObject:v23 forKeyedSubscript:v25];
+      _personLocalIdentifierToName3 = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
+      localIdentifier = [v21 localIdentifier];
+      [_personLocalIdentifierToName3 setObject:displayName3 forKeyedSubscript:localIdentifier];
     }
 
     v18 = [v16 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -454,12 +454,12 @@ LABEL_27:
   while (v18);
 LABEL_29:
 
-  v12 = v30;
-  v5 = v31;
+  _personsModel = v30;
+  lCopy = v31;
   v15 = v29;
 LABEL_30:
-  v26 = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
-  v8 = [v26 count] != 0;
+  _personLocalIdentifierToName4 = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
+  v8 = [_personLocalIdentifierToName4 count] != 0;
 
 LABEL_39:
 LABEL_11:
@@ -467,15 +467,15 @@ LABEL_11:
   return v8;
 }
 
-- (id)nameForFaceObservation:(id)a3
+- (id)nameForFaceObservation:(id)observation
 {
-  v4 = a3;
-  v5 = [(AXMVisionFaceNameHelper *)self _checkPhotoLibraryAuthorization];
+  observationCopy = observation;
+  _checkPhotoLibraryAuthorization = [(AXMVisionFaceNameHelper *)self _checkPhotoLibraryAuthorization];
   v6 = 0;
-  if (v4 && v5)
+  if (observationCopy && _checkPhotoLibraryAuthorization)
   {
-    v7 = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
-    v8 = [v7 count];
+    _personLocalIdentifierToName = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
+    v8 = [_personLocalIdentifierToName count];
 
     if (!v8)
     {
@@ -490,17 +490,17 @@ LABEL_11:
     }
 
     VCPMediaAnalyzerClass = getVCPMediaAnalyzerClass();
-    v10 = [(AXMVisionFaceNameHelper *)self _personsModel];
+    _personsModel = [(AXMVisionFaceNameHelper *)self _personsModel];
     v15 = 0;
-    v11 = [VCPMediaAnalyzerClass classifyFaceObservation:v4 withPersonsModel:v10 error:&v15];
+    v11 = [VCPMediaAnalyzerClass classifyFaceObservation:observationCopy withPersonsModel:_personsModel error:&v15];
     v12 = v15;
 
     if (v12)
     {
-      v13 = AXMediaLogCommon();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      _personLocalIdentifierToName2 = AXMediaLogCommon();
+      if (os_log_type_enabled(_personLocalIdentifierToName2, OS_LOG_TYPE_ERROR))
       {
-        [(AXMVisionFaceNameHelper *)v12 nameForFaceObservation:v13];
+        [(AXMVisionFaceNameHelper *)v12 nameForFaceObservation:_personLocalIdentifierToName2];
       }
 
       v6 = 0;
@@ -514,8 +514,8 @@ LABEL_11:
         goto LABEL_14;
       }
 
-      v13 = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
-      v6 = [v13 objectForKeyedSubscript:v11];
+      _personLocalIdentifierToName2 = [(AXMVisionFaceNameHelper *)self _personLocalIdentifierToName];
+      v6 = [_personLocalIdentifierToName2 objectForKeyedSubscript:v11];
     }
 
 LABEL_14:

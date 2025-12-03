@@ -2,9 +2,9 @@
 - (BOOL)finished;
 - (BOOL)needsInput;
 - (id)endImpl;
-- (int)deflateWithByteArray:(id)a3;
-- (int)deflateWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (int)deflateWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6;
+- (int)deflateWithByteArray:(id)array;
+- (int)deflateWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (int)deflateWithByteArray:(id)array withInt:(int)int withInt:(int)withInt withInt:(int)a6;
 - (int)getAdler;
 - (int)getTotalIn;
 - (int)getTotalOut;
@@ -13,40 +13,40 @@
 - (uint64_t)checkOpen;
 - (void)dealloc;
 - (void)end;
-- (void)endImplWithLong:(int64_t)a3;
+- (void)endImplWithLong:(int64_t)long;
 - (void)finish;
 - (void)reset;
-- (void)setDictionaryWithByteArray:(id)a3;
-- (void)setDictionaryWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)setInputWithByteArray:(id)a3;
-- (void)setInputWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)setLevelWithInt:(int)a3;
-- (void)setStrategyWithInt:(int)a3;
+- (void)setDictionaryWithByteArray:(id)array;
+- (void)setDictionaryWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (void)setInputWithByteArray:(id)array;
+- (void)setInputWithByteArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (void)setLevelWithInt:(int)int;
+- (void)setStrategyWithInt:(int)int;
 @end
 
 @implementation JavaUtilZipDeflater
 
-- (int)deflateWithByteArray:(id)a3
+- (int)deflateWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  return [(JavaUtilZipDeflater *)self deflateWithByteArray:a3 withInt:0 withInt:v4];
+  return [(JavaUtilZipDeflater *)self deflateWithByteArray:array withInt:0 withInt:v4];
 }
 
-- (int)deflateWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (int)deflateWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   objc_sync_enter(self);
-  v9 = sub_100152374(self, a3, a4, a5, self->flushParm_);
+  v9 = sub_100152374(self, array, int, withInt, self->flushParm_);
   objc_sync_exit(self);
   return v9;
 }
 
-- (int)deflateWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5 withInt:(int)a6
+- (int)deflateWithByteArray:(id)array withInt:(int)int withInt:(int)withInt withInt:(int)a6
 {
   objc_sync_enter(self);
   if ((a6 - 2) >= 2 && a6)
@@ -56,7 +56,7 @@
     objc_exception_throw(v21);
   }
 
-  v18 = sub_100152374(self, a3, a4, a5, a6);
+  v18 = sub_100152374(self, array, int, withInt, a6);
   objc_sync_exit(self);
   return v18;
 }
@@ -92,12 +92,12 @@
   return result;
 }
 
-- (void)endImplWithLong:(int64_t)a3
+- (void)endImplWithLong:(int64_t)long
 {
-  deflateEnd(a3);
+  deflateEnd(long);
   free(self->inBuffer_);
 
-  free(a3);
+  free(long);
 }
 
 - (void)dealloc
@@ -201,73 +201,73 @@
   objc_sync_exit(self);
 }
 
-- (void)setDictionaryWithByteArray:(id)a3
+- (void)setDictionaryWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  [(JavaUtilZipDeflater *)self setDictionaryWithByteArray:a3 withInt:0 withInt:v4];
+  [(JavaUtilZipDeflater *)self setDictionaryWithByteArray:array withInt:0 withInt:v4];
 }
 
-- (void)setDictionaryWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)setDictionaryWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   objc_sync_enter(self);
   [JavaUtilZipDeflater checkOpen]_0(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
-  sub_100152BBC(a3, a4, a5, self->streamHandle_);
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
+  sub_100152BBC(array, int, withInt, self->streamHandle_);
 
   objc_sync_exit(self);
 }
 
-- (void)setInputWithByteArray:(id)a3
+- (void)setInputWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  [(JavaUtilZipDeflater *)self setInputWithByteArray:a3 withInt:0 withInt:v4];
+  [(JavaUtilZipDeflater *)self setInputWithByteArray:array withInt:0 withInt:v4];
 }
 
-- (void)setInputWithByteArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (void)setInputWithByteArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   objc_sync_enter(self);
   [JavaUtilZipDeflater checkOpen]_0(self);
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
   inputBuffer = self->inputBuffer_;
   self->inRead_ = 0;
-  self->inLength_ = a5;
+  self->inLength_ = withInt;
   if (!inputBuffer)
   {
     sub_100152D34(self->compressLevel_, self->strategy_, self->streamHandle_);
   }
 
-  JreStrongAssign(&self->inputBuffer_, a3);
-  sub_100152D7C(self, a3, a4, a5, self->streamHandle_);
+  JreStrongAssign(&self->inputBuffer_, array);
+  sub_100152D7C(self, array, int, withInt, self->streamHandle_);
 
   objc_sync_exit(self);
 }
 
-- (void)setLevelWithInt:(int)a3
+- (void)setLevelWithInt:(int)int
 {
   objc_sync_enter(self);
-  if ((a3 - 10) <= 0xFFFFFFF4)
+  if ((int - 10) <= 0xFFFFFFF4)
   {
     v12 = JreStrcat("$I", v5, v6, v7, v8, v9, v10, v11, @"Bad level: ");
     v13 = new_JavaLangIllegalArgumentException_initWithNSString_(v12);
@@ -281,15 +281,15 @@ LABEL_8:
     objc_exception_throw(v13);
   }
 
-  self->compressLevel_ = a3;
+  self->compressLevel_ = int;
 
   objc_sync_exit(self);
 }
 
-- (void)setStrategyWithInt:(int)a3
+- (void)setStrategyWithInt:(int)int
 {
   objc_sync_enter(self);
-  if (a3 >= 3)
+  if (int >= 3)
   {
     v12 = JreStrcat("$I", v5, v6, v7, v8, v9, v10, v11, @"Bad strategy: ");
     v13 = new_JavaLangIllegalArgumentException_initWithNSString_(v12);
@@ -303,7 +303,7 @@ LABEL_8:
     objc_exception_throw(v13);
   }
 
-  self->strategy_ = a3;
+  self->strategy_ = int;
 
   objc_sync_exit(self);
 }

@@ -1,65 +1,65 @@
 @interface NotifierInterface
-- (NotifierInterface)initWithXPCConnection:(id)a3;
-- (void)deliverNotificaton:(id)a3;
-- (void)pendingNotificationsWithIdentifier:(id)a3 replyBlock:(id)a4;
+- (NotifierInterface)initWithXPCConnection:(id)connection;
+- (void)deliverNotificaton:(id)notificaton;
+- (void)pendingNotificationsWithIdentifier:(id)identifier replyBlock:(id)block;
 - (void)removeAllNotifications;
-- (void)removeNotificationWithIdentifier:(id)a3;
+- (void)removeNotificationWithIdentifier:(id)identifier;
 @end
 
 @implementation NotifierInterface
 
-- (NotifierInterface)initWithXPCConnection:(id)a3
+- (NotifierInterface)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = NotifierInterface;
   v6 = [(NotifierInterface *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_conn, a3);
+    objc_storeStrong(&v6->_conn, connection);
   }
 
   return v7;
 }
 
-- (void)deliverNotificaton:(id)a3
+- (void)deliverNotificaton:(id)notificaton
 {
-  v4 = a3;
+  notificatonCopy = notificaton;
   v5 = +[NSString uniqueIdentifier];
-  [v4 setUuid:v5];
+  [notificatonCopy setUuid:v5];
 
-  v6 = [(NotifierInterface *)self clientIdentifier];
-  [v4 setClientIdentifier:v6];
+  clientIdentifier = [(NotifierInterface *)self clientIdentifier];
+  [notificatonCopy setClientIdentifier:clientIdentifier];
 
-  v7 = [(NotifierInterface *)self delegateMachServiceName];
-  [v4 setDelegateMachServiceName:v7];
+  delegateMachServiceName = [(NotifierInterface *)self delegateMachServiceName];
+  [notificatonCopy setDelegateMachServiceName:delegateMachServiceName];
 
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = notificatonCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Delivering %@", &v10, 0xCu);
   }
 
   v9 = +[NotificationController sharedController];
-  [v9 deliverNotification:v4];
+  [v9 deliverNotification:notificatonCopy];
 }
 
-- (void)removeNotificationWithIdentifier:(id)a3
+- (void)removeNotificationWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _FALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Removing %@", &v6, 0xCu);
   }
 
   v5 = +[NotificationController sharedController];
-  [v5 removeNotificationWithIdentifier:v3];
+  [v5 removeNotificationWithIdentifier:identifierCopy];
 }
 
 - (void)removeAllNotifications
@@ -72,19 +72,19 @@
   }
 
   v4 = +[NotificationController sharedController];
-  v5 = [(NotifierInterface *)self clientIdentifier];
-  [v4 removeAllNotificationsFromClient:v5];
+  clientIdentifier = [(NotifierInterface *)self clientIdentifier];
+  [v4 removeAllNotificationsFromClient:clientIdentifier];
 }
 
-- (void)pendingNotificationsWithIdentifier:(id)a3 replyBlock:(id)a4
+- (void)pendingNotificationsWithIdentifier:(id)identifier replyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Returning pending notifications for identifier %@", buf, 0xCu);
   }
 
@@ -94,8 +94,8 @@
   v11[2] = sub_10000147C;
   v11[3] = &unk_1000082C8;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
+  v12 = blockCopy;
+  v10 = blockCopy;
   dispatch_async(v9, v11);
 }
 

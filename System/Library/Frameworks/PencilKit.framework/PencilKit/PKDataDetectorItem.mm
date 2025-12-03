@@ -1,36 +1,36 @@
 @interface PKDataDetectorItem
-+ (id)dataDetectorItemWithQueryItem:(id)a3 sessionManager:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)dataDetectorItemWithQueryItem:(id)item sessionManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
 - (DDScannerResult)scannerResult;
 - (PKDataDetectorItemDelegate)delegate;
 - (__DDResult)coreResult;
 - (id)_baselinePath;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewInContainerView:(id)a5 frame:(CGRect)a6;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4 view:(id)a5 identifier:(id)a6 sourceRect:(CGRect)a7;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewInContainerView:(id)view frame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location view:(id)view identifier:(id)identifier sourceRect:(CGRect)rect;
 - (id)drawing;
 - (id)strokeColor;
-- (id)updatedDataDetectorContextForView:(id)a3 sourceRect:(CGRect)a4;
+- (id)updatedDataDetectorContextForView:(id)view sourceRect:(CGRect)rect;
 - (unint64_t)hash;
-- (void)_highlightForView:(id)a3 viewTransform:(CGAffineTransform *)a4 drawingTransform:(CGAffineTransform *)a5 highlightTransform:(CGAffineTransform *)a6 completion:(id)a7;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)handleTapForMenuForInteraction:(id)a3 location:(CGPoint)a4 view:(id)a5 viewTransform:(CGAffineTransform *)a6 drawingTransform:(CGAffineTransform *)a7;
-- (void)handleTapForMenuForInteraction:(id)a3 location:(CGPoint)a4 view:(id)a5 viewTransform:(CGAffineTransform *)a6 drawingTransform:(CGAffineTransform *)a7 highlightTransform:(CGAffineTransform *)a8 sourceRect:(CGRect)a9;
+- (void)_highlightForView:(id)view viewTransform:(CGAffineTransform *)transform drawingTransform:(CGAffineTransform *)drawingTransform highlightTransform:(CGAffineTransform *)highlightTransform completion:(id)completion;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)handleTapForMenuForInteraction:(id)interaction location:(CGPoint)location view:(id)view viewTransform:(CGAffineTransform *)transform drawingTransform:(CGAffineTransform *)drawingTransform;
+- (void)handleTapForMenuForInteraction:(id)interaction location:(CGPoint)location view:(id)view viewTransform:(CGAffineTransform *)transform drawingTransform:(CGAffineTransform *)drawingTransform highlightTransform:(CGAffineTransform *)highlightTransform sourceRect:(CGRect)rect;
 @end
 
 @implementation PKDataDetectorItem
 
-+ (id)dataDetectorItemWithQueryItem:(id)a3 sessionManager:(id)a4
++ (id)dataDetectorItemWithQueryItem:(id)item sessionManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 strokeIdentifiers];
-  v8 = [(PKRecognitionSessionManager *)v6 drawing];
-  valid = HasValidInkForDetectionItem(v7, v8);
+  itemCopy = item;
+  managerCopy = manager;
+  strokeIdentifiers = [itemCopy strokeIdentifiers];
+  drawing = [(PKRecognitionSessionManager *)managerCopy drawing];
+  valid = HasValidInkForDetectionItem(strokeIdentifiers, drawing);
 
   if (valid)
   {
-    v10 = [(PKDetectionItem *)[PKDataDetectorItem alloc] initWithSessionManager:v6];
-    [(PKDetectionItem *)v10 setQueryItem:v5];
+    v10 = [(PKDetectionItem *)[PKDataDetectorItem alloc] initWithSessionManager:managerCopy];
+    [(PKDetectionItem *)v10 setQueryItem:itemCopy];
   }
 
   else
@@ -43,24 +43,24 @@
 
 - (id)drawing
 {
-  v2 = [(PKDetectionItem *)self sessionManager];
-  v3 = [(PKRecognitionSessionManager *)v2 drawing];
+  sessionManager = [(PKDetectionItem *)self sessionManager];
+  drawing = [(PKRecognitionSessionManager *)sessionManager drawing];
 
-  return v3;
+  return drawing;
 }
 
 - (id)_baselinePath
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 baselinePath];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  baselinePath = [queryItem baselinePath];
 
-  return v3;
+  return baselinePath;
 }
 
 - (id)strokeColor
 {
-  v3 = [(PKDataDetectorItem *)self scannerResult];
-  v4 = [v3 coreResult];
+  scannerResult = [(PKDataDetectorItem *)self scannerResult];
+  coreResult = [scannerResult coreResult];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -80,13 +80,13 @@
   _Block_object_dispose(&v18, 8);
   if (v5)
   {
-    v6 = v5(v4, 0);
+    v6 = v5(coreResult, 0);
 
     if (v6)
     {
-      v7 = [(PKDetectionItem *)self inkColor];
+      inkColor = [(PKDetectionItem *)self inkColor];
 
-      if (!v7)
+      if (!inkColor)
       {
         [(PKDetectionItem *)self _generatePaths];
       }
@@ -109,8 +109,8 @@
 
       v9 = v8;
       _Block_object_dispose(&v18, 8);
-      v10 = [(PKDetectionItem *)self inkColor];
-      v11 = [v8 lightUnderlineColorFromTextColor:v10];
+      inkColor2 = [(PKDetectionItem *)self inkColor];
+      v11 = [v8 lightUnderlineColorFromTextColor:inkColor2];
     }
 
     else
@@ -133,33 +133,33 @@
 
 - (DDScannerResult)scannerResult
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 scannerResult];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  scannerResult = [queryItem scannerResult];
 
-  return v3;
+  return scannerResult;
 }
 
 - (__DDResult)coreResult
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 scannerResult];
-  v4 = [v3 coreResult];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  scannerResult = [queryItem scannerResult];
+  coreResult = [scannerResult coreResult];
 
-  return v4;
+  return coreResult;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PKDetectionItem *)self queryItem];
-  v3 = [v2 hash];
+  queryItem = [(PKDetectionItem *)self queryItem];
+  v3 = [queryItem hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -169,9 +169,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PKDetectionItem *)self queryItem];
-      v6 = [(PKDetectionItem *)v4 queryItem];
-      v7 = [v5 isEqual:v6];
+      queryItem = [(PKDetectionItem *)self queryItem];
+      queryItem2 = [(PKDetectionItem *)equalCopy queryItem];
+      v7 = [queryItem isEqual:queryItem2];
     }
 
     else
@@ -190,16 +190,16 @@
   return WeakRetained;
 }
 
-- (id)updatedDataDetectorContextForView:(id)a3 sourceRect:(CGRect)a4
+- (id)updatedDataDetectorContextForView:(id)view sourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   v10 = objc_opt_new();
-  v11 = [(PKDataDetectorItem *)self delegate];
-  v12 = [v11 dataDetectorItemAllItems:self];
+  delegate = [(PKDataDetectorItem *)self delegate];
+  v12 = [delegate dataDetectorItemAllItems:self];
 
   if (v12)
   {
@@ -225,17 +225,17 @@
     [v10 setObject:v12 forKeyedSubscript:*v13];
   }
 
-  v15 = [(PKDataDetectorItem *)self scannerResult];
-  v16 = [v15 value];
-  v17 = [v16 length];
+  scannerResult = [(PKDataDetectorItem *)self scannerResult];
+  value = [scannerResult value];
+  v17 = [value length];
 
   if (!v17)
   {
     goto LABEL_11;
   }
 
-  v18 = [(PKDataDetectorItem *)self scannerResult];
-  v19 = [v18 value];
+  scannerResult2 = [(PKDataDetectorItem *)self scannerResult];
+  value2 = [scannerResult2 value];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -259,7 +259,7 @@ LABEL_16:
     _Unwind_Resume(v28);
   }
 
-  [v10 setObject:v19 forKeyedSubscript:*v20];
+  [v10 setObject:value2 forKeyedSubscript:*v20];
 
 LABEL_11:
   v34.origin.x = x;
@@ -268,7 +268,7 @@ LABEL_11:
   v34.size.height = height;
   if (CGRectIsEmpty(v34))
   {
-    [v9 bounds];
+    [viewCopy bounds];
     x = v22;
     y = v23;
     width = v24;
@@ -280,60 +280,60 @@ LABEL_11:
   return v26;
 }
 
-- (void)handleTapForMenuForInteraction:(id)a3 location:(CGPoint)a4 view:(id)a5 viewTransform:(CGAffineTransform *)a6 drawingTransform:(CGAffineTransform *)a7
+- (void)handleTapForMenuForInteraction:(id)interaction location:(CGPoint)location view:(id)view viewTransform:(CGAffineTransform *)transform drawingTransform:(CGAffineTransform *)drawingTransform
 {
-  v7 = *&a6->c;
-  v12[0] = *&a6->a;
+  v7 = *&transform->c;
+  v12[0] = *&transform->a;
   v12[1] = v7;
-  v12[2] = *&a6->tx;
-  v8 = *&a7->c;
-  v11[0] = *&a7->a;
+  v12[2] = *&transform->tx;
+  v8 = *&drawingTransform->c;
+  v11[0] = *&drawingTransform->a;
   v11[1] = v8;
-  v11[2] = *&a7->tx;
+  v11[2] = *&drawingTransform->tx;
   v9 = *(MEMORY[0x1E695EFD0] + 16);
   v10[0] = *MEMORY[0x1E695EFD0];
   v10[1] = v9;
   v10[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [(PKDataDetectorItem *)self handleTapForMenuForInteraction:a3 location:a5 view:v12 viewTransform:v11 drawingTransform:v10 highlightTransform:a4.x sourceRect:a4.y, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+  [(PKDataDetectorItem *)self handleTapForMenuForInteraction:interaction location:view view:v12 viewTransform:v11 drawingTransform:v10 highlightTransform:location.x sourceRect:location.y, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
 }
 
-- (void)handleTapForMenuForInteraction:(id)a3 location:(CGPoint)a4 view:(id)a5 viewTransform:(CGAffineTransform *)a6 drawingTransform:(CGAffineTransform *)a7 highlightTransform:(CGAffineTransform *)a8 sourceRect:(CGRect)a9
+- (void)handleTapForMenuForInteraction:(id)interaction location:(CGPoint)location view:(id)view viewTransform:(CGAffineTransform *)transform drawingTransform:(CGAffineTransform *)drawingTransform highlightTransform:(CGAffineTransform *)highlightTransform sourceRect:(CGRect)rect
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v17 = a4.y;
-  v18 = a4.x;
-  v20 = a3;
-  v21 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v17 = location.y;
+  v18 = location.x;
+  interactionCopy = interaction;
+  viewCopy = view;
   objc_initWeak(&location, self);
-  v22 = [(PKDataDetectorItem *)self updatedDataDetectorContextForView:v21 sourceRect:x, y, width, height];
+  height = [(PKDataDetectorItem *)self updatedDataDetectorContextForView:viewCopy sourceRect:x, y, width, height];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __148__PKDataDetectorItem_InteractionSupport__handleTapForMenuForInteraction_location_view_viewTransform_drawingTransform_highlightTransform_sourceRect___block_invoke;
   v32[3] = &unk_1E82DAE30;
   objc_copyWeak(v36, &location);
-  v23 = v21;
+  v23 = viewCopy;
   v33 = v23;
   v36[1] = *&v18;
   v36[2] = *&v17;
-  v24 = v20;
+  v24 = interactionCopy;
   v34 = v24;
-  v25 = v22;
+  v25 = height;
   v35 = v25;
-  v26 = *&a6->c;
-  v31[0] = *&a6->a;
+  v26 = *&transform->c;
+  v31[0] = *&transform->a;
   v31[1] = v26;
-  v31[2] = *&a6->tx;
-  v27 = *&a7->c;
-  v30[0] = *&a7->a;
+  v31[2] = *&transform->tx;
+  v27 = *&drawingTransform->c;
+  v30[0] = *&drawingTransform->a;
   v30[1] = v27;
-  v30[2] = *&a7->tx;
-  v28 = *&a8->c;
-  v29[0] = *&a8->a;
+  v30[2] = *&drawingTransform->tx;
+  v28 = *&highlightTransform->c;
+  v29[0] = *&highlightTransform->a;
   v29[1] = v28;
-  v29[2] = *&a8->tx;
+  v29[2] = *&highlightTransform->tx;
   [(PKDataDetectorItem *)self _highlightForView:v23 viewTransform:v31 drawingTransform:v30 highlightTransform:v29 completion:v32];
 
   objc_destroyWeak(v36);
@@ -354,10 +354,10 @@ void __148__PKDataDetectorItem_InteractionSupport__handleTapForMenuForInteractio
   }
 }
 
-- (void)_highlightForView:(id)a3 viewTransform:(CGAffineTransform *)a4 drawingTransform:(CGAffineTransform *)a5 highlightTransform:(CGAffineTransform *)a6 completion:(id)a7
+- (void)_highlightForView:(id)view viewTransform:(CGAffineTransform *)transform drawingTransform:(CGAffineTransform *)drawingTransform highlightTransform:(CGAffineTransform *)highlightTransform completion:(id)completion
 {
-  v12 = a3;
-  v13 = a7;
+  viewCopy = view;
+  completionCopy = completion;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3010000000;
@@ -370,23 +370,23 @@ void __148__PKDataDetectorItem_InteractionSupport__handleTapForMenuForInteractio
   v44 = 0;
   v45 = 0;
   v43 = "";
-  v14 = [(PKDetectionItem *)self itemSpaceBaselinePath];
-  v15 = [v14 CGPath];
+  itemSpaceBaselinePath = [(PKDetectionItem *)self itemSpaceBaselinePath];
+  cGPath = [itemSpaceBaselinePath CGPath];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __121__PKDataDetectorItem_InteractionSupport___highlightForView_viewTransform_drawingTransform_highlightTransform_completion___block_invoke;
   block[3] = &unk_1E82DAE58;
   block[4] = &v46;
   block[5] = &v40;
-  CGPathApplyWithBlock(v15, block);
+  CGPathApplyWithBlock(cGPath, block);
 
-  v16 = [(PKDetectionItem *)self itemSpaceBoundsPath];
-  v17 = [v16 copy];
+  itemSpaceBoundsPath = [(PKDetectionItem *)self itemSpaceBoundsPath];
+  v17 = [itemSpaceBoundsPath copy];
 
-  v18 = *&a5->c;
-  *&v38.a = *&a5->a;
+  v18 = *&drawingTransform->c;
+  *&v38.a = *&drawingTransform->a;
   *&v38.c = v18;
-  *&v38.tx = *&a5->tx;
+  *&v38.tx = *&drawingTransform->tx;
   [v17 applyTransform:&v38];
   v19 = atan2(v41[5] - v47[5], v41[4] - v47[4]);
   v20 = fabs(v19);
@@ -404,15 +404,15 @@ void __148__PKDataDetectorItem_InteractionSupport__handleTapForMenuForInteractio
   }
 
   [v17 bounds];
-  v25 = *&a4->c;
-  *&v38.a = *&a4->a;
+  v25 = *&transform->c;
+  *&v38.a = *&transform->a;
   *&v38.c = v25;
-  *&v38.tx = *&a4->tx;
+  *&v38.tx = *&transform->tx;
   v53 = CGRectApplyAffineTransform(v52, &v38);
-  v26 = *&a6->c;
-  *&v38.a = *&a6->a;
+  v26 = *&highlightTransform->c;
+  *&v38.a = *&highlightTransform->a;
   *&v38.c = v26;
-  *&v38.tx = *&a6->tx;
+  *&v38.tx = *&highlightTransform->tx;
   v54 = CGRectApplyAffineTransform(v53, &v38);
   v27 = [objc_alloc(MEMORY[0x1E69DD500]) initWithFrame:{v54.origin.x, v54.origin.y, v54.size.width, v54.size.height}];
   [v27 setOpaque:0];
@@ -434,15 +434,15 @@ void __148__PKDataDetectorItem_InteractionSupport__handleTapForMenuForInteractio
   v30 = [MEMORY[0x1E69DC888] colorWithWhite:0.101960784 alpha:0.3];
   [v27 setColor:v30];
 
-  [v12 addSubview:v27];
+  [viewCopy addSubview:v27];
   v31 = dispatch_time(0, 100000000);
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __121__PKDataDetectorItem_InteractionSupport___highlightForView_viewTransform_drawingTransform_highlightTransform_completion___block_invoke_2;
   v34[3] = &unk_1E82D7AE8;
   v35 = v27;
-  v36 = v13;
-  v32 = v13;
+  v36 = completionCopy;
+  v32 = completionCopy;
   v33 = v27;
   dispatch_after(v31, MEMORY[0x1E69E96A0], v34);
 
@@ -498,32 +498,32 @@ uint64_t __121__PKDataDetectorItem_InteractionSupport___highlightForView_viewTra
   return v2();
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4 view:(id)a5 identifier:(id)a6 sourceRect:(CGRect)a7
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location view:(id)view identifier:(id)identifier sourceRect:(CGRect)rect
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v13 = a6;
-  v14 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  identifierCopy = identifier;
+  viewCopy = view;
   DDContextMenuActionClass = getDDContextMenuActionClass();
-  v16 = [(PKDataDetectorItem *)self scannerResult];
-  v17 = [v16 coreResult];
-  v18 = [(PKDataDetectorItem *)self updatedDataDetectorContextForView:v14 sourceRect:x, y, width, height];
-  v19 = [DDContextMenuActionClass contextMenuConfigurationWithResult:v17 inView:v14 context:v18 menuIdentifier:v13];
+  scannerResult = [(PKDataDetectorItem *)self scannerResult];
+  coreResult = [scannerResult coreResult];
+  height = [(PKDataDetectorItem *)self updatedDataDetectorContextForView:viewCopy sourceRect:x, y, width, height];
+  v19 = [DDContextMenuActionClass contextMenuConfigurationWithResult:coreResult inView:viewCopy context:height menuIdentifier:identifierCopy];
 
   return v19;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewInContainerView:(id)a5 frame:(CGRect)a6
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewInContainerView:(id)view frame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a5;
-  v12 = [(PKDetectionItem *)self image];
-  v13 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v12];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  image = [(PKDetectionItem *)self image];
+  v13 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:image];
   [v13 setFrame:{0.0, 0.0, width, height}];
   v22.origin.x = x;
   v22.origin.y = y;
@@ -537,18 +537,18 @@ uint64_t __121__PKDataDetectorItem_InteractionSupport___highlightForView_viewTra
   MidY = CGRectGetMidY(v23);
   v16 = objc_alloc(MEMORY[0x1E69DD070]);
   v17 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-  v18 = [objc_alloc(MEMORY[0x1E69DCE38]) initWithContainer:v11 center:{MidX, MidY}];
+  v18 = [objc_alloc(MEMORY[0x1E69DCE38]) initWithContainer:viewCopy center:{MidX, MidY}];
 
   v19 = [v16 initWithView:v13 parameters:v17 target:v18];
 
   return v19;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -570,7 +570,7 @@ uint64_t __121__PKDataDetectorItem_InteractionSupport___highlightForView_viewTra
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 performPreviewActionForMenuWithAnimator:v9];
+    [configurationCopy performPreviewActionForMenuWithAnimator:animatorCopy];
   }
 }
 

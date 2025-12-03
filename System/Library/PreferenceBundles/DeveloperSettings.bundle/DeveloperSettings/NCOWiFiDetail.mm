@@ -3,9 +3,9 @@
 - (id)specifiers;
 - (unsigned)selectedOverride;
 - (void)confirmInexpensiveSelection;
-- (void)selectDefaultSpecifier:(id)a3;
-- (void)selectExpensiveSpecifier:(id)a3;
-- (void)selectInexpensiveSpecifier:(id)a3;
+- (void)selectDefaultSpecifier:(id)specifier;
+- (void)selectExpensiveSpecifier:(id)specifier;
+- (void)selectInexpensiveSpecifier:(id)specifier;
 @end
 
 @implementation NCOWiFiDetail
@@ -58,9 +58,9 @@
     [v5 addObject:v17];
     v18 = v11;
     [(NCOWiFiDetail *)self setCachedValue:[(NCOWiFiDetail *)self selectedOverride]];
-    v19 = [(NCOWiFiDetail *)self cachedValue];
+    cachedValue = [(NCOWiFiDetail *)self cachedValue];
     v20 = v14;
-    if (v19 == 1 || (v21 = [(NCOWiFiDetail *)self cachedValue], v20 = v17, v22 = v18, v21 == 2))
+    if (cachedValue == 1 || (v21 = [(NCOWiFiDetail *)self cachedValue], v20 = v17, v22 = v18, v21 == 2))
     {
       v22 = v20;
     }
@@ -77,13 +77,13 @@
 
 - (unsigned)selectedOverride
 {
-  v2 = [(NCOWiFiDetail *)self ncoData];
-  v3 = [v2 wifiOverride];
+  ncoData = [(NCOWiFiDetail *)self ncoData];
+  wifiOverride = [ncoData wifiOverride];
 
-  return v3;
+  return wifiOverride;
 }
 
-- (void)selectDefaultSpecifier:(id)a3
+- (void)selectDefaultSpecifier:(id)specifier
 {
   if ([(NCOWiFiDetail *)self cachedValue])
   {
@@ -92,7 +92,7 @@
   }
 }
 
-- (void)selectInexpensiveSpecifier:(id)a3
+- (void)selectInexpensiveSpecifier:(id)specifier
 {
   if ([(NCOWiFiDetail *)self cachedValue]!= &dword_0 + 1)
   {
@@ -101,7 +101,7 @@
   }
 }
 
-- (void)selectExpensiveSpecifier:(id)a3
+- (void)selectExpensiveSpecifier:(id)specifier
 {
   if ([(NCOWiFiDetail *)self cachedValue]!= &dword_0 + 2)
   {

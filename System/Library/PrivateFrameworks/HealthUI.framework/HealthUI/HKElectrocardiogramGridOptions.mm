@@ -1,23 +1,23 @@
 @interface HKElectrocardiogramGridOptions
 - (CGAffineTransform)scale;
-- (HKElectrocardiogramGridOptions)initWithUnitMultiple:(int64_t)a3 axis:(unint64_t)a4 lineColor:(id)a5 lineWidth:(double)a6;
+- (HKElectrocardiogramGridOptions)initWithUnitMultiple:(int64_t)multiple axis:(unint64_t)axis lineColor:(id)color lineWidth:(double)width;
 @end
 
 @implementation HKElectrocardiogramGridOptions
 
-- (HKElectrocardiogramGridOptions)initWithUnitMultiple:(int64_t)a3 axis:(unint64_t)a4 lineColor:(id)a5 lineWidth:(double)a6
+- (HKElectrocardiogramGridOptions)initWithUnitMultiple:(int64_t)multiple axis:(unint64_t)axis lineColor:(id)color lineWidth:(double)width
 {
-  v11 = a5;
+  colorCopy = color;
   v15.receiver = self;
   v15.super_class = HKElectrocardiogramGridOptions;
   v12 = [(HKElectrocardiogramGridOptions *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_unitMultiple = a3;
-    v12->_axis = a4;
-    objc_storeStrong(&v12->_lineColor, a5);
-    v13->_lineWidth = a6;
+    v12->_unitMultiple = multiple;
+    v12->_axis = axis;
+    objc_storeStrong(&v12->_lineColor, color);
+    v13->_lineWidth = width;
   }
 
   return v13;
@@ -25,10 +25,10 @@
 
 - (CGAffineTransform)scale
 {
-  v5 = [(HKElectrocardiogramGridOptions *)self unitMultiple];
-  v6 = [(HKElectrocardiogramGridOptions *)self unitMultiple];
+  unitMultiple = [(HKElectrocardiogramGridOptions *)self unitMultiple];
+  unitMultiple2 = [(HKElectrocardiogramGridOptions *)self unitMultiple];
 
-  return CGAffineTransformMakeScale(retstr, v5, v6);
+  return CGAffineTransformMakeScale(retstr, unitMultiple, unitMultiple2);
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface UIPDFDocument
-+ (id)documentNamed:(id)a3;
++ (id)documentNamed:(id)named;
 - (BOOL)allowsCopying;
 - (CGPDFDocument)copyCGPDFDocument;
 - (NSString)documentID;
-- (UIPDFDocument)initWithCGPDFDocument:(CGPDFDocument *)a3;
-- (UIPDFDocument)initWithCGPDFDocumentLimitedMemory:(CGPDFDocument *)a3;
-- (UIPDFDocument)initWithURL:(id)a3;
+- (UIPDFDocument)initWithCGPDFDocument:(CGPDFDocument *)document;
+- (UIPDFDocument)initWithCGPDFDocumentLimitedMemory:(CGPDFDocument *)memory;
+- (UIPDFDocument)initWithURL:(id)l;
 - (UIPDFPageImageCache)pageImageCache;
 - (UIPDFPageImageCache)thumbnailCache;
 - (double)maxHeight;
 - (double)maxWidth;
 - (double)sumHeight;
 - (double)sumWidth;
-- (id)copyPageAtIndex:(unint64_t)a3;
-- (id)pageAtIndex:(unint64_t)a3;
+- (id)copyPageAtIndex:(unint64_t)index;
+- (id)pageAtIndex:(unint64_t)index;
 - (unint64_t)numberOfPages;
 - (void)dealloc;
-- (void)setImageCacheCount:(unint64_t)a3 lookAhead:(unint64_t)a4 withResolution:(double)a5;
-- (void)setPageImageCache:(id)a3;
-- (void)setThumbnailCache:(id)a3;
+- (void)setImageCacheCount:(unint64_t)count lookAhead:(unint64_t)ahead withResolution:(double)resolution;
+- (void)setPageImageCache:(id)cache;
+- (void)setThumbnailCache:(id)cache;
 - (void)updateWidthHeightCache;
 @end
 
 @implementation UIPDFDocument
 
-+ (id)documentNamed:(id)a3
++ (id)documentNamed:(id)named
 {
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  if (!v4)
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  if (!mainBundle)
   {
     return 0;
   }
 
-  v5 = [v4 URLForResource:objc_msgSend(a3 withExtension:{"stringByDeletingPathExtension"), @"pdf"}];
+  v5 = [mainBundle URLForResource:objc_msgSend(named withExtension:{"stringByDeletingPathExtension"), @"pdf"}];
   if (!v5)
   {
     return 0;
@@ -51,7 +51,7 @@
   return v3;
 }
 
-- (UIPDFDocument)initWithCGPDFDocument:(CGPDFDocument *)a3
+- (UIPDFDocument)initWithCGPDFDocument:(CGPDFDocument *)document
 {
   v13.receiver = self;
   v13.super_class = UIPDFDocument;
@@ -61,7 +61,7 @@
   {
     *&v4->_lock._os_unfair_lock_opaque = 0;
     v4->_thumbnailLock._os_unfair_lock_opaque = 0;
-    v6 = CGPDFDocumentRetain(a3);
+    v6 = CGPDFDocumentRetain(document);
     v5->_cgDocument = v6;
     v5->_numberOfPages = CGPDFDocumentGetNumberOfPages(v6);
     __asm { FMOV            V0.2D, #-1.0 }
@@ -73,7 +73,7 @@
   return v5;
 }
 
-- (UIPDFDocument)initWithCGPDFDocumentLimitedMemory:(CGPDFDocument *)a3
+- (UIPDFDocument)initWithCGPDFDocumentLimitedMemory:(CGPDFDocument *)memory
 {
   v13.receiver = self;
   v13.super_class = UIPDFDocument;
@@ -83,7 +83,7 @@
   {
     *&v4->_lock._os_unfair_lock_opaque = 0;
     v4->_thumbnailLock._os_unfair_lock_opaque = 0;
-    v6 = CGPDFDocumentRetain(a3);
+    v6 = CGPDFDocumentRetain(memory);
     v5->_cgDocument = v6;
     v5->_numberOfPages = CGPDFDocumentGetNumberOfPages(v6);
     __asm { FMOV            V0.2D, #-1.0 }
@@ -95,20 +95,20 @@
   return v5;
 }
 
-- (UIPDFDocument)initWithURL:(id)a3
+- (UIPDFDocument)initWithURL:(id)l
 {
   v12.receiver = self;
   v12.super_class = UIPDFDocument;
   v4 = [(UIPDFDocument *)&v12 init];
   if (v4)
   {
-    v5 = CGPDFDocumentCreateWithURL(a3);
+    v5 = CGPDFDocumentCreateWithURL(l);
     *(v4 + 1) = v5;
     if (v5)
     {
       *(v4 + 11) = 0;
       *(v4 + 26) = 0;
-      *(v4 + 6) = [a3 lastPathComponent];
+      *(v4 + 6) = [l lastPathComponent];
       *(v4 + 2) = CGPDFDocumentGetNumberOfPages(*(v4 + 1));
       __asm { FMOV            V0.2D, #-1.0 }
 
@@ -144,12 +144,12 @@
   [(UIPDFDocument *)&v5 dealloc];
 }
 
-- (void)setImageCacheCount:(unint64_t)a3 lookAhead:(unint64_t)a4 withResolution:(double)a5
+- (void)setImageCacheCount:(unint64_t)count lookAhead:(unint64_t)ahead withResolution:(double)resolution
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_imageCacheCount = a3;
-  self->_imageCacheLookAhead = a4;
-  self->_imageCacheResolution = a5;
+  self->_imageCacheCount = count;
+  self->_imageCacheLookAhead = ahead;
+  self->_imageCacheResolution = resolution;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -162,16 +162,16 @@
   return numberOfPages;
 }
 
-- (id)pageAtIndex:(unint64_t)a3
+- (id)pageAtIndex:(unint64_t)index
 {
-  v3 = [(UIPDFDocument *)self copyPageAtIndex:a3];
+  v3 = [(UIPDFDocument *)self copyPageAtIndex:index];
 
   return v3;
 }
 
-- (id)copyPageAtIndex:(unint64_t)a3
+- (id)copyPageAtIndex:(unint64_t)index
 {
-  if (self->_numberOfPages <= a3)
+  if (self->_numberOfPages <= index)
   {
     return 0;
   }
@@ -385,11 +385,11 @@
   return pageImageCache;
 }
 
-- (void)setPageImageCache:(id)a3
+- (void)setPageImageCache:(id)cache
 {
-  if (a3)
+  if (cache)
   {
-    v5 = a3;
+    cacheCopy = cache;
   }
 
   os_unfair_lock_lock(&self->_imageCacheLock);
@@ -398,7 +398,7 @@
   {
   }
 
-  self->_pageImageCache = a3;
+  self->_pageImageCache = cache;
 
   os_unfair_lock_unlock(&self->_imageCacheLock);
 }
@@ -417,11 +417,11 @@
   return thumbnailCache;
 }
 
-- (void)setThumbnailCache:(id)a3
+- (void)setThumbnailCache:(id)cache
 {
-  if (a3)
+  if (cache)
   {
-    v5 = a3;
+    cacheCopy = cache;
   }
 
   os_unfair_lock_lock(&self->_thumbnailLock);
@@ -430,7 +430,7 @@
   {
   }
 
-  self->_thumbnailCache = a3;
+  self->_thumbnailCache = cache;
 
   os_unfair_lock_unlock(&self->_thumbnailLock);
 }

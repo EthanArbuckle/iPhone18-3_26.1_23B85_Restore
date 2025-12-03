@@ -1,53 +1,53 @@
 @interface PXSharingUserSafetyController
 + (BOOL)userSafetyInterventionCheckRequired;
-+ (void)_analyzeAsset:(id)a3 withSensitivityAnalyzer:(id)a4 activeRequests:(id)a5 completionHandler:(id)a6;
-+ (void)_analyzeAssetWithFileURL:(id)a3 withSensitivityAnalyzer:(id)a4 completionHandler:(id)a5;
-+ (void)_updateAsset:(id)a3 withAnalysisResult:(id)a4 forVideoComplement:(BOOL)a5;
-+ (void)_userSafetyInterventionCheckRequiredBeforeSharingAssets:(id)a3 completion:(id)a4;
-+ (void)userSafetyInterventionCheckRequiredBeforeSharingAssets:(id)a3 completion:(id)a4;
++ (void)_analyzeAsset:(id)asset withSensitivityAnalyzer:(id)analyzer activeRequests:(id)requests completionHandler:(id)handler;
++ (void)_analyzeAssetWithFileURL:(id)l withSensitivityAnalyzer:(id)analyzer completionHandler:(id)handler;
++ (void)_updateAsset:(id)asset withAnalysisResult:(id)result forVideoComplement:(BOOL)complement;
++ (void)_userSafetyInterventionCheckRequiredBeforeSharingAssets:(id)assets completion:(id)completion;
++ (void)userSafetyInterventionCheckRequiredBeforeSharingAssets:(id)assets completion:(id)completion;
 @end
 
 @implementation PXSharingUserSafetyController
 
-+ (void)_analyzeAssetWithFileURL:(id)a3 withSensitivityAnalyzer:(id)a4 completionHandler:(id)a5
++ (void)_analyzeAssetWithFileURL:(id)l withSensitivityAnalyzer:(id)analyzer completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __100__PXSharingUserSafetyController__analyzeAssetWithFileURL_withSensitivityAnalyzer_completionHandler___block_invoke;
   v11[3] = &unk_1E7746BB0;
-  v12 = v7;
-  v13 = v8;
-  v9 = v7;
-  v10 = v8;
-  [a4 analyzeFile:v9 options:0 progressHandler:0 completionHandler:v11];
+  v12 = lCopy;
+  v13 = handlerCopy;
+  v9 = lCopy;
+  v10 = handlerCopy;
+  [analyzer analyzeFile:v9 options:0 progressHandler:0 completionHandler:v11];
 }
 
-+ (void)_analyzeAsset:(id)a3 withSensitivityAnalyzer:(id)a4 activeRequests:(id)a5 completionHandler:(id)a6
++ (void)_analyzeAsset:(id)asset withSensitivityAnalyzer:(id)analyzer activeRequests:(id)requests completionHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  assetCopy = asset;
+  analyzerCopy = analyzer;
+  requestsCopy = requests;
+  handlerCopy = handler;
   v13 = PLSharingGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v9 localIdentifier];
+    localIdentifier = [assetCopy localIdentifier];
     *buf = 138412546;
-    v49 = v14;
+    v49 = localIdentifier;
     v50 = 2048;
-    v51 = [v9 mediaType];
+    mediaType = [assetCopy mediaType];
     _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "[Civic] Analyzing %@ with media type: %ld", buf, 0x16u);
   }
 
-  v15 = [v9 localIdentifier];
-  v16 = [v9 photoLibrary];
-  v17 = [v16 photoLibraryURL];
+  localIdentifier2 = [assetCopy localIdentifier];
+  photoLibrary = [assetCopy photoLibrary];
+  photoLibraryURL = [photoLibrary photoLibraryURL];
 
-  v18 = [v9 mediaType];
-  if (v18 == 2)
+  mediaType2 = [assetCopy mediaType];
+  if (mediaType2 == 2)
   {
     v19 = 2;
   }
@@ -57,25 +57,25 @@
     v19 = 1;
   }
 
-  if (v18 != 2)
+  if (mediaType2 != 2)
   {
-    v21 = v18;
-    if (![v9 isPhotoIris] || (objc_msgSend(v9, "isPhotoIrisPlaceholder") & 1) != 0 || !objc_msgSend(v9, "canPlayPhotoIris"))
+    v21 = mediaType2;
+    if (![assetCopy isPhotoIris] || (objc_msgSend(assetCopy, "isPhotoIrisPlaceholder") & 1) != 0 || !objc_msgSend(assetCopy, "canPlayPhotoIris"))
     {
       if (v21 == 1)
       {
-        if ([MEMORY[0x1E6978AB0] assetNeedsThumbnailSensitivityProcessingForPickerSharing:v9])
+        if ([MEMORY[0x1E6978AB0] assetNeedsThumbnailSensitivityProcessingForPickerSharing:assetCopy])
         {
           v29[0] = MEMORY[0x1E69E9820];
           v29[1] = 3221225472;
           v29[2] = __104__PXSharingUserSafetyController__analyzeAsset_withSensitivityAnalyzer_activeRequests_completionHandler___block_invoke_3;
           v29[3] = &unk_1E7746B88;
-          v30 = v9;
-          v31 = v11;
-          v32 = v10;
-          v33 = v15;
-          v34 = v17;
-          v35 = v12;
+          v30 = assetCopy;
+          v31 = requestsCopy;
+          v32 = analyzerCopy;
+          v33 = localIdentifier2;
+          v34 = photoLibraryURL;
+          v35 = handlerCopy;
           v36 = 1;
           [v32 analyzeImageWithLocalIdentifier:v33 fromPhotoLibraryWithURL:v34 completionHandler:v29];
 
@@ -83,37 +83,37 @@
           goto LABEL_20;
         }
 
-        v27 = [v9 uuid];
+        uuid = [assetCopy uuid];
         v37 = 0;
-        v28 = [MEMORY[0x1E6978AB0] sensitivityAnalysisFromAsset:v9 outError:&v37];
+        v28 = [MEMORY[0x1E6978AB0] sensitivityAnalysisFromAsset:assetCopy outError:&v37];
         v20 = v37;
-        (*(v12 + 2))(v12, v27, 0, v28, 1, v20);
+        (*(handlerCopy + 2))(handlerCopy, uuid, 0, v28, 1, v20);
       }
 
       else
       {
         v20 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"Unsupported Media Type"];
-        v27 = [v9 uuid];
-        (*(v12 + 2))(v12, v27, 0, 0, 1, v20);
+        uuid = [assetCopy uuid];
+        (*(handlerCopy + 2))(handlerCopy, uuid, 0, 0, 1, v20);
       }
 
       goto LABEL_20;
     }
   }
 
-  if ([MEMORY[0x1E6978AB0] assetNeedsVideoSensitivityProcessingForPickerSharing:v9])
+  if ([MEMORY[0x1E6978AB0] assetNeedsVideoSensitivityProcessingForPickerSharing:assetCopy])
   {
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __104__PXSharingUserSafetyController__analyzeAsset_withSensitivityAnalyzer_activeRequests_completionHandler___block_invoke_212;
     v38[3] = &unk_1E7746B38;
-    v39 = v9;
-    v40 = v11;
-    v41 = v10;
-    v42 = v15;
-    v43 = v17;
+    v39 = assetCopy;
+    v40 = requestsCopy;
+    v41 = analyzerCopy;
+    v42 = localIdentifier2;
+    v43 = photoLibraryURL;
     v44 = &__block_literal_global_211_217769;
-    v45 = v12;
+    v45 = handlerCopy;
     v46 = v19;
     [v41 analyzeVideoWithLocalIdentifier:v42 fromPhotoLibraryWithURL:v43 progressHandler:&__block_literal_global_211_217769 completionHandler:v38];
 
@@ -122,18 +122,18 @@
 
   else
   {
-    [v9 uuid];
-    v22 = v11;
-    v24 = v23 = v10;
+    [assetCopy uuid];
+    v22 = requestsCopy;
+    v24 = v23 = analyzerCopy;
     v47 = 0;
-    [MEMORY[0x1E6978AB0] sensitivityAnalysisFromAsset:v9 outError:&v47];
-    v26 = v25 = v17;
+    [MEMORY[0x1E6978AB0] sensitivityAnalysisFromAsset:assetCopy outError:&v47];
+    v26 = v25 = photoLibraryURL;
     v20 = v47;
-    (*(v12 + 2))(v12, v24, 0, v26, v19, v20);
+    (*(handlerCopy + 2))(handlerCopy, v24, 0, v26, v19, v20);
 
-    v17 = v25;
-    v10 = v23;
-    v11 = v22;
+    photoLibraryURL = v25;
+    analyzerCopy = v23;
+    requestsCopy = v22;
   }
 
 LABEL_20:
@@ -326,14 +326,14 @@ uint64_t __104__PXSharingUserSafetyController__analyzeAsset_withSensitivityAnaly
   return [v10 removeObject:v11];
 }
 
-+ (void)_userSafetyInterventionCheckRequiredBeforeSharingAssets:(id)a3 completion:(id)a4
++ (void)_userSafetyInterventionCheckRequiredBeforeSharingAssets:(id)assets completion:(id)completion
 {
   v59 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v6 = a4;
-  if ([a1 userSafetyInterventionCheckRequired])
+  assetsCopy = assets;
+  completionCopy = completion;
+  if ([self userSafetyInterventionCheckRequired])
   {
-    v22 = v6;
+    v22 = completionCopy;
     v55[0] = 0;
     v55[1] = v55;
     v55[2] = 0x2020000000;
@@ -375,7 +375,7 @@ uint64_t __104__PXSharingUserSafetyController__analyzeAsset_withSensitivityAnaly
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = v23;
+    obj = assetsCopy;
     v11 = [obj countByEnumeratingWithState:&v34 objects:v58 count:16];
     if (v11)
     {
@@ -406,8 +406,8 @@ uint64_t __104__PXSharingUserSafetyController__analyzeAsset_withSensitivityAnaly
             if (objc_opt_isKindOfClass())
             {
               v15 = v14;
-              v16 = [v15 url];
-              [PXSharingUserSafetyController _analyzeAssetWithFileURL:v16 withSensitivityAnalyzer:v10 completionHandler:v9];
+              fileURL = [v15 url];
+              [PXSharingUserSafetyController _analyzeAssetWithFileURL:fileURL withSensitivityAnalyzer:v10 completionHandler:v9];
             }
 
             else
@@ -416,8 +416,8 @@ uint64_t __104__PXSharingUserSafetyController__analyzeAsset_withSensitivityAnaly
               if (objc_opt_isKindOfClass())
               {
                 v15 = v14;
-                v16 = [v15 fileURL];
-                [PXSharingUserSafetyController _analyzeAssetWithFileURL:v16 withSensitivityAnalyzer:v10 completionHandler:v9];
+                fileURL = [v15 fileURL];
+                [PXSharingUserSafetyController _analyzeAssetWithFileURL:fileURL withSensitivityAnalyzer:v10 completionHandler:v9];
               }
 
               else
@@ -430,8 +430,8 @@ uint64_t __104__PXSharingUserSafetyController__analyzeAsset_withSensitivityAnaly
                 v20 = MEMORY[0x1E696ABC0];
                 v56 = v25;
                 v57 = v15;
-                v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-                v21 = [v20 errorWithDomain:v24 code:4302 userInfo:v16];
+                fileURL = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
+                v21 = [v20 errorWithDomain:v24 code:4302 userInfo:fileURL];
                 (*(v9 + 2))(v9, 0, 0, 0, 0, v21);
               }
             }
@@ -465,12 +465,12 @@ uint64_t __104__PXSharingUserSafetyController__analyzeAsset_withSensitivityAnaly
 
     _Block_object_dispose(v53, 8);
     _Block_object_dispose(v55, 8);
-    v6 = v22;
+    completionCopy = v22;
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
   }
 }
 
@@ -613,19 +613,19 @@ LABEL_26:
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (void)userSafetyInterventionCheckRequiredBeforeSharingAssets:(id)a3 completion:(id)a4
++ (void)userSafetyInterventionCheckRequiredBeforeSharingAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __99__PXSharingUserSafetyController_userSafetyInterventionCheckRequiredBeforeSharingAssets_completion___block_invoke;
   v10[3] = &unk_1E7746A70;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
-  [a1 _userSafetyInterventionCheckRequiredBeforeSharingAssets:v9 completion:v10];
+  v11 = assetsCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = assetsCopy;
+  [self _userSafetyInterventionCheckRequiredBeforeSharingAssets:v9 completion:v10];
 }
 
 void __99__PXSharingUserSafetyController_userSafetyInterventionCheckRequiredBeforeSharingAssets_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, int a4, void *a5)
@@ -649,22 +649,22 @@ void __99__PXSharingUserSafetyController_userSafetyInterventionCheckRequiredBefo
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)_updateAsset:(id)a3 withAnalysisResult:(id)a4 forVideoComplement:(BOOL)a5
++ (void)_updateAsset:(id)asset withAnalysisResult:(id)result forVideoComplement:(BOOL)complement
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  assetCopy = asset;
+  resultCopy = result;
+  if (resultCopy)
   {
-    v9 = [v7 photoLibrary];
+    photoLibrary = [assetCopy photoLibrary];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __84__PXSharingUserSafetyController__updateAsset_withAnalysisResult_forVideoComplement___block_invoke;
     v12[3] = &unk_1E774B368;
-    v13 = v7;
-    v15 = a5;
-    v14 = v8;
-    [v9 performChanges:v12 completionHandler:&__block_literal_global_217814];
+    v13 = assetCopy;
+    complementCopy = complement;
+    v14 = resultCopy;
+    [photoLibrary performChanges:v12 completionHandler:&__block_literal_global_217814];
 
     v10 = v13;
   }
@@ -674,9 +674,9 @@ void __99__PXSharingUserSafetyController_userSafetyInterventionCheckRequiredBefo
     v10 = PLSharingGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v7 localIdentifier];
+      localIdentifier = [assetCopy localIdentifier];
       *buf = 138412290;
-      v17 = v11;
+      v17 = localIdentifier;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "No analysis result received for asset: %@", buf, 0xCu);
     }
   }

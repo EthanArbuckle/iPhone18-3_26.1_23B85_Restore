@@ -11,7 +11,7 @@
 - (UIAccessibilityTraits)accessibilityTraits;
 - (UIFocusEnvironment)parentFocusEnvironment;
 - (id)_firstViewAncestor;
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)focusItemsInRect:(CGRect)rect;
 - (id)nextResponder;
 - (void)dealloc;
 - (void)setAccessibilityFrame:(CGRect)accessibilityFrame;
@@ -193,23 +193,23 @@
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(UIAccessibilityElement *)self isAccessibilityElement];
-  if (v3)
+  isAccessibilityElement = [(UIAccessibilityElement *)self isAccessibilityElement];
+  if (isAccessibilityElement)
   {
 
-    LOBYTE(v3) = [self accessibilityRespondsToUserInteraction];
+    LOBYTE(isAccessibilityElement) = [self accessibilityRespondsToUserInteraction];
   }
 
-  return v3;
+  return isAccessibilityElement;
 }
 
 - (CGRect)frame
 {
-  v3 = [(UIAccessibilityElement *)self _firstViewAncestor];
-  v4 = [v3 window];
+  _firstViewAncestor = [(UIAccessibilityElement *)self _firstViewAncestor];
+  window = [_firstViewAncestor window];
   [(UIAccessibilityElement *)self accessibilityFrame];
 
-  [v4 convertRect:v3 toView:?];
+  [window convertRect:_firstViewAncestor toView:?];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -217,9 +217,9 @@
   return result;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  v3 = [self accessibilityElements:a3.origin.x];
+  v3 = [self accessibilityElements:rect.origin.x];
   v4 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_2];
 
   return [(NSArray *)v3 filteredArrayUsingPredicate:v4];
@@ -237,33 +237,33 @@ uint64_t __43__UIAccessibilityElement_focusItemsInRect___block_invoke(uint64_t a
 
 - (id)_firstViewAncestor
 {
-  v2 = [self accessibilityContainer];
+  accessibilityContainer = [self accessibilityContainer];
   objc_opt_class();
-  while ((objc_opt_isKindOfClass() & 1) == 0 && v2)
+  while ((objc_opt_isKindOfClass() & 1) == 0 && accessibilityContainer)
   {
-    v2 = [v2 accessibilityContainer];
+    accessibilityContainer = [accessibilityContainer accessibilityContainer];
     objc_opt_class();
   }
 
-  return v2;
+  return accessibilityContainer;
 }
 
 - (id)nextResponder
 {
-  v2 = [self accessibilityContainer];
-  v3 = [v2 __isKindOfUIResponder];
-  if (v2 && (v3 & 1) == 0)
+  accessibilityContainer = [self accessibilityContainer];
+  __isKindOfUIResponder = [accessibilityContainer __isKindOfUIResponder];
+  if (accessibilityContainer && (__isKindOfUIResponder & 1) == 0)
   {
     do
     {
-      v2 = [v2 accessibilityContainer];
-      v4 = [v2 __isKindOfUIResponder];
+      accessibilityContainer = [accessibilityContainer accessibilityContainer];
+      __isKindOfUIResponder2 = [accessibilityContainer __isKindOfUIResponder];
     }
 
-    while (v2 && !v4);
+    while (accessibilityContainer && !__isKindOfUIResponder2);
   }
 
-  return v2;
+  return accessibilityContainer;
 }
 
 - (CGRect)accessibilityFrameInContainerSpace

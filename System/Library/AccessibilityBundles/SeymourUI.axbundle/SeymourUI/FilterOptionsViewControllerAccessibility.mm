@@ -1,15 +1,15 @@
 @interface FilterOptionsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)updateTitleView;
 @end
 
 @implementation FilterOptionsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.FilterOptionsViewController" hasInstanceMethod:@"updateTitleView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SeymourUI.FilterOptionsViewController" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.FilterOptionsViewController" hasInstanceMethod:@"updateTitleView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SeymourUI.FilterOptionsViewController" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
 }
 
 - (void)updateTitleView
@@ -34,14 +34,14 @@
   v7 = v6;
   if (v4)
   {
-    v8 = [v6 text];
-    v9 = [v8 length];
+    text = [v6 text];
+    v9 = [text length];
 
     if (v9)
     {
       v10 = *MEMORY[0x29EDC7EA8];
-      v11 = [v7 text];
-      UIAccessibilityPostNotification(v10, v11);
+      text2 = [v7 text];
+      UIAccessibilityPostNotification(v10, text2);
     }
   }
 }

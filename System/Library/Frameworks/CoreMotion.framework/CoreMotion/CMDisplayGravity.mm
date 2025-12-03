@@ -1,16 +1,16 @@
 @interface CMDisplayGravity
 - ($1AB5FA073B851C12C2339EC22442E995)gravity;
-- (BOOL)isEqual:(id)a3;
-- (CMDisplayGravity)initWithCoder:(id)a3;
-- (CMDisplayGravity)initWithDisplayGravity:(id *)a3 timestamp:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (CMDisplayGravity)initWithCoder:(id)coder;
+- (CMDisplayGravity)initWithDisplayGravity:(id *)gravity timestamp:(double)timestamp;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMDisplayGravity
 
-- (CMDisplayGravity)initWithDisplayGravity:(id *)a3 timestamp:(double)a4
+- (CMDisplayGravity)initWithDisplayGravity:(id *)gravity timestamp:(double)timestamp
 {
   v12.receiver = self;
   v12.super_class = CMDisplayGravity;
@@ -18,11 +18,11 @@
   v7 = v6;
   if (v6)
   {
-    *(v6 + 24) = vcvtq_f64_f32(*&a3->var1.var0);
-    *(v6 + 5) = a3->var1.var2;
+    *(v6 + 24) = vcvtq_f64_f32(*&gravity->var1.var0);
+    *(v6 + 5) = gravity->var1.var2;
     v8 = [CMAttitude alloc];
-    v7->_attitude = objc_msgSend_initWithQuaternion_(v8, v9, v10, a3->var0.var0, a3->var0.var1, a3->var0.var2, a3->var0.var3);
-    v7->_timestamp = a4;
+    v7->_attitude = objc_msgSend_initWithQuaternion_(v8, v9, v10, gravity->var0.var0, gravity->var0.var1, gravity->var0.var2, gravity->var0.var3);
+    v7->_timestamp = timestamp;
   }
 
   return v7;
@@ -35,40 +35,40 @@
   [(CMDisplayGravity *)&v3 dealloc];
 }
 
-- (CMDisplayGravity)initWithCoder:(id)a3
+- (CMDisplayGravity)initWithCoder:(id)coder
 {
-  v5 = objc_msgSend_init(self, a2, a3);
+  v5 = objc_msgSend_init(self, a2, coder);
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"gravityX");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"gravityX");
     *(v5 + 24) = v6;
-    objc_msgSend_decodeDoubleForKey_(a3, v7, @"gravityY");
+    objc_msgSend_decodeDoubleForKey_(coder, v7, @"gravityY");
     *(v5 + 32) = v8;
-    objc_msgSend_decodeDoubleForKey_(a3, v9, @"gravityZ");
+    objc_msgSend_decodeDoubleForKey_(coder, v9, @"gravityZ");
     *(v5 + 40) = v10;
     v11 = objc_opt_class();
-    *(v5 + 8) = objc_msgSend_decodeObjectOfClass_forKey_(a3, v12, v11, @"attitude");
-    objc_msgSend_decodeDoubleForKey_(a3, v13, @"timestamp");
+    *(v5 + 8) = objc_msgSend_decodeObjectOfClass_forKey_(coder, v12, v11, @"attitude");
+    objc_msgSend_decodeDoubleForKey_(coder, v13, @"timestamp");
     *(v5 + 16) = v14;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeDouble_forKey_(a3, a2, @"gravityX", self->_gravity.x);
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"gravityY", self->_gravity.y);
-  objc_msgSend_encodeDouble_forKey_(a3, v6, @"gravityZ", self->_gravity.z);
-  objc_msgSend_encodeObject_forKey_(a3, v7, self->_attitude, @"attitude");
+  objc_msgSend_encodeDouble_forKey_(coder, a2, @"gravityX", self->_gravity.x);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"gravityY", self->_gravity.y);
+  objc_msgSend_encodeDouble_forKey_(coder, v6, @"gravityZ", self->_gravity.z);
+  objc_msgSend_encodeObject_forKey_(coder, v7, self->_attitude, @"attitude");
   timestamp = self->_timestamp;
 
-  objc_msgSend_encodeDouble_forKey_(a3, v8, @"timestamp", timestamp);
+  objc_msgSend_encodeDouble_forKey_(coder, v8, @"timestamp", timestamp);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -80,7 +80,7 @@
   }
 
   timestamp = self->_timestamp;
-  objc_msgSend_timestamp(a3, v5, v6);
+  objc_msgSend_timestamp(equal, v5, v6);
   return timestamp == v8;
 }
 

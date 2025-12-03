@@ -1,8 +1,8 @@
 @interface AXUIContextDrawingAnnotation
-+ (id)annotationsForContext:(CGContext *)a3;
++ (id)annotationsForContext:(CGContext *)context;
 + (id)contextAnnotationMap;
-+ (void)addLabel:(id)a3 boundingRect:(CGRect)a4 withContext:(CGContext *)a5;
-- (AXUIContextDrawingAnnotation)initWithLabel:(id)a3 boundingRect:(CGRect)a4;
++ (void)addLabel:(id)label boundingRect:(CGRect)rect withContext:(CGContext *)context;
+- (AXUIContextDrawingAnnotation)initWithLabel:(id)label boundingRect:(CGRect)rect;
 - (CGRect)boundingRect;
 - (id)description;
 @end
@@ -21,20 +21,20 @@
   return v3;
 }
 
-- (AXUIContextDrawingAnnotation)initWithLabel:(id)a3 boundingRect:(CGRect)a4
+- (AXUIContextDrawingAnnotation)initWithLabel:(id)label boundingRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  labelCopy = label;
   v14.receiver = self;
   v14.super_class = AXUIContextDrawingAnnotation;
   v11 = [(AXUIContextDrawingAnnotation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_label, a3);
+    objc_storeStrong(&v11->_label, label);
     v12->_boundingRect.origin.x = x;
     v12->_boundingRect.origin.y = y;
     v12->_boundingRect.size.width = width;
@@ -44,33 +44,33 @@
   return v12;
 }
 
-+ (void)addLabel:(id)a3 boundingRect:(CGRect)a4 withContext:(CGContext *)a5
++ (void)addLabel:(id)label boundingRect:(CGRect)rect withContext:(CGContext *)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  if (a5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  labelCopy = label;
+  if (context)
   {
-    v12 = [MEMORY[0x1E696B098] valueWithPointer:a5];
-    v13 = [[AXUIContextDrawingAnnotation alloc] initWithLabel:v11 boundingRect:x, y, width, height];
-    v14 = [a1 contextAnnotationMap];
-    objc_sync_enter(v14);
-    v15 = [v14 objectForKeyedSubscript:v12];
+    v12 = [MEMORY[0x1E696B098] valueWithPointer:context];
+    height = [[AXUIContextDrawingAnnotation alloc] initWithLabel:labelCopy boundingRect:x, y, width, height];
+    contextAnnotationMap = [self contextAnnotationMap];
+    objc_sync_enter(contextAnnotationMap);
+    v15 = [contextAnnotationMap objectForKeyedSubscript:v12];
 
     if (!v15)
     {
-      v16 = [MEMORY[0x1E695DF70] array];
-      [v14 setObject:v16 forKeyedSubscript:v12];
+      array = [MEMORY[0x1E695DF70] array];
+      [contextAnnotationMap setObject:array forKeyedSubscript:v12];
     }
 
-    v17 = [v14 objectForKeyedSubscript:v12];
-    [v17 addObject:v13];
+    v17 = [contextAnnotationMap objectForKeyedSubscript:v12];
+    [v17 addObject:height];
 
-    v18 = v14;
+    v18 = contextAnnotationMap;
     v19 = v12;
-    v20 = v13;
+    v20 = height;
     AXPerformBlockOnMainThreadAfterDelay();
 
     objc_sync_exit(v18);
@@ -95,22 +95,22 @@ void __66__AXUIContextDrawingAnnotation_addLabel_boundingRect_withContext___bloc
   objc_sync_exit(obj);
 }
 
-+ (id)annotationsForContext:(CGContext *)a3
++ (id)annotationsForContext:(CGContext *)context
 {
-  if (a3)
+  if (context)
   {
     v4 = [MEMORY[0x1E696B098] valueWithPointer:?];
-    v5 = [a1 contextAnnotationMap];
-    objc_sync_enter(v5);
-    v6 = [v5 objectForKey:v4];
+    contextAnnotationMap = [self contextAnnotationMap];
+    objc_sync_enter(contextAnnotationMap);
+    v6 = [contextAnnotationMap objectForKey:v4];
     v7 = [v6 copy];
 
     if (v7)
     {
-      [v5 removeObjectForKey:v4];
+      [contextAnnotationMap removeObjectForKey:v4];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(contextAnnotationMap);
   }
 
   else
@@ -134,10 +134,10 @@ uint64_t __52__AXUIContextDrawingAnnotation_contextAnnotationMap__block_invoke()
   v9.receiver = self;
   v9.super_class = AXUIContextDrawingAnnotation;
   v4 = [(AXUIContextDrawingAnnotation *)&v9 description];
-  v5 = [(AXUIContextDrawingAnnotation *)self label];
+  label = [(AXUIContextDrawingAnnotation *)self label];
   [(AXUIContextDrawingAnnotation *)self boundingRect];
   v6 = NSStringFromCGRect(v11);
-  v7 = [v3 stringWithFormat:@"%@, label=%@, boundingRect=%@", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@, label=%@, boundingRect=%@", v4, label, v6];
 
   return v7;
 }

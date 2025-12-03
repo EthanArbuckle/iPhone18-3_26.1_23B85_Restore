@@ -1,22 +1,22 @@
 @interface OUObjectCompleteness
-- (BOOL)checkBoxFaceCompleteness:(uint64_t)a3 faceIndex:(int)a4 boxType:(void *)a5 pointCloud:(void *)a6;
-- (uint64_t)isPointInCameraView:(simd_float4)a3 cameraPose:(simd_float4)a4 camera:(simd_float4)a5 marginRatio:(float)a6;
-- (void)updateRawCornersStatus:(float32x4_t)a3 withOldObjects:(float32x4_t)a4 cameraPose:(double)a5 camera:(uint64_t)a6;
-- (void)updateRawCornersStatusNoTimer:(float32x4_t)a3 withOldObjects:(float32x4_t)a4 cameraPose:(double)a5 camera:(uint64_t)a6;
-- (void)updateRawFacesStatus:(double)a3 withOldObjects:(double)a4 pointCloud:(double)a5 cameraPose:(uint64_t)a6 camera:(void *)a7;
+- (BOOL)checkBoxFaceCompleteness:(uint64_t)completeness faceIndex:(int)index boxType:(void *)type pointCloud:(void *)cloud;
+- (uint64_t)isPointInCameraView:(simd_float4)view cameraPose:(simd_float4)pose camera:(simd_float4)camera marginRatio:(float)ratio;
+- (void)updateRawCornersStatus:(float32x4_t)status withOldObjects:(float32x4_t)objects cameraPose:(double)pose camera:(uint64_t)camera;
+- (void)updateRawCornersStatusNoTimer:(float32x4_t)timer withOldObjects:(float32x4_t)objects cameraPose:(double)pose camera:(uint64_t)camera;
+- (void)updateRawFacesStatus:(double)status withOldObjects:(double)objects pointCloud:(double)cloud cameraPose:(uint64_t)pose camera:(void *)camera;
 @end
 
 @implementation OUObjectCompleteness
 
-- (uint64_t)isPointInCameraView:(simd_float4)a3 cameraPose:(simd_float4)a4 camera:(simd_float4)a5 marginRatio:(float)a6
+- (uint64_t)isPointInCameraView:(simd_float4)view cameraPose:(simd_float4)pose camera:(simd_float4)camera marginRatio:(float)ratio
 {
-  v29.columns[2] = a4;
-  v29.columns[3] = a5;
+  v29.columns[2] = pose;
+  v29.columns[3] = camera;
   v29.columns[0] = a2;
-  v29.columns[1] = a3;
+  v29.columns[1] = view;
   v10 = a9;
   v36 = __invert_f4(v29);
-  v35 = vaddq_f32(v36.columns[3], vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v36.columns[0], a1.f32[0]), v36.columns[1], *a1.f32, 1), v36.columns[2], a1, 2));
+  v35 = vaddq_f32(v36.columns[3], vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v36.columns[0], self.f32[0]), v36.columns[1], *self.f32, 1), v36.columns[2], self, 2));
   if (v35.f32[2] <= 0.01)
   {
     goto LABEL_9;
@@ -34,8 +34,8 @@
   [v10 imageResolution];
   v18 = v17;
   v19 = (vmuls_n_f32(v35.f32[0], v33) / v35.f32[2]) + v32;
-  v20 = a6;
-  v21 = v16 * a6;
+  ratioCopy = ratio;
+  v21 = v16 * ratio;
   if (v19 < v21)
   {
     goto LABEL_9;
@@ -43,7 +43,7 @@
 
   [v10 imageResolution];
   v22 = (vmuls_lane_f32(v35.f32[1], v31, 1) / v35.f32[2]) + v30;
-  v23 = v18 * v20;
+  v23 = v18 * ratioCopy;
   v25 = v24 - v21 <= v19 || v22 < v23;
   if (v25 || ([v10 imageResolution], v26 - v23 <= v22))
   {
@@ -59,19 +59,19 @@ LABEL_9:
   return v27;
 }
 
-- (void)updateRawCornersStatusNoTimer:(float32x4_t)a3 withOldObjects:(float32x4_t)a4 cameraPose:(double)a5 camera:(uint64_t)a6
+- (void)updateRawCornersStatusNoTimer:(float32x4_t)timer withOldObjects:(float32x4_t)objects cameraPose:(double)pose camera:(uint64_t)camera
 {
   v64 = a7;
   v62 = a8;
   v11 = a9;
-  v12 = vaddq_f32(a4, vmlaq_f32(vmulq_f32(a2, 0), 0, a3)).u64[0];
+  v12 = vaddq_f32(objects, vmlaq_f32(vmulq_f32(a2, 0), 0, timer)).u64[0];
   v13 = 1.57079633 - atan2f(*(&v12 + 1), *&v12);
   v14.i64[0] = 0;
   v14.i32[2] = 0;
-  *&v14.i32[3] = -*&a5;
+  *&v14.i32[3] = -*&pose;
   v15.i64[0] = 0;
   v15.i32[2] = 0;
-  *&v15.i32[3] = -*(&a5 + 1);
+  *&v15.i32[3] = -*(&pose + 1);
   v16 = vzip2q_s32(v14, xmmword_25D277BC0);
   v17 = vzip2q_s32(v15, xmmword_25D277B90);
   v68 = vzip2q_s32(v16, v17);
@@ -106,8 +106,8 @@ LABEL_9:
   {
     v27 = [v62 objectAtIndexedSubscript:i];
     v28 = [v62 objectAtIndexedSubscript:i];
-    v29 = [v28 identifier];
-    [v61 setObject:v27 forKey:v29];
+    identifier = [v28 identifier];
+    [v61 setObject:v27 forKey:identifier];
   }
 
   v65 = 0;
@@ -116,12 +116,12 @@ LABEL_9:
   while ([v64 count] > v65)
   {
     v32 = [v64 objectAtIndexedSubscript:?];
-    v33 = [v32 identifier];
-    v34 = [v61 objectForKey:v33];
+    identifier2 = [v32 identifier];
+    v34 = [v61 objectForKey:identifier2];
 
     v63 = [v64 objectAtIndexedSubscript:v65];
-    v35 = [v63 boxesDict];
-    v36 = [v35 objectForKey:@"rawdetection"];
+    boxesDict = [v63 boxesDict];
+    v36 = [boxesDict objectForKey:@"rawdetection"];
 
     if (v36)
     {
@@ -130,8 +130,8 @@ LABEL_9:
       v77 = 0u;
       v78 = 0u;
       memset(&v76, 0, sizeof(v76));
-      v37 = [v63 boxesDict];
-      v38 = [v37 objectForKeyedSubscript:@"rawdetection"];
+      boxesDict2 = [v63 boxesDict];
+      v38 = [boxesDict2 objectForKeyedSubscript:@"rawdetection"];
       box3dFromNSArray(v38, &v76);
 
       v39 = objc_opt_new();
@@ -140,7 +140,7 @@ LABEL_9:
         if (v11)
         {
           LODWORD(v40) = 0.125;
-          if ([a1 isPointInCameraView:v11 cameraPose:*v76.columns[j].i64 camera:*a2.i64 marginRatio:{*a3.i64, *a4.i64, a5, v40}])
+          if ([self isPointInCameraView:v11 cameraPose:*v76.columns[j].i64 camera:*a2.i64 marginRatio:{*timer.i64, *objects.i64, pose, v40}])
           {
             v42 = v30;
           }
@@ -174,48 +174,48 @@ LABEL_9:
 
     if (v34)
     {
-      v46 = [v34 corners_status];
-      v47 = [v46 count];
+      corners_status = [v34 corners_status];
+      v47 = [corners_status count];
 
       if (v47 == 8)
       {
-        v48 = [v63 corners_status];
-        v49 = [v48 count];
+        corners_status2 = [v63 corners_status];
+        v49 = [corners_status2 count];
 
         if (v49 == 8)
         {
-          v50 = objc_opt_new();
+          corners_status5 = objc_opt_new();
           for (k = 0; k != 8; ++k)
           {
             v52 = v34;
-            v53 = [v34 corners_status];
-            v54 = [v53 objectAtIndexedSubscript:k];
-            v55 = [v54 BOOLValue];
+            corners_status3 = [v34 corners_status];
+            v54 = [corners_status3 objectAtIndexedSubscript:k];
+            bOOLValue = [v54 BOOLValue];
 
-            if (v55)
+            if (bOOLValue)
             {
-              [v50 addObject:v30];
+              [corners_status5 addObject:v30];
             }
 
             else
             {
               v56 = [v64 objectAtIndexedSubscript:v65];
-              v57 = [v56 corners_status];
-              v58 = [v57 objectAtIndexedSubscript:k];
-              [v50 addObject:v58];
+              corners_status4 = [v56 corners_status];
+              v58 = [corners_status4 objectAtIndexedSubscript:k];
+              [corners_status5 addObject:v58];
             }
 
             v34 = v52;
           }
 
-          v59 = [v50 copy];
+          v59 = [corners_status5 copy];
           [v63 setCorners_status:v59];
         }
 
         else
         {
-          v50 = [v34 corners_status];
-          v59 = [v50 copy];
+          corners_status5 = [v34 corners_status];
+          v59 = [corners_status5 copy];
           [v63 setCorners_status:v59];
         }
       }
@@ -225,19 +225,19 @@ LABEL_9:
   }
 }
 
-- (void)updateRawCornersStatus:(float32x4_t)a3 withOldObjects:(float32x4_t)a4 cameraPose:(double)a5 camera:(uint64_t)a6
+- (void)updateRawCornersStatus:(float32x4_t)status withOldObjects:(float32x4_t)objects cameraPose:(double)pose camera:(uint64_t)camera
 {
   v67 = a7;
   v11 = a8;
   v12 = a9;
-  v13 = vaddq_f32(a4, vmlaq_f32(vmulq_f32(a2, 0), 0, a3)).u64[0];
+  v13 = vaddq_f32(objects, vmlaq_f32(vmulq_f32(a2, 0), 0, status)).u64[0];
   v14 = 1.57079633 - atan2f(*(&v13 + 1), *&v13);
   v15.i64[0] = 0;
   v15.i32[2] = 0;
-  *&v15.i32[3] = -*&a5;
+  *&v15.i32[3] = -*&pose;
   v16.i64[0] = 0;
   v16.i32[2] = 0;
-  *&v16.i32[3] = -*(&a5 + 1);
+  *&v16.i32[3] = -*(&pose + 1);
   v17 = vzip2q_s32(v15, xmmword_25D277BC0);
   v18 = vzip2q_s32(v16, xmmword_25D277B90);
   v79 = vzip1q_s32(v17, v18);
@@ -273,8 +273,8 @@ LABEL_9:
   {
     v28 = [v65 objectAtIndexedSubscript:i];
     v29 = [v65 objectAtIndexedSubscript:i];
-    v30 = [v29 identifier];
-    [v64 setObject:v28 forKey:v30];
+    identifier = [v29 identifier];
+    [v64 setObject:v28 forKey:identifier];
   }
 
   v31 = 0;
@@ -284,19 +284,19 @@ LABEL_9:
   while ([v67 count] > v31)
   {
     v35 = [v67 objectAtIndexedSubscript:v31];
-    v36 = [v35 identifier];
-    v66 = [v64 objectForKey:v36];
+    identifier2 = [v35 identifier];
+    v66 = [v64 objectForKey:identifier2];
 
     v68 = [v67 objectAtIndexedSubscript:v31];
-    v37 = [v68 boxesDict];
-    v38 = [v37 objectForKey:@"rawdetection"];
+    boxesDict = [v68 boxesDict];
+    v38 = [boxesDict objectForKey:@"rawdetection"];
 
     if (v38)
     {
       if (v66)
       {
-        v39 = [v66 corners_history];
-        v40 = [v39 copy];
+        corners_history = [v66 corners_history];
+        v40 = [corners_history copy];
         [v68 setCorners_history:v40];
       }
 
@@ -305,15 +305,15 @@ LABEL_9:
       v82 = 0u;
       v83 = 0u;
       memset(&v81, 0, sizeof(v81));
-      v41 = [v68 boxesDict];
-      v42 = [v41 objectForKeyedSubscript:@"rawdetection"];
+      boxesDict2 = [v68 boxesDict];
+      v42 = [boxesDict2 objectForKeyedSubscript:@"rawdetection"];
       box3dFromNSArray(v42, &v81);
 
-      v43 = [v68 corners_history];
-      v44 = [v43 mutableCopy];
+      corners_history2 = [v68 corners_history];
+      v44 = [corners_history2 mutableCopy];
 
-      v45 = [MEMORY[0x277CBEAA8] date];
-      [v45 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v47 = v46;
       v63 = v31;
 
@@ -325,7 +325,7 @@ LABEL_9:
         if (v12)
         {
           LODWORD(v49) = 0.125;
-          v52 = [a1 isPointInCameraView:v12 cameraPose:*v51 camera:*a2.i64 marginRatio:{*a3.i64, *a4.i64, a5, v49}];
+          v52 = [self isPointInCameraView:v12 cameraPose:*v51 camera:*a2.i64 marginRatio:{*status.i64, *objects.i64, pose, v49}];
         }
 
         else
@@ -390,9 +390,9 @@ LABEL_9:
   }
 }
 
-- (void)updateRawFacesStatus:(double)a3 withOldObjects:(double)a4 pointCloud:(double)a5 cameraPose:(uint64_t)a6 camera:(void *)a7
+- (void)updateRawFacesStatus:(double)status withOldObjects:(double)objects pointCloud:(double)cloud cameraPose:(uint64_t)pose camera:(void *)camera
 {
-  v68 = a7;
+  cameraCopy = camera;
   v67 = a8;
   v69 = a9;
   v77 = a10;
@@ -401,35 +401,35 @@ LABEL_9:
   {
     v15 = [v67 objectAtIndexedSubscript:i];
     v16 = [v67 objectAtIndexedSubscript:i];
-    v17 = [v16 identifier];
-    [v66 setObject:v15 forKey:v17];
+    identifier = [v16 identifier];
+    [v66 setObject:v15 forKey:identifier];
   }
 
   v18 = 0;
   v19 = MEMORY[0x277CBEC28];
-  while ([v68 count] > v18)
+  while ([cameraCopy count] > v18)
   {
-    v20 = [v68 objectAtIndexedSubscript:v18];
-    v21 = [v20 identifier];
-    v71 = [v66 objectForKey:v21];
+    v20 = [cameraCopy objectAtIndexedSubscript:v18];
+    identifier2 = [v20 identifier];
+    v71 = [v66 objectForKey:identifier2];
 
-    v78 = [v68 objectAtIndexedSubscript:v18];
-    v22 = [v78 type];
-    if ([v22 isEqualToString:@"Cabinet"])
+    v78 = [cameraCopy objectAtIndexedSubscript:v18];
+    type = [v78 type];
+    if ([type isEqualToString:@"Cabinet"])
     {
       goto LABEL_9;
     }
 
-    v23 = [v78 type];
-    if ([v23 isEqualToString:@"Sofa"])
+    type2 = [v78 type];
+    if ([type2 isEqualToString:@"Sofa"])
     {
 
 LABEL_9:
       goto LABEL_10;
     }
 
-    v64 = [v78 type];
-    v65 = [v64 isEqualToString:@"Table"];
+    type3 = [v78 type];
+    v65 = [type3 isEqualToString:@"Table"];
 
     if ((v65 & 1) == 0)
     {
@@ -437,8 +437,8 @@ LABEL_9:
     }
 
 LABEL_10:
-    v24 = [v78 boxesDict];
-    v25 = [v24 objectForKey:@"rawdetection"];
+    boxesDict = [v78 boxesDict];
+    v25 = [boxesDict objectForKey:@"rawdetection"];
 
     if (v25)
     {
@@ -450,8 +450,8 @@ LABEL_10:
       v90 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v26 = [v78 boxesDict];
-      v27 = [v26 objectForKeyedSubscript:@"rawdetection"];
+      boxesDict2 = [v78 boxesDict];
+      v27 = [boxesDict2 objectForKeyedSubscript:@"rawdetection"];
       box3dFromNSArray(v27, &v87);
 
       v28.i32[0] = 1017370378;
@@ -474,17 +474,17 @@ LABEL_10:
           goto LABEL_17;
         }
 
-        v31 = [v71 faces_status];
-        if ([v31 count] != 6)
+        faces_status = [v71 faces_status];
+        if ([faces_status count] != 6)
         {
           break;
         }
 
-        v32 = [v71 faces_status];
-        v33 = [v32 objectAtIndexedSubscript:v30];
-        v34 = [v33 BOOLValue];
+        faces_status2 = [v71 faces_status];
+        v33 = [faces_status2 objectAtIndexedSubscript:v30];
+        bOOLValue = [v33 BOOLValue];
 
-        if (!v34)
+        if (!bOOLValue)
         {
           goto LABEL_17;
         }
@@ -497,9 +497,9 @@ LABEL_33:
           for (j = 0; j != 6; ++j)
           {
             v51 = [v72 objectAtIndexedSubscript:j];
-            v52 = [v51 BOOLValue];
+            bOOLValue2 = [v51 BOOLValue];
 
-            if (v52)
+            if (bOOLValue2)
             {
               v53 = kFaceEdgeIndicesMap + 24 * j;
               v54 = *v53;
@@ -565,13 +565,13 @@ LABEL_17:
       {
         v40 = *v36;
         LODWORD(v29) = 1011666125;
-        v41 = [a1 isPointInCameraView:v77 cameraPose:*&v87.i64[2 * v40] camera:a2 marginRatio:{a3, a4, a5, v29}];
-        v42 = [v78 corners_status];
-        v43 = [v42 objectAtIndexedSubscript:v40];
-        v44 = [v43 BOOLValue];
+        v41 = [self isPointInCameraView:v77 cameraPose:*&v87.i64[2 * v40] camera:a2 marginRatio:{status, objects, cloud, v29}];
+        corners_status = [v78 corners_status];
+        v43 = [corners_status objectAtIndexedSubscript:v40];
+        bOOLValue3 = [v43 BOOLValue];
         v39 += v41;
 
-        v38 += v44;
+        v38 += bOOLValue3;
         ++v36;
       }
 
@@ -591,8 +591,8 @@ LABEL_17:
         v80 = v88;
         v81 = v89;
         v82 = v90;
-        v47 = [v78 type];
-        v48 = [a1 checkBoxFaceCompleteness:__p faceIndex:v30 boxType:v47 pointCloud:v69];
+        type4 = [v78 type];
+        v48 = [self checkBoxFaceCompleteness:__p faceIndex:v30 boxType:type4 pointCloud:v69];
 
         if (v48)
         {
@@ -627,11 +627,11 @@ LABEL_52:
   }
 }
 
-- (BOOL)checkBoxFaceCompleteness:(uint64_t)a3 faceIndex:(int)a4 boxType:(void *)a5 pointCloud:(void *)a6
+- (BOOL)checkBoxFaceCompleteness:(uint64_t)completeness faceIndex:(int)index boxType:(void *)type pointCloud:(void *)cloud
 {
-  v9 = a5;
-  v10 = a6;
-  if (a4 > 5)
+  typeCopy = type;
+  cloudCopy = cloud;
+  if (index > 5)
   {
     v22 = 0;
     goto LABEL_31;
@@ -640,7 +640,7 @@ LABEL_52:
   v31 = 0;
   v32 = 0;
   v30 = 0;
-  std::vector<int>::__init_with_size[abi:ne200100]<int *,int *>(&v30, *(kFaceCornerIndicesMap + 24 * a4), *(kFaceCornerIndicesMap + 24 * a4 + 8), (*(kFaceCornerIndicesMap + 24 * a4 + 8) - *(kFaceCornerIndicesMap + 24 * a4)) >> 2);
+  std::vector<int>::__init_with_size[abi:ne200100]<int *,int *>(&v30, *(kFaceCornerIndicesMap + 24 * index), *(kFaceCornerIndicesMap + 24 * index + 8), (*(kFaceCornerIndicesMap + 24 * index + 8) - *(kFaceCornerIndicesMap + 24 * index)) >> 2);
   __p = 0;
   v28 = 0;
   v29 = 0;
@@ -682,7 +682,7 @@ LABEL_52:
         }
 
         v19 = (16 * v16);
-        *v19 = *(a3 + 16 * v15);
+        *v19 = *(completeness + 16 * v15);
         v14 = (16 * v16 + 16);
         v20 = v19 - (v28 - __p);
         memcpy(v20, __p, v28 - __p);
@@ -698,7 +698,7 @@ LABEL_52:
 
       else
       {
-        v11 = *(a3 + 16 * v15);
+        v11 = *(completeness + 16 * v15);
         *v14 = v11;
         v14 += 16;
       }
@@ -711,7 +711,7 @@ LABEL_52:
   }
 
   LODWORD(v11) = 1036831949;
-  CountPointsNearPlane(v9, &__p, v10, v24, *&v11);
+  CountPointsNearPlane(typeCopy, &__p, cloudCopy, v24, *&v11);
   if (3 * v25 < v24[2])
   {
     v22 = 1;

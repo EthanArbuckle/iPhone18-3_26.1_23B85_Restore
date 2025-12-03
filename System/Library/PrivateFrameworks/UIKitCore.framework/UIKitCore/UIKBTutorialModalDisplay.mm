@@ -5,7 +5,7 @@
 - (UIEdgeInsets)safeAreaInsets;
 - (UIFont)largeTitleFont;
 - (UIFont)textTitleFont;
-- (UIKBTutorialModalDisplay)initWithKeyboardAppearance:(int64_t)a3;
+- (UIKBTutorialModalDisplay)initWithKeyboardAppearance:(int64_t)appearance;
 - (double)containerBottomPadding;
 - (double)containerTopPadding;
 - (id)constructMediaView;
@@ -16,13 +16,13 @@
 - (void)containerForKeyboardView;
 - (void)layoutSubviews;
 - (void)restartPagingAnimation;
-- (void)tapInsideButton:(id)a3;
+- (void)tapInsideButton:(id)button;
 - (void)updateMediaViewTextAndPlacement;
 @end
 
 @implementation UIKBTutorialModalDisplay
 
-- (UIKBTutorialModalDisplay)initWithKeyboardAppearance:(int64_t)a3
+- (UIKBTutorialModalDisplay)initWithKeyboardAppearance:(int64_t)appearance
 {
   v28.receiver = self;
   v28.super_class = UIKBTutorialModalDisplay;
@@ -32,14 +32,14 @@
     v5 = +[UIColor clearColor];
     [(UIView *)v4 setBackgroundColor:v5];
 
-    v4->_appearance = a3;
-    if (a3 == 10 || !a3)
+    v4->_appearance = appearance;
+    if (appearance == 10 || !appearance)
     {
-      v6 = [(UIView *)v4 traitCollection];
-      v7 = [v6 userInterfaceStyle];
+      traitCollection = [(UIView *)v4 traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
       v8 = 1;
-      if (v7 != 2)
+      if (userInterfaceStyle != 2)
       {
         v8 = 2;
       }
@@ -55,8 +55,8 @@
     backgroundBlurView = v4->_backgroundBlurView;
     v4->_backgroundBlurView = v11;
 
-    v13 = [(UIKBTutorialModalDisplayStyling *)v4->_styling backgroundEffects];
-    [(UIVisualEffectView *)v4->_backgroundBlurView setBackgroundEffects:v13];
+    backgroundEffects = [(UIKBTutorialModalDisplayStyling *)v4->_styling backgroundEffects];
+    [(UIVisualEffectView *)v4->_backgroundBlurView setBackgroundEffects:backgroundEffects];
 
     [(UIView *)v4 addSubview:v4->_backgroundBlurView];
     v14 = objc_alloc_init(UIView);
@@ -64,9 +64,9 @@
     v4->_containerView = v14;
 
     [(UIView *)v4 addSubview:v4->_containerView];
-    v16 = [(UIKBTutorialModalDisplay *)v4 constructMediaView];
+    constructMediaView = [(UIKBTutorialModalDisplay *)v4 constructMediaView];
     mediaView = v4->_mediaView;
-    v4->_mediaView = v16;
+    v4->_mediaView = constructMediaView;
 
     if (v4->_mediaView)
     {
@@ -78,16 +78,16 @@
     v4->_button = v18;
 
     v20 = v4->_button;
-    v21 = [(UIKBTutorialModalDisplay *)v4 buttonTitle];
-    [(UIButton *)v20 setTitle:v21 forState:0];
+    buttonTitle = [(UIKBTutorialModalDisplay *)v4 buttonTitle];
+    [(UIButton *)v20 setTitle:buttonTitle forState:0];
 
     v22 = v4->_button;
     v23 = +[UIColor systemBlueColor];
     [(UIButton *)v22 setTitleColor:v23 forState:0];
 
     v24 = [off_1E70ECC18 boldSystemFontOfSize:18.0];
-    v25 = [(UIButton *)v4->_button titleLabel];
-    [v25 setFont:v24];
+    titleLabel = [(UIButton *)v4->_button titleLabel];
+    [titleLabel setFont:v24];
 
     [(UIControl *)v4->_button addTarget:v4 action:sel_tapInsideButton_ forControlEvents:64];
     [(UIView *)v4->_containerView addSubview:v4->_button];
@@ -116,9 +116,9 @@
 {
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v3 = [(UIKBTutorialModalDisplay *)self isPortrait];
+    isPortrait = [(UIKBTutorialModalDisplay *)self isPortrait];
     result = 60.0;
-    if (v3)
+    if (isPortrait)
     {
       return 20.0;
     }
@@ -126,24 +126,24 @@
 
   else
   {
-    v5 = [(UIView *)self _rootInputWindowController];
-    v6 = [v5 _inputView];
-    [v6 bounds];
+    _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+    _inputView = [_rootInputWindowController _inputView];
+    [_inputView bounds];
     v8 = v7;
-    v9 = [(UIView *)self _rootInputWindowController];
-    v10 = [v9 _inputAssistantView];
-    [v10 bounds];
+    _rootInputWindowController2 = [(UIView *)self _rootInputWindowController];
+    _inputAssistantView = [_rootInputWindowController2 _inputAssistantView];
+    [_inputAssistantView bounds];
     v12 = v8 + v11;
 
     [(UIKBTutorialModalDisplay *)self safeAreaInsets];
     if (v13 <= 0.0)
     {
-      v15 = [(UIView *)self _rootInputWindowController];
-      v16 = [v15 _inputAssistantView];
-      if (v16)
+      _rootInputWindowController3 = [(UIView *)self _rootInputWindowController];
+      _inputAssistantView2 = [_rootInputWindowController3 _inputAssistantView];
+      if (_inputAssistantView2)
       {
-        v17 = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
-        v18 = [v17 objectAtIndex:0];
+        textBodyDescriptions = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
+        v18 = [textBodyDescriptions objectAtIndex:0];
         v14 = dbl_18A67B8E0[[v18 length] > 0xBE];
       }
 
@@ -186,24 +186,24 @@
   if (![(UIKBTutorialModalDisplay *)self presentsFullScreen])
   {
     [(UIView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-    v3 = [(UIView *)self _rootInputWindowController];
-    v4 = [v3 _inputAccessoryView];
+    _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+    _inputAccessoryView = [_rootInputWindowController _inputAccessoryView];
 
-    v5 = [(UIView *)self _rootInputWindowController];
-    v6 = v5;
-    if (v4)
+    _rootInputWindowController2 = [(UIView *)self _rootInputWindowController];
+    _rootInputWindowController4 = _rootInputWindowController2;
+    if (_inputAccessoryView)
     {
-      v7 = [v5 _inputAccessoryView];
+      _inputAccessoryView2 = [_rootInputWindowController2 _inputAccessoryView];
 LABEL_13:
-      v16 = v7;
-      v57 = [v7 topAnchor];
+      v16 = _inputAccessoryView2;
+      topAnchor = [_inputAccessoryView2 topAnchor];
 
       v17 = +[UIKeyboardImpl isFloating];
-      v18 = [(UIView *)self _rootInputWindowController];
-      v19 = v18;
+      _rootInputWindowController3 = [(UIView *)self _rootInputWindowController];
+      v19 = _rootInputWindowController3;
       if (v17)
       {
-        v20 = [v18 _inputView];
+        _inputView = [_rootInputWindowController3 _inputView];
 
         +[UIKeyboardPopoverContainer contentInsets];
         v22 = -fabs(v21);
@@ -217,7 +217,7 @@ LABEL_13:
 
       else
       {
-        v20 = [v18 view];
+        _inputView = [_rootInputWindowController3 view];
 
         v26 = 0.0;
         v22 = 0.0;
@@ -225,67 +225,67 @@ LABEL_13:
         v28 = 0.0;
       }
 
-      v29 = [(UIView *)self topAnchor];
-      v30 = [v29 constraintEqualToAnchor:v57 constant:v22];
+      topAnchor2 = [(UIView *)self topAnchor];
+      v30 = [topAnchor2 constraintEqualToAnchor:topAnchor constant:v22];
       [v30 setActive:1];
 
-      v31 = [(UIView *)self bottomAnchor];
-      v32 = [v20 bottomAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32 constant:v24];
+      bottomAnchor = [(UIView *)self bottomAnchor];
+      bottomAnchor2 = [_inputView bottomAnchor];
+      v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v24];
       [v33 setActive:1];
 
-      v34 = [(UIView *)self leftAnchor];
-      v35 = [v20 leftAnchor];
-      v36 = [v34 constraintEqualToAnchor:v35 constant:v26];
+      leftAnchor = [(UIView *)self leftAnchor];
+      leftAnchor2 = [_inputView leftAnchor];
+      v36 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v26];
       [v36 setActive:1];
 
-      v37 = [(UIView *)self rightAnchor];
-      v38 = [v20 rightAnchor];
-      v39 = [v37 constraintEqualToAnchor:v38 constant:v28];
+      rightAnchor = [(UIView *)self rightAnchor];
+      rightAnchor2 = [_inputView rightAnchor];
+      v39 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v28];
       [v39 setActive:1];
 
-      v40 = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
-      [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
+      backgroundBlurView = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
+      [backgroundBlurView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v41 = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
-      v42 = [v41 bottomAnchor];
-      v43 = [(UIView *)self bottomAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      backgroundBlurView2 = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
+      bottomAnchor3 = [backgroundBlurView2 bottomAnchor];
+      bottomAnchor4 = [(UIView *)self bottomAnchor];
+      v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       [v44 setActive:1];
 
-      v45 = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
-      v46 = [v45 topAnchor];
-      v47 = [(UIView *)self topAnchor];
-      v48 = [v46 constraintEqualToAnchor:v47];
+      backgroundBlurView3 = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
+      topAnchor3 = [backgroundBlurView3 topAnchor];
+      topAnchor4 = [(UIView *)self topAnchor];
+      v48 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       [v48 setActive:1];
 
-      v49 = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
-      v50 = [v49 leftAnchor];
-      v51 = [(UIView *)self leftAnchor];
-      v52 = [v50 constraintEqualToAnchor:v51];
+      backgroundBlurView4 = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
+      leftAnchor3 = [backgroundBlurView4 leftAnchor];
+      leftAnchor4 = [(UIView *)self leftAnchor];
+      v52 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
       [v52 setActive:1];
 
-      v53 = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
-      v54 = [v53 rightAnchor];
-      v55 = [(UIView *)self rightAnchor];
-      v56 = [v54 constraintEqualToAnchor:v55];
+      backgroundBlurView5 = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
+      rightAnchor3 = [backgroundBlurView5 rightAnchor];
+      rightAnchor4 = [(UIView *)self rightAnchor];
+      v56 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
       [v56 setActive:1];
 
       goto LABEL_17;
     }
 
-    v8 = [v5 _inputAssistantView];
-    v9 = [v8 superview];
-    if (v9)
+    _inputAssistantView = [_rootInputWindowController2 _inputAssistantView];
+    superview = [_inputAssistantView superview];
+    if (superview)
     {
-      v10 = v9;
+      v10 = superview;
       v11 = +[UIKeyboardImpl activeInstance];
-      v12 = [v11 _showsScribbleIconsInAssistantView];
+      _showsScribbleIconsInAssistantView = [v11 _showsScribbleIconsInAssistantView];
 
-      if ((v12 & 1) == 0)
+      if ((_showsScribbleIconsInAssistantView & 1) == 0)
       {
-        v6 = [(UIView *)self _rootInputWindowController];
-        v7 = [v6 _inputAssistantView];
+        _rootInputWindowController4 = [(UIView *)self _rootInputWindowController];
+        _inputAccessoryView2 = [_rootInputWindowController4 _inputAssistantView];
         goto LABEL_13;
       }
     }
@@ -294,26 +294,26 @@ LABEL_13:
     {
     }
 
-    v13 = [(UIView *)self _rootInputWindowController];
-    v14 = [v13 _inputView];
+    _rootInputWindowController5 = [(UIView *)self _rootInputWindowController];
+    _inputView2 = [_rootInputWindowController5 _inputView];
 
-    v15 = [(UIView *)self _rootInputWindowController];
-    v6 = v15;
-    if (v14)
+    _rootInputWindowController6 = [(UIView *)self _rootInputWindowController];
+    _rootInputWindowController4 = _rootInputWindowController6;
+    if (_inputView2)
     {
-      [v15 _inputView];
+      [_rootInputWindowController6 _inputView];
     }
 
     else
     {
-      [v15 view];
+      [_rootInputWindowController6 view];
     }
-    v7 = ;
+    _inputAccessoryView2 = ;
     goto LABEL_13;
   }
 
-  v57 = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
-  [v57 removeFromSuperview];
+  topAnchor = [(UIKBTutorialModalDisplay *)self backgroundBlurView];
+  [topAnchor removeFromSuperview];
 LABEL_17:
 }
 
@@ -343,9 +343,9 @@ LABEL_17:
 
 - (UIEdgeInsets)safeAreaInsets
 {
-  v2 = [(UIView *)self _rootInputWindowController];
-  v3 = [v2 view];
-  [v3 safeAreaInsets];
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+  view = [_rootInputWindowController view];
+  [view safeAreaInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -365,18 +365,18 @@ LABEL_17:
 - (void)containerForKeyboardView
 {
   v80[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBTutorialModalDisplay *)self adjustableConstraints];
-  v4 = [v3 firstObject];
-  v5 = [v4 isActive];
+  adjustableConstraints = [(UIKBTutorialModalDisplay *)self adjustableConstraints];
+  firstObject = [adjustableConstraints firstObject];
+  isActive = [firstObject isActive];
 
-  if ((v5 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v6 = [(UIKBTutorialModalDisplay *)self containerView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    containerView = [(UIKBTutorialModalDisplay *)self containerView];
+    [containerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v7 = objc_alloc_init(UILayoutGuide);
     [(UIView *)self addLayoutGuide:v7];
-    v8 = [(UILayoutGuide *)v7 widthAnchor];
+    widthAnchor = [(UILayoutGuide *)v7 widthAnchor];
     SafeDeviceIdiom = UIKeyboardGetSafeDeviceIdiom();
     v10 = 320.0;
     if ((SafeDeviceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
@@ -384,56 +384,56 @@ LABEL_17:
       v10 = 448.0;
     }
 
-    v11 = [v8 constraintEqualToConstant:v10];
+    v11 = [widthAnchor constraintEqualToConstant:v10];
     [v11 setActive:1];
 
-    v12 = [(UIKBTutorialModalDisplay *)self containerView];
-    v13 = [v12 widthAnchor];
-    v14 = [(UILayoutGuide *)v7 widthAnchor];
+    containerView2 = [(UIKBTutorialModalDisplay *)self containerView];
+    widthAnchor2 = [containerView2 widthAnchor];
+    widthAnchor3 = [(UILayoutGuide *)v7 widthAnchor];
     [(UIKBTutorialModalDisplay *)self mediaLayoutWidthAdjustment];
-    v16 = [v13 constraintEqualToAnchor:v14 multiplier:1.0 constant:v15];
+    v16 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3 multiplier:1.0 constant:v15];
     [(UIKBTutorialModalDisplay *)self setWidthAdjustmentConstraint:v16];
 
-    v17 = [(UIKBTutorialModalDisplay *)self widthAdjustmentConstraint];
-    [v17 setActive:1];
+    widthAdjustmentConstraint = [(UIKBTutorialModalDisplay *)self widthAdjustmentConstraint];
+    [widthAdjustmentConstraint setActive:1];
 
-    v18 = [(UIKBTutorialModalDisplay *)self containerView];
-    v19 = [v18 centerXAnchor];
-    v20 = [(UIView *)self centerXAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    containerView3 = [(UIKBTutorialModalDisplay *)self containerView];
+    centerXAnchor = [containerView3 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self centerXAnchor];
+    v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v21 setActive:1];
 
-    v22 = [(UIKBTutorialModalDisplay *)self containerView];
-    v23 = [v22 topAnchor];
-    v24 = [(UIView *)self topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    containerView4 = [(UIKBTutorialModalDisplay *)self containerView];
+    topAnchor = [containerView4 topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(UIKBTutorialModalDisplay *)self setContainerViewTopConstraits:v25];
 
-    v26 = [(UIKBTutorialModalDisplay *)self containerViewTopConstraits];
-    [v26 setActive:1];
+    containerViewTopConstraits = [(UIKBTutorialModalDisplay *)self containerViewTopConstraits];
+    [containerViewTopConstraits setActive:1];
 
-    v27 = [(UIView *)self safeAreaLayoutGuide];
-    v28 = [v27 bottomAnchor];
-    v29 = [(UIKBTutorialModalDisplay *)self containerView];
-    v30 = [v29 bottomAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
+    safeAreaLayoutGuide = [(UIView *)self safeAreaLayoutGuide];
+    bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
+    containerView5 = [(UIKBTutorialModalDisplay *)self containerView];
+    bottomAnchor2 = [containerView5 bottomAnchor];
+    v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v31 setActive:1];
 
-    v32 = [(UIKBTutorialModalDisplay *)self button];
-    [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+    button = [(UIKBTutorialModalDisplay *)self button];
+    [button setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v33 = [(UIKBTutorialModalDisplay *)self button];
-    v34 = [v33 centerXAnchor];
-    v35 = [(UIKBTutorialModalDisplay *)self containerView];
-    v36 = [v35 centerXAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36];
+    button2 = [(UIKBTutorialModalDisplay *)self button];
+    centerXAnchor3 = [button2 centerXAnchor];
+    containerView6 = [(UIKBTutorialModalDisplay *)self containerView];
+    centerXAnchor4 = [containerView6 centerXAnchor];
+    v37 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v37 setActive:1];
 
-    v38 = [(UIKBTutorialModalDisplay *)self button];
-    v39 = [v38 widthAnchor];
-    v40 = [(UIKBTutorialModalDisplay *)self containerView];
-    v41 = [v40 widthAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41 multiplier:0.7];
+    button3 = [(UIKBTutorialModalDisplay *)self button];
+    widthAnchor4 = [button3 widthAnchor];
+    containerView7 = [(UIKBTutorialModalDisplay *)self containerView];
+    widthAnchor5 = [containerView7 widthAnchor];
+    v42 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5 multiplier:0.7];
     [v42 setActive:1];
 
     if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
@@ -446,9 +446,9 @@ LABEL_17:
       v43 = 21.0;
     }
 
-    v44 = [(UIKBTutorialModalDisplay *)self button];
-    v45 = [v44 heightAnchor];
-    v46 = [v45 constraintEqualToConstant:v43];
+    button4 = [(UIKBTutorialModalDisplay *)self button];
+    heightAnchor = [button4 heightAnchor];
+    v46 = [heightAnchor constraintEqualToConstant:v43];
     [v46 setActive:1];
 
     v47 = 0.0;
@@ -466,65 +466,65 @@ LABEL_17:
       }
     }
 
-    v49 = [(UIKBTutorialModalDisplay *)self containerView];
-    v50 = [v49 bottomAnchor];
-    v51 = [(UIKBTutorialModalDisplay *)self button];
-    v52 = [v51 bottomAnchor];
-    v53 = [v50 constraintEqualToAnchor:v52 constant:v47];
+    containerView8 = [(UIKBTutorialModalDisplay *)self containerView];
+    bottomAnchor3 = [containerView8 bottomAnchor];
+    button5 = [(UIKBTutorialModalDisplay *)self button];
+    bottomAnchor4 = [button5 bottomAnchor];
+    v53 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v47];
     [v53 setActive:1];
 
-    v54 = [(UIKBTutorialModalDisplay *)self mediaView];
-    [v54 setTranslatesAutoresizingMaskIntoConstraints:0];
+    mediaView = [(UIKBTutorialModalDisplay *)self mediaView];
+    [mediaView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v55 = [(UIKBTutorialModalDisplay *)self mediaView];
-    v56 = [v55 centerXAnchor];
-    v57 = [(UIKBTutorialModalDisplay *)self containerView];
-    v58 = [v57 centerXAnchor];
-    v59 = [v56 constraintEqualToAnchor:v58];
+    mediaView2 = [(UIKBTutorialModalDisplay *)self mediaView];
+    centerXAnchor5 = [mediaView2 centerXAnchor];
+    containerView9 = [(UIKBTutorialModalDisplay *)self containerView];
+    centerXAnchor6 = [containerView9 centerXAnchor];
+    v59 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v59 setActive:1];
 
-    v60 = [(UIKBTutorialModalDisplay *)self mediaView];
-    v61 = [v60 topAnchor];
-    v62 = [(UIKBTutorialModalDisplay *)self containerView];
-    v63 = [v62 topAnchor];
-    v64 = [v61 constraintEqualToAnchor:v63];
+    mediaView3 = [(UIKBTutorialModalDisplay *)self mediaView];
+    topAnchor3 = [mediaView3 topAnchor];
+    containerView10 = [(UIKBTutorialModalDisplay *)self containerView];
+    topAnchor4 = [containerView10 topAnchor];
+    v64 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v64 setActive:1];
 
-    v65 = [(UIKBTutorialModalDisplay *)self button];
-    LODWORD(v61) = [v65 isHidden];
+    button6 = [(UIKBTutorialModalDisplay *)self button];
+    LODWORD(topAnchor3) = [button6 isHidden];
 
-    if (v61)
+    if (topAnchor3)
     {
-      v66 = [(UIKBTutorialModalDisplay *)self mediaView];
-      v67 = [v66 bottomAnchor];
-      v68 = [(UIView *)self bottomAnchor];
-      v69 = [v67 constraintEqualToAnchor:v68];
-      v80[0] = v69;
+      mediaView4 = [(UIKBTutorialModalDisplay *)self mediaView];
+      bottomAnchor5 = [mediaView4 bottomAnchor];
+      bottomAnchor6 = [(UIView *)self bottomAnchor];
+      v68BottomAnchor = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
+      v80[0] = v68BottomAnchor;
       v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:1];
       [(UIKBTutorialModalDisplay *)self setAdjustableConstraints:v70];
     }
 
     else
     {
-      v66 = [(UIKBTutorialModalDisplay *)self button];
-      v67 = [v66 topAnchor];
-      v68 = [(UIKBTutorialModalDisplay *)self mediaView];
-      v69 = [v68 bottomAnchor];
-      v70 = [v67 constraintGreaterThanOrEqualToAnchor:v69];
+      mediaView4 = [(UIKBTutorialModalDisplay *)self button];
+      bottomAnchor5 = [mediaView4 topAnchor];
+      bottomAnchor6 = [(UIKBTutorialModalDisplay *)self mediaView];
+      v68BottomAnchor = [bottomAnchor6 bottomAnchor];
+      v70 = [bottomAnchor5 constraintGreaterThanOrEqualToAnchor:v68BottomAnchor];
       v79 = v70;
       v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v79 count:1];
       [(UIKBTutorialModalDisplay *)self setAdjustableConstraints:v71];
     }
 
     v72 = MEMORY[0x1E69977A0];
-    v73 = [(UIKBTutorialModalDisplay *)self adjustableConstraints];
-    [v72 activateConstraints:v73];
+    adjustableConstraints2 = [(UIKBTutorialModalDisplay *)self adjustableConstraints];
+    [v72 activateConstraints:adjustableConstraints2];
 
-    v74 = [(UIKBTutorialModalDisplay *)self mediaView];
-    v75 = [v74 widthAnchor];
-    v76 = [(UIKBTutorialModalDisplay *)self containerView];
-    v77 = [v76 widthAnchor];
-    v78 = [v75 constraintEqualToAnchor:v77];
+    mediaView5 = [(UIKBTutorialModalDisplay *)self mediaView];
+    widthAnchor6 = [mediaView5 widthAnchor];
+    containerView11 = [(UIKBTutorialModalDisplay *)self containerView];
+    widthAnchor7 = [containerView11 widthAnchor];
+    v78 = [widthAnchor6 constraintEqualToAnchor:widthAnchor7];
     [v78 setActive:1];
   }
 }
@@ -532,108 +532,108 @@ LABEL_17:
 - (void)containerForFullScreenView
 {
   v118[5] = *MEMORY[0x1E69E9840];
-  v3 = [(UIKBTutorialModalDisplay *)self containerView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  containerView = [(UIKBTutorialModalDisplay *)self containerView];
+  [containerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(UIKBTutorialModalDisplay *)self containerView];
-  v5 = [v4 leadingAnchor];
-  v6 = [(UIView *)self leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  containerView2 = [(UIKBTutorialModalDisplay *)self containerView];
+  leadingAnchor = [containerView2 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v7 setActive:1];
 
-  v8 = [(UIView *)self trailingAnchor];
-  v9 = [(UIKBTutorialModalDisplay *)self containerView];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  trailingAnchor = [(UIView *)self trailingAnchor];
+  containerView3 = [(UIKBTutorialModalDisplay *)self containerView];
+  trailingAnchor2 = [containerView3 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v11 setActive:1];
 
-  v12 = [(UIKBTutorialModalDisplay *)self containerView];
-  v13 = [v12 topAnchor];
-  v14 = [(UIView *)self topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  containerView4 = [(UIKBTutorialModalDisplay *)self containerView];
+  topAnchor = [containerView4 topAnchor];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v15 setActive:1];
 
-  v16 = [(UIView *)self bottomAnchor];
-  v17 = [(UIKBTutorialModalDisplay *)self containerView];
-  v18 = [v17 bottomAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  bottomAnchor = [(UIView *)self bottomAnchor];
+  containerView5 = [(UIKBTutorialModalDisplay *)self containerView];
+  bottomAnchor2 = [containerView5 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v19 setActive:1];
 
   v20 = objc_alloc_init(UILayoutGuide);
   [(UIView *)self addLayoutGuide:?];
   v21 = objc_alloc_init(UILabel);
   [(UIView *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v22 = [(UIKBTutorialModalDisplay *)self largeTitleFont];
-  [(UILabel *)v21 setFont:v22];
+  largeTitleFont = [(UIKBTutorialModalDisplay *)self largeTitleFont];
+  [(UILabel *)v21 setFont:largeTitleFont];
 
-  v23 = [(UIKBTutorialModalDisplay *)self largeTitle];
-  [(UILabel *)v21 setText:v23];
+  largeTitle = [(UIKBTutorialModalDisplay *)self largeTitle];
+  [(UILabel *)v21 setText:largeTitle];
 
   [(UILabel *)v21 setTextAlignment:1];
   [(UILabel *)v21 setAdjustsFontSizeToFitWidth:1];
-  v24 = [(UIKBTutorialModalDisplay *)self containerView];
-  [v24 addSubview:v21];
+  containerView6 = [(UIKBTutorialModalDisplay *)self containerView];
+  [containerView6 addSubview:v21];
 
   v89 = MEMORY[0x1E69977A0];
-  v108 = [(UILayoutGuide *)v20 topAnchor];
-  v111 = [(UIKBTutorialModalDisplay *)self containerView];
-  v105 = [v111 topAnchor];
-  v102 = [v108 constraintEqualToAnchor:v105];
+  topAnchor3 = [(UILayoutGuide *)v20 topAnchor];
+  containerView7 = [(UIKBTutorialModalDisplay *)self containerView];
+  topAnchor4 = [containerView7 topAnchor];
+  v102 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v118[0] = v102;
   v114 = v20;
-  v96 = [(UILayoutGuide *)v20 heightAnchor];
-  v99 = [(UIKBTutorialModalDisplay *)self containerView];
-  v93 = [v99 heightAnchor];
-  v91 = [v96 constraintEqualToAnchor:v93 multiplier:0.09];
+  heightAnchor = [(UILayoutGuide *)v20 heightAnchor];
+  containerView8 = [(UIKBTutorialModalDisplay *)self containerView];
+  heightAnchor2 = [containerView8 heightAnchor];
+  v91 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.09];
   v118[1] = v91;
-  v87 = [(UIView *)v21 topAnchor];
-  v85 = [(UILayoutGuide *)v20 bottomAnchor];
-  v83 = [v87 constraintEqualToAnchor:v85 constant:8.0];
+  topAnchor5 = [(UIView *)v21 topAnchor];
+  bottomAnchor3 = [(UILayoutGuide *)v20 bottomAnchor];
+  v83 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:8.0];
   v118[2] = v83;
   v115 = v21;
-  v25 = [(UIView *)v21 leadingAnchor];
-  v26 = [(UIKBTutorialModalDisplay *)self containerView];
-  v27 = [v26 leadingAnchor];
-  v28 = [v25 constraintEqualToSystemSpacingAfterAnchor:v27 multiplier:1.0];
+  leadingAnchor3 = [(UIView *)v21 leadingAnchor];
+  containerView9 = [(UIKBTutorialModalDisplay *)self containerView];
+  leadingAnchor4 = [containerView9 leadingAnchor];
+  v28 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:leadingAnchor4 multiplier:1.0];
   v118[3] = v28;
-  v29 = [(UIKBTutorialModalDisplay *)self containerView];
-  v30 = [v29 trailingAnchor];
-  v31 = [(UIView *)v21 trailingAnchor];
-  v32 = [v30 constraintEqualToSystemSpacingAfterAnchor:v31 multiplier:1.0];
+  containerView10 = [(UIKBTutorialModalDisplay *)self containerView];
+  trailingAnchor3 = [containerView10 trailingAnchor];
+  trailingAnchor4 = [(UIView *)v21 trailingAnchor];
+  v32 = [trailingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor4 multiplier:1.0];
   v118[4] = v32;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v118 count:5];
   [v89 activateConstraints:v33];
 
-  v34 = [(UIKBTutorialModalDisplay *)self mediaView];
-  [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+  mediaView = [(UIKBTutorialModalDisplay *)self mediaView];
+  [mediaView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v97 = MEMORY[0x1E69977A0];
-  v112 = [(UIKBTutorialModalDisplay *)self mediaView];
-  v109 = [v112 topAnchor];
-  v106 = [(UIView *)v115 bottomAnchor];
-  v103 = [v109 constraintEqualToAnchor:v106];
+  mediaView2 = [(UIKBTutorialModalDisplay *)self mediaView];
+  topAnchor6 = [mediaView2 topAnchor];
+  bottomAnchor4 = [(UIView *)v115 bottomAnchor];
+  v103 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4];
   v117[0] = v103;
-  v100 = [(UIKBTutorialModalDisplay *)self mediaView];
-  v94 = [v100 leadingAnchor];
-  v35 = [(UIKBTutorialModalDisplay *)self containerView];
-  v36 = [v35 leadingAnchor];
-  v37 = [v94 constraintEqualToAnchor:v36];
+  mediaView3 = [(UIKBTutorialModalDisplay *)self mediaView];
+  leadingAnchor5 = [mediaView3 leadingAnchor];
+  containerView11 = [(UIKBTutorialModalDisplay *)self containerView];
+  leadingAnchor6 = [containerView11 leadingAnchor];
+  v37 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v117[1] = v37;
-  v38 = [(UIKBTutorialModalDisplay *)self containerView];
-  v39 = [v38 trailingAnchor];
-  v40 = [(UIKBTutorialModalDisplay *)self mediaView];
-  v41 = [v40 trailingAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41];
+  containerView12 = [(UIKBTutorialModalDisplay *)self containerView];
+  trailingAnchor5 = [containerView12 trailingAnchor];
+  mediaView4 = [(UIKBTutorialModalDisplay *)self mediaView];
+  trailingAnchor6 = [mediaView4 trailingAnchor];
+  v42 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v117[2] = v42;
   v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v117 count:3];
   [v97 activateConstraints:v43];
 
-  v44 = [(UIKBTutorialModalDisplay *)self button];
-  [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
+  button = [(UIKBTutorialModalDisplay *)self button];
+  [button setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v45 = [(UIKBTutorialModalDisplay *)self button];
-  v46 = [v45 widthAnchor];
-  v47 = [v46 constraintEqualToConstant:327.0];
+  button2 = [(UIKBTutorialModalDisplay *)self button];
+  widthAnchor = [button2 widthAnchor];
+  v47 = [widthAnchor constraintEqualToConstant:327.0];
 
   LODWORD(v48) = 1148829696;
   v49 = v47;
@@ -644,172 +644,172 @@ LABEL_17:
   v51 = objc_alloc_init(UILayoutGuide);
   [(UIView *)self addLayoutGuide:v51];
   v78 = MEMORY[0x1E69977A0];
-  v110 = [(UILayoutGuide *)v51 widthAnchor];
-  v107 = [(UILayoutGuide *)v50 widthAnchor];
-  v101 = [v110 constraintEqualToAnchor:v107 multiplier:1.0];
+  widthAnchor2 = [(UILayoutGuide *)v51 widthAnchor];
+  widthAnchor3 = [(UILayoutGuide *)v50 widthAnchor];
+  v101 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3 multiplier:1.0];
   v116[0] = v101;
   v113 = v50;
-  v95 = [(UILayoutGuide *)v50 leadingAnchor];
-  v98 = [(UIKBTutorialModalDisplay *)self containerView];
-  v92 = [v98 leadingAnchor];
-  v90 = [v95 constraintEqualToSystemSpacingAfterAnchor:v92 multiplier:1.0];
+  leadingAnchor7 = [(UILayoutGuide *)v50 leadingAnchor];
+  containerView13 = [(UIKBTutorialModalDisplay *)self containerView];
+  leadingAnchor8 = [containerView13 leadingAnchor];
+  v90 = [leadingAnchor7 constraintEqualToSystemSpacingAfterAnchor:leadingAnchor8 multiplier:1.0];
   v116[1] = v90;
-  v88 = [(UIKBTutorialModalDisplay *)self button];
-  v86 = [v88 leadingAnchor];
-  v84 = [(UILayoutGuide *)v50 trailingAnchor];
-  v82 = [v86 constraintEqualToAnchor:v84];
+  button3 = [(UIKBTutorialModalDisplay *)self button];
+  leadingAnchor9 = [button3 leadingAnchor];
+  trailingAnchor7 = [(UILayoutGuide *)v50 trailingAnchor];
+  v82 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor7];
   v116[2] = v82;
   v104 = v51;
-  v79 = [(UILayoutGuide *)v51 leadingAnchor];
-  v80 = [(UIKBTutorialModalDisplay *)self button];
-  v77 = [v80 trailingAnchor];
-  v76 = [v79 constraintEqualToAnchor:v77];
+  leadingAnchor10 = [(UILayoutGuide *)v51 leadingAnchor];
+  button4 = [(UIKBTutorialModalDisplay *)self button];
+  trailingAnchor8 = [button4 trailingAnchor];
+  v76 = [leadingAnchor10 constraintEqualToAnchor:trailingAnchor8];
   v116[3] = v76;
-  v75 = [(UIKBTutorialModalDisplay *)self containerView];
-  v74 = [v75 trailingAnchor];
-  v73 = [(UILayoutGuide *)v51 trailingAnchor];
-  v72 = [v74 constraintEqualToSystemSpacingAfterAnchor:v73 multiplier:1.0];
+  containerView14 = [(UIKBTutorialModalDisplay *)self containerView];
+  trailingAnchor9 = [containerView14 trailingAnchor];
+  trailingAnchor10 = [(UILayoutGuide *)v51 trailingAnchor];
+  v72 = [trailingAnchor9 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor10 multiplier:1.0];
   v116[4] = v72;
-  v71 = [(UIKBTutorialModalDisplay *)self button];
-  v70 = [v71 heightAnchor];
-  v69 = [v70 constraintEqualToConstant:50.0];
+  button5 = [(UIKBTutorialModalDisplay *)self button];
+  heightAnchor3 = [button5 heightAnchor];
+  v69 = [heightAnchor3 constraintEqualToConstant:50.0];
   v116[5] = v69;
-  v68 = [(UIKBTutorialModalDisplay *)self button];
-  v67 = [v68 topAnchor];
-  v52 = [(UIKBTutorialModalDisplay *)self mediaView];
-  v53 = [v52 bottomAnchor];
-  v54 = [v67 constraintEqualToAnchor:v53 constant:128.0];
+  button6 = [(UIKBTutorialModalDisplay *)self button];
+  topAnchor7 = [button6 topAnchor];
+  mediaView5 = [(UIKBTutorialModalDisplay *)self mediaView];
+  bottomAnchor5 = [mediaView5 bottomAnchor];
+  v54 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:128.0];
   v116[6] = v54;
-  v55 = [(UIKBTutorialModalDisplay *)self containerView];
-  v56 = [v55 bottomAnchor];
-  v57 = [(UIKBTutorialModalDisplay *)self button];
-  v58 = [v57 bottomAnchor];
-  v59 = [v56 constraintEqualToAnchor:v58 constant:55.0];
+  containerView15 = [(UIKBTutorialModalDisplay *)self containerView];
+  bottomAnchor6 = [containerView15 bottomAnchor];
+  button7 = [(UIKBTutorialModalDisplay *)self button];
+  bottomAnchor7 = [button7 bottomAnchor];
+  v59 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:55.0];
   v116[7] = v59;
   v116[8] = v49;
   v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:v116 count:9];
   [v78 activateConstraints:v60];
 
-  v61 = [(UIKBTutorialModalDisplay *)self styling];
-  v62 = [v61 buttonTextColor];
-  v63 = [(UIKBTutorialModalDisplay *)self button];
-  [v63 setBackgroundColor:v62];
+  styling = [(UIKBTutorialModalDisplay *)self styling];
+  buttonTextColor = [styling buttonTextColor];
+  button8 = [(UIKBTutorialModalDisplay *)self button];
+  [button8 setBackgroundColor:buttonTextColor];
 
-  v64 = [(UIKBTutorialModalDisplay *)self button];
+  button9 = [(UIKBTutorialModalDisplay *)self button];
   v65 = +[UIColor systemWhiteColor];
-  [v64 setTitleColor:v65 forState:0];
+  [button9 setTitleColor:v65 forState:0];
 
-  v66 = [(UIKBTutorialModalDisplay *)self button];
-  [v66 _setContinuousCornerRadius:14.0];
+  button10 = [(UIKBTutorialModalDisplay *)self button];
+  [button10 _setContinuousCornerRadius:14.0];
 }
 
 - (void)containerForAlertPresentation
 {
-  v3 = [(UIKBTutorialModalDisplay *)self containerView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  containerView = [(UIKBTutorialModalDisplay *)self containerView];
+  [containerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(UIKBTutorialModalDisplay *)self containerView];
-  v5 = [v4 leadingAnchor];
-  v6 = [(UIView *)self leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  containerView2 = [(UIKBTutorialModalDisplay *)self containerView];
+  leadingAnchor = [containerView2 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v7 setActive:1];
 
-  v8 = [(UIView *)self trailingAnchor];
-  v9 = [(UIKBTutorialModalDisplay *)self containerView];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  trailingAnchor = [(UIView *)self trailingAnchor];
+  containerView3 = [(UIKBTutorialModalDisplay *)self containerView];
+  trailingAnchor2 = [containerView3 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v11 setActive:1];
 
-  v12 = [(UIKBTutorialModalDisplay *)self containerView];
-  v13 = [v12 topAnchor];
-  v14 = [(UIView *)self topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:0.0];
+  containerView4 = [(UIKBTutorialModalDisplay *)self containerView];
+  topAnchor = [containerView4 topAnchor];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   [v15 setActive:1];
 
-  v16 = [(UIView *)self bottomAnchor];
-  v17 = [(UIKBTutorialModalDisplay *)self containerView];
-  v18 = [v17 bottomAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:0.0];
+  bottomAnchor = [(UIView *)self bottomAnchor];
+  containerView5 = [(UIKBTutorialModalDisplay *)self containerView];
+  bottomAnchor2 = [containerView5 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   [v19 setActive:1];
 
-  v20 = [(UIKBTutorialModalDisplay *)self mediaView];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+  mediaView = [(UIKBTutorialModalDisplay *)self mediaView];
+  [mediaView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v21 = [(UIKBTutorialModalDisplay *)self mediaView];
-  v22 = [v21 topAnchor];
-  v23 = [(UIKBTutorialModalDisplay *)self containerView];
-  v24 = [v23 topAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24 constant:0.0];
+  mediaView2 = [(UIKBTutorialModalDisplay *)self mediaView];
+  topAnchor3 = [mediaView2 topAnchor];
+  containerView6 = [(UIKBTutorialModalDisplay *)self containerView];
+  topAnchor4 = [containerView6 topAnchor];
+  v25 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:0.0];
   [v25 setActive:1];
 
-  v26 = [(UIKBTutorialModalDisplay *)self mediaView];
-  v27 = [v26 leadingAnchor];
-  v28 = [(UIKBTutorialModalDisplay *)self containerView];
-  v29 = [v28 leadingAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  mediaView3 = [(UIKBTutorialModalDisplay *)self mediaView];
+  leadingAnchor3 = [mediaView3 leadingAnchor];
+  containerView7 = [(UIKBTutorialModalDisplay *)self containerView];
+  leadingAnchor4 = [containerView7 leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v30 setActive:1];
 
-  v31 = [(UIKBTutorialModalDisplay *)self containerView];
-  v32 = [v31 trailingAnchor];
-  v33 = [(UIKBTutorialModalDisplay *)self mediaView];
-  v34 = [v33 trailingAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  containerView8 = [(UIKBTutorialModalDisplay *)self containerView];
+  trailingAnchor3 = [containerView8 trailingAnchor];
+  mediaView4 = [(UIKBTutorialModalDisplay *)self mediaView];
+  trailingAnchor4 = [mediaView4 trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v35 setActive:1];
 
-  v36 = [(UIKBTutorialModalDisplay *)self button];
-  [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
+  button = [(UIKBTutorialModalDisplay *)self button];
+  [button setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v37 = [(UIKBTutorialModalDisplay *)self button];
-  v38 = [v37 leadingAnchor];
-  v39 = [(UIKBTutorialModalDisplay *)self containerView];
-  v40 = [v39 leadingAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
+  button2 = [(UIKBTutorialModalDisplay *)self button];
+  leadingAnchor5 = [button2 leadingAnchor];
+  containerView9 = [(UIKBTutorialModalDisplay *)self containerView];
+  leadingAnchor6 = [containerView9 leadingAnchor];
+  v41 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v41 setActive:1];
 
-  v42 = [(UIKBTutorialModalDisplay *)self button];
-  v43 = [v42 trailingAnchor];
-  v44 = [(UIKBTutorialModalDisplay *)self containerView];
-  v45 = [v44 trailingAnchor];
-  v46 = [v43 constraintEqualToAnchor:v45];
+  button3 = [(UIKBTutorialModalDisplay *)self button];
+  trailingAnchor5 = [button3 trailingAnchor];
+  containerView10 = [(UIKBTutorialModalDisplay *)self containerView];
+  trailingAnchor6 = [containerView10 trailingAnchor];
+  v46 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   [v46 setActive:1];
 
-  v47 = [(UIKBTutorialModalDisplay *)self button];
-  v48 = [v47 heightAnchor];
-  v49 = [v48 constraintEqualToConstant:50.0];
+  button4 = [(UIKBTutorialModalDisplay *)self button];
+  heightAnchor = [button4 heightAnchor];
+  v49 = [heightAnchor constraintEqualToConstant:50.0];
   [v49 setActive:1];
 
-  v50 = [(UIKBTutorialModalDisplay *)self button];
-  v51 = [v50 topAnchor];
-  v52 = [(UIKBTutorialModalDisplay *)self mediaView];
-  v53 = [v52 bottomAnchor];
-  v54 = [v51 constraintEqualToAnchor:v53 constant:0.0];
+  button5 = [(UIKBTutorialModalDisplay *)self button];
+  topAnchor5 = [button5 topAnchor];
+  mediaView5 = [(UIKBTutorialModalDisplay *)self mediaView];
+  bottomAnchor3 = [mediaView5 bottomAnchor];
+  v54 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:0.0];
   [v54 setActive:1];
 
-  v55 = [(UIKBTutorialModalDisplay *)self containerView];
-  v56 = [v55 bottomAnchor];
-  v57 = [(UIKBTutorialModalDisplay *)self button];
-  v58 = [v57 bottomAnchor];
-  v59 = [v56 constraintEqualToAnchor:v58 constant:0.0];
+  containerView11 = [(UIKBTutorialModalDisplay *)self containerView];
+  bottomAnchor4 = [containerView11 bottomAnchor];
+  button6 = [(UIKBTutorialModalDisplay *)self button];
+  bottomAnchor5 = [button6 bottomAnchor];
+  v59 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:0.0];
   [v59 setActive:1];
 
-  v62 = [(UIKBTutorialModalDisplay *)self button];
-  v60 = [(UIKBTutorialModalDisplay *)self styling];
-  v61 = [v60 buttonTextColor];
-  [v62 setTitleColor:v61 forState:0];
+  button7 = [(UIKBTutorialModalDisplay *)self button];
+  styling = [(UIKBTutorialModalDisplay *)self styling];
+  buttonTextColor = [styling buttonTextColor];
+  [button7 setTitleColor:buttonTextColor forState:0];
 }
 
 - (CGSize)sizeForTutorialPageView
 {
   v3 = UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL;
-  v4 = [(UIKBTutorialModalDisplay *)self isPortrait];
+  isPortrait = [(UIKBTutorialModalDisplay *)self isPortrait];
   v5 = 201.6;
-  if (!v4)
+  if (!isPortrait)
   {
     v5 = 246.4;
   }
 
   v6 = 160.0;
-  if (!v4)
+  if (!isPortrait)
   {
     v6 = 96.0;
   }
@@ -832,132 +832,132 @@ LABEL_17:
 
 - (void)updateMediaViewTextAndPlacement
 {
-  v3 = [(UIKBTutorialModalDisplay *)self mediaView];
+  mediaView = [(UIKBTutorialModalDisplay *)self mediaView];
 
-  if (v3)
+  if (mediaView)
   {
     [(UIKBTutorialModalDisplay *)self mediaLayoutWidthAdjustment];
     v5 = v4;
-    v6 = [(UIKBTutorialModalDisplay *)self widthAdjustmentConstraint];
-    [v6 setConstant:v5];
+    widthAdjustmentConstraint = [(UIKBTutorialModalDisplay *)self widthAdjustmentConstraint];
+    [widthAdjustmentConstraint setConstant:v5];
 
-    v7 = [(UIKBTutorialModalDisplay *)self mediaView];
-    v49 = [v7 pageViews];
+    mediaView2 = [(UIKBTutorialModalDisplay *)self mediaView];
+    pageViews = [mediaView2 pageViews];
 
-    v8 = [v49 count];
-    v9 = v49;
+    v8 = [pageViews count];
+    v9 = pageViews;
     if (v8)
     {
       for (i = 0; i < v37; ++i)
       {
         v11 = [v9 objectAtIndex:i];
-        v12 = [(UIKBTutorialModalDisplay *)self textTitleDescriptions];
-        v13 = [v12 objectAtIndex:i];
+        textTitleDescriptions = [(UIKBTutorialModalDisplay *)self textTitleDescriptions];
+        v13 = [textTitleDescriptions objectAtIndex:i];
         v14 = [v13 length];
 
         if (v14)
         {
-          v15 = [(UIKBTutorialModalDisplay *)self textTitleDescriptions];
-          v16 = [v15 objectAtIndex:i];
-          v17 = [v11 textTitle];
-          [v17 setText:v16];
+          textTitleDescriptions2 = [(UIKBTutorialModalDisplay *)self textTitleDescriptions];
+          v16 = [textTitleDescriptions2 objectAtIndex:i];
+          textTitle = [v11 textTitle];
+          [textTitle setText:v16];
 
-          v18 = [(UIKBTutorialModalDisplay *)self textTitleFont];
-          v19 = [v11 textTitle];
-          [v19 setFont:v18];
+          textTitleFont = [(UIKBTutorialModalDisplay *)self textTitleFont];
+          textTitle2 = [v11 textTitle];
+          [textTitle2 setFont:textTitleFont];
 
-          v20 = [(UIKBTutorialModalDisplay *)self styling];
-          v21 = [v20 mainTextColor];
-          v22 = [v11 textTitle];
-          [v22 setTextColor:v21];
+          styling = [(UIKBTutorialModalDisplay *)self styling];
+          mainTextColor = [styling mainTextColor];
+          textTitle3 = [v11 textTitle];
+          [textTitle3 setTextColor:mainTextColor];
         }
 
         else
         {
-          v20 = [v11 textTitle];
-          [v20 setText:&stru_1EFB14550];
+          styling = [v11 textTitle];
+          [styling setText:&stru_1EFB14550];
         }
 
-        v23 = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
-        v24 = [v23 objectAtIndex:i];
+        textBodyDescriptions = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
+        v24 = [textBodyDescriptions objectAtIndex:i];
         v25 = [v24 length];
 
         if (v25)
         {
-          v26 = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
-          v27 = [v26 objectAtIndex:i];
-          v28 = [v11 textBody];
-          [v28 setText:v27];
+          textBodyDescriptions2 = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
+          v27 = [textBodyDescriptions2 objectAtIndex:i];
+          textBody = [v11 textBody];
+          [textBody setText:v27];
 
-          v29 = [(UIKBTutorialModalDisplay *)self textBodyFont];
-          v30 = [v11 textBody];
-          [v30 setFont:v29];
+          textBodyFont = [(UIKBTutorialModalDisplay *)self textBodyFont];
+          textBody2 = [v11 textBody];
+          [textBody2 setFont:textBodyFont];
 
-          v31 = [(UIKBTutorialModalDisplay *)self styling];
-          v32 = [v31 mainTextColor];
-          v33 = [v11 textBody];
-          [v33 setTextColor:v32];
+          styling2 = [(UIKBTutorialModalDisplay *)self styling];
+          mainTextColor2 = [styling2 mainTextColor];
+          textBody3 = [v11 textBody];
+          [textBody3 setTextColor:mainTextColor2];
 
-          v34 = [(UIKBTutorialModalDisplay *)self textBodyMaxLines];
-          v35 = [v11 textBody];
-          [v35 setNumberOfLines:v34];
+          textBodyMaxLines = [(UIKBTutorialModalDisplay *)self textBodyMaxLines];
+          textBody4 = [v11 textBody];
+          [textBody4 setNumberOfLines:textBodyMaxLines];
 
-          v36 = [v11 textBody];
-          [v36 setAdjustsFontSizeToFitWidth:1];
+          textBody5 = [v11 textBody];
+          [textBody5 setAdjustsFontSizeToFitWidth:1];
         }
 
         else
         {
-          v36 = [v11 textBody];
-          [v36 setText:&stru_1EFB14550];
+          textBody5 = [v11 textBody];
+          [textBody5 setText:&stru_1EFB14550];
         }
 
         [v11 setNeedsLayout];
-        v37 = [v49 count];
-        v9 = v49;
+        v37 = [pageViews count];
+        v9 = pageViews;
       }
     }
 
     v38 = MEMORY[0x1E69977A0];
-    v39 = [(UIKBTutorialModalDisplay *)self adjustableConstraints];
-    [v38 deactivateConstraints:v39];
+    adjustableConstraints = [(UIKBTutorialModalDisplay *)self adjustableConstraints];
+    [v38 deactivateConstraints:adjustableConstraints];
 
     v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v41 = [(UIKBTutorialModalDisplay *)self button];
-    v42 = [v41 isHidden];
+    button = [(UIKBTutorialModalDisplay *)self button];
+    isHidden = [button isHidden];
 
-    if (v42)
+    if (isHidden)
     {
-      v43 = [(UIKBTutorialModalDisplay *)self mediaView];
-      v44 = [v43 bottomAnchor];
-      v45 = [(UIView *)self bottomAnchor];
-      v46 = [v44 constraintEqualToAnchor:v45];
-      [v40 addObject:v46];
+      mediaView3 = [(UIKBTutorialModalDisplay *)self mediaView];
+      bottomAnchor = [mediaView3 bottomAnchor];
+      bottomAnchor2 = [(UIView *)self bottomAnchor];
+      v45BottomAnchor = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+      [v40 addObject:v45BottomAnchor];
     }
 
     else
     {
-      v43 = [(UIKBTutorialModalDisplay *)self button];
-      v44 = [v43 topAnchor];
-      v45 = [(UIKBTutorialModalDisplay *)self mediaView];
-      v46 = [v45 bottomAnchor];
-      v47 = [v44 constraintGreaterThanOrEqualToAnchor:v46];
+      mediaView3 = [(UIKBTutorialModalDisplay *)self button];
+      bottomAnchor = [mediaView3 topAnchor];
+      bottomAnchor2 = [(UIKBTutorialModalDisplay *)self mediaView];
+      v45BottomAnchor = [bottomAnchor2 bottomAnchor];
+      v47 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:v45BottomAnchor];
       [v40 addObject:v47];
     }
 
     [MEMORY[0x1E69977A0] activateConstraints:v40];
     [(UIKBTutorialModalDisplay *)self setAdjustableConstraints:v40];
-    v48 = [(UIKBTutorialModalDisplay *)self mediaView];
-    [v48 layoutIfNeeded];
+    mediaView4 = [(UIKBTutorialModalDisplay *)self mediaView];
+    [mediaView4 layoutIfNeeded];
   }
 }
 
 - (id)constructMediaView
 {
-  v3 = [(UIKBTutorialModalDisplay *)self mediaContents];
-  v4 = [v3 count];
-  v5 = [(UIKBTutorialModalDisplay *)self textTitleDescriptions];
-  if (v4 != [v5 count])
+  mediaContents = [(UIKBTutorialModalDisplay *)self mediaContents];
+  v4 = [mediaContents count];
+  textTitleDescriptions = [(UIKBTutorialModalDisplay *)self textTitleDescriptions];
+  if (v4 != [textTitleDescriptions count])
   {
     v39 = 0;
 LABEL_15:
@@ -965,69 +965,69 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v6 = [v3 count];
-  v7 = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
-  v8 = [v7 count];
+  v6 = [mediaContents count];
+  textBodyDescriptions = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
+  v8 = [textBodyDescriptions count];
 
   if (v6 == v8)
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-    if ([v3 count])
+    textTitleDescriptions = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(mediaContents, "count")}];
+    if ([mediaContents count])
     {
       v9 = 0;
       do
       {
         v10 = [UIKBTutorialSinglePageView alloc];
-        v11 = [v3 objectAtIndex:v9];
+        v11 = [mediaContents objectAtIndex:v9];
         v12 = [(UIKBTutorialSinglePageView *)v10 initWithImageView:v11];
 
-        v13 = [(UIKBTutorialModalDisplay *)self textTitleDescriptions];
-        v14 = [v13 objectAtIndex:v9];
+        textTitleDescriptions2 = [(UIKBTutorialModalDisplay *)self textTitleDescriptions];
+        v14 = [textTitleDescriptions2 objectAtIndex:v9];
         v15 = [v14 length];
 
         if (v15)
         {
-          v16 = [(UIKBTutorialModalDisplay *)self textTitleDescriptions];
-          v17 = [v16 objectAtIndex:v9];
-          v18 = [(UIKBTutorialSinglePageView *)v12 textTitle];
-          [v18 setText:v17];
+          textTitleDescriptions3 = [(UIKBTutorialModalDisplay *)self textTitleDescriptions];
+          v17 = [textTitleDescriptions3 objectAtIndex:v9];
+          textTitle = [(UIKBTutorialSinglePageView *)v12 textTitle];
+          [textTitle setText:v17];
 
-          v19 = [(UIKBTutorialModalDisplay *)self textTitleFont];
-          v20 = [(UIKBTutorialSinglePageView *)v12 textTitle];
-          [v20 setFont:v19];
+          textTitleFont = [(UIKBTutorialModalDisplay *)self textTitleFont];
+          textTitle2 = [(UIKBTutorialSinglePageView *)v12 textTitle];
+          [textTitle2 setFont:textTitleFont];
 
-          v21 = [(UIKBTutorialModalDisplay *)self styling];
-          v22 = [v21 mainTextColor];
-          v23 = [(UIKBTutorialSinglePageView *)v12 textTitle];
-          [v23 setTextColor:v22];
+          styling = [(UIKBTutorialModalDisplay *)self styling];
+          mainTextColor = [styling mainTextColor];
+          textTitle3 = [(UIKBTutorialSinglePageView *)v12 textTitle];
+          [textTitle3 setTextColor:mainTextColor];
         }
 
-        v24 = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
-        v25 = [v24 objectAtIndex:v9];
+        textBodyDescriptions2 = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
+        v25 = [textBodyDescriptions2 objectAtIndex:v9];
         v26 = [v25 length];
 
         if (v26)
         {
-          v27 = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
-          v28 = [v27 objectAtIndex:v9];
-          v29 = [(UIKBTutorialSinglePageView *)v12 textBody];
-          [v29 setText:v28];
+          textBodyDescriptions3 = [(UIKBTutorialModalDisplay *)self textBodyDescriptions];
+          v28 = [textBodyDescriptions3 objectAtIndex:v9];
+          textBody = [(UIKBTutorialSinglePageView *)v12 textBody];
+          [textBody setText:v28];
 
-          v30 = [(UIKBTutorialModalDisplay *)self textBodyFont];
-          v31 = [(UIKBTutorialSinglePageView *)v12 textBody];
-          [v31 setFont:v30];
+          textBodyFont = [(UIKBTutorialModalDisplay *)self textBodyFont];
+          textBody2 = [(UIKBTutorialSinglePageView *)v12 textBody];
+          [textBody2 setFont:textBodyFont];
 
-          v32 = [(UIKBTutorialModalDisplay *)self styling];
-          v33 = [v32 mainTextColor];
-          v34 = [(UIKBTutorialSinglePageView *)v12 textBody];
-          [v34 setTextColor:v33];
+          styling2 = [(UIKBTutorialModalDisplay *)self styling];
+          mainTextColor2 = [styling2 mainTextColor];
+          textBody3 = [(UIKBTutorialSinglePageView *)v12 textBody];
+          [textBody3 setTextColor:mainTextColor2];
 
-          v35 = [(UIKBTutorialModalDisplay *)self textBodyMaxLines];
-          v36 = [(UIKBTutorialSinglePageView *)v12 textBody];
-          [v36 setNumberOfLines:v35];
+          textBodyMaxLines = [(UIKBTutorialModalDisplay *)self textBodyMaxLines];
+          textBody4 = [(UIKBTutorialSinglePageView *)v12 textBody];
+          [textBody4 setNumberOfLines:textBodyMaxLines];
 
-          v37 = [(UIKBTutorialSinglePageView *)v12 textBody];
-          [v37 setAdjustsFontSizeToFitWidth:1];
+          textBody5 = [(UIKBTutorialSinglePageView *)v12 textBody];
+          [textBody5 setAdjustsFontSizeToFitWidth:1];
         }
 
         if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1 && [(UIKBTutorialModalDisplay *)self presentsFullScreen])
@@ -1035,17 +1035,17 @@ LABEL_15:
           [(UIKBTutorialSinglePageView *)v12 setUseAlertStyle:1];
         }
 
-        [v5 addObject:v12];
+        [textTitleDescriptions addObject:v12];
 
         ++v9;
       }
 
-      while (v9 < [v3 count]);
+      while (v9 < [mediaContents count]);
     }
 
     v38 = [UIKBTutorialMultipageView alloc];
     [(UIKBTutorialModalDisplay *)self pagingInterval];
-    v39 = [(UIKBTutorialMultipageView *)v38 initWithPageViews:v5 pagingInterval:?];
+    v39 = [(UIKBTutorialMultipageView *)v38 initWithPageViews:textTitleDescriptions pagingInterval:?];
     goto LABEL_15;
   }
 
@@ -1055,11 +1055,11 @@ LABEL_17:
   return v39;
 }
 
-- (void)tapInsideButton:(id)a3
+- (void)tapInsideButton:(id)button
 {
-  v4 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v4)
+  if (superview)
   {
     [(UIKBTutorialModalDisplay *)self extraButtonTapAction];
 
@@ -1069,13 +1069,13 @@ LABEL_17:
 
 - (void)restartPagingAnimation
 {
-  v3 = [(UIKBTutorialModalDisplay *)self mediaView];
+  mediaView = [(UIKBTutorialModalDisplay *)self mediaView];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UIKBTutorialModalDisplay *)self mediaView];
-    [v5 resetPageScrolling];
+    mediaView2 = [(UIKBTutorialModalDisplay *)self mediaView];
+    [mediaView2 resetPageScrolling];
   }
 }
 

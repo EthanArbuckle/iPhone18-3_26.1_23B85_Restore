@@ -1,9 +1,9 @@
 @interface ICLibraryAuthServiceClientTokenResult
 - (BOOL)isExpired;
-- (ICLibraryAuthServiceClientTokenResult)initWithCoder:(id)a3;
-- (ICLibraryAuthServiceClientTokenResult)initWithResponseDictionary:(id)a3;
+- (ICLibraryAuthServiceClientTokenResult)initWithCoder:(id)coder;
+- (ICLibraryAuthServiceClientTokenResult)initWithResponseDictionary:(id)dictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLibraryAuthServiceClientTokenResult
@@ -32,40 +32,40 @@
 - (BOOL)isExpired
 {
   v2 = ((self->_timeToLiveMillis + self->_generatedAtMillis) / 1000);
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v5 = v4 > v2;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   token = self->_token;
-  v5 = a3;
-  [v5 encodeObject:token forKey:@"tokenString"];
-  [v5 encodeInt64:self->_generatedAtMillis forKey:@"generatedAtMillis"];
-  [v5 encodeInt64:self->_timeToLiveMillis forKey:@"ttlMillis"];
-  [v5 encodeInt64:self->_lifespanMillis forKey:@"lifespanMillis"];
-  [v5 encodeObject:self->_tokenIdentitifer forKey:@"tokenID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:token forKey:@"tokenString"];
+  [coderCopy encodeInt64:self->_generatedAtMillis forKey:@"generatedAtMillis"];
+  [coderCopy encodeInt64:self->_timeToLiveMillis forKey:@"ttlMillis"];
+  [coderCopy encodeInt64:self->_lifespanMillis forKey:@"lifespanMillis"];
+  [coderCopy encodeObject:self->_tokenIdentitifer forKey:@"tokenID"];
 }
 
-- (ICLibraryAuthServiceClientTokenResult)initWithCoder:(id)a3
+- (ICLibraryAuthServiceClientTokenResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ICLibraryAuthServiceClientTokenResult;
   v5 = [(ICLibraryAuthServiceClientTokenResult *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenString"];
     token = v5->_token;
     v5->_token = v6;
 
-    v5->_generatedAtMillis = [v4 decodeInt64ForKey:@"generatedAtMillis"];
-    v5->_timeToLiveMillis = [v4 decodeInt64ForKey:@"ttlMillis"];
-    v5->_lifespanMillis = [v4 decodeInt64ForKey:@"lifespanMillis"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenID"];
+    v5->_generatedAtMillis = [coderCopy decodeInt64ForKey:@"generatedAtMillis"];
+    v5->_timeToLiveMillis = [coderCopy decodeInt64ForKey:@"ttlMillis"];
+    v5->_lifespanMillis = [coderCopy decodeInt64ForKey:@"lifespanMillis"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenID"];
     tokenIdentitifer = v5->_tokenIdentitifer;
     v5->_tokenIdentitifer = v8;
   }
@@ -73,27 +73,27 @@
   return v5;
 }
 
-- (ICLibraryAuthServiceClientTokenResult)initWithResponseDictionary:(id)a3
+- (ICLibraryAuthServiceClientTokenResult)initWithResponseDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(ICLibraryAuthServiceClientTokenResult *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"token"];
+    v6 = [dictionaryCopy objectForKey:@"token"];
     if (_NSIsNSString())
     {
       objc_storeStrong(&v5->_token, v6);
     }
 
-    v7 = [v4 objectForKey:@"generatedAtMillis"];
+    v7 = [dictionaryCopy objectForKey:@"generatedAtMillis"];
 
     if (_NSIsNSNumber())
     {
       v5->_generatedAtMillis = [v7 longLongValue];
     }
 
-    v8 = [v4 objectForKey:@"timeToLiveMillis"];
+    v8 = [dictionaryCopy objectForKey:@"timeToLiveMillis"];
 
     if ([v8 isNSNumber])
     {
@@ -101,23 +101,23 @@
     }
 
     v9 = +[ICDefaults standardDefaults];
-    v10 = [v9 authServiceClientTokenTimeToLive];
+    authServiceClientTokenTimeToLive = [v9 authServiceClientTokenTimeToLive];
 
-    if ([v10 longLongValue] >= 1)
+    if ([authServiceClientTokenTimeToLive longLongValue] >= 1)
     {
-      v11 = [v10 longLongValue];
+      longLongValue = [authServiceClientTokenTimeToLive longLongValue];
       v12 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-      if (v11 > 119999)
+      if (longLongValue > 119999)
       {
         if (v13)
         {
           v19 = 134217984;
-          v20 = [v10 longLongValue];
+          longLongValue2 = [authServiceClientTokenTimeToLive longLongValue];
           _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "Overridden to %lld milis.", &v19, 0xCu);
         }
 
-        v5->_timeToLiveMillis = [v10 longLongValue];
+        v5->_timeToLiveMillis = [authServiceClientTokenTimeToLive longLongValue];
       }
 
       else
@@ -130,14 +130,14 @@
       }
     }
 
-    v14 = [v4 objectForKey:@"lifespanMillis"];
+    v14 = [dictionaryCopy objectForKey:@"lifespanMillis"];
 
     if (_NSIsNSNumber())
     {
       v5->_lifespanMillis = [v14 longLongValue];
     }
 
-    v15 = [v4 objectForKey:@"tokenID"];
+    v15 = [dictionaryCopy objectForKey:@"tokenID"];
 
     if (_NSIsNSDictionary())
     {

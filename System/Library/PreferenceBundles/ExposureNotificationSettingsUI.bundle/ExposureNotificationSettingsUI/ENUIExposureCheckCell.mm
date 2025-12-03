@@ -1,16 +1,16 @@
 @interface ENUIExposureCheckCell
-- (ENUIExposureCheckCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ENUIExposureCheckCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)commonInit;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ENUIExposureCheckCell
 
-- (ENUIExposureCheckCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ENUIExposureCheckCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = ENUIExposureCheckCell;
-  v4 = [(ENUIExposureCheckCell *)&v7 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(ENUIExposureCheckCell *)&v7 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -25,60 +25,60 @@
   v3 = objc_opt_new();
   [(ENUIExposureCheckCell *)self setSectionLabel:v3];
 
-  v4 = [(ENUIExposureCheckCell *)self sectionLabel];
-  [v4 setNumberOfLines:0];
+  sectionLabel = [(ENUIExposureCheckCell *)self sectionLabel];
+  [sectionLabel setNumberOfLines:0];
 
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleCallout];
-  v6 = [(ENUIExposureCheckCell *)self sectionLabel];
-  [v6 setFont:v5];
+  sectionLabel2 = [(ENUIExposureCheckCell *)self sectionLabel];
+  [sectionLabel2 setFont:v5];
 
   v7 = +[UIColor secondaryLabelColor];
-  v8 = [(ENUIExposureCheckCell *)self sectionLabel];
-  [v8 setTextColor:v7];
+  sectionLabel3 = [(ENUIExposureCheckCell *)self sectionLabel];
+  [sectionLabel3 setTextColor:v7];
 
   v9 = objc_opt_new();
   [(ENUIExposureCheckCell *)self setTitleIconImageView:v9];
 
-  v10 = [(ENUIExposureCheckCell *)self titleIconImageView];
-  [v10 setContentMode:1];
+  titleIconImageView = [(ENUIExposureCheckCell *)self titleIconImageView];
+  [titleIconImageView setContentMode:1];
 
-  v11 = [(ENUIExposureCheckCell *)self titleIconImageView];
+  titleIconImageView2 = [(ENUIExposureCheckCell *)self titleIconImageView];
   LODWORD(v12) = 1148846080;
-  [v11 setContentCompressionResistancePriority:0 forAxis:v12];
+  [titleIconImageView2 setContentCompressionResistancePriority:0 forAxis:v12];
 
   v13 = objc_opt_new();
   [(ENUIExposureCheckCell *)self setTitleLabel:v13];
 
-  v14 = [(ENUIExposureCheckCell *)self titleLabel];
-  [v14 setNumberOfLines:0];
+  titleLabel = [(ENUIExposureCheckCell *)self titleLabel];
+  [titleLabel setNumberOfLines:0];
 
   v15 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v16 = [(ENUIExposureCheckCell *)self titleLabel];
-  [v16 setFont:v15];
+  titleLabel2 = [(ENUIExposureCheckCell *)self titleLabel];
+  [titleLabel2 setFont:v15];
 
-  v17 = [(ENUIExposureCheckCell *)self titleLabel];
+  titleLabel3 = [(ENUIExposureCheckCell *)self titleLabel];
   LODWORD(v18) = 1144750080;
-  [v17 setContentCompressionResistancePriority:0 forAxis:v18];
+  [titleLabel3 setContentCompressionResistancePriority:0 forAxis:v18];
 
   v19 = objc_opt_new();
   [(ENUIExposureCheckCell *)self setSubtitleLabel:v19];
 
-  v20 = [(ENUIExposureCheckCell *)self subtitleLabel];
-  [v20 setNumberOfLines:0];
+  subtitleLabel = [(ENUIExposureCheckCell *)self subtitleLabel];
+  [subtitleLabel setNumberOfLines:0];
 
   v21 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-  v22 = [(ENUIExposureCheckCell *)self subtitleLabel];
-  [v22 setFont:v21];
+  subtitleLabel2 = [(ENUIExposureCheckCell *)self subtitleLabel];
+  [subtitleLabel2 setFont:v21];
 
   v23 = +[UIColor secondaryLabelColor];
-  v24 = [(ENUIExposureCheckCell *)self subtitleLabel];
-  [v24 setTextColor:v23];
+  subtitleLabel3 = [(ENUIExposureCheckCell *)self subtitleLabel];
+  [subtitleLabel3 setTextColor:v23];
 
   v25 = [UIStackView alloc];
-  v26 = [(ENUIExposureCheckCell *)self titleIconImageView];
-  v62[0] = v26;
-  v27 = [(ENUIExposureCheckCell *)self titleLabel];
-  v62[1] = v27;
+  titleIconImageView3 = [(ENUIExposureCheckCell *)self titleIconImageView];
+  v62[0] = titleIconImageView3;
+  titleLabel4 = [(ENUIExposureCheckCell *)self titleLabel];
+  v62[1] = titleLabel4;
   v28 = objc_opt_new();
   v62[2] = v28;
   v29 = [NSArray arrayWithObjects:v62 count:3];
@@ -89,81 +89,81 @@
   v59 = v30;
   [v30 setSpacing:4.0];
   v32 = [UIStackView alloc];
-  v33 = [(ENUIExposureCheckCell *)self sectionLabel];
-  v61[0] = v33;
+  sectionLabel4 = [(ENUIExposureCheckCell *)self sectionLabel];
+  v61[0] = sectionLabel4;
   v61[1] = v31;
-  v34 = [(ENUIExposureCheckCell *)self subtitleLabel];
-  v61[2] = v34;
+  subtitleLabel4 = [(ENUIExposureCheckCell *)self subtitleLabel];
+  v61[2] = subtitleLabel4;
   v35 = [NSArray arrayWithObjects:v61 count:3];
   v36 = [v32 initWithArrangedSubviews:v35];
 
   [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v36 setAxis:1];
   [v36 setSpacing:4.0];
-  v37 = [(ENUIExposureCheckCell *)self contentView];
-  [v37 addSubview:v36];
+  contentView = [(ENUIExposureCheckCell *)self contentView];
+  [contentView addSubview:v36];
 
-  v57 = [v36 leadingAnchor];
-  v58 = [(ENUIExposureCheckCell *)self contentView];
-  v56 = [v58 layoutMarginsGuide];
-  v55 = [v56 leadingAnchor];
-  v54 = [v57 constraintEqualToAnchor:v55];
+  leadingAnchor = [v36 leadingAnchor];
+  contentView2 = [(ENUIExposureCheckCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v54 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v60[0] = v54;
-  v52 = [v36 trailingAnchor];
-  v53 = [(ENUIExposureCheckCell *)self contentView];
-  v51 = [v53 layoutMarginsGuide];
-  v50 = [v51 trailingAnchor];
-  v49 = [v52 constraintEqualToAnchor:v50];
+  trailingAnchor = [v36 trailingAnchor];
+  contentView3 = [(ENUIExposureCheckCell *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v49 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v60[1] = v49;
-  v47 = [v36 topAnchor];
-  v48 = [(ENUIExposureCheckCell *)self contentView];
-  v38 = [v48 layoutMarginsGuide];
-  v39 = [v38 topAnchor];
-  v40 = [v47 constraintEqualToAnchor:v39];
+  topAnchor = [v36 topAnchor];
+  contentView4 = [(ENUIExposureCheckCell *)self contentView];
+  layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v60[2] = v40;
-  v41 = [v36 bottomAnchor];
-  v42 = [(ENUIExposureCheckCell *)self contentView];
-  v43 = [v42 layoutMarginsGuide];
-  v44 = [v43 bottomAnchor];
-  v45 = [v41 constraintEqualToAnchor:v44];
+  bottomAnchor = [v36 bottomAnchor];
+  contentView5 = [(ENUIExposureCheckCell *)self contentView];
+  layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+  v45 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v60[3] = v45;
   v46 = [NSArray arrayWithObjects:v60 count:4];
   [NSLayoutConstraint activateConstraints:v46];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v33 = [a3 userInfo];
-  v4 = [v33 objectForKeyedSubscript:@"notificationAvailable"];
-  v5 = [v4 BOOLValue];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"notificationAvailable"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [v33 objectForKeyedSubscript:@"status"];
-  v7 = [v6 integerValue];
+  v6 = [userInfo objectForKeyedSubscript:@"status"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v33 objectForKeyedSubscript:@"sectionKey"];
-  v9 = [(ENUIExposureCheckCell *)self sectionLabel];
-  [v9 setText:v8];
+  v8 = [userInfo objectForKeyedSubscript:@"sectionKey"];
+  sectionLabel = [(ENUIExposureCheckCell *)self sectionLabel];
+  [sectionLabel setText:v8];
 
-  v10 = [v33 objectForKeyedSubscript:@"titleKey"];
-  v11 = [(ENUIExposureCheckCell *)self titleLabel];
-  [v11 setText:v10];
+  v10 = [userInfo objectForKeyedSubscript:@"titleKey"];
+  titleLabel = [(ENUIExposureCheckCell *)self titleLabel];
+  [titleLabel setText:v10];
 
   v12 = +[UIColor labelColor];
-  v13 = [(ENUIExposureCheckCell *)self titleLabel];
-  [v13 setTextColor:v12];
+  titleLabel2 = [(ENUIExposureCheckCell *)self titleLabel];
+  [titleLabel2 setTextColor:v12];
 
-  v14 = [v33 objectForKeyedSubscript:@"subtitleKey"];
-  v15 = [(ENUIExposureCheckCell *)self subtitleLabel];
-  [v15 setText:v14];
+  v14 = [userInfo objectForKeyedSubscript:@"subtitleKey"];
+  subtitleLabel = [(ENUIExposureCheckCell *)self subtitleLabel];
+  [subtitleLabel setText:v14];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v16 = [(ENUIExposureCheckCell *)self titleLabel];
-    v17 = [v16 font];
-    [v17 pointSize];
+    titleLabel3 = [(ENUIExposureCheckCell *)self titleLabel];
+    font = [titleLabel3 font];
+    [font pointSize];
     v18 = [UIFont boldSystemFontOfSize:?];
-    v19 = [(ENUIExposureCheckCell *)self titleLabel];
-    [v19 setFont:v18];
+    titleLabel4 = [(ENUIExposureCheckCell *)self titleLabel];
+    [titleLabel4 setFont:v18];
 
     v20 = 1;
   }
@@ -174,43 +174,43 @@
   }
 
   [(ENUIExposureCheckCell *)self setAccessoryType:v20];
-  if (v7 == &dword_0 + 2)
+  if (integerValue == &dword_0 + 2)
   {
     v30 = [UIImage systemImageNamed:@"exclamationmark.circle.fill"];
     v31 = [v30 imageWithRenderingMode:2];
-    v32 = [(ENUIExposureCheckCell *)self titleIconImageView];
-    [v32 setImage:v31];
+    titleIconImageView = [(ENUIExposureCheckCell *)self titleIconImageView];
+    [titleIconImageView setImage:v31];
 
     v29 = +[UIColor systemRedColor];
   }
 
   else
   {
-    if (!v7)
+    if (!integerValue)
     {
       v21 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleFootnote];
       v22 = [UIImage systemImageNamed:@"circle.fill" withConfiguration:v21];
-      v23 = [(ENUIExposureCheckCell *)self titleIconImageView];
-      [v23 setImage:v22];
+      titleIconImageView2 = [(ENUIExposureCheckCell *)self titleIconImageView];
+      [titleIconImageView2 setImage:v22];
 
-      v24 = +[UIColor systemGray2Color];
-      v25 = [(ENUIExposureCheckCell *)self titleIconImageView];
-      [v25 setTintColor:v24];
+      titleIconImageView5 = +[UIColor systemGray2Color];
+      titleIconImageView3 = [(ENUIExposureCheckCell *)self titleIconImageView];
+      [titleIconImageView3 setTintColor:titleIconImageView5];
 
       goto LABEL_10;
     }
 
     v26 = [UIImage systemImageNamed:@"checkmark.circle.fill"];
     v27 = [v26 imageWithRenderingMode:2];
-    v28 = [(ENUIExposureCheckCell *)self titleIconImageView];
-    [v28 setImage:v27];
+    titleIconImageView4 = [(ENUIExposureCheckCell *)self titleIconImageView];
+    [titleIconImageView4 setImage:v27];
 
     v29 = +[UIColor systemGreenColor];
   }
 
   v21 = v29;
-  v24 = [(ENUIExposureCheckCell *)self titleIconImageView];
-  [v24 setTintColor:v21];
+  titleIconImageView5 = [(ENUIExposureCheckCell *)self titleIconImageView];
+  [titleIconImageView5 setTintColor:v21];
 LABEL_10:
 }
 

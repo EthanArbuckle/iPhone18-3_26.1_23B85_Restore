@@ -7,7 +7,7 @@
 
 + (id)operation
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -17,9 +17,9 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:-[BLSHEnsureFlipbookCurrentOperation isStarted](self withName:{"isStarted"), @"started"}];
   v5 = [v3 appendBool:-[BLSHEnsureFlipbookCurrentOperation isCompleted](self withName:{"isCompleted"), @"completed"}];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

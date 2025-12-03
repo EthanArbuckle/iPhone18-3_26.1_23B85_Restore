@@ -1,11 +1,11 @@
 @interface BLFilesystemDownloadDataConsumer
-- (BLFilesystemDownloadDataConsumer)initWithPath:(id)a3 MD5Hashes:(id)a4 numberOfBytesToHash:(int64_t)a5;
-- (BOOL)_checkHashForByteCount:(int64_t)a3;
-- (BOOL)_hashAndWriteData:(id)a3 error:(id *)a4;
+- (BLFilesystemDownloadDataConsumer)initWithPath:(id)path MD5Hashes:(id)hashes numberOfBytesToHash:(int64_t)hash;
+- (BOOL)_checkHashForByteCount:(int64_t)count;
+- (BOOL)_hashAndWriteData:(id)data error:(id *)error;
 - (BOOL)_openFile;
-- (BOOL)consumeData:(id)a3 error:(id *)a4;
-- (BOOL)finish:(id *)a3;
-- (void)_truncateToSize:(int64_t)a3;
+- (BOOL)consumeData:(id)data error:(id *)error;
+- (BOOL)finish:(id *)finish;
+- (void)_truncateToSize:(int64_t)size;
 - (void)dealloc;
 - (void)reset;
 - (void)suspend;
@@ -13,21 +13,21 @@
 
 @implementation BLFilesystemDownloadDataConsumer
 
-- (BLFilesystemDownloadDataConsumer)initWithPath:(id)a3 MD5Hashes:(id)a4 numberOfBytesToHash:(int64_t)a5
+- (BLFilesystemDownloadDataConsumer)initWithPath:(id)path MD5Hashes:(id)hashes numberOfBytesToHash:(int64_t)hash
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  hashesCopy = hashes;
   v16.receiver = self;
   v16.super_class = BLFilesystemDownloadDataConsumer;
   v10 = [(BLFilesystemDownloadDataConsumer *)&v16 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [hashesCopy copy];
     v12 = *(v10 + 25);
     *(v10 + 25) = v11;
 
-    *(v10 + 129) = a5;
-    v13 = [v8 copy];
+    *(v10 + 129) = hash;
+    v13 = [pathCopy copy];
     v14 = *(v10 + 137);
     *(v10 + 137) = v13;
 
@@ -55,13 +55,13 @@
   [(BLFilesystemDownloadDataConsumer *)&v4 dealloc];
 }
 
-- (BOOL)consumeData:(id)a3 error:(id *)a4
+- (BOOL)consumeData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  dataCopy = data;
+  v7 = dataCopy;
   if (*(&self->_md5Context.num + 1) < 1)
   {
-    v10 = write(*(&self->_bytesWritten + 1), [v6 bytes], objc_msgSend(v6, "length"));
+    v10 = write(*(&self->_bytesWritten + 1), [dataCopy bytes], objc_msgSend(dataCopy, "length"));
     if (v10 < 0)
     {
       v9 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
@@ -81,13 +81,13 @@
   else
   {
     v15 = 0;
-    v8 = [(BLFilesystemDownloadDataConsumer *)self _hashAndWriteData:v6 error:&v15];
+    v8 = [(BLFilesystemDownloadDataConsumer *)self _hashAndWriteData:dataCopy error:&v15];
     v9 = v15;
   }
 
   v12 = (self->_bytesWritten & 0x10000000000) != 0 || *(&self->super._overrideProgress + 1) > 0;
   BYTE5(self->_bytesWritten) = v12;
-  if (a4)
+  if (error)
   {
     v13 = v8;
   }
@@ -100,13 +100,13 @@
   if ((v13 & 1) == 0)
   {
     v9 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-- (BOOL)finish:(id *)a3
+- (BOOL)finish:(id *)finish
 {
   v5 = BLServiceDownloadFilesystemLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -140,10 +140,10 @@
 
     close(*(&self->_bytesWritten + 1));
     *(&self->_bytesWritten + 1) = -1;
-    if (a3 && !v8)
+    if (finish && !v8)
     {
       v9 = v7;
-      *a3 = v7;
+      *finish = v7;
       v10 = BLServiceDownloadFilesystemLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -197,11 +197,11 @@
   }
 }
 
-- (BOOL)_checkHashForByteCount:(int64_t)a3
+- (BOOL)_checkHashForByteCount:(int64_t)count
 {
   CC_MD5_Final(md, (&self->_hashes + 1));
   v5 = sub_1000C45A0(md, 0x10u);
-  v6 = a3 / *(&self->_md5Context.num + 1);
+  v6 = count / *(&self->_md5Context.num + 1);
   v7 = (ceilf(v6) + -1.0);
   if ([*(&self->_fd + 1) count] <= v7)
   {
@@ -212,7 +212,7 @@
       v14 = 134218496;
       v15 = v7;
       v16 = 2048;
-      v17 = a3;
+      countCopy2 = count;
       v18 = 2048;
       v19 = v12;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[Download-FileSys]: Invalid chunk index: %ld, for bytes written: %lld, bytes to hash: %ld", &v14, 0x20u);
@@ -234,7 +234,7 @@
         v14 = 134218754;
         v15 = v11;
         v16 = 2048;
-        v17 = a3;
+        countCopy2 = count;
         v18 = 2114;
         v19 = v5;
         v20 = 2114;
@@ -247,12 +247,12 @@
   return v9;
 }
 
-- (BOOL)_hashAndWriteData:(id)a3 error:(id *)a4
+- (BOOL)_hashAndWriteData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = *(&self->super._overrideProgress + 1);
   v8 = *(&self->_md5Context.num + 1);
-  v9 = [v6 length];
+  v9 = [dataCopy length];
   if (v9 < 1)
   {
 LABEL_13:
@@ -262,7 +262,7 @@ LABEL_13:
   }
 
   v10 = v9;
-  v20 = a4;
+  errorCopy = error;
   v11 = 0;
   v12 = v7 % v8;
   while (1)
@@ -271,7 +271,7 @@ LABEL_13:
     v14 = v13 - v12 >= v10 - v11 ? v10 - v11 : v13 - v12;
     if (v14 >= 1)
     {
-      CC_MD5_Update((&self->_hashes + 1), [v6 bytes] + v11, v14);
+      CC_MD5_Update((&self->_hashes + 1), [dataCopy bytes] + v11, v14);
       v13 = *(&self->_md5Context.num + 1);
     }
 
@@ -281,7 +281,7 @@ LABEL_13:
     }
 
 LABEL_11:
-    v15 = write(*(&self->_bytesWritten + 1), [v6 bytes] + v11, v14);
+    v15 = write(*(&self->_bytesWritten + 1), [dataCopy bytes] + v11, v14);
     if (v15 < v14)
     {
       v16 = sub_1000A8F44(7, 0, 0);
@@ -307,11 +307,11 @@ LABEL_11:
   v16 = sub_1000A8F44(8, 0, 0);
   [(BLFilesystemDownloadDataConsumer *)self _truncateToSize:*(&self->_resumptionOffset + 1)];
 LABEL_16:
-  if (v20)
+  if (errorCopy)
   {
     v18 = v16;
     v17 = 0;
-    *v20 = v16;
+    *errorCopy = v16;
   }
 
   else
@@ -326,8 +326,8 @@ LABEL_19:
 
 - (BOOL)_openFile
 {
-  v3 = [*(&self->_numberOfBytesToHash + 1) fileSystemRepresentation];
-  *(&self->_bytesWritten + 1) = open(v3, 522, 420);
+  fileSystemRepresentation = [*(&self->_numberOfBytesToHash + 1) fileSystemRepresentation];
+  *(&self->_bytesWritten + 1) = open(fileSystemRepresentation, 522, 420);
   v4 = BLServiceDownloadFilesystemLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -347,7 +347,7 @@ LABEL_19:
   fcntl(*(&self->_bytesWritten + 1), 76, 1);
   CC_MD5_Init((&self->_hashes + 1));
   memset(&buf, 0, sizeof(buf));
-  if (stat(v3, &buf) != -1)
+  if (stat(fileSystemRepresentation, &buf) != -1)
   {
     st_size = buf.st_size;
     *(&self->super._overrideProgress + 1) = buf.st_size;
@@ -415,14 +415,14 @@ LABEL_23:
   return *(&self->_bytesWritten + 1) != -1;
 }
 
-- (void)_truncateToSize:(int64_t)a3
+- (void)_truncateToSize:(int64_t)size
 {
-  ftruncate(*(&self->_bytesWritten + 1), a3);
+  ftruncate(*(&self->_bytesWritten + 1), size);
   CC_MD5_Init((&self->_hashes + 1));
-  *(&self->super._overrideProgress + 1) = a3;
-  BYTE5(self->_bytesWritten) = a3 > 0;
-  *(&self->_path + 1) = a3;
-  *(&self->_resumptionOffset + 1) = a3;
+  *(&self->super._overrideProgress + 1) = size;
+  BYTE5(self->_bytesWritten) = size > 0;
+  *(&self->_path + 1) = size;
+  *(&self->_resumptionOffset + 1) = size;
 }
 
 @end

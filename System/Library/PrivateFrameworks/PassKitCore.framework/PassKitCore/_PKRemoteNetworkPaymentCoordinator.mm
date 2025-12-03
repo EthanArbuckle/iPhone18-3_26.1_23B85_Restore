@@ -1,8 +1,8 @@
 @interface _PKRemoteNetworkPaymentCoordinator
 - (PKRemoteNetworkPaymentCoordinator)wrapper;
 - (_PKRemoteNetworkPaymentCoordinator)init;
-- (void)handlePaymentUserActivity:(id)a3 originProcess:(id)a4;
-- (void)presentErrorMessageWithFailure:(unint64_t)a3 originProcess:(id)a4 delay:(double)a5;
+- (void)handlePaymentUserActivity:(id)activity originProcess:(id)process;
+- (void)presentErrorMessageWithFailure:(unint64_t)failure originProcess:(id)process delay:(double)delay;
 @end
 
 @implementation _PKRemoteNetworkPaymentCoordinator
@@ -24,19 +24,19 @@
   return [(_PKRemoteNetworkPaymentCoordinator *)&v4 init];
 }
 
-- (void)handlePaymentUserActivity:(id)a3 originProcess:(id)a4
+- (void)handlePaymentUserActivity:(id)activity originProcess:(id)process
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1AD4BD3A4(v6, v7);
+  activityCopy = activity;
+  processCopy = process;
+  selfCopy = self;
+  sub_1AD4BD3A4(activityCopy, processCopy);
 }
 
-- (void)presentErrorMessageWithFailure:(unint64_t)a3 originProcess:(id)a4 delay:(double)a5
+- (void)presentErrorMessageWithFailure:(unint64_t)failure originProcess:(id)process delay:(double)delay
 {
-  v8 = a4;
-  v9 = self;
-  sub_1AD4BFB60(a3, v8, a5);
+  processCopy = process;
+  selfCopy = self;
+  sub_1AD4BFB60(failure, processCopy, delay);
 }
 
 @end

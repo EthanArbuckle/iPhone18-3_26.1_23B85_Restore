@@ -1,8 +1,8 @@
 @interface CNContactListHeaderView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setHeaderView:(id)a3;
+- (void)setHeaderView:(id)view;
 @end
 
 @implementation CNContactListHeaderView
@@ -22,48 +22,48 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CNContactListHeaderView *)self headerView];
-  [v8 convertPoint:self fromView:{x, y}];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  headerView = [(CNContactListHeaderView *)self headerView];
+  [headerView convertPoint:self fromView:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(CNContactListHeaderView *)self headerView];
-  LOBYTE(v8) = [v13 pointInside:v7 withEvent:{v10, v12}];
+  headerView2 = [(CNContactListHeaderView *)self headerView];
+  LOBYTE(headerView) = [headerView2 pointInside:eventCopy withEvent:{v10, v12}];
 
-  return v8;
+  return headerView;
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v8 = a3;
-  v5 = [v8 superview];
-  v6 = [(CNContactListHeaderView *)self contentView];
+  viewCopy = view;
+  superview = [viewCopy superview];
+  contentView = [(CNContactListHeaderView *)self contentView];
 
-  if (v5 != v6)
+  if (superview != contentView)
   {
-    objc_storeStrong(&self->_headerView, a3);
-    v7 = [(CNContactListHeaderView *)self contentView];
-    [v7 addSubview:self->_headerView];
+    objc_storeStrong(&self->_headerView, view);
+    contentView2 = [(CNContactListHeaderView *)self contentView];
+    [contentView2 addSubview:self->_headerView];
 
     [(UIView *)self->_headerView bounds];
     [(CNContactListHeaderView *)self setBounds:?];
   }
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v11.receiver = self;
   v11.super_class = CNContactListHeaderView;
-  v4 = [(CNContactListHeaderView *)&v11 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(CNContactListHeaderView *)&v11 preferredLayoutAttributesFittingAttributes:attributes];
   [v4 size];
   v6 = v5;
-  v7 = [(CNContactListHeaderView *)self headerView];
-  [v7 frame];
+  headerView = [(CNContactListHeaderView *)self headerView];
+  [headerView frame];
   if (v8 == 0.0)
   {
     v9 = 0.0;

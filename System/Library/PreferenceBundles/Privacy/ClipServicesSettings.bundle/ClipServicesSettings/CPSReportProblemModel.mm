@@ -3,28 +3,28 @@
 + (id)testModel;
 + (id)test_problemTypes;
 - (CPSReportProblemModel)init;
-- (CPSReportProblemModel)initWithBundleIdentifier:(id)a3 itemIdentifier:(unint64_t)a4;
-- (void)fetchAMSDataWithCompletion:(id)a3;
-- (void)obtainBagValuesWithCompletion:(id)a3;
-- (void)obtainSupportURLWithCompletion:(id)a3;
-- (void)submitResponseForProblemType:(id)a3 userNote:(id)a4 completion:(id)a5;
+- (CPSReportProblemModel)initWithBundleIdentifier:(id)identifier itemIdentifier:(unint64_t)itemIdentifier;
+- (void)fetchAMSDataWithCompletion:(id)completion;
+- (void)obtainBagValuesWithCompletion:(id)completion;
+- (void)obtainSupportURLWithCompletion:(id)completion;
+- (void)submitResponseForProblemType:(id)type userNote:(id)note completion:(id)completion;
 @end
 
 @implementation CPSReportProblemModel
 
-- (CPSReportProblemModel)initWithBundleIdentifier:(id)a3 itemIdentifier:(unint64_t)a4
+- (CPSReportProblemModel)initWithBundleIdentifier:(id)identifier itemIdentifier:(unint64_t)itemIdentifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = CPSReportProblemModel;
   v7 = [(CPSReportProblemModel *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = v8;
 
-    v7->_itemIdentifier = a4;
+    v7->_itemIdentifier = itemIdentifier;
     v10 = v7;
   }
 
@@ -49,9 +49,9 @@
   return v3;
 }
 
-- (void)fetchAMSDataWithCompletion:(id)a3
+- (void)fetchAMSDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   amsFetchGroup = self->_amsFetchGroup;
   self->_amsFetchGroup = v5;
@@ -82,17 +82,17 @@
   block[1] = 3221225472;
   block[2] = sub_2174;
   block[3] = &unk_147A8;
-  v10 = v4;
+  v10 = completionCopy;
   v11 = v14;
-  v8 = v4;
+  v8 = completionCopy;
   dispatch_group_notify(v7, &_dispatch_main_q, block);
 
   _Block_object_dispose(v14, 8);
 }
 
-- (void)obtainSupportURLWithCompletion:(id)a3
+- (void)obtainSupportURLWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_59B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -101,12 +101,12 @@
   }
 
   v6 = [AMSMediaTask alloc];
-  v7 = [objc_opt_class() sharedAMSBag];
-  v8 = [v6 initWithType:0 clientIdentifier:@"com.apple.ClipServices.clipserviced" clientVersion:@"1" bag:v7];
+  sharedAMSBag = [objc_opt_class() sharedAMSBag];
+  v8 = [v6 initWithType:0 clientIdentifier:@"com.apple.ClipServices.clipserviced" clientVersion:@"1" bag:sharedAMSBag];
 
   v9 = [NSNumber numberWithUnsignedLongLong:self->_itemIdentifier];
-  v10 = [v9 stringValue];
-  v20 = v10;
+  stringValue = [v9 stringValue];
+  v20 = stringValue;
   v11 = [NSArray arrayWithObjects:&v20 count:1];
   [v8 setItemIdentifiers:v11];
 
@@ -115,22 +115,22 @@
   v12 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   [v8 setAdditionalQueryParams:v12];
 
-  v13 = [v8 perform];
+  perform = [v8 perform];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_23B0;
   v15[3] = &unk_147D0;
-  v16 = v4;
-  v14 = v4;
-  [v13 addFinishBlock:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [perform addFinishBlock:v15];
 }
 
-- (void)obtainBagValuesWithCompletion:(id)a3
+- (void)obtainBagValuesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NSMutableArray array];
-  v5 = [objc_opt_class() sharedAMSBag];
-  v6 = [v5 dictionaryForKey:@"app-clips-report-problem"];
+  sharedAMSBag = [objc_opt_class() sharedAMSBag];
+  v6 = [sharedAMSBag dictionaryForKey:@"app-clips-report-problem"];
 
   v7 = sub_59B0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -144,17 +144,17 @@
   v10[2] = sub_2750;
   v10[3] = &unk_147F8;
   v11 = v4;
-  v12 = v3;
+  v12 = completionCopy;
   v8 = v4;
-  v9 = v3;
+  v9 = completionCopy;
   [v6 valueWithCompletion:v10];
 }
 
-- (void)submitResponseForProblemType:(id)a3 userNote:(id)a4 completion:(id)a5
+- (void)submitResponseForProblemType:(id)type userNote:(id)note completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  noteCopy = note;
+  completionCopy = completion;
   v11 = +[CPSWebClipStore sharedStore];
   bundleIdentifier = self->_bundleIdentifier;
   v16[0] = _NSConcreteStackBlock;
@@ -162,18 +162,18 @@
   v16[2] = sub_2C10;
   v16[3] = &unk_14898;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = typeCopy;
+  v18 = noteCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = noteCopy;
+  v15 = typeCopy;
   [v11 getWebClipsBackedbyAppClipIdentifier:bundleIdentifier completion:v16];
 }
 
 + (id)testModel
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = +[CPSReportProblemModel test_problemTypes];
   v4 = v2[6];
   v2[6] = v3;

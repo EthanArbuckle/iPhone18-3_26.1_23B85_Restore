@@ -1,12 +1,12 @@
 @interface SXMotionComponentBehavior
-- (Class)handlerClassForComponent:(id)a3;
+- (Class)handlerClassForComponent:(id)component;
 @end
 
 @implementation SXMotionComponentBehavior
 
-- (Class)handlerClassForComponent:(id)a3
+- (Class)handlerClassForComponent:(id)component
 {
-  v3 = a3;
+  componentCopy = component;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {

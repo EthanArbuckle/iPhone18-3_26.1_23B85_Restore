@@ -1,15 +1,15 @@
 @interface PDFHostExtensionContext
 - (PDFHostViewController)hostViewController;
-- (void)extensionSnapshotToHost:(id)a3 scale:(double)a4;
-- (void)extensionToHost:(id)a3;
+- (void)extensionSnapshotToHost:(id)host scale:(double)scale;
+- (void)extensionToHost:(id)host;
 @end
 
 @implementation PDFHostExtensionContext
 
-- (void)extensionToHost:(id)a3
+- (void)extensionToHost:(id)host
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"function"];
+  hostCopy = host;
+  v5 = [hostCopy objectForKey:@"function"];
   v6 = v5;
   if (v5 && [v5 length])
   {
@@ -19,7 +19,7 @@
     block[3] = &unk_1E8151480;
     block[4] = self;
     v8 = v6;
-    v9 = v4;
+    v9 = hostCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -461,17 +461,17 @@ LABEL_41:
 LABEL_13:
 }
 
-- (void)extensionSnapshotToHost:(id)a3 scale:(double)a4
+- (void)extensionSnapshotToHost:(id)host scale:(double)scale
 {
-  v6 = a3;
+  hostCopy = host;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__PDFHostExtensionContext_extensionSnapshotToHost_scale___block_invoke;
   block[3] = &unk_1E8152188;
-  v11 = a4;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  scaleCopy = scale;
+  v9 = hostCopy;
+  selfCopy = self;
+  v7 = hostCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

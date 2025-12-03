@@ -1,28 +1,28 @@
 @interface AWDCountersIpv6S
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRxSuccess:(BOOL)a3;
-- (void)setHasRxSuccessRate:(BOOL)a3;
-- (void)setHasTxAppPktSucess:(BOOL)a3;
-- (void)setHasTxDelayavg:(BOOL)a3;
-- (void)setHasTxDelaymax:(BOOL)a3;
-- (void)setHasTxDelaymin:(BOOL)a3;
-- (void)setHasTxFailure:(BOOL)a3;
-- (void)setHasTxSuccess:(BOOL)a3;
-- (void)setHasTxSuccessRate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRxSuccess:(BOOL)success;
+- (void)setHasRxSuccessRate:(BOOL)rate;
+- (void)setHasTxAppPktSucess:(BOOL)sucess;
+- (void)setHasTxDelayavg:(BOOL)delayavg;
+- (void)setHasTxDelaymax:(BOOL)delaymax;
+- (void)setHasTxDelaymin:(BOOL)delaymin;
+- (void)setHasTxFailure:(BOOL)failure;
+- (void)setHasTxSuccess:(BOOL)success;
+- (void)setHasTxSuccessRate:(BOOL)rate;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCountersIpv6S
 
-- (void)setHasTxSuccess:(BOOL)a3
+- (void)setHasTxSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 256;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasTxFailure:(BOOL)a3
+- (void)setHasTxFailure:(BOOL)failure
 {
-  if (a3)
+  if (failure)
   {
     v3 = 128;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRxSuccess:(BOOL)a3
+- (void)setHasRxSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 2;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasTxAppPktSucess:(BOOL)a3
+- (void)setHasTxAppPktSucess:(BOOL)sucess
 {
-  if (a3)
+  if (sucess)
   {
     v3 = 8;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTxDelaymin:(BOOL)a3
+- (void)setHasTxDelaymin:(BOOL)delaymin
 {
-  if (a3)
+  if (delaymin)
   {
     v3 = 64;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasTxDelaymax:(BOOL)a3
+- (void)setHasTxDelaymax:(BOOL)delaymax
 {
-  if (a3)
+  if (delaymax)
   {
     v3 = 32;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTxDelayavg:(BOOL)a3
+- (void)setHasTxDelayavg:(BOOL)delayavg
 {
-  if (a3)
+  if (delayavg)
   {
     v3 = 16;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasTxSuccessRate:(BOOL)a3
+- (void)setHasTxSuccessRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 512;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasRxSuccessRate:(BOOL)a3
+- (void)setHasRxSuccessRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 4;
   }
@@ -160,8 +160,8 @@
   v7.receiver = self;
   v7.super_class = AWDCountersIpv6S;
   v3 = [(AWDCountersIpv6S *)&v7 description];
-  v4 = [(AWDCountersIpv6S *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDCountersIpv6S *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -320,9 +320,9 @@ LABEL_12:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -456,7 +456,7 @@ LABEL_22:
   if ((*&self->_has & 4) == 0)
   {
 LABEL_11:
-    v5 = v16;
+    v5 = toCopy;
 
     goto LABEL_13;
   }
@@ -464,19 +464,19 @@ LABEL_11:
 LABEL_23:
   rxSuccessRate = self->_rxSuccessRate;
   PBDataWriterWriteUint32Field();
-  v5 = v16;
+  v5 = toCopy;
 
 LABEL_13:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    v4[10] = self->_txSuccess;
-    *(v4 + 24) |= 0x100u;
+    toCopy[10] = self->_txSuccess;
+    *(toCopy + 24) |= 0x100u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -495,8 +495,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[9] = self->_txFailure;
-  *(v4 + 24) |= 0x80u;
+  toCopy[9] = self->_txFailure;
+  *(toCopy + 24) |= 0x80u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -510,8 +510,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  v4[3] = self->_rxSuccess;
-  *(v4 + 24) |= 2u;
+  toCopy[3] = self->_rxSuccess;
+  *(toCopy + 24) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -525,8 +525,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  v4[2] = self->_rxFailure;
-  *(v4 + 24) |= 1u;
+  toCopy[2] = self->_rxFailure;
+  *(toCopy + 24) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -540,8 +540,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  v4[5] = self->_txAppPktSucess;
-  *(v4 + 24) |= 8u;
+  toCopy[5] = self->_txAppPktSucess;
+  *(toCopy + 24) |= 8u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -555,8 +555,8 @@ LABEL_7:
   }
 
 LABEL_19:
-  v4[8] = self->_txDelaymin;
-  *(v4 + 24) |= 0x40u;
+  toCopy[8] = self->_txDelaymin;
+  *(toCopy + 24) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -570,8 +570,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  v4[7] = self->_txDelaymax;
-  *(v4 + 24) |= 0x20u;
+  toCopy[7] = self->_txDelaymax;
+  *(toCopy + 24) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -585,8 +585,8 @@ LABEL_9:
   }
 
 LABEL_21:
-  v4[6] = self->_txDelayavg;
-  *(v4 + 24) |= 0x10u;
+  toCopy[6] = self->_txDelayavg;
+  *(toCopy + 24) |= 0x10u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -600,8 +600,8 @@ LABEL_10:
   }
 
 LABEL_22:
-  v4[11] = self->_txSuccessRate;
-  *(v4 + 24) |= 0x200u;
+  toCopy[11] = self->_txSuccessRate;
+  *(toCopy + 24) |= 0x200u;
   if ((*&self->_has & 4) == 0)
   {
 LABEL_11:
@@ -610,15 +610,15 @@ LABEL_11:
   }
 
 LABEL_23:
-  v4[4] = self->_rxSuccessRate;
-  *(v4 + 24) |= 4u;
+  toCopy[4] = self->_rxSuccessRate;
+  *(toCopy + 24) |= 4u;
 
 LABEL_13:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -760,32 +760,32 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 24) & 0x100) == 0 || self->_txSuccess != *(v4 + 10))
+    if ((*(equalCopy + 24) & 0x100) == 0 || self->_txSuccess != *(equalCopy + 10))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 24) & 0x100) != 0)
+  else if ((*(equalCopy + 24) & 0x100) != 0)
   {
     goto LABEL_52;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_txFailure != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_txFailure != *(equalCopy + 9))
     {
       goto LABEL_52;
     }
@@ -798,7 +798,7 @@ LABEL_20:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_rxSuccess != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_rxSuccess != *(equalCopy + 3))
     {
       goto LABEL_52;
     }
@@ -811,7 +811,7 @@ LABEL_20:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_rxFailure != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_rxFailure != *(equalCopy + 2))
     {
       goto LABEL_52;
     }
@@ -824,7 +824,7 @@ LABEL_20:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_txAppPktSucess != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_txAppPktSucess != *(equalCopy + 5))
     {
       goto LABEL_52;
     }
@@ -837,7 +837,7 @@ LABEL_20:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_txDelaymin != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_txDelaymin != *(equalCopy + 8))
     {
       goto LABEL_52;
     }
@@ -850,7 +850,7 @@ LABEL_20:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_txDelaymax != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_txDelaymax != *(equalCopy + 7))
     {
       goto LABEL_52;
     }
@@ -863,7 +863,7 @@ LABEL_20:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_txDelayavg != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_txDelayavg != *(equalCopy + 6))
     {
       goto LABEL_52;
     }
@@ -876,13 +876,13 @@ LABEL_20:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 24) & 0x200) == 0 || self->_txSuccessRate != *(v4 + 11))
+    if ((*(equalCopy + 24) & 0x200) == 0 || self->_txSuccessRate != *(equalCopy + 11))
     {
       goto LABEL_52;
     }
   }
 
-  else if ((*(v4 + 24) & 0x200) != 0)
+  else if ((*(equalCopy + 24) & 0x200) != 0)
   {
     goto LABEL_52;
   }
@@ -894,7 +894,7 @@ LABEL_20:
     return v7;
   }
 
-  if ((v6 & 4) != 0 && self->_rxSuccessRate == *(v4 + 4))
+  if ((v6 & 4) != 0 && self->_rxSuccessRate == *(equalCopy + 4))
   {
 
     return 1;
@@ -1044,15 +1044,15 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x100) != 0)
   {
-    self->_txSuccess = *(v4 + 10);
+    self->_txSuccess = *(fromCopy + 10);
     *&self->_has |= 0x100u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 0x80) == 0)
     {
 LABEL_3:
@@ -1070,9 +1070,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_txFailure = *(v4 + 9);
+  self->_txFailure = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -1085,9 +1085,9 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_rxSuccess = *(v4 + 3);
+  self->_rxSuccess = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -1100,9 +1100,9 @@ LABEL_5:
   }
 
 LABEL_17:
-  self->_rxFailure = *(v4 + 2);
+  self->_rxFailure = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -1115,9 +1115,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_txAppPktSucess = *(v4 + 5);
+  self->_txAppPktSucess = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x40) == 0)
   {
 LABEL_7:
@@ -1130,9 +1130,9 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_txDelaymin = *(v4 + 8);
+  self->_txDelaymin = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x20) == 0)
   {
 LABEL_8:
@@ -1145,9 +1145,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_txDelaymax = *(v4 + 7);
+  self->_txDelaymax = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x10) == 0)
   {
 LABEL_9:
@@ -1160,9 +1160,9 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_txDelayavg = *(v4 + 6);
+  self->_txDelayavg = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 0x200) == 0)
   {
 LABEL_10:
@@ -1175,9 +1175,9 @@ LABEL_10:
   }
 
 LABEL_22:
-  self->_txSuccessRate = *(v4 + 11);
+  self->_txSuccessRate = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  if ((*(v4 + 24) & 4) == 0)
+  if ((*(fromCopy + 24) & 4) == 0)
   {
 LABEL_11:
 
@@ -1185,7 +1185,7 @@ LABEL_11:
   }
 
 LABEL_23:
-  self->_rxSuccessRate = *(v4 + 4);
+  self->_rxSuccessRate = *(fromCopy + 4);
   *&self->_has |= 4u;
 
 LABEL_13:

@@ -1,5 +1,5 @@
 @interface NTKJetsamInfoFetcher
-- (BOOL)getInfo:(jetsam_info *)a3;
+- (BOOL)getInfo:(jetsam_info *)info;
 - (BOOL)resetInterval;
 - (void)dealloc;
 @end
@@ -24,12 +24,12 @@
   [(NTKJetsamInfoFetcher *)&v4 dealloc];
 }
 
-- (BOOL)getInfo:(jetsam_info *)a3
+- (BOOL)getInfo:(jetsam_info *)info
 {
   v5 = +[_NTKSharedJetsamInfo sharedJetsamInfo];
-  LOBYTE(a3) = [v5 getInfoFor:self into:a3];
+  LOBYTE(info) = [v5 getInfoFor:self into:info];
 
-  return a3;
+  return info;
 }
 
 @end

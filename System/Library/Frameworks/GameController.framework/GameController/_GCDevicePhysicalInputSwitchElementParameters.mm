@@ -1,7 +1,7 @@
 @interface _GCDevicePhysicalInputSwitchElementParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_GCDevicePhysicalInputSwitchElementParameters)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sources;
 - (uint64_t)canWrap;
 - (uint64_t)eventPositionField;
@@ -9,9 +9,9 @@
 - (uint64_t)positionRange;
 - (uint64_t)setCanWrap:(uint64_t)result;
 - (uint64_t)setEventPositionField:(uint64_t)result;
-- (uint64_t)setPositionRange:(uint64_t)a3;
+- (uint64_t)setPositionRange:(uint64_t)range;
 - (uint64_t)setSequential:(uint64_t)result;
-- (void)setSources:(void *)a1;
+- (void)setSources:(void *)sources;
 @end
 
 @implementation _GCDevicePhysicalInputSwitchElementParameters
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _GCDevicePhysicalInputSwitchElementParameters;
-  v4 = [(_GCDevicePhysicalInputElementParameters *)&v6 copyWithZone:a3];
+  v4 = [(_GCDevicePhysicalInputElementParameters *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 6, self->_sources);
   *(v4 + 40) = self->_sequential;
   *(v4 + 41) = self->_canWrap;
@@ -42,47 +42,47 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = _GCDevicePhysicalInputSwitchElementParameters;
-  v7 = [(_GCDevicePhysicalInputElementParameters *)&v9 isEqual:v4]&& ((sources = self->_sources, sources == v4[6]) || [(NSSet *)sources isEqual:?]) && self->_sequential == *(v4 + 40) && self->_canWrap == *(v4 + 41) && (self->_positionRange.location == v4[8] ? (v6 = self->_positionRange.length == v4[9]) : (v6 = 0), v6) && self->_eventPositionField == v4[7];
+  v7 = [(_GCDevicePhysicalInputElementParameters *)&v9 isEqual:equalCopy]&& ((sources = self->_sources, sources == equalCopy[6]) || [(NSSet *)sources isEqual:?]) && self->_sequential == *(equalCopy + 40) && self->_canWrap == *(equalCopy + 41) && (self->_positionRange.location == equalCopy[8] ? (v6 = self->_positionRange.length == equalCopy[9]) : (v6 = 0), v6) && self->_eventPositionField == equalCopy[7];
 
   return v7;
 }
 
 - (id)sources
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[6];
+    v2 = self[6];
     if (v2)
     {
-      v1 = v2;
+      selfCopy = v2;
     }
 
     else
     {
       v3 = MEMORY[0x1E695DFD8];
       v4 = MEMORY[0x1E69A06B8];
-      v5 = [(_GCDevicePhysicalInputElementParameters *)a1 aliases];
-      v6 = [(_GCDevicePhysicalInputElementParameters *)v1 localizedName];
-      v7 = [(_GCDevicePhysicalInputElementParameters *)v1 symbol];
-      v8 = [v4 sourceWithElementAliases:v5 localizedName:v6 symbol:v7];
-      v1 = [v3 setWithObject:v8];
+      aliases = [(_GCDevicePhysicalInputElementParameters *)self aliases];
+      localizedName = [(_GCDevicePhysicalInputElementParameters *)selfCopy localizedName];
+      symbol = [(_GCDevicePhysicalInputElementParameters *)selfCopy symbol];
+      v8 = [v4 sourceWithElementAliases:aliases localizedName:localizedName symbol:symbol];
+      selfCopy = [v3 setWithObject:v8];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)canWrap
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 41);
+    v1 = *(self + 41);
   }
 
   else
@@ -95,9 +95,9 @@
 
 - (uint64_t)isSequential
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
   }
 
   else
@@ -130,11 +130,11 @@
   return result;
 }
 
-- (void)setSources:(void *)a1
+- (void)setSources:(void *)sources
 {
-  if (a1)
+  if (sources)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 48);
+    objc_setProperty_nonatomic_copy(sources, newValue, newValue, 48);
   }
 }
 
@@ -158,12 +158,12 @@
   return result;
 }
 
-- (uint64_t)setPositionRange:(uint64_t)a3
+- (uint64_t)setPositionRange:(uint64_t)range
 {
   if (result)
   {
     *(result + 64) = a2;
-    *(result + 72) = a3;
+    *(result + 72) = range;
   }
 
   return result;

@@ -1,24 +1,24 @@
 @interface TSWPDragItem
 - (CGRect)canvasRect;
-- (TSWPDragItem)initWithDragPreview:(id)a3 canvasRect:(CGRect)a4;
-- (id)retargetedDragPreviewForDefaultTargetedDragPreview:(id)a3 icc:(id)a4 canvasView:(id)a5 boundsRect:(CGRect)a6;
+- (TSWPDragItem)initWithDragPreview:(id)preview canvasRect:(CGRect)rect;
+- (id)retargetedDragPreviewForDefaultTargetedDragPreview:(id)preview icc:(id)icc canvasView:(id)view boundsRect:(CGRect)rect;
 - (void)dealloc;
 @end
 
 @implementation TSWPDragItem
 
-- (TSWPDragItem)initWithDragPreview:(id)a3 canvasRect:(CGRect)a4
+- (TSWPDragItem)initWithDragPreview:(id)preview canvasRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11.receiver = self;
   v11.super_class = TSWPDragItem;
   v9 = [(TSWPDragItem *)&v11 init];
   if (v9)
   {
-    v9->_targetedDragPreview = a3;
+    v9->_targetedDragPreview = preview;
     v9->_canvasRect.origin.x = x;
     v9->_canvasRect.origin.y = y;
     v9->_canvasRect.size.width = width;
@@ -35,22 +35,22 @@
   [(TSWPDragItem *)&v3 dealloc];
 }
 
-- (id)retargetedDragPreviewForDefaultTargetedDragPreview:(id)a3 icc:(id)a4 canvasView:(id)a5 boundsRect:(CGRect)a6
+- (id)retargetedDragPreviewForDefaultTargetedDragPreview:(id)preview icc:(id)icc canvasView:(id)view boundsRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   memset(&v22, 0, sizeof(v22));
-  [a4 viewScale];
+  [icc viewScale];
   v14 = v13;
-  [a4 viewScale];
+  [icc viewScale];
   CGAffineTransformMakeScale(&v22, v14, v15);
   v16 = objc_alloc(MEMORY[0x277D75488]);
   v17 = TSDCenterOfRect(x, y, width, height);
   v21 = v22;
-  v18 = [v16 initWithContainer:a5 center:&v21 transform:v17];
-  v19 = [a3 retargetedPreviewWithTarget:v18];
+  v18 = [v16 initWithContainer:view center:&v21 transform:v17];
+  v19 = [preview retargetedPreviewWithTarget:v18];
 
   return v19;
 }

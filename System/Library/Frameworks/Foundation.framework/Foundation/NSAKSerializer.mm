@@ -1,23 +1,23 @@
 @interface NSAKSerializer
-- (id)initForSerializerStream:(id)a3;
-- (unint64_t)serializeData:(id)a3;
-- (unint64_t)serializeList:(id)a3;
-- (unint64_t)serializeListItemIn:(id)a3 at:(unint64_t)a4;
-- (unint64_t)serializeObject:(id)a3;
-- (unint64_t)serializePropertyList:(id)a3;
-- (unint64_t)serializeString:(id)a3;
+- (id)initForSerializerStream:(id)stream;
+- (unint64_t)serializeData:(id)data;
+- (unint64_t)serializeList:(id)list;
+- (unint64_t)serializeListItemIn:(id)in at:(unint64_t)at;
+- (unint64_t)serializeObject:(id)object;
+- (unint64_t)serializePropertyList:(id)list;
+- (unint64_t)serializeString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation NSAKSerializer
 
-- (id)initForSerializerStream:(id)a3
+- (id)initForSerializerStream:(id)stream
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSAKSerializer;
   v4 = [(NSAKSerializer *)&v6 init];
-  v4->ss = a3;
+  v4->ss = stream;
   return v4;
 }
 
@@ -30,37 +30,37 @@
   [(NSAKSerializer *)&v3 dealloc];
 }
 
-- (unint64_t)serializeObject:(id)a3
+- (unint64_t)serializeObject:(id)object
 {
   if (_NSIsNSData())
   {
     v5 = [self->ss writeInt:1];
-    v6 = [(NSAKSerializer *)self serializeData:a3];
+    v6 = [(NSAKSerializer *)self serializeData:object];
     return v6 + v5;
   }
 
   if (_NSIsNSArray())
   {
     v5 = [self->ss writeInt:2];
-    v6 = [(NSAKSerializer *)self serializeList:a3];
+    v6 = [(NSAKSerializer *)self serializeList:object];
     return v6 + v5;
   }
 
   if (_NSIsNSDictionary())
   {
     v5 = [self->ss writeInt:3];
-    v6 = [(NSAKSerializer *)self serializePropertyList:a3];
+    v6 = [(NSAKSerializer *)self serializePropertyList:object];
     return v6 + v5;
   }
 
   if (_NSIsNSString())
   {
     v5 = [self->ss writeInt:4];
-    v6 = [(NSAKSerializer *)self serializeString:a3];
+    v6 = [(NSAKSerializer *)self serializeString:object];
     return v6 + v5;
   }
 
-  if (a3)
+  if (object)
   {
     v8 = objc_opt_class();
     NSLog(@"Serializing object of class %@\n", v8);
@@ -71,25 +71,25 @@
   return [ss writeInt:0];
 }
 
-- (unint64_t)serializeData:(id)a3
+- (unint64_t)serializeData:(id)data
 {
-  v5 = [a3 length];
-  v6 = [a3 bytes];
+  v5 = [data length];
+  bytes = [data bytes];
   v7 = [self->ss writeAlignedDataSize:v5];
-  return [self->ss writeData:v6 length:v5] + v7;
+  return [self->ss writeData:bytes length:v5] + v7;
 }
 
-- (unint64_t)serializeString:(id)a3
+- (unint64_t)serializeString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4 allowLossyConversion:1];
+  v4 = [string dataUsingEncoding:4 allowLossyConversion:1];
   v5 = [v4 length];
   v6 = [self->ss writeAlignedDataSize:v5];
   return [self->ss writeData:objc_msgSend(v4 length:{"bytes"), v5}] + v6;
 }
 
-- (unint64_t)serializeList:(id)a3
+- (unint64_t)serializeList:(id)list
 {
-  v5 = [a3 count];
+  v5 = [list count];
   v6 = [self->ss writeInt:v5];
   v7 = malloc_type_malloc(4 * v5, 0x100004052888210uLL);
   if (!v7)
@@ -112,7 +112,7 @@
     while (v10);
     for (i = 0; i != v5; ++i)
     {
-      v12 = [(NSAKSerializer *)self serializeListItemIn:a3 at:i];
+      v12 = [(NSAKSerializer *)self serializeListItemIn:list at:i];
       [self->ss writeDelayedInt:v12 for:v8[i]];
       v6 += v12;
     }
@@ -122,17 +122,17 @@
   return v6;
 }
 
-- (unint64_t)serializeListItemIn:(id)a3 at:(unint64_t)a4
+- (unint64_t)serializeListItemIn:(id)in at:(unint64_t)at
 {
-  v5 = [a3 objectAtIndex:a4];
+  v5 = [in objectAtIndex:at];
 
   return [(NSAKSerializer *)self serializeObject:v5];
 }
 
-- (unint64_t)serializePropertyList:(id)a3
+- (unint64_t)serializePropertyList:(id)list
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [a3 count];
+  v5 = [list count];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -148,9 +148,9 @@
   v13[2] = __40__NSAKSerializer_serializePropertyList___block_invoke;
   v13[3] = &unk_1E69F7698;
   v13[4] = self;
-  v13[5] = a3;
+  v13[5] = list;
   v13[6] = &v14;
-  [a3 enumerateKeysAndObjectsUsingBlock:v13];
+  [list enumerateKeysAndObjectsUsingBlock:v13];
   bzero(v6, 4 * v5);
   if (v5)
   {
@@ -175,11 +175,11 @@
   v11[2] = __40__NSAKSerializer_serializePropertyList___block_invoke_2;
   v11[3] = &unk_1E69F76C0;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = list;
   v11[7] = v12;
   v11[8] = v6;
   v11[6] = &v14;
-  [a3 enumerateKeysAndObjectsUsingBlock:v11];
+  [list enumerateKeysAndObjectsUsingBlock:v11];
   free(v6);
   v9 = v15[3];
   _Block_object_dispose(v12, 8);

@@ -1,27 +1,27 @@
 @interface NTKPhotosReader
-+ (id)readerForMemoriesWithResourceDirectory:(id)a3;
-+ (id)readerForResourceDirectory:(id)a3;
-+ (id)readerForSyncedAlbumWithResourceDirectory:(id)a3;
-- (NTKPhotosReader)initWithResourceDirectory:(id)a3;
++ (id)readerForMemoriesWithResourceDirectory:(id)directory;
++ (id)readerForResourceDirectory:(id)directory;
++ (id)readerForSyncedAlbumWithResourceDirectory:(id)directory;
+- (NTKPhotosReader)initWithResourceDirectory:(id)directory;
 - (NTKPhotosReaderDelegate)delegate;
 - (id)firstObject;
 - (id)lastObject;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation NTKPhotosReader
 
-- (NTKPhotosReader)initWithResourceDirectory:(id)a3
+- (NTKPhotosReader)initWithResourceDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v10.receiver = self;
   v10.super_class = NTKPhotosReader;
   v5 = [(NTKPhotosReader *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (directoryCopy)
     {
-      v6 = [v4 copy];
+      v6 = [directoryCopy copy];
       resourceDirectory = v5->_resourceDirectory;
       v5->_resourceDirectory = v6;
     }
@@ -33,12 +33,12 @@
   return v5;
 }
 
-+ (id)readerForResourceDirectory:(id)a3
++ (id)readerForResourceDirectory:(id)directory
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v11];
+  v5 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:&v11];
   v6 = v11;
   if (v6)
   {
@@ -68,24 +68,24 @@ LABEL_5:
     v9 = _NTKImageListPhotosReader;
   }
 
-  v8 = [[v9 alloc] initWithResourceDirectory:v3];
+  v8 = [[v9 alloc] initWithResourceDirectory:directoryCopy];
 LABEL_11:
 
   return v8;
 }
 
-+ (id)readerForSyncedAlbumWithResourceDirectory:(id)a3
++ (id)readerForSyncedAlbumWithResourceDirectory:(id)directory
 {
-  v3 = a3;
-  v4 = [[_NTKImageListPhotosReader alloc] initWithResourceDirectory:v3];
+  directoryCopy = directory;
+  v4 = [[_NTKImageListPhotosReader alloc] initWithResourceDirectory:directoryCopy];
 
   return v4;
 }
 
-+ (id)readerForMemoriesWithResourceDirectory:(id)a3
++ (id)readerForMemoriesWithResourceDirectory:(id)directory
 {
-  v3 = a3;
-  v4 = [[_NTKImageListPhotosReader alloc] initWithResourceDirectory:v3];
+  directoryCopy = directory;
+  v4 = [[_NTKImageListPhotosReader alloc] initWithResourceDirectory:directoryCopy];
 
   return v4;
 }
@@ -112,13 +112,13 @@ LABEL_11:
   return v3;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  a3->var2 = &self->_mutationCount;
-  a3->var0 = 1;
-  v8 = a3->var3[0];
-  v9 = v8 + a5;
-  if (v8 + a5 > [(NTKPhotosReader *)self count])
+  state->var2 = &self->_mutationCount;
+  state->var0 = 1;
+  v8 = state->var3[0];
+  v9 = v8 + count;
+  if (v8 + count > [(NTKPhotosReader *)self count])
   {
     v9 = [(NTKPhotosReader *)self count];
   }
@@ -126,17 +126,17 @@ LABEL_11:
   v10 = v9 - v8;
   if (v9 > v8)
   {
-    v11 = a4;
+    objectsCopy = objects;
     do
     {
-      *v11++ = [(NTKPhotosReader *)self objectAtIndex:v8++];
+      *objectsCopy++ = [(NTKPhotosReader *)self objectAtIndex:v8++];
     }
 
     while (v9 != v8);
   }
 
-  a3->var3[0] = v9;
-  a3->var1 = a4;
+  state->var3[0] = v9;
+  state->var1 = objects;
   return v10;
 }
 

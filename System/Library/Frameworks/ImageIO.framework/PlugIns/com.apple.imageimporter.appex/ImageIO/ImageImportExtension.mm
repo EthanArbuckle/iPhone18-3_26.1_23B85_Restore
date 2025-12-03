@@ -1,23 +1,23 @@
 @interface ImageImportExtension
-- (BOOL)updateAttributes:(id)a3 forFileAtURL:(id)a4 error:(id *)a5;
-- (BOOL)updateAttributes:(id)a3 withExifAuxProperties:(id)a4 forISR:(CGImageSource *)a5;
-- (BOOL)updateAttributes:(id)a3 withExifProperties:(id)a4 forISR:(CGImageSource *)a5;
-- (BOOL)updateAttributes:(id)a3 withGPSProperties:(id)a4 forISR:(CGImageSource *)a5;
-- (BOOL)updateAttributes:(id)a3 withIPTCProperties:(id)a4 forISR:(CGImageSource *)a5;
-- (BOOL)updateAttributes:(id)a3 withPhotoshopProperties:(id)a4 forISR:(CGImageSource *)a5;
-- (BOOL)updateAttributes:(id)a3 withProperties:(id)a4 forISR:(CGImageSource *)a5;
-- (BOOL)updateAttributes:(id)a3 withTIFFProperties:(id)a4 forISR:(CGImageSource *)a5;
-- (id)dateFromString:(id)a3;
+- (BOOL)updateAttributes:(id)attributes forFileAtURL:(id)l error:(id *)error;
+- (BOOL)updateAttributes:(id)attributes withExifAuxProperties:(id)properties forISR:(CGImageSource *)r;
+- (BOOL)updateAttributes:(id)attributes withExifProperties:(id)properties forISR:(CGImageSource *)r;
+- (BOOL)updateAttributes:(id)attributes withGPSProperties:(id)properties forISR:(CGImageSource *)r;
+- (BOOL)updateAttributes:(id)attributes withIPTCProperties:(id)properties forISR:(CGImageSource *)r;
+- (BOOL)updateAttributes:(id)attributes withPhotoshopProperties:(id)properties forISR:(CGImageSource *)r;
+- (BOOL)updateAttributes:(id)attributes withProperties:(id)properties forISR:(CGImageSource *)r;
+- (BOOL)updateAttributes:(id)attributes withTIFFProperties:(id)properties forISR:(CGImageSource *)r;
+- (id)dateFromString:(id)string;
 @end
 
 @implementation ImageImportExtension
 
-- (id)dateFromString:(id)a3
+- (id)dateFromString:(id)string
 {
   if (qword_100008498 != -1)
   {
     sub_10000205C();
-    if (a3)
+    if (string)
     {
       goto LABEL_3;
     }
@@ -25,7 +25,7 @@
     return 0;
   }
 
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
@@ -33,18 +33,18 @@
 LABEL_3:
   v4 = qword_100008490;
 
-  return [v4 dateFromString:a3];
+  return [v4 dateFromString:string];
 }
 
-- (BOOL)updateAttributes:(id)a3 withGPSProperties:(id)a4 forISR:(CGImageSource *)a5
+- (BOOL)updateAttributes:(id)attributes withGPSProperties:(id)properties forISR:(CGImageSource *)r
 {
-  [a3 setEXIFGPSVersion:{objc_msgSend(objc_msgSend(a4, "objectForKeyedSubscript:", kCGImagePropertyGPSVersion), "componentsJoinedByString:", @"."}];
-  v8 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSAltitude];
+  [attributes setEXIFGPSVersion:{objc_msgSend(objc_msgSend(properties, "objectForKeyedSubscript:", kCGImagePropertyGPSVersion), "componentsJoinedByString:", @"."}];
+  v8 = [properties objectForKeyedSubscript:kCGImagePropertyGPSAltitude];
   if (v8)
   {
     [v8 doubleValue];
     v10 = v9;
-    v11 = [objc_msgSend(a4 objectForKeyedSubscript:{kCGImagePropertyGPSAltitudeRef), "intValue"}];
+    v11 = [objc_msgSend(properties objectForKeyedSubscript:{kCGImagePropertyGPSAltitudeRef), "intValue"}];
     v12 = v10 > 0.0 && v11 == 1;
     v13 = -v10;
     if (!v12)
@@ -52,15 +52,15 @@ LABEL_3:
       v13 = v10;
     }
 
-    [a3 setAltitude:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v13)}];
+    [attributes setAltitude:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v13)}];
   }
 
-  v14 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSLatitude];
+  v14 = [properties objectForKeyedSubscript:kCGImagePropertyGPSLatitude];
   if (v14)
   {
     [v14 doubleValue];
     v16 = v15;
-    v17 = [objc_msgSend(a4 objectForKeyedSubscript:{kCGImagePropertyGPSLatitudeRef), "caseInsensitiveCompare:", @"S"}];
+    v17 = [objc_msgSend(properties objectForKeyedSubscript:{kCGImagePropertyGPSLatitudeRef), "caseInsensitiveCompare:", @"S"}];
     v18 = v16 > 0.0 && v17 == 0;
     v19 = -v16;
     if (!v18)
@@ -68,15 +68,15 @@ LABEL_3:
       v19 = v16;
     }
 
-    [a3 setLatitude:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v19)}];
+    [attributes setLatitude:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v19)}];
   }
 
-  v20 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSLongitude];
+  v20 = [properties objectForKeyedSubscript:kCGImagePropertyGPSLongitude];
   if (v20)
   {
     [v20 doubleValue];
     v22 = v21;
-    v23 = [objc_msgSend(a4 objectForKeyedSubscript:{kCGImagePropertyGPSLongitudeRef), "caseInsensitiveCompare:", @"W"}];
+    v23 = [objc_msgSend(properties objectForKeyedSubscript:{kCGImagePropertyGPSLongitudeRef), "caseInsensitiveCompare:", @"W"}];
     v24 = v22 > 0.0 && v23 == 0;
     v25 = -v22;
     if (!v24)
@@ -84,15 +84,15 @@ LABEL_3:
       v25 = v22;
     }
 
-    [a3 setLongitude:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v25)}];
+    [attributes setLongitude:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v25)}];
   }
 
-  v26 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSSpeed];
+  v26 = [properties objectForKeyedSubscript:kCGImagePropertyGPSSpeed];
   if (v26)
   {
     [v26 doubleValue];
     v28 = v27;
-    v29 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSSpeedRef];
+    v29 = [properties objectForKeyedSubscript:kCGImagePropertyGPSSpeedRef];
     if ([v29 caseInsensitiveCompare:@"M"])
     {
       v30 = [v29 caseInsensitiveCompare:@"N"];
@@ -108,27 +108,27 @@ LABEL_3:
       v31 = v28 * 1.609344;
     }
 
-    [a3 setSpeed:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v31)}];
+    [attributes setSpeed:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v31)}];
   }
 
-  v32 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSTrack];
+  v32 = [properties objectForKeyedSubscript:kCGImagePropertyGPSTrack];
   if (v32)
   {
-    [a3 setGPSTrack:v32];
+    [attributes setGPSTrack:v32];
   }
 
-  v33 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSImgDirection];
+  v33 = [properties objectForKeyedSubscript:kCGImagePropertyGPSImgDirection];
   if (v33)
   {
-    [a3 setImageDirection:v33];
+    [attributes setImageDirection:v33];
   }
 
-  v34 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSDestLatitude];
+  v34 = [properties objectForKeyedSubscript:kCGImagePropertyGPSDestLatitude];
   if (v34)
   {
     [v34 doubleValue];
     v36 = v35;
-    v37 = [objc_msgSend(a4 objectForKeyedSubscript:{kCGImagePropertyGPSDestLatitudeRef), "caseInsensitiveCompare:", @"S"}];
+    v37 = [objc_msgSend(properties objectForKeyedSubscript:{kCGImagePropertyGPSDestLatitudeRef), "caseInsensitiveCompare:", @"S"}];
     v38 = v36 > 0.0 && v37 == 0;
     v39 = -v36;
     if (!v38)
@@ -136,15 +136,15 @@ LABEL_3:
       v39 = v36;
     }
 
-    [a3 setGPSDestLatitude:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v39)}];
+    [attributes setGPSDestLatitude:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v39)}];
   }
 
-  v40 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSDestLongitude];
+  v40 = [properties objectForKeyedSubscript:kCGImagePropertyGPSDestLongitude];
   if (v40)
   {
     [v40 doubleValue];
     v42 = v41;
-    v43 = [objc_msgSend(a4 objectForKeyedSubscript:{kCGImagePropertyGPSDestLongitudeRef), "caseInsensitiveCompare:", @"W"}];
+    v43 = [objc_msgSend(properties objectForKeyedSubscript:{kCGImagePropertyGPSDestLongitudeRef), "caseInsensitiveCompare:", @"W"}];
     v44 = v42 > 0.0 && v43 == 0;
     v45 = -v42;
     if (!v44)
@@ -152,45 +152,45 @@ LABEL_3:
       v45 = v42;
     }
 
-    [a3 setGPSDestLongitude:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v45)}];
+    [attributes setGPSDestLongitude:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v45)}];
   }
 
-  v46 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSStatus];
+  v46 = [properties objectForKeyedSubscript:kCGImagePropertyGPSStatus];
   if (v46)
   {
-    [a3 setGPSStatus:v46];
+    [attributes setGPSStatus:v46];
   }
 
-  v47 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSMeasureMode];
+  v47 = [properties objectForKeyedSubscript:kCGImagePropertyGPSMeasureMode];
   if (v47)
   {
-    [a3 setGPSMeasureMode:v47];
+    [attributes setGPSMeasureMode:v47];
   }
 
-  v48 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSDOP];
+  v48 = [properties objectForKeyedSubscript:kCGImagePropertyGPSDOP];
   if (v48)
   {
-    [a3 setGPSDOP:v48];
+    [attributes setGPSDOP:v48];
   }
 
-  v49 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSMapDatum];
+  v49 = [properties objectForKeyedSubscript:kCGImagePropertyGPSMapDatum];
   if (v49)
   {
-    [a3 setGPSMapDatum:v49];
+    [attributes setGPSMapDatum:v49];
   }
 
-  v50 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSDestBearing];
+  v50 = [properties objectForKeyedSubscript:kCGImagePropertyGPSDestBearing];
   if (v50)
   {
-    [a3 setGPSDestBearing:v50];
+    [attributes setGPSDestBearing:v50];
   }
 
-  v51 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSDestDistance];
+  v51 = [properties objectForKeyedSubscript:kCGImagePropertyGPSDestDistance];
   if (v51)
   {
     [v51 doubleValue];
     v53 = v52;
-    v54 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSDestDistanceRef];
+    v54 = [properties objectForKeyedSubscript:kCGImagePropertyGPSDestDistanceRef];
     if ([v54 caseInsensitiveCompare:@"M"])
     {
       v55 = [v54 caseInsensitiveCompare:@"N"];
@@ -206,46 +206,46 @@ LABEL_3:
       v56 = v53 * 1.609344;
     }
 
-    [a3 setGPSDestDistance:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v56)}];
+    [attributes setGPSDestDistance:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v56)}];
   }
 
-  v57 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSProcessingMethod];
+  v57 = [properties objectForKeyedSubscript:kCGImagePropertyGPSProcessingMethod];
   if (v57)
   {
-    [a3 setGPSProcessingMethod:v57];
+    [attributes setGPSProcessingMethod:v57];
   }
 
-  v58 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSAreaInformation];
+  v58 = [properties objectForKeyedSubscript:kCGImagePropertyGPSAreaInformation];
   if (v58)
   {
-    [a3 setGPSAreaInformation:v58];
+    [attributes setGPSAreaInformation:v58];
   }
 
-  v59 = -[ImageImportExtension dateFromString:](self, "dateFromString:", [a4 objectForKeyedSubscript:kCGImagePropertyGPSTimeStamp]);
+  v59 = -[ImageImportExtension dateFromString:](self, "dateFromString:", [properties objectForKeyedSubscript:kCGImagePropertyGPSTimeStamp]);
   if (v59)
   {
-    [a3 setTimestamp:v59];
+    [attributes setTimestamp:v59];
   }
 
-  v60 = -[ImageImportExtension dateFromString:](self, "dateFromString:", [a4 objectForKeyedSubscript:kCGImagePropertyGPSDateStamp]);
+  v60 = -[ImageImportExtension dateFromString:](self, "dateFromString:", [properties objectForKeyedSubscript:kCGImagePropertyGPSDateStamp]);
   if (v60)
   {
-    [a3 setGPSDateStamp:v60];
+    [attributes setGPSDateStamp:v60];
   }
 
-  v61 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSDifferental];
+  v61 = [properties objectForKeyedSubscript:kCGImagePropertyGPSDifferental];
   if (v61)
   {
-    [a3 setGPSDifferental:v61];
+    [attributes setGPSDifferental:v61];
   }
 
   return 1;
 }
 
-- (BOOL)updateAttributes:(id)a3 withIPTCProperties:(id)a4 forISR:(CGImageSource *)a5
+- (BOOL)updateAttributes:(id)attributes withIPTCProperties:(id)properties forISR:(CGImageSource *)r
 {
-  v7 = [NSMutableArray array:a3];
-  v8 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCByline];
+  v7 = [NSMutableArray array:attributes];
+  v8 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCByline];
   if (v8)
   {
     v9 = v8;
@@ -261,7 +261,7 @@ LABEL_3:
     }
   }
 
-  v10 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCWriterEditor];
+  v10 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCWriterEditor];
   if (v10)
   {
     v11 = v10;
@@ -279,65 +279,65 @@ LABEL_3:
 
   if ([v7 count])
   {
-    [a3 setAuthorNames:v7];
+    [attributes setAuthorNames:v7];
   }
 
-  v12 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCCopyrightNotice];
+  v12 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCCopyrightNotice];
   if (v12)
   {
-    [a3 setCopyright:v12];
+    [attributes setCopyright:v12];
   }
 
-  v13 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCObjectName];
+  v13 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCObjectName];
   if (v13)
   {
-    [a3 setTitle:v13];
+    [attributes setTitle:v13];
   }
 
-  v14 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCCaptionAbstract];
+  v14 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCCaptionAbstract];
   if (v14)
   {
-    [a3 setContentDescription:v14];
+    [attributes setContentDescription:v14];
   }
 
-  v15 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCHeadline];
+  v15 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCHeadline];
   if (v15)
   {
-    [a3 setHeadline:v15];
+    [attributes setHeadline:v15];
   }
 
-  v16 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCSpecialInstructions];
+  v16 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCSpecialInstructions];
   if (v16)
   {
-    [a3 setInstructions:v16];
+    [attributes setInstructions:v16];
   }
 
-  v17 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCCity];
+  v17 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCCity];
   if (v17)
   {
-    [a3 setCity:v17];
+    [attributes setCity:v17];
   }
 
-  v18 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCProvinceState];
+  v18 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCProvinceState];
   if (v18)
   {
-    [a3 setStateOrProvince:v18];
+    [attributes setStateOrProvince:v18];
   }
 
-  v19 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCCountryPrimaryLocationName];
+  v19 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCCountryPrimaryLocationName];
   if (v19)
   {
-    [a3 setCountry:v19];
+    [attributes setCountry:v19];
   }
 
-  v20 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCContact];
+  v20 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCContact];
   if (v20)
   {
     v21 = v20;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = a3;
+      attributesCopy2 = attributes;
       v23 = v21;
     }
 
@@ -345,20 +345,20 @@ LABEL_3:
     {
       v35 = v21;
       v23 = [NSArray arrayWithObjects:&v35 count:1];
-      v22 = a3;
+      attributesCopy2 = attributes;
     }
 
-    [v22 setContactKeywords:v23];
+    [attributesCopy2 setContactKeywords:v23];
   }
 
-  v24 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCKeywords];
+  v24 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCKeywords];
   if (v24)
   {
     v25 = v24;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = a3;
+      attributesCopy4 = attributes;
       v27 = v25;
     }
 
@@ -366,20 +366,20 @@ LABEL_3:
     {
       v34 = v25;
       v27 = [NSArray arrayWithObjects:&v34 count:1];
-      v26 = a3;
+      attributesCopy4 = attributes;
     }
 
-    [v26 setKeywords:v27];
+    [attributesCopy4 setKeywords:v27];
   }
 
-  v28 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCCredit];
+  v28 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCCredit];
   if (v28)
   {
     v29 = v28;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = a3;
+      attributesCopy6 = attributes;
       v31 = v29;
     }
 
@@ -387,109 +387,109 @@ LABEL_3:
     {
       v33 = v29;
       v31 = [NSArray arrayWithObjects:&v33 count:1];
-      v30 = a3;
+      attributesCopy6 = attributes;
     }
 
-    [v30 setContributors:v31];
+    [attributesCopy6 setContributors:v31];
   }
 
   return 1;
 }
 
-- (BOOL)updateAttributes:(id)a3 withPhotoshopProperties:(id)a4 forISR:(CGImageSource *)a5
+- (BOOL)updateAttributes:(id)attributes withPhotoshopProperties:(id)properties forISR:(CGImageSource *)r
 {
-  v6 = [a4 objectForKeyedSubscript:kCGImageProperty8BIMLayerNames];
+  v6 = [properties objectForKeyedSubscript:kCGImageProperty8BIMLayerNames];
   if (v6)
   {
-    [a3 setLayerNames:v6];
+    [attributes setLayerNames:v6];
   }
 
   return 1;
 }
 
-- (BOOL)updateAttributes:(id)a3 withTIFFProperties:(id)a4 forISR:(CGImageSource *)a5
+- (BOOL)updateAttributes:(id)attributes withTIFFProperties:(id)properties forISR:(CGImageSource *)r
 {
-  v8 = [a4 objectForKeyedSubscript:kCGImagePropertyTIFFModel];
+  v8 = [properties objectForKeyedSubscript:kCGImagePropertyTIFFModel];
   if (v8)
   {
-    [a3 setAcquisitionModel:v8];
+    [attributes setAcquisitionModel:v8];
   }
 
-  v9 = [a4 objectForKeyedSubscript:kCGImagePropertyTIFFMake];
+  v9 = [properties objectForKeyedSubscript:kCGImagePropertyTIFFMake];
   if (v9)
   {
-    [a3 setAcquisitionMake:v9];
+    [attributes setAcquisitionMake:v9];
   }
 
-  if (![a3 contentCreationDate])
+  if (![attributes contentCreationDate])
   {
-    v10 = -[ImageImportExtension dateFromString:](self, "dateFromString:", [a4 objectForKeyedSubscript:kCGImagePropertyTIFFDateTime]);
+    v10 = -[ImageImportExtension dateFromString:](self, "dateFromString:", [properties objectForKeyedSubscript:kCGImagePropertyTIFFDateTime]);
     if (v10)
     {
-      [a3 setContentCreationDate:v10];
+      [attributes setContentCreationDate:v10];
     }
   }
 
-  v11 = [a4 objectForKeyedSubscript:kCGImagePropertyTIFFSoftware];
+  v11 = [properties objectForKeyedSubscript:kCGImagePropertyTIFFSoftware];
   if (v11)
   {
-    [a3 setCreator:v11];
+    [attributes setCreator:v11];
   }
 
   return 1;
 }
 
-- (BOOL)updateAttributes:(id)a3 withExifAuxProperties:(id)a4 forISR:(CGImageSource *)a5
+- (BOOL)updateAttributes:(id)attributes withExifAuxProperties:(id)properties forISR:(CGImageSource *)r
 {
-  v7 = [a4 objectForKeyedSubscript:kCGImagePropertyExifLensModel];
+  v7 = [properties objectForKeyedSubscript:kCGImagePropertyExifLensModel];
   if (v7)
   {
-    [a3 setLensModel:v7];
+    [attributes setLensModel:v7];
   }
 
-  v8 = [a4 objectForKeyedSubscript:kCGImagePropertyExifCameraOwnerName];
+  v8 = [properties objectForKeyedSubscript:kCGImagePropertyExifCameraOwnerName];
   if (v8)
   {
-    [a3 setCameraOwner:v8];
+    [attributes setCameraOwner:v8];
   }
 
   return 1;
 }
 
-- (BOOL)updateAttributes:(id)a3 withExifProperties:(id)a4 forISR:(CGImageSource *)a5
+- (BOOL)updateAttributes:(id)attributes withExifProperties:(id)properties forISR:(CGImageSource *)r
 {
-  [a3 setEXIFVersion:{objc_msgSend(objc_msgSend(a4, "objectForKeyedSubscript:", kCGImagePropertyExifVersion), "componentsJoinedByString:", @"."}];
-  v8 = -[ImageImportExtension dateFromString:](self, "dateFromString:", [a4 objectForKeyedSubscript:kCGImagePropertyExifDateTimeOriginal]);
+  [attributes setEXIFVersion:{objc_msgSend(objc_msgSend(properties, "objectForKeyedSubscript:", kCGImagePropertyExifVersion), "componentsJoinedByString:", @"."}];
+  v8 = -[ImageImportExtension dateFromString:](self, "dateFromString:", [properties objectForKeyedSubscript:kCGImagePropertyExifDateTimeOriginal]);
   if (v8)
   {
-    [a3 setContentCreationDate:v8];
+    [attributes setContentCreationDate:v8];
   }
 
-  v9 = -[ImageImportExtension dateFromString:](self, "dateFromString:", [a4 objectForKeyedSubscript:kCGImagePropertyExifDateTimeDigitized]);
+  v9 = -[ImageImportExtension dateFromString:](self, "dateFromString:", [properties objectForKeyedSubscript:kCGImagePropertyExifDateTimeDigitized]);
   if (v9)
   {
-    [a3 setContentModificationDate:v9];
+    [attributes setContentModificationDate:v9];
   }
 
-  v10 = [a4 objectForKeyedSubscript:kCGImagePropertyExifApertureValue];
+  v10 = [properties objectForKeyedSubscript:kCGImagePropertyExifApertureValue];
   if (v10)
   {
-    [a3 setAperture:v10];
+    [attributes setAperture:v10];
   }
 
-  v11 = [a4 objectForKeyedSubscript:kCGImagePropertyExifExposureTime];
+  v11 = [properties objectForKeyedSubscript:kCGImagePropertyExifExposureTime];
   if (v11)
   {
     v12 = v11;
-    [a3 setExposureTime:v11];
-    [a3 setExposureTimeString:{objc_msgSend(v12, "fractionString")}];
+    [attributes setExposureTime:v11];
+    [attributes setExposureTimeString:{objc_msgSend(v12, "fractionString")}];
   }
 
-  v13 = [a4 objectForKeyedSubscript:kCGImagePropertyExifFlash];
+  v13 = [properties objectForKeyedSubscript:kCGImagePropertyExifFlash];
   if (v13)
   {
-    v14 = [v13 intValue];
-    if (v14)
+    intValue = [v13 intValue];
+    if (intValue)
     {
       v15 = &__kCFBooleanTrue;
     }
@@ -499,8 +499,8 @@ LABEL_3:
       v15 = &__kCFBooleanFalse;
     }
 
-    [a3 setFlashOn:v15];
-    if ((v14 & 0x40) != 0)
+    [attributes setFlashOn:v15];
+    if ((intValue & 0x40) != 0)
     {
       v16 = &__kCFBooleanTrue;
     }
@@ -510,75 +510,75 @@ LABEL_3:
       v16 = &__kCFBooleanFalse;
     }
 
-    [a3 setRedEyeOn:v16];
+    [attributes setRedEyeOn:v16];
   }
 
-  v17 = [a4 objectForKeyedSubscript:kCGImagePropertyExifExposureMode];
+  v17 = [properties objectForKeyedSubscript:kCGImagePropertyExifExposureMode];
   if (v17)
   {
-    [a3 setExposureMode:v17];
+    [attributes setExposureMode:v17];
   }
 
-  v18 = [a4 objectForKeyedSubscript:kCGImagePropertyExifWhiteBalance];
+  v18 = [properties objectForKeyedSubscript:kCGImagePropertyExifWhiteBalance];
   if (v18)
   {
-    [a3 setWhiteBalance:v18];
+    [attributes setWhiteBalance:v18];
   }
 
-  v19 = [a4 objectForKeyedSubscript:kCGImagePropertyExifMeteringMode];
+  v19 = [properties objectForKeyedSubscript:kCGImagePropertyExifMeteringMode];
   if (v19)
   {
-    v20 = [v19 intValue];
-    if (v20 > 6)
+    intValue2 = [v19 intValue];
+    if (intValue2 > 6)
     {
       v21 = @"other";
     }
 
     else
     {
-      v21 = *(&off_100004370 + v20);
+      v21 = *(&off_100004370 + intValue2);
     }
 
-    [a3 setMeteringMode:v21];
+    [attributes setMeteringMode:v21];
   }
 
-  v22 = [a4 objectForKeyedSubscript:kCGImagePropertyExifISOSpeedRatings];
+  v22 = [properties objectForKeyedSubscript:kCGImagePropertyExifISOSpeedRatings];
   if (v22)
   {
     v23 = v22;
     if ([v22 count])
     {
-      [a3 setISOSpeed:{objc_msgSend(v23, "objectAtIndexedSubscript:", 0)}];
+      [attributes setISOSpeed:{objc_msgSend(v23, "objectAtIndexedSubscript:", 0)}];
     }
   }
 
-  v24 = [a4 objectForKeyedSubscript:kCGImagePropertyExifFocalLength];
+  v24 = [properties objectForKeyedSubscript:kCGImagePropertyExifFocalLength];
   if (v24)
   {
-    [a3 setFocalLength:v24];
+    [attributes setFocalLength:v24];
   }
 
-  v25 = [a4 objectForKeyedSubscript:kCGImagePropertyExifFocalLenIn35mmFilm];
+  v25 = [properties objectForKeyedSubscript:kCGImagePropertyExifFocalLenIn35mmFilm];
   if (v25)
   {
-    [a3 setFocalLength35mm:v25];
+    [attributes setFocalLength35mm:v25];
   }
 
-  v26 = [a4 objectForKeyedSubscript:kCGImagePropertyExifUserComment];
+  v26 = [properties objectForKeyedSubscript:kCGImagePropertyExifUserComment];
   if (v26)
   {
     v27 = v26;
-    [a3 setComment:v26];
+    [attributes setComment:v26];
     [v27 isEqualToString:@"Screenshot"];
   }
 
-  v28 = [a4 objectForKeyedSubscript:kCGImagePropertyExifFNumber];
+  v28 = [properties objectForKeyedSubscript:kCGImagePropertyExifFNumber];
   if (v28)
   {
-    [a3 setFNumber:v28];
+    [attributes setFNumber:v28];
   }
 
-  v29 = [a4 objectForKeyedSubscript:kCGImagePropertyExifExposureProgram];
+  v29 = [properties objectForKeyedSubscript:kCGImagePropertyExifExposureProgram];
   if (v29)
   {
     v30 = [v29 intValue] - 1;
@@ -592,21 +592,21 @@ LABEL_3:
       v31 = *(&off_1000043A8 + v30);
     }
 
-    [a3 setExposureProgram:v31];
+    [attributes setExposureProgram:v31];
   }
 
   return 1;
 }
 
-- (BOOL)updateAttributes:(id)a3 withProperties:(id)a4 forISR:(CGImageSource *)a5
+- (BOOL)updateAttributes:(id)attributes withProperties:(id)properties forISR:(CGImageSource *)r
 {
-  v8 = [a4 objectForKeyedSubscript:kCGImagePropertyPixelWidth];
-  v9 = [a4 objectForKeyedSubscript:kCGImagePropertyPixelHeight];
-  v10 = [a4 objectForKeyedSubscript:kCGImagePropertyDPIWidth];
-  v11 = [a4 objectForKeyedSubscript:kCGImagePropertyDPIHeight];
-  v12 = [v9 longValue];
-  v13 = v12 > [v8 longValue];
-  if ([a4 objectForKeyedSubscript:kCGImagePropertyOrientation] && objc_msgSend(objc_msgSend(a4, "objectForKeyedSubscript:", kCGImagePropertyOrientation), "intValue") >= 5)
+  v8 = [properties objectForKeyedSubscript:kCGImagePropertyPixelWidth];
+  v9 = [properties objectForKeyedSubscript:kCGImagePropertyPixelHeight];
+  v10 = [properties objectForKeyedSubscript:kCGImagePropertyDPIWidth];
+  v11 = [properties objectForKeyedSubscript:kCGImagePropertyDPIHeight];
+  longValue = [v9 longValue];
+  v13 = longValue > [v8 longValue];
+  if ([properties objectForKeyedSubscript:kCGImagePropertyOrientation] && objc_msgSend(objc_msgSend(properties, "objectForKeyedSubscript:", kCGImagePropertyOrientation), "intValue") >= 5)
   {
     v14 = [NSNumber numberWithInt:v13 ^ 1];
     v15 = v10;
@@ -622,13 +622,13 @@ LABEL_3:
     v16 = v9;
   }
 
-  [a3 setOrientation:v14];
-  [a3 setPixelWidth:v8];
-  [a3 setPixelHeight:v16];
-  [a3 setPixelCount:{+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", objc_msgSend(objc_msgSend(a3, "pixelHeight"), "longLongValue") * objc_msgSend(objc_msgSend(a3, "pixelWidth"), "longLongValue"))}];
-  [a3 setResolutionWidthDPI:v10];
-  [a3 setResolutionHeightDPI:v15];
-  if ([objc_msgSend(a4 objectForKeyedSubscript:{kCGImagePropertyHasAlpha), "BOOLValue"}])
+  [attributes setOrientation:v14];
+  [attributes setPixelWidth:v8];
+  [attributes setPixelHeight:v16];
+  [attributes setPixelCount:{+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", objc_msgSend(objc_msgSend(attributes, "pixelHeight"), "longLongValue") * objc_msgSend(objc_msgSend(attributes, "pixelWidth"), "longLongValue"))}];
+  [attributes setResolutionWidthDPI:v10];
+  [attributes setResolutionHeightDPI:v15];
+  if ([objc_msgSend(properties objectForKeyedSubscript:{kCGImagePropertyHasAlpha), "BOOLValue"}])
   {
     v17 = &__kCFBooleanTrue;
   }
@@ -638,65 +638,65 @@ LABEL_3:
     v17 = &__kCFBooleanFalse;
   }
 
-  [a3 setHasAlphaChannel:v17];
-  if ([a4 objectForKeyedSubscript:kCGImagePropertyProfileName])
+  [attributes setHasAlphaChannel:v17];
+  if ([properties objectForKeyedSubscript:kCGImagePropertyProfileName])
   {
-    [a3 setProfileName:{objc_msgSend(a4, "objectForKeyedSubscript:", kCGImagePropertyProfileName)}];
+    [attributes setProfileName:{objc_msgSend(properties, "objectForKeyedSubscript:", kCGImagePropertyProfileName)}];
   }
 
-  if ([a4 objectForKeyedSubscript:kCGImagePropertyColorModel])
+  if ([properties objectForKeyedSubscript:kCGImagePropertyColorModel])
   {
-    [a3 setColorSpace:{objc_msgSend(a4, "objectForKeyedSubscript:", kCGImagePropertyColorModel)}];
+    [attributes setColorSpace:{objc_msgSend(properties, "objectForKeyedSubscript:", kCGImagePropertyColorModel)}];
   }
 
-  v18 = [a4 objectForKeyedSubscript:kCGImagePropertyExifDictionary];
+  v18 = [properties objectForKeyedSubscript:kCGImagePropertyExifDictionary];
   if (v18)
   {
-    [(ImageImportExtension *)self updateAttributes:a3 withExifProperties:v18 forISR:a5];
+    [(ImageImportExtension *)self updateAttributes:attributes withExifProperties:v18 forISR:r];
   }
 
-  v19 = [a4 objectForKeyedSubscript:kCGImagePropertyExifAuxDictionary];
+  v19 = [properties objectForKeyedSubscript:kCGImagePropertyExifAuxDictionary];
   if (v19)
   {
-    [(ImageImportExtension *)self updateAttributes:a3 withExifAuxProperties:v19 forISR:a5];
+    [(ImageImportExtension *)self updateAttributes:attributes withExifAuxProperties:v19 forISR:r];
   }
 
-  v20 = [a4 objectForKeyedSubscript:kCGImagePropertyTIFFDictionary];
+  v20 = [properties objectForKeyedSubscript:kCGImagePropertyTIFFDictionary];
   if (v20)
   {
-    [(ImageImportExtension *)self updateAttributes:a3 withTIFFProperties:v20 forISR:a5];
+    [(ImageImportExtension *)self updateAttributes:attributes withTIFFProperties:v20 forISR:r];
   }
 
-  v21 = [a4 objectForKeyedSubscript:kCGImageProperty8BIMDictionary];
+  v21 = [properties objectForKeyedSubscript:kCGImageProperty8BIMDictionary];
   if (v21)
   {
-    [(ImageImportExtension *)self updateAttributes:a3 withPhotoshopProperties:v21 forISR:a5];
+    [(ImageImportExtension *)self updateAttributes:attributes withPhotoshopProperties:v21 forISR:r];
   }
 
-  v22 = [a4 objectForKeyedSubscript:kCGImagePropertyIPTCDictionary];
+  v22 = [properties objectForKeyedSubscript:kCGImagePropertyIPTCDictionary];
   if (v22)
   {
-    [(ImageImportExtension *)self updateAttributes:a3 withIPTCProperties:v22 forISR:a5];
+    [(ImageImportExtension *)self updateAttributes:attributes withIPTCProperties:v22 forISR:r];
   }
 
-  v23 = [a4 objectForKeyedSubscript:kCGImagePropertyGPSDictionary];
+  v23 = [properties objectForKeyedSubscript:kCGImagePropertyGPSDictionary];
   if (v23)
   {
-    [(ImageImportExtension *)self updateAttributes:a3 withGPSProperties:v23 forISR:a5];
+    [(ImageImportExtension *)self updateAttributes:attributes withGPSProperties:v23 forISR:r];
   }
 
   return 1;
 }
 
-- (BOOL)updateAttributes:(id)a3 forFileAtURL:(id)a4 error:(id *)a5
+- (BOOL)updateAttributes:(id)attributes forFileAtURL:(id)l error:(id *)error
 {
-  v7 = CGImageSourceCreateWithURL(a4, 0);
+  v7 = CGImageSourceCreateWithURL(l, 0);
   if (v7)
   {
     v8 = v7;
     v10 = kCGImageSourceSkipMetadata;
     v11 = &__kCFBooleanTrue;
-    [(ImageImportExtension *)self updateAttributes:a3 withProperties:CGImageSourceCopyPropertiesAtIndex(v7 forISR:0, [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1]), v7];
+    [(ImageImportExtension *)self updateAttributes:attributes withProperties:CGImageSourceCopyPropertiesAtIndex(v7 forISR:0, [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1]), v7];
     CFRelease(v8);
   }
 

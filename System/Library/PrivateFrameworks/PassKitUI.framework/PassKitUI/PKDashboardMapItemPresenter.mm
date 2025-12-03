@@ -1,12 +1,12 @@
 @interface PKDashboardMapItemPresenter
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardMapItemPresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardMapItemPresenter
@@ -37,50 +37,50 @@
   return v2;
 }
 
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 merchant];
-  if (!v6)
+  itemCopy = item;
+  merchant = [itemCopy merchant];
+  if (!merchant)
   {
-    v7 = [v5 transaction];
-    v6 = [v7 merchant];
+    transaction = [itemCopy transaction];
+    merchant = [transaction merchant];
   }
 
-  if ([v6 shouldIgnoreMapsMatches])
+  if ([merchant shouldIgnoreMapsMatches])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v6 mapsMerchant];
-    v8 = v9 != 0;
+    mapsMerchant = [merchant mapsMerchant];
+    v8 = mapsMerchant != 0;
   }
 
   return v8;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v33 = a4;
-  v13 = a5;
-  v32 = a6;
-  v14 = a7;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  controllerCopy = controller;
+  presentCopy = present;
   if (!self->_loadingMapsViewController)
   {
-    v31 = v12;
-    v15 = [v31 merchant];
-    v16 = [v15 mapsMerchant];
+    v31 = itemCopy;
+    merchant = [v31 merchant];
+    mapsMerchant = [merchant mapsMerchant];
 
-    if (v16 || ([v31 transaction], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "merchant"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "mapsMerchant"), v16 = objc_claimAutoreleasedReturnValue(), v18, v17, v16))
+    if (mapsMerchant || ([v31 transaction], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "merchant"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "mapsMerchant"), mapsMerchant = objc_claimAutoreleasedReturnValue(), v18, v17, mapsMerchant))
     {
-      v19 = [v16 identifier];
-      if (v19)
+      identifier = [mapsMerchant identifier];
+      if (identifier)
       {
-        v20 = v19;
+        v20 = identifier;
         self->_loadingMapsViewController = 1;
         v21 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
         v22 = dispatch_time(0, 1000000000);
@@ -91,9 +91,9 @@
         handler[3] = &unk_1E8010A88;
         v23 = v21;
         v42 = v23;
-        v30 = v33;
+        v30 = viewCopy;
         v43 = v30;
-        v29 = v13;
+        v29 = pathCopy;
         v44 = v29;
         dispatch_source_set_event_handler(v23, handler);
         dispatch_resume(v23);
@@ -112,7 +112,7 @@
         v28 = v23;
         v35 = v28;
         objc_copyWeak(v39, &location);
-        v38 = v14;
+        v38 = presentCopy;
         v36 = v30;
         v37 = v29;
         v39[1] = v20;
@@ -235,102 +235,102 @@ void __106__PKDashboardMapItemPresenter_didSelectItem_inCollectionView_atIndexPa
   }
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"TransactionMapItemCellReuseIdentifier" forIndexPath:v8];
-  [(PKDashboardMapItemPresenter *)self _configureCell:v11 forItem:v10 inCollectionView:v9 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"TransactionMapItemCellReuseIdentifier" forIndexPath:pathCopy];
+  [(PKDashboardMapItemPresenter *)self _configureCell:v11 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   return v11;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  [(PKDashboardMapItemPresenter *)self _configureCell:self->_sampleCell forItem:a3 inCollectionView:a4 forIndexPath:a6];
+  [(PKDashboardMapItemPresenter *)self _configureCell:self->_sampleCell forItem:item inCollectionView:view forIndexPath:path];
   sampleCell = self->_sampleCell;
 
-  [(PKPaymentTransactionMapCollectionViewCell *)sampleCell sizeThatFits:a5, 1.79769313e308];
+  [(PKPaymentTransactionMapCollectionViewCell *)sampleCell sizeThatFits:width, 1.79769313e308];
   result.height = v10;
   result.width = v9;
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = [v8 transaction];
-  [v22 setItem:v8];
-  v10 = [v22 mapView];
-  [v10 setTransaction:v9];
+  cellCopy = cell;
+  itemCopy = item;
+  transaction = [itemCopy transaction];
+  [cellCopy setItem:itemCopy];
+  mapView = [cellCopy mapView];
+  [mapView setTransaction:transaction];
 
-  v11 = [v8 merchant];
+  merchant = [itemCopy merchant];
 
-  if (!v11)
+  if (!merchant)
   {
-    v11 = [v9 merchant];
+    merchant = [transaction merchant];
   }
 
-  v12 = [v22 mapView];
-  [v12 setMerchant:v11];
+  mapView2 = [cellCopy mapView];
+  [mapView2 setMerchant:merchant];
 
-  if ([v11 shouldIgnoreMapsMatches])
+  if ([merchant shouldIgnoreMapsMatches])
   {
     v13 = 0;
   }
 
   else
   {
-    v14 = [v11 mapsMerchant];
-    v13 = v14 != 0;
+    mapsMerchant = [merchant mapsMerchant];
+    v13 = mapsMerchant != 0;
   }
 
-  [v22 setShowDisclosureIndicator:v13];
-  [v22 setShowSpinner:self->_loadingMapsViewController];
-  v15 = [v11 displayName];
-  if ([v11 useDisplayNameIgnoringBrand])
+  [cellCopy setShowDisclosureIndicator:v13];
+  [cellCopy setShowSpinner:self->_loadingMapsViewController];
+  displayName = [merchant displayName];
+  if ([merchant useDisplayNameIgnoringBrand])
   {
-    v16 = [v11 displayNameIgnoringBrand];
+    displayNameIgnoringBrand = [merchant displayNameIgnoringBrand];
 
-    v15 = v16;
+    displayName = displayNameIgnoringBrand;
   }
 
-  v17 = [v9 displayLocation];
+  displayLocation = [transaction displayLocation];
 
-  if (v17)
+  if (displayLocation)
   {
-    if (v15)
+    if (displayName)
     {
       v18 = MEMORY[0x1E696AEC0];
-      v19 = [v9 displayLocation];
-      v20 = [v18 stringWithFormat:@"%@, %@", v15, v19];
+      displayLocation2 = [transaction displayLocation];
+      v20 = [v18 stringWithFormat:@"%@, %@", displayName, displayLocation2];
 
-      v15 = v20;
+      displayName = v20;
     }
 
     else
     {
-      v15 = [v9 displayLocation];
+      displayName = [transaction displayLocation];
     }
   }
 
-  v21 = [v22 titleLabel];
-  [v21 setText:v15];
+  titleLabel = [cellCopy titleLabel];
+  [titleLabel setText:displayName];
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [PKPaymentTransactionMapCollectionViewCell alloc];

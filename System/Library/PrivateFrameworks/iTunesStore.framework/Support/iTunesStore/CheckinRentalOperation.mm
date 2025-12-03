@@ -1,28 +1,28 @@
 @interface CheckinRentalOperation
-- (BOOL)_handleCheckinAckResponse:(id)a3 error:(id *)a4;
-- (BOOL)_handleResponse:(id)a3 error:(id *)a4;
-- (BOOL)_runCheckinAckOperationWithResponseData:(id)a3 error:(id *)a4;
-- (CheckinRentalOperation)initWithAccountIdentifier:(id)a3 rentalKeyIdentifier:(id)a4;
-- (CheckinRentalOperation)initWithCheckinRequest:(id)a3;
-- (CheckinRentalOperation)initWithSinfs:(id)a3;
+- (BOOL)_handleCheckinAckResponse:(id)response error:(id *)error;
+- (BOOL)_handleResponse:(id)response error:(id *)error;
+- (BOOL)_runCheckinAckOperationWithResponseData:(id)data error:(id *)error;
+- (CheckinRentalOperation)initWithAccountIdentifier:(id)identifier rentalKeyIdentifier:(id)keyIdentifier;
+- (CheckinRentalOperation)initWithCheckinRequest:(id)request;
+- (CheckinRentalOperation)initWithSinfs:(id)sinfs;
 - (NSNumber)accountIdentifier;
 - (NSNumber)rentalKeyIdentifier;
 - (NSString)clientIdentifierHeader;
 - (NSString)userAgent;
 - (SSURLConnectionResponse)URLResponse;
 - (id)_bodyData;
-- (id)_bodyDataWithCheckinAckResponseData:(id)a3;
+- (id)_bodyDataWithCheckinAckResponseData:(id)data;
 - (void)_run;
 - (void)dealloc;
-- (void)setClientIdentifierHeader:(id)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setClientIdentifierHeader:(id)header;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation CheckinRentalOperation
 
-- (CheckinRentalOperation)initWithAccountIdentifier:(id)a3 rentalKeyIdentifier:(id)a4
+- (CheckinRentalOperation)initWithAccountIdentifier:(id)identifier rentalKeyIdentifier:(id)keyIdentifier
 {
-  if (![a3 unsignedLongLongValue] || !objc_msgSend(a4, "unsignedLongLongValue"))
+  if (![identifier unsignedLongLongValue] || !objc_msgSend(keyIdentifier, "unsignedLongLongValue"))
   {
     sub_100272318(a2, self);
   }
@@ -32,16 +32,16 @@
   v8 = [(CheckinRentalOperation *)&v10 init];
   if (v8)
   {
-    v8->_accountIdentifier = [a3 copy];
-    v8->_rentalKeyIdentifier = [a4 copy];
+    v8->_accountIdentifier = [identifier copy];
+    v8->_rentalKeyIdentifier = [keyIdentifier copy];
   }
 
   return v8;
 }
 
-- (CheckinRentalOperation)initWithSinfs:(id)a3
+- (CheckinRentalOperation)initWithSinfs:(id)sinfs
 {
-  if (![a3 count])
+  if (![sinfs count])
   {
     sub_100272374(a2, self);
   }
@@ -51,7 +51,7 @@
   v6 = [(CheckinRentalOperation *)&v10 init];
   if (v6)
   {
-    v7 = [a3 copy];
+    v7 = [sinfs copy];
     v6->_sinfs = v7;
     if (v7)
     {
@@ -64,21 +64,21 @@
   return v6;
 }
 
-- (CheckinRentalOperation)initWithCheckinRequest:(id)a3
+- (CheckinRentalOperation)initWithCheckinRequest:(id)request
 {
-  v5 = [a3 accountIdentifier];
-  v6 = [a3 rentalKeyIdentifier];
-  v7 = [a3 sinfs];
-  if (v5 && v6)
+  accountIdentifier = [request accountIdentifier];
+  rentalKeyIdentifier = [request rentalKeyIdentifier];
+  sinfs = [request sinfs];
+  if (accountIdentifier && rentalKeyIdentifier)
   {
 
-    return [(CheckinRentalOperation *)self initWithAccountIdentifier:v5 rentalKeyIdentifier:v6];
+    return [(CheckinRentalOperation *)self initWithAccountIdentifier:accountIdentifier rentalKeyIdentifier:rentalKeyIdentifier];
   }
 
-  else if (v7)
+  else if (sinfs)
   {
 
-    return [(CheckinRentalOperation *)self initWithSinfs:v7];
+    return [(CheckinRentalOperation *)self initWithSinfs:sinfs];
   }
 
   else
@@ -117,27 +117,27 @@
   return v2;
 }
 
-- (void)setClientIdentifierHeader:(id)a3
+- (void)setClientIdentifierHeader:(id)header
 {
   [(CheckinRentalOperation *)self lock];
   clientIdentifierHeader = self->_clientIdentifierHeader;
-  if (clientIdentifierHeader != a3)
+  if (clientIdentifierHeader != header)
   {
 
-    self->_clientIdentifierHeader = [a3 copy];
+    self->_clientIdentifierHeader = [header copy];
   }
 
   [(CheckinRentalOperation *)self unlock];
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
   [(CheckinRentalOperation *)self lock];
   userAgent = self->_userAgent;
-  if (userAgent != a3)
+  if (userAgent != agent)
   {
 
-    self->_userAgent = [a3 copy];
+    self->_userAgent = [agent copy];
   }
 
   [(CheckinRentalOperation *)self unlock];
@@ -180,15 +180,15 @@ LABEL_28:
       v12 = +[SSLogConfig sharedConfig];
     }
 
-    v13 = [v12 shouldLog];
+    shouldLog = [v12 shouldLog];
     if ([v12 shouldLogToDisk])
     {
-      v14 = v13 | 2;
+      v14 = shouldLog | 2;
     }
 
     else
     {
-      v14 = v13;
+      v14 = shouldLog;
     }
 
     if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -227,15 +227,15 @@ LABEL_28:
       v23 = +[SSLogConfig sharedConfig];
     }
 
-    v24 = [v23 shouldLog];
+    shouldLog2 = [v23 shouldLog];
     if ([v23 shouldLogToDisk])
     {
-      v25 = v24 | 2;
+      v25 = shouldLog2 | 2;
     }
 
     else
     {
-      v25 = v24;
+      v25 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v23 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -268,15 +268,15 @@ LABEL_29:
       v18 = +[SSLogConfig sharedConfig];
     }
 
-    v19 = [v18 shouldLog];
+    shouldLog3 = [v18 shouldLog];
     if ([v18 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog3 | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -318,10 +318,10 @@ LABEL_29:
     [v6 setObject:accountIdentifier forKey:@"dsid"];
   }
 
-  v8 = [+[ISDevice sharedInstance](ISDevice guid];
-  if (v8)
+  guid = [+[ISDevice sharedInstance](ISDevice guid];
+  if (guid)
   {
-    [v6 setObject:v8 forKey:@"guid"];
+    [v6 setObject:guid forKey:@"guid"];
   }
 
   v9 = [+[SSDevice currentDevice](SSDevice "currentDevice")];
@@ -348,15 +348,15 @@ LABEL_40:
   return v11;
 }
 
-- (id)_bodyDataWithCheckinAckResponseData:(id)a3
+- (id)_bodyDataWithCheckinAckResponseData:(id)data
 {
-  if (-[NSNumber unsignedLongLongValue](self->_accountIdentifier, "unsignedLongLongValue") && -[NSNumber unsignedLongLongValue](self->_rentalKeyIdentifier, "unsignedLongLongValue") && [a3 length])
+  if (-[NSNumber unsignedLongLongValue](self->_accountIdentifier, "unsignedLongLongValue") && -[NSNumber unsignedLongLongValue](self->_rentalKeyIdentifier, "unsignedLongLongValue") && [data length])
   {
     v5 = objc_alloc_init(NSMutableDictionary);
     v6 = v5;
-    if (a3)
+    if (data)
     {
-      [v5 setObject:a3 forKey:@"checkin-ack-sar"];
+      [v5 setObject:data forKey:@"checkin-ack-sar"];
     }
 
     accountIdentifier = self->_accountIdentifier;
@@ -365,10 +365,10 @@ LABEL_40:
       [v6 setObject:accountIdentifier forKey:@"dsid"];
     }
 
-    v8 = [+[ISDevice sharedInstance](ISDevice guid];
-    if (v8)
+    guid = [+[ISDevice sharedInstance](ISDevice guid];
+    if (guid)
     {
-      [v6 setObject:v8 forKey:@"guid"];
+      [v6 setObject:guid forKey:@"guid"];
     }
 
     v9 = [+[SSDevice currentDevice](SSDevice "currentDevice")];
@@ -396,15 +396,15 @@ LABEL_40:
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [v13 shouldLog];
+    shouldLog = [v13 shouldLog];
     if ([v13 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
     if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -431,10 +431,10 @@ LABEL_40:
   }
 }
 
-- (BOOL)_handleResponse:(id)a3 error:(id *)a4
+- (BOOL)_handleResponse:(id)response error:(id *)error
 {
   v24 = 0;
-  v7 = [a3 objectForKey:kISFailureTypeKey];
+  v7 = [response objectForKey:kISFailureTypeKey];
   if (v7)
   {
     v8 = v7;
@@ -444,15 +444,15 @@ LABEL_40:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -492,11 +492,11 @@ LABEL_40:
   else
   {
     *v25 = 0;
-    v16 = [a3 objectForKey:@"rental-bag-response"];
+    v16 = [response objectForKey:@"rental-bag-response"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [a3 objectForKey:@"checkin-sar"];
+      v17 = [response objectForKey:@"checkin-sar"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && sub_1000B2CB8(v16, v17))
       {
@@ -519,17 +519,17 @@ LABEL_22:
   result = 0;
   v24 = v21;
 LABEL_23:
-  if (a4)
+  if (error)
   {
-    *a4 = v24;
+    *error = v24;
   }
 
   return result;
 }
 
-- (BOOL)_handleCheckinAckResponse:(id)a3 error:(id *)a4
+- (BOOL)_handleCheckinAckResponse:(id)response error:(id *)error
 {
-  v5 = [a3 objectForKey:kISFailureTypeKey];
+  v5 = [response objectForKey:kISFailureTypeKey];
   v6 = v5;
   if (v5)
   {
@@ -539,15 +539,15 @@ LABEL_23:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -575,7 +575,7 @@ LABEL_23:
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       v5 = ISError();
-      if (!a4)
+      if (!error)
       {
         return v6 == 0;
       }
@@ -586,10 +586,10 @@ LABEL_23:
     v5 = [ISError() errorBySettingFatalError:1];
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_15:
-    *a4 = v5;
+    *error = v5;
   }
 
   return v6 == 0;
@@ -598,8 +598,8 @@ LABEL_15:
 - (void)_run
 {
   v20 = 0;
-  v3 = [(CheckinRentalOperation *)self _bodyData];
-  if (v3)
+  _bodyData = [(CheckinRentalOperation *)self _bodyData];
+  if (_bodyData)
   {
     v4 = objc_alloc_init(ISStoreURLOperation);
     v5 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:self->_accountIdentifier];
@@ -611,11 +611,11 @@ LABEL_15:
     v7 = objc_alloc_init(SSMutableURLRequestProperties);
     [v7 setCachePolicy:1];
     [v7 setClientIdentifier:{-[CheckinRentalOperation clientIdentifierHeader](self, "clientIdentifierHeader")}];
-    [v7 setHTTPBody:v3];
+    [v7 setHTTPBody:_bodyData];
     [v7 setHTTPMethod:@"POST"];
     [v7 setURLBagKey:@"rental-checkin"];
-    v8 = [(CheckinRentalOperation *)self userAgent];
-    [v7 setValue:v8 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+    userAgent = [(CheckinRentalOperation *)self userAgent];
+    [v7 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
     [v4 setRequestProperties:v7];
 
     v9 = +[SSLogConfig sharedDaemonConfig];
@@ -624,15 +624,15 @@ LABEL_15:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_INFO))
@@ -659,9 +659,9 @@ LABEL_15:
 
     if ([(CheckinRentalOperation *)self runSubOperation:v4 returningError:&v20, v18])
     {
-      v15 = [(DaemonProtocolDataProvider *)v6 output];
-      v3 = [(CheckinRentalOperation *)self _handleResponse:v15 error:&v20];
-      v16 = [NSPropertyListSerialization dataWithPropertyList:v15 format:100 options:0 error:0];
+      output = [(DaemonProtocolDataProvider *)v6 output];
+      _bodyData = [(CheckinRentalOperation *)self _handleResponse:output error:&v20];
+      v16 = [NSPropertyListSerialization dataWithPropertyList:output format:100 options:0 error:0];
       [(CheckinRentalOperation *)self lock];
 
       self->_urlResponse = [[SSURLConnectionResponse alloc] initWithURLResponse:objc_msgSend(v4 bodyData:{"response"), v16}];
@@ -670,7 +670,7 @@ LABEL_15:
 
     else
     {
-      v3 = 0;
+      _bodyData = 0;
     }
 
     v17 = v20;
@@ -683,18 +683,18 @@ LABEL_15:
   }
 
   [(CheckinRentalOperation *)self setError:v17];
-  [(CheckinRentalOperation *)self setSuccess:v3];
+  [(CheckinRentalOperation *)self setSuccess:_bodyData];
 }
 
-- (BOOL)_runCheckinAckOperationWithResponseData:(id)a3 error:(id *)a4
+- (BOOL)_runCheckinAckOperationWithResponseData:(id)data error:(id *)error
 {
   v23 = 0;
-  v6 = [(CheckinRentalOperation *)self _bodyDataWithCheckinAckResponseData:a3];
+  v6 = [(CheckinRentalOperation *)self _bodyDataWithCheckinAckResponseData:data];
   if (!v6)
   {
     v19 = 0;
     v23 = ISError();
-    if (!a4)
+    if (!error)
     {
       return v19;
     }
@@ -716,8 +716,8 @@ LABEL_15:
   [v11 setHTTPBody:v7];
   [v11 setHTTPMethod:@"POST"];
   [v11 setURLBagKey:@"rental-ack-checkin"];
-  v12 = [(CheckinRentalOperation *)self userAgent];
-  [v11 setValue:v12 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  userAgent = [(CheckinRentalOperation *)self userAgent];
+  [v11 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
   [v8 setRequestProperties:v11];
 
   v13 = +[SSLogConfig sharedDaemonConfig];
@@ -726,15 +726,15 @@ LABEL_15:
     v13 = +[SSLogConfig sharedConfig];
   }
 
-  v14 = [v13 shouldLog];
+  shouldLog = [v13 shouldLog];
   if ([v13 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog;
   }
 
   if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_INFO))
@@ -769,10 +769,10 @@ LABEL_15:
     v19 = 0;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_18:
-    *a4 = v23;
+    *error = v23;
   }
 
   return v19;

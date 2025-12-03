@@ -1,28 +1,28 @@
 @interface CNKCallParticipantLabelDescriptorFactory
-- (id)callScreeningLabelDescriptorForCall:(id)a3 callCount:(int64_t)a4;
-- (id)labelDescriptorWithStringsForCall:(id)a3 callCount:(int64_t)a4 alertAvailable:(BOOL)a5 allowsDuration:(BOOL)a6;
-- (id)labelDescriptorWithStringsForCall:(id)a3 callCount:(int64_t)a4 callCenter:(id)a5 alertAvailable:(BOOL)a6 allowsDuration:(BOOL)a7;
+- (id)callScreeningLabelDescriptorForCall:(id)call callCount:(int64_t)count;
+- (id)labelDescriptorWithStringsForCall:(id)call callCount:(int64_t)count alertAvailable:(BOOL)available allowsDuration:(BOOL)duration;
+- (id)labelDescriptorWithStringsForCall:(id)call callCount:(int64_t)count callCenter:(id)center alertAvailable:(BOOL)available allowsDuration:(BOOL)duration;
 - (id)makeLabel;
-- (id)makeLabelWithString:(id)a3;
-- (id)makeLabelWithString:(id)a3 secondaryString:(id)a4 layoutState:(int64_t)a5;
+- (id)makeLabelWithString:(id)string;
+- (id)makeLabelWithString:(id)string secondaryString:(id)secondaryString layoutState:(int64_t)state;
 - (id)organizationNameProvider;
-- (void)setOrganizationNameProvider:(id)a3;
+- (void)setOrganizationNameProvider:(id)provider;
 @end
 
 @implementation CNKCallParticipantLabelDescriptorFactory
 
-- (id)labelDescriptorWithStringsForCall:(id)a3 callCount:(int64_t)a4 alertAvailable:(BOOL)a5 allowsDuration:(BOOL)a6
+- (id)labelDescriptorWithStringsForCall:(id)call callCount:(int64_t)count alertAvailable:(BOOL)available allowsDuration:(BOOL)duration
 {
-  v10 = a3;
-  v11 = self;
-  v12 = CNKCallParticipantLabelDescriptorFactory.labelDescriptor(call:callCount:alertAvailable:allowsDuration:)(v10, a4, a5, a6);
+  callCopy = call;
+  selfCopy = self;
+  v12 = CNKCallParticipantLabelDescriptorFactory.labelDescriptor(call:callCount:alertAvailable:allowsDuration:)(callCopy, count, available, duration);
 
   return v12;
 }
 
 - (id)makeLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNKCallParticipantLabelDescriptorFactory.makeLabel()();
 
   return v3;
@@ -41,40 +41,40 @@
   return v3;
 }
 
-- (void)setOrganizationNameProvider:(id)a3
+- (void)setOrganizationNameProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   static CallParticipantLabelDescriptor.organizationNameProvider.setter(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned TUCall) -> (@autoreleased NSString?), v5);
 }
 
-- (id)makeLabelWithString:(id)a3
+- (id)makeLabelWithString:(id)string
 {
-  if (a3)
+  if (string)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = CNKCallParticipantLabelDescriptorFactory.makeLabel(using:)();
 
   return v5;
 }
 
-- (id)makeLabelWithString:(id)a3 secondaryString:(id)a4 layoutState:(int64_t)a5
+- (id)makeLabelWithString:(id)string secondaryString:(id)secondaryString layoutState:(int64_t)state
 {
-  v6 = a4;
-  if (a3)
+  secondaryStringCopy = secondaryString;
+  if (string)
   {
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
-    if (v6)
+    if (secondaryStringCopy)
     {
 LABEL_3:
       v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-      v6 = v12;
+      secondaryStringCopy = v12;
       goto LABEL_6;
     }
   }
@@ -83,7 +83,7 @@ LABEL_3:
   {
     v8 = 0;
     v10 = 0;
-    if (a4)
+    if (secondaryString)
     {
       goto LABEL_3;
     }
@@ -91,26 +91,26 @@ LABEL_3:
 
   v11 = 0;
 LABEL_6:
-  v13 = self;
-  v14 = CNKCallParticipantLabelDescriptorFactory.makeLabel(using:secondaryString:layoutState:)(v8, v10, v11, v6, a5);
+  selfCopy = self;
+  v14 = CNKCallParticipantLabelDescriptorFactory.makeLabel(using:secondaryString:layoutState:)(v8, v10, v11, secondaryStringCopy, state);
 
   return v14;
 }
 
-- (id)labelDescriptorWithStringsForCall:(id)a3 callCount:(int64_t)a4 callCenter:(id)a5 alertAvailable:(BOOL)a6 allowsDuration:(BOOL)a7
+- (id)labelDescriptorWithStringsForCall:(id)call callCount:(int64_t)count callCenter:(id)center alertAvailable:(BOOL)available allowsDuration:(BOOL)duration
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = self;
-  v15 = CNKCallParticipantLabelDescriptorFactory.labelDescriptor(call:callCount:callCenter:alertAvailable:allowsDuration:)(v12, a4, v13, a6, a7);
+  callCopy = call;
+  centerCopy = center;
+  selfCopy = self;
+  v15 = CNKCallParticipantLabelDescriptorFactory.labelDescriptor(call:callCount:callCenter:alertAvailable:allowsDuration:)(callCopy, count, centerCopy, available, duration);
 
   return v15;
 }
 
-- (id)callScreeningLabelDescriptorForCall:(id)a3 callCount:(int64_t)a4
+- (id)callScreeningLabelDescriptorForCall:(id)call callCount:(int64_t)count
 {
-  v5 = a3;
-  v6 = self;
+  callCopy = call;
+  selfCopy = self;
   v7 = CNKCallParticipantLabelDescriptorFactory.callScreeningLabelDescriptor(call:callCount:)();
 
   return v7;

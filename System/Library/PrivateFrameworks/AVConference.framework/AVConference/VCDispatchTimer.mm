@@ -1,5 +1,5 @@
 @interface VCDispatchTimer
-- (VCDispatchTimer)initWithIntervalMilliseconds:(unsigned int)a3 callbackBlock:(id)a4 clientQueue:(id)a5;
+- (VCDispatchTimer)initWithIntervalMilliseconds:(unsigned int)milliseconds callbackBlock:(id)block clientQueue:(id)queue;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
@@ -7,7 +7,7 @@
 
 @implementation VCDispatchTimer
 
-- (VCDispatchTimer)initWithIntervalMilliseconds:(unsigned int)a3 callbackBlock:(id)a4 clientQueue:(id)a5
+- (VCDispatchTimer)initWithIntervalMilliseconds:(unsigned int)milliseconds callbackBlock:(id)block clientQueue:(id)queue
 {
   v19 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -15,12 +15,12 @@
   v8 = [(VCObject *)&v18 init];
   if (v8)
   {
-    v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, a5);
+    v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queue);
     v8->_timer = v9;
     if (v9)
     {
-      v8->_callbackBlock = _Block_copy(a4);
-      v8->_intervalMilliseconds = a3;
+      v8->_callbackBlock = _Block_copy(block);
+      v8->_intervalMilliseconds = milliseconds;
       v10 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:v8];
       timer = v8->_timer;
       handler[0] = MEMORY[0x1E69E9820];
@@ -283,7 +283,7 @@ LABEL_11:
         v31 = 2112;
         v32 = v4;
         v33 = 2048;
-        v34 = self;
+        selfCopy2 = self;
         v35 = 2048;
         v36 = v7;
         v8 = v6;
@@ -351,7 +351,7 @@ LABEL_26:
         v31 = 2112;
         v32 = v14;
         v33 = 2048;
-        v34 = self;
+        selfCopy2 = self;
         v35 = 2048;
         v36 = v23;
         v18 = " [%s] %s:%d %@(%p) timer=%p has been test cancelled";

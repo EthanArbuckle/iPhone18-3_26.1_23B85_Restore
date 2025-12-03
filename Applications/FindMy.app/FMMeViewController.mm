@@ -1,77 +1,77 @@
 @interface FMMeViewController
 - (void)handleClearTags;
 - (void)handleLocationLabel;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 - (void)update;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMMeViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100083648(a3);
+  selfCopy = self;
+  sub_100083648(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100085074(a3);
+  selfCopy = self;
+  sub_100085074(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100085A20(a3);
+  selfCopy = self;
+  sub_100085A20(disappear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100085EA4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100085EA4(change);
 }
 
 - (void)update
 {
-  v2 = self;
+  selfCopy = self;
   sub_100083A2C();
 }
 
 - (void)handleLocationLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_100087AE8();
 }
 
 - (void)handleClearTags
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008893C();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v9 = &type metadata for SolariumFeatureFlag;
   v10 = sub_10000BD04();
-  v5 = a3;
-  v6 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   v7 = isFeatureEnabled(_:)();
   sub_100006060(v8);
   if (v7)
   {
-    sub_10027C124(v5);
+    sub_10027C124(scrollCopy);
   }
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008A010();
 }
 

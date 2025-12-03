@@ -1,9 +1,9 @@
 @interface MapsSettingsDrivingController
-- (id)_avoidHighways:(id)a3;
-- (id)_avoidTolls:(id)a3;
+- (id)_avoidHighways:(id)highways;
+- (id)_avoidTolls:(id)tolls;
 - (id)specifiers;
-- (void)_setReportAndVerifyIncidentsWhileNavigating:(id)a3 specifier:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_setReportAndVerifyIncidentsWhileNavigating:(id)navigating specifier:(id)specifier;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -20,11 +20,11 @@
   [(MapsSettingsDrivingController *)self setTitle:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = MapsSettingsDrivingController;
-  [(MapsSettingsDrivingController *)&v9 viewDidAppear:a3];
+  [(MapsSettingsDrivingController *)&v9 viewDidAppear:appear];
   v4 = MapsSettingsDrivingTitle();
   v5 = AppsSettingsTitle();
   v10[0] = v5;
@@ -35,7 +35,7 @@
   [(MapsSettingsDrivingController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:@"com.apple.Maps" title:v4 localizedNavigationComponents:v7 deepLink:v8];
 }
 
-- (id)_avoidTolls:(id)a3
+- (id)_avoidTolls:(id)tolls
 {
   v3 = [MapsSettings valueForDefaultsKey:@"MapsDefaultAvoidTollsKey"];
   if (!v3)
@@ -46,7 +46,7 @@
   return v3;
 }
 
-- (id)_avoidHighways:(id)a3
+- (id)_avoidHighways:(id)highways
 {
   v3 = [MapsSettings valueForDefaultsKey:@"MapsDefaultAvoidHighwaysKey"];
   if (!v3)
@@ -57,9 +57,9 @@
   return v3;
 }
 
-- (void)_setReportAndVerifyIncidentsWhileNavigating:(id)a3 specifier:(id)a4
+- (void)_setReportAndVerifyIncidentsWhileNavigating:(id)navigating specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [navigating BOOLValue];
 
   GEOConfigSetBOOL();
 }

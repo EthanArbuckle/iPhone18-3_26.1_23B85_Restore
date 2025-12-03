@@ -1,21 +1,21 @@
 @interface TIAnalyticsNumberFieldSpec
-- (BOOL)validate:(id)a3 error:(id *)a4;
-- (TIAnalyticsNumberFieldSpec)initWithName:(id)a3 isInteger:(BOOL)a4 minValue:(id)a5 maxValue:(id)a6 significantDigits:(id)a7;
+- (BOOL)validate:(id)validate error:(id *)error;
+- (TIAnalyticsNumberFieldSpec)initWithName:(id)name isInteger:(BOOL)integer minValue:(id)value maxValue:(id)maxValue significantDigits:(id)digits;
 @end
 
 @implementation TIAnalyticsNumberFieldSpec
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
-  v7 = a3;
-  if (v7)
+  validateCopy = validate;
+  if (validateCopy)
   {
     if (self->_isInteger)
     {
-      if (![TIAnalyticsUtil isInteger:v7])
+      if (![TIAnalyticsUtil isInteger:validateCopy])
       {
-        v10 = [(TIAnalyticsFieldSpec *)self name];
-        v26 = v10;
+        name = [(TIAnalyticsFieldSpec *)self name];
+        v26 = name;
         v11 = @"Field '%@' must be an integer.";
         goto LABEL_13;
       }
@@ -26,31 +26,31 @@
       }
     }
 
-    if ([TIAnalyticsUtil isFloat:v7])
+    if ([TIAnalyticsUtil isFloat:validateCopy])
     {
 LABEL_6:
-      v8 = [(TIAnalyticsNumberFieldSpec *)self minValue];
-      if (v8)
+      minValue = [(TIAnalyticsNumberFieldSpec *)self minValue];
+      if (minValue)
       {
-        v4 = [(TIAnalyticsNumberFieldSpec *)self minValue];
-        if ([v7 compare:v4] == -1)
+        minValue2 = [(TIAnalyticsNumberFieldSpec *)self minValue];
+        if ([validateCopy compare:minValue2] == -1)
         {
 
 LABEL_18:
-          v10 = [(TIAnalyticsFieldSpec *)self name];
-          [(TIAnalyticsFieldSpec *)self errorFromValue:v7 code:14 message:@"Field '%@' is out of range.", v10];
+          name = [(TIAnalyticsFieldSpec *)self name];
+          [(TIAnalyticsFieldSpec *)self errorFromValue:validateCopy code:14 message:@"Field '%@' is out of range.", name];
           goto LABEL_24;
         }
       }
 
-      v15 = [(TIAnalyticsNumberFieldSpec *)self maxValue];
-      if (v15)
+      maxValue = [(TIAnalyticsNumberFieldSpec *)self maxValue];
+      if (maxValue)
       {
-        v16 = v15;
-        v17 = [(TIAnalyticsNumberFieldSpec *)self maxValue];
-        v18 = [v7 compare:v17];
+        v16 = maxValue;
+        maxValue2 = [(TIAnalyticsNumberFieldSpec *)self maxValue];
+        v18 = [validateCopy compare:maxValue2];
 
-        if (v8)
+        if (minValue)
         {
         }
 
@@ -60,33 +60,33 @@ LABEL_18:
         }
       }
 
-      else if (v8)
+      else if (minValue)
       {
       }
 
-      v19 = [TIAnalyticsUtil roundNumber:v7 toSignificantDigits:self->_significantDigits];
+      v19 = [TIAnalyticsUtil roundNumber:validateCopy toSignificantDigits:self->_significantDigits];
       [v19 doubleValue];
       v21 = v20;
-      [v7 doubleValue];
+      [validateCopy doubleValue];
       v23 = v22;
 
       if (v21 == v23)
       {
-        v9 = 0;
+        errorFromNil = 0;
         goto LABEL_27;
       }
 
-      v10 = [(TIAnalyticsFieldSpec *)self name];
-      v26 = v10;
+      name = [(TIAnalyticsFieldSpec *)self name];
+      v26 = name;
       v11 = @"Field '%@' has too many significant digits.";
-      v12 = self;
-      v13 = v7;
+      selfCopy2 = self;
+      v13 = validateCopy;
       v14 = 15;
 LABEL_23:
-      [(TIAnalyticsFieldSpec *)v12 errorFromValue:v13 code:v14 message:v11, v26];
-      v9 = LABEL_24:;
+      [(TIAnalyticsFieldSpec *)selfCopy2 errorFromValue:v13 code:v14 message:v11, v26];
+      errorFromNil = LABEL_24:;
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -94,55 +94,55 @@ LABEL_23:
       goto LABEL_25;
     }
 
-    v10 = [(TIAnalyticsFieldSpec *)self name];
-    v26 = v10;
+    name = [(TIAnalyticsFieldSpec *)self name];
+    v26 = name;
     v11 = @"Field '%@' must be a double.";
 LABEL_13:
-    v12 = self;
-    v13 = v7;
+    selfCopy2 = self;
+    v13 = validateCopy;
     v14 = 10;
     goto LABEL_23;
   }
 
-  v9 = [(TIAnalyticsFieldSpec *)self errorFromNil];
-  if (!a4)
+  errorFromNil = [(TIAnalyticsFieldSpec *)self errorFromNil];
+  if (!error)
   {
     goto LABEL_27;
   }
 
 LABEL_25:
-  if (v9)
+  if (errorFromNil)
   {
-    v24 = v9;
-    *a4 = v9;
+    v24 = errorFromNil;
+    *error = errorFromNil;
   }
 
 LABEL_27:
 
-  return v9 == 0;
+  return errorFromNil == 0;
 }
 
-- (TIAnalyticsNumberFieldSpec)initWithName:(id)a3 isInteger:(BOOL)a4 minValue:(id)a5 maxValue:(id)a6 significantDigits:(id)a7
+- (TIAnalyticsNumberFieldSpec)initWithName:(id)name isInteger:(BOOL)integer minValue:(id)value maxValue:(id)maxValue significantDigits:(id)digits
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  valueCopy = value;
+  maxValueCopy = maxValue;
+  digitsCopy = digits;
   v24.receiver = self;
   v24.super_class = TIAnalyticsNumberFieldSpec;
-  v15 = [(TIAnalyticsFieldSpec *)&v24 initWithName:a3];
+  v15 = [(TIAnalyticsFieldSpec *)&v24 initWithName:name];
   v16 = v15;
   if (v15)
   {
-    v15->_isInteger = a4;
-    v17 = [v12 copy];
+    v15->_isInteger = integer;
+    v17 = [valueCopy copy];
     minValue = v16->_minValue;
     v16->_minValue = v17;
 
-    v19 = [v13 copy];
+    v19 = [maxValueCopy copy];
     maxValue = v16->_maxValue;
     v16->_maxValue = v19;
 
-    v21 = [v14 copy];
+    v21 = [digitsCopy copy];
     significantDigits = v16->_significantDigits;
     v16->_significantDigits = v21;
   }

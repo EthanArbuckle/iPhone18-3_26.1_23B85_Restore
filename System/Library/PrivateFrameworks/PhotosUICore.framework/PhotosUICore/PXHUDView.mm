@@ -1,55 +1,55 @@
 @interface PXHUDView
-+ (Class)visualizationClassToViewClass:(Class)a3;
-- (PXHUDView)initWithCoder:(id)a3;
-- (PXHUDView)initWithFrame:(CGRect)a3;
-- (void)addVisualization:(id)a3;
-- (void)removeVisualization:(id)a3;
++ (Class)visualizationClassToViewClass:(Class)class;
+- (PXHUDView)initWithCoder:(id)coder;
+- (PXHUDView)initWithFrame:(CGRect)frame;
+- (void)addVisualization:(id)visualization;
+- (void)removeVisualization:(id)visualization;
 @end
 
 @implementation PXHUDView
 
-- (void)removeVisualization:(id)a3
+- (void)removeVisualization:(id)visualization
 {
-  v8 = a3;
-  v4 = [(PXHUDView *)self visualizationToView];
-  v5 = [v4 objectForKey:v8];
+  visualizationCopy = visualization;
+  visualizationToView = [(PXHUDView *)self visualizationToView];
+  v5 = [visualizationToView objectForKey:visualizationCopy];
 
   if (v5)
   {
-    v6 = [(PXHUDView *)self visualizationToView];
-    [v6 removeObjectForKey:v8];
+    visualizationToView2 = [(PXHUDView *)self visualizationToView];
+    [visualizationToView2 removeObjectForKey:visualizationCopy];
 
-    v7 = [(PXHUDView *)self stackView];
-    [v7 removeArrangedSubview:v5];
+    stackView = [(PXHUDView *)self stackView];
+    [stackView removeArrangedSubview:v5];
 
     [v5 removeFromSuperview];
   }
 }
 
-- (void)addVisualization:(id)a3
+- (void)addVisualization:(id)visualization
 {
-  v9 = a3;
-  v4 = [(PXHUDView *)self visualizationToView];
-  v5 = [v4 objectForKey:v9];
+  visualizationCopy = visualization;
+  visualizationToView = [(PXHUDView *)self visualizationToView];
+  v5 = [visualizationToView objectForKey:visualizationCopy];
 
   if (!v5)
   {
     v6 = objc_opt_class();
     v5 = objc_alloc_init([v6 visualizationClassToViewClass:objc_opt_class()]);
-    [v5 setVisualization:v9];
-    v7 = [(PXHUDView *)self stackView];
-    [v7 addArrangedSubview:v5];
+    [v5 setVisualization:visualizationCopy];
+    stackView = [(PXHUDView *)self stackView];
+    [stackView addArrangedSubview:v5];
 
-    v8 = [(PXHUDView *)self visualizationToView];
-    [v8 setObject:v5 forKey:v9];
+    visualizationToView2 = [(PXHUDView *)self visualizationToView];
+    [visualizationToView2 setObject:v5 forKey:visualizationCopy];
   }
 }
 
-- (PXHUDView)initWithFrame:(CGRect)a3
+- (PXHUDView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXHUDView;
-  v3 = [(PXHUDView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXHUDView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -59,11 +59,11 @@
   return v4;
 }
 
-- (PXHUDView)initWithCoder:(id)a3
+- (PXHUDView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXHUDView;
-  v3 = [(PXHUDView *)&v6 initWithCoder:a3];
+  v3 = [(PXHUDView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -73,7 +73,7 @@
   return v4;
 }
 
-+ (Class)visualizationClassToViewClass:(Class)a3
++ (Class)visualizationClassToViewClass:(Class)class
 {
   if (visualizationClassToViewClass__onceToken != -1)
   {
@@ -82,7 +82,7 @@
 
   v4 = visualizationClassToViewClass__visualizationClassToViewClass;
 
-  return [v4 objectForKey:a3];
+  return [v4 objectForKey:class];
 }
 
 uint64_t __43__PXHUDView_visualizationClassToViewClass___block_invoke()

@@ -1,5 +1,5 @@
 @interface MULabeledValueActionRowView
-- (MULabeledValueActionRowView)initWithFrame:(CGRect)a3;
+- (MULabeledValueActionRowView)initWithFrame:(CGRect)frame;
 - (id)_valueLabelFont;
 - (id)initForDeveloperPlaceCard;
 - (void)_actionButtonTapped;
@@ -7,34 +7,34 @@
 - (void)_setupSubviews;
 - (void)_updateAppearance;
 - (void)_updateValueText;
-- (void)copy:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)copy:(id)copy;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MULabeledValueActionRowView
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = [(MULabeledValueActionViewModelProviding *)self->_viewModel valueString];
-  if ([v4 length])
+  valueString = [(MULabeledValueActionViewModelProviding *)self->_viewModel valueString];
+  if ([valueString length])
   {
-    v3 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    [v3 setString:v4];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    [generalPasteboard setString:valueString];
   }
 }
 
 - (void)_updateValueText
 {
-  v3 = [(MULabeledValueActionViewModelProviding *)self->_viewModel valueString];
-  v4 = [v3 length];
+  valueString = [(MULabeledValueActionViewModelProviding *)self->_viewModel valueString];
+  v4 = [valueString length];
 
   if (v4)
   {
     v5 = [(MULabeledValueActionViewModelProviding *)self->_viewModel actionVariant]== 1 && UIAccessibilityButtonShapesEnabled();
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v7 = [MEMORY[0x1E696F200] sharedManager];
-    v8 = [v7 bodyFont];
-    [v12 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69DB648]];
+    mEMORY[0x1E696F200] = [MEMORY[0x1E696F200] sharedManager];
+    bodyFont = [mEMORY[0x1E696F200] bodyFont];
+    [v12 setObject:bodyFont forKeyedSubscript:*MEMORY[0x1E69DB648]];
 
     if (v5)
     {
@@ -42,8 +42,8 @@
     }
 
     v9 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v10 = [(MULabeledValueActionViewModelProviding *)self->_viewModel valueString];
-    v11 = [v9 initWithString:v10 attributes:v12];
+    valueString2 = [(MULabeledValueActionViewModelProviding *)self->_viewModel valueString];
+    v11 = [v9 initWithString:valueString2 attributes:v12];
     [(MULabelViewProtocol *)self->_valueLabel setAttributedText:v11];
   }
 
@@ -60,8 +60,8 @@
   v3 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] weight:*MEMORY[0x1E69DB970]];
   [(MULabelViewProtocol *)self->_titleLabel setFont:v3];
 
-  v4 = [(MULabeledValueActionRowView *)self _valueLabelFont];
-  [(MULabelViewProtocol *)self->_valueLabel setFont:v4];
+  _valueLabelFont = [(MULabeledValueActionRowView *)self _valueLabelFont];
+  [(MULabelViewProtocol *)self->_valueLabel setFont:_valueLabelFont];
 
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
   [(MULabelViewProtocol *)self->_tertiaryLabel setFont:v5];
@@ -71,14 +71,14 @@
 {
   if ([(MULabeledValueActionViewModelProviding *)self->_viewModel emphasizeValueString])
   {
-    v2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
-    [v2 _mapkit_fontWithWeight:*MEMORY[0x1E69DB958]];
+    mEMORY[0x1E696F200] = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
+    [mEMORY[0x1E696F200] _mapkit_fontWithWeight:*MEMORY[0x1E69DB958]];
   }
 
   else
   {
-    v2 = [MEMORY[0x1E696F200] sharedManager];
-    [v2 bodyFont];
+    mEMORY[0x1E696F200] = [MEMORY[0x1E696F200] sharedManager];
+    [mEMORY[0x1E696F200] bodyFont];
   }
   v3 = ;
 
@@ -87,46 +87,46 @@
 
 - (void)_updateAppearance
 {
-  v3 = [(MULabeledValueActionViewModelProviding *)self->_viewModel titleString];
-  v4 = [v3 length];
+  titleString = [(MULabeledValueActionViewModelProviding *)self->_viewModel titleString];
+  v4 = [titleString length];
 
   if (v4)
   {
-    v5 = [(MULabeledValueActionViewModelProviding *)self->_viewModel valueString];
-    v6 = [v5 length];
+    valueString = [(MULabeledValueActionViewModelProviding *)self->_viewModel valueString];
+    v6 = [valueString length];
 
     if (v6)
     {
-      v7 = [(MULabeledValueActionViewModelProviding *)self->_viewModel titleString];
-      [(MULabelViewProtocol *)self->_titleLabel setText:v7];
+      titleString2 = [(MULabeledValueActionViewModelProviding *)self->_viewModel titleString];
+      [(MULabelViewProtocol *)self->_titleLabel setText:titleString2];
 
-      v8 = [(MULabeledValueActionRowView *)self _valueLabelFont];
-      [(MULabelViewProtocol *)self->_valueLabel setFont:v8];
+      _valueLabelFont = [(MULabeledValueActionRowView *)self _valueLabelFont];
+      [(MULabelViewProtocol *)self->_valueLabel setFont:_valueLabelFont];
 
       [(MULabeledValueActionRowView *)self _updateValueText];
-      v9 = [(MULabeledValueActionViewModelProviding *)self->_viewModel alternativeTitleString];
-      v10 = [v9 length];
+      alternativeTitleString = [(MULabeledValueActionViewModelProviding *)self->_viewModel alternativeTitleString];
+      v10 = [alternativeTitleString length];
 
       if (v10)
       {
-        v11 = [(MULabeledValueActionViewModelProviding *)self->_viewModel alternativeTitleString];
-        [(MULabelViewProtocol *)self->_tertiaryLabel setText:v11];
+        alternativeTitleString2 = [(MULabeledValueActionViewModelProviding *)self->_viewModel alternativeTitleString];
+        [(MULabelViewProtocol *)self->_tertiaryLabel setText:alternativeTitleString2];
 
         [(MULabeledValueActionRowView *)self addSubview:self->_tertiaryLabel];
       }
 
       [(MULabeledValueActionRowView *)self addGestureRecognizer:self->_tapGestureRecognizer];
       v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v12 = [(MULabelViewProtocol *)self->_valueLabel superview];
+      superview = [(MULabelViewProtocol *)self->_valueLabel superview];
 
-      if (v12)
+      if (superview)
       {
         [v16 addObject:self->_valueLabel];
       }
 
-      v13 = [(MULabelViewProtocol *)self->_tertiaryLabel superview];
+      superview2 = [(MULabelViewProtocol *)self->_tertiaryLabel superview];
 
-      if (v13)
+      if (superview2)
       {
         [v16 addObject:self->_tertiaryLabel];
       }
@@ -149,26 +149,26 @@
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(MULabeledValueActionRowView *)self _updateAppearance];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
 - (void)_actionButtonTapped
 {
-  v3 = [(MULabeledValueActionViewModelProviding *)self->_viewModel actionBlock];
+  actionBlock = [(MULabeledValueActionViewModelProviding *)self->_viewModel actionBlock];
 
-  if (v3)
+  if (actionBlock)
   {
-    v4 = [(MULabeledValueActionViewModelProviding *)self->_viewModel actionBlock];
-    v4[2](v4, self);
+    actionBlock2 = [(MULabeledValueActionViewModelProviding *)self->_viewModel actionBlock];
+    actionBlock2[2](actionBlock2, self);
   }
 }
 
@@ -207,8 +207,8 @@
   self->_valueLabel = v9;
 
   [(MULabelViewProtocol *)self->_valueLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(MULabeledValueActionRowView *)self _valueLabelFont];
-  [(MULabelViewProtocol *)self->_valueLabel setFont:v11];
+  _valueLabelFont = [(MULabeledValueActionRowView *)self _valueLabelFont];
+  [(MULabelViewProtocol *)self->_valueLabel setFont:_valueLabelFont];
 
   [(MULabelViewProtocol *)self->_valueLabel setNumberOfLines:0];
   v12 = [@"LabeledValueActionRow" stringByAppendingString:@"Value"];
@@ -247,8 +247,8 @@
 
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer addTarget:self action:sel__actionButtonTapped];
   [(UIView *)self _mapsui_addSelectGestureRecognizerWithTarget:self action:sel__actionButtonTapped];
-  v21 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v21 addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
   MURegisterForButtonShapeEnablementChanges(self, sel__updateValueText);
   v22 = [[MUCompositionalStackLayoutGroup alloc] initWithAxis:1];
@@ -297,11 +297,11 @@
   return result;
 }
 
-- (MULabeledValueActionRowView)initWithFrame:(CGRect)a3
+- (MULabeledValueActionRowView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MULabeledValueActionRowView;
-  v3 = [(MUPlaceSectionRowView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceSectionRowView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

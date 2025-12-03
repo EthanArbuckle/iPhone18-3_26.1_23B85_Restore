@@ -1,11 +1,11 @@
 @interface _HDAchievementProgressLocalJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (_HDAchievementProgressLocalJournalEntry)initWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (_HDAchievementProgressLocalJournalEntry)initWithCoder:(id)coder;
 @end
 
 @implementation _HDAchievementProgressLocalJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v10 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -22,7 +22,7 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (_HDAchievementProgressLocalJournalEntry)initWithCoder:(id)a3
+- (_HDAchievementProgressLocalJournalEntry)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _HDAchievementProgressLocalJournalEntry;

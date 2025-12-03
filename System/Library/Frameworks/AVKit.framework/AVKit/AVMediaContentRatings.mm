@@ -1,50 +1,50 @@
 @interface AVMediaContentRatings
-+ (BOOL)isImageMaskForMetadataItem:(id)a3;
-+ (BOOL)isRatingImageMask:(id)a3;
-+ (id)_imageNameForRating:(id)a3;
++ (BOOL)isImageMaskForMetadataItem:(id)item;
++ (BOOL)isRatingImageMask:(id)mask;
++ (id)_imageNameForRating:(id)rating;
 + (id)contentRatingsDictionary;
-+ (id)displayStringForMetadataItem:(id)a3;
-+ (id)imageForMetadataItem:(id)a3;
-+ (id)imageForRating:(id)a3;
++ (id)displayStringForMetadataItem:(id)item;
++ (id)imageForMetadataItem:(id)item;
++ (id)imageForRating:(id)rating;
 @end
 
 @implementation AVMediaContentRatings
 
-+ (BOOL)isImageMaskForMetadataItem:(id)a3
++ (BOOL)isImageMaskForMetadataItem:(id)item
 {
-  v4 = [a3 stringValue];
-  LOBYTE(a1) = [a1 isRatingImageMask:v4];
+  stringValue = [item stringValue];
+  LOBYTE(self) = [self isRatingImageMask:stringValue];
 
-  return a1;
+  return self;
 }
 
-+ (id)displayStringForMetadataItem:(id)a3
++ (id)displayStringForMetadataItem:(id)item
 {
-  v4 = [a3 stringValue];
-  v5 = [a1 displayStringForRating:v4];
+  stringValue = [item stringValue];
+  v5 = [self displayStringForRating:stringValue];
 
   return v5;
 }
 
-+ (id)imageForMetadataItem:(id)a3
++ (id)imageForMetadataItem:(id)item
 {
-  v4 = [a3 stringValue];
-  v5 = [a1 imageForRating:v4];
+  stringValue = [item stringValue];
+  v5 = [self imageForRating:stringValue];
 
   return v5;
 }
 
-+ (BOOL)isRatingImageMask:(id)a3
++ (BOOL)isRatingImageMask:(id)mask
 {
-  v3 = [a1 _imageNameForRating:a3];
+  v3 = [self _imageNameForRating:mask];
   v4 = [v3 hasSuffix:@"_mask"];
 
   return v4;
 }
 
-+ (id)imageForRating:(id)a3
++ (id)imageForRating:(id)rating
 {
-  v3 = [a1 _imageNameForRating:a3];
+  v3 = [self _imageNameForRating:rating];
   if (v3)
   {
     v4 = MEMORY[0x1E69DCAB8];
@@ -60,10 +60,10 @@
   return v6;
 }
 
-+ (id)_imageNameForRating:(id)a3
++ (id)_imageNameForRating:(id)rating
 {
-  v3 = [a3 lowercaseString];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  lowercaseString = [rating lowercaseString];
+  v4 = [lowercaseString stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   v5 = [v4 stringByReplacingOccurrencesOfString:@"-" withString:&stru_1EFED57D8];
 

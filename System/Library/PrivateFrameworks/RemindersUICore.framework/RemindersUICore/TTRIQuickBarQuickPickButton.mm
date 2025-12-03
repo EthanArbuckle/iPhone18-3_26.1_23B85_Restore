@@ -1,32 +1,32 @@
 @interface TTRIQuickBarQuickPickButton
 - (CGSize)intrinsicContentSize;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation TTRIQuickBarQuickPickButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_21D4B1030(a3);
+  selfCopy = self;
+  sub_21D4B1030(highlighted);
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TTRIQuickBarQuickPickButton *)&v5 setSelected:v3];
+  [(TTRIQuickBarQuickPickButton *)&v5 setSelected:selectedCopy];
   v4[OBJC_IVAR____TtC15RemindersUICore27TTRIQuickBarQuickPickButton_colorsAreDirty] = 1;
   [v4 setNeedsLayout];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D4B1340();
 }
 

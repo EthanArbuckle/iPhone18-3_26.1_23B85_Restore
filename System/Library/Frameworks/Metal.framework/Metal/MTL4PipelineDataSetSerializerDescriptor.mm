@@ -1,7 +1,7 @@
 @interface MTL4PipelineDataSetSerializerDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4PipelineDataSetSerializerDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MTL4PipelineDataSetSerializerDescriptor
@@ -13,22 +13,22 @@
   return [(MTL4PipelineDataSetSerializerDescriptor *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = self->_configuration;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && *(a3 + 1) == self->_configuration;
+  return Class == object_getClass(equal) && *(equal + 1) == self->_configuration;
 }
 
 @end

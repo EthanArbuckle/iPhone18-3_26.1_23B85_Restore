@@ -1,7 +1,7 @@
 @interface _HAPBTLEDiscoveryContext
 - (BOOL)isComplete;
 - (_HAPBTLEDiscoveryContext)init;
-- (_HAPBTLEDiscoveryContext)initWithDiscoveryType:(int64_t)a3;
+- (_HAPBTLEDiscoveryContext)initWithDiscoveryType:(int64_t)type;
 - (void)reset;
 @end
 
@@ -17,7 +17,7 @@
   objc_exception_throw(v4);
 }
 
-- (_HAPBTLEDiscoveryContext)initWithDiscoveryType:(int64_t)a3
+- (_HAPBTLEDiscoveryContext)initWithDiscoveryType:(int64_t)type
 {
   v25.receiver = self;
   v25.super_class = _HAPBTLEDiscoveryContext;
@@ -25,7 +25,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_discoveryType = a3;
+    v4->_discoveryType = type;
     v6 = +[NSMutableArray array];
     discoveringServices = v5->_discoveringServices;
     v5->_discoveringServices = v6;
@@ -69,86 +69,86 @@
 - (void)reset
 {
   [(_HAPBTLEDiscoveryContext *)self setDiscovering:0];
-  v3 = [(_HAPBTLEDiscoveryContext *)self discoveringServices];
-  [v3 removeAllObjects];
+  discoveringServices = [(_HAPBTLEDiscoveryContext *)self discoveringServices];
+  [discoveringServices removeAllObjects];
 
-  v4 = [(_HAPBTLEDiscoveryContext *)self discoveringCharacteristics];
-  [v4 removeAllObjects];
+  discoveringCharacteristics = [(_HAPBTLEDiscoveryContext *)self discoveringCharacteristics];
+  [discoveringCharacteristics removeAllObjects];
 
-  v5 = [(_HAPBTLEDiscoveryContext *)self readingCharacteristics];
-  [v5 removeAllObjects];
+  readingCharacteristics = [(_HAPBTLEDiscoveryContext *)self readingCharacteristics];
+  [readingCharacteristics removeAllObjects];
 
-  v6 = [(_HAPBTLEDiscoveryContext *)self discoveringDescriptors];
-  [v6 removeAllObjects];
+  discoveringDescriptors = [(_HAPBTLEDiscoveryContext *)self discoveringDescriptors];
+  [discoveringDescriptors removeAllObjects];
 
-  v7 = [(_HAPBTLEDiscoveryContext *)self readingDescriptors];
-  [v7 removeAllObjects];
+  readingDescriptors = [(_HAPBTLEDiscoveryContext *)self readingDescriptors];
+  [readingDescriptors removeAllObjects];
 
-  v8 = [(_HAPBTLEDiscoveryContext *)self readingSignatureCharacteristics];
-  [v8 removeAllObjects];
+  readingSignatureCharacteristics = [(_HAPBTLEDiscoveryContext *)self readingSignatureCharacteristics];
+  [readingSignatureCharacteristics removeAllObjects];
 
-  v9 = [(_HAPBTLEDiscoveryContext *)self readingSignatureServices];
-  [v9 removeAllObjects];
+  readingSignatureServices = [(_HAPBTLEDiscoveryContext *)self readingSignatureServices];
+  [readingSignatureServices removeAllObjects];
 
-  v10 = [(_HAPBTLEDiscoveryContext *)self characteristicSignatures];
-  [v10 removeAllObjects];
+  characteristicSignatures = [(_HAPBTLEDiscoveryContext *)self characteristicSignatures];
+  [characteristicSignatures removeAllObjects];
 
-  v11 = [(_HAPBTLEDiscoveryContext *)self serviceSignatures];
-  [v11 removeAllObjects];
+  serviceSignatures = [(_HAPBTLEDiscoveryContext *)self serviceSignatures];
+  [serviceSignatures removeAllObjects];
 }
 
 - (BOOL)isComplete
 {
-  v3 = [(_HAPBTLEDiscoveryContext *)self discoveringServices];
-  if ([v3 count])
+  discoveringServices = [(_HAPBTLEDiscoveryContext *)self discoveringServices];
+  if ([discoveringServices count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(_HAPBTLEDiscoveryContext *)self discoveringCharacteristics];
-    if ([v5 count])
+    discoveringCharacteristics = [(_HAPBTLEDiscoveryContext *)self discoveringCharacteristics];
+    if ([discoveringCharacteristics count])
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(_HAPBTLEDiscoveryContext *)self readingCharacteristics];
-      if ([v6 count])
+      readingCharacteristics = [(_HAPBTLEDiscoveryContext *)self readingCharacteristics];
+      if ([readingCharacteristics count])
       {
         v4 = 0;
       }
 
       else
       {
-        v7 = [(_HAPBTLEDiscoveryContext *)self discoveringDescriptors];
-        if ([v7 count])
+        discoveringDescriptors = [(_HAPBTLEDiscoveryContext *)self discoveringDescriptors];
+        if ([discoveringDescriptors count])
         {
           v4 = 0;
         }
 
         else
         {
-          v8 = [(_HAPBTLEDiscoveryContext *)self readingDescriptors];
-          if ([v8 count])
+          readingDescriptors = [(_HAPBTLEDiscoveryContext *)self readingDescriptors];
+          if ([readingDescriptors count])
           {
             v4 = 0;
           }
 
           else
           {
-            v9 = [(_HAPBTLEDiscoveryContext *)self readingSignatureCharacteristics];
-            if ([v9 count])
+            readingSignatureCharacteristics = [(_HAPBTLEDiscoveryContext *)self readingSignatureCharacteristics];
+            if ([readingSignatureCharacteristics count])
             {
               v4 = 0;
             }
 
             else
             {
-              v10 = [(_HAPBTLEDiscoveryContext *)self readingSignatureServices];
-              v4 = [v10 count] == 0;
+              readingSignatureServices = [(_HAPBTLEDiscoveryContext *)self readingSignatureServices];
+              v4 = [readingSignatureServices count] == 0;
             }
           }
         }

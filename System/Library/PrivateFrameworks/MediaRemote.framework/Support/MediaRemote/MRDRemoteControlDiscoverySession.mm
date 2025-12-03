@@ -11,84 +11,84 @@
 - (NSArray)unclusteredOutputDevices;
 - (NSSet)lastReportedClientIdentifiers;
 - (NSString)debugDescription;
-- (id)_addUndiscoverableGroupLeaderFromDeviceInfo:(id)a3;
-- (id)_addUndiscoveredOutputContextOutputDevices:(id)a3;
-- (id)_applyDeviceInfoValuesToOutputDevices:(id)a3 withDeviceInfo:(id)a4;
-- (id)_applyLocalReservedOutputContextValuesToOutputDevices:(id)a3;
-- (id)_applyLocallySourcedValuesToOutputDevices:(id)a3;
-- (id)_applyOutputContextValuesToOutputDevices:(id)a3;
-- (id)_calculateUndiscoverableGroupLeaderFromDeviceInfo:(id)a3;
-- (id)_clusterOutputDevicesFromUnclusteredDevices:(id)a3;
+- (id)_addUndiscoverableGroupLeaderFromDeviceInfo:(id)info;
+- (id)_addUndiscoveredOutputContextOutputDevices:(id)devices;
+- (id)_applyDeviceInfoValuesToOutputDevices:(id)devices withDeviceInfo:(id)info;
+- (id)_applyLocalReservedOutputContextValuesToOutputDevices:(id)devices;
+- (id)_applyLocallySourcedValuesToOutputDevices:(id)devices;
+- (id)_applyOutputContextValuesToOutputDevices:(id)devices;
+- (id)_calculateUndiscoverableGroupLeaderFromDeviceInfo:(id)info;
+- (id)_clusterOutputDevicesFromUnclusteredDevices:(id)devices;
 - (id)_fetchAvailableOutputDevicesFromDiscoverySessions;
 - (id)routingContextUID;
 - (unsigned)discoveryMode;
 - (void)_initializeDiscoverySessions;
 - (void)_loadDefaults;
 - (void)_loadLocalEndpointConnection;
-- (void)_logChangesInModifyingOutputDevice:(id)a3 toOutputDevice:(id)a4 reason:(id)a5;
-- (void)_mergeDeviceInfo:(id)a3 intoProtobuf:(id)a4;
-- (void)_mergeOutputDevice:(id)a3 intoProtobuf:(id)a4;
+- (void)_logChangesInModifyingOutputDevice:(id)device toOutputDevice:(id)outputDevice reason:(id)reason;
+- (void)_mergeDeviceInfo:(id)info intoProtobuf:(id)protobuf;
+- (void)_mergeOutputDevice:(id)device intoProtobuf:(id)protobuf;
 - (void)_reloadOutputDevices;
 - (void)_scheduleAvailableOutputDevicesReload;
-- (void)_setupProxiedDiscoveryWithDestinationEndpoint:(id)a3;
+- (void)_setupProxiedDiscoveryWithDestinationEndpoint:(id)endpoint;
 - (void)_setupStandaloneDiscovery;
-- (void)_updateLocalEndpointConnection:(id)a3 withUrgency:(BOOL)a4;
-- (void)controller:(id)a3 didDiscoverCompanion:(id)a4;
-- (void)controllerDidUndiscoverCompanion:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerConnectionFailureForWHAIdentifier:(id)a3;
-- (void)setAvailableOutputDevices:(id)a3;
-- (void)setDeviceInfo:(id)a3;
-- (void)setDiscoveryMode:(unsigned int)a3 forClientIdentifiers:(id)a4;
-- (void)setLocalEndpointConnection:(id)a3;
-- (void)setNativeOutputDevice:(id)a3;
-- (void)setRoutingContextUID:(id)a3;
-- (void)setUnclusteredOutputDevices:(id)a3;
-- (void)setUndiscoverableGroupLeaderHandle:(id)a3;
-- (void)transport:(id)a3 didReceiveData:(id)a4;
-- (void)transportDidClose:(id)a3 error:(id)a4;
-- (void)unregisterConnectionFailureForWHAIdentifier:(id)a3;
+- (void)_updateLocalEndpointConnection:(id)connection withUrgency:(BOOL)urgency;
+- (void)controller:(id)controller didDiscoverCompanion:(id)companion;
+- (void)controllerDidUndiscoverCompanion:(id)companion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerConnectionFailureForWHAIdentifier:(id)identifier;
+- (void)setAvailableOutputDevices:(id)devices;
+- (void)setDeviceInfo:(id)info;
+- (void)setDiscoveryMode:(unsigned int)mode forClientIdentifiers:(id)identifiers;
+- (void)setLocalEndpointConnection:(id)connection;
+- (void)setNativeOutputDevice:(id)device;
+- (void)setRoutingContextUID:(id)d;
+- (void)setUnclusteredOutputDevices:(id)devices;
+- (void)setUndiscoverableGroupLeaderHandle:(id)handle;
+- (void)transport:(id)transport didReceiveData:(id)data;
+- (void)transportDidClose:(id)close error:(id)error;
+- (void)unregisterConnectionFailureForWHAIdentifier:(id)identifier;
 @end
 
 @implementation MRDRemoteControlDiscoverySession
 
 - (NSSet)lastReportedClientIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastReportedClientIdentifiers;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastReportedClientIdentifiers;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)availableOutputDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSArray *)v2->_availableOutputDevices copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSArray *)selfCopy->_availableOutputDevices copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (void)_scheduleAvailableOutputDevicesReload
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_scheduledAvailableOutputDevicesReload)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_scheduledAvailableOutputDevicesReload)
   {
-    v2->_scheduledAvailableOutputDevicesReload = 1;
-    workerQueue = v2->_workerQueue;
+    selfCopy->_scheduledAvailableOutputDevicesReload = 1;
+    workerQueue = selfCopy->_workerQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100012634;
     block[3] = &unk_1004B6D08;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(workerQueue, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_reloadOutputDevices
@@ -97,9 +97,9 @@
   v3 = +[MRUserSettings currentSettings];
   if ([v3 shouldConnectToLocalEndpoint])
   {
-    v4 = [(MRDRemoteControlDiscoverySession *)self localEndpointConnection];
+    localEndpointConnection = [(MRDRemoteControlDiscoverySession *)self localEndpointConnection];
 
-    if (!v4)
+    if (!localEndpointConnection)
     {
       return;
     }
@@ -110,13 +110,13 @@
   }
 
   v5 = +[MRDMediaRemoteServer server];
-  v6 = [v5 nowPlayingServer];
-  v7 = [v6 localOriginClient];
-  v8 = [v7 deviceInfoDataSource];
-  v9 = [v8 deviceInfo];
-  [(MRDRemoteControlDiscoverySession *)self setDeviceInfo:v9];
+  nowPlayingServer = [v5 nowPlayingServer];
+  localOriginClient = [nowPlayingServer localOriginClient];
+  deviceInfoDataSource = [localOriginClient deviceInfoDataSource];
+  deviceInfo = [deviceInfoDataSource deviceInfo];
+  [(MRDRemoteControlDiscoverySession *)self setDeviceInfo:deviceInfo];
 
-  v10 = [(MRDRemoteControlDiscoverySession *)self _fetchAvailableOutputDevicesFromDiscoverySessions];
+  _fetchAvailableOutputDevicesFromDiscoverySessions = [(MRDRemoteControlDiscoverySession *)self _fetchAvailableOutputDevicesFromDiscoverySessions];
   if ([(NSArray *)self->_allowList count])
   {
     v22[0] = _NSConcreteStackBlock;
@@ -124,9 +124,9 @@
     v22[2] = sub_10009CE84;
     v22[3] = &unk_1004B8A40;
     v22[4] = self;
-    v11 = [v10 msv_filter:v22];
+    v11 = [_fetchAvailableOutputDevicesFromDiscoverySessions msv_filter:v22];
 
-    v10 = v11;
+    _fetchAvailableOutputDevicesFromDiscoverySessions = v11;
   }
 
   if ([(NSArray *)self->_denyList count])
@@ -136,29 +136,29 @@
     v21[2] = sub_10009CED8;
     v21[3] = &unk_1004B8A40;
     v21[4] = self;
-    v12 = [v10 msv_filter:v21];
+    v12 = [_fetchAvailableOutputDevicesFromDiscoverySessions msv_filter:v21];
 
-    v10 = v12;
+    _fetchAvailableOutputDevicesFromDiscoverySessions = v12;
   }
 
-  [(MRDRemoteControlDiscoverySession *)self setUnclusteredOutputDevices:v10];
-  v13 = [(MRDRemoteControlDiscoverySession *)self deviceInfo];
-  v14 = [v13 deviceUID];
+  [(MRDRemoteControlDiscoverySession *)self setUnclusteredOutputDevices:_fetchAvailableOutputDevicesFromDiscoverySessions];
+  deviceInfo2 = [(MRDRemoteControlDiscoverySession *)self deviceInfo];
+  deviceUID = [deviceInfo2 deviceUID];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10003B434;
   v19[3] = &unk_1004B8A40;
-  v20 = v14;
-  v15 = v14;
-  v16 = [v10 msv_firstWhere:v19];
+  v20 = deviceUID;
+  v15 = deviceUID;
+  v16 = [_fetchAvailableOutputDevicesFromDiscoverySessions msv_firstWhere:v19];
   [(MRDRemoteControlDiscoverySession *)self setNativeOutputDevice:v16];
 
-  v17 = [(MRDRemoteControlDiscoverySession *)self _clusterOutputDevicesFromUnclusteredDevices:v10];
+  v17 = [(MRDRemoteControlDiscoverySession *)self _clusterOutputDevicesFromUnclusteredDevices:_fetchAvailableOutputDevicesFromDiscoverySessions];
   [(MRDRemoteControlDiscoverySession *)self setAvailableOutputDevices:v17];
 
-  v18 = [(MRDRemoteControlDiscoverySession *)self availableOutputDevices];
-  [(MRDRemoteControlDiscoverySession *)self notifyOutputDevicesChanged:v18];
+  availableOutputDevices = [(MRDRemoteControlDiscoverySession *)self availableOutputDevices];
+  [(MRDRemoteControlDiscoverySession *)self notifyOutputDevicesChanged:availableOutputDevices];
 }
 
 - (id)_fetchAvailableOutputDevicesFromDiscoverySessions
@@ -167,15 +167,15 @@
   if ([(MRDRemoteControlDiscoverySession *)self shouldUseDeviceInfoForLocalDevice])
   {
     v4 = [MRDeviceInfoOutputDevice alloc];
-    v5 = [(MRDRemoteControlDiscoverySession *)self deviceInfo];
-    v6 = [v4 initWithDeviceInfo:v5];
+    deviceInfo = [(MRDRemoteControlDiscoverySession *)self deviceInfo];
+    v6 = [v4 initWithDeviceInfo:deviceInfo];
 
     [v3 addObject:v6];
   }
 
   v7 = objc_alloc_init(NSMutableSet);
-  v8 = [(MRAVConcreteRoutingDiscoverySession *)self->_avDiscoverySession availableOutputDevices];
-  v9 = [v8 copy];
+  availableOutputDevices = [(MRAVConcreteRoutingDiscoverySession *)self->_avDiscoverySession availableOutputDevices];
+  v9 = [availableOutputDevices copy];
 
   v42 = 0u;
   v43 = 0u;
@@ -197,11 +197,11 @@
         }
 
         v14 = *(*(&v40 + 1) + 8 * i);
-        v15 = [v14 clusterID];
-        v16 = v15;
-        if (v15)
+        clusterID = [v14 clusterID];
+        v16 = clusterID;
+        if (clusterID)
         {
-          v17 = v15;
+          v17 = clusterID;
         }
 
         else
@@ -227,8 +227,8 @@
     while (v11);
   }
 
-  v19 = [(MRDGroupSessionDiscoverySession *)self->_groupSessionDiscoverySession availableOutputDevices];
-  v20 = [v19 copy];
+  availableOutputDevices2 = [(MRDGroupSessionDiscoverySession *)self->_groupSessionDiscoverySession availableOutputDevices];
+  v20 = [availableOutputDevices2 copy];
 
   v38 = 0u;
   v39 = 0u;
@@ -265,17 +265,17 @@
     while (v23);
   }
 
-  v29 = [(MRDIDSDiscoverySession *)self->_idsDiscoverySession availableOutputDevices];
-  [v3 addObjectsFromArray:v29];
+  availableOutputDevices3 = [(MRDIDSDiscoverySession *)self->_idsDiscoverySession availableOutputDevices];
+  [v3 addObjectsFromArray:availableOutputDevices3];
 
-  v30 = [(MRAVRoutingDiscoverySession *)self->_companionDiscoverySession availableOutputDevices];
-  [v3 addObjectsFromArray:v30];
+  availableOutputDevices4 = [(MRAVRoutingDiscoverySession *)self->_companionDiscoverySession availableOutputDevices];
+  [v3 addObjectsFromArray:availableOutputDevices4];
 
-  v31 = [(MRAVRoutingDiscoverySession *)self->_externalDiscoverySession availableOutputDevices];
-  [v3 addObjectsFromArray:v31];
+  availableOutputDevices5 = [(MRAVRoutingDiscoverySession *)self->_externalDiscoverySession availableOutputDevices];
+  [v3 addObjectsFromArray:availableOutputDevices5];
 
-  v32 = [v3 allObjects];
-  v33 = [(MRDRemoteControlDiscoverySession *)self _applyLocallySourcedValuesToOutputDevices:v32];
+  allObjects = [v3 allObjects];
+  v33 = [(MRDRemoteControlDiscoverySession *)self _applyLocallySourcedValuesToOutputDevices:allObjects];
 
   return v33;
 }
@@ -285,54 +285,54 @@
   v2 = +[MRUserSettings currentSettings];
   if ([v2 forceDeviceInfoDiscovery])
   {
-    v3 = 1;
+    homepodDemoMode = 1;
   }
 
   else
   {
     v4 = +[MRUserSettings currentSettings];
-    v3 = [v4 homepodDemoMode];
+    homepodDemoMode = [v4 homepodDemoMode];
   }
 
-  return v3;
+  return homepodDemoMode;
 }
 
 - (MRDeviceInfo)deviceInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MRDeviceInfo *)v2->_deviceInfo copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(MRDeviceInfo *)selfCopy->_deviceInfo copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (unsigned)discoveryMode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  discoveryMode = v2->_discoveryMode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveryMode = selfCopy->_discoveryMode;
+  objc_sync_exit(selfCopy);
 
   return discoveryMode;
 }
 
 - (NSArray)unclusteredOutputDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSArray *)v2->_unclusteredOutputDevices copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSArray *)selfCopy->_unclusteredOutputDevices copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (MRAVOutputDevice)nativeOutputDevice
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_nativeOutputDevice;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_nativeOutputDevice;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -340,29 +340,29 @@
 - (BOOL)_shouldCreateClusterOutputDevices
 {
   v2 = +[MRUserSettings currentSettings];
-  v3 = [v2 useClusterDevices];
+  useClusterDevices = [v2 useClusterDevices];
 
-  return v3;
+  return useClusterDevices;
 }
 
 - (MRDRemoteControlDiscoverySession)init
 {
-  v3 = [(MRDRemoteControlDiscoverySession *)self configuration];
+  configuration = [(MRDRemoteControlDiscoverySession *)self configuration];
   v48.receiver = self;
   v48.super_class = MRDRemoteControlDiscoverySession;
-  v4 = [(MRDRemoteControlDiscoverySession *)&v48 initWithConfiguration:v3];
+  v4 = [(MRDRemoteControlDiscoverySession *)&v48 initWithConfiguration:configuration];
   v5 = v4;
   if (v4)
   {
     [(MRDRemoteControlDiscoverySession *)v4 setAlwaysLogUpdates:1];
     v6 = [[NSString alloc] initWithFormat:@"com.apple.mediaremote.%@", objc_opt_class()];
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     workerQueue = v5->_workerQueue;
     v5->_workerQueue = v9;
 
-    [v3 features];
+    [configuration features];
     v11 = MRMediaRemoteEndpointFeaturesDescription();
     v12 = [MRRollingWindowActivityTracker alloc];
     v13 = +[MRUserSettings currentSettings];
@@ -445,40 +445,40 @@
 - (NSString)debugDescription
 {
   v3 = [[NSMutableString alloc] initWithFormat:@"<%@ %p {\n", objc_opt_class(), self];
-  v4 = self;
-  objc_sync_enter(v4);
-  [v3 appendFormat:@"  localEndpointConnection=%@\n", v4->_localEndpointConnection];
-  discoveryMode = v4->_discoveryMode;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [v3 appendFormat:@"  localEndpointConnection=%@\n", selfCopy->_localEndpointConnection];
+  discoveryMode = selfCopy->_discoveryMode;
   v6 = MRMediaRemoteCopyRouteDiscoveryModeDescription();
   [v3 appendFormat:@"  discoveryMode=%@\n", v6];
 
-  [v3 appendFormat:@"  lastReportedClientIdentifiers=%@\n", v4->_lastReportedClientIdentifiers];
-  discoveryTracker = v4->_discoveryTracker;
+  [v3 appendFormat:@"  lastReportedClientIdentifiers=%@\n", selfCopy->_lastReportedClientIdentifiers];
+  discoveryTracker = selfCopy->_discoveryTracker;
   v8 = MRCreateIndentedDebugDescriptionFromObject();
   [v3 appendFormat:@"  discoveryTracker=%@\n", v8];
 
-  [v3 appendFormat:@"  routingContextID=%@\n", v4->_routingContextID];
-  objc_sync_exit(v4);
+  [v3 appendFormat:@"  routingContextID=%@\n", selfCopy->_routingContextID];
+  objc_sync_exit(selfCopy);
 
-  workerQueue = v4->_workerQueue;
+  workerQueue = selfCopy->_workerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009BB3C;
   block[3] = &unk_1004B68F0;
-  block[4] = v4;
+  block[4] = selfCopy;
   v10 = v3;
   v19 = v10;
   dispatch_sync(workerQueue, block);
-  v11 = v4;
+  v11 = selfCopy;
   objc_sync_enter(v11);
-  v12 = [v11[4] mr_formattedDebugDescription];
-  [v10 appendFormat:@"  nativeOutputDevice = %@\n", v12];
+  mr_formattedDebugDescription = [v11[4] mr_formattedDebugDescription];
+  [v10 appendFormat:@"  nativeOutputDevice = %@\n", mr_formattedDebugDescription];
 
-  v13 = [v11[3] mr_formattedDebugDescription];
-  [v10 appendFormat:@"  unclusteredOutputDevices = %@\n", v13];
+  mr_formattedDebugDescription2 = [v11[3] mr_formattedDebugDescription];
+  [v10 appendFormat:@"  unclusteredOutputDevices = %@\n", mr_formattedDebugDescription2];
 
-  v14 = [v11[2] mr_formattedDebugDescription];
-  [v10 appendFormat:@"  availableOutputDevices = %@\n", v14];
+  mr_formattedDebugDescription3 = [v11[2] mr_formattedDebugDescription];
+  [v10 appendFormat:@"  availableOutputDevices = %@\n", mr_formattedDebugDescription3];
 
   [v10 appendString:@"}>"];
   objc_sync_exit(v11);
@@ -494,34 +494,34 @@
   v2 = [MRAVRoutingDiscoverySessionConfiguration configurationWithEndpointFeatures:8];
   [v2 setAlwaysAllowUpdates:1];
   v3 = +[MRAVOutputContext sharedAudioPresentationContext];
-  v4 = [v3 uniqueIdentifier];
-  [v2 setRoutingContextUID:v4];
+  uniqueIdentifier = [v3 uniqueIdentifier];
+  [v2 setRoutingContextUID:uniqueIdentifier];
 
   return v2;
 }
 
 - (MRAirPlayTransportConnection)localEndpointConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_localEndpointConnection;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_localEndpointConnection;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLocalEndpointConnection:(id)a3
+- (void)setLocalEndpointConnection:(id)connection
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_localEndpointConnection)
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_localEndpointConnection)
   {
     v7 = _MRLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
-      localEndpointConnection = v6->_localEndpointConnection;
+      localEndpointConnection = selfCopy->_localEndpointConnection;
       v13 = 138544130;
       v14 = v8;
       v15 = 2114;
@@ -529,7 +529,7 @@
       v17 = 2112;
       v18 = localEndpointConnection;
       v19 = 2112;
-      v20 = v5;
+      v20 = connectionCopy;
       v10 = "Set: %{public}@ setting %{public}@ from <%@> to <%@>";
       v11 = v7;
       v12 = 42;
@@ -548,7 +548,7 @@ LABEL_6:
       v15 = 2114;
       v16 = @"localEndpointConnection";
       v17 = 2112;
-      v18 = v5;
+      v18 = connectionCopy;
       v10 = "Set: %{public}@ setting %{public}@ to <%@>";
       v11 = v7;
       v12 = 32;
@@ -556,24 +556,24 @@ LABEL_6:
     }
   }
 
-  objc_storeStrong(&v6->_localEndpointConnection, a3);
-  [(MRAirPlayTransportConnection *)v6->_localEndpointConnection addObserver:v6];
-  objc_sync_exit(v6);
+  objc_storeStrong(&selfCopy->_localEndpointConnection, connection);
+  [(MRAirPlayTransportConnection *)selfCopy->_localEndpointConnection addObserver:selfCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_updateLocalEndpointConnection:(id)a3 withUrgency:(BOOL)a4
+- (void)_updateLocalEndpointConnection:(id)connection withUrgency:(BOOL)urgency
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 isValid])
+  urgencyCopy = urgency;
+  connectionCopy = connection;
+  if ([connectionCopy isValid])
   {
-    [(MRDRemoteControlDiscoverySession *)self setLocalEndpointConnection:v6];
+    [(MRDRemoteControlDiscoverySession *)self setLocalEndpointConnection:connectionCopy];
     [(MRDRemoteControlDiscoverySession *)self _scheduleAvailableOutputDevicesReload];
   }
 
   else
   {
-    if (v4)
+    if (urgencyCopy)
     {
       v7 = 1000000000;
     }
@@ -594,9 +594,9 @@ LABEL_6:
   }
 }
 
-- (void)setUndiscoverableGroupLeaderHandle:(id)a3
+- (void)setUndiscoverableGroupLeaderHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   undiscoverableGroupLeaderHandle = self->_undiscoverableGroupLeaderHandle;
   v6 = _MRLogForCategory();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -613,7 +613,7 @@ LABEL_6:
       v18 = 2112;
       v19 = v9;
       v20 = 2112;
-      v21 = v4;
+      v21 = handleCopy;
       v10 = "Set: %{public}@ setting %{public}@ from <%@> to <%@>";
       v11 = v6;
       v12 = 42;
@@ -629,7 +629,7 @@ LABEL_6:
     v16 = 2114;
     v17 = @"undiscoverableGroupLeader";
     v18 = 2112;
-    v19 = v4;
+    v19 = handleCopy;
     v10 = "Set: %{public}@ setting %{public}@ to <%@>";
     v11 = v6;
     v12 = 32;
@@ -637,129 +637,129 @@ LABEL_6:
   }
 
   v13 = self->_undiscoverableGroupLeaderHandle;
-  self->_undiscoverableGroupLeaderHandle = v4;
+  self->_undiscoverableGroupLeaderHandle = handleCopy;
 }
 
-- (void)setDiscoveryMode:(unsigned int)a3 forClientIdentifiers:(id)a4
+- (void)setDiscoveryMode:(unsigned int)mode forClientIdentifiers:(id)identifiers
 {
-  v7 = a4;
-  if (a3 == 3)
+  identifiersCopy = identifiers;
+  if (mode == 3)
   {
     v8 = +[MRSharedSettings currentSettings];
-    v9 = [v8 supportNanoStandalone];
+    supportNanoStandalone = [v8 supportNanoStandalone];
 
-    if (v9)
+    if (supportNanoStandalone)
     {
-      a3 = 3;
+      mode = 3;
     }
 
     else
     {
-      a3 = 2;
+      mode = 2;
     }
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  discoveryMode = v10->_discoveryMode;
-  v12 = [v7 isEqualToSet:v10->_lastReportedClientIdentifiers];
-  v10->_discoveryMode = a3;
-  objc_storeStrong(&v10->_lastReportedClientIdentifiers, a4);
-  objc_sync_exit(v10);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveryMode = selfCopy->_discoveryMode;
+  v12 = [identifiersCopy isEqualToSet:selfCopy->_lastReportedClientIdentifiers];
+  selfCopy->_discoveryMode = mode;
+  objc_storeStrong(&selfCopy->_lastReportedClientIdentifiers, identifiers);
+  objc_sync_exit(selfCopy);
 
-  if (discoveryMode != a3 || v12 != 1)
+  if (discoveryMode != mode || v12 != 1)
   {
-    workerQueue = v10->_workerQueue;
+    workerQueue = selfCopy->_workerQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10009C3D0;
     block[3] = &unk_1004B9A80;
-    v18 = discoveryMode != a3;
-    block[4] = v10;
-    v17 = a3;
-    v16 = v7;
+    v18 = discoveryMode != mode;
+    block[4] = selfCopy;
+    modeCopy = mode;
+    v16 = identifiersCopy;
     dispatch_async(workerQueue, block);
   }
 }
 
 - (BOOL)devicePresenceDetected
 {
-  v2 = [(MRDRemoteControlDiscoverySession *)self availableOutputDevices];
-  v3 = [v2 count] != 0;
+  availableOutputDevices = [(MRDRemoteControlDiscoverySession *)self availableOutputDevices];
+  v3 = [availableOutputDevices count] != 0;
 
   return v3;
 }
 
-- (void)setAvailableOutputDevices:(id)a3
+- (void)setAvailableOutputDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   obj = self;
   objc_sync_enter(obj);
   availableOutputDevices = obj->_availableOutputDevices;
-  obj->_availableOutputDevices = v4;
+  obj->_availableOutputDevices = devicesCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setUnclusteredOutputDevices:(id)a3
+- (void)setUnclusteredOutputDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   obj = self;
   objc_sync_enter(obj);
   unclusteredOutputDevices = obj->_unclusteredOutputDevices;
-  obj->_unclusteredOutputDevices = v4;
+  obj->_unclusteredOutputDevices = devicesCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setNativeOutputDevice:(id)a3
+- (void)setNativeOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   obj = self;
   objc_sync_enter(obj);
   nativeOutputDevice = obj->_nativeOutputDevice;
-  obj->_nativeOutputDevice = v4;
+  obj->_nativeOutputDevice = deviceCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setRoutingContextUID:(id)a3
+- (void)setRoutingContextUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   obj = self;
   objc_sync_enter(obj);
   routingContextID = obj->_routingContextID;
-  obj->_routingContextID = v4;
+  obj->_routingContextID = dCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)routingContextUID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_routingContextID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_routingContextID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setDeviceInfo:(id)a3
+- (void)setDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   obj = self;
   objc_sync_enter(obj);
   deviceInfo = obj->_deviceInfo;
-  obj->_deviceInfo = v4;
+  obj->_deviceInfo = infoCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)registerConnectionFailureForWHAIdentifier:(id)a3
+- (void)registerConnectionFailureForWHAIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     workerQueue = self->_workerQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -767,73 +767,73 @@ LABEL_6:
     v7[2] = sub_10009C934;
     v7[3] = &unk_1004B68F0;
     v7[4] = self;
-    v8 = v4;
+    v8 = identifierCopy;
     dispatch_async(workerQueue, v7);
   }
 }
 
-- (void)unregisterConnectionFailureForWHAIdentifier:(id)a3
+- (void)unregisterConnectionFailureForWHAIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   workerQueue = self->_workerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009CA48;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(workerQueue, v7);
 }
 
-- (void)transport:(id)a3 didReceiveData:(id)a4
+- (void)transport:(id)transport didReceiveData:(id)data
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(MRDRemoteControlDiscoverySession *)v7 localEndpointConnection];
+  transportCopy = transport;
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRDRemoteControlDiscoverySession *)selfCopy localEndpointConnection];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)transportDidClose:(id)a3 error:(id)a4
+- (void)transportDidClose:(id)close error:(id)error
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(MRDRemoteControlDiscoverySession *)v7 localEndpointConnection];
+  closeCopy = close;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  localEndpointConnection = [(MRDRemoteControlDiscoverySession *)selfCopy localEndpointConnection];
 
-  if (v8 == v14)
+  if (localEndpointConnection == closeCopy)
   {
-    v13 = [(MRDRemoteControlDiscoverySession *)v7 localEndpointConnection];
-    [v13 removeObserver:v7];
+    localEndpointConnection2 = [(MRDRemoteControlDiscoverySession *)selfCopy localEndpointConnection];
+    [localEndpointConnection2 removeObserver:selfCopy];
 
-    [(MRDRemoteControlDiscoverySession *)v7 _updateLocalEndpointConnection:0 withUrgency:1];
+    [(MRDRemoteControlDiscoverySession *)selfCopy _updateLocalEndpointConnection:0 withUrgency:1];
   }
 
   else
   {
-    v9 = [(MRDRemoteControlDiscoverySession *)v7 undiscoverableGroupLeaderHandle];
-    v10 = [v9 connection];
+    undiscoverableGroupLeaderHandle = [(MRDRemoteControlDiscoverySession *)selfCopy undiscoverableGroupLeaderHandle];
+    connection = [undiscoverableGroupLeaderHandle connection];
 
-    if (v10 == v14)
+    if (connection == closeCopy)
     {
-      v11 = [(MRDRemoteControlDiscoverySession *)v7 undiscoverableGroupLeaderHandle];
-      v12 = [v11 connection];
-      [v12 removeObserver:v7];
+      undiscoverableGroupLeaderHandle2 = [(MRDRemoteControlDiscoverySession *)selfCopy undiscoverableGroupLeaderHandle];
+      connection2 = [undiscoverableGroupLeaderHandle2 connection];
+      [connection2 removeObserver:selfCopy];
 
-      [(MRDRemoteControlDiscoverySession *)v7 _scheduleAvailableOutputDevicesReload];
+      [(MRDRemoteControlDiscoverySession *)selfCopy _scheduleAvailableOutputDevicesReload];
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_10051F468 == a6 || off_10051F470 == a6)
+  if (off_10051F468 == context || off_10051F470 == context)
   {
     workerQueue = self->_workerQueue;
     block[0] = _NSConcreteStackBlock;
@@ -848,25 +848,25 @@ LABEL_6:
   {
     v8.receiver = self;
     v8.super_class = MRDRemoteControlDiscoverySession;
-    [(MRDRemoteControlDiscoverySession *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(MRDRemoteControlDiscoverySession *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)controller:(id)a3 didDiscoverCompanion:(id)a4
+- (void)controller:(id)controller didDiscoverCompanion:(id)companion
 {
-  v5 = a4;
+  companionCopy = companion;
   workerQueue = self->_workerQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10009CDF4;
   v8[3] = &unk_1004B68F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = companionCopy;
+  v7 = companionCopy;
   dispatch_async(workerQueue, v8);
 }
 
-- (void)controllerDidUndiscoverCompanion:(id)a3
+- (void)controllerDidUndiscoverCompanion:(id)companion
 {
   workerQueue = self->_workerQueue;
   block[0] = _NSConcreteStackBlock;
@@ -877,16 +877,16 @@ LABEL_6:
   dispatch_async(workerQueue, block);
 }
 
-- (id)_clusterOutputDevicesFromUnclusteredDevices:(id)a3
+- (id)_clusterOutputDevicesFromUnclusteredDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = objc_alloc_init(NSMutableDictionary);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v4;
+  v7 = devicesCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -902,18 +902,18 @@ LABEL_6:
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 clusterID];
-        if (v13 && [(MRDRemoteControlDiscoverySession *)self _shouldCreateClusterOutputDevices])
+        clusterID = [v12 clusterID];
+        if (clusterID && [(MRDRemoteControlDiscoverySession *)self _shouldCreateClusterOutputDevices])
         {
-          v14 = [v6 objectForKeyedSubscript:v13];
+          v14 = [v6 objectForKeyedSubscript:clusterID];
 
           if (!v14)
           {
             v15 = objc_alloc_init(NSMutableArray);
-            [v6 setObject:v15 forKeyedSubscript:v13];
+            [v6 setObject:v15 forKeyedSubscript:clusterID];
           }
 
-          v16 = [v6 objectForKeyedSubscript:v13];
+          v16 = [v6 objectForKeyedSubscript:clusterID];
           [v16 addObject:v12];
         }
 
@@ -940,21 +940,21 @@ LABEL_6:
   return v17;
 }
 
-- (id)_applyLocallySourcedValuesToOutputDevices:(id)a3
+- (id)_applyLocallySourcedValuesToOutputDevices:(id)devices
 {
-  v4 = [(MRDRemoteControlDiscoverySession *)self _applyOutputContextValuesToOutputDevices:a3];
-  v5 = [(MRDRemoteControlDiscoverySession *)self deviceInfo];
-  v6 = [(MRDRemoteControlDiscoverySession *)self _applyDeviceInfoValuesToOutputDevices:v4 withDeviceInfo:v5];
+  v4 = [(MRDRemoteControlDiscoverySession *)self _applyOutputContextValuesToOutputDevices:devices];
+  deviceInfo = [(MRDRemoteControlDiscoverySession *)self deviceInfo];
+  v6 = [(MRDRemoteControlDiscoverySession *)self _applyDeviceInfoValuesToOutputDevices:v4 withDeviceInfo:deviceInfo];
 
   v7 = +[MRUserSettings currentSettings];
-  LODWORD(v5) = [v7 supportMultiplayerHost];
+  LODWORD(deviceInfo) = [v7 supportMultiplayerHost];
 
-  if (v5)
+  if (deviceInfo)
   {
-    v8 = [(MRDRemoteControlDiscoverySession *)self deviceInfo];
-    v9 = [v8 parentGroupContainsDiscoverableGroupLeader];
+    deviceInfo2 = [(MRDRemoteControlDiscoverySession *)self deviceInfo];
+    parentGroupContainsDiscoverableGroupLeader = [deviceInfo2 parentGroupContainsDiscoverableGroupLeader];
 
-    if (v9)
+    if (parentGroupContainsDiscoverableGroupLeader)
     {
       [(MRDRemoteControlDiscoverySession *)self setRoutingContextUID:0];
     }
@@ -970,9 +970,9 @@ LABEL_6:
   v11 = [(MRDRemoteControlDiscoverySession *)self _addUndiscoveredOutputContextOutputDevices:v6];
 
   v12 = +[MRUserSettings currentSettings];
-  v13 = [v12 supportMRRelay];
+  supportMRRelay = [v12 supportMRRelay];
 
-  if (v13)
+  if (supportMRRelay)
   {
     v14 = [(MRDRemoteControlDiscoverySession *)self _addUndiscoverableGroupLeaderFromDeviceInfo:v11];
 
@@ -982,25 +982,25 @@ LABEL_6:
   return v11;
 }
 
-- (id)_applyOutputContextValuesToOutputDevices:(id)a3
+- (id)_applyOutputContextValuesToOutputDevices:(id)devices
 {
-  v4 = a3;
-  v40 = [v4 mutableCopy];
+  devicesCopy = devices;
+  v40 = [devicesCopy mutableCopy];
   v5 = +[MRDAVOutputContextManager sharedManager];
-  v31 = [v5 outputContexts];
+  outputContexts = [v5 outputContexts];
 
-  v6 = self;
+  selfCopy = self;
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v4;
+  obj = devicesCopy;
   v7 = [obj countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v58;
-    v39 = v6;
+    v39 = selfCopy;
     v30 = *v58;
     do
     {
@@ -1021,7 +1021,7 @@ LABEL_6:
           v56 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v35 = v31;
+          v35 = outputContexts;
           v37 = [v35 countByEnumeratingWithState:&v53 objects:v63 count:16];
           if (!v37)
           {
@@ -1045,8 +1045,8 @@ LABEL_6:
               v50 = 0u;
               v51 = 0u;
               v52 = 0u;
-              v41 = [v13 outputDevices];
-              v44 = [v41 countByEnumeratingWithState:&v49 objects:v62 count:16];
+              outputDevices = [v13 outputDevices];
+              v44 = [outputDevices countByEnumeratingWithState:&v49 objects:v62 count:16];
               if (v44)
               {
                 v43 = *v50;
@@ -1056,31 +1056,31 @@ LABEL_6:
                   {
                     if (*v50 != v43)
                     {
-                      objc_enumerationMutation(v41);
+                      objc_enumerationMutation(outputDevices);
                     }
 
                     v15 = *(*(&v49 + 1) + 8 * i);
-                    v16 = [v15 clusterCompositionMembers];
-                    v17 = v16;
-                    if (v16)
+                    clusterCompositionMembers = [v15 clusterCompositionMembers];
+                    v17 = clusterCompositionMembers;
+                    if (clusterCompositionMembers)
                     {
                       v47 = 0u;
                       v48 = 0u;
                       v45 = 0u;
                       v46 = 0u;
-                      v18 = v16;
-                      v19 = [v18 countByEnumeratingWithState:&v45 objects:v61 count:16];
-                      if (v19)
+                      descriptor2 = clusterCompositionMembers;
+                      descriptor = [descriptor2 countByEnumeratingWithState:&v45 objects:v61 count:16];
+                      if (descriptor)
                       {
                         v42 = v17;
                         v20 = *v46;
                         while (2)
                         {
-                          for (j = 0; j != v19; j = j + 1)
+                          for (j = 0; j != descriptor; j = j + 1)
                           {
                             if (*v46 != v20)
                             {
-                              objc_enumerationMutation(v18);
+                              objc_enumerationMutation(descriptor2);
                             }
 
                             v22 = [*(*(&v45 + 1) + 8 * j) uid];
@@ -1089,15 +1089,15 @@ LABEL_6:
 
                             if (v24)
                             {
-                              v19 = [v11 descriptor];
-                              v6 = v39;
-                              [(MRDRemoteControlDiscoverySession *)v39 _mergeOutputDevice:v15 intoProtobuf:v19];
+                              descriptor = [v11 descriptor];
+                              selfCopy = v39;
+                              [(MRDRemoteControlDiscoverySession *)v39 _mergeOutputDevice:v15 intoProtobuf:descriptor];
                               goto LABEL_28;
                             }
                           }
 
-                          v19 = [v18 countByEnumeratingWithState:&v45 objects:v61 count:16];
-                          if (v19)
+                          descriptor = [descriptor2 countByEnumeratingWithState:&v45 objects:v61 count:16];
+                          if (descriptor)
                           {
                             continue;
                           }
@@ -1105,7 +1105,7 @@ LABEL_6:
                           break;
                         }
 
-                        v6 = v39;
+                        selfCopy = v39;
 LABEL_28:
                         v17 = v42;
                       }
@@ -1122,25 +1122,25 @@ LABEL_28:
                         goto LABEL_33;
                       }
 
-                      v19 = [v11 descriptor];
-                      v18 = [v15 descriptor];
-                      [v19 mergeFrom:v18];
+                      descriptor = [v11 descriptor];
+                      descriptor2 = [v15 descriptor];
+                      [descriptor mergeFrom:descriptor2];
                     }
 
-                    if (v19)
+                    if (descriptor)
                     {
-                      [v19 setIsRemoteControllable:1];
+                      [descriptor setIsRemoteControllable:1];
                       [v40 removeObject:v11];
-                      v28 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:v19];
+                      v28 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:descriptor];
                       [v40 addObject:v28];
 
-                      [(MRDRemoteControlDiscoverySession *)v6 _logChangesInModifyingOutputDevice:v11 toOutputDevice:v19 reason:@"updateFromOutputContext"];
+                      [(MRDRemoteControlDiscoverySession *)selfCopy _logChangesInModifyingOutputDevice:v11 toOutputDevice:descriptor reason:@"updateFromOutputContext"];
                     }
 
 LABEL_33:
                   }
 
-                  v44 = [v41 countByEnumeratingWithState:&v49 objects:v62 count:16];
+                  v44 = [outputDevices countByEnumeratingWithState:&v49 objects:v62 count:16];
                 }
 
                 while (v44);
@@ -1176,44 +1176,44 @@ LABEL_37:
   return v40;
 }
 
-- (id)_applyDeviceInfoValuesToOutputDevices:(id)a3 withDeviceInfo:(id)a4
+- (id)_applyDeviceInfoValuesToOutputDevices:(id)devices withDeviceInfo:(id)info
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10009D864;
   v8[3] = &unk_1004B9AD0;
   v8[4] = self;
-  v9 = a4;
-  v5 = v9;
-  v6 = [a3 msv_map:v8];
+  infoCopy = info;
+  v5 = infoCopy;
+  v6 = [devices msv_map:v8];
 
   return v6;
 }
 
-- (id)_applyLocalReservedOutputContextValuesToOutputDevices:(id)a3
+- (id)_applyLocalReservedOutputContextValuesToOutputDevices:(id)devices
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10009D998;
   v5[3] = &unk_1004B9AF8;
   v5[4] = self;
-  v3 = [a3 msv_map:v5];
+  v3 = [devices msv_map:v5];
 
   return v3;
 }
 
-- (id)_addUndiscoveredOutputContextOutputDevices:(id)a3
+- (id)_addUndiscoveredOutputContextOutputDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  devicesCopy = devices;
+  v5 = [devicesCopy mutableCopy];
   v6 = +[MRDAVOutputContextManager sharedManager];
-  v7 = [v6 populatedOutputContexts];
+  populatedOutputContexts = [v6 populatedOutputContexts];
 
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = sub_10009DF7C;
   v51[3] = &unk_1004B8A40;
-  v26 = v4;
+  v26 = devicesCopy;
   v52 = v26;
   v8 = objc_retainBlock(v51);
   v48[0] = _NSConcreteStackBlock;
@@ -1222,14 +1222,14 @@ LABEL_37:
   v48[3] = &unk_1004B9B20;
   v25 = v5;
   v49 = v25;
-  v50 = self;
-  v35 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v9 = objc_retainBlock(v48);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v7;
+  obj = populatedOutputContexts;
   v29 = [obj countByEnumeratingWithState:&v44 objects:v55 count:16];
   if (v29)
   {
@@ -1250,8 +1250,8 @@ LABEL_37:
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v31 = [v11 outputDevices];
-        v33 = [v31 countByEnumeratingWithState:&v40 objects:v54 count:16];
+        outputDevices = [v11 outputDevices];
+        v33 = [outputDevices countByEnumeratingWithState:&v40 objects:v54 count:16];
         if (v33)
         {
           v32 = *v41;
@@ -1262,20 +1262,20 @@ LABEL_37:
             {
               if (*v41 != v32)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(outputDevices);
               }
 
               v34 = v12;
               v13 = *(*(&v40 + 1) + 8 * v12);
-              v14 = [v13 clusterCompositionMembers];
-              v15 = v14;
-              if (v14)
+              clusterCompositionMembers = [v13 clusterCompositionMembers];
+              v15 = clusterCompositionMembers;
+              if (clusterCompositionMembers)
               {
                 v38 = 0u;
                 v39 = 0u;
                 v36 = 0u;
                 v37 = 0u;
-                v16 = [v14 countByEnumeratingWithState:&v36 objects:v53 count:16];
+                v16 = [clusterCompositionMembers countByEnumeratingWithState:&v36 objects:v53 count:16];
                 if (v16)
                 {
                   v17 = v16;
@@ -1292,9 +1292,9 @@ LABEL_37:
                       v20 = *(*(&v36 + 1) + 8 * i);
                       if (((v8[2])(v8, v20) & 1) == 0)
                       {
-                        v21 = [v20 descriptor];
-                        [(MRDRemoteControlDiscoverySession *)v35 _mergeOutputDevice:v13 intoProtobuf:v21];
-                        (v9[2])(v9, v21);
+                        descriptor = [v20 descriptor];
+                        [(MRDRemoteControlDiscoverySession *)selfCopy2 _mergeOutputDevice:v13 intoProtobuf:descriptor];
+                        (v9[2])(v9, descriptor);
                       }
                     }
 
@@ -1307,15 +1307,15 @@ LABEL_37:
 
               else if (((v8[2])(v8, v13) & 1) == 0)
               {
-                v22 = [v13 descriptor];
-                (v9[2])(v9, v22);
+                descriptor2 = [v13 descriptor];
+                (v9[2])(v9, descriptor2);
               }
 
               v12 = v34 + 1;
             }
 
             while ((v34 + 1) != v33);
-            v33 = [v31 countByEnumeratingWithState:&v40 objects:v54 count:16];
+            v33 = [outputDevices countByEnumeratingWithState:&v40 objects:v54 count:16];
           }
 
           while (v33);
@@ -1335,72 +1335,72 @@ LABEL_37:
   return v25;
 }
 
-- (id)_addUndiscoverableGroupLeaderFromDeviceInfo:(id)a3
+- (id)_addUndiscoverableGroupLeaderFromDeviceInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(MRDRemoteControlDiscoverySession *)self deviceInfo];
-  v6 = [(MRDRemoteControlDiscoverySession *)self _calculateUndiscoverableGroupLeaderFromDeviceInfo:v5];
+  infoCopy = info;
+  deviceInfo = [(MRDRemoteControlDiscoverySession *)self deviceInfo];
+  v6 = [(MRDRemoteControlDiscoverySession *)self _calculateUndiscoverableGroupLeaderFromDeviceInfo:deviceInfo];
   if (v6)
   {
-    v7 = [(MRDRemoteControlDiscoverySession *)self undiscoverableGroupLeaderHandle];
+    undiscoverableGroupLeaderHandle = [(MRDRemoteControlDiscoverySession *)self undiscoverableGroupLeaderHandle];
 
-    if (!v7)
+    if (!undiscoverableGroupLeaderHandle)
     {
       [(MRDRemoteControlDiscoverySession *)self setUndiscoverableGroupLeaderHandle:v6];
-      v8 = [v6 connection];
-      [v8 addObserver:self];
+      connection = [v6 connection];
+      [connection addObserver:self];
     }
 
-    v9 = [v5 leaderDeviceInfo];
-    v10 = [[MRDeviceInfoOutputDevice alloc] initWithDeviceInfo:v9];
-    v11 = [v10 descriptor];
-    [(MRDRemoteControlDiscoverySession *)self _mergeDeviceInfo:v9 intoProtobuf:v11];
-    [v11 setIsRemoteControllable:1];
-    [v11 setParentGroupContainsDiscoverableLeader:1];
-    [v11 setGroupContainsGroupLeader:1];
-    [v11 setIsProxyGroupPlayer:1];
-    v12 = [v9 WHAIdentifier];
-    [v11 setUniqueIdentifier:v12];
+    leaderDeviceInfo = [deviceInfo leaderDeviceInfo];
+    v10 = [[MRDeviceInfoOutputDevice alloc] initWithDeviceInfo:leaderDeviceInfo];
+    descriptor = [v10 descriptor];
+    [(MRDRemoteControlDiscoverySession *)self _mergeDeviceInfo:leaderDeviceInfo intoProtobuf:descriptor];
+    [descriptor setIsRemoteControllable:1];
+    [descriptor setParentGroupContainsDiscoverableLeader:1];
+    [descriptor setGroupContainsGroupLeader:1];
+    [descriptor setIsProxyGroupPlayer:1];
+    wHAIdentifier = [leaderDeviceInfo WHAIdentifier];
+    [descriptor setUniqueIdentifier:wHAIdentifier];
 
-    [v11 setIsGroupLeader:1];
-    [v11 setTransportType:8];
-    [(MRDRemoteControlDiscoverySession *)self _logChangesInModifyingOutputDevice:0 toOutputDevice:v11 reason:@"addUndiscoveredGroupLeader"];
-    v13 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:v11];
-    v14 = [v4 arrayByAddingObject:v13];
+    [descriptor setIsGroupLeader:1];
+    [descriptor setTransportType:8];
+    [(MRDRemoteControlDiscoverySession *)self _logChangesInModifyingOutputDevice:0 toOutputDevice:descriptor reason:@"addUndiscoveredGroupLeader"];
+    v13 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:descriptor];
+    v14 = [infoCopy arrayByAddingObject:v13];
   }
 
   else
   {
     [(MRDRemoteControlDiscoverySession *)self setUndiscoverableGroupLeaderHandle:0];
-    v14 = v4;
+    v14 = infoCopy;
   }
 
   return v14;
 }
 
-- (id)_calculateUndiscoverableGroupLeaderFromDeviceInfo:(id)a3
+- (id)_calculateUndiscoverableGroupLeaderFromDeviceInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = +[MRDMediaRemoteServer server];
-  v5 = [v4 routingServer];
-  v6 = [v5 isStartingNowPlayingSession];
+  routingServer = [v4 routingServer];
+  isStartingNowPlayingSession = [routingServer isStartingNowPlayingSession];
 
-  if (v6 & 1) != 0 || ([v3 parentGroupContainsDiscoverableGroupLeader])
+  if (isStartingNowPlayingSession & 1) != 0 || ([infoCopy parentGroupContainsDiscoverableGroupLeader])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v3 leaderDeviceInfo];
-    v9 = v8;
-    if (v8)
+    leaderDeviceInfo = [infoCopy leaderDeviceInfo];
+    v9 = leaderDeviceInfo;
+    if (leaderDeviceInfo)
     {
-      v10 = [v8 WHAIdentifier];
-      if (v10)
+      wHAIdentifier = [leaderDeviceInfo WHAIdentifier];
+      if (wHAIdentifier)
       {
         v11 = +[MRDMRRelayConnectionManager sharedManager];
-        v7 = [v11 connectionForOutputDeviceUID:v10];
+        v7 = [v11 connectionForOutputDeviceUID:wHAIdentifier];
       }
 
       else
@@ -1418,70 +1418,70 @@ LABEL_37:
   return v7;
 }
 
-- (void)_mergeOutputDevice:(id)a3 intoProtobuf:(id)a4
+- (void)_mergeOutputDevice:(id)device intoProtobuf:(id)protobuf
 {
-  v11 = a4;
-  v5 = a3;
-  [v11 setIsAirPlayReceiverSessionActive:{objc_msgSend(v5, "isAirPlayReceiverSessionActive")}];
-  v6 = [v5 groupID];
-  [v11 setGroupID:v6];
+  protobufCopy = protobuf;
+  deviceCopy = device;
+  [protobufCopy setIsAirPlayReceiverSessionActive:{objc_msgSend(deviceCopy, "isAirPlayReceiverSessionActive")}];
+  groupID = [deviceCopy groupID];
+  [protobufCopy setGroupID:groupID];
 
-  v7 = [v5 airPlayGroupID];
-  [v11 setAirPlayGroupID:v7];
+  airPlayGroupID = [deviceCopy airPlayGroupID];
+  [protobufCopy setAirPlayGroupID:airPlayGroupID];
 
-  v8 = [v5 parentGroupIdentifier];
-  [v11 setParentGroupIdentifier:v8];
+  parentGroupIdentifier = [deviceCopy parentGroupIdentifier];
+  [protobufCopy setParentGroupIdentifier:parentGroupIdentifier];
 
-  [v11 setGroupContainsGroupLeader:{objc_msgSend(v5, "groupContainsGroupLeader")}];
-  [v11 setParentGroupContainsDiscoverableLeader:{objc_msgSend(v5, "parentGroupContainsDiscoverableLeader")}];
-  [v11 setIsGroupLeader:{objc_msgSend(v5, "isGroupLeader")}];
-  [v11 setIsProxyGroupPlayer:{objc_msgSend(v5, "isProxyGroupPlayer")}];
-  v9 = [v5 uid];
-  [v11 setClusterID:v9];
+  [protobufCopy setGroupContainsGroupLeader:{objc_msgSend(deviceCopy, "groupContainsGroupLeader")}];
+  [protobufCopy setParentGroupContainsDiscoverableLeader:{objc_msgSend(deviceCopy, "parentGroupContainsDiscoverableLeader")}];
+  [protobufCopy setIsGroupLeader:{objc_msgSend(deviceCopy, "isGroupLeader")}];
+  [protobufCopy setIsProxyGroupPlayer:{objc_msgSend(deviceCopy, "isProxyGroupPlayer")}];
+  v9 = [deviceCopy uid];
+  [protobufCopy setClusterID:v9];
 
-  [v11 setIsRemoteControllable:1];
-  [v11 setConfiguredClusterSize:{objc_msgSend(v5, "configuredClusterSize")}];
-  v10 = [v5 clusterType];
+  [protobufCopy setIsRemoteControllable:1];
+  [protobufCopy setConfiguredClusterSize:{objc_msgSend(deviceCopy, "configuredClusterSize")}];
+  clusterType = [deviceCopy clusterType];
 
-  [v11 setClusterType:v10];
+  [protobufCopy setClusterType:clusterType];
 }
 
-- (void)_mergeDeviceInfo:(id)a3 intoProtobuf:(id)a4
+- (void)_mergeDeviceInfo:(id)info intoProtobuf:(id)protobuf
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 setIsAirPlayReceiverSessionActive:{objc_msgSend(v6, "isAirPlayActive")}];
-  v7 = [v6 groupUID];
-  [v5 setGroupID:v7];
+  protobufCopy = protobuf;
+  infoCopy = info;
+  [protobufCopy setIsAirPlayReceiverSessionActive:{objc_msgSend(infoCopy, "isAirPlayActive")}];
+  groupUID = [infoCopy groupUID];
+  [protobufCopy setGroupID:groupUID];
 
-  v8 = [v6 airPlayGroupUID];
-  [v5 setAirPlayGroupID:v8];
+  airPlayGroupUID = [infoCopy airPlayGroupUID];
+  [protobufCopy setAirPlayGroupID:airPlayGroupUID];
 
-  v9 = [v6 parentGroupID];
-  [v5 setParentGroupIdentifier:v9];
+  parentGroupID = [infoCopy parentGroupID];
+  [protobufCopy setParentGroupIdentifier:parentGroupID];
 
-  [v5 setGroupContainsGroupLeader:{objc_msgSend(v6, "groupContainsDiscoverableGroupLeader")}];
-  [v5 setParentGroupContainsDiscoverableLeader:{objc_msgSend(v6, "parentGroupContainsDiscoverableGroupLeader")}];
-  [v5 setIsGroupLeader:{objc_msgSend(v6, "isGroupLeader")}];
-  [v5 setIsProxyGroupPlayer:{objc_msgSend(v6, "isProxyGroupPlayer")}];
-  v10 = [v6 clusterID];
+  [protobufCopy setGroupContainsGroupLeader:{objc_msgSend(infoCopy, "groupContainsDiscoverableGroupLeader")}];
+  [protobufCopy setParentGroupContainsDiscoverableLeader:{objc_msgSend(infoCopy, "parentGroupContainsDiscoverableGroupLeader")}];
+  [protobufCopy setIsGroupLeader:{objc_msgSend(infoCopy, "isGroupLeader")}];
+  [protobufCopy setIsProxyGroupPlayer:{objc_msgSend(infoCopy, "isProxyGroupPlayer")}];
+  clusterID = [infoCopy clusterID];
 
-  [v5 setClusterID:v10];
+  [protobufCopy setClusterID:clusterID];
 }
 
-- (void)_logChangesInModifyingOutputDevice:(id)a3 toOutputDevice:(id)a4 reason:(id)a5
+- (void)_logChangesInModifyingOutputDevice:(id)device toOutputDevice:(id)outputDevice reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  outputDeviceCopy = outputDevice;
+  reasonCopy = reason;
   v10 = +[MRUserSettings currentSettings];
-  v11 = [v10 verboseRemoteControlDiscoveryLogging];
+  verboseRemoteControlDiscoveryLogging = [v10 verboseRemoteControlDiscoveryLogging];
 
-  if (v11)
+  if (verboseRemoteControlDiscoveryLogging)
   {
-    v12 = [v7 descriptor];
-    v13 = [v12 dictionaryRepresentation];
-    v14 = [v8 dictionaryRepresentation];
+    descriptor = [deviceCopy descriptor];
+    dictionaryRepresentation = [descriptor dictionaryRepresentation];
+    dictionaryRepresentation2 = [outputDeviceCopy dictionaryRepresentation];
     MRDictionaryCalculateDeltas();
     v15 = 0;
     v16 = 0;
@@ -1494,18 +1494,18 @@ LABEL_37:
       v20 = MRLogCategoryDiscoveryOversize();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v8 uniqueIdentifier];
-        v22 = [v8 name];
+        uniqueIdentifier = [outputDeviceCopy uniqueIdentifier];
+        name = [outputDeviceCopy name];
         *buf = 138412802;
-        v27 = v9;
+        v27 = reasonCopy;
         v28 = 2112;
-        v29 = v21;
+        v29 = uniqueIdentifier;
         v30 = 2112;
-        v31 = v22;
+        v31 = name;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[RemoteControlDiscoverySession] Applied %@ sourced values from outputDevice %@:%@", buf, 0x20u);
       }
 
-      if (v7)
+      if (deviceCopy)
       {
         if ([v15 count])
         {
@@ -1548,9 +1548,9 @@ LABEL_37:
 {
   v3 = +[NSDate date];
   v4 = +[NSUUID UUID];
-  v5 = [v4 UUIDString];
+  uUIDString = [v4 UUIDString];
 
-  v6 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"loadLocalEndpointConnection", v5];
+  v6 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"loadLocalEndpointConnection", uUIDString];
   if (objc_opt_class())
   {
     [(__CFString *)v6 appendFormat:@" for %@", objc_opt_class()];
@@ -1569,21 +1569,21 @@ LABEL_37:
   v10 = NSStringFromClass(v9);
   [v8 setObject:v10 forKeyedSubscript:MRExternalDeviceConnectionReasonUserInfoKey];
 
-  [v8 setObject:v5 forKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
+  [v8 setObject:uUIDString forKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
   v11 = MRMediaRemoteCopyDeviceUID();
   v12 = [MRAVOutputDeviceTransport _createConnectionWith:v11 groupID:0 connectionType:2 shouldUseSystemAuthenticationPrompt:0 userInfo:v8];
-  v13 = [v12 first];
-  v14 = [v12 second];
+  first = [v12 first];
+  second = [v12 second];
 
-  if (v14 || !v13)
+  if (second || !first)
   {
     v19 = v3;
-    v25 = [v12 second];
+    second2 = [v12 second];
 
     v26 = objc_opt_class();
     v27 = _MRLogForCategory();
     v16 = v27;
-    if (v25)
+    if (second2)
     {
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_ERROR);
       if (!v26)
@@ -1593,15 +1593,15 @@ LABEL_37:
           goto LABEL_21;
         }
 
-        v34 = [v12 second];
+        second3 = [v12 second];
         v40 = +[NSDate date];
         [v40 timeIntervalSinceDate:v19];
         *buf = 138544130;
         v45 = @"loadLocalEndpointConnection";
         v46 = 2114;
-        v47 = v5;
+        v47 = uUIDString;
         v48 = 2114;
-        v49 = v34;
+        v49 = second3;
         v50 = 2048;
         v51 = v41;
         _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Response: %{public}@<%{public}@> returned with error <%{public}@> in %.4lf seconds", buf, 0x2Au);
@@ -1614,16 +1614,16 @@ LABEL_26:
 
       if (v28)
       {
-        v43 = [v12 second];
+        second4 = [v12 second];
         v42 = objc_opt_class();
         v29 = +[NSDate date];
         [v29 timeIntervalSinceDate:v19];
         *buf = 138544386;
         v45 = @"loadLocalEndpointConnection";
         v46 = 2114;
-        v47 = v5;
+        v47 = uUIDString;
         v48 = 2114;
-        v49 = v43;
+        v49 = second4;
         v50 = 2114;
         v51 = v42;
         v3 = v19;
@@ -1646,12 +1646,12 @@ LABEL_26:
           goto LABEL_22;
         }
 
-        v34 = +[NSDate date];
-        [v34 timeIntervalSinceDate:v19];
+        second3 = +[NSDate date];
+        [second3 timeIntervalSinceDate:v19];
         *buf = 138543874;
         v45 = @"loadLocalEndpointConnection";
         v46 = 2114;
-        v47 = v5;
+        v47 = uUIDString;
         v48 = 2048;
         v49 = v39;
         v36 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -1670,7 +1670,7 @@ LABEL_25:
         *buf = 138544130;
         v45 = @"loadLocalEndpointConnection";
         v46 = 2114;
-        v47 = v5;
+        v47 = uUIDString;
         v48 = 2114;
         v49 = v32;
         v50 = 2048;
@@ -1697,14 +1697,14 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v34 = +[NSDate date];
-    [v34 timeIntervalSinceDate:v3];
+    second3 = +[NSDate date];
+    [second3 timeIntervalSinceDate:v3];
     *buf = 138544130;
     v45 = @"loadLocalEndpointConnection";
     v46 = 2114;
-    v47 = v5;
+    v47 = uUIDString;
     v48 = 2112;
-    v49 = v13;
+    v49 = first;
     v50 = 2048;
     v51 = v35;
     v36 = "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds";
@@ -1722,9 +1722,9 @@ LABEL_21:
     *buf = 138544386;
     v45 = @"loadLocalEndpointConnection";
     v46 = 2114;
-    v47 = v5;
+    v47 = uUIDString;
     v48 = 2112;
-    v49 = v13;
+    v49 = first;
     v50 = 2114;
     v51 = v18;
     v52 = 2048;
@@ -1740,7 +1740,7 @@ LABEL_17:
 
 LABEL_22:
 
-  [(MRDRemoteControlDiscoverySession *)self _updateLocalEndpointConnection:v13 withUrgency:0];
+  [(MRDRemoteControlDiscoverySession *)self _updateLocalEndpointConnection:first withUrgency:0];
 }
 
 - (void)_loadDefaults
@@ -1886,9 +1886,9 @@ LABEL_23:
   dispatch_assert_queue_V2(self->_workerQueue);
   objc_initWeak(&location, self);
   v3 = +[MRUserSettings currentSettings];
-  v4 = [v3 supportIDSDiscovery];
+  supportIDSDiscovery = [v3 supportIDSDiscovery];
 
-  if (v4)
+  if (supportIDSDiscovery)
   {
     v5 = objc_alloc_init(MRDIDSDiscoverySession);
     idsDiscoverySession = self->_idsDiscoverySession;
@@ -1907,9 +1907,9 @@ LABEL_23:
   }
 
   v9 = +[MRSharedSettings currentSettings];
-  v10 = [v9 supportGroupSession];
+  supportGroupSession = [v9 supportGroupSession];
 
-  if (v10)
+  if (supportGroupSession)
   {
     v11 = objc_alloc_init(_TtC12mediaremoted31MRDGroupSessionDiscoverySession);
     groupSessionDiscoverySession = self->_groupSessionDiscoverySession;
@@ -1926,9 +1926,9 @@ LABEL_23:
   }
 
   v15 = +[MRUserSettings currentSettings];
-  v16 = [v15 discoverCompanionDevices];
+  discoverCompanionDevices = [v15 discoverCompanionDevices];
 
-  if (v16)
+  if (discoverCompanionDevices)
   {
     v17 = objc_alloc_init(MRIDSCompanionDiscoverySession);
     companionDiscoverySession = self->_companionDiscoverySession;
@@ -1962,14 +1962,14 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[RemoteControlDiscoverySession] %@ setupStandaloneDiscovery", buf, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_workerQueue);
   v4 = [MRAVConcreteRoutingDiscoverySession alloc];
-  v5 = [(MRDRemoteControlDiscoverySession *)self configuration];
-  v6 = [v4 initWithConfiguration:v5];
+  configuration = [(MRDRemoteControlDiscoverySession *)self configuration];
+  v6 = [v4 initWithConfiguration:configuration];
   avDiscoverySession = self->_avDiscoverySession;
   self->_avDiscoverySession = v6;
 
@@ -1997,23 +1997,23 @@ LABEL_23:
   objc_destroyWeak(buf);
 }
 
-- (void)_setupProxiedDiscoveryWithDestinationEndpoint:(id)a3
+- (void)_setupProxiedDiscoveryWithDestinationEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[RemoteControlDiscoverySession] %@ setupCompanionDiscovery", buf, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_workerQueue);
   v6 = [[MRAVRoutingDiscoverySessionConfiguration alloc] initWithEndpointFeatures:{-[MRDRemoteControlDiscoverySession endpointFeatures](self, "endpointFeatures")}];
-  v7 = [(MRDRemoteControlDiscoverySession *)self routingContextUID];
-  [v6 setRoutingContextUID:v7];
+  routingContextUID = [(MRDRemoteControlDiscoverySession *)self routingContextUID];
+  [v6 setRoutingContextUID:routingContextUID];
 
-  v8 = [v4 discoverySessionWithConfiguration:v6];
+  v8 = [endpointCopy discoverySessionWithConfiguration:v6];
   externalDiscoverySession = self->_externalDiscoverySession;
   self->_externalDiscoverySession = v8;
 

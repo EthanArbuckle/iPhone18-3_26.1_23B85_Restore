@@ -1,15 +1,15 @@
 @interface HMMutableCHIPEcosystem
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableCHIPEcosystem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMCHIPEcosystem allocWithZone:a3];
-  v5 = [(HMCHIPEcosystem *)self rootPublicKey];
-  v6 = [(HMCHIPEcosystem *)self vendor];
-  v7 = [(HMCHIPEcosystem *)v4 initWithRootPublicKey:v5 vendor:v6];
+  v4 = [HMCHIPEcosystem allocWithZone:zone];
+  rootPublicKey = [(HMCHIPEcosystem *)self rootPublicKey];
+  vendor = [(HMCHIPEcosystem *)self vendor];
+  v7 = [(HMCHIPEcosystem *)v4 initWithRootPublicKey:rootPublicKey vendor:vendor];
 
   return v7;
 }

@@ -1,7 +1,7 @@
 @interface CIOAnalytics
 - (BOOL)_startEventMonitoring;
 - (CIOAnalytics)init;
-- (void)_handleServiceMatched:(unsigned int)a3;
+- (void)_handleServiceMatched:(unsigned int)matched;
 - (void)_stopEventMonitoring;
 - (void)start;
 - (void)stop;
@@ -46,13 +46,13 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Starting %@...", buf, 0xCu);
   }
 
-  v6 = [(CIOAnalytics *)self queue];
+  queue = [(CIOAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __21__CIOAnalytics_start__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __21__CIOAnalytics_start__block_invoke(uint64_t a1)
@@ -89,13 +89,13 @@ void __21__CIOAnalytics_start__block_invoke(uint64_t a1)
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Stopping %@...", buf, 0xCu);
   }
 
-  v6 = [(CIOAnalytics *)self queue];
+  queue = [(CIOAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __20__CIOAnalytics_stop__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __20__CIOAnalytics_stop__block_invoke(uint64_t a1)
@@ -146,9 +146,9 @@ void __20__CIOAnalytics_stop__block_invoke(uint64_t a1)
 
     [(CIOAnalytics *)self setMonitoring:1];
     [(CIOAnalytics *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-    v5 = [(CIOAnalytics *)self ioNotificationPort];
-    v6 = [(CIOAnalytics *)self queue];
-    IONotificationPortSetDispatchQueue(v5, v6);
+    ioNotificationPort = [(CIOAnalytics *)self ioNotificationPort];
+    queue = [(CIOAnalytics *)self queue];
+    IONotificationPortSetDispatchQueue(ioNotificationPort, queue);
 
     v7 = IOServiceMatching("IOThunderboltSwitch");
     v8 = [(CIOAnalytics *)self log];
@@ -157,9 +157,9 @@ void __20__CIOAnalytics_stop__block_invoke(uint64_t a1)
       [(AUVDMAnalytics *)v7 _startEventMonitoring];
     }
 
-    v9 = [(CIOAnalytics *)self ioNotificationPort];
+    ioNotificationPort2 = [(CIOAnalytics *)self ioNotificationPort];
     v10 = v7;
-    v11 = IOServiceAddMatchingNotification(v9, "IOServiceFirstMatch", v10, _servicesMatched_0, self, &self->_ioServiceMatchingIterator);
+    v11 = IOServiceAddMatchingNotification(ioNotificationPort2, "IOServiceFirstMatch", v10, _servicesMatched_0, self, &self->_ioServiceMatchingIterator);
     if (v11)
     {
       [(AUVDMAnalytics *)self _startEventMonitoring];
@@ -199,12 +199,12 @@ void __20__CIOAnalytics_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleServiceMatched:(unsigned int)a3
+- (void)_handleServiceMatched:(unsigned int)matched
 {
-  if (a3)
+  if (matched)
   {
     memset(name, 0, 128);
-    IORegistryEntryGetName(a3, name);
+    IORegistryEntryGetName(matched, name);
     v5 = [(CIOAnalytics *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -216,7 +216,7 @@ void __20__CIOAnalytics_stop__block_invoke(uint64_t a1)
     if ([(CIOAnalytics *)self analyticsEventsEnabled])
     {
       HIDWORD(v183) = 0;
-      if (!IORegistryEntryGetParentEntry(a3, "IOPort", &v183 + 1) && HIDWORD(v183))
+      if (!IORegistryEntryGetParentEntry(matched, "IOPort", &v183 + 1) && HIDWORD(v183))
       {
         if (!IOObjectConformsTo(HIDWORD(v183), "IOPortTransportStateCIO"))
         {

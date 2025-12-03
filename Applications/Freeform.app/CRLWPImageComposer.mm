@@ -1,63 +1,63 @@
 @interface CRLWPImageComposer
-- (CRLWPImageComposer)initWithBaseImage:(id)a3 screenScale:(double)a4;
-- (id)overlayImage:(id)a3 usingFrame:(CGRect)a4;
+- (CRLWPImageComposer)initWithBaseImage:(id)image screenScale:(double)scale;
+- (id)overlayImage:(id)image usingFrame:(CGRect)frame;
 @end
 
 @implementation CRLWPImageComposer
 
-- (CRLWPImageComposer)initWithBaseImage:(id)a3 screenScale:(double)a4
+- (CRLWPImageComposer)initWithBaseImage:(id)image screenScale:(double)scale
 {
-  v6 = a3;
+  imageCopy = image;
   v11.receiver = self;
   v11.super_class = CRLWPImageComposer;
   v7 = [(CRLWPImageComposer *)&v11 init];
   if (v7)
   {
-    [v6 scale];
-    if (v8 != a4)
+    [imageCopy scale];
+    if (v8 != scale)
     {
-      v9 = +[CRLImage imageWithCGImage:](CRLImage, "imageWithCGImage:", [v6 CGImageForContentsScale:a4]);
+      v9 = +[CRLImage imageWithCGImage:](CRLImage, "imageWithCGImage:", [imageCopy CGImageForContentsScale:scale]);
 
-      v6 = v9;
+      imageCopy = v9;
     }
 
-    objc_storeStrong(&v7->_baseImage, v6);
-    objc_storeStrong(&v7->_compositedImage, v6);
-    v7->_screenScale = a4;
+    objc_storeStrong(&v7->_baseImage, imageCopy);
+    objc_storeStrong(&v7->_compositedImage, imageCopy);
+    v7->_screenScale = scale;
   }
 
   return v7;
 }
 
-- (id)overlayImage:(id)a3 usingFrame:(CGRect)a4
+- (id)overlayImage:(id)image usingFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  imageCopy = image;
   if (sub_1001207D0(x, y, width, height))
   {
-    [v9 scale];
+    [imageCopy scale];
     v11 = v10;
     [(CRLWPImageComposer *)self screenScale];
     if (v11 != v12)
     {
       [(CRLWPImageComposer *)self screenScale];
-      v13 = +[CRLImage imageWithCGImage:](CRLImage, "imageWithCGImage:", [v9 CGImageForContentsScale:?]);
+      v13 = +[CRLImage imageWithCGImage:](CRLImage, "imageWithCGImage:", [imageCopy CGImageForContentsScale:?]);
 
-      v9 = v13;
+      imageCopy = v13;
     }
 
-    v14 = [(CRLWPImageComposer *)self compositedImage];
-    [v14 size];
+    compositedImage = [(CRLWPImageComposer *)self compositedImage];
+    [compositedImage size];
     v15 = sub_10011ECB4();
     v17 = v16;
     v19 = v18;
     v21 = v20;
 
-    v22 = [(CRLWPImageComposer *)self compositedImage];
-    [v22 scale];
+    compositedImage2 = [(CRLWPImageComposer *)self compositedImage];
+    [compositedImage2 scale];
     v24 = sub_10011FFD8(v15, v17, v19, v21, v23);
     v53 = v25;
     v54 = v24;
@@ -65,8 +65,8 @@
     v28 = v27;
     v30 = v29;
 
-    v31 = [(CRLWPImageComposer *)self compositedImage];
-    [v31 scale];
+    compositedImage3 = [(CRLWPImageComposer *)self compositedImage];
+    [compositedImage3 scale];
     v33 = sub_10011FFD8(x, y, width, height, v32);
     v35 = v34;
     v37 = v36;
@@ -76,16 +76,16 @@
     v42 = v41;
     v45 = sub_10050DF80(3, v43, v44);
     CGContextTranslateCTM(v45, -v40, -v42);
-    v46 = [(CRLWPImageComposer *)self compositedImage];
-    v47 = [v46 CGImage];
+    compositedImage4 = [(CRLWPImageComposer *)self compositedImage];
+    cGImage = [compositedImage4 CGImage];
     v56.origin.y = v53;
     v56.origin.x = v54;
     v56.size.width = v28;
     v56.size.height = v30;
-    CGContextDrawImage(v45, v56, v47);
+    CGContextDrawImage(v45, v56, cGImage);
 
     [(CRLWPImageComposer *)self screenScale];
-    v48 = [v9 CGImageForContentsScale:?];
+    v48 = [imageCopy CGImageForContentsScale:?];
     v57.origin.x = v33;
     v57.origin.y = v35;
     v57.size.width = v37;
@@ -94,9 +94,9 @@
     Image = CGBitmapContextCreateImage(v45);
     CGContextRelease(v45);
     [(CRLWPImageComposer *)self screenScale];
-    v50 = [CRLImage imageWithCGImage:Image scale:0 orientation:?];
+    compositedImage5 = [CRLImage imageWithCGImage:Image scale:0 orientation:?];
     CGImageRelease(Image);
-    [(CRLWPImageComposer *)self setCompositedImage:v50];
+    [(CRLWPImageComposer *)self setCompositedImage:compositedImage5];
   }
 
   else
@@ -112,10 +112,10 @@
       sub_10136884C(v51, x, y, width, height);
     }
 
-    v50 = [(CRLWPImageComposer *)self compositedImage];
+    compositedImage5 = [(CRLWPImageComposer *)self compositedImage];
   }
 
-  return v50;
+  return compositedImage5;
 }
 
 @end

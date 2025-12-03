@@ -1,26 +1,26 @@
 @interface PNRODSchemaPNRODPQAMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODPQAMetrics)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODPQAMetrics)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PNRODSchemaPNRODPQAMetrics)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODPQAMetrics)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODPQAMetrics
 
-- (PNRODSchemaPNRODPQAMetrics)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODPQAMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = PNRODSchemaPNRODPQAMetrics;
   v5 = [(PNRODSchemaPNRODPQAMetrics *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"searchToolId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"searchToolId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PNRODSchemaPNRODPQAMetrics *)v5 setSearchToolId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"overallTime"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"overallTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PNRODSchemaPNRODPQAMetrics *)v5 setOverallTime:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"llmQUTotalTime"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"llmQUTotalTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(PNRODSchemaPNRODPQAMetrics *)v5 setLlmQUTotalTime:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"spotlightTotalTime"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"spotlightTotalTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(PNRODSchemaPNRODPQAMetrics *)v5 setSpotlightTotalTime:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"answerSynthesisTime"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"answerSynthesisTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODPQAMetrics)initWithJSON:(id)a3
+- (PNRODSchemaPNRODPQAMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODPQAMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODPQAMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODPQAMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,90 +102,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_answerSynthesisTime)
   {
-    v4 = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    answerSynthesisTime = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
+    dictionaryRepresentation = [answerSynthesisTime dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"answerSynthesisTime"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"answerSynthesisTime"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"answerSynthesisTime"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"answerSynthesisTime"];
     }
   }
 
   if (self->_llmQUTotalTime)
   {
-    v7 = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    llmQUTotalTime = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
+    dictionaryRepresentation2 = [llmQUTotalTime dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"llmQUTotalTime"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"llmQUTotalTime"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"llmQUTotalTime"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"llmQUTotalTime"];
     }
   }
 
   if (self->_overallTime)
   {
-    v10 = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    overallTime = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
+    dictionaryRepresentation3 = [overallTime dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"overallTime"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"overallTime"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"overallTime"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"overallTime"];
     }
   }
 
   if (self->_searchToolId)
   {
-    v13 = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    searchToolId = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
+    dictionaryRepresentation4 = [searchToolId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"searchToolId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"searchToolId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"searchToolId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"searchToolId"];
     }
   }
 
   if (self->_spotlightTotalTime)
   {
-    v16 = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    spotlightTotalTime = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
+    dictionaryRepresentation5 = [spotlightTotalTime dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"spotlightTotalTime"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"spotlightTotalTime"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"spotlightTotalTime"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"spotlightTotalTime"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -197,28 +197,28 @@
   return v6 ^ [(PNRODSchemaPNRODMetricDuration *)self->_answerSynthesisTime hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
-  v6 = [v4 searchToolId];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
+  searchToolId2 = [equalCopy searchToolId];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
-  if (v7)
+  searchToolId3 = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
+  if (searchToolId3)
   {
-    v8 = v7;
-    v9 = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
-    v10 = [v4 searchToolId];
-    v11 = [v9 isEqual:v10];
+    v8 = searchToolId3;
+    searchToolId4 = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
+    searchToolId5 = [equalCopy searchToolId];
+    v11 = [searchToolId4 isEqual:searchToolId5];
 
     if (!v11)
     {
@@ -230,20 +230,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
-  v6 = [v4 overallTime];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
+  searchToolId2 = [equalCopy overallTime];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
-  if (v12)
+  overallTime = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
+  if (overallTime)
   {
-    v13 = v12;
-    v14 = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
-    v15 = [v4 overallTime];
-    v16 = [v14 isEqual:v15];
+    v13 = overallTime;
+    overallTime2 = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
+    overallTime3 = [equalCopy overallTime];
+    v16 = [overallTime2 isEqual:overallTime3];
 
     if (!v16)
     {
@@ -255,20 +255,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
-  v6 = [v4 llmQUTotalTime];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
+  searchToolId2 = [equalCopy llmQUTotalTime];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
-  if (v17)
+  llmQUTotalTime = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
+  if (llmQUTotalTime)
   {
-    v18 = v17;
-    v19 = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
-    v20 = [v4 llmQUTotalTime];
-    v21 = [v19 isEqual:v20];
+    v18 = llmQUTotalTime;
+    llmQUTotalTime2 = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
+    llmQUTotalTime3 = [equalCopy llmQUTotalTime];
+    v21 = [llmQUTotalTime2 isEqual:llmQUTotalTime3];
 
     if (!v21)
     {
@@ -280,20 +280,20 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
-  v6 = [v4 spotlightTotalTime];
-  if ((v5 != 0) == (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
+  searchToolId2 = [equalCopy spotlightTotalTime];
+  if ((searchToolId != 0) == (searchToolId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
-  if (v22)
+  spotlightTotalTime = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
+  if (spotlightTotalTime)
   {
-    v23 = v22;
-    v24 = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
-    v25 = [v4 spotlightTotalTime];
-    v26 = [v24 isEqual:v25];
+    v23 = spotlightTotalTime;
+    spotlightTotalTime2 = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
+    spotlightTotalTime3 = [equalCopy spotlightTotalTime];
+    v26 = [spotlightTotalTime2 isEqual:spotlightTotalTime3];
 
     if (!v26)
     {
@@ -305,12 +305,12 @@
   {
   }
 
-  v5 = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
-  v6 = [v4 answerSynthesisTime];
-  if ((v5 != 0) != (v6 == 0))
+  searchToolId = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
+  searchToolId2 = [equalCopy answerSynthesisTime];
+  if ((searchToolId != 0) != (searchToolId2 == 0))
   {
-    v27 = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
-    if (!v27)
+    answerSynthesisTime = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
+    if (!answerSynthesisTime)
     {
 
 LABEL_30:
@@ -318,10 +318,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
-    v30 = [v4 answerSynthesisTime];
-    v31 = [v29 isEqual:v30];
+    v28 = answerSynthesisTime;
+    answerSynthesisTime2 = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
+    answerSynthesisTime3 = [equalCopy answerSynthesisTime];
+    v31 = [answerSynthesisTime2 isEqual:answerSynthesisTime3];
 
     if (v31)
     {
@@ -341,100 +341,100 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
+  toCopy = to;
+  searchToolId = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
 
-  if (v4)
+  if (searchToolId)
   {
-    v5 = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
+    searchToolId2 = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
+  overallTime = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
 
-  if (v6)
+  if (overallTime)
   {
-    v7 = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
+    overallTime2 = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
+  llmQUTotalTime = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
 
-  if (v8)
+  if (llmQUTotalTime)
   {
-    v9 = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
+    llmQUTotalTime2 = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
+  spotlightTotalTime = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
 
-  if (v10)
+  if (spotlightTotalTime)
   {
-    v11 = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
+    spotlightTotalTime2 = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
+  answerSynthesisTime = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (answerSynthesisTime)
   {
-    v14 = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
+    answerSynthesisTime2 = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = PNRODSchemaPNRODPQAMetrics;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  searchToolId = [(PNRODSchemaPNRODPQAMetrics *)self searchToolId];
+  v7 = [searchToolId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PNRODSchemaPNRODPQAMetrics *)self deleteSearchToolId];
   }
 
-  v9 = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  overallTime = [(PNRODSchemaPNRODPQAMetrics *)self overallTime];
+  v10 = [overallTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PNRODSchemaPNRODPQAMetrics *)self deleteOverallTime];
   }
 
-  v12 = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  llmQUTotalTime = [(PNRODSchemaPNRODPQAMetrics *)self llmQUTotalTime];
+  v13 = [llmQUTotalTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PNRODSchemaPNRODPQAMetrics *)self deleteLlmQUTotalTime];
   }
 
-  v15 = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  spotlightTotalTime = [(PNRODSchemaPNRODPQAMetrics *)self spotlightTotalTime];
+  v16 = [spotlightTotalTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PNRODSchemaPNRODPQAMetrics *)self deleteSpotlightTotalTime];
   }
 
-  v18 = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  answerSynthesisTime = [(PNRODSchemaPNRODPQAMetrics *)self answerSynthesisTime];
+  v19 = [answerSynthesisTime applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PNRODSchemaPNRODPQAMetrics *)self deleteAnswerSynthesisTime];
   }

@@ -1,20 +1,20 @@
 @interface DYRendererInfo
-+ (BOOL)_dimensionsAreSupported:(id)a3 supportedDimensions:(id)a4;
-+ (BOOL)_rangeIsSupported:(id)a3 supportedRange:(id)a4;
-+ (id)rendererInfoWithGLIContext:(__GLIContextRec *)a3 dispatch:(__GLIFunctionDispatchRec *)a4 api:(int)a5;
-- (BOOL)_supportsGLSLVersion:(id)a3;
-- (BOOL)_supportsGLVersion:(id)a3;
-- (BOOL)_supportsLimits:(id)a3;
-- (BOOL)supportsCapabilitiesOfRenderer:(id)a3;
-- (DYRendererInfo)initWithCoder:(id)a3;
++ (BOOL)_dimensionsAreSupported:(id)supported supportedDimensions:(id)dimensions;
++ (BOOL)_rangeIsSupported:(id)supported supportedRange:(id)range;
++ (id)rendererInfoWithGLIContext:(__GLIContextRec *)context dispatch:(__GLIFunctionDispatchRec *)dispatch api:(int)api;
+- (BOOL)_supportsGLSLVersion:(id)version;
+- (BOOL)_supportsGLVersion:(id)version;
+- (BOOL)_supportsLimits:(id)limits;
+- (BOOL)supportsCapabilitiesOfRenderer:(id)renderer;
+- (DYRendererInfo)initWithCoder:(id)coder;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DYRendererInfo
 
-+ (id)rendererInfoWithGLIContext:(__GLIContextRec *)a3 dispatch:(__GLIFunctionDispatchRec *)a4 api:(int)a5
++ (id)rendererInfoWithGLIContext:(__GLIContextRec *)context dispatch:(__GLIFunctionDispatchRec *)dispatch api:(int)api
 {
   result = objc_opt_new();
   if (!result)
@@ -27,29 +27,29 @@
   v56[1] = 3221225472;
   v57 = __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_invoke;
   v58 = &__block_descriptor_48_e18___NSString_12__0I8l;
-  v59 = a4;
-  v60 = a3;
+  dispatchCopy = dispatch;
+  contextCopy = context;
   [result setVersion:__58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_invoke(v56)];
   [v9 setGlslVersion:{(v57)(v56, 35724)}];
   [v9 setVendor:{(v57)(v56, 7936)}];
   [v9 setRenderer:{(v57)(v56, 7937)}];
-  v24 = a5 - 3;
-  if (a5 >= 3)
+  v24 = api - 3;
+  if (api >= 3)
   {
-    if ((a5 - 3) >= 2)
+    if ((api - 3) >= 2)
     {
       goto LABEL_13;
     }
 
     v61[0] = 0;
-    (a4->get_integerv)(a3, 33309, v61);
+    (dispatch->get_integerv)(context, 33309, v61);
     v15 = [MEMORY[0x277CBEB58] setWithCapacity:v61[0]];
     if (v61[0])
     {
       v16 = 0;
       do
       {
-        v17 = (a4->get_stringi)(a3, 7939, v16);
+        v17 = (dispatch->get_stringi)(context, 7939, v16);
         if (v17)
         {
           v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCString:v17 encoding:1];
@@ -91,46 +91,46 @@ LABEL_13:
   v51[1] = 3221225472;
   v52 = __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_invoke_2;
   v53 = &__block_descriptor_48_e45_v28__0I8__NSMutableDictionary_12__NSString_20l;
-  v54 = a4;
-  v55 = a3;
-  v45 = a3;
+  dispatchCopy2 = dispatch;
+  contextCopy2 = context;
+  contextCopy3 = context;
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v47 = __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_invoke_3;
   v48 = &__block_descriptor_48_e45_v28__0I8__NSMutableDictionary_12__NSString_20l;
-  v49 = a4;
-  v50 = a3;
-  v40 = a3;
+  dispatchCopy3 = dispatch;
+  contextCopy4 = context;
+  contextCopy5 = context;
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v42 = __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_invoke_4;
   v43 = &__block_descriptor_48_e45_v28__0I8__NSMutableDictionary_12__NSString_20l;
-  v44 = a4;
-  v35 = a3;
+  dispatchCopy4 = dispatch;
+  contextCopy6 = context;
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v37 = __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_invoke_5;
   v38 = &__block_descriptor_48_e48_v36__0I8__NSMutableDictionary_12__NSString_20Q28l;
-  v39 = a4;
-  v30 = a3;
+  dispatchCopy5 = dispatch;
+  contextCopy7 = context;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v32 = __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_invoke_6;
   v33 = &__block_descriptor_48_e48_v36__0I8__NSMutableDictionary_12__NSString_20Q28l;
-  v34 = a4;
+  dispatchCopy6 = dispatch;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v26 = __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_invoke_7;
   v27 = &unk_27916F0B8;
   v28 = v21;
-  v29 = a4;
+  dispatchCopy7 = dispatch;
   v23 = v21;
-  if (a5 > 2)
+  if (api > 2)
   {
-    if (a5 == 3)
+    if (api == 3)
     {
       v61[0] = 0;
-      (a4->get_integerv)(a3, 34921, v61);
+      (dispatch->get_integerv)(context, 34921, v61);
       [v19 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", v61[0]), @"GL_MAX_VERTEX_ATTRIBS"}];
       v52(v51, 35658, v19, @"GL_MAX_VERTEX_UNIFORM_COMPONENTS");
       v52(v51, 35371, v19, @"GL_MAX_VERTEX_UNIFORM_BLOCKS");
@@ -177,13 +177,13 @@ LABEL_13:
       goto LABEL_23;
     }
 
-    if (a5 != 4)
+    if (api != 4)
     {
       goto LABEL_23;
     }
 
     v61[0] = 0;
-    (a4->get_integerv)(a3, 35375, v61);
+    (dispatch->get_integerv)(context, 35375, v61);
     [v19 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", v61[0]), @"GL_MAX_UNIFORM_BUFFER_BINDINGS"}];
     v52(v51, 35376, v19, @"GL_MAX_UNIFORM_BLOCK_SIZE");
     v52(v51, 35371, v19, @"GL_MAX_VERTEX_UNIFORM_BLOCKS");
@@ -240,10 +240,10 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  if (a5 == 1)
+  if (api == 1)
   {
     v61[0] = 0;
-    (a4->get_integerv)(a3, 3377, v61);
+    (dispatch->get_integerv)(context, 3377, v61);
     [v19 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", v61[0]), @"GL_MAX_LIGHTS"}];
     v52(v51, 3378, v19, @"GL_MAX_CLIP_PLANES");
     v52(v51, 3382, v19, @"GL_MAX_MODELVIEW_STACK_DEPTH");
@@ -257,7 +257,7 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  if (a5 == 2)
+  if (api == 2)
   {
     goto LABEL_20;
   }
@@ -295,7 +295,7 @@ LABEL_23:
   }
 
   v61[0] = 0;
-  (a4->get_integerv)(a3, 34466, v61);
+  (dispatch->get_integerv)(context, 34466, v61);
   v37(v36, 34467, v19, @"GL_COMPRESSED_TEXTURE_FORMATS", v61[0]);
   [v9 setLimits:{objc_msgSend(v19, "copy")}];
 
@@ -397,50 +397,50 @@ uint64_t __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_in
   return [*(a1 + 32) setObject:objc_msgSend(v6 forKey:{"dictionaryWithObjectsAndKeys:", v7, @"range", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", v10[0]), @"precision", 0), a4}];
 }
 
-- (DYRendererInfo)initWithCoder:(id)a3
+- (DYRendererInfo)initWithCoder:(id)coder
 {
   v18.receiver = self;
   v18.super_class = DYRendererInfo;
   v4 = [(DYRendererInfo *)&v18 init];
   if (v4)
   {
-    v4->vendor = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"vendor"];
-    v4->renderer = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"renderer"];
-    v4->version = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-    v4->glslVersion = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"glslVersion"];
+    v4->vendor = [coder decodeObjectOfClass:objc_opt_class() forKey:@"vendor"];
+    v4->renderer = [coder decodeObjectOfClass:objc_opt_class() forKey:@"renderer"];
+    v4->version = [coder decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v4->glslVersion = [coder decodeObjectOfClass:objc_opt_class() forKey:@"glslVersion"];
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
-    v4->extensions = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"extensions"}];
+    v4->extensions = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"extensions"}];
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = objc_opt_class();
-    v4->limits = [a3 decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, v9, v10, objc_opt_class(), 0), @"limits"}];
+    v4->limits = [coder decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithObjects:", v8, v9, v10, objc_opt_class(), 0), @"limits"}];
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = objc_opt_class();
-    v4->bitCounts = [a3 decodeObjectOfClasses:objc_msgSend(v11 forKey:{"setWithObjects:", v12, v13, objc_opt_class(), 0), @"bitCounts"}];
+    v4->bitCounts = [coder decodeObjectOfClasses:objc_msgSend(v11 forKey:{"setWithObjects:", v12, v13, objc_opt_class(), 0), @"bitCounts"}];
     v14 = MEMORY[0x277CBEB98];
     v15 = objc_opt_class();
     v16 = objc_opt_class();
-    v4->shaderPrecisionsFormats = [a3 decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithObjects:", v15, v16, objc_opt_class(), 0), @"shaderPrecisionsFormats"}];
+    v4->shaderPrecisionsFormats = [coder decodeObjectOfClasses:objc_msgSend(v14 forKey:{"setWithObjects:", v15, v16, objc_opt_class(), 0), @"shaderPrecisionsFormats"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->vendor forKey:@"vendor"];
-  [a3 encodeObject:self->renderer forKey:@"renderer"];
-  [a3 encodeObject:self->version forKey:@"version"];
-  [a3 encodeObject:self->glslVersion forKey:@"glslVersion"];
-  [a3 encodeObject:self->extensions forKey:@"extensions"];
-  [a3 encodeObject:self->limits forKey:@"limits"];
-  [a3 encodeObject:self->bitCounts forKey:@"bitCounts"];
+  [coder encodeObject:self->vendor forKey:@"vendor"];
+  [coder encodeObject:self->renderer forKey:@"renderer"];
+  [coder encodeObject:self->version forKey:@"version"];
+  [coder encodeObject:self->glslVersion forKey:@"glslVersion"];
+  [coder encodeObject:self->extensions forKey:@"extensions"];
+  [coder encodeObject:self->limits forKey:@"limits"];
+  [coder encodeObject:self->bitCounts forKey:@"bitCounts"];
   shaderPrecisionsFormats = self->shaderPrecisionsFormats;
 
-  [a3 encodeObject:shaderPrecisionsFormats forKey:@"shaderPrecisionsFormats"];
+  [coder encodeObject:shaderPrecisionsFormats forKey:@"shaderPrecisionsFormats"];
 }
 
 - (id)description
@@ -457,12 +457,12 @@ uint64_t __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_in
   [(DYRendererInfo *)&v3 dealloc];
 }
 
-+ (BOOL)_rangeIsSupported:(id)a3 supportedRange:(id)a4
++ (BOOL)_rangeIsSupported:(id)supported supportedRange:(id)range
 {
-  v6 = [a3 count];
-  if (v6 == [a4 count])
+  v6 = [supported count];
+  if (v6 == [range count])
   {
-    if (![a3 count])
+    if (![supported count])
     {
       return 1;
     }
@@ -470,17 +470,17 @@ uint64_t __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_in
     v7 = 0;
     while (1)
     {
-      v8 = [a3 objectAtIndex:0];
-      v9 = [a3 objectAtIndex:1];
-      v10 = [a4 objectAtIndex:0];
-      v11 = [a4 objectAtIndex:1];
+      v8 = [supported objectAtIndex:0];
+      v9 = [supported objectAtIndex:1];
+      v10 = [range objectAtIndex:0];
+      v11 = [range objectAtIndex:1];
       if ([v10 compare:v8] == 1 || objc_msgSend(v11, "compare:", v9) == -1)
       {
         break;
       }
 
       v7 += 2;
-      if (v7 >= [a3 count])
+      if (v7 >= [supported count])
       {
         return 1;
       }
@@ -490,15 +490,15 @@ uint64_t __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_in
   return 0;
 }
 
-+ (BOOL)_dimensionsAreSupported:(id)a3 supportedDimensions:(id)a4
++ (BOOL)_dimensionsAreSupported:(id)supported supportedDimensions:(id)dimensions
 {
-  v6 = [a3 count];
-  if (v6 != [a4 count])
+  v6 = [supported count];
+  if (v6 != [dimensions count])
   {
     return 0;
   }
 
-  if (![a3 count])
+  if (![supported count])
   {
     return 1;
   }
@@ -506,7 +506,7 @@ uint64_t __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_in
   v7 = 0;
   do
   {
-    v8 = [objc_msgSend(a3 objectAtIndex:{v7), "compare:", objc_msgSend(a4, "objectAtIndex:", v7)}];
+    v8 = [objc_msgSend(supported objectAtIndex:{v7), "compare:", objc_msgSend(dimensions, "objectAtIndex:", v7)}];
     v9 = v8 != 1;
     if (v8 == 1)
     {
@@ -516,11 +516,11 @@ uint64_t __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_in
     ++v7;
   }
 
-  while (v7 < [a3 count]);
+  while (v7 < [supported count]);
   return v9;
 }
 
-- (BOOL)_supportsLimits:(id)a3
+- (BOOL)_supportsLimits:(id)limits
 {
   v6 = 0;
   v7 = &v6;
@@ -532,7 +532,7 @@ uint64_t __58__DYRendererInfo_rendererInfoWithGLIContext_dispatch_api___block_in
   v5[3] = &unk_27916F0E0;
   v5[4] = self;
   v5[5] = &v6;
-  [a3 enumerateKeysAndObjectsUsingBlock:v5];
+  [limits enumerateKeysAndObjectsUsingBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -602,37 +602,37 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)_supportsGLVersion:(id)a3
+- (BOOL)_supportsGLVersion:(id)version
 {
   [-[NSArray objectAtIndex:](-[NSString componentsSeparatedByString:](self->version componentsSeparatedByString:{@" ", "objectAtIndex:", 2), "floatValue"}];
   v5 = v4;
-  [objc_msgSend(objc_msgSend(a3 componentsSeparatedByString:{@" ", "objectAtIndex:", 2), "floatValue"}];
+  [objc_msgSend(objc_msgSend(version componentsSeparatedByString:{@" ", "objectAtIndex:", 2), "floatValue"}];
   return SLODWORD(v6) == SLODWORD(v5) && v6 <= v5;
 }
 
-- (BOOL)_supportsGLSLVersion:(id)a3
+- (BOOL)_supportsGLSLVersion:(id)version
 {
   [-[NSArray objectAtIndex:](-[NSString componentsSeparatedByString:](self->glslVersion componentsSeparatedByString:{@" ", "objectAtIndex:", 4), "floatValue"}];
   v5 = v4;
-  [objc_msgSend(objc_msgSend(a3 componentsSeparatedByString:{@" ", "objectAtIndex:", 4), "floatValue"}];
+  [objc_msgSend(objc_msgSend(version componentsSeparatedByString:{@" ", "objectAtIndex:", 4), "floatValue"}];
   return v6 <= v5;
 }
 
-- (BOOL)supportsCapabilitiesOfRenderer:(id)a3
+- (BOOL)supportsCapabilitiesOfRenderer:(id)renderer
 {
-  if (!a3)
+  if (!renderer)
   {
     [DYRendererInfo supportsCapabilitiesOfRenderer:];
   }
 
-  if (!-[DYRendererInfo _supportsGLVersion:](self, "_supportsGLVersion:", [a3 version]) || self->glslVersion && !-[DYRendererInfo _supportsGLSLVersion:](self, "_supportsGLSLVersion:", objc_msgSend(a3, "glslVersion")) || !objc_msgSend(objc_msgSend(a3, "extensions"), "isSubsetOfSet:", self->extensions))
+  if (!-[DYRendererInfo _supportsGLVersion:](self, "_supportsGLVersion:", [renderer version]) || self->glslVersion && !-[DYRendererInfo _supportsGLSLVersion:](self, "_supportsGLSLVersion:", objc_msgSend(renderer, "glslVersion")) || !objc_msgSend(objc_msgSend(renderer, "extensions"), "isSubsetOfSet:", self->extensions))
   {
     return 0;
   }
 
-  v5 = [a3 limits];
+  limits = [renderer limits];
 
-  return [(DYRendererInfo *)self _supportsLimits:v5];
+  return [(DYRendererInfo *)self _supportsLimits:limits];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface TVRCRapportRemoteTextInputKeyboardImpl
 - (TVRXKeyboardController)keyboardController;
 - (id)text;
-- (void)_receivedInputSourceSession:(id)a3;
+- (void)_receivedInputSourceSession:(id)session;
 - (void)_stopObservingTelevisionEditingSession;
-- (void)handleTextActionPayload:(id)a3;
-- (void)inputSessionDidBegin:(id)a3;
-- (void)inputSessionDidDie:(id)a3;
-- (void)inputSessionDidEnd:(id)a3;
-- (void)setCompanionLinkWrapper:(id)a3;
-- (void)setTextActionPayload:(id)a3;
+- (void)handleTextActionPayload:(id)payload;
+- (void)inputSessionDidBegin:(id)begin;
+- (void)inputSessionDidDie:(id)die;
+- (void)inputSessionDidEnd:(id)end;
+- (void)setCompanionLinkWrapper:(id)wrapper;
+- (void)setTextActionPayload:(id)payload;
 @end
 
 @implementation TVRCRapportRemoteTextInputKeyboardImpl
 
-- (void)setCompanionLinkWrapper:(id)a3
+- (void)setCompanionLinkWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   p_companionLinkWrapper = &self->_companionLinkWrapper;
   companionLinkWrapper = self->_companionLinkWrapper;
-  if (companionLinkWrapper != v5)
+  if (companionLinkWrapper != wrapperCopy)
   {
     [(TVRCRPCompanionLinkClientWrapper *)companionLinkWrapper setRTISessionHandler:0];
-    objc_storeStrong(&self->_companionLinkWrapper, a3);
+    objc_storeStrong(&self->_companionLinkWrapper, wrapper);
     objc_initWeak(&location, self);
     v8 = self->_companionLinkWrapper;
     v12[0] = MEMORY[0x277D85DD0];
@@ -93,9 +93,9 @@ void __66__TVRCRapportRemoteTextInputKeyboardImpl_setCompanionLinkWrapper___bloc
 - (id)text
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(RTIInputSystemDataPayload *)self->_cachedInputSystemDataPayload documentState];
-  v4 = [v3 documentState];
-  v5 = [v4 contextBeforeInput];
+  documentState = [(RTIInputSystemDataPayload *)self->_cachedInputSystemDataPayload documentState];
+  v3DocumentState = [documentState documentState];
+  contextBeforeInput = [v3DocumentState contextBeforeInput];
 
   v6 = _TVRCRemoteTextInputLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -104,7 +104,7 @@ void __66__TVRCRapportRemoteTextInputKeyboardImpl_setCompanionLinkWrapper___bloc
     v12 = 134218240;
     v13 = v7;
     v14 = 2048;
-    v15 = [v5 length];
+    v15 = [contextBeforeInput length];
     _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "Cached text length:%lu remote text length: %lu", &v12, 0x16u);
   }
 
@@ -115,44 +115,44 @@ void __66__TVRCRapportRemoteTextInputKeyboardImpl_setCompanionLinkWrapper___bloc
   return cachedText;
 }
 
-- (void)setTextActionPayload:(id)a3
+- (void)setTextActionPayload:(id)payload
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   v5 = _TVRCRemoteTextInputLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[TVRCRapportRemoteTextInputKeyboardImpl setTextActionPayload:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = payloadCopy;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%s - payload: %@", &v13, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 documentState];
-    v7 = [v6 documentState];
-    v8 = [v7 contextBeforeInput];
+    documentState = [payloadCopy documentState];
+    v6DocumentState = [documentState documentState];
+    contextBeforeInput = [v6DocumentState contextBeforeInput];
 
     v9 = _TVRCRemoteTextInputLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 length];
+      v10 = [contextBeforeInput length];
       v13 = 134217984;
       v14 = v10;
       _os_log_impl(&dword_26CF7F000, v9, OS_LOG_TYPE_DEFAULT, "Keyboard RemoteTextInput send payload string length: %lu", &v13, 0xCu);
     }
   }
 
-  v11 = [(RTIInputSystemSourceSession *)self->_currentSession payloadDelegate];
-  [v11 handleTextActionPayload:v4];
+  payloadDelegate = [(RTIInputSystemSourceSession *)self->_currentSession payloadDelegate];
+  [payloadDelegate handleTextActionPayload:payloadCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inputSessionDidBegin:(id)a3
+- (void)inputSessionDidBegin:(id)begin
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _TVRCRemoteTextInputLog();
@@ -174,7 +174,7 @@ void __66__TVRCRapportRemoteTextInputKeyboardImpl_setCompanionLinkWrapper___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inputSessionDidEnd:(id)a3
+- (void)inputSessionDidEnd:(id)end
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _TVRCRemoteTextInputLog();
@@ -196,7 +196,7 @@ void __66__TVRCRapportRemoteTextInputKeyboardImpl_setCompanionLinkWrapper___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inputSessionDidDie:(id)a3
+- (void)inputSessionDidDie:(id)die
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _TVRCRemoteTextInputLog();
@@ -218,58 +218,58 @@ void __66__TVRCRapportRemoteTextInputKeyboardImpl_setCompanionLinkWrapper___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTextActionPayload:(id)a3
+- (void)handleTextActionPayload:(id)payload
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  payloadCopy = payload;
+  if (payloadCopy)
   {
     v5 = _TVRCRemoteTextInputLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138543362;
-      v24 = v4;
+      v24 = payloadCopy;
       _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "Keyboard RemoteTextInput received text action payload: %{public}@", &v23, 0xCu);
     }
 
     v6 = MEMORY[0x277D46160];
-    v7 = [v4 data];
-    v8 = [v6 payloadWithData:v7 version:{objc_msgSend(v4, "version")}];
+    data = [payloadCopy data];
+    v8 = [v6 payloadWithData:data version:{objc_msgSend(payloadCopy, "version")}];
 
     objc_storeStrong(&self->_cachedInputSystemDataPayload, v8);
-    v9 = [v8 documentState];
-    v10 = [v9 documentState];
-    v11 = [v10 contextBeforeInput];
+    documentState = [v8 documentState];
+    v9DocumentState = [documentState documentState];
+    contextBeforeInput = [v9DocumentState contextBeforeInput];
 
-    objc_storeStrong(&self->_cachedText, v11);
+    objc_storeStrong(&self->_cachedText, contextBeforeInput);
     v12 = _TVRCRemoteTextInputLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v11 length];
+      v13 = [contextBeforeInput length];
       v23 = 134217984;
       v24 = v13;
       _os_log_impl(&dword_26CF7F000, v12, OS_LOG_TYPE_DEFAULT, "Keyboard RemoteTextInput received payload string length: %lu", &v23, 0xCu);
     }
 
-    v14 = [[TVRCKeyboardAttributes alloc] _init];
+    _init = [[TVRCKeyboardAttributes alloc] _init];
     currentAttributes = self->_currentAttributes;
-    self->_currentAttributes = v14;
+    self->_currentAttributes = _init;
 
-    [(TVRCKeyboardAttributes *)self->_currentAttributes setRtiDataPayload:v4];
-    v16 = [(RTIInputSystemSourceSession *)self->_currentSession documentTraits];
-    v17 = [v16 prompt];
+    [(TVRCKeyboardAttributes *)self->_currentAttributes setRtiDataPayload:payloadCopy];
+    documentTraits = [(RTIInputSystemSourceSession *)self->_currentSession documentTraits];
+    prompt = [documentTraits prompt];
 
     v18 = self->_currentAttributes;
-    if (v17)
+    if (prompt)
     {
-      [(TVRCKeyboardAttributes *)self->_currentAttributes setTitle:v17];
+      [(TVRCKeyboardAttributes *)self->_currentAttributes setTitle:prompt];
     }
 
     else
     {
-      v19 = [(RTIInputSystemSourceSession *)self->_currentSession documentTraits];
-      v20 = [v19 title];
-      [(TVRCKeyboardAttributes *)v18 setTitle:v20];
+      documentTraits2 = [(RTIInputSystemSourceSession *)self->_currentSession documentTraits];
+      title = [documentTraits2 title];
+      [(TVRCKeyboardAttributes *)v18 setTitle:title];
     }
 
     if (self->_editing)
@@ -307,34 +307,34 @@ void __66__TVRCRapportRemoteTextInputKeyboardImpl_setCompanionLinkWrapper___bloc
   self->_cachedText = 0;
 }
 
-- (void)_receivedInputSourceSession:(id)a3
+- (void)_receivedInputSourceSession:(id)session
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sessionCopy = session;
   v6 = _TVRCRemoteTextInputLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     currentSession = self->_currentSession;
     v12 = 138412546;
-    v13 = v5;
+    v13 = sessionCopy;
     v14 = 2112;
     v15 = currentSession;
     _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "_receivedInputSourceSession: newSession: %@ currentSession: %@", &v12, 0x16u);
   }
 
   v8 = self->_currentSession;
-  if (v8 != v5)
+  if (v8 != sessionCopy)
   {
     [(RTIInputSystemSourceSession *)v8 setForwardingPayloadDelegate:0];
     [(RTIInputSystemSourceSession *)self->_currentSession removeSessionDelegate:self];
     cachedInputSystemDataPayload = self->_cachedInputSystemDataPayload;
     self->_cachedInputSystemDataPayload = 0;
 
-    objc_storeStrong(&self->_currentSession, a3);
+    objc_storeStrong(&self->_currentSession, session);
     [(RTIInputSystemSourceSession *)self->_currentSession addSessionDelegate:self];
     [(RTIInputSystemSourceSession *)self->_currentSession setForwardingPayloadDelegate:self];
-    v10 = [(RTIInputSystemSourceSession *)self->_currentSession currentForwardingDataPayload];
-    [(TVRCRapportRemoteTextInputKeyboardImpl *)self handleTextActionPayload:v10];
+    currentForwardingDataPayload = [(RTIInputSystemSourceSession *)self->_currentSession currentForwardingDataPayload];
+    [(TVRCRapportRemoteTextInputKeyboardImpl *)self handleTextActionPayload:currentForwardingDataPayload];
   }
 
   v11 = *MEMORY[0x277D85DE8];

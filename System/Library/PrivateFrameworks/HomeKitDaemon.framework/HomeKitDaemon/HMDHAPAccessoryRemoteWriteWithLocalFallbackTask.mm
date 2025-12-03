@@ -1,29 +1,29 @@
 @interface HMDHAPAccessoryRemoteWriteWithLocalFallbackTask
-- (id)_makeLocalTaskWithRequests:(id)a3 completion:(id)a4;
-- (id)_makeRemoteTaskWithRequests:(id)a3 delegateDevice:(id)a4 completion:(id)a5;
+- (id)_makeLocalTaskWithRequests:(id)requests completion:(id)completion;
+- (id)_makeRemoteTaskWithRequests:(id)requests delegateDevice:(id)device completion:(id)completion;
 @end
 
 @implementation HMDHAPAccessoryRemoteWriteWithLocalFallbackTask
 
-- (id)_makeLocalTaskWithRequests:(id)a3 completion:(id)a4
+- (id)_makeLocalTaskWithRequests:(id)requests completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  requestsCopy = requests;
   v8 = [HMDHAPAccessoryLocalWriteTask alloc];
-  v9 = [(HMDHAPAccessoryTask *)self context];
-  v10 = [v7 na_map:&__block_literal_global_543];
+  context = [(HMDHAPAccessoryTask *)self context];
+  v10 = [requestsCopy na_map:&__block_literal_global_543];
 
-  v11 = [(HMDHAPAccessoryTask *)v8 initWithContext:v9 requests:v10 completion:v6];
+  v11 = [(HMDHAPAccessoryTask *)v8 initWithContext:context requests:v10 completion:completionCopy];
 
   return v11;
 }
 
-- (id)_makeRemoteTaskWithRequests:(id)a3 delegateDevice:(id)a4 completion:(id)a5
+- (id)_makeRemoteTaskWithRequests:(id)requests delegateDevice:(id)device completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 na_any:&__block_literal_global_414];
+  completionCopy = completion;
+  deviceCopy = device;
+  requestsCopy = requests;
+  v11 = [requestsCopy na_any:&__block_literal_global_414];
   v12 = @"AccessoryReaderWriterMessageWriteTimeout";
   if (v11)
   {
@@ -32,18 +32,18 @@
 
   v13 = MEMORY[0x277D0F8D0];
   v14 = v12;
-  v15 = [v13 sharedPreferences];
-  v16 = [v15 preferenceForKey:v14];
+  sharedPreferences = [v13 sharedPreferences];
+  v16 = [sharedPreferences preferenceForKey:v14];
 
-  v17 = [v16 numberValue];
-  [v17 doubleValue];
+  numberValue = [v16 numberValue];
+  [numberValue doubleValue];
   v19 = v18;
 
   v20 = [HMDHAPAccessoryRemoteWriteTask alloc];
-  v21 = [(HMDHAPAccessoryTask *)self context];
-  v22 = [v10 na_map:&__block_literal_global_543];
+  context = [(HMDHAPAccessoryTask *)self context];
+  v22 = [requestsCopy na_map:&__block_literal_global_543];
 
-  v23 = [(HMDHAPAccessoryRemoteWriteTask *)v20 initWithContext:v21 requests:v22 delegateDevice:v9 timeout:v8 completion:v19];
+  v23 = [(HMDHAPAccessoryRemoteWriteTask *)v20 initWithContext:context requests:v22 delegateDevice:deviceCopy timeout:completionCopy completion:v19];
 
   return v23;
 }

@@ -1,21 +1,21 @@
 @interface AWDFlagstoneCTCSNumberPreferredNetworksByBorderRouters
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumberOfPreferredNwByAppleBorderRouters:(BOOL)a3;
-- (void)setHasNumberOfPreferredNwByThirdPartyBorderRouters:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumberOfPreferredNwByAppleBorderRouters:(BOOL)routers;
+- (void)setHasNumberOfPreferredNwByThirdPartyBorderRouters:(BOOL)routers;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDFlagstoneCTCSNumberPreferredNetworksByBorderRouters
 
-- (void)setHasNumberOfPreferredNwByThirdPartyBorderRouters:(BOOL)a3
+- (void)setHasNumberOfPreferredNwByThirdPartyBorderRouters:(BOOL)routers
 {
-  if (a3)
+  if (routers)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumberOfPreferredNwByAppleBorderRouters:(BOOL)a3
+- (void)setHasNumberOfPreferredNwByAppleBorderRouters:(BOOL)routers
 {
-  if (a3)
+  if (routers)
   {
     v3 = 2;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = AWDFlagstoneCTCSNumberPreferredNetworksByBorderRouters;
   v3 = [(AWDFlagstoneCTCSNumberPreferredNetworksByBorderRouters *)&v7 description];
-  v4 = [(AWDFlagstoneCTCSNumberPreferredNetworksByBorderRouters *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDFlagstoneCTCSNumberPreferredNetworksByBorderRouters *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -66,8 +66,8 @@
   header = self->_header;
   if (header)
   {
-    v6 = [(AWDHeaderInfoS *)header dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"header"];
+    dictionaryRepresentation = [(AWDHeaderInfoS *)header dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   has = self->_has;
@@ -88,9 +88,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -117,40 +117,40 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_header)
   {
-    v6 = v4;
-    [v4 setHeader:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setHeader:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 7) = self->_numberOfPreferredNwByThirdPartyBorderRouters;
-    *(v4 + 32) |= 4u;
+    *(toCopy + 7) = self->_numberOfPreferredNwByThirdPartyBorderRouters;
+    *(toCopy + 32) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_numberOfPreferredNwByAppleBorderRouters;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 6) = self->_numberOfPreferredNwByAppleBorderRouters;
+    *(toCopy + 32) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -158,7 +158,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(AWDHeaderInfoS *)self->_header copyWithZone:a3];
+  v7 = [(AWDHeaderInfoS *)self->_header copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
@@ -179,31 +179,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_19;
   }
 
   header = self->_header;
-  if (header | *(v4 + 2))
+  if (header | *(equalCopy + 2))
   {
     if (![(AWDHeaderInfoS *)header isEqual:?])
     {
@@ -217,21 +217,21 @@ LABEL_19:
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_numberOfPreferredNwByThirdPartyBorderRouters != *(v4 + 7))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_numberOfPreferredNwByThirdPartyBorderRouters != *(equalCopy + 7))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_19;
   }
 
-  v8 = (*(v4 + 32) & 2) == 0;
+  v8 = (*(equalCopy + 32) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_numberOfPreferredNwByAppleBorderRouters != *(v4 + 6))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_numberOfPreferredNwByAppleBorderRouters != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
@@ -281,13 +281,13 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[4])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[4])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 

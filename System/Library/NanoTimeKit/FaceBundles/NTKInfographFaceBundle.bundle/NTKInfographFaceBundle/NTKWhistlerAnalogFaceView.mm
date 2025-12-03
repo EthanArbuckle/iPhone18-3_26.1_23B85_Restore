@@ -1,38 +1,38 @@
 @interface NTKWhistlerAnalogFaceView
-+ (double)curvedRadiusForDevice:(id)a3 dark:(BOOL)a4;
-- (BOOL)_isComplicationSlotInsideDial:(id)a3;
++ (double)curvedRadiusForDevice:(id)device dark:(BOOL)dark;
+- (BOOL)_isComplicationSlotInsideDial:(id)dial;
 - (BOOL)_wantsDimWithDesaturationFilterDuringComplicationEditing;
-- (BOOL)viewShouldIgnoreTwoPieceImage:(id)a3;
-- (NTKWhistlerAnalogFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_bezelCircularBackgroundFromComplication:(id)a3;
-- (double)_bezelLabelCurvedRadiusForColor:(id)a3;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
-- (double)_dialTextBackgroundAlphaForEditMode:(int64_t)a3;
-- (double)_handAlphaForEditMode:(int64_t)a3;
+- (BOOL)viewShouldIgnoreTwoPieceImage:(id)image;
+- (NTKWhistlerAnalogFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_bezelCircularBackgroundFromComplication:(id)complication;
+- (double)_bezelLabelCurvedRadiusForColor:(id)color;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
+- (double)_dialTextBackgroundAlphaForEditMode:(int64_t)mode;
+- (double)_handAlphaForEditMode:(int64_t)mode;
 - (double)_paddedBezelAngularWidth;
 - (double)_verticalPaddingForStatusBar;
 - (id)_additonalViewsToApplyDesaturationDuringComplicationEditing;
-- (id)_bezelTextColorForEditMode:(int64_t)a3 colorPalette:(id)a4;
-- (id)_keylineViewForComplicationSlot:(id)a3;
-- (id)_platterTextColorForEditMode:(int64_t)a3 colorPalette:(id)a4;
-- (id)_richComplicationViewForView:(id)a3;
-- (id)colorForView:(id)a3 accented:(BOOL)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)filtersForView:(id)a3 style:(int64_t)a4;
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
+- (id)_bezelTextColorForEditMode:(int64_t)mode colorPalette:(id)palette;
+- (id)_keylineViewForComplicationSlot:(id)slot;
+- (id)_platterTextColorForEditMode:(int64_t)mode colorPalette:(id)palette;
+- (id)_richComplicationViewForView:(id)view;
+- (id)colorForView:(id)view accented:(BOOL)accented;
+- (id)filterForView:(id)view style:(int64_t)style;
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)filtersForView:(id)view style:(int64_t)style;
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction;
 - (int64_t)_editMode;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyEnteringEditingWithTransitionFraction:(double)a3;
-- (void)_applyExitingEditingWithTransitionFraction:(double)a3;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 applyHandsTransition:(BOOL)a6;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyEnteringEditingWithTransitionFraction:(double)fraction;
+- (void)_applyExitingEditingWithTransitionFraction:(double)fraction;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette applyHandsTransition:(BOOL)transition;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureTimeView:(id)a3;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureTimeView:(id)view;
 - (void)_configureUIOnColorChange;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
@@ -41,27 +41,27 @@
 - (void)_setupDialView;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateDialTicksForBezelText;
-- (void)bezelViewDidBecomeInteractive:(id)a3;
-- (void)bezelViewDidEndInteractive:(id)a3;
+- (void)bezelViewDidBecomeInteractive:(id)interactive;
+- (void)bezelViewDidEndInteractive:(id)interactive;
 @end
 
 @implementation NTKWhistlerAnalogFaceView
 
-- (NTKWhistlerAnalogFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKWhistlerAnalogFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v20.receiver = self;
   v20.super_class = NTKWhistlerAnalogFaceView;
-  v9 = [(NTKWhistlerAnalogFaceView *)&v20 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKWhistlerAnalogFaceView *)&v20 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
     v10 = [NTKWhistlerAnalogFaceViewComplicationFactory alloc];
-    sub_43A4(v10, v8);
-    v12 = [v10 initWithFaceView:v9 dialDiameter:v8 device:v11];
+    sub_43A4(v10, deviceCopy);
+    v12 = [v10 initWithFaceView:v9 dialDiameter:deviceCopy device:v11];
     faceViewComplicationFactory = v9->_faceViewComplicationFactory;
     v9->_faceViewComplicationFactory = v12;
 
-    v14 = [[NTKWhistlerAnalogColorPalette alloc] initWithDevice:v8];
+    v14 = [[NTKWhistlerAnalogColorPalette alloc] initWithDevice:deviceCopy];
     colorPalette = v9->_colorPalette;
     v9->_colorPalette = v14;
 
@@ -76,11 +76,11 @@
   return v9;
 }
 
-+ (double)curvedRadiusForDevice:(id)a3 dark:(BOOL)a4
++ (double)curvedRadiusForDevice:(id)device dark:(BOOL)dark
 {
-  v4 = a4;
-  result = sub_43A4(a1, a3);
-  if (v4)
+  darkCopy = dark;
+  result = sub_43A4(self, device);
+  if (darkCopy)
   {
     return v6;
   }
@@ -107,45 +107,45 @@
   self->_dialView = 0;
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v4.receiver = self;
   v4.super_class = NTKWhistlerAnalogFaceView;
-  [(NTKWhistlerAnalogFaceView *)&v4 _configureTimeView:a3];
+  [(NTKWhistlerAnalogFaceView *)&v4 _configureTimeView:view];
   [(NTKWhistlerAnalogFaceView *)self _configureUIOnColorChange];
 }
 
 - (void)_loadLayoutRules
 {
   faceViewComplicationFactory = self->_faceViewComplicationFactory;
-  v5 = [(NTKWhistlerAnalogFaceView *)self device];
-  sub_43A4(v5, v5);
+  device = [(NTKWhistlerAnalogFaceView *)self device];
+  sub_43A4(device, device);
   [(NTKWhistlerAnalogFaceViewComplicationFactory *)faceViewComplicationFactory loadLayoutRulesForFaceView:self dialDiameter:v4];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v26 = a3;
-  v6 = a4;
-  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory configureComplicationView:v26 forSlot:v6 faceView:self];
+  viewCopy = view;
+  slotCopy = slot;
+  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory configureComplicationView:viewCopy forSlot:slotCopy faceView:self];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v26;
-    if ([v6 isEqualToString:NTKComplicationSlotBezel])
+    v7 = viewCopy;
+    if ([slotCopy isEqualToString:NTKComplicationSlotBezel])
     {
       if ([(NTKWhistlerAnalogFaceView *)self monochromeRichComplicationsEnabled])
       {
-        v8 = [(NTKWhistlerAnalogFaceView *)self _editMode];
-        v9 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-        [(NTKWhistlerAnalogFaceView *)self _platterTextColorForEditMode:v8 colorPalette:v9];
+        _editMode = [(NTKWhistlerAnalogFaceView *)self _editMode];
+        faceColorPalette = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+        [(NTKWhistlerAnalogFaceView *)self _platterTextColorForEditMode:_editMode colorPalette:faceColorPalette];
       }
 
       else
       {
         colorPalette = self->_colorPalette;
-        v9 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-        [(NTKWhistlerAnalogColorPalette *)colorPalette complicationForegroundColorPalette:v9];
+        faceColorPalette = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+        [(NTKWhistlerAnalogColorPalette *)colorPalette complicationForegroundColorPalette:faceColorPalette];
       }
       v11 = ;
       [v7 setForegroundColor:v11];
@@ -156,17 +156,17 @@
       goto LABEL_13;
     }
 
-    v12 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-    if ([v12 isWhiteColor])
+    faceColorPalette2 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+    if ([faceColorPalette2 isWhiteColor])
     {
     }
 
     else
     {
-      v13 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-      v14 = [v13 isBlackColor];
+      faceColorPalette3 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+      isBlackColor = [faceColorPalette3 isBlackColor];
 
-      if ((v14 & 1) == 0)
+      if ((isBlackColor & 1) == 0)
       {
         [v7 updateMonochromeColor];
         goto LABEL_13;
@@ -175,32 +175,32 @@
 
     [v7 transitionToMonochromeWithFraction:0.0];
 LABEL_13:
-    v15 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-    v16 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewThemeFromFaceColorPalette:v15];
+    faceColorPalette4 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+    v16 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewThemeFromFaceColorPalette:faceColorPalette4];
 
     [v7 transitThemeFromTheme:v16 toTheme:v16 fraction:1.0];
   }
 
-  if ([v26 conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationBezelView])
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationBezelView])
   {
-    v17 = v26;
-    v18 = [(NTKWhistlerAnalogFaceView *)self _editMode];
-    v19 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-    v20 = [(NTKWhistlerAnalogFaceView *)self _bezelTextColorForEditMode:v18 colorPalette:v19];
+    v17 = viewCopy;
+    _editMode2 = [(NTKWhistlerAnalogFaceView *)self _editMode];
+    faceColorPalette5 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+    v20 = [(NTKWhistlerAnalogFaceView *)self _bezelTextColorForEditMode:_editMode2 colorPalette:faceColorPalette5];
     [v17 setBezelTextColor:v20];
 
     [v17 setBezelTextDelegate:self];
   }
 
-  if ([v26 conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationBezelView])
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationBezelView])
   {
-    [v26 setBezelTextRadius:self->_bezelLabelCurvedRadius];
+    [viewCopy setBezelTextRadius:self->_bezelLabelCurvedRadius];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = v26;
+    v21 = viewCopy;
     v22 = +[UIColor whiteColor];
     [v21 setForegroundColor:v22];
 
@@ -210,9 +210,9 @@ LABEL_13:
     [v21 setUseRoundedFontDesign:1];
   }
 
-  if ([v26 conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationCircularView])
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationCircularView])
   {
-    v24 = v26;
+    v24 = viewCopy;
     v25 = +[UIColor blackColor];
     [v24 setPlatterColor:v25];
   }
@@ -220,17 +220,17 @@ LABEL_13:
 
 - (double)_verticalPaddingForStatusBar
 {
-  v2 = [(NTKWhistlerAnalogFaceView *)self device];
-  sub_43A4(v2, v2);
+  device = [(NTKWhistlerAnalogFaceView *)self device];
+  sub_43A4(device, device);
   v4 = v3;
 
   return v4;
 }
 
-- (id)_keylineViewForComplicationSlot:(id)a3
+- (id)_keylineViewForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory keylineViewForComplicationSlot:v4];
+  slotCopy = slot;
+  v5 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory keylineViewForComplicationSlot:slotCopy];
   v6 = v5;
   if (v5)
   {
@@ -241,7 +241,7 @@ LABEL_13:
   {
     v10.receiver = self;
     v10.super_class = NTKWhistlerAnalogFaceView;
-    v7 = [(NTKWhistlerAnalogFaceView *)&v10 _keylineViewForComplicationSlot:v4];
+    v7 = [(NTKWhistlerAnalogFaceView *)&v10 _keylineViewForComplicationSlot:slotCopy];
   }
 
   v8 = v7;
@@ -253,173 +253,173 @@ LABEL_13:
 {
   [(NTKWhistlerAnalogFaceView *)self _updateDialTicksForBezelText];
   [(NTKCircularAnalogDialView *)self->_dialView prepareForEdit];
-  v4 = [(NTKWhistlerAnalogFaceView *)self complicationContainerView];
-  v3 = [v4 layer];
-  [v3 setAllowsGroupOpacity:1];
+  complicationContainerView = [(NTKWhistlerAnalogFaceView *)self complicationContainerView];
+  layer = [complicationContainerView layer];
+  [layer setAllowsGroupOpacity:1];
 }
 
 - (void)_cleanupAfterEditing
 {
   [(NTKWhistlerAnalogFaceView *)self _updateDialTicksForBezelText];
   [(NTKCircularAnalogDialView *)self->_dialView cleanupAfterEdit];
-  v4 = [(NTKWhistlerAnalogFaceView *)self complicationContainerView];
-  v3 = [v4 layer];
-  [v3 setAllowsGroupOpacity:0];
+  complicationContainerView = [(NTKWhistlerAnalogFaceView *)self complicationContainerView];
+  layer = [complicationContainerView layer];
+  [layer setAllowsGroupOpacity:0];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    v7 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette:a3];
+    v7 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette:option];
     [(NTKWhistlerAnalogFaceView *)self updateWithColorPalette:v7];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 10)
+  if (mode == 10)
   {
-    v10 = [(NTKWhistlerAnalogFaceView *)self interpolatedColorPalette:a4];
-    v13 = [v10 fromPalette];
+    v10 = [(NTKWhistlerAnalogFaceView *)self interpolatedColorPalette:option];
+    fromPalette = [v10 fromPalette];
 
-    v11 = [(NTKWhistlerAnalogFaceView *)self interpolatedColorPalette];
-    v12 = [v11 toPalette];
+    interpolatedColorPalette = [(NTKWhistlerAnalogFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette toPalette];
 
-    [(NTKWhistlerAnalogFaceView *)self _applyTransitionFraction:v13 fromColorPalette:v12 toColorPalette:a3];
+    [(NTKWhistlerAnalogFaceView *)self _applyTransitionFraction:fromPalette fromColorPalette:toPalette toColorPalette:fraction];
   }
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  v9 = [(NTKWhistlerAnalogFaceView *)self timeView];
-  [(NTKWhistlerAnalogFaceView *)self _handAlphaForEditMode:a4];
-  [(NTKWhistlerAnalogFaceView *)self _handAlphaForEditMode:a5];
+  timeView = [(NTKWhistlerAnalogFaceView *)self timeView];
+  [(NTKWhistlerAnalogFaceView *)self _handAlphaForEditMode:mode];
+  [(NTKWhistlerAnalogFaceView *)self _handAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v9 setAlpha:?];
+  [timeView setAlpha:?];
 
-  v10 = [(NTKWhistlerAnalogFaceView *)self contentView];
-  [(NTKWhistlerAnalogFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKWhistlerAnalogFaceView *)self _contentAlphaForEditMode:a5];
+  contentView = [(NTKWhistlerAnalogFaceView *)self contentView];
+  [(NTKWhistlerAnalogFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKWhistlerAnalogFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v10 setAlpha:?];
+  [contentView setAlpha:?];
 
   v11 = [(NTKWhistlerAnalogFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotBezel];
-  v27 = [v11 display];
+  display = [v11 display];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if ([(NTKWhistlerAnalogFaceView *)self monochromeRichComplicationsEnabled])
     {
-      v12 = v27;
-      v13 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-      v14 = [(NTKWhistlerAnalogFaceView *)self _platterTextColorForEditMode:a4 colorPalette:v13];
-      v15 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-      [(NTKWhistlerAnalogFaceView *)self _platterTextColorForEditMode:a5 colorPalette:v15];
+      v12 = display;
+      faceColorPalette = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+      v14 = [(NTKWhistlerAnalogFaceView *)self _platterTextColorForEditMode:mode colorPalette:faceColorPalette];
+      faceColorPalette2 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+      [(NTKWhistlerAnalogFaceView *)self _platterTextColorForEditMode:editMode colorPalette:faceColorPalette2];
     }
 
     else
     {
       colorPalette = self->_colorPalette;
-      v17 = v27;
-      v13 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-      v14 = [(NTKWhistlerAnalogColorPalette *)colorPalette complicationForegroundColorPalette:v13];
+      v17 = display;
+      faceColorPalette = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+      v14 = [(NTKWhistlerAnalogColorPalette *)colorPalette complicationForegroundColorPalette:faceColorPalette];
       v18 = self->_colorPalette;
-      v15 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-      [(NTKWhistlerAnalogColorPalette *)v18 complicationForegroundColorPalette:v15];
+      faceColorPalette2 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+      [(NTKWhistlerAnalogColorPalette *)v18 complicationForegroundColorPalette:faceColorPalette2];
     }
     v19 = ;
     v20 = NTKInterpolateBetweenColors();
 
-    [v27 setForegroundColor:v20];
+    [display setForegroundColor:v20];
   }
 
-  if ([v27 conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationBezelView])
+  if ([display conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationBezelView])
   {
-    v21 = v27;
-    v22 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-    v23 = [(NTKWhistlerAnalogFaceView *)self _bezelTextColorForEditMode:a4 colorPalette:v22];
-    v24 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-    v25 = [(NTKWhistlerAnalogFaceView *)self _bezelTextColorForEditMode:a5 colorPalette:v24];
+    v21 = display;
+    faceColorPalette3 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+    v23 = [(NTKWhistlerAnalogFaceView *)self _bezelTextColorForEditMode:mode colorPalette:faceColorPalette3];
+    faceColorPalette4 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+    v25 = [(NTKWhistlerAnalogFaceView *)self _bezelTextColorForEditMode:editMode colorPalette:faceColorPalette4];
     v26 = NTKInterpolateBetweenColors();
 
     [v21 setBezelTextColor:v26];
   }
 
-  if (a4 || !a5)
+  if (mode || !editMode)
   {
-    if (a4 && !a5)
+    if (mode && !editMode)
     {
-      [(NTKWhistlerAnalogFaceView *)self _applyExitingEditingWithTransitionFraction:a3];
+      [(NTKWhistlerAnalogFaceView *)self _applyExitingEditingWithTransitionFraction:fraction];
     }
   }
 
   else
   {
-    [(NTKWhistlerAnalogFaceView *)self _applyEnteringEditingWithTransitionFraction:a3];
+    [(NTKWhistlerAnalogFaceView *)self _applyEnteringEditingWithTransitionFraction:fraction];
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v19.receiver = self;
   v19.super_class = NTKWhistlerAnalogFaceView;
-  [(NTKWhistlerAnalogFaceView *)&v19 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKWhistlerAnalogFaceView *)&v19 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKScaleForRubberBandingFraction();
     memset(&v18, 0, sizeof(v18));
     CGAffineTransformMakeScale(&v18, v7, v7);
-    v8 = [(NTKWhistlerAnalogFaceView *)self contentView];
+    contentView = [(NTKWhistlerAnalogFaceView *)self contentView];
     v17 = v18;
-    [v8 setTransform:&v17];
+    [contentView setTransform:&v17];
 
-    v9 = [(NTKWhistlerAnalogFaceView *)self timeView];
+    timeView = [(NTKWhistlerAnalogFaceView *)self timeView];
     v17 = v18;
-    [v9 setTransform:&v17];
+    [timeView setTransform:&v17];
 
-    v10 = [(NTKWhistlerAnalogFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKWhistlerAnalogFaceView *)self complicationContainerView];
     v17 = v18;
-    [v10 setTransform:&v17];
+    [complicationContainerView setTransform:&v17];
 
     NTKAlphaForRubberBandingFraction();
     v12 = v11;
     [(NTKWhistlerAnalogFaceView *)self _contentAlphaForEditMode:10];
     v14 = v12 * v13;
-    v15 = [(NTKWhistlerAnalogFaceView *)self contentView];
-    [v15 setAlpha:v14];
+    contentView2 = [(NTKWhistlerAnalogFaceView *)self contentView];
+    [contentView2 setAlpha:v14];
 
-    v16 = [(NTKWhistlerAnalogFaceView *)self complicationContainerView];
-    [v16 setAlpha:v14];
+    complicationContainerView2 = [(NTKWhistlerAnalogFaceView *)self complicationContainerView];
+    [complicationContainerView2 setAlpha:v14];
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v13.receiver = self;
   v13.super_class = NTKWhistlerAnalogFaceView;
-  [(NTKWhistlerAnalogFaceView *)&v13 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKWhistlerAnalogFaceView *)&v13 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v12, 0, sizeof(v12));
     CGAffineTransformMakeScale(&v12, v7, v7);
-    v8 = [(NTKWhistlerAnalogFaceView *)self contentView];
+    contentView = [(NTKWhistlerAnalogFaceView *)self contentView];
     v11 = v12;
-    [v8 setTransform:&v11];
+    [contentView setTransform:&v11];
 
-    v9 = [(NTKWhistlerAnalogFaceView *)self timeView];
+    timeView = [(NTKWhistlerAnalogFaceView *)self timeView];
     v11 = v12;
-    [v9 setTransform:&v11];
+    [timeView setTransform:&v11];
 
-    v10 = [(NTKWhistlerAnalogFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKWhistlerAnalogFaceView *)self complicationContainerView];
     v11 = v12;
-    [v10 setTransform:&v11];
+    [complicationContainerView setTransform:&v11];
   }
 }
 
-- (void)_applyEnteringEditingWithTransitionFraction:(double)a3
+- (void)_applyEnteringEditingWithTransitionFraction:(double)fraction
 {
   dialView = self->_dialView;
   [(NTKWhistlerAnalogFaceView *)self _paddedBezelAngularWidth];
@@ -427,7 +427,7 @@ LABEL_13:
   [NTKCircularAnalogDialView transitInvisibleTicksAlphaWithBezelTextWidthInRadius:"transitInvisibleTicksAlphaWithBezelTextWidthInRadius:invisbleTicksAlpha:" invisbleTicksAlpha:?];
 }
 
-- (void)_applyExitingEditingWithTransitionFraction:(double)a3
+- (void)_applyExitingEditingWithTransitionFraction:(double)fraction
 {
   dialView = self->_dialView;
   [(NTKWhistlerAnalogFaceView *)self _paddedBezelAngularWidth];
@@ -435,106 +435,106 @@ LABEL_13:
   [NTKCircularAnalogDialView transitInvisibleTicksAlphaWithBezelTextWidthInRadius:"transitInvisibleTicksAlphaWithBezelTextWidthInRadius:invisbleTicksAlpha:" invisbleTicksAlpha:?];
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4
+- (id)filtersForView:(id)view style:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:v6];
+  viewCopy = view;
+  v7 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:viewCopy];
   if ([v7 family] == &dword_8)
   {
-    a4 = CLKUIAssociatedNonAccentStyle();
+    style = CLKUIAssociatedNonAccentStyle();
   }
 
   v10.receiver = self;
   v10.super_class = NTKWhistlerAnalogFaceView;
-  v8 = [(NTKWhistlerAnalogFaceView *)&v10 filtersForView:v6 style:a4];
+  v8 = [(NTKWhistlerAnalogFaceView *)&v10 filtersForView:viewCopy style:style];
 
   return v8;
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = a3;
-  v9 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:v8];
+  viewCopy = view;
+  v9 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:viewCopy];
   if ([v9 family] == &dword_8)
   {
-    a4 = CLKUIAssociatedNonAccentStyle();
+    style = CLKUIAssociatedNonAccentStyle();
   }
 
   v12.receiver = self;
   v12.super_class = NTKWhistlerAnalogFaceView;
-  v10 = [(NTKWhistlerAnalogFaceView *)&v12 filtersForView:v8 style:a4 fraction:a5];
+  v10 = [(NTKWhistlerAnalogFaceView *)&v12 filtersForView:viewCopy style:style fraction:fraction];
 
   return v10;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = a3;
-  v9 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:v8];
+  viewCopy = view;
+  v9 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:viewCopy];
   if ([v9 family] == &dword_8)
   {
-    a4 = CLKUIAssociatedNonAccentStyle();
+    style = CLKUIAssociatedNonAccentStyle();
   }
 
   v12.receiver = self;
   v12.super_class = NTKWhistlerAnalogFaceView;
-  v10 = [(NTKWhistlerAnalogFaceView *)&v12 filterForView:v8 style:a4 fraction:a5];
+  v10 = [(NTKWhistlerAnalogFaceView *)&v12 filterForView:viewCopy style:style fraction:fraction];
 
   return v10;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4
+- (id)filterForView:(id)view style:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:v6];
+  viewCopy = view;
+  v7 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:viewCopy];
   if ([v7 family] == &dword_8)
   {
-    a4 = CLKUIAssociatedNonAccentStyle();
+    style = CLKUIAssociatedNonAccentStyle();
   }
 
   v10.receiver = self;
   v10.super_class = NTKWhistlerAnalogFaceView;
-  v8 = [(NTKWhistlerAnalogFaceView *)&v10 filterForView:v6 style:a4];
+  v8 = [(NTKWhistlerAnalogFaceView *)&v10 filterForView:viewCopy style:style];
 
   return v8;
 }
 
-- (id)colorForView:(id)a3 accented:(BOOL)a4
+- (id)colorForView:(id)view accented:(BOOL)accented
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:v6];
-  v8 = [v7 family] != &dword_8 && v4;
+  accentedCopy = accented;
+  viewCopy = view;
+  v7 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:viewCopy];
+  v8 = [v7 family] != &dword_8 && accentedCopy;
   v11.receiver = self;
   v11.super_class = NTKWhistlerAnalogFaceView;
-  v9 = [(NTKWhistlerAnalogFaceView *)&v11 colorForView:v6 accented:v8];
+  v9 = [(NTKWhistlerAnalogFaceView *)&v11 colorForView:viewCopy accented:v8];
 
   return v9;
 }
 
-- (BOOL)viewShouldIgnoreTwoPieceImage:(id)a3
+- (BOOL)viewShouldIgnoreTwoPieceImage:(id)image
 {
-  v3 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:a3];
+  v3 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:image];
   v4 = [v3 family] == &dword_8;
 
   return v4;
 }
 
-- (id)_richComplicationViewForView:(id)a3
+- (id)_richComplicationViewForView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = viewCopy;
     }
 
     else
     {
-      v6 = [v4 superview];
-      v5 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:v6];
+      superview = [viewCopy superview];
+      v5 = [(NTKWhistlerAnalogFaceView *)self _richComplicationViewForView:superview];
     }
   }
 
@@ -546,17 +546,17 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)_isComplicationSlotInsideDial:(id)a3
+- (BOOL)_isComplicationSlotInsideDial:(id)dial
 {
-  v3 = a3;
-  if ([v3 isEqualToString:NTKComplicationSlot1] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", NTKComplicationSlot2) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", NTKComplicationSlot3))
+  dialCopy = dial;
+  if ([dialCopy isEqualToString:NTKComplicationSlot1] & 1) != 0 || (objc_msgSend(dialCopy, "isEqualToString:", NTKComplicationSlot2) & 1) != 0 || (objc_msgSend(dialCopy, "isEqualToString:", NTKComplicationSlot3))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:NTKComplicationSlotBezel];
+    v4 = [dialCopy isEqualToString:NTKComplicationSlotBezel];
   }
 
   return v4;
@@ -564,10 +564,10 @@ LABEL_13:
 
 - (BOOL)_wantsDimWithDesaturationFilterDuringComplicationEditing
 {
-  v2 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-  v3 = [v2 isWhiteColor];
+  faceColorPalette = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+  isWhiteColor = [faceColorPalette isWhiteColor];
 
-  return v3;
+  return isWhiteColor;
 }
 
 - (id)_additonalViewsToApplyDesaturationDuringComplicationEditing
@@ -578,84 +578,84 @@ LABEL_13:
   return v2;
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 applyHandsTransition:(BOOL)a6
+- (void)_applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette applyHandsTransition:(BOOL)transition
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a5;
-  [(NTKCircularAnalogDialView *)self->_dialView applyColorTransitionFraction:v10 fromFaceColorPalette:v11 toFaceColorPalette:a3];
-  v51 = v11;
-  if (v6)
+  transitionCopy = transition;
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  [(NTKCircularAnalogDialView *)self->_dialView applyColorTransitionFraction:paletteCopy fromFaceColorPalette:colorPaletteCopy toFaceColorPalette:fraction];
+  v51 = colorPaletteCopy;
+  if (transitionCopy)
   {
-    v12 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette handStrokeColorForColorPalette:v10];
-    v13 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette handStrokeColorForColorPalette:v11];
-    v14 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette handFillColorForColorPalette:v10];
-    v15 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette handFillColorForColorPalette:v11];
+    v12 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette handStrokeColorForColorPalette:paletteCopy];
+    v13 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette handStrokeColorForColorPalette:colorPaletteCopy];
+    v14 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette handFillColorForColorPalette:paletteCopy];
+    v15 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette handFillColorForColorPalette:colorPaletteCopy];
     v48 = v13;
     v49 = v12;
     v47 = v14;
-    if (([v10 isWhiteColor] & 1) != 0 || objc_msgSend(v11, "isWhiteColor"))
+    if (([paletteCopy isWhiteColor] & 1) != 0 || objc_msgSend(colorPaletteCopy, "isWhiteColor"))
     {
-      v16 = [(NTKWhistlerAnalogFaceView *)self timeView];
-      [v16 applyHourMinuteHandsTransitionFraction:v12 fromStrokeColor:v14 fromFillColor:v13 toStrokeColor:v15 toFillColor:a3];
+      timeView = [(NTKWhistlerAnalogFaceView *)self timeView];
+      [timeView applyHourMinuteHandsTransitionFraction:v12 fromStrokeColor:v14 fromFillColor:v13 toStrokeColor:v15 toFillColor:fraction];
     }
 
     else
     {
-      v16 = NTKInterpolateBetweenColors();
+      timeView = NTKInterpolateBetweenColors();
       v17 = NTKInterpolateBetweenColors();
-      v18 = [(NTKWhistlerAnalogFaceView *)self timeView];
-      [v18 applyHourMinuteHandsStrokeColor:v16 fillColor:v17];
+      timeView2 = [(NTKWhistlerAnalogFaceView *)self timeView];
+      [timeView2 applyHourMinuteHandsStrokeColor:timeView fillColor:v17];
 
-      v11 = v51;
+      colorPaletteCopy = v51;
     }
 
-    v19 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette secondHandColorForColorPalette:v10];
-    v20 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette secondHandColorForColorPalette:v11];
+    v19 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette secondHandColorForColorPalette:paletteCopy];
+    v20 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette secondHandColorForColorPalette:colorPaletteCopy];
     v21 = NTKInterpolateBetweenColors();
-    v22 = [(NTKWhistlerAnalogFaceView *)self timeView];
-    [v22 applySecondHandColor:v21];
+    timeView3 = [(NTKWhistlerAnalogFaceView *)self timeView];
+    [timeView3 applySecondHandColor:v21];
 
-    v23 = [(NTKWhistlerAnalogFaceView *)self timeView];
-    v24 = [v23 secondHandView];
+    timeView4 = [(NTKWhistlerAnalogFaceView *)self timeView];
+    secondHandView = [timeView4 secondHandView];
     v25 = +[UIColor blackColor];
-    [v24 setHandDotColor:v25];
+    [secondHandView setHandDotColor:v25];
 
-    v11 = v51;
+    colorPaletteCopy = v51;
   }
 
-  v26 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette complicationForegroundColorPalette:v10];
-  v27 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette complicationForegroundColorPalette:v11];
+  v26 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette complicationForegroundColorPalette:paletteCopy];
+  v27 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette complicationForegroundColorPalette:colorPaletteCopy];
   v50 = v26;
   v28 = NTKInterpolateBetweenColors();
   [(NTKWhistlerAnalogFaceView *)self setInterpolatedComplicationColor:v28];
-  if ([v10 isBlackColor])
+  if ([paletteCopy isBlackColor])
   {
-    v29 = 1;
+    isWhiteColor = 1;
   }
 
   else
   {
-    v29 = [v10 isWhiteColor];
+    isWhiteColor = [paletteCopy isWhiteColor];
   }
 
-  if ([v11 isBlackColor])
+  if ([colorPaletteCopy isBlackColor])
   {
-    v30 = 1;
+    isWhiteColor2 = 1;
   }
 
   else
   {
-    v30 = [v11 isWhiteColor];
+    isWhiteColor2 = [colorPaletteCopy isWhiteColor];
   }
 
   [(NTKWhistlerAnalogFaceView *)self setComplicationColor:v28];
   if ([(NTKWhistlerAnalogFaceView *)self monochromeRichComplicationsEnabled])
   {
-    v31 = 0.0;
-    if ((v29 & v30) == 0)
+    fractionCopy = 0.0;
+    if ((isWhiteColor & isWhiteColor2) == 0)
     {
-      v31 = a3;
+      fractionCopy = fraction;
     }
 
     v58[1] = 3221225472;
@@ -663,19 +663,19 @@ LABEL_13:
     v58[2] = sub_3550;
     v58[3] = &unk_C318;
     v58[4] = self;
-    v59 = v29 ^ v30;
-    if (!(v29 | v30 ^ 1))
+    v59 = isWhiteColor ^ isWhiteColor2;
+    if (!(isWhiteColor | isWhiteColor2 ^ 1))
     {
-      v31 = 1.0 - a3;
+      fractionCopy = 1.0 - fraction;
     }
 
-    v60 = v29 & v30;
-    *&v58[5] = v31;
+    v60 = isWhiteColor & isWhiteColor2;
+    *&v58[5] = fractionCopy;
     [(NTKWhistlerAnalogFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v58];
   }
 
   v32 = [(NTKWhistlerAnalogFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotBezel];
-  v33 = [v32 display];
+  display = [v32 display];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -683,35 +683,35 @@ LABEL_13:
   {
     if ([(NTKWhistlerAnalogFaceView *)self monochromeRichComplicationsEnabled])
     {
-      v35 = [(NTKWhistlerAnalogFaceView *)self _platterTextColorForEditMode:[(NTKWhistlerAnalogFaceView *)self _editMode] colorPalette:v10];
-      [(NTKWhistlerAnalogFaceView *)self _platterTextColorForEditMode:[(NTKWhistlerAnalogFaceView *)self _editMode] colorPalette:v11];
+      v35 = [(NTKWhistlerAnalogFaceView *)self _platterTextColorForEditMode:[(NTKWhistlerAnalogFaceView *)self _editMode] colorPalette:paletteCopy];
+      [(NTKWhistlerAnalogFaceView *)self _platterTextColorForEditMode:[(NTKWhistlerAnalogFaceView *)self _editMode] colorPalette:colorPaletteCopy];
     }
 
     else
     {
-      v35 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette complicationForegroundColorPalette:v10];
-      [(NTKWhistlerAnalogColorPalette *)self->_colorPalette complicationForegroundColorPalette:v11];
+      v35 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette complicationForegroundColorPalette:paletteCopy];
+      [(NTKWhistlerAnalogColorPalette *)self->_colorPalette complicationForegroundColorPalette:colorPaletteCopy];
     }
     v36 = ;
     v37 = NTKInterpolateBetweenColors();
-    v38 = [v32 display];
-    [v38 setForegroundColor:v37];
+    display2 = [v32 display];
+    [display2 setForegroundColor:v37];
 
-    v11 = v51;
+    colorPaletteCopy = v51;
   }
 
-  [(NTKWhistlerAnalogFaceView *)self _bezelLabelCurvedRadiusForColor:v10];
-  [(NTKWhistlerAnalogFaceView *)self _bezelLabelCurvedRadiusForColor:v11];
+  [(NTKWhistlerAnalogFaceView *)self _bezelLabelCurvedRadiusForColor:paletteCopy];
+  [(NTKWhistlerAnalogFaceView *)self _bezelLabelCurvedRadiusForColor:colorPaletteCopy];
   CLKInterpolateBetweenFloatsClipped();
   self->_bezelLabelCurvedRadius = v39;
-  v40 = [v32 display];
-  v41 = [v40 conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationBezelView];
+  display3 = [v32 display];
+  v41 = [display3 conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationBezelView];
 
   if (v41)
   {
-    v42 = [v32 display];
-    v43 = [(NTKWhistlerAnalogFaceView *)self _bezelTextColorForEditMode:[(NTKWhistlerAnalogFaceView *)self _editMode] colorPalette:v10];
-    v44 = [(NTKWhistlerAnalogFaceView *)self _bezelTextColorForEditMode:[(NTKWhistlerAnalogFaceView *)self _editMode] colorPalette:v11];
+    display4 = [v32 display];
+    v43 = [(NTKWhistlerAnalogFaceView *)self _bezelTextColorForEditMode:[(NTKWhistlerAnalogFaceView *)self _editMode] colorPalette:paletteCopy];
+    v44 = [(NTKWhistlerAnalogFaceView *)self _bezelTextColorForEditMode:[(NTKWhistlerAnalogFaceView *)self _editMode] colorPalette:colorPaletteCopy];
     v45 = NTKInterpolateBetweenColors();
     if (objc_opt_respondsToSelector())
     {
@@ -720,17 +720,17 @@ LABEL_13:
       v55[2] = sub_3618;
       v55[3] = &unk_C340;
       v56 = v45;
-      v57 = self;
-      [v42 updatePropertiesAsGroupWithHandler:v55];
+      selfCopy = self;
+      [display4 updatePropertiesAsGroupWithHandler:v55];
     }
 
     else
     {
-      [v42 setBezelTextColor:v45];
-      [v42 setBezelTextRadius:self->_bezelLabelCurvedRadius];
+      [display4 setBezelTextColor:v45];
+      [display4 setBezelTextRadius:self->_bezelLabelCurvedRadius];
     }
 
-    v11 = v51;
+    colorPaletteCopy = v51;
   }
 
   v52[0] = _NSConcreteStackBlock;
@@ -738,24 +738,24 @@ LABEL_13:
   v52[2] = sub_3680;
   v52[3] = &unk_C368;
   v52[4] = self;
-  v53 = v10;
-  v54 = a3;
-  v46 = v10;
+  v53 = paletteCopy;
+  fractionCopy2 = fraction;
+  v46 = paletteCopy;
   [(NTKWhistlerAnalogFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v52];
 }
 
 - (void)_configureUIOnColorChange
 {
-  v4 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-  v3 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
-  [(NTKWhistlerAnalogFaceView *)self _applyTransitionFraction:v4 fromColorPalette:v3 toColorPalette:0.0];
+  faceColorPalette = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+  faceColorPalette2 = [(NTKWhistlerAnalogFaceView *)self faceColorPalette];
+  [(NTKWhistlerAnalogFaceView *)self _applyTransitionFraction:faceColorPalette fromColorPalette:faceColorPalette2 toColorPalette:0.0];
 }
 
-- (double)_handAlphaForEditMode:(int64_t)a3
+- (double)_handAlphaForEditMode:(int64_t)mode
 {
-  if (a3)
+  if (mode)
   {
-    v3 = a3 == 10;
+    v3 = mode == 10;
   }
 
   else
@@ -772,11 +772,11 @@ LABEL_13:
   return result;
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
-  if (a3)
+  if (mode)
   {
-    v3 = a3 == 10;
+    v3 = mode == 10;
   }
 
   else
@@ -793,10 +793,10 @@ LABEL_13:
   return result;
 }
 
-- (double)_dialTextBackgroundAlphaForEditMode:(int64_t)a3
+- (double)_dialTextBackgroundAlphaForEditMode:(int64_t)mode
 {
   result = 0.0;
-  if (a3 == 10)
+  if (mode == 10)
   {
     return 1.0;
   }
@@ -820,24 +820,24 @@ LABEL_13:
   }
 }
 
-- (id)_bezelTextColorForEditMode:(int64_t)a3 colorPalette:(id)a4
+- (id)_bezelTextColorForEditMode:(int64_t)mode colorPalette:(id)palette
 {
-  v6 = a4;
-  if (a3 == 10)
+  paletteCopy = palette;
+  if (mode == 10)
   {
     v7 = +[UIColor clearColor];
   }
 
   else
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       +[UIColor whiteColor];
     }
 
     else
     {
-      [(NTKWhistlerAnalogColorPalette *)self->_colorPalette bezelTextColorForColorPalette:v6];
+      [(NTKWhistlerAnalogColorPalette *)self->_colorPalette bezelTextColorForColorPalette:paletteCopy];
     }
     v7 = ;
   }
@@ -847,27 +847,27 @@ LABEL_13:
   return v8;
 }
 
-- (id)_platterTextColorForEditMode:(int64_t)a3 colorPalette:(id)a4
+- (id)_platterTextColorForEditMode:(int64_t)mode colorPalette:(id)palette
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     [UIColor whiteColor:1];
   }
 
   else
   {
-    [(NTKWhistlerAnalogColorPalette *)self->_colorPalette platterTextColorForColorPalette:a4];
+    [(NTKWhistlerAnalogColorPalette *)self->_colorPalette platterTextColorForColorPalette:palette];
   }
   v4 = ;
 
   return v4;
 }
 
-- (double)_bezelCircularBackgroundFromComplication:(id)a3
+- (double)_bezelCircularBackgroundFromComplication:(id)complication
 {
-  v3 = [a3 complicationType];
+  complicationType = [complication complicationType];
   result = 0.0;
-  if (v3 > 0x2D || ((1 << v3) & 0x200000004012) == 0)
+  if (complicationType > 0x2D || ((1 << complicationType) & 0x200000004012) == 0)
   {
     return 1.0;
   }
@@ -875,15 +875,15 @@ LABEL_13:
   return result;
 }
 
-- (double)_bezelLabelCurvedRadiusForColor:(id)a3
+- (double)_bezelLabelCurvedRadiusForColor:(id)color
 {
-  v4 = a3;
-  v5 = [(NTKWhistlerAnalogFaceView *)self device];
-  v6 = sub_43A4(v5, v5);
+  colorCopy = color;
+  device = [(NTKWhistlerAnalogFaceView *)self device];
+  v6 = sub_43A4(device, device);
   v8 = v7;
 
-  LODWORD(v5) = [v4 isWhiteColor];
-  if (v5)
+  LODWORD(device) = [colorCopy isWhiteColor];
+  if (device)
   {
     return v6;
   }
@@ -910,18 +910,18 @@ LABEL_13:
 - (double)_paddedBezelAngularWidth
 {
   v3 = [(NTKWhistlerAnalogFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotBezel];
-  v4 = [v3 display];
-  v5 = [v4 conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationBezelView];
+  display = [v3 display];
+  v5 = [display conformsToProtocol:&OBJC_PROTOCOL___NTKRichComplicationBezelView];
 
   v6 = 0.0;
   if (v5)
   {
-    v7 = [v3 display];
-    [v7 bezelTextAngularWidth];
+    display2 = [v3 display];
+    [display2 bezelTextAngularWidth];
     v6 = v8;
     if (v8 > 0.0)
     {
-      v9 = [(NTKWhistlerAnalogFaceView *)self device];
+      device = [(NTKWhistlerAnalogFaceView *)self device];
       NTKWhistlerBezelCircularViewDefaultAngularWidthPadding();
       v6 = v6 + v10;
     }
@@ -930,24 +930,24 @@ LABEL_13:
   return v6;
 }
 
-- (void)bezelViewDidBecomeInteractive:(id)a3
+- (void)bezelViewDidBecomeInteractive:(id)interactive
 {
-  v4 = a3;
-  v5 = [(NTKWhistlerAnalogFaceView *)self timeView];
-  v6 = [v5 layer];
-  [v6 setAllowsGroupOpacity:1];
+  interactiveCopy = interactive;
+  timeView = [(NTKWhistlerAnalogFaceView *)self timeView];
+  layer = [timeView layer];
+  [layer setAllowsGroupOpacity:1];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_3E6C;
   v8[3] = &unk_C3E0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = interactiveCopy;
+  v7 = interactiveCopy;
   [UIView animateWithDuration:4 delay:v8 options:&stru_C420 animations:0.3 completion:0.0];
 }
 
-- (void)bezelViewDidEndInteractive:(id)a3
+- (void)bezelViewDidEndInteractive:(id)interactive
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -964,23 +964,23 @@ LABEL_13:
 
 - (void)_reorderSwitcherSnapshotView
 {
-  v3 = [(NTKWhistlerAnalogFaceView *)self switcherSnapshotView];
+  switcherSnapshotView = [(NTKWhistlerAnalogFaceView *)self switcherSnapshotView];
 
-  if (v3)
+  if (switcherSnapshotView)
   {
-    v4 = [(NTKWhistlerAnalogFaceView *)self switcherSnapshotView];
-    [(NTKWhistlerAnalogFaceView *)self bringSubviewToFront:v4];
+    switcherSnapshotView2 = [(NTKWhistlerAnalogFaceView *)self switcherSnapshotView];
+    [(NTKWhistlerAnalogFaceView *)self bringSubviewToFront:switcherSnapshotView2];
   }
 }
 
 - (void)_setupDialView
 {
-  v17 = [(NTKWhistlerAnalogFaceView *)self contentView];
-  v3 = [(NTKWhistlerAnalogFaceView *)self device];
-  sub_43A4(v3, v3);
+  contentView = [(NTKWhistlerAnalogFaceView *)self contentView];
+  device = [(NTKWhistlerAnalogFaceView *)self device];
+  sub_43A4(device, device);
 
-  [v17 bounds];
-  v4 = [(NTKWhistlerAnalogFaceView *)self device];
+  [contentView bounds];
+  device2 = [(NTKWhistlerAnalogFaceView *)self device];
   CLKSizeCenteredInRectForDevice();
   v6 = v5;
   v8 = v7;
@@ -988,12 +988,12 @@ LABEL_13:
   v12 = v11;
 
   v13 = [NTKCircularAnalogDialView alloc];
-  v14 = [(NTKWhistlerAnalogFaceView *)self device];
-  v15 = [v13 initWithFrame:v14 forDevice:{v6, v8, v10, v12}];
+  device3 = [(NTKWhistlerAnalogFaceView *)self device];
+  v15 = [v13 initWithFrame:device3 forDevice:{v6, v8, v10, v12}];
   dialView = self->_dialView;
   self->_dialView = v15;
 
-  [v17 addSubview:self->_dialView];
+  [contentView addSubview:self->_dialView];
 }
 
 @end

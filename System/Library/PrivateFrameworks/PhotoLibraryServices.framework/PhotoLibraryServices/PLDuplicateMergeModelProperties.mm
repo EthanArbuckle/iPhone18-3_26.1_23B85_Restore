@@ -3,63 +3,63 @@
 + (id)_assetDescriptionMergePropertyMap;
 + (id)_assetMergePropertyMap;
 + (id)_mergePropertyMap;
-+ (void)_addPropertyToActionMap:(id)a3 name:(id)a4 action:(int64_t)a5;
-- (BOOL)_isValidForDateCreatedOverwriteWithSource:(id)a3;
-- (BOOL)_isValidForOverwriteWithSourceProperty:(id)a3 targetProperty:(id)a4;
-- (BOOL)_isValidForTimezoneOverwriteWithSource:(id)a3;
-- (BOOL)_isValidForTitleOverwriteWithSource:(id)a3;
-- (BOOL)_isValidManagedObject:(id)a3 forEntityName:(id)a4;
-- (BOOL)isRecentlyModifiedSourceAsset:(id)a3;
-- (BOOL)transferPropertiesFromSourceAsset:(id)a3 propertyMergeType:(int64_t)a4 error:(id *)a5;
-- (PLDuplicateMergeModelProperties)initWithTargetAsset:(id)a3 photoLibrary:(id)a4;
-- (id)_managedObjectFromDuplicateAsset:(id)a3 matchingEntityName:(id)a4;
-- (void)_customActionProcessingWithSourceDuplicateAsset:(id)a3 entityName:(id)a4 propertyName:(id)a5 type:(int64_t)a6;
-- (void)_mergeActionProcessingWithSourceDuplicateAsset:(id)a3 entityName:(id)a4 propertyName:(id)a5;
-- (void)_mergeAlbumRelationshipsFromSource:(id)a3;
-- (void)_mergeCaptionFromSource:(id)a3;
-- (void)_mergeDateFromSource:(id)a3;
-- (void)_mergeFavoriteFromSource:(id)a3;
-- (void)_mergeKeywordsFromSource:(id)a3;
-- (void)_mergeMemoriesBeingCustomUserAssetsFromSource:(id)a3;
-- (void)_mergeMemoriesBeingKeyAssetFromSource:(id)a3;
-- (void)_mergeMemoriesBeingMovieCuratedAssetsFromSource:(id)a3;
-- (void)_mergeMemoriesBeingUserCuratedAssetsFromSource:(id)a3;
-- (void)_mergeMemoryBeingCuratedAssetsFromSource:(id)a3;
-- (void)_mergeMemoryBeingExtendedCuratedAssetsFromSource:(id)a3;
-- (void)_mergeMemoryBeingRepresentativeAssetsFromSource:(id)a3;
-- (void)_mergeTimezoneFromSource:(id)a3;
-- (void)_mergeTitleFromSource:(id)a3;
-- (void)_postProcessingWithSourceDuplicateAsset:(id)a3 type:(int64_t)a4;
-- (void)_resourcePropertyCopyCurrentSleetCastFromSource:(id)a3;
-- (void)_resourcePropertyCopyDateCreatedFromSource:(id)a3;
-- (void)_resourcePropertyCopyExtendedAttributesFromSource:(id)a3;
-- (void)_resourcePropertyCopyMediaMetadataFromSource:(id)a3;
++ (void)_addPropertyToActionMap:(id)map name:(id)name action:(int64_t)action;
+- (BOOL)_isValidForDateCreatedOverwriteWithSource:(id)source;
+- (BOOL)_isValidForOverwriteWithSourceProperty:(id)property targetProperty:(id)targetProperty;
+- (BOOL)_isValidForTimezoneOverwriteWithSource:(id)source;
+- (BOOL)_isValidForTitleOverwriteWithSource:(id)source;
+- (BOOL)_isValidManagedObject:(id)object forEntityName:(id)name;
+- (BOOL)isRecentlyModifiedSourceAsset:(id)asset;
+- (BOOL)transferPropertiesFromSourceAsset:(id)asset propertyMergeType:(int64_t)type error:(id *)error;
+- (PLDuplicateMergeModelProperties)initWithTargetAsset:(id)asset photoLibrary:(id)library;
+- (id)_managedObjectFromDuplicateAsset:(id)asset matchingEntityName:(id)name;
+- (void)_customActionProcessingWithSourceDuplicateAsset:(id)asset entityName:(id)name propertyName:(id)propertyName type:(int64_t)type;
+- (void)_mergeActionProcessingWithSourceDuplicateAsset:(id)asset entityName:(id)name propertyName:(id)propertyName;
+- (void)_mergeAlbumRelationshipsFromSource:(id)source;
+- (void)_mergeCaptionFromSource:(id)source;
+- (void)_mergeDateFromSource:(id)source;
+- (void)_mergeFavoriteFromSource:(id)source;
+- (void)_mergeKeywordsFromSource:(id)source;
+- (void)_mergeMemoriesBeingCustomUserAssetsFromSource:(id)source;
+- (void)_mergeMemoriesBeingKeyAssetFromSource:(id)source;
+- (void)_mergeMemoriesBeingMovieCuratedAssetsFromSource:(id)source;
+- (void)_mergeMemoriesBeingUserCuratedAssetsFromSource:(id)source;
+- (void)_mergeMemoryBeingCuratedAssetsFromSource:(id)source;
+- (void)_mergeMemoryBeingExtendedCuratedAssetsFromSource:(id)source;
+- (void)_mergeMemoryBeingRepresentativeAssetsFromSource:(id)source;
+- (void)_mergeTimezoneFromSource:(id)source;
+- (void)_mergeTitleFromSource:(id)source;
+- (void)_postProcessingWithSourceDuplicateAsset:(id)asset type:(int64_t)type;
+- (void)_resourcePropertyCopyCurrentSleetCastFromSource:(id)source;
+- (void)_resourcePropertyCopyDateCreatedFromSource:(id)source;
+- (void)_resourcePropertyCopyExtendedAttributesFromSource:(id)source;
+- (void)_resourcePropertyCopyMediaMetadataFromSource:(id)source;
 - (void)dealloc;
 @end
 
 @implementation PLDuplicateMergeModelProperties
 
-- (BOOL)_isValidForTitleOverwriteWithSource:(id)a3
+- (BOOL)_isValidForTitleOverwriteWithSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [v5 title];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  title = [asset title];
 
-  if (v6)
+  if (title)
   {
-    v7 = [(PLDuplicateAsset *)self->_targetAsset asset];
-    v8 = [v7 title];
+    asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+    title2 = [asset2 title];
 
-    if (!v8)
+    if (!title2)
     {
       LOBYTE(v10) = 1;
       goto LABEL_11;
     }
 
-    v9 = [v4 hasModifiedUserTitle];
-    if (-[PLDuplicateAsset hasModifiedUserTitle](self->_targetAsset, "hasModifiedUserTitle") && [v4 hasModifiedUserTitle])
+    hasModifiedUserTitle = [sourceCopy hasModifiedUserTitle];
+    if (-[PLDuplicateAsset hasModifiedUserTitle](self->_targetAsset, "hasModifiedUserTitle") && [sourceCopy hasModifiedUserTitle])
     {
-      if (![(PLDuplicateMergeModelProperties *)self isRecentlyModifiedSourceAsset:v4])
+      if (![(PLDuplicateMergeModelProperties *)self isRecentlyModifiedSourceAsset:sourceCopy])
       {
 LABEL_6:
         LOBYTE(v10) = 0;
@@ -69,12 +69,12 @@ LABEL_11:
       }
     }
 
-    else if (!v9)
+    else if (!hasModifiedUserTitle)
     {
       goto LABEL_6;
     }
 
-    v10 = [v8 isEqualToString:v6] ^ 1;
+    v10 = [title2 isEqualToString:title] ^ 1;
     goto LABEL_11;
   }
 
@@ -84,33 +84,33 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)_isValidForDateCreatedOverwriteWithSource:(id)a3
+- (BOOL)_isValidForDateCreatedOverwriteWithSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [v5 dateCreated];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  dateCreated = [asset dateCreated];
 
-  if (v6)
+  if (dateCreated)
   {
-    v7 = [(PLDuplicateAsset *)self->_targetAsset asset];
-    v8 = [v7 dateCreated];
+    asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+    dateCreated2 = [asset2 dateCreated];
 
-    if (!v8)
+    if (!dateCreated2)
     {
       v10 = 1;
       goto LABEL_13;
     }
 
-    v9 = [v4 hasModifiedUserDateCreated];
-    if (-[PLDuplicateAsset hasModifiedUserDateCreated](self->_targetAsset, "hasModifiedUserDateCreated") && [v4 hasModifiedUserDateCreated])
+    hasModifiedUserDateCreated = [sourceCopy hasModifiedUserDateCreated];
+    if (-[PLDuplicateAsset hasModifiedUserDateCreated](self->_targetAsset, "hasModifiedUserDateCreated") && [sourceCopy hasModifiedUserDateCreated])
     {
-      if (![(PLDuplicateMergeModelProperties *)self isRecentlyModifiedSourceAsset:v4])
+      if (![(PLDuplicateMergeModelProperties *)self isRecentlyModifiedSourceAsset:sourceCopy])
       {
         goto LABEL_10;
       }
     }
 
-    else if (!v9)
+    else if (!hasModifiedUserDateCreated)
     {
 LABEL_10:
       v10 = 0;
@@ -119,9 +119,9 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (([v8 isEqualToDate:v6] & 1) == 0)
+    if (([dateCreated2 isEqualToDate:dateCreated] & 1) == 0)
     {
-      [v8 timeIntervalSinceDate:v6];
+      [dateCreated2 timeIntervalSinceDate:dateCreated];
       v10 = fabs(v11) >= 1.0;
       goto LABEL_13;
     }
@@ -135,29 +135,29 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)_isValidForTimezoneOverwriteWithSource:(id)a3
+- (BOOL)_isValidForTimezoneOverwriteWithSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [v5 additionalAttributes];
-  v7 = [v6 timeZoneOffset];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  additionalAttributes = [asset additionalAttributes];
+  timeZoneOffset = [additionalAttributes timeZoneOffset];
 
-  if (v7)
+  if (timeZoneOffset)
   {
-    v8 = [(PLDuplicateAsset *)self->_targetAsset asset];
-    v9 = [v8 additionalAttributes];
-    v10 = [v9 timeZoneOffset];
+    asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+    additionalAttributes2 = [asset2 additionalAttributes];
+    timeZoneOffset2 = [additionalAttributes2 timeZoneOffset];
 
-    if (!v10)
+    if (!timeZoneOffset2)
     {
       LOBYTE(v12) = 1;
       goto LABEL_11;
     }
 
-    v11 = [v4 hasModifiedUserTimezone];
-    if (-[PLDuplicateAsset hasModifiedUserTimezone](self->_targetAsset, "hasModifiedUserTimezone") && [v4 hasModifiedUserTimezone])
+    hasModifiedUserTimezone = [sourceCopy hasModifiedUserTimezone];
+    if (-[PLDuplicateAsset hasModifiedUserTimezone](self->_targetAsset, "hasModifiedUserTimezone") && [sourceCopy hasModifiedUserTimezone])
     {
-      if (![(PLDuplicateMergeModelProperties *)self isRecentlyModifiedSourceAsset:v4])
+      if (![(PLDuplicateMergeModelProperties *)self isRecentlyModifiedSourceAsset:sourceCopy])
       {
 LABEL_6:
         LOBYTE(v12) = 0;
@@ -167,12 +167,12 @@ LABEL_11:
       }
     }
 
-    else if (!v11)
+    else if (!hasModifiedUserTimezone)
     {
       goto LABEL_6;
     }
 
-    v12 = [v10 isEqualToNumber:v7] ^ 1;
+    v12 = [timeZoneOffset2 isEqualToNumber:timeZoneOffset] ^ 1;
     goto LABEL_11;
   }
 
@@ -182,17 +182,17 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)_isValidForOverwriteWithSourceProperty:(id)a3 targetProperty:(id)a4
+- (BOOL)_isValidForOverwriteWithSourceProperty:(id)property targetProperty:(id)targetProperty
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  propertyCopy = property;
+  targetPropertyCopy = targetProperty;
+  v7 = targetPropertyCopy;
+  if (!propertyCopy)
   {
     goto LABEL_14;
   }
 
-  if (v6)
+  if (targetPropertyCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -200,7 +200,7 @@ LABEL_12:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v5 isEqualToString:v7];
+        v8 = [propertyCopy isEqualToString:v7];
 LABEL_13:
         v9 = v8 ^ 1;
         goto LABEL_15;
@@ -213,7 +213,7 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v5 isEqualToDate:v7];
+        v8 = [propertyCopy isEqualToDate:v7];
         goto LABEL_13;
       }
     }
@@ -224,7 +224,7 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v5 isEqualToNumber:v7];
+        v8 = [propertyCopy isEqualToNumber:v7];
         goto LABEL_13;
       }
     }
@@ -240,31 +240,31 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)isRecentlyModifiedSourceAsset:(id)a3
+- (BOOL)isRecentlyModifiedSourceAsset:(id)asset
 {
   targetAsset = self->_targetAsset;
-  v4 = a3;
-  v5 = [(PLDuplicateAsset *)targetAsset asset];
-  v6 = [v5 modificationDate];
-  v7 = [v4 asset];
+  assetCopy = asset;
+  asset = [(PLDuplicateAsset *)targetAsset asset];
+  modificationDate = [asset modificationDate];
+  asset2 = [assetCopy asset];
 
-  v8 = [v7 modificationDate];
-  v9 = [v6 compare:v8] == -1;
+  modificationDate2 = [asset2 modificationDate];
+  v9 = [modificationDate compare:modificationDate2] == -1;
 
   return v9;
 }
 
-- (void)_mergeMemoriesBeingKeyAssetFromSource:(id)a3
+- (void)_mergeMemoriesBeingKeyAssetFromSource:(id)source
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v5 memoriesBeingKeyAsset];
-  v7 = [v6 copy];
+  memoriesBeingKeyAsset = [asset memoriesBeingKeyAsset];
+  v7 = [memoriesBeingKeyAsset copy];
 
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v8)
@@ -282,8 +282,8 @@ LABEL_15:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 calculateKeyAsset];
-        [v13 setKeyAsset:v14];
+        calculateKeyAsset = [v13 calculateKeyAsset];
+        [v13 setKeyAsset:calculateKeyAsset];
       }
 
       v10 += v9;
@@ -295,38 +295,38 @@ LABEL_15:
     v7 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v15 = [v4 shortDescription];
-      v16 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       *buf = 134218498;
       v22 = v10;
       v23 = 2114;
-      v24 = v15;
+      v24 = shortDescription;
       v25 = 2114;
-      v26 = v16;
+      v26 = shortDescription2;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingKeyAsset: [%{public}@ -> %{public}@]", buf, 0x20u);
     }
   }
 }
 
-- (void)_mergeMemoriesBeingCustomUserAssetsFromSource:(id)a3
+- (void)_mergeMemoriesBeingCustomUserAssetsFromSource:(id)source
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v5 memoriesBeingCustomUserAssets];
-  v8 = [v7 copy];
+  memoriesBeingCustomUserAssets = [asset memoriesBeingCustomUserAssets];
+  v8 = [memoriesBeingCustomUserAssets copy];
 
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
-    v19 = self;
-    v20 = v4;
+    selfCopy = self;
+    v20 = sourceCopy;
     v11 = 0;
     v12 = *v22;
     do
@@ -339,10 +339,10 @@ LABEL_15:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 customUserAssets];
-        v16 = [v15 indexOfObject:v5];
+        customUserAssets = [v14 customUserAssets];
+        v16 = [customUserAssets indexOfObject:asset];
 
-        [v14 replaceObjectInCustomUserAssetsAtIndex:v16 withObject:v6];
+        [v14 replaceObjectInCustomUserAssetsAtIndex:v16 withObject:asset2];
       }
 
       v11 += v10;
@@ -352,34 +352,34 @@ LABEL_15:
     while (v10);
 
     v8 = PLDuplicateDetectionGetLog();
-    v4 = v20;
+    sourceCopy = v20;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v17 = [v20 shortDescription];
-      v18 = [(PLDuplicateAsset *)v19->_targetAsset shortDescription];
+      shortDescription = [v20 shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)selfCopy->_targetAsset shortDescription];
       *buf = 134218498;
       v26 = v11;
       v27 = 2114;
-      v28 = v17;
+      v28 = shortDescription;
       v29 = 2114;
-      v30 = v18;
+      v30 = shortDescription2;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingCustomUserAssets: [%{public}@ -> %{public}@]", buf, 0x20u);
     }
   }
 }
 
-- (void)_mergeMemoriesBeingUserCuratedAssetsFromSource:(id)a3
+- (void)_mergeMemoriesBeingUserCuratedAssetsFromSource:(id)source
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 memoriesBeingUserCuratedAssets];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  memoriesBeingUserCuratedAssets = [asset memoriesBeingUserCuratedAssets];
+  v8 = [memoriesBeingUserCuratedAssets countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -391,46 +391,46 @@ LABEL_15:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(memoriesBeingUserCuratedAssets);
         }
 
-        [*(*(&v15 + 1) + 8 * i) addUserCuratedAssetsObject:v6];
+        [*(*(&v15 + 1) + 8 * i) addUserCuratedAssetsObject:asset2];
       }
 
       v10 += v9;
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+      v9 = [memoriesBeingUserCuratedAssets countByEnumeratingWithState:&v15 objects:v25 count:16];
     }
 
     while (v9);
 
-    v7 = PLDuplicateDetectionGetLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    memoriesBeingUserCuratedAssets = PLDuplicateDetectionGetLog();
+    if (os_log_type_enabled(memoriesBeingUserCuratedAssets, OS_LOG_TYPE_INFO))
     {
-      v13 = [v4 shortDescription];
-      v14 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       *buf = 134218498;
       v20 = v10;
       v21 = 2114;
-      v22 = v13;
+      v22 = shortDescription;
       v23 = 2114;
-      v24 = v14;
-      _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingUserCuratedAssets: [%{public}@ -> %{public}@]", buf, 0x20u);
+      v24 = shortDescription2;
+      _os_log_impl(&dword_19BF1F000, memoriesBeingUserCuratedAssets, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingUserCuratedAssets: [%{public}@ -> %{public}@]", buf, 0x20u);
     }
   }
 }
 
-- (void)_mergeMemoriesBeingMovieCuratedAssetsFromSource:(id)a3
+- (void)_mergeMemoriesBeingMovieCuratedAssetsFromSource:(id)source
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 memoriesBeingMovieCuratedAssets];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  memoriesBeingMovieCuratedAssets = [asset memoriesBeingMovieCuratedAssets];
+  v8 = [memoriesBeingMovieCuratedAssets countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -442,53 +442,53 @@ LABEL_15:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(memoriesBeingMovieCuratedAssets);
         }
 
-        [*(*(&v15 + 1) + 8 * i) addMovieCuratedAssetsObject:v6];
+        [*(*(&v15 + 1) + 8 * i) addMovieCuratedAssetsObject:asset2];
       }
 
       v10 += v9;
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+      v9 = [memoriesBeingMovieCuratedAssets countByEnumeratingWithState:&v15 objects:v25 count:16];
     }
 
     while (v9);
 
-    v7 = PLDuplicateDetectionGetLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    memoriesBeingMovieCuratedAssets = PLDuplicateDetectionGetLog();
+    if (os_log_type_enabled(memoriesBeingMovieCuratedAssets, OS_LOG_TYPE_INFO))
     {
-      v13 = [v4 shortDescription];
-      v14 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       *buf = 134218498;
       v20 = v10;
       v21 = 2114;
-      v22 = v13;
+      v22 = shortDescription;
       v23 = 2114;
-      v24 = v14;
-      _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingMovieCuratedAssets: [%{public}@ -> %{public}@]", buf, 0x20u);
+      v24 = shortDescription2;
+      _os_log_impl(&dword_19BF1F000, memoriesBeingMovieCuratedAssets, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingMovieCuratedAssets: [%{public}@ -> %{public}@]", buf, 0x20u);
     }
   }
 }
 
-- (void)_mergeMemoryBeingExtendedCuratedAssetsFromSource:(id)a3
+- (void)_mergeMemoryBeingExtendedCuratedAssetsFromSource:(id)source
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v5 memoriesBeingExtendedCuratedAssets];
-  v8 = [v7 copy];
+  memoriesBeingExtendedCuratedAssets = [asset memoriesBeingExtendedCuratedAssets];
+  v8 = [memoriesBeingExtendedCuratedAssets copy];
 
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
-    v19 = self;
-    v20 = v4;
+    selfCopy = self;
+    v20 = sourceCopy;
     v11 = 0;
     v12 = *v22;
     do
@@ -501,11 +501,11 @@ LABEL_15:
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 extendedCuratedAssets];
-        v16 = [v15 mutableCopy];
+        extendedCuratedAssets = [v14 extendedCuratedAssets];
+        v16 = [extendedCuratedAssets mutableCopy];
 
-        [v16 removeObject:v5];
-        [v16 addObject:v6];
+        [v16 removeObject:asset];
+        [v16 addObject:asset2];
         [v14 setExtendedCuratedAssets:v16];
       }
 
@@ -516,34 +516,34 @@ LABEL_15:
     while (v10);
 
     v8 = PLDuplicateDetectionGetLog();
-    v4 = v20;
+    sourceCopy = v20;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v17 = [v20 shortDescription];
-      v18 = [(PLDuplicateAsset *)v19->_targetAsset shortDescription];
+      shortDescription = [v20 shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)selfCopy->_targetAsset shortDescription];
       *buf = 134218498;
       v26 = v11;
       v27 = 2114;
-      v28 = v17;
+      v28 = shortDescription;
       v29 = 2114;
-      v30 = v18;
+      v30 = shortDescription2;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingExtendedCuratedAssets: [%{public}@ -> %{public}@]", buf, 0x20u);
     }
   }
 }
 
-- (void)_mergeMemoryBeingCuratedAssetsFromSource:(id)a3
+- (void)_mergeMemoryBeingCuratedAssetsFromSource:(id)source
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 memoriesBeingCuratedAssets];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  memoriesBeingCuratedAssets = [asset memoriesBeingCuratedAssets];
+  v8 = [memoriesBeingCuratedAssets countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -555,46 +555,46 @@ LABEL_15:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(memoriesBeingCuratedAssets);
         }
 
-        [*(*(&v15 + 1) + 8 * i) addCuratedAssetsObject:v6];
+        [*(*(&v15 + 1) + 8 * i) addCuratedAssetsObject:asset2];
       }
 
       v10 += v9;
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+      v9 = [memoriesBeingCuratedAssets countByEnumeratingWithState:&v15 objects:v25 count:16];
     }
 
     while (v9);
 
-    v7 = PLDuplicateDetectionGetLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    memoriesBeingCuratedAssets = PLDuplicateDetectionGetLog();
+    if (os_log_type_enabled(memoriesBeingCuratedAssets, OS_LOG_TYPE_INFO))
     {
-      v13 = [v4 shortDescription];
-      v14 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       *buf = 134218498;
       v20 = v10;
       v21 = 2114;
-      v22 = v13;
+      v22 = shortDescription;
       v23 = 2114;
-      v24 = v14;
-      _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingCuratedAssets: [%{public}@ -> %{public}@]", buf, 0x20u);
+      v24 = shortDescription2;
+      _os_log_impl(&dword_19BF1F000, memoriesBeingCuratedAssets, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingCuratedAssets: [%{public}@ -> %{public}@]", buf, 0x20u);
     }
   }
 }
 
-- (void)_mergeMemoryBeingRepresentativeAssetsFromSource:(id)a3
+- (void)_mergeMemoryBeingRepresentativeAssetsFromSource:(id)source
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 memoriesBeingRepresentativeAssets];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  memoriesBeingRepresentativeAssets = [asset memoriesBeingRepresentativeAssets];
+  v8 = [memoriesBeingRepresentativeAssets countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -606,52 +606,52 @@ LABEL_15:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(memoriesBeingRepresentativeAssets);
         }
 
-        [*(*(&v15 + 1) + 8 * i) addRepresentativeAssetsObject:v6];
+        [*(*(&v15 + 1) + 8 * i) addRepresentativeAssetsObject:asset2];
       }
 
       v10 += v9;
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+      v9 = [memoriesBeingRepresentativeAssets countByEnumeratingWithState:&v15 objects:v25 count:16];
     }
 
     while (v9);
 
-    v7 = PLDuplicateDetectionGetLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    memoriesBeingRepresentativeAssets = PLDuplicateDetectionGetLog();
+    if (os_log_type_enabled(memoriesBeingRepresentativeAssets, OS_LOG_TYPE_INFO))
     {
-      v13 = [v4 shortDescription];
-      v14 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       *buf = 134218498;
       v20 = v10;
       v21 = 2114;
-      v22 = v13;
+      v22 = shortDescription;
       v23 = 2114;
-      v24 = v14;
-      _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingRepresentativeAssets: [%{public}@ -> %{public}@]", buf, 0x20u);
+      v24 = shortDescription2;
+      _os_log_impl(&dword_19BF1F000, memoriesBeingRepresentativeAssets, OS_LOG_TYPE_INFO, "Duplicate Merge: updated %tu memoriesBeingRepresentativeAssets: [%{public}@ -> %{public}@]", buf, 0x20u);
     }
   }
 }
 
-- (void)_mergeAlbumRelationshipsFromSource:(id)a3
+- (void)_mergeAlbumRelationshipsFromSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
-  v7 = [v5 albums];
-  v8 = [v7 copy];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  albums = [asset albums];
+  v8 = [albums copy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__PLDuplicateMergeModelProperties__mergeAlbumRelationshipsFromSource___block_invoke;
   v12[3] = &unk_1E7567680;
-  v13 = v5;
-  v14 = v6;
-  v15 = v4;
-  v16 = self;
-  v9 = v4;
-  v10 = v6;
-  v11 = v5;
+  v13 = asset;
+  v14 = asset2;
+  v15 = sourceCopy;
+  selfCopy = self;
+  v9 = sourceCopy;
+  v10 = asset2;
+  v11 = asset;
   [v8 enumerateObjectsUsingBlock:v12];
 }
 
@@ -689,51 +689,51 @@ void __70__PLDuplicateMergeModelProperties__mergeAlbumRelationshipsFromSource___
   }
 }
 
-- (void)_mergeFavoriteFromSource:(id)a3
+- (void)_mergeFavoriteFromSource:(id)source
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
-  if (([v6 isFavorite] & 1) == 0 && objc_msgSend(v5, "isFavorite"))
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  if (([asset2 isFavorite] & 1) == 0 && objc_msgSend(asset, "isFavorite"))
   {
-    [v6 setFavorite:1];
+    [asset2 setFavorite:1];
     v7 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v4 shortDescription];
-      v9 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       v10 = 138543618;
-      v11 = v8;
+      v11 = shortDescription;
       v12 = 2114;
-      v13 = v9;
+      v13 = shortDescription2;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Duplicate Merge: favorite: YES [%{public}@ -> %{public}@]", &v10, 0x16u);
     }
   }
 }
 
-- (void)_mergeKeywordsFromSource:(id)a3
+- (void)_mergeKeywordsFromSource:(id)source
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [v5 additionalAttributes];
-  v7 = [v6 keywords];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  additionalAttributes = [asset additionalAttributes];
+  keywords = [additionalAttributes keywords];
 
-  if ([v7 count])
+  if ([keywords count])
   {
-    v8 = [(PLDuplicateAsset *)self->_targetAsset asset];
-    v9 = [v8 additionalAttributes];
-    v10 = [v9 keywords];
-    v11 = [v10 valueForKey:@"title"];
+    asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+    additionalAttributes2 = [asset2 additionalAttributes];
+    keywords2 = [additionalAttributes2 keywords];
+    v11 = [keywords2 valueForKey:@"title"];
 
-    v12 = [v7 valueForKey:@"title"];
+    v12 = [keywords valueForKey:@"title"];
     v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     [v13 unionSet:v11];
     [v13 unionSet:v12];
-    v14 = [(PLPhotoLibrary *)self->_library keywordManager];
-    v15 = [(PLDuplicateAsset *)self->_targetAsset asset];
-    [v14 setKeywords:v13 forAsset:v15];
+    keywordManager = [(PLPhotoLibrary *)self->_library keywordManager];
+    asset3 = [(PLDuplicateAsset *)self->_targetAsset asset];
+    [keywordManager setKeywords:v13 forAsset:asset3];
 
     v16 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -741,15 +741,15 @@ void __70__PLDuplicateMergeModelProperties__mergeAlbumRelationshipsFromSource___
       log = v16;
       v32 = v12;
       v33 = v11;
-      v34 = v7;
-      v35 = v4;
-      v17 = [v13 allObjects];
+      v34 = keywords;
+      v35 = sourceCopy;
+      allObjects = [v13 allObjects];
       v18 = objc_alloc_init(MEMORY[0x1E696AD60]);
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v19 = v17;
+      v19 = allObjects;
       v20 = [v19 countByEnumeratingWithState:&v36 objects:buf count:16];
       if (v20)
       {
@@ -790,72 +790,72 @@ void __70__PLDuplicateMergeModelProperties__mergeAlbumRelationshipsFromSource___
       v27 = [v18 description];
 
       v28 = v27;
-      v4 = v35;
-      v29 = [v35 shortDescription];
-      v30 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      sourceCopy = v35;
+      shortDescription = [v35 shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
 
       *buf = 138412802;
       v41 = v27;
       v42 = 2114;
-      v43 = v29;
+      v43 = shortDescription;
       v44 = 2114;
-      v45 = v30;
+      v45 = shortDescription2;
       v16 = log;
       _os_log_impl(&dword_19BF1F000, log, OS_LOG_TYPE_INFO, "Duplicate Merge: update keywords: %@ [%{public}@ -> %{public}@]", buf, 0x20u);
 
       v11 = v33;
-      v7 = v34;
+      keywords = v34;
       v12 = v32;
     }
   }
 }
 
-- (void)_mergeCaptionFromSource:(id)a3
+- (void)_mergeCaptionFromSource:(id)source
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
-  v7 = [v5 longDescription];
-  v8 = [v6 longDescription];
-  v9 = [(PLDuplicateMergeModelProperties *)self _isValidForOverwriteWithSourceProperty:v7 targetProperty:v8];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  longDescription = [asset longDescription];
+  longDescription2 = [asset2 longDescription];
+  v9 = [(PLDuplicateMergeModelProperties *)self _isValidForOverwriteWithSourceProperty:longDescription targetProperty:longDescription2];
 
   if (v9)
   {
-    v10 = [v5 longDescription];
-    v11 = [v6 longDescription];
-    if ([v11 length])
+    longDescription3 = [asset longDescription];
+    longDescription4 = [asset2 longDescription];
+    if ([longDescription4 length])
     {
-      v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self contains[cd] %@", v10];
-      if (([v12 evaluateWithObject:v11]& 1) != 0)
+      v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self contains[cd] %@", longDescription3];
+      if (([v12 evaluateWithObject:longDescription4]& 1) != 0)
       {
 LABEL_7:
 
         goto LABEL_8;
       }
 
-      v13 = [MEMORY[0x1E696AD60] stringWithString:v11];
-      [v13 appendFormat:@"\n%@", v10];
+      v13 = [MEMORY[0x1E696AD60] stringWithString:longDescription4];
+      [v13 appendFormat:@"\n%@", longDescription3];
       v14 = [v13 copy];
 
-      v10 = v14;
+      longDescription3 = v14;
     }
 
-    [v6 setLongDescription:v10];
+    [asset2 setLongDescription:longDescription3];
     v12 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v15 = [v5 longDescription];
-      v16 = [v4 shortDescription];
-      v17 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      longDescription5 = [asset longDescription];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       *buf = 138413058;
-      v19 = v11;
+      v19 = longDescription4;
       v20 = 2112;
-      v21 = v15;
+      v21 = longDescription5;
       v22 = 2114;
-      v23 = v16;
+      v23 = shortDescription;
       v24 = 2114;
-      v25 = v17;
+      v25 = shortDescription2;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_INFO, "Duplicate Merge: update caption: %@|%@ [%{public}@ -> %{public}@]", buf, 0x2Au);
     }
 
@@ -865,163 +865,163 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_mergeTimezoneFromSource:(id)a3
+- (void)_mergeTimezoneFromSource:(id)source
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(PLDuplicateAsset *)self->_targetAsset timezoneUpdated]&& [(PLDuplicateMergeModelProperties *)self _isValidForTimezoneOverwriteWithSource:v4])
+  sourceCopy = source;
+  if (![(PLDuplicateAsset *)self->_targetAsset timezoneUpdated]&& [(PLDuplicateMergeModelProperties *)self _isValidForTimezoneOverwriteWithSource:sourceCopy])
   {
-    v5 = [v4 asset];
-    v6 = [v5 additionalAttributes];
+    asset = [sourceCopy asset];
+    additionalAttributes = [asset additionalAttributes];
 
-    v7 = [(PLDuplicateAsset *)self->_targetAsset asset];
-    v8 = [v7 additionalAttributes];
+    asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+    additionalAttributes2 = [asset2 additionalAttributes];
 
-    v9 = [v6 timeZoneName];
-    [v8 setTimeZoneName:v9];
+    timeZoneName = [additionalAttributes timeZoneName];
+    [additionalAttributes2 setTimeZoneName:timeZoneName];
 
-    v10 = [v6 timeZoneOffset];
-    [v8 setTimeZoneOffset:v10];
+    timeZoneOffset = [additionalAttributes timeZoneOffset];
+    [additionalAttributes2 setTimeZoneOffset:timeZoneOffset];
 
     [(PLDuplicateAsset *)self->_targetAsset setTimezoneUpdated:1];
     v11 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v8 timeZoneName];
-      v13 = [v8 timeZoneOffset];
-      v14 = [v4 shortDescription];
-      v15 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      timeZoneName2 = [additionalAttributes2 timeZoneName];
+      timeZoneOffset2 = [additionalAttributes2 timeZoneOffset];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       v16 = 138413058;
-      v17 = v12;
+      v17 = timeZoneName2;
       v18 = 2112;
-      v19 = v13;
+      v19 = timeZoneOffset2;
       v20 = 2114;
-      v21 = v14;
+      v21 = shortDescription;
       v22 = 2114;
-      v23 = v15;
+      v23 = shortDescription2;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "Duplicate Merge: timezone: %@ | %@ [%{public}@ -> %{public}@]", &v16, 0x2Au);
     }
   }
 }
 
-- (void)_mergeDateFromSource:(id)a3
+- (void)_mergeDateFromSource:(id)source
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(PLDuplicateAsset *)self->_targetAsset dateUpdated]&& [(PLDuplicateMergeModelProperties *)self _isValidForDateCreatedOverwriteWithSource:v4])
+  sourceCopy = source;
+  if (![(PLDuplicateAsset *)self->_targetAsset dateUpdated]&& [(PLDuplicateMergeModelProperties *)self _isValidForDateCreatedOverwriteWithSource:sourceCopy])
   {
-    v5 = [v4 asset];
-    v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
-    v7 = [v5 dateCreated];
-    [v6 setDateCreated:v7];
+    asset = [sourceCopy asset];
+    asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+    dateCreated = [asset dateCreated];
+    [asset2 setDateCreated:dateCreated];
 
     [(PLDuplicateAsset *)self->_targetAsset setDateUpdated:1];
     v8 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v6 dateCreated];
-      v10 = [v4 shortDescription];
-      v11 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      dateCreated2 = [asset2 dateCreated];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       v12 = 138412802;
-      v13 = v9;
+      v13 = dateCreated2;
       v14 = 2114;
-      v15 = v10;
+      v15 = shortDescription;
       v16 = 2114;
-      v17 = v11;
+      v17 = shortDescription2;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_INFO, "Duplicate Merge: date: %@ [%{public}@ -> %{public}@]", &v12, 0x20u);
     }
   }
 }
 
-- (void)_mergeTitleFromSource:(id)a3
+- (void)_mergeTitleFromSource:(id)source
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(PLDuplicateAsset *)self->_targetAsset titleUpdated]&& [(PLDuplicateMergeModelProperties *)self _isValidForTitleOverwriteWithSource:v4])
+  sourceCopy = source;
+  if (![(PLDuplicateAsset *)self->_targetAsset titleUpdated]&& [(PLDuplicateMergeModelProperties *)self _isValidForTitleOverwriteWithSource:sourceCopy])
   {
-    v5 = [v4 asset];
-    v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
-    v7 = [v5 title];
-    [v6 setTitle:v7];
+    asset = [sourceCopy asset];
+    asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+    title = [asset title];
+    [asset2 setTitle:title];
 
     [(PLDuplicateAsset *)self->_targetAsset setTitleUpdated:1];
     v8 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v6 title];
-      v10 = [v4 shortDescription];
-      v11 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      title2 = [asset2 title];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       v12 = 138412802;
-      v13 = v9;
+      v13 = title2;
       v14 = 2114;
-      v15 = v10;
+      v15 = shortDescription;
       v16 = 2114;
-      v17 = v11;
+      v17 = shortDescription2;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_INFO, "Duplicate Merge: title: %@ [%{public}@ -> %{public}@]", &v12, 0x20u);
     }
   }
 }
 
-- (void)_resourcePropertyCopyCurrentSleetCastFromSource:(id)a3
+- (void)_resourcePropertyCopyCurrentSleetCastFromSource:(id)source
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 asset];
-  v6 = [(PLDuplicateAsset *)self->_targetAsset asset];
-  [v6 setCurrentSleetCast:{objc_msgSend(v5, "currentSleetCast")}];
+  sourceCopy = source;
+  asset = [sourceCopy asset];
+  asset2 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  [asset2 setCurrentSleetCast:{objc_msgSend(asset, "currentSleetCast")}];
   v7 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v4 shortDescription];
-    v9 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+    shortDescription = [sourceCopy shortDescription];
+    shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
     v10 = 138543618;
-    v11 = v8;
+    v11 = shortDescription;
     v12 = 2114;
-    v13 = v9;
+    v13 = shortDescription2;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "Duplicate Merge: currentSleetCast property merge completed [%{public}@ -> %{public}@", &v10, 0x16u);
   }
 }
 
-- (void)_resourcePropertyCopyMediaMetadataFromSource:(id)a3
+- (void)_resourcePropertyCopyMediaMetadataFromSource:(id)source
 {
   targetAsset = self->_targetAsset;
-  v4 = a3;
-  v5 = [(PLDuplicateAsset *)targetAsset asset];
-  v10 = [v5 additionalAttributes];
+  sourceCopy = source;
+  asset = [(PLDuplicateAsset *)targetAsset asset];
+  additionalAttributes = [asset additionalAttributes];
 
-  v6 = [v4 asset];
+  asset2 = [sourceCopy asset];
 
-  v7 = [v6 additionalAttributes];
+  additionalAttributes2 = [asset2 additionalAttributes];
 
-  v8 = [v7 mediaMetadataType];
-  [v10 setMediaMetadataType:v8];
+  mediaMetadataType = [additionalAttributes2 mediaMetadataType];
+  [additionalAttributes setMediaMetadataType:mediaMetadataType];
 
-  v9 = [v7 mediaMetadataData];
-  if (v9)
+  mediaMetadataData = [additionalAttributes2 mediaMetadataData];
+  if (mediaMetadataData)
   {
-    [v10 setMediaMetadataData:v9];
+    [additionalAttributes setMediaMetadataData:mediaMetadataData];
   }
 }
 
-- (void)_resourcePropertyCopyExtendedAttributesFromSource:(id)a3
+- (void)_resourcePropertyCopyExtendedAttributesFromSource:(id)source
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLDuplicateAsset *)self->_targetAsset asset];
+  sourceCopy = source;
+  asset = [(PLDuplicateAsset *)self->_targetAsset asset];
   v13 = 0;
-  [v5 updateExtendedAttributesWithError:&v13];
+  [asset updateExtendedAttributesWithError:&v13];
   v6 = v13;
   if (v6)
   {
     v7 = PLDuplicateDetectionGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v4 shortDescription];
-      v9 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+      shortDescription = [sourceCopy shortDescription];
+      shortDescription2 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
       *buf = 138412802;
-      v15 = v8;
+      v15 = shortDescription;
       v16 = 2112;
-      v17 = v9;
+      v17 = shortDescription2;
       v18 = 2112;
       v19 = v6;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Duplicate Merge: update extended attributes failed: [%@ -> %@] Error: %@", buf, 0x20u);
@@ -1031,37 +1031,37 @@ LABEL_8:
   v10 = PLDuplicateDetectionGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v4 shortDescription];
-    v12 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
+    shortDescription3 = [sourceCopy shortDescription];
+    shortDescription4 = [(PLDuplicateAsset *)self->_targetAsset shortDescription];
     *buf = 138543618;
-    v15 = v11;
+    v15 = shortDescription3;
     v16 = 2114;
-    v17 = v12;
+    v17 = shortDescription4;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "Duplicate Merge: property merge completed [%{public}@ -> %{public}@]", buf, 0x16u);
   }
 }
 
-- (void)_resourcePropertyCopyDateCreatedFromSource:(id)a3
+- (void)_resourcePropertyCopyDateCreatedFromSource:(id)source
 {
   targetAsset = self->_targetAsset;
-  v5 = a3;
-  v8 = [(PLDuplicateAsset *)targetAsset asset];
-  v6 = [v5 asset];
+  sourceCopy = source;
+  asset = [(PLDuplicateAsset *)targetAsset asset];
+  asset2 = [sourceCopy asset];
 
   if (![(PLDuplicateAsset *)self->_targetAsset dateUpdated])
   {
-    v7 = [v6 dateCreated];
-    [v8 setDateCreated:v7];
+    dateCreated = [asset2 dateCreated];
+    [asset setDateCreated:dateCreated];
   }
 }
 
-- (BOOL)_isValidManagedObject:(id)a3 forEntityName:(id)a4
+- (BOOL)_isValidManagedObject:(id)object forEntityName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v6 = +[PLAssetDescription entityName];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [nameCopy isEqualToString:v6];
 
-  if (a3)
+  if (object)
   {
     return 1;
   }
@@ -1072,94 +1072,94 @@ LABEL_8:
   }
 }
 
-- (id)_managedObjectFromDuplicateAsset:(id)a3 matchingEntityName:(id)a4
+- (id)_managedObjectFromDuplicateAsset:(id)asset matchingEntityName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  nameCopy = name;
   v7 = +[PLManagedAsset entityName];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [nameCopy isEqualToString:v7];
 
   if (v8)
   {
-    v9 = [v5 asset];
+    asset = [assetCopy asset];
     goto LABEL_9;
   }
 
   v10 = +[PLAdditionalAssetAttributes entityName];
-  v11 = [v6 isEqualToString:v10];
+  v11 = [nameCopy isEqualToString:v10];
 
   if (v11)
   {
-    v12 = [v5 asset];
-    v9 = [v12 additionalAttributes];
+    asset2 = [assetCopy asset];
+    asset = [asset2 additionalAttributes];
 LABEL_7:
 
     goto LABEL_9;
   }
 
   v13 = +[PLAssetDescription entityName];
-  v14 = [v6 isEqualToString:v13];
+  v14 = [nameCopy isEqualToString:v13];
 
   if (v14)
   {
-    v12 = [v5 asset];
-    v15 = [v12 additionalAttributes];
-    v9 = [v15 assetDescription];
+    asset2 = [assetCopy asset];
+    additionalAttributes = [asset2 additionalAttributes];
+    asset = [additionalAttributes assetDescription];
 
     goto LABEL_7;
   }
 
-  v9 = 0;
+  asset = 0;
 LABEL_9:
 
-  return v9;
+  return asset;
 }
 
-- (void)_customActionProcessingWithSourceDuplicateAsset:(id)a3 entityName:(id)a4 propertyName:(id)a5 type:(int64_t)a6
+- (void)_customActionProcessingWithSourceDuplicateAsset:(id)asset entityName:(id)name propertyName:(id)propertyName type:(int64_t)type
 {
-  v21 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  nameCopy = name;
+  propertyNameCopy = propertyName;
   v12 = +[PLManagedAsset entityName];
-  v13 = [v10 isEqualToString:v12];
+  v13 = [nameCopy isEqualToString:v12];
 
   if (v13)
   {
-    if ([v11 isEqualToString:@"dateCreated"])
+    if ([propertyNameCopy isEqualToString:@"dateCreated"])
     {
-      if (a6)
+      if (type)
       {
-        if (a6 == 1)
+        if (type == 1)
         {
-          [(PLDuplicateMergeModelProperties *)self _resourcePropertyCopyDateCreatedFromSource:v21];
+          [(PLDuplicateMergeModelProperties *)self _resourcePropertyCopyDateCreatedFromSource:assetCopy];
           goto LABEL_6;
         }
       }
 
       else
       {
-        [(PLDuplicateMergeModelProperties *)self _mergeDateFromSource:v21];
+        [(PLDuplicateMergeModelProperties *)self _mergeDateFromSource:assetCopy];
       }
 
-      [v11 isEqualToString:@"extendedAttributes"];
-      v16 = a6 == 1;
+      [propertyNameCopy isEqualToString:@"extendedAttributes"];
+      v16 = type == 1;
 LABEL_16:
-      v20 = [v11 isEqualToString:@"currentSleetCast"];
+      v20 = [propertyNameCopy isEqualToString:@"currentSleetCast"];
       if (v16 && v20)
       {
-        [(PLDuplicateMergeModelProperties *)self _resourcePropertyCopyCurrentSleetCastFromSource:v21];
+        [(PLDuplicateMergeModelProperties *)self _resourcePropertyCopyCurrentSleetCastFromSource:assetCopy];
       }
 
       goto LABEL_19;
     }
 
 LABEL_6:
-    v14 = [v11 isEqualToString:@"extendedAttributes"];
-    v15 = a6 == 1;
-    v16 = a6 == 1;
+    v14 = [propertyNameCopy isEqualToString:@"extendedAttributes"];
+    v15 = type == 1;
+    v16 = type == 1;
     if (v15 && v14)
     {
-      [(PLDuplicateMergeModelProperties *)self _resourcePropertyCopyExtendedAttributesFromSource:v21];
+      [(PLDuplicateMergeModelProperties *)self _resourcePropertyCopyExtendedAttributesFromSource:assetCopy];
       v16 = 1;
     }
 
@@ -1167,16 +1167,16 @@ LABEL_6:
   }
 
   v17 = +[PLAdditionalAssetAttributes entityName];
-  v18 = [v10 isEqualToString:v17];
+  v18 = [nameCopy isEqualToString:v17];
 
   if (v18)
   {
-    v19 = [v11 isEqualToString:@"mediaMetadataType"];
-    if (a6 == 1)
+    v19 = [propertyNameCopy isEqualToString:@"mediaMetadataType"];
+    if (type == 1)
     {
       if (v19)
       {
-        [(PLDuplicateMergeModelProperties *)self _resourcePropertyCopyMediaMetadataFromSource:v21];
+        [(PLDuplicateMergeModelProperties *)self _resourcePropertyCopyMediaMetadataFromSource:assetCopy];
       }
     }
   }
@@ -1184,120 +1184,120 @@ LABEL_6:
 LABEL_19:
 }
 
-- (void)_mergeActionProcessingWithSourceDuplicateAsset:(id)a3 entityName:(id)a4 propertyName:(id)a5
+- (void)_mergeActionProcessingWithSourceDuplicateAsset:(id)asset entityName:(id)name propertyName:(id)propertyName
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  assetCopy = asset;
+  nameCopy = name;
+  propertyNameCopy = propertyName;
   v10 = +[PLManagedAsset entityName];
-  v11 = [v8 isEqualToString:v10];
+  v11 = [nameCopy isEqualToString:v10];
 
   if (v11)
   {
-    if ([v9 isEqualToString:@"favorite"])
+    if ([propertyNameCopy isEqualToString:@"favorite"])
     {
-      [(PLDuplicateMergeModelProperties *)self _mergeFavoriteFromSource:v16];
+      [(PLDuplicateMergeModelProperties *)self _mergeFavoriteFromSource:assetCopy];
     }
 
-    else if ([v9 isEqualToString:@"albums"])
+    else if ([propertyNameCopy isEqualToString:@"albums"])
     {
-      [(PLDuplicateMergeModelProperties *)self _mergeAlbumRelationshipsFromSource:v16];
+      [(PLDuplicateMergeModelProperties *)self _mergeAlbumRelationshipsFromSource:assetCopy];
     }
 
-    else if ([v9 isEqualToString:@"memoriesBeingRepresentativeAssets"])
+    else if ([propertyNameCopy isEqualToString:@"memoriesBeingRepresentativeAssets"])
     {
-      [(PLDuplicateMergeModelProperties *)self _mergeMemoryBeingRepresentativeAssetsFromSource:v16];
+      [(PLDuplicateMergeModelProperties *)self _mergeMemoryBeingRepresentativeAssetsFromSource:assetCopy];
     }
 
-    else if ([v9 isEqualToString:@"memoriesBeingCuratedAssets"])
+    else if ([propertyNameCopy isEqualToString:@"memoriesBeingCuratedAssets"])
     {
-      [(PLDuplicateMergeModelProperties *)self _mergeMemoryBeingCuratedAssetsFromSource:v16];
+      [(PLDuplicateMergeModelProperties *)self _mergeMemoryBeingCuratedAssetsFromSource:assetCopy];
     }
 
-    else if ([v9 isEqualToString:@"memoriesBeingExtendedCuratedAssets"])
+    else if ([propertyNameCopy isEqualToString:@"memoriesBeingExtendedCuratedAssets"])
     {
-      [(PLDuplicateMergeModelProperties *)self _mergeMemoryBeingExtendedCuratedAssetsFromSource:v16];
+      [(PLDuplicateMergeModelProperties *)self _mergeMemoryBeingExtendedCuratedAssetsFromSource:assetCopy];
     }
 
-    else if ([v9 isEqualToString:@"memoriesBeingMovieCuratedAssets"])
+    else if ([propertyNameCopy isEqualToString:@"memoriesBeingMovieCuratedAssets"])
     {
-      [(PLDuplicateMergeModelProperties *)self _mergeMemoriesBeingMovieCuratedAssetsFromSource:v16];
+      [(PLDuplicateMergeModelProperties *)self _mergeMemoriesBeingMovieCuratedAssetsFromSource:assetCopy];
     }
 
-    else if ([v9 isEqualToString:@"memoriesBeingUserCuratedAssets"])
+    else if ([propertyNameCopy isEqualToString:@"memoriesBeingUserCuratedAssets"])
     {
-      [(PLDuplicateMergeModelProperties *)self _mergeMemoriesBeingUserCuratedAssetsFromSource:v16];
+      [(PLDuplicateMergeModelProperties *)self _mergeMemoriesBeingUserCuratedAssetsFromSource:assetCopy];
     }
 
-    else if ([v9 isEqualToString:@"memoriesBeingCustomUserAssets"])
+    else if ([propertyNameCopy isEqualToString:@"memoriesBeingCustomUserAssets"])
     {
-      [(PLDuplicateMergeModelProperties *)self _mergeMemoriesBeingCustomUserAssetsFromSource:v16];
+      [(PLDuplicateMergeModelProperties *)self _mergeMemoriesBeingCustomUserAssetsFromSource:assetCopy];
     }
 
-    else if ([v9 isEqualToString:@"memoriesBeingKeyAsset"])
+    else if ([propertyNameCopy isEqualToString:@"memoriesBeingKeyAsset"])
     {
-      [(PLDuplicateMergeModelProperties *)self _mergeMemoriesBeingKeyAssetFromSource:v16];
+      [(PLDuplicateMergeModelProperties *)self _mergeMemoriesBeingKeyAssetFromSource:assetCopy];
     }
   }
 
   else
   {
     v12 = +[PLAdditionalAssetAttributes entityName];
-    v13 = [v8 isEqualToString:v12];
+    v13 = [nameCopy isEqualToString:v12];
 
     if (v13)
     {
-      if ([v9 isEqualToString:@"title"])
+      if ([propertyNameCopy isEqualToString:@"title"])
       {
-        [(PLDuplicateMergeModelProperties *)self _mergeTitleFromSource:v16];
+        [(PLDuplicateMergeModelProperties *)self _mergeTitleFromSource:assetCopy];
       }
 
-      else if (([v9 isEqualToString:@"timeZoneName"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"timeZoneOffset"))
+      else if (([propertyNameCopy isEqualToString:@"timeZoneName"] & 1) != 0 || objc_msgSend(propertyNameCopy, "isEqualToString:", @"timeZoneOffset"))
       {
-        [(PLDuplicateMergeModelProperties *)self _mergeTimezoneFromSource:v16];
+        [(PLDuplicateMergeModelProperties *)self _mergeTimezoneFromSource:assetCopy];
       }
 
-      else if ([v9 isEqualToString:@"keywords"])
+      else if ([propertyNameCopy isEqualToString:@"keywords"])
       {
-        [(PLDuplicateMergeModelProperties *)self _mergeKeywordsFromSource:v16];
+        [(PLDuplicateMergeModelProperties *)self _mergeKeywordsFromSource:assetCopy];
       }
 
       else
       {
-        [v9 isEqualToString:@"editedIPTCAttributes"];
+        [propertyNameCopy isEqualToString:@"editedIPTCAttributes"];
       }
     }
 
     else
     {
       v14 = +[PLAssetDescription entityName];
-      v15 = [v8 isEqualToString:v14];
+      v15 = [nameCopy isEqualToString:v14];
 
-      if (v15 && [v9 isEqualToString:@"longDescription"])
+      if (v15 && [propertyNameCopy isEqualToString:@"longDescription"])
       {
-        [(PLDuplicateMergeModelProperties *)self _mergeCaptionFromSource:v16];
+        [(PLDuplicateMergeModelProperties *)self _mergeCaptionFromSource:assetCopy];
       }
     }
   }
 }
 
-- (void)_postProcessingWithSourceDuplicateAsset:(id)a3 type:(int64_t)a4
+- (void)_postProcessingWithSourceDuplicateAsset:(id)asset type:(int64_t)type
 {
-  if (!a4)
+  if (!type)
   {
-    v6 = a3;
+    assetCopy = asset;
     v7 = +[PLManagedAsset entityName];
-    [(PLDuplicateMergeModelProperties *)self _mergeActionProcessingWithSourceDuplicateAsset:v6 entityName:v7 propertyName:@"memoriesBeingKeyAsset"];
+    [(PLDuplicateMergeModelProperties *)self _mergeActionProcessingWithSourceDuplicateAsset:assetCopy entityName:v7 propertyName:@"memoriesBeingKeyAsset"];
   }
 }
 
-- (BOOL)transferPropertiesFromSourceAsset:(id)a3 propertyMergeType:(int64_t)a4 error:(id *)a5
+- (BOOL)transferPropertiesFromSourceAsset:(id)asset propertyMergeType:(int64_t)type error:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLDuplicateMergeModelProperties.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"sourceAsset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateMergeModelProperties.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"sourceAsset"}];
   }
 
   v29 = 0;
@@ -1310,26 +1310,26 @@ LABEL_19:
   v26 = __Block_byref_object_copy__14273;
   v27 = __Block_byref_object_dispose__14274;
   v28 = 0;
-  v10 = [(PLDuplicateMergeModelProperties *)self mergePropertyMap];
-  v11 = [v10 allKeys];
+  mergePropertyMap = [(PLDuplicateMergeModelProperties *)self mergePropertyMap];
+  allKeys = [mergePropertyMap allKeys];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __93__PLDuplicateMergeModelProperties_transferPropertiesFromSourceAsset_propertyMergeType_error___block_invoke;
   v18[3] = &unk_1E7567658;
   v18[4] = self;
-  v12 = v9;
+  v12 = assetCopy;
   v19 = v12;
   v20 = &v29;
   v21 = &v23;
-  v22 = a4;
-  [v11 enumerateObjectsUsingBlock:v18];
+  typeCopy = type;
+  [allKeys enumerateObjectsUsingBlock:v18];
   v13 = *(v30 + 24);
   v14 = v24[5];
-  if (a5 && (v13 & 1) == 0)
+  if (error && (v13 & 1) == 0)
   {
     v14 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   v15 = *(v30 + 24);
@@ -1415,10 +1415,10 @@ void __93__PLDuplicateMergeModelProperties_transferPropertiesFromSourceAsset_pro
   [(PLDuplicateMergeModelProperties *)&v3 dealloc];
 }
 
-- (PLDuplicateMergeModelProperties)initWithTargetAsset:(id)a3 photoLibrary:(id)a4
+- (PLDuplicateMergeModelProperties)initWithTargetAsset:(id)asset photoLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  libraryCopy = library;
   v18.receiver = self;
   v18.super_class = PLDuplicateMergeModelProperties;
   v9 = [(PLDuplicateMergeModelProperties *)&v18 init];
@@ -1438,8 +1438,8 @@ void __93__PLDuplicateMergeModelProperties_transferPropertiesFromSourceAsset_pro
     lazyMergePropertyMap = v9->_lazyMergePropertyMap;
     v9->_lazyMergePropertyMap = v12;
 
-    objc_storeStrong(&v9->_targetAsset, a3);
-    objc_storeStrong(&v9->_library, a4);
+    objc_storeStrong(&v9->_targetAsset, asset);
+    objc_storeStrong(&v9->_library, library);
   }
 
   return v9;
@@ -1461,43 +1461,43 @@ id __68__PLDuplicateMergeModelProperties_initWithTargetAsset_photoLibrary___bloc
   return v2;
 }
 
-+ (void)_addPropertyToActionMap:(id)a3 name:(id)a4 action:(int64_t)a5
++ (void)_addPropertyToActionMap:(id)map name:(id)name action:(int64_t)action
 {
-  v16 = a3;
-  v9 = a4;
-  if (!v9)
+  mapCopy = map;
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PLDuplicateMergeModelProperties.m" lineNumber:927 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDuplicateMergeModelProperties.m" lineNumber:927 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
-  v10 = v16;
-  if (!v16)
+  v10 = mapCopy;
+  if (!mapCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PLDuplicateMergeModelProperties.m" lineNumber:928 description:{@"Invalid parameter not satisfying: %@", @"map"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLDuplicateMergeModelProperties.m" lineNumber:928 description:{@"Invalid parameter not satisfying: %@", @"map"}];
 
     v10 = 0;
   }
 
-  v11 = [v10 objectForKeyedSubscript:v9];
+  v11 = [v10 objectForKeyedSubscript:nameCopy];
 
   if (v11)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"Attempt to add merge property %@ multiple times", v9];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"Attempt to add merge property %@ multiple times", nameCopy];
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:@"DuplicateMergePropertyValidation" reason:objc_claimAutoreleasedReturnValue() userInfo:0];
     objc_exception_throw(v15);
   }
 
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-  [v16 setObject:v12 forKeyedSubscript:v9];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:action];
+  [mapCopy setObject:v12 forKeyedSubscript:nameCopy];
 }
 
 + (id)_assetDescriptionMergePropertyMap
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [a1 _addPropertyToActionMap:v3 name:@"longDescription" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"assetAttributes" action:0];
+  [self _addPropertyToActionMap:v3 name:@"longDescription" action:2];
+  [self _addPropertyToActionMap:v3 name:@"assetAttributes" action:0];
 
   return v3;
 }
@@ -1505,98 +1505,98 @@ id __68__PLDuplicateMergeModelProperties_initWithTargetAsset_photoLibrary___bloc
 + (id)_additionalAssetAttributesMergePropertyMap
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [a1 _addPropertyToActionMap:v3 name:@"accessibilityDescription" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"adjustedStableHash" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"alternateImportImageDate" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"editorBundleID" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"embeddedThumbnailHeight" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"embeddedThumbnailLength" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"embeddedThumbnailOffset" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"embeddedThumbnailWidth" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"originalStableHash" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"originalFilesize" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"originalHash" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"originalHeight" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"originalOrientation" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"originalResourceChoice" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"originalWidth" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"originatingAssetIdentifier" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"spatialOverCaptureGroupIdentifier" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"videoCpDisplayTimescale" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"videoCpDisplayValue" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"videoCpDurationTimescale" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"viewPresentation" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"sleetIsReversible" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"title" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"timeZoneName" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"timeZoneOffset" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"keywords" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"editedIPTCAttributes" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"mediaMetadataType" action:3];
-  [a1 _addPropertyToActionMap:v3 name:@"allowedForAnalysis" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cameraCaptureDevice" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudAvalanchePickType" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudKindSubtype" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudRecoveryState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudStateRecoveryAttemptsCount" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"dateCreatedSource" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"deferredPhotoIdentifier" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"deferredProcessingCandidateOptions" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"destinationAssetCopyState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"distanceIdentity" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"duplicateDetectorPerceptualProcessingState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"exifTimestampString" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"faceAnalysisVersion" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"faceRegions" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"gpsHorizontalAccuracy" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"hasPeopleSceneMidOrGreaterConfidence" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"importedBy" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"importedByBundleIdentifier" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"importedByDisplayName" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"importSessionID" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"inferredTimeZoneOffset" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"lastUploadAttemptDate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"lastViewedDate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"libraryScopeAssetContributorsToUpdate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"locationHash" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"mediaMetadata" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"montage" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"objectSaliencyRectsData" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"originalAssetsUUID" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"originalFilename" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"pendingPlayCount" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"pendingShareCount" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"pendingViewCount" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"photoStreamTagId" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"placeAnnotationData" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"playCount" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"ptpTrashedState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"publicGlobalUUID" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"reverseLocationData" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"reverseLocationDataIsValid" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"sceneAnalysisIsFromPreview" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"sceneAnalysisTimestamp" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"sceneAnalysisVersion" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"shareCount" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"shareOriginator" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"shareType" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"shiftedLocationData" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"shiftedLocationIsValid" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"sourceAssetForDuplicationIdentifier" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"sourceAssetForDuplicationScopeIdentifier" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"syndicationHistory" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"syndicationIdentifier" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"uploadAttempts" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"variationSuggestionStates" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"viewCount" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudViewPresentation" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"asset" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"assetDescription" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"personReferences" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"sceneClassifications" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"sceneprint" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"temporalSceneClassifications" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"unmanagedAdjustment" action:0];
+  [self _addPropertyToActionMap:v3 name:@"accessibilityDescription" action:1];
+  [self _addPropertyToActionMap:v3 name:@"adjustedStableHash" action:1];
+  [self _addPropertyToActionMap:v3 name:@"alternateImportImageDate" action:1];
+  [self _addPropertyToActionMap:v3 name:@"editorBundleID" action:1];
+  [self _addPropertyToActionMap:v3 name:@"embeddedThumbnailHeight" action:1];
+  [self _addPropertyToActionMap:v3 name:@"embeddedThumbnailLength" action:1];
+  [self _addPropertyToActionMap:v3 name:@"embeddedThumbnailOffset" action:1];
+  [self _addPropertyToActionMap:v3 name:@"embeddedThumbnailWidth" action:1];
+  [self _addPropertyToActionMap:v3 name:@"originalStableHash" action:1];
+  [self _addPropertyToActionMap:v3 name:@"originalFilesize" action:1];
+  [self _addPropertyToActionMap:v3 name:@"originalHash" action:1];
+  [self _addPropertyToActionMap:v3 name:@"originalHeight" action:1];
+  [self _addPropertyToActionMap:v3 name:@"originalOrientation" action:1];
+  [self _addPropertyToActionMap:v3 name:@"originalResourceChoice" action:1];
+  [self _addPropertyToActionMap:v3 name:@"originalWidth" action:1];
+  [self _addPropertyToActionMap:v3 name:@"originatingAssetIdentifier" action:1];
+  [self _addPropertyToActionMap:v3 name:@"spatialOverCaptureGroupIdentifier" action:1];
+  [self _addPropertyToActionMap:v3 name:@"videoCpDisplayTimescale" action:1];
+  [self _addPropertyToActionMap:v3 name:@"videoCpDisplayValue" action:1];
+  [self _addPropertyToActionMap:v3 name:@"videoCpDurationTimescale" action:1];
+  [self _addPropertyToActionMap:v3 name:@"viewPresentation" action:1];
+  [self _addPropertyToActionMap:v3 name:@"sleetIsReversible" action:1];
+  [self _addPropertyToActionMap:v3 name:@"title" action:2];
+  [self _addPropertyToActionMap:v3 name:@"timeZoneName" action:2];
+  [self _addPropertyToActionMap:v3 name:@"timeZoneOffset" action:2];
+  [self _addPropertyToActionMap:v3 name:@"keywords" action:2];
+  [self _addPropertyToActionMap:v3 name:@"editedIPTCAttributes" action:2];
+  [self _addPropertyToActionMap:v3 name:@"mediaMetadataType" action:3];
+  [self _addPropertyToActionMap:v3 name:@"allowedForAnalysis" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cameraCaptureDevice" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudAvalanchePickType" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudKindSubtype" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudRecoveryState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudStateRecoveryAttemptsCount" action:0];
+  [self _addPropertyToActionMap:v3 name:@"dateCreatedSource" action:0];
+  [self _addPropertyToActionMap:v3 name:@"deferredPhotoIdentifier" action:0];
+  [self _addPropertyToActionMap:v3 name:@"deferredProcessingCandidateOptions" action:0];
+  [self _addPropertyToActionMap:v3 name:@"destinationAssetCopyState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"distanceIdentity" action:0];
+  [self _addPropertyToActionMap:v3 name:@"duplicateDetectorPerceptualProcessingState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"exifTimestampString" action:0];
+  [self _addPropertyToActionMap:v3 name:@"faceAnalysisVersion" action:0];
+  [self _addPropertyToActionMap:v3 name:@"faceRegions" action:0];
+  [self _addPropertyToActionMap:v3 name:@"gpsHorizontalAccuracy" action:0];
+  [self _addPropertyToActionMap:v3 name:@"hasPeopleSceneMidOrGreaterConfidence" action:0];
+  [self _addPropertyToActionMap:v3 name:@"importedBy" action:0];
+  [self _addPropertyToActionMap:v3 name:@"importedByBundleIdentifier" action:0];
+  [self _addPropertyToActionMap:v3 name:@"importedByDisplayName" action:0];
+  [self _addPropertyToActionMap:v3 name:@"importSessionID" action:0];
+  [self _addPropertyToActionMap:v3 name:@"inferredTimeZoneOffset" action:0];
+  [self _addPropertyToActionMap:v3 name:@"lastUploadAttemptDate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"lastViewedDate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"libraryScopeAssetContributorsToUpdate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"locationHash" action:0];
+  [self _addPropertyToActionMap:v3 name:@"mediaMetadata" action:0];
+  [self _addPropertyToActionMap:v3 name:@"montage" action:0];
+  [self _addPropertyToActionMap:v3 name:@"objectSaliencyRectsData" action:0];
+  [self _addPropertyToActionMap:v3 name:@"originalAssetsUUID" action:0];
+  [self _addPropertyToActionMap:v3 name:@"originalFilename" action:0];
+  [self _addPropertyToActionMap:v3 name:@"pendingPlayCount" action:0];
+  [self _addPropertyToActionMap:v3 name:@"pendingShareCount" action:0];
+  [self _addPropertyToActionMap:v3 name:@"pendingViewCount" action:0];
+  [self _addPropertyToActionMap:v3 name:@"photoStreamTagId" action:0];
+  [self _addPropertyToActionMap:v3 name:@"placeAnnotationData" action:0];
+  [self _addPropertyToActionMap:v3 name:@"playCount" action:0];
+  [self _addPropertyToActionMap:v3 name:@"ptpTrashedState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"publicGlobalUUID" action:0];
+  [self _addPropertyToActionMap:v3 name:@"reverseLocationData" action:0];
+  [self _addPropertyToActionMap:v3 name:@"reverseLocationDataIsValid" action:0];
+  [self _addPropertyToActionMap:v3 name:@"sceneAnalysisIsFromPreview" action:0];
+  [self _addPropertyToActionMap:v3 name:@"sceneAnalysisTimestamp" action:0];
+  [self _addPropertyToActionMap:v3 name:@"sceneAnalysisVersion" action:0];
+  [self _addPropertyToActionMap:v3 name:@"shareCount" action:0];
+  [self _addPropertyToActionMap:v3 name:@"shareOriginator" action:0];
+  [self _addPropertyToActionMap:v3 name:@"shareType" action:0];
+  [self _addPropertyToActionMap:v3 name:@"shiftedLocationData" action:0];
+  [self _addPropertyToActionMap:v3 name:@"shiftedLocationIsValid" action:0];
+  [self _addPropertyToActionMap:v3 name:@"sourceAssetForDuplicationIdentifier" action:0];
+  [self _addPropertyToActionMap:v3 name:@"sourceAssetForDuplicationScopeIdentifier" action:0];
+  [self _addPropertyToActionMap:v3 name:@"syndicationHistory" action:0];
+  [self _addPropertyToActionMap:v3 name:@"syndicationIdentifier" action:0];
+  [self _addPropertyToActionMap:v3 name:@"uploadAttempts" action:0];
+  [self _addPropertyToActionMap:v3 name:@"variationSuggestionStates" action:0];
+  [self _addPropertyToActionMap:v3 name:@"viewCount" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudViewPresentation" action:0];
+  [self _addPropertyToActionMap:v3 name:@"asset" action:0];
+  [self _addPropertyToActionMap:v3 name:@"assetDescription" action:0];
+  [self _addPropertyToActionMap:v3 name:@"personReferences" action:0];
+  [self _addPropertyToActionMap:v3 name:@"sceneClassifications" action:0];
+  [self _addPropertyToActionMap:v3 name:@"sceneprint" action:0];
+  [self _addPropertyToActionMap:v3 name:@"temporalSceneClassifications" action:0];
+  [self _addPropertyToActionMap:v3 name:@"unmanagedAdjustment" action:0];
 
   return v3;
 }
@@ -1604,161 +1604,161 @@ id __68__PLDuplicateMergeModelProperties_initWithTargetAsset_photoLibrary___bloc
 + (id)_assetMergePropertyMap
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [a1 _addPropertyToActionMap:v3 name:@"depthType" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"hdrGain" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"hdrType" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"height" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"imageRequestHints" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"kind" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"kindSubtype" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"mediaGroupUUID" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"orientation" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"overallAestheticScore" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"packedAcceptableCropRect" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"packedBadgeAttributes" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"packedPreferredCropRect" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"playbackStyle" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"playbackVariation" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"RAWBadgeAttribute" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"savedAssetType" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"uniformTypeIdentifier" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"videoCpDurationValue" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"videoCpVisibilityState" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"videoDeferredProcessingNeeded" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"videoKeyFrameTimeScale" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"videoKeyFrameValue" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"visibilityState" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"width" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"stickerConfidenceScore" action:1];
-  [a1 _addPropertyToActionMap:v3 name:@"albums" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"favorite" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"memoriesBeingCuratedAssets" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"memoriesBeingCustomUserAssets" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"memoriesBeingExtendedCuratedAssets" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"memoriesBeingMovieCuratedAssets" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"memoriesBeingRepresentativeAssets" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"memoriesBeingUserCuratedAssets" action:2];
-  [a1 _addPropertyToActionMap:v3 name:@"memoriesBeingKeyAsset" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"memoriesBeingUserRemovedAssets" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"dateCreated" action:3];
-  [a1 _addPropertyToActionMap:v3 name:@"extendedAttributes" action:3];
-  [a1 _addPropertyToActionMap:v3 name:@"currentSleetCast" action:3];
-  [a1 _addPropertyToActionMap:v3 name:@"activeLibraryScopeParticipationState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"addedDate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"adjustmentTimestamp" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"adjustmentsState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"albumAssociativity" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"analysisStateModificationDate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"avalanchePickType" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"avalancheKind" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"avalancheUUID" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"boundedByRect" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"bundleScope" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cameraProcessingAdjustmentState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudAssetGUID" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudBatchID" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudBatchPublishDate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudCollectionGUID" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudDeleteState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudDownloadRequests" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudHasCommentsByMe" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudHasCommentsConversation" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudHasUnseenComments" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudIsDeletable" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudIsMyAsset" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudLastViewedCommentDate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudLocalState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudOwnerHashedPersonID" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudServerPublishDate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"complete" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"curationScore" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"deferredProcessingNeeded" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"deleteReason" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"derivedCameraCaptureDevice" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"directory" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"duplicateAssetVisibilityState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"duration" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"faceAdjustmentVersion" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"faceAreaPoints" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"filename" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"hidden" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"highFrameRateState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"highlightVisibilityScore" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"iconicScore" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"isMagicCarpet" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"lastSharedDate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"latitude" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"libraryScopeShareState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"locationData" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"longitude" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"modificationDate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"spatialType" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"originalColorSpace" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"promotionScore" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"searchIndexRebuildState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"sortToken" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"syndicationState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"thumbnailIndex" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"trashedDate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"trashedReason" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"trashedState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"uuid" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"isDetectedScreenshot" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"captureSessionIdentifier" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"isRecentlySaved" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"proxyState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"generativeMemoryCreationEligibilityState" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"compactSCSensitivityAnalysis" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"additionalAttributes" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"albumsBeingCustomKeyAsset" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"albumsBeingKeyAssets" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"analysisStates" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudComments" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"cloudFeedAssetsEntry" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"computedAttributes" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"conversation" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"dayGroupHighlightBeingAssets" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"dayGroupHighlightBeingExtendedAssets" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"dayGroupHighlightBeingKeyAssetPrivate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"dayGroupHighlightBeingKeyAssetShared" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"dayGroupHighlightBeingSummaryAssets" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"detectedFaces" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"detectedTorsos" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"duplicateMetadataMatchingAlbum" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"duplicatePerceptualMatchingAlbum" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"faceCrops" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"highlightBeingAssets" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"highlightBeingExtendedAssets" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"dayHighlightBeingCollageAssetsPrivate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"dayHighlightBeingCollageAssetsShared" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"dayHighlightBeingCollageAssetsMixed" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"highlightBeingKeyAssetPrivate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"highlightBeingKeyAssetShared" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"highlightBeingSummaryAssets" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"importSession" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"legacyFaces" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"libraryScope" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"collectionShare" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"libraryScopeAssetContributors" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"collectionShareAssetContributor" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"collectionShareContributor" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"likeComments" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"master" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"mediaAnalysisAttributes" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"computeSyncAttributes" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"modernResources" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"moment" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"momentShare" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"monthHighlightBeingKeyAssetPrivate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"monthHighlightBeingKeyAssetShared" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"photoAnalysisAttributes" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"resources" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"suggestionsBeingKeyAssets" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"suggestionsBeingRepresentativeAssets" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"temporalDetectedFaces" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"trashedByParticipant" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"yearHighlightBeingKeyAssetPrivate" action:0];
-  [a1 _addPropertyToActionMap:v3 name:@"yearHighlightBeingKeyAssetShared" action:0];
+  [self _addPropertyToActionMap:v3 name:@"depthType" action:1];
+  [self _addPropertyToActionMap:v3 name:@"hdrGain" action:1];
+  [self _addPropertyToActionMap:v3 name:@"hdrType" action:1];
+  [self _addPropertyToActionMap:v3 name:@"height" action:1];
+  [self _addPropertyToActionMap:v3 name:@"imageRequestHints" action:1];
+  [self _addPropertyToActionMap:v3 name:@"kind" action:1];
+  [self _addPropertyToActionMap:v3 name:@"kindSubtype" action:1];
+  [self _addPropertyToActionMap:v3 name:@"mediaGroupUUID" action:1];
+  [self _addPropertyToActionMap:v3 name:@"orientation" action:1];
+  [self _addPropertyToActionMap:v3 name:@"overallAestheticScore" action:1];
+  [self _addPropertyToActionMap:v3 name:@"packedAcceptableCropRect" action:1];
+  [self _addPropertyToActionMap:v3 name:@"packedBadgeAttributes" action:1];
+  [self _addPropertyToActionMap:v3 name:@"packedPreferredCropRect" action:1];
+  [self _addPropertyToActionMap:v3 name:@"playbackStyle" action:1];
+  [self _addPropertyToActionMap:v3 name:@"playbackVariation" action:1];
+  [self _addPropertyToActionMap:v3 name:@"RAWBadgeAttribute" action:1];
+  [self _addPropertyToActionMap:v3 name:@"savedAssetType" action:1];
+  [self _addPropertyToActionMap:v3 name:@"uniformTypeIdentifier" action:1];
+  [self _addPropertyToActionMap:v3 name:@"videoCpDurationValue" action:1];
+  [self _addPropertyToActionMap:v3 name:@"videoCpVisibilityState" action:1];
+  [self _addPropertyToActionMap:v3 name:@"videoDeferredProcessingNeeded" action:1];
+  [self _addPropertyToActionMap:v3 name:@"videoKeyFrameTimeScale" action:1];
+  [self _addPropertyToActionMap:v3 name:@"videoKeyFrameValue" action:1];
+  [self _addPropertyToActionMap:v3 name:@"visibilityState" action:1];
+  [self _addPropertyToActionMap:v3 name:@"width" action:1];
+  [self _addPropertyToActionMap:v3 name:@"stickerConfidenceScore" action:1];
+  [self _addPropertyToActionMap:v3 name:@"albums" action:2];
+  [self _addPropertyToActionMap:v3 name:@"favorite" action:2];
+  [self _addPropertyToActionMap:v3 name:@"memoriesBeingCuratedAssets" action:2];
+  [self _addPropertyToActionMap:v3 name:@"memoriesBeingCustomUserAssets" action:2];
+  [self _addPropertyToActionMap:v3 name:@"memoriesBeingExtendedCuratedAssets" action:2];
+  [self _addPropertyToActionMap:v3 name:@"memoriesBeingMovieCuratedAssets" action:2];
+  [self _addPropertyToActionMap:v3 name:@"memoriesBeingRepresentativeAssets" action:2];
+  [self _addPropertyToActionMap:v3 name:@"memoriesBeingUserCuratedAssets" action:2];
+  [self _addPropertyToActionMap:v3 name:@"memoriesBeingKeyAsset" action:0];
+  [self _addPropertyToActionMap:v3 name:@"memoriesBeingUserRemovedAssets" action:0];
+  [self _addPropertyToActionMap:v3 name:@"dateCreated" action:3];
+  [self _addPropertyToActionMap:v3 name:@"extendedAttributes" action:3];
+  [self _addPropertyToActionMap:v3 name:@"currentSleetCast" action:3];
+  [self _addPropertyToActionMap:v3 name:@"activeLibraryScopeParticipationState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"addedDate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"adjustmentTimestamp" action:0];
+  [self _addPropertyToActionMap:v3 name:@"adjustmentsState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"albumAssociativity" action:0];
+  [self _addPropertyToActionMap:v3 name:@"analysisStateModificationDate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"avalanchePickType" action:0];
+  [self _addPropertyToActionMap:v3 name:@"avalancheKind" action:0];
+  [self _addPropertyToActionMap:v3 name:@"avalancheUUID" action:0];
+  [self _addPropertyToActionMap:v3 name:@"boundedByRect" action:0];
+  [self _addPropertyToActionMap:v3 name:@"bundleScope" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cameraProcessingAdjustmentState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudAssetGUID" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudBatchID" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudBatchPublishDate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudCollectionGUID" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudDeleteState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudDownloadRequests" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudHasCommentsByMe" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudHasCommentsConversation" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudHasUnseenComments" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudIsDeletable" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudIsMyAsset" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudLastViewedCommentDate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudLocalState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudOwnerHashedPersonID" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudServerPublishDate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"complete" action:0];
+  [self _addPropertyToActionMap:v3 name:@"curationScore" action:0];
+  [self _addPropertyToActionMap:v3 name:@"deferredProcessingNeeded" action:0];
+  [self _addPropertyToActionMap:v3 name:@"deleteReason" action:0];
+  [self _addPropertyToActionMap:v3 name:@"derivedCameraCaptureDevice" action:0];
+  [self _addPropertyToActionMap:v3 name:@"directory" action:0];
+  [self _addPropertyToActionMap:v3 name:@"duplicateAssetVisibilityState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"duration" action:0];
+  [self _addPropertyToActionMap:v3 name:@"faceAdjustmentVersion" action:0];
+  [self _addPropertyToActionMap:v3 name:@"faceAreaPoints" action:0];
+  [self _addPropertyToActionMap:v3 name:@"filename" action:0];
+  [self _addPropertyToActionMap:v3 name:@"hidden" action:0];
+  [self _addPropertyToActionMap:v3 name:@"highFrameRateState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"highlightVisibilityScore" action:0];
+  [self _addPropertyToActionMap:v3 name:@"iconicScore" action:0];
+  [self _addPropertyToActionMap:v3 name:@"isMagicCarpet" action:0];
+  [self _addPropertyToActionMap:v3 name:@"lastSharedDate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"latitude" action:0];
+  [self _addPropertyToActionMap:v3 name:@"libraryScopeShareState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"locationData" action:0];
+  [self _addPropertyToActionMap:v3 name:@"longitude" action:0];
+  [self _addPropertyToActionMap:v3 name:@"modificationDate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"spatialType" action:0];
+  [self _addPropertyToActionMap:v3 name:@"originalColorSpace" action:0];
+  [self _addPropertyToActionMap:v3 name:@"promotionScore" action:0];
+  [self _addPropertyToActionMap:v3 name:@"searchIndexRebuildState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"sortToken" action:0];
+  [self _addPropertyToActionMap:v3 name:@"syndicationState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"thumbnailIndex" action:0];
+  [self _addPropertyToActionMap:v3 name:@"trashedDate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"trashedReason" action:0];
+  [self _addPropertyToActionMap:v3 name:@"trashedState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"uuid" action:0];
+  [self _addPropertyToActionMap:v3 name:@"isDetectedScreenshot" action:0];
+  [self _addPropertyToActionMap:v3 name:@"captureSessionIdentifier" action:0];
+  [self _addPropertyToActionMap:v3 name:@"isRecentlySaved" action:0];
+  [self _addPropertyToActionMap:v3 name:@"proxyState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"generativeMemoryCreationEligibilityState" action:0];
+  [self _addPropertyToActionMap:v3 name:@"compactSCSensitivityAnalysis" action:0];
+  [self _addPropertyToActionMap:v3 name:@"additionalAttributes" action:0];
+  [self _addPropertyToActionMap:v3 name:@"albumsBeingCustomKeyAsset" action:0];
+  [self _addPropertyToActionMap:v3 name:@"albumsBeingKeyAssets" action:0];
+  [self _addPropertyToActionMap:v3 name:@"analysisStates" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudComments" action:0];
+  [self _addPropertyToActionMap:v3 name:@"cloudFeedAssetsEntry" action:0];
+  [self _addPropertyToActionMap:v3 name:@"computedAttributes" action:0];
+  [self _addPropertyToActionMap:v3 name:@"conversation" action:0];
+  [self _addPropertyToActionMap:v3 name:@"dayGroupHighlightBeingAssets" action:0];
+  [self _addPropertyToActionMap:v3 name:@"dayGroupHighlightBeingExtendedAssets" action:0];
+  [self _addPropertyToActionMap:v3 name:@"dayGroupHighlightBeingKeyAssetPrivate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"dayGroupHighlightBeingKeyAssetShared" action:0];
+  [self _addPropertyToActionMap:v3 name:@"dayGroupHighlightBeingSummaryAssets" action:0];
+  [self _addPropertyToActionMap:v3 name:@"detectedFaces" action:0];
+  [self _addPropertyToActionMap:v3 name:@"detectedTorsos" action:0];
+  [self _addPropertyToActionMap:v3 name:@"duplicateMetadataMatchingAlbum" action:0];
+  [self _addPropertyToActionMap:v3 name:@"duplicatePerceptualMatchingAlbum" action:0];
+  [self _addPropertyToActionMap:v3 name:@"faceCrops" action:0];
+  [self _addPropertyToActionMap:v3 name:@"highlightBeingAssets" action:0];
+  [self _addPropertyToActionMap:v3 name:@"highlightBeingExtendedAssets" action:0];
+  [self _addPropertyToActionMap:v3 name:@"dayHighlightBeingCollageAssetsPrivate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"dayHighlightBeingCollageAssetsShared" action:0];
+  [self _addPropertyToActionMap:v3 name:@"dayHighlightBeingCollageAssetsMixed" action:0];
+  [self _addPropertyToActionMap:v3 name:@"highlightBeingKeyAssetPrivate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"highlightBeingKeyAssetShared" action:0];
+  [self _addPropertyToActionMap:v3 name:@"highlightBeingSummaryAssets" action:0];
+  [self _addPropertyToActionMap:v3 name:@"importSession" action:0];
+  [self _addPropertyToActionMap:v3 name:@"legacyFaces" action:0];
+  [self _addPropertyToActionMap:v3 name:@"libraryScope" action:0];
+  [self _addPropertyToActionMap:v3 name:@"collectionShare" action:0];
+  [self _addPropertyToActionMap:v3 name:@"libraryScopeAssetContributors" action:0];
+  [self _addPropertyToActionMap:v3 name:@"collectionShareAssetContributor" action:0];
+  [self _addPropertyToActionMap:v3 name:@"collectionShareContributor" action:0];
+  [self _addPropertyToActionMap:v3 name:@"likeComments" action:0];
+  [self _addPropertyToActionMap:v3 name:@"master" action:0];
+  [self _addPropertyToActionMap:v3 name:@"mediaAnalysisAttributes" action:0];
+  [self _addPropertyToActionMap:v3 name:@"computeSyncAttributes" action:0];
+  [self _addPropertyToActionMap:v3 name:@"modernResources" action:0];
+  [self _addPropertyToActionMap:v3 name:@"moment" action:0];
+  [self _addPropertyToActionMap:v3 name:@"momentShare" action:0];
+  [self _addPropertyToActionMap:v3 name:@"monthHighlightBeingKeyAssetPrivate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"monthHighlightBeingKeyAssetShared" action:0];
+  [self _addPropertyToActionMap:v3 name:@"photoAnalysisAttributes" action:0];
+  [self _addPropertyToActionMap:v3 name:@"resources" action:0];
+  [self _addPropertyToActionMap:v3 name:@"suggestionsBeingKeyAssets" action:0];
+  [self _addPropertyToActionMap:v3 name:@"suggestionsBeingRepresentativeAssets" action:0];
+  [self _addPropertyToActionMap:v3 name:@"temporalDetectedFaces" action:0];
+  [self _addPropertyToActionMap:v3 name:@"trashedByParticipant" action:0];
+  [self _addPropertyToActionMap:v3 name:@"yearHighlightBeingKeyAssetPrivate" action:0];
+  [self _addPropertyToActionMap:v3 name:@"yearHighlightBeingKeyAssetShared" action:0];
 
   return v3;
 }
@@ -1768,16 +1768,16 @@ id __68__PLDuplicateMergeModelProperties_initWithTargetAsset_photoLibrary___bloc
   v12[3] = *MEMORY[0x1E69E9840];
   v3 = +[PLManagedAsset entityName];
   v11[0] = v3;
-  v4 = [a1 _assetMergePropertyMap];
-  v12[0] = v4;
+  _assetMergePropertyMap = [self _assetMergePropertyMap];
+  v12[0] = _assetMergePropertyMap;
   v5 = +[PLAdditionalAssetAttributes entityName];
   v11[1] = v5;
-  v6 = [a1 _additionalAssetAttributesMergePropertyMap];
-  v12[1] = v6;
+  _additionalAssetAttributesMergePropertyMap = [self _additionalAssetAttributesMergePropertyMap];
+  v12[1] = _additionalAssetAttributesMergePropertyMap;
   v7 = +[PLAssetDescription entityName];
   v11[2] = v7;
-  v8 = [a1 _assetDescriptionMergePropertyMap];
-  v12[2] = v8;
+  _assetDescriptionMergePropertyMap = [self _assetDescriptionMergePropertyMap];
+  v12[2] = _assetDescriptionMergePropertyMap;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
   return v9;

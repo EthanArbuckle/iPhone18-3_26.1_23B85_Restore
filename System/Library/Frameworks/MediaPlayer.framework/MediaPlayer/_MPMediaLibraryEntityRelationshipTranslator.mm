@@ -2,7 +2,7 @@
 - (MPMediaLibraryEntityTranslator)entityTranslator;
 - (id).cxx_construct;
 - (shared_ptr<std::unordered_map<std::string,)relationshipValidationProperties;
-- (void)setRelationshipValidationProperties:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)a3 :unordered_map<std::string;
+- (void)setRelationshipValidationProperties:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)std :unordered_map<std::string;
 @end
 
 @implementation _MPMediaLibraryEntityRelationshipTranslator
@@ -14,10 +14,10 @@
   return self;
 }
 
-- (void)setRelationshipValidationProperties:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)a3 :unordered_map<std::string
+- (void)setRelationshipValidationProperties:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)std :unordered_map<std::string
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *std.__ptr_;
+  v3 = *(std.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -49,9 +49,9 @@
 
 - (MPMediaLibraryEntityTranslator)entityTranslator
 {
-  v2 = [(_MPMediaLibraryEntityRelationshipTranslator *)self relationshipModelClass];
+  relationshipModelClass = [(_MPMediaLibraryEntityRelationshipTranslator *)self relationshipModelClass];
 
-  return [MPMediaLibraryEntityTranslator translatorForMPModelClass:v2];
+  return [MPMediaLibraryEntityTranslator translatorForMPModelClass:relationshipModelClass];
 }
 
 @end

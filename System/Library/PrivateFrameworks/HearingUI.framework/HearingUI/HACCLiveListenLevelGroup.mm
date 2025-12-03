@@ -1,19 +1,19 @@
 @interface HACCLiveListenLevelGroup
-- (HACCLiveListenLevelGroup)initWithFrame:(CGRect)a3;
+- (HACCLiveListenLevelGroup)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)updateLevel:(double)a3;
+- (void)updateLevel:(double)level;
 @end
 
 @implementation HACCLiveListenLevelGroup
 
-- (HACCLiveListenLevelGroup)initWithFrame:(CGRect)a3
+- (HACCLiveListenLevelGroup)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = HACCLiveListenLevelGroup;
-  v3 = [(HACCLiveListenLevelGroup *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HACCLiveListenLevelGroup *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = 5;
     do
     {
@@ -21,15 +21,15 @@
       v7 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.25];
       [v6 setFillColor:{objc_msgSend(v7, "CGColor")}];
 
-      v8 = [(HACCLiveListenLevelGroup *)v3 layer];
-      [v8 addSublayer:v6];
+      layer = [(HACCLiveListenLevelGroup *)v3 layer];
+      [layer addSublayer:v6];
 
-      [v4 addObject:v6];
+      [array addObject:v6];
       --v5;
     }
 
     while (v5);
-    [(HACCLiveListenLevelGroup *)v3 setLevels:v4];
+    [(HACCLiveListenLevelGroup *)v3 setLevels:array];
   }
 
   return v3;
@@ -45,7 +45,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HACCLiveListenLevelGroup *)self levels];
+  levels = [(HACCLiveListenLevelGroup *)self levels];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __42__HACCLiveListenLevelGroup_layoutSubviews__block_invoke;
@@ -55,7 +55,7 @@
   v12[6] = v6;
   v12[7] = v8;
   v12[8] = v10;
-  [v11 enumerateObjectsUsingBlock:v12];
+  [levels enumerateObjectsUsingBlock:v12];
 }
 
 void __42__HACCLiveListenLevelGroup_layoutSubviews__block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -87,15 +87,15 @@ void __42__HACCLiveListenLevelGroup_layoutSubviews__block_invoke(uint64_t a1, vo
   [v7 setPath:{objc_msgSend(v18, "CGPath")}];
 }
 
-- (void)updateLevel:(double)a3
+- (void)updateLevel:(double)level
 {
-  v4 = [(HACCLiveListenLevelGroup *)self levels];
+  levels = [(HACCLiveListenLevelGroup *)self levels];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__HACCLiveListenLevelGroup_updateLevel___block_invoke;
   v5[3] = &__block_descriptor_40_e29_v32__0__CAShapeLayer_8Q16_B24l;
-  *&v5[4] = a3;
-  [v4 enumerateObjectsUsingBlock:v5];
+  *&v5[4] = level;
+  [levels enumerateObjectsUsingBlock:v5];
 }
 
 void __40__HACCLiveListenLevelGroup_updateLevel___block_invoke(uint64_t a1, void *a2, uint64_t a3)

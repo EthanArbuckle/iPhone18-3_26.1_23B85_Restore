@@ -1,30 +1,30 @@
 @interface TSDStrokePattern
-+ (id)dashPatternWithSpacing:(double)a3;
++ (id)dashPatternWithSpacing:(double)spacing;
 + (id)emptyPattern;
 + (id)longDashPattern;
 + (id)mediumDashPattern;
 + (id)roundDashPattern;
-+ (id)roundDashPatternWithSpacing:(double)a3;
++ (id)roundDashPatternWithSpacing:(double)spacing;
 + (id)shortDashPattern;
 + (id)solidPattern;
-+ (id)strokePatternWithPattern:(const double *)a3 count:(unint64_t)a4 phase:(double)a5;
-- (BOOL)isEqual:(id)a3;
-- (TSDStrokePattern)initWithPatternType:(int64_t)a3 pattern:(const double *)a4 count:(unint64_t)a5 phase:(double)a6;
-- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)a3 withinAvailableLength:(double)a4;
++ (id)strokePatternWithPattern:(const double *)pattern count:(unint64_t)count phase:(double)phase;
+- (BOOL)isEqual:(id)equal;
+- (TSDStrokePattern)initWithPatternType:(int64_t)type pattern:(const double *)pattern count:(unint64_t)count phase:(double)phase;
+- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)width withinAvailableLength:(double)length;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
 - (id)p_patternString;
 - (id)p_typeString;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
-- (void)applyToShapeRenderable:(id)a3;
-- (void)i_applyToContext:(CGContext *)a3 lineWidth:(double)a4 capStyle:(unint64_t *)a5;
-- (void)p_applyToShapeRenderable:(id)a3 lineWidth:(double)a4;
+- (void)applyToShapeRenderable:(id)renderable;
+- (void)i_applyToContext:(CGContext *)context lineWidth:(double)width capStyle:(unint64_t *)style;
+- (void)p_applyToShapeRenderable:(id)renderable lineWidth:(double)width;
 @end
 
 @implementation TSDStrokePattern
 
-- (TSDStrokePattern)initWithPatternType:(int64_t)a3 pattern:(const double *)a4 count:(unint64_t)a5 phase:(double)a6
+- (TSDStrokePattern)initWithPatternType:(int64_t)type pattern:(const double *)pattern count:(unint64_t)count phase:(double)phase
 {
   v13.receiver = self;
   v13.super_class = TSDStrokePattern;
@@ -32,17 +32,17 @@
   v10 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    v9->_count = a5;
-    if (a4)
+    v9->_type = type;
+    v9->_count = count;
+    if (pattern)
     {
-      v11 = 6;
-      if (a5 < 6)
+      countCopy = 6;
+      if (count < 6)
       {
-        v11 = a5;
+        countCopy = count;
       }
 
-      memcpy(v9->_pattern, a4, 8 * v11);
+      memcpy(v9->_pattern, pattern, 8 * countCopy);
     }
   }
 
@@ -163,44 +163,44 @@ uint64_t __36__TSDStrokePattern_roundDashPattern__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)roundDashPatternWithSpacing:(double)a3
++ (id)roundDashPatternWithSpacing:(double)spacing
 {
   v5[2] = *MEMORY[0x277D85DE8];
   v5[0] = 0x3F50624DD2F1A9FCLL;
-  *&v5[1] = a3;
+  *&v5[1] = spacing;
   v3 = [TSDStrokePattern strokePatternWithPattern:v5 count:2 phase:0.0];
 
   return v3;
 }
 
-+ (id)dashPatternWithSpacing:(double)a3
++ (id)dashPatternWithSpacing:(double)spacing
 {
   v5[2] = *MEMORY[0x277D85DE8];
-  *v5 = a3;
-  *&v5[1] = a3;
+  *v5 = spacing;
+  *&v5[1] = spacing;
   v3 = [TSDStrokePattern strokePatternWithPattern:v5 count:2 phase:0.0];
 
   return v3;
 }
 
-+ (id)strokePatternWithPattern:(const double *)a3 count:(unint64_t)a4 phase:(double)a5
++ (id)strokePatternWithPattern:(const double *)pattern count:(unint64_t)count phase:(double)phase
 {
-  v5 = [[TSDStrokePattern alloc] initWithPattern:a3 count:a4 phase:a5];
+  v5 = [[TSDStrokePattern alloc] initWithPattern:pattern count:count phase:phase];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
-  if (!v4)
+  if (!equalCopy)
   {
     goto LABEL_10;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
 LABEL_9:
     v13 = 1;
@@ -216,14 +216,14 @@ LABEL_10:
 
   if ([(TSDStrokePattern *)self count]>= 6)
   {
-    v12 = [v5 pattern];
+    pattern = [v5 pattern];
     v11 = 6;
   }
 
   else
   {
     v11 = [(TSDStrokePattern *)self count];
-    v12 = [v5 pattern];
+    pattern = [v5 pattern];
     if (!v11)
     {
       goto LABEL_9;
@@ -236,7 +236,7 @@ LABEL_10:
   {
     v17 = *pattern++;
     v18 = v17;
-    v19 = *v12++;
+    v19 = *pattern++;
     v20 = vabdd_f64(v18, v19);
     v22 = v16-- != 0;
     v13 = v20 < 0.00999999978;
@@ -257,12 +257,12 @@ LABEL_11:
 
 - (id)description
 {
-  v3 = [(TSDStrokePattern *)self p_patternString];
-  v4 = [(TSDStrokePattern *)self p_typeString];
+  p_patternString = [(TSDStrokePattern *)self p_patternString];
+  p_typeString = [(TSDStrokePattern *)self p_typeString];
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 stringWithFormat:@"%@ (%p) pattern: %@ count: %ld phase: %f type: %@", v7, self, v3, self->_count, *&self->_phase, v4];
+  v8 = [v5 stringWithFormat:@"%@ (%p) pattern: %@ count: %ld phase: %f type: %@", v7, self, p_patternString, self->_count, *&self->_phase, p_typeString];
 
   return v8;
 }
@@ -316,21 +316,21 @@ LABEL_11:
   }
 }
 
-- (void)i_applyToContext:(CGContext *)a3 lineWidth:(double)a4 capStyle:(unint64_t *)a5
+- (void)i_applyToContext:(CGContext *)context lineWidth:(double)width capStyle:(unint64_t *)style
 {
   v21 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   *lengths = 0u;
-  v9 = [(TSDStrokePattern *)self pattern];
+  pattern = [(TSDStrokePattern *)self pattern];
   count = self->_count;
   if (count)
   {
     v11 = lengths;
     do
     {
-      v12 = *v9++;
-      *v11++ = v12 * a4;
+      v12 = *pattern++;
+      *v11++ = v12 * width;
       --count;
     }
 
@@ -341,43 +341,43 @@ LABEL_11:
   if ([(TSDStrokePattern *)self isRoundDash])
   {
     memset(&v17, 0, sizeof(v17));
-    CGContextGetCTM(&v17, a3);
+    CGContextGetCTM(&v17, context);
     v16 = v17;
     v14 = TSDTransformScale(&v16.a);
-    if (a5 && *a5 == 1 && v14 * a4 <= 2.0)
+    if (style && *style == 1 && v14 * width <= 2.0)
     {
-      lengths[0] = a4;
-      *a5 = 0;
+      lengths[0] = width;
+      *style = 0;
       v15 = 0.0;
     }
 
     else
     {
-      lengths[1] = lengths[1] + a4;
+      lengths[1] = lengths[1] + width;
       v15 = 0.5;
     }
   }
 
   else
   {
-    v15 = phase * a4;
+    v15 = phase * width;
   }
 
-  CGContextSetLineDash(a3, v15, lengths, self->_count);
+  CGContextSetLineDash(context, v15, lengths, self->_count);
 }
 
-- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)a3 withinAvailableLength:(double)a4
+- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)width withinAvailableLength:(double)length
 {
   if ([(TSDStrokePattern *)self count]== 2)
   {
-    v7 = *[(TSDStrokePattern *)self pattern]* a3;
-    v8 = [(TSDStrokePattern *)self pattern][8] * a3;
+    v7 = *[(TSDStrokePattern *)self pattern]* width;
+    v8 = [(TSDStrokePattern *)self pattern][8] * width;
     [(TSDStrokePattern *)self phase];
-    v10 = v9 * a3;
-    v11 = [(TSDStrokePattern *)self isRoundDash];
-    if (v11)
+    v10 = v9 * width;
+    isRoundDash = [(TSDStrokePattern *)self isRoundDash];
+    if (isRoundDash)
     {
-      v12 = v7 + a3;
+      v12 = v7 + width;
     }
 
     else
@@ -386,70 +386,70 @@ LABEL_11:
     }
 
     v13 = 0.5;
-    if (!v11)
+    if (!isRoundDash)
     {
       v13 = v10;
     }
 
-    v14 = a4 - (v8 + v12 - v13);
+    v14 = length - (v8 + v12 - v13);
     v15 = v8 + v12;
     v16 = fmodf(v14, v15);
     v17 = v16;
     if (v16 > 0.0 && v16 < 5.0 && v12 > v17)
     {
-      a4 = a4 - v17;
+      length = length - v17;
       if ([(TSDStrokePattern *)self isRoundDash])
       {
-        return a4 + v8 * -0.5;
+        return length + v8 * -0.5;
       }
     }
   }
 
-  return a4;
+  return length;
 }
 
-- (void)applyToShapeRenderable:(id)a3
+- (void)applyToShapeRenderable:(id)renderable
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  renderableCopy = renderable;
+  v8 = renderableCopy;
+  if (!renderableCopy)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDStrokePattern applyToShapeRenderable:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDStroke.m"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:342 description:{@"invalid nil value for '%s'", "shapeRenderable"}];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:342 description:{@"invalid nil value for '%s'", "shapeRenderable"}];
 
-    v4 = 0;
+    renderableCopy = 0;
   }
 
-  [v4 lineWidth];
+  [renderableCopy lineWidth];
   [(TSDStrokePattern *)self p_applyToShapeRenderable:v8 lineWidth:?];
 }
 
-- (void)p_applyToShapeRenderable:(id)a3 lineWidth:(double)a4
+- (void)p_applyToShapeRenderable:(id)renderable lineWidth:(double)width
 {
-  v12 = a3;
+  renderableCopy = renderable;
   if ([(TSDStrokePattern *)self patternType]== 1)
   {
-    [v12 setLineDashPattern:0];
+    [renderableCopy setLineDashPattern:0];
   }
 
   else if (![(TSDStrokePattern *)self patternType])
   {
-    [v12 setLineDashPhase:self->_phase * a4];
+    [renderableCopy setLineDashPhase:self->_phase * width];
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [(TSDStrokePattern *)self pattern];
+    pattern = [(TSDStrokePattern *)self pattern];
     if (self->_count)
     {
-      v8 = v7;
+      v8 = pattern;
       v9 = 0;
       do
       {
-        v10 = v8[v9] * a4;
+        v10 = v8[v9] * width;
         if (v9 == 1 && [(TSDStrokePattern *)self isRoundDash])
         {
-          [v12 setLineDashPhase:0.5];
-          v10 = v10 + a4;
+          [renderableCopy setLineDashPhase:0.5];
+          v10 = v10 + width;
         }
 
         v11 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
@@ -461,26 +461,26 @@ LABEL_11:
       while (v9 < self->_count);
     }
 
-    [v12 setLineDashPattern:v6];
+    [renderableCopy setLineDashPattern:v6];
   }
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
   if (!v5)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDStrokePattern mixingTypeWithObject:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDStroke.m"];
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:377 description:@"nil object after cast"];
+    [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:377 description:@"nil object after cast"];
   }
 
-  v9 = [(TSDStrokePattern *)self patternType];
-  if (v9 == [v5 patternType] && (v10 = -[TSDStrokePattern count](self, "count"), v10 == objc_msgSend(v5, "count")) && (v11 = -[TSDStrokePattern isDash](self, "isDash"), v11 == objc_msgSend(v5, "isDash")) && (v12 = -[TSDStrokePattern isRoundDash](self, "isRoundDash"), v12 == objc_msgSend(v5, "isRoundDash")))
+  patternType = [(TSDStrokePattern *)self patternType];
+  if (patternType == [v5 patternType] && (v10 = -[TSDStrokePattern count](self, "count"), v10 == objc_msgSend(v5, "count")) && (v11 = -[TSDStrokePattern isDash](self, "isDash"), v11 == objc_msgSend(v5, "isDash")) && (v12 = -[TSDStrokePattern isRoundDash](self, "isRoundDash"), v12 == objc_msgSend(v5, "isRoundDash")))
   {
     v13 = 5;
   }
@@ -493,10 +493,10 @@ LABEL_11:
   return v13;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v19[6] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (v7)
@@ -506,7 +506,7 @@ LABEL_11:
       v8 = 0;
       do
       {
-        *&v19[v8] = TSDMixFloats(-[TSDStrokePattern pattern](self, "pattern")[8 * v8], *([v7 pattern] + 8 * v8), a3);
+        *&v19[v8] = TSDMixFloats(-[TSDStrokePattern pattern](self, "pattern")[8 * v8], *([v7 pattern] + 8 * v8), fraction);
         ++v8;
       }
 
@@ -517,15 +517,15 @@ LABEL_11:
     [(TSDStrokePattern *)self phase];
     v11 = v10;
     [v7 phase];
-    v13 = [TSDStrokePattern strokePatternWithPattern:v19 count:v9 phase:TSDMixFloats(v11, v12, a3)];
+    v13 = [TSDStrokePattern strokePatternWithPattern:v19 count:v9 phase:TSDMixFloats(v11, v12, fraction)];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDStrokePattern mixedObjectWithFraction:ofObject:]"];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDStroke.m"];
-    [v14 handleFailureInFunction:v15 file:v16 lineNumber:393 description:@"nil object after cast"];
+    [currentHandler handleFailureInFunction:v15 file:v16 lineNumber:393 description:@"nil object after cast"];
 
     v13 = +[TSDStrokePattern emptyPattern];
   }

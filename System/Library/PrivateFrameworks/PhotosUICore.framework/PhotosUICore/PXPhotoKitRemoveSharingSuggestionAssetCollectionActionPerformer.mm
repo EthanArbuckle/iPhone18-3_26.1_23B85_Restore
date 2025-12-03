@@ -1,17 +1,17 @@
 @interface PXPhotoKitRemoveSharingSuggestionAssetCollectionActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performBackgroundTask;
 @end
 
 @implementation PXPhotoKitRemoveSharingSuggestionAssetCollectionActionPerformer
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = [a4 assetCollection];
-  v6 = [v5 px_isSharedLibrarySharingSuggestionsSmartAlbum];
+  assetCollection = [reference assetCollection];
+  px_isSharedLibrarySharingSuggestionsSmartAlbum = [assetCollection px_isSharedLibrarySharingSuggestionsSmartAlbum];
 
-  if (v6)
+  if (px_isSharedLibrarySharingSuggestionsSmartAlbum)
   {
     v7 = @"PXSharedLibrary_Action_RemoveAllSharingSuggestions";
   }
@@ -24,33 +24,33 @@
   return PXLocalizedSharedLibraryString(v7);
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v4 = a3;
-  v5 = [v4 assetCollection];
+  referenceCopy = reference;
+  assetCollection = [referenceCopy assetCollection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 assetCollection];
-    if ([v7 px_isSharedLibrarySharingSuggestionsSmartAlbum])
+    assetCollection2 = [referenceCopy assetCollection];
+    if ([assetCollection2 px_isSharedLibrarySharingSuggestionsSmartAlbum])
     {
-      v8 = 1;
+      px_isSharedLibrarySharingSuggestion = 1;
     }
 
     else
     {
-      v8 = [v7 px_isSharedLibrarySharingSuggestion];
+      px_isSharedLibrarySharingSuggestion = [assetCollection2 px_isSharedLibrarySharingSuggestion];
     }
   }
 
   else
   {
-    v8 = 0;
+    px_isSharedLibrarySharingSuggestion = 0;
   }
 
-  return v8;
+  return px_isSharedLibrarySharingSuggestion;
 }
 
 - (void)performBackgroundTask
@@ -62,15 +62,15 @@
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_INFO, "Attempting remove sharing suggestions. Calling PXSharedLibraryRemoveSharingSuggestions()", buf, 2u);
   }
 
-  v4 = [(PXAssetCollectionActionPerformer *)self assetsDataSource];
-  v5 = v4;
-  if (!v4)
+  assetsDataSource = [(PXAssetCollectionActionPerformer *)self assetsDataSource];
+  v5 = assetsDataSource;
+  if (!assetsDataSource)
   {
     v9 = MEMORY[0x1E6978630];
-    v10 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-    v6 = [v9 fetchAssetsInAssetCollection:v10 options:0];
+    assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+    allItemsEnumerator = [v9 fetchAssetsInAssetCollection:assetCollection options:0];
 
-    if (v6)
+    if (allItemsEnumerator)
     {
       goto LABEL_5;
     }
@@ -79,21 +79,21 @@ LABEL_7:
     PXAssertGetLog();
   }
 
-  v6 = [v4 allItemsEnumerator];
-  if (!v6)
+  allItemsEnumerator = [assetsDataSource allItemsEnumerator];
+  if (!allItemsEnumerator)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v7 = [(PXAssetsAction *)[PXRemoveLibrarySharingSuggestionAction alloc] initWithAssets:v6];
-  v8 = [(PXActionPerformer *)self undoManager];
+  v7 = [(PXAssetsAction *)[PXRemoveLibrarySharingSuggestionAction alloc] initWithAssets:allItemsEnumerator];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__PXPhotoKitRemoveSharingSuggestionAssetCollectionActionPerformer_performBackgroundTask__block_invoke;
   v11[3] = &unk_1E774C5C0;
   v11[4] = self;
-  [(PXAction *)v7 executeWithUndoManager:v8 completionHandler:v11];
+  [(PXAction *)v7 executeWithUndoManager:undoManager completionHandler:v11];
 }
 
 @end

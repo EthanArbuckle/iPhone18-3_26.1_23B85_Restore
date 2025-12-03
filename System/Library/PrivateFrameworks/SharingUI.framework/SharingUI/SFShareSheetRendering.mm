@@ -1,28 +1,28 @@
 @interface SFShareSheetRendering
-+ (BOOL)isAXFromConfig:(id)a3;
-+ (CGImage)createCGImageForRenderingCommand:(id)a3;
-+ (CGSize)nameLabelSizeFromConfig:(id)a3;
-+ (double)_nearbyBadgeNumberStringTopInsetForIdiom:(int64_t)a3;
-+ (double)_normalCellWidthForIdiom:(int64_t)a3;
-+ (double)morePlatterMaxWidthFromConfig:(id)a3 activityCategory:(int64_t)a4;
-+ (double)platterMaxWidthFromConfig:(id)a3;
-+ (id)_nearbyBadgeFontForIdiom:(int64_t)a3;
-+ (id)badgeNumberFormatterFromConfig:(id)a3;
-+ (id)cappedOrthoLabelFontFromConfig:(id)a3;
-+ (id)drawingCommandsForActionPlatterWithTitle:(id)a3 tintColor:(id)a4 hostConfig:(id)a5;
-+ (id)drawingCommandsForMoreListEntryTitle:(id)a3 labelColor:(id)a4 hostConfig:(id)a5 activityCategory:(int64_t)a6;
-+ (id)drawingCommandsForNameLabelWithString:(id)a3 textColor:(id)a4 maxNumberOfLines:(unint64_t)a5 isAirDrop:(BOOL)a6 ignoreNameWrapping:(BOOL)a7 hostConfig:(id)a8;
-+ (id)drawingCommandsForNearbyBadgeWithCount:(int64_t)a3 hostConfig:(id)a4;
-+ (id)drawingCommandsForUIActivityTitle:(id)a3 foregroundColor:(id)a4 hostConfig:(id)a5;
-+ (int64_t)_hostIdiomFromConfig:(id)a3;
-+ (int64_t)hostNaturalTextAlignmentFromConfig:(id)a3;
++ (BOOL)isAXFromConfig:(id)config;
++ (CGImage)createCGImageForRenderingCommand:(id)command;
++ (CGSize)nameLabelSizeFromConfig:(id)config;
++ (double)_nearbyBadgeNumberStringTopInsetForIdiom:(int64_t)idiom;
++ (double)_normalCellWidthForIdiom:(int64_t)idiom;
++ (double)morePlatterMaxWidthFromConfig:(id)config activityCategory:(int64_t)category;
++ (double)platterMaxWidthFromConfig:(id)config;
++ (id)_nearbyBadgeFontForIdiom:(int64_t)idiom;
++ (id)badgeNumberFormatterFromConfig:(id)config;
++ (id)cappedOrthoLabelFontFromConfig:(id)config;
++ (id)drawingCommandsForActionPlatterWithTitle:(id)title tintColor:(id)color hostConfig:(id)config;
++ (id)drawingCommandsForMoreListEntryTitle:(id)title labelColor:(id)color hostConfig:(id)config activityCategory:(int64_t)category;
++ (id)drawingCommandsForNameLabelWithString:(id)string textColor:(id)color maxNumberOfLines:(unint64_t)lines isAirDrop:(BOOL)drop ignoreNameWrapping:(BOOL)wrapping hostConfig:(id)config;
++ (id)drawingCommandsForNearbyBadgeWithCount:(int64_t)count hostConfig:(id)config;
++ (id)drawingCommandsForUIActivityTitle:(id)title foregroundColor:(id)color hostConfig:(id)config;
++ (int64_t)_hostIdiomFromConfig:(id)config;
++ (int64_t)hostNaturalTextAlignmentFromConfig:(id)config;
 @end
 
 @implementation SFShareSheetRendering
 
-+ (CGImage)createCGImageForRenderingCommand:(id)a3
++ (CGImage)createCGImageForRenderingCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   v4 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -30,9 +30,9 @@
   aBlock[3] = &__block_descriptor_40_e5_v8__0l;
   aBlock[4] = v4;
   v5 = _Block_copy(aBlock);
-  [v3 contextSize];
+  [commandCopy contextSize];
   v7 = v6;
-  [v3 contextSize];
+  [commandCopy contextSize];
   v9 = CGBitmapContextCreate(0, v7, v8, 8uLL, 0, v4, 1u);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -41,11 +41,11 @@
   v15[4] = v9;
   v10 = _Block_copy(v15);
   CGContextScaleCTM(v9, 1.0, -1.0);
-  [v3 contextSize];
+  [commandCopy contextSize];
   CGContextTranslateCTM(v9, 0.0, -v11);
   UIGraphicsPushContext(v9);
-  v12 = [v3 commandBlock];
-  v12[2]();
+  commandBlock = [commandCopy commandBlock];
+  commandBlock[2]();
 
   UIGraphicsPopContext();
   Image = CGBitmapContextCreateImage(v9);
@@ -55,14 +55,14 @@
   return Image;
 }
 
-+ (id)badgeNumberFormatterFromConfig:(id)a3
++ (id)badgeNumberFormatterFromConfig:(id)config
 {
-  v3 = a3;
-  if (v3)
+  configCopy = config;
+  if (configCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-    v5 = [v3 hostLocale];
-    [v4 setLocale:v5];
+    hostLocale = [configCopy hostLocale];
+    [v4 setLocale:hostLocale];
 
     [v4 setNumberStyle:1];
   }
@@ -81,15 +81,15 @@
   return v4;
 }
 
-+ (id)cappedOrthoLabelFontFromConfig:(id)a3
++ (id)cappedOrthoLabelFontFromConfig:(id)config
 {
-  v3 = a3;
-  v4 = [SFUIShareSheetActivityCellSpec titleLabelFontTextStyleForIdiom:[SFShareSheetRendering _hostIdiomFromConfig:v3]];
-  v5 = [v3 hostTraitCollection];
+  configCopy = config;
+  v4 = [SFUIShareSheetActivityCellSpec titleLabelFontTextStyleForIdiom:[SFShareSheetRendering _hostIdiomFromConfig:configCopy]];
+  hostTraitCollection = [configCopy hostTraitCollection];
 
-  if (v5)
+  if (hostTraitCollection)
   {
-    v6 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v4 compatibleWithTraitCollection:v5];
+    v6 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v4 compatibleWithTraitCollection:hostTraitCollection];
     v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v6 size:0.0];
   }
 
@@ -107,20 +107,20 @@
   return v7;
 }
 
-+ (int64_t)hostNaturalTextAlignmentFromConfig:(id)a3
++ (int64_t)hostNaturalTextAlignmentFromConfig:(id)config
 {
-  if (a3)
+  if (config)
   {
-    v3 = [a3 hostTraitCollection];
-    v4 = [v3 layoutDirection];
+    hostTraitCollection = [config hostTraitCollection];
+    layoutDirection = [hostTraitCollection layoutDirection];
 
     v5 = 4;
-    if (v4 == 1)
+    if (layoutDirection == 1)
     {
       v5 = 2;
     }
 
-    if (v4)
+    if (layoutDirection)
     {
       return v5;
     }
@@ -143,13 +143,13 @@
   }
 }
 
-+ (BOOL)isAXFromConfig:(id)a3
++ (BOOL)isAXFromConfig:(id)config
 {
-  if (a3)
+  if (config)
   {
-    v3 = [a3 hostTraitCollection];
-    v4 = [v3 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+    hostTraitCollection = [config hostTraitCollection];
+    preferredContentSizeCategory = [hostTraitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     return IsAccessibilityCategory;
   }
@@ -166,16 +166,16 @@
   }
 }
 
-+ (double)morePlatterMaxWidthFromConfig:(id)a3 activityCategory:(int64_t)a4
++ (double)morePlatterMaxWidthFromConfig:(id)config activityCategory:(int64_t)category
 {
-  v5 = a3;
-  if ([SFShareSheetRendering _hostIdiomFromConfig:v5]== 6)
+  configCopy = config;
+  if ([SFShareSheetRendering _hostIdiomFromConfig:configCopy]== 6)
   {
-    [v5 hostLayoutMargins];
+    [configCopy hostLayoutMargins];
     v7 = v6;
-    [v5 hostLayoutMargins];
+    [configCopy hostLayoutMargins];
     v9 = v7 + v8 + v7 + v8;
-    if (a4 == 1)
+    if (category == 1)
     {
       v10 = 45.0;
     }
@@ -185,14 +185,14 @@
       v10 = 0.0;
     }
 
-    [v5 preferredWidth];
+    [configCopy preferredWidth];
     v12 = v11 - v9 + -26.0 - v10 + -42.0;
     v13 = -30.0;
   }
 
   else
   {
-    [SFShareSheetRendering platterMaxWidthFromConfig:v5];
+    [SFShareSheetRendering platterMaxWidthFromConfig:configCopy];
     v13 = -100.0;
   }
 
@@ -201,10 +201,10 @@
   return v14;
 }
 
-+ (double)_normalCellWidthForIdiom:(int64_t)a3
++ (double)_normalCellWidthForIdiom:(int64_t)idiom
 {
   result = 78.0;
-  if (a3 == 6)
+  if (idiom == 6)
   {
     return 80.0;
   }
@@ -212,36 +212,36 @@
   return result;
 }
 
-+ (int64_t)_hostIdiomFromConfig:(id)a3
++ (int64_t)_hostIdiomFromConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 hostIdiom];
+    hostIdiom = [configCopy hostIdiom];
   }
 
   else
   {
-    v4 = -1;
+    hostIdiom = -1;
   }
 
-  return v4;
+  return hostIdiom;
 }
 
-+ (CGSize)nameLabelSizeFromConfig:(id)a3
++ (CGSize)nameLabelSizeFromConfig:(id)config
 {
-  v3 = a3;
-  [SFShareSheetRendering _normalCellWidthForIdiom:[SFShareSheetRendering _hostIdiomFromConfig:v3]];
+  configCopy = config;
+  [SFShareSheetRendering _normalCellWidthForIdiom:[SFShareSheetRendering _hostIdiomFromConfig:configCopy]];
   v5 = v4;
-  v6 = v3;
+  v6 = configCopy;
   if (v6)
   {
     if ([SFShareSheetRendering isAXFromConfig:v6])
     {
-      v7 = [MEMORY[0x1E69DC938] currentDevice];
-      v8 = [v7 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v8 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 0)
       {
         [v6 preferredWidth];
         v10 = v9;
@@ -249,18 +249,18 @@
 
       else
       {
-        v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v12 _referenceBounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen _referenceBounds];
         v10 = v13;
       }
 
       if (v10 >= 414.0)
       {
-        v15 = [MEMORY[0x1E69DC938] currentDevice];
-        v16 = [v15 userInterfaceIdiom];
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
         v14 = 62.0;
-        if ((v16 & 0xFFFFFFFFFFFFFFFBLL) == 0)
+        if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 0)
         {
           v14 = 66.0;
         }
@@ -291,20 +291,20 @@
   return result;
 }
 
-+ (double)platterMaxWidthFromConfig:(id)a3
++ (double)platterMaxWidthFromConfig:(id)config
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  configCopy = config;
+  v4 = configCopy;
+  if (configCopy)
   {
-    [v3 hostLayoutMargins];
+    [configCopy hostLayoutMargins];
     v6 = v5;
     [v4 hostLayoutMargins];
     v8 = v7;
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v10 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 0)
     {
       [v4 preferredWidth];
       v12 = v11;
@@ -312,8 +312,8 @@
 
     else
     {
-      v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v15 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
       v12 = v16;
     }
 
@@ -323,12 +323,12 @@
     v20 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8] addingSymbolicTraits:0x8000 options:0];
     v21 = [v18 fontWithDescriptor:v20 size:0.0];
 
-    v22 = [v4 hostTraitCollection];
-    v23 = [v22 preferredContentSizeCategory];
+    hostTraitCollection = [v4 hostTraitCollection];
+    preferredContentSizeCategory = [hostTraitCollection preferredContentSizeCategory];
 
-    [MEMORY[0x1E69CD9E8] imageWidthForContentSizeCategory:v23];
+    [MEMORY[0x1E69CD9E8] imageWidthForContentSizeCategory:preferredContentSizeCategory];
     v25 = v24;
-    if (UIContentSizeCategoryIsAccessibilityCategory(v23))
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
       v26 = MEMORY[0x1E69DB880];
       v27 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC40]];
@@ -359,32 +359,32 @@
   return v14;
 }
 
-+ (id)drawingCommandsForActionPlatterWithTitle:(id)a3 tintColor:(id)a4 hostConfig:(id)a5
++ (id)drawingCommandsForActionPlatterWithTitle:(id)title tintColor:(id)color hostConfig:(id)config
 {
   v44[3] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  [SFShareSheetRendering platterMaxWidthFromConfig:v8];
+  colorCopy = color;
+  configCopy = config;
+  titleCopy = title;
+  [SFShareSheetRendering platterMaxWidthFromConfig:configCopy];
   v11 = v10;
   v12 = MEMORY[0x1E69DB878];
   v13 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8] addingSymbolicTraits:0x8000 options:0];
   v14 = [v12 fontWithDescriptor:v13 size:0.0];
 
-  if (v7)
+  if (colorCopy)
   {
-    v15 = v7;
+    labelColor = colorCopy;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  v16 = v15;
+  v16 = labelColor;
   v17 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v17 setLineBreakStrategy:0xFFFFLL];
-  v18 = [SFShareSheetRendering hostNaturalTextAlignmentFromConfig:v8];
+  v18 = [SFShareSheetRendering hostNaturalTextAlignmentFromConfig:configCopy];
 
   [v17 setAlignment:v18];
   v19 = *MEMORY[0x1E69DB648];
@@ -398,9 +398,9 @@
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:3];
 
   v22 = &stru_1F37E96A8;
-  if (v9)
+  if (titleCopy)
   {
-    v22 = v9;
+    v22 = titleCopy;
   }
 
   v23 = MEMORY[0x1E696AAB0];
@@ -432,19 +432,19 @@
   return v31;
 }
 
-+ (id)drawingCommandsForMoreListEntryTitle:(id)a3 labelColor:(id)a4 hostConfig:(id)a5 activityCategory:(int64_t)a6
++ (id)drawingCommandsForMoreListEntryTitle:(id)title labelColor:(id)color hostConfig:(id)config activityCategory:(int64_t)category
 {
   v42[3] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [SFShareSheetRendering _hostIdiomFromConfig:v10];
-  [SFShareSheetRendering morePlatterMaxWidthFromConfig:v10 activityCategory:a6];
+  colorCopy = color;
+  configCopy = config;
+  titleCopy = title;
+  v12 = [SFShareSheetRendering _hostIdiomFromConfig:configCopy];
+  [SFShareSheetRendering morePlatterMaxWidthFromConfig:configCopy activityCategory:category];
   v14 = v13;
   v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   v16 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v16 setLineBreakStrategy:0xFFFFLL];
-  v17 = [SFShareSheetRendering hostNaturalTextAlignmentFromConfig:v10];
+  v17 = [SFShareSheetRendering hostNaturalTextAlignmentFromConfig:configCopy];
 
   [v16 setAlignment:v17];
   if (v12 == 6)
@@ -461,14 +461,14 @@
   v19 = *MEMORY[0x1E69DB648];
   v41[0] = *MEMORY[0x1E69DB650];
   v41[1] = v19;
-  v42[0] = v9;
+  v42[0] = colorCopy;
   v42[1] = v15;
   v41[2] = *MEMORY[0x1E69DB688];
   v20 = [v16 copy];
   v42[2] = v20;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:3];
 
-  v22 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v11 attributes:v21];
+  v22 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy attributes:v21];
   v23 = objc_alloc_init(MEMORY[0x1E69DB7E0]);
   [v23 setWantsBaselineOffset:1];
   [v22 boundingRectWithSize:35 options:v23 context:{v14, 1.79769313e308}];
@@ -504,22 +504,22 @@
   return v26;
 }
 
-+ (id)drawingCommandsForNameLabelWithString:(id)a3 textColor:(id)a4 maxNumberOfLines:(unint64_t)a5 isAirDrop:(BOOL)a6 ignoreNameWrapping:(BOOL)a7 hostConfig:(id)a8
++ (id)drawingCommandsForNameLabelWithString:(id)string textColor:(id)color maxNumberOfLines:(unint64_t)lines isAirDrop:(BOOL)drop ignoreNameWrapping:(BOOL)wrapping hostConfig:(id)config
 {
-  v9 = a7;
-  v10 = a6;
+  wrappingCopy = wrapping;
+  dropCopy = drop;
   v86[3] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v64 = a4;
-  v14 = a8;
-  [SFShareSheetRendering nameLabelSizeFromConfig:v14];
+  stringCopy = string;
+  colorCopy = color;
+  configCopy = config;
+  [SFShareSheetRendering nameLabelSizeFromConfig:configCopy];
   v16 = v15;
   v18 = v17;
   v78 = 0;
   v79 = &v78;
   v80 = 0x2020000000;
   v81 = 0;
-  v19 = [v13 length];
+  v19 = [stringCopy length];
   v77[0] = MEMORY[0x1E69E9820];
   v77[1] = 3221225472;
   v77[2] = __130__SFShareSheetRendering_drawingCommandsForNameLabelWithString_textColor_maxNumberOfLines_isAirDrop_ignoreNameWrapping_hostConfig___block_invoke;
@@ -527,12 +527,12 @@
   v77[5] = 0;
   v77[6] = v19;
   v77[4] = &v78;
-  [v13 enumerateSubstringsInRange:0 options:v19 usingBlock:{3, v77}];
+  [stringCopy enumerateSubstringsInRange:0 options:v19 usingBlock:{3, v77}];
   v20 = *(v79 + 24);
-  v67 = [SFShareSheetRendering cappedOrthoLabelFontFromConfig:v14];
+  v67 = [SFShareSheetRendering cappedOrthoLabelFontFromConfig:configCopy];
   v21 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   v22 = v21;
-  v23 = (a5 == 1) & ~v10 & v9;
+  v23 = (lines == 1) & ~dropCopy & wrappingCopy;
   v24 = v23 | v20;
   if (v24)
   {
@@ -547,9 +547,9 @@
   [v21 setLineBreakMode:v25];
   [v22 setHyphenationFactor:0.0];
   [v22 setLineBreakStrategy:0xFFFFLL];
-  if ([SFShareSheetRendering isAXFromConfig:v14])
+  if ([SFShareSheetRendering isAXFromConfig:configCopy])
   {
-    v26 = [SFShareSheetRendering hostNaturalTextAlignmentFromConfig:v14];
+    v26 = [SFShareSheetRendering hostNaturalTextAlignmentFromConfig:configCopy];
   }
 
   else
@@ -562,7 +562,7 @@
   v85[0] = *MEMORY[0x1E69DB650];
   v85[1] = v27;
   v63 = v27;
-  v86[0] = v64;
+  v86[0] = colorCopy;
   v86[1] = v67;
   v85[2] = *MEMORY[0x1E69DB688];
   v86[2] = v22;
@@ -571,9 +571,9 @@
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    *&buf[4] = a5;
+    *&buf[4] = lines;
     *&buf[12] = 2048;
-    *&buf[14] = v9;
+    *&buf[14] = wrappingCopy;
     _os_log_impl(&dword_1B9E4B000, v28, OS_LOG_TYPE_DEFAULT, "maxLines %lu ignoreNameWrapping %lu", buf, 0x16u);
   }
 
@@ -583,7 +583,7 @@
     v30 = 1;
   }
 
-  else if ([SFShareSheetRendering isAXFromConfig:v14])
+  else if ([SFShareSheetRendering isAXFromConfig:configCopy])
   {
     v30 = 3;
   }
@@ -595,7 +595,7 @@
 
   [v29 setMaximumNumberOfLines:v30];
   v31 = 35;
-  if (v10)
+  if (dropCopy)
   {
     v31 = 3;
   }
@@ -606,21 +606,21 @@
     [v29 setMinimumScaleFactor:0.8];
   }
 
-  v32 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v65 = [v13 componentsSeparatedByCharactersInSet:v32];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v65 = [stringCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
-  if ([v65 count] == 2 && !+[SFShareSheetRendering isAXFromConfig:](SFShareSheetRendering, "isAXFromConfig:", v14) && !v9)
+  if ([v65 count] == 2 && !+[SFShareSheetRendering isAXFromConfig:](SFShareSheetRendering, "isAXFromConfig:", configCopy) && !wrappingCopy)
   {
-    v33 = [v65 firstObject];
-    v34 = [v65 lastObject];
-    if ([v33 length])
+    firstObject = [v65 firstObject];
+    lastObject = [v65 lastObject];
+    if ([firstObject length])
     {
-      if ([v34 length])
+      if ([lastObject length])
       {
-        v35 = [v33 length];
-        if (([v34 length] + v35) >= 8)
+        v35 = [firstObject length];
+        if (([lastObject length] + v35) >= 8)
         {
-          v36 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v33 attributes:v68];
+          v36 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:firstObject attributes:v68];
           [v36 boundingRectWithSize:v66 options:v29 context:{v16, v18}];
           v89 = CGRectIntegral(v88);
           height = v89.size.height;
@@ -630,9 +630,9 @@
           *&v38 = height;
           if (llroundf(*&v38) / v39 == 1)
           {
-            v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v33, v34];
+            v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", firstObject, lastObject];
 
-            v13 = v40;
+            stringCopy = v40;
           }
         }
       }
@@ -641,14 +641,14 @@
     goto LABEL_29;
   }
 
-  if (![SFShareSheetRendering isAXFromConfig:v14])
+  if (![SFShareSheetRendering isAXFromConfig:configCopy])
   {
     SFNonBreakingStringFromDeviceName();
-    v13 = v33 = v13;
+    stringCopy = firstObject = stringCopy;
 LABEL_29:
   }
 
-  v41 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v13 attributes:v68];
+  v41 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:stringCopy attributes:v68];
   [v41 boundingRectWithSize:v66 options:v29 context:{v16, v18}];
   v91 = CGRectIntegral(v90);
   width = v91.size.width;
@@ -660,11 +660,11 @@ LABEL_29:
     {
       v82 = v63;
       v45 = MEMORY[0x1E69DB878];
-      v46 = [v67 fontDescriptor];
+      fontDescriptor = [v67 fontDescriptor];
       [v67 pointSize];
       v48 = v47;
       [v29 actualScaleFactor];
-      v50 = [v45 fontWithDescriptor:v46 size:v48 * v49];
+      v50 = [v45 fontWithDescriptor:fontDescriptor size:v48 * v49];
       v83 = v50;
       v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
       [v41 addAttributes:v51 range:{0, objc_msgSend(v41, "length")}];
@@ -676,9 +676,9 @@ LABEL_29:
     }
   }
 
-  if (v10)
+  if (dropCopy)
   {
-    v52 = [objc_alloc(MEMORY[0x1E69DB850]) initWithString:v13 attributes:v68];
+    v52 = [objc_alloc(MEMORY[0x1E69DB850]) initWithString:stringCopy attributes:v68];
     v53 = objc_alloc_init(MEMORY[0x1E69DB7C0]);
     [v53 setUsesFontLeading:1];
     v54 = objc_alloc_init(MEMORY[0x1E69DB800]);
@@ -689,7 +689,7 @@ LABEL_29:
     *buf = 0;
     *&buf[8] = 0;
     [v53 lineFragmentUsedRectForGlyphAtIndex:0 effectiveRange:buf];
-    v55 = [v13 length];
+    v55 = [stringCopy length];
     if (v55 >= *&buf[8])
     {
       v56 = *&buf[8];
@@ -700,7 +700,7 @@ LABEL_29:
       v56 = v55;
     }
 
-    v57 = [v13 substringWithRange:{0, v56}];
+    v57 = [stringCopy substringWithRange:{0, v56}];
 
     [v22 setLineBreakMode:4];
     [v29 setMaximumNumberOfLines:1];
@@ -715,7 +715,7 @@ LABEL_29:
   else
   {
     v58 = v41;
-    v57 = v13;
+    v57 = stringCopy;
   }
 
   v59 = objc_opt_new();
@@ -751,9 +751,9 @@ void *__130__SFShareSheetRendering_drawingCommandsForNameLabelWithString_textCol
   return result;
 }
 
-+ (id)_nearbyBadgeFontForIdiom:(int64_t)a3
++ (id)_nearbyBadgeFontForIdiom:(int64_t)idiom
 {
-  if (a3 == 6)
+  if (idiom == 6)
   {
     v3 = [MEMORY[0x1E69DB878] systemFontOfSize:11.0 weight:*MEMORY[0x1E69DB980]];
   }
@@ -767,10 +767,10 @@ void *__130__SFShareSheetRendering_drawingCommandsForNameLabelWithString_textCol
   return v3;
 }
 
-+ (double)_nearbyBadgeNumberStringTopInsetForIdiom:(int64_t)a3
++ (double)_nearbyBadgeNumberStringTopInsetForIdiom:(int64_t)idiom
 {
   result = 17.0;
-  if (a3 == 6)
+  if (idiom == 6)
   {
     return 13.0;
   }
@@ -778,21 +778,21 @@ void *__130__SFShareSheetRendering_drawingCommandsForNameLabelWithString_textCol
   return result;
 }
 
-+ (id)drawingCommandsForNearbyBadgeWithCount:(int64_t)a3 hostConfig:(id)a4
++ (id)drawingCommandsForNearbyBadgeWithCount:(int64_t)count hostConfig:(id)config
 {
   v36[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [SFShareSheetRendering _hostIdiomFromConfig:v6];
+  configCopy = config;
+  v7 = [SFShareSheetRendering _hostIdiomFromConfig:configCopy];
   [SFUIShareSheetActivityCellSpec nearbyAirDropBadgeSizeForIdiom:v7];
   v9 = v8;
   v10 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v10 setAlignment:1];
   [v10 setLineBreakStrategy:0xFFFFLL];
   v35[0] = *MEMORY[0x1E69DB650];
-  v11 = [MEMORY[0x1E69DC888] whiteColor];
-  v36[0] = v11;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v36[0] = whiteColor;
   v35[1] = *MEMORY[0x1E69DB648];
-  v12 = [a1 _nearbyBadgeFontForIdiom:v7];
+  v12 = [self _nearbyBadgeFontForIdiom:v7];
   v36[1] = v12;
   v35[2] = *MEMORY[0x1E69DB688];
   v13 = [v10 copy];
@@ -800,9 +800,9 @@ void *__130__SFShareSheetRendering_drawingCommandsForNameLabelWithString_textCol
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:3];
 
   v15 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v16 = [SFShareSheetRendering badgeNumberFormatterFromConfig:v6];
+  v16 = [SFShareSheetRendering badgeNumberFormatterFromConfig:configCopy];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v17 = [MEMORY[0x1E696AD98] numberWithInteger:count];
   v18 = [v16 stringFromNumber:v17];
   v19 = [v15 initWithString:v18 attributes:v14];
 
@@ -813,7 +813,7 @@ void *__130__SFShareSheetRendering_drawingCommandsForNameLabelWithString_textCol
   v26 = 3221225472;
   v27 = __75__SFShareSheetRendering_drawingCommandsForNearbyBadgeWithCount_hostConfig___block_invoke;
   v28 = &unk_1E7EE4328;
-  v31 = a1;
+  selfCopy = self;
   v32 = v7;
   v33 = v9;
   v34 = 35;
@@ -838,20 +838,20 @@ uint64_t __75__SFShareSheetRendering_drawingCommandsForNearbyBadgeWithCount_host
   return [v2 drawWithRect:v5 options:v6 context:{0.0, v3, v4, v4}];
 }
 
-+ (id)drawingCommandsForUIActivityTitle:(id)a3 foregroundColor:(id)a4 hostConfig:(id)a5
++ (id)drawingCommandsForUIActivityTitle:(id)title foregroundColor:(id)color hostConfig:(id)config
 {
   v50[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [SFShareSheetRendering nameLabelSizeFromConfig:v9];
+  titleCopy = title;
+  colorCopy = color;
+  configCopy = config;
+  [SFShareSheetRendering nameLabelSizeFromConfig:configCopy];
   v11 = v10;
   v13 = v12;
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 0;
-  v14 = v7;
+  v14 = titleCopy;
   v15 = [v14 length];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
@@ -861,7 +861,7 @@ uint64_t __75__SFShareSheetRendering_drawingCommandsForNearbyBadgeWithCount_host
   v44[6] = v15;
   v44[4] = &v45;
   [v14 enumerateSubstringsInRange:0 options:v15 usingBlock:{3, v44}];
-  v16 = [SFShareSheetRendering cappedOrthoLabelFontFromConfig:v9];
+  v16 = [SFShareSheetRendering cappedOrthoLabelFontFromConfig:configCopy];
   v17 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   v18 = v17;
   if (*(v46 + 24))
@@ -877,9 +877,9 @@ uint64_t __75__SFShareSheetRendering_drawingCommandsForNearbyBadgeWithCount_host
   [v17 setLineBreakMode:v19];
   [v18 setHyphenationFactor:0.0];
   [v18 setLineBreakStrategy:0xFFFFLL];
-  if ([SFShareSheetRendering isAXFromConfig:v9])
+  if ([SFShareSheetRendering isAXFromConfig:configCopy])
   {
-    v20 = [SFShareSheetRendering hostNaturalTextAlignmentFromConfig:v9];
+    v20 = [SFShareSheetRendering hostNaturalTextAlignmentFromConfig:configCopy];
   }
 
   else
@@ -891,7 +891,7 @@ uint64_t __75__SFShareSheetRendering_drawingCommandsForNearbyBadgeWithCount_host
   v21 = *MEMORY[0x1E69DB648];
   v49[0] = *MEMORY[0x1E69DB650];
   v49[1] = v21;
-  v50[0] = v8;
+  v50[0] = colorCopy;
   v50[1] = v16;
   v49[2] = *MEMORY[0x1E69DB688];
   v22 = [v18 copy];
@@ -905,7 +905,7 @@ uint64_t __75__SFShareSheetRendering_drawingCommandsForNearbyBadgeWithCount_host
     v26 = 1;
   }
 
-  else if ([SFShareSheetRendering isAXFromConfig:v9])
+  else if ([SFShareSheetRendering isAXFromConfig:configCopy])
   {
     v26 = 3;
   }

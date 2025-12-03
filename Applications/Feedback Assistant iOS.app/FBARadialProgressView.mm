@@ -1,8 +1,8 @@
 @interface FBARadialProgressView
-- (CGRect)circleRectForFrame:(CGRect)a3;
+- (CGRect)circleRectForFrame:(CGRect)frame;
 - (void)awakeFromNib;
-- (void)drawRect:(CGRect)a3;
-- (void)setProgress:(float)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setProgress:(float)progress;
 @end
 
 @implementation FBARadialProgressView
@@ -16,18 +16,18 @@
   [(FBARadialProgressView *)self setBackgroundColor:v3];
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  if (a3 > 1.0)
+  if (progress > 1.0)
   {
-    a3 = 1.0;
+    progress = 1.0;
   }
 
-  self->_progress = fmaxf(a3, 0.0);
+  self->_progress = fmaxf(progress, 0.0);
   [(FBARadialProgressView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(FBARadialProgressView *)self bounds];
@@ -35,7 +35,7 @@
   CGContextTranslateCTM(CurrentContext, 0.0, Height);
   v6 = UIGraphicsGetCurrentContext();
   CGContextScaleCTM(v6, 1.0, -1.0);
-  v24 = [(FBARadialProgressView *)self tintColor];
+  tintColor = [(FBARadialProgressView *)self tintColor];
   [(FBARadialProgressView *)self bounds];
   [(FBARadialProgressView *)self circleRectForFrame:?];
   v8 = v7;
@@ -48,7 +48,7 @@
   v27.size.width = v12;
   v27.size.height = v14;
   v23 = CGRectGetWidth(v27) * 0.5;
-  [v24 set];
+  [tintColor set];
   [v15 setLineWidth:1.0];
   [v15 stroke];
   [(FBARadialProgressView *)self progress];
@@ -81,13 +81,13 @@
   [v22 fill];
 }
 
-- (CGRect)circleRectForFrame:(CGRect)a3
+- (CGRect)circleRectForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CGRectGetWidth(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v7 = CGRectGetWidth(frame);
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;

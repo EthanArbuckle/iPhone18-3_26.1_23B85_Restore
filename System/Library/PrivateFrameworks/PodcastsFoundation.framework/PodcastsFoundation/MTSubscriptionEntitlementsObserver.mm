@@ -1,29 +1,29 @@
 @interface MTSubscriptionEntitlementsObserver
-- (MTSubscriptionEntitlementsObserver)initWithDelegate:(id)a3 onQueue:(id)a4;
+- (MTSubscriptionEntitlementsObserver)initWithDelegate:(id)delegate onQueue:(id)queue;
 - (MTSubscriptionEntitlementsObserverDelegate)delegate;
-- (void)entitlementsDidChange:(id)a3;
+- (void)entitlementsDidChange:(id)change;
 @end
 
 @implementation MTSubscriptionEntitlementsObserver
 
-- (MTSubscriptionEntitlementsObserver)initWithDelegate:(id)a3 onQueue:(id)a4
+- (MTSubscriptionEntitlementsObserver)initWithDelegate:(id)delegate onQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = MTSubscriptionEntitlementsObserver;
   v8 = [(MTSubscriptionEntitlementsObserver *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v9->_subscriptionsEntitlementsLock._os_unfair_lock_opaque = 0;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__MTSubscriptionEntitlementsObserver_initWithDelegate_onQueue___block_invoke;
     block[3] = &unk_1E8568E28;
     v12 = v9;
-    dispatch_async(v7, block);
+    dispatch_async(queueCopy, block);
   }
 
   return v9;
@@ -90,7 +90,7 @@ void __63__MTSubscriptionEntitlementsObserver_initWithDelegate_onQueue___block_i
   os_unfair_lock_unlock((*(a1 + 32) + 8));
 }
 
-- (void)entitlementsDidChange:(id)a3
+- (void)entitlementsDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

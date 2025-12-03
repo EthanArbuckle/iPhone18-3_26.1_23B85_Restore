@@ -1,17 +1,17 @@
 @interface CDRichComplicationCurvedMeteredView
 - (id)customizeMeterLayerBlock;
-- (void)_setupShapeLayer:(id)a3;
+- (void)_setupShapeLayer:(id)layer;
 - (void)_updateGradient;
-- (void)colorMetersWithProgress:(double)a3;
-- (void)setProgress:(double)a3;
+- (void)colorMetersWithProgress:(double)progress;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation CDRichComplicationCurvedMeteredView
 
 - (id)customizeMeterLayerBlock
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = ___LayoutConstants_block_invoke_3(v3, v3);
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v4 = ___LayoutConstants_block_invoke_3(currentDevice, currentDevice);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__CDRichComplicationCurvedMeteredView_customizeMeterLayerBlock__block_invoke;
@@ -58,11 +58,11 @@ void __63__CDRichComplicationCurvedMeteredView_customizeMeterLayerBlock__block_i
   [v9 setAffineTransform:&v21];
 }
 
-- (void)_setupShapeLayer:(id)a3
+- (void)_setupShapeLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(CDRichComplicationCurvedMeteredView *)self customizeMeterLayerBlock];
-  v6 = CDGenerateMeterLayersOnLayer(v4, v5);
+  layerCopy = layer;
+  customizeMeterLayerBlock = [(CDRichComplicationCurvedMeteredView *)self customizeMeterLayerBlock];
+  v6 = CDGenerateMeterLayersOnLayer(layerCopy, customizeMeterLayerBlock);
 
   [(CDRichComplicationCurvedMeteredView *)self setMeterLayers:v6];
   [(CDRichComplicationShapeView *)self progress];
@@ -70,12 +70,12 @@ void __63__CDRichComplicationCurvedMeteredView_customizeMeterLayerBlock__block_i
   [(CDRichComplicationCurvedMeteredView *)self colorMetersWithProgress:?];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
   v5.receiver = self;
   v5.super_class = CDRichComplicationCurvedMeteredView;
   [(CDRichComplicationShapeView *)&v5 setProgress:?];
-  [(CDRichComplicationCurvedMeteredView *)self colorMetersWithProgress:a3];
+  [(CDRichComplicationCurvedMeteredView *)self colorMetersWithProgress:progress];
 }
 
 - (void)_updateGradient
@@ -87,15 +87,15 @@ void __63__CDRichComplicationCurvedMeteredView_customizeMeterLayerBlock__block_i
   [(CDRichComplicationCurvedMeteredView *)self colorMetersWithProgress:?];
 }
 
-- (void)colorMetersWithProgress:(double)a3
+- (void)colorMetersWithProgress:(double)progress
 {
-  v5 = [(CDRichComplicationCurvedMeteredView *)self meterLayers];
+  meterLayers = [(CDRichComplicationCurvedMeteredView *)self meterLayers];
 
-  if (v5)
+  if (meterLayers)
   {
-    v7 = [(CDRichComplicationCurvedMeteredView *)self meterLayers];
-    v6 = [(CDRichComplicationShapeView *)self gradientColors];
-    CDColorizeMeterProgress(v7, v6, 0, a3);
+    meterLayers2 = [(CDRichComplicationCurvedMeteredView *)self meterLayers];
+    gradientColors = [(CDRichComplicationShapeView *)self gradientColors];
+    CDColorizeMeterProgress(meterLayers2, gradientColors, 0, progress);
   }
 }
 

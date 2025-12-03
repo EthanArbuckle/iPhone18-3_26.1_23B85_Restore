@@ -1,16 +1,16 @@
 @interface HWScrollView
-- (BOOL)touchesShouldCancelInContentView:(id)a3;
+- (BOOL)touchesShouldCancelInContentView:(id)view;
 @end
 
 @implementation HWScrollView
 
-- (BOOL)touchesShouldCancelInContentView:(id)a3
+- (BOOL)touchesShouldCancelInContentView:(id)view
 {
-  v4 = a3;
-  v5 = [(HWScrollView *)self delegate];
+  viewCopy = view;
+  delegate = [(HWScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 handwritingScrollView:self shouldCancelTouchesInView:v4];
+    v6 = [delegate handwritingScrollView:self shouldCancelTouchesInView:viewCopy];
   }
 
   else

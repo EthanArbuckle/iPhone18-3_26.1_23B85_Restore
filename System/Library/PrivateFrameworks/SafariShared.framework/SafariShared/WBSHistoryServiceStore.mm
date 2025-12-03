@@ -1,77 +1,77 @@
 @interface WBSHistoryServiceStore
-- (BOOL)_ensureItemHasID:(id)a3;
-- (BOOL)_ensureVisitHasID:(id)a3;
+- (BOOL)_ensureItemHasID:(id)d;
+- (BOOL)_ensureVisitHasID:(id)d;
 - (BOOL)isUsingInMemoryDatabase;
-- (WBSHistoryServiceStore)initWithDatabaseID:(id)a3 itemCountLimit:(unint64_t)a4 historyAgeLimit:(double)a5 historyItemClass:(Class)a6;
-- (WBSHistoryServiceStore)initWithDatabaseID:(id)a3 itemCountLimit:(unint64_t)a4 historyAgeLimit:(double)a5 historyItemClass:(Class)a6 connectionProxy:(id)a7;
+- (WBSHistoryServiceStore)initWithDatabaseID:(id)d itemCountLimit:(unint64_t)limit historyAgeLimit:(double)ageLimit historyItemClass:(Class)class;
+- (WBSHistoryServiceStore)initWithDatabaseID:(id)d itemCountLimit:(unint64_t)limit historyAgeLimit:(double)ageLimit historyItemClass:(Class)class connectionProxy:(id)proxy;
 - (WBSHistoryStoreDelegate)delegate;
 - (id)_connectOptions;
 - (id)_databaseURLs;
-- (id)_fetchVisitsOnDatabaseQueue:(unint64_t)a3 predicate:(id)a4 error:(id *)a5;
-- (id)_loadOnDatabaseQueue:(unint64_t)a3 readHandle:(id)a4;
+- (id)_fetchVisitsOnDatabaseQueue:(unint64_t)queue predicate:(id)predicate error:(id *)error;
+- (id)_loadOnDatabaseQueue:(unint64_t)queue readHandle:(id)handle;
 - (int64_t)_generateTemporaryDatabaseID;
-- (void)_connectWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)_createTagsForIdentifiers:(id)a3 withTitles:(id)a4 type:(unint64_t)a5 level:(int64_t)a6 completionHandler:(id)a7;
-- (void)_databaseFetchWithOptions:(unint64_t)a3 predicate:(id)a4 completionHandler:(id)a5;
+- (void)_connectWithOptions:(id)options completionHandler:(id)handler;
+- (void)_createTagsForIdentifiers:(id)identifiers withTitles:(id)titles type:(unint64_t)type level:(int64_t)level completionHandler:(id)handler;
+- (void)_databaseFetchWithOptions:(unint64_t)options predicate:(id)predicate completionHandler:(id)handler;
 - (void)_expireOldVisits;
-- (void)_fetchHistoryItemsForTopics:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 completionHandler:(id)a6;
-- (void)_fetchTags:(unint64_t)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withIdentifiers:(id)a6 limit:(unint64_t)a7 minimumItemCount:(unint64_t)a8 sortOrder:(int64_t)a9 completionHandler:(id)a10;
-- (void)_load:(id)a3;
-- (void)_performMaintenance:(id)a3;
+- (void)_fetchHistoryItemsForTopics:(id)topics fromStartDate:(id)date toEndDate:(id)endDate completionHandler:(id)handler;
+- (void)_fetchTags:(unint64_t)tags fromStartDate:(id)date toEndDate:(id)endDate withIdentifiers:(id)identifiers limit:(unint64_t)limit minimumItemCount:(unint64_t)count sortOrder:(int64_t)order completionHandler:(id)self0;
+- (void)_load:(id)_load;
+- (void)_performMaintenance:(id)maintenance;
 - (void)_scheduleMaintenance;
-- (void)_setMetadataValue:(id)a3 forKey:(id)a4 group:(id)a5;
+- (void)_setMetadataValue:(id)value forKey:(id)key group:(id)group;
 - (void)_updateLastMaintenanceDate;
-- (void)_waitForDatabase:(id)a3;
-- (void)addAutocompleteTrigger:(id)a3 forItem:(id)a4;
-- (void)assignHistoryItem:(id)a3 toTopicTags:(id)a4 completionHandler:(id)a5;
-- (void)checkIfLocalVisitExistsInAnyOfItems:(id)a3 withCompletion:(id)a4;
-- (void)clearHistoryVisitsAddedAfterDate:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5;
-- (void)closeWithCompletionHandler:(id)a3;
-- (void)computeFrequentlyVisitedSites:(unint64_t)a3 minimalVisitCountScore:(unint64_t)a4 blockList:(id)a5 allowList:(id)a6 options:(unint64_t)a7 currentTime:(double)a8 completionHandler:(id)a9;
-- (void)connectionProxyConnectionWasInterrupted:(id)a3;
-- (void)exportHistory:(id)a3 completionHandler:(id)a4;
-- (void)fetchTopicsFromStartDate:(id)a3 toEndDate:(id)a4 limit:(unint64_t)a5 minimumItemCount:(unint64_t)a6 sortOrder:(int64_t)a7 completionHandler:(id)a8;
-- (void)getAutocompleteTriggersForItem:(id)a3 completionHandler:(id)a4;
-- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)a3 beforeDate:(id)a4 onlyFromThisDevice:(BOOL)a5 completionHandler:(id)a6;
-- (void)getItemCountBeforeDate:(id)a3 completionHandler:(id)a4;
-- (void)getVisitsCreatedAfterDate:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5;
-- (void)handleEvent:(id)a3 completionHandler:(id)a4;
-- (void)initializeCloudHistoryWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)loadWithCompletionHandler:(id)a3;
-- (void)performMaintenance:(id)a3;
-- (void)releaseCloudHistory:(id)a3;
-- (void)removePastHistoryVisitsForItem:(id)a3 completionHandler:(id)a4;
-- (void)reportPermanentIDsForItems:(id)a3 completionHandler:(id)a4;
-- (void)reportPermanentIDsForVisits:(id)a3 completionHandler:(id)a4;
-- (void)reportSevereError:(id)a3 completionHandler:(id)a4;
-- (void)savePendingChangesWithCompletionHandler:(id)a3;
-- (void)searchForUserTypedString:(id)a3 options:(unint64_t)a4 currentTime:(double)a5 enumerationBlock:(id)a6 completionHandler:(id)a7;
-- (void)setTitle:(id)a3 ofTag:(id)a4 completionHandler:(id)a5;
-- (void)tagsWithIdentifiers:(id)a3 type:(unint64_t)a4 level:(int64_t)a5 creatingIfNecessary:(BOOL)a6 withTitles:(id)a7 completionHandler:(id)a8;
-- (void)vacuumHistoryWithCompletionHandler:(id)a3;
-- (void)visitAttributeWasUpdated:(id)a3 removeAttributes:(unint64_t)a4 addAttributes:(unint64_t)a5;
-- (void)visitTitleWasUpdated:(id)a3;
-- (void)visitsWereAdded:(id)a3;
+- (void)_waitForDatabase:(id)database;
+- (void)addAutocompleteTrigger:(id)trigger forItem:(id)item;
+- (void)assignHistoryItem:(id)item toTopicTags:(id)tags completionHandler:(id)handler;
+- (void)checkIfLocalVisitExistsInAnyOfItems:(id)items withCompletion:(id)completion;
+- (void)clearHistoryVisitsAddedAfterDate:(id)date beforeDate:(id)beforeDate completionHandler:(id)handler;
+- (void)closeWithCompletionHandler:(id)handler;
+- (void)computeFrequentlyVisitedSites:(unint64_t)sites minimalVisitCountScore:(unint64_t)score blockList:(id)list allowList:(id)allowList options:(unint64_t)options currentTime:(double)time completionHandler:(id)handler;
+- (void)connectionProxyConnectionWasInterrupted:(id)interrupted;
+- (void)exportHistory:(id)history completionHandler:(id)handler;
+- (void)fetchTopicsFromStartDate:(id)date toEndDate:(id)endDate limit:(unint64_t)limit minimumItemCount:(unint64_t)count sortOrder:(int64_t)order completionHandler:(id)handler;
+- (void)getAutocompleteTriggersForItem:(id)item completionHandler:(id)handler;
+- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)date beforeDate:(id)beforeDate onlyFromThisDevice:(BOOL)device completionHandler:(id)handler;
+- (void)getItemCountBeforeDate:(id)date completionHandler:(id)handler;
+- (void)getVisitsCreatedAfterDate:(id)date beforeDate:(id)beforeDate completionHandler:(id)handler;
+- (void)handleEvent:(id)event completionHandler:(id)handler;
+- (void)initializeCloudHistoryWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)loadWithCompletionHandler:(id)handler;
+- (void)performMaintenance:(id)maintenance;
+- (void)releaseCloudHistory:(id)history;
+- (void)removePastHistoryVisitsForItem:(id)item completionHandler:(id)handler;
+- (void)reportPermanentIDsForItems:(id)items completionHandler:(id)handler;
+- (void)reportPermanentIDsForVisits:(id)visits completionHandler:(id)handler;
+- (void)reportSevereError:(id)error completionHandler:(id)handler;
+- (void)savePendingChangesWithCompletionHandler:(id)handler;
+- (void)searchForUserTypedString:(id)string options:(unint64_t)options currentTime:(double)time enumerationBlock:(id)block completionHandler:(id)handler;
+- (void)setTitle:(id)title ofTag:(id)tag completionHandler:(id)handler;
+- (void)tagsWithIdentifiers:(id)identifiers type:(unint64_t)type level:(int64_t)level creatingIfNecessary:(BOOL)necessary withTitles:(id)titles completionHandler:(id)handler;
+- (void)vacuumHistoryWithCompletionHandler:(id)handler;
+- (void)visitAttributeWasUpdated:(id)updated removeAttributes:(unint64_t)attributes addAttributes:(unint64_t)addAttributes;
+- (void)visitTitleWasUpdated:(id)updated;
+- (void)visitsWereAdded:(id)added;
 - (void)waitForLoadingToComplete;
 @end
 
 @implementation WBSHistoryServiceStore
 
-- (WBSHistoryServiceStore)initWithDatabaseID:(id)a3 itemCountLimit:(unint64_t)a4 historyAgeLimit:(double)a5 historyItemClass:(Class)a6 connectionProxy:(id)a7
+- (WBSHistoryServiceStore)initWithDatabaseID:(id)d itemCountLimit:(unint64_t)limit historyAgeLimit:(double)ageLimit historyItemClass:(Class)class connectionProxy:(id)proxy
 {
-  v13 = a3;
-  v14 = a7;
+  dCopy = d;
+  proxyCopy = proxy;
   v28.receiver = self;
   v28.super_class = WBSHistoryServiceStore;
   v15 = [(WBSHistoryServiceStore *)&v28 init];
   v16 = v15;
   if (v15)
   {
-    v15->_historyAgeLimit = a5;
-    v15->_historyItemClass = a6;
-    v15->_itemCountLimit = a4;
+    v15->_historyAgeLimit = ageLimit;
+    v15->_historyItemClass = class;
+    v15->_itemCountLimit = limit;
     atomic_store(0, &v15->_state);
-    objc_storeStrong(&v15->_connection, a7);
+    objc_storeStrong(&v15->_connection, proxy);
     v17 = dispatch_queue_create("com.apple.SafariShared.WBSHistoryServiceStore", 0);
     databaseQueue = v16->_databaseQueue;
     v16->_databaseQueue = v17;
@@ -80,7 +80,7 @@
     v20 = +[WBSHistoryItem synchronizationQueue];
     dispatch_set_target_queue(v19, v20);
 
-    objc_storeStrong(&v16->_databaseID, a3);
+    objc_storeStrong(&v16->_databaseID, d);
     v21 = objc_alloc_init(WBSHistoryObjectCache);
     cache = v16->_cache;
     v16->_cache = v21;
@@ -89,8 +89,8 @@
     crypto = v16->_crypto;
     v16->_crypto = v23;
 
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v16 selector:sel_connectionProxyConnectionWasInterrupted_ name:@"WBSHistoryConnectionWasInterrupted" object:v14];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel_connectionProxyConnectionWasInterrupted_ name:@"WBSHistoryConnectionWasInterrupted" object:proxyCopy];
 
     v26 = v16;
   }
@@ -98,11 +98,11 @@
   return v16;
 }
 
-- (WBSHistoryServiceStore)initWithDatabaseID:(id)a3 itemCountLimit:(unint64_t)a4 historyAgeLimit:(double)a5 historyItemClass:(Class)a6
+- (WBSHistoryServiceStore)initWithDatabaseID:(id)d itemCountLimit:(unint64_t)limit historyAgeLimit:(double)ageLimit historyItemClass:(Class)class
 {
-  v10 = a3;
+  dCopy = d;
   v11 = objc_alloc_init(WBSHistoryConnectionProxy);
-  v12 = [(WBSHistoryServiceStore *)self initWithDatabaseID:v10 itemCountLimit:a4 historyAgeLimit:a6 historyItemClass:v11 connectionProxy:a5];
+  v12 = [(WBSHistoryServiceStore *)self initWithDatabaseID:dCopy itemCountLimit:limit historyAgeLimit:class historyItemClass:v11 connectionProxy:ageLimit];
 
   return v12;
 }
@@ -129,9 +129,9 @@
   v2 = [WBSHistory profileDirectoryURLForProfileID:self->_databaseID];
   v3 = [v2 URLByAppendingPathComponent:@"History.db"];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v3 path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
@@ -150,20 +150,20 @@
   return v9;
 }
 
-- (void)_connectWithOptions:(id)a3 completionHandler:(id)a4
+- (void)_connectWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = [[WBSHistoryServiceDatabaseDelegateWeakProxy alloc] initWithDelegate:self];
   connection = self->_connection;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__WBSHistoryServiceStore__connectWithOptions_completionHandler___block_invoke;
   v13[3] = &unk_1E7FC7790;
-  v10 = v7;
+  v10 = handlerCopy;
   v16 = v10;
   v13[4] = self;
-  v11 = v6;
+  v11 = optionsCopy;
   v14 = v11;
   v15 = v8;
   v12 = v8;
@@ -252,20 +252,20 @@ void __64__WBSHistoryServiceStore__connectWithOptions_completionHandler___block_
   }
 }
 
-- (void)loadWithCompletionHandler:(id)a3
+- (void)loadWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSHistoryServiceStore *)self _connectOptions];
+  handlerCopy = handler;
+  _connectOptions = [(WBSHistoryServiceStore *)self _connectOptions];
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__WBSHistoryServiceStore_loadWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = _connectOptions;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = _connectOptions;
   dispatch_async(databaseQueue, block);
 }
 
@@ -374,11 +374,11 @@ void __52__WBSHistoryServiceStore_loadWithCompletionHandler___block_invoke_20(ui
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (id)_loadOnDatabaseQueue:(unint64_t)a3 readHandle:(id)a4
+- (id)_loadOnDatabaseQueue:(unint64_t)queue readHandle:(id)handle
 {
-  v6 = a4;
-  v17 = [MEMORY[0x1E695DF70] array];
-  [(WBSHistoryObjectCache *)self->_cache reserveItemCapacity:a3];
+  handleCopy = handle;
+  array = [MEMORY[0x1E695DF70] array];
+  [(WBSHistoryObjectCache *)self->_cache reserveItemCapacity:queue];
   v24 = 0;
   v25 = &v24;
   v26 = 0x5812000000;
@@ -388,13 +388,13 @@ void __52__WBSHistoryServiceStore_loadWithCompletionHandler___block_invoke_20(ui
   memset(v30, 0, sizeof(v30));
   v31 = 1065353216;
   v7 = [MEMORY[0x1E695DFA8] set];
-  v8 = [v6 fileDescriptor];
+  fileDescriptor = [handleCopy fileDescriptor];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke;
   v22[3] = &unk_1E7FC77E0;
   v22[4] = self;
-  v9 = v17;
+  v9 = array;
   v23 = v9;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -409,8 +409,8 @@ void __52__WBSHistoryServiceStore_loadWithCompletionHandler___block_invoke_20(ui
   v18[2] = __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke_35;
   v18[3] = &unk_1E7FC7280;
   v18[4] = self;
-  SafariShared::ReadStreamedObjects(v8, v22, v19, v18);
-  [v6 closeFile];
+  SafariShared::ReadStreamedObjects(fileDescriptor, v22, v19, v18);
+  [handleCopy closeFile];
   for (i = v25[8]; i; i = *i)
   {
     v12 = [(WBSHistoryObjectCache *)self->_cache visitForID:i[2]];
@@ -508,10 +508,10 @@ void __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke
   }
 }
 
-- (void)_load:(id)a3
+- (void)_load:(id)_load
 {
   v84 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  _loadCopy = _load;
   v5 = dispatch_group_create();
   group = dispatch_group_create();
   v30 = objc_alloc_init(MEMORY[0x1E696AB50]);
@@ -536,15 +536,15 @@ void __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke
   v65[2] = 0x3032000000;
   v65[3] = __Block_byref_object_copy__24;
   v65[4] = __Block_byref_object_dispose__24;
-  v66 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v63[0] = 0;
   v63[1] = v63;
   v63[2] = 0x3032000000;
   v63[3] = __Block_byref_object_copy__24;
   v63[4] = __Block_byref_object_dispose__24;
-  v64 = [MEMORY[0x1E695DF00] date];
+  date2 = [MEMORY[0x1E695DF00] date];
   dispatch_group_enter(v5);
-  v6 = [(WBSHistoryServiceStore *)self databaseProxy];
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
   v7 = objc_opt_new();
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
@@ -556,16 +556,16 @@ void __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke
   v62 = v63;
   v8 = v5;
   v58 = v8;
-  [v6 fetchWithOptions:27 predicate:v7 completionHandler:v57];
+  [databaseProxy fetchWithOptions:27 predicate:v7 completionHandler:v57];
 
   v55[0] = 0;
   v55[1] = v55;
   v55[2] = 0x3032000000;
   v55[3] = __Block_byref_object_copy__24;
   v55[4] = __Block_byref_object_dispose__24;
-  v56 = [MEMORY[0x1E695DF00] date];
+  date3 = [MEMORY[0x1E695DF00] date];
   dispatch_group_enter(group);
-  v9 = [(WBSHistoryServiceStore *)self databaseProxy];
+  databaseProxy2 = [(WBSHistoryServiceStore *)self databaseProxy];
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __32__WBSHistoryServiceStore__load___block_invoke_40;
@@ -575,10 +575,10 @@ void __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke
   v54 = v55;
   v11 = group;
   v53 = v11;
-  [v9 fetchDomainExpansions:v51];
+  [databaseProxy2 fetchDomainExpansions:v51];
 
   dispatch_group_enter(v11);
-  v12 = [(WBSHistoryServiceStore *)self databaseProxy];
+  databaseProxy3 = [(WBSHistoryServiceStore *)self databaseProxy];
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
   v49[2] = __32__WBSHistoryServiceStore__load___block_invoke_46;
@@ -586,12 +586,12 @@ void __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke
   v49[4] = self;
   v13 = v11;
   v50 = v13;
-  [v12 fetchDatabaseURL:v49];
+  [databaseProxy3 fetchDatabaseURL:v49];
 
   v14 = [MEMORY[0x1E695DFD8] setWithObjects:{@"last_maintenance_date", 0}];
-  v15 = [MEMORY[0x1E695DF00] date];
+  date4 = [MEMORY[0x1E695DF00] date];
   dispatch_group_enter(v13);
-  v16 = [(WBSHistoryServiceStore *)self databaseProxy];
+  databaseProxy4 = [(WBSHistoryServiceStore *)self databaseProxy];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __32__WBSHistoryServiceStore__load___block_invoke_49;
@@ -599,12 +599,12 @@ void __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke
   v47[4] = self;
   v17 = v13;
   v48 = v17;
-  [v16 fetchMetadataForKeys:v14 completionHandler:v47];
+  [databaseProxy4 fetchMetadataForKeys:v14 completionHandler:v47];
 
   v18 = WBS_LOG_CHANNEL_PREFIXHistory();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    [v15 timeIntervalSinceNow];
+    [date4 timeIntervalSinceNow];
     [WBSHistoryServiceStore _load:v19];
   }
 
@@ -617,17 +617,17 @@ void __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke
   {
     if (v68[5])
     {
-      v4[2](v4);
+      _loadCopy[2](_loadCopy);
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DF00] date];
+      date5 = [MEMORY[0x1E695DF00] date];
       v29 = [(WBSHistoryServiceStore *)self _loadOnDatabaseQueue:v80[3] readHandle:v74[5]];
       v21 = WBS_LOG_CHANNEL_PREFIXHistory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        [v28 timeIntervalSinceNow];
+        [date5 timeIntervalSinceNow];
         [WBSHistoryServiceStore _load:v22];
       }
 
@@ -654,14 +654,14 @@ void __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke
         v40[2] = 0x3032000000;
         v40[3] = __Block_byref_object_copy__24;
         v40[4] = __Block_byref_object_dispose__24;
-        v41 = [MEMORY[0x1E695DF00] date];
+        date6 = [MEMORY[0x1E695DF00] date];
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __32__WBSHistoryServiceStore__load___block_invoke_2;
         v32[3] = &unk_1E7FC78F8;
         v36 = v42;
         objc_copyWeak(&v39, &location);
-        v35 = v4;
+        v35 = _loadCopy;
         v37 = v40;
         v38 = v65;
         v33 = v29;
@@ -685,7 +685,7 @@ void __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke
       else
       {
         v27 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:89 userInfo:0];
-        (v4[2])(v4, v27);
+        (_loadCopy[2])(_loadCopy, v27);
       }
     }
   }
@@ -693,7 +693,7 @@ void __58__WBSHistoryServiceStore__loadOnDatabaseQueue_readHandle___block_invoke
   else
   {
     v20 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:89 userInfo:0];
-    (v4[2])(v4, v20);
+    (_loadCopy[2])(_loadCopy, v20);
   }
 
   _Block_object_dispose(v55, 8);
@@ -961,31 +961,31 @@ void __50__WBSHistoryServiceStore_waitForLoadingToComplete__block_invoke(uint64_
   *(v3 + 40) = v2;
 }
 
-- (void)_databaseFetchWithOptions:(unint64_t)a3 predicate:(id)a4 completionHandler:(id)a5
+- (void)_databaseFetchWithOptions:(unint64_t)options predicate:(id)predicate completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WBSHistoryServiceStore *)self databaseProxy];
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
 
-  if (v10)
+  if (databaseProxy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [(WBSHistoryServiceStore *)self databaseProxy];
+    databaseProxy2 = [(WBSHistoryServiceStore *)self databaseProxy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __80__WBSHistoryServiceStore__databaseFetchWithOptions_predicate_completionHandler___block_invoke;
     v15[3] = &unk_1E7FC7920;
-    v17 = v9;
+    v17 = handlerCopy;
     v15[4] = self;
     v13 = WeakRetained;
     v16 = v13;
-    [v12 fetchWithOptions:a3 predicate:v8 completionHandler:v15];
+    [databaseProxy2 fetchWithOptions:options predicate:predicateCopy completionHandler:v15];
   }
 
   else
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSHistoryErrorDomain" code:4 userInfo:0];
-    (*(v9 + 2))(v9, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 }
 
@@ -1155,9 +1155,9 @@ LABEL_10:
 LABEL_13:
 }
 
-- (id)_fetchVisitsOnDatabaseQueue:(unint64_t)a3 predicate:(id)a4 error:(id *)a5
+- (id)_fetchVisitsOnDatabaseQueue:(unint64_t)queue predicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  queueCopy = queue;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1170,7 +1170,7 @@ LABEL_13:
   v20 = __Block_byref_object_copy__24;
   v21 = __Block_byref_object_dispose__24;
   v22 = 0;
-  v8 = a4;
+  predicateCopy = predicate;
   v9 = dispatch_group_create();
   dispatch_group_enter(v9);
   v13[0] = MEMORY[0x1E69E9820];
@@ -1181,12 +1181,12 @@ LABEL_13:
   v16 = &v23;
   v14 = v9;
   v10 = v9;
-  [(WBSHistoryServiceStore *)self _databaseFetchWithOptions:v6 & 0xB predicate:v8 completionHandler:v13];
+  [(WBSHistoryServiceStore *)self _databaseFetchWithOptions:queueCopy & 0xB predicate:predicateCopy completionHandler:v13];
 
   dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
-    *a5 = v18[5];
+    *error = v18[5];
   }
 
   v11 = v24[5];
@@ -1210,17 +1210,17 @@ void __70__WBSHistoryServiceStore__fetchVisitsOnDatabaseQueue_predicate_error___
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)getVisitsCreatedAfterDate:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5
+- (void)getVisitsCreatedAfterDate:(id)date beforeDate:(id)beforeDate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[WBSHistoryVisitsInTimeRangePredicate alloc] initWithStartDate:v8 endDate:v9 urlString:0 urlHash:0 urlSalt:0];
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  handlerCopy = handler;
+  v11 = [[WBSHistoryVisitsInTimeRangePredicate alloc] initWithStartDate:dateCopy endDate:beforeDateCopy urlString:0 urlHash:0 urlSalt:0];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__WBSHistoryServiceStore_getVisitsCreatedAfterDate_beforeDate_completionHandler___block_invoke;
   v13[3] = &unk_1E7FC7970;
-  v12 = v10;
+  v12 = handlerCopy;
   v14 = v12;
   [(WBSHistoryServiceStore *)self _databaseFetchWithOptions:2 predicate:v11 completionHandler:v13];
 }
@@ -1243,11 +1243,11 @@ void __81__WBSHistoryServiceStore_getVisitsCreatedAfterDate_beforeDate_completio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)checkIfLocalVisitExistsInAnyOfItems:(id)a3 withCompletion:(id)a4
+- (void)checkIfLocalVisitExistsInAnyOfItems:(id)items withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 safari_arrayByMappingObjectsUsingBlock:&__block_literal_global_67];
+  itemsCopy = items;
+  completionCopy = completion;
+  v8 = [itemsCopy safari_arrayByMappingObjectsUsingBlock:&__block_literal_global_67];
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1255,8 +1255,8 @@ void __81__WBSHistoryServiceStore_getVisitsCreatedAfterDate_beforeDate_completio
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
   v13 = v8;
-  v14 = v7;
-  v10 = v7;
+  v14 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
   dispatch_async(databaseQueue, block);
 }
@@ -1275,22 +1275,22 @@ void __77__WBSHistoryServiceStore_checkIfLocalVisitExistsInAnyOfItems_withComple
   [v2 checkIfLocalVisitExistsForDatabaseIDs:*(a1 + 40) withCompletion:*(a1 + 48)];
 }
 
-- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)a3 beforeDate:(id)a4 onlyFromThisDevice:(BOOL)a5 completionHandler:(id)a6
+- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)date beforeDate:(id)beforeDate onlyFromThisDevice:(BOOL)device completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __120__WBSHistoryServiceStore_getHighLevelHTTPFamilyDomainsVisitedAfterDate_beforeDate_onlyFromThisDevice_completionHandler___block_invoke;
   v16[3] = &unk_1E7FC79B8;
-  v18 = v11;
-  v19 = v12;
-  v17 = v10;
-  v20 = a5;
-  v13 = v11;
-  v14 = v10;
-  v15 = v12;
+  v18 = beforeDateCopy;
+  v19 = handlerCopy;
+  v17 = dateCopy;
+  deviceCopy = device;
+  v13 = beforeDateCopy;
+  v14 = dateCopy;
+  v15 = handlerCopy;
   [(WBSHistoryServiceStore *)self _waitForDatabase:v16];
 }
 
@@ -1334,20 +1334,20 @@ void __120__WBSHistoryServiceStore_getHighLevelHTTPFamilyDomainsVisitedAfterDate
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removePastHistoryVisitsForItem:(id)a3 completionHandler:(id)a4
+- (void)removePastHistoryVisitsForItem:(id)item completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__WBSHistoryServiceStore_removePastHistoryVisitsForItem_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = itemCopy;
+  v9 = handlerCopy;
+  v10 = itemCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -1443,10 +1443,10 @@ void __75__WBSHistoryServiceStore_removePastHistoryVisitsForItem_completionHandl
   }
 }
 
-- (void)visitsWereAdded:(id)a3
+- (void)visitsWereAdded:(id)added
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  addedCopy = added;
+  v5 = [addedCopy copy];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -1542,26 +1542,26 @@ void __42__WBSHistoryServiceStore_visitsWereAdded___block_invoke_3(uint64_t a1, 
   }
 }
 
-- (void)visitTitleWasUpdated:(id)a3
+- (void)visitTitleWasUpdated:(id)updated
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v15[0] = v4;
+  updatedCopy = updated;
+  v15[0] = updatedCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   [(WBSHistoryServiceStore *)self visitsWereModified:v5];
 
   v6 = [WBSHistoryVisitIdentifier alloc];
-  v7 = [v4 item];
-  v8 = [v7 urlString];
-  [v4 visitTime];
-  v9 = [(WBSHistoryVisitIdentifier *)v6 initWithURLString:v8 visitTime:?];
+  item = [updatedCopy item];
+  urlString = [item urlString];
+  [updatedCopy visitTime];
+  v9 = [(WBSHistoryVisitIdentifier *)v6 initWithURLString:urlString visitTime:?];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__WBSHistoryServiceStore_visitTitleWasUpdated___block_invoke;
   v12[3] = &unk_1E7FC7A30;
   v13 = v9;
-  v10 = v4;
+  v10 = updatedCopy;
   v14 = v10;
   v11 = v9;
   [(WBSHistoryServiceStore *)self _waitForDatabase:v12];
@@ -1590,22 +1590,22 @@ void __47__WBSHistoryServiceStore_visitTitleWasUpdated___block_invoke_2(uint64_t
   }
 }
 
-- (void)visitAttributeWasUpdated:(id)a3 removeAttributes:(unint64_t)a4 addAttributes:(unint64_t)a5
+- (void)visitAttributeWasUpdated:(id)updated removeAttributes:(unint64_t)attributes addAttributes:(unint64_t)addAttributes
 {
-  v8 = a3;
+  updatedCopy = updated;
   v9 = [WBSHistoryVisitIdentifier alloc];
-  v10 = [v8 item];
-  v11 = [v10 urlString];
-  [v8 visitTime];
-  v12 = [(WBSHistoryVisitIdentifier *)v9 initWithURLString:v11 visitTime:?];
+  item = [updatedCopy item];
+  urlString = [item urlString];
+  [updatedCopy visitTime];
+  v12 = [(WBSHistoryVisitIdentifier *)v9 initWithURLString:urlString visitTime:?];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__WBSHistoryServiceStore_visitAttributeWasUpdated_removeAttributes_addAttributes___block_invoke;
   v14[3] = &unk_1E7FC7A58;
   v15 = v12;
-  v16 = a4;
-  v17 = a5;
+  attributesCopy = attributes;
+  addAttributesCopy = addAttributes;
   v13 = v12;
   [(WBSHistoryServiceStore *)self _waitForDatabase:v14];
 }
@@ -1656,17 +1656,17 @@ void __60__WBSHistoryServiceStore_clearHistoryWithCompletionHandler___block_invo
   }
 }
 
-- (void)vacuumHistoryWithCompletionHandler:(id)a3
+- (void)vacuumHistoryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__WBSHistoryServiceStore_vacuumHistoryWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(databaseQueue, v7);
 }
 
@@ -1698,23 +1698,23 @@ void __61__WBSHistoryServiceStore_vacuumHistoryWithCompletionHandler___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)clearHistoryVisitsAddedAfterDate:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5
+- (void)clearHistoryVisitsAddedAfterDate:(id)date beforeDate:(id)beforeDate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __88__WBSHistoryServiceStore_clearHistoryVisitsAddedAfterDate_beforeDate_completionHandler___block_invoke;
   v15[3] = &unk_1E7FC76B8;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dateCopy;
+  v17 = beforeDateCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = beforeDateCopy;
+  v14 = dateCopy;
   dispatch_async(databaseQueue, v15);
 }
 
@@ -1815,20 +1815,20 @@ void __88__WBSHistoryServiceStore_clearHistoryVisitsAddedAfterDate_beforeDate_co
   }
 }
 
-- (void)exportHistory:(id)a3 completionHandler:(id)a4
+- (void)exportHistory:(id)history completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  historyCopy = history;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__WBSHistoryServiceStore_exportHistory_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = historyCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = historyCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -1855,13 +1855,13 @@ void __58__WBSHistoryServiceStore_exportHistory_completionHandler___block_invoke
     maintenanceScheduler = self->_maintenanceScheduler;
     self->_maintenanceScheduler = v6;
 
-    v8 = [(WBSHistoryServiceStore *)self databaseProxy];
+    databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __46__WBSHistoryServiceStore__scheduleMaintenance__block_invoke_4;
     v9[3] = &unk_1E7FC7AD0;
     v9[4] = self;
-    [v8 fetchEventsForListener:@"Safari" completionHandler:v9];
+    [databaseProxy fetchEventsForListener:@"Safari" completionHandler:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -1985,9 +1985,9 @@ void __46__WBSHistoryServiceStore__scheduleMaintenance__block_invoke_2_88(uint64
 
 - (void)_expireOldVisits
 {
-  v3 = [(WBSHistoryServiceStore *)self databaseProxy];
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
   +[WBSHistoryItem timeIntervalForDailyAndWeeklyVisitCountScores];
-  [v3 expireOldVisits:&__block_literal_global_93_0 completionHandler:v2 + v2];
+  [databaseProxy expireOldVisits:&__block_literal_global_93_0 completionHandler:v2 + v2];
 }
 
 void __42__WBSHistoryServiceStore__expireOldVisits__block_invoke(uint64_t a1, void *a2)
@@ -2007,11 +2007,11 @@ void __42__WBSHistoryServiceStore__expireOldVisits__block_invoke(uint64_t a1, vo
 
 - (void)_updateLastMaintenanceDate
 {
-  v5 = [(WBSHistoryServiceStore *)self databaseProxy];
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
   v3 = MEMORY[0x1E696AD98];
   [(NSDate *)self->_lastMaintenanceDate timeIntervalSinceReferenceDate];
   v4 = [v3 numberWithDouble:?];
-  [v5 setMetadataValue:v4 forKey:@"last_maintenance_date" completionHandler:&__block_literal_global_95];
+  [databaseProxy setMetadataValue:v4 forKey:@"last_maintenance_date" completionHandler:&__block_literal_global_95];
 }
 
 void __52__WBSHistoryServiceStore__updateLastMaintenanceDate__block_invoke(uint64_t a1, void *a2)
@@ -2029,13 +2029,13 @@ void __52__WBSHistoryServiceStore__updateLastMaintenanceDate__block_invoke(uint6
   }
 }
 
-- (void)_performMaintenance:(id)a3
+- (void)_performMaintenance:(id)maintenance
 {
-  v4 = a3;
+  maintenanceCopy = maintenance;
   v5 = atomic_load(&self->_state);
   if (v5 != 2)
   {
-    v6 = [(WBSHistoryServiceStore *)self databaseProxy];
+    databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
     [(WBSHistoryServiceStore *)self _ageLimitSinceReferenceDate];
     v8 = v7;
     itemCountLimit = self->_itemCountLimit;
@@ -2044,8 +2044,8 @@ void __52__WBSHistoryServiceStore__updateLastMaintenanceDate__block_invoke(uint6
     v10[2] = __46__WBSHistoryServiceStore__performMaintenance___block_invoke;
     v10[3] = &unk_1E7FC7AF8;
     v10[4] = self;
-    v11 = v4;
-    [v6 performMaintenanceWithAgeLimit:itemCountLimit itemCountLimit:v10 completionHandler:v8];
+    v11 = maintenanceCopy;
+    [databaseProxy performMaintenanceWithAgeLimit:itemCountLimit itemCountLimit:v10 completionHandler:v8];
   }
 }
 
@@ -2080,17 +2080,17 @@ void __46__WBSHistoryServiceStore__performMaintenance___block_invoke_2(uint64_t 
   }
 }
 
-- (void)performMaintenance:(id)a3
+- (void)performMaintenance:(id)maintenance
 {
-  v4 = a3;
+  maintenanceCopy = maintenance;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__WBSHistoryServiceStore_performMaintenance___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = maintenanceCopy;
+  v6 = maintenanceCopy;
   dispatch_async(databaseQueue, v7);
 }
 
@@ -2115,35 +2115,35 @@ void __45__WBSHistoryServiceStore_performMaintenance___block_invoke(uint64_t a1)
   }
 }
 
-- (void)closeWithCompletionHandler:(id)a3
+- (void)closeWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   atomic_store(2uLL, &self->_state);
   [(WBSPeriodicActivityScheduler *)self->_maintenanceScheduler invalidate];
   maintenanceScheduler = self->_maintenanceScheduler;
   self->_maintenanceScheduler = 0;
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2]();
+    handlerCopy[2]();
   }
 }
 
-- (void)addAutocompleteTrigger:(id)a3 forItem:(id)a4
+- (void)addAutocompleteTrigger:(id)trigger forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSHistoryServiceStore *)self databaseProxy];
-  v9 = [v7 urlString];
+  triggerCopy = trigger;
+  itemCopy = item;
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
+  urlString = [itemCopy urlString];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__WBSHistoryServiceStore_addAutocompleteTrigger_forItem___block_invoke;
   v12[3] = &unk_1E7FC7AA8;
-  v10 = v6;
+  v10 = triggerCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = itemCopy;
   v14 = v11;
-  [v8 addAutocompleteTrigger:v10 forURL:v9 completionHandler:v12];
+  [databaseProxy addAutocompleteTrigger:v10 forURL:urlString completionHandler:v12];
 }
 
 void __57__WBSHistoryServiceStore_addAutocompleteTrigger_forItem___block_invoke(uint64_t a1, void *a2)
@@ -2177,21 +2177,21 @@ void __57__WBSHistoryServiceStore_addAutocompleteTrigger_forItem___block_invoke(
   }
 }
 
-- (void)getAutocompleteTriggersForItem:(id)a3 completionHandler:(id)a4
+- (void)getAutocompleteTriggersForItem:(id)item completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  itemCopy = item;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(WBSHistoryServiceStore *)self databaseProxy];
-    v9 = [v6 urlString];
+    databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
+    urlString = [itemCopy urlString];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __75__WBSHistoryServiceStore_getAutocompleteTriggersForItem_completionHandler___block_invoke;
     v10[3] = &unk_1E7FC7B20;
-    v11 = v6;
-    v12 = v7;
-    [v8 fetchAutocompleteTriggersForURLString:v9 completionHandler:v10];
+    v11 = itemCopy;
+    v12 = handlerCopy;
+    [databaseProxy fetchAutocompleteTriggersForURLString:urlString completionHandler:v10];
   }
 }
 
@@ -2223,46 +2223,46 @@ void __75__WBSHistoryServiceStore_getAutocompleteTriggersForItem_completionHandl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getItemCountBeforeDate:(id)a3 completionHandler:(id)a4
+- (void)getItemCountBeforeDate:(id)date completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(WBSHistoryServiceStore *)self databaseProxy];
-  [v7 getItemCountBeforeDate:v8 completionHandler:v6];
+  dateCopy = date;
+  handlerCopy = handler;
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
+  [databaseProxy getItemCountBeforeDate:dateCopy completionHandler:handlerCopy];
 }
 
-- (void)_fetchTags:(unint64_t)a3 fromStartDate:(id)a4 toEndDate:(id)a5 withIdentifiers:(id)a6 limit:(unint64_t)a7 minimumItemCount:(unint64_t)a8 sortOrder:(int64_t)a9 completionHandler:(id)a10
+- (void)_fetchTags:(unint64_t)tags fromStartDate:(id)date toEndDate:(id)endDate withIdentifiers:(id)identifiers limit:(unint64_t)limit minimumItemCount:(unint64_t)count sortOrder:(int64_t)order completionHandler:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a10;
-  v20 = [(WBSHistoryServiceStore *)self databaseProxy];
+  dateCopy = date;
+  endDateCopy = endDate;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
 
-  if (v20)
+  if (databaseProxy)
   {
-    v21 = [[WBSHistoryTagsPredicate alloc] initWithStartDate:v16 endDate:v17 tagType:a3];
-    [(WBSHistoryTagsPredicate *)v21 setLimit:a7];
-    [(WBSHistoryTagsPredicate *)v21 setMinimumItemCount:a8];
-    [(WBSHistoryTagsPredicate *)v21 setSortOrder:a9];
-    if ([v18 count])
+    v21 = [[WBSHistoryTagsPredicate alloc] initWithStartDate:dateCopy endDate:endDateCopy tagType:tags];
+    [(WBSHistoryTagsPredicate *)v21 setLimit:limit];
+    [(WBSHistoryTagsPredicate *)v21 setMinimumItemCount:count];
+    [(WBSHistoryTagsPredicate *)v21 setSortOrder:order];
+    if ([identifiersCopy count])
     {
-      [(WBSHistoryTagsPredicate *)v21 setIdentifiers:v18];
+      [(WBSHistoryTagsPredicate *)v21 setIdentifiers:identifiersCopy];
     }
 
-    v22 = [(WBSHistoryServiceStore *)self databaseProxy];
+    databaseProxy2 = [(WBSHistoryServiceStore *)self databaseProxy];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __128__WBSHistoryServiceStore__fetchTags_fromStartDate_toEndDate_withIdentifiers_limit_minimumItemCount_sortOrder_completionHandler___block_invoke;
     v23[3] = &unk_1E7FC7BD0;
-    v24 = v19;
-    [v22 fetchWithOptions:32 predicate:v21 completionHandler:v23];
+    v24 = handlerCopy;
+    [databaseProxy2 fetchWithOptions:32 predicate:v21 completionHandler:v23];
   }
 
   else
   {
     v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSHistoryErrorDomain" code:4 userInfo:0];
-    (*(v19 + 2))(v19, 0, v21);
+    (*(handlerCopy + 2))(handlerCopy, 0, v21);
   }
 }
 
@@ -2302,25 +2302,25 @@ void __128__WBSHistoryServiceStore__fetchTags_fromStartDate_toEndDate_withIdenti
   }
 }
 
-- (void)_createTagsForIdentifiers:(id)a3 withTitles:(id)a4 type:(unint64_t)a5 level:(int64_t)a6 completionHandler:(id)a7
+- (void)_createTagsForIdentifiers:(id)identifiers withTitles:(id)titles type:(unint64_t)type level:(int64_t)level completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(WBSHistoryServiceStore *)self databaseProxy];
+  identifiersCopy = identifiers;
+  titlesCopy = titles;
+  handlerCopy = handler;
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __92__WBSHistoryServiceStore__createTagsForIdentifiers_withTitles_type_level_completionHandler___block_invoke;
   v19[3] = &unk_1E7FC7BF8;
-  v16 = v14;
+  v16 = handlerCopy;
   v22 = v16;
-  v17 = v12;
+  v17 = identifiersCopy;
   v20 = v17;
-  v18 = v13;
+  v18 = titlesCopy;
   v21 = v18;
-  v23 = a5;
-  v24 = a6;
-  [v15 createTagsForIdentifiers:v17 withTitles:v18 type:a5 level:a6 completionHandler:v19];
+  typeCopy = type;
+  levelCopy = level;
+  [databaseProxy createTagsForIdentifiers:v17 withTitles:v18 type:type level:level completionHandler:v19];
 }
 
 void __92__WBSHistoryServiceStore__createTagsForIdentifiers_withTitles_type_level_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2355,28 +2355,28 @@ void __92__WBSHistoryServiceStore__createTagsForIdentifiers_withTitles_type_leve
   }
 }
 
-- (void)tagsWithIdentifiers:(id)a3 type:(unint64_t)a4 level:(int64_t)a5 creatingIfNecessary:(BOOL)a6 withTitles:(id)a7 completionHandler:(id)a8
+- (void)tagsWithIdentifiers:(id)identifiers type:(unint64_t)type level:(int64_t)level creatingIfNecessary:(BOOL)necessary withTitles:(id)titles completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a7;
-  v21 = a8;
-  v15 = [MEMORY[0x1E695DF00] distantPast];
-  v16 = [MEMORY[0x1E695DF00] distantFuture];
-  v17 = [MEMORY[0x1E695DFD8] setWithArray:v13];
+  identifiersCopy = identifiers;
+  titlesCopy = titles;
+  handlerCopy = handler;
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v17 = [MEMORY[0x1E695DFD8] setWithArray:identifiersCopy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __106__WBSHistoryServiceStore_tagsWithIdentifiers_type_level_creatingIfNecessary_withTitles_completionHandler___block_invoke;
   v22[3] = &unk_1E7FC7C48;
-  v18 = v13;
+  v18 = identifiersCopy;
   v23 = v18;
-  v19 = v14;
+  v19 = titlesCopy;
   v24 = v19;
-  v25 = self;
-  v27 = a4;
-  v28 = a5;
-  v20 = v21;
+  selfCopy = self;
+  typeCopy = type;
+  levelCopy = level;
+  v20 = handlerCopy;
   v26 = v20;
-  [(WBSHistoryServiceStore *)self _fetchTags:a4 fromStartDate:v15 toEndDate:v16 withIdentifiers:v17 limit:0 minimumItemCount:0 sortOrder:0 completionHandler:v22];
+  [(WBSHistoryServiceStore *)self _fetchTags:type fromStartDate:distantPast toEndDate:distantFuture withIdentifiers:v17 limit:0 minimumItemCount:0 sortOrder:0 completionHandler:v22];
 }
 
 void __106__WBSHistoryServiceStore_tagsWithIdentifiers_type_level_creatingIfNecessary_withTitles_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2456,54 +2456,54 @@ void __106__WBSHistoryServiceStore_tagsWithIdentifiers_type_level_creatingIfNece
   [v15 _createTagsForIdentifiers:v3 withTitles:v5 type:v13 level:v14 completionHandler:v18];
 }
 
-- (void)assignHistoryItem:(id)a3 toTopicTags:(id)a4 completionHandler:(id)a5
+- (void)assignHistoryItem:(id)item toTopicTags:(id)tags completionHandler:(id)handler
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WBSHistoryServiceStore *)self databaseProxy];
+  itemCopy = item;
+  tagsCopy = tags;
+  handlerCopy = handler;
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
 
-  if (v10)
+  if (databaseProxy)
   {
-    v11 = [(WBSHistoryServiceStore *)self databaseProxy];
-    v12 = [v14 urlString];
-    v13 = WBSSetOfIdentifiersFromTags(v8);
-    [v11 assignURLString:v12 toTopicTagsWithIDs:v13 completionHandler:v9];
+    databaseProxy2 = [(WBSHistoryServiceStore *)self databaseProxy];
+    urlString = [itemCopy urlString];
+    v13 = WBSSetOfIdentifiersFromTags(tagsCopy);
+    [databaseProxy2 assignURLString:urlString toTopicTagsWithIDs:v13 completionHandler:handlerCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSHistoryErrorDomain" code:4 userInfo:0];
-    v9[2](v9, 0, v11);
+    databaseProxy2 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSHistoryErrorDomain" code:4 userInfo:0];
+    handlerCopy[2](handlerCopy, 0, databaseProxy2);
   }
 }
 
-- (void)_fetchHistoryItemsForTopics:(id)a3 fromStartDate:(id)a4 toEndDate:(id)a5 completionHandler:(id)a6
+- (void)_fetchHistoryItemsForTopics:(id)topics fromStartDate:(id)date toEndDate:(id)endDate completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(WBSHistoryServiceStore *)self databaseProxy];
+  topicsCopy = topics;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
 
-  if (v14)
+  if (databaseProxy)
   {
-    v15 = [[WBSHistoryItemToTagPairsPredicate alloc] initWithStartDate:v11 endDate:v12];
-    v16 = [(WBSHistoryServiceStore *)self databaseProxy];
+    v15 = [[WBSHistoryItemToTagPairsPredicate alloc] initWithStartDate:dateCopy endDate:endDateCopy];
+    databaseProxy2 = [(WBSHistoryServiceStore *)self databaseProxy];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __96__WBSHistoryServiceStore__fetchHistoryItemsForTopics_fromStartDate_toEndDate_completionHandler___block_invoke;
     v17[3] = &unk_1E7FC7920;
-    v19 = v13;
+    v19 = handlerCopy;
     v17[4] = self;
-    v18 = v10;
-    [v16 fetchWithOptions:64 predicate:v15 completionHandler:v17];
+    v18 = topicsCopy;
+    [databaseProxy2 fetchWithOptions:64 predicate:v15 completionHandler:v17];
   }
 
   else
   {
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSHistoryErrorDomain" code:4 userInfo:0];
-    (*(v13 + 2))(v13, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 }
 
@@ -2622,23 +2622,23 @@ LABEL_4:
   __break(1u);
 }
 
-- (void)fetchTopicsFromStartDate:(id)a3 toEndDate:(id)a4 limit:(unint64_t)a5 minimumItemCount:(unint64_t)a6 sortOrder:(int64_t)a7 completionHandler:(id)a8
+- (void)fetchTopicsFromStartDate:(id)date toEndDate:(id)endDate limit:(unint64_t)limit minimumItemCount:(unint64_t)count sortOrder:(int64_t)order completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __112__WBSHistoryServiceStore_fetchTopicsFromStartDate_toEndDate_limit_minimumItemCount_sortOrder_completionHandler___block_invoke;
   v20[3] = &unk_1E7FC7CE0;
   v20[4] = self;
-  v21 = v14;
-  v22 = v15;
-  v23 = v16;
-  v17 = v15;
-  v18 = v14;
-  v19 = v16;
-  [(WBSHistoryServiceStore *)self _fetchTags:1 fromStartDate:v18 toEndDate:v17 withIdentifiers:0 limit:a5 minimumItemCount:a6 sortOrder:a7 completionHandler:v20];
+  v21 = dateCopy;
+  v22 = endDateCopy;
+  v23 = handlerCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  v19 = handlerCopy;
+  [(WBSHistoryServiceStore *)self _fetchTags:1 fromStartDate:v18 toEndDate:v17 withIdentifiers:0 limit:limit minimumItemCount:count sortOrder:order completionHandler:v20];
 }
 
 void __112__WBSHistoryServiceStore_fetchTopicsFromStartDate_toEndDate_limit_minimumItemCount_sortOrder_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2683,23 +2683,23 @@ void __112__WBSHistoryServiceStore_fetchTopicsFromStartDate_toEndDate_limit_mini
   (*(*(a1 + 40) + 16))(*(a1 + 40), v6, v5);
 }
 
-- (void)setTitle:(id)a3 ofTag:(id)a4 completionHandler:(id)a5
+- (void)setTitle:(id)title ofTag:(id)tag completionHandler:(id)handler
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WBSHistoryServiceStore *)self databaseProxy];
+  titleCopy = title;
+  tagCopy = tag;
+  handlerCopy = handler;
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
 
-  if (v10)
+  if (databaseProxy)
   {
-    v11 = [(WBSHistoryServiceStore *)self databaseProxy];
-    [v11 setTitle:v12 ofTagWithID:objc_msgSend(v8 completionHandler:{"databaseID"), v9}];
+    databaseProxy2 = [(WBSHistoryServiceStore *)self databaseProxy];
+    [databaseProxy2 setTitle:titleCopy ofTagWithID:objc_msgSend(tagCopy completionHandler:{"databaseID"), handlerCopy}];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSHistoryErrorDomain" code:4 userInfo:0];
-    v9[2](v9, 0, v11);
+    databaseProxy2 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSHistoryErrorDomain" code:4 userInfo:0];
+    handlerCopy[2](handlerCopy, 0, databaseProxy2);
   }
 }
 
@@ -2712,24 +2712,24 @@ void __112__WBSHistoryServiceStore_fetchTopicsFromStartDate_toEndDate_limit_mini
   return databaseURL;
 }
 
-- (void)_setMetadataValue:(id)a3 forKey:(id)a4 group:(id)a5
+- (void)_setMetadataValue:(id)value forKey:(id)key group:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  dispatch_group_enter(v10);
-  v11 = [(WBSHistoryServiceStore *)self databaseProxy];
+  valueCopy = value;
+  keyCopy = key;
+  groupCopy = group;
+  dispatch_group_enter(groupCopy);
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __57__WBSHistoryServiceStore__setMetadataValue_forKey_group___block_invoke;
   v15[3] = &unk_1E7FC7D08;
-  v12 = v9;
+  v12 = keyCopy;
   v16 = v12;
-  v13 = v8;
+  v13 = valueCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = groupCopy;
   v18 = v14;
-  [v11 setMetadataValue:v13 forKey:v12 completionHandler:v15];
+  [databaseProxy setMetadataValue:v13 forKey:v12 completionHandler:v15];
 }
 
 void __57__WBSHistoryServiceStore__setMetadataValue_forKey_group___block_invoke(uint64_t a1, void *a2)
@@ -2764,11 +2764,11 @@ void __57__WBSHistoryServiceStore__setMetadataValue_forKey_group___block_invoke(
   return nextTemporaryDatabaseID;
 }
 
-- (BOOL)_ensureItemHasID:(id)a3
+- (BOOL)_ensureItemHasID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 databaseID])
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && ![dCopy databaseID])
   {
     [v5 setDatabaseID:{-[WBSHistoryServiceStore _generateTemporaryDatabaseID](self, "_generateTemporaryDatabaseID")}];
     -[WBSHistoryObjectCache setItem:forID:](self->_cache, "setItem:forID:", v5, [v5 databaseID]);
@@ -2783,11 +2783,11 @@ void __57__WBSHistoryServiceStore__setMetadataValue_forKey_group___block_invoke(
   return v6;
 }
 
-- (BOOL)_ensureVisitHasID:(id)a3
+- (BOOL)_ensureVisitHasID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 databaseID])
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && ![dCopy databaseID])
   {
     [v5 setDatabaseID:{-[WBSHistoryServiceStore _generateTemporaryDatabaseID](self, "_generateTemporaryDatabaseID")}];
     -[WBSHistoryObjectCache setVisit:forID:](self->_cache, "setVisit:forID:", v5, [v5 databaseID]);
@@ -2802,20 +2802,20 @@ void __57__WBSHistoryServiceStore__setMetadataValue_forKey_group___block_invoke(
   return v6;
 }
 
-- (void)reportPermanentIDsForItems:(id)a3 completionHandler:(id)a4
+- (void)reportPermanentIDsForItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__WBSHistoryServiceStore_reportPermanentIDsForItems_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = itemsCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -2827,20 +2827,20 @@ uint64_t __71__WBSHistoryServiceStore_reportPermanentIDsForItems_completionHandl
   return v2();
 }
 
-- (void)reportPermanentIDsForVisits:(id)a3 completionHandler:(id)a4
+- (void)reportPermanentIDsForVisits:(id)visits completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  visitsCopy = visits;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__WBSHistoryServiceStore_reportPermanentIDsForVisits_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = visitsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = visitsCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -2852,35 +2852,35 @@ uint64_t __72__WBSHistoryServiceStore_reportPermanentIDsForVisits_completionHand
   return v2();
 }
 
-- (void)reportSevereError:(id)a3 completionHandler:(id)a4
+- (void)reportSevereError:(id)error completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
+  errorCopy = error;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [(WBSHistoryServiceStore *)self _databaseURLs];
-  [WeakRetained historyStoreDidFailDatabaseIntegrityCheck:self error:v9 databaseURLs:v8];
+  _databaseURLs = [(WBSHistoryServiceStore *)self _databaseURLs];
+  [WeakRetained historyStoreDidFailDatabaseIntegrityCheck:self error:errorCopy databaseURLs:_databaseURLs];
 
-  v6[2](v6);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)handleEvent:(id)a3 completionHandler:(id)a4
+- (void)handleEvent:(id)event completionHandler:(id)handler
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v29 = a4;
+  eventCopy = event;
+  handlerCopy = handler;
   group = dispatch_group_create();
   v7 = WBS_LOG_CHANNEL_PREFIXHistory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [v6 eventType];
+    [eventCopy eventType];
     objc_claimAutoreleasedReturnValue();
-    [v6 time];
+    [eventCopy time];
     objc_claimAutoreleasedReturnValue();
     [WBSHistoryServiceStore handleEvent:completionHandler:];
   }
 
-  v8 = [v6 value];
-  v32 = [v8 safari_dictionaryForKey:@"disposedURLs"];
+  value = [eventCopy value];
+  v32 = [value safari_dictionaryForKey:@"disposedURLs"];
 
   if ([v32 count])
   {
@@ -2890,13 +2890,13 @@ uint64_t __72__WBSHistoryServiceStore_reportPermanentIDsForVisits_completionHand
     block[2] = __56__WBSHistoryServiceStore_handleEvent_completionHandler___block_invoke;
     block[3] = &unk_1E7FB7DD0;
     v50 = v32;
-    v51 = self;
+    selfCopy = self;
     v52 = group;
     dispatch_group_async(v52, databaseQueue, block);
   }
 
-  v10 = [v6 value];
-  v31 = [v10 safari_arrayForKey:@"disposedHostnames"];
+  value2 = [eventCopy value];
+  v31 = [value2 safari_arrayForKey:@"disposedHostnames"];
 
   if ([v31 count])
   {
@@ -2905,13 +2905,13 @@ uint64_t __72__WBSHistoryServiceStore_reportPermanentIDsForVisits_completionHand
     v46[2] = __56__WBSHistoryServiceStore_handleEvent_completionHandler___block_invoke_3;
     v46[3] = &unk_1E7FB7F10;
     v47 = v31;
-    v48 = self;
+    selfCopy2 = self;
     dispatch_group_async(group, MEMORY[0x1E69E96A0], v46);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v12 = [v6 value];
-  v30 = [v12 safari_arrayForKey:@"disposedHighLevelDomains"];
+  value3 = [eventCopy value];
+  v30 = [value3 safari_arrayForKey:@"disposedHighLevelDomains"];
 
   if ([v30 count] && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -2921,15 +2921,15 @@ uint64_t __72__WBSHistoryServiceStore_reportPermanentIDsForVisits_completionHand
     v42[3] = &unk_1E7FB7DD0;
     v43 = v30;
     v44 = WeakRetained;
-    v45 = self;
+    selfCopy3 = self;
     dispatch_group_async(group, MEMORY[0x1E69E96A0], v42);
   }
 
-  v13 = [v6 value];
-  v14 = [v13 safari_arrayForKey:@"disposedVisits"];
+  value4 = [eventCopy value];
+  v14 = [value4 safari_arrayForKey:@"disposedVisits"];
 
-  v15 = [v6 value];
-  v16 = [v15 safari_dictionaryForKey:@"updateLatestVisits"];
+  value5 = [eventCopy value];
+  v16 = [value5 safari_dictionaryForKey:@"updateLatestVisits"];
 
   if ([v14 count] || objc_msgSend(v16, "count"))
   {
@@ -2940,41 +2940,41 @@ uint64_t __72__WBSHistoryServiceStore_reportPermanentIDsForVisits_completionHand
     v36[3] = &unk_1E7FC7D58;
     v37 = v14;
     v38 = v16;
-    v39 = self;
-    v40 = v6;
+    selfCopy4 = self;
+    v40 = eventCopy;
     v41 = WeakRetained;
     dispatch_group_async(group, v17, v36);
   }
 
-  v18 = [v6 eventType];
-  v19 = [v18 isEqualToString:@"clear"];
+  eventType = [eventCopy eventType];
+  v19 = [eventType isEqualToString:@"clear"];
 
   if (v19)
   {
-    v20 = [v6 value];
-    v21 = [v20 safari_dateForKey:@"startDate"];
+    value6 = [eventCopy value];
+    v21 = [value6 safari_dateForKey:@"startDate"];
 
-    v22 = [v6 value];
-    v23 = [v22 safari_dateForKey:@"endDate"];
+    value7 = [eventCopy value];
+    v23 = [value7 safari_dateForKey:@"endDate"];
 
-    v24 = [MEMORY[0x1E6998640] sharedInstance];
-    v25 = v24;
+    mEMORY[0x1E6998640] = [MEMORY[0x1E6998640] sharedInstance];
+    v25 = mEMORY[0x1E6998640];
     if (v21 && v23)
     {
-      [v24 clearCompletionsFromDate:v21 toDate:v23];
+      [mEMORY[0x1E6998640] clearCompletionsFromDate:v21 toDate:v23];
     }
 
     else
     {
       if (!v23)
       {
-        [v24 clearAllCompletions];
+        [mEMORY[0x1E6998640] clearAllCompletions];
         [WeakRetained historyStoreWasCleared:self];
         goto LABEL_21;
       }
 
-      v26 = [MEMORY[0x1E695DF00] distantPast];
-      [v25 clearCompletionsFromDate:v26 toDate:v23];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
+      [v25 clearCompletionsFromDate:distantPast toDate:v23];
 
       if (!v21)
       {
@@ -2994,8 +2994,8 @@ LABEL_22:
   v34[1] = 3221225472;
   v34[2] = __56__WBSHistoryServiceStore_handleEvent_completionHandler___block_invoke_130;
   v34[3] = &unk_1E7FB7B80;
-  v35 = v29;
-  v28 = v29;
+  v35 = handlerCopy;
+  v28 = handlerCopy;
   dispatch_group_notify(group, v27, v34);
 }
 
@@ -3371,13 +3371,13 @@ void __56__WBSHistoryServiceStore_handleEvent_completionHandler___block_invoke_1
 LABEL_68:
 }
 
-- (void)_waitForDatabase:(id)a3
+- (void)_waitForDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(WBSHistoryServiceStore *)self databaseProxy];
-  if (v5)
+  databaseCopy = database;
+  databaseProxy = [(WBSHistoryServiceStore *)self databaseProxy];
+  if (databaseProxy)
   {
-    v4[2](v4, v5);
+    databaseCopy[2](databaseCopy, databaseProxy);
   }
 
   else
@@ -3388,7 +3388,7 @@ LABEL_68:
     v7[2] = __43__WBSHistoryServiceStore__waitForDatabase___block_invoke;
     v7[3] = &unk_1E7FB6BC0;
     v7[4] = self;
-    v8 = v4;
+    v8 = databaseCopy;
     dispatch_async(databaseQueue, v7);
   }
 }
@@ -3414,23 +3414,23 @@ void __43__WBSHistoryServiceStore__waitForDatabase___block_invoke_2(uint64_t a1)
   (*(v1 + 16))(v1);
 }
 
-- (void)searchForUserTypedString:(id)a3 options:(unint64_t)a4 currentTime:(double)a5 enumerationBlock:(id)a6 completionHandler:(id)a7
+- (void)searchForUserTypedString:(id)string options:(unint64_t)options currentTime:(double)time enumerationBlock:(id)block completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  stringCopy = string;
+  blockCopy = block;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __106__WBSHistoryServiceStore_searchForUserTypedString_options_currentTime_enumerationBlock_completionHandler___block_invoke;
   v18[3] = &unk_1E7FC7DF8;
-  v19 = v12;
-  v20 = v14;
-  v23 = a5;
-  v21 = v13;
-  v22 = a4;
-  v15 = v13;
-  v16 = v12;
-  v17 = v14;
+  v19 = stringCopy;
+  v20 = handlerCopy;
+  timeCopy = time;
+  v21 = blockCopy;
+  optionsCopy = options;
+  v15 = blockCopy;
+  v16 = stringCopy;
+  v17 = handlerCopy;
   [(WBSHistoryServiceStore *)self _waitForDatabase:v18];
 }
 
@@ -3550,25 +3550,25 @@ void __106__WBSHistoryServiceStore_searchForUserTypedString_options_currentTime_
   [v2 addObject:?];
 }
 
-- (void)computeFrequentlyVisitedSites:(unint64_t)a3 minimalVisitCountScore:(unint64_t)a4 blockList:(id)a5 allowList:(id)a6 options:(unint64_t)a7 currentTime:(double)a8 completionHandler:(id)a9
+- (void)computeFrequentlyVisitedSites:(unint64_t)sites minimalVisitCountScore:(unint64_t)score blockList:(id)list allowList:(id)allowList options:(unint64_t)options currentTime:(double)time completionHandler:(id)handler
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
+  listCopy = list;
+  allowListCopy = allowList;
+  handlerCopy = handler;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __137__WBSHistoryServiceStore_computeFrequentlyVisitedSites_minimalVisitCountScore_blockList_allowList_options_currentTime_completionHandler___block_invoke;
   v22[3] = &unk_1E7FC7E20;
-  v25 = v18;
-  v26 = a3;
-  v23 = v16;
-  v24 = v17;
-  v27 = a4;
-  v28 = a7;
-  v29 = a8;
-  v19 = v17;
-  v20 = v16;
-  v21 = v18;
+  v25 = handlerCopy;
+  sitesCopy = sites;
+  v23 = listCopy;
+  v24 = allowListCopy;
+  scoreCopy = score;
+  optionsCopy = options;
+  timeCopy = time;
+  v19 = allowListCopy;
+  v20 = listCopy;
+  v21 = handlerCopy;
   [(WBSHistoryServiceStore *)self _waitForDatabase:v22];
 }
 
@@ -3589,19 +3589,19 @@ void __137__WBSHistoryServiceStore_computeFrequentlyVisitedSites_minimalVisitCou
   }
 }
 
-- (void)connectionProxyConnectionWasInterrupted:(id)a3
+- (void)connectionProxyConnectionWasInterrupted:(id)interrupted
 {
   v3 = atomic_load(&self->_state);
   if (v3 != 2)
   {
     dispatch_suspend(self->_databaseQueue);
-    v5 = [(WBSHistoryServiceStore *)self _connectOptions];
+    _connectOptions = [(WBSHistoryServiceStore *)self _connectOptions];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __66__WBSHistoryServiceStore_connectionProxyConnectionWasInterrupted___block_invoke;
     v6[3] = &unk_1E7FC7E48;
     v6[4] = self;
-    [(WBSHistoryServiceStore *)self _connectWithOptions:v5 completionHandler:v6];
+    [(WBSHistoryServiceStore *)self _connectWithOptions:_connectOptions completionHandler:v6];
   }
 }
 
@@ -3630,19 +3630,19 @@ void __66__WBSHistoryServiceStore_connectionProxyConnectionWasInterrupted___bloc
   dispatch_resume(*(*(a1 + 32) + 40));
 }
 
-- (void)initializeCloudHistoryWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)initializeCloudHistoryWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__WBSHistoryServiceStore_initializeCloudHistoryWithConfiguration_completionHandler___block_invoke;
   v10[3] = &unk_1E7FC7E70;
-  v11 = v6;
-  v12 = v7;
+  v11 = configurationCopy;
+  v12 = handlerCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = configurationCopy;
+  v9 = handlerCopy;
   [(WBSHistoryServiceStore *)self _waitForDatabase:v10];
 }
 
@@ -3662,16 +3662,16 @@ void __84__WBSHistoryServiceStore_initializeCloudHistoryWithConfiguration_comple
   }
 }
 
-- (void)releaseCloudHistory:(id)a3
+- (void)releaseCloudHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__WBSHistoryServiceStore_releaseCloudHistory___block_invoke;
   v6[3] = &unk_1E7FC7E98;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = historyCopy;
+  v5 = historyCopy;
   [(WBSHistoryServiceStore *)self _waitForDatabase:v6];
 }
 
@@ -3691,17 +3691,17 @@ void __46__WBSHistoryServiceStore_releaseCloudHistory___block_invoke(uint64_t a1
   }
 }
 
-- (void)savePendingChangesWithCompletionHandler:(id)a3
+- (void)savePendingChangesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__WBSHistoryServiceStore_savePendingChangesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(databaseQueue, v7);
 }
 

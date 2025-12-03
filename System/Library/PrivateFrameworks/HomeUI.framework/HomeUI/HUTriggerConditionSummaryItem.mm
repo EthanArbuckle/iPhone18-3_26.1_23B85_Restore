@@ -1,46 +1,46 @@
 @interface HUTriggerConditionSummaryItem
-- (HUTriggerConditionSummaryItem)initWithConditions:(id)a3 home:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUTriggerConditionSummaryItem)initWithConditions:(id)conditions home:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUTriggerConditionSummaryItem
 
-- (HUTriggerConditionSummaryItem)initWithConditions:(id)a3 home:(id)a4
+- (HUTriggerConditionSummaryItem)initWithConditions:(id)conditions home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  conditionsCopy = conditions;
+  homeCopy = home;
   v12.receiver = self;
   v12.super_class = HUTriggerConditionSummaryItem;
   v9 = [(HUTriggerConditionSummaryItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_conditions, a3);
-    objc_storeStrong(&v10->_home, a4);
+    objc_storeStrong(&v9->_conditions, conditions);
+    objc_storeStrong(&v10->_home, home);
   }
 
   return v10;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_alloc(MEMORY[0x277D145A0]);
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(HUTriggerConditionSummaryItem *)self conditions];
-  v8 = [v6 setWithArray:v7];
-  v9 = [(HUTriggerConditionSummaryItem *)self home];
-  v10 = [v5 initWithConditions:v8 home:v9];
+  conditions = [(HUTriggerConditionSummaryItem *)self conditions];
+  v8 = [v6 setWithArray:conditions];
+  home = [(HUTriggerConditionSummaryItem *)self home];
+  v10 = [v5 initWithConditions:v8 home:home];
 
-  v11 = [v10 reloadItems];
+  reloadItems = [v10 reloadItems];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__HUTriggerConditionSummaryItem__subclass_updateWithOptions___block_invoke;
   v15[3] = &unk_277DC3678;
   v15[4] = self;
-  v16 = v4;
-  v12 = v4;
-  v13 = [v11 flatMap:v15];
+  v16 = optionsCopy;
+  v12 = optionsCopy;
+  v13 = [reloadItems flatMap:v15];
 
   return v13;
 }

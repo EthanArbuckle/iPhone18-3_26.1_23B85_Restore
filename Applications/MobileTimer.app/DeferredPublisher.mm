@@ -1,23 +1,23 @@
 @interface DeferredPublisher
 - (_TtC11MobileTimer17DeferredPublisher)init;
-- (void)deferActionWithTimeOut:(double)a3 completion:(id)a4;
+- (void)deferActionWithTimeOut:(double)out completion:(id)completion;
 - (void)publish;
 @end
 
 @implementation DeferredPublisher
 
-- (void)deferActionWithTimeOut:(double)a3 completion:(id)a4
+- (void)deferActionWithTimeOut:(double)out completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = self;
+  selfCopy = self;
   DeferredPublisher.deferAction(timeOut:completion:)(sub_100063930, v6);
 }
 
 - (void)publish
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005F248(&qword_1000D2510);
   sub_10006285C(&qword_1000D2590, &qword_1000D2510);
   Subject<>.send()();

@@ -1,28 +1,28 @@
 @interface FPnfsMemNode
 - (FPnfsMemNode)parent;
 - (id)getattr;
-- (id)lookup:(id)a3;
-- (id)lookupNode:(id)a3;
-- (id)readDirAtCookie:(unint64_t)a3 withVerifier:(unint64_t)a4 forBytes:(unint64_t)a5 andError:(int *)a6;
-- (id)readDirAttrAtCookie:(unint64_t)a3 withVerifier:(unint64_t)a4 forBytes:(unint64_t)a5 andError:(int *)a6;
-- (int)mkDir:(id)a3 fhBuffer:(id *)a4 locked:(BOOL)a5;
-- (int)renameFrom:(id)a3 toName:(id)a4;
-- (int)rmDir:(id)a3;
+- (id)lookup:(id)lookup;
+- (id)lookupNode:(id)node;
+- (id)readDirAtCookie:(unint64_t)cookie withVerifier:(unint64_t)verifier forBytes:(unint64_t)bytes andError:(int *)error;
+- (id)readDirAttrAtCookie:(unint64_t)cookie withVerifier:(unint64_t)verifier forBytes:(unint64_t)bytes andError:(int *)error;
+- (int)mkDir:(id)dir fhBuffer:(id *)buffer locked:(BOOL)locked;
+- (int)renameFrom:(id)from toName:(id)name;
+- (int)rmDir:(id)dir;
 @end
 
 @implementation FPnfsMemNode
 
-- (id)lookupNode:(id)a3
+- (id)lookupNode:(id)node
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  entries = v5->entries;
+  nodeCopy = node;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  entries = selfCopy->entries;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100003B18;
   v11[3] = &unk_100060AF8;
-  v7 = v4;
+  v7 = nodeCopy;
   v12 = v7;
   v8 = [(NSMutableArray *)entries indexOfObjectPassingTest:v11];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -32,17 +32,17 @@
 
   else
   {
-    v9 = [(NSMutableArray *)v5->entries objectAtIndexedSubscript:v8];
+    v9 = [(NSMutableArray *)selfCopy->entries objectAtIndexedSubscript:v8];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)lookup:(id)a3
+- (id)lookup:(id)lookup
 {
-  if (a3)
+  if (lookup)
   {
     v3 = [(FPnfsMemNode *)self lookupNode:?];
     v4 = v3;
@@ -65,17 +65,17 @@
   return v5;
 }
 
-- (int)mkDir:(id)a3 fhBuffer:(id *)a4 locked:(BOOL)a5
+- (int)mkDir:(id)dir fhBuffer:(id *)buffer locked:(BOOL)locked
 {
-  v7 = a3;
-  v8 = self;
-  objc_sync_enter(v8);
-  entries = v8->entries;
+  dirCopy = dir;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  entries = selfCopy->entries;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100003D60;
   v17[3] = &unk_100060AF8;
-  v10 = v7;
+  v10 = dirCopy;
   v18 = v10;
   v11 = [(NSMutableArray *)entries indexOfObjectPassingTest:v17];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
@@ -87,7 +87,7 @@
 
   else
   {
-    v12 = [(NSMutableArray *)v8->entries objectAtIndexedSubscript:v11];
+    v12 = [(NSMutableArray *)selfCopy->entries objectAtIndexedSubscript:v11];
     v13 = [v12 fh];
     if ([v12 nascent])
     {
@@ -101,22 +101,22 @@
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v15 = v13;
-  *a4 = v13;
+  *buffer = v13;
 
   return v14;
 }
 
-- (int)renameFrom:(id)a3 toName:(id)a4
+- (int)renameFrom:(id)from toName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if ([(NSString *)v8->_name isEqualToString:v6])
+  fromCopy = from;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSString *)selfCopy->_name isEqualToString:fromCopy])
   {
-    objc_storeStrong(&v8->_name, a4);
+    objc_storeStrong(&selfCopy->_name, name);
     v9 = 0;
   }
 
@@ -125,22 +125,22 @@
     v9 = 2;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (int)rmDir:(id)a3
+- (int)rmDir:(id)dir
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  entries = v5->entries;
+  dirCopy = dir;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  entries = selfCopy->entries;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10000439C;
   v23[3] = &unk_100060AF8;
-  v7 = v4;
+  v7 = dirCopy;
   v24 = v7;
   v8 = [(NSMutableArray *)entries indexOfObjectPassingTest:v23];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -150,7 +150,7 @@
 
   else
   {
-    v10 = [(NSMutableArray *)v5->entries objectAtIndexedSubscript:v8];
+    v10 = [(NSMutableArray *)selfCopy->entries objectAtIndexedSubscript:v8];
     if ([v10[1] count])
     {
       v9 = 66;
@@ -158,44 +158,44 @@
 
     else
     {
-      [(NSMutableArray *)v5->entries removeObjectAtIndex:v8];
-      v11 = [(FPnfsMemNode *)v5 fs];
+      [(NSMutableArray *)selfCopy->entries removeObjectAtIndex:v8];
+      v11 = [(FPnfsMemNode *)selfCopy fs];
       [v11 rmNode:v10];
 
       v12 = objc_alloc_init(NSDate);
-      mtime = v5->_mtime;
-      v5->_mtime = v12;
+      mtime = selfCopy->_mtime;
+      selfCopy->_mtime = v12;
 
-      v14 = [v10 name];
-      v5->size -= ([v14 length] + 29) & 0xFFFFFFFFFFFFFFF8;
+      name = [v10 name];
+      selfCopy->size -= ([name length] + 29) & 0xFFFFFFFFFFFFFFF8;
 
-      v15 = [v10 name];
-      v5->dirattrSize -= ([v15 length] + 208) & 0xFFFFFFF8;
+      name2 = [v10 name];
+      selfCopy->dirattrSize -= ([name2 length] + 208) & 0xFFFFFFF8;
 
       v9 = 0;
-      ++v5->_verf;
+      ++selfCopy->_verf;
     }
   }
 
-  v16 = [(NSMutableArray *)v5->entries count];
-  objc_sync_exit(v5);
+  v16 = [(NSMutableArray *)selfCopy->entries count];
+  objc_sync_exit(selfCopy);
 
   if (!v16)
   {
-    v18 = [(FPnfsMemNode *)v5 parent];
-    if (v18)
+    parent = [(FPnfsMemNode *)selfCopy parent];
+    if (parent)
     {
-      v19 = v18;
-      v20 = [(FPnfsMemNode *)v5 parent];
+      v19 = parent;
+      parent2 = [(FPnfsMemNode *)selfCopy parent];
 
-      if (v20 != v5)
+      if (parent2 != selfCopy)
       {
         v21 = dispatch_get_global_queue(2, 0);
         v22[0] = _NSConcreteStackBlock;
         v22[1] = 3221225472;
         v22[2] = sub_100004404;
         v22[3] = &unk_100060978;
-        v22[4] = v5;
+        v22[4] = selfCopy;
         dispatch_async(v21, v22);
       }
     }
@@ -204,14 +204,14 @@
   return v9;
 }
 
-- (id)readDirAtCookie:(unint64_t)a3 withVerifier:(unint64_t)a4 forBytes:(unint64_t)a5 andError:(int *)a6
+- (id)readDirAtCookie:(unint64_t)cookie withVerifier:(unint64_t)verifier forBytes:(unint64_t)bytes andError:(int *)error
 {
-  if (a6)
+  if (error)
   {
-    v6 = a6;
-    v10 = self;
-    objc_sync_enter(v10);
-    if (a4 && v10->_verf != a4)
+    errorCopy = error;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (verifier && selfCopy->_verf != verifier)
     {
       v12 = 0;
       v18 = -1000;
@@ -219,34 +219,34 @@
 
     else
     {
-      if (v10->size >= a5)
+      if (selfCopy->size >= bytes)
       {
-        size = a5;
+        size = bytes;
       }
 
       else
       {
-        size = v10->size;
+        size = selfCopy->size;
       }
 
       v12 = [[NSMutableData alloc] initWithLength:size];
-      v13 = [v12 mutableBytes];
-      if (v13)
+      mutableBytes = [v12 mutableBytes];
+      if (mutableBytes)
       {
-        v36 = v6;
-        v14 = [(NSMutableArray *)v10->entries count];
-        v15 = a3 + 1;
+        v36 = errorCopy;
+        v14 = [(NSMutableArray *)selfCopy->entries count];
+        v15 = cookie + 1;
         v35 = v12;
-        if (a3 || size < 0x18)
+        if (cookie || size < 0x18)
         {
-          if (a3 > 1)
+          if (cookie > 1)
           {
             v19 = 0;
             v16 = 0;
 LABEL_28:
-            if (a3 >= 2)
+            if (cookie >= 2)
             {
-              v24 = a3 - 2;
+              v24 = cookie - 2;
             }
 
             else
@@ -263,10 +263,10 @@ LABEL_28:
             {
               do
               {
-                v25 = [(NSMutableArray *)v10->entries objectAtIndexedSubscript:v24];
+                v25 = [(NSMutableArray *)selfCopy->entries objectAtIndexedSubscript:v24];
 
-                v26 = [(FPnfsMemNode *)v25 name];
-                v27 = ([v26 length] + 29) & 0xFFFFFFFFFFFFFFF8;
+                name = [(FPnfsMemNode *)v25 name];
+                v27 = ([name length] + 29) & 0xFFFFFFFFFFFFFFF8;
 
                 if (v27 + v16 > size)
                 {
@@ -275,10 +275,10 @@ LABEL_28:
 
                 if (!v25->_nascent)
                 {
-                  v28 = [(FPnfsMemNode *)v25 name];
-                  v29 = [v28 UTF8String];
+                  name2 = [(FPnfsMemNode *)v25 name];
+                  uTF8String = [name2 UTF8String];
 
-                  v30 = [(FPnfsMemNode *)v25 fileno];
+                  fileno = [(FPnfsMemNode *)v25 fileno];
                   if (v14 - 1 == v24)
                   {
                     v31 = -1;
@@ -289,7 +289,7 @@ LABEL_28:
                     v31 = v15;
                   }
 
-                  v13 = sub_10000482C(v30, v29, v31, v13);
+                  mutableBytes = sub_10000482C(fileno, uTF8String, v31, mutableBytes);
                 }
 
                 ++v15;
@@ -301,12 +301,12 @@ LABEL_28:
             }
 
             v32 = objc_alloc_init(NSDate);
-            atime = v10->_atime;
-            v10->_atime = v32;
+            atime = selfCopy->_atime;
+            selfCopy->_atime = v32;
 
             v18 = 0;
             v12 = v35;
-            v6 = v36;
+            errorCopy = v36;
             goto LABEL_43;
           }
 
@@ -315,26 +315,26 @@ LABEL_28:
 
         else
         {
-          v13 = sub_10000482C([(FPnfsMemNode *)v10 fileno], ".", 1, v13);
+          mutableBytes = sub_10000482C([(FPnfsMemNode *)selfCopy fileno], ".", 1, mutableBytes);
           v16 = 24;
         }
 
         if (size >= v16 + 24)
         {
-          v20 = [(FPnfsMemNode *)v10 parent];
-          if (v20)
+          parent = [(FPnfsMemNode *)selfCopy parent];
+          if (parent)
           {
-            v21 = [(FPnfsMemNode *)v10 parent];
+            parent2 = [(FPnfsMemNode *)selfCopy parent];
           }
 
           else
           {
-            v21 = v10;
+            parent2 = selfCopy;
           }
 
-          v19 = v21;
+          v19 = parent2;
 
-          v22 = [(FPnfsMemNode *)v19 fileno];
+          fileno2 = [(FPnfsMemNode *)v19 fileno];
           if (v14)
           {
             v23 = 2;
@@ -345,8 +345,8 @@ LABEL_28:
             v23 = -1;
           }
 
-          v13 = sub_10000482C(v22, "..", v23, v13);
-          v15 = a3 | 2;
+          mutableBytes = sub_10000482C(fileno2, "..", v23, mutableBytes);
+          v15 = cookie | 2;
           v16 += 24;
         }
 
@@ -362,9 +362,9 @@ LABEL_28:
     }
 
 LABEL_43:
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
 
-    *v6 = v18;
+    *errorCopy = v18;
     goto LABEL_44;
   }
 
@@ -382,11 +382,11 @@ LABEL_44:
   return v12;
 }
 
-- (id)readDirAttrAtCookie:(unint64_t)a3 withVerifier:(unint64_t)a4 forBytes:(unint64_t)a5 andError:(int *)a6
+- (id)readDirAttrAtCookie:(unint64_t)cookie withVerifier:(unint64_t)verifier forBytes:(unint64_t)bytes andError:(int *)error
 {
-  v10 = self;
-  objc_sync_enter(v10);
-  if (a4 && v10->_verf != a4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (verifier && selfCopy->_verf != verifier)
   {
     v12 = 0;
     v34 = -1000;
@@ -394,28 +394,28 @@ LABEL_44:
 
   else
   {
-    if (v10->dirattrSize >= a5)
+    if (selfCopy->dirattrSize >= bytes)
     {
-      dirattrSize = a5;
+      dirattrSize = bytes;
     }
 
     else
     {
-      dirattrSize = v10->dirattrSize;
+      dirattrSize = selfCopy->dirattrSize;
     }
 
-    v38 = v10;
+    v38 = selfCopy;
     v12 = [[NSMutableData alloc] initWithLength:dirattrSize];
-    v13 = [v12 mutableBytes];
-    if (v13)
+    mutableBytes = [v12 mutableBytes];
+    if (mutableBytes)
     {
-      v14 = [(NSMutableArray *)v10->entries count];
+      v14 = [(NSMutableArray *)selfCopy->entries count];
       v15 = v14;
       v36 = v12;
-      v37 = a6;
+      errorCopy = error;
       v16 = 0;
-      v17 = a3 - 2;
-      if (a3 < 2)
+      v17 = cookie - 2;
+      if (cookie < 2)
       {
         v17 = 0;
       }
@@ -424,9 +424,9 @@ LABEL_44:
       {
         v18 = 0;
         v19 = 0;
-        v20 = a3 + 2;
-        v21 = a3 - 2;
-        if (a3 < 2)
+        v20 = cookie + 2;
+        v21 = cookie - 2;
+        if (cookie < 2)
         {
           v21 = 0;
         }
@@ -434,10 +434,10 @@ LABEL_44:
         v22 = v21 + 1;
         do
         {
-          v16 = [(NSMutableArray *)v10->entries objectAtIndexedSubscript:v22 - 1];
+          v16 = [(NSMutableArray *)selfCopy->entries objectAtIndexedSubscript:v22 - 1];
 
-          v23 = [v16 name];
-          v24 = ([v23 length] + 208) & 0xFFFFFFF8;
+          name = [v16 name];
+          v24 = ([name length] + 208) & 0xFFFFFFF8;
 
           v25 = v24 + v19;
           if (v25 > dirattrSize)
@@ -447,10 +447,10 @@ LABEL_44:
 
           if ((v16[32] & 1) == 0)
           {
-            v26 = [v16 name];
-            v27 = [v26 UTF8String];
+            name2 = [v16 name];
+            uTF8String = [name2 UTF8String];
 
-            v28 = [v16 fileno];
+            fileno = [v16 fileno];
             if (v15 == v22)
             {
               v29 = -1;
@@ -461,29 +461,29 @@ LABEL_44:
               v29 = v20;
             }
 
-            v30 = strlen(v27);
-            *(v13 + 10) = v28;
-            *(v13 + 5) = 0x1C000000002;
-            *(v13 + 8) = 0;
-            *(v13 + 3) = 323;
-            v13[6] = v30;
-            v13[5] = 200;
-            *v13 = v29;
-            v13[4] = (v30 & 0xFFF8) + 208;
-            strlcpy(v13 + 200, v27, v30 + 1);
+            v30 = strlen(uTF8String);
+            *(mutableBytes + 10) = fileno;
+            *(mutableBytes + 5) = 0x1C000000002;
+            *(mutableBytes + 8) = 0;
+            *(mutableBytes + 3) = 323;
+            mutableBytes[6] = v30;
+            mutableBytes[5] = 200;
+            *mutableBytes = v29;
+            mutableBytes[4] = (v30 & 0xFFF8) + 208;
+            strlcpy(mutableBytes + 200, uTF8String, v30 + 1);
             if (v29 == -1)
             {
               v31 = 0;
-              v13[4] = 0;
+              mutableBytes[4] = 0;
             }
 
             else
             {
-              v31 = v13[4];
+              v31 = mutableBytes[4];
             }
 
-            v10 = v38;
-            v13 = (v13 + v31);
+            selfCopy = v38;
+            mutableBytes = (mutableBytes + v31);
             v19 = v25;
           }
 
@@ -501,12 +501,12 @@ LABEL_44:
       }
 
       v32 = objc_alloc_init(NSDate);
-      atime = v10->_atime;
-      v10->_atime = v32;
+      atime = selfCopy->_atime;
+      selfCopy->_atime = v32;
 
       v34 = 0;
       v12 = v36;
-      a6 = v37;
+      error = errorCopy;
     }
 
     else
@@ -515,52 +515,52 @@ LABEL_44:
     }
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
-  *a6 = v34;
+  *error = v34;
 
   return v12;
 }
 
 - (id)getattr
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v15 = [(NSMutableArray *)v2->entries count:0]+ 2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v15 = [(NSMutableArray *)selfCopy->entries count:0]+ 2;
   v16 = getuid();
   v17 = getgid();
-  size = v2->size;
+  size = selfCopy->size;
   v19 = 1;
-  *&v20 = [(FPnfsMemNode *)v2 fileno];
-  v3 = [(FPnfsMemNode *)v2 atime];
-  v4 = v3;
-  if (v3)
+  *&v20 = [(FPnfsMemNode *)selfCopy fileno];
+  atime = [(FPnfsMemNode *)selfCopy atime];
+  v4 = atime;
+  if (atime)
   {
-    [v3 timeIntervalSince1970];
+    [atime timeIntervalSince1970];
     v21 = vcvtmd_s64_f64(v5);
     v22 = llround((v5 - floor(v5)) * 1000000000.0);
   }
 
-  v6 = [(FPnfsMemNode *)v2 mtime];
-  v7 = v6;
-  if (v6)
+  mtime = [(FPnfsMemNode *)selfCopy mtime];
+  v7 = mtime;
+  if (mtime)
   {
-    [v6 timeIntervalSince1970];
+    [mtime timeIntervalSince1970];
     v23 = vcvtmd_s64_f64(v8);
     v24 = llround((v8 - floor(v8)) * 1000000000.0);
   }
 
-  v9 = [(FPnfsMemNode *)v2 mtime];
-  v10 = v9;
-  if (v9)
+  mtime2 = [(FPnfsMemNode *)selfCopy mtime];
+  v10 = mtime2;
+  if (mtime2)
   {
-    [v9 timeIntervalSince1970];
+    [mtime2 timeIntervalSince1970];
     v25 = vcvtmd_s64_f64(v11);
     v26 = llround((v11 - floor(v11)) * 1000000000.0);
   }
 
   v12 = [NSData dataWithBytes:&v14 length:184];
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }

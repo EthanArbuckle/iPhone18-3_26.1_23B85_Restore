@@ -1,19 +1,19 @@
 @interface TSMADEVValue
-- (TSMADEVValue)initWithObservationInterval:(double)a3 andMADEV:(double)a4;
+- (TSMADEVValue)initWithObservationInterval:(double)interval andMADEV:(double)v;
 - (id)description;
 @end
 
 @implementation TSMADEVValue
 
-- (TSMADEVValue)initWithObservationInterval:(double)a3 andMADEV:(double)a4
+- (TSMADEVValue)initWithObservationInterval:(double)interval andMADEV:(double)v
 {
   v7.receiver = self;
   v7.super_class = TSMADEVValue;
   result = [(TSMADEVValue *)&v7 init];
   if (result)
   {
-    result->_observationInterval = a3;
-    result->_madev = a4;
+    result->_observationInterval = interval;
+    result->_madev = v;
   }
 
   return result;

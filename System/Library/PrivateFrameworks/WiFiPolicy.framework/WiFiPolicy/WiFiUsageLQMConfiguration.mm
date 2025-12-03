@@ -1,8 +1,8 @@
 @interface WiFiUsageLQMConfiguration
-+ (id)getConfigForKey:(id)a3;
++ (id)getConfigForKey:(id)key;
 + (void)getConfigForPlatform;
 + (void)initialize;
-+ (void)setConfig:(id)a3;
++ (void)setConfig:(id)config;
 @end
 
 @implementation WiFiUsageLQMConfiguration
@@ -13,13 +13,13 @@
   _dataPathTelemetryConfig = 0;
 }
 
-+ (void)setConfig:(id)a3
++ (void)setConfig:(id)config
 {
-  v6 = a3;
-  if (([v6 isEqualToDictionary:_dataPathTelemetryConfig] & 1) == 0)
+  configCopy = config;
+  if (([configCopy isEqualToDictionary:_dataPathTelemetryConfig] & 1) == 0)
   {
-    objc_storeStrong(&_dataPathTelemetryConfig, a3);
-    [a1 getConfigForPlatform];
+    objc_storeStrong(&_dataPathTelemetryConfig, config);
+    [self getConfigForPlatform];
     NSLog(&cfstr_SUpdatedDatapa.isa, "+[WiFiUsageLQMConfiguration setConfig:]");
     +[WiFiUsageLQMRollingWindow updateConfig];
     v5 = +[WiFiUsageMonitor sharedInstance];
@@ -30,13 +30,13 @@
   }
 }
 
-+ (id)getConfigForKey:(id)a3
++ (id)getConfigForKey:(id)key
 {
-  v3 = a3;
-  v4 = [_dataPathTelemetryConfig objectForKey:v3];
+  keyCopy = key;
+  v4 = [_dataPathTelemetryConfig objectForKey:keyCopy];
   if (!v4)
   {
-    NSLog(&cfstr_SDatapathtelem.isa, "+[WiFiUsageLQMConfiguration getConfigForKey:]", v3);
+    NSLog(&cfstr_SDatapathtelem.isa, "+[WiFiUsageLQMConfiguration getConfigForKey:]", keyCopy);
   }
 
   return v4;
@@ -111,9 +111,9 @@ LABEL_18:
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
               v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v27, "UTF8String")];
-              v29 = [v28 UTF8String];
+              uTF8String = [v28 UTF8String];
               *buf = 136446210;
-              v52 = v29;
+              uTF8String2 = uTF8String;
               _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
             }
 
@@ -229,7 +229,7 @@ LABEL_40:
       {
         v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v38, "UTF8String")];
         *buf = 136446210;
-        v52 = [v39 UTF8String];
+        uTF8String2 = [v39 UTF8String];
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
       }
 

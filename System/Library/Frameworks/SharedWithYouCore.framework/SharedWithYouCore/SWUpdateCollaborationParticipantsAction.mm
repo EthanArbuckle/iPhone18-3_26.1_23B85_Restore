@@ -1,58 +1,58 @@
 @interface SWUpdateCollaborationParticipantsAction
-+ (SWUpdateCollaborationParticipantsAction)actionWithMetadata:(id)a3 addedIdentities:(id)a4 removedIdentites:(id)a5;
-- (BOOL)isEqualToAction:(id)a3;
-- (SWUpdateCollaborationParticipantsAction)initWithCoder:(id)a3;
-- (SWUpdateCollaborationParticipantsAction)initWithDestinationAction:(id)a3;
-- (SWUpdateCollaborationParticipantsAction)initWithMetadata:(id)a3 addedIdentities:(id)a4 removedIdentites:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSActionSettings:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (SWUpdateCollaborationParticipantsAction)actionWithMetadata:(id)metadata addedIdentities:(id)identities removedIdentites:(id)identites;
+- (BOOL)isEqualToAction:(id)action;
+- (SWUpdateCollaborationParticipantsAction)initWithCoder:(id)coder;
+- (SWUpdateCollaborationParticipantsAction)initWithDestinationAction:(id)action;
+- (SWUpdateCollaborationParticipantsAction)initWithMetadata:(id)metadata addedIdentities:(id)identities removedIdentites:(id)identites;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSActionSettings:(id)settings;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWUpdateCollaborationParticipantsAction
 
-+ (SWUpdateCollaborationParticipantsAction)actionWithMetadata:(id)a3 addedIdentities:(id)a4 removedIdentites:(id)a5
++ (SWUpdateCollaborationParticipantsAction)actionWithMetadata:(id)metadata addedIdentities:(id)identities removedIdentites:(id)identites
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithMetadata:v9 addedIdentities:v8 removedIdentites:v7];
+  identitesCopy = identites;
+  identitiesCopy = identities;
+  metadataCopy = metadata;
+  v10 = [objc_alloc(objc_opt_class()) initWithMetadata:metadataCopy addedIdentities:identitiesCopy removedIdentites:identitesCopy];
 
   return v10;
 }
 
-- (SWUpdateCollaborationParticipantsAction)initWithMetadata:(id)a3 addedIdentities:(id)a4 removedIdentites:(id)a5
+- (SWUpdateCollaborationParticipantsAction)initWithMetadata:(id)metadata addedIdentities:(id)identities removedIdentites:(id)identites
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  metadataCopy = metadata;
+  identitiesCopy = identities;
+  identitesCopy = identites;
   v15.receiver = self;
   v15.super_class = SWUpdateCollaborationParticipantsAction;
   v12 = [(SWAction *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_collaborationMetadata, a3);
-    objc_storeStrong(&v13->_addedIdentities, a4);
-    objc_storeStrong(&v13->_removedIdentities, a5);
+    objc_storeStrong(&v12->_collaborationMetadata, metadata);
+    objc_storeStrong(&v13->_addedIdentities, identities);
+    objc_storeStrong(&v13->_removedIdentities, identites);
   }
 
   return v13;
 }
 
-- (SWUpdateCollaborationParticipantsAction)initWithCoder:(id)a3
+- (SWUpdateCollaborationParticipantsAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = SWUpdateCollaborationParticipantsAction;
-  v5 = [(SWAction *)&v27 initWithCoder:v4];
+  v5 = [(SWAction *)&v27 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
     v9 = NSStringFromSelector(sel_collaborationMetadata);
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
     collaborationMetadata = v5->_collaborationMetadata;
     v5->_collaborationMetadata = v10;
 
@@ -61,7 +61,7 @@
     v14 = objc_opt_class();
     v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
     v16 = NSStringFromSelector(sel_addedIdentities);
-    v17 = [v4 decodeObjectOfClasses:v15 forKey:v16];
+    v17 = [coderCopy decodeObjectOfClasses:v15 forKey:v16];
     addedIdentities = v5->_addedIdentities;
     v5->_addedIdentities = v17;
 
@@ -70,7 +70,7 @@
     v21 = objc_opt_class();
     v22 = [v19 setWithObjects:{v20, v21, objc_opt_class(), 0}];
     v23 = NSStringFromSelector(sel_removedIdentities);
-    v24 = [v4 decodeObjectOfClasses:v22 forKey:v23];
+    v24 = [coderCopy decodeObjectOfClasses:v22 forKey:v23];
     removedIdentities = v5->_removedIdentities;
     v5->_removedIdentities = v24;
   }
@@ -78,70 +78,70 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = SWUpdateCollaborationParticipantsAction;
-  v4 = a3;
-  [(SWAction *)&v11 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(SWAction *)&v11 encodeWithCoder:coderCopy];
   v5 = [(SWUpdateCollaborationParticipantsAction *)self collaborationMetadata:v11.receiver];
   v6 = NSStringFromSelector(sel_collaborationMetadata);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 
-  v7 = [(SWUpdateCollaborationParticipantsAction *)self addedIdentities];
+  addedIdentities = [(SWUpdateCollaborationParticipantsAction *)self addedIdentities];
   v8 = NSStringFromSelector(sel_addedIdentities);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:addedIdentities forKey:v8];
 
-  v9 = [(SWUpdateCollaborationParticipantsAction *)self removedIdentities];
+  removedIdentities = [(SWUpdateCollaborationParticipantsAction *)self removedIdentities];
   v10 = NSStringFromSelector(sel_removedIdentities);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:removedIdentities forKey:v10];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = SWUpdateCollaborationParticipantsAction;
-  v4 = [(SWAction *)&v9 copyWithZone:a3];
+  v4 = [(SWAction *)&v9 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(SWUpdateCollaborationParticipantsAction *)self collaborationMetadata];
-    [v4 setCollaborationMetadata:v5];
+    collaborationMetadata = [(SWUpdateCollaborationParticipantsAction *)self collaborationMetadata];
+    [v4 setCollaborationMetadata:collaborationMetadata];
 
-    v6 = [(SWUpdateCollaborationParticipantsAction *)self addedIdentities];
-    [v4 setAddedIdentities:v6];
+    addedIdentities = [(SWUpdateCollaborationParticipantsAction *)self addedIdentities];
+    [v4 setAddedIdentities:addedIdentities];
 
-    v7 = [(SWUpdateCollaborationParticipantsAction *)self removedIdentities];
-    [v4 setRemovedIdentities:v7];
+    removedIdentities = [(SWUpdateCollaborationParticipantsAction *)self removedIdentities];
+    [v4 setRemovedIdentities:removedIdentities];
   }
 
   return v4;
 }
 
-- (BOOL)isEqualToAction:(id)a3
+- (BOOL)isEqualToAction:(id)action
 {
-  v8 = a3;
+  actionCopy = action;
   v29.receiver = self;
   v29.super_class = SWUpdateCollaborationParticipantsAction;
-  if (![(SWAction *)&v29 isEqualToAction:v8]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (![(SWAction *)&v29 isEqualToAction:actionCopy]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v13 = 0;
     goto LABEL_32;
   }
 
-  v9 = v8;
-  v10 = [(SWUpdateCollaborationParticipantsAction *)self collaborationMetadata];
-  if (v10 || ([v9 collaborationMetadata], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  v9 = actionCopy;
+  collaborationMetadata = [(SWUpdateCollaborationParticipantsAction *)self collaborationMetadata];
+  if (collaborationMetadata || ([v9 collaborationMetadata], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(SWUpdateCollaborationParticipantsAction *)self collaborationMetadata];
-    v11 = [v9 collaborationMetadata];
-    if (([v4 isEqual:v11] & 1) == 0)
+    collaborationMetadata2 = [(SWUpdateCollaborationParticipantsAction *)self collaborationMetadata];
+    collaborationMetadata3 = [v9 collaborationMetadata];
+    if (([collaborationMetadata2 isEqual:collaborationMetadata3] & 1) == 0)
     {
 
       v13 = 0;
       goto LABEL_29;
     }
 
-    v28 = v11;
+    v28 = collaborationMetadata3;
     v12 = 1;
   }
 
@@ -150,39 +150,39 @@
     v12 = 0;
   }
 
-  v14 = [(SWUpdateCollaborationParticipantsAction *)self addedIdentities];
-  if (!v14)
+  addedIdentities = [(SWUpdateCollaborationParticipantsAction *)self addedIdentities];
+  if (!addedIdentities)
   {
-    v23 = [v9 addedIdentities];
-    if (!v23)
+    addedIdentities2 = [v9 addedIdentities];
+    if (!addedIdentities2)
     {
       v26 = 0;
       v27 = v12;
-      v23 = 0;
+      addedIdentities2 = 0;
       goto LABEL_20;
     }
   }
 
-  v6 = [(SWUpdateCollaborationParticipantsAction *)self addedIdentities];
-  v5 = [v9 addedIdentities];
-  if ([v6 isEqual:v5])
+  addedIdentities3 = [(SWUpdateCollaborationParticipantsAction *)self addedIdentities];
+  addedIdentities4 = [v9 addedIdentities];
+  if ([addedIdentities3 isEqual:addedIdentities4])
   {
     v26 = 1;
     v27 = v12;
 LABEL_20:
-    v15 = [(SWUpdateCollaborationParticipantsAction *)self removedIdentities];
-    if (v15 || ([v9 removedIdentities], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+    removedIdentities = [(SWUpdateCollaborationParticipantsAction *)self removedIdentities];
+    if (removedIdentities || ([v9 removedIdentities], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v24 = v4;
+      v24 = collaborationMetadata2;
       v25 = v3;
       v16 = [(SWUpdateCollaborationParticipantsAction *)self removedIdentities:v21];
-      v17 = [v9 removedIdentities];
-      v13 = [v16 isEqual:v17];
+      removedIdentities2 = [v9 removedIdentities];
+      v13 = [v16 isEqual:removedIdentities2];
 
-      if (v15)
+      if (removedIdentities)
       {
 
-        v4 = v24;
+        collaborationMetadata2 = v24;
         v3 = v25;
         v18 = v27;
         if (!v26)
@@ -193,7 +193,7 @@ LABEL_20:
         goto LABEL_24;
       }
 
-      v4 = v24;
+      collaborationMetadata2 = v24;
       v3 = v25;
       v18 = v27;
       v20 = v22;
@@ -209,7 +209,7 @@ LABEL_20:
     if ((v26 & 1) == 0)
     {
 LABEL_25:
-      if (!v14)
+      if (!addedIdentities)
       {
       }
 
@@ -226,7 +226,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (v14)
+  if (addedIdentities)
   {
   }
 
@@ -241,7 +241,7 @@ LABEL_28:
   }
 
 LABEL_29:
-  if (!v10)
+  if (!collaborationMetadata)
   {
   }
 
@@ -249,18 +249,18 @@ LABEL_32:
   return v13;
 }
 
-- (SWUpdateCollaborationParticipantsAction)initWithDestinationAction:(id)a3
+- (SWUpdateCollaborationParticipantsAction)initWithDestinationAction:(id)action
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 info];
-  v5 = [v4 objectForSetting:3];
+  actionCopy = action;
+  info = [actionCopy info];
+  v5 = [info objectForSetting:3];
 
-  v6 = [v3 info];
-  v7 = [v6 objectForSetting:4];
+  info2 = [actionCopy info];
+  v7 = [info2 objectForSetting:4];
 
-  v8 = [v3 info];
-  v32 = [v8 objectForSetting:5];
+  info3 = [actionCopy info];
+  v32 = [info3 objectForSetting:5];
 
   v9 = MEMORY[0x1E696ACD0];
   v10 = MEMORY[0x1E695DFD8];
@@ -292,7 +292,7 @@ LABEL_32:
   {
     v37.receiver = self;
     v37.super_class = SWUpdateCollaborationParticipantsAction;
-    v26 = [(SWAction *)&v37 initWithDestinationAction:v3];
+    v26 = [(SWAction *)&v37 initWithDestinationAction:actionCopy];
     p_isa = &v26->super.super.isa;
     if (v26)
     {
@@ -301,41 +301,41 @@ LABEL_32:
       objc_storeStrong(p_isa + 10, v25);
     }
 
-    v28 = p_isa;
-    v29 = v28;
+    selfCopy = p_isa;
+    v29 = selfCopy;
   }
 
   else
   {
     v29 = 0;
-    v28 = self;
+    selfCopy = self;
   }
 
   v30 = *MEMORY[0x1E69E9840];
   return v29;
 }
 
-- (void)encodeWithBSActionSettings:(id)a3
+- (void)encodeWithBSActionSettings:(id)settings
 {
   v14.receiver = self;
   v14.super_class = SWUpdateCollaborationParticipantsAction;
-  v4 = a3;
-  [(SWAction *)&v14 encodeWithBSActionSettings:v4];
+  settingsCopy = settings;
+  [(SWAction *)&v14 encodeWithBSActionSettings:settingsCopy];
   v5 = MEMORY[0x1E696ACC8];
   v6 = [(SWUpdateCollaborationParticipantsAction *)self collaborationMetadata:v14.receiver];
   v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
 
   v8 = MEMORY[0x1E696ACC8];
-  v9 = [(SWUpdateCollaborationParticipantsAction *)self addedIdentities];
-  v10 = [v8 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
+  addedIdentities = [(SWUpdateCollaborationParticipantsAction *)self addedIdentities];
+  v10 = [v8 archivedDataWithRootObject:addedIdentities requiringSecureCoding:1 error:0];
 
   v11 = MEMORY[0x1E696ACC8];
-  v12 = [(SWUpdateCollaborationParticipantsAction *)self removedIdentities];
-  v13 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:1 error:0];
+  removedIdentities = [(SWUpdateCollaborationParticipantsAction *)self removedIdentities];
+  v13 = [v11 archivedDataWithRootObject:removedIdentities requiringSecureCoding:1 error:0];
 
-  [v4 setObject:v7 forSetting:3];
-  [v4 setObject:v10 forSetting:4];
-  [v4 setObject:v13 forSetting:5];
+  [settingsCopy setObject:v7 forSetting:3];
+  [settingsCopy setObject:v10 forSetting:4];
+  [settingsCopy setObject:v13 forSetting:5];
 }
 
 @end

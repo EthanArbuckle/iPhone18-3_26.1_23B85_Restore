@@ -1,17 +1,17 @@
 @interface _TUIFeedCaptureSectionLoader
-- (_TUIFeedCaptureSectionLoader)initWithTemplateURL:(id)a3 uuid:(id)a4 bindings:(id)a5;
-- (id)feedEntry:(id)a3 requestDataWithPriority:(float)a4 block:(id)a5;
+- (_TUIFeedCaptureSectionLoader)initWithTemplateURL:(id)l uuid:(id)uuid bindings:(id)bindings;
+- (id)feedEntry:(id)entry requestDataWithPriority:(float)priority block:(id)block;
 - (void)_update;
-- (void)updateTemplateURL:(id)a3 bindings:(id)a4;
+- (void)updateTemplateURL:(id)l bindings:(id)bindings;
 @end
 
 @implementation _TUIFeedCaptureSectionLoader
 
-- (_TUIFeedCaptureSectionLoader)initWithTemplateURL:(id)a3 uuid:(id)a4 bindings:(id)a5
+- (_TUIFeedCaptureSectionLoader)initWithTemplateURL:(id)l uuid:(id)uuid bindings:(id)bindings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  uuidCopy = uuid;
+  bindingsCopy = bindings;
   v20.receiver = self;
   v20.super_class = _TUIFeedCaptureSectionLoader;
   v11 = [(_TUIFeedCaptureSectionLoader *)&v20 init];
@@ -19,15 +19,15 @@
   if (v11)
   {
     v11->_lock._os_unfair_lock_opaque = 0;
-    v13 = [v8 copy];
+    v13 = [lCopy copy];
     templateURL = v12->_templateURL;
     v12->_templateURL = v13;
 
-    v15 = [v9 copy];
+    v15 = [uuidCopy copy];
     uuid = v12->_uuid;
     v12->_uuid = v15;
 
-    v17 = [v10 copy];
+    v17 = [bindingsCopy copy];
     bindings = v12->_bindings;
     v12->_bindings = v17;
   }
@@ -35,11 +35,11 @@
   return v12;
 }
 
-- (id)feedEntry:(id)a3 requestDataWithPriority:(float)a4 block:(id)a5
+- (id)feedEntry:(id)entry requestDataWithPriority:(float)priority block:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [v6 copy];
+  v7 = [blockCopy copy];
 
   replyBlock = self->_replyBlock;
   self->_replyBlock = v7;
@@ -49,16 +49,16 @@
   return 0;
 }
 
-- (void)updateTemplateURL:(id)a3 bindings:(id)a4
+- (void)updateTemplateURL:(id)l bindings:(id)bindings
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  bindingsCopy = bindings;
   templateURL = self->_templateURL;
-  self->_templateURL = v6;
-  v9 = v6;
+  self->_templateURL = lCopy;
+  v9 = lCopy;
 
   bindings = self->_bindings;
-  self->_bindings = v7;
+  self->_bindings = bindingsCopy;
 
   [(_TUIFeedCaptureSectionLoader *)self _update];
 }

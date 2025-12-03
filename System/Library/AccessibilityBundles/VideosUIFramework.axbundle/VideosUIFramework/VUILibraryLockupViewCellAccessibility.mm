@@ -1,14 +1,14 @@
 @interface VUILibraryLockupViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation VUILibraryLockupViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUILibraryLockupViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUILibraryLockupViewCell" hasInstanceMethod:@"expirationLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUILibraryLockupViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUILibraryLockupViewCell" hasInstanceMethod:@"expirationLabel" withFullSignature:{"@", 0}];
 }
 
 @end

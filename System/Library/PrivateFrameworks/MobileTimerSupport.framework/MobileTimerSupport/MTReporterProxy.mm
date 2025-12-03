@@ -1,15 +1,15 @@
 @interface MTReporterProxy
-- (void)didCreateLiveActivityForAlarm:(id)a3 withId:(id)a4 date:(id)a5;
-- (void)didPostNotificationForAlarm:(id)a3 fullNotificationId:(id)a4 shortNotificationId:(id)a5;
-- (void)didRenderSceneForAlarm:(id)a3 withType:(id)a4;
-- (void)didRetrieveDeliveredNotificationForAlarm:(id)a3 date:(id)a4;
-- (void)didUpdateAudioReporterId:(unint64_t)a3;
-- (void)processFiredAlarm:(id)a3;
+- (void)didCreateLiveActivityForAlarm:(id)alarm withId:(id)id date:(id)date;
+- (void)didPostNotificationForAlarm:(id)alarm fullNotificationId:(id)id shortNotificationId:(id)notificationId;
+- (void)didRenderSceneForAlarm:(id)alarm withType:(id)type;
+- (void)didRetrieveDeliveredNotificationForAlarm:(id)alarm date:(id)date;
+- (void)didUpdateAudioReporterId:(unint64_t)id;
+- (void)processFiredAlarm:(id)alarm;
 @end
 
 @implementation MTReporterProxy
 
-- (void)processFiredAlarm:(id)a3
+- (void)processFiredAlarm:(id)alarm
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA01FF0, &qword_22D81FC70);
   v6 = *(*(v5 - 8) + 64);
@@ -21,30 +21,30 @@
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v10[5] = a3;
-  v11 = a3;
-  v12 = self;
+  v10[5] = alarm;
+  alarmCopy = alarm;
+  selfCopy = self;
   sub_22D75D890(0, 0, v8, &unk_22D820A88, v10);
 }
 
-- (void)didPostNotificationForAlarm:(id)a3 fullNotificationId:(id)a4 shortNotificationId:(id)a5
+- (void)didPostNotificationForAlarm:(id)alarm fullNotificationId:(id)id shortNotificationId:(id)notificationId
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA01FF0, &qword_22D81FC70);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v22 - v11;
-  if (a3)
+  if (alarm)
   {
-    a3 = sub_22D81B2C8();
+    alarm = sub_22D81B2C8();
     v14 = v13;
-    if (a4)
+    if (id)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v16 = 0;
-    if (a5)
+    if (notificationId)
     {
       goto LABEL_4;
     }
@@ -55,42 +55,42 @@ LABEL_7:
   }
 
   v14 = 0;
-  if (!a4)
+  if (!id)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  a4 = sub_22D81B2C8();
+  id = sub_22D81B2C8();
   v16 = v15;
-  if (!a5)
+  if (!notificationId)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  a5 = sub_22D81B2C8();
+  notificationId = sub_22D81B2C8();
   v18 = v17;
 LABEL_8:
-  v19 = self;
+  selfCopy = self;
   v20 = sub_22D81B4F8();
   (*(*(v20 - 8) + 56))(v12, 1, 1, v20);
   v21 = swift_allocObject();
   v21[2] = 0;
   v21[3] = 0;
-  v21[4] = v19;
-  v21[5] = a4;
+  v21[4] = selfCopy;
+  v21[5] = id;
   v21[6] = v16;
-  v21[7] = a5;
+  v21[7] = notificationId;
   v21[8] = v18;
-  v21[9] = a3;
+  v21[9] = alarm;
   v21[10] = v14;
   sub_22D75D890(0, 0, v12, &unk_22D820A80, v21);
 }
 
-- (void)didRetrieveDeliveredNotificationForAlarm:(id)a3 date:(id)a4
+- (void)didRetrieveDeliveredNotificationForAlarm:(id)alarm date:(id)date
 {
-  v24 = self;
+  selfCopy = self;
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA01FF0, &qword_22D81FC70);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x28223BE20](v4 - 8);
@@ -112,8 +112,8 @@ LABEL_8:
   v20 = swift_allocObject();
   *(v20 + 2) = 0;
   *(v20 + 3) = 0;
-  v21 = v24;
-  *(v20 + 4) = v24;
+  v21 = selfCopy;
+  *(v20 + 4) = selfCopy;
   *(v20 + 5) = v15;
   *(v20 + 6) = v17;
   (*(v9 + 32))(&v20[v19], v12, v8);
@@ -123,9 +123,9 @@ LABEL_8:
   (*(v9 + 8))(v14, v8);
 }
 
-- (void)didCreateLiveActivityForAlarm:(id)a3 withId:(id)a4 date:(id)a5
+- (void)didCreateLiveActivityForAlarm:(id)alarm withId:(id)id date:(id)date
 {
-  v30 = self;
+  selfCopy = self;
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA01FF0, &qword_22D81FC70);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
@@ -151,8 +151,8 @@ LABEL_8:
   *(v23 + 2) = 0;
   *(v23 + 3) = 0;
   v24 = v29;
-  v25 = v30;
-  *(v23 + 4) = v30;
+  v25 = selfCopy;
+  *(v23 + 4) = selfCopy;
   *(v23 + 5) = v24;
   *(v23 + 6) = v28;
   *(v23 + 7) = v18;
@@ -164,7 +164,7 @@ LABEL_8:
   (*(v10 + 8))(v15, v9);
 }
 
-- (void)didRenderSceneForAlarm:(id)a3 withType:(id)a4
+- (void)didRenderSceneForAlarm:(id)alarm withType:(id)type
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA01FF0, &qword_22D81FC70);
   v6 = *(*(v5 - 8) + 64);
@@ -184,11 +184,11 @@ LABEL_8:
   v16[6] = v11;
   v16[7] = v12;
   v16[8] = v14;
-  v17 = self;
+  selfCopy = self;
   sub_22D75D890(0, 0, v8, &unk_22D820A68, v16);
 }
 
-- (void)didUpdateAudioReporterId:(unint64_t)a3
+- (void)didUpdateAudioReporterId:(unint64_t)id
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA01FF0, &qword_22D81FC70);
   v6 = *(*(v5 - 8) + 64);
@@ -200,8 +200,8 @@ LABEL_8:
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v10[5] = a3;
-  v11 = self;
+  v10[5] = id;
+  selfCopy = self;
   sub_22D75D890(0, 0, v8, &unk_22D820A38, v10);
 }
 

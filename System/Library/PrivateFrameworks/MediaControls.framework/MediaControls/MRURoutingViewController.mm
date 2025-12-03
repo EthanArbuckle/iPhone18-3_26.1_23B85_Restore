@@ -1,51 +1,51 @@
 @interface MRURoutingViewController
-- (BOOL)_operationRequiresOptimisticState:(int64_t)a3 routes:(id)a4;
+- (BOOL)_operationRequiresOptimisticState:(int64_t)state routes:(id)routes;
 - (BOOL)_shouldShowShowMoreButton;
-- (BOOL)_wouldEndGroupSessionForViewItem:(id)a3 operation:(int64_t)a4 pickedRoutes:(id)a5;
-- (BOOL)_wouldShareAudioForPickedRoute:(id)a3 operation:(int64_t)a4 pickedRoutes:(id)a5;
+- (BOOL)_wouldEndGroupSessionForViewItem:(id)item operation:(int64_t)operation pickedRoutes:(id)routes;
+- (BOOL)_wouldShareAudioForPickedRoute:(id)route operation:(int64_t)operation pickedRoutes:(id)routes;
 - (BOOL)canUseUncoalescedResults;
-- (BOOL)handleSelectedRoutingViewItem:(id)a3 operation:(int64_t)a4;
+- (BOOL)handleSelectedRoutingViewItem:(id)item operation:(int64_t)operation;
 - (BOOL)hasCarKitRoute;
 - (BOOL)isInCarPlay;
 - (BOOL)isInVehicle;
-- (BOOL)isVendorSpecificGroupStatusRecorded:(id)a3;
-- (BOOL)routesContainAirPlayGroupableRoute:(id)a3;
-- (BOOL)routesContainMultipleBuiltIn:(id)a3;
-- (BOOL)routesContainSplitterCapableRoute:(id)a3;
+- (BOOL)isVendorSpecificGroupStatusRecorded:(id)recorded;
+- (BOOL)routesContainAirPlayGroupableRoute:(id)route;
+- (BOOL)routesContainMultipleBuiltIn:(id)in;
+- (BOOL)routesContainSplitterCapableRoute:(id)route;
 - (BOOL)shouldSuppressNativeRoutesStatusDisplay;
-- (BOOL)tableView:(id)a3 shouldHaveFullLengthBottomSeparatorForSection:(int64_t)a4;
-- (BOOL)wasVendorSpecificGroupDisplayedAsExpanded:(id)a3;
+- (BOOL)tableView:(id)view shouldHaveFullLengthBottomSeparatorForSection:(int64_t)section;
+- (BOOL)wasVendorSpecificGroupDisplayedAsExpanded:(id)expanded;
 - (MRURoutingViewController)init;
-- (MRURoutingViewController)initWithRoutingController:(id)a3;
+- (MRURoutingViewController)initWithRoutingController:(id)controller;
 - (MRURoutingViewControllerDelegate)delegate;
 - (UIEdgeInsets)contentEdgeInsets;
 - (UIEdgeInsets)scrollIndicatorInsets;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_airPlayRoutesInRoutes:(id)a3;
-- (id)_createRoutingViewItemsForUpdate:(id)a3;
-- (id)_createSectionedCollection:(id)a3 withPickedRoutes:(id)a4;
-- (id)_displayAsPickedRoutesInRoutes:(id)a3;
-- (id)_displayableRoutesInRoutes:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_airPlayRoutesInRoutes:(id)routes;
+- (id)_createRoutingViewItemsForUpdate:(id)update;
+- (id)_createSectionedCollection:(id)collection withPickedRoutes:(id)routes;
+- (id)_displayAsPickedRoutesInRoutes:(id)routes;
+- (id)_displayableRoutesInRoutes:(id)routes;
 - (id)_fullStateDumpObject;
-- (id)_mergeRoutes:(id)a3 withCoalescedResult:(id)a4;
-- (id)_recommendedRoutesFromRoutes:(id)a3;
+- (id)_mergeRoutes:(id)routes withCoalescedResult:(id)result;
+- (id)_recommendedRoutesFromRoutes:(id)routes;
 - (id)_stateDumpObject;
 - (id)endpointGroupUID;
-- (id)groupUIDForRoute:(id)a3;
-- (id)symbolNameForVendorSpecificRoute:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)subtitleAccessoryForItem:(id)a3 nowPlayingInfo:(id)a4;
-- (void)_applyUpdate:(id)a3;
+- (id)groupUIDForRoute:(id)route;
+- (id)symbolNameForVendorSpecificRoute:(id)route;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)subtitleAccessoryForItem:(id)item nowPlayingInfo:(id)info;
+- (void)_applyUpdate:(id)update;
 - (void)_collapseAllGroups;
 - (void)_collapseAllGroupsAfterDelay;
-- (void)_configureVolumeForUpdate:(id)a3 volumeCapableRoutes:(id *)a4 volumeController:(id *)a5;
-- (void)_createUpdateWithRefreshOnly:(BOOL)a3 completion:(id)a4;
-- (void)_displayEndGroupSessionWithCompletion:(id)a3;
-- (void)_displayGroupSessionAlertWithTitle:(id)a3 body:(id)a4 confirmTitle:(id)a5 cancelTitle:(id)a6 completion:(id)a7;
-- (void)_displayShareAudioDisabledAlertForReason:(id)a3;
-- (void)_enqueueUpdate:(id)a3;
+- (void)_configureVolumeForUpdate:(id)update volumeCapableRoutes:(id *)routes volumeController:(id *)controller;
+- (void)_createUpdateWithRefreshOnly:(BOOL)only completion:(id)completion;
+- (void)_displayEndGroupSessionWithCompletion:(id)completion;
+- (void)_displayGroupSessionAlertWithTitle:(id)title body:(id)body confirmTitle:(id)confirmTitle cancelTitle:(id)cancelTitle completion:(id)completion;
+- (void)_displayShareAudioDisabledAlertForReason:(id)reason;
+- (void)_enqueueUpdate:(id)update;
 - (void)_refreshDisplayedRoutes;
 - (void)_reloadDisplayedRoutes;
 - (void)_setNeedsDisplayedRoutesUpdate;
@@ -53,63 +53,63 @@
 - (void)_setupUpdateTimerIfNecessary;
 - (void)_updateDisplayedRoutes;
 - (void)_updateGroupSessionDiscovery;
-- (void)applyVendorSpecificGroupExpandedRecord:(id)a3;
-- (void)clearVendorSpecificGroupExpandedRecordFor:(id)a3;
+- (void)applyVendorSpecificGroupExpandedRecord:(id)record;
+- (void)clearVendorSpecificGroupExpandedRecordFor:(id)for;
 - (void)dealloc;
-- (void)didReceiveInteraction:(id)a3;
-- (void)ensureVendorSpecificGroupTreeIsVisible:(id)a3;
-- (void)fetchAvailableRoutesWithCompletionHandler:(id)a3;
-- (void)groupSession:(id)a3 didInvalidateWithError:(id)a4;
-- (void)groupSessionDidConnect:(id)a3;
-- (void)groupSessionDiscovery:(id)a3 activeSessionDidChange:(id)a4;
-- (void)groupSessionDiscovery:(id)a3 discoveredSessionsDidChange:(id)a4;
-- (void)handleGroupSessionJoinWithPickedRoute:(id)a3;
+- (void)didReceiveInteraction:(id)interaction;
+- (void)ensureVendorSpecificGroupTreeIsVisible:(id)visible;
+- (void)fetchAvailableRoutesWithCompletionHandler:(id)handler;
+- (void)groupSession:(id)session didInvalidateWithError:(id)error;
+- (void)groupSessionDidConnect:(id)connect;
+- (void)groupSessionDiscovery:(id)discovery activeSessionDidChange:(id)change;
+- (void)groupSessionDiscovery:(id)discovery discoveredSessionsDidChange:(id)change;
+- (void)handleGroupSessionJoinWithPickedRoute:(id)route;
 - (void)hearingAidConnectionDidChange;
 - (void)loadView;
-- (void)playingSessionsDidChangeNotification:(id)a3;
+- (void)playingSessionsDidChangeNotification:(id)notification;
 - (void)resetDisplayedRoutes;
-- (void)routingCellDidTapToExpand:(id)a3;
-- (void)routingController:(id)a3 shouldHijackRoute:(id)a4 alertStyle:(int64_t)a5 busyRouteName:(id)a6 presentingAppName:(id)a7 completion:(id)a8;
-- (void)routingControllerAvailableRoutesDidChange:(id)a3;
-- (void)selectRoutes:(id)a3 operation:(int64_t)a4 routingViewItem:(id)a5;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setCustomRows:(id)a3;
-- (void)setDiscoveryMode:(int64_t)a3;
-- (void)setEndpointRoute:(id)a3;
-- (void)setGroupSessionDiscovery:(id)a3;
-- (void)setNowPlayingControllers:(id)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setOptimisticUpdate:(id)a3;
-- (void)setPresentingAppBundleID:(id)a3;
-- (void)setRoutingController:(id)a3;
-- (void)setScrollIndicatorInsets:(UIEdgeInsets)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setVendorSpecificManager:(id)a3;
-- (void)setVolumeGroupCoordinator:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forIndexPath:(id)a4;
+- (void)routingCellDidTapToExpand:(id)expand;
+- (void)routingController:(id)controller shouldHijackRoute:(id)route alertStyle:(int64_t)style busyRouteName:(id)name presentingAppName:(id)appName completion:(id)completion;
+- (void)routingControllerAvailableRoutesDidChange:(id)change;
+- (void)selectRoutes:(id)routes operation:(int64_t)operation routingViewItem:(id)item;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setCustomRows:(id)rows;
+- (void)setDiscoveryMode:(int64_t)mode;
+- (void)setEndpointRoute:(id)route;
+- (void)setGroupSessionDiscovery:(id)discovery;
+- (void)setNowPlayingControllers:(id)controllers;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setOptimisticUpdate:(id)update;
+- (void)setPresentingAppBundleID:(id)d;
+- (void)setRoutingController:(id)controller;
+- (void)setScrollIndicatorInsets:(UIEdgeInsets)insets;
+- (void)setStylingProvider:(id)provider;
+- (void)setVendorSpecificManager:(id)manager;
+- (void)setVolumeGroupCoordinator:(id)coordinator;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forIndexPath:(id)path;
 - (void)updateExpandedGroups;
-- (void)updateHeaderView:(id)a3 forSection:(int64_t)a4;
+- (void)updateHeaderView:(id)view forSection:(int64_t)section;
 - (void)updateMetadata;
-- (void)updateMetadataForNowPlayingController:(id)a3;
-- (void)updateNowPlayingControllersForRoutes:(id)a3;
+- (void)updateMetadataForNowPlayingController:(id)controller;
+- (void)updateNowPlayingControllersForRoutes:(id)routes;
 - (void)updateSubtitle;
-- (void)updateVendorSpecificCell:(id)a3 forIndexPath:(id)a4;
-- (void)updateVendorSpecificCustomRowCell:(id)a3 forIndexPath:(id)a4;
-- (void)updateVendorSpecificGroupExpandedRecordFor:(id)a3;
-- (void)updateVendorSpecificSpeakerGroupCell:(id)a3 forIndexPath:(id)a4;
-- (void)updateVendorSpecificSubRouteCell:(id)a3 forIndexPath:(id)a4;
-- (void)vendorSpecificCellDidTapToExpand:(id)a3;
-- (void)vendorSpecificManager:(id)a3 deviceNowPlayingInfoDidChange:(id)a4;
-- (void)vendorSpecificManager:(id)a3 deviceStateDidChange:(id)a4;
-- (void)vendorSpecificManagerDeviceListDidChange:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateVendorSpecificCell:(id)cell forIndexPath:(id)path;
+- (void)updateVendorSpecificCustomRowCell:(id)cell forIndexPath:(id)path;
+- (void)updateVendorSpecificGroupExpandedRecordFor:(id)for;
+- (void)updateVendorSpecificSpeakerGroupCell:(id)cell forIndexPath:(id)path;
+- (void)updateVendorSpecificSubRouteCell:(id)cell forIndexPath:(id)path;
+- (void)vendorSpecificCellDidTapToExpand:(id)expand;
+- (void)vendorSpecificManager:(id)manager deviceNowPlayingInfoDidChange:(id)change;
+- (void)vendorSpecificManager:(id)manager deviceStateDidChange:(id)change;
+- (void)vendorSpecificManagerDeviceListDidChange:(id)change;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MRURoutingViewController
@@ -125,16 +125,16 @@
   return v7;
 }
 
-- (MRURoutingViewController)initWithRoutingController:(id)a3
+- (MRURoutingViewController)initWithRoutingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v28.receiver = self;
   v28.super_class = MRURoutingViewController;
   v6 = [(MRURoutingViewController *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_routingController, a3);
+    objc_storeStrong(&v6->_routingController, controller);
     [(MPAVRoutingController *)v7->_routingController setDelegate:v7];
     v7->_discoveryMode = 0;
     v8 = [MEMORY[0x1E695DFA8] set];
@@ -157,9 +157,9 @@
     expandedVendorSpecificGroupUIDs = v7->_expandedVendorSpecificGroupUIDs;
     v7->_expandedVendorSpecificGroupUIDs = v16;
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     vendorSpecificGroupDisplayedSubroutes = v7->_vendorSpecificGroupDisplayedSubroutes;
-    v7->_vendorSpecificGroupDisplayedSubroutes = v18;
+    v7->_vendorSpecificGroupDisplayedSubroutes = dictionary;
 
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
@@ -168,13 +168,13 @@
     v20 = v7;
     v27 = v20;
     v20->_stateHandle = __54__MRURoutingViewController_initWithRoutingController___block_invoke(v26);
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     staticCustomRowItems = v20->_staticCustomRowItems;
-    v20->_staticCustomRowItems = v21;
+    v20->_staticCustomRowItems = array;
 
     v20->_didExpandVendorSpecificSpeakerGroup = 0;
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 addObserver:v20 selector:sel_routeRecommenderDidUpdateRecommendations_ name:MRURouteRecommenderDidUpdateRecommendationsNotification object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v20 selector:sel_routeRecommenderDidUpdateRecommendations_ name:MRURouteRecommenderDidUpdateRecommendationsNotification object:0];
 
     v24 = +[MRURouteRecommender sharedInstance];
     [v24 updateRecommendations];
@@ -224,22 +224,22 @@ id __54__MRURoutingViewController_initWithRoutingController___block_invoke_2(uin
   return v4;
 }
 
-- (void)setRoutingController:(id)a3
+- (void)setRoutingController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(MPAVRoutingController *)self->_routingController setDelegate:0];
   routingController = self->_routingController;
-  self->_routingController = v4;
-  v6 = v4;
+  self->_routingController = controllerCopy;
+  v6 = controllerCopy;
 
   [(MPAVRoutingController *)self->_routingController setDelegate:self];
   [(MRURoutingViewController *)self _setNeedsRouteDiscoveryModeUpdate];
   [(MRURoutingViewController *)self _setNeedsDisplayedRoutesUpdate];
   [(MRURoutingViewController *)self updateMetadata];
   [(MRURoutingViewController *)self updateSubtitle];
-  v8 = [(MRURoutingViewController *)self view];
-  v7 = [v8 tableView];
-  [v7 reloadData];
+  view = [(MRURoutingViewController *)self view];
+  tableView = [view tableView];
+  [tableView reloadData];
 }
 
 - (void)dealloc
@@ -270,45 +270,45 @@ id __54__MRURoutingViewController_initWithRoutingController___block_invoke_2(uin
   left = self->_contentEdgeInsets.left;
   bottom = self->_contentEdgeInsets.bottom;
   right = self->_contentEdgeInsets.right;
-  v7 = [(MRURoutingViewController *)self view];
-  [v7 setContentEdgeInsets:{top, left, bottom, right}];
+  view = [(MRURoutingViewController *)self view];
+  [view setContentEdgeInsets:{top, left, bottom, right}];
 
   v8 = self->_scrollIndicatorInsets.top;
   v9 = self->_scrollIndicatorInsets.left;
   v10 = self->_scrollIndicatorInsets.bottom;
   v11 = self->_scrollIndicatorInsets.right;
-  v12 = [(MRURoutingViewController *)self view];
-  v13 = [v12 tableView];
-  [v13 setScrollIndicatorInsets:{v8, v9, v10, v11}];
+  view2 = [(MRURoutingViewController *)self view];
+  tableView = [view2 tableView];
+  [tableView setScrollIndicatorInsets:{v8, v9, v10, v11}];
 
-  v14 = [(MRURoutingViewController *)self view];
-  v15 = [v14 tableView];
+  view3 = [(MRURoutingViewController *)self view];
+  tableView2 = [view3 tableView];
   v16 = objc_opt_class();
   v17 = objc_opt_class();
   v18 = NSStringFromClass(v17);
-  [v15 registerClass:v16 forHeaderFooterViewReuseIdentifier:v18];
+  [tableView2 registerClass:v16 forHeaderFooterViewReuseIdentifier:v18];
 
-  v19 = [(MRURoutingViewController *)self view];
-  v20 = [v19 tableView];
+  view4 = [(MRURoutingViewController *)self view];
+  tableView3 = [view4 tableView];
   v21 = objc_opt_class();
   v22 = objc_opt_class();
   v23 = NSStringFromClass(v22);
-  [v20 registerClass:v21 forHeaderFooterViewReuseIdentifier:v23];
+  [tableView3 registerClass:v21 forHeaderFooterViewReuseIdentifier:v23];
 
-  v24 = [(MRURoutingViewController *)self view];
-  v25 = [v24 tableView];
+  view5 = [(MRURoutingViewController *)self view];
+  tableView4 = [view5 tableView];
   v26 = objc_opt_class();
   v27 = objc_opt_class();
   v28 = NSStringFromClass(v27);
-  [v25 registerClass:v26 forCellReuseIdentifier:v28];
+  [tableView4 registerClass:v26 forCellReuseIdentifier:v28];
 
-  v29 = [(MRURoutingViewController *)self view];
-  v30 = [v29 tableView];
-  [v30 setDataSource:self];
+  view6 = [(MRURoutingViewController *)self view];
+  tableView5 = [view6 tableView];
+  [tableView5 setDataSource:self];
 
-  v31 = [(MRURoutingViewController *)self view];
-  v32 = [v31 tableView];
-  [v32 setDelegate:self];
+  view7 = [(MRURoutingViewController *)self view];
+  tableView6 = [view7 tableView];
+  [tableView6 setDelegate:self];
 
   [(MRURoutingViewController *)self _updateGroupSessionDiscovery];
   v33 = dispatch_get_global_queue(0, 0);
@@ -333,8 +333,8 @@ id __54__MRURoutingViewController_initWithRoutingController___block_invoke_2(uin
   [(NSNumberFormatter *)self->_percentageFormatter setUsesGroupingSeparator:0];
   v38 = [[MediaControlsInteractionRecognizer alloc] initWithTarget:self action:sel_didReceiveInteraction_];
   [(MediaControlsInteractionRecognizer *)v38 setCancelsTouchesInView:0];
-  v39 = [(MRURoutingViewController *)self view];
-  [v39 addGestureRecognizer:v38];
+  view8 = [(MRURoutingViewController *)self view];
+  [view8 addGestureRecognizer:v38];
 
   [(MediaControlsInteractionRecognizer *)v38 setDelegate:self];
   objc_initWeak(&location, self);
@@ -379,28 +379,28 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MRURoutingViewController;
-  [(MRURoutingViewController *)&v4 viewWillAppear:a3];
+  [(MRURoutingViewController *)&v4 viewWillAppear:appear];
   [(MRURoutingViewController *)self setOnScreen:1];
   [(MRURoutingViewController *)self playingSessionsDidChangeNotification:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MRURoutingViewController;
-  [(MRURoutingViewController *)&v4 viewWillDisappear:a3];
+  [(MRURoutingViewController *)&v4 viewWillDisappear:disappear];
   [(MRURoutingViewController *)self setOnScreen:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MRURoutingViewController;
-  [(MRURoutingViewController *)&v5 viewDidDisappear:a3];
+  [(MRURoutingViewController *)&v5 viewDidDisappear:disappear];
   [(MPWeakTimer *)self->_updateTimer invalidate];
   updateTimer = self->_updateTimer;
   self->_updateTimer = 0;
@@ -410,11 +410,11 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   [(MRURoutingViewController *)self resetDisplayedRoutes];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MRURoutingViewController;
-  [(MRURoutingViewController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(MRURoutingViewController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   if (!self->_onScreen)
   {
     [(MPWeakTimer *)self->_updateTimer invalidate];
@@ -423,42 +423,42 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setDiscoveryMode:(int64_t)a3
+- (void)setDiscoveryMode:(int64_t)mode
 {
-  if (self->_discoveryMode != a3)
+  if (self->_discoveryMode != mode)
   {
-    self->_discoveryMode = a3;
+    self->_discoveryMode = mode;
     [(MRURoutingViewController *)self _setNeedsRouteDiscoveryModeUpdate];
   }
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    self->_onScreen = a3;
+    self->_onScreen = screen;
     [(MRURoutingViewController *)self _setNeedsRouteDiscoveryModeUpdate];
     [(MRURoutingViewController *)self _setNeedsDisplayedRoutesUpdate];
     [(MRURoutingViewController *)self updateMetadata];
     [(MRURoutingViewController *)self updateSubtitle];
     if (self->_onScreen)
     {
-      v5 = [(MRURoutingViewController *)self view];
-      v4 = [v5 tableView];
-      [v4 reloadData];
+      view = [(MRURoutingViewController *)self view];
+      tableView = [view tableView];
+      [tableView reloadData];
     }
   }
 }
 
-- (void)setVolumeGroupCoordinator:(id)a3
+- (void)setVolumeGroupCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   volumeGroupCoordinator = self->_volumeGroupCoordinator;
-  v8 = v5;
-  if (volumeGroupCoordinator != v5)
+  v8 = coordinatorCopy;
+  if (volumeGroupCoordinator != coordinatorCopy)
   {
     [(MRUVolumeGroupCoordinator *)volumeGroupCoordinator setVolumeControllers:0];
-    objc_storeStrong(&self->_volumeGroupCoordinator, a3);
+    objc_storeStrong(&self->_volumeGroupCoordinator, coordinator);
     outputDeviceVolumeControllers = self->_outputDeviceVolumeControllers;
     self->_outputDeviceVolumeControllers = 0;
   }
@@ -466,12 +466,12 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   [(MRURoutingViewController *)self _reloadDisplayedRoutes];
 }
 
-- (void)setNowPlayingControllers:(id)a3
+- (void)setNowPlayingControllers:(id)controllers
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_nowPlayingControllers, a3);
-  v25 = self;
+  controllersCopy = controllers;
+  objc_storeStrong(&self->_nowPlayingControllers, controllers);
+  selfCopy = self;
   v6 = [(NSArray *)self->_cachedDisplayableAvailableRoutes mutableCopy];
   v7 = MEMORY[0x1E695DFA8];
   v8 = [v6 msv_compactMap:&__block_literal_global_27];
@@ -481,7 +481,7 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v5;
+  obj = controllersCopy;
   v28 = [obj countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v28)
   {
@@ -497,17 +497,17 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
         }
 
         v30 = v10;
-        v11 = [*(*(&v35 + 1) + 8 * v10) endpointController];
-        v12 = [v11 route];
-        v13 = [v12 endpointObject];
+        endpointController = [*(*(&v35 + 1) + 8 * v10) endpointController];
+        route = [endpointController route];
+        endpointObject = [route endpointObject];
 
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v29 = v13;
-        v14 = [v13 outputDevices];
-        v15 = [v14 countByEnumeratingWithState:&v31 objects:v40 count:16];
+        v29 = endpointObject;
+        outputDevices = [endpointObject outputDevices];
+        v15 = [outputDevices countByEnumeratingWithState:&v31 objects:v40 count:16];
         if (v15)
         {
           v16 = v15;
@@ -518,7 +518,7 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
             {
               if (*v32 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(outputDevices);
               }
 
               v19 = *(*(&v31 + 1) + 8 * i);
@@ -535,7 +535,7 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v31 objects:v40 count:16];
+            v16 = [outputDevices countByEnumeratingWithState:&v31 objects:v40 count:16];
           }
 
           while (v16);
@@ -551,16 +551,16 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
     while (v28);
   }
 
-  [(MRURoutingViewController *)v25 updateNowPlayingControllersForRoutes:v6];
-  [(MRURoutingViewController *)v25 updateMetadata];
+  [(MRURoutingViewController *)selfCopy updateNowPlayingControllersForRoutes:v6];
+  [(MRURoutingViewController *)selfCopy updateMetadata];
 }
 
-- (void)setPresentingAppBundleID:(id)a3
+- (void)setPresentingAppBundleID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   v5 = self->_presentingAppBundleID;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == dCopy)
   {
   }
 
@@ -570,20 +570,20 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_presentingAppBundleID, a3);
+      objc_storeStrong(&self->_presentingAppBundleID, d);
       [(MRURoutingViewController *)self _updateGroupSessionDiscovery];
     }
   }
 }
 
-- (void)setGroupSessionDiscovery:(id)a3
+- (void)setGroupSessionDiscovery:(id)discovery
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_groupSessionDiscovery != v5 && ([(MRGroupSessionDiscovery *)v5 isEqual:?]& 1) == 0)
+  discoveryCopy = discovery;
+  v6 = discoveryCopy;
+  if (self->_groupSessionDiscovery != discoveryCopy && ([(MRGroupSessionDiscovery *)discoveryCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_groupSessionDiscovery, a3);
+    objc_storeStrong(&self->_groupSessionDiscovery, discovery);
     v7 = MCLogCategoryDefault();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -602,8 +602,8 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
 
 - (BOOL)isInCarPlay
 {
-  v2 = [(CARSessionStatus *)self->_carPlaySessionStatus currentSession];
-  v3 = v2 != 0;
+  currentSession = [(CARSessionStatus *)self->_carPlaySessionStatus currentSession];
+  v3 = currentSession != 0;
 
   return v3;
 }
@@ -615,8 +615,8 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(MPAVRoutingController *)self->_routingController availableRoutes];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  availableRoutes = [(MPAVRoutingController *)self->_routingController availableRoutes];
+  v3 = [availableRoutes countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -626,7 +626,7 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(availableRoutes);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) routeSubtype] == 19)
@@ -636,7 +636,7 @@ void __39__MRURoutingViewController_viewDidLoad__block_invoke_2(uint64_t a1)
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [availableRoutes countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -663,20 +663,20 @@ LABEL_11:
 
 - (BOOL)canUseUncoalescedResults
 {
-  v2 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager devices];
-  v3 = [v2 count] == 0;
+  devices = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager devices];
+  v3 = [devices count] == 0;
 
   return v3;
 }
 
 - (BOOL)shouldSuppressNativeRoutesStatusDisplay
 {
-  v3 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
+  activatedDeviceIDs = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
 
-  if (v3 && !self->_presentingAppHasActiveAVSession)
+  if (activatedDeviceIDs && !self->_presentingAppHasActiveAVSession)
   {
-    v5 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
-    if ([v5 count])
+    activatedDeviceIDs2 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
+    if ([activatedDeviceIDs2 count])
     {
       v4 = !self->_didLastPickNativeRoute;
     }
@@ -702,63 +702,63 @@ LABEL_11:
   [(MRURoutingViewController *)self _updateDisplayedRoutes];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  objc_storeStrong(&self->_stylingProvider, a3);
+  objc_storeStrong(&self->_stylingProvider, provider);
 
   [(MRURoutingViewController *)self _setNeedsDisplayedRoutesUpdate];
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  self->_contentEdgeInsets = a3;
-  v8 = [(MRURoutingViewController *)self viewIfLoaded];
-  [v8 setContentEdgeInsets:{top, left, bottom, right}];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  self->_contentEdgeInsets = insets;
+  viewIfLoaded = [(MRURoutingViewController *)self viewIfLoaded];
+  [viewIfLoaded setContentEdgeInsets:{top, left, bottom, right}];
 
   [(MRURoutingViewController *)self _reloadDisplayedRoutes];
 }
 
-- (void)setScrollIndicatorInsets:(UIEdgeInsets)a3
+- (void)setScrollIndicatorInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  self->_scrollIndicatorInsets = a3;
-  v8 = [(MRURoutingViewController *)self view];
-  v7 = [v8 tableView];
-  [v7 setScrollIndicatorInsets:{top, left, bottom, right}];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  self->_scrollIndicatorInsets = insets;
+  view = [(MRURoutingViewController *)self view];
+  tableView = [view tableView];
+  [tableView setScrollIndicatorInsets:{top, left, bottom, right}];
 }
 
-- (void)setVendorSpecificManager:(id)a3
+- (void)setVendorSpecificManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_vendorSpecificManager, a3);
+    v8 = managerCopy;
+    objc_storeStrong(&self->_vendorSpecificManager, manager);
     [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager setDelegate:self];
-    v6 = [(MRURoutingViewController *)self view];
-    v7 = [v6 tableView];
-    [v7 reloadData];
+    view = [(MRURoutingViewController *)self view];
+    tableView = [view tableView];
+    [tableView reloadData];
 
-    v5 = v8;
+    managerCopy = v8;
   }
 }
 
-- (void)setCustomRows:(id)a3
+- (void)setCustomRows:(id)rows
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_customRows, a3);
-  v39 = self;
+  rowsCopy = rows;
+  objc_storeStrong(&self->_customRows, rows);
+  selfCopy = self;
   if (!self->_staticCustomRowItems)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(rowsCopy, "count")}];
     staticCustomRowItems = self->_staticCustomRowItems;
     self->_staticCustomRowItems = v6;
   }
@@ -767,7 +767,7 @@ LABEL_11:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v8 = v5;
+  v8 = rowsCopy;
   v41 = [v8 countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v41)
   {
@@ -787,15 +787,15 @@ LABEL_11:
         }
 
         v13 = *(*(&v42 + 1) + 8 * i);
-        v14 = [v13 type];
+        type = [v13 type];
         v15 = *(v11 + 2624);
-        v16 = [v14 identifier];
-        v17 = [v15 symbolForTypeIdentifier:v16 error:0];
+        identifier = [type identifier];
+        v17 = [v15 symbolForTypeIdentifier:identifier error:0];
 
         if (v17)
         {
-          v18 = [MEMORY[0x1E69DCEB0] mainScreen];
-          [v18 scale];
+          mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+          [mainScreen scale];
           v20 = [v17 imageForSize:20.0 scale:{20.0, v19}];
 
           v21 = [MEMORY[0x1E69DCAB8] imageWithCGImage:{objc_msgSend(v20, "CGImage")}];
@@ -804,41 +804,41 @@ LABEL_11:
           if (v22)
           {
             v40 = v22;
-            v23 = [v14 localizedDescription];
+            localizedDescription = [type localizedDescription];
 
-            if (v23)
+            if (localizedDescription)
             {
-              v24 = [v14 localizedDescription];
-              v25 = [v13 titleOverride];
-              if (v25)
+              localizedDescription2 = [type localizedDescription];
+              titleOverride = [v13 titleOverride];
+              if (titleOverride)
               {
-                v26 = v25;
-                v27 = [v13 titleOverride];
-                v28 = [v27 isEqualToString:&stru_1F1445548];
+                v26 = titleOverride;
+                titleOverride2 = [v13 titleOverride];
+                v28 = [titleOverride2 isEqualToString:&stru_1F1445548];
 
                 if ((v28 & 1) == 0)
                 {
-                  v29 = [v13 titleOverride];
+                  titleOverride3 = [v13 titleOverride];
 
-                  v24 = v29;
+                  localizedDescription2 = titleOverride3;
                 }
               }
 
               v30 = MCLogCategoryDeviceAccess();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
               {
-                v31 = [v13 identifier];
+                identifier2 = [v13 identifier];
                 *buf = v36;
-                v47 = v24;
+                v47 = localizedDescription2;
                 v48 = 2112;
-                v49 = v31;
+                v49 = identifier2;
                 _os_log_impl(&dword_1A20FC000, v30, OS_LOG_TYPE_DEFAULT, "MRURoutingViewController - Adding Custom Row with title: %@, identifier: %@", buf, 0x16u);
               }
 
-              v32 = v39->_staticCustomRowItems;
+              v32 = selfCopy->_staticCustomRowItems;
               v33 = MEMORY[0x1E6970498];
-              v34 = [v13 identifier];
-              v35 = [v33 itemWithVendorSpecificCustomRowTitle:v24 icon:v40 identifier:v34];
+              identifier3 = [v13 identifier];
+              v35 = [v33 itemWithVendorSpecificCustomRowTitle:localizedDescription2 icon:v40 identifier:identifier3];
               [(NSMutableArray *)v32 addObject:v35];
 
               v10 = v37;
@@ -856,9 +856,9 @@ LABEL_11:
   }
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 0.0;
   }
@@ -873,84 +873,84 @@ LABEL_11:
   return result;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = [MEMORY[0x1E69DB878] mru_routingTitleFont];
-  [v5 lineHeight];
+  mru_routingTitleFont = [MEMORY[0x1E69DB878] mru_routingTitleFont];
+  [mru_routingTitleFont lineHeight];
 
-  v6 = [MEMORY[0x1E69DB878] mru_routingSubtitleFont];
-  [v6 lineHeight];
+  mru_routingSubtitleFont = [MEMORY[0x1E69DB878] mru_routingSubtitleFont];
+  [mru_routingSubtitleFont lineHeight];
 
-  v7 = [(MRURoutingViewController *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(MRURoutingViewController *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v9 = v8;
 
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessibilityIdentifier:0];
-  v11 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v6];
-  v12 = [v11 type];
-  if (v12 > 5)
+  v11 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:pathCopy];
+  type = [v11 type];
+  if (type > 5)
   {
-    if (v12 == 6)
+    if (type == 6)
     {
       [v10 setIsVendorSpecific:1];
-      [(MRURoutingViewController *)self updateVendorSpecificCustomRowCell:v10 forIndexPath:v6];
+      [(MRURoutingViewController *)self updateVendorSpecificCustomRowCell:v10 forIndexPath:pathCopy];
       goto LABEL_11;
     }
 
-    if (v12 == 7)
+    if (type == 7)
     {
       [v10 setIsVendorSpecific:1];
-      [(MRURoutingViewController *)self updateVendorSpecificSpeakerGroupCell:v10 forIndexPath:v6];
+      [(MRURoutingViewController *)self updateVendorSpecificSpeakerGroupCell:v10 forIndexPath:pathCopy];
       goto LABEL_11;
     }
   }
 
   else
   {
-    if ((v12 - 3) < 2)
+    if ((type - 3) < 2)
     {
       [v10 setIsVendorSpecific:1];
-      [(MRURoutingViewController *)self updateVendorSpecificCell:v10 forIndexPath:v6];
+      [(MRURoutingViewController *)self updateVendorSpecificCell:v10 forIndexPath:pathCopy];
       goto LABEL_11;
     }
 
-    if (v12 == 5)
+    if (type == 5)
     {
       [v10 setIsVendorSpecific:1];
-      [(MRURoutingViewController *)self updateVendorSpecificSubRouteCell:v10 forIndexPath:v6];
+      [(MRURoutingViewController *)self updateVendorSpecificSubRouteCell:v10 forIndexPath:pathCopy];
       goto LABEL_11;
     }
   }
 
   [v10 setIsVendorSpecific:0];
-  [(MRURoutingViewController *)self updateCell:v10 forIndexPath:v6];
+  [(MRURoutingViewController *)self updateCell:v10 forIndexPath:pathCopy];
 LABEL_11:
 
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
     if (+[MRUFeatureFlagProvider isNewControlsEnabled])
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v8];
+      v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v8];
 
       [v9 setStylingProvider:self->_stylingProvider];
     }
@@ -959,9 +959,9 @@ LABEL_11:
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v11];
+      v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v11];
 
-      [(MRURoutingViewController *)self updateHeaderView:v9 forSection:a4];
+      [(MRURoutingViewController *)self updateHeaderView:v9 forSection:section];
     }
   }
 
@@ -973,28 +973,28 @@ LABEL_11:
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v91 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v7];
-  v9 = [v8 mainRoute];
-  if (([(MPAVRoutingController *)self->_routingController routeIsPendingPick:v9]& 1) != 0)
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:pathCopy];
+  mainRoute = [v8 mainRoute];
+  if (([(MPAVRoutingController *)self->_routingController routeIsPendingPick:mainRoute]& 1) != 0)
   {
     LOBYTE(v10) = 0;
   }
 
   else
   {
-    v10 = [v9 isPicked] ^ 1;
+    v10 = [mainRoute isPicked] ^ 1;
   }
 
-  v11 = [(MPAVRoutingController *)self->_routingController routeIsPendingPick:v9];
+  v11 = [(MPAVRoutingController *)self->_routingController routeIsPendingPick:mainRoute];
   if (v11)
   {
-    LOBYTE(v11) = [v9 isPicked];
+    LOBYTE(v11) = [mainRoute isPicked];
   }
 
   v12 = v10 | v11;
@@ -1008,20 +1008,20 @@ LABEL_11:
     v13 = 2;
   }
 
-  v74 = [v6 cellForRowAtIndexPath:v7];
+  v74 = [viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (v12)
   {
     if (isKindOfClass)
     {
-      [v9 connect];
+      [mainRoute connect];
       v15 = v74;
-      v16 = [v74 routingAccessoryView];
-      WeakRetained = v16;
+      routingAccessoryView = [v74 routingAccessoryView];
+      WeakRetained = routingAccessoryView;
       v18 = 2;
 LABEL_14:
-      [v16 setState:v18];
+      [routingAccessoryView setState:v18];
 LABEL_15:
 
       goto LABEL_16;
@@ -1032,15 +1032,15 @@ LABEL_15:
   {
     if (isKindOfClass)
     {
-      [v9 disconnect];
+      [mainRoute disconnect];
       v15 = v74;
-      v16 = [v74 routingAccessoryView];
-      WeakRetained = v16;
+      routingAccessoryView = [v74 routingAccessoryView];
+      WeakRetained = routingAccessoryView;
       v18 = 0;
       goto LABEL_14;
     }
 
-    if ([v9 isHearingDeviceRoute])
+    if ([mainRoute isHearingDeviceRoute])
     {
       +[MRUVirtualHearingAidRoute disconnect];
       v15 = v74;
@@ -1048,22 +1048,22 @@ LABEL_15:
     }
   }
 
-  v78 = self;
-  v19 = [v8 type];
+  selfCopy = self;
+  type = [v8 type];
   v20 = 1;
-  if (v19 > 3)
+  if (type > 3)
   {
-    if (v19 > 5)
+    if (type > 5)
     {
-      if (v19 == 6)
+      if (type == 6)
       {
-        v24 = MCLogCategoryDeviceAccess();
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+        device4 = MCLogCategoryDeviceAccess();
+        if (os_log_type_enabled(device4, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
           v53 = "selected vendor specific custom row";
 LABEL_75:
-          _os_log_impl(&dword_1A20FC000, v24, OS_LOG_TYPE_DEFAULT, v53, buf, 2u);
+          _os_log_impl(&dword_1A20FC000, device4, OS_LOG_TYPE_DEFAULT, v53, buf, 2u);
         }
 
 LABEL_76:
@@ -1071,14 +1071,14 @@ LABEL_76:
         goto LABEL_96;
       }
 
-      if (v19 != 7)
+      if (type != 7)
       {
         goto LABEL_96;
       }
 
-      v72 = v6;
-      v73 = v9;
-      v71 = v7;
+      v72 = viewCopy;
+      v73 = mainRoute;
+      v71 = pathCopy;
       v30 = MCLogCategoryDeviceAccess();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
@@ -1086,7 +1086,7 @@ LABEL_76:
         _os_log_impl(&dword_1A20FC000, v30, OS_LOG_TYPE_DEFAULT, "selected vendor specific speaker group", buf, 2u);
       }
 
-      v31 = self;
+      selfCopy2 = self;
       self->_hasUserSelections = 1;
       v83 = 0u;
       v84 = 0u;
@@ -1131,8 +1131,8 @@ LABEL_76:
               v82 = 0u;
               v79 = 0u;
               v80 = 0u;
-              v39 = [v38 subroutes];
-              v40 = [v39 countByEnumeratingWithState:&v79 objects:v87 count:16];
+              subroutes = [v38 subroutes];
+              v40 = [subroutes countByEnumeratingWithState:&v79 objects:v87 count:16];
               if (v40)
               {
                 v41 = v40;
@@ -1143,28 +1143,28 @@ LABEL_76:
                   {
                     if (*v80 != v42)
                     {
-                      objc_enumerationMutation(v39);
+                      objc_enumerationMutation(subroutes);
                     }
 
                     v44 = *(*(&v79 + 1) + 8 * i);
-                    cachedActivatedVendorSpecificDeviceIDs = v31->_cachedActivatedVendorSpecificDeviceIDs;
-                    v46 = [v44 routeUID];
-                    LODWORD(cachedActivatedVendorSpecificDeviceIDs) = [(NSArray *)cachedActivatedVendorSpecificDeviceIDs containsObject:v46];
+                    cachedActivatedVendorSpecificDeviceIDs = selfCopy2->_cachedActivatedVendorSpecificDeviceIDs;
+                    routeUID = [v44 routeUID];
+                    LODWORD(cachedActivatedVendorSpecificDeviceIDs) = [(NSArray *)cachedActivatedVendorSpecificDeviceIDs containsObject:routeUID];
 
                     if (cachedActivatedVendorSpecificDeviceIDs)
                     {
-                      v31 = v78;
-                      vendorSpecificManager = v78->_vendorSpecificManager;
-                      v49 = [v44 device];
-                      [(MRUVendorSpecificDeviceManager *)vendorSpecificManager setDevice:v49 picked:1];
+                      selfCopy2 = selfCopy;
+                      vendorSpecificManager = selfCopy->_vendorSpecificManager;
+                      device = [v44 device];
+                      [(MRUVendorSpecificDeviceManager *)vendorSpecificManager setDevice:device picked:1];
 
                       goto LABEL_59;
                     }
 
-                    v31 = v78;
+                    selfCopy2 = selfCopy;
                   }
 
-                  v41 = [v39 countByEnumeratingWithState:&v79 objects:v87 count:16];
+                  v41 = [subroutes countByEnumeratingWithState:&v79 objects:v87 count:16];
                   if (v41)
                   {
                     continue;
@@ -1181,9 +1181,9 @@ LABEL_59:
 
             else
             {
-              v47 = v31->_vendorSpecificManager;
-              v39 = [v38 device];
-              [(MRUVendorSpecificDeviceManager *)v47 setDevice:v39 picked:1];
+              v47 = selfCopy2->_vendorSpecificManager;
+              subroutes = [v38 device];
+              [(MRUVendorSpecificDeviceManager *)v47 setDevice:subroutes picked:1];
             }
 
             ++v35;
@@ -1197,14 +1197,14 @@ LABEL_59:
       }
 
       v20 = 1;
-      v7 = v71;
-      v6 = v72;
+      pathCopy = v71;
+      viewCopy = v72;
       v8 = v70;
     }
 
     else
     {
-      if (v19 != 4)
+      if (type != 4)
       {
         v25 = MCLogCategoryDeviceAccess();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1214,12 +1214,12 @@ LABEL_59:
         }
 
         self->_hasUserSelections = 1;
-        v26 = v9;
+        v26 = mainRoute;
         [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager resolverSetLastSelectedRoute:v26];
-        v27 = [v26 isAirPlayRoute];
+        isAirPlayRoute = [v26 isAirPlayRoute];
         v28 = MCLogCategoryDeviceAccess();
         v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-        if (v27)
+        if (isAirPlayRoute)
         {
           if (v29)
           {
@@ -1239,9 +1239,9 @@ LABEL_59:
           }
 
           self->_didLastPickNativeRoute = 0;
-          v68 = [v26 device];
+          device2 = [v26 device];
           v20 = 1;
-          [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager setDevice:v68 picked:1];
+          [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager setDevice:device2 picked:1];
         }
 
         goto LABEL_96;
@@ -1263,24 +1263,24 @@ LABEL_59:
       }
 
       v58 = v8;
-      v73 = v9;
-      v59 = v9;
-      v60 = [v59 routeUID];
+      v73 = mainRoute;
+      v59 = mainRoute;
+      routeUID2 = [v59 routeUID];
       mostRecentlyInteractedVendorSpecificGroupRouteID = self->_mostRecentlyInteractedVendorSpecificGroupRouteID;
-      self->_mostRecentlyInteractedVendorSpecificGroupRouteID = v60;
+      self->_mostRecentlyInteractedVendorSpecificGroupRouteID = routeUID2;
 
       vendorSpecificGroupDisplayedSubroutes = self->_vendorSpecificGroupDisplayedSubroutes;
-      v63 = [v59 routeUID];
-      v64 = [(NSMutableDictionary *)vendorSpecificGroupDisplayedSubroutes objectForKeyedSubscript:v63];
+      routeUID3 = [v59 routeUID];
+      v64 = [(NSMutableDictionary *)vendorSpecificGroupDisplayedSubroutes objectForKeyedSubscript:routeUID3];
 
       if (v64)
       {
         self->_hasUserSelections = 1;
         [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager resolverSetLastSelectedRoute:v64];
-        v65 = [v64 isAirPlayRoute];
+        isAirPlayRoute2 = [v64 isAirPlayRoute];
         v66 = MCLogCategoryDeviceAccess();
         v67 = os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT);
-        if (v65)
+        if (isAirPlayRoute2)
         {
           if (v67)
           {
@@ -1300,9 +1300,9 @@ LABEL_59:
           }
 
           self->_didLastPickNativeRoute = 0;
-          v69 = [v64 device];
+          device3 = [v64 device];
           v20 = 1;
-          [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager setDevice:v69 picked:1];
+          [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager setDevice:device3 picked:1];
         }
       }
 
@@ -1316,21 +1316,21 @@ LABEL_59:
       v8 = v58;
     }
 
-    v9 = v73;
+    mainRoute = v73;
     goto LABEL_96;
   }
 
-  if (v19 < 2)
+  if (type < 2)
   {
-    v50 = [v8 isPickable];
-    v24 = MCLogCategoryDeviceAccess();
-    v51 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-    if (v50)
+    isPickable = [v8 isPickable];
+    device4 = MCLogCategoryDeviceAccess();
+    v51 = os_log_type_enabled(device4, OS_LOG_TYPE_DEFAULT);
+    if (isPickable)
     {
       if (v51)
       {
         *buf = 0;
-        _os_log_impl(&dword_1A20FC000, v24, OS_LOG_TYPE_DEFAULT, "selected native routes", buf, 2u);
+        _os_log_impl(&dword_1A20FC000, device4, OS_LOG_TYPE_DEFAULT, "selected native routes", buf, 2u);
       }
 
       v20 = [(MRURoutingViewController *)self handleSelectedRoutingViewItem:v8 operation:v13];
@@ -1347,19 +1347,19 @@ LABEL_59:
     goto LABEL_76;
   }
 
-  if (v19 == 2)
+  if (type == 2)
   {
     v54 = MCLogCategoryDefault();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
     {
-      v55 = [v8 actionIdentifier];
+      actionIdentifier = [v8 actionIdentifier];
       *buf = 138543362;
-      v90 = v55;
+      v90 = actionIdentifier;
       _os_log_impl(&dword_1A20FC000, v54, OS_LOG_TYPE_DEFAULT, "[MRURoutingViewController] RCS user selected: %{public}@", buf, 0xCu);
     }
 
-    v56 = [v8 actionIdentifier];
-    v57 = [v56 isEqualToString:@"Show more"];
+    actionIdentifier2 = [v8 actionIdentifier];
+    v57 = [actionIdentifier2 isEqualToString:@"Show more"];
 
     if (v57)
     {
@@ -1367,7 +1367,7 @@ LABEL_59:
     }
   }
 
-  else if (v19 == 3)
+  else if (type == 3)
   {
     v21 = MCLogCategoryDeviceAccess();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1379,11 +1379,11 @@ LABEL_59:
     self->_hasUserSelections = 1;
     self->_didLastPickNativeRoute = 0;
     v22 = self->_vendorSpecificManager;
-    v23 = v9;
+    v23 = mainRoute;
     [(MRUVendorSpecificDeviceManager *)v22 resolverSetLastSelectedRoute:v23];
-    v24 = [v23 device];
+    device4 = [v23 device];
 
-    [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager setDevice:v24 picked:1];
+    [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager setDevice:device4 picked:1];
     goto LABEL_76;
   }
 
@@ -1391,10 +1391,10 @@ LABEL_96:
   v15 = v74;
   if (v8 && v20)
   {
-    WeakRetained = objc_loadWeakRetained(&v78->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained routingViewController:v78 didSelectRoutingViewItem:v8];
+      [WeakRetained routingViewController:selfCopy didSelectRoutingViewItem:v8];
     }
 
     goto LABEL_15;
@@ -1403,15 +1403,15 @@ LABEL_96:
 LABEL_16:
 }
 
-- (BOOL)tableView:(id)a3 shouldHaveFullLengthBottomSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldHaveFullLengthBottomSeparatorForSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = +[MRUFeatureFlagProvider isNewControlsEnabled](MRUFeatureFlagProvider, "isNewControlsEnabled") || [v5 numberOfSections] - 1 == a4;
+  viewCopy = view;
+  v6 = +[MRUFeatureFlagProvider isNewControlsEnabled](MRUFeatureFlagProvider, "isNewControlsEnabled") || [viewCopy numberOfSections] - 1 == section;
 
   return v6;
 }
 
-- (void)vendorSpecificManagerDeviceListDidChange:(id)a3
+- (void)vendorSpecificManagerDeviceListDidChange:(id)change
 {
   v4 = MCLogCategoryDeviceAccess();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1423,7 +1423,7 @@ LABEL_16:
   [(MRURoutingViewController *)self _refreshDisplayedRoutes];
 }
 
-- (void)vendorSpecificManager:(id)a3 deviceStateDidChange:(id)a4
+- (void)vendorSpecificManager:(id)manager deviceStateDidChange:(id)change
 {
   v5 = MCLogCategoryDeviceAccess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1435,24 +1435,24 @@ LABEL_16:
   [(MRURoutingViewController *)self _updateDisplayedRoutes];
 }
 
-- (void)vendorSpecificManager:(id)a3 deviceNowPlayingInfoDidChange:(id)a4
+- (void)vendorSpecificManager:(id)manager deviceNowPlayingInfoDidChange:(id)change
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(MRURoutingViewController *)self view];
-  v7 = [v6 tableView];
-  v8 = [v7 indexPathsForVisibleRows];
+  changeCopy = change;
+  view = [(MRURoutingViewController *)self view];
+  tableView = [view tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-  v9 = self;
+  selfCopy = self;
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v8;
+  obj = indexPathsForVisibleRows;
   v41 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v41)
   {
-    v39 = self;
+    selfCopy2 = self;
     v40 = *v43;
     do
     {
@@ -1464,61 +1464,61 @@ LABEL_16:
         }
 
         v11 = *(*(&v42 + 1) + 8 * i);
-        v12 = [(MPSectionedCollection *)v9->_routingViewItems safeItemAtIndexPath:v11];
+        v12 = [(MPSectionedCollection *)selfCopy->_routingViewItems safeItemAtIndexPath:v11];
         if ([v12 type] == 5)
         {
-          v13 = [v12 mainRoute];
-          v14 = [v13 device];
-          v15 = [v14 identifier];
-          [v5 identifier];
-          v17 = v16 = v5;
-          v18 = [v15 isEqualToString:v17];
+          mainRoute = [v12 mainRoute];
+          device = [mainRoute device];
+          identifier = [device identifier];
+          [changeCopy identifier];
+          v17 = v16 = changeCopy;
+          v18 = [identifier isEqualToString:v17];
 
           if (!v18)
           {
-            v5 = v16;
+            changeCopy = v16;
 LABEL_23:
 
             goto LABEL_24;
           }
 
-          v19 = [(MRURoutingViewController *)v9 view];
-          v20 = [v19 tableView];
-          v21 = [v20 cellForRowAtIndexPath:v11];
+          view2 = [(MRURoutingViewController *)selfCopy view];
+          tableView2 = [view2 tableView];
+          v21 = [tableView2 cellForRowAtIndexPath:v11];
 
-          v22 = [v16 mediaPlaybackState];
-          v23 = [v21 subtitleStateController];
-          v5 = v16;
+          mediaPlaybackState = [v16 mediaPlaybackState];
+          subtitleStateController = [v21 subtitleStateController];
+          changeCopy = v16;
           goto LABEL_18;
         }
 
         if ([v12 type] == 3 || objc_msgSend(v12, "type") == 4)
         {
-          v13 = [v12 mainRoute];
-          if ([v13 isGroup])
+          mainRoute = [v12 mainRoute];
+          if ([mainRoute isGroup])
           {
-            v24 = [v13 preferredSubroute];
-            v25 = [v24 device];
-            v26 = [v25 identifier];
-            [v5 identifier];
-            v28 = v27 = v5;
-            v29 = [v26 isEqualToString:v28];
+            preferredSubroute = [mainRoute preferredSubroute];
+            device2 = [preferredSubroute device];
+            identifier2 = [device2 identifier];
+            [changeCopy identifier];
+            v28 = v27 = changeCopy;
+            v29 = [identifier2 isEqualToString:v28];
 
-            v5 = v27;
+            changeCopy = v27;
             if ((v29 & 1) == 0)
             {
 LABEL_22:
-              v9 = v39;
+              selfCopy = selfCopy2;
               goto LABEL_23;
             }
           }
 
           else
           {
-            v30 = [v13 device];
-            v31 = [v30 identifier];
-            v32 = [v5 identifier];
-            v33 = [v31 isEqualToString:v32];
+            device3 = [mainRoute device];
+            identifier3 = [device3 identifier];
+            identifier4 = [changeCopy identifier];
+            v33 = [identifier3 isEqualToString:identifier4];
 
             if (!v33)
             {
@@ -1526,21 +1526,21 @@ LABEL_22:
             }
           }
 
-          v34 = [(MRURoutingViewController *)v39 view];
-          v35 = [v34 tableView];
-          v21 = [v35 cellForRowAtIndexPath:v11];
+          view3 = [(MRURoutingViewController *)selfCopy2 view];
+          tableView3 = [view3 tableView];
+          v21 = [tableView3 cellForRowAtIndexPath:v11];
 
           if (!v21)
           {
             goto LABEL_22;
           }
 
-          v22 = [v5 mediaPlaybackState];
-          v23 = [v21 subtitleStateController];
-          v9 = v39;
+          mediaPlaybackState = [changeCopy mediaPlaybackState];
+          subtitleStateController = [v21 subtitleStateController];
+          selfCopy = selfCopy2;
 LABEL_18:
-          v36 = [v5 nowPlayingSubtitle];
-          if (v22 == 2)
+          nowPlayingSubtitle = [changeCopy nowPlayingSubtitle];
+          if (mediaPlaybackState == 2)
           {
             v37 = 2;
           }
@@ -1550,7 +1550,7 @@ LABEL_18:
             v37 = 1;
           }
 
-          [v23 setText:v36 forState:3 accessory:v37];
+          [subtitleStateController setText:nowPlayingSubtitle forState:3 accessory:v37];
 
           goto LABEL_23;
         }
@@ -1565,23 +1565,23 @@ LABEL_24:
   }
 }
 
-- (void)vendorSpecificCellDidTapToExpand:(id)a3
+- (void)vendorSpecificCellDidTapToExpand:(id)expand
 {
-  v4 = a3;
-  v5 = [(MRURoutingViewController *)self view];
-  v6 = [v5 tableView];
-  obj = [v6 indexPathForCell:v4];
+  expandCopy = expand;
+  view = [(MRURoutingViewController *)self view];
+  tableView = [view tableView];
+  obj = [tableView indexPathForCell:expandCopy];
 
   v7 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:obj];
-  v8 = [v7 mainRoute];
+  mainRoute = [v7 mainRoute];
 
-  v9 = [v8 routeUID];
+  routeUID = [mainRoute routeUID];
   mostRecentlyInteractedVendorSpecificGroupRouteID = self->_mostRecentlyInteractedVendorSpecificGroupRouteID;
-  self->_mostRecentlyInteractedVendorSpecificGroupRouteID = v9;
+  self->_mostRecentlyInteractedVendorSpecificGroupRouteID = routeUID;
 
-  [v8 setExpanded:{objc_msgSend(v4, "showChevronExpanded")}];
-  [(MRURoutingViewController *)self updateVendorSpecificGroupExpandedRecordFor:v8];
-  LODWORD(v7) = [v4 showChevronExpanded];
+  [mainRoute setExpanded:{objc_msgSend(expandCopy, "showChevronExpanded")}];
+  [(MRURoutingViewController *)self updateVendorSpecificGroupExpandedRecordFor:mainRoute];
+  LODWORD(v7) = [expandCopy showChevronExpanded];
 
   if (v7)
   {
@@ -1591,7 +1591,7 @@ LABEL_24:
   [(MRURoutingViewController *)self _refreshDisplayedRoutes];
 }
 
-- (void)routingControllerAvailableRoutesDidChange:(id)a3
+- (void)routingControllerAvailableRoutesDidChange:(id)change
 {
   updatesSincePresentation = self->_updatesSincePresentation;
   self->_updatesSincePresentation = updatesSincePresentation + 1;
@@ -1606,53 +1606,53 @@ LABEL_24:
   }
 }
 
-- (void)routingController:(id)a3 shouldHijackRoute:(id)a4 alertStyle:(int64_t)a5 busyRouteName:(id)a6 presentingAppName:(id)a7 completion:(id)a8
+- (void)routingController:(id)controller shouldHijackRoute:(id)route alertStyle:(int64_t)style busyRouteName:(id)name presentingAppName:(id)appName completion:(id)completion
 {
-  v34 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v32 = v15;
-  v33 = v14;
-  v30 = v16;
-  if (!a5)
+  controllerCopy = controller;
+  routeCopy = route;
+  nameCopy = name;
+  appNameCopy = appName;
+  completionCopy = completion;
+  v32 = nameCopy;
+  v33 = routeCopy;
+  v30 = appNameCopy;
+  if (!style)
   {
-    if ([v14 isTVRoute])
+    if ([routeCopy isTVRoute])
     {
-      v18 = +[MRUStringsProvider routingHijackTVTitle];
+      controllerCopy = +[MRUStringsProvider routingHijackTVTitle];
       +[MRUStringsProvider routingHijackTVMessage];
     }
 
     else
     {
-      v18 = +[MRUStringsProvider routingHijackSpeakerTitle];
+      controllerCopy = +[MRUStringsProvider routingHijackSpeakerTitle];
       +[MRUStringsProvider routingHijackSpeakerMessage];
     }
     v19 = ;
     goto LABEL_9;
   }
 
-  if (a5 == 1)
+  if (style == 1)
   {
-    v18 = [MRUStringsProvider routingHijackLocalTitle:v15, v16, v15, v14, v34];
-    v19 = [MRUStringsProvider routingHijackLocalMessagePresentingApp:v16 busyRouteName:v15];
+    controllerCopy = [MRUStringsProvider routingHijackLocalTitle:nameCopy, appNameCopy, nameCopy, routeCopy, controllerCopy];
+    v19 = [MRUStringsProvider routingHijackLocalMessagePresentingApp:appNameCopy busyRouteName:nameCopy];
 LABEL_9:
     v20 = v19;
     goto LABEL_10;
   }
 
   v20 = 0;
-  v18 = 0;
+  controllerCopy = 0;
 LABEL_10:
-  v21 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v18 message:v20 preferredStyle:{1, v30}];
+  v21 = [MEMORY[0x1E69DC650] alertControllerWithTitle:controllerCopy message:v20 preferredStyle:{1, v30}];
   v22 = MEMORY[0x1E69DC648];
   v23 = +[MRUStringsProvider routingHijackCancelTitle];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __118__MRURoutingViewController_routingController_shouldHijackRoute_alertStyle_busyRouteName_presentingAppName_completion___block_invoke;
   v37[3] = &unk_1E7664CA0;
-  v24 = v17;
+  v24 = completionCopy;
   v38 = v24;
   v25 = [v22 actionWithTitle:v23 style:1 handler:v37];
   [v21 addAction:v25];
@@ -1671,53 +1671,53 @@ LABEL_10:
   [(MRURoutingViewController *)self showViewController:v21 sender:self];
 }
 
-- (void)routingCellDidTapToExpand:(id)a3
+- (void)routingCellDidTapToExpand:(id)expand
 {
-  v17 = a3;
-  v4 = [(MRURoutingViewController *)self view];
-  v5 = [v4 tableView];
-  v6 = [v5 indexPathForCell:v17];
+  expandCopy = expand;
+  view = [(MRURoutingViewController *)self view];
+  tableView = [view tableView];
+  v6 = [tableView indexPathForCell:expandCopy];
 
   v7 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v6];
-  LODWORD(v5) = [v7 isExpandable];
-  v8 = [v7 type];
-  if (v5)
+  LODWORD(tableView) = [v7 isExpandable];
+  type = [v7 type];
+  if (tableView)
   {
-    if (v8 == 1)
+    if (type == 1)
     {
-      v9 = [v7 mainRoute];
-      v10 = [(MRURoutingViewController *)self groupUIDForRoute:v9];
+      mainRoute = [v7 mainRoute];
+      mainRoute3 = [(MRURoutingViewController *)self groupUIDForRoute:mainRoute];
 
-      [(NSMutableSet *)self->_expandedGroupUIDs addObject:v10];
+      [(NSMutableSet *)self->_expandedGroupUIDs addObject:mainRoute3];
     }
 
     else
     {
       expandedRouteUIDs = self->_expandedRouteUIDs;
-      v12 = [v7 mainRoute];
-      v13 = [v12 routeUID];
-      v14 = [(NSMutableSet *)expandedRouteUIDs containsObject:v13];
+      mainRoute2 = [v7 mainRoute];
+      routeUID = [mainRoute2 routeUID];
+      v14 = [(NSMutableSet *)expandedRouteUIDs containsObject:routeUID];
 
       v15 = self->_expandedRouteUIDs;
-      v10 = [v7 mainRoute];
-      v16 = [v10 routeUID];
+      mainRoute3 = [v7 mainRoute];
+      routeUID2 = [mainRoute3 routeUID];
       if (v14)
       {
-        [(NSMutableSet *)v15 removeObject:v16];
+        [(NSMutableSet *)v15 removeObject:routeUID2];
       }
 
       else
       {
-        [(NSMutableSet *)v15 addObject:v16];
+        [(NSMutableSet *)v15 addObject:routeUID2];
       }
     }
 
     goto LABEL_13;
   }
 
-  if (v8 == 4)
+  if (type == 4)
   {
-    [(MRURoutingViewController *)self vendorSpecificCellDidTapToExpand:v17];
+    [(MRURoutingViewController *)self vendorSpecificCellDidTapToExpand:expandCopy];
     goto LABEL_14;
   }
 
@@ -1732,7 +1732,7 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = MCLogCategoryDefault();
@@ -1746,7 +1746,7 @@ LABEL_14:
   [(MRURoutingViewController *)self _refreshDisplayedRoutes];
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = MCLogCategoryDefault();
@@ -1760,7 +1760,7 @@ LABEL_14:
   [(MRURoutingViewController *)self _refreshDisplayedRoutes];
 }
 
-- (void)playingSessionsDidChangeNotification:(id)a3
+- (void)playingSessionsDidChangeNotification:(id)notification
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -1844,12 +1844,12 @@ void __65__MRURoutingViewController_playingSessionsDidChangeNotification___block
   }
 }
 
-- (void)setEndpointRoute:(id)a3
+- (void)setEndpointRoute:(id)route
 {
-  v5 = a3;
-  if (self->_endpointRoute != v5)
+  routeCopy = route;
+  if (self->_endpointRoute != routeCopy)
   {
-    objc_storeStrong(&self->_endpointRoute, a3);
+    objc_storeStrong(&self->_endpointRoute, route);
     msv_dispatch_on_main_queue();
   }
 }
@@ -1866,22 +1866,22 @@ void __45__MRURoutingViewController_setEndpointRoute___block_invoke(uint64_t a1)
   [*(a1 + 32) _enqueueUpdate:v4];
 }
 
-- (BOOL)_operationRequiresOptimisticState:(int64_t)a3 routes:(id)a4
+- (BOOL)_operationRequiresOptimisticState:(int64_t)state routes:(id)routes
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  routesCopy = routes;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 count] > 1;
+  v6 = [routesCopy count] > 1;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = routesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v8)
   {
 
 LABEL_12:
-    v14 = (a3 == 2) & v6;
+    v14 = (state == 2) & v6;
     goto LABEL_13;
   }
 
@@ -1907,7 +1907,7 @@ LABEL_12:
 
   while (v9);
 
-  if (((a3 == 1) & v10) != 1 || [v7 count] != 1)
+  if (((state == 1) & v10) != 1 || [v7 count] != 1)
   {
     goto LABEL_12;
   }
@@ -1918,38 +1918,38 @@ LABEL_13:
   return v14;
 }
 
-- (void)updateVendorSpecificSubRouteCell:(id)a3 forIndexPath:(id)a4
+- (void)updateVendorSpecificSubRouteCell:(id)cell forIndexPath:(id)path
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  pathCopy = path;
   v8 = MCLogCategoryDeviceAccess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v30 = 138412290;
-    v31 = v7;
+    v31 = pathCopy;
     _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_DEFAULT, "updateVendorSpecificSubRouteCell forIndexPath: %@", &v30, 0xCu);
   }
 
-  v9 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v7];
-  v10 = [v9 mainRoute];
-  v11 = [v10 protocolIcon];
-  [v6 setProtocolIcon:v11];
+  v9 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:pathCopy];
+  mainRoute = [v9 mainRoute];
+  protocolIcon = [mainRoute protocolIcon];
+  [cellCopy setProtocolIcon:protocolIcon];
 
-  v12 = [v10 protocolName];
-  [v6 setProtocolName:v12];
+  protocolName = [mainRoute protocolName];
+  [cellCopy setProtocolName:protocolName];
 
-  v13 = [v10 protocolIcon];
-  [v6 setIconImage:v13];
+  protocolIcon2 = [mainRoute protocolIcon];
+  [cellCopy setIconImage:protocolIcon2];
 
-  v14 = [v10 protocolName];
-  [v6 setTitle:v14];
+  protocolName2 = [mainRoute protocolName];
+  [cellCopy setTitle:protocolName2];
 
-  [v6 setIndentationLevel:1];
-  if ([v10 isAirPlayRoute])
+  [cellCopy setIndentationLevel:1];
+  if ([mainRoute isAirPlayRoute])
   {
-    v15 = [v10 underlyingNativeRoute];
-    if ([v10 supportsAirPlayGrouping])
+    underlyingNativeRoute = [mainRoute underlyingNativeRoute];
+    if ([mainRoute supportsAirPlayGrouping])
     {
       v16 = [(MRURoutingViewController *)self routesContainAirPlayGroupableRoute:self->_cachedDisplayAsPickedRoutes];
     }
@@ -1959,10 +1959,10 @@ LABEL_13:
       v16 = 0;
     }
 
-    v20 = [(NSArray *)self->_cachedDisplayAsPickedRoutes containsObject:v15];
-    v21 = [(NSArray *)self->_cachedPendingPickedRoutes containsObject:v15];
-    v22 = [v6 routingAccessoryView];
-    v23 = v22;
+    v20 = [(NSArray *)self->_cachedDisplayAsPickedRoutes containsObject:underlyingNativeRoute];
+    v21 = [(NSArray *)self->_cachedPendingPickedRoutes containsObject:underlyingNativeRoute];
+    routingAccessoryView = [cellCopy routingAccessoryView];
+    subtitleStateController = routingAccessoryView;
     if (v21)
     {
       v24 = 2;
@@ -1986,14 +1986,14 @@ LABEL_13:
       v24 = v16;
     }
 
-    [v22 setState:v24];
+    [routingAccessoryView setState:v24];
   }
 
   else
   {
-    v15 = [v10 device];
-    v17 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager isGroupingAvailableForDevice:v15];
-    v18 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager latestStateForDevice:v15];
+    underlyingNativeRoute = [mainRoute device];
+    v17 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager isGroupingAvailableForDevice:underlyingNativeRoute];
+    v18 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager latestStateForDevice:underlyingNativeRoute];
     v19 = 2;
     if (v18 != 10 && v18 != 30)
     {
@@ -2016,13 +2016,13 @@ LABEL_13:
       }
     }
 
-    v25 = [v6 routingAccessoryView];
-    [v25 setState:v19];
+    routingAccessoryView2 = [cellCopy routingAccessoryView];
+    [routingAccessoryView2 setState:v19];
 
-    v26 = [v15 mediaPlaybackState];
-    v23 = [v6 subtitleStateController];
-    v27 = [v15 nowPlayingSubtitle];
-    if (v26 == 2)
+    mediaPlaybackState = [underlyingNativeRoute mediaPlaybackState];
+    subtitleStateController = [cellCopy subtitleStateController];
+    nowPlayingSubtitle = [underlyingNativeRoute nowPlayingSubtitle];
+    if (mediaPlaybackState == 2)
     {
       v28 = 2;
     }
@@ -2032,93 +2032,93 @@ LABEL_13:
       v28 = 1;
     }
 
-    [v23 setText:v27 forState:3 accessory:v28];
+    [subtitleStateController setText:nowPlayingSubtitle forState:3 accessory:v28];
   }
 
   [(MRURoutingViewController *)self contentEdgeInsets];
-  [v6 setContentEdgeInsets:?];
-  v29 = [(MRURoutingViewController *)self stylingProvider];
-  [v6 setStylingProvider:v29];
+  [cellCopy setContentEdgeInsets:?];
+  stylingProvider = [(MRURoutingViewController *)self stylingProvider];
+  [cellCopy setStylingProvider:stylingProvider];
 }
 
-- (void)updateVendorSpecificCell:(id)a3 forIndexPath:(id)a4
+- (void)updateVendorSpecificCell:(id)cell forIndexPath:(id)path
 {
   v140 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  pathCopy = path;
   v8 = MCLogCategoryDeviceAccess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v139 = v7;
+    v139 = pathCopy;
     _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_DEFAULT, "updateVendorSpecificCell forIndexPath: %@", buf, 0xCu);
   }
 
-  v9 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v7];
-  v10 = [v9 mainRoute];
+  v9 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:pathCopy];
+  mainRoute = [v9 mainRoute];
   v11 = MCLogCategoryDeviceAccess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 routeName];
+    routeName = [mainRoute routeName];
     *buf = 138412290;
-    v139 = v12;
+    v139 = routeName;
     _os_log_impl(&dword_1A20FC000, v11, OS_LOG_TYPE_DEFAULT, "updateVendorSpecificCell device: %@", buf, 0xCu);
   }
 
-  v13 = [v10 device];
-  if ([v10 isGroup])
+  device = [mainRoute device];
+  if ([mainRoute isGroup])
   {
-    [v6 setEnabled:1];
-    [v6 setShowChevron:1];
+    [cellCopy setEnabled:1];
+    [cellCopy setShowChevron:1];
     expandedVendorSpecificGroupUIDs = self->_expandedVendorSpecificGroupUIDs;
-    v15 = [v10 routeUID];
-    [v6 setShowChevronExpanded:{-[NSMutableSet containsObject:](expandedVendorSpecificGroupUIDs, "containsObject:", v15)}];
+    routeUID = [mainRoute routeUID];
+    [cellCopy setShowChevronExpanded:{-[NSMutableSet containsObject:](expandedVendorSpecificGroupUIDs, "containsObject:", routeUID)}];
 
     v16 = MEMORY[0x1E69DCAB8];
-    v17 = [(MRURoutingViewController *)self symbolNameForVendorSpecificRoute:v10];
+    v17 = [(MRURoutingViewController *)self symbolNameForVendorSpecificRoute:mainRoute];
     v18 = [v16 systemImageNamed:v17];
-    [v6 setIconImage:v18];
+    [cellCopy setIconImage:v18];
 
-    v19 = [v10 routeName];
+    routeName2 = [mainRoute routeName];
     v111 = v9;
-    v113 = v7;
-    v109 = v13;
-    if (v19 && (v20 = v19, [v10 routeName], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", &stru_1F1445548), v21, v20, (v22 & 1) == 0))
+    v113 = pathCopy;
+    v109 = device;
+    if (routeName2 && (v20 = routeName2, [mainRoute routeName], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", &stru_1F1445548), v21, v20, (v22 & 1) == 0))
     {
-      v30 = [v10 routeName];
-      [v6 setTitle:v30];
+      routeName3 = [mainRoute routeName];
+      [cellCopy setTitle:routeName3];
     }
 
     else
     {
-      [v6 setTitle:{@"Unknown Device", v13, v9, v7}];
+      [cellCopy setTitle:{@"Unknown Device", device, v9, pathCopy}];
     }
 
-    v31 = [v10 subroutes];
+    subroutes = [mainRoute subroutes];
     v132[0] = MEMORY[0x1E69E9820];
     v132[1] = 3221225472;
     v132[2] = __66__MRURoutingViewController_updateVendorSpecificCell_forIndexPath___block_invoke;
     v132[3] = &unk_1E7664CC8;
-    v116 = v6;
+    v116 = cellCopy;
     v133 = v116;
-    v134 = self;
-    v118 = [v31 msv_compactMap:v132];
+    selfCopy = self;
+    v118 = [subroutes msv_compactMap:v132];
 
-    v32 = [v10 subroutes];
+    subroutes2 = [mainRoute subroutes];
     v131[0] = MEMORY[0x1E69E9820];
     v131[1] = 3221225472;
     v131[2] = __66__MRURoutingViewController_updateVendorSpecificCell_forIndexPath___block_invoke_2;
     v131[3] = &unk_1E7664CF0;
     v131[4] = self;
-    v117 = [v32 msv_compactMap:v131];
+    v117 = [subroutes2 msv_compactMap:v131];
 
     v129 = 0u;
     v130 = 0u;
     v127 = 0u;
     v128 = 0u;
-    v115 = v10;
-    v33 = [v10 subroutes];
-    v34 = [v33 countByEnumeratingWithState:&v127 objects:v137 count:16];
+    v115 = mainRoute;
+    subroutes3 = [mainRoute subroutes];
+    v34 = [subroutes3 countByEnumeratingWithState:&v127 objects:v137 count:16];
     if (v34)
     {
       v35 = v34;
@@ -2129,7 +2129,7 @@ LABEL_13:
         {
           if (*v128 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(subroutes3);
           }
 
           v38 = *(*(&v127 + 1) + 8 * i);
@@ -2144,13 +2144,13 @@ LABEL_13:
           else
           {
             vendorSpecificManager = self->_vendorSpecificManager;
-            v40 = [v38 device];
-            LOBYTE(vendorSpecificManager) = [(MRUVendorSpecificDeviceManager *)vendorSpecificManager isGroupingAvailableForDevice:v40];
+            device2 = [v38 device];
+            LOBYTE(vendorSpecificManager) = [(MRUVendorSpecificDeviceManager *)vendorSpecificManager isGroupingAvailableForDevice:device2];
 
             if (vendorSpecificManager)
             {
 LABEL_25:
-              v10 = v115;
+              mainRoute = v115;
               [v115 setTempPreferredSubrouteOverride:v38];
 
               v41 = 1;
@@ -2159,7 +2159,7 @@ LABEL_25:
           }
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v127 objects:v137 count:16];
+        v35 = [subroutes3 countByEnumeratingWithState:&v127 objects:v137 count:16];
         if (v35)
         {
           continue;
@@ -2169,7 +2169,7 @@ LABEL_25:
       }
     }
 
-    v10 = v115;
+    mainRoute = v115;
     [v115 setTempPreferredSubrouteOverride:0];
     v41 = 0;
 LABEL_26:
@@ -2179,7 +2179,7 @@ LABEL_26:
     {
       if ([v118 count] == 1)
       {
-        v44 = [v118 firstObject];
+        firstObject = [v118 firstObject];
         v45 = 3;
         goto LABEL_73;
       }
@@ -2193,7 +2193,7 @@ LABEL_26:
       if (v53)
       {
         v54 = v53;
-        v44 = 0;
+        firstObject = 0;
         v55 = *v120;
         do
         {
@@ -2209,7 +2209,7 @@ LABEL_26:
             {
               v58 = v57;
 
-              v44 = v58;
+              firstObject = v58;
             }
           }
 
@@ -2221,7 +2221,7 @@ LABEL_26:
 
       else
       {
-        v44 = 0;
+        firstObject = 0;
       }
 
       v45 = 3;
@@ -2231,61 +2231,61 @@ LABEL_26:
     {
       if (![v117 count])
       {
-        v67 = [v10 preferredSubroute];
+        preferredSubroute = [mainRoute preferredSubroute];
 
-        if (v67)
+        if (preferredSubroute)
         {
-          v44 = [v10 preferredSubroute];
+          firstObject = [mainRoute preferredSubroute];
           v45 = 1;
         }
 
         else
         {
           v45 = 0;
-          v44 = 0;
+          firstObject = 0;
         }
 
 LABEL_73:
         vendorSpecificGroupDisplayedSubroutes = self->_vendorSpecificGroupDisplayedSubroutes;
-        v76 = [v10 routeUID];
-        [(NSMutableDictionary *)vendorSpecificGroupDisplayedSubroutes setObject:v44 forKeyedSubscript:v76];
+        routeUID2 = [mainRoute routeUID];
+        [(NSMutableDictionary *)vendorSpecificGroupDisplayedSubroutes setObject:firstObject forKeyedSubscript:routeUID2];
 
-        if (!v44)
+        if (!firstObject)
         {
           goto LABEL_108;
         }
 
-        v77 = [v44 protocolIcon];
-        [v116 setProtocolIcon:v77];
+        protocolIcon = [firstObject protocolIcon];
+        [v116 setProtocolIcon:protocolIcon];
 
-        v78 = [v44 protocolName];
-        [v116 setProtocolName:v78];
+        protocolName = [firstObject protocolName];
+        [v116 setProtocolName:protocolName];
 
         if ([v116 showChevronExpanded])
         {
           goto LABEL_108;
         }
 
-        v79 = [v44 isAirPlayRoute];
-        v80 = [v116 subtitleStateController];
-        v81 = [v116 protocolName];
-        if (v79)
+        isAirPlayRoute = [firstObject isAirPlayRoute];
+        subtitleStateController = [v116 subtitleStateController];
+        protocolName2 = [v116 protocolName];
+        if (isAirPlayRoute)
         {
-          [v80 setText:v81 forState:6];
+          [subtitleStateController setText:protocolName2 forState:6];
         }
 
         else
         {
-          v82 = [v116 protocolIcon];
-          [v80 setText:v81 icon:v82 forState:6];
+          protocolIcon2 = [v116 protocolIcon];
+          [subtitleStateController setText:protocolName2 icon:protocolIcon2 forState:6];
         }
 
         if (v45 > 1)
         {
           if (v45 == 2)
           {
-            v85 = [v116 routingAccessoryView];
-            [v85 setState:2];
+            routingAccessoryView = [v116 routingAccessoryView];
+            [routingAccessoryView setState:2];
 LABEL_94:
 
             v83 = v116;
@@ -2302,17 +2302,17 @@ LABEL_94:
             v86 = 3;
           }
 
-          v87 = [v116 routingAccessoryView];
-          [v87 setState:v86];
+          routingAccessoryView2 = [v116 routingAccessoryView];
+          [routingAccessoryView2 setState:v86];
 
-          if ([v44 isAirPlayRoute])
+          if ([firstObject isAirPlayRoute])
           {
-            v85 = [v44 underlyingNativeRoute];
-            if ([(NSArray *)self->_cachedVolumeCapableRoutes containsObject:v85])
+            routingAccessoryView = [firstObject underlyingNativeRoute];
+            if ([(NSArray *)self->_cachedVolumeCapableRoutes containsObject:routingAccessoryView])
             {
               outputDeviceVolumeControllers = self->_outputDeviceVolumeControllers;
-              v89 = [v85 routeUID];
-              v90 = [(NSDictionary *)outputDeviceVolumeControllers objectForKeyedSubscript:v89];
+              routeUID3 = [routingAccessoryView routeUID];
+              v90 = [(NSDictionary *)outputDeviceVolumeControllers objectForKeyedSubscript:routeUID3];
               [v116 setVolumeController:v90];
             }
 
@@ -2323,59 +2323,59 @@ LABEL_94:
         else
         {
           v83 = v116;
-          if (!v45 || ([v116 routingAccessoryView], v84 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v84, "setState:", v41), v84, (objc_msgSend(v44, "isAirPlayRoute") & 1) != 0))
+          if (!v45 || ([v116 routingAccessoryView], v84 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v84, "setState:", v41), v84, (objc_msgSend(firstObject, "isAirPlayRoute") & 1) != 0))
           {
 LABEL_95:
             objc_opt_class();
             v42 = v118;
             if (objc_opt_isKindOfClass())
             {
-              v96 = v10;
+              v96 = mainRoute;
               [v96 setHearingAidDelegate:self];
               if ([v96 isConnecting])
               {
-                v97 = [v83 routingAccessoryView];
-                [v97 setState:2];
+                routingAccessoryView3 = [v83 routingAccessoryView];
+                [routingAccessoryView3 setState:2];
               }
             }
 
-            if ([v44 isAirPlayRoute])
+            if ([firstObject isAirPlayRoute])
             {
-              v98 = [v44 underlyingNativeRoute];
-              if (![(NSArray *)self->_cachedVolumeCapableRoutes containsObject:v98])
+              underlyingNativeRoute = [firstObject underlyingNativeRoute];
+              if (![(NSArray *)self->_cachedVolumeCapableRoutes containsObject:underlyingNativeRoute])
               {
 LABEL_107:
 
                 v43 = v117;
 LABEL_108:
 
-                v64 = v133;
+                subtitleStateController4 = v133;
                 v9 = v112;
-                v7 = v114;
-                v13 = v110;
+                pathCopy = v114;
+                device = v110;
                 goto LABEL_109;
               }
 
               v99 = self->_outputDeviceVolumeControllers;
-              v100 = [v98 routeUID];
-              v101 = [(NSDictionary *)v99 objectForKeyedSubscript:v100];
-              [v116 setVolumeController:v101];
+              routeUID4 = [underlyingNativeRoute routeUID];
+              nowPlayingSubtitle = [(NSDictionary *)v99 objectForKeyedSubscript:routeUID4];
+              [v116 setVolumeController:nowPlayingSubtitle];
             }
 
             else
             {
-              v102 = [v83 subtitleStateController];
-              v103 = [v83 protocolName];
-              v104 = [v83 protocolIcon];
-              [v102 setText:v103 icon:v104 forState:6];
+              subtitleStateController2 = [v83 subtitleStateController];
+              protocolName3 = [v83 protocolName];
+              protocolIcon3 = [v83 protocolIcon];
+              [subtitleStateController2 setText:protocolName3 icon:protocolIcon3 forState:6];
 
-              v105 = [v44 device];
-              v106 = [v105 mediaPlaybackState];
+              device3 = [firstObject device];
+              mediaPlaybackState = [device3 mediaPlaybackState];
 
-              v98 = [v83 subtitleStateController];
-              v100 = [v44 device];
-              v101 = [v100 nowPlayingSubtitle];
-              if (v106 == 2)
+              underlyingNativeRoute = [v83 subtitleStateController];
+              routeUID4 = [firstObject device];
+              nowPlayingSubtitle = [routeUID4 nowPlayingSubtitle];
+              if (mediaPlaybackState == 2)
               {
                 v107 = 2;
               }
@@ -2385,20 +2385,20 @@ LABEL_108:
                 v107 = 1;
               }
 
-              [v98 setText:v101 forState:3 accessory:v107];
+              [underlyingNativeRoute setText:nowPlayingSubtitle forState:3 accessory:v107];
             }
 
             goto LABEL_107;
           }
         }
 
-        v91 = [v44 device];
-        v92 = [v91 mediaPlaybackState];
+        device4 = [firstObject device];
+        mediaPlaybackState2 = [device4 mediaPlaybackState];
 
-        v85 = [v116 subtitleStateController];
-        v93 = [v44 device];
-        v94 = [v93 nowPlayingSubtitle];
-        if (v92 == 2)
+        routingAccessoryView = [v116 subtitleStateController];
+        device5 = [firstObject device];
+        nowPlayingSubtitle2 = [device5 nowPlayingSubtitle];
+        if (mediaPlaybackState2 == 2)
         {
           v95 = 2;
         }
@@ -2408,14 +2408,14 @@ LABEL_108:
           v95 = 1;
         }
 
-        [v85 setText:v94 forState:3 accessory:v95];
+        [routingAccessoryView setText:nowPlayingSubtitle2 forState:3 accessory:v95];
 
         goto LABEL_94;
       }
 
       if ([v117 count] == 1)
       {
-        v44 = [v117 firstObject];
+        firstObject = [v117 firstObject];
         v45 = 2;
         goto LABEL_73;
       }
@@ -2429,7 +2429,7 @@ LABEL_108:
       if (v69)
       {
         v70 = v69;
-        v44 = 0;
+        firstObject = 0;
         v71 = *v124;
         do
         {
@@ -2445,7 +2445,7 @@ LABEL_108:
             {
               v74 = v73;
 
-              v44 = v74;
+              firstObject = v74;
             }
           }
 
@@ -2457,44 +2457,44 @@ LABEL_108:
 
       else
       {
-        v44 = 0;
+        firstObject = 0;
       }
 
       v45 = 2;
     }
 
-    v10 = v115;
+    mainRoute = v115;
     v43 = v117;
     v42 = v118;
     goto LABEL_73;
   }
 
-  [v6 setShowChevron:0];
+  [cellCopy setShowChevron:0];
   v23 = MEMORY[0x1E69DCAB8];
-  v24 = [(MRURoutingViewController *)self symbolNameForVendorSpecificRoute:v10];
+  v24 = [(MRURoutingViewController *)self symbolNameForVendorSpecificRoute:mainRoute];
   v25 = [v23 systemImageNamed:v24];
-  [v6 setIconImage:v25];
+  [cellCopy setIconImage:v25];
 
-  v26 = [v10 routeName];
-  if (v26 && (v27 = v26, [v10 routeName], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "isEqualToString:", &stru_1F1445548), v28, v27, (v29 & 1) == 0))
+  routeName4 = [mainRoute routeName];
+  if (routeName4 && (v27 = routeName4, [mainRoute routeName], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "isEqualToString:", &stru_1F1445548), v28, v27, (v29 & 1) == 0))
   {
-    v46 = [v10 routeName];
-    [v6 setTitle:v46];
+    routeName5 = [mainRoute routeName];
+    [cellCopy setTitle:routeName5];
   }
 
   else
   {
-    [v6 setTitle:@"Unknown Device"];
+    [cellCopy setTitle:@"Unknown Device"];
   }
 
-  v47 = [v10 protocolIcon];
-  [v6 setProtocolIcon:v47];
+  protocolIcon4 = [mainRoute protocolIcon];
+  [cellCopy setProtocolIcon:protocolIcon4];
 
-  v48 = [v10 protocolName];
-  [v6 setProtocolName:v48];
+  protocolName4 = [mainRoute protocolName];
+  [cellCopy setProtocolName:protocolName4];
 
-  v49 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager isGroupingAvailableForDevice:v13];
-  v50 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager latestStateForDevice:v13];
+  v49 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager isGroupingAvailableForDevice:device];
+  v50 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager latestStateForDevice:device];
   v51 = 2;
   if (v50 != 10 && v50 != 30)
   {
@@ -2517,18 +2517,18 @@ LABEL_108:
     }
   }
 
-  v59 = [v6 routingAccessoryView];
-  [v59 setState:v51];
+  routingAccessoryView4 = [cellCopy routingAccessoryView];
+  [routingAccessoryView4 setState:v51];
 
-  v60 = [v6 subtitleStateController];
-  v61 = [v6 protocolName];
-  v62 = [v6 protocolIcon];
-  [v60 setText:v61 icon:v62 forState:6];
+  subtitleStateController3 = [cellCopy subtitleStateController];
+  protocolName5 = [cellCopy protocolName];
+  protocolIcon5 = [cellCopy protocolIcon];
+  [subtitleStateController3 setText:protocolName5 icon:protocolIcon5 forState:6];
 
-  v63 = [v13 mediaPlaybackState];
-  v64 = [v6 subtitleStateController];
-  v65 = [v13 nowPlayingSubtitle];
-  if (v63 == 2)
+  mediaPlaybackState3 = [device mediaPlaybackState];
+  subtitleStateController4 = [cellCopy subtitleStateController];
+  nowPlayingSubtitle3 = [device nowPlayingSubtitle];
+  if (mediaPlaybackState3 == 2)
   {
     v66 = 2;
   }
@@ -2538,14 +2538,14 @@ LABEL_108:
     v66 = 1;
   }
 
-  [v64 setText:v65 forState:3 accessory:v66];
+  [subtitleStateController4 setText:nowPlayingSubtitle3 forState:3 accessory:v66];
 
 LABEL_109:
-  [v6 setDelegate:self];
+  [cellCopy setDelegate:self];
   [(MRURoutingViewController *)self contentEdgeInsets];
-  [v6 setContentEdgeInsets:?];
-  v108 = [(MRURoutingViewController *)self stylingProvider];
-  [v6 setStylingProvider:v108];
+  [cellCopy setContentEdgeInsets:?];
+  stylingProvider = [(MRURoutingViewController *)self stylingProvider];
+  [cellCopy setStylingProvider:stylingProvider];
 }
 
 id __66__MRURoutingViewController_updateVendorSpecificCell_forIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -2631,176 +2631,176 @@ LABEL_6:
   return v8;
 }
 
-- (void)updateVendorSpecificCustomRowCell:(id)a3 forIndexPath:(id)a4
+- (void)updateVendorSpecificCustomRowCell:(id)cell forIndexPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  cellCopy = cell;
   v8 = MCLogCategoryDeviceAccess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v6;
+    v14 = pathCopy;
     _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_DEFAULT, "updateVendorSpecificCustomRowCell forIndexPath: %@", &v13, 0xCu);
   }
 
-  v9 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v6];
-  v10 = [v9 image];
-  [v7 setIconImage:v10];
+  v9 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:pathCopy];
+  image = [v9 image];
+  [cellCopy setIconImage:image];
 
-  v11 = [v9 localizedTitle];
-  [v7 setTitle:v11];
+  localizedTitle = [v9 localizedTitle];
+  [cellCopy setTitle:localizedTitle];
 
   [(MRURoutingViewController *)self contentEdgeInsets];
-  [v7 setContentEdgeInsets:?];
-  v12 = [(MRURoutingViewController *)self stylingProvider];
-  [v7 setStylingProvider:v12];
+  [cellCopy setContentEdgeInsets:?];
+  stylingProvider = [(MRURoutingViewController *)self stylingProvider];
+  [cellCopy setStylingProvider:stylingProvider];
 }
 
-- (void)updateVendorSpecificSpeakerGroupCell:(id)a3 forIndexPath:(id)a4
+- (void)updateVendorSpecificSpeakerGroupCell:(id)cell forIndexPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  cellCopy = cell;
   v8 = MCLogCategoryDeviceAccess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v6;
+    v20 = pathCopy;
     _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_DEFAULT, "updateVendorSpecificSpeakerGroupCell forIndexPath: %@", &v19, 0xCu);
   }
 
-  v9 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v6];
-  [v7 setEnabled:1];
-  [v7 setShowChevron:1];
-  [v7 setShowChevronExpanded:self->_didExpandVendorSpecificSpeakerGroup];
-  v10 = [v9 leader];
+  v9 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:pathCopy];
+  [cellCopy setEnabled:1];
+  [cellCopy setShowChevron:1];
+  [cellCopy setShowChevronExpanded:self->_didExpandVendorSpecificSpeakerGroup];
+  leader = [v9 leader];
   v11 = MEMORY[0x1E69DCAB8];
-  v12 = [(MRURoutingViewController *)self symbolNameForVendorSpecificRoute:v10];
+  v12 = [(MRURoutingViewController *)self symbolNameForVendorSpecificRoute:leader];
   v13 = [v11 systemImageNamed:v12];
-  [v7 setIconImage:v13];
+  [cellCopy setIconImage:v13];
 
-  [v7 setDelegate:self];
-  v14 = [v9 localizedTitle];
-  [v7 setTitle:v14];
+  [cellCopy setDelegate:self];
+  localizedTitle = [v9 localizedTitle];
+  [cellCopy setTitle:localizedTitle];
 
-  v15 = [v7 subtitleStateController];
-  v16 = [v9 localizedSubtitle];
-  [v15 setText:v16 forState:4];
+  subtitleStateController = [cellCopy subtitleStateController];
+  localizedSubtitle = [v9 localizedSubtitle];
+  [subtitleStateController setText:localizedSubtitle forState:4];
 
-  v17 = [v7 routingAccessoryView];
-  [v17 setState:4];
+  routingAccessoryView = [cellCopy routingAccessoryView];
+  [routingAccessoryView setState:4];
 
   [(MRURoutingViewController *)self contentEdgeInsets];
-  [v7 setContentEdgeInsets:?];
-  v18 = [(MRURoutingViewController *)self stylingProvider];
-  [v7 setStylingProvider:v18];
+  [cellCopy setContentEdgeInsets:?];
+  stylingProvider = [(MRURoutingViewController *)self stylingProvider];
+  [cellCopy setStylingProvider:stylingProvider];
 }
 
-- (void)updateCell:(id)a3 forIndexPath:(id)a4
+- (void)updateCell:(id)cell forIndexPath:(id)path
 {
   v78 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:a4];
-  v8 = [v7 mainRoute];
-  v9 = [v8 routeUID];
-  v10 = [v7 image];
-  if (v10)
+  cellCopy = cell;
+  v7 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:path];
+  mainRoute = [v7 mainRoute];
+  routeUID = [mainRoute routeUID];
+  image = [v7 image];
+  if (image)
   {
 
 LABEL_3:
-    v11 = [v7 image];
+    image2 = [v7 image];
     goto LABEL_4;
   }
 
-  v33 = [v7 mainRoute];
+  mainRoute2 = [v7 mainRoute];
 
-  if (!v33)
+  if (!mainRoute2)
   {
     goto LABEL_3;
   }
 
-  v34 = [v7 type];
+  type = [v7 type];
   v35 = MEMORY[0x1E6970490];
-  if (v34 == 1)
+  if (type == 1)
   {
-    v12 = [v7 routes];
-    v36 = [v35 _symbolImageForRoutes:v12];
-    [v6 setIconImage:v36];
+    routes = [v7 routes];
+    v36 = [v35 _symbolImageForRoutes:routes];
+    [cellCopy setIconImage:v36];
 
     goto LABEL_5;
   }
 
-  v11 = [MEMORY[0x1E6970490] _symbolImageForRoute:v8];
+  image2 = [MEMORY[0x1E6970490] _symbolImageForRoute:mainRoute];
 LABEL_4:
-  v12 = v11;
-  [v6 setIconImage:v11];
+  routes = image2;
+  [cellCopy setIconImage:image2];
 LABEL_5:
 
-  if (!-[MRURoutingViewController routesContainMultipleBuiltIn:](self, "routesContainMultipleBuiltIn:", self->_cachedDisplayableAvailableRoutes) && ([v8 routeSubtype] == 1 || objc_msgSend(v8, "routeSubtype") == 3))
+  if (!-[MRURoutingViewController routesContainMultipleBuiltIn:](self, "routesContainMultipleBuiltIn:", self->_cachedDisplayableAvailableRoutes) && ([mainRoute routeSubtype] == 1 || objc_msgSend(mainRoute, "routeSubtype") == 3))
   {
-    v13 = MSVCopyLocalizedModelName();
+    localizedTitle = MSVCopyLocalizedModelName();
   }
 
   else
   {
-    v13 = [v7 localizedTitle];
+    localizedTitle = [v7 localizedTitle];
   }
 
-  v14 = v13;
-  [v6 setTitle:v13];
+  v14 = localizedTitle;
+  [cellCopy setTitle:localizedTitle];
 
-  v15 = [v6 subtitleStateController];
-  v16 = [v8 routingBatteryTextWithFormatter:self->_percentageFormatter];
-  [v15 setText:v16 forState:1];
+  subtitleStateController = [cellCopy subtitleStateController];
+  v16 = [mainRoute routingBatteryTextWithFormatter:self->_percentageFormatter];
+  [subtitleStateController setText:v16 forState:1];
 
-  v17 = [v6 subtitleStateController];
-  v18 = [v8 routingPairedDeviceText];
-  [v17 setText:v18 forState:2];
+  subtitleStateController2 = [cellCopy subtitleStateController];
+  routingPairedDeviceText = [mainRoute routingPairedDeviceText];
+  [subtitleStateController2 setText:routingPairedDeviceText forState:2];
 
-  v19 = [v6 subtitleStateController];
-  v20 = [v7 localizedSubtitle];
-  [v19 setText:v20 forState:4];
+  subtitleStateController3 = [cellCopy subtitleStateController];
+  localizedSubtitle = [v7 localizedSubtitle];
+  [subtitleStateController3 setText:localizedSubtitle forState:4];
 
-  if (v9)
+  if (routeUID)
   {
-    v21 = [(NSDictionary *)self->_indexedNowPlayingControllers objectForKeyedSubscript:v9];
-    v22 = [v21 metadataController];
-    v23 = [v22 nowPlayingInfo];
+    v21 = [(NSDictionary *)self->_indexedNowPlayingControllers objectForKeyedSubscript:routeUID];
+    metadataController = [v21 metadataController];
+    nowPlayingInfo = [metadataController nowPlayingInfo];
 
-    v24 = [(MRURoutingViewController *)self subtitleAccessoryForItem:v7 nowPlayingInfo:v23];
-    v25 = [v6 subtitleStateController];
-    v26 = [v23 stringForComponents:59];
-    [v25 setText:v26 forState:3 accessory:v24];
+    v24 = [(MRURoutingViewController *)self subtitleAccessoryForItem:v7 nowPlayingInfo:nowPlayingInfo];
+    subtitleStateController4 = [cellCopy subtitleStateController];
+    v26 = [nowPlayingInfo stringForComponents:59];
+    [subtitleStateController4 setText:v26 forState:3 accessory:v24];
   }
 
-  v27 = [v7 mainRoute];
-  v72 = v9;
-  if (v27)
+  mainRoute3 = [v7 mainRoute];
+  v72 = routeUID;
+  if (mainRoute3)
   {
-    v28 = v27;
-    v29 = [MEMORY[0x1E69B0B28] currentSettings];
-    v30 = [v29 addDebugBadgeToRecommendedRoutes];
+    v28 = mainRoute3;
+    currentSettings = [MEMORY[0x1E69B0B28] currentSettings];
+    addDebugBadgeToRecommendedRoutes = [currentSettings addDebugBadgeToRecommendedRoutes];
 
-    if (v30)
+    if (addDebugBadgeToRecommendedRoutes)
     {
-      v31 = [v7 mainRoute];
+      mainRoute4 = [v7 mainRoute];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v32 = [v31 outputDevice];
+        outputDevice = [mainRoute4 outputDevice];
       }
 
       else
       {
-        v32 = 0;
+        outputDevice = 0;
       }
 
-      v70 = v31;
+      v70 = mainRoute4;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v37 = v32;
+        v37 = outputDevice;
       }
 
       else
@@ -2809,40 +2809,40 @@ LABEL_5:
       }
 
       v38 = v37;
-      v39 = [v38 recommendation];
-      v40 = [v39 reason];
-      v41 = v40;
+      recommendation = [v38 recommendation];
+      reason = [recommendation reason];
+      v41 = reason;
       v42 = @"(no reason provided)";
-      if (v40)
+      if (reason)
       {
-        v42 = v40;
+        v42 = reason;
       }
 
       v43 = v42;
 
-      v44 = [v38 recommendation];
-      v45 = [v44 sortingHint];
+      recommendation2 = [v38 recommendation];
+      sortingHint = [recommendation2 sortingHint];
 
-      if (v45)
+      if (sortingHint)
       {
         v46 = MEMORY[0x1E696AEC0];
-        v47 = [v38 recommendation];
-        v48 = [v47 sortingHint];
-        v49 = [v46 stringWithFormat:@"Hint: %@, %@", v48, v43];
+        recommendation3 = [v38 recommendation];
+        sortingHint2 = [recommendation3 sortingHint];
+        v49 = [v46 stringWithFormat:@"Hint: %@, %@", sortingHint2, v43];
 
         v43 = v49;
       }
 
-      v50 = [v6 subtitleStateController];
-      [v50 setText:v43 forState:5];
+      subtitleStateController5 = [cellCopy subtitleStateController];
+      [subtitleStateController5 setText:v43 forState:5];
     }
   }
 
-  v51 = [v7 mainRoute];
-  v52 = [v51 routeUID];
-  [v6 setAccessibilityIdentifier:v52];
+  mainRoute5 = [v7 mainRoute];
+  routeUID2 = [mainRoute5 routeUID];
+  [cellCopy setAccessibilityIdentifier:routeUID2];
 
-  if ([v8 isSplitterCapable])
+  if ([mainRoute isSplitterCapable])
   {
     v53 = [(MRURoutingViewController *)self routesContainSplitterCapableRoute:self->_cachedDisplayAsPickedRoutes];
 LABEL_32:
@@ -2850,7 +2850,7 @@ LABEL_32:
     goto LABEL_34;
   }
 
-  if ([v8 supportsAirPlayGrouping])
+  if ([mainRoute supportsAirPlayGrouping])
   {
     v53 = [(MRURoutingViewController *)self routesContainAirPlayGroupableRoute:self->_cachedDisplayAsPickedRoutes];
     goto LABEL_32;
@@ -2858,13 +2858,13 @@ LABEL_32:
 
   v54 = 0;
 LABEL_34:
-  v71 = [v7 type];
+  type2 = [v7 type];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v55 = [v7 routes];
-  v56 = [v55 countByEnumeratingWithState:&v73 objects:v77 count:16];
+  routes2 = [v7 routes];
+  v56 = [routes2 countByEnumeratingWithState:&v73 objects:v77 count:16];
   if (!v56)
   {
 
@@ -2874,8 +2874,8 @@ LABEL_34:
     }
 
 LABEL_45:
-    v64 = [v6 routingAccessoryView];
-    [v64 setState:0];
+    routingAccessoryView = [cellCopy routingAccessoryView];
+    [routingAccessoryView setState:0];
     v65 = v72;
 LABEL_55:
 
@@ -2884,7 +2884,7 @@ LABEL_55:
 
   v57 = v56;
   v68 = v54;
-  v69 = v6;
+  v69 = cellCopy;
   v58 = 0;
   v59 = 0;
   v60 = *v74;
@@ -2894,7 +2894,7 @@ LABEL_55:
     {
       if (*v74 != v60)
       {
-        objc_enumerationMutation(v55);
+        objc_enumerationMutation(routes2);
       }
 
       v62 = *(*(&v73 + 1) + 8 * i);
@@ -2902,12 +2902,12 @@ LABEL_55:
       v58 |= [(NSArray *)self->_cachedPendingPickedRoutes containsObject:v62];
     }
 
-    v57 = [v55 countByEnumeratingWithState:&v73 objects:v77 count:16];
+    v57 = [routes2 countByEnumeratingWithState:&v73 objects:v77 count:16];
   }
 
   while (v57);
 
-  v6 = v69;
+  cellCopy = v69;
   v54 = v68;
   if ([(MRURoutingViewController *)self shouldSuppressNativeRoutesStatusDisplay])
   {
@@ -2939,51 +2939,51 @@ LABEL_50:
 
 LABEL_51:
   v65 = v72;
-  v66 = [v6 routingAccessoryView];
-  [v66 setState:v63];
+  routingAccessoryView2 = [cellCopy routingAccessoryView];
+  [routingAccessoryView2 setState:v63];
 
-  if ([(NSArray *)self->_cachedVolumeCapableRoutes containsObject:v8]&& v72 && v71 != 1)
+  if ([(NSArray *)self->_cachedVolumeCapableRoutes containsObject:mainRoute]&& v72 && type2 != 1)
   {
-    v64 = [(NSDictionary *)self->_outputDeviceVolumeControllers objectForKey:v72];
-    [v6 setVolumeController:v64];
+    routingAccessoryView = [(NSDictionary *)self->_outputDeviceVolumeControllers objectForKey:v72];
+    [cellCopy setVolumeController:routingAccessoryView];
     goto LABEL_55;
   }
 
 LABEL_56:
-  [v6 setDelegate:self];
-  [v6 setShowChevron:{objc_msgSend(v7, "isExpandable")}];
-  [v6 setShowChevronExpanded:{-[NSMutableSet containsObject:](self->_expandedRouteUIDs, "containsObject:", v65)}];
-  [v6 setIndentationLevel:{objc_msgSend(v7, "nestedLevel")}];
-  [v6 setEnabled:{objc_msgSend(v7, "enabled")}];
+  [cellCopy setDelegate:self];
+  [cellCopy setShowChevron:{objc_msgSend(v7, "isExpandable")}];
+  [cellCopy setShowChevronExpanded:{-[NSMutableSet containsObject:](self->_expandedRouteUIDs, "containsObject:", v65)}];
+  [cellCopy setIndentationLevel:{objc_msgSend(v7, "nestedLevel")}];
+  [cellCopy setEnabled:{objc_msgSend(v7, "enabled")}];
   [(MRURoutingViewController *)self contentEdgeInsets];
-  [v6 setContentEdgeInsets:?];
-  v67 = [(MRURoutingViewController *)self stylingProvider];
-  [v6 setStylingProvider:v67];
+  [cellCopy setContentEdgeInsets:?];
+  stylingProvider = [(MRURoutingViewController *)self stylingProvider];
+  [cellCopy setStylingProvider:stylingProvider];
 }
 
-- (void)updateHeaderView:(id)a3 forSection:(int64_t)a4
+- (void)updateHeaderView:(id)view forSection:(int64_t)section
 {
   routingViewItems = self->_routingViewItems;
-  v7 = a3;
-  v8 = [(MPSectionedCollection *)routingViewItems sectionAtIndex:a4];
-  [v7 setTitle:v8];
+  viewCopy = view;
+  v8 = [(MPSectionedCollection *)routingViewItems sectionAtIndex:section];
+  [viewCopy setTitle:v8];
 
   [(MRURoutingViewController *)self contentEdgeInsets];
-  [v7 setContentEdgeInsets:?];
-  v9 = [(MRURoutingViewController *)self stylingProvider];
-  [v7 setStylingProvider:v9];
+  [viewCopy setContentEdgeInsets:?];
+  stylingProvider = [(MRURoutingViewController *)self stylingProvider];
+  [viewCopy setStylingProvider:stylingProvider];
 }
 
-- (void)updateNowPlayingControllersForRoutes:(id)a3
+- (void)updateNowPlayingControllersForRoutes:(id)routes
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v27 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  routesCopy = routes;
+  v27 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(routesCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v4;
+  obj = routesCopy;
   v5 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v5)
   {
@@ -3029,24 +3029,24 @@ LABEL_56:
                 }
 
                 v14 = *(*(&v36 + 1) + 8 * v13);
-                v15 = [v14 identifier];
-                v16 = [v14 endpointController];
-                v17 = [v9 routeUID];
-                if ([v16 containsOutputDeviceWithRouteUID:v17] && (objc_msgSend(v9, "routeUID"), (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+                identifier = [v14 identifier];
+                endpointController = [v14 endpointController];
+                routeUID = [v9 routeUID];
+                if ([endpointController containsOutputDeviceWithRouteUID:routeUID] && (objc_msgSend(v9, "routeUID"), (v18 = objc_claimAutoreleasedReturnValue()) != 0))
                 {
                   v19 = v18;
                   v20 = v12;
                   [(MRURoutingViewController *)self endpointRoute];
                   v22 = v21 = self;
-                  v23 = [v22 routeUID];
-                  if (![v23 isEqualToString:v15])
+                  routeUID2 = [v22 routeUID];
+                  if (![routeUID2 isEqualToString:identifier])
                   {
 
                     self = v21;
                     v9 = v32;
 LABEL_22:
-                    v24 = [v9 routeUID];
-                    [v27 setObject:v14 forKeyedSubscript:v24];
+                    routeUID3 = [v9 routeUID];
+                    [v27 setObject:v14 forKeyedSubscript:routeUID3];
 
                     [v14 addObserver:self];
                     goto LABEL_23;
@@ -3109,17 +3109,17 @@ LABEL_23:
   v42 = *MEMORY[0x1E69E9840];
   if (self->_onScreen)
   {
-    v2 = self;
+    selfCopy = self;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v3 = [(MRURoutingViewController *)self view];
-    v4 = [v3 tableView];
-    v5 = [v4 indexPathsForVisibleRows];
+    view = [(MRURoutingViewController *)self view];
+    tableView = [view tableView];
+    indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-    obj = v5;
-    v6 = [v5 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    obj = indexPathsForVisibleRows;
+    v6 = [indexPathsForVisibleRows countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3135,38 +3135,38 @@ LABEL_23:
           }
 
           v11 = *(*(&v37 + 1) + 8 * i);
-          v12 = [*(&v2->super.super.super.isa + v9[304]) safeItemAtIndexPath:v11];
-          v13 = [v12 type];
-          v14 = [v12 type];
-          v15 = [v12 type];
-          v16 = [v12 type];
-          if (v13 != 3 && v14 != 4 && v15 != 5 && v16 != 6)
+          v12 = [*(&selfCopy->super.super.super.isa + v9[304]) safeItemAtIndexPath:v11];
+          type = [v12 type];
+          type2 = [v12 type];
+          type3 = [v12 type];
+          type4 = [v12 type];
+          if (type != 3 && type2 != 4 && type3 != 5 && type4 != 6)
           {
-            indexedNowPlayingControllers = v2->_indexedNowPlayingControllers;
-            v21 = [v12 mainRoute];
-            v22 = [v21 routeUID];
-            v36 = [(NSDictionary *)indexedNowPlayingControllers objectForKeyedSubscript:v22];
+            indexedNowPlayingControllers = selfCopy->_indexedNowPlayingControllers;
+            mainRoute = [v12 mainRoute];
+            routeUID = [mainRoute routeUID];
+            v36 = [(NSDictionary *)indexedNowPlayingControllers objectForKeyedSubscript:routeUID];
 
-            v23 = [(MRURoutingViewController *)v2 view];
-            v24 = [v23 tableView];
-            v35 = [v24 cellForRowAtIndexPath:v11];
+            view2 = [(MRURoutingViewController *)selfCopy view];
+            tableView2 = [view2 tableView];
+            v35 = [tableView2 cellForRowAtIndexPath:v11];
 
-            v25 = [v36 metadataController];
-            v26 = [v25 nowPlayingInfo];
+            metadataController = [v36 metadataController];
+            nowPlayingInfo = [metadataController nowPlayingInfo];
 
-            v27 = [(MRURoutingViewController *)v2 subtitleAccessoryForItem:v12 nowPlayingInfo:v26];
+            v27 = [(MRURoutingViewController *)selfCopy subtitleAccessoryForItem:v12 nowPlayingInfo:nowPlayingInfo];
             [v35 subtitleStateController];
-            v28 = v2;
+            v28 = selfCopy;
             v29 = v9;
             v31 = v30 = v8;
-            [v26 stringForComponents:59];
+            [nowPlayingInfo stringForComponents:59];
             v33 = v32 = v7;
             [v31 setText:v33 forState:3 accessory:v27];
 
             v7 = v32;
             v8 = v30;
             v9 = v29;
-            v2 = v28;
+            selfCopy = v28;
           }
         }
 
@@ -3178,19 +3178,19 @@ LABEL_23:
   }
 }
 
-- (void)updateMetadataForNowPlayingController:(id)a3
+- (void)updateMetadataForNowPlayingController:(id)controller
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRURoutingViewController *)self view];
-  v6 = [v5 tableView];
-  v7 = [v6 indexPathsForVisibleRows];
+  controllerCopy = controller;
+  view = [(MRURoutingViewController *)self view];
+  tableView = [view tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v7;
+  v8 = indexPathsForVisibleRows;
   v31 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v31)
   {
@@ -3206,39 +3206,39 @@ LABEL_23:
 
         v11 = *(*(&v32 + 1) + 8 * i);
         v12 = [(MPSectionedCollection *)self->_routingViewItems safeItemAtIndexPath:v11, v30];
-        v13 = [v12 mainRoute];
+        mainRoute = [v12 mainRoute];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if ((isKindOfClass & 1) == 0)
         {
           indexedNowPlayingControllers = self->_indexedNowPlayingControllers;
-          v16 = [v12 mainRoute];
-          v17 = [v16 routeUID];
-          v18 = [(NSDictionary *)indexedNowPlayingControllers objectForKeyedSubscript:v17];
+          mainRoute2 = [v12 mainRoute];
+          routeUID = [mainRoute2 routeUID];
+          v18 = [(NSDictionary *)indexedNowPlayingControllers objectForKeyedSubscript:routeUID];
 
-          if (v18 == v4)
+          if (v18 == controllerCopy)
           {
-            v19 = [(MRURoutingViewController *)self view];
-            v20 = [v19 tableView];
-            v30 = [v20 cellForRowAtIndexPath:v11];
+            view2 = [(MRURoutingViewController *)self view];
+            tableView2 = [view2 tableView];
+            v30 = [tableView2 cellForRowAtIndexPath:v11];
 
-            v21 = [v4 metadataController];
-            v22 = [v21 nowPlayingInfo];
+            metadataController = [controllerCopy metadataController];
+            nowPlayingInfo = [metadataController nowPlayingInfo];
 
-            v23 = [(MRURoutingViewController *)self subtitleAccessoryForItem:v12 nowPlayingInfo:v22];
-            v24 = [v30 subtitleStateController];
-            [v22 stringForComponents:59];
-            v25 = self;
+            v23 = [(MRURoutingViewController *)self subtitleAccessoryForItem:v12 nowPlayingInfo:nowPlayingInfo];
+            subtitleStateController = [v30 subtitleStateController];
+            [nowPlayingInfo stringForComponents:59];
+            selfCopy = self;
             v26 = v9;
             v27 = v8;
-            v29 = v28 = v4;
-            [v24 setText:v29 forState:3 accessory:v23];
+            v29 = v28 = controllerCopy;
+            [subtitleStateController setText:v29 forState:3 accessory:v23];
 
-            v4 = v28;
+            controllerCopy = v28;
             v8 = v27;
             v9 = v26;
-            self = v25;
+            self = selfCopy;
           }
         }
       }
@@ -3326,14 +3326,14 @@ void __42__MRURoutingViewController_updateSubtitle__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)subtitleAccessoryForItem:(id)a3 nowPlayingInfo:(id)a4
+- (int64_t)subtitleAccessoryForItem:(id)item nowPlayingInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 type];
-  if (v7 == 1)
+  itemCopy = item;
+  infoCopy = info;
+  type = [itemCopy type];
+  if (type == 1)
   {
-    if ([v6 isPlaying])
+    if ([infoCopy isPlaying])
     {
       v9 = 2;
     }
@@ -3344,15 +3344,15 @@ void __42__MRURoutingViewController_updateSubtitle__block_invoke(uint64_t a1)
     }
   }
 
-  else if (v7)
+  else if (type)
   {
     v9 = 0;
   }
 
-  else if ([v6 isPlaying])
+  else if ([infoCopy isPlaying])
   {
-    v8 = [v5 mainRoute];
-    if ([v8 isProxyGroupPlayer])
+    mainRoute = [itemCopy mainRoute];
+    if ([mainRoute isProxyGroupPlayer])
     {
       v9 = 1;
     }
@@ -3371,43 +3371,43 @@ void __42__MRURoutingViewController_updateSubtitle__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (BOOL)_wouldShareAudioForPickedRoute:(id)a3 operation:(int64_t)a4 pickedRoutes:(id)a5
+- (BOOL)_wouldShareAudioForPickedRoute:(id)route operation:(int64_t)operation pickedRoutes:(id)routes
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 firstObject];
-  if (a4 == 1 && [v8 count] == 1 && objc_msgSend(v7, "supportsGrouping"))
+  routeCopy = route;
+  routesCopy = routes;
+  firstObject = [routesCopy firstObject];
+  if (operation == 1 && [routesCopy count] == 1 && objc_msgSend(routeCopy, "supportsGrouping"))
   {
-    v10 = [v9 supportsGrouping];
+    supportsGrouping = [firstObject supportsGrouping];
   }
 
   else
   {
-    v10 = 0;
+    supportsGrouping = 0;
   }
 
-  return v10;
+  return supportsGrouping;
 }
 
-- (BOOL)_wouldEndGroupSessionForViewItem:(id)a3 operation:(int64_t)a4 pickedRoutes:(id)a5
+- (BOOL)_wouldEndGroupSessionForViewItem:(id)item operation:(int64_t)operation pickedRoutes:(id)routes
 {
-  v7 = a5;
-  v8 = [a3 routes];
-  v9 = [v7 mutableCopy];
-  switch(a4)
+  routesCopy = routes;
+  routes = [item routes];
+  v9 = [routesCopy mutableCopy];
+  switch(operation)
   {
     case 0:
       goto LABEL_9;
     case 1:
-      v16 = [v7 firstObject];
-      if ([v16 supportsGrouping])
+      firstObject = [routesCopy firstObject];
+      if ([firstObject supportsGrouping])
       {
-        v17 = [v8 firstObject];
-        v18 = [v17 supportsGrouping];
+        firstObject2 = [routes firstObject];
+        supportsGrouping = [firstObject2 supportsGrouping];
 
-        if (v18)
+        if (supportsGrouping)
         {
-          v19 = [v7 arrayByAddingObjectsFromArray:v8];
+          v19 = [routesCopy arrayByAddingObjectsFromArray:routes];
           break;
         }
       }
@@ -3417,13 +3417,13 @@ void __42__MRURoutingViewController_updateSubtitle__block_invoke(uint64_t a1)
       }
 
 LABEL_9:
-      v20 = [v8 mutableCopy];
+      v20 = [routes mutableCopy];
 
       v9 = v20;
       break;
     case 2:
       v10 = MEMORY[0x1E695DFD8];
-      v11 = [v8 msv_map:&__block_literal_global_214];
+      v11 = [routes msv_map:&__block_literal_global_214];
       v12 = [v10 setWithArray:v11];
 
       v24[0] = MEMORY[0x1E69E9820];
@@ -3454,23 +3454,23 @@ uint64_t __84__MRURoutingViewController__wouldEndGroupSessionForViewItem_operati
   return v2 ^ 1;
 }
 
-- (void)handleGroupSessionJoinWithPickedRoute:(id)a3
+- (void)handleGroupSessionJoinWithPickedRoute:(id)route
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  routeCopy = route;
   v4 = *MEMORY[0x1E69B0938];
   v11[0] = &unk_1F148B208;
   v5 = *MEMORY[0x1E69B0930];
   v10[0] = v4;
   v10[1] = v5;
-  v6 = [v3 discoveredGroupSession];
-  v7 = [v6 identifier];
+  discoveredGroupSession = [routeCopy discoveredGroupSession];
+  identifier = [discoveredGroupSession identifier];
   v10[2] = *MEMORY[0x1E69B0940];
-  v11[1] = v7;
+  v11[1] = identifier;
   v11[2] = MEMORY[0x1E695E118];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
-  v9 = v3;
+  v9 = routeCopy;
   MRGroupSessionSendEvent();
 }
 
@@ -3513,9 +3513,9 @@ void __66__MRURoutingViewController_handleGroupSessionJoinWithPickedRoute___bloc
   }
 }
 
-- (void)_displayShareAudioDisabledAlertForReason:(id)a3
+- (void)_displayShareAudioDisabledAlertForReason:(id)reason
 {
-  v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:a3 preferredStyle:1];
+  v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:reason preferredStyle:1];
   v4 = MEMORY[0x1E69DC648];
   v5 = +[MRUStringsProvider ok];
   v6 = [v4 actionWithTitle:v5 style:0 handler:0];
@@ -3524,31 +3524,31 @@ void __66__MRURoutingViewController_handleGroupSessionJoinWithPickedRoute___bloc
   [(MRURoutingViewController *)self showViewController:v7 sender:self];
 }
 
-- (void)_displayEndGroupSessionWithCompletion:(id)a3
+- (void)_displayEndGroupSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8 = +[MRUStringsProvider groupSessionEndTitle];
   v5 = +[MRUStringsProvider groupSessionEndBody];
   v6 = +[MRUStringsProvider groupSessionEndConfirm];
   v7 = +[MRUStringsProvider groupSessionEndCancel];
-  [(MRURoutingViewController *)self _displayGroupSessionAlertWithTitle:v8 body:v5 confirmTitle:v6 cancelTitle:v7 completion:v4];
+  [(MRURoutingViewController *)self _displayGroupSessionAlertWithTitle:v8 body:v5 confirmTitle:v6 cancelTitle:v7 completion:completionCopy];
 }
 
-- (void)_displayGroupSessionAlertWithTitle:(id)a3 body:(id)a4 confirmTitle:(id)a5 cancelTitle:(id)a6 completion:(id)a7
+- (void)_displayGroupSessionAlertWithTitle:(id)title body:(id)body confirmTitle:(id)confirmTitle cancelTitle:(id)cancelTitle completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   v13 = MEMORY[0x1E69DC650];
-  v14 = a6;
-  v15 = a5;
-  v16 = [v13 alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  cancelTitleCopy = cancelTitle;
+  confirmTitleCopy = confirmTitle;
+  v16 = [v13 alertControllerWithTitle:title message:body preferredStyle:1];
   v17 = MEMORY[0x1E69DC648];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __104__MRURoutingViewController__displayGroupSessionAlertWithTitle_body_confirmTitle_cancelTitle_completion___block_invoke;
   v28[3] = &unk_1E7664CA0;
-  v18 = v12;
+  v18 = completionCopy;
   v29 = v18;
-  v19 = [v17 actionWithTitle:v15 style:2 handler:v28];
+  v19 = [v17 actionWithTitle:confirmTitleCopy style:2 handler:v28];
 
   [v16 addAction:v19];
   v20 = MEMORY[0x1E69DC648];
@@ -3558,7 +3558,7 @@ void __66__MRURoutingViewController_handleGroupSessionJoinWithPickedRoute___bloc
   v26 = &unk_1E7664CA0;
   v27 = v18;
   v21 = v18;
-  v22 = [v20 actionWithTitle:v14 style:0 handler:&v23];
+  v22 = [v20 actionWithTitle:cancelTitleCopy style:0 handler:&v23];
 
   [v16 addAction:{v22, v23, v24, v25, v26}];
   [(MRURoutingViewController *)self showViewController:v16 sender:self];
@@ -3635,10 +3635,10 @@ void __56__MRURoutingViewController__setupUpdateTimerIfNecessary__block_invoke(u
 
   else
   {
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v5 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v4 = v9;
+    v4 = bundleIdentifier;
   }
 
   v10 = v4;
@@ -3659,38 +3659,38 @@ void __56__MRURoutingViewController__setupUpdateTimerIfNecessary__block_invoke(u
   }
 }
 
-- (id)_displayableRoutesInRoutes:(id)a3
+- (id)_displayableRoutesInRoutes:(id)routes
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69B0B28] currentSettings];
-  v6 = [v5 supportRouteRecommendations];
+  routesCopy = routes;
+  currentSettings = [MEMORY[0x1E69B0B28] currentSettings];
+  supportRouteRecommendations = [currentSettings supportRouteRecommendations];
 
-  if (v6)
+  if (supportRouteRecommendations)
   {
-    v7 = [(MRURoutingViewController *)self _recommendedRoutesFromRoutes:v4];
+    v7 = [(MRURoutingViewController *)self _recommendedRoutesFromRoutes:routesCopy];
 
-    v4 = v7;
+    routesCopy = v7;
   }
 
-  v8 = [MEMORY[0x1E695DF70] arrayWithArray:v4];
-  v9 = [MEMORY[0x1E69B0B28] currentSettings];
-  v10 = [v9 routePickerAirPlayAllowList];
+  v8 = [MEMORY[0x1E695DF70] arrayWithArray:routesCopy];
+  currentSettings2 = [MEMORY[0x1E69B0B28] currentSettings];
+  routePickerAirPlayAllowList = [currentSettings2 routePickerAirPlayAllowList];
 
-  v11 = [MEMORY[0x1E69B0B28] currentSettings];
-  v12 = [v11 routePickerAirPlayDenyList];
+  currentSettings3 = [MEMORY[0x1E69B0B28] currentSettings];
+  routePickerAirPlayDenyList = [currentSettings3 routePickerAirPlayDenyList];
 
-  if ([v10 count])
+  if ([routePickerAirPlayAllowList count])
   {
     v13 = v21;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v14 = __55__MRURoutingViewController__displayableRoutesInRoutes___block_invoke;
-    v15 = v10;
+    v15 = routePickerAirPlayAllowList;
   }
 
   else
   {
-    if (![v12 count])
+    if (![routePickerAirPlayDenyList count])
     {
       goto LABEL_8;
     }
@@ -3699,13 +3699,13 @@ void __56__MRURoutingViewController__setupUpdateTimerIfNecessary__block_invoke(u
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v14 = __55__MRURoutingViewController__displayableRoutesInRoutes___block_invoke_2;
-    v15 = v12;
+    v15 = routePickerAirPlayDenyList;
   }
 
   v13[2] = v14;
   v13[3] = &unk_1E7664D38;
   v13[4] = v15;
-  v16 = [v4 msv_filter:v13];
+  v16 = [routesCopy msv_filter:v13];
   v17 = [v16 mutableCopy];
 
   v8 = v17;
@@ -4047,16 +4047,16 @@ LABEL_69:
   return v10;
 }
 
-- (id)_recommendedRoutesFromRoutes:(id)a3
+- (id)_recommendedRoutesFromRoutes:(id)routes
 {
-  v3 = a3;
+  routesCopy = routes;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__MRURoutingViewController__recommendedRoutesFromRoutes___block_invoke_3;
   v7[3] = &unk_1E7664E38;
-  v8 = v3;
+  v8 = routesCopy;
   v9 = &__block_literal_global_229;
-  v4 = v3;
+  v4 = routesCopy;
   v5 = [v4 msv_compactMap:v7];
 
   return v5;
@@ -4176,16 +4176,16 @@ void *__57__MRURoutingViewController__recommendedRoutesFromRoutes___block_invoke
   return v4;
 }
 
-- (id)_displayAsPickedRoutesInRoutes:(id)a3
+- (id)_displayAsPickedRoutesInRoutes:(id)routes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  routesCopy = routes;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = routesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -4216,16 +4216,16 @@ void *__57__MRURoutingViewController__recommendedRoutesFromRoutes___block_invoke
   return v4;
 }
 
-- (id)_airPlayRoutesInRoutes:(id)a3
+- (id)_airPlayRoutesInRoutes:(id)routes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  routesCopy = routes;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = routesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -4257,21 +4257,21 @@ void *__57__MRURoutingViewController__recommendedRoutesFromRoutes___block_invoke
   return v4;
 }
 
-- (id)_mergeRoutes:(id)a3 withCoalescedResult:(id)a4
+- (id)_mergeRoutes:(id)routes withCoalescedResult:(id)result
 {
   v142 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v97 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count") + objc_msgSend(v6, "count")}];
-  v99 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-  v104 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-  v107 = v6;
-  v105 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  routesCopy = routes;
+  resultCopy = result;
+  v97 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(resultCopy, "count") + objc_msgSend(routesCopy, "count")}];
+  v99 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(resultCopy, "count")}];
+  v104 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(routesCopy, "count")}];
+  v107 = routesCopy;
+  v105 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(routesCopy, "count")}];
   v130 = 0u;
   v131 = 0u;
   v132 = 0u;
   v133 = 0u;
-  obj = v7;
+  obj = resultCopy;
   v101 = [obj countByEnumeratingWithState:&v130 objects:v141 count:16];
   if (!v101)
   {
@@ -4280,7 +4280,7 @@ void *__57__MRURoutingViewController__recommendedRoutesFromRoutes___block_invoke
 
   v100 = *v131;
   p_superclass = MediaControlsMaterialView.superclass;
-  v106 = self;
+  selfCopy = self;
   do
   {
     v9 = 0;
@@ -4292,8 +4292,8 @@ void *__57__MRURoutingViewController__recommendedRoutesFromRoutes___block_invoke
       }
 
       v10 = *(*(&v130 + 1) + 8 * v9);
-      v11 = [v10 endpoints];
-      v12 = [v11 count];
+      endpoints = [v10 endpoints];
+      v12 = [endpoints count];
 
       if (v12 >= 2)
       {
@@ -4301,8 +4301,8 @@ void *__57__MRURoutingViewController__recommendedRoutesFromRoutes___block_invoke
         v14 = MCLogCategoryDeviceAccess();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v10 endpoints];
-          v16 = [v15 count];
+          endpoints2 = [v10 endpoints];
+          v16 = [endpoints2 count];
           *buf = 134218242;
           v138 = v16;
           v139 = 2112;
@@ -4325,11 +4325,11 @@ void *__57__MRURoutingViewController__recommendedRoutesFromRoutes___block_invoke
         v129 = 0u;
         v126 = 0u;
         v127 = 0u;
-        v36 = [v10 endpoints];
-        v37 = [v36 allValues];
+        endpoints3 = [v10 endpoints];
+        allValues = [endpoints3 allValues];
 
-        v112 = v37;
-        v38 = [v37 countByEnumeratingWithState:&v126 objects:v136 count:16];
+        v112 = allValues;
+        v38 = [allValues countByEnumeratingWithState:&v126 objects:v136 count:16];
         if (v38)
         {
           v39 = v38;
@@ -4349,17 +4349,17 @@ void *__57__MRURoutingViewController__recommendedRoutesFromRoutes___block_invoke
 
               v42 = *(*(&v126 + 1) + 8 * v41);
               v43 = objc_alloc((p_superclass + 64));
-              v44 = [v42 underlyingDADevice];
-              v45 = [v43 initWithDevice:v44];
+              underlyingDADevice = [v42 underlyingDADevice];
+              v45 = [v43 initWithDevice:underlyingDADevice];
 
               [v45 setIsPreferredRoute:{objc_msgSend(v42, "selected")}];
-              v46 = [v45 device];
+              device = [v45 device];
 
-              if (v46)
+              if (device)
               {
-                v47 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
-                v48 = [v45 routeUID];
-                [v45 setIsPicked:{objc_msgSend(v47, "containsObject:", v48)}];
+                activatedDeviceIDs = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
+                routeUID = [v45 routeUID];
+                [v45 setIsPicked:{objc_msgSend(activatedDeviceIDs, "containsObject:", routeUID)}];
 
                 [v13 addSubRoute:v45];
               }
@@ -4387,9 +4387,9 @@ LABEL_26:
                     }
 
                     v54 = *(*(&v122 + 1) + 8 * v53);
-                    v55 = [v54 routeUID];
-                    v56 = [v42 airplayDeviceID];
-                    v57 = [v55 isEqualToString:v56];
+                    routeUID2 = [v54 routeUID];
+                    airplayDeviceID = [v42 airplayDeviceID];
+                    v57 = [routeUID2 isEqualToString:airplayDeviceID];
 
                     if (v57)
                     {
@@ -4448,7 +4448,7 @@ LABEL_32:
                 }
 
 LABEL_39:
-                self = v106;
+                self = selfCopy;
                 p_superclass = MediaControlsMaterialView.superclass;
                 v40 = v108;
               }
@@ -4463,8 +4463,8 @@ LABEL_39:
           while (v39);
         }
 
-        v60 = [v13 subroutes];
-        v61 = [v60 count];
+        subroutes = [v13 subroutes];
+        v61 = [subroutes count];
 
         if (v61 >= 2)
         {
@@ -4474,37 +4474,37 @@ LABEL_65:
           goto LABEL_66;
         }
 
-        v65 = [v13 subroutes];
-        v66 = [v65 count];
+        subroutes2 = [v13 subroutes];
+        v66 = [subroutes2 count];
 
         if (v66)
         {
-          v67 = [v13 subroutes];
-          v68 = [v67 firstObject];
-          v69 = [v68 device];
+          subroutes3 = [v13 subroutes];
+          firstObject = [subroutes3 firstObject];
+          device2 = [firstObject device];
 
-          if (v69)
+          if (device2)
           {
             v70 = MCLogCategoryDeviceAccess();
             if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
             {
-              v71 = [v13 subroutes];
-              v72 = [v71 firstObject];
-              v73 = [v72 device];
+              subroutes4 = [v13 subroutes];
+              firstObject2 = [subroutes4 firstObject];
+              device3 = [firstObject2 device];
               *buf = 138412290;
-              v138 = v73;
+              v138 = device3;
               _os_log_impl(&dword_1A20FC000, v70, OS_LOG_TYPE_DEFAULT, "Changing group route to single route instead with device: %@", buf, 0xCu);
             }
 
             v74 = objc_alloc((p_superclass + 64));
-            v75 = [v13 subroutes];
-            v76 = [v75 firstObject];
-            v77 = [v76 device];
-            v78 = [v74 initWithDevice:v77];
+            subroutes5 = [v13 subroutes];
+            firstObject3 = [subroutes5 firstObject];
+            device4 = [firstObject3 device];
+            v78 = [v74 initWithDevice:device4];
 
-            v79 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
-            v80 = [v78 routeUID];
-            -[NSObject setIsPicked:](v78, "setIsPicked:", [v79 containsObject:v80]);
+            activatedDeviceIDs2 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
+            routeUID3 = [v78 routeUID];
+            -[NSObject setIsPicked:](v78, "setIsPicked:", [activatedDeviceIDs2 containsObject:routeUID3]);
 
             [v99 addObject:v78];
             goto LABEL_63;
@@ -4527,41 +4527,41 @@ LABEL_63:
         goto LABEL_65;
       }
 
-      v17 = [v10 endpoints];
-      v18 = [v17 count];
+      endpoints4 = [v10 endpoints];
+      v18 = [endpoints4 count];
 
       if (v18 == 1)
       {
-        v19 = [v10 endpoints];
-        v20 = [v19 allValues];
-        v21 = [v20 firstObject];
-        v22 = [v21 underlyingDADevice];
+        endpoints5 = [v10 endpoints];
+        allValues2 = [endpoints5 allValues];
+        firstObject4 = [allValues2 firstObject];
+        underlyingDADevice2 = [firstObject4 underlyingDADevice];
 
-        if (v22)
+        if (underlyingDADevice2)
         {
           v23 = v9;
           v24 = MCLogCategoryDeviceAccess();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v10 endpoints];
-            v26 = [v25 allValues];
-            v27 = [v26 firstObject];
-            v28 = [v27 underlyingDADevice];
+            endpoints6 = [v10 endpoints];
+            allValues3 = [endpoints6 allValues];
+            firstObject5 = [allValues3 firstObject];
+            underlyingDADevice3 = [firstObject5 underlyingDADevice];
             *buf = 138412290;
-            v138 = v28;
+            v138 = underlyingDADevice3;
             _os_log_impl(&dword_1A20FC000, v24, OS_LOG_TYPE_DEFAULT, "_mergeRoutes - Single Underlying DA route found: %@", buf, 0xCu);
           }
 
           v29 = objc_alloc((p_superclass + 64));
-          v30 = [v10 endpoints];
-          v31 = [v30 allValues];
-          v32 = [v31 firstObject];
-          v33 = [v32 underlyingDADevice];
-          v13 = [v29 initWithDevice:v33];
+          endpoints7 = [v10 endpoints];
+          allValues4 = [endpoints7 allValues];
+          firstObject6 = [allValues4 firstObject];
+          underlyingDADevice4 = [firstObject6 underlyingDADevice];
+          v13 = [v29 initWithDevice:underlyingDADevice4];
 
-          v34 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
-          v35 = [v13 routeUID];
-          [v13 setIsPicked:{objc_msgSend(v34, "containsObject:", v35)}];
+          activatedDeviceIDs3 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
+          routeUID4 = [v13 routeUID];
+          [v13 setIsPicked:{objc_msgSend(activatedDeviceIDs3, "containsObject:", routeUID4)}];
 
           [v99 addObject:v13];
           v9 = v23;
@@ -4592,12 +4592,12 @@ LABEL_63:
                 }
 
                 v85 = *(*(&v118 + 1) + 8 * i);
-                v86 = [v85 routeUID];
-                v87 = [v114 endpoints];
-                v88 = [v87 allValues];
-                v89 = [v88 firstObject];
-                v90 = [v89 airplayDeviceID];
-                v91 = [v86 isEqualToString:v90];
+                routeUID5 = [v85 routeUID];
+                endpoints8 = [v114 endpoints];
+                allValues5 = [endpoints8 allValues];
+                firstObject7 = [allValues5 firstObject];
+                airplayDeviceID2 = [firstObject7 airplayDeviceID];
+                v91 = [routeUID5 isEqualToString:airplayDeviceID2];
 
                 if (v91)
                 {
@@ -4616,7 +4616,7 @@ LABEL_63:
             }
 
 LABEL_69:
-            self = v106;
+            self = selfCopy;
             p_superclass = (MediaControlsMaterialView + 8);
             v9 = v103;
             v13 = v110;
@@ -4635,9 +4635,9 @@ LABEL_69:
         }
 
         v13 = [objc_alloc((p_superclass + 64)) initWithDevice:v10];
-        v63 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
-        v64 = [v13 routeUID];
-        [v13 setIsPicked:{objc_msgSend(v63, "containsObject:", v64)}];
+        activatedDeviceIDs4 = [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager activatedDeviceIDs];
+        routeUID6 = [v13 routeUID];
+        [v13 setIsPicked:{objc_msgSend(activatedDeviceIDs4, "containsObject:", routeUID6)}];
 
         [v99 addObject:v13];
       }
@@ -4667,7 +4667,7 @@ LABEL_71:
     v115[2] = __61__MRURoutingViewController__mergeRoutes_withCoalescedResult___block_invoke;
     v115[3] = &unk_1E7664E60;
     v116 = v105;
-    v117 = self;
+    selfCopy2 = self;
     v93 = [v107 msv_compactMap:v115];
   }
 
@@ -4711,17 +4711,17 @@ id __61__MRURoutingViewController__mergeRoutes_withCoalescedResult___block_invok
   return v8;
 }
 
-- (void)_createUpdateWithRefreshOnly:(BOOL)a3 completion:(id)a4
+- (void)_createUpdateWithRefreshOnly:(BOOL)only completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__MRURoutingViewController__createUpdateWithRefreshOnly_completion___block_invoke;
   v8[3] = &unk_1E7664E88;
-  v10 = a3;
+  onlyCopy = only;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(MRURoutingViewController *)self fetchAvailableRoutesWithCompletionHandler:v8];
 }
 
@@ -4941,14 +4941,14 @@ void __50__MRURoutingViewController__reloadDisplayedRoutes__block_invoke(uint64_
   [*(a1 + 32) _enqueueUpdate:v3];
 }
 
-- (void)setOptimisticUpdate:(id)a3
+- (void)setOptimisticUpdate:(id)update
 {
-  v5 = a3;
-  v7 = v5;
-  if (v5)
+  updateCopy = update;
+  v7 = updateCopy;
+  if (updateCopy)
   {
-    [(MRURoutingViewController *)self _enqueueUpdate:v5];
-    objc_storeStrong(&self->_optimisticUpdate, a3);
+    [(MRURoutingViewController *)self _enqueueUpdate:updateCopy];
+    objc_storeStrong(&self->_optimisticUpdate, update);
   }
 
   else
@@ -4960,7 +4960,7 @@ void __50__MRURoutingViewController__reloadDisplayedRoutes__block_invoke(uint64_
   }
 }
 
-- (void)didReceiveInteraction:(id)a3
+- (void)didReceiveInteraction:(id)interaction
 {
   if (self->_collapseTimer)
   {
@@ -4968,35 +4968,35 @@ void __50__MRURoutingViewController__reloadDisplayedRoutes__block_invoke(uint64_
   }
 }
 
-- (void)_enqueueUpdate:(id)a3
+- (void)_enqueueUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if (!self->_optimisticUpdate)
   {
     if (self->_isAnimatingUpdate)
     {
-      objc_storeStrong(&self->_pendingUpdate, a3);
+      objc_storeStrong(&self->_pendingUpdate, update);
     }
 
     else
     {
-      [(MRURoutingViewController *)self _applyUpdate:v5];
+      [(MRURoutingViewController *)self _applyUpdate:updateCopy];
     }
   }
 }
 
-- (void)_configureVolumeForUpdate:(id)a3 volumeCapableRoutes:(id *)a4 volumeController:(id *)a5
+- (void)_configureVolumeForUpdate:(id)update volumeCapableRoutes:(id *)routes volumeController:(id *)controller
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  updateCopy = update;
   v9 = MEMORY[0x1E695DF70];
-  v10 = [v8 displayAsPickedRoutes];
-  v11 = [v9 arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  displayAsPickedRoutes = [updateCopy displayAsPickedRoutes];
+  v11 = [v9 arrayWithCapacity:{objc_msgSend(displayAsPickedRoutes, "count")}];
 
   v12 = objc_alloc(MEMORY[0x1E695DF90]);
-  v13 = [v8 displayAsPickedRoutes];
-  v14 = [v12 initWithCapacity:{objc_msgSend(v13, "count")}];
+  displayAsPickedRoutes2 = [updateCopy displayAsPickedRoutes];
+  v14 = [v12 initWithCapacity:{objc_msgSend(displayAsPickedRoutes2, "count")}];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -5010,17 +5010,17 @@ void __50__MRURoutingViewController__reloadDisplayedRoutes__block_invoke(uint64_
   v50[1] = 3221225472;
   v50[2] = __91__MRURoutingViewController__configureVolumeForUpdate_volumeCapableRoutes_volumeController___block_invoke_2;
   v50[3] = &unk_1E7664F00;
-  v17 = v8;
+  v17 = updateCopy;
   v51 = v17;
-  v52 = self;
+  selfCopy = self;
   v18 = _Block_copy(v50);
   if (v18[2]())
   {
     v35 = v18;
     v36 = v17;
     v37 = v15;
-    v38 = a4;
-    v39 = a5;
+    routesCopy = routes;
+    controllerCopy = controller;
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
@@ -5045,8 +5045,8 @@ void __50__MRURoutingViewController__reloadDisplayedRoutes__block_invoke(uint64_
 
           v24 = *(*(&v46 + 1) + 8 * v23);
           v25 = *(&self->super.super.super.isa + v22[274]);
-          v26 = [v24 routeUID];
-          LODWORD(v25) = [v25 containsObject:v26];
+          routeUID = [v24 routeUID];
+          LODWORD(v25) = [v25 containsObject:routeUID];
 
           if (v25)
           {
@@ -5054,8 +5054,8 @@ void __50__MRURoutingViewController__reloadDisplayedRoutes__block_invoke(uint64_
             v45 = 0u;
             v42 = 0u;
             v43 = 0u;
-            v27 = [v24 subRoutes];
-            v28 = [v27 countByEnumeratingWithState:&v42 objects:v55 count:16];
+            subRoutes = [v24 subRoutes];
+            v28 = [subRoutes countByEnumeratingWithState:&v42 objects:v55 count:16];
             if (v28)
             {
               v29 = v28;
@@ -5066,7 +5066,7 @@ void __50__MRURoutingViewController__reloadDisplayedRoutes__block_invoke(uint64_
                 {
                   if (*v43 != v30)
                   {
-                    objc_enumerationMutation(v27);
+                    objc_enumerationMutation(subRoutes);
                   }
 
                   v32 = *(*(&v42 + 1) + 8 * i);
@@ -5077,7 +5077,7 @@ void __50__MRURoutingViewController__reloadDisplayedRoutes__block_invoke(uint64_
                   }
                 }
 
-                v29 = [v27 countByEnumeratingWithState:&v42 objects:v55 count:16];
+                v29 = [subRoutes countByEnumeratingWithState:&v42 objects:v55 count:16];
               }
 
               while (v29);
@@ -5103,23 +5103,23 @@ void __50__MRURoutingViewController__reloadDisplayedRoutes__block_invoke(uint64_
       while (v20);
     }
 
-    a4 = v38;
-    a5 = v39;
+    routes = routesCopy;
+    controller = controllerCopy;
     v17 = v36;
     v15 = v37;
     v18 = v35;
   }
 
-  if (a4)
+  if (routes)
   {
     v33 = v11;
-    *a4 = v11;
+    *routes = v11;
   }
 
-  if (a5)
+  if (controller)
   {
     v34 = v15;
-    *a5 = v15;
+    *controller = v15;
   }
 }
 
@@ -5165,21 +5165,21 @@ uint64_t __91__MRURoutingViewController__configureVolumeForUpdate_volumeCapableR
 
 - (id)endpointGroupUID
 {
-  v2 = [(MPAVEndpointRoute *)self->_endpointRoute endpoint];
-  v3 = [v2 designatedGroupLeader];
-  v4 = [v3 groupID];
-  v5 = v4;
-  if (v4)
+  endpoint = [(MPAVEndpointRoute *)self->_endpointRoute endpoint];
+  designatedGroupLeader = [endpoint designatedGroupLeader];
+  groupID = [designatedGroupLeader groupID];
+  v5 = groupID;
+  if (groupID)
   {
-    v6 = v4;
+    localDeviceUID = groupID;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69B09A8] localDeviceUID];
+    localDeviceUID = [MEMORY[0x1E69B09A8] localDeviceUID];
   }
 
-  v7 = v6;
+  v7 = localDeviceUID;
 
   return v7;
 }
@@ -5187,33 +5187,33 @@ uint64_t __91__MRURoutingViewController__configureVolumeForUpdate_volumeCapableR
 - (void)updateExpandedGroups
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(NSDictionary *)self->_cachedRouteGrouping allKeys];
-  v7 = [v3 setWithArray:v4];
+  allKeys = [(NSDictionary *)self->_cachedRouteGrouping allKeys];
+  v7 = [v3 setWithArray:allKeys];
 
   [(NSMutableSet *)self->_expandedGroupUIDs intersectSet:v7];
   if ([(NSArray *)self->_cachedPickedRoutes count]== 1)
   {
     expandedGroupUIDs = self->_expandedGroupUIDs;
-    v6 = [(MRURoutingViewController *)self endpointGroupUID];
-    [(NSMutableSet *)expandedGroupUIDs addObject:v6];
+    endpointGroupUID = [(MRURoutingViewController *)self endpointGroupUID];
+    [(NSMutableSet *)expandedGroupUIDs addObject:endpointGroupUID];
   }
 }
 
-- (BOOL)wasVendorSpecificGroupDisplayedAsExpanded:(id)a3
+- (BOOL)wasVendorSpecificGroupDisplayedAsExpanded:(id)expanded
 {
   expandedVendorSpecificGroupUIDs = self->_expandedVendorSpecificGroupUIDs;
-  v4 = [a3 routeUID];
-  LOBYTE(expandedVendorSpecificGroupUIDs) = [(NSMutableSet *)expandedVendorSpecificGroupUIDs containsObject:v4];
+  routeUID = [expanded routeUID];
+  LOBYTE(expandedVendorSpecificGroupUIDs) = [(NSMutableSet *)expandedVendorSpecificGroupUIDs containsObject:routeUID];
 
   return expandedVendorSpecificGroupUIDs;
 }
 
-- (BOOL)isVendorSpecificGroupStatusRecorded:(id)a3
+- (BOOL)isVendorSpecificGroupStatusRecorded:(id)recorded
 {
-  v4 = a3;
+  recordedCopy = recorded;
   expandedVendorSpecificGroupUIDs = self->_expandedVendorSpecificGroupUIDs;
-  v6 = [v4 routeUID];
-  if (([(NSMutableSet *)expandedVendorSpecificGroupUIDs containsObject:v6]& 1) != 0)
+  routeUID = [recordedCopy routeUID];
+  if (([(NSMutableSet *)expandedVendorSpecificGroupUIDs containsObject:routeUID]& 1) != 0)
   {
     v7 = 1;
   }
@@ -5221,70 +5221,70 @@ uint64_t __91__MRURoutingViewController__configureVolumeForUpdate_volumeCapableR
   else
   {
     collapsedVendorSpecificGroupUIDs = self->_collapsedVendorSpecificGroupUIDs;
-    v9 = [v4 routeUID];
-    v7 = [(NSMutableSet *)collapsedVendorSpecificGroupUIDs containsObject:v9];
+    routeUID2 = [recordedCopy routeUID];
+    v7 = [(NSMutableSet *)collapsedVendorSpecificGroupUIDs containsObject:routeUID2];
   }
 
   return v7;
 }
 
-- (void)applyVendorSpecificGroupExpandedRecord:(id)a3
+- (void)applyVendorSpecificGroupExpandedRecord:(id)record
 {
   expandedVendorSpecificGroupUIDs = self->_expandedVendorSpecificGroupUIDs;
-  v4 = a3;
-  v5 = [v4 routeUID];
-  [v4 setExpanded:{-[NSMutableSet containsObject:](expandedVendorSpecificGroupUIDs, "containsObject:", v5)}];
+  recordCopy = record;
+  routeUID = [recordCopy routeUID];
+  [recordCopy setExpanded:{-[NSMutableSet containsObject:](expandedVendorSpecificGroupUIDs, "containsObject:", routeUID)}];
 }
 
-- (void)updateVendorSpecificGroupExpandedRecordFor:(id)a3
+- (void)updateVendorSpecificGroupExpandedRecordFor:(id)for
 {
-  v4 = a3;
-  v5 = [v4 expanded];
+  forCopy = for;
+  expanded = [forCopy expanded];
   expandedVendorSpecificGroupUIDs = self->_expandedVendorSpecificGroupUIDs;
-  v7 = [v4 routeUID];
-  if (v5)
+  routeUID = [forCopy routeUID];
+  if (expanded)
   {
-    [(NSMutableSet *)expandedVendorSpecificGroupUIDs addObject:v7];
+    [(NSMutableSet *)expandedVendorSpecificGroupUIDs addObject:routeUID];
 
     collapsedVendorSpecificGroupUIDs = self->_collapsedVendorSpecificGroupUIDs;
-    v10 = [v4 routeUID];
+    routeUID2 = [forCopy routeUID];
 
-    [(NSMutableSet *)collapsedVendorSpecificGroupUIDs removeObject:v10];
+    [(NSMutableSet *)collapsedVendorSpecificGroupUIDs removeObject:routeUID2];
   }
 
   else
   {
-    [(NSMutableSet *)expandedVendorSpecificGroupUIDs removeObject:v7];
+    [(NSMutableSet *)expandedVendorSpecificGroupUIDs removeObject:routeUID];
 
     v9 = self->_collapsedVendorSpecificGroupUIDs;
-    v10 = [v4 routeUID];
+    routeUID2 = [forCopy routeUID];
 
-    [(NSMutableSet *)v9 addObject:v10];
+    [(NSMutableSet *)v9 addObject:routeUID2];
   }
 }
 
-- (void)clearVendorSpecificGroupExpandedRecordFor:(id)a3
+- (void)clearVendorSpecificGroupExpandedRecordFor:(id)for
 {
   expandedVendorSpecificGroupUIDs = self->_expandedVendorSpecificGroupUIDs;
-  v5 = a3;
-  v6 = [v5 routeUID];
-  [(NSMutableSet *)expandedVendorSpecificGroupUIDs removeObject:v6];
+  forCopy = for;
+  routeUID = [forCopy routeUID];
+  [(NSMutableSet *)expandedVendorSpecificGroupUIDs removeObject:routeUID];
 
   collapsedVendorSpecificGroupUIDs = self->_collapsedVendorSpecificGroupUIDs;
-  v8 = [v5 routeUID];
+  routeUID2 = [forCopy routeUID];
 
-  [(NSMutableSet *)collapsedVendorSpecificGroupUIDs removeObject:v8];
+  [(NSMutableSet *)collapsedVendorSpecificGroupUIDs removeObject:routeUID2];
 }
 
-- (void)_applyUpdate:(id)a3
+- (void)_applyUpdate:(id)update
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(MRURoutingViewController *)self view];
-  v6 = [v5 tableView];
+  view = [(MRURoutingViewController *)self view];
+  tableView = [view tableView];
 
-  if (!v6)
+  if (!tableView)
   {
     goto LABEL_16;
   }
@@ -5303,21 +5303,21 @@ uint64_t __91__MRURoutingViewController__configureVolumeForUpdate_volumeCapableR
 
   v10 = v9;
 
-  v11 = [(MRURoutingViewController *)self _createRoutingViewItemsForUpdate:v4];
-  v12 = [v11 routeGrouping];
-  v13 = [v4 pickedRoutes];
-  v14 = [(MRURoutingViewController *)self _createSectionedCollection:v11 withPickedRoutes:v13];
+  v11 = [(MRURoutingViewController *)self _createRoutingViewItemsForUpdate:updateCopy];
+  routeGrouping = [v11 routeGrouping];
+  pickedRoutes = [updateCopy pickedRoutes];
+  v14 = [(MRURoutingViewController *)self _createSectionedCollection:v11 withPickedRoutes:pickedRoutes];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__MRURoutingViewController__applyUpdate___block_invoke;
   aBlock[3] = &unk_1E7664F28;
   aBlock[4] = self;
-  v15 = v4;
+  v15 = updateCopy;
   v51 = v15;
   v16 = v14;
   v52 = v16;
-  v32 = v12;
+  v32 = routeGrouping;
   v53 = v32;
   v17 = _Block_copy(aBlock);
   v47[0] = MEMORY[0x1E69E9820];
@@ -5340,7 +5340,7 @@ uint64_t __91__MRURoutingViewController__configureVolumeForUpdate_volumeCapableR
   v46 = &__block_literal_global_244;
   v22 = v15;
   v44 = v22;
-  v45 = self;
+  selfCopy = self;
   v34 = _Block_copy(v41);
   if (![(MRURoutingViewControllerUpdate *)v22 shouldReload])
   {
@@ -5348,24 +5348,24 @@ uint64_t __91__MRURoutingViewController__configureVolumeForUpdate_volumeCapableR
     if (v23)
     {
       self->_isAnimatingUpdate = 1;
-      v24 = [(MRURoutingViewController *)self view];
-      v25 = [v24 tableView];
+      view2 = [(MRURoutingViewController *)self view];
+      tableView2 = [view2 tableView];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __41__MRURoutingViewController__applyUpdate___block_invoke_246;
       v37[3] = &unk_1E7664FC0;
       v40 = v17;
-      v26 = v23;
-      v38 = v26;
-      v39 = self;
+      view3 = v23;
+      v38 = view3;
+      selfCopy2 = self;
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __41__MRURoutingViewController__applyUpdate___block_invoke_3_249;
       v36[3] = &unk_1E7664FE8;
       v36[4] = self;
-      [v25 performBatchUpdates:v37 completion:v36];
+      [tableView2 performBatchUpdates:v37 completion:v36];
 
-      v27 = v40;
+      tableView3 = v40;
 LABEL_10:
 
       goto LABEL_11;
@@ -5376,9 +5376,9 @@ LABEL_10:
   objc_storeStrong(&self->_displayedEndpointRoute, self->_endpointRoute);
   if ([(MRURoutingViewControllerUpdate *)v22 shouldReload])
   {
-    v26 = [(MRURoutingViewController *)self view];
-    v27 = [v26 tableView];
-    [v27 reloadData];
+    view3 = [(MRURoutingViewController *)self view];
+    tableView3 = [view3 tableView];
+    [tableView3 reloadData];
     goto LABEL_10;
   }
 
@@ -6488,13 +6488,13 @@ void __41__MRURoutingViewController__applyUpdate___block_invoke_254(uint64_t a1)
   [WeakRetained routingViewControllerDidUpdateItems:*(a1 + 32)];
 }
 
-- (id)groupUIDForRoute:(id)a3
+- (id)groupUIDForRoute:(id)route
 {
-  v3 = a3;
+  routeCopy = route;
   v4 = MRAVEndpointGetLocalEndpoint();
-  v5 = [v4 outputDeviceUIDs];
-  v6 = [v3 routeUID];
-  v7 = [v5 containsObject:v6];
+  outputDeviceUIDs = [v4 outputDeviceUIDs];
+  routeUID = [routeCopy routeUID];
+  v7 = [outputDeviceUIDs containsObject:routeUID];
 
   if (v7)
   {
@@ -6503,39 +6503,39 @@ void __41__MRURoutingViewController__applyUpdate___block_invoke_254(uint64_t a1)
 
   else
   {
-    [v3 groupUID];
+    [routeCopy groupUID];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)_createRoutingViewItemsForUpdate:(id)a3
+- (id)_createRoutingViewItemsForUpdate:(id)update
 {
   v182 = *MEMORY[0x1E69E9840];
-  v128 = a3;
-  v3 = [v128 displayableAvailableRoutes];
-  v126 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v124 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v131 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  updateCopy = update;
+  displayableAvailableRoutes = [updateCopy displayableAvailableRoutes];
+  v126 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(displayableAvailableRoutes, "count")}];
+  v124 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(displayableAvailableRoutes, "count")}];
+  v131 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(displayableAvailableRoutes, "count")}];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(displayableAvailableRoutes, "count")}];
   v5 = MRAVEndpointGetLocalEndpoint();
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [v5 outputDeviceUIDs];
-  v135 = [v6 setWithArray:v7];
+  outputDeviceUIDs = [v5 outputDeviceUIDs];
+  v135 = [v6 setWithArray:outputDeviceUIDs];
 
-  v121 = [MEMORY[0x1E69B09A8] localDeviceUID];
+  localDeviceUID = [MEMORY[0x1E69B09A8] localDeviceUID];
   v109 = v5;
-  v8 = [v5 outputDevices];
-  v9 = [v8 firstObject];
-  v112 = [v9 uid];
+  outputDevices = [v5 outputDevices];
+  firstObject = [outputDevices firstObject];
+  v112 = [firstObject uid];
 
-  v122 = [v3 mutableCopy];
+  v122 = [displayableAvailableRoutes mutableCopy];
   v169 = 0u;
   v170 = 0u;
   v171 = 0u;
   v172 = 0u;
-  v10 = v3;
+  v10 = displayableAvailableRoutes;
   v11 = [v10 countByEnumeratingWithState:&v169 objects:v181 count:16];
   v110 = v10;
   if (!v11)
@@ -6566,18 +6566,18 @@ void __41__MRURoutingViewController__applyUpdate___block_invoke_254(uint64_t a1)
       {
         v17 = v16;
         v18 = [(MRURoutingViewController *)self groupUIDForRoute:v17];
-        v19 = [v17 routeUID];
-        v20 = [v19 isEqualToString:v112];
+        routeUID = [v17 routeUID];
+        v20 = [routeUID isEqualToString:v112];
 
         if (v20)
         {
           v21 = v4;
           v22 = v17;
-          v23 = v121;
+          v23 = localDeviceUID;
           goto LABEL_10;
         }
 
-        if ([v17 isGroupLeader] && v18 && v18 != v121)
+        if ([v17 isGroupLeader] && v18 && v18 != localDeviceUID)
         {
           v24 = [v4 objectForKeyedSubscript:v18];
 
@@ -6594,11 +6594,11 @@ LABEL_23:
               if (([v17 isKnown] & 1) == 0)
               {
                 ++v136;
-                v28 = [v17 outputDevice];
-                v29 = [v28 recommendation];
-                v30 = [v29 isConservativelyFiltered];
+                outputDevice = [v17 outputDevice];
+                recommendation = [outputDevice recommendation];
+                isConservativelyFiltered = [recommendation isConservativelyFiltered];
 
-                v133 += v30;
+                v133 += isConservativelyFiltered;
                 v10 = v110;
               }
 
@@ -6615,24 +6615,24 @@ LABEL_23:
         }
 
         expandedItemUIDs = self->_expandedItemUIDs;
-        v26 = [v17 routeUID];
-        if (![(NSMutableSet *)expandedItemUIDs containsObject:v26])
+        routeUID2 = [v17 routeUID];
+        if (![(NSMutableSet *)expandedItemUIDs containsObject:routeUID2])
         {
-          v27 = [v17 isHeadphonesRoute];
+          isHeadphonesRoute = [v17 isHeadphonesRoute];
 
-          if (v27)
+          if (isHeadphonesRoute)
           {
             goto LABEL_23;
           }
 
-          v26 = [v131 objectForKeyedSubscript:v18];
-          if (!v26)
+          routeUID2 = [v131 objectForKeyedSubscript:v18];
+          if (!routeUID2)
           {
-            v26 = [MEMORY[0x1E695DF70] array];
-            [v131 setObject:v26 forKeyedSubscript:v18];
+            routeUID2 = [MEMORY[0x1E695DF70] array];
+            [v131 setObject:routeUID2 forKeyedSubscript:v18];
           }
 
-          [v26 addObject:v17];
+          [routeUID2 addObject:v17];
         }
 
         goto LABEL_23;
@@ -6711,7 +6711,7 @@ LABEL_32:
   v156[1] = 3221225472;
   v156[2] = __61__MRURoutingViewController__createRoutingViewItemsForUpdate___block_invoke_3;
   v156[3] = &unk_1E7664DF0;
-  v116 = v128;
+  v116 = updateCopy;
   v157 = v116;
   v42 = [v38 msv_compactMap:v156];
   v111 = v42;
@@ -6765,17 +6765,17 @@ LABEL_32:
 
           v51 = v46;
           v52 = [(MRURoutingViewController *)self groupUIDForRoute:v51];
-          v53 = [v51 routeUID];
+          routeUID3 = [v51 routeUID];
           v118 = v45;
-          if ([v135 containsObject:v53])
+          if ([v135 containsObject:routeUID3])
           {
             v54 = v51;
-            v55 = [v51 isHeadphonesRoute];
+            isHeadphonesRoute2 = [v51 isHeadphonesRoute];
 
-            if ((v55 & 1) == 0)
+            if ((isHeadphonesRoute2 & 1) == 0)
             {
-              v53 = v52;
-              v52 = v121;
+              routeUID3 = v52;
+              v52 = localDeviceUID;
               goto LABEL_97;
             }
           }
@@ -6801,16 +6801,16 @@ LABEL_97:
 
           else
           {
-            v82 = [v116 nativeRoutesInVendorSpecificGroup];
-            v83 = [v82 containsObject:v54];
+            nativeRoutesInVendorSpecificGroup = [v116 nativeRoutesInVendorSpecificGroup];
+            v83 = [nativeRoutesInVendorSpecificGroup containsObject:v54];
 
             if ((v83 & 1) == 0)
             {
               v138 = v77;
               v84 = [MEMORY[0x1E6970498] itemWithRoute:v54];
               expandedRouteUIDs = self->_expandedRouteUIDs;
-              v86 = [v54 routeUID];
-              [v84 setExpanded:{-[NSMutableSet containsObject:](expandedRouteUIDs, "containsObject:", v86)}];
+              routeUID4 = [v54 routeUID];
+              [v84 setExpanded:{-[NSMutableSet containsObject:](expandedRouteUIDs, "containsObject:", routeUID4)}];
 
               v41[2](v41, v84);
               if ([v84 isExpanded])
@@ -6820,8 +6820,8 @@ LABEL_97:
                 v143 = 0u;
                 v140 = 0u;
                 v141 = 0u;
-                v87 = [v54 subRoutes];
-                v88 = [v87 countByEnumeratingWithState:&v140 objects:v173 count:16];
+                subRoutes = [v54 subRoutes];
+                v88 = [subRoutes countByEnumeratingWithState:&v140 objects:v173 count:16];
                 if (v88)
                 {
                   v89 = v88;
@@ -6832,14 +6832,14 @@ LABEL_97:
                     {
                       if (*v141 != v90)
                       {
-                        objc_enumerationMutation(v87);
+                        objc_enumerationMutation(subRoutes);
                       }
 
                       v92 = [MEMORY[0x1E6970498] itemWithRoute:*(*(&v140 + 1) + 8 * j)];
                       v41[2](v41, v92);
                     }
 
-                    v89 = [v87 countByEnumeratingWithState:&v140 objects:v173 count:16];
+                    v89 = [subRoutes countByEnumeratingWithState:&v140 objects:v173 count:16];
                   }
 
                   while (v89);
@@ -6872,12 +6872,12 @@ LABEL_132:
             v101 = MCLogCategoryDeviceAccess();
             if (os_log_type_enabled(v101, OS_LOG_TYPE_DEFAULT))
             {
-              v102 = [v49 localizedTitle];
-              v103 = [v49 localizedSubtitle];
+              localizedTitle = [v49 localizedTitle];
+              localizedSubtitle = [v49 localizedSubtitle];
               *buf = 138412546;
-              v177 = v102;
+              v177 = localizedTitle;
               v178 = 2112;
-              v179 = v103;
+              v179 = localizedSubtitle;
               _os_log_impl(&dword_1A20FC000, v101, OS_LOG_TYPE_DEFAULT, "Adding vendor specific speaker group: %@, %@", buf, 0x16u);
 
               v44 = v113;
@@ -6894,9 +6894,9 @@ LABEL_132:
             v49 = MCLogCategoryDeviceAccess();
             if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
             {
-              v50 = [v125 routeName];
+              routeName = [v125 routeName];
               *buf = 138412290;
-              v177 = v50;
+              v177 = routeName;
               _os_log_impl(&dword_1A20FC000, v49, OS_LOG_TYPE_DEFAULT, "Skipping member speaker in vendor specific group: %@@", buf, 0xCu);
             }
 
@@ -6916,8 +6916,8 @@ LABEL_132:
         v151 = 0u;
         v148 = 0u;
         v149 = 0u;
-        v56 = [v48 subroutes];
-        v57 = [v56 countByEnumeratingWithState:&v148 objects:v175 count:16];
+        subroutes = [v48 subroutes];
+        v57 = [subroutes countByEnumeratingWithState:&v148 objects:v175 count:16];
         if (!v57)
         {
 
@@ -6928,7 +6928,7 @@ LABEL_132:
         v59 = *v149;
         v117 = 1;
         v127 = *v149;
-        v129 = v56;
+        v129 = subroutes;
         while (2)
         {
           v60 = 0;
@@ -6937,30 +6937,30 @@ LABEL_132:
           {
             if (*v149 != v59)
             {
-              objc_enumerationMutation(v56);
+              objc_enumerationMutation(subroutes);
             }
 
             v61 = *(*(&v148 + 1) + 8 * v60);
             if ([v61 isAirPlayRoute])
             {
-              v62 = [v61 underlyingNativeRoute];
+              underlyingNativeRoute = [v61 underlyingNativeRoute];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v63 = v62;
+                v63 = underlyingNativeRoute;
                 v64 = [(MRURoutingViewController *)self groupUIDForRoute:v63];
-                v65 = [v63 routeUID];
-                if (![v135 containsObject:v65])
+                routeUID5 = [v63 routeUID];
+                if (![v135 containsObject:routeUID5])
                 {
                   goto LABEL_79;
                 }
 
-                v66 = [v63 isHeadphonesRoute];
+                isHeadphonesRoute3 = [v63 isHeadphonesRoute];
 
-                if ((v66 & 1) == 0)
+                if ((isHeadphonesRoute3 & 1) == 0)
                 {
-                  v65 = v64;
-                  v64 = v121;
+                  routeUID5 = v64;
+                  v64 = localDeviceUID;
 LABEL_79:
                 }
 
@@ -6982,8 +6982,8 @@ LABEL_79:
 
                   if ((v70 & 1) == 0)
                   {
-                    v74 = [v116 nativeRoutesInVendorSpecificGroup];
-                    v75 = [v74 containsObject:v63];
+                    nativeRoutesInVendorSpecificGroup2 = [v116 nativeRoutesInVendorSpecificGroup];
+                    v75 = [nativeRoutesInVendorSpecificGroup2 containsObject:v63];
 
                     if (v75)
                     {
@@ -7006,7 +7006,7 @@ LABEL_87:
                 }
 
                 v59 = v127;
-                v56 = v129;
+                subroutes = v129;
                 v58 = v137;
               }
             }
@@ -7015,7 +7015,7 @@ LABEL_87:
           }
 
           while (v58 != v60);
-          v58 = [v56 countByEnumeratingWithState:&v148 objects:v175 count:16];
+          v58 = [subroutes countByEnumeratingWithState:&v148 objects:v175 count:16];
           if (v58)
           {
             continue;
@@ -7040,8 +7040,8 @@ LABEL_116:
         v147 = 0u;
         v144 = 0u;
         v145 = 0u;
-        v93 = [v125 subroutes];
-        v94 = [v93 countByEnumeratingWithState:&v144 objects:v174 count:16];
+        subroutes2 = [v125 subroutes];
+        v94 = [subroutes2 countByEnumeratingWithState:&v144 objects:v174 count:16];
         if (v94)
         {
           v95 = v94;
@@ -7052,7 +7052,7 @@ LABEL_116:
             {
               if (*v145 != v96)
               {
-                objc_enumerationMutation(v93);
+                objc_enumerationMutation(subroutes2);
               }
 
               v98 = *(*(&v144 + 1) + 8 * k);
@@ -7063,7 +7063,7 @@ LABEL_116:
               }
             }
 
-            v95 = [v93 countByEnumeratingWithState:&v144 objects:v174 count:16];
+            v95 = [subroutes2 countByEnumeratingWithState:&v144 objects:v174 count:16];
           }
 
           while (v95);
@@ -7305,39 +7305,39 @@ void __56__MRURoutingViewController__collapseAllGroupsAfterDelay__block_invoke(u
   *(v2 + 1344) = 0;
 }
 
-- (id)_createSectionedCollection:(id)a3 withPickedRoutes:(id)a4
+- (id)_createSectionedCollection:(id)collection withPickedRoutes:(id)routes
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  routesCopy = routes;
   v7 = MEMORY[0x1E6970818];
-  v8 = a3;
+  collectionCopy = collection;
   v9 = objc_alloc_init(v7);
-  v10 = [v8 localDevicesAndHeadphones];
-  v11 = [v8 speakersAndTVs];
-  v12 = [v8 customRows];
+  localDevicesAndHeadphones = [collectionCopy localDevicesAndHeadphones];
+  speakersAndTVs = [collectionCopy speakersAndTVs];
+  customRows = [collectionCopy customRows];
 
-  v13 = [v11 arrayByAddingObjectsFromArray:v12];
+  v13 = [speakersAndTVs arrayByAddingObjectsFromArray:customRows];
 
-  if ([v10 count])
+  if ([localDevicesAndHeadphones count])
   {
     [v9 appendSection:@"LOCAL DEVICES"];
-    [v9 appendItems:v10];
-    v14 = [(MRURoutingViewController *)self endpointRoute];
-    if ([v14 isSplitRoute])
+    [v9 appendItems:localDevicesAndHeadphones];
+    endpointRoute = [(MRURoutingViewController *)self endpointRoute];
+    if ([endpointRoute isSplitRoute])
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v15 = [(MRURoutingViewController *)self routesContainSplitterCapableRoute:v6];
+    v15 = [(MRURoutingViewController *)self routesContainSplitterCapableRoute:routesCopy];
 
     if (!v15)
     {
       goto LABEL_12;
     }
 
-    v16 = [(MRURoutingViewController *)self isInVehicle];
+    isInVehicle = [(MRURoutingViewController *)self isInVehicle];
     if ([(MRURoutingViewController *)self isInCarPlay])
     {
       v17 = +[MRUStringsProvider audioSharingDisabledCarPlay];
@@ -7347,18 +7347,18 @@ LABEL_11:
     {
       if (![(MRURoutingViewController *)self hasCarKitRoute])
       {
-        v14 = 0;
+        endpointRoute = 0;
         goto LABEL_10;
       }
 
       v17 = +[MRUStringsProvider audioShaingDisabledCarKit];
     }
 
-    v14 = v17;
+    endpointRoute = v17;
 LABEL_10:
     v18 = MEMORY[0x1E6970498];
     v19 = +[MRUStringsProvider audioShaingActionTitle];
-    v20 = [v18 itemWithActionTitle:v19 subtitle:v14 enabled:!v16 identifier:*MEMORY[0x1E696F8A8] image:0];
+    v20 = [v18 itemWithActionTitle:v19 subtitle:endpointRoute enabled:!isInVehicle identifier:*MEMORY[0x1E696F8A8] image:0];
 
     v28[0] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
@@ -7390,15 +7390,15 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)routesContainMultipleBuiltIn:(id)a3
+- (BOOL)routesContainMultipleBuiltIn:(id)in
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  inCopy = in;
+  v4 = [inCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -7412,7 +7412,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inCopy);
         }
 
         if ([*(*(&v11 + 1) + 8 * v8) pickableRouteType])
@@ -7434,7 +7434,7 @@ LABEL_12:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [inCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -7446,10 +7446,10 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)routesContainSplitterCapableRoute:(id)a3
+- (BOOL)routesContainSplitterCapableRoute:(id)route
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  routeCopy = route;
   if (routesContainSplitterCapableRoute__onceToken != -1)
   {
     [MRURoutingViewController routesContainSplitterCapableRoute:];
@@ -7461,7 +7461,7 @@ LABEL_12:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = v3;
+    v4 = routeCopy;
     v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
@@ -7510,15 +7510,15 @@ uint64_t __62__MRURoutingViewController_routesContainSplitterCapableRoute___bloc
   return result;
 }
 
-- (BOOL)routesContainAirPlayGroupableRoute:(id)a3
+- (BOOL)routesContainAirPlayGroupableRoute:(id)route
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  routeCopy = route;
+  v4 = [routeCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -7528,7 +7528,7 @@ uint64_t __62__MRURoutingViewController_routesContainSplitterCapableRoute___bloc
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(routeCopy);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) supportsAirPlayGrouping])
@@ -7538,7 +7538,7 @@ uint64_t __62__MRURoutingViewController_routesContainSplitterCapableRoute___bloc
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [routeCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -7553,42 +7553,42 @@ LABEL_11:
   return v4;
 }
 
-- (void)ensureVendorSpecificGroupTreeIsVisible:(id)a3
+- (void)ensureVendorSpecificGroupTreeIsVisible:(id)visible
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v4];
-  v6 = [v5 mainRoute];
-  v7 = [v6 subroutes];
-  v8 = [v7 msv_compactMap:&__block_literal_global_271];
+  visibleCopy = visible;
+  v5 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:visibleCopy];
+  mainRoute = [v5 mainRoute];
+  subroutes = [mainRoute subroutes];
+  v8 = [subroutes msv_compactMap:&__block_literal_global_271];
   v9 = [v8 count];
 
-  v10 = [v4 row] + v9;
-  v11 = [(MRURoutingViewController *)self view];
-  v12 = [v11 tableView];
-  v13 = [v12 numberOfRowsInSection:{objc_msgSend(v4, "section")}];
+  v10 = [visibleCopy row] + v9;
+  view = [(MRURoutingViewController *)self view];
+  tableView = [view tableView];
+  v13 = [tableView numberOfRowsInSection:{objc_msgSend(visibleCopy, "section")}];
 
   if (v10 >= v13)
   {
     v14 = MCLogCategoryDeviceAccess();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 row] + v9;
-      v16 = [(MRURoutingViewController *)self view];
-      v17 = [v16 tableView];
+      v15 = [visibleCopy row] + v9;
+      view2 = [(MRURoutingViewController *)self view];
+      tableView2 = [view2 tableView];
       v34 = 134218240;
       v35 = v15;
       v36 = 2048;
-      v37 = [v17 numberOfRowsInSection:{objc_msgSend(v4, "section")}];
+      v37 = [tableView2 numberOfRowsInSection:{objc_msgSend(visibleCopy, "section")}];
       _os_log_impl(&dword_1A20FC000, v14, OS_LOG_TYPE_DEFAULT, "ensureVendorSpecificGroupTreeIsVisible - Want to scroll to row %lu, but there are only %ld rows", &v34, 0x16u);
     }
   }
 
   v18 = MEMORY[0x1E696AC88];
-  v19 = [v4 row] + v9;
-  v20 = [(MRURoutingViewController *)self view];
-  v21 = [v20 tableView];
-  v22 = [v21 numberOfRowsInSection:{objc_msgSend(v4, "section")}];
+  v19 = [visibleCopy row] + v9;
+  view3 = [(MRURoutingViewController *)self view];
+  tableView3 = [view3 tableView];
+  v22 = [tableView3 numberOfRowsInSection:{objc_msgSend(visibleCopy, "section")}];
 
   if (v19 >= v22)
   {
@@ -7600,18 +7600,18 @@ LABEL_11:
     v23 = v19;
   }
 
-  v24 = [v18 indexPathForRow:v23 inSection:{objc_msgSend(v4, "section")}];
-  v25 = [(MRURoutingViewController *)self view];
-  v26 = [v25 tableView];
-  v27 = [v26 indexPathsForVisibleRows];
-  v28 = [v27 lastObject];
+  v24 = [v18 indexPathForRow:v23 inSection:{objc_msgSend(visibleCopy, "section")}];
+  view4 = [(MRURoutingViewController *)self view];
+  tableView4 = [view4 tableView];
+  indexPathsForVisibleRows = [tableView4 indexPathsForVisibleRows];
+  lastObject = [indexPathsForVisibleRows lastObject];
 
-  v29 = [v28 section];
-  if (v29 < [v24 section] || (v32 = objc_msgSend(v28, "section"), v32 == objc_msgSend(v24, "section")) && (v33 = objc_msgSend(v28, "row"), v33 < objc_msgSend(v24, "row")))
+  section = [lastObject section];
+  if (section < [v24 section] || (v32 = objc_msgSend(lastObject, "section"), v32 == objc_msgSend(v24, "section")) && (v33 = objc_msgSend(lastObject, "row"), v33 < objc_msgSend(v24, "row")))
   {
-    v30 = [(MRURoutingViewController *)self view];
-    v31 = [v30 tableView];
-    [v31 scrollToRowAtIndexPath:v24 atScrollPosition:3 animated:1];
+    view5 = [(MRURoutingViewController *)self view];
+    tableView5 = [view5 tableView];
+    [tableView5 scrollToRowAtIndexPath:v24 atScrollPosition:3 animated:1];
   }
 }
 
@@ -7633,131 +7633,131 @@ id __67__MRURoutingViewController_ensureVendorSpecificGroupTreeIsVisible___block
 
 - (BOOL)_shouldShowShowMoreButton
 {
-  v3 = [MEMORY[0x1E69B0B08] currentSettings];
-  v4 = [v3 supportShowMore];
+  currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+  supportShowMore = [currentSettings supportShowMore];
 
-  return v4 && self->_someRoutesAreFiltered && !self->_didSelectShowMore;
+  return supportShowMore && self->_someRoutesAreFiltered && !self->_didSelectShowMore;
 }
 
-- (id)symbolNameForVendorSpecificRoute:(id)a3
+- (id)symbolNameForVendorSpecificRoute:(id)route
 {
-  v3 = [a3 vendorSpecificRouteType];
-  if ((v3 - 1) > 4)
+  vendorSpecificRouteType = [route vendorSpecificRouteType];
+  if ((vendorSpecificRouteType - 1) > 4)
   {
     return @"hifispeaker.fill";
   }
 
   else
   {
-    return off_1E7665138[v3 - 1];
+    return off_1E7665138[vendorSpecificRouteType - 1];
   }
 }
 
-- (BOOL)handleSelectedRoutingViewItem:(id)a3 operation:(int64_t)a4
+- (BOOL)handleSelectedRoutingViewItem:(id)item operation:(int64_t)operation
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v45 = [v6 routes];
-  v7 = [v6 mainRoute];
+  itemCopy = item;
+  routes = [itemCopy routes];
+  mainRoute = [itemCopy mainRoute];
   [(MRUVendorSpecificDeviceManager *)self->_vendorSpecificManager disconnectAllDevices];
-  if ([v6 type] == 5)
+  if ([itemCopy type] == 5)
   {
-    v8 = v7;
+    v8 = mainRoute;
     if (![v8 isAirPlayRoute])
     {
-      v7 = v8;
+      mainRoute = v8;
       goto LABEL_9;
     }
 
-    v7 = [v8 underlyingNativeRoute];
+    mainRoute = [v8 underlyingNativeRoute];
 
-    v55[0] = v7;
+    v55[0] = mainRoute;
     v9 = v55;
     goto LABEL_7;
   }
 
-  if ([v6 type] != 4)
+  if ([itemCopy type] != 4)
   {
     goto LABEL_10;
   }
 
   vendorSpecificGroupDisplayedSubroutes = self->_vendorSpecificGroupDisplayedSubroutes;
-  v11 = [v7 routeUID];
-  v8 = [(NSMutableDictionary *)vendorSpecificGroupDisplayedSubroutes objectForKeyedSubscript:v11];
+  routeUID = [mainRoute routeUID];
+  v8 = [(NSMutableDictionary *)vendorSpecificGroupDisplayedSubroutes objectForKeyedSubscript:routeUID];
 
   if ([v8 isAirPlayRoute])
   {
-    v12 = [v8 underlyingNativeRoute];
+    underlyingNativeRoute = [v8 underlyingNativeRoute];
 
-    v54 = v12;
+    v54 = underlyingNativeRoute;
     v9 = &v54;
-    v7 = v12;
+    mainRoute = underlyingNativeRoute;
 LABEL_7:
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
-    v45 = v13;
+    routes = v13;
   }
 
 LABEL_9:
 
 LABEL_10:
-  if (v7)
+  if (mainRoute)
   {
-    v43 = v6;
+    v43 = itemCopy;
     self->_hasUserSelections = 1;
-    v14 = a4;
-    if (a4 == 2)
+    operationCopy = operation;
+    if (operation == 2)
     {
       if ([(MRURoutingViewController *)self shouldSuppressNativeRoutesStatusDisplay])
       {
-        v14 = 1;
+        operationCopy = 1;
       }
 
       else
       {
-        v14 = 2;
+        operationCopy = 2;
       }
     }
 
     self->_didLastPickNativeRoute = 1;
-    v15 = [(MPAVRoutingController *)self->_routingController pickedRoutes];
-    v16 = [(MRGroupSessionDiscovery *)self->_groupSessionDiscovery activeSession];
-    v17 = v7;
-    v18 = v7;
-    v19 = v14;
-    v42 = [(MRURoutingViewController *)self _wouldShareAudioForPickedRoute:v18 operation:v14 pickedRoutes:v15];
-    v41 = [(MPAVRoutingController *)self->_routingController supportsMultipleSelection];
-    v20 = [(MRURoutingViewController *)self endpointRoute];
-    v21 = [v20 isGroupSession];
+    pickedRoutes = [(MPAVRoutingController *)self->_routingController pickedRoutes];
+    activeSession = [(MRGroupSessionDiscovery *)self->_groupSessionDiscovery activeSession];
+    v17 = mainRoute;
+    v18 = mainRoute;
+    v19 = operationCopy;
+    v42 = [(MRURoutingViewController *)self _wouldShareAudioForPickedRoute:v18 operation:operationCopy pickedRoutes:pickedRoutes];
+    supportsMultipleSelection = [(MPAVRoutingController *)self->_routingController supportsMultipleSelection];
+    endpointRoute = [(MRURoutingViewController *)self endpointRoute];
+    isGroupSession = [endpointRoute isGroupSession];
 
-    v44 = v16;
-    if (v16)
+    v44 = activeSession;
+    if (activeSession)
     {
-      v22 = [(MRURoutingViewController *)self endpointRoute];
-      v23 = [v22 endpointObject];
-      v24 = [v23 isLocalEndpoint];
+      endpointRoute2 = [(MRURoutingViewController *)self endpointRoute];
+      endpointObject = [endpointRoute2 endpointObject];
+      isLocalEndpoint = [endpointObject isLocalEndpoint];
     }
 
     else
     {
-      v24 = 0;
+      isLocalEndpoint = 0;
     }
 
-    v6 = v43;
-    v26 = v21 & v24;
-    if (a4 == 1 && ![v43 type])
+    itemCopy = v43;
+    v26 = isGroupSession & isLocalEndpoint;
+    if (operation == 1 && ![v43 type])
     {
       expandedItemUIDs = self->_expandedItemUIDs;
-      v28 = [v17 routeUID];
-      [(NSMutableSet *)expandedItemUIDs addObject:v28];
+      routeUID2 = [v17 routeUID];
+      [(NSMutableSet *)expandedItemUIDs addObject:routeUID2];
     }
 
     v29 = v19;
-    v7 = v17;
-    if (v26 && [(MRURoutingViewController *)self _wouldEndGroupSessionForViewItem:v43 operation:v29 pickedRoutes:v15])
+    mainRoute = v17;
+    if (v26 && [(MRURoutingViewController *)self _wouldEndGroupSessionForViewItem:v43 operation:v29 pickedRoutes:pickedRoutes])
     {
-      v30 = [(MRGroupSession *)self->_activeGroupSession participants];
-      v31 = [v30 count];
+      participants = [(MRGroupSession *)self->_activeGroupSession participants];
+      v31 = [participants count];
 
       v32 = MCLogCategoryDefault();
       v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
@@ -7767,7 +7767,7 @@ LABEL_10:
         {
           activeGroupSession = self->_activeGroupSession;
           *buf = 138543618;
-          v51 = v7;
+          v51 = mainRoute;
           v52 = 2114;
           v53 = activeGroupSession;
           _os_log_impl(&dword_1A20FC000, v32, OS_LOG_TYPE_DEFAULT, "[MRURoutingViewController] User picked route that would end hosted group session. Route: %{public}@, active group session: %{public}@", buf, 0x16u);
@@ -7778,7 +7778,7 @@ LABEL_10:
         v46[2] = __68__MRURoutingViewController_handleSelectedRoutingViewItem_operation___block_invoke;
         v46[3] = &unk_1E7665080;
         v46[4] = self;
-        v47 = v45;
+        v47 = routes;
         v49 = v29;
         v48 = v43;
         [(MRURoutingViewController *)self _displayEndGroupSessionWithCompletion:v46];
@@ -7795,20 +7795,20 @@ LABEL_10:
       }
     }
 
-    if ([v7 isDiscoveredGroupSession])
+    if ([mainRoute isDiscoveredGroupSession])
     {
       v36 = MCLogCategoryDefault();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v51 = v7;
+        v51 = mainRoute;
         _os_log_impl(&dword_1A20FC000, v36, OS_LOG_TYPE_DEFAULT, "[MRURoutingViewController] User picked route that will join group session: %{public}@", buf, 0xCu);
       }
 
-      [(MRURoutingViewController *)self handleGroupSessionJoinWithPickedRoute:v7];
+      [(MRURoutingViewController *)self handleGroupSessionJoinWithPickedRoute:mainRoute];
     }
 
-    else if (v29 == 2 && [v7 isDeviceSpeakerRoute])
+    else if (v29 == 2 && [mainRoute isDeviceSpeakerRoute])
     {
       v37 = MCLogCategoryDefault();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -7820,9 +7820,9 @@ LABEL_10:
 
     else
     {
-      if (([(MRURoutingViewController *)self isInVehicle]& v41 & v42) != 1)
+      if (([(MRURoutingViewController *)self isInVehicle]& supportsMultipleSelection & v42) != 1)
       {
-        [(MRURoutingViewController *)self selectRoutes:v45 operation:v29 routingViewItem:v43];
+        [(MRURoutingViewController *)self selectRoutes:routes operation:v29 routingViewItem:v43];
 LABEL_48:
         v25 = 1;
 LABEL_52:
@@ -7834,9 +7834,9 @@ LABEL_52:
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v51 = v7;
+        v51 = mainRoute;
         v52 = 2114;
-        v53 = v15;
+        v53 = pickedRoutes;
         _os_log_impl(&dword_1A20FC000, v38, OS_LOG_TYPE_DEFAULT, "[MRURoutingViewController] Can't share audio while in the Car. Route: %{public}@, picked: %{public}@", buf, 0x16u);
       }
 
@@ -7857,11 +7857,11 @@ LABEL_52:
     goto LABEL_52;
   }
 
-  v15 = MCLogCategoryDefault();
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+  pickedRoutes = MCLogCategoryDefault();
+  if (os_log_type_enabled(pickedRoutes, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_impl(&dword_1A20FC000, v15, OS_LOG_TYPE_ERROR, "[MRURoutingViewController] RCS attempted to select a nil route, ignoring.", buf, 2u);
+    _os_log_impl(&dword_1A20FC000, pickedRoutes, OS_LOG_TYPE_ERROR, "[MRURoutingViewController] RCS attempted to select a nil route, ignoring.", buf, 2u);
   }
 
   v25 = 0;
@@ -7880,19 +7880,19 @@ uint64_t __68__MRURoutingViewController_handleSelectedRoutingViewItem_operation_
   return result;
 }
 
-- (void)selectRoutes:(id)a3 operation:(int64_t)a4 routingViewItem:(id)a5
+- (void)selectRoutes:(id)routes operation:(int64_t)operation routingViewItem:(id)item
 {
-  v8 = a5;
+  itemCopy = item;
   routingController = self->_routingController;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__MRURoutingViewController_selectRoutes_operation_routingViewItem___block_invoke;
   v11[3] = &unk_1E76650A8;
-  v13 = a4 == 1;
+  v13 = operation == 1;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [(MPAVRoutingController *)routingController selectRoutes:a3 operation:a4 completion:v11];
+  v12 = itemCopy;
+  v10 = itemCopy;
+  [(MPAVRoutingController *)routingController selectRoutes:routes operation:operation completion:v11];
 }
 
 void __67__MRURoutingViewController_selectRoutes_operation_routingViewItem___block_invoke(uint64_t a1, uint64_t a2)
@@ -7969,17 +7969,17 @@ void __67__MRURoutingViewController_selectRoutes_operation_routingViewItem___blo
   }
 }
 
-- (void)fetchAvailableRoutesWithCompletionHandler:(id)a3
+- (void)fetchAvailableRoutesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   routingController = self->_routingController;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__MRURoutingViewController_fetchAvailableRoutesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E76650F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(MPAVRoutingController *)routingController fetchAvailableRoutesWithCompletionHandler:v7];
 }
 
@@ -8042,7 +8042,7 @@ MRUDiscoveredGroupSessionRoute *__70__MRURoutingViewController_fetchAvailableRou
   return v3;
 }
 
-- (void)groupSessionDiscovery:(id)a3 discoveredSessionsDidChange:(id)a4
+- (void)groupSessionDiscovery:(id)discovery discoveredSessionsDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -8052,16 +8052,16 @@ MRUDiscoveredGroupSessionRoute *__70__MRURoutingViewController_fetchAvailableRou
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)groupSessionDiscovery:(id)a3 activeSessionDidChange:(id)a4
+- (void)groupSessionDiscovery:(id)discovery activeSessionDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__MRURoutingViewController_groupSessionDiscovery_activeSessionDidChange___block_invoke;
   v7[3] = &unk_1E76639D0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -8122,31 +8122,31 @@ uint64_t __73__MRURoutingViewController_groupSessionDiscovery_activeSessionDidCh
   return [*(a1 + 32) _updateDisplayedRoutes];
 }
 
-- (void)groupSessionDidConnect:(id)a3
+- (void)groupSessionDidConnect:(id)connect
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  connectCopy = connect;
   v4 = MCLogCategoryDefault();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = connectCopy;
     _os_log_impl(&dword_1A20FC000, v4, OS_LOG_TYPE_DEFAULT, "[MRURoutingViewController] Connected to group session: %{public}@", &v5, 0xCu);
   }
 }
 
-- (void)groupSession:(id)a3 didInvalidateWithError:(id)a4
+- (void)groupSession:(id)session didInvalidateWithError:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v8 = MCLogCategoryDefault();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = v6;
+    v11 = sessionCopy;
     v12 = 2114;
-    v13 = v7;
+    v13 = errorCopy;
     _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_DEFAULT, "[MRURoutingViewController] Group session invalidated: %{public}@ with error: %{public}@", buf, 0x16u);
   }
 
@@ -8469,15 +8469,15 @@ void __48__MRURoutingViewController__fullStateDumpObject__block_invoke(uint64_t 
 - (void)hearingAidConnectionDidChange
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(MRURoutingViewController *)self view];
-  v4 = [v3 tableView];
-  v5 = [v4 indexPathsForVisibleRows];
+  view = [(MRURoutingViewController *)self view];
+  tableView = [view tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v5;
+  v6 = indexPathsForVisibleRows;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
   obj = v6;
   if (v7)
@@ -8495,7 +8495,7 @@ LABEL_3:
 
       v11 = *(*(&v22 + 1) + 8 * v10);
       v12 = [(MPSectionedCollection *)self->_routingViewItems itemAtIndexPath:v11];
-      v13 = [v12 mainRoute];
+      mainRoute = [v12 mainRoute];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -8532,8 +8532,8 @@ LABEL_3:
       _os_log_impl(&dword_1A20FC000, v16, OS_LOG_TYPE_DEFAULT, "[MRURoutingViewController] virtualHearingAidIndexPath: %@", buf, 0xCu);
     }
 
-    v17 = [(MRURoutingViewController *)self view];
-    v18 = [v17 tableView];
+    view2 = [(MRURoutingViewController *)self view];
+    tableView2 = [view2 tableView];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __57__MRURoutingViewController_hearingAidConnectionDidChange__block_invoke;
@@ -8541,7 +8541,7 @@ LABEL_3:
     v20[4] = self;
     v21 = v15;
     v6 = v15;
-    [v18 performBatchUpdates:v20 completion:0];
+    [tableView2 performBatchUpdates:v20 completion:0];
   }
 
 LABEL_14:

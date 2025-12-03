@@ -1,13 +1,13 @@
 @interface IMDFilePurgeabilityMonitor
 + (id)sharedInstance;
 - (void)dealloc;
-- (void)observeFileEvents:(id)a3;
-- (void)userNotificationDidFinish:(id)a3;
+- (void)observeFileEvents:(id)events;
+- (void)userNotificationDidFinish:(id)finish;
 @end
 
 @implementation IMDFilePurgeabilityMonitor
 
-- (void)observeFileEvents:(id)a3
+- (void)observeFileEvents:(id)events
 {
   v4 = sub_22B7DA688();
   v5 = *(v4 - 8);
@@ -15,7 +15,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22B7DA658();
-  v9 = self;
+  selfCopy = self;
   sub_22B4D9E98();
 
   (*(v5 + 8))(v8, v4);
@@ -33,17 +33,17 @@
   return v3;
 }
 
-- (void)userNotificationDidFinish:(id)a3
+- (void)userNotificationDidFinish:(id)finish
 {
-  v5 = a3;
-  v6 = self;
-  IMDFilePurgeabilityMonitor.userNotificationDidFinish(_:)(a3);
+  finishCopy = finish;
+  selfCopy = self;
+  IMDFilePurgeabilityMonitor.userNotificationDidFinish(_:)(finish);
 }
 
 - (void)dealloc
 {
   sub_22B4D01A0(0, &qword_27D8CF050, 0x277D192D8);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_22B72276C();
   if (v4)
   {
@@ -51,10 +51,10 @@
     [v4 removeListener_];
   }
 
-  v6 = [objc_opt_self() defaultCenter];
-  [v6 removeObserver_];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v7.receiver = v3;
+  v7.receiver = selfCopy;
   v7.super_class = IMDFilePurgeabilityMonitor;
   [(IMDFilePurgeabilityMonitor *)&v7 dealloc];
 }

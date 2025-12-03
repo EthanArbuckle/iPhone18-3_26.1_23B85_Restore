@@ -1,5 +1,5 @@
 @interface BSXPCServiceConnectionActivationMessage
-- (id)initWithMessage:(void *)a1;
+- (id)initWithMessage:(void *)message;
 - (void)dealloc;
 - (void)invalidate;
 - (void)sendIfNecessary;
@@ -23,7 +23,7 @@
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSXPCServiceConnection.m";
       v19 = 1024;
@@ -66,14 +66,14 @@
   }
 }
 
-- (id)initWithMessage:(void *)a1
+- (id)initWithMessage:(void *)message
 {
-  if (!a1)
+  if (!message)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = message;
   v6.super_class = BSXPCServiceConnectionActivationMessage;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;

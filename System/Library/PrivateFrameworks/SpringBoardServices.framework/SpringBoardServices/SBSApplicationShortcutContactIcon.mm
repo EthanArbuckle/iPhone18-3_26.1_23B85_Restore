@@ -1,75 +1,75 @@
 @interface SBSApplicationShortcutContactIcon
-- (BOOL)isEqual:(id)a3;
-- (SBSApplicationShortcutContactIcon)initWithContactIdentifier:(id)a3;
-- (SBSApplicationShortcutContactIcon)initWithFirstName:(id)a3 lastName:(id)a4;
-- (SBSApplicationShortcutContactIcon)initWithFirstName:(id)a3 lastName:(id)a4 imageData:(id)a5;
-- (SBSApplicationShortcutContactIcon)initWithXPCDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSApplicationShortcutContactIcon)initWithContactIdentifier:(id)identifier;
+- (SBSApplicationShortcutContactIcon)initWithFirstName:(id)name lastName:(id)lastName;
+- (SBSApplicationShortcutContactIcon)initWithFirstName:(id)name lastName:(id)lastName imageData:(id)data;
+- (SBSApplicationShortcutContactIcon)initWithXPCDictionary:(id)dictionary;
 - (id)_initForSubclass;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSApplicationShortcutContactIcon
 
-- (SBSApplicationShortcutContactIcon)initWithContactIdentifier:(id)a3
+- (SBSApplicationShortcutContactIcon)initWithContactIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SBSApplicationShortcutContactIcon;
-  v5 = [(SBSApplicationShortcutIcon *)&v9 _initForSubclass];
-  if (v5)
+  _initForSubclass = [(SBSApplicationShortcutIcon *)&v9 _initForSubclass];
+  if (_initForSubclass)
   {
-    v6 = [v4 copy];
-    contactIdentifier = v5->_contactIdentifier;
-    v5->_contactIdentifier = v6;
+    v6 = [identifierCopy copy];
+    contactIdentifier = _initForSubclass->_contactIdentifier;
+    _initForSubclass->_contactIdentifier = v6;
   }
 
-  return v5;
+  return _initForSubclass;
 }
 
-- (SBSApplicationShortcutContactIcon)initWithFirstName:(id)a3 lastName:(id)a4
+- (SBSApplicationShortcutContactIcon)initWithFirstName:(id)name lastName:(id)lastName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v14.receiver = self;
   v14.super_class = SBSApplicationShortcutContactIcon;
-  v8 = [(SBSApplicationShortcutIcon *)&v14 _initForSubclass];
-  if (v8)
+  _initForSubclass = [(SBSApplicationShortcutIcon *)&v14 _initForSubclass];
+  if (_initForSubclass)
   {
-    v9 = [v6 copy];
-    firstName = v8->_firstName;
-    v8->_firstName = v9;
+    v9 = [nameCopy copy];
+    firstName = _initForSubclass->_firstName;
+    _initForSubclass->_firstName = v9;
 
-    v11 = [v7 copy];
-    lastName = v8->_lastName;
-    v8->_lastName = v11;
+    v11 = [lastNameCopy copy];
+    lastName = _initForSubclass->_lastName;
+    _initForSubclass->_lastName = v11;
   }
 
-  return v8;
+  return _initForSubclass;
 }
 
-- (SBSApplicationShortcutContactIcon)initWithFirstName:(id)a3 lastName:(id)a4 imageData:(id)a5
+- (SBSApplicationShortcutContactIcon)initWithFirstName:(id)name lastName:(id)lastName imageData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = SBSApplicationShortcutContactIcon;
-  v11 = [(SBSApplicationShortcutIcon *)&v17 _initForSubclass];
-  if (v11)
+  _initForSubclass = [(SBSApplicationShortcutIcon *)&v17 _initForSubclass];
+  if (_initForSubclass)
   {
-    v12 = [v8 copy];
-    firstName = v11->_firstName;
-    v11->_firstName = v12;
+    v12 = [nameCopy copy];
+    firstName = _initForSubclass->_firstName;
+    _initForSubclass->_firstName = v12;
 
-    v14 = [v9 copy];
-    lastName = v11->_lastName;
-    v11->_lastName = v14;
+    v14 = [lastNameCopy copy];
+    lastName = _initForSubclass->_lastName;
+    _initForSubclass->_lastName = v14;
 
-    objc_storeStrong(&v11->_imageData, a5);
+    objc_storeStrong(&_initForSubclass->_imageData, data);
   }
 
-  return v11;
+  return _initForSubclass;
 }
 
 - (id)_initForSubclass
@@ -83,51 +83,51 @@
   return [(SBSApplicationShortcutContactIcon *)self initWithContactIdentifier:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-    v6 = [(SBSApplicationShortcutContactIcon *)self contactIdentifier];
+    v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+    contactIdentifier = [(SBSApplicationShortcutContactIcon *)self contactIdentifier];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __45__SBSApplicationShortcutContactIcon_isEqual___block_invoke;
     v28[3] = &unk_1E7360810;
-    v7 = v4;
+    v7 = equalCopy;
     v29 = v7;
-    v8 = [v5 appendObject:v6 counterpart:v28];
+    v8 = [v5 appendObject:contactIdentifier counterpart:v28];
 
-    v9 = [(SBSApplicationShortcutContactIcon *)self firstName];
+    firstName = [(SBSApplicationShortcutContactIcon *)self firstName];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __45__SBSApplicationShortcutContactIcon_isEqual___block_invoke_2;
     v26[3] = &unk_1E7360810;
     v10 = v7;
     v27 = v10;
-    v11 = [v5 appendObject:v9 counterpart:v26];
+    v11 = [v5 appendObject:firstName counterpart:v26];
 
-    v12 = [(SBSApplicationShortcutContactIcon *)self lastName];
+    lastName = [(SBSApplicationShortcutContactIcon *)self lastName];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __45__SBSApplicationShortcutContactIcon_isEqual___block_invoke_3;
     v24[3] = &unk_1E7360810;
     v13 = v10;
     v25 = v13;
-    v14 = [v5 appendObject:v12 counterpart:v24];
+    v14 = [v5 appendObject:lastName counterpart:v24];
 
-    v15 = [(SBSApplicationShortcutContactIcon *)self imageData];
+    imageData = [(SBSApplicationShortcutContactIcon *)self imageData];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __45__SBSApplicationShortcutContactIcon_isEqual___block_invoke_4;
     v22 = &unk_1E7360C58;
     v23 = v13;
-    v16 = [v5 appendObject:v15 counterpart:&v19];
+    v16 = [v5 appendObject:imageData counterpart:&v19];
 
     v17 = [v5 isEqual];
   }
@@ -137,21 +137,21 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(SBSApplicationShortcutContactIcon *)self contactIdentifier];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  contactIdentifier = [(SBSApplicationShortcutContactIcon *)self contactIdentifier];
+  v5 = [builder appendObject:contactIdentifier];
 
-  v6 = [(SBSApplicationShortcutContactIcon *)self lastName];
-  v7 = [v3 appendObject:v6];
+  lastName = [(SBSApplicationShortcutContactIcon *)self lastName];
+  v7 = [builder appendObject:lastName];
 
-  v8 = [v3 hash];
+  v8 = [builder hash];
   return v8;
 }
 
-- (SBSApplicationShortcutContactIcon)initWithXPCDictionary:(id)a3
+- (SBSApplicationShortcutContactIcon)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     goto LABEL_19;
   }
@@ -190,7 +190,7 @@
 
       v15 = v14;
 
-      v16 = xpc_dictionary_get_value(v4, "contactIconImageData");
+      v16 = xpc_dictionary_get_value(dictionaryCopy, "contactIconImageData");
       if (v16)
       {
         v17 = v16;
@@ -198,7 +198,7 @@
 
       else
       {
-        v17 = xpc_dictionary_get_value(v4, "contactImageData");
+        v17 = xpc_dictionary_get_value(dictionaryCopy, "contactImageData");
         if (!v17)
         {
           goto LABEL_16;
@@ -220,7 +220,7 @@ LABEL_18:
         }
 
 LABEL_19:
-        v7 = 0;
+        selfCopy = 0;
         goto LABEL_20;
       }
 
@@ -236,32 +236,32 @@ LABEL_16:
 
 LABEL_5:
   self = self;
-  v7 = self;
+  selfCopy = self;
 LABEL_20:
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    xdict = v4;
-    v5 = [(SBSApplicationShortcutContactIcon *)self contactIdentifier];
+    xdict = dictionaryCopy;
+    contactIdentifier = [(SBSApplicationShortcutContactIcon *)self contactIdentifier];
     BSSerializeStringToXPCDictionaryWithKey();
 
-    v6 = [(SBSApplicationShortcutContactIcon *)self firstName];
+    firstName = [(SBSApplicationShortcutContactIcon *)self firstName];
     BSSerializeStringToXPCDictionaryWithKey();
 
-    v7 = [(SBSApplicationShortcutContactIcon *)self lastName];
+    lastName = [(SBSApplicationShortcutContactIcon *)self lastName];
     BSSerializeStringToXPCDictionaryWithKey();
 
-    v8 = [(SBSApplicationShortcutContactIcon *)self imageData];
-    v9 = [v8 length];
+    imageData = [(SBSApplicationShortcutContactIcon *)self imageData];
+    v9 = [imageData length];
     if (v9)
     {
-      xpc_dictionary_set_data(xdict, "contactIconImageData", [v8 bytes], v9);
+      xpc_dictionary_set_data(xdict, "contactIconImageData", [imageData bytes], v9);
     }
   }
 

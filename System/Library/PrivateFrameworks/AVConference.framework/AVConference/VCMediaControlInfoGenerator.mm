@@ -1,14 +1,14 @@
 @interface VCMediaControlInfoGenerator
-- (VCMediaControlInfoGenerator)initWithType:(unsigned int)a3 version:(unsigned __int8)a4;
-- (int)deregisterCallbacksWithContext:(void *)a3;
-- (int)registerFillBlobCallback:(void *)a3 processBlobCallback:(void *)a4 context:(void *)a5;
+- (VCMediaControlInfoGenerator)initWithType:(unsigned int)type version:(unsigned __int8)version;
+- (int)deregisterCallbacksWithContext:(void *)context;
+- (int)registerFillBlobCallback:(void *)callback processBlobCallback:(void *)blobCallback context:(void *)context;
 - (unint64_t)feedbackSize;
 - (void)dealloc;
 @end
 
 @implementation VCMediaControlInfoGenerator
 
-- (VCMediaControlInfoGenerator)initWithType:(unsigned int)a3 version:(unsigned __int8)a4
+- (VCMediaControlInfoGenerator)initWithType:(unsigned int)type version:(unsigned __int8)version
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -17,8 +17,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_version = a4;
-    v6->_type = a3;
+    v6->_version = version;
+    v6->_type = type;
     v9.equal = 0;
     *&v9.version = 0u;
     v9.copyDescription = 0;
@@ -44,21 +44,21 @@
   [(VCMediaControlInfoGenerator *)&v3 dealloc];
 }
 
-- (int)registerFillBlobCallback:(void *)a3 processBlobCallback:(void *)a4 context:(void *)a5
+- (int)registerFillBlobCallback:(void *)callback processBlobCallback:(void *)blobCallback context:(void *)context
 {
   v9 = malloc_type_malloc(0x10uLL, 0x80040803F642BuLL);
-  *v9 = a3;
-  v9[1] = a4;
+  *v9 = callback;
+  v9[1] = blobCallback;
   pthread_rwlock_wrlock(&self->_callbackDictLock);
-  CFDictionarySetValue(self->_callbacksDict, a5, v9);
+  CFDictionarySetValue(self->_callbacksDict, context, v9);
   pthread_rwlock_unlock(&self->_callbackDictLock);
   return 0;
 }
 
-- (int)deregisterCallbacksWithContext:(void *)a3
+- (int)deregisterCallbacksWithContext:(void *)context
 {
   pthread_rwlock_wrlock(&self->_callbackDictLock);
-  CFDictionaryRemoveValue(self->_callbacksDict, a3);
+  CFDictionaryRemoveValue(self->_callbacksDict, context);
   pthread_rwlock_unlock(&self->_callbackDictLock);
   return 0;
 }

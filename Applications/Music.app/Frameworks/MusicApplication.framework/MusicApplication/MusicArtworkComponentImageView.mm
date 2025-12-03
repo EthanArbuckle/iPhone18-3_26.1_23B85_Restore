@@ -1,19 +1,19 @@
 @interface MusicArtworkComponentImageView
 - (CGRect)frame;
-- (MusicArtworkComponentImageView)initWithCoder:(id)a3;
-- (MusicArtworkComponentImageView)initWithFrame:(CGRect)a3;
-- (MusicArtworkComponentImageView)initWithImage:(id)a3;
-- (MusicArtworkComponentImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (MusicArtworkComponentImageView)initWithCoder:(id)coder;
+- (MusicArtworkComponentImageView)initWithFrame:(CGRect)frame;
+- (MusicArtworkComponentImageView)initWithImage:(id)image;
+- (MusicArtworkComponentImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 - (void)didMoveToSuperview;
-- (void)setFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MusicArtworkComponentImageView
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_7E158();
 }
 
@@ -29,25 +29,25 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for ArtworkComponentImageView();
   v23.receiver = self;
   v23.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(MusicArtworkComponentImageView *)&v23 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v22.receiver = v9;
+  v22.receiver = selfCopy;
   v22.super_class = v8;
   [(MusicArtworkComponentImageView *)&v22 setFrame:x, y, width, height];
-  [(MusicArtworkComponentImageView *)v9 frame];
+  [(MusicArtworkComponentImageView *)selfCopy frame];
   v25.origin.x = v18;
   v25.origin.y = v19;
   v25.size.width = v20;
@@ -62,14 +62,14 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_7E420(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_7E420(change);
 }
 
-- (MusicArtworkComponentImageView)initWithImage:(id)a3
+- (MusicArtworkComponentImageView)initWithImage:(id)image
 {
   swift_weakInit();
   *(&self->super.super.super.super.isa + OBJC_IVAR___MusicArtworkComponentImageView_accessoryArtworkCatalog) = 0;
@@ -82,22 +82,22 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR___MusicArtworkComponentImageView_accessoryStrokeView) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ArtworkComponentImageView();
-  return [(MusicArtworkComponentImageView *)&v7 initWithImage:a3];
+  return [(MusicArtworkComponentImageView *)&v7 initWithImage:image];
 }
 
-- (MusicArtworkComponentImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (MusicArtworkComponentImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
-  v6 = a3;
-  v7 = a4;
-  return sub_7EDE8(a3, a4);
+  imageCopy = image;
+  highlightedImageCopy = highlightedImage;
+  return sub_7EDE8(image, highlightedImage);
 }
 
-- (MusicArtworkComponentImageView)initWithFrame:(CGRect)a3
+- (MusicArtworkComponentImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_weakInit();
   *(&self->super.super.super.super.isa + OBJC_IVAR___MusicArtworkComponentImageView_accessoryArtworkCatalog) = 0;
   v8 = self + OBJC_IVAR___MusicArtworkComponentImageView_accessoryStyle;
@@ -112,10 +112,10 @@
   return [(MusicArtworkComponentImageView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (MusicArtworkComponentImageView)initWithCoder:(id)a3
+- (MusicArtworkComponentImageView)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_805D0(v3);
+  coderCopy = coder;
+  v4 = sub_805D0(coderCopy);
 
   return v4;
 }

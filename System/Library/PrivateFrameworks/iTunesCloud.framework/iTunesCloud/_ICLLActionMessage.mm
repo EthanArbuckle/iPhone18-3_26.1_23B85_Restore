@@ -1,11 +1,11 @@
 @interface _ICLLActionMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (void)clearOneofValuesForAction;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLActionMessage
@@ -61,48 +61,48 @@ LABEL_6:
   return v19 ^ v20 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ [(_ICLLDisplayMessage *)self->_displayMessage hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 148) & 2) == 0 || self->_action != *(v4 + 4))
+    if ((*(equalCopy + 148) & 2) == 0 || self->_action != *(equalCopy + 4))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(v4 + 148) & 2) != 0)
+  else if ((*(equalCopy + 148) & 2) != 0)
   {
     goto LABEL_45;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 148) & 1) == 0 || self->_originatorId != *(v4 + 1))
+    if ((*(equalCopy + 148) & 1) == 0 || self->_originatorId != *(equalCopy + 1))
     {
       goto LABEL_45;
     }
   }
 
-  else if (*(v4 + 148))
+  else if (*(equalCopy + 148))
   {
     goto LABEL_45;
   }
 
   playbackSync = self->_playbackSync;
-  if (playbackSync | *(v4 + 12) && ![(_ICLLPlaybackSyncAction *)playbackSync isEqual:?])
+  if (playbackSync | *(equalCopy + 12) && ![(_ICLLPlaybackSyncAction *)playbackSync isEqual:?])
   {
     goto LABEL_45;
   }
 
   addItems = self->_addItems;
-  if (addItems | *(v4 + 3))
+  if (addItems | *(equalCopy + 3))
   {
     if (![(_ICLLAddQueueItemsAction *)addItems isEqual:?])
     {
@@ -111,7 +111,7 @@ LABEL_6:
   }
 
   removeItem = self->_removeItem;
-  if (removeItem | *(v4 + 15))
+  if (removeItem | *(equalCopy + 15))
   {
     if (![(_ICLLRemoveQueueItemAction *)removeItem isEqual:?])
     {
@@ -120,7 +120,7 @@ LABEL_6:
   }
 
   moveItem = self->_moveItem;
-  if (moveItem | *(v4 + 8))
+  if (moveItem | *(equalCopy + 8))
   {
     if (![(_ICLLMoveQueueItemAction *)moveItem isEqual:?])
     {
@@ -129,7 +129,7 @@ LABEL_6:
   }
 
   currentItemChange = self->_currentItemChange;
-  if (currentItemChange | *(v4 + 5))
+  if (currentItemChange | *(equalCopy + 5))
   {
     if (![(_ICLLCurrentItemChangeAction *)currentItemChange isEqual:?])
     {
@@ -138,7 +138,7 @@ LABEL_6:
   }
 
   reaction = self->_reaction;
-  if (reaction | *(v4 + 14))
+  if (reaction | *(equalCopy + 14))
   {
     if (![(_ICLLReactionAction *)reaction isEqual:?])
     {
@@ -147,7 +147,7 @@ LABEL_6:
   }
 
   participantChange = self->_participantChange;
-  if (participantChange | *(v4 + 10))
+  if (participantChange | *(equalCopy + 10))
   {
     if (![(_ICLLParticipantChangeAction *)participantChange isEqual:?])
     {
@@ -156,7 +156,7 @@ LABEL_6:
   }
 
   serverNotice = self->_serverNotice;
-  if (serverNotice | *(v4 + 17))
+  if (serverNotice | *(equalCopy + 17))
   {
     if (![(_ICLLServerNoticeAction *)serverNotice isEqual:?])
     {
@@ -165,7 +165,7 @@ LABEL_6:
   }
 
   clientInfo = self->_clientInfo;
-  if (clientInfo | *(v4 + 4))
+  if (clientInfo | *(equalCopy + 4))
   {
     if (![(_ICLLClientInfoAction *)clientInfo isEqual:?])
     {
@@ -174,7 +174,7 @@ LABEL_6:
   }
 
   replaceQueueItems = self->_replaceQueueItems;
-  if (replaceQueueItems | *(v4 + 16))
+  if (replaceQueueItems | *(equalCopy + 16))
   {
     if (![(_ICLLReplaceQueueItemsAction *)replaceQueueItems isEqual:?])
     {
@@ -183,7 +183,7 @@ LABEL_6:
   }
 
   originatorUUID = self->_originatorUUID;
-  if (originatorUUID | *(v4 + 9))
+  if (originatorUUID | *(equalCopy + 9))
   {
     if (![(NSString *)originatorUUID isEqual:?])
     {
@@ -192,7 +192,7 @@ LABEL_6:
   }
 
   playNowQueueItems = self->_playNowQueueItems;
-  if (playNowQueueItems | *(v4 + 11))
+  if (playNowQueueItems | *(equalCopy + 11))
   {
     if (![(_ICLLPlayNowQueueItemsAction *)playNowQueueItems isEqual:?])
     {
@@ -201,7 +201,7 @@ LABEL_6:
   }
 
   currentItemTransition = self->_currentItemTransition;
-  if (currentItemTransition | *(v4 + 6))
+  if (currentItemTransition | *(equalCopy + 6))
   {
     if (![(_ICLLCurrentItemTransitionAction *)currentItemTransition isEqual:?])
     {
@@ -210,7 +210,7 @@ LABEL_6:
   }
 
   queueSync = self->_queueSync;
-  if (queueSync | *(v4 + 13))
+  if (queueSync | *(equalCopy + 13))
   {
     if (![(_ICLLQueueSyncAction *)queueSync isEqual:?])
     {
@@ -220,7 +220,7 @@ LABEL_6:
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 148) & 4) == 0)
+    if ((*(equalCopy + 148) & 4) == 0)
     {
       goto LABEL_42;
     }
@@ -230,27 +230,27 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if ((*(v4 + 148) & 4) == 0)
+  if ((*(equalCopy + 148) & 4) == 0)
   {
     goto LABEL_45;
   }
 
   if (self->_displayNotice)
   {
-    if ((*(v4 + 144) & 1) == 0)
+    if ((*(equalCopy + 144) & 1) == 0)
     {
       goto LABEL_45;
     }
   }
 
-  else if (*(v4 + 144))
+  else if (*(equalCopy + 144))
   {
     goto LABEL_45;
   }
 
 LABEL_42:
   displayMessage = self->_displayMessage;
-  if (displayMessage | *(v4 + 7))
+  if (displayMessage | *(equalCopy + 7))
   {
     v20 = [(_ICLLDisplayMessage *)displayMessage isEqual:?];
   }
@@ -265,9 +265,9 @@ LABEL_46:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -283,59 +283,59 @@ LABEL_46:
     *(v5 + 148) |= 1u;
   }
 
-  v8 = [(_ICLLPlaybackSyncAction *)self->_playbackSync copyWithZone:a3];
+  v8 = [(_ICLLPlaybackSyncAction *)self->_playbackSync copyWithZone:zone];
   v9 = *(v6 + 96);
   *(v6 + 96) = v8;
 
-  v10 = [(_ICLLAddQueueItemsAction *)self->_addItems copyWithZone:a3];
+  v10 = [(_ICLLAddQueueItemsAction *)self->_addItems copyWithZone:zone];
   v11 = *(v6 + 24);
   *(v6 + 24) = v10;
 
-  v12 = [(_ICLLRemoveQueueItemAction *)self->_removeItem copyWithZone:a3];
+  v12 = [(_ICLLRemoveQueueItemAction *)self->_removeItem copyWithZone:zone];
   v13 = *(v6 + 120);
   *(v6 + 120) = v12;
 
-  v14 = [(_ICLLMoveQueueItemAction *)self->_moveItem copyWithZone:a3];
+  v14 = [(_ICLLMoveQueueItemAction *)self->_moveItem copyWithZone:zone];
   v15 = *(v6 + 64);
   *(v6 + 64) = v14;
 
-  v16 = [(_ICLLCurrentItemChangeAction *)self->_currentItemChange copyWithZone:a3];
+  v16 = [(_ICLLCurrentItemChangeAction *)self->_currentItemChange copyWithZone:zone];
   v17 = *(v6 + 40);
   *(v6 + 40) = v16;
 
-  v18 = [(_ICLLReactionAction *)self->_reaction copyWithZone:a3];
+  v18 = [(_ICLLReactionAction *)self->_reaction copyWithZone:zone];
   v19 = *(v6 + 112);
   *(v6 + 112) = v18;
 
-  v20 = [(_ICLLParticipantChangeAction *)self->_participantChange copyWithZone:a3];
+  v20 = [(_ICLLParticipantChangeAction *)self->_participantChange copyWithZone:zone];
   v21 = *(v6 + 80);
   *(v6 + 80) = v20;
 
-  v22 = [(_ICLLServerNoticeAction *)self->_serverNotice copyWithZone:a3];
+  v22 = [(_ICLLServerNoticeAction *)self->_serverNotice copyWithZone:zone];
   v23 = *(v6 + 136);
   *(v6 + 136) = v22;
 
-  v24 = [(_ICLLClientInfoAction *)self->_clientInfo copyWithZone:a3];
+  v24 = [(_ICLLClientInfoAction *)self->_clientInfo copyWithZone:zone];
   v25 = *(v6 + 32);
   *(v6 + 32) = v24;
 
-  v26 = [(_ICLLReplaceQueueItemsAction *)self->_replaceQueueItems copyWithZone:a3];
+  v26 = [(_ICLLReplaceQueueItemsAction *)self->_replaceQueueItems copyWithZone:zone];
   v27 = *(v6 + 128);
   *(v6 + 128) = v26;
 
-  v28 = [(NSString *)self->_originatorUUID copyWithZone:a3];
+  v28 = [(NSString *)self->_originatorUUID copyWithZone:zone];
   v29 = *(v6 + 72);
   *(v6 + 72) = v28;
 
-  v30 = [(_ICLLPlayNowQueueItemsAction *)self->_playNowQueueItems copyWithZone:a3];
+  v30 = [(_ICLLPlayNowQueueItemsAction *)self->_playNowQueueItems copyWithZone:zone];
   v31 = *(v6 + 88);
   *(v6 + 88) = v30;
 
-  v32 = [(_ICLLCurrentItemTransitionAction *)self->_currentItemTransition copyWithZone:a3];
+  v32 = [(_ICLLCurrentItemTransitionAction *)self->_currentItemTransition copyWithZone:zone];
   v33 = *(v6 + 48);
   *(v6 + 48) = v32;
 
-  v34 = [(_ICLLQueueSyncAction *)self->_queueSync copyWithZone:a3];
+  v34 = [(_ICLLQueueSyncAction *)self->_queueSync copyWithZone:zone];
   v35 = *(v6 + 104);
   *(v6 + 104) = v34;
 
@@ -345,293 +345,293 @@ LABEL_46:
     *(v6 + 148) |= 4u;
   }
 
-  v36 = [(_ICLLDisplayMessage *)self->_displayMessage copyWithZone:a3];
+  v36 = [(_ICLLDisplayMessage *)self->_displayMessage copyWithZone:zone];
   v37 = *(v6 + 56);
   *(v6 + 56) = v36;
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playbackSync)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_addItems)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_removeItem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_moveItem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_currentItemChange)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_reaction)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_participantChange)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_serverNotice)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clientInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_replaceQueueItems)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_originatorUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playNowQueueItems)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_currentItemTransition)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_queueSync)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_displayMessage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (void)clearOneofValuesForAction
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 148) &= ~2u;
-    *(a1 + 16) = 0;
-    v2 = *(a1 + 96);
-    *(a1 + 96) = 0;
+    *(self + 148) &= ~2u;
+    *(self + 16) = 0;
+    v2 = *(self + 96);
+    *(self + 96) = 0;
 
-    v3 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v3 = *(self + 24);
+    *(self + 24) = 0;
 
-    v4 = *(a1 + 120);
-    *(a1 + 120) = 0;
+    v4 = *(self + 120);
+    *(self + 120) = 0;
 
-    v5 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    v5 = *(self + 64);
+    *(self + 64) = 0;
 
-    v6 = *(a1 + 40);
-    *(a1 + 40) = 0;
+    v6 = *(self + 40);
+    *(self + 40) = 0;
 
-    v7 = *(a1 + 112);
-    *(a1 + 112) = 0;
+    v7 = *(self + 112);
+    *(self + 112) = 0;
 
-    v8 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    v8 = *(self + 80);
+    *(self + 80) = 0;
 
-    v9 = *(a1 + 136);
-    *(a1 + 136) = 0;
+    v9 = *(self + 136);
+    *(self + 136) = 0;
 
-    v10 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v10 = *(self + 32);
+    *(self + 32) = 0;
 
-    v11 = *(a1 + 128);
-    *(a1 + 128) = 0;
+    v11 = *(self + 128);
+    *(self + 128) = 0;
 
-    v12 = *(a1 + 88);
-    *(a1 + 88) = 0;
+    v12 = *(self + 88);
+    *(self + 88) = 0;
 
-    v13 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v13 = *(self + 48);
+    *(self + 48) = 0;
 
-    v14 = *(a1 + 104);
-    *(a1 + 104) = 0;
+    v14 = *(self + 104);
+    *(self + 104) = 0;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_originatorId];
-    [v3 setObject:v4 forKey:@"originatorId"];
+    [dictionary setObject:v4 forKey:@"originatorId"];
   }
 
   playbackSync = self->_playbackSync;
   if (playbackSync)
   {
-    v6 = [(_ICLLPlaybackSyncAction *)playbackSync dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"playbackSync"];
+    dictionaryRepresentation = [(_ICLLPlaybackSyncAction *)playbackSync dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"playbackSync"];
   }
 
   addItems = self->_addItems;
   if (addItems)
   {
-    v8 = [(_ICLLAddQueueItemsAction *)addItems dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"addItems"];
+    dictionaryRepresentation2 = [(_ICLLAddQueueItemsAction *)addItems dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"addItems"];
   }
 
   removeItem = self->_removeItem;
   if (removeItem)
   {
-    v10 = [(_ICLLRemoveQueueItemAction *)removeItem dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"removeItem"];
+    dictionaryRepresentation3 = [(_ICLLRemoveQueueItemAction *)removeItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"removeItem"];
   }
 
   moveItem = self->_moveItem;
   if (moveItem)
   {
-    v12 = [(_ICLLMoveQueueItemAction *)moveItem dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"moveItem"];
+    dictionaryRepresentation4 = [(_ICLLMoveQueueItemAction *)moveItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"moveItem"];
   }
 
   currentItemChange = self->_currentItemChange;
   if (currentItemChange)
   {
-    v14 = [(_ICLLCurrentItemChangeAction *)currentItemChange dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"currentItemChange"];
+    dictionaryRepresentation5 = [(_ICLLCurrentItemChangeAction *)currentItemChange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"currentItemChange"];
   }
 
   reaction = self->_reaction;
   if (reaction)
   {
-    v16 = [(_ICLLReactionAction *)reaction dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"reaction"];
+    dictionaryRepresentation6 = [(_ICLLReactionAction *)reaction dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"reaction"];
   }
 
   participantChange = self->_participantChange;
   if (participantChange)
   {
-    v18 = [(_ICLLParticipantChangeAction *)participantChange dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"participantChange"];
+    dictionaryRepresentation7 = [(_ICLLParticipantChangeAction *)participantChange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"participantChange"];
   }
 
   serverNotice = self->_serverNotice;
   if (serverNotice)
   {
-    v20 = [(_ICLLServerNoticeAction *)serverNotice dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"serverNotice"];
+    dictionaryRepresentation8 = [(_ICLLServerNoticeAction *)serverNotice dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"serverNotice"];
   }
 
   clientInfo = self->_clientInfo;
   if (clientInfo)
   {
-    v22 = [(_ICLLClientInfoAction *)clientInfo dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"clientInfo"];
+    dictionaryRepresentation9 = [(_ICLLClientInfoAction *)clientInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation9 forKey:@"clientInfo"];
   }
 
   replaceQueueItems = self->_replaceQueueItems;
   if (replaceQueueItems)
   {
-    v24 = [(_ICLLReplaceQueueItemsAction *)replaceQueueItems dictionaryRepresentation];
-    [v3 setObject:v24 forKey:@"replaceQueueItems"];
+    dictionaryRepresentation10 = [(_ICLLReplaceQueueItemsAction *)replaceQueueItems dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation10 forKey:@"replaceQueueItems"];
   }
 
   playNowQueueItems = self->_playNowQueueItems;
   if (playNowQueueItems)
   {
-    v26 = [(_ICLLPlayNowQueueItemsAction *)playNowQueueItems dictionaryRepresentation];
-    [v3 setObject:v26 forKey:@"playNowQueueItems"];
+    dictionaryRepresentation11 = [(_ICLLPlayNowQueueItemsAction *)playNowQueueItems dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation11 forKey:@"playNowQueueItems"];
   }
 
   currentItemTransition = self->_currentItemTransition;
   if (currentItemTransition)
   {
-    v28 = [(_ICLLCurrentItemTransitionAction *)currentItemTransition dictionaryRepresentation];
-    [v3 setObject:v28 forKey:@"currentItemTransition"];
+    dictionaryRepresentation12 = [(_ICLLCurrentItemTransitionAction *)currentItemTransition dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation12 forKey:@"currentItemTransition"];
   }
 
   queueSync = self->_queueSync;
   if (queueSync)
   {
-    v30 = [(_ICLLQueueSyncAction *)queueSync dictionaryRepresentation];
-    [v3 setObject:v30 forKey:@"queueSync"];
+    dictionaryRepresentation13 = [(_ICLLQueueSyncAction *)queueSync dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation13 forKey:@"queueSync"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v31 = [MEMORY[0x1E696AD98] numberWithInt:self->_action];
-    [v3 setObject:v31 forKey:@"action"];
+    [dictionary setObject:v31 forKey:@"action"];
   }
 
   originatorUUID = self->_originatorUUID;
   if (originatorUUID)
   {
-    [v3 setObject:originatorUUID forKey:@"originatorUUID"];
+    [dictionary setObject:originatorUUID forKey:@"originatorUUID"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v33 = [MEMORY[0x1E696AD98] numberWithBool:self->_displayNotice];
-    [v3 setObject:v33 forKey:@"displayNotice"];
+    [dictionary setObject:v33 forKey:@"displayNotice"];
   }
 
   displayMessage = self->_displayMessage;
   if (displayMessage)
   {
-    v35 = [(_ICLLDisplayMessage *)displayMessage dictionaryRepresentation];
-    [v3 setObject:v35 forKey:@"displayMessage"];
+    dictionaryRepresentation14 = [(_ICLLDisplayMessage *)displayMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation14 forKey:@"displayMessage"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -640,8 +640,8 @@ LABEL_46:
   v8.receiver = self;
   v8.super_class = _ICLLActionMessage;
   v4 = [(_ICLLActionMessage *)&v8 description];
-  v5 = [(_ICLLActionMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLActionMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

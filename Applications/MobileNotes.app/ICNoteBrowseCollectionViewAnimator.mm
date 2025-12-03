@@ -1,7 +1,7 @@
 @interface ICNoteBrowseCollectionViewAnimator
 + (id)animator;
 + (id)springAnimation;
-- (ICNoteBrowseCollectionViewAnimator)initWithCoder:(id)a3;
+- (ICNoteBrowseCollectionViewAnimator)initWithCoder:(id)coder;
 - (UISpringTimingParameters)springTimingParameters;
 - (id)commonInit;
 @end
@@ -10,42 +10,42 @@
 
 + (id)animator
 {
-  v2 = [a1 alloc];
-  v3 = [v2 commonInit];
+  v2 = [self alloc];
+  commonInit = [v2 commonInit];
 
-  return v3;
+  return commonInit;
 }
 
 - (id)commonInit
 {
-  v2 = self;
-  v3 = [objc_opt_class() springAnimation];
-  [v3 settlingDuration];
-  v4 = [(ICNoteBrowseCollectionViewAnimator *)v2 initWithDuration:v2 timingParameters:?];
+  selfCopy = self;
+  springAnimation = [objc_opt_class() springAnimation];
+  [springAnimation settlingDuration];
+  v4 = [(ICNoteBrowseCollectionViewAnimator *)selfCopy initWithDuration:selfCopy timingParameters:?];
 
   return v4;
 }
 
-- (ICNoteBrowseCollectionViewAnimator)initWithCoder:(id)a3
+- (ICNoteBrowseCollectionViewAnimator)initWithCoder:(id)coder
 {
-  v4 = [(ICNoteBrowseCollectionViewAnimator *)self commonInit];
+  commonInit = [(ICNoteBrowseCollectionViewAnimator *)self commonInit];
 
-  return v4;
+  return commonInit;
 }
 
 - (UISpringTimingParameters)springTimingParameters
 {
-  v2 = [objc_opt_class() springAnimation];
+  springAnimation = [objc_opt_class() springAnimation];
   v3 = [UISpringTimingParameters alloc];
-  [v2 mass];
+  [springAnimation mass];
   v5 = v4;
-  [v2 stiffness];
+  [springAnimation stiffness];
   v7 = v6;
-  [v2 damping];
+  [springAnimation damping];
   v9 = v8;
-  [v2 initialVelocity];
+  [springAnimation initialVelocity];
   v11 = v10;
-  [v2 initialVelocity];
+  [springAnimation initialVelocity];
   v13 = [v3 initWithMass:v5 stiffness:v7 damping:v9 initialVelocity:{v11, v12}];
 
   return v13;

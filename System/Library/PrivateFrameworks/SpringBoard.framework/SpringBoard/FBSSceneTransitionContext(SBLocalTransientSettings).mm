@@ -7,8 +7,8 @@
 
 - (double)watchdogScaleFactor
 {
-  v1 = [a1 transientLocalClientSettings];
-  v2 = [v1 objectForSetting:1];
+  transientLocalClientSettings = [self transientLocalClientSettings];
+  v2 = [transientLocalClientSettings objectForSetting:1];
 
   if (v2)
   {
@@ -26,9 +26,9 @@
 
 - (void)setWatchdogScaleFactor:()SBLocalTransientSettings
 {
-  v4 = [a1 transientLocalClientSettings];
+  transientLocalClientSettings = [self transientLocalClientSettings];
   v3 = [MEMORY[0x277CCABB0] numberWithDouble:a2];
-  [v4 setObject:v3 forSetting:1];
+  [transientLocalClientSettings setObject:v3 forSetting:1];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface SFCapsulePageLayoutTopFloatingSquished
 - (NSArray)supplementaryIdentifiers;
 - (_TtC12MobileSafari38SFCapsulePageLayoutTopFloatingSquished)init;
-- (_TtC12MobileSafari38SFCapsulePageLayoutTopFloatingSquished)initWithContainer:(id)a3;
-- (_TtC12MobileSafari38SFCapsulePageLayoutTopFloatingSquished)initWithContainer:(id)a3 baseLayout:(id)a4;
+- (_TtC12MobileSafari38SFCapsulePageLayoutTopFloatingSquished)initWithContainer:(id)container;
+- (_TtC12MobileSafari38SFCapsulePageLayoutTopFloatingSquished)initWithContainer:(id)container baseLayout:(id)layout;
 - (double)pageWidth;
-- (id)bottomBackdropInfoForPage:(id)a3;
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4;
+- (id)bottomBackdropInfoForPage:(id)page;
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page;
 @end
 
 @implementation SFCapsulePageLayoutTopFloatingSquished
 
-- (_TtC12MobileSafari38SFCapsulePageLayoutTopFloatingSquished)initWithContainer:(id)a3
+- (_TtC12MobileSafari38SFCapsulePageLayoutTopFloatingSquished)initWithContainer:(id)container
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -21,7 +21,7 @@
   return [(SFCapsulePageLayoutTopFloatingSquished *)&v5 init];
 }
 
-- (_TtC12MobileSafari38SFCapsulePageLayoutTopFloatingSquished)initWithContainer:(id)a3 baseLayout:(id)a4
+- (_TtC12MobileSafari38SFCapsulePageLayoutTopFloatingSquished)initWithContainer:(id)container baseLayout:(id)layout
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -56,8 +56,8 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
-    v6 = [v4 supplementaryIdentifiers];
+    selfCopy = self;
+    supplementaryIdentifiers = [v4 supplementaryIdentifiers];
     swift_unknownObjectRelease();
     sub_18BC20D98();
   }
@@ -67,23 +67,23 @@
   return v7;
 }
 
-- (id)bottomBackdropInfoForPage:(id)a3
+- (id)bottomBackdropInfoForPage:(id)page
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_18B9AA7D0();
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page
 {
   v6 = sub_18BC20BD8();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = self;
-  v10 = sub_18B9AA0A4(v6, v8, a4);
+  selfCopy = self;
+  v10 = sub_18B9AA0A4(v6, v8, page);
   swift_unknownObjectRelease();
 
   return v10;

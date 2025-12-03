@@ -1,84 +1,84 @@
 @interface OBWelcomeController
-+ (void)setAdditionalScaleForAnimation:(double)a3 headerView:(id)a4;
-- (id)animationController:(id)a3;
-- (id)animationController:(id)a3 animatedStates:(id)a4 startAtFirstState:(BOOL)a5;
-- (id)bundleUrlForPackageName:(id)a3;
-- (void)setAdditionalScaleForAnimation:(double)a3;
++ (void)setAdditionalScaleForAnimation:(double)animation headerView:(id)view;
+- (id)animationController:(id)controller;
+- (id)animationController:(id)controller animatedStates:(id)states startAtFirstState:(BOOL)state;
+- (id)bundleUrlForPackageName:(id)name;
+- (void)setAdditionalScaleForAnimation:(double)animation;
 @end
 
 @implementation OBWelcomeController
 
-- (id)animationController:(id)a3 animatedStates:(id)a4 startAtFirstState:(BOOL)a5
+- (id)animationController:(id)controller animatedStates:(id)states startAtFirstState:(BOOL)state
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v5)
+  stateCopy = state;
+  controllerCopy = controller;
+  statesCopy = states;
+  v10 = statesCopy;
+  if (stateCopy)
   {
-    v11 = [v9 firstObject];
+    firstObject = [statesCopy firstObject];
   }
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
   v12 = [OBAnimationController alloc];
-  v13 = [(OBWelcomeController *)self bundleUrlForPackageName:v8];
-  v14 = [(OBWelcomeController *)self headerView];
-  v15 = [v14 animationView];
-  v16 = [v12 initWithUrlToPackage:v13 animationView:v15 animatedStates:v10 startAtFirstState:v11];
+  v13 = [(OBWelcomeController *)self bundleUrlForPackageName:controllerCopy];
+  headerView = [(OBWelcomeController *)self headerView];
+  animationView = [headerView animationView];
+  v16 = [v12 initWithUrlToPackage:v13 animationView:animationView animatedStates:v10 startAtFirstState:firstObject];
 
   [(OBWelcomeController *)self setStandardScaleForAnimation];
 
   return v16;
 }
 
-- (id)animationController:(id)a3
+- (id)animationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [[OBAnimationState alloc] initWithStateName:@"State 1" darkStateName:@"Dark 1" transitionDuration:0.01 transitionSpeed:1.0];
   v10[0] = v5;
   v6 = [[OBAnimationState alloc] initWithStateName:@"State 2" darkStateName:@"Dark 2" transitionDuration:1.0 transitionSpeed:0.5];
   v10[1] = v6;
   v7 = [NSArray arrayWithObjects:v10 count:2];
 
-  v8 = [(OBWelcomeController *)self animationController:v4 animatedStates:v7 startAtFirstState:1];
+  v8 = [(OBWelcomeController *)self animationController:controllerCopy animatedStates:v7 startAtFirstState:1];
 
   return v8;
 }
 
-- (id)bundleUrlForPackageName:(id)a3
+- (id)bundleUrlForPackageName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[NSBundle mainBundle];
-  v5 = [v4 URLForResource:v3 withExtension:@"ca"];
+  v5 = [v4 URLForResource:nameCopy withExtension:@"ca"];
 
   if (!v5)
   {
-    sub_100046BB0(v3);
+    sub_100046BB0(nameCopy);
   }
 
   return v5;
 }
 
-- (void)setAdditionalScaleForAnimation:(double)a3
+- (void)setAdditionalScaleForAnimation:(double)animation
 {
   v5 = objc_opt_class();
-  v6 = [(OBWelcomeController *)self headerView];
-  [v5 setAdditionalScaleForAnimation:v6 headerView:a3];
+  headerView = [(OBWelcomeController *)self headerView];
+  [v5 setAdditionalScaleForAnimation:headerView headerView:animation];
 }
 
-+ (void)setAdditionalScaleForAnimation:(double)a3 headerView:(id)a4
++ (void)setAdditionalScaleForAnimation:(double)animation headerView:(id)view
 {
-  v5 = a4;
-  v9 = [v5 animationView];
-  [v9 defaultScale];
-  v7 = v6 + a3;
-  v8 = [v5 animationView];
+  viewCopy = view;
+  animationView = [viewCopy animationView];
+  [animationView defaultScale];
+  v7 = v6 + animation;
+  animationView2 = [viewCopy animationView];
 
-  [v8 setScale:v7];
+  [animationView2 setScale:v7];
 }
 
 @end

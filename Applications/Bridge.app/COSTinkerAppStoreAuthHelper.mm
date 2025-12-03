@@ -1,69 +1,69 @@
 @interface COSTinkerAppStoreAuthHelper
-+ (id)satelliteStoreAccountForFamilyMember:(id)a3;
-+ (id)storeAccountWithDSID:(id)a3 altDSID:(id)a4 username:(id)a5;
-- (COSTinkerAppStoreAuthHelper)initWithContext:(id)a3;
-- (void)authenticateWithCompletion:(id)a3;
++ (id)satelliteStoreAccountForFamilyMember:(id)member;
++ (id)storeAccountWithDSID:(id)d altDSID:(id)iD username:(id)username;
+- (COSTinkerAppStoreAuthHelper)initWithContext:(id)context;
+- (void)authenticateWithCompletion:(id)completion;
 @end
 
 @implementation COSTinkerAppStoreAuthHelper
 
-- (COSTinkerAppStoreAuthHelper)initWithContext:(id)a3
+- (COSTinkerAppStoreAuthHelper)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = COSTinkerAppStoreAuthHelper;
   v5 = [(COSTinkerAppStoreAuthHelper *)&v13 init];
   if (v5)
   {
-    v6 = [v4 presentingViewController];
+    presentingViewController = [contextCopy presentingViewController];
     presentingViewController = v5->_presentingViewController;
-    v5->_presentingViewController = v6;
+    v5->_presentingViewController = presentingViewController;
 
-    v8 = [v4 satelliteAppStoreAccount];
+    satelliteAppStoreAccount = [contextCopy satelliteAppStoreAccount];
     satelliteAppStoreAccount = v5->_satelliteAppStoreAccount;
-    v5->_satelliteAppStoreAccount = v8;
+    v5->_satelliteAppStoreAccount = satelliteAppStoreAccount;
 
-    v10 = [v4 satelliteAKDevice];
+    satelliteAKDevice = [contextCopy satelliteAKDevice];
     satelliteAKDevice = v5->_satelliteAKDevice;
-    v5->_satelliteAKDevice = v10;
+    v5->_satelliteAKDevice = satelliteAKDevice;
   }
 
   return v5;
 }
 
-+ (id)satelliteStoreAccountForFamilyMember:(id)a3
++ (id)satelliteStoreAccountForFamilyMember:(id)member
 {
-  v3 = a3;
-  if ([v3 hasLinkediTunesAccount])
+  memberCopy = member;
+  if ([memberCopy hasLinkediTunesAccount])
   {
-    v4 = [v3 iTunesAccountDSID];
-    v5 = [v3 iTunesAccountUsername];
-    v6 = 0;
+    iTunesAccountDSID = [memberCopy iTunesAccountDSID];
+    iTunesAccountUsername = [memberCopy iTunesAccountUsername];
+    altDSID = 0;
   }
 
   else
   {
-    v4 = [v3 dsid];
-    v5 = [v3 appleID];
-    v6 = [v3 altDSID];
+    iTunesAccountDSID = [memberCopy dsid];
+    iTunesAccountUsername = [memberCopy appleID];
+    altDSID = [memberCopy altDSID];
   }
 
-  v7 = [objc_opt_class() storeAccountWithDSID:v4 altDSID:v6 username:v5];
+  v7 = [objc_opt_class() storeAccountWithDSID:iTunesAccountDSID altDSID:altDSID username:iTunesAccountUsername];
 
   return v7;
 }
 
-+ (id)storeAccountWithDSID:(id)a3 altDSID:(id)a4 username:(id)a5
++ (id)storeAccountWithDSID:(id)d altDSID:(id)iD username:(id)username
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  usernameCopy = username;
   v10 = +[ACAccountStore ams_sharedAccountStore];
-  v11 = [v10 ams_iTunesAccountWithAltDSID:v8 DSID:v7 username:v9];
+  v11 = [v10 ams_iTunesAccountWithAltDSID:iDCopy DSID:dCopy username:usernameCopy];
 
   if (!v11)
   {
-    if (v7 || v8 || v9)
+    if (dCopy || iDCopy || usernameCopy)
     {
       v12 = pbb_accountsignin_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -77,9 +77,9 @@
       v14 = [v13 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifieriTunesStore];
 
       v11 = [[ACAccount alloc] initWithAccountType:v14];
-      [v11 setUsername:v9];
-      [v11 ams_setDSID:v7];
-      [v11 ams_setAltDSID:v8];
+      [v11 setUsername:usernameCopy];
+      [v11 ams_setDSID:dCopy];
+      [v11 ams_setAltDSID:iDCopy];
     }
 
     else
@@ -91,9 +91,9 @@
   return v11;
 }
 
-- (void)authenticateWithCompletion:(id)a3
+- (void)authenticateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(AMSAuthenticateOptions);
   [v5 setAllowServerDialogs:1];
   [v5 setAuthenticationType:1];
@@ -114,27 +114,27 @@
   [v8 _setProxyingForApp:1];
   [v8 setAppProvidedContext:@"tinker"];
   v9 = +[CDPAccount sharedInstance];
-  v10 = [v9 primaryAccountAltDSID];
-  [v8 setAltDSID:v10];
+  primaryAccountAltDSID = [v9 primaryAccountAltDSID];
+  [v8 setAltDSID:primaryAccountAltDSID];
 
-  v11 = [(ACAccount *)self->_satelliteAppStoreAccount username];
-  [v8 setUsername:v11];
+  username = [(ACAccount *)self->_satelliteAppStoreAccount username];
+  [v8 setUsername:username];
 
   [v8 setProxiedDevice:self->_satelliteAKDevice];
   [v8 setIsUsernameEditable:0];
   v12 = objc_opt_new();
-  v13 = [(COSTinkerAppStoreAuthHelper *)self presentingViewController];
-  [v12 setPresentingController:v13];
+  presentingViewController = [(COSTinkerAppStoreAuthHelper *)self presentingViewController];
+  [v12 setPresentingController:presentingViewController];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100133F6C;
   v16[3] = &unk_10026CB40;
   v17 = v5;
-  v18 = v4;
+  v18 = completionCopy;
   v16[4] = self;
   v14 = v5;
-  v15 = v4;
+  v15 = completionCopy;
   [v12 authenticateWithContext:v8 completion:v16];
 }
 

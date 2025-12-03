@@ -1,26 +1,26 @@
 @interface REMReminderExtractionInput
-- (BOOL)isEqual:(id)a3;
-- (REMReminderExtractionInput)initWithCoder:(id)a3;
-- (REMReminderExtractionInput)initWithInputText:(id)a3 inputURL:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMReminderExtractionInput)initWithCoder:(id)coder;
+- (REMReminderExtractionInput)initWithInputText:(id)text inputURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMReminderExtractionInput
 
-- (REMReminderExtractionInput)initWithInputText:(id)a3 inputURL:(id)a4
+- (REMReminderExtractionInput)initWithInputText:(id)text inputURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  textCopy = text;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = REMReminderExtractionInput;
   v9 = [(REMReminderExtractionInput *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_text, a3);
-    objc_storeStrong(&v10->_url, a4);
+    objc_storeStrong(&v9->_text, text);
+    objc_storeStrong(&v10->_url, l);
   }
 
   return v10;
@@ -30,33 +30,33 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMReminderExtractionInput *)self text];
+  text = [(REMReminderExtractionInput *)self text];
   v6 = [(REMReminderExtractionInput *)self url];
-  v7 = [v3 stringWithFormat:@"<%@: %p text: %@, url: %@>", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@: %p text: %@, url: %@>", v4, self, text, v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     v5 = objc_opt_class();
-    v6 = REMDynamicCast(v5, v4);
+    v6 = REMDynamicCast(v5, equalCopy);
 
-    v7 = [(REMReminderExtractionInput *)self text];
-    v8 = [v6 text];
-    v9 = v8;
-    if (v7 == v8)
+    text = [(REMReminderExtractionInput *)self text];
+    text2 = [v6 text];
+    v9 = text2;
+    if (text == text2)
     {
     }
 
     else
     {
-      v10 = [(REMReminderExtractionInput *)self text];
-      v11 = [v6 text];
-      v12 = [v10 isEqual:v11];
+      text3 = [(REMReminderExtractionInput *)self text];
+      text4 = [v6 text];
+      v12 = [text3 isEqual:text4];
 
       if (!v12)
       {
@@ -88,33 +88,33 @@ LABEL_11:
   return v13 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(REMReminderExtractionInput *)self text];
-  v7 = [v6 copyWithZone:a3];
+  text = [(REMReminderExtractionInput *)self text];
+  v7 = [text copyWithZone:zone];
   v8 = [(REMReminderExtractionInput *)self url];
-  v9 = [v8 copyWithZone:a3];
+  v9 = [v8 copyWithZone:zone];
   v10 = [v5 initWithInputText:v7 inputURL:v9];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMReminderExtractionInput *)self text];
-  [v4 encodeObject:v5 forKey:@"text"];
+  coderCopy = coder;
+  text = [(REMReminderExtractionInput *)self text];
+  [coderCopy encodeObject:text forKey:@"text"];
 
   v6 = [(REMReminderExtractionInput *)self url];
-  [v4 encodeObject:v6 forKey:@"url"];
+  [coderCopy encodeObject:v6 forKey:@"url"];
 }
 
-- (REMReminderExtractionInput)initWithCoder:(id)a3
+- (REMReminderExtractionInput)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
 
   v7 = [objc_alloc(objc_opt_class()) initWithInputText:v5 inputURL:v6];
   return v7;

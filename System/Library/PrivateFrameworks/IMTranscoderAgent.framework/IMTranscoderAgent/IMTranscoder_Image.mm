@@ -1,34 +1,34 @@
 @interface IMTranscoder_Image
-+ (BOOL)_canConvertPNGToJPEG:(CGImage *)a3;
-+ (BOOL)_imageContainsTranslucentPixels:(CGImage *)a3;
-+ (id)findOrientationFromProperties:(id)a3;
-+ (unint64_t)findLargerDimensionFromImage:(CGImageSource *)a3 withProperties:(id)a4 toWidth:(id *)a5 toHeight:(id *)a6;
-- (BOOL)_isWideGamutImage:(CGImageSource *)a3;
-- (id)_checkAndSaveImageData:(id)a3 sourceURL:(id)a4 inFormat:(__CFString *)a5 withMaxByteSize:(unint64_t)a6 actualSize:(unint64_t *)a7 usedLengthIndex:(int *)a8 currentIndex:(int)a9;
-- (id)_getScaleFactorArray:(id)a3 transferURL:(id)a4 outputURLs:(id)a5;
-- (id)_newGeneratedImage:(CGImageSource *)a3 sourceWidth:(id)a4 sourceHeight:(id)a5 sourceLength:(unint64_t)a6 sourceProps:(id)a7 target:(int64_t)a8 hardwareEncoder:(id)a9 inFormat:(__CFString *)a10 fromFormat:(__CFString *)a11 withMaxLength:(unint64_t)a12 withMaxCount:(unint64_t)a13 withCompressionQuality:(double)a14 enforceMaxes:(BOOL)a15 subsampling:(int)a16 shouldSkipAuxillaryData:(BOOL)a17;
-- (id)_wideGamutImage:(CGImageSource *)a3 sourceURL:(id)a4 inFormat:(__CFString *)a5 withMaxByteSize:(unint64_t)a6 maxDimension:(unint64_t)a7 actualSize:(unint64_t *)a8 telemetry:(id)a9;
-- (id)_writeHEIFImage:(CGImageSource *)a3 sourceURL:(id)a4 inFormat:(__CFString *)a5 withMaxByteSize:(unint64_t)a6 maxDimension:(unint64_t)a7 downgradingMultiFrameImageToSingleFrame:(BOOL)a8 actualSize:(unint64_t *)a9 startingLengthIndex:(int)a10 usedLengthIndex:(int *)a11 telemetry:(id)a12;
-- (id)_writeImage:(CGImageSource *)a3 sourceURL:(id)a4 target:(int64_t)a5 hardwareEncoder:(id)a6 inFormat:(__CFString *)a7 fromFormat:(__CFString *)a8 withMaxByteSize:(unint64_t)a9 maxDimension:(unint64_t)a10 actualSize:(unint64_t *)a11 startingLengthIndex:(int)a12 usedLengthIndex:(int *)a13 estimator:(id)a14 isLQMEnabled:(BOOL)a15 telemetry:(id)a16;
-- (id)_writeImageData:(id)a3 inFormat:(__CFString *)a4 sourceURL:(id)a5;
-- (id)_writeRepresentationsForImage:(CGImageSource *)a3 target:(int64_t)a4 sourceURL:(id)a5 sizes:(id)a6 maxDimension:(unint64_t)a7 srcUTI:(__CFString *)a8 inFormat:(__CFString *)a9 downgradingMultiFrameImageToSingleFrame:(BOOL)a10 estimator:(id)a11 isLQMEnabled:(BOOL)a12 telemetry:(id)a13;
-- (id)copyFramePropertiesFrom:(CGImageSource *)a3 index:(unint64_t)a4 inFormat:(__CFString *)a5 outFormat:(__CFString *)a6;
-- (id)copyImagePropertiesFrom:(CGImageSource *)a3 frameCount:(unint64_t)a4 withProps:(id)a5 inFormat:(__CFString *)a6 outFormat:(__CFString *)a7;
-- (int64_t)shouldTranscodeTransfer:(id)a3 transcoderUserInfo:(id)a4 target:(int64_t)a5 utiType:(id)a6 allowUnfilteredUTIs:(id)a7 fileSizeLimit:(unint64_t)a8 commonCapabilities:(id)a9;
-- (unint64_t)_determineFrameIndexForDowngradeFromMultiFrameToSingleFrameWithMaxDimension:(unint64_t)a3 fromImageSource:(CGImageSource *)a4;
-- (unint64_t)_getImageWidth:(CGImageSource *)a3;
-- (void)_imMetricsCollectorForLQMQualityEstimatorModeImageTypeHEIC:(unint64_t)a3 shouldUseQualityEstimatorModel:(BOOL)a4 inputImageFeatures:(id)a5 metricsDict:(id)a6;
-- (void)_setWideGamutProperties:(id)a3 scaledImage:(CGImage *)a4;
-- (void)copyAuxiliaryImagesFromImageSource:(CGImageSource *)a3 toDestination:(CGImageDestination *)a4 fromImageAtIndex:(unint64_t)a5 scaleFactor:(double)a6;
-- (void)transcodeFileTransfer:(id)a3 utiType:(id)a4 allowUnfilteredUTIs:(id)a5 target:(int64_t)a6 sizes:(id)a7 commonCapabilities:(id)a8 maxDimension:(unint64_t)a9 transcoderUserInfo:(id)a10 representations:(int64_t)a11 isLQMEnabled:(BOOL)a12 completionBlock:(id)a13;
++ (BOOL)_canConvertPNGToJPEG:(CGImage *)g;
++ (BOOL)_imageContainsTranslucentPixels:(CGImage *)pixels;
++ (id)findOrientationFromProperties:(id)properties;
++ (unint64_t)findLargerDimensionFromImage:(CGImageSource *)image withProperties:(id)properties toWidth:(id *)width toHeight:(id *)height;
+- (BOOL)_isWideGamutImage:(CGImageSource *)image;
+- (id)_checkAndSaveImageData:(id)data sourceURL:(id)l inFormat:(__CFString *)format withMaxByteSize:(unint64_t)size actualSize:(unint64_t *)actualSize usedLengthIndex:(int *)index currentIndex:(int)currentIndex;
+- (id)_getScaleFactorArray:(id)array transferURL:(id)l outputURLs:(id)ls;
+- (id)_newGeneratedImage:(CGImageSource *)image sourceWidth:(id)width sourceHeight:(id)height sourceLength:(unint64_t)length sourceProps:(id)props target:(int64_t)target hardwareEncoder:(id)encoder inFormat:(__CFString *)self0 fromFormat:(__CFString *)self1 withMaxLength:(unint64_t)self2 withMaxCount:(unint64_t)self3 withCompressionQuality:(double)self4 enforceMaxes:(BOOL)self5 subsampling:(int)self6 shouldSkipAuxillaryData:(BOOL)self7;
+- (id)_wideGamutImage:(CGImageSource *)image sourceURL:(id)l inFormat:(__CFString *)format withMaxByteSize:(unint64_t)size maxDimension:(unint64_t)dimension actualSize:(unint64_t *)actualSize telemetry:(id)telemetry;
+- (id)_writeHEIFImage:(CGImageSource *)image sourceURL:(id)l inFormat:(__CFString *)format withMaxByteSize:(unint64_t)size maxDimension:(unint64_t)dimension downgradingMultiFrameImageToSingleFrame:(BOOL)frame actualSize:(unint64_t *)actualSize startingLengthIndex:(int)self0 usedLengthIndex:(int *)self1 telemetry:(id)self2;
+- (id)_writeImage:(CGImageSource *)image sourceURL:(id)l target:(int64_t)target hardwareEncoder:(id)encoder inFormat:(__CFString *)format fromFormat:(__CFString *)fromFormat withMaxByteSize:(unint64_t)size maxDimension:(unint64_t)self0 actualSize:(unint64_t *)self1 startingLengthIndex:(int)self2 usedLengthIndex:(int *)self3 estimator:(id)self4 isLQMEnabled:(BOOL)self5 telemetry:(id)self6;
+- (id)_writeImageData:(id)data inFormat:(__CFString *)format sourceURL:(id)l;
+- (id)_writeRepresentationsForImage:(CGImageSource *)image target:(int64_t)target sourceURL:(id)l sizes:(id)sizes maxDimension:(unint64_t)dimension srcUTI:(__CFString *)i inFormat:(__CFString *)format downgradingMultiFrameImageToSingleFrame:(BOOL)self0 estimator:(id)self1 isLQMEnabled:(BOOL)self2 telemetry:(id)self3;
+- (id)copyFramePropertiesFrom:(CGImageSource *)from index:(unint64_t)index inFormat:(__CFString *)format outFormat:(__CFString *)outFormat;
+- (id)copyImagePropertiesFrom:(CGImageSource *)from frameCount:(unint64_t)count withProps:(id)props inFormat:(__CFString *)format outFormat:(__CFString *)outFormat;
+- (int64_t)shouldTranscodeTransfer:(id)transfer transcoderUserInfo:(id)info target:(int64_t)target utiType:(id)type allowUnfilteredUTIs:(id)is fileSizeLimit:(unint64_t)limit commonCapabilities:(id)capabilities;
+- (unint64_t)_determineFrameIndexForDowngradeFromMultiFrameToSingleFrameWithMaxDimension:(unint64_t)dimension fromImageSource:(CGImageSource *)source;
+- (unint64_t)_getImageWidth:(CGImageSource *)width;
+- (void)_imMetricsCollectorForLQMQualityEstimatorModeImageTypeHEIC:(unint64_t)c shouldUseQualityEstimatorModel:(BOOL)model inputImageFeatures:(id)features metricsDict:(id)dict;
+- (void)_setWideGamutProperties:(id)properties scaledImage:(CGImage *)image;
+- (void)copyAuxiliaryImagesFromImageSource:(CGImageSource *)source toDestination:(CGImageDestination *)destination fromImageAtIndex:(unint64_t)index scaleFactor:(double)factor;
+- (void)transcodeFileTransfer:(id)transfer utiType:(id)type allowUnfilteredUTIs:(id)is target:(int64_t)target sizes:(id)sizes commonCapabilities:(id)capabilities maxDimension:(unint64_t)dimension transcoderUserInfo:(id)self0 representations:(int64_t)self1 isLQMEnabled:(BOOL)self2 completionBlock:(id)self3;
 @end
 
 @implementation IMTranscoder_Image
 
-- (BOOL)_isWideGamutImage:(CGImageSource *)a3
+- (BOOL)_isWideGamutImage:(CGImageSource *)image
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (image)
   {
     IsColorOptimizedForSharing = CGImageSourceIsColorOptimizedForSharing();
     v4 = IsColorOptimizedForSharing ^ 1;
@@ -69,23 +69,23 @@
   return v4;
 }
 
-- (int64_t)shouldTranscodeTransfer:(id)a3 transcoderUserInfo:(id)a4 target:(int64_t)a5 utiType:(id)a6 allowUnfilteredUTIs:(id)a7 fileSizeLimit:(unint64_t)a8 commonCapabilities:(id)a9
+- (int64_t)shouldTranscodeTransfer:(id)transfer transcoderUserInfo:(id)info target:(int64_t)target utiType:(id)type allowUnfilteredUTIs:(id)is fileSizeLimit:(unint64_t)limit commonCapabilities:(id)capabilities
 {
   v160[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v23 = a9;
-  if (!v15)
+  transferCopy = transfer;
+  infoCopy = info;
+  typeCopy = type;
+  isCopy = is;
+  capabilitiesCopy = capabilities;
+  if (!transferCopy)
   {
     v29 = 0;
     goto LABEL_90;
   }
 
-  if (!objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v19, v16, *MEMORY[0x277D19E80], v20, v21, v22))
+  if (!objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v19, infoCopy, *MEMORY[0x277D19E80], v20, v21, v22))
   {
-    if (objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v24, v16, *MEMORY[0x277D19E78], v25, v26, v27))
+    if (objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v24, infoCopy, *MEMORY[0x277D19E78], v25, v26, v27))
     {
       if (IMOSLoggingEnabled())
       {
@@ -104,8 +104,8 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v35 = objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v30, v16, @"isSticker", v31, v32, v33);
-    if (a5 != 1 && v35)
+    v35 = objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v30, infoCopy, @"isSticker", v31, v32, v33);
+    if (target != 1 && v35)
     {
       if (IMOSLoggingEnabled())
       {
@@ -124,8 +124,8 @@ LABEL_20:
       goto LABEL_90;
     }
 
-    v40 = objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v36, v16, @"preserveHEIF", v37, v38, v39);
-    if (a5)
+    v40 = objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v36, infoCopy, @"preserveHEIF", v37, v38, v39);
+    if (target)
     {
       v41 = 0;
     }
@@ -141,15 +141,15 @@ LABEL_20:
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v156 = v15;
+        v156 = transferCopy;
         _os_log_impl(&dword_254811000, v45, OS_LOG_TYPE_INFO, "Creating CGImageSource from url: %@", buf, 0xCu);
       }
     }
 
-    if (v17)
+    if (typeCopy)
     {
       v159 = *MEMORY[0x277CD3668];
-      v160[0] = v17;
+      v160[0] = typeCopy;
       v46 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v42, v160, &v159, 1, v43, v44);
     }
 
@@ -159,7 +159,7 @@ LABEL_20:
     }
 
     v151 = v46;
-    isrc = CGImageSourceCreateWithURL(v15, v46);
+    isrc = CGImageSourceCreateWithURL(transferCopy, v46);
     if (IMOSLoggingEnabled())
     {
       v47 = OSLogHandleForIMFoundationCategory();
@@ -183,7 +183,7 @@ LABEL_20:
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v156 = v15;
+        v156 = transferCopy;
         _os_log_impl(&dword_254811000, v49, OS_LOG_TYPE_INFO, "Checking uti from source ref at url: %@", buf, 0xCu);
       }
     }
@@ -270,7 +270,7 @@ LABEL_66:
           if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v156 = v17;
+            v156 = typeCopy;
             _os_log_impl(&dword_254811000, v72, OS_LOG_TYPE_INFO, "Needs transcode as all recipients support heif (source uti %@)", buf, 0xCu);
           }
 
@@ -352,7 +352,7 @@ LABEL_66:
     }
 
     v88 = IMOSLoggingEnabled();
-    if (v17)
+    if (typeCopy)
     {
       if (v88)
       {
@@ -360,7 +360,7 @@ LABEL_66:
         if (os_log_type_enabled(v89, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v156 = v17;
+          v156 = typeCopy;
           _os_log_impl(&dword_254811000, v89, OS_LOG_TYPE_INFO, "shouldTranscodeTransfer with uti: %@ ?", buf, 0xCu);
         }
       }
@@ -377,11 +377,11 @@ LABEL_66:
 
       v91 = objc_opt_class();
       v98 = objc_msgSend_supportedUTIs(v91, v92, v93, v94, v95, v96, v97);
-      v104 = objc_msgSend_containsObject_(v98, v99, v17, v100, v101, v102, v103);
+      v104 = objc_msgSend_containsObject_(v98, v99, typeCopy, v100, v101, v102, v103);
 
       if (v104)
       {
-        if (objc_msgSend_isEqualToIgnoringCase_(v17, v105, @"________WBMP_________", v106, v107, v108, v109))
+        if (objc_msgSend_isEqualToIgnoringCase_(typeCopy, v105, @"________WBMP_________", v106, v107, v108, v109))
         {
           if (!IMOSLoggingEnabled())
           {
@@ -399,7 +399,7 @@ LABEL_66:
         else
         {
           v111 = IMOSLoggingEnabled();
-          if (a5 != 1)
+          if (target != 1)
           {
             if (v111)
             {
@@ -412,7 +412,7 @@ LABEL_66:
             }
 
             v119 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v112, v113, v114, v115, v116, v117);
-            v126 = objc_msgSend_path(v15, v120, v121, v122, v123, v124, v125);
+            v126 = objc_msgSend_path(transferCopy, v120, v121, v122, v123, v124, v125);
             v154 = 0;
             v131 = objc_msgSend_attributesOfItemAtPath_error_(v119, v127, v126, &v154, v128, v129, v130);
             isrca = v154;
@@ -424,18 +424,18 @@ LABEL_66:
               if (os_log_type_enabled(v139, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412546;
-                v156 = v15;
+                v156 = transferCopy;
                 v157 = 2112;
                 v158 = isrca;
                 _os_log_impl(&dword_254811000, v139, OS_LOG_TYPE_INFO, "Checked size of file %@ with error %@", buf, 0x16u);
               }
             }
 
-            v140 = v18;
+            v140 = isCopy;
             v146 = v140;
             if (v140)
             {
-              LODWORD(v140) = objc_msgSend_containsObject_(v140, v141, v17, v142, v143, v144, v145);
+              LODWORD(v140) = objc_msgSend_containsObject_(v140, v141, typeCopy, v142, v143, v144, v145);
             }
 
             if (isrca)
@@ -448,7 +448,7 @@ LABEL_66:
               v147 = v140;
             }
 
-            if (v138 < a8)
+            if (v138 < limit)
             {
               v148 = v147;
             }
@@ -560,13 +560,13 @@ LABEL_90:
   return v29;
 }
 
-- (id)copyImagePropertiesFrom:(CGImageSource *)a3 frameCount:(unint64_t)a4 withProps:(id)a5 inFormat:(__CFString *)a6 outFormat:(__CFString *)a7
+- (id)copyImagePropertiesFrom:(CGImageSource *)from frameCount:(unint64_t)count withProps:(id)props inFormat:(__CFString *)format outFormat:(__CFString *)outFormat
 {
   v99 = *MEMORY[0x277D85DE8];
-  v10 = a5;
+  propsCopy = props;
   v11 = *MEMORY[0x277CC2120];
-  v85 = v10;
-  if (UTTypeConformsTo(a6, *MEMORY[0x277CC2120]))
+  v85 = propsCopy;
+  if (UTTypeConformsTo(format, *MEMORY[0x277CC2120]))
   {
     v12 = *MEMORY[0x277CD3438];
     v13 = *MEMORY[0x277CD2DC0];
@@ -579,7 +579,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (UTTypeConformsTo(a6, *MEMORY[0x277D1AD78]))
+  if (UTTypeConformsTo(format, *MEMORY[0x277D1AD78]))
   {
     v12 = *MEMORY[0x277CD3340];
     v13 = *MEMORY[0x277CD3350];
@@ -589,9 +589,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (!UTTypeConformsTo(a6, *MEMORY[0x277D1AD80]))
+  if (!UTTypeConformsTo(format, *MEMORY[0x277D1AD80]))
   {
-    if (UTTypeConformsTo(a6, *MEMORY[0x277CC2088]))
+    if (UTTypeConformsTo(format, *MEMORY[0x277CC2088]))
     {
       v12 = *MEMORY[0x277CD31C8];
       v13 = *MEMORY[0x277CD31E0];
@@ -602,7 +602,7 @@ LABEL_5:
 
     else
     {
-      if (!UTTypeConformsTo(a6, *MEMORY[0x277D1AD88]))
+      if (!UTTypeConformsTo(format, *MEMORY[0x277D1AD88]))
       {
         v27 = 0;
         v13 = 0;
@@ -636,7 +636,7 @@ LABEL_6:
   v19 = v17;
   if (v12)
   {
-    v26 = objc_msgSend_objectForKey_(v10, v20, v12, v22, v23, v24, v25);
+    v26 = objc_msgSend_objectForKey_(propsCopy, v20, v12, v22, v23, v24, v25);
     v27 = v26;
     if (v26)
     {
@@ -697,14 +697,14 @@ LABEL_11:
   v28 = 0;
   v29 = 0;
 LABEL_22:
-  if (a4 < 2)
+  if (count < 2)
   {
     goto LABEL_40;
   }
 
   if (!v29 || !v28)
   {
-    v30 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+    v30 = CGImageSourceCopyPropertiesAtIndex(from, 0, 0);
     v36 = v30;
     if (v30)
     {
@@ -751,7 +751,7 @@ LABEL_40:
     }
   }
 
-  if (UTTypeConformsTo(a7, v11))
+  if (UTTypeConformsTo(outFormat, v11))
   {
     v46 = MEMORY[0x277CD2DB8];
     v47 = MEMORY[0x277CD2DC8];
@@ -760,7 +760,7 @@ LABEL_40:
     v50 = MEMORY[0x277CD3438];
   }
 
-  else if (UTTypeConformsTo(a7, *MEMORY[0x277D1AD78]))
+  else if (UTTypeConformsTo(outFormat, *MEMORY[0x277D1AD78]))
   {
     v46 = MEMORY[0x277CD3348];
     v47 = MEMORY[0x277CD3358];
@@ -769,7 +769,7 @@ LABEL_40:
     v50 = MEMORY[0x277CD3340];
   }
 
-  else if (UTTypeConformsTo(a7, *MEMORY[0x277CC2088]))
+  else if (UTTypeConformsTo(outFormat, *MEMORY[0x277CC2088]))
   {
     v46 = MEMORY[0x277CD31D0];
     v47 = MEMORY[0x277CD31E8];
@@ -780,7 +780,7 @@ LABEL_40:
 
   else
   {
-    if (!UTTypeConformsTo(a7, *MEMORY[0x277D1AD88]))
+    if (!UTTypeConformsTo(outFormat, *MEMORY[0x277D1AD88]))
     {
       isrca = 0;
       v59 = 0;
@@ -891,17 +891,17 @@ LABEL_84:
   return v51;
 }
 
-- (id)copyFramePropertiesFrom:(CGImageSource *)a3 index:(unint64_t)a4 inFormat:(__CFString *)a5 outFormat:(__CFString *)a6
+- (id)copyFramePropertiesFrom:(CGImageSource *)from index:(unint64_t)index inFormat:(__CFString *)format outFormat:(__CFString *)outFormat
 {
   v92 = *MEMORY[0x277D85DE8];
-  v9 = CGImageSourceCopyPropertiesAtIndex(a3, a4, 0);
+  v9 = CGImageSourceCopyPropertiesAtIndex(from, index, 0);
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v88 = 134218242;
-      v89 = a4;
+      indexCopy = index;
       v90 = 2112;
       v91 = v9;
       _os_log_impl(&dword_254811000, v10, OS_LOG_TYPE_INFO, "Got image properties for image at index %zu: %@", &v88, 0x16u);
@@ -909,7 +909,7 @@ LABEL_84:
   }
 
   v11 = *MEMORY[0x277CC2120];
-  v12 = UTTypeConformsTo(a5, *MEMORY[0x277CC2120]);
+  v12 = UTTypeConformsTo(format, *MEMORY[0x277CC2120]);
   v18 = MEMORY[0x277D1AD78];
   v19 = MEMORY[0x277D1AD88];
   if (v12)
@@ -921,7 +921,7 @@ LABEL_84:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         v88 = 138412290;
-        v89 = v20;
+        indexCopy = v20;
         _os_log_impl(&dword_254811000, v26, OS_LOG_TYPE_INFO, "Checking for PNG Properties: %@", &v88, 0xCu);
       }
     }
@@ -934,7 +934,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (UTTypeConformsTo(a5, *MEMORY[0x277D1AD78]))
+  if (UTTypeConformsTo(format, *MEMORY[0x277D1AD78]))
   {
     v20 = objc_msgSend_objectForKey_(v9, v29, *MEMORY[0x277CD3340], v30, v31, v32, v33);
     if (IMOSLoggingEnabled())
@@ -943,7 +943,7 @@ LABEL_29:
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
         v88 = 138412290;
-        v89 = v20;
+        indexCopy = v20;
         _os_log_impl(&dword_254811000, v34, OS_LOG_TYPE_INFO, "Checking for HEICS Properties: %@", &v88, 0xCu);
       }
     }
@@ -953,7 +953,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (UTTypeConformsTo(a5, *MEMORY[0x277CC2088]))
+  if (UTTypeConformsTo(format, *MEMORY[0x277CC2088]))
   {
     v20 = objc_msgSend_objectForKey_(v9, v35, *MEMORY[0x277CD31C8], v36, v37, v38, v39);
     if (IMOSLoggingEnabled())
@@ -962,7 +962,7 @@ LABEL_29:
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
         v88 = 138412290;
-        v89 = v20;
+        indexCopy = v20;
         _os_log_impl(&dword_254811000, v40, OS_LOG_TYPE_INFO, "Checking for GIF Properties: %@", &v88, 0xCu);
       }
     }
@@ -972,7 +972,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (UTTypeConformsTo(a5, *v19))
+  if (UTTypeConformsTo(format, *v19))
   {
     v20 = objc_msgSend_objectForKey_(v9, v41, *MEMORY[0x277CD3500], v42, v43, v44, v45);
     if (IMOSLoggingEnabled())
@@ -981,7 +981,7 @@ LABEL_29:
       if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
       {
         v88 = 138412290;
-        v89 = v20;
+        indexCopy = v20;
         _os_log_impl(&dword_254811000, v46, OS_LOG_TYPE_INFO, "Checking for WebP Properties: %@", &v88, 0xCu);
       }
     }
@@ -995,7 +995,7 @@ LABEL_29:
   v47 = 0;
   v20 = 0;
 LABEL_30:
-  if (UTTypeConformsTo(a6, v11))
+  if (UTTypeConformsTo(outFormat, v11))
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
     v55 = v47;
@@ -1056,7 +1056,7 @@ LABEL_30:
     v56 = 0;
   }
 
-  if (UTTypeConformsTo(a6, *v18))
+  if (UTTypeConformsTo(outFormat, *v18))
   {
     v66 = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
     v67 = v47;
@@ -1121,7 +1121,7 @@ LABEL_73:
   }
 
 LABEL_74:
-  if (UTTypeConformsTo(a6, *v19))
+  if (UTTypeConformsTo(outFormat, *v19))
   {
     v76 = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
     v77 = v47;
@@ -1191,12 +1191,12 @@ LABEL_96:
   return v56;
 }
 
-+ (id)findOrientationFromProperties:(id)a3
++ (id)findOrientationFromProperties:(id)properties
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  propertiesCopy = properties;
   v4 = *MEMORY[0x277CD3410];
-  v15 = objc_msgSend_objectForKey_(v3, v5, *MEMORY[0x277CD3410], v6, v7, v8, v9);
+  v15 = objc_msgSend_objectForKey_(propertiesCopy, v5, *MEMORY[0x277CD3410], v6, v7, v8, v9);
   if (v15)
   {
     if (!IMOSLoggingEnabled())
@@ -1215,7 +1215,7 @@ LABEL_96:
 
   else
   {
-    v17 = objc_msgSend_objectForKey_(v3, v10, *MEMORY[0x277CD3490], v11, v12, v13, v14);
+    v17 = objc_msgSend_objectForKey_(propertiesCopy, v10, *MEMORY[0x277CD3490], v11, v12, v13, v14);
     v15 = objc_msgSend_objectForKey_(v17, v18, v4, v19, v20, v21, v22);
 
     if (!IMOSLoggingEnabled())
@@ -1238,11 +1238,11 @@ LABEL_10:
   return v15;
 }
 
-+ (unint64_t)findLargerDimensionFromImage:(CGImageSource *)a3 withProperties:(id)a4 toWidth:(id *)a5 toHeight:(id *)a6
++ (unint64_t)findLargerDimensionFromImage:(CGImageSource *)image withProperties:(id)properties toWidth:(id *)width toHeight:(id *)height
 {
-  v9 = a4;
-  v15 = v9;
-  if (!v9)
+  propertiesCopy = properties;
+  v15 = propertiesCopy;
+  if (!propertiesCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1260,7 +1260,7 @@ LABEL_10:
   }
 
   v16 = *MEMORY[0x277CD3450];
-  v17 = objc_msgSend_objectForKey_(v9, v10, *MEMORY[0x277CD3450], v11, v12, v13, v14);
+  v17 = objc_msgSend_objectForKey_(propertiesCopy, v10, *MEMORY[0x277CD3450], v11, v12, v13, v14);
   v18 = *MEMORY[0x277CD3448];
   v24 = objc_msgSend_objectForKey_(v15, v19, *MEMORY[0x277CD3448], v20, v21, v22, v23);
   v31 = v24;
@@ -1274,9 +1274,9 @@ LABEL_10:
     v32 = 1;
   }
 
-  if (v32 && CGImageSourceGetCount(a3))
+  if (v32 && CGImageSourceGetCount(image))
   {
-    v33 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+    v33 = CGImageSourceCopyPropertiesAtIndex(image, 0, 0);
     v39 = v33;
     if (v33)
     {
@@ -1289,16 +1289,16 @@ LABEL_10:
     }
   }
 
-  if (a5 && v17)
+  if (width && v17)
   {
     v47 = v17;
-    *a5 = v17;
+    *width = v17;
   }
 
-  if (a6 && v31)
+  if (height && v31)
   {
     v48 = v31;
-    *a6 = v31;
+    *height = v31;
   }
 
   if (v17)
@@ -1337,18 +1337,18 @@ LABEL_31:
   return v60;
 }
 
-- (id)_newGeneratedImage:(CGImageSource *)a3 sourceWidth:(id)a4 sourceHeight:(id)a5 sourceLength:(unint64_t)a6 sourceProps:(id)a7 target:(int64_t)a8 hardwareEncoder:(id)a9 inFormat:(__CFString *)a10 fromFormat:(__CFString *)a11 withMaxLength:(unint64_t)a12 withMaxCount:(unint64_t)a13 withCompressionQuality:(double)a14 enforceMaxes:(BOOL)a15 subsampling:(int)a16 shouldSkipAuxillaryData:(BOOL)a17
+- (id)_newGeneratedImage:(CGImageSource *)image sourceWidth:(id)width sourceHeight:(id)height sourceLength:(unint64_t)length sourceProps:(id)props target:(int64_t)target hardwareEncoder:(id)encoder inFormat:(__CFString *)self0 fromFormat:(__CFString *)self1 withMaxLength:(unint64_t)self2 withMaxCount:(unint64_t)self3 withCompressionQuality:(double)self4 enforceMaxes:(BOOL)self5 subsampling:(int)self6 shouldSkipAuxillaryData:(BOOL)self7
 {
   v263 = *MEMORY[0x277D85DE8];
-  v251 = a4;
-  v250 = a5;
-  v252 = a7;
-  v22 = a9;
-  v23 = v22;
-  if (a3)
+  widthCopy = width;
+  heightCopy = height;
+  propsCopy = props;
+  encoderCopy = encoder;
+  v23 = encoderCopy;
+  if (image)
   {
-    v248 = v22;
-    if (!a10)
+    v248 = encoderCopy;
+    if (!format)
     {
       if (IMOSLoggingEnabled())
       {
@@ -1364,10 +1364,10 @@ LABEL_31:
       goto LABEL_31;
     }
 
-    v24 = CGImageSourceGetCount(a3);
+    v24 = CGImageSourceGetCount(image);
     if (v24)
     {
-      v247 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+      v247 = CGImageSourceCopyPropertiesAtIndex(image, 0, 0);
     }
 
     else
@@ -1375,7 +1375,7 @@ LABEL_31:
       v247 = 0;
     }
 
-    if (!v251 || !v250)
+    if (!widthCopy || !heightCopy)
     {
       if (IMOSLoggingEnabled())
       {
@@ -1390,7 +1390,7 @@ LABEL_31:
       goto LABEL_29;
     }
 
-    if (a12 > a6 && a15 && v24 < a13)
+    if (maxLength > length && maxes && v24 < count)
     {
       if (IMOSLoggingEnabled())
       {
@@ -1398,11 +1398,11 @@ LABEL_31:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
           *buf = 134218752;
-          *v257 = a12;
+          *v257 = maxLength;
           *&v257[8] = 2048;
-          v258 = a13;
+          imageCopy = count;
           v259 = 2048;
-          v260 = a6;
+          lengthCopy = length;
           v261 = 2048;
           v262 = v24;
           _os_log_impl(&dword_254811000, v28, OS_LOG_TYPE_INFO, "Not considering resizing to %lu or reducing to %zd images, it's larger than the current image dimension (%zd) and the current image count (%zd)", buf, 0x2Au);
@@ -1418,28 +1418,28 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (v24 >= a13)
+    if (v24 >= count)
     {
-      v32 = a13;
+      countCopy2 = count;
     }
 
     else
     {
-      v32 = v24;
+      countCopy2 = v24;
     }
 
-    count = v32;
-    if (a12 >= a6)
+    count = countCopy2;
+    if (maxLength >= length)
     {
-      v33 = a6;
+      maxLengthCopy = length;
     }
 
     else
     {
-      v33 = a12;
+      maxLengthCopy = maxLength;
     }
 
-    v246 = v33;
+    v246 = maxLengthCopy;
     if (IMOSLoggingEnabled())
     {
       v34 = OSLogHandleForIMFoundationCategory();
@@ -1468,7 +1468,7 @@ LABEL_31:
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        *v257 = a13;
+        *v257 = count;
         _os_log_impl(&dword_254811000, v36, OS_LOG_TYPE_INFO, "      Max count = %lu", buf, 0xCu);
       }
     }
@@ -1490,7 +1490,7 @@ LABEL_31:
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        *v257 = a12;
+        *v257 = maxLength;
         _os_log_impl(&dword_254811000, v38, OS_LOG_TYPE_INFO, "     Max length = %lu", buf, 0xCu);
       }
     }
@@ -1501,7 +1501,7 @@ LABEL_31:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        *v257 = a6;
+        *v257 = length;
         _os_log_impl(&dword_254811000, v39, OS_LOG_TYPE_INFO, "Original Length = %lu", buf, 0xCu);
       }
     }
@@ -1512,12 +1512,12 @@ LABEL_31:
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        *v257 = a16;
+        *v257 = subsampling;
         _os_log_impl(&dword_254811000, v40, OS_LOG_TYPE_INFO, "    subsampling = %d", buf, 8u);
       }
     }
 
-    v46 = v246 / a6;
+    v46 = v246 / length;
     if (IMOSLoggingEnabled())
     {
       v47 = OSLogHandleForIMFoundationCategory();
@@ -1529,8 +1529,8 @@ LABEL_31:
       }
     }
 
-    isWideGamutImage = objc_msgSend__isWideGamutImage_(self, v41, a3, v42, v43, v44, v45);
-    Type = CGImageSourceGetType(a3);
+    isWideGamutImage = objc_msgSend__isWideGamutImage_(self, v41, image, v42, v43, v44, v45);
+    Type = CGImageSourceGetType(image);
     if ((v248 == 0) | (isWideGamutImage | objc_msgSend__isHEIFImageFormat_(self, v50, Type, v51, v52, v53, v54)) & 1)
     {
       if (IMOSLoggingEnabled())
@@ -1547,7 +1547,7 @@ LABEL_31:
           *buf = 138412546;
           *v257 = v248;
           *&v257[8] = 2112;
-          v258 = v62;
+          imageCopy = v62;
           _os_log_impl(&dword_254811000, v61, OS_LOG_TYPE_INFO, "Not using hardware encoding. encoder %@  isWideGamut %@", buf, 0x16u);
         }
       }
@@ -1555,7 +1555,7 @@ LABEL_31:
 
     else
     {
-      objc_msgSend_setTargetJPEGCompressionValue_(v248, v55, v56, v57, v58, v59, v60, a14);
+      objc_msgSend_setTargetJPEGCompressionValue_(v248, v55, v56, v57, v58, v59, v60, quality);
       v68 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x277CCABB0], v63, v246, v64, v65, v66, v67);
       v255 = 0;
       v73 = objc_msgSend_scaleImageToFitLargestDimension_outputData_(v248, v69, v68, &v255, v70, v71, v72);
@@ -1589,12 +1589,12 @@ LABEL_31:
     }
 
     data = objc_alloc_init(MEMORY[0x277CBEB28]);
-    idst = CGImageDestinationCreateWithData(data, a10, count, 0);
+    idst = CGImageDestinationCreateWithData(data, format, count, 0);
     if (idst)
     {
-      if (v252)
+      if (propsCopy)
       {
-        v79 = objc_msgSend_copyImagePropertiesFrom_frameCount_withProps_inFormat_outFormat_(self, v77, a3, v24, v252, a11, a10);
+        v79 = objc_msgSend_copyImagePropertiesFrom_frameCount_withProps_inFormat_outFormat_(self, v77, image, v24, propsCopy, fromFormat, format);
         if (v79)
         {
           if (IMOSLoggingEnabled())
@@ -1615,7 +1615,7 @@ LABEL_31:
       if (count)
       {
         v81 = 0;
-        v83 = a8 != 1 && v247 != 0;
+        v83 = target != 1 && v247 != 0;
         v240 = v83;
         v238 = *MEMORY[0x277CD3650];
         v244 = *MEMORY[0x277CD3568];
@@ -1624,7 +1624,7 @@ LABEL_31:
         v243 = *MEMORY[0x277CD3660];
         inConformsToUTI = *MEMORY[0x277CC20C8];
         v236 = *MEMORY[0x277D1AD80];
-        v85 = a14;
+        qualityCopy = quality;
         key = *MEMORY[0x277CD2D48];
         v234 = *MEMORY[0x277CD3410];
         v239 = *MEMORY[0x277CD2D60];
@@ -1636,16 +1636,16 @@ LABEL_31:
           v87 = objc_alloc(MEMORY[0x277CBEB38]);
           v93 = objc_msgSend_initWithCapacity_(v87, v88, 4, v89, v90, v91, v92);
           v99 = v93;
-          if (a16 == -1)
+          if (subsampling == -1)
           {
             objc_msgSend_setObject_forKey_(v93, v94, MEMORY[0x277CBEC38], v244, v96, v97, v98);
             v136 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x277CCABB0], v131, v246, v132, v133, v134, v135);
             objc_msgSend_setObject_forKey_(v99, v137, v136, v243, v138, v139, v140);
 
-            v146 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v141, a8 == 1, v142, v143, v144, v145);
+            v146 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v141, target == 1, v142, v143, v144, v145);
             objc_msgSend_setObject_forKey_(v99, v147, v146, v242, v148, v149, v150);
 
-            ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(a3, v81, v99);
+            ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(image, v81, v99);
             if (IMOSLoggingEnabled())
             {
               v152 = OSLogHandleForIMFoundationCategory();
@@ -1660,14 +1660,14 @@ LABEL_31:
 
           else
           {
-            v100 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v94, a16, v95, v96, v97, v98);
+            v100 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v94, subsampling, v95, v96, v97, v98);
             objc_msgSend_setObject_forKey_(v99, v101, v100, v238, v102, v103, v104);
 
             objc_msgSend_setObject_forKey_(v99, v105, MEMORY[0x277CBEC38], v244, v106, v107, v108);
             v114 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x277CCABB0], v109, v246, v110, v111, v112, v113);
             objc_msgSend_setObject_forKey_(v99, v115, v114, v243, v116, v117, v118);
 
-            v124 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v119, a8 == 1, v120, v121, v122, v123);
+            v124 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v119, target == 1, v120, v121, v122, v123);
             objc_msgSend_setObject_forKey_(v99, v125, v124, v242, v126, v127, v128);
 
             if (IMOSLoggingEnabled())
@@ -1676,7 +1676,7 @@ LABEL_31:
               if (os_log_type_enabled(v129, OS_LOG_TYPE_INFO))
               {
                 *buf = 67109376;
-                *v257 = a16;
+                *v257 = subsampling;
                 *&v257[4] = 1024;
                 *&v257[6] = v81;
                 _os_log_impl(&dword_254811000, v129, OS_LOG_TYPE_INFO, "Using subsamping with: %d  (index: %d)", buf, 0xEu);
@@ -1685,7 +1685,7 @@ LABEL_31:
 
             if (count == 1)
             {
-              ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, v81, v99);
+              ImageAtIndex = CGImageSourceCreateImageAtIndex(image, v81, v99);
             }
 
             else
@@ -1698,21 +1698,21 @@ LABEL_31:
                   *buf = v233;
                   *v257 = v81;
                   *&v257[8] = 2112;
-                  v258 = a3;
+                  imageCopy = image;
                   _os_log_impl(&dword_254811000, v153, OS_LOG_TYPE_INFO, "Getting thumbnail at index %zu from %@", buf, 0x16u);
                 }
               }
 
-              ImageAtIndex = CGImageSourceCreateThumbnailAtIndex(a3, v81, v99);
+              ImageAtIndex = CGImageSourceCreateThumbnailAtIndex(image, v81, v99);
             }
 
             v154 = ImageAtIndex;
-            if (a8 != 1)
+            if (target != 1)
             {
               goto LABEL_133;
             }
 
-            ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(a3, v81, v99);
+            ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(image, v81, v99);
             v155 = IMOSLoggingEnabled();
             if (!ThumbnailAtIndex)
             {
@@ -1749,9 +1749,9 @@ LABEL_133:
           }
 
 LABEL_134:
-          if (!UTTypeConformsTo(a10, inConformsToUTI) && !UTTypeConformsTo(a10, v236))
+          if (!UTTypeConformsTo(format, inConformsToUTI) && !UTTypeConformsTo(format, v236))
           {
-            v205 = objc_msgSend_copyFramePropertiesFrom_index_inFormat_outFormat_(self, v158, a3, v81, a11, a10, v159);
+            v205 = objc_msgSend_copyFramePropertiesFrom_index_inFormat_outFormat_(self, v158, image, v81, fromFormat, format, v159);
             if (!v205)
             {
               goto LABEL_171;
@@ -1765,7 +1765,7 @@ LABEL_169:
           }
 
           Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-          *&v161 = v85;
+          *&v161 = qualityCopy;
           v168 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v162, v163, v164, v165, v166, v167, v161);
           if (v168)
           {
@@ -1781,12 +1781,12 @@ LABEL_169:
               *buf = 138412546;
               *v257 = key;
               *&v257[8] = 2080;
-              v258 = "properties";
+              imageCopy = "properties";
               _os_log_error_impl(&dword_254811000, v169, OS_LOG_TYPE_ERROR, "REQUIRED_ATTRIBUTE - Warning, missing %@ to add to %s", buf, 0x16u);
             }
           }
 
-          v171 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+          v171 = CGImageSourceCopyPropertiesAtIndex(image, 0, 0);
           if (IMOSLoggingEnabled())
           {
             v172 = OSLogHandleForIMFoundationCategory();
@@ -1800,7 +1800,7 @@ LABEL_169:
 
           if (v171)
           {
-            if (a8 == 1)
+            if (target == 1)
             {
               if (IMOSLoggingEnabled())
               {
@@ -1812,7 +1812,7 @@ LABEL_169:
                 }
               }
 
-              if (objc_msgSend_count(v252, v173, v174, v175, v176, v177, v178, v233))
+              if (objc_msgSend_count(propsCopy, v173, v174, v175, v176, v177, v178, v233))
               {
                 if (IMOSLoggingEnabled())
                 {
@@ -1824,7 +1824,7 @@ LABEL_169:
                   }
                 }
 
-                objc_msgSend_addEntriesFromDictionary_(Mutable, v180, v252, v181, v182, v183, v184);
+                objc_msgSend_addEntriesFromDictionary_(Mutable, v180, propsCopy, v181, v182, v183, v184);
               }
             }
 
@@ -1842,7 +1842,7 @@ LABEL_169:
                     *buf = 138412546;
                     *v257 = v234;
                     *&v257[8] = 2112;
-                    v258 = v192;
+                    imageCopy = v192;
                     _os_log_impl(&dword_254811000, v197, OS_LOG_TYPE_INFO, "Setting the image orientation (key=%@) to (%@)", buf, 0x16u);
                   }
                 }
@@ -1852,7 +1852,7 @@ LABEL_169:
             }
           }
 
-          v205 = objc_msgSend_copyFramePropertiesFrom_index_inFormat_outFormat_(self, v198, a3, v81, a11, a10, v199);
+          v205 = objc_msgSend_copyFramePropertiesFrom_index_inFormat_outFormat_(self, v198, image, v81, fromFormat, format, v199);
           if (v205)
           {
             if (!Mutable)
@@ -1885,7 +1885,7 @@ LABEL_171:
               *buf = 138412546;
               *v257 = v239;
               *&v257[8] = 2080;
-              v258 = "properties";
+              imageCopy = "properties";
               _os_log_error_impl(&dword_254811000, v207, OS_LOG_TYPE_ERROR, "REQUIRED_ATTRIBUTE - Warning, missing %@ to add to %s", buf, 0x16u);
             }
           }
@@ -1895,7 +1895,7 @@ LABEL_171:
             objc_msgSend_addEntriesFromDictionary_(Mutable, v209, v247, v210, v211, v212, v213);
           }
 
-          if ((objc_msgSend__isHEIFImageFormat_(self, v209, a10, v210, v211, v212, v213) & 1) == 0)
+          if ((objc_msgSend__isHEIFImageFormat_(self, v209, format, v210, v211, v212, v213) & 1) == 0)
           {
             objc_msgSend__setWideGamutProperties_scaledImage_(self, v214, Mutable, ThumbnailAtIndex, v215, v216, v217);
           }
@@ -1927,7 +1927,7 @@ LABEL_171:
 
             CGImageDestinationAddImage(idst, ThumbnailAtIndex, Mutable);
             v221 = IMOSLoggingEnabled();
-            if (a17)
+            if (data)
             {
               if (v221)
               {
@@ -1952,7 +1952,7 @@ LABEL_171:
                 }
               }
 
-              objc_msgSend_copyAuxiliaryImagesFromImageSource_toDestination_fromImageAtIndex_scaleFactor_(self, v222, a3, idst, v81, v223, v224, v46);
+              objc_msgSend_copyAuxiliaryImagesFromImageSource_toDestination_fromImageAtIndex_scaleFactor_(self, v222, image, idst, v81, v223, v224, v46);
             }
 
             CGImageRelease(ThumbnailAtIndex);
@@ -2001,8 +2001,8 @@ LABEL_171:
       }
 
       CFRelease(idst);
-      v231 = data;
-      v26 = v231;
+      dataCopy2 = data;
+      v26 = dataCopy2;
     }
 
     else
@@ -2018,7 +2018,7 @@ LABEL_171:
       }
 
       v26 = 0;
-      v231 = data;
+      dataCopy2 = data;
     }
 
     goto LABEL_30;
@@ -2041,10 +2041,10 @@ LABEL_32:
   return v26;
 }
 
-- (void)_setWideGamutProperties:(id)a3 scaledImage:(CGImage *)a4
+- (void)_setWideGamutProperties:(id)properties scaledImage:(CGImage *)image
 {
-  v5 = a3;
-  if (a4)
+  propertiesCopy = properties;
+  if (image)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2056,8 +2056,8 @@ LABEL_32:
       }
     }
 
-    Width = CGImageGetWidth(a4);
-    Height = CGImageGetHeight(a4);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     if (Width <= Height)
     {
       objc_msgSend_numberWithUnsignedLong_(MEMORY[0x277CCABB0], v9, Height, v10, v11, v12, v13);
@@ -2068,20 +2068,20 @@ LABEL_32:
       objc_msgSend_numberWithUnsignedLong_(MEMORY[0x277CCABB0], v9, Width, v10, v11, v12, v13);
     }
     v14 = ;
-    objc_msgSend_setObject_forKey_(v5, v15, v14, *MEMORY[0x277CD2D40], v16, v17, v18);
+    objc_msgSend_setObject_forKey_(propertiesCopy, v15, v14, *MEMORY[0x277CD2D40], v16, v17, v18);
 
-    objc_msgSend_setObject_forKey_(v5, v19, MEMORY[0x277CBEC38], *MEMORY[0x277CD2D60], v20, v21, v22);
+    objc_msgSend_setObject_forKey_(propertiesCopy, v19, MEMORY[0x277CBEC38], *MEMORY[0x277CD2D60], v20, v21, v22);
   }
 }
 
-- (id)_checkAndSaveImageData:(id)a3 sourceURL:(id)a4 inFormat:(__CFString *)a5 withMaxByteSize:(unint64_t)a6 actualSize:(unint64_t *)a7 usedLengthIndex:(int *)a8 currentIndex:(int)a9
+- (id)_checkAndSaveImageData:(id)data sourceURL:(id)l inFormat:(__CFString *)format withMaxByteSize:(unint64_t)size actualSize:(unint64_t *)actualSize usedLengthIndex:(int *)index currentIndex:(int)currentIndex
 {
   *&v36[5] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v23 = objc_msgSend_length(v15, v17, v18, v19, v20, v21, v22);
+  dataCopy = data;
+  lCopy = l;
+  v23 = objc_msgSend_length(dataCopy, v17, v18, v19, v20, v21, v22);
   v24 = IMOSLoggingEnabled();
-  if (!v15 || !v23)
+  if (!dataCopy || !v23)
   {
     if (v24)
     {
@@ -2104,17 +2104,17 @@ LABEL_32:
       v35 = 67109376;
       v36[0] = v23;
       LOWORD(v36[1]) = 1024;
-      *(&v36[1] + 2) = a6;
+      *(&v36[1] + 2) = size;
       _os_log_impl(&dword_254811000, v25, OS_LOG_TYPE_INFO, "Successfully generated image! Comparing data length (%d) to maxByteSize (%d)", &v35, 0xEu);
     }
   }
 
-  if (a7)
+  if (actualSize)
   {
-    *a7 = v23;
+    *actualSize = v23;
   }
 
-  if (v23 > a6)
+  if (v23 > size)
   {
 LABEL_25:
     v30 = 0;
@@ -2131,7 +2131,7 @@ LABEL_25:
     }
   }
 
-  v30 = objc_msgSend__writeImageData_inFormat_sourceURL_(self, v26, v15, a5, v16, v27, v28);
+  v30 = objc_msgSend__writeImageData_inFormat_sourceURL_(self, v26, dataCopy, format, lCopy, v27, v28);
   if (v30)
   {
     if (IMOSLoggingEnabled())
@@ -2145,9 +2145,9 @@ LABEL_25:
       }
     }
 
-    if (a8)
+    if (index)
     {
-      *a8 = a9;
+      *index = currentIndex;
     }
   }
 
@@ -2158,10 +2158,10 @@ LABEL_26:
   return v30;
 }
 
-- (void)copyAuxiliaryImagesFromImageSource:(CGImageSource *)a3 toDestination:(CGImageDestination *)a4 fromImageAtIndex:(unint64_t)a5 scaleFactor:(double)a6
+- (void)copyAuxiliaryImagesFromImageSource:(CGImageSource *)source toDestination:(CGImageDestination *)destination fromImageAtIndex:(unint64_t)index scaleFactor:(double)factor
 {
   v46 = *MEMORY[0x277D85DE8];
-  v11 = objc_msgSend_auxiliaryImagesToPreserveForDerivativesFromImageSource_imageIndex_(MEMORY[0x277D3B408], a2, a3, a5, a5, v6, v7);
+  v11 = objc_msgSend_auxiliaryImagesToPreserveForDerivativesFromImageSource_imageIndex_(MEMORY[0x277D3B408], a2, source, index, index, v6, v7);
   v18 = objc_msgSend_count(v11, v12, v13, v14, v15, v16, v17);
   if (v11)
   {
@@ -2176,7 +2176,7 @@ LABEL_26:
   if (!v23)
   {
     v24 = v18;
-    v25 = objc_msgSend_transformAuxiliaryImages_scaleFactor_applyingOrientation_(MEMORY[0x277D3B408], v19, v11, 1, v20, v21, v22, a6);
+    v25 = objc_msgSend_transformAuxiliaryImages_scaleFactor_applyingOrientation_(MEMORY[0x277D3B408], v19, v11, 1, v20, v21, v22, factor);
     if (IMOSLoggingEnabled())
     {
       v31 = OSLogHandleForIMFoundationCategory();
@@ -2185,9 +2185,9 @@ LABEL_26:
         *buf = 134219266;
         v35 = v24;
         v36 = 2048;
-        v37 = a5;
+        indexCopy = index;
         v38 = 2048;
-        v39 = a6;
+        factorCopy = factor;
         v40 = 1024;
         v41 = 1;
         v42 = 2112;
@@ -2202,19 +2202,19 @@ LABEL_26:
     v33[1] = 3221225472;
     v33[2] = sub_25481C700;
     v33[3] = &unk_27978AB68;
-    v33[4] = a4;
+    v33[4] = destination;
     objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v25, v26, v33, v27, v28, v29, v30);
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_writeImageData:(id)a3 inFormat:(__CFString *)a4 sourceURL:(id)a5
+- (id)_writeImageData:(id)data inFormat:(__CFString *)format sourceURL:(id)l
 {
   v72 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (!v7)
+  dataCopy = data;
+  lCopy = l;
+  if (!dataCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2233,7 +2233,7 @@ LABEL_24:
     goto LABEL_38;
   }
 
-  if (!a4)
+  if (!format)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2252,7 +2252,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v9 = UTTypeCopyPreferredTagWithClass(a4, *MEMORY[0x277CC1F58]);
+  v9 = UTTypeCopyPreferredTagWithClass(format, *MEMORY[0x277CC1F58]);
   v10 = IMOSLoggingEnabled();
   if (!v9)
   {
@@ -2282,7 +2282,7 @@ LABEL_23:
   }
 
   v18 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v11, v12, v13, v14, v15, v16);
-  v25 = objc_msgSend_lastPathComponent(v8, v19, v20, v21, v22, v23, v24);
+  v25 = objc_msgSend_lastPathComponent(lCopy, v19, v20, v21, v22, v23, v24);
   v32 = objc_msgSend_stringByDeletingPathExtension(v25, v26, v27, v28, v29, v30, v31);
   v38 = objc_msgSend_stringByAppendingPathExtension_(v32, v33, v9, v34, v35, v36, v37);
   v44 = objc_msgSend_im_randomTemporaryFileURLWithFileName_(v18, v39, v38, v40, v41, v42, v43);
@@ -2325,7 +2325,7 @@ LABEL_31:
   }
 
   v59 = objc_autoreleasePoolPush();
-  v64 = objc_msgSend_writeToURL_atomically_(v7, v60, v58, 1, v61, v62, v63);
+  v64 = objc_msgSend_writeToURL_atomically_(dataCopy, v60, v58, 1, v61, v62, v63);
   objc_autoreleasePoolPop(v59);
   if ((v64 & 1) == 0)
   {
@@ -2342,15 +2342,15 @@ LABEL_38:
   return v58;
 }
 
-- (id)_writeImage:(CGImageSource *)a3 sourceURL:(id)a4 target:(int64_t)a5 hardwareEncoder:(id)a6 inFormat:(__CFString *)a7 fromFormat:(__CFString *)a8 withMaxByteSize:(unint64_t)a9 maxDimension:(unint64_t)a10 actualSize:(unint64_t *)a11 startingLengthIndex:(int)a12 usedLengthIndex:(int *)a13 estimator:(id)a14 isLQMEnabled:(BOOL)a15 telemetry:(id)a16
+- (id)_writeImage:(CGImageSource *)image sourceURL:(id)l target:(int64_t)target hardwareEncoder:(id)encoder inFormat:(__CFString *)format fromFormat:(__CFString *)fromFormat withMaxByteSize:(unint64_t)size maxDimension:(unint64_t)self0 actualSize:(unint64_t *)self1 startingLengthIndex:(int)self2 usedLengthIndex:(int *)self3 estimator:(id)self4 isLQMEnabled:(BOOL)self5 telemetry:(id)self6
 {
   v263 = *MEMORY[0x277D85DE8];
-  v249 = a4;
-  v248 = a6;
-  v253 = a14;
-  v241 = a16;
-  v251 = a3;
-  if (!a3)
+  lCopy = l;
+  encoderCopy = encoder;
+  estimatorCopy = estimator;
+  telemetryCopy = telemetry;
+  imageCopy = image;
+  if (!image)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2369,7 +2369,7 @@ LABEL_33:
     goto LABEL_152;
   }
 
-  if (*&a7 == 0.0)
+  if (*&format == 0.0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2388,9 +2388,9 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v254 = a7;
-  Count = CGImageSourceGetCount(a3);
-  *&v246 = COERCE_DOUBLE(CGImageSourceCopyProperties(a3, 0));
+  formatCopy = format;
+  Count = CGImageSourceGetCount(image);
+  *&v246 = COERCE_DOUBLE(CGImageSourceCopyProperties(image, 0));
   if (IMOSLoggingEnabled())
   {
     v20 = OSLogHandleForIMFoundationCategory();
@@ -2405,7 +2405,7 @@ LABEL_32:
   v21 = objc_opt_class();
   v255 = 0;
   v256 = 0;
-  LargerDimensionFromImage_withProperties_toWidth_toHeight = objc_msgSend_findLargerDimensionFromImage_withProperties_toWidth_toHeight_(v21, v22, a3, v246, &v256, &v255, v23);
+  LargerDimensionFromImage_withProperties_toWidth_toHeight = objc_msgSend_findLargerDimensionFromImage_withProperties_toWidth_toHeight_(v21, v22, image, v246, &v256, &v255, v23);
   v244 = v256;
   v245 = v255;
   if (IMOSLoggingEnabled())
@@ -2414,11 +2414,11 @@ LABEL_32:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138413314;
-      v258 = *&a7;
+      v258 = *&format;
       v259 = 1024;
-      *v260 = a9;
+      *v260 = size;
       *&v260[4] = 2048;
-      *&v260[6] = a10;
+      *&v260[6] = dimension;
       *&v260[14] = 2112;
       *&v260[16] = v244;
       v261 = 2112;
@@ -2427,13 +2427,13 @@ LABEL_32:
     }
   }
 
-  if (a13)
+  if (lengthIndex)
   {
-    *a13 = -1;
+    *lengthIndex = -1;
   }
 
   v25 = *MEMORY[0x277CC2088];
-  if (!UTTypeConformsTo(a7, *MEMORY[0x277CC2088]) || !UTTypeConformsTo(a8, v25))
+  if (!UTTypeConformsTo(format, *MEMORY[0x277CC2088]) || !UTTypeConformsTo(fromFormat, v25))
   {
     goto LABEL_47;
   }
@@ -2472,7 +2472,7 @@ LABEL_32:
     }
   }
 
-  v53 = objc_msgSend_longValue(v38, v32, v33, v34, v35, v36, v37) / a9;
+  v53 = objc_msgSend_longValue(v38, v32, v33, v34, v35, v36, v37) / size;
   if (v53 <= 2.0)
   {
     v54 = 1;
@@ -2504,14 +2504,14 @@ LABEL_32:
   }
 
 LABEL_43:
-  v56 = sub_25481DAD4(v251, a9, v45, v41);
-  if (objc_msgSend_length(v56, v57, v58, v59, v60, v61, v62) >= a9)
+  v56 = sub_25481DAD4(imageCopy, size, v45, v41);
+  if (objc_msgSend_length(v56, v57, v58, v59, v60, v61, v62) >= size)
   {
   }
 
   else
   {
-    v43 = objc_msgSend__writeImageData_inFormat_sourceURL_(self, v63, v56, a7, v249, v64, v65);
+    v43 = objc_msgSend__writeImageData_inFormat_sourceURL_(self, v63, v56, format, lCopy, v64, v65);
 
     if (v43)
     {
@@ -2528,9 +2528,9 @@ LABEL_47:
     v79 = 0;
     v240 = 0;
     v80 = -1;
-    if (UTTypeConformsTo(a8, @"public.heic") && a15)
+    if (UTTypeConformsTo(fromFormat, @"public.heic") && enabled)
     {
-      v240 = objc_msgSend_getInputImageFeatures_(IMTranscoderImageQualityEstimator, v74, v251, v75, v76, v77, v78);
+      v240 = objc_msgSend_getInputImageFeatures_(IMTranscoderImageQualityEstimator, v74, imageCopy, v75, v76, v77, v78);
       if (v240)
       {
         if (IMOSLoggingEnabled())
@@ -2587,7 +2587,7 @@ LABEL_47:
     v83 = v84;
     v85 = !LargerDimensionFromImage_withProperties_toWidth_toHeight || LargerDimensionFromImage_withProperties_toWidth_toHeight >= v84;
     v86 = !v85;
-    v87 = v83 <= a10 || a10 == 0;
+    v87 = v83 <= dimension || dimension == 0;
     if (v87 && !v86)
     {
       break;
@@ -2639,7 +2639,7 @@ LABEL_146:
   }
 
   v247 = v89;
-  if (CGImageSourceGetCount(v251) >= 2 && UTTypeConformsTo(a8, inConformsToUTI))
+  if (CGImageSourceGetCount(imageCopy) >= 2 && UTTypeConformsTo(fromFormat, inConformsToUTI))
   {
     if (IMOSLoggingEnabled())
     {
@@ -2655,9 +2655,9 @@ LABEL_146:
     v247 = 8;
   }
 
-  if (UTTypeConformsTo(v254, v238))
+  if (UTTypeConformsTo(formatCopy, v238))
   {
-    if (UTTypeConformsTo(a8, v238))
+    if (UTTypeConformsTo(fromFormat, v238))
     {
       v97 = 2;
     }
@@ -2697,8 +2697,8 @@ LABEL_146:
       break;
     }
 
-    *&v143 = COERCE_DOUBLE(objc_msgSend_estimatedSizeForOutputUTI_maximumDimension_quality_(v253, v117, v254, v83, v119, v120, v121, v108));
-    if (v143 <= a9)
+    *&v143 = COERCE_DOUBLE(objc_msgSend_estimatedSizeForOutputUTI_maximumDimension_quality_(estimatorCopy, v117, formatCopy, v83, v119, v120, v121, v108));
+    if (v143 <= size)
     {
       LOBYTE(v128) = 0;
       goto LABEL_121;
@@ -2712,7 +2712,7 @@ LABEL_146:
         *buf = 134218240;
         v258 = *&v143;
         v259 = 2048;
-        *v260 = a9;
+        *v260 = size;
         _os_log_impl(&dword_254811000, shouldSkipAuxillaryData, OS_LOG_TYPE_INFO, "Estimated size %lu is larger than required size %lu, skipping", buf, 0x16u);
       }
 
@@ -2804,8 +2804,8 @@ LABEL_133:
 
   else
   {
-    *&v145 = COERCE_DOUBLE(objc_msgSend_estimatedSizeForOutputUTI_maximumDimension_quality_(v253, v129, v254, v83, v130, v131, v132, v108));
-    if (v145 > a9)
+    *&v145 = COERCE_DOUBLE(objc_msgSend_estimatedSizeForOutputUTI_maximumDimension_quality_(estimatorCopy, v129, formatCopy, v83, v130, v131, v132, v108));
+    if (v145 > size)
     {
       if (IMOSLoggingEnabled())
       {
@@ -2815,7 +2815,7 @@ LABEL_133:
           *buf = 134218240;
           v258 = *&v145;
           v259 = 2048;
-          *v260 = a9;
+          *v260 = size;
           _os_log_impl(&dword_254811000, v146, OS_LOG_TYPE_INFO, "Estimated size %lu is larger than required size %lu, skipping", buf, 0x16u);
         }
       }
@@ -2828,9 +2828,9 @@ LABEL_121:
   HIDWORD(v235) = v247;
   LOBYTE(v235) = v80 < 0x19;
   LOBYTE(v236) = v79 & v128 & 1;
-  shouldSkipAuxillaryData = objc_msgSend__newGeneratedImage_sourceWidth_sourceHeight_sourceLength_sourceProps_target_hardwareEncoder_inFormat_fromFormat_withMaxLength_withMaxCount_withCompressionQuality_enforceMaxes_subsampling_shouldSkipAuxillaryData_(self, v141, v251, v244, v245, LargerDimensionFromImage_withProperties_toWidth_toHeight, v246, a5, v108, v248, v254, a8, v83, Count, v235, v236);
+  shouldSkipAuxillaryData = objc_msgSend__newGeneratedImage_sourceWidth_sourceHeight_sourceLength_sourceProps_target_hardwareEncoder_inFormat_fromFormat_withMaxLength_withMaxCount_withCompressionQuality_enforceMaxes_subsampling_shouldSkipAuxillaryData_(self, v141, imageCopy, v244, v245, LargerDimensionFromImage_withProperties_toWidth_toHeight, v246, target, v108, encoderCopy, formatCopy, fromFormat, v83, Count, v235, v236);
   LODWORD(v234) = v80;
-  v43 = objc_msgSend__checkAndSaveImageData_sourceURL_inFormat_withMaxByteSize_actualSize_usedLengthIndex_currentIndex_(self, v147, shouldSkipAuxillaryData, v249, v254, a9, a11, a13, v234);
+  v43 = objc_msgSend__checkAndSaveImageData_sourceURL_inFormat_withMaxByteSize_actualSize_usedLengthIndex_currentIndex_(self, v147, shouldSkipAuxillaryData, lCopy, formatCopy, size, actualSize, lengthIndex, v234);
   v154 = objc_msgSend_sharedFeatureFlags(MEMORY[0x277D1A9B8], v148, v149, v150, v151, v152, v153);
   v161 = objc_msgSend_isLQMImageQualityEstimatorEnabled(v154, v155, v156, v157, v158, v159, v160);
 
@@ -2863,7 +2863,7 @@ LABEL_132:
 LABEL_130:
     if (shouldSkipAuxillaryData)
     {
-      objc_msgSend_emitSignpostTranscodeStepForDestinationUTI_(v241, v162, v254, v164, v165, v166, v167);
+      objc_msgSend_emitSignpostTranscodeStepForDestinationUTI_(telemetryCopy, v162, formatCopy, v164, v165, v166, v167);
     }
 
     goto LABEL_132;
@@ -2874,14 +2874,14 @@ LABEL_130:
     goto LABEL_130;
   }
 
-  objc_msgSend_emitSignpostTranscodeFinalForDestinationUTI_(v241, v162, v254, v164, v165, v166, v167);
+  objc_msgSend_emitSignpostTranscodeFinalForDestinationUTI_(telemetryCopy, v162, formatCopy, v164, v165, v166, v167);
 
   v208 = objc_msgSend_sharedFeatureFlags(MEMORY[0x277D1A9B8], v202, v203, v204, v205, v206, v207);
   v215 = objc_msgSend_isLQMImageQualityEstimatorEnabled(v208, v209, v210, v211, v212, v213, v214);
 
-  if (v215 & a15)
+  if (v215 & enabled)
   {
-    v218 = objc_msgSend__imMetricsCollectorForLQMQualityEstimatorModel_suggestedMaxLength_shouldUseQualityEstimatorModel_inputImageFeatures_(self, v216, a8, v83, v79 & 1, v240, v217);
+    v218 = objc_msgSend__imMetricsCollectorForLQMQualityEstimatorModel_suggestedMaxLength_shouldUseQualityEstimatorModel_inputImageFeatures_(self, v216, fromFormat, v83, v79 & 1, v240, v217);
     v225 = objc_msgSend_sharedInstance(MEMORY[0x277D1AAA8], v219, v220, v221, v222, v223, v224);
     objc_msgSend_trackEvent_withDictionary_(v225, v226, *MEMORY[0x277D1A168], v218, v227, v228, v229);
   }
@@ -2896,23 +2896,23 @@ LABEL_152:
   return v43;
 }
 
-- (id)_writeRepresentationsForImage:(CGImageSource *)a3 target:(int64_t)a4 sourceURL:(id)a5 sizes:(id)a6 maxDimension:(unint64_t)a7 srcUTI:(__CFString *)a8 inFormat:(__CFString *)a9 downgradingMultiFrameImageToSingleFrame:(BOOL)a10 estimator:(id)a11 isLQMEnabled:(BOOL)a12 telemetry:(id)a13
+- (id)_writeRepresentationsForImage:(CGImageSource *)image target:(int64_t)target sourceURL:(id)l sizes:(id)sizes maxDimension:(unint64_t)dimension srcUTI:(__CFString *)i inFormat:(__CFString *)format downgradingMultiFrameImageToSingleFrame:(BOOL)self0 estimator:(id)self1 isLQMEnabled:(BOOL)self2 telemetry:(id)self3
 {
   v214 = *MEMORY[0x277D85DE8];
-  v205 = a5;
-  v16 = a6;
-  v199 = a11;
-  inUTI = a8;
-  v201 = a13;
+  lCopy = l;
+  sizesCopy = sizes;
+  estimatorCopy = estimator;
+  inUTI = i;
+  telemetryCopy = telemetry;
   v23 = 0;
-  if (a8 && a9)
+  if (i && format)
   {
     v24 = *MEMORY[0x277CC20C8];
-    if (CFEqual(a9, *MEMORY[0x277CC20C8]))
+    if (CFEqual(format, *MEMORY[0x277CC20C8]))
     {
-      v25 = UTTypeConformsTo(a8, v24);
+      v25 = UTTypeConformsTo(i, v24);
       v23 = 0;
-      if (a4 != 1 && v25)
+      if (target != 1 && v25)
       {
         if (IMOSLoggingEnabled())
         {
@@ -2936,14 +2936,14 @@ LABEL_152:
 
   v27 = objc_msgSend_array(MEMORY[0x277CBEB18], v17, v18, v19, v20, v21, v22);
   v34 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v28, v29, v30, v31, v32, v33);
-  v41 = objc_msgSend_path(v205, v35, v36, v37, v38, v39, v40);
+  v41 = objc_msgSend_path(lCopy, v35, v36, v37, v38, v39, v40);
   v208 = 0;
   v46 = objc_msgSend_attributesOfItemAtPath_error_(v34, v42, v41, &v208, v43, v44, v45);
   v195 = v208;
   v202 = objc_msgSend_fileSize(v46, v47, v48, v49, v50, v51, v52);
 
   v207 = v202;
-  v58 = objc_msgSend_objectAtIndexedSubscript_(v16, v53, 0, v54, v55, v56, v57);
+  v58 = objc_msgSend_objectAtIndexedSubscript_(sizesCopy, v53, 0, v54, v55, v56, v57);
   v65 = objc_msgSend_unsignedLongValue(v58, v59, v60, v61, v62, v63, v64);
 
   if (IMOSLoggingEnabled())
@@ -2952,16 +2952,16 @@ LABEL_152:
     if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
     {
       *buf = 134218498;
-      v210 = v202;
+      formatCopy = v202;
       v211 = 2112;
       *v212 = v195;
       *&v212[8] = 2112;
-      v213 = v16;
+      v213 = sizesCopy;
       _os_log_impl(&dword_254811000, v71, OS_LOG_TYPE_INFO, "Generating the representations, originalSize %ld (err %@) sizes %@", buf, 0x20u);
     }
   }
 
-  isWideGamutImage = objc_msgSend__isWideGamutImage_(self, v66, a3, v67, v68, v69, v70);
+  isWideGamutImage = objc_msgSend__isWideGamutImage_(self, v66, image, v67, v68, v69, v70);
   v73 = 0;
   if (v195)
   {
@@ -2981,14 +2981,14 @@ LABEL_152:
       if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        v210 = v202;
+        formatCopy = v202;
         v211 = 2048;
         *v212 = v65;
         _os_log_impl(&dword_254811000, v76, OS_LOG_TYPE_INFO, "Attempting copy+add props for size %lu (reason: the source is wide gamut and smaller than the limit %lu)", buf, 0x16u);
       }
     }
 
-    v77 = objc_msgSend__wideGamutImage_sourceURL_inFormat_withMaxByteSize_maxDimension_actualSize_telemetry_(self, v75, a3, v205, a9, v65, a7, &v207, v201);
+    v77 = objc_msgSend__wideGamutImage_sourceURL_inFormat_withMaxByteSize_maxDimension_actualSize_telemetry_(self, v75, image, lCopy, format, v65, dimension, &v207, telemetryCopy);
     v78 = IMOSLoggingEnabled();
     if (v77)
     {
@@ -2998,7 +2998,7 @@ LABEL_152:
         if (os_log_type_enabled(v79, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v210 = v77;
+          formatCopy = v77;
           _os_log_impl(&dword_254811000, v79, OS_LOG_TYPE_INFO, "Using original wide-gamut image with added properties answerImageURL: %@", buf, 0xCu);
         }
       }
@@ -3019,7 +3019,7 @@ LABEL_152:
         if (os_log_type_enabled(v80, OS_LOG_TYPE_INFO))
         {
           *buf = 134218240;
-          v210 = v207;
+          formatCopy = v207;
           v211 = 2048;
           *v212 = v65;
           _os_log_impl(&dword_254811000, v80, OS_LOG_TYPE_INFO, "Couldn't use copy of wide-gamut image with added properties (size %ld max %ld), transcoding", buf, 0x16u);
@@ -3032,7 +3032,7 @@ LABEL_152:
   }
 
   v81 = v23 ^ 1;
-  if (!v205)
+  if (!lCopy)
   {
     v81 = 1;
   }
@@ -3045,11 +3045,11 @@ LABEL_152:
   else
   {
     v82 = objc_alloc(MEMORY[0x277CBEA90]);
-    v86 = objc_msgSend_initWithContentsOfURL_options_error_(v82, v83, v205, 1, 0, v84, v85);
+    v86 = objc_msgSend_initWithContentsOfURL_options_error_(v82, v83, lCopy, 1, 0, v84, v85);
     if (objc_msgSend_length(v86, v87, v88, v89, v90, v91, v92))
     {
       v93 = [IMEmbeddedHardwareJPEGTranscoder alloc];
-      v198 = objc_msgSend_initWithImageData_imageSource_(v93, v94, v86, a3, v95, v96, v97);
+      v198 = objc_msgSend_initWithImageData_imageSource_(v93, v94, v86, image, v95, v96, v97);
     }
 
     else
@@ -3064,14 +3064,14 @@ LABEL_152:
     if (os_log_type_enabled(v104, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v210 = v16;
+      formatCopy = sizesCopy;
       v211 = 2048;
       *v212 = v202;
       _os_log_impl(&dword_254811000, v104, OS_LOG_TYPE_INFO, "Beginning to transcode images with size limits: %@ originalFileSize %lu", buf, 0x16u);
     }
   }
 
-  if (v73 < objc_msgSend_count(v16, v98, v99, v100, v101, v102, v103))
+  if (v73 < objc_msgSend_count(sizesCopy, v98, v99, v100, v101, v102, v103))
   {
     v105 = 0;
     if (v195)
@@ -3093,9 +3093,9 @@ LABEL_152:
         v113 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v113, OS_LOG_TYPE_INFO))
         {
-          v119 = objc_msgSend_objectAtIndexedSubscript_(v16, v114, v73, v115, v116, v117, v118);
+          v119 = objc_msgSend_objectAtIndexedSubscript_(sizesCopy, v114, v73, v115, v116, v117, v118);
           *buf = 134218242;
-          v210 = v73;
+          formatCopy = v73;
           v211 = 2112;
           *v212 = v119;
           _os_log_impl(&dword_254811000, v113, OS_LOG_TYPE_INFO, "Trying to transcode to target size index %lu size limit %@", buf, 0x16u);
@@ -3110,7 +3110,7 @@ LABEL_152:
           if (os_log_type_enabled(v180, OS_LOG_TYPE_INFO))
           {
             *buf = 67109120;
-            LODWORD(v210) = v105;
+            LODWORD(formatCopy) = v105;
             _os_log_impl(&dword_254811000, v180, OS_LOG_TYPE_INFO, "Transcoding: Aborting further transcoding attempts: current image resize index is %d.", buf, 8u);
           }
         }
@@ -3118,7 +3118,7 @@ LABEL_152:
         goto LABEL_151;
       }
 
-      v120 = objc_msgSend_objectAtIndexedSubscript_(v16, v108, v73, v109, v110, v111, v112);
+      v120 = objc_msgSend_objectAtIndexedSubscript_(sizesCopy, v108, v73, v109, v110, v111, v112);
       v127 = objc_msgSend_unsignedLongValue(v120, v121, v122, v123, v124, v125, v126);
 
       if (!v73)
@@ -3126,7 +3126,7 @@ LABEL_152:
         break;
       }
 
-      v133 = objc_msgSend_objectAtIndexedSubscript_(v16, v128, v73 - 1, v129, v130, v131, v132);
+      v133 = objc_msgSend_objectAtIndexedSubscript_(sizesCopy, v128, v73 - 1, v129, v130, v131, v132);
       v140 = objc_msgSend_unsignedLongValue(v133, v134, v135, v136, v137, v138, v139) == v127;
 
       if (!v140)
@@ -3140,7 +3140,7 @@ LABEL_152:
             if (os_log_type_enabled(v151, OS_LOG_TYPE_INFO))
             {
               *buf = 134218240;
-              v210 = v127;
+              formatCopy = v127;
               v211 = 2048;
               *v212 = v207;
               _os_log_impl(&dword_254811000, v151, OS_LOG_TYPE_INFO, "Transcoding at size %tu (the previous size is %tu)", buf, 0x16u);
@@ -3151,16 +3151,16 @@ LABEL_152:
 
 LABEL_132:
           v206 = v105;
-          LOBYTE(v194) = a12;
+          LOBYTE(v194) = enabled;
           LODWORD(v193) = v105;
-          v170 = objc_msgSend__writeImage_sourceURL_target_hardwareEncoder_inFormat_fromFormat_withMaxByteSize_maxDimension_actualSize_startingLengthIndex_usedLengthIndex_estimator_isLQMEnabled_telemetry_(self, v150, a3, v205, a4, v198, a9, inUTI, v127, a7, &v207, v193, &v206, v199, v194, v201);
+          v170 = objc_msgSend__writeImage_sourceURL_target_hardwareEncoder_inFormat_fromFormat_withMaxByteSize_maxDimension_actualSize_startingLengthIndex_usedLengthIndex_estimator_isLQMEnabled_telemetry_(self, v150, image, lCopy, target, v198, format, inUTI, v127, dimension, &v207, v193, &v206, estimatorCopy, v194, telemetryCopy);
           if (IMOSLoggingEnabled())
           {
             v178 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v178, OS_LOG_TYPE_INFO))
             {
               *buf = 138412802;
-              v210 = v170;
+              formatCopy = v170;
               v211 = 1024;
               *v212 = v105;
               *&v212[4] = 1024;
@@ -3177,7 +3177,7 @@ LABEL_137:
             if (os_log_type_enabled(v179, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v210 = v27;
+              formatCopy = v27;
               v211 = 2112;
               *v212 = v170;
               _os_log_impl(&dword_254811000, v179, OS_LOG_TYPE_INFO, "answer: %@ answerImageURL: %@", buf, 0x16u);
@@ -3202,7 +3202,7 @@ LABEL_124:
           if (os_log_type_enabled(v177, OS_LOG_TYPE_INFO))
           {
             *buf = 134217984;
-            v210 = v127;
+            formatCopy = v127;
             _os_log_impl(&dword_254811000, v177, OS_LOG_TYPE_INFO, "Not transcoding an image for size: %tu", buf, 0xCu);
           }
         }
@@ -3216,13 +3216,13 @@ LABEL_124:
         if (os_log_type_enabled(v147, OS_LOG_TYPE_INFO))
         {
           *buf = 134217984;
-          v210 = v127;
+          formatCopy = v127;
           _os_log_impl(&dword_254811000, v147, OS_LOG_TYPE_INFO, "Aborting transcoding attempt: current size limit %tu is the same as the previous size.", buf, 0xCu);
         }
       }
 
 LABEL_145:
-      if (++v73 >= objc_msgSend_count(v16, v141, v142, v143, v144, v145, v146))
+      if (++v73 >= objc_msgSend_count(sizesCopy, v141, v142, v143, v144, v145, v146))
       {
         goto LABEL_151;
       }
@@ -3239,7 +3239,7 @@ LABEL_145:
       v149 = 0;
     }
 
-    if (a4 == 1)
+    if (target == 1)
     {
       if (!IMOSLoggingEnabled())
       {
@@ -3250,15 +3250,15 @@ LABEL_145:
       if (os_log_type_enabled(v151, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v210 = v127;
+        formatCopy = v127;
         _os_log_impl(&dword_254811000, v151, OS_LOG_TYPE_INFO, "Transcoding large size %tu (reason: the target is MMS).", buf, 0xCu);
       }
 
       goto LABEL_122;
     }
 
-    Type = CGImageSourceGetType(a3);
-    if (objc_msgSend__isHEIFImageFormat_(self, v153, Type, v154, v155, v156, v157) && (objc_msgSend__isHEIFImageFormat_(self, v158, a9, v159, v160, v161, v162) & 1) == 0)
+    Type = CGImageSourceGetType(image);
+    if (objc_msgSend__isHEIFImageFormat_(self, v153, Type, v154, v155, v156, v157) && (objc_msgSend__isHEIFImageFormat_(self, v158, format, v159, v160, v161, v162) & 1) == 0)
     {
       if (IMOSLoggingEnabled())
       {
@@ -3266,7 +3266,7 @@ LABEL_145:
         if (os_log_type_enabled(v171, OS_LOG_TYPE_INFO))
         {
           *buf = 134217984;
-          v210 = v127;
+          formatCopy = v127;
           _os_log_impl(&dword_254811000, v171, OS_LOG_TYPE_INFO, "Transcoding to size %tu (reason: the source is HEIF).", buf, 0xCu);
         }
       }
@@ -3296,7 +3296,7 @@ LABEL_145:
 
         *buf = v105;
         LODWORD(v192) = v105;
-        v170 = objc_msgSend__writeHEIFImage_sourceURL_inFormat_withMaxByteSize_maxDimension_downgradingMultiFrameImageToSingleFrame_actualSize_startingLengthIndex_usedLengthIndex_telemetry_(self, v150, a3, v205, a9, v127, a7, a10, &v207, v192, buf, v201);
+        v170 = objc_msgSend__writeHEIFImage_sourceURL_inFormat_withMaxByteSize_maxDimension_downgradingMultiFrameImageToSingleFrame_actualSize_startingLengthIndex_usedLengthIndex_telemetry_(self, v150, image, lCopy, format, v127, dimension, frame, &v207, v192, buf, telemetryCopy);
         v105 = *buf + 1;
         if (!v170)
         {
@@ -3321,9 +3321,9 @@ LABEL_145:
 
     else
     {
-      if (!objc_msgSend__isHEIFImageFormat_(self, v158, a9, v159, v160, v161, v162) || (v163 = CGImageSourceGetType(a3), (objc_msgSend__isHEIFImageFormat_(self, v164, v163, v165, v166, v167, v168) & 1) != 0))
+      if (!objc_msgSend__isHEIFImageFormat_(self, v158, format, v159, v160, v161, v162) || (v163 = CGImageSourceGetType(image), (objc_msgSend__isHEIFImageFormat_(self, v164, v163, v165, v166, v167, v168) & 1) != 0))
       {
-        if (UTTypeEqual(a9, inUTI))
+        if (UTTypeEqual(format, inUTI))
         {
           if (v149)
           {
@@ -3333,14 +3333,14 @@ LABEL_145:
               if (os_log_type_enabled(v169, OS_LOG_TYPE_INFO))
               {
                 *buf = 134218240;
-                v210 = v127;
+                formatCopy = v127;
                 v211 = 2048;
                 *v212 = v202;
                 _os_log_impl(&dword_254811000, v169, OS_LOG_TYPE_INFO, "Given size limit %lu is already greater than the original file size %lu.", buf, 0x16u);
               }
             }
 
-            v170 = v205;
+            v170 = lCopy;
             goto LABEL_124;
           }
 
@@ -3364,7 +3364,7 @@ LABEL_145:
           if (os_log_type_enabled(v151, OS_LOG_TYPE_INFO))
           {
             *buf = 134218240;
-            v210 = v202;
+            formatCopy = v202;
             v211 = 2048;
             *v212 = v127;
             _os_log_impl(&dword_254811000, v151, OS_LOG_TYPE_INFO, "Original file size limit %lu is bigger than target size %lu", buf, 0x16u);
@@ -3382,7 +3382,7 @@ LABEL_145:
           if (os_log_type_enabled(v151, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v210 = a9;
+            formatCopy = format;
             v211 = 2112;
             *v212 = inUTI;
             _os_log_impl(&dword_254811000, v151, OS_LOG_TYPE_INFO, "Destination (%@) and source (%@) UTIs do not match, so transcoding", buf, 0x16u);
@@ -3418,7 +3418,7 @@ LABEL_151:
     {
       v188 = objc_msgSend_count(v27, v182, v183, v184, v185, v186, v187);
       *buf = 134218242;
-      v210 = v188;
+      formatCopy = v188;
       v211 = 2112;
       *v212 = v27;
       _os_log_impl(&dword_254811000, v181, OS_LOG_TYPE_INFO, "Finished transcoding images with %tu results: %@", buf, 0x16u);
@@ -3432,12 +3432,12 @@ LABEL_151:
   return v189;
 }
 
-- (id)_wideGamutImage:(CGImageSource *)a3 sourceURL:(id)a4 inFormat:(__CFString *)a5 withMaxByteSize:(unint64_t)a6 maxDimension:(unint64_t)a7 actualSize:(unint64_t *)a8 telemetry:(id)a9
+- (id)_wideGamutImage:(CGImageSource *)image sourceURL:(id)l inFormat:(__CFString *)format withMaxByteSize:(unint64_t)size maxDimension:(unint64_t)dimension actualSize:(unint64_t *)actualSize telemetry:(id)telemetry
 {
   v71 = *MEMORY[0x277D85DE8];
-  v66 = a4;
-  v67 = a9;
-  Count = CGImageSourceGetCount(a3);
+  lCopy = l;
+  telemetryCopy = telemetry;
+  Count = CGImageSourceGetCount(image);
   context = objc_autoreleasePoolPush();
   if (IMOSLoggingEnabled())
   {
@@ -3451,7 +3451,7 @@ LABEL_151:
   }
 
   data = objc_alloc_init(MEMORY[0x277CBEB28]);
-  v14 = CGImageDestinationCreateWithData(data, a5, Count, 0);
+  v14 = CGImageDestinationCreateWithData(data, format, Count, 0);
   v15 = IMOSLoggingEnabled();
   if (!v14)
   {
@@ -3484,10 +3484,10 @@ LABEL_151:
     for (i = 0; i != Count; ++i)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = CGImageSourceCopyPropertiesAtIndex(a3, i, 0);
+      v19 = CGImageSourceCopyPropertiesAtIndex(image, i, 0);
       v26 = objc_msgSend_mutableCopy(v19, v20, v21, v22, v23, v24, v25);
 
-      ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, i, 0);
+      ImageAtIndex = CGImageSourceCreateImageAtIndex(image, i, 0);
       if (IMOSLoggingEnabled())
       {
         v33 = OSLogHandleForIMFoundationCategory();
@@ -3505,7 +3505,7 @@ LABEL_151:
         }
       }
 
-      if ((objc_msgSend__isHEIFImageFormat_(self, v28, a5, v29, v30, v31, v32) & 1) == 0)
+      if ((objc_msgSend__isHEIFImageFormat_(self, v28, format, v29, v30, v31, v32) & 1) == 0)
       {
         objc_msgSend__setWideGamutProperties_scaledImage_(self, v35, v26, ImageAtIndex, v36, v37, v38);
       }
@@ -3536,7 +3536,7 @@ LABEL_151:
         }
 
         CGImageDestinationAddImage(v14, ImageAtIndex, v26);
-        objc_msgSend_copyAuxiliaryImagesFromImageSource_toDestination_fromImageAtIndex_scaleFactor_(self, v42, a3, v14, i, v43, v44, 1.0);
+        objc_msgSend_copyAuxiliaryImagesFromImageSource_toDestination_fromImageAtIndex_scaleFactor_(self, v42, image, v14, i, v43, v44, 1.0);
         CGImageRelease(ImageAtIndex);
       }
 
@@ -3565,7 +3565,7 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  v53 = objc_msgSend__checkAndSaveImageData_sourceURL_inFormat_withMaxByteSize_actualSize_usedLengthIndex_currentIndex_(self, v47, data, v66, a5, a6, a8, 0, -1);
+  v53 = objc_msgSend__checkAndSaveImageData_sourceURL_inFormat_withMaxByteSize_actualSize_usedLengthIndex_currentIndex_(self, v47, data, lCopy, format, size, actualSize, 0, -1);
   if (v53)
   {
     if (IMOSLoggingEnabled())
@@ -3579,7 +3579,7 @@ LABEL_48:
       }
     }
 
-    objc_msgSend_emitSignpostTranscodeFinalForDestinationUTI_(v67, v54, a5, v55, v56, v57, v58);
+    objc_msgSend_emitSignpostTranscodeFinalForDestinationUTI_(telemetryCopy, v54, format, v55, v56, v57, v58);
     CFRelease(v14);
 
     objc_autoreleasePoolPop(context);
@@ -3587,7 +3587,7 @@ LABEL_48:
 
   else
   {
-    objc_msgSend_emitSignpostTranscodeStepForDestinationUTI_(v67, v48, a5, v49, v50, v51, v52);
+    objc_msgSend_emitSignpostTranscodeStepForDestinationUTI_(telemetryCopy, v48, format, v49, v50, v51, v52);
     CFRelease(v14);
 
     objc_autoreleasePoolPop(context);
@@ -3609,34 +3609,34 @@ LABEL_49:
   return v53;
 }
 
-- (id)_writeHEIFImage:(CGImageSource *)a3 sourceURL:(id)a4 inFormat:(__CFString *)a5 withMaxByteSize:(unint64_t)a6 maxDimension:(unint64_t)a7 downgradingMultiFrameImageToSingleFrame:(BOOL)a8 actualSize:(unint64_t *)a9 startingLengthIndex:(int)a10 usedLengthIndex:(int *)a11 telemetry:(id)a12
+- (id)_writeHEIFImage:(CGImageSource *)image sourceURL:(id)l inFormat:(__CFString *)format withMaxByteSize:(unint64_t)size maxDimension:(unint64_t)dimension downgradingMultiFrameImageToSingleFrame:(BOOL)frame actualSize:(unint64_t *)actualSize startingLengthIndex:(int)self0 usedLengthIndex:(int *)self1 telemetry:(id)self2
 {
-  v95 = a8;
+  frameCopy = frame;
   *(&v105[2] + 2) = *MEMORY[0x277D85DE8];
-  v91 = a4;
-  v90 = a12;
-  if (a10 >= 0x1A)
+  lCopy = l;
+  telemetryCopy = telemetry;
+  if (index >= 0x1A)
   {
-    v15 = 0;
+    indexCopy = 0;
   }
 
   else
   {
-    v15 = a10;
+    indexCopy = index;
   }
 
-  Count = CGImageSourceGetCount(a3);
-  if (a7)
+  Count = CGImageSourceGetCount(image);
+  if (dimension)
   {
-    v16 = v15 - 1;
-    v17 = &dword_254832E48[v15];
+    v16 = indexCopy - 1;
+    v17 = &dword_254832E48[indexCopy];
     do
     {
       v18 = *v17++;
       ++v16;
     }
 
-    while (v18 > a7);
+    while (v18 > dimension);
     if (v16 > 0x19)
     {
 LABEL_59:
@@ -3653,23 +3653,23 @@ LABEL_59:
       goto LABEL_69;
     }
 
-    LODWORD(v15) = v16;
+    LODWORD(indexCopy) = v16;
   }
 
-  v98 = v15;
-  v19 = a7;
+  v98 = indexCopy;
+  dimensionCopy = dimension;
   v20 = *MEMORY[0x277CD3660];
   v87 = *MEMORY[0x277CD3660];
   v88 = *MEMORY[0x277CD3568];
-  v93 = a7;
+  dimensionCopy2 = dimension;
   while (1)
   {
     context = objc_autoreleasePoolPush();
     v21 = dword_254832E48[v98];
     v22 = dword_254832EB8[v98];
-    if (a7)
+    if (dimension)
     {
-      v23 = v21 / v19;
+      v23 = v21 / dimensionCopy;
     }
 
     else
@@ -3687,7 +3687,7 @@ LABEL_59:
       v24 = Count;
     }
 
-    if (v95)
+    if (frameCopy)
     {
       v25 = 1;
     }
@@ -3714,7 +3714,7 @@ LABEL_59:
     }
 
     v97 = objc_alloc_init(MEMORY[0x277CBEB28]);
-    v27 = CGImageDestinationCreateWithData(v97, a5, v99, 0);
+    v27 = CGImageDestinationCreateWithData(v97, format, v99, 0);
     v28 = IMOSLoggingEnabled();
     if (!v27)
     {
@@ -3741,9 +3741,9 @@ LABEL_59:
     v101[1] = v35;
     v39 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v36, v101, v100, 2, v37, v38);
 
-    if (v95)
+    if (frameCopy)
     {
-      v44 = objc_msgSend__determineFrameIndexForDowngradeFromMultiFrameToSingleFrameWithMaxDimension_fromImageSource_(self, v40, v93, a3, v41, v42, v43);
+      v44 = objc_msgSend__determineFrameIndexForDowngradeFromMultiFrameToSingleFrameWithMaxDimension_fromImageSource_(self, v40, dimensionCopy2, image, v41, v42, v43);
       v24 = 1;
     }
 
@@ -3757,17 +3757,17 @@ LABEL_59:
       do
       {
         v45 = objc_autoreleasePoolPush();
-        v46 = CGImageSourceCopyPropertiesAtIndex(a3, v44, 0);
+        v46 = CGImageSourceCopyPropertiesAtIndex(image, v44, 0);
         v53 = objc_msgSend_mutableCopy(v46, v47, v48, v49, v50, v51, v52);
 
         if (v99 >= 2)
         {
-          ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(a3, v44, v39);
+          ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(image, v44, v39);
         }
 
         else
         {
-          ThumbnailAtIndex = CGImageSourceCreateImageAtIndex(a3, v44, 0);
+          ThumbnailAtIndex = CGImageSourceCreateImageAtIndex(image, v44, 0);
         }
 
         v55 = ThumbnailAtIndex;
@@ -3815,7 +3815,7 @@ LABEL_59:
           }
 
           CGImageDestinationAddImage(v27, v55, v53);
-          objc_msgSend_copyAuxiliaryImagesFromImageSource_toDestination_fromImageAtIndex_scaleFactor_(self, v65, a3, v27, v44, v66, v67, v23);
+          objc_msgSend_copyAuxiliaryImagesFromImageSource_toDestination_fromImageAtIndex_scaleFactor_(self, v65, image, v27, v44, v66, v67, v23);
           CGImageRelease(v55);
         }
 
@@ -3847,7 +3847,7 @@ LABEL_59:
     }
 
     LODWORD(v86) = v98;
-    v75 = objc_msgSend__checkAndSaveImageData_sourceURL_inFormat_withMaxByteSize_actualSize_usedLengthIndex_currentIndex_(self, v69, v97, v91, a5, a6, a9, a11, v86);
+    v75 = objc_msgSend__checkAndSaveImageData_sourceURL_inFormat_withMaxByteSize_actualSize_usedLengthIndex_currentIndex_(self, v69, v97, lCopy, format, size, actualSize, lengthIndex, v86);
     if (v75)
     {
       if (IMOSLoggingEnabled())
@@ -3861,19 +3861,19 @@ LABEL_59:
         }
       }
 
-      objc_msgSend_emitSignpostTranscodeFinalForDestinationUTI_(v90, v80, a5, v81, v82, v83, v84);
+      objc_msgSend_emitSignpostTranscodeFinalForDestinationUTI_(telemetryCopy, v80, format, v81, v82, v83, v84);
       CFRelease(v27);
 
       objc_autoreleasePoolPop(context);
       goto LABEL_70;
     }
 
-    objc_msgSend_emitSignpostTranscodeStepForDestinationUTI_(v90, v70, a5, v71, v72, v73, v74);
+    objc_msgSend_emitSignpostTranscodeStepForDestinationUTI_(telemetryCopy, v70, format, v71, v72, v73, v74);
     CFRelease(v27);
 
     objc_autoreleasePoolPop(context);
     ++v98;
-    a7 = v93;
+    dimension = dimensionCopy2;
     if (v98 == 26)
     {
       goto LABEL_59;
@@ -3900,11 +3900,11 @@ LABEL_70:
   return v75;
 }
 
-- (unint64_t)_determineFrameIndexForDowngradeFromMultiFrameToSingleFrameWithMaxDimension:(unint64_t)a3 fromImageSource:(CGImageSource *)a4
+- (unint64_t)_determineFrameIndexForDowngradeFromMultiFrameToSingleFrameWithMaxDimension:(unint64_t)dimension fromImageSource:(CGImageSource *)source
 {
-  v4 = a4;
+  sourceCopy = source;
   v64 = *MEMORY[0x277D85DE8];
-  Count = CGImageSourceGetCount(a4);
+  Count = CGImageSourceGetCount(source);
   v7 = Count;
   if (!Count)
   {
@@ -3945,14 +3945,14 @@ LABEL_22:
     v55 = -1;
     do
     {
-      v13 = CGImageSourceCopyPropertiesAtIndex(v4, v11, 0);
+      v13 = CGImageSourceCopyPropertiesAtIndex(sourceCopy, v11, 0);
       v19 = objc_msgSend_objectForKeyedSubscript_(v13, v14, v12, v15, v16, v17, v18);
       v26 = objc_msgSend_unsignedIntegerValue(v19, v20, v21, v22, v23, v24, v25);
 
-      if (v26 <= a3)
+      if (v26 <= dimension)
       {
         v32 = objc_msgSend_objectForKeyedSubscript_(v13, v27, v53, v28, v29, v30, v31);
-        v39 = v4;
+        v39 = sourceCopy;
         v40 = v7;
         v41 = objc_msgSend_unsignedIntegerValue(v32, v33, v34, v35, v36, v37, v38);
 
@@ -3991,9 +3991,9 @@ LABEL_22:
           v49 = v11;
         }
 
-        v50 = v41 > a3;
+        v50 = v41 > dimension;
         v7 = v40;
-        v4 = v39;
+        sourceCopy = v39;
         if (!v50)
         {
           v44 = v47;
@@ -4026,26 +4026,26 @@ LABEL_25:
   return v9;
 }
 
-- (unint64_t)_getImageWidth:(CGImageSource *)a3
+- (unint64_t)_getImageWidth:(CGImageSource *)width
 {
-  if (!a3 || !CGImageSourceGetCount(a3))
+  if (!width || !CGImageSourceGetCount(width))
   {
     return 0;
   }
 
-  v4 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+  v4 = CGImageSourceCopyPropertiesAtIndex(width, 0, 0);
   v10 = objc_msgSend_objectForKey_(v4, v5, *MEMORY[0x277CD3450], v6, v7, v8, v9);
   v17 = objc_msgSend_unsignedIntegerValue(v10, v11, v12, v13, v14, v15, v16);
 
   return v17;
 }
 
-- (id)_getScaleFactorArray:(id)a3 transferURL:(id)a4 outputURLs:(id)a5
+- (id)_getScaleFactorArray:(id)array transferURL:(id)l outputURLs:(id)ls
 {
   v107 = *MEMORY[0x277D85DE8];
-  inUTI = a3;
-  url = a4;
-  v93 = a5;
+  inUTI = array;
+  url = l;
+  lsCopy = ls;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -4056,13 +4056,13 @@ LABEL_25:
       v103 = 2112;
       v104 = url;
       v105 = 2112;
-      v106 = v93;
+      v106 = lsCopy;
       _os_log_impl(&dword_254811000, v8, OS_LOG_TYPE_INFO, "_getScaleFactorArray uti %@ transferURL %@ outputURLs %@", buf, 0x20u);
     }
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ((UTTypeConformsTo(inUTI, *MEMORY[0x277CC2120]) || UTTypeConformsTo(inUTI, *MEMORY[0x277CC2088]) || UTTypeConformsTo(inUTI, *MEMORY[0x277CC20C8])) && (v16 = objc_msgSend_count(v93, v10, v11, v12, v13, v14, v15), url) && v16)
+  if ((UTTypeConformsTo(inUTI, *MEMORY[0x277CC2120]) || UTTypeConformsTo(inUTI, *MEMORY[0x277CC2088]) || UTTypeConformsTo(inUTI, *MEMORY[0x277CC20C8])) && (v16 = objc_msgSend_count(lsCopy, v10, v11, v12, v13, v14, v15), url) && v16)
   {
     cf = CGImageSourceCreateWithURL(url, 0);
     ImageWidth = objc_msgSend__getImageWidth_(self, v17, cf, v18, v19, v20, v21);
@@ -4081,7 +4081,7 @@ LABEL_25:
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    obj = v93;
+    obj = lsCopy;
     v27 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v24, &v96, v100, 16, v25, v26);
     if (v27)
     {
@@ -4185,7 +4185,7 @@ LABEL_36:
     if (os_log_type_enabled(v74, OS_LOG_TYPE_INFO))
     {
       v81 = MEMORY[0x277CCABB0];
-      v82 = objc_msgSend_count(v93, v75, v76, v77, v78, v79, v80);
+      v82 = objc_msgSend_count(lsCopy, v75, v76, v77, v78, v79, v80);
       v88 = objc_msgSend_numberWithUnsignedInteger_(v81, v83, v82, v84, v85, v86, v87);
       *buf = 138412802;
       v102 = v88;
@@ -4202,17 +4202,17 @@ LABEL_36:
   return v9;
 }
 
-- (void)transcodeFileTransfer:(id)a3 utiType:(id)a4 allowUnfilteredUTIs:(id)a5 target:(int64_t)a6 sizes:(id)a7 commonCapabilities:(id)a8 maxDimension:(unint64_t)a9 transcoderUserInfo:(id)a10 representations:(int64_t)a11 isLQMEnabled:(BOOL)a12 completionBlock:(id)a13
+- (void)transcodeFileTransfer:(id)transfer utiType:(id)type allowUnfilteredUTIs:(id)is target:(int64_t)target sizes:(id)sizes commonCapabilities:(id)capabilities maxDimension:(unint64_t)dimension transcoderUserInfo:(id)self0 representations:(int64_t)self1 isLQMEnabled:(BOOL)self2 completionBlock:(id)self3
 {
   v439 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v421 = a5;
-  v20 = a7;
-  v426 = a8;
-  v21 = a10;
-  v423 = a13;
-  v22 = v20;
+  transferCopy = transfer;
+  typeCopy = type;
+  isCopy = is;
+  sizesCopy = sizes;
+  capabilitiesCopy = capabilities;
+  infoCopy = info;
+  blockCopy = block;
+  v22 = sizesCopy;
   if (objc_msgSend_count(v22, v23, v24, v25, v26, v27, v28) < 2)
   {
     v55 = 0;
@@ -4240,7 +4240,7 @@ LABEL_36:
     v55 = isEqualToValue ^ 1u;
   }
 
-  if (v55 != a11 && IMOSLoggingEnabled())
+  if (v55 != representations && IMOSLoggingEnabled())
   {
     v59 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
@@ -4248,19 +4248,19 @@ LABEL_36:
       *buf = 138412546;
       *&buf[4] = v22;
       *&buf[12] = 1024;
-      *&buf[14] = a11;
+      *&buf[14] = representations;
       _os_log_impl(&dword_254811000, v59, OS_LOG_TYPE_INFO, "Warning - sizes %@ do not match the number of reps requested (%d)", buf, 0x12u);
     }
   }
 
-  shouldPreserveHEIFEncoding_target_sourceUTI = objc_msgSend_shouldPreserveHEIFEncoding_target_sourceUTI_(IMTranscoder, v56, v426, a6, v19, v57, v58);
+  shouldPreserveHEIFEncoding_target_sourceUTI = objc_msgSend_shouldPreserveHEIFEncoding_target_sourceUTI_(IMTranscoder, v56, capabilitiesCopy, target, typeCopy, v57, v58);
   v66 = objc_msgSend_lastObject(v22, v60, v61, v62, v63, v64, v65);
   v73 = objc_msgSend_longValue(v66, v67, v68, v69, v70, v71, v72);
-  shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_fileSizeLimit_commonCapabilities = objc_msgSend_shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_fileSizeLimit_commonCapabilities_(self, v74, v18, v21, a6, v19, v421, v73, v426);
+  shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_fileSizeLimit_commonCapabilities = objc_msgSend_shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_fileSizeLimit_commonCapabilities_(self, v74, transferCopy, infoCopy, target, typeCopy, isCopy, v73, capabilitiesCopy);
 
   v76 = shouldTranscodeTransfer_transcoderUserInfo_target_utiType_allowUnfilteredUTIs_fileSizeLimit_commonCapabilities == 2;
-  isEqualToIgnoringCase = objc_msgSend_isEqualToIgnoringCase_(v19, v77, @"________WBMP_________", v78, v79, v80, v81);
-  v424 = objc_msgSend_objectForKey_(v21, v83, @"ImageQuality", v84, v85, v86, v87);
+  isEqualToIgnoringCase = objc_msgSend_isEqualToIgnoringCase_(typeCopy, v77, @"________WBMP_________", v78, v79, v80, v81);
+  v424 = objc_msgSend_objectForKey_(infoCopy, v83, @"ImageQuality", v84, v85, v86, v87);
   if (v424)
   {
     objc_msgSend_floatValue(v424, v88, v89, v90, v91, v92, v93);
@@ -4280,17 +4280,17 @@ LABEL_36:
       }
 
       *buf = 138412546;
-      *&buf[4] = v18;
+      *&buf[4] = transferCopy;
       *&buf[12] = 2112;
       *&buf[14] = v107;
       _os_log_impl(&dword_254811000, v106, OS_LOG_TYPE_INFO, "Transfer: %@   needsTranscode? %@", buf, 0x16u);
     }
   }
 
-  if (a6 == 1)
+  if (target == 1)
   {
-    v108 = objc_msgSend_objectForKey_(v21, v101, *MEMORY[0x277D1A7D8], v102, v103, v104, v105);
-    v114 = objc_msgSend_objectForKey_(v21, v109, *MEMORY[0x277D1A7E0], v110, v111, v112, v113);
+    v108 = objc_msgSend_objectForKey_(infoCopy, v101, *MEMORY[0x277D1A7D8], v102, v103, v104, v105);
+    v114 = objc_msgSend_objectForKey_(infoCopy, v109, *MEMORY[0x277D1A7E0], v110, v111, v112, v113);
     v119 = (objc_msgSend_IMMMSMaximumMessageByteCountForPhoneNumber_simID_(MEMORY[0x277D1A8F8], v115, v108, v114, v116, v117, v118) * 0.92);
     if (IMOSLoggingEnabled())
     {
@@ -4335,14 +4335,14 @@ LABEL_36:
       }
     }
 
-    v420 = v139;
+    dimensionCopy = v139;
     v422 = 1;
     v22 = v134;
   }
 
   else
   {
-    v420 = a9;
+    dimensionCopy = dimension;
   }
 
   if (IMOSLoggingEnabled())
@@ -4351,7 +4351,7 @@ LABEL_36:
     if (os_log_type_enabled(v141, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      *&buf[4] = v420;
+      *&buf[4] = dimensionCopy;
       _os_log_impl(&dword_254811000, v141, OS_LOG_TYPE_INFO, " Max image dimension is: %zd", buf, 0xCu);
     }
   }
@@ -4370,7 +4370,7 @@ LABEL_36:
   v425 = objc_alloc_init(IMTranscoderTelemetry);
   if (v422)
   {
-    objc_msgSend_emitTranscodeBeginFromUTI_(v425, v143, v19, v144, v145, v146, v147);
+    objc_msgSend_emitTranscodeBeginFromUTI_(v425, v143, typeCopy, v144, v145, v146, v147);
     if (IMOSLoggingEnabled())
     {
       v153 = OSLogHandleForIMFoundationCategory();
@@ -4381,9 +4381,9 @@ LABEL_36:
       }
     }
 
-    if (!objc_msgSend_isEqualToIgnoringCase_(v19, v148, @"________WBMP_________", v149, v150, v151, v152))
+    if (!objc_msgSend_isEqualToIgnoringCase_(typeCopy, v148, @"________WBMP_________", v149, v150, v151, v152))
     {
-      if (v18)
+      if (transferCopy)
       {
 LABEL_108:
         if (IMOSLoggingEnabled())
@@ -4392,15 +4392,15 @@ LABEL_108:
           if (os_log_type_enabled(v220, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            *&buf[4] = v18;
+            *&buf[4] = transferCopy;
             _os_log_impl(&dword_254811000, v220, OS_LOG_TYPE_INFO, "Creating CGImageSource from url: %@", buf, 0xCu);
           }
         }
 
-        if (v19)
+        if (typeCopy)
         {
           v434 = *MEMORY[0x277CD3668];
-          v435 = v19;
+          v435 = typeCopy;
           v221 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v217, &v435, &v434, 1, v218, v219);
         }
 
@@ -4409,7 +4409,7 @@ LABEL_108:
           v221 = 0;
         }
 
-        v203 = CGImageSourceCreateWithURL(v18, v221);
+        v203 = CGImageSourceCreateWithURL(transferCopy, v221);
         if (IMOSLoggingEnabled())
         {
           v227 = OSLogHandleForIMFoundationCategory();
@@ -4474,8 +4474,8 @@ LABEL_131:
         goto LABEL_284;
       }
 
-      loga = objc_msgSend_newEstimatorWithURL_uti_imageSource_(IMTranscoderImageSizeEstimator, v222, v18, v19, v203, v223, v224);
-      if (a6 == 1)
+      loga = objc_msgSend_newEstimatorWithURL_uti_imageSource_(IMTranscoderImageSizeEstimator, v222, transferCopy, typeCopy, v203, v223, v224);
+      if (target == 1)
       {
         if (v226)
         {
@@ -4486,7 +4486,7 @@ LABEL_131:
 
 LABEL_137:
         v233 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v211, v212, v213, v214, v215, v216);
-        v240 = objc_msgSend_path(v18, v234, v235, v236, v237, v238, v239);
+        v240 = objc_msgSend_path(transferCopy, v234, v235, v236, v237, v238, v239);
         v428 = 0;
         v245 = objc_msgSend_attributesOfItemAtPath_error_(v233, v241, v240, &v428, v242, v243, v244);
         v414 = v428;
@@ -4499,7 +4499,7 @@ LABEL_138:
           if (os_log_type_enabled(v258, OS_LOG_TYPE_INFO))
           {
             *buf = 138412802;
-            *&buf[4] = v18;
+            *&buf[4] = transferCopy;
             *&buf[12] = 2112;
             *&buf[14] = v414;
             *&buf[22] = 2048;
@@ -4513,7 +4513,7 @@ LABEL_138:
 
         if (v266)
         {
-          if (UTTypeConformsTo(v19, *MEMORY[0x277CC20C8]))
+          if (UTTypeConformsTo(typeCopy, *MEMORY[0x277CC20C8]))
           {
             v267 = CGImageSourceCopyPropertiesAtIndex(v203, 0, 0);
             if (IMOSLoggingEnabled())
@@ -4595,7 +4595,7 @@ LABEL_138:
 
         if (IMMMSRestrictedModeEnabled())
         {
-          v231 = UTTypeConformsTo(v19, *MEMORY[0x277CC2088]) != 0;
+          v231 = UTTypeConformsTo(typeCopy, *MEMORY[0x277CC2088]) != 0;
           if (!v232)
           {
             goto LABEL_187;
@@ -4614,7 +4614,7 @@ LABEL_138:
 LABEL_178:
         if (!v231)
         {
-          if (objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v211, v21, *MEMORY[0x277D19E80], v214, v215, v216))
+          if (objc_msgSend_BOOLFromTranscoderUserInfo_withKey_(self, v211, infoCopy, *MEMORY[0x277D19E80], v214, v215, v216))
           {
             if (IMOSLoggingEnabled())
             {
@@ -4622,12 +4622,12 @@ LABEL_178:
               if (os_log_type_enabled(v297, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                *&buf[4] = v19;
+                *&buf[4] = typeCopy;
                 _os_log_impl(&dword_254811000, v297, OS_LOG_TYPE_INFO, "Transcoding Genmoji to single frame PNG, original uti: %@", buf, 0xCu);
               }
             }
 
-            v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v296, v203, a6, v18, v22, v420, v19, *MEMORY[0x277CC2120], 1, loga, a12, v425);
+            v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v296, v203, target, transferCopy, v22, dimensionCopy, typeCopy, *MEMORY[0x277CC2120], 1, loga, enabled, v425);
             if (objc_msgSend_count(v197, v298, v299, v300, v301, v302, v303))
             {
               if (v197)
@@ -4650,7 +4650,7 @@ LABEL_178:
             }
           }
 
-          if (a6 == 1 && (IMMMSRestrictedModeEnabled() & 1) != 0)
+          if (target == 1 && (IMMMSRestrictedModeEnabled() & 1) != 0)
           {
             goto LABEL_254;
           }
@@ -4661,7 +4661,7 @@ LABEL_178:
 
           if ((Count > 1) | isHighQualityPhotosEnabled & 1)
           {
-            v336 = UTTypeConformsTo(v19, *MEMORY[0x277D1AD80]) == 0;
+            v336 = UTTypeConformsTo(typeCopy, *MEMORY[0x277D1AD80]) == 0;
           }
 
           else
@@ -4677,7 +4677,7 @@ LABEL_178:
               if (os_log_type_enabled(v337, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                *&buf[4] = v19;
+                *&buf[4] = typeCopy;
                 _os_log_impl(&dword_254811000, v337, OS_LOG_TYPE_INFO, "Transcoding to HEIF, original uti: %@", buf, 0xCu);
               }
             }
@@ -4689,9 +4689,9 @@ LABEL_178:
             }
 
             v339 = *v338;
-            LOBYTE(v413) = a12;
+            LOBYTE(v413) = enabled;
             LOBYTE(v412) = 0;
-            v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v340, v203, a6, v18, v22, v420, v19, v339, v412, loga, v413, v425);
+            v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v340, v203, target, transferCopy, v22, dimensionCopy, typeCopy, v339, v412, loga, v413, v425);
             if (!objc_msgSend_count(v197, v341, v342, v343, v344, v345, v346))
             {
               if (IMOSLoggingEnabled())
@@ -4711,9 +4711,9 @@ LABEL_178:
           }
 
           v348 = *MEMORY[0x277CC2120];
-          if (UTTypeConformsTo(v19, *MEMORY[0x277CC2120]))
+          if (UTTypeConformsTo(typeCopy, *MEMORY[0x277CC2120]))
           {
-            if (a12)
+            if (enabled)
             {
               if (CGImageSourceGetCount(v203) == 1)
               {
@@ -4751,9 +4751,9 @@ LABEL_178:
               }
             }
 
-            LOBYTE(v413) = a12;
+            LOBYTE(v413) = enabled;
             LOBYTE(v412) = 0;
-            v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v349, v203, a6, v18, v22, v420, v19, v348, v412, loga, v413, v425);
+            v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v349, v203, target, transferCopy, v22, dimensionCopy, typeCopy, v348, v412, loga, v413, v425);
             if (objc_msgSend_count(v197, v370, v371, v372, v373, v374, v375))
             {
               goto LABEL_247;
@@ -4775,7 +4775,7 @@ LABEL_178:
           }
 
           v359 = *MEMORY[0x277CC2088];
-          if (UTTypeConformsTo(v19, *MEMORY[0x277CC2088]))
+          if (UTTypeConformsTo(typeCopy, *MEMORY[0x277CC2088]))
           {
             if (IMOSLoggingEnabled())
             {
@@ -4787,9 +4787,9 @@ LABEL_178:
               }
             }
 
-            LOBYTE(v413) = a12;
+            LOBYTE(v413) = enabled;
             LOBYTE(v412) = 0;
-            v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v360, v203, a6, v18, v22, v420, v19, v359, v412, loga, v413, v425);
+            v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v360, v203, target, transferCopy, v22, dimensionCopy, typeCopy, v359, v412, loga, v413, v425);
             if (!objc_msgSend_count(v197, v362, v363, v364, v365, v366, v367))
             {
               if (!IMOSLoggingEnabled())
@@ -4797,7 +4797,7 @@ LABEL_178:
 LABEL_253:
 
 LABEL_254:
-                v376 = UTTypeConformsTo(v19, *MEMORY[0x277D1AD80]);
+                v376 = UTTypeConformsTo(typeCopy, *MEMORY[0x277D1AD80]);
                 v377 = *MEMORY[0x277CC20C8];
                 if (v376)
                 {
@@ -4820,9 +4820,9 @@ LABEL_254:
                   }
                 }
 
-                LOBYTE(v413) = a12;
+                LOBYTE(v413) = enabled;
                 LOBYTE(v412) = 0;
-                v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v380, v203, a6, v18, v22, v420, v19, v377, v412, loga, v413, v425);
+                v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v380, v203, target, transferCopy, v22, dimensionCopy, typeCopy, v377, v412, loga, v413, v425);
                 if (!v197)
                 {
 LABEL_263:
@@ -4836,7 +4836,7 @@ LABEL_263:
                     }
                   }
 
-                  v319 = _IMTranscoderLinkFile(v18, v382, v383, v384, v385, v386, v387);
+                  v319 = _IMTranscoderLinkFile(transferCopy, v382, v383, v384, v385, v386, v387);
                   v389 = IMSingleObjectArray();
 
                   v197 = v389;
@@ -4887,7 +4887,7 @@ LABEL_269:
                   }
 
 LABEL_284:
-                  objc_msgSend_emitTranscodeEndFromUTI_(v425, v288, v19, v289, v290, v291, v292);
+                  objc_msgSend_emitTranscodeEndFromUTI_(v425, v288, typeCopy, v289, v290, v291, v292);
                   goto LABEL_285;
                 }
 
@@ -4909,7 +4909,7 @@ LABEL_252:
 
           else
           {
-            if (!UTTypeConformsTo(v19, *MEMORY[0x277D1AD88]))
+            if (!UTTypeConformsTo(typeCopy, *MEMORY[0x277D1AD88]))
             {
               goto LABEL_254;
             }
@@ -4934,9 +4934,9 @@ LABEL_252:
               }
             }
 
-            LOBYTE(v413) = a12;
+            LOBYTE(v413) = enabled;
             LOBYTE(v412) = 0;
-            v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v404, v203, a6, v18, v22, v420, v19, v417, v412, loga, v413, v425);
+            v197 = objc_msgSend__writeRepresentationsForImage_target_sourceURL_sizes_maxDimension_srcUTI_inFormat_downgradingMultiFrameImageToSingleFrame_estimator_isLQMEnabled_telemetry_(self, v404, v203, target, transferCopy, v22, dimensionCopy, typeCopy, v417, v412, loga, v413, v425);
             if (!objc_msgSend_count(v197, v406, v407, v408, v409, v410, v411))
             {
               if (!IMOSLoggingEnabled())
@@ -4995,7 +4995,7 @@ LABEL_187:
           }
         }
 
-        v319 = _IMTranscoderLinkFile(v18, v310, v311, v312, v313, v314, v315);
+        v319 = _IMTranscoderLinkFile(transferCopy, v310, v311, v312, v313, v314, v315);
         v197 = IMSingleObjectArray();
 LABEL_268:
 
@@ -5019,14 +5019,14 @@ LABEL_136:
     }
 
     v155 = objc_alloc(MEMORY[0x277CBEA90]);
-    v161 = objc_msgSend_initWithContentsOfURL_(v155, v156, v18, v157, v158, v159, v160);
+    v161 = objc_msgSend_initWithContentsOfURL_(v155, v156, transferCopy, v157, v158, v159, v160);
     if (!objc_msgSend_length(v161, v162, v163, v164, v165, v166, v167) && IMOSLoggingEnabled())
     {
       v168 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v168, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v18;
+        *&buf[4] = transferCopy;
         _os_log_impl(&dword_254811000, v168, OS_LOG_TYPE_INFO, "Failing, Empty data created from URL: %@", buf, 0xCu);
       }
     }
@@ -5167,13 +5167,13 @@ LABEL_136:
 LABEL_104:
 
       v203 = v188;
-      if (v18)
+      if (transferCopy)
       {
         if (v188)
         {
-          loga = objc_msgSend_newEstimatorWithURL_uti_imageSource_(IMTranscoderImageSizeEstimator, v208, v18, v19, v188, v209, v210);
+          loga = objc_msgSend_newEstimatorWithURL_uti_imageSource_(IMTranscoderImageSizeEstimator, v208, transferCopy, typeCopy, v188, v209, v210);
           v415 = 0;
-          if (a6 == 1)
+          if (target == 1)
           {
             goto LABEL_137;
           }
@@ -5192,7 +5192,7 @@ LABEL_103:
     goto LABEL_104;
   }
 
-  objc_msgSend_emitSignpostTranscodeSkipSourceUTI_(v425, v143, v19, v144, v145, v146, v147);
+  objc_msgSend_emitSignpostTranscodeSkipSourceUTI_(v425, v143, typeCopy, v144, v145, v146, v147);
   if (IMOSLoggingEnabled())
   {
     v195 = OSLogHandleForIMFoundationCategory();
@@ -5203,13 +5203,13 @@ LABEL_103:
     }
   }
 
-  v196 = _IMTranscoderLinkFile(v18, v189, v190, v191, v192, v193, v194);
+  v196 = _IMTranscoderLinkFile(transferCopy, v189, v190, v191, v192, v193, v194);
   v197 = IMSingleObjectArray();
 
   v201 = 0;
   v202 = 1;
 LABEL_285:
-  v398 = objc_msgSend__getScaleFactorArray_transferURL_outputURLs_(self, v198, v19, v18, v197, v199, v200);
+  v398 = objc_msgSend__getScaleFactorArray_transferURL_outputURLs_(self, v198, typeCopy, transferCopy, v197, v199, v200);
   if (IMOSLoggingEnabled())
   {
     v399 = OSLogHandleForIMFoundationCategory();
@@ -5228,26 +5228,26 @@ LABEL_285:
     CFDictionarySetValue(v400, *MEMORY[0x277D1A7D0], v401);
   }
 
-  if (v423)
+  if (blockCopy)
   {
-    (*(v423 + 2))(v423, v18, v197, 0, v201, v202, v422 & 1, v400);
+    (*(blockCopy + 2))(blockCopy, transferCopy, v197, 0, v201, v202, v422 & 1, v400);
   }
 
   v402 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_imMetricsCollectorForLQMQualityEstimatorModeImageTypeHEIC:(unint64_t)a3 shouldUseQualityEstimatorModel:(BOOL)a4 inputImageFeatures:(id)a5 metricsDict:(id)a6
+- (void)_imMetricsCollectorForLQMQualityEstimatorModeImageTypeHEIC:(unint64_t)c shouldUseQualityEstimatorModel:(BOOL)model inputImageFeatures:(id)features metricsDict:(id)dict
 {
-  v7 = a4;
+  modelCopy = model;
   v107 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  v16 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v11, a3, v12, v13, v14, v15);
+  featuresCopy = features;
+  dictCopy = dict;
+  v16 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v11, c, v12, v13, v14, v15);
   v22 = objc_msgSend_containsObject_(&unk_28669CC60, v17, v16, v18, v19, v20, v21);
 
   if (v22)
   {
-    v23 = !v7;
+    v23 = !modelCopy;
   }
 
   else
@@ -5263,7 +5263,7 @@ LABEL_285:
       if (os_log_type_enabled(v97, OS_LOG_TYPE_INFO))
       {
         v105 = 134217984;
-        v106 = a3;
+        cCopy3 = c;
         _os_log_impl(&dword_254811000, v97, OS_LOG_TYPE_INFO, "Quality estimator model used, suggestedMaxLength: %zu", &v105, 0xCu);
       }
     }
@@ -5271,12 +5271,12 @@ LABEL_285:
     v98 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v92, 3, v93, v94, v95, v96);
 LABEL_25:
     v86 = v98;
-    objc_msgSend_setObject_forKey_(v10, v99, v98, *MEMORY[0x277D1A160], v100, v101, v102);
+    objc_msgSend_setObject_forKey_(dictCopy, v99, v98, *MEMORY[0x277D1A160], v100, v101, v102);
     goto LABEL_26;
   }
 
   v24 = IMOSLoggingEnabled();
-  if (!v9 || ((v22 | !v7) & 1) == 0)
+  if (!featuresCopy || ((v22 | !modelCopy) & 1) == 0)
   {
     if (v24)
     {
@@ -5284,7 +5284,7 @@ LABEL_25:
       if (os_log_type_enabled(v103, OS_LOG_TYPE_INFO))
       {
         v105 = 134217984;
-        v106 = a3;
+        cCopy3 = c;
         _os_log_impl(&dword_254811000, v103, OS_LOG_TYPE_INFO, "Legacy model used without fallback, suggestedMaxLength: %zu", &v105, 0xCu);
       }
     }
@@ -5299,16 +5299,16 @@ LABEL_25:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
       v105 = 134217984;
-      v106 = a3;
+      cCopy3 = c;
       _os_log_impl(&dword_254811000, v30, OS_LOG_TYPE_INFO, "Legacy model used with fallback, suggestedMaxLength: %zu", &v105, 0xCu);
     }
   }
 
   v31 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v25, 2, v26, v27, v28, v29);
-  objc_msgSend_setObject_forKey_(v10, v32, v31, *MEMORY[0x277D1A160], v33, v34, v35);
+  objc_msgSend_setObject_forKey_(dictCopy, v32, v31, *MEMORY[0x277D1A160], v33, v34, v35);
 
   v36 = MEMORY[0x277CCABB0];
-  v42 = objc_msgSend_objectForKey_(v9, v37, @"Input File Size", v38, v39, v40, v41);
+  v42 = objc_msgSend_objectForKey_(featuresCopy, v37, @"Input File Size", v38, v39, v40, v41);
   v49 = objc_msgSend_intValue(v42, v43, v44, v45, v46, v47, v48);
   v55 = v49 + 0xFFFFF;
   if (v49 >= 0)
@@ -5317,25 +5317,25 @@ LABEL_25:
   }
 
   v56 = objc_msgSend_numberWithInteger_(v36, v50, v55 >> 20, v51, v52, v53, v54);
-  objc_msgSend_setObject_forKey_(v10, v57, v56, *MEMORY[0x277D1A148], v58, v59, v60);
+  objc_msgSend_setObject_forKey_(dictCopy, v57, v56, *MEMORY[0x277D1A148], v58, v59, v60);
 
-  v66 = objc_msgSend_objectForKey_(v9, v61, @"Input Entropy", v62, v63, v64, v65);
-  objc_msgSend_setObject_forKey_(v10, v67, v66, *MEMORY[0x277D1A140], v68, v69, v70);
+  v66 = objc_msgSend_objectForKey_(featuresCopy, v61, @"Input Entropy", v62, v63, v64, v65);
+  objc_msgSend_setObject_forKey_(dictCopy, v67, v66, *MEMORY[0x277D1A140], v68, v69, v70);
 
-  v76 = objc_msgSend_objectForKey_(v9, v71, @"Input Height", v72, v73, v74, v75);
-  objc_msgSend_setObject_forKey_(v10, v77, v76, *MEMORY[0x277D1A138], v78, v79, v80);
+  v76 = objc_msgSend_objectForKey_(featuresCopy, v71, @"Input Height", v72, v73, v74, v75);
+  objc_msgSend_setObject_forKey_(dictCopy, v77, v76, *MEMORY[0x277D1A138], v78, v79, v80);
 
-  v86 = objc_msgSend_objectForKey_(v9, v81, @"Aspect Ratio", v82, v83, v84, v85);
-  objc_msgSend_setObject_forKey_(v10, v87, v86, *MEMORY[0x277D1A130], v88, v89, v90);
+  v86 = objc_msgSend_objectForKey_(featuresCopy, v81, @"Aspect Ratio", v82, v83, v84, v85);
+  objc_msgSend_setObject_forKey_(dictCopy, v87, v86, *MEMORY[0x277D1A130], v88, v89, v90);
 LABEL_26:
 
   v104 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_canConvertPNGToJPEG:(CGImage *)a3
++ (BOOL)_canConvertPNGToJPEG:(CGImage *)g
 {
   v14 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend__imageContainsTranslucentPixels_(a1, a2, a3, v3, v4, v5, v6);
+  v7 = objc_msgSend__imageContainsTranslucentPixels_(self, a2, g, v3, v4, v5, v6);
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -5357,10 +5357,10 @@ LABEL_26:
   return v7 ^ 1;
 }
 
-+ (BOOL)_imageContainsTranslucentPixels:(CGImage *)a3
++ (BOOL)_imageContainsTranslucentPixels:(CGImage *)pixels
 {
   v41 = *MEMORY[0x277D85DE8];
-  AlphaInfo = CGImageGetAlphaInfo(a3);
+  AlphaInfo = CGImageGetAlphaInfo(pixels);
   if (AlphaInfo > kCGImageAlphaOnly)
   {
     if (IMOSLoggingEnabled())
@@ -5422,7 +5422,7 @@ LABEL_20:
     }
   }
 
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
+  BitsPerComponent = CGImageGetBitsPerComponent(pixels);
   if (BitsPerComponent >= 9)
   {
     v9 = 16;
@@ -5446,8 +5446,8 @@ LABEL_20:
     }
   }
 
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(pixels);
+  Height = CGImageGetHeight(pixels);
   v13 = Height;
   if (BitsPerComponent < 9)
   {
@@ -5590,7 +5590,7 @@ LABEL_39:
   v42.size.height = v13;
   v42.origin.x = 0.0;
   v42.origin.y = 0.0;
-  CGContextDrawImage(v26, v42, a3);
+  CGContextDrawImage(v26, v42, pixels);
   if (!v13)
   {
 LABEL_73:

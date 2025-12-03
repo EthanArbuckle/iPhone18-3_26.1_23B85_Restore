@@ -1,8 +1,8 @@
 @interface _DASPolicyManager
 + (id)allPoliciesForPlatform;
 + (id)allPredictingPoliciesForPlatform;
-+ (id)policyForBitIndex:(unint64_t)a3;
-+ (unint64_t)bitmaskForPolicy:(id)a3;
++ (id)policyForBitIndex:(unint64_t)index;
++ (unint64_t)bitmaskForPolicy:(id)policy;
 + (void)initializeAllPolicies;
 @end
 
@@ -32,11 +32,11 @@
   return v2;
 }
 
-+ (unint64_t)bitmaskForPolicy:(id)a3
++ (unint64_t)bitmaskForPolicy:(id)policy
 {
-  v3 = a3;
-  v4 = [qword_10020B520 allValues];
-  v5 = [v4 containsObject:v3];
+  policyCopy = policy;
+  allValues = [qword_10020B520 allValues];
+  v5 = [allValues containsObject:policyCopy];
 
   if (v5)
   {
@@ -60,7 +60,7 @@
 
           v10 = *(*(&v25 + 1) + 8 * i);
           v11 = [qword_10020B520 objectForKeyedSubscript:v10];
-          v12 = [v11 isEqualToString:v3];
+          v12 = [v11 isEqualToString:policyCopy];
 
           if (v12)
           {
@@ -102,8 +102,8 @@
 
           v15 = *(*(&v21 + 1) + 8 * j);
           v16 = [qword_10020B510 objectForKeyedSubscript:{v15, v21}];
-          v17 = [v16 policyName];
-          v18 = [v17 isEqualToString:v3];
+          policyName = [v16 policyName];
+          v18 = [policyName isEqualToString:policyCopy];
 
           if (v18)
           {
@@ -139,7 +139,7 @@ LABEL_22:
   return v19;
 }
 
-+ (id)policyForBitIndex:(unint64_t)a3
++ (id)policyForBitIndex:(unint64_t)index
 {
   v4 = qword_10020B520;
   v5 = [NSNumber numberWithUnsignedLongLong:?];
@@ -148,19 +148,19 @@ LABEL_22:
   if (v6)
   {
     v7 = qword_10020B520;
-    v8 = [NSNumber numberWithUnsignedLongLong:a3];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    v8 = [NSNumber numberWithUnsignedLongLong:index];
+    policyName = [v7 objectForKeyedSubscript:v8];
   }
 
   else
   {
     v10 = qword_10020B510;
-    v8 = [NSNumber numberWithUnsignedLongLong:a3];
+    v8 = [NSNumber numberWithUnsignedLongLong:index];
     v11 = [v10 objectForKeyedSubscript:v8];
-    v9 = [v11 policyName];
+    policyName = [v11 policyName];
   }
 
-  return v9;
+  return policyName;
 }
 
 @end

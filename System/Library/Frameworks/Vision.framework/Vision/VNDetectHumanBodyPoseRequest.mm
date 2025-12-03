@@ -3,27 +3,27 @@
 + (NSArray)supportedJointsGroupNamesForRevision:(NSUInteger)revision error:(NSError *)error;
 + (id)_supportedJointNamesRevision1;
 + (id)_supportedJointsGroupNamesRevision1;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (NSArray)supportedJointNamesAndReturnError:(NSError *)error;
 - (NSArray)supportedJointsGroupNamesAndReturnError:(NSError *)error;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 @end
 
 @implementation VNDetectHumanBodyPoseRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
   if (v9)
   {
-    v10 = [v8 session];
+    session = [contextCopy session];
     v21 = 0;
-    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v21 forRevision:a3 loadedInSession:v10 error:a5];
+    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v21 forRevision:revision loadedInSession:session error:error];
     v12 = v21;
     if (v11)
     {
@@ -31,19 +31,19 @@
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
       [v12 setObject:v13 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-      if (a3 == 3737841664)
+      if (revision == 3737841664)
       {
         v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNDetectHumanBodyPoseRequest detectsHands](self, "detectsHands")}];
         [v12 setObject:v14 forKey:@"VNHumanBodyPoseDetectorProcessOption_HolisticDetection"];
       }
 
-      v15 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v16 = [v11 processUsingQualityOfServiceClass:v15 options:v12 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v16 = [v11 processUsingQualityOfServiceClass:qosClass options:v12 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v17 = v16 != 0;
       if (v16)
       {
-        if (a3 == 1 && [(VisionCoreRuntimeUtilities *)VNRuntimeUtilities linkTimeOrRunTimeBeforeVersion:393216])
+        if (revision == 1 && [(VisionCoreRuntimeUtilities *)VNRuntimeUtilities linkTimeOrRunTimeBeforeVersion:393216])
         {
           v18 = &__block_literal_global_125;
           v19 = [v16 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_125];
@@ -69,11 +69,11 @@
   return v17;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v8.receiver = self;
   v8.super_class = VNDetectHumanBodyPoseRequest;
-  v5 = [(VNRequest *)&v8 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v5 = [(VNRequest *)&v8 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNRequest usesCPUOnly](self, "usesCPUOnly")}];
   [v5 setObject:v6 forKey:@"VNHumanPoseDetectorInitOption_UseCPUOnly"];
 
@@ -82,64 +82,64 @@
 
 - (NSArray)supportedJointsGroupNamesAndReturnError:(NSError *)error
 {
-  v5 = [(VNRequest *)self revision];
-  if (v5 == 3737841664 || v5 == 1)
+  revision = [(VNRequest *)self revision];
+  if (revision == 3737841664 || revision == 1)
   {
-    v6 = [objc_opt_class() _supportedJointsGroupNamesRevision1];
+    _supportedJointsGroupNamesRevision1 = [objc_opt_class() _supportedJointsGroupNamesRevision1];
   }
 
   else if (error)
   {
     v7 = [VNError errorForUnsupportedRevision:[(VNRequest *)self revision] ofRequest:self];
     v8 = v7;
-    v6 = 0;
+    _supportedJointsGroupNamesRevision1 = 0;
     *error = v7;
   }
 
   else
   {
-    v6 = 0;
+    _supportedJointsGroupNamesRevision1 = 0;
   }
 
-  return v6;
+  return _supportedJointsGroupNamesRevision1;
 }
 
 - (NSArray)supportedJointNamesAndReturnError:(NSError *)error
 {
-  v5 = [(VNRequest *)self revision];
-  if (v5 == 3737841664 || v5 == 1)
+  revision = [(VNRequest *)self revision];
+  if (revision == 3737841664 || revision == 1)
   {
-    v6 = [objc_opt_class() _supportedJointNamesRevision1];
+    _supportedJointNamesRevision1 = [objc_opt_class() _supportedJointNamesRevision1];
   }
 
   else if (error)
   {
     v7 = [VNError errorForUnsupportedRevision:[(VNRequest *)self revision] ofRequest:self];
     v8 = v7;
-    v6 = 0;
+    _supportedJointNamesRevision1 = 0;
     *error = v7;
   }
 
   else
   {
-    v6 = 0;
+    _supportedJointNamesRevision1 = 0;
   }
 
-  return v6;
+  return _supportedJointNamesRevision1;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 3737841664 || a3 == 1)
+  if (revision == 3737841664 || revision == 1)
   {
     v5 = @"VNHumanBodyPoseDetectorType";
     v6 = @"VNHumanBodyPoseDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v5 = 0;
+    *error = v5 = 0;
   }
 
   else
@@ -248,9 +248,9 @@ void __61__VNDetectHumanBodyPoseRequest__supportedJointNamesRevision1__block_inv
   +[VNDetectHumanBodyPoseRequest _supportedJointNamesRevision1]::jointNames = v0;
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 == 3737841664)
+  if (revision == 3737841664)
   {
     v5 = @"VNDetectHumanBodyPoseRequestRevision2";
   }
@@ -259,7 +259,7 @@ void __61__VNDetectHumanBodyPoseRequest__supportedJointNamesRevision1__block_inv
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNDetectHumanBodyPoseRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }

@@ -11,7 +11,7 @@
 - (id)tsu_encodeToBase64String
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = (v2 + 2) / 3;
   v4 = 8 * v3;
   if (v2 >= 0xBFFFFFFFFFFFFFFELL)
@@ -38,10 +38,10 @@ LABEL_5:
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v9 = [a1 bytes];
+  bytes = [self bytes];
   if (v2)
   {
-    v10 = v9;
+    v10 = bytes;
     v11 = 0;
     v12 = 0;
     updated = 0;
@@ -92,7 +92,7 @@ LABEL_5:
 
 - (id)tsu_encodeToBase64URLSafeString
 {
-  v1 = [objc_msgSend(a1 base64EncodedStringWithOptions:{0), "mutableCopy"}];
+  v1 = [objc_msgSend(self base64EncodedStringWithOptions:{0), "mutableCopy"}];
   [v1 replaceOccurrencesOfString:@"+" withString:@"-" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@"/" withString:@"_" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@"=" withString:&stru_286EE1130 options:0 range:{0, objc_msgSend(v1, "length")}];
@@ -103,16 +103,16 @@ LABEL_5:
 {
   v4 = [a3 stringByReplacingOccurrencesOfString:@"[ \r\n\t]+" withString:&stru_286EE1130 options:1024 range:{0, objc_msgSend(a3, "length")}];
 
-  return [a1 tsu_decodeFromBase64String:v4];
+  return [self tsu_decodeFromBase64String:v4];
 }
 
 + (uint64_t)tsu_decodeFromBase64String:()Base64Additions
 {
   v4 = MEMORY[0x277CBEA90];
-  v5 = [a3 UTF8String];
+  uTF8String = [a3 UTF8String];
   v6 = [a3 length];
 
-  return [v4 tsu_decodeFromBase64CString:v5 srcLength:v6];
+  return [v4 tsu_decodeFromBase64CString:uTF8String srcLength:v6];
 }
 
 + (id)tsu_decodeFromBase64CString:()Base64Additions srcLength:

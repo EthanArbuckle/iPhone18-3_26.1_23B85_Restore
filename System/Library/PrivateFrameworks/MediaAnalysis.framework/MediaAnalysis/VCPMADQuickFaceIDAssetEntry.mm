@@ -1,25 +1,25 @@
 @interface VCPMADQuickFaceIDAssetEntry
-+ (id)entryWithAsset:(id)a3 previousStatus:(unint64_t)a4 previousAttempts:(unint64_t)a5 andLastAttemptDate:(id)a6;
-- (VCPMADQuickFaceIDAssetEntry)initWithAsset:(id)a3 previousStatus:(unint64_t)a4 previousAttempts:(unint64_t)a5 andLastAttemptDate:(id)a6;
++ (id)entryWithAsset:(id)asset previousStatus:(unint64_t)status previousAttempts:(unint64_t)attempts andLastAttemptDate:(id)date;
+- (VCPMADQuickFaceIDAssetEntry)initWithAsset:(id)asset previousStatus:(unint64_t)status previousAttempts:(unint64_t)attempts andLastAttemptDate:(id)date;
 @end
 
 @implementation VCPMADQuickFaceIDAssetEntry
 
-- (VCPMADQuickFaceIDAssetEntry)initWithAsset:(id)a3 previousStatus:(unint64_t)a4 previousAttempts:(unint64_t)a5 andLastAttemptDate:(id)a6
+- (VCPMADQuickFaceIDAssetEntry)initWithAsset:(id)asset previousStatus:(unint64_t)status previousAttempts:(unint64_t)attempts andLastAttemptDate:(id)date
 {
-  v11 = a3;
-  v12 = a6;
+  assetCopy = asset;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = VCPMADQuickFaceIDAssetEntry;
   v13 = [(VCPMADQuickFaceIDAssetEntry *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_asset, a3);
+    objc_storeStrong(&v13->_asset, asset);
     v14->_status = 0;
-    v14->_previousStatus = a4;
-    v14->_previousAttempts = a5;
-    objc_storeStrong(&v14->_lastAttemptDate, a6);
+    v14->_previousStatus = status;
+    v14->_previousAttempts = attempts;
+    objc_storeStrong(&v14->_lastAttemptDate, date);
     v15 = +[NSDate now];
     currentAttemptDate = v14->_currentAttemptDate;
     v14->_currentAttemptDate = v15;
@@ -28,11 +28,11 @@
   return v14;
 }
 
-+ (id)entryWithAsset:(id)a3 previousStatus:(unint64_t)a4 previousAttempts:(unint64_t)a5 andLastAttemptDate:(id)a6
++ (id)entryWithAsset:(id)asset previousStatus:(unint64_t)status previousAttempts:(unint64_t)attempts andLastAttemptDate:(id)date
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [objc_alloc(objc_opt_class()) initWithAsset:v9 previousStatus:a4 previousAttempts:a5 andLastAttemptDate:v10];
+  assetCopy = asset;
+  dateCopy = date;
+  v11 = [objc_alloc(objc_opt_class()) initWithAsset:assetCopy previousStatus:status previousAttempts:attempts andLastAttemptDate:dateCopy];
 
   return v11;
 }

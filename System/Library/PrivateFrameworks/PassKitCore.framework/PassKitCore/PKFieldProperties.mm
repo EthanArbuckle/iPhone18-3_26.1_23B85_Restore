@@ -1,27 +1,27 @@
 @interface PKFieldProperties
-+ (id)fieldPropertiesForFieldNotification:(id)a3;
-+ (id)fieldPropertiesForSTSFieldNotification:(id)a3;
++ (id)fieldPropertiesForFieldNotification:(id)notification;
++ (id)fieldPropertiesForSTSFieldNotification:(id)notification;
 - (BOOL)shouldIgnore;
-- (PKFieldProperties)initWithCoder:(id)a3;
-- (PKFieldProperties)initWithTechnology:(unint64_t)a3 terminalType:(int64_t)a4 accessTerminalSubtype:(int64_t)a5 valueAddedServiceMode:(int64_t)a6;
+- (PKFieldProperties)initWithCoder:(id)coder;
+- (PKFieldProperties)initWithTechnology:(unint64_t)technology terminalType:(int64_t)type accessTerminalSubtype:(int64_t)subtype valueAddedServiceMode:(int64_t)mode;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFieldProperties
 
-- (PKFieldProperties)initWithTechnology:(unint64_t)a3 terminalType:(int64_t)a4 accessTerminalSubtype:(int64_t)a5 valueAddedServiceMode:(int64_t)a6
+- (PKFieldProperties)initWithTechnology:(unint64_t)technology terminalType:(int64_t)type accessTerminalSubtype:(int64_t)subtype valueAddedServiceMode:(int64_t)mode
 {
   v11.receiver = self;
   v11.super_class = PKFieldProperties;
   result = [(PKFieldProperties *)&v11 init];
   if (result)
   {
-    result->_technology = a3;
-    result->_terminalType = a4;
-    result->_valueAddedServiceMode = a6;
-    result->_accessTerminalSubtype = a5;
-    result->_pairingRequested = 2 * (a5 != 2);
+    result->_technology = technology;
+    result->_terminalType = type;
+    result->_valueAddedServiceMode = mode;
+    result->_accessTerminalSubtype = subtype;
+    result->_pairingRequested = 2 * (subtype != 2);
   }
 
   return result;
@@ -153,54 +153,54 @@ LABEL_18:
   v22 = v3;
   applicationIdentifier = self->_applicationIdentifier;
   credentialIdentifier = self->_credentialIdentifier;
-  v19 = [(NSData *)self->_readerIdentifier hexEncoding];
-  v20 = [v28 stringWithFormat:@"[%@ Technology: %@, Terminal Type: %@ (%@), Field Type: %lu, VAS Mode: %@, Authentication Required: %@, Pairing Requested: %s, Background Transaction: %@, Merchant Identifiers: %@, TCIs: %@, Credential Identifier: %@, AID: %@, Reader Identifier: %@, Secondary Properties Required: %d, Secondary Properties Acquired: %d]", v29, v26, v24, v25, fieldType, v10, v13, v12, v14, v15, TCIs, credentialIdentifier, applicationIdentifier, v19, self->_secondaryPropertiesRequired, self->_secondaryPropertiesAcquired];
+  hexEncoding = [(NSData *)self->_readerIdentifier hexEncoding];
+  v20 = [v28 stringWithFormat:@"[%@ Technology: %@, Terminal Type: %@ (%@), Field Type: %lu, VAS Mode: %@, Authentication Required: %@, Pairing Requested: %s, Background Transaction: %@, Merchant Identifiers: %@, TCIs: %@, Credential Identifier: %@, AID: %@, Reader Identifier: %@, Secondary Properties Required: %d, Secondary Properties Acquired: %d]", v29, v26, v24, v25, fieldType, v10, v13, v12, v14, v15, TCIs, credentialIdentifier, applicationIdentifier, hexEncoding, self->_secondaryPropertiesRequired, self->_secondaryPropertiesAcquired];
 
   return v20;
 }
 
-- (PKFieldProperties)initWithCoder:(id)a3
+- (PKFieldProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PKFieldProperties;
   v5 = [(PKFieldProperties *)&v23 init];
   if (v5)
   {
-    v5->_technology = [v4 decodeIntegerForKey:@"technology"];
-    v5->_terminalType = [v4 decodeIntegerForKey:@"terminalType"];
-    v5->_accessTerminalSubtype = [v4 decodeIntegerForKey:@"terminalSubtype"];
-    v5->_valueAddedServiceMode = [v4 decodeIntegerForKey:@"valueAddedServiceMode"];
-    v5->_authenticationRequired = [v4 decodeBoolForKey:@"authenticationRequired"];
-    v5->_backgroundTransaction = [v4 decodeBoolForKey:@"backgroundTransaction"];
-    v5->_pairingRequested = [v4 decodeIntegerForKey:@"pairingRequested"];
-    v5->_carKeyBrandCode = [v4 decodeIntegerForKey:@"carKeyBrandCode"];
+    v5->_technology = [coderCopy decodeIntegerForKey:@"technology"];
+    v5->_terminalType = [coderCopy decodeIntegerForKey:@"terminalType"];
+    v5->_accessTerminalSubtype = [coderCopy decodeIntegerForKey:@"terminalSubtype"];
+    v5->_valueAddedServiceMode = [coderCopy decodeIntegerForKey:@"valueAddedServiceMode"];
+    v5->_authenticationRequired = [coderCopy decodeBoolForKey:@"authenticationRequired"];
+    v5->_backgroundTransaction = [coderCopy decodeBoolForKey:@"backgroundTransaction"];
+    v5->_pairingRequested = [coderCopy decodeIntegerForKey:@"pairingRequested"];
+    v5->_carKeyBrandCode = [coderCopy decodeIntegerForKey:@"carKeyBrandCode"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"TCIs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"TCIs"];
     TCIs = v5->_TCIs;
     v5->_TCIs = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"merchantIdentifiers"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"merchantIdentifiers"];
     merchantIdentifiers = v5->_merchantIdentifiers;
     v5->_merchantIdentifiers = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentifier"];
     credentialIdentifier = v5->_credentialIdentifier;
     v5->_credentialIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v18;
 
-    v5->_secondaryPropertiesRequired = [v4 decodeBoolForKey:@"secondaryPropertiesRequired"];
-    v5->_secondaryPropertiesAcquired = [v4 decodeBoolForKey:@"secondaryPropertiesAquired"];
-    v5->_fieldType = [v4 decodeIntegerForKey:@"ecpTypeKey"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
+    v5->_secondaryPropertiesRequired = [coderCopy decodeBoolForKey:@"secondaryPropertiesRequired"];
+    v5->_secondaryPropertiesAcquired = [coderCopy decodeBoolForKey:@"secondaryPropertiesAquired"];
+    v5->_fieldType = [coderCopy decodeIntegerForKey:@"ecpTypeKey"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
     readerIdentifier = v5->_readerIdentifier;
     v5->_readerIdentifier = v20;
   }
@@ -208,26 +208,26 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   technology = self->_technology;
-  v5 = a3;
-  [v5 encodeInteger:technology forKey:@"technology"];
-  [v5 encodeInteger:self->_terminalType forKey:@"terminalType"];
-  [v5 encodeInteger:self->_accessTerminalSubtype forKey:@"terminalSubtype"];
-  [v5 encodeInteger:self->_valueAddedServiceMode forKey:@"valueAddedServiceMode"];
-  [v5 encodeBool:self->_authenticationRequired forKey:@"authenticationRequired"];
-  [v5 encodeBool:self->_backgroundTransaction forKey:@"backgroundTransaction"];
-  [v5 encodeInteger:self->_pairingRequested forKey:@"pairingRequested"];
-  [v5 encodeInteger:self->_carKeyBrandCode forKey:@"carKeyBrandCode"];
-  [v5 encodeObject:self->_TCIs forKey:@"TCIs"];
-  [v5 encodeObject:self->_merchantIdentifiers forKey:@"merchantIdentifiers"];
-  [v5 encodeObject:self->_credentialIdentifier forKey:@"credentialIdentifier"];
-  [v5 encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
-  [v5 encodeBool:self->_secondaryPropertiesRequired forKey:@"secondaryPropertiesRequired"];
-  [v5 encodeBool:self->_secondaryPropertiesAcquired forKey:@"secondaryPropertiesAquired"];
-  [v5 encodeInteger:self->_fieldType forKey:@"ecpTypeKey"];
-  [v5 encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:technology forKey:@"technology"];
+  [coderCopy encodeInteger:self->_terminalType forKey:@"terminalType"];
+  [coderCopy encodeInteger:self->_accessTerminalSubtype forKey:@"terminalSubtype"];
+  [coderCopy encodeInteger:self->_valueAddedServiceMode forKey:@"valueAddedServiceMode"];
+  [coderCopy encodeBool:self->_authenticationRequired forKey:@"authenticationRequired"];
+  [coderCopy encodeBool:self->_backgroundTransaction forKey:@"backgroundTransaction"];
+  [coderCopy encodeInteger:self->_pairingRequested forKey:@"pairingRequested"];
+  [coderCopy encodeInteger:self->_carKeyBrandCode forKey:@"carKeyBrandCode"];
+  [coderCopy encodeObject:self->_TCIs forKey:@"TCIs"];
+  [coderCopy encodeObject:self->_merchantIdentifiers forKey:@"merchantIdentifiers"];
+  [coderCopy encodeObject:self->_credentialIdentifier forKey:@"credentialIdentifier"];
+  [coderCopy encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
+  [coderCopy encodeBool:self->_secondaryPropertiesRequired forKey:@"secondaryPropertiesRequired"];
+  [coderCopy encodeBool:self->_secondaryPropertiesAcquired forKey:@"secondaryPropertiesAquired"];
+  [coderCopy encodeInteger:self->_fieldType forKey:@"ecpTypeKey"];
+  [coderCopy encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
 }
 
 - (BOOL)shouldIgnore
@@ -251,17 +251,17 @@ LABEL_18:
   return self->_accessTerminalSubtype == 2;
 }
 
-+ (id)fieldPropertiesForFieldNotification:(id)a3
++ (id)fieldPropertiesForFieldNotification:(id)notification
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  notificationCopy = notification;
+  v4 = notificationCopy;
+  if (notificationCopy)
   {
-    v5 = [v3 rfTechnology] & 0xF;
-    v6 = [v4 notificationType];
+    v5 = [notificationCopy rfTechnology] & 0xF;
+    notificationType = [v4 notificationType];
     v28 = v5;
-    if (v6 == 3)
+    if (notificationType == 3)
     {
       v15 = v4;
       v16 = [v15 terminalType] - 1;
@@ -275,10 +275,10 @@ LABEL_18:
         v7 = qword_1ADB9AC60[v16];
       }
 
-      v29 = [v15 odaRequired];
-      v13 = [v15 terminalSubType];
-      v10 = [v15 tciArray];
-      v11 = [v15 readerIdentifier];
+      odaRequired = [v15 odaRequired];
+      terminalSubType = [v15 terminalSubType];
+      tciArray = [v15 tciArray];
+      readerIdentifier = [v15 readerIdentifier];
 
       v9 = 0;
       v12 = 1;
@@ -286,25 +286,25 @@ LABEL_18:
       goto LABEL_14;
     }
 
-    if (v6 == 2)
+    if (notificationType == 2)
     {
       v7 = PKFieldTerminalTypeForNFTerminalType([v4 terminalType]);
-      v8 = [v4 terminalMode];
-      if (v8 >= 4)
+      terminalMode = [v4 terminalMode];
+      if (terminalMode >= 4)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = 4 - v8;
+        v9 = 4 - terminalMode;
       }
 
-      v29 = [v4 odaRequired];
-      v10 = 0;
-      v11 = 0;
+      odaRequired = [v4 odaRequired];
+      tciArray = 0;
+      readerIdentifier = 0;
       v12 = 0;
-      v13 = 0;
+      terminalSubType = 0;
       v14 = 1;
       goto LABEL_14;
     }
@@ -315,25 +315,25 @@ LABEL_18:
     v28 = 0;
   }
 
-  v10 = 0;
-  v11 = 0;
-  v29 = 0;
+  tciArray = 0;
+  readerIdentifier = 0;
+  odaRequired = 0;
   v12 = 0;
   v14 = 0;
   v9 = 0;
-  v13 = 0;
+  terminalSubType = 0;
   v7 = 0;
 LABEL_14:
   v17 = PKFieldValueAddedServiceModeOverride();
-  v18 = [v17 integerValue];
+  integerValue = [v17 integerValue];
 
-  if (v18)
+  if (integerValue)
   {
     v19 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v31 = v18;
+      v31 = integerValue;
       _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "Field Properties Overriding Mode: %tu", buf, 0xCu);
     }
 
@@ -343,7 +343,7 @@ LABEL_14:
   else
   {
     v20 = v28;
-    v18 = v9;
+    integerValue = v9;
   }
 
   if (v7 == 3)
@@ -356,16 +356,16 @@ LABEL_14:
     v21 = 0;
   }
 
-  if (v21 != 1 || v13 > 0xB)
+  if (v21 != 1 || terminalSubType > 0xB)
   {
     goto LABEL_33;
   }
 
   v22 = 1;
-  if (((1 << v13) & 0xF22) != 0)
+  if (((1 << terminalSubType) & 0xF22) != 0)
   {
-    v23 = [v4 pairingMode];
-    if (v23)
+    pairingMode = [v4 pairingMode];
+    if (pairingMode)
     {
       v24 = 2;
     }
@@ -375,7 +375,7 @@ LABEL_14:
       v24 = 0;
     }
 
-    if (v23 == 1)
+    if (pairingMode == 1)
     {
       v25 = 1;
     }
@@ -389,7 +389,7 @@ LABEL_14:
     goto LABEL_35;
   }
 
-  if (v13)
+  if (terminalSubType)
   {
 LABEL_33:
     v22 = 0;
@@ -397,23 +397,23 @@ LABEL_33:
 
   v25 = 2;
 LABEL_35:
-  v26 = [[PKFieldProperties alloc] initWithTechnology:v20 terminalType:v7 accessTerminalSubtype:v22 valueAddedServiceMode:v18];
-  [(PKFieldProperties *)v26 setTCIs:v10];
-  [(PKFieldProperties *)v26 setAuthenticationRequired:v29];
+  v26 = [[PKFieldProperties alloc] initWithTechnology:v20 terminalType:v7 accessTerminalSubtype:v22 valueAddedServiceMode:integerValue];
+  [(PKFieldProperties *)v26 setTCIs:tciArray];
+  [(PKFieldProperties *)v26 setAuthenticationRequired:odaRequired];
   [(PKFieldProperties *)v26 setFieldType:v14];
-  [(PKFieldProperties *)v26 setReaderIdentifier:v11];
+  [(PKFieldProperties *)v26 setReaderIdentifier:readerIdentifier];
   [(PKFieldProperties *)v26 setPairingRequested:v25];
 
   return v26;
 }
 
-+ (id)fieldPropertiesForSTSFieldNotification:(id)a3
++ (id)fieldPropertiesForSTSFieldNotification:(id)notification
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 fieldType] == 1)
+  notificationCopy = notification;
+  if ([notificationCopy fieldType] == 1)
   {
-    v4 = v3;
+    v4 = notificationCopy;
   }
 
   else
@@ -425,8 +425,8 @@ LABEL_35:
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 nfcTechnology];
-    v8 = [v3 terminalType] - 1;
+    nfcTechnology = [v5 nfcTechnology];
+    v8 = [notificationCopy terminalType] - 1;
     if (v8 > 8)
     {
       v9 = 0;
@@ -437,7 +437,7 @@ LABEL_35:
       v9 = qword_1ADB9AC88[v8];
     }
 
-    v11 = [v3 terminalType] - 3;
+    v11 = [notificationCopy terminalType] - 3;
     if (v11 > 6)
     {
       v12 = 0;
@@ -448,30 +448,30 @@ LABEL_35:
       v12 = qword_1ADB9ACD0[v11];
     }
 
-    v13 = [v6 terminalMode];
-    if (v13 >= 4)
+    terminalMode = [v6 terminalMode];
+    if (terminalMode >= 4)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = 4 - v13;
+      v14 = 4 - terminalMode;
     }
 
     [v6 ecpVersion];
-    v15 = [v3 odaRequired];
-    v16 = [v6 tcis];
+    odaRequired = [notificationCopy odaRequired];
+    tcis = [v6 tcis];
     v17 = PKFieldValueAddedServiceModeOverride();
-    v18 = [v17 integerValue];
+    integerValue = [v17 integerValue];
 
-    if (v18)
+    if (integerValue)
     {
       v19 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 134217984;
-        v23 = v18;
+        v23 = integerValue;
         _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "Field Properties Overriding Mode: %tu", &v22, 0xCu);
       }
 
@@ -480,13 +480,13 @@ LABEL_35:
 
     else
     {
-      v20 = v7 & 0xF;
-      v18 = v14;
+      v20 = nfcTechnology & 0xF;
+      integerValue = v14;
     }
 
-    v10 = [[PKFieldProperties alloc] initWithTechnology:v20 terminalType:v9 accessTerminalSubtype:v12 valueAddedServiceMode:v18];
-    [(PKFieldProperties *)v10 setTCIs:v16];
-    [(PKFieldProperties *)v10 setAuthenticationRequired:v15];
+    v10 = [[PKFieldProperties alloc] initWithTechnology:v20 terminalType:v9 accessTerminalSubtype:v12 valueAddedServiceMode:integerValue];
+    [(PKFieldProperties *)v10 setTCIs:tcis];
+    [(PKFieldProperties *)v10 setAuthenticationRequired:odaRequired];
     [(PKFieldProperties *)v10 setFieldType:0];
     if ([v6 terminalType] == 9)
     {

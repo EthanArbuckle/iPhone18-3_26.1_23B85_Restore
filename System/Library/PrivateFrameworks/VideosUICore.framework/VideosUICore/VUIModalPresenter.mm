@@ -3,11 +3,11 @@
 - (NSArray)presentedViewControllers;
 - (VUIModalPresenter)init;
 - (id)_presentationControllers;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentViewController:(id)a3 fromViewController:(id)a4 options:(id)a5 completion:(id)a6;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentViewController:(id)controller fromViewController:(id)viewController options:(id)options completion:(id)completion;
 @end
 
 @implementation VUIModalPresenter
@@ -55,9 +55,9 @@ uint64_t __35__VUIModalPresenter_sharedInstance__block_invoke()
   presentationControllers = self->__presentationControllers;
   if (!presentationControllers)
   {
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v5 = self->__presentationControllers;
-    self->__presentationControllers = v4;
+    self->__presentationControllers = weakObjectsHashTable;
 
     presentationControllers = self->__presentationControllers;
   }
@@ -69,15 +69,15 @@ uint64_t __35__VUIModalPresenter_sharedInstance__block_invoke()
 {
   v30 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(VUIModalPresenter *)self _presentationControllers];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  _presentationControllers = [(VUIModalPresenter *)self _presentationControllers];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(_presentationControllers, "count")}];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [(VUIModalPresenter *)self _presentationControllers];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  _presentationControllers2 = [(VUIModalPresenter *)self _presentationControllers];
+  v7 = [_presentationControllers2 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -88,7 +88,7 @@ uint64_t __35__VUIModalPresenter_sharedInstance__block_invoke()
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_presentationControllers2);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -96,8 +96,8 @@ uint64_t __35__VUIModalPresenter_sharedInstance__block_invoke()
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v12 = [v11 viewControllers];
-        v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        viewControllers = [v11 viewControllers];
+        v13 = [viewControllers countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v13)
         {
           v14 = v13;
@@ -108,7 +108,7 @@ uint64_t __35__VUIModalPresenter_sharedInstance__block_invoke()
             {
               if (*v21 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(viewControllers);
               }
 
               v17 = *(*(&v20 + 1) + 8 * j);
@@ -118,14 +118,14 @@ uint64_t __35__VUIModalPresenter_sharedInstance__block_invoke()
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v14 = [viewControllers countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v14);
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [_presentationControllers2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v8);
@@ -136,47 +136,47 @@ uint64_t __35__VUIModalPresenter_sharedInstance__block_invoke()
   return v18;
 }
 
-- (void)presentViewController:(id)a3 fromViewController:(id)a4 options:(id)a5 completion:(id)a6
+- (void)presentViewController:(id)controller fromViewController:(id)viewController options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  optionsCopy = options;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (controllerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v11;
-      v16 = [v15 vuiPresentedViewController];
+      v15 = viewControllerCopy;
+      vuiPresentedViewController = [v15 vuiPresentedViewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v15 vuiPresentedViewController];
+        vuiPresentedViewController2 = [v15 vuiPresentedViewController];
       }
 
       else
       {
-        v17 = 0;
+        vuiPresentedViewController2 = 0;
       }
     }
 
     else
     {
-      v17 = 0;
+      vuiPresentedViewController2 = 0;
     }
 
-    v18 = [v17 configuration];
-    v19 = [v18 type];
-    v20 = [(VUIModalPresenter *)v12 type];
+    configuration = [vuiPresentedViewController2 configuration];
+    type = [configuration type];
+    type2 = [(VUIModalPresenter *)optionsCopy type];
 
-    if (v19 == v20)
+    if (type == type2)
     {
-      if (!v17)
+      if (!vuiPresentedViewController2)
       {
 LABEL_16:
-        v22 = [[VUIModalPresentationNavigationController alloc] initWithConfiguration:v12];
+        v22 = [[VUIModalPresentationNavigationController alloc] initWithConfiguration:optionsCopy];
         v23 = 0;
         goto LABEL_17;
       }
@@ -184,30 +184,30 @@ LABEL_16:
 
     else
     {
-      v21 = [(VUIModalPresenter *)v12 allowsModalOverModal];
-      if (!v17 || (v21 & 1) == 0)
+      allowsModalOverModal = [(VUIModalPresenter *)optionsCopy allowsModalOverModal];
+      if (!vuiPresentedViewController2 || (allowsModalOverModal & 1) == 0)
       {
         goto LABEL_16;
       }
     }
 
-    v22 = v17;
+    v22 = vuiPresentedViewController2;
     v23 = 1;
 LABEL_17:
-    [(VUIModalPresentationNavigationController *)v22 setConfiguration:v12];
-    v24 = [(VUIModalPresenter *)v12 isAnimated];
+    [(VUIModalPresentationNavigationController *)v22 setConfiguration:optionsCopy];
+    isAnimated = [(VUIModalPresenter *)optionsCopy isAnimated];
     objc_initWeak(location, self);
-    if ([(VUIModalPresenter *)v12 conformsToProtocol:&unk_288115708])
+    if ([(VUIModalPresenter *)optionsCopy conformsToProtocol:&unk_288115708])
     {
-      v25 = v12;
+      selfCopy = optionsCopy;
     }
 
     else
     {
-      v25 = self;
+      selfCopy = self;
     }
 
-    v26 = v25;
+    v26 = selfCopy;
     [(VUIModalPresentationNavigationController *)v22 setTransitioningDelegate:v26];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
@@ -217,24 +217,24 @@ LABEL_17:
     v27 = v22;
     v34 = v27;
     v41 = v23;
-    v35 = v12;
-    v36 = self;
-    v37 = v10;
+    v35 = optionsCopy;
+    selfCopy2 = self;
+    v37 = controllerCopy;
     v39 = v14;
-    v42 = v24;
-    v38 = v11;
+    v42 = isAnimated;
+    v38 = viewControllerCopy;
     v28 = MEMORY[0x2743B7C30](v33);
-    v29 = [(VUIModalPresentationNavigationController *)v27 transitionCoordinator];
+    transitionCoordinator = [(VUIModalPresentationNavigationController *)v27 transitionCoordinator];
 
-    if (v29)
+    if (transitionCoordinator)
     {
-      v30 = [(VUIModalPresentationNavigationController *)v27 transitionCoordinator];
+      transitionCoordinator2 = [(VUIModalPresentationNavigationController *)v27 transitionCoordinator];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __81__VUIModalPresenter_presentViewController_fromViewController_options_completion___block_invoke_4;
       v31[3] = &unk_279E213E8;
       v32 = v28;
-      [v30 animateAlongsideTransition:0 completion:v31];
+      [transitionCoordinator2 animateAlongsideTransition:0 completion:v31];
     }
 
     else
@@ -248,10 +248,10 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"VUIModalPresentationErrorDomain" code:0 userInfo:0];
-    (v14)[2](v14, 0, v17);
+    vuiPresentedViewController2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"VUIModalPresentationErrorDomain" code:0 userInfo:0];
+    (v14)[2](v14, 0, vuiPresentedViewController2);
 LABEL_24:
   }
 }
@@ -388,25 +388,25 @@ uint64_t __81__VUIModalPresenter_presentViewController_fromViewController_option
   return result;
 }
 
-- (void)dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 presentingViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  presentingViewController = [controllerCopy presentingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 presentingViewController];
+    presentingViewController2 = [controllerCopy presentingViewController];
 
-    if (v10)
+    if (presentingViewController2)
     {
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __63__VUIModalPresenter_dismissViewController_animated_completion___block_invoke;
       v18[3] = &unk_279E21370;
-      v19 = v8;
-      [v10 dismissViewControllerAnimated:v6 completion:v18];
+      v19 = completionCopy;
+      [presentingViewController2 dismissViewControllerAnimated:animatedCopy completion:v18];
 
       goto LABEL_13;
     }
@@ -416,39 +416,39 @@ uint64_t __81__VUIModalPresenter_presentViewController_fromViewController_option
   {
   }
 
-  v11 = [v7 navigationController];
+  navigationController = [controllerCopy navigationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 navigationController];
+    presentingViewController2 = [controllerCopy navigationController];
   }
 
   else
   {
-    v10 = 0;
+    presentingViewController2 = 0;
   }
 
-  v12 = [v10 topViewController];
+  topViewController = [presentingViewController2 topViewController];
 
-  if (v12 == v7)
+  if (topViewController == controllerCopy)
   {
-    v15 = [v10 popViewControllerAnimated:v6 completion:v8];
+    v15 = [presentingViewController2 popViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [v10 viewControllers];
-    v14 = [v13 mutableCopy];
+    viewControllers = [presentingViewController2 viewControllers];
+    v14 = [viewControllers mutableCopy];
 
-    [v14 removeObject:v7];
-    [v10 setViewControllers:v14 animated:v6];
-    if (v8)
+    [v14 removeObject:controllerCopy];
+    [presentingViewController2 setViewControllers:v14 animated:animatedCopy];
+    if (completionCopy)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __63__VUIModalPresenter_dismissViewController_animated_completion___block_invoke_2;
       v16[3] = &unk_279E21370;
-      v17 = v8;
+      v17 = completionCopy;
       dispatch_async(MEMORY[0x277D85CD0], v16);
     }
   }
@@ -467,13 +467,13 @@ uint64_t __63__VUIModalPresenter_dismissViewController_animated_completion___blo
   return result;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v6 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v8 = 0;
-  if (v6 && (isKindOfClass & 1) != 0)
+  if (controllerCopy && (isKindOfClass & 1) != 0)
   {
     v8 = self->_presentingAnimator;
   }
@@ -481,13 +481,13 @@ uint64_t __63__VUIModalPresenter_dismissViewController_animated_completion___blo
   return v8;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (controllerCopy && (isKindOfClass & 1) != 0)
   {
     v6 = self->_dismissingAnimator;
   }
@@ -495,12 +495,12 @@ uint64_t __63__VUIModalPresenter_dismissViewController_animated_completion___blo
   return v6;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   v6 = MEMORY[0x277D76198];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithPresentedViewController:v8 presentingViewController:v7];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v9 = [[v6 alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   [v9 setBlurStyle:4005];
 

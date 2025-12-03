@@ -1,15 +1,15 @@
 @interface SWLoader
-+ (id)loaderWithBlock:(id)a3;
++ (id)loaderWithBlock:(id)block;
 - (void)load;
 @end
 
 @implementation SWLoader
 
-+ (id)loaderWithBlock:(id)a3
++ (id)loaderWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = MEMORY[0x1DA6FDA60](v4);
+  blockCopy = block;
+  v5 = objc_alloc_init(self);
+  v6 = MEMORY[0x1DA6FDA60](blockCopy);
 
   v7 = v5[1];
   v5[1] = v6;
@@ -19,8 +19,8 @@
 
 - (void)load
 {
-  v2 = [(SWLoader *)self loadBlock];
-  v2[2]();
+  loadBlock = [(SWLoader *)self loadBlock];
+  loadBlock[2]();
 }
 
 @end

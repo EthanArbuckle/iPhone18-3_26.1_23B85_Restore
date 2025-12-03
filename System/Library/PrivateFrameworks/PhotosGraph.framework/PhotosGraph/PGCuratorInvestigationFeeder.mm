@@ -1,5 +1,5 @@
 @interface PGCuratorInvestigationFeeder
-- (PGCuratorInvestigationFeeder)initWithItems:(id)a3;
+- (PGCuratorInvestigationFeeder)initWithItems:(id)items;
 - (id)approximateLocation;
 - (id)localEndDateComponents;
 - (id)localStartDateComponents;
@@ -51,10 +51,10 @@
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * i) clsLocation];
-        if (v7)
+        clsLocation = [*(*(&v11 + 1) + 8 * i) clsLocation];
+        if (clsLocation)
         {
-          v8 = v7;
+          v8 = clsLocation;
           goto LABEL_11;
         }
       }
@@ -79,40 +79,40 @@ LABEL_11:
 
 - (id)localEndDateComponents
 {
-  v2 = [(NSArray *)self->_items lastObject];
-  v3 = [v2 cls_localDateComponents];
+  lastObject = [(NSArray *)self->_items lastObject];
+  cls_localDateComponents = [lastObject cls_localDateComponents];
 
-  return v3;
+  return cls_localDateComponents;
 }
 
 - (id)localStartDateComponents
 {
-  v2 = [(NSArray *)self->_items firstObject];
-  v3 = [v2 cls_localDateComponents];
+  firstObject = [(NSArray *)self->_items firstObject];
+  cls_localDateComponents = [firstObject cls_localDateComponents];
 
-  return v3;
+  return cls_localDateComponents;
 }
 
 - (id)universalEndDate
 {
-  v2 = [(NSArray *)self->_items lastObject];
-  v3 = [v2 cls_universalDate];
+  lastObject = [(NSArray *)self->_items lastObject];
+  cls_universalDate = [lastObject cls_universalDate];
 
-  return v3;
+  return cls_universalDate;
 }
 
 - (id)universalStartDate
 {
-  v2 = [(NSArray *)self->_items firstObject];
-  v3 = [v2 cls_universalDate];
+  firstObject = [(NSArray *)self->_items firstObject];
+  cls_universalDate = [firstObject cls_universalDate];
 
-  return v3;
+  return cls_universalDate;
 }
 
-- (PGCuratorInvestigationFeeder)initWithItems:(id)a3
+- (PGCuratorInvestigationFeeder)initWithItems:(id)items
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v13.receiver = self;
   v13.super_class = PGCuratorInvestigationFeeder;
   v5 = [(CLSInvestigationFeeder *)&v13 init];
@@ -123,7 +123,7 @@ LABEL_11:
     v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"clsIdentifier" ascending:1];
     v14[1] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-    v9 = [v4 sortedArrayUsingDescriptors:v8];
+    v9 = [itemsCopy sortedArrayUsingDescriptors:v8];
     items = v5->_items;
     v5->_items = v9;
   }

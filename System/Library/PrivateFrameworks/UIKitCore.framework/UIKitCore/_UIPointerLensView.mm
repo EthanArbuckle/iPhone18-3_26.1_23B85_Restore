@@ -1,8 +1,8 @@
 @interface _UIPointerLensView
 - (CGRect)bounds;
 - (double)_cornerRadius;
-- (void)_setCornerRadius:(double)a3;
-- (void)setBounds:(CGRect)a3;
+- (void)_setCornerRadius:(double)radius;
+- (void)setBounds:(CGRect)bounds;
 - (void)tintColorDidChange;
 @end
 
@@ -16,15 +16,15 @@
   return result;
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for _UIPointerLensView();
   v4 = v7.receiver;
-  [(UIView *)&v7 _setCornerRadius:a3];
-  v5 = [v4 layer];
+  [(UIView *)&v7 _setCornerRadius:radius];
+  layer = [v4 layer];
   [v4 _cornerRadius];
-  [v5 setCornerRadius_];
+  [layer setCornerRadius_];
 
   v6 = *&v4[OBJC_IVAR____UIPointerLensView_element];
   [v4 _cornerRadius];
@@ -43,24 +43,24 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for _UIPointerLensView();
   v7 = v10.receiver;
   [(UIView *)&v10 setBounds:x, y, width, height];
-  v8 = [v7 layer];
+  layer = [v7 layer];
   v9 = v7;
-  sub_189128BBC(v8, v9);
+  sub_189128BBC(layer, v9);
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1891286F8();
 }
 

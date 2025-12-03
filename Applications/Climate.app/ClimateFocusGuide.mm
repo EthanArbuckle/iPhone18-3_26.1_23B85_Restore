@@ -1,9 +1,9 @@
 @interface ClimateFocusGuide
 - (BOOL)isEnabled;
 - (_TtC7Climate17ClimateFocusGuide)init;
-- (_TtC7Climate17ClimateFocusGuide)initWithCoder:(id)a3;
+- (_TtC7Climate17ClimateFocusGuide)initWithCoder:(id)coder;
 - (void)_didUpdateFocusToPreferredFocusedView;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation ClimateFocusGuide
@@ -15,13 +15,13 @@
   return [(ClimateFocusGuide *)&v3 isEnabled];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ClimateFocusGuide();
   v4 = v7.receiver;
-  [(ClimateFocusGuide *)&v7 setEnabled:v3];
+  [(ClimateFocusGuide *)&v7 setEnabled:enabledCopy];
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -30,7 +30,7 @@
   }
 }
 
-- (_TtC7Climate17ClimateFocusGuide)initWithCoder:(id)a3
+- (_TtC7Climate17ClimateFocusGuide)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC7Climate17ClimateFocusGuide_completion);
@@ -44,7 +44,7 @@
 
 - (void)_didUpdateFocusToPreferredFocusedView
 {
-  v2 = self;
+  selfCopy = self;
   ClimateFocusGuide._didUpdateFocusToPreferredFocusedView()();
 }
 

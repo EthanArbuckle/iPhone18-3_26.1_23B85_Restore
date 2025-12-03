@@ -9,7 +9,7 @@
 - (_PXStoryObservation)_pxStoryPPT_observeChangesUsingChangeHandler:()PXStory
 {
   v4 = a3;
-  v5 = [[_PXStoryObservation alloc] initWithObservable:a1 changeHandler:v4];
+  v5 = [[_PXStoryObservation alloc] initWithObservable:self changeHandler:v4];
 
   return v5;
 }
@@ -21,7 +21,7 @@
   v23 = &v22;
   v24 = 0x2020000000;
   v25[0] = 0;
-  v6[2](v6, a1, a3, v25);
+  v6[2](v6, self, a3, v25);
   if (v23[3])
   {
     v7 = 0;
@@ -39,12 +39,12 @@
     v11[1] = 3221225472;
     v11[2] = __77__PXObservable_PXStory__pxStory_enumerateStatesByWatchingChanges_usingBlock___block_invoke;
     v11[3] = &unk_1E773D438;
-    v11[4] = a1;
+    v11[4] = self;
     v13 = &v22;
     v15 = a3;
     v12 = v6;
     v14 = &v16;
-    v8 = [a1 _pxStoryPPT_observeChangesUsingChangeHandler:v11];
+    v8 = [self _pxStoryPPT_observeChangesUsingChangeHandler:v11];
     v9 = v17[5];
     v17[5] = v8;
 
@@ -72,21 +72,21 @@
   v12 = v10;
   v22 = v12;
   v23 = v24;
-  v13 = [a1 pxStory_enumerateStatesByWatchingChanges:a4 usingBlock:v21];
+  v13 = [self pxStory_enumerateStatesByWatchingChanges:a4 usingBlock:v21];
   if (v13)
   {
     if (objc_opt_respondsToSelector())
     {
-      v14 = [a1 storyQueue];
+      storyQueue = [self storyQueue];
     }
 
     else
     {
-      v14 = MEMORY[0x1E69E96A0];
+      storyQueue = MEMORY[0x1E69E96A0];
       v15 = MEMORY[0x1E69E96A0];
     }
 
-    dispatch_assert_queue_V2(v14);
+    dispatch_assert_queue_V2(storyQueue);
     v16 = dispatch_time(0, (a2 * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -95,7 +95,7 @@
     v18 = v13;
     v19 = v11;
     v20 = v24;
-    dispatch_after(v16, v14, block);
+    dispatch_after(v16, storyQueue, block);
   }
 
   _Block_object_dispose(v24, 8);

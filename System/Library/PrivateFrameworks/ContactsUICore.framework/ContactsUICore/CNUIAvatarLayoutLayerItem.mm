@@ -1,20 +1,20 @@
 @interface CNUIAvatarLayoutLayerItem
-- (CNUIAvatarLayoutLayerItem)initWithLayer:(id)a3;
+- (CNUIAvatarLayoutLayerItem)initWithLayer:(id)layer;
 - (void)resetToken;
 @end
 
 @implementation CNUIAvatarLayoutLayerItem
 
-- (CNUIAvatarLayoutLayerItem)initWithLayer:(id)a3
+- (CNUIAvatarLayoutLayerItem)initWithLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v10.receiver = self;
   v10.super_class = CNUIAvatarLayoutLayerItem;
   v6 = [(CNUIAvatarLayoutLayerItem *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_layer, a3);
+    objc_storeStrong(&v6->_layer, layer);
     v8 = v7;
   }
 
@@ -23,8 +23,8 @@
 
 - (void)resetToken
 {
-  v3 = [(CNUIAvatarLayoutLayerItem *)self avatarImageRendererToken];
-  [v3 cancel];
+  avatarImageRendererToken = [(CNUIAvatarLayoutLayerItem *)self avatarImageRendererToken];
+  [avatarImageRendererToken cancel];
 
   [(CNUIAvatarLayoutLayerItem *)self setAvatarImageRendererToken:0];
 }

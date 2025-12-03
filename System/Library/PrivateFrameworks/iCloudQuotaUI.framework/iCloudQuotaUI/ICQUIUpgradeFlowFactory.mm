@@ -1,19 +1,19 @@
 @interface ICQUIUpgradeFlowFactory
-+ (Class)flowManagerClassForOfferType:(int64_t)a3;
++ (Class)flowManagerClassForOfferType:(int64_t)type;
 @end
 
 @implementation ICQUIUpgradeFlowFactory
 
-+ (Class)flowManagerClassForOfferType:(int64_t)a3
++ (Class)flowManagerClassForOfferType:(int64_t)type
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      if (a3)
+      if (type)
       {
-        if (a3 != 1)
+        if (type != 1)
         {
           goto LABEL_22;
         }
@@ -36,9 +36,9 @@ LABEL_18:
 
   else
   {
-    if (a3 > 5)
+    if (type > 5)
     {
-      if (a3 != 6 && a3 != 7 && a3 != 8)
+      if (type != 6 && type != 7 && type != 8)
       {
         goto LABEL_22;
       }
@@ -46,7 +46,7 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    if (a3 != 4)
+    if (type != 4)
     {
       v3 = _ICQGetLogSystem();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

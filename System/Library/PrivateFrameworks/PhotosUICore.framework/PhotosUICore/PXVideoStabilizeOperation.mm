@@ -1,5 +1,5 @@
 @interface PXVideoStabilizeOperation
-- (PXVideoStabilizeOperation)initWithSpec:(id)a3;
+- (PXVideoStabilizeOperation)initWithSpec:(id)spec;
 - (id)imagePropertiesRequest;
 - (id)performProcessing;
 - (id)renderer;
@@ -7,19 +7,19 @@
 - (void)_cancelWork;
 - (void)cancel;
 - (void)dealloc;
-- (void)setImagePropertiesRequest:(id)a3;
-- (void)setRenderer:(id)a3;
-- (void)setStabilizeRequest:(id)a3;
+- (void)setImagePropertiesRequest:(id)request;
+- (void)setRenderer:(id)renderer;
+- (void)setStabilizeRequest:(id)request;
 @end
 
 @implementation PXVideoStabilizeOperation
 
-- (void)setStabilizeRequest:(id)a3
+- (void)setStabilizeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   os_unfair_lock_lock(&self->_lock);
   lock_stabilizeRequest = self->_lock_stabilizeRequest;
-  self->_lock_stabilizeRequest = v4;
+  self->_lock_stabilizeRequest = requestCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -33,12 +33,12 @@
   return v3;
 }
 
-- (void)setImagePropertiesRequest:(id)a3
+- (void)setImagePropertiesRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   os_unfair_lock_lock(&self->_lock);
   lock_imagePropertiesRequest = self->_lock_imagePropertiesRequest;
-  self->_lock_imagePropertiesRequest = v4;
+  self->_lock_imagePropertiesRequest = requestCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -52,12 +52,12 @@
   return v3;
 }
 
-- (void)setRenderer:(id)a3
+- (void)setRenderer:(id)renderer
 {
-  v4 = a3;
+  rendererCopy = renderer;
   os_unfair_lock_lock(&self->_lock);
   lock_renderer = self->_lock_renderer;
-  self->_lock_renderer = v4;
+  self->_lock_renderer = rendererCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -81,12 +81,12 @@
   v9 = lock_renderer;
   os_unfair_lock_unlock(&self->_lock);
   [(PLPhotoEditRenderer *)v9 cancelAllRenders];
-  v7 = [(PIVideoStabilizeRequest *)v6 renderContext];
-  [v7 cancelAllRequests];
+  renderContext = [(PIVideoStabilizeRequest *)v6 renderContext];
+  [renderContext cancelAllRequests];
 
-  v8 = [(NUImagePropertiesRequest *)v5 renderContext];
+  renderContext2 = [(NUImagePropertiesRequest *)v5 renderContext];
 
-  [v8 cancelAllRequests];
+  [renderContext2 cancelAllRequests];
 }
 
 - (void)dealloc
@@ -109,28 +109,28 @@
 {
   v144[1] = *MEMORY[0x1E69E9840];
   v89 = objc_alloc_init(_PXVideoStabilizeResult);
-  v3 = [(PXVideoProcessingOperation *)self spec];
-  v4 = [v3 inputVideoURL];
+  spec = [(PXVideoProcessingOperation *)self spec];
+  inputVideoURL = [spec inputVideoURL];
 
-  v5 = [(PXVideoProcessingOperation *)self spec];
-  v85 = [v5 performStabilization];
+  spec2 = [(PXVideoProcessingOperation *)self spec];
+  performStabilization = [spec2 performStabilization];
 
-  v6 = [objc_alloc(MEMORY[0x1E69BE880]) initWithVideoURL:v4];
-  v7 = [(PXVideoProcessingOperation *)self progressHandler];
-  v8 = v7;
-  if (v7)
+  v6 = [objc_alloc(MEMORY[0x1E69BE880]) initWithVideoURL:inputVideoURL];
+  progressHandler = [(PXVideoProcessingOperation *)self progressHandler];
+  v8 = progressHandler;
+  if (progressHandler)
   {
-    (*(v7 + 16))(v7, @"Preparing NUComposition", 0.0);
+    (*(progressHandler + 16))(progressHandler, @"Preparing NUComposition", 0.0);
   }
 
   PIPhotoEditHelperClass_211976 = getPIPhotoEditHelperClass_211976();
-  v10 = [getPIPhotoEditHelperClass_211976() newComposition];
-  v11 = [PIPhotoEditHelperClass_211976 newCompositionControllerWithComposition:v10];
+  newComposition = [getPIPhotoEditHelperClass_211976() newComposition];
+  v11 = [PIPhotoEditHelperClass_211976 newCompositionControllerWithComposition:newComposition];
 
-  v12 = [v6 source];
-  [v11 setSource:v12 mediaType:2];
+  source = [v6 source];
+  [v11 setSource:source mediaType:2];
 
-  v88 = [v11 adjustmentConstants];
+  adjustmentConstants = [v11 adjustmentConstants];
   v13 = [v11 copy];
   if (([(PXVideoStabilizeOperation *)self isCancelled]& 1) != 0)
   {
@@ -141,8 +141,8 @@
 
   v16 = getPIPhotoEditHelperClass_211976();
   v81 = v13;
-  v17 = [v13 composition];
-  v87 = [v16 imagePropertiesRequestWithComposition:v17];
+  composition = [v13 composition];
+  v87 = [v16 imagePropertiesRequestWithComposition:composition];
 
   [(PXVideoStabilizeOperation *)self setImagePropertiesRequest:v87];
   [v87 setName:@"PXStabilizedPlayerItemWithVideoURL-imageProperties"];
@@ -155,7 +155,7 @@
     v143 = *MEMORY[0x1E6987BB8];
     v144[0] = MEMORY[0x1E695E118];
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v144 forKeys:&v143 count:1];
-    v80 = [v18 initWithURL:v4 options:v19];
+    v80 = [v18 initWithURL:inputVideoURL options:v19];
 
     v132 = 0;
     v75 = [getNUVideoUtilitiesClass() firstEnabledVideoTrackInAsset:v80 error:&v132];
@@ -180,8 +180,8 @@
 
     if (v84)
     {
-      v21 = [v84 properties];
-      v22 = [v21 orientation];
+      properties = [v84 properties];
+      orientation = [properties orientation];
 
       v121 = 0;
       v122 = &v121;
@@ -205,22 +205,22 @@
       _Block_object_dispose(&v121, 8);
       if (!v23)
       {
-        v69 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v70 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NUOrientation SOFT_LINKED_NUOrientationIsValid(NUOrientation)"];
-        [v69 handleFailureInFunction:v70 file:@"PXVideoStabilizeOperation.m" lineNumber:39 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v70 file:@"PXVideoStabilizeOperation.m" lineNumber:39 description:{@"%s", dlerror()}];
 
         goto LABEL_83;
       }
 
-      if (v23(v22))
+      if (v23(orientation))
       {
-        [MEMORY[0x1E69BE360] compositionController:v11 setInputOrientation:v22];
+        [MEMORY[0x1E69BE360] compositionController:v11 setInputOrientation:orientation];
       }
 
       else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 67109120;
-        DWORD1(buf) = v22;
+        DWORD1(buf) = orientation;
         _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "image orientation from the image properties is invalid: %d", &buf, 8u);
       }
 
@@ -241,15 +241,15 @@
 
     v83 = 0;
     v129 = 0;
-    if (!v85)
+    if (!performStabilization)
     {
       goto LABEL_43;
     }
 
-    v26 = [(PXVideoProcessingOperation *)self spec];
-    v27 = [v26 recipeSource];
+    spec3 = [(PXVideoProcessingOperation *)self spec];
+    recipeSource = [spec3 recipeSource];
     v128 = 0;
-    group = [v27 loadStabilizationRecipe:&v128 analysisType:&v129];
+    group = [recipeSource loadStabilizationRecipe:&v128 analysisType:&v129];
     v28 = v128;
 
     if (!group)
@@ -303,8 +303,8 @@
           _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Stabilization recipe returned empty crop rect: %{public}@", &buf, 0xCu);
         }
 
-        v34 = [v83 keyframes];
-        v35 = [v34 count] == 0;
+        keyframes = [v83 keyframes];
+        v35 = [keyframes count] == 0;
 
         if (v35)
         {
@@ -377,27 +377,27 @@ LABEL_76:
           v101[1] = 3221225472;
           v101[2] = __46__PXVideoStabilizeOperation_performProcessing__block_invoke;
           v101[3] = &unk_1E77457D8;
-          v108 = v85;
+          v108 = performStabilization;
           v102 = v83;
-          v39 = v88;
+          v39 = adjustmentConstants;
           v106 = v130;
           v107 = v131;
           v103 = v39;
-          v104 = self;
+          selfCopy = self;
           v105 = v80;
           [v77 applySourceChangesToCompositionSynchronously:v11 source:v6 withBlock:v101];
         }
 
-        v40 = [(PXVideoProcessingOperation *)self spec];
-        v86 = [v40 outputURL];
+        spec4 = [(PXVideoProcessingOperation *)self spec];
+        outputURL = [spec4 outputURL];
 
-        if (!v86)
+        if (!outputURL)
         {
           dispatch_group_enter(groupa);
-          v50 = [v84 properties];
-          v51 = [v50 size];
-          v52 = [v84 properties];
-          [v52 size];
+          properties2 = [v84 properties];
+          v51 = [properties2 size];
+          properties3 = [v84 properties];
+          [properties3 size];
           v54 = v53;
           v91[0] = MEMORY[0x1E69E9820];
           v91[1] = 3221225472;
@@ -410,7 +410,7 @@ LABEL_76:
           v92 = groupa;
           [v77 renderVideoWithTargetSize:0 contentMode:@"PXVideoStabilizeOperation-video" name:v91 completion:{v51, v54}];
 
-          v41 = v92;
+          defaultManager = v92;
 LABEL_60:
 
           dispatch_group_wait(groupa, 0xFFFFFFFFFFFFFFFFLL);
@@ -424,7 +424,7 @@ LABEL_60:
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
               *v134 = 138412290;
-              v135 = v14;
+              selfCopy2 = v14;
               _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Error encountered rendering stabilized video: %@", v134, 0xCu);
             }
 
@@ -433,8 +433,8 @@ LABEL_60:
             v14 = v55;
           }
 
-          v56 = [(PXVideoProcessingOperation *)self spec];
-          [(_PXVideoStabilizeResult *)v89 setSpec:v56];
+          spec5 = [(PXVideoProcessingOperation *)self spec];
+          [(_PXVideoStabilizeResult *)v89 setSpec:spec5];
 
           [(_PXVideoStabilizeResult *)v89 setOutputVideoAsset:*(*(&buf + 1) + 40)];
           [(_PXVideoStabilizeResult *)v89 setOutputVideoComposition:v122[5]];
@@ -451,22 +451,22 @@ LABEL_60:
 
           [(_PXVideoStabilizeResult *)v89 setAnalysisType:v57];
           [(_PXVideoStabilizeResult *)v89 setError:v14];
-          v58 = [v83 rawHomographies];
-          [(_PXVideoStabilizeResult *)v89 setStabilizationRecipe:v58];
+          rawHomographies = [v83 rawHomographies];
+          [(_PXVideoStabilizeResult *)v89 setStabilizationRecipe:rawHomographies];
 
-          v59 = [(PXVideoProcessingOperation *)self spec];
-          v60 = [v59 recipeSource];
-          v61 = [v60 debugInfo];
-          [(_PXVideoStabilizeResult *)v89 setDebugInfo:v61];
+          spec6 = [(PXVideoProcessingOperation *)self spec];
+          recipeSource2 = [spec6 recipeSource];
+          debugInfo = [recipeSource2 debugInfo];
+          [(_PXVideoStabilizeResult *)v89 setDebugInfo:debugInfo];
 
-          v62 = [(PXVideoProcessingOperation *)self spec];
-          v63 = [v62 debugInfoOutputURL];
+          spec7 = [(PXVideoProcessingOperation *)self spec];
+          debugInfoOutputURL = [spec7 debugInfoOutputURL];
 
-          if (v63)
+          if (debugInfoOutputURL)
           {
-            v64 = [(_PXVideoStabilizeResult *)v89 dictionaryRepresentation];
+            dictionaryRepresentation = [(_PXVideoStabilizeResult *)v89 dictionaryRepresentation];
             v90 = 0;
-            v65 = [v64 writeToURL:v63 error:&v90];
+            v65 = [dictionaryRepresentation writeToURL:debugInfoOutputURL error:&v90];
             v66 = v90;
 
             if ((v65 & 1) == 0)
@@ -475,7 +475,7 @@ LABEL_60:
               if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
               {
                 *v134 = 138412546;
-                v135 = self;
+                selfCopy2 = self;
                 v136 = 2112;
                 v137 = v66;
                 _os_log_impl(&dword_1A3C1C000, v67, OS_LOG_TYPE_ERROR, "%@: Unable to write debug plist to disk. Error: %@", v134, 0x16u);
@@ -488,15 +488,15 @@ LABEL_60:
           goto LABEL_76;
         }
 
-        v41 = [MEMORY[0x1E696AC08] defaultManager];
-        v42 = [(PXVideoStabilizeOperation *)v86 path];
-        v43 = [v41 fileExistsAtPath:v42];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        path = [(PXVideoStabilizeOperation *)outputURL path];
+        v43 = [defaultManager fileExistsAtPath:path];
 
         if (v43)
         {
-          v44 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
           v100 = 0;
-          v45 = [v44 removeItemAtURL:v86 error:&v100];
+          v45 = [defaultManager2 removeItemAtURL:outputURL error:&v100];
           v46 = v100;
 
           if ((v45 & 1) == 0)
@@ -504,7 +504,7 @@ LABEL_60:
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
               *v134 = 138412546;
-              v135 = v86;
+              selfCopy2 = outputURL;
               v136 = 2112;
               v137 = v46;
               _os_log_error_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Error encountered deleting existing file before exporting to %@: %@", v134, 0x16u);
@@ -524,7 +524,7 @@ LABEL_60:
         v97[3] = &unk_1E7745800;
         v99 = &v109;
         v98 = groupa;
-        v48 = [v77 exportVideoToURL:v86 preset:v47 livePhotoPairingIdentifier:0 completion:v97];
+        v48 = [v77 exportVideoToURL:outputURL preset:v47 livePhotoPairingIdentifier:0 completion:v97];
         v49 = v98;
 LABEL_59:
 
@@ -546,9 +546,9 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v71 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v72 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"id<PIVideoStabilizeResult>  _Nullable SOFT_LINKED_PIVideoStabilizeResultFromHomographies(NSDictionary *__strong, NUPixelSize, NSError *__autoreleasing *)"}];
-    [v71 handleFailureInFunction:v72 file:@"PXVideoStabilizeOperation.m" lineNumber:38 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v72 file:@"PXVideoStabilizeOperation.m" lineNumber:38 description:{@"%s", dlerror()}];
 
 LABEL_83:
     __break(1u);
@@ -846,11 +846,11 @@ void __46__PXVideoStabilizeOperation_performProcessing__block_invoke_6(uint64_t 
   [v3 setEnabled:0];
 }
 
-- (PXVideoStabilizeOperation)initWithSpec:(id)a3
+- (PXVideoStabilizeOperation)initWithSpec:(id)spec
 {
   v4.receiver = self;
   v4.super_class = PXVideoStabilizeOperation;
-  result = [(PXVideoProcessingOperation *)&v4 initWithSpec:a3];
+  result = [(PXVideoProcessingOperation *)&v4 initWithSpec:spec];
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;

@@ -1,70 +1,70 @@
 @interface CHDocumentTile
 - (BOOL)hasSubtiles;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)origin;
-- (CHDocumentTile)initWithCoder:(id)a3;
-- (CHDocumentTile)initWithTilePosition:(id)a3 scale:(double)a4;
-- (CHDocumentTile)initWithTilePosition:(id)a3 subtilePositions:(id)a4 scale:(double)a5 origin:(CGPoint)a6 orderedStrokeIdentifiers:(id)a7 contentStrokeIdentifiers:(id)a8 overlapStrokeIdentifiers:(id)a9 contextStrokeIdentifiers:(id)a10;
+- (CHDocumentTile)initWithCoder:(id)coder;
+- (CHDocumentTile)initWithTilePosition:(id)position scale:(double)scale;
+- (CHDocumentTile)initWithTilePosition:(id)position subtilePositions:(id)positions scale:(double)scale origin:(CGPoint)origin orderedStrokeIdentifiers:(id)identifiers contentStrokeIdentifiers:(id)strokeIdentifiers overlapStrokeIdentifiers:(id)overlapStrokeIdentifiers contextStrokeIdentifiers:(id)self0;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHDocumentTile
 
-- (CHDocumentTile)initWithTilePosition:(id)a3 scale:(double)a4
+- (CHDocumentTile)initWithTilePosition:(id)position scale:(double)scale
 {
-  v6 = a3;
+  positionCopy = position;
   v7 = *MEMORY[0x1E695EFF8];
   v8 = *(MEMORY[0x1E695EFF8] + 8);
   v14 = objc_msgSend_set(MEMORY[0x1E695DFD8], v9, v10, v11, v12, v13);
   v20 = objc_msgSend_set(MEMORY[0x1E695DFD8], v15, v16, v17, v18, v19);
   v26 = objc_msgSend_set(MEMORY[0x1E695DFD8], v21, v22, v23, v24, v25);
-  v28 = objc_msgSend_initWithTilePosition_subtilePositions_scale_origin_orderedStrokeIdentifiers_contentStrokeIdentifiers_overlapStrokeIdentifiers_contextStrokeIdentifiers_(self, v27, v6, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0], v14, v20, v26, a4, v7, v8);
+  v28 = objc_msgSend_initWithTilePosition_subtilePositions_scale_origin_orderedStrokeIdentifiers_contentStrokeIdentifiers_overlapStrokeIdentifiers_contextStrokeIdentifiers_(self, v27, positionCopy, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0], v14, v20, v26, scale, v7, v8);
 
   return v28;
 }
 
-- (CHDocumentTile)initWithTilePosition:(id)a3 subtilePositions:(id)a4 scale:(double)a5 origin:(CGPoint)a6 orderedStrokeIdentifiers:(id)a7 contentStrokeIdentifiers:(id)a8 overlapStrokeIdentifiers:(id)a9 contextStrokeIdentifiers:(id)a10
+- (CHDocumentTile)initWithTilePosition:(id)position subtilePositions:(id)positions scale:(double)scale origin:(CGPoint)origin orderedStrokeIdentifiers:(id)identifiers contentStrokeIdentifiers:(id)strokeIdentifiers overlapStrokeIdentifiers:(id)overlapStrokeIdentifiers contextStrokeIdentifiers:(id)self0
 {
-  y = a6.y;
-  x = a6.x;
-  v28 = a3;
-  v27 = a4;
-  v26 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  y = origin.y;
+  x = origin.x;
+  positionCopy = position;
+  positionsCopy = positions;
+  identifiersCopy = identifiers;
+  strokeIdentifiersCopy = strokeIdentifiers;
+  overlapStrokeIdentifiersCopy = overlapStrokeIdentifiers;
+  contextStrokeIdentifiersCopy = contextStrokeIdentifiers;
   v29.receiver = self;
   v29.super_class = CHDocumentTile;
   v23 = [(CHDocumentTile *)&v29 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_tilePosition, a3);
-    objc_storeStrong(&v24->_subtilePositions, a4);
-    v24->_scale = a5;
+    objc_storeStrong(&v23->_tilePosition, position);
+    objc_storeStrong(&v24->_subtilePositions, positions);
+    v24->_scale = scale;
     v24->_origin.x = x;
     v24->_origin.y = y;
     v24->_savedHash = 0;
-    objc_storeStrong(&v24->_orderedStrokeIdentifiers, a7);
-    objc_storeStrong(&v24->_contentStrokeIdentifiers, a8);
-    objc_storeStrong(&v24->_overlapStrokeIdentifiers, a9);
-    objc_storeStrong(&v24->_contextStrokeIdentifiers, a10);
+    objc_storeStrong(&v24->_orderedStrokeIdentifiers, identifiers);
+    objc_storeStrong(&v24->_contentStrokeIdentifiers, strokeIdentifiers);
+    objc_storeStrong(&v24->_overlapStrokeIdentifiers, overlapStrokeIdentifiers);
+    objc_storeStrong(&v24->_contextStrokeIdentifiers, contextStrokeIdentifiers);
   }
 
   return v24;
 }
 
-- (CHDocumentTile)initWithCoder:(id)a3
+- (CHDocumentTile)initWithCoder:(id)coder
 {
   v129[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  objc_msgSend_decodeFloatForKey_(v3, v4, @"scale", v5, v6, v7);
+  coderCopy = coder;
+  objc_msgSend_decodeFloatForKey_(coderCopy, v4, @"scale", v5, v6, v7);
   v9 = v8;
   v10 = objc_opt_class();
-  v14 = objc_msgSend_decodeObjectOfClass_forKey_(v3, v11, v10, @"origin", v12, v13);
+  v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"origin", v12, v13);
   v123 = v14;
   if (v14)
   {
@@ -80,8 +80,8 @@
   }
 
   v24 = objc_opt_class();
-  v127 = objc_msgSend_decodeObjectOfClass_forKey_(v3, v25, v24, @"tilePosition", v26, v27);
-  v32 = objc_msgSend_containsValueForKey_(v3, v28, @"subtilePositions", v29, v30, v31);
+  v127 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v25, v24, @"tilePosition", v26, v27);
+  v32 = objc_msgSend_containsValueForKey_(coderCopy, v28, @"subtilePositions", v29, v30, v31);
   v33 = MEMORY[0x1E695E0F0];
   v34 = MEMORY[0x1E695E0F0];
   if (v32)
@@ -91,7 +91,7 @@
     v129[1] = objc_opt_class();
     v39 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v36, v129, 2, v37, v38);
     v44 = objc_msgSend_setWithArray_(v35, v40, v39, v41, v42, v43);
-    v34 = objc_msgSend_decodeObjectOfClasses_forKey_(v3, v45, v44, @"subtilePositions", v46, v47);
+    v34 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v45, v44, @"subtilePositions", v46, v47);
   }
 
   v48 = MEMORY[0x1E695DFD8];
@@ -99,14 +99,14 @@
   v128[1] = objc_opt_class();
   v52 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v49, v128, 2, v50, v51);
   v57 = objc_msgSend_setWithArray_(v48, v53, v52, v54, v55, v56);
-  v61 = objc_msgSend_decodeObjectOfClasses_forKey_(v3, v58, v57, @"orderedStrokeIdentifiers", v59, v60);
+  v61 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v58, v57, @"orderedStrokeIdentifiers", v59, v60);
 
   v62 = objc_opt_class();
-  v126 = objc_msgSend_decodeObjectOfClass_forKey_(v3, v63, v62, @"contentStrokeIndexes", v64, v65);
+  v126 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v63, v62, @"contentStrokeIndexes", v64, v65);
   v66 = objc_opt_class();
-  v125 = objc_msgSend_decodeObjectOfClass_forKey_(v3, v67, v66, @"overlapStrokeIndexes", v68, v69);
+  v125 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v67, v66, @"overlapStrokeIndexes", v68, v69);
   v70 = objc_opt_class();
-  v74 = objc_msgSend_decodeObjectOfClass_forKey_(v3, v71, v70, @"contextStrokeIndexes", v72, v73);
+  v74 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v71, v70, @"contextStrokeIndexes", v72, v73);
   v75 = MEMORY[0x1E695DFD8];
   v80 = objc_msgSend_objectsAtIndexes_(v61, v76, v126, v77, v78, v79);
   v85 = objc_msgSend_setWithArray_(v75, v81, v80, v82, v83, v84);
@@ -131,25 +131,25 @@
   return v121;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_msgSend_scale(self, v5, v6, v7, v8, v9);
   *&v10 = v10;
-  objc_msgSend_encodeFloat_forKey_(v4, v11, @"scale", v12, v13, v14, v10);
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v11, @"scale", v12, v13, v14, v10);
   v15 = MEMORY[0x1E696B098];
   objc_msgSend_origin(self, v16, v17, v18, v19, v20);
   v26 = objc_msgSend_ch_valueWithCGPoint_(v15, v21, v22, v23, v24, v25);
-  objc_msgSend_encodeObject_forKey_(v4, v27, v26, @"origin", v28, v29);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v27, v26, @"origin", v28, v29);
 
   v35 = objc_msgSend_subtilePositions(self, v30, v31, v32, v33, v34);
-  objc_msgSend_encodeObject_forKey_(v4, v36, v35, @"subtilePositions", v37, v38);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v36, v35, @"subtilePositions", v37, v38);
 
   v44 = objc_msgSend_tilePosition(self, v39, v40, v41, v42, v43);
-  objc_msgSend_encodeObject_forKey_(v4, v45, v44, @"tilePosition", v46, v47);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v45, v44, @"tilePosition", v46, v47);
 
   v53 = objc_msgSend_orderedStrokeIdentifiers(self, v48, v49, v50, v51, v52);
-  objc_msgSend_encodeObject_forKey_(v4, v54, v53, @"orderedStrokeIdentifiers", v55, v56);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v54, v53, @"orderedStrokeIdentifiers", v55, v56);
 
   v62 = objc_msgSend_indexSet(MEMORY[0x1E696AD50], v57, v58, v59, v60, v61);
   v68 = objc_msgSend_indexSet(MEMORY[0x1E696AD50], v63, v64, v65, v66, v67);
@@ -159,7 +159,7 @@
   v98 = 3221225472;
   v99 = sub_1838D4054;
   v100 = &unk_1E6DDF860;
-  v101 = self;
+  selfCopy = self;
   v81 = v62;
   v102 = v81;
   v82 = v68;
@@ -168,9 +168,9 @@
   v104 = v83;
   objc_msgSend_enumerateObjectsUsingBlock_(v80, v84, &v97, v85, v86, v87);
 
-  objc_msgSend_encodeObject_forKey_(v4, v88, v81, @"contentStrokeIndexes", v89, v90, v97, v98, v99, v100, v101);
-  objc_msgSend_encodeObject_forKey_(v4, v91, v82, @"overlapStrokeIndexes", v92, v93);
-  objc_msgSend_encodeObject_forKey_(v4, v94, v83, @"contextStrokeIndexes", v95, v96);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v88, v81, @"contentStrokeIndexes", v89, v90, v97, v98, v99, v100, selfCopy);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v91, v82, @"overlapStrokeIndexes", v92, v93);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v94, v83, @"contextStrokeIndexes", v95, v96);
 }
 
 - (id)description
@@ -213,7 +213,7 @@
   return v113;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHMutableDocumentTile alloc];
   v10 = objc_msgSend_tilePosition(self, v5, v6, v7, v8, v9);
@@ -264,13 +264,13 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v11 = v5;
     if (self)
     {

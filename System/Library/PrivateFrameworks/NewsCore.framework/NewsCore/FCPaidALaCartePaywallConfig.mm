@@ -1,8 +1,8 @@
 @interface FCPaidALaCartePaywallConfig
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FCPaidALaCartePaywallConfig)init;
-- (FCPaidALaCartePaywallConfig)initWithChannelID:(id)a3 channelPaywallTitle:(id)a4 hardPaywallTitle:(id)a5 leakyPaywallTitle:(id)a6 promotionalPaywallTitle:(id)a7;
-- (FCPaidALaCartePaywallConfig)initWithChannelID:(id)a3 configDictionary:(id)a4;
+- (FCPaidALaCartePaywallConfig)initWithChannelID:(id)d channelPaywallTitle:(id)title hardPaywallTitle:(id)paywallTitle leakyPaywallTitle:(id)leakyPaywallTitle promotionalPaywallTitle:(id)promotionalPaywallTitle;
+- (FCPaidALaCartePaywallConfig)initWithChannelID:(id)d configDictionary:(id)dictionary;
 - (unint64_t)hash;
 @end
 
@@ -34,48 +34,48 @@
   objc_exception_throw(v6);
 }
 
-- (FCPaidALaCartePaywallConfig)initWithChannelID:(id)a3 configDictionary:(id)a4
+- (FCPaidALaCartePaywallConfig)initWithChannelID:(id)d configDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = FCAppConfigurationStringValue(v6, @"channelPaywall", 0);
-  v9 = FCAppConfigurationStringValue(v6, @"hardPaywall", 0);
-  v10 = FCAppConfigurationStringValue(v6, @"leakyPaywall", 0);
-  v11 = FCAppConfigurationStringValue(v6, @"promotionalPaywall", 0);
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  v8 = FCAppConfigurationStringValue(dictionaryCopy, @"channelPaywall", 0);
+  v9 = FCAppConfigurationStringValue(dictionaryCopy, @"hardPaywall", 0);
+  v10 = FCAppConfigurationStringValue(dictionaryCopy, @"leakyPaywall", 0);
+  v11 = FCAppConfigurationStringValue(dictionaryCopy, @"promotionalPaywall", 0);
 
-  v12 = [(FCPaidALaCartePaywallConfig *)self initWithChannelID:v7 channelPaywallTitle:v8 hardPaywallTitle:v9 leakyPaywallTitle:v10 promotionalPaywallTitle:v11];
+  v12 = [(FCPaidALaCartePaywallConfig *)self initWithChannelID:dCopy channelPaywallTitle:v8 hardPaywallTitle:v9 leakyPaywallTitle:v10 promotionalPaywallTitle:v11];
   return v12;
 }
 
-- (FCPaidALaCartePaywallConfig)initWithChannelID:(id)a3 channelPaywallTitle:(id)a4 hardPaywallTitle:(id)a5 leakyPaywallTitle:(id)a6 promotionalPaywallTitle:(id)a7
+- (FCPaidALaCartePaywallConfig)initWithChannelID:(id)d channelPaywallTitle:(id)title hardPaywallTitle:(id)paywallTitle leakyPaywallTitle:(id)leakyPaywallTitle promotionalPaywallTitle:(id)promotionalPaywallTitle
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  titleCopy = title;
+  paywallTitleCopy = paywallTitle;
+  leakyPaywallTitleCopy = leakyPaywallTitle;
+  promotionalPaywallTitleCopy = promotionalPaywallTitle;
   v29.receiver = self;
   v29.super_class = FCPaidALaCartePaywallConfig;
   v17 = [(FCPaidALaCartePaywallConfig *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [dCopy copy];
     channelID = v17->_channelID;
     v17->_channelID = v18;
 
-    v20 = [v13 copy];
+    v20 = [titleCopy copy];
     channelPaywallTitle = v17->_channelPaywallTitle;
     v17->_channelPaywallTitle = v20;
 
-    v22 = [v14 copy];
+    v22 = [paywallTitleCopy copy];
     hardPaywallTitle = v17->_hardPaywallTitle;
     v17->_hardPaywallTitle = v22;
 
-    v24 = [v15 copy];
+    v24 = [leakyPaywallTitleCopy copy];
     leakyPaywallTitle = v17->_leakyPaywallTitle;
     v17->_leakyPaywallTitle = v24;
 
-    v26 = [v16 copy];
+    v26 = [promotionalPaywallTitleCopy copy];
     promotionalPaywallTitle = v17->_promotionalPaywallTitle;
     v17->_promotionalPaywallTitle = v26;
   }
@@ -83,15 +83,15 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -110,33 +110,33 @@
   if (v6)
   {
     v7 = MEMORY[0x1E69E58C0];
-    v8 = [(FCPaidALaCartePaywallConfig *)self channelId];
-    v9 = [v6 channelID];
-    if ([v7 nf_object:v8 isEqualToObject:v9])
+    channelId = [(FCPaidALaCartePaywallConfig *)self channelId];
+    channelID = [v6 channelID];
+    if ([v7 nf_object:channelId isEqualToObject:channelID])
     {
       v10 = MEMORY[0x1E69E58C0];
-      v11 = [(FCPaidALaCartePaywallConfig *)self channelPaywallTitle];
-      v12 = [v6 channelPaywallTitle];
-      if ([v10 nf_object:v11 isEqualToObject:v12])
+      channelPaywallTitle = [(FCPaidALaCartePaywallConfig *)self channelPaywallTitle];
+      channelPaywallTitle2 = [v6 channelPaywallTitle];
+      if ([v10 nf_object:channelPaywallTitle isEqualToObject:channelPaywallTitle2])
       {
         v13 = MEMORY[0x1E69E58C0];
-        v14 = [(FCPaidALaCartePaywallConfig *)self hardPaywallTitle];
-        v15 = [v6 hardPaywallTitle];
-        if ([v13 nf_object:v14 isEqualToObject:v15])
+        hardPaywallTitle = [(FCPaidALaCartePaywallConfig *)self hardPaywallTitle];
+        hardPaywallTitle2 = [v6 hardPaywallTitle];
+        if ([v13 nf_object:hardPaywallTitle isEqualToObject:hardPaywallTitle2])
         {
-          v26 = v14;
+          v26 = hardPaywallTitle;
           v16 = MEMORY[0x1E69E58C0];
-          v17 = [(FCPaidALaCartePaywallConfig *)self leakyPaywallTitle];
-          v18 = [v6 leakyPaywallTitle];
-          v27 = v17;
-          v19 = v17;
-          v20 = v18;
-          if ([v16 nf_object:v19 isEqualToObject:v18])
+          leakyPaywallTitle = [(FCPaidALaCartePaywallConfig *)self leakyPaywallTitle];
+          leakyPaywallTitle2 = [v6 leakyPaywallTitle];
+          v27 = leakyPaywallTitle;
+          v19 = leakyPaywallTitle;
+          v20 = leakyPaywallTitle2;
+          if ([v16 nf_object:v19 isEqualToObject:leakyPaywallTitle2])
           {
             v25 = MEMORY[0x1E69E58C0];
-            v21 = [(FCPaidALaCartePaywallConfig *)self promotionalPaywallTitle];
-            v22 = [v6 promotionalPaywallTitle];
-            v23 = [v25 nf_object:v21 isEqualToObject:v22];
+            promotionalPaywallTitle = [(FCPaidALaCartePaywallConfig *)self promotionalPaywallTitle];
+            promotionalPaywallTitle2 = [v6 promotionalPaywallTitle];
+            v23 = [v25 nf_object:promotionalPaywallTitle isEqualToObject:promotionalPaywallTitle2];
           }
 
           else
@@ -144,7 +144,7 @@
             v23 = 0;
           }
 
-          v14 = v26;
+          hardPaywallTitle = v26;
         }
 
         else
@@ -175,16 +175,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FCPaidALaCartePaywallConfig *)self channelId];
-  v4 = [v3 hash];
-  v5 = [(FCPaidALaCartePaywallConfig *)self channelPaywallTitle];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(FCPaidALaCartePaywallConfig *)self hardPaywallTitle];
-  v8 = [v7 hash];
-  v9 = [(FCPaidALaCartePaywallConfig *)self leakyPaywallTitle];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(FCPaidALaCartePaywallConfig *)self promotionalPaywallTitle];
-  v12 = [v11 hash];
+  channelId = [(FCPaidALaCartePaywallConfig *)self channelId];
+  v4 = [channelId hash];
+  channelPaywallTitle = [(FCPaidALaCartePaywallConfig *)self channelPaywallTitle];
+  v6 = [channelPaywallTitle hash] ^ v4;
+  hardPaywallTitle = [(FCPaidALaCartePaywallConfig *)self hardPaywallTitle];
+  v8 = [hardPaywallTitle hash];
+  leakyPaywallTitle = [(FCPaidALaCartePaywallConfig *)self leakyPaywallTitle];
+  v10 = v6 ^ v8 ^ [leakyPaywallTitle hash];
+  promotionalPaywallTitle = [(FCPaidALaCartePaywallConfig *)self promotionalPaywallTitle];
+  v12 = [promotionalPaywallTitle hash];
 
   return v10 ^ v12;
 }

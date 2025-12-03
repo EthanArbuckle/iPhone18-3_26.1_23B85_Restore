@@ -1,14 +1,14 @@
 @interface PKApplyCannotResumeIDVViewController
 - (void)_restartApplyFlow;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
+- (void)explanationViewDidSelectSetupLater:(id)later;
 @end
 
 @implementation PKApplyCannotResumeIDVViewController
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
-  v4 = [(PKApplyExplanationViewController *)self controller];
-  [v4 endApplyFlow];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  [controller endApplyFlow];
 
   [(PKApplyExplanationViewController *)self handleNextStep];
 }
@@ -16,13 +16,13 @@
 - (void)_restartApplyFlow
 {
   [(PKApplyExplanationViewController *)self showNavigationBarSpinner:1];
-  v3 = [(PKApplyExplanationViewController *)self controller];
+  controller = [(PKApplyExplanationViewController *)self controller];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __57__PKApplyCannotResumeIDVViewController__restartApplyFlow__block_invoke;
   v4[3] = &unk_1E8011D00;
   v4[4] = self;
-  [v3 withdrawApplicationWithCompletion:v4];
+  [controller withdrawApplicationWithCompletion:v4];
 }
 
 void __57__PKApplyCannotResumeIDVViewController__restartApplyFlow__block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,16 +1,16 @@
 @interface CNPhotoLibraryProvider
-+ (id)photoLibraryWithError:(id *)a3;
++ (id)photoLibraryWithError:(id *)error;
 @end
 
 @implementation CNPhotoLibraryProvider
 
-+ (id)photoLibraryWithError:(id *)a3
++ (id)photoLibraryWithError:(id *)error
 {
-  v4 = [(objc_class *)getPHPhotoLibraryClass() isMultiLibraryModeEnabled];
+  isMultiLibraryModeEnabled = [(objc_class *)getPHPhotoLibraryClass() isMultiLibraryModeEnabled];
   PHPhotoLibraryClass = getPHPhotoLibraryClass();
-  if (v4)
+  if (isMultiLibraryModeEnabled)
   {
-    [(objc_class *)PHPhotoLibraryClass openPhotoLibraryWithWellKnownIdentifier:1 error:a3];
+    [(objc_class *)PHPhotoLibraryClass openPhotoLibraryWithWellKnownIdentifier:1 error:error];
   }
 
   else

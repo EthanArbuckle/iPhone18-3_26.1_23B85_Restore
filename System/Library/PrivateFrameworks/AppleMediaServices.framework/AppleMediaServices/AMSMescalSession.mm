@@ -1,18 +1,18 @@
 @interface AMSMescalSession
-+ (AMSMescalSession)sessionWithType:(int64_t)a3;
++ (AMSMescalSession)sessionWithType:(int64_t)type;
 + (id)defaultSession;
 + (id)primeSession;
-- (AMSMescalSession)initWithType:(int64_t)a3;
-- (BOOL)_cacheCertData:(id)a3 expiration:(double)a4;
-- (BOOL)verifyPrimeSignature:(id)a3 error:(id *)a4;
+- (AMSMescalSession)initWithType:(int64_t)type;
+- (BOOL)_cacheCertData:(id)data expiration:(double)expiration;
+- (BOOL)verifyPrimeSignature:(id)signature error:(id *)error;
 - (id)_cachedCertData;
 - (id)_cachedCertPath;
-- (id)primeSignatureForData:(id)a3 bag:(id)a4;
-- (id)primeSignatureForData:(id)a3 bag:(id)a4 error:(id *)a5;
-- (id)signData:(id)a3 bag:(id)a4;
-- (id)signData:(id)a3 bag:(id)a4 error:(id *)a5;
-- (id)verifyData:(id)a3 withSignature:(id)a4 bag:(id)a5;
-- (id)verifyPrimeSignature:(id)a3;
+- (id)primeSignatureForData:(id)data bag:(id)bag;
+- (id)primeSignatureForData:(id)data bag:(id)bag error:(id *)error;
+- (id)signData:(id)data bag:(id)bag;
+- (id)signData:(id)data bag:(id)bag error:(id *)error;
+- (id)verifyData:(id)data withSignature:(id)signature bag:(id)bag;
+- (id)verifyPrimeSignature:(id)signature;
 @end
 
 @implementation AMSMescalSession
@@ -39,11 +39,11 @@ uint64_t __34__AMSMescalSession_defaultSession__block_invoke()
 - (id)_cachedCertData
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSMescalSession *)self _cachedCertPath];
-  if (v3)
+  _cachedCertPath = [(AMSMescalSession *)self _cachedCertPath];
+  if (_cachedCertPath)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v4 fileExistsAtPath:v3];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v5 = [defaultManager fileExistsAtPath:_cachedCertPath];
 
     if (!v5)
     {
@@ -52,19 +52,19 @@ uint64_t __34__AMSMescalSession_defaultSession__block_invoke()
     }
 
     v24 = 0;
-    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3 options:0 error:&v24];
+    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:_cachedCertPath options:0 error:&v24];
     v7 = v24;
     v8 = v7;
     if (!v6 || v7)
     {
-      v9 = +[AMSLogConfig sharedConfig];
-      if (!v9)
+      oSLogObject4 = +[AMSLogConfig sharedConfig];
+      if (!oSLogObject4)
       {
-        v9 = +[AMSLogConfig sharedConfig];
+        oSLogObject4 = +[AMSLogConfig sharedConfig];
       }
 
-      v11 = [v9 OSLogObject];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [oSLogObject4 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         v17 = objc_opt_class();
         *buf = 138543618;
@@ -72,16 +72,16 @@ uint64_t __34__AMSMescalSession_defaultSession__block_invoke()
         v27 = 2114;
         v28 = v8;
         v18 = v17;
-        _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEBUG, "%{public}@: Unable to find cert data. Error: %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: Unable to find cert data. Error: %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      v9 = +[AMSDefaults mescalCertExpiration];
-      v10 = [MEMORY[0x1E695DF00] date];
-      v11 = v10;
-      if (v9 && [v10 compare:v9]!= 1)
+      oSLogObject4 = +[AMSDefaults mescalCertExpiration];
+      date = [MEMORY[0x1E695DF00] date];
+      oSLogObject = date;
+      if (oSLogObject4 && [date compare:oSLogObject4]!= 1)
       {
         v19 = +[AMSLogConfig sharedConfig];
         if (!v19)
@@ -89,14 +89,14 @@ uint64_t __34__AMSMescalSession_defaultSession__block_invoke()
           v19 = +[AMSLogConfig sharedConfig];
         }
 
-        v20 = [v19 OSLogObject];
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+        oSLogObject2 = [v19 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
         {
           v21 = objc_opt_class();
           *buf = 138543362;
           v26 = v21;
           v22 = v21;
-          _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEBUG, "%{public}@: Loaded cert data", buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@: Loaded cert data", buf, 0xCu);
         }
       }
 
@@ -108,14 +108,14 @@ uint64_t __34__AMSMescalSession_defaultSession__block_invoke()
           v12 = +[AMSLogConfig sharedConfig];
         }
 
-        v13 = [v12 OSLogObject];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+        oSLogObject3 = [v12 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
         {
           v14 = objc_opt_class();
           *buf = 138543362;
           v26 = v14;
           v15 = v14;
-          _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEBUG, "%{public}@: Removing expired cert data cache", buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEBUG, "%{public}@: Removing expired cert data cache", buf, 0xCu);
         }
 
         [(AMSMescalSession *)self _cacheCertData:0 expiration:0.0];
@@ -132,13 +132,13 @@ uint64_t __34__AMSMescalSession_defaultSession__block_invoke()
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    oSLogObject4 = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
       v26 = objc_opt_class();
       v16 = v26;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_INFO, "%{public}@: Failed to determine cache path", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_INFO, "%{public}@: Failed to determine cache path", buf, 0xCu);
     }
 
     v6 = 0;
@@ -153,8 +153,8 @@ LABEL_29:
 {
   v2 = objc_alloc(MEMORY[0x1E695DEC8]);
   v3 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v4 = [v3 lastObject];
-  v5 = [v2 initWithObjects:{v4, @"com.apple.AppleMediaServices", 0}];
+  lastObject = [v3 lastObject];
+  v5 = [v2 initWithObjects:{lastObject, @"com.apple.AppleMediaServices", 0}];
 
   v6 = [MEMORY[0x1E696AEC0] pathWithComponents:v5];
   v7 = objc_alloc_init(MEMORY[0x1E696AC08]);
@@ -166,7 +166,7 @@ LABEL_29:
   return v8;
 }
 
-- (AMSMescalSession)initWithType:(int64_t)a3
+- (AMSMescalSession)initWithType:(int64_t)type
 {
   v14.receiver = self;
   v14.super_class = AMSMescalSession;
@@ -185,7 +185,7 @@ LABEL_29:
     v9[2] = __33__AMSMescalSession_initWithType___block_invoke_7;
     v9[3] = &unk_1E73B9258;
     objc_copyWeak(&v10, &location);
-    v6 = [(AMSMescalFairplaySession *)v5 initWithMescalType:a3 cachedCertificateProvider:v11 certificateCacher:v9];
+    v6 = [(AMSMescalFairplaySession *)v5 initWithMescalType:type cachedCertificateProvider:v11 certificateCacher:v9];
     session = v4->_session;
     v4->_session = v6;
 
@@ -277,14 +277,14 @@ uint64_t __32__AMSMescalSession_primeSession__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (AMSMescalSession)sessionWithType:(int64_t)a3
++ (AMSMescalSession)sessionWithType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = +[AMSMescalSession primeSession];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     v3 = +[AMSMescalSession defaultSession];
   }
@@ -297,83 +297,83 @@ uint64_t __32__AMSMescalSession_primeSession__block_invoke()
   return v3;
 }
 
-- (id)primeSignatureForData:(id)a3 bag:(id)a4
+- (id)primeSignatureForData:(id)data bag:(id)bag
 {
-  v6 = a4;
-  v7 = a3;
+  bagCopy = bag;
+  dataCopy = data;
   v8 = objc_alloc_init(AMSMutablePromise);
   session = self->_session;
   v10 = AMSLogKey();
-  v11 = [(AMSPromise *)v8 completionHandlerAdapter];
-  [(AMSMescalFairplaySession *)session primeSignatureForData:v7 bag:v6 logKey:v10 completionHandler:v11];
+  completionHandlerAdapter = [(AMSPromise *)v8 completionHandlerAdapter];
+  [(AMSMescalFairplaySession *)session primeSignatureForData:dataCopy bag:bagCopy logKey:v10 completionHandler:completionHandlerAdapter];
 
   return v8;
 }
 
-- (id)signData:(id)a3 bag:(id)a4
+- (id)signData:(id)data bag:(id)bag
 {
-  v6 = a4;
-  v7 = a3;
+  bagCopy = bag;
+  dataCopy = data;
   v8 = objc_alloc_init(AMSMutablePromise);
   session = self->_session;
   v10 = AMSLogKey();
-  v11 = [(AMSPromise *)v8 completionHandlerAdapter];
-  [(AMSMescalFairplaySession *)session signData:v7 bag:v6 logKey:v10 completionHandler:v11];
+  completionHandlerAdapter = [(AMSPromise *)v8 completionHandlerAdapter];
+  [(AMSMescalFairplaySession *)session signData:dataCopy bag:bagCopy logKey:v10 completionHandler:completionHandlerAdapter];
 
   return v8;
 }
 
-- (id)verifyData:(id)a3 withSignature:(id)a4 bag:(id)a5
+- (id)verifyData:(id)data withSignature:(id)signature bag:(id)bag
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  bagCopy = bag;
+  signatureCopy = signature;
+  dataCopy = data;
   v11 = objc_alloc_init(AMSMutableBinaryPromise);
   session = self->_session;
   v13 = AMSLogKey();
-  v14 = [(AMSBinaryPromise *)v11 completionHandlerAdapter];
-  [(AMSMescalFairplaySession *)session verifyData:v10 signature:v9 bag:v8 logKey:v13 completionHandler:v14];
+  completionHandlerAdapter = [(AMSBinaryPromise *)v11 completionHandlerAdapter];
+  [(AMSMescalFairplaySession *)session verifyData:dataCopy signature:signatureCopy bag:bagCopy logKey:v13 completionHandler:completionHandlerAdapter];
 
   return v11;
 }
 
-- (id)verifyPrimeSignature:(id)a3
+- (id)verifyPrimeSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   v5 = objc_alloc_init(AMSMutableBinaryPromise);
   session = self->_session;
-  v7 = [(AMSBinaryPromise *)v5 completionHandlerAdapter];
-  [(AMSMescalFairplaySession *)session verifyPrimeSignature:v4 completionHandler:v7];
+  completionHandlerAdapter = [(AMSBinaryPromise *)v5 completionHandlerAdapter];
+  [(AMSMescalFairplaySession *)session verifyPrimeSignature:signatureCopy completionHandler:completionHandlerAdapter];
 
   return v5;
 }
 
-- (BOOL)_cacheCertData:(id)a3 expiration:(double)a4
+- (BOOL)_cacheCertData:(id)data expiration:(double)expiration
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(AMSMescalSession *)self _cachedCertPath];
-  if (v7)
+  dataCopy = data;
+  _cachedCertPath = [(AMSMescalSession *)self _cachedCertPath];
+  if (_cachedCertPath)
   {
-    if (v6)
+    if (dataCopy)
     {
       v29 = 0;
-      v8 = [v6 writeToFile:v7 options:1 error:&v29];
+      v8 = [dataCopy writeToFile:_cachedCertPath options:1 error:&v29];
       v9 = v29;
       if (v8)
       {
-        v10 = [MEMORY[0x1E695DF00] date];
-        v11 = [v10 dateByAddingTimeInterval:a4];
+        date = [MEMORY[0x1E695DF00] date];
+        v11 = [date dateByAddingTimeInterval:expiration];
         [AMSDefaults setMescalCertExpiration:v11];
 
-        v12 = +[AMSLogConfig sharedConfig];
-        if (!v12)
+        oSLogObject2 = +[AMSLogConfig sharedConfig];
+        if (!oSLogObject2)
         {
-          v12 = +[AMSLogConfig sharedConfig];
+          oSLogObject2 = +[AMSLogConfig sharedConfig];
         }
 
-        v13 = [v12 OSLogObject];
-        if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+        oSLogObject = [oSLogObject2 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
         {
           goto LABEL_29;
         }
@@ -382,22 +382,22 @@ uint64_t __32__AMSMescalSession_primeSession__block_invoke()
         *buf = 138543618;
         v31 = v14;
         v32 = 2048;
-        v33 = a4;
+        expirationCopy = expiration;
         v15 = v14;
         v16 = "%{public}@: Saved mescal cert with expiration: %ld";
-        v17 = v13;
+        v17 = oSLogObject;
         v18 = OS_LOG_TYPE_INFO;
         goto LABEL_22;
       }
 
-      v12 = +[AMSLogConfig sharedConfig];
-      if (!v12)
+      oSLogObject2 = +[AMSLogConfig sharedConfig];
+      if (!oSLogObject2)
       {
-        v12 = +[AMSLogConfig sharedConfig];
+        oSLogObject2 = +[AMSLogConfig sharedConfig];
       }
 
-      v13 = [v12 OSLogObject];
-      if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      oSLogObject = [oSLogObject2 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_29;
       }
@@ -406,11 +406,11 @@ uint64_t __32__AMSMescalSession_primeSession__block_invoke()
       *buf = 138543618;
       v31 = v22;
       v32 = 2114;
-      v33 = v9;
+      expirationCopy = v9;
       v15 = v22;
       v16 = "%{public}@: Failed to cache mescal cert. Error: %{public}@";
 LABEL_21:
-      v17 = v13;
+      v17 = oSLogObject;
       v18 = OS_LOG_TYPE_ERROR;
 LABEL_22:
       v23 = 22;
@@ -421,28 +421,28 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v20 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v28 = 0;
-    LOBYTE(v8) = [v20 removeItemAtPath:v7 error:&v28];
+    LOBYTE(v8) = [defaultManager removeItemAtPath:_cachedCertPath error:&v28];
     v9 = v28;
 
     if ((v8 & 1) == 0)
     {
-      v21 = [v9 domain];
-      if ([v21 isEqual:*MEMORY[0x1E696A250]])
+      domain = [v9 domain];
+      if ([domain isEqual:*MEMORY[0x1E696A250]])
       {
         if ([v9 code] == 4)
         {
 
 LABEL_32:
-          v12 = +[AMSLogConfig sharedConfig];
-          if (!v12)
+          oSLogObject2 = +[AMSLogConfig sharedConfig];
+          if (!oSLogObject2)
           {
-            v12 = +[AMSLogConfig sharedConfig];
+            oSLogObject2 = +[AMSLogConfig sharedConfig];
           }
 
-          v13 = [v12 OSLogObject];
-          if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+          oSLogObject = [oSLogObject2 OSLogObject];
+          if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_29;
           }
@@ -451,15 +451,15 @@ LABEL_32:
           *buf = 138543618;
           v31 = v27;
           v32 = 2114;
-          v33 = v9;
+          expirationCopy = v9;
           v15 = v27;
           v16 = "%{public}@: Failed to remove existing mescal cert. Error: %{public}@";
           goto LABEL_21;
         }
 
-        v26 = [v9 code];
+        code = [v9 code];
 
-        if (v26 == 260)
+        if (code == 260)
         {
           goto LABEL_32;
         }
@@ -470,14 +470,14 @@ LABEL_32:
       }
     }
 
-    v12 = +[AMSLogConfig sharedConfig];
-    if (!v12)
+    oSLogObject2 = +[AMSLogConfig sharedConfig];
+    if (!oSLogObject2)
     {
-      v12 = +[AMSLogConfig sharedConfig];
+      oSLogObject2 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    oSLogObject = [oSLogObject2 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       goto LABEL_29;
     }
@@ -487,7 +487,7 @@ LABEL_32:
     v31 = v24;
     v15 = v24;
     v16 = "%{public}@: Removed mescal cert if there was one present.";
-    v17 = v13;
+    v17 = oSLogObject;
     v18 = OS_LOG_TYPE_INFO;
     v23 = 12;
     goto LABEL_28;
@@ -499,13 +499,13 @@ LABEL_32:
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v9 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
     v31 = objc_opt_class();
     v19 = v31;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_INFO, "%{public}@: Failed to determine cache path", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: Failed to determine cache path", buf, 0xCu);
   }
 
   LOBYTE(v8) = 0;
@@ -514,28 +514,28 @@ LABEL_30:
   return v8;
 }
 
-- (id)signData:(id)a3 bag:(id)a4 error:(id *)a5
+- (id)signData:(id)data bag:(id)bag error:(id *)error
 {
-  v6 = [(AMSMescalSession *)self signData:a3 bag:a4];
-  v7 = [v6 resultWithError:a5];
+  v6 = [(AMSMescalSession *)self signData:data bag:bag];
+  v7 = [v6 resultWithError:error];
 
   return v7;
 }
 
-- (id)primeSignatureForData:(id)a3 bag:(id)a4 error:(id *)a5
+- (id)primeSignatureForData:(id)data bag:(id)bag error:(id *)error
 {
-  v6 = [(AMSMescalSession *)self primeSignatureForData:a3 bag:a4];
-  v7 = [v6 resultWithError:a5];
+  v6 = [(AMSMescalSession *)self primeSignatureForData:data bag:bag];
+  v7 = [v6 resultWithError:error];
 
   return v7;
 }
 
-- (BOOL)verifyPrimeSignature:(id)a3 error:(id *)a4
+- (BOOL)verifyPrimeSignature:(id)signature error:(id *)error
 {
-  v5 = [(AMSMescalSession *)self verifyPrimeSignature:a3];
-  LOBYTE(a4) = [v5 resultWithError:a4];
+  v5 = [(AMSMescalSession *)self verifyPrimeSignature:signature];
+  LOBYTE(error) = [v5 resultWithError:error];
 
-  return a4;
+  return error;
 }
 
 @end

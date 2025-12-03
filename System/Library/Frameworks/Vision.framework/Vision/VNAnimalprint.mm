@@ -1,24 +1,24 @@
 @interface VNAnimalprint
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToVNEntityIdentificationModelPrint:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToVNEntityIdentificationModelPrint:(id)print;
 - (NSString)description;
-- (VNAnimalprint)initWithCoder:(id)a3;
-- (VNAnimalprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 confidence:(float)a7 requestRevision:(unint64_t)a8;
-- (VNAnimalprint)initWithState:(id)a3 byteOffset:(unint64_t *)a4 error:(id *)a5;
-- (VNAnimalprint)initWithState:(id)a3 error:(id *)a4;
+- (VNAnimalprint)initWithCoder:(id)coder;
+- (VNAnimalprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes confidence:(float)confidence requestRevision:(unint64_t)revision;
+- (VNAnimalprint)initWithState:(id)state byteOffset:(unint64_t *)offset error:(id *)error;
+- (VNAnimalprint)initWithState:(id)state error:(id *)error;
 - (unint64_t)hash;
-- (unint64_t)serializeStateIntoData:(id)a3 startingAtByteOffset:(unint64_t)a4 error:(id *)a5;
+- (unint64_t)serializeStateIntoData:(id)data startingAtByteOffset:(unint64_t)offset error:(id *)error;
 - (unint64_t)serializedLength;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNAnimalprint
 
-- (BOOL)isEquivalentToVNEntityIdentificationModelPrint:(id)a3
+- (BOOL)isEquivalentToVNEntityIdentificationModelPrint:(id)print
 {
-  v4 = a3;
+  printCopy = print;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(VNEspressoModelImageprint *)self hasEquivalentDescriptorToImageprint:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(VNEspressoModelImageprint *)self hasEquivalentDescriptorToImageprint:printCopy];
 
   return v5;
 }
@@ -26,8 +26,8 @@
 - (NSString)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(VNEspressoModelImageprint *)self descriptorData];
-  v5 = [v4 bytes];
+  descriptorData = [(VNEspressoModelImageprint *)self descriptorData];
+  bytes = [descriptorData bytes];
 
   for (i = 0; i < [(VNEspressoModelImageprint *)self elementCount]; ++i)
   {
@@ -42,7 +42,7 @@
     }
 
     v8 = v7;
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%f%@", *(v5 + 4 * i), v8];
+    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%f%@", *(bytes + 4 * i), v8];
     [v3 appendString:v9];
   }
 
@@ -70,10 +70,10 @@
   return v5 ^ __ROR8__(v3, 51);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -81,11 +81,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = VNAnimalprint, [(VNEspressoModelImageprint *)&v10 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = VNAnimalprint, [(VNEspressoModelImageprint *)&v10 isEqual:equalCopy]))
     {
       [(VNAnimalprint *)self confidence];
       v6 = v5;
-      [(VNAnimalprint *)v4 confidence];
+      [(VNAnimalprint *)equalCopy confidence];
       v8 = v6 == v7;
     }
 
@@ -98,12 +98,12 @@
   return v8;
 }
 
-- (unint64_t)serializeStateIntoData:(id)a3 startingAtByteOffset:(unint64_t)a4 error:(id *)a5
+- (unint64_t)serializeStateIntoData:(id)data startingAtByteOffset:(unint64_t)offset error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = VNAnimalprint;
-  v9 = [(VNEspressoModelImageprint *)&v14 serializeStateIntoData:v8 startingAtByteOffset:a4 error:a5];
+  v9 = [(VNEspressoModelImageprint *)&v14 serializeStateIntoData:dataCopy startingAtByteOffset:offset error:error];
   if (!v9)
   {
 LABEL_6:
@@ -111,21 +111,21 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [v8 mutableBytes];
-  *&v9[v10 + a4] = self->_confidence;
+  mutableBytes = [dataCopy mutableBytes];
+  *&v9[mutableBytes + offset] = self->_confidence;
   v11 = (v9 + 4);
   if (v9 + 4 != [(VNAnimalprint *)self serializedLength])
   {
-    if (a5)
+    if (error)
     {
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected size of serialized state of the object of type %@", objc_opt_class()];
-      *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v12];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:v12];
     }
 
     goto LABEL_6;
   }
 
-  calculateChecksumMD5((v10 + a4 + 28), (v9 - 24), (v10 + a4 + 12));
+  calculateChecksumMD5((mutableBytes + offset + 28), (v9 - 24), (mutableBytes + offset + 12));
 LABEL_7:
 
   return v11;
@@ -138,74 +138,74 @@ LABEL_7:
   return [(VNEspressoModelImageprint *)&v3 serializedLength]+ 4;
 }
 
-- (VNAnimalprint)initWithState:(id)a3 byteOffset:(unint64_t *)a4 error:(id *)a5
+- (VNAnimalprint)initWithState:(id)state byteOffset:(unint64_t *)offset error:(id *)error
 {
-  v8 = a3;
+  stateCopy = state;
   v15.receiver = self;
   v15.super_class = VNAnimalprint;
-  v9 = [(VNEspressoModelImageprint *)&v15 initWithState:v8 byteOffset:a4 error:a5];
+  v9 = [(VNEspressoModelImageprint *)&v15 initWithState:stateCopy byteOffset:offset error:error];
   if (!v9)
   {
     goto LABEL_7;
   }
 
-  v10 = *([v8 bytes] + *a4);
-  *a4 += 4;
+  v10 = *([stateCopy bytes] + *offset);
+  *offset += 4;
   *&v11 = v10;
-  if (![VNValidationUtilities validateVNConfidenceRange:a5 error:v11])
+  if (![VNValidationUtilities validateVNConfidenceRange:error error:v11])
   {
     goto LABEL_7;
   }
 
   v9->_confidence = v10;
-  v12 = *a4;
+  v12 = *offset;
   if (v12 != [(VNAnimalprint *)v9 serializedLength])
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
 
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error deserializing object of type %@", objc_opt_class()];
-    *a5 = [VNError errorWithCode:14 message:v13];
+    *error = [VNError errorWithCode:14 message:v13];
 
 LABEL_7:
-    a5 = 0;
+    error = 0;
     goto LABEL_8;
   }
 
-  a5 = v9;
+  error = v9;
 LABEL_8:
 
-  return a5;
+  return error;
 }
 
-- (VNAnimalprint)initWithState:(id)a3 error:(id *)a4
+- (VNAnimalprint)initWithState:(id)state error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = VNAnimalprint;
-  return [(VNEspressoModelImageprint *)&v5 initWithState:a3 error:a4];
+  return [(VNEspressoModelImageprint *)&v5 initWithState:state error:error];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = VNAnimalprint;
-  [(VNEspressoModelImageprint *)&v6 encodeWithCoder:v4];
+  [(VNEspressoModelImageprint *)&v6 encodeWithCoder:coderCopy];
   *&v5 = self->_confidence;
-  [v4 vn_encodeValidatedConfidence:@"ap_conf" forKey:v5];
+  [coderCopy vn_encodeValidatedConfidence:@"ap_conf" forKey:v5];
 }
 
-- (VNAnimalprint)initWithCoder:(id)a3
+- (VNAnimalprint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = VNAnimalprint;
-  v5 = [(VNEspressoModelImageprint *)&v9 initWithCoder:v4];
+  v5 = [(VNEspressoModelImageprint *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 vn_decodeValidatedConfidenceForKey:@"ap_conf"];
+    [coderCopy vn_decodeValidatedConfidenceForKey:@"ap_conf"];
     v5->_confidence = v6;
     v7 = v5;
   }
@@ -213,29 +213,29 @@ LABEL_8:
   return v5;
 }
 
-- (VNAnimalprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 confidence:(float)a7 requestRevision:(unint64_t)a8
+- (VNAnimalprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes confidence:(float)confidence requestRevision:(unint64_t)revision
 {
   v25.receiver = self;
   v25.super_class = VNAnimalprint;
-  v9 = [(VNEspressoModelImageprint *)&v25 initWithData:a3 elementCount:a4 elementType:a5 lengthInBytes:a6 requestRevision:a8];
+  v9 = [(VNEspressoModelImageprint *)&v25 initWithData:data elementCount:count elementType:type lengthInBytes:bytes requestRevision:revision];
   if (v9)
   {
     v24 = 0;
-    *&v10 = a7;
+    *&v10 = confidence;
     v11 = [VNValidationUtilities validateVNConfidenceRange:&v24 error:v10];
     v12 = v24;
     v13 = v12;
     if (v11)
     {
-      v9->_confidence = a7;
+      v9->_confidence = confidence;
       v14 = v9;
     }
 
     else
     {
-      v15 = [v12 localizedDescription];
-      v16 = [v15 UTF8String];
-      VNValidatedLog(4, @"%s", v17, v18, v19, v20, v21, v22, v16);
+      localizedDescription = [v12 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
+      VNValidatedLog(4, @"%s", v17, v18, v19, v20, v21, v22, uTF8String);
 
       v14 = 0;
     }

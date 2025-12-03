@@ -1,80 +1,80 @@
 @interface UberedCollectionViewController
 - (void)as_viewDidBecomePartiallyVisible;
 - (void)as_viewWillBecomeFullyVisible;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UberedCollectionViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006174E0();
 }
 
 - (void)as_viewWillBecomeFullyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_100617694();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1006177B8(a3);
+  selfCopy = self;
+  sub_1006177B8(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100617BA8(a3);
+  selfCopy = self;
+  sub_100617BA8(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100617D08(a3);
+  selfCopy = self;
+  sub_100617D08(disappear);
 }
 
 - (void)as_viewDidBecomePartiallyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_100618268();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for UberedCollectionViewController();
   v4 = v5.receiver;
-  [(StoreCollectionViewController *)&v5 viewDidDisappear:v3];
+  [(StoreCollectionViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_100760BDC();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1006183B8(a4, width, height);
+  selfCopy = self;
+  sub_1006183B8(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100618550();
 }
 
@@ -87,35 +87,35 @@
   v2[OBJC_IVAR____TtC20ProductPageExtension30UberedCollectionViewController_contentInsetsInvalid] = 1;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   if (*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension30UberedCollectionViewController_uberScrollObserver))
   {
     type metadata accessor for UberScrollObserver();
     sub_1006192AC(&qword_100961160, type metadata accessor for UberScrollObserver);
-    v7 = a3;
-    v8 = self;
+    draggingCopy = dragging;
+    selfCopy = self;
 
     sub_10076199C();
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension30UberedCollectionViewController_uberScrollObserver))
   {
-    v4 = a3;
-    v5 = self;
+    scrollCopy = scroll;
+    selfCopy = self;
 
-    sub_1001A37AC(v4);
+    sub_1001A37AC(scrollCopy);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100618E84(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100618E84(change);
 }
 
 @end

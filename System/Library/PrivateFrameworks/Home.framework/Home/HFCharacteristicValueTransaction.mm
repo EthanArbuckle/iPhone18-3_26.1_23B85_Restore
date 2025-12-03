@@ -1,6 +1,6 @@
 @interface HFCharacteristicValueTransaction
 - (HFCharacteristicValueTransaction)init;
-- (id)executionErrorForActionSet:(id)a3;
+- (id)executionErrorForActionSet:(id)set;
 @end
 
 @implementation HFCharacteristicValueTransaction
@@ -25,14 +25,14 @@
     v6 = [MEMORY[0x277CBEB58] set];
     [(HFCharacteristicValueTransaction *)v2 setActionsToExecute:v6];
 
-    v7 = [MEMORY[0x277CBEB18] array];
-    [(HFCharacteristicValueTransaction *)v2 setClientReasonsStack:v7];
+    array = [MEMORY[0x277CBEB18] array];
+    [(HFCharacteristicValueTransaction *)v2 setClientReasonsStack:array];
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    [(HFCharacteristicValueTransaction *)v2 setReadFuturesKeyedByCharacteristicIdentifier:v8];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(HFCharacteristicValueTransaction *)v2 setReadFuturesKeyedByCharacteristicIdentifier:dictionary];
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    [(HFCharacteristicValueTransaction *)v2 setWriteFuturesKeyedByCharacteristicIdentifier:v9];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(HFCharacteristicValueTransaction *)v2 setWriteFuturesKeyedByCharacteristicIdentifier:dictionary2];
 
     v10 = objc_alloc_init(MEMORY[0x277D2C900]);
     [(HFCharacteristicValueTransaction *)v2 setCommitFuture:v10];
@@ -52,13 +52,13 @@
   return v2;
 }
 
-- (id)executionErrorForActionSet:(id)a3
+- (id)executionErrorForActionSet:(id)set
 {
-  v4 = [a3 uniqueIdentifier];
-  if (v4)
+  uniqueIdentifier = [set uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    v5 = [(HFCharacteristicValueTransaction *)self actionSetErrorsKeyedByUUID];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    actionSetErrorsKeyedByUUID = [(HFCharacteristicValueTransaction *)self actionSetErrorsKeyedByUUID];
+    v6 = [actionSetErrorsKeyedByUUID objectForKeyedSubscript:uniqueIdentifier];
   }
 
   else

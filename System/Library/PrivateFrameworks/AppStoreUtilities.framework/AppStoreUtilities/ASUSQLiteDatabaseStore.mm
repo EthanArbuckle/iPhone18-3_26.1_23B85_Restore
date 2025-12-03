@@ -1,19 +1,19 @@
 @interface ASUSQLiteDatabaseStore
-- (ASUSQLiteDatabaseStore)initWithDatabase:(id)a3;
+- (ASUSQLiteDatabaseStore)initWithDatabase:(id)database;
 @end
 
 @implementation ASUSQLiteDatabaseStore
 
-- (ASUSQLiteDatabaseStore)initWithDatabase:(id)a3
+- (ASUSQLiteDatabaseStore)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v9.receiver = self;
   v9.super_class = ASUSQLiteDatabaseStore;
   v6 = [(ASUSQLiteDatabaseStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
   }
 
   return v7;

@@ -3,13 +3,13 @@
 - (UIGestureRecognizer)gestureRecognizerForExclusionRelationship;
 - (UILargeContentViewerInteraction)initWithDelegate:(id)delegate;
 - (UIView)view;
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4;
-- (id)_itemAtPoint:(CGPoint)a3;
-- (id)_viewControllerForAccessibilityHUDGestureManager:(id)a3;
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point;
+- (id)_itemAtPoint:(CGPoint)point;
+- (id)_viewControllerForAccessibilityHUDGestureManager:(id)manager;
 - (id)delegate;
-- (void)_accessibilityHUDGestureManager:(id)a3 gestureLiftedAtPoint:(CGPoint)a4;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)_accessibilityHUDGestureManager:(id)manager gestureLiftedAtPoint:(CGPoint)point;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UILargeContentViewerInteraction
@@ -71,32 +71,32 @@ void __45__UILargeContentViewerInteraction_initialize__block_invoke_2()
 
 - (UIGestureRecognizer)gestureRecognizerForExclusionRelationship
 {
-  v2 = [(UILargeContentViewerInteraction *)self view];
-  v3 = [v2 _largeContentViewerGestureManager];
-  v4 = [v3 _recognizer];
+  view = [(UILargeContentViewerInteraction *)self view];
+  _largeContentViewerGestureManager = [view _largeContentViewerGestureManager];
+  _recognizer = [_largeContentViewerGestureManager _recognizer];
 
-  return v4;
+  return _recognizer;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
     v6 = objc_loadWeakRetained(&self->_view);
-    v7 = [v6 _largeContentViewerGestureManager];
-    [v7 _invalidate];
+    _largeContentViewerGestureManager = [v6 _largeContentViewerGestureManager];
+    [_largeContentViewerGestureManager _invalidate];
 
     v8 = objc_loadWeakRetained(&self->_view);
     [v8 _setLargeContentViewerGestureManager:0];
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   if (WeakRetained != obj)
@@ -110,19 +110,19 @@ void __45__UILargeContentViewerInteraction_initialize__block_invoke_2()
   }
 }
 
-- (id)_itemAtPoint:(CGPoint)a3
+- (id)_itemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UILargeContentViewerInteraction *)self delegate];
+  y = point.y;
+  x = point.x;
+  delegate = [(UILargeContentViewerInteraction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(UILargeContentViewerInteraction *)self delegate];
-    v9 = [v8 largeContentViewerInteraction:self itemAtPoint:{x, y}];
+    delegate2 = [(UILargeContentViewerInteraction *)self delegate];
+    view = [delegate2 largeContentViewerInteraction:self itemAtPoint:{x, y}];
 
-    if ([v9 showsLargeContentViewer])
+    if ([view showsLargeContentViewer])
     {
       goto LABEL_6;
     }
@@ -132,23 +132,23 @@ void __45__UILargeContentViewerInteraction_initialize__block_invoke_2()
 
   else
   {
-    v9 = [(UILargeContentViewerInteraction *)self view];
-    v10 = [v9 _largeContentViewerItemAtPoint:{x, y}];
+    view = [(UILargeContentViewerInteraction *)self view];
+    v10 = [view _largeContentViewerItemAtPoint:{x, y}];
   }
 
-  v9 = v10;
+  view = v10;
 LABEL_6:
 
-  return v9;
+  return view;
 }
 
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point
 {
-  v4 = [(UILargeContentViewerInteraction *)self _itemAtPoint:a3, a4.x, a4.y];
+  v4 = [(UILargeContentViewerInteraction *)self _itemAtPoint:manager, point.x, point.y];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 accessibilityHUDRepresentation];
-    if (v5)
+    accessibilityHUDRepresentation = [v4 accessibilityHUDRepresentation];
+    if (accessibilityHUDRepresentation)
     {
       goto LABEL_7;
     }
@@ -156,36 +156,36 @@ LABEL_6:
 
   else
   {
-    v5 = 0;
+    accessibilityHUDRepresentation = 0;
   }
 
   if (v4)
   {
     v6 = [UIAccessibilityHUDItem alloc];
-    v7 = [v4 largeContentTitle];
-    v8 = [v4 largeContentImage];
+    largeContentTitle = [v4 largeContentTitle];
+    largeContentImage = [v4 largeContentImage];
     [v4 largeContentImageInsets];
-    v5 = -[UIAccessibilityHUDItem initWithTitle:image:imageInsets:scaleImage:](v6, "initWithTitle:image:imageInsets:scaleImage:", v7, v8, [v4 scalesLargeContentImage], v9, v10, v11, v12);
+    accessibilityHUDRepresentation = -[UIAccessibilityHUDItem initWithTitle:image:imageInsets:scaleImage:](v6, "initWithTitle:image:imageInsets:scaleImage:", largeContentTitle, largeContentImage, [v4 scalesLargeContentImage], v9, v10, v11, v12);
   }
 
 LABEL_7:
 
-  return v5;
+  return accessibilityHUDRepresentation;
 }
 
-- (void)_accessibilityHUDGestureManager:(id)a3 gestureLiftedAtPoint:(CGPoint)a4
+- (void)_accessibilityHUDGestureManager:(id)manager gestureLiftedAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
+  y = point.y;
+  x = point.x;
+  managerCopy = manager;
   v7 = [(UILargeContentViewerInteraction *)self _itemAtPoint:x, y];
-  v8 = [(UILargeContentViewerInteraction *)self delegate];
+  delegate = [(UILargeContentViewerInteraction *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(UILargeContentViewerInteraction *)self delegate];
-    [v10 largeContentViewerInteraction:self didEndOnItem:v7 atPoint:{x, y}];
+    delegate2 = [(UILargeContentViewerInteraction *)self delegate];
+    [delegate2 largeContentViewerInteraction:self didEndOnItem:v7 atPoint:{x, y}];
 LABEL_3:
 
     goto LABEL_7;
@@ -194,12 +194,12 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
-    if ([v10 isEnabled])
+    delegate2 = v7;
+    if ([delegate2 isEnabled])
     {
-      v11 = [v12 view];
-      [v10 convertPoint:v11 fromView:{x, y}];
-      [v10 _activateForAccessibilityHUDLiftAtPoint:?];
+      view = [managerCopy view];
+      [delegate2 convertPoint:view fromView:{x, y}];
+      [delegate2 _activateForAccessibilityHUDLiftAtPoint:?];
     }
 
     goto LABEL_3;
@@ -208,15 +208,15 @@ LABEL_3:
 LABEL_7:
 }
 
-- (id)_viewControllerForAccessibilityHUDGestureManager:(id)a3
+- (id)_viewControllerForAccessibilityHUDGestureManager:(id)manager
 {
-  v5 = [(UILargeContentViewerInteraction *)self delegate];
+  delegate = [(UILargeContentViewerInteraction *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UILargeContentViewerInteraction *)self delegate];
-    v8 = [v7 viewControllerForLargeContentViewerInteraction:self];
+    delegate2 = [(UILargeContentViewerInteraction *)self delegate];
+    v8 = [delegate2 viewControllerForLargeContentViewerInteraction:self];
 
     if (v8)
     {

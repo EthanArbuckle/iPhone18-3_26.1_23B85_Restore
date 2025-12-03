@@ -1,13 +1,13 @@
 @interface PBObjectToRepresentationCoercion
-- (BOOL)canCoerceToType:(id)a3;
-- (PBObjectToRepresentationCoercion)initWithClass:(Class)a3;
-- (void)addCoercionToType:(id)a3 block:(id)a4;
-- (void)createRepresentationOfType:(id)a3 fromObject:(id)a4 completionBlock:(id)a5;
+- (BOOL)canCoerceToType:(id)type;
+- (PBObjectToRepresentationCoercion)initWithClass:(Class)class;
+- (void)addCoercionToType:(id)type block:(id)block;
+- (void)createRepresentationOfType:(id)type fromObject:(id)object completionBlock:(id)block;
 @end
 
 @implementation PBObjectToRepresentationCoercion
 
-- (PBObjectToRepresentationCoercion)initWithClass:(Class)a3
+- (PBObjectToRepresentationCoercion)initWithClass:(Class)class
 {
   v11.receiver = self;
   v11.super_class = PBObjectToRepresentationCoercion;
@@ -15,32 +15,32 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_theClass, a3);
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v4->_theClass, class);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     coercionBlockByType = v5->_coercionBlockByType;
-    v5->_coercionBlockByType = v6;
+    v5->_coercionBlockByType = dictionary;
 
-    v8 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     typeOrder = v5->_typeOrder;
-    v5->_typeOrder = v8;
+    v5->_typeOrder = orderedSet;
   }
 
   return v5;
 }
 
-- (void)addCoercionToType:(id)a3 block:(id)a4
+- (void)addCoercionToType:(id)type block:(id)block
 {
-  v7 = a3;
-  v6 = MEMORY[0x25F8AC430](a4);
-  [(NSMutableDictionary *)self->_coercionBlockByType setObject:v6 forKeyedSubscript:v7];
+  typeCopy = type;
+  v6 = MEMORY[0x25F8AC430](block);
+  [(NSMutableDictionary *)self->_coercionBlockByType setObject:v6 forKeyedSubscript:typeCopy];
 
-  [(NSMutableOrderedSet *)self->_typeOrder addObject:v7];
+  [(NSMutableOrderedSet *)self->_typeOrder addObject:typeCopy];
 }
 
-- (BOOL)canCoerceToType:(id)a3
+- (BOOL)canCoerceToType:(id)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -59,7 +59,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if (UTTypeConformsTo(*(*(&v11 + 1) + 8 * i), v4))
+        if (UTTypeConformsTo(*(*(&v11 + 1) + 8 * i), typeCopy))
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -82,12 +82,12 @@ LABEL_11:
   return v6;
 }
 
-- (void)createRepresentationOfType:(id)a3 fromObject:(id)a4 completionBlock:(id)a5
+- (void)createRepresentationOfType:(id)type fromObject:(id)object completionBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  objectCopy = object;
+  blockCopy = block;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -108,7 +108,7 @@ LABEL_3:
       }
 
       v16 = *(*(&v36 + 1) + 8 * v15);
-      if (UTTypeConformsTo(v16, v8))
+      if (UTTypeConformsTo(v16, typeCopy))
       {
         break;
       }
@@ -137,13 +137,13 @@ LABEL_3:
     v32[1] = 3221225472;
     v32[2] = __90__PBObjectToRepresentationCoercion_createRepresentationOfType_fromObject_completionBlock___block_invoke;
     v32[3] = &unk_279A07458;
-    v33 = v8;
-    v34 = v9;
-    v35 = v10;
+    v33 = typeCopy;
+    v34 = objectCopy;
+    v35 = blockCopy;
     v19 = v18[2];
-    v20 = v10;
-    v21 = v9;
-    v22 = v8;
+    v20 = blockCopy;
+    v21 = objectCopy;
+    v22 = typeCopy;
     v19(v18, v17, v21, v32);
   }
 
@@ -158,12 +158,12 @@ LABEL_12:
     v28[1] = 3221225472;
     v28[2] = __90__PBObjectToRepresentationCoercion_createRepresentationOfType_fromObject_completionBlock___block_invoke_3;
     v28[3] = &unk_279A06AB0;
-    v30 = v9;
-    v31 = v10;
-    v29 = v8;
-    v24 = v10;
-    v25 = v9;
-    v26 = v8;
+    v30 = objectCopy;
+    v31 = blockCopy;
+    v29 = typeCopy;
+    v24 = blockCopy;
+    v25 = objectCopy;
+    v26 = typeCopy;
     dispatch_async(v23, v28);
 
     v18 = v31;

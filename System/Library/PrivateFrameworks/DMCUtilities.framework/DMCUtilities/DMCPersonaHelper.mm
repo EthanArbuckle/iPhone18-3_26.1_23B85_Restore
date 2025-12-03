@@ -1,37 +1,37 @@
 @interface DMCPersonaHelper
 + (BOOL)isCurrentPersonaEnterprise;
-+ (BOOL)personaWithUniqueIdentifierExists:(id)a3;
-+ (BOOL)removePersona:(id)a3 error:(id *)a4;
-+ (id)createEnterprisePersonaWithDevicePasscode:(id)a3 error:(id *)a4;
-+ (id)createEnterprisePersonaWithPasscodeData:(id)a3 passcodeDataType:(unint64_t)a4 error:(id *)a5;
++ (BOOL)personaWithUniqueIdentifierExists:(id)exists;
++ (BOOL)removePersona:(id)persona error:(id *)error;
++ (id)createEnterprisePersonaWithDevicePasscode:(id)passcode error:(id *)error;
++ (id)createEnterprisePersonaWithPasscodeData:(id)data passcodeDataType:(unint64_t)type error:(id *)error;
 + (id)currentPersonaID;
 + (id)currentPersonaTypeString;
 + (id)enterprisePersonaDisplayName;
 + (id)enterprisePersonaIdentifier;
 + (id)fetchDirtyPersonaIDs;
-+ (id)performBlockUnderPersona:(id)a3 block:(id)a4;
-+ (id)performBlockUnderPersonalPersona:(id)a3;
-+ (void)removePersonaAndAccountsWithPersonaID:(id)a3;
-+ (void)setPersonaIdentifierForApps:(id)a3 personaID:(id)a4 completionHandler:(id)a5;
-+ (void)trackDirtyPersona:(id)a3;
++ (id)performBlockUnderPersona:(id)persona block:(id)block;
++ (id)performBlockUnderPersonalPersona:(id)persona;
++ (void)removePersonaAndAccountsWithPersonaID:(id)d;
++ (void)setPersonaIdentifierForApps:(id)apps personaID:(id)d completionHandler:(id)handler;
++ (void)trackDirtyPersona:(id)persona;
 + (void)untrackAllDirtyPersonas;
-+ (void)untrackDirtyPersona:(id)a3;
++ (void)untrackDirtyPersona:(id)persona;
 @end
 
 @implementation DMCPersonaHelper
 
-+ (id)createEnterprisePersonaWithDevicePasscode:(id)a3 error:(id *)a4
++ (id)createEnterprisePersonaWithDevicePasscode:(id)passcode error:(id *)error
 {
-  v6 = [a3 dataUsingEncoding:4];
-  v7 = [a1 createEnterprisePersonaWithPasscodeData:v6 passcodeDataType:0 error:a4];
+  v6 = [passcode dataUsingEncoding:4];
+  v7 = [self createEnterprisePersonaWithPasscodeData:v6 passcodeDataType:0 error:error];
 
   return v7;
 }
 
-+ (id)createEnterprisePersonaWithPasscodeData:(id)a3 passcodeDataType:(unint64_t)a4 error:(id *)a5
++ (id)createEnterprisePersonaWithPasscodeData:(id)data passcodeDataType:(unint64_t)type error:(id *)error
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dataCopy = data;
   v37 = *MEMORY[0x1E69DF0A8];
   v38[0] = &unk_1F28682A8;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
@@ -48,7 +48,7 @@
   v27 = __Block_byref_object_dispose__5;
   v28 = 0;
   v9 = [objc_alloc(MEMORY[0x1E696AB38]) initWithCondition:0];
-  v10 = [MEMORY[0x1E69DF068] sharedManager];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __83__DMCPersonaHelper_createEnterprisePersonaWithPasscodeData_passcodeDataType_error___block_invoke;
@@ -57,7 +57,7 @@
   v20 = v11;
   v21 = &v29;
   v22 = &v23;
-  [v10 createUserPersona:v8 passcodeData:v7 passcodeDataType:a4 completionHandler:v19];
+  [mEMORY[0x1E69DF068] createUserPersona:v8 passcodeData:dataCopy passcodeDataType:type completionHandler:v19];
 
   if (([v11 tryLockWhenCondition:1] & 1) == 0)
   {
@@ -75,9 +75,9 @@
   v13 = v30[5];
   if (v13)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -136,12 +136,12 @@ void __83__DMCPersonaHelper_createEnterprisePersonaWithPasscodeData_passcodeData
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)removePersona:(id)a3 error:(id *)a4
++ (BOOL)removePersona:(id)persona error:(id *)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  personaCopy = persona;
   v34 = *MEMORY[0x1E69DF0B0];
-  v35[0] = v5;
+  v35[0] = personaCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
   v24 = 0;
   v25 = &v24;
@@ -150,17 +150,17 @@ void __83__DMCPersonaHelper_createEnterprisePersonaWithPasscodeData_passcodeData
   v28 = __Block_byref_object_dispose__5;
   v29 = 0;
   v7 = [objc_alloc(MEMORY[0x1E696AB38]) initWithCondition:0];
-  v8 = [MEMORY[0x1E69DF068] sharedManager];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __40__DMCPersonaHelper_removePersona_error___block_invoke;
   v20[3] = &unk_1E7ADCE88;
   v9 = v7;
   v21 = v9;
-  v10 = v5;
+  v10 = personaCopy;
   v22 = v10;
   v23 = &v24;
-  [v8 deleteUserPersonaWithProfileInfo:v6 passcodeData:0 completionHandler:v20];
+  [mEMORY[0x1E69DF068] deleteUserPersonaWithProfileInfo:v6 passcodeData:0 completionHandler:v20];
 
   if (([v9 tryLockWhenCondition:1] & 1) == 0)
   {
@@ -191,9 +191,9 @@ void __83__DMCPersonaHelper_createEnterprisePersonaWithPasscodeData_passcodeData
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     [v13 logErrorEventForTopic:@"Persona" reason:@"Persona Removal Failed" error:v14 details:v16];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v25[5];
+      *error = v25[5];
     }
   }
 
@@ -239,23 +239,23 @@ void __40__DMCPersonaHelper_removePersona_error___block_invoke(uint64_t a1, void
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removePersonaAndAccountsWithPersonaID:(id)a3
++ (void)removePersonaAndAccountsWithPersonaID:(id)d
 {
-  v3 = a3;
-  [DMCPersonaHelper removePersona:v3 error:0];
-  v4 = [MEMORY[0x1E6959A48] defaultStore];
-  [v4 dmc_removeMAIDRelatedAccountsWithPersonaID:v3 asynchronous:0];
+  dCopy = d;
+  [DMCPersonaHelper removePersona:dCopy error:0];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  [defaultStore dmc_removeMAIDRelatedAccountsWithPersonaID:dCopy asynchronous:0];
 }
 
-+ (id)performBlockUnderPersonalPersona:(id)a3
++ (id)performBlockUnderPersonalPersona:(id)persona
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DF068] sharedManager];
-  v5 = [v4 currentPersona];
+  personaCopy = persona;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  if (([v5 isPersonalPersona] & 1) != 0 || (objc_msgSend(v5, "isSystemPersona") & 1) != 0 || objc_msgSend(v5, "isDefaultPersona"))
+  if (([currentPersona isPersonalPersona] & 1) != 0 || (objc_msgSend(currentPersona, "isSystemPersona") & 1) != 0 || objc_msgSend(currentPersona, "isDefaultPersona"))
   {
-    v3[2](v3);
+    personaCopy[2](personaCopy);
     v6 = 0;
   }
 
@@ -272,15 +272,15 @@ void __40__DMCPersonaHelper_removePersona_error___block_invoke(uint64_t a1, void
     v17 = v9;
     if (v9 && ([v9 userPersonaUniqueString], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "length"), v18, v19))
     {
-      v20 = [v17 userPersonaUniqueString];
-      v21 = [DMCPersonaHelper performBlockUnderPersona:v20 block:v3];
+      userPersonaUniqueString = [v17 userPersonaUniqueString];
+      v21 = [DMCPersonaHelper performBlockUnderPersona:userPersonaUniqueString block:personaCopy];
     }
 
     else
     {
       v22 = MEMORY[0x1E696ABC0];
-      v20 = DMCErrorArray(@"PERSONA_ATTRIBUTE_FETCH_ERROR", v10, v11, v12, v13, v14, v15, v16, 0);
-      v21 = [v22 DMCErrorWithDomain:@"DMCPersonaErrorDomain" code:55001 descriptionArray:v20 errorType:@"DMCFatalError"];
+      userPersonaUniqueString = DMCErrorArray(@"PERSONA_ATTRIBUTE_FETCH_ERROR", v10, v11, v12, v13, v14, v15, v16, 0);
+      v21 = [v22 DMCErrorWithDomain:@"DMCPersonaErrorDomain" code:55001 descriptionArray:userPersonaUniqueString errorType:@"DMCFatalError"];
     }
 
     v6 = v21;
@@ -289,19 +289,19 @@ void __40__DMCPersonaHelper_removePersona_error___block_invoke(uint64_t a1, void
   return v6;
 }
 
-+ (id)performBlockUnderPersona:(id)a3 block:(id)a4
++ (id)performBlockUnderPersona:(id)persona block:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  personaCopy = persona;
+  blockCopy = block;
+  if (!blockCopy)
   {
 LABEL_8:
     v10 = 0;
     goto LABEL_9;
   }
 
-  if (![v5 length])
+  if (![personaCopy length])
   {
     v11 = DMCLogObjects()[1];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -310,19 +310,19 @@ LABEL_8:
       _os_log_impl(&dword_1B1630000, v11, OS_LOG_TYPE_INFO, "performBlockUnderPersona: No persona provided, will just run the block", buf, 2u);
     }
 
-    v6[2](v6);
+    blockCopy[2](blockCopy);
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x1E69DF068] sharedManager];
-  v8 = [v7 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v18 = 0;
-  v9 = [v8 copyCurrentPersonaContextWithError:&v18];
+  v9 = [currentPersona copyCurrentPersonaContextWithError:&v18];
   v10 = v18;
   if (!v10)
   {
-    v14 = [v8 createPersonaContextForBackgroundProcessingWithPersonaUniqueString:v5];
+    v14 = [currentPersona createPersonaContextForBackgroundProcessingWithPersonaUniqueString:personaCopy];
     if (v14)
     {
       v10 = v14;
@@ -330,7 +330,7 @@ LABEL_8:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v20 = v5;
+        v20 = personaCopy;
         v21 = 2114;
         v22 = v10;
         _os_log_impl(&dword_1B1630000, v15, OS_LOG_TYPE_ERROR, "Failed to adopt persona:%{public}@ with error: %{public}@", buf, 0x16u);
@@ -339,8 +339,8 @@ LABEL_8:
 
     else
     {
-      v6[2](v6);
-      [v8 restorePersonaWithSavedPersonaContext:v9];
+      blockCopy[2](blockCopy);
+      [currentPersona restorePersonaWithSavedPersonaContext:v9];
       if (objc_claimAutoreleasedReturnValue())
       {
         v16 = DMCLogObjects()[1];
@@ -366,66 +366,66 @@ LABEL_9:
 
 + (id)currentPersonaID
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  v3 = [v2 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  v4 = [v3 userPersonaUniqueString];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
-  return v4;
+  return userPersonaUniqueString;
 }
 
 + (BOOL)isCurrentPersonaEnterprise
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  v3 = [v2 currentPersona];
-  v4 = [v3 isEnterprisePersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  isEnterprisePersona = [currentPersona isEnterprisePersona];
 
-  return v4;
+  return isEnterprisePersona;
 }
 
 + (id)currentPersonaTypeString
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  v3 = [v2 currentPersona];
-  v4 = [v3 userPersonaNickName];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaNickName = [currentPersona userPersonaNickName];
 
-  return v4;
+  return userPersonaNickName;
 }
 
 + (id)enterprisePersonaIdentifier
 {
   v2 = [MEMORY[0x1E69DF088] personaAttributesForPersonaType:2];
-  v3 = [v2 userPersonaUniqueString];
+  userPersonaUniqueString = [v2 userPersonaUniqueString];
 
-  return v3;
+  return userPersonaUniqueString;
 }
 
 + (id)enterprisePersonaDisplayName
 {
   v2 = [MEMORY[0x1E69DF088] personaAttributesForPersonaType:2];
-  v3 = [v2 userPersonaDisplayName];
+  userPersonaDisplayName = [v2 userPersonaDisplayName];
 
-  return v3;
+  return userPersonaDisplayName;
 }
 
-+ (void)setPersonaIdentifierForApps:(id)a3 personaID:(id)a4 completionHandler:(id)a5
++ (void)setPersonaIdentifierForApps:(id)apps personaID:(id)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E69DF068] sharedManager];
+  appsCopy = apps;
+  dCopy = d;
+  handlerCopy = handler;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__DMCPersonaHelper_setPersonaIdentifierForApps_personaID_completionHandler___block_invoke;
   v15[3] = &unk_1E7ADCED8;
-  v16 = v7;
-  v17 = v10;
-  v18 = v8;
-  v19 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
-  v14 = v7;
+  v16 = appsCopy;
+  v17 = mEMORY[0x1E69DF068];
+  v18 = dCopy;
+  v19 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = dCopy;
+  v13 = mEMORY[0x1E69DF068];
+  v14 = appsCopy;
   [v13 fetchBundleIdentifierForPersonaWithIDString:v12 completionHandler:v15];
 }
 
@@ -474,44 +474,44 @@ void __76__DMCPersonaHelper_setPersonaIdentifierForApps_personaID_completionHand
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)personaWithUniqueIdentifierExists:(id)a3
++ (BOOL)personaWithUniqueIdentifierExists:(id)exists
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  existsCopy = exists;
   v4 = *DMCLogObjects();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v3;
+    v10 = existsCopy;
     _os_log_impl(&dword_1B1630000, v4, OS_LOG_TYPE_INFO, "fetchPersonaWithPersonaUniqueString: will fetch persona with persona ID: %@", &v9, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E69DF088] personaAttributesForPersonaUniqueString:v3];
+  v5 = [MEMORY[0x1E69DF088] personaAttributesForPersonaUniqueString:existsCopy];
   v6 = v5 != 0;
 
   v7 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-+ (void)trackDirtyPersona:(id)a3
++ (void)trackDirtyPersona:(id)persona
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  personaCopy = persona;
+  if ([personaCopy length])
   {
     v4 = MDMDirtyPersonaFilePath();
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:v4];
 
     if (v6)
     {
       v7 = [MEMORY[0x1E695DF70] arrayWithContentsOfFile:v4];
-      [v7 addObject:v3];
+      [v7 addObject:personaCopy];
     }
 
     else
     {
-      v9[0] = v3;
+      v9[0] = personaCopy;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     }
 
@@ -522,20 +522,20 @@ void __76__DMCPersonaHelper_setPersonaIdentifierForApps_personaID_completionHand
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)untrackDirtyPersona:(id)a3
++ (void)untrackDirtyPersona:(id)persona
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  personaCopy = persona;
   v4 = MDMDirtyPersonaFilePath();
-  if ([v3 length])
+  if ([personaCopy length])
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:v4];
 
     if (v6)
     {
       v7 = [MEMORY[0x1E695DF70] arrayWithContentsOfFile:v4];
-      [v7 removeObject:v3];
+      [v7 removeObject:personaCopy];
       if ([v7 count])
       {
         [v7 writeToFile:v4 atomically:1];
@@ -544,9 +544,9 @@ void __76__DMCPersonaHelper_setPersonaIdentifierForApps_personaID_completionHand
 
       else
       {
-        v8 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
         v12 = 0;
-        [v8 removeItemAtPath:v4 error:&v12];
+        [defaultManager2 removeItemAtPath:v4 error:&v12];
         v9 = v12;
 
         if (v9)
@@ -570,14 +570,14 @@ void __76__DMCPersonaHelper_setPersonaIdentifierForApps_personaID_completionHand
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = MDMDirtyPersonaFilePath();
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v2];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager2 fileExistsAtPath:v2];
 
   if (v5)
   {
     v10 = 0;
-    [v3 removeItemAtPath:v2 error:&v10];
+    [defaultManager removeItemAtPath:v2 error:&v10];
     v6 = v10;
     if (v6)
     {

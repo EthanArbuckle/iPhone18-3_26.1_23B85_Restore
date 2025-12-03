@@ -1,21 +1,21 @@
 @interface DiagnosticExtensionController
-- (DiagnosticExtensionController)initWithDestinationDirectory:(id)a3;
-- (void)collectDEPayloadsWithIdentifier:(id)a3 diagnosticExtensions:(id)a4 queue:(id)a5 reply:(id)a6;
-- (void)collectDEPayloadsWithIdentifier:(id)a3 diagnosticExtensionsWithParameters:(id)a4 queue:(id)a5 reply:(id)a6;
+- (DiagnosticExtensionController)initWithDestinationDirectory:(id)directory;
+- (void)collectDEPayloadsWithIdentifier:(id)identifier diagnosticExtensions:(id)extensions queue:(id)queue reply:(id)reply;
+- (void)collectDEPayloadsWithIdentifier:(id)identifier diagnosticExtensionsWithParameters:(id)parameters queue:(id)queue reply:(id)reply;
 @end
 
 @implementation DiagnosticExtensionController
 
-- (DiagnosticExtensionController)initWithDestinationDirectory:(id)a3
+- (DiagnosticExtensionController)initWithDestinationDirectory:(id)directory
 {
-  v5 = a3;
+  directoryCopy = directory;
   v14.receiver = self;
   v14.super_class = DiagnosticExtensionController;
   v6 = [(DiagnosticExtensionController *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_destinationRootDirectory, a3);
+    objc_storeStrong(&v6->_destinationRootDirectory, directory);
     v8 = objc_alloc_init(MEMORY[0x277CCA968]);
     dateFormatter = v7->dateFormatter;
     v7->dateFormatter = v8;
@@ -30,20 +30,20 @@
   return v7;
 }
 
-- (void)collectDEPayloadsWithIdentifier:(id)a3 diagnosticExtensions:(id)a4 queue:(id)a5 reply:(id)a6
+- (void)collectDEPayloadsWithIdentifier:(id)identifier diagnosticExtensions:(id)extensions queue:(id)queue reply:(id)reply
 {
-  v21 = self;
+  selfCopy = self;
   v28 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x277CBEB38] dictionary];
+  identifierCopy = identifier;
+  extensionsCopy = extensions;
+  queueCopy = queue;
+  replyCopy = reply;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = v9;
+  v13 = extensionsCopy;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
@@ -60,8 +60,8 @@
         }
 
         v18 = *(*(&v23 + 1) + 8 * v17);
-        v19 = [MEMORY[0x277CBEB68] null];
-        [v12 setObject:v19 forKeyedSubscript:v18];
+        null = [MEMORY[0x277CBEB68] null];
+        [dictionary setObject:null forKeyedSubscript:v18];
 
         ++v17;
       }
@@ -73,18 +73,18 @@
     while (v15);
   }
 
-  [(DiagnosticExtensionController *)v21 collectDEPayloadsWithIdentifier:v22 diagnosticExtensionsWithParameters:v12 queue:v10 reply:v11];
+  [(DiagnosticExtensionController *)selfCopy collectDEPayloadsWithIdentifier:identifierCopy diagnosticExtensionsWithParameters:dictionary queue:queueCopy reply:replyCopy];
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)collectDEPayloadsWithIdentifier:(id)a3 diagnosticExtensionsWithParameters:(id)a4 queue:(id)a5 reply:(id)a6
+- (void)collectDEPayloadsWithIdentifier:(id)identifier diagnosticExtensionsWithParameters:(id)parameters queue:(id)queue reply:(id)reply
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  queueCopy = queue;
+  replyCopy = reply;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x2020000000;
@@ -92,21 +92,21 @@
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
-  v37 = [v11 count];
+  v37 = [parametersCopy count];
   dateFormatter = self->dateFormatter;
-  v16 = [MEMORY[0x277CBEAA8] date];
-  v17 = [(NSDateFormatter *)dateFormatter stringFromDate:v16];
-  v18 = [v10 stringByAppendingFormat:@"-%@", v17];
+  date = [MEMORY[0x277CBEAA8] date];
+  v17 = [(NSDateFormatter *)dateFormatter stringFromDate:date];
+  v18 = [identifierCopy stringByAppendingFormat:@"-%@", v17];
 
   v19 = diagextLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v11 count];
-    v21 = [v11 allKeys];
+    v20 = [parametersCopy count];
+    allKeys = [parametersCopy allKeys];
     *buf = 134218242;
     v40 = v20;
     v41 = 2112;
-    v42 = v21;
+    v42 = allKeys;
     _os_log_impl(&dword_241804000, v19, OS_LOG_TYPE_DEFAULT, "Calling %ld DEs: %@", buf, 0x16u);
   }
 
@@ -117,13 +117,13 @@
     v27[2] = __112__DiagnosticExtensionController_collectDEPayloadsWithIdentifier_diagnosticExtensionsWithParameters_queue_reply___block_invoke;
     v27[3] = &unk_278CF06D8;
     v27[4] = self;
-    v28 = v14;
+    v28 = dictionary;
     v32 = v38;
     v29 = v18;
     v33 = &v34;
-    v31 = v13;
-    v30 = v12;
-    [v11 enumerateKeysAndObjectsUsingBlock:v27];
+    v31 = replyCopy;
+    v30 = queueCopy;
+    [parametersCopy enumerateKeysAndObjectsUsingBlock:v27];
   }
 
   else
@@ -135,15 +135,15 @@
       _os_log_impl(&dword_241804000, v22, OS_LOG_TYPE_DEFAULT, "List of DiagnosticExtensions to call was empty", buf, 2u);
     }
 
-    if (v13)
+    if (replyCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __112__DiagnosticExtensionController_collectDEPayloadsWithIdentifier_diagnosticExtensionsWithParameters_queue_reply___block_invoke_105;
       block[3] = &unk_278CEFF50;
-      v26 = v13;
-      v25 = v14;
-      dispatch_async(v12, block);
+      v26 = replyCopy;
+      v25 = dictionary;
+      dispatch_async(queueCopy, block);
     }
   }
 

@@ -1,13 +1,13 @@
 @interface CACUserAttentionInterface
 + (id)sharedManager;
 - (void)cancelDelayedUserAttentionControllerStop;
-- (void)startUserAttentionControllerIfNeededForTypes:(unint64_t)a3;
+- (void)startUserAttentionControllerIfNeededForTypes:(unint64_t)types;
 - (void)stopUserAttentionControllerIfNeeded;
-- (void)stopUserAttentionControllerIfNeededAfterDelay:(double)a3;
-- (void)userAttentionController:(id)a3 didGainAttentionWithEvent:(int64_t)a4;
-- (void)userAttentionController:(id)a3 didLoseAttentionWithEvent:(int64_t)a4;
-- (void)userAttentionControllerAttentionAwarenessInterrupted:(id)a3;
-- (void)userAttentionControllerAttentionAwarenessInterruptionEnded:(id)a3;
+- (void)stopUserAttentionControllerIfNeededAfterDelay:(double)delay;
+- (void)userAttentionController:(id)controller didGainAttentionWithEvent:(int64_t)event;
+- (void)userAttentionController:(id)controller didLoseAttentionWithEvent:(int64_t)event;
+- (void)userAttentionControllerAttentionAwarenessInterrupted:(id)interrupted;
+- (void)userAttentionControllerAttentionAwarenessInterruptionEnded:(id)ended;
 @end
 
 @implementation CACUserAttentionInterface
@@ -31,7 +31,7 @@ uint64_t __42__CACUserAttentionInterface_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)startUserAttentionControllerIfNeededForTypes:(unint64_t)a3
+- (void)startUserAttentionControllerIfNeededForTypes:(unint64_t)types
 {
   v5 = CACLogAttentionAware();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -48,7 +48,7 @@ uint64_t __42__CACUserAttentionInterface_sharedManager__block_invoke()
   v8[2] = __74__CACUserAttentionInterface_startUserAttentionControllerIfNeededForTypes___block_invoke;
   v8[3] = &unk_279CEC6B8;
   objc_copyWeak(v9, buf);
-  v9[1] = a3;
+  v9[1] = types;
   CACGetDeviceSupportsUserAttentionDetection(v6, v8);
 
   objc_destroyWeak(v9);
@@ -108,7 +108,7 @@ void __74__CACUserAttentionInterface_startUserAttentionControllerIfNeededForType
 - (void)stopUserAttentionControllerIfNeeded
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = *a1;
+  v3 = *self;
   v4 = 138543618;
   v5 = v3;
   v6 = 2114;
@@ -116,11 +116,11 @@ void __74__CACUserAttentionInterface_startUserAttentionControllerIfNeededForType
   _os_log_error_impl(&dword_26B354000, log, OS_LOG_TYPE_ERROR, "Failed to stop user attention controller: %{public}@, error: %{public}@", &v4, 0x16u);
 }
 
-- (void)stopUserAttentionControllerIfNeededAfterDelay:(double)a3
+- (void)stopUserAttentionControllerIfNeededAfterDelay:(double)delay
 {
   [(CACUserAttentionInterface *)self cancelDelayedUserAttentionControllerStop];
 
-  [(CACUserAttentionInterface *)self performSelector:sel_stopUserAttentionControllerIfNeeded withObject:0 afterDelay:a3];
+  [(CACUserAttentionInterface *)self performSelector:sel_stopUserAttentionControllerIfNeeded withObject:0 afterDelay:delay];
 }
 
 - (void)cancelDelayedUserAttentionControllerStop
@@ -130,14 +130,14 @@ void __74__CACUserAttentionInterface_startUserAttentionControllerIfNeededForType
   [v3 cancelPreviousPerformRequestsWithTarget:self selector:sel_stopUserAttentionControllerIfNeeded object:0];
 }
 
-- (void)userAttentionController:(id)a3 didLoseAttentionWithEvent:(int64_t)a4
+- (void)userAttentionController:(id)controller didLoseAttentionWithEvent:(int64_t)event
 {
   v10 = *MEMORY[0x277D85DE8];
   v6 = CACLogAttentionAware();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 134217984;
-    v9 = a4;
+    eventCopy = event;
     _os_log_impl(&dword_26B354000, v6, OS_LOG_TYPE_INFO, "Attention was lost with event=%zd", &v8, 0xCu);
   }
 
@@ -153,7 +153,7 @@ void __74__CACUserAttentionInterface_startUserAttentionControllerIfNeededForType
 
   else
   {
-    if ((a4 - 1) > 1)
+    if ((event - 1) > 1)
     {
       return;
     }
@@ -163,14 +163,14 @@ void __74__CACUserAttentionInterface_startUserAttentionControllerIfNeededForType
   }
 }
 
-- (void)userAttentionController:(id)a3 didGainAttentionWithEvent:(int64_t)a4
+- (void)userAttentionController:(id)controller didGainAttentionWithEvent:(int64_t)event
 {
   v10 = *MEMORY[0x277D85DE8];
   v6 = CACLogAttentionAware();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 134217984;
-    v9 = a4;
+    eventCopy = event;
     _os_log_impl(&dword_26B354000, v6, OS_LOG_TYPE_INFO, "Attention was gained with event=%zd", &v8, 0xCu);
   }
 
@@ -186,7 +186,7 @@ void __74__CACUserAttentionInterface_startUserAttentionControllerIfNeededForType
 
   else
   {
-    if ((a4 - 1) > 3)
+    if ((event - 1) > 3)
     {
       return;
     }
@@ -196,7 +196,7 @@ void __74__CACUserAttentionInterface_startUserAttentionControllerIfNeededForType
   }
 }
 
-- (void)userAttentionControllerAttentionAwarenessInterrupted:(id)a3
+- (void)userAttentionControllerAttentionAwarenessInterrupted:(id)interrupted
 {
   if (![(CACUserAttentionInterface *)self isAttentionAwarenessInterrupted])
   {
@@ -207,7 +207,7 @@ void __74__CACUserAttentionInterface_startUserAttentionControllerIfNeededForType
   [(CACUserAttentionInterface *)self setIsAttentionAwarenessInterrupted:1];
 }
 
-- (void)userAttentionControllerAttentionAwarenessInterruptionEnded:(id)a3
+- (void)userAttentionControllerAttentionAwarenessInterruptionEnded:(id)ended
 {
   if ([(CACUserAttentionInterface *)self isAttentionAwarenessInterrupted])
   {

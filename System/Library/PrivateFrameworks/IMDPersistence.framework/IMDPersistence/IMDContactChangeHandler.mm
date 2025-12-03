@@ -1,15 +1,15 @@
 @interface IMDContactChangeHandler
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDropEverythingEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDropEverythingEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation IMDContactChangeHandler
 
-- (void)visitDropEverythingEvent:(id)a3
+- (void)visitDropEverythingEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -24,10 +24,10 @@
   objc_msgSend_resetCache(v7, v8, v9);
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -38,7 +38,7 @@
     }
   }
 
-  v7 = objc_msgSend_contact(v3, v4, v5);
+  v7 = objc_msgSend_contact(eventCopy, v4, v5);
   v9 = objc_msgSend_IDsFromCNContact_(MEMORY[0x1E69A7FD0], v8, v7);
   if (IMOSLoggingEnabled())
   {
@@ -92,10 +92,10 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
   v63 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -106,7 +106,7 @@
     }
   }
 
-  v7 = objc_msgSend_contact(v3, v4, v5);
+  v7 = objc_msgSend_contact(eventCopy, v4, v5);
   v9 = objc_msgSend_IDsFromCNContact_(MEMORY[0x1E69A7FD0], v8, v7);
   v12 = objc_msgSend_sharedInstance(IMDContactCache, v10, v11);
   v15 = objc_msgSend_identifier(v7, v13, v14);
@@ -213,10 +213,10 @@
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -227,7 +227,7 @@
     }
   }
 
-  v7 = objc_msgSend_contactIdentifier(v3, v4, v5);
+  v7 = objc_msgSend_contactIdentifier(eventCopy, v4, v5);
   v10 = objc_msgSend_sharedInstance(IMDContactCache, v8, v9);
   v12 = objc_msgSend__handlesMatchingContactIdentifier_(v10, v11, v7);
 

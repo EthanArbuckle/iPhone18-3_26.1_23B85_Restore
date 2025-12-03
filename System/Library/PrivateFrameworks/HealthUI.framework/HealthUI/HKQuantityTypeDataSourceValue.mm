@@ -1,18 +1,18 @@
 @interface HKQuantityTypeDataSourceValue
-+ (id)quantityTypeDataSourceValueWithCodableStatistics:(id)a3 sourceTimeZone:(id)a4;
++ (id)quantityTypeDataSourceValueWithCodableStatistics:(id)statistics sourceTimeZone:(id)zone;
 - (id)codableStatistics;
 - (id)maxYValue;
 - (id)minYValue;
-- (void)setBaselineRelativeValueState:(id)a3;
+- (void)setBaselineRelativeValueState:(id)state;
 @end
 
 @implementation HKQuantityTypeDataSourceValue
 
-- (void)setBaselineRelativeValueState:(id)a3
+- (void)setBaselineRelativeValueState:(id)state
 {
-  v12 = a3;
-  objc_storeStrong(&self->_baselineRelativeValueState, a3);
-  if (v12)
+  stateCopy = state;
+  objc_storeStrong(&self->_baselineRelativeValueState, state);
+  if (stateCopy)
   {
     minQuantity = self->_minQuantity;
     if (minQuantity)
@@ -26,14 +26,14 @@
       self->_maxQuantity = 0;
     }
 
-    if ([v12 integerValue] != 3)
+    if ([stateCopy integerValue] != 3)
     {
       averageQuantity = self->_averageQuantity;
       if (averageQuantity)
       {
         v8 = MEMORY[0x1E696C348];
-        v9 = [(HKQuantity *)averageQuantity _unit];
-        v10 = [v8 quantityWithUnit:v9 doubleValue:0.0];
+        _unit = [(HKQuantity *)averageQuantity _unit];
+        v10 = [v8 quantityWithUnit:_unit doubleValue:0.0];
         v11 = self->_averageQuantity;
         self->_averageQuantity = v10;
       }
@@ -57,108 +57,108 @@
   return [v2 numberWithDouble:?];
 }
 
-+ (id)quantityTypeDataSourceValueWithCodableStatistics:(id)a3 sourceTimeZone:(id)a4
++ (id)quantityTypeDataSourceValueWithCodableStatistics:(id)statistics sourceTimeZone:(id)zone
 {
-  v5 = a3;
-  v6 = a4;
+  statisticsCopy = statistics;
+  zoneCopy = zone;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = objc_alloc_init(HKQuantityTypeDataSourceValue);
-    if ([v5 hasDataType])
+    if ([statisticsCopy hasDataType])
     {
-      v8 = [MEMORY[0x1E696C2E0] dataTypeWithCode:{objc_msgSend(v5, "dataType")}];
+      v8 = [MEMORY[0x1E696C2E0] dataTypeWithCode:{objc_msgSend(statisticsCopy, "dataType")}];
       [(HKQuantityTypeDataSourceValue *)v7 setQuantityType:v8];
     }
 
-    if ([v5 hasStartDate])
+    if ([statisticsCopy hasStartDate])
     {
-      [v5 startDate];
+      [statisticsCopy startDate];
       v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
-      v10 = [v9 hk_dateFromSourceTimeZone:v6];
+      v10 = [v9 hk_dateFromSourceTimeZone:zoneCopy];
       [(HKQuantityTypeDataSourceValue *)v7 setStartDate:v10];
     }
 
-    if ([v5 hasEndDate])
+    if ([statisticsCopy hasEndDate])
     {
-      [v5 endDate];
+      [statisticsCopy endDate];
       v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
-      v12 = [v11 hk_dateFromSourceTimeZone:v6];
+      v12 = [v11 hk_dateFromSourceTimeZone:zoneCopy];
       [(HKQuantityTypeDataSourceValue *)v7 setEndDate:v12];
     }
 
-    if ([v5 hasAverageQuantity])
+    if ([statisticsCopy hasAverageQuantity])
     {
       v13 = MEMORY[0x1E696C348];
-      v14 = [v5 averageQuantity];
-      v15 = [v13 createWithCodableQuantity:v14];
+      averageQuantity = [statisticsCopy averageQuantity];
+      v15 = [v13 createWithCodableQuantity:averageQuantity];
       [(HKQuantityTypeDataSourceValue *)v7 setAverageQuantity:v15];
     }
 
-    if ([v5 hasMinQuantity])
+    if ([statisticsCopy hasMinQuantity])
     {
       v16 = MEMORY[0x1E696C348];
-      v17 = [v5 minQuantity];
-      v18 = [v16 createWithCodableQuantity:v17];
+      minQuantity = [statisticsCopy minQuantity];
+      v18 = [v16 createWithCodableQuantity:minQuantity];
       [(HKQuantityTypeDataSourceValue *)v7 setMinQuantity:v18];
     }
 
-    if ([v5 hasMaxQuantity])
+    if ([statisticsCopy hasMaxQuantity])
     {
       v19 = MEMORY[0x1E696C348];
-      v20 = [v5 maxQuantity];
-      v21 = [v19 createWithCodableQuantity:v20];
+      maxQuantity = [statisticsCopy maxQuantity];
+      v21 = [v19 createWithCodableQuantity:maxQuantity];
       [(HKQuantityTypeDataSourceValue *)v7 setMaxQuantity:v21];
     }
 
-    if ([v5 hasMostRecentQuantity])
+    if ([statisticsCopy hasMostRecentQuantity])
     {
       v22 = MEMORY[0x1E696C348];
-      v23 = [v5 mostRecentQuantity];
-      v24 = [v22 createWithCodableQuantity:v23];
+      mostRecentQuantity = [statisticsCopy mostRecentQuantity];
+      v24 = [v22 createWithCodableQuantity:mostRecentQuantity];
       [(HKQuantityTypeDataSourceValue *)v7 setMostRecentQuantity:v24];
     }
 
-    if ([v5 hasSumQuantity])
+    if ([statisticsCopy hasSumQuantity])
     {
       v25 = MEMORY[0x1E696C348];
-      v26 = [v5 sumQuantity];
-      v27 = [v25 createWithCodableQuantity:v26];
+      sumQuantity = [statisticsCopy sumQuantity];
+      v27 = [v25 createWithCodableQuantity:sumQuantity];
       [(HKQuantityTypeDataSourceValue *)v7 setSumQuantity:v27];
     }
 
-    if ([v5 hasDurationQuantity])
+    if ([statisticsCopy hasDurationQuantity])
     {
       v28 = MEMORY[0x1E696C348];
-      v29 = [v5 durationQuantity];
-      v30 = [v28 createWithCodableQuantity:v29];
+      durationQuantity = [statisticsCopy durationQuantity];
+      v30 = [v28 createWithCodableQuantity:durationQuantity];
       [(HKQuantityTypeDataSourceValue *)v7 setDurationQuantity:v30];
     }
 
-    if ([v5 hasDataCount])
+    if ([statisticsCopy hasDataCount])
     {
-      -[HKQuantityTypeDataSourceValue setRecordCount:](v7, "setRecordCount:", [v5 dataCount]);
+      -[HKQuantityTypeDataSourceValue setRecordCount:](v7, "setRecordCount:", [statisticsCopy dataCount]);
     }
 
-    if ([v5 hasStatisticsInterval])
+    if ([statisticsCopy hasStatisticsInterval])
     {
       v31 = MEMORY[0x1E695DF10];
-      v32 = [v5 statisticsInterval];
-      v33 = [v31 hkui_dateComponentsWithCodableDateComponents:v32];
+      statisticsInterval = [statisticsCopy statisticsInterval];
+      v33 = [v31 hkui_dateComponentsWithCodableDateComponents:statisticsInterval];
       [(HKQuantityTypeDataSourceValue *)v7 setStatisticsInterval:v33];
     }
 
-    if ([v5 hasBaselineRelativeValueState])
+    if ([statisticsCopy hasBaselineRelativeValueState])
     {
-      v34 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v5, "baselineRelativeValueState")}];
+      v34 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(statisticsCopy, "baselineRelativeValueState")}];
       [(HKQuantityTypeDataSourceValue *)v7 setBaselineRelativeValueState:v34];
     }
 
-    if ([v5 hasMetadata])
+    if ([statisticsCopy hasMetadata])
     {
       v35 = MEMORY[0x1E695DF20];
-      v36 = [v5 metadata];
-      v37 = [v35 dictionaryWithCodableMetadata:v36];
+      metadata = [statisticsCopy metadata];
+      v37 = [v35 dictionaryWithCodableMetadata:metadata];
       [(HKQuantityTypeDataSourceValue *)v7 setMetadata:v37];
     }
   }
@@ -174,67 +174,67 @@
 - (id)codableStatistics
 {
   v3 = objc_alloc_init(HKCodableStatistics);
-  v4 = [(HKQuantityTypeDataSourceValue *)self quantityType];
-  -[HKCodableStatistics setDataType:](v3, "setDataType:", [v4 code]);
+  quantityType = [(HKQuantityTypeDataSourceValue *)self quantityType];
+  -[HKCodableStatistics setDataType:](v3, "setDataType:", [quantityType code]);
 
-  v5 = [(HKQuantityTypeDataSourceValue *)self startDate];
-  [v5 timeIntervalSinceReferenceDate];
+  startDate = [(HKQuantityTypeDataSourceValue *)self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [(HKCodableStatistics *)v3 setStartDate:?];
 
-  v6 = [(HKQuantityTypeDataSourceValue *)self endDate];
-  [v6 timeIntervalSinceReferenceDate];
+  endDate = [(HKQuantityTypeDataSourceValue *)self endDate];
+  [endDate timeIntervalSinceReferenceDate];
   [(HKCodableStatistics *)v3 setEndDate:?];
 
-  v7 = [(HKQuantityTypeDataSourceValue *)self averageQuantity];
-  v8 = [v7 codableRepresentation];
-  [(HKCodableStatistics *)v3 setAverageQuantity:v8];
+  averageQuantity = [(HKQuantityTypeDataSourceValue *)self averageQuantity];
+  codableRepresentation = [averageQuantity codableRepresentation];
+  [(HKCodableStatistics *)v3 setAverageQuantity:codableRepresentation];
 
-  v9 = [(HKQuantityTypeDataSourceValue *)self minQuantity];
-  v10 = [v9 codableRepresentation];
-  [(HKCodableStatistics *)v3 setMinQuantity:v10];
+  minQuantity = [(HKQuantityTypeDataSourceValue *)self minQuantity];
+  codableRepresentation2 = [minQuantity codableRepresentation];
+  [(HKCodableStatistics *)v3 setMinQuantity:codableRepresentation2];
 
-  v11 = [(HKQuantityTypeDataSourceValue *)self maxQuantity];
-  v12 = [v11 codableRepresentation];
-  [(HKCodableStatistics *)v3 setMaxQuantity:v12];
+  maxQuantity = [(HKQuantityTypeDataSourceValue *)self maxQuantity];
+  codableRepresentation3 = [maxQuantity codableRepresentation];
+  [(HKCodableStatistics *)v3 setMaxQuantity:codableRepresentation3];
 
-  v13 = [(HKQuantityTypeDataSourceValue *)self mostRecentQuantity];
-  v14 = [v13 codableRepresentation];
-  [(HKCodableStatistics *)v3 setMostRecentQuantity:v14];
+  mostRecentQuantity = [(HKQuantityTypeDataSourceValue *)self mostRecentQuantity];
+  codableRepresentation4 = [mostRecentQuantity codableRepresentation];
+  [(HKCodableStatistics *)v3 setMostRecentQuantity:codableRepresentation4];
 
-  v15 = [(HKQuantityTypeDataSourceValue *)self sumQuantity];
-  v16 = [v15 codableRepresentation];
-  [(HKCodableStatistics *)v3 setSumQuantity:v16];
+  sumQuantity = [(HKQuantityTypeDataSourceValue *)self sumQuantity];
+  codableRepresentation5 = [sumQuantity codableRepresentation];
+  [(HKCodableStatistics *)v3 setSumQuantity:codableRepresentation5];
 
-  v17 = [(HKQuantityTypeDataSourceValue *)self durationQuantity];
-  v18 = [v17 codableRepresentation];
-  [(HKCodableStatistics *)v3 setDurationQuantity:v18];
+  durationQuantity = [(HKQuantityTypeDataSourceValue *)self durationQuantity];
+  codableRepresentation6 = [durationQuantity codableRepresentation];
+  [(HKCodableStatistics *)v3 setDurationQuantity:codableRepresentation6];
 
   [(HKCodableStatistics *)v3 setDataCount:[(HKQuantityTypeDataSourceValue *)self recordCount]];
-  v19 = [(HKQuantityTypeDataSourceValue *)self statisticsInterval];
-  v20 = [v19 hkui_codableDateComponents];
-  [(HKCodableStatistics *)v3 setStatisticsInterval:v20];
+  statisticsInterval = [(HKQuantityTypeDataSourceValue *)self statisticsInterval];
+  hkui_codableDateComponents = [statisticsInterval hkui_codableDateComponents];
+  [(HKCodableStatistics *)v3 setStatisticsInterval:hkui_codableDateComponents];
 
-  v21 = [(HKQuantityTypeDataSourceValue *)self baselineRelativeValueState];
-  v22 = v21;
-  if (v21)
+  baselineRelativeValueState = [(HKQuantityTypeDataSourceValue *)self baselineRelativeValueState];
+  v22 = baselineRelativeValueState;
+  if (baselineRelativeValueState)
   {
-    -[HKCodableStatistics setBaselineRelativeValueState:](v3, "setBaselineRelativeValueState:", [v21 integerValue]);
+    -[HKCodableStatistics setBaselineRelativeValueState:](v3, "setBaselineRelativeValueState:", [baselineRelativeValueState integerValue]);
   }
 
-  v23 = [(HKQuantityTypeDataSourceValue *)self metadata];
+  metadata = [(HKQuantityTypeDataSourceValue *)self metadata];
 
-  if (v23)
+  if (metadata)
   {
     v24 = objc_alloc_init(HKCodableMetadataDictionary);
     [(HKCodableStatistics *)v3 setMetadata:v24];
 
-    v25 = [(HKQuantityTypeDataSourceValue *)self metadata];
+    metadata2 = [(HKQuantityTypeDataSourceValue *)self metadata];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __67__HKQuantityTypeDataSourceValue_HKCodingSupport__codableStatistics__block_invoke;
     v27[3] = &unk_1E81BC930;
     v28 = v3;
-    [v25 enumerateKeysAndObjectsUsingBlock:v27];
+    [metadata2 enumerateKeysAndObjectsUsingBlock:v27];
   }
 
   return v3;

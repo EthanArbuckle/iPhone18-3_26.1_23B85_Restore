@@ -1,15 +1,15 @@
 @interface PXGFocusEffectView
-- (CGPoint)convertHostedChildCenter:(CGPoint)a3 fromGlobalLayer:(id)a4;
+- (CGPoint)convertHostedChildCenter:(CGPoint)center fromGlobalLayer:(id)layer;
 - (CGRect)clippingRect;
-- (PXGFocusEffectView)initWithFrame:(CGRect)a3;
-- (void)_handleSelectTap:(id)a3;
+- (PXGFocusEffectView)initWithFrame:(CGRect)frame;
+- (void)_handleSelectTap:(id)tap;
 - (void)_updatePressedAppearance;
-- (void)addHostedLayer:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)addHostedLayer:(id)layer;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation PXGFocusEffectView
@@ -27,13 +27,13 @@
   return result;
 }
 
-- (CGPoint)convertHostedChildCenter:(CGPoint)a3 fromGlobalLayer:(id)a4
+- (CGPoint)convertHostedChildCenter:(CGPoint)center fromGlobalLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXGFocusEffectView *)self layer];
-  [v8 convertPoint:v7 fromLayer:{x, y}];
+  y = center.y;
+  x = center.x;
+  layerCopy = layer;
+  layer = [(PXGFocusEffectView *)self layer];
+  [layer convertPoint:layerCopy fromLayer:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -44,12 +44,12 @@
   return result;
 }
 
-- (void)addHostedLayer:(id)a3
+- (void)addHostedLayer:(id)layer
 {
   hostedContentView = self->_hostedContentView;
-  v4 = a3;
-  v5 = [(UIView *)hostedContentView layer];
-  [v5 addSublayer:v4];
+  layerCopy = layer;
+  layer = [(UIView *)hostedContentView layer];
+  [layer addSublayer:layerCopy];
 }
 
 - (void)_updatePressedAppearance
@@ -72,15 +72,15 @@
   }
 }
 
-- (void)_handleSelectTap:(id)a3
+- (void)_handleSelectTap:(id)tap
 {
-  v13 = a3;
-  if ([v13 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    v5 = [(PXGFocusEffectView *)self superview];
-    if (v5)
+    superview = [(PXGFocusEffectView *)self superview];
+    if (superview)
     {
-      v6 = v5;
+      v6 = superview;
       while (1)
       {
         objc_opt_class();
@@ -89,10 +89,10 @@
           break;
         }
 
-        v7 = [v6 superview];
+        superview2 = [v6 superview];
 
-        v6 = v7;
-        if (!v7)
+        v6 = superview2;
+        if (!superview2)
         {
           goto LABEL_10;
         }
@@ -102,14 +102,14 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v10 = objc_opt_class();
         v11 = NSStringFromClass(v10);
-        v12 = [v8 px_descriptionForAssertionMessage];
-        [v9 handleFailureInMethod:a2 object:self file:@"PXGFocusEffectView.m" lineNumber:209 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"ancestor", v11, v12}];
+        px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXGFocusEffectView.m" lineNumber:209 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"ancestor", v11, px_descriptionForAssertionMessage}];
       }
 
-      [v13 locationInView:v8];
+      [tapCopy locationInView:v8];
       [v8 handlePrimaryInteractionAtPoint:?];
     }
   }
@@ -117,16 +117,16 @@
 LABEL_10:
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a4;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = PXGFocusEffectView;
-  [(PXGFocusableView *)&v10 didUpdateFocusInContext:a3 withAnimationCoordinator:v6];
+  [(PXGFocusableView *)&v10 didUpdateFocusInContext:context withAnimationCoordinator:coordinatorCopy];
   if ([(PXGFocusEffectView *)self isFocused])
   {
-    v7 = [(PXGFocusEffectView *)self superview];
-    [v7 bringSubviewToFront:self];
+    superview = [(PXGFocusEffectView *)self superview];
+    [superview bringSubviewToFront:self];
 
     v8 = 8;
   }
@@ -136,28 +136,28 @@ LABEL_10:
     v8 = 0;
   }
 
-  [(_UIFloatingContentView *)self->_floatingContentView setControlState:v8 withAnimationCoordinator:v6];
+  [(_UIFloatingContentView *)self->_floatingContentView setControlState:v8 withAnimationCoordinator:coordinatorCopy];
   [(PXGFocusEffectView *)self setNeedsLayout];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__PXGFocusEffectView_didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
   v9[3] = &unk_1E774C648;
   v9[4] = self;
-  [v6 addCoordinatedAnimations:v9 completion:0];
+  [coordinatorCopy addCoordinatedAnimations:v9 completion:0];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  cancelledCopy = cancelled;
   v17.receiver = self;
   v17.super_class = PXGFocusEffectView;
-  [(PXGFocusEffectView *)&v17 pressesCancelled:v6 withEvent:a4];
+  [(PXGFocusEffectView *)&v17 pressesCancelled:cancelledCopy withEvent:event];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6;
+  v7 = cancelledCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v8)
   {
@@ -196,18 +196,18 @@ LABEL_10:
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  endedCopy = ended;
   v17.receiver = self;
   v17.super_class = PXGFocusEffectView;
-  [(PXGFocusEffectView *)&v17 pressesEnded:v6 withEvent:a4];
+  [(PXGFocusEffectView *)&v17 pressesEnded:endedCopy withEvent:event];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6;
+  v7 = endedCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v8)
   {
@@ -246,18 +246,18 @@ LABEL_10:
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  beganCopy = began;
   v17.receiver = self;
   v17.super_class = PXGFocusEffectView;
-  [(PXGFocusEffectView *)&v17 pressesBegan:v6 withEvent:a4];
+  [(PXGFocusEffectView *)&v17 pressesBegan:beganCopy withEvent:event];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6;
+  v7 = beganCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v8)
   {
@@ -304,37 +304,37 @@ LABEL_10:
   v8 = v7;
   v10 = v9;
   [(PXGFocusEffectView *)self setClipsToBounds:0];
-  v21 = [(PXGFocusableView *)self userData];
+  userData = [(PXGFocusableView *)self userData];
   [(_UIFloatingContentView *)self->_floatingContentView setFrame:v4, v6, v8, v10];
-  [v21 cornerRadius];
+  [userData cornerRadius];
   [(_UIFloatingContentView *)self->_floatingContentView setCornerRadius:?];
   floatingContentView = self->_floatingContentView;
-  [v21 contentMotionRotation];
+  [userData contentMotionRotation];
   v13 = v12;
   v15 = v14;
-  [v21 contentMotionTranslation];
+  [userData contentMotionTranslation];
   [(_UIFloatingContentView *)floatingContentView setContentMotionRotation:v13 translation:v15, v16, v17];
-  [v21 focusedSizeIncrease];
+  [userData focusedSizeIncrease];
   [(_UIFloatingContentView *)self->_floatingContentView setFocusedSizeIncrease:?];
-  [v21 shadowVerticalOffset];
+  [userData shadowVerticalOffset];
   [(_UIFloatingContentView *)self->_floatingContentView setShadowVerticalOffset:?];
   v18 = self->_floatingContentView;
-  [v21 shadowOpacity];
+  [userData shadowOpacity];
   [(_UIFloatingContentView *)v18 setShadowOpacity:1 forUserInterfaceStyle:?];
   v19 = self->_floatingContentView;
-  [v21 shadowOpacity];
+  [userData shadowOpacity];
   [(_UIFloatingContentView *)v19 setShadowOpacity:2 forUserInterfaceStyle:?];
   [(_UIFloatingContentView *)self->_floatingContentView layoutIfNeeded];
-  v20 = [(_UIFloatingContentView *)self->_floatingContentView contentView];
-  [v20 bounds];
+  contentView = [(_UIFloatingContentView *)self->_floatingContentView contentView];
+  [contentView bounds];
   [(UIView *)self->_hostedContentView setFrame:?];
 }
 
-- (PXGFocusEffectView)initWithFrame:(CGRect)a3
+- (PXGFocusEffectView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = PXGFocusEffectView;
-  v3 = [(PXGFocusEffectView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXGFocusEffectView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -353,8 +353,8 @@ LABEL_10:
 
     [(_UIFloatingContentView *)v4->_floatingContentView setHighlightStyle:1];
     [(PXGFocusEffectView *)v4 addSubview:v4->_floatingContentView];
-    v17 = [(_UIFloatingContentView *)v4->_floatingContentView contentView];
-    [v17 addSubview:v4->_hostedContentView];
+    contentView = [(_UIFloatingContentView *)v4->_floatingContentView contentView];
+    [contentView addSubview:v4->_hostedContentView];
 
     v18 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel__handleSelectTap_];
     [v18 setAllowedPressTypes:&unk_1F19112F0];

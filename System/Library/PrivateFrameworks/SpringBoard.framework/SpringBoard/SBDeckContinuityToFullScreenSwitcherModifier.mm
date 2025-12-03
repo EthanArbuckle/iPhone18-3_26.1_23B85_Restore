@@ -1,33 +1,33 @@
 @interface SBDeckContinuityToFullScreenSwitcherModifier
-- (BOOL)_isInsertingIndex:(unint64_t)a3;
+- (BOOL)_isInsertingIndex:(unint64_t)index;
 - (CGRect)_initialFrameForContinuityAppLayout;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBDeckContinuityToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 deckModifier:(id)a5 fullscreenModifier:(id)a6;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (double)titleOpacityForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBDeckContinuityToFullScreenSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout deckModifier:(id)modifier fullscreenModifier:(id)fullscreenModifier;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (double)titleOpacityForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
 @end
 
 @implementation SBDeckContinuityToFullScreenSwitcherModifier
 
-- (SBDeckContinuityToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 deckModifier:(id)a5 fullscreenModifier:(id)a6
+- (SBDeckContinuityToFullScreenSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout deckModifier:(id)modifier fullscreenModifier:(id)fullscreenModifier
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  layoutCopy = layout;
+  modifierCopy = modifier;
+  fullscreenModifierCopy = fullscreenModifier;
   v17.receiver = self;
   v17.super_class = SBDeckContinuityToFullScreenSwitcherModifier;
-  v15 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:a3];
+  v15 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:d];
   if (v15)
   {
-    if (v12)
+    if (layoutCopy)
     {
-      if (v13)
+      if (modifierCopy)
       {
         goto LABEL_4;
       }
@@ -36,15 +36,15 @@
     else
     {
       [SBDeckContinuityToFullScreenSwitcherModifier initWithTransitionID:a2 appLayout:v15 deckModifier:? fullscreenModifier:?];
-      if (v13)
+      if (modifierCopy)
       {
 LABEL_4:
-        if (v14)
+        if (fullscreenModifierCopy)
         {
 LABEL_5:
-          objc_storeStrong(&v15->_appLayout, a4);
-          objc_storeStrong(&v15->_fullscreenModifier, a6);
-          [(SBChainableModifier *)v15 addChildModifier:v13];
+          objc_storeStrong(&v15->_appLayout, layout);
+          objc_storeStrong(&v15->_fullscreenModifier, fullscreenModifier);
+          [(SBChainableModifier *)v15 addChildModifier:modifierCopy];
           goto LABEL_6;
         }
 
@@ -55,7 +55,7 @@ LABEL_9:
     }
 
     [SBDeckContinuityToFullScreenSwitcherModifier initWithTransitionID:a2 appLayout:v15 deckModifier:? fullscreenModifier:?];
-    if (v14)
+    if (fullscreenModifierCopy)
     {
       goto LABEL_5;
     }
@@ -72,9 +72,9 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = SBDeckContinuityToFullScreenSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:6 updateMode:2];
-  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v2];
+  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:transitionWillBegin];
 
   return v4;
 }
@@ -83,27 +83,27 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = SBDeckContinuityToFullScreenSwitcherModifier;
-  v3 = [(SBDeckContinuityToFullScreenSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_appLayout];
+  visibleAppLayouts = [(SBDeckContinuityToFullScreenSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_appLayout];
 
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v12.receiver = self;
   v12.super_class = SBDeckContinuityToFullScreenSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:v4];
-  v6 = [v4 switcherLayoutElementType];
+  elementCopy = element;
+  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:elementCopy];
+  switcherLayoutElementType = [elementCopy switcherLayoutElementType];
 
-  if (!v6)
+  if (!switcherLayoutElementType)
   {
     v7 = [v5 mutableCopy];
-    v8 = [(SBDeckContinuityToFullScreenSwitcherModifier *)self switcherSettings];
-    v9 = [v8 animationSettings];
-    v10 = [v9 continuityBannerSlideUpSettings];
-    [v7 setLayoutSettings:v10];
+    switcherSettings = [(SBDeckContinuityToFullScreenSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    continuityBannerSlideUpSettings = [animationSettings continuityBannerSlideUpSettings];
+    [v7 setLayoutSettings:continuityBannerSlideUpSettings];
 
     v5 = v7;
   }
@@ -111,7 +111,7 @@ LABEL_6:
   return v5;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   if ([(SBDeckContinuityToFullScreenSwitcherModifier *)self _isInsertingIndex:?])
   {
@@ -124,7 +124,7 @@ LABEL_6:
   {
     v9.receiver = self;
     v9.super_class = SBDeckContinuityToFullScreenSwitcherModifier;
-    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v9 cornerRadiiForIndex:a3];
+    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v9 cornerRadiiForIndex:index];
   }
 
   result.topRight = v8;
@@ -134,7 +134,7 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v21 = 0;
   v22 = &v21;
@@ -153,7 +153,7 @@ LABEL_6:
       v20[3] = &unk_2783AA618;
       v20[4] = self;
       v20[5] = &v21;
-      v20[6] = a3;
+      v20[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fullscreenModifier usingBlock:v20];
       v9 = v22[4];
       v10 = v22[5];
@@ -169,7 +169,7 @@ LABEL_6:
   {
     v19.receiver = self;
     v19.super_class = SBDeckContinuityToFullScreenSwitcherModifier;
-    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v19 frameForIndex:a3];
+    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v19 frameForIndex:index];
   }
 
   v9 = v5;
@@ -205,7 +205,7 @@ uint64_t __62__SBDeckContinuityToFullScreenSwitcherModifier_frameForIndex___bloc
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v11 = 0;
   v12 = &v11;
@@ -228,7 +228,7 @@ uint64_t __62__SBDeckContinuityToFullScreenSwitcherModifier_frameForIndex___bloc
       v10[3] = &unk_2783AA618;
       v10[4] = self;
       v10[5] = &v11;
-      v10[6] = a3;
+      v10[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fullscreenModifier usingBlock:v10];
       v5 = v12[3];
     }
@@ -238,7 +238,7 @@ uint64_t __62__SBDeckContinuityToFullScreenSwitcherModifier_frameForIndex___bloc
   {
     v9.receiver = self;
     v9.super_class = SBDeckContinuityToFullScreenSwitcherModifier;
-    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v9 scaleForIndex:a3];
+    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v9 scaleForIndex:index];
     v5 = v6;
     v12[3] = v6;
   }
@@ -254,7 +254,7 @@ uint64_t __62__SBDeckContinuityToFullScreenSwitcherModifier_scaleForIndex___bloc
   return result;
 }
 
-- (double)titleOpacityForIndex:(unint64_t)a3
+- (double)titleOpacityForIndex:(unint64_t)index
 {
   v11 = 0;
   v12 = &v11;
@@ -277,7 +277,7 @@ uint64_t __62__SBDeckContinuityToFullScreenSwitcherModifier_scaleForIndex___bloc
       v10[3] = &unk_2783AA618;
       v10[4] = self;
       v10[5] = &v11;
-      v10[6] = a3;
+      v10[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fullscreenModifier usingBlock:v10];
       v5 = v12[3];
     }
@@ -287,7 +287,7 @@ uint64_t __62__SBDeckContinuityToFullScreenSwitcherModifier_scaleForIndex___bloc
   {
     v9.receiver = self;
     v9.super_class = SBDeckContinuityToFullScreenSwitcherModifier;
-    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v9 titleOpacityForIndex:a3];
+    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v9 titleOpacityForIndex:index];
     v5 = v6;
     v12[3] = v6;
   }
@@ -303,14 +303,14 @@ uint64_t __69__SBDeckContinuityToFullScreenSwitcherModifier_titleOpacityForIndex
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  if ([(SBDeckContinuityToFullScreenSwitcherModifier *)self _isInsertingIndex:a5])
+  if ([(SBDeckContinuityToFullScreenSwitcherModifier *)self _isInsertingIndex:index])
   {
     if ([(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
     {
@@ -326,10 +326,10 @@ uint64_t __69__SBDeckContinuityToFullScreenSwitcherModifier_titleOpacityForIndex
       v14[2] = __89__SBDeckContinuityToFullScreenSwitcherModifier_opacityForLayoutRole_inAppLayout_atIndex___block_invoke;
       v14[3] = &unk_2783AA690;
       v16 = &v19;
-      v17 = a3;
+      roleCopy = role;
       v14[4] = self;
-      v15 = v8;
-      v18 = a5;
+      v15 = layoutCopy;
+      indexCopy = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fullscreenModifier usingBlock:v14];
 
       v9 = v20[3];
@@ -340,7 +340,7 @@ uint64_t __69__SBDeckContinuityToFullScreenSwitcherModifier_titleOpacityForIndex
   {
     v13.receiver = self;
     v13.super_class = SBDeckContinuityToFullScreenSwitcherModifier;
-    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v13 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v13 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v9 = v10;
     v20[3] = v10;
   }
@@ -357,7 +357,7 @@ uint64_t __89__SBDeckContinuityToFullScreenSwitcherModifier_opacityForLayoutRole
   return result;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
   v11 = 0;
   v12 = &v11;
@@ -380,7 +380,7 @@ uint64_t __89__SBDeckContinuityToFullScreenSwitcherModifier_opacityForLayoutRole
       v10[3] = &unk_2783AA618;
       v10[4] = self;
       v10[5] = &v11;
-      v10[6] = a3;
+      v10[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fullscreenModifier usingBlock:v10];
       v5 = v12[3];
     }
@@ -390,7 +390,7 @@ uint64_t __89__SBDeckContinuityToFullScreenSwitcherModifier_opacityForLayoutRole
   {
     v9.receiver = self;
     v9.super_class = SBDeckContinuityToFullScreenSwitcherModifier;
-    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v9 titleAndIconOpacityForIndex:a3];
+    [(SBDeckContinuityToFullScreenSwitcherModifier *)&v9 titleAndIconOpacityForIndex:index];
     v5 = v6;
     v12[3] = v6;
   }
@@ -406,14 +406,14 @@ uint64_t __76__SBDeckContinuityToFullScreenSwitcherModifier_titleAndIconOpacityF
   return result;
 }
 
-- (BOOL)_isInsertingIndex:(unint64_t)a3
+- (BOOL)_isInsertingIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = [(SBDeckContinuityToFullScreenSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBDeckContinuityToFullScreenSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
-  LOBYTE(v4) = [(SBAppLayout *)v4->_appLayout isEqual:v6];
-  return v4;
+  LOBYTE(selfCopy) = [(SBAppLayout *)selfCopy->_appLayout isEqual:v6];
+  return selfCopy;
 }
 
 - (CGRect)_initialFrameForContinuityAppLayout

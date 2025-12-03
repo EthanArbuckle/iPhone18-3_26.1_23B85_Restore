@@ -1,24 +1,24 @@
 @interface CRRegisterLeast
-- (int64_t)compare:(id)a3 with:(id)a4;
+- (int64_t)compare:(id)compare with:(id)with;
 @end
 
 @implementation CRRegisterLeast
 
-- (int64_t)compare:(id)a3 with:(id)a4
+- (int64_t)compare:(id)compare with:(id)with
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 == v6)
+  compareCopy = compare;
+  withCopy = with;
+  v7 = withCopy;
+  if (compareCopy == withCopy)
   {
     v8 = 0;
   }
 
-  else if (v5)
+  else if (compareCopy)
   {
-    if (v6)
+    if (withCopy)
     {
-      v8 = [v6 compare:v5];
+      v8 = [withCopy compare:compareCopy];
     }
 
     else

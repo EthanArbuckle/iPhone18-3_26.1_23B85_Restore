@@ -9,7 +9,7 @@
 
 - (id)__ck_indexPathRowsInSection:()CKUtilities
 {
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__NSIndexSet_CKUtilities____ck_indexPathRowsInSection___block_invoke;
@@ -17,14 +17,14 @@
   v6 = v5;
   v9 = v6;
   v10 = a3;
-  [a1 enumerateIndexesUsingBlock:v8];
+  [self enumerateIndexesUsingBlock:v8];
 
   return v6;
 }
 
 - (id)__ck_indexPathItemsInSection:()CKUtilities
 {
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__NSIndexSet_CKUtilities____ck_indexPathItemsInSection___block_invoke;
@@ -32,7 +32,7 @@
   v6 = v5;
   v9 = v6;
   v10 = a3;
-  [a1 enumerateIndexesUsingBlock:v8];
+  [self enumerateIndexesUsingBlock:v8];
 
   return v6;
 }
@@ -41,10 +41,10 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [a1 count];
+  v7 = [self count];
   v8 = &v16 - ((8 * v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, 8 * v7);
-  [a1 getIndexes:v8 maxCount:v7 inIndexRange:0];
+  [self getIndexes:v8 maxCount:v7 inIndexRange:0];
   v9 = 0;
   if (!v7)
   {
@@ -151,24 +151,24 @@ LABEL_24:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 mutableCopy];
+  v8 = [self mutableCopy];
   if ([v7 count])
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v10 = [v7 firstIndex];
-    v11 = [v8 firstIndex];
-    if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [v7 firstIndex];
+    firstIndex2 = [v8 firstIndex];
+    if (firstIndex2 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = v11;
+      v12 = firstIndex2;
       v13 = 0;
       do
       {
-        for (; v10 < v12; v10 = [v7 indexGreaterThanIndex:v10])
+        for (; firstIndex < v12; firstIndex = [v7 indexGreaterThanIndex:firstIndex])
         {
           ++v13;
         }
 
-        if (v10 != v12)
+        if (firstIndex != v12)
         {
           [v9 addIndex:v12 - v13];
         }
@@ -188,18 +188,18 @@ LABEL_24:
   if ([v6 count])
   {
     v14 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v15 = [v6 firstIndex];
-    v16 = [v9 firstIndex];
-    if (v16 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex3 = [v6 firstIndex];
+    firstIndex4 = [v9 firstIndex];
+    if (firstIndex4 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v17 = v16;
+      v17 = firstIndex4;
       v18 = 0;
       do
       {
-        while (v17 + v18 >= v15)
+        while (v17 + v18 >= firstIndex3)
         {
           ++v18;
-          v15 = [v6 indexGreaterThanIndex:v15];
+          firstIndex3 = [v6 indexGreaterThanIndex:firstIndex3];
         }
 
         [v14 addIndex:?];
@@ -207,7 +207,7 @@ LABEL_24:
       }
 
       while (v17 != 0x7FFFFFFFFFFFFFFFLL);
-      [v6 indexGreaterThanIndex:v15];
+      [v6 indexGreaterThanIndex:firstIndex3];
     }
   }
 

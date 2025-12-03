@@ -1,70 +1,70 @@
 @interface HomeOutlineRootController
 - (BOOL)_isLoading;
 - (BOOL)_needsSnapshotUpdate;
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)isCollectionViewFocusedWithSectionController:(id)a3;
-- (BOOL)isCollectionViewProxyFocusedWithSectionController:(id)a3;
-- (HomeOutlineRootController)initWithConfiguration:(id)a3;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)isCollectionViewFocusedWithSectionController:(id)controller;
+- (BOOL)isCollectionViewProxyFocusedWithSectionController:(id)controller;
+- (HomeOutlineRootController)initWithConfiguration:(id)configuration;
 - (KeyboardProxyingView)keyboardProxy;
 - (UICollectionViewDataSource)dataSource;
 - (UICollectionViewLayout)collectionViewLayout;
 - (UIScrollView)hoverScrollView;
 - (id)_focusedIdentifierPath;
-- (id)_identifierPathForIndexPath:(id)a3;
-- (id)_indexPathForIdentifierPath:(id)a3;
+- (id)_identifierPathForIndexPath:(id)path;
+- (id)_indexPathForIdentifierPath:(id)path;
 - (id)_loadingDataProviders;
-- (id)_nodeSnapshotAtIdentifierPath:(id)a3;
-- (id)_nodeSnapshotAtIndexPath:(id)a3;
-- (id)_sectionControllerForIdentifierPath:(id)a3;
-- (id)_sectionControllerForIndexPath:(id)a3;
+- (id)_nodeSnapshotAtIdentifierPath:(id)path;
+- (id)_nodeSnapshotAtIndexPath:(id)path;
+- (id)_sectionControllerForIdentifierPath:(id)path;
+- (id)_sectionControllerForIndexPath:(id)path;
 - (id)_selectedIdentifierPaths;
 - (id)_storage;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (void)_applySnapshotUpdatesInSectionControllers:(id)a3 animateCells:(BOOL)a4 animateCollectionView:(BOOL)a5 completion:(id)a6;
-- (void)_collapseItem:(id)a3;
-- (void)_completeFocusAfterScrollingWithSuccess:(BOOL)a3;
-- (void)_deselectItemAtIndexPath:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (void)_applySnapshotUpdatesInSectionControllers:(id)controllers animateCells:(BOOL)cells animateCollectionView:(BOOL)view completion:(id)completion;
+- (void)_collapseItem:(id)item;
+- (void)_completeFocusAfterScrollingWithSuccess:(BOOL)success;
+- (void)_deselectItemAtIndexPath:(id)path;
 - (void)_didCompleteInitialUpdate;
-- (void)_expandItem:(id)a3;
+- (void)_expandItem:(id)item;
 - (void)_focusAfterScrollingAnimationDidEnd;
 - (void)_focusAfterScrollingCellWillDisplay;
-- (void)_focusCellAtVisibleSelectedIdentifierPath:(id)a3 completion:(id)a4;
+- (void)_focusCellAtVisibleSelectedIdentifierPath:(id)path completion:(id)completion;
 - (void)_loadingTimerDidFire;
 - (void)_resetSnapshotUpdateState;
-- (void)_selectItemAtIdentifierPath:(id)a3 notifyDelegate:(BOOL)a4 completion:(id)a5;
-- (void)_setFocusAfterScrollingIdentifierPath:(id)a3 completion:(id)a4;
-- (void)_setNeedsSnapshotUpdatesForSectionControllers:(id)a3 animated:(BOOL)a4;
+- (void)_selectItemAtIdentifierPath:(id)path notifyDelegate:(BOOL)delegate completion:(id)completion;
+- (void)_setFocusAfterScrollingIdentifierPath:(id)path completion:(id)completion;
+- (void)_setNeedsSnapshotUpdatesForSectionControllers:(id)controllers animated:(BOOL)animated;
 - (void)_setupSectionControllers;
-- (void)_updateContentInjectionWithSelectedIndexPath:(id)a3;
+- (void)_updateContentInjectionWithSelectedIndexPath:(id)path;
 - (void)_updateFocusAfterScrolling;
 - (void)_updateLoadingTimer;
-- (void)clearSelectionWithReason:(id)a3;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidEnter:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidExit:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5;
-- (void)downArrowPressed:(id)a3;
-- (void)keyboardProxyingView:(id)a3 pressesBegan:(id)a4 withEvent:(id)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)sectionController:(id)a3 deselectItemAtIdentifierPath:(id)a4;
-- (void)sectionController:(id)a3 setNeedsApplySnapshotAnimated:(BOOL)a4;
-- (void)setActive:(BOOL)a3;
-- (void)setKeyboardProxy:(id)a3;
-- (void)showCollection:(id)a3;
-- (void)upArrowPressed:(id)a3;
+- (void)clearSelectionWithReason:(id)reason;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dropSessionDidEnter:(id)enter;
+- (void)collectionView:(id)view dropSessionDidExit:(id)exit;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator;
+- (void)downArrowPressed:(id)pressed;
+- (void)keyboardProxyingView:(id)view pressesBegan:(id)began withEvent:(id)event;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)sectionController:(id)controller deselectItemAtIdentifierPath:(id)path;
+- (void)sectionController:(id)controller setNeedsApplySnapshotAnimated:(BOOL)animated;
+- (void)setActive:(BOOL)active;
+- (void)setKeyboardProxy:(id)proxy;
+- (void)showCollection:(id)collection;
+- (void)upArrowPressed:(id)pressed;
 - (void)updateIfNeeded;
 @end
 
@@ -92,19 +92,19 @@
   return storage;
 }
 
-- (void)downArrowPressed:(id)a3
+- (void)downArrowPressed:(id)pressed
 {
-  v4 = [(HomeOutlineRootController *)self configuration];
-  v16 = [v4 collectionView];
+  configuration = [(HomeOutlineRootController *)self configuration];
+  collectionView = [configuration collectionView];
 
-  v5 = [v16 indexPathsForSelectedItems];
-  v6 = [v5 firstObject];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  v7 = [v16 numberOfItemsInSection:{objc_msgSend(v6, "section")}];
+  v7 = [collectionView numberOfItemsInSection:{objc_msgSend(firstObject, "section")}];
   if (v7)
   {
     v8 = v7;
-    v9 = [v6 copy];
+    v9 = [firstObject copy];
     if (v9)
     {
       while (1)
@@ -118,8 +118,8 @@
 
         v9 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v11 + 1, [v9 section]);
 
-        v12 = [v16 delegate];
-        v13 = [v12 collectionView:v16 shouldHighlightItemAtIndexPath:v9];
+        delegate = [collectionView delegate];
+        v13 = [delegate collectionView:collectionView shouldHighlightItemAtIndexPath:v9];
 
         if (v13)
         {
@@ -147,17 +147,17 @@ LABEL_9:
   }
 }
 
-- (void)upArrowPressed:(id)a3
+- (void)upArrowPressed:(id)pressed
 {
-  v4 = [(HomeOutlineRootController *)self configuration];
-  v14 = [v4 collectionView];
+  configuration = [(HomeOutlineRootController *)self configuration];
+  collectionView = [configuration collectionView];
 
-  v5 = [v14 indexPathsForSelectedItems];
-  v6 = [v5 firstObject];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  if ([v14 numberOfItemsInSection:{objc_msgSend(v6, "section")}])
+  if ([collectionView numberOfItemsInSection:{objc_msgSend(firstObject, "section")}])
   {
-    v7 = [v6 copy];
+    v7 = [firstObject copy];
     if (v7)
     {
       while (1)
@@ -171,8 +171,8 @@ LABEL_9:
 
         v7 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v9 - 1, [v7 section]);
 
-        v10 = [v14 delegate];
-        v11 = [v10 collectionView:v14 shouldHighlightItemAtIndexPath:v7];
+        delegate = [collectionView delegate];
+        v11 = [delegate collectionView:collectionView shouldHighlightItemAtIndexPath:v7];
 
         if (v11)
         {
@@ -200,50 +200,50 @@ LABEL_9:
   }
 }
 
-- (void)keyboardProxyingView:(id)a3 pressesBegan:(id)a4 withEvent:(id)a5
+- (void)keyboardProxyingView:(id)view pressesBegan:(id)began withEvent:(id)event
 {
-  v13 = a4;
-  v6 = [v13 count] == 1;
-  v7 = v13;
+  beganCopy = began;
+  v6 = [beganCopy count] == 1;
+  v7 = beganCopy;
   if (v6)
   {
-    v8 = [v13 anyObject];
-    v9 = [v8 key];
-    v10 = [v9 keyCode];
+    anyObject = [beganCopy anyObject];
+    v9 = [anyObject key];
+    keyCode = [v9 keyCode];
 
-    if (v10 == 82)
+    if (keyCode == 82)
     {
-      [(HomeOutlineRootController *)self upArrowPressed:v8];
+      [(HomeOutlineRootController *)self upArrowPressed:anyObject];
     }
 
     else
     {
-      v11 = [v8 key];
-      v12 = [v11 keyCode];
+      v11 = [anyObject key];
+      keyCode2 = [v11 keyCode];
 
-      if (v12 == 81)
+      if (keyCode2 == 81)
       {
-        [(HomeOutlineRootController *)self downArrowPressed:v8];
+        [(HomeOutlineRootController *)self downArrowPressed:anyObject];
       }
     }
 
-    v7 = v13;
+    v7 = beganCopy;
   }
 }
 
 - (UIScrollView)hoverScrollView
 {
-  v2 = [(HomeOutlineRootController *)self configuration];
-  v3 = [v2 collectionView];
+  configuration = [(HomeOutlineRootController *)self configuration];
+  collectionView = [configuration collectionView];
 
-  return v3;
+  return collectionView;
 }
 
-- (void)_completeFocusAfterScrollingWithSuccess:(BOOL)a3
+- (void)_completeFocusAfterScrollingWithSuccess:(BOOL)success
 {
   if (self->_focusAfterScrollingIndentifierPath)
   {
-    v3 = a3;
+    successCopy = success;
     v8 = objc_retainBlock(self->_focusAfterScrollingCompletion);
     focusAfterScrollingIndentifierPath = self->_focusAfterScrollingIndentifierPath;
     self->_focusAfterScrollingIndentifierPath = 0;
@@ -255,7 +255,7 @@ LABEL_9:
     *&self->_needsFocusAfterScrollingAnimationDidEnd = 0;
     if (v8)
     {
-      (*(v8 + 2))(v8, v3);
+      (*(v8 + 2))(v8, successCopy);
       v7 = v8;
     }
   }
@@ -295,10 +295,10 @@ LABEL_9:
   }
 }
 
-- (void)_setFocusAfterScrollingIdentifierPath:(id)a3 completion:(id)a4
+- (void)_setFocusAfterScrollingIdentifierPath:(id)path completion:(id)completion
 {
-  v6 = a3;
-  v11 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   if (self->_focusAfterScrollingIndentifierPath)
   {
     [(HomeOutlineRootController *)self _completeFocusAfterScrollingWithSuccess:0];
@@ -310,18 +310,18 @@ LABEL_9:
     focusAfterScrollingIndentifierPath = 0;
   }
 
-  self->_focusAfterScrollingIndentifierPath = v6;
-  v8 = v6;
+  self->_focusAfterScrollingIndentifierPath = pathCopy;
+  v8 = pathCopy;
 
-  v9 = objc_retainBlock(v11);
+  v9 = objc_retainBlock(completionCopy);
   focusAfterScrollingCompletion = self->_focusAfterScrollingCompletion;
   self->_focusAfterScrollingCompletion = v9;
 }
 
-- (void)_focusCellAtVisibleSelectedIdentifierPath:(id)a3 completion:(id)a4
+- (void)_focusCellAtVisibleSelectedIdentifierPath:(id)path completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   v9 = sub_1000410AC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -333,56 +333,56 @@ LABEL_9:
     v24 = 2112;
     v25 = v12;
     v26 = 2112;
-    v27 = v7;
+    v27 = pathCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ %@, identifier path = %@", &v22, 0x20u);
   }
 
-  v13 = [(HomeOutlineRootController *)self _indexPathForIdentifierPath:v7];
+  v13 = [(HomeOutlineRootController *)self _indexPathForIdentifierPath:pathCopy];
   if (v13)
   {
-    v14 = [(HomeOutlineRootController *)self _selectedIdentifierPaths];
-    if (([v14 containsObject:v7] & 1) == 0)
+    _selectedIdentifierPaths = [(HomeOutlineRootController *)self _selectedIdentifierPaths];
+    if (([_selectedIdentifierPaths containsObject:pathCopy] & 1) == 0)
     {
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       goto LABEL_21;
     }
 
-    v15 = [(HomeOutlineRootController *)self configuration];
-    v16 = [v15 collectionView];
-    v17 = [v16 cellForItemAtIndexPath:v13];
+    configuration = [(HomeOutlineRootController *)self configuration];
+    collectionView = [configuration collectionView];
+    v17 = [collectionView cellForItemAtIndexPath:v13];
 
     if (!v17)
     {
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       goto LABEL_20;
     }
 
-    v18 = [(HomeOutlineRootController *)self _focusedIdentifierPath];
-    v19 = v18;
-    if (v18 == v7 || [v18 isEqual:v7])
+    _focusedIdentifierPath = [(HomeOutlineRootController *)self _focusedIdentifierPath];
+    v19 = _focusedIdentifierPath;
+    if (_focusedIdentifierPath == pathCopy || [_focusedIdentifierPath isEqual:pathCopy])
     {
-      if (v8)
+      if (completionCopy)
       {
         v20 = 1;
 LABEL_18:
-        v8[2](v8, v20);
+        completionCopy[2](completionCopy, v20);
       }
     }
 
     else
     {
-      v21 = [v17 becomeFirstResponder];
-      if (v8)
+      becomeFirstResponder = [v17 becomeFirstResponder];
+      if (completionCopy)
       {
-        v20 = v21;
+        v20 = becomeFirstResponder;
         goto LABEL_18;
       }
     }
@@ -393,9 +393,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_22:
@@ -408,13 +408,13 @@ LABEL_22:
   v11 = 0u;
   v12 = 0u;
   v2 = self->_sectionControllers;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  focusedIdentifierPath2 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (focusedIdentifierPath2)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != focusedIdentifierPath2; i = i + 1)
       {
         if (*v10 != v4)
         {
@@ -422,17 +422,17 @@ LABEL_22:
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 focusedIdentifierPath];
+        focusedIdentifierPath = [v6 focusedIdentifierPath];
 
-        if (v7)
+        if (focusedIdentifierPath)
         {
-          v3 = [v6 focusedIdentifierPath];
+          focusedIdentifierPath2 = [v6 focusedIdentifierPath];
           goto LABEL_11;
         }
       }
 
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      focusedIdentifierPath2 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (focusedIdentifierPath2)
       {
         continue;
       }
@@ -443,29 +443,29 @@ LABEL_22:
 
 LABEL_11:
 
-  return v3;
+  return focusedIdentifierPath2;
 }
 
-- (void)clearSelectionWithReason:(id)a3
+- (void)clearSelectionWithReason:(id)reason
 {
-  v5 = a3;
-  v6 = [(HomeOutlineRootController *)self _selectedIdentifierPaths];
+  reasonCopy = reason;
+  _selectedIdentifierPaths = [(HomeOutlineRootController *)self _selectedIdentifierPaths];
   v7 = sub_1000410AC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v19 = v5;
+    v19 = reasonCopy;
     v8 = objc_opt_class();
     v18 = v8;
     v9 = NSStringFromSelector(a2);
-    v17 = [(HomeOutlineRootController *)self configuration];
-    v10 = [v17 collectionView];
-    v11 = [v10 indexPathsForSelectedItems];
-    v12 = [v11 componentsJoinedByString:{@", "}];
-    v13 = [v6 allObjects];
-    v14 = [v13 componentsJoinedByString:{@", "}];
+    configuration = [(HomeOutlineRootController *)self configuration];
+    collectionView = [configuration collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    v12 = [indexPathsForSelectedItems componentsJoinedByString:{@", "}];
+    allObjects = [_selectedIdentifierPaths allObjects];
+    v14 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 138413314;
     v21 = v8;
-    v5 = v19;
+    reasonCopy = v19;
     v22 = 2112;
     v23 = v9;
     v24 = 2112;
@@ -477,18 +477,18 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@ %@ selected index paths = [%@], selected identifier paths = [%@], deselection reason = %@", buf, 0x34u);
   }
 
-  if ([v6 count] && objc_msgSend(v6, "count") <= 1)
+  if ([_selectedIdentifierPaths count] && objc_msgSend(_selectedIdentifierPaths, "count") <= 1)
   {
-    v15 = [v6 anyObject];
-    v16 = [(HomeOutlineRootController *)self _sectionControllerForIdentifierPath:v15];
-    [v16 clearSelectionWithReason:v5];
+    anyObject = [_selectedIdentifierPaths anyObject];
+    v16 = [(HomeOutlineRootController *)self _sectionControllerForIdentifierPath:anyObject];
+    [v16 clearSelectionWithReason:reasonCopy];
   }
 }
 
-- (void)_deselectItemAtIndexPath:(id)a3
+- (void)_deselectItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:pathCopy];
   v7 = sub_1000410AC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -500,34 +500,34 @@ LABEL_11:
     v19 = 2112;
     v20 = v10;
     v21 = 2112;
-    v22 = v5;
+    v22 = pathCopy;
     v23 = 2112;
     v24 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@ %@ index path = %@, identifier path = %@", &v17, 0x2Au);
   }
 
-  v11 = [(HomeOutlineRootController *)self configuration];
-  v12 = [v11 collectionView];
-  v13 = [v12 indexPathsForSelectedItems];
-  v14 = [v13 containsObject:v5];
+  configuration = [(HomeOutlineRootController *)self configuration];
+  collectionView = [configuration collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v14 = [indexPathsForSelectedItems containsObject:pathCopy];
 
   if (v14)
   {
-    v15 = [(HomeOutlineRootController *)self configuration];
-    v16 = [v15 collectionView];
-    [v16 deselectItemAtIndexPath:v5 animated:1];
+    configuration2 = [(HomeOutlineRootController *)self configuration];
+    collectionView2 = [configuration2 collectionView];
+    [collectionView2 deselectItemAtIndexPath:pathCopy animated:1];
 
     [(HomeOutlineRootController *)self _updateContentInjectionWithSelectedIndexPath:0];
   }
 }
 
-- (void)_selectItemAtIdentifierPath:(id)a3 notifyDelegate:(BOOL)a4 completion:(id)a5
+- (void)_selectItemAtIdentifierPath:(id)path notifyDelegate:(BOOL)delegate completion:(id)completion
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  delegateCopy = delegate;
+  pathCopy = path;
+  completionCopy = completion;
   [(HomeOutlineRootController *)self updateIfNeeded];
-  v11 = [(HomeOutlineRootController *)self _indexPathForIdentifierPath:v9];
+  v11 = [(HomeOutlineRootController *)self _indexPathForIdentifierPath:pathCopy];
   v12 = sub_1000410AC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -541,17 +541,17 @@ LABEL_11:
     v30 = 2112;
     v31 = v11;
     v32 = 2112;
-    v33 = v9;
+    v33 = pathCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%@ %@ index path = %@, identifier path = %@", buf, 0x2Au);
   }
 
-  if (v9 && v11)
+  if (pathCopy && v11)
   {
-    v16 = [(HomeOutlineRootController *)self configuration];
-    v17 = [v16 collectionView];
+    configuration = [(HomeOutlineRootController *)self configuration];
+    collectionView = [configuration collectionView];
 
-    v18 = [v17 indexPathsForVisibleItems];
-    v19 = [v18 containsObject:v11];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+    v19 = [indexPathsForVisibleItems containsObject:v11];
     if (v19)
     {
       v20 = 0;
@@ -562,15 +562,15 @@ LABEL_11:
       v20 = 2;
     }
 
-    [v17 selectItemAtIndexPath:v11 animated:1 scrollPosition:v20];
-    if (v6)
+    [collectionView selectItemAtIndexPath:v11 animated:1 scrollPosition:v20];
+    if (delegateCopy)
     {
       [(NSTimer *)self->_keyboardSelectionTimer invalidate];
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_1009AABDC;
       v23[3] = &unk_101630DE0;
-      v24 = v17;
+      v24 = collectionView;
       v25 = v11;
       v21 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v23 block:0.2];
       keyboardSelectionTimer = self->_keyboardSelectionTimer;
@@ -580,7 +580,7 @@ LABEL_11:
     else
     {
       [(HomeOutlineRootController *)self _updateContentInjectionWithSelectedIndexPath:v11];
-      [(HomeOutlineRootController *)self _setFocusAfterScrollingIdentifierPath:v9 completion:v10];
+      [(HomeOutlineRootController *)self _setFocusAfterScrollingIdentifierPath:pathCopy completion:completionCopy];
       if (v19)
       {
         [(HomeOutlineRootController *)self _updateFocusAfterScrolling];
@@ -593,71 +593,71 @@ LABEL_11:
     }
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
 - (id)_selectedIdentifierPaths
 {
-  v3 = [(HomeOutlineRootController *)self configuration];
-  v4 = [v3 collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  configuration = [(HomeOutlineRootController *)self configuration];
+  collectionView = [configuration collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1009AAD1C;
   v9[3] = &unk_101657A50;
   v9[4] = self;
-  v6 = sub_100021DB0(v5, v9);
+  v6 = sub_100021DB0(indexPathsForSelectedItems, v9);
   v7 = [NSSet setWithArray:v6];
 
   return v7;
 }
 
-- (void)showCollection:(id)a3
+- (void)showCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 handlerType] == 3)
+  collectionCopy = collection;
+  if ([collectionCopy handlerType] == 3)
   {
-    [(HomeOutlineSuggestionsSectionController *)self->_suggestionsSectionController showSharedCollection:v4];
+    [(HomeOutlineSuggestionsSectionController *)self->_suggestionsSectionController showSharedCollection:collectionCopy];
   }
 
   else
   {
-    [(HomeOutlineCollectionsSectionController *)self->_collectionsSectionController showCollection:v4];
+    [(HomeOutlineCollectionsSectionController *)self->_collectionsSectionController showCollection:collectionCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v9 = a3;
-  v4 = [(HomeOutlineRootController *)self configuration];
-  v5 = [v4 homeUpdateDelegate];
+  scrollCopy = scroll;
+  configuration = [(HomeOutlineRootController *)self configuration];
+  homeUpdateDelegate = [configuration homeUpdateDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HomeOutlineRootController *)self configuration];
-    v8 = [v7 homeUpdateDelegate];
-    [v8 scrollViewDidScroll:v9];
+    configuration2 = [(HomeOutlineRootController *)self configuration];
+    homeUpdateDelegate2 = [configuration2 homeUpdateDelegate];
+    [homeUpdateDelegate2 scrollViewDidScroll:scrollCopy];
   }
 
   [(HomeOutlineRootController *)self _notifyCellHoverObservers];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:v10];
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  v11 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:pathCopy];
   v12 = sub_1000410AC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v14 = 138412546;
-    v15 = v10;
+    v15 = pathCopy;
     v16 = 2112;
     v17 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Will display cell at index path: %@, identifier path: %@", &v14, 0x16u);
@@ -666,7 +666,7 @@ LABEL_11:
   v13 = [(HomeOutlineRootController *)self _sectionControllerForIdentifierPath:v11];
   if (objc_opt_respondsToSelector())
   {
-    [v13 collectionView:v8 willDisplayCell:v9 forItemAtIndexPath:v10];
+    [v13 collectionView:viewCopy willDisplayCell:cellCopy forItemAtIndexPath:pathCopy];
   }
 
   if (v11 == self->_focusAfterScrollingIndentifierPath || [(IdentifierPath *)v11 isEqual:?])
@@ -675,10 +675,10 @@ LABEL_11:
   }
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  endCopy = end;
   self->_hasDropSession = 0;
   dropTargetSectionController = self->_dropTargetSectionController;
   self->_dropTargetSectionController = 0;
@@ -706,7 +706,7 @@ LABEL_11:
         v14 = *(*(&v15 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 collectionView:v6 dropSessionDidEnd:{v7, v15}];
+          [v14 collectionView:viewCopy dropSessionDidEnd:{endCopy, v15}];
         }
 
         v13 = v13 + 1;
@@ -720,10 +720,10 @@ LABEL_11:
   }
 }
 
-- (void)collectionView:(id)a3 dropSessionDidExit:(id)a4
+- (void)collectionView:(id)view dropSessionDidExit:(id)exit
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  exitCopy = exit;
   self->_hasDropSession = 0;
   dropTargetSectionController = self->_dropTargetSectionController;
   self->_dropTargetSectionController = 0;
@@ -751,7 +751,7 @@ LABEL_11:
         v14 = *(*(&v15 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 collectionView:v6 dropSessionDidExit:{v7, v15}];
+          [v14 collectionView:viewCopy dropSessionDidExit:{exitCopy, v15}];
         }
 
         v13 = v13 + 1;
@@ -765,17 +765,17 @@ LABEL_11:
   }
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   v9 = sub_1000410AC();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
 
   if (v10)
   {
-    v11 = [v8 destinationIndexPath];
-    v12 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:v11];
+    destinationIndexPath = [coordinatorCopy destinationIndexPath];
+    v12 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:destinationIndexPath];
     v13 = sub_1000410AC();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -787,33 +787,33 @@ LABEL_11:
       v21 = 2112;
       v22 = v16;
       v23 = 2112;
-      v24 = v11;
+      v24 = destinationIndexPath;
       v25 = 2112;
       v26 = v12;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%@ %@, indexPath = %@, identifierPath = %@", &v19, 0x2Au);
     }
   }
 
-  v17 = [v8 destinationIndexPath];
-  v18 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:v17];
+  destinationIndexPath2 = [coordinatorCopy destinationIndexPath];
+  v18 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:destinationIndexPath2];
 
   if (objc_opt_respondsToSelector())
   {
-    [v18 collectionView:v7 performDropWithCoordinator:v8];
+    [v18 collectionView:viewCopy performDropWithCoordinator:coordinatorCopy];
   }
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  updateCopy = update;
+  pathCopy = path;
   v12 = sub_1000410AC();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
 
   if (v13)
   {
-    v14 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:v11];
+    v14 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:pathCopy];
     v15 = sub_1000410AC();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -825,21 +825,21 @@ LABEL_11:
       v28 = 2112;
       v29 = v18;
       v30 = 2112;
-      v31 = v11;
+      v31 = pathCopy;
       v32 = 2112;
       v33 = v14;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%@ %@, indexPath = %@, identifierPath = %@", &v26, 0x2Au);
     }
   }
 
-  v19 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:v11];
+  v19 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:pathCopy];
   dropTargetSectionController = self->_dropTargetSectionController;
   p_dropTargetSectionController = &self->_dropTargetSectionController;
   if (v19 != dropTargetSectionController)
   {
     if (objc_opt_respondsToSelector())
     {
-      v22 = [(HomeOutlineSectionControllerSubclassing *)*p_dropTargetSectionController collectionView:v9 dropSessionDidUpdate:v10 withDestinationIndexPath:0];
+      v22 = [(HomeOutlineSectionControllerSubclassing *)*p_dropTargetSectionController collectionView:viewCopy dropSessionDidUpdate:updateCopy withDestinationIndexPath:0];
     }
 
     objc_storeStrong(p_dropTargetSectionController, v19);
@@ -847,7 +847,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    v23 = [(HomeOutlineSectionControllerSubclassing *)v19 collectionView:v9 dropSessionDidUpdate:v10 withDestinationIndexPath:v11];
+    v23 = [(HomeOutlineSectionControllerSubclassing *)v19 collectionView:viewCopy dropSessionDidUpdate:updateCopy withDestinationIndexPath:pathCopy];
   }
 
   else
@@ -860,10 +860,10 @@ LABEL_11:
   return v24;
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnter:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnter:(id)enter
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  enterCopy = enter;
   self->_hasDropSession = 1;
   v14 = 0u;
   v15 = 0u;
@@ -888,7 +888,7 @@ LABEL_11:
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 collectionView:v6 dropSessionDidEnter:{v7, v14}];
+          [v13 collectionView:viewCopy dropSessionDidEnter:{enterCopy, v14}];
         }
 
         v12 = v12 + 1;
@@ -902,21 +902,21 @@ LABEL_11:
   }
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
-  v4 = [a4 localDragSession];
-  v5 = v4 != 0;
+  localDragSession = [session localDragSession];
+  v5 = localDragSession != 0;
 
   return v5;
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  endCopy = end;
   if (objc_opt_respondsToSelector())
   {
-    [(HomeOutlineSectionControllerSubclassing *)self->_draggingSectionController collectionView:v9 dragSessionDidEnd:v6];
+    [(HomeOutlineSectionControllerSubclassing *)self->_draggingSectionController collectionView:viewCopy dragSessionDidEnd:endCopy];
   }
 
   draggingSectionController = self->_draggingSectionController;
@@ -926,37 +926,37 @@ LABEL_11:
   [v8 setDragSession:0];
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v12 = a3;
-  v6 = a4;
+  viewCopy = view;
+  beginCopy = begin;
   v7 = +[MapsDragAndDropManager sharedManager];
-  [v7 setDragSession:v6];
+  [v7 setDragSession:beginCopy];
 
   v8 = [MapsDragLocalContext alloc];
-  v9 = [v12 window];
-  v10 = [v9 windowScene];
-  v11 = [(MapsDragLocalContext *)v8 initWithWindowScene:v10];
-  [v6 setLocalContext:v11];
+  window = [viewCopy window];
+  windowScene = [window windowScene];
+  v11 = [(MapsDragLocalContext *)v8 initWithWindowScene:windowScene];
+  [beginCopy setLocalContext:v11];
 
   if (objc_opt_respondsToSelector())
   {
-    [(HomeOutlineSectionControllerSubclassing *)self->_draggingSectionController collectionView:v12 dragSessionWillBegin:v6];
+    [(HomeOutlineSectionControllerSubclassing *)self->_draggingSectionController collectionView:viewCopy dragSessionWillBegin:beginCopy];
   }
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  sessionCopy = session;
+  pathCopy = path;
   v11 = +[MapsDragAndDropManager sharedManager];
-  v12 = [v11 canStartNewDrag];
+  canStartNewDrag = [v11 canStartNewDrag];
 
-  if (v12)
+  if (canStartNewDrag)
   {
-    v13 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:v10];
-    v14 = [v13 collectionView:v8 itemsForBeginningDragSession:v9 atIndexPath:v10];
+    v13 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:pathCopy];
+    v14 = [v13 collectionView:viewCopy itemsForBeginningDragSession:sessionCopy atIndexPath:pathCopy];
     if ([v14 count])
     {
       objc_storeStrong(&self->_draggingSectionController, v13);
@@ -971,20 +971,20 @@ LABEL_11:
   return v14;
 }
 
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [(HomeOutlineRootController *)self configuration:a3];
-  v5 = [v6 collectionView];
-  [v5 setActivityItemsConfiguration:0];
+  v6 = [(HomeOutlineRootController *)self configuration:view];
+  collectionView = [v6 collectionView];
+  [collectionView setActivityItemsConfiguration:0];
 }
 
-- (void)collectionView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [a4 identifier];
+  identifier = [configuration identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = identifier;
   }
 
   else
@@ -1003,12 +1003,12 @@ LABEL_11:
     if (v10)
     {
       v11 = [UIActivityItemsConfiguration alloc];
-      v12 = [v10 activityProviders];
-      v13 = [v10 applicationActivities];
-      v14 = [v11 _initWithActivityItems:v12 applicationActivities:v13];
+      activityProviders = [v10 activityProviders];
+      applicationActivities = [v10 applicationActivities];
+      v14 = [v11 _initWithActivityItems:activityProviders applicationActivities:applicationActivities];
 
-      v15 = [v10 excludedActivityTypes];
-      [v14 _setExcludedActivityTypes:v15];
+      excludedActivityTypes = [v10 excludedActivityTypes];
+      [v14 _setExcludedActivityTypes:excludedActivityTypes];
     }
 
     else
@@ -1022,25 +1022,25 @@ LABEL_11:
     v14 = 0;
   }
 
-  v16 = [(HomeOutlineRootController *)self configuration];
-  v17 = [v16 collectionView];
-  [v17 setActivityItemsConfiguration:v14];
+  configuration = [(HomeOutlineRootController *)self configuration];
+  collectionView = [configuration collectionView];
+  [collectionView setActivityItemsConfiguration:v14];
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
-  if ([v10 count] == 1)
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  pathsCopy = paths;
+  if ([pathsCopy count] == 1)
   {
-    v11 = [v10 firstObject];
-    v12 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:v11];
+    firstObject = [pathsCopy firstObject];
+    v12 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:firstObject];
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v12 collectionView:v9 contextMenuConfigurationForItemsAtIndexPaths:v10 point:{x, y}];
+      v13 = [v12 collectionView:viewCopy contextMenuConfigurationForItemsAtIndexPaths:pathsCopy point:{x, y}];
     }
 
     else
@@ -1057,11 +1057,11 @@ LABEL_11:
   return v13;
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1085,7 +1085,7 @@ LABEL_11:
         v16 = *(*(&v17 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 collectionView:v8 didUpdateFocusInContext:v9 withAnimationCoordinator:{v10, v17}];
+          [v16 collectionView:viewCopy didUpdateFocusInContext:contextCopy withAnimationCoordinator:{coordinatorCopy, v17}];
         }
 
         v15 = v15 + 1;
@@ -1099,14 +1099,14 @@ LABEL_11:
   }
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 collectionView:v6 canFocusItemAtIndexPath:v7];
+    v9 = [v8 collectionView:viewCopy canFocusItemAtIndexPath:pathCopy];
   }
 
   else
@@ -1117,10 +1117,10 @@ LABEL_11:
   return v9;
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v9 = sub_1000410AC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -1132,22 +1132,22 @@ LABEL_11:
     v16 = 2112;
     v17 = v12;
     v18 = 2112;
-    v19 = v8;
+    v19 = pathCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ %@%@", &v14, 0x20u);
   }
 
   [(HomeOutlineRootController *)self _updateContentInjectionWithSelectedIndexPath:0];
-  v13 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:v8];
+  v13 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v13 collectionView:v7 didDeselectItemAtIndexPath:v8];
+    [v13 collectionView:viewCopy didDeselectItemAtIndexPath:pathCopy];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v9 = sub_1000410AC();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -1159,26 +1159,26 @@ LABEL_11:
     v16 = 2112;
     v17 = v12;
     v18 = 2112;
-    v19 = v8;
+    v19 = pathCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ %@%@", &v14, 0x20u);
   }
 
-  [(HomeOutlineRootController *)self _updateContentInjectionWithSelectedIndexPath:v8];
-  v13 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:v8];
+  [(HomeOutlineRootController *)self _updateContentInjectionWithSelectedIndexPath:pathCopy];
+  v13 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v13 collectionView:v7 didSelectItemAtIndexPath:v8];
+    [v13 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(HomeOutlineRootController *)self _sectionControllerForIndexPath:pathCopy];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 collectionView:v6 shouldHighlightItemAtIndexPath:v7];
+    v9 = [v8 collectionView:viewCopy shouldHighlightItemAtIndexPath:pathCopy];
   }
 
   else
@@ -1189,22 +1189,22 @@ LABEL_11:
   return v9;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   v11 = sub_1000410AC();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v27 = 138412546;
-    v28 = v9;
+    v28 = pathCopy;
     v29 = 2112;
-    v30 = v10;
+    v30 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Dequeuing cell at index path: %@, identifier path: %@", &v27, 0x16u);
   }
 
-  v12 = v10;
+  v12 = identifierCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1219,13 +1219,13 @@ LABEL_11:
   v14 = v13;
 
   v15 = [(HomeOutlineRootController *)self _nodeSnapshotAtIdentifierPath:v14];
-  v16 = [v15 viewModel];
-  v17 = [v16 cellRegistration];
+  viewModel = [v15 viewModel];
+  cellRegistration = [viewModel cellRegistration];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v17;
+    v18 = cellRegistration;
   }
 
   else
@@ -1245,13 +1245,13 @@ LABEL_11:
 
   if (v19)
   {
-    v21 = [v8 dequeueConfiguredReusableCellWithRegistration:v19 forIndexPath:v9 item:v12];
-    v22 = [v14 firstIdentifier];
-    v23 = [v22 stringByReplacingOccurrencesOfString:@" " withString:&stru_1016631F0];
+    v21 = [viewCopy dequeueConfiguredReusableCellWithRegistration:v19 forIndexPath:pathCopy item:v12];
+    firstIdentifier = [v14 firstIdentifier];
+    v23 = [firstIdentifier stringByReplacingOccurrencesOfString:@" " withString:&stru_1016631F0];
     [v21 setAxSectionIdentifier:v23];
 
-    v24 = [v19 viewModelConfigurationHandler];
-    (v24)[2](v24, v21, v9, v15);
+    viewModelConfigurationHandler = [v19 viewModelConfigurationHandler];
+    (viewModelConfigurationHandler)[2](viewModelConfigurationHandler, v21, pathCopy, v15);
 
     [v21 setHoverSource:self];
     if ([v14 length] >= 2)
@@ -1275,9 +1275,9 @@ LABEL_11:
   return v21;
 }
 
-- (void)sectionController:(id)a3 deselectItemAtIdentifierPath:(id)a4
+- (void)sectionController:(id)controller deselectItemAtIdentifierPath:(id)path
 {
-  v5 = [(HomeOutlineRootController *)self _indexPathForIdentifierPath:a4];
+  v5 = [(HomeOutlineRootController *)self _indexPathForIdentifierPath:path];
   if (v5)
   {
     v6 = v5;
@@ -1286,7 +1286,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)isCollectionViewFocusedWithSectionController:(id)a3
+- (BOOL)isCollectionViewFocusedWithSectionController:(id)controller
 {
   v9 = 0u;
   v10 = 0u;
@@ -1306,9 +1306,9 @@ LABEL_11:
           objc_enumerationMutation(v3);
         }
 
-        v7 = [*(*(&v9 + 1) + 8 * i) focusedIdentifierPath];
+        focusedIdentifierPath = [*(*(&v9 + 1) + 8 * i) focusedIdentifierPath];
 
-        if (v7)
+        if (focusedIdentifierPath)
         {
           LOBYTE(v4) = 1;
           goto LABEL_11;
@@ -1330,41 +1330,41 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isCollectionViewProxyFocusedWithSectionController:(id)a3
+- (BOOL)isCollectionViewProxyFocusedWithSectionController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_keyboardProxy);
-  v4 = [WeakRetained shouldAppearFocused];
+  shouldAppearFocused = [WeakRetained shouldAppearFocused];
 
-  return v4;
+  return shouldAppearFocused;
 }
 
-- (void)sectionController:(id)a3 setNeedsApplySnapshotAnimated:(BOOL)a4
+- (void)sectionController:(id)controller setNeedsApplySnapshotAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   v7 = sub_1000410AC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v11 = v6;
+    v11 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Apply Snapshot for section controller: %@", buf, 0xCu);
   }
 
-  v9 = v6;
+  v9 = controllerCopy;
   v8 = [NSArray arrayWithObjects:&v9 count:1];
-  [(HomeOutlineRootController *)self _setNeedsSnapshotUpdatesForSectionControllers:v8 animated:v4];
+  [(HomeOutlineRootController *)self _setNeedsSnapshotUpdatesForSectionControllers:v8 animated:animatedCopy];
 }
 
-- (void)_updateContentInjectionWithSelectedIndexPath:(id)a3
+- (void)_updateContentInjectionWithSelectedIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [(HomeOutlineRootController *)self _nodeSnapshotAtIndexPath:?];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 identifierPath];
-      v7 = [(HomeOutlineRootController *)self _sectionControllerForIdentifierPath:v6];
+      identifierPath = [v4 identifierPath];
+      v7 = [(HomeOutlineRootController *)self _sectionControllerForIdentifierPath:identifierPath];
 
       v12 = [v7 contentInjectorForSnapshot:v5];
     }
@@ -1380,13 +1380,13 @@ LABEL_11:
     v12 = 0;
   }
 
-  v8 = [(HomeOutlineRootController *)self configuration];
-  v9 = [v8 actionCoordinator];
+  configuration = [(HomeOutlineRootController *)self configuration];
+  actionCoordinator = [configuration actionCoordinator];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = actionCoordinator;
   }
 
   else
@@ -1446,19 +1446,19 @@ LABEL_11:
   }
 }
 
-- (void)_applySnapshotUpdatesInSectionControllers:(id)a3 animateCells:(BOOL)a4 animateCollectionView:(BOOL)a5 completion:(id)a6
+- (void)_applySnapshotUpdatesInSectionControllers:(id)controllers animateCells:(BOOL)cells animateCollectionView:(BOOL)view completion:(id)completion
 {
-  v7 = a5;
-  v129 = a4;
-  v9 = a3;
-  v10 = a6;
+  viewCopy = view;
+  cellsCopy = cells;
+  controllersCopy = controllers;
+  completionCopy = completion;
   v11 = sub_1000410AC();
   v12 = v11;
   signpostID = self->_signpostID;
-  v137 = self;
+  selfCopy = self;
   if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
-    if (v129)
+    if (cellsCopy)
     {
       v14 = @"YES";
     }
@@ -1469,7 +1469,7 @@ LABEL_11:
     }
 
     v15 = v14;
-    if (v7)
+    if (viewCopy)
     {
       v16 = @"YES";
     }
@@ -1487,17 +1487,17 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "ApplySnapshot", "animateCells = %@, animateCollectionView = %@", buf, 0x16u);
   }
 
-  v127 = v7;
-  if (v7)
+  v127 = viewCopy;
+  if (viewCopy)
   {
-    v18 = [(HomeOutlineRootController *)self configuration];
-    v19 = [v18 collectionView];
-    [v19 alpha];
+    configuration = [(HomeOutlineRootController *)self configuration];
+    collectionView = [configuration collectionView];
+    [collectionView alpha];
     v21 = v20;
 
-    v22 = [(HomeOutlineRootController *)self configuration];
-    v23 = [v22 collectionView];
-    [v23 setAlpha:0.0];
+    configuration2 = [(HomeOutlineRootController *)self configuration];
+    collectionView2 = [configuration2 collectionView];
+    [collectionView2 setAlpha:0.0];
 
     v155[0] = _NSConcreteStackBlock;
     v155[1] = 3221225472;
@@ -1509,7 +1509,7 @@ LABEL_11:
     v153[1] = 3221225472;
     v153[2] = sub_1009AD858;
     v153[3] = &unk_10165F438;
-    v154 = v10;
+    v154 = completionCopy;
     [UIView animateWithDuration:2 delay:v155 options:v153 animations:0.25 completion:0.0];
   }
 
@@ -1544,18 +1544,18 @@ LABEL_11:
         }
 
         v33 = *(*(&v149 + 1) + 8 * i);
-        if ([v9 containsObject:v33])
+        if ([controllersCopy containsObject:v33])
         {
           [v33 invalidateSectionSnapshot];
         }
 
-        v34 = [v33 sectionSnapshot];
-        v35 = [v34 childSnapshots];
-        v36 = [v35 count];
+        sectionSnapshot = [v33 sectionSnapshot];
+        childSnapshots = [sectionSnapshot childSnapshots];
+        v36 = [childSnapshots count];
 
         if (v36)
         {
-          [v135 addObject:v34];
+          [v135 addObject:sectionSnapshot];
         }
       }
 
@@ -1565,34 +1565,34 @@ LABEL_11:
     while (v30);
   }
 
-  v134 = v9;
+  v134 = controllersCopy;
 
-  v37 = v137->_rootSnapshot;
+  v37 = selfCopy->_rootSnapshot;
   v38 = [MapsUIDiffableDataSourceOutlineNodeSnapshot alloc];
   v39 = +[IdentifierPath identifierPath];
   v40 = +[HomeOutlineHiddenViewModel sharedViewModel];
   v41 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v38 initWithIdentifierPath:v39 viewModel:v40 childSnapshots:v135 expanded:1];
-  rootSnapshot = v137->_rootSnapshot;
-  v137->_rootSnapshot = v41;
+  rootSnapshot = selfCopy->_rootSnapshot;
+  selfCopy->_rootSnapshot = v41;
 
   v128 = v37;
-  v43 = [v24 _maps_applyChangesWithNewRootSnapshot:v137->_rootSnapshot oldRootSnapshot:v37];
+  v43 = [v24 _maps_applyChangesWithNewRootSnapshot:selfCopy->_rootSnapshot oldRootSnapshot:v37];
   v44 = sub_1000410AC();
   v45 = v44;
-  v46 = v137->_signpostID;
+  v46 = selfCopy->_signpostID;
   if (v46 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v44))
   {
     *buf = 0;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v45, OS_SIGNPOST_INTERVAL_END, v46, "BuildSectionSnapshot", "", buf, 2u);
   }
 
-  v136 = [(HomeOutlineRootController *)v137 _focusedIdentifierPath];
+  _focusedIdentifierPath = [(HomeOutlineRootController *)selfCopy _focusedIdentifierPath];
   v145 = 0u;
   v146 = 0u;
   v147 = 0u;
   v148 = 0u;
-  v47 = [v43 deletedItems];
-  v48 = [v47 countByEnumeratingWithState:&v145 objects:v177 count:16];
+  deletedItems = [v43 deletedItems];
+  v48 = [deletedItems countByEnumeratingWithState:&v145 objects:v177 count:16];
   if (v48)
   {
     v49 = v48;
@@ -1603,18 +1603,18 @@ LABEL_11:
       {
         if (*v146 != v50)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(deletedItems);
         }
 
-        v52 = [*(*(&v145 + 1) + 8 * j) identifierPath];
-        v53 = v52;
-        if (v52 == v136)
+        identifierPath = [*(*(&v145 + 1) + 8 * j) identifierPath];
+        v53 = identifierPath;
+        if (identifierPath == _focusedIdentifierPath)
         {
         }
 
         else
         {
-          v54 = [v52 isEqual:?];
+          v54 = [identifierPath isEqual:?];
 
           if (!v54)
           {
@@ -1622,13 +1622,13 @@ LABEL_11:
           }
         }
 
-        v55 = [(HomeOutlineRootController *)v137 configuration];
-        v56 = [v55 actionCoordinator];
+        configuration3 = [(HomeOutlineRootController *)selfCopy configuration];
+        actionCoordinator = [configuration3 actionCoordinator];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v57 = v56;
+          v57 = actionCoordinator;
         }
 
         else
@@ -1641,19 +1641,19 @@ LABEL_11:
         [v58 makeMapViewFirstResponder];
       }
 
-      v49 = [v47 countByEnumeratingWithState:&v145 objects:v177 count:16];
+      v49 = [deletedItems countByEnumeratingWithState:&v145 objects:v177 count:16];
     }
 
     while (v49);
   }
 
-  v132 = v10;
+  v132 = completionCopy;
   v133 = v24;
 
   v59 = sub_1000410AC();
   v60 = v59;
-  v61 = v137;
-  v62 = v137->_signpostID;
+  v61 = selfCopy;
+  v62 = selfCopy->_signpostID;
   if (v62 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v59))
   {
     *buf = 0;
@@ -1665,8 +1665,8 @@ LABEL_11:
   v141 = 0u;
   v142 = 0u;
   v131 = v43;
-  v63 = [v43 reloadedItems];
-  v64 = [v63 countByEnumeratingWithState:&v141 objects:v176 count:16];
+  reloadedItems = [v43 reloadedItems];
+  v64 = [reloadedItems countByEnumeratingWithState:&v141 objects:v176 count:16];
   if (v64)
   {
     v65 = v64;
@@ -1677,28 +1677,28 @@ LABEL_11:
       {
         if (*v142 != v66)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(reloadedItems);
         }
 
         v68 = *(*(&v141 + 1) + 8 * k);
-        v69 = [v68 identifierPath];
-        v70 = [(HomeOutlineRootController *)v61 _indexPathForIdentifierPath:v69];
+        identifierPath2 = [v68 identifierPath];
+        v70 = [(HomeOutlineRootController *)v61 _indexPathForIdentifierPath:identifierPath2];
 
         if (v70)
         {
-          v71 = [(HomeOutlineRootController *)v61 configuration];
-          v72 = [v71 collectionView];
-          v73 = [v72 cellForItemAtIndexPath:v70];
+          configuration4 = [(HomeOutlineRootController *)v61 configuration];
+          collectionView3 = [configuration4 collectionView];
+          v73 = [collectionView3 cellForItemAtIndexPath:v70];
 
           if (v73)
           {
-            v74 = [v68 viewModel];
-            v75 = [v74 cellRegistration];
+            viewModel = [v68 viewModel];
+            cellRegistration = [viewModel cellRegistration];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v76 = v75;
+              v76 = cellRegistration;
             }
 
             else
@@ -1713,17 +1713,17 @@ LABEL_11:
               [v77 cellClass];
               if (objc_opt_isKindOfClass())
               {
-                v78 = [v77 viewModelConfigurationHandler];
-                (v78)[2](v78, v73, v70, v68);
+                viewModelConfigurationHandler = [v77 viewModelConfigurationHandler];
+                (viewModelConfigurationHandler)[2](viewModelConfigurationHandler, v73, v70, v68);
               }
             }
 
-            v61 = v137;
+            v61 = selfCopy;
           }
         }
       }
 
-      v65 = [v63 countByEnumeratingWithState:&v141 objects:v176 count:16];
+      v65 = [reloadedItems countByEnumeratingWithState:&v141 objects:v176 count:16];
     }
 
     while (v65);
@@ -1751,7 +1751,7 @@ LABEL_11:
 
   if ([v131 hasChanges])
   {
-    diffableDataSource = v137->_diffableDataSource;
+    diffableDataSource = selfCopy->_diffableDataSource;
     v138[0] = _NSConcreteStackBlock;
     v138[1] = 3221225472;
     v138[2] = sub_1009AD870;
@@ -1759,8 +1759,8 @@ LABEL_11:
     v140 = v127;
     v139 = v132;
     v88 = diffableDataSource;
-    v61 = v137;
-    [(UICollectionViewDiffableDataSource *)v88 applySnapshot:v133 toSection:@"root" animatingDifferences:v129 completion:v138];
+    v61 = selfCopy;
+    [(UICollectionViewDiffableDataSource *)v88 applySnapshot:v133 toSection:@"root" animatingDifferences:cellsCopy completion:v138];
   }
 
   else if (v132)
@@ -1783,23 +1783,23 @@ LABEL_11:
   if (v93)
   {
     v123 = sub_100021DB0(v134, &stru_101630CD8);
-    v94 = [v131 reloadedItems];
-    v122 = sub_100021DB0(v94, &stru_101630D18);
+    reloadedItems2 = [v131 reloadedItems];
+    v122 = sub_100021DB0(reloadedItems2, &stru_101630D18);
 
-    v95 = [v131 insertedItems];
-    v96 = sub_100021DB0(v95, &stru_101630D38);
+    insertedItems = [v131 insertedItems];
+    v96 = sub_100021DB0(insertedItems, &stru_101630D38);
 
-    v97 = [v131 deletedItems];
-    v98 = sub_100021DB0(v97, &stru_101630D58);
+    deletedItems2 = [v131 deletedItems];
+    v98 = sub_100021DB0(deletedItems2, &stru_101630D58);
 
-    v99 = [v131 movedItems];
-    v126 = sub_100021DB0(v99, &stru_101630D78);
+    movedItems = [v131 movedItems];
+    v126 = sub_100021DB0(movedItems, &stru_101630D78);
 
-    v100 = [v131 expandedItems];
-    v125 = sub_100021DB0(v100, &stru_101630D98);
+    expandedItems = [v131 expandedItems];
+    v125 = sub_100021DB0(expandedItems, &stru_101630D98);
 
-    v101 = [v131 collapsedItems];
-    v124 = sub_100021DB0(v101, &stru_101630DB8);
+    collapsedItems = [v131 collapsedItems];
+    v124 = sub_100021DB0(collapsedItems, &stru_101630DB8);
 
     v102 = sub_1000410AC();
     if (os_log_type_enabled(v102, OS_LOG_TYPE_INFO))
@@ -1807,7 +1807,7 @@ LABEL_11:
       v103 = objc_opt_class();
       v120 = NSStringFromClass(v103);
       v121 = v98;
-      if (v129)
+      if (cellsCopy)
       {
         v104 = @"YES";
       }
@@ -1871,7 +1871,7 @@ LABEL_11:
 
   v116 = sub_1000410AC();
   v117 = v116;
-  v118 = v137->_signpostID;
+  v118 = selfCopy->_signpostID;
   if (v118 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v116))
   {
     *buf = 0;
@@ -1909,8 +1909,8 @@ LABEL_11:
     objc_copyWeak(&v20, buf);
     [(HomeOutlineRootController *)self _applySnapshotUpdatesInSectionControllers:v4 animateCells:animateNextUpdate animateCollectionView:v5 completion:&v16];
     v14 = [(HomeOutlineRootController *)self configuration:v16];
-    v15 = [v14 homeUpdateDelegate];
-    [v15 homeDidUpdateAnimated:animateNextUpdate || v5];
+    homeUpdateDelegate = [v14 homeUpdateDelegate];
+    [homeUpdateDelegate homeDidUpdateAnimated:animateNextUpdate || v5];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -1989,10 +1989,10 @@ LABEL_11:
   }
 }
 
-- (void)_setNeedsSnapshotUpdatesForSectionControllers:(id)a3 animated:(BOOL)a4
+- (void)_setNeedsSnapshotUpdatesForSectionControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllersCopy = controllers;
   if (self->_active)
   {
     v7 = sub_1000410AC();
@@ -2007,16 +2007,16 @@ LABEL_11:
     [(HomeOutlineRootController *)self _updateLoadingTimer];
     if (![(HomeOutlineRootController *)self _isLoading])
     {
-      if ([(HomeOutlineRootController *)self _needsSnapshotUpdate]&& self->_animateNextUpdate != v4 && self->_appliedInitialUpdate)
+      if ([(HomeOutlineRootController *)self _needsSnapshotUpdate]&& self->_animateNextUpdate != animatedCopy && self->_appliedInitialUpdate)
       {
         [(HomeOutlineRootController *)self updateIfNeeded];
       }
 
-      self->_animateNextUpdate = v4;
-      [(NSMutableSet *)self->_sectionControllersToUpdate addObjectsFromArray:v6];
-      v17 = [(HomeOutlineRootController *)self configuration];
-      v18 = [v17 homeUpdateDelegate];
-      [v18 homeSetNeedsUpdate];
+      self->_animateNextUpdate = animatedCopy;
+      [(NSMutableSet *)self->_sectionControllersToUpdate addObjectsFromArray:controllersCopy];
+      configuration = [(HomeOutlineRootController *)self configuration];
+      homeUpdateDelegate = [configuration homeUpdateDelegate];
+      [homeUpdateDelegate homeSetNeedsUpdate];
       goto LABEL_16;
     }
 
@@ -2035,22 +2035,22 @@ LABEL_11:
 
     if (v14)
     {
-      v15 = [(HomeOutlineRootController *)self _loadingDataProviders];
-      v16 = sub_100021DB0(v15, &stru_101630C98);
-      v17 = [NSSet setWithArray:v16];
+      _loadingDataProviders = [(HomeOutlineRootController *)self _loadingDataProviders];
+      v16 = sub_100021DB0(_loadingDataProviders, &stru_101630C98);
+      configuration = [NSSet setWithArray:v16];
 
-      v18 = sub_1000410AC();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+      homeUpdateDelegate = sub_1000410AC();
+      if (os_log_type_enabled(homeUpdateDelegate, OS_LOG_TYPE_INFO))
       {
         v19 = objc_opt_class();
         v20 = NSStringFromClass(v19);
-        v21 = [v17 allObjects];
-        v22 = [v21 componentsJoinedByString:{@", "}];
+        allObjects = [configuration allObjects];
+        v22 = [allObjects componentsJoinedByString:{@", "}];
         v23 = 138412546;
         v24 = v20;
         v25 = 2112;
         v26 = v22;
-        _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%@ skipping applySnapshot because initial data has not loaded in data providers [%@]", &v23, 0x16u);
+        _os_log_impl(&_mh_execute_header, homeUpdateDelegate, OS_LOG_TYPE_INFO, "%@ skipping applySnapshot because initial data has not loaded in data providers [%@]", &v23, 0x16u);
       }
 
 LABEL_16:
@@ -2079,8 +2079,8 @@ LABEL_16:
 
 - (void)_updateLoadingTimer
 {
-  v3 = [(HomeOutlineRootController *)self _loadingDataProviders];
-  v4 = [v3 count];
+  _loadingDataProviders = [(HomeOutlineRootController *)self _loadingDataProviders];
+  v4 = [_loadingDataProviders count];
 
   loadingTimer = self->_loadingTimer;
   if (v4)
@@ -2106,8 +2106,8 @@ LABEL_16:
 
 - (BOOL)_isLoading
 {
-  v3 = [(HomeOutlineRootController *)self _loadingDataProviders];
-  v4 = [v3 count] != 0;
+  _loadingDataProviders = [(HomeOutlineRootController *)self _loadingDataProviders];
+  v4 = [_loadingDataProviders count] != 0;
 
   return v4 & [(NSTimer *)self->_loadingTimer isValid];
 }
@@ -2139,8 +2139,8 @@ LABEL_16:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 dataProviders];
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        dataProviders = [v9 dataProviders];
+        v11 = [dataProviders countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
@@ -2151,7 +2151,7 @@ LABEL_16:
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(dataProviders);
               }
 
               v15 = *(*(&v18 + 1) + 8 * j);
@@ -2161,7 +2161,7 @@ LABEL_16:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v12 = [dataProviders countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v12);
@@ -2179,23 +2179,23 @@ LABEL_16:
   return v16;
 }
 
-- (void)setKeyboardProxy:(id)a3
+- (void)setKeyboardProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   WeakRetained = objc_loadWeakRetained(&self->_keyboardProxy);
   [WeakRetained setDelegate:0];
 
-  [v4 setDelegate:self];
-  objc_storeWeak(&self->_keyboardProxy, v4);
+  [proxyCopy setDelegate:self];
+  objc_storeWeak(&self->_keyboardProxy, proxyCopy);
 
   sectionControllers = self->_sectionControllers;
 
   [(HomeOutlineRootController *)self _setNeedsSnapshotUpdatesForSectionControllers:sectionControllers animated:1];
 }
 
-- (id)_nodeSnapshotAtIdentifierPath:(id)a3
+- (id)_nodeSnapshotAtIdentifierPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)self->_rootSnapshot nodeSnapshotAtIdentifierPath:?];
   }
@@ -2208,17 +2208,17 @@ LABEL_16:
   return v4;
 }
 
-- (id)_nodeSnapshotAtIndexPath:(id)a3
+- (id)_nodeSnapshotAtIndexPath:(id)path
 {
-  v4 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:a3];
+  v4 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:path];
   v5 = [(HomeOutlineRootController *)self _nodeSnapshotAtIdentifierPath:v4];
 
   return v5;
 }
 
-- (id)_indexPathForIdentifierPath:(id)a3
+- (id)_indexPathForIdentifierPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource indexPathForItemIdentifier:?];
   }
@@ -2231,9 +2231,9 @@ LABEL_16:
   return v4;
 }
 
-- (id)_identifierPathForIndexPath:(id)a3
+- (id)_identifierPathForIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:?];
   }
@@ -2246,21 +2246,21 @@ LABEL_16:
   return v4;
 }
 
-- (id)_sectionControllerForIndexPath:(id)a3
+- (id)_sectionControllerForIndexPath:(id)path
 {
-  v4 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:a3];
+  v4 = [(HomeOutlineRootController *)self _identifierPathForIndexPath:path];
   v5 = [(HomeOutlineRootController *)self _sectionControllerForIdentifierPath:v4];
 
   return v5;
 }
 
-- (id)_sectionControllerForIdentifierPath:(id)a3
+- (id)_sectionControllerForIdentifierPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     sectionControllersByIdentifier = self->_sectionControllersByIdentifier;
-    v4 = [a3 firstIdentifier];
-    v5 = [(NSDictionary *)sectionControllersByIdentifier objectForKeyedSubscript:v4];
+    firstIdentifier = [path firstIdentifier];
+    v5 = [(NSDictionary *)sectionControllersByIdentifier objectForKeyedSubscript:firstIdentifier];
   }
 
   else
@@ -2271,23 +2271,23 @@ LABEL_16:
   return v5;
 }
 
-- (void)_collapseItem:(id)a3
+- (void)_collapseItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HomeOutlineRootController *)self _sectionControllerForIdentifierPath:v4];
-  [v5 collapseElementAtIdentifierPath:v4];
+  itemCopy = item;
+  v5 = [(HomeOutlineRootController *)self _sectionControllerForIdentifierPath:itemCopy];
+  [v5 collapseElementAtIdentifierPath:itemCopy];
 }
 
-- (void)_expandItem:(id)a3
+- (void)_expandItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HomeOutlineRootController *)self _sectionControllerForIdentifierPath:v4];
-  [v5 expandElementAtIdentifierPath:v4];
+  itemCopy = item;
+  v5 = [(HomeOutlineRootController *)self _sectionControllerForIdentifierPath:itemCopy];
+  [v5 expandElementAtIdentifierPath:itemCopy];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   if (!self->_loadingState)
   {
     self->_loadingState = 1;
@@ -2301,9 +2301,9 @@ LABEL_16:
     }
   }
 
-  if (self->_active != v3)
+  if (self->_active != activeCopy)
   {
-    self->_active = v3;
+    self->_active = activeCopy;
     v9 = sub_1000410AC();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -2311,7 +2311,7 @@ LABEL_16:
       v11 = NSStringFromClass(v10);
       v12 = NSStringFromSelector(a2);
       v13 = @"NO";
-      if (v3)
+      if (activeCopy)
       {
         v13 = @"YES";
       }
@@ -2357,7 +2357,7 @@ LABEL_16:
       while (v17);
     }
 
-    if (v3)
+    if (activeCopy)
     {
       [(HomeOutlineRootController *)self _resetSnapshotUpdateState];
       [(HomeOutlineRootController *)self _setNeedsSnapshotUpdatesForSectionControllers:self->_sectionControllers animated:0];
@@ -2373,10 +2373,10 @@ LABEL_16:
   if (!diffableDataSource)
   {
     v4 = [UICollectionViewDiffableDataSource alloc];
-    v5 = [(HomeOutlineRootController *)self configuration];
-    v6 = [v5 collectionView];
+    configuration = [(HomeOutlineRootController *)self configuration];
+    collectionView = [configuration collectionView];
     v7 = sub_1007CDFC8(self);
-    v8 = [v4 initWithCollectionView:v6 cellProvider:v7];
+    v8 = [v4 initWithCollectionView:collectionView cellProvider:v7];
     v9 = self->_diffableDataSource;
     self->_diffableDataSource = v8;
 
@@ -2510,9 +2510,9 @@ LABEL_16:
         }
 
         v36 = *(*(&v42 + 1) + 8 * i);
-        v37 = [v36 configuration];
-        v38 = [v37 sectionIdentifier];
-        [v30 setObject:v36 forKeyedSubscript:v38];
+        configuration = [v36 configuration];
+        sectionIdentifier = [configuration sectionIdentifier];
+        [v30 setObject:v36 forKeyedSubscript:sectionIdentifier];
       }
 
       v33 = [(NSArray *)v31 countByEnumeratingWithState:&v42 objects:v47 count:16];
@@ -2526,9 +2526,9 @@ LABEL_16:
   self->_sectionControllersByIdentifier = v39;
 }
 
-- (HomeOutlineRootController)initWithConfiguration:(id)a3
+- (HomeOutlineRootController)initWithConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v30.receiver = self;
   v30.super_class = HomeOutlineRootController;
   v7 = [(HomeOutlineRootController *)&v30 init];
@@ -2550,7 +2550,7 @@ LABEL_16:
     v12 = sub_1000410AC();
     v7->_signpostID = os_signpost_id_make_with_pointer(v12, v7);
 
-    objc_storeStrong(&v7->_configuration, a3);
+    objc_storeStrong(&v7->_configuration, configuration);
     v13 = [SuggestionsDataProvider alloc];
     v14 = [[MapsSuggestionsBlockFilter alloc] initWithBlock:&stru_101630C08];
     v15 = [(SuggestionsDataProvider *)v13 initWithViewMode:0 filter:v14 includePlaceholderShortcuts:1];
@@ -2572,9 +2572,9 @@ LABEL_16:
     hoverGestureRecognizer = v7->_hoverGestureRecognizer;
     v7->_hoverGestureRecognizer = v23;
 
-    v25 = [(HomeOutlineRootController *)v7 configuration];
-    v26 = [v25 collectionView];
-    [v26 addGestureRecognizer:v7->_hoverGestureRecognizer];
+    configuration = [(HomeOutlineRootController *)v7 configuration];
+    collectionView = [configuration collectionView];
+    [collectionView addGestureRecognizer:v7->_hoverGestureRecognizer];
 
     v27 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___SidebarOutlineCellHoverObserver queue:0];
     hoverChangeObservers = v7->_hoverChangeObservers;

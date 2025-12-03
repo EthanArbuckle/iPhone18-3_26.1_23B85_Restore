@@ -9,20 +9,20 @@
   v23.receiver = self;
   v23.super_class = AccountPSDetailTableCell;
   [(AccountPSDetailTableCell *)&v23 layoutSubviews];
-  v3 = [(AccountPSDetailTableCell *)self detailTextLabel];
-  [v3 setTextAlignment:0];
-  [v3 frame];
+  detailTextLabel = [(AccountPSDetailTableCell *)self detailTextLabel];
+  [detailTextLabel setTextAlignment:0];
+  [detailTextLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
   [(AccountPSDetailTableCell *)self textFieldOffset];
   v13 = v12;
-  v14 = [(AccountPSDetailTableCell *)self textLabel];
-  [v14 frame];
+  textLabel = [(AccountPSDetailTableCell *)self textLabel];
+  [textLabel frame];
   v16 = v15;
-  v17 = [(AccountPSDetailTableCell *)self _tableView];
-  [v17 layoutMargins];
+  _tableView = [(AccountPSDetailTableCell *)self _tableView];
+  [_tableView layoutMargins];
   v19 = v16 + v18 + 6.0;
 
   if (v19 > v13)
@@ -32,8 +32,8 @@
 
   if ([(AccountPSDetailTableCell *)self effectiveUserInterfaceLayoutDirection])
   {
-    v20 = [(AccountPSDetailTableCell *)self contentView];
-    [v20 bounds];
+    contentView = [(AccountPSDetailTableCell *)self contentView];
+    [contentView bounds];
     v22 = v21 - v13;
 
     v13 = v22 - v9;
@@ -44,7 +44,7 @@
     v9 = v9 - (v13 - v5);
   }
 
-  [v3 setFrame:{v13, v7, v9, v11}];
+  [detailTextLabel setFrame:{v13, v7, v9, v11}];
 }
 
 @end

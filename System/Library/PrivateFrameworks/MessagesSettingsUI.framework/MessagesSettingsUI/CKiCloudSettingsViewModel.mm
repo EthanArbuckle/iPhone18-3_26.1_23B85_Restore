@@ -13,13 +13,13 @@
 - (id)_currentKeepMessagesPreference;
 - (id)_lastSyncedDateFromDefaults;
 - (id)_lastSyncedDateString;
-- (id)_stateModelForSyncState:(int64_t)a3;
-- (id)captionTextForCaptionTextType:(int64_t)a3;
-- (id)valueTextForValueTextType:(int64_t)a3;
+- (id)_stateModelForSyncState:(int64_t)state;
+- (id)captionTextForCaptionTextType:(int64_t)type;
+- (id)valueTextForValueTextType:(int64_t)type;
 - (void)_internalInit;
 - (void)_resolveSyncState;
-- (void)_syncedSettingsDidChange:(id)a3;
-- (void)_updateActionForICQInAppMessage:(id)a3;
+- (void)_syncedSettingsDidChange:(id)change;
+- (void)_updateActionForICQInAppMessage:(id)message;
 - (void)showICloudUpsellIfAvailable;
 - (void)stopObservers;
 - (void)syncButtonPressed;
@@ -59,7 +59,7 @@
   syncController = self->_syncController;
   self->_syncController = v6;
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -83,13 +83,13 @@
   if (v9)
   {
     v12 = *v9;
-    v13 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __42__CKiCloudSettingsViewModel__internalInit__block_invoke_2;
     v23[3] = &unk_2798C4AF8;
     objc_copyWeak(&v24, &location);
-    v14 = [v8 addObserverForName:v12 object:0 queue:v13 usingBlock:v23];
+    v14 = [defaultCenter addObserverForName:v12 object:0 queue:mainQueue usingBlock:v23];
     iCloudMessagingObserverToken = self->_iCloudMessagingObserverToken;
     self->_iCloudMessagingObserverToken = v14;
 
@@ -111,7 +111,7 @@
 
     v17 = v16;
     _Block_object_dispose(&v33, 8);
-    v18 = [v16 shared];
+    shared = [v16 shared];
     v33 = 0;
     v34 = &v33;
     v35 = 0x2020000000;
@@ -135,7 +135,7 @@
     if (v19)
     {
       v22 = *v19;
-      [v18 observeUpdatesForBundleID:@"com.apple.MobileSMS" placement:v22];
+      [shared observeUpdatesForBundleID:@"com.apple.MobileSMS" placement:v22];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(&v26);
@@ -206,36 +206,36 @@ void __42__CKiCloudSettingsViewModel__internalInit__block_invoke_2(uint64_t a1, 
 - (void)stopObservers
 {
   [(CKKeepMessagesPreferenceManager *)self->_keepMessagesPreferenceManager removeSyncedSettingObserver:self key:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_iCloudMessagingObserverToken];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_iCloudMessagingObserverToken];
 
   iCloudMessagingObserverToken = self->_iCloudMessagingObserverToken;
   self->_iCloudMessagingObserverToken = 0;
 }
 
-- (void)_syncedSettingsDidChange:(id)a3
+- (void)_syncedSettingsDidChange:(id)change
 {
-  v4 = [(CKiCloudSettingsViewModel *)self delegate];
-  [v4 iCloudSettingsViewModelDidUpdateState:self];
+  delegate = [(CKiCloudSettingsViewModel *)self delegate];
+  [delegate iCloudSettingsViewModelDidUpdateState:self];
 }
 
-- (id)_stateModelForSyncState:(int64_t)a3
+- (id)_stateModelForSyncState:(int64_t)state
 {
   v5 = MEMORY[0x259C9B360](@"com.apple.madrid", @"Server.TotalRecords.messageManateeZone");
-  v6 = [v5 unsignedIntegerValue];
-  v7 = [(CKiCloudSettingsViewModel *)self _lastSyncedDateFromDefaults];
-  v8 = [(CKiCloudSettingsViewModel *)self syncController];
-  v9 = [v8 messagesToUploadCount];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  _lastSyncedDateFromDefaults = [(CKiCloudSettingsViewModel *)self _lastSyncedDateFromDefaults];
+  syncController = [(CKiCloudSettingsViewModel *)self syncController];
+  messagesToUploadCount = [syncController messagesToUploadCount];
 
-  LOBYTE(v8) = [(CKiCloudSettingsViewModel *)self _isBetweenInitialAndBackfillSync];
+  LOBYTE(syncController) = [(CKiCloudSettingsViewModel *)self _isBetweenInitialAndBackfillSync];
   v10 = CKiCloudSyncStateBuilder;
-  v14[0] = a3;
-  v14[1] = v6;
-  v14[2] = v9;
-  v11 = v7;
+  v14[0] = state;
+  v14[1] = unsignedIntegerValue;
+  v14[2] = messagesToUploadCount;
+  v11 = _lastSyncedDateFromDefaults;
   v12 = v11;
   v14[3] = v11;
-  v15 = v8;
+  v15 = syncController;
   if (CKiCloudSyncStateBuilder)
   {
     v10 = [CKiCloudSyncStateBuilder syncModelForDescriptor:v14];
@@ -296,21 +296,21 @@ LABEL_8:
 
 - (BOOL)isSyncing
 {
-  v2 = [(CKiCloudSettingsViewModel *)self syncController];
-  v3 = [v2 isSyncing];
+  syncController = [(CKiCloudSettingsViewModel *)self syncController];
+  isSyncing = [syncController isSyncing];
 
-  return v3;
+  return isSyncing;
 }
 
 - (BOOL)syncSupportsCancellation
 {
-  v3 = [(CKiCloudSettingsViewModel *)self isSyncing];
-  if (v3)
+  isSyncing = [(CKiCloudSettingsViewModel *)self isSyncing];
+  if (isSyncing)
   {
-    LOBYTE(v3) = [(IMCloudKitSyncState *)self->_lastEngineSyncState syncType]== 6;
+    LOBYTE(isSyncing) = [(IMCloudKitSyncState *)self->_lastEngineSyncState syncType]== 6;
   }
 
-  return v3;
+  return isSyncing;
 }
 
 - (BOOL)isSyncButtonEnabled
@@ -325,43 +325,43 @@ LABEL_8:
 
 - (BOOL)micAccountsMatch
 {
-  v2 = [(CKiCloudSettingsViewModel *)self syncController];
-  v3 = [v2 micAccountsMatch];
+  syncController = [(CKiCloudSettingsViewModel *)self syncController];
+  micAccountsMatch = [syncController micAccountsMatch];
 
-  return v3;
+  return micAccountsMatch;
 }
 
 - (void)syncButtonPressed
 {
-  v3 = [(CKiCloudSettingsViewModel *)self syncController];
-  v4 = [v3 isSyncing];
+  syncController = [(CKiCloudSettingsViewModel *)self syncController];
+  isSyncing = [syncController isSyncing];
 
-  v5 = [(CKiCloudSettingsViewModel *)self syncController];
-  v6 = v5;
-  if (v4)
+  syncController2 = [(CKiCloudSettingsViewModel *)self syncController];
+  v6 = syncController2;
+  if (isSyncing)
   {
-    [v5 cancelCurrentSync];
+    [syncController2 cancelCurrentSync];
   }
 
   else
   {
-    [v5 startSync];
+    [syncController2 startSync];
   }
 }
 
 - (void)showICloudUpsellIfAvailable
 {
-  v2 = [(CKiCloudSettingsViewModel *)self upgradeICloudAction];
-  [v2 performAction];
+  upgradeICloudAction = [(CKiCloudSettingsViewModel *)self upgradeICloudAction];
+  [upgradeICloudAction performAction];
 }
 
-- (void)_updateActionForICQInAppMessage:(id)a3
+- (void)_updateActionForICQInAppMessage:(id)message
 {
-  v9 = a3;
-  if (v9 && ([v9 actions], v4 = objc_claimAutoreleasedReturnValue(), v4, v4) && (objc_msgSend(v9, "actions"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6 == 1))
+  messageCopy = message;
+  if (messageCopy && ([messageCopy actions], v4 = objc_claimAutoreleasedReturnValue(), v4, v4) && (objc_msgSend(messageCopy, "actions"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6 == 1))
   {
-    v7 = [v9 actions];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    actions = [messageCopy actions];
+    v8 = [actions objectAtIndexedSubscript:0];
     [(CKiCloudSettingsViewModel *)self setUpgradeICloudAction:v8];
   }
 
@@ -390,11 +390,11 @@ LABEL_8:
 
 - (id)_lastSyncedDateString
 {
-  v2 = [(CKiCloudSyncStateModel *)self->_syncStateModel lastSyncedDateString];
-  v3 = v2;
-  if (v2)
+  lastSyncedDateString = [(CKiCloudSyncStateModel *)self->_syncStateModel lastSyncedDateString];
+  v3 = lastSyncedDateString;
+  if (lastSyncedDateString)
   {
-    v4 = v2;
+    v4 = lastSyncedDateString;
   }
 
   else
@@ -499,20 +499,20 @@ LABEL_8:
 {
   v3 = self->_lastEngineSyncState;
   v4 = self->_lastInAppMessage;
-  v5 = [(CKiCloudSettingsViewModel *)self syncController];
-  v6 = [v5 isMiCEnabled];
+  syncController = [(CKiCloudSettingsViewModel *)self syncController];
+  isMiCEnabled = [syncController isMiCEnabled];
 
-  v7 = [(CKiCloudSettingsViewModel *)self syncController];
-  v8 = [v7 micAccountsMatch];
+  syncController2 = [(CKiCloudSettingsViewModel *)self syncController];
+  micAccountsMatch = [syncController2 micAccountsMatch];
 
   v9 = 6;
-  if (v8)
+  if (micAccountsMatch)
   {
     v9 = 0;
   }
 
-  v10 = v8 | ~v6;
-  if (v6)
+  v10 = micAccountsMatch | ~isMiCEnabled;
+  if (isMiCEnabled)
   {
     v11 = v9;
   }
@@ -536,7 +536,7 @@ LABEL_8:
 
   if (!v11 && v4)
   {
-    v13 = [(ICQInAppMessage *)v4 reason];
+    reason = [(ICQInAppMessage *)v4 reason];
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
@@ -553,7 +553,7 @@ LABEL_8:
     _Block_object_dispose(&v28, 8);
     if (v14)
     {
-      if ([v13 isEqualToString:*v14])
+      if ([reason isEqualToString:*v14])
       {
         v11 = 3;
 LABEL_39:
@@ -577,7 +577,7 @@ LABEL_39:
       _Block_object_dispose(&v28, 8);
       if (v16)
       {
-        if ([v13 isEqualToString:*v16])
+        if ([reason isEqualToString:*v16])
         {
           v11 = 4;
           goto LABEL_39;
@@ -599,7 +599,7 @@ LABEL_39:
         _Block_object_dispose(&v28, 8);
         if (v18)
         {
-          if ([v13 isEqualToString:*v18])
+          if ([reason isEqualToString:*v18])
           {
             v11 = 5;
             goto LABEL_39;
@@ -621,7 +621,7 @@ LABEL_39:
           _Block_object_dispose(&v28, 8);
           if (v20)
           {
-            if ([v13 isEqualToString:*v20])
+            if ([reason isEqualToString:*v20])
             {
               v11 = 7;
               goto LABEL_39;
@@ -643,7 +643,7 @@ LABEL_39:
             _Block_object_dispose(&v28, 8);
             if (v22)
             {
-              if ([v13 isEqualToString:*v22])
+              if ([reason isEqualToString:*v22])
               {
                 v11 = 8;
               }
@@ -688,15 +688,15 @@ LABEL_40:
   syncStateModel = self->_syncStateModel;
   self->_syncStateModel = v24;
 
-  v26 = [(CKiCloudSettingsViewModel *)self delegate];
-  [v26 iCloudSettingsViewModelDidUpdateState:self];
+  delegate = [(CKiCloudSettingsViewModel *)self delegate];
+  [delegate iCloudSettingsViewModelDidUpdateState:self];
 }
 
-- (id)captionTextForCaptionTextType:(int64_t)a3
+- (id)captionTextForCaptionTextType:(int64_t)type
 {
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    v4 = off_2798C4B50[a3];
+    v4 = off_2798C4B50[type];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v3 = [v5 localizedStringForKey:v4 value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
   }
@@ -704,42 +704,42 @@ LABEL_40:
   return v3;
 }
 
-- (id)valueTextForValueTextType:(int64_t)a3
+- (id)valueTextForValueTextType:(int64_t)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v3 = [(CKiCloudSettingsViewModel *)self syncStatus];
+      syncStatus = [(CKiCloudSettingsViewModel *)self syncStatus];
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_11;
       }
 
-      v3 = [(CKiCloudSettingsViewModel *)self _lastSyncedDateString];
+      syncStatus = [(CKiCloudSettingsViewModel *)self _lastSyncedDateString];
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
 
-    v3 = [(CKiCloudSettingsViewModel *)self keepMessagesPreference];
+    syncStatus = [(CKiCloudSettingsViewModel *)self keepMessagesPreference];
   }
 
   else
   {
-    v3 = [(CKiCloudSettingsViewModel *)self messagesInCloudCount];
+    syncStatus = [(CKiCloudSettingsViewModel *)self messagesInCloudCount];
   }
 
-  a2 = v3;
+  a2 = syncStatus;
 LABEL_11:
 
   return a2;
@@ -749,10 +749,10 @@ LABEL_11:
 {
   if ([(CKiCloudSettingsViewModel *)self syncSupportsCancellation])
   {
-    v3 = [(CKiCloudSettingsViewModel *)self isSyncing];
+    isSyncing = [(CKiCloudSettingsViewModel *)self isSyncing];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = v4;
-    if (v3)
+    if (isSyncing)
     {
       v6 = @"CANCEL_SYNCING";
     }

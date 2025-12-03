@@ -1,10 +1,10 @@
 @interface HMUserListViewController
-- (HMUserListViewController)initWithHome:(id)a3 loadHandler:(id)a4;
+- (HMUserListViewController)initWithHome:(id)home loadHandler:(id)handler;
 - (void)_configureAndAddRemoteViewController;
-- (void)_finishSetupWithError:(id)a3;
+- (void)_finishSetupWithError:(id)error;
 - (void)_presentAsTopmostViewController;
 - (void)_requestRemoteViewController;
-- (void)userManagementDidFinishWithError:(id)a3;
+- (void)userManagementDidFinishWithError:(id)error;
 - (void)userManagementDidLoad;
 - (void)viewDidLoad;
 @end
@@ -13,47 +13,47 @@
 
 - (void)_presentAsTopmostViewController
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 keyWindow];
-  v5 = [v4 rootViewController];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
-  v6 = [v5 presentedViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
     do
     {
-      v14 = [v5 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v7 = [v14 presentedViewController];
+      v14PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v8 = v14;
-      v5 = v14;
+      v8 = presentedViewController2;
+      rootViewController = presentedViewController2;
     }
 
-    while (v7);
+    while (v14PresentedViewController);
   }
 
   else
   {
-    v8 = v5;
+    v8 = rootViewController;
   }
 
   v15 = v8;
-  v9 = [v8 traitCollection];
-  if ([v9 horizontalSizeClass] != 2)
+  traitCollection = [v8 traitCollection];
+  if ([traitCollection horizontalSizeClass] != 2)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [v15 traitCollection];
-  if ([v10 userInterfaceIdiom] != 1)
+  traitCollection2 = [v15 traitCollection];
+  if ([traitCollection2 userInterfaceIdiom] != 1)
   {
-    v12 = [v15 traitCollection];
-    v13 = [v12 userInterfaceIdiom];
+    traitCollection3 = [v15 traitCollection];
+    userInterfaceIdiom = [traitCollection3 userInterfaceIdiom];
 
-    if (v13 == 5)
+    if (userInterfaceIdiom == 5)
     {
       goto LABEL_11;
     }
@@ -70,16 +70,16 @@ LABEL_12:
   [v15 presentViewController:self animated:1 completion:0];
 }
 
-- (void)userManagementDidFinishWithError:(id)a3
+- (void)userManagementDidFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__HMUserListViewController_userManagementDidFinishWithError___block_invoke;
   v6[3] = &unk_1E754E5C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -110,29 +110,29 @@ uint64_t __49__HMUserListViewController_userManagementDidLoad__block_invoke(uint
   return [v4 _endDelayingPresentation];
 }
 
-- (void)_finishSetupWithError:(id)a3
+- (void)_finishSetupWithError:(id)error
 {
-  v9 = a3;
-  v4 = [(HMUserListViewController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  errorCopy = error;
+  presentingViewController = [(HMUserListViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
   [(HMUserListViewController *)self _endDelayingPresentation];
-  v5 = [(HMUserListViewController *)self loadHandler];
+  loadHandler = [(HMUserListViewController *)self loadHandler];
 
-  if (v5)
+  if (loadHandler)
   {
-    v6 = [(HMUserListViewController *)self loadHandler];
-    (v6)[2](v6, v9);
+    loadHandler2 = [(HMUserListViewController *)self loadHandler];
+    (loadHandler2)[2](loadHandler2, errorCopy);
 
     [(HMUserListViewController *)self setLoadHandler:0];
   }
 
-  v7 = [(HMUserListViewController *)self completionHandler];
+  completionHandler = [(HMUserListViewController *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(HMUserListViewController *)self completionHandler];
-    (v8)[2](v8, v9);
+    completionHandler2 = [(HMUserListViewController *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
 
     [(HMUserListViewController *)self setCompletionHandler:0];
   }
@@ -141,39 +141,39 @@ uint64_t __49__HMUserListViewController_userManagementDidLoad__block_invoke(uint
 - (void)_configureAndAddRemoteViewController
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(HMUserListViewController *)self remoteViewController];
-  if (v3)
+  remoteViewController = [(HMUserListViewController *)self remoteViewController];
+  if (remoteViewController)
   {
-    v4 = v3;
-    v5 = [(HMUserListViewController *)self remoteViewController];
-    v6 = [v5 parentViewController];
+    v4 = remoteViewController;
+    remoteViewController2 = [(HMUserListViewController *)self remoteViewController];
+    parentViewController = [remoteViewController2 parentViewController];
 
-    if (!v6)
+    if (!parentViewController)
     {
-      v7 = [(HMUserListViewController *)self remoteViewController];
-      [v7 setDelegate:self];
+      remoteViewController3 = [(HMUserListViewController *)self remoteViewController];
+      [remoteViewController3 setDelegate:self];
 
-      v8 = [(HMUserListViewController *)self remoteViewController];
-      [(HMUserListViewController *)self addChildViewController:v8];
+      remoteViewController4 = [(HMUserListViewController *)self remoteViewController];
+      [(HMUserListViewController *)self addChildViewController:remoteViewController4];
 
-      v9 = [(HMUserListViewController *)self remoteViewController];
-      v10 = [v9 view];
+      remoteViewController5 = [(HMUserListViewController *)self remoteViewController];
+      view = [remoteViewController5 view];
 
-      v11 = [(HMUserListViewController *)self view];
-      [v11 addSubview:v10];
+      view2 = [(HMUserListViewController *)self view];
+      [view2 addSubview:view];
 
-      v12 = [(HMUserListViewController *)self view];
-      [v12 frame];
-      [v10 setFrame:?];
+      view3 = [(HMUserListViewController *)self view];
+      [view3 frame];
+      [view setFrame:?];
 
-      v13 = [(HMUserListViewController *)self remoteViewController];
-      [v13 didMoveToParentViewController:self];
+      remoteViewController6 = [(HMUserListViewController *)self remoteViewController];
+      [remoteViewController6 didMoveToParentViewController:self];
 
-      v14 = [(HMUserListViewController *)self remoteViewController];
-      v15 = [v14 serviceViewControllerProxy];
+      remoteViewController7 = [(HMUserListViewController *)self remoteViewController];
+      serviceViewControllerProxy = [remoteViewController7 serviceViewControllerProxy];
 
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -181,18 +181,18 @@ uint64_t __49__HMUserListViewController_userManagementDidLoad__block_invoke(uint
         v23 = 138543618;
         v24 = v19;
         v25 = 2112;
-        v26 = v15;
+        v26 = serviceViewControllerProxy;
         _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_ERROR, "%{public}@serviceViewControllerProxy: %@", &v23, 0x16u);
       }
 
       objc_autoreleasePoolPop(v16);
-      v20 = [(HMUserListViewController *)v17 home];
-      v21 = [v20 uuid];
-      [v15 setHomeUUID:v21];
+      home = [(HMUserListViewController *)selfCopy home];
+      uuid = [home uuid];
+      [serviceViewControllerProxy setHomeUUID:uuid];
 
-      if ([(HMUserListViewController *)v17 shouldPresentWhenLoaded])
+      if ([(HMUserListViewController *)selfCopy shouldPresentWhenLoaded])
       {
-        [(HMUserListViewController *)v17 _presentAsTopmostViewController];
+        [(HMUserListViewController *)selfCopy _presentAsTopmostViewController];
       }
     }
   }
@@ -258,23 +258,23 @@ void __56__HMUserListViewController__requestRemoteViewController__block_invoke_2
   v5.receiver = self;
   v5.super_class = HMUserListViewController;
   [(HMUserListViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(HMUserListViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(HMUserListViewController *)self view];
+  [view setBackgroundColor:clearColor];
 }
 
-- (HMUserListViewController)initWithHome:(id)a3 loadHandler:(id)a4
+- (HMUserListViewController)initWithHome:(id)home loadHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = HMUserListViewController;
   v8 = [(HMUserListViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(HMUserListViewController *)v8 setHome:v6];
-    [(HMUserListViewController *)v9 setLoadHandler:v7];
+    [(HMUserListViewController *)v8 setHome:homeCopy];
+    [(HMUserListViewController *)v9 setLoadHandler:handlerCopy];
     [(HMUserListViewController *)v9 _requestRemoteViewController];
   }
 

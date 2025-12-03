@@ -1,57 +1,57 @@
 @interface NLXSchemaCDMServiceSetupMetric
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMServiceSetupMetric)initWithDictionary:(id)a3;
-- (NLXSchemaCDMServiceSetupMetric)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMServiceSetupMetric)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMServiceSetupMetric)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEndLogicalTimestampInNs:(BOOL)a3;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasFailureReason:(BOOL)a3;
-- (void)setHasStartLogicalTimestampInNs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEndLogicalTimestampInNs:(BOOL)ns;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasFailureReason:(BOOL)reason;
+- (void)setHasStartLogicalTimestampInNs:(BOOL)ns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMServiceSetupMetric
 
-- (NLXSchemaCDMServiceSetupMetric)initWithDictionary:(id)a3
+- (NLXSchemaCDMServiceSetupMetric)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = NLXSchemaCDMServiceSetupMetric;
   v5 = [(NLXSchemaCDMServiceSetupMetric *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"serviceType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"serviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMServiceSetupMetric setServiceType:](v5, "setServiceType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"startLogicalTimestampInNs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"startLogicalTimestampInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMServiceSetupMetric setStartLogicalTimestampInNs:](v5, "setStartLogicalTimestampInNs:", [v7 longLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"endLogicalTimestampInNs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"endLogicalTimestampInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMServiceSetupMetric setEndLogicalTimestampInNs:](v5, "setEndLogicalTimestampInNs:", [v8 longLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"failureReason"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"failureReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMServiceSetupMetric setFailureReason:](v5, "setFailureReason:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMServiceSetupMetric)initWithJSON:(id)a3
+- (NLXSchemaCDMServiceSetupMetric)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMServiceSetupMetric *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMServiceSetupMetric *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMServiceSetupMetric *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,12 +100,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[NLXSchemaCDMServiceSetupMetric endLogicalTimestampInNs](self, "endLogicalTimestampInNs")}];
-    [v3 setObject:v7 forKeyedSubscript:@"endLogicalTimestampInNs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"endLogicalTimestampInNs"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -126,7 +126,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaCDMServiceSetupMetric errorCode](self, "errorCode")}];
-  [v3 setObject:v8 forKeyedSubscript:@"errorCode"];
+  [dictionary setObject:v8 forKeyedSubscript:@"errorCode"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -141,14 +141,14 @@ LABEL_4:
   }
 
 LABEL_12:
-  v9 = [(NLXSchemaCDMServiceSetupMetric *)self failureReason];
+  failureReason = [(NLXSchemaCDMServiceSetupMetric *)self failureReason];
   v10 = @"CDMSERVICESETUPATTEMPTFAILUREREASON_UNKNOWN";
-  if (v9 == 1)
+  if (failureReason == 1)
   {
     v10 = @"CDMSERVICESETUPATTEMPTFAILUREREASON_TIMED_OUT";
   }
 
-  if (v9 == 2)
+  if (failureReason == 2)
   {
     v11 = @"CDMSERVICESETUPATTEMPTFAILUREREASON_ERROR_DURING_SETUP";
   }
@@ -158,7 +158,7 @@ LABEL_12:
     v11 = v10;
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"failureReason"];
+  [dictionary setObject:v11 forKeyedSubscript:@"failureReason"];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -183,7 +183,7 @@ LABEL_18:
     v13 = off_1E78DBC08[v12];
   }
 
-  [v3 setObject:v13 forKeyedSubscript:@"serviceType"];
+  [dictionary setObject:v13 forKeyedSubscript:@"serviceType"];
   if ((*&self->_has & 2) == 0)
   {
     goto LABEL_7;
@@ -191,12 +191,12 @@ LABEL_18:
 
 LABEL_6:
   v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[NLXSchemaCDMServiceSetupMetric startLogicalTimestampInNs](self, "startLogicalTimestampInNs")}];
-  [v3 setObject:v5 forKeyedSubscript:@"startLogicalTimestampInNs"];
+  [dictionary setObject:v5 forKeyedSubscript:@"startLogicalTimestampInNs"];
 
 LABEL_7:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -267,16 +267,16 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -285,13 +285,13 @@ LABEL_6:
   if (*&has)
   {
     serviceType = self->_serviceType;
-    if (serviceType != [v4 serviceType])
+    if (serviceType != [equalCopy serviceType])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -303,13 +303,13 @@ LABEL_6:
   if (v8)
   {
     startLogicalTimestampInNs = self->_startLogicalTimestampInNs;
-    if (startLogicalTimestampInNs != [v4 startLogicalTimestampInNs])
+    if (startLogicalTimestampInNs != [equalCopy startLogicalTimestampInNs])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -321,13 +321,13 @@ LABEL_6:
   if (v10)
   {
     endLogicalTimestampInNs = self->_endLogicalTimestampInNs;
-    if (endLogicalTimestampInNs != [v4 endLogicalTimestampInNs])
+    if (endLogicalTimestampInNs != [equalCopy endLogicalTimestampInNs])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -339,10 +339,10 @@ LABEL_6:
   if (v12)
   {
     failureReason = self->_failureReason;
-    if (failureReason == [v4 failureReason])
+    if (failureReason == [equalCopy failureReason])
     {
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
       goto LABEL_18;
     }
 
@@ -361,7 +361,7 @@ LABEL_18:
   if (v14)
   {
     errorCode = self->_errorCode;
-    if (errorCode != [v4 errorCode])
+    if (errorCode != [equalCopy errorCode])
     {
       goto LABEL_22;
     }
@@ -373,9 +373,9 @@ LABEL_23:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -436,9 +436,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 16;
   }
@@ -451,9 +451,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasFailureReason:(BOOL)a3
+- (void)setHasFailureReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -466,9 +466,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEndLogicalTimestampInNs:(BOOL)a3
+- (void)setHasEndLogicalTimestampInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 4;
   }
@@ -481,9 +481,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasStartLogicalTimestampInNs:(BOOL)a3
+- (void)setHasStartLogicalTimestampInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }

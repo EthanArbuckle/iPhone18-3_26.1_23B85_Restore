@@ -1,26 +1,26 @@
 @interface NUVisionInstanceSegmentationRequest
 + (int64_t)maximumTargetPoints;
-- (NUVisionInstanceSegmentationRequest)initWithComposition:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NUVisionInstanceSegmentationRequest)initWithComposition:(id)composition;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 @end
 
 @implementation NUVisionInstanceSegmentationRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NUVisionInstanceSegmentationRequest;
-  v4 = [(NURenderRequest *)&v10 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v10 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(NUVisionInstanceSegmentationRequest *)self targetSamplePoints];
+    targetSamplePoints = [(NUVisionInstanceSegmentationRequest *)self targetSamplePoints];
     v6 = v4[21];
-    v4[21] = v5;
+    v4[21] = targetSamplePoints;
 
-    v7 = [(NUVisionInstanceSegmentationRequest *)self scalePolicy];
+    scalePolicy = [(NUVisionInstanceSegmentationRequest *)self scalePolicy];
     v8 = v4[20];
-    v4[20] = v7;
+    v4[20] = scalePolicy;
   }
 
   return v4;
@@ -33,11 +33,11 @@
   return [(NURenderJob *)v3 initWithRequest:self];
 }
 
-- (NUVisionInstanceSegmentationRequest)initWithComposition:(id)a3
+- (NUVisionInstanceSegmentationRequest)initWithComposition:(id)composition
 {
   v8.receiver = self;
   v8.super_class = NUVisionInstanceSegmentationRequest;
-  v3 = [(NURenderRequest *)&v8 initWithComposition:a3];
+  v3 = [(NURenderRequest *)&v8 initWithComposition:composition];
   v4 = +[NUGlobalSettings inpaintSegmentationMaxInputSize];
   if (v4 < 1)
   {
@@ -63,9 +63,9 @@
   if (!_maximumTargetPoints)
   {
     v3 = objc_alloc_init(MEMORY[0x1E6984558]);
-    v4 = [v3 maximumTargetPoints];
+    maximumTargetPoints = [v3 maximumTargetPoints];
 
-    return v4;
+    return maximumTargetPoints;
   }
 
   return result;

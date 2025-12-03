@@ -1,22 +1,22 @@
 @interface TSCH3DChartGetProjectedBoundsPipeline
 - (BOOL)run;
-- (Class)labelsMeshRendererClassForLabelsRenderer:(id)a3;
+- (Class)labelsMeshRendererClassForLabelsRenderer:(id)renderer;
 - (box<glm::detail::tvec2<float>>)bodyLayoutInPage;
 - (box<glm::detail::tvec2<float>>)containingViewport;
 - (box<glm::detail::tvec2<float>>)layoutInPage;
-- (box<glm::detail::tvec3<float>>)boundsFromObjectBoundsOfType:(SEL)a3;
-- (box<glm::detail::tvec3<float>>)getBoundsFromObjectBoundsForScene:(SEL)a3 boundsType:(id)a4;
-- (box<glm::detail::tvec3<float>>)p_extendLabelsBoundsToBounds:(SEL)a3;
+- (box<glm::detail::tvec3<float>>)boundsFromObjectBoundsOfType:(SEL)type;
+- (box<glm::detail::tvec3<float>>)getBoundsFromObjectBoundsForScene:(SEL)scene boundsType:(id)type;
+- (box<glm::detail::tvec3<float>>)p_extendLabelsBoundsToBounds:(SEL)bounds;
 - (id).cxx_construct;
 - (id)chartSceneObjectClasses;
 - (id)drawingBoundsSceneObjectClasses;
 - (id)labelsSceneObjectClasses;
-- (id)updatedConstantDepthSceneFromScene:(id)a3;
+- (id)updatedConstantDepthSceneFromScene:(id)scene;
 - (void)calculateBounds;
 - (void)calculateBoundsIfNecessary;
 - (void)calculateLabelsBounds;
 - (void)calculateLabelsBoundsIfNecssary;
-- (void)calculateLayoutBoundsSkippingLayoutSceneBounds:(BOOL)a3;
+- (void)calculateLayoutBoundsSkippingLayoutSceneBounds:(BOOL)bounds;
 - (void)calculateLayoutLabelsBounds;
 - (void)dealloc;
 - (void)updateBounds;
@@ -54,37 +54,37 @@
   [(TSCH3DChartGetProjectedBoundsPipeline *)&v36 dealloc];
 }
 
-- (box<glm::detail::tvec3<float>>)boundsFromObjectBoundsOfType:(SEL)a3
+- (box<glm::detail::tvec3<float>>)boundsFromObjectBoundsOfType:(SEL)type
 {
-  v8 = objc_msgSend_bounds(self, a3, v4, v5, v6, *&a4);
+  v8 = objc_msgSend_bounds(self, type, v4, v5, v6, *&a4);
   *retstr = v8[1];
 
   return sub_276166138(retstr, &v8[2]);
 }
 
-- (id)updatedConstantDepthSceneFromScene:(id)a3
+- (id)updatedConstantDepthSceneFromScene:(id)scene
 {
-  v6 = objc_msgSend_clone(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_clone(scene, a2, v3, v4, v5);
   v11 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v7, v8, v9, v10, v6);
   objc_msgSend_updateInfoChartScaleUsingConstantDepth(v11, v12, v13, v14, v15);
 
   return v6;
 }
 
-- (box<glm::detail::tvec3<float>>)getBoundsFromObjectBoundsForScene:(SEL)a3 boundsType:(id)a4
+- (box<glm::detail::tvec3<float>>)getBoundsFromObjectBoundsForScene:(SEL)scene boundsType:(id)type
 {
   v5 = *&a5;
-  v7 = a4;
+  typeCopy = type;
   if (v5 == 1)
   {
-    v17 = v7;
-    v11 = objc_msgSend_updatedConstantDepthSceneFromScene_(self, v7, v8, v9, v10, v7);
+    v17 = typeCopy;
+    v11 = objc_msgSend_updatedConstantDepthSceneFromScene_(self, typeCopy, v8, v9, v10, typeCopy);
 
-    v7 = v11;
+    typeCopy = v11;
   }
 
-  v18 = v7;
-  objc_msgSend_getBounds_(self, v7, v8, v9, v10, v7);
+  v18 = typeCopy;
+  objc_msgSend_getBounds_(self, typeCopy, v8, v9, v10, typeCopy);
   objc_msgSend_boundsFromObjectBoundsOfType_(self, v12, v13, v14, v15, v5);
 
   return result;
@@ -120,7 +120,7 @@
   return v6;
 }
 
-- (void)calculateLayoutBoundsSkippingLayoutSceneBounds:(BOOL)a3
+- (void)calculateLayoutBoundsSkippingLayoutSceneBounds:(BOOL)bounds
 {
   v8 = objc_msgSend_clone(self->super.super._scene, a2, v3, v4, v5);
   v108 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v9, v10, v11, v12, v8);
@@ -148,7 +148,7 @@
   *&self->_layoutBounds._min.var0.var0 = xmmword_2764D5F00;
   v72 = 2.84809454e-306;
   *&self->_layoutBounds._max.var1.var0 = 0x80000000800000;
-  if (!a3)
+  if (!bounds)
   {
     objc_msgSend_getBoundsFromObjectBoundsForScene_boundsType_(self, v69, 2.84809454e-306, v70, v71, v26, 0);
     *&self->_layoutBounds._min.var0.var0 = *&__p._min.var0.var0;
@@ -514,9 +514,9 @@
   }
 }
 
-- (box<glm::detail::tvec3<float>>)p_extendLabelsBoundsToBounds:(SEL)a3
+- (box<glm::detail::tvec3<float>>)p_extendLabelsBoundsToBounds:(SEL)bounds
 {
-  result = objc_msgSend_p_excludesLabels(self, a3, v4, v5, v6);
+  result = objc_msgSend_p_excludesLabels(self, bounds, v4, v5, v6);
   if ((result & 1) == 0)
   {
     v11 = *a4;
@@ -700,7 +700,7 @@
   return self;
 }
 
-- (Class)labelsMeshRendererClassForLabelsRenderer:(id)a3
+- (Class)labelsMeshRendererClassForLabelsRenderer:(id)renderer
 {
   v3 = objc_opt_class();
 

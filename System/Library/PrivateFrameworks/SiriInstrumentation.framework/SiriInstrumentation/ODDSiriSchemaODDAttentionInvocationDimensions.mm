@@ -1,30 +1,30 @@
 @interface ODDSiriSchemaODDAttentionInvocationDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAttentionInvocationDimensions)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAttentionInvocationDimensions)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDAttentionInvocationDimensions)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAttentionInvocationDimensions)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAgeOfProfileInMonths:(BOOL)a3;
-- (void)setHasEnrollmentPitchEstimation:(BOOL)a3;
-- (void)setHasInvocationSource:(BOOL)a3;
-- (void)setHasTriggerPhrase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAgeOfProfileInMonths:(BOOL)months;
+- (void)setHasEnrollmentPitchEstimation:(BOOL)estimation;
+- (void)setHasInvocationSource:(BOOL)source;
+- (void)setHasTriggerPhrase:(BOOL)phrase;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAttentionInvocationDimensions
 
-- (ODDSiriSchemaODDAttentionInvocationDimensions)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAttentionInvocationDimensions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = ODDSiriSchemaODDAttentionInvocationDimensions;
   v5 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"systemBuild"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"systemBuild"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,14 +32,14 @@
       [(ODDSiriSchemaODDAttentionInvocationDimensions *)v5 setSystemBuild:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"dataSharingOptInStatus"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"dataSharingOptInStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationDimensions setDataSharingOptInStatus:](v5, "setDataSharingOptInStatus:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:{@"siriInputLocale", v8}];
+    v9 = [dictionaryCopy objectForKeyedSubscript:{@"siriInputLocale", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(ODDSiriSchemaODDAttentionInvocationDimensions *)v5 setSiriInputLocale:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"voiceTriggerAssetVersion"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"voiceTriggerAssetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,7 +55,7 @@
       [(ODDSiriSchemaODDAttentionInvocationDimensions *)v5 setVoiceTriggerAssetVersion:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"mitigationAssetVersion"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"mitigationAssetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,28 +63,28 @@
       [(ODDSiriSchemaODDAttentionInvocationDimensions *)v5 setMitigationAssetVersion:v14];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"invocationSource"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"invocationSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationDimensions setInvocationSource:](v5, "setInvocationSource:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"triggerPhrase"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"triggerPhrase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationDimensions setTriggerPhrase:](v5, "setTriggerPhrase:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"ageOfProfileInMonths"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"ageOfProfileInMonths"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationDimensions setAgeOfProfileInMonths:](v5, "setAgeOfProfileInMonths:", [v17 unsignedIntValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"enrollmentPitchEstimation"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentPitchEstimation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAttentionInvocationDimensions)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAttentionInvocationDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,12 +134,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationDimensions ageOfProfileInMonths](self, "ageOfProfileInMonths")}];
-    [v3 setObject:v5 forKeyedSubscript:@"ageOfProfileInMonths"];
+    [dictionary setObject:v5 forKeyedSubscript:@"ageOfProfileInMonths"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -170,7 +170,7 @@ LABEL_3:
     v7 = off_1E78DCE70[v6];
   }
 
-  [v3 setObject:v7 forKeyedSubscript:@"dataSharingOptInStatus"];
+  [dictionary setObject:v7 forKeyedSubscript:@"dataSharingOptInStatus"];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -187,7 +187,7 @@ LABEL_11:
   v8 = MEMORY[0x1E696AD98];
   [(ODDSiriSchemaODDAttentionInvocationDimensions *)self enrollmentPitchEstimation];
   v9 = [v8 numberWithFloat:?];
-  [v3 setObject:v9 forKeyedSubscript:@"enrollmentPitchEstimation"];
+  [dictionary setObject:v9 forKeyedSubscript:@"enrollmentPitchEstimation"];
 
   if ((*&self->_has & 2) == 0)
   {
@@ -206,48 +206,48 @@ LABEL_12:
     v11 = off_1E78DCE88[v10];
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"invocationSource"];
+  [dictionary setObject:v11 forKeyedSubscript:@"invocationSource"];
 LABEL_16:
   if (self->_mitigationAssetVersion)
   {
-    v12 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self mitigationAssetVersion];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"mitigationAssetVersion"];
+    mitigationAssetVersion = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self mitigationAssetVersion];
+    v13 = [mitigationAssetVersion copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"mitigationAssetVersion"];
   }
 
   if (self->_siriInputLocale)
   {
-    v14 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    siriInputLocale = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
+    dictionaryRepresentation = [siriInputLocale dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"siriInputLocale"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"siriInputLocale"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"siriInputLocale"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"siriInputLocale"];
     }
   }
 
   if (self->_systemBuild)
   {
-    v17 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self systemBuild];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"systemBuild"];
+    systemBuild = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self systemBuild];
+    v18 = [systemBuild copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"systemBuild"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v19 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self triggerPhrase];
+    triggerPhrase = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self triggerPhrase];
     v20 = @"TRIGGERPHRASE_UNKNOWN";
-    if (v19 == 1)
+    if (triggerPhrase == 1)
     {
       v20 = @"TRIGGERPHRASE_HEY_SIRI";
     }
 
-    if (v19 == 2)
+    if (triggerPhrase == 2)
     {
       v21 = @"TRIGGERPHRASE_SIRI";
     }
@@ -257,19 +257,19 @@ LABEL_16:
       v21 = v20;
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"triggerPhrase"];
+    [dictionary setObject:v21 forKeyedSubscript:@"triggerPhrase"];
   }
 
   if (self->_voiceTriggerAssetVersion)
   {
-    v22 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self voiceTriggerAssetVersion];
-    v23 = [v22 copy];
-    [v3 setObject:v23 forKeyedSubscript:@"voiceTriggerAssetVersion"];
+    voiceTriggerAssetVersion = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self voiceTriggerAssetVersion];
+    v23 = [voiceTriggerAssetVersion copy];
+    [dictionary setObject:v23 forKeyedSubscript:@"voiceTriggerAssetVersion"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -369,28 +369,28 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v10 ^ v11 ^ v12 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self systemBuild];
-  v6 = [v4 systemBuild];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self systemBuild];
+  systemBuild2 = [equalCopy systemBuild];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_24;
   }
 
-  v7 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self systemBuild];
-  if (v7)
+  systemBuild3 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self systemBuild];
+  if (systemBuild3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self systemBuild];
-    v10 = [v4 systemBuild];
-    v11 = [v9 isEqual:v10];
+    v8 = systemBuild3;
+    systemBuild4 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self systemBuild];
+    systemBuild5 = [equalCopy systemBuild];
+    v11 = [systemBuild4 isEqual:systemBuild5];
 
     if (!v11)
     {
@@ -402,7 +402,7 @@ LABEL_8:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[64] & 1))
+  if ((*&self->_has & 1) != (equalCopy[64] & 1))
   {
     goto LABEL_25;
   }
@@ -410,26 +410,26 @@ LABEL_8:
   if (*&self->_has)
   {
     dataSharingOptInStatus = self->_dataSharingOptInStatus;
-    if (dataSharingOptInStatus != [v4 dataSharingOptInStatus])
+    if (dataSharingOptInStatus != [equalCopy dataSharingOptInStatus])
     {
       goto LABEL_25;
     }
   }
 
-  v5 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
-  v6 = [v4 siriInputLocale];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
+  systemBuild2 = [equalCopy siriInputLocale];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_24;
   }
 
-  v13 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
-  if (v13)
+  siriInputLocale = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
+  if (siriInputLocale)
   {
-    v14 = v13;
-    v15 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
-    v16 = [v4 siriInputLocale];
-    v17 = [v15 isEqual:v16];
+    v14 = siriInputLocale;
+    siriInputLocale2 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
+    siriInputLocale3 = [equalCopy siriInputLocale];
+    v17 = [siriInputLocale2 isEqual:siriInputLocale3];
 
     if (!v17)
     {
@@ -441,20 +441,20 @@ LABEL_8:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self voiceTriggerAssetVersion];
-  v6 = [v4 voiceTriggerAssetVersion];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self voiceTriggerAssetVersion];
+  systemBuild2 = [equalCopy voiceTriggerAssetVersion];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
     goto LABEL_24;
   }
 
-  v18 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self voiceTriggerAssetVersion];
-  if (v18)
+  voiceTriggerAssetVersion = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self voiceTriggerAssetVersion];
+  if (voiceTriggerAssetVersion)
   {
-    v19 = v18;
-    v20 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self voiceTriggerAssetVersion];
-    v21 = [v4 voiceTriggerAssetVersion];
-    v22 = [v20 isEqual:v21];
+    v19 = voiceTriggerAssetVersion;
+    voiceTriggerAssetVersion2 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self voiceTriggerAssetVersion];
+    voiceTriggerAssetVersion3 = [equalCopy voiceTriggerAssetVersion];
+    v22 = [voiceTriggerAssetVersion2 isEqual:voiceTriggerAssetVersion3];
 
     if (!v22)
     {
@@ -466,22 +466,22 @@ LABEL_8:
   {
   }
 
-  v5 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self mitigationAssetVersion];
-  v6 = [v4 mitigationAssetVersion];
-  if ((v5 != 0) == (v6 == 0))
+  systemBuild = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self mitigationAssetVersion];
+  systemBuild2 = [equalCopy mitigationAssetVersion];
+  if ((systemBuild != 0) == (systemBuild2 == 0))
   {
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  v23 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self mitigationAssetVersion];
-  if (v23)
+  mitigationAssetVersion = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self mitigationAssetVersion];
+  if (mitigationAssetVersion)
   {
-    v24 = v23;
-    v25 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self mitigationAssetVersion];
-    v26 = [v4 mitigationAssetVersion];
-    v27 = [v25 isEqual:v26];
+    v24 = mitigationAssetVersion;
+    mitigationAssetVersion2 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self mitigationAssetVersion];
+    mitigationAssetVersion3 = [equalCopy mitigationAssetVersion];
+    v27 = [mitigationAssetVersion2 isEqual:mitigationAssetVersion3];
 
     if (!v27)
     {
@@ -495,19 +495,19 @@ LABEL_24:
 
   has = self->_has;
   v31 = (*&has >> 1) & 1;
-  v32 = v4[64];
+  v32 = equalCopy[64];
   if (v31 == ((v32 >> 1) & 1))
   {
     if (v31)
     {
       invocationSource = self->_invocationSource;
-      if (invocationSource != [v4 invocationSource])
+      if (invocationSource != [equalCopy invocationSource])
       {
         goto LABEL_25;
       }
 
       has = self->_has;
-      v32 = v4[64];
+      v32 = equalCopy[64];
     }
 
     v34 = (*&has >> 2) & 1;
@@ -516,13 +516,13 @@ LABEL_24:
       if (v34)
       {
         triggerPhrase = self->_triggerPhrase;
-        if (triggerPhrase != [v4 triggerPhrase])
+        if (triggerPhrase != [equalCopy triggerPhrase])
         {
           goto LABEL_25;
         }
 
         has = self->_has;
-        v32 = v4[64];
+        v32 = equalCopy[64];
       }
 
       v36 = (*&has >> 3) & 1;
@@ -531,19 +531,19 @@ LABEL_24:
         if (v36)
         {
           ageOfProfileInMonths = self->_ageOfProfileInMonths;
-          if (ageOfProfileInMonths != [v4 ageOfProfileInMonths])
+          if (ageOfProfileInMonths != [equalCopy ageOfProfileInMonths])
           {
             goto LABEL_25;
           }
 
           has = self->_has;
-          v32 = v4[64];
+          v32 = equalCopy[64];
         }
 
         v38 = (*&has >> 4) & 1;
         if (v38 == ((v32 >> 4) & 1))
         {
-          if (!v38 || (enrollmentPitchEstimation = self->_enrollmentPitchEstimation, [v4 enrollmentPitchEstimation], enrollmentPitchEstimation == v40))
+          if (!v38 || (enrollmentPitchEstimation = self->_enrollmentPitchEstimation, [equalCopy enrollmentPitchEstimation], enrollmentPitchEstimation == v40))
           {
             v28 = 1;
             goto LABEL_26;
@@ -560,12 +560,12 @@ LABEL_26:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self systemBuild];
+  toCopy = to;
+  systemBuild = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self systemBuild];
 
-  if (v4)
+  if (systemBuild)
   {
     PBDataWriterWriteStringField();
   }
@@ -575,34 +575,34 @@ LABEL_26:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
+  siriInputLocale = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
 
-  if (v5)
+  if (siriInputLocale)
   {
-    v6 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
+    siriInputLocale2 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self voiceTriggerAssetVersion];
+  voiceTriggerAssetVersion = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self voiceTriggerAssetVersion];
 
-  if (v7)
+  if (voiceTriggerAssetVersion)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self mitigationAssetVersion];
+  mitigationAssetVersion = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self mitigationAssetVersion];
 
-  if (v8)
+  if (mitigationAssetVersion)
   {
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v10 = v11;
+  v10 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v10 = v11;
+    v10 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -622,7 +622,7 @@ LABEL_13:
   }
 
   PBDataWriterWriteInt32Field();
-  v10 = v11;
+  v10 = toCopy;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -637,20 +637,20 @@ LABEL_14:
 
 LABEL_21:
   PBDataWriterWriteUint32Field();
-  v10 = v11;
+  v10 = toCopy;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_15:
     PBDataWriterWriteFloatField();
-    v10 = v11;
+    v10 = toCopy;
   }
 
 LABEL_16:
 }
 
-- (void)setHasEnrollmentPitchEstimation:(BOOL)a3
+- (void)setHasEnrollmentPitchEstimation:(BOOL)estimation
 {
-  if (a3)
+  if (estimation)
   {
     v3 = 16;
   }
@@ -663,9 +663,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAgeOfProfileInMonths:(BOOL)a3
+- (void)setHasAgeOfProfileInMonths:(BOOL)months
 {
-  if (a3)
+  if (months)
   {
     v3 = 8;
   }
@@ -678,9 +678,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTriggerPhrase:(BOOL)a3
+- (void)setHasTriggerPhrase:(BOOL)phrase
 {
-  if (a3)
+  if (phrase)
   {
     v3 = 4;
   }
@@ -693,9 +693,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasInvocationSource:(BOOL)a3
+- (void)setHasInvocationSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }
@@ -708,17 +708,17 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDAttentionInvocationDimensions;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDAttentionInvocationDimensions *)self siriInputLocale:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDAttentionInvocationDimensions *)self deleteSiriInputLocale];
   }

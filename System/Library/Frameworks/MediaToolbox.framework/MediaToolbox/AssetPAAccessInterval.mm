@@ -1,11 +1,11 @@
 @interface AssetPAAccessInterval
-- (AssetPAAccessInterval)initWithClientPid:(int)a3 auditToken:(id *)a4;
+- (AssetPAAccessInterval)initWithClientPid:(int)pid auditToken:(id *)token;
 - (void)dealloc;
 @end
 
 @implementation AssetPAAccessInterval
 
-- (AssetPAAccessInterval)initWithClientPid:(int)a3 auditToken:(id *)a4
+- (AssetPAAccessInterval)initWithClientPid:(int)pid auditToken:(id *)token
 {
   v15.receiver = self;
   v15.super_class = AssetPAAccessInterval;
@@ -35,8 +35,8 @@
     v7 = objc_alloc(getPATCCAccessClass());
     v8 = MEMORY[0x1E69D5580];
     v9 = *MEMORY[0x1E69D5580];
-    v10 = *&a4->var0[4];
-    v21 = *a4->var0;
+    v10 = *&token->var0[4];
+    v21 = *token->var0;
     v22 = v10;
     v11 = [v7 initWithAuditToken:&v21 forService:v9];
     v5->_access = v11;

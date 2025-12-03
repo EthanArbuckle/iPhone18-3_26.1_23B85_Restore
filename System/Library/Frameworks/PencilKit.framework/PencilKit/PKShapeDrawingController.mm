@@ -1,35 +1,35 @@
 @interface PKShapeDrawingController
-+ (CGMutablePathRef)_createNormalizedPathFromPath:(uint64_t)a1;
++ (CGMutablePathRef)_createNormalizedPathFromPath:(uint64_t)path;
 + (uint64_t)hasSnapToShapeEntitlement;
-- (CGRect)_addCurrentStrokePoint:(CGFloat)a3;
-- (double)_arrowRadiusForStroke:(void *)a1 inputScale:(double)a2;
-- (double)aspectRatioAdjustedSizeFromResult:(void *)a1;
+- (CGRect)_addCurrentStrokePoint:(CGFloat)point;
+- (double)_arrowRadiusForStroke:(void *)stroke inputScale:(double)scale;
+- (double)aspectRatioAdjustedSizeFromResult:(void *)result;
 - (id).cxx_construct;
-- (id)_arrowStrokesWithInputScale:(void *)a3 firstPt:(double)a4 secondPt:(double)a5 radius:(double)a6 averageInputPoint:(double)a7 sourceStroke:(double)a8;
-- (id)_generateChatBubble:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:;
-- (id)_generateCloud:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:;
-- (id)_generateHeart:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:;
-- (id)_generateLine:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(uint64_t *)a5 averageInputPoint:(double)a6 shapeTypeOut:;
-- (id)_generateManhattanLine:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:;
-- (id)_generateOutlineArrow:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:;
-- (id)_generateOval:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:;
-- (id)_generatePentagon:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:;
-- (id)_generateRectangle:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:;
-- (id)_generateStar:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:;
-- (id)_generateTriangle:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:;
-- (id)_strokeFromPoints:(uint64_t)a3 inputScale:(void *)a4 averageInputPoint:(double)a5 sourceStroke:;
-- (id)detectedShapeWithInputScale:(void *)a3 averageInputPoint:(void *)a4 allowedShapeTypes:(double)a5 createCurrentStrokeBlock:;
-- (id)shapeFromStroke:(__int128 *)a3 inputScale:(void *)a4 averageInputPoint:(double)a5 allowedShapeTypes:;
-- (uint64_t)_shapeTypeFromResultName:(uint64_t)a1;
+- (id)_arrowStrokesWithInputScale:(void *)scale firstPt:(double)pt secondPt:(double)secondPt radius:(double)radius averageInputPoint:(double)point sourceStroke:(double)stroke;
+- (id)_generateChatBubble:(void *)bubble sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:;
+- (id)_generateCloud:(void *)cloud sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:;
+- (id)_generateHeart:(void *)heart sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:;
+- (id)_generateLine:(void *)line sourceStroke:(uint64_t)stroke inputScale:(uint64_t *)scale averageInputPoint:(double)point shapeTypeOut:;
+- (id)_generateManhattanLine:(void *)line sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:;
+- (id)_generateOutlineArrow:(void *)arrow sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:;
+- (id)_generateOval:(void *)oval sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:;
+- (id)_generatePentagon:(void *)pentagon sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:;
+- (id)_generateRectangle:(void *)rectangle sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:;
+- (id)_generateStar:(void *)star sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:;
+- (id)_generateTriangle:(void *)triangle sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:;
+- (id)_strokeFromPoints:(uint64_t)points inputScale:(void *)scale averageInputPoint:(double)point sourceStroke:;
+- (id)detectedShapeWithInputScale:(void *)scale averageInputPoint:(void *)point allowedShapeTypes:(double)types createCurrentStrokeBlock:;
+- (id)shapeFromStroke:(__int128 *)stroke inputScale:(void *)scale averageInputPoint:(double)point allowedShapeTypes:;
+- (uint64_t)_shapeTypeFromResultName:(uint64_t)name;
 - (uint64_t)hasMovementStopped;
 - (uint64_t)isScratchOutActive;
 - (void)_addAngles:(void *)result;
 - (void)_checkDetectedStroke;
-- (void)addStrokePoint:(CGFloat)a3 inputPoint:(CGFloat)a4;
-- (void)beginStrokeAtPoint:(CGFloat)a3;
-- (void)initWithDelegate:(void *)a1;
+- (void)addStrokePoint:(CGFloat)point inputPoint:(CGFloat)inputPoint;
+- (void)beginStrokeAtPoint:(CGFloat)point;
+- (void)initWithDelegate:(void *)delegate;
 - (void)resetStroke;
-- (void)setDetectedShape:(uint64_t)a1;
+- (void)setDetectedShape:(uint64_t)shape;
 @end
 
 @implementation PKShapeDrawingController
@@ -45,31 +45,31 @@
   return self;
 }
 
-- (void)initWithDelegate:(void *)a1
+- (void)initWithDelegate:(void *)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
-    v26.receiver = a1;
+    v26.receiver = delegate;
     v26.super_class = PKShapeDrawingController;
     v4 = objc_msgSendSuper2(&v26, sel_init);
-    a1 = v4;
+    delegate = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 25, v3);
-      if (0xAAAAAAAAAAAAAAABLL * ((a1[11] - a1[9]) >> 3) <= 9)
+      if (0xAAAAAAAAAAAAAAABLL * ((delegate[11] - delegate[9]) >> 3) <= 9)
       {
         operator new();
       }
 
-      a1[20] = 0x3FC999999999999ALL;
+      delegate[20] = 0x3FC999999999999ALL;
       v5 = objc_alloc_init(PKAveragePointGenerator);
-      v6 = a1[15];
-      a1[15] = v5;
+      v6 = delegate[15];
+      delegate[15] = v5;
 
       v7 = objc_opt_class();
-      v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v9 = [v8 objectForKey:@"internalSettings.shapeRecognition.minimumDelay"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v9 = [standardUserDefaults objectForKey:@"internalSettings.shapeRecognition.minimumDelay"];
       v10 = PKDynamicCast(v7, v9);
 
       if (v10)
@@ -78,14 +78,14 @@
         if (v11 > 0.0)
         {
           [v10 doubleValue];
-          a1[20] = v12;
+          delegate[20] = v12;
         }
       }
 
-      a1[21] = 0x3FE6666666666666;
+      delegate[21] = 0x3FE6666666666666;
       v13 = objc_opt_class();
-      v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v15 = [v14 objectForKey:@"internalSettings.shapeRecognition.maximumDelay"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v15 = [standardUserDefaults2 objectForKey:@"internalSettings.shapeRecognition.maximumDelay"];
       v16 = PKDynamicCast(v13, v15);
 
       if (v16)
@@ -94,14 +94,14 @@
         if (v17 > 0.0)
         {
           [v16 doubleValue];
-          a1[21] = v18;
+          delegate[21] = v18;
         }
       }
 
-      a1[22] = 0x3FD3333333333333;
+      delegate[22] = 0x3FD3333333333333;
       v19 = objc_opt_class();
-      v20 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v21 = [v20 objectForKey:@"internalSettings.shapeRecognition.maximumFastDelay"];
+      standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v21 = [standardUserDefaults3 objectForKey:@"internalSettings.shapeRecognition.maximumFastDelay"];
       v22 = PKDynamicCast(v19, v21);
 
       if (v22)
@@ -110,24 +110,24 @@
         if (v23 > 0.0)
         {
           [v22 doubleValue];
-          a1[22] = v24;
+          delegate[22] = v24;
         }
       }
     }
   }
 
-  return a1;
+  return delegate;
 }
 
 - (uint64_t)isScratchOutActive
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 200));
+  WeakRetained = objc_loadWeakRetained((self + 200));
   v2 = objc_opt_respondsToSelector();
 
   return v2 & 1;
 }
 
-+ (CGMutablePathRef)_createNormalizedPathFromPath:(uint64_t)a1
++ (CGMutablePathRef)_createNormalizedPathFromPath:(uint64_t)path
 {
   objc_opt_self();
   BoundingBox = CGPathGetBoundingBox(a2);
@@ -257,18 +257,18 @@ LABEL_25:
   qword_1ED6A5448 = v33;
 }
 
-- (double)_arrowRadiusForStroke:(void *)a1 inputScale:(double)a2
+- (double)_arrowRadiusForStroke:(void *)stroke inputScale:(double)scale
 {
-  v3 = a1;
-  v4 = [v3 path];
-  v5 = [v4 count];
+  strokeCopy = stroke;
+  path = [strokeCopy path];
+  v5 = [path count];
   if (v5)
   {
     v6 = 0;
     v7 = 0.0;
     do
     {
-      [v4 radiusAtIndex:v6];
+      [path radiusAtIndex:v6];
       v7 = v7 + v8;
       ++v6;
     }
@@ -282,7 +282,7 @@ LABEL_25:
     v9 = 10.0;
   }
 
-  return v9 * a2;
+  return v9 * scale;
 }
 
 void __48__PKShapeDrawingController_shapeRecognizerQueue__block_invoke()
@@ -338,17 +338,17 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   return result;
 }
 
-- (id)_arrowStrokesWithInputScale:(void *)a3 firstPt:(double)a4 secondPt:(double)a5 radius:(double)a6 averageInputPoint:(double)a7 sourceStroke:(double)a8
+- (id)_arrowStrokesWithInputScale:(void *)scale firstPt:(double)pt secondPt:(double)secondPt radius:(double)radius averageInputPoint:(double)point sourceStroke:(double)stroke
 {
   v56[2] = *MEMORY[0x1E69E9840];
-  *&v55 = a5;
-  *(&v55 + 1) = a6;
-  v17 = a3;
-  v18 = 1.0 / sqrt((a8 - a6) * (a8 - a6) + (a7 - a5) * (a7 - a5));
-  v19 = (a7 - a5) * v18;
-  v20 = (a8 - a6) * v18;
-  v21 = a5 + (a9 + a9) * v19;
-  v22 = a6 + (a9 + a9) * v20;
+  *&v55 = secondPt;
+  *(&v55 + 1) = radius;
+  scaleCopy = scale;
+  v18 = 1.0 / sqrt((stroke - radius) * (stroke - radius) + (point - secondPt) * (point - secondPt));
+  v19 = (point - secondPt) * v18;
+  v20 = (stroke - radius) * v18;
+  v21 = secondPt + (a9 + a9) * v19;
+  v22 = radius + (a9 + a9) * v20;
   v23 = v20 * a9;
   v24 = -(v19 * a9);
   *&v54 = v20 * a9 + v21;
@@ -361,7 +361,7 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   __p = 0;
   v49 = 0;
   v50 = 0;
-  PKPointsFromLineSegments(&v51, &__p, a4 * 6.0);
+  PKPointsFromLineSegments(&v51, &__p, pt * 6.0);
   v25 = a2[7];
   v45 = a2[6];
   v46 = v25;
@@ -375,12 +375,12 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   v28 = a2[1];
   v39 = *a2;
   v40 = v28;
-  v29 = [(PKShapeDrawingController *)a1 _strokeFromPoints:&v39 inputScale:v17 averageInputPoint:a4 sourceStroke:?];
+  v29 = [(PKShapeDrawingController *)self _strokeFromPoints:&v39 inputScale:scaleCopy averageInputPoint:pt sourceStroke:?];
   v30 = v51;
   *v51 = v21 - v23;
   v30[1] = v22 - v24;
   std::vector<CGPoint>::resize(&__p, 0);
-  PKPointsFromLineSegments(&v51, &__p, a4 * 6.0);
+  PKPointsFromLineSegments(&v51, &__p, pt * 6.0);
   v31 = a2[7];
   v45 = a2[6];
   v46 = v31;
@@ -394,7 +394,7 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   v34 = a2[1];
   v39 = *a2;
   v40 = v34;
-  v35 = [(PKShapeDrawingController *)a1 _strokeFromPoints:&v39 inputScale:v17 averageInputPoint:a4 sourceStroke:?];
+  v35 = [(PKShapeDrawingController *)self _strokeFromPoints:&v39 inputScale:scaleCopy averageInputPoint:pt sourceStroke:?];
   v36 = v35;
   v37 = 0;
   if (v29 && v35)
@@ -419,11 +419,11 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   return v37;
 }
 
-- (id)_strokeFromPoints:(uint64_t)a3 inputScale:(void *)a4 averageInputPoint:(double)a5 sourceStroke:
+- (id)_strokeFromPoints:(uint64_t)points inputScale:(void *)scale averageInputPoint:(double)point sourceStroke:
 {
   v85 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = v9;
+  scaleCopy = scale;
+  v10 = scaleCopy;
   if (a2[1] == *a2)
   {
     v18 = 0;
@@ -431,15 +431,15 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
 
   else
   {
-    v11 = *(a1 + 152);
-    v12 = [v9 path];
-    v13 = [v12 count];
+    v11 = *(self + 152);
+    path = [scaleCopy path];
+    v13 = [path count];
 
     if (v13)
     {
       v14 = [v10 ink];
-      v15 = [v14 identifier];
-      v16 = [v15 isEqualToString:@"com.apple.ink.fountainpen"];
+      identifier = [v14 identifier];
+      v16 = [identifier isEqualToString:@"com.apple.ink.fountainpen"];
 
       v17 = v16 ^ 1;
     }
@@ -453,13 +453,13 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = [v10 ink];
-      v21 = [v20 identifier];
+      identifier2 = [v20 identifier];
       v22 = [v10 ink];
       [v22 _weight];
       v24 = v23;
       v25 = [v10 ink];
       *buf = 138412802;
-      *&buf[4] = v21;
+      *&buf[4] = identifier2;
       *&buf[12] = 2048;
       *&buf[14] = v24;
       *&buf[22] = 1024;
@@ -517,9 +517,9 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
       v39 = [PKStrokePath alloc];
       v40 = __p;
       v41 = v80;
-      v42 = [v10 _inputType];
-      v43 = [MEMORY[0x1E696AFB0] UUID];
-      v44 = [(PKStrokePath *)v39 initWithPoints:v40 count:0x8E38E38E38E38E39 * ((v41 - v40) >> 2) immutableCount:0x8E38E38E38E38E39 * ((v41 - v40) >> 2) inputType:v42 timestamp:v43 UUID:v32];
+      _inputType = [v10 _inputType];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      v44 = [(PKStrokePath *)v39 initWithPoints:v40 count:0x8E38E38E38E38E39 * ((v41 - v40) >> 2) immutableCount:0x8E38E38E38E38E39 * ((v41 - v40) >> 2) inputType:_inputType timestamp:uUID UUID:v32];
 
       v45 = objc_alloc(objc_opt_class());
       v46 = [v10 ink];
@@ -539,13 +539,13 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
     else
     {
       v27 = [[PKStrokeGenerator alloc] initWithStrokeNoiseSmoothing:0];
-      WeakRetained = objc_loadWeakRetained((a1 + 200));
+      WeakRetained = objc_loadWeakRetained((self + 200));
       v49 = objc_opt_respondsToSelector();
 
       if (v49)
       {
-        v50 = objc_loadWeakRetained((a1 + 200));
-        v51 = [v50 shapeDrawingControllerMaximumSupportedContentVersion:a1];
+        v50 = objc_loadWeakRetained((self + 200));
+        v51 = [v50 shapeDrawingControllerMaximumSupportedContentVersion:self];
       }
 
       else
@@ -557,11 +557,11 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
       [(PKAveragePointGenerator *)v27 setupForInk:v52 maximumSupportedContentVersion:v51];
 
       [(PKAveragePointGenerator *)v27 setAdditionalRollAngle:0.0];
-      *(a3 + 112) = 0;
+      *(points + 112) = 0;
       if (v10)
       {
-        v53 = [v10 path];
-        v54 = [v53 count];
+        path2 = [v10 path];
+        v54 = [path2 count];
         if (v54)
         {
           v55 = 0;
@@ -570,9 +570,9 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
           {
             v57 = 0.0;
             memset(buf, 0, sizeof(buf));
-            if (v53)
+            if (path2)
             {
-              [v53 decompressedPointAt:v55];
+              [path2 decompressedPointAt:v55];
               v57 = *&buf[56];
             }
 
@@ -594,7 +594,7 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
           v57 = 0.0;
         }
 
-        *(a3 + 24) = v57;
+        *(points + 24) = v57;
       }
 
       v59 = *a2;
@@ -624,34 +624,34 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
         while (v60);
       }
 
-      *(a3 + 40) = v64 / (v26 * a5);
-      v67 = *(a3 + 112);
-      v82 = *(a3 + 96);
+      *(points + 40) = v64 / (v26 * point);
+      v67 = *(points + 112);
+      v82 = *(points + 96);
       v83 = v67;
-      v84 = *(a3 + 128);
-      v68 = *(a3 + 48);
-      *&buf[32] = *(a3 + 32);
+      v84 = *(points + 128);
+      v68 = *(points + 48);
+      *&buf[32] = *(points + 32);
       *&buf[48] = v68;
-      v69 = *(a3 + 80);
-      *&buf[64] = *(a3 + 64);
+      v69 = *(points + 80);
+      *&buf[64] = *(points + 64);
       *&buf[80] = v69;
-      v70 = *(a3 + 16);
-      *buf = *a3;
+      v70 = *(points + 16);
+      *buf = *points;
       *&buf[16] = v70;
-      v18 = [(PKAveragePointGenerator *)v27 strokeFromPoints:a2 sourceStroke:v10 inputScale:buf averageInputPoint:a5];
+      v18 = [(PKAveragePointGenerator *)v27 strokeFromPoints:a2 sourceStroke:v10 inputScale:buf averageInputPoint:point];
     }
 
-    v71 = [v10 _clipPlane];
-    [v18 _setClipPlane:v71];
+    _clipPlane = [v10 _clipPlane];
+    [v18 _setClipPlane:_clipPlane];
   }
 
   return v18;
 }
 
-- (id)_generateLine:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(uint64_t *)a5 averageInputPoint:(double)a6 shapeTypeOut:
+- (id)_generateLine:(void *)line sourceStroke:(uint64_t)stroke inputScale:(uint64_t *)scale averageInputPoint:(double)point shapeTypeOut:
 {
   v11 = a2;
-  v12 = a3;
+  lineCopy = line;
   __p = 0;
   v62 = 0;
   v63 = 0;
@@ -661,55 +661,55 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   [v11 endLocation];
   v18 = v17;
   v20 = v19;
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, 0, v14, v16);
   [v11 controlPoint];
   v24 = v23;
   [v11 controlPoint];
   CGPathAddQuadCurveToPoint(Mutable, 0, v24, v25, v18, v20);
-  PKPointsFromPath(Mutable, &__p, a6 * 6.0, a6 * 0.1);
+  PKPointsFromPath(Mutable, &__p, point * 6.0, point * 0.1);
   CGPathRelease(Mutable);
-  v26 = *(a4 + 112);
-  v58 = *(a4 + 96);
+  v26 = *(stroke + 112);
+  v58 = *(stroke + 96);
   v59 = v26;
-  v60 = *(a4 + 128);
-  v27 = *(a4 + 48);
-  v54 = *(a4 + 32);
+  v60 = *(stroke + 128);
+  v27 = *(stroke + 48);
+  v54 = *(stroke + 32);
   v55 = v27;
-  v28 = *(a4 + 80);
-  v56 = *(a4 + 64);
+  v28 = *(stroke + 80);
+  v56 = *(stroke + 64);
   v57 = v28;
-  v29 = *(a4 + 16);
-  v52 = *a4;
+  v29 = *(stroke + 16);
+  v52 = *stroke;
   v53 = v29;
-  v30 = [(PKShapeDrawingController *)a1 _strokeFromPoints:&v52 inputScale:v12 averageInputPoint:a6 sourceStroke:?];
+  v30 = [(PKShapeDrawingController *)self _strokeFromPoints:&v52 inputScale:lineCopy averageInputPoint:point sourceStroke:?];
   if (v30)
   {
-    [v21 addObject:v30];
+    [array addObject:v30];
   }
 
   if ([v11 startEndpointType] == 1)
   {
-    v31 = [PKShapeDrawingController _arrowRadiusForStroke:v12 inputScale:a6];
+    v31 = [PKShapeDrawingController _arrowRadiusForStroke:lineCopy inputScale:point];
     [v11 controlPoint];
     v33 = v32;
     v35 = v34;
-    v36 = *(a4 + 112);
-    v58 = *(a4 + 96);
+    v36 = *(stroke + 112);
+    v58 = *(stroke + 96);
     v59 = v36;
-    v60 = *(a4 + 128);
-    v37 = *(a4 + 48);
-    v54 = *(a4 + 32);
+    v60 = *(stroke + 128);
+    v37 = *(stroke + 48);
+    v54 = *(stroke + 32);
     v55 = v37;
-    v38 = *(a4 + 80);
-    v56 = *(a4 + 64);
+    v38 = *(stroke + 80);
+    v56 = *(stroke + 64);
     v57 = v38;
-    v39 = *(a4 + 16);
-    v52 = *a4;
+    v39 = *(stroke + 16);
+    v52 = *stroke;
     v53 = v39;
-    v40 = [(PKShapeDrawingController *)a1 _arrowStrokesWithInputScale:v12 firstPt:a6 secondPt:v14 radius:v16 averageInputPoint:v33 sourceStroke:v35, v31];
-    [v21 addObjectsFromArray:v40];
+    v40 = [(PKShapeDrawingController *)self _arrowStrokesWithInputScale:lineCopy firstPt:point secondPt:v14 radius:v16 averageInputPoint:v33 sourceStroke:v35, v31];
+    [array addObjectsFromArray:v40];
 
     v41 = 5;
   }
@@ -724,34 +724,34 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   {
     if (v31 == 0.0)
     {
-      v31 = [PKShapeDrawingController _arrowRadiusForStroke:v12 inputScale:a6];
+      v31 = [PKShapeDrawingController _arrowRadiusForStroke:lineCopy inputScale:point];
     }
 
     [v11 controlPoint];
     v43 = v42;
     v45 = v44;
-    v46 = *(a4 + 112);
-    v58 = *(a4 + 96);
+    v46 = *(stroke + 112);
+    v58 = *(stroke + 96);
     v59 = v46;
-    v60 = *(a4 + 128);
-    v47 = *(a4 + 48);
-    v54 = *(a4 + 32);
+    v60 = *(stroke + 128);
+    v47 = *(stroke + 48);
+    v54 = *(stroke + 32);
     v55 = v47;
-    v48 = *(a4 + 80);
-    v56 = *(a4 + 64);
+    v48 = *(stroke + 80);
+    v56 = *(stroke + 64);
     v57 = v48;
-    v49 = *(a4 + 16);
-    v52 = *a4;
+    v49 = *(stroke + 16);
+    v52 = *stroke;
     v53 = v49;
-    v50 = [(PKShapeDrawingController *)a1 _arrowStrokesWithInputScale:v12 firstPt:a6 secondPt:v18 radius:v20 averageInputPoint:v43 sourceStroke:v45, v31];
-    [v21 addObjectsFromArray:v50];
+    v50 = [(PKShapeDrawingController *)self _arrowStrokesWithInputScale:lineCopy firstPt:point secondPt:v18 radius:v20 averageInputPoint:v43 sourceStroke:v45, v31];
+    [array addObjectsFromArray:v50];
 
     v41 = 5;
   }
 
-  if (a5)
+  if (scale)
   {
-    *a5 = v41;
+    *scale = v41;
   }
 
   if (__p)
@@ -760,13 +760,13 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
     operator delete(__p);
   }
 
-  return v21;
+  return array;
 }
 
-- (double)aspectRatioAdjustedSizeFromResult:(void *)a1
+- (double)aspectRatioAdjustedSizeFromResult:(void *)result
 {
-  v1 = a1;
-  [v1 size];
+  resultCopy = result;
+  [resultCopy size];
   if (v2 <= 0.0 || v3 <= 0.0)
   {
     v5 = *MEMORY[0x1E695F060];
@@ -790,11 +790,11 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   return v5;
 }
 
-- (id)_generatePentagon:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:
+- (id)_generatePentagon:(void *)pentagon sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:
 {
   v50[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
+  pentagonCopy = pentagon;
   v12 = [PKShapeDrawingController aspectRatioAdjustedSizeFromResult:v9];
   v13 = 0;
   if (v12 > 0.0)
@@ -834,8 +834,8 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
       v42 = vmlaq_f64(vmulq_f64(v45[-1], _Q2), _Q2, *v44);
       std::vector<CGPoint>::insert(&v44, v44, &v42);
       std::vector<CGPoint>::push_back[abi:ne200100](&v44, &v42);
-      PKPointsFromLineSegments(&v44, &v47, a5 * 6.0);
-      if ([v10 _pathHasClockwisePointOrdering])
+      PKPointsFromLineSegments(&v44, &v47, scale * 6.0);
+      if ([pentagonCopy _pathHasClockwisePointOrdering])
       {
         if (v47 != v48)
         {
@@ -858,20 +858,20 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
         }
       }
 
-      v30 = *(a4 + 112);
-      v40[6] = *(a4 + 96);
+      v30 = *(stroke + 112);
+      v40[6] = *(stroke + 96);
       v40[7] = v30;
-      v41 = *(a4 + 128);
-      v31 = *(a4 + 48);
-      v40[2] = *(a4 + 32);
+      v41 = *(stroke + 128);
+      v31 = *(stroke + 48);
+      v40[2] = *(stroke + 32);
       v40[3] = v31;
-      v32 = *(a4 + 80);
-      v40[4] = *(a4 + 64);
+      v32 = *(stroke + 80);
+      v40[4] = *(stroke + 64);
       v40[5] = v32;
-      v33 = *(a4 + 16);
-      v40[0] = *a4;
+      v33 = *(stroke + 16);
+      v40[0] = *stroke;
       v40[1] = v33;
-      v34 = [(PKShapeDrawingController *)a1 _strokeFromPoints:v40 inputScale:v10 averageInputPoint:a5 sourceStroke:?];
+      v34 = [(PKShapeDrawingController *)self _strokeFromPoints:v40 inputScale:pentagonCopy averageInputPoint:scale sourceStroke:?];
       v35 = v34;
       if (v34)
       {
@@ -901,11 +901,11 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   return v13;
 }
 
-- (id)_generateRectangle:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:
+- (id)_generateRectangle:(void *)rectangle sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:
 {
   v51[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
+  rectangleCopy = rectangle;
   v48 = 0;
   v49 = 0;
   v50 = 0;
@@ -938,8 +938,8 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   std::vector<CGPoint>::push_back[abi:ne200100](&v45, &v40);
   std::vector<CGPoint>::push_back[abi:ne200100](&v45, &v44);
   std::vector<CGPoint>::push_back[abi:ne200100](&v45, &v42);
-  PKPointsFromLineSegments(&v45, &v48, a5 * 6.0);
-  if ([v10 _pathHasClockwisePointOrdering])
+  PKPointsFromLineSegments(&v45, &v48, scale * 6.0);
+  if ([rectangleCopy _pathHasClockwisePointOrdering])
   {
     if (v48 != v49)
     {
@@ -962,20 +962,20 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
     }
   }
 
-  v28 = *(a4 + 112);
-  v38[6] = *(a4 + 96);
+  v28 = *(stroke + 112);
+  v38[6] = *(stroke + 96);
   v38[7] = v28;
-  v39 = *(a4 + 128);
-  v29 = *(a4 + 48);
-  v38[2] = *(a4 + 32);
+  v39 = *(stroke + 128);
+  v29 = *(stroke + 48);
+  v38[2] = *(stroke + 32);
   v38[3] = v29;
-  v30 = *(a4 + 80);
-  v38[4] = *(a4 + 64);
+  v30 = *(stroke + 80);
+  v38[4] = *(stroke + 64);
   v38[5] = v30;
-  v31 = *(a4 + 16);
-  v38[0] = *a4;
+  v31 = *(stroke + 16);
+  v38[0] = *stroke;
   v38[1] = v31;
-  v32 = [(PKShapeDrawingController *)a1 _strokeFromPoints:v38 inputScale:v10 averageInputPoint:a5 sourceStroke:?];
+  v32 = [(PKShapeDrawingController *)self _strokeFromPoints:v38 inputScale:rectangleCopy averageInputPoint:scale sourceStroke:?];
   v33 = v32;
   if (v32)
   {
@@ -1003,11 +1003,11 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   return v34;
 }
 
-- (id)_generateOutlineArrow:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:
+- (id)_generateOutlineArrow:(void *)arrow sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:
 {
   v54[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
+  arrowCopy = arrow;
   [v9 size];
   v13 = v12;
   v14 = 0;
@@ -1042,7 +1042,7 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
       CGAffineTransformTranslate(&v42, &v49, -v19, -v21);
       m = v42;
       Mutable = CGPathCreateMutable();
-      v39 = a5;
+      scaleCopy = scale;
       v26 = v19 - v13 * 0.5;
       v27 = v15 * 0.5;
       v28 = v21 - v15 * 0.5;
@@ -1062,22 +1062,22 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
       CGPathAddLineToPoint(Mutable, &m, x, v41 - v30);
       CGPathAddLineToPoint(Mutable, &m, v26, v28 + v29);
       CGPathCloseSubpath(Mutable);
-      PKPointsFromPath(Mutable, &v51, v39 * 6.0, v39 * 0.1);
+      PKPointsFromPath(Mutable, &v51, scaleCopy * 6.0, scaleCopy * 0.1);
       CGPathRelease(Mutable);
-      v32 = *(a4 + 112);
-      v46 = *(a4 + 96);
+      v32 = *(stroke + 112);
+      v46 = *(stroke + 96);
       v47 = v32;
-      v48 = *(a4 + 128);
-      v33 = *(a4 + 48);
-      *&v42.tx = *(a4 + 32);
+      v48 = *(stroke + 128);
+      v33 = *(stroke + 48);
+      *&v42.tx = *(stroke + 32);
       v43 = v33;
-      v34 = *(a4 + 80);
-      v44 = *(a4 + 64);
+      v34 = *(stroke + 80);
+      v44 = *(stroke + 64);
       v45 = v34;
-      v35 = *(a4 + 16);
-      *&v42.a = *a4;
+      v35 = *(stroke + 16);
+      *&v42.a = *stroke;
       *&v42.c = v35;
-      v36 = [(PKShapeDrawingController *)a1 _strokeFromPoints:&v42 inputScale:v10 averageInputPoint:v39 sourceStroke:?];
+      v36 = [(PKShapeDrawingController *)self _strokeFromPoints:&v42 inputScale:arrowCopy averageInputPoint:scaleCopy sourceStroke:?];
       v37 = v36;
       if (v36)
       {
@@ -1101,11 +1101,11 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   return v14;
 }
 
-- (id)_generateTriangle:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:
+- (id)_generateTriangle:(void *)triangle sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:
 {
   v51[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
+  triangleCopy = triangle;
   v48 = 0;
   v49 = 0;
   v50 = 0;
@@ -1137,8 +1137,8 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   std::vector<CGPoint>::push_back[abi:ne200100](&v45, &v42);
   std::vector<CGPoint>::push_back[abi:ne200100](&v45, &v44);
   std::vector<CGPoint>::push_back[abi:ne200100](&v45, &v41);
-  PKPointsFromLineSegments(&v45, &v48, a5 * 6.0);
-  if ([v10 _pathHasClockwisePointOrdering])
+  PKPointsFromLineSegments(&v45, &v48, scale * 6.0);
+  if ([triangleCopy _pathHasClockwisePointOrdering])
   {
     if (v48 != v49)
     {
@@ -1161,20 +1161,20 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
     }
   }
 
-  v27 = *(a4 + 112);
-  v39[6] = *(a4 + 96);
+  v27 = *(stroke + 112);
+  v39[6] = *(stroke + 96);
   v39[7] = v27;
-  v40 = *(a4 + 128);
-  v28 = *(a4 + 48);
-  v39[2] = *(a4 + 32);
+  v40 = *(stroke + 128);
+  v28 = *(stroke + 48);
+  v39[2] = *(stroke + 32);
   v39[3] = v28;
-  v29 = *(a4 + 80);
-  v39[4] = *(a4 + 64);
+  v29 = *(stroke + 80);
+  v39[4] = *(stroke + 64);
   v39[5] = v29;
-  v30 = *(a4 + 16);
-  v39[0] = *a4;
+  v30 = *(stroke + 16);
+  v39[0] = *stroke;
   v39[1] = v30;
-  v31 = [(PKShapeDrawingController *)a1 _strokeFromPoints:v39 inputScale:v10 averageInputPoint:a5 sourceStroke:?];
+  v31 = [(PKShapeDrawingController *)self _strokeFromPoints:v39 inputScale:triangleCopy averageInputPoint:scale sourceStroke:?];
   v32 = v31;
   if (v31)
   {
@@ -1202,11 +1202,11 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   return v33;
 }
 
-- (id)_generateManhattanLine:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:
+- (id)_generateManhattanLine:(void *)line sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:
 {
   v43 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
+  lineCopy = line;
   v38 = 0;
   v39 = 0;
   v40 = 0;
@@ -1221,8 +1221,8 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = [v9 pathPoints];
-  v14 = [v13 countByEnumeratingWithState:&v31 objects:v42 count:16];
+  pathPoints = [v9 pathPoints];
+  v14 = [pathPoints countByEnumeratingWithState:&v31 objects:v42 count:16];
   if (v14)
   {
     v15 = *v32;
@@ -1232,7 +1232,7 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
       {
         if (*v32 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(pathPoints);
         }
 
         [*(*(&v31 + 1) + 8 * i) CGPointValue];
@@ -1241,7 +1241,7 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
         std::vector<CGPoint>::push_back[abi:ne200100](&__p, v29);
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v31 objects:v42 count:16];
+      v14 = [pathPoints countByEnumeratingWithState:&v31 objects:v42 count:16];
     }
 
     while (v14);
@@ -1251,21 +1251,21 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   *&v29[0] = v19;
   *(&v29[0] + 1) = v20;
   std::vector<CGPoint>::push_back[abi:ne200100](&__p, v29);
-  PKPointsFromLineSegments(&__p, &v38, a5 * 6.0);
-  v21 = *(a4 + 112);
-  v29[6] = *(a4 + 96);
+  PKPointsFromLineSegments(&__p, &v38, scale * 6.0);
+  v21 = *(stroke + 112);
+  v29[6] = *(stroke + 96);
   v29[7] = v21;
-  v30 = *(a4 + 128);
-  v22 = *(a4 + 48);
-  v29[2] = *(a4 + 32);
+  v30 = *(stroke + 128);
+  v22 = *(stroke + 48);
+  v29[2] = *(stroke + 32);
   v29[3] = v22;
-  v23 = *(a4 + 80);
-  v29[4] = *(a4 + 64);
+  v23 = *(stroke + 80);
+  v29[4] = *(stroke + 64);
   v29[5] = v23;
-  v24 = *(a4 + 16);
-  v29[0] = *a4;
+  v24 = *(stroke + 16);
+  v29[0] = *stroke;
   v29[1] = v24;
-  v25 = [(PKShapeDrawingController *)a1 _strokeFromPoints:v29 inputScale:v10 averageInputPoint:a5 sourceStroke:?];
+  v25 = [(PKShapeDrawingController *)self _strokeFromPoints:v29 inputScale:lineCopy averageInputPoint:scale sourceStroke:?];
   v26 = v25;
   if (v25)
   {
@@ -1293,11 +1293,11 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   return v27;
 }
 
-- (id)_generateHeart:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:
+- (id)_generateHeart:(void *)heart sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:
 {
   v43[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
+  heartCopy = heart;
   v12 = [PKShapeDrawingController aspectRatioAdjustedSizeFromResult:v9];
   v13 = 0;
   if (v12 > 0.0)
@@ -1333,9 +1333,9 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
       }
 
       v19 = CGPathCreateMutableCopyByTransformingPath(qword_1ED6A5448, &transform);
-      PKPointsFromPath(v19, &v40, a5 * 6.0, a5 * 0.1);
+      PKPointsFromPath(v19, &v40, scale * 6.0, scale * 0.1);
       CGPathRelease(v19);
-      if (([v10 _pathHasClockwisePointOrdering] & 1) == 0 && v40 != v41)
+      if (([heartCopy _pathHasClockwisePointOrdering] & 1) == 0 && v40 != v41)
       {
         v20 = v41 - 2;
         if (v41 - 2 > v40)
@@ -1355,20 +1355,20 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
         }
       }
 
-      v24 = *(a4 + 112);
-      v35 = *(a4 + 96);
+      v24 = *(stroke + 112);
+      v35 = *(stroke + 96);
       v36 = v24;
-      v37 = *(a4 + 128);
-      v25 = *(a4 + 48);
-      *&v31.tx = *(a4 + 32);
+      v37 = *(stroke + 128);
+      v25 = *(stroke + 48);
+      *&v31.tx = *(stroke + 32);
       v32 = v25;
-      v26 = *(a4 + 80);
-      v33 = *(a4 + 64);
+      v26 = *(stroke + 80);
+      v33 = *(stroke + 64);
       v34 = v26;
-      v27 = *(a4 + 16);
-      *&v31.a = *a4;
+      v27 = *(stroke + 16);
+      *&v31.a = *stroke;
       *&v31.c = v27;
-      v28 = [(PKShapeDrawingController *)a1 _strokeFromPoints:&v31 inputScale:v10 averageInputPoint:a5 sourceStroke:?];
+      v28 = [(PKShapeDrawingController *)self _strokeFromPoints:&v31 inputScale:heartCopy averageInputPoint:scale sourceStroke:?];
       v29 = v28;
       if (v28)
       {
@@ -1392,11 +1392,11 @@ uint64_t __49__PKShapeDrawingController__chDrawingFromStroke___block_invoke(uint
   return v13;
 }
 
-- (id)_generateCloud:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:
+- (id)_generateCloud:(void *)cloud sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:
 {
   v61[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
+  cloudCopy = cloud;
   __p = 0;
   v55 = 0;
   v56 = 0;
@@ -1530,9 +1530,9 @@ LABEL_20:
       CGPathRelease(Mutable);
       v34 = CGPathCreateMutableCopyByTransformingPath(v33, &transform);
       CGPathRelease(v33);
-      PKPointsFromPath(v34, &__p, a5 * 6.0, a5 * 0.1);
+      PKPointsFromPath(v34, &__p, scale * 6.0, scale * 0.1);
       CGPathRelease(v34);
-      if (([v10 _pathHasClockwisePointOrdering] & 1) == 0 && __p != v55)
+      if (([cloudCopy _pathHasClockwisePointOrdering] & 1) == 0 && __p != v55)
       {
         v35 = v55 - 16;
         if (v55 - 16 > __p)
@@ -1552,20 +1552,20 @@ LABEL_20:
         }
       }
 
-      v39 = *(a4 + 112);
-      v50 = *(a4 + 96);
+      v39 = *(stroke + 112);
+      v50 = *(stroke + 96);
       v51 = v39;
-      v52 = *(a4 + 128);
-      v40 = *(a4 + 48);
-      *&m.tx = *(a4 + 32);
+      v52 = *(stroke + 128);
+      v40 = *(stroke + 48);
+      *&m.tx = *(stroke + 32);
       v47 = v40;
-      v41 = *(a4 + 80);
-      v48 = *(a4 + 64);
+      v41 = *(stroke + 80);
+      v48 = *(stroke + 64);
       v49 = v41;
-      v42 = *(a4 + 16);
-      *&m.a = *a4;
+      v42 = *(stroke + 16);
+      *&m.a = *stroke;
       *&m.c = v42;
-      v43 = [(PKShapeDrawingController *)a1 _strokeFromPoints:&m inputScale:v10 averageInputPoint:a5 sourceStroke:?];
+      v43 = [(PKShapeDrawingController *)self _strokeFromPoints:&m inputScale:cloudCopy averageInputPoint:scale sourceStroke:?];
       v44 = v43;
       if (v43)
       {
@@ -1589,11 +1589,11 @@ LABEL_20:
   return v18;
 }
 
-- (id)_generateStar:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:
+- (id)_generateStar:(void *)star sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:
 {
   v54[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
+  starCopy = star;
   v11 = 0;
   v42 = [PKShapeDrawingController aspectRatioAdjustedSizeFromResult:v9]* 0.5;
   if (v42 > 0.0)
@@ -1611,7 +1611,7 @@ LABEL_20:
       [v9 rotation];
       CGAffineTransformMakeRotation(&v50, v15 * 3.14159265 / 180.0);
       Mutable = CGPathCreateMutable();
-      v40 = a5;
+      scaleCopy = scale;
       v17 = v42 * 0.4;
       v45 = v41 * 0.4;
       v18 = 5;
@@ -1647,9 +1647,9 @@ LABEL_20:
       }
 
       while (v18);
-      PKPointsFromPath(Mutable, &v51, v40 * 6.0, v40 * 0.1);
+      PKPointsFromPath(Mutable, &v51, scaleCopy * 6.0, scaleCopy * 0.1);
       CGPathRelease(Mutable);
-      if ([v10 _pathHasClockwisePointOrdering])
+      if ([starCopy _pathHasClockwisePointOrdering])
       {
         if (v51 != v52)
         {
@@ -1672,20 +1672,20 @@ LABEL_20:
         }
       }
 
-      v33 = *(a4 + 112);
-      v48[6] = *(a4 + 96);
+      v33 = *(stroke + 112);
+      v48[6] = *(stroke + 96);
       v48[7] = v33;
-      v49 = *(a4 + 128);
-      v34 = *(a4 + 48);
-      v48[2] = *(a4 + 32);
+      v49 = *(stroke + 128);
+      v34 = *(stroke + 48);
+      v48[2] = *(stroke + 32);
       v48[3] = v34;
-      v35 = *(a4 + 80);
-      v48[4] = *(a4 + 64);
+      v35 = *(stroke + 80);
+      v48[4] = *(stroke + 64);
       v48[5] = v35;
-      v36 = *(a4 + 16);
-      v48[0] = *a4;
+      v36 = *(stroke + 16);
+      v48[0] = *stroke;
       v48[1] = v36;
-      v37 = [(PKShapeDrawingController *)a1 _strokeFromPoints:v48 inputScale:v10 averageInputPoint:v40 sourceStroke:?];
+      v37 = [(PKShapeDrawingController *)self _strokeFromPoints:v48 inputScale:starCopy averageInputPoint:scaleCopy sourceStroke:?];
       v38 = v37;
       if (v37)
       {
@@ -1709,11 +1709,11 @@ LABEL_20:
   return v11;
 }
 
-- (id)_generateChatBubble:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:
+- (id)_generateChatBubble:(void *)bubble sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:
 {
   v58[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
+  bubbleCopy = bubble;
   [v9 size];
   v13 = v12;
   v14 = 0;
@@ -1722,7 +1722,7 @@ LABEL_20:
     v15 = v11;
     if (v11 > 0.0)
     {
-      v45 = a5;
+      scaleCopy = scale;
       v55 = 0;
       v56 = 0;
       v57 = 0;
@@ -1769,9 +1769,9 @@ LABEL_20:
       CGPathAddLineToPoint(Mutable, &m, v29, v30);
       v33 = __sincos_stret(v31 + v28 * -0.5);
       CGPathAddLineToPoint(Mutable, &m, v17 + v33.__cosval * v21, v19 + v33.__sinval * v21);
-      PKPointsFromPath(Mutable, &v55, v45 * 6.0, v45 * 0.1);
+      PKPointsFromPath(Mutable, &v55, scaleCopy * 6.0, scaleCopy * 0.1);
       CGPathRelease(Mutable);
-      if ([v10 _pathHasClockwisePointOrdering])
+      if ([bubbleCopy _pathHasClockwisePointOrdering])
       {
         if (v55 != v56)
         {
@@ -1794,20 +1794,20 @@ LABEL_20:
         }
       }
 
-      v38 = *(a4 + 112);
-      v50 = *(a4 + 96);
+      v38 = *(stroke + 112);
+      v50 = *(stroke + 96);
       v51 = v38;
-      v52 = *(a4 + 128);
-      v39 = *(a4 + 48);
-      *&v46.tx = *(a4 + 32);
+      v52 = *(stroke + 128);
+      v39 = *(stroke + 48);
+      *&v46.tx = *(stroke + 32);
       v47 = v39;
-      v40 = *(a4 + 80);
-      v48 = *(a4 + 64);
+      v40 = *(stroke + 80);
+      v48 = *(stroke + 64);
       v49 = v40;
-      v41 = *(a4 + 16);
-      *&v46.a = *a4;
+      v41 = *(stroke + 16);
+      *&v46.a = *stroke;
       *&v46.c = v41;
-      v42 = [(PKShapeDrawingController *)a1 _strokeFromPoints:&v46 inputScale:v10 averageInputPoint:v45 sourceStroke:?];
+      v42 = [(PKShapeDrawingController *)self _strokeFromPoints:&v46 inputScale:bubbleCopy averageInputPoint:scaleCopy sourceStroke:?];
       v43 = v42;
       if (v42)
       {
@@ -1831,11 +1831,11 @@ LABEL_20:
   return v14;
 }
 
-- (id)_generateOval:(void *)a3 sourceStroke:(uint64_t)a4 inputScale:(double)a5 averageInputPoint:
+- (id)_generateOval:(void *)oval sourceStroke:(uint64_t)stroke inputScale:(double)scale averageInputPoint:
 {
   v47[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
+  ovalCopy = oval;
   [v9 size];
   v13 = v12;
   v14 = 0;
@@ -1865,9 +1865,9 @@ LABEL_20:
       v49.size.width = v13;
       v49.size.height = v15;
       v23 = CGPathCreateWithEllipseInRect(v49, &transform);
-      PKPointsFromPath(v23, &v44, a5 * 6.0, a5 * 0.1);
+      PKPointsFromPath(v23, &v44, scale * 6.0, scale * 0.1);
       CGPathRelease(v23);
-      if ([v10 _pathHasClockwisePointOrdering])
+      if ([ovalCopy _pathHasClockwisePointOrdering])
       {
         if (v44 != v45)
         {
@@ -1890,20 +1890,20 @@ LABEL_20:
         }
       }
 
-      v28 = *(a4 + 112);
-      v39 = *(a4 + 96);
+      v28 = *(stroke + 112);
+      v39 = *(stroke + 96);
       v40 = v28;
-      v41 = *(a4 + 128);
-      v29 = *(a4 + 48);
-      *&v35.tx = *(a4 + 32);
+      v41 = *(stroke + 128);
+      v29 = *(stroke + 48);
+      *&v35.tx = *(stroke + 32);
       v36 = v29;
-      v30 = *(a4 + 80);
-      v37 = *(a4 + 64);
+      v30 = *(stroke + 80);
+      v37 = *(stroke + 64);
       v38 = v30;
-      v31 = *(a4 + 16);
-      *&v35.a = *a4;
+      v31 = *(stroke + 16);
+      *&v35.a = *stroke;
       *&v35.c = v31;
-      v32 = [(PKShapeDrawingController *)a1 _strokeFromPoints:&v35 inputScale:v10 averageInputPoint:a5 sourceStroke:?];
+      v32 = [(PKShapeDrawingController *)self _strokeFromPoints:&v35 inputScale:ovalCopy averageInputPoint:scale sourceStroke:?];
       v33 = v32;
       if (v32)
       {
@@ -1927,85 +1927,85 @@ LABEL_20:
   return v14;
 }
 
-- (uint64_t)_shapeTypeFromResultName:(uint64_t)a1
+- (uint64_t)_shapeTypeFromResultName:(uint64_t)name
 {
   v3 = a2;
-  v4 = [v3 lowercaseString];
-  if (([v4 isEqualToString:@"freeform"] & 1) == 0)
+  lowercaseString = [v3 lowercaseString];
+  if (([lowercaseString isEqualToString:@"freeform"] & 1) == 0)
   {
-    if ([v4 isEqualToString:@"rectangle"])
+    if ([lowercaseString isEqualToString:@"rectangle"])
     {
       v5 = 2;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"triangle"])
+    if ([lowercaseString isEqualToString:@"triangle"])
     {
       v5 = 3;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"oval"])
+    if ([lowercaseString isEqualToString:@"oval"])
     {
       v5 = 1;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"star"])
+    if ([lowercaseString isEqualToString:@"star"])
     {
       v5 = 8;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"heart"])
+    if ([lowercaseString isEqualToString:@"heart"])
     {
       v5 = 9;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"chat bubble"])
+    if ([lowercaseString isEqualToString:@"chat bubble"])
     {
       v5 = 10;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"pentagon"])
+    if ([lowercaseString isEqualToString:@"pentagon"])
     {
       v5 = 4;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"line"])
+    if ([lowercaseString isEqualToString:@"line"])
     {
       v5 = 6;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"outline arrow"])
+    if ([lowercaseString isEqualToString:@"outline arrow"])
     {
       v5 = 11;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"arrow"])
+    if ([lowercaseString isEqualToString:@"arrow"])
     {
       v5 = 5;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"manhattan line"])
+    if ([lowercaseString isEqualToString:@"manhattan line"])
     {
       v5 = 7;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"cloud"])
+    if ([lowercaseString isEqualToString:@"cloud"])
     {
       v5 = 12;
       goto LABEL_27;
     }
 
-    if ([v4 isEqualToString:@"scratchout"] && (-[PKShapeDrawingController isScratchOutActive](a1) & 1) != 0)
+    if ([lowercaseString isEqualToString:@"scratchout"] && (-[PKShapeDrawingController isScratchOutActive](name) & 1) != 0)
     {
       v5 = 13;
       goto LABEL_27;
@@ -2018,34 +2018,34 @@ LABEL_27:
   return v5;
 }
 
-- (id)shapeFromStroke:(__int128 *)a3 inputScale:(void *)a4 averageInputPoint:(double)a5 allowedShapeTypes:
+- (id)shapeFromStroke:(__int128 *)stroke inputScale:(void *)scale averageInputPoint:(double)point allowedShapeTypes:
 {
   v158 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v128 = a4;
+  scaleCopy = scale;
   v129 = v9;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_118;
   }
 
-  if (!memcmp(a3, &PKInputPointZero, 0x88uLL))
+  if (!memcmp(stroke, &PKInputPointZero, 0x88uLL))
   {
-    v11 = [v9 path];
-    v12 = [v11 count];
+    path = [v9 path];
+    v12 = [path count];
 
     if (v12)
     {
-      v13 = [v9 path];
-      [v13 timestampAtIndex:0];
+      path2 = [v9 path];
+      [path2 timestampAtIndex:0];
       v15 = v14;
 
-      v16 = [v9 path];
-      v17 = [v9 path];
-      [v16 timestampAtIndex:{objc_msgSend(v17, "count") - 1}];
+      path3 = [v9 path];
+      path4 = [v9 path];
+      [path3 timestampAtIndex:{objc_msgSend(path4, "count") - 1}];
       v19 = v18;
 
-      *(a1 + 152) = v19 - v15;
+      *(self + 152) = v19 - v15;
     }
 
     v20 = v9;
@@ -2054,40 +2054,40 @@ LABEL_27:
     [(PKAveragePointGenerator *)v21 currentInputPoint];
 
     v22 = v156;
-    a3[6] = v155;
-    a3[7] = v22;
-    *(a3 + 16) = v157;
+    stroke[6] = v155;
+    stroke[7] = v22;
+    *(stroke + 16) = v157;
     v23 = v152;
-    a3[2] = v151;
-    a3[3] = v23;
+    stroke[2] = v151;
+    stroke[3] = v23;
     v24 = v154;
-    a3[4] = v153;
-    a3[5] = v24;
+    stroke[4] = v153;
+    stroke[5] = v24;
     v10 = v150;
-    *a3 = block;
-    a3[1] = v10;
+    *stroke = block;
+    stroke[1] = v10;
   }
 
   v138 = 0;
-  if (*(a1 + 193) != 1)
+  if (*(self + 193) != 1)
   {
     goto LABEL_19;
   }
 
-  v25 = 1.0;
-  if (a5 > 0.0)
+  pointCopy = 1.0;
+  if (point > 0.0)
   {
-    v26 = [v9 _strokeData];
+    _strokeData = [v9 _strokeData];
     x = *MEMORY[0x1E695F050];
     y = *(MEMORY[0x1E695F050] + 8);
     width = *(MEMORY[0x1E695F050] + 16);
     height = *(MEMORY[0x1E695F050] + 24);
-    v31 = [v26 _pointsCount];
-    if (v31)
+    _pointsCount = [_strokeData _pointsCount];
+    if (_pointsCount)
     {
-      for (i = 0; i != v31; ++i)
+      for (i = 0; i != _pointsCount; ++i)
       {
-        [v26 interpolatedLocationAt:{i, v128}];
+        [_strokeData interpolatedLocationAt:{i, scaleCopy}];
         v162.origin.x = v33;
         v162.origin.y = v34;
         v162.size.width = 0.0;
@@ -2104,10 +2104,10 @@ LABEL_27:
       }
     }
 
-    *&v10 = 1.0 / a5 * height;
-    if (1.0 / a5 * width > 4.0 || *&v10 > 4.0)
+    *&v10 = 1.0 / point * height;
+    if (1.0 / point * width > 4.0 || *&v10 > 4.0)
     {
-      v25 = a5;
+      pointCopy = point;
       goto LABEL_16;
     }
 
@@ -2117,8 +2117,8 @@ LABEL_19:
   }
 
 LABEL_16:
-  v36 = [v9 path];
-  v37 = [v36 count];
+  path5 = [v9 path];
+  v37 = [path5 count];
 
   if (v37 > 0xFA0)
   {
@@ -2171,7 +2171,7 @@ LABEL_16:
     *&v150 = __57__PKShapeDrawingController_recognitionResultsForDrawing___block_invoke;
     *(&v150 + 1) = &unk_1E82DBFB8;
     *&v152 = &v139;
-    *&v151 = a1;
+    *&v151 = self;
     v45 = v43;
     *(&v151 + 1) = v45;
     dispatch_sync(v44, &block);
@@ -2180,15 +2180,15 @@ LABEL_16:
     _Block_object_dispose(&v139, 8);
   }
 
-  a5 = v25;
+  point = pointCopy;
 LABEL_26:
   if (![v42 count])
   {
 LABEL_43:
     v58 = 0;
-    if (v9 && (*(a1 + 192) & 1) != 0)
+    if (v9 && (*(self + 192) & 1) != 0)
     {
-      v59 = [(PKShapeDrawingController *)a1 isScratchOutActive];
+      isScratchOutActive = [(PKShapeDrawingController *)self isScratchOutActive];
       if (v138 == 13)
       {
         v60 = 0;
@@ -2196,7 +2196,7 @@ LABEL_43:
 
       else
       {
-        v60 = v59;
+        v60 = isScratchOutActive;
       }
 
       if (v60 == 1)
@@ -2225,13 +2225,13 @@ LABEL_43:
     v47 = [v42 objectAtIndexedSubscript:1];
   }
 
-  v48 = [v46 string];
-  v138 = [(PKShapeDrawingController *)a1 _shapeTypeFromResultName:v48];
+  string = [v46 string];
+  v138 = [(PKShapeDrawingController *)self _shapeTypeFromResultName:string];
 
-  if (v128)
+  if (scaleCopy)
   {
     v49 = [MEMORY[0x1E696AD98] numberWithInteger:v138];
-    v50 = [v128 containsObject:v49];
+    v50 = [scaleCopy containsObject:v49];
 
     if ((v50 & 1) == 0)
     {
@@ -2250,9 +2250,9 @@ LABEL_42:
   v51 = os_log_create("com.apple.pencilkit", "Actions");
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
   {
-    v52 = [v46 string];
+    string2 = [v46 string];
     LODWORD(block) = 138412290;
-    *(&block + 4) = v52;
+    *(&block + 4) = string2;
     _os_log_impl(&dword_1C7CCA000, v51, OS_LOG_TYPE_DEFAULT, "Shape recognized %@.", &block, 0xCu);
   }
 
@@ -2262,45 +2262,45 @@ LABEL_42:
     {
       if (v138 == 8)
       {
-        v83 = a3[7];
-        v155 = a3[6];
+        v83 = stroke[7];
+        v155 = stroke[6];
         v156 = v83;
-        v157 = *(a3 + 16);
-        v84 = a3[3];
-        v151 = a3[2];
+        v157 = *(stroke + 16);
+        v84 = stroke[3];
+        v151 = stroke[2];
         v152 = v84;
-        v85 = a3[5];
-        v153 = a3[4];
+        v85 = stroke[5];
+        v153 = stroke[4];
         v154 = v85;
-        v86 = a3[1];
-        block = *a3;
+        v86 = stroke[1];
+        block = *stroke;
         v150 = v86;
-        v57 = [(PKShapeDrawingController *)a1 _generateStar:v46 sourceStroke:v9 inputScale:&block averageInputPoint:a5];
+        v57 = [(PKShapeDrawingController *)self _generateStar:v46 sourceStroke:v9 inputScale:&block averageInputPoint:point];
       }
 
       else
       {
-        v61 = a3[7];
-        v155 = a3[6];
+        v61 = stroke[7];
+        v155 = stroke[6];
         v156 = v61;
-        v157 = *(a3 + 16);
-        v62 = a3[3];
-        v151 = a3[2];
+        v157 = *(stroke + 16);
+        v62 = stroke[3];
+        v151 = stroke[2];
         v152 = v62;
-        v63 = a3[5];
-        v153 = a3[4];
+        v63 = stroke[5];
+        v153 = stroke[4];
         v154 = v63;
-        v64 = a3[1];
-        block = *a3;
+        v64 = stroke[1];
+        block = *stroke;
         v150 = v64;
         if (v138 == 9)
         {
-          [(PKShapeDrawingController *)a1 _generateHeart:v46 sourceStroke:v9 inputScale:&block averageInputPoint:a5];
+          [(PKShapeDrawingController *)self _generateHeart:v46 sourceStroke:v9 inputScale:&block averageInputPoint:point];
         }
 
         else
         {
-          [(PKShapeDrawingController *)a1 _generateChatBubble:v46 sourceStroke:v9 inputScale:&block averageInputPoint:a5];
+          [(PKShapeDrawingController *)self _generateChatBubble:v46 sourceStroke:v9 inputScale:&block averageInputPoint:point];
         }
         v57 = ;
       }
@@ -2310,43 +2310,43 @@ LABEL_42:
 
     if (v138 == 11)
     {
-      v87 = a3[7];
-      v155 = a3[6];
+      v87 = stroke[7];
+      v155 = stroke[6];
       v156 = v87;
-      v157 = *(a3 + 16);
-      v88 = a3[3];
-      v151 = a3[2];
+      v157 = *(stroke + 16);
+      v88 = stroke[3];
+      v151 = stroke[2];
       v152 = v88;
-      v89 = a3[5];
-      v153 = a3[4];
+      v89 = stroke[5];
+      v153 = stroke[4];
       v154 = v89;
-      v90 = a3[1];
-      block = *a3;
+      v90 = stroke[1];
+      block = *stroke;
       v150 = v90;
-      v57 = [(PKShapeDrawingController *)a1 _generateOutlineArrow:v46 sourceStroke:v9 inputScale:&block averageInputPoint:a5];
+      v57 = [(PKShapeDrawingController *)self _generateOutlineArrow:v46 sourceStroke:v9 inputScale:&block averageInputPoint:point];
       goto LABEL_88;
     }
 
     if (v138 == 12)
     {
-      v91 = a3[7];
-      v155 = a3[6];
+      v91 = stroke[7];
+      v155 = stroke[6];
       v156 = v91;
-      v157 = *(a3 + 16);
-      v92 = a3[3];
-      v151 = a3[2];
+      v157 = *(stroke + 16);
+      v92 = stroke[3];
+      v151 = stroke[2];
       v152 = v92;
-      v93 = a3[5];
-      v153 = a3[4];
+      v93 = stroke[5];
+      v153 = stroke[4];
       v154 = v93;
-      v94 = a3[1];
-      block = *a3;
+      v94 = stroke[1];
+      block = *stroke;
       v150 = v94;
-      v57 = [(PKShapeDrawingController *)a1 _generateCloud:v46 sourceStroke:v9 inputScale:&block averageInputPoint:a5];
+      v57 = [(PKShapeDrawingController *)self _generateCloud:v46 sourceStroke:v9 inputScale:&block averageInputPoint:point];
       goto LABEL_88;
     }
 
-    if (v138 != 13 || ![(PKShapeDrawingController *)a1 isScratchOutActive])
+    if (v138 != 13 || ![(PKShapeDrawingController *)self isScratchOutActive])
     {
       goto LABEL_42;
     }
@@ -2356,17 +2356,17 @@ LABEL_42:
       v69 = os_log_create("com.apple.pencilkit", "Actions");
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
       {
-        v70 = [v9 _pointsCount];
+        _pointsCount2 = [v9 _pointsCount];
         LODWORD(block) = 134217984;
-        *(&block + 4) = v70;
+        *(&block + 4) = _pointsCount2;
         _os_log_impl(&dword_1C7CCA000, v69, OS_LOG_TYPE_DEFAULT, "Scratch Out stroke has %lu points, cancelling due to too many.", &block, 0xCu);
       }
 
       goto LABEL_87;
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 200));
-    v110 = [WeakRetained shapeDrawingController:a1 scratchOutStrokesCoveredByStroke:v9];
+    WeakRetained = objc_loadWeakRetained((self + 200));
+    v110 = [WeakRetained shapeDrawingController:self scratchOutStrokesCoveredByStroke:v9];
 
     if ((v110 & 1) == 0)
     {
@@ -2385,52 +2385,52 @@ LABEL_87:
     switch(v138)
     {
       case 1:
-        v75 = a3[7];
-        v155 = a3[6];
+        v75 = stroke[7];
+        v155 = stroke[6];
         v156 = v75;
-        v157 = *(a3 + 16);
-        v76 = a3[3];
-        v151 = a3[2];
+        v157 = *(stroke + 16);
+        v76 = stroke[3];
+        v151 = stroke[2];
         v152 = v76;
-        v77 = a3[5];
-        v153 = a3[4];
+        v77 = stroke[5];
+        v153 = stroke[4];
         v154 = v77;
-        v78 = a3[1];
-        block = *a3;
+        v78 = stroke[1];
+        block = *stroke;
         v150 = v78;
-        v57 = [(PKShapeDrawingController *)a1 _generateOval:v46 sourceStroke:v9 inputScale:&block averageInputPoint:a5];
+        v57 = [(PKShapeDrawingController *)self _generateOval:v46 sourceStroke:v9 inputScale:&block averageInputPoint:point];
         goto LABEL_88;
       case 2:
-        v79 = a3[7];
-        v155 = a3[6];
+        v79 = stroke[7];
+        v155 = stroke[6];
         v156 = v79;
-        v157 = *(a3 + 16);
-        v80 = a3[3];
-        v151 = a3[2];
+        v157 = *(stroke + 16);
+        v80 = stroke[3];
+        v151 = stroke[2];
         v152 = v80;
-        v81 = a3[5];
-        v153 = a3[4];
+        v81 = stroke[5];
+        v153 = stroke[4];
         v154 = v81;
-        v82 = a3[1];
-        block = *a3;
+        v82 = stroke[1];
+        block = *stroke;
         v150 = v82;
-        v57 = [(PKShapeDrawingController *)a1 _generateRectangle:v46 sourceStroke:v9 inputScale:&block averageInputPoint:a5];
+        v57 = [(PKShapeDrawingController *)self _generateRectangle:v46 sourceStroke:v9 inputScale:&block averageInputPoint:point];
         goto LABEL_88;
       case 3:
-        v53 = a3[7];
-        v155 = a3[6];
+        v53 = stroke[7];
+        v155 = stroke[6];
         v156 = v53;
-        v157 = *(a3 + 16);
-        v54 = a3[3];
-        v151 = a3[2];
+        v157 = *(stroke + 16);
+        v54 = stroke[3];
+        v151 = stroke[2];
         v152 = v54;
-        v55 = a3[5];
-        v153 = a3[4];
+        v55 = stroke[5];
+        v153 = stroke[4];
         v154 = v55;
-        v56 = a3[1];
-        block = *a3;
+        v56 = stroke[1];
+        block = *stroke;
         v150 = v56;
-        v57 = [(PKShapeDrawingController *)a1 _generateTriangle:v46 sourceStroke:v9 inputScale:&block averageInputPoint:a5];
+        v57 = [(PKShapeDrawingController *)self _generateTriangle:v46 sourceStroke:v9 inputScale:&block averageInputPoint:point];
 LABEL_88:
         v58 = v57;
         goto LABEL_89;
@@ -2441,39 +2441,39 @@ LABEL_88:
 
   if ((v138 - 5) < 2)
   {
-    v71 = a3[7];
-    v155 = a3[6];
+    v71 = stroke[7];
+    v155 = stroke[6];
     v156 = v71;
-    v157 = *(a3 + 16);
-    v72 = a3[3];
-    v151 = a3[2];
+    v157 = *(stroke + 16);
+    v72 = stroke[3];
+    v151 = stroke[2];
     v152 = v72;
-    v73 = a3[5];
-    v153 = a3[4];
+    v73 = stroke[5];
+    v153 = stroke[4];
     v154 = v73;
-    v74 = a3[1];
-    block = *a3;
+    v74 = stroke[1];
+    block = *stroke;
     v150 = v74;
-    v57 = [(PKShapeDrawingController *)a1 _generateLine:v46 sourceStroke:v9 inputScale:&block averageInputPoint:&v138 shapeTypeOut:a5];
+    v57 = [(PKShapeDrawingController *)self _generateLine:v46 sourceStroke:v9 inputScale:&block averageInputPoint:&v138 shapeTypeOut:point];
     goto LABEL_88;
   }
 
   if (v138 == 4)
   {
-    v95 = a3[7];
-    v155 = a3[6];
+    v95 = stroke[7];
+    v155 = stroke[6];
     v156 = v95;
-    v157 = *(a3 + 16);
-    v96 = a3[3];
-    v151 = a3[2];
+    v157 = *(stroke + 16);
+    v96 = stroke[3];
+    v151 = stroke[2];
     v152 = v96;
-    v97 = a3[5];
-    v153 = a3[4];
+    v97 = stroke[5];
+    v153 = stroke[4];
     v154 = v97;
-    v98 = a3[1];
-    block = *a3;
+    v98 = stroke[1];
+    block = *stroke;
     v150 = v98;
-    v57 = [(PKShapeDrawingController *)a1 _generatePentagon:v46 sourceStroke:v9 inputScale:&block averageInputPoint:a5];
+    v57 = [(PKShapeDrawingController *)self _generatePentagon:v46 sourceStroke:v9 inputScale:&block averageInputPoint:point];
     goto LABEL_88;
   }
 
@@ -2500,43 +2500,43 @@ LABEL_88:
   v58 = 0;
   if (fabs(v99) < 0.0001 && v68 > 2.0)
   {
-    v100 = a3[7];
-    v155 = a3[6];
+    v100 = stroke[7];
+    v155 = stroke[6];
     v156 = v100;
-    v157 = *(a3 + 16);
-    v101 = a3[3];
-    v151 = a3[2];
+    v157 = *(stroke + 16);
+    v101 = stroke[3];
+    v151 = stroke[2];
     v152 = v101;
-    v102 = a3[5];
-    v153 = a3[4];
+    v102 = stroke[5];
+    v153 = stroke[4];
     v154 = v102;
-    v103 = a3[1];
-    block = *a3;
+    v103 = stroke[1];
+    block = *stroke;
     v150 = v103;
-    v58 = [(PKShapeDrawingController *)a1 _generateManhattanLine:v46 sourceStroke:v9 inputScale:&block averageInputPoint:a5];
+    v58 = [(PKShapeDrawingController *)self _generateManhattanLine:v46 sourceStroke:v9 inputScale:&block averageInputPoint:point];
   }
 
   if (!v58 && v47 && v68 < 1.0)
   {
-    v104 = [v47 string];
-    v138 = [(PKShapeDrawingController *)a1 _shapeTypeFromResultName:v104];
+    string3 = [v47 string];
+    v138 = [(PKShapeDrawingController *)self _shapeTypeFromResultName:string3];
 
     if ((v138 - 5) <= 1)
     {
-      v105 = a3[7];
-      v155 = a3[6];
+      v105 = stroke[7];
+      v155 = stroke[6];
       v156 = v105;
-      v157 = *(a3 + 16);
-      v106 = a3[3];
-      v151 = a3[2];
+      v157 = *(stroke + 16);
+      v106 = stroke[3];
+      v151 = stroke[2];
       v152 = v106;
-      v107 = a3[5];
-      v153 = a3[4];
+      v107 = stroke[5];
+      v153 = stroke[4];
       v154 = v107;
-      v108 = a3[1];
-      block = *a3;
+      v108 = stroke[1];
+      block = *stroke;
       v150 = v108;
-      v57 = [(PKShapeDrawingController *)a1 _generateLine:v47 sourceStroke:v9 inputScale:&block averageInputPoint:&v138 shapeTypeOut:a5];
+      v57 = [(PKShapeDrawingController *)self _generateLine:v47 sourceStroke:v9 inputScale:&block averageInputPoint:&v138 shapeTypeOut:point];
       goto LABEL_88;
     }
 
@@ -2553,8 +2553,8 @@ LABEL_89:
 LABEL_90:
   if ([v58 count])
   {
-    v111 = [MEMORY[0x1E696AFB0] UUID];
-    objc_storeStrong((a1 + 224), v111);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong((self + 224), uUID);
 
     v136 = 0u;
     v137 = 0u;
@@ -2575,7 +2575,7 @@ LABEL_90:
           }
 
           v116 = *(*(&v134 + 1) + 8 * j);
-          v117 = *(a1 + 224);
+          v117 = *(self + 224);
           [v116 _setGroupID:v117];
 
           [v116 _setShapeType:v138];
@@ -2589,7 +2589,7 @@ LABEL_90:
 
     if ([v112 count] >= 2)
     {
-      v118 = [MEMORY[0x1E696AFB0] UUID];
+      uUID2 = [MEMORY[0x1E696AFB0] UUID];
       v132 = 0u;
       v133 = 0u;
       v130 = 0u;
@@ -2608,7 +2608,7 @@ LABEL_90:
               objc_enumerationMutation(v119);
             }
 
-            [*(*(&v130 + 1) + 8 * k) _setRenderGroupID:v118];
+            [*(*(&v130 + 1) + 8 * k) _setRenderGroupID:uUID2];
           }
 
           v120 = [v119 countByEnumeratingWithState:&v130 objects:v145 count:16];
@@ -2619,7 +2619,7 @@ LABEL_90:
     }
   }
 
-  if ((![v58 count] || !v138) && ((v123 = -[PKShapeDrawingController isScratchOutActive](a1), v138 == 13) ? (v124 = v123) : (v124 = 0), v124 != 1) || (v125 = [PKShape alloc], (a1 = -[PKShape initWithShapeType:strokes:originalStroke:](v125, "initWithShapeType:strokes:originalStroke:", v138, v58, v129)) == 0))
+  if ((![v58 count] || !v138) && ((v123 = -[PKShapeDrawingController isScratchOutActive](self), v138 == 13) ? (v124 = v123) : (v124 = 0), v124 != 1) || (v125 = [PKShape alloc], (self = -[PKShape initWithShapeType:strokes:originalStroke:](v125, "initWithShapeType:strokes:originalStroke:", v138, v58, v129)) == 0))
   {
     v126 = os_log_create("com.apple.pencilkit", "Actions");
     if (os_log_type_enabled(v126, OS_LOG_TYPE_DEFAULT))
@@ -2628,28 +2628,28 @@ LABEL_90:
       _os_log_impl(&dword_1C7CCA000, v126, OS_LOG_TYPE_DEFAULT, "Shape recognized <none>.", &block, 2u);
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_118:
 
-  return a1;
+  return self;
 }
 
-- (id)detectedShapeWithInputScale:(void *)a3 averageInputPoint:(void *)a4 allowedShapeTypes:(double)a5 createCurrentStrokeBlock:
+- (id)detectedShapeWithInputScale:(void *)scale averageInputPoint:(void *)point allowedShapeTypes:(double)types createCurrentStrokeBlock:
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (a1)
+  scaleCopy = scale;
+  pointCopy = point;
+  v11 = pointCopy;
+  if (self)
   {
-    if (((*(a1 + 193) & 1) != 0 || *(a1 + 216)) && ((*(a1 + 64) & 1) != 0 || *(a1 + 65) == 1))
+    if (((*(self + 193) & 1) != 0 || *(self + 216)) && ((*(self + 64) & 1) != 0 || *(self + 65) == 1))
     {
-      v12 = (*(v10 + 2))(v10);
+      v12 = (*(pointCopy + 2))(pointCopy);
       [v12 renderBounds];
-      if (v14 / a5 < 10.0 && v13 / a5 < 10.0 || v12 == 0)
+      if (v14 / types < 10.0 && v13 / types < 10.0 || v12 == 0)
       {
-        a1 = 0;
+        self = 0;
       }
 
       else
@@ -2667,17 +2667,17 @@ LABEL_118:
         v20 = *(a2 + 16);
         v22[0] = *a2;
         v22[1] = v20;
-        a1 = [(PKShapeDrawingController *)a1 shapeFromStroke:v12 inputScale:v22 averageInputPoint:v9 allowedShapeTypes:a5];
+        self = [(PKShapeDrawingController *)self shapeFromStroke:v12 inputScale:v22 averageInputPoint:scaleCopy allowedShapeTypes:types];
       }
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_addAngles:(void *)result
@@ -2752,7 +2752,7 @@ LABEL_118:
   return result;
 }
 
-- (CGRect)_addCurrentStrokePoint:(CGFloat)a3
+- (CGRect)_addCurrentStrokePoint:(CGFloat)point
 {
   if (result)
   {
@@ -2760,10 +2760,10 @@ LABEL_118:
     v22.size.width = 1.0;
     v22.size.height = 1.0;
     v22.origin.x = a2;
-    v22.origin.y = a3;
+    v22.origin.y = point;
     result[1] = CGRectUnion(result[1], v22);
     _Q0.f64[0] = a2;
-    _Q0.f64[1] = a3;
+    _Q0.f64[1] = point;
     *&_Q0.f64[0] = vmovn_s64(vcvtq_s64_f64(vmulq_f64(_Q0, vdupq_n_s64(0x4059000000000000uLL))));
     *&v5 = SLODWORD(_Q0.f64[0]);
     *(&v5 + 1) = SHIDWORD(_Q0.f64[0]);
@@ -2827,7 +2827,7 @@ LABEL_118:
       }
 
       *v11 = a2;
-      v11[1] = a3;
+      v11[1] = point;
       v11[2] = v10;
       p_x[10] = v11 + 3;
     }
@@ -2836,37 +2836,37 @@ LABEL_118:
   return result;
 }
 
-- (void)beginStrokeAtPoint:(CGFloat)a3
+- (void)beginStrokeAtPoint:(CGFloat)point
 {
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 208);
-    *(a1 + 208) = 0;
+    v6 = *(self + 208);
+    *(self + 208) = 0;
 
-    [(PKAveragePointGenerator *)*(a1 + 120) reset];
-    *(a1 + 128) = 0;
-    *(a1 + 64) = 0;
-    *(a1 + 66) = 0;
+    [(PKAveragePointGenerator *)*(self + 120) reset];
+    *(self + 128) = 0;
+    *(self + 64) = 0;
+    *(self + 66) = 0;
     v7 = *(MEMORY[0x1E695F050] + 16);
-    *(a1 + 32) = *MEMORY[0x1E695F050];
-    *(a1 + 48) = v7;
-    std::vector<ClipperLib::IntPoint>::resize((a1 + 8), 0);
-    [(PKShapeDrawingController *)a1 _addCurrentStrokePoint:a2, a3];
+    *(self + 32) = *MEMORY[0x1E695F050];
+    *(self + 48) = v7;
+    std::vector<ClipperLib::IntPoint>::resize((self + 8), 0);
+    [(PKShapeDrawingController *)self _addCurrentStrokePoint:a2, point];
     v8 = CACurrentMediaTime();
-    *(a1 + 136) = v8;
-    *(a1 + 144) = v8;
-    *(a1 + 152) = 0;
-    *(a1 + 67) = 1;
-    *(a1 + 184) = 0;
+    *(self + 136) = v8;
+    *(self + 144) = v8;
+    *(self + 152) = 0;
+    *(self + 67) = 1;
+    *(self + 184) = 0;
   }
 }
 
-- (void)addStrokePoint:(CGFloat)a3 inputPoint:(CGFloat)a4
+- (void)addStrokePoint:(CGFloat)point inputPoint:(CGFloat)inputPoint
 {
-  if (a1)
+  if (self)
   {
-    v5 = (a1 + 8);
-    if (*(a1 + 16) != *(a1 + 8))
+    v5 = (self + 8);
+    if (*(self + 16) != *(self + 8))
     {
       v9 = a2[7];
       v30 = a2[6];
@@ -2881,19 +2881,19 @@ LABEL_118:
       v12 = a2[1];
       v24 = *a2;
       v25 = v12;
-      [(PKShapeDrawingController *)a1 _addAngles:?];
-      v13 = *(a1 + 16);
-      v14 = sqrt((a4 - (*(v13 - 16) / 100)) * (a4 - (*(v13 - 16) / 100)) + (a3 - (*(v13 - 24) / 100)) * (a3 - (*(v13 - 24) / 100)));
+      [(PKShapeDrawingController *)self _addAngles:?];
+      v13 = *(self + 16);
+      v14 = sqrt((inputPoint - (*(v13 - 16) / 100)) * (inputPoint - (*(v13 - 16) / 100)) + (point - (*(v13 - 24) / 100)) * (point - (*(v13 - 24) / 100)));
       v15 = 10.0;
-      if (!*(a1 + 208))
+      if (!*(self + 208))
       {
         v15 = 2.0;
       }
 
       if (v14 > v15)
       {
-        [(PKShapeDrawingController *)a1 _addCurrentStrokePoint:a3, a4];
-        v16 = *(a1 + 120);
+        [(PKShapeDrawingController *)self _addCurrentStrokePoint:point, inputPoint];
+        v16 = *(self + 120);
         v17 = a2[7];
         v30 = a2[6];
         v31 = v17;
@@ -2908,47 +2908,47 @@ LABEL_118:
         v24 = *a2;
         v25 = v20;
         [(PKAveragePointGenerator *)v16 addInputPoint:?];
-        ++*(a1 + 128);
+        ++*(self + 128);
         v21 = CACurrentMediaTime();
-        if (*(a1 + 208))
+        if (*(self + 208))
         {
-          WeakRetained = objc_loadWeakRetained((a1 + 200));
-          [WeakRetained shapeDrawingControllerShapeDetectionCancelled:a1];
+          WeakRetained = objc_loadWeakRetained((self + 200));
+          [WeakRetained shapeDrawingControllerShapeDetectionCancelled:self];
 
-          *(a1 + 136) = v21;
+          *(self + 136) = v21;
           v23 = v21;
         }
 
         else
         {
-          v23 = *(a1 + 136);
+          v23 = *(self + 136);
         }
 
-        *(a1 + 144) = v21;
-        if (v21 - v23 > 0.3 && sqrt((a4 - (*(*v5 + 8) / 100)) * (a4 - (*(*v5 + 8) / 100)) + (a3 - (**v5 / 100)) * (a3 - (**v5 / 100))) < 20.0 && fabs(ClipperLib::Area(v5)) / 10000.0 > 500.0)
+        *(self + 144) = v21;
+        if (v21 - v23 > 0.3 && sqrt((inputPoint - (*(*v5 + 8) / 100)) * (inputPoint - (*(*v5 + 8) / 100)) + (point - (**v5 / 100)) * (point - (**v5 / 100))) < 20.0 && fabs(ClipperLib::Area(v5)) / 10000.0 > 500.0)
         {
-          *(a1 + 64) = 1;
+          *(self + 64) = 1;
         }
       }
 
-      [(PKShapeDrawingController *)a1 _checkDetectedStroke];
+      [(PKShapeDrawingController *)self _checkDetectedStroke];
     }
   }
 }
 
 - (void)_checkDetectedStroke
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 208);
+    v2 = *(self + 208);
     if (v2)
     {
     }
 
-    else if (*(a1 + 67))
+    else if (*(self + 67))
     {
-      v3 = *(a1 + 8);
-      v4 = 0xAAAAAAAAAAAAAAABLL * ((*(a1 + 16) - v3) >> 3);
+      v3 = *(self + 8);
+      v4 = 0xAAAAAAAAAAAAAAABLL * ((*(self + 16) - v3) >> 3);
       if (v4 >= 2)
       {
         v5 = v4 - 1;
@@ -2974,13 +2974,13 @@ LABEL_118:
           if (v9 >= 10.0)
           {
             v13 = CACurrentMediaTime();
-            v14 = *(a1 + 160);
-            if (v13 - *(a1 + 136) > v14 && v13 - *(a1 + 184) >= v14)
+            v14 = *(self + 160);
+            if (v13 - *(self + 136) > v14 && v13 - *(self + 184) >= v14)
             {
-              *(a1 + 184) = v13;
-              if (*(a1 + 194) == 1 && (*(a1 + 66) & 1) == 0)
+              *(self + 184) = v13;
+              if (*(self + 194) == 1 && (*(self + 66) & 1) == 0)
               {
-                v15 = *(a1 + 195);
+                v15 = *(self + 195);
               }
 
               else
@@ -2988,26 +2988,26 @@ LABEL_118:
                 v15 = 0;
               }
 
-              if (*(a1 + 193) == 1)
+              if (*(self + 193) == 1)
               {
-                if ([(PKShapeDrawingController *)a1 hasMovementStopped])
+                if ([(PKShapeDrawingController *)self hasMovementStopped])
                 {
-                  *(a1 + 65) = 1;
-                  *(a1 + 152) = *(a1 + 152) + v13 - *(a1 + 136);
-                  WeakRetained = objc_loadWeakRetained((a1 + 200));
-                  [WeakRetained shapeDrawingControllerShapeGestureDetected:a1 isFastGesture:v15 & 1];
+                  *(self + 65) = 1;
+                  *(self + 152) = *(self + 152) + v13 - *(self + 136);
+                  WeakRetained = objc_loadWeakRetained((self + 200));
+                  [WeakRetained shapeDrawingControllerShapeGestureDetected:self isFastGesture:v15 & 1];
 
-                  *(a1 + 66) = 1;
+                  *(self + 66) = 1;
                 }
               }
 
-              else if (*(a1 + 64) == 1 && [(PKShapeDrawingController *)a1 hasMovementStopped])
+              else if (*(self + 64) == 1 && [(PKShapeDrawingController *)self hasMovementStopped])
               {
-                *(a1 + 152) = *(a1 + 152) + v13 - *(a1 + 136);
-                v17 = objc_loadWeakRetained((a1 + 200));
-                [v17 shapeDrawingControllerShapeGestureDetected:a1 isFastGesture:v15 & 1];
+                *(self + 152) = *(self + 152) + v13 - *(self + 136);
+                v17 = objc_loadWeakRetained((self + 200));
+                [v17 shapeDrawingControllerShapeGestureDetected:self isFastGesture:v15 & 1];
 
-                *(a1 + 66) = 1;
+                *(self + 66) = 1;
               }
             }
           }
@@ -3019,17 +3019,17 @@ LABEL_118:
 
 - (void)resetStroke
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 67) = 0;
-    std::vector<TimestampedPoint>::resize((a1 + 72), 0);
-    std::vector<TimestampedAngles>::resize((a1 + 96), 0);
+    *(self + 67) = 0;
+    std::vector<TimestampedPoint>::resize((self + 72), 0);
+    std::vector<TimestampedAngles>::resize((self + 96), 0);
     v2 = *(MEMORY[0x1E695F050] + 16);
-    *(a1 + 32) = *MEMORY[0x1E695F050];
-    *(a1 + 48) = v2;
-    std::vector<ClipperLib::IntPoint>::resize((a1 + 8), 0);
-    v3 = *(a1 + 208);
-    *(a1 + 208) = 0;
+    *(self + 32) = *MEMORY[0x1E695F050];
+    *(self + 48) = v2;
+    std::vector<ClipperLib::IntPoint>::resize((self + 8), 0);
+    v3 = *(self + 208);
+    *(self + 208) = 0;
   }
 }
 
@@ -3039,18 +3039,18 @@ LABEL_118:
   v2 = CACurrentMediaTime();
   v3 = 0.0;
   v4 = 0.0;
-  if (0xAAAAAAAAAAAAAAABLL * ((*(a1 + 80) - *(a1 + 72)) >> 3) >= 2)
+  if (0xAAAAAAAAAAAAAAABLL * ((*(self + 80) - *(self + 72)) >> 3) >= 2)
   {
     v5 = CACurrentMediaTime();
-    v6 = *(a1 + 72);
+    v6 = *(self + 72);
     v7 = v6[2];
-    v8 = 0xAAAAAAAAAAAAAAABLL * ((*(a1 + 80) - v6) >> 3);
+    v8 = 0xAAAAAAAAAAAAAAABLL * ((*(self + 80) - v6) >> 3);
     v4 = 0.0;
     v9 = v7;
     v10 = 0.0;
     if (v8 != 1)
     {
-      v11 = v5 - *(a1 + 160);
+      v11 = v5 - *(self + 160);
       v9 = v6[2];
       v10 = 0.0;
       if (v6[5] <= v11)
@@ -3097,8 +3097,8 @@ LABEL_118:
     }
   }
 
-  v17 = *(a1 + 96);
-  v16 = *(a1 + 104);
+  v17 = *(self + 96);
+  v16 = *(self + 104);
   v18 = v16 - v17;
   v19 = (v16 - v17) >> 5;
   if (v19 >= 2)
@@ -3179,31 +3179,31 @@ LABEL_118:
     }
   }
 
-  if (*(a1 + 194) == 1 && *(a1 + 66) != 1)
+  if (*(self + 194) == 1 && *(self + 66) != 1)
   {
-    v38 = *(a1 + 195);
+    v38 = *(self + 195);
     v40 = 168;
-    if (*(a1 + 195))
+    if (*(self + 195))
     {
       v40 = 176;
     }
 
-    v39 = (a1 + v40);
+    v39 = (self + v40);
   }
 
   else
   {
     v38 = 0;
-    v39 = (a1 + 168);
+    v39 = (self + 168);
   }
 
-  if (v2 - *(a1 + 136) <= 0.3)
+  if (v2 - *(self + 136) <= 0.3)
   {
     return 0;
   }
 
-  v41 = (v4 / -400.0 + 1.0) * *v39 + *(a1 + 160) * (1.0 - (v4 / -400.0 + 1.0));
-  if (v2 - *(a1 + 144) <= v41 || v3 >= 0.5)
+  v41 = (v4 / -400.0 + 1.0) * *v39 + *(self + 160) * (1.0 - (v4 / -400.0 + 1.0));
+  if (v2 - *(self + 144) <= v41 || v3 >= 0.5)
   {
     return 0;
   }
@@ -3261,11 +3261,11 @@ void __53__PKShapeDrawingController_hasSnapToShapeEntitlement__block_invoke()
   }
 }
 
-- (void)setDetectedShape:(uint64_t)a1
+- (void)setDetectedShape:(uint64_t)shape
 {
-  if (a1)
+  if (shape)
   {
-    objc_storeStrong((a1 + 208), a2);
+    objc_storeStrong((shape + 208), a2);
   }
 }
 

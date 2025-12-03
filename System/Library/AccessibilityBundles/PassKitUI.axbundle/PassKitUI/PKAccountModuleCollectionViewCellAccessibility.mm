@@ -6,14 +6,14 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __68__PKAccountModuleCollectionViewCellAccessibility_accessibilityLabel__block_invoke;
   v8[3] = &unk_29F2E1B70;
   v8[4] = self;
-  v9 = v3;
-  v4 = v3;
+  v9 = array;
+  v4 = array;
   v5 = [(PKAccountModuleCollectionViewCellAccessibility *)self _accessibilityFindDescendant:v8];
   v6 = AXLabelForElements();
 

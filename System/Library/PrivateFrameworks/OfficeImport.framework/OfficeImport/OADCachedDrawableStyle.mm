@@ -1,6 +1,6 @@
 @interface OADCachedDrawableStyle
-- (BOOL)isEqual:(id)a3;
-- (OADCachedDrawableStyle)initWithFillCategory:(int)a3 mFillIndex:(unint64_t)a4 strokeIndex:(unint64_t)a5 shadowIndex:(unint64_t)a6 reflectionOpacity:(unsigned __int8)a7 textStyleIndex:(unint64_t)a8;
+- (BOOL)isEqual:(id)equal;
+- (OADCachedDrawableStyle)initWithFillCategory:(int)category mFillIndex:(unint64_t)index strokeIndex:(unint64_t)strokeIndex shadowIndex:(unint64_t)shadowIndex reflectionOpacity:(unsigned __int8)opacity textStyleIndex:(unint64_t)styleIndex;
 - (unint64_t)hash;
 @end
 
@@ -17,31 +17,31 @@
   return (v4.i32[0] | v4.i32[1]) | ((self->mReflectionOpacity & 7) << 21) | self->mFillCategory & 3;
 }
 
-- (OADCachedDrawableStyle)initWithFillCategory:(int)a3 mFillIndex:(unint64_t)a4 strokeIndex:(unint64_t)a5 shadowIndex:(unint64_t)a6 reflectionOpacity:(unsigned __int8)a7 textStyleIndex:(unint64_t)a8
+- (OADCachedDrawableStyle)initWithFillCategory:(int)category mFillIndex:(unint64_t)index strokeIndex:(unint64_t)strokeIndex shadowIndex:(unint64_t)shadowIndex reflectionOpacity:(unsigned __int8)opacity textStyleIndex:(unint64_t)styleIndex
 {
   v15.receiver = self;
   v15.super_class = OADCachedDrawableStyle;
   result = [(OADCachedDrawableStyle *)&v15 init];
   if (result)
   {
-    result->mFillCategory = a3;
-    result->mFillIndex = a4;
-    result->mStrokeIndex = a5;
-    result->mShadowIndex = a6;
-    result->mReflectionOpacity = a7;
-    result->mTextStyleIndex = a8;
+    result->mFillCategory = category;
+    result->mFillIndex = index;
+    result->mStrokeIndex = strokeIndex;
+    result->mShadowIndex = shadowIndex;
+    result->mReflectionOpacity = opacity;
+    result->mTextStyleIndex = styleIndex;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     v6 = self->mFillCategory == v7[2] && self->mFillIndex == *(v7 + 2) && self->mStrokeIndex == *(v7 + 3) && self->mShadowIndex == *(v7 + 4) && self->mReflectionOpacity == *(v7 + 40) && self->mTextStyleIndex == *(v7 + 6);
   }
 

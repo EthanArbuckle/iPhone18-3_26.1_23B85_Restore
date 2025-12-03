@@ -1,5 +1,5 @@
 @interface MUPlatterView
-- (MUPlatterView)initWithContentView:(id)a3 includeBackground:(BOOL)a4;
+- (MUPlatterView)initWithContentView:(id)view includeBackground:(BOOL)background;
 - (id)_createVisualStyleProvider;
 - (void)_fetchGroupNameIfNeeded;
 - (void)_setup;
@@ -11,42 +11,42 @@
 
 - (void)_fetchGroupNameIfNeeded
 {
-  v3 = [(MUPlatterView *)self window];
+  window = [(MUPlatterView *)self window];
 
-  if (v3)
+  if (window)
   {
     visualEffectView = self->_visualEffectView;
     if (visualEffectView)
     {
       if (([(UIVisualEffectView *)visualEffectView isHidden]& 1) == 0)
       {
-        v5 = [(UIVisualEffectView *)self->_visualEffectView _groupName];
-        v6 = [v5 length];
+        _groupName = [(UIVisualEffectView *)self->_visualEffectView _groupName];
+        v6 = [_groupName length];
 
         if (!v6)
         {
-          v7 = [(MUPlatterView *)self superview];
-          if (v7)
+          superview = [(MUPlatterView *)self superview];
+          if (superview)
           {
             while (1)
             {
-              v10 = v7;
+              v10 = superview;
               if (objc_opt_respondsToSelector())
               {
                 break;
               }
 
-              v8 = [v10 superview];
+              superview2 = [v10 superview];
 
-              v7 = v8;
-              if (!v8)
+              superview = superview2;
+              if (!superview2)
               {
                 return;
               }
             }
 
-            v9 = [v10 vibrancyGroupName];
-            [(UIVisualEffectView *)self->_visualEffectView _setGroupName:v9];
+            vibrancyGroupName = [v10 vibrancyGroupName];
+            [(UIVisualEffectView *)self->_visualEffectView _setGroupName:vibrancyGroupName];
           }
         }
       }
@@ -81,14 +81,14 @@
 - (void)_setup
 {
   v31[4] = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlatterView *)self _createVisualStyleProvider];
+  _createVisualStyleProvider = [(MUPlatterView *)self _createVisualStyleProvider];
   visualStyleProvider = self->_visualStyleProvider;
-  self->_visualStyleProvider = v3;
+  self->_visualStyleProvider = _createVisualStyleProvider;
 
-  v5 = [(MUPlatterViewStyleProviding *)self->_visualStyleProvider fillColor];
+  fillColor = [(MUPlatterViewStyleProviding *)self->_visualStyleProvider fillColor];
   v6 = self->_visualStyleProvider;
-  v7 = [(MUPlatterView *)self traitCollection];
-  v8 = [(MUPlatterViewStyleProviding *)v6 visualEffectForTraitCollection:v7];
+  traitCollection = [(MUPlatterView *)self traitCollection];
+  v8 = [(MUPlatterViewStyleProviding *)v6 visualEffectForTraitCollection:traitCollection];
 
   if (v8)
   {
@@ -96,8 +96,8 @@
     visualEffectView = self->_visualEffectView;
     self->_visualEffectView = v9;
 
-    v11 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-    [v11 setBackgroundColor:v5];
+    contentView = [(UIVisualEffectView *)self->_visualEffectView contentView];
+    [contentView setBackgroundColor:fillColor];
 
     if (self->_includeBackground)
     {
@@ -109,7 +109,7 @@
 
   else if (self->_includeBackground)
   {
-    [(MUPlatterView *)self setBackgroundColor:v5];
+    [(MUPlatterView *)self setBackgroundColor:fillColor];
   }
 
   if (self->_includeBackground)
@@ -121,7 +121,7 @@
   if (contentView)
   {
     v29 = v8;
-    v30 = v5;
+    v30 = fillColor;
     [(UIView *)contentView setTranslatesAutoresizingMaskIntoConstraints:0];
     if (self->_includeBackground)
     {
@@ -130,46 +130,46 @@
 
     [(MUPlatterView *)self addSubview:self->_contentView];
     v24 = MEMORY[0x1E696ACD8];
-    v28 = [(UIView *)self->_contentView leadingAnchor];
-    v27 = [(MUPlatterView *)self leadingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    leadingAnchor = [(UIView *)self->_contentView leadingAnchor];
+    leadingAnchor2 = [(MUPlatterView *)self leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v31[0] = v26;
-    v25 = [(UIView *)self->_contentView trailingAnchor];
-    v13 = [(MUPlatterView *)self trailingAnchor];
-    v14 = [v25 constraintEqualToAnchor:v13];
+    trailingAnchor = [(UIView *)self->_contentView trailingAnchor];
+    trailingAnchor2 = [(MUPlatterView *)self trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v31[1] = v14;
-    v15 = [(UIView *)self->_contentView topAnchor];
-    v16 = [(MUPlatterView *)self topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    topAnchor = [(UIView *)self->_contentView topAnchor];
+    topAnchor2 = [(MUPlatterView *)self topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v31[2] = v17;
-    v18 = [(UIView *)self->_contentView bottomAnchor];
-    v19 = [(MUPlatterView *)self bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    bottomAnchor = [(UIView *)self->_contentView bottomAnchor];
+    bottomAnchor2 = [(MUPlatterView *)self bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v31[3] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
     [v24 activateConstraints:v21];
 
     v8 = v29;
-    v5 = v30;
+    fillColor = v30;
   }
 
-  v22 = [(MUPlatterView *)self traitOverrides];
-  [v22 setNSIntegerValue:1 forTrait:objc_opt_class()];
+  traitOverrides = [(MUPlatterView *)self traitOverrides];
+  [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (MUPlatterView)initWithContentView:(id)a3 includeBackground:(BOOL)a4
+- (MUPlatterView)initWithContentView:(id)view includeBackground:(BOOL)background
 {
-  v7 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = MUPlatterView;
   v8 = [(MUPlatterView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_contentView, a3);
-    v9->_includeBackground = a4;
+    objc_storeStrong(&v8->_contentView, view);
+    v9->_includeBackground = background;
     [(MUPlatterView *)v9 _setup];
   }
 

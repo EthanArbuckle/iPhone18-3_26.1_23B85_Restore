@@ -1,18 +1,18 @@
 @interface QLScrollableContentItemViewController
 - (BOOL)canPinchToDismiss;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)shouldLayoutContentBasedOnPeripheryInsets;
 - (CGSize)imageSize;
 - (QLScrollableContentItemViewController)init;
-- (double)previewScrollView:(id)a3 extraMinimumZoomForMinimumZoomScale:(double)a4 maximumZoomScale:(double)a5;
-- (void)_doubleTapRecognized:(id)a3;
-- (void)_updateScrollViewZoomUpdate:(CGSize)a3;
+- (double)previewScrollView:(id)view extraMinimumZoomForMinimumZoomScale:(double)scale maximumZoomScale:(double)zoomScale;
+- (void)_doubleTapRecognized:(id)recognized;
+- (void)_updateScrollViewZoomUpdate:(CGSize)update;
 - (void)loadView;
-- (void)previewScrollViewDidScroll:(id)a3;
-- (void)previewScrollViewDidZoom:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)transitionWillFinish:(BOOL)a3 didComplete:(BOOL)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)previewScrollViewDidScroll:(id)scroll;
+- (void)previewScrollViewDidZoom:(id)zoom;
+- (void)setContentView:(id)view;
+- (void)transitionWillFinish:(BOOL)finish didComplete:(BOOL)complete;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation QLScrollableContentItemViewController
@@ -51,42 +51,42 @@
     self->_doubleTapGesture = v5;
 
     [(UITapGestureRecognizer *)self->_doubleTapGesture setNumberOfTapsRequired:2];
-    v7 = [(QLItemViewController *)self delegate];
-    [(UITapGestureRecognizer *)self->_doubleTapGesture setDelegate:v7];
+    delegate = [(QLItemViewController *)self delegate];
+    [(UITapGestureRecognizer *)self->_doubleTapGesture setDelegate:delegate];
 
     v20 = objc_opt_new();
     [v20 addSubview:self->_scrollView];
     [(QLPreviewScrollView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(QLPreviewScrollView *)self->_scrollView leftAnchor];
-    v9 = [v20 leftAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    leftAnchor = [(QLPreviewScrollView *)self->_scrollView leftAnchor];
+    leftAnchor2 = [v20 leftAnchor];
+    v10 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v10 setActive:1];
 
-    v11 = [(QLPreviewScrollView *)self->_scrollView rightAnchor];
-    v12 = [v20 rightAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    rightAnchor = [(QLPreviewScrollView *)self->_scrollView rightAnchor];
+    rightAnchor2 = [v20 rightAnchor];
+    v13 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v13 setActive:1];
 
-    v14 = [(QLPreviewScrollView *)self->_scrollView topAnchor];
-    v15 = [v20 topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    topAnchor = [(QLPreviewScrollView *)self->_scrollView topAnchor];
+    topAnchor2 = [v20 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v16 setActive:1];
 
-    v17 = [(QLPreviewScrollView *)self->_scrollView bottomAnchor];
-    v18 = [v20 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [(QLPreviewScrollView *)self->_scrollView bottomAnchor];
+    bottomAnchor2 = [v20 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v19 setActive:1];
 
     [(QLScrollableContentItemViewController *)self setView:v20];
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v10 = a3;
+  viewCopy = view;
   [(QLScrollableContentItemViewController *)self loadView];
   contentView = self->_contentView;
-  if (contentView != v10)
+  if (contentView != viewCopy)
   {
     if (contentView)
     {
@@ -94,7 +94,7 @@
       [(UIView *)self->_contentView removeGestureRecognizer:self->_doubleTapGesture];
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(QLScrollableContentItemViewController *)self imageSize];
     v7 = v6;
     v9 = v8;
@@ -104,10 +104,10 @@
   }
 }
 
-- (void)_doubleTapRecognized:(id)a3
+- (void)_doubleTapRecognized:(id)recognized
 {
   scrollView = self->_scrollView;
-  v5 = a3;
+  recognizedCopy = recognized;
   [(QLPreviewScrollView *)scrollView zoomScale];
   v7 = v6;
   [(QLPreviewScrollView *)self->_scrollView contentIsSmallerThanView];
@@ -152,8 +152,8 @@ LABEL_9:
 
 LABEL_11:
   v19 = self->_scrollView;
-  v20 = [v5 view];
-  [v5 locationInView:v20];
+  view = [recognizedCopy view];
+  [recognizedCopy locationInView:view];
   v22 = v21;
   v24 = v23;
 
@@ -164,17 +164,17 @@ LABEL_11:
   v32 = v31;
 
   [(QLPreviewScrollView *)self->_scrollView zoomToRect:1 animated:v26, v28, v30, v32];
-  v33 = [(QLItemViewController *)self delegate];
-  [v33 previewItemViewController:self wantsFullScreen:1];
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self wantsFullScreen:1];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(QLScrollableContentItemViewController *)self view];
-  [v8 frame];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  view = [(QLScrollableContentItemViewController *)self view];
+  [view frame];
   v10 = v9;
   v12 = v11;
 
@@ -188,21 +188,21 @@ LABEL_11:
     v15[4] = self;
     *&v15[5] = width;
     *&v15[6] = height;
-    [v7 animateAlongsideTransition:v15 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v15 completion:0];
   }
 
   v14.receiver = self;
   v14.super_class = QLScrollableContentItemViewController;
-  [(QLScrollableContentItemViewController *)&v14 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(QLScrollableContentItemViewController *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)transitionWillFinish:(BOOL)a3 didComplete:(BOOL)a4
+- (void)transitionWillFinish:(BOOL)finish didComplete:(BOOL)complete
 {
-  v4 = a4;
+  completeCopy = complete;
   v8.receiver = self;
   v8.super_class = QLScrollableContentItemViewController;
   [QLItemViewController transitionWillFinish:sel_transitionWillFinish_didComplete_ didComplete:?];
-  if (v4 && !a3)
+  if (completeCopy && !finish)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -229,10 +229,10 @@ uint64_t __74__QLScrollableContentItemViewController_transitionWillFinish_didCom
   return v4 == v5;
 }
 
-- (void)_updateScrollViewZoomUpdate:(CGSize)a3
+- (void)_updateScrollViewZoomUpdate:(CGSize)update
 {
-  height = a3.height;
-  width = a3.width;
+  height = update.height;
+  width = update.width;
   [(QLPreviewScrollView *)self->_scrollView setPreventZoomUpdate:0];
   [(QLPreviewScrollView *)self->_scrollView zoomScale];
   v7 = v6;
@@ -287,11 +287,11 @@ LABEL_11:
 
 - (BOOL)shouldLayoutContentBasedOnPeripheryInsets
 {
-  v3 = [(QLItemViewController *)self appearance];
-  v4 = [v3 presentationMode];
+  appearance = [(QLItemViewController *)self appearance];
+  presentationMode = [appearance presentationMode];
 
-  v5 = [(QLScrollableContentItemViewController *)self view];
-  [v5 frame];
+  view = [(QLScrollableContentItemViewController *)self view];
+  [view frame];
   v7 = v6;
   v9 = v8;
   v10 = *MEMORY[0x277CBF3A8];
@@ -299,47 +299,47 @@ LABEL_11:
 
   if (v7 == v10 && v9 == v11)
   {
-    v13 = [MEMORY[0x277D759A0] mainScreen];
-    [v13 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
   }
 
   else
   {
-    v13 = [(QLScrollableContentItemViewController *)self view];
-    [v13 frame];
+    mainScreen = [(QLScrollableContentItemViewController *)self view];
+    [mainScreen frame];
   }
 
   v16 = v14;
   v17 = v15;
 
   [(QLScrollableContentItemViewController *)self imageSize];
-  return (v4 != 4) & !QLSizeAspectRatioEqualToSizeAspectRatioWithTolerance(v18, v19, v16, v17);
+  return (presentationMode != 4) & !QLSizeAspectRatioEqualToSizeAspectRatioWithTolerance(v18, v19, v16, v17);
 }
 
-- (void)previewScrollViewDidScroll:(id)a3
+- (void)previewScrollViewDidScroll:(id)scroll
 {
-  [(QLScrollableContentItemViewController *)self didScroll:a3];
-  v4 = [(QLScrollableContentItemViewController *)self view];
+  [(QLScrollableContentItemViewController *)self didScroll:scroll];
+  view = [(QLScrollableContentItemViewController *)self view];
   [(UIView *)self->_contentView frame];
-  [v4 convertRect:self->_scrollView fromView:?];
+  [view convertRect:self->_scrollView fromView:?];
   [(QLItemViewController *)self setContentFrame:?];
 }
 
-- (void)previewScrollViewDidZoom:(id)a3
+- (void)previewScrollViewDidZoom:(id)zoom
 {
-  [(QLScrollableContentItemViewController *)self didZoom:a3];
-  v4 = [(QLScrollableContentItemViewController *)self view];
+  [(QLScrollableContentItemViewController *)self didZoom:zoom];
+  view = [(QLScrollableContentItemViewController *)self view];
   [(UIView *)self->_contentView frame];
-  [v4 convertRect:self->_scrollView fromView:?];
+  [view convertRect:self->_scrollView fromView:?];
   [(QLItemViewController *)self setContentFrame:?];
 }
 
-- (double)previewScrollView:(id)a3 extraMinimumZoomForMinimumZoomScale:(double)a4 maximumZoomScale:(double)a5
+- (double)previewScrollView:(id)view extraMinimumZoomForMinimumZoomScale:(double)scale maximumZoomScale:(double)zoomScale
 {
-  v7 = [(QLItemViewController *)self appearance];
-  if ([v7 presentationMode] == 4)
+  appearance = [(QLItemViewController *)self appearance];
+  if ([appearance presentationMode] == 4)
   {
-    v8 = (a5 - a4) * 0.002;
+    v8 = (zoomScale - scale) * 0.002;
   }
 
   else
@@ -350,9 +350,9 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

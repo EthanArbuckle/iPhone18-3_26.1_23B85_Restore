@@ -2,9 +2,9 @@
 - (LNAction)resolvedAction;
 - (NSData)auditTokenData;
 - (NSXPCListenerEndpoint)listenerEndpoint;
-- (void)setAuditTokenData:(id)a3;
-- (void)setListenerEndpoint:(id)a3;
-- (void)setResolvedAction:(id)a3;
+- (void)setAuditTokenData:(id)data;
+- (void)setListenerEndpoint:(id)endpoint;
+- (void)setResolvedAction:(id)action;
 @end
 
 @implementation LNXPCListenerEndpointContainer
@@ -16,11 +16,11 @@
   return v2;
 }
 
-- (void)setListenerEndpoint:(id)a3
+- (void)setListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = self;
-  XPCListenerEndpointContainer.listenerEndpoint.setter(v4);
+  endpointCopy = endpoint;
+  selfCopy = self;
+  XPCListenerEndpointContainer.listenerEndpoint.setter(endpointCopy);
 }
 
 - (NSData)auditTokenData
@@ -33,10 +33,10 @@
   return v5;
 }
 
-- (void)setAuditTokenData:(id)a3
+- (void)setAuditTokenData:(id)data
 {
-  v4 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v5 = sub_18F520D4C();
   v7 = v6;
 
@@ -50,11 +50,11 @@
   return v2;
 }
 
-- (void)setResolvedAction:(id)a3
+- (void)setResolvedAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  XPCListenerEndpointContainer.resolvedAction.setter(v4);
+  actionCopy = action;
+  selfCopy = self;
+  XPCListenerEndpointContainer.resolvedAction.setter(actionCopy);
 }
 
 @end

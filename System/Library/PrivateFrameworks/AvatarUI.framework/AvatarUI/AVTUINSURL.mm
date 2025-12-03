@@ -6,9 +6,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AVTUINSURL *)self path];
-  v3 = [v2 lastPathComponent];
-  v4 = [v3 hash];
+  path = [(AVTUINSURL *)self path];
+  lastPathComponent = [path lastPathComponent];
+  v4 = [lastPathComponent hash];
 
   return v4;
 }

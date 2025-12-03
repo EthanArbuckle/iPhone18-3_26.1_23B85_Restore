@@ -1,11 +1,11 @@
 @interface RBSProcessAssertionInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSProcessAssertionInfo)initWithRBSXPCCoder:(id)a3;
-- (RBSProcessAssertionInfo)initWithType:(unsigned __int8)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RBSProcessAssertionInfo)initWithRBSXPCCoder:(id)coder;
+- (RBSProcessAssertionInfo)initWithType:(unsigned __int8)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessAssertionInfo
@@ -18,27 +18,27 @@
   return v2 ^ ((v4 ^ v2) >> 31) ^ v4;
 }
 
-- (RBSProcessAssertionInfo)initWithType:(unsigned __int8)a3
+- (RBSProcessAssertionInfo)initWithType:(unsigned __int8)type
 {
   result = [(RBSProcessAssertionInfo *)self init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!equalCopy)
   {
     goto LABEL_18;
   }
@@ -113,7 +113,7 @@ LABEL_20:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[RBSProcessAssertionInfo allocWithZone:?], "initWithType:", self->_type];
   [(RBSProcessAssertionInfo *)v4 setReason:self->_reason];
@@ -123,33 +123,33 @@ LABEL_20:
   return v4;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeUInt64:type forKey:@"t"];
-  [v5 encodeUInt64:self->_reason forKey:@"r"];
-  [v5 encodeObject:self->_explanation forKey:@"e"];
-  [v5 encodeObject:self->_domain forKey:@"d"];
-  [v5 encodeObject:self->_name forKey:@"n"];
+  coderCopy = coder;
+  [coderCopy encodeUInt64:type forKey:@"t"];
+  [coderCopy encodeUInt64:self->_reason forKey:@"r"];
+  [coderCopy encodeObject:self->_explanation forKey:@"e"];
+  [coderCopy encodeObject:self->_domain forKey:@"d"];
+  [coderCopy encodeObject:self->_name forKey:@"n"];
 }
 
-- (RBSProcessAssertionInfo)initWithRBSXPCCoder:(id)a3
+- (RBSProcessAssertionInfo)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[RBSProcessAssertionInfo initWithType:](self, "initWithType:", [v4 decodeUInt64ForKey:@"t"]);
+  coderCopy = coder;
+  v5 = -[RBSProcessAssertionInfo initWithType:](self, "initWithType:", [coderCopy decodeUInt64ForKey:@"t"]);
   if (v5)
   {
-    v5->_reason = [v4 decodeUInt64ForKey:@"r"];
-    v6 = [v4 decodeStringForKey:@"e"];
+    v5->_reason = [coderCopy decodeUInt64ForKey:@"r"];
+    v6 = [coderCopy decodeStringForKey:@"e"];
     explanation = v5->_explanation;
     v5->_explanation = v6;
 
-    v8 = [v4 decodeStringForKey:@"d"];
+    v8 = [coderCopy decodeStringForKey:@"d"];
     domain = v5->_domain;
     v5->_domain = v8;
 
-    v10 = [v4 decodeStringForKey:@"n"];
+    v10 = [coderCopy decodeStringForKey:@"n"];
     name = v5->_name;
     v5->_name = v10;
   }

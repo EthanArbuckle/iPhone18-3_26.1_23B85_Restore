@@ -1,20 +1,20 @@
 @interface REMAppleAccountUtilities
-- (id)_applicationDocumentsURLForPersonaIdentifier:(id)a3 accountIdentifier:(id)a4;
-- (id)applicationDocumentsURLForAccountIdentifier:(id)a3;
-- (id)reminderDataContainerURLForAccountIdentifier:(id)a3;
+- (id)_applicationDocumentsURLForPersonaIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier;
+- (id)applicationDocumentsURLForAccountIdentifier:(id)identifier;
+- (id)reminderDataContainerURLForAccountIdentifier:(id)identifier;
 - (id)status;
 - (id)unsafeUntilSystemReady_allICloudAccountsWithCloudKitEnabled;
-- (void)_unsetMigrationFlagsWithACAccount:(id)a3 inStore:(id)a4 completionHandler:(id)a5;
+- (void)_unsetMigrationFlagsWithACAccount:(id)account inStore:(id)store completionHandler:(id)handler;
 @end
 
 @implementation REMAppleAccountUtilities
 
-- (id)applicationDocumentsURLForAccountIdentifier:(id)a3
+- (id)applicationDocumentsURLForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (+[RDPaths isDataSeparationEnabled])
   {
-    v5 = v4;
+    v5 = identifierCopy;
     v6 = v5;
     if (v5)
     {
@@ -55,7 +55,7 @@
       v18 = sub_10006826C;
       v19 = &unk_1008D99D8;
       v23 = &v24;
-      v20 = self;
+      selfCopy = self;
       v21 = v6;
       v22 = v7;
       [(REMAppleAccountUtilities *)self performBlockInPersonaContextForAccountIdentifier:v21 block:&v16];
@@ -89,25 +89,25 @@
   return v12;
 }
 
-- (id)reminderDataContainerURLForAccountIdentifier:(id)a3
+- (id)reminderDataContainerURLForAccountIdentifier:(id)identifier
 {
-  v3 = [(REMAppleAccountUtilities *)self applicationDocumentsURLForAccountIdentifier:a3];
+  v3 = [(REMAppleAccountUtilities *)self applicationDocumentsURLForAccountIdentifier:identifier];
   v4 = [RDPaths reminderDataContainerURLWithAppDocumentsURL:v3];
 
   return v4;
 }
 
-- (id)_applicationDocumentsURLForPersonaIdentifier:(id)a3 accountIdentifier:(id)a4
+- (id)_applicationDocumentsURLForPersonaIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
   v7 = [REMPaths URLForGroupContainerWithIdentifier:REMAppGroupBundleIdentifier];
   if (!v7)
   {
     v8 = +[REMLog utility];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_10075FC98(v5, v6, v8);
+      sub_10075FC98(identifierCopy, accountIdentifierCopy, v8);
     }
 
     v7 = +[REMPaths legacy_applicationDocumentsURL];
@@ -123,10 +123,10 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(REMAppleAccountUtilities *)self accountStore];
-  v5 = [(REMAppleAccountUtilities *)self accountStore];
-  v6 = [v5 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierCloudKit];
-  v7 = [v4 accountsWithAccountType:v6];
+  accountStore = [(REMAppleAccountUtilities *)self accountStore];
+  accountStore2 = [(REMAppleAccountUtilities *)self accountStore];
+  v6 = [accountStore2 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierCloudKit];
+  v7 = [accountStore accountsWithAccountType:v6];
 
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
@@ -142,8 +142,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) displayAccount];
-        [v3 addObject:v12];
+        displayAccount = [*(*(&v14 + 1) + 8 * i) displayAccount];
+        [v3 addObject:displayAccount];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -158,7 +158,7 @@
 - (id)status
 {
   v3 = +[NSMutableDictionary dictionary];
-  v47 = self;
+  selfCopy = self;
   [(REMAppleAccountUtilities *)self unsafeUntilSystemReady_allICloudACAccounts];
   v53 = 0u;
   v54 = 0u;
@@ -183,50 +183,50 @@
         }
 
         v5 = *(*(&v53 + 1) + 8 * i);
-        v6 = [v5 identifier];
-        if (v6)
+        identifier = [v5 identifier];
+        if (identifier)
         {
           v7 = [v5 objectForKeyedSubscript:v46];
           v8 = [v5 objectForKeyedSubscript:v45];
-          v9 = [v5 rem_isManagedAppleID];
+          rem_isManagedAppleID = [v5 rem_isManagedAppleID];
           v50 = [v5 isEnabledForDataclass:v44];
-          v10 = [v5 shortDebugName];
-          v11 = [NSString stringWithFormat:@"%@.description", v6];
-          [v3 setObject:v10 forKeyedSubscript:v11];
+          shortDebugName = [v5 shortDebugName];
+          v11 = [NSString stringWithFormat:@"%@.description", identifier];
+          [v3 setObject:shortDebugName forKeyedSubscript:v11];
 
-          v12 = [v5 aa_accountClass];
-          v13 = [NSString stringWithFormat:@"%@.aa_accountClass", v6];
-          [v3 setObject:v12 forKeyedSubscript:v13];
+          aa_accountClass = [v5 aa_accountClass];
+          v13 = [NSString stringWithFormat:@"%@.aa_accountClass", identifier];
+          [v3 setObject:aa_accountClass forKeyedSubscript:v13];
 
-          v14 = [v5 aa_personID];
-          v15 = [NSString stringWithFormat:@"%@.aa_personID", v6];
-          [v3 setObject:v14 forKeyedSubscript:v15];
+          aa_personID = [v5 aa_personID];
+          v15 = [NSString stringWithFormat:@"%@.aa_personID", identifier];
+          [v3 setObject:aa_personID forKeyedSubscript:v15];
 
-          v16 = [v5 aa_altDSID];
-          v17 = [NSString stringWithFormat:@"%@.aa_altDSID", v6];
-          [v3 setObject:v16 forKeyedSubscript:v17];
+          aa_altDSID = [v5 aa_altDSID];
+          v17 = [NSString stringWithFormat:@"%@.aa_altDSID", identifier];
+          [v3 setObject:aa_altDSID forKeyedSubscript:v17];
 
           v52 = v7;
           v18 = [NSString stringWithFormat:@"%@", v7];
-          v19 = [NSString stringWithFormat:@"%@.didChooseToMigrate", v6];
+          v19 = [NSString stringWithFormat:@"%@.didChooseToMigrate", identifier];
           [v3 setObject:v18 forKeyedSubscript:v19];
 
           v51 = v8;
           v20 = [NSString stringWithFormat:@"%@", v8];
-          v21 = [NSString stringWithFormat:@"%@.didFinishMigration", v6];
+          v21 = [NSString stringWithFormat:@"%@.didFinishMigration", identifier];
           [v3 setObject:v20 forKeyedSubscript:v21];
 
-          v22 = [NSString stringWithFormat:@"%d", v9];
-          v23 = [NSString stringWithFormat:@"%@.isManagedAppleID", v6];
+          v22 = [NSString stringWithFormat:@"%d", rem_isManagedAppleID];
+          v23 = [NSString stringWithFormat:@"%@.isManagedAppleID", identifier];
           [v3 setObject:v22 forKeyedSubscript:v23];
 
           v24 = [NSString stringWithFormat:@"%d", v50];
-          v25 = [NSString stringWithFormat:@"%@.isEnabledForDataclass", v6];
+          v25 = [NSString stringWithFormat:@"%@.isEnabledForDataclass", identifier];
           [v3 setObject:v24 forKeyedSubscript:v25];
 
           v26 = [v5 accountPropertyForKey:v43];
-          v27 = [v5 identifier];
-          v28 = [(REMAppleAccountUtilities *)v47 applicationDocumentsURLForAccountIdentifier:v27];
+          identifier2 = [v5 identifier];
+          v28 = [(REMAppleAccountUtilities *)selfCopy applicationDocumentsURLForAccountIdentifier:identifier2];
 
           if (v26)
           {
@@ -238,24 +238,24 @@
             v29 = @"NIL";
           }
 
-          v30 = [NSString stringWithFormat:@"%@.personaIdentifier", v6];
+          v30 = [NSString stringWithFormat:@"%@.personaIdentifier", identifier];
           [v3 setObject:v29 forKeyedSubscript:v30];
 
-          v31 = [v28 absoluteString];
-          v32 = [NSString stringWithFormat:@"%@", v31];
-          v33 = [NSString stringWithFormat:@"%@.applicationDocumentsURL", v6];
+          absoluteString = [v28 absoluteString];
+          v32 = [NSString stringWithFormat:@"%@", absoluteString];
+          v33 = [NSString stringWithFormat:@"%@.applicationDocumentsURL", identifier];
           [v3 setObject:v32 forKeyedSubscript:v33];
 
           if (([v5 aa_isAccountClass:v42] & 1) == 0)
           {
-            v34 = [v5 rem_eligibleForAutoCloudKitMigration];
-            v35 = [v5 rem_isEligibleForCloudKitReminders];
-            v36 = [NSString stringWithFormat:@"%d", v34];
-            v37 = [NSString stringWithFormat:@"%@.eligibleForAutoCloudKitMigration", v6];
+            rem_eligibleForAutoCloudKitMigration = [v5 rem_eligibleForAutoCloudKitMigration];
+            rem_isEligibleForCloudKitReminders = [v5 rem_isEligibleForCloudKitReminders];
+            v36 = [NSString stringWithFormat:@"%d", rem_eligibleForAutoCloudKitMigration];
+            v37 = [NSString stringWithFormat:@"%@.eligibleForAutoCloudKitMigration", identifier];
             [v3 setObject:v36 forKeyedSubscript:v37];
 
-            v38 = [NSString stringWithFormat:@"%d", v35];
-            v39 = [NSString stringWithFormat:@"%@.isEligibleForCloudKitReminders", v6];
+            v38 = [NSString stringWithFormat:@"%d", rem_isEligibleForCloudKitReminders];
+            v39 = [NSString stringWithFormat:@"%@.isEligibleForCloudKitReminders", identifier];
             [v3 setObject:v38 forKeyedSubscript:v39];
           }
         }
@@ -270,28 +270,28 @@
   return v3;
 }
 
-- (void)_unsetMigrationFlagsWithACAccount:(id)a3 inStore:(id)a4 completionHandler:(id)a5
+- (void)_unsetMigrationFlagsWithACAccount:(id)account inStore:(id)store completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  accountCopy = account;
+  handlerCopy = handler;
+  storeCopy = store;
   v10 = +[REMLog utility];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_10076C49C(v7, v10);
+    sub_10076C49C(accountCopy, v10);
   }
 
-  [v7 setObject:0 forKeyedSubscript:REMACAccountPropertyDidChooseToMigrate];
-  [v7 setObject:0 forKeyedSubscript:REMACAccountPropertyDidFinishMigration];
+  [accountCopy setObject:0 forKeyedSubscript:REMACAccountPropertyDidChooseToMigrate];
+  [accountCopy setObject:0 forKeyedSubscript:REMACAccountPropertyDidFinishMigration];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000CB5E8;
   v13[3] = &unk_1008DC450;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
-  [v9 saveAccount:v12 withCompletionHandler:v13];
+  v14 = accountCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = accountCopy;
+  [storeCopy saveAccount:v12 withCompletionHandler:v13];
 }
 
 @end

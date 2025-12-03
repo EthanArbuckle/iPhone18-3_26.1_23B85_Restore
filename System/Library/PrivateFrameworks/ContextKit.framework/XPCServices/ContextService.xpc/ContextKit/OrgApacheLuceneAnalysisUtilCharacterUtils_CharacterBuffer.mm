@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneAnalysisUtilCharacterUtils_CharacterBuffer
-- (OrgApacheLuceneAnalysisUtilCharacterUtils_CharacterBuffer)initWithCharArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (OrgApacheLuceneAnalysisUtilCharacterUtils_CharacterBuffer)initWithCharArray:(id)array withInt:(int)int withInt:(int)withInt;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneAnalysisUtilCharacterUtils_CharacterBuffer
 
-- (OrgApacheLuceneAnalysisUtilCharacterUtils_CharacterBuffer)initWithCharArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (OrgApacheLuceneAnalysisUtilCharacterUtils_CharacterBuffer)initWithCharArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->buffer_, a3);
-  self->offset_ = a4;
-  self->length_ = a5;
+  JreStrongAssign(&self->buffer_, array);
+  self->offset_ = int;
+  self->length_ = withInt;
   return self;
 }
 

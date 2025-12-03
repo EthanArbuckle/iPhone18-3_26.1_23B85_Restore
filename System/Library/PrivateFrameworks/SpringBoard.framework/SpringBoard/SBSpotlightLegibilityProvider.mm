@@ -1,29 +1,29 @@
 @interface SBSpotlightLegibilityProvider
 - (CGRect)_rectForSpotlightHeader;
 - (SBFLegibilitySettingsProviderDelegate)delegate;
-- (SBSpotlightLegibilityProvider)initWithVariant:(int64_t)a3;
-- (SBSpotlightLegibilityProvider)initWithVariant:(int64_t)a3 wallpaperController:(id)a4;
+- (SBSpotlightLegibilityProvider)initWithVariant:(int64_t)variant;
+- (SBSpotlightLegibilityProvider)initWithVariant:(int64_t)variant wallpaperController:(id)controller;
 - (_UILegibilitySettings)legibilitySettings;
 - (void)_calculateLegibilitySettings;
 - (void)dealloc;
-- (void)wallpaperDidChangeForVariant:(int64_t)a3;
-- (void)wallpaperGeometryDidChangeForVariant:(int64_t)a3;
-- (void)wallpaperLegibilitySettingsDidChange:(id)a3 forVariant:(int64_t)a4;
+- (void)wallpaperDidChangeForVariant:(int64_t)variant;
+- (void)wallpaperGeometryDidChangeForVariant:(int64_t)variant;
+- (void)wallpaperLegibilitySettingsDidChange:(id)change forVariant:(int64_t)variant;
 @end
 
 @implementation SBSpotlightLegibilityProvider
 
-- (SBSpotlightLegibilityProvider)initWithVariant:(int64_t)a3
+- (SBSpotlightLegibilityProvider)initWithVariant:(int64_t)variant
 {
   v5 = +[SBWallpaperController sharedInstance];
-  v6 = [(SBSpotlightLegibilityProvider *)self initWithVariant:a3 wallpaperController:v5];
+  v6 = [(SBSpotlightLegibilityProvider *)self initWithVariant:variant wallpaperController:v5];
 
   return v6;
 }
 
-- (SBSpotlightLegibilityProvider)initWithVariant:(int64_t)a3 wallpaperController:(id)a4
+- (SBSpotlightLegibilityProvider)initWithVariant:(int64_t)variant wallpaperController:(id)controller
 {
-  v7 = a4;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SBSpotlightLegibilityProvider;
   v8 = [(SBSpotlightLegibilityProvider *)&v11 init];
@@ -31,9 +31,9 @@
   if (v8)
   {
     objc_storeWeak(&v8->_delegate, 0);
-    v9->_variant = a3;
-    objc_storeStrong(&v9->_wallpaperController, a4);
-    [(SBWallpaperController *)v9->_wallpaperController addObserver:v9 forVariant:a3];
+    v9->_variant = variant;
+    objc_storeStrong(&v9->_wallpaperController, controller);
+    [(SBWallpaperController *)v9->_wallpaperController addObserver:v9 forVariant:variant];
   }
 
   return v9;
@@ -59,10 +59,10 @@
   return currentLegibilitySettings;
 }
 
-- (void)wallpaperDidChangeForVariant:(int64_t)a3
+- (void)wallpaperDidChangeForVariant:(int64_t)variant
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (self->_variant == a3 && WeakRetained != 0)
+  if (self->_variant == variant && WeakRetained != 0)
   {
     v7 = WeakRetained;
     [(SBSpotlightLegibilityProvider *)self _calculateLegibilitySettings];
@@ -71,10 +71,10 @@
   }
 }
 
-- (void)wallpaperLegibilitySettingsDidChange:(id)a3 forVariant:(int64_t)a4
+- (void)wallpaperLegibilitySettingsDidChange:(id)change forVariant:(int64_t)variant
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (self->_variant == a4 && WeakRetained != 0)
+  if (self->_variant == variant && WeakRetained != 0)
   {
     v8 = WeakRetained;
     [(SBSpotlightLegibilityProvider *)self _calculateLegibilitySettings];
@@ -83,10 +83,10 @@
   }
 }
 
-- (void)wallpaperGeometryDidChangeForVariant:(int64_t)a3
+- (void)wallpaperGeometryDidChangeForVariant:(int64_t)variant
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (self->_variant == a3 && WeakRetained != 0)
+  if (self->_variant == variant && WeakRetained != 0)
   {
     v7 = WeakRetained;
     [(SBSpotlightLegibilityProvider *)self _calculateLegibilitySettings];
@@ -117,16 +117,16 @@
     [MEMORY[0x277D65D38] notificationCenterSearchBar];
   }
   v3 = ;
-  v4 = [v3 view];
-  [v4 bounds];
+  view = [v3 view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBWallpaperController *)self->_wallpaperController windowScene];
-  v14 = [v13 screen];
-  v15 = [v14 coordinateSpace];
-  [v4 convertRect:v15 toCoordinateSpace:{v6, v8, v10, v12}];
+  windowScene = [(SBWallpaperController *)self->_wallpaperController windowScene];
+  screen = [windowScene screen];
+  coordinateSpace = [screen coordinateSpace];
+  [view convertRect:coordinateSpace toCoordinateSpace:{v6, v8, v10, v12}];
   v17 = v16;
   v19 = v18;
   v21 = v20;

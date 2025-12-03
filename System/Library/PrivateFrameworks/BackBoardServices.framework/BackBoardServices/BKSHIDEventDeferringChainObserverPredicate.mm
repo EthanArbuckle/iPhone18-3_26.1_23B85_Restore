@@ -1,33 +1,33 @@
 @interface BKSHIDEventDeferringChainObserverPredicate
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 + (id)new;
 - (BKSHIDEventDeferringChainObserverPredicate)init;
-- (BKSHIDEventDeferringChainObserverPredicate)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithCopyOf:(id *)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BKSHIDEventDeferringChainObserverPredicate)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithCopyOf:(id *)of;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDeferringChainObserverPredicate
 
-- (id)_initWithCopyOf:(id *)a1
+- (id)_initWithCopyOf:(id *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    v4 = [(BKSHIDEventDeferringChainObserverPredicate *)a1 _init];
-    a1 = v4;
-    if (v4)
+    _init = [(BKSHIDEventDeferringChainObserverPredicate *)of _init];
+    of = _init;
+    if (_init)
     {
-      objc_storeStrong(v4 + 1, v3[1]);
-      objc_storeStrong(a1 + 2, v3[2]);
+      objc_storeStrong(_init + 1, v3[1]);
+      objc_storeStrong(of + 2, v3[2]);
     }
   }
 
-  return a1;
+  return of;
 }
 
 - (void)_init
@@ -41,8 +41,8 @@
       v3 = objc_opt_class();
       if (v3 != objc_opt_class())
       {
-        v8 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v8 handleFailureInMethod:sel__init object:v1 file:@"BKSHIDEventDeferringChainObserverPredicate.m" lineNumber:50 description:@"BKSHIDEventDeferringChainObserverPredicate cannot be subclassed"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel__init object:v1 file:@"BKSHIDEventDeferringChainObserverPredicate.m" lineNumber:50 description:@"BKSHIDEventDeferringChainObserverPredicate cannot be subclassed"];
       }
     }
 
@@ -62,20 +62,20 @@
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableHIDEventDeferringChainObserverPredicate alloc];
 
   return [(BKSHIDEventDeferringChainObserverPredicate *)&v4->super.super.isa _initWithCopyOf:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[1];
     display = self->_display;
     if (BSEqualObjects())
@@ -107,36 +107,36 @@
   return BSHashPurifyNS();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   display = self->_display;
-  v7 = v4;
+  v7 = coderCopy;
   if (display)
   {
-    [v4 encodeObject:display forKey:@"display"];
-    v4 = v7;
+    [coderCopy encodeObject:display forKey:@"display"];
+    coderCopy = v7;
   }
 
   environment = self->_environment;
   if (environment)
   {
     [v7 encodeObject:environment forKey:@"environment"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (BKSHIDEventDeferringChainObserverPredicate)initWithCoder:(id)a3
+- (BKSHIDEventDeferringChainObserverPredicate)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = BKSHIDEventDeferringChainObserverPredicate;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BKSHIDEventDeferringChainObserverPredicate *)&v10 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"display", v10.receiver, v10.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"display", v10.receiver, v10.super_class}];
   display = v4->_display;
   v4->_display = v5;
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
 
   environment = v4->_environment;
   v4->_environment = v7;
@@ -146,29 +146,29 @@
 
 - (BKSHIDEventDeferringChainObserverPredicate)init
 {
-  v3 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[BKSHIDEventDeferringChainObserverPredicate init]"];
-  [v3 handleFailureInFunction:v4 file:@"BKSHIDEventDeferringChainObserverPredicate.m" lineNumber:39 description:@"cannot directly allocate BKSHIDEventDeferringChainObserverPredicate"];
+  [currentHandler handleFailureInFunction:v4 file:@"BKSHIDEventDeferringChainObserverPredicate.m" lineNumber:39 description:@"cannot directly allocate BKSHIDEventDeferringChainObserverPredicate"];
 
   return 0;
 }
 
 + (id)new
 {
-  v2 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[BKSHIDEventDeferringChainObserverPredicate new]"];
-  [v2 handleFailureInFunction:v3 file:@"BKSHIDEventDeferringChainObserverPredicate.m" lineNumber:44 description:@"cannot directly allocate BKSHIDEventDeferringChainObserverPredicate"];
+  [currentHandler handleFailureInFunction:v3 file:@"BKSHIDEventDeferringChainObserverPredicate.m" lineNumber:44 description:@"cannot directly allocate BKSHIDEventDeferringChainObserverPredicate"];
 
   return 0;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(BKSHIDEventDeferringChainObserverPredicate *)[BKSMutableHIDEventDeferringChainObserverPredicate alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(BKSHIDEventDeferringChainObserverPredicate *)[BKSMutableHIDEventDeferringChainObserverPredicate alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }

@@ -2,28 +2,28 @@
 - (NSString)buttonTitle;
 - (NSString)message;
 - (NSString)title;
-- (ServiceErrorViewController)initWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 actionBlock:(id)a6;
+- (ServiceErrorViewController)initWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle actionBlock:(id)block;
 - (void)loadView;
-- (void)setButtonTitle:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setButtonTitle:(id)title;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation ServiceErrorViewController
 
-- (ServiceErrorViewController)initWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 actionBlock:(id)a6
+- (ServiceErrorViewController)initWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle actionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  blockCopy = block;
   v27.receiver = self;
   v27.super_class = ServiceErrorViewController;
   v14 = [(ServiceErrorViewController *)&v27 initWithNibName:0 bundle:0];
   if (v14)
   {
-    v15 = objc_retainBlock(v13);
+    v15 = objc_retainBlock(blockCopy);
     actionBlock = v14->_actionBlock;
     v14->_actionBlock = v15;
 
@@ -31,9 +31,9 @@
     errorView = v14->_errorView;
     v14->_errorView = v17;
 
-    if (v10)
+    if (titleCopy)
     {
-      [(_UIContentUnavailableView *)v14->_errorView setTitle:v10];
+      [(_UIContentUnavailableView *)v14->_errorView setTitle:titleCopy];
     }
 
     else
@@ -43,12 +43,12 @@
       [(_UIContentUnavailableView *)v14->_errorView setTitle:v20];
     }
 
-    [(_UIContentUnavailableView *)v14->_errorView setMessage:v11];
-    if (v13)
+    [(_UIContentUnavailableView *)v14->_errorView setMessage:messageCopy];
+    if (blockCopy)
     {
-      if (v12)
+      if (buttonTitleCopy)
       {
-        [(_UIContentUnavailableView *)v14->_errorView setButtonTitle:v12];
+        [(_UIContentUnavailableView *)v14->_errorView setButtonTitle:buttonTitleCopy];
       }
 
       else
@@ -63,7 +63,7 @@
       v25[1] = 3221225472;
       v25[2] = sub_100005B74;
       v25[3] = &unk_100051088;
-      v26 = v13;
+      v26 = blockCopy;
       [(_UIContentUnavailableView *)v23 setButtonAction:v25];
     }
   }
@@ -76,9 +76,9 @@
   v5.receiver = self;
   v5.super_class = ServiceErrorViewController;
   [(ServiceErrorViewController *)&v5 loadView];
-  v3 = [(ServiceErrorViewController *)self view];
-  v4 = [(ServiceErrorViewController *)self errorView];
-  [v3 addSubview:v4];
+  view = [(ServiceErrorViewController *)self view];
+  errorView = [(ServiceErrorViewController *)self errorView];
+  [view addSubview:errorView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -86,59 +86,59 @@
   v13.receiver = self;
   v13.super_class = ServiceErrorViewController;
   [(ServiceErrorViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(ServiceErrorViewController *)self view];
-  [v3 bounds];
+  view = [(ServiceErrorViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ServiceErrorViewController *)self errorView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  errorView = [(ServiceErrorViewController *)self errorView];
+  [errorView setFrame:{v5, v7, v9, v11}];
 }
 
 - (NSString)buttonTitle
 {
-  v2 = [(ServiceErrorViewController *)self errorView];
-  v3 = [v2 buttonTitle];
+  errorView = [(ServiceErrorViewController *)self errorView];
+  buttonTitle = [errorView buttonTitle];
 
-  return v3;
+  return buttonTitle;
 }
 
 - (NSString)message
 {
-  v2 = [(ServiceErrorViewController *)self errorView];
-  v3 = [v2 message];
+  errorView = [(ServiceErrorViewController *)self errorView];
+  message = [errorView message];
 
-  return v3;
+  return message;
 }
 
 - (NSString)title
 {
-  v2 = [(ServiceErrorViewController *)self errorView];
-  v3 = [v2 title];
+  errorView = [(ServiceErrorViewController *)self errorView];
+  title = [errorView title];
 
-  return v3;
+  return title;
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(ServiceErrorViewController *)self errorView];
-  [v5 setButtonTitle:v4];
+  titleCopy = title;
+  errorView = [(ServiceErrorViewController *)self errorView];
+  [errorView setButtonTitle:titleCopy];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(ServiceErrorViewController *)self errorView];
-  [v5 setMessage:v4];
+  messageCopy = message;
+  errorView = [(ServiceErrorViewController *)self errorView];
+  [errorView setMessage:messageCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(ServiceErrorViewController *)self errorView];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  errorView = [(ServiceErrorViewController *)self errorView];
+  [errorView setTitle:titleCopy];
 }
 
 @end

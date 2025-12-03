@@ -1,14 +1,14 @@
 @interface BWTiledInferenceAdapter
-- (id)inferenceProviderForType:(int)a3 version:(id)a4 configuration:(id)a5 resourceProvider:(id)a6 status:(int *)a7;
+- (id)inferenceProviderForType:(int)type version:(id)version configuration:(id)configuration resourceProvider:(id)provider status:(int *)status;
 @end
 
 @implementation BWTiledInferenceAdapter
 
-- (id)inferenceProviderForType:(int)a3 version:(id)a4 configuration:(id)a5 resourceProvider:(id)a6 status:(int *)a7
+- (id)inferenceProviderForType:(int)type version:(id)version configuration:(id)configuration resourceProvider:(id)provider status:(int *)status
 {
-  if (a7)
+  if (status)
   {
-    *a7 = 0;
+    *status = 0;
   }
 
   return 0;

@@ -4,120 +4,120 @@
 - (SPOwnerSessionState)ownerSessionState;
 - (SPOwnerSessionXPCProtocol)proxy;
 - (id)_enforceRateLimit;
-- (id)executeCommand:(id)a3;
-- (id)executeUTPlaySoundCommand:(id)a3;
+- (id)executeCommand:(id)command;
+- (id)executeUTPlaySoundCommand:(id)command;
 - (id)maintenanceConnectionUpdateBlock;
 - (id)remoteInterface;
 - (void)_invalidate;
-- (void)_unregisterDarwinNotificationName:(id)a3;
+- (void)_unregisterDarwinNotificationName:(id)name;
 - (void)_updateOwnerSessionState;
-- (void)acceptUTForBeaconUUID:(id)a3;
-- (void)activeCompanionWithCompletion:(id)a3;
-- (void)addBeaconChangedListener:(id)a3 beaconUUID:(id)a4 taskName:(id)a5 commandIdentifier:(id)a6 commandIssueDate:(id)a7;
-- (void)addSafeLocation:(id)a3 completion:(id)a4;
-- (void)allBeaconsWithCompletion:(id)a3;
-- (void)allObservationsForBeacon:(id)a3 completion:(id)a4;
-- (void)assignSafeLocation:(id)a3 beaconUUIDs:(id)a4 completion:(id)a5;
-- (void)assignSafeLocation:(id)a3 to:(id)a4 completion:(id)a5;
-- (void)beaconForIdentifier:(id)a3 completion:(id)a4;
-- (void)beaconForUUID:(id)a3 completion:(id)a4;
-- (void)beaconGroupForIdentifier:(id)a3 completion:(id)a4;
-- (void)beaconGroupsForUUIDs:(id)a3 completion:(id)a4;
-- (void)beaconStoreStatusWithCompletion:(id)a3;
-- (void)beaconingIdentifierForMACAddress:(id)a3 completion:(id)a4;
-- (void)beaconsToMaintainPersistentConnection:(id)a3;
-- (void)beaconsToMonitorForSeparation:(id)a3;
-- (void)clientConfigurationWithCompletion:(id)a3;
-- (void)connectUsingMACAddress:(id)a3 longTermKey:(id)a4 completion:(id)a5;
+- (void)acceptUTForBeaconUUID:(id)d;
+- (void)activeCompanionWithCompletion:(id)completion;
+- (void)addBeaconChangedListener:(id)listener beaconUUID:(id)d taskName:(id)name commandIdentifier:(id)identifier commandIssueDate:(id)date;
+- (void)addSafeLocation:(id)location completion:(id)completion;
+- (void)allBeaconsWithCompletion:(id)completion;
+- (void)allObservationsForBeacon:(id)beacon completion:(id)completion;
+- (void)assignSafeLocation:(id)location beaconUUIDs:(id)ds completion:(id)completion;
+- (void)assignSafeLocation:(id)location to:(id)to completion:(id)completion;
+- (void)beaconForIdentifier:(id)identifier completion:(id)completion;
+- (void)beaconForUUID:(id)d completion:(id)completion;
+- (void)beaconGroupForIdentifier:(id)identifier completion:(id)completion;
+- (void)beaconGroupsForUUIDs:(id)ds completion:(id)completion;
+- (void)beaconStoreStatusWithCompletion:(id)completion;
+- (void)beaconingIdentifierForMACAddress:(id)address completion:(id)completion;
+- (void)beaconsToMaintainPersistentConnection:(id)connection;
+- (void)beaconsToMonitorForSeparation:(id)separation;
+- (void)clientConfigurationWithCompletion:(id)completion;
+- (void)connectUsingMACAddress:(id)address longTermKey:(id)key completion:(id)completion;
 - (void)connectionExpiryTimerFired;
 - (void)dealloc;
-- (void)delegatedLocationForContext:(id)a3 completion:(id)a4;
-- (void)didDetectUnauthorizedTrackingWithCompletion:(id)a3 completion:(id)a4;
-- (void)didObserveUnauthorizedTrackingWithCompletion:(id)a3 completion:(id)a4;
-- (void)didUpdateUnauthorizedTrackingWithCompletion:(id)a3 completion:(id)a4;
-- (void)didWithdrawUnauthorizedTrackingWithCompletion:(id)a3 completion:(id)a4;
-- (void)disableSeparationMonitoringForBeacon:(id)a3 completion:(id)a4;
-- (void)disableSeparationMonitoringForBeacons:(id)a3 completion:(id)a4;
-- (void)disableUTAppAlert:(BOOL)a3 completion:(id)a4;
-- (void)disconnectFromMACAddress:(id)a3 completion:(id)a4;
-- (void)enableSeparationMonitoringForBeacon:(id)a3 completion:(id)a4;
-- (void)enableSeparationMonitoringForBeacons:(id)a3 completion:(id)a4;
-- (void)executeCommand:(id)a3 completion:(id)a4;
-- (void)fakeClassicPairingWithMACAddress:(id)a3 completion:(id)a4;
-- (void)fetchFindMyNetworkStatusForMACAddress:(id)a3 completion:(id)a4;
-- (void)fetchHawkeyeFirmwareVersion:(id)a3 completion:(id)a4;
-- (void)fetchSeparationMonitoringStatus:(id)a3;
-- (void)fetchUnauthorizedEncryptedPayload:(id)a3 completion:(id)a4;
-- (void)finishBeaconFuture:(id)a3 beaconUUID:(id)a4;
-- (void)finishBeaconGroupFuture:(id)a3 command:(id)a4 commandIssueDate:(id)a5;
-- (void)forceDistributeKeysWithCompletion:(id)a3;
-- (void)forceKeySyncForBeaconUUID:(id)a3 lastObservationDate:(id)a4 lastObservationIndex:(unint64_t)a5 completion:(id)a6;
-- (void)forceLOIBasedSafeLocationRefresh:(id)a3;
-- (void)forceRePairingWithUUID:(id)a3 partIds:(id)a4 completion:(id)a5;
-- (void)forceUpdateKeyAlignmentRecordForUUID:(id)a3 completion:(id)a4;
-- (void)forceUpdateKeyMapsForUUID:(id)a3 completion:(id)a4;
-- (void)hasAccessoryWithCapabilities:(unint64_t)a3 completion:(id)a4;
-- (void)hintBasedIndexSearchForBeacon:(id)a3 baseIndex:(id)a4 hint:(unsigned __int8)a5 completion:(id)a6;
-- (void)ignoreBeaconByAdvertisement:(id)a3 until:(unint64_t)a4 completion:(id)a5;
-- (void)ignoreBeaconByUUID:(id)a3 until:(unint64_t)a4;
-- (void)ignoreBeaconByUUID:(id)a3 until:(unint64_t)a4 completion:(id)a5;
-- (void)ignoreBeaconByUUID:(id)a3 untilDate:(id)a4 completion:(id)a5;
-- (void)ignoringUnauthorizedTrackingWithCompletion:(id)a3 completion:(id)a4;
-- (void)isUTAppAlertDisabled:(id)a3;
-- (void)locationForContext:(id)a3 completion:(id)a4;
-- (void)locationsForBeacons:(id)a3 completion:(id)a4;
-- (void)peripheralConnectionMaterialForAccessoryIdentifier:(id)a3 completion:(id)a4;
-- (void)playUnauthorizedSoundOnBeaconByUUID:(id)a3 completion:(id)a4;
-- (void)publishSeparationEventForBeacons:(id)a3 eventType:(int64_t)a4 region:(id)a5 completion:(id)a6;
-- (void)publishUnificationEventForBeacons:(id)a3;
-- (void)publishWildModeRecordsWithCompletion:(id)a3;
-- (void)rawSearchResultsForBeacon:(id)a3 dateInterval:(id)a4 completion:(id)a5;
-- (void)readAISMetadataFromBeaconIdentifier:(id)a3 completion:(id)a4;
-- (void)readAISMetadataFromMACAddress:(id)a3 useOwnerControlPoint:(BOOL)a4 completion:(id)a5;
-- (void)readRawAISMetadataFromBeaconIdentifier:(id)a3 completion:(id)a4;
-- (void)readRawAISMetadataFromMACAddress:(id)a3 useOwnerControlPoint:(BOOL)a4 completion:(id)a5;
-- (void)registerDarwinNotificationName:(id)a3 block:(id)a4;
-- (void)removeBeacon:(id)a3 completion:(id)a4;
-- (void)removeBeaconFromGroup:(id)a3 completion:(id)a4;
-- (void)removeSafeLocation:(id)a3 completion:(id)a4;
-- (void)safeLocationsForSeparationMonitoring:(id)a3;
-- (void)setConnectionExpiryDispatchTimerWithInterval:(double)a3;
-- (void)setDelegatedLocationUpdateBlock:(id)a3;
-- (void)setDeviceEventUpdateBlock:(id)a3;
-- (void)setFindMyNetworkStatusForMACAddress:(id)a3 status:(BOOL)a4 completion:(id)a5;
-- (void)setInvalidationBlock:(id)a3;
-- (void)setLocationUpdateBlock:(id)a3;
-- (void)simulateAccessoryPairing:(id)a3 name:(id)a4 isAirPods:(BOOL)a5 completion:(id)a6;
-- (void)standaloneBeaconsForUUIDs:(id)a3 completion:(id)a4;
+- (void)delegatedLocationForContext:(id)context completion:(id)completion;
+- (void)didDetectUnauthorizedTrackingWithCompletion:(id)completion completion:(id)a4;
+- (void)didObserveUnauthorizedTrackingWithCompletion:(id)completion completion:(id)a4;
+- (void)didUpdateUnauthorizedTrackingWithCompletion:(id)completion completion:(id)a4;
+- (void)didWithdrawUnauthorizedTrackingWithCompletion:(id)completion completion:(id)a4;
+- (void)disableSeparationMonitoringForBeacon:(id)beacon completion:(id)completion;
+- (void)disableSeparationMonitoringForBeacons:(id)beacons completion:(id)completion;
+- (void)disableUTAppAlert:(BOOL)alert completion:(id)completion;
+- (void)disconnectFromMACAddress:(id)address completion:(id)completion;
+- (void)enableSeparationMonitoringForBeacon:(id)beacon completion:(id)completion;
+- (void)enableSeparationMonitoringForBeacons:(id)beacons completion:(id)completion;
+- (void)executeCommand:(id)command completion:(id)completion;
+- (void)fakeClassicPairingWithMACAddress:(id)address completion:(id)completion;
+- (void)fetchFindMyNetworkStatusForMACAddress:(id)address completion:(id)completion;
+- (void)fetchHawkeyeFirmwareVersion:(id)version completion:(id)completion;
+- (void)fetchSeparationMonitoringStatus:(id)status;
+- (void)fetchUnauthorizedEncryptedPayload:(id)payload completion:(id)completion;
+- (void)finishBeaconFuture:(id)future beaconUUID:(id)d;
+- (void)finishBeaconGroupFuture:(id)future command:(id)command commandIssueDate:(id)date;
+- (void)forceDistributeKeysWithCompletion:(id)completion;
+- (void)forceKeySyncForBeaconUUID:(id)d lastObservationDate:(id)date lastObservationIndex:(unint64_t)index completion:(id)completion;
+- (void)forceLOIBasedSafeLocationRefresh:(id)refresh;
+- (void)forceRePairingWithUUID:(id)d partIds:(id)ids completion:(id)completion;
+- (void)forceUpdateKeyAlignmentRecordForUUID:(id)d completion:(id)completion;
+- (void)forceUpdateKeyMapsForUUID:(id)d completion:(id)completion;
+- (void)hasAccessoryWithCapabilities:(unint64_t)capabilities completion:(id)completion;
+- (void)hintBasedIndexSearchForBeacon:(id)beacon baseIndex:(id)index hint:(unsigned __int8)hint completion:(id)completion;
+- (void)ignoreBeaconByAdvertisement:(id)advertisement until:(unint64_t)until completion:(id)completion;
+- (void)ignoreBeaconByUUID:(id)d until:(unint64_t)until;
+- (void)ignoreBeaconByUUID:(id)d until:(unint64_t)until completion:(id)completion;
+- (void)ignoreBeaconByUUID:(id)d untilDate:(id)date completion:(id)completion;
+- (void)ignoringUnauthorizedTrackingWithCompletion:(id)completion completion:(id)a4;
+- (void)isUTAppAlertDisabled:(id)disabled;
+- (void)locationForContext:(id)context completion:(id)completion;
+- (void)locationsForBeacons:(id)beacons completion:(id)completion;
+- (void)peripheralConnectionMaterialForAccessoryIdentifier:(id)identifier completion:(id)completion;
+- (void)playUnauthorizedSoundOnBeaconByUUID:(id)d completion:(id)completion;
+- (void)publishSeparationEventForBeacons:(id)beacons eventType:(int64_t)type region:(id)region completion:(id)completion;
+- (void)publishUnificationEventForBeacons:(id)beacons;
+- (void)publishWildModeRecordsWithCompletion:(id)completion;
+- (void)rawSearchResultsForBeacon:(id)beacon dateInterval:(id)interval completion:(id)completion;
+- (void)readAISMetadataFromBeaconIdentifier:(id)identifier completion:(id)completion;
+- (void)readAISMetadataFromMACAddress:(id)address useOwnerControlPoint:(BOOL)point completion:(id)completion;
+- (void)readRawAISMetadataFromBeaconIdentifier:(id)identifier completion:(id)completion;
+- (void)readRawAISMetadataFromMACAddress:(id)address useOwnerControlPoint:(BOOL)point completion:(id)completion;
+- (void)registerDarwinNotificationName:(id)name block:(id)block;
+- (void)removeBeacon:(id)beacon completion:(id)completion;
+- (void)removeBeaconFromGroup:(id)group completion:(id)completion;
+- (void)removeSafeLocation:(id)location completion:(id)completion;
+- (void)safeLocationsForSeparationMonitoring:(id)monitoring;
+- (void)setConnectionExpiryDispatchTimerWithInterval:(double)interval;
+- (void)setDelegatedLocationUpdateBlock:(id)block;
+- (void)setDeviceEventUpdateBlock:(id)block;
+- (void)setFindMyNetworkStatusForMACAddress:(id)address status:(BOOL)status completion:(id)completion;
+- (void)setInvalidationBlock:(id)block;
+- (void)setLocationUpdateBlock:(id)block;
+- (void)simulateAccessoryPairing:(id)pairing name:(id)name isAirPods:(BOOL)pods completion:(id)completion;
+- (void)standaloneBeaconsForUUIDs:(id)ds completion:(id)completion;
 - (void)startRefreshing;
-- (void)startRefreshingBeacons:(id)a3;
-- (void)startRefreshingBeaconsForSeparationMonitoringWithBlock:(id)a3;
-- (void)startRefreshingPersistentConnectionWithBlock:(id)a3;
-- (void)startRefreshingSafeLocationWithBlock:(id)a3;
-- (void)startRefreshingSeparationMonitoringState:(id)a3;
-- (void)startRefreshingTagSeparationWithBlock:(id)a3;
-- (void)startUpdatingApplicationBeaconsWithContext:(id)a3 collectionDifference:(id)a4 completion:(id)a5;
+- (void)startRefreshingBeacons:(id)beacons;
+- (void)startRefreshingBeaconsForSeparationMonitoringWithBlock:(id)block;
+- (void)startRefreshingPersistentConnectionWithBlock:(id)block;
+- (void)startRefreshingSafeLocationWithBlock:(id)block;
+- (void)startRefreshingSeparationMonitoringState:(id)state;
+- (void)startRefreshingTagSeparationWithBlock:(id)block;
+- (void)startUpdatingApplicationBeaconsWithContext:(id)context collectionDifference:(id)difference completion:(id)completion;
 - (void)startUpdatingMaintenanceConnection;
-- (void)stopFetchingUnauthorizedEncryptedPayloadWithCompletion:(id)a3;
+- (void)stopFetchingUnauthorizedEncryptedPayloadWithCompletion:(id)completion;
 - (void)stopRefreshing;
-- (void)stopUpdatingApplicationBeaconsWithCompletion:(id)a3;
-- (void)subscribeAndFetchLocationForContext:(id)a3 completion:(id)a4;
-- (void)subscribeDelegatedLocationUpdatesForContext:(id)a3 completion:(id)a4;
-- (void)tagSeparationStateChanged:(id)a3 beaconUUID:(id)a4 location:(id)a5 completion:(id)a6;
-- (void)unacceptedBeaconsWithCompletion:(id)a3;
-- (void)unassignSafeLocation:(id)a3 beaconUUID:(id)a4 completion:(id)a5;
-- (void)unassignSafeLocation:(id)a3 beaconUUIDs:(id)a4 completion:(id)a5;
-- (void)unauthorizedTrackingTypeWithCompletion:(id)a3 completion:(id)a4;
-- (void)unknownBeaconsForUUIDs:(id)a3 completion:(id)a4;
-- (void)unregisterDarwinNotificationName:(id)a3;
-- (void)unsubscribeDelegatedLocationUpdatesWithCompletion:(id)a3;
-- (void)unsubscribeLocationUpdatesWithCompletion:(id)a3;
+- (void)stopUpdatingApplicationBeaconsWithCompletion:(id)completion;
+- (void)subscribeAndFetchLocationForContext:(id)context completion:(id)completion;
+- (void)subscribeDelegatedLocationUpdatesForContext:(id)context completion:(id)completion;
+- (void)tagSeparationStateChanged:(id)changed beaconUUID:(id)d location:(id)location completion:(id)completion;
+- (void)unacceptedBeaconsWithCompletion:(id)completion;
+- (void)unassignSafeLocation:(id)location beaconUUID:(id)d completion:(id)completion;
+- (void)unassignSafeLocation:(id)location beaconUUIDs:(id)ds completion:(id)completion;
+- (void)unauthorizedTrackingTypeWithCompletion:(id)completion completion:(id)a4;
+- (void)unknownBeaconsForUUIDs:(id)ds completion:(id)completion;
+- (void)unregisterDarwinNotificationName:(id)name;
+- (void)unsubscribeDelegatedLocationUpdatesWithCompletion:(id)completion;
+- (void)unsubscribeLocationUpdatesWithCompletion:(id)completion;
 - (void)updateAllBeacons;
-- (void)updateBatteryStatus:(unsigned __int8)a3 beaconUUID:(id)a4 completion:(id)a5;
-- (void)updateBeaconObservations:(id)a3 completion:(id)a4;
-- (void)updateConnectionExpiryDispatchTimerWithBeacons:(id)a3;
-- (void)updateSafeLocation:(id)a3 completion:(id)a4;
-- (void)waitForBeaconStoreAvailableWithCompletion:(id)a3;
+- (void)updateBatteryStatus:(unsigned __int8)status beaconUUID:(id)d completion:(id)completion;
+- (void)updateBeaconObservations:(id)observations completion:(id)completion;
+- (void)updateConnectionExpiryDispatchTimerWithBeacons:(id)beacons;
+- (void)updateSafeLocation:(id)location completion:(id)completion;
+- (void)waitForBeaconStoreAvailableWithCompletion:(id)completion;
 @end
 
 @implementation SPOwnerSession
@@ -169,8 +169,8 @@
     v2->_tokenBucket = v21;
 
     v23 = objc_alloc(MEMORY[0x277D07BA0]);
-    v24 = [(SPOwnerSession *)v2 remoteInterface];
-    v25 = [v23 initWithMachServiceName:@"com.apple.icloud.searchpartyd.ownersession" options:0 remoteObjectInterface:v24 interruptionHandler:0 invalidationHandler:0];
+    remoteInterface = [(SPOwnerSession *)v2 remoteInterface];
+    v25 = [v23 initWithMachServiceName:@"com.apple.icloud.searchpartyd.ownersession" options:0 remoteObjectInterface:remoteInterface interruptionHandler:0 invalidationHandler:0];
     serviceDescription = v2->_serviceDescription;
     v2->_serviceDescription = v25;
 
@@ -350,7 +350,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2643D0000, v3, OS_LOG_TYPE_DEFAULT, "SPOwnerSession: Dealloc %@", buf, 0xCu);
   }
 
@@ -363,20 +363,20 @@
 
 - (void)_invalidate
 {
-  v3 = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
+  connectionExpiryDispatchTimer = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
 
-  if (v3)
+  if (connectionExpiryDispatchTimer)
   {
-    v4 = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
-    dispatch_source_cancel(v4);
+    connectionExpiryDispatchTimer2 = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
+    dispatch_source_cancel(connectionExpiryDispatchTimer2);
   }
 
   [(SPOwnerSession *)self setConnectionExpiryDispatchTimer:0];
   v5 = objc_opt_new();
   [(SPOwnerSession *)self setClientObservedBeacons:v5];
 
-  v6 = [(SPOwnerSession *)self session];
-  [v6 invalidate];
+  session = [(SPOwnerSession *)self session];
+  [session invalidate];
 
   [(SPOwnerSession *)self setSession:0];
   [(SPOwnerSession *)self _unregisterDarwinNotificationName:@"SPBeaconsChangedNotification"];
@@ -389,53 +389,53 @@
 - (SPOwnerSessionXPCProtocol)proxy
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SPOwnerSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPOwnerSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPOwnerSession *)self session];
+  session = [(SPOwnerSession *)self session];
 
-  if (!v4)
+  if (!session)
   {
     v5 = objc_alloc(MEMORY[0x277D07BA8]);
-    v6 = [(SPOwnerSession *)self serviceDescription];
-    v7 = [v5 initWithServiceDescription:v6];
+    serviceDescription = [(SPOwnerSession *)self serviceDescription];
+    v7 = [v5 initWithServiceDescription:serviceDescription];
     [(SPOwnerSession *)self setSession:v7];
 
     v8 = LogCategory_OwnerSession();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(SPOwnerSession *)self serviceDescription];
-      v10 = [v9 machService];
+      serviceDescription2 = [(SPOwnerSession *)self serviceDescription];
+      machService = [serviceDescription2 machService];
       v16 = 138412290;
-      v17 = v10;
+      v17 = machService;
       _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "SPOwnerSession: Establishing XPC connection to %@", &v16, 0xCu);
     }
 
-    v11 = [(SPOwnerSession *)self session];
-    [v11 resume];
+    session2 = [(SPOwnerSession *)self session];
+    [session2 resume];
   }
 
-  v12 = [(SPOwnerSession *)self session];
-  v13 = [v12 proxy];
+  session3 = [(SPOwnerSession *)self session];
+  proxy = [session3 proxy];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return proxy;
 }
 
-- (void)beaconsToMonitorForSeparation:(id)a3
+- (void)beaconsToMonitorForSeparation:(id)separation
 {
-  v4 = a3;
+  separationCopy = separation;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SPOwnerSession_SeparationMonitoring__beaconsToMonitorForSeparation___block_invoke;
   block[3] = &unk_279B58B80;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = separationCopy;
+  v6 = separationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&location);
 }
@@ -447,14 +447,14 @@ void __70__SPOwnerSession_SeparationMonitoring__beaconsToMonitorForSeparation___
   [v3 beaconsToMonitorForSeparation:*(a1 + 40)];
 }
 
-- (void)startRefreshingBeaconsForSeparationMonitoringWithBlock:(id)a3
+- (void)startRefreshingBeaconsForSeparationMonitoringWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __95__SPOwnerSession_SeparationMonitoring__startRefreshingBeaconsForSeparationMonitoringWithBlock___block_invoke;
   aBlock[3] = &unk_279B59348;
-  v5 = v4;
+  v5 = blockCopy;
   v12 = v5;
   v6 = _Block_copy(aBlock);
   [(SPOwnerSession *)self beaconsToMonitorForSeparation:v6];
@@ -495,22 +495,22 @@ uint64_t __95__SPOwnerSession_SeparationMonitoring__startRefreshingBeaconsForSep
   return result;
 }
 
-- (void)enableSeparationMonitoringForBeacons:(id)a3 completion:(id)a4
+- (void)enableSeparationMonitoringForBeacons:(id)beacons completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beaconsCopy = beacons;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __88__SPOwnerSession_SeparationMonitoring__enableSeparationMonitoringForBeacons_completion___block_invoke;
   v11[3] = &unk_279B58BD0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = beaconsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = beaconsCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&location);
 }
@@ -522,22 +522,22 @@ void __88__SPOwnerSession_SeparationMonitoring__enableSeparationMonitoringForBea
   [v3 enableSeparationMonitoringForBeacons:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)disableSeparationMonitoringForBeacons:(id)a3 completion:(id)a4
+- (void)disableSeparationMonitoringForBeacons:(id)beacons completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beaconsCopy = beacons;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __89__SPOwnerSession_SeparationMonitoring__disableSeparationMonitoringForBeacons_completion___block_invoke;
   v11[3] = &unk_279B58BD0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = beaconsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = beaconsCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&location);
 }
@@ -549,45 +549,45 @@ void __89__SPOwnerSession_SeparationMonitoring__disableSeparationMonitoringForBe
   [v3 disableSeparationMonitoringForBeacons:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)enableSeparationMonitoringForBeacon:(id)a3 completion:(id)a4
+- (void)enableSeparationMonitoringForBeacon:(id)beacon completion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  beaconCopy = beacon;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
+  completionCopy = completion;
+  beaconCopy2 = beacon;
+  v9 = [v6 arrayWithObjects:&beaconCopy count:1];
 
-  [(SPOwnerSession *)self enableSeparationMonitoringForBeacons:v9 completion:v7, v11, v12];
+  [(SPOwnerSession *)self enableSeparationMonitoringForBeacons:v9 completion:completionCopy, beaconCopy, v12];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disableSeparationMonitoringForBeacon:(id)a3 completion:(id)a4
+- (void)disableSeparationMonitoringForBeacon:(id)beacon completion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  beaconCopy = beacon;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
+  completionCopy = completion;
+  beaconCopy2 = beacon;
+  v9 = [v6 arrayWithObjects:&beaconCopy count:1];
 
-  [(SPOwnerSession *)self disableSeparationMonitoringForBeacons:v9 completion:v7, v11, v12];
+  [(SPOwnerSession *)self disableSeparationMonitoringForBeacons:v9 completion:completionCopy, beaconCopy, v12];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)safeLocationsForSeparationMonitoring:(id)a3
+- (void)safeLocationsForSeparationMonitoring:(id)monitoring
 {
-  v4 = a3;
+  monitoringCopy = monitoring;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__SPOwnerSession_SeparationMonitoring__safeLocationsForSeparationMonitoring___block_invoke;
   block[3] = &unk_279B58B80;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = monitoringCopy;
+  v6 = monitoringCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&location);
 }
@@ -604,17 +604,17 @@ void __77__SPOwnerSession_SeparationMonitoring__safeLocationsForSeparationMonito
   [v3 safeLocationsWithCompletion:v4];
 }
 
-- (void)startRefreshingSafeLocationWithBlock:(id)a3
+- (void)startRefreshingSafeLocationWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  [(SPOwnerSession *)self safeLocationsForSeparationMonitoring:v4];
+  [(SPOwnerSession *)self safeLocationsForSeparationMonitoring:blockCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __77__SPOwnerSession_SeparationMonitoring__startRefreshingSafeLocationWithBlock___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   [(SPOwnerSession *)self registerDarwinNotificationName:@"com.apple.icloud.searchparty.separation_monitoring.safelocations_changed" block:v6];
 
@@ -648,22 +648,22 @@ void __77__SPOwnerSession_SeparationMonitoring__startRefreshingSafeLocationWithB
   dispatch_async(v4, v7);
 }
 
-- (void)addSafeLocation:(id)a3 completion:(id)a4
+- (void)addSafeLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__SPOwnerSession_SeparationMonitoring__addSafeLocation_completion___block_invoke;
   v11[3] = &unk_279B58BD0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = locationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = locationCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&location);
 }
@@ -675,22 +675,22 @@ void __67__SPOwnerSession_SeparationMonitoring__addSafeLocation_completion___blo
   [v3 addSafeLocation:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)removeSafeLocation:(id)a3 completion:(id)a4
+- (void)removeSafeLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __70__SPOwnerSession_SeparationMonitoring__removeSafeLocation_completion___block_invoke;
   v11[3] = &unk_279B58BD0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = locationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = locationCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&location);
 }
@@ -702,22 +702,22 @@ void __70__SPOwnerSession_SeparationMonitoring__removeSafeLocation_completion___
   [v3 removeSafeLocation:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)updateSafeLocation:(id)a3 completion:(id)a4
+- (void)updateSafeLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __70__SPOwnerSession_SeparationMonitoring__updateSafeLocation_completion___block_invoke;
   v11[3] = &unk_279B58BD0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = locationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = locationCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&location);
 }
@@ -729,53 +729,53 @@ void __70__SPOwnerSession_SeparationMonitoring__updateSafeLocation_completion___
   [v3 updateSafeLocation:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)assignSafeLocation:(id)a3 to:(id)a4 completion:(id)a5
+- (void)assignSafeLocation:(id)location to:(id)to completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v14 = a4;
+  toCopy = to;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v14 count:1];
+  completionCopy = completion;
+  toCopy2 = to;
+  locationCopy = location;
+  v12 = [v8 arrayWithObjects:&toCopy count:1];
 
-  [(SPOwnerSession *)self assignSafeLocation:v11 beaconUUIDs:v12 completion:v9, v14, v15];
+  [(SPOwnerSession *)self assignSafeLocation:locationCopy beaconUUIDs:v12 completion:completionCopy, toCopy, v15];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unassignSafeLocation:(id)a3 beaconUUID:(id)a4 completion:(id)a5
+- (void)unassignSafeLocation:(id)location beaconUUID:(id)d completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v14 = a4;
+  dCopy = d;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v14 count:1];
+  completionCopy = completion;
+  dCopy2 = d;
+  locationCopy = location;
+  v12 = [v8 arrayWithObjects:&dCopy count:1];
 
-  [(SPOwnerSession *)self unassignSafeLocation:v11 beaconUUIDs:v12 completion:v9, v14, v15];
+  [(SPOwnerSession *)self unassignSafeLocation:locationCopy beaconUUIDs:v12 completion:completionCopy, dCopy, v15];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assignSafeLocation:(id)a3 beaconUUIDs:(id)a4 completion:(id)a5
+- (void)assignSafeLocation:(id)location beaconUUIDs:(id)ds completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  dsCopy = ds;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__SPOwnerSession_SeparationMonitoring__assignSafeLocation_beaconUUIDs_completion___block_invoke;
   block[3] = &unk_279B593C0;
   block[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = locationCopy;
+  v17 = dsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dsCopy;
+  v14 = locationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&location);
 }
@@ -787,25 +787,25 @@ void __82__SPOwnerSession_SeparationMonitoring__assignSafeLocation_beaconUUIDs_c
   [v3 assignSafeLocation:*(a1 + 40) to:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)unassignSafeLocation:(id)a3 beaconUUIDs:(id)a4 completion:(id)a5
+- (void)unassignSafeLocation:(id)location beaconUUIDs:(id)ds completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationCopy = location;
+  dsCopy = ds;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__SPOwnerSession_SeparationMonitoring__unassignSafeLocation_beaconUUIDs_completion___block_invoke;
   block[3] = &unk_279B593C0;
   block[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = locationCopy;
+  v17 = dsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dsCopy;
+  v14 = locationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&location);
 }
@@ -817,26 +817,26 @@ void __84__SPOwnerSession_SeparationMonitoring__unassignSafeLocation_beaconUUIDs
   [v3 unassignSafeLocation:*(a1 + 40) from:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)publishSeparationEventForBeacons:(id)a3 eventType:(int64_t)a4 region:(id)a5 completion:(id)a6
+- (void)publishSeparationEventForBeacons:(id)beacons eventType:(int64_t)type region:(id)region completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  beaconsCopy = beacons;
+  regionCopy = region;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v13 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __101__SPOwnerSession_SeparationMonitoring__publishSeparationEventForBeacons_eventType_region_completion___block_invoke;
   v17[3] = &unk_279B593E8;
   v17[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a4;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v17);
+  v18 = beaconsCopy;
+  v20 = completionCopy;
+  typeCopy = type;
+  v19 = regionCopy;
+  v14 = completionCopy;
+  v15 = regionCopy;
+  v16 = beaconsCopy;
+  dispatch_async(queue, v17);
 
   objc_destroyWeak(&location);
 }
@@ -848,19 +848,19 @@ void __101__SPOwnerSession_SeparationMonitoring__publishSeparationEventForBeacon
   [v3 publishSeparationEventForBeacons:*(a1 + 40) eventType:*(a1 + 64) region:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)publishUnificationEventForBeacons:(id)a3
+- (void)publishUnificationEventForBeacons:(id)beacons
 {
-  v4 = a3;
+  beaconsCopy = beacons;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__SPOwnerSession_SeparationMonitoring__publishUnificationEventForBeacons___block_invoke;
   block[3] = &unk_279B59228;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = beaconsCopy;
+  v6 = beaconsCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -873,19 +873,19 @@ void __74__SPOwnerSession_SeparationMonitoring__publishUnificationEventForBeacon
   [v2 publishUnificationEventForBeacons:*(a1 + 32)];
 }
 
-- (void)activeCompanionWithCompletion:(id)a3
+- (void)activeCompanionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SPOwnerSession_SeparationMonitoring__activeCompanionWithCompletion___block_invoke;
   block[3] = &unk_279B58B80;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&location);
 }
@@ -897,19 +897,19 @@ void __70__SPOwnerSession_SeparationMonitoring__activeCompanionWithCompletion___
   [v3 activeCompanionWithCompletion:*(a1 + 40)];
 }
 
-- (void)fetchSeparationMonitoringStatus:(id)a3
+- (void)fetchSeparationMonitoringStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__SPOwnerSession_SeparationMonitoring__fetchSeparationMonitoringStatus___block_invoke;
   block[3] = &unk_279B58B80;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = statusCopy;
+  v6 = statusCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&location);
 }
@@ -921,37 +921,37 @@ void __72__SPOwnerSession_SeparationMonitoring__fetchSeparationMonitoringStatus_
   [v3 fetchSeparationMonitoringStatus:*(a1 + 40)];
 }
 
-- (void)startRefreshingSeparationMonitoringState:(id)a3
+- (void)startRefreshingSeparationMonitoringState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   objc_initWeak(&location, self);
-  [(SPOwnerSession *)self fetchSeparationMonitoringStatus:v4];
+  [(SPOwnerSession *)self fetchSeparationMonitoringStatus:stateCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __81__SPOwnerSession_SeparationMonitoring__startRefreshingSeparationMonitoringState___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v5 = v4;
+  v5 = stateCopy;
   v7 = v5;
   [(SPOwnerSession *)self registerDarwinNotificationName:@"com.apple.icloud.searchparty.separation_monitoring.state_changed" block:v6];
 
   objc_destroyWeak(&location);
 }
 
-- (void)forceLOIBasedSafeLocationRefresh:(id)a3
+- (void)forceLOIBasedSafeLocationRefresh:(id)refresh
 {
-  v4 = a3;
+  refreshCopy = refresh;
   objc_initWeak(&location, self);
-  v5 = self;
-  v6 = [(SPOwnerSession *)v5 queue];
+  selfCopy = self;
+  queue = [(SPOwnerSession *)selfCopy queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__SPOwnerSession_SeparationMonitoring__forceLOIBasedSafeLocationRefresh___block_invoke;
   block[3] = &unk_279B58B80;
-  block[4] = v5;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, block);
+  block[4] = selfCopy;
+  v9 = refreshCopy;
+  v7 = refreshCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&location);
 }
@@ -964,14 +964,14 @@ void __73__SPOwnerSession_SeparationMonitoring__forceLOIBasedSafeLocationRefresh
 
 - (id)maintenanceConnectionUpdateBlock
 {
-  v3 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__SPOwnerSession_MaintenanceConnection__maintenanceConnectionUpdateBlock__block_invoke;
   aBlock[3] = &unk_279B58F90;
-  v9 = v3;
-  v4 = v3;
+  v9 = queue;
+  v4 = queue;
   objc_copyWeak(&v10, &location);
   v5 = _Block_copy(aBlock);
   v6 = _Block_copy(v5);
@@ -1060,12 +1060,6 @@ void __73__SPOwnerSession_MaintenanceConnection__maintenanceConnectionUpdateBloc
   dispatch_group_leave(*(a1 + 32));
 }
 
-{
-  objc_storeStrong((*(*(a1 + 40) + 8) + 40), a2);
-  v4 = a2;
-  dispatch_group_leave(*(a1 + 32));
-}
-
 void __73__SPOwnerSession_MaintenanceConnection__maintenanceConnectionUpdateBlock__block_invoke_3(uint64_t a1)
 {
   v2 = [*(a1 + 32) maintainedBeaconsChangedBlock];
@@ -1078,29 +1072,29 @@ void __73__SPOwnerSession_MaintenanceConnection__maintenanceConnectionUpdateBloc
 
 - (void)startUpdatingMaintenanceConnection
 {
-  v3 = [(SPOwnerSession *)self maintenanceConnectionUpdateBlock];
-  [(SPOwnerSession *)self registerDarwinNotificationName:@"com.apple.nanoregistry.watchdidbecomeactive" block:v3];
-  [(SPOwnerSession *)self registerDarwinNotificationName:@"com.apple.mobile.keybagd.first_unlock" block:v3];
-  [(SPOwnerSession *)self registerDarwinNotificationName:@"SPMaintenancePolicyChangedNotification" block:v3];
+  maintenanceConnectionUpdateBlock = [(SPOwnerSession *)self maintenanceConnectionUpdateBlock];
+  [(SPOwnerSession *)self registerDarwinNotificationName:@"com.apple.nanoregistry.watchdidbecomeactive" block:maintenanceConnectionUpdateBlock];
+  [(SPOwnerSession *)self registerDarwinNotificationName:@"com.apple.mobile.keybagd.first_unlock" block:maintenanceConnectionUpdateBlock];
+  [(SPOwnerSession *)self registerDarwinNotificationName:@"SPMaintenancePolicyChangedNotification" block:maintenanceConnectionUpdateBlock];
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __75__SPOwnerSession_MaintenanceConnection__startUpdatingMaintenanceConnection__block_invoke;
   activity_block[3] = &unk_279B58EF8;
-  v6 = v3;
-  v4 = v3;
+  v6 = maintenanceConnectionUpdateBlock;
+  v4 = maintenanceConnectionUpdateBlock;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling initial maintenanceConnectionUpdateBlock", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)startRefreshingPersistentConnectionWithBlock:(id)a3
+- (void)startRefreshingPersistentConnectionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __85__SPOwnerSession_PersistentConnection__startRefreshingPersistentConnectionWithBlock___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   [(SPOwnerSession *)self registerDarwinNotificationName:@"com.apple.icloud.searchparty.PersistentConnectionChanged" block:v6];
 
@@ -1134,19 +1128,19 @@ void __85__SPOwnerSession_PersistentConnection__startRefreshingPersistentConnect
   dispatch_async(v4, v7);
 }
 
-- (void)beaconsToMaintainPersistentConnection:(id)a3
+- (void)beaconsToMaintainPersistentConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__SPOwnerSession_PersistentConnection__beaconsToMaintainPersistentConnection___block_invoke;
   block[3] = &unk_279B59650;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = connectionCopy;
+  v6 = connectionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1159,23 +1153,23 @@ void __78__SPOwnerSession_PersistentConnection__beaconsToMaintainPersistentConne
   [v2 beaconsToMaintainPersistentConnection:*(a1 + 32)];
 }
 
-- (void)locationsForBeacons:(id)a3 completion:(id)a4
+- (void)locationsForBeacons:(id)beacons completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beaconsCopy = beacons;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__SPOwnerSession_locationsForBeacons_completion___block_invoke;
   block[3] = &unk_279B599D0;
-  v12 = v6;
-  v9 = v6;
+  v12 = beaconsCopy;
+  v9 = beaconsCopy;
   objc_copyWeak(&v15, &location);
-  v13 = self;
-  v14 = v7;
-  v10 = v7;
-  dispatch_async(v8, block);
+  selfCopy = self;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1256,14 +1250,14 @@ void __49__SPOwnerSession_locationsForBeacons_completion___block_invoke_4(uint64
   v10 = __Block_byref_object_copy__4;
   v11 = __Block_byref_object_dispose__4;
   v12 = 0;
-  v3 = [(SPOwnerSession *)self queueSynchronizer];
+  queueSynchronizer = [(SPOwnerSession *)self queueSynchronizer];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__SPOwnerSession__enforceRateLimit__block_invoke;
   v6[3] = &unk_279B594E0;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 conditionalSync:v6];
+  [queueSynchronizer conditionalSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1300,96 +1294,96 @@ void __35__SPOwnerSession__enforceRateLimit__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationForContext:(id)a3 completion:(id)a4
+- (void)locationForContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SPOwnerSession *)self locationFetch];
-  [v8 locationForContext:v7 completion:v6];
+  completionCopy = completion;
+  contextCopy = context;
+  locationFetch = [(SPOwnerSession *)self locationFetch];
+  [locationFetch locationForContext:contextCopy completion:completionCopy];
 }
 
-- (void)subscribeAndFetchLocationForContext:(id)a3 completion:(id)a4
+- (void)subscribeAndFetchLocationForContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SPOwnerSession *)self locationFetch];
-  [v8 subscribeAndFetchLocationForContext:v7 completion:v6];
+  completionCopy = completion;
+  contextCopy = context;
+  locationFetch = [(SPOwnerSession *)self locationFetch];
+  [locationFetch subscribeAndFetchLocationForContext:contextCopy completion:completionCopy];
 }
 
-- (void)unsubscribeLocationUpdatesWithCompletion:(id)a3
+- (void)unsubscribeLocationUpdatesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SPOwnerSession *)self locationFetch];
-  [v5 unsubscribeLocationUpdatesWithCompletion:v4];
+  completionCopy = completion;
+  locationFetch = [(SPOwnerSession *)self locationFetch];
+  [locationFetch unsubscribeLocationUpdatesWithCompletion:completionCopy];
 }
 
-- (void)setLocationUpdateBlock:(id)a3
+- (void)setLocationUpdateBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SPOwnerSession *)self locationFetch];
-  [v5 setLocationUpdateBlock:v4];
+  blockCopy = block;
+  locationFetch = [(SPOwnerSession *)self locationFetch];
+  [locationFetch setLocationUpdateBlock:blockCopy];
 }
 
-- (void)setDeviceEventUpdateBlock:(id)a3
+- (void)setDeviceEventUpdateBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SPOwnerSession *)self locationFetch];
-  [v5 setDeviceEventUpdateBlock:v4];
+  blockCopy = block;
+  locationFetch = [(SPOwnerSession *)self locationFetch];
+  [locationFetch setDeviceEventUpdateBlock:blockCopy];
 }
 
-- (void)setInvalidationBlock:(id)a3
+- (void)setInvalidationBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SPOwnerSession *)self locationFetch];
-  [v5 setInvalidationBlock:v4];
+  blockCopy = block;
+  locationFetch = [(SPOwnerSession *)self locationFetch];
+  [locationFetch setInvalidationBlock:blockCopy];
 }
 
-- (void)delegatedLocationForContext:(id)a3 completion:(id)a4
+- (void)delegatedLocationForContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SPOwnerSession *)self delegationUpdate];
-  [v8 delegatedLocationForContext:v7 completion:v6];
+  completionCopy = completion;
+  contextCopy = context;
+  delegationUpdate = [(SPOwnerSession *)self delegationUpdate];
+  [delegationUpdate delegatedLocationForContext:contextCopy completion:completionCopy];
 }
 
-- (void)setDelegatedLocationUpdateBlock:(id)a3
+- (void)setDelegatedLocationUpdateBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SPOwnerSession *)self delegationUpdate];
-  [v5 setDelegatedLocationUpdateBlock:v4];
+  blockCopy = block;
+  delegationUpdate = [(SPOwnerSession *)self delegationUpdate];
+  [delegationUpdate setDelegatedLocationUpdateBlock:blockCopy];
 }
 
-- (void)subscribeDelegatedLocationUpdatesForContext:(id)a3 completion:(id)a4
+- (void)subscribeDelegatedLocationUpdatesForContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SPOwnerSession *)self delegationUpdate];
-  [v8 subscribeDelegatedLocationUpdatesForContext:v7 completion:v6];
+  completionCopy = completion;
+  contextCopy = context;
+  delegationUpdate = [(SPOwnerSession *)self delegationUpdate];
+  [delegationUpdate subscribeDelegatedLocationUpdatesForContext:contextCopy completion:completionCopy];
 }
 
-- (void)unsubscribeDelegatedLocationUpdatesWithCompletion:(id)a3
+- (void)unsubscribeDelegatedLocationUpdatesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SPOwnerSession *)self delegationUpdate];
-  [v5 unsubscribeDelegatedLocationUpdatesWithCompletion:v4];
+  completionCopy = completion;
+  delegationUpdate = [(SPOwnerSession *)self delegationUpdate];
+  [delegationUpdate unsubscribeDelegatedLocationUpdatesWithCompletion:completionCopy];
 }
 
-- (void)setConnectionExpiryDispatchTimerWithInterval:(double)a3
+- (void)setConnectionExpiryDispatchTimerWithInterval:(double)interval
 {
-  v5 = [(SPOwnerSession *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(SPOwnerSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
+  connectionExpiryDispatchTimer = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
 
-  if (v6)
+  if (connectionExpiryDispatchTimer)
   {
-    v7 = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
-    dispatch_source_cancel(v7);
+    connectionExpiryDispatchTimer2 = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
+    dispatch_source_cancel(connectionExpiryDispatchTimer2);
 
     [(SPOwnerSession *)self setConnectionExpiryDispatchTimer:0];
   }
 
-  if ((a3 < 0.0 || ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 > 0x3FE) && (*&a3 - 1) > 0xFFFFFFFFFFFFELL)
+  if ((interval < 0.0 || ((*&interval & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 > 0x3FE) && (*&interval - 1) > 0xFFFFFFFFFFFFELL)
   {
     v12 = -1;
     v11 = -1;
@@ -1397,26 +1391,26 @@ void __35__SPOwnerSession__enforceRateLimit__block_invoke(uint64_t a1)
 
   else
   {
-    v10 = a3 * 1000000000.0;
+    v10 = interval * 1000000000.0;
     v11 = dispatch_walltime(0, v10);
     v12 = (v10 * 0.02);
   }
 
-  v13 = [(SPOwnerSession *)self queue];
-  v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v13);
+  queue2 = [(SPOwnerSession *)self queue];
+  v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue2);
   [(SPOwnerSession *)self setConnectionExpiryDispatchTimer:v14];
 
-  v15 = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
-  dispatch_source_set_timer(v15, v11, 0xFFFFFFFFFFFFFFFFLL, v12);
+  connectionExpiryDispatchTimer3 = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
+  dispatch_source_set_timer(connectionExpiryDispatchTimer3, v11, 0xFFFFFFFFFFFFFFFFLL, v12);
 
   objc_initWeak(&location, self);
-  v16 = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
+  connectionExpiryDispatchTimer4 = [(SPOwnerSession *)self connectionExpiryDispatchTimer];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __63__SPOwnerSession_setConnectionExpiryDispatchTimerWithInterval___block_invoke;
   v21 = &unk_279B58D88;
   objc_copyWeak(&v22, &location);
-  dispatch_source_set_event_handler(v16, &v18);
+  dispatch_source_set_event_handler(connectionExpiryDispatchTimer4, &v18);
 
   v17 = [(SPOwnerSession *)self connectionExpiryDispatchTimer:v18];
   dispatch_resume(v17);
@@ -1448,13 +1442,13 @@ void __63__SPOwnerSession_setConnectionExpiryDispatchTimerWithInterval___block_i
   }
 
   objc_initWeak(buf, self);
-  v4 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__SPOwnerSession_connectionExpiryTimerFired__block_invoke;
   block[3] = &unk_279B58D88;
   objc_copyWeak(&v6, buf);
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
@@ -1466,12 +1460,12 @@ void __44__SPOwnerSession_connectionExpiryTimerFired__block_invoke(uint64_t a1)
   [WeakRetained updateAllBeacons];
 }
 
-- (void)updateConnectionExpiryDispatchTimerWithBeacons:(id)a3
+- (void)updateConnectionExpiryDispatchTimerWithBeacons:(id)beacons
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SPOwnerSession *)self queue];
-  dispatch_assert_queue_V2(v5);
+  beaconsCopy = beacons;
+  queue = [(SPOwnerSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1491,7 +1485,7 @@ void __44__SPOwnerSession_connectionExpiryTimerFired__block_invoke(uint64_t a1)
   v12[2] = __65__SPOwnerSession_updateConnectionExpiryDispatchTimerWithBeacons___block_invoke;
   v12[3] = &unk_279B599F8;
   v12[4] = buf;
-  [v4 enumerateObjectsUsingBlock:v12];
+  [beaconsCopy enumerateObjectsUsingBlock:v12];
   if (*(v14 + 5))
   {
     v7 = LogCategory_BeaconManager();
@@ -1554,25 +1548,25 @@ void __65__SPOwnerSession_updateConnectionExpiryDispatchTimerWithBeacons___block
 LABEL_6:
 }
 
-- (void)rawSearchResultsForBeacon:(id)a3 dateInterval:(id)a4 completion:(id)a5
+- (void)rawSearchResultsForBeacon:(id)beacon dateInterval:(id)interval completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  beaconCopy = beacon;
+  intervalCopy = interval;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__SPOwnerSession_rawSearchResultsForBeacon_dateInterval_completion___block_invoke;
   block[3] = &unk_279B59A20;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = beaconCopy;
+  v17 = intervalCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = intervalCopy;
+  v14 = beaconCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -1586,19 +1580,19 @@ void __68__SPOwnerSession_rawSearchResultsForBeacon_dateInterval_completion___bl
   [v2 rawSearchResultsForIdentifier:v3 dateInterval:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)beaconForUUID:(id)a3 completion:(id)a4
+- (void)beaconForUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __43__SPOwnerSession_beaconForUUID_completion___block_invoke;
   activity_block[3] = &unk_279B59A48;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = completionCopy;
+  v11 = dCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: beaconForUUID:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1651,19 +1645,19 @@ void __43__SPOwnerSession_beaconForUUID_completion___block_invoke_266(uint64_t a
   [v2 beaconForUUID:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)forceDistributeKeysWithCompletion:(id)a3
+- (void)forceDistributeKeysWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SPOwnerSession_forceDistributeKeysWithCompletion___block_invoke;
   block[3] = &unk_279B59650;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1676,22 +1670,22 @@ void __52__SPOwnerSession_forceDistributeKeysWithCompletion___block_invoke(uint6
   [v2 forceDistributeKeysWithCompletion:*(a1 + 32)];
 }
 
-- (void)forceUpdateKeyMapsForUUID:(id)a3 completion:(id)a4
+- (void)forceUpdateKeyMapsForUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__SPOwnerSession_forceUpdateKeyMapsForUUID_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1704,22 +1698,22 @@ void __55__SPOwnerSession_forceUpdateKeyMapsForUUID_completion___block_invoke(ui
   [v2 forceUpdateKeyMapsForUUID:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)forceUpdateKeyAlignmentRecordForUUID:(id)a3 completion:(id)a4
+- (void)forceUpdateKeyAlignmentRecordForUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__SPOwnerSession_forceUpdateKeyAlignmentRecordForUUID_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1732,20 +1726,20 @@ void __66__SPOwnerSession_forceUpdateKeyAlignmentRecordForUUID_completion___bloc
   [v2 forceUpdateKeyAlignmentRecordForUUID:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)beaconForIdentifier:(id)a3 completion:(id)a4
+- (void)beaconForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __49__SPOwnerSession_beaconForIdentifier_completion___block_invoke;
   activity_block[3] = &unk_279B59A70;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = completionCopy;
+  v11 = identifierCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   objc_copyWeak(&v14, &location);
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling beaconForIdentifier:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
   objc_destroyWeak(&v14);
@@ -1803,20 +1797,20 @@ void __49__SPOwnerSession_beaconForIdentifier_completion___block_invoke_267(uint
   [v2 beaconForIdentifier:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)beaconGroupForIdentifier:(id)a3 completion:(id)a4
+- (void)beaconGroupForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __54__SPOwnerSession_beaconGroupForIdentifier_completion___block_invoke;
   activity_block[3] = &unk_279B59A70;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = completionCopy;
+  v11 = identifierCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   objc_copyWeak(&v14, &location);
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling beaconGroupForIdentifier:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
   objc_destroyWeak(&v14);
@@ -1874,18 +1868,18 @@ void __54__SPOwnerSession_beaconGroupForIdentifier_completion___block_invoke_268
   [v2 beaconGroupForIdentifier:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)hasAccessoryWithCapabilities:(unint64_t)a3 completion:(id)a4
+- (void)hasAccessoryWithCapabilities:(unint64_t)capabilities completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __58__SPOwnerSession_hasAccessoryWithCapabilities_completion___block_invoke;
   activity_block[3] = &unk_279B59AC0;
-  v10[1] = a3;
+  v10[1] = capabilities;
   activity_block[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = completionCopy;
+  v7 = completionCopy;
   objc_copyWeak(v10, &location);
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling hasAccessoryWithCapabilities:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
   objc_destroyWeak(v10);
@@ -1943,22 +1937,22 @@ void __58__SPOwnerSession_hasAccessoryWithCapabilities_completion___block_invoke
   [v2 hasAccessoryWithCapabilities:*(a1 + 48) completion:*(a1 + 32)];
 }
 
-- (void)beaconGroupsForUUIDs:(id)a3 completion:(id)a4
+- (void)beaconGroupsForUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__SPOwnerSession_beaconGroupsForUUIDs_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = dsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1971,22 +1965,22 @@ void __50__SPOwnerSession_beaconGroupsForUUIDs_completion___block_invoke(uint64_
   [v2 beaconGroupsForUUIDs:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)standaloneBeaconsForUUIDs:(id)a3 completion:(id)a4
+- (void)standaloneBeaconsForUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__SPOwnerSession_standaloneBeaconsForUUIDs_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = dsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1999,22 +1993,22 @@ void __55__SPOwnerSession_standaloneBeaconsForUUIDs_completion___block_invoke(ui
   [v2 standaloneBeaconsForUUIDs:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)beaconingIdentifierForMACAddress:(id)a3 completion:(id)a4
+- (void)beaconingIdentifierForMACAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__SPOwnerSession_beaconingIdentifierForMACAddress_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = addressCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = addressCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2027,19 +2021,19 @@ void __62__SPOwnerSession_beaconingIdentifierForMACAddress_completion___block_in
   [v2 beaconingIdentifierForMACAddress:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)clientConfigurationWithCompletion:(id)a3
+- (void)clientConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SPOwnerSession_clientConfigurationWithCompletion___block_invoke;
   block[3] = &unk_279B59650;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2052,31 +2046,31 @@ void __52__SPOwnerSession_clientConfigurationWithCompletion___block_invoke(uint6
   [v2 clientConfigurationWithCompletion:*(a1 + 32)];
 }
 
-- (void)fetchFindMyNetworkStatusForMACAddress:(id)a3 completion:(id)a4
+- (void)fetchFindMyNetworkStatusForMACAddress:(id)address completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v8 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = addressCopy;
     _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "SPOwnerSession: fetchFindMyNetworkStatusForMACAddress: %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__SPOwnerSession_fetchFindMyNetworkStatusForMACAddress_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v14 = addressCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = addressCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -2090,35 +2084,35 @@ void __67__SPOwnerSession_fetchFindMyNetworkStatusForMACAddress_completion___blo
   [v2 fetchFindMyNetworkStatusForMACAddress:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)setFindMyNetworkStatusForMACAddress:(id)a3 status:(BOOL)a4 completion:(id)a5
+- (void)setFindMyNetworkStatusForMACAddress:(id)address status:(BOOL)status completion:(id)completion
 {
-  v6 = a4;
+  statusCopy = status;
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   v10 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109378;
-    HIDWORD(buf) = v6;
+    HIDWORD(buf) = statusCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = addressCopy;
     _os_log_impl(&dword_2643D0000, v10, OS_LOG_TYPE_DEFAULT, "SPOwnerSession: setFindMyNetworkStatus: %d for MACAddress: %@", &buf, 0x12u);
   }
 
   objc_initWeak(&buf, self);
-  v11 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__SPOwnerSession_setFindMyNetworkStatusForMACAddress_status_completion___block_invoke;
   v15[3] = &unk_279B59678;
   objc_copyWeak(&v18, &buf);
-  v19 = v6;
-  v16 = v8;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
-  dispatch_async(v11, v15);
+  v19 = statusCopy;
+  v16 = addressCopy;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = addressCopy;
+  dispatch_async(queue, v15);
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&buf);
@@ -2132,25 +2126,25 @@ void __72__SPOwnerSession_setFindMyNetworkStatusForMACAddress_status_completion_
   [v2 setFindMyNetworkStatusForMACAddress:*(a1 + 32) status:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)connectUsingMACAddress:(id)a3 longTermKey:(id)a4 completion:(id)a5
+- (void)connectUsingMACAddress:(id)address longTermKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  keyCopy = key;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__SPOwnerSession_connectUsingMACAddress_longTermKey_completion___block_invoke;
   block[3] = &unk_279B59A20;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = addressCopy;
+  v17 = keyCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = keyCopy;
+  v14 = addressCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -2163,22 +2157,22 @@ void __64__SPOwnerSession_connectUsingMACAddress_longTermKey_completion___block_
   [v2 connectUsingMACAddress:*(a1 + 32) longTermKey:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)disconnectFromMACAddress:(id)a3 completion:(id)a4
+- (void)disconnectFromMACAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__SPOwnerSession_disconnectFromMACAddress_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = addressCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = addressCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2191,26 +2185,26 @@ void __54__SPOwnerSession_disconnectFromMACAddress_completion___block_invoke(uin
   [v2 disconnectFromMACAddress:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)simulateAccessoryPairing:(id)a3 name:(id)a4 isAirPods:(BOOL)a5 completion:(id)a6
+- (void)simulateAccessoryPairing:(id)pairing name:(id)name isAirPods:(BOOL)pods completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  pairingCopy = pairing;
+  nameCopy = name;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v13 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __69__SPOwnerSession_simulateAccessoryPairing_name_isAirPods_completion___block_invoke;
   v17[3] = &unk_279B59AE8;
   objc_copyWeak(&v21, &location);
-  v18 = v10;
-  v19 = v11;
-  v22 = a5;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v17);
+  v18 = pairingCopy;
+  v19 = nameCopy;
+  podsCopy = pods;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = nameCopy;
+  v16 = pairingCopy;
+  dispatch_async(queue, v17);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -2223,26 +2217,26 @@ void __69__SPOwnerSession_simulateAccessoryPairing_name_isAirPods_completion___b
   [v2 simulateAccessoryPairing:*(a1 + 32) name:*(a1 + 40) isAirPods:*(a1 + 64) completion:*(a1 + 48)];
 }
 
-- (void)forceKeySyncForBeaconUUID:(id)a3 lastObservationDate:(id)a4 lastObservationIndex:(unint64_t)a5 completion:(id)a6
+- (void)forceKeySyncForBeaconUUID:(id)d lastObservationDate:(id)date lastObservationIndex:(unint64_t)index completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  dateCopy = date;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v13 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __96__SPOwnerSession_forceKeySyncForBeaconUUID_lastObservationDate_lastObservationIndex_completion___block_invoke;
   v17[3] = &unk_279B59B10;
   objc_copyWeak(v21, &location);
-  v18 = v10;
-  v19 = v11;
-  v21[1] = a5;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v17);
+  v18 = dCopy;
+  v19 = dateCopy;
+  v21[1] = index;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = dateCopy;
+  v16 = dCopy;
+  dispatch_async(queue, v17);
 
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
@@ -2255,22 +2249,22 @@ void __96__SPOwnerSession_forceKeySyncForBeaconUUID_lastObservationDate_lastObse
   [v2 forceKeySyncForBeaconUUID:*(a1 + 32) lastObservationDate:*(a1 + 40) lastObservationIndex:*(a1 + 64) completion:*(a1 + 48)];
 }
 
-- (void)fakeClassicPairingWithMACAddress:(id)a3 completion:(id)a4
+- (void)fakeClassicPairingWithMACAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __62__SPOwnerSession_fakeClassicPairingWithMACAddress_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = addressCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = addressCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2283,25 +2277,25 @@ void __62__SPOwnerSession_fakeClassicPairingWithMACAddress_completion___block_in
   [v2 fakeClassicPairingWithMACAddress:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)forceRePairingWithUUID:(id)a3 partIds:(id)a4 completion:(id)a5
+- (void)forceRePairingWithUUID:(id)d partIds:(id)ids completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  idsCopy = ids;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SPOwnerSession_forceRePairingWithUUID_partIds_completion___block_invoke;
   block[3] = &unk_279B59A20;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = dCopy;
+  v17 = idsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = idsCopy;
+  v14 = dCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -2314,31 +2308,31 @@ void __60__SPOwnerSession_forceRePairingWithUUID_partIds_completion___block_invo
   [v2 forceRePairingWithUUID:*(a1 + 32) partIds:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (id)executeCommand:(id)a3
+- (id)executeCommand:(id)command
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   v5 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = commandCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPOwnerSession: executeCommand: %@", buf, 0xCu);
   }
 
   v6 = objc_alloc_init(MEMORY[0x277D07B68]);
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __33__SPOwnerSession_executeCommand___block_invoke;
   v18 = &unk_279B59B38;
-  v19 = v4;
+  v19 = commandCopy;
   v8 = v6;
   v20 = v8;
-  v21 = self;
-  v22 = v7;
-  v9 = v7;
-  v10 = v4;
+  selfCopy = self;
+  v22 = date;
+  v9 = date;
+  v10 = commandCopy;
   v11 = _Block_copy(&v15);
   [(SPOwnerSession *)self executeCommand:v10 completion:v11, v15, v16, v17, v18];
   v12 = v8;
@@ -2428,28 +2422,28 @@ void __33__SPOwnerSession_executeCommand___block_invoke(uint64_t a1, void *a2)
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishBeaconGroupFuture:(id)a3 command:(id)a4 commandIssueDate:(id)a5
+- (void)finishBeaconGroupFuture:(id)future command:(id)command commandIssueDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  futureCopy = future;
+  commandCopy = command;
+  dateCopy = date;
   v11 = MEMORY[0x277CBEA60];
-  v12 = [v9 beaconIdentifier];
-  v13 = [v11 arrayWithObject:v12];
+  beaconIdentifier = [commandCopy beaconIdentifier];
+  v13 = [v11 arrayWithObject:beaconIdentifier];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __67__SPOwnerSession_finishBeaconGroupFuture_command_commandIssueDate___block_invoke;
   v18[3] = &unk_279B59B88;
-  v19 = v9;
-  v20 = v8;
-  v21 = self;
+  v19 = commandCopy;
+  v20 = futureCopy;
+  selfCopy = self;
   v22 = v13;
-  v23 = v10;
-  v14 = v10;
+  v23 = dateCopy;
+  v14 = dateCopy;
   v15 = v13;
-  v16 = v8;
-  v17 = v9;
+  v16 = futureCopy;
+  v17 = commandCopy;
   [(SPOwnerSession *)self beaconGroupsForUUIDs:v15 completion:v18];
 }
 
@@ -2536,18 +2530,18 @@ void __67__SPOwnerSession_finishBeaconGroupFuture_command_commandIssueDate___blo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishBeaconFuture:(id)a3 beaconUUID:(id)a4
+- (void)finishBeaconFuture:(id)future beaconUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  futureCopy = future;
+  dCopy = d;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__SPOwnerSession_finishBeaconFuture_beaconUUID___block_invoke;
   v10[3] = &unk_279B59BD8;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = dCopy;
+  v12 = futureCopy;
+  v8 = futureCopy;
+  v9 = dCopy;
   [(SPOwnerSession *)self allBeaconsWithCompletion:v10];
 }
 
@@ -2597,18 +2591,18 @@ uint64_t __48__SPOwnerSession_finishBeaconFuture_beaconUUID___block_invoke_2(uin
   return v4;
 }
 
-- (void)addBeaconChangedListener:(id)a3 beaconUUID:(id)a4 taskName:(id)a5 commandIdentifier:(id)a6 commandIssueDate:(id)a7
+- (void)addBeaconChangedListener:(id)listener beaconUUID:(id)d taskName:(id)name commandIdentifier:(id)identifier commandIssueDate:(id)date
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(SPOwnerSession *)self queue];
+  listenerCopy = listener;
+  dCopy = d;
+  nameCopy = name;
+  identifierCopy = identifier;
+  dateCopy = date;
+  queue = [(SPOwnerSession *)self queue];
   v18 = objc_opt_new();
   v19 = [SPSimpleBeaconContext alloc];
-  v45[0] = v13;
+  v45[0] = dCopy;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
   v21 = [(SPSimpleBeaconContext *)v19 initWithFetchProperties:4608 matchingBeaconUUIDs:v20];
 
@@ -2616,18 +2610,18 @@ uint64_t __48__SPOwnerSession_finishBeaconFuture_beaconUUID___block_invoke_2(uin
   v38[1] = 3221225472;
   v38[2] = __98__SPOwnerSession_addBeaconChangedListener_beaconUUID_taskName_commandIdentifier_commandIssueDate___block_invoke;
   v38[3] = &unk_279B59C50;
-  v22 = v13;
+  v22 = dCopy;
   v39 = v22;
-  v40 = v17;
-  v41 = v14;
-  v42 = v15;
-  v43 = v16;
-  v44 = v12;
-  v23 = v12;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
-  v27 = v17;
+  v40 = queue;
+  v41 = nameCopy;
+  v42 = identifierCopy;
+  v43 = dateCopy;
+  v44 = listenerCopy;
+  v23 = listenerCopy;
+  v24 = dateCopy;
+  v25 = identifierCopy;
+  v26 = nameCopy;
+  v27 = queue;
   [v18 setSimpleBeaconDifferenceBlock:v38];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -2915,19 +2909,19 @@ void __98__SPOwnerSession_addBeaconChangedListener_beaconUUID_taskName_commandId
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)executeCommand:(id)a3 completion:(id)a4
+- (void)executeCommand:(id)command completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __44__SPOwnerSession_executeCommand_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = commandCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = commandCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling executeCommand:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -2964,13 +2958,13 @@ void __44__SPOwnerSession_executeCommand_completion___block_invoke_2(uint64_t a1
     _os_log_impl(&dword_2643D0000, v3, OS_LOG_TYPE_DEFAULT, "SPOwnerSession: startRefreshing", buf, 2u);
   }
 
-  v4 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__SPOwnerSession_startRefreshing__block_invoke;
   block[3] = &unk_279B58AE8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __33__SPOwnerSession_startRefreshing__block_invoke(uint64_t a1)
@@ -3037,27 +3031,27 @@ void __33__SPOwnerSession_startRefreshing__block_invoke_5(uint64_t a1)
   [WeakRetained _updateOwnerSessionState];
 }
 
-- (void)startRefreshingBeacons:(id)a3
+- (void)startRefreshingBeacons:(id)beacons
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  beaconsCopy = beacons;
   v5 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = [v4 count];
+    v16 = [beaconsCopy count];
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPOwnerSession: startRefreshingBeacons: %lu", buf, 0xCu);
   }
 
-  v6 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __41__SPOwnerSession_startRefreshingBeacons___block_invoke;
   v12 = &unk_279B58C78;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
-  dispatch_async(v6, &v9);
+  selfCopy = self;
+  v14 = beaconsCopy;
+  v7 = beaconsCopy;
+  dispatch_async(queue, &v9);
 
   [(SPOwnerSession *)self startRefreshing:v9];
   v8 = *MEMORY[0x277D85DE8];
@@ -3078,21 +3072,21 @@ void __41__SPOwnerSession_startRefreshingBeacons___block_invoke(uint64_t a1)
     _os_log_impl(&dword_2643D0000, v3, OS_LOG_TYPE_DEFAULT, "SPOwnerSession: stopRefreshing", buf, 2u);
   }
 
-  v4 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__SPOwnerSession_stopRefreshing__block_invoke;
   block[3] = &unk_279B58AE8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 
-  v5 = [(SPOwnerSession *)self queue];
+  queue2 = [(SPOwnerSession *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__SPOwnerSession_stopRefreshing__block_invoke_2;
   v6[3] = &unk_279B58AE8;
   v6[4] = self;
-  dispatch_sync(v5, v6);
+  dispatch_sync(queue2, v6);
 }
 
 - (void)updateAllBeacons
@@ -3121,14 +3115,14 @@ void __34__SPOwnerSession_updateAllBeacons__block_invoke()
   v10 = __Block_byref_object_copy__4;
   v11 = __Block_byref_object_dispose__4;
   v12 = 0;
-  v3 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __28__SPOwnerSession_allBeacons__block_invoke;
   v6[3] = &unk_279B58D60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3145,20 +3139,20 @@ void __28__SPOwnerSession_allBeacons__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)allBeaconsWithCompletion:(id)a3
+- (void)allBeaconsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__SPOwnerSession_allBeaconsWithCompletion___block_invoke;
   v8[3] = &unk_279B58BA8;
   objc_copyWeak(&v11, &location);
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = queue;
+  v10 = completionCopy;
+  v6 = completionCopy;
+  v7 = queue;
   dispatch_async(v7, v8);
 
   objc_destroyWeak(&v11);
@@ -3224,12 +3218,12 @@ void __43__SPOwnerSession_allBeaconsWithCompletion___block_invoke_4(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)startUpdatingApplicationBeaconsWithContext:(id)a3 collectionDifference:(id)a4 completion:(id)a5
+- (void)startUpdatingApplicationBeaconsWithContext:(id)context collectionDifference:(id)difference completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  differenceCopy = difference;
+  completionCopy = completion;
   v11 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -3243,14 +3237,14 @@ void __43__SPOwnerSession_allBeaconsWithCompletion___block_invoke_4(uint64_t a1)
   aBlock[2] = __93__SPOwnerSession_startUpdatingApplicationBeaconsWithContext_collectionDifference_completion___block_invoke;
   aBlock[3] = &unk_279B58E30;
   aBlock[4] = self;
-  v22 = v8;
-  v23 = v9;
-  v24 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v22 = contextCopy;
+  v23 = differenceCopy;
+  v24 = completionCopy;
+  v12 = completionCopy;
+  v13 = contextCopy;
+  v14 = differenceCopy;
   v15 = _Block_copy(aBlock);
-  v16 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __93__SPOwnerSession_startUpdatingApplicationBeaconsWithContext_collectionDifference_completion___block_invoke_4;
@@ -3258,7 +3252,7 @@ void __43__SPOwnerSession_allBeaconsWithCompletion___block_invoke_4(uint64_t a1)
   v19[4] = self;
   v20 = v15;
   v17 = v15;
-  dispatch_async(v16, v19);
+  dispatch_async(queue, v19);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -3348,10 +3342,10 @@ void __93__SPOwnerSession_startUpdatingApplicationBeaconsWithContext_collectionD
   dispatch_async(v2, block);
 }
 
-- (void)stopUpdatingApplicationBeaconsWithCompletion:(id)a3
+- (void)stopUpdatingApplicationBeaconsWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3360,15 +3354,15 @@ void __93__SPOwnerSession_startUpdatingApplicationBeaconsWithContext_collectionD
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPOwnerSession: SPI: %{public}s", buf, 0xCu);
   }
 
-  v6 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__SPOwnerSession_stopUpdatingApplicationBeaconsWithCompletion___block_invoke;
   v9[3] = &unk_279B58B80;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -3388,19 +3382,19 @@ void __63__SPOwnerSession_stopUpdatingApplicationBeaconsWithCompletion___block_i
   }
 }
 
-- (void)unacceptedBeaconsWithCompletion:(id)a3
+- (void)unacceptedBeaconsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SPOwnerSession_unacceptedBeaconsWithCompletion___block_invoke;
   block[3] = &unk_279B59650;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -3413,22 +3407,22 @@ void __50__SPOwnerSession_unacceptedBeaconsWithCompletion___block_invoke(uint64_
   [v2 unacceptedBeaconsWithCompletion:*(a1 + 32)];
 }
 
-- (void)removeBeacon:(id)a3 completion:(id)a4
+- (void)removeBeacon:(id)beacon completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  beaconCopy = beacon;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __42__SPOwnerSession_removeBeacon_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = beaconCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = beaconCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -3441,22 +3435,22 @@ void __42__SPOwnerSession_removeBeacon_completion___block_invoke(uint64_t a1)
   [v2 removeBeacon:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)removeBeaconFromGroup:(id)a3 completion:(id)a4
+- (void)removeBeaconFromGroup:(id)group completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__SPOwnerSession_removeBeaconFromGroup_completion___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = groupCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = groupCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -3469,19 +3463,19 @@ void __51__SPOwnerSession_removeBeaconFromGroup_completion___block_invoke(uint64
   [v2 removeBeaconFromGroup:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)beaconStoreStatusWithCompletion:(id)a3
+- (void)beaconStoreStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SPOwnerSession_beaconStoreStatusWithCompletion___block_invoke;
   block[3] = &unk_279B59650;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -3494,19 +3488,19 @@ void __50__SPOwnerSession_beaconStoreStatusWithCompletion___block_invoke(uint64_
   [v2 beaconStoreStatusWithCompletion:*(a1 + 32)];
 }
 
-- (void)waitForBeaconStoreAvailableWithCompletion:(id)a3
+- (void)waitForBeaconStoreAvailableWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SPOwnerSession_waitForBeaconStoreAvailableWithCompletion___block_invoke;
   block[3] = &unk_279B59650;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -3519,31 +3513,31 @@ void __60__SPOwnerSession_waitForBeaconStoreAvailableWithCompletion___block_invo
   [v2 waitForBeaconStoreAvailableWithCompletion:*(a1 + 32)];
 }
 
-- (void)updateBeaconObservations:(id)a3 completion:(id)a4
+- (void)updateBeaconObservations:(id)observations completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observationsCopy = observations;
+  completionCopy = completion;
   v8 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = observationsCopy;
     _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "update beacon observations %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__SPOwnerSession_updateBeaconObservations_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v14 = observationsCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = observationsCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -3557,34 +3551,34 @@ void __54__SPOwnerSession_updateBeaconObservations_completion___block_invoke(uin
   [v2 updateBeaconObservations:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (id)executeUTPlaySoundCommand:(id)a3
+- (id)executeUTPlaySoundCommand:(id)command
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   v5 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v4;
+    v26 = commandCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPOwnerSession: executeUTPlaySoundCommand: %@", buf, 0xCu);
   }
 
   [(SPOwnerSession *)self startRefreshing];
   v6 = objc_alloc_init(MEMORY[0x277D07B68]);
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "playSoundContext")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(commandCopy, "playSoundContext")}];
   v8 = [MEMORY[0x277CBEB98] setWithArray:&unk_2875F2BE0];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __44__SPOwnerSession_executeUTPlaySoundCommand___block_invoke;
   v20 = &unk_279B59B38;
-  v21 = v4;
+  v21 = commandCopy;
   v9 = v6;
   v22 = v9;
   v23 = v8;
   v24 = v7;
   v10 = v7;
   v11 = v8;
-  v12 = v4;
+  v12 = commandCopy;
   v13 = _Block_copy(&v17);
   [(SPOwnerSession *)self executeCommand:v12 completion:v13, v17, v18, v19, v20];
   v14 = v9;
@@ -3672,31 +3666,31 @@ void __44__SPOwnerSession_executeUTPlaySoundCommand___block_invoke(uint64_t a1, 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unknownBeaconsForUUIDs:(id)a3 completion:(id)a4
+- (void)unknownBeaconsForUUIDs:(id)ds completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = dsCopy;
     _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "unknownBeaconsForUUIDs %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SPOwnerSession_unknownBeaconsForUUIDs_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v14 = dsCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = dsCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -3710,35 +3704,35 @@ void __52__SPOwnerSession_unknownBeaconsForUUIDs_completion___block_invoke(uint6
   [v2 unknownBeaconsForUUIDs:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)updateBatteryStatus:(unsigned __int8)a3 beaconUUID:(id)a4 completion:(id)a5
+- (void)updateBatteryStatus:(unsigned __int8)status beaconUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
+  statusCopy = status;
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 67109378;
-    v21 = v6;
+    v21 = statusCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = uUIDString;
     _os_log_impl(&dword_2643D0000, v10, OS_LOG_TYPE_DEFAULT, "updateBatteryStatus %d for beacon %@.", buf, 0x12u);
   }
 
-  v12 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __60__SPOwnerSession_updateBatteryStatus_beaconUUID_completion___block_invoke;
   v16[3] = &unk_279B59890;
   v16[4] = self;
-  v17 = v8;
-  v19 = v6;
-  v18 = v9;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v12, v16);
+  v17 = dCopy;
+  v19 = statusCopy;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = dCopy;
+  dispatch_async(queue, v16);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -3844,14 +3838,14 @@ LABEL_9:
   v10 = __Block_byref_object_copy__4;
   v11 = __Block_byref_object_dispose__4;
   v12 = 0;
-  v3 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__SPOwnerSession_ownerSessionState__block_invoke;
   v6[3] = &unk_279B58D60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3871,14 +3865,14 @@ void __35__SPOwnerSession_ownerSessionState__block_invoke(uint64_t a1)
 - (void)_updateOwnerSessionState
 {
   objc_initWeak(&location, self);
-  v3 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SPOwnerSession__updateOwnerSessionState__block_invoke;
   block[3] = &unk_279B58F90;
   block[4] = self;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -3935,30 +3929,30 @@ void __42__SPOwnerSession__updateOwnerSessionState__block_invoke_3(id *a1)
   dispatch_async(v3, v4);
 }
 
-- (void)disableUTAppAlert:(BOOL)a3 completion:(id)a4
+- (void)disableUTAppAlert:(BOOL)alert completion:(id)completion
 {
-  v4 = a3;
+  alertCopy = alert;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v4;
+    HIDWORD(buf) = alertCopy;
     _os_log_impl(&dword_2643D0000, v7, OS_LOG_TYPE_DEFAULT, "disableUTAppAlert %d", &buf, 8u);
   }
 
   objc_initWeak(&buf, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SPOwnerSession_disableUTAppAlert_completion___block_invoke;
   block[3] = &unk_279B596C8;
   objc_copyWeak(&v13, &buf);
-  v14 = v4;
-  v12 = v6;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v14 = alertCopy;
+  v12 = completionCopy;
+  v9 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&buf);
@@ -3972,9 +3966,9 @@ void __47__SPOwnerSession_disableUTAppAlert_completion___block_invoke(uint64_t a
   [v2 disableUTAppAlert:*(a1 + 48) completion:*(a1 + 32)];
 }
 
-- (void)isUTAppAlertDisabled:(id)a3
+- (void)isUTAppAlertDisabled:(id)disabled
 {
-  v4 = a3;
+  disabledCopy = disabled;
   v5 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3983,15 +3977,15 @@ void __47__SPOwnerSession_disableUTAppAlert_completion___block_invoke(uint64_t a
   }
 
   objc_initWeak(buf, self);
-  v6 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__SPOwnerSession_isUTAppAlertDisabled___block_invoke;
   v8[3] = &unk_279B59650;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = disabledCopy;
+  v7 = disabledCopy;
+  dispatch_async(queue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -4004,19 +3998,19 @@ void __39__SPOwnerSession_isUTAppAlertDisabled___block_invoke(uint64_t a1)
   [v2 isUTAppAlertDisabled:*(a1 + 32)];
 }
 
-- (void)fetchUnauthorizedEncryptedPayload:(id)a3 completion:(id)a4
+- (void)fetchUnauthorizedEncryptedPayload:(id)payload completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __63__SPOwnerSession_fetchUnauthorizedEncryptedPayload_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = payloadCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = payloadCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession.fetchUnauthorizedEncryptedPayload", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -4055,19 +4049,19 @@ void __63__SPOwnerSession_fetchUnauthorizedEncryptedPayload_completion___block_i
   [v2 fetchUnauthorizedEncryptedPayload:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)fetchHawkeyeFirmwareVersion:(id)a3 completion:(id)a4
+- (void)fetchHawkeyeFirmwareVersion:(id)version completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __57__SPOwnerSession_fetchHawkeyeFirmwareVersion_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = versionCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = versionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession.fetchFirmwareVersion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -4106,16 +4100,16 @@ void __57__SPOwnerSession_fetchHawkeyeFirmwareVersion_completion___block_invoke_
   [v2 fetchHawkeyeFirmwareVersion:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)stopFetchingUnauthorizedEncryptedPayloadWithCompletion:(id)a3
+- (void)stopFetchingUnauthorizedEncryptedPayloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__SPOwnerSession_stopFetchingUnauthorizedEncryptedPayloadWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession.stopFetchingUnauthorizedEncryptedPayload", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -4149,19 +4143,19 @@ void __73__SPOwnerSession_stopFetchingUnauthorizedEncryptedPayloadWithCompletion
   [v2 stopFetchingUnauthorizedEncryptedPayloadWithCompletion:*(a1 + 32)];
 }
 
-- (void)peripheralConnectionMaterialForAccessoryIdentifier:(id)a3 completion:(id)a4
+- (void)peripheralConnectionMaterialForAccessoryIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __80__SPOwnerSession_peripheralConnectionMaterialForAccessoryIdentifier_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession.peripheralConnectionMaterialForAccessoryIdentifier", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -4200,22 +4194,22 @@ void __80__SPOwnerSession_peripheralConnectionMaterialForAccessoryIdentifier_com
   [v2 peripheralConnectionMaterialForAccessoryIdentifier:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)registerDarwinNotificationName:(id)a3 block:(id)a4
+- (void)registerDarwinNotificationName:(id)name block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__SPOwnerSession_registerDarwinNotificationName_block___block_invoke;
   v11[3] = &unk_279B58BA8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = nameCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = nameCopy;
+  dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -4229,42 +4223,42 @@ void __55__SPOwnerSession_registerDarwinNotificationName_block___block_invoke(ui
   [v2 setValue:v3 forKey:*(a1 + 32)];
 }
 
-- (void)unregisterDarwinNotificationName:(id)a3
+- (void)unregisterDarwinNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = [(SPOwnerSession *)self queue];
+  nameCopy = name;
+  queue = [(SPOwnerSession *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__SPOwnerSession_unregisterDarwinNotificationName___block_invoke;
   v7[3] = &unk_279B58C78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = nameCopy;
+  v6 = nameCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)_unregisterDarwinNotificationName:(id)a3
+- (void)_unregisterDarwinNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = [(SPOwnerSession *)self darwinHandlers];
-  [v5 removeObjectForKey:v4];
+  nameCopy = name;
+  darwinHandlers = [(SPOwnerSession *)self darwinHandlers];
+  [darwinHandlers removeObjectForKey:nameCopy];
 }
 
-- (void)allObservationsForBeacon:(id)a3 completion:(id)a4
+- (void)allObservationsForBeacon:(id)beacon completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SPOwnerSession *)self queue];
+  beaconCopy = beacon;
+  completionCopy = completion;
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__SPOwnerSession_allObservationsForBeacon_completion___block_invoke;
   block[3] = &unk_279B58BD0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = beaconCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = beaconCopy;
+  dispatch_async(queue, block);
 }
 
 void __54__SPOwnerSession_allObservationsForBeacon_completion___block_invoke(uint64_t a1)
@@ -4294,25 +4288,25 @@ void __54__SPOwnerSession_allObservationsForBeacon_completion___block_invoke_2(u
   dispatch_async(v4, v7);
 }
 
-- (void)hintBasedIndexSearchForBeacon:(id)a3 baseIndex:(id)a4 hint:(unsigned __int8)a5 completion:(id)a6
+- (void)hintBasedIndexSearchForBeacon:(id)beacon baseIndex:(id)index hint:(unsigned __int8)hint completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SPOwnerSession *)self queue];
+  beaconCopy = beacon;
+  indexCopy = index;
+  completionCopy = completion;
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__SPOwnerSession_hintBasedIndexSearchForBeacon_baseIndex_hint_completion___block_invoke;
   block[3] = &unk_279B59CE8;
   block[4] = self;
-  v18 = v10;
-  v21 = a5;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = beaconCopy;
+  hintCopy = hint;
+  v19 = indexCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = indexCopy;
+  v16 = beaconCopy;
+  dispatch_async(queue, block);
 }
 
 void __74__SPOwnerSession_hintBasedIndexSearchForBeacon_baseIndex_hint_completion___block_invoke(uint64_t a1)
@@ -4347,22 +4341,22 @@ void __74__SPOwnerSession_hintBasedIndexSearchForBeacon_baseIndex_hint_completio
   dispatch_async(v7, block);
 }
 
-- (void)readRawAISMetadataFromMACAddress:(id)a3 useOwnerControlPoint:(BOOL)a4 completion:(id)a5
+- (void)readRawAISMetadataFromMACAddress:(id)address useOwnerControlPoint:(BOOL)point completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v10 = [(SPOwnerSession *)self _enforceRateLimit];
-  if (v10)
+  _enforceRateLimit = [(SPOwnerSession *)self _enforceRateLimit];
+  if (_enforceRateLimit)
   {
     v11 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __83__SPOwnerSession_readRawAISMetadataFromMACAddress_useOwnerControlPoint_completion___block_invoke;
     block[3] = &unk_279B59398;
-    v22 = v9;
-    v21 = v10;
-    v12 = v9;
+    v22 = completionCopy;
+    v21 = _enforceRateLimit;
+    v12 = completionCopy;
     dispatch_async(v11, block);
   }
 
@@ -4374,11 +4368,11 @@ void __74__SPOwnerSession_hintBasedIndexSearchForBeacon_baseIndex_hint_completio
     v15[3] = &unk_279B59DD8;
     v15[4] = self;
     objc_copyWeak(&v18, &location);
-    v13 = v8;
-    v19 = a4;
+    v13 = addressCopy;
+    pointCopy = point;
     v16 = v13;
-    v17 = v9;
-    v14 = v9;
+    v17 = completionCopy;
+    v14 = completionCopy;
     _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: readRawAISMetadataFromMACAddress:useOwnerControlPoint:completion:", OS_ACTIVITY_FLAG_DEFAULT, v15);
 
     objc_destroyWeak(&v18);
@@ -4473,22 +4467,22 @@ void __83__SPOwnerSession_readRawAISMetadataFromMACAddress_useOwnerControlPoint_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readAISMetadataFromMACAddress:(id)a3 useOwnerControlPoint:(BOOL)a4 completion:(id)a5
+- (void)readAISMetadataFromMACAddress:(id)address useOwnerControlPoint:(BOOL)point completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v10 = [(SPOwnerSession *)self _enforceRateLimit];
-  if (v10)
+  _enforceRateLimit = [(SPOwnerSession *)self _enforceRateLimit];
+  if (_enforceRateLimit)
   {
     v11 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__SPOwnerSession_readAISMetadataFromMACAddress_useOwnerControlPoint_completion___block_invoke;
     block[3] = &unk_279B59398;
-    v22 = v9;
-    v21 = v10;
-    v12 = v9;
+    v22 = completionCopy;
+    v21 = _enforceRateLimit;
+    v12 = completionCopy;
     dispatch_async(v11, block);
   }
 
@@ -4500,11 +4494,11 @@ void __83__SPOwnerSession_readRawAISMetadataFromMACAddress_useOwnerControlPoint_
     v15[3] = &unk_279B59DD8;
     v15[4] = self;
     objc_copyWeak(&v18, &location);
-    v13 = v8;
-    v19 = a4;
+    v13 = addressCopy;
+    pointCopy = point;
     v16 = v13;
-    v17 = v9;
-    v14 = v9;
+    v17 = completionCopy;
+    v14 = completionCopy;
     _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: readAISMetadataFromMACAddress:useOwnerControlPoint:completion:", OS_ACTIVITY_FLAG_DEFAULT, v15);
 
     objc_destroyWeak(&v18);
@@ -4599,22 +4593,22 @@ void __80__SPOwnerSession_readAISMetadataFromMACAddress_useOwnerControlPoint_com
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readRawAISMetadataFromBeaconIdentifier:(id)a3 completion:(id)a4
+- (void)readRawAISMetadataFromBeaconIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self _enforceRateLimit];
-  if (v8)
+  _enforceRateLimit = [(SPOwnerSession *)self _enforceRateLimit];
+  if (_enforceRateLimit)
   {
     v9 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__SPOwnerSession_readRawAISMetadataFromBeaconIdentifier_completion___block_invoke;
     block[3] = &unk_279B59398;
-    v18 = v7;
-    v17 = v8;
-    v10 = v7;
+    v18 = completionCopy;
+    v17 = _enforceRateLimit;
+    v10 = completionCopy;
     dispatch_async(v9, block);
   }
 
@@ -4626,9 +4620,9 @@ void __80__SPOwnerSession_readAISMetadataFromMACAddress_useOwnerControlPoint_com
     activity_block[3] = &unk_279B599D0;
     activity_block[4] = self;
     objc_copyWeak(&v15, &location);
-    v13 = v6;
-    v14 = v7;
-    v11 = v7;
+    v13 = identifierCopy;
+    v14 = completionCopy;
+    v11 = completionCopy;
     _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: readRawAISMetadataFromBeaconIdentifier:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
     objc_destroyWeak(&v15);
@@ -4709,22 +4703,22 @@ void __68__SPOwnerSession_readRawAISMetadataFromBeaconIdentifier_completion___bl
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readAISMetadataFromBeaconIdentifier:(id)a3 completion:(id)a4
+- (void)readAISMetadataFromBeaconIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(SPOwnerSession *)self _enforceRateLimit];
-  if (v8)
+  _enforceRateLimit = [(SPOwnerSession *)self _enforceRateLimit];
+  if (_enforceRateLimit)
   {
     v9 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__SPOwnerSession_readAISMetadataFromBeaconIdentifier_completion___block_invoke;
     block[3] = &unk_279B59398;
-    v18 = v7;
-    v17 = v8;
-    v10 = v7;
+    v18 = completionCopy;
+    v17 = _enforceRateLimit;
+    v10 = completionCopy;
     dispatch_async(v9, block);
   }
 
@@ -4736,9 +4730,9 @@ void __68__SPOwnerSession_readRawAISMetadataFromBeaconIdentifier_completion___bl
     activity_block[3] = &unk_279B599D0;
     activity_block[4] = self;
     objc_copyWeak(&v15, &location);
-    v13 = v6;
-    v14 = v7;
-    v11 = v7;
+    v13 = identifierCopy;
+    v14 = completionCopy;
+    v11 = completionCopy;
     _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: readAISMetadataFromBeaconIdentifier:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
     objc_destroyWeak(&v15);
@@ -4819,10 +4813,10 @@ void __65__SPOwnerSession_readAISMetadataFromBeaconIdentifier_completion___block
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didDetectUnauthorizedTrackingWithCompletion:(id)a3 completion:(id)a4
+- (void)didDetectUnauthorizedTrackingWithCompletion:(id)completion completion:(id)a4
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   v8 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4833,17 +4827,17 @@ void __65__SPOwnerSession_readAISMetadataFromBeaconIdentifier_completion___block
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__SPOwnerSession_TrackingAvoidance__didDetectUnauthorizedTrackingWithCompletion_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
+  v14 = completionCopy;
   v15 = v7;
   v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v11 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -4857,10 +4851,10 @@ void __92__SPOwnerSession_TrackingAvoidance__didDetectUnauthorizedTrackingWithCo
   [v2 didDetectUnauthorizedTrackingWithCompletion:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)didUpdateUnauthorizedTrackingWithCompletion:(id)a3 completion:(id)a4
+- (void)didUpdateUnauthorizedTrackingWithCompletion:(id)completion completion:(id)a4
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   v8 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4871,17 +4865,17 @@ void __92__SPOwnerSession_TrackingAvoidance__didDetectUnauthorizedTrackingWithCo
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__SPOwnerSession_TrackingAvoidance__didUpdateUnauthorizedTrackingWithCompletion_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
+  v14 = completionCopy;
   v15 = v7;
   v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v11 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -4895,10 +4889,10 @@ void __92__SPOwnerSession_TrackingAvoidance__didUpdateUnauthorizedTrackingWithCo
   [v2 didUpdateUnauthorizedTrackingWithCompletion:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)didWithdrawUnauthorizedTrackingWithCompletion:(id)a3 completion:(id)a4
+- (void)didWithdrawUnauthorizedTrackingWithCompletion:(id)completion completion:(id)a4
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   v8 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4909,17 +4903,17 @@ void __92__SPOwnerSession_TrackingAvoidance__didUpdateUnauthorizedTrackingWithCo
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__SPOwnerSession_TrackingAvoidance__didWithdrawUnauthorizedTrackingWithCompletion_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
+  v14 = completionCopy;
   v15 = v7;
   v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v11 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -4933,10 +4927,10 @@ void __94__SPOwnerSession_TrackingAvoidance__didWithdrawUnauthorizedTrackingWith
   [v2 didWithdrawUnauthorizedTrackingWithCompletion:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)ignoringUnauthorizedTrackingWithCompletion:(id)a3 completion:(id)a4
+- (void)ignoringUnauthorizedTrackingWithCompletion:(id)completion completion:(id)a4
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   v8 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4947,17 +4941,17 @@ void __94__SPOwnerSession_TrackingAvoidance__didWithdrawUnauthorizedTrackingWith
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__SPOwnerSession_TrackingAvoidance__ignoringUnauthorizedTrackingWithCompletion_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
+  v14 = completionCopy;
   v15 = v7;
   v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v11 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -4971,10 +4965,10 @@ void __91__SPOwnerSession_TrackingAvoidance__ignoringUnauthorizedTrackingWithCom
   [v2 ignoringUnauthorizedTrackingWithCompletion:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)unauthorizedTrackingTypeWithCompletion:(id)a3 completion:(id)a4
+- (void)unauthorizedTrackingTypeWithCompletion:(id)completion completion:(id)a4
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   v8 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4985,17 +4979,17 @@ void __91__SPOwnerSession_TrackingAvoidance__ignoringUnauthorizedTrackingWithCom
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__SPOwnerSession_TrackingAvoidance__unauthorizedTrackingTypeWithCompletion_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
+  v14 = completionCopy;
   v15 = v7;
   v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v11 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -5009,11 +5003,11 @@ void __87__SPOwnerSession_TrackingAvoidance__unauthorizedTrackingTypeWithComplet
   [v2 unauthorizedTrackingTypeWithCompletion:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)playUnauthorizedSoundOnBeaconByUUID:(id)a3 completion:(id)a4
+- (void)playUnauthorizedSoundOnBeaconByUUID:(id)d completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -5023,17 +5017,17 @@ void __87__SPOwnerSession_TrackingAvoidance__unauthorizedTrackingTypeWithComplet
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__SPOwnerSession_TrackingAvoidance__playUnauthorizedSoundOnBeaconByUUID_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v14 = dCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = dCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -5047,30 +5041,30 @@ void __84__SPOwnerSession_TrackingAvoidance__playUnauthorizedSoundOnBeaconByUUID
   [v2 playUnauthorizedSoundOnBeaconUUID:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)ignoreBeaconByUUID:(id)a3 until:(unint64_t)a4
+- (void)ignoreBeaconByUUID:(id)d until:(unint64_t)until
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138412290;
-    v16 = v8;
+    v16 = uUIDString;
     _os_log_impl(&dword_2643D0000, v7, OS_LOG_TYPE_DEFAULT, "received ignore beacon for %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SPOwnerSession_TrackingAvoidance__ignoreBeaconByUUID_until___block_invoke;
   block[3] = &unk_279B59F50;
   objc_copyWeak(v14, buf);
-  v13 = v6;
-  v14[1] = a4;
-  v10 = v6;
-  dispatch_async(v9, block);
+  v13 = dCopy;
+  v14[1] = until;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v14);
   objc_destroyWeak(buf);
@@ -5084,33 +5078,33 @@ void __62__SPOwnerSession_TrackingAvoidance__ignoreBeaconByUUID_until___block_in
   [v2 ignoreBeaconByUUID:*(a1 + 32) until:*(a1 + 48)];
 }
 
-- (void)ignoreBeaconByUUID:(id)a3 until:(unint64_t)a4 completion:(id)a5
+- (void)ignoreBeaconByUUID:(id)d until:(unint64_t)until completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138412290;
-    v21 = v11;
+    v21 = uUIDString;
     _os_log_impl(&dword_2643D0000, v10, OS_LOG_TYPE_DEFAULT, "received ignore beacon for %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v12 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__SPOwnerSession_TrackingAvoidance__ignoreBeaconByUUID_until_completion___block_invoke;
   v16[3] = &unk_279B59F78;
   objc_copyWeak(v19, buf);
-  v19[1] = a4;
-  v17 = v8;
-  v18 = v9;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v12, v16);
+  v19[1] = until;
+  v17 = dCopy;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = dCopy;
+  dispatch_async(queue, v16);
 
   objc_destroyWeak(v19);
   objc_destroyWeak(buf);
@@ -5124,35 +5118,35 @@ void __73__SPOwnerSession_TrackingAvoidance__ignoreBeaconByUUID_until_completion
   [v2 ignoreTrackingForUUID:*(a1 + 32) until:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)ignoreBeaconByUUID:(id)a3 untilDate:(id)a4 completion:(id)a5
+- (void)ignoreBeaconByUUID:(id)d untilDate:(id)date completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  dateCopy = date;
+  completionCopy = completion;
   v11 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138412290;
-    v24 = v12;
+    v24 = uUIDString;
     _os_log_impl(&dword_2643D0000, v11, OS_LOG_TYPE_DEFAULT, "received ignore beacon for %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v13 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __77__SPOwnerSession_TrackingAvoidance__ignoreBeaconByUUID_untilDate_completion___block_invoke;
   v18[3] = &unk_279B59A20;
   objc_copyWeak(&v22, buf);
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
-  dispatch_async(v13, v18);
+  v19 = dCopy;
+  v20 = dateCopy;
+  v21 = completionCopy;
+  v14 = completionCopy;
+  v15 = dateCopy;
+  v16 = dCopy;
+  dispatch_async(queue, v18);
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
@@ -5166,34 +5160,34 @@ void __77__SPOwnerSession_TrackingAvoidance__ignoreBeaconByUUID_untilDate_comple
   [v2 ignoreBeaconByUUID:*(a1 + 32) untilDate:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)ignoreBeaconByAdvertisement:(id)a3 until:(unint64_t)a4 completion:(id)a5
+- (void)ignoreBeaconByAdvertisement:(id)advertisement until:(unint64_t)until completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  advertisementCopy = advertisement;
+  completionCopy = completion;
   v10 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 data];
-    v12 = [v11 fm_hexString];
+    data = [advertisementCopy data];
+    fm_hexString = [data fm_hexString];
     *buf = 138412290;
-    v22 = v12;
+    v22 = fm_hexString;
     _os_log_impl(&dword_2643D0000, v10, OS_LOG_TYPE_DEFAULT, "received ignore beacon for %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v13 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __82__SPOwnerSession_TrackingAvoidance__ignoreBeaconByAdvertisement_until_completion___block_invoke;
   v17[3] = &unk_279B59F78;
   objc_copyWeak(v20, buf);
-  v20[1] = a4;
-  v18 = v8;
-  v19 = v9;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v13, v17);
+  v20[1] = until;
+  v18 = advertisementCopy;
+  v19 = completionCopy;
+  v14 = completionCopy;
+  v15 = advertisementCopy;
+  dispatch_async(queue, v17);
 
   objc_destroyWeak(v20);
   objc_destroyWeak(buf);
@@ -5207,29 +5201,29 @@ void __82__SPOwnerSession_TrackingAvoidance__ignoreBeaconByAdvertisement_until_c
   [v2 ignoreTrackingFor:*(a1 + 32) until:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)acceptUTForBeaconUUID:(id)a3
+- (void)acceptUTForBeaconUUID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = LogCategory_OwnerSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 138412290;
-    v14 = v6;
+    v14 = uUIDString;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "received accept UT event for beacon %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v7 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__SPOwnerSession_TrackingAvoidance__acceptUTForBeaconUUID___block_invoke;
   v10[3] = &unk_279B59228;
   objc_copyWeak(&v12, buf);
-  v11 = v4;
-  v8 = v4;
-  dispatch_async(v7, v10);
+  v11 = dCopy;
+  v8 = dCopy;
+  dispatch_async(queue, v10);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
@@ -5243,10 +5237,10 @@ void __59__SPOwnerSession_TrackingAvoidance__acceptUTForBeaconUUID___block_invok
   [v2 acceptUTForBeaconUUID:*(a1 + 32)];
 }
 
-- (void)didObserveUnauthorizedTrackingWithCompletion:(id)a3 completion:(id)a4
+- (void)didObserveUnauthorizedTrackingWithCompletion:(id)completion completion:(id)a4
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   v8 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -5257,17 +5251,17 @@ void __59__SPOwnerSession_TrackingAvoidance__acceptUTForBeaconUUID___block_invok
   }
 
   objc_initWeak(buf, self);
-  v9 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __93__SPOwnerSession_TrackingAvoidance__didObserveUnauthorizedTrackingWithCompletion_completion___block_invoke;
   block[3] = &unk_279B58BA8;
   objc_copyWeak(&v16, buf);
-  v14 = v6;
+  v14 = completionCopy;
   v15 = v7;
   v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v11 = completionCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -5281,10 +5275,10 @@ void __93__SPOwnerSession_TrackingAvoidance__didObserveUnauthorizedTrackingWithC
   [v2 didObserveUnauthorizedTrackingWithCompletion:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)publishWildModeRecordsWithCompletion:(id)a3
+- (void)publishWildModeRecordsWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_BeaconManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5294,15 +5288,15 @@ void __93__SPOwnerSession_TrackingAvoidance__didObserveUnauthorizedTrackingWithC
   }
 
   objc_initWeak(buf, self);
-  v6 = [(SPOwnerSession *)self queue];
+  queue = [(SPOwnerSession *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__SPOwnerSession_TrackingAvoidance__publishWildModeRecordsWithCompletion___block_invoke;
   v9[3] = &unk_279B59650;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
@@ -5316,18 +5310,18 @@ void __74__SPOwnerSession_TrackingAvoidance__publishWildModeRecordsWithCompletio
   [v2 publishWildModeRecordsWithCompletion:*(a1 + 32)];
 }
 
-- (void)startRefreshingTagSeparationWithBlock:(id)a3
+- (void)startRefreshingTagSeparationWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SPOwnerSession *)self queue];
+  blockCopy = block;
+  queue = [(SPOwnerSession *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__SPOwnerSession_TagSeparation__startRefreshingTagSeparationWithBlock___block_invoke;
   v7[3] = &unk_279B58B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(queue, v7);
 }
 
 void __71__SPOwnerSession_TagSeparation__startRefreshingTagSeparationWithBlock___block_invoke(uint64_t a1)
@@ -5342,24 +5336,24 @@ void __71__SPOwnerSession_TagSeparation__startRefreshingTagSeparationWithBlock__
   dispatch_async(v2, block);
 }
 
-- (void)tagSeparationStateChanged:(id)a3 beaconUUID:(id)a4 location:(id)a5 completion:(id)a6
+- (void)tagSeparationStateChanged:(id)changed beaconUUID:(id)d location:(id)location completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(SPOwnerSession *)self queue];
+  changedCopy = changed;
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(SPOwnerSession *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__SPOwnerSession_TagSeparation__tagSeparationStateChanged_beaconUUID_location_completion___block_invoke;
   v16[3] = &unk_279B593C0;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  dispatch_async(v12, v16);
+  v17 = changedCopy;
+  v18 = dCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = dCopy;
+  v15 = changedCopy;
+  dispatch_async(queue, v16);
 }
 
 void __90__SPOwnerSession_TagSeparation__tagSeparationStateChanged_beaconUUID_location_completion___block_invoke(uint64_t a1)

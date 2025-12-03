@@ -4,15 +4,15 @@
 - (int)_runPasswordShare;
 - (int)_runSFSessionStart;
 - (void)_cleanup;
-- (void)_completedWithError:(id)a3;
-- (void)_receivedObject:(id)a3 flags:(unsigned int)a4;
+- (void)_completedWithError:(id)error;
+- (void)_receivedObject:(id)object flags:(unsigned int)flags;
 - (void)_run;
-- (void)_runPasswordShareReceiveResponse:(id)a3;
+- (void)_runPasswordShareReceiveResponse:(id)response;
 - (void)_runPasswordShareSendInfo;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)tryPIN:(id)a3;
+- (void)tryPIN:(id)n;
 @end
 
 @implementation SFPasswordSharingSession
@@ -113,17 +113,17 @@ uint64_t __38__SFPasswordSharingSession_invalidate__block_invoke(uint64_t a1)
   return [v4 _cleanup];
 }
 
-- (void)tryPIN:(id)a3
+- (void)tryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__SFPasswordSharingSession_tryPIN___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -147,17 +147,17 @@ uint64_t __35__SFPasswordSharingSession_tryPIN___block_invoke(uint64_t a1)
   self->_sfSessionState = 0;
 }
 
-- (void)_completedWithError:(id)a3
+- (void)_completedWithError:(id)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (gLogCategory_SFPasswordSharingSession <= 50 && (gLogCategory_SFPasswordSharingSession != -1 || _LogCategory_Initialize()))
   {
     [SFPasswordSharingSession _completedWithError:?];
   }
 
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = v4;
+  v5 = errorCopy;
   if (v5)
   {
     if (gLogCategory_SFPasswordSharingSession <= 60 && (gLogCategory_SFPasswordSharingSession != -1 || _LogCategory_Initialize()))
@@ -229,8 +229,8 @@ uint64_t __35__SFPasswordSharingSession_tryPIN___block_invoke(uint64_t a1)
     [(SFSession *)self->_sfSession setDispatchQueue:self->_dispatchQueue];
     [(SFSession *)self->_sfSession setPeerDevice:self->_peerDevice];
     [(SFSession *)self->_sfSession setServiceIdentifier:@"com.apple.sharing.PasswordSharing"];
-    v6 = [(SFDevice *)self->_peerDevice contactIdentifier];
-    [(SFSession *)self->_sfSession setPeerContactIdentifier:v6];
+    contactIdentifier = [(SFDevice *)self->_peerDevice contactIdentifier];
+    [(SFSession *)self->_sfSession setPeerContactIdentifier:contactIdentifier];
 
     [(SFSession *)self->_sfSession setSessionFlags:12];
     v14[0] = MEMORY[0x1E69E9820];
@@ -389,9 +389,9 @@ void __46__SFPasswordSharingSession__runSFSessionStart__block_invoke_6(uint64_t 
       LogPrintF();
     }
 
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v5 = v12[5];
-    v12[5] = v4;
+    v12[5] = date;
 
     self->_pairState = 1;
     progressHandler = self->_progressHandler;
@@ -534,7 +534,7 @@ void __36__SFPasswordSharingSession__runPair__block_invoke(uint64_t a1, void *a2
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A768];
-  v7 = a1;
+  selfCopy = self;
   *a2 = *MEMORY[0x1E696A578];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:DebugGetErrorString()];
   v9 = v8;
@@ -546,14 +546,14 @@ void __36__SFPasswordSharingSession__runPair__block_invoke(uint64_t a1, void *a2
 
   *a3 = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:a3 forKeys:a2 count:1];
-  v12 = [v5 errorWithDomain:v6 code:v7 userInfo:v11];
+  v12 = [v5 errorWithDomain:v6 code:selfCopy userInfo:v11];
   LogPrintF();
 }
 
-- (void)_runPasswordShareReceiveResponse:(id)a3
+- (void)_runPasswordShareReceiveResponse:(id)response
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   if (CFDictionaryGetInt64())
   {
     if (gLogCategory_SFPasswordSharingSession <= 30 && (gLogCategory_SFPasswordSharingSession != -1 || _LogCategory_Initialize()))
@@ -615,12 +615,12 @@ void __36__SFPasswordSharingSession__runPair__block_invoke(uint64_t a1, void *a2
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_receivedObject:(id)a3 flags:(unsigned int)a4
+- (void)_receivedObject:(id)object flags:(unsigned int)flags
 {
-  v5 = a3;
+  objectCopy = object;
   if (CFDictionaryGetInt64Ranged() == 5)
   {
-    [(SFPasswordSharingSession *)self _runPasswordShareReceiveResponse:v5];
+    [(SFPasswordSharingSession *)self _runPasswordShareReceiveResponse:objectCopy];
   }
 
   else if (gLogCategory_SFPasswordSharingSession <= 60 && (gLogCategory_SFPasswordSharingSession != -1 || _LogCategory_Initialize()))

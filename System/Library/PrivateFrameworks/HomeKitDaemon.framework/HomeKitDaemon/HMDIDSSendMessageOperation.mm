@@ -2,34 +2,34 @@
 + (double)timeout;
 + (id)logCategory;
 + (id)shortDescription;
-- (HMDIDSSendMessageOperation)initWithMessage:(id)a3;
-- (HMDIDSSendMessageOperation)initWithMessage:(id)a3 service:(id)a4;
+- (HMDIDSSendMessageOperation)initWithMessage:(id)message;
+- (HMDIDSSendMessageOperation)initWithMessage:(id)message service:(id)service;
 - (NSArray)attributeDescriptions;
 - (NSString)privateDescription;
 - (NSString)shortDescription;
 - (id)logIdentifier;
 - (void)main;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
 @end
 
 @implementation HMDIDSSendMessageOperation
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  v10 = a6;
+  successCopy = success;
   v33 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if ([(HMFOperation *)self isExecuting]&& [(NSString *)self->_messageIdentifier isEqualToString:v16])
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
+  contextCopy = context;
+  if ([(HMFOperation *)self isExecuting]&& [(NSString *)self->_messageIdentifier isEqualToString:identifierCopy])
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     v22 = v21;
-    if (v10)
+    if (successCopy)
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -40,7 +40,7 @@
       }
 
       objc_autoreleasePoolPop(v19);
-      [(HMFOperation *)v20 finish];
+      [(HMFOperation *)selfCopy finish];
     }
 
     else
@@ -51,16 +51,16 @@
         v29 = 138543618;
         v30 = v24;
         v31 = 2112;
-        v32 = v17;
+        v32 = errorCopy;
         _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@Failed to send message with error: %@", &v29, 0x16u);
       }
 
       objc_autoreleasePoolPop(v19);
       v25 = MEMORY[0x277CCA9B8];
-      v26 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3203 underlyingError:v17];
+      v26 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3203 underlyingError:errorCopy];
       v27 = [v25 hmErrorWithCode:54 description:0 reason:0 suggestion:0 underlyingError:v26];
 
-      [(HMFOperation *)v20 cancelWithError:v27];
+      [(HMFOperation *)selfCopy cancelWithError:v27];
     }
   }
 
@@ -69,17 +69,17 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMFMessage *)self->_message identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMFMessage *)self->_message identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (void)main
 {
   v59 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -90,11 +90,11 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDIDSSendMessageOperation *)v4 message];
-  v8 = [(HMDIDSSendMessageOperation *)v4 message];
-  v9 = [v8 isSecureRemote];
+  message = [(HMDIDSSendMessageOperation *)selfCopy message];
+  message2 = [(HMDIDSSendMessageOperation *)selfCopy message];
+  isSecureRemote = [message2 isSecureRemote];
   v10 = +[HMDAccountRegistry sharedRegistry];
-  v11 = [HMDRemoteMessageTransport remoteMessageFromMessage:v7 secure:v9 accountRegistry:v10];
+  v11 = [HMDRemoteMessageTransport remoteMessageFromMessage:message secure:isSecureRemote accountRegistry:v10];
 
   [v11 setResponseRestriction:1];
   v52 = 0;
@@ -105,16 +105,16 @@
   {
 
     v53 = *MEMORY[0x277D18650];
-    v15 = [MEMORY[0x277CCABB0] numberWithDouble:v4->_timeout];
+    v15 = [MEMORY[0x277CCABB0] numberWithDouble:selfCopy->_timeout];
     v54 = v15;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
 
     v16 = +[HMDRemoteDestinationFormatter defaultFormatter];
-    v17 = [v16 stringForObjectValue:v4->_destination];
+    v17 = [v16 stringForObjectValue:selfCopy->_destination];
 
     if (v17)
     {
-      service = v4->_service;
+      service = selfCopy->_service;
       v19 = [MEMORY[0x277CBEB98] setWithObject:v17];
       v50 = 0;
       v51 = 0;
@@ -129,7 +129,7 @@
         [v23 submitLogEvent:v24];
 
         v25 = objc_autoreleasePoolPush();
-        v26 = v4;
+        v26 = selfCopy;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
@@ -150,7 +150,7 @@
       else
       {
         v43 = objc_autoreleasePoolPush();
-        v44 = v4;
+        v44 = selfCopy;
         v45 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
@@ -174,12 +174,12 @@
     else
     {
       v35 = objc_autoreleasePoolPush();
-      v36 = v4;
+      v36 = selfCopy;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         v38 = HMFGetLogIdentifier();
-        destination = v4->_destination;
+        destination = selfCopy->_destination;
         *buf = 138543618;
         v56 = v38;
         v57 = 2112;
@@ -200,7 +200,7 @@
   else
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = v4;
+    v32 = selfCopy;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -235,10 +235,10 @@
 - (NSString)privateDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDIDSSendMessageOperation *)self message];
-  v6 = [v5 privateDescription];
-  v7 = [v3 stringWithFormat:@"%@, Message = %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  message = [(HMDIDSSendMessageOperation *)self message];
+  privateDescription = [message privateDescription];
+  v7 = [v3 stringWithFormat:@"%@, Message = %@", shortDescription, privateDescription];
 
   return v7;
 }
@@ -246,36 +246,36 @@
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDIDSSendMessageOperation *)self message];
-  v6 = [v5 identifier];
-  v7 = [v3 stringWithFormat:@"%@, Message = %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  message = [(HMDIDSSendMessageOperation *)self message];
+  identifier = [message identifier];
+  v7 = [v3 stringWithFormat:@"%@, Message = %@", shortDescription, identifier];
 
   return v7;
 }
 
-- (HMDIDSSendMessageOperation)initWithMessage:(id)a3 service:(id)a4
+- (HMDIDSSendMessageOperation)initWithMessage:(id)message service:(id)service
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 destination];
+  messageCopy = message;
+  serviceCopy = service;
+  destination = [messageCopy destination];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v26 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       v28 = HMFGetLogIdentifier();
-      v29 = [v7 destination];
+      destination2 = [messageCopy destination];
       *buf = 138543618;
       v34 = v28;
       v35 = 2112;
-      v36 = v29;
+      v36 = destination2;
       _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_ERROR, "%{public}@Invalid message destination: %@", buf, 0x16u);
 
 LABEL_16:
@@ -288,10 +288,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v8)
+  if (!serviceCopy)
   {
     v26 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -305,7 +305,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v11 = v7;
+  v11 = messageCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -339,32 +339,32 @@ LABEL_17:
   if (v18)
   {
     v18->_timeout = v17;
-    objc_storeStrong(&v18->_message, a3);
-    v20 = [v11 destination];
+    objc_storeStrong(&v18->_message, message);
+    destination3 = [v11 destination];
     destination = v19->_destination;
-    v19->_destination = v20;
+    v19->_destination = destination3;
 
-    objc_storeStrong(&v19->_service, a4);
+    objc_storeStrong(&v19->_service, service);
     service = v19->_service;
-    v23 = [(HMFOperation *)v19 underlyingQueue];
-    [(HMDIDSService *)service addDelegate:v19 queue:v23];
+    underlyingQueue = [(HMFOperation *)v19 underlyingQueue];
+    [(HMDIDSService *)service addDelegate:v19 queue:underlyingQueue];
   }
 
-  v24 = v19;
+  selfCopy2 = v19;
 
-  v25 = v24;
+  v25 = selfCopy2;
 LABEL_18:
 
   v30 = *MEMORY[0x277D85DE8];
   return v25;
 }
 
-- (HMDIDSSendMessageOperation)initWithMessage:(id)a3
+- (HMDIDSSendMessageOperation)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[HMDIDSServiceManager sharedManager];
-  v6 = [v5 service];
-  v7 = [(HMDIDSSendMessageOperation *)self initWithMessage:v4 service:v6];
+  service = [v5 service];
+  v7 = [(HMDIDSSendMessageOperation *)self initWithMessage:messageCopy service:service];
 
   return v7;
 }
@@ -398,15 +398,15 @@ void __41__HMDIDSSendMessageOperation_logCategory__block_invoke()
 
 + (double)timeout
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"defaultIDSMessageTimeout"];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"defaultIDSMessageTimeout"];
 
-  v4 = [v3 numberValue];
+  numberValue = [v3 numberValue];
 
-  if (v4)
+  if (numberValue)
   {
-    v5 = [v3 numberValue];
-    [v5 doubleValue];
+    numberValue2 = [v3 numberValue];
+    [numberValue2 doubleValue];
     v7 = v6;
   }
 

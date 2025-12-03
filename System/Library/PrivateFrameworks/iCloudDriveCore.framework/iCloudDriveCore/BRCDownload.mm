@@ -1,38 +1,38 @@
 @interface BRCDownload
-- (BRCDownload)initWithDocument:(id)a3 stageID:(id)a4;
+- (BRCDownload)initWithDocument:(id)document stageID:(id)d;
 - (void)dealloc;
 @end
 
 @implementation BRCDownload
 
-- (BRCDownload)initWithDocument:(id)a3 stageID:(id)a4
+- (BRCDownload)initWithDocument:(id)document stageID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  documentCopy = document;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = BRCDownload;
   v8 = [(BRCDownload *)&v20 init];
   if (v8)
   {
-    v8->_throttleID = [v6 dbRowID];
-    v9 = [v6 itemID];
+    v8->_throttleID = [documentCopy dbRowID];
+    itemID = [documentCopy itemID];
     itemID = v8->_itemID;
-    v8->_itemID = v9;
+    v8->_itemID = itemID;
 
-    v11 = [v6 documentRecordID];
+    documentRecordID = [documentCopy documentRecordID];
     recordID = v8->_recordID;
-    v8->_recordID = v11;
+    v8->_recordID = documentRecordID;
 
-    objc_storeStrong(&v8->_stageID, a4);
-    v13 = [v6 currentVersion];
-    v14 = [v13 ckInfo];
-    v15 = [v14 etag];
+    objc_storeStrong(&v8->_stageID, d);
+    currentVersion = [documentCopy currentVersion];
+    ckInfo = [currentVersion ckInfo];
+    etag = [ckInfo etag];
     etag = v8->_etag;
-    v8->_etag = v15;
+    v8->_etag = etag;
 
-    v17 = [v6 clientZone];
+    clientZone = [documentCopy clientZone];
     clientZone = v8->_clientZone;
-    v8->_clientZone = v17;
+    v8->_clientZone = clientZone;
   }
 
   return v8;

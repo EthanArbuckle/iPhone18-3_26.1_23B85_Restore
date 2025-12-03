@@ -5,33 +5,33 @@
 + (id)entryCauseHelperDefinition;
 + (id)entryEventPointDefinitions;
 + (void)load;
-- (BOOL)containsExclusionsAfterCleanupWithDate:(id)a3;
-- (BOOL)doesCurrPeriodHaveProblem:(id)a3;
-- (BOOL)isPackageTimeValidWithEntry:(id)a3;
-- (BOOL)isPackageValidWithEntry:(id)a3;
+- (BOOL)containsExclusionsAfterCleanupWithDate:(id)date;
+- (BOOL)doesCurrPeriodHaveProblem:(id)problem;
+- (BOOL)isPackageTimeValidWithEntry:(id)entry;
+- (BOOL)isPackageValidWithEntry:(id)entry;
 - (PLBBPowerToolService)init;
 - (PLTelephonyConnection)connection;
-- (double)calculateMaxPerepherialPercentageWithEntry:(id)a3;
-- (double)percentageHistogramFromArray:(id)a3;
-- (id)analazeCauseResultsReturnCause:(CauseDurations *)a3;
-- (id)findCauseWithEntry:(id)a3;
-- (void)analazeIntervalWithSnapshot:(CauseSnapshot *)a3 withDuration:(CauseDurations *)a4 withInterval:(double)a5 withEntry:(id)a6;
-- (void)collectExtraDataForPackage:(id)a3;
-- (void)handleAudioCallback:(id)a3;
-- (void)handleDisplayCallback:(id)a3;
-- (void)handleExclusionWithState:(BOOL)a3 withExclusion:(unsigned __int8)a4;
-- (void)handleHotspotCallback:(id)a3;
-- (void)handleMavBBHwOtherCallback:(id)a3;
-- (void)handleProblemWithEntry:(id)a3;
+- (double)calculateMaxPerepherialPercentageWithEntry:(id)entry;
+- (double)percentageHistogramFromArray:(id)array;
+- (id)analazeCauseResultsReturnCause:(CauseDurations *)cause;
+- (id)findCauseWithEntry:(id)entry;
+- (void)analazeIntervalWithSnapshot:(CauseSnapshot *)snapshot withDuration:(CauseDurations *)duration withInterval:(double)interval withEntry:(id)entry;
+- (void)collectExtraDataForPackage:(id)package;
+- (void)handleAudioCallback:(id)callback;
+- (void)handleDisplayCallback:(id)callback;
+- (void)handleExclusionWithState:(BOOL)state withExclusion:(unsigned __int8)exclusion;
+- (void)handleHotspotCallback:(id)callback;
+- (void)handleMavBBHwOtherCallback:(id)callback;
+- (void)handleProblemWithEntry:(id)entry;
 - (void)initOperatorDependancies;
-- (void)lteRRCCallback:(id)a3;
-- (void)msgLiteCallback:(id)a3;
-- (void)resetAllCounters:(id)a3;
-- (void)resetStructuresWithSnapshot:(CauseSnapshot *)a3 withDuration:(CauseDurations *)a4;
+- (void)lteRRCCallback:(id)callback;
+- (void)msgLiteCallback:(id)callback;
+- (void)resetAllCounters:(id)counters;
+- (void)resetStructuresWithSnapshot:(CauseSnapshot *)snapshot withDuration:(CauseDurations *)duration;
 - (void)submitAWD;
-- (void)telActivityCallback:(id)a3;
-- (void)wcdmaRRCCallback:(id)a3;
-- (void)writeToHelperTable:(id)a3 WithValue:(double)a4 withDate:(id)a5;
+- (void)telActivityCallback:(id)callback;
+- (void)wcdmaRRCCallback:(id)callback;
+- (void)writeToHelperTable:(id)table WithValue:(double)value withDate:(id)date;
 @end
 
 @implementation PLBBPowerToolService
@@ -40,11 +40,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"bbPowerPointCause";
-  v3 = [a1 entryCauseDefinition];
+  entryCauseDefinition = [self entryCauseDefinition];
   v8[1] = @"bbPowerPointCauseHelper";
-  v9[0] = v3;
-  v4 = [a1 entryCauseHelperDefinition];
-  v9[1] = v4;
+  v9[0] = entryCauseDefinition;
+  entryCauseHelperDefinition = [self entryCauseHelperDefinition];
+  v9[1] = entryCauseHelperDefinition;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -65,33 +65,33 @@
   v27[0] = v21;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"cause";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_StringFormat];
-  v23[0] = v19;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v23[0] = commonTypeDict_StringFormat;
   v22[1] = @"causeTimeStamp";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_DateFormat];
-  v23[1] = v17;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]2 commonTypeDict_DateFormat];
+  v23[1] = commonTypeDict_DateFormat;
   v22[2] = @"causeDuration";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v23[2] = v15;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v23[2] = commonTypeDict_IntegerFormat;
   v22[3] = @"ArmUtil";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v23[3] = v4;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v23[3] = commonTypeDict_IntegerFormat2;
   v22[4] = @"IsContinuous";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_BoolFormat];
-  v23[4] = v6;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]5 commonTypeDict_BoolFormat];
+  v23[4] = commonTypeDict_BoolFormat;
   v22[5] = @"PerepherialMax";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v23[5] = v8;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v23[5] = commonTypeDict_IntegerFormat3;
   v22[6] = @"APExclusion";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v23[6] = v10;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v23[6] = commonTypeDict_IntegerFormat4;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:7];
   v27[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
@@ -114,13 +114,13 @@
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"BBPowerName";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v12[1] = @"Value";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v13[1] = commonTypeDict_IntegerFormat;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -134,8 +134,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"AggregatedARMUtil";
-  v2 = [a1 entryArmUtil];
-  v7[0] = v2;
+  entryArmUtil = [self entryArmUtil];
+  v7[0] = entryArmUtil;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -156,13 +156,13 @@
   v25[0] = v3;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = @"ArmUtilBucket";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v20[1] = @"ArmUtilCount";
-  v21[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat_aggregateFunction_sum];
-  v21[1] = v7;
+  v21[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat_aggregateFunction_sum];
+  v21[1] = commonTypeDict_IntegerFormat_aggregateFunction_sum;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v25[1] = v8;
   v24[2] = *MEMORY[0x277D3F478];
@@ -186,7 +186,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLBBPowerToolService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -207,8 +207,8 @@
     {
       if ([MEMORY[0x277D3F180] BOOLForKey:@"PLBasebandPostProcessing"] && objc_msgSend(MEMORY[0x277D3F180], "fullMode"))
       {
-        v3 = [MEMORY[0x277D3F6D8] sharedTelephonyConnection];
-        [v3 enableDiagLogging];
+        mEMORY[0x277D3F6D8] = [MEMORY[0x277D3F6D8] sharedTelephonyConnection];
+        [mEMORY[0x277D3F6D8] enableDiagLogging];
 
         goto LABEL_8;
       }
@@ -220,16 +220,16 @@
     }
 
 LABEL_9:
-    v4 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
 LABEL_8:
   self = self;
-  v4 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -241,8 +241,8 @@ LABEL_10:
   v4 = objc_opt_new();
   [(PLBBPowerToolService *)self setEndExclusionPeriods:v4];
 
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLBBPowerToolService *)self setNotToRemoveDate:v5];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLBBPowerToolService *)self setNotToRemoveDate:monotonicDate];
 
   [(PLBBPowerToolService *)self setSendAWD:0];
   [(PLBBPowerToolService *)self setDoesCurrPackageHasProblem:0];
@@ -257,8 +257,8 @@ LABEL_10:
   [MEMORY[0x277D3F180] doubleForKey:@"RRCDisconnected" ifNotSet:80.0];
   [(PLBBPowerToolService *)self setRrcDisconnectedVal:?];
   [(PLBBPowerToolService *)self resetAllCounters:0];
-  v6 = [MEMORY[0x277D3F6D8] sharedTelephonyConnection];
-  objc_storeWeak(&self->_connection, v6);
+  mEMORY[0x277D3F6D8] = [MEMORY[0x277D3F6D8] sharedTelephonyConnection];
+  objc_storeWeak(&self->_connection, mEMORY[0x277D3F6D8]);
 
   v7 = *MEMORY[0x277D3F5D0];
   v8 = [MEMORY[0x277D3F678] entryKeyForType:*MEMORY[0x277D3F5D0] andName:*MEMORY[0x277D3F738]];
@@ -489,59 +489,59 @@ uint64_t __48__PLBBPowerToolService_initOperatorDependancies__block_invoke_10(ui
   return result;
 }
 
-- (void)writeToHelperTable:(id)a3 WithValue:(double)a4 withDate:(id)a5
+- (void)writeToHelperTable:(id)table WithValue:(double)value withDate:(id)date
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  tableCopy = table;
   v9 = *MEMORY[0x277D3F5E8];
-  v10 = a5;
+  dateCopy = date;
   v11 = [(PLOperator *)PLBBPowerToolService entryKeyForType:v9 andName:@"bbPowerPointCauseHelper"];
-  v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11 withDate:v10];
+  v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11 withDate:dateCopy];
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@", @"BBPowerName", v8];
-  v14 = [(PLOperator *)self storage];
-  v15 = [(PLBBPowerToolService *)self notToRemoveDate];
-  [v15 timeIntervalSince1970];
+  tableCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@", @"BBPowerName", tableCopy];
+  storage = [(PLOperator *)self storage];
+  notToRemoveDate = [(PLBBPowerToolService *)self notToRemoveDate];
+  [notToRemoveDate timeIntervalSince1970];
   v17 = v16;
-  v27[0] = v13;
+  v27[0] = tableCopy;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-  v19 = [v14 entriesForKey:v11 before:1 timeInterval:1 count:v18 withFilters:v17];
+  v19 = [storage entriesForKey:v11 before:1 timeInterval:1 count:v18 withFilters:v17];
 
   if ([v19 count])
   {
     v20 = [v19 objectAtIndexedSubscript:0];
-    v21 = [(PLOperator *)self storage];
-    v22 = [v20 entryDate];
-    v26 = v13;
+    storage2 = [(PLOperator *)self storage];
+    entryDate = [v20 entryDate];
+    v26 = tableCopy;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-    [v21 deleteAllEntriesForKey:v11 beforeTimestamp:v22 withFilters:v23];
+    [storage2 deleteAllEntriesForKey:v11 beforeTimestamp:entryDate withFilters:v23];
   }
 
-  [v12 setObject:v8 forKeyedSubscript:@"BBPowerName"];
-  v24 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  [v12 setObject:tableCopy forKeyedSubscript:@"BBPowerName"];
+  v24 = [MEMORY[0x277CCABB0] numberWithDouble:value];
   [v12 setObject:v24 forKeyedSubscript:@"Value"];
 
   [(PLOperator *)self logEntry:v12];
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)msgLiteCallback:(id)a3
+- (void)msgLiteCallback:(id)callback
 {
-  v8 = [a3 objectForKey:@"entry"];
+  v8 = [callback objectForKey:@"entry"];
   v4 = [v8 objectForKeyedSubscript:@"EventCode"];
   [v4 doubleValue];
   v6 = v5;
 
   if (v6 == 1010)
   {
-    v7 = [v8 entryDate];
-    [(PLBBPowerToolService *)self writeToHelperTable:@"prachCount" WithValue:v7 withDate:0.0];
+    entryDate = [v8 entryDate];
+    [(PLBBPowerToolService *)self writeToHelperTable:@"prachCount" WithValue:entryDate withDate:0.0];
   }
 }
 
-- (void)wcdmaRRCCallback:(id)a3
+- (void)wcdmaRRCCallback:(id)callback
 {
-  v13 = [a3 objectForKey:@"entry"];
+  v13 = [callback objectForKey:@"entry"];
   v4 = [v13 objectForKeyedSubscript:@"EventCode"];
   [v4 doubleValue];
   v6 = v5;
@@ -554,14 +554,14 @@ uint64_t __48__PLBBPowerToolService_initOperatorDependancies__block_invoke_10(ui
   {
     if ([v9 isEqual:@"Disconnected"])
     {
-      v10 = [v13 entryDate];
+      entryDate = [v13 entryDate];
       v11 = 0.0;
     }
 
     else
     {
       v12 = [v9 isEqual:@"CellDCH"];
-      v10 = [v13 entryDate];
+      entryDate = [v13 entryDate];
       if (v12)
       {
         v11 = 1.0;
@@ -573,13 +573,13 @@ uint64_t __48__PLBBPowerToolService_initOperatorDependancies__block_invoke_10(ui
       }
     }
 
-    [(PLBBPowerToolService *)self writeToHelperTable:@"wcdmaRRCState" WithValue:v10 withDate:v11];
+    [(PLBBPowerToolService *)self writeToHelperTable:@"wcdmaRRCState" WithValue:entryDate withDate:v11];
   }
 }
 
-- (void)lteRRCCallback:(id)a3
+- (void)lteRRCCallback:(id)callback
 {
-  v12 = [a3 objectForKey:@"entry"];
+  v12 = [callback objectForKey:@"entry"];
   v4 = [v12 objectForKeyedSubscript:@"EventCode"];
   [v4 doubleValue];
   v6 = v5;
@@ -590,14 +590,14 @@ uint64_t __48__PLBBPowerToolService_initOperatorDependancies__block_invoke_10(ui
   {
     if ([v7 isEqual:@"Disconnected"])
     {
-      v9 = [v12 entryDate];
+      entryDate = [v12 entryDate];
       v10 = 0.0;
     }
 
     else
     {
       v11 = [v8 isEqual:@"CellDCH"];
-      v9 = [v12 entryDate];
+      entryDate = [v12 entryDate];
       if (v11)
       {
         v10 = 1.0;
@@ -609,30 +609,30 @@ uint64_t __48__PLBBPowerToolService_initOperatorDependancies__block_invoke_10(ui
       }
     }
 
-    [(PLBBPowerToolService *)self writeToHelperTable:@"lteRRCState" WithValue:v9 withDate:v10];
+    [(PLBBPowerToolService *)self writeToHelperTable:@"lteRRCState" WithValue:entryDate withDate:v10];
   }
 }
 
-- (void)telActivityCallback:(id)a3
+- (void)telActivityCallback:(id)callback
 {
-  v12 = [a3 objectForKey:@"entry"];
+  v12 = [callback objectForKey:@"entry"];
   v4 = [v12 objectForKeyedSubscript:@"campedRat"];
   if ([v4 isEqualToString:@"Unknown"])
   {
-    v5 = [v12 entryDate];
+    entryDate = [v12 entryDate];
     v6 = 0.0;
   }
 
   else if ([v4 isEqualToString:@"UMTS"])
   {
-    v5 = [v12 entryDate];
+    entryDate = [v12 entryDate];
     v6 = 1.0;
   }
 
   else
   {
     v7 = [v4 isEqualToString:@"LTE"];
-    v5 = [v12 entryDate];
+    entryDate = [v12 entryDate];
     if (v7)
     {
       v6 = 2.0;
@@ -644,22 +644,22 @@ uint64_t __48__PLBBPowerToolService_initOperatorDependancies__block_invoke_10(ui
     }
   }
 
-  [(PLBBPowerToolService *)self writeToHelperTable:@"campedRat" WithValue:v5 withDate:v6];
+  [(PLBBPowerToolService *)self writeToHelperTable:@"campedRat" WithValue:entryDate withDate:v6];
 
   v8 = [v12 objectForKeyedSubscript:@"signalStrength"];
   [v8 doubleValue];
   v10 = v9;
-  v11 = [v12 entryDate];
-  [(PLBBPowerToolService *)self writeToHelperTable:@"strength" WithValue:v11 withDate:v10];
+  entryDate2 = [v12 entryDate];
+  [(PLBBPowerToolService *)self writeToHelperTable:@"strength" WithValue:entryDate2 withDate:v10];
 }
 
-- (void)resetAllCounters:(id)a3
+- (void)resetAllCounters:(id)counters
 {
-  v5 = a3;
-  if (v5)
+  countersCopy = counters;
+  if (countersCopy)
   {
-    v4 = [v5 entryDate];
-    [(PLBBPowerToolService *)self setNotToRemoveDate:v4];
+    entryDate = [countersCopy entryDate];
+    [(PLBBPowerToolService *)self setNotToRemoveDate:entryDate];
   }
 
   [(PLBBPowerToolService *)self setElapsedDenumerator:0.0];
@@ -677,85 +677,85 @@ uint64_t __48__PLBBPowerToolService_initOperatorDependancies__block_invoke_10(ui
   }
 }
 
-- (void)handleAudioCallback:(id)a3
+- (void)handleAudioCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   if (v4)
   {
     v7 = v4;
     v5 = [v4 objectForKeyedSubscript:@"Active"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    [(PLBBPowerToolService *)self handleExclusionWithState:v6 withExclusion:1];
+    [(PLBBPowerToolService *)self handleExclusionWithState:bOOLValue withExclusion:1];
     v4 = v7;
   }
 }
 
-- (void)handleDisplayCallback:(id)a3
+- (void)handleDisplayCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   if (v4)
   {
     v7 = v4;
     v5 = [v4 objectForKeyedSubscript:@"Active"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    [(PLBBPowerToolService *)self handleExclusionWithState:v6 withExclusion:2];
+    [(PLBBPowerToolService *)self handleExclusionWithState:bOOLValue withExclusion:2];
     v4 = v7;
   }
 }
 
-- (void)handleHotspotCallback:(id)a3
+- (void)handleHotspotCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   if (v4)
   {
     v7 = v4;
     v5 = [v4 objectForKeyedSubscript:@"Active"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    [(PLBBPowerToolService *)self handleExclusionWithState:v6 withExclusion:4];
+    [(PLBBPowerToolService *)self handleExclusionWithState:bOOLValue withExclusion:4];
     v4 = v7;
   }
 }
 
-- (void)handleExclusionWithState:(BOOL)a3 withExclusion:(unsigned __int8)a4
+- (void)handleExclusionWithState:(BOOL)state withExclusion:(unsigned __int8)exclusion
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PLBBPowerToolService *)self exclusionMask];
-  if (v5)
+  exclusionCopy = exclusion;
+  stateCopy = state;
+  exclusionMask = [(PLBBPowerToolService *)self exclusionMask];
+  if (stateCopy)
   {
-    if (!v7)
+    if (!exclusionMask)
     {
-      v8 = [MEMORY[0x277CBEAA8] monotonicDate];
-      v9 = [(PLBBPowerToolService *)self startExclusionPeriods];
-      [v9 addObject:v8];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      startExclusionPeriods = [(PLBBPowerToolService *)self startExclusionPeriods];
+      [startExclusionPeriods addObject:monotonicDate];
     }
 
-    v10 = [(PLBBPowerToolService *)self exclusionMask]| v4;
+    v10 = [(PLBBPowerToolService *)self exclusionMask]| exclusionCopy;
 
     [(PLBBPowerToolService *)self setExclusionMask:v10];
   }
 
-  else if (v4)
+  else if (exclusionCopy)
   {
-    if (v7)
+    if (exclusionMask)
     {
-      [(PLBBPowerToolService *)self setExclusionMask:[(PLBBPowerToolService *)self exclusionMask]& ~v4];
+      [(PLBBPowerToolService *)self setExclusionMask:[(PLBBPowerToolService *)self exclusionMask]& ~exclusionCopy];
       if (![(PLBBPowerToolService *)self exclusionMask])
       {
-        v12 = [(PLBBPowerToolService *)self endExclusionPeriods];
-        v11 = [MEMORY[0x277CBEAA8] monotonicDate];
-        [v12 addObject:v11];
+        endExclusionPeriods = [(PLBBPowerToolService *)self endExclusionPeriods];
+        monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+        [endExclusionPeriods addObject:monotonicDate2];
       }
     }
   }
 }
 
-- (void)handleMavBBHwOtherCallback:(id)a3
+- (void)handleMavBBHwOtherCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F710]];
 
   if (v5)
@@ -802,12 +802,12 @@ LABEL_13:
       [(PLBBPowerToolService *)self collectExtraDataForPackage:v4];
       [(PLBBPowerToolService *)self doesCurrPeriodHaveProblem:v4];
       [(PLBBPowerToolService *)self handleProblemWithEntry:v4];
-      v9 = [v4 entryDate];
-      v10 = [v9 copy];
+      entryDate = [v4 entryDate];
+      v10 = [entryDate copy];
       [(PLBBPowerToolService *)self setStartSamplingDate:v10];
 
-      v11 = [(PLBBPowerToolService *)self startSamplingDate];
-      [v8 setObject:v11 forKeyedSubscript:@"causeTimeStamp"];
+      startSamplingDate = [(PLBBPowerToolService *)self startSamplingDate];
+      [v8 setObject:startSamplingDate forKeyedSubscript:@"causeTimeStamp"];
 
       v12 = MEMORY[0x277CCABB0];
       [(PLBBPowerToolService *)self elapsedDenumerator];
@@ -827,8 +827,8 @@ LABEL_13:
       [v8 setObject:v17 forKeyedSubscript:@"PerepherialMax"];
 
       v18 = MEMORY[0x277CCABB0];
-      v19 = [(PLBBPowerToolService *)self startExclusionPeriods];
-      v20 = [v18 numberWithUnsignedInteger:{objc_msgSend(v19, "count")}];
+      startExclusionPeriods = [(PLBBPowerToolService *)self startExclusionPeriods];
+      v20 = [v18 numberWithUnsignedInteger:{objc_msgSend(startExclusionPeriods, "count")}];
       [v8 setObject:v20 forKeyedSubscript:@"APExclusion"];
 
       [(PLOperator *)self logEntry:v8];
@@ -837,9 +837,9 @@ LABEL_13:
   }
 }
 
-- (BOOL)doesCurrPeriodHaveProblem:(id)a3
+- (BOOL)doesCurrPeriodHaveProblem:(id)problem
 {
-  v4 = a3;
+  problemCopy = problem;
   [(PLBBPowerToolService *)self totalNormalARMUtility];
   v6 = v5;
   [(PLBBPowerToolService *)self elapsedDenumerator];
@@ -858,12 +858,12 @@ LABEL_13:
   {
     v14 = [(PLOperator *)PLBBPowerToolService entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"bbPowerPointCause"];
     v15 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v14];
-    v16 = [v4 entryDate];
-    v17 = [v16 copy];
+    entryDate = [problemCopy entryDate];
+    v17 = [entryDate copy];
     [(PLBBPowerToolService *)self setStartSamplingDate:v17];
 
-    v18 = [(PLBBPowerToolService *)self startSamplingDate];
-    [v15 setObject:v18 forKeyedSubscript:@"causeTimeStamp"];
+    startSamplingDate = [(PLBBPowerToolService *)self startSamplingDate];
+    [v15 setObject:startSamplingDate forKeyedSubscript:@"causeTimeStamp"];
 
     v19 = MEMORY[0x277CCABB0];
     [(PLBBPowerToolService *)self elapsedDenumerator];
@@ -883,8 +883,8 @@ LABEL_13:
     [v15 setObject:v24 forKeyedSubscript:@"PerepherialMax"];
 
     v25 = MEMORY[0x277CCABB0];
-    v26 = [(PLBBPowerToolService *)self startExclusionPeriods];
-    v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(v26, "count")}];
+    startExclusionPeriods = [(PLBBPowerToolService *)self startExclusionPeriods];
+    v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(startExclusionPeriods, "count")}];
     [v15 setObject:v27 forKeyedSubscript:@"APExclusion"];
 
     [(PLOperator *)self logEntry:v15];
@@ -893,41 +893,41 @@ LABEL_13:
   return v8 > v13;
 }
 
-- (void)collectExtraDataForPackage:(id)a3
+- (void)collectExtraDataForPackage:(id)package
 {
-  v18 = a3;
-  v4 = [v18 objectForKeyedSubscript:*MEMORY[0x277D3F728]];
+  packageCopy = package;
+  v4 = [packageCopy objectForKeyedSubscript:*MEMORY[0x277D3F728]];
   [v4 doubleValue];
   v6 = v5;
 
   [(PLBBPowerToolService *)self elapsedDenumerator];
   [(PLBBPowerToolService *)self setElapsedDenumerator:v6 * 0.0000305175781 + v7];
-  v8 = [v18 objectForKeyedSubscript:*MEMORY[0x277D3F828]];
+  v8 = [packageCopy objectForKeyedSubscript:*MEMORY[0x277D3F828]];
   [v8 doubleValue];
   v10 = v9 / v6;
-  v11 = [v18 objectForKeyedSubscript:*MEMORY[0x277D3F820]];
+  v11 = [packageCopy objectForKeyedSubscript:*MEMORY[0x277D3F820]];
   [v11 doubleValue];
   v13 = 100.0 - (v12 / v6 * 100.0 + v10 * 100.0);
 
   [(PLBBPowerToolService *)self totalNormalARMUtility];
   [(PLBBPowerToolService *)self setTotalNormalARMUtility:v14 + v6 * v13];
-  v15 = [(PLBBPowerToolService *)self startSamplingDate];
+  startSamplingDate = [(PLBBPowerToolService *)self startSamplingDate];
 
-  if (!v15)
+  if (!startSamplingDate)
   {
-    v16 = [v18 entryDate];
-    v17 = [v16 copy];
+    entryDate = [packageCopy entryDate];
+    v17 = [entryDate copy];
     [(PLBBPowerToolService *)self setStartSamplingDate:v17];
   }
 }
 
-- (void)handleProblemWithEntry:(id)a3
+- (void)handleProblemWithEntry:(id)entry
 {
-  v4 = [(PLBBPowerToolService *)self findCauseWithEntry:a3];
+  v4 = [(PLBBPowerToolService *)self findCauseWithEntry:entry];
   v5 = [(PLOperator *)PLBBPowerToolService entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"bbPowerPointCause"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5];
-  v7 = [(PLBBPowerToolService *)self startSamplingDate];
-  [v6 setObject:v7 forKeyedSubscript:@"causeTimeStamp"];
+  startSamplingDate = [(PLBBPowerToolService *)self startSamplingDate];
+  [v6 setObject:startSamplingDate forKeyedSubscript:@"causeTimeStamp"];
 
   v8 = MEMORY[0x277CCABB0];
   [(PLBBPowerToolService *)self elapsedDenumerator];
@@ -947,17 +947,17 @@ LABEL_13:
   [v6 setObject:v13 forKeyedSubscript:@"PerepherialMax"];
 
   v14 = MEMORY[0x277CCABB0];
-  v15 = [(PLBBPowerToolService *)self startExclusionPeriods];
-  v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
+  startExclusionPeriods = [(PLBBPowerToolService *)self startExclusionPeriods];
+  v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(startExclusionPeriods, "count")}];
   [v6 setObject:v16 forKeyedSubscript:@"APExclusion"];
 
   [(PLOperator *)self logEntry:v6];
-  v17 = [(PLBBPowerToolService *)self connection];
+  connection = [(PLBBPowerToolService *)self connection];
   v18 = MEMORY[0x277CCACA8];
-  v19 = [(PLBBPowerToolService *)self startSamplingDate];
+  startSamplingDate2 = [(PLBBPowerToolService *)self startSamplingDate];
   [(PLBBPowerToolService *)self elapsedDenumerator];
-  v21 = [v18 stringWithFormat:@"Auto-trigger of core dump by Powerlog: bb-powertool, startTime = %@ duration = %f", v19, v20];;
-  v22 = [v17 requestBasebandStateDump:v21];
+  v21 = [v18 stringWithFormat:@"Auto-trigger of core dump by Powerlog: bb-powertool, startTime = %@ duration = %f", startSamplingDate2, v20];;
+  v22 = [connection requestBasebandStateDump:v21];
 
   if ((v22 & 1) == 0 && [MEMORY[0x277D3F180] debugEnabled])
   {
@@ -977,9 +977,9 @@ LABEL_13:
       v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"BBPowerTool: BB snapshot failed"];
       v25 = MEMORY[0x277D3F178];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLBBPowerToolService.m"];
-      v27 = [v26 lastPathComponent];
+      lastPathComponent = [v26 lastPathComponent];
       v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBPowerToolService handleProblemWithEntry:]"];
-      [v25 logMessage:v24 fromFile:v27 fromFunction:v28 fromLineNumber:705];
+      [v25 logMessage:v24 fromFile:lastPathComponent fromFunction:v28 fromLineNumber:705];
 
       v29 = PLLogCommon();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -997,27 +997,27 @@ uint64_t __47__PLBBPowerToolService_handleProblemWithEntry___block_invoke(uint64
   return result;
 }
 
-- (void)resetStructuresWithSnapshot:(CauseSnapshot *)a3 withDuration:(CauseDurations *)a4
+- (void)resetStructuresWithSnapshot:(CauseSnapshot *)snapshot withDuration:(CauseDurations *)duration
 {
-  a3->var1 = 0.0;
-  a3->var2 = 0;
-  a3->var0 = 3;
-  a4->var0 = 0;
-  *&a4->var1 = 0u;
-  *&a4->var3 = 0u;
+  snapshot->var1 = 0.0;
+  snapshot->var2 = 0;
+  snapshot->var0 = 3;
+  duration->var0 = 0;
+  *&duration->var1 = 0u;
+  *&duration->var3 = 0u;
 }
 
-- (id)analazeCauseResultsReturnCause:(CauseDurations *)a3
+- (id)analazeCauseResultsReturnCause:(CauseDurations *)cause
 {
-  var1 = a3->var1;
+  var1 = cause->var1;
   [(PLBBPowerToolService *)self elapsedDenumerator];
   v7 = v6;
-  var2 = a3->var2;
+  var2 = cause->var2;
   [(PLBBPowerToolService *)self elapsedDenumerator];
   v10 = v9;
-  var4 = a3->var4;
+  var4 = cause->var4;
   [(PLBBPowerToolService *)self elapsedDenumerator];
-  if (a3->var0 > 50)
+  if (cause->var0 > 50)
   {
     return @"RACHFail";
   }
@@ -1043,40 +1043,40 @@ uint64_t __47__PLBBPowerToolService_handleProblemWithEntry___block_invoke(uint64
   return @"Unknown";
 }
 
-- (void)analazeIntervalWithSnapshot:(CauseSnapshot *)a3 withDuration:(CauseDurations *)a4 withInterval:(double)a5 withEntry:(id)a6
+- (void)analazeIntervalWithSnapshot:(CauseSnapshot *)snapshot withDuration:(CauseDurations *)duration withInterval:(double)interval withEntry:(id)entry
 {
-  if (!a3->var0)
+  if (!snapshot->var0)
   {
     v6 = 8;
     goto LABEL_8;
   }
 
-  if (a3->var0 == 1 && !a3->var2)
+  if (snapshot->var0 == 1 && !snapshot->var2)
   {
-    a4->var2 = a4->var2 + a5;
+    duration->var2 = duration->var2 + interval;
   }
 
-  if (a3->var1 < -100.0)
+  if (snapshot->var1 < -100.0)
   {
     v6 = 32;
 LABEL_8:
-    *(&a4->var0 + v6) = *(&a4->var0 + v6) + a5;
+    *(&duration->var0 + v6) = *(&duration->var0 + v6) + interval;
   }
 }
 
-- (id)findCauseWithEntry:(id)a3
+- (id)findCauseWithEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = [(PLOperator *)PLBBPowerToolService entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"bbPowerPointCauseHelper"];
-  v6 = [(PLOperator *)self storage];
+  storage = [(PLOperator *)self storage];
   v31 = v5;
-  v7 = [v6 entriesForKey:v5];
+  v7 = [storage entriesForKey:v5];
 
-  v32 = v4;
-  v8 = [v4 entryDate];
+  v32 = entryCopy;
+  entryDate = [entryCopy entryDate];
   v9 = MEMORY[0x277CBEAA8];
   [(PLBBPowerToolService *)self elapsedDenumerator];
-  v11 = [v9 dateWithTimeInterval:v8 sinceDate:-v10];
+  v11 = [v9 dateWithTimeInterval:entryDate sinceDate:-v10];
   v36 = 0;
   v37 = 0;
   v38 = 0;
@@ -1094,21 +1094,21 @@ LABEL_8:
   while (1)
   {
     v14 = [v7 objectAtIndexedSubscript:v12];
-    v15 = [v14 entryDate];
-    v16 = [v15 compare:v11];
+    entryDate2 = [v14 entryDate];
+    v16 = [entryDate2 compare:v11];
 
     if (v16 == 1)
     {
-      v17 = [v14 entryDate];
-      v18 = [v17 earlierDate:v8];
+      entryDate3 = [v14 entryDate];
+      v18 = [entryDate3 earlierDate:entryDate];
       [v11 timeIntervalSinceDate:v18];
       v20 = v19;
 
-      v21 = [v14 entryDate];
+      entryDate4 = [v14 entryDate];
 
       [(PLBBPowerToolService *)self analazeIntervalWithSnapshot:&v36 withDuration:v34 withInterval:v14 withEntry:v20];
       v13 = 1;
-      v11 = v21;
+      v11 = entryDate4;
     }
 
     v22 = [v14 objectForKeyedSubscript:@"BBPowerName"];
@@ -1147,8 +1147,8 @@ LABEL_15:
     }
 
 LABEL_16:
-    v27 = [v14 entryDate];
-    v28 = [v27 compare:v8];
+    entryDate5 = [v14 entryDate];
+    v28 = [entryDate5 compare:entryDate];
 
     if (v28 == 1)
     {
@@ -1166,7 +1166,7 @@ LABEL_16:
     }
   }
 
-  [v11 timeIntervalSinceDate:v8];
+  [v11 timeIntervalSinceDate:entryDate];
   [(PLBBPowerToolService *)self analazeIntervalWithSnapshot:&v36 withDuration:v34 withInterval:v14 withEntry:?];
 LABEL_21:
 
@@ -1176,39 +1176,39 @@ LABEL_22:
   return v29;
 }
 
-- (BOOL)isPackageValidWithEntry:(id)a3
+- (BOOL)isPackageValidWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F708]];
+  entryCopy = entry;
+  v5 = [entryCopy objectForKeyedSubscript:*MEMORY[0x277D3F708]];
   [v5 doubleValue];
   v7 = v6;
-  v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F728]];
+  v8 = [entryCopy objectForKeyedSubscript:*MEMORY[0x277D3F728]];
   [v8 doubleValue];
   v10 = v7 / v9 * 100.0;
 
-  [(PLBBPowerToolService *)self calculateMaxPerepherialPercentageWithEntry:v4];
+  [(PLBBPowerToolService *)self calculateMaxPerepherialPercentageWithEntry:entryCopy];
   v12 = v11;
   [(PLBBPowerToolService *)self setGPerepherialMax:v11];
   [(PLBBPowerToolService *)self armUtilityThresholdVal];
   v14 = v13;
   [(PLBBPowerToolService *)self magicDeltaThresholdVal];
-  v19 = 100.0 - v10 <= v14 - v15 && ([(PLBBPowerToolService *)self armUtilityThresholdVal], v17 = v16, [(PLBBPowerToolService *)self magicDeltaThresholdVal], v17 - v18 >= v12) && [(PLBBPowerToolService *)self isPackageTimeValidWithEntry:v4];
+  v19 = 100.0 - v10 <= v14 - v15 && ([(PLBBPowerToolService *)self armUtilityThresholdVal], v17 = v16, [(PLBBPowerToolService *)self magicDeltaThresholdVal], v17 - v18 >= v12) && [(PLBBPowerToolService *)self isPackageTimeValidWithEntry:entryCopy];
 
   return v19;
 }
 
-- (BOOL)isPackageTimeValidWithEntry:(id)a3
+- (BOOL)isPackageTimeValidWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 entryDate];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F728]];
+  entryCopy = entry;
+  entryDate = [entryCopy entryDate];
+  v6 = [entryCopy objectForKeyedSubscript:*MEMORY[0x277D3F728]];
 
   [v6 doubleValue];
   v8 = v7 * -0.0000305175781;
 
-  v9 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v5 sinceDate:v8];
-  v10 = [(PLBBPowerToolService *)self notToRemoveDate];
-  v11 = [v9 compare:v10];
+  v9 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:entryDate sinceDate:v8];
+  notToRemoveDate = [(PLBBPowerToolService *)self notToRemoveDate];
+  v11 = [v9 compare:notToRemoveDate];
 
   if (v11 == -1)
   {
@@ -1219,33 +1219,33 @@ LABEL_10:
 
   if ([(PLBBPowerToolService *)self containsExclusionsAfterCleanupWithDate:v9])
   {
-    v12 = [(PLBBPowerToolService *)self startExclusionPeriods];
-    v13 = [v12 count];
-    v14 = [(PLBBPowerToolService *)self endExclusionPeriods];
-    if (v13 == [v14 count])
+    startExclusionPeriods = [(PLBBPowerToolService *)self startExclusionPeriods];
+    endExclusionPeriods4 = [startExclusionPeriods count];
+    endExclusionPeriods = [(PLBBPowerToolService *)self endExclusionPeriods];
+    if (endExclusionPeriods4 == [endExclusionPeriods count])
     {
 
 LABEL_7:
-      v17 = [(PLBBPowerToolService *)self startExclusionPeriods];
-      v18 = [v17 objectAtIndexedSubscript:0];
+      startExclusionPeriods2 = [(PLBBPowerToolService *)self startExclusionPeriods];
+      v18 = [startExclusionPeriods2 objectAtIndexedSubscript:0];
       v19 = [v9 compare:v18];
-      if (v19 == -1 && (-[PLBBPowerToolService startExclusionPeriods](self, "startExclusionPeriods"), v13 = objc_claimAutoreleasedReturnValue(), [v13 objectAtIndexedSubscript:0], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "compare:") == 1))
+      if (v19 == -1 && (-[PLBBPowerToolService startExclusionPeriods](self, "startExclusionPeriods"), endExclusionPeriods4 = objc_claimAutoreleasedReturnValue(), [endExclusionPeriods4 objectAtIndexedSubscript:0], v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(entryDate, "compare:") == 1))
       {
         v20 = 1;
       }
 
       else
       {
-        v21 = [(PLBBPowerToolService *)self endExclusionPeriods];
-        v22 = [v21 objectAtIndexedSubscript:0];
+        endExclusionPeriods2 = [(PLBBPowerToolService *)self endExclusionPeriods];
+        v22 = [endExclusionPeriods2 objectAtIndexedSubscript:0];
         if ([v9 compare:v22] == -1)
         {
-          v23 = [(PLBBPowerToolService *)self endExclusionPeriods];
-          [v23 objectAtIndexedSubscript:0];
-          v24 = v26 = v13;
-          v20 = [v5 compare:v24] == 1;
+          endExclusionPeriods3 = [(PLBBPowerToolService *)self endExclusionPeriods];
+          [endExclusionPeriods3 objectAtIndexedSubscript:0];
+          v24 = v26 = endExclusionPeriods4;
+          v20 = [entryDate compare:v24] == 1;
 
-          v13 = v26;
+          endExclusionPeriods4 = v26;
         }
 
         else
@@ -1264,8 +1264,8 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v13 = [(PLBBPowerToolService *)self endExclusionPeriods];
-    v16 = [v13 count];
+    endExclusionPeriods4 = [(PLBBPowerToolService *)self endExclusionPeriods];
+    v16 = [endExclusionPeriods4 count];
 
     if (v16)
     {
@@ -1281,30 +1281,30 @@ LABEL_17:
   return v15;
 }
 
-- (BOOL)containsExclusionsAfterCleanupWithDate:(id)a3
+- (BOOL)containsExclusionsAfterCleanupWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLBBPowerToolService *)self startExclusionPeriods];
-  v6 = [v5 count];
+  dateCopy = date;
+  startExclusionPeriods = [(PLBBPowerToolService *)self startExclusionPeriods];
+  v6 = [startExclusionPeriods count];
 
   if (v6)
   {
     while (1)
     {
-      v7 = [(PLBBPowerToolService *)self endExclusionPeriods];
-      v8 = [v7 count];
+      endExclusionPeriods = [(PLBBPowerToolService *)self endExclusionPeriods];
+      v8 = [endExclusionPeriods count];
       if (v8)
       {
-        v5 = [(PLBBPowerToolService *)self endExclusionPeriods];
-        v6 = [v5 objectAtIndexedSubscript:0];
-        if ([v4 compare:v6] == -1)
+        startExclusionPeriods = [(PLBBPowerToolService *)self endExclusionPeriods];
+        v6 = [startExclusionPeriods objectAtIndexedSubscript:0];
+        if ([dateCopy compare:v6] == -1)
         {
           break;
         }
       }
 
-      v9 = [(PLBBPowerToolService *)self endExclusionPeriods];
-      v10 = [v9 count];
+      endExclusionPeriods2 = [(PLBBPowerToolService *)self endExclusionPeriods];
+      v10 = [endExclusionPeriods2 count];
 
       if (v8)
       {
@@ -1315,14 +1315,14 @@ LABEL_17:
         goto LABEL_10;
       }
 
-      v11 = [(PLBBPowerToolService *)self startExclusionPeriods];
-      [v11 removeObjectAtIndex:0];
+      startExclusionPeriods2 = [(PLBBPowerToolService *)self startExclusionPeriods];
+      [startExclusionPeriods2 removeObjectAtIndex:0];
 
-      v12 = [(PLBBPowerToolService *)self endExclusionPeriods];
-      [v12 removeObjectAtIndex:0];
+      endExclusionPeriods3 = [(PLBBPowerToolService *)self endExclusionPeriods];
+      [endExclusionPeriods3 removeObjectAtIndex:0];
 
-      v13 = [(PLBBPowerToolService *)self startExclusionPeriods];
-      v14 = [v13 count];
+      startExclusionPeriods3 = [(PLBBPowerToolService *)self startExclusionPeriods];
+      v14 = [startExclusionPeriods3 count];
 
       if (!v14)
       {
@@ -1343,17 +1343,17 @@ LABEL_8:
   return v15;
 }
 
-- (double)percentageHistogramFromArray:(id)a3
+- (double)percentageHistogramFromArray:(id)array
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = v3;
+    v4 = arrayCopy;
     v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
@@ -1398,15 +1398,15 @@ LABEL_8:
   return v11;
 }
 
-- (double)calculateMaxPerepherialPercentageWithEntry:(id)a3
+- (double)calculateMaxPerepherialPercentageWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F838]];
+  entryCopy = entry;
+  v5 = [entryCopy objectForKeyedSubscript:*MEMORY[0x277D3F838]];
   if (([MEMORY[0x277D3F208] isBasebandClass:1003001] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003002) & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003003))
   {
     [(PLBBPowerToolService *)self percentageHistogramFromArray:v5];
     v7 = v6;
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F720]];
+    v8 = [entryCopy objectForKeyedSubscript:*MEMORY[0x277D3F720]];
 
     [(PLBBPowerToolService *)self percentageHistogramFromArray:v8];
     if (v7 < v9)
@@ -1421,7 +1421,7 @@ LABEL_8:
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F810]];
+    v8 = [entryCopy objectForKeyedSubscript:*MEMORY[0x277D3F810]];
 
     [(PLBBPowerToolService *)self percentageHistogramFromArray:v8];
     v7 = v20;
@@ -1430,7 +1430,7 @@ LABEL_8:
     v12 = MEMORY[0x277D3F800];
   }
 
-  v13 = [v4 objectForKeyedSubscript:*v12];
+  v13 = [entryCopy objectForKeyedSubscript:*v12];
 
   [(PLBBPowerToolService *)self percentageHistogramFromArray:v13];
   if (v7 < v14)
@@ -1438,7 +1438,7 @@ LABEL_8:
     v7 = v14;
   }
 
-  v15 = [v4 objectForKeyedSubscript:*v11];
+  v15 = [entryCopy objectForKeyedSubscript:*v11];
 
   [(PLBBPowerToolService *)self percentageHistogramFromArray:v15];
   if (v7 < v16)
@@ -1446,7 +1446,7 @@ LABEL_8:
     v7 = v16;
   }
 
-  v17 = [v4 objectForKeyedSubscript:*v10];
+  v17 = [entryCopy objectForKeyedSubscript:*v10];
 
   [(PLBBPowerToolService *)self percentageHistogramFromArray:v17];
   if (v7 < v18)
@@ -1469,17 +1469,17 @@ LABEL_8:
     v60 = v3;
     v61 = objc_alloc_init(MEMORY[0x277D817E0]);
     v6 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:-86400.0];
-    v7 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     [v6 timeIntervalSince1970];
     v9 = v8;
-    [v7 timeIntervalSince1970];
+    [monotonicDate timeIntervalSince1970];
     v11 = v10 - v9;
 
     v12 = 0x279A58000uLL;
     v13 = [(PLOperator *)PLBBPowerToolService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"AggregatedARMUtil"];
-    v14 = [(PLOperator *)self storage];
+    storage = [(PLOperator *)self storage];
     v58 = v13;
-    v15 = [v14 aggregateEntriesForKey:v13 withBucketLength:86400.0 inTimeIntervalRange:{v9, v11}];
+    v15 = [storage aggregateEntriesForKey:v13 withBucketLength:86400.0 inTimeIntervalRange:{v9, v11}];
 
     v57 = v15;
     v16 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v15];
@@ -1493,7 +1493,7 @@ LABEL_8:
     if (v17)
     {
       v18 = v17;
-      v64 = self;
+      selfCopy = self;
       v19 = *v67;
       do
       {
@@ -1518,7 +1518,7 @@ LABEL_8:
       }
 
       while (v18);
-      self = v64;
+      self = selfCopy;
       v12 = 0x279A58000;
     }
 
@@ -1529,9 +1529,9 @@ LABEL_8:
 
     [v61 setArmUtilityPDFs:v95 count:101];
     v27 = [*(v12 + 2608) entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"bbPowerPointCause"];
-    v28 = [(PLOperator *)self storage];
+    storage2 = [(PLOperator *)self storage];
     v56 = v27;
-    v29 = [v28 entriesForKey:v27];
+    v29 = [storage2 entriesForKey:v27];
 
     v93 = 0;
     memset(v92, 0, sizeof(v92));
@@ -1591,9 +1591,9 @@ LABEL_8:
 
           v62 = v34;
           v42 = [v39 objectForKeyedSubscript:@"IsContinuous"];
-          v43 = [v42 BOOLValue];
+          bOOLValue = [v42 BOOLValue];
 
-          if (v43)
+          if (bOOLValue)
           {
             v44 = [v31 isEqualToString:v36];
             v45 = v63;

@@ -17,8 +17,8 @@
 
 + (void)dismissCalibrationAlert
 {
-  v2 = [qword_100008848 _remoteViewControllerProxy];
-  [v2 dismiss];
+  _remoteViewControllerProxy = [qword_100008848 _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismiss];
 
   v3 = qword_100008848;
   qword_100008848 = 0;
@@ -48,8 +48,8 @@
 
 - (void)reset
 {
-  v2 = [(CalibrationViewServiceController *)self calibrationViewController];
-  [v2 reset];
+  calibrationViewController = [(CalibrationViewServiceController *)self calibrationViewController];
+  [calibrationViewController reset];
 }
 
 - (CalibrationViewController)calibrationViewController
@@ -101,8 +101,8 @@
 
 - (void)minimumTimeElapsed
 {
-  v3 = [(CalibrationViewServiceController *)self minimumTimer];
-  [v3 invalidate];
+  minimumTimer = [(CalibrationViewServiceController *)self minimumTimer];
+  [minimumTimer invalidate];
 
   [(CalibrationViewServiceController *)self setMinimumTimer:0];
   self->_minTimeElapsed = 1;
@@ -112,8 +112,8 @@
 
 - (void)maximumTimeElapsed
 {
-  v3 = [(CalibrationViewServiceController *)self maximumTimer];
-  [v3 invalidate];
+  maximumTimer = [(CalibrationViewServiceController *)self maximumTimer];
+  [maximumTimer invalidate];
 
   [(CalibrationViewServiceController *)self setMaximumTimer:0];
   self->_maxTimeElapsed = 1;
@@ -125,19 +125,19 @@
 {
   if (self->_minTimeElapsed && self->_calibrated || self->_maxTimeElapsed)
   {
-    v3 = [(CalibrationViewServiceController *)self motionManager];
-    [v3 stopDeviceMotionUpdates];
+    motionManager = [(CalibrationViewServiceController *)self motionManager];
+    [motionManager stopDeviceMotionUpdates];
 
-    v4 = [(CalibrationViewServiceController *)self locationManager];
-    [v4 stopUpdatingHeading];
+    locationManager = [(CalibrationViewServiceController *)self locationManager];
+    [locationManager stopUpdatingHeading];
 
     [objc_opt_class() dismissCalibrationAlert];
-    v5 = [(CalibrationViewServiceController *)self maximumTimer];
-    [v5 invalidate];
+    maximumTimer = [(CalibrationViewServiceController *)self maximumTimer];
+    [maximumTimer invalidate];
 
     [(CalibrationViewServiceController *)self setMaximumTimer:0];
-    v6 = [(CalibrationViewServiceController *)self minimumTimer];
-    [v6 invalidate];
+    minimumTimer = [(CalibrationViewServiceController *)self minimumTimer];
+    [minimumTimer invalidate];
 
     [(CalibrationViewServiceController *)self setMinimumTimer:0];
   }

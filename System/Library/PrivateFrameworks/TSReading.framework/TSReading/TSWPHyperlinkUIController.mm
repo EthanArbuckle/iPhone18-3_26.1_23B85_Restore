@@ -14,11 +14,11 @@
 - (void)endUISession;
 - (void)i_openURLAction;
 - (void)p_clearTextSelection;
-- (void)p_initChangeSessionAuthorCreatedWithCommand:(id *)a3;
+- (void)p_initChangeSessionAuthorCreatedWithCommand:(id *)command;
 - (void)p_selectHyperlinkField;
 - (void)p_stopObservingStorage;
-- (void)setKeyboardSuppressedAndTextInputEditorIgnoresFirstResponderChanges:(BOOL)a3;
-- (void)startUISessionForHyperlinkField:(id)a3 inRep:(id)a4;
+- (void)setKeyboardSuppressedAndTextInputEditorIgnoresFirstResponderChanges:(BOOL)changes;
+- (void)startUISessionForHyperlinkField:(id)field inRep:(id)rep;
 - (void)visit;
 @end
 
@@ -26,9 +26,9 @@
 
 - (BOOL)isCanvasInReadMode
 {
-  v2 = [(TSWPHyperlinkUIController *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSWPHyperlinkUIController *)self interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v2 inReadMode];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController inReadMode];
 }
 
 + (id)sharedHyperlinkUIController
@@ -37,8 +37,8 @@
   if (!+[TSWPHyperlinkUIController sharedHyperlinkUIController]::instance)
   {
     +[TSWPHyperlinkUIController sharedHyperlinkUIController]::instance = objc_alloc_init(TSWPHyperlinkUIController);
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:+[TSWPHyperlinkUIController sharedHyperlinkUIController]::instance selector:sel_p_documentUIWillCloseNotification_ name:@"TSKDocumentUIWillCloseNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:+[TSWPHyperlinkUIController sharedHyperlinkUIController]::instance selector:sel_p_documentUIWillCloseNotification_ name:@"TSKDocumentUIWillCloseNotification" object:0];
     return +[TSWPHyperlinkUIController sharedHyperlinkUIController]::instance;
   }
 
@@ -74,33 +74,33 @@
   [(TSWPHyperlinkUIController *)self endUISession];
 }
 
-- (void)setKeyboardSuppressedAndTextInputEditorIgnoresFirstResponderChanges:(BOOL)a3
+- (void)setKeyboardSuppressedAndTextInputEditorIgnoresFirstResponderChanges:(BOOL)changes
 {
-  v3 = a3;
-  v4 = [(TSWPHyperlinkUIController *)self interactiveCanvasController];
+  changesCopy = changes;
+  interactiveCanvasController = [(TSWPHyperlinkUIController *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v4 setKeyboardSuppressedAndTextInputEditorIgnoresFirstResponderChanges:v3];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController setKeyboardSuppressedAndTextInputEditorIgnoresFirstResponderChanges:changesCopy];
 }
 
-- (void)startUISessionForHyperlinkField:(id)a3 inRep:(id)a4
+- (void)startUISessionForHyperlinkField:(id)field inRep:(id)rep
 {
   if (![(TSWPHyperlinkUIController *)self p_UIState])
   {
-    self->_hyperlinkRep = a4;
-    self->_hyperlinkField = a3;
+    self->_hyperlinkRep = rep;
+    self->_hyperlinkField = field;
     v7 = [TSWPFilteredStorage alloc];
-    v8 = [(TSWPSmartField *)self->_hyperlinkField parentStorage];
-    v9 = [(TSWPSmartField *)self->_hyperlinkField range];
+    parentStorage = [(TSWPSmartField *)self->_hyperlinkField parentStorage];
+    range = [(TSWPSmartField *)self->_hyperlinkField range];
     v11 = v10;
-    v12 = [(TSWPSmartField *)self->_hyperlinkField parentStorage];
-    v13 = [(TSWPSmartField *)self->_hyperlinkField range];
-    v15 = [(TSWPFilteredStorage *)v7 initWithStorage:v8 subRange:v9 removeRanges:v11, [(TSWPStorage *)v12 deletedRangesInRange:v13, v14]];
+    parentStorage2 = [(TSWPSmartField *)self->_hyperlinkField parentStorage];
+    range2 = [(TSWPSmartField *)self->_hyperlinkField range];
+    v15 = [(TSWPFilteredStorage *)v7 initWithStorage:parentStorage subRange:range removeRanges:v11, [(TSWPStorage *)parentStorage2 deletedRangesInRange:range2, v14]];
     self->_originalDisplayText = [(TSWPFilteredStorage *)v15 string];
 
     self->_changeSession = 0;
-    v16 = [(TSWPSmartField *)self->_hyperlinkField parentStorage];
-    self->_observedStorage = v16;
-    [(TSWPStorage *)v16 addObserver:self];
+    parentStorage3 = [(TSWPSmartField *)self->_hyperlinkField parentStorage];
+    self->_observedStorage = parentStorage3;
+    [(TSWPStorage *)parentStorage3 addObserver:self];
     ++self->_hyperlinkUISessionID;
   }
 }
@@ -122,13 +122,13 @@
     [(TSWPHyperlinkUIController *)self hideHyperlinkHighlight];
     if (!self->_shouldMaintainKeyboardWhenEndingSession)
     {
-      v3 = [(TSWPHyperlinkUIController *)self interactiveCanvasController];
+      interactiveCanvasController = [(TSWPHyperlinkUIController *)self interactiveCanvasController];
       v4 = dispatch_time(0, 300000000);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __41__TSWPHyperlinkUIController_endUISession__block_invoke;
       block[3] = &unk_279D46770;
-      block[4] = v3;
+      block[4] = interactiveCanvasController;
       dispatch_after(v4, MEMORY[0x277D85CD0], block);
     }
 
@@ -152,8 +152,8 @@
   {
     v4 = [(TSDEditorController *)[(TSDInteractiveCanvasController *)[(TSWPHyperlinkUIController *)self interactiveCanvasController] editorController] mostSpecificCurrentEditorOfClass:objc_opt_class()];
     self->_cachedEditingController = v4;
-    v5 = [(TSWPEditingController *)v4 storage];
-    if (v5 == [(TSWPSmartField *)self->_hyperlinkField parentStorage])
+    storage = [(TSWPEditingController *)v4 storage];
+    if (storage == [(TSWPSmartField *)self->_hyperlinkField parentStorage])
     {
       cachedEditingController = self->_cachedEditingController;
     }
@@ -175,11 +175,11 @@
 {
   if (![(TSWPHyperlinkUIController *)self isCanvasInReadMode])
   {
-    v3 = [(TSWPHyperlinkUIController *)self editingController];
-    v4 = [(TSWPSmartField *)self->_hyperlinkField range];
-    v6 = [TSWPSelection selectionWithRange:v4, v5];
+    editingController = [(TSWPHyperlinkUIController *)self editingController];
+    range = [(TSWPSmartField *)self->_hyperlinkField range];
+    v6 = [TSWPSelection selectionWithRange:range, v5];
 
-    [(TSWPEditingController *)v3 setSelection:v6 withFlags:0x200000];
+    [(TSWPEditingController *)editingController setSelection:v6 withFlags:0x200000];
   }
 }
 
@@ -187,29 +187,29 @@
 {
   if (![(TSWPHyperlinkUIController *)self isCanvasInReadMode])
   {
-    v3 = [(TSWPHyperlinkUIController *)self editingController];
+    editingController = [(TSWPHyperlinkUIController *)self editingController];
 
-    [(TSWPEditingController *)v3 setSelection:0 withFlags:0x200000];
+    [(TSWPEditingController *)editingController setSelection:0 withFlags:0x200000];
   }
 }
 
 - (BOOL)isDisplayingHyperlinkUI
 {
-  v3 = [(TSWPHyperlinkUIController *)self p_UIState];
-  if (v3)
+  p_UIState = [(TSWPHyperlinkUIController *)self p_UIState];
+  if (p_UIState)
   {
     if (TSUPhoneUI())
     {
-      LOBYTE(v3) = self->_observedStorage != 0;
+      LOBYTE(p_UIState) = self->_observedStorage != 0;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(p_UIState) = 1;
     }
   }
 
-  return v3;
+  return p_UIState;
 }
 
 - (CGRect)p_viewBoundsForField
@@ -220,9 +220,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TSWPHyperlinkUIController *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSWPHyperlinkUIController *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v11 convertUnscaledToBoundsRect:v4, v6, v8, v10];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsRect:v4, v6, v8, v10];
   result.size.height = v15;
   result.size.width = v14;
   result.origin.y = v13;
@@ -230,14 +230,14 @@
   return result;
 }
 
-- (void)p_initChangeSessionAuthorCreatedWithCommand:(id *)a3
+- (void)p_initChangeSessionAuthorCreatedWithCommand:(id *)command
 {
   if (!self->_changeSession)
   {
     v5 = [-[TSWPStorage documentRoot](-[TSWPSmartField parentStorage](self->_hyperlinkField "parentStorage")];
     if (v5)
     {
-      self->_changeSession = [v5 changeSessionAuthorCreatedWithCommand:a3];
+      self->_changeSession = [v5 changeSessionAuthorCreatedWithCommand:command];
     }
   }
 }
@@ -308,9 +308,9 @@
   v3 = TSUDynamicCast();
   if (!v3)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPHyperlinkUIController viewControllerForPresenting]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPHyperlinkUIController.mm"), 1262, @"invalid nil value for '%s'", "viewController"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPHyperlinkUIController.mm"), 1262, @"invalid nil value for '%s'", "viewController"}];
   }
 
   return v3;

@@ -1,17 +1,17 @@
 @interface ParticipantMonogramViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axHandleRingMemberAction;
 - (id)accessibilityCustomActions;
 @end
 
 @implementation ParticipantMonogramViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.ParticipantMonogramView" hasInstanceMethod:@"titleLabelContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.ParticipantMonogramView" hasInstanceMethod:@"subtitleLabelContainer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.ParticipantMonogramView" hasInstanceMethod:@"ringButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.ParticipantMonogramView" hasInstanceMethod:@"titleLabelContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantMonogramView" hasInstanceMethod:@"subtitleLabelContainer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.ParticipantMonogramView" hasInstanceMethod:@"ringButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityCustomActions

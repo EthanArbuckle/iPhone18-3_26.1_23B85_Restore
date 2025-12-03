@@ -13,15 +13,15 @@
   v16 = &unk_277DBB548;
   v8 = v7;
   v17 = v8;
-  v18 = a1;
+  selfCopy = self;
   if (!__75__UINavigationController_HUModalPresentation__finishPresentation_animated___block_invoke(&v13))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [a1 presentedViewController];
-    NSLog(&cfstr_ReceivedCallTo.isa, v9, v8, a1, v10, v13, v14, v15, v16);
+    presentedViewController = [self presentedViewController];
+    NSLog(&cfstr_ReceivedCallTo.isa, v9, v8, self, presentedViewController, v13, v14, v15, v16);
   }
 
-  v11 = [a1 hu_dismissViewControllerAnimated:a4];
+  v11 = [self hu_dismissViewControllerAnimated:a4];
 
   return v11;
 }

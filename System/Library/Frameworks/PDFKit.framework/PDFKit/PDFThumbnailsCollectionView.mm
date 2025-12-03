@@ -1,74 +1,74 @@
 @interface PDFThumbnailsCollectionView
 - (BOOL)_canEditDocument;
-- (BOOL)shouldDisplayActionButtonForPage:(id)a3;
-- (CGSize)thumbnailSizeForPage:(id)a3;
-- (CGSize)thumbnailSizeForPage:(id)a3 displayBox:(int64_t)a4;
-- (CGSize)thumbnailSizeForPage:(id)a3 displayBox:(int64_t)a4 thumbnailView:(id)a5;
-- (id)_pasteActionIfAvailableAfterPage:(id)a3;
-- (id)cacheKeyForPage:(id)a3;
-- (id)cachedImageForPage:(id)a3 displayBox:(int64_t)a4 thumbnailView:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4;
-- (id)collectionView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4;
-- (id)contextMenuForBackgroundAtLocation:(CGPoint)a3;
-- (id)contextMenuForPage:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (BOOL)shouldDisplayActionButtonForPage:(id)page;
+- (CGSize)thumbnailSizeForPage:(id)page;
+- (CGSize)thumbnailSizeForPage:(id)page displayBox:(int64_t)box;
+- (CGSize)thumbnailSizeForPage:(id)page displayBox:(int64_t)box thumbnailView:(id)view;
+- (id)_pasteActionIfAvailableAfterPage:(id)page;
+- (id)cacheKeyForPage:(id)page;
+- (id)cachedImageForPage:(id)page displayBox:(int64_t)box thumbnailView:(id)view;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration;
+- (id)collectionView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration;
+- (id)contextMenuForBackgroundAtLocation:(CGPoint)location;
+- (id)contextMenuForPage:(id)page;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)currentPage;
 - (id)datasourceQueue;
-- (id)defaultContextMenuForPage:(id)a3;
+- (id)defaultContextMenuForPage:(id)page;
 - (id)imageDrawingOperationQueue;
-- (id)initFromThumbnailView:(id)a3;
-- (id)itemsForDragWithSession:(id)a3 atIndexPath:(id)a4;
+- (id)initFromThumbnailView:(id)view;
+- (id)itemsForDragWithSession:(id)session atIndexPath:(id)path;
 - (id)makeDatasource;
-- (id)previewForCollectionView:(id)a3 contextMenuInteraction:(id)a4;
-- (id)previewForCollectionView:(id)a3 indexPath:(id)a4;
+- (id)previewForCollectionView:(id)view contextMenuInteraction:(id)interaction;
+- (id)previewForCollectionView:(id)view indexPath:(id)path;
 - (id)supportedUTTypes;
-- (unint64_t)_insertPagesFromProvidedPDFDocument:(id)a3 atPageIndex:(unint64_t)a4;
-- (void)_insertFileAtURL:(id)a3 type:(id)a4 atIndex:(unint64_t)a5 completionHandler:(id)a6;
-- (void)_insertImageWithURL:(id)a3 atIndex:(unint64_t)a4 completionHandler:(id)a5;
-- (void)_insertPDFDocumentWithURL:(id)a3 atIndex:(unint64_t)a4 completionHandler:(id)a5;
-- (void)_reloadPage:(id)a3;
+- (unint64_t)_insertPagesFromProvidedPDFDocument:(id)document atPageIndex:(unint64_t)index;
+- (void)_insertFileAtURL:(id)l type:(id)type atIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)_insertImageWithURL:(id)l atIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)_insertPDFDocumentWithURL:(id)l atIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)_reloadPage:(id)page;
 - (void)_selectAndScrollToCurrentPageIfNeeded;
-- (void)_updateActionsButtonVisibilityAtIndexPath:(id)a3;
+- (void)_updateActionsButtonVisibilityAtIndexPath:(id)path;
 - (void)_updateScrubber;
-- (void)applySnapshotWithAnimation:(BOOL)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)configureCell:(id)a3 withPage:(id)a4 indexPath:(id)a5;
-- (void)copyPage:(id)a3;
-- (void)currentPageChanged:(id)a3;
-- (void)insertPages:(id)a3 atIndexes:(id)a4;
-- (void)itemProvider:(id)a3 registerDataRepresentationForPage:(id)a4 draggedPages:(id)a5;
-- (void)itemProvider:(id)a3 registerFileRepresentationForPage:(id)a4 draggedPages:(id)a5;
-- (void)loadImageWithPage:(id)a3 displayBox:(int64_t)a4 thumbnailView:(id)a5 completionHandler:(id)a6;
-- (void)movePage:(id)a3 toIndex:(unint64_t)a4;
-- (void)movePageWithTransaction:(id)a3;
-- (void)pageChanged:(id)a3;
-- (void)pasteAfterPage:(id)a3;
-- (void)removePages:(id)a3;
-- (void)updateCacheForPage:(id)a3 withImage:(id)a4;
-- (void)updateImageForCell:(id)a3 atIndexPath:(id)a4;
-- (void)updateImageForCell:(id)a3 indexPath:(id)a4 page:(id)a5;
-- (void)writePDFDocumentFromPages:(id)a3 completionHandler:(id)a4;
+- (void)applySnapshotWithAnimation:(BOOL)animation;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)configureCell:(id)cell withPage:(id)page indexPath:(id)path;
+- (void)copyPage:(id)page;
+- (void)currentPageChanged:(id)changed;
+- (void)insertPages:(id)pages atIndexes:(id)indexes;
+- (void)itemProvider:(id)provider registerDataRepresentationForPage:(id)page draggedPages:(id)pages;
+- (void)itemProvider:(id)provider registerFileRepresentationForPage:(id)page draggedPages:(id)pages;
+- (void)loadImageWithPage:(id)page displayBox:(int64_t)box thumbnailView:(id)view completionHandler:(id)handler;
+- (void)movePage:(id)page toIndex:(unint64_t)index;
+- (void)movePageWithTransaction:(id)transaction;
+- (void)pageChanged:(id)changed;
+- (void)pasteAfterPage:(id)page;
+- (void)removePages:(id)pages;
+- (void)updateCacheForPage:(id)page withImage:(id)image;
+- (void)updateImageForCell:(id)cell atIndexPath:(id)path;
+- (void)updateImageForCell:(id)cell indexPath:(id)path page:(id)page;
+- (void)writePDFDocumentFromPages:(id)pages completionHandler:(id)handler;
 @end
 
 @implementation PDFThumbnailsCollectionView
 
-- (id)initFromThumbnailView:(id)a3
+- (id)initFromThumbnailView:(id)view
 {
   v34[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v33.receiver = self;
   v33.super_class = PDFThumbnailsCollectionView;
   v5 = [(PDFThumbnailsCollectionView *)&v33 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_thumbnailView, v4);
+    objc_storeWeak(&v5->_thumbnailView, viewCopy);
     v7 = objc_opt_new();
     cache = v6->_cache;
     v6->_cache = v7;
@@ -80,7 +80,7 @@
     v32 = v9;
     [v9 setEstimatedItemSize:{*MEMORY[0x1E69DDC10], *(MEMORY[0x1E69DDC10] + 8)}];
     v10 = objc_alloc(MEMORY[0x1E69DC7F0]);
-    [v4 bounds];
+    [viewCopy bounds];
     v11 = [v10 initWithFrame:v9 collectionViewLayout:?];
     collectionView = v6->_collectionView;
     v6->_collectionView = v11;
@@ -91,34 +91,34 @@
     [(UICollectionView *)v6->_collectionView setDropDelegate:v6];
     [(UICollectionView *)v6->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
     v26 = MEMORY[0x1E696ACD8];
-    v31 = [(UICollectionView *)v6->_collectionView bottomAnchor];
-    v30 = [(PDFThumbnailsCollectionView *)v6 bottomAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    bottomAnchor = [(UICollectionView *)v6->_collectionView bottomAnchor];
+    bottomAnchor2 = [(PDFThumbnailsCollectionView *)v6 bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v34[0] = v29;
-    v28 = [(UICollectionView *)v6->_collectionView topAnchor];
-    v27 = [(PDFThumbnailsCollectionView *)v6 topAnchor];
-    v25 = [v28 constraintEqualToAnchor:v27];
+    topAnchor = [(UICollectionView *)v6->_collectionView topAnchor];
+    topAnchor2 = [(PDFThumbnailsCollectionView *)v6 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v34[1] = v25;
-    v13 = [(UICollectionView *)v6->_collectionView leadingAnchor];
-    v14 = [(PDFThumbnailsCollectionView *)v6 leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    leadingAnchor = [(UICollectionView *)v6->_collectionView leadingAnchor];
+    leadingAnchor2 = [(PDFThumbnailsCollectionView *)v6 leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v34[2] = v15;
-    v16 = [(UICollectionView *)v6->_collectionView trailingAnchor];
-    v17 = [(PDFThumbnailsCollectionView *)v6 trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    trailingAnchor = [(UICollectionView *)v6->_collectionView trailingAnchor];
+    trailingAnchor2 = [(PDFThumbnailsCollectionView *)v6 trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v34[3] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:4];
     [v26 activateConstraints:v19];
 
     [(UICollectionView *)v6->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PDFIconCollectionViewCell"];
-    v20 = [(PDFThumbnailsCollectionView *)v6 makeDatasource];
+    makeDatasource = [(PDFThumbnailsCollectionView *)v6 makeDatasource];
     dataSource = v6->_dataSource;
-    v6->_dataSource = v20;
+    v6->_dataSource = makeDatasource;
 
     [(UICollectionView *)v6->_collectionView setDataSource:v6->_dataSource];
     [(UICollectionView *)v6->_collectionView setDelegate:v6];
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)v6->_collectionView setBackgroundColor:v22];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)v6->_collectionView setBackgroundColor:clearColor];
 
     v23 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:v6];
     [(UICollectionView *)v6->_collectionView addInteraction:v23];
@@ -138,16 +138,16 @@
   v11[3] = &unk_1E8150F60;
   objc_copyWeak(&v12, &location);
   v5 = [v3 initWithCollectionView:collectionView cellProvider:v11];
-  v6 = [v5 reorderingHandlers];
-  [v6 setCanReorderItemHandler:&__block_literal_global_6];
+  reorderingHandlers = [v5 reorderingHandlers];
+  [reorderingHandlers setCanReorderItemHandler:&__block_literal_global_6];
 
-  v7 = [v5 reorderingHandlers];
+  reorderingHandlers2 = [v5 reorderingHandlers];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__PDFThumbnailsCollectionView_makeDatasource__block_invoke_3;
   v9[3] = &unk_1E8150FA8;
   objc_copyWeak(&v10, &location);
-  [v7 setDidReorderHandler:v9];
+  [reorderingHandlers2 setDidReorderHandler:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
@@ -182,36 +182,36 @@ void __45__PDFThumbnailsCollectionView_makeDatasource__block_invoke_3(uint64_t a
   }
 }
 
-- (void)updateImageForCell:(id)a3 indexPath:(id)a4 page:(id)a5
+- (void)updateImageForCell:(id)cell indexPath:(id)path page:(id)page
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 page];
+  cellCopy = cell;
+  pathCopy = path;
+  pageCopy = page;
+  page = [cellCopy page];
 
-  if (v11 == v10)
+  if (page == pageCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-    v13 = [WeakRetained PDFView];
-    v14 = [v13 document];
-    v15 = [v14 renderingProperties];
-    v16 = [v15 displayBox];
+    pDFView = [WeakRetained PDFView];
+    document = [pDFView document];
+    renderingProperties = [document renderingProperties];
+    displayBox = [renderingProperties displayBox];
 
-    v17 = [(PDFThumbnailsCollectionView *)self cachedImageForPage:v10 displayBox:v16 thumbnailView:WeakRetained];
+    v17 = [(PDFThumbnailsCollectionView *)self cachedImageForPage:pageCopy displayBox:displayBox thumbnailView:WeakRetained];
     if (v17)
     {
-      v18 = [v8 imageView];
-      v19 = [v18 image];
+      imageView = [cellCopy imageView];
+      image = [imageView image];
 
-      if (v17 != v19)
+      if (v17 != image)
       {
-        v20 = [v9 item];
-        _PDFLog(OS_LOG_TYPE_INFO, "PDFThumbnailsCollectionView", "Setting cell image for cell n°%lu", v21, v22, v23, v24, v25, v20);
+        item = [pathCopy item];
+        _PDFLog(OS_LOG_TYPE_INFO, "PDFThumbnailsCollectionView", "Setting cell image for cell n°%lu", v21, v22, v23, v24, v25, item);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __65__PDFThumbnailsCollectionView_updateImageForCell_indexPath_page___block_invoke_2;
         block[3] = &unk_1E8150FF8;
-        v33 = v8;
+        v33 = cellCopy;
         v34 = v17;
         dispatch_async(MEMORY[0x1E69E96A0], block);
       }
@@ -219,17 +219,17 @@ void __45__PDFThumbnailsCollectionView_makeDatasource__block_invoke_3(uint64_t a
 
     else
     {
-      v26 = [v9 item];
-      _PDFLog(OS_LOG_TYPE_INFO, "PDFThumbnailsCollectionView", "Image for cell n°%lu is not cached", v27, v28, v29, v30, v31, v26);
+      item2 = [pathCopy item];
+      _PDFLog(OS_LOG_TYPE_INFO, "PDFThumbnailsCollectionView", "Image for cell n°%lu is not cached", v27, v28, v29, v30, v31, item2);
       objc_initWeak(&location, self);
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __65__PDFThumbnailsCollectionView_updateImageForCell_indexPath_page___block_invoke;
       v35[3] = &unk_1E8150FD0;
       objc_copyWeak(&v38, &location);
-      v36 = v8;
-      v37 = v10;
-      [(PDFThumbnailsCollectionView *)self loadImageWithPage:v37 displayBox:v16 thumbnailView:WeakRetained completionHandler:v35];
+      v36 = cellCopy;
+      v37 = pageCopy;
+      [(PDFThumbnailsCollectionView *)self loadImageWithPage:v37 displayBox:displayBox thumbnailView:WeakRetained completionHandler:v35];
 
       objc_destroyWeak(&v38);
       objc_destroyWeak(&location);
@@ -265,39 +265,39 @@ void __65__PDFThumbnailsCollectionView_updateImageForCell_indexPath_page___block
   [v2 setImage:v1];
 }
 
-- (void)configureCell:(id)a3 withPage:(id)a4 indexPath:(id)a5
+- (void)configureCell:(id)cell withPage:(id)page indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 item];
-  _PDFLog(OS_LOG_TYPE_DEBUG, "PDFThumbnailsCollectionView", "Configuring cell n°%lu", v12, v13, v14, v15, v16, v11);
+  cellCopy = cell;
+  pageCopy = page;
+  pathCopy = path;
+  item = [pathCopy item];
+  _PDFLog(OS_LOG_TYPE_DEBUG, "PDFThumbnailsCollectionView", "Configuring cell n°%lu", v12, v13, v14, v15, v16, item);
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v51 = [WeakRetained PDFView];
-  v18 = [v51 document];
-  v19 = [WeakRetained layoutMode];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  layoutMode = [WeakRetained layoutMode];
   [WeakRetained thumbnailSize];
-  if (v19)
+  if (layoutMode)
   {
-    [v8 setThumbnailHeight:v20];
+    [cellCopy setThumbnailHeight:v20];
   }
 
   else
   {
-    [v8 setThumbnailWidth:?];
+    [cellCopy setThumbnailWidth:?];
   }
 
-  v50 = v18;
-  v21 = [v18 renderingProperties];
-  v22 = [v21 displayBox];
+  v50 = document;
+  renderingProperties = [document renderingProperties];
+  displayBox = [renderingProperties displayBox];
 
-  [v9 boundsForBox:v22];
+  [pageCopy boundsForBox:displayBox];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
   memset(&v56, 0, sizeof(v56));
-  v31 = PDFDegToRad([v9 rotation]);
+  v31 = PDFDegToRad([pageCopy rotation]);
   CGAffineTransformMakeRotation(&v56, v31);
   v55 = v56;
   v57.origin.x = v24;
@@ -305,49 +305,49 @@ void __65__PDFThumbnailsCollectionView_updateImageForCell_indexPath_page___block
   v57.size.width = v28;
   v57.size.height = v30;
   v58 = CGRectApplyAffineTransform(v57, &v55);
-  [v8 updateAspectConstraintWithSize:{v58.size.width, v58.size.height}];
-  [v8 setPage:v9];
-  [(PDFThumbnailsCollectionView *)self updateImageForCell:v8 indexPath:v10 page:v9];
+  [cellCopy updateAspectConstraintWithSize:{v58.size.width, v58.size.height}];
+  [cellCopy setPage:pageCopy];
+  [(PDFThumbnailsCollectionView *)self updateImageForCell:cellCopy indexPath:pathCopy page:pageCopy];
   objc_initWeak(&v55, self);
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __64__PDFThumbnailsCollectionView_configureCell_withPage_indexPath___block_invoke;
   v52[3] = &unk_1E8151020;
   objc_copyWeak(&v54, &v55);
-  v32 = v9;
+  v32 = pageCopy;
   v53 = v32;
-  v33 = [v8 actionsButton];
-  [v33 _setMenuProvider:v52];
+  actionsButton = [cellCopy actionsButton];
+  [actionsButton _setMenuProvider:v52];
 
-  v34 = [v8 actionsButton];
-  [v34 setShowsMenuAsPrimaryAction:1];
+  actionsButton2 = [cellCopy actionsButton];
+  [actionsButton2 setShowsMenuAsPrimaryAction:1];
 
   v35 = [(PDFThumbnailsCollectionView *)self shouldDisplayActionButtonForPage:v32];
-  v36 = [v8 actionsButton];
-  [v36 setHidden:!v35];
+  actionsButton3 = [cellCopy actionsButton];
+  [actionsButton3 setHidden:!v35];
 
-  [v8 invalidateIntrinsicContentSize];
-  v37 = [v32 document];
-  v38 = [v37 indexForPage:v32];
+  [cellCopy invalidateIntrinsicContentSize];
+  document2 = [v32 document];
+  v38 = [document2 indexForPage:v32];
 
   v39 = MEMORY[0x1E696AEC0];
   v40 = PDFKitLocalizedString(@"Thumbnail for page %ld");
   v41 = v38 + 1;
   v42 = [v39 stringWithFormat:v40, v38 + 1];
-  [v8 setAccessibilityLabel:v42];
+  [cellCopy setAccessibilityLabel:v42];
 
   v43 = PDFKitLocalizedString(@"PDF thumbnail");
-  [v8 setAccessibilityIdentifier:v43];
+  [cellCopy setAccessibilityIdentifier:v43];
 
   v44 = MEMORY[0x1E696AEC0];
   v45 = PDFKitLocalizedString(@"Page actions for page %ld");
   v46 = [v44 stringWithFormat:v45, v41];
-  v47 = [v8 actionsButton];
-  [v47 setAccessibilityLabel:v46];
+  actionsButton4 = [cellCopy actionsButton];
+  [actionsButton4 setAccessibilityLabel:v46];
 
   v48 = PDFKitLocalizedString(@"Page actions");
-  v49 = [v8 actionsButton];
-  [v49 setAccessibilityIdentifier:v48];
+  actionsButton5 = [cellCopy actionsButton];
+  [actionsButton5 setAccessibilityIdentifier:v48];
 
   objc_destroyWeak(&v54);
   objc_destroyWeak(&v55);
@@ -361,80 +361,80 @@ id __64__PDFThumbnailsCollectionView_configureCell_withPage_indexPath___block_in
   return v3;
 }
 
-- (id)cacheKeyForPage:(id)a3
+- (id)cacheKeyForPage:(id)page
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pageCopy = page;
   v4 = MEMORY[0x1E695DF90];
   v11 = @"pageHash";
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "hash")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(pageCopy, "hash")}];
   v12[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v7 = [v4 dictionaryWithDictionary:v6];
 
-  v8 = [v3 lastAnnotationChange];
-  if (v8)
+  lastAnnotationChange = [pageCopy lastAnnotationChange];
+  if (lastAnnotationChange)
   {
-    [v7 setObject:v8 forKeyedSubscript:@"lastAnnotation"];
+    [v7 setObject:lastAnnotationChange forKeyedSubscript:@"lastAnnotation"];
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "rotation")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(pageCopy, "rotation")}];
   [v7 setObject:v9 forKeyedSubscript:@"rotation"];
 
   return v7;
 }
 
-- (void)updateCacheForPage:(id)a3 withImage:(id)a4
+- (void)updateCacheForPage:(id)page withImage:(id)image
 {
-  if (a3 && a4)
+  if (page && image)
   {
-    v7 = a4;
-    v8 = a4;
-    v9 = a3;
-    Height = CGImageGetHeight([v8 CGImage]);
-    *&v11 = (4 * Height * CGImageGetBytesPerRow([v8 CGImage]));
+    imageCopy = image;
+    imageCopy2 = image;
+    pageCopy = page;
+    Height = CGImageGetHeight([imageCopy2 CGImage]);
+    *&v11 = (4 * Height * CGImageGetBytesPerRow([imageCopy2 CGImage]));
     _PDFLog(OS_LOG_TYPE_INFO, "PDFThumbnailsCollectionView", "Adding new image to the cache with a cost of %f", v12, v13, v14, v15, v16, v11);
     cache = self->_cache;
-    v23 = [(PDFThumbnailsCollectionView *)self cacheKeyForPage:v9];
+    pageCopy2 = [(PDFThumbnailsCollectionView *)self cacheKeyForPage:pageCopy];
 
-    [(NSCache *)cache setObject:v8 forKey:v23 cost:*&v11];
+    [(NSCache *)cache setObject:imageCopy2 forKey:pageCopy2 cost:*&v11];
   }
 
   else
   {
-    a4;
-    v23 = a3;
-    _PDFLog(OS_LOG_TYPE_ERROR, "PDFThumbnailsCollectionView", "Invalid nil parameter(s) to [updateCacheForPage:%p withImage:%p]", v18, v19, v20, v21, v22, v23);
+    image;
+    pageCopy2 = page;
+    _PDFLog(OS_LOG_TYPE_ERROR, "PDFThumbnailsCollectionView", "Invalid nil parameter(s) to [updateCacheForPage:%p withImage:%p]", v18, v19, v20, v21, v22, pageCopy2);
   }
 }
 
-- (id)cachedImageForPage:(id)a3 displayBox:(int64_t)a4 thumbnailView:(id)a5
+- (id)cachedImageForPage:(id)page displayBox:(int64_t)box thumbnailView:(id)view
 {
   cache = self->_cache;
-  v6 = [(PDFThumbnailsCollectionView *)self cacheKeyForPage:a3, a4, a5];
-  v7 = [(NSCache *)cache objectForKey:v6];
+  view = [(PDFThumbnailsCollectionView *)self cacheKeyForPage:page, box, view];
+  v7 = [(NSCache *)cache objectForKey:view];
 
   return v7;
 }
 
-- (void)loadImageWithPage:(id)a3 displayBox:(int64_t)a4 thumbnailView:(id)a5 completionHandler:(id)a6
+- (void)loadImageWithPage:(id)page displayBox:(int64_t)box thumbnailView:(id)view completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 document];
-  v14 = [v13 pageCount];
-  v15 = [v13 indexForPage:v10];
-  if (v15 > 0x7FFFFFFFFFFFFFFELL || v15 > v14 - 1)
+  pageCopy = page;
+  viewCopy = view;
+  handlerCopy = handler;
+  document = [pageCopy document];
+  pageCount = [document pageCount];
+  v15 = [document indexForPage:pageCopy];
+  if (v15 > 0x7FFFFFFFFFFFFFFELL || v15 > pageCount - 1)
   {
-    v19 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __92__PDFThumbnailsCollectionView_loadImageWithPage_displayBox_thumbnailView_completionHandler___block_invoke;
     v29[3] = &unk_1E8151048;
-    v31 = v12;
-    v30 = v10;
-    [v19 addOperationWithBlock:v29];
+    v31 = handlerCopy;
+    v30 = pageCopy;
+    [mainQueue addOperationWithBlock:v29];
   }
 
   else
@@ -446,10 +446,10 @@ id __64__PDFThumbnailsCollectionView_configureCell_withPage_indexPath___block_in
     v22 = __92__PDFThumbnailsCollectionView_loadImageWithPage_displayBox_thumbnailView_completionHandler___block_invoke_2;
     v23 = &unk_1E8151098;
     objc_copyWeak(v27, &location);
-    v26 = v12;
-    v24 = v10;
-    v27[1] = a4;
-    v25 = v11;
+    v26 = handlerCopy;
+    v24 = pageCopy;
+    v27[1] = box;
+    v25 = viewCopy;
     v17 = [v16 blockOperationWithBlock:&v20];
     v18 = [(PDFThumbnailsCollectionView *)self imageDrawingOperationQueue:v20];
     [v18 addOperation:v17];
@@ -553,15 +553,15 @@ uint64_t __57__PDFThumbnailsCollectionView_imageDrawingOperationQueue__block_inv
   return [v2 setQualityOfService:25];
 }
 
-- (void)applySnapshotWithAnimation:(BOOL)a3
+- (void)applySnapshotWithAnimation:(BOOL)animation
 {
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v6 = [WeakRetained PDFView];
-  v7 = [v6 document];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
 
   if (WeakRetained)
   {
-    v8 = v7 == 0;
+    v8 = document == 0;
   }
 
   else
@@ -569,18 +569,18 @@ uint64_t __57__PDFThumbnailsCollectionView_imageDrawingOperationQueue__block_inv
     v8 = 1;
   }
 
-  if (!v8 && ([v7 isLocked] & 1) == 0)
+  if (!v8 && ([document isLocked] & 1) == 0)
   {
     objc_initWeak(&location, self);
-    v9 = [(PDFThumbnailsCollectionView *)self datasourceQueue];
+    datasourceQueue = [(PDFThumbnailsCollectionView *)self datasourceQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__PDFThumbnailsCollectionView_applySnapshotWithAnimation___block_invoke;
     v10[3] = &unk_1E81510C0;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    v13 = a3;
-    dispatch_async(v9, v10);
+    v11 = document;
+    animationCopy = animation;
+    dispatch_async(datasourceQueue, v10);
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -629,17 +629,17 @@ void __58__PDFThumbnailsCollectionView_applySnapshotWithAnimation___block_invoke
   }
 }
 
-- (CGSize)thumbnailSizeForPage:(id)a3
+- (CGSize)thumbnailSizeForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v6 = [WeakRetained PDFView];
-  v7 = [v6 document];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
 
-  v8 = [v7 renderingProperties];
-  v9 = [v8 displayBox];
+  renderingProperties = [document renderingProperties];
+  displayBox = [renderingProperties displayBox];
 
-  [(PDFThumbnailsCollectionView *)self thumbnailSizeForPage:v4 displayBox:v9];
+  [(PDFThumbnailsCollectionView *)self thumbnailSizeForPage:pageCopy displayBox:displayBox];
   v11 = v10;
   v13 = v12;
 
@@ -650,11 +650,11 @@ void __58__PDFThumbnailsCollectionView_applySnapshotWithAnimation___block_invoke
   return result;
 }
 
-- (CGSize)thumbnailSizeForPage:(id)a3 displayBox:(int64_t)a4
+- (CGSize)thumbnailSizeForPage:(id)page displayBox:(int64_t)box
 {
-  v6 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  [(PDFThumbnailsCollectionView *)self thumbnailSizeForPage:v6 displayBox:a4 thumbnailView:WeakRetained];
+  [(PDFThumbnailsCollectionView *)self thumbnailSizeForPage:pageCopy displayBox:box thumbnailView:WeakRetained];
   v9 = v8;
   v11 = v10;
 
@@ -665,25 +665,25 @@ void __58__PDFThumbnailsCollectionView_applySnapshotWithAnimation___block_invoke
   return result;
 }
 
-- (CGSize)thumbnailSizeForPage:(id)a3 displayBox:(int64_t)a4 thumbnailView:(id)a5
+- (CGSize)thumbnailSizeForPage:(id)page displayBox:(int64_t)box thumbnailView:(id)view
 {
-  v8 = a5;
-  v9 = a3;
+  viewCopy = view;
+  pageCopy = page;
   BackingScaleFactor = PDFScreenGetBackingScaleFactor();
-  [v9 boundsForBox:a4];
+  [pageCopy boundsForBox:box];
   v12 = v11;
   v14 = v13;
 
   v15 = v14 / v12;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v17 = [WeakRetained layoutMode];
-  [v8 thumbnailSize];
+  layoutMode = [WeakRetained layoutMode];
+  [viewCopy thumbnailSize];
   v19 = v18;
   v21 = v20;
 
   v22 = v21 + -6.0;
   v23 = v19 + -6.0;
-  if (v17)
+  if (layoutMode)
   {
     v23 = (v21 + -6.0) / v15;
   }
@@ -706,15 +706,15 @@ void __58__PDFThumbnailsCollectionView_applySnapshotWithAnimation___block_invoke
 
 - (id)currentPage
 {
-  v3 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-  v4 = v3;
-  if (v3 && [v3 count])
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  v4 = indexPathsForSelectedItems;
+  if (indexPathsForSelectedItems && [indexPathsForSelectedItems count])
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-    v7 = [WeakRetained PDFView];
-    v8 = [v7 document];
-    v9 = [v8 pageAtIndex:{objc_msgSend(v5, "item")}];
+    pDFView = [WeakRetained PDFView];
+    document = [pDFView document];
+    v9 = [document pageAtIndex:{objc_msgSend(firstObject, "item")}];
   }
 
   else
@@ -725,40 +725,40 @@ void __58__PDFThumbnailsCollectionView_applySnapshotWithAnimation___block_invoke
   return v9;
 }
 
-- (void)currentPageChanged:(id)a3
+- (void)currentPageChanged:(id)changed
 {
   [(PDFThumbnailsCollectionView *)self _updateScrubber];
 
   [(PDFThumbnailsCollectionView *)self _selectAndScrollToCurrentPageIfNeeded];
 }
 
-- (void)pageChanged:(id)a3
+- (void)pageChanged:(id)changed
 {
   v4 = MEMORY[0x1E69E58C0];
-  v5 = a3;
+  changedCopy = changed;
   [v4 cancelPreviousPerformRequestsWithTarget:self selector:sel_pageChanged_ object:0];
-  v7 = [v5 userInfo];
+  userInfo = [changedCopy userInfo];
 
-  v6 = [v7 objectForKey:@"page"];
+  v6 = [userInfo objectForKey:@"page"];
   if (v6)
   {
     [(PDFThumbnailsCollectionView *)self _reloadPage:v6];
   }
 }
 
-- (void)_reloadPage:(id)a3
+- (void)_reloadPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   objc_initWeak(&location, self);
-  v5 = [(PDFThumbnailsCollectionView *)self datasourceQueue];
+  datasourceQueue = [(PDFThumbnailsCollectionView *)self datasourceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__PDFThumbnailsCollectionView__reloadPage___block_invoke;
   block[3] = &unk_1E81510E8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = pageCopy;
+  v6 = pageCopy;
+  dispatch_async(datasourceQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -804,12 +804,12 @@ void __43__PDFThumbnailsCollectionView__reloadPage___block_invoke(uint64_t a1)
 - (void)_updateScrubber
 {
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v4 = [WeakRetained layoutMode];
+  layoutMode = [WeakRetained layoutMode];
 
-  v5 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  if (v5)
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  if (collectionViewLayout)
   {
-    v6 = v4 == 0;
+    v6 = layoutMode == 0;
   }
 
   else
@@ -819,45 +819,45 @@ void __43__PDFThumbnailsCollectionView__reloadPage___block_invoke(uint64_t a1)
 
   if (!v6)
   {
-    v7 = v5;
-    if (v4 == 1)
+    v7 = collectionViewLayout;
+    if (layoutMode == 1)
     {
-      [v5 setScrollDirection:1];
+      [collectionViewLayout setScrollDirection:1];
     }
 
     [(UICollectionView *)self->_collectionView setCollectionViewLayout:v7];
-    v5 = v7;
+    collectionViewLayout = v7;
   }
 }
 
 - (void)_selectAndScrollToCurrentPageIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v3 = [WeakRetained PDFView];
-  v4 = [v3 document];
-  v5 = [v3 currentPage];
-  v6 = [v5 document];
-  v7 = [v6 indexForPage:v5];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  currentPage = [pDFView currentPage];
+  document2 = [currentPage document];
+  v7 = [document2 indexForPage:currentPage];
 
-  v8 = [v4 pageCount];
+  pageCount = [document pageCount];
   v9 = v7 & ~(v7 >> 31);
-  if (v9 >= v8 - 1)
+  if (v9 >= pageCount - 1)
   {
-    v9 = v8 - 1;
+    v9 = pageCount - 1;
   }
 
   v10 = v9;
   v11 = [MEMORY[0x1E696AC88] indexPathForRow:v9 inSection:0];
-  v12 = [(UICollectionView *)self->_collectionView dataSource];
-  v13 = [v12 numberOfSectionsInCollectionView:self->_collectionView];
+  dataSource = [(UICollectionView *)self->_collectionView dataSource];
+  v13 = [dataSource numberOfSectionsInCollectionView:self->_collectionView];
 
   if (v13)
   {
     if ([(UICollectionView *)self->_collectionView numberOfItemsInSection:0]> v10)
     {
       [(UICollectionView *)self->_collectionView scrollToItemAtIndexPath:v11 atScrollPosition:0 animated:1];
-      v14 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-      v15 = [v14 containsObject:v11];
+      indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+      v15 = [indexPathsForSelectedItems containsObject:v11];
 
       if ((v15 & 1) == 0)
       {
@@ -871,13 +871,13 @@ void __43__PDFThumbnailsCollectionView__reloadPage___block_invoke(uint64_t a1)
 - (BOOL)_canEditDocument
 {
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v3 = [WeakRetained PDFView];
-  v4 = [v3 document];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
 
-  v5 = [v4 delegate];
+  delegate = [document delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 documentCanBeEdited:v4];
+    v6 = [delegate documentCanBeEdited:document];
   }
 
   else
@@ -888,15 +888,15 @@ void __43__PDFThumbnailsCollectionView__reloadPage___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_updateActionsButtonVisibilityAtIndexPath:(id)a3
+- (void)_updateActionsButtonVisibilityAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v6 = [WeakRetained PDFView];
-  v7 = [v6 document];
-  v12 = [v7 pageAtIndex:{objc_msgSend(v4, "item")}];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  v12 = [document pageAtIndex:{objc_msgSend(pathCopy, "item")}];
 
-  v8 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v4];
+  v8 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:pathCopy];
 
   if (v12)
   {
@@ -911,28 +911,28 @@ void __43__PDFThumbnailsCollectionView__reloadPage___block_invoke(uint64_t a1)
   if (!v9)
   {
     v10 = [(PDFThumbnailsCollectionView *)self shouldDisplayActionButtonForPage:v12];
-    v11 = [v8 actionsButton];
-    [v11 setHidden:!v10];
+    actionsButton = [v8 actionsButton];
+    [actionsButton setHidden:!v10];
   }
 }
 
-- (void)updateImageForCell:(id)a3 atIndexPath:(id)a4
+- (void)updateImageForCell:(id)cell atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  pathCopy = path;
   objc_initWeak(&location, self);
-  v8 = [(PDFThumbnailsCollectionView *)self datasourceQueue];
+  datasourceQueue = [(PDFThumbnailsCollectionView *)self datasourceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__PDFThumbnailsCollectionView_updateImageForCell_atIndexPath___block_invoke;
   block[3] = &unk_1E8151110;
   objc_copyWeak(&v15, &location);
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = cellCopy;
+  v13 = pathCopy;
+  selfCopy = self;
+  v9 = pathCopy;
+  v10 = cellCopy;
+  dispatch_async(datasourceQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -958,30 +958,30 @@ void __62__PDFThumbnailsCollectionView_updateImageForCell_atIndexPath___block_in
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v9 = [WeakRetained PDFView];
+  pDFView = [WeakRetained PDFView];
 
-  v7 = [v9 document];
-  v8 = [v7 pageAtIndex:{objc_msgSend(v5, "item")}];
-  [v9 goToPage:v8];
+  document = [pDFView document];
+  v8 = [document pageAtIndex:{objc_msgSend(pathCopy, "item")}];
+  [pDFView goToPage:v8];
 
-  [(PDFThumbnailsCollectionView *)self _updateActionsButtonVisibilityAtIndexPath:v5];
+  [(PDFThumbnailsCollectionView *)self _updateActionsButtonVisibilityAtIndexPath:pathCopy];
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v10 = [WeakRetained PDFView];
-  v11 = [v10 document];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
 
-  if (v11)
+  if (document)
   {
-    v12 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v8];
+    v12 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
     if (v12)
     {
       objc_initWeak(&location, self);
@@ -992,7 +992,7 @@ void __62__PDFThumbnailsCollectionView_updateImageForCell_atIndexPath___block_in
       v16[3] = &unk_1E8151138;
       objc_copyWeak(&v18, &location);
       v17 = v12;
-      v14 = [v13 configurationWithIdentifier:v8 previewProvider:0 actionProvider:v16];
+      v14 = [v13 configurationWithIdentifier:pathCopy previewProvider:0 actionProvider:v16];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
@@ -1020,11 +1020,11 @@ id __95__PDFThumbnailsCollectionView_collectionView_contextMenuConfigurationForI
   return v3;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
   v8 = [(UICollectionView *)self->_collectionView indexPathForItemAtPoint:x, y];
   if (v8)
   {
@@ -1034,10 +1034,10 @@ id __95__PDFThumbnailsCollectionView_collectionView_contextMenuConfigurationForI
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-    v11 = [WeakRetained PDFView];
-    v12 = [v11 document];
+    pDFView = [WeakRetained PDFView];
+    document = [pDFView document];
 
-    v13 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v12 inSection:{"pageCount") - 1, 0}];
+    v13 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(document inSection:{"pageCount") - 1, 0}];
     objc_initWeak(&location, self);
     v14 = MEMORY[0x1E69DC8D8];
     v16[0] = MEMORY[0x1E69E9820];
@@ -1063,17 +1063,17 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
   return v3;
 }
 
-- (id)previewForCollectionView:(id)a3 contextMenuInteraction:(id)a4
+- (id)previewForCollectionView:(id)view contextMenuInteraction:(id)interaction
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 locationInView:v6];
+  viewCopy = view;
+  interactionCopy = interaction;
+  [interactionCopy locationInView:viewCopy];
   v9 = v8;
   v11 = v10;
-  v12 = [v6 indexPathForItemAtPoint:?];
+  v12 = [viewCopy indexPathForItemAtPoint:?];
   if (v12)
   {
-    v13 = [(PDFThumbnailsCollectionView *)self previewForCollectionView:v6 indexPath:v12];
+    v13 = [(PDFThumbnailsCollectionView *)self previewForCollectionView:viewCopy indexPath:v12];
   }
 
   else
@@ -1084,19 +1084,19 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
       backgroundOnePixelView = self->_backgroundOnePixelView;
       self->_backgroundOnePixelView = v14;
 
-      v16 = [MEMORY[0x1E69DC888] clearColor];
-      [(UIView *)self->_backgroundOnePixelView setBackgroundColor:v16];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UIView *)self->_backgroundOnePixelView setBackgroundColor:clearColor];
 
-      [v6 addSubview:self->_backgroundOnePixelView];
+      [viewCopy addSubview:self->_backgroundOnePixelView];
     }
 
-    [v7 locationInView:self];
+    [interactionCopy locationInView:self];
     v18 = v17;
     v20 = v19;
     [(UIView *)self->_backgroundOnePixelView setFrame:v9, v11, 0.0, 0.0];
     v21 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [v21 setBackgroundColor:v22];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [v21 setBackgroundColor:clearColor2];
 
     v23 = [objc_alloc(MEMORY[0x1E69DCE38]) initWithContainer:self center:{v18, v20}];
     v13 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self->_backgroundOnePixelView parameters:v21 target:v23];
@@ -1105,29 +1105,29 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
   return v13;
 }
 
-- (id)previewForCollectionView:(id)a3 indexPath:(id)a4
+- (id)previewForCollectionView:(id)view indexPath:(id)path
 {
-  if (a4)
+  if (path)
   {
-    v4 = [a3 cellForItemAtIndexPath:a4];
+    v4 = [view cellForItemAtIndexPath:path];
     v5 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v5 setBackgroundColor:clearColor];
 
     v7 = MEMORY[0x1E69DC728];
-    v8 = [v4 imageView];
-    [v8 bounds];
+    imageView = [v4 imageView];
+    [imageView bounds];
     v9 = [v7 bezierPathWithRoundedRect:? cornerRadius:?];
     [v5 setVisiblePath:v9];
 
     v10 = objc_alloc(MEMORY[0x1E69DCE38]);
-    v11 = [v4 imageView];
-    [v11 center];
+    imageView2 = [v4 imageView];
+    [imageView2 center];
     v12 = [v10 initWithContainer:v4 center:?];
 
     v13 = objc_alloc(MEMORY[0x1E69DD070]);
-    v14 = [v4 imageView];
-    v15 = [v13 initWithView:v14 parameters:v5 target:v12];
+    imageView3 = [v4 imageView];
+    v15 = [v13 initWithView:imageView3 parameters:v5 target:v12];
   }
 
   else
@@ -1138,32 +1138,32 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
   return v15;
 }
 
-- (id)collectionView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4
+- (id)collectionView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  v8 = [(PDFThumbnailsCollectionView *)self previewForCollectionView:v6 indexPath:v7];
+  viewCopy = view;
+  identifier = [configuration identifier];
+  v8 = [(PDFThumbnailsCollectionView *)self previewForCollectionView:viewCopy indexPath:identifier];
 
   return v8;
 }
 
-- (id)collectionView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4
+- (id)collectionView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  v8 = [(PDFThumbnailsCollectionView *)self previewForCollectionView:v6 indexPath:v7];
+  viewCopy = view;
+  identifier = [configuration identifier];
+  v8 = [(PDFThumbnailsCollectionView *)self previewForCollectionView:viewCopy indexPath:identifier];
 
   return v8;
 }
 
-- (id)contextMenuForBackgroundAtLocation:(CGPoint)a3
+- (id)contextMenuForBackgroundAtLocation:(CGPoint)location
 {
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [WeakRetained PDFView];
-  v7 = [v6 document];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
 
-  v8 = [v7 pageAtIndex:{objc_msgSend(v7, "pageCount") - 1}];
+  v8 = [document pageAtIndex:{objc_msgSend(document, "pageCount") - 1}];
   v9 = [(PDFThumbnailsCollectionView *)self _pasteActionIfAvailableAfterPage:v8];
   if (v9)
   {
@@ -1175,31 +1175,31 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
   return v10;
 }
 
-- (id)contextMenuForPage:(id)a3
+- (id)contextMenuForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(PDFThumbnailsCollectionView *)self defaultContextMenuForPage:v4];
+  v7 = [(PDFThumbnailsCollectionView *)self defaultContextMenuForPage:pageCopy];
   v8 = v7;
   if (v7 && [v7 count])
   {
     [v6 addObjectsFromArray:v8];
   }
 
-  v9 = [WeakRetained thumbnailContextMenuDelegate];
-  if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+  thumbnailContextMenuDelegate = [WeakRetained thumbnailContextMenuDelegate];
+  if (thumbnailContextMenuDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v10 = [v9 menuElementsForPage:v4];
+    v10 = [thumbnailContextMenuDelegate menuElementsForPage:pageCopy];
     if ([v10 count])
     {
       [v6 addObjectsFromArray:v10];
     }
   }
 
-  v11 = [WeakRetained PDFView];
-  v12 = [v11 document];
-  v13 = [v12 indexForPage:v4];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  v13 = [document indexForPage:pageCopy];
 
   v14 = MEMORY[0x1E696ADA0];
   v15 = [MEMORY[0x1E696AD98] numberWithInteger:v13 + 1];
@@ -1214,11 +1214,11 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
   return v20;
 }
 
-- (BOOL)shouldDisplayActionButtonForPage:(id)a3
+- (BOOL)shouldDisplayActionButtonForPage:(id)page
 {
-  v4 = [(PDFThumbnailsCollectionView *)self contextMenuForPage:a3];
-  v5 = [v4 children];
-  if ([v5 count])
+  v4 = [(PDFThumbnailsCollectionView *)self contextMenuForPage:page];
+  children = [v4 children];
+  if ([children count])
   {
     v6 = ![(UICollectionView *)self->_collectionView hasActiveDrag];
   }
@@ -1231,22 +1231,22 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
   return v6;
 }
 
-- (id)_pasteActionIfAvailableAfterPage:(id)a3
+- (id)_pasteActionIfAvailableAfterPage:(id)page
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pageCopy = page;
   if ([(PDFThumbnailsCollectionView *)self _canEditDocument])
   {
-    v24 = v4;
+    v24 = pageCopy;
     objc_initWeak(&location, self);
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v5 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    v6 = [v5 itemProviders];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    itemProviders = [generalPasteboard itemProviders];
 
-    v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    v7 = [itemProviders countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v7)
     {
       v23 = *v33;
@@ -1257,7 +1257,7 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
         {
           if (*v33 != v23)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(itemProviders);
           }
 
           v9 = *(*(&v32 + 1) + 8 * i);
@@ -1265,8 +1265,8 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v10 = [(PDFThumbnailsCollectionView *)self supportedUTTypes];
-          v11 = [v10 countByEnumeratingWithState:&v28 objects:v37 count:16];
+          supportedUTTypes = [(PDFThumbnailsCollectionView *)self supportedUTTypes];
+          v11 = [supportedUTTypes countByEnumeratingWithState:&v28 objects:v37 count:16];
           if (v11)
           {
             v12 = *v29;
@@ -1276,11 +1276,11 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
               {
                 if (*v29 != v12)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(supportedUTTypes);
                 }
 
-                v14 = [*(*(&v28 + 1) + 8 * j) identifier];
-                v15 = [v9 hasItemConformingToTypeIdentifier:v14];
+                identifier = [*(*(&v28 + 1) + 8 * j) identifier];
+                v15 = [v9 hasItemConformingToTypeIdentifier:identifier];
 
                 if (v15)
                 {
@@ -1298,12 +1298,12 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
                   v16 = v20;
                   objc_destroyWeak(&v27);
 
-                  v6 = v16;
+                  itemProviders = v16;
                   goto LABEL_20;
                 }
               }
 
-              v11 = [v10 countByEnumeratingWithState:&v28 objects:v37 count:16];
+              v11 = [supportedUTTypes countByEnumeratingWithState:&v28 objects:v37 count:16];
               if (v11)
               {
                 continue;
@@ -1314,7 +1314,7 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v32 objects:v38 count:16];
+        v7 = [itemProviders countByEnumeratingWithState:&v32 objects:v38 count:16];
       }
 
       while (v7);
@@ -1324,7 +1324,7 @@ id __85__PDFThumbnailsCollectionView_contextMenuInteraction_configurationForMenu
 LABEL_20:
 
     objc_destroyWeak(&location);
-    v4 = v24;
+    pageCopy = v24;
   }
 
   else
@@ -1341,9 +1341,9 @@ void __64__PDFThumbnailsCollectionView__pasteActionIfAvailableAfterPage___block_
   [WeakRetained pasteAfterPage:*(a1 + 32)];
 }
 
-- (id)defaultContextMenuForPage:(id)a3
+- (id)defaultContextMenuForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = MEMORY[0x1E69DC628];
@@ -1354,7 +1354,7 @@ void __64__PDFThumbnailsCollectionView__pasteActionIfAvailableAfterPage___block_
   v13[2] = __57__PDFThumbnailsCollectionView_defaultContextMenuForPage___block_invoke;
   v13[3] = &unk_1E8151188;
   objc_copyWeak(&v15, &location);
-  v9 = v4;
+  v9 = pageCopy;
   v14 = v9;
   v10 = [v6 actionWithTitle:v7 image:v8 identifier:@"copy" handler:v13];
 
@@ -1377,41 +1377,41 @@ void __57__PDFThumbnailsCollectionView_defaultContextMenuForPage___block_invoke(
   [WeakRetained copyPage:*(a1 + 32)];
 }
 
-- (void)copyPage:(id)a3
+- (void)copyPage:(id)page
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ACA0];
-  v5 = a3;
+  pageCopy = page;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 copy];
+  v7 = [pageCopy copy];
 
   v8 = MEMORY[0x1E695E0F0];
   [(PDFThumbnailsCollectionView *)self itemProvider:v6 registerDataRepresentationForPage:v7 draggedPages:MEMORY[0x1E695E0F0]];
   [(PDFThumbnailsCollectionView *)self itemProvider:v6 registerFileRepresentationForPage:v7 draggedPages:v8];
   v11[0] = v6;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v10 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  [v10 setItemProviders:v9];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  [generalPasteboard setItemProviders:v9];
 }
 
-- (void)pasteAfterPage:(id)a3
+- (void)pasteAfterPage:(id)page
 {
   v40 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v27 = self;
+  pageCopy = page;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v5 = [WeakRetained PDFView];
-  v24 = [v5 document];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
 
   v37[0] = 0;
   v37[1] = v37;
   v37[2] = 0x2020000000;
-  v6 = [v24 indexForPage:v22];
-  v7 = [v24 pageCount];
+  v6 = [document indexForPage:pageCopy];
+  pageCount = [document pageCount];
   v8 = v6 + 1;
-  if (v6 + 1 >= v7)
+  if (v6 + 1 >= pageCount)
   {
-    v8 = v7;
+    v8 = pageCount;
   }
 
   v37[3] = v8;
@@ -1419,8 +1419,8 @@ void __57__PDFThumbnailsCollectionView_defaultContextMenuForPage___block_invoke(
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  obj = [v9 itemProviders];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  obj = [generalPasteboard itemProviders];
 
   v10 = [obj countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v10)
@@ -1440,8 +1440,8 @@ void __57__PDFThumbnailsCollectionView_defaultContextMenuForPage___block_invoke(
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v13 = [(PDFThumbnailsCollectionView *)v27 supportedUTTypes];
-        v14 = [v13 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        supportedUTTypes = [(PDFThumbnailsCollectionView *)selfCopy supportedUTTypes];
+        v14 = [supportedUTTypes countByEnumeratingWithState:&v29 objects:v38 count:16];
         if (v14)
         {
           v15 = *v30;
@@ -1451,31 +1451,31 @@ void __57__PDFThumbnailsCollectionView_defaultContextMenuForPage___block_invoke(
             {
               if (*v30 != v15)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(supportedUTTypes);
               }
 
               v17 = *(*(&v29 + 1) + 8 * j);
-              v18 = [v17 identifier];
-              v19 = [v12 hasItemConformingToTypeIdentifier:v18];
+              identifier = [v17 identifier];
+              v19 = [v12 hasItemConformingToTypeIdentifier:identifier];
 
               if (v19)
               {
-                v20 = [v17 identifier];
+                identifier2 = [v17 identifier];
                 v28[0] = MEMORY[0x1E69E9820];
                 v28[1] = 3221225472;
                 v28[2] = __46__PDFThumbnailsCollectionView_pasteAfterPage___block_invoke;
                 v28[3] = &unk_1E81511D8;
-                v28[4] = v27;
+                v28[4] = selfCopy;
                 v28[5] = v17;
                 v28[6] = v12;
                 v28[7] = v37;
-                v21 = [v12 loadFileRepresentationForTypeIdentifier:v20 completionHandler:v28];
+                v21 = [v12 loadFileRepresentationForTypeIdentifier:identifier2 completionHandler:v28];
 
                 goto LABEL_18;
               }
             }
 
-            v14 = [v13 countByEnumeratingWithState:&v29 objects:v38 count:16];
+            v14 = [supportedUTTypes countByEnumeratingWithState:&v29 objects:v38 count:16];
             if (v14)
             {
               continue;
@@ -1519,10 +1519,10 @@ void __46__PDFThumbnailsCollectionView_pasteAfterPage___block_invoke(void *a1, u
   }
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems:a3];
+  v5 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems:view];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1553,16 +1553,16 @@ void __46__PDFThumbnailsCollectionView_pasteAfterPage___block_invoke(void *a1, u
   }
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v5 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems:a3];
+  v5 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems:view];
   v6 = dispatch_time(0, 100000000);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__PDFThumbnailsCollectionView_collectionView_dragSessionDidEnd___block_invoke;
   v8[3] = &unk_1E8150FF8;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
   dispatch_after(v6, MEMORY[0x1E69E96A0], v8);
 }
@@ -1601,20 +1601,20 @@ void __64__PDFThumbnailsCollectionView_collectionView_dragSessionDidEnd___block_
   }
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  pathCopy = path;
   v10 = [MEMORY[0x1E6982C40] typeWithIdentifier:@"com.adobe.pdf"];
-  v11 = [v10 identifier];
-  v16[0] = v11;
+  identifier = [v10 identifier];
+  v16[0] = identifier;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v13 = [v8 hasItemsConformingToTypeIdentifiers:v12];
+  v13 = [sessionCopy hasItemsConformingToTypeIdentifiers:v12];
 
   if (v13)
   {
-    v14 = [(PDFThumbnailsCollectionView *)self itemsForDragWithSession:v8 atIndexPath:v9];
+    v14 = [(PDFThumbnailsCollectionView *)self itemsForDragWithSession:sessionCopy atIndexPath:pathCopy];
   }
 
   else
@@ -1625,22 +1625,22 @@ void __64__PDFThumbnailsCollectionView_collectionView_dragSessionDidEnd___block_
   return v14;
 }
 
-- (id)itemsForDragWithSession:(id)a3 atIndexPath:(id)a4
+- (id)itemsForDragWithSession:(id)session atIndexPath:(id)path
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v7];
+  sessionCopy = session;
+  pathCopy = path;
+  v8 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
   v9 = MEMORY[0x1E695DF70];
-  v10 = [v6 items];
-  v11 = [v9 arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  items = [sessionCopy items];
+  v11 = [v9 arrayWithCapacity:{objc_msgSend(items, "count")}];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v12 = [v6 items];
-  v13 = [v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  items2 = [sessionCopy items];
+  v13 = [items2 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v13)
   {
     v14 = *v40;
@@ -1650,17 +1650,17 @@ void __64__PDFThumbnailsCollectionView_collectionView_dragSessionDidEnd___block_
       {
         if (*v40 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(items2);
         }
 
-        v16 = [*(*(&v39 + 1) + 8 * i) localObject];
-        if (v16)
+        localObject = [*(*(&v39 + 1) + 8 * i) localObject];
+        if (localObject)
         {
-          [v11 addObject:v16];
+          [v11 addObject:localObject];
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v13 = [items2 countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v13);
@@ -1673,20 +1673,20 @@ void __64__PDFThumbnailsCollectionView_collectionView_dragSessionDidEnd___block_
   v37 = __Block_byref_object_dispose__0;
   v38 = 0;
   v17 = MEMORY[0x1E69DCD50];
-  v18 = [(PDFThumbnailsCollectionView *)self _dragDataOwner];
+  _dragDataOwner = [(PDFThumbnailsCollectionView *)self _dragDataOwner];
   v25 = MEMORY[0x1E69E9820];
   v26 = 3221225472;
   v27 = __67__PDFThumbnailsCollectionView_itemsForDragWithSession_atIndexPath___block_invoke;
   v28 = &unk_1E8151200;
   v32 = &v33;
-  v29 = self;
+  selfCopy = self;
   v19 = v8;
   v30 = v19;
   v20 = v11;
   v31 = v20;
-  [v17 _performAsDataOwner:v18 block:&v25];
+  [v17 _performAsDataOwner:_dragDataOwner block:&v25];
   v21 = objc_alloc(MEMORY[0x1E69DC990]);
-  v22 = [v21 initWithItemProvider:{v34[5], v25, v26, v27, v28, v29}];
+  v22 = [v21 initWithItemProvider:{v34[5], v25, v26, v27, v28, selfCopy}];
   [v22 setLocalObject:v19];
   v43 = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
@@ -1712,11 +1712,11 @@ uint64_t __67__PDFThumbnailsCollectionView_itemsForDragWithSession_atIndexPath__
   return [v7 itemProvider:v6 registerFileRepresentationForPage:v8 draggedPages:v5];
 }
 
-- (void)itemProvider:(id)a3 registerDataRepresentationForPage:(id)a4 draggedPages:(id)a5
+- (void)itemProvider:(id)provider registerDataRepresentationForPage:(id)page draggedPages:(id)pages
 {
-  v7 = a3;
-  v8 = [a4 copy];
-  v9 = [*MEMORY[0x1E6982F10] identifier];
+  providerCopy = provider;
+  v8 = [page copy];
+  identifier = [*MEMORY[0x1E6982F10] identifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __91__PDFThumbnailsCollectionView_itemProvider_registerDataRepresentationForPage_draggedPages___block_invoke;
@@ -1724,7 +1724,7 @@ uint64_t __67__PDFThumbnailsCollectionView_itemsForDragWithSession_atIndexPath__
   v11[4] = self;
   v12 = v8;
   v10 = v8;
-  [v7 registerDataRepresentationForTypeIdentifier:v9 visibility:0 loadHandler:v11];
+  [providerCopy registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v11];
 }
 
 uint64_t __91__PDFThumbnailsCollectionView_itemProvider_registerDataRepresentationForPage_draggedPages___block_invoke(uint64_t a1, void *a2)
@@ -1762,11 +1762,11 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerDataRepresentationFo
   }
 }
 
-- (void)itemProvider:(id)a3 registerFileRepresentationForPage:(id)a4 draggedPages:(id)a5
+- (void)itemProvider:(id)provider registerFileRepresentationForPage:(id)page draggedPages:(id)pages
 {
-  v7 = a3;
-  v8 = [a4 copy];
-  v9 = [*MEMORY[0x1E6982F10] identifier];
+  providerCopy = provider;
+  v8 = [page copy];
+  identifier = [*MEMORY[0x1E6982F10] identifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationForPage_draggedPages___block_invoke;
@@ -1774,7 +1774,7 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerDataRepresentationFo
   v11[4] = self;
   v12 = v8;
   v10 = v8;
-  [v7 registerFileRepresentationForTypeIdentifier:v9 fileOptions:0 visibility:0 loadHandler:v11];
+  [providerCopy registerFileRepresentationForTypeIdentifier:identifier fileOptions:0 visibility:0 loadHandler:v11];
 }
 
 uint64_t __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationForPage_draggedPages___block_invoke(uint64_t a1, void *a2)
@@ -1815,16 +1815,16 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationFo
   }
 }
 
-- (void)writePDFDocumentFromPages:(id)a3 completionHandler:(id)a4
+- (void)writePDFDocumentFromPages:(id)pages completionHandler:(id)handler
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pagesCopy = pages;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v9 = [WeakRetained PDFView];
-  v10 = [v9 document];
-  v11 = [v10 documentAttributes];
-  v12 = [v11 objectForKeyedSubscript:@"Title"];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  documentAttributes = [document documentAttributes];
+  v12 = [documentAttributes objectForKeyedSubscript:@"Title"];
 
   v13 = objc_alloc_init(PDFDocument);
   v14 = objc_autoreleasePoolPush();
@@ -1832,7 +1832,7 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationFo
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v15 = v6;
+  v15 = pagesCopy;
   v16 = [v15 countByEnumeratingWithState:&v56 objects:v60 count:16];
   if (v16)
   {
@@ -1858,46 +1858,46 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationFo
   }
 
   objc_autoreleasePoolPop(v14);
-  v21 = [MEMORY[0x1E696AC08] defaultManager];
-  v22 = [v21 temporaryDirectory];
-  v23 = [MEMORY[0x1E696AFB0] UUID];
-  v24 = [v23 UUIDString];
-  v25 = [v22 URLByAppendingPathComponent:v24];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v25 = [temporaryDirectory URLByAppendingPathComponent:uUIDString];
 
-  v26 = [v25 path];
+  path = [v25 path];
   v55 = 0;
-  [v21 removeItemAtPath:v26 error:&v55];
+  [defaultManager removeItemAtPath:path error:&v55];
   v27 = v55;
 
   if (v27 && [v27 code] != 4)
   {
-    v35 = [v25 path];
-    _PDFLog(OS_LOG_TYPE_DEFAULT, "PDFThumbnailsCollectionView", "Failed to remove temporary folder (at path %@) prior to storing temporary PDF document with error: %@", v36, v37, v38, v39, v40, v35);
+    path2 = [v25 path];
+    _PDFLog(OS_LOG_TYPE_DEFAULT, "PDFThumbnailsCollectionView", "Failed to remove temporary folder (at path %@) prior to storing temporary PDF document with error: %@", v36, v37, v38, v39, v40, path2);
 
-    v7[2](v7, 0, v27);
+    handlerCopy[2](handlerCopy, 0, v27);
   }
 
   else
   {
     v53 = v12;
-    v28 = [v25 path];
+    path3 = [v25 path];
     v54 = 0;
-    [v21 createDirectoryAtPath:v28 withIntermediateDirectories:1 attributes:0 error:&v54];
+    [defaultManager createDirectoryAtPath:path3 withIntermediateDirectories:1 attributes:0 error:&v54];
     v29 = v54;
 
     if (v29)
     {
       _PDFLog(OS_LOG_TYPE_DEFAULT, "PDFThumbnailsCollectionView", "Failed to create directory for scanned PDF with error: %@", v30, v31, v32, v33, v34, v29);
-      v7[2](v7, 0, v29);
+      handlerCopy[2](handlerCopy, 0, v29);
     }
 
     else
     {
-      v52 = v7;
+      v52 = handlerCopy;
       if ([v15 count] == 1)
       {
-        v41 = [v15 firstObject];
-        v42 = v41;
+        firstObject = [v15 firstObject];
+        v42 = firstObject;
         v50 = MEMORY[0x1E696AEC0];
         if (v53)
         {
@@ -1909,8 +1909,8 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationFo
           v43 = @"Exported Page";
         }
 
-        v44 = [v41 label];
-        v45 = [v50 stringWithFormat:@"%@ n°%@", v43, v44];
+        label = [firstObject label];
+        v45 = [v50 stringWithFormat:@"%@ n°%@", v43, label];
       }
 
       else
@@ -1944,27 +1944,27 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationFo
         v45 = v51;
       }
 
-      v7 = v52;
+      handlerCopy = v52;
     }
 
     v12 = v53;
   }
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  updateCopy = update;
   if ([(PDFThumbnailsCollectionView *)self _canEditDocument])
   {
-    v9 = [v8 localDragSession];
+    localDragSession = [updateCopy localDragSession];
 
-    if (v9)
+    if (localDragSession)
     {
-      v10 = [v7 hasActiveDrag];
+      hasActiveDrag = [viewCopy hasActiveDrag];
       v11 = objc_alloc(MEMORY[0x1E69DC838]);
-      if (v10)
+      if (hasActiveDrag)
       {
         v12 = 3;
       }
@@ -1982,13 +1982,13 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationFo
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v13 = [v8 items];
-    v30 = [v13 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    items = [updateCopy items];
+    v30 = [items countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v30)
     {
       v14 = *v39;
-      v32 = v13;
-      v33 = v7;
+      v32 = items;
+      v33 = viewCopy;
       v29 = *v39;
       do
       {
@@ -1997,7 +1997,7 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationFo
         {
           if (*v39 != v14)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(items);
           }
 
           v31 = v15;
@@ -2006,8 +2006,8 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationFo
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v17 = [(PDFThumbnailsCollectionView *)self supportedUTTypes];
-          v18 = [v17 countByEnumeratingWithState:&v34 objects:v42 count:16];
+          supportedUTTypes = [(PDFThumbnailsCollectionView *)self supportedUTTypes];
+          v18 = [supportedUTTypes countByEnumeratingWithState:&v34 objects:v42 count:16];
           if (v18)
           {
             v19 = v18;
@@ -2018,24 +2018,24 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationFo
               {
                 if (*v35 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(supportedUTTypes);
                 }
 
                 v22 = *(*(&v34 + 1) + 8 * i);
-                v23 = [v16 itemProvider];
-                v24 = [v22 identifier];
-                v25 = [v23 hasItemConformingToTypeIdentifier:v24];
+                itemProvider = [v16 itemProvider];
+                identifier = [v22 identifier];
+                v25 = [itemProvider hasItemConformingToTypeIdentifier:identifier];
 
                 if (v25)
                 {
                   v27 = [objc_alloc(MEMORY[0x1E69DC838]) initWithDropOperation:2 intent:1];
 
-                  v7 = v33;
+                  viewCopy = v33;
                   goto LABEL_25;
                 }
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v34 objects:v42 count:16];
+              v19 = [supportedUTTypes countByEnumeratingWithState:&v34 objects:v42 count:16];
               if (v19)
               {
                 continue;
@@ -2046,8 +2046,8 @@ void __91__PDFThumbnailsCollectionView_itemProvider_registerFileRepresentationFo
           }
 
           v15 = v31 + 1;
-          v13 = v32;
-          v7 = v33;
+          items = v32;
+          viewCopy = v33;
           v14 = v29;
         }
 
@@ -2067,33 +2067,33 @@ LABEL_25:
   return v27;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
   v39 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v19 = a4;
-  v21 = [v19 destinationIndexPath];
-  if (!v21)
+  viewCopy = view;
+  coordinatorCopy = coordinator;
+  destinationIndexPath = [coordinatorCopy destinationIndexPath];
+  if (!destinationIndexPath)
   {
-    v21 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(v20 inSection:{"numberOfItemsInSection:", 0), 0}];
+    destinationIndexPath = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(viewCopy inSection:{"numberOfItemsInSection:", 0), 0}];
   }
 
-  if (([v20 hasActiveDrag] & 1) == 0)
+  if (([viewCopy hasActiveDrag] & 1) == 0)
   {
     v36[0] = 0;
     v36[1] = v36;
     v36[2] = 0x2020000000;
-    v36[3] = [v21 item];
+    v36[3] = [destinationIndexPath item];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v5 = [v19 items];
-    v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    items = [coordinatorCopy items];
+    v6 = [items countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v6)
     {
       v23 = *v33;
-      obj = v5;
+      obj = items;
       do
       {
         for (i = 0; i != v6; ++i)
@@ -2103,17 +2103,17 @@ LABEL_25:
             objc_enumerationMutation(obj);
           }
 
-          v8 = [*(*(&v32 + 1) + 8 * i) dragItem];
-          v9 = [v8 itemProvider];
+          dragItem = [*(*(&v32 + 1) + 8 * i) dragItem];
+          itemProvider = [dragItem itemProvider];
 
-          if (v9)
+          if (itemProvider)
           {
             v30 = 0u;
             v31 = 0u;
             v28 = 0u;
             v29 = 0u;
-            v10 = [(PDFThumbnailsCollectionView *)self supportedUTTypes];
-            v11 = [v10 countByEnumeratingWithState:&v28 objects:v37 count:16];
+            supportedUTTypes = [(PDFThumbnailsCollectionView *)self supportedUTTypes];
+            v11 = [supportedUTTypes countByEnumeratingWithState:&v28 objects:v37 count:16];
             if (v11)
             {
               v12 = *v29;
@@ -2123,16 +2123,16 @@ LABEL_25:
                 {
                   if (*v29 != v12)
                   {
-                    objc_enumerationMutation(v10);
+                    objc_enumerationMutation(supportedUTTypes);
                   }
 
                   v14 = *(*(&v28 + 1) + 8 * j);
-                  v15 = [v14 identifier];
-                  v16 = [v9 hasItemConformingToTypeIdentifier:v15];
+                  identifier = [v14 identifier];
+                  v16 = [itemProvider hasItemConformingToTypeIdentifier:identifier];
 
                   if (v16)
                   {
-                    v17 = [v14 identifier];
+                    identifier2 = [v14 identifier];
                     v25[0] = MEMORY[0x1E69E9820];
                     v25[1] = 3221225472;
                     v25[2] = __73__PDFThumbnailsCollectionView_collectionView_performDropWithCoordinator___block_invoke;
@@ -2140,14 +2140,14 @@ LABEL_25:
                     v25[4] = self;
                     v25[5] = v14;
                     v27 = v36;
-                    v26 = v9;
-                    v18 = [v26 loadFileRepresentationForTypeIdentifier:v17 completionHandler:v25];
+                    v26 = itemProvider;
+                    v18 = [v26 loadFileRepresentationForTypeIdentifier:identifier2 completionHandler:v25];
 
                     goto LABEL_20;
                   }
                 }
 
-                v11 = [v10 countByEnumeratingWithState:&v28 objects:v37 count:16];
+                v11 = [supportedUTTypes countByEnumeratingWithState:&v28 objects:v37 count:16];
                 if (v11)
                 {
                   continue;
@@ -2161,7 +2161,7 @@ LABEL_20:
           }
         }
 
-        v5 = obj;
+        items = obj;
         v6 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
       }
 
@@ -2194,54 +2194,54 @@ void __73__PDFThumbnailsCollectionView_collectionView_performDropWithCoordinator
   }
 }
 
-- (unint64_t)_insertPagesFromProvidedPDFDocument:(id)a3 atPageIndex:(unint64_t)a4
+- (unint64_t)_insertPagesFromProvidedPDFDocument:(id)document atPageIndex:(unint64_t)index
 {
-  v6 = a3;
-  v23 = self;
+  documentCopy = document;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v24 = [WeakRetained PDFView];
-  v7 = [v24 document];
-  v8 = [v7 renderingProperties];
-  v9 = [v8 displayBox];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  renderingProperties = [document renderingProperties];
+  displayBox = [renderingProperties displayBox];
 
-  v10 = [v6 pageCount];
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:v10];
-  if (v10)
+  pageCount = [documentCopy pageCount];
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:pageCount];
+  if (pageCount)
   {
-    for (i = 0; i != v10; ++i)
+    for (i = 0; i != pageCount; ++i)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = [v6 pageAtIndex:i];
+      v14 = [documentCopy pageAtIndex:i];
       v15 = [v14 copy];
 
       [v15 boundsForBox:1];
-      [v15 setBounds:v9 forBox:?];
-      [v7 insertPage:v15 atIndex:a4];
+      [v15 setBounds:displayBox forBox:?];
+      [document insertPage:v15 atIndex:index];
       [v11 addObject:v15];
 
       objc_autoreleasePoolPop(v13);
-      ++a4;
+      ++index;
     }
   }
 
   v16 = PDFKitLocalizedString(@"Insert pages");
-  v17 = [(PDFThumbnailsCollectionView *)v23 undoManager];
-  v18 = [v17 prepareWithInvocationTarget:v23];
+  undoManager = [(PDFThumbnailsCollectionView *)selfCopy undoManager];
+  v18 = [undoManager prepareWithInvocationTarget:selfCopy];
   [v18 removePages:v11];
 
-  v19 = [(PDFThumbnailsCollectionView *)v23 undoManager];
+  undoManager2 = [(PDFThumbnailsCollectionView *)selfCopy undoManager];
   v20 = PDFKitLocalizedString(v16);
-  [v19 setActionName:v20];
+  [undoManager2 setActionName:v20];
 
   v21 = [v11 count];
   return v21;
 }
 
-- (void)_insertPDFDocumentWithURL:(id)a3 atIndex:(unint64_t)a4 completionHandler:(id)a5
+- (void)_insertPDFDocumentWithURL:(id)l atIndex:(unint64_t)index completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [[PDFDocument alloc] initWithURL:v8];
+  lCopy = l;
+  handlerCopy = handler;
+  v10 = [[PDFDocument alloc] initWithURL:lCopy];
   v16 = v10;
   if (v10)
   {
@@ -2251,15 +2251,15 @@ void __73__PDFThumbnailsCollectionView_collectionView_performDropWithCoordinator
     block[3] = &unk_1E81512A0;
     block[4] = self;
     v18 = v10;
-    v20 = a4;
-    v19 = v9;
+    indexCopy = index;
+    v19 = handlerCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
-    _PDFLog(OS_LOG_TYPE_ERROR, "PDFThumbnailsCollectionView", "PDF document could not be created from URL %@", v11, v12, v13, v14, v15, v8);
-    (*(v9 + 2))(v9, 0);
+    _PDFLog(OS_LOG_TYPE_ERROR, "PDFThumbnailsCollectionView", "PDF document could not be created from URL %@", v11, v12, v13, v14, v15, lCopy);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -2271,21 +2271,21 @@ uint64_t __83__PDFThumbnailsCollectionView__insertPDFDocumentWithURL_atIndex_com
   return v2();
 }
 
-- (void)_insertImageWithURL:(id)a3 atIndex:(unint64_t)a4 completionHandler:(id)a5
+- (void)_insertImageWithURL:(id)l atIndex:(unint64_t)index completionHandler:(id)handler
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v11 = [WeakRetained PDFView];
-  v12 = [v11 document];
-  v13 = CGImageSourceCreateWithURL(v8, 0);
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
+  v13 = CGImageSourceCreateWithURL(lCopy, 0);
   ImageAtIndex = CGImageSourceCreateImageAtIndex(v13, 0, 0);
-  if ([v12 pageCount] && objc_msgSend(v12, "pageCount") >= a4)
+  if ([document pageCount] && objc_msgSend(document, "pageCount") >= index)
   {
-    if (a4)
+    if (index)
     {
-      v16 = a4 - 1;
+      v16 = index - 1;
     }
 
     else
@@ -2293,7 +2293,7 @@ uint64_t __83__PDFThumbnailsCollectionView__insertPDFDocumentWithURL_atIndex_com
       v16 = 0;
     }
 
-    v28 = [v12 pageAtIndex:v16];
+    v28 = [document pageAtIndex:v16];
     [v28 boundsForBox:0];
     v18 = v17;
     CGImageGetSizeAfterOrientation();
@@ -2327,15 +2327,15 @@ uint64_t __83__PDFThumbnailsCollectionView__insertPDFDocumentWithURL_atIndex_com
     block[3] = &unk_1E81512A0;
     block[4] = self;
     v31 = v27;
-    v33 = a4;
-    v32 = v9;
+    indexCopy = index;
+    v32 = handlerCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
-    _PDFLog(OS_LOG_TYPE_ERROR, "PDFThumbnailsCollectionView", "PDF document could not be created from URL %@", v22, v23, v24, v25, v26, v8);
-    (*(v9 + 2))(v9, 0);
+    _PDFLog(OS_LOG_TYPE_ERROR, "PDFThumbnailsCollectionView", "PDF document could not be created from URL %@", v22, v23, v24, v25, v26, lCopy);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -2376,51 +2376,51 @@ void __47__PDFThumbnailsCollectionView_supportedUTTypes__block_invoke()
   supportedUTTypes_supportedTypes = v1;
 }
 
-- (void)_insertFileAtURL:(id)a3 type:(id)a4 atIndex:(unint64_t)a5 completionHandler:(id)a6
+- (void)_insertFileAtURL:(id)l type:(id)type atIndex:(unint64_t)index completionHandler:(id)handler
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a6;
+  lCopy = l;
+  typeCopy = type;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v13 = [WeakRetained thumbnailDataSourceDelegate];
+  thumbnailDataSourceDelegate = [WeakRetained thumbnailDataSourceDelegate];
 
-  if (v13)
+  if (thumbnailDataSourceDelegate)
   {
-    [v13 insertFileAtURL:v14 atIndex:a5 completionHandler:v11];
+    [thumbnailDataSourceDelegate insertFileAtURL:lCopy atIndex:index completionHandler:handlerCopy];
   }
 
-  else if (*MEMORY[0x1E6982F10] == v10)
+  else if (*MEMORY[0x1E6982F10] == typeCopy)
   {
-    [(PDFThumbnailsCollectionView *)self _insertPDFDocumentWithURL:v14 atIndex:a5 completionHandler:v11];
+    [(PDFThumbnailsCollectionView *)self _insertPDFDocumentWithURL:lCopy atIndex:index completionHandler:handlerCopy];
   }
 
-  else if (*MEMORY[0x1E6982E30] == v10)
+  else if (*MEMORY[0x1E6982E30] == typeCopy)
   {
-    [(PDFThumbnailsCollectionView *)self _insertImageWithURL:v14 atIndex:a5 completionHandler:v11];
+    [(PDFThumbnailsCollectionView *)self _insertImageWithURL:lCopy atIndex:index completionHandler:handlerCopy];
   }
 }
 
-- (void)removePages:(id)a3
+- (void)removePages:(id)pages
 {
-  v4 = a3;
+  pagesCopy = pages;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v6 = [WeakRetained PDFView];
-  v7 = [v6 document];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
 
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v9 = [v4 reverseObjectEnumerator];
-  v10 = [v9 allObjects];
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(pagesCopy, "count")}];
+  reverseObjectEnumerator = [pagesCopy reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __43__PDFThumbnailsCollectionView_removePages___block_invoke;
   v24 = &unk_1E81512C8;
-  v25 = v7;
+  v25 = document;
   v26 = v8;
   v11 = v8;
-  v12 = v7;
-  [v10 enumerateObjectsUsingBlock:&v21];
-  if ([v4 count] <= 1)
+  v12 = document;
+  [allObjects enumerateObjectsUsingBlock:&v21];
+  if ([pagesCopy count] <= 1)
   {
     v13 = @"Remove page";
   }
@@ -2431,15 +2431,15 @@ void __47__PDFThumbnailsCollectionView_supportedUTTypes__block_invoke()
   }
 
   v14 = PDFKitLocalizedString(v13);
-  v15 = [(PDFThumbnailsCollectionView *)self undoManager];
-  v16 = [v15 prepareWithInvocationTarget:self];
-  v17 = [v11 reverseObjectEnumerator];
-  v18 = [v17 allObjects];
-  [v16 insertPages:v4 atIndexes:v18];
+  undoManager = [(PDFThumbnailsCollectionView *)self undoManager];
+  v16 = [undoManager prepareWithInvocationTarget:self];
+  reverseObjectEnumerator2 = [v11 reverseObjectEnumerator];
+  allObjects2 = [reverseObjectEnumerator2 allObjects];
+  [v16 insertPages:pagesCopy atIndexes:allObjects2];
 
-  v19 = [(PDFThumbnailsCollectionView *)self undoManager];
+  undoManager2 = [(PDFThumbnailsCollectionView *)self undoManager];
   v20 = PDFKitLocalizedString(v14);
-  [v19 setActionName:v20];
+  [undoManager2 setActionName:v20];
 }
 
 void __43__PDFThumbnailsCollectionView_removePages___block_invoke(uint64_t a1, uint64_t a2)
@@ -2451,29 +2451,29 @@ void __43__PDFThumbnailsCollectionView_removePages___block_invoke(uint64_t a1, u
   [v4 addObject:v5];
 }
 
-- (void)insertPages:(id)a3 atIndexes:(id)a4
+- (void)insertPages:(id)pages atIndexes:(id)indexes
 {
-  v29 = a3;
-  v6 = a4;
-  v7 = [v29 count];
-  if (v7 == [v6 count])
+  pagesCopy = pages;
+  indexesCopy = indexes;
+  v7 = [pagesCopy count];
+  if (v7 == [indexesCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-    v14 = [WeakRetained PDFView];
-    v15 = [v14 document];
+    pDFView = [WeakRetained PDFView];
+    document = [pDFView document];
 
-    v16 = [v6 count];
-    v17 = v29;
+    v16 = [indexesCopy count];
+    v17 = pagesCopy;
     if (v16)
     {
       for (i = 0; i < v21; ++i)
       {
         v19 = [v17 objectAtIndexedSubscript:i];
-        v20 = [v6 objectAtIndexedSubscript:i];
-        [v15 insertPage:v19 atIndex:{objc_msgSend(v20, "unsignedIntegerValue")}];
+        v20 = [indexesCopy objectAtIndexedSubscript:i];
+        [document insertPage:v19 atIndex:{objc_msgSend(v20, "unsignedIntegerValue")}];
 
-        v21 = [v6 count];
-        v17 = v29;
+        v21 = [indexesCopy count];
+        v17 = pagesCopy;
       }
     }
 
@@ -2488,13 +2488,13 @@ void __43__PDFThumbnailsCollectionView_removePages___block_invoke(uint64_t a1, u
     }
 
     v23 = PDFKitLocalizedString(v22);
-    v24 = [(PDFThumbnailsCollectionView *)self undoManager];
-    v25 = [v24 prepareWithInvocationTarget:self];
-    [v25 removePages:v29];
+    undoManager = [(PDFThumbnailsCollectionView *)self undoManager];
+    v25 = [undoManager prepareWithInvocationTarget:self];
+    [v25 removePages:pagesCopy];
 
-    v26 = [(PDFThumbnailsCollectionView *)self undoManager];
+    undoManager2 = [(PDFThumbnailsCollectionView *)self undoManager];
     v27 = PDFKitLocalizedString(v23);
-    [v26 setActionName:v27];
+    [undoManager2 setActionName:v27];
   }
 
   else
@@ -2503,59 +2503,59 @@ void __43__PDFThumbnailsCollectionView_removePages___block_invoke(uint64_t a1, u
   }
 }
 
-- (void)movePage:(id)a3 toIndex:(unint64_t)a4
+- (void)movePage:(id)page toIndex:(unint64_t)index
 {
-  v6 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-  v8 = [WeakRetained PDFView];
-  v15 = [v8 document];
+  pDFView = [WeakRetained PDFView];
+  document = [pDFView document];
 
-  v9 = [v15 indexForPage:v6];
-  [v15 removePageAtIndex:v9];
-  [v15 insertPage:v6 atIndex:a4];
+  v9 = [document indexForPage:pageCopy];
+  [document removePageAtIndex:v9];
+  [document insertPage:pageCopy atIndex:index];
   v10 = PDFKitLocalizedString(@"Move page");
-  v11 = [(PDFThumbnailsCollectionView *)self undoManager];
-  v12 = [v11 prepareWithInvocationTarget:self];
-  [v12 movePage:v6 toIndex:v9];
+  undoManager = [(PDFThumbnailsCollectionView *)self undoManager];
+  v12 = [undoManager prepareWithInvocationTarget:self];
+  [v12 movePage:pageCopy toIndex:v9];
 
-  v13 = [(PDFThumbnailsCollectionView *)self undoManager];
+  undoManager2 = [(PDFThumbnailsCollectionView *)self undoManager];
   v14 = PDFKitLocalizedString(v10);
-  [v13 setActionName:v14];
+  [undoManager2 setActionName:v14];
 }
 
-- (void)movePageWithTransaction:(id)a3
+- (void)movePageWithTransaction:(id)transaction
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 difference];
-  v6 = [v5 hasChanges];
+  transactionCopy = transaction;
+  difference = [transactionCopy difference];
+  hasChanges = [difference hasChanges];
 
-  if (v6)
+  if (hasChanges)
   {
     WeakRetained = objc_loadWeakRetained(&self->_thumbnailView);
-    v8 = [WeakRetained thumbnailDataSourceDelegate];
-    if (v8)
+    thumbnailDataSourceDelegate = [WeakRetained thumbnailDataSourceDelegate];
+    if (thumbnailDataSourceDelegate)
     {
-      v9 = [v4 difference];
-      [v8 handlePageOrderedCollectionDifference:v9];
+      difference2 = [transactionCopy difference];
+      [thumbnailDataSourceDelegate handlePageOrderedCollectionDifference:difference2];
     }
 
     else
     {
       v25 = WeakRetained;
-      v10 = [WeakRetained PDFView];
-      v11 = [v10 document];
+      pDFView = [WeakRetained PDFView];
+      document = [pDFView document];
 
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v26 = v4;
-      v12 = [v4 difference];
-      v13 = [v12 removals];
+      v26 = transactionCopy;
+      difference3 = [transactionCopy difference];
+      removals = [difference3 removals];
 
-      obj = v13;
-      v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      obj = removals;
+      v14 = [removals countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v14)
       {
         v15 = v14;
@@ -2570,19 +2570,19 @@ void __43__PDFThumbnailsCollectionView_removePages___block_invoke(uint64_t a1, u
             }
 
             v18 = *(*(&v28 + 1) + 8 * i);
-            v19 = [v18 object];
-            if (v19)
+            object = [v18 object];
+            if (object)
             {
-              [v11 removePageAtIndex:{objc_msgSend(v18, "index")}];
-              [v11 insertPage:v19 atIndex:{objc_msgSend(v18, "associatedIndex")}];
+              [document removePageAtIndex:{objc_msgSend(v18, "index")}];
+              [document insertPage:object atIndex:{objc_msgSend(v18, "associatedIndex")}];
               v20 = PDFKitLocalizedString(@"Move page");
-              v21 = [(PDFThumbnailsCollectionView *)self undoManager];
-              v22 = [v21 prepareWithInvocationTarget:self];
-              [v22 movePage:v19 toIndex:{objc_msgSend(v18, "index")}];
+              undoManager = [(PDFThumbnailsCollectionView *)self undoManager];
+              v22 = [undoManager prepareWithInvocationTarget:self];
+              [v22 movePage:object toIndex:{objc_msgSend(v18, "index")}];
 
-              v23 = [(PDFThumbnailsCollectionView *)self undoManager];
+              undoManager2 = [(PDFThumbnailsCollectionView *)self undoManager];
               v24 = PDFKitLocalizedString(v20);
-              [v23 setActionName:v24];
+              [undoManager2 setActionName:v24];
             }
           }
 
@@ -2593,8 +2593,8 @@ void __43__PDFThumbnailsCollectionView_removePages___block_invoke(uint64_t a1, u
       }
 
       WeakRetained = v25;
-      v4 = v26;
-      v8 = 0;
+      transactionCopy = v26;
+      thumbnailDataSourceDelegate = 0;
     }
   }
 }

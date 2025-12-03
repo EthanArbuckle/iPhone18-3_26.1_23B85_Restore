@@ -1,18 +1,18 @@
 @interface TTRIGroupMembershipViewController
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (_TtC9Reminders33TTRIGroupMembershipViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9Reminders33TTRIGroupMembershipViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (_TtC9Reminders33TTRIGroupMembershipViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9Reminders33TTRIGroupMembershipViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -24,17 +24,17 @@
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
   [(TTRIGroupMembershipViewController *)&v7 viewDidLoad];
-  v3 = [v2 tableView];
-  if (v3)
+  tableView = [v2 tableView];
+  if (tableView)
   {
-    v4 = v3;
+    v4 = tableView;
     UITableView.fixUpBackgroundColorLoadedFromNibIfNeeded_workaroundRdar108920406()();
 
-    v5 = [v2 tableView];
-    if (v5)
+    tableView2 = [v2 tableView];
+    if (tableView2)
     {
-      v6 = v5;
-      [v5 setEditing:1 animated:0];
+      v6 = tableView2;
+      [tableView2 setEditing:1 animated:0];
 
       sub_10008E9D8();
       return;
@@ -49,26 +49,26 @@
   __break(1u);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(TTRIGroupMembershipViewController *)&v5 viewDidAppear:v3];
+  [(TTRIGroupMembershipViewController *)&v5 viewDidAppear:appearCopy];
   [v4 becomeFirstResponder];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_10009176C(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_10009176C(section);
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4 = (self + OBJC_IVAR____TtC9Reminders33TTRIGroupMembershipViewController_viewModel);
   swift_beginAccess();
@@ -76,7 +76,7 @@
   if (*v4)
   {
     v6 = v4[1];
-    v7 = self;
+    selfCopy = self;
     sub_1000915B4(v5);
     v8 = sub_1002AB7D4(v5, v6);
 
@@ -86,23 +86,23 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_10008F524(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_10008F524(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for TTRIGroupMembershipViewModel.List(0);
   __chkstk_darwin(v6 - 8);
@@ -112,7 +112,7 @@
   __chkstk_darwin(v9);
   v12 = &v14 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = self;
+  selfCopy = self;
   sub_10008ED80(v8);
   if (*(v8 + 16) == 1)
   {
@@ -128,7 +128,7 @@
   (*(v10 + 8))(v12, v9);
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
   v5 = type metadata accessor for TTRIGroupMembershipViewModel.List(0);
   __chkstk_darwin(v5 - 8);
@@ -138,13 +138,13 @@
   __chkstk_darwin(v8);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = self;
+  selfCopy = self;
   sub_10008ED80(v7);
 
   (*(v9 + 8))(v11, v8);
-  LODWORD(v12) = v7[16];
+  LODWORD(selfCopy) = v7[16];
   sub_1000916A4(v7, type metadata accessor for TTRIGroupMembershipViewModel.List);
-  if (v12)
+  if (selfCopy)
   {
     return 1;
   }
@@ -155,11 +155,11 @@
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_100091968(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100091968(section);
   v9 = v8;
 
   if (v9)
@@ -175,7 +175,7 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -193,15 +193,15 @@
   return v10;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100091BF8();
   LOBYTE(self) = v12;
 
@@ -209,7 +209,7 @@
   return self & 1;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
@@ -219,8 +219,8 @@
   v13 = &v17 - v12;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = a3;
-  v15 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100091F6C(v13, v11);
 
   v16 = *(v8 + 8);
@@ -228,7 +228,7 @@
   v16(v13, v7);
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
@@ -240,8 +240,8 @@
   v16 = &v22 - v15;
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v17 = a3;
-  v18 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10008FF78(v14, v11, v16);
 
   v19 = *(v8 + 8);
@@ -253,32 +253,32 @@
   return v20.super.isa;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
   objc_opt_self();
   v6 = swift_dynamicCastObjCClass();
   if (v6)
   {
     v7 = v6;
-    v10 = a4;
-    v8 = [v7 textLabel];
-    if (v8)
+    headerViewCopy = headerView;
+    textLabel = [v7 textLabel];
+    if (textLabel)
     {
-      v9 = v8;
+      v9 = textLabel;
       sub_100091F20();
       TTRIFontCustomizable.replaceFontWithRounded()();
     }
   }
 }
 
-- (_TtC9Reminders33TTRIGroupMembershipViewController)initWithStyle:(int64_t)a3
+- (_TtC9Reminders33TTRIGroupMembershipViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9Reminders33TTRIGroupMembershipViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders33TTRIGroupMembershipViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

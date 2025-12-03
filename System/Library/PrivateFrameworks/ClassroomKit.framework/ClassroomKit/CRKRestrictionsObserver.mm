@@ -1,26 +1,26 @@
 @interface CRKRestrictionsObserver
-+ (void)addRestrictionsObserver:(id)a3;
-+ (void)removeRestrictionsObserver:(id)a3;
++ (void)addRestrictionsObserver:(id)observer;
++ (void)removeRestrictionsObserver:(id)observer;
 @end
 
 @implementation CRKRestrictionsObserver
 
-+ (void)addRestrictionsObserver:(id)a3
++ (void)addRestrictionsObserver:(id)observer
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v6 = [v3 defaultCenter];
+  observerCopy = observer;
+  defaultCenter = [v3 defaultCenter];
   v5 = +[CRKRestrictions didChangeNotification];
-  [v6 addObserver:v4 selector:sel_restrictionsDidChange_ name:v5 object:0];
+  [defaultCenter addObserver:observerCopy selector:sel_restrictionsDidChange_ name:v5 object:0];
 }
 
-+ (void)removeRestrictionsObserver:(id)a3
++ (void)removeRestrictionsObserver:(id)observer
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v6 = [v3 defaultCenter];
+  observerCopy = observer;
+  defaultCenter = [v3 defaultCenter];
   v5 = +[CRKRestrictions didChangeNotification];
-  [v6 removeObserver:v4 name:v5 object:0];
+  [defaultCenter removeObserver:observerCopy name:v5 object:0];
 }
 
 @end

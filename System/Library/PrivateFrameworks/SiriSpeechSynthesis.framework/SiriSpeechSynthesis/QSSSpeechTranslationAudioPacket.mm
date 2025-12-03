@@ -1,7 +1,7 @@
 @interface QSSSpeechTranslationAudioPacket
 - (NSArray)audio_frames;
-- (Offset<siri::speech::schema_fb::SpeechTranslationAudioPacket>)addObjectToBuffer:(void *)a3;
-- (QSSSpeechTranslationAudioPacket)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationAudioPacket *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::SpeechTranslationAudioPacket>)addObjectToBuffer:(void *)buffer;
+- (QSSSpeechTranslationAudioPacket)initWithFlatbuffData:(id)data root:(const SpeechTranslationAudioPacket *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -36,11 +36,11 @@ flatbuffers::DetachedBuffer *__47__QSSSpeechTranslationAudioPacket_flatbuffData_
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::SpeechTranslationAudioPacket>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::SpeechTranslationAudioPacket>)addObjectToBuffer:(void *)buffer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSSpeechTranslationAudioPacket *)self audio_frames];
-  v6 = [v5 count];
+  audio_frames = [(QSSSpeechTranslationAudioPacket *)self audio_frames];
+  v6 = [audio_frames count];
   if (v6)
   {
     if (!(v6 >> 62))
@@ -60,34 +60,34 @@ flatbuffers::DetachedBuffer *__47__QSSSpeechTranslationAudioPacket_flatbuffData_
   {
     *v17;
     *v17;
-    [**(&v16 + 1) addObjectToBuffer:a3];
+    [**(&v16 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v7 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v8 = *(a3 + 5);
-  v9 = *(a3 + 6);
-  v10 = *(a3 + 4);
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v7 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v8 = *(buffer + 5);
+  v9 = *(buffer + 6);
+  v10 = *(buffer + 4);
   if (v7)
   {
-    v11 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v7);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v11);
+    v11 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v7);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, v11);
   }
 
-  v12.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v10 - v9 + v8);
+  v12.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v10 - v9 + v8);
   v13 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
 - (NSArray)audio_frames
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"audio_frames"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"audio_frames"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 5u)
@@ -104,7 +104,7 @@ flatbuffers::DetachedBuffer *__47__QSSSpeechTranslationAudioPacket_flatbuffData_
           do
           {
             v11 = [[QSSAudioFrame alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -115,48 +115,48 @@ flatbuffers::DetachedBuffer *__47__QSSSpeechTranslationAudioPacket_flatbuffData_
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"audio_frames"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"audio_frames"];
   }
 
-  return v3;
+  return array;
 }
 
-- (QSSSpeechTranslationAudioPacket)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationAudioPacket *)a4 verify:(BOOL)a5
+- (QSSSpeechTranslationAudioPacket)initWithFlatbuffData:(id)data root:(const SpeechTranslationAudioPacket *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSSpeechTranslationAudioPacket;
   v10 = [(QSSSpeechTranslationAudioPacket *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -178,9 +178,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

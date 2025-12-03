@@ -1,38 +1,38 @@
 @interface CLCountryTracker
-+ (BOOL)territoriesAreUnchanged:(id)a3 fromOldList:(id)a4;
++ (BOOL)territoriesAreUnchanged:(id)unchanged fromOldList:(id)list;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (BOOL)getHasAtLeastOneValidLocation;
-- (BOOL)locationIsUsable:(id)a3;
-- (BOOL)shouldSendUpdateForCurrentList:(id)a3 previousList:(id)a4 previousTimestamp:(double)a5 withDescription:(id)a6;
+- (BOOL)locationIsUsable:(id)usable;
+- (BOOL)shouldSendUpdateForCurrentList:(id)list previousList:(id)previousList previousTimestamp:(double)timestamp withDescription:(id)description;
 - (CLCountryTracker)init;
-- (double)calculateDistance:(id)a3 b:(id)a4;
+- (double)calculateDistance:(id)distance b:(id)b;
 - (id).cxx_construct;
 - (void)beginService;
 - (void)checkLocationServicesStatusAndEnableExpensiveScansIfNecessary;
 - (void)endService;
-- (void)handleNewLocation:(id)a3 shouldUpdateTerritories:(BOOL)a4;
-- (void)handleResponseFromPossibleTerritoriesFetch:(id)a3 withError:(id)a4;
-- (void)handleRevGeocodeCompletionForPlacemarks:(id)a3 withError:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)handleNewLocation:(id)location shouldUpdateTerritories:(BOOL)territories;
+- (void)handleResponseFromPossibleTerritoriesFetch:(id)fetch withError:(id)error;
+- (void)handleRevGeocodeCompletionForPlacemarks:(id)placemarks withError:(id)error;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)onLocationUnknownTimer;
-- (void)onManagerNotification:(const int *)a3 data:(const void *)a4;
+- (void)onManagerNotification:(const int *)notification data:(const void *)data;
 - (void)refreshSettings;
-- (void)requestLocationWithDesiredAccuracy:(double)a3;
-- (void)revGeoForAdminArea:(id)a3;
+- (void)requestLocationWithDesiredAccuracy:(double)accuracy;
+- (void)revGeoForAdminArea:(id)area;
 - (void)updateLocationUnknown;
 @end
 
 @implementation CLCountryTracker
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -76,8 +76,8 @@
   v3 = qword_1025D4758;
   if (os_log_type_enabled(qword_1025D4758, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CLCountryTracker *)self allowSimulatedLocations];
-    v5 = [(CLCountryTracker *)self minimumConfidence];
+    allowSimulatedLocations = [(CLCountryTracker *)self allowSimulatedLocations];
+    minimumConfidence = [(CLCountryTracker *)self minimumConfidence];
     [(CLCountryTracker *)self maximumCountryLocationChangeSpeed];
     v7 = v6;
     [(CLCountryTracker *)self maximumCountryLocationChangeAccuracy];
@@ -98,9 +98,9 @@
     v23[0] = 2082;
     *&v23[1] = "";
     v23[5] = 1026;
-    v24 = v4;
+    v24 = allowSimulatedLocations;
     v25 = 1026;
-    v26 = v5;
+    v26 = minimumConfidence;
     v27 = 2050;
     v28 = v7;
     v29 = 2050;
@@ -208,8 +208,8 @@
   v13 = qword_1025D4758;
   if (os_log_type_enabled(qword_1025D4758, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(CLCountryTracker *)self allowSimulatedLocations];
-    v15 = [(CLCountryTracker *)self minimumConfidence];
+    allowSimulatedLocations = [(CLCountryTracker *)self allowSimulatedLocations];
+    minimumConfidence = [(CLCountryTracker *)self minimumConfidence];
     [(CLCountryTracker *)self maximumCountryLocationChangeSpeed];
     v32 = v16;
     [(CLCountryTracker *)self maximumCountryLocationChangeAccuracy];
@@ -232,9 +232,9 @@
     v35 = 2082;
     v36 = "";
     v37 = 1026;
-    v38 = v14;
+    v38 = allowSimulatedLocations;
     v39 = 1026;
-    v40 = v15;
+    v40 = minimumConfidence;
     v41 = 2050;
     v42 = v32;
     v43 = 2050;
@@ -254,47 +254,47 @@
     v57 = 2050;
     v58 = v31;
     v59 = 1026;
-    v60 = [(CLCountryTracker *)self countryCodeDebounceInterval];
+    countryCodeDebounceInterval = [(CLCountryTracker *)self countryCodeDebounceInterval];
     _os_log_impl(dword_100000000, v13, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:settings updated, AllowSimulatedLocations:%{public}hhd, CountryLocationMinimumConfidence:%{public}d, MaximumCountryLocationChangeSpeed:%{public}f, MaximumCountryLocationChangeAccuracy:%{public}f, MinimumMoveDistance:%{public}f, CountryLocationDebounceTime:%{public}f, CountryLocationStalenessTime:%{public}f, TimeToCountryUnknown:%{public}f, TimeToCountryCheapLocation:%{public}f, TimeToRequestCheapActiveLocation:%{public}f, MinimumTimeBetweenExpensiveQueries:%{public}f, CountryDebounceInterval:%{public}d}", buf, 0x7Eu);
   }
 }
 
 - (BOOL)getHasAtLeastOneValidLocation
 {
-  v3 = [(CLCountryTracker *)self previousLocation];
-  if (v3)
+  previousLocation = [(CLCountryTracker *)self previousLocation];
+  if (previousLocation)
   {
     [(CLLocation *)[(CLCountryTracker *)self previousLocation] coordinate];
 
-    LOBYTE(v3) = CLLocationCoordinate2DIsValid(*&v4);
+    LOBYTE(previousLocation) = CLLocationCoordinate2DIsValid(*&v4);
   }
 
-  return v3;
+  return previousLocation;
 }
 
-- (BOOL)locationIsUsable:(id)a3
+- (BOOL)locationIsUsable:(id)usable
 {
-  [a3 horizontalAccuracy];
+  [usable horizontalAccuracy];
   if (v5 >= 0.0)
   {
-    [a3 coordinate];
+    [usable coordinate];
     v10 = v9;
-    [a3 coordinate];
+    [usable coordinate];
     if (sub_100020608(v10, v11))
     {
-      [a3 speed];
+      [usable speed];
       v13 = v12;
       [(CLCountryTracker *)self maximumCountryLocationChangeSpeed];
       if (v13 <= v14)
       {
-        [a3 horizontalAccuracy];
+        [usable horizontalAccuracy];
         v23 = v22;
         [(CLCountryTracker *)self maximumCountryLocationChangeAccuracy];
         if (v23 <= v24)
         {
-          if (a3)
+          if (usable)
           {
-            [a3 clientLocation];
+            [usable clientLocation];
             v28 = DWORD1(v40);
           }
 
@@ -312,7 +312,7 @@
 
           if (v28 >= [(CLCountryTracker *)self minimumConfidence])
           {
-            if ([objc_msgSend(a3 "sourceInformation")] && !-[CLCountryTracker allowSimulatedLocations](self, "allowSimulatedLocations"))
+            if ([objc_msgSend(usable "sourceInformation")] && !-[CLCountryTracker allowSimulatedLocations](self, "allowSimulatedLocations"))
             {
               if (qword_1025D4750 != -1)
               {
@@ -349,9 +349,9 @@
             v7 = os_log_type_enabled(qword_1025D4758, OS_LOG_TYPE_INFO);
             if (v7)
             {
-              if (a3)
+              if (usable)
               {
-                [a3 clientLocation];
+                [usable clientLocation];
                 v30 = DWORD1(v40);
               }
 
@@ -396,7 +396,7 @@
           return v7;
         }
 
-        [a3 horizontalAccuracy];
+        [usable horizontalAccuracy];
         v26 = v25;
         [(CLCountryTracker *)self maximumCountryLocationChangeAccuracy];
         *buf = 68289538;
@@ -424,7 +424,7 @@
           return v7;
         }
 
-        [a3 speed];
+        [usable speed];
         v17 = v16;
         [(CLCountryTracker *)self maximumCountryLocationChangeSpeed];
         *buf = 68289538;
@@ -491,10 +491,10 @@ LABEL_23:
   return v7;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = [a4 firstObject];
-  if ([(CLCountryTracker *)self locationIsUsable:v5])
+  firstObject = [locations firstObject];
+  if ([(CLCountryTracker *)self locationIsUsable:firstObject])
   {
     if (qword_1025D4750 != -1)
     {
@@ -504,19 +504,19 @@ LABEL_23:
     v6 = qword_1025D4758;
     if (os_log_type_enabled(qword_1025D4758, OS_LOG_TYPE_INFO))
     {
-      [v5 coordinate];
+      [firstObject coordinate];
       v8 = v7;
-      [v5 coordinate];
+      [firstObject coordinate];
       v10 = v9;
-      [v5 horizontalAccuracy];
+      [firstObject horizontalAccuracy];
       v12 = v11;
-      [objc_msgSend(v5 "timestamp")];
+      [objc_msgSend(firstObject "timestamp")];
       v14 = v13;
-      if (v5)
+      if (firstObject)
       {
-        [v5 clientLocation];
+        [firstObject clientLocation];
         v15 = *(&v76 + 1);
-        [v5 clientLocation];
+        [firstObject clientLocation];
         v16 = DWORD1(v54);
       }
 
@@ -557,19 +557,19 @@ LABEL_23:
         sub_100260318();
       }
 
-      [v5 coordinate];
+      [firstObject coordinate];
       v44 = v43;
-      [v5 coordinate];
+      [firstObject coordinate];
       v46 = v45;
-      [v5 horizontalAccuracy];
+      [firstObject horizontalAccuracy];
       v48 = v47;
-      [objc_msgSend(v5 "timestamp")];
+      [objc_msgSend(firstObject "timestamp")];
       v50 = v49;
-      if (v5)
+      if (firstObject)
       {
-        [v5 clientLocation];
+        [firstObject clientLocation];
         v51 = *(&v54 + 1);
-        [v5 clientLocation];
+        [firstObject clientLocation];
         v52 = DWORD1(v57);
       }
 
@@ -613,9 +613,9 @@ LABEL_23:
     if ([(CLCountryTracker *)self getHasAtLeastOneValidLocation])
     {
       [(CLLocation *)[(CLCountryTracker *)self previousLocation] coordinate];
-      [(CLCountryTracker *)self calculateDistance:v5 b:[(CLCountryTracker *)self previousLocation]];
+      [(CLCountryTracker *)self calculateDistance:firstObject b:[(CLCountryTracker *)self previousLocation]];
       v19 = v20;
-      [objc_msgSend(v5 "timestamp")];
+      [objc_msgSend(firstObject "timestamp")];
       v22 = v21;
       [(NSDate *)[(CLLocation *)[(CLCountryTracker *)self previousLocation] timestamp] timeIntervalSince1970];
       v24 = v23;
@@ -730,17 +730,17 @@ LABEL_33:
     [+[NSDate now](NSDate timeIntervalSince1970];
     v41 = vabdd_f64(v39, v40);
     [(CLCountryTracker *)self minTimeBetweenExpensiveQueries];
-    [(CLCountryTracker *)self handleNewLocation:v5 shouldUpdateTerritories:v41 >= v42];
+    [(CLCountryTracker *)self handleNewLocation:firstObject shouldUpdateTerritories:v41 >= v42];
 
     self->_previousLocation = 0;
-    self->_previousLocation = v5;
+    self->_previousLocation = firstObject;
     [(CLTimer *)self->fLocationUnknownTimeoutTimer setNextFireDelay:1.79769313e308];
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  -[CLCountryTracker setAuthStatus:](self, "setAuthStatus:", [a3 authorizationStatus]);
+  -[CLCountryTracker setAuthStatus:](self, "setAuthStatus:", [authorization authorizationStatus]);
   if (qword_1025D4750 != -1)
   {
     sub_10192B7E4();
@@ -755,7 +755,7 @@ LABEL_33:
     v6 = 2082;
     v7 = "";
     v8 = 2050;
-    v9 = [(CLCountryTracker *)self authStatus];
+    authStatus = [(CLCountryTracker *)self authStatus];
     _os_log_impl(dword_100000000, v4, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:authorization status changed, status:%{public, location:CLAuthorizationStatus}lld}", v5, 0x1Cu);
   }
 
@@ -763,7 +763,7 @@ LABEL_33:
   self->fAtLeastOneAuthDetermination = 1;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   if (qword_1025D4750 != -1)
   {
@@ -778,7 +778,7 @@ LABEL_33:
     v9 = 2082;
     v10 = "";
     v11 = 2082;
-    v12 = [objc_msgSend(a4 "description")];
+    v12 = [objc_msgSend(error "description")];
     _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_INFO, "{msg%{public}.0s:Got location unavailable, error:%{public, location:escape_only}s}", v8, 0x1Cu);
   }
 
@@ -792,20 +792,20 @@ LABEL_33:
   }
 }
 
-+ (BOOL)territoriesAreUnchanged:(id)a3 fromOldList:(id)a4
++ (BOOL)territoriesAreUnchanged:(id)unchanged fromOldList:(id)list
 {
-  if (!(a3 | a4))
+  if (!(unchanged | list))
   {
     return 1;
   }
 
   result = 0;
-  if (a3)
+  if (unchanged)
   {
-    if (a4)
+    if (list)
     {
-      v6 = [[NSSet alloc] initWithArray:a4];
-      v7 = [[NSSet alloc] initWithArray:a3];
+      v6 = [[NSSet alloc] initWithArray:list];
+      v7 = [[NSSet alloc] initWithArray:unchanged];
       v8 = [v6 isEqualToSet:v7];
 
       return v8;
@@ -815,30 +815,30 @@ LABEL_33:
   return result;
 }
 
-- (void)handleNewLocation:(id)a3 shouldUpdateTerritories:(BOOL)a4
+- (void)handleNewLocation:(id)location shouldUpdateTerritories:(BOOL)territories
 {
-  [a3 coordinate];
+  [location coordinate];
   v8 = v7;
-  [a3 coordinate];
+  [location coordinate];
   v10 = [[GEOLocation alloc] initWithGEOCoordinate:{v8, v9}];
   if (v10)
   {
     v11 = v10;
-    [a3 altitude];
+    [location altitude];
     [v11 setAltitude:v12];
-    [a3 horizontalAccuracy];
+    [location horizontalAccuracy];
     [v11 setHorizontalAccuracy:?];
-    [a3 verticalAccuracy];
+    [location verticalAccuracy];
     [v11 setVerticalAccuracy:?];
-    v13 = [a3 referenceFrame];
-    if (v13 == 1)
+    referenceFrame = [location referenceFrame];
+    if (referenceFrame == 1)
     {
       v14 = 1;
     }
 
     else
     {
-      v14 = 2 * (v13 == 2);
+      v14 = 2 * (referenceFrame == 2);
     }
 
     [v11 setReferenceFrame:v14];
@@ -852,9 +852,9 @@ LABEL_33:
     v17[1] = 3221225472;
     v17[2] = sub_100764DB4;
     v17[3] = &unk_10246F538;
-    v17[5] = a3;
+    v17[5] = location;
     v17[6] = buf;
-    v18 = a4;
+    territoriesCopy = territories;
     v17[4] = self;
     +[GEOGeographicMetadataRequester fetchPossibleTerritoriesForLocation:responseQueue:responseBlock:](GEOGeographicMetadataRequester, "fetchPossibleTerritoriesForLocation:responseQueue:responseBlock:", v11, [objc_msgSend(-[CLCountryTracker universe](self "universe")], v17);
     _Block_object_dispose(buf, 8);
@@ -893,7 +893,7 @@ LABEL_33:
   }
 }
 
-- (void)handleResponseFromPossibleTerritoriesFetch:(id)a3 withError:(id)a4
+- (void)handleResponseFromPossibleTerritoriesFetch:(id)fetch withError:(id)error
 {
   if (qword_1025D4750 != -1)
   {
@@ -907,13 +907,13 @@ LABEL_33:
     v58 = 2082;
     v59 = "";
     v60 = 2113;
-    v61 = a3;
+    errorCopy3 = fetch;
     v62 = 2114;
-    v63 = a4;
+    errorCopy = error;
     _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_INFO, "{msg%{public}.0s:response from fetchPossibleTerritoriesForLocation, results:%{private, location:escape_only}@, error:%{public, location:escape_only}@}", &buf, 0x26u);
   }
 
-  if (a4)
+  if (error)
   {
     if (qword_1025D4750 != -1)
     {
@@ -927,7 +927,7 @@ LABEL_33:
       v58 = 2082;
       v59 = "";
       v60 = 2114;
-      v61 = a4;
+      errorCopy3 = error;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:error getting country info, error:%{public, location:escape_only}@}", &buf, 0x1Cu);
       if (qword_1025D4750 != -1)
       {
@@ -942,15 +942,15 @@ LABEL_33:
       v58 = 2082;
       v59 = "";
       v60 = 2114;
-      v61 = a4;
+      errorCopy3 = error;
       _os_signpost_emit_with_name_impl(dword_100000000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "error getting country info", "{msg%{public}.0s:error getting country info, error:%{public, location:escape_only}@}", &buf, 0x1Cu);
     }
 
     return;
   }
 
-  v39 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!fetch)
   {
     if (qword_1025D4750 != -1)
     {
@@ -964,7 +964,7 @@ LABEL_33:
       v58 = 2082;
       v59 = "";
       v60 = 2114;
-      v61 = @"XZ";
+      errorCopy3 = @"XZ";
       _os_log_impl(dword_100000000, v35, OS_LOG_TYPE_INFO, "{msg%{public}.0s:no country info found, defaulting to international waters, code:%{public, location:escape_only}@}", &buf, 0x1Cu);
     }
 
@@ -972,13 +972,13 @@ LABEL_33:
     goto LABEL_68;
   }
 
-  v9 = a3;
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [a3 count]);
+  fetchCopy3 = fetch;
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [fetch count]);
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v49 objects:v56 count:16];
+  v11 = [fetch countByEnumeratingWithState:&v49 objects:v56 count:16];
   if (!v11)
   {
 LABEL_68:
@@ -998,7 +998,7 @@ LABEL_68:
     {
       if (*v50 != v14)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(fetchCopy3);
       }
 
       v44 = v15;
@@ -1020,7 +1020,7 @@ LABEL_68:
             v58 = 2082;
             v59 = "";
             v60 = 2081;
-            v61 = v18;
+            errorCopy3 = v18;
             _os_log_impl(dword_100000000, v17, OS_LOG_TYPE_INFO, "{msg%{public}.0s:result is a disputed territory, adding all interested parties, name:%{private, location:escape_only}s}", &buf, 0x1Cu);
           }
 
@@ -1028,8 +1028,8 @@ LABEL_68:
           v48 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v19 = [(__CFString *)v16 interestedPartyIso3166CountryCodes2];
-          v20 = [v19 countByEnumeratingWithState:&v45 objects:v55 count:16];
+          interestedPartyIso3166CountryCodes2 = [(__CFString *)v16 interestedPartyIso3166CountryCodes2];
+          v20 = [interestedPartyIso3166CountryCodes2 countByEnumeratingWithState:&v45 objects:v55 count:16];
           if (v20)
           {
             v21 = v20;
@@ -1040,7 +1040,7 @@ LABEL_68:
               {
                 if (*v46 != v22)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(interestedPartyIso3166CountryCodes2);
                 }
 
                 v24 = [*(*(&v45 + 1) + 8 * i) copy];
@@ -1053,22 +1053,22 @@ LABEL_68:
                 v25 = qword_1025D4758;
                 if (os_log_type_enabled(qword_1025D4758, OS_LOG_TYPE_INFO))
                 {
-                  v26 = [v24 UTF8String];
+                  uTF8String = [v24 UTF8String];
                   buf = 68289283;
                   v58 = 2082;
                   v59 = "";
                   v60 = 2081;
-                  v61 = v26;
+                  errorCopy3 = uTF8String;
                   _os_log_impl(dword_100000000, v25, OS_LOG_TYPE_INFO, "{msg%{public}.0s:adding interested party, countryCode:%{private, location:escape_only}s}", &buf, 0x1Cu);
                 }
               }
 
-              v21 = [v19 countByEnumeratingWithState:&v45 objects:v55 count:16];
+              v21 = [interestedPartyIso3166CountryCodes2 countByEnumeratingWithState:&v45 objects:v55 count:16];
             }
 
             while (v21);
             v13 = 1;
-            v9 = a3;
+            fetchCopy3 = fetch;
             v12 = v42;
             v14 = v43;
           }
@@ -1097,7 +1097,7 @@ LABEL_59:
             v58 = 2082;
             v59 = "";
             v60 = 2114;
-            v61 = v16;
+            errorCopy3 = v16;
             _os_log_impl(dword_100000000, v33, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:got a result that lacked a 2-letter ISO country code, terr:%{public, location:escape_only}@}", &buf, 0x1Cu);
             if (qword_1025D4750 != -1)
             {
@@ -1112,7 +1112,7 @@ LABEL_59:
             v58 = 2082;
             v59 = "";
             v60 = 2114;
-            v61 = v16;
+            errorCopy3 = v16;
             _os_signpost_emit_with_name_impl(dword_100000000, v34, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "got a result that lacked a 2-letter ISO country code", "{msg%{public}.0s:got a result that lacked a 2-letter ISO country code, terr:%{public, location:escape_only}@}", &buf, 0x1Cu);
           }
 
@@ -1130,12 +1130,12 @@ LABEL_59:
         v31 = qword_1025D4758;
         if (os_log_type_enabled(qword_1025D4758, OS_LOG_TYPE_INFO))
         {
-          v32 = [v30 UTF8String];
+          uTF8String2 = [v30 UTF8String];
           buf = 68289283;
           v58 = 2082;
           v59 = "";
           v60 = 2081;
-          v61 = v32;
+          errorCopy3 = uTF8String2;
           _os_log_impl(dword_100000000, v31, OS_LOG_TYPE_INFO, "{msg%{public}.0s:adding resultant country code, countryCode:%{private, location:escape_only}s}", &buf, 0x1Cu);
         }
 
@@ -1178,15 +1178,15 @@ LABEL_60:
     }
 
     while (v15 != v12);
-    v12 = [v9 countByEnumeratingWithState:&v49 objects:v56 count:16];
+    v12 = [fetchCopy3 countByEnumeratingWithState:&v49 objects:v56 count:16];
   }
 
   while (v12);
 LABEL_69:
   v36 = [+[NSSet setWithArray:](NSSet allObjects:v10];
-  v37 = [v40 previousCountries];
+  previousCountries = [v40 previousCountries];
   [v40 previousCountryCodeTimeStamp];
-  if ([v40 shouldSendUpdateForCurrentList:v36 previousList:v37 previousTimestamp:@"countries" withDescription:?])
+  if ([v40 shouldSendUpdateForCurrentList:v36 previousList:previousCountries previousTimestamp:@"countries" withDescription:?])
   {
 
     *(v40 + 256) = [(NSArray *)v36 copy];
@@ -1255,9 +1255,9 @@ LABEL_69:
   self->_previousEligibilityTerrs = 0;
 }
 
-- (void)requestLocationWithDesiredAccuracy:(double)a3
+- (void)requestLocationWithDesiredAccuracy:(double)accuracy
 {
-  if (kCLLocationAccuracyBystander == a3)
+  if (kCLLocationAccuracyBystander == accuracy)
   {
     if (qword_1025D4750 != -1)
     {
@@ -1291,7 +1291,7 @@ LABEL_69:
       *v11 = 2082;
       *&v11[2] = "";
       *&v11[10] = 2050;
-      *&v11[12] = a3;
+      *&v11[12] = accuracy;
       v6 = "{msg%{public}.0s:registering for active location updates, accuracy:%{public}f}";
       v7 = v5;
       v8 = 28;
@@ -1300,7 +1300,7 @@ LABEL_10:
     }
   }
 
-  [(CLLocationManager *)self->_locManager setDesiredAccuracy:a3, v10, *v11, *&v11[16]];
+  [(CLLocationManager *)self->_locManager setDesiredAccuracy:accuracy, v10, *v11, *&v11[16]];
 }
 
 - (void)checkLocationServicesStatusAndEnableExpensiveScansIfNecessary
@@ -1341,7 +1341,7 @@ LABEL_10:
       v10 = 2082;
       v11 = "";
       v12 = 1026;
-      LODWORD(v13) = v4;
+      LODWORD(authStatus) = v4;
       _os_log_impl(dword_100000000, v3, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:location services was toggled on, and this service is authorized, doing an initial high-accuracy scan, duration:%{public}d}", &v8, 0x18u);
     }
 
@@ -1367,7 +1367,7 @@ LABEL_10:
       v10 = 2082;
       v11 = "";
       v12 = 2050;
-      v13 = [(CLCountryTracker *)self authStatus];
+      authStatus = [(CLCountryTracker *)self authStatus];
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:location services was toggled on, but the service isn't authorized, so not scanning, status:%{public, location:CLAuthorizationStatus}lld}", &v8, 0x1Cu);
     }
   }
@@ -1385,15 +1385,15 @@ LABEL_18:
   }
 }
 
-- (void)onManagerNotification:(const int *)a3 data:(const void *)a4
+- (void)onManagerNotification:(const int *)notification data:(const void *)data
 {
-  if (*a3 == 4)
+  if (*notification == 4)
   {
 
     [(CLCountryTracker *)self checkLocationServicesStatusAndEnableExpensiveScansIfNecessary];
   }
 
-  else if (!*a3)
+  else if (!*notification)
   {
     if (qword_1025D4750 != -1)
     {
@@ -1418,7 +1418,7 @@ LABEL_18:
   }
 }
 
-- (double)calculateDistance:(id)a3 b:(id)a4
+- (double)calculateDistance:(id)distance b:(id)b
 {
   if (qword_1025D4750 != -1)
   {
@@ -1428,13 +1428,13 @@ LABEL_18:
   v7 = qword_1025D4758;
   if (os_log_type_enabled(qword_1025D4758, OS_LOG_TYPE_DEBUG))
   {
-    [a3 coordinate];
+    [distance coordinate];
     v9 = v8;
-    [a3 coordinate];
+    [distance coordinate];
     v11 = v10;
-    [a4 coordinate];
+    [b coordinate];
     v13 = v12;
-    [a4 coordinate];
+    [b coordinate];
     *buf = 134546433;
     *&buf[4] = v9;
     *&buf[12] = 2053;
@@ -1448,12 +1448,12 @@ LABEL_18:
 
   if (sub_10000A100(121, 2))
   {
-    sub_10192B90C(a3, a4);
+    sub_10192B90C(distance, b);
   }
 
-  if (a3)
+  if (distance)
   {
-    [a3 clientLocation];
+    [distance clientLocation];
   }
 
   else
@@ -1479,9 +1479,9 @@ LABEL_18:
   v40 = v32;
   *buf = v27;
   *&buf[16] = v28;
-  if (a4)
+  if (b)
   {
-    [a4 clientLocation];
+    [b clientLocation];
   }
 
   else
@@ -1511,12 +1511,12 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)shouldSendUpdateForCurrentList:(id)a3 previousList:(id)a4 previousTimestamp:(double)a5 withDescription:(id)a6
+- (BOOL)shouldSendUpdateForCurrentList:(id)list previousList:(id)previousList previousTimestamp:(double)timestamp withDescription:(id)description
 {
   if ([CLCountryTracker territoriesAreUnchanged:"territoriesAreUnchanged:fromOldList:" fromOldList:?])
   {
     [+[NSDate now](NSDate timeIntervalSince1970];
-    if ([(CLCountryTracker *)self countryCodeDebounceInterval]> (v11 - a5))
+    if ([(CLCountryTracker *)self countryCodeDebounceInterval]> (v11 - timestamp))
     {
       if (qword_1025D4750 != -1)
       {
@@ -1526,18 +1526,18 @@ LABEL_18:
       v12 = qword_1025D4758;
       if (os_log_type_enabled(qword_1025D4758, OS_LOG_TYPE_INFO))
       {
-        v13 = [a6 UTF8String];
+        uTF8String = [description UTF8String];
         [+[NSDate now](NSDate timeIntervalSince1970];
         v24 = 68290050;
         v25 = 0;
         v26 = 2082;
         v27 = "";
         v28 = 2082;
-        v29 = v13;
+        uTF8String3 = uTF8String;
         v30 = 1026;
         *v31 = v14;
         *&v31[4] = 2050;
-        *&v31[6] = a5;
+        *&v31[6] = timestamp;
         *&v31[14] = 1026;
         *&v31[16] = [(CLCountryTracker *)self countryCodeDebounceInterval];
         _os_log_impl(dword_100000000, v12, OS_LOG_TYPE_INFO, "{msg%{public}.0s:already sent this, skipping, description:%{public, location:escape_only}s, now:%{public}d, prevTime:%{public}f, delta:%{public}d}", &v24, 0x32u);
@@ -1555,18 +1555,18 @@ LABEL_18:
     v15 = 1;
     if (os_log_type_enabled(qword_1025D4758, OS_LOG_TYPE_INFO))
     {
-      v21 = [a6 UTF8String];
+      uTF8String2 = [description UTF8String];
       [+[NSDate now](NSDate timeIntervalSince1970];
       v24 = 68290050;
       v25 = 0;
       v26 = 2082;
       v27 = "";
       v28 = 2082;
-      v29 = v21;
+      uTF8String3 = uTF8String2;
       v30 = 1026;
       *v31 = v22;
       *&v31[4] = 2050;
-      *&v31[6] = a5;
+      *&v31[6] = timestamp;
       *&v31[14] = 1026;
       *&v31[16] = [(CLCountryTracker *)self countryCodeDebounceInterval];
       v17 = "{msg%{public}.0s:already sent this, but it's been long enough so sending it again, description:%{public, location:escape_only}s, now:%{public}d, prevTime:%{public}f, delta:%{public}d}";
@@ -1592,11 +1592,11 @@ LABEL_18:
       v26 = 2082;
       v27 = "";
       v28 = 2082;
-      v29 = [a6 UTF8String];
+      uTF8String3 = [description UTF8String];
       v30 = 2113;
-      *v31 = a4;
+      *v31 = previousList;
       *&v31[8] = 2113;
-      *&v31[10] = a3;
+      *&v31[10] = list;
       v17 = "{msg%{public}.0s:lists have changed, sending, description:%{public, location:escape_only}s, prev:%{private, location:escape_only}@, curr:%{private, location:escape_only}@}";
       v18 = v16;
       v19 = 48;
@@ -1608,7 +1608,7 @@ LABEL_16:
   return v15;
 }
 
-- (void)revGeoForAdminArea:(id)a3
+- (void)revGeoForAdminArea:(id)area
 {
   v6[0] = 0;
   v6[1] = v6;
@@ -1622,18 +1622,18 @@ LABEL_16:
   v5[3] = &unk_10246F560;
   v5[4] = self;
   v5[5] = v6;
-  [objc_alloc_init(CLGeocoder) reverseGeocodeLocation:a3 completionHandler:v5];
+  [objc_alloc_init(CLGeocoder) reverseGeocodeLocation:area completionHandler:v5];
   _Block_object_dispose(v6, 8);
 }
 
-- (void)handleRevGeocodeCompletionForPlacemarks:(id)a3 withError:(id)a4
+- (void)handleRevGeocodeCompletionForPlacemarks:(id)placemarks withError:(id)error
 {
   xarray = xpc_array_create(0, 0);
-  v35 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(a3, "count")}];
-  v7 = [a3 count];
-  if (a4 || !v7)
+  v35 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(placemarks, "count")}];
+  v7 = [placemarks count];
+  if (error || !v7)
   {
-    if (a4)
+    if (error)
     {
       if (qword_1025D4750 != -1)
       {
@@ -1647,7 +1647,7 @@ LABEL_16:
         v42 = 2082;
         v43 = "";
         v44 = 2114;
-        v45 = [a4 description];
+        v45 = [error description];
         _os_log_impl(dword_100000000, v22, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:failed to revgeo, error:%{public, location:escape_only}@}", &buf, 0x1Cu);
         if (qword_1025D4750 != -1)
         {
@@ -1658,7 +1658,7 @@ LABEL_16:
       v23 = qword_1025D4758;
       if (os_signpost_enabled(qword_1025D4758))
       {
-        v24 = [a4 description];
+        v24 = [error description];
         buf = 68289282;
         v42 = 2082;
         v43 = "";
@@ -1683,7 +1683,7 @@ LABEL_16:
       v42 = 2082;
       v43 = "";
       v44 = 2050;
-      v45 = [a3 count];
+      v45 = [placemarks count];
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_INFO, "{msg%{public}.0s:parsing results for eligibility, count:%{public}lu}", &buf, 0x1Cu);
     }
 
@@ -1692,7 +1692,7 @@ LABEL_16:
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    v10 = [placemarks countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1704,7 +1704,7 @@ LABEL_16:
         {
           if (*v37 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(placemarks);
           }
 
           v14 = *(*(&v36 + 1) + 8 * v13);
@@ -1775,16 +1775,16 @@ LABEL_17:
         }
 
         while (v13 != v11);
-        v11 = [a3 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v11 = [placemarks countByEnumeratingWithState:&v36 objects:v40 count:16];
       }
 
       while (v11);
     }
   }
 
-  v25 = [(CLCountryTracker *)self previousEligibilityTerrs];
+  previousEligibilityTerrs = [(CLCountryTracker *)self previousEligibilityTerrs];
   [(CLCountryTracker *)self previousEligibilityTerrsTimeStamp];
-  if ([(CLCountryTracker *)self shouldSendUpdateForCurrentList:v35 previousList:v25 previousTimestamp:@"territories" withDescription:?])
+  if ([(CLCountryTracker *)self shouldSendUpdateForCurrentList:v35 previousList:previousEligibilityTerrs previousTimestamp:@"territories" withDescription:?])
   {
 
     self->_previousEligibilityTerrs = [v35 copy];

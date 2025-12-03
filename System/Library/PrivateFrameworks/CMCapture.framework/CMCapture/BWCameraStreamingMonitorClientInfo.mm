@@ -1,6 +1,6 @@
 @interface BWCameraStreamingMonitorClientInfo
 - (void)dealloc;
-- (void)initWithProcessHandle:(void *)a1;
+- (void)initWithProcessHandle:(void *)handle;
 @end
 
 @implementation BWCameraStreamingMonitorClientInfo
@@ -12,14 +12,14 @@
   [(BWCameraStreamingMonitorClientInfo *)&v3 dealloc];
 }
 
-- (void)initWithProcessHandle:(void *)a1
+- (void)initWithProcessHandle:(void *)handle
 {
-  if (!a1)
+  if (!handle)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = handle;
   v5.super_class = BWCameraStreamingMonitorClientInfo;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)

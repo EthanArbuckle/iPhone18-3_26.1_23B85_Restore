@@ -1,41 +1,41 @@
 @interface PUIMutableStylePickerHomeScreenConfiguration
-- (void)setAccentColor:(id)a3;
-- (void)setLuminance:(double)a3;
-- (void)setSaturation:(double)a3;
-- (void)setVariation:(double)a3;
+- (void)setAccentColor:(id)color;
+- (void)setLuminance:(double)luminance;
+- (void)setSaturation:(double)saturation;
+- (void)setVariation:(double)variation;
 @end
 
 @implementation PUIMutableStylePickerHomeScreenConfiguration
 
-- (void)setAccentColor:(id)a3
+- (void)setAccentColor:(id)color
 {
-  v4 = a3;
-  v6 = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
-  v5 = [v6 copyWithVariatedColor:v4];
+  colorCopy = color;
+  accentStyle = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
+  v5 = [accentStyle copyWithVariatedColor:colorCopy];
 
   [(PUIStylePickerHomeScreenConfiguration *)self setAccentStyle:v5];
 }
 
-- (void)setVariation:(double)a3
+- (void)setVariation:(double)variation
 {
-  v6 = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
-  v5 = [v6 copyWithVariation:a3];
+  accentStyle = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
+  v5 = [accentStyle copyWithVariation:variation];
   [(PUIStylePickerHomeScreenConfiguration *)self setAccentStyle:v5];
 }
 
-- (void)setLuminance:(double)a3
+- (void)setLuminance:(double)luminance
 {
-  v6 = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
-  v5 = [v6 copyWithLuminance:a3];
+  accentStyle = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
+  v5 = [accentStyle copyWithLuminance:luminance];
   [(PUIStylePickerHomeScreenConfiguration *)self setAccentStyle:v5];
 }
 
-- (void)setSaturation:(double)a3
+- (void)setSaturation:(double)saturation
 {
-  v6 = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
-  v4 = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
-  [v4 luminance];
-  v5 = [v6 copyWithLuminance:? saturation:?];
+  accentStyle = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
+  accentStyle2 = [(PUIStylePickerHomeScreenConfiguration *)self accentStyle];
+  [accentStyle2 luminance];
+  v5 = [accentStyle copyWithLuminance:? saturation:?];
   [(PUIStylePickerHomeScreenConfiguration *)self setAccentStyle:v5];
 }
 

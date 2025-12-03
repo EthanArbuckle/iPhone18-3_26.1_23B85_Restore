@@ -1,16 +1,16 @@
 @interface KNArchivedActionGhostSelection
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)saveToArchiver:(id)a3 intoMessage:(void *)a4;
-- (void)setSelection:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver intoMessage:(void *)message;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation KNArchivedActionGhostSelection
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v6 = a3;
-  if (v6)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -28,34 +28,34 @@
 
   objc_msgSend_willModify(self, v4, v5);
   selection = self->_selection;
-  self->_selection = v6;
+  self->_selection = selectionCopy;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812EA908[48]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812EA908[48]);
 
   v6 = [KNActionGhostSelection alloc];
-  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v5, v10);
+  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v5, unarchiverCopy);
   objc_msgSend_setSelection_(self, v9, v8);
 }
 
-- (void)saveToArchiver:(id)a3 intoMessage:(void *)a4
+- (void)saveToArchiver:(id)archiver intoMessage:(void *)message
 {
-  v11 = a3;
+  archiverCopy = archiver;
   objc_opt_class();
   v8 = objc_msgSend_selection(self, v6, v7);
   v9 = TSUDynamicCast();
-  objc_msgSend_saveToArchive_archiver_(v9, v10, a4, v11);
+  objc_msgSend_saveToArchive_archiver_(v9, v10, message, archiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
-  objc_msgSend_setMessageVersion_(v4, v5, *MEMORY[0x277D809A8]);
-  v9 = v4;
+  archiverCopy = archiver;
+  objc_msgSend_setMessageVersion_(archiverCopy, v5, *MEMORY[0x277D809A8]);
+  v9 = archiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v7 = objc_msgSend_messageWithNewFunction_descriptor_(v9, v6, sub_275DAB014, off_2812EA908[48]);
 

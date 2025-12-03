@@ -1,91 +1,91 @@
 @interface DropInManager
-- (void)accessoryDidUpdateName:(id)a3;
-- (void)accessoryDidUpdateSupportedCapabilities:(id)a3;
-- (void)didAddHome:(id)a3;
-- (void)didRemoveHome:(id)a3;
-- (void)didUpdateHomes:(id)a3;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didAddUser:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveUser:(id)a4;
-- (void)home:(id)a3 didUpdateAccessControlForUser:(id)a4;
+- (void)accessoryDidUpdateName:(id)name;
+- (void)accessoryDidUpdateSupportedCapabilities:(id)capabilities;
+- (void)didAddHome:(id)home;
+- (void)didRemoveHome:(id)home;
+- (void)didUpdateHomes:(id)homes;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didAddUser:(id)user;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveUser:(id)user;
+- (void)home:(id)home didUpdateAccessControlForUser:(id)user;
 @end
 
 @implementation DropInManager
 
-- (void)didUpdateHomes:(id)a3
+- (void)didUpdateHomes:(id)homes
 {
   sub_249DF691C(0, &unk_28130D1A0, 0x277CD1A60);
   sub_249E7ABE8();
-  v4 = self;
+  selfCopy = self;
   sub_249E19EE0();
 }
 
-- (void)didAddHome:(id)a3
+- (void)didAddHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
-  sub_249E1A3D4(v4);
+  homeCopy = home;
+  selfCopy = self;
+  sub_249E1A3D4(homeCopy);
 }
 
-- (void)didRemoveHome:(id)a3
+- (void)didRemoveHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
-  sub_249E1A808(v4);
+  homeCopy = home;
+  selfCopy = self;
+  sub_249E1A808(homeCopy);
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
   sub_249E1B1A0();
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
   sub_249E1B1A0();
 }
 
-- (void)accessoryDidUpdateName:(id)a3
+- (void)accessoryDidUpdateName:(id)name
 {
-  v4 = a3;
-  v5 = self;
+  nameCopy = name;
+  selfCopy = self;
   sub_249E1B758();
 }
 
-- (void)accessoryDidUpdateSupportedCapabilities:(id)a3
+- (void)accessoryDidUpdateSupportedCapabilities:(id)capabilities
 {
-  v4 = a3;
-  v5 = self;
+  capabilitiesCopy = capabilities;
+  selfCopy = self;
   sub_249E1B758();
 }
 
-- (void)home:(id)a3 didAddUser:(id)a4
+- (void)home:(id)home didAddUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_249E1BB54(v6, v7);
+  homeCopy = home;
+  userCopy = user;
+  selfCopy = self;
+  sub_249E1BB54(homeCopy, userCopy);
 }
 
-- (void)home:(id)a3 didRemoveUser:(id)a4
+- (void)home:(id)home didRemoveUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_249E1BF6C(v6, v7);
+  homeCopy = home;
+  userCopy = user;
+  selfCopy = self;
+  sub_249E1BF6C(homeCopy, userCopy);
 }
 
-- (void)home:(id)a3 didUpdateAccessControlForUser:(id)a4
+- (void)home:(id)home didUpdateAccessControlForUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  homeCopy = home;
+  userCopy = user;
+  selfCopy = self;
   sub_249E1C104();
 }
 

@@ -1,28 +1,28 @@
 @interface FBAOSLogViewerDataSource
 - (BOOL)hasMoreLogs;
 - (BOOL)lastFetchReturnedZeroEvents;
-- (BOOL)persistence:(id)a3 results:(id)a4 error:(id)a5;
+- (BOOL)persistence:(id)persistence results:(id)results error:(id)error;
 - (BOOL)shouldContinue;
-- (FBAOSLogViewerDataSource)initWithArchive:(id)a3 pageSize:(int64_t)a4 pageCompletion:(id)a5 error:(id)a6;
-- (id)logAtIndex:(int64_t)a3;
-- (id)loggerLibWithArchive:(id)a3 pageSize:(unint64_t)a4;
+- (FBAOSLogViewerDataSource)initWithArchive:(id)archive pageSize:(int64_t)size pageCompletion:(id)completion error:(id)error;
+- (id)logAtIndex:(int64_t)index;
+- (id)loggerLibWithArchive:(id)archive pageSize:(unint64_t)size;
 - (int64_t)numberOfLogs;
 - (void)dealloc;
 - (void)fetchNextBatch;
 - (void)nextPage;
 - (void)nextPageForReal;
-- (void)persistenceDidFinishReadingForStartDate:(id)a3 endDate:(id)a4;
+- (void)persistenceDidFinishReadingForStartDate:(id)date endDate:(id)endDate;
 - (void)prepareForNextDateRangeFetch;
 - (void)prepareForNextPage;
 @end
 
 @implementation FBAOSLogViewerDataSource
 
-- (FBAOSLogViewerDataSource)initWithArchive:(id)a3 pageSize:(int64_t)a4 pageCompletion:(id)a5 error:(id)a6
+- (FBAOSLogViewerDataSource)initWithArchive:(id)archive pageSize:(int64_t)size pageCompletion:(id)completion error:(id)error
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  archiveCopy = archive;
+  completionCopy = completion;
+  errorCopy = error;
   v37.receiver = self;
   v37.super_class = FBAOSLogViewerDataSource;
   v14 = [(FBAOSLogViewerDataSource *)&v37 init];
@@ -34,7 +34,7 @@ LABEL_11:
   }
 
   v36 = 0;
-  v15 = [v11 checkResourceIsReachableAndReturnError:&v36];
+  v15 = [archiveCopy checkResourceIsReachableAndReturnError:&v36];
   v16 = v36;
   v17 = sub_10000A588();
   v18 = v17;
@@ -42,23 +42,23 @@ LABEL_11:
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v11 path];
+      path = [archiveCopy path];
       *buf = 138543362;
-      v39 = v19;
+      v39 = path;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Initializing log viewer with log archive [%{public}@]", buf, 0xCu);
     }
 
-    v20 = objc_retainBlock(v12);
+    v20 = objc_retainBlock(completionCopy);
     pageFetchCompletion = v14->_pageFetchCompletion;
     v14->_pageFetchCompletion = v20;
 
-    v22 = objc_retainBlock(v13);
+    v22 = objc_retainBlock(errorCopy);
     fetchErrorBlock = v14->_fetchErrorBlock;
     v14->_fetchErrorBlock = v22;
 
-    objc_storeStrong(&v14->_logArchivePath, a3);
-    v14->_pageSize = a4;
-    v24 = [(FBAOSLogViewerDataSource *)v14 loggerLibWithArchive:v11 pageSize:[(FBAOSLogViewerDataSource *)v14 pageSize]];
+    objc_storeStrong(&v14->_logArchivePath, archive);
+    v14->_pageSize = size;
+    v24 = [(FBAOSLogViewerDataSource *)v14 loggerLibWithArchive:archiveCopy pageSize:[(FBAOSLogViewerDataSource *)v14 pageSize]];
     loggerLib = v14->_loggerLib;
     v14->_loggerLib = v24;
 
@@ -73,14 +73,14 @@ LABEL_11:
     v14->_numberOfEmptyFetches = 0;
     v14->_pendingNextPageRequest = 0;
     v14->_fetchWatchdog = 0;
-    v28 = [(FBAOSLogViewerDataSource *)v14 fetchErrorBlock];
+    fetchErrorBlock = [(FBAOSLogViewerDataSource *)v14 fetchErrorBlock];
 
-    if (v28)
+    if (fetchErrorBlock)
     {
-      v29 = [(FBAOSLogViewerDataSource *)v14 loggerLib];
-      v30 = [v29 fba_hasValidStartAndEndDates];
+      loggerLib = [(FBAOSLogViewerDataSource *)v14 loggerLib];
+      fba_hasValidStartAndEndDates = [loggerLib fba_hasValidStartAndEndDates];
 
-      if ((v30 & 1) == 0)
+      if ((fba_hasValidStartAndEndDates & 1) == 0)
       {
         [(FBAOSLogViewerDataSource *)v14 setFoundCorruptDate:1];
         v31 = sub_10000A588();
@@ -89,9 +89,9 @@ LABEL_11:
           sub_1000922D8(v14, v31);
         }
 
-        v32 = [(FBAOSLogViewerDataSource *)v14 fetchErrorBlock];
+        fetchErrorBlock2 = [(FBAOSLogViewerDataSource *)v14 fetchErrorBlock];
         v33 = sub_10002791C(-1008);
-        (v32)[2](v32, v33);
+        (fetchErrorBlock2)[2](fetchErrorBlock2, v33);
       }
     }
 
@@ -119,10 +119,10 @@ LABEL_15:
 
 - (void)nextPage
 {
-  v3 = [(FBAOSLogViewerDataSource *)self loggerLib];
-  v4 = [v3 fba_hasValidStartAndEndDates];
+  loggerLib = [(FBAOSLogViewerDataSource *)self loggerLib];
+  fba_hasValidStartAndEndDates = [loggerLib fba_hasValidStartAndEndDates];
 
-  if (v4)
+  if (fba_hasValidStartAndEndDates)
   {
     v5 = sub_10000A588();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -152,41 +152,41 @@ LABEL_15:
 
 - (int64_t)numberOfLogs
 {
-  v2 = [(FBAOSLogViewerDataSource *)self savedEvents];
-  v3 = [v2 count];
+  savedEvents = [(FBAOSLogViewerDataSource *)self savedEvents];
+  v3 = [savedEvents count];
 
   return v3;
 }
 
-- (id)logAtIndex:(int64_t)a3
+- (id)logAtIndex:(int64_t)index
 {
-  v4 = [(FBAOSLogViewerDataSource *)self savedEvents];
-  v5 = [v4 objectAtIndexedSubscript:a3];
-  v6 = [v5 fba_toString];
+  savedEvents = [(FBAOSLogViewerDataSource *)self savedEvents];
+  v5 = [savedEvents objectAtIndexedSubscript:index];
+  fba_toString = [v5 fba_toString];
 
-  return v6;
+  return fba_toString;
 }
 
 - (BOOL)hasMoreLogs
 {
-  v3 = [(FBAOSLogViewerDataSource *)self oldestEventTimestamp];
+  oldestEventTimestamp = [(FBAOSLogViewerDataSource *)self oldestEventTimestamp];
 
-  if (!v3)
+  if (!oldestEventTimestamp)
   {
     return 1;
   }
 
-  v4 = [(FBAOSLogViewerDataSource *)self loggerLib];
+  loggerLib = [(FBAOSLogViewerDataSource *)self loggerLib];
 
-  if (!v4)
+  if (!loggerLib)
   {
     return 0;
   }
 
-  v5 = [(FBAOSLogViewerDataSource *)self oldestEventTimestamp];
-  v6 = [(FBAOSLogViewerDataSource *)self loggerLib];
-  v7 = [v6 endDate];
-  v8 = [v5 compare:v7] != 0;
+  oldestEventTimestamp2 = [(FBAOSLogViewerDataSource *)self oldestEventTimestamp];
+  loggerLib2 = [(FBAOSLogViewerDataSource *)self loggerLib];
+  endDate = [loggerLib2 endDate];
+  v8 = [oldestEventTimestamp2 compare:endDate] != 0;
 
   return v8;
 }
@@ -225,17 +225,17 @@ LABEL_15:
     sub_100092400(self);
   }
 
-  v4 = [(FBAOSLogViewerDataSource *)self oldestEventTimestamp];
-  v5 = v4;
-  if (v4)
+  oldestEventTimestamp = [(FBAOSLogViewerDataSource *)self oldestEventTimestamp];
+  v5 = oldestEventTimestamp;
+  if (oldestEventTimestamp)
   {
-    v6 = v4;
+    startDate = oldestEventTimestamp;
   }
 
   else
   {
-    v7 = [(FBAOSLogViewerDataSource *)self loggerLib];
-    v6 = [v7 startDate];
+    loggerLib = [(FBAOSLogViewerDataSource *)self loggerLib];
+    startDate = [loggerLib startDate];
   }
 
   v8 = 10.0;
@@ -252,46 +252,46 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Time delta: [%f]", &v15, 0xCu);
   }
 
-  v10 = [v6 dateByAddingTimeInterval:v8];
+  v10 = [startDate dateByAddingTimeInterval:v8];
   v11 = sub_10000A588();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v6 fba_toString];
-    v13 = [v10 fba_toString];
+    fba_toString = [startDate fba_toString];
+    fba_toString2 = [v10 fba_toString];
     v15 = 138543618;
-    v16 = *&v12;
+    v16 = *&fba_toString;
     v17 = 2114;
-    v18 = v13;
+    v18 = fba_toString2;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "start date: [%{public}@]  end date: [%{public}@] ", &v15, 0x16u);
   }
 
   [(FBAOSLogViewerDataSource *)self prepareForNextDateRangeFetch];
-  v14 = [(FBAOSLogViewerDataSource *)self loggerLib];
-  [v14 fetchFromStartDate:v6 toEndDate:v10];
+  loggerLib2 = [(FBAOSLogViewerDataSource *)self loggerLib];
+  [loggerLib2 fetchFromStartDate:startDate toEndDate:v10];
 }
 
-- (id)loggerLibWithArchive:(id)a3 pageSize:(unint64_t)a4
+- (id)loggerLibWithArchive:(id)archive pageSize:(unint64_t)size
 {
-  v5 = a3;
+  archiveCopy = archive;
   v6 = objc_alloc_init(OSLogPersistence);
   [v6 setOptions:1];
-  [v6 setBatchSize:a4];
-  [v6 setLogArchive:v5];
+  [v6 setBatchSize:size];
+  [v6 setLogArchive:archiveCopy];
 
   v7 = sub_10000A588();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 archiveVersion];
-    v9 = [v6 startDate];
-    v10 = [v9 fba_toString];
-    v11 = [v6 endDate];
-    v12 = [v11 fba_toString];
+    archiveVersion = [v6 archiveVersion];
+    startDate = [v6 startDate];
+    fba_toString = [startDate fba_toString];
+    endDate = [v6 endDate];
+    fba_toString2 = [endDate fba_toString];
     v14 = 134218498;
-    v15 = v8;
+    v15 = archiveVersion;
     v16 = 2114;
-    v17 = v10;
+    v17 = fba_toString;
     v18 = 2114;
-    v19 = v12;
+    v19 = fba_toString2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Log archive version is [%lu] start date: [%{public}@] end date [%{public}@]", &v14, 0x20u);
   }
 
@@ -308,10 +308,10 @@ LABEL_15:
   return [(FBAOSLogViewerDataSource *)self hasMoreLogs];
 }
 
-- (BOOL)persistence:(id)a3 results:(id)a4 error:(id)a5
+- (BOOL)persistence:(id)persistence results:(id)results error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  resultsCopy = results;
+  errorCopy = error;
   [(FBAOSLogViewerDataSource *)self setGotDelegateCallbackInLastFetch:1];
   v9 = sub_10000A588();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -319,16 +319,16 @@ LABEL_15:
     sub_100092484();
   }
 
-  if ([v7 count])
+  if ([resultsCopy count])
   {
-    if (!v8)
+    if (!errorCopy)
     {
-      v12 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+      fetchErrorBlock2 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v14 = v7;
+      v14 = resultsCopy;
       v15 = [v14 countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v15)
       {
@@ -344,20 +344,20 @@ LABEL_14:
           }
 
           v19 = *(*(&v28 + 1) + 8 * v18);
-          v20 = [(FBAOSLogViewerDataSource *)self eventCountForCurrentPage];
-          v21 = [v12 count]+ v20;
+          eventCountForCurrentPage = [(FBAOSLogViewerDataSource *)self eventCountForCurrentPage];
+          v21 = [fetchErrorBlock2 count]+ eventCountForCurrentPage;
           if (v21 >= [(FBAOSLogViewerDataSource *)self pageSize])
           {
             break;
           }
 
-          v22 = [v19 machTimestamp];
-          if (v22 > [(FBAOSLogViewerDataSource *)self oldestEventMachTime])
+          machTimestamp = [v19 machTimestamp];
+          if (machTimestamp > [(FBAOSLogViewerDataSource *)self oldestEventMachTime])
           {
-            [v12 addObject:v19];
+            [fetchErrorBlock2 addObject:v19];
             -[FBAOSLogViewerDataSource setOldestEventMachTime:](self, "setOldestEventMachTime:", [v19 machTimestamp]);
-            v23 = [v19 timestamp];
-            [(FBAOSLogViewerDataSource *)self setOldestEventTimestamp:v23];
+            timestamp = [v19 timestamp];
+            [(FBAOSLogViewerDataSource *)self setOldestEventTimestamp:timestamp];
           }
 
           if (v16 == ++v18)
@@ -373,60 +373,60 @@ LABEL_14:
         }
       }
 
-      [(FBAOSLogViewerDataSource *)self setEventCountForCurrentPage:[v12 count]+ [(FBAOSLogViewerDataSource *)self eventCountForCurrentPage]];
-      [(FBAOSLogViewerDataSource *)self setNumberOfEventsInLastFetch:[v12 count]];
+      [(FBAOSLogViewerDataSource *)self setEventCountForCurrentPage:[fetchErrorBlock2 count]+ [(FBAOSLogViewerDataSource *)self eventCountForCurrentPage]];
+      [(FBAOSLogViewerDataSource *)self setNumberOfEventsInLastFetch:[fetchErrorBlock2 count]];
       v24 = sub_10000A588();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        sub_100092530(v12);
+        sub_100092530(fetchErrorBlock2);
       }
 
-      v25 = [(FBAOSLogViewerDataSource *)self savedEvents];
-      v26 = [v12 copy];
-      [v25 addObjectsFromArray:v26];
+      savedEvents = [(FBAOSLogViewerDataSource *)self savedEvents];
+      v26 = [fetchErrorBlock2 copy];
+      [savedEvents addObjectsFromArray:v26];
 
-      v13 = [(FBAOSLogViewerDataSource *)self shouldContinue];
+      shouldContinue = [(FBAOSLogViewerDataSource *)self shouldContinue];
       goto LABEL_25;
     }
 
     v10 = sub_10000A588();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_1000924B8(v8, v10);
+      sub_1000924B8(errorCopy, v10);
     }
 
-    v11 = [(FBAOSLogViewerDataSource *)self fetchErrorBlock];
+    fetchErrorBlock = [(FBAOSLogViewerDataSource *)self fetchErrorBlock];
 
-    if (!v11)
+    if (!fetchErrorBlock)
     {
-      v13 = 0;
+      shouldContinue = 0;
       goto LABEL_26;
     }
 
-    v12 = [(FBAOSLogViewerDataSource *)self fetchErrorBlock];
-    (v12[2].isa)(v12, v8);
+    fetchErrorBlock2 = [(FBAOSLogViewerDataSource *)self fetchErrorBlock];
+    (fetchErrorBlock2[2].isa)(fetchErrorBlock2, errorCopy);
   }
 
   else
   {
-    v12 = sub_10000A588();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    fetchErrorBlock2 = sub_10000A588();
+    if (os_log_type_enabled(fetchErrorBlock2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No more results, done", buf, 2u);
+      _os_log_impl(&_mh_execute_header, fetchErrorBlock2, OS_LOG_TYPE_DEFAULT, "No more results, done", buf, 2u);
     }
   }
 
-  v13 = 0;
+  shouldContinue = 0;
 LABEL_25:
 
 LABEL_26:
-  return v13;
+  return shouldContinue;
 }
 
-- (void)persistenceDidFinishReadingForStartDate:(id)a3 endDate:(id)a4
+- (void)persistenceDidFinishReadingForStartDate:(id)date endDate:(id)endDate
 {
-  if ([(FBAOSLogViewerDataSource *)self gotDelegateCallbackInLastFetch:a3]&& ![(FBAOSLogViewerDataSource *)self lastFetchReturnedZeroEvents])
+  if ([(FBAOSLogViewerDataSource *)self gotDelegateCallbackInLastFetch:date]&& ![(FBAOSLogViewerDataSource *)self lastFetchReturnedZeroEvents])
   {
     v5 = 0;
   }
@@ -437,14 +437,14 @@ LABEL_26:
   }
 
   [(FBAOSLogViewerDataSource *)self setNumberOfEmptyFetches:v5];
-  v6 = [(FBAOSLogViewerDataSource *)self fetchWatchdog];
-  [(FBAOSLogViewerDataSource *)self setFetchWatchdog:v6 + 1];
-  if (v6 < 1000)
+  fetchWatchdog = [(FBAOSLogViewerDataSource *)self fetchWatchdog];
+  [(FBAOSLogViewerDataSource *)self setFetchWatchdog:fetchWatchdog + 1];
+  if (fetchWatchdog < 1000)
   {
-    v10 = [(FBAOSLogViewerDataSource *)self shouldContinue];
+    shouldContinue = [(FBAOSLogViewerDataSource *)self shouldContinue];
     v11 = sub_10000A588();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
-    if (v10)
+    if (shouldContinue)
     {
       if (v12)
       {
@@ -466,9 +466,9 @@ LABEL_26:
         sub_1000925B4();
       }
 
-      v13 = [(FBAOSLogViewerDataSource *)self pageFetchCompletion];
+      pageFetchCompletion = [(FBAOSLogViewerDataSource *)self pageFetchCompletion];
 
-      if (v13)
+      if (pageFetchCompletion)
       {
         v14 = sub_10000A588();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -476,8 +476,8 @@ LABEL_26:
           sub_1000925E8(self);
         }
 
-        v15 = [(FBAOSLogViewerDataSource *)self pageFetchCompletion];
-        (v15)[2](v15, self);
+        pageFetchCompletion2 = [(FBAOSLogViewerDataSource *)self pageFetchCompletion];
+        (pageFetchCompletion2)[2](pageFetchCompletion2, self);
       }
 
       if ([(FBAOSLogViewerDataSource *)self pendingNextPageRequest]>= 1)
@@ -503,9 +503,9 @@ LABEL_26:
       sub_1000926E4();
     }
 
-    v8 = [(FBAOSLogViewerDataSource *)self fetchErrorBlock];
+    fetchErrorBlock = [(FBAOSLogViewerDataSource *)self fetchErrorBlock];
     v9 = sub_10002791C(-1008);
-    (v8)[2](v8, v9);
+    (fetchErrorBlock)[2](fetchErrorBlock, v9);
   }
 }
 

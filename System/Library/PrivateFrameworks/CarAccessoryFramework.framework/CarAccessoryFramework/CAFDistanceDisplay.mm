@@ -12,8 +12,8 @@
 - (CAFUInt64Range)distanceMilesRange;
 - (NSMeasurement)distanceKM;
 - (NSMeasurement)distanceMiles;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFDistanceDisplay
@@ -23,18 +23,18 @@
   v3 = objc_opt_class();
   if (v3 != objc_opt_class())
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___CAFDistanceDisplay;
     objc_msgSendSuper2(&v4, sel_load);
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -47,12 +47,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -68,13 +68,13 @@
 - (CAFMeasurementCharacteristic)distanceKMCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000003000004A"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004A"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000003000004A"];
@@ -93,49 +93,49 @@
 
 - (NSMeasurement)distanceKM
 {
-  v2 = [(CAFDistanceDisplay *)self distanceKMCharacteristic];
-  v3 = [v2 measurementValue];
+  distanceKMCharacteristic = [(CAFDistanceDisplay *)self distanceKMCharacteristic];
+  measurementValue = [distanceKMCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt64Range)distanceKMRange
 {
-  v2 = [(CAFDistanceDisplay *)self distanceKMCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt64Range];
+  distanceKMCharacteristic = [(CAFDistanceDisplay *)self distanceKMCharacteristic];
+  range = [distanceKMCharacteristic range];
+  uInt64Range = [range uInt64Range];
 
-  return v4;
+  return uInt64Range;
 }
 
 - (CAFMeasurementRange)distanceKMMeasurementRange
 {
-  v3 = [(CAFDistanceDisplay *)self distanceKMRange];
-  v4 = [(CAFDistanceDisplay *)self distanceKM];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  distanceKMRange = [(CAFDistanceDisplay *)self distanceKMRange];
+  distanceKM = [(CAFDistanceDisplay *)self distanceKM];
+  unit = [distanceKM unit];
+  v6 = [distanceKMRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)distanceKMInvalid
 {
-  v2 = [(CAFDistanceDisplay *)self distanceKMCharacteristic];
-  v3 = [v2 isInvalid];
+  distanceKMCharacteristic = [(CAFDistanceDisplay *)self distanceKMCharacteristic];
+  isInvalid = [distanceKMCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFMeasurementCharacteristic)distanceMilesCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000003000004B"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004B"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000003000004B"];
@@ -154,49 +154,49 @@
 
 - (NSMeasurement)distanceMiles
 {
-  v2 = [(CAFDistanceDisplay *)self distanceMilesCharacteristic];
-  v3 = [v2 measurementValue];
+  distanceMilesCharacteristic = [(CAFDistanceDisplay *)self distanceMilesCharacteristic];
+  measurementValue = [distanceMilesCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt64Range)distanceMilesRange
 {
-  v2 = [(CAFDistanceDisplay *)self distanceMilesCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt64Range];
+  distanceMilesCharacteristic = [(CAFDistanceDisplay *)self distanceMilesCharacteristic];
+  range = [distanceMilesCharacteristic range];
+  uInt64Range = [range uInt64Range];
 
-  return v4;
+  return uInt64Range;
 }
 
 - (CAFMeasurementRange)distanceMilesMeasurementRange
 {
-  v3 = [(CAFDistanceDisplay *)self distanceMilesRange];
-  v4 = [(CAFDistanceDisplay *)self distanceMiles];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  distanceMilesRange = [(CAFDistanceDisplay *)self distanceMilesRange];
+  distanceMiles = [(CAFDistanceDisplay *)self distanceMiles];
+  unit = [distanceMiles unit];
+  v6 = [distanceMilesRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)distanceMilesInvalid
 {
-  v2 = [(CAFDistanceDisplay *)self distanceMilesCharacteristic];
-  v3 = [v2 isInvalid];
+  distanceMilesCharacteristic = [(CAFDistanceDisplay *)self distanceMilesCharacteristic];
+  isInvalid = [distanceMilesCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (BOOL)registeredForDistanceKM
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000003000004A"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004A"];
 
   return v10;
 }
@@ -204,13 +204,13 @@
 - (BOOL)registeredForDistanceMiles
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000003000004B"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004B"];
 
   return v10;
 }

@@ -1,18 +1,18 @@
 @interface SXFloatDataFormat
-- (int64_t)decimalsWithValue:(id)a3 withType:(int)a4;
+- (int64_t)decimalsWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXFloatDataFormat
 
-- (int64_t)decimalsWithValue:(id)a3 withType:(int)a4
+- (int64_t)decimalsWithValue:(id)value withType:(int)type
 {
-  if (!a3 || a4 != 2)
+  if (!value || type != 2)
   {
     return 2;
   }
 
-  v6 = [a3 integerValue];
-  return v6 & ~(v6 >> 63);
+  integerValue = [value integerValue];
+  return integerValue & ~(integerValue >> 63);
 }
 
 @end

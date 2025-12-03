@@ -91,16 +91,16 @@
   v10 = 3;
   while (1)
   {
-    v11 = [v8 tokenizer];
-    v12 = [v11 positionFromPosition:v7 toBoundary:1 inDirection:1];
+    tokenizer = [v8 tokenizer];
+    v12 = [tokenizer positionFromPosition:v7 toBoundary:1 inDirection:1];
 
     if (v12)
     {
       break;
     }
 
-    v13 = [v8 tokenizer];
-    v14 = [v13 positionFromPosition:v7 toBoundary:3 inDirection:1];
+    tokenizer2 = [v8 tokenizer];
+    v14 = [tokenizer2 positionFromPosition:v7 toBoundary:3 inDirection:1];
 
     if (!v14 || [v8 comparePosition:v14 toPosition:v7] != -1)
     {
@@ -112,8 +112,8 @@
     v12 = [v8 textInRange:v15];
 
     v9[2](v9, v12);
-    v16 = [v8 tokenizer];
-    v17 = [v16 isPosition:v7 atBoundary:1 inDirection:0];
+    tokenizer3 = [v8 tokenizer];
+    v17 = [tokenizer3 isPosition:v7 atBoundary:1 inDirection:0];
 
     if (v17)
     {
@@ -156,15 +156,15 @@ LABEL_17:
 {
   v8 = a4;
   v9 = a5;
-  v10 = [a1 _positionFromPosition:a3 toPreviousWordBoundaryInDocument:v8 tokenAccumulator:v9];
+  v10 = [self _positionFromPosition:a3 toPreviousWordBoundaryInDocument:v8 tokenAccumulator:v9];
   if (v10)
   {
-    v11 = [v8 tokenizer];
-    v12 = [v11 isPosition:v10 atBoundary:1 inDirection:1];
+    tokenizer = [v8 tokenizer];
+    v12 = [tokenizer isPosition:v10 atBoundary:1 inDirection:1];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [a1 _positionFromPosition:v10 toPreviousWordBoundaryInDocument:v8 tokenAccumulator:v9];
+      v13 = [self _positionFromPosition:v10 toPreviousWordBoundaryInDocument:v8 tokenAccumulator:v9];
 
       v10 = v13;
     }
@@ -180,8 +180,8 @@ LABEL_17:
   v9 = v8;
   if (v7)
   {
-    v10 = [v8 tokenizer];
-    v11 = [v10 positionFromPosition:v7 toBoundary:a5 inDirection:1];
+    tokenizer = [v8 tokenizer];
+    v11 = [tokenizer positionFromPosition:v7 toBoundary:a5 inDirection:1];
 
     if (a5 == 3 && v11)
     {
@@ -266,8 +266,8 @@ LABEL_17:
   v9 = v8;
   if (v7)
   {
-    v10 = [v8 tokenizer];
-    v11 = [v10 positionFromPosition:v7 toBoundary:a5 inDirection:0];
+    tokenizer = [v8 tokenizer];
+    v11 = [tokenizer positionFromPosition:v7 toBoundary:a5 inDirection:0];
 
     if (a5 == 3 && v11)
     {
@@ -326,17 +326,17 @@ LABEL_17:
 - (id)initWithDocument:()UITextInputAdditions contextBoundary:
 {
   v6 = a3;
-  v7 = [v6 selectedTextRange];
-  v8 = [v6 markedTextRange];
-  v9 = v8;
-  if (v8)
+  selectedTextRange = [v6 selectedTextRange];
+  markedTextRange = [v6 markedTextRange];
+  v9 = markedTextRange;
+  if (markedTextRange)
   {
-    v10 = v8;
+    v10 = markedTextRange;
   }
 
   else
   {
-    v10 = v7;
+    v10 = selectedTextRange;
   }
 
   v11 = v10;
@@ -344,11 +344,11 @@ LABEL_17:
   if (v11)
   {
     v12 = v11;
-    v13 = [v11 start];
-    v35 = [a1 _contextBeforePosition:v13 inDocument:v6 toBoundary:a4];
+    start = [v11 start];
+    v35 = [self _contextBeforePosition:start inDocument:v6 toBoundary:a4];
 
     v14 = [v12 end];
-    v34 = [a1 _contextAfterPosition:v14 inDocument:v6 toBoundary:a4];
+    v34 = [self _contextAfterPosition:v14 inDocument:v6 toBoundary:a4];
   }
 
   else
@@ -357,19 +357,19 @@ LABEL_17:
     v35 = 0;
   }
 
-  v15 = [v9 start];
-  v16 = [v7 start];
-  v17 = [a1 textRangeFromPosition:v15 toPosition:v16 inDocument:v6];
+  start2 = [v9 start];
+  start3 = [selectedTextRange start];
+  v17 = [self textRangeFromPosition:start2 toPosition:start3 inDocument:v6];
 
-  v18 = [v7 end];
+  v18 = [selectedTextRange end];
   v19 = [v9 end];
-  v20 = [a1 textRangeFromPosition:v18 toPosition:v19 inDocument:v6];
+  v20 = [self textRangeFromPosition:v18 toPosition:v19 inDocument:v6];
 
   v33 = v17;
-  v21 = [a1 copyAttributedTextInRange:v17 fromDocument:v6];
-  v22 = [a1 copyAttributedTextInRange:v7 fromDocument:v6];
+  v21 = [self copyAttributedTextInRange:v17 fromDocument:v6];
+  v22 = [self copyAttributedTextInRange:selectedTextRange fromDocument:v6];
   v32 = v20;
-  v23 = [a1 copyAttributedTextInRange:v20 fromDocument:v6];
+  v23 = [self copyAttributedTextInRange:v20 fromDocument:v6];
   v31 = v21;
   if (v9)
   {
@@ -403,12 +403,12 @@ LABEL_17:
 LABEL_16:
   if (a4 == 3)
   {
-    v28 = [a1 initWithUnboundedContextBefore:v35 markedText:v25 selectedText:v22 unboundedContextAfter:v34 selectedRangeInMarkedText:{v26, v27}];
+    v28 = [self initWithUnboundedContextBefore:v35 markedText:v25 selectedText:v22 unboundedContextAfter:v34 selectedRangeInMarkedText:{v26, v27}];
   }
 
   else
   {
-    v28 = [a1 initWithContextBefore:v35 markedText:v25 selectedText:v22 contextAfter:v34 selectedRangeInMarkedText:{v26, v27}];
+    v28 = [self initWithContextBefore:v35 markedText:v25 selectedText:v22 contextAfter:v34 selectedRangeInMarkedText:{v26, v27}];
   }
 
   v29 = v28;
@@ -419,12 +419,12 @@ LABEL_16:
 - (id)initWithSecureTextDocument:()UITextInputAdditions
 {
   v4 = a3;
-  v5 = [v4 selectedTextRange];
-  if (v5)
+  selectedTextRange = [v4 selectedTextRange];
+  if (selectedTextRange)
   {
-    v6 = [v4 beginningOfDocument];
-    v7 = [v5 start];
-    v8 = [v4 textRangeFromPosition:v6 toPosition:v7];
+    beginningOfDocument = [v4 beginningOfDocument];
+    start = [selectedTextRange start];
+    v8 = [v4 textRangeFromPosition:beginningOfDocument toPosition:start];
 
     if ([v8 isEmpty])
     {
@@ -436,19 +436,19 @@ LABEL_16:
       v9 = [v4 attributedTextInRange:v8];
     }
 
-    if ([v5 isEmpty])
+    if ([selectedTextRange isEmpty])
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = [v4 attributedTextInRange:v5];
+      v11 = [v4 attributedTextInRange:selectedTextRange];
     }
 
-    v12 = [v5 end];
-    v13 = [v4 endOfDocument];
-    v14 = [v4 textRangeFromPosition:v12 toPosition:v13];
+    v12 = [selectedTextRange end];
+    endOfDocument = [v4 endOfDocument];
+    v14 = [v4 textRangeFromPosition:v12 toPosition:endOfDocument];
 
     if ([v14 isEmpty])
     {
@@ -460,12 +460,12 @@ LABEL_16:
       v15 = [v4 attributedTextInRange:v14];
     }
 
-    v10 = [a1 initWithContextBefore:v9 markedText:0 selectedText:v11 contextAfter:v15 selectedRangeInMarkedText:{0x7FFFFFFFFFFFFFFFLL, 0}];
+    v10 = [self initWithContextBefore:v9 markedText:0 selectedText:v11 contextAfter:v15 selectedRangeInMarkedText:{0x7FFFFFFFFFFFFFFFLL, 0}];
   }
 
   else
   {
-    v10 = [a1 initWithContextBefore:0 markedText:0 selectedText:0 contextAfter:0 selectedRangeInMarkedText:{0x7FFFFFFFFFFFFFFFLL, 0}];
+    v10 = [self initWithContextBefore:0 markedText:0 selectedText:0 contextAfter:0 selectedRangeInMarkedText:{0x7FFFFFFFFFFFFFFFLL, 0}];
   }
 
   return v10;
@@ -474,31 +474,31 @@ LABEL_16:
 - (id)fullString
 {
   v2 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:&stru_1EFB14550];
-  v3 = [a1 contextBeforeInput];
-  v4 = [v3 length];
+  contextBeforeInput = [self contextBeforeInput];
+  v4 = [contextBeforeInput length];
 
   if (v4)
   {
-    v5 = [a1 contextBeforeInput];
-    [v2 appendAttributedString:v5];
+    contextBeforeInput2 = [self contextBeforeInput];
+    [v2 appendAttributedString:contextBeforeInput2];
   }
 
-  v6 = [a1 selectedText];
-  v7 = [v6 length];
+  selectedText = [self selectedText];
+  v7 = [selectedText length];
 
   if (v7)
   {
-    v8 = [a1 selectedText];
-    [v2 appendAttributedString:v8];
+    selectedText2 = [self selectedText];
+    [v2 appendAttributedString:selectedText2];
   }
 
-  v9 = [a1 contextAfterInput];
-  v10 = [v9 length];
+  contextAfterInput = [self contextAfterInput];
+  v10 = [contextAfterInput length];
 
   if (v10)
   {
-    v11 = [a1 contextAfterInput];
-    [v2 appendAttributedString:v11];
+    contextAfterInput2 = [self contextAfterInput];
+    [v2 appendAttributedString:contextAfterInput2];
   }
 
   return v2;
@@ -506,10 +506,10 @@ LABEL_16:
 
 - (uint64_t)_selectedTextRange
 {
-  v2 = [a1 contextBeforeInput];
-  v3 = [v2 length];
-  v4 = [a1 selectedText];
-  [v4 length];
+  contextBeforeInput = [self contextBeforeInput];
+  v3 = [contextBeforeInput length];
+  selectedText = [self selectedText];
+  [selectedText length];
 
   return v3;
 }

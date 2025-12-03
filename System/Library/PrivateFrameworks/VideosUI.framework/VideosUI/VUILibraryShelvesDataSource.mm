@@ -1,20 +1,20 @@
 @interface VUILibraryShelvesDataSource
-- (VUILibraryShelvesDataSource)initWithValidShelfTypes:(id)a3;
+- (VUILibraryShelvesDataSource)initWithValidShelfTypes:(id)types;
 - (VUIShelvesDataSourceDelegate)shelvesDelegate;
 @end
 
 @implementation VUILibraryShelvesDataSource
 
-- (VUILibraryShelvesDataSource)initWithValidShelfTypes:(id)a3
+- (VUILibraryShelvesDataSource)initWithValidShelfTypes:(id)types
 {
-  v5 = a3;
+  typesCopy = types;
   v9.receiver = self;
   v9.super_class = VUILibraryShelvesDataSource;
   v6 = [(VUILibraryShelvesDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_shelfTypes, a3);
+    objc_storeStrong(&v6->_shelfTypes, types);
   }
 
   return v7;

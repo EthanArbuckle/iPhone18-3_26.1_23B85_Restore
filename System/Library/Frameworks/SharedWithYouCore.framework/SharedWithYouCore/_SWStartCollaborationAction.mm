@@ -1,24 +1,24 @@
 @interface _SWStartCollaborationAction
 - (_SWCollaborationMetadata)collaborationMetadata;
-- (void)fulfillWithURL:(id)a3 updatedMetadata:(id)a4;
+- (void)fulfillWithURL:(id)l updatedMetadata:(id)metadata;
 @end
 
 @implementation _SWStartCollaborationAction
 
-- (void)fulfillWithURL:(id)a3 updatedMetadata:(id)a4
+- (void)fulfillWithURL:(id)l updatedMetadata:(id)metadata
 {
   v4.receiver = self;
   v4.super_class = _SWStartCollaborationAction;
-  [(SWStartCollaborationAction *)&v4 fulfillUsingURL:a3 updatedMetadata:a4];
+  [(SWStartCollaborationAction *)&v4 fulfillUsingURL:l updatedMetadata:metadata];
 }
 
 - (_SWCollaborationMetadata)collaborationMetadata
 {
   v4.receiver = self;
   v4.super_class = _SWStartCollaborationAction;
-  v2 = [(SWStartCollaborationAction *)&v4 collaborationMetadata];
+  collaborationMetadata = [(SWStartCollaborationAction *)&v4 collaborationMetadata];
 
-  return v2;
+  return collaborationMetadata;
 }
 
 @end

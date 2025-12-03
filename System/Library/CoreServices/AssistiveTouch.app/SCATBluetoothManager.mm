@@ -2,29 +2,29 @@
 + (id)sharedInstance;
 + (id)superNew;
 - (SCATBluetoothManager)init;
-- (void)_accessoryCustomMessageForAccessoryManager:(BTAccessoryManagerImpl *)a3 device:(BTDeviceImpl *)a4 customMessageType:(int)a5 data:(char *)a6 dataSize:(unint64_t)a7;
+- (void)_accessoryCustomMessageForAccessoryManager:(BTAccessoryManagerImpl *)manager device:(BTDeviceImpl *)device customMessageType:(int)type data:(char *)data dataSize:(unint64_t)size;
 - (void)_beginAttach;
 - (void)_beginDetach;
 - (void)_beginStateTransitionIfNecessary;
-- (void)_didConnectWithSession:(BTSessionImpl *)a3;
+- (void)_didConnectWithSession:(BTSessionImpl *)session;
 - (void)_didDisconnect;
 - (void)_probeAccessories;
-- (void)_sessionEventForSession:(BTSessionImpl *)a3 event:(int)a4 result:(int)a5;
-- (void)addActivationReason:(id)a3;
-- (void)addDeviceListener:(id)a3;
-- (void)checkIfActiveForReason:(id)a3 completion:(id)a4;
-- (void)getExtantDevicesWithCompletion:(id)a3;
-- (void)removeActivationReason:(id)a3;
-- (void)removeDeviceListener:(id)a3;
-- (void)sendConfigurationMessageToDevice:(id)a3 ofType:(unsigned __int8)a4 value:(unsigned int)a5;
-- (void)sendCustomMessageToDevice:(id)a3 ofType:(int)a4 withData:(id)a5;
+- (void)_sessionEventForSession:(BTSessionImpl *)session event:(int)event result:(int)result;
+- (void)addActivationReason:(id)reason;
+- (void)addDeviceListener:(id)listener;
+- (void)checkIfActiveForReason:(id)reason completion:(id)completion;
+- (void)getExtantDevicesWithCompletion:(id)completion;
+- (void)removeActivationReason:(id)reason;
+- (void)removeDeviceListener:(id)listener;
+- (void)sendConfigurationMessageToDevice:(id)device ofType:(unsigned __int8)type value:(unsigned int)value;
+- (void)sendCustomMessageToDevice:(id)device ofType:(int)type withData:(id)data;
 @end
 
 @implementation SCATBluetoothManager
 
 + (id)superNew
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___SCATBluetoothManager;
   v2 = objc_msgSendSuper2(&v4, "new");
 
@@ -123,8 +123,8 @@
 
   if ([(SCATBluetoothManager *)self _sessionState]!= 1 && [(SCATBluetoothManager *)self _sessionState]!= 3)
   {
-    v5 = [(SCATBluetoothManager *)self _desiredSessionState];
-    if (v5 != [(SCATBluetoothManager *)self _sessionState])
+    _desiredSessionState = [(SCATBluetoothManager *)self _desiredSessionState];
+    if (_desiredSessionState != [(SCATBluetoothManager *)self _sessionState])
     {
       if ([(SCATBluetoothManager *)self _desiredSessionState]== 2)
       {
@@ -135,7 +135,7 @@
       {
         if ([(SCATBluetoothManager *)self _desiredSessionState])
         {
-          v6 = [(SCATBluetoothManager *)self _desiredSessionState];
+          _desiredSessionState2 = [(SCATBluetoothManager *)self _desiredSessionState];
           _AXAssert();
         }
 
@@ -212,8 +212,8 @@ LABEL_48:
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v11 = [(NSMutableDictionary *)self->_addressToDeviceMap keyEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v51 objects:v58 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->_addressToDeviceMap keyEnumerator];
+  v12 = [keyEnumerator countByEnumeratingWithState:&v51 objects:v58 count:16];
   if (v12)
   {
     v13 = v12;
@@ -224,7 +224,7 @@ LABEL_48:
       {
         if (*v52 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v16 = *(*(&v51 + 1) + 8 * i);
@@ -240,7 +240,7 @@ LABEL_48:
         [v19 deviceDisappeared];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v51 objects:v58 count:16];
+      v13 = [keyEnumerator countByEnumeratingWithState:&v51 objects:v58 count:16];
     }
 
     while (v13);
@@ -341,11 +341,11 @@ LABEL_48:
   self->_addressToDeviceMap = v9;
 }
 
-- (void)_didConnectWithSession:(BTSessionImpl *)a3
+- (void)_didConnectWithSession:(BTSessionImpl *)session
 {
   dispatch_assert_queue_V2(self->_queue);
   self->_sessionState = 2;
-  self->_session = a3;
+  self->_session = session;
   BTAccessoryManagerGetDefault();
   BTLocalDeviceGetDefault();
   BTAccessoryManagerAddCallbacks();
@@ -369,13 +369,13 @@ LABEL_48:
   self->_session = 0;
 }
 
-- (void)_sessionEventForSession:(BTSessionImpl *)a3 event:(int)a4 result:(int)a5
+- (void)_sessionEventForSession:(BTSessionImpl *)session event:(int)event result:(int)result
 {
-  if (a4 <= 1)
+  if (event <= 1)
   {
-    if (a4)
+    if (event)
     {
-      if (a4 == 1)
+      if (event == 1)
       {
         v7 = SWCHLogHW();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -399,18 +399,18 @@ LABEL_48:
       }
 
       self->_sessionState = 1;
-      if (a5)
+      if (result)
       {
         goto LABEL_23;
       }
 
-      [(SCATBluetoothManager *)self _didConnectWithSession:a3];
+      [(SCATBluetoothManager *)self _didConnectWithSession:session];
     }
 
     goto LABEL_24;
   }
 
-  if (a4 == 2)
+  if (event == 2)
   {
     v11 = SWCHLogHW();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -419,7 +419,7 @@ LABEL_48:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "BTSession terminated.", v12, 2u);
     }
 
-    if (self->_session == a3)
+    if (self->_session == session)
     {
       goto LABEL_23;
     }
@@ -427,7 +427,7 @@ LABEL_48:
 
   else
   {
-    if (a4 != 3)
+    if (event != 3)
     {
       goto LABEL_24;
     }
@@ -438,7 +438,7 @@ LABEL_48:
       sub_100129018();
     }
 
-    if (!a3 || self->_session == a3)
+    if (!session || self->_session == session)
     {
       goto LABEL_22;
     }
@@ -446,7 +446,7 @@ LABEL_48:
 
   _AXAssert();
 LABEL_22:
-  if (self->_session == a3)
+  if (self->_session == session)
   {
 LABEL_23:
     [(SCATBluetoothManager *)self _didDisconnect];
@@ -456,9 +456,9 @@ LABEL_24:
   [(SCATBluetoothManager *)self _beginStateTransitionIfNecessary];
 }
 
-- (void)_accessoryCustomMessageForAccessoryManager:(BTAccessoryManagerImpl *)a3 device:(BTDeviceImpl *)a4 customMessageType:(int)a5 data:(char *)a6 dataSize:(unint64_t)a7
+- (void)_accessoryCustomMessageForAccessoryManager:(BTAccessoryManagerImpl *)manager device:(BTDeviceImpl *)device customMessageType:(int)type data:(char *)data dataSize:(unint64_t)size
 {
-  v9 = *&a5;
+  v9 = *&type;
   if (BTDeviceGetAddressString())
   {
     v12 = SWCHLogHW();
@@ -472,7 +472,7 @@ LABEL_24:
   {
     v12 = [NSString stringWithUTF8String:v24];
     v13 = [(NSMutableDictionary *)self->_addressToDeviceMap objectForKey:v12];
-    v14 = [NSData dataWithBytes:a6 length:a7];
+    v14 = [NSData dataWithBytes:data length:size];
     v15 = SWCHLogHW();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -491,124 +491,124 @@ LABEL_24:
   }
 }
 
-- (void)addActivationReason:(id)a3
+- (void)addActivationReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003D814;
   v7[3] = &unk_1001D36E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeActivationReason:(id)a3
+- (void)removeActivationReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003D8EC;
   v7[3] = &unk_1001D36E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)checkIfActiveForReason:(id)a3 completion:(id)a4
+- (void)checkIfActiveForReason:(id)reason completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003D9F4;
   block[3] = &unk_1001D4800;
-  v12 = v6;
-  v13 = v7;
+  v12 = reasonCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = reasonCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)addDeviceListener:(id)a3
+- (void)addDeviceListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003DAD8;
   v7[3] = &unk_1001D36E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeDeviceListener:(id)a3
+- (void)removeDeviceListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003DB7C;
   v7[3] = &unk_1001D36E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)getExtantDevicesWithCompletion:(id)a3
+- (void)getExtantDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003DCA4;
   v7[3] = &unk_1001D3EF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)sendCustomMessageToDevice:(id)a3 ofType:(int)a4 withData:(id)a5
+- (void)sendCustomMessageToDevice:(id)device ofType:(int)type withData:(id)data
 {
-  v8 = a3;
-  v9 = a5;
+  deviceCopy = device;
+  dataCopy = data;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10003DDD0;
   v13[3] = &unk_1001D4828;
-  v17 = a4;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v11 = v9;
-  v12 = v8;
+  typeCopy = type;
+  v14 = deviceCopy;
+  v15 = dataCopy;
+  selfCopy = self;
+  v11 = dataCopy;
+  v12 = deviceCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)sendConfigurationMessageToDevice:(id)a3 ofType:(unsigned __int8)a4 value:(unsigned int)a5
+- (void)sendConfigurationMessageToDevice:(id)device ofType:(unsigned __int8)type value:(unsigned int)value
 {
-  v8 = a3;
+  deviceCopy = device;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003E0D8;
   block[3] = &unk_1001D4850;
-  v15 = a4;
-  v14 = a5;
-  v12 = v8;
-  v13 = self;
-  v10 = v8;
+  typeCopy = type;
+  valueCopy = value;
+  v12 = deviceCopy;
+  selfCopy = self;
+  v10 = deviceCopy;
   dispatch_async(queue, block);
 }
 

@@ -1,17 +1,17 @@
 @interface BackLightCCSiriPlusButtonLED
 - (BOOL)findBacklightServices;
-- (BackLightCCSiriPlusButtonLED)initWithParams:(__CFDictionary *)a3;
+- (BackLightCCSiriPlusButtonLED)initWithParams:(__CFDictionary *)params;
 - (int)numberOfFields;
 - (void)refreshFunctionalTelemetry;
 @end
 
 @implementation BackLightCCSiriPlusButtonLED
 
-- (BackLightCCSiriPlusButtonLED)initWithParams:(__CFDictionary *)a3
+- (BackLightCCSiriPlusButtonLED)initWithParams:(__CFDictionary *)params
 {
   v6.receiver = self;
   v6.super_class = BackLightCCSiriPlusButtonLED;
-  v3 = [(BackLightCC *)&v6 initWithParams:a3];
+  v3 = [(BackLightCC *)&v6 initWithParams:params];
   v4 = v3;
   if (v3)
   {
@@ -90,18 +90,18 @@
 
 - (void)refreshFunctionalTelemetry
 {
-  v2 = self;
+  selfCopy = self;
   v35.receiver = self;
   v35.super_class = BackLightCCSiriPlusButtonLED;
   [(BackLightCC *)&v35 refreshFunctionalTelemetry];
   v3 = 326;
-  if (*(&v2->super._solarDetectorPresent + 5))
+  if (*(&selfCopy->super._solarDetectorPresent + 5))
   {
     v4 = 0;
     v5 = 346;
     v6 = 318;
     v7 = @"IODisplayParameters";
-    for (i = v2; ; i = (i + 4))
+    for (i = selfCopy; ; i = (i + 4))
     {
       *(&i->super.super.super.super.isa + v5) = 0;
       v9 = sub_100005E68(v7, *(&i->super.super.super.super.isa + v6));
@@ -132,7 +132,7 @@
 LABEL_33:
       CFRelease(v10);
 LABEL_34:
-      if (++v4 >= *(&v2->super.super.super.super.isa + v3))
+      if (++v4 >= *(&selfCopy->super.super.super.super.isa + v3))
       {
         return;
       }
@@ -146,7 +146,7 @@ LABEL_34:
     }
 
     v23 = v13;
-    v14 = v2;
+    v14 = selfCopy;
     v15 = v3;
     v16 = v5;
     v17 = v6;
@@ -157,7 +157,7 @@ LABEL_34:
     v6 = v17;
     v5 = v16;
     v3 = v15;
-    v2 = v14;
+    selfCopy = v14;
     v13 = v23;
     if (v20)
     {

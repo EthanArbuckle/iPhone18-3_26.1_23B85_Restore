@@ -1,23 +1,23 @@
 @interface PaletteViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)currentSelectedDateChanged:(id)a3;
+- (void)currentSelectedDateChanged:(id)changed;
 - (void)viewDidLoad;
 @end
 
 @implementation PaletteViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PaletteViewController" hasInstanceVariable:@"_paletteView" withType:"PaletteWeekdayHeaderView"];
-  [v3 validateClass:@"PaletteWeekdayHeaderView" hasInstanceVariable:@"_weekdayLabels" withType:"NSMutableArray"];
-  [v3 validateClass:@"PaletteViewController" hasInstanceVariable:@"_paletteScrollVC" withType:"PaletteScrollViewController"];
-  [v3 validateClass:@"PaletteScrollViewController" hasInstanceMethod:@"activitySummaryProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ActivitySummaryCache" hasInstanceMethod:@"activitySummaryForCacheIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"ActivitySummaryCache" hasInstanceMethod:@"fitnessStartOfWeekOffset" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PaletteViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PaletteViewController" hasInstanceMethod:@"currentSelectedDateChanged:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PaletteViewController" hasInstanceVariable:@"_paletteView" withType:"PaletteWeekdayHeaderView"];
+  [validationsCopy validateClass:@"PaletteWeekdayHeaderView" hasInstanceVariable:@"_weekdayLabels" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"PaletteViewController" hasInstanceVariable:@"_paletteScrollVC" withType:"PaletteScrollViewController"];
+  [validationsCopy validateClass:@"PaletteScrollViewController" hasInstanceMethod:@"activitySummaryProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ActivitySummaryCache" hasInstanceMethod:@"activitySummaryForCacheIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"ActivitySummaryCache" hasInstanceMethod:@"fitnessStartOfWeekOffset" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PaletteViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PaletteViewController" hasInstanceMethod:@"currentSelectedDateChanged:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -29,18 +29,18 @@
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
   v4 = v3;
-  v5 = [v3 view];
+  view = [v3 view];
   v6 = [(PaletteViewControllerAccessibility *)self safeValueForKey:@"_paletteView"];
   v7 = [(PaletteViewControllerAccessibility *)self safeValueForKey:@"_paletteView"];
   v8 = [NSArray axArrayByIgnoringNilElementsWithCount:1, v7];
-  [v5 setAccessibilityElements:v8];
+  [view setAccessibilityElements:v8];
 
   LOBYTE(v42) = 0;
   objc_opt_class();
   v9 = [(PaletteViewControllerAccessibility *)self safeValueForKey:@"_paletteScrollVC"];
   v10 = __UIAccessibilityCastAsClass();
 
-  v37 = v5;
+  v37 = view;
   v38 = v4;
   LOBYTE(v42) = 0;
   v36 = v6;
@@ -137,11 +137,11 @@ uint64_t __80__PaletteViewControllerAccessibility__accessibilityLoadAccessibilit
   [(PaletteViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)currentSelectedDateChanged:(id)a3
+- (void)currentSelectedDateChanged:(id)changed
 {
   v4.receiver = self;
   v4.super_class = PaletteViewControllerAccessibility;
-  [(PaletteViewControllerAccessibility *)&v4 currentSelectedDateChanged:a3];
+  [(PaletteViewControllerAccessibility *)&v4 currentSelectedDateChanged:changed];
   [(PaletteViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

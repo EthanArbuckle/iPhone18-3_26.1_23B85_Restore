@@ -1,12 +1,12 @@
 @interface HDCodableAuthorizationResponseMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableAuthorizationResponseMessage
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableAuthorizationResponseMessage;
   v4 = [(HDCodableAuthorizationResponseMessage *)&v8 description];
-  v5 = [(HDCodableAuthorizationResponseMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableAuthorizationResponseMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   appBundleIdentifier = self->_appBundleIdentifier;
   if (appBundleIdentifier)
   {
-    [v3 setObject:appBundleIdentifier forKey:@"appBundleIdentifier"];
+    [dictionary setObject:appBundleIdentifier forKey:@"appBundleIdentifier"];
   }
 
   requestIdentifier = self->_requestIdentifier;
@@ -60,85 +60,85 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_appBundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_requestIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     shouldPrompt = self->_shouldPrompt;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hostAppName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_errorDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_appBundleIdentifier)
   {
-    [v4 setAppBundleIdentifier:?];
-    v4 = v5;
+    [toCopy setAppBundleIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_requestIdentifier)
   {
     [v5 setRequestIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[40] = self->_shouldPrompt;
-    v4[44] |= 1u;
+    toCopy[40] = self->_shouldPrompt;
+    toCopy[44] |= 1u;
   }
 
   if (self->_hostAppName)
   {
     [v5 setHostAppName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorDescription)
   {
     [v5 setErrorDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_appBundleIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_appBundleIdentifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSData *)self->_requestIdentifier copyWithZone:a3];
+  v8 = [(NSData *)self->_requestIdentifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -148,27 +148,27 @@
     *(v5 + 44) |= 1u;
   }
 
-  v10 = [(NSString *)self->_hostAppName copyWithZone:a3];
+  v10 = [(NSString *)self->_hostAppName copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
-  v12 = [(NSString *)self->_errorDescription copyWithZone:a3];
+  v12 = [(NSString *)self->_errorDescription copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   appBundleIdentifier = self->_appBundleIdentifier;
-  if (appBundleIdentifier | *(v4 + 1))
+  if (appBundleIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)appBundleIdentifier isEqual:?])
     {
@@ -177,7 +177,7 @@
   }
 
   requestIdentifier = self->_requestIdentifier;
-  if (requestIdentifier | *(v4 + 4))
+  if (requestIdentifier | *(equalCopy + 4))
   {
     if (![(NSData *)requestIdentifier isEqual:?])
     {
@@ -185,18 +185,18 @@
     }
   }
 
-  v7 = *(v4 + 44);
+  v7 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
       goto LABEL_13;
     }
 
-    v7 = *(v4 + 40);
+    v7 = *(equalCopy + 40);
     if (self->_shouldPrompt)
     {
-      if (*(v4 + 40))
+      if (*(equalCopy + 40))
       {
         goto LABEL_8;
       }
@@ -214,13 +214,13 @@ LABEL_13:
 
 LABEL_8:
   hostAppName = self->_hostAppName;
-  if (hostAppName | *(v4 + 3) && ![(NSString *)hostAppName isEqual:?])
+  if (hostAppName | *(equalCopy + 3) && ![(NSString *)hostAppName isEqual:?])
   {
     goto LABEL_13;
   }
 
   errorDescription = self->_errorDescription;
-  if (errorDescription | *(v4 + 2))
+  if (errorDescription | *(equalCopy + 2))
   {
     v10 = [(NSString *)errorDescription isEqual:?];
   }
@@ -253,38 +253,38 @@ LABEL_14:
   return v6 ^ [(NSString *)self->_errorDescription hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(HDCodableAuthorizationResponseMessage *)self setAppBundleIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HDCodableAuthorizationResponseMessage *)self setRequestIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[44])
+  if (fromCopy[44])
   {
-    self->_shouldPrompt = v4[40];
+    self->_shouldPrompt = fromCopy[40];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HDCodableAuthorizationResponseMessage *)self setHostAppName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(HDCodableAuthorizationResponseMessage *)self setErrorDescription:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

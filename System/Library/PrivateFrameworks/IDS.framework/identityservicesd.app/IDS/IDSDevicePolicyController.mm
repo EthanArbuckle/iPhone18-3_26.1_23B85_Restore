@@ -1,9 +1,9 @@
 @interface IDSDevicePolicyController
 + (id)sharedInstance;
-- (BOOL)shouldBlackOutDeviceWithCbuuid:(id)a3;
+- (BOOL)shouldBlackOutDeviceWithCbuuid:(id)cbuuid;
 - (IDSDevicePolicyController)init;
-- (void)endFairplayAuthenticationForDeviceWithCbuuid:(id)a3;
-- (void)startFairplayAuthenticationForDeviceWithCbuuid:(id)a3;
+- (void)endFairplayAuthenticationForDeviceWithCbuuid:(id)cbuuid;
+- (void)startFairplayAuthenticationForDeviceWithCbuuid:(id)cbuuid;
 @end
 
 @implementation IDSDevicePolicyController
@@ -37,31 +37,31 @@
   return v3;
 }
 
-- (void)startFairplayAuthenticationForDeviceWithCbuuid:(id)a3
+- (void)startFairplayAuthenticationForDeviceWithCbuuid:(id)cbuuid
 {
-  v4 = a3;
+  cbuuidCopy = cbuuid;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_devices objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_devices objectForKey:cbuuidCopy];
   v6 = [v5 objectForKey:@"start-count"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
   devices = self->_devices;
   v18[0] = @"start-count";
-  v9 = [NSNumber numberWithInteger:v7 + 1];
+  v9 = [NSNumber numberWithInteger:integerValue + 1];
   v18[1] = @"start-time";
   v19[0] = v9;
   ids_monotonic_time();
   v10 = [NSNumber numberWithDouble:?];
   v19[1] = v10;
   v11 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:2];
-  [(NSMutableDictionary *)devices setObject:v11 forKey:v4];
+  [(NSMutableDictionary *)devices setObject:v11 forKey:cbuuidCopy];
 
   v12 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = self->_devices;
     *buf = 138412546;
-    v15 = v4;
+    v15 = cbuuidCopy;
     v16 = 2112;
     v17 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "started policy for %@, devices: %@", buf, 0x16u);
@@ -75,17 +75,17 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)endFairplayAuthenticationForDeviceWithCbuuid:(id)a3
+- (void)endFairplayAuthenticationForDeviceWithCbuuid:(id)cbuuid
 {
-  v4 = a3;
+  cbuuidCopy = cbuuid;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_devices removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_devices removeObjectForKey:cbuuidCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)shouldBlackOutDeviceWithCbuuid:(id)a3
+- (BOOL)shouldBlackOutDeviceWithCbuuid:(id)cbuuid
 {
-  v4 = a3;
+  cbuuidCopy = cbuuid;
   os_unfair_lock_lock(&self->_lock);
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -102,7 +102,7 @@
     _IDSLogV();
   }
 
-  v7 = [(NSMutableDictionary *)self->_devices objectForKey:v4, v20];
+  v7 = [(NSMutableDictionary *)self->_devices objectForKey:cbuuidCopy, v20];
   v8 = v7;
   if (!v7)
   {
@@ -117,7 +117,7 @@
   v13 = v12 - v11;
   if (v13 >= 10800.0)
   {
-    [(NSMutableDictionary *)self->_devices removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_devices removeObjectForKey:cbuuidCopy];
     v18 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -144,9 +144,9 @@
   }
 
   v14 = [v8 objectForKey:@"start-count"];
-  v15 = [v14 integerValue];
+  integerValue = [v14 integerValue];
 
-  if (v15 < 5)
+  if (integerValue < 5)
   {
 LABEL_22:
     v17 = 0;

@@ -1,11 +1,11 @@
 @interface PassportSceneView.PassportNode
-- (_TtCC9CoreIDVUI17PassportSceneView12PassportNode)initWithCoder:(id)a3;
+- (_TtCC9CoreIDVUI17PassportSceneView12PassportNode)initWithCoder:(id)coder;
 - (void)removeAllActions;
 @end
 
 @implementation PassportSceneView.PassportNode
 
-- (_TtCC9CoreIDVUI17PassportSceneView12PassportNode)initWithCoder:(id)a3
+- (_TtCC9CoreIDVUI17PassportSceneView12PassportNode)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtCC9CoreIDVUI17PassportSceneView12PassportNode_loadTask) = 0;
   *(&self->super.super.isa + OBJC_IVAR____TtCC9CoreIDVUI17PassportSceneView12PassportNode_pageNodes) = MEMORY[0x277D84F90];
@@ -18,7 +18,7 @@
 
 - (void)removeAllActions
 {
-  v2 = self;
+  selfCopy = self;
   sub_24581BD04();
 }
 

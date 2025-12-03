@@ -1,9 +1,9 @@
 @interface DisplayModeRefreshRateObserver
 - (DisplayModeRefreshRateObserver)init;
 - (double)readHDMILatencyFromCoreAnimation;
-- (int)updateHDMILatencyOnCoreAnimation:(double)a3;
+- (int)updateHDMILatencyOnCoreAnimation:(double)animation;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation DisplayModeRefreshRateObserver
@@ -17,9 +17,9 @@
   {
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v2->_accessQueue = dispatch_queue_create("com.apple.coremedia.displaymoderefreshrateobserver", v3);
-    v4 = [MEMORY[0x1E6979328] TVOutDisplay];
-    v2->_tvOutDisplay = v4;
-    [(CADisplay *)v4 addObserver:v2 forKeyPath:@"currentMode" options:7 context:0];
+    tVOutDisplay = [MEMORY[0x1E6979328] TVOutDisplay];
+    v2->_tvOutDisplay = tVOutDisplay;
+    [(CADisplay *)tVOutDisplay addObserver:v2 forKeyPath:@"currentMode" options:7 context:0];
     accessQueue = v2->_accessQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -65,9 +65,9 @@ uint64_t __38__DisplayModeRefreshRateObserver_init__block_invoke(uint64_t a1)
   [(DisplayModeRefreshRateObserver *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:@"currentMode"])
+  if ([path isEqualToString:@"currentMode"])
   {
     accessQueue = self->_accessQueue;
     v13[0] = MEMORY[0x1E69E9820];
@@ -82,7 +82,7 @@ uint64_t __38__DisplayModeRefreshRateObserver_init__block_invoke(uint64_t a1)
   {
     v12.receiver = self;
     v12.super_class = DisplayModeRefreshRateObserver;
-    [(DisplayModeRefreshRateObserver *)&v12 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+    [(DisplayModeRefreshRateObserver *)&v12 observeValueForKeyPath:path ofObject:object change:change context:context];
   }
 }
 
@@ -106,10 +106,10 @@ uint64_t __81__DisplayModeRefreshRateObserver_observeValueForKeyPath_ofObject_ch
   return result;
 }
 
-- (int)updateHDMILatencyOnCoreAnimation:(double)a3
+- (int)updateHDMILatencyOnCoreAnimation:(double)animation
 {
-  v3 = [(CADisplay *)self->_tvOutDisplay currentMode];
-  if ([v3 width] && objc_msgSend(v3, "height"))
+  currentMode = [(CADisplay *)self->_tvOutDisplay currentMode];
+  if ([currentMode width] && objc_msgSend(currentMode, "height"))
   {
     return 0;
   }
@@ -122,10 +122,10 @@ uint64_t __81__DisplayModeRefreshRateObserver_observeValueForKeyPath_ofObject_ch
 
 - (double)readHDMILatencyFromCoreAnimation
 {
-  v2 = [(CADisplay *)self->_tvOutDisplay currentMode];
-  if ([v2 width])
+  currentMode = [(CADisplay *)self->_tvOutDisplay currentMode];
+  if ([currentMode width])
   {
-    [v2 height];
+    [currentMode height];
   }
 
   return 0.0;

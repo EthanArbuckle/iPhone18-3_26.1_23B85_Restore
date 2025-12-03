@@ -6,7 +6,7 @@
 
 - (void)ae_reverseValues
 {
-  v2 = self;
+  selfCopy = self;
   CABasicAnimation.reverseValues()();
 }
 

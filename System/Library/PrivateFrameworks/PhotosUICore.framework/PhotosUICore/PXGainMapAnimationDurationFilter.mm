@@ -1,7 +1,7 @@
 @interface PXGainMapAnimationDurationFilter
 - (PXGainMapAnimationDurationFilter)init;
 - (double)updatedOutput;
-- (void)setGainMapImageAvailable:(BOOL)a3;
+- (void)setGainMapImageAvailable:(BOOL)available;
 @end
 
 @implementation PXGainMapAnimationDurationFilter
@@ -32,12 +32,12 @@
   return result;
 }
 
-- (void)setGainMapImageAvailable:(BOOL)a3
+- (void)setGainMapImageAvailable:(BOOL)available
 {
-  if (self->_gainMapImageAvailable != a3)
+  if (self->_gainMapImageAvailable != available)
   {
-    self->_gainMapImageAvailable = a3;
-    if (!a3)
+    self->_gainMapImageAvailable = available;
+    if (!available)
     {
       [(PXNumberFilter *)self currentTime];
       [(PXGainMapAnimationDurationFilter *)self setFilterStartTime:?];

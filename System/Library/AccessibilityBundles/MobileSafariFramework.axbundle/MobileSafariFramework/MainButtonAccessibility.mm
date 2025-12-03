@@ -7,8 +7,8 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(MainButtonAccessibility *)self accessibilityIdentifier];
-  if ([v2 isEqualToString:@"MoreMenuItem"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"FindOnPage"))
+  accessibilityIdentifier = [(MainButtonAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"MoreMenuItem"] & 1) != 0 || (objc_msgSend(accessibilityIdentifier, "isEqualToString:", @"FindOnPage"))
   {
     LOBYTE(v3) = 1;
   }

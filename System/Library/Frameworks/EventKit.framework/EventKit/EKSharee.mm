@@ -1,54 +1,54 @@
 @interface EKSharee
-+ (id)_urlForEmailAddress:(id)a3 andPhoneNumber:(id)a4;
++ (id)_urlForEmailAddress:(id)address andPhoneNumber:(id)number;
 + (id)knownIdentityKeysForComparison;
 + (id)knownSingleValueKeysForComparison;
-+ (id)shareeWithName:(id)a3 emailAddress:(id)a4;
-+ (id)shareeWithName:(id)a3 emailAddress:(id)a4 phoneNumber:(id)a5;
-+ (id)shareeWithName:(id)a3 emailAddress:(id)a4 phoneNumber:(id)a5 externalID:(id)a6;
-+ (id)shareeWithName:(id)a3 phoneNumber:(id)a4;
-+ (id)shareeWithName:(id)a3 url:(id)a4;
-+ (id)shareeWithUUID:(id)a3 name:(id)a4 emailAddress:(id)a5 phoneNumber:(id)a6;
-+ (id)statusStringFromEnum:(unint64_t)a3;
-+ (int)_calShareeAccessLevelFromEKShareeAccessLevel:(unint64_t)a3;
-+ (int)_calShareeStatusFromEKShareeStatus:(unint64_t)a3;
-+ (unint64_t)statusEnumFromString:(id)a3;
++ (id)shareeWithName:(id)name emailAddress:(id)address;
++ (id)shareeWithName:(id)name emailAddress:(id)address phoneNumber:(id)number;
++ (id)shareeWithName:(id)name emailAddress:(id)address phoneNumber:(id)number externalID:(id)d;
++ (id)shareeWithName:(id)name phoneNumber:(id)number;
++ (id)shareeWithName:(id)name url:(id)url;
++ (id)shareeWithUUID:(id)d name:(id)name emailAddress:(id)address phoneNumber:(id)number;
++ (id)statusStringFromEnum:(unint64_t)enum;
++ (int)_calShareeAccessLevelFromEKShareeAccessLevel:(unint64_t)level;
++ (int)_calShareeStatusFromEKShareeStatus:(unint64_t)status;
++ (unint64_t)statusEnumFromString:(id)string;
 - (BOOL)isCurrentUserForSharing;
-- (BOOL)isEqualToSharee:(id)a3;
+- (BOOL)isEqualToSharee:(id)sharee;
 - (BOOL)shareeMuteRemoval;
 - (EKSharee)init;
-- (EKSharee)initWithName:(id)a3 url:(id)a4 externalID:(id)a5;
+- (EKSharee)initWithName:(id)name url:(id)url externalID:(id)d;
 - (NSPredicate)contactPredicate;
 - (NSString)description;
 - (NSString)emailAddress;
 - (NSString)phoneNumber;
 - (id)URL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)displayName;
 - (id)existingContact;
 - (int)shareeAccessLevelRaw;
 - (int)shareeStatusRaw;
 - (unint64_t)shareeAccessLevel;
 - (unint64_t)shareeStatus;
-- (void)setEmailAddress:(id)a3;
-- (void)setPhoneNumber:(id)a3;
-- (void)setShareeAccessLevel:(unint64_t)a3;
-- (void)setShareeStatus:(unint64_t)a3;
+- (void)setEmailAddress:(id)address;
+- (void)setPhoneNumber:(id)number;
+- (void)setShareeAccessLevel:(unint64_t)level;
+- (void)setShareeStatus:(unint64_t)status;
 @end
 
 @implementation EKSharee
 
 - (NSPredicate)contactPredicate
 {
-  v3 = [(EKSharee *)self owner];
-  v4 = [v3 source];
-  v5 = [v4 isFacebookSource];
+  owner = [(EKSharee *)self owner];
+  source = [owner source];
+  isFacebookSource = [source isFacebookSource];
 
-  if (v5)
+  if (isFacebookSource)
   {
-    v6 = [(EKSharee *)self address];
-    if (v6)
+    address = [(EKSharee *)self address];
+    if (address)
     {
-      v7 = [MEMORY[0x1E695DFF8] URLWithString:v6];
+      v7 = [MEMORY[0x1E695DFF8] URLWithString:address];
     }
 
     else
@@ -64,9 +64,9 @@
 
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-[CNContact predicateForContactMatchingEKParticipantWithName:emailAddress:URL:predicateDescription:]"];
   v9 = MEMORY[0x1E695CD58];
-  v10 = [(EKSharee *)self name];
-  v11 = [(EKSharee *)self emailAddress];
-  v12 = [v9 predicateForContactMatchingEKParticipantWithName:v10 emailAddress:v11 URL:v7 predicateDescription:v8];
+  name = [(EKSharee *)self name];
+  emailAddress = [(EKSharee *)self emailAddress];
+  v12 = [v9 predicateForContactMatchingEKParticipantWithName:name emailAddress:emailAddress URL:v7 predicateDescription:v8];
 
   return v12;
 }
@@ -125,78 +125,78 @@ void __45__EKSharee_knownSingleValueKeysForComparison__block_invoke()
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)shareeWithName:(id)a3 emailAddress:(id)a4
++ (id)shareeWithName:(id)name emailAddress:(id)address
 {
   v6 = MEMORY[0x1E695DFF8];
-  v7 = a3;
-  v8 = [a4 stringAddingMailto];
-  v9 = [v6 URLWithString:v8];
+  nameCopy = name;
+  stringAddingMailto = [address stringAddingMailto];
+  v9 = [v6 URLWithString:stringAddingMailto];
 
-  v10 = [a1 shareeWithName:v7 url:v9];
+  v10 = [self shareeWithName:nameCopy url:v9];
 
   return v10;
 }
 
-+ (id)shareeWithName:(id)a3 emailAddress:(id)a4 phoneNumber:(id)a5
++ (id)shareeWithName:(id)name emailAddress:(id)address phoneNumber:(id)number
 {
-  v8 = a3;
-  v9 = [a1 _urlForEmailAddress:a4 andPhoneNumber:a5];
-  v10 = [[a1 alloc] initWithName:v8 url:v9];
+  nameCopy = name;
+  v9 = [self _urlForEmailAddress:address andPhoneNumber:number];
+  v10 = [[self alloc] initWithName:nameCopy url:v9];
 
   return v10;
 }
 
-+ (id)shareeWithName:(id)a3 phoneNumber:(id)a4
++ (id)shareeWithName:(id)name phoneNumber:(id)number
 {
   v6 = MEMORY[0x1E695DFF8];
-  v7 = a3;
-  v8 = [a4 stringAddingTel];
-  v9 = [v6 URLWithString:v8];
+  nameCopy = name;
+  stringAddingTel = [number stringAddingTel];
+  v9 = [v6 URLWithString:stringAddingTel];
 
-  v10 = [a1 shareeWithName:v7 url:v9];
+  v10 = [self shareeWithName:nameCopy url:v9];
 
   return v10;
 }
 
-+ (id)shareeWithName:(id)a3 url:(id)a4
++ (id)shareeWithName:(id)name url:(id)url
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 url:v6];
+  urlCopy = url;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy url:urlCopy];
 
   return v8;
 }
 
-+ (id)shareeWithName:(id)a3 emailAddress:(id)a4 phoneNumber:(id)a5 externalID:(id)a6
++ (id)shareeWithName:(id)name emailAddress:(id)address phoneNumber:(id)number externalID:(id)d
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [a1 _urlForEmailAddress:a4 andPhoneNumber:a5];
-  v13 = [[a1 alloc] initWithName:v11 url:v12 externalID:v10];
+  dCopy = d;
+  nameCopy = name;
+  v12 = [self _urlForEmailAddress:address andPhoneNumber:number];
+  v13 = [[self alloc] initWithName:nameCopy url:v12 externalID:dCopy];
 
   return v13;
 }
 
-+ (id)_urlForEmailAddress:(id)a3 andPhoneNumber:(id)a4
++ (id)_urlForEmailAddress:(id)address andPhoneNumber:(id)number
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  addressCopy = address;
+  numberCopy = number;
+  v7 = numberCopy;
+  if (addressCopy)
   {
     v8 = MEMORY[0x1E695DFF8];
-    v9 = [v5 stringAddingMailto];
+    stringAddingMailto = [addressCopy stringAddingMailto];
 LABEL_5:
-    v10 = v9;
-    v11 = [v8 URLWithString:v9];
+    v10 = stringAddingMailto;
+    v11 = [v8 URLWithString:stringAddingMailto];
 
     goto LABEL_6;
   }
 
-  if (v6)
+  if (numberCopy)
   {
     v8 = MEMORY[0x1E695DFF8];
-    v9 = [v6 stringAddingTel];
+    stringAddingMailto = [numberCopy stringAddingTel];
     goto LABEL_5;
   }
 
@@ -206,11 +206,11 @@ LABEL_6:
   return v11;
 }
 
-+ (id)shareeWithUUID:(id)a3 name:(id)a4 emailAddress:(id)a5 phoneNumber:(id)a6
++ (id)shareeWithUUID:(id)d name:(id)name emailAddress:(id)address phoneNumber:(id)number
 {
-  v10 = a3;
-  v11 = [a1 shareeWithName:a4 emailAddress:a5 phoneNumber:a6];
-  [v11 setUUID:v10];
+  dCopy = d;
+  v11 = [self shareeWithName:name emailAddress:address phoneNumber:number];
+  [v11 setUUID:dCopy];
 
   return v11;
 }
@@ -229,20 +229,20 @@ LABEL_6:
   return v2;
 }
 
-- (EKSharee)initWithName:(id)a3 url:(id)a4 externalID:(id)a5
+- (EKSharee)initWithName:(id)name url:(id)url externalID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  urlCopy = url;
+  dCopy = d;
   v11 = [(EKSharee *)self init];
   v12 = v11;
   if (v11)
   {
-    [(EKSharee *)v11 setName:v8];
-    v13 = [v9 absoluteString];
-    [(EKSharee *)v12 setAddress:v13];
+    [(EKSharee *)v11 setName:nameCopy];
+    absoluteString = [urlCopy absoluteString];
+    [(EKSharee *)v12 setAddress:absoluteString];
 
-    [(EKSharee *)v12 setExternalID:v10];
+    [(EKSharee *)v12 setExternalID:dCopy];
     [(EKSharee *)v12 setShareeStatus:5];
     [(EKSharee *)v12 setShareeAccessLevel:2];
   }
@@ -250,13 +250,13 @@ LABEL_6:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([MEMORY[0x1E6992F30] isProgramSDKAtLeast:0x7E30901FFFFFFFFLL])
   {
     v10.receiver = self;
     v10.super_class = EKSharee;
-    return [(EKObject *)&v10 copyWithZone:a3];
+    return [(EKObject *)&v10 copyWithZone:zone];
   }
 
   else
@@ -264,14 +264,14 @@ LABEL_6:
     v5 = objc_alloc_init(EKSharee);
     if (v5)
     {
-      v6 = [(EKSharee *)self name];
-      [(EKSharee *)v5 setName:v6];
+      name = [(EKSharee *)self name];
+      [(EKSharee *)v5 setName:name];
 
-      v7 = [(EKSharee *)self address];
-      [(EKSharee *)v5 setAddress:v7];
+      address = [(EKSharee *)self address];
+      [(EKSharee *)v5 setAddress:address];
 
-      v8 = [(EKSharee *)self externalID];
-      [(EKSharee *)v5 setExternalID:v8];
+      externalID = [(EKSharee *)self externalID];
+      [(EKSharee *)v5 setExternalID:externalID];
 
       [(EKSharee *)v5 setShareeStatusRaw:[(EKSharee *)self shareeStatusRaw]];
       [(EKSharee *)v5 setShareeAccessLevelRaw:[(EKSharee *)self shareeAccessLevelRaw]];
@@ -285,47 +285,47 @@ LABEL_6:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKSharee *)self UUID];
-  v6 = [(EKSharee *)self name];
-  v7 = [(EKSharee *)self emailAddress];
-  v8 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ name = %@; email = %@; status = %lu; accessLevel = %lu;}", v4, self, v5, v6, v7, -[EKSharee shareeStatus](self, "shareeStatus"), -[EKSharee shareeAccessLevel](self, "shareeAccessLevel")];;
+  uUID = [(EKSharee *)self UUID];
+  name = [(EKSharee *)self name];
+  emailAddress = [(EKSharee *)self emailAddress];
+  v8 = [v3 stringWithFormat:@"%@ <%p> {UUID = %@ name = %@; email = %@; status = %lu; accessLevel = %lu;}", v4, self, uUID, name, emailAddress, -[EKSharee shareeStatus](self, "shareeStatus"), -[EKSharee shareeAccessLevel](self, "shareeAccessLevel")];;
 
   return v8;
 }
 
-+ (int)_calShareeStatusFromEKShareeStatus:(unint64_t)a3
++ (int)_calShareeStatusFromEKShareeStatus:(unint64_t)status
 {
-  if (a3 < 7)
+  if (status < 7)
   {
-    return dword_1A81C3E48[a3];
+    return dword_1A81C3E48[status];
   }
 
   v5 = EKLogHandle;
   result = os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR);
   if (result)
   {
-    [(EKSharee *)a3 _calShareeStatusFromEKShareeStatus:v5, v6, v7, v8, v9, v10, v11];
+    [(EKSharee *)status _calShareeStatusFromEKShareeStatus:v5, v6, v7, v8, v9, v10, v11];
     return 0;
   }
 
   return result;
 }
 
-+ (int)_calShareeAccessLevelFromEKShareeAccessLevel:(unint64_t)a3
++ (int)_calShareeAccessLevelFromEKShareeAccessLevel:(unint64_t)level
 {
-  v3 = a3;
-  if (a3 >= 4)
+  levelCopy = level;
+  if (level >= 4)
   {
     v4 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
-      [(EKSharee *)v3 _calShareeAccessLevelFromEKShareeAccessLevel:v4, v5, v6, v7, v8, v9, v10];
+      [(EKSharee *)levelCopy _calShareeAccessLevelFromEKShareeAccessLevel:v4, v5, v6, v7, v8, v9, v10];
     }
 
-    LODWORD(v3) = 0;
+    LODWORD(levelCopy) = 0;
   }
 
-  return v3;
+  return levelCopy;
 }
 
 - (id)displayName
@@ -333,8 +333,8 @@ LABEL_6:
   v3 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992C78]];
   if (!v3)
   {
-    v4 = [(EKSharee *)self firstName];
-    v5 = [(EKSharee *)self lastName];
+    firstName = [(EKSharee *)self firstName];
+    lastName = [(EKSharee *)self lastName];
     v3 = DisplayNameStringForIdentityWithProperties();
   }
 
@@ -344,81 +344,81 @@ LABEL_6:
 - (id)URL
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(EKSharee *)self address];
-  v4 = [v2 URLWithString:v3];
+  address = [(EKSharee *)self address];
+  v4 = [v2 URLWithString:address];
 
   return v4;
 }
 
 - (NSString)emailAddress
 {
-  v3 = [(EKSharee *)self address];
-  v4 = [v3 hasMailto];
+  address = [(EKSharee *)self address];
+  hasMailto = [address hasMailto];
 
-  if (v4)
+  if (hasMailto)
   {
-    v5 = [(EKSharee *)self address];
-    v6 = [v5 stringRemovingMailto];
+    address2 = [(EKSharee *)self address];
+    stringRemovingMailto = [address2 stringRemovingMailto];
   }
 
   else
   {
-    v6 = 0;
+    stringRemovingMailto = 0;
   }
 
-  return v6;
+  return stringRemovingMailto;
 }
 
-- (void)setEmailAddress:(id)a3
+- (void)setEmailAddress:(id)address
 {
-  v4 = [a3 stringAddingMailto];
-  [(EKSharee *)self setAddress:v4];
+  stringAddingMailto = [address stringAddingMailto];
+  [(EKSharee *)self setAddress:stringAddingMailto];
 }
 
 - (NSString)phoneNumber
 {
-  v3 = [(EKSharee *)self address];
-  v4 = [v3 hasTel];
+  address = [(EKSharee *)self address];
+  hasTel = [address hasTel];
 
-  if (v4)
+  if (hasTel)
   {
-    v5 = [(EKSharee *)self address];
-    v6 = [v5 stringRemovingTel];
+    address2 = [(EKSharee *)self address];
+    stringRemovingTel = [address2 stringRemovingTel];
   }
 
   else
   {
-    v6 = 0;
+    stringRemovingTel = 0;
   }
 
-  return v6;
+  return stringRemovingTel;
 }
 
-- (void)setPhoneNumber:(id)a3
+- (void)setPhoneNumber:(id)number
 {
-  v4 = [a3 stringAddingTel];
-  [(EKSharee *)self setAddress:v4];
+  stringAddingTel = [number stringAddingTel];
+  [(EKSharee *)self setAddress:stringAddingTel];
 }
 
 - (int)shareeStatusRaw
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992C98]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (unint64_t)shareeStatus
 {
-  v2 = [(EKSharee *)self shareeStatusRaw];
+  shareeStatusRaw = [(EKSharee *)self shareeStatusRaw];
   v3 = objc_opt_class();
 
-  return [v3 _ekShareeStatusFromCalShareeStatus:v2];
+  return [v3 _ekShareeStatusFromCalShareeStatus:shareeStatusRaw];
 }
 
-- (void)setShareeStatus:(unint64_t)a3
+- (void)setShareeStatus:(unint64_t)status
 {
-  v4 = [objc_opt_class() _calShareeStatusFromEKShareeStatus:a3];
+  v4 = [objc_opt_class() _calShareeStatusFromEKShareeStatus:status];
 
   [(EKSharee *)self setShareeStatusRaw:v4];
 }
@@ -426,22 +426,22 @@ LABEL_6:
 - (int)shareeAccessLevelRaw
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992C68]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (unint64_t)shareeAccessLevel
 {
-  v2 = [(EKSharee *)self shareeAccessLevelRaw];
+  shareeAccessLevelRaw = [(EKSharee *)self shareeAccessLevelRaw];
   v3 = objc_opt_class();
 
-  return [v3 _ekShareeAccessLevelFromCalShareeAccessLevel:v2];
+  return [v3 _ekShareeAccessLevelFromCalShareeAccessLevel:shareeAccessLevelRaw];
 }
 
-- (void)setShareeAccessLevel:(unint64_t)a3
+- (void)setShareeAccessLevel:(unint64_t)level
 {
-  v4 = [objc_opt_class() _calShareeAccessLevelFromEKShareeAccessLevel:a3];
+  v4 = [objc_opt_class() _calShareeAccessLevelFromEKShareeAccessLevel:level];
 
   [(EKSharee *)self setShareeAccessLevelRaw:v4];
 }
@@ -449,20 +449,20 @@ LABEL_6:
 - (BOOL)shareeMuteRemoval
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992C90]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)existingContact
 {
-  v3 = [MEMORY[0x1E6992F50] defaultProvider];
-  v4 = [(EKSharee *)self contactPredicate];
-  v5 = [MEMORY[0x1E695CD58] CalKeys];
-  v6 = [v3 unifiedContactsMatchingPredicate:v4 keysToFetch:v5];
-  v7 = [v6 firstObject];
+  defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
+  contactPredicate = [(EKSharee *)self contactPredicate];
+  calKeys = [MEMORY[0x1E695CD58] CalKeys];
+  v6 = [defaultProvider unifiedContactsMatchingPredicate:contactPredicate keysToFetch:calKeys];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 - (BOOL)isCurrentUserForSharing
@@ -472,10 +472,10 @@ LABEL_6:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(EKSharee *)self owner];
-  v4 = [v3 sharedOwnerAddresses];
+  owner = [(EKSharee *)self owner];
+  sharedOwnerAddresses = [owner sharedOwnerAddresses];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [sharedOwnerAddresses countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -486,12 +486,12 @@ LABEL_6:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sharedOwnerAddresses);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(EKSharee *)self address];
-        LOBYTE(v9) = [v9 isEqualToString:v10];
+        address = [(EKSharee *)self address];
+        LOBYTE(v9) = [v9 isEqualToString:address];
 
         if (v9)
         {
@@ -500,7 +500,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [sharedOwnerAddresses countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -517,12 +517,12 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)isEqualToSharee:(id)a3
+- (BOOL)isEqualToSharee:(id)sharee
 {
-  v4 = a3;
-  v5 = [(EKSharee *)self emailAddress];
-  v6 = [v4 emailAddress];
-  v7 = [v5 isEqual:v6];
+  shareeCopy = sharee;
+  emailAddress = [(EKSharee *)self emailAddress];
+  emailAddress2 = [shareeCopy emailAddress];
+  v7 = [emailAddress isEqual:emailAddress2];
 
   if (v7)
   {
@@ -532,37 +532,37 @@ LABEL_11:
   else
   {
     v9 = [MEMORY[0x1E695DFA8] set];
-    v10 = [(EKSharee *)self familyEmailAddressAliases];
+    familyEmailAddressAliases = [(EKSharee *)self familyEmailAddressAliases];
 
-    if (v10)
+    if (familyEmailAddressAliases)
     {
-      v11 = [(EKSharee *)self familyEmailAddressAliases];
-      [v9 addObjectsFromArray:v11];
+      familyEmailAddressAliases2 = [(EKSharee *)self familyEmailAddressAliases];
+      [v9 addObjectsFromArray:familyEmailAddressAliases2];
     }
 
-    v12 = [(EKSharee *)self emailAddress];
+    emailAddress3 = [(EKSharee *)self emailAddress];
 
-    if (v12)
+    if (emailAddress3)
     {
-      v13 = [(EKSharee *)self emailAddress];
-      [v9 addObject:v13];
+      emailAddress4 = [(EKSharee *)self emailAddress];
+      [v9 addObject:emailAddress4];
     }
 
     v14 = [MEMORY[0x1E695DFA8] set];
-    v15 = [v4 familyEmailAddressAliases];
+    familyEmailAddressAliases3 = [shareeCopy familyEmailAddressAliases];
 
-    if (v15)
+    if (familyEmailAddressAliases3)
     {
-      v16 = [v4 familyEmailAddressAliases];
-      [v9 addObjectsFromArray:v16];
+      familyEmailAddressAliases4 = [shareeCopy familyEmailAddressAliases];
+      [v9 addObjectsFromArray:familyEmailAddressAliases4];
     }
 
-    v17 = [v4 emailAddress];
+    emailAddress5 = [shareeCopy emailAddress];
 
-    if (v17)
+    if (emailAddress5)
     {
-      v18 = [v4 emailAddress];
-      [v9 addObject:v18];
+      emailAddress6 = [shareeCopy emailAddress];
+      [v9 addObject:emailAddress6];
     }
 
     v8 = [v9 intersectsSet:v14];
@@ -571,30 +571,30 @@ LABEL_11:
   return v8;
 }
 
-+ (unint64_t)statusEnumFromString:(id)a3
++ (unint64_t)statusEnumFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"invite-accepted"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"invite-accepted"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"invite-declined"])
+  else if ([stringCopy isEqualToString:@"invite-declined"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"invite-deleted"])
+  else if ([stringCopy isEqualToString:@"invite-deleted"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"invite-invalid"])
+  else if ([stringCopy isEqualToString:@"invite-invalid"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"invite-noresponse"])
+  else if ([stringCopy isEqualToString:@"invite-noresponse"])
   {
     v4 = 5;
   }
@@ -607,16 +607,16 @@ LABEL_11:
   return v4;
 }
 
-+ (id)statusStringFromEnum:(unint64_t)a3
++ (id)statusStringFromEnum:(unint64_t)enum
 {
-  if (a3 - 1 > 4)
+  if (enum - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78000F0[a3 - 1];
+    return off_1E78000F0[enum - 1];
   }
 }
 

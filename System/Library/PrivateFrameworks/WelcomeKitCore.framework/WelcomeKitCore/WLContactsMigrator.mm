@@ -1,24 +1,24 @@
 @interface WLContactsMigrator
 - (WLContactsMigrator)init;
 - (WLFeaturePayload)featurePayload;
-- (id)_vcardDataWithoutCustomFieldsFromVcardData:(id)a3;
+- (id)_vcardDataWithoutCustomFieldsFromVcardData:(id)data;
 - (id)importWillBegin;
-- (void)addWorkingTime:(unint64_t)a3;
+- (void)addWorkingTime:(unint64_t)time;
 - (void)enable;
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4;
-- (void)importRecordData:(id)a3 summary:(id)a4 account:(id)a5 completion:(id)a6;
-- (void)setEstimatedDataSize:(unint64_t)a3;
-- (void)setState:(id)a3;
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account;
+- (void)importRecordData:(id)data summary:(id)summary account:(id)account completion:(id)completion;
+- (void)setEstimatedDataSize:(unint64_t)size;
+- (void)setState:(id)state;
 @end
 
 @implementation WLContactsMigrator
 
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account
 {
-  v4 = a3;
-  if (![v4 itemSize])
+  summaryCopy = summary;
+  if (![summaryCopy itemSize])
   {
-    [v4 setItemSize:512];
+    [summaryCopy setItemSize:512];
   }
 }
 
@@ -45,23 +45,23 @@
   [v4 setState:@"enabled"];
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setState:v4];
+  [WeakRetained setState:stateCopy];
 }
 
-- (void)setEstimatedDataSize:(unint64_t)a3
+- (void)setEstimatedDataSize:(unint64_t)size
 {
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setSize:a3];
+  [WeakRetained setSize:size];
 }
 
-- (void)addWorkingTime:(unint64_t)a3
+- (void)addWorkingTime:(unint64_t)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setElapsedTime:{objc_msgSend(WeakRetained, "elapsedTime") + a3}];
+  [WeakRetained setElapsedTime:{objc_msgSend(WeakRetained, "elapsedTime") + time}];
 }
 
 - (id)importWillBegin
@@ -72,23 +72,23 @@
   return 0;
 }
 
-- (void)importRecordData:(id)a3 summary:(id)a4 account:(id)a5 completion:(id)a6
+- (void)importRecordData:(id)data summary:(id)summary account:(id)account completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a6;
+  dataCopy = data;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
   [WeakRetained setCount:{objc_msgSend(WeakRetained, "count") + 1}];
 
   v11 = objc_loadWeakRetained(&self->_featurePayload);
-  [v11 setSize:{objc_msgSend(v11, "size") + objc_msgSend(v8, "length")}];
+  [v11 setSize:{objc_msgSend(v11, "size") + objc_msgSend(dataCopy, "length")}];
 
-  if (![v8 length])
+  if (![dataCopy length])
   {
     v14 = 0;
     v23 = 0;
-    v12 = v8;
-    if (!v9)
+    v12 = dataCopy;
+    if (!completionCopy)
     {
       goto LABEL_22;
     }
@@ -96,7 +96,7 @@
     goto LABEL_21;
   }
 
-  v12 = [(WLContactsMigrator *)self _vcardDataWithoutCustomFieldsFromVcardData:v8];
+  v12 = [(WLContactsMigrator *)self _vcardDataWithoutCustomFieldsFromVcardData:dataCopy];
 
   v38 = 0;
   v13 = [MEMORY[0x277CBDAC8] contactsWithData:v12 error:&v38];
@@ -183,10 +183,10 @@
   _WLLog();
 
 LABEL_20:
-  if (v9)
+  if (completionCopy)
   {
 LABEL_21:
-    v9[2](v9, v23, v14);
+    completionCopy[2](completionCopy, v23, v14);
   }
 
 LABEL_22:
@@ -194,14 +194,14 @@ LABEL_22:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_vcardDataWithoutCustomFieldsFromVcardData:(id)a3
+- (id)_vcardDataWithoutCustomFieldsFromVcardData:(id)data
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
-  v6 = v4;
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
+  v6 = dataCopy;
   if ([v5 rangeOfString:@"BEGIN:VCARD\r\n" options:1 range:{0, objc_msgSend(@"BEGIN:VCARD\r\n", "length")}] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "length")}];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
     v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "length")}];
     _WLLog();
 
@@ -251,7 +251,7 @@ LABEL_22:
       v9 = [v8 length] - v10;
     }
 
-    v6 = v4;
+    v6 = dataCopy;
     if (i)
     {
       v6 = [v8 dataUsingEncoding:4];

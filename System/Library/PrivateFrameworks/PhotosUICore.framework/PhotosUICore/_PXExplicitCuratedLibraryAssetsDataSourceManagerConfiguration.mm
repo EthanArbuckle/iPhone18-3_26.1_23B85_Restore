@@ -1,22 +1,22 @@
 @interface _PXExplicitCuratedLibraryAssetsDataSourceManagerConfiguration
-- (_PXExplicitCuratedLibraryAssetsDataSourceManagerConfiguration)initWithPhotoLibrary:(id)a3 yearsAssetsDataSourceManager:(id)a4 monthsAssetsDataSourceManager:(id)a5 daysAssetsDataSourceManager:(id)a6 allPhotosAssetsDataSourceManager:(id)a7;
-- (id)configurationForZoomLevel:(int64_t)a3;
+- (_PXExplicitCuratedLibraryAssetsDataSourceManagerConfiguration)initWithPhotoLibrary:(id)library yearsAssetsDataSourceManager:(id)manager monthsAssetsDataSourceManager:(id)sourceManager daysAssetsDataSourceManager:(id)dataSourceManager allPhotosAssetsDataSourceManager:(id)assetsDataSourceManager;
+- (id)configurationForZoomLevel:(int64_t)level;
 @end
 
 @implementation _PXExplicitCuratedLibraryAssetsDataSourceManagerConfiguration
 
-- (id)configurationForZoomLevel:(int64_t)a3
+- (id)configurationForZoomLevel:(int64_t)level
 {
-  if (a3 > 2)
+  if (level > 2)
   {
-    if (a3 == 3)
+    if (level == 3)
     {
       v6 = &OBJC_IVAR____PXExplicitCuratedLibraryAssetsDataSourceManagerConfiguration__daysAssetsDataSourceManager;
     }
 
     else
     {
-      if (a3 != 4)
+      if (level != 4)
       {
         goto LABEL_13;
       }
@@ -34,7 +34,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  switch(a3)
+  switch(level)
   {
     case 1:
       v6 = &OBJC_IVAR____PXExplicitCuratedLibraryAssetsDataSourceManagerConfiguration__yearsAssetsDataSourceManager;
@@ -43,39 +43,39 @@ LABEL_10:
       v6 = &OBJC_IVAR____PXExplicitCuratedLibraryAssetsDataSourceManagerConfiguration__monthsAssetsDataSourceManager;
       goto LABEL_10;
     case 0:
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManagerConfiguration.m" lineNumber:117 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManagerConfiguration.m" lineNumber:117 description:@"Code which should be unreachable has been reached"];
 
       abort();
   }
 
 LABEL_13:
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManagerConfiguration.m" lineNumber:132 description:{@"missing assetsDataSourceManager for zoomLevel %li", a3}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManagerConfiguration.m" lineNumber:132 description:{@"missing assetsDataSourceManager for zoomLevel %li", level}];
 
   v7 = 0;
 LABEL_14:
-  v9 = [[PXCuratedLibraryZoomLevelDataConfiguration alloc] initWithZoomLevel:a3 assetsDataSourceManager:v7];
+  v9 = [[PXCuratedLibraryZoomLevelDataConfiguration alloc] initWithZoomLevel:level assetsDataSourceManager:v7];
 
   return v9;
 }
 
-- (_PXExplicitCuratedLibraryAssetsDataSourceManagerConfiguration)initWithPhotoLibrary:(id)a3 yearsAssetsDataSourceManager:(id)a4 monthsAssetsDataSourceManager:(id)a5 daysAssetsDataSourceManager:(id)a6 allPhotosAssetsDataSourceManager:(id)a7
+- (_PXExplicitCuratedLibraryAssetsDataSourceManagerConfiguration)initWithPhotoLibrary:(id)library yearsAssetsDataSourceManager:(id)manager monthsAssetsDataSourceManager:(id)sourceManager daysAssetsDataSourceManager:(id)dataSourceManager allPhotosAssetsDataSourceManager:(id)assetsDataSourceManager
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  managerCopy = manager;
+  sourceManagerCopy = sourceManager;
+  dataSourceManagerCopy = dataSourceManager;
+  assetsDataSourceManagerCopy = assetsDataSourceManager;
   v20.receiver = self;
   v20.super_class = _PXExplicitCuratedLibraryAssetsDataSourceManagerConfiguration;
-  v17 = [(PXCuratedLibraryAssetsDataSourceManagerConfiguration *)&v20 initWithPhotoLibrary:a3];
+  v17 = [(PXCuratedLibraryAssetsDataSourceManagerConfiguration *)&v20 initWithPhotoLibrary:library];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_yearsAssetsDataSourceManager, a4);
-    objc_storeStrong(&v18->_monthsAssetsDataSourceManager, a5);
-    objc_storeStrong(&v18->_daysAssetsDataSourceManager, a6);
-    objc_storeStrong(&v18->_allPhotosAssetsDataSourceManager, a7);
+    objc_storeStrong(&v17->_yearsAssetsDataSourceManager, manager);
+    objc_storeStrong(&v18->_monthsAssetsDataSourceManager, sourceManager);
+    objc_storeStrong(&v18->_daysAssetsDataSourceManager, dataSourceManager);
+    objc_storeStrong(&v18->_allPhotosAssetsDataSourceManager, assetsDataSourceManager);
   }
 
   return v18;

@@ -1,15 +1,15 @@
 @interface _UIVisualEffectBackdropView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)isTransparentFocusItem;
 - (_UIVisualEffectViewBackdropCaptureGroup)captureGroup;
 - (int64_t)renderMode;
-- (void)_applyScaleHintAsRequested:(BOOL)a3;
+- (void)_applyScaleHintAsRequested:(BOOL)requested;
 - (void)applyIdentityFilterEffects;
 - (void)applyRequestedFilterEffects;
 - (void)removeFromCurrentCaptureGroup;
-- (void)setCaptureGroup:(id)a3;
-- (void)setRenderMode:(int64_t)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setCaptureGroup:(id)group;
+- (void)setRenderMode:(int64_t)mode;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIVisualEffectBackdropView
@@ -39,10 +39,10 @@
 
 - (BOOL)isTransparentFocusItem
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 supportsViewTransparency];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  supportsViewTransparency = [_focusBehavior supportsViewTransparency];
 
-  if (v4)
+  if (supportsViewTransparency)
   {
     return [(_UIVisualEffectBackdropView *)self renderMode]!= 2;
   }
@@ -54,10 +54,10 @@
 
 - (int64_t)renderMode
 {
-  v2 = [(_UIVisualEffectBackdropView *)self backdropLayer];
-  if ([v2 isEnabled])
+  backdropLayer = [(_UIVisualEffectBackdropView *)self backdropLayer];
+  if ([backdropLayer isEnabled])
   {
-    if ([v2 captureOnly])
+    if ([backdropLayer captureOnly])
     {
       v3 = 1;
     }
@@ -76,42 +76,42 @@
   return v3;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = _UIVisualEffectBackdropView;
-  if ([(_UIVisualEffectSubview *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(_UIVisualEffectSubview *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [@"scale" isEqualToString:v4];
+    v5 = [@"scale" isEqualToString:keyCopy];
   }
 
   return v5;
 }
 
-- (void)setRenderMode:(int64_t)a3
+- (void)setRenderMode:(int64_t)mode
 {
-  v4 = [(_UIVisualEffectBackdropView *)self backdropLayer];
-  [v4 setEnabled:a3 != 0];
-  [v4 setCaptureOnly:a3 == 1];
+  backdropLayer = [(_UIVisualEffectBackdropView *)self backdropLayer];
+  [backdropLayer setEnabled:mode != 0];
+  [backdropLayer setCaptureOnly:mode == 1];
 }
 
-- (void)setCaptureGroup:(id)a3
+- (void)setCaptureGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   captureGroup = self->_captureGroup;
-  if (captureGroup != v5)
+  if (captureGroup != groupCopy)
   {
-    v7 = v5;
-    [(_UIVisualEffectViewBackdropCaptureGroup *)captureGroup removeBackdrop:self update:v5 == 0];
-    objc_storeStrong(&self->_captureGroup, a3);
+    v7 = groupCopy;
+    [(_UIVisualEffectViewBackdropCaptureGroup *)captureGroup removeBackdrop:self update:groupCopy == 0];
+    objc_storeStrong(&self->_captureGroup, group);
     [(_UIVisualEffectViewBackdropCaptureGroup *)self->_captureGroup addBackdrop:self update:1];
-    v5 = v7;
+    groupCopy = v7;
   }
 }
 
@@ -124,21 +124,21 @@
     v4 = self->_captureGroup;
     self->_captureGroup = 0;
 
-    v5 = [(_UIVisualEffectBackdropView *)self backdropLayer];
-    [v5 setGroupName:0];
+    backdropLayer = [(_UIVisualEffectBackdropView *)self backdropLayer];
+    [backdropLayer setGroupName:0];
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
+  windowCopy = window;
   v9.receiver = self;
   v9.super_class = _UIVisualEffectBackdropView;
-  [(_UIVisualEffectSubview *)&v9 willMoveToWindow:v5];
-  if (v5)
+  [(_UIVisualEffectSubview *)&v9 willMoveToWindow:windowCopy];
+  if (windowCopy)
   {
-    v3 = [v5 screen];
-    [v3 scale];
+    screen = [windowCopy screen];
+    [screen scale];
     v7 = v6;
   }
 
@@ -147,24 +147,24 @@
     v7 = 1.0;
   }
 
-  v8 = [(_UIVisualEffectBackdropView *)self backdropLayer];
-  [v8 setRasterizationScale:v7];
+  backdropLayer = [(_UIVisualEffectBackdropView *)self backdropLayer];
+  [backdropLayer setRasterizationScale:v7];
 
-  if (v5)
+  if (windowCopy)
   {
   }
 }
 
-- (void)_applyScaleHintAsRequested:(BOOL)a3
+- (void)_applyScaleHintAsRequested:(BOOL)requested
 {
-  v3 = a3;
+  requestedCopy = requested;
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(_UIVisualEffectSubview *)self filters];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  filters = [(_UIVisualEffectSubview *)self filters];
+  v6 = [filters countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -176,17 +176,17 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(filters);
         }
 
-        [*(*(&v13 + 1) + 8 * i) scaleHintAsRequested:v3];
+        [*(*(&v13 + 1) + 8 * i) scaleHintAsRequested:requestedCopy];
         if (v9 < v11)
         {
           v9 = v11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [filters countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);

@@ -1,10 +1,10 @@
 @interface MPStoreItemMetadata
-+ (id)artworkRequestTokenForStorePlatformArtworkValue:(id)a3;
++ (id)artworkRequestTokenForStorePlatformArtworkValue:(id)value;
 + (id)storeServerCalendar;
 - (BOOL)hasArtistBiography;
 - (BOOL)hasCredits;
 - (BOOL)hasLyrics;
-- (BOOL)hasMetadataForRequestReason:(unint64_t)a3;
+- (BOOL)hasMetadataForRequestReason:(unint64_t)reason;
 - (BOOL)hasSocialPosts;
 - (BOOL)hasSubscriptionOffer;
 - (BOOL)hasTimeSyncedLyrics;
@@ -30,14 +30,14 @@
 - (MPStoreArtworkRequestToken)latestAlbumArtworkRequestToken;
 - (MPStoreArtworkRequestToken)staticTallEditorialArtworkRequestToken;
 - (MPStoreArtworkRequestToken)superHeroTallEditorialArtworkRequestToken;
-- (MPStoreItemMetadata)initWithCoder:(id)a3;
-- (MPStoreItemMetadata)initWithDownloadAssetDictionary:(id)a3;
-- (MPStoreItemMetadata)initWithStoreMusicAPIDictionary:(id)a3;
-- (MPStoreItemMetadata)initWithStoreMusicAPIDictionary:(id)a3 parentStoreItemMetadata:(id)a4;
-- (MPStoreItemMetadata)initWithStorePlatformDictionary:(id)a3 expirationDate:(id)a4;
-- (MPStoreItemMetadata)initWithStorePlatformDictionary:(id)a3 parentStoreItemMetadata:(id)a4 expirationDate:(id)a5;
-- (MPStoreItemMetadata)metadataWithChildStorePlatformDictionaries:(id)a3;
-- (MPStoreItemMetadata)metadataWithParentMetadata:(id)a3;
+- (MPStoreItemMetadata)initWithCoder:(id)coder;
+- (MPStoreItemMetadata)initWithDownloadAssetDictionary:(id)dictionary;
+- (MPStoreItemMetadata)initWithStoreMusicAPIDictionary:(id)dictionary;
+- (MPStoreItemMetadata)initWithStoreMusicAPIDictionary:(id)dictionary parentStoreItemMetadata:(id)metadata;
+- (MPStoreItemMetadata)initWithStorePlatformDictionary:(id)dictionary expirationDate:(id)date;
+- (MPStoreItemMetadata)initWithStorePlatformDictionary:(id)dictionary parentStoreItemMetadata:(id)metadata expirationDate:(id)date;
+- (MPStoreItemMetadata)metadataWithChildStorePlatformDictionaries:(id)dictionaries;
+- (MPStoreItemMetadata)metadataWithParentMetadata:(id)metadata;
 - (NSArray)artworkTrackIDs;
 - (NSArray)audioTraits;
 - (NSArray)childStoreItemMetadatas;
@@ -90,35 +90,35 @@
 - (NSURL)classicalURL;
 - (NSURL)shortURL;
 - (double)duration;
-- (id)_fetchValueFromStoreMusicAPIDictionary:(id)a3;
+- (id)_fetchValueFromStoreMusicAPIDictionary:(id)dictionary;
 - (id)_musicAPIDateFormatter;
 - (id)_storePlatformLastModifiedDateFormatter;
 - (id)_storePlatformReleaseDateFormatter;
 - (id)artistStoreID;
-- (id)artworkRequestTokenForEditorialArtworkKind:(id)a3;
+- (id)artworkRequestTokenForEditorialArtworkKind:(id)kind;
 - (id)artworkRequestTokenForScreenshotArtwork;
 - (id)artworkRequestTokenForStoreMusicAPIDictionary;
-- (id)artworkRequestTokenForStorePlatformDictionary:(id)a3;
-- (id)artworkRequestTokenForUberArtworkKind:(id)a3;
+- (id)artworkRequestTokenForStorePlatformDictionary:(id)dictionary;
+- (id)artworkRequestTokenForUberArtworkKind:(id)kind;
 - (id)avatarArtworkRequestToken;
 - (id)brickEditorialArtworkRequestToken;
-- (id)childStorePlatformDictionaryForArtworkTrackID:(id)a3;
-- (id)childStorePlatformDictionaryForStoreID:(id)a3;
+- (id)childStorePlatformDictionaryForArtworkTrackID:(id)d;
+- (id)childStorePlatformDictionaryForStoreID:(id)d;
 - (id)collectionStoreID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionTextWithStyle:(id)a3;
-- (id)editorNotesWithStyle:(id)a3;
+- (id)descriptionTextWithStyle:(id)style;
+- (id)editorNotesWithStyle:(id)style;
 - (id)flowcaseEditorialArtworkRequestToken;
-- (id)metadataByAppendingMetadata:(id)a3;
+- (id)metadataByAppendingMetadata:(id)metadata;
 - (id)movieArtworkRequestToken;
 - (id)staticTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary;
-- (id)staticTallEditorialArtworkRequestTokenForStorePlatformDictionary:(id)a3;
+- (id)staticTallEditorialArtworkRequestTokenForStorePlatformDictionary:(id)dictionary;
 - (id)stationGlyphRequestTokenForStoreMusicAPIDictionary;
-- (id)stationGlyphRequestTokenForStorePlatformDictionary:(id)a3;
+- (id)stationGlyphRequestTokenForStorePlatformDictionary:(id)dictionary;
 - (id)storeID;
 - (id)superHeroTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary;
-- (id)superHeroTallEditorialArtworkRequestTokenForStorePlatformDictionary:(id)a3;
+- (id)superHeroTallEditorialArtworkRequestTokenForStorePlatformDictionary:(id)dictionary;
 - (id)tvEpisodeArtworkRequestToken;
 - (id)tvShowArtworkRequestToken;
 - (int64_t)discCount;
@@ -135,24 +135,24 @@
 - (int64_t)trackCount;
 - (int64_t)trackNumber;
 - (unint64_t)cloudID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPStoreItemMetadata
 
-- (id)_fetchValueFromStoreMusicAPIDictionary:(id)a3
+- (id)_fetchValueFromStoreMusicAPIDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_storeMusicAPIDictionary valueForKeyPath:v4];
+  dictionaryCopy = dictionary;
+  v5 = [(NSDictionary *)self->_storeMusicAPIDictionary valueForKeyPath:dictionaryCopy];
   if (!v5)
   {
     v6 = [(NSDictionary *)self->_storeMusicAPIDictionary objectForKey:@"attributes"];
-    if (!_NSIsNSDictionary() || ([v6 valueForKeyPath:v4], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!_NSIsNSDictionary() || ([v6 valueForKeyPath:dictionaryCopy], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v7 = [(NSDictionary *)self->_storeMusicAPIDictionary objectForKey:@"relationships"];
       if (_NSIsNSDictionary())
       {
-        v5 = [v7 valueForKeyPath:v4];
+        v5 = [v7 valueForKeyPath:dictionaryCopy];
       }
 
       else
@@ -240,51 +240,51 @@ void __57__MPStoreItemMetadata__storePlatformReleaseDateFormatter__block_invoke(
   [_storePlatformReleaseDateFormatter_sStorePlatformReleaseDateFormatter setDateFormat:@"YYYY-MM-dd"];
 }
 
-- (MPStoreItemMetadata)metadataWithParentMetadata:(id)a3
+- (MPStoreItemMetadata)metadataWithParentMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v6 = [(MPStoreItemMetadata *)self copy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong((v6 + 72), a3);
+    objc_storeStrong((v6 + 72), metadata);
   }
 
   return v7;
 }
 
-- (MPStoreItemMetadata)metadataWithChildStorePlatformDictionaries:(id)a3
+- (MPStoreItemMetadata)metadataWithChildStorePlatformDictionaries:(id)dictionaries
 {
-  v5 = a3;
+  dictionariesCopy = dictionaries;
   v6 = [(MPStoreItemMetadata *)self copy];
   v7 = v6;
   if (v6)
   {
     *(v6 + 40) = 1;
-    objc_storeStrong((v6 + 56), a3);
+    objc_storeStrong((v6 + 56), dictionaries);
   }
 
   return v7;
 }
 
-- (id)metadataByAppendingMetadata:(id)a3
+- (id)metadataByAppendingMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
-  if (v4)
+  metadataCopy = metadata;
+  selfCopy = self;
+  if (metadataCopy)
   {
-    v6 = v4;
+    v6 = metadataCopy;
     v7 = v6;
-    if (v5->_downloadAssetDictionary && !v6->_downloadAssetDictionary)
+    if (selfCopy->_downloadAssetDictionary && !v6->_downloadAssetDictionary)
     {
 
-      v8 = v5;
+      v8 = selfCopy;
     }
 
     else
     {
       v8 = v6;
-      v7 = v5;
+      v7 = selfCopy;
     }
 
     parentStoreItemMetadata = v8->_parentStoreItemMetadata;
@@ -346,13 +346,13 @@ void __57__MPStoreItemMetadata__storePlatformReleaseDateFormatter__block_invoke(
     }
 
     v21 = [objc_alloc(objc_opt_class()) initWithDownloadAssetDictionary:v19];
-    v5 = v21;
+    selfCopy = v21;
     if (v21)
     {
       *(v21 + 40) = v12;
       objc_storeStrong((v21 + 56), v11);
-      objc_storeStrong(&v5->_parentStoreItemMetadata, parentStoreItemMetadata);
-      objc_storeStrong(&v5->_storePlatformDictionary, v15);
+      objc_storeStrong(&selfCopy->_parentStoreItemMetadata, parentStoreItemMetadata);
+      objc_storeStrong(&selfCopy->_storePlatformDictionary, v15);
       v22 = v8->_expirationDate;
       v23 = v7->_expirationDate;
       v24 = v23;
@@ -371,12 +371,12 @@ void __57__MPStoreItemMetadata__storePlatformReleaseDateFormatter__block_invoke(
         v25 = v23;
       }
 
-      expirationDate = v5->_expirationDate;
-      v5->_expirationDate = v25;
+      expirationDate = selfCopy->_expirationDate;
+      selfCopy->_expirationDate = v25;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)brickEditorialArtworkRequestToken
@@ -438,16 +438,16 @@ void __57__MPStoreItemMetadata__storePlatformReleaseDateFormatter__block_invoke(
 
 - (id)tvEpisodeArtworkRequestToken
 {
-  v2 = [(MPStoreItemMetadata *)self artworkRequestTokenForScreenshotArtwork];
-  [v2 setCropStyle:*MEMORY[0x1E69E4250]];
+  artworkRequestTokenForScreenshotArtwork = [(MPStoreItemMetadata *)self artworkRequestTokenForScreenshotArtwork];
+  [artworkRequestTokenForScreenshotArtwork setCropStyle:*MEMORY[0x1E69E4250]];
 
-  return v2;
+  return artworkRequestTokenForScreenshotArtwork;
 }
 
-- (id)editorNotesWithStyle:(id)a3
+- (id)editorNotesWithStyle:(id)style
 {
-  v4 = a3;
-  if (!v4)
+  styleCopy = style;
+  if (!styleCopy)
   {
     v9 = 0;
     goto LABEL_20;
@@ -472,7 +472,7 @@ void __57__MPStoreItemMetadata__storePlatformReleaseDateFormatter__block_invoke(
 
     if (_NSIsNSDictionary())
     {
-      v9 = [v10 objectForKey:v4];
+      v9 = [v10 objectForKey:styleCopy];
       v11 = _NSIsNSString();
 
       if (v11)
@@ -493,7 +493,7 @@ LABEL_13:
   v12 = [(MPStoreItemMetadata *)self _fetchValueFromStoreMusicAPIDictionary:@"editorialNotes"];
   if (_NSIsNSDictionary())
   {
-    v13 = [v12 objectForKey:v4];
+    v13 = [v12 objectForKey:styleCopy];
     if (_NSIsNSString())
     {
       v9 = v13;
@@ -532,10 +532,10 @@ LABEL_20:
   return v3;
 }
 
-- (id)descriptionTextWithStyle:(id)a3
+- (id)descriptionTextWithStyle:(id)style
 {
-  v4 = a3;
-  if (!v4)
+  styleCopy = style;
+  if (!styleCopy)
   {
     v8 = 0;
     goto LABEL_19;
@@ -547,7 +547,7 @@ LABEL_20:
     v6 = [(NSDictionary *)storePlatformDictionary objectForKey:@"description"];
     if (_NSIsNSDictionary())
     {
-      v7 = [v6 objectForKey:v4];
+      v7 = [v6 objectForKey:styleCopy];
       if (_NSIsNSString())
       {
         v8 = v7;
@@ -566,7 +566,7 @@ LABEL_10:
   v9 = [(MPStoreItemMetadata *)self _fetchValueFromStoreMusicAPIDictionary:@"description"];
   if (_NSIsNSDictionary())
   {
-    v10 = [v9 objectForKey:v4];
+    v10 = [v9 objectForKey:styleCopy];
     if (_NSIsNSString())
     {
       v8 = v10;
@@ -595,11 +595,11 @@ LABEL_19:
   return v8;
 }
 
-- (id)childStorePlatformDictionaryForStoreID:(id)a3
+- (id)childStorePlatformDictionaryForStoreID:(id)d
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v12 = 0;
     goto LABEL_35;
@@ -610,7 +610,7 @@ LABEL_19:
     v5 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"children"];
     if (_NSIsNSDictionary())
     {
-      v12 = [v5 objectForKey:v4];
+      v12 = [v5 objectForKey:dCopy];
       if (_NSIsNSDictionary())
       {
         goto LABEL_17;
@@ -644,7 +644,7 @@ LABEL_17:
 
               v15 = *(*(&v18 + 1) + 8 * i);
               v16 = [v15 objectForKeyedSubscript:{@"id", v18}];
-              if ([v16 isEqual:v4] && _NSIsNSDictionary())
+              if ([v16 isEqual:dCopy] && _NSIsNSDictionary())
               {
                 v12 = v15;
 
@@ -700,7 +700,7 @@ LABEL_33:
 
         v10 = *(*(&v22 + 1) + 8 * j);
         v11 = [v10 objectForKey:@"id"];
-        if ([v11 isEqual:v4])
+        if ([v11 isEqual:dCopy])
         {
           v12 = v10;
           goto LABEL_33;
@@ -725,15 +725,15 @@ LABEL_35:
   return v12;
 }
 
-- (id)childStorePlatformDictionaryForArtworkTrackID:(id)a3
+- (id)childStorePlatformDictionaryForArtworkTrackID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"artworkTracks"];
     if (_NSIsNSDictionary())
     {
-      v6 = [v5 objectForKey:v4];
+      v6 = [v5 objectForKey:dCopy];
       if (_NSIsNSDictionary())
       {
 LABEL_6:
@@ -752,9 +752,9 @@ LABEL_8:
   return v6;
 }
 
-- (id)stationGlyphRequestTokenForStorePlatformDictionary:(id)a3
+- (id)stationGlyphRequestTokenForStorePlatformDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"stationGlyph"];
+  v3 = [dictionary objectForKey:@"stationGlyph"];
   if (v3)
   {
     v4 = [objc_opt_class() artworkRequestTokenForStorePlatformArtworkValue:v3];
@@ -784,9 +784,9 @@ LABEL_8:
   return v3;
 }
 
-- (id)superHeroTallEditorialArtworkRequestTokenForStorePlatformDictionary:(id)a3
+- (id)superHeroTallEditorialArtworkRequestTokenForStorePlatformDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"editorialArtwork"];
+  v3 = [dictionary objectForKey:@"editorialArtwork"];
   if (_NSIsNSDictionary())
   {
     v4 = [v3 objectForKey:@"superHeroTall"];
@@ -801,9 +801,9 @@ LABEL_8:
   return v5;
 }
 
-- (id)staticTallEditorialArtworkRequestTokenForStorePlatformDictionary:(id)a3
+- (id)staticTallEditorialArtworkRequestTokenForStorePlatformDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"editorialArtwork"];
+  v3 = [dictionary objectForKey:@"editorialArtwork"];
   if (_NSIsNSDictionary())
   {
     v4 = [v3 objectForKey:@"staticDetailTall"];
@@ -818,9 +818,9 @@ LABEL_8:
   return v5;
 }
 
-- (id)artworkRequestTokenForStorePlatformDictionary:(id)a3
+- (id)artworkRequestTokenForStorePlatformDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"artwork"];
+  v3 = [dictionary objectForKey:@"artwork"];
   if (v3)
   {
     v4 = [objc_opt_class() artworkRequestTokenForStorePlatformArtworkValue:v3];
@@ -901,15 +901,15 @@ LABEL_8:
   return v5;
 }
 
-- (id)artworkRequestTokenForUberArtworkKind:(id)a3
+- (id)artworkRequestTokenForUberArtworkKind:(id)kind
 {
-  v4 = a3;
-  if (v4)
+  kindCopy = kind;
+  if (kindCopy)
   {
     v5 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"uber"];
     if (_NSIsNSDictionary())
     {
-      v6 = [v5 objectForKey:v4];
+      v6 = [v5 objectForKey:kindCopy];
       if (_NSIsNSDictionary())
       {
         v7 = [objc_alloc(MEMORY[0x1E69E45C0]) initWithArtworkResponseDictionary:v6];
@@ -969,22 +969,22 @@ LABEL_8:
   return v4;
 }
 
-- (id)artworkRequestTokenForEditorialArtworkKind:(id)a3
+- (id)artworkRequestTokenForEditorialArtworkKind:(id)kind
 {
-  v4 = a3;
-  if (v4)
+  kindCopy = kind;
+  if (kindCopy)
   {
     v5 = [(NSDictionary *)self->_storeMusicAPIDictionary objectForKey:@"editorialArtwork"];
     if (_NSIsNSDictionary())
     {
-      v6 = [v5 objectForKey:v4];
+      v6 = [v5 objectForKey:kindCopy];
       if (_NSIsNSDictionary())
       {
         v7 = [objc_alloc(MEMORY[0x1E69E45C0]) initWithArtworkResponseDictionary:v6];
         if (v7)
         {
           v8 = [MPStoreArtworkRequestToken tokenWithImageArtworkInfo:v7];
-          [v8 setSourceEditorialArtworkKind:v4];
+          [v8 setSourceEditorialArtworkKind:kindCopy];
         }
 
         else
@@ -1051,9 +1051,9 @@ LABEL_8:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSURL)classicalURL
@@ -1076,7 +1076,7 @@ LABEL_8:
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v19 = [(MPStoreItemMetadata *)self _musicAPIDateFormatter];
+  _musicAPIDateFormatter = [(MPStoreItemMetadata *)self _musicAPIDateFormatter];
   v4 = [(MPStoreItemMetadata *)self _fetchValueFromStoreMusicAPIDictionary:@"relationships"];
   if (_NSIsNSDictionary())
   {
@@ -1114,7 +1114,7 @@ LABEL_8:
               v20[2] = __41__MPStoreItemMetadata_radioStationEvents__block_invoke;
               v20[3] = &unk_1E7678640;
               v20[4] = v12;
-              v21 = v19;
+              v21 = _musicAPIDateFormatter;
               v14 = [(MPRadioStationEvent *)v13 initWithBlock:v20];
               v3 = v11;
               [v11 addObject:v14];
@@ -1184,8 +1184,8 @@ void __41__MPStoreItemMetadata_radioStationEvents__block_invoke(uint64_t a1, voi
   if (_NSIsNSDictionary())
   {
     v4 = [v3 objectForKey:@"end"];
-    v5 = [(MPStoreItemMetadata *)self _storePlatformLastModifiedDateFormatter];
-    v6 = [v5 dateFromString:v4];
+    _storePlatformLastModifiedDateFormatter = [(MPStoreItemMetadata *)self _storePlatformLastModifiedDateFormatter];
+    v6 = [_storePlatformLastModifiedDateFormatter dateFromString:v4];
 
     if (v6)
     {
@@ -1203,13 +1203,13 @@ void __41__MPStoreItemMetadata_radioStationEvents__block_invoke(uint64_t a1, voi
 
   if (_NSIsNSString())
   {
-    v8 = [(MPStoreItemMetadata *)self _musicAPIDateFormatter];
-    v6 = [v8 dateFromString:v4];
+    _musicAPIDateFormatter = [(MPStoreItemMetadata *)self _musicAPIDateFormatter];
+    v6 = [_musicAPIDateFormatter dateFromString:v4];
 
     if (!v6)
     {
-      v9 = [(MPStoreItemMetadata *)self _storePlatformReleaseDateFormatter];
-      v6 = [v9 dateFromString:v4];
+      _storePlatformReleaseDateFormatter = [(MPStoreItemMetadata *)self _storePlatformReleaseDateFormatter];
+      v6 = [_storePlatformReleaseDateFormatter dateFromString:v4];
     }
   }
 
@@ -1229,8 +1229,8 @@ LABEL_9:
   if (_NSIsNSDictionary())
   {
     v4 = [v3 objectForKey:@"start"];
-    v5 = [(MPStoreItemMetadata *)self _storePlatformLastModifiedDateFormatter];
-    v6 = [v5 dateFromString:v4];
+    _storePlatformLastModifiedDateFormatter = [(MPStoreItemMetadata *)self _storePlatformLastModifiedDateFormatter];
+    v6 = [_storePlatformLastModifiedDateFormatter dateFromString:v4];
 
     if (v6)
     {
@@ -1248,13 +1248,13 @@ LABEL_9:
 
   if (_NSIsNSString())
   {
-    v8 = [(MPStoreItemMetadata *)self _musicAPIDateFormatter];
-    v6 = [v8 dateFromString:v4];
+    _musicAPIDateFormatter = [(MPStoreItemMetadata *)self _musicAPIDateFormatter];
+    v6 = [_musicAPIDateFormatter dateFromString:v4];
 
     if (!v6)
     {
-      v9 = [(MPStoreItemMetadata *)self _storePlatformReleaseDateFormatter];
-      v6 = [v9 dateFromString:v4];
+      _storePlatformReleaseDateFormatter = [(MPStoreItemMetadata *)self _storePlatformReleaseDateFormatter];
+      v6 = [_storePlatformReleaseDateFormatter dateFromString:v4];
     }
   }
 
@@ -1277,9 +1277,9 @@ LABEL_9:
     v2 = MEMORY[0x1E695E110];
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)radioStationProviderName
@@ -1303,9 +1303,9 @@ LABEL_9:
     v2 = MEMORY[0x1E695E110];
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)radioStationSubtype
@@ -1334,9 +1334,9 @@ LABEL_9:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)radioStationTypeID
@@ -1348,9 +1348,9 @@ LABEL_9:
     v2 = 0;
   }
 
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isOnboardedPerson
@@ -1358,15 +1358,15 @@ LABEL_9:
   v2 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"isOnboarded"];
   if (v2 && _NSIsNSNumber())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isVerifiedPerson
@@ -1378,9 +1378,9 @@ LABEL_9:
     v2 = MEMORY[0x1E695E110];
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPrivatePerson
@@ -1392,9 +1392,9 @@ LABEL_9:
     v2 = MEMORY[0x1E695E110];
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)nameRaw
@@ -1532,9 +1532,9 @@ LABEL_9:
     }
   }
 
-  v5 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)episodeCount
@@ -1556,9 +1556,9 @@ LABEL_9:
     }
   }
 
-  v5 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)trackNumber
@@ -1584,9 +1584,9 @@ LABEL_9:
     v3 = 0;
   }
 
-  v6 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 - (int64_t)trackCount
@@ -1623,9 +1623,9 @@ LABEL_9:
     v3 = v6;
   }
 
-  v7 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 - (int64_t)subscriptionAdamID
@@ -1633,21 +1633,21 @@ LABEL_9:
   v3 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"subscribedAdamID"];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 longLongValue];
+    longLongValue = [v3 longLongValue];
   }
 
   else if ([(MPStoreItemMetadata *)self hasSubscriptionOffer])
   {
-    v5 = [(MPStoreItemMetadata *)self storeID];
-    v4 = MPStoreItemMetadataInt64NormalizeStoreIDValue(v5);
+    storeID = [(MPStoreItemMetadata *)self storeID];
+    longLongValue = MPStoreItemMetadataInt64NormalizeStoreIDValue(storeID);
   }
 
   else
   {
-    v4 = 0;
+    longLongValue = 0;
   }
 
-  return v4;
+  return longLongValue;
 }
 
 - (int64_t)purchasedAdamID
@@ -1655,15 +1655,15 @@ LABEL_9:
   v2 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"purchasedAdamId"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 longLongValue];
+    longLongValue = [v2 longLongValue];
   }
 
   else
   {
-    v3 = 0;
+    longLongValue = 0;
   }
 
-  return v3;
+  return longLongValue;
 }
 
 - (NSArray)formerStoreAdamIDs
@@ -1799,9 +1799,9 @@ LABEL_6:
     v3 = MEMORY[0x1E695E110];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldReportPlayEvents
@@ -1809,24 +1809,24 @@ LABEL_6:
   v3 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"shouldReportPlayEvents"];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = [(MPStoreItemMetadata *)self itemKind];
-    if (MPStoreItemMetadataItemKindIsArtistUploadedContent(v5))
+    itemKind = [(MPStoreItemMetadata *)self itemKind];
+    if (MPStoreItemMetadataItemKindIsArtistUploadedContent(itemKind))
     {
-      v4 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v4 = [(MPStoreItemMetadata *)self hasSubscriptionOffer];
+      bOOLValue = [(MPStoreItemMetadata *)self hasSubscriptionOffer];
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSNumber)shouldBookmarkPlayPosition
@@ -1869,8 +1869,8 @@ LABEL_6:
     v6 = [(MPStoreItemMetadata *)self _fetchValueFromStoreMusicAPIDictionary:@"lastModifiedDate"];
     if (_NSIsNSString())
     {
-      v7 = [(MPStoreItemMetadata *)self _musicAPIDateFormatter];
-      v5 = [v7 dateFromString:v6];
+      _musicAPIDateFormatter = [(MPStoreItemMetadata *)self _musicAPIDateFormatter];
+      v5 = [_musicAPIDateFormatter dateFromString:v6];
     }
 
     else
@@ -1891,13 +1891,13 @@ LABEL_6:
 
     if (_NSIsNSString())
     {
-      v7 = [(MPStoreItemMetadata *)self _musicAPIDateFormatter];
-      v5 = [v7 dateFromString:v6];
+      _musicAPIDateFormatter = [(MPStoreItemMetadata *)self _musicAPIDateFormatter];
+      v5 = [_musicAPIDateFormatter dateFromString:v6];
 
       if (!v5)
       {
-        v8 = [(MPStoreItemMetadata *)self _storePlatformReleaseDateFormatter];
-        v5 = [v8 dateFromString:v6];
+        _storePlatformReleaseDateFormatter = [(MPStoreItemMetadata *)self _storePlatformReleaseDateFormatter];
+        v5 = [_storePlatformReleaseDateFormatter dateFromString:v6];
       }
     }
 
@@ -2163,9 +2163,9 @@ LABEL_6:
     v3 = 0;
   }
 
-  v6 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 - (NSString)movementName
@@ -2213,9 +2213,9 @@ LABEL_6:
     v3 = 0;
   }
 
-  v6 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 - (MPStoreArtworkRequestToken)latestAlbumArtworkRequestToken
@@ -2281,9 +2281,9 @@ LABEL_6:
     v2 = MEMORY[0x1E695E110];
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)playlistType
@@ -2361,17 +2361,17 @@ LABEL_11:
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v5 = 0;
+      bOOLValue = 0;
       goto LABEL_7;
     }
 
     v3 = v4;
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 LABEL_7:
 
-  return v5;
+  return bOOLValue;
 }
 
 - (NSArray)audioTraits
@@ -2390,24 +2390,24 @@ LABEL_7:
   v3 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"isAvailable"];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = [(MPStoreItemMetadata *)self itemKind];
-    if (MPStoreItemMetadataItemKindIsArtistUploadedContent(v5))
+    itemKind = [(MPStoreItemMetadata *)self itemKind];
+    if (MPStoreItemMetadataItemKindIsArtistUploadedContent(itemKind))
     {
-      v4 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v4 = [(MPStoreItemMetadata *)self hasSubscriptionOffer];
+      bOOLValue = [(MPStoreItemMetadata *)self hasSubscriptionOffer];
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isPreorder
@@ -2424,9 +2424,9 @@ LABEL_7:
     v3 = MEMORY[0x1E695E110];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isMasteredForiTunes
@@ -2448,9 +2448,9 @@ LABEL_7:
     v4 = MEMORY[0x1E695E110];
   }
 
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)isCompilation
@@ -2467,9 +2467,9 @@ LABEL_7:
     v3 = MEMORY[0x1E695E110];
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)explicitRating
@@ -2477,35 +2477,35 @@ LABEL_7:
   v2 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"contentRatingsBySystem"];
   if (_NSIsNSDictionary())
   {
-    v3 = [v2 allValues];
-    v4 = [v3 firstObject];
+    allValues = [v2 allValues];
+    firstObject = [allValues firstObject];
 
     if (_NSIsNSDictionary())
     {
-      v5 = [v4 objectForKey:@"value"];
+      v5 = [firstObject objectForKey:@"value"];
       if (objc_opt_respondsToSelector())
       {
-        v6 = [v5 integerValue];
+        integerValue = [v5 integerValue];
       }
 
       else
       {
-        v6 = 100;
+        integerValue = 100;
       }
     }
 
     else
     {
-      v6 = 100;
+      integerValue = 100;
     }
   }
 
   else
   {
-    v6 = 100;
+    integerValue = 100;
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (BOOL)isExplicitContent
@@ -2513,32 +2513,32 @@ LABEL_7:
   v3 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"contentRatingsBySystem"];
   if (_NSIsNSDictionary())
   {
-    v4 = [v3 allValues];
-    v5 = [v4 firstObject];
+    allValues = [v3 allValues];
+    firstObject = [allValues firstObject];
 
     if (_NSIsNSDictionary())
     {
-      v6 = [v5 objectForKey:@"value"];
-      v7 = (objc_opt_respondsToSelector() & 1) != 0 && [v6 integerValue] > 499;
+      v6 = [firstObject objectForKey:@"value"];
+      bOOLValue = (objc_opt_respondsToSelector() & 1) != 0 && [v6 integerValue] > 499;
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    v7 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v5 = [(NSDictionary *)self->_downloadMetadataDictionary objectForKey:@"explicit"];
+    firstObject = [(NSDictionary *)self->_downloadMetadataDictionary objectForKey:@"explicit"];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v5 BOOLValue];
+      bOOLValue = [firstObject BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
 
     if (self->_storeMusicAPIDictionary)
@@ -2546,7 +2546,7 @@ LABEL_13:
       v6 = [(MPStoreItemMetadata *)self _fetchValueFromStoreMusicAPIDictionary:@"contentRating"];
       if (_NSIsNSString())
       {
-        v7 |= [v6 isEqualToString:@"explicit"];
+        bOOLValue |= [v6 isEqualToString:@"explicit"];
       }
 
       goto LABEL_13;
@@ -2555,7 +2555,7 @@ LABEL_13:
 
 LABEL_14:
 
-  return v7 & 1;
+  return bOOLValue & 1;
 }
 
 - (NSArray)genreNames
@@ -2740,8 +2740,8 @@ LABEL_53:
   if (!hasSubscriptionOffer)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(MPStoreItemMetadata *)self offers];
-    v6 = MPStoreItemMetadataSubscriptionOfferInOffers(v5);
+    offers = [(MPStoreItemMetadata *)self offers];
+    v6 = MPStoreItemMetadataSubscriptionOfferInOffers(offers);
     v7 = [v4 numberWithInt:v6 != 0];
     v8 = self->_hasSubscriptionOffer;
     self->_hasSubscriptionOffer = v7;
@@ -2757,15 +2757,15 @@ LABEL_53:
   v2 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"hasSocialPosts"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasTimeSyncedLyrics
@@ -2773,15 +2773,15 @@ LABEL_53:
   v2 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"hasTimeSyncedLyrics"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasLyrics
@@ -2789,15 +2789,15 @@ LABEL_53:
   v2 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"hasLyrics"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasCredits
@@ -2805,15 +2805,15 @@ LABEL_53:
   v2 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"hasCredits"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasArtistBiography
@@ -2821,15 +2821,15 @@ LABEL_53:
   v2 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"hasArtistBio"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSDictionary)importableStorePlatformDictionary
@@ -2841,16 +2841,16 @@ LABEL_53:
 
   else
   {
-    v5 = [(MPStoreItemMetadata *)self effectiveStorePlatformDictionary];
-    v2 = v5;
+    effectiveStorePlatformDictionary = [(MPStoreItemMetadata *)self effectiveStorePlatformDictionary];
+    v2 = effectiveStorePlatformDictionary;
     if (self->_parentStoreItemMetadata)
     {
-      v6 = [v5 objectForKeyedSubscript:@"artwork"];
+      v6 = [effectiveStorePlatformDictionary objectForKeyedSubscript:@"artwork"];
 
       if (!v6)
       {
-        v7 = [(MPStoreItemMetadata *)self->_parentStoreItemMetadata effectiveStorePlatformDictionary];
-        v8 = [v7 objectForKeyedSubscript:@"artwork"];
+        effectiveStorePlatformDictionary2 = [(MPStoreItemMetadata *)self->_parentStoreItemMetadata effectiveStorePlatformDictionary];
+        v8 = [effectiveStorePlatformDictionary2 objectForKeyedSubscript:@"artwork"];
         if (v8)
         {
           v9 = [v2 mutableCopy];
@@ -2877,100 +2877,100 @@ LABEL_53:
   }
 
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:0];
-  v6 = [(MPStoreItemMetadata *)self artworkRequestToken];
-  v7 = [v6 imageArtworkInfo];
-  v8 = [v7 responseDictionary];
+  artworkRequestToken = [(MPStoreItemMetadata *)self artworkRequestToken];
+  imageArtworkInfo = [artworkRequestToken imageArtworkInfo];
+  responseDictionary = [imageArtworkInfo responseDictionary];
 
   if (_NSIsNSDictionary())
   {
-    [v5 setObject:v8 forKey:@"artwork"];
+    [v5 setObject:responseDictionary forKey:@"artwork"];
   }
 
-  v9 = [(MPStoreItemMetadata *)self artistName];
-  if (v9)
+  artistName = [(MPStoreItemMetadata *)self artistName];
+  if (artistName)
   {
-    [v5 setObject:v9 forKey:@"artistName"];
+    [v5 setObject:artistName forKey:@"artistName"];
   }
 
-  v10 = [(MPStoreItemMetadata *)self artistStoreID];
-  if (v10)
+  artistStoreID = [(MPStoreItemMetadata *)self artistStoreID];
+  if (artistStoreID)
   {
-    [v5 setObject:v10 forKey:@"artistId"];
+    [v5 setObject:artistStoreID forKey:@"artistId"];
   }
 
-  v11 = [(MPStoreItemMetadata *)self artistUploadedContentType];
-  if (v11)
+  artistUploadedContentType = [(MPStoreItemMetadata *)self artistUploadedContentType];
+  if (artistUploadedContentType)
   {
-    [v5 setObject:v11 forKey:@"aucType"];
+    [v5 setObject:artistUploadedContentType forKey:@"aucType"];
   }
 
-  v12 = [(MPStoreItemMetadata *)self artworkTrackIDs];
-  if (v12)
+  artworkTrackIDs = [(MPStoreItemMetadata *)self artworkTrackIDs];
+  if (artworkTrackIDs)
   {
-    [v5 setObject:v12 forKey:@"artworkTrackIds"];
+    [v5 setObject:artworkTrackIDs forKey:@"artworkTrackIds"];
   }
 
-  v13 = [(MPStoreItemMetadata *)self audioTraits];
-  if (v13)
+  audioTraits = [(MPStoreItemMetadata *)self audioTraits];
+  if (audioTraits)
   {
-    [v5 setObject:v13 forKey:@"audioTraits"];
+    [v5 setObject:audioTraits forKey:@"audioTraits"];
   }
 
-  v14 = [(MPStoreItemMetadata *)self childrenStoreIDs];
-  if (v14)
+  childrenStoreIDs = [(MPStoreItemMetadata *)self childrenStoreIDs];
+  if (childrenStoreIDs)
   {
-    [v5 setObject:v14 forKey:@"childrenIds"];
+    [v5 setObject:childrenStoreIDs forKey:@"childrenIds"];
   }
 
   v145 = v5;
-  v15 = [(MPStoreItemMetadata *)self collectionName];
-  if (v15)
+  collectionName = [(MPStoreItemMetadata *)self collectionName];
+  if (collectionName)
   {
-    [v145 setObject:v15 forKey:@"collectionName"];
+    [v145 setObject:collectionName forKey:@"collectionName"];
   }
 
-  v132 = v14;
-  v133 = v13;
-  v134 = v12;
-  v16 = [(MPStoreItemMetadata *)self collectionStoreID];
-  if (v16)
+  v132 = childrenStoreIDs;
+  v133 = audioTraits;
+  v134 = artworkTrackIDs;
+  collectionStoreID = [(MPStoreItemMetadata *)self collectionStoreID];
+  if (collectionStoreID)
   {
-    [v145 setObject:v16 forKey:@"collectionId"];
+    [v145 setObject:collectionStoreID forKey:@"collectionId"];
   }
 
-  v130 = v16;
-  v17 = [(MPStoreItemMetadata *)self composerName];
-  v129 = v17;
-  if (v17)
+  v130 = collectionStoreID;
+  composerName = [(MPStoreItemMetadata *)self composerName];
+  v129 = composerName;
+  if (composerName)
   {
     v167 = @"name";
-    v168[0] = v17;
+    v168[0] = composerName;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v168 forKeys:&v167 count:1];
     [v145 setObject:v18 forKey:@"composer"];
   }
 
-  v19 = [(MPStoreItemMetadata *)self copyrightText];
-  if (v19)
+  copyrightText = [(MPStoreItemMetadata *)self copyrightText];
+  if (copyrightText)
   {
-    [v145 setObject:v19 forKey:@"copyright"];
+    [v145 setObject:copyrightText forKey:@"copyright"];
   }
 
-  v20 = [(MPStoreItemMetadata *)self curatorID];
-  if (v20)
+  curatorID = [(MPStoreItemMetadata *)self curatorID];
+  if (curatorID)
   {
-    [v145 setObject:v20 forKey:@"curatorId"];
+    [v145 setObject:curatorID forKey:@"curatorId"];
   }
 
-  v127 = v20;
-  v21 = [(MPStoreItemMetadata *)self curatorName];
-  if (v21)
+  v127 = curatorID;
+  curatorName = [(MPStoreItemMetadata *)self curatorName];
+  if (curatorName)
   {
-    [v145 setObject:v21 forKey:@"curatorName"];
+    [v145 setObject:curatorName forKey:@"curatorName"];
   }
 
-  v126 = v21;
+  v126 = curatorName;
   [(MPStoreItemMetadata *)self curatorHandle];
-  v22 = v138 = v8;
+  v22 = v138 = responseDictionary;
   if (v22)
   {
     [v145 setObject:v22 forKey:@"username"];
@@ -2981,7 +2981,7 @@ LABEL_53:
   v144 = v23;
   v25 = v23 | v24;
   v26 = v24;
-  v128 = v19;
+  v128 = copyrightText;
   if (v25)
   {
     v27 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -2999,17 +2999,17 @@ LABEL_53:
     [v145 setObject:v28 forKey:@"description"];
   }
 
-  v29 = [(MPStoreItemMetadata *)self discCount];
-  if (v29)
+  discCount = [(MPStoreItemMetadata *)self discCount];
+  if (discCount)
   {
-    v30 = [MEMORY[0x1E696AD98] numberWithInteger:v29];
+    v30 = [MEMORY[0x1E696AD98] numberWithInteger:discCount];
     [v145 setObject:v30 forKey:@"discCount"];
   }
 
-  v31 = [(MPStoreItemMetadata *)self discNumber];
-  if (v31)
+  discNumber = [(MPStoreItemMetadata *)self discNumber];
+  if (discNumber)
   {
-    v32 = [MEMORY[0x1E696AD98] numberWithInteger:v31];
+    v32 = [MEMORY[0x1E696AD98] numberWithInteger:discNumber];
     [v145 setObject:v32 forKey:@"discNumber"];
   }
 
@@ -3048,27 +3048,27 @@ LABEL_53:
     [v145 setObject:MEMORY[0x1E695E118] forKey:@"hasTimeSyncedLyrics"];
   }
 
-  v135 = v11;
-  v136 = v10;
-  v137 = v9;
+  v135 = artistUploadedContentType;
+  v136 = artistStoreID;
+  v137 = artistName;
   if ([(MPStoreItemMetadata *)self hasSocialPosts])
   {
     [v145 setObject:MEMORY[0x1E695E118] forKey:@"hasSocialPosts"];
   }
 
-  v142 = [(MPStoreItemMetadata *)self genreNames];
-  v131 = v15;
+  genreNames = [(MPStoreItemMetadata *)self genreNames];
+  v131 = collectionName;
   v36 = v145;
   v124 = v26;
   v125 = v22;
-  if ([v142 count])
+  if ([genreNames count])
   {
-    [v145 setObject:v142 forKey:@"genreNames"];
+    [v145 setObject:genreNames forKey:@"genreNames"];
     v156 = 0u;
     v157 = 0u;
     v154 = 0u;
     v155 = 0u;
-    v37 = v142;
+    v37 = genreNames;
     v38 = [v37 countByEnumeratingWithState:&v154 objects:v166 count:16];
     if (!v38)
     {
@@ -3118,19 +3118,19 @@ LABEL_68:
     [v36 setObject:MEMORY[0x1E695E118] forKey:@"isBeats1"];
   }
 
-  v45 = [(MPStoreItemMetadata *)self explicitRating];
-  if (v45)
+  explicitRating = [(MPStoreItemMetadata *)self explicitRating];
+  if (explicitRating)
   {
     goto LABEL_74;
   }
 
   if ([(MPStoreItemMetadata *)self isExplicitContent])
   {
-    v45 = 500;
+    explicitRating = 500;
 LABEL_74:
     v162 = @"riaa";
     v160 = @"value";
-    v46 = [MEMORY[0x1E696AD98] numberWithInteger:v45];
+    v46 = [MEMORY[0x1E696AD98] numberWithInteger:explicitRating];
     v161 = v46;
     v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v161 forKeys:&v160 count:1];
     v163 = v47;
@@ -3153,57 +3153,57 @@ LABEL_74:
     [v36 setObject:MEMORY[0x1E695E118] forKey:@"isPreorder"];
   }
 
-  v49 = [(MPStoreItemMetadata *)self itemKind];
-  if (v49)
+  itemKind = [(MPStoreItemMetadata *)self itemKind];
+  if (itemKind)
   {
-    [v36 setObject:v49 forKey:@"kind"];
+    [v36 setObject:itemKind forKey:@"kind"];
   }
 
-  v50 = [(MPStoreItemMetadata *)self playlistType];
-  if (v50)
+  playlistType = [(MPStoreItemMetadata *)self playlistType];
+  if (playlistType)
   {
-    [v36 setObject:v50 forKey:@"playlistType"];
+    [v36 setObject:playlistType forKey:@"playlistType"];
   }
 
-  v51 = [(MPStoreItemMetadata *)self personalMixSortKey];
-  if (v51)
+  personalMixSortKey = [(MPStoreItemMetadata *)self personalMixSortKey];
+  if (personalMixSortKey)
   {
-    [v36 setObject:v51 forKey:@"personalMixSortKey"];
+    [v36 setObject:personalMixSortKey forKey:@"personalMixSortKey"];
   }
 
-  v52 = [(MPStoreItemMetadata *)self movementName];
-  if (v52)
+  movementName = [(MPStoreItemMetadata *)self movementName];
+  if (movementName)
   {
-    [v36 setObject:v52 forKey:@"movementName"];
+    [v36 setObject:movementName forKey:@"movementName"];
   }
 
-  v53 = [(MPStoreItemMetadata *)self movementCount];
-  if (v53)
+  movementCount = [(MPStoreItemMetadata *)self movementCount];
+  if (movementCount)
   {
-    v54 = [MEMORY[0x1E696AD98] numberWithInteger:v53];
+    v54 = [MEMORY[0x1E696AD98] numberWithInteger:movementCount];
     [v36 setObject:v54 forKey:@"movementCount"];
   }
 
-  v55 = [(MPStoreItemMetadata *)self movementNumber];
-  if (v55)
+  movementNumber = [(MPStoreItemMetadata *)self movementNumber];
+  if (movementNumber)
   {
-    v56 = [MEMORY[0x1E696AD98] numberWithInteger:v55];
+    v56 = [MEMORY[0x1E696AD98] numberWithInteger:movementNumber];
     [v36 setObject:v56 forKey:@"movementNumber"];
   }
 
-  v141 = [(MPStoreItemMetadata *)self movieClips];
-  v122 = v50;
-  v123 = v49;
-  v120 = v52;
-  v121 = v51;
-  if ([v141 count])
+  movieClips = [(MPStoreItemMetadata *)self movieClips];
+  v122 = playlistType;
+  v123 = itemKind;
+  v120 = movementName;
+  v121 = personalMixSortKey;
+  if ([movieClips count])
   {
     v57 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v150 = 0u;
     v151 = 0u;
     v152 = 0u;
     v153 = 0u;
-    v58 = v141;
+    v58 = movieClips;
     v59 = [v58 countByEnumeratingWithState:&v150 objects:v159 count:16];
     if (v59)
     {
@@ -3218,8 +3218,8 @@ LABEL_74:
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v150 + 1) + 8 * j) lookupDictionary];
-          [v57 addObject:v63];
+          lookupDictionary = [*(*(&v150 + 1) + 8 * j) lookupDictionary];
+          [v57 addObject:lookupDictionary];
         }
 
         v60 = [v58 countByEnumeratingWithState:&v150 objects:v159 count:16];
@@ -3231,22 +3231,22 @@ LABEL_74:
     [v36 setObject:v57 forKey:@"movieClips"];
   }
 
-  v64 = [(MPStoreItemMetadata *)self name];
-  if (v64)
+  name = [(MPStoreItemMetadata *)self name];
+  if (name)
   {
-    [v36 setObject:v64 forKey:@"name"];
+    [v36 setObject:name forKey:@"name"];
   }
 
-  v140 = [(MPStoreItemMetadata *)self offers];
-  v119 = v64;
-  if ([v140 count])
+  offers = [(MPStoreItemMetadata *)self offers];
+  v119 = name;
+  if ([offers count])
   {
     v65 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v146 = 0u;
     v147 = 0u;
     v148 = 0u;
     v149 = 0u;
-    v66 = v140;
+    v66 = offers;
     v67 = [v66 countByEnumeratingWithState:&v146 objects:v158 count:16];
     if (v67)
     {
@@ -3261,10 +3261,10 @@ LABEL_74:
             objc_enumerationMutation(v66);
           }
 
-          v71 = [*(*(&v146 + 1) + 8 * k) lookupDictionary];
-          if (v71)
+          lookupDictionary2 = [*(*(&v146 + 1) + 8 * k) lookupDictionary];
+          if (lookupDictionary2)
           {
-            [v65 addObject:v71];
+            [v65 addObject:lookupDictionary2];
           }
         }
 
@@ -3277,51 +3277,51 @@ LABEL_74:
     [v36 setObject:v65 forKey:@"offers"];
   }
 
-  v72 = [(MPStoreItemMetadata *)self playlistIdentifiers];
-  if (v72)
+  playlistIdentifiers = [(MPStoreItemMetadata *)self playlistIdentifiers];
+  if (playlistIdentifiers)
   {
-    [v36 setObject:v72 forKey:@"playlistIds"];
+    [v36 setObject:playlistIdentifiers forKey:@"playlistIds"];
   }
 
-  v73 = [(MPStoreItemMetadata *)self popularity];
-  if (v73)
+  popularity = [(MPStoreItemMetadata *)self popularity];
+  if (popularity)
   {
-    [v36 setObject:v73 forKey:@"popularity"];
+    [v36 setObject:popularity forKey:@"popularity"];
   }
 
-  v74 = [(MPStoreItemMetadata *)self releaseDate];
-  if (v74)
+  releaseDate = [(MPStoreItemMetadata *)self releaseDate];
+  if (releaseDate)
   {
-    v75 = [(MPStoreItemMetadata *)self _storePlatformReleaseDateFormatter];
-    v76 = [v75 stringFromDate:v74];
+    _storePlatformReleaseDateFormatter = [(MPStoreItemMetadata *)self _storePlatformReleaseDateFormatter];
+    v76 = [_storePlatformReleaseDateFormatter stringFromDate:releaseDate];
     if (v76)
     {
       [v36 setObject:v76 forKey:@"releaseDate"];
     }
   }
 
-  v77 = [(MPStoreItemMetadata *)self lastModifiedDate];
-  if (v77)
+  lastModifiedDate = [(MPStoreItemMetadata *)self lastModifiedDate];
+  if (lastModifiedDate)
   {
-    v78 = [(MPStoreItemMetadata *)self _storePlatformLastModifiedDateFormatter];
-    v79 = [v78 stringFromDate:v77];
+    _storePlatformLastModifiedDateFormatter = [(MPStoreItemMetadata *)self _storePlatformLastModifiedDateFormatter];
+    v79 = [_storePlatformLastModifiedDateFormatter stringFromDate:lastModifiedDate];
     if (v79)
     {
       [v36 setObject:v79 forKey:@"lastModifiedDate"];
     }
   }
 
-  v112 = v73;
-  v80 = [(MPStoreItemMetadata *)self shortName];
-  if (v80)
+  v112 = popularity;
+  shortName = [(MPStoreItemMetadata *)self shortName];
+  if (shortName)
   {
-    [v36 setObject:v80 forKey:@"shortName"];
+    [v36 setObject:shortName forKey:@"shortName"];
   }
 
-  v81 = [(MPStoreItemMetadata *)self shouldBookmarkPlayPosition];
-  if (v81)
+  shouldBookmarkPlayPosition = [(MPStoreItemMetadata *)self shouldBookmarkPlayPosition];
+  if (shouldBookmarkPlayPosition)
   {
-    [v36 setObject:v81 forKey:@"shouldBookmarkPlayPosition"];
+    [v36 setObject:shouldBookmarkPlayPosition forKey:@"shouldBookmarkPlayPosition"];
   }
 
   if ([(MPStoreItemMetadata *)self showComposer])
@@ -3330,78 +3330,78 @@ LABEL_74:
     [v36 setObject:v82 forKey:@"showComposer"];
   }
 
-  v83 = [(MPStoreItemMetadata *)self storeID];
-  if (v83)
+  storeID = [(MPStoreItemMetadata *)self storeID];
+  if (storeID)
   {
-    [v36 setObject:v83 forKey:@"id"];
+    [v36 setObject:storeID forKey:@"id"];
   }
 
-  v84 = [(MPStoreItemMetadata *)self socialProfileID];
-  if (v84)
+  socialProfileID = [(MPStoreItemMetadata *)self socialProfileID];
+  if (socialProfileID)
   {
-    [v36 setObject:v84 forKey:@"socialProfileId"];
+    [v36 setObject:socialProfileID forKey:@"socialProfileId"];
   }
 
-  v113 = v84;
-  v85 = [(MPStoreItemMetadata *)self trackCount];
-  v114 = v83;
-  if (v85)
+  v113 = socialProfileID;
+  trackCount = [(MPStoreItemMetadata *)self trackCount];
+  v114 = storeID;
+  if (trackCount)
   {
-    v86 = [MEMORY[0x1E696AD98] numberWithInteger:v85];
+    v86 = [MEMORY[0x1E696AD98] numberWithInteger:trackCount];
     [v36 setObject:v86 forKey:@"trackCount"];
   }
 
-  v87 = [(MPStoreItemMetadata *)self trackNumber];
-  if (v87)
+  trackNumber = [(MPStoreItemMetadata *)self trackNumber];
+  if (trackNumber)
   {
-    v88 = [MEMORY[0x1E696AD98] numberWithInteger:v87];
+    v88 = [MEMORY[0x1E696AD98] numberWithInteger:trackNumber];
     [v36 setObject:v88 forKey:@"trackNumber"];
   }
 
-  v89 = [(MPStoreItemMetadata *)self seasonNumber];
-  if (v89)
+  seasonNumber = [(MPStoreItemMetadata *)self seasonNumber];
+  if (seasonNumber)
   {
-    v90 = [MEMORY[0x1E696AD98] numberWithInteger:v89];
+    v90 = [MEMORY[0x1E696AD98] numberWithInteger:seasonNumber];
     [v36 setObject:v90 forKey:@"seasonNumber"];
   }
 
-  v91 = [(MPStoreItemMetadata *)self episodeCount];
-  if (v91)
+  episodeCount = [(MPStoreItemMetadata *)self episodeCount];
+  if (episodeCount)
   {
-    v92 = [MEMORY[0x1E696AD98] numberWithInteger:v91];
+    v92 = [MEMORY[0x1E696AD98] numberWithInteger:episodeCount];
     [v36 setObject:v92 forKey:@"episodeCount"];
   }
 
-  v93 = [(MPStoreItemMetadata *)self versionHash];
-  if (v93)
+  versionHash = [(MPStoreItemMetadata *)self versionHash];
+  if (versionHash)
   {
-    [v36 setObject:v93 forKey:@"versionHash"];
+    [v36 setObject:versionHash forKey:@"versionHash"];
   }
 
-  v117 = v74;
-  v94 = [(MPStoreItemMetadata *)self workName];
-  if (v94)
+  v117 = releaseDate;
+  workName = [(MPStoreItemMetadata *)self workName];
+  if (workName)
   {
-    [v36 setObject:v94 forKey:@"workName"];
+    [v36 setObject:workName forKey:@"workName"];
   }
 
-  v116 = v77;
-  v95 = [(MPStoreItemMetadata *)self iTunesBrandType];
-  if (v95)
+  v116 = lastModifiedDate;
+  iTunesBrandType = [(MPStoreItemMetadata *)self iTunesBrandType];
+  if (iTunesBrandType)
   {
-    [v36 setObject:v95 forKey:@"iTunesBrandType"];
+    [v36 setObject:iTunesBrandType forKey:@"iTunesBrandType"];
   }
 
-  v96 = [(MPStoreItemMetadata *)self handle];
-  if (v96)
+  handle = [(MPStoreItemMetadata *)self handle];
+  if (handle)
   {
-    [v36 setObject:v96 forKey:@"handle"];
+    [v36 setObject:handle forKey:@"handle"];
   }
 
-  v97 = [(MPStoreItemMetadata *)self nameRaw];
-  if (v97)
+  nameRaw = [(MPStoreItemMetadata *)self nameRaw];
+  if (nameRaw)
   {
-    [v36 setObject:v97 forKey:@"nameRaw"];
+    [v36 setObject:nameRaw forKey:@"nameRaw"];
   }
 
   if ([(MPStoreItemMetadata *)self isPrivatePerson])
@@ -3414,61 +3414,61 @@ LABEL_74:
     [v36 setObject:MEMORY[0x1E695E118] forKey:@"isVerified"];
   }
 
-  v111 = v93;
+  v111 = versionHash;
   if ([(MPStoreItemMetadata *)self isOnboardedPerson])
   {
     [v36 setObject:MEMORY[0x1E695E118] forKey:@"isOnboarded"];
   }
 
-  v115 = v80;
-  v98 = [(MPStoreItemMetadata *)self shortURL];
-  v99 = [v98 absoluteString];
+  v115 = shortName;
+  shortURL = [(MPStoreItemMetadata *)self shortURL];
+  absoluteString = [shortURL absoluteString];
 
-  if (v99)
+  if (absoluteString)
   {
-    [v145 setObject:v99 forKey:@"shortUrl"];
+    [v145 setObject:absoluteString forKey:@"shortUrl"];
   }
 
   v100 = [(MPStoreItemMetadata *)self URL];
-  v101 = [v100 absoluteString];
+  absoluteString2 = [v100 absoluteString];
 
-  if (v101)
+  if (absoluteString2)
   {
-    [v145 setObject:v101 forKey:@"url"];
+    [v145 setObject:absoluteString2 forKey:@"url"];
   }
 
-  v118 = v72;
-  v102 = [(MPStoreItemMetadata *)self videoSubtype];
-  if (v102)
+  v118 = playlistIdentifiers;
+  videoSubtype = [(MPStoreItemMetadata *)self videoSubtype];
+  if (videoSubtype)
   {
-    [v145 setObject:v102 forKey:@"videoSubType"];
+    [v145 setObject:videoSubtype forKey:@"videoSubType"];
   }
 
-  v110 = v97;
-  v103 = [(MPStoreItemMetadata *)self radioStationTypeID];
-  if (v103)
+  v110 = nameRaw;
+  radioStationTypeID = [(MPStoreItemMetadata *)self radioStationTypeID];
+  if (radioStationTypeID)
   {
-    v104 = [MEMORY[0x1E696AD98] numberWithInteger:v103];
+    v104 = [MEMORY[0x1E696AD98] numberWithInteger:radioStationTypeID];
     [v145 setObject:v104 forKey:@"radioStationTypeId"];
   }
 
-  v105 = v96;
-  v106 = [(MPStoreItemMetadata *)self radioStationSubtype];
-  if (v106)
+  v105 = handle;
+  radioStationSubtype = [(MPStoreItemMetadata *)self radioStationSubtype];
+  if (radioStationSubtype)
   {
-    [v145 setObject:v106 forKey:@"streamingRadioSubType"];
+    [v145 setObject:radioStationSubtype forKey:@"streamingRadioSubType"];
   }
 
-  v107 = v94;
+  v107 = workName;
   if ([(MPStoreItemMetadata *)self isChart])
   {
     [v145 setObject:MEMORY[0x1E695E118] forKey:@"isChart"];
   }
 
-  v108 = [(MPStoreItemMetadata *)self radioStationProviderName];
-  if (v108)
+  radioStationProviderName = [(MPStoreItemMetadata *)self radioStationProviderName];
+  if (radioStationProviderName)
   {
-    [v145 setObject:v108 forKey:@"stationProviderName"];
+    [v145 setObject:radioStationProviderName forKey:@"stationProviderName"];
   }
 
   v3 = v145;
@@ -3493,11 +3493,11 @@ LABEL_176:
 
 - (BOOL)isExpired
 {
-  v2 = [(MPStoreItemMetadata *)self expirationDate];
-  if (v2)
+  expirationDate = [(MPStoreItemMetadata *)self expirationDate];
+  if (expirationDate)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF00]);
-    v4 = [v2 compare:v3] == -1;
+    v4 = [expirationDate compare:v3] == -1;
   }
 
   else
@@ -3513,15 +3513,15 @@ LABEL_176:
   expirationDate = self->_expirationDate;
   if (expirationDate)
   {
-    v3 = expirationDate;
+    expirationDate = expirationDate;
   }
 
   else
   {
-    v3 = [(MPStoreItemMetadata *)self->_parentStoreItemMetadata expirationDate];
+    expirationDate = [(MPStoreItemMetadata *)self->_parentStoreItemMetadata expirationDate];
   }
 
-  return v3;
+  return expirationDate;
 }
 
 - (NSString)editorNotes
@@ -3539,7 +3539,7 @@ LABEL_176:
 
 - (double)duration
 {
-  v2 = self;
+  selfCopy = self;
   v35 = *MEMORY[0x1E69E9840];
   storePlatformDictionary = self->_storePlatformDictionary;
   if (storePlatformDictionary)
@@ -3547,19 +3547,19 @@ LABEL_176:
     v4 = [(NSDictionary *)storePlatformDictionary objectForKey:@"durationInMillis"];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v5 = [(MPStoreItemMetadata *)v2 offers];
+      offers = [(MPStoreItemMetadata *)selfCopy offers];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v6 = [offers countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (!v6)
       {
         goto LABEL_25;
       }
 
       v7 = v6;
-      v23 = v2;
+      v23 = selfCopy;
       v24 = v4;
       v8 = 0;
       v9 = *v30;
@@ -3570,15 +3570,15 @@ LABEL_176:
         {
           if (*v30 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(offers);
           }
 
-          v12 = [*(*(&v29 + 1) + 8 * i) assets];
+          assets = [*(*(&v29 + 1) + 8 * i) assets];
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v13 = [v12 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          v13 = [assets countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v13)
           {
             v14 = v13;
@@ -3589,7 +3589,7 @@ LABEL_176:
               {
                 if (*v26 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(assets);
                 }
 
                 [*(*(&v25 + 1) + 8 * j) duration];
@@ -3600,18 +3600,18 @@ LABEL_176:
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v14 = [assets countByEnumeratingWithState:&v25 objects:v33 count:16];
             }
 
             while (v14);
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v7 = [offers countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v7);
-      v2 = v23;
+      selfCopy = v23;
       v4 = v24;
       if (v8)
       {
@@ -3621,7 +3621,7 @@ LABEL_176:
       else
       {
 LABEL_25:
-        v20 = [(NSDictionary *)v2->_storePlatformDictionary objectForKey:@"duration"];
+        v20 = [(NSDictionary *)selfCopy->_storePlatformDictionary objectForKey:@"duration"];
         v18 = 0.0;
         if (objc_opt_respondsToSelector())
         {
@@ -3639,10 +3639,10 @@ LABEL_24:
     goto LABEL_29;
   }
 
-  v4 = [(NSDictionary *)v2->_downloadMetadataDictionary objectForKey:@"duration"];
+  v4 = [(NSDictionary *)selfCopy->_downloadMetadataDictionary objectForKey:@"duration"];
   if (!v4)
   {
-    v4 = [(MPStoreItemMetadata *)v2 _fetchValueFromStoreMusicAPIDictionary:@"durationInMillis"];
+    v4 = [(MPStoreItemMetadata *)selfCopy _fetchValueFromStoreMusicAPIDictionary:@"durationInMillis"];
   }
 
   v18 = 0.0;
@@ -3679,9 +3679,9 @@ LABEL_29:
     v3 = 0;
   }
 
-  v6 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 - (int64_t)discCount
@@ -3703,9 +3703,9 @@ LABEL_29:
     }
   }
 
-  v5 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (NSString)descriptionText
@@ -3838,15 +3838,15 @@ LABEL_7:
   v2 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"sagaId"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 longLongValue];
+    longLongValue = [v2 longLongValue];
   }
 
   else
   {
-    v3 = 0;
+    longLongValue = 0;
   }
 
-  return v3;
+  return longLongValue;
 }
 
 - (NSString)cloudAlbumID
@@ -3868,14 +3868,14 @@ LABEL_7:
 - (NSArray)childStoreItemMetadatas
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(MPStoreItemMetadata *)self childrenStoreIDs];
+  childrenStoreIDs = [(MPStoreItemMetadata *)self childrenStoreIDs];
   v4 = [(MPStoreItemMetadata *)self _fetchValueFromStoreMusicAPIDictionary:@"relationships.tracks.data"];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = childrenStoreIDs;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -4043,15 +4043,15 @@ LABEL_30:
   v2 = [(NSDictionary *)self->_storePlatformDictionary objectForKey:@"isBeats1"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSArray)artworkTrackIDs
@@ -4068,38 +4068,38 @@ LABEL_30:
 
 - (MPStoreArtworkRequestToken)superHeroTallEditorialArtworkRequestToken
 {
-  if (!self->_storePlatformDictionary || ([(MPStoreItemMetadata *)self superHeroTallEditorialArtworkRequestTokenForStorePlatformDictionary:?], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!self->_storePlatformDictionary || ([(MPStoreItemMetadata *)self superHeroTallEditorialArtworkRequestTokenForStorePlatformDictionary:?], (superHeroTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v3 = [(MPStoreItemMetadata *)self superHeroTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary];
-    if (!v3)
+    superHeroTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary = [(MPStoreItemMetadata *)self superHeroTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary];
+    if (!superHeroTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary)
     {
-      v3 = [(MPStoreItemMetadata *)self->_parentStoreItemMetadata superHeroTallEditorialArtworkRequestToken];
+      superHeroTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary = [(MPStoreItemMetadata *)self->_parentStoreItemMetadata superHeroTallEditorialArtworkRequestToken];
     }
   }
 
-  return v3;
+  return superHeroTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary;
 }
 
 - (MPStoreArtworkRequestToken)staticTallEditorialArtworkRequestToken
 {
-  if (!self->_storePlatformDictionary || ([(MPStoreItemMetadata *)self staticTallEditorialArtworkRequestTokenForStorePlatformDictionary:?], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!self->_storePlatformDictionary || ([(MPStoreItemMetadata *)self staticTallEditorialArtworkRequestTokenForStorePlatformDictionary:?], (staticTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v3 = [(MPStoreItemMetadata *)self staticTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary];
-    if (!v3)
+    staticTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary = [(MPStoreItemMetadata *)self staticTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary];
+    if (!staticTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary)
     {
-      v3 = [(MPStoreItemMetadata *)self->_parentStoreItemMetadata staticTallEditorialArtworkRequestToken];
+      staticTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary = [(MPStoreItemMetadata *)self->_parentStoreItemMetadata staticTallEditorialArtworkRequestToken];
     }
   }
 
-  return v3;
+  return staticTallEditorialArtworkRequestTokenForStoreMusicAPIDictionary;
 }
 
 - (MPStoreArtworkRequestToken)artworkRequestToken
 {
-  if (!self->_storePlatformDictionary || ([(MPStoreItemMetadata *)self artworkRequestTokenForStorePlatformDictionary:?], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!self->_storePlatformDictionary || ([(MPStoreItemMetadata *)self artworkRequestTokenForStorePlatformDictionary:?], (artworkRequestTokenForStoreMusicAPIDictionary = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v3 = [(MPStoreItemMetadata *)self artworkRequestTokenForStorePlatformDictionary:self->_downloadAssetDictionary];
-    if (!v3)
+    artworkRequestTokenForStoreMusicAPIDictionary = [(MPStoreItemMetadata *)self artworkRequestTokenForStorePlatformDictionary:self->_downloadAssetDictionary];
+    if (!artworkRequestTokenForStoreMusicAPIDictionary)
     {
       v4 = [(NSDictionary *)self->_downloadAssetDictionary objectForKey:@"artworkURL"];
       if (_NSIsNSString() && ([MEMORY[0x1E695DFF8] URLWithString:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -4118,15 +4118,15 @@ LABEL_30:
       {
       }
 
-      v3 = [(MPStoreItemMetadata *)self artworkRequestTokenForStoreMusicAPIDictionary];
-      if (!v3)
+      artworkRequestTokenForStoreMusicAPIDictionary = [(MPStoreItemMetadata *)self artworkRequestTokenForStoreMusicAPIDictionary];
+      if (!artworkRequestTokenForStoreMusicAPIDictionary)
       {
-        v3 = [(MPStoreItemMetadata *)self->_parentStoreItemMetadata artworkRequestToken];
+        artworkRequestTokenForStoreMusicAPIDictionary = [(MPStoreItemMetadata *)self->_parentStoreItemMetadata artworkRequestToken];
       }
     }
   }
 
-  v8 = v3;
+  v8 = artworkRequestTokenForStoreMusicAPIDictionary;
 LABEL_12:
 
   return v8;
@@ -4176,9 +4176,9 @@ LABEL_12:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -4195,22 +4195,22 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   downloadAssetDictionary = self->_downloadAssetDictionary;
-  v5 = a3;
-  [v5 encodeObject:downloadAssetDictionary forKey:@"MPStoreItemMetadataDownloadAssetDictionary"];
-  [v5 encodeObject:self->_storeMusicAPIDictionary forKey:@"MPStoreItemMetadataMusicAPIDictionary"];
-  [v5 encodeObject:self->_expirationDate forKey:@"MPStoreItemMetadataExpirationDate"];
-  [v5 encodeBool:self->_hasOverrideChildStorePlatformDictionaries forKey:@"MPStoreItemMetadataHasOverrideChildStorePlatformDictionaries"];
-  [v5 encodeObject:self->_overrideChildStorePlatformDictionaries forKey:@"MPStoreItemMetadataOverrideChildStorePlatformDictionaries"];
-  [v5 encodeObject:self->_parentStoreItemMetadata forKey:@"MPStoreItemMetadataParentStoreItemMetadata"];
-  [v5 encodeObject:self->_storePlatformDictionary forKey:@"MPStoreItemMetadataStorePlatformDictionary"];
+  coderCopy = coder;
+  [coderCopy encodeObject:downloadAssetDictionary forKey:@"MPStoreItemMetadataDownloadAssetDictionary"];
+  [coderCopy encodeObject:self->_storeMusicAPIDictionary forKey:@"MPStoreItemMetadataMusicAPIDictionary"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"MPStoreItemMetadataExpirationDate"];
+  [coderCopy encodeBool:self->_hasOverrideChildStorePlatformDictionaries forKey:@"MPStoreItemMetadataHasOverrideChildStorePlatformDictionaries"];
+  [coderCopy encodeObject:self->_overrideChildStorePlatformDictionaries forKey:@"MPStoreItemMetadataOverrideChildStorePlatformDictionaries"];
+  [coderCopy encodeObject:self->_parentStoreItemMetadata forKey:@"MPStoreItemMetadataParentStoreItemMetadata"];
+  [coderCopy encodeObject:self->_storePlatformDictionary forKey:@"MPStoreItemMetadataStorePlatformDictionary"];
 }
 
-- (MPStoreItemMetadata)initWithCoder:(id)a3
+- (MPStoreItemMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = MPStoreItemMetadata;
   v5 = [(MPStoreItemMetadata *)&v31 init];
@@ -4224,7 +4224,7 @@ LABEL_12:
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v6 setWithObjects:{v7, v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"MPStoreItemMetadataDownloadAssetDictionary"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"MPStoreItemMetadataDownloadAssetDictionary"];
     downloadAssetDictionary = v5->_downloadAssetDictionary;
     v5->_downloadAssetDictionary = v14;
 
@@ -4240,16 +4240,16 @@ LABEL_12:
       objc_storeStrong(&v5->_downloadMetadataDictionary, v17);
     }
 
-    v18 = [v4 decodeObjectOfClasses:v13 forKey:@"MPStoreItemMetadataMusicAPIDictionary"];
+    v18 = [coderCopy decodeObjectOfClasses:v13 forKey:@"MPStoreItemMetadataMusicAPIDictionary"];
     storeMusicAPIDictionary = v5->_storeMusicAPIDictionary;
     v5->_storeMusicAPIDictionary = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPStoreItemMetadataExpirationDate"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPStoreItemMetadataExpirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v20;
 
-    v5->_hasOverrideChildStorePlatformDictionaries = [v4 decodeBoolForKey:@"MPStoreItemMetadataHasOverrideChildStorePlatformDictionaries"];
-    v22 = [v4 decodeObjectOfClasses:v13 forKey:@"MPStoreItemMetadataOverrideChildStorePlatformDictionaries"];
+    v5->_hasOverrideChildStorePlatformDictionaries = [coderCopy decodeBoolForKey:@"MPStoreItemMetadataHasOverrideChildStorePlatformDictionaries"];
+    v22 = [coderCopy decodeObjectOfClasses:v13 forKey:@"MPStoreItemMetadataOverrideChildStorePlatformDictionaries"];
     overrideChildStorePlatformDictionaries = v5->_overrideChildStorePlatformDictionaries;
     v5->_overrideChildStorePlatformDictionaries = v22;
 
@@ -4259,11 +4259,11 @@ LABEL_12:
       v5->_overrideChildStorePlatformDictionaries = 0;
     }
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPStoreItemMetadataParentStoreItemMetadata"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPStoreItemMetadataParentStoreItemMetadata"];
     parentStoreItemMetadata = v5->_parentStoreItemMetadata;
     v5->_parentStoreItemMetadata = v25;
 
-    v27 = [v4 decodeObjectOfClasses:v13 forKey:@"MPStoreItemMetadataStorePlatformDictionary"];
+    v27 = [coderCopy decodeObjectOfClasses:v13 forKey:@"MPStoreItemMetadataStorePlatformDictionary"];
     storePlatformDictionary = v5->_storePlatformDictionary;
     v5->_storePlatformDictionary = v27;
 
@@ -4279,46 +4279,46 @@ LABEL_12:
 
 - (id)description
 {
-  v3 = [(MPStoreItemMetadata *)self offers];
-  v4 = MPStoreItemMetadataSubscriptionOfferInOffers(v3);
+  offers = [(MPStoreItemMetadata *)self offers];
+  v4 = MPStoreItemMetadataSubscriptionOfferInOffers(offers);
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(MPStoreItemMetadata *)self storeID];
-  v9 = [(MPStoreItemMetadata *)self name];
-  v10 = [v5 stringWithFormat:@"<%@:%p storeID=%@ name=%@ subscriptionOffer=%@>", v7, self, v8, v9, v4];
+  storeID = [(MPStoreItemMetadata *)self storeID];
+  name = [(MPStoreItemMetadata *)self name];
+  v10 = [v5 stringWithFormat:@"<%@:%p storeID=%@ name=%@ subscriptionOffer=%@>", v7, self, storeID, name, v4];
 
   return v10;
 }
 
-- (MPStoreItemMetadata)initWithStorePlatformDictionary:(id)a3 parentStoreItemMetadata:(id)a4 expirationDate:(id)a5
+- (MPStoreItemMetadata)initWithStorePlatformDictionary:(id)dictionary parentStoreItemMetadata:(id)metadata expirationDate:(id)date
 {
-  v9 = a4;
-  v10 = [(MPStoreItemMetadata *)self initWithStorePlatformDictionary:a3 expirationDate:a5];
+  metadataCopy = metadata;
+  v10 = [(MPStoreItemMetadata *)self initWithStorePlatformDictionary:dictionary expirationDate:date];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_parentStoreItemMetadata, a4);
+    objc_storeStrong(&v10->_parentStoreItemMetadata, metadata);
   }
 
   return v11;
 }
 
-- (MPStoreItemMetadata)initWithStorePlatformDictionary:(id)a3 expirationDate:(id)a4
+- (MPStoreItemMetadata)initWithStorePlatformDictionary:(id)dictionary expirationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = MPStoreItemMetadata;
   v8 = [(MPStoreItemMetadata *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [dateCopy copy];
     expirationDate = v8->_expirationDate;
     v8->_expirationDate = v9;
 
-    v11 = [v6 copy];
+    v11 = [dictionaryCopy copy];
     storePlatformDictionary = v8->_storePlatformDictionary;
     v8->_storePlatformDictionary = v11;
   }
@@ -4326,28 +4326,28 @@ LABEL_12:
   return v8;
 }
 
-- (MPStoreItemMetadata)initWithStoreMusicAPIDictionary:(id)a3 parentStoreItemMetadata:(id)a4
+- (MPStoreItemMetadata)initWithStoreMusicAPIDictionary:(id)dictionary parentStoreItemMetadata:(id)metadata
 {
-  v7 = a4;
-  v8 = [(MPStoreItemMetadata *)self initWithStoreMusicAPIDictionary:a3];
+  metadataCopy = metadata;
+  v8 = [(MPStoreItemMetadata *)self initWithStoreMusicAPIDictionary:dictionary];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_parentStoreItemMetadata, a4);
+    objc_storeStrong(&v8->_parentStoreItemMetadata, metadata);
   }
 
   return v9;
 }
 
-- (MPStoreItemMetadata)initWithStoreMusicAPIDictionary:(id)a3
+- (MPStoreItemMetadata)initWithStoreMusicAPIDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = MPStoreItemMetadata;
   v5 = [(MPStoreItemMetadata *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     storeMusicAPIDictionary = v5->_storeMusicAPIDictionary;
     v5->_storeMusicAPIDictionary = v6;
   }
@@ -4355,19 +4355,19 @@ LABEL_12:
   return v5;
 }
 
-- (MPStoreItemMetadata)initWithDownloadAssetDictionary:(id)a3
+- (MPStoreItemMetadata)initWithDownloadAssetDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = MPStoreItemMetadata;
   v5 = [(MPStoreItemMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     downloadAssetDictionary = v5->_downloadAssetDictionary;
     v5->_downloadAssetDictionary = v6;
 
-    v8 = [v4 objectForKey:@"metadata"];
+    v8 = [dictionaryCopy objectForKey:@"metadata"];
     if (_NSIsNSDictionary())
     {
       objc_storeStrong(&v5->_downloadMetadataDictionary, v8);
@@ -4401,12 +4401,12 @@ void __42__MPStoreItemMetadata_storeServerCalendar__block_invoke()
   [v3 setTimeZone:v4];
 }
 
-+ (id)artworkRequestTokenForStorePlatformArtworkValue:(id)a3
++ (id)artworkRequestTokenForStorePlatformArtworkValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   if (_NSIsNSArray())
   {
-    v4 = [objc_alloc(MEMORY[0x1E69E45C0]) initWithArtworkResponseArray:v3];
+    v4 = [objc_alloc(MEMORY[0x1E69E45C0]) initWithArtworkResponseArray:valueCopy];
   }
 
   else
@@ -4417,7 +4417,7 @@ void __42__MPStoreItemMetadata_storeServerCalendar__block_invoke()
       goto LABEL_8;
     }
 
-    v4 = [objc_alloc(MEMORY[0x1E69E45C0]) initWithArtworkResponseDictionary:v3];
+    v4 = [objc_alloc(MEMORY[0x1E69E45C0]) initWithArtworkResponseDictionary:valueCopy];
   }
 
   v5 = v4;
@@ -4434,23 +4434,23 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)hasMetadataForRequestReason:(unint64_t)a3
+- (BOOL)hasMetadataForRequestReason:(unint64_t)reason
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3 != 3)
+  if (reason != 3)
   {
-    if (a3 != 2)
+    if (reason != 2)
     {
-      if (a3 == 1)
+      if (reason == 1)
       {
-        v4 = [(MPStoreItemMetadata *)self artworkRequestToken];
-        if (v4)
+        artworkRequestToken = [(MPStoreItemMetadata *)self artworkRequestToken];
+        if (artworkRequestToken)
         {
-          v5 = [(MPStoreItemMetadata *)self name];
-          if (v5)
+          name = [(MPStoreItemMetadata *)self name];
+          if (name)
           {
-            v6 = [(MPStoreItemMetadata *)self offers];
-            if (v6)
+            offers = [(MPStoreItemMetadata *)self offers];
+            if (offers)
             {
               v7 = [(MPStoreItemMetadata *)self URL];
               v8 = v7 != 0;
@@ -4477,40 +4477,40 @@ LABEL_30:
       return 1;
     }
 
-    v4 = [(MPStoreItemMetadata *)self childrenStoreIDs];
-    if (!v4)
+    artworkRequestToken = [(MPStoreItemMetadata *)self childrenStoreIDs];
+    if (!artworkRequestToken)
     {
       goto LABEL_24;
     }
 
-    v5 = [(MPStoreItemMetadata *)self childrenStoreIDs];
-    v8 = [v5 count] != 0;
+    name = [(MPStoreItemMetadata *)self childrenStoreIDs];
+    v8 = [name count] != 0;
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  v9 = [(MPStoreItemMetadata *)self artworkRequestToken];
-  if (!v9)
+  artworkRequestToken2 = [(MPStoreItemMetadata *)self artworkRequestToken];
+  if (!artworkRequestToken2)
   {
     return 0;
   }
 
-  v10 = v9;
-  v11 = [(MPStoreItemMetadata *)self name];
+  v10 = artworkRequestToken2;
+  name2 = [(MPStoreItemMetadata *)self name];
 
-  if (!v11)
+  if (!name2)
   {
     return 0;
   }
 
-  v12 = [(MPStoreItemMetadata *)self itemKind];
-  IsContainerKind = MPStoreItemMetadataItemKindIsContainerKind(v12);
+  itemKind = [(MPStoreItemMetadata *)self itemKind];
+  IsContainerKind = MPStoreItemMetadataItemKindIsContainerKind(itemKind);
 
   if (IsContainerKind)
   {
-    v4 = [(MPStoreItemMetadata *)self childrenStoreIDs];
-    if (![v4 count])
+    artworkRequestToken = [(MPStoreItemMetadata *)self childrenStoreIDs];
+    if (![artworkRequestToken count])
     {
       goto LABEL_24;
     }
@@ -4519,8 +4519,8 @@ LABEL_29:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = v4;
-    v14 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    name = artworkRequestToken;
+    v14 = [name countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {
       v15 = v14;
@@ -4531,7 +4531,7 @@ LABEL_16:
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(name);
         }
 
         v18 = [(MPStoreItemMetadata *)self childStorePlatformDictionaryForStoreID:*(*(&v20 + 1) + 8 * v17), v20];
@@ -4543,7 +4543,7 @@ LABEL_16:
 
         if (v15 == ++v17)
         {
-          v15 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v15 = [name countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v15)
           {
             goto LABEL_16;
@@ -4568,8 +4568,8 @@ LABEL_22:
 
 - (NSString)cacheableItemIdentifier
 {
-  v3 = [(MPStoreItemMetadata *)self cloudUniversalLibraryID];
-  v4 = MPStoreItemMetadataStringNormalizeStoreIDValue(v3);
+  cloudUniversalLibraryID = [(MPStoreItemMetadata *)self cloudUniversalLibraryID];
+  v4 = MPStoreItemMetadataStringNormalizeStoreIDValue(cloudUniversalLibraryID);
 
   if (v4)
   {
@@ -4578,8 +4578,8 @@ LABEL_22:
 
   else
   {
-    v6 = [(MPStoreItemMetadata *)self storeID];
-    v7 = MPStoreItemMetadataStringNormalizeStoreIDValue(v6);
+    storeID = [(MPStoreItemMetadata *)self storeID];
+    v7 = MPStoreItemMetadataStringNormalizeStoreIDValue(storeID);
 
     if (v7)
     {
@@ -4588,8 +4588,8 @@ LABEL_22:
 
     else
     {
-      v8 = [(MPStoreItemMetadata *)self socialProfileID];
-      v5 = MPStoreItemMetadataStringNormalizeStoreIDValue(v8);
+      socialProfileID = [(MPStoreItemMetadata *)self socialProfileID];
+      v5 = MPStoreItemMetadataStringNormalizeStoreIDValue(socialProfileID);
 
       if (v5)
       {

@@ -1,20 +1,20 @@
 @interface SBWorkspaceTransitionRequest
-- (CGRect)applicationTransitionContext:(id)a3 frameForApplicationSceneEntity:(id)a4;
+- (CGRect)applicationTransitionContext:(id)context frameForApplicationSceneEntity:(id)entity;
 - (NSSet)fromApplicationSceneEntities;
 - (NSSet)toApplicationSceneEntities;
-- (id)_initWithWorkspace:(id)a3 displayConfiguration:(id)a4;
+- (id)_initWithWorkspace:(id)workspace displayConfiguration:(id)configuration;
 - (id)compactDescriptionBuilder;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)declineWithReason:(id)a3;
+- (void)declineWithReason:(id)reason;
 - (void)finalize;
-- (void)modifyApplicationContext:(id)a3;
-- (void)modifyTransientOverlayContext:(id)a3;
-- (void)setApplicationContext:(id)a3;
-- (void)setDisplayConfiguration:(id)a3;
-- (void)setEventLabelWithFormat:(id)a3;
+- (void)modifyApplicationContext:(id)context;
+- (void)modifyTransientOverlayContext:(id)context;
+- (void)setApplicationContext:(id)context;
+- (void)setDisplayConfiguration:(id)configuration;
+- (void)setEventLabelWithFormat:(id)format;
 @end
 
 @implementation SBWorkspaceTransitionRequest
@@ -22,7 +22,7 @@
 - (void)finalize
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -57,8 +57,8 @@ void __57__SBWorkspaceTransitionRequest_compactDescriptionBuilder__block_invoke(
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_eventLabel withName:@"eventLabel" skipIfNil:1];
-  v5 = [(FBSDisplayConfiguration *)self->_displayConfiguration identity];
-  v6 = [v3 appendObject:v5 withName:@"display"];
+  identity = [(FBSDisplayConfiguration *)self->_displayConfiguration identity];
+  v6 = [v3 appendObject:identity withName:@"display"];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -76,38 +76,38 @@ void __57__SBWorkspaceTransitionRequest_compactDescriptionBuilder__block_invoke(
 
 - (NSSet)toApplicationSceneEntities
 {
-  v2 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  v3 = [v2 applicationSceneEntities];
+  applicationContext = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  applicationSceneEntities = [applicationContext applicationSceneEntities];
 
-  return v3;
+  return applicationSceneEntities;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBWorkspaceTransitionRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBWorkspaceTransitionRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_eventLabel withName:@"eventLabel" skipIfNil:1];
-  v5 = [(FBSDisplayConfiguration *)self->_displayConfiguration identity];
-  v6 = [v3 appendObject:v5 withName:@"display"];
+  identity = [(FBSDisplayConfiguration *)self->_displayConfiguration identity];
+  v6 = [v3 appendObject:identity withName:@"display"];
 
   return v3;
 }
 
-- (id)_initWithWorkspace:(id)a3 displayConfiguration:(id)a4
+- (id)_initWithWorkspace:(id)workspace displayConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  workspaceCopy = workspace;
+  configurationCopy = configuration;
+  v9 = configurationCopy;
+  if (workspaceCopy)
   {
-    if (v8)
+    if (configurationCopy)
     {
       goto LABEL_3;
     }
@@ -130,19 +130,19 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_workspace, a3);
-    objc_storeStrong(&v11->_displayConfiguration, a4);
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v13 = [v12 copy];
+    objc_storeStrong(&v10->_workspace, workspace);
+    objc_storeStrong(&v11->_displayConfiguration, configuration);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v13 = [uUID copy];
     uniqueID = v11->_uniqueID;
     v11->_uniqueID = v13;
 
-    v15 = [SBApp windowSceneManager];
-    v16 = [v9 identity];
-    v17 = [v15 windowSceneForDisplayIdentity:v16];
-    v18 = [v17 layoutStateTransitionCoordinator];
+    windowSceneManager = [SBApp windowSceneManager];
+    identity = [v9 identity];
+    v17 = [windowSceneManager windowSceneForDisplayIdentity:identity];
+    layoutStateTransitionCoordinator = [v17 layoutStateTransitionCoordinator];
     layoutStateTransitionCoordinator = v11->_layoutStateTransitionCoordinator;
-    v11->_layoutStateTransitionCoordinator = v18;
+    v11->_layoutStateTransitionCoordinator = layoutStateTransitionCoordinator;
 
     v11->_interfaceOrientation = 0;
     v20 = objc_alloc_init(SBWorkspaceApplicationSceneTransitionContext);
@@ -155,132 +155,132 @@ LABEL_3:
   return v11;
 }
 
-- (void)setApplicationContext:(id)a3
+- (void)setApplicationContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   applicationContext = self->_applicationContext;
-  if (applicationContext != v5)
+  if (applicationContext != contextCopy)
   {
-    v7 = v5;
+    v7 = contextCopy;
     [(SBWorkspaceTransitionContext *)applicationContext setRequest:0];
-    objc_storeStrong(&self->_applicationContext, a3);
+    objc_storeStrong(&self->_applicationContext, context);
     [(SBWorkspaceTransitionContext *)self->_applicationContext setRequest:self];
-    v5 = v7;
+    contextCopy = v7;
   }
 }
 
-- (void)modifyTransientOverlayContext:(id)a3
+- (void)modifyTransientOverlayContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     transientOverlayContext = self->_transientOverlayContext;
-    v7 = v4;
+    v7 = contextCopy;
     if (!transientOverlayContext)
     {
       v6 = +[(SBWorkspaceTransitionContext *)SBWorkspaceTransientOverlayTransitionContext];
       [(SBWorkspaceTransitionRequest *)self setTransientOverlayContext:v6];
 
-      v4 = v7;
+      contextCopy = v7;
       transientOverlayContext = self->_transientOverlayContext;
     }
 
-    (*(v4 + 2))(v7, transientOverlayContext);
-    v4 = v7;
+    (*(contextCopy + 2))(v7, transientOverlayContext);
+    contextCopy = v7;
   }
 }
 
-- (void)modifyApplicationContext:(id)a3
+- (void)modifyApplicationContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     applicationContext = self->_applicationContext;
-    v7 = v4;
+    v7 = contextCopy;
     if (!applicationContext)
     {
       v6 = +[(SBWorkspaceTransitionContext *)SBWorkspaceApplicationSceneTransitionContext];
       [(SBWorkspaceTransitionRequest *)self setApplicationContext:v6];
 
-      v4 = v7;
+      contextCopy = v7;
       applicationContext = self->_applicationContext;
     }
 
-    (*(v4 + 2))(v7, applicationContext);
-    v4 = v7;
+    (*(contextCopy + 2))(v7, applicationContext);
+    contextCopy = v7;
   }
 }
 
-- (void)setEventLabelWithFormat:(id)a3
+- (void)setEventLabelWithFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
   [(SBWorkspaceTransitionRequest *)self setEventLabel:v6];
 }
 
-- (void)declineWithReason:(id)a3
+- (void)declineWithReason:(id)reason
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (!self->_finalized)
   {
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SBWorkspaceTransitionRequest *)self succinctDescription];
+      succinctDescription = [(SBWorkspaceTransitionRequest *)self succinctDescription];
       *buf = 138543618;
-      v10 = v6;
+      v10 = succinctDescription;
       v11 = 2114;
-      v12 = v4;
+      v12 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Transition request %{public}@ was declined: %{public}@", buf, 0x16u);
     }
 
-    v7 = [(SBWorkspaceTransitionRequest *)self applicationContext];
+    applicationContext = [(SBWorkspaceTransitionRequest *)self applicationContext];
     v8 = FBSOpenApplicationErrorCreate();
-    [v7 sendActivationResultError:{v8, v4}];
+    [applicationContext sendActivationResultError:{v8, reasonCopy}];
   }
 }
 
-- (void)setDisplayConfiguration:(id)a3
+- (void)setDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_displayConfiguration != v5)
+  configurationCopy = configuration;
+  if (self->_displayConfiguration != configurationCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_displayConfiguration, a3);
-    v6 = [SBApp windowSceneManager];
-    v7 = [(FBSDisplayConfiguration *)v11 identity];
-    v8 = [v6 windowSceneForDisplayIdentity:v7];
-    v9 = [v8 layoutStateTransitionCoordinator];
+    v11 = configurationCopy;
+    objc_storeStrong(&self->_displayConfiguration, configuration);
+    windowSceneManager = [SBApp windowSceneManager];
+    identity = [(FBSDisplayConfiguration *)v11 identity];
+    v8 = [windowSceneManager windowSceneForDisplayIdentity:identity];
+    layoutStateTransitionCoordinator = [v8 layoutStateTransitionCoordinator];
     layoutStateTransitionCoordinator = self->_layoutStateTransitionCoordinator;
-    self->_layoutStateTransitionCoordinator = v9;
+    self->_layoutStateTransitionCoordinator = layoutStateTransitionCoordinator;
 
-    v5 = v11;
+    configurationCopy = v11;
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBWorkspaceTransitionRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBWorkspaceTransitionRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBWorkspaceTransitionRequest *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBWorkspaceTransitionRequest *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__SBWorkspaceTransitionRequest_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -293,15 +293,15 @@ id __70__SBWorkspaceTransitionRequest_descriptionBuilderWithMultilinePrefix___bl
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 80) withName:@"transientOverlayContext" skipIfNil:1];
 }
 
-- (CGRect)applicationTransitionContext:(id)a3 frameForApplicationSceneEntity:(id)a4
+- (CGRect)applicationTransitionContext:(id)context frameForApplicationSceneEntity:(id)entity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBLayoutStateTransitionCoordinator *)self->_layoutStateTransitionCoordinator sceneEntityFrameProvider];
-  if (v8)
+  contextCopy = context;
+  entityCopy = entity;
+  sceneEntityFrameProvider = [(SBLayoutStateTransitionCoordinator *)self->_layoutStateTransitionCoordinator sceneEntityFrameProvider];
+  if (sceneEntityFrameProvider)
   {
-    v9 = [v6 layoutState];
-    [v8 sceneEntityFrameForWorkspaceEntity:v7 inLayoutState:v9];
+    layoutState = [contextCopy layoutState];
+    [sceneEntityFrameProvider sceneEntityFrameForWorkspaceEntity:entityCopy inLayoutState:layoutState];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -329,10 +329,10 @@ id __70__SBWorkspaceTransitionRequest_descriptionBuilderWithMultilinePrefix___bl
 
 - (NSSet)fromApplicationSceneEntities
 {
-  v2 = [(SBWorkspaceTransitionRequest *)self applicationContext];
-  v3 = [v2 previousApplicationSceneEntities];
+  applicationContext = [(SBWorkspaceTransitionRequest *)self applicationContext];
+  previousApplicationSceneEntities = [applicationContext previousApplicationSceneEntities];
 
-  return v3;
+  return previousApplicationSceneEntities;
 }
 
 - (void)_initWithWorkspace:displayConfiguration:.cold.1()

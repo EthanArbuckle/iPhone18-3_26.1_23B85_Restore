@@ -4,7 +4,7 @@
 - (id)contentView;
 - (void)_setupConstraints;
 - (void)_setupViews;
-- (void)buttonTapped:(id)a3;
+- (void)buttonTapped:(id)tapped;
 @end
 
 @implementation LookAroundTTRButtonView
@@ -16,54 +16,54 @@
   return WeakRetained;
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(LookAroundTTRButtonView *)self delegate];
-  [v5 lookAroundTTRButtonView:self didTapTTRButton:v4];
+  tappedCopy = tapped;
+  delegate = [(LookAroundTTRButtonView *)self delegate];
+  [delegate lookAroundTTRButtonView:self didTapTTRButton:tappedCopy];
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(LookAroundTTRButtonView *)self blurView];
-  v4 = [(LookAroundTTRButtonView *)self button];
-  v35 = [v3 topAnchor];
-  v34 = [(LookAroundTTRButtonView *)self topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  blurView = [(LookAroundTTRButtonView *)self blurView];
+  button = [(LookAroundTTRButtonView *)self button];
+  topAnchor = [blurView topAnchor];
+  topAnchor2 = [(LookAroundTTRButtonView *)self topAnchor];
+  v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v36[0] = v33;
-  v32 = [v3 bottomAnchor];
-  v30 = [(LookAroundTTRButtonView *)self bottomAnchor];
-  v29 = [v32 constraintEqualToAnchor:v30];
+  bottomAnchor = [blurView bottomAnchor];
+  bottomAnchor2 = [(LookAroundTTRButtonView *)self bottomAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v36[1] = v29;
-  v31 = v3;
-  v28 = [v3 leadingAnchor];
-  v27 = [(LookAroundTTRButtonView *)self leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  v31 = blurView;
+  leadingAnchor = [blurView leadingAnchor];
+  leadingAnchor2 = [(LookAroundTTRButtonView *)self leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v36[2] = v26;
-  v25 = [v3 trailingAnchor];
-  v24 = [(LookAroundTTRButtonView *)self trailingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  trailingAnchor = [blurView trailingAnchor];
+  trailingAnchor2 = [(LookAroundTTRButtonView *)self trailingAnchor];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v36[3] = v23;
-  v20 = [v4 topAnchor];
-  v21 = [(LookAroundTTRButtonView *)self contentView];
-  v19 = [v21 topAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  topAnchor3 = [button topAnchor];
+  contentView = [(LookAroundTTRButtonView *)self contentView];
+  topAnchor4 = [contentView topAnchor];
+  v18 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v36[4] = v18;
-  v16 = [v4 bottomAnchor];
-  v17 = [(LookAroundTTRButtonView *)self contentView];
-  v15 = [v17 bottomAnchor];
-  v5 = [v16 constraintEqualToAnchor:v15];
+  bottomAnchor3 = [button bottomAnchor];
+  contentView2 = [(LookAroundTTRButtonView *)self contentView];
+  bottomAnchor4 = [contentView2 bottomAnchor];
+  v5 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v36[5] = v5;
-  v22 = v4;
-  v6 = [v4 leadingAnchor];
-  v7 = [(LookAroundTTRButtonView *)self contentView];
-  v8 = [v7 leadingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  v22 = button;
+  leadingAnchor3 = [button leadingAnchor];
+  contentView3 = [(LookAroundTTRButtonView *)self contentView];
+  leadingAnchor4 = [contentView3 leadingAnchor];
+  v9 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v36[6] = v9;
-  v10 = [v4 trailingAnchor];
-  v11 = [(LookAroundTTRButtonView *)self contentView];
-  v12 = [v11 trailingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  trailingAnchor3 = [button trailingAnchor];
+  contentView4 = [(LookAroundTTRButtonView *)self contentView];
+  trailingAnchor4 = [contentView4 trailingAnchor];
+  v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v36[7] = v13;
   v14 = [NSArray arrayWithObjects:v36 count:8];
   [NSLayoutConstraint activateConstraints:v14];
@@ -80,11 +80,11 @@
 
   [v12 size];
   v6 = v5 * 0.5;
-  v7 = [(LookAroundTTRButtonView *)self layer];
-  [v7 setCornerRadius:v6];
+  layer = [(LookAroundTTRButtonView *)self layer];
+  [layer setCornerRadius:v6];
 
-  v8 = [(LookAroundTTRButtonView *)self layer];
-  [v8 setMasksToBounds:1];
+  layer2 = [(LookAroundTTRButtonView *)self layer];
+  [layer2 setMasksToBounds:1];
 
   [(LookAroundTTRButtonView *)self setBlurView:v3];
   v9 = [UIButton buttonWithType:0];
@@ -93,8 +93,8 @@
   v10 = [UIImage imageNamed:@"LookAroundTTR"];
   [v9 setImage:v10 forState:0];
 
-  v11 = [(LookAroundTTRButtonView *)self contentView];
-  [v11 addSubview:v9];
+  contentView = [(LookAroundTTRButtonView *)self contentView];
+  [contentView addSubview:v9];
 
   [(LookAroundTTRButtonView *)self setButton:v9];
 }
@@ -117,10 +117,10 @@
 
 - (id)contentView
 {
-  v2 = [(LookAroundTTRButtonView *)self blurView];
-  v3 = [v2 contentView];
+  blurView = [(LookAroundTTRButtonView *)self blurView];
+  contentView = [blurView contentView];
 
-  return v3;
+  return contentView;
 }
 
 @end

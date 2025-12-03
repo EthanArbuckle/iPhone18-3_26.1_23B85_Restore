@@ -1,22 +1,22 @@
 @interface Channel
-+ (id)predicateForChannelIdentifier:(id)a3;
++ (id)predicateForChannelIdentifier:(id)identifier;
 + (id)predicateForChannelTypePresence;
 + (id)predicateForChannelTypeStatus;
 + (id)predicateForCreationDateNotNil;
-+ (id)predicateForPresenceIdentifier:(id)a3;
-+ (id)predicateForStatusTypeIdentifier:(id)a3;
++ (id)predicateForPresenceIdentifier:(id)identifier;
++ (id)predicateForStatusTypeIdentifier:(id)identifier;
 @end
 
 @implementation Channel
 
-+ (id)predicateForStatusTypeIdentifier:(id)a3
++ (id)predicateForStatusTypeIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[Channel statusTypeKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 + (id)predicateForChannelTypeStatus
@@ -37,24 +37,24 @@
   return v4;
 }
 
-+ (id)predicateForPresenceIdentifier:(id)a3
++ (id)predicateForPresenceIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[Channel presenceIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
-+ (id)predicateForChannelIdentifier:(id)a3
++ (id)predicateForChannelIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[Channel identifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 + (id)predicateForCreationDateNotNil

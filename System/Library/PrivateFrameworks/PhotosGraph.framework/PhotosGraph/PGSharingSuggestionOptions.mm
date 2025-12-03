@@ -1,5 +1,5 @@
 @interface PGSharingSuggestionOptions
-+ (id)optionsForClient:(unint64_t)a3;
++ (id)optionsForClient:(unint64_t)client;
 - (PGSharingSuggestionOptions)init;
 - (id)description;
 @end
@@ -45,11 +45,11 @@
   return result;
 }
 
-+ (id)optionsForClient:(unint64_t)a3
++ (id)optionsForClient:(unint64_t)client
 {
   v5 = objc_opt_new();
   v6 = v5;
-  if (a3 == 3)
+  if (client == 3)
   {
     [v5 setSharingStream:1];
     [v6 setUseContactSuggestion:0];
@@ -57,9 +57,9 @@
     [v6 setFetchLimit:30];
   }
 
-  else if (a3 == 2)
+  else if (client == 2)
   {
-    [v5 setSharingStream:{objc_msgSend(a1, "_shareSheetSharingStream")}];
+    [v5 setSharingStream:{objc_msgSend(self, "_shareSheetSharingStream")}];
     [v6 setUseContactSuggestion:1];
     [v6 setIncludeUnverified:0];
     [v6 setFetchLimit:10];

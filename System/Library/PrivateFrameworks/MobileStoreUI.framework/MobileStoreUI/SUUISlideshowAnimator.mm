@@ -1,49 +1,49 @@
 @interface SUUISlideshowAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation SUUISlideshowAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v7 = [v6 view];
-  v8 = [v5 view];
-  v9 = [v4 containerView];
-  [v4 finalFrameForViewController:v6];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  view = [v6 view];
+  view2 = [v5 view];
+  containerView = [transitionCopy containerView];
+  [transitionCopy finalFrameForViewController:v6];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v7 setAlpha:0.0];
-  [v7 setFrame:{v11, v13, v15, v17}];
-  [v9 insertSubview:v7 aboveSubview:v8];
+  [view setAlpha:0.0];
+  [view setFrame:{v11, v13, v15, v17}];
+  [containerView insertSubview:view aboveSubview:view2];
   v18 = [objc_alloc(MEMORY[0x277D75DE8]) initWithFrame:2020 privateStyle:{v11, v13, v15, v17}];
   [v18 setAlpha:0.0];
   [v18 setAutoresizingMask:18];
-  [v9 addSubview:v18];
+  [containerView addSubview:v18];
   imageView = self->_imageView;
   [(UIImageView *)imageView frame];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  v28 = [(UIImageView *)self->_imageView superview];
-  [v9 convertRect:v28 fromView:{v21, v23, v25, v27}];
+  superview = [(UIImageView *)self->_imageView superview];
+  [containerView convertRect:superview fromView:{v21, v23, v25, v27}];
   [(UIImageView *)imageView setFrame:?];
 
-  [v9 addSubview:self->_imageView];
+  [containerView addSubview:self->_imageView];
   v29 = MEMORY[0x277D75D18];
-  [(SUUISlideshowAnimator *)self transitionDuration:v4];
+  [(SUUISlideshowAnimator *)self transitionDuration:transitionCopy];
   v31 = v30;
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __43__SUUISlideshowAnimator_animateTransition___block_invoke;
   v44[3] = &unk_2798F8DB0;
   v45 = v18;
-  v46 = self;
+  selfCopy = self;
   v47 = v11;
   v48 = v13;
   v49 = v15;
@@ -56,13 +56,13 @@
   v41 = v13;
   v42 = v15;
   v43 = v17;
-  v36 = v7;
-  v37 = self;
+  v36 = view;
+  selfCopy2 = self;
   v38 = v45;
-  v39 = v4;
-  v32 = v4;
+  v39 = transitionCopy;
+  v32 = transitionCopy;
   v33 = v45;
-  v34 = v7;
+  v34 = view;
   [v29 animateWithDuration:v44 animations:v35 completion:v31];
 }
 

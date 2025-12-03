@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_MigrateMemoryPendingStateStoryToCreationType
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_MigrateMemoryPendingStateStoryToCreationType
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v103 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v64 = 0;
   v65 = &v64;
   v66 = 0x2020000000;
@@ -42,7 +42,7 @@
   v50[1] = 3221225472;
   v50[2] = __115__PLModelMigrationAction_MigrateMemoryPendingStateStoryToCreationType_performActionWithManagedObjectContext_error___block_invoke;
   v50[3] = &unk_1E7575B30;
-  v14 = v6;
+  v14 = contextCopy;
   v51 = v14;
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
@@ -75,8 +75,8 @@
       goto LABEL_17;
     }
 
-    v20 = [(PLModelMigrationActionCore *)self logger];
-    v21 = v20 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v21 = logger == 0;
 
     if (!v21)
     {
@@ -156,8 +156,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v29 = [(PLModelMigrationActionCore *)self logger];
-  v30 = v29 == 0;
+  logger2 = [(PLModelMigrationActionCore *)self logger];
+  v30 = logger2 == 0;
 
   if (v30)
   {
@@ -232,10 +232,10 @@ LABEL_16:
 LABEL_17:
   v42 = v65[3];
   v43 = v59[5];
-  if (v42 != 1 && a4)
+  if (v42 != 1 && error)
   {
     v43 = v43;
-    *a4 = v43;
+    *error = v43;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

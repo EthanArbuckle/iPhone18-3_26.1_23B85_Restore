@@ -1,33 +1,33 @@
 @interface CKDPZoneChildrenRetrieveResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addChildren:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addChildren:(id)children;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZoneChildrenRetrieveResponse
 
-- (void)addChildren:(id)a3
+- (void)addChildren:(id)children
 {
-  v4 = a3;
+  childrenCopy = children;
   childrens = self->_childrens;
-  v8 = v4;
+  v8 = childrenCopy;
   if (!childrens)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_childrens;
     self->_childrens = v6;
 
-    v4 = v8;
+    childrenCopy = v8;
     childrens = self->_childrens;
   }
 
-  objc_msgSend_addObject_(childrens, v4, v4);
+  objc_msgSend_addObject_(childrens, childrenCopy, childrenCopy);
 }
 
 - (id)description
@@ -100,10 +100,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -150,12 +150,12 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (objc_msgSend_childrensCount(self, v4, v5))
   {
-    objc_msgSend_clearChildrens(v16, v6, v7);
+    objc_msgSend_clearChildrens(toCopy, v6, v7);
     v10 = objc_msgSend_childrensCount(self, v8, v9);
     if (v10)
     {
@@ -163,7 +163,7 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_childrenAtIndex_(self, v6, i);
-        objc_msgSend_addChildren_(v16, v14, v13);
+        objc_msgSend_addChildren_(toCopy, v14, v13);
       }
     }
   }
@@ -171,21 +171,21 @@
   continuationToken = self->_continuationToken;
   if (continuationToken)
   {
-    objc_msgSend_setContinuationToken_(v16, v6, continuationToken);
+    objc_msgSend_setContinuationToken_(toCopy, v6, continuationToken);
   }
 
   if (*&self->_has)
   {
-    v16[24] = self->_isComplete;
-    v16[28] |= 1u;
+    toCopy[24] = self->_isComplete;
+    toCopy[28] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v25 = 0u;
   v26 = 0u;
@@ -206,7 +206,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * i), v14, a3, v25);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v25 + 1) + 8 * i), v14, zone, v25);
         objc_msgSend_addChildren_(v10, v19, v18);
       }
 
@@ -216,7 +216,7 @@
     while (v15);
   }
 
-  v21 = objc_msgSend_copyWithZone_(self->_continuationToken, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_continuationToken, v20, zone);
   v22 = *(v10 + 16);
   *(v10 + 16) = v21;
 
@@ -230,17 +230,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_8;
   }
 
   childrens = self->_childrens;
-  v9 = v4[1];
+  v9 = equalCopy[1];
   if (childrens | v9)
   {
     if (!objc_msgSend_isEqual_(childrens, v7, v9))
@@ -250,7 +250,7 @@
   }
 
   continuationToken = self->_continuationToken;
-  v11 = v4[2];
+  v11 = equalCopy[2];
   if (continuationToken | v11)
   {
     if (!objc_msgSend_isEqual_(continuationToken, v7, v11))
@@ -259,10 +259,10 @@
     }
   }
 
-  v12 = (*(v4 + 28) & 1) == 0;
+  v12 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
 LABEL_8:
       v12 = 0;
@@ -271,13 +271,13 @@ LABEL_8:
 
     if (self->_isComplete)
     {
-      if ((v4[3] & 1) == 0)
+      if ((equalCopy[3] & 1) == 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_8;
     }
@@ -307,15 +307,15 @@ LABEL_9:
   return v7 ^ v4 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v15, v19, 16);
   if (v7)
   {
@@ -339,15 +339,15 @@ LABEL_9:
     while (v9);
   }
 
-  v13 = *(v4 + 2);
+  v13 = *(fromCopy + 2);
   if (v13)
   {
     objc_msgSend_setContinuationToken_(self, v12, v13);
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_isComplete = *(v4 + 24);
+    self->_isComplete = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 

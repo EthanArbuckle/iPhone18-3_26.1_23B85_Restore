@@ -1,5 +1,5 @@
 @interface AVCDaemonProcessInfo
-+ ($115C4C562B26FF47E01F9F4EA65B5887)auditTokenWithError:(SEL)a3;
++ ($115C4C562B26FF47E01F9F4EA65B5887)auditTokenWithError:(SEL)error;
 + (id)getDaemonProcessInfo;
 @end
 
@@ -14,7 +14,7 @@
   return [v2 sendMessageSync:"vcGetDaemonProcessInfo" arguments:objc_msgSend(MEMORY[0x1E695DF20] xpcArguments:{"dictionaryWithObjects:forKeys:count:", v5, &v4, 1), 0}];
 }
 
-+ ($115C4C562B26FF47E01F9F4EA65B5887)auditTokenWithError:(SEL)a3
++ ($115C4C562B26FF47E01F9F4EA65B5887)auditTokenWithError:(SEL)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v6 = +[AVConferenceXPCClient AVConferenceXPCClientSingleton];

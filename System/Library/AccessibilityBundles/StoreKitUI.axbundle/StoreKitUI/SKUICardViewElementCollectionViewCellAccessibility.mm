@@ -2,7 +2,7 @@
 - (BOOL)accessibilityActivate;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_accessibilityFindPlayButton;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axAdornedImageElement;
 - (id)_axLockupElements;
@@ -20,7 +20,7 @@
   v3 = [(SKUICardViewElementCollectionViewCellAccessibility *)self safeValueForKey:@"allExistingViews"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -63,7 +63,7 @@
           }
         }
 
-        [v5 addObject:{v11, v14}];
+        [array addObject:{v11, v14}];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -74,7 +74,7 @@
 
   v12 = *MEMORY[0x29EDCA608];
 
-  return v5;
+  return array;
 }
 
 - (id)_axAdornedImageElement
@@ -137,8 +137,8 @@ LABEL_11:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axLockupElements];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  _axLockupElements = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axLockupElements];
+  v4 = [_axLockupElements countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -152,10 +152,10 @@ LABEL_11:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_axLockupElements);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v8) accessibilityLabel];
+        accessibilityLabel = [*(*(&v19 + 1) + 8 * v8) accessibilityLabel];
         v18 = @"__AXStringForVariablesSentinel";
         v6 = __UIAXStringForVariables();
 
@@ -164,7 +164,7 @@ LABEL_11:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:{16, v17, @"__AXStringForVariablesSentinel"}];
+      v5 = [_axLockupElements countByEnumeratingWithState:&v19 objects:v23 count:{16, accessibilityLabel, @"__AXStringForVariablesSentinel"}];
     }
 
     while (v5);
@@ -187,9 +187,9 @@ LABEL_11:
 
   if (![v6 length])
   {
-    v13 = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axAdornedImageElement];
+    _axAdornedImageElement = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axAdornedImageElement];
 
-    if (v13)
+    if (_axAdornedImageElement)
     {
       v14 = accessibilitySKUILocalizedString(@"play");
 
@@ -202,20 +202,20 @@ LABEL_11:
   return v6;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v23 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  if ([(SKUICardViewElementCollectionViewCellAccessibility *)self pointInside:v7 withEvent:x, y])
+  eventCopy = event;
+  if ([(SKUICardViewElementCollectionViewCellAccessibility *)self pointInside:eventCopy withEvent:x, y])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [(SKUICardViewElementCollectionViewCellAccessibility *)self _accessibilitySupplementaryFooterViews];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    _accessibilitySupplementaryFooterViews = [(SKUICardViewElementCollectionViewCellAccessibility *)self _accessibilitySupplementaryFooterViews];
+    v9 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -226,12 +226,12 @@ LABEL_11:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(_accessibilitySupplementaryFooterViews);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
           [(SKUICardViewElementCollectionViewCellAccessibility *)self convertPoint:v13 toView:x, y];
-          v14 = [v13 _accessibilityHitTest:v7 withEvent:?];
+          v14 = [v13 _accessibilityHitTest:eventCopy withEvent:?];
           if ([v14 isAccessibilityElement])
           {
 
@@ -239,7 +239,7 @@ LABEL_11:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [_accessibilitySupplementaryFooterViews countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v10)
         {
           continue;
@@ -251,7 +251,7 @@ LABEL_11:
 
     v17.receiver = self;
     v17.super_class = SKUICardViewElementCollectionViewCellAccessibility;
-    v14 = [(SKUICardViewElementCollectionViewCellAccessibility *)&v17 _accessibilityHitTest:v7 withEvent:x, y];
+    v14 = [(SKUICardViewElementCollectionViewCellAccessibility *)&v17 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   else
@@ -268,8 +268,8 @@ LABEL_13:
 
 - (id)_accessibilityFindPlayButton
 {
-  v2 = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axAdornedImageElement];
-  v3 = [v2 safeValueForKey:@"_reuseView"];
+  _axAdornedImageElement = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axAdornedImageElement];
+  v3 = [_axAdornedImageElement safeValueForKey:@"_reuseView"];
   v4 = [v3 safeValueForKey:@"_playButton"];
 
   if ([v4 _accessibilityViewIsVisible])
@@ -287,23 +287,23 @@ LABEL_13:
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axAdornedImageElement];
+  _axAdornedImageElement = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axAdornedImageElement];
 
-  if (!v3)
+  if (!_axAdornedImageElement)
   {
     return 0;
   }
 
-  v4 = [(SKUICardViewElementCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
-  v5 = [v4 accessibilityActivate];
+  _accessibilityFindPlayButton = [(SKUICardViewElementCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
+  accessibilityActivate = [_accessibilityFindPlayButton accessibilityActivate];
 
-  return v5;
+  return accessibilityActivate;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
   v32 = *MEMORY[0x29EDCA608];
-  v21 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -330,18 +330,18 @@ LABEL_13:
         NSClassFromString(&cfstr_Skuistyledbutt_0.isa);
         if (objc_opt_isKindOfClass())
         {
-          [v21 addObject:v7];
+          [array addObject:v7];
         }
 
         else
         {
-          v8 = [v7 _accessibilitySupplementaryFooterViews];
-          v9 = [MEMORY[0x29EDB8DE8] array];
+          _accessibilitySupplementaryFooterViews = [v7 _accessibilitySupplementaryFooterViews];
+          array2 = [MEMORY[0x29EDB8DE8] array];
           v22 = 0u;
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v10 = v8;
+          v10 = _accessibilitySupplementaryFooterViews;
           v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v11)
           {
@@ -367,7 +367,7 @@ LABEL_13:
                   }
                 }
 
-                [v9 addObject:{v15, v18}];
+                [array2 addObject:{v15, v18}];
               }
 
               v12 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -376,9 +376,9 @@ LABEL_13:
             while (v12);
           }
 
-          if ([v9 count])
+          if ([array2 count])
           {
-            [v21 addObjectsFromArray:v9];
+            [array addObjectsFromArray:array2];
           }
 
           v5 = v18;
@@ -397,17 +397,17 @@ LABEL_13:
 
   v16 = *MEMORY[0x29EDCA608];
 
-  return v21;
+  return array;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axAdornedImageElement];
+  _axAdornedImageElement = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axAdornedImageElement];
 
-  if (v3)
+  if (_axAdornedImageElement)
   {
-    v4 = [(SKUICardViewElementCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
-    [v4 accessibilityActivationPoint];
+    _accessibilityFindPlayButton = [(SKUICardViewElementCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
+    [_accessibilityFindPlayButton accessibilityActivationPoint];
     v6 = v5;
     v8 = v7;
 
@@ -441,8 +441,8 @@ LABEL_13:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axLockupElements];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _axLockupElements = [(SKUICardViewElementCollectionViewCellAccessibility *)self _axLockupElements];
+  v3 = [_axLockupElements countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -453,25 +453,25 @@ LABEL_13:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_axLockupElements);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
         NSClassFromString(&cfstr_Skuihorizontal_2.isa);
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v7 accessibilityCustomActions];
-          v9 = [v8 count];
+          accessibilityCustomActions = [v7 accessibilityCustomActions];
+          v9 = [accessibilityCustomActions count];
 
           if (v9)
           {
-            v10 = [v7 accessibilityCustomActions];
+            accessibilityCustomActions2 = [v7 accessibilityCustomActions];
             goto LABEL_12;
           }
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [_axLockupElements countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -481,12 +481,12 @@ LABEL_13:
     }
   }
 
-  v10 = 0;
+  accessibilityCustomActions2 = 0;
 LABEL_12:
 
   v11 = *MEMORY[0x29EDCA608];
 
-  return v10;
+  return accessibilityCustomActions2;
 }
 
 @end

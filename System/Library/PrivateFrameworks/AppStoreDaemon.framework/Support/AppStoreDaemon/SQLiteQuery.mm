@@ -1,35 +1,35 @@
 @interface SQLiteQuery
-- (BOOL)createTemporaryTableWithName:(id)a3 properties:(id)a4;
+- (BOOL)createTemporaryTableWithName:(id)name properties:(id)properties;
 - (BOOL)deleteAllEntities;
 - (SQLiteQueryDescriptor)queryDescriptor;
-- (id)_newSelectSQLWithProperties:(id)a3;
-- (id)allMemoryEntitiesWithProperties:(id)a3;
+- (id)_newSelectSQLWithProperties:(id)properties;
+- (id)allMemoryEntitiesWithProperties:(id)properties;
 - (id)copyEntityIdentifiers;
-- (id)copySelectSQLWithProperties:(id)a3;
-- (id)firstMemoryEntityWithProperties:(id)a3;
-- (id)initOnConnection:(id)a3 descriptor:(id)a4;
+- (id)copySelectSQLWithProperties:(id)properties;
+- (id)firstMemoryEntityWithProperties:(id)properties;
+- (id)initOnConnection:(id)connection descriptor:(id)descriptor;
 - (int64_t)countOfEntities;
-- (void)applyBinding:(id)a3 atIndex:(int *)a4;
-- (void)enumerateMemoryEntitiesUsingBlock:(id)a3;
-- (void)enumerateMemoryEntitiesWithProperties:(id)a3 usingBlock:(id)a4;
-- (void)enumeratePersistentIDsAndProperties:(id)a3 usingBlock:(id)a4;
-- (void)enumeratePersistentIDsUsingBlock:(id)a3;
+- (void)applyBinding:(id)binding atIndex:(int *)index;
+- (void)enumerateMemoryEntitiesUsingBlock:(id)block;
+- (void)enumerateMemoryEntitiesWithProperties:(id)properties usingBlock:(id)block;
+- (void)enumeratePersistentIDsAndProperties:(id)properties usingBlock:(id)block;
+- (void)enumeratePersistentIDsUsingBlock:(id)block;
 @end
 
 @implementation SQLiteQuery
 
-- (id)initOnConnection:(id)a3 descriptor:(id)a4
+- (id)initOnConnection:(id)connection descriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  descriptorCopy = descriptor;
   v14.receiver = self;
   v14.super_class = SQLiteQuery;
   v9 = [(SQLiteQuery *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_connection, connection);
+    v11 = [descriptorCopy copy];
     descriptor = v10->_descriptor;
     v10->_descriptor = v11;
   }
@@ -37,9 +37,9 @@
   return v10;
 }
 
-- (void)applyBinding:(id)a3 atIndex:(int *)a4
+- (void)applyBinding:(id)binding atIndex:(int *)index
 {
-  v6 = a3;
+  bindingCopy = binding;
   descriptor = self->_descriptor;
   if (descriptor)
   {
@@ -51,15 +51,15 @@
     predicate = 0;
   }
 
-  v11 = v6;
-  [(SQLitePredicate *)predicate applyBinding:v6 atIndex:a4];
+  v11 = bindingCopy;
+  [(SQLitePredicate *)predicate applyBinding:bindingCopy atIndex:index];
   v9 = self->_descriptor;
   if (v9)
   {
     limitCount = v9->_limitCount;
     if (limitCount)
     {
-      [v11 bindInt64:limitCount atPosition:(*a4)++];
+      [v11 bindInt64:limitCount atPosition:(*index)++];
     }
   }
 }
@@ -77,9 +77,9 @@
   return v3;
 }
 
-- (id)copySelectSQLWithProperties:(id)a3
+- (id)copySelectSQLWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = objc_alloc_init(NSMutableArray);
   descriptor = self->_descriptor;
   if (descriptor)
@@ -96,7 +96,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v4;
+  v8 = propertiesCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -146,13 +146,13 @@
   return v2;
 }
 
-- (BOOL)createTemporaryTableWithName:(id)a3 properties:(id)a4
+- (BOOL)createTemporaryTableWithName:(id)name properties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  propertiesCopy = properties;
   v8 = [[NSMutableString alloc] initWithString:@"CREATE TEMPORARY TABLE "];
-  v26 = v6;
-  [v8 appendString:v6];
+  v26 = nameCopy;
+  [v8 appendString:nameCopy];
   [v8 appendString:@" AS "];
   v9 = [(SQLiteQueryDescriptor *)self->_descriptor copy];
   v11 = v9;
@@ -178,7 +178,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = v7;
+  v16 = propertiesCopy;
   v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v17)
   {
@@ -241,40 +241,40 @@
   return v3;
 }
 
-- (void)enumerateMemoryEntitiesUsingBlock:(id)a3
+- (void)enumerateMemoryEntitiesUsingBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   descriptor = self->_descriptor;
   if (!descriptor || (memoryEntityClass = descriptor->_memoryEntityClass) == 0)
   {
     memoryEntityClass = objc_opt_class();
   }
 
-  v6 = [memoryEntityClass defaultProperties];
-  [(SQLiteQuery *)self enumerateMemoryEntitiesWithProperties:v6 usingBlock:v7];
+  defaultProperties = [memoryEntityClass defaultProperties];
+  [(SQLiteQuery *)self enumerateMemoryEntitiesWithProperties:defaultProperties usingBlock:blockCopy];
 }
 
-- (void)enumerateMemoryEntitiesWithProperties:(id)a3 usingBlock:(id)a4
+- (void)enumerateMemoryEntitiesWithProperties:(id)properties usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  blockCopy = block;
   descriptor = self->_descriptor;
   if (!descriptor || (memoryEntityClass = descriptor->_memoryEntityClass) == 0)
   {
     memoryEntityClass = objc_opt_class();
   }
 
-  if ([v6 count])
+  if ([propertiesCopy count])
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1002D2E5C;
     v13[3] = &unk_100521890;
     v10 = v14;
-    v14[0] = v7;
+    v14[0] = blockCopy;
     v14[1] = memoryEntityClass;
-    v11 = v7;
-    [(SQLiteQuery *)self enumeratePersistentIDsAndProperties:v6 usingBlock:v13];
+    v11 = blockCopy;
+    [(SQLiteQuery *)self enumeratePersistentIDsAndProperties:propertiesCopy usingBlock:v13];
   }
 
   else
@@ -284,45 +284,45 @@
     v15[2] = sub_1002D2DDC;
     v15[3] = &unk_100521868;
     v10 = v16;
-    v16[0] = v7;
+    v16[0] = blockCopy;
     v16[1] = memoryEntityClass;
-    v12 = v7;
+    v12 = blockCopy;
     [(SQLiteQuery *)self enumeratePersistentIDsUsingBlock:v15];
   }
 }
 
-- (void)enumeratePersistentIDsUsingBlock:(id)a3
+- (void)enumeratePersistentIDsUsingBlock:(id)block
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1002D2FA4;
   v5[3] = &unk_100521790;
-  v6 = a3;
-  v4 = v6;
+  blockCopy = block;
+  v4 = blockCopy;
   [(SQLiteQuery *)self enumeratePersistentIDsAndProperties:0 usingBlock:v5];
 }
 
-- (void)enumeratePersistentIDsAndProperties:(id)a3 usingBlock:(id)a4
+- (void)enumeratePersistentIDsAndProperties:(id)properties usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SQLiteQuery *)self _newSelectSQLWithProperties:v6];
+  propertiesCopy = properties;
+  blockCopy = block;
+  v8 = [(SQLiteQuery *)self _newSelectSQLWithProperties:propertiesCopy];
   connection = self->_connection;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1002D30A4;
   v12[3] = &unk_100521908;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = propertiesCopy;
+  v14 = blockCopy;
+  v10 = blockCopy;
+  v11 = propertiesCopy;
   sub_10022C3C4(connection, v8, v12);
 }
 
-- (id)firstMemoryEntityWithProperties:(id)a3
+- (id)firstMemoryEntityWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -334,23 +334,23 @@
   v7[2] = sub_1002D34C8;
   v7[3] = &unk_10051B010;
   v7[4] = &v8;
-  [(SQLiteQuery *)self enumerateMemoryEntitiesWithProperties:v4 usingBlock:v7];
+  [(SQLiteQuery *)self enumerateMemoryEntitiesWithProperties:propertiesCopy usingBlock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-- (id)allMemoryEntitiesWithProperties:(id)a3
+- (id)allMemoryEntitiesWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1002D35D8;
   v8[3] = &unk_10051B038;
   v9 = objc_alloc_init(NSMutableArray);
   v5 = v9;
-  [(SQLiteQuery *)self enumerateMemoryEntitiesWithProperties:v4 usingBlock:v8];
+  [(SQLiteQuery *)self enumerateMemoryEntitiesWithProperties:propertiesCopy usingBlock:v8];
 
   v6 = [v5 copy];
 
@@ -364,9 +364,9 @@
   return v2;
 }
 
-- (id)_newSelectSQLWithProperties:(id)a3
+- (id)_newSelectSQLWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = objc_alloc_init(NSMutableArray);
   descriptor = self->_descriptor;
   if (descriptor)
@@ -386,7 +386,7 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v4;
+  v9 = propertiesCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {

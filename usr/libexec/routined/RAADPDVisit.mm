@@ -1,7 +1,7 @@
 @interface RAADPDVisit
 - (RAADPDVisit)init;
-- (void)queryPeopleDensity:(id)a3;
-- (void)queryProximityEvents:(id)a3;
+- (void)queryPeopleDensity:(id)density;
+- (void)queryProximityEvents:(id)events;
 @end
 
 @implementation RAADPDVisit
@@ -27,20 +27,20 @@
   return self;
 }
 
-- (void)queryProximityEvents:(id)a3
+- (void)queryProximityEvents:(id)events
 {
-  v4 = a3;
-  v20 = [v4 entryDate];
-  v18 = v4;
-  v5 = [v4 exitDate];
+  eventsCopy = events;
+  entryDate = [eventsCopy entryDate];
+  v18 = eventsCopy;
+  exitDate = [eventsCopy exitDate];
   v19 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = self;
-  v6 = [(RAAdpdVisitProvider *)self->_visitProvider allProximityEvents];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  selfCopy = self;
+  allProximityEvents = [(RAAdpdVisitProvider *)self->_visitProvider allProximityEvents];
+  v7 = [allProximityEvents countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -52,16 +52,16 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allProximityEvents);
         }
 
         v11 = *(*(&v21 + 1) + 8 * v10);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 startDate];
-        if ([v13 compare:v5] == 1)
+        startDate = [v11 startDate];
+        if ([startDate compare:exitDate] == 1)
         {
-          v14 = [v11 endDate];
-          v15 = [v14 compare:v20];
+          endDate = [v11 endDate];
+          v15 = [endDate compare:entryDate];
 
           if (v15 == -1)
           {
@@ -78,30 +78,30 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [allProximityEvents countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
   }
 
-  proximityEvents = v17->_proximityEvents;
-  v17->_proximityEvents = v19;
+  proximityEvents = selfCopy->_proximityEvents;
+  selfCopy->_proximityEvents = v19;
 }
 
-- (void)queryPeopleDensity:(id)a3
+- (void)queryPeopleDensity:(id)density
 {
-  v4 = a3;
-  v20 = [v4 entryDate];
-  v18 = v4;
-  v5 = [v4 exitDate];
+  densityCopy = density;
+  entryDate = [densityCopy entryDate];
+  v18 = densityCopy;
+  exitDate = [densityCopy exitDate];
   v19 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = self;
-  v6 = [(RAAdpdVisitProvider *)self->_visitProvider allDensityEvents];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  selfCopy = self;
+  allDensityEvents = [(RAAdpdVisitProvider *)self->_visitProvider allDensityEvents];
+  v7 = [allDensityEvents countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -113,16 +113,16 @@
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allDensityEvents);
         }
 
         v11 = *(*(&v21 + 1) + 8 * v10);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 startDate];
-        if ([v13 compare:v5] == 1)
+        startDate = [v11 startDate];
+        if ([startDate compare:exitDate] == 1)
         {
-          v14 = [v11 endDate];
-          v15 = [v14 compare:v20];
+          endDate = [v11 endDate];
+          v15 = [endDate compare:entryDate];
 
           if (v15 == -1)
           {
@@ -139,14 +139,14 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [allDensityEvents countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
   }
 
-  peopleDensities = v17->_peopleDensities;
-  v17->_peopleDensities = v19;
+  peopleDensities = selfCopy->_peopleDensities;
+  selfCopy->_peopleDensities = v19;
 }
 
 @end

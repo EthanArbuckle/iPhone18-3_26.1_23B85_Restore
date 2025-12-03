@@ -1,15 +1,15 @@
 @interface CLSCalendarEventsCacheDay
-- (BOOL)isEqual:(id)a3;
-- (CLSCalendarEventsCacheDay)initWithDay:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLSCalendarEventsCacheDay)initWithDay:(int64_t)day;
 - (id)debugDescription;
 @end
 
 @implementation CLSCalendarEventsCacheDay
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -19,7 +19,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CLSCalendarEventsCacheDay *)v4 day];
+      v5 = [(CLSCalendarEventsCacheDay *)equalCopy day];
       v6 = v5 == [(CLSCalendarEventsCacheDay *)self day];
     }
 
@@ -42,7 +42,7 @@
   return v6;
 }
 
-- (CLSCalendarEventsCacheDay)initWithDay:(int64_t)a3
+- (CLSCalendarEventsCacheDay)initWithDay:(int64_t)day
 {
   v8.receiver = self;
   v8.super_class = CLSCalendarEventsCacheDay;
@@ -53,7 +53,7 @@
     events = v4->_events;
     v4->_events = v5;
 
-    v4->_day = a3;
+    v4->_day = day;
   }
 
   return v4;

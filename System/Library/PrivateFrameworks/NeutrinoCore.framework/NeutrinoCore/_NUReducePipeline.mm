@@ -1,23 +1,23 @@
 @interface _NUReducePipeline
 - (_NUReducePipeline)init;
-- (_NUReducePipeline)initWithIdentifier:(id)a3;
-- (id)_addInputChannel:(id)a3;
-- (id)_evaluateOutputPort:(id)a3 context:(id)a4 error:(id *)a5;
+- (_NUReducePipeline)initWithIdentifier:(id)identifier;
+- (id)_addInputChannel:(id)channel;
+- (id)_evaluateOutputPort:(id)port context:(id)context error:(id *)error;
 @end
 
 @implementation _NUReducePipeline
 
-- (id)_evaluateOutputPort:(id)a3 context:(id)a4 error:(id *)a5
+- (id)_evaluateOutputPort:(id)port context:(id)context error:(id *)error
 {
   v106 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v78 = a4;
+  portCopy = port;
+  contextCopy = context;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v9 = [(_NUPipeline *)self outputChannels];
-  v10 = [v9 countByEnumeratingWithState:&v94 objects:v105 count:16];
+  outputChannels = [(_NUPipeline *)self outputChannels];
+  v10 = [outputChannels countByEnumeratingWithState:&v94 objects:v105 count:16];
   if (v10)
   {
     v11 = v10;
@@ -28,7 +28,7 @@
       {
         if (*v95 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(outputChannels);
         }
 
         v14 = *(*(&v94 + 1) + 8 * i);
@@ -37,12 +37,12 @@
         if (!v15)
         {
           [NUError missingError:@"Missing input (initial value) channel for output channel" object:v14];
-          *a5 = v52 = 0;
+          *error = v52 = 0;
           goto LABEL_56;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v94 objects:v105 count:16];
+      v11 = [outputChannels countByEnumeratingWithState:&v94 objects:v105 count:16];
     }
 
     while (v11);
@@ -54,26 +54,26 @@
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v16 = [(_NUPipeline *)self inputChannels];
-  v17 = [v16 countByEnumeratingWithState:&v90 objects:v104 count:16];
+  inputChannels = [(_NUPipeline *)self inputChannels];
+  v17 = [inputChannels countByEnumeratingWithState:&v90 objects:v104 count:16];
   if (!v17)
   {
 
 LABEL_54:
-    v40 = [(_NUPipeline *)self inputChannels];
-    [NUError invalidError:@"Nothing to reduce" object:v40];
-    v9 = 0;
-    *a5 = v52 = 0;
+    inputChannels2 = [(_NUPipeline *)self inputChannels];
+    [NUError invalidError:@"Nothing to reduce" object:inputChannels2];
+    outputChannels = 0;
+    *error = v52 = 0;
     goto LABEL_55;
   }
 
   v18 = v17;
-  v71 = a5;
-  v72 = v8;
+  errorCopy = error;
+  v72 = portCopy;
   v74 = 0;
-  obj = v16;
+  obj = inputChannels;
   v19 = *v91;
-  v20 = v78;
+  v20 = contextCopy;
   while (2)
   {
     for (j = 0; j != v18; ++j)
@@ -84,72 +84,72 @@ LABEL_54:
       }
 
       v22 = *(*(&v90 + 1) + 8 * j);
-      v23 = [v22 name];
-      v24 = [v20 dataForChannel:v23];
+      name = [v22 name];
+      v24 = [v20 dataForChannel:name];
 
       v25 = [(_NUPipeline *)self _inputPortForChannel:v22];
-      v26 = [v25 elementSubport];
+      elementSubport = [v25 elementSubport];
 
-      v27 = [v26 fullName];
+      fullName = [elementSubport fullName];
       v28 = [(_NUPipeline *)self _outputPortForChannel:v22];
 
-      v29 = [v24 cardinality];
+      cardinality = [v24 cardinality];
 
       if (v28)
       {
-        if (!v29)
+        if (!cardinality)
         {
-          v30 = [v22 name];
-          [v77 setObject:v27 forKeyedSubscript:v30];
+          name2 = [v22 name];
+          [v77 setObject:fullName forKeyedSubscript:name2];
 
 LABEL_17:
-          v20 = v78;
-          [v78 setData:v24 forChannel:v27];
+          v20 = contextCopy;
+          [contextCopy setData:v24 forChannel:fullName];
           goto LABEL_24;
         }
 
         v103[0] = v24;
         v102[0] = @"data";
         v102[1] = @"channel";
-        v62 = [v22 name];
-        v103[1] = v62;
-        v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v103 forKeys:v102 count:2];
-        *v71 = [NUError invalidError:@"Initial value should not be an array" object:v63];
+        name3 = [v22 name];
+        v103[1] = name3;
+        name5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v103 forKeys:v102 count:2];
+        *errorCopy = [NUError invalidError:@"Initial value should not be an array" object:name5];
 LABEL_52:
 
         v52 = 0;
-        v8 = v72;
-        v9 = v74;
-        v40 = obj;
+        portCopy = v72;
+        outputChannels = v74;
+        inputChannels2 = obj;
         goto LABEL_55;
       }
 
-      if (!v29)
+      if (!cardinality)
       {
         goto LABEL_17;
       }
 
-      v31 = [v22 name];
-      [v73 setObject:v27 forKeyedSubscript:v31];
+      name4 = [v22 name];
+      [v73 setObject:fullName forKeyedSubscript:name4];
 
-      v32 = [v24 cardinality];
-      v33 = v32;
+      cardinality2 = [v24 cardinality];
+      v33 = cardinality2;
       if (v74)
       {
-        v34 = [v32 isEqualToNumber:?];
+        v34 = [cardinality2 isEqualToNumber:?];
 
         if ((v34 & 1) == 0)
         {
           v101[0] = v74;
           v100[0] = @"expected";
           v100[1] = @"actual";
-          v62 = [v24 cardinality];
-          v101[1] = v62;
+          name3 = [v24 cardinality];
+          v101[1] = name3;
           v100[2] = @"channel";
-          v63 = [v22 name];
-          v101[2] = v63;
+          name5 = [v22 name];
+          v101[2] = name5;
           v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v101 forKeys:v100 count:3];
-          *v71 = [NUError mismatchError:@"Cardinality mismatch" object:v64];
+          *errorCopy = [NUError mismatchError:@"Cardinality mismatch" object:v64];
 
           goto LABEL_52;
         }
@@ -157,10 +157,10 @@ LABEL_52:
 
       else
       {
-        v74 = v32;
+        v74 = cardinality2;
       }
 
-      v20 = v78;
+      v20 = contextCopy;
 LABEL_24:
     }
 
@@ -173,20 +173,20 @@ LABEL_24:
     break;
   }
 
-  a5 = v71;
-  v8 = v72;
-  v9 = v74;
+  error = errorCopy;
+  portCopy = v72;
+  outputChannels = v74;
   if (!v74)
   {
     goto LABEL_54;
   }
 
-  v35 = [v74 unsignedIntegerValue];
-  if (v35)
+  unsignedIntegerValue = [v74 unsignedIntegerValue];
+  if (unsignedIntegerValue)
   {
     obja = 0;
     v36 = 0uLL;
-    v66 = v35;
+    v66 = unsignedIntegerValue;
     do
     {
       v88 = v36;
@@ -198,13 +198,13 @@ LABEL_24:
       if (v38)
       {
         v39 = v38;
-        v40 = 0;
+        inputChannels2 = 0;
         v69 = *v87;
-        v41 = v78;
+        v41 = contextCopy;
         while (2)
         {
           v42 = 0;
-          v43 = v40;
+          v43 = inputChannels2;
           do
           {
             if (*v87 != v69)
@@ -213,26 +213,26 @@ LABEL_24:
             }
 
             v44 = *(*(&v86 + 1) + 8 * v42);
-            v45 = [v78 dataForChannel:{v44, v66}];
+            v45 = [contextCopy dataForChannel:{v44, v66}];
             v85 = 0;
             v46 = [v45 subdataAtIndex:obja error:&v85];
-            v40 = v85;
+            inputChannels2 = v85;
 
             if (!v46)
             {
-              *v71 = [NUError errorWithCode:1 reason:@"Failed to evaluate subdata at index" object:v45 underlyingError:v40];
+              *errorCopy = [NUError errorWithCode:1 reason:@"Failed to evaluate subdata at index" object:v45 underlyingError:inputChannels2];
 
               v52 = 0;
-              v8 = v72;
-              v9 = v74;
+              portCopy = v72;
+              outputChannels = v74;
               goto LABEL_55;
             }
 
             v47 = [v37 objectForKeyedSubscript:v44];
-            [v78 setData:v46 forChannel:v47];
+            [contextCopy setData:v46 forChannel:v47];
 
             ++v42;
-            v43 = v40;
+            v43 = inputChannels2;
           }
 
           while (v39 != v42);
@@ -248,28 +248,28 @@ LABEL_24:
 
       else
       {
-        v40 = 0;
-        v41 = v78;
+        inputChannels2 = 0;
+        v41 = contextCopy;
       }
 
       v83 = 0u;
       v84 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v67 = [(_NUPipeline *)self outputChannels];
-      v70 = [v67 countByEnumeratingWithState:&v81 objects:v98 count:16];
+      outputChannels2 = [(_NUPipeline *)self outputChannels];
+      v70 = [outputChannels2 countByEnumeratingWithState:&v81 objects:v98 count:16];
       if (v70)
       {
         v68 = *v82;
         while (2)
         {
           v48 = 0;
-          v49 = v40;
+          v49 = inputChannels2;
           do
           {
             if (*v82 != v68)
             {
-              objc_enumerationMutation(v67);
+              objc_enumerationMutation(outputChannels2);
             }
 
             v50 = *(*(&v81 + 1) + 8 * v48);
@@ -282,17 +282,17 @@ LABEL_24:
 
             if (!v52)
             {
-              *v71 = [NUError errorWithCode:1 reason:@"Failed to evaluate reduction pipeline" object:v51 underlyingError:v53];
+              *errorCopy = [NUError errorWithCode:1 reason:@"Failed to evaluate reduction pipeline" object:v51 underlyingError:v53];
 
-              v8 = v72;
-              v9 = v74;
-              v40 = v53;
+              portCopy = v72;
+              outputChannels = v74;
+              inputChannels2 = v53;
               goto LABEL_55;
             }
 
             v54 = v41;
-            v55 = [v50 name];
-            v56 = [v77 objectForKeyedSubscript:v55];
+            name6 = [v50 name];
+            v56 = [v77 objectForKeyedSubscript:name6];
             [v54 setData:v52 forChannel:v56];
 
             ++v48;
@@ -301,8 +301,8 @@ LABEL_24:
           }
 
           while (v70 != v48);
-          v40 = v53;
-          v70 = [v67 countByEnumeratingWithState:&v81 objects:v98 count:16];
+          inputChannels2 = v53;
+          v70 = [outputChannels2 countByEnumeratingWithState:&v81 objects:v98 count:16];
           if (v70)
           {
             continue;
@@ -312,33 +312,33 @@ LABEL_24:
         }
       }
 
-      v9 = v74;
+      outputChannels = v74;
       ++obja;
-      a5 = v71;
-      v8 = v72;
+      error = errorCopy;
+      portCopy = v72;
       v36 = 0uLL;
     }
 
     while (obja != v66);
   }
 
-  v57 = [v8 channel];
-  v58 = [v57 name];
-  v59 = [v77 objectForKeyedSubscript:v58];
-  v60 = [v78 dataForChannel:v59];
+  channel = [portCopy channel];
+  name7 = [channel name];
+  v59 = [v77 objectForKeyedSubscript:name7];
+  v60 = [contextCopy dataForChannel:v59];
 
   if (v60)
   {
-    v40 = v60;
-    v52 = v40;
+    inputChannels2 = v60;
+    v52 = inputChannels2;
   }
 
   else
   {
-    v65 = [v8 channel];
-    *a5 = [NUError unknownError:@"Failed to evaluate output port" object:v65];
+    channel2 = [portCopy channel];
+    *error = [NUError unknownError:@"Failed to evaluate output port" object:channel2];
 
-    v40 = 0;
+    inputChannels2 = 0;
     v52 = 0;
   }
 
@@ -349,21 +349,21 @@ LABEL_56:
   return v52;
 }
 
-- (id)_addInputChannel:(id)a3
+- (id)_addInputChannel:(id)channel
 {
-  v4 = [NUChannel arrayChannel:a3];
+  v4 = [NUChannel arrayChannel:channel];
   v8.receiver = self;
   v8.super_class = _NUReducePipeline;
   v5 = [(_NUPipeline *)&v8 _addInputChannel:v4];
-  v6 = [v5 elementSubport];
+  elementSubport = [v5 elementSubport];
 
-  return v6;
+  return elementSubport;
 }
 
-- (_NUReducePipeline)initWithIdentifier:(id)a3
+- (_NUReducePipeline)initWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1383);
@@ -407,8 +407,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -424,8 +424,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

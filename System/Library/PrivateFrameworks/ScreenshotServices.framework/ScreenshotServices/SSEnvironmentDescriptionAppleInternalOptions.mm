@@ -1,21 +1,21 @@
 @interface SSEnvironmentDescriptionAppleInternalOptions
-- (SSEnvironmentDescriptionAppleInternalOptions)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SSEnvironmentDescriptionAppleInternalOptions)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SSEnvironmentDescriptionAppleInternalOptions
 
-- (SSEnvironmentDescriptionAppleInternalOptions)initWithBSXPCCoder:(id)a3
+- (SSEnvironmentDescriptionAppleInternalOptions)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSEnvironmentDescriptionAppleInternalOptions *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentDescriptionAppleInternalOptionsRunPPTServiceRequest"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SSEnvironmentDescriptionAppleInternalOptionsRunPPTServiceRequest"];
   runPPTServiceRequest = v5->_runPPTServiceRequest;
   v5->_runPPTServiceRequest = v6;
 
   if (RecapLibraryCore())
   {
-    v8 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"SSEnvironmentDescriptionAppleInternalRecapKey"];
+    v8 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"SSEnvironmentDescriptionAppleInternalRecapKey"];
     if (v8)
     {
       v15 = 0;
@@ -45,23 +45,23 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(SSEnvironmentDescriptionAppleInternalOptions *)self runPPTServiceRequest];
-  [v10 encodeObject:v4 forKey:@"SSEnvironmentDescriptionAppleInternalOptionsRunPPTServiceRequest"];
+  coderCopy = coder;
+  runPPTServiceRequest = [(SSEnvironmentDescriptionAppleInternalOptions *)self runPPTServiceRequest];
+  [coderCopy encodeObject:runPPTServiceRequest forKey:@"SSEnvironmentDescriptionAppleInternalOptionsRunPPTServiceRequest"];
 
-  v5 = [(SSEnvironmentDescriptionAppleInternalOptions *)self recapMovie];
-  if (v5)
+  recapMovie = [(SSEnvironmentDescriptionAppleInternalOptions *)self recapMovie];
+  if (recapMovie)
   {
-    v6 = v5;
+    v6 = recapMovie;
     v7 = RecapLibraryCore();
 
     if (v7)
     {
-      v8 = [(SSEnvironmentDescriptionAppleInternalOptions *)self recapMovie];
-      v9 = [v8 encodeToXPC];
-      [v10 encodeXPCObject:v9 forKey:@"SSEnvironmentDescriptionAppleInternalRecapKey"];
+      recapMovie2 = [(SSEnvironmentDescriptionAppleInternalOptions *)self recapMovie];
+      encodeToXPC = [recapMovie2 encodeToXPC];
+      [coderCopy encodeXPCObject:encodeToXPC forKey:@"SSEnvironmentDescriptionAppleInternalRecapKey"];
     }
   }
 }

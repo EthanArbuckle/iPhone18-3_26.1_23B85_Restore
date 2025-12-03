@@ -1,21 +1,21 @@
 @interface CRPairedVehicleManager
-- (BOOL)removeVehicle:(id)a3;
+- (BOOL)removeVehicle:(id)vehicle;
 - (CRPairedVehicleManager)init;
-- (id)_firstVehicleMatchingTest:(id)a3;
+- (id)_firstVehicleMatchingTest:(id)test;
 - (id)allVehicles;
 - (id)pairedVehicles;
-- (id)saveVehicle:(id)a3;
-- (id)vehicleForBluetoothAddress:(id)a3;
-- (id)vehicleForCertificateSerial:(id)a3;
-- (id)vehicleNameForWiFiUUID:(id)a3;
-- (void)fetchAllVehiclesWithCompletion:(id)a3;
-- (void)fetchPairedVehiclesWithCompletion:(id)a3;
-- (void)fetchViewAreasForVehicleIdentifier:(id)a3 completion:(id)a4;
-- (void)removeVehicle:(id)a3 completion:(id)a4;
-- (void)saveVehicle:(id)a3 completion:(id)a4;
-- (void)saveViewAreas:(id)a3 forVehicleIdentifier:(id)a4 completion:(id)a5;
-- (void)syncFetchAllVehiclesWithCompletion:(id)a3;
-- (void)syncFetchViewAreasForVehicleIdentifier:(id)a3 completion:(id)a4;
+- (id)saveVehicle:(id)vehicle;
+- (id)vehicleForBluetoothAddress:(id)address;
+- (id)vehicleForCertificateSerial:(id)serial;
+- (id)vehicleNameForWiFiUUID:(id)d;
+- (void)fetchAllVehiclesWithCompletion:(id)completion;
+- (void)fetchPairedVehiclesWithCompletion:(id)completion;
+- (void)fetchViewAreasForVehicleIdentifier:(id)identifier completion:(id)completion;
+- (void)removeVehicle:(id)vehicle completion:(id)completion;
+- (void)saveVehicle:(id)vehicle completion:(id)completion;
+- (void)saveViewAreas:(id)areas forVehicleIdentifier:(id)identifier completion:(id)completion;
+- (void)syncFetchAllVehiclesWithCompletion:(id)completion;
+- (void)syncFetchViewAreasForVehicleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation CRPairedVehicleManager
@@ -34,22 +34,22 @@
   return v2;
 }
 
-- (void)syncFetchAllVehiclesWithCompletion:(id)a3
+- (void)syncFetchAllVehiclesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairedVehicleManager *)self serviceClient];
+  completionCopy = completion;
+  serviceClient = [(CRPairedVehicleManager *)self serviceClient];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__CRPairedVehicleManager_syncFetchAllVehiclesWithCompletion___block_invoke;
   v9[3] = &unk_1E82FC438;
-  v10 = v4;
+  v10 = completionCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__CRPairedVehicleManager_syncFetchAllVehiclesWithCompletion___block_invoke_3;
   v7[3] = &unk_1E82FBF48;
   v8 = v10;
   v6 = v10;
-  [v5 performSynchronousServiceBlock:v9 errorHandler:v7];
+  [serviceClient performSynchronousServiceBlock:v9 errorHandler:v7];
 }
 
 void __61__CRPairedVehicleManager_syncFetchAllVehiclesWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -84,22 +84,22 @@ uint64_t __61__CRPairedVehicleManager_syncFetchAllVehiclesWithCompletion___block
   return result;
 }
 
-- (void)fetchAllVehiclesWithCompletion:(id)a3
+- (void)fetchAllVehiclesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRPairedVehicleManager *)self serviceClient];
+  completionCopy = completion;
+  serviceClient = [(CRPairedVehicleManager *)self serviceClient];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__CRPairedVehicleManager_fetchAllVehiclesWithCompletion___block_invoke;
   v9[3] = &unk_1E82FC438;
-  v10 = v4;
+  v10 = completionCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__CRPairedVehicleManager_fetchAllVehiclesWithCompletion___block_invoke_3;
   v7[3] = &unk_1E82FBF48;
   v8 = v10;
   v6 = v10;
-  [v5 performServiceBlock:v9 errorHandler:v7];
+  [serviceClient performServiceBlock:v9 errorHandler:v7];
 }
 
 void __57__CRPairedVehicleManager_fetchAllVehiclesWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -134,15 +134,15 @@ uint64_t __57__CRPairedVehicleManager_fetchAllVehiclesWithCompletion___block_inv
   return result;
 }
 
-- (void)fetchPairedVehiclesWithCompletion:(id)a3
+- (void)fetchPairedVehiclesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__CRPairedVehicleManager_fetchPairedVehiclesWithCompletion___block_invoke;
   v6[3] = &unk_1E82FC148;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CRPairedVehicleManager *)self fetchAllVehiclesWithCompletion:v6];
 }
 
@@ -172,25 +172,25 @@ void __60__CRPairedVehicleManager_fetchPairedVehiclesWithCompletion___block_invo
   }
 }
 
-- (void)saveVehicle:(id)a3 completion:(id)a4
+- (void)saveVehicle:(id)vehicle completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRPairedVehicleManager *)self serviceClient];
+  vehicleCopy = vehicle;
+  completionCopy = completion;
+  serviceClient = [(CRPairedVehicleManager *)self serviceClient];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __49__CRPairedVehicleManager_saveVehicle_completion___block_invoke;
   v13[3] = &unk_1E82FC170;
-  v14 = v6;
-  v15 = v7;
+  v14 = vehicleCopy;
+  v15 = completionCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__CRPairedVehicleManager_saveVehicle_completion___block_invoke_2;
   v11[3] = &unk_1E82FBF48;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
-  [v8 performServiceBlock:v13 errorHandler:v11];
+  v10 = vehicleCopy;
+  [serviceClient performServiceBlock:v13 errorHandler:v11];
 }
 
 uint64_t __49__CRPairedVehicleManager_saveVehicle_completion___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -204,25 +204,25 @@ uint64_t __49__CRPairedVehicleManager_saveVehicle_completion___block_invoke_2(ui
   return result;
 }
 
-- (void)removeVehicle:(id)a3 completion:(id)a4
+- (void)removeVehicle:(id)vehicle completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRPairedVehicleManager *)self serviceClient];
+  vehicleCopy = vehicle;
+  completionCopy = completion;
+  serviceClient = [(CRPairedVehicleManager *)self serviceClient];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__CRPairedVehicleManager_removeVehicle_completion___block_invoke;
   v13[3] = &unk_1E82FC170;
-  v14 = v6;
-  v15 = v7;
+  v14 = vehicleCopy;
+  v15 = completionCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__CRPairedVehicleManager_removeVehicle_completion___block_invoke_2;
   v11[3] = &unk_1E82FBF48;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
-  [v8 performServiceBlock:v13 errorHandler:v11];
+  v10 = vehicleCopy;
+  [serviceClient performServiceBlock:v13 errorHandler:v11];
 }
 
 uint64_t __51__CRPairedVehicleManager_removeVehicle_completion___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -236,9 +236,9 @@ uint64_t __51__CRPairedVehicleManager_removeVehicle_completion___block_invoke_2(
   return result;
 }
 
-- (id)_firstVehicleMatchingTest:(id)a3
+- (id)_firstVehicleMatchingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -249,7 +249,7 @@ uint64_t __51__CRPairedVehicleManager_removeVehicle_completion___block_invoke_2(
   v8[1] = 3221225472;
   v8[2] = __52__CRPairedVehicleManager__firstVehicleMatchingTest___block_invoke;
   v8[3] = &unk_1E82FC480;
-  v5 = v4;
+  v5 = testCopy;
   v9 = v5;
   v10 = &v11;
   [(CRPairedVehicleManager *)self syncFetchAllVehiclesWithCompletion:v8];
@@ -273,15 +273,15 @@ void __52__CRPairedVehicleManager__firstVehicleMatchingTest___block_invoke(uint6
   }
 }
 
-- (id)vehicleForBluetoothAddress:(id)a3
+- (id)vehicleForBluetoothAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__CRPairedVehicleManager_vehicleForBluetoothAddress___block_invoke;
   v8[3] = &unk_1E82FC4A8;
-  v9 = v4;
-  v5 = v4;
+  v9 = addressCopy;
+  v5 = addressCopy;
   v6 = [(CRPairedVehicleManager *)self _firstVehicleMatchingTest:v8];
 
   return v6;
@@ -311,19 +311,19 @@ uint64_t __53__CRPairedVehicleManager_vehicleForBluetoothAddress___block_invoke(
   return v7;
 }
 
-- (id)vehicleNameForWiFiUUID:(id)a3
+- (id)vehicleNameForWiFiUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__CRPairedVehicleManager_vehicleNameForWiFiUUID___block_invoke;
   v9[3] = &unk_1E82FC4A8;
-  v10 = v4;
-  v5 = v4;
+  v10 = dCopy;
+  v5 = dCopy;
   v6 = [(CRPairedVehicleManager *)self _firstVehicleMatchingTest:v9];
-  v7 = [v6 vehicleName];
+  vehicleName = [v6 vehicleName];
 
-  return v7;
+  return vehicleName;
 }
 
 uint64_t __49__CRPairedVehicleManager_vehicleNameForWiFiUUID___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -350,15 +350,15 @@ uint64_t __49__CRPairedVehicleManager_vehicleNameForWiFiUUID___block_invoke(uint
   return v7;
 }
 
-- (id)vehicleForCertificateSerial:(id)a3
+- (id)vehicleForCertificateSerial:(id)serial
 {
-  v4 = a3;
+  serialCopy = serial;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__CRPairedVehicleManager_vehicleForCertificateSerial___block_invoke;
   v8[3] = &unk_1E82FC4A8;
-  v9 = v4;
-  v5 = v4;
+  v9 = serialCopy;
+  v5 = serialCopy;
   v6 = [(CRPairedVehicleManager *)self _firstVehicleMatchingTest:v8];
 
   return v6;
@@ -388,28 +388,28 @@ uint64_t __54__CRPairedVehicleManager_vehicleForCertificateSerial___block_invoke
   return v7;
 }
 
-- (void)saveViewAreas:(id)a3 forVehicleIdentifier:(id)a4 completion:(id)a5
+- (void)saveViewAreas:(id)areas forVehicleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CRPairedVehicleManager *)self serviceClient];
+  areasCopy = areas;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  serviceClient = [(CRPairedVehicleManager *)self serviceClient];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__CRPairedVehicleManager_saveViewAreas_forVehicleIdentifier_completion___block_invoke;
   v17[3] = &unk_1E82FC4D0;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = areasCopy;
+  v19 = identifierCopy;
+  v20 = completionCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__CRPairedVehicleManager_saveViewAreas_forVehicleIdentifier_completion___block_invoke_3;
   v15[3] = &unk_1E82FBF48;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
-  [v11 performServiceBlock:v17 errorHandler:v15];
+  v13 = identifierCopy;
+  v14 = areasCopy;
+  [serviceClient performServiceBlock:v17 errorHandler:v15];
 }
 
 void __72__CRPairedVehicleManager_saveViewAreas_forVehicleIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -446,51 +446,51 @@ uint64_t __72__CRPairedVehicleManager_saveViewAreas_forVehicleIdentifier_complet
   return result;
 }
 
-- (void)fetchViewAreasForVehicleIdentifier:(id)a3 completion:(id)a4
+- (void)fetchViewAreasForVehicleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRPairedVehicleManager *)self serviceClient];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  serviceClient = [(CRPairedVehicleManager *)self serviceClient];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__CRPairedVehicleManager_fetchViewAreasForVehicleIdentifier_completion___block_invoke;
   v13[3] = &unk_1E82FC170;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__CRPairedVehicleManager_fetchViewAreasForVehicleIdentifier_completion___block_invoke_2;
   v11[3] = &unk_1E82FBF48;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
-  [v8 performServiceBlock:v13 errorHandler:v11];
+  v10 = identifierCopy;
+  [serviceClient performServiceBlock:v13 errorHandler:v11];
 }
 
-- (void)syncFetchViewAreasForVehicleIdentifier:(id)a3 completion:(id)a4
+- (void)syncFetchViewAreasForVehicleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRPairedVehicleManager *)self serviceClient];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  serviceClient = [(CRPairedVehicleManager *)self serviceClient];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__CRPairedVehicleManager_syncFetchViewAreasForVehicleIdentifier_completion___block_invoke;
   v13[3] = &unk_1E82FC170;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__CRPairedVehicleManager_syncFetchViewAreasForVehicleIdentifier_completion___block_invoke_2;
   v11[3] = &unk_1E82FBF48;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
-  [v8 performSynchronousServiceBlock:v13 errorHandler:v11];
+  v10 = identifierCopy;
+  [serviceClient performSynchronousServiceBlock:v13 errorHandler:v11];
 }
 
-- (id)saveVehicle:(id)a3
+- (id)saveVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -505,7 +505,7 @@ uint64_t __72__CRPairedVehicleManager_saveViewAreas_forVehicleIdentifier_complet
   v12 = &v13;
   v6 = v5;
   v11 = v6;
-  [(CRPairedVehicleManager *)self saveVehicle:v4 completion:v10];
+  [(CRPairedVehicleManager *)self saveVehicle:vehicleCopy completion:v10];
   v7 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v6, v7);
   v8 = v14[5];
@@ -522,9 +522,9 @@ void __38__CRPairedVehicleManager_saveVehicle___block_invoke(uint64_t a1, void *
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)removeVehicle:(id)a3
+- (BOOL)removeVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -537,7 +537,7 @@ void __38__CRPairedVehicleManager_saveVehicle___block_invoke(uint64_t a1, void *
   v11 = &v12;
   v6 = v5;
   v10 = v6;
-  [(CRPairedVehicleManager *)self removeVehicle:v4 completion:v9];
+  [(CRPairedVehicleManager *)self removeVehicle:vehicleCopy completion:v9];
   v7 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v6, v7);
   LOBYTE(self) = *(v13 + 24);

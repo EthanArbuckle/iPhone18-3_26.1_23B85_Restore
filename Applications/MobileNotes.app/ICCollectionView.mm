@@ -1,113 +1,113 @@
 @interface ICCollectionView
-- (BOOL)canFocusItemAtIndexPath:(id)a3;
-- (BOOL)isCellDraggableForIdentifier:(id)a3;
-- (BOOL)isCellReorderableForIdentifier:(id)a3;
-- (BOOL)sourceObjectIDsContainsSystemPaperNotes:(id)a3;
-- (CGRect)presentationSourceRectForCell:(id)a3;
-- (ICCollectionView)initWithPresentingViewController:(id)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5 viewControllerManager:(id)a6;
+- (BOOL)canFocusItemAtIndexPath:(id)path;
+- (BOOL)isCellDraggableForIdentifier:(id)identifier;
+- (BOOL)isCellReorderableForIdentifier:(id)identifier;
+- (BOOL)sourceObjectIDsContainsSystemPaperNotes:(id)notes;
+- (CGRect)presentationSourceRectForCell:(id)cell;
+- (ICCollectionView)initWithPresentingViewController:(id)controller legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext viewControllerManager:(id)manager;
 - (ICNAViewController)presentingViewController;
 - (ICViewControllerManager)viewControllerManager;
-- (id)cellForItemIdentifier:(id)a3;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)commonAccessibilityActionsForFolder:(id)a3;
-- (id)commonAcessibilityActionsForNoteWithObjectID:(id)a3;
-- (id)contextMenuConfigurationForIndexPath:(id)a3;
-- (id)contextMenuConfigurationForItemsAtIndexPaths:(id)a3;
-- (id)contextMenuForFolder:(id)a3 sourceView:(id)a4;
-- (id)contextMenuForInvitation:(id)a3 sourceView:(id)a4;
-- (id)contextMenuForLegacyNote:(id)a3 sourceView:(id)a4;
-- (id)contextMenuForModernNote:(id)a3 sourceView:(id)a4;
-- (id)contextMenuPreviewWithConfiguration:(id)a3 indexPath:(id)a4;
-- (id)contextMenuWithPinnedActionsAndCenterWindow:(id)a3 pinnedActions:(id)a4 actions:(id)a5;
+- (id)cellForItemIdentifier:(id)identifier;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)commonAccessibilityActionsForFolder:(id)folder;
+- (id)commonAcessibilityActionsForNoteWithObjectID:(id)d;
+- (id)contextMenuConfigurationForIndexPath:(id)path;
+- (id)contextMenuConfigurationForItemsAtIndexPaths:(id)paths;
+- (id)contextMenuForFolder:(id)folder sourceView:(id)view;
+- (id)contextMenuForInvitation:(id)invitation sourceView:(id)view;
+- (id)contextMenuForLegacyNote:(id)note sourceView:(id)view;
+- (id)contextMenuForModernNote:(id)note sourceView:(id)view;
+- (id)contextMenuPreviewWithConfiguration:(id)configuration indexPath:(id)path;
+- (id)contextMenuWithPinnedActionsAndCenterWindow:(id)window pinnedActions:(id)actions actions:(id)a5;
 - (id)createLayout;
-- (id)customAccessibilityActionsForObjectID:(id)a3 galleryView:(BOOL)a4;
-- (id)defaultPreviewForCell:(id)a3;
+- (id)customAccessibilityActionsForObjectID:(id)d galleryView:(BOOL)view;
+- (id)defaultPreviewForCell:(id)cell;
 - (id)deleteFolderAccessibilityLabel;
 - (id)deleteNoteAccessibilityLabel;
-- (id)dragItemsForIndexPath:(id)a3 sessionContext:(id)a4;
+- (id)dragItemsForIndexPath:(id)path sessionContext:(id)context;
 - (id)duplicateNoteAccessibilityLabel;
-- (id)firstUnselectedIndexPathWithFrame:(CGRect)a3 arrowDirection:(unint64_t)a4;
-- (id)galleryViewAcessibilityActionsForFolder:(id)a3;
-- (id)galleryViewAcessibilityActionsForNote:(id)a3;
-- (id)interactionSourceViewForObjectID:(id)a3;
-- (id)leadingSwipeActionsConfigurationForModernNote:(id)a3 inCell:(id)a4;
+- (id)firstUnselectedIndexPathWithFrame:(CGRect)frame arrowDirection:(unint64_t)direction;
+- (id)galleryViewAcessibilityActionsForFolder:(id)folder;
+- (id)galleryViewAcessibilityActionsForNote:(id)note;
+- (id)interactionSourceViewForObjectID:(id)d;
+- (id)leadingSwipeActionsConfigurationForModernNote:(id)note inCell:(id)cell;
 - (id)leadingSwipeActionsConfigurationProvider;
-- (id)lockOrUnlockAccessibilityLabelForNoteIsLocked:(BOOL)a3;
-- (id)movableNoteObjectIDsIn:(id)a3 forDropIntoSection:(id)a4;
+- (id)lockOrUnlockAccessibilityLabelForNoteIsLocked:(BOOL)locked;
+- (id)movableNoteObjectIDsIn:(id)in forDropIntoSection:(id)section;
 - (id)moveFolderAccessibilityLabel;
 - (id)moveNoteAccessibilityLabel;
-- (id)multiSelectionContextMenuPreviewForHighlightingItemAtIndexPath:(id)a3;
-- (id)pinOrUnpinAccessibilityAnnouncementForNoteIsPinned:(BOOL)a3 noteTitle:(id)a4;
-- (id)pinOrUnpinAccessibilityLabelForNoteIsPinned:(BOOL)a3;
-- (id)previewForWindowSceneActivationConfiguration:(id)a3 indexPath:(id)a4;
-- (id)previewParametersWithCollectionView:(id)a3 atIndexPath:(id)a4;
+- (id)multiSelectionContextMenuPreviewForHighlightingItemAtIndexPath:(id)path;
+- (id)pinOrUnpinAccessibilityAnnouncementForNoteIsPinned:(BOOL)pinned noteTitle:(id)title;
+- (id)pinOrUnpinAccessibilityLabelForNoteIsPinned:(BOOL)pinned;
+- (id)previewForWindowSceneActivationConfiguration:(id)configuration indexPath:(id)path;
+- (id)previewParametersWithCollectionView:(id)view atIndexPath:(id)path;
 - (id)removeInvitationAccessibilityLabel;
 - (id)renameFolderAccessibilityLabel;
 - (id)replyToInvitationAccessibilityLabel;
 - (id)sendNoteCopyAccessibilityLabel;
 - (id)showFolderActivityAccessibilityLabel;
-- (id)sourceObjectIDsForDragSession:(id)a3;
-- (id)trailingSwipeActionsConfigurationForInvitation:(id)a3 inCell:(id)a4;
-- (id)trailingSwipeActionsConfigurationForLegacyNote:(id)a3 inCell:(id)a4;
-- (id)trailingSwipeActionsConfigurationForModernFolder:(id)a3 inCell:(id)a4;
-- (id)trailingSwipeActionsConfigurationForModernNote:(id)a3 inCell:(id)a4;
+- (id)sourceObjectIDsForDragSession:(id)session;
+- (id)trailingSwipeActionsConfigurationForInvitation:(id)invitation inCell:(id)cell;
+- (id)trailingSwipeActionsConfigurationForLegacyNote:(id)note inCell:(id)cell;
+- (id)trailingSwipeActionsConfigurationForModernFolder:(id)folder inCell:(id)cell;
+- (id)trailingSwipeActionsConfigurationForModernNote:(id)note inCell:(id)cell;
 - (id)trailingSwipeActionsConfigurationProvider;
-- (int64_t)dataOwnerForIndexPath:(id)a3;
-- (unint64_t)actualChildIndexForSnapshotIndex:(unint64_t)a3 inDestinationObjectID:(id)a4 sectionSnapshot:(id)a5;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)contextMenuWillPerformPreviewActionForMenuWithConfiguration:(id)a3 animator:(id)a4;
-- (void)performCollaborationActionWithFolder:(id)a3 forceShareSheet:(BOOL)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 completion:(id)a7;
-- (void)performCollaborationActionWithNote:(id)a3 forceShareSheet:(BOOL)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 completion:(id)a7;
-- (void)performDeleteActionWithObjects:(id)a3 completion:(id)a4;
-- (void)performDropOfFolderObjectIDs:(id)a3 atFolderObjectID:(id)a4 atIndex:(unint64_t)a5;
-- (void)performDuplicateActionWithNote:(id)a3;
-- (void)performEditSmartFolderActionWithFolder:(id)a3;
-- (void)performExportArchiveActionWithObjects:(id)a3 fromSourceView:(id)a4;
-- (void)performImportArchiveActionWithNoteContainer:(id)a3 fromSourceView:(id)a4;
-- (void)performLockActionWithNote:(id)a3;
-- (void)performMoveActionWithFolder:(id)a3 completion:(id)a4;
-- (void)performMoveActionWithNotes:(id)a3 completion:(id)a4;
-- (void)performPinActionWithNote:(id)a3;
-- (void)performPinActionWithNotes:(id)a3;
-- (void)performRemoveActionWithInvitation:(id)a3;
-- (void)performRenameActionWithFolder:(id)a3;
-- (void)performReplyActionWithInvitation:(id)a3;
-- (void)performSendActionWithNote:(id)a3 fromSourceView:(id)a4;
-- (void)performShowActivityStreamActionWithFolder:(id)a3;
-- (void)reExpandFolderWithObjectID:(id)a3;
-- (void)reloadCellAfterDelayForObjectID:(id)a3;
-- (void)setDiffableDataSource:(id)a3;
-- (void)synchronouslyRemoveItemsWithIdentifiers:(id)a3;
+- (int64_t)dataOwnerForIndexPath:(id)path;
+- (unint64_t)actualChildIndexForSnapshotIndex:(unint64_t)index inDestinationObjectID:(id)d sectionSnapshot:(id)snapshot;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)contextMenuWillPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)performCollaborationActionWithFolder:(id)folder forceShareSheet:(BOOL)sheet sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion;
+- (void)performCollaborationActionWithNote:(id)note forceShareSheet:(BOOL)sheet sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion;
+- (void)performDeleteActionWithObjects:(id)objects completion:(id)completion;
+- (void)performDropOfFolderObjectIDs:(id)ds atFolderObjectID:(id)d atIndex:(unint64_t)index;
+- (void)performDuplicateActionWithNote:(id)note;
+- (void)performEditSmartFolderActionWithFolder:(id)folder;
+- (void)performExportArchiveActionWithObjects:(id)objects fromSourceView:(id)view;
+- (void)performImportArchiveActionWithNoteContainer:(id)container fromSourceView:(id)view;
+- (void)performLockActionWithNote:(id)note;
+- (void)performMoveActionWithFolder:(id)folder completion:(id)completion;
+- (void)performMoveActionWithNotes:(id)notes completion:(id)completion;
+- (void)performPinActionWithNote:(id)note;
+- (void)performPinActionWithNotes:(id)notes;
+- (void)performRemoveActionWithInvitation:(id)invitation;
+- (void)performRenameActionWithFolder:(id)folder;
+- (void)performReplyActionWithInvitation:(id)invitation;
+- (void)performSendActionWithNote:(id)note fromSourceView:(id)view;
+- (void)performShowActivityStreamActionWithFolder:(id)folder;
+- (void)reExpandFolderWithObjectID:(id)d;
+- (void)reloadCellAfterDelayForObjectID:(id)d;
+- (void)setDiffableDataSource:(id)source;
+- (void)synchronouslyRemoveItemsWithIdentifiers:(id)identifiers;
 @end
 
 @implementation ICCollectionView
 
-- (ICCollectionView)initWithPresentingViewController:(id)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5 viewControllerManager:(id)a6
+- (ICCollectionView)initWithPresentingViewController:(id)controller legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext viewControllerManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ICCollectionView *)self createLayout];
+  controllerCopy = controller;
+  contextCopy = context;
+  objectContextCopy = objectContext;
+  managerCopy = manager;
+  createLayout = [(ICCollectionView *)self createLayout];
   if (objc_opt_respondsToSelector())
   {
-    [v14 _setRecomputesLayoutForEmptyUpdates:0];
+    [createLayout _setRecomputesLayoutForEmptyUpdates:0];
   }
 
   v19.receiver = self;
   v19.super_class = ICCollectionView;
-  v15 = [(ICCollectionView *)&v19 initWithFrame:v14 collectionViewLayout:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  v15 = [(ICCollectionView *)&v19 initWithFrame:createLayout collectionViewLayout:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_presentingViewController, v10);
-    objc_storeStrong(&v16->_legacyManagedObjectContext, a4);
-    objc_storeStrong(&v16->_modernManagedObjectContext, a5);
-    objc_storeWeak(&v16->_viewControllerManager, v13);
+    objc_storeWeak(&v15->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v16->_legacyManagedObjectContext, context);
+    objc_storeStrong(&v16->_modernManagedObjectContext, objectContext);
+    objc_storeWeak(&v16->_viewControllerManager, managerCopy);
     [(ICCollectionView *)v16 setAlwaysBounceVertical:1];
     v17 = +[UIColor ICGroupedBackgroundColor];
     [(ICCollectionView *)v16 setBackgroundColor:v17];
@@ -122,26 +122,26 @@
   return v16;
 }
 
-- (void)setDiffableDataSource:(id)a3
+- (void)setDiffableDataSource:(id)source
 {
-  v5 = a3;
-  objc_storeStrong(&self->_diffableDataSource, a3);
+  sourceCopy = source;
+  objc_storeStrong(&self->_diffableDataSource, source);
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000E33E0;
   v10[3] = &unk_100649540;
   objc_copyWeak(&v11, &location);
-  v6 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource reorderingHandlers];
-  [v6 setCanReorderItemHandler:v10];
+  reorderingHandlers = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource reorderingHandlers];
+  [reorderingHandlers setCanReorderItemHandler:v10];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E3434;
   v8[3] = &unk_1006495A8;
   objc_copyWeak(&v9, &location);
-  v7 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource reorderingHandlers];
-  [v7 setDidReorderHandler:v8];
+  reorderingHandlers2 = [(UICollectionViewDiffableDataSource *)self->_diffableDataSource reorderingHandlers];
+  [reorderingHandlers2 setDidReorderHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
@@ -155,23 +155,23 @@
   return v2;
 }
 
-- (BOOL)canFocusItemAtIndexPath:(id)a3
+- (BOOL)canFocusItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ICCollectionView *)self cellForItemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(ICCollectionView *)self cellForItemAtIndexPath:pathCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(ICCollectionView *)self diffableDataSource];
-      v8 = [v7 itemIdentifierForIndexPath:v4];
+      diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+      v8 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
       objc_opt_class();
-      LOBYTE(v7) = objc_opt_isKindOfClass();
+      LOBYTE(diffableDataSource) = objc_opt_isKindOfClass();
 
-      if ((v7 & 1) == 0)
+      if ((diffableDataSource & 1) == 0)
       {
 LABEL_5:
         v6 = 1;
@@ -188,8 +188,8 @@ LABEL_5:
       }
     }
 
-    v9 = [v5 accessories];
-    v6 = [v9 ic_containsObjectPassingTest:&stru_1006495E8];
+    accessories = [v5 accessories];
+    v6 = [accessories ic_containsObjectPassingTest:&stru_1006495E8];
 
     goto LABEL_8;
   }
@@ -200,36 +200,36 @@ LABEL_8:
   return v6;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
+  pathCopy = path;
+  sessionCopy = session;
   v9 = [ICDragSessionContext alloc];
-  v10 = [(ICCollectionView *)self modernManagedObjectContext];
-  v11 = [(ICCollectionView *)self legacyManagedObjectContext];
-  v12 = [(ICDragSessionContext *)v9 initWithModernManagedObjectContext:v10 legacyManagedObjectContext:v11];
+  modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
+  legacyManagedObjectContext = [(ICCollectionView *)self legacyManagedObjectContext];
+  v12 = [(ICDragSessionContext *)v9 initWithModernManagedObjectContext:modernManagedObjectContext legacyManagedObjectContext:legacyManagedObjectContext];
 
-  [v8 setLocalContext:v12];
+  [sessionCopy setLocalContext:v12];
   [(ICCollectionView *)self setCurrentDragSessionContext:v12];
-  v13 = [(ICCollectionView *)self dragItemsForIndexPath:v7 sessionContext:v12];
+  v13 = [(ICCollectionView *)self dragItemsForIndexPath:pathCopy sessionContext:v12];
 
   return v13;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v5 = a4;
+  beginCopy = begin;
   objc_opt_class();
-  v21 = v5;
-  v6 = [v5 localContext];
+  v21 = beginCopy;
+  localContext = [beginCopy localContext];
   v7 = ICDynamicCast();
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v7 currentSourceObjectIDs];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  currentSourceObjectIDs = [v7 currentSourceObjectIDs];
+  v9 = [currentSourceObjectIDs countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -240,18 +240,18 @@ LABEL_8:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(currentSourceObjectIDs);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
         if ([v13 ic_isEntityOfClass:objc_opt_class()])
         {
-          v14 = [(ICCollectionView *)self diffableDataSource];
-          v15 = [v14 snapshot];
-          v16 = [v15 sectionIdentifierForSectionContainingItemIdentifier:v13];
+          diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+          snapshot = [diffableDataSource snapshot];
+          v16 = [snapshot sectionIdentifierForSectionContainingItemIdentifier:v13];
 
-          v17 = [(ICCollectionView *)self diffableDataSource];
-          v18 = [v17 snapshotForSection:v16];
+          diffableDataSource2 = [(ICCollectionView *)self diffableDataSource];
+          v18 = [diffableDataSource2 snapshotForSection:v16];
 
           if ([v18 isExpanded:v13])
           {
@@ -259,93 +259,93 @@ LABEL_8:
             v19 = [NSArray arrayWithObjects:&v26 count:1];
             [v18 collapseItems:v19];
 
-            v20 = [(ICCollectionView *)self diffableDataSource];
-            [v20 applySnapshot:v18 toSection:v16 animatingDifferences:1];
+            diffableDataSource3 = [(ICCollectionView *)self diffableDataSource];
+            [diffableDataSource3 applySnapshot:v18 toSection:v16 animatingDifferences:1];
 
             [v7 setAutoCollapsedFolderObjectID:v13];
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v10 = [currentSourceObjectIDs countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v10);
   }
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
-  v8 = a5;
-  v9 = a4;
+  pathCopy = path;
+  sessionCopy = session;
   objc_opt_class();
-  v10 = [v9 localContext];
+  localContext = [sessionCopy localContext];
 
   v11 = ICDynamicCast();
-  v12 = [(ICCollectionView *)self dragItemsForIndexPath:v8 sessionContext:v11];
+  v12 = [(ICCollectionView *)self dragItemsForIndexPath:pathCopy sessionContext:v11];
 
   return v12;
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v5 = a4;
+  endCopy = end;
   objc_opt_class();
-  v6 = [v5 localContext];
+  localContext = [endCopy localContext];
 
   v9 = ICDynamicCast();
 
   [v9 updateDropTargetCellsForPinNoteDrop:0];
-  v7 = [v9 autoCollapsedFolderObjectID];
+  autoCollapsedFolderObjectID = [v9 autoCollapsedFolderObjectID];
 
-  if (v7)
+  if (autoCollapsedFolderObjectID)
   {
-    v8 = [v9 autoCollapsedFolderObjectID];
-    [(ICCollectionView *)self reExpandFolderWithObjectID:v8];
+    autoCollapsedFolderObjectID2 = [v9 autoCollapsedFolderObjectID];
+    [(ICCollectionView *)self reExpandFolderWithObjectID:autoCollapsedFolderObjectID2];
   }
 
   [(ICCollectionView *)self setCurrentDragSessionContext:0];
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  updateCopy = update;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
-  v61 = v8;
-  v11 = [v8 localDragSession];
-  v12 = [v11 localContext];
+  v61 = updateCopy;
+  localDragSession = [updateCopy localDragSession];
+  localContext = [localDragSession localContext];
   v13 = ICDynamicCast();
 
   [v13 updateDropTargetCellsForPinNoteDrop:0];
-  v14 = [v13 currentSourceObjectIDs];
+  currentSourceObjectIDs = [v13 currentSourceObjectIDs];
   v67[0] = _NSConcreteStackBlock;
   v67[1] = 3221225472;
   v67[2] = sub_1000E464C;
   v67[3] = &unk_100649610;
   v67[4] = self;
-  v64 = [v14 ic_compactMap:v67];
+  v64 = [currentSourceObjectIDs ic_compactMap:v67];
 
-  v15 = [(ICCollectionView *)self diffableDataSource];
-  v16 = [v15 itemIdentifierForIndexPath:v9];
+  diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+  v16 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   v17 = ICDynamicCast();
   v62 = v16;
   if ([v17 ic_isModernType])
   {
-    v18 = [(ICCollectionView *)self modernManagedObjectContext];
+    modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
 LABEL_5:
-    v19 = v18;
-    v20 = [v18 objectWithID:v17];
+    v19 = modernManagedObjectContext;
+    v20 = [modernManagedObjectContext objectWithID:v17];
 
     goto LABEL_7;
   }
 
   if ([v17 ic_isLegacyType])
   {
-    v18 = [(ICCollectionView *)self legacyManagedObjectContext];
+    modernManagedObjectContext = [(ICCollectionView *)self legacyManagedObjectContext];
     goto LABEL_5;
   }
 
@@ -359,21 +359,21 @@ LABEL_7:
   v63 = ICDynamicCast();
   objc_opt_class();
   v65 = ICDynamicCast();
-  v23 = [v21 parentCloudObject];
-  v24 = v23;
-  if (v23)
+  parentCloudObject = [v21 parentCloudObject];
+  v24 = parentCloudObject;
+  if (parentCloudObject)
   {
-    v25 = v23;
+    cloudAccount = parentCloudObject;
   }
 
   else
   {
-    v25 = [v21 cloudAccount];
+    cloudAccount = [v21 cloudAccount];
   }
 
-  v60 = v25;
+  v60 = cloudAccount;
 
-  v26 = [v10 cellForItemAtIndexPath:v9];
+  v26 = [viewCopy cellForItemAtIndexPath:pathCopy];
 
   if (!v20 || !v26)
   {
@@ -399,10 +399,10 @@ LABEL_7:
         goto LABEL_35;
       }
 
-      v37 = [v22 account];
-      v38 = [v37 visibleCustomFoldersCount];
+      account = [v22 account];
+      visibleCustomFoldersCount = [account visibleCustomFoldersCount];
 
-      if (v38)
+      if (visibleCustomFoldersCount)
       {
         goto LABEL_35;
       }
@@ -423,8 +423,8 @@ LABEL_7:
         v59 = 0;
       }
 
-      v50 = [v13 currentSourceObjectIDs];
-      v51 = [v50 containsObject:v17];
+      currentSourceObjectIDs2 = [v13 currentSourceObjectIDs];
+      v51 = [currentSourceObjectIDs2 containsObject:v17];
 
       if (!v59 && (v51 & 1) == 0)
       {
@@ -433,8 +433,8 @@ LABEL_7:
     }
 
     v40 = [[ICMoveDecision alloc] initWithSourceObjects:v64 destination:v60];
-    v52 = [v40 shouldMove];
-    if (v52)
+    shouldMove = [v40 shouldMove];
+    if (shouldMove)
     {
       v33 = 3;
     }
@@ -444,7 +444,7 @@ LABEL_7:
       v33 = 1;
     }
 
-    v32 = v52;
+    v32 = shouldMove;
 LABEL_50:
 
     goto LABEL_51;
@@ -454,11 +454,11 @@ LABEL_50:
   {
 LABEL_14:
     v58 = v21;
-    v27 = v9;
+    v27 = pathCopy;
     v28 = v22;
     v29 = [[ICMoveDecision alloc] initWithSourceObjects:v64 destination:v20];
-    v30 = [v29 shouldMove];
-    if (v30)
+    shouldMove2 = [v29 shouldMove];
+    if (shouldMove2)
     {
       v31 = 3;
     }
@@ -468,7 +468,7 @@ LABEL_14:
       v31 = 1;
     }
 
-    if (v30)
+    if (shouldMove2)
     {
       v32 = 2;
     }
@@ -491,7 +491,7 @@ LABEL_35:
   }
 
   v58 = v21;
-  v27 = v9;
+  v27 = pathCopy;
   v28 = v22;
   v32 = 2;
   v33 = 3;
@@ -499,7 +499,7 @@ LABEL_30:
   v22 = v28;
   if (v33 != 1 && v32)
   {
-    v9 = v27;
+    pathCopy = v27;
     if (v22 | v65)
     {
       v69 = v26;
@@ -523,13 +523,13 @@ LABEL_30:
       }
 
       v56 = v33;
-      v43 = [(ICCollectionView *)self diffableDataSource];
-      v44 = [v43 snapshot];
+      diffableDataSource2 = [(ICCollectionView *)self diffableDataSource];
+      snapshot = [diffableDataSource2 snapshot];
 
-      v57 = v44;
-      v55 = [v44 sectionIdentifierForSectionContainingItemIdentifier:v62];
-      v45 = [v13 currentSourceObjectIDs];
-      v46 = [(ICCollectionView *)self movableNoteObjectIDsIn:v45 forDropIntoSection:v55];
+      v57 = snapshot;
+      v55 = [snapshot sectionIdentifierForSectionContainingItemIdentifier:v62];
+      currentSourceObjectIDs3 = [v13 currentSourceObjectIDs];
+      v46 = [(ICCollectionView *)self movableNoteObjectIDsIn:currentSourceObjectIDs3 forDropIntoSection:v55];
 
       if ([v46 count])
       {
@@ -554,7 +554,7 @@ LABEL_30:
     goto LABEL_50;
   }
 
-  v9 = v27;
+  pathCopy = v27;
   v21 = v58;
 LABEL_51:
   v34 = [UICollectionViewDropProposal alloc];
@@ -566,27 +566,27 @@ LABEL_52:
   return v53;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v5 = a4;
+  coordinatorCopy = coordinator;
   objc_opt_class();
-  v6 = [v5 session];
-  v7 = [v6 localDragSession];
-  v8 = [v7 localContext];
+  session = [coordinatorCopy session];
+  localDragSession = [session localDragSession];
+  localContext = [localDragSession localContext];
   v9 = ICDynamicCast();
 
-  v10 = [v5 proposal];
-  v11 = [v10 operation];
+  proposal = [coordinatorCopy proposal];
+  operation = [proposal operation];
 
-  if (v11 == 3)
+  if (operation == 3)
   {
     v82 = v9;
-    v12 = [v5 session];
-    v13 = [v12 localDragSession];
-    v84 = self;
-    v14 = [(ICCollectionView *)self sourceObjectIDsForDragSession:v13];
+    session2 = [coordinatorCopy session];
+    localDragSession2 = [session2 localDragSession];
+    selfCopy = self;
+    v14 = [(ICCollectionView *)self sourceObjectIDsForDragSession:localDragSession2];
 
-    v83 = [v5 destinationIndexPath];
+    destinationIndexPath = [coordinatorCopy destinationIndexPath];
     v15 = +[NSMutableArray array];
     v16 = +[NSMutableArray array];
     v89 = 0u;
@@ -630,9 +630,9 @@ LABEL_52:
       while (v19);
     }
 
-    v26 = [(ICCollectionView *)v84 diffableDataSource];
-    v27 = v83;
-    v28 = [v26 itemIdentifierForIndexPath:v83];
+    diffableDataSource = [(ICCollectionView *)selfCopy diffableDataSource];
+    v27 = destinationIndexPath;
+    v28 = [diffableDataSource itemIdentifierForIndexPath:destinationIndexPath];
 
     objc_opt_class();
     v29 = ICDynamicCast();
@@ -660,62 +660,62 @@ LABEL_50:
       }
 
       v80 = v30;
-      v31 = [v5 proposal];
-      v32 = [v31 intent];
+      proposal2 = [coordinatorCopy proposal];
+      intent = [proposal2 intent];
 
-      if (v32 == 2)
+      if (intent == 2)
       {
-        v33 = [v82 currentDropTargetItemIDs];
-        v34 = [v33 count];
+        currentDropTargetItemIDs = [v82 currentDropTargetItemIDs];
+        v34 = [currentDropTargetItemIDs count];
 
         if (v34 == 1)
         {
           objc_opt_class();
-          v35 = [v82 currentDropTargetItemIDs];
-          v36 = [v35 firstObject];
+          currentDropTargetItemIDs2 = [v82 currentDropTargetItemIDs];
+          firstObject = [currentDropTargetItemIDs2 firstObject];
           v37 = ICDynamicCast();
 
           v29 = v37;
         }
 
-        v38 = [v82 autoCollapsedFolderObjectID];
-        v39 = [v16 containsObject:v38];
+        autoCollapsedFolderObjectID = [v82 autoCollapsedFolderObjectID];
+        v39 = [v16 containsObject:autoCollapsedFolderObjectID];
 
         if (v39)
         {
           [v82 setAutoCollapsedFolderObjectID:0];
         }
 
-        [(ICCollectionView *)v84 performDropOfFolderObjectIDs:v16 atFolderObjectID:v29 atIndex:0];
+        [(ICCollectionView *)selfCopy performDropOfFolderObjectIDs:v16 atFolderObjectID:v29 atIndex:0];
         goto LABEL_49;
       }
 
-      v48 = [(ICCollectionView *)v84 modernManagedObjectContext];
-      v49 = [v48 objectWithID:v29];
+      modernManagedObjectContext = [(ICCollectionView *)selfCopy modernManagedObjectContext];
+      v49 = [modernManagedObjectContext objectWithID:v29];
 
-      v50 = [v49 parent];
-      v51 = v50;
-      if (v50)
+      parent = [v49 parent];
+      v51 = parent;
+      if (parent)
       {
-        v52 = v50;
+        account = parent;
       }
 
       else
       {
-        v52 = [v49 account];
+        account = [v49 account];
       }
 
-      v76 = v52;
+      v76 = account;
 
-      v77 = [(ICCollectionView *)v84 diffableDataSource];
-      v59 = [v77 snapshot];
+      diffableDataSource2 = [(ICCollectionView *)selfCopy diffableDataSource];
+      snapshot = [diffableDataSource2 snapshot];
       v78 = v49;
-      v60 = [v49 objectID];
-      v61 = [v59 sectionIdentifierForSectionContainingItemIdentifier:v60];
+      objectID = [v49 objectID];
+      v61 = [snapshot sectionIdentifierForSectionContainingItemIdentifier:objectID];
 
-      v62 = [(ICCollectionView *)v84 diffableDataSource];
+      diffableDataSource3 = [(ICCollectionView *)selfCopy diffableDataSource];
       v75 = v61;
-      v63 = [v62 snapshotForSection:v61];
+      v63 = [diffableDataSource3 snapshotForSection:v61];
 
       v64 = [v63 parentOfChild:v29];
       v74 = v64;
@@ -730,8 +730,8 @@ LABEL_50:
       }
 
       v73 = v65;
-      v66 = [v78 objectID];
-      v67 = [v65 indexOfObject:v66];
+      objectID2 = [v78 objectID];
+      v67 = [v65 indexOfObject:objectID2];
 
       if (v67 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -744,11 +744,11 @@ LABEL_50:
       }
 
       v71 = v68;
-      v69 = [v76 objectID];
-      v72 = [(ICCollectionView *)v84 actualChildIndexForSnapshotIndex:v71 inDestinationObjectID:v69 sectionSnapshot:v63];
+      objectID3 = [v76 objectID];
+      v72 = [(ICCollectionView *)selfCopy actualChildIndexForSnapshotIndex:v71 inDestinationObjectID:objectID3 sectionSnapshot:v63];
 
-      v70 = [v76 objectID];
-      [(ICCollectionView *)v84 performDropOfFolderObjectIDs:v16 atFolderObjectID:v70 atIndex:v72];
+      objectID4 = [v76 objectID];
+      [(ICCollectionView *)selfCopy performDropOfFolderObjectIDs:v16 atFolderObjectID:objectID4 atIndex:v72];
     }
 
     else
@@ -767,21 +767,21 @@ LABEL_50:
           v85[1] = 3221225472;
           v85[2] = sub_1000E510C;
           v85[3] = &unk_100649680;
-          v85[4] = v84;
+          v85[4] = selfCopy;
           v53 = [v15 ic_map:v85];
           v54 = [ICMoveDecisionController alloc];
-          v55 = [(ICCollectionView *)v84 presentingViewController];
+          presentingViewController = [(ICCollectionView *)selfCopy presentingViewController];
           v79 = v53;
-          v56 = [(ICMoveDecisionController *)v54 initWithSourceObjects:v53 presentingViewController:v55];
+          v56 = [(ICMoveDecisionController *)v54 initWithSourceObjects:v53 presentingViewController:presentingViewController];
 
           if (v29)
           {
-            v57 = [(ICCollectionView *)v84 modernManagedObjectContext];
-            v58 = [v57 objectWithID:v29];
+            modernManagedObjectContext2 = [(ICCollectionView *)selfCopy modernManagedObjectContext];
+            v58 = [modernManagedObjectContext2 objectWithID:v29];
             [(ICMoveDecisionController *)v56 setDestination:v58];
 
             v9 = v82;
-            v27 = v83;
+            v27 = destinationIndexPath;
             v30 = v81;
           }
 
@@ -789,7 +789,7 @@ LABEL_50:
           {
             v30 = v81;
             [(ICMoveDecisionController *)v56 setDestination:v81];
-            v27 = v83;
+            v27 = destinationIndexPath;
           }
 
           [(ICMoveDecisionController *)v56 performDecisionWithCompletion:0];
@@ -799,34 +799,34 @@ LABEL_50:
       }
 
       v80 = v30;
-      v40 = [(ICCollectionView *)v84 diffableDataSource];
-      v41 = [v40 snapshot];
+      diffableDataSource4 = [(ICCollectionView *)selfCopy diffableDataSource];
+      snapshot2 = [diffableDataSource4 snapshot];
 
-      v42 = [v41 sectionIdentifiers];
-      v43 = [v42 objectAtIndexedSubscript:{objc_msgSend(v83, "section")}];
+      sectionIdentifiers = [snapshot2 sectionIdentifiers];
+      v43 = [sectionIdentifiers objectAtIndexedSubscript:{objc_msgSend(destinationIndexPath, "section")}];
 
-      v78 = v41;
-      v44 = v41;
+      v78 = snapshot2;
+      v44 = snapshot2;
       v45 = v43;
-      v46 = [v44 sectionIdentifiers];
-      LODWORD(v43) = [v46 ic_containsObjectPassingTest:&stru_100649658];
+      sectionIdentifiers2 = [v44 sectionIdentifiers];
+      LODWORD(v43) = [sectionIdentifiers2 ic_containsObjectPassingTest:&stru_100649658];
 
       if (v43)
       {
-        v47 = [(ICCollectionView *)v84 modernManagedObjectContext];
+        modernManagedObjectContext3 = [(ICCollectionView *)selfCopy modernManagedObjectContext];
         v86[0] = _NSConcreteStackBlock;
         v86[1] = 3221225472;
         v86[2] = sub_1000E4F8C;
         v86[3] = &unk_100645D40;
-        v86[4] = v84;
+        v86[4] = selfCopy;
         v87 = v17;
         v88 = v45;
-        [v47 performBlockAndWait:v86];
+        [modernManagedObjectContext3 performBlockAndWait:v86];
       }
     }
 
 LABEL_49:
-    v27 = v83;
+    v27 = destinationIndexPath;
     v30 = v80;
     goto LABEL_50;
   }
@@ -834,17 +834,17 @@ LABEL_49:
 LABEL_51:
 }
 
-- (id)customAccessibilityActionsForObjectID:(id)a3 galleryView:(BOOL)a4
+- (id)customAccessibilityActionsForObjectID:(id)d galleryView:(BOOL)view
 {
-  v4 = a4;
-  v6 = a3;
+  viewCopy = view;
+  dCopy = d;
   v7 = +[NSArray array];
-  if ([v6 ic_isModernFolderType])
+  if ([dCopy ic_isModernFolderType])
   {
-    v8 = [(ICCollectionView *)self modernManagedObjectContext];
-    v9 = [v8 objectWithID:v6];
+    modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
+    v9 = [modernManagedObjectContext objectWithID:dCopy];
 
-    if (v4)
+    if (viewCopy)
     {
       [(ICCollectionView *)self galleryViewAcessibilityActionsForFolder:v9];
     }
@@ -858,20 +858,20 @@ LABEL_51:
 
   else
   {
-    if (![v6 ic_isNoteType])
+    if (![dCopy ic_isNoteType])
     {
       goto LABEL_13;
     }
 
-    if (!v4 || ![v6 ic_isModernNoteType])
+    if (!viewCopy || ![dCopy ic_isModernNoteType])
     {
-      [(ICCollectionView *)self commonAcessibilityActionsForNoteWithObjectID:v6];
+      [(ICCollectionView *)self commonAcessibilityActionsForNoteWithObjectID:dCopy];
       v7 = v9 = v7;
       goto LABEL_12;
     }
 
-    v11 = [(ICCollectionView *)self modernManagedObjectContext];
-    v9 = [v11 objectWithID:v6];
+    modernManagedObjectContext2 = [(ICCollectionView *)self modernManagedObjectContext];
+    v9 = [modernManagedObjectContext2 objectWithID:dCopy];
 
     v10 = [(ICCollectionView *)self galleryViewAcessibilityActionsForNote:v9];
   }
@@ -886,31 +886,31 @@ LABEL_13:
   return v7;
 }
 
-- (id)contextMenuConfigurationForItemsAtIndexPaths:(id)a3
+- (id)contextMenuConfigurationForItemsAtIndexPaths:(id)paths
 {
-  v4 = a3;
-  if ([v4 count])
+  pathsCopy = paths;
+  if ([pathsCopy count])
   {
-    if ([v4 count] == 1)
+    if ([pathsCopy count] == 1)
     {
-      v5 = [v4 firstObject];
-      v6 = [(ICCollectionView *)self contextMenuConfigurationForIndexPath:v5];
+      firstObject = [pathsCopy firstObject];
+      v6 = [(ICCollectionView *)self contextMenuConfigurationForIndexPath:firstObject];
 
       goto LABEL_34;
     }
 
-    v34 = [v4 count] != 0;
-    v7 = [v4 count] != 0;
-    v8 = [v4 count] != 0;
-    v9 = [v4 count] != 0;
+    v34 = [pathsCopy count] != 0;
+    v7 = [pathsCopy count] != 0;
+    v8 = [pathsCopy count] != 0;
+    v9 = [pathsCopy count] != 0;
     v30 = +[NSMutableArray array];
     +[NSMutableArray array];
-    v29 = v28 = v4;
+    v29 = v28 = pathsCopy;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    obj = v4;
+    obj = pathsCopy;
     v10 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v10)
     {
@@ -928,13 +928,13 @@ LABEL_13:
           }
 
           v14 = *(*(&v46 + 1) + 8 * i);
-          v15 = [(ICCollectionView *)self diffableDataSource];
-          v16 = [v15 itemIdentifierForIndexPath:v14];
+          diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+          v16 = [diffableDataSource itemIdentifierForIndexPath:v14];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = v16;
+            objectID = v16;
           }
 
           else
@@ -942,21 +942,21 @@ LABEL_13:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v18 = [v16 object];
-              v17 = [v18 objectID];
+              object = [v16 object];
+              objectID = [object objectID];
             }
 
             else
             {
-              v17 = 0;
+              objectID = 0;
             }
           }
 
-          if ([v17 ic_isNoteType])
+          if ([objectID ic_isNoteType])
           {
             v19 = v12;
             v20 = v7;
-            if ([v17 ic_isModernNoteType])
+            if ([objectID ic_isModernNoteType])
             {
               [(ICCollectionView *)self modernManagedObjectContext];
             }
@@ -966,7 +966,7 @@ LABEL_13:
               [(ICCollectionView *)self legacyManagedObjectContext];
             }
             v24 = ;
-            v22 = [v24 objectWithID:v17];
+            v22 = [v24 objectWithID:objectID];
 
             v34 &= [v22 isPinnable];
             v7 = v20 & [v22 isMovable];
@@ -979,16 +979,16 @@ LABEL_13:
 
           else
           {
-            if (![v17 ic_isInvitationType])
+            if (![objectID ic_isInvitationType])
             {
               goto LABEL_23;
             }
 
-            v21 = [(ICCollectionView *)self modernManagedObjectContext];
-            v22 = [v21 objectWithID:v17];
+            modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
+            v22 = [modernManagedObjectContext objectWithID:objectID];
 
-            v23 = [v22 highlight];
-            v9 &= v23 != 0;
+            highlight = [v22 highlight];
+            v9 &= highlight != 0;
 
             [v29 ic_addNonNilObject:v22];
             v8 = 0;
@@ -1020,7 +1020,7 @@ LABEL_27:
       v42 = v9 & 1;
       v25 = v29;
       v36 = v29;
-      v37 = self;
+      selfCopy = self;
       v40 = v33;
       v41 = v12;
       v43 = v34 & 1;
@@ -1031,13 +1031,13 @@ LABEL_27:
       v45 = v8 & 1;
       v6 = [UIContextMenuConfiguration configurationWithIdentifier:0 previewProvider:&stru_1006496C0 actionProvider:v35];
 
-      v4 = v28;
+      pathsCopy = v28;
     }
 
     else
     {
       v6 = 0;
-      v4 = v28;
+      pathsCopy = v28;
       v25 = v29;
       v26 = v30;
     }
@@ -1053,19 +1053,19 @@ LABEL_34:
   return v6;
 }
 
-- (id)contextMenuConfigurationForIndexPath:(id)a3
+- (id)contextMenuConfigurationForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ICCollectionView *)self diffableDataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+  v6 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   v7 = [(ICCollectionView *)self cellForItemIdentifier:v6];
   v8 = ICProtocolCast();
-  v9 = [v8 contextMenuInteractionPreview];
-  v10 = v9;
-  if (v9)
+  contextMenuInteractionPreview = [v8 contextMenuInteractionPreview];
+  v10 = contextMenuInteractionPreview;
+  if (contextMenuInteractionPreview)
   {
-    v11 = v9;
+    v11 = contextMenuInteractionPreview;
   }
 
   else
@@ -1078,46 +1078,46 @@ LABEL_34:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v6;
-    if (!v13)
+    objectID2 = v6;
+    if (!objectID2)
     {
       goto LABEL_26;
     }
 
 LABEL_9:
-    if ([v13 ic_isAttachmentType])
+    if ([objectID2 ic_isAttachmentType])
     {
-      v15 = [(ICCollectionView *)self modernManagedObjectContext];
-      v16 = [v15 objectWithID:v13];
+      modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
+      v16 = [modernManagedObjectContext objectWithID:objectID2];
 
-      v17 = [v16 note];
-      v18 = [v17 objectID];
+      note = [v16 note];
+      objectID = [note objectID];
 
-      v13 = v18;
+      objectID2 = objectID;
     }
 
-    if ([v13 ic_isInvitationType])
+    if ([objectID2 ic_isInvitationType])
     {
-      v19 = [(ICCollectionView *)self modernManagedObjectContext];
-      v20 = [v19 objectWithID:v13];
+      modernManagedObjectContext2 = [(ICCollectionView *)self modernManagedObjectContext];
+      v20 = [modernManagedObjectContext2 objectWithID:objectID2];
       v21 = 0;
       v22 = 0;
       v23 = 0;
       goto LABEL_24;
     }
 
-    if ([v13 ic_isModernFolderType])
+    if ([objectID2 ic_isModernFolderType])
     {
-      v24 = [(ICCollectionView *)self modernManagedObjectContext];
-      v19 = [v24 objectWithID:v13];
+      modernManagedObjectContext3 = [(ICCollectionView *)self modernManagedObjectContext];
+      modernManagedObjectContext2 = [modernManagedObjectContext3 objectWithID:objectID2];
 
-      if ([v19 isModernCustomFolder])
+      if ([modernManagedObjectContext2 isModernCustomFolder])
       {
-        v19 = v19;
+        modernManagedObjectContext2 = modernManagedObjectContext2;
         v21 = 0;
         v22 = 0;
         v20 = 0;
-        v23 = v19;
+        v23 = modernManagedObjectContext2;
         goto LABEL_24;
       }
 
@@ -1125,10 +1125,10 @@ LABEL_9:
       goto LABEL_22;
     }
 
-    if ([v13 ic_isModernNoteType])
+    if ([objectID2 ic_isModernNoteType])
     {
-      v19 = [(ICCollectionView *)self modernManagedObjectContext];
-      v22 = [v19 objectWithID:v13];
+      modernManagedObjectContext2 = [(ICCollectionView *)self modernManagedObjectContext];
+      v22 = [modernManagedObjectContext2 objectWithID:objectID2];
       v21 = 0;
 LABEL_23:
       v23 = 0;
@@ -1143,10 +1143,10 @@ LABEL_24:
       goto LABEL_28;
     }
 
-    if ([v13 ic_isLegacyNoteType])
+    if ([objectID2 ic_isLegacyNoteType])
     {
-      v19 = [(ICCollectionView *)self legacyManagedObjectContext];
-      v21 = [v19 objectWithID:v13];
+      modernManagedObjectContext2 = [(ICCollectionView *)self legacyManagedObjectContext];
+      v21 = [modernManagedObjectContext2 objectWithID:objectID2];
 LABEL_22:
       v22 = 0;
       goto LABEL_23;
@@ -1161,10 +1161,10 @@ LABEL_26:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v6 object];
-    v13 = [v14 objectID];
+    object = [v6 object];
+    objectID2 = [object objectID];
 
-    if (!v13)
+    if (!objectID2)
     {
       goto LABEL_26;
     }
@@ -1174,7 +1174,7 @@ LABEL_26:
 
   v21 = 0;
   v22 = 0;
-  v13 = 0;
+  objectID2 = 0;
 LABEL_27:
   v23 = 0;
   v20 = 0;
@@ -1205,7 +1205,7 @@ LABEL_32:
   v27[2] = sub_1000E6220;
   v27[3] = &unk_100649780;
   v28 = v35;
-  v29 = self;
+  selfCopy = self;
   v30 = v12;
   v31 = v36;
   v32 = v37;
@@ -1217,15 +1217,15 @@ LABEL_34:
   return v25;
 }
 
-- (id)multiSelectionContextMenuPreviewForHighlightingItemAtIndexPath:(id)a3
+- (id)multiSelectionContextMenuPreviewForHighlightingItemAtIndexPath:(id)path
 {
-  v3 = [(ICCollectionView *)self cellForItemAtIndexPath:a3];
+  v3 = [(ICCollectionView *)self cellForItemAtIndexPath:path];
   v4 = ICProtocolCast();
-  v5 = [v4 contextMenuInteractionPreview];
-  v6 = v5;
-  if (v5)
+  contextMenuInteractionPreview = [v4 contextMenuInteractionPreview];
+  v6 = contextMenuInteractionPreview;
+  if (contextMenuInteractionPreview)
   {
-    v7 = v5;
+    v7 = contextMenuInteractionPreview;
   }
 
   else
@@ -1235,8 +1235,8 @@ LABEL_34:
 
   v8 = v7;
 
-  v9 = [v8 window];
-  if (v9)
+  window = [v8 window];
+  if (window)
   {
     v10 = [[UITargetedPreview alloc] initWithView:v8];
   }
@@ -1249,24 +1249,24 @@ LABEL_34:
   return v10;
 }
 
-- (void)contextMenuWillPerformPreviewActionForMenuWithConfiguration:(id)a3 animator:(id)a4
+- (void)contextMenuWillPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_1000E6490;
   v15 = &unk_100645BA0;
-  v16 = self;
-  v17 = v6;
-  v8 = v6;
+  selfCopy = self;
+  v17 = configurationCopy;
+  v8 = configurationCopy;
   v9 = objc_retainBlock(&v12);
   v10 = [(ICCollectionView *)self viewControllerManager:v12];
-  v11 = [v10 noteContainerViewMode];
+  noteContainerViewMode = [v10 noteContainerViewMode];
 
-  if (v11 == 1)
+  if (noteContainerViewMode == 1)
   {
-    [v7 addAnimations:v9];
+    [animatorCopy addAnimations:v9];
   }
 
   else
@@ -1275,49 +1275,49 @@ LABEL_34:
   }
 }
 
-- (id)previewForWindowSceneActivationConfiguration:(id)a3 indexPath:(id)a4
+- (id)previewForWindowSceneActivationConfiguration:(id)configuration indexPath:(id)path
 {
-  v5 = [(ICCollectionView *)self cellForItemAtIndexPath:a4];
+  v5 = [(ICCollectionView *)self cellForItemAtIndexPath:path];
   v6 = [(ICCollectionView *)self defaultPreviewForCell:v5];
 
   return v6;
 }
 
-- (BOOL)sourceObjectIDsContainsSystemPaperNotes:(id)a3
+- (BOOL)sourceObjectIDsContainsSystemPaperNotes:(id)notes
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000E6704;
   v6[3] = &unk_1006497A8;
   v6[4] = self;
-  v3 = [a3 ic_compactMap:v6];
+  v3 = [notes ic_compactMap:v6];
   v4 = [v3 ic_containsObjectPassingTest:&stru_1006497C8];
 
   return v4;
 }
 
-- (void)reloadCellAfterDelayForObjectID:(id)a3
+- (void)reloadCellAfterDelayForObjectID:(id)d
 {
-  v4 = a3;
-  v3 = v4;
+  dCopy = d;
+  v3 = dCopy;
   dispatchMainAfterDelay();
 }
 
-- (unint64_t)actualChildIndexForSnapshotIndex:(unint64_t)a3 inDestinationObjectID:(id)a4 sectionSnapshot:(id)a5
+- (unint64_t)actualChildIndexForSnapshotIndex:(unint64_t)index inDestinationObjectID:(id)d sectionSnapshot:(id)snapshot
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v8 ic_isEntityOfClass:objc_opt_class()])
+  dCopy = d;
+  snapshotCopy = snapshot;
+  if ([dCopy ic_isEntityOfClass:objc_opt_class()])
   {
-    v10 = [v9 containsItem:v8];
-    v11 = [(ICCollectionView *)self modernManagedObjectContext];
-    v12 = [v11 objectWithID:v8];
+    v10 = [snapshotCopy containsItem:dCopy];
+    modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
+    v12 = [modernManagedObjectContext objectWithID:dCopy];
 
-    v13 = [v12 defaultFolder];
-    v14 = [v13 objectID];
+    defaultFolder = [v12 defaultFolder];
+    objectID = [defaultFolder objectID];
 
-    v15 = [v9 containsItem:v14];
-    if (a3)
+    v15 = [snapshotCopy containsItem:objectID];
+    if (index)
     {
       v16 = v10;
     }
@@ -1327,7 +1327,7 @@ LABEL_34:
       v16 = 0;
     }
 
-    if (a3)
+    if (index)
     {
       v17 = v15;
     }
@@ -1337,28 +1337,28 @@ LABEL_34:
       v17 = 0;
     }
 
-    a3 = a3 - v16 - v17;
+    index = index - v16 - v17;
   }
 
-  return a3;
+  return index;
 }
 
-- (id)sourceObjectIDsForDragSession:(id)a3
+- (id)sourceObjectIDsForDragSession:(id)session
 {
-  v3 = [a3 items];
-  v4 = [v3 ic_compactMap:&stru_100649808];
+  items = [session items];
+  v4 = [items ic_compactMap:&stru_100649808];
 
   return v4;
 }
 
-- (id)dragItemsForIndexPath:(id)a3 sessionContext:(id)a4
+- (id)dragItemsForIndexPath:(id)path sessionContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCollectionView *)self diffableDataSource];
-  v9 = [v8 itemIdentifierForIndexPath:v7];
+  contextCopy = context;
+  pathCopy = path;
+  diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+  v9 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  if (-[ICCollectionView isCellDraggableForIdentifier:](self, "isCellDraggableForIdentifier:", v9) && ([v6 addItemIdentifierIfAppropriate:v9 isEditingCollectionView:{-[ICCollectionView isEditing](self, "isEditing")}], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (-[ICCollectionView isCellDraggableForIdentifier:](self, "isCellDraggableForIdentifier:", v9) && ([contextCopy addItemIdentifierIfAppropriate:v9 isEditingCollectionView:{-[ICCollectionView isEditing](self, "isEditing")}], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v10;
     v14 = v10;
@@ -1373,18 +1373,18 @@ LABEL_34:
   return v12;
 }
 
-- (BOOL)isCellDraggableForIdentifier:(id)a3
+- (BOOL)isCellDraggableForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICCollectionView *)self cellForItemIdentifier:v4];
-  if (![v5 isUserInteractionEnabled] || (objc_msgSend(v4, "conformsToProtocol:", &OBJC_PROTOCOL___ICSectionIdentifier) & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  identifierCopy = identifier;
+  v5 = [(ICCollectionView *)self cellForItemIdentifier:identifierCopy];
+  if (![v5 isUserInteractionEnabled] || (objc_msgSend(identifierCopy, "conformsToProtocol:", &OBJC_PROTOCOL___ICSectionIdentifier) & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v6 = [ICTagCoreDataIndexer isTagItemIdentifier:v4]^ 1;
+    v6 = [ICTagCoreDataIndexer isTagItemIdentifier:identifierCopy]^ 1;
   }
 
   objc_opt_class();
@@ -1392,21 +1392,21 @@ LABEL_34:
   if (v7)
   {
     objc_opt_class();
-    v8 = [v7 noteContainer];
+    noteContainer = [v7 noteContainer];
     v9 = ICDynamicCast();
 
     objc_opt_class();
-    v10 = [v7 noteContainer];
+    noteContainer2 = [v7 noteContainer];
     v11 = ICDynamicCast();
 
     if ([(ICCollectionView *)self isEditing])
     {
-      v12 = [v7 allowsEditing];
+      allowsEditing = [v7 allowsEditing];
     }
 
     else
     {
-      v12 = 1;
+      allowsEditing = 1;
     }
 
     if (v9)
@@ -1416,7 +1416,7 @@ LABEL_34:
 
     else
     {
-      v13 = v6 & v12;
+      v13 = v6 & allowsEditing;
     }
 
     if (v11)
@@ -1435,38 +1435,38 @@ LABEL_34:
   return v6;
 }
 
-- (BOOL)isCellReorderableForIdentifier:(id)a3
+- (BOOL)isCellReorderableForIdentifier:(id)identifier
 {
-  v4 = [(ICCollectionView *)self cellForItemIdentifier:a3];
+  v4 = [(ICCollectionView *)self cellForItemIdentifier:identifier];
   objc_opt_class();
   v5 = ICDynamicCast();
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 allowsEditing])
   {
-    v6 = [(ICCollectionView *)self isEditing];
+    isEditing = [(ICCollectionView *)self isEditing];
   }
 
   else
   {
-    v6 = 0;
+    isEditing = 0;
   }
 
-  return v6;
+  return isEditing;
 }
 
-- (int64_t)dataOwnerForIndexPath:(id)a3
+- (int64_t)dataOwnerForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ICCollectionView *)self diffableDataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+  v6 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 object];
-    v8 = [v7 objectID];
+    object = [v6 object];
+    objectID = [object objectID];
 
-    v6 = v8;
+    v6 = objectID;
   }
 
   objc_opt_class();
@@ -1480,14 +1480,14 @@ LABEL_34:
   {
     if ([v9 ic_isModernNoteType])
     {
-      v15 = [(ICCollectionView *)self modernManagedObjectContext];
-      v16 = [v15 ic_existingObjectWithID:v9];
+      modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
+      v16 = [modernManagedObjectContext ic_existingObjectWithID:v9];
 
-      v17 = [v16 folder];
-      v18 = [v17 account];
-      v19 = [v18 isManaged];
+      folder = [v16 folder];
+      account = [folder account];
+      isManaged = [account isManaged];
 
-      if (v19)
+      if (isManaged)
       {
         goto LABEL_7;
       }
@@ -1495,15 +1495,15 @@ LABEL_34:
 
     else if ([v9 ic_isAttachmentType])
     {
-      v20 = [(ICCollectionView *)self modernManagedObjectContext];
-      v21 = [v20 ic_existingObjectWithID:v9];
+      modernManagedObjectContext2 = [(ICCollectionView *)self modernManagedObjectContext];
+      v21 = [modernManagedObjectContext2 ic_existingObjectWithID:v9];
 
-      v22 = [v21 note];
-      v23 = [v22 folder];
-      v24 = [v23 account];
-      v25 = [v24 isManaged];
+      note = [v21 note];
+      folder2 = [note folder];
+      account2 = [folder2 account];
+      isManaged2 = [account2 isManaged];
 
-      if (v25)
+      if (isManaged2)
       {
         goto LABEL_7;
       }
@@ -1518,13 +1518,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v10 = [(ICCollectionView *)self modernManagedObjectContext];
-  v11 = [v10 ic_existingObjectWithID:v9];
+  modernManagedObjectContext3 = [(ICCollectionView *)self modernManagedObjectContext];
+  v11 = [modernManagedObjectContext3 ic_existingObjectWithID:v9];
 
-  v12 = [v11 account];
-  v13 = [v12 isManaged];
+  account3 = [v11 account];
+  isManaged3 = [account3 isManaged];
 
-  if ((v13 & 1) == 0)
+  if ((isManaged3 & 1) == 0)
   {
     goto LABEL_15;
   }
@@ -1536,78 +1536,78 @@ LABEL_16:
   return v14;
 }
 
-- (void)reExpandFolderWithObjectID:(id)a3
+- (void)reExpandFolderWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICCollectionView *)self currentDragSessionContext];
-  v6 = [v5 autoCollapsedFolderObjectID];
-  v7 = [v6 isEqual:v4];
+  dCopy = d;
+  currentDragSessionContext = [(ICCollectionView *)self currentDragSessionContext];
+  autoCollapsedFolderObjectID = [currentDragSessionContext autoCollapsedFolderObjectID];
+  v7 = [autoCollapsedFolderObjectID isEqual:dCopy];
 
   if (v7)
   {
-    v8 = [(ICCollectionView *)self diffableDataSource];
-    v9 = [v8 snapshot];
-    v10 = [v9 sectionIdentifierForSectionContainingItemIdentifier:v4];
+    diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+    snapshot = [diffableDataSource snapshot];
+    v10 = [snapshot sectionIdentifierForSectionContainingItemIdentifier:dCopy];
 
-    v11 = [(ICCollectionView *)self diffableDataSource];
-    v12 = [v11 snapshotForSection:v10];
+    diffableDataSource2 = [(ICCollectionView *)self diffableDataSource];
+    v12 = [diffableDataSource2 snapshotForSection:v10];
 
-    v16 = v4;
+    v16 = dCopy;
     v13 = [NSArray arrayWithObjects:&v16 count:1];
     [v12 expandItems:v13];
 
-    v14 = [(ICCollectionView *)self diffableDataSource];
-    [v14 applySnapshot:v12 toSection:v10 animatingDifferences:1];
+    diffableDataSource3 = [(ICCollectionView *)self diffableDataSource];
+    [diffableDataSource3 applySnapshot:v12 toSection:v10 animatingDifferences:1];
 
-    v15 = [(ICCollectionView *)self currentDragSessionContext];
-    [v15 setAutoCollapsedFolderObjectID:0];
+    currentDragSessionContext2 = [(ICCollectionView *)self currentDragSessionContext];
+    [currentDragSessionContext2 setAutoCollapsedFolderObjectID:0];
   }
 }
 
-- (id)movableNoteObjectIDsIn:(id)a3 forDropIntoSection:(id)a4
+- (id)movableNoteObjectIDsIn:(id)in forDropIntoSection:(id)section
 {
-  v6 = a4;
-  v7 = a3;
+  sectionCopy = section;
+  inCopy = in;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000E72D8;
   v10[3] = &unk_100649830;
   v10[4] = self;
-  v11 = [v6 sectionType] == 3;
-  v8 = [v7 ic_compactMap:v10];
+  v11 = [sectionCopy sectionType] == 3;
+  v8 = [inCopy ic_compactMap:v10];
 
   return v8;
 }
 
-- (void)performDropOfFolderObjectIDs:(id)a3 atFolderObjectID:(id)a4 atIndex:(unint64_t)a5
+- (void)performDropOfFolderObjectIDs:(id)ds atFolderObjectID:(id)d atIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 count];
-  if (v9 && v10)
+  dsCopy = ds;
+  dCopy = d;
+  v10 = [dsCopy count];
+  if (dCopy && v10)
   {
-    v11 = [(ICCollectionView *)self modernManagedObjectContext];
+    modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000E7498;
     v12[3] = &unk_100649858;
     v12[4] = self;
-    v13 = v9;
-    v14 = v8;
-    v15 = a5;
-    [v11 performBlockAndWait:v12];
+    v13 = dCopy;
+    v14 = dsCopy;
+    indexCopy = index;
+    [modernManagedObjectContext performBlockAndWait:v12];
   }
 }
 
-- (CGRect)presentationSourceRectForCell:(id)a3
+- (CGRect)presentationSourceRectForCell:(id)cell
 {
-  v4 = a3;
-  [v4 frame];
+  cellCopy = cell;
+  [cellCopy frame];
   [(ICCollectionView *)self convertPoint:self toView:?];
   v6 = v5;
   [(ICCollectionView *)self bounds];
   Width = CGRectGetWidth(v20);
-  [v4 bounds];
+  [cellCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1628,20 +1628,20 @@ LABEL_16:
   return result;
 }
 
-- (id)contextMenuForInvitation:(id)a3 sourceView:(id)a4
+- (id)contextMenuForInvitation:(id)invitation sourceView:(id)view
 {
-  v5 = a3;
+  invitationCopy = invitation;
   v6 = +[NSMutableArray array];
-  v7 = [v5 highlight];
+  highlight = [invitationCopy highlight];
 
-  if (v7)
+  if (highlight)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000E7CB0;
     v19[3] = &unk_100646870;
     v19[4] = self;
-    v8 = v5;
+    v8 = invitationCopy;
     v20 = v8;
     v9 = [UIAction ic_replyActionWithHandler:v19];
     [v6 addObject:v9];
@@ -1649,10 +1649,10 @@ LABEL_16:
     v14 = 3221225472;
     v15 = sub_1000E7CBC;
     v16 = &unk_100646870;
-    v17 = self;
+    selfCopy = self;
     v18 = v8;
     v10 = [UIAction ic_removeActionWithHandler:&v13];
-    [v6 addObject:{v10, v13, v14, v15, v16, v17}];
+    [v6 addObject:{v10, v13, v14, v15, v16, selfCopy}];
   }
 
   v11 = [UIMenu menuWithChildren:v6];
@@ -1660,21 +1660,21 @@ LABEL_16:
   return v11;
 }
 
-- (id)contextMenuForFolder:(id)a3 sourceView:(id)a4
+- (id)contextMenuForFolder:(id)folder sourceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  viewCopy = view;
   v8 = +[NSMutableArray array];
   v9 = +[NSMutableArray array];
-  if ([v6 canBeSharedViaICloud] && objc_msgSend(v6, "canCurrentUserShare"))
+  if ([folderCopy canBeSharedViaICloud] && objc_msgSend(folderCopy, "canCurrentUserShare"))
   {
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_1000E832C;
     v50[3] = &unk_1006498A8;
     v50[4] = self;
-    v51 = v6;
-    v52 = v7;
+    v51 = folderCopy;
+    v52 = viewCopy;
     v10 = [UIAction ic_collaborateShareActionWithCloudSyncingObject:v51 withHandler:v50];
     if (_UISolariumEnabled())
     {
@@ -1689,33 +1689,33 @@ LABEL_16:
     [v11 addObject:v10];
   }
 
-  if ([v6 canBeSharedViaICloud] && objc_msgSend(v6, "isSharedViaICloud"))
+  if ([folderCopy canBeSharedViaICloud] && objc_msgSend(folderCopy, "isSharedViaICloud"))
   {
     v47[0] = _NSConcreteStackBlock;
     v47[1] = 3221225472;
     v47[2] = sub_1000E8354;
     v47[3] = &unk_1006498A8;
     v47[4] = self;
-    v48 = v6;
-    v49 = v7;
+    v48 = folderCopy;
+    v49 = viewCopy;
     v12 = [UIAction ic_collaborateManageActionWithCloudSyncingObject:v48 withHandler:v47];
     [v8 addObject:v12];
   }
 
-  if ([v6 isSharedViaICloud])
+  if ([folderCopy isSharedViaICloud])
   {
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_1000E837C;
     v45[3] = &unk_100646870;
     v45[4] = self;
-    v46 = v6;
+    v46 = folderCopy;
     v13 = [UIAction ic_showActivityStreamActionWithCloudSyncingObject:v46 withHandler:v45];
     [v8 addObject:v13];
   }
 
-  v14 = [(ICCollectionView *)self viewControllerManager];
-  v15 = [ICMoveFolderActivity canShowMoveActionForFolder:v6 viewControllerManager:v14];
+  viewControllerManager = [(ICCollectionView *)self viewControllerManager];
+  v15 = [ICMoveFolderActivity canShowMoveActionForFolder:folderCopy viewControllerManager:viewControllerManager];
 
   if (v15)
   {
@@ -1724,7 +1724,7 @@ LABEL_16:
     v43[2] = sub_1000E8388;
     v43[3] = &unk_100646870;
     v43[4] = self;
-    v44 = v6;
+    v44 = folderCopy;
     v16 = [UIAction ic_moveActionWithHandler:v43];
     if (_UISolariumEnabled())
     {
@@ -1739,7 +1739,7 @@ LABEL_16:
     [v17 addObject:v16];
   }
 
-  if ([v6 isEditableSmartFolder])
+  if ([folderCopy isEditableSmartFolder])
   {
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
@@ -1747,13 +1747,13 @@ LABEL_16:
     v41[3] = &unk_100646870;
     v41[4] = self;
     v18 = &v42;
-    v42 = v6;
+    v42 = folderCopy;
     v19 = [UIAction ic_editSmartFolderActionWithHandler:v41];
   }
 
   else
   {
-    if (![v6 isRenamable])
+    if (![folderCopy isRenamable])
     {
       goto LABEL_22;
     }
@@ -1764,7 +1764,7 @@ LABEL_16:
     v39[3] = &unk_100646870;
     v39[4] = self;
     v18 = &v40;
-    v40 = v6;
+    v40 = folderCopy;
     v19 = [UIAction ic_renameActionWithHandler:v39];
   }
 
@@ -1772,14 +1772,14 @@ LABEL_16:
   [v8 addObject:v19];
 
 LABEL_22:
-  if ([v6 isDeletable])
+  if ([folderCopy isDeletable])
   {
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_1000E83B0;
     v37[3] = &unk_100646870;
     v37[4] = self;
-    v38 = v6;
+    v38 = folderCopy;
     v21 = [UIAction ic_deleteActionWithHandler:v37];
     if (_UISolariumEnabled())
     {
@@ -1796,30 +1796,30 @@ LABEL_22:
 
   if (ICInternalSettingsIsAlexandriaEnabled())
   {
-    if ([v6 allowsImporting])
+    if ([folderCopy allowsImporting])
     {
       v34[0] = _NSConcreteStackBlock;
       v34[1] = 3221225472;
       v34[2] = sub_1000E8438;
       v34[3] = &unk_1006498A8;
       v34[4] = self;
-      v35 = v6;
-      v36 = v7;
+      v35 = folderCopy;
+      v36 = viewCopy;
       v23 = [UIAction ic_importArchiveActionWithHandler:v34];
       [v8 addObject:v23];
     }
 
-    if ([v6 allowsExporting])
+    if ([folderCopy allowsExporting])
     {
       v27 = _NSConcreteStackBlock;
       v28 = 3221225472;
       v29 = sub_1000E8448;
       v30 = &unk_1006498A8;
-      v31 = self;
-      v32 = v6;
-      v33 = v7;
+      selfCopy = self;
+      v32 = folderCopy;
+      v33 = viewCopy;
       v24 = [UIAction ic_exportArchiveActionWithHandler:&v27];
-      [v8 addObject:{v24, v27, v28, v29, v30, v31}];
+      [v8 addObject:{v24, v27, v28, v29, v30, selfCopy}];
     }
   }
 
@@ -1828,59 +1828,59 @@ LABEL_22:
   return v25;
 }
 
-- (id)contextMenuForModernNote:(id)a3 sourceView:(id)a4
+- (id)contextMenuForModernNote:(id)note sourceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  viewCopy = view;
   v8 = +[NSMutableArray array];
   v9 = +[NSMutableArray array];
-  if ([v6 isPinnable])
+  if ([noteCopy isPinnable])
   {
-    v10 = [v6 isPinned];
+    isPinned = [noteCopy isPinned];
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_1000E8AB4;
     v50[3] = &unk_100646870;
     v50[4] = self;
-    v51 = v6;
-    v11 = [UIAction ic_pinNoteActionPinned:v10 withHandler:v50];
+    v51 = noteCopy;
+    v11 = [UIAction ic_pinNoteActionPinned:isPinned withHandler:v50];
     [v8 addObject:v11];
   }
 
-  if ([v6 isLockable])
+  if ([noteCopy isLockable])
   {
-    v12 = [v6 isPasswordProtected];
+    isPasswordProtected = [noteCopy isPasswordProtected];
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_1000E8AC0;
     v48[3] = &unk_100646870;
     v48[4] = self;
-    v49 = v6;
-    v13 = [UIAction ic_lockNoteActionLocked:v12 withHandler:v48];
+    v49 = noteCopy;
+    v13 = [UIAction ic_lockNoteActionLocked:isPasswordProtected withHandler:v48];
     [v8 addObject:v13];
   }
 
-  if ([v6 isDuplicatable])
+  if ([noteCopy isDuplicatable])
   {
     v46[0] = _NSConcreteStackBlock;
     v46[1] = 3221225472;
     v46[2] = sub_1000E8ACC;
     v46[3] = &unk_100646870;
     v46[4] = self;
-    v47 = v6;
+    v47 = noteCopy;
     v14 = [UIAction ic_duplicateNoteActionWithHandler:v46];
     [v8 addObject:v14];
   }
 
-  if ([v6 canBeSharedViaICloud])
+  if ([noteCopy canBeSharedViaICloud])
   {
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_1000E8AD8;
     v43[3] = &unk_1006498A8;
     v43[4] = self;
-    v44 = v6;
-    v45 = v7;
+    v44 = noteCopy;
+    v45 = viewCopy;
     v15 = [UIAction ic_collaborateShareActionWithCloudSyncingObject:v44 withHandler:v43];
     if (_UISolariumEnabled())
     {
@@ -1895,40 +1895,40 @@ LABEL_22:
     [v16 addObject:v15];
   }
 
-  if ([v6 isSharedViaICloud])
+  if ([noteCopy isSharedViaICloud])
   {
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_1000E8B00;
     v40[3] = &unk_1006498A8;
     v40[4] = self;
-    v41 = v6;
-    v42 = v7;
+    v41 = noteCopy;
+    v42 = viewCopy;
     v17 = [UIAction ic_collaborateManageActionWithCloudSyncingObject:v41 withHandler:v40];
     [v8 addObject:v17];
   }
 
-  if (ICInternalSettingsIsAlexandriaEnabled() && [v6 allowsExporting])
+  if (ICInternalSettingsIsAlexandriaEnabled() && [noteCopy allowsExporting])
   {
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_1000E8B28;
     v37[3] = &unk_1006498A8;
     v37[4] = self;
-    v38 = v6;
-    v39 = v7;
+    v38 = noteCopy;
+    v39 = viewCopy;
     v18 = [UIAction ic_exportArchiveActionWithHandler:v37];
     [v8 addObject:v18];
   }
 
-  if ([v6 isMovable] && -[ICCollectionView ic_behavior](self, "ic_behavior") != 1)
+  if ([noteCopy isMovable] && -[ICCollectionView ic_behavior](self, "ic_behavior") != 1)
   {
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_1000E8BBC;
     v35[3] = &unk_100646870;
     v35[4] = self;
-    v36 = v6;
+    v36 = noteCopy;
     v19 = [UIAction ic_moveActionWithHandler:v35];
     if (_UISolariumEnabled())
     {
@@ -1943,24 +1943,24 @@ LABEL_22:
     [v20 addObject:v19];
   }
 
-  if ([v6 isDeletable])
+  if ([noteCopy isDeletable])
   {
     v29 = _NSConcreteStackBlock;
     v30 = 3221225472;
     v31 = sub_1000E8C44;
     v32 = &unk_100646870;
-    v33 = self;
-    v34 = v6;
+    selfCopy = self;
+    v34 = noteCopy;
     v21 = [UIAction ic_deleteActionWithHandler:&v29];
     if (!_UISolariumEnabled() || (v22 = [v9 count], v23 = v9, !v22))
     {
       v23 = v8;
     }
 
-    [v23 addObject:{v21, v29, v30, v31, v32, v33}];
+    [v23 addObject:{v21, v29, v30, v31, v32, selfCopy}];
   }
 
-  v24 = [ICAppURLUtilities appURLForNote:v6];
+  v24 = [ICAppURLUtilities appURLForNote:noteCopy];
   v25 = objc_alloc_init(ICCenterWindowSceneActivationRequestOptions);
   v26 = [UIAction ic_centerWindowActionWithAppURL:v24 activationRequestOptions:v25];
   v27 = [(ICCollectionView *)self contextMenuWithPinnedActionsAndCenterWindow:v26 pinnedActions:v9 actions:v8];
@@ -1968,10 +1968,10 @@ LABEL_22:
   return v27;
 }
 
-- (id)contextMenuForLegacyNote:(id)a3 sourceView:(id)a4
+- (id)contextMenuForLegacyNote:(id)note sourceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  viewCopy = view;
   v8 = +[NSMutableArray array];
   v9 = +[NSMutableArray array];
   v29[0] = _NSConcreteStackBlock;
@@ -1979,9 +1979,9 @@ LABEL_22:
   v29[2] = sub_1000E8F8C;
   v29[3] = &unk_1006498A8;
   v29[4] = self;
-  v10 = v6;
+  v10 = noteCopy;
   v30 = v10;
-  v24 = v7;
+  v24 = viewCopy;
   v31 = v24;
   v11 = [UIAction ic_sendActionWithHandler:v29];
   if (_UISolariumEnabled())
@@ -2041,18 +2041,18 @@ LABEL_22:
   return v22;
 }
 
-- (id)contextMenuWithPinnedActionsAndCenterWindow:(id)a3 pinnedActions:(id)a4 actions:(id)a5
+- (id)contextMenuWithPinnedActionsAndCenterWindow:(id)window pinnedActions:(id)actions actions:(id)a5
 {
-  v7 = a3;
+  windowCopy = window;
   v8 = a5;
-  v9 = [UIMenu menuWithTitle:&stru_100661CF0 image:0 identifier:0 options:1 children:a4];
+  v9 = [UIMenu menuWithTitle:&stru_100661CF0 image:0 identifier:0 options:1 children:actions];
   [v9 setPreferredElementSize:1];
   v10 = [UIMenu menuWithTitle:&stru_100661CF0 image:0 identifier:0 options:1 children:v8];
 
-  if (v7)
+  if (windowCopy)
   {
     v16 = v9;
-    v17 = v7;
+    v17 = windowCopy;
     v18 = v10;
     v11 = &v16;
     v12 = 3;
@@ -2102,23 +2102,23 @@ LABEL_22:
   return v2;
 }
 
-- (id)leadingSwipeActionsConfigurationForModernNote:(id)a3 inCell:(id)a4
+- (id)leadingSwipeActionsConfigurationForModernNote:(id)note inCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  cellCopy = cell;
   v8 = +[NSMutableArray array];
   objc_initWeak(&location, self);
-  if ([v6 isPinnable])
+  if ([noteCopy isPinnable])
   {
-    v9 = [v6 isPinned];
+    isPinned = [noteCopy isPinned];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000E992C;
     v16[3] = &unk_1006498F8;
     objc_copyWeak(&v18, &location);
-    v10 = v6;
+    v10 = noteCopy;
     v17 = v10;
-    v11 = [UIContextualAction ic_pinContextualActionWithPinned:v9 pinBlock:v16];
+    v11 = [UIContextualAction ic_pinContextualActionWithPinned:isPinned pinBlock:v16];
     v12 = -[ICCollectionView pinOrUnpinAccessibilityLabelForNoteIsPinned:](self, "pinOrUnpinAccessibilityLabelForNoteIsPinned:", [v10 isPinned]);
     [v11 setAccessibilityLabel:v12];
 
@@ -2135,10 +2135,10 @@ LABEL_22:
   return v14;
 }
 
-- (id)trailingSwipeActionsConfigurationForLegacyNote:(id)a3 inCell:(id)a4
+- (id)trailingSwipeActionsConfigurationForLegacyNote:(id)note inCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  cellCopy = cell;
   v8 = +[NSMutableArray array];
   objc_initWeak(&location, self);
   v21[0] = _NSConcreteStackBlock;
@@ -2146,11 +2146,11 @@ LABEL_22:
   v21[2] = sub_1000E9C14;
   v21[3] = &unk_1006498F8;
   objc_copyWeak(&v23, &location);
-  v9 = v6;
+  v9 = noteCopy;
   v22 = v9;
   v10 = [UIContextualAction ic_deleteContextualActionWithBlock:v21];
-  v11 = [(ICCollectionView *)self deleteNoteAccessibilityLabel];
-  [v10 setAccessibilityLabel:v11];
+  deleteNoteAccessibilityLabel = [(ICCollectionView *)self deleteNoteAccessibilityLabel];
+  [v10 setAccessibilityLabel:deleteNoteAccessibilityLabel];
 
   [v8 addObject:v10];
   v18[0] = _NSConcreteStackBlock;
@@ -2161,8 +2161,8 @@ LABEL_22:
   v12 = v9;
   v19 = v12;
   v13 = [UIContextualAction ic_moveContextualActionWithBlock:v18];
-  v14 = [(ICCollectionView *)self moveNoteAccessibilityLabel];
-  [v13 setAccessibilityLabel:v14];
+  moveNoteAccessibilityLabel = [(ICCollectionView *)self moveNoteAccessibilityLabel];
+  [v13 setAccessibilityLabel:moveNoteAccessibilityLabel];
 
   [v8 addObject:v13];
   v15 = [v8 copy];
@@ -2177,53 +2177,53 @@ LABEL_22:
   return v16;
 }
 
-- (id)trailingSwipeActionsConfigurationForModernNote:(id)a3 inCell:(id)a4
+- (id)trailingSwipeActionsConfigurationForModernNote:(id)note inCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  cellCopy = cell;
   v8 = +[NSMutableArray array];
   objc_initWeak(&location, self);
-  if ([v6 isDeletable])
+  if ([noteCopy isDeletable])
   {
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1000EA0F4;
     v29[3] = &unk_1006498F8;
     objc_copyWeak(&v31, &location);
-    v30 = v6;
+    v30 = noteCopy;
     v9 = [UIContextualAction ic_deleteContextualActionWithBlock:v29];
-    v10 = [(ICCollectionView *)self deleteNoteAccessibilityLabel];
-    [v9 setAccessibilityLabel:v10];
+    deleteNoteAccessibilityLabel = [(ICCollectionView *)self deleteNoteAccessibilityLabel];
+    [v9 setAccessibilityLabel:deleteNoteAccessibilityLabel];
 
     [v8 addObject:v9];
     objc_destroyWeak(&v31);
   }
 
-  if ([v6 isMovable] && -[ICCollectionView ic_behavior](self, "ic_behavior") != 1)
+  if ([noteCopy isMovable] && -[ICCollectionView ic_behavior](self, "ic_behavior") != 1)
   {
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000EA1A4;
     v26[3] = &unk_1006498F8;
     objc_copyWeak(&v28, &location);
-    v27 = v6;
+    v27 = noteCopy;
     v11 = [UIContextualAction ic_moveContextualActionWithBlock:v26];
-    v12 = [(ICCollectionView *)self moveNoteAccessibilityLabel];
-    [v11 setAccessibilityLabel:v12];
+    moveNoteAccessibilityLabel = [(ICCollectionView *)self moveNoteAccessibilityLabel];
+    [v11 setAccessibilityLabel:moveNoteAccessibilityLabel];
 
     [v8 addObject:v11];
     objc_destroyWeak(&v28);
   }
 
-  if ([v6 canBeSharedViaICloud])
+  if ([noteCopy canBeSharedViaICloud])
   {
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
     v21 = sub_1000EA254;
     v22 = &unk_100649920;
     objc_copyWeak(&v25, &location);
-    v23 = v7;
-    v13 = v6;
+    v23 = cellCopy;
+    v13 = noteCopy;
     v24 = v13;
     v14 = [UIContextualAction ic_shareContextualActionWithBlock:&v19];
     v15 = [(ICCollectionView *)self collaborationAccessibilityLabelForCloudSyncingObject:v13, v19, v20, v21, v22];
@@ -2242,30 +2242,30 @@ LABEL_22:
   return v17;
 }
 
-- (id)trailingSwipeActionsConfigurationForModernFolder:(id)a3 inCell:(id)a4
+- (id)trailingSwipeActionsConfigurationForModernFolder:(id)folder inCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  cellCopy = cell;
   v8 = +[NSMutableArray array];
   objc_initWeak(&location, self);
-  if ([v6 isDeletable])
+  if ([folderCopy isDeletable])
   {
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1000EA6B4;
     v31[3] = &unk_1006498F8;
     objc_copyWeak(&v33, &location);
-    v32 = v6;
+    v32 = folderCopy;
     v9 = [UIContextualAction ic_deleteContextualActionWithBlock:v31];
-    v10 = [(ICCollectionView *)self deleteFolderAccessibilityLabel];
-    [v9 setAccessibilityLabel:v10];
+    deleteFolderAccessibilityLabel = [(ICCollectionView *)self deleteFolderAccessibilityLabel];
+    [v9 setAccessibilityLabel:deleteFolderAccessibilityLabel];
 
     [v8 addObject:v9];
     objc_destroyWeak(&v33);
   }
 
-  v11 = [(ICCollectionView *)self viewControllerManager];
-  v12 = [ICMoveFolderActivity canShowMoveActionForFolder:v6 viewControllerManager:v11];
+  viewControllerManager = [(ICCollectionView *)self viewControllerManager];
+  v12 = [ICMoveFolderActivity canShowMoveActionForFolder:folderCopy viewControllerManager:viewControllerManager];
 
   if (v12)
   {
@@ -2274,24 +2274,24 @@ LABEL_22:
     v28[2] = sub_1000EA764;
     v28[3] = &unk_1006498F8;
     objc_copyWeak(&v30, &location);
-    v29 = v6;
+    v29 = folderCopy;
     v13 = [UIContextualAction ic_moveContextualActionWithBlock:v28];
-    v14 = [(ICCollectionView *)self moveFolderAccessibilityLabel];
-    [v13 setAccessibilityLabel:v14];
+    moveFolderAccessibilityLabel = [(ICCollectionView *)self moveFolderAccessibilityLabel];
+    [v13 setAccessibilityLabel:moveFolderAccessibilityLabel];
 
     [v8 addObject:v13];
     objc_destroyWeak(&v30);
   }
 
-  if ([v6 canBeSharedViaICloud] && objc_msgSend(v6, "canCurrentUserShare"))
+  if ([folderCopy canBeSharedViaICloud] && objc_msgSend(folderCopy, "canCurrentUserShare"))
   {
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_1000EA7C4;
     v24 = &unk_100649920;
     objc_copyWeak(&v27, &location);
-    v25 = v7;
-    v15 = v6;
+    v25 = cellCopy;
+    v15 = folderCopy;
     v26 = v15;
     v16 = [UIContextualAction ic_shareContextualActionWithBlock:&v21];
     v17 = [(ICCollectionView *)self collaborationAccessibilityLabelForCloudSyncingObject:v15, v21, v22, v23, v24];
@@ -2310,26 +2310,26 @@ LABEL_22:
   return v19;
 }
 
-- (id)trailingSwipeActionsConfigurationForInvitation:(id)a3 inCell:(id)a4
+- (id)trailingSwipeActionsConfigurationForInvitation:(id)invitation inCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  cellCopy = cell;
   v8 = +[NSMutableArray array];
   objc_initWeak(&location, self);
-  v9 = [v6 highlight];
+  highlight = [invitationCopy highlight];
 
-  if (v9)
+  if (highlight)
   {
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1000EAB10;
     v21[3] = &unk_1006498F8;
     objc_copyWeak(&v23, &location);
-    v10 = v6;
+    v10 = invitationCopy;
     v22 = v10;
     v11 = [UIContextualAction ic_removeContextualActionWithBlock:v21];
-    v12 = [(ICCollectionView *)self removeInvitationAccessibilityLabel];
-    [v11 setAccessibilityLabel:v12];
+    removeInvitationAccessibilityLabel = [(ICCollectionView *)self removeInvitationAccessibilityLabel];
+    [v11 setAccessibilityLabel:removeInvitationAccessibilityLabel];
 
     [v8 addObject:v11];
     v18[0] = _NSConcreteStackBlock;
@@ -2339,8 +2339,8 @@ LABEL_22:
     objc_copyWeak(&v20, &location);
     v19 = v10;
     v13 = [UIContextualAction ic_replyContextualActionWithBlock:v18];
-    v14 = [(ICCollectionView *)self replyToInvitationAccessibilityLabel];
-    [v13 setAccessibilityLabel:v14];
+    replyToInvitationAccessibilityLabel = [(ICCollectionView *)self replyToInvitationAccessibilityLabel];
+    [v13 setAccessibilityLabel:replyToInvitationAccessibilityLabel];
 
     [v8 addObject:v13];
     objc_destroyWeak(&v20);
@@ -2357,42 +2357,42 @@ LABEL_22:
   return v16;
 }
 
-- (void)performPinActionWithNote:(id)a3
+- (void)performPinActionWithNote:(id)note
 {
-  v6 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v6 count:1];
+  noteCopy = note;
+  noteCopy2 = note;
+  v5 = [NSArray arrayWithObjects:&noteCopy count:1];
 
-  [(ICCollectionView *)self performPinActionWithNotes:v5, v6];
+  [(ICCollectionView *)self performPinActionWithNotes:v5, noteCopy];
 }
 
-- (void)performPinActionWithNotes:(id)a3
+- (void)performPinActionWithNotes:(id)notes
 {
-  v4 = a3;
+  notesCopy = notes;
   objc_opt_class();
-  v5 = [(ICCollectionView *)self presentingViewController];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
   v6 = ICDynamicCast();
 
   objc_opt_class();
-  v7 = [v6 dataSource];
+  dataSource = [v6 dataSource];
   v8 = ICDynamicCast();
 
   objc_opt_class();
-  v9 = [v8 indexer];
+  indexer = [v8 indexer];
   v10 = ICDynamicCast();
 
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_1000EB040;
   v42[3] = &unk_100645BA0;
-  v11 = v4;
+  v11 = notesCopy;
   v43 = v11;
   v32 = v10;
   v44 = v32;
   [v8 performBlockSuspendingUpdates:v42 andApplySnapshotAnimated:1];
   objc_opt_class();
   v33 = v6;
-  v12 = [v6 dataSource];
+  dataSource2 = [v6 dataSource];
   v13 = ICDynamicCast();
 
   if (v13)
@@ -2418,8 +2418,8 @@ LABEL_22:
 
           v19 = *(*(&v38 + 1) + 8 * i);
           [v19 changePinStatusIfPossible];
-          v20 = [v19 managedObjectContext];
-          [v20 ic_save];
+          managedObjectContext = [v19 managedObjectContext];
+          [managedObjectContext ic_save];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -2451,15 +2451,15 @@ LABEL_22:
         }
 
         v26 = *(*(&v34 + 1) + 8 * j);
-        v27 = [(ICCollectionView *)self presentingViewController];
-        v28 = [v27 eventReporter];
-        [v28 submitNotePinEventForModernNote:v26 contextPath:0];
+        presentingViewController2 = [(ICCollectionView *)self presentingViewController];
+        eventReporter = [presentingViewController2 eventReporter];
+        [eventReporter submitNotePinEventForModernNote:v26 contextPath:0];
 
         if (UIAccessibilityIsVoiceOverRunning())
         {
-          v29 = [v26 isPinned];
-          v30 = [v26 title];
-          v31 = [(ICCollectionView *)self pinOrUnpinAccessibilityAnnouncementForNoteIsPinned:v29 noteTitle:v30];
+          isPinned = [v26 isPinned];
+          title = [v26 title];
+          v31 = [(ICCollectionView *)self pinOrUnpinAccessibilityAnnouncementForNoteIsPinned:isPinned noteTitle:title];
 
           ICAccessibilityPostHighPriorityAnnouncementNotification();
         }
@@ -2472,22 +2472,22 @@ LABEL_22:
   }
 }
 
-- (void)performLockActionWithNote:(id)a3
+- (void)performLockActionWithNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   v5 = [ICLockNoteActivity alloc];
-  v6 = [(ICCollectionView *)self presentingViewController];
-  v7 = [v5 initWithNote:v4 presentingViewController:v6];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  v7 = [v5 initWithNote:noteCopy presentingViewController:presentingViewController];
   [(ICCollectionView *)self setLockNoteActivity:v7];
 
   objc_initWeak(&location, self);
-  v8 = [(ICCollectionView *)self viewControllerManager];
-  v9 = [v8 window];
-  v10 = [v9 firstResponder];
+  viewControllerManager = [(ICCollectionView *)self viewControllerManager];
+  window = [viewControllerManager window];
+  firstResponder = [window firstResponder];
 
-  if ([v10 conformsToProtocol:&OBJC_PROTOCOL___UITextInput])
+  if ([firstResponder conformsToProtocol:&OBJC_PROTOCOL___UITextInput])
   {
-    [v10 resignFirstResponder];
+    [firstResponder resignFirstResponder];
     v14[1] = _NSConcreteStackBlock;
     v14[2] = 3221225472;
     v14[3] = sub_1000EB330;
@@ -2499,14 +2499,14 @@ LABEL_22:
 
   else
   {
-    v12 = [(ICCollectionView *)self lockNoteActivity];
+    lockNoteActivity = [(ICCollectionView *)self lockNoteActivity];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000EB43C;
     v13[3] = &unk_1006467C8;
     v11 = v14;
     objc_copyWeak(v14, &location);
-    [v12 performActivityWithCompletion:v13];
+    [lockNoteActivity performActivityWithCompletion:v13];
   }
 
   objc_destroyWeak(v11);
@@ -2514,88 +2514,88 @@ LABEL_22:
   objc_destroyWeak(&location);
 }
 
-- (void)performCollaborationActionWithNote:(id)a3 forceShareSheet:(BOOL)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 completion:(id)a7
+- (void)performCollaborationActionWithNote:(id)note forceShareSheet:(BOOL)sheet sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = v17;
-  if (v15)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  noteCopy = note;
+  viewCopy = view;
+  completionCopy = completion;
+  v18 = completionCopy;
+  if (noteCopy)
   {
-    if (a4 || ([v15 isPubliclySharedOrHasInvitees] & 1) == 0)
+    if (sheet || ([noteCopy isPubliclySharedOrHasInvitees] & 1) == 0)
     {
       v25 = [ICSendNoteActivity alloc];
-      v26 = [(ICCollectionView *)self presentingViewController];
-      v27 = [(ICCollectionView *)self presentingViewController];
-      v28 = [v27 eventReporter];
-      v23 = [(ICSendNoteActivity *)v25 initWithNote:v15 presentingViewController:v26 presentingBarButtonItem:0 presentingSourceView:v16 presentingSourceRect:v28 eventReporter:x, y, width, height];
+      presentingViewController = [(ICCollectionView *)self presentingViewController];
+      presentingViewController2 = [(ICCollectionView *)self presentingViewController];
+      eventReporter = [presentingViewController2 eventReporter];
+      height = [(ICSendNoteActivity *)v25 initWithNote:noteCopy presentingViewController:presentingViewController presentingBarButtonItem:0 presentingSourceView:viewCopy presentingSourceRect:eventReporter eventReporter:x, y, width, height];
 
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_1000EB6E4;
       v31[3] = &unk_100649948;
       v32 = v18;
-      [(ICSendNoteActivity *)v23 performActivityWithCompletion:v31];
+      [(ICSendNoteActivity *)height performActivityWithCompletion:v31];
       v24 = v32;
     }
 
     else
     {
       v19 = [ICCollaborationNoteActivity alloc];
-      v20 = [(ICCollectionView *)self presentingViewController];
-      v21 = [(ICCollectionView *)self presentingViewController];
-      v22 = [v21 eventReporter];
-      v23 = [(ICCollaborationNoteActivity *)v19 initWithNote:v15 presentingViewController:v20 presentingBarButtonItem:0 presentingSourceView:v16 eventReporter:v22];
+      presentingViewController3 = [(ICCollectionView *)self presentingViewController];
+      presentingViewController4 = [(ICCollectionView *)self presentingViewController];
+      eventReporter2 = [presentingViewController4 eventReporter];
+      height = [(ICCollaborationNoteActivity *)v19 initWithNote:noteCopy presentingViewController:presentingViewController3 presentingBarButtonItem:0 presentingSourceView:viewCopy eventReporter:eventReporter2];
 
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_1000EB6FC;
       v29[3] = &unk_100649948;
       v30 = v18;
-      [(ICSendNoteActivity *)v23 performActivityWithCompletion:v29];
+      [(ICSendNoteActivity *)height performActivityWithCompletion:v29];
       v24 = v30;
     }
   }
 
-  else if (v17)
+  else if (completionCopy)
   {
-    (*(v17 + 2))(v17, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)performDuplicateActionWithNote:(id)a3
+- (void)performDuplicateActionWithNote:(id)note
 {
-  v4 = a3;
-  v8 = v4;
+  noteCopy = note;
+  v8 = noteCopy;
   v5 = [NSArray arrayWithObjects:&v8 count:1];
   v6 = [ICNote undoablyDuplicateNotes:v5];
 
-  v7 = [(ICCollectionView *)self modernManagedObjectContext];
-  [v7 ic_save];
+  modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
+  [modernManagedObjectContext ic_save];
 }
 
-- (void)performSendActionWithNote:(id)a3 fromSourceView:(id)a4
+- (void)performSendActionWithNote:(id)note fromSourceView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(ICCollectionView *)self modernManagedObjectContext];
-    v9 = [v6 objectID];
-    v10 = [v8 objectWithID:v9];
+    modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
+    objectID = [noteCopy objectID];
+    v10 = [modernManagedObjectContext objectWithID:objectID];
 
     v11 = [ICSendNoteActivity alloc];
-    v12 = [(ICCollectionView *)self presentingViewController];
-    v13 = [(ICCollectionView *)self presentingViewController];
-    v14 = [v13 eventReporter];
-    v15 = [(ICSendNoteActivity *)v11 initWithNote:v10 presentingViewController:v12 presentingBarButtonItem:0 presentingSourceView:v7 presentingSourceRect:v14 eventReporter:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
+    presentingViewController = [(ICCollectionView *)self presentingViewController];
+    presentingViewController2 = [(ICCollectionView *)self presentingViewController];
+    eventReporter = [presentingViewController2 eventReporter];
+    legacyNoteEditorViewController = [(ICSendNoteActivity *)v11 initWithNote:v10 presentingViewController:presentingViewController presentingBarButtonItem:0 presentingSourceView:viewCopy presentingSourceRect:eventReporter eventReporter:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
 
-    [(ICSendNoteActivity *)v15 performActivityWithCompletion:0];
+    [(ICSendNoteActivity *)legacyNoteEditorViewController performActivityWithCompletion:0];
 LABEL_8:
 
     goto LABEL_9;
@@ -2604,23 +2604,23 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [(ICCollectionView *)self legacyManagedObjectContext];
-    v17 = [v6 objectID];
-    v10 = [v16 objectWithID:v17];
+    legacyManagedObjectContext = [(ICCollectionView *)self legacyManagedObjectContext];
+    objectID2 = [noteCopy objectID];
+    v10 = [legacyManagedObjectContext objectWithID:objectID2];
 
-    v18 = [(ICCollectionView *)self viewControllerManager];
-    v15 = [v18 legacyNoteEditorViewController];
+    viewControllerManager = [(ICCollectionView *)self viewControllerManager];
+    legacyNoteEditorViewController = [viewControllerManager legacyNoteEditorViewController];
 
-    v19 = [(ICSendNoteActivity *)v15 view];
-    [(ICSendNoteActivity *)v15 setNote:v10];
-    [(ICSendNoteActivity *)v15 setContentFromNote];
+    view = [(ICSendNoteActivity *)legacyNoteEditorViewController view];
+    [(ICSendNoteActivity *)legacyNoteEditorViewController setNote:v10];
+    [(ICSendNoteActivity *)legacyNoteEditorViewController setContentFromNote];
     v20 = [NotesActivityViewController alloc];
-    v21 = [(ICSendNoteActivity *)v15 noteActivityItemsForSharing];
-    v22 = [(NotesActivityViewController *)v20 initWithActivityItems:v21 applicationActivities:0];
+    noteActivityItemsForSharing = [(ICSendNoteActivity *)legacyNoteEditorViewController noteActivityItemsForSharing];
+    v22 = [(NotesActivityViewController *)v20 initWithActivityItems:noteActivityItemsForSharing applicationActivities:0];
 
-    v23 = [v10 store];
-    v24 = [v23 account];
-    -[NotesActivityViewController setIsContentManaged:](v22, "setIsContentManaged:", [v24 isManaged]);
+    store = [v10 store];
+    account = [store account];
+    -[NotesActivityViewController setIsContentManaged:](v22, "setIsContentManaged:", [account isManaged]);
 
     v29[0] = UIActivityTypeOpenInIBooks;
     v29[1] = ICActivityTypeShareToNote;
@@ -2628,7 +2628,7 @@ LABEL_8:
     v25 = [NSArray arrayWithObjects:v29 count:3];
     [(NotesActivityViewController *)v22 setExcludedActivityTypes:v25];
 
-    [(NotesActivityViewController *)v22 setDisplayController:v15];
+    [(NotesActivityViewController *)v22 setDisplayController:legacyNoteEditorViewController];
     if (+[UIDevice ic_isVision])
     {
       v26 = -2;
@@ -2640,11 +2640,11 @@ LABEL_8:
     }
 
     [(NotesActivityViewController *)v22 setModalPresentationStyle:v26];
-    v27 = [(NotesActivityViewController *)v22 popoverPresentationController];
-    [v27 setSourceView:v7];
+    popoverPresentationController = [(NotesActivityViewController *)v22 popoverPresentationController];
+    [popoverPresentationController setSourceView:viewCopy];
 
-    v28 = [(ICCollectionView *)self presentingViewController];
-    [v28 presentViewController:v22 animated:1 completion:0];
+    presentingViewController3 = [(ICCollectionView *)self presentingViewController];
+    [presentingViewController3 presentViewController:v22 animated:1 completion:0];
 
     goto LABEL_8;
   }
@@ -2652,65 +2652,65 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)performMoveActionWithNotes:(id)a3 completion:(id)a4
+- (void)performMoveActionWithNotes:(id)notes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  notesCopy = notes;
   v8 = [ICMoveDecisionController alloc];
-  v9 = [(ICCollectionView *)self presentingViewController];
-  v10 = [(ICMoveDecisionController *)v8 initWithSourceObjects:v7 presentingViewController:v9];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  v10 = [(ICMoveDecisionController *)v8 initWithSourceObjects:notesCopy presentingViewController:presentingViewController];
 
   [(ICCollectionView *)self setMoveDecisionController:v10];
-  v11 = [(ICCollectionView *)self moveDecisionController];
+  moveDecisionController = [(ICCollectionView *)self moveDecisionController];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000EBC30;
   v13[3] = &unk_100648068;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
-  [v11 performDecisionWithCompletion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [moveDecisionController performDecisionWithCompletion:v13];
 }
 
-- (void)performDeleteActionWithObjects:(id)a3 completion:(id)a4
+- (void)performDeleteActionWithObjects:(id)objects completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCollectionView *)self presentingViewController];
-  if (([v8 isFirstResponder] & 1) == 0)
+  completionCopy = completion;
+  objectsCopy = objects;
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  if (([presentingViewController isFirstResponder] & 1) == 0)
   {
-    v9 = [(ICCollectionView *)self presentingViewController];
-    v10 = [v9 canBecomeFirstResponder];
+    presentingViewController2 = [(ICCollectionView *)self presentingViewController];
+    canBecomeFirstResponder = [presentingViewController2 canBecomeFirstResponder];
 
-    if (!v10)
+    if (!canBecomeFirstResponder)
     {
       goto LABEL_5;
     }
 
-    v8 = [(ICCollectionView *)self presentingViewController];
-    [v8 becomeFirstResponder];
+    presentingViewController = [(ICCollectionView *)self presentingViewController];
+    [presentingViewController becomeFirstResponder];
   }
 
 LABEL_5:
   objc_opt_class();
-  v11 = [(ICCollectionView *)self presentingViewController];
+  presentingViewController3 = [(ICCollectionView *)self presentingViewController];
   v12 = ICDynamicCast();
 
   v13 = [ICDeleteDecisionController alloc];
-  v14 = [(ICCollectionView *)self window];
-  v15 = [(ICCollectionView *)self presentingViewController];
-  v16 = [v15 eventReporter];
-  v17 = [(ICDeleteDecisionController *)v13 initWithSourceObjects:v7 window:v14 sender:0 eventReporter:v16];
+  window = [(ICCollectionView *)self window];
+  presentingViewController4 = [(ICCollectionView *)self presentingViewController];
+  eventReporter = [presentingViewController4 eventReporter];
+  v17 = [(ICDeleteDecisionController *)v13 initWithSourceObjects:objectsCopy window:window sender:0 eventReporter:eventReporter];
 
   objc_opt_class();
-  v18 = [v12 dataSource];
+  dataSource = [v12 dataSource];
   v19 = ICDynamicCast();
 
   objc_opt_class();
-  v20 = [v19 indexer];
+  indexer = [v19 indexer];
   v21 = ICDynamicCast();
 
-  v22 = [v7 ic_compactMap:&stru_100649990];
+  v22 = [objectsCopy ic_compactMap:&stru_100649990];
 
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
@@ -2719,15 +2719,15 @@ LABEL_5:
   v39[4] = self;
   v23 = v22;
   v40 = v23;
-  v24 = v6;
+  v24 = completionCopy;
   v41 = v24;
   [v21 deleteWithDecisionController:v17 completion:v39];
   objc_opt_class();
-  v25 = [v12 dataSource];
+  dataSource2 = [v12 dataSource];
   v26 = ICDynamicCast();
 
   objc_opt_class();
-  v27 = [v26 indexer];
+  indexer2 = [v26 indexer];
   v28 = ICDynamicCast();
 
   v36[0] = _NSConcreteStackBlock;
@@ -2741,7 +2741,7 @@ LABEL_5:
   v38 = v30;
   [v28 deleteWithDecisionController:v17 completion:v36];
   objc_opt_class();
-  v31 = [v12 dataSource];
+  dataSource3 = [v12 dataSource];
   v32 = ICDynamicCast();
 
   if (v32)
@@ -2756,206 +2756,206 @@ LABEL_5:
   }
 }
 
-- (void)performMoveActionWithFolder:(id)a3 completion:(id)a4
+- (void)performMoveActionWithFolder:(id)folder completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  completionCopy = completion;
   v8 = [ICMoveFolderActivity alloc];
-  v9 = [(ICCollectionView *)self presentingViewController];
-  v10 = [(ICMoveFolderActivity *)v8 initWithFolder:v6 presentingViewController:v9];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  v10 = [(ICMoveFolderActivity *)v8 initWithFolder:folderCopy presentingViewController:presentingViewController];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000EC474;
   v13[3] = &unk_1006499E0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = folderCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = folderCopy;
   [(ICMoveFolderActivity *)v10 performActivityWithCompletion:v13];
 }
 
-- (void)performRenameActionWithFolder:(id)a3
+- (void)performRenameActionWithFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = [ICRenameFolderActivity alloc];
-  v6 = [(ICCollectionView *)self presentingViewController];
-  v7 = [(ICRenameFolderActivity *)v5 initWithFolder:v4 presentingViewController:v6];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  v7 = [(ICRenameFolderActivity *)v5 initWithFolder:folderCopy presentingViewController:presentingViewController];
 
   [(ICCollectionView *)self setRenameFolderActivity:v7];
-  v8 = [(ICCollectionView *)self renameFolderActivity];
-  [v8 performActivityWithCompletion:0];
+  renameFolderActivity = [(ICCollectionView *)self renameFolderActivity];
+  [renameFolderActivity performActivityWithCompletion:0];
 }
 
-- (void)performEditSmartFolderActionWithFolder:(id)a3
+- (void)performEditSmartFolderActionWithFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = [ICEditSmartFolderActivity alloc];
-  v6 = [(ICCollectionView *)self presentingViewController];
-  v7 = [(ICEditSmartFolderActivity *)v5 initWithSmartFolder:v4 presentingViewController:v6];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  v7 = [(ICEditSmartFolderActivity *)v5 initWithSmartFolder:folderCopy presentingViewController:presentingViewController];
 
   [(ICEditSmartFolderActivity *)v7 performActivityWithCompletion:0];
 }
 
-- (void)performCollaborationActionWithFolder:(id)a3 forceShareSheet:(BOOL)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 completion:(id)a7
+- (void)performCollaborationActionWithFolder:(id)folder forceShareSheet:(BOOL)sheet sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a4;
-  v15 = a7;
-  v16 = a5;
-  v17 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  sheetCopy = sheet;
+  completionCopy = completion;
+  viewCopy = view;
+  folderCopy = folder;
   v18 = [ICCollaborationFolderActivity alloc];
-  v19 = [(ICCollectionView *)self presentingViewController];
-  v20 = [(ICCollectionView *)self presentingViewController];
-  v21 = [v20 eventReporter];
-  v22 = [(ICCollaborationFolderActivity *)v18 initWithFolder:v17 presentingViewController:v19 presentingBarButtonItem:0 presentingSourceView:v16 presentingSourceRect:v21 eventReporter:x, y, width, height];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  presentingViewController2 = [(ICCollectionView *)self presentingViewController];
+  eventReporter = [presentingViewController2 eventReporter];
+  height = [(ICCollaborationFolderActivity *)v18 initWithFolder:folderCopy presentingViewController:presentingViewController presentingBarButtonItem:0 presentingSourceView:viewCopy presentingSourceRect:eventReporter eventReporter:x, y, width, height];
 
-  [(ICCollaborationFolderActivity *)v22 setForceShareSheet:v12];
+  [(ICCollaborationFolderActivity *)height setForceShareSheet:sheetCopy];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000EC7CC;
   v24[3] = &unk_100649948;
-  v25 = v15;
-  v23 = v15;
-  [(ICCollaborationFolderActivity *)v22 performActivityWithCompletion:v24];
+  v25 = completionCopy;
+  v23 = completionCopy;
+  [(ICCollaborationFolderActivity *)height performActivityWithCompletion:v24];
 }
 
-- (void)performShowActivityStreamActionWithFolder:(id)a3
+- (void)performShowActivityStreamActionWithFolder:(id)folder
 {
-  v4 = a3;
-  v6 = [[ICShowActivityStreamActivity alloc] initWithObject:v4];
+  folderCopy = folder;
+  v6 = [[ICShowActivityStreamActivity alloc] initWithObject:folderCopy];
 
-  v5 = [(ICCollectionView *)self viewControllerManager];
-  [(ICShowActivityStreamActivity *)v6 setViewControllerManager:v5];
+  viewControllerManager = [(ICCollectionView *)self viewControllerManager];
+  [(ICShowActivityStreamActivity *)v6 setViewControllerManager:viewControllerManager];
 
   [(ICShowActivityStreamActivity *)v6 performActivityWithCompletion:0];
 }
 
-- (void)performImportArchiveActionWithNoteContainer:(id)a3 fromSourceView:(id)a4
+- (void)performImportArchiveActionWithNoteContainer:(id)container fromSourceView:(id)view
 {
-  v5 = a3;
+  containerCopy = container;
   v6 = [ICImportArchiveActivity alloc];
-  v7 = [(ICCollectionView *)self presentingViewController];
-  v8 = [(ICImportArchiveActivity *)v6 initWithNoteContainer:v5 markdown:0 presentingViewController:v7];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  v8 = [(ICImportArchiveActivity *)v6 initWithNoteContainer:containerCopy markdown:0 presentingViewController:presentingViewController];
 
   [(ICCollectionView *)self setImportArchiveActivity:v8];
-  v9 = [(ICCollectionView *)self importArchiveActivity];
-  [v9 performActivityWithCompletion:0];
+  importArchiveActivity = [(ICCollectionView *)self importArchiveActivity];
+  [importArchiveActivity performActivityWithCompletion:0];
 }
 
-- (void)performExportArchiveActionWithObjects:(id)a3 fromSourceView:(id)a4
+- (void)performExportArchiveActionWithObjects:(id)objects fromSourceView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
+  viewCopy = view;
+  objectsCopy = objects;
   v8 = [ICExportArchiveActivity alloc];
-  v9 = [(ICCollectionView *)self presentingViewController];
-  v10 = [(ICExportArchiveActivity *)v8 initWithObjects:v7 presentingViewController:v9 presentingBarButtonItem:0 presentingSourceView:v6];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  v10 = [(ICExportArchiveActivity *)v8 initWithObjects:objectsCopy presentingViewController:presentingViewController presentingBarButtonItem:0 presentingSourceView:viewCopy];
 
   [(ICExportArchiveActivity *)v10 performActivityWithCompletion:0];
 }
 
-- (void)performRemoveActionWithInvitation:(id)a3
+- (void)performRemoveActionWithInvitation:(id)invitation
 {
-  v4 = a3;
-  v5 = [v4 highlight];
-  v6 = [v5 hideContextMenu];
-  v7 = [v6 actionBlock];
+  invitationCopy = invitation;
+  highlight = [invitationCopy highlight];
+  hideContextMenu = [highlight hideContextMenu];
+  actionBlock = [hideContextMenu actionBlock];
 
-  if (v7)
+  if (actionBlock)
   {
-    v8 = [v4 highlight];
-    v9 = [v8 hideContextMenu];
-    v10 = [v9 actionBlock];
-    v10[2]();
+    highlight2 = [invitationCopy highlight];
+    hideContextMenu2 = [highlight2 hideContextMenu];
+    actionBlock2 = [hideContextMenu2 actionBlock];
+    actionBlock2[2]();
   }
 
-  v11 = [v4 objectID];
-  v15 = v11;
+  objectID = [invitationCopy objectID];
+  v15 = objectID;
   v12 = [NSArray arrayWithObjects:&v15 count:1];
   [(ICCollectionView *)self synchronouslyRemoveItemsWithIdentifiers:v12];
 
-  v13 = [(ICCollectionView *)self presentingViewController];
-  v14 = [v13 eventReporter];
-  [v14 submitCollabNotificationEventWithAction:2];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  eventReporter = [presentingViewController eventReporter];
+  [eventReporter submitCollabNotificationEventWithAction:2];
 }
 
-- (void)performReplyActionWithInvitation:(id)a3
+- (void)performReplyActionWithInvitation:(id)invitation
 {
-  v4 = [a3 highlight];
-  v5 = [(ICCollectionView *)self presentingViewController];
-  v8 = [v4 replyContextMenuWithPresentingViewController:v5];
+  highlight = [invitation highlight];
+  presentingViewController = [(ICCollectionView *)self presentingViewController];
+  v8 = [highlight replyContextMenuWithPresentingViewController:presentingViewController];
 
-  v6 = [v8 actionBlock];
+  actionBlock = [v8 actionBlock];
 
-  if (v6)
+  if (actionBlock)
   {
-    v7 = [v8 actionBlock];
-    v7[2]();
+    actionBlock2 = [v8 actionBlock];
+    actionBlock2[2]();
   }
 }
 
-- (id)contextMenuPreviewWithConfiguration:(id)a3 indexPath:(id)a4
+- (id)contextMenuPreviewWithConfiguration:(id)configuration indexPath:(id)path
 {
-  v5 = [a3 identifier];
-  v6 = [(ICCollectionView *)self cellForItemIdentifier:v5];
+  identifier = [configuration identifier];
+  v6 = [(ICCollectionView *)self cellForItemIdentifier:identifier];
 
   v7 = [(ICCollectionView *)self defaultPreviewForCell:v6];
 
   return v7;
 }
 
-- (id)defaultPreviewForCell:(id)a3
+- (id)defaultPreviewForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v5 = ICProtocolCast();
-  v6 = [v5 contextMenuInteractionPreview];
-  v7 = v6;
-  if (v6)
+  contextMenuInteractionPreview = [v5 contextMenuInteractionPreview];
+  v7 = contextMenuInteractionPreview;
+  if (contextMenuInteractionPreview)
   {
-    v8 = v6;
+    v8 = contextMenuInteractionPreview;
   }
 
   else
   {
-    v8 = v4;
+    v8 = cellCopy;
   }
 
   v9 = v8;
 
-  v10 = [v9 window];
+  window = [v9 window];
 
-  if (v10)
+  if (window)
   {
-    v10 = [[UITargetedPreview alloc] initWithView:v9];
+    window = [[UITargetedPreview alloc] initWithView:v9];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v4 _visiblePathForBackgroundConfiguration];
-      v12 = [v10 parameters];
-      [v12 setVisiblePath:v11];
+      _visiblePathForBackgroundConfiguration = [cellCopy _visiblePathForBackgroundConfiguration];
+      parameters = [window parameters];
+      [parameters setVisiblePath:_visiblePathForBackgroundConfiguration];
 
-      v13 = [(ICCollectionView *)self backgroundColor];
-      v14 = [v10 parameters];
-      [v14 setBackgroundColor:v13];
+      backgroundColor = [(ICCollectionView *)self backgroundColor];
+      parameters2 = [window parameters];
+      [parameters2 setBackgroundColor:backgroundColor];
     }
   }
 
-  return v10;
+  return window;
 }
 
-- (id)previewParametersWithCollectionView:(id)a3 atIndexPath:(id)a4
+- (id)previewParametersWithCollectionView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 cellForItemAtIndexPath:a4];
+  v5 = [view cellForItemAtIndexPath:path];
   v6 = ICProtocolCast();
-  v7 = [v6 contextMenuInteractionPreview];
-  v8 = v7;
-  if (v7)
+  contextMenuInteractionPreview = [v6 contextMenuInteractionPreview];
+  v8 = contextMenuInteractionPreview;
+  if (contextMenuInteractionPreview)
   {
-    v9 = v7;
+    v9 = contextMenuInteractionPreview;
   }
 
   else
@@ -2971,22 +2971,22 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v5 _visiblePathForBackgroundConfiguration];
-      [v11 setVisiblePath:v12];
+      _visiblePathForBackgroundConfiguration = [v5 _visiblePathForBackgroundConfiguration];
+      [v11 setVisiblePath:_visiblePathForBackgroundConfiguration];
 
-      v13 = [(ICCollectionView *)self backgroundColor];
-      [v11 setBackgroundColor:v13];
+      backgroundColor = [(ICCollectionView *)self backgroundColor];
+      [v11 setBackgroundColor:backgroundColor];
     }
 
     else
     {
-      v13 = [v10 layer];
-      [v13 bounds];
+      backgroundColor = [v10 layer];
+      [backgroundColor bounds];
       v15 = v14;
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      [v13 cornerRadius];
+      [backgroundColor cornerRadius];
       v23 = [UIBezierPath bezierPathWithRoundedRect:v15 cornerRadius:v17, v19, v21, v22];
       [v11 setVisiblePath:v23];
     }
@@ -3000,47 +3000,47 @@ LABEL_5:
   return v11;
 }
 
-- (id)cellForItemIdentifier:(id)a3
+- (id)cellForItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICCollectionView *)self diffableDataSource];
-  v6 = [v5 indexPathForItemIdentifier:v4];
+  identifierCopy = identifier;
+  diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+  v6 = [diffableDataSource indexPathForItemIdentifier:identifierCopy];
 
   v7 = [(ICCollectionView *)self cellForItemAtIndexPath:v6];
 
   return v7;
 }
 
-- (void)synchronouslyRemoveItemsWithIdentifiers:(id)a3
+- (void)synchronouslyRemoveItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(ICCollectionView *)self diffableDataSource];
-  v9 = [v5 snapshot];
+  identifiersCopy = identifiers;
+  diffableDataSource = [(ICCollectionView *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
 
-  [v9 deleteItemsWithIdentifiers:v4];
-  v6 = [(ICCollectionView *)self diffableDataSource];
-  [v6 applySnapshot:v9 animatingDifferences:1];
+  [snapshot deleteItemsWithIdentifiers:identifiersCopy];
+  diffableDataSource2 = [(ICCollectionView *)self diffableDataSource];
+  [diffableDataSource2 applySnapshot:snapshot animatingDifferences:1];
 
-  v7 = [(ICCollectionView *)self optimisticallyAppliedSnapshotHandler];
+  optimisticallyAppliedSnapshotHandler = [(ICCollectionView *)self optimisticallyAppliedSnapshotHandler];
 
-  if (v7)
+  if (optimisticallyAppliedSnapshotHandler)
   {
-    v8 = [(ICCollectionView *)self optimisticallyAppliedSnapshotHandler];
-    (v8)[2](v8, v9);
+    optimisticallyAppliedSnapshotHandler2 = [(ICCollectionView *)self optimisticallyAppliedSnapshotHandler];
+    (optimisticallyAppliedSnapshotHandler2)[2](optimisticallyAppliedSnapshotHandler2, snapshot);
   }
 }
 
-- (id)firstUnselectedIndexPathWithFrame:(CGRect)a3 arrowDirection:(unint64_t)a4
+- (id)firstUnselectedIndexPathWithFrame:(CGRect)frame arrowDirection:(unint64_t)direction
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(ICCollectionView *)self indexPathsForSelectedItems];
-  v11 = [v10 firstObject];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  indexPathsForSelectedItems = [(ICCollectionView *)self indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  v12 = [(ICCollectionView *)self collectionViewLayout];
-  v13 = [v12 layoutAttributesForElementsInRect:{x, y, width, height}];
+  collectionViewLayout = [(ICCollectionView *)self collectionViewLayout];
+  v13 = [collectionViewLayout layoutAttributesForElementsInRect:{x, y, width, height}];
 
   v26 = 0;
   v27 = &v26;
@@ -3050,7 +3050,7 @@ LABEL_5:
   v31 = 0;
   v25[0] = 0;
   v25[1] = v25;
-  v14 = a4 == 8 || a4 == 2;
+  v14 = direction == 8 || direction == 2;
   v15 = -1.79769313e308;
   if (v14)
   {
@@ -3063,53 +3063,53 @@ LABEL_5:
   v19[1] = 3221225472;
   v19[2] = sub_1000ED2A4;
   v19[3] = &unk_100649A08;
-  v16 = v11;
+  v16 = firstObject;
   v20 = v16;
-  v21 = self;
+  selfCopy = self;
   v23 = &v26;
-  v24 = a4;
+  directionCopy = direction;
   v22 = v25;
   [v13 enumerateObjectsUsingBlock:v19];
-  v17 = [v27[5] indexPath];
+  indexPath = [v27[5] indexPath];
 
   _Block_object_dispose(v25, 8);
   _Block_object_dispose(&v26, 8);
 
-  return v17;
+  return indexPath;
 }
 
-- (id)commonAccessibilityActionsForFolder:(id)a3
+- (id)commonAccessibilityActionsForFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = +[NSMutableArray array];
-  if ([v4 isRenamable])
+  if ([folderCopy isRenamable])
   {
     v6 = [UIAccessibilityCustomAction alloc];
-    v7 = [(ICCollectionView *)self renameFolderAccessibilityLabel];
+    renameFolderAccessibilityLabel = [(ICCollectionView *)self renameFolderAccessibilityLabel];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000ED63C;
     v20[3] = &unk_100649A30;
     v20[4] = self;
-    v21 = v4;
-    v8 = [v6 initWithName:v7 actionHandler:v20];
+    v21 = folderCopy;
+    v8 = [v6 initWithName:renameFolderAccessibilityLabel actionHandler:v20];
 
     [v5 addObject:v8];
   }
 
-  if ([v4 isSharedViaICloud])
+  if ([folderCopy isSharedViaICloud])
   {
     v9 = [UIAccessibilityCustomAction alloc];
-    v10 = [(ICCollectionView *)self showFolderActivityAccessibilityLabel];
+    showFolderActivityAccessibilityLabel = [(ICCollectionView *)self showFolderActivityAccessibilityLabel];
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_1000ED660;
     v17 = &unk_100649A30;
-    v18 = self;
-    v19 = v4;
-    v11 = [v9 initWithName:v10 actionHandler:&v14];
+    selfCopy = self;
+    v19 = folderCopy;
+    v11 = [v9 initWithName:showFolderActivityAccessibilityLabel actionHandler:&v14];
 
-    [v5 addObject:{v11, v14, v15, v16, v17, v18}];
+    [v5 addObject:{v11, v14, v15, v16, v17, selfCopy}];
   }
 
   v12 = [v5 copy];
@@ -3117,59 +3117,59 @@ LABEL_5:
   return v12;
 }
 
-- (id)galleryViewAcessibilityActionsForFolder:(id)a3
+- (id)galleryViewAcessibilityActionsForFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = +[NSMutableArray array];
-  v6 = [(ICCollectionView *)self commonAccessibilityActionsForFolder:v4];
+  v6 = [(ICCollectionView *)self commonAccessibilityActionsForFolder:folderCopy];
   [v5 addObjectsFromArray:v6];
 
-  if ([v4 isDeletable])
+  if ([folderCopy isDeletable])
   {
     v7 = [UIAccessibilityCustomAction alloc];
-    v8 = [(ICCollectionView *)self deleteFolderAccessibilityLabel];
+    deleteFolderAccessibilityLabel = [(ICCollectionView *)self deleteFolderAccessibilityLabel];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_1000ED93C;
     v28[3] = &unk_100649A30;
     v28[4] = self;
-    v29 = v4;
-    v9 = [v7 initWithName:v8 actionHandler:v28];
+    v29 = folderCopy;
+    v9 = [v7 initWithName:deleteFolderAccessibilityLabel actionHandler:v28];
 
     [v5 addObject:v9];
   }
 
-  v10 = [(ICCollectionView *)self viewControllerManager];
-  v11 = [ICMoveFolderActivity canShowMoveActionForFolder:v4 viewControllerManager:v10];
+  viewControllerManager = [(ICCollectionView *)self viewControllerManager];
+  v11 = [ICMoveFolderActivity canShowMoveActionForFolder:folderCopy viewControllerManager:viewControllerManager];
 
   if (v11)
   {
     v12 = [UIAccessibilityCustomAction alloc];
-    v13 = [(ICCollectionView *)self moveFolderAccessibilityLabel];
+    moveFolderAccessibilityLabel = [(ICCollectionView *)self moveFolderAccessibilityLabel];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1000ED9C8;
     v26[3] = &unk_100649A30;
     v26[4] = self;
-    v27 = v4;
-    v14 = [v12 initWithName:v13 actionHandler:v26];
+    v27 = folderCopy;
+    v14 = [v12 initWithName:moveFolderAccessibilityLabel actionHandler:v26];
 
     [v5 addObject:v14];
   }
 
-  if ([v4 canBeSharedViaICloud])
+  if ([folderCopy canBeSharedViaICloud])
   {
     v15 = [UIAccessibilityCustomAction alloc];
-    v16 = [(ICCollectionView *)self collaborationAccessibilityLabelForCloudSyncingObject:v4];
+    v16 = [(ICCollectionView *)self collaborationAccessibilityLabelForCloudSyncingObject:folderCopy];
     v20 = _NSConcreteStackBlock;
     v21 = 3221225472;
     v22 = sub_1000ED9F0;
     v23 = &unk_100649A30;
-    v24 = self;
-    v25 = v4;
+    selfCopy = self;
+    v25 = folderCopy;
     v17 = [v15 initWithName:v16 actionHandler:&v20];
 
-    [v5 addObject:{v17, v20, v21, v22, v23, v24}];
+    [v5 addObject:{v17, v20, v21, v22, v23, selfCopy}];
   }
 
   v18 = [v5 copy];
@@ -3177,28 +3177,28 @@ LABEL_5:
   return v18;
 }
 
-- (id)commonAcessibilityActionsForNoteWithObjectID:(id)a3
+- (id)commonAcessibilityActionsForNoteWithObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSMutableArray array];
-  if ([v4 ic_isModernNoteType])
+  if ([dCopy ic_isModernNoteType])
   {
-    v6 = [(ICCollectionView *)self modernManagedObjectContext];
+    modernManagedObjectContext = [(ICCollectionView *)self modernManagedObjectContext];
   }
 
   else
   {
-    if (![v4 ic_isLegacyNoteType])
+    if (![dCopy ic_isLegacyNoteType])
     {
       v8 = 0;
       goto LABEL_7;
     }
 
-    v6 = [(ICCollectionView *)self legacyManagedObjectContext];
+    modernManagedObjectContext = [(ICCollectionView *)self legacyManagedObjectContext];
   }
 
-  v7 = v6;
-  v8 = [v6 objectWithID:v4];
+  v7 = modernManagedObjectContext;
+  v8 = [modernManagedObjectContext objectWithID:dCopy];
 
 LABEL_7:
   objc_opt_class();
@@ -3222,16 +3222,16 @@ LABEL_7:
   if ([v10 isDuplicatable])
   {
     v14 = [UIAccessibilityCustomAction alloc];
-    v15 = [(ICCollectionView *)self duplicateNoteAccessibilityLabel];
+    duplicateNoteAccessibilityLabel = [(ICCollectionView *)self duplicateNoteAccessibilityLabel];
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
     v21 = sub_1000EDCF4;
     v22 = &unk_100649A30;
-    v23 = self;
+    selfCopy = self;
     v24 = v10;
-    v16 = [v14 initWithName:v15 actionHandler:&v19];
+    v16 = [v14 initWithName:duplicateNoteAccessibilityLabel actionHandler:&v19];
 
-    [v5 addObject:{v16, v19, v20, v21, v22, v23}];
+    [v5 addObject:{v16, v19, v20, v21, v22, selfCopy}];
   }
 
   v17 = [v5 copy];
@@ -3239,72 +3239,72 @@ LABEL_7:
   return v17;
 }
 
-- (id)galleryViewAcessibilityActionsForNote:(id)a3
+- (id)galleryViewAcessibilityActionsForNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   v5 = +[NSMutableArray array];
-  v6 = [v4 objectID];
-  v7 = [(ICCollectionView *)self commonAcessibilityActionsForNoteWithObjectID:v6];
+  objectID = [noteCopy objectID];
+  v7 = [(ICCollectionView *)self commonAcessibilityActionsForNoteWithObjectID:objectID];
   [v5 addObjectsFromArray:v7];
 
-  if ([v4 isDeletable])
+  if ([noteCopy isDeletable])
   {
     v8 = [UIAccessibilityCustomAction alloc];
-    v9 = [(ICCollectionView *)self deleteNoteAccessibilityLabel];
+    deleteNoteAccessibilityLabel = [(ICCollectionView *)self deleteNoteAccessibilityLabel];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1000EE0A0;
     v31[3] = &unk_100649A30;
     v31[4] = self;
-    v32 = v4;
-    v10 = [v8 initWithName:v9 actionHandler:v31];
+    v32 = noteCopy;
+    v10 = [v8 initWithName:deleteNoteAccessibilityLabel actionHandler:v31];
 
     [v5 addObject:v10];
   }
 
-  if ([v4 isMovable])
+  if ([noteCopy isMovable])
   {
     v11 = [UIAccessibilityCustomAction alloc];
-    v12 = [(ICCollectionView *)self moveNoteAccessibilityLabel];
+    moveNoteAccessibilityLabel = [(ICCollectionView *)self moveNoteAccessibilityLabel];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1000EE12C;
     v29[3] = &unk_100649A30;
     v29[4] = self;
-    v30 = v4;
-    v13 = [v11 initWithName:v12 actionHandler:v29];
+    v30 = noteCopy;
+    v13 = [v11 initWithName:moveNoteAccessibilityLabel actionHandler:v29];
 
     [v5 addObject:v13];
   }
 
-  if ([v4 isPinnable])
+  if ([noteCopy isPinnable])
   {
     v14 = [UIAccessibilityCustomAction alloc];
-    v15 = -[ICCollectionView pinOrUnpinAccessibilityLabelForNoteIsPinned:](self, "pinOrUnpinAccessibilityLabelForNoteIsPinned:", [v4 isPinned]);
+    v15 = -[ICCollectionView pinOrUnpinAccessibilityLabelForNoteIsPinned:](self, "pinOrUnpinAccessibilityLabelForNoteIsPinned:", [noteCopy isPinned]);
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_1000EE1B8;
     v27[3] = &unk_100649A30;
     v27[4] = self;
-    v28 = v4;
+    v28 = noteCopy;
     v16 = [v14 initWithName:v15 actionHandler:v27];
 
     [v5 addObject:v16];
   }
 
-  if ([v4 canBeSharedViaICloud])
+  if ([noteCopy canBeSharedViaICloud])
   {
-    v17 = [v4 objectID];
-    v18 = [(ICCollectionView *)self interactionSourceViewForObjectID:v17];
+    objectID2 = [noteCopy objectID];
+    v18 = [(ICCollectionView *)self interactionSourceViewForObjectID:objectID2];
 
     v19 = [UIAccessibilityCustomAction alloc];
-    v20 = [(ICCollectionView *)self collaborationAccessibilityLabelForCloudSyncingObject:v4];
+    v20 = [(ICCollectionView *)self collaborationAccessibilityLabelForCloudSyncingObject:noteCopy];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1000EE1DC;
     v24[3] = &unk_100649A58;
     v24[4] = self;
-    v25 = v4;
+    v25 = noteCopy;
     v26 = v18;
     v21 = v18;
     v22 = [v19 initWithName:v20 actionHandler:v24];
@@ -3315,15 +3315,15 @@ LABEL_7:
   return v5;
 }
 
-- (id)interactionSourceViewForObjectID:(id)a3
+- (id)interactionSourceViewForObjectID:(id)d
 {
-  v3 = [(ICCollectionView *)self cellForItemIdentifier:a3];
+  v3 = [(ICCollectionView *)self cellForItemIdentifier:d];
   v4 = ICProtocolCast();
-  v5 = [v4 contextMenuInteractionPreview];
-  v6 = v5;
-  if (v5)
+  contextMenuInteractionPreview = [v4 contextMenuInteractionPreview];
+  v6 = contextMenuInteractionPreview;
+  if (contextMenuInteractionPreview)
   {
-    v7 = v5;
+    v7 = contextMenuInteractionPreview;
   }
 
   else
@@ -3360,12 +3360,12 @@ LABEL_7:
   return v3;
 }
 
-- (id)pinOrUnpinAccessibilityLabelForNoteIsPinned:(BOOL)a3
+- (id)pinOrUnpinAccessibilityLabelForNoteIsPinned:(BOOL)pinned
 {
-  v3 = a3;
+  pinnedCopy = pinned;
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (pinnedCopy)
   {
     v6 = @"Unpin note";
   }
@@ -3380,13 +3380,13 @@ LABEL_7:
   return v7;
 }
 
-- (id)pinOrUnpinAccessibilityAnnouncementForNoteIsPinned:(BOOL)a3 noteTitle:(id)a4
+- (id)pinOrUnpinAccessibilityAnnouncementForNoteIsPinned:(BOOL)pinned noteTitle:(id)title
 {
-  v4 = a3;
-  v5 = a4;
+  pinnedCopy = pinned;
+  titleCopy = title;
   v6 = +[NSBundle mainBundle];
   v7 = v6;
-  if (v4)
+  if (pinnedCopy)
   {
     v8 = @"Pinned note with title, %@";
   }
@@ -3398,17 +3398,17 @@ LABEL_7:
 
   v9 = [v6 localizedStringForKey:v8 value:&stru_100661CF0 table:0];
 
-  v10 = [NSString localizedStringWithFormat:v9, v5];
+  titleCopy = [NSString localizedStringWithFormat:v9, titleCopy];
 
-  return v10;
+  return titleCopy;
 }
 
-- (id)lockOrUnlockAccessibilityLabelForNoteIsLocked:(BOOL)a3
+- (id)lockOrUnlockAccessibilityLabelForNoteIsLocked:(BOOL)locked
 {
-  v3 = a3;
+  lockedCopy = locked;
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (lockedCopy)
   {
     v6 = @"Remove lock from note";
   }

@@ -1,14 +1,14 @@
 @interface _UIDragDestinationIndicatorView
-- (_UIDragDestinationIndicatorView)initWithSourceListStyle:(BOOL)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)positionHorizontallyCenteredInFrame:(CGRect)a3;
-- (void)positionOnCellFrame:(CGRect)a3 above:(BOOL)a4;
-- (void)positionVerticallyCenteredInFrame:(CGRect)a3;
+- (_UIDragDestinationIndicatorView)initWithSourceListStyle:(BOOL)style;
+- (void)drawRect:(CGRect)rect;
+- (void)positionHorizontallyCenteredInFrame:(CGRect)frame;
+- (void)positionOnCellFrame:(CGRect)frame above:(BOOL)above;
+- (void)positionVerticallyCenteredInFrame:(CGRect)frame;
 @end
 
 @implementation _UIDragDestinationIndicatorView
 
-- (_UIDragDestinationIndicatorView)initWithSourceListStyle:(BOOL)a3
+- (_UIDragDestinationIndicatorView)initWithSourceListStyle:(BOOL)style
 {
   v8.receiver = self;
   v8.super_class = _UIDragDestinationIndicatorView;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isSourceList = a3;
+    v4->_isSourceList = style;
     v4->_scaleFactor = 1.0;
     v6 = +[UIColor clearColor];
     [(UIView *)v5 setBackgroundColor:v6];
@@ -27,12 +27,12 @@
   return v5;
 }
 
-- (void)positionVerticallyCenteredInFrame:(CGRect)a3
+- (void)positionVerticallyCenteredInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(_UIDragDestinationIndicatorView *)self scaleFactor];
   v9 = 2.0;
   if (self->_isSourceList)
@@ -50,29 +50,29 @@
   [(UIView *)self setFrame:x, v11, width, v10];
 }
 
-- (void)positionOnCellFrame:(CGRect)a3 above:(BOOL)a4
+- (void)positionOnCellFrame:(CGRect)frame above:(BOOL)above
 {
-  width = a3.size.width;
-  x = a3.origin.x;
-  if (a4)
+  width = frame.size.width;
+  x = frame.origin.x;
+  if (above)
   {
-    MinY = CGRectGetMinY(a3);
+    MinY = CGRectGetMinY(frame);
   }
 
   else
   {
-    MinY = CGRectGetMaxY(a3);
+    MinY = CGRectGetMaxY(frame);
   }
 
   [(_UIDragDestinationIndicatorView *)self positionVerticallyCenteredInFrame:x, MinY, width, 0.0];
 }
 
-- (void)positionHorizontallyCenteredInFrame:(CGRect)a3
+- (void)positionHorizontallyCenteredInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(_UIDragDestinationIndicatorView *)self scaleFactor];
   v9 = v8 + v8;
   v12.origin.x = x;
@@ -84,9 +84,9 @@
   [(UIView *)self setFrame:v10, y, v9, height];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(_UIDragDestinationIndicatorView *)self scaleFactor:a3.origin.x];
+  [(_UIDragDestinationIndicatorView *)self scaleFactor:rect.origin.x];
   v5 = v4;
   [(UIView *)self bounds];
   x = v24.origin.x;
@@ -179,8 +179,8 @@
   v22 = v20;
   [v20 moveToPoint:{MinX, MidY}];
   [v22 addLineToPoint:{MaxX, v15}];
-  v21 = [(UIView *)self tintColor];
-  [v21 set];
+  tintColor = [(UIView *)self tintColor];
+  [tintColor set];
 
   [v22 setLineWidth:v17];
   [v22 stroke];

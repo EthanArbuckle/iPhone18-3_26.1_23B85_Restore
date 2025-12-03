@@ -1,43 +1,43 @@
 @interface TUIVisibilityCollector
 - (BOOL)_computeVisible;
-- (BOOL)q_updateVisible:(BOOL)a3;
+- (BOOL)q_updateVisible:(BOOL)visible;
 - (CGSize)q_visibleBoundsSize;
-- (TUIVisibilityCollector)initWithController:(id)a3 provider:(id)a4 identifier:(id)a5;
+- (TUIVisibilityCollector)initWithController:(id)controller provider:(id)provider identifier:(id)identifier;
 - (TUIVisibilityCollector)parent;
 - (TUIVisibilityProviding)provider;
 - (double)_now;
 - (id)children;
-- (id)q_computeChangeNodeForTracker:(id)a3 anyChange:(BOOL *)a4 rootVisibleSize:(CGSize)a5 needsUpdate:(BOOL)a6 needUpdateSet:(id)a7;
-- (void)_addChild:(id)a3;
-- (void)_removeChild:(id)a3;
-- (void)becameHiddenAtTime:(double)a3;
-- (void)becameVisibleAtTime:(double)a3;
+- (id)q_computeChangeNodeForTracker:(id)tracker anyChange:(BOOL *)change rootVisibleSize:(CGSize)size needsUpdate:(BOOL)update needUpdateSet:(id)set;
+- (void)_addChild:(id)child;
+- (void)_removeChild:(id)child;
+- (void)becameHiddenAtTime:(double)time;
+- (void)becameVisibleAtTime:(double)time;
 - (void)teardown;
-- (void)teardownAtTime:(double)a3;
+- (void)teardownAtTime:(double)time;
 - (void)updateSections;
-- (void)updateSectionsAtTime:(double)a3;
+- (void)updateSectionsAtTime:(double)time;
 - (void)updateVisible;
-- (void)updateVisibleAtTime:(double)a3;
+- (void)updateVisibleAtTime:(double)time;
 - (void)updateVisibleBounds;
-- (void)updateVisibleBoundsAtTime:(double)a3;
+- (void)updateVisibleBoundsAtTime:(double)time;
 @end
 
 @implementation TUIVisibilityCollector
 
-- (TUIVisibilityCollector)initWithController:(id)a3 provider:(id)a4 identifier:(id)a5
+- (TUIVisibilityCollector)initWithController:(id)controller provider:(id)provider identifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  providerCopy = provider;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = TUIVisibilityCollector;
   v11 = [(TUIVisibilityCollector *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_controller, v8);
-    objc_storeWeak(&v12->_provider, v9);
-    objc_storeStrong(&v12->_identifier, a5);
+    objc_storeWeak(&v11->_controller, controllerCopy);
+    objc_storeWeak(&v12->_provider, providerCopy);
+    objc_storeStrong(&v12->_identifier, identifier);
     *(v12 + 88) &= 0xF0u;
     size = CGRectNull.size;
     v12->_q_visibleBounds.origin = CGRectNull.origin;
@@ -65,12 +65,12 @@
   [(TUIVisibilityCollector *)self updateSectionsAtTime:v3];
 }
 
-- (void)updateSectionsAtTime:(double)a3
+- (void)updateSectionsAtTime:(double)time
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
   WeakRetained = objc_loadWeakRetained(&self->_provider);
-  v6 = [WeakRetained visibilityProviderSections];
-  v7 = [v6 copy];
+  visibilityProviderSections = [WeakRetained visibilityProviderSections];
+  v7 = [visibilityProviderSections copy];
 
   v8 = objc_loadWeakRetained(&self->_controller);
   v10[0] = _NSConcreteStackBlock;
@@ -80,7 +80,7 @@
   v10[4] = self;
   v11 = v7;
   v9 = v7;
-  [v8 queueUpdateForCollector:self time:v10 block:a3];
+  [v8 queueUpdateForCollector:self time:v10 block:time];
 }
 
 - (void)updateVisibleBounds
@@ -91,13 +91,13 @@
   [(TUIVisibilityCollector *)self updateVisibleBoundsAtTime:v3];
 }
 
-- (void)updateVisibleBoundsAtTime:(double)a3
+- (void)updateVisibleBoundsAtTime:(double)time
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
   WeakRetained = objc_loadWeakRetained(&self->_provider);
   if ([WeakRetained visibilityProviderIsScrolling])
   {
-    v6 = a3 - self->_lastScrollUpdate;
+    v6 = time - self->_lastScrollUpdate;
 
     if (v6 <= 0.1)
     {
@@ -109,9 +109,9 @@
   {
   }
 
-  self->_lastScrollUpdate = a3;
+  self->_lastScrollUpdate = time;
   v7 = objc_loadWeakRetained(&self->_controller);
-  [v7 queueVisibleBoundsUpdateForCollector:self time:a3];
+  [v7 queueVisibleBoundsUpdateForCollector:self time:time];
 }
 
 - (void)teardown
@@ -122,7 +122,7 @@
   [(TUIVisibilityCollector *)self teardownAtTime:v3];
 }
 
-- (void)teardownAtTime:(double)a3
+- (void)teardownAtTime:(double)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   v8[0] = _NSConcreteStackBlock;
@@ -130,10 +130,10 @@
   v8[2] = sub_1A88C;
   v8[3] = &unk_25DE30;
   v8[4] = self;
-  [WeakRetained queueUpdateForCollector:self time:v8 block:a3];
+  [WeakRetained queueUpdateForCollector:self time:v8 block:time];
 
-  v6 = [(TUIVisibilityCollector *)self parent];
-  [v6 _removeChild:self];
+  parent = [(TUIVisibilityCollector *)self parent];
+  [parent _removeChild:self];
 
   v7 = objc_loadWeakRetained(&self->_controller);
   [v7 removeCollector:self];
@@ -142,31 +142,31 @@
 - (BOOL)_computeVisible
 {
   WeakRetained = objc_loadWeakRetained(&self->_provider);
-  v4 = [WeakRetained visibilityProviderIsVisible];
+  visibilityProviderIsVisible = [WeakRetained visibilityProviderIsVisible];
 
   v5 = objc_loadWeakRetained(&self->_parent);
   if (v5)
   {
     v6 = v5;
     v7 = objc_loadWeakRetained(&self->_parent);
-    v8 = [v7 _computeVisible];
+    _computeVisible = [v7 _computeVisible];
 
-    v4 &= v8;
+    visibilityProviderIsVisible &= _computeVisible;
   }
 
-  return v4 & 1;
+  return visibilityProviderIsVisible & 1;
 }
 
-- (void)becameVisibleAtTime:(double)a3
+- (void)becameVisibleAtTime:(double)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  [WeakRetained queueUpdateVisible:1 forCollector:self time:a3];
+  [WeakRetained queueUpdateVisible:1 forCollector:self time:time];
 }
 
-- (void)becameHiddenAtTime:(double)a3
+- (void)becameHiddenAtTime:(double)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  [WeakRetained queueUpdateVisible:0 forCollector:self time:a3];
+  [WeakRetained queueUpdateVisible:0 forCollector:self time:time];
 }
 
 - (void)updateVisible
@@ -176,25 +176,25 @@
   [(TUIVisibilityCollector *)self updateVisibleAtTime:v3];
 }
 
-- (void)updateVisibleAtTime:(double)a3
+- (void)updateVisibleAtTime:(double)time
 {
   if ([(TUIVisibilityCollector *)self _computeVisible])
   {
 
-    [(TUIVisibilityCollector *)self becameVisibleAtTime:a3];
+    [(TUIVisibilityCollector *)self becameVisibleAtTime:time];
   }
 
   else
   {
 
-    [(TUIVisibilityCollector *)self becameHiddenAtTime:a3];
+    [(TUIVisibilityCollector *)self becameHiddenAtTime:time];
   }
 }
 
-- (void)_addChild:(id)a3
+- (void)_addChild:(id)child
 {
-  v4 = a3;
-  if (v4)
+  childCopy = child;
+  if (childCopy)
   {
     currentChildren = self->_currentChildren;
     if (!currentChildren)
@@ -206,8 +206,8 @@
       currentChildren = self->_currentChildren;
     }
 
-    [(NSMutableArray *)currentChildren addObject:v4];
-    [v4 setParent:self];
+    [(NSMutableArray *)currentChildren addObject:childCopy];
+    [childCopy setParent:self];
     v8 = [(NSMutableArray *)self->_currentChildren copy];
     WeakRetained = objc_loadWeakRetained(&self->_controller);
     v11[0] = _NSConcreteStackBlock;
@@ -221,14 +221,14 @@
   }
 }
 
-- (void)_removeChild:(id)a3
+- (void)_removeChild:(id)child
 {
-  if (a3)
+  if (child)
   {
     currentChildren = self->_currentChildren;
-    v5 = a3;
-    [(NSMutableArray *)currentChildren removeObjectIdenticalTo:v5];
-    [v5 setParent:0];
+    childCopy = child;
+    [(NSMutableArray *)currentChildren removeObjectIdenticalTo:childCopy];
+    [childCopy setParent:0];
 
     v6 = [(NSMutableArray *)self->_currentChildren copy];
     WeakRetained = objc_loadWeakRetained(&self->_controller);
@@ -252,12 +252,12 @@
   return v4;
 }
 
-- (BOOL)q_updateVisible:(BOOL)a3
+- (BOOL)q_updateVisible:(BOOL)visible
 {
   v3 = *(self + 88);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ visible) & 1) == 0)
   {
-    if (a3)
+    if (visible)
     {
       v4 = 4;
     }
@@ -270,7 +270,7 @@
     *(self + 88) = v3 & 0xFB | v4;
   }
 
-  return ((v3 & 4) == 0) ^ a3 ^ 1;
+  return ((v3 & 4) == 0) ^ visible ^ 1;
 }
 
 - (CGSize)q_visibleBoundsSize
@@ -282,29 +282,29 @@
   return result;
 }
 
-- (id)q_computeChangeNodeForTracker:(id)a3 anyChange:(BOOL *)a4 rootVisibleSize:(CGSize)a5 needsUpdate:(BOOL)a6 needUpdateSet:(id)a7
+- (id)q_computeChangeNodeForTracker:(id)tracker anyChange:(BOOL *)change rootVisibleSize:(CGSize)size needsUpdate:(BOOL)update needUpdateSet:(id)set
 {
-  height = a5.height;
-  width = a5.width;
-  v13 = a3;
-  v81 = a7;
+  height = size.height;
+  width = size.width;
+  trackerCopy = tracker;
+  setCopy = set;
   if ((*(self + 88) & 1) == 0)
   {
     v14 = 0;
     goto LABEL_86;
   }
 
-  if (a6)
+  if (update)
   {
     v80 = 1;
   }
 
   else
   {
-    v80 = [v81 containsObject:self];
+    v80 = [setCopy containsObject:self];
   }
 
-  v15 = [(NSMapTable *)self->_q_trackerStateMap objectForKey:v13];
+  v15 = [(NSMapTable *)self->_q_trackerStateMap objectForKey:trackerCopy];
   if (v15)
   {
     v16 = v15;
@@ -313,7 +313,7 @@
   else
   {
     v16 = objc_alloc_init(_TUIVisibilityState);
-    [(NSMapTable *)self->_q_trackerStateMap setObject:v16 forKey:v13];
+    [(NSMapTable *)self->_q_trackerStateMap setObject:v16 forKey:trackerCopy];
     v80 = 1;
     if (!v16)
     {
@@ -372,7 +372,7 @@ LABEL_10:
                   v96 = height;
                   v91 = v22;
                   v92 = v23;
-                  [v13 enumerateAttributesInSection:v29 block:v90];
+                  [trackerCopy enumerateAttributesInSection:v29 block:v90];
                 }
               }
             }
@@ -449,12 +449,12 @@ LABEL_32:
         }
 
         v43 = *(*(&v86 + 1) + 8 * j);
-        v44 = [v43 q_computeChangeNodeForTracker:v13 anyChange:a4 rootVisibleSize:v20 needsUpdate:v81 needUpdateSet:{width, height}];
-        v45 = [v43 identifier];
-        v46 = v45;
+        v44 = [v43 q_computeChangeNodeForTracker:trackerCopy anyChange:change rootVisibleSize:v20 needsUpdate:setCopy needUpdateSet:{width, height}];
+        identifier = [v43 identifier];
+        v46 = identifier;
         if (v44)
         {
-          v47 = v45 == 0;
+          v47 = identifier == 0;
         }
 
         else
@@ -561,7 +561,7 @@ LABEL_32:
 
     if (v55 | v56)
     {
-      *a4 = 1;
+      *change = 1;
     }
 
     if ([v56 count])

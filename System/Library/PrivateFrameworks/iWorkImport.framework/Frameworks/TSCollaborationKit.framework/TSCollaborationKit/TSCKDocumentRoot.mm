@@ -1,8 +1,8 @@
 @interface TSCKDocumentRoot
 - (BOOL)hasICloudConflict;
 - (BOOL)hasICloudTeardownObserver;
-- (BOOL)shouldDropOperationHistoryWithDocumentRevision:(id)a3;
-- (TSCKDocumentRoot)initWithContext:(id)a3;
+- (BOOL)shouldDropOperationHistoryWithDocumentRevision:(id)revision;
+- (TSCKDocumentRoot)initWithContext:(id)context;
 - (TSCKDocumentRootDelegate)tsck_delegate;
 - (id)additionalDocumentSupportPropertiesForWrite;
 - (id)boostPrimaryThreadQualityOfService;
@@ -10,11 +10,11 @@
 - (id)currentAuthorShareParticipantID;
 - (void)backgroundDocumentDidLoad;
 - (void)dealloc;
-- (void)documentDidLoadWithCommandDispatcher:(id)a3 commandExecutor:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)notifyICloudTeardownObserversWithReason:(unint64_t)a3;
-- (void)removeICloudTeardownObserver:(int64_t)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)documentDidLoadWithCommandDispatcher:(id)dispatcher commandExecutor:(id)executor;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)notifyICloudTeardownObserversWithReason:(unint64_t)reason;
+- (void)removeICloudTeardownObserver:(int64_t)observer;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 - (void)willClose;
 @end
 
@@ -28,11 +28,11 @@
   return v5;
 }
 
-- (TSCKDocumentRoot)initWithContext:(id)a3
+- (TSCKDocumentRoot)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSCKDocumentRoot;
-  return [(TSCKDocumentRoot *)&v4 initWithContext:a3];
+  return [(TSCKDocumentRoot *)&v4 initWithContext:context];
 }
 
 - (void)dealloc
@@ -91,11 +91,11 @@
   [(TSCKDocumentRoot *)&v2 backgroundDocumentDidLoad];
 }
 
-- (void)documentDidLoadWithCommandDispatcher:(id)a3 commandExecutor:(id)a4
+- (void)documentDidLoadWithCommandDispatcher:(id)dispatcher commandExecutor:(id)executor
 {
   v4.receiver = self;
   v4.super_class = TSCKDocumentRoot;
-  [(TSCKDocumentRoot *)&v4 documentDidLoadWithCommandDispatcher:a3 commandExecutor:a4];
+  [(TSCKDocumentRoot *)&v4 documentDidLoadWithCommandDispatcher:dispatcher commandExecutor:executor];
 }
 
 - (void)willClose
@@ -118,19 +118,19 @@
   return v8;
 }
 
-- (BOOL)shouldDropOperationHistoryWithDocumentRevision:(id)a3
+- (BOOL)shouldDropOperationHistoryWithDocumentRevision:(id)revision
 {
-  v4 = a3;
+  revisionCopy = revision;
   if (objc_msgSend_shouldDropCachedCollaborationData(self, v5, v6, v7))
   {
     LOBYTE(v11) = 1;
   }
 
-  else if (v4)
+  else if (revisionCopy)
   {
     v12 = objc_msgSend_context(self, v8, v9, v10);
     v16 = objc_msgSend_documentRevision(v12, v13, v14, v15);
-    v11 = objc_msgSend_isEqual_(v16, v17, v4, v18) ^ 1;
+    v11 = objc_msgSend_isEqual_(v16, v17, revisionCopy, v18) ^ 1;
   }
 
   else
@@ -141,26 +141,26 @@
   return v11;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v4.receiver = self;
   v4.super_class = TSCKDocumentRoot;
-  [(TSCKDocumentRoot *)&v4 loadFromArchive:a3 unarchiver:a4];
+  [(TSCKDocumentRoot *)&v4 loadFromArchive:archive unarchiver:unarchiver];
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v4.receiver = self;
   v4.super_class = TSCKDocumentRoot;
-  [(TSCKDocumentRoot *)&v4 saveToArchive:a3 archiver:a4];
+  [(TSCKDocumentRoot *)&v4 saveToArchive:archive archiver:archiver];
 }
 
 - (id)additionalDocumentSupportPropertiesForWrite
 {
   v13.receiver = self;
   v13.super_class = TSCKDocumentRoot;
-  v2 = [(TSCKDocumentRoot *)&v13 additionalDocumentSupportPropertiesForWrite];
-  v6 = objc_msgSend_mutableCopy(v2, v3, v4, v5);
+  additionalDocumentSupportPropertiesForWrite = [(TSCKDocumentRoot *)&v13 additionalDocumentSupportPropertiesForWrite];
+  v6 = objc_msgSend_mutableCopy(additionalDocumentSupportPropertiesForWrite, v3, v4, v5);
   v9 = v6;
   if (v6)
   {
@@ -177,10 +177,10 @@
   return v11;
 }
 
-- (void)removeICloudTeardownObserver:(int64_t)a3
+- (void)removeICloudTeardownObserver:(int64_t)observer
 {
   v36 = *MEMORY[0x277D85DE8];
-  if ((objc_msgSend_isMainThread(MEMORY[0x277CCACC8], a2, a3, v3) & 1) == 0)
+  if ((objc_msgSend_isMainThread(MEMORY[0x277CCACC8], a2, observer, v3) & 1) == 0)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSCKDocumentRoot removeICloudTeardownObserver:]", v8);
@@ -210,7 +210,7 @@
         }
 
         v27 = *(*(&v31 + 1) + 8 * i);
-        if (v24 || objc_msgSend_identifer(*(*(&v31 + 1) + 8 * i), v20, v21, v22) != a3)
+        if (v24 || objc_msgSend_identifer(*(*(&v31 + 1) + 8 * i), v20, v21, v22) != observer)
         {
           objc_msgSend_suspendedCollaboration(v27, v20, v21, v22);
         }
@@ -241,10 +241,10 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyICloudTeardownObserversWithReason:(unint64_t)a3
+- (void)notifyICloudTeardownObserversWithReason:(unint64_t)reason
 {
   v34 = *MEMORY[0x277D85DE8];
-  if ((objc_msgSend_isMainThread(MEMORY[0x277CCACC8], a2, a3, v3) & 1) == 0)
+  if ((objc_msgSend_isMainThread(MEMORY[0x277CCACC8], a2, reason, v3) & 1) == 0)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSCKDocumentRoot notifyICloudTeardownObserversWithReason:]", v8);
@@ -275,7 +275,7 @@
           objc_enumerationMutation(v22);
         }
 
-        objc_msgSend_invokeWithDocumentRoot_reason_(*(*(&v29 + 1) + 8 * v27++), v24, self, a3);
+        objc_msgSend_invokeWithDocumentRoot_reason_(*(*(&v29 + 1) + 8 * v27++), v24, self, reason);
       }
 
       while (v25 != v27);

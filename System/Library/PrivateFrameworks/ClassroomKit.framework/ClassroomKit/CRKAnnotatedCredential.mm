@@ -1,24 +1,24 @@
 @interface CRKAnnotatedCredential
-- (BOOL)isEqual:(id)a3;
-- (CRKAnnotatedCredential)initWithCredential:(id)a3 annotation:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CRKAnnotatedCredential)initWithCredential:(id)credential annotation:(id)annotation;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CRKAnnotatedCredential
 
-- (CRKAnnotatedCredential)initWithCredential:(id)a3 annotation:(id)a4
+- (CRKAnnotatedCredential)initWithCredential:(id)credential annotation:(id)annotation
 {
-  v7 = a3;
-  v8 = a4;
+  credentialCopy = credential;
+  annotationCopy = annotation;
   v14.receiver = self;
   v14.super_class = CRKAnnotatedCredential;
   v9 = [(CRKAnnotatedCredential *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_credential, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_credential, credential);
+    v11 = [annotationCopy copy];
     annotation = v10->_annotation;
     v10->_annotation = v11;
   }
@@ -28,18 +28,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CRKAnnotatedCredential *)self credential];
-  v4 = [v3 hash];
-  v5 = [(CRKAnnotatedCredential *)self annotation];
-  v6 = [v5 hash];
+  credential = [(CRKAnnotatedCredential *)self credential];
+  v4 = [credential hash];
+  annotation = [(CRKAnnotatedCredential *)self annotation];
+  v6 = [annotation hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v5 = [@"credential annotation"];
   v6 = [v5 mutableCopy];
 
@@ -51,10 +51,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -83,7 +83,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKAnnotatedCredential *)v8 valueForKey:v16];
+          v18 = [(CRKAnnotatedCredential *)selfCopy valueForKey:v16];
           v19 = [(CRKAnnotatedCredential *)v17 valueForKey:v16];
 
           if (v18 | v19)
@@ -130,9 +130,9 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKAnnotatedCredential *)self credential];
-  v6 = [(CRKAnnotatedCredential *)self annotation];
-  v7 = [v3 stringWithFormat:@"<%@: %p { credential = %@, annotation = %@ }>", v4, self, v5, v6];
+  credential = [(CRKAnnotatedCredential *)self credential];
+  annotation = [(CRKAnnotatedCredential *)self annotation];
+  v7 = [v3 stringWithFormat:@"<%@: %p { credential = %@, annotation = %@ }>", v4, self, credential, annotation];
 
   return v7;
 }

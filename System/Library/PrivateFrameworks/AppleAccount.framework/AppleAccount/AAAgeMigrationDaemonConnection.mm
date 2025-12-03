@@ -1,8 +1,8 @@
 @interface AAAgeMigrationDaemonConnection
-- (AAAgeMigrationDaemonConnection)initWithListenerEndpoint:(id)a3;
+- (AAAgeMigrationDaemonConnection)initWithListenerEndpoint:(id)endpoint;
 - (id)_connection;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_connectionInterruptionHandler;
 - (void)_connectionInvalidationHandler;
 - (void)dealloc;
@@ -10,16 +10,16 @@
 
 @implementation AAAgeMigrationDaemonConnection
 
-- (AAAgeMigrationDaemonConnection)initWithListenerEndpoint:(id)a3
+- (AAAgeMigrationDaemonConnection)initWithListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v9.receiver = self;
   v9.super_class = AAAgeMigrationDaemonConnection;
   v6 = [(AAAgeMigrationDaemonConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listenerEndpoint, a3);
+    objc_storeStrong(&v6->_listenerEndpoint, endpoint);
     v7->_unfairLock._os_unfair_lock_opaque = 0;
   }
 
@@ -43,30 +43,30 @@
   [(AAAgeMigrationDaemonConnection *)&v5 dealloc];
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [(AAAgeMigrationDaemonConnection *)a2 remoteObjectProxyWithErrorHandler:?];
   }
 
-  v6 = [(AAAgeMigrationDaemonConnection *)self _connection];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v5];
+  _connection = [(AAAgeMigrationDaemonConnection *)self _connection];
+  v7 = [_connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v7;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [(AAAgeMigrationDaemonConnection *)a2 synchronousRemoteObjectProxyWithErrorHandler:?];
   }
 
-  v6 = [(AAAgeMigrationDaemonConnection *)self _connection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v5];
+  _connection = [(AAAgeMigrationDaemonConnection *)self _connection];
+  v7 = [_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v7;
 }

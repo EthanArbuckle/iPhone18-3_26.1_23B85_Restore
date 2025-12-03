@@ -1,13 +1,13 @@
 @interface WLKSportsFavoriteResponse
-- (WLKSportsFavoriteResponse)initWithDictionary:(id)a3;
+- (WLKSportsFavoriteResponse)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WLKSportsFavoriteResponse
 
-- (WLKSportsFavoriteResponse)initWithDictionary:(id)a3
+- (WLKSportsFavoriteResponse)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = WLKSportsFavoriteResponse;
   v5 = [(WLKSportsFavoriteResponse *)&v22 init];
@@ -18,7 +18,7 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [v4 wlk_arrayForKey:{@"data", 0}];
+    v7 = [dictionaryCopy wlk_arrayForKey:{@"data", 0}];
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v8)
     {

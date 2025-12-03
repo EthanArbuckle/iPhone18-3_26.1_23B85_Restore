@@ -32,7 +32,7 @@
   v3 = OBJC_IVAR___NCRemoteNotificationsManager_protectedFeatureIsAvailable;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v4 + 20));
   v6 = *(v4 + 16);

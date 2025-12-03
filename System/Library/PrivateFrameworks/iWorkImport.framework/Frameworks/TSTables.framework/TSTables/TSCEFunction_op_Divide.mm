@@ -1,23 +1,23 @@
 @interface TSCEFunction_op_Divide
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_op_Divide
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
-  v9 = *(*a5 + 8);
+  v8 = **arguments;
+  v9 = *(*arguments + 8);
   v40 = 0;
-  v11 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v10, a3, a4, 0, &v40);
+  v11 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v10, context, spec, 0, &v40);
   v12 = v40;
   v39 = v12;
-  v14 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v9, v13, a3, a4, 1, &v39);
+  v14 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v9, v13, context, spec, 1, &v39);
   v15 = v39;
 
   if (v15)
   {
-    v19 = objc_msgSend_raiseErrorOrConvert_(a3, v16, v15, v17, v18);
+    v19 = objc_msgSend_raiseErrorOrConvert_(context, v16, v15, v17, v18);
     goto LABEL_12;
   }
 
@@ -28,14 +28,14 @@
   {
     if (v8)
     {
-      objc_msgSend_formatWithContext_(v8, v21, a3, v23, v24);
+      objc_msgSend_formatWithContext_(v8, v21, context, v23, v24);
       if (v9)
       {
 LABEL_7:
-        objc_msgSend_formatWithContext_(v9, v21, a3, v23, v24);
+        objc_msgSend_formatWithContext_(v9, v21, context, v23, v24);
 LABEL_10:
         TSCEFormat::formatByMergingWithFormat(&v36, &v35, v22, v23, v24, &v37);
-        v30 = objc_msgSend_locale(a3, v26, v27, v28, v29);
+        v30 = objc_msgSend_locale(context, v26, v27, v28, v29);
         TSCEFormat::formatByModifyingFormatAccordingToCurrencyStateOfValue(&v37, v20, v30, &v36);
         TSCEFormat::operator=(&v37, &v36);
 
@@ -59,7 +59,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v25 = objc_msgSend_raiseErrorOrConvert_(a3, v21, v15, v23, v24);
+  v25 = objc_msgSend_raiseErrorOrConvert_(context, v21, v15, v23, v24);
 LABEL_11:
   v19 = v25;
 

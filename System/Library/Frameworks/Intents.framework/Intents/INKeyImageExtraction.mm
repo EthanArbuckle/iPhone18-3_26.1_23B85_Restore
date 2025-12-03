@@ -1,34 +1,34 @@
 @interface INKeyImageExtraction
 - (INKeyImageExtraction)init;
-- (INKeyImageExtraction)initWithCoder:(id)a3;
+- (INKeyImageExtraction)initWithCoder:(id)coder;
 - (NSDictionary)keyImagesByType;
 - (NSString)serviceIdentifier;
-- (id)retrieveImageSynchronouslyForIdentifier:(id)a3 error:(id *)a4;
-- (id)storeImageSynchronously:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)purgeImageWithIdentifier:(id)a3 completion:(id)a4;
-- (void)retrieveImageWithIdentifier:(id)a3 completion:(id)a4;
+- (id)retrieveImageSynchronouslyForIdentifier:(id)identifier error:(id *)error;
+- (id)storeImageSynchronously:(id)synchronously error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)purgeImageWithIdentifier:(id)identifier completion:(id)completion;
+- (void)retrieveImageWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation INKeyImageExtraction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(INKeyImageExtraction *)self proxyIdentifier];
-  [v4 encodeObject:v5 forKey:@"proxyIdentifier"];
+  coderCopy = coder;
+  proxyIdentifier = [(INKeyImageExtraction *)self proxyIdentifier];
+  [coderCopy encodeObject:proxyIdentifier forKey:@"proxyIdentifier"];
 
-  v6 = [(INKeyImageExtraction *)self keyImagesByType];
-  [v4 encodeObject:v6 forKey:@"keyImagesByType"];
+  keyImagesByType = [(INKeyImageExtraction *)self keyImagesByType];
+  [coderCopy encodeObject:keyImagesByType forKey:@"keyImagesByType"];
 }
 
-- (INKeyImageExtraction)initWithCoder:(id)a3
+- (INKeyImageExtraction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(INKeyImageExtraction *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proxyIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxyIdentifier"];
     [(INKeyImageExtraction *)v5 setProxyIdentifier:v6];
 
     v7 = MEMORY[0x1E695DFD8];
@@ -36,13 +36,13 @@
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
     v10 = +[INImage _classesInCluster];
     v11 = [v9 setByAddingObjectsFromArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"keyImage"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"keyImage"];
     [(INKeyImageExtraction *)v5 setKeyImagesByType:v12];
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = +[INImage _classesInCluster];
     v15 = [v13 setWithArray:v14];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"keyImage"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"keyImage"];
 
     if (v16)
     {
@@ -56,78 +56,78 @@
 - (NSString)serviceIdentifier
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(INKeyImageExtraction *)self proxyIdentifier];
-  v4 = [v2 stringWithFormat:@"com.apple.INKeyImageExtraction-%@", v3];
+  proxyIdentifier = [(INKeyImageExtraction *)self proxyIdentifier];
+  v4 = [v2 stringWithFormat:@"com.apple.INKeyImageExtraction-%@", proxyIdentifier];
 
   return v4;
 }
 
-- (id)retrieveImageSynchronouslyForIdentifier:(id)a3 error:(id *)a4
+- (id)retrieveImageSynchronouslyForIdentifier:(id)identifier error:(id *)error
 {
-  v5 = [a3 componentsSeparatedByString:{@"|", a4}];
-  v6 = [v5 firstObject];
-  v7 = [(INKeyImageExtraction *)self proxyIdentifier];
-  v8 = [v6 isEqualToString:v7];
+  v5 = [identifier componentsSeparatedByString:{@"|", error}];
+  firstObject = [v5 firstObject];
+  proxyIdentifier = [(INKeyImageExtraction *)self proxyIdentifier];
+  v8 = [firstObject isEqualToString:proxyIdentifier];
 
   if (v8)
   {
     if ([v5 count] == 2)
     {
       v9 = [v5 objectAtIndex:1];
-      v10 = [v9 integerValue];
+      integerValue = [v9 integerValue];
 
       keyImagesByType = self->_keyImagesByType;
-      v12 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
-      v13 = [(NSMutableDictionary *)keyImagesByType objectForKey:v12];
+      v12 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
+      keyImage = [(NSMutableDictionary *)keyImagesByType objectForKey:v12];
     }
 
     else
     {
-      v13 = [(INKeyImageExtraction *)self keyImage];
+      keyImage = [(INKeyImageExtraction *)self keyImage];
     }
   }
 
   else
   {
-    v13 = 0;
+    keyImage = 0;
   }
 
-  return v13;
+  return keyImage;
 }
 
-- (id)storeImageSynchronously:(id)a3 error:(id *)a4
+- (id)storeImageSynchronously:(id)synchronously error:(id *)error
 {
   keyImagesByType = self->_keyImagesByType;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
+  synchronouslyCopy = synchronously;
   v8 = [v6 numberWithInteger:{-[INKeyImageExtraction _imageTypeToStore](self, "_imageTypeToStore")}];
-  [(NSMutableDictionary *)keyImagesByType setObject:v7 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)keyImagesByType setObject:synchronouslyCopy forKeyedSubscript:v8];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(INKeyImageExtraction *)self proxyIdentifier];
+  proxyIdentifier = [(INKeyImageExtraction *)self proxyIdentifier];
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:{-[INKeyImageExtraction _imageTypeToStore](self, "_imageTypeToStore")}];
-  v12 = [v9 stringWithFormat:@"%@|%@", v10, v11];
+  v12 = [v9 stringWithFormat:@"%@|%@", proxyIdentifier, v11];
 
   return v12;
 }
 
-- (void)purgeImageWithIdentifier:(id)a3 completion:(id)a4
+- (void)purgeImageWithIdentifier:(id)identifier completion:(id)completion
 {
-  v15 = a4;
-  v6 = [a3 componentsSeparatedByString:@"|"];
-  v7 = [v6 firstObject];
-  v8 = [(INKeyImageExtraction *)self proxyIdentifier];
-  v9 = [v7 isEqualToString:v8];
+  completionCopy = completion;
+  v6 = [identifier componentsSeparatedByString:@"|"];
+  firstObject = [v6 firstObject];
+  proxyIdentifier = [(INKeyImageExtraction *)self proxyIdentifier];
+  v9 = [firstObject isEqualToString:proxyIdentifier];
 
   if (v9)
   {
     if ([v6 count] == 2)
     {
       v10 = [v6 objectAtIndex:1];
-      v11 = [v10 integerValue];
+      integerValue = [v10 integerValue];
 
       keyImagesByType = self->_keyImagesByType;
-      v13 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
+      v13 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
       [(NSMutableDictionary *)keyImagesByType removeObjectForKey:v13];
     }
 
@@ -144,21 +144,21 @@
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"IntentsErrorDomain" code:6000 userInfo:0];
   }
 
-  if (v15)
+  if (completionCopy)
   {
-    v15[2](v15, v14);
+    completionCopy[2](completionCopy, v14);
   }
 }
 
-- (void)retrieveImageWithIdentifier:(id)a3 completion:(id)a4
+- (void)retrieveImageWithIdentifier:(id)identifier completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
     v9 = 0;
-    v6 = a4;
-    v7 = [(INKeyImageExtraction *)self retrieveImageSynchronouslyForIdentifier:a3 error:&v9];
+    completionCopy = completion;
+    v7 = [(INKeyImageExtraction *)self retrieveImageSynchronouslyForIdentifier:identifier error:&v9];
     v8 = v9;
-    v6[2](v6, v7, v8);
+    completionCopy[2](completionCopy, v7, v8);
   }
 }
 
@@ -176,13 +176,13 @@
   v2 = [(INKeyImageExtraction *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
-    [(INKeyImageExtraction *)v2 setProxyIdentifier:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [(INKeyImageExtraction *)v2 setProxyIdentifier:uUIDString];
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     keyImagesByType = v2->_keyImagesByType;
-    v2->_keyImagesByType = v5;
+    v2->_keyImagesByType = dictionary;
 
     v2->_imageTypeToStore = 0;
   }

@@ -1,6 +1,6 @@
 @interface NPKPassSyncEngine
-- (NPKPassSyncEngine)initWithCoder:(id)a3;
-- (NPKPassSyncEngine)initWithRole:(unint64_t)a3;
+- (NPKPassSyncEngine)initWithCoder:(id)coder;
+- (NPKPassSyncEngine)initWithRole:(unint64_t)role;
 - (NPKPassSyncEngineDataSource)dataSource;
 - (NPKPassSyncEngineDelegate)delegate;
 - (NPKPassSyncState)candidateState;
@@ -8,58 +8,58 @@
 - (NPKPassSyncState)reconciledState;
 - (NSString)engineName;
 - (void)_engineStateChanged;
-- (void)_finishedProcessingChange:(id)a3;
-- (void)_handleStateChange:(id)a3 attemptRecoverReconcileStateVersionMismatch:(BOOL)a4;
-- (void)_requestAddPassData:(id)a3 forSyncStateItem:(id)a4 completion:(id)a5;
-- (void)_requestRemovePassWithUniqueID:(id)a3 completion:(id)a4;
-- (void)_requestUpdatePassData:(id)a3 forSyncStateItem:(id)a4 baseManifestHashForPartialUpdate:(id)a5 remoteAssetsForPartialUpdate:(id)a6 completion:(id)a7;
+- (void)_finishedProcessingChange:(id)change;
+- (void)_handleStateChange:(id)change attemptRecoverReconcileStateVersionMismatch:(BOOL)mismatch;
+- (void)_requestAddPassData:(id)data forSyncStateItem:(id)item completion:(id)completion;
+- (void)_requestRemovePassWithUniqueID:(id)d completion:(id)completion;
+- (void)_requestUpdatePassData:(id)data forSyncStateItem:(id)item baseManifestHashForPartialUpdate:(id)update remoteAssetsForPartialUpdate:(id)partialUpdate completion:(id)completion;
 - (void)_sendNextStateChange;
-- (void)_sendProposedReconciledState:(id)a3;
-- (void)_sendReconciledStateAcceptedWithHash:(id)a3;
-- (void)_sendReconciledStateUnrecognizedWithHash:(id)a3 version:(unint64_t)a4 currentPassSyncState:(id)a5;
-- (void)_sendStateChange:(id)a3;
-- (void)_shouldProcessAddOrUpdateChangeOfType:(unint64_t)a3 changeSyncStateItem:(id)a4 librarySyncStateItem:(id)a5 reconciledSyncStateItem:(id)a6 candidateChange:(id)a7 shouldApplyToPassLibrary:(BOOL *)a8 shouldApplyToReconciledState:(BOOL *)a9;
+- (void)_sendProposedReconciledState:(id)state;
+- (void)_sendReconciledStateAcceptedWithHash:(id)hash;
+- (void)_sendReconciledStateUnrecognizedWithHash:(id)hash version:(unint64_t)version currentPassSyncState:(id)state;
+- (void)_sendStateChange:(id)change;
+- (void)_shouldProcessAddOrUpdateChangeOfType:(unint64_t)type changeSyncStateItem:(id)item librarySyncStateItem:(id)stateItem reconciledSyncStateItem:(id)syncStateItem candidateChange:(id)change shouldApplyToPassLibrary:(BOOL *)library shouldApplyToReconciledState:(BOOL *)state;
 - (void)_unexpectedEventOccurred;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleProposedReconciledState:(id)a3;
-- (void)handleReconciledStateAcceptedWithHash:(id)a3;
-- (void)handleReconciledStateUnrecognizedWithHash:(id)a3 version:(unint64_t)a4 passSyncState:(id)a5;
-- (void)setBackupState:(id)a3;
-- (void)setCandidateChange:(id)a3;
-- (void)setCandidateState:(id)a3;
-- (void)setLibraryState:(id)a3;
-- (void)setMinSyncStateVersion:(unint64_t)a3;
-- (void)setReconciledState:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleProposedReconciledState:(id)state;
+- (void)handleReconciledStateAcceptedWithHash:(id)hash;
+- (void)handleReconciledStateUnrecognizedWithHash:(id)hash version:(unint64_t)version passSyncState:(id)state;
+- (void)setBackupState:(id)state;
+- (void)setCandidateChange:(id)change;
+- (void)setCandidateState:(id)state;
+- (void)setLibraryState:(id)state;
+- (void)setMinSyncStateVersion:(unint64_t)version;
+- (void)setReconciledState:(id)state;
 - (void)syncIfNecessary;
 @end
 
 @implementation NPKPassSyncEngine
 
-- (NPKPassSyncEngine)initWithRole:(unint64_t)a3
+- (NPKPassSyncEngine)initWithRole:(unint64_t)role
 {
   v5.receiver = self;
   v5.super_class = NPKPassSyncEngine;
   result = [(NPKPassSyncEngine *)&v5 init];
   if (result)
   {
-    result->_engineRole = a3;
+    result->_engineRole = role;
     result->_requireAppleAccountForPaymentPasses = 1;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   libraryState = self->_libraryState;
-  v5 = a3;
-  [v5 encodeObject:libraryState forKey:@"libraryState"];
-  [v5 encodeObject:self->_reconciledState forKey:@"reconciledState"];
-  [v5 encodeObject:self->_backupState forKey:@"backupState"];
-  [v5 encodeObject:self->_candidateState forKey:@"candidateState"];
+  coderCopy = coder;
+  [coderCopy encodeObject:libraryState forKey:@"libraryState"];
+  [coderCopy encodeObject:self->_reconciledState forKey:@"reconciledState"];
+  [coderCopy encodeObject:self->_backupState forKey:@"backupState"];
+  [coderCopy encodeObject:self->_candidateState forKey:@"candidateState"];
   v7 = [(NPKPassSyncChange *)self->_candidateChange copy];
   [v7 setPassData:0];
-  [v5 encodeObject:v7 forKey:@"candidateChange"];
+  [coderCopy encodeObject:v7 forKey:@"candidateChange"];
   if (self->_engineRole)
   {
     v6 = @"Companion";
@@ -70,38 +70,38 @@
     v6 = @"Watch";
   }
 
-  [v5 encodeObject:v6 forKey:@"engineRole"];
+  [coderCopy encodeObject:v6 forKey:@"engineRole"];
 }
 
-- (NPKPassSyncEngine)initWithCoder:(id)a3
+- (NPKPassSyncEngine)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = NPKPassSyncEngine;
   v5 = [(NPKPassSyncEngine *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"libraryState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"libraryState"];
     libraryState = v5->_libraryState;
     v5->_libraryState = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reconciledState"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reconciledState"];
     reconciledState = v5->_reconciledState;
     v5->_reconciledState = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backupState"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backupState"];
     backupState = v5->_backupState;
     v5->_backupState = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidateState"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidateState"];
     candidateState = v5->_candidateState;
     v5->_candidateState = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidateChange"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidateChange"];
     candidateChange = v5->_candidateChange;
     v5->_candidateChange = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"engineRole"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"engineRole"];
     v5->_engineRole = [v16 isEqualToString:@"Companion"];
   }
 
@@ -124,8 +124,8 @@
 - (void)syncIfNecessary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(NPKPassSyncEngine *)self libraryState];
-  v4 = [(NPKPassSyncEngine *)self reconciledState];
+  libraryState = [(NPKPassSyncEngine *)self libraryState];
+  reconciledState = [(NPKPassSyncEngine *)self reconciledState];
   v5 = PKEqualObjects();
   v6 = pk_Sync_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -137,9 +137,9 @@
       v8 = pk_Sync_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(NPKPassSyncEngine *)self engineName];
+        engineName = [(NPKPassSyncEngine *)self engineName];
         v13 = 138412290;
-        v14 = v9;
+        v14 = engineName;
         _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Sync engine (%@): No sync necessary.", &v13, 0xCu);
       }
     }
@@ -152,13 +152,13 @@
       v10 = pk_Sync_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(NPKPassSyncEngine *)self engineName];
+        engineName2 = [(NPKPassSyncEngine *)self engineName];
         v13 = 138412802;
-        v14 = v11;
+        v14 = engineName2;
         v15 = 2112;
-        v16 = v3;
+        v16 = libraryState;
         v17 = 2112;
-        v18 = v4;
+        v18 = reconciledState;
         _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Sync is necessary.\n libraryState:%@\n reconciledState:%@", &v13, 0x20u);
       }
     }
@@ -169,11 +169,11 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleStateChange:(id)a3 attemptRecoverReconcileStateVersionMismatch:(BOOL)a4
+- (void)_handleStateChange:(id)change attemptRecoverReconcileStateVersionMismatch:(BOOL)mismatch
 {
-  v4 = a4;
+  mismatchCopy = mismatch;
   v145 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  changeCopy = change;
   v7 = pk_Sync_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -184,65 +184,65 @@
     {
       [(NPKPassSyncEngine *)self engineName];
       v106 = v99 = self;
-      v10 = v6;
-      v97 = v6;
-      v103 = [v6 changeUUID];
-      v98 = [v6 reconciledStateHash];
-      v11 = [v98 hexEncoding];
-      v95 = [v6 reconciledStateVersion];
-      v12 = NPKPassSyncChangeTypeToString([v6 changeType]);
-      v94 = [v10 uniqueID];
-      v13 = [v10 syncStateItem];
-      v96 = [v10 passData];
-      v14 = [v96 npkDescription];
-      v15 = [v10 baseManifestHashForPartialUpdate];
-      v16 = [v15 hexEncoding];
+      v10 = changeCopy;
+      v97 = changeCopy;
+      changeUUID = [changeCopy changeUUID];
+      reconciledStateHash = [changeCopy reconciledStateHash];
+      hexEncoding = [reconciledStateHash hexEncoding];
+      reconciledStateVersion = [changeCopy reconciledStateVersion];
+      v12 = NPKPassSyncChangeTypeToString([changeCopy changeType]);
+      uniqueID = [v10 uniqueID];
+      syncStateItem = [v10 syncStateItem];
+      passData = [v10 passData];
+      npkDescription = [passData npkDescription];
+      baseManifestHashForPartialUpdate = [v10 baseManifestHashForPartialUpdate];
+      hexEncoding2 = [baseManifestHashForPartialUpdate hexEncoding];
       [v10 remoteAssetsForPartialUpdate];
-      v17 = v100 = v4;
+      v17 = v100 = mismatchCopy;
       *buf = 138414594;
       v126 = v106;
       v127 = 2112;
-      v128 = v103;
+      v128 = changeUUID;
       v129 = 2112;
-      v130 = v11;
+      v130 = hexEncoding;
       v131 = 2048;
-      v132 = v95;
+      v132 = reconciledStateVersion;
       v133 = 2112;
       v134 = v12;
       v135 = 2112;
-      v136 = v94;
+      v136 = uniqueID;
       v137 = 2112;
-      v138 = v13;
+      v138 = syncStateItem;
       v139 = 2112;
-      v140 = v14;
+      v140 = npkDescription;
       v141 = 2112;
-      v142 = v16;
+      v142 = hexEncoding2;
       v143 = 2112;
       v144 = v17;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Received state change\n\tChange UUID: %@\n\tReconciled state hash: %@\n\tVersion:%lu\n\tChange type: %@\n\tunique ID: %@\n\tsync state item: %@\n\tpass data: %@\n\tbase manifest hash for partial update: %@\n\t remote assets for partial update: %@", buf, 0x66u);
 
-      v4 = v100;
+      mismatchCopy = v100;
       self = v99;
-      v6 = v97;
+      changeCopy = v97;
     }
   }
 
-  v18 = [(NPKPassSyncEngine *)self backupState];
-  v19 = v18;
-  if (v18)
+  backupState = [(NPKPassSyncEngine *)self backupState];
+  v19 = backupState;
+  if (backupState)
   {
-    v20 = [v18 syncStateHash];
-    v21 = [(NPKPassSyncEngine *)self reconciledState];
-    v22 = [v21 syncStateHash];
+    syncStateHash = [backupState syncStateHash];
+    reconciledState = [(NPKPassSyncEngine *)self reconciledState];
+    syncStateHash2 = [reconciledState syncStateHash];
 
-    v23 = [v6 reconciledStateHash];
+    reconciledStateHash2 = [changeCopy reconciledStateHash];
     if (PKEqualObjects())
     {
     }
 
     else
     {
-      v24 = [v6 reconciledStateHash];
+      reconciledStateHash3 = [changeCopy reconciledStateHash];
       v25 = PKEqualObjects();
 
       if (v25)
@@ -255,13 +255,13 @@
           v28 = pk_Sync_log();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [(NPKPassSyncEngine *)self engineName];
+            engineName = [(NPKPassSyncEngine *)self engineName];
             *buf = 138412802;
-            v126 = v29;
+            v126 = engineName;
             v127 = 2112;
-            v128 = v20;
+            v128 = syncStateHash;
             v129 = 2112;
-            v130 = v22;
+            v130 = syncStateHash2;
             _os_log_impl(&dword_25B300000, v28, OS_LOG_TYPE_DEFAULT, "Warning: Sync state engine (%@): State change based on backup hash (%@), not reconciled hash (%@); moving backup to reconciled", buf, 0x20u);
           }
         }
@@ -273,49 +273,49 @@
     }
   }
 
-  v30 = [v6 reconciledStateHash];
-  v31 = [(NPKPassSyncEngine *)self reconciledState];
-  v32 = [v31 syncStateHash];
+  reconciledStateHash4 = [changeCopy reconciledStateHash];
+  reconciledState2 = [(NPKPassSyncEngine *)self reconciledState];
+  syncStateHash3 = [reconciledState2 syncStateHash];
   if (PKEqualObjects())
   {
-    v33 = [v6 reconciledStateVersion];
-    v34 = [(NPKPassSyncEngine *)self reconciledState];
-    v35 = v4;
-    v36 = [v34 version];
+    reconciledStateVersion2 = [changeCopy reconciledStateVersion];
+    reconciledState3 = [(NPKPassSyncEngine *)self reconciledState];
+    v35 = mismatchCopy;
+    version = [reconciledState3 version];
 
-    v37 = v33 == v36;
-    v4 = v35;
+    v37 = reconciledStateVersion2 == version;
+    mismatchCopy = v35;
     if (!v37)
     {
       goto LABEL_22;
     }
 
-    v38 = [v6 changeType];
-    v39 = [v6 uniqueID];
+    changeType = [changeCopy changeType];
+    uniqueID2 = [changeCopy uniqueID];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __84__NPKPassSyncEngine__handleStateChange_attemptRecoverReconcileStateVersionMismatch___block_invoke;
     aBlock[3] = &unk_279947A80;
     aBlock[4] = self;
-    v40 = v6;
+    v40 = changeCopy;
     v124 = v40;
     v107 = _Block_copy(aBlock);
     v119[0] = MEMORY[0x277D85DD0];
     v119[1] = 3221225472;
     v119[2] = __84__NPKPassSyncEngine__handleStateChange_attemptRecoverReconcileStateVersionMismatch___block_invoke_82;
     v119[3] = &unk_279945958;
-    v122 = v38;
+    v122 = changeType;
     v119[4] = self;
     v41 = v40;
     v120 = v41;
-    v42 = v39;
+    v42 = uniqueID2;
     v121 = v42;
     v104 = _Block_copy(v119);
     v115[0] = MEMORY[0x277D85DD0];
     v115[1] = 3221225472;
     v115[2] = __84__NPKPassSyncEngine__handleStateChange_attemptRecoverReconcileStateVersionMismatch___block_invoke_84;
     v115[3] = &unk_279947AA8;
-    v118 = v38;
+    v118 = changeType;
     v115[4] = self;
     v43 = v41;
     v116 = v43;
@@ -323,9 +323,9 @@
     v117 = v44;
     v45 = _Block_copy(v115);
     v114 = 0;
-    if (v38 >= 2)
+    if (changeType >= 2)
     {
-      if (v38 != 2)
+      if (changeType != 2)
       {
         goto LABEL_45;
       }
@@ -335,19 +335,19 @@
 
     else
     {
-      v46 = [(NPKPassSyncEngine *)self libraryState];
-      v47 = [v46 syncStateItems];
-      v48 = [v47 objectForKey:v44];
+      libraryState = [(NPKPassSyncEngine *)self libraryState];
+      syncStateItems = [libraryState syncStateItems];
+      v48 = [syncStateItems objectForKey:v44];
 
-      v49 = [(NPKPassSyncEngine *)self reconciledState];
-      v50 = [v49 syncStateItems];
-      [v50 objectForKey:v44];
+      reconciledState4 = [(NPKPassSyncEngine *)self reconciledState];
+      syncStateItems2 = [reconciledState4 syncStateItems];
+      [syncStateItems2 objectForKey:v44];
       v101 = v44;
       v52 = v51 = v45;
 
-      v53 = [(NPKPassSyncEngine *)self candidateChange];
-      v54 = [v43 syncStateItem];
-      [(NPKPassSyncEngine *)self _shouldProcessAddOrUpdateChangeOfType:v38 changeSyncStateItem:v54 librarySyncStateItem:v48 reconciledSyncStateItem:v52 candidateChange:v53 shouldApplyToPassLibrary:&v114 + 1 shouldApplyToReconciledState:&v114];
+      candidateChange = [(NPKPassSyncEngine *)self candidateChange];
+      syncStateItem2 = [v43 syncStateItem];
+      [(NPKPassSyncEngine *)self _shouldProcessAddOrUpdateChangeOfType:changeType changeSyncStateItem:syncStateItem2 librarySyncStateItem:v48 reconciledSyncStateItem:v52 candidateChange:candidateChange shouldApplyToPassLibrary:&v114 + 1 shouldApplyToReconciledState:&v114];
 
       v45 = v51;
       v44 = v101;
@@ -367,12 +367,12 @@ LABEL_45:
             v87 = pk_Sync_log();
             if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
             {
-              v88 = [(NPKPassSyncEngine *)self engineName];
-              v89 = [v43 changeUUID];
+              engineName2 = [(NPKPassSyncEngine *)self engineName];
+              changeUUID2 = [v43 changeUUID];
               *buf = 138412546;
-              v126 = v88;
+              v126 = engineName2;
               v127 = 2112;
-              v128 = v89;
+              v128 = changeUUID2;
               _os_log_impl(&dword_25B300000, v87, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Not applying change to pass library, but applying to reconciled state and accepting\n\tChange UUID: %@", buf, 0x16u);
             }
           }
@@ -390,12 +390,12 @@ LABEL_45:
             v90 = pk_Sync_log();
             if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
             {
-              v91 = [(NPKPassSyncEngine *)self engineName];
-              v92 = [v43 changeUUID];
+              engineName3 = [(NPKPassSyncEngine *)self engineName];
+              changeUUID3 = [v43 changeUUID];
               *buf = 138412546;
-              v126 = v91;
+              v126 = engineName3;
               v127 = 2112;
-              v128 = v92;
+              v128 = changeUUID3;
               _os_log_impl(&dword_25B300000, v90, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Rejecting change\n\tChange UUID: %@", buf, 0x16u);
             }
           }
@@ -418,12 +418,12 @@ LABEL_56:
       v79 = pk_Sync_log();
       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
       {
-        v80 = [(NPKPassSyncEngine *)self engineName];
-        v81 = [v43 changeUUID];
+        engineName4 = [(NPKPassSyncEngine *)self engineName];
+        changeUUID4 = [v43 changeUUID];
         *buf = 138412546;
-        v126 = v80;
+        v126 = engineName4;
         v127 = 2112;
-        v128 = v81;
+        v128 = changeUUID4;
         _os_log_impl(&dword_25B300000, v79, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Applying change to pass library\n\tChange UUID: %@", buf, 0x16u);
       }
     }
@@ -446,47 +446,47 @@ LABEL_56:
   }
 
 LABEL_22:
-  v55 = [v6 reconciledStateVersion];
-  v56 = [(NPKPassSyncEngine *)self reconciledState];
-  v57 = [v56 version];
+  reconciledStateVersion3 = [changeCopy reconciledStateVersion];
+  reconciledState5 = [(NPKPassSyncEngine *)self reconciledState];
+  version2 = [reconciledState5 version];
 
   v58 = pk_Sync_log();
   v59 = os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT);
 
-  if (!v4 || v57 == v55)
+  if (!mismatchCopy || version2 == reconciledStateVersion3)
   {
     if (v59)
     {
       v67 = pk_Sync_log();
       if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
       {
-        v68 = [(NPKPassSyncEngine *)self engineName];
-        v108 = [v6 reconciledStateHash];
-        v69 = [v108 hexEncoding];
-        v102 = [v6 reconciledStateVersion];
-        v105 = [(NPKPassSyncEngine *)self reconciledState];
-        v70 = [v105 syncStateHash];
-        v71 = [v70 hexEncoding];
-        v72 = [(NPKPassSyncEngine *)self reconciledState];
-        v73 = [v72 version];
+        engineName5 = [(NPKPassSyncEngine *)self engineName];
+        reconciledStateHash5 = [changeCopy reconciledStateHash];
+        hexEncoding3 = [reconciledStateHash5 hexEncoding];
+        reconciledStateVersion4 = [changeCopy reconciledStateVersion];
+        reconciledState6 = [(NPKPassSyncEngine *)self reconciledState];
+        syncStateHash4 = [reconciledState6 syncStateHash];
+        hexEncoding4 = [syncStateHash4 hexEncoding];
+        reconciledState7 = [(NPKPassSyncEngine *)self reconciledState];
+        version3 = [reconciledState7 version];
         *buf = 138413314;
-        v126 = v68;
+        v126 = engineName5;
         v127 = 2112;
-        v128 = v69;
+        v128 = hexEncoding3;
         v129 = 2048;
-        v130 = v102;
+        v130 = reconciledStateVersion4;
         v131 = 2112;
-        v132 = v71;
+        v132 = hexEncoding4;
         v133 = 2048;
-        v134 = v73;
+        v134 = version3;
         _os_log_impl(&dword_25B300000, v67, OS_LOG_TYPE_DEFAULT, "Warning: Sync state engine (%@): Unrecognized reconciled state hash %@ version:%lu, current state hash:%@ version:%lu", buf, 0x34u);
       }
     }
 
-    v74 = [v6 reconciledStateHash];
-    v75 = [v6 reconciledStateVersion];
-    v76 = [(NPKPassSyncEngine *)self reconciledState];
-    [(NPKPassSyncEngine *)self _sendReconciledStateUnrecognizedWithHash:v74 version:v75 currentPassSyncState:v76];
+    reconciledStateHash6 = [changeCopy reconciledStateHash];
+    reconciledStateVersion5 = [changeCopy reconciledStateVersion];
+    reconciledState8 = [(NPKPassSyncEngine *)self reconciledState];
+    [(NPKPassSyncEngine *)self _sendReconciledStateUnrecognizedWithHash:reconciledStateHash6 version:reconciledStateVersion5 currentPassSyncState:reconciledState8];
 
     [(NPKPassSyncEngine *)self _unexpectedEventOccurred];
   }
@@ -498,14 +498,14 @@ LABEL_22:
       v60 = pk_Sync_log();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = [(NPKPassSyncEngine *)self engineName];
+        engineName6 = [(NPKPassSyncEngine *)self engineName];
         *buf = 138412290;
-        v126 = v61;
+        v126 = engineName6;
         _os_log_impl(&dword_25B300000, v60, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Attempt to recover from mismatch reconcile state", buf, 0xCu);
       }
     }
 
-    -[NPKPassSyncEngine setMinSyncStateVersion:](self, "setMinSyncStateVersion:", [v6 reconciledStateVersion]);
+    -[NPKPassSyncEngine setMinSyncStateVersion:](self, "setMinSyncStateVersion:", [changeCopy reconciledStateVersion]);
     v62 = pk_Sync_log();
     v63 = os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT);
 
@@ -514,17 +514,17 @@ LABEL_22:
       v64 = pk_Sync_log();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
       {
-        v65 = [(NPKPassSyncEngine *)self engineName];
-        v66 = [v6 uniqueID];
+        engineName7 = [(NPKPassSyncEngine *)self engineName];
+        uniqueID3 = [changeCopy uniqueID];
         *buf = 138412546;
-        v126 = v65;
+        v126 = engineName7;
         v127 = 2112;
-        v128 = v66;
+        v128 = uniqueID3;
         _os_log_impl(&dword_25B300000, v64, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): handle second time change with UUID:%@", buf, 0x16u);
       }
     }
 
-    [(NPKPassSyncEngine *)self _handleStateChange:v6 attemptRecoverReconcileStateVersionMismatch:0];
+    [(NPKPassSyncEngine *)self _handleStateChange:changeCopy attemptRecoverReconcileStateVersionMismatch:0];
   }
 
 LABEL_57:
@@ -778,11 +778,11 @@ LABEL_18:
   return result;
 }
 
-- (void)handleReconciledStateUnrecognizedWithHash:(id)a3 version:(unint64_t)a4 passSyncState:(id)a5
+- (void)handleReconciledStateUnrecognizedWithHash:(id)hash version:(unint64_t)version passSyncState:(id)state
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  hashCopy = hash;
+  stateCopy = state;
   v10 = pk_Sync_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -791,42 +791,42 @@ LABEL_18:
     v12 = pk_Sync_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(NPKPassSyncEngine *)self engineName];
-      v14 = [v8 hexEncoding];
+      engineName = [(NPKPassSyncEngine *)self engineName];
+      hexEncoding = [hashCopy hexEncoding];
       v23 = 138413058;
-      v24 = v13;
+      v24 = engineName;
       v25 = 2112;
-      v26 = v14;
+      v26 = hexEncoding;
       v27 = 2048;
-      v28 = a4;
+      versionCopy = version;
       v29 = 2112;
-      v30 = v9;
+      v30 = stateCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Received reconciled state unrecognized\n\tReconciled state hash: %@\n\tversion:%lu\n\tPass sync state: %@", &v23, 0x2Au);
     }
   }
 
-  v15 = [v9 version];
-  v16 = [(NPKPassSyncEngine *)self reconciledState];
-  v17 = [v16 version];
+  version = [stateCopy version];
+  reconciledState = [(NPKPassSyncEngine *)self reconciledState];
+  version2 = [reconciledState version];
 
-  if (v17 == v15)
+  if (version2 == version)
   {
-    v18 = [(NPKPassSyncEngine *)self reconciledState];
+    reconciledState2 = [(NPKPassSyncEngine *)self reconciledState];
   }
 
   else
   {
-    [(NPKPassSyncEngine *)self setMinSyncStateVersion:v15];
-    v19 = [(NPKPassSyncEngine *)self reconciledState];
-    v20 = [(NPKPassSyncEngine *)self libraryState];
-    v18 = [v19 commonBaselinePassSyncStateWithState:v20 version:v15];
+    [(NPKPassSyncEngine *)self setMinSyncStateVersion:version];
+    reconciledState3 = [(NPKPassSyncEngine *)self reconciledState];
+    libraryState = [(NPKPassSyncEngine *)self libraryState];
+    reconciledState2 = [reconciledState3 commonBaselinePassSyncStateWithState:libraryState version:version];
   }
 
   [(NPKPassSyncEngine *)self setCandidateState:0];
   [(NPKPassSyncEngine *)self setReconciledState:0];
-  if (v9)
+  if (stateCopy)
   {
-    v21 = [v18 commonBaselinePassSyncStateWithState:v9 version:{objc_msgSend(v18, "version")}];
+    v21 = [reconciledState2 commonBaselinePassSyncStateWithState:stateCopy version:{objc_msgSend(reconciledState2, "version")}];
     [(NPKPassSyncEngine *)self setCandidateState:v21];
     [(NPKPassSyncEngine *)self _sendProposedReconciledState:v21];
   }
@@ -834,10 +834,10 @@ LABEL_18:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleProposedReconciledState:(id)a3
+- (void)handleProposedReconciledState:(id)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = pk_Sync_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -846,50 +846,50 @@ LABEL_18:
     v7 = pk_Sync_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NPKPassSyncEngine *)self engineName];
+      engineName = [(NPKPassSyncEngine *)self engineName];
       *buf = 138412546;
-      v19 = v8;
+      v19 = engineName;
       v20 = 2112;
-      v21 = v4;
+      v21 = stateCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Received proposed reconciled state\n\tProposed pass sync state: %@", buf, 0x16u);
     }
   }
 
-  v9 = [v4 version];
-  v10 = [(NPKPassSyncEngine *)self libraryState];
-  if (v9 != [v10 version])
+  version = [stateCopy version];
+  libraryState = [(NPKPassSyncEngine *)self libraryState];
+  if (version != [libraryState version])
   {
 
     goto LABEL_9;
   }
 
-  v11 = [(NPKPassSyncEngine *)self candidateState];
-  v12 = [(NPKPassSyncEngine *)self libraryState];
-  v17[1] = v12;
+  candidateState = [(NPKPassSyncEngine *)self candidateState];
+  libraryState2 = [(NPKPassSyncEngine *)self libraryState];
+  v17[1] = libraryState2;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-  v14 = [v4 stateIsSubsetOfUnionOfPassSyncStates:v13];
+  v14 = [stateCopy stateIsSubsetOfUnionOfPassSyncStates:v13];
 
   if (!v14)
   {
 LABEL_9:
-    v15 = [v4 syncStateHash];
-    -[NPKPassSyncEngine _sendReconciledStateUnrecognizedWithHash:version:currentPassSyncState:](self, "_sendReconciledStateUnrecognizedWithHash:version:currentPassSyncState:", v15, [v4 version], 0);
+    syncStateHash = [stateCopy syncStateHash];
+    -[NPKPassSyncEngine _sendReconciledStateUnrecognizedWithHash:version:currentPassSyncState:](self, "_sendReconciledStateUnrecognizedWithHash:version:currentPassSyncState:", syncStateHash, [stateCopy version], 0);
     goto LABEL_10;
   }
 
   [(NPKPassSyncEngine *)self setBackupState:0];
-  [(NPKPassSyncEngine *)self setReconciledState:v4];
-  v15 = [v4 syncStateHash];
-  [(NPKPassSyncEngine *)self _sendReconciledStateAcceptedWithHash:v15];
+  [(NPKPassSyncEngine *)self setReconciledState:stateCopy];
+  syncStateHash = [stateCopy syncStateHash];
+  [(NPKPassSyncEngine *)self _sendReconciledStateAcceptedWithHash:syncStateHash];
 LABEL_10:
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleReconciledStateAcceptedWithHash:(id)a3
+- (void)handleReconciledStateAcceptedWithHash:(id)hash
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hashCopy = hash;
   v5 = pk_Sync_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -898,23 +898,23 @@ LABEL_10:
     v7 = pk_Sync_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NPKPassSyncEngine *)self engineName];
-      v9 = [v4 hexEncoding];
+      engineName = [(NPKPassSyncEngine *)self engineName];
+      hexEncoding = [hashCopy hexEncoding];
       v20 = 138412546;
-      v21 = v8;
+      v21 = engineName;
       v22 = 2112;
-      v23 = v9;
+      v23 = hexEncoding;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Received proposed reconciled state accepted\n\tReconciled state hash: %@", &v20, 0x16u);
     }
   }
 
-  v10 = [(NPKPassSyncEngine *)self candidateState];
-  v11 = [v10 syncStateHash];
+  candidateState = [(NPKPassSyncEngine *)self candidateState];
+  syncStateHash = [candidateState syncStateHash];
   v12 = PKEqualObjects();
 
   if (v12)
   {
-    [(NPKPassSyncEngine *)self setReconciledState:v10];
+    [(NPKPassSyncEngine *)self setReconciledState:candidateState];
     [(NPKPassSyncEngine *)self setCandidateState:0];
     [(NPKPassSyncEngine *)self _sendNextStateChange];
   }
@@ -929,15 +929,15 @@ LABEL_10:
       v15 = pk_Sync_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(NPKPassSyncEngine *)self engineName];
-        v17 = [v4 hexEncoding];
-        v18 = [v10 syncStateHash];
+        engineName2 = [(NPKPassSyncEngine *)self engineName];
+        hexEncoding2 = [hashCopy hexEncoding];
+        syncStateHash2 = [candidateState syncStateHash];
         v20 = 138412802;
-        v21 = v16;
+        v21 = engineName2;
         v22 = 2112;
-        v23 = v17;
+        v23 = hexEncoding2;
         v24 = 2112;
-        v25 = v18;
+        v25 = syncStateHash2;
         _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Warning: Sync state engine (%@): Did not recognize hash (%@) in reconciled state accepted message; reconciled state hash is %@", &v20, 0x20u);
       }
     }
@@ -948,27 +948,27 @@ LABEL_10:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMinSyncStateVersion:(unint64_t)a3
+- (void)setMinSyncStateVersion:(unint64_t)version
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = [(NPKPassSyncEngine *)self libraryState];
-  v6 = [v5 version];
+  libraryState = [(NPKPassSyncEngine *)self libraryState];
+  version = [libraryState version];
 
-  v7 = [(NPKPassSyncEngine *)self reconciledState];
-  v8 = [v7 version];
+  reconciledState = [(NPKPassSyncEngine *)self reconciledState];
+  version2 = [reconciledState version];
 
   backupState = self->_backupState;
   if (backupState)
   {
-    v10 = [(NPKPassSyncState *)backupState version];
+    version3 = [(NPKPassSyncState *)backupState version];
   }
 
   else
   {
-    v10 = v8;
+    version3 = version2;
   }
 
-  if (v8 != a3 || v6 != a3 || v6 != v8 || v8 != v10)
+  if (version2 != version || version != version || version != version2 || version2 != version3)
   {
     v11 = pk_Sync_log();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -979,16 +979,16 @@ LABEL_10:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v34 = 134217984;
-        v35 = a3;
+        versionCopy = version;
         _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Requested to move to sync state version:%lu", &v34, 0xCu);
       }
     }
 
-    [NPKPassSyncState setMinRemoteDevicePassSyncStateVersionSupport:a3];
-    v14 = [(NPKPassSyncEngine *)self dataSource];
-    v15 = [v14 passSyncEngineNeedsUpdatedPassLibraryState:self];
+    [NPKPassSyncState setMinRemoteDevicePassSyncStateVersionSupport:version];
+    dataSource = [(NPKPassSyncEngine *)self dataSource];
+    v15 = [dataSource passSyncEngineNeedsUpdatedPassLibraryState:self];
 
-    v16 = [v15 passSyncStateWithVersion:a3];
+    v16 = [v15 passSyncStateWithVersion:version];
     [(NPKPassSyncEngine *)self setLibraryState:v16];
     v17 = pk_Sync_log();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
@@ -998,17 +998,17 @@ LABEL_10:
       v19 = pk_Sync_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(NPKPassSyncEngine *)self engineName];
+        engineName = [(NPKPassSyncEngine *)self engineName];
         v34 = 138412546;
-        v35 = v20;
+        versionCopy = engineName;
         v36 = 2112;
         v37 = v16;
         _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): updated library state to match expected version:%@", &v34, 0x16u);
       }
     }
 
-    v21 = [(NPKPassSyncEngine *)self reconciledState];
-    v22 = [v15 updateReconcileState:v21 expectedVersion:a3];
+    reconciledState2 = [(NPKPassSyncEngine *)self reconciledState];
+    v22 = [v15 updateReconcileState:reconciledState2 expectedVersion:version];
 
     [(NPKPassSyncEngine *)self setReconciledState:v22];
     v23 = pk_Sync_log();
@@ -1019,9 +1019,9 @@ LABEL_10:
       v25 = pk_Sync_log();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(NPKPassSyncEngine *)self engineName];
+        engineName2 = [(NPKPassSyncEngine *)self engineName];
         v34 = 138412546;
-        v35 = v26;
+        versionCopy = engineName2;
         v36 = 2112;
         v37 = v22;
         _os_log_impl(&dword_25B300000, v25, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): updated reconciled state to match expected version:%@", &v34, 0x16u);
@@ -1031,7 +1031,7 @@ LABEL_10:
     v27 = self->_backupState;
     if (v27)
     {
-      v28 = [v15 updateReconcileState:v27 expectedVersion:a3];
+      v28 = [v15 updateReconcileState:v27 expectedVersion:version];
       [(NPKPassSyncEngine *)self setBackupState:v28];
       v29 = pk_Sync_log();
       v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
@@ -1041,9 +1041,9 @@ LABEL_10:
         v31 = pk_Sync_log();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [(NPKPassSyncEngine *)self engineName];
+          engineName3 = [(NPKPassSyncEngine *)self engineName];
           v34 = 138412546;
-          v35 = v32;
+          versionCopy = engineName3;
           v36 = 2112;
           v37 = v28;
           _os_log_impl(&dword_25B300000, v31, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): updated backup state to match expected version:%@", &v34, 0x16u);
@@ -1057,15 +1057,15 @@ LABEL_10:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLibraryState:(id)a3
+- (void)setLibraryState:(id)state
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stateCopy = state;
   libraryState = self->_libraryState;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v7 = [v5 version];
-    if (v7 != +[NPKPassSyncState minRemoteDevicePassSyncStateVersionSupport])
+    version = [stateCopy version];
+    if (version != +[NPKPassSyncState minRemoteDevicePassSyncStateVersionSupport])
     {
       v8 = pk_Sync_log();
       v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -1075,11 +1075,11 @@ LABEL_10:
         v10 = pk_Sync_log();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [(NPKPassSyncEngine *)self engineName];
+          engineName = [(NPKPassSyncEngine *)self engineName];
           v13 = 138412802;
-          v14 = v11;
+          v14 = engineName;
           v15 = 2048;
-          v16 = [v5 version];
+          version2 = [stateCopy version];
           v17 = 2048;
           v18 = +[NPKPassSyncState minRemoteDevicePassSyncStateVersionSupport];
           _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Warning: Sync state engine (%@): setting new library state with version:%lu, expected:%lu", &v13, 0x20u);
@@ -1087,7 +1087,7 @@ LABEL_10:
       }
     }
 
-    objc_storeStrong(&self->_libraryState, a3);
+    objc_storeStrong(&self->_libraryState, state);
     [(NPKPassSyncEngine *)self _engineStateChanged];
   }
 
@@ -1110,26 +1110,26 @@ LABEL_10:
   return v3;
 }
 
-- (void)setBackupState:(id)a3
+- (void)setBackupState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   backupState = self->_backupState;
-  v7 = v5;
+  v7 = stateCopy;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_backupState, a3);
+    objc_storeStrong(&self->_backupState, state);
     [(NPKPassSyncEngine *)self _engineStateChanged];
   }
 }
 
-- (void)setReconciledState:(id)a3
+- (void)setReconciledState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   reconciledState = self->_reconciledState;
-  v7 = v5;
+  v7 = stateCopy;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_reconciledState, a3);
+    objc_storeStrong(&self->_reconciledState, state);
     [(NPKPassSyncEngine *)self _engineStateChanged];
   }
 }
@@ -1150,14 +1150,14 @@ LABEL_10:
   return v3;
 }
 
-- (void)setCandidateState:(id)a3
+- (void)setCandidateState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   candidateState = self->_candidateState;
-  v7 = v5;
+  v7 = stateCopy;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_candidateState, a3);
+    objc_storeStrong(&self->_candidateState, state);
     [(NPKPassSyncEngine *)self _engineStateChanged];
   }
 }
@@ -1178,14 +1178,14 @@ LABEL_10:
   return v3;
 }
 
-- (void)setCandidateChange:(id)a3
+- (void)setCandidateChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   candidateChange = self->_candidateChange;
-  v7 = v5;
+  v7 = changeCopy;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_candidateChange, a3);
+    objc_storeStrong(&self->_candidateChange, change);
     [(NPKPassSyncEngine *)self _engineStateChanged];
   }
 }
@@ -1193,46 +1193,46 @@ LABEL_10:
 - (void)_sendNextStateChange
 {
   v77 = *MEMORY[0x277D85DE8];
-  v3 = [(NPKPassSyncEngine *)self libraryState];
-  v4 = [(NPKPassSyncEngine *)self reconciledState];
+  libraryState = [(NPKPassSyncEngine *)self libraryState];
+  reconciledState = [(NPKPassSyncEngine *)self reconciledState];
   v63 = 0;
   v64 = 0;
   v62 = 0;
-  [v3 compareWithBaselinePassSyncState:v4 outAddedSyncItems:&v64 outUpdatedSyncItems:&v63 outRemovedSyncItems:&v62];
+  [libraryState compareWithBaselinePassSyncState:reconciledState outAddedSyncItems:&v64 outUpdatedSyncItems:&v63 outRemovedSyncItems:&v62];
   v5 = v64;
   v6 = v63;
   v60 = v62;
 
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [(NPKPassSyncEngine *)self reconciledState];
-  v58 = [v8 syncStateHash];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  reconciledState2 = [(NPKPassSyncEngine *)self reconciledState];
+  syncStateHash = [reconciledState2 syncStateHash];
 
-  v9 = [(NPKPassSyncEngine *)self reconciledState];
-  v56 = [v9 version];
+  reconciledState3 = [(NPKPassSyncEngine *)self reconciledState];
+  version = [reconciledState3 version];
 
   v10 = pk_Sync_log();
-  LODWORD(v4) = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
+  LODWORD(reconciledState) = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
-  v59 = v7;
-  if (v4)
+  v59 = uUID;
+  if (reconciledState)
   {
     v11 = pk_Sync_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(NPKPassSyncEngine *)self engineName];
-      v54 = [(NPKPassSyncEngine *)self libraryState];
-      [v54 syncStateHash];
+      engineName = [(NPKPassSyncEngine *)self engineName];
+      libraryState2 = [(NPKPassSyncEngine *)self libraryState];
+      [libraryState2 syncStateHash];
       v14 = v13 = v6;
-      v15 = [v14 hexEncoding];
-      v16 = [(NPKPassSyncEngine *)self reconciledState];
-      v17 = [v16 syncStateHash];
-      v18 = [v17 hexEncoding];
+      hexEncoding = [v14 hexEncoding];
+      reconciledState4 = [(NPKPassSyncEngine *)self reconciledState];
+      syncStateHash2 = [reconciledState4 syncStateHash];
+      hexEncoding2 = [syncStateHash2 hexEncoding];
       *buf = 138413570;
-      v66 = v12;
+      v66 = engineName;
       v67 = 2112;
-      v68 = v15;
+      v68 = hexEncoding;
       v69 = 2112;
-      v70 = v18;
+      v70 = hexEncoding2;
       v71 = 2112;
       v72 = v5;
       v73 = 2112;
@@ -1241,7 +1241,7 @@ LABEL_10:
       v76 = v60;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Compared library state with manifestHash:%@ with reconcileState:%@\n addedID:%@\n updatedIDs:%@\n removedIDs:%@\n", buf, 0x3Eu);
 
-      v7 = v59;
+      uUID = v59;
       v6 = v13;
     }
   }
@@ -1252,21 +1252,21 @@ LABEL_10:
     v55 = v6;
     if ([v6 count])
     {
-      v19 = [v6 firstObject];
-      v20 = [(NPKPassSyncEngine *)self reconciledState];
-      v21 = [v20 syncStateItems];
-      v22 = [v19 uniqueID];
-      v23 = [v21 objectForKey:v22];
+      firstObject = [v6 firstObject];
+      reconciledState5 = [(NPKPassSyncEngine *)self reconciledState];
+      syncStateItems = [reconciledState5 syncStateItems];
+      uniqueID = [firstObject uniqueID];
+      v23 = [syncStateItems objectForKey:uniqueID];
 
-      v24 = [v23 manifest];
-      v25 = [v23 manifestHash];
+      manifest = [v23 manifest];
+      manifestHash = [v23 manifestHash];
 
-      if (v24)
+      if (manifest)
       {
-        v26 = [(NPKPassSyncEngine *)self dataSource];
-        v27 = [v19 uniqueID];
+        dataSource = [(NPKPassSyncEngine *)self dataSource];
+        uniqueID2 = [firstObject uniqueID];
         v61 = 0;
-        v28 = [v26 passSyncEngine:self partialDataForPassWithUniqueID:v27 baseManifest:v24 outRemoteAssets:&v61];
+        v28 = [dataSource passSyncEngine:self partialDataForPassWithUniqueID:uniqueID2 baseManifest:manifest outRemoteAssets:&v61];
         v29 = v61;
 
         v30 = 1;
@@ -1274,10 +1274,10 @@ LABEL_10:
         {
 LABEL_14:
           v33 = [NPKPassSyncChange alloc];
-          v34 = [v19 uniqueID];
+          uniqueID3 = [firstObject uniqueID];
           v35 = v33;
-          v36 = v58;
-          v37 = [(NPKPassSyncChange *)v35 initWithChangeUUID:v7 reconciledStateHash:v58 reconciledStateVersion:v56 changeType:v30 uniqueID:v34 syncStateItem:v19 passData:v28 baseManifestHashForPartialUpdate:v25 remoteAssetsForPartialUpdate:v29];
+          v36 = syncStateHash;
+          v37 = [(NPKPassSyncChange *)v35 initWithChangeUUID:uUID reconciledStateHash:syncStateHash reconciledStateVersion:version changeType:v30 uniqueID:uniqueID3 syncStateItem:firstObject passData:v28 baseManifestHashForPartialUpdate:manifestHash remoteAssetsForPartialUpdate:v29];
 
           v6 = v55;
           v38 = v60;
@@ -1294,19 +1294,19 @@ LABEL_14:
 
     else
     {
-      v19 = [v5 firstObject];
+      firstObject = [v5 firstObject];
       v29 = 0;
       v30 = 0;
-      v25 = 0;
-      v24 = 0;
+      manifestHash = 0;
+      manifest = 0;
     }
 
-    v31 = [(NPKPassSyncEngine *)self dataSource];
-    v32 = [v19 uniqueID];
-    v28 = [v31 passSyncEngine:self dataForPassWithUniqueID:v32];
+    dataSource2 = [(NPKPassSyncEngine *)self dataSource];
+    uniqueID4 = [firstObject uniqueID];
+    v28 = [dataSource2 passSyncEngine:self dataForPassWithUniqueID:uniqueID4];
 
     v29 = 0;
-    v25 = 0;
+    manifestHash = 0;
     goto LABEL_14;
   }
 
@@ -1316,7 +1316,7 @@ LABEL_14:
     v48 = pk_Sync_log();
     v49 = os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT);
 
-    v36 = v58;
+    v36 = syncStateHash;
     if (!v49)
     {
       goto LABEL_25;
@@ -1325,35 +1325,35 @@ LABEL_14:
     v37 = pk_Sync_log();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v50 = [(NPKPassSyncEngine *)self engineName];
-      v51 = [(NPKPassSyncEngine *)self reconciledState];
-      v52 = [v51 syncStateHash];
-      v53 = [v52 hexEncoding];
+      engineName2 = [(NPKPassSyncEngine *)self engineName];
+      reconciledState6 = [(NPKPassSyncEngine *)self reconciledState];
+      syncStateHash3 = [reconciledState6 syncStateHash];
+      hexEncoding3 = [syncStateHash3 hexEncoding];
       *buf = 138412546;
-      v66 = v50;
+      v66 = engineName2;
       v67 = 2112;
-      v68 = v53;
+      v68 = hexEncoding3;
       _os_log_impl(&dword_25B300000, v37, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): No state changes to send; settling on reconciled state hash %@.", buf, 0x16u);
 
-      v36 = v58;
+      v36 = syncStateHash;
       v38 = v60;
     }
 
     goto LABEL_24;
   }
 
-  v19 = [v60 firstObject];
+  firstObject = [v60 firstObject];
   v46 = [NPKPassSyncChange alloc];
-  v24 = [v19 uniqueID];
+  manifest = [firstObject uniqueID];
   v47 = v46;
-  v36 = v58;
-  v37 = [(NPKPassSyncChange *)v47 initWithChangeUUID:v7 reconciledStateHash:v58 reconciledStateVersion:v56 changeType:2 uniqueID:v24 syncStateItem:0 passData:0];
+  v36 = syncStateHash;
+  v37 = [(NPKPassSyncChange *)v47 initWithChangeUUID:uUID reconciledStateHash:syncStateHash reconciledStateVersion:version changeType:2 uniqueID:manifest syncStateItem:0 passData:0];
 LABEL_15:
 
   if (v37)
   {
-    v39 = [(NPKPassSyncEngine *)self candidateChange];
-    if (v39 && [v37 isEqualToChangeIgnoringUUID:v39])
+    candidateChange = [(NPKPassSyncEngine *)self candidateChange];
+    if (candidateChange && [v37 isEqualToChangeIgnoringUUID:candidateChange])
     {
       v40 = pk_Sync_log();
       v41 = os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT);
@@ -1363,21 +1363,21 @@ LABEL_15:
         v42 = pk_Sync_log();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [(NPKPassSyncEngine *)self engineName];
+          engineName3 = [(NPKPassSyncEngine *)self engineName];
           *buf = 138412802;
-          v66 = v43;
+          v66 = engineName3;
           v67 = 2112;
-          v68 = v39;
+          v68 = candidateChange;
           v69 = 2112;
           v70 = v37;
           _os_log_impl(&dword_25B300000, v42, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Outgoing change is identical to candidate change except for UUID; changing UUID to match candidate change\n\tCandidate change: %@\n\tOutgoing change: %@", buf, 0x20u);
         }
       }
 
-      v44 = [v39 changeUUID];
-      [v37 setChangeUUID:v44];
+      changeUUID = [candidateChange changeUUID];
+      [v37 setChangeUUID:changeUUID];
 
-      v36 = v58;
+      v36 = syncStateHash;
     }
 
     [(NPKPassSyncEngine *)self setCandidateChange:v37];
@@ -1391,15 +1391,15 @@ LABEL_25:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_shouldProcessAddOrUpdateChangeOfType:(unint64_t)a3 changeSyncStateItem:(id)a4 librarySyncStateItem:(id)a5 reconciledSyncStateItem:(id)a6 candidateChange:(id)a7 shouldApplyToPassLibrary:(BOOL *)a8 shouldApplyToReconciledState:(BOOL *)a9
+- (void)_shouldProcessAddOrUpdateChangeOfType:(unint64_t)type changeSyncStateItem:(id)item librarySyncStateItem:(id)stateItem reconciledSyncStateItem:(id)syncStateItem candidateChange:(id)change shouldApplyToPassLibrary:(BOOL *)library shouldApplyToReconciledState:(BOOL *)state
 {
-  v15 = a9;
+  stateCopy5 = state;
   v75 = *MEMORY[0x277D85DE8];
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  if (a3 != 1 || v17)
+  itemCopy = item;
+  stateItemCopy = stateItem;
+  syncStateItemCopy = syncStateItem;
+  changeCopy = change;
+  if (type != 1 || stateItemCopy)
   {
     if (PKEqualObjects())
     {
@@ -1415,23 +1415,23 @@ LABEL_25:
       v29 = pk_Sync_log();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(NPKPassSyncEngine *)self engineName];
+        engineName = [(NPKPassSyncEngine *)self engineName];
         *buf = 138413058;
-        v68 = v30;
+        v68 = engineName;
         v69 = 2112;
-        v70 = v18;
+        v70 = syncStateItemCopy;
         v71 = 2112;
-        v72 = v17;
+        v72 = stateItemCopy;
         v73 = 2112;
-        v74 = v16;
+        v74 = itemCopy;
         _os_log_impl(&dword_25B300000, v29, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Pass has been added/updated in local library also.\n\tReconciled sync state item: %@\n\tLocal library sync state item: %@\n\tChange sync state item: %@", buf, 0x2Au);
       }
     }
 
-    v22 = [v17 sequenceCounter];
-    v31 = [v16 sequenceCounter];
-    v32 = v31;
-    if (!v22 && v31)
+    sequenceCounter = [stateItemCopy sequenceCounter];
+    sequenceCounter2 = [itemCopy sequenceCounter];
+    v32 = sequenceCounter2;
+    if (!sequenceCounter && sequenceCounter2)
     {
 LABEL_14:
 
@@ -1441,14 +1441,14 @@ LABEL_44:
       goto LABEL_45;
     }
 
-    if (v22 && v31)
+    if (sequenceCounter && sequenceCounter2)
     {
-      if ([v22 compare:v31]!= 1)
+      if ([sequenceCounter compare:sequenceCounter2]!= 1)
       {
         goto LABEL_14;
       }
 
-      v66 = a9;
+      stateCopy3 = state;
       v33 = pk_Sync_log();
       v34 = os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT);
 
@@ -1457,11 +1457,11 @@ LABEL_44:
         v35 = pk_Sync_log();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
-          v36 = [(NPKPassSyncEngine *)self engineName];
+          engineName2 = [(NPKPassSyncEngine *)self engineName];
           *buf = 138412802;
-          v68 = v36;
+          v68 = engineName2;
           v69 = 2112;
-          v70 = v22;
+          v70 = sequenceCounter;
           v71 = 2112;
           v72 = v32;
           v37 = "Notice: Sync state engine (%@): local pass has higher sequence counter (%@) than change (%@); not applying change to local library";
@@ -1479,35 +1479,35 @@ LABEL_25:
 
     else
     {
-      v65 = v22;
-      v66 = a9;
-      v40 = self;
-      v41 = v16;
-      v42 = a8;
-      v43 = v18;
-      v44 = v19;
-      v45 = v40;
-      engineRole = v40->_engineRole;
+      v65 = sequenceCounter;
+      stateCopy3 = state;
+      selfCopy = self;
+      v41 = itemCopy;
+      libraryCopy = library;
+      v43 = syncStateItemCopy;
+      v44 = changeCopy;
+      v45 = selfCopy;
+      engineRole = selfCopy->_engineRole;
       v47 = pk_Sync_log();
       v48 = os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT);
 
       if (!engineRole)
       {
-        v19 = v44;
-        v18 = v43;
-        a8 = v42;
-        v16 = v41;
+        changeCopy = v44;
+        syncStateItemCopy = v43;
+        library = libraryCopy;
+        itemCopy = v41;
         v62 = v45;
-        v22 = v65;
-        v15 = a9;
+        sequenceCounter = v65;
+        stateCopy5 = state;
         if (v48)
         {
           v63 = pk_Sync_log();
           if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
           {
-            v64 = [(NPKPassSyncEngine *)v62 engineName];
+            engineName3 = [(NPKPassSyncEngine *)v62 engineName];
             *buf = 138412290;
-            v68 = v64;
+            v68 = engineName3;
             _os_log_impl(&dword_25B300000, v63, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Applying change in the absence of sync state counters", buf, 0xCu);
           }
         }
@@ -1515,20 +1515,20 @@ LABEL_25:
         goto LABEL_14;
       }
 
-      v19 = v44;
-      v18 = v43;
-      a8 = v42;
-      v16 = v41;
+      changeCopy = v44;
+      syncStateItemCopy = v43;
+      library = libraryCopy;
+      itemCopy = v41;
       self = v45;
-      v22 = v65;
+      sequenceCounter = v65;
       if (v48)
       {
         v35 = pk_Sync_log();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
-          v36 = [(NPKPassSyncEngine *)self engineName];
+          engineName2 = [(NPKPassSyncEngine *)self engineName];
           *buf = 138412290;
-          v68 = v36;
+          v68 = engineName2;
           v37 = "Notice: Sync state engine (%@): Not applying change in the absence of sync state counters";
           v38 = v35;
           v39 = 12;
@@ -1539,7 +1539,7 @@ LABEL_26:
       }
     }
 
-    v15 = v66;
+    stateCopy5 = stateCopy3;
     goto LABEL_28;
   }
 
@@ -1551,21 +1551,21 @@ LABEL_26:
     goto LABEL_29;
   }
 
-  v22 = pk_Sync_log();
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  sequenceCounter = pk_Sync_log();
+  if (os_log_type_enabled(sequenceCounter, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [(NPKPassSyncEngine *)self engineName];
-    v24 = [v16 uniqueID];
-    v25 = [(NPKPassSyncEngine *)self libraryState];
+    engineName4 = [(NPKPassSyncEngine *)self engineName];
+    uniqueID = [itemCopy uniqueID];
+    libraryState = [(NPKPassSyncEngine *)self libraryState];
     *buf = 138412802;
-    v68 = v23;
+    v68 = engineName4;
     v69 = 2112;
-    v70 = v24;
+    v70 = uniqueID;
     v71 = 2112;
-    v72 = v25;
-    _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Ignoring request to apply pass update with unique ID %@ to local library since the pass is not in our library state: %@", buf, 0x20u);
+    v72 = libraryState;
+    _os_log_impl(&dword_25B300000, sequenceCounter, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Ignoring request to apply pass update with unique ID %@ to local library since the pass is not in our library state: %@", buf, 0x20u);
 
-    v15 = a9;
+    stateCopy5 = state;
   }
 
 LABEL_28:
@@ -1577,7 +1577,7 @@ LABEL_47:
     v26 = 0;
 LABEL_48:
     v59 = 1;
-    if (!a8)
+    if (!library)
     {
       goto LABEL_50;
     }
@@ -1592,19 +1592,19 @@ LABEL_48:
 
     if (v50)
     {
-      v22 = pk_Sync_log();
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      sequenceCounter = pk_Sync_log();
+      if (os_log_type_enabled(sequenceCounter, OS_LOG_TYPE_DEFAULT))
       {
-        v51 = [(NPKPassSyncEngine *)self engineName];
+        engineName5 = [(NPKPassSyncEngine *)self engineName];
         *buf = 138413058;
-        v68 = v51;
+        v68 = engineName5;
         v69 = 2112;
-        v70 = v17;
+        v70 = stateItemCopy;
         v71 = 2112;
-        v72 = v16;
+        v72 = itemCopy;
         v73 = 2112;
-        v74 = v19;
-        _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Applying change to reconciled state because it matches our library state\n\tLocal library sync state item: %@\n\tChange sync state item: %@\n\tCandidate change: %@", buf, 0x2Au);
+        v74 = changeCopy;
+        _os_log_impl(&dword_25B300000, sequenceCounter, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Applying change to reconciled state because it matches our library state\n\tLocal library sync state item: %@\n\tChange sync state item: %@\n\tCandidate change: %@", buf, 0x2Au);
 LABEL_42:
 
         goto LABEL_43;
@@ -1616,9 +1616,9 @@ LABEL_42:
     goto LABEL_47;
   }
 
-  v52 = [v19 uniqueID];
-  v53 = [v16 uniqueID];
-  v54 = [v52 isEqualToString:v53];
+  uniqueID2 = [changeCopy uniqueID];
+  uniqueID3 = [itemCopy uniqueID];
+  v54 = [uniqueID2 isEqualToString:uniqueID3];
 
   v55 = pk_Sync_log();
   v56 = os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT);
@@ -1627,18 +1627,18 @@ LABEL_42:
   {
     if (v56)
     {
-      v22 = pk_Sync_log();
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      sequenceCounter = pk_Sync_log();
+      if (os_log_type_enabled(sequenceCounter, OS_LOG_TYPE_DEFAULT))
       {
-        v51 = [(NPKPassSyncEngine *)self engineName];
-        v60 = [v16 uniqueID];
+        engineName5 = [(NPKPassSyncEngine *)self engineName];
+        uniqueID4 = [itemCopy uniqueID];
         *buf = 138412802;
-        v68 = v51;
+        v68 = engineName5;
         v69 = 2112;
-        v70 = v60;
+        v70 = uniqueID4;
         v71 = 2112;
-        v72 = v19;
-        _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Applying change to reconciled state even though we have an outstanding candidate change for pass with unique ID %@: %@", buf, 0x20u);
+        v72 = changeCopy;
+        _os_log_impl(&dword_25B300000, sequenceCounter, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Applying change to reconciled state even though we have an outstanding candidate change for pass with unique ID %@: %@", buf, 0x20u);
 
         goto LABEL_42;
       }
@@ -1653,54 +1653,54 @@ LABEL_43:
 
   if (v56)
   {
-    v22 = pk_Sync_log();
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    sequenceCounter = pk_Sync_log();
+    if (os_log_type_enabled(sequenceCounter, OS_LOG_TYPE_DEFAULT))
     {
-      v57 = [(NPKPassSyncEngine *)self engineName];
-      v58 = [v16 uniqueID];
+      engineName6 = [(NPKPassSyncEngine *)self engineName];
+      uniqueID5 = [itemCopy uniqueID];
       *buf = 138412802;
-      v68 = v57;
+      v68 = engineName6;
       v69 = 2112;
-      v70 = v58;
+      v70 = uniqueID5;
       v71 = 2112;
-      v72 = v19;
-      _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Not applying change to reconciled state since we are not applying it to the local library and have an outstanding candidate change for pass with unique ID %@: %@", buf, 0x20u);
+      v72 = changeCopy;
+      _os_log_impl(&dword_25B300000, sequenceCounter, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Not applying change to reconciled state since we are not applying it to the local library and have an outstanding candidate change for pass with unique ID %@: %@", buf, 0x20u);
     }
 
     v26 = 0;
     v59 = 0;
 LABEL_45:
 
-    if (!a8)
+    if (!library)
     {
       goto LABEL_50;
     }
 
 LABEL_49:
-    *a8 = v26;
+    *library = v26;
     goto LABEL_50;
   }
 
   v26 = 0;
   v59 = 0;
-  if (a8)
+  if (library)
   {
     goto LABEL_49;
   }
 
 LABEL_50:
-  if (v15)
+  if (stateCopy5)
   {
-    *v15 = v59;
+    *stateCopy5 = v59;
   }
 
   v61 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendStateChange:(id)a3
+- (void)_sendStateChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = pk_Sync_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1709,26 +1709,26 @@ LABEL_50:
     v7 = pk_Sync_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NPKPassSyncEngine *)self engineName];
+      engineName = [(NPKPassSyncEngine *)self engineName];
       v11 = 138412546;
-      v12 = v8;
+      v12 = engineName;
       v13 = 2112;
-      v14 = v4;
+      v14 = changeCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Sending state change\n\tChange: %@", &v11, 0x16u);
     }
   }
 
-  v9 = [(NPKPassSyncEngine *)self delegate];
-  [v9 passSyncEngine:self sendStateChange:v4];
+  delegate = [(NPKPassSyncEngine *)self delegate];
+  [delegate passSyncEngine:self sendStateChange:changeCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendReconciledStateUnrecognizedWithHash:(id)a3 version:(unint64_t)a4 currentPassSyncState:(id)a5
+- (void)_sendReconciledStateUnrecognizedWithHash:(id)hash version:(unint64_t)version currentPassSyncState:(id)state
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  hashCopy = hash;
+  stateCopy = state;
   v10 = pk_Sync_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -1737,30 +1737,30 @@ LABEL_50:
     v12 = pk_Sync_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(NPKPassSyncEngine *)self engineName];
-      v14 = [v8 hexEncoding];
+      engineName = [(NPKPassSyncEngine *)self engineName];
+      hexEncoding = [hashCopy hexEncoding];
       v17 = 138413058;
-      v18 = v13;
+      v18 = engineName;
       v19 = 2112;
-      v20 = v14;
+      v20 = hexEncoding;
       v21 = 2048;
-      v22 = a4;
+      versionCopy = version;
       v23 = 2112;
-      v24 = v9;
+      v24 = stateCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Sending reconciled state unrecognized\n\tReconciled state hash: %@\n\tversion:%lu\n\tPass sync state: %@", &v17, 0x2Au);
     }
   }
 
-  v15 = [(NPKPassSyncEngine *)self delegate];
-  [v15 passSyncEngine:self sendReconciledStateUnrecognizedWithHash:v8 version:a4 currentPassSyncState:v9];
+  delegate = [(NPKPassSyncEngine *)self delegate];
+  [delegate passSyncEngine:self sendReconciledStateUnrecognizedWithHash:hashCopy version:version currentPassSyncState:stateCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendReconciledStateAcceptedWithHash:(id)a3
+- (void)_sendReconciledStateAcceptedWithHash:(id)hash
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hashCopy = hash;
   v5 = pk_Sync_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1769,26 +1769,26 @@ LABEL_50:
     v7 = pk_Sync_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NPKPassSyncEngine *)self engineName];
-      v9 = [v4 hexEncoding];
+      engineName = [(NPKPassSyncEngine *)self engineName];
+      hexEncoding = [hashCopy hexEncoding];
       v12 = 138412546;
-      v13 = v8;
+      v13 = engineName;
       v14 = 2112;
-      v15 = v9;
+      v15 = hexEncoding;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Sending reconciled state accepted\n\tReconciled state hash: %@", &v12, 0x16u);
     }
   }
 
-  v10 = [(NPKPassSyncEngine *)self delegate];
-  [v10 passSyncEngine:self sendReconciledStateAcceptedWithHash:v4];
+  delegate = [(NPKPassSyncEngine *)self delegate];
+  [delegate passSyncEngine:self sendReconciledStateAcceptedWithHash:hashCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendProposedReconciledState:(id)a3
+- (void)_sendProposedReconciledState:(id)state
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = pk_Sync_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1797,27 +1797,27 @@ LABEL_50:
     v7 = pk_Sync_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NPKPassSyncEngine *)self engineName];
+      engineName = [(NPKPassSyncEngine *)self engineName];
       v11 = 138412546;
-      v12 = v8;
+      v12 = engineName;
       v13 = 2112;
-      v14 = v4;
+      v14 = stateCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Sending proposed reconciled state\n\tProposed pass sync state: %@", &v11, 0x16u);
     }
   }
 
-  v9 = [(NPKPassSyncEngine *)self delegate];
-  [v9 passSyncEngine:self sendProposedReconciledState:v4];
+  delegate = [(NPKPassSyncEngine *)self delegate];
+  [delegate passSyncEngine:self sendProposedReconciledState:stateCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestAddPassData:(id)a3 forSyncStateItem:(id)a4 completion:(id)a5
+- (void)_requestAddPassData:(id)data forSyncStateItem:(id)item completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  itemCopy = item;
+  completionCopy = completion;
   v11 = pk_Sync_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -1826,29 +1826,29 @@ LABEL_50:
     v13 = pk_Sync_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(NPKPassSyncEngine *)self engineName];
-      v15 = [v8 npkDescription];
+      engineName = [(NPKPassSyncEngine *)self engineName];
+      npkDescription = [dataCopy npkDescription];
       *buf = 138412802;
-      v24 = v14;
+      v24 = engineName;
       v25 = 2112;
-      v26 = v15;
+      v26 = npkDescription;
       v27 = 2112;
-      v28 = v9;
+      v28 = itemCopy;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Requesting that delegate add pass to local pass library\n\tData: %@\n\tSync state item: %@", buf, 0x20u);
     }
   }
 
-  v16 = [(NPKPassSyncEngine *)self delegate];
+  delegate = [(NPKPassSyncEngine *)self delegate];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __69__NPKPassSyncEngine__requestAddPassData_forSyncStateItem_completion___block_invoke;
   v20[3] = &unk_279947AF8;
   v20[4] = self;
-  v21 = v9;
-  v22 = v10;
-  v17 = v10;
-  v18 = v9;
-  [v16 passSyncEngine:self requestsAddPassData:v8 forSyncStateItem:v18 completion:v20];
+  v21 = itemCopy;
+  v22 = completionCopy;
+  v17 = completionCopy;
+  v18 = itemCopy;
+  [delegate passSyncEngine:self requestsAddPassData:dataCopy forSyncStateItem:v18 completion:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -1886,14 +1886,14 @@ uint64_t __69__NPKPassSyncEngine__requestAddPassData_forSyncStateItem_completion
   return result;
 }
 
-- (void)_requestUpdatePassData:(id)a3 forSyncStateItem:(id)a4 baseManifestHashForPartialUpdate:(id)a5 remoteAssetsForPartialUpdate:(id)a6 completion:(id)a7
+- (void)_requestUpdatePassData:(id)data forSyncStateItem:(id)item baseManifestHashForPartialUpdate:(id)update remoteAssetsForPartialUpdate:(id)partialUpdate completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dataCopy = data;
+  itemCopy = item;
+  updateCopy = update;
+  partialUpdateCopy = partialUpdate;
+  completionCopy = completion;
   v17 = pk_Sync_log();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
 
@@ -1902,33 +1902,33 @@ uint64_t __69__NPKPassSyncEngine__requestAddPassData_forSyncStateItem_completion
     v19 = pk_Sync_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(NPKPassSyncEngine *)self engineName];
-      v21 = [v12 npkDescription];
+      engineName = [(NPKPassSyncEngine *)self engineName];
+      npkDescription = [dataCopy npkDescription];
       *buf = 138413314;
-      v30 = v20;
+      v30 = engineName;
       v31 = 2112;
-      v32 = v21;
+      v32 = npkDescription;
       v33 = 2112;
-      v34 = v13;
+      v34 = itemCopy;
       v35 = 2112;
-      v36 = v14;
+      v36 = updateCopy;
       v37 = 2112;
-      v38 = v15;
+      v38 = partialUpdateCopy;
       _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Requesting that delegate update pass in local pass library\n\tData: %@\n\tSync state item: %@\n\tBase manifest hash for partial update: %@\n\tRemote assets for partial update: %@", buf, 0x34u);
     }
   }
 
-  v22 = [(NPKPassSyncEngine *)self delegate];
+  delegate = [(NPKPassSyncEngine *)self delegate];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __134__NPKPassSyncEngine__requestUpdatePassData_forSyncStateItem_baseManifestHashForPartialUpdate_remoteAssetsForPartialUpdate_completion___block_invoke;
   v26[3] = &unk_279947B20;
   v26[4] = self;
-  v27 = v13;
-  v28 = v16;
-  v23 = v16;
-  v24 = v13;
-  [v22 passSyncEngine:self requestsUpdatePassData:v12 forSyncStateItem:v24 baseManifestHashForPartialUpdate:v14 remoteAssetsForPartialUpdate:v15 completion:v26];
+  v27 = itemCopy;
+  v28 = completionCopy;
+  v23 = completionCopy;
+  v24 = itemCopy;
+  [delegate passSyncEngine:self requestsUpdatePassData:dataCopy forSyncStateItem:v24 baseManifestHashForPartialUpdate:updateCopy remoteAssetsForPartialUpdate:partialUpdateCopy completion:v26];
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -1966,11 +1966,11 @@ uint64_t __134__NPKPassSyncEngine__requestUpdatePassData_forSyncStateItem_baseMa
   return result;
 }
 
-- (void)_requestRemovePassWithUniqueID:(id)a3 completion:(id)a4
+- (void)_requestRemovePassWithUniqueID:(id)d completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = pk_Sync_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1979,26 +1979,26 @@ uint64_t __134__NPKPassSyncEngine__requestUpdatePassData_forSyncStateItem_baseMa
     v10 = pk_Sync_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(NPKPassSyncEngine *)self engineName];
+      engineName = [(NPKPassSyncEngine *)self engineName];
       *buf = 138412546;
-      v20 = v11;
+      v20 = engineName;
       v21 = 2112;
-      v22 = v6;
+      v22 = dCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Requesting that delegate remove pass in local pass library\n\tunique ID: %@", buf, 0x16u);
     }
   }
 
-  v12 = [(NPKPassSyncEngine *)self delegate];
+  delegate = [(NPKPassSyncEngine *)self delegate];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__NPKPassSyncEngine__requestRemovePassWithUniqueID_completion___block_invoke;
   v16[3] = &unk_279947AF8;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
-  v13 = v7;
-  v14 = v6;
-  [v12 passSyncEngine:self requestsRemovePassWithUniqueID:v14 completion:v16];
+  v17 = dCopy;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = dCopy;
+  [delegate passSyncEngine:self requestsRemovePassWithUniqueID:v14 completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -2047,17 +2047,17 @@ uint64_t __63__NPKPassSyncEngine__requestRemovePassWithUniqueID_completion___blo
     v5 = pk_Sync_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NPKPassSyncEngine *)self engineName];
+      engineName = [(NPKPassSyncEngine *)self engineName];
       v9 = 138412290;
-      v10 = v6;
+      v10 = engineName;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): encountered unexpected event", &v9, 0xCu);
     }
   }
 
-  v7 = [(NPKPassSyncEngine *)self delegate];
+  delegate = [(NPKPassSyncEngine *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 passSyncEngineEncounteredUnexpectedEvent:self];
+    [delegate passSyncEngineEncounteredUnexpectedEvent:self];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -2074,29 +2074,29 @@ uint64_t __63__NPKPassSyncEngine__requestRemovePassWithUniqueID_completion___blo
     v5 = pk_Sync_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NPKPassSyncEngine *)self engineName];
+      engineName = [(NPKPassSyncEngine *)self engineName];
       v9 = 138412290;
-      v10 = v6;
+      v10 = engineName;
       _os_log_impl(&dword_25B300000, v5, OS_LOG_TYPE_DEFAULT, "Notice: Sync state engine (%@): Engine state changed", &v9, 0xCu);
     }
   }
 
-  v7 = [(NPKPassSyncEngine *)self delegate];
+  delegate = [(NPKPassSyncEngine *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 passSyncEngineStateChanged:self];
+    [delegate passSyncEngineStateChanged:self];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishedProcessingChange:(id)a3
+- (void)_finishedProcessingChange:(id)change
 {
-  v5 = a3;
-  v4 = [(NPKPassSyncEngine *)self delegate];
+  changeCopy = change;
+  delegate = [(NPKPassSyncEngine *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 passSyncEngine:self finishedProcessingChange:v5];
+    [delegate passSyncEngine:self finishedProcessingChange:changeCopy];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface PUPhotoPinchGestureRecognizer
-- (CGPoint)adjustedInitialCenterInView:(id)a3;
-- (CGPoint)adjustedTranslationInView:(id)a3;
-- (CGPoint)adjustedTranslationVelocityInView:(id)a3;
+- (CGPoint)adjustedInitialCenterInView:(id)view;
+- (CGPoint)adjustedTranslationInView:(id)view;
+- (CGPoint)adjustedTranslationVelocityInView:(id)view;
 - (CGRect)initialPinchRect;
-- (PUPhotoPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (double)adjustedRotationInView:(id)a3;
-- (double)adjustedScaleInView:(id)a3;
+- (PUPhotoPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (double)adjustedRotationInView:(id)view;
+- (double)adjustedScaleInView:(id)view;
 - (void)_updateIfNeeded;
 - (void)reset;
-- (void)setInitialPinchRect:(CGRect)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setInitialPinchRect:(CGRect)rect;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation PUPhotoPinchGestureRecognizer
@@ -71,7 +71,7 @@
   }
 }
 
-- (CGPoint)adjustedTranslationVelocityInView:(id)a3
+- (CGPoint)adjustedTranslationVelocityInView:(id)view
 {
   v3 = *MEMORY[0x1E695EFF8];
   v4 = *(MEMORY[0x1E695EFF8] + 8);
@@ -80,7 +80,7 @@
   return result;
 }
 
-- (double)adjustedScaleInView:(id)a3
+- (double)adjustedScaleInView:(id)view
 {
   [(PUPhotoPinchGestureRecognizer *)self _updateIfNeeded];
   result = 0.0;
@@ -95,7 +95,7 @@
   return result;
 }
 
-- (double)adjustedRotationInView:(id)a3
+- (double)adjustedRotationInView:(id)view
 {
   v14[2] = *MEMORY[0x1E69E9840];
   [(PUPhotoPinchGestureRecognizer *)self _updateIfNeeded];
@@ -104,33 +104,33 @@
   {
     v5 = atan2(self->_initialTouchLocations[1].y - self->_initialTouchLocations[0].y, self->_initialTouchLocations[1].x - self->_initialTouchLocations[0].x);
     v6 = atan2(self->_latestTouchLocations[1].y - self->_latestTouchLocations[0].y, self->_latestTouchLocations[1].x - self->_latestTouchLocations[0].x) - v5;
-    v7 = [(PUPhotoPinchGestureRecognizer *)self _rotationFilter];
-    if (!v7)
+    _rotationFilter = [(PUPhotoPinchGestureRecognizer *)self _rotationFilter];
+    if (!_rotationFilter)
     {
       v8 = objc_alloc_init(PUAngleValueFilter);
       v9 = objc_alloc_init(PUInitialHysteresisValueFilter);
       [(PUPhotoPinchGestureRecognizer *)self rotationHysteresisDegrees];
       [(PUInitialHysteresisValueFilter *)v9 setThresholdValue:v10 / 180.0 * 3.14159265];
-      v7 = objc_alloc_init(PUGroupValueFilter);
+      _rotationFilter = objc_alloc_init(PUGroupValueFilter);
       v14[0] = v8;
       v14[1] = v9;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-      [(PUGroupValueFilter *)v7 setFilters:v11];
+      [(PUGroupValueFilter *)_rotationFilter setFilters:v11];
 
-      [(PUPhotoPinchGestureRecognizer *)self _setRotationFilter:v7];
+      [(PUPhotoPinchGestureRecognizer *)self _setRotationFilter:_rotationFilter];
     }
 
-    [(PUGroupValueFilter *)v7 setInputValue:v6];
-    [(PUGroupValueFilter *)v7 outputValue];
+    [(PUGroupValueFilter *)_rotationFilter setInputValue:v6];
+    [(PUGroupValueFilter *)_rotationFilter outputValue];
     v4 = v12;
   }
 
   return v4;
 }
 
-- (CGPoint)adjustedTranslationInView:(id)a3
+- (CGPoint)adjustedTranslationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(PUPhotoPinchGestureRecognizer *)self _updateIfNeeded];
   if (self->_initialTouchLocationsSet)
   {
@@ -140,12 +140,12 @@
     UIMidPointBetweenPoints();
     v10 = v9;
     v12 = v11;
-    if (v4)
+    if (viewCopy)
     {
-      [v4 convertPoint:0 fromView:{v6, v8}];
+      [viewCopy convertPoint:0 fromView:{v6, v8}];
       v6 = v13;
       v8 = v14;
-      [v4 convertPoint:0 fromView:{v10, v12}];
+      [viewCopy convertPoint:0 fromView:{v10, v12}];
       v10 = v15;
       v12 = v16;
     }
@@ -167,18 +167,18 @@
   return result;
 }
 
-- (CGPoint)adjustedInitialCenterInView:(id)a3
+- (CGPoint)adjustedInitialCenterInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(PUPhotoPinchGestureRecognizer *)self _updateIfNeeded];
   if (self->_initialTouchLocationsSet)
   {
     UIMidPointBetweenPoints();
     v7 = v5;
     v8 = v6;
-    if (v4)
+    if (viewCopy)
     {
-      [v4 convertPoint:0 fromView:{v5, v6}];
+      [viewCopy convertPoint:0 fromView:{v5, v6}];
       v7 = v9;
       v8 = v10;
     }
@@ -197,14 +197,14 @@
   return result;
 }
 
-- (void)setInitialPinchRect:(CGRect)a3
+- (void)setInitialPinchRect:(CGRect)rect
 {
   p_initialPinchRect = &self->_initialPinchRect;
-  self->_initialPinchRect = a3;
+  self->_initialPinchRect = rect;
   if (self->_initialTouchLocationsSet)
   {
-    v5 = [(PUPhotoPinchGestureRecognizer *)self view];
-    [v5 convertRect:0 toView:{p_initialPinchRect->origin.x, p_initialPinchRect->origin.y, p_initialPinchRect->size.width, p_initialPinchRect->size.height}];
+    view = [(PUPhotoPinchGestureRecognizer *)self view];
+    [view convertRect:0 toView:{p_initialPinchRect->origin.x, p_initialPinchRect->origin.y, p_initialPinchRect->size.width, p_initialPinchRect->size.height}];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -222,44 +222,44 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  cancelledCopy = cancelled;
   [(PUPhotoPinchGestureRecognizer *)self _setTouchesNeedUpdate:1];
   v8.receiver = self;
   v8.super_class = PUPhotoPinchGestureRecognizer;
-  [(PUPhotoPinchGestureRecognizer *)&v8 touchesCancelled:v7 withEvent:v6];
+  [(PUPhotoPinchGestureRecognizer *)&v8 touchesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  endedCopy = ended;
   [(PUPhotoPinchGestureRecognizer *)self _setTouchesNeedUpdate:1];
   v8.receiver = self;
   v8.super_class = PUPhotoPinchGestureRecognizer;
-  [(PUPhotoPinchGestureRecognizer *)&v8 touchesEnded:v7 withEvent:v6];
+  [(PUPhotoPinchGestureRecognizer *)&v8 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  movedCopy = moved;
   [(PUPhotoPinchGestureRecognizer *)self _setTouchesNeedUpdate:1];
   v8.receiver = self;
   v8.super_class = PUPhotoPinchGestureRecognizer;
-  [(PUPhotoPinchGestureRecognizer *)&v8 touchesMoved:v7 withEvent:v6];
+  [(PUPhotoPinchGestureRecognizer *)&v8 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  beganCopy = began;
   [(PUPhotoPinchGestureRecognizer *)self _setTouchesNeedUpdate:1];
   v8.receiver = self;
   v8.super_class = PUPhotoPinchGestureRecognizer;
-  [(PUPhotoPinchGestureRecognizer *)&v8 touchesBegan:v7 withEvent:v6];
+  [(PUPhotoPinchGestureRecognizer *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
 
   [(PUPhotoPinchGestureRecognizer *)self _updateIfNeeded];
 }
@@ -276,11 +276,11 @@
   [(PUPhotoPinchGestureRecognizer *)&v4 reset];
 }
 
-- (PUPhotoPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (PUPhotoPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = PUPhotoPinchGestureRecognizer;
-  v4 = [(UIPinchGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIPinchGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {

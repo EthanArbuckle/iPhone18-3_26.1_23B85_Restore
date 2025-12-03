@@ -10,15 +10,15 @@
 - (id)descriptionWithContext:()BRCAddition
 {
   v4 = a3;
-  v5 = [a1 data];
-  if ([v5 length] == 33)
+  data = [self data];
+  if ([data length] == 33)
   {
-    v6 = [v5 bytes];
-    v7 = *v6;
+    bytes = [data bytes];
+    v7 = *bytes;
     if (v7 == 1)
     {
-      v8 = bswap64(*(v6 + 1));
-      v9 = *(v6 + 9);
+      v8 = bswap64(*(bytes + 1));
+      v9 = *(bytes + 9);
       if (v9 == -129)
       {
         v10 = @"current";
@@ -27,18 +27,18 @@
       else
       {
         v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bswap64(v9)];
-        v23 = [v22 stringValue];
-        v24 = [BRCDumpContext highlightedString:v23 type:1 context:v4];
+        stringValue = [v22 stringValue];
+        v24 = [BRCDumpContext highlightedString:stringValue type:1 context:v4];
 
         v10 = 0;
       }
 
       v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v8];
-      v26 = [v25 stringValue];
-      v18 = [BRCDumpContext highlightedString:v26 type:1 context:v4];
+      stringValue2 = [v25 stringValue];
+      stringValue4 = [BRCDumpContext highlightedString:stringValue2 type:1 context:v4];
 
       v21 = MEMORY[0x277CCACA8];
-      v30 = v18;
+      v30 = stringValue4;
       v31 = v10;
       v19 = @"<%@,%@>";
       goto LABEL_14;
@@ -47,23 +47,23 @@
 
   else
   {
-    if ([v5 length] != 17)
+    if ([data length] != 17)
     {
       v17 = MEMORY[0x277CCACA8];
-      v20 = [v5 length];
-      v18 = [v5 base64EncodedStringWithOptions:0];
+      v20 = [data length];
+      stringValue4 = [data base64EncodedStringWithOptions:0];
       v30 = v20;
-      v31 = v18;
+      v31 = stringValue4;
       v19 = @"unkown-token-size:%lu (%@)";
       goto LABEL_11;
     }
 
-    v11 = [v5 bytes];
-    v7 = *v11;
+    bytes2 = [data bytes];
+    v7 = *bytes2;
     if (v7 == 101)
     {
-      v12 = *(v11 + 1);
-      v13 = *(v11 + 9);
+      v12 = *(bytes2 + 1);
+      v13 = *(bytes2 + 9);
       if (v12 == -1)
       {
         v16 = @"beginning";
@@ -72,31 +72,31 @@
       else
       {
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bswap64(v12)];
-        v15 = [v14 stringValue];
-        v16 = [BRCDumpContext highlightedString:v15 type:1 context:v4];
+        stringValue3 = [v14 stringValue];
+        v16 = [BRCDumpContext highlightedString:stringValue3 type:1 context:v4];
       }
 
       if (v13 == -1)
       {
-        v18 = @"beginning";
+        stringValue4 = @"beginning";
       }
 
       else
       {
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bswap64(v13)];
-        v18 = [v29 stringValue];
+        stringValue4 = [v29 stringValue];
       }
 
-      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@, %@>", v16, v18];
+      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@, %@>", v16, stringValue4];
 
       goto LABEL_15;
     }
   }
 
   v17 = MEMORY[0x277CCACA8];
-  v18 = [v5 base64EncodedStringWithOptions:0];
+  stringValue4 = [data base64EncodedStringWithOptions:0];
   v30 = v7;
-  v31 = v18;
+  v31 = stringValue4;
   v19 = @"unkown-token-version:%d (%@)";
 LABEL_11:
   v21 = v17;
@@ -109,8 +109,8 @@ LABEL_15:
 
 - (void)sqliteBind:()BRCAddition index:
 {
-  v6 = [a1 data];
-  [v6 sqliteBind:a3 index:a4];
+  data = [self data];
+  [data sqliteBind:a3 index:a4];
 }
 
 + (uint64_t)newFromSqliteValue:()BRCAddition

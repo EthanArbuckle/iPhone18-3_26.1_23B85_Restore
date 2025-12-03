@@ -1,12 +1,12 @@
 @interface AMPOnboardingViewController
-- (AMPOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 primaryButtonText:(id)a6 privacyLinkController:(id)a7;
-- (AMPOnboardingViewController)initWithTitleText:(id)a3 features:(id)a4 primaryButtonText:(id)a5 privacyLinkController:(id)a6;
+- (AMPOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText primaryButtonText:(id)buttonText privacyLinkController:(id)controller;
+- (AMPOnboardingViewController)initWithTitleText:(id)text features:(id)features primaryButtonText:(id)buttonText privacyLinkController:(id)controller;
 - (BOOL)isPresentedInFormSheet;
 - (UITraitCollection)cappedTraitCollection;
-- (id)childTraitCollectionForViewController:(id)a3;
+- (id)childTraitCollectionForViewController:(id)controller;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)didTapPrimaryButton:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)didTapPrimaryButton:(id)button;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateOverrideTraits;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -14,24 +14,24 @@
 
 @implementation AMPOnboardingViewController
 
-- (AMPOnboardingViewController)initWithHeaderImage:(id)a3 titleText:(id)a4 descriptionText:(id)a5 primaryButtonText:(id)a6 privacyLinkController:(id)a7
+- (AMPOnboardingViewController)initWithHeaderImage:(id)image titleText:(id)text descriptionText:(id)descriptionText primaryButtonText:(id)buttonText privacyLinkController:(id)controller
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  imageCopy = image;
+  textCopy = text;
+  descriptionTextCopy = descriptionText;
+  buttonTextCopy = buttonText;
+  controllerCopy = controller;
   v26.receiver = self;
   v26.super_class = AMPOnboardingViewController;
   v18 = [(AMPOnboardingViewController *)&v26 initWithNibName:0 bundle:0];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_titleText, a4);
-    objc_storeStrong(&v19->_descriptionText, a5);
-    objc_storeStrong(&v19->_primaryButtonText, a6);
-    objc_storeStrong(&v19->_image, a3);
-    v20 = [objc_alloc(getAMSUIOnboardingViewControllerClass()) initWithHeaderImage:v13 titleText:v14 descriptionText:v15 primaryButtonText:v16 privacyLinkController:v17];
+    objc_storeStrong(&v18->_titleText, text);
+    objc_storeStrong(&v19->_descriptionText, descriptionText);
+    objc_storeStrong(&v19->_primaryButtonText, buttonText);
+    objc_storeStrong(&v19->_image, image);
+    v20 = [objc_alloc(getAMSUIOnboardingViewControllerClass()) initWithHeaderImage:imageCopy titleText:textCopy descriptionText:descriptionTextCopy primaryButtonText:buttonTextCopy privacyLinkController:controllerCopy];
     onboardingController = v19->_onboardingController;
     v19->_onboardingController = v20;
 
@@ -61,26 +61,26 @@ void __117__AMPOnboardingViewController_initWithHeaderImage_titleText_descriptio
   }
 }
 
-- (AMPOnboardingViewController)initWithTitleText:(id)a3 features:(id)a4 primaryButtonText:(id)a5 privacyLinkController:(id)a6
+- (AMPOnboardingViewController)initWithTitleText:(id)text features:(id)features primaryButtonText:(id)buttonText privacyLinkController:(id)controller
 {
   v46 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v30 = a4;
-  v28 = a5;
-  v29 = a6;
+  textCopy = text;
+  featuresCopy = features;
+  buttonTextCopy = buttonText;
+  controllerCopy = controller;
   v39.receiver = self;
   v39.super_class = AMPOnboardingViewController;
   val = [(AMPOnboardingViewController *)&v39 initWithNibName:0 bundle:0];
   if (val)
   {
-    objc_storeStrong(&val->_titleText, a3);
-    objc_storeStrong(&val->_primaryButtonText, a5);
-    v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v30, "count")}];
+    objc_storeStrong(&val->_titleText, text);
+    objc_storeStrong(&val->_primaryButtonText, buttonText);
+    v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(featuresCopy, "count")}];
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = v30;
+    obj = featuresCopy;
     v12 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
     if (v12)
     {
@@ -115,10 +115,10 @@ void __117__AMPOnboardingViewController_initWithHeaderImage_titleText_descriptio
           v17 = v16;
           _Block_object_dispose(&v41, 8);
           v18 = [v16 alloc];
-          v19 = [v15 image];
-          v20 = [v15 titleText];
-          v21 = [v15 descriptionText];
-          v22 = [v18 initWithImage:v19 titleText:v20 descriptionText:v21];
+          image = [v15 image];
+          titleText = [v15 titleText];
+          descriptionText = [v15 descriptionText];
+          v22 = [v18 initWithImage:image titleText:titleText descriptionText:descriptionText];
 
           [v11 addObject:v22];
           ++v14;
@@ -131,7 +131,7 @@ void __117__AMPOnboardingViewController_initWithHeaderImage_titleText_descriptio
       while (v12);
     }
 
-    v23 = [objc_alloc(getAMSUIOnboardingViewControllerClass()) initWithTitleText:v27 features:v11 primaryButtonText:v28 privacyLinkController:v29];
+    v23 = [objc_alloc(getAMSUIOnboardingViewControllerClass()) initWithTitleText:textCopy features:v11 primaryButtonText:buttonTextCopy privacyLinkController:controllerCopy];
     onboardingController = val->_onboardingController;
     val->_onboardingController = v23;
 
@@ -167,24 +167,24 @@ void __98__AMPOnboardingViewController_initWithTitleText_features_primaryButtonT
   v11.receiver = self;
   v11.super_class = AMPOnboardingViewController;
   [(AMPOnboardingViewController *)&v11 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(AMPOnboardingViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(AMPOnboardingViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(AMPOnboardingViewController *)self onboardingController];
+  onboardingController = [(AMPOnboardingViewController *)self onboardingController];
 
-  if (v5)
+  if (onboardingController)
   {
-    v6 = [(AMPOnboardingViewController *)self onboardingController];
-    [(AMPOnboardingViewController *)self addChildViewController:v6];
+    onboardingController2 = [(AMPOnboardingViewController *)self onboardingController];
+    [(AMPOnboardingViewController *)self addChildViewController:onboardingController2];
 
-    v7 = [(AMPOnboardingViewController *)self view];
-    v8 = [(AMPOnboardingViewController *)self onboardingController];
-    v9 = [v8 view];
-    [v7 addSubview:v9];
+    view2 = [(AMPOnboardingViewController *)self view];
+    onboardingController3 = [(AMPOnboardingViewController *)self onboardingController];
+    view3 = [onboardingController3 view];
+    [view2 addSubview:view3];
 
-    v10 = [(AMPOnboardingViewController *)self onboardingController];
-    [v10 didMoveToParentViewController:self];
+    onboardingController4 = [(AMPOnboardingViewController *)self onboardingController];
+    [onboardingController4 didMoveToParentViewController:self];
   }
 }
 
@@ -193,33 +193,33 @@ void __98__AMPOnboardingViewController_initWithTitleText_features_primaryButtonT
   v14.receiver = self;
   v14.super_class = AMPOnboardingViewController;
   [(AMPOnboardingViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [(AMPOnboardingViewController *)self view];
-  [v3 bounds];
+  view = [(AMPOnboardingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMPOnboardingViewController *)self onboardingController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  onboardingController = [(AMPOnboardingViewController *)self onboardingController];
+  view2 = [onboardingController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = AMPOnboardingViewController;
-  [(AMPOnboardingViewController *)&v5 traitCollectionDidChange:a3];
+  [(AMPOnboardingViewController *)&v5 traitCollectionDidChange:change];
   [(AMPOnboardingViewController *)self updateOverrideTraits];
-  v4 = [(AMPOnboardingViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(AMPOnboardingViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(AMPOnboardingViewController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(AMPOnboardingViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -238,20 +238,20 @@ void __98__AMPOnboardingViewController_initWithTitleText_features_primaryButtonT
     [AMPOnboardingViewController cappedTraitCollection];
   }
 
-  v3 = [(AMPOnboardingViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  traitCollection = [(AMPOnboardingViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v5 = cappedTraitCollection_cappedSizes;
-    v6 = [(AMPOnboardingViewController *)self traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
-    LODWORD(v5) = [v5 containsObject:v7];
+    traitCollection2 = [(AMPOnboardingViewController *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+    LODWORD(v5) = [v5 containsObject:preferredContentSizeCategory2];
 
     if (v5)
     {
       v8 = MEMORY[0x277D75C80];
-      v9 = [(AMPOnboardingViewController *)self traitCollection];
-      v15[0] = v9;
+      traitCollection3 = [(AMPOnboardingViewController *)self traitCollection];
+      v15[0] = traitCollection3;
       v10 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x277D76800]];
       v15[1] = v10;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
@@ -286,9 +286,9 @@ void __52__AMPOnboardingViewController_cappedTraitCollection__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (id)childTraitCollectionForViewController:(id)a3
+- (id)childTraitCollectionForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -309,15 +309,15 @@ void __52__AMPOnboardingViewController_cappedTraitCollection__block_invoke()
   _Block_object_dispose(&v10, 8);
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(AMPOnboardingViewController *)self cappedTraitCollection];
+    cappedTraitCollection = [(AMPOnboardingViewController *)self cappedTraitCollection];
   }
 
   else
   {
-    v7 = 0;
+    cappedTraitCollection = 0;
   }
 
-  return v7;
+  return cappedTraitCollection;
 }
 
 - (void)updateOverrideTraits
@@ -327,8 +327,8 @@ void __52__AMPOnboardingViewController_cappedTraitCollection__block_invoke()
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(AMPOnboardingViewController *)self childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childViewControllers = [(AMPOnboardingViewController *)self childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -339,7 +339,7 @@ void __52__AMPOnboardingViewController_cappedTraitCollection__block_invoke()
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -347,7 +347,7 @@ void __52__AMPOnboardingViewController_cappedTraitCollection__block_invoke()
         [(AMPOnboardingViewController *)self setOverrideTraitCollection:v9 forChildViewController:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -356,37 +356,37 @@ void __52__AMPOnboardingViewController_cappedTraitCollection__block_invoke()
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didTapPrimaryButton:(id)a3
+- (void)didTapPrimaryButton:(id)button
 {
-  v4 = [(AMPOnboardingViewController *)self primaryButtonCallback];
+  primaryButtonCallback = [(AMPOnboardingViewController *)self primaryButtonCallback];
 
-  if (v4)
+  if (primaryButtonCallback)
   {
-    v5 = [(AMPOnboardingViewController *)self primaryButtonCallback];
-    v5[2](v5, self);
+    primaryButtonCallback2 = [(AMPOnboardingViewController *)self primaryButtonCallback];
+    primaryButtonCallback2[2](primaryButtonCallback2, self);
   }
 }
 
 - (BOOL)isPresentedInFormSheet
 {
-  v3 = [(AMPOnboardingViewController *)self navigationController];
-  v4 = v3;
-  if (v3)
+  navigationController = [(AMPOnboardingViewController *)self navigationController];
+  v4 = navigationController;
+  if (navigationController)
   {
-    v5 = v3;
+    selfCopy = navigationController;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
-  v7 = [(AMPOnboardingViewController *)v6 presentationController];
+  presentationController = [(AMPOnboardingViewController *)v6 presentationController];
 
-  v8 = [v7 _activePresentationController];
-  v9 = [v8 presentationStyle] == 2;
+  _activePresentationController = [presentationController _activePresentationController];
+  v9 = [_activePresentationController presentationStyle] == 2;
 
   return v9;
 }

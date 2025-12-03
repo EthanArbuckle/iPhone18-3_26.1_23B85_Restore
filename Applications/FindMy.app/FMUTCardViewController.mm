@@ -1,14 +1,14 @@
 @interface FMUTCardViewController
-- (_TtC6FindMy22FMUTCardViewController)initWithCoder:(id)a3;
-- (_TtC6FindMy22FMUTCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC6FindMy22FMUTCardViewController)initWithCoder:(id)coder;
+- (_TtC6FindMy22FMUTCardViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)handleCloseAction;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMUTCardViewController
 
-- (_TtC6FindMy22FMUTCardViewController)initWithCoder:(id)a3
+- (_TtC6FindMy22FMUTCardViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy22FMUTCardViewController_selectionSubscription) = 0;
   v4 = OBJC_IVAR____TtC6FindMy22FMUTCardViewController_returnSelection;
@@ -21,28 +21,28 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003E42C0(a3);
+  selfCopy = self;
+  sub_1003E42C0(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1003E4418(a3);
+  selfCopy = self;
+  sub_1003E4418(disappear);
 }
 
 - (void)handleCloseAction
 {
   if (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy22FMUTCardViewController_content))
   {
-    v2 = self;
+    selfCopy = self;
     sub_10024D71C();
   }
 }
 
-- (_TtC6FindMy22FMUTCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy22FMUTCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

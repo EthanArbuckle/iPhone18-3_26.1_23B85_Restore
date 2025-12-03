@@ -1,9 +1,9 @@
 @interface PLTimeReferenceBaseband
-- (PLTimeReferenceBaseband)initWithTimeManager:(id)a3 entryDefinitionKey:(id)a4 timeReferenceType:(int64_t)a5;
+- (PLTimeReferenceBaseband)initWithTimeManager:(id)manager entryDefinitionKey:(id)key timeReferenceType:(int64_t)type;
 - (id)currentTime;
 - (void)dealloc;
 - (void)registerForTimeChangedNotification;
-- (void)timeChangedNotificationReceived:(id)a3;
+- (void)timeChangedNotificationReceived:(id)received;
 @end
 
 @implementation PLTimeReferenceBaseband
@@ -76,11 +76,11 @@ void __38__PLTimeReferenceBaseband_currentTime__block_invoke_29(uint64_t a1)
   [*(a1 + 32) setFollowupCurrentTimeRunning:0];
 }
 
-- (PLTimeReferenceBaseband)initWithTimeManager:(id)a3 entryDefinitionKey:(id)a4 timeReferenceType:(int64_t)a5
+- (PLTimeReferenceBaseband)initWithTimeManager:(id)manager entryDefinitionKey:(id)key timeReferenceType:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = PLTimeReferenceBaseband;
-  v5 = [(PLTimeReferenceDynamic *)&v10 initWithTimeManager:a3 entryDefinitionKey:a4 timeReferenceType:a5];
+  v5 = [(PLTimeReferenceDynamic *)&v10 initWithTimeManager:manager entryDefinitionKey:key timeReferenceType:type];
   v6 = v5;
   if (v5)
   {
@@ -122,7 +122,7 @@ void __38__PLTimeReferenceBaseband_currentTime__block_invoke_29(uint64_t a1)
   if (+[PLPlatform hasBaseband])
   {
     v3 = +[PLABMClient sharedABMClient];
-    v4 = [v3 getBasebandTimeAndLatency];
+    getBasebandTimeAndLatency = [v3 getBasebandTimeAndLatency];
 
     v5 = objc_opt_class();
     objc_sync_enter(v5);
@@ -134,8 +134,8 @@ void __38__PLTimeReferenceBaseband_currentTime__block_invoke_29(uint64_t a1)
     else
     {
       [(PLTimeReferenceBaseband *)self setFollowupCurrentTimeRunning:1];
-      v13 = [MEMORY[0x1E695DF00] monotonicDate];
-      [(PLTimeReferenceDynamic *)self setLastQueryTime:v13];
+      monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
+      [(PLTimeReferenceDynamic *)self setLastQueryTime:monotonicDate];
 
       objc_sync_exit(v5);
       v5 = [PLUtilities workQueueForClass:objc_opt_class()];
@@ -147,11 +147,11 @@ void __38__PLTimeReferenceBaseband_currentTime__block_invoke_29(uint64_t a1)
       dispatch_async(v5, block);
     }
 
-    if (v4)
+    if (getBasebandTimeAndLatency)
     {
-      v14 = [v4 time];
-      [v4 latency];
-      v12 = [v14 dateByAddingTimeInterval:-v15];
+      time = [getBasebandTimeAndLatency time];
+      [getBasebandTimeAndLatency latency];
+      v12 = [time dateByAddingTimeInterval:-v15];
 
       if (+[PLDefaults debugEnabled])
       {
@@ -170,9 +170,9 @@ void __38__PLTimeReferenceBaseband_currentTime__block_invoke_29(uint64_t a1)
         {
           v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLTimeReferenceBaseband::currentTime=%@", v12];
           v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLTimeReferenceClasses/PLTimeReferenceBaseband.m"];
-          v19 = [v18 lastPathComponent];
+          lastPathComponent = [v18 lastPathComponent];
           v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLTimeReferenceBaseband currentTime]"];
-          [PLCoreStorage logMessage:v17 fromFile:v19 fromFunction:v20 fromLineNumber:141];
+          [PLCoreStorage logMessage:v17 fromFile:lastPathComponent fromFunction:v20 fromLineNumber:141];
 
           v21 = PLLogCommon();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -212,9 +212,9 @@ void __38__PLTimeReferenceBaseband_currentTime__block_invoke_29(uint64_t a1)
       {
         v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLTimeReferenceBaseband::currentTime: This device doesn't have a baseband. Getting system time instead"];
         v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLTimeReferenceClasses/PLTimeReferenceBaseband.m"];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent2 = [v8 lastPathComponent];
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLTimeReferenceBaseband currentTime]"];
-        [PLCoreStorage logMessage:v7 fromFile:v9 fromFunction:v10 fromLineNumber:96];
+        [PLCoreStorage logMessage:v7 fromFile:lastPathComponent2 fromFunction:v10 fromLineNumber:96];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -224,8 +224,8 @@ void __38__PLTimeReferenceBaseband_currentTime__block_invoke_29(uint64_t a1)
       }
     }
 
-    v4 = [(PLTimeReference *)self timeManager];
-    v12 = [v4 currentTimeFromTimeReference:1 toTimeReference:1];
+    getBasebandTimeAndLatency = [(PLTimeReference *)self timeManager];
+    v12 = [getBasebandTimeAndLatency currentTimeFromTimeReference:1 toTimeReference:1];
   }
 
   return v12;
@@ -252,27 +252,27 @@ BOOL __38__PLTimeReferenceBaseband_currentTime__block_invoke_37(uint64_t a1)
   return result;
 }
 
-- (void)timeChangedNotificationReceived:(id)a3
+- (void)timeChangedNotificationReceived:(id)received
 {
   v4 = MEMORY[0x1E695DF10];
-  v5 = a3;
+  receivedCopy = received;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 objectForKeyedSubscript:@"year"];
+  v7 = [receivedCopy objectForKeyedSubscript:@"year"];
   [v6 setYear:{objc_msgSend(v7, "integerValue")}];
 
-  v8 = [v5 objectForKeyedSubscript:@"month"];
+  v8 = [receivedCopy objectForKeyedSubscript:@"month"];
   [v6 setMonth:{objc_msgSend(v8, "integerValue")}];
 
-  v9 = [v5 objectForKeyedSubscript:@"day"];
+  v9 = [receivedCopy objectForKeyedSubscript:@"day"];
   [v6 setDay:{objc_msgSend(v9, "integerValue")}];
 
-  v10 = [v5 objectForKeyedSubscript:@"hour"];
+  v10 = [receivedCopy objectForKeyedSubscript:@"hour"];
   [v6 setHour:{objc_msgSend(v10, "integerValue")}];
 
-  v11 = [v5 objectForKeyedSubscript:@"minute"];
+  v11 = [receivedCopy objectForKeyedSubscript:@"minute"];
   [v6 setMinute:{objc_msgSend(v11, "integerValue")}];
 
-  v12 = [v5 objectForKeyedSubscript:@"second"];
+  v12 = [receivedCopy objectForKeyedSubscript:@"second"];
 
   [v6 setSecond:{objc_msgSend(v12, "integerValue")}];
   v13 = objc_alloc(MEMORY[0x1E695DEE8]);
@@ -298,9 +298,9 @@ BOOL __38__PLTimeReferenceBaseband_currentTime__block_invoke_37(uint64_t a1)
     {
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLTimeReferenceBaseband::timeChangedNotificationReceived currentTime=%@", v16];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLTimeReferenceClasses/PLTimeReferenceBaseband.m"];
-      v20 = [v19 lastPathComponent];
+      lastPathComponent = [v19 lastPathComponent];
       v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLTimeReferenceBaseband timeChangedNotificationReceived:]"];
-      [PLCoreStorage logMessage:v18 fromFile:v20 fromFunction:v21 fromLineNumber:164];
+      [PLCoreStorage logMessage:v18 fromFile:lastPathComponent fromFunction:v21 fromLineNumber:164];
 
       v22 = PLLogCommon();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))

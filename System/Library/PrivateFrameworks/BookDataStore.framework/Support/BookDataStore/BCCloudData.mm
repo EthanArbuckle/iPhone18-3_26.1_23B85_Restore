@@ -1,20 +1,20 @@
 @interface BCCloudData
-+ (id)localIdentifierFromRecord:(id)a3;
++ (id)localIdentifierFromRecord:(id)record;
 + (id)propertyIDKey;
 - (BCCloudDataPrivacyDelegate)privacyDelegate;
 - (BOOL)hasValidSalt;
-- (BOOL)isEqualExceptForDate:(id)a3 ignoringEmptySalt:(BOOL)a4;
+- (BOOL)isEqualExceptForDate:(id)date ignoringEmptySalt:(BOOL)salt;
 - (CKRecord)systemFields;
 - (id)configuredRecordFromAttributes;
 - (id)identifier;
 - (id)mutableCopy;
 - (id)recordType;
 - (id)zoneName;
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4;
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers;
 - (void)incrementEditGeneration;
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4;
-- (void)setPrivacyDelegate:(id)a3;
-- (void)setSystemFields:(id)a3;
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers;
+- (void)setPrivacyDelegate:(id)delegate;
+- (void)setSystemFields:(id)fields;
 @end
 
 @implementation BCCloudData
@@ -28,23 +28,23 @@
 
 - (CKRecord)systemFields
 {
-  v3 = [(BCCloudData *)self privacyDelegate];
-  v4 = [(BCCloudData *)self ckSystemFields];
+  privacyDelegate = [(BCCloudData *)self privacyDelegate];
+  ckSystemFields = [(BCCloudData *)self ckSystemFields];
 
-  if (v4)
+  if (ckSystemFields)
   {
-    v5 = [(BCCloudData *)self ckSystemFields];
-    v4 = [BCCloudKitDatabaseController decodeRecordFromSystemFields:v5];
+    ckSystemFields2 = [(BCCloudData *)self ckSystemFields];
+    ckSystemFields = [BCCloudKitDatabaseController decodeRecordFromSystemFields:ckSystemFields2];
 
-    if ([v3 establishedSalt])
+    if ([privacyDelegate establishedSalt])
     {
-      v6 = [(BCCloudData *)self recordType];
-      v7 = [(BCCloudData *)self identifier];
-      v8 = [v3 recordNameFromRecordType:v6 identifier:v7];
+      recordType = [(BCCloudData *)self recordType];
+      identifier = [(BCCloudData *)self identifier];
+      v8 = [privacyDelegate recordNameFromRecordType:recordType identifier:identifier];
 
-      v9 = [v4 recordID];
-      v10 = [v9 recordName];
-      v11 = [v10 isEqualToString:v8];
+      recordID = [ckSystemFields recordID];
+      recordName = [recordID recordName];
+      v11 = [recordName isEqualToString:v8];
 
       if ((v11 & 1) == 0)
       {
@@ -55,47 +55,47 @@
         }
 
         [(BCCloudData *)self setSystemFields:0];
-        v4 = 0;
+        ckSystemFields = 0;
       }
     }
   }
 
-  v13 = [(BCCloudData *)self ckSystemFields];
+  ckSystemFields3 = [(BCCloudData *)self ckSystemFields];
 
-  if (!v13)
+  if (!ckSystemFields3)
   {
-    if ([v3 establishedSalt])
+    if ([privacyDelegate establishedSalt])
     {
-      v14 = [(BCCloudData *)self identifier];
+      identifier2 = [(BCCloudData *)self identifier];
 
-      if (v14)
+      if (identifier2)
       {
-        v15 = [(BCCloudData *)self recordType];
-        v16 = [(BCCloudData *)self identifier];
-        v17 = [v3 recordNameFromRecordType:v15 identifier:v16];
+        recordType2 = [(BCCloudData *)self recordType];
+        identifier3 = [(BCCloudData *)self identifier];
+        v17 = [privacyDelegate recordNameFromRecordType:recordType2 identifier:identifier3];
 
         if (v17)
         {
-          v18 = [(BCCloudData *)self saltedHashedID];
+          saltedHashedID = [(BCCloudData *)self saltedHashedID];
 
-          if (!v18)
+          if (!saltedHashedID)
           {
             [(BCCloudData *)self setSaltedHashedID:v17];
           }
 
           v19 = [CKRecordZoneID alloc];
-          v20 = [(BCCloudData *)self zoneName];
-          v21 = [v19 initWithZoneName:v20 ownerName:CKCurrentUserDefaultName];
+          zoneName = [(BCCloudData *)self zoneName];
+          v21 = [v19 initWithZoneName:zoneName ownerName:CKCurrentUserDefaultName];
 
           v22 = [[CKRecordID alloc] initWithRecordName:v17 zoneID:v21];
           v23 = [CKRecord alloc];
-          v24 = [(BCCloudData *)self recordType];
-          v25 = [v23 initWithRecordType:v24 recordID:v22];
+          recordType3 = [(BCCloudData *)self recordType];
+          v25 = [v23 initWithRecordType:recordType3 recordID:v22];
 
           [(BCCloudData *)self setSystemFields:v25];
           [(BCCloudData *)self incrementEditGeneration];
 
-          v4 = v25;
+          ckSystemFields = v25;
         }
 
         else
@@ -110,7 +110,7 @@
     }
   }
 
-  return v4;
+  return ckSystemFields;
 }
 
 - (id)mutableCopy
@@ -120,100 +120,100 @@
   return [(BCMutableCloudData *)v3 initWithCloudData:self];
 }
 
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers
 {
-  v36 = a3;
-  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v36 deletedFlag]);
+  dataCopy = data;
+  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [dataCopy deletedFlag]);
   [(BCCloudData *)self setDifferentNumber:v5 forKey:@"deletedFlag"];
 
-  v6 = [v36 modificationDate];
-  [(BCCloudData *)self setDifferentDate:v6 forKey:@"modificationDate"];
+  modificationDate = [dataCopy modificationDate];
+  [(BCCloudData *)self setDifferentDate:modificationDate forKey:@"modificationDate"];
 
-  v7 = [(BCCloudData *)self systemFields];
-  if (!v7)
+  systemFields = [(BCCloudData *)self systemFields];
+  if (!systemFields)
   {
     goto LABEL_12;
   }
 
-  v8 = [v36 systemFields];
-  v9 = [v8 recordChangeTag];
-  if (v9)
+  systemFields2 = [dataCopy systemFields];
+  recordChangeTag = [systemFields2 recordChangeTag];
+  if (recordChangeTag)
   {
-    v10 = [(BCCloudData *)self systemFields];
-    v11 = [v10 recordChangeTag];
-    v12 = [v36 systemFields];
-    v13 = [v12 recordChangeTag];
-    if (![v11 isEqualToString:v13])
+    systemFields3 = [(BCCloudData *)self systemFields];
+    recordChangeTag2 = [systemFields3 recordChangeTag];
+    systemFields4 = [dataCopy systemFields];
+    recordChangeTag3 = [systemFields4 recordChangeTag];
+    if (![recordChangeTag2 isEqualToString:recordChangeTag3])
     {
 
       goto LABEL_12;
     }
 
-    v30 = v12;
-    v31 = v11;
-    v32 = v10;
-    v35 = v8;
-    [v36 systemFields];
+    v30 = systemFields4;
+    v31 = recordChangeTag2;
+    v32 = systemFields3;
+    v35 = systemFields2;
+    [dataCopy systemFields];
   }
 
   else
   {
-    v35 = v8;
-    [v36 systemFields];
+    v35 = systemFields2;
+    [dataCopy systemFields];
   }
   v14 = ;
-  v15 = [v14 recordID];
-  if (!v15)
+  recordID = [v14 recordID];
+  if (!recordID)
   {
 
-    if (!v9)
+    if (!recordChangeTag)
     {
-      v26 = v35;
+      recordType = v35;
       goto LABEL_17;
     }
 
-    v26 = v35;
+    recordType = v35;
     v27 = v32;
 LABEL_16:
 
 LABEL_17:
-    v22 = v36;
+    v22 = dataCopy;
     goto LABEL_18;
   }
 
-  v16 = v15;
-  v33 = [v36 systemFields];
-  v17 = [v33 recordID];
-  v18 = [v17 recordName];
-  v19 = [(BCCloudData *)self systemFields];
-  v20 = [v19 recordID];
-  v21 = [v20 recordName];
-  v34 = [v18 isEqualToString:v21];
+  v16 = recordID;
+  systemFields5 = [dataCopy systemFields];
+  recordID2 = [systemFields5 recordID];
+  recordName = [recordID2 recordName];
+  systemFields6 = [(BCCloudData *)self systemFields];
+  recordID3 = [systemFields6 recordID];
+  recordName2 = [recordID3 recordName];
+  v34 = [recordName isEqualToString:recordName2];
 
-  if (v9)
+  if (recordChangeTag)
   {
   }
 
-  v22 = v36;
+  v22 = dataCopy;
   if ((v34 & 1) == 0)
   {
 LABEL_12:
-    v23 = [v36 systemFields];
-    [(BCCloudData *)self setSystemFields:v23];
+    systemFields7 = [dataCopy systemFields];
+    [(BCCloudData *)self setSystemFields:systemFields7];
 
-    v24 = [(BCCloudData *)self privacyDelegate];
-    v25 = [v24 establishedSalt];
+    privacyDelegate = [(BCCloudData *)self privacyDelegate];
+    establishedSalt = [privacyDelegate establishedSalt];
 
-    v22 = v36;
-    if (!v25)
+    v22 = dataCopy;
+    if (!establishedSalt)
     {
       goto LABEL_18;
     }
 
-    v7 = [(BCCloudData *)self privacyDelegate];
-    v26 = [v36 recordType];
-    v9 = [v36 identifier];
-    v27 = [v7 recordNameFromRecordType:v26 identifier:v9];
+    systemFields = [(BCCloudData *)self privacyDelegate];
+    recordType = [dataCopy recordType];
+    recordChangeTag = [dataCopy identifier];
+    v27 = [systemFields recordNameFromRecordType:recordType identifier:recordChangeTag];
     [(BCCloudData *)self setSaltedHashedID:v27];
     goto LABEL_16;
   }
@@ -221,33 +221,33 @@ LABEL_12:
 LABEL_18:
 }
 
-- (BOOL)isEqualExceptForDate:(id)a3 ignoringEmptySalt:(BOOL)a4
+- (BOOL)isEqualExceptForDate:(id)date ignoringEmptySalt:(BOOL)salt
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = [(BCCloudData *)self systemFields];
-  if (!v8)
+  saltCopy = salt;
+  dateCopy = date;
+  systemFields = [(BCCloudData *)self systemFields];
+  if (!systemFields)
   {
-    v4 = [v7 systemFields];
-    if (!v4)
+    systemFields2 = [dateCopy systemFields];
+    if (!systemFields2)
     {
-      LODWORD(v9) = 1;
+      LODWORD(systemFields3) = 1;
 LABEL_11:
 
       goto LABEL_12;
     }
   }
 
-  v9 = [(BCCloudData *)self systemFields];
-  if (v9)
+  systemFields3 = [(BCCloudData *)self systemFields];
+  if (systemFields3)
   {
-    v10 = [v7 systemFields];
-    v11 = [v10 recordChangeTag];
-    if (!v11)
+    systemFields4 = [dateCopy systemFields];
+    recordChangeTag = [systemFields4 recordChangeTag];
+    if (!recordChangeTag)
     {
 
-      LODWORD(v9) = 1;
-      if (!v8)
+      LODWORD(systemFields3) = 1;
+      if (!systemFields)
       {
         goto LABEL_11;
       }
@@ -255,36 +255,36 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v12 = v11;
+    v12 = recordChangeTag;
     [(BCCloudData *)self systemFields];
-    v13 = v30 = v5;
+    v13 = v30 = saltCopy;
     [v13 recordChangeTag];
-    v14 = v29 = v4;
-    v15 = [v7 systemFields];
-    v16 = [v15 recordChangeTag];
-    v28 = [v14 isEqualToString:v16];
+    v14 = v29 = systemFields2;
+    systemFields5 = [dateCopy systemFields];
+    recordChangeTag2 = [systemFields5 recordChangeTag];
+    v28 = [v14 isEqualToString:recordChangeTag2];
 
-    v4 = v29;
-    v5 = v30;
+    systemFields2 = v29;
+    saltCopy = v30;
 
-    LODWORD(v9) = v28;
+    LODWORD(systemFields3) = v28;
   }
 
-  if (!v8)
+  if (!systemFields)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  v17 = [(BCCloudData *)self saltedHashedID];
-  v18 = [v7 systemFields];
-  v19 = [v18 recordID];
-  v20 = [v19 recordName];
+  saltedHashedID = [(BCCloudData *)self saltedHashedID];
+  systemFields6 = [dateCopy systemFields];
+  recordID = [systemFields6 recordID];
+  recordName = [recordID recordName];
 
-  if (v17 | v20 && (v17 ? (v21 = v20 == 0) : (v21 = 1), v21 ? (v22 = 0) : (v22 = 1), !v5 || v22))
+  if (saltedHashedID | recordName && (saltedHashedID ? (v21 = recordName == 0) : (v21 = 1), v21 ? (v22 = 0) : (v22 = 1), !saltCopy || v22))
   {
-    v23 = [v17 isEqualToString:v20];
+    v23 = [saltedHashedID isEqualToString:recordName];
   }
 
   else
@@ -292,9 +292,9 @@ LABEL_12:
     v23 = 1;
   }
 
-  v24 = [(BCCloudData *)self deletedFlag];
-  v25 = v23 & (v24 ^ [v7 deletedFlag] ^ 1);
-  if (v9)
+  deletedFlag = [(BCCloudData *)self deletedFlag];
+  v25 = v23 & (deletedFlag ^ [dateCopy deletedFlag] ^ 1);
+  if (systemFields3)
   {
     v26 = v25;
   }
@@ -307,60 +307,60 @@ LABEL_12:
   return v26;
 }
 
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers
 {
-  v13 = a3;
-  v5 = [(BCCloudData *)self systemFields];
-  if (!v5)
+  recordCopy = record;
+  systemFields = [(BCCloudData *)self systemFields];
+  if (!systemFields)
   {
     goto LABEL_3;
   }
 
-  v6 = v5;
-  v7 = [(BCCloudData *)self systemFields];
-  v8 = [v7 recordChangeTag];
-  v9 = [v13 recordChangeTag];
-  v10 = [v8 isEqualToString:v9];
+  v6 = systemFields;
+  systemFields2 = [(BCCloudData *)self systemFields];
+  recordChangeTag = [systemFields2 recordChangeTag];
+  recordChangeTag2 = [recordCopy recordChangeTag];
+  v10 = [recordChangeTag isEqualToString:recordChangeTag2];
 
   if ((v10 & 1) == 0)
   {
 LABEL_3:
-    [(BCCloudData *)self setSystemFields:v13];
-    v11 = [v13 recordID];
-    v12 = [v11 recordName];
-    [(BCCloudData *)self setSaltedHashedID:v12];
+    [(BCCloudData *)self setSystemFields:recordCopy];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
+    [(BCCloudData *)self setSaltedHashedID:recordName];
   }
 }
 
 - (BOOL)hasValidSalt
 {
-  v3 = [(BCCloudData *)self privacyDelegate];
-  v4 = [(BCCloudData *)self ckSystemFields];
-  if (v4 && (v5 = v4, v6 = [v3 establishedSalt], v5, v6))
+  privacyDelegate = [(BCCloudData *)self privacyDelegate];
+  ckSystemFields = [(BCCloudData *)self ckSystemFields];
+  if (ckSystemFields && (v5 = ckSystemFields, v6 = [privacyDelegate establishedSalt], v5, v6))
   {
-    v7 = [(BCCloudData *)self ckSystemFields];
-    v8 = [BCCloudKitDatabaseController decodeRecordFromSystemFields:v7];
+    ckSystemFields2 = [(BCCloudData *)self ckSystemFields];
+    v8 = [BCCloudKitDatabaseController decodeRecordFromSystemFields:ckSystemFields2];
 
-    v9 = [(BCCloudData *)self recordType];
-    v10 = [(BCCloudData *)self identifier];
-    v11 = [v3 recordNameFromRecordType:v9 identifier:v10];
+    recordType = [(BCCloudData *)self recordType];
+    identifier = [(BCCloudData *)self identifier];
+    v11 = [privacyDelegate recordNameFromRecordType:recordType identifier:identifier];
 
-    v12 = [v8 recordID];
-    v13 = [v12 recordName];
-    v14 = [v13 isEqualToString:v11];
+    recordID = [v8 recordID];
+    recordName = [recordID recordName];
+    v14 = [recordName isEqualToString:v11];
 
     v15 = +[BULogUtilities shared];
-    LODWORD(v13) = [v15 verboseLoggingEnabled];
+    LODWORD(recordName) = [v15 verboseLoggingEnabled];
 
-    if (v13)
+    if (recordName)
     {
       v16 = sub_10000DB80();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v8 recordID];
-        v18 = [v17 recordName];
+        recordID2 = [v8 recordID];
+        recordName2 = [recordID2 recordName];
         v20 = 138543874;
-        v21 = v18;
+        v21 = recordName2;
         v22 = 2114;
         v23 = v11;
         v24 = 1024;
@@ -375,7 +375,7 @@ LABEL_3:
     v8 = sub_100002660();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_1001C0668(v3, self);
+      sub_1001C0668(privacyDelegate, self);
     }
 
     LOBYTE(v14) = 1;
@@ -384,9 +384,9 @@ LABEL_3:
   return v14;
 }
 
-- (void)setPrivacyDelegate:(id)a3
+- (void)setPrivacyDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_privacyDelegate);
 
   if (WeakRetained != obj)
@@ -394,23 +394,23 @@ LABEL_3:
     objc_storeWeak(&self->_privacyDelegate, obj);
   }
 
-  v5 = [(BCCloudData *)self saltedHashedID];
-  if (!v5)
+  saltedHashedID = [(BCCloudData *)self saltedHashedID];
+  if (!saltedHashedID)
   {
-    v5 = [(BCCloudData *)self privacyDelegate];
-    if ([v5 establishedSalt])
+    saltedHashedID = [(BCCloudData *)self privacyDelegate];
+    if ([saltedHashedID establishedSalt])
     {
-      v6 = [(BCCloudData *)self identifier];
+      identifier = [(BCCloudData *)self identifier];
 
-      if (!v6)
+      if (!identifier)
       {
         goto LABEL_8;
       }
 
-      v5 = [(BCCloudData *)self privacyDelegate];
-      v7 = [(BCCloudData *)self recordType];
-      v8 = [(BCCloudData *)self identifier];
-      v9 = [v5 recordNameFromRecordType:v7 identifier:v8];
+      saltedHashedID = [(BCCloudData *)self privacyDelegate];
+      recordType = [(BCCloudData *)self recordType];
+      identifier2 = [(BCCloudData *)self identifier];
+      v9 = [saltedHashedID recordNameFromRecordType:recordType identifier:identifier2];
       [(BCCloudData *)self setSaltedHashedID:v9];
     }
   }
@@ -418,18 +418,18 @@ LABEL_3:
 LABEL_8:
 }
 
-- (void)setSystemFields:(id)a3
+- (void)setSystemFields:(id)fields
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  fieldsCopy = fields;
+  v8 = fieldsCopy;
+  if (fieldsCopy)
   {
-    v5 = [BCCloudKitDatabaseController encodeRecordSystemFields:v4];
+    v5 = [BCCloudKitDatabaseController encodeRecordSystemFields:fieldsCopy];
     [(BCCloudData *)self setCkSystemFields:v5];
 
-    v6 = [v8 recordID];
-    v7 = [v6 recordName];
-    [(BCCloudData *)self setSaltedHashedID:v7];
+    recordID = [v8 recordID];
+    recordName = [recordID recordName];
+    [(BCCloudData *)self setSaltedHashedID:recordName];
   }
 
   else
@@ -443,17 +443,17 @@ LABEL_8:
 {
   [(BCCloudData *)self setEditGeneration:[(BCCloudData *)self editGeneration]+ 1];
   v3 = +[BULogUtilities shared];
-  v4 = [v3 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v3 verboseLoggingEnabled];
 
-  if (v4)
+  if (verboseLoggingEnabled)
   {
     v5 = sub_10000DB80();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218242;
-      v7 = [(BCCloudData *)self editGeneration];
+      editGeneration = [(BCCloudData *)self editGeneration];
       v8 = 2112;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "\\Incrementing edit generation to: %lld for %@\\"", &v6, 0x16u);
     }
   }
@@ -461,12 +461,12 @@ LABEL_8:
 
 - (id)configuredRecordFromAttributes
 {
-  v3 = [(BCCloudData *)self systemFields];
-  v4 = [(BCCloudData *)self identifier];
-  v5 = [v3 encryptedValuesByKey];
-  [v5 setObject:v4 forKeyedSubscript:@"localRecordIDEncrypted"];
+  systemFields = [(BCCloudData *)self systemFields];
+  identifier = [(BCCloudData *)self identifier];
+  encryptedValuesByKey = [systemFields encryptedValuesByKey];
+  [encryptedValuesByKey setObject:identifier forKeyedSubscript:@"localRecordIDEncrypted"];
 
-  return v3;
+  return systemFields;
 }
 
 - (id)recordType
@@ -513,16 +513,16 @@ LABEL_8:
   return &stru_10024C800;
 }
 
-+ (id)localIdentifierFromRecord:(id)a3
++ (id)localIdentifierFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = [v3 encryptedValuesByKey];
-  v5 = [v4 objectForKeyedSubscript:@"localRecordIDEncrypted"];
+  recordCopy = record;
+  encryptedValuesByKey = [recordCopy encryptedValuesByKey];
+  v5 = [encryptedValuesByKey objectForKeyedSubscript:@"localRecordIDEncrypted"];
 
   if (!v5)
   {
     objc_opt_class();
-    v6 = [v3 objectForKey:@"localRecordID"];
+    v6 = [recordCopy objectForKey:@"localRecordID"];
     v5 = BUDynamicCast();
   }
 

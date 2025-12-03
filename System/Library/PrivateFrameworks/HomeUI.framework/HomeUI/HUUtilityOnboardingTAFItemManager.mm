@@ -1,30 +1,30 @@
 @interface HUUtilityOnboardingTAFItemManager
-- (HUUtilityOnboardingTAFItemManager)initWithDelegate:(id)a3 fields:(id)a4 sections:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUUtilityOnboardingTAFItemManager)initWithDelegate:(id)delegate fields:(id)fields sections:(id)sections;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUUtilityOnboardingTAFItemManager
 
-- (HUUtilityOnboardingTAFItemManager)initWithDelegate:(id)a3 fields:(id)a4 sections:(id)a5
+- (HUUtilityOnboardingTAFItemManager)initWithDelegate:(id)delegate fields:(id)fields sections:(id)sections
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  fieldsCopy = fields;
+  sectionsCopy = sections;
   v16.receiver = self;
   v16.super_class = HUUtilityOnboardingTAFItemManager;
-  v11 = [(HFItemManager *)&v16 initWithDelegate:a3 sourceItem:0];
+  v11 = [(HFItemManager *)&v16 initWithDelegate:delegate sourceItem:0];
   v12 = v11;
   if (v11)
   {
-    if (v9)
+    if (fieldsCopy)
     {
-      objc_storeStrong(&v11->_TAFfields, a4);
+      objc_storeStrong(&v11->_TAFfields, fields);
     }
 
-    if (v10)
+    if (sectionsCopy)
     {
-      objc_storeStrong(&v12->_TAFSections, a5);
+      objc_storeStrong(&v12->_TAFSections, sections);
     }
 
     v13 = HFLogForCategory();
@@ -44,16 +44,16 @@
   return v12;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     TAFfields = self->_TAFfields;
     *buf = 138412802;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2080;
     v22 = "[HUUtilityOnboardingTAFItemManager _buildItemProvidersForHome:]";
     v23 = 2112;
@@ -65,14 +65,14 @@
   v17[1] = v17;
   v17[2] = 0x2020000000;
   v17[3] = 0;
-  v7 = [(HUUtilityOnboardingTAFItemManager *)self TAFfields];
+  tAFfields = [(HUUtilityOnboardingTAFItemManager *)self TAFfields];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __64__HUUtilityOnboardingTAFItemManager__buildItemProvidersForHome___block_invoke;
   v16[3] = &unk_277DB9F00;
   v16[4] = self;
   v16[5] = v17;
-  v8 = [v7 na_map:v16];
+  v8 = [tAFfields na_map:v16];
 
   v9 = objc_alloc(MEMORY[0x277D14B40]);
   v10 = [MEMORY[0x277CBEB98] setWithArray:v8];
@@ -81,15 +81,15 @@
   v12 = HFLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(NSArray *)v11 items];
+    items = [(NSArray *)v11 items];
     *buf = 138413058;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2080;
     v22 = "[HUUtilityOnboardingTAFItemManager _buildItemProvidersForHome:]";
     v23 = 2112;
     v24 = v11;
     v25 = 2112;
-    v26 = v13;
+    v26 = items;
     _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@:%s item provider: %@ with items %@ ", buf, 0x2Au);
   }
 
@@ -162,10 +162,10 @@ id __64__HUUtilityOnboardingTAFItemManager__buildItemProvidersForHome___block_in
   return v16;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemsCopy = items;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -174,19 +174,19 @@ id __64__HUUtilityOnboardingTAFItemManager__buildItemProvidersForHome___block_in
     *&buf[12] = 2080;
     *&buf[14] = "[HUUtilityOnboardingTAFItemManager _buildSectionsWithDisplayedItems:]";
     *&buf[22] = 2112;
-    v26 = v5;
+    v26 = itemsCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%s with displayed items %@", buf, 0x20u);
   }
 
-  v7 = [(HFItemManager *)self allItems];
-  v8 = [v7 allObjects];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_46];
+  allItems = [(HFItemManager *)self allItems];
+  allObjects = [allItems allObjects];
+  v9 = [allObjects sortedArrayUsingComparator:&__block_literal_global_46];
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v26 = 0;
-  v10 = [(HUUtilityOnboardingTAFItemManager *)self TAFSections];
+  tAFSections = [(HUUtilityOnboardingTAFItemManager *)self TAFSections];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__HUUtilityOnboardingTAFItemManager__buildSectionsWithDisplayedItems___block_invoke_3;
@@ -196,13 +196,13 @@ id __64__HUUtilityOnboardingTAFItemManager__buildItemProvidersForHome___block_in
   v15[4] = self;
   v11 = v9;
   v16 = v11;
-  v12 = [v10 na_map:v15];
+  v12 = [tAFSections na_map:v15];
 
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *v19 = 138412802;
-    v20 = self;
+    selfCopy = self;
     v21 = 2080;
     v22 = "[HUUtilityOnboardingTAFItemManager _buildSectionsWithDisplayedItems:]";
     v23 = 2112;

@@ -1,21 +1,21 @@
 @interface NTKTimeTravelModuleView
-+ (double)_actualCornerRadiusForDevice:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKTimeTravelModuleView)initWithMaximumWidth:(double)a3;
++ (double)_actualCornerRadiusForDevice:(id)device;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKTimeTravelModuleView)initWithMaximumWidth:(double)width;
 - (NTKTimeTravelModuleViewTapClient)tapDelegate;
-- (id)_formatDateStringForIntervalBetweenReferenceDate:(id)a3 andOverrideDate:(id)a4;
+- (id)_formatDateStringForIntervalBetweenReferenceDate:(id)date andOverrideDate:(id)overrideDate;
 - (void)_layoutContentView;
 - (void)_setupBorder;
 - (void)layoutSubviews;
 - (void)prepareToAppear;
-- (void)scrubToDate:(id)a3;
-- (void)setTapDelegate:(id)a3;
+- (void)scrubToDate:(id)date;
+- (void)setTapDelegate:(id)delegate;
 @end
 
 @implementation NTKTimeTravelModuleView
 
-- (NTKTimeTravelModuleView)initWithMaximumWidth:(double)a3
+- (NTKTimeTravelModuleView)initWithMaximumWidth:(double)width
 {
   v55.receiver = self;
   v55.super_class = NTKTimeTravelModuleView;
@@ -27,10 +27,10 @@
   v9 = v8;
   if (v8)
   {
-    v10 = [(NTKModuleView *)v8 device];
-    v11 = [v10 sizeClass];
+    device = [(NTKModuleView *)v8 device];
+    sizeClass = [device sizeClass];
 
-    if (v11)
+    if (sizeClass)
     {
       v12 = 16.0;
     }
@@ -40,14 +40,14 @@
       v12 = 15.0;
     }
 
-    v13 = [MEMORY[0x277CBEAF8] currentLocale];
-    v14 = [v13 objectForKey:*MEMORY[0x277CBE6C8]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v14 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
     v15 = [&unk_284189C28 objectForKey:v14];
 
     v16 = v12;
     if (v15)
     {
-      v17 = [v15 objectAtIndex:v11 != 0];
+      v17 = [v15 objectAtIndex:sizeClass != 0];
       [v17 floatValue];
       v16 = v18;
     }
@@ -65,17 +65,17 @@
     v23 = v9->_timeScrubDifferenceLabel;
     v24 = *MEMORY[0x277D74410];
     v25 = [MEMORY[0x277CBBB08] systemFontOfSize:v12 weight:*MEMORY[0x277D74410]];
-    v26 = [v25 CLKFontWithMonospacedNumbers];
-    v27 = [v26 CLKFontWithAlternativePunctuation];
-    [(UILabel *)v23 setFont:v27];
+    cLKFontWithMonospacedNumbers = [v25 CLKFontWithMonospacedNumbers];
+    cLKFontWithAlternativePunctuation = [cLKFontWithMonospacedNumbers CLKFontWithAlternativePunctuation];
+    [(UILabel *)v23 setFont:cLKFontWithAlternativePunctuation];
 
     [(UILabel *)v9->_timeScrubDifferenceLabel setTextAlignment:1];
     v28 = v9->_timeScrubDifferenceLabel;
-    v29 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v28 setTextColor:v29];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v28 setTextColor:blackColor];
 
-    v30 = [(NTKModuleView *)v9 contentView];
-    [v30 addSubview:v9->_timeScrubDifferenceLabel];
+    contentView = [(NTKModuleView *)v9 contentView];
+    [contentView addSubview:v9->_timeScrubDifferenceLabel];
 
     v31 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v4, v5, v6, v7}];
     timeScrubNowLabel = v9->_timeScrubNowLabel;
@@ -87,11 +87,11 @@
 
     [(UILabel *)v9->_timeScrubNowLabel setTextAlignment:1];
     v35 = v9->_timeScrubNowLabel;
-    v36 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v35 setTextColor:v36];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v35 setTextColor:blackColor2];
 
-    v37 = [(NTKModuleView *)v9 contentView];
-    [v37 addSubview:v9->_timeScrubNowLabel];
+    contentView2 = [(NTKModuleView *)v9 contentView];
+    [contentView2 addSubview:v9->_timeScrubNowLabel];
 
     v38 = v9->_timeScrubNowLabel;
     v39 = NTKClockFaceLocalizedString(@"TIME_TRAVEL_DATE_NOW", @"Text shown when Time Travel reaches the current time");
@@ -102,9 +102,9 @@
     if ((CLKFloatEqualsFloat() & 1) == 0)
     {
       v40 = objc_opt_class();
-      v41 = [(NTKModuleView *)v9 device];
-      [v40 _actualCornerRadiusForDevice:v41];
-      v43 = a3 + v42 * -2.0;
+      device2 = [(NTKModuleView *)v9 device];
+      [v40 _actualCornerRadiusForDevice:device2];
+      v43 = width + v42 * -2.0;
 
       [(UILabel *)v9->_timeScrubNowLabel bounds];
       if (v44 > v43)
@@ -114,17 +114,17 @@
     }
 
     v9->_nowLabelCenterY = 0.0;
-    v45 = [objc_opt_class() timeTravelColor];
-    [(UIView *)v9->_backgroundView setBackgroundColor:v45];
+    timeTravelColor = [objc_opt_class() timeTravelColor];
+    [(UIView *)v9->_backgroundView setBackgroundColor:timeTravelColor];
     v46 = objc_opt_class();
-    v47 = [(NTKModuleView *)v9 device];
-    [v46 _actualCornerRadiusForDevice:v47];
+    device3 = [(NTKModuleView *)v9 device];
+    [v46 _actualCornerRadiusForDevice:device3];
     v49 = v48;
 
-    v50 = [(UIView *)v9->_backgroundView layer];
-    [v50 setCornerRadius:v49];
+    layer = [(UIView *)v9->_backgroundView layer];
+    [layer setCornerRadius:v49];
 
-    v51 = NTKColorByPremultiplyingAlpha(v45, 0.82);
+    v51 = NTKColorByPremultiplyingAlpha(timeTravelColor, 0.82);
     [(NTKModuleView *)v9 setHighlightBackgroundColor:v51];
 
     v52 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
@@ -145,11 +145,11 @@
   [(UILabel *)timeScrubNowLabel setHidden:0];
 }
 
-+ (double)_actualCornerRadiusForDevice:(id)a3
++ (double)_actualCornerRadiusForDevice:(id)device
 {
-  v4 = a3;
-  [a1 _defaultHeightForDevice:v4];
-  [a1 _defaultHeightForDevice:v4];
+  deviceCopy = device;
+  [self _defaultHeightForDevice:deviceCopy];
+  [self _defaultHeightForDevice:deviceCopy];
   CLKValueForDeviceMetrics();
   v6 = v5;
 
@@ -160,20 +160,20 @@
 {
   if (!self->_borderLayer)
   {
-    v3 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     borderLayer = self->_borderLayer;
-    self->_borderLayer = v3;
+    self->_borderLayer = layer;
 
     v5 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
     -[CALayer setBackgroundColor:](self->_borderLayer, "setBackgroundColor:", [v5 CGColor]);
 
     v6 = objc_opt_class();
-    v7 = [(NTKModuleView *)self device];
-    [v6 _actualCornerRadiusForDevice:v7];
+    device = [(NTKModuleView *)self device];
+    [v6 _actualCornerRadiusForDevice:device];
     [(CALayer *)self->_borderLayer setCornerRadius:v8 + 1.0];
 
-    v9 = [(NTKTimeTravelModuleView *)self layer];
-    [v9 insertSublayer:self->_borderLayer atIndex:0];
+    layer2 = [(NTKTimeTravelModuleView *)self layer];
+    [layer2 insertSublayer:self->_borderLayer atIndex:0];
   }
 }
 
@@ -194,11 +194,11 @@
 {
   [(UILabel *)self->_timeScrubDifferenceLabel sizeToFit];
   [(NTKTimeTravelModuleView *)self bounds];
-  v3 = [(NTKModuleView *)self device];
-  v4 = [v3 sizeClass];
+  device = [(NTKModuleView *)self device];
+  sizeClass = [device sizeClass];
 
   [(UILabel *)self->_timeScrubDifferenceLabel bounds];
-  v5 = [(NTKModuleView *)self device];
+  device2 = [(NTKModuleView *)self device];
   CLKRectCenteredAboutPointForDevice();
   v7 = v6;
   v9 = v8;
@@ -209,7 +209,7 @@
   if (self->_nowLabelCenterY == 0.0)
   {
     v14 = 15.0;
-    if (!v4)
+    if (!sizeClass)
     {
       v14 = 14.0;
     }
@@ -220,7 +220,7 @@
   }
 
   [(UILabel *)self->_timeScrubNowLabel bounds];
-  v16 = [(NTKModuleView *)self device];
+  device3 = [(NTKModuleView *)self device];
   CLKRectCenteredAboutPointForDevice();
   v18 = v17;
   v20 = v19;
@@ -232,7 +232,7 @@
   [(UILabel *)timeScrubNowLabel ntk_setBoundsAndPositionFromFrame:v18, v20, v22, v24];
 }
 
-- (void)scrubToDate:(id)a3
+- (void)scrubToDate:(id)date
 {
   obj = NTKRoundDateDownToNearestMinute();
   if (([(NSDate *)self->_date isEqual:?]& 1) == 0)
@@ -249,9 +249,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if (([(UILabel *)self->_timeScrubDifferenceLabel isHidden:a3.width]& 1) != 0)
+  if (([(UILabel *)self->_timeScrubDifferenceLabel isHidden:fits.width]& 1) != 0)
   {
     [(UILabel *)self->_timeScrubNowLabel bounds];
   }
@@ -263,15 +263,15 @@
   }
 
   v4 = objc_opt_class();
-  v5 = [(NTKModuleView *)self device];
-  [v4 _actualCornerRadiusForDevice:v5];
+  device = [(NTKModuleView *)self device];
+  [v4 _actualCornerRadiusForDevice:device];
 
-  v6 = [(NTKModuleView *)self device];
+  device2 = [(NTKModuleView *)self device];
   CLKCeilForDevice();
   v8 = v7;
 
-  v9 = [(NTKModuleView *)self device];
-  [NTKTimeTravelModuleView _defaultHeightForDevice:v9];
+  device3 = [(NTKModuleView *)self device];
+  [NTKTimeTravelModuleView _defaultHeightForDevice:device3];
   v11 = v10;
 
   v12 = v8;
@@ -281,10 +281,10 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(NTKTimeTravelModuleView *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -305,9 +305,9 @@
   return v22;
 }
 
-- (id)_formatDateStringForIntervalBetweenReferenceDate:(id)a3 andOverrideDate:(id)a4
+- (id)_formatDateStringForIntervalBetweenReferenceDate:(id)date andOverrideDate:(id)overrideDate
 {
-  [a4 timeIntervalSinceDate:a3];
+  [overrideDate timeIntervalSinceDate:date];
   v6 = v5;
   v7 = fabs(v5);
   if (v7 < 60.0 && self->_shouldUseNowText)
@@ -333,8 +333,8 @@
     }
 
     v12 = [(NSDateComponentsFormatter *)offsetDateFormatter stringFromTimeInterval:v7];
-    v13 = [MEMORY[0x277CBEAF8] currentLocale];
-    v14 = [v13 objectForKey:*MEMORY[0x277CBE6C8]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v14 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
     if (CLKLocaleCurrentNumberSystem() == 1)
     {
       v15 = @"\u200F";
@@ -354,7 +354,7 @@
     v17 = v16;
     if ([v14 isEqualToString:@"en"])
     {
-      v18 = [v12 uppercaseStringWithLocale:v13];
+      v18 = [v12 uppercaseStringWithLocale:currentLocale];
 
       v12 = v18;
     }
@@ -365,9 +365,9 @@
   return v8;
 }
 
-- (void)setTapDelegate:(id)a3
+- (void)setTapDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_tapDelegate);
 
   v5 = obj;

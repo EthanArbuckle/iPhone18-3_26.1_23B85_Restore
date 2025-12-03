@@ -1,21 +1,21 @@
 @interface LPPlayButtonControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
-- (void)_showPlayIndicator:(BOOL)a3;
+- (void)_showPlayIndicator:(BOOL)indicator;
 @end
 
 @implementation LPPlayButtonControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LPPlayButtonControl" hasInstanceMethod:@"_showPlayIndicator:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"LPPlayButtonControl" hasInstanceMethod:@"buttonPressed:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LPPlayButtonControl" hasInstanceMethod:@"_showPlayIndicator:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"LPPlayButtonControl" hasInstanceMethod:@"buttonPressed:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   if ([(LPPlayButtonControlAccessibility *)self _axIsPlaying])
   {
     v4 = @"pause.button";
@@ -35,12 +35,12 @@
   v12 = &unk_29F2C9B00;
   objc_copyWeak(&v13, &location);
   v7 = [v6 initWithName:v5 actionHandler:&v9];
-  [v3 axSafelyAddObject:{v7, v9, v10, v11, v12}];
+  [array axSafelyAddObject:{v7, v9, v10, v11, v12}];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 
-  return v3;
+  return array;
 }
 
 uint64_t __62__LPPlayButtonControlAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1, void *a2)
@@ -59,13 +59,13 @@ void __62__LPPlayButtonControlAccessibility_accessibilityCustomActions__block_in
   [WeakRetained buttonPressed:0];
 }
 
-- (void)_showPlayIndicator:(BOOL)a3
+- (void)_showPlayIndicator:(BOOL)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   v5.receiver = self;
   v5.super_class = LPPlayButtonControlAccessibility;
   [(LPPlayButtonControlAccessibility *)&v5 _showPlayIndicator:?];
-  [(LPPlayButtonControlAccessibility *)self _axSetIsPlaying:!v3];
+  [(LPPlayButtonControlAccessibility *)self _axSetIsPlaying:!indicatorCopy];
 }
 
 @end

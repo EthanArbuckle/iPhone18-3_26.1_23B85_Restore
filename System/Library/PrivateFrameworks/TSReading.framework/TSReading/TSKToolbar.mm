@@ -1,25 +1,25 @@
 @interface TSKToolbar
 - (NSString)title;
-- (TSKToolbar)initWithFrame:(CGRect)a3;
+- (TSKToolbar)initWithFrame:(CGRect)frame;
 - (UIColor)titleColor;
-- (id)itemWithTag:(int64_t)a3;
+- (id)itemWithTag:(int64_t)tag;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setItems:(id)a3 animated:(BOOL)a4 height:(double)a5 isLeft:(BOOL)a6;
-- (void)setLeftItems:(id)a3 title:(id)a4 rightItems:(id)a5 duration:(double)a6;
-- (void)setNavigationTitleView:(id)a3;
-- (void)setShadowEnabled:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleColor:(id)a3;
+- (void)setItems:(id)items animated:(BOOL)animated height:(double)height isLeft:(BOOL)left;
+- (void)setLeftItems:(id)items title:(id)title rightItems:(id)rightItems duration:(double)duration;
+- (void)setNavigationTitleView:(id)view;
+- (void)setShadowEnabled:(BOOL)enabled;
+- (void)setTitle:(id)title;
+- (void)setTitleColor:(id)color;
 @end
 
 @implementation TSKToolbar
 
-- (TSKToolbar)initWithFrame:(CGRect)a3
+- (TSKToolbar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TSKToolbar;
-  v3 = [(TSKToolbar *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TSKToolbar *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D757A8]);
@@ -58,15 +58,15 @@
   }
 }
 
-- (id)itemWithTag:(int64_t)a3
+- (id)itemWithTag:(int64_t)tag
 {
   v27 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(TSKToolbar *)self subviews];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  subviews = [(TSKToolbar *)self subviews];
+  v5 = [subviews countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -77,7 +77,7 @@
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -88,8 +88,8 @@
           v20 = 0u;
           v17 = 0u;
           v18 = 0u;
-          v10 = [v9 subviews];
-          v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          subviews2 = [v9 subviews];
+          v11 = [subviews2 countByEnumeratingWithState:&v17 objects:v25 count:16];
           if (v11)
           {
             v12 = v11;
@@ -100,18 +100,18 @@ LABEL_9:
             {
               if (*v18 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(subviews2);
               }
 
               v15 = *(*(&v17 + 1) + 8 * v14);
-              if ([v15 tag] == a3)
+              if ([v15 tag] == tag)
               {
                 break;
               }
 
               if (v12 == ++v14)
               {
-                v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+                v12 = [subviews2 countByEnumeratingWithState:&v17 objects:v25 count:16];
                 if (v12)
                 {
                   goto LABEL_9;
@@ -132,7 +132,7 @@ LABEL_17:
         ;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -141,41 +141,41 @@ LABEL_17:
   return 0;
 }
 
-- (void)setLeftItems:(id)a3 title:(id)a4 rightItems:(id)a5 duration:(double)a6
+- (void)setLeftItems:(id)items title:(id)title rightItems:(id)rightItems duration:(double)duration
 {
-  [(TSKToolbar *)self setTitle:a4];
-  v10 = a6 > 0.0;
+  [(TSKToolbar *)self setTitle:title];
+  v10 = duration > 0.0;
   [(TSKToolbar *)self bounds];
   v12 = v11;
-  [(TSKToolbar *)self setItems:a3 animated:v10 height:1 isLeft:v11];
+  [(TSKToolbar *)self setItems:items animated:v10 height:1 isLeft:v11];
 
-  [(TSKToolbar *)self setItems:a5 animated:v10 height:0 isLeft:v12];
+  [(TSKToolbar *)self setItems:rightItems animated:v10 height:0 isLeft:v12];
 }
 
-- (void)setItems:(id)a3 animated:(BOOL)a4 height:(double)a5 isLeft:(BOOL)a6
+- (void)setItems:(id)items animated:(BOOL)animated height:(double)height isLeft:(BOOL)left
 {
-  v6 = a6;
-  v8 = a4;
-  v9 = a3;
+  leftCopy = left;
+  animatedCopy = animated;
+  itemsCopy = items;
   v18[2] = *MEMORY[0x277D85DE8];
-  if (![a3 count])
+  if (![items count])
   {
-    v9 = 0;
-    if (!v6)
+    itemsCopy = 0;
+    if (!leftCopy)
     {
       goto LABEL_17;
     }
 
 LABEL_6:
-    [(UINavigationItem *)self->_navigationItem setLeftBarButtonItems:v9 animated:v8];
+    [(UINavigationItem *)self->_navigationItem setLeftBarButtonItems:itemsCopy animated:animatedCopy];
     return;
   }
 
-  [v9 firstObject];
+  [itemsCopy firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v6)
+    if (leftCopy)
     {
       [(TSKToolbar *)self leftToolbarItemsMaximumWidth];
     }
@@ -185,9 +185,9 @@ LABEL_6:
       [(TSKToolbar *)self rightToolbarItemsMaximumWidth];
     }
 
-    v12 = [[TSKToolbarButtonCollectionView alloc] initWithHeight:v9 items:a5 maximumWidth:v11];
+    v12 = [[TSKToolbarButtonCollectionView alloc] initWithHeight:itemsCopy items:height maximumWidth:v11];
     v13 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v12];
-    if (v6)
+    if (leftCopy)
     {
       [(TSKToolbar *)self leftToolbarItemsInset];
     }
@@ -201,7 +201,7 @@ LABEL_6:
     if (v14 == 0.0)
     {
       v17 = v13;
-      v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
+      itemsCopy = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
     }
 
     else
@@ -210,10 +210,10 @@ LABEL_6:
       [v16 setWidth:v15];
       v18[0] = v16;
       v18[1] = v13;
-      v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
+      itemsCopy = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
     }
 
-    if (!v6)
+    if (!leftCopy)
     {
       goto LABEL_17;
     }
@@ -221,14 +221,14 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (v6)
+  if (leftCopy)
   {
     goto LABEL_6;
   }
 
-  v9 = [v9 tsu_arrayByReversingOrder];
+  itemsCopy = [itemsCopy tsu_arrayByReversingOrder];
 LABEL_17:
-  [(UINavigationItem *)self->_navigationItem setRightBarButtonItems:v9 animated:v8];
+  [(UINavigationItem *)self->_navigationItem setRightBarButtonItems:itemsCopy animated:animatedCopy];
 }
 
 - (NSString)title
@@ -246,17 +246,17 @@ LABEL_17:
   return [navigationTitleView title];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   navigationTitleView = self->_navigationTitleView;
   if (navigationTitleView)
   {
-    [(TSKToolbarTitleView *)navigationTitleView setTitle:a3];
+    [(TSKToolbarTitleView *)navigationTitleView setTitle:title];
   }
 
   else
   {
-    [(UINavigationItem *)self->_navigationItem setTitle:a3];
+    [(UINavigationItem *)self->_navigationItem setTitle:title];
   }
 
   v5 = self->_navigationTitleView;
@@ -267,47 +267,47 @@ LABEL_17:
 
 - (UIColor)titleColor
 {
-  v2 = [(TSKToolbar *)self titleTextAttributes];
+  titleTextAttributes = [(TSKToolbar *)self titleTextAttributes];
   v3 = *MEMORY[0x277D740C0];
 
-  return [v2 objectForKey:v3];
+  return [titleTextAttributes objectForKey:v3];
 }
 
-- (void)setTitleColor:(id)a3
+- (void)setTitleColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v6[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (color)
   {
     v5 = *MEMORY[0x277D740C0];
-    v6[0] = a3;
-    a3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
+    v6[0] = color;
+    color = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
   }
 
-  [(TSKToolbar *)self setTitleTextAttributes:a3];
-  [(TSKToolbarTitleView *)self->_navigationTitleView setTitleColor:v3];
+  [(TSKToolbar *)self setTitleTextAttributes:color];
+  [(TSKToolbarTitleView *)self->_navigationTitleView setTitleColor:colorCopy];
 }
 
-- (void)setNavigationTitleView:(id)a3
+- (void)setNavigationTitleView:(id)view
 {
-  if (self->_navigationTitleView != a3)
+  if (self->_navigationTitleView != view)
   {
     v6 = [(NSString *)[(TSKToolbar *)self title] copy];
 
-    v5 = a3;
-    self->_navigationTitleView = v5;
-    [(TSKToolbarTitleView *)v5 setTitle:v6];
+    viewCopy = view;
+    self->_navigationTitleView = viewCopy;
+    [(TSKToolbarTitleView *)viewCopy setTitle:v6];
     [(TSKToolbarTitleView *)self->_navigationTitleView setTitleColor:[(TSKToolbar *)self titleColor]];
   }
 }
 
-- (void)setShadowEnabled:(BOOL)a3
+- (void)setShadowEnabled:(BOOL)enabled
 {
-  if (self->_shadowEnabled != a3)
+  if (self->_shadowEnabled != enabled)
   {
-    self->_shadowEnabled = a3;
+    self->_shadowEnabled = enabled;
     shadowLayer = self->_shadowLayer;
-    if (a3)
+    if (enabled)
     {
       if (!shadowLayer)
       {

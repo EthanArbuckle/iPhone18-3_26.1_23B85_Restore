@@ -1,39 +1,39 @@
 @interface HULocationEventEditorSummaryViewController
-+ (id)defaultLocationEventBuilderForHome:(id)a3 eventType:(unint64_t)a4;
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HULocationEventEditorSummaryViewController)initWithFlow:(id)a3 stepIdentifier:(id)a4;
-- (HULocationEventEditorSummaryViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (void)_doneButtonPressed:(id)a3;
-- (void)regionEditor:(id)a3 didFinishWithRegion:(id)a4;
-- (void)resetSelectedLocationToHomeForPresenceUserPickerItemModuleController:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
++ (id)defaultLocationEventBuilderForHome:(id)home eventType:(unint64_t)type;
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HULocationEventEditorSummaryViewController)initWithFlow:(id)flow stepIdentifier:(id)identifier;
+- (HULocationEventEditorSummaryViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (void)_doneButtonPressed:(id)pressed;
+- (void)regionEditor:(id)editor didFinishWithRegion:(id)region;
+- (void)resetSelectedLocationToHomeForPresenceUserPickerItemModuleController:(id)controller;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation HULocationEventEditorSummaryViewController
 
-+ (id)defaultLocationEventBuilderForHome:(id)a3 eventType:(unint64_t)a4
++ (id)defaultLocationEventBuilderForHome:(id)home eventType:(unint64_t)type
 {
-  v5 = a3;
-  if ([MEMORY[0x277CD1D20] hf_presenceDisableReasonsForHome:v5])
+  homeCopy = home;
+  if ([MEMORY[0x277CD1D20] hf_presenceDisableReasonsForHome:homeCopy])
   {
     v6 = objc_alloc_init(MEMORY[0x277D147B0]);
-    v7 = [HULocationTriggerRegion homeRegionWithHome:v5 eventType:a4];
-    v8 = [v7 defaultCircularRegionForCoordinate];
-    [v6 setRegion:v8];
+    v7 = [HULocationTriggerRegion homeRegionWithHome:homeCopy eventType:type];
+    defaultCircularRegionForCoordinate = [v7 defaultCircularRegionForCoordinate];
+    [v6 setRegion:defaultCircularRegionForCoordinate];
   }
 
   else
   {
     v6 = objc_alloc_init(MEMORY[0x277D14978]);
-    [v6 setLocationEventType:a4];
-    v9 = [MEMORY[0x277D14A70] allUsersCollection];
-    [v6 setUsers:v9];
+    [v6 setLocationEventType:type];
+    allUsersCollection = [MEMORY[0x277D14A70] allUsersCollection];
+    [v6 setUsers:allUsersCollection];
 
     [v6 setActivationGranularity:0];
   }
@@ -41,28 +41,28 @@
   return v6;
 }
 
-- (HULocationEventEditorSummaryViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HULocationEventEditorSummaryViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithTriggerBuilder_mode_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HULocationEventEditorSummaryViewController.m" lineNumber:56 description:{@"%s is unavailable; use %@ instead", "-[HULocationEventEditorSummaryViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULocationEventEditorSummaryViewController.m" lineNumber:56 description:{@"%s is unavailable; use %@ instead", "-[HULocationEventEditorSummaryViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (HULocationEventEditorSummaryViewController)initWithFlow:(id)a3 stepIdentifier:(id)a4
+- (HULocationEventEditorSummaryViewController)initWithFlow:(id)flow stepIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[HULocationEventEditorSummaryItemManager alloc] initWithDelegate:self flow:v6];
+  flowCopy = flow;
+  identifierCopy = identifier;
+  v8 = [[HULocationEventEditorSummaryItemManager alloc] initWithDelegate:self flow:flowCopy];
   v12.receiver = self;
   v12.super_class = HULocationEventEditorSummaryViewController;
   v9 = [(HUItemTableViewController *)&v12 initWithItemManager:v8 tableViewStyle:1];
   v10 = v9;
   if (v9)
   {
-    [(HULocationEventEditorSummaryViewController *)v9 setFlow:v6];
-    [(HULocationEventEditorSummaryViewController *)v10 setStepIdentifier:v7];
+    [(HULocationEventEditorSummaryViewController *)v9 setFlow:flowCopy];
+    [(HULocationEventEditorSummaryViewController *)v10 setStepIdentifier:identifierCopy];
   }
 
   return v10;
@@ -73,51 +73,51 @@
   v10.receiver = self;
   v10.super_class = HULocationEventEditorSummaryViewController;
   [(HUItemTableViewController *)&v10 viewDidLoad];
-  v3 = [(HULocationEventEditorSummaryViewController *)self flow];
-  v4 = [(HULocationEventEditorSummaryViewController *)self stepIdentifier];
-  v5 = [v3 shouldShowDoneButtonForStep:v4];
+  flow = [(HULocationEventEditorSummaryViewController *)self flow];
+  stepIdentifier = [(HULocationEventEditorSummaryViewController *)self stepIdentifier];
+  v5 = [flow shouldShowDoneButtonForStep:stepIdentifier];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D751E0]);
     v7 = _HULocalizedStringWithDefaultValue(@"HUDoneTitle", @"HUDoneTitle", 1);
     v8 = [v6 initWithTitle:v7 style:2 target:self action:sel__doneButtonPressed_];
-    v9 = [(HULocationEventEditorSummaryViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [(HULocationEventEditorSummaryViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
   }
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = [(HUItemTableViewController *)self itemManager];
-  v6 = [v5 userPickerModule];
-  v7 = [v4 isEqual:v6];
+  moduleCopy = module;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  userPickerModule = [itemManager userPickerModule];
+  v7 = [moduleCopy isEqual:userPickerModule];
 
   if (v7)
   {
-    v8 = [(HUItemModuleController *)[HUPresenceUserPickerItemModuleController alloc] initWithModule:v4];
+    v8 = [(HUItemModuleController *)[HUPresenceUserPickerItemModuleController alloc] initWithModule:moduleCopy];
     userPickerModuleController = self->_userPickerModuleController;
     self->_userPickerModuleController = v8;
 
     [(HUPresenceUserPickerItemModuleController *)self->_userPickerModuleController setDelegate:self];
-    v10 = [(HULocationEventEditorSummaryViewController *)self userPickerModuleController];
+    userPickerModuleController = [(HULocationEventEditorSummaryViewController *)self userPickerModuleController];
 LABEL_5:
-    v16 = v10;
+    v16 = userPickerModuleController;
     goto LABEL_7;
   }
 
-  v11 = [(HUItemTableViewController *)self itemManager];
-  v12 = [v11 conditionEditorModule];
-  v13 = [v4 isEqual:v12];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  conditionEditorModule = [itemManager2 conditionEditorModule];
+  v13 = [moduleCopy isEqual:conditionEditorModule];
 
   if (v13)
   {
-    v14 = [[HUTriggerConditionEditorItemModuleController alloc] initWithModule:v4 delegate:self];
+    v14 = [[HUTriggerConditionEditorItemModuleController alloc] initWithModule:moduleCopy delegate:self];
     conditionEditorModuleController = self->_conditionEditorModuleController;
     self->_conditionEditorModuleController = v14;
 
-    v10 = [(HULocationEventEditorSummaryViewController *)self conditionEditorModuleController];
+    userPickerModuleController = [(HULocationEventEditorSummaryViewController *)self conditionEditorModuleController];
     goto LABEL_5;
   }
 
@@ -127,13 +127,13 @@ LABEL_7:
   return v16;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 isInstructionsItem:v5];
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager isInstructionsItem:itemCopy];
 
-  if ((v7 & 1) != 0 || (-[HUItemTableViewController itemManager](self, "itemManager"), v8 = objc_claimAutoreleasedReturnValue(), [v8 locationItem], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9 == v5))
+  if ((v7 & 1) != 0 || (-[HUItemTableViewController itemManager](self, "itemManager"), v8 = objc_claimAutoreleasedReturnValue(), [v8 locationItem], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9 == itemCopy))
   {
     v10 = objc_opt_class();
   }
@@ -146,45 +146,45 @@ LABEL_7:
   return v10;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = HULocationEventEditorSummaryViewController;
-  [(HUItemTableViewController *)&v13 setupCell:v8 forItem:v9 indexPath:a5];
-  v10 = [(HUItemTableViewController *)self itemManager];
-  LODWORD(self) = [v10 isInstructionsItem:v9];
+  [(HUItemTableViewController *)&v13 setupCell:cellCopy forItem:itemCopy indexPath:path];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  LODWORD(self) = [itemManager isInstructionsItem:itemCopy];
 
   if (self)
   {
-    v11 = [HUListContentConfigurationUtilities instructionsConfigurationForItem:v9];
-    [v8 setContentConfiguration:v11];
-    v12 = [MEMORY[0x277D751C0] clearConfiguration];
-    [v8 setBackgroundConfiguration:v12];
+    v11 = [HUListContentConfigurationUtilities instructionsConfigurationForItem:itemCopy];
+    [cellCopy setContentConfiguration:v11];
+    clearConfiguration = [MEMORY[0x277D751C0] clearConfiguration];
+    [cellCopy setBackgroundConfiguration:clearConfiguration];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
+  animatedCopy = animated;
+  cellCopy = cell;
   v15.receiver = self;
   v15.super_class = HULocationEventEditorSummaryViewController;
-  v11 = a4;
-  [(HUItemTableViewController *)&v15 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
+  itemCopy = item;
+  [(HUItemTableViewController *)&v15 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
   v12 = [(HUItemTableViewController *)self itemManager:v15.receiver];
-  v13 = [v12 locationItem];
+  locationItem = [v12 locationItem];
 
-  if (v13 == v11)
+  if (locationItem == itemCopy)
   {
-    v14 = v10;
+    v14 = cellCopy;
     [v14 setHideIcon:1];
     [v14 setValueColorFollowsTintColor:1];
   }
 }
 
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section
 {
   if (_MergedGlobals_4_5 != -1)
   {
@@ -192,11 +192,11 @@ LABEL_7:
   }
 
   v5 = qword_27C838050;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 displayedSectionIdentifierForSectionIndex:a3];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager displayedSectionIdentifierForSectionIndex:section];
 
-  LOBYTE(v6) = [v5 containsObject:v7];
-  return v6;
+  LOBYTE(itemManager) = [v5 containsObject:v7];
+  return itemManager;
 }
 
 void __75__HULocationEventEditorSummaryViewController_shouldHideHeaderAboveSection___block_invoke_2()
@@ -213,33 +213,33 @@ void __75__HULocationEventEditorSummaryViewController_shouldHideHeaderAboveSecti
   qword_27C838050 = v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = HULocationEventEditorSummaryViewController;
-  [(HUItemTableViewController *)&v21 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  [(HUItemTableViewController *)&v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v10 = [(HUItemTableViewController *)self moduleControllerForItem:v9];
 
   if (!v10)
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
-    v11 = [(HUItemTableViewController *)self itemManager];
-    v12 = [v11 locationItem];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    locationItem = [itemManager2 locationItem];
 
-    if (v9 == v12)
+    if (v9 == locationItem)
     {
-      v13 = [(HUItemTableViewController *)self itemManager];
-      v14 = [v13 locationEventRegion];
+      itemManager3 = [(HUItemTableViewController *)self itemManager];
+      locationEventRegion = [itemManager3 locationEventRegion];
 
       v15 = [HULocationTriggerRegionEditorViewController alloc];
-      v16 = [(HUItemTableViewController *)self itemManager];
-      v17 = [v16 home];
-      v18 = [(HULocationTriggerRegionEditorViewController *)v15 initWithRegion:v14 home:v17 delegate:self];
+      itemManager4 = [(HUItemTableViewController *)self itemManager];
+      home = [itemManager4 home];
+      v18 = [(HULocationTriggerRegionEditorViewController *)v15 initWithRegion:locationEventRegion home:home delegate:self];
 
       v19 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v18];
       [v19 setModalPresentationStyle:2];
@@ -249,26 +249,26 @@ void __75__HULocationEventEditorSummaryViewController_shouldHideHeaderAboveSecti
   }
 }
 
-- (void)_doneButtonPressed:(id)a3
+- (void)_doneButtonPressed:(id)pressed
 {
-  v5 = [(HULocationEventEditorSummaryViewController *)self flow];
-  v4 = [(HULocationEventEditorSummaryViewController *)self stepIdentifier];
-  [v5 viewController:self didFinishStepWithIdentifier:v4];
+  flow = [(HULocationEventEditorSummaryViewController *)self flow];
+  stepIdentifier = [(HULocationEventEditorSummaryViewController *)self stepIdentifier];
+  [flow viewController:self didFinishStepWithIdentifier:stepIdentifier];
 }
 
-- (void)regionEditor:(id)a3 didFinishWithRegion:(id)a4
+- (void)regionEditor:(id)editor didFinishWithRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D2C900] futureWithNoResult];
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 canAddRegionToTriggerBuilder];
+  editorCopy = editor;
+  regionCopy = region;
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  canAddRegionToTriggerBuilder = [itemManager canAddRegionToTriggerBuilder];
 
-  if ((v10 & 1) == 0)
+  if ((canAddRegionToTriggerBuilder & 1) == 0)
   {
-    v11 = [v6 showLocationRegionInvalidAlert];
+    showLocationRegionInvalidAlert = [editorCopy showLocationRegionInvalidAlert];
 
-    v8 = v11;
+    futureWithNoResult = showLocationRegionInvalidAlert;
   }
 
   v14[0] = MEMORY[0x277D85DD0];
@@ -276,9 +276,9 @@ void __75__HULocationEventEditorSummaryViewController_shouldHideHeaderAboveSecti
   v14[2] = __79__HULocationEventEditorSummaryViewController_regionEditor_didFinishWithRegion___block_invoke;
   v14[3] = &unk_277DB7E68;
   v14[4] = self;
-  v15 = v7;
-  v12 = v7;
-  v13 = [v8 addSuccessBlock:v14];
+  v15 = regionCopy;
+  v12 = regionCopy;
+  v13 = [futureWithNoResult addSuccessBlock:v14];
 }
 
 uint64_t __79__HULocationEventEditorSummaryViewController_regionEditor_didFinishWithRegion___block_invoke(uint64_t a1)
@@ -291,34 +291,34 @@ uint64_t __79__HULocationEventEditorSummaryViewController_regionEditor_didFinish
   return [v3 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)resetSelectedLocationToHomeForPresenceUserPickerItemModuleController:(id)a3
+- (void)resetSelectedLocationToHomeForPresenceUserPickerItemModuleController:(id)controller
 {
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 home];
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 locationEventRegion];
-  v9 = +[HULocationTriggerRegion homeRegionWithHome:eventType:](HULocationTriggerRegion, "homeRegionWithHome:eventType:", v5, [v7 eventType]);
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager home];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  locationEventRegion = [itemManager2 locationEventRegion];
+  v9 = +[HULocationTriggerRegion homeRegionWithHome:eventType:](HULocationTriggerRegion, "homeRegionWithHome:eventType:", home, [locationEventRegion eventType]);
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  [v8 updateLocationEventWithRegion:v9];
+  itemManager3 = [(HUItemTableViewController *)self itemManager];
+  [itemManager3 updateLocationEventWithRegion:v9];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v7;
+    v15 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v12, 0x16u);
   }
 
-  v9 = [MEMORY[0x277D148E8] sharedInstance];
-  v10 = [v9 openURL:v7];
+  mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+  v10 = [mEMORY[0x277D148E8] openURL:lCopy];
 
   return 0;
 }

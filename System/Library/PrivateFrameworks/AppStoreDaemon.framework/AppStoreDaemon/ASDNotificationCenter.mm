@@ -3,18 +3,18 @@
 + (id)interface;
 - (ASDNotificationCenter)init;
 - (ASDNotificationCenterDialogObserver)dialogObserver;
-- (void)addNotificationObserver:(id)a3 forName:(id)a4;
-- (void)addProgressObserver:(id)a3;
-- (void)deliverAlertPresentationRequest:(id)a3 resultHandler:(id)a4;
-- (void)deliverAuthenticateRequest:(id)a3 withResultHandler:(id)a4;
-- (void)deliverDialogRequest:(id)a3 withResultHandler:(id)a4;
-- (void)deliverEngagementRequest:(id)a3 withResultHandler:(id)a4;
-- (void)deliverNotifications:(id)a3;
-- (void)deliverProgress:(id)a3;
-- (void)deliverViewPresentationRequest:(id)a3 resultHandler:(id)a4;
-- (void)removeNotificationObserver:(id)a3 forName:(id)a4;
-- (void)removeProgressObserver:(id)a3;
-- (void)setDialogObserver:(id)a3;
+- (void)addNotificationObserver:(id)observer forName:(id)name;
+- (void)addProgressObserver:(id)observer;
+- (void)deliverAlertPresentationRequest:(id)request resultHandler:(id)handler;
+- (void)deliverAuthenticateRequest:(id)request withResultHandler:(id)handler;
+- (void)deliverDialogRequest:(id)request withResultHandler:(id)handler;
+- (void)deliverEngagementRequest:(id)request withResultHandler:(id)handler;
+- (void)deliverNotifications:(id)notifications;
+- (void)deliverProgress:(id)progress;
+- (void)deliverViewPresentationRequest:(id)request resultHandler:(id)handler;
+- (void)removeNotificationObserver:(id)observer forName:(id)name;
+- (void)removeProgressObserver:(id)observer;
+- (void)setDialogObserver:(id)observer;
 @end
 
 @implementation ASDNotificationCenter
@@ -52,9 +52,9 @@
     notificationObservers = v2->_notificationObservers;
     v2->_notificationObservers = v8;
 
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     progressObservers = v2->_progressObservers;
-    v2->_progressObservers = v10;
+    v2->_progressObservers = weakObjectsHashTable;
   }
 
   return v2;
@@ -101,9 +101,9 @@ uint64_t __38__ASDNotificationCenter_defaultCenter__block_invoke()
   return WeakRetained;
 }
 
-- (void)setDialogObserver:(id)a3
+- (void)setDialogObserver:(id)observer
 {
-  obj = a3;
+  obj = observer;
   os_unfair_lock_lock(&self->_observerLock);
   objc_storeWeak(&self->_dialogObserver, obj);
   os_unfair_lock_unlock(&self->_observerLock);
@@ -121,65 +121,65 @@ uint64_t __38__ASDNotificationCenter_defaultCenter__block_invoke()
   }
 }
 
-- (void)addNotificationObserver:(id)a3 forName:(id)a4
+- (void)addNotificationObserver:(id)observer forName:(id)name
 {
-  v8 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_observerLock);
-  v7 = [(NSMutableDictionary *)self->_notificationObservers objectForKeyedSubscript:v6];
-  if (!v7)
+  weakObjectsHashTable = [(NSMutableDictionary *)self->_notificationObservers objectForKeyedSubscript:nameCopy];
+  if (!weakObjectsHashTable)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [(NSMutableDictionary *)self->_notificationObservers setObject:v7 forKeyedSubscript:v6];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(NSMutableDictionary *)self->_notificationObservers setObject:weakObjectsHashTable forKeyedSubscript:nameCopy];
   }
 
-  [v7 addObject:v8];
+  [weakObjectsHashTable addObject:observerCopy];
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)addProgressObserver:(id)a3
+- (void)addProgressObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  [(NSHashTable *)self->_progressObservers addObject:v4];
+  [(NSHashTable *)self->_progressObservers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)removeNotificationObserver:(id)a3 forName:(id)a4
+- (void)removeNotificationObserver:(id)observer forName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  v8 = [(NSMutableDictionary *)self->_notificationObservers objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_notificationObservers objectForKeyedSubscript:nameCopy];
 
-  [v8 removeObject:v7];
+  [v8 removeObject:observerCopy];
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observerLock);
-  [(NSHashTable *)self->_progressObservers removeObject:v4];
+  [(NSHashTable *)self->_progressObservers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observerLock);
 }
 
-- (void)deliverAlertPresentationRequest:(id)a3 resultHandler:(id)a4
+- (void)deliverAlertPresentationRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__ASDNotificationCenter_deliverAlertPresentationRequest_resultHandler___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(v8, block);
 }
 
@@ -199,20 +199,20 @@ void __71__ASDNotificationCenter_deliverAlertPresentationRequest_resultHandler__
   }
 }
 
-- (void)deliverAuthenticateRequest:(id)a3 withResultHandler:(id)a4
+- (void)deliverAuthenticateRequest:(id)request withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__ASDNotificationCenter_deliverAuthenticateRequest_withResultHandler___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(v8, block);
 }
 
@@ -232,20 +232,20 @@ void __70__ASDNotificationCenter_deliverAuthenticateRequest_withResultHandler___
   }
 }
 
-- (void)deliverDialogRequest:(id)a3 withResultHandler:(id)a4
+- (void)deliverDialogRequest:(id)request withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__ASDNotificationCenter_deliverDialogRequest_withResultHandler___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(v8, block);
 }
 
@@ -265,20 +265,20 @@ void __64__ASDNotificationCenter_deliverDialogRequest_withResultHandler___block_
   }
 }
 
-- (void)deliverEngagementRequest:(id)a3 withResultHandler:(id)a4
+- (void)deliverEngagementRequest:(id)request withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__ASDNotificationCenter_deliverEngagementRequest_withResultHandler___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(v8, block);
 }
 
@@ -298,17 +298,17 @@ void __68__ASDNotificationCenter_deliverEngagementRequest_withResultHandler___bl
   }
 }
 
-- (void)deliverNotifications:(id)a3
+- (void)deliverNotifications:(id)notifications
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
     v14 = objc_opt_class();
     v15 = 2112;
-    v16 = v4;
+    v16 = notificationsCopy;
     v6 = v14;
     _os_log_impl(&dword_1B8220000, v5, OS_LOG_TYPE_INFO, "[%@]: Received notifications: %@", buf, 0x16u);
   }
@@ -318,9 +318,9 @@ void __68__ASDNotificationCenter_deliverEngagementRequest_withResultHandler___bl
   v10[1] = 3221225472;
   v10[2] = __46__ASDNotificationCenter_deliverNotifications___block_invoke;
   v10[3] = &unk_1E7CDB868;
-  v11 = v4;
-  v12 = self;
-  v8 = v4;
+  v11 = notificationsCopy;
+  selfCopy = self;
+  v8 = notificationsCopy;
   dispatch_async(dispatchQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -455,17 +455,17 @@ void __46__ASDNotificationCenter_deliverNotifications___block_invoke_3(uint64_t 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deliverProgress:(id)a3
+- (void)deliverProgress:(id)progress
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  progressCopy = progress;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
     v13 = objc_opt_class();
     v14 = 2112;
-    v15 = v4;
+    v15 = progressCopy;
     v6 = v13;
     _os_log_impl(&dword_1B8220000, v5, OS_LOG_TYPE_INFO, "[%@]: Received progress: %@", buf, 0x16u);
   }
@@ -476,8 +476,8 @@ void __46__ASDNotificationCenter_deliverNotifications___block_invoke_3(uint64_t 
   v10[2] = __41__ASDNotificationCenter_deliverProgress___block_invoke;
   v10[3] = &unk_1E7CDB868;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = progressCopy;
+  v8 = progressCopy;
   dispatch_async(dispatchQueue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -665,20 +665,20 @@ void __41__ASDNotificationCenter_deliverProgress___block_invoke_2(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deliverViewPresentationRequest:(id)a3 resultHandler:(id)a4
+- (void)deliverViewPresentationRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__ASDNotificationCenter_deliverViewPresentationRequest_resultHandler___block_invoke;
   block[3] = &unk_1E7CDBF88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(v8, block);
 }
 

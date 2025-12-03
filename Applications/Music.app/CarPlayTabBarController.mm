@@ -1,9 +1,9 @@
 @interface CarPlayTabBarController
-- (BOOL)tabBarController:(id)a3 shouldSelectTab:(id)a4;
-- (CarPlayTabBarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CarPlayTabBarController)initWithTabs:(id)a3;
+- (BOOL)tabBarController:(id)controller shouldSelectTab:(id)tab;
+- (CarPlayTabBarController)initWithNibName:(id)name bundle:(id)bundle;
+- (CarPlayTabBarController)initWithTabs:(id)tabs;
 - (void)accessoryViewAction;
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5;
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab;
 - (void)viewDidLoad;
 @end
 
@@ -11,36 +11,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10018A200();
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectTab:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectTab:(id)tab
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10018CE88(v6, v7);
+  controllerCopy = controller;
+  tabCopy = tab;
+  selfCopy = self;
+  v9 = sub_10018CE88(controllerCopy, tabCopy);
 
   return v9 & 1;
 }
 
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10018CF7C(v9, a5);
+  controllerCopy = controller;
+  tabCopy = tab;
+  previousTabCopy = previousTab;
+  selfCopy = self;
+  sub_10018CF7C(tabCopy, previousTab);
 }
 
 - (void)accessoryViewAction
 {
-  v5 = self;
-  v2 = [(CarPlayTabBarController *)v5 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(CarPlayTabBarController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
+    v3 = navigationController;
     type metadata accessor for CarPlayRootNavigationController();
     if (swift_dynamicCastClass())
     {
@@ -50,20 +50,20 @@
 
     else
     {
-      v4 = v5;
-      v5 = v3;
+      v4 = selfCopy;
+      selfCopy = v3;
     }
   }
 }
 
-- (CarPlayTabBarController)initWithTabs:(id)a3
+- (CarPlayTabBarController)initWithTabs:(id)tabs
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CarPlayTabBarController)initWithNibName:(id)a3 bundle:(id)a4
+- (CarPlayTabBarController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,12 +1,12 @@
 @interface FindFriendIntentResponse
-- (FindFriendIntentResponse)initWithPropertiesByName:(id)a3;
+- (FindFriendIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation FindFriendIntentResponse
 
-- (FindFriendIntentResponse)initWithPropertiesByName:(id)a3
+- (FindFriendIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_266DAA6AC();
   }

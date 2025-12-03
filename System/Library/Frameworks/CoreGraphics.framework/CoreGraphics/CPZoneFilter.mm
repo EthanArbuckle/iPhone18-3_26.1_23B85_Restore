@@ -1,36 +1,36 @@
 @interface CPZoneFilter
-+ (void)filterZonesInPage:(id)a3;
-- (CPZoneFilter)initWithPage:(id)a3;
-- (void)filterZonesInZone:(id)a3;
-- (void)findBackgroundGraphicsInZone:(id)a3;
-- (void)findUsedGraphicsInZone:(id)a3;
++ (void)filterZonesInPage:(id)page;
+- (CPZoneFilter)initWithPage:(id)page;
+- (void)filterZonesInZone:(id)zone;
+- (void)findBackgroundGraphicsInZone:(id)zone;
+- (void)findUsedGraphicsInZone:(id)zone;
 @end
 
 @implementation CPZoneFilter
 
-- (void)findUsedGraphicsInZone:(id)a3
+- (void)findUsedGraphicsInZone:(id)zone
 {
-  v5 = [a3 zoneBorders];
-  v6 = [v5 count];
+  zoneBorders = [zone zoneBorders];
+  v6 = [zoneBorders count];
   v7 = v6;
   if (v6)
   {
     v8 = 0;
     do
     {
-      v9 = [v5 objectAtIndex:v8];
-      v10 = [v9 graphicObjects];
-      v11 = [v10 count];
+      v9 = [zoneBorders objectAtIndex:v8];
+      graphicObjects = [v9 graphicObjects];
+      v11 = [graphicObjects count];
       v12 = v11;
       if (v11)
       {
         v13 = 0;
         do
         {
-          v14 = [v10 objectAtIndex:v13];
+          v14 = [graphicObjects objectAtIndex:v13];
           if ([v14 parent] && !objc_msgSend(v14, "user"))
           {
-            [v14 setUser:a3];
+            [v14 setUser:zone];
           }
 
           ++v13;
@@ -39,17 +39,17 @@
         while (v12 != v13);
       }
 
-      v15 = [v9 neighborCount];
-      if (v15)
+      neighborCount = [v9 neighborCount];
+      if (neighborCount)
       {
-        v16 = v15;
+        v16 = neighborCount;
         v17 = 0;
         do
         {
           v18 = [objc_msgSend(v9 neighborAtIndex:{v17), "neighborShape"}];
           if (![v18 user])
           {
-            [v18 setUser:a3];
+            [v18 setUser:zone];
           }
 
           v17 = (v17 + 1);
@@ -64,8 +64,8 @@
     while (v8 != v7);
   }
 
-  v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
-  [a3 childrenOfClass:objc_opt_class() into:v22];
+  v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(zone, "count")}];
+  [zone childrenOfClass:objc_opt_class() into:v22];
   v19 = [v22 count];
   v20 = v19;
   if (v19)
@@ -80,20 +80,20 @@
   }
 }
 
-- (void)findBackgroundGraphicsInZone:(id)a3
+- (void)findBackgroundGraphicsInZone:(id)zone
 {
-  v5 = [a3 backgroundGraphics];
-  v6 = [v5 count];
+  backgroundGraphics = [zone backgroundGraphics];
+  v6 = [backgroundGraphics count];
   v7 = v6;
   if (v6)
   {
     v8 = 0;
     do
     {
-      v9 = [v5 objectAtIndex:v8];
+      v9 = [backgroundGraphics objectAtIndex:v8];
       if (![v9 user])
       {
-        [v9 setUser:a3];
+        [v9 setUser:zone];
       }
 
       ++v8;
@@ -102,8 +102,8 @@
     while (v7 != v8);
   }
 
-  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
-  [a3 childrenOfClass:objc_opt_class() into:v13];
+  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(zone, "count")}];
+  [zone childrenOfClass:objc_opt_class() into:v13];
   v10 = [v13 count];
   v11 = v10;
   if (v10)
@@ -118,10 +118,10 @@
   }
 }
 
-- (void)filterZonesInZone:(id)a3
+- (void)filterZonesInZone:(id)zone
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
-  [a3 childrenOfClass:objc_opt_class() into:v5];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(zone, "count")}];
+  [zone childrenOfClass:objc_opt_class() into:v5];
   v6 = [v5 count];
   v7 = v6;
   if (!v6)
@@ -207,10 +207,10 @@ LABEL_10:
 
 LABEL_24:
 
-  deZoneTablesIn(a3);
+  deZoneTablesIn(zone);
 }
 
-- (CPZoneFilter)initWithPage:(id)a3
+- (CPZoneFilter)initWithPage:(id)page
 {
   v9.receiver = self;
   v9.super_class = CPZoneFilter;
@@ -218,21 +218,21 @@ LABEL_24:
   v5 = v4;
   if (v4)
   {
-    v4->page = a3;
-    [a3 pageCropBox];
+    v4->page = page;
+    [page pageCropBox];
     v5->minArea = v6 * v7 * 0.04;
   }
 
   return v5;
 }
 
-+ (void)filterZonesInPage:(id)a3
++ (void)filterZonesInPage:(id)page
 {
-  v4 = [a3 firstDescendantOfClass:objc_opt_class()];
+  v4 = [page firstDescendantOfClass:objc_opt_class()];
   if (v4)
   {
     v5 = v4;
-    v6 = [[CPZoneFilter alloc] initWithPage:a3];
+    v6 = [[CPZoneFilter alloc] initWithPage:page];
     [(CPZoneFilter *)v6 filterZonesInZone:v5];
     [(CPZoneFilter *)v6 findBackgroundGraphicsInZone:v5];
     [(CPZoneFilter *)v6 findUsedGraphicsInZone:v5];

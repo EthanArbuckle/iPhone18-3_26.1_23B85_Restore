@@ -1,20 +1,20 @@
 @interface LACPreboardController
 - (BOOL)isRequired;
-- (BOOL)launchPreboardWithError:(id *)a3;
+- (BOOL)launchPreboardWithError:(id *)error;
 - (NSArray)batchOptions;
 - (_TtC23LocalAuthenticationCore21LACPreboardController)init;
 - (id)uppTeamName;
 - (int64_t)useCase;
-- (void)enableCurrentUseCaseWithPasscode:(NSString *)a3 completion:(id)a4;
-- (void)launchPreboardWithCompletion:(id)a3;
-- (void)terminateWithCompletion:(id)a3;
+- (void)enableCurrentUseCaseWithPasscode:(NSString *)passcode completion:(id)completion;
+- (void)launchPreboardWithCompletion:(id)completion;
+- (void)terminateWithCompletion:(id)completion;
 @end
 
 @implementation LACPreboardController
 
 - (NSArray)batchOptions
 {
-  v2 = self;
+  selfCopy = self;
   LACPreboardController.batchOptions.getter();
 
   type metadata accessor for NSNumber();
@@ -25,7 +25,7 @@
 
 - (BOOL)isRequired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LACPreboardController.isRequired.getter();
 
   return v3 & 1;
@@ -38,7 +38,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_0(v3, v4);
   v6 = *(v5 + 8);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   return v8;
@@ -51,7 +51,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_0(v3, v4);
   v6 = *(v5 + 8);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
   v10 = v9;
 
@@ -68,19 +68,19 @@
   return v11;
 }
 
-- (BOOL)launchPreboardWithError:(id *)a3
+- (BOOL)launchPreboardWithError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   LACPreboardController.launchPreboard()();
 
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v6 = _convertErrorToNSError(_:)();
 
       v7 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -91,13 +91,13 @@
   return v5 == 0;
 }
 
-- (void)launchPreboardWithCompletion:(id)a3
+- (void)launchPreboardWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -113,19 +113,19 @@
   v13[3] = 0;
   v13[4] = &_sIeghH_IeAgH_TRTA_59Tu;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTA_64Tu, v13);
 }
 
-- (void)enableCurrentUseCaseWithPasscode:(NSString *)a3 completion:(id)a4
+- (void)enableCurrentUseCaseWithPasscode:(NSString *)passcode completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = passcode;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -140,18 +140,18 @@
   v15[3] = 0;
   v15[4] = &_sIeghH_IeAgH_TRTA_44Tu;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  passcodeCopy = passcode;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v10, &_sIeAgH_ytIeAgHr_TRTA_49Tu, v15);
 }
 
-- (void)terminateWithCompletion:(id)a3
+- (void)terminateWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -167,7 +167,7 @@
   v13[3] = 0;
   v13[4] = &_sIeghH_IeAgH_TRTATu;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v8, &_sIeAgH_ytIeAgHr_TRTATu, v13);
 }
 

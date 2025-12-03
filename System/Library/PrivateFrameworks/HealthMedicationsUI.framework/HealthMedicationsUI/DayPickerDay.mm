@@ -1,6 +1,6 @@
 @interface DayPickerDay
 - (BOOL)isSelected;
-- (_TtC19HealthMedicationsUI12DayPickerDay)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI12DayPickerDay)initWithFrame:(CGRect)frame;
 - (id)accessibilityWeekday;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
@@ -10,7 +10,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_22823A4A4();
 }
 
@@ -32,11 +32,11 @@
 
 - (id)accessibilityWeekday
 {
-  v2 = self;
-  v3 = [(DayPickerDay *)v2 largeContentTitle];
-  if (v3 || (v3 = [*(&v2->super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI12DayPickerDay_dayLabel) text]) != 0)
+  selfCopy = self;
+  largeContentTitle = [(DayPickerDay *)selfCopy largeContentTitle];
+  if (largeContentTitle || (largeContentTitle = [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI12DayPickerDay_dayLabel) text]) != 0)
   {
-    v4 = v3;
+    v4 = largeContentTitle;
     sub_228392000();
 
     v5 = sub_228391FC0();
@@ -51,7 +51,7 @@
   return v5;
 }
 
-- (_TtC19HealthMedicationsUI12DayPickerDay)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI12DayPickerDay)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

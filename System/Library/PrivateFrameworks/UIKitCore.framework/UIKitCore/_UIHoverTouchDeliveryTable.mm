@@ -1,21 +1,21 @@
 @interface _UIHoverTouchDeliveryTable
 - (NSSet)gestureRecognizers;
-- (_UIHoverTouchDeliveryTable)initWithTouch:(id)a3;
-- (int64_t)updateGestureRecognizerForDelivery:(id)a3;
+- (_UIHoverTouchDeliveryTable)initWithTouch:(id)touch;
+- (int64_t)updateGestureRecognizerForDelivery:(id)delivery;
 - (void)_cancelAllGestureRecognizers;
-- (void)removeGestureRecognizer:(id)a3;
-- (void)updateForEvent:(id)a3 forcingHitTest:(BOOL)a4;
+- (void)removeGestureRecognizer:(id)recognizer;
+- (void)updateForEvent:(id)event forcingHitTest:(BOOL)test;
 @end
 
 @implementation _UIHoverTouchDeliveryTable
 
-- (_UIHoverTouchDeliveryTable)initWithTouch:(id)a3
+- (_UIHoverTouchDeliveryTable)initWithTouch:(id)touch
 {
-  v6 = a3;
-  if (!v6)
+  touchCopy = touch;
+  if (!touchCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIHoverEvent.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"touch"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIHoverEvent.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"touch"}];
   }
 
   v17.receiver = self;
@@ -24,7 +24,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_touch, a3);
+    objc_storeStrong(&v7->_touch, touch);
     v9 = objc_opt_new();
     beginningGestureRecognizers = v8->_beginningGestureRecognizers;
     v8->_beginningGestureRecognizers = v9;
@@ -41,24 +41,24 @@
   return v8;
 }
 
-- (int64_t)updateGestureRecognizerForDelivery:(id)a3
+- (int64_t)updateGestureRecognizerForDelivery:(id)delivery
 {
-  v4 = a3;
-  if ([(NSMutableSet *)self->_exitingGestureRecognizers containsObject:v4])
+  deliveryCopy = delivery;
+  if ([(NSMutableSet *)self->_exitingGestureRecognizers containsObject:deliveryCopy])
   {
-    [(NSMutableSet *)self->_exitingGestureRecognizers removeObject:v4];
+    [(NSMutableSet *)self->_exitingGestureRecognizers removeObject:deliveryCopy];
     v5 = 7;
   }
 
-  else if (([(NSMutableSet *)self->_updatingGestureRecognizers containsObject:v4]& 1) != 0)
+  else if (([(NSMutableSet *)self->_updatingGestureRecognizers containsObject:deliveryCopy]& 1) != 0)
   {
     v5 = 6;
   }
 
-  else if ([(NSMutableSet *)self->_beginningGestureRecognizers containsObject:v4])
+  else if ([(NSMutableSet *)self->_beginningGestureRecognizers containsObject:deliveryCopy])
   {
-    [(NSMutableSet *)self->_beginningGestureRecognizers removeObject:v4];
-    [(NSMutableSet *)self->_updatingGestureRecognizers addObject:v4];
+    [(NSMutableSet *)self->_beginningGestureRecognizers removeObject:deliveryCopy];
+    [(NSMutableSet *)self->_updatingGestureRecognizers addObject:deliveryCopy];
     v5 = 5;
   }
 
@@ -70,32 +70,32 @@
   return v5;
 }
 
-- (void)removeGestureRecognizer:(id)a3
+- (void)removeGestureRecognizer:(id)recognizer
 {
   beginningGestureRecognizers = self->_beginningGestureRecognizers;
-  v5 = a3;
-  [(NSMutableSet *)beginningGestureRecognizers removeObject:v5];
-  [(NSMutableSet *)self->_updatingGestureRecognizers removeObject:v5];
-  [(NSMutableSet *)self->_exitingGestureRecognizers removeObject:v5];
+  recognizerCopy = recognizer;
+  [(NSMutableSet *)beginningGestureRecognizers removeObject:recognizerCopy];
+  [(NSMutableSet *)self->_updatingGestureRecognizers removeObject:recognizerCopy];
+  [(NSMutableSet *)self->_exitingGestureRecognizers removeObject:recognizerCopy];
 }
 
 - (void)_cancelAllGestureRecognizers
 {
-  v5 = [(_UIHoverTouchDeliveryTable *)self gestureRecognizers];
+  gestureRecognizers = [(_UIHoverTouchDeliveryTable *)self gestureRecognizers];
   [(NSMutableSet *)self->_beginningGestureRecognizers removeAllObjects];
   [(NSMutableSet *)self->_updatingGestureRecognizers removeAllObjects];
   [(NSMutableSet *)self->_exitingGestureRecognizers removeAllObjects];
   v3 = UIApp;
-  v4 = [v5 allObjects];
-  [v3 _cancelGestureRecognizers:v4];
+  allObjects = [gestureRecognizers allObjects];
+  [v3 _cancelGestureRecognizers:allObjects];
 }
 
-- (void)updateForEvent:(id)a3 forcingHitTest:(BOOL)a4
+- (void)updateForEvent:(id)event forcingHitTest:(BOOL)test
 {
   v109 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [UIApp _isSpringBoard];
-  if (_UIEventHIDGetDescendantPointerEvent([v5 _hidEvent]))
+  eventCopy = event;
+  _isSpringBoard = [UIApp _isSpringBoard];
+  if (_UIEventHIDGetDescendantPointerEvent([eventCopy _hidEvent]))
   {
     v7 = BKSHIDEventGetPointerAttributes();
     v8 = [v7 pointerState] == 4;
@@ -109,10 +109,10 @@
   if (_UIApplicationIsExtension())
   {
     MayVendViews = 1;
-    if (!v6)
+    if (!_isSpringBoard)
     {
 LABEL_6:
-      v10 = 0;
+      _constrainsHoverEventHitTesting = 0;
       goto LABEL_12;
     }
   }
@@ -120,50 +120,50 @@ LABEL_6:
   else
   {
     MayVendViews = _UIApplicationMayVendViews();
-    if (!v6)
+    if (!_isSpringBoard)
     {
       goto LABEL_6;
     }
   }
 
-  v11 = [(UITouch *)self->_touch window];
-  if (v11)
+  window = [(UITouch *)self->_touch window];
+  if (window)
   {
     [(UITouch *)self->_touch window];
-    v13 = v12 = v5;
-    v10 = [v13 _constrainsHoverEventHitTesting];
+    v13 = v12 = eventCopy;
+    _constrainsHoverEventHitTesting = [v13 _constrainsHoverEventHitTesting];
 
-    v5 = v12;
+    eventCopy = v12;
   }
 
   else
   {
-    v10 = 0;
+    _constrainsHoverEventHitTesting = 0;
   }
 
 LABEL_12:
-  v63 = [(UITouch *)self->_touch _responder];
-  v14 = [(UITouch *)self->_touch phase];
-  v15 = v14 - 5;
-  if ((v14 - 5) > 1)
+  _responder = [(UITouch *)self->_touch _responder];
+  phase = [(UITouch *)self->_touch phase];
+  v15 = phase - 5;
+  if ((phase - 5) > 1)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [(UITouch *)self->_touch _rehitTestWithEvent:v5 constrainingToCurrentWindow:(v8 | v10 | MayVendViews) & 1];
+    v16 = [(UITouch *)self->_touch _rehitTestWithEvent:eventCopy constrainingToCurrentWindow:(v8 | _constrainsHoverEventHitTesting | MayVendViews) & 1];
   }
 
-  v17 = v63 == v16 || v15 >= 2;
+  v17 = _responder == v16 || v15 >= 2;
   v18 = 1;
   v60 = v16;
-  if (v17 && !a4)
+  if (v17 && !test)
   {
     v18 = ![(NSMutableSet *)self->_beginningGestureRecognizers count]&& [(NSMutableSet *)self->_updatingGestureRecognizers count]== 0;
-    if (!v18 && v8 && ((v6 ^ 1) & 1) == 0)
+    if (!v18 && v8 && ((_isSpringBoard ^ 1) & 1) == 0)
     {
-      v19 = [(UITouch *)self->_touch window];
+      window2 = [(UITouch *)self->_touch window];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -228,7 +228,7 @@ LABEL_40:
     }
   }
 
-  if (v14 == UITouchPhaseRegionExited)
+  if (phase == UITouchPhaseRegionExited)
   {
     [(NSMutableSet *)self->_exitingGestureRecognizers unionSet:self->_updatingGestureRecognizers];
     v16 = v60;
@@ -243,38 +243,38 @@ LABEL_40:
       v27 = 1;
     }
 
-    v28 = self;
+    selfCopy3 = self;
     if ((v27 & 1) == 0)
     {
       [(UITouch *)self->_touch _setResponder:v16];
       [(NSMutableSet *)self->_exitingGestureRecognizers removeAllObjects];
       v29 = objc_opt_new();
-      v66 = [v5 _isPointerLocked];
+      _isPointerLocked = [eventCopy _isPointerLocked];
       v73 = v29;
-      v62 = v5;
+      v62 = eventCopy;
       if (v16)
       {
         v64 = MEMORY[0x1E69E9820];
-        v30 = v60;
+        _parentGestureRecognizerContainer = v60;
         do
         {
           aBlock[0] = v64;
           aBlock[1] = 3221225472;
           aBlock[2] = __60___UIHoverTouchDeliveryTable_updateForEvent_forcingHitTest___block_invoke;
           aBlock[3] = &unk_1E710B5D0;
-          v98 = v66;
+          v98 = _isPointerLocked;
           v95 = v29;
-          v96 = v28;
-          v31 = v5;
+          v96 = selfCopy3;
+          v31 = eventCopy;
           v97 = v31;
           v32 = _Block_copy(aBlock);
           v90 = 0u;
           v91 = 0u;
           v92 = 0u;
           v93 = 0u;
-          v68 = v30;
-          v33 = [v30 gestureRecognizers];
-          v34 = [v33 countByEnumeratingWithState:&v90 objects:v107 count:16];
+          v68 = _parentGestureRecognizerContainer;
+          gestureRecognizers = [_parentGestureRecognizerContainer gestureRecognizers];
+          v34 = [gestureRecognizers countByEnumeratingWithState:&v90 objects:v107 count:16];
           if (v34)
           {
             v35 = v34;
@@ -285,13 +285,13 @@ LABEL_40:
               {
                 if (*v91 != v36)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(gestureRecognizers);
                 }
 
                 v32[2](v32, *(*(&v90 + 1) + 8 * j));
               }
 
-              v35 = [v33 countByEnumeratingWithState:&v90 objects:v107 count:16];
+              v35 = [gestureRecognizers countByEnumeratingWithState:&v90 objects:v107 count:16];
             }
 
             while (v35);
@@ -354,24 +354,24 @@ LABEL_40:
               while (v39);
             }
 
-            v5 = v62;
-            v28 = self;
+            eventCopy = v62;
+            selfCopy3 = self;
             v29 = v73;
           }
 
-          v30 = [v68 _parentGestureRecognizerContainer];
+          _parentGestureRecognizerContainer = [v68 _parentGestureRecognizerContainer];
         }
 
-        while (v30);
+        while (_parentGestureRecognizerContainer);
       }
 
-      if ([(NSMutableSet *)v28->_beginningGestureRecognizers count])
+      if ([(NSMutableSet *)selfCopy3->_beginningGestureRecognizers count])
       {
         v80 = 0u;
         v81 = 0u;
         v78 = 0u;
         v79 = 0u;
-        v65 = v28->_beginningGestureRecognizers;
+        v65 = selfCopy3->_beginningGestureRecognizers;
         v69 = [(NSMutableSet *)v65 countByEnumeratingWithState:&v78 objects:v104 count:16];
         v48 = 0;
         if (v69)
@@ -393,7 +393,7 @@ LABEL_40:
               v75 = 0u;
               v76 = 0u;
               v77 = 0u;
-              v51 = v28->_updatingGestureRecognizers;
+              v51 = selfCopy3->_updatingGestureRecognizers;
               v52 = [(NSMutableSet *)v51 countByEnumeratingWithState:&v74 objects:v103 count:16];
               if (v52)
               {
@@ -416,9 +416,9 @@ LABEL_40:
                         continue;
                       }
 
-                      v57 = [v50 container];
-                      v58 = [v56 container];
-                      v59 = isDescendantOfContainer(v57, v58, 0);
+                      container = [v50 container];
+                      container2 = [v56 container];
+                      v59 = isDescendantOfContainer(container, container2, 0);
 
                       v29 = v73;
                       if (!v59)
@@ -441,7 +441,7 @@ LABEL_40:
                 while (v53);
               }
 
-              v28 = self;
+              selfCopy3 = self;
               v49 = obja + 1;
             }
 
@@ -452,17 +452,17 @@ LABEL_40:
           while (v69);
         }
 
-        [(NSMutableSet *)v28->_updatingGestureRecognizers minusSet:v48];
-        [(NSMutableSet *)v28->_exitingGestureRecognizers unionSet:v48];
+        [(NSMutableSet *)selfCopy3->_updatingGestureRecognizers minusSet:v48];
+        [(NSMutableSet *)selfCopy3->_exitingGestureRecognizers unionSet:v48];
 
-        v5 = v62;
+        eventCopy = v62;
       }
 
       else
       {
-        [(NSMutableSet *)v28->_exitingGestureRecognizers unionSet:v28->_updatingGestureRecognizers];
-        [(NSMutableSet *)v28->_exitingGestureRecognizers minusSet:v29];
-        [(NSMutableSet *)v28->_updatingGestureRecognizers minusSet:v28->_exitingGestureRecognizers];
+        [(NSMutableSet *)selfCopy3->_exitingGestureRecognizers unionSet:selfCopy3->_updatingGestureRecognizers];
+        [(NSMutableSet *)selfCopy3->_exitingGestureRecognizers minusSet:v29];
+        [(NSMutableSet *)selfCopy3->_updatingGestureRecognizers minusSet:selfCopy3->_exitingGestureRecognizers];
       }
 
       v16 = v61;

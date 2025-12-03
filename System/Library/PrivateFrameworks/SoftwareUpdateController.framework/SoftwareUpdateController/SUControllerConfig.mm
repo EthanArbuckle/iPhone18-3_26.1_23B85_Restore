@@ -1,25 +1,25 @@
 @interface SUControllerConfig
 - (BOOL)_allowedToTurnOffAutoScan;
-- (BOOL)_loadBooleanFromDefaults:(id)a3 usingDefault:(BOOL)a4 isStoredInverted:(BOOL)a5;
-- (BOOL)_storeBooleanToDefaults:(id)a3 toValue:(BOOL)a4 isStoredInverted:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_loadBooleanFromDefaults:(id)defaults usingDefault:(BOOL)default isStoredInverted:(BOOL)inverted;
+- (BOOL)_storeBooleanToDefaults:(id)defaults toValue:(BOOL)value isStoredInverted:(BOOL)inverted;
+- (BOOL)isEqual:(id)equal;
 - (SUControllerConfig)init;
-- (SUControllerConfig)initWithCoder:(id)a3;
-- (id)_copyStringFromDefaults:(id)a3 usingDefault:(id)a4;
-- (id)_storeStringToDefaults:(id)a3 toValue:(id)a4;
-- (id)changeSummary:(int64_t)a3;
+- (SUControllerConfig)initWithCoder:(id)coder;
+- (id)_copyStringFromDefaults:(id)defaults usingDefault:(id)default;
+- (id)_storeStringToDefaults:(id)defaults toValue:(id)value;
+- (id)changeSummary:(int64_t)summary;
 - (id)copy;
 - (id)description;
-- (id)initFromDefaults:(int64_t)a3;
+- (id)initFromDefaults:(int64_t)defaults;
 - (id)summary;
-- (int64_t)_decodeInteger:(id)a3 forKey:(id)a4 withLimit:(int64_t)a5;
-- (int64_t)_limitedInteger:(id)a3 checkingValue:(int64_t)a4 forKey:(id)a5 withLimit:(int64_t)a6;
-- (int64_t)_loadBooleanFromDefaults:(id)a3 releaseType:(int64_t)a4 externalDefault:(BOOL)a5 internalDefault:(BOOL)a6 isStoredInverted:(BOOL)a7;
-- (int64_t)_loadIntegerFromDefaults:(id)a3 releaseType:(int64_t)a4 externalDefault:(int64_t)a5 internalDefault:(int64_t)a6 withLimit:(int64_t)a7;
-- (int64_t)_loadIntegerFromDefaults:(id)a3 usingDefault:(int64_t)a4 withLimit:(int64_t)a5;
-- (int64_t)_storeIntegerToDefaults:(id)a3 toValue:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)modify:(id)a3 usingMask:(int64_t)a4;
+- (int64_t)_decodeInteger:(id)integer forKey:(id)key withLimit:(int64_t)limit;
+- (int64_t)_limitedInteger:(id)integer checkingValue:(int64_t)value forKey:(id)key withLimit:(int64_t)limit;
+- (int64_t)_loadBooleanFromDefaults:(id)defaults releaseType:(int64_t)type externalDefault:(BOOL)default internalDefault:(BOOL)internalDefault isStoredInverted:(BOOL)inverted;
+- (int64_t)_loadIntegerFromDefaults:(id)defaults releaseType:(int64_t)type externalDefault:(int64_t)default internalDefault:(int64_t)internalDefault withLimit:(int64_t)limit;
+- (int64_t)_loadIntegerFromDefaults:(id)defaults usingDefault:(int64_t)default withLimit:(int64_t)limit;
+- (int64_t)_storeIntegerToDefaults:(id)defaults toValue:(int64_t)value;
+- (void)encodeWithCoder:(id)coder;
+- (void)modify:(id)modify usingMask:(int64_t)mask;
 @end
 
 @implementation SUControllerConfig
@@ -69,7 +69,7 @@
   return v3;
 }
 
-- (id)initFromDefaults:(int64_t)a3
+- (id)initFromDefaults:(int64_t)defaults
 {
   v21.receiver = self;
   v21.super_class = SUControllerConfig;
@@ -83,7 +83,7 @@
     *&v5->_performAutoScan = 257;
     v5->_performAutoInstall = [(SUControllerConfig *)v5 _loadBooleanFromDefaults:@"SUDisableAutoInstall" usingDefault:0 isStoredInverted:1];
     v5->_autoAcceptTermsAndConditions = [(SUControllerConfig *)v5 _loadBooleanFromDefaults:@"SUAutoAcceptTermsAndConditions" usingDefault:updateRequiresDocAsset() ^ 1 isStoredInverted:0];
-    v5->_autoActivityCheckPeriod = [(SUControllerConfig *)v5 _loadIntegerFromDefaults:@"SUAutoActivityCheckPeriod" releaseType:a3 externalDefault:10080 internalDefault:240 withLimit:44640];
+    v5->_autoActivityCheckPeriod = [(SUControllerConfig *)v5 _loadIntegerFromDefaults:@"SUAutoActivityCheckPeriod" releaseType:defaults externalDefault:10080 internalDefault:240 withLimit:44640];
     v5->_autoInstallForceMaxWait = [(SUControllerConfig *)v5 _loadIntegerFromDefaults:@"SUAutoInstallForceMaxWait" usingDefault:20 withLimit:1440];
     v5->_autoInstallWindowBeginHour = [(SUControllerConfig *)v5 _loadIntegerFromDefaults:@"SUAutoInstallWindowBeginHour" usingDefault:2 withLimit:23];
     v5->_autoInstallWindowBeginMinute = [(SUControllerConfig *)v5 _loadIntegerFromDefaults:@"SUAutoInstallWindowBeginMinute" usingDefault:0 withLimit:59];
@@ -134,9 +134,9 @@
   return v5;
 }
 
-- (SUControllerConfig)initWithCoder:(id)a3
+- (SUControllerConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = SUControllerConfig;
   v5 = [(SUControllerConfig *)&v23 init];
@@ -145,117 +145,117 @@
   {
     v7 = 1;
     v5->_useSUCore = 1;
-    v5->_vpnOnDemandAsInternal = [v4 decodeBoolForKey:@"vpnOnDemandAsInternal"];
+    v5->_vpnOnDemandAsInternal = [coderCopy decodeBoolForKey:@"vpnOnDemandAsInternal"];
     if ([(SUControllerConfig *)v6 _allowedToTurnOffAutoScan])
     {
-      v7 = [v4 decodeBoolForKey:@"performAutoScan"];
+      v7 = [coderCopy decodeBoolForKey:@"performAutoScan"];
     }
 
     v6->_performAutoScan = v7;
-    v6->_performAutoDownloadAndPrepare = [v4 decodeBoolForKey:@"performAutoDownloadAndPrepare"];
-    v6->_performAutoInstall = [v4 decodeBoolForKey:@"performAutoInstall"];
-    v6->_autoAcceptTermsAndConditions = [v4 decodeBoolForKey:@"autoAcceptTermsAndConditions"];
-    v6->_autoActivityCheckPeriod = [(SUControllerConfig *)v6 _decodeInteger:v4 forKey:@"autoActivityCheckPeriod" withLimit:44640];
-    v6->_autoInstallForceMaxWait = [(SUControllerConfig *)v6 _decodeInteger:v4 forKey:@"autoInstallForceMaxWait" withLimit:1440];
-    v6->_autoInstallWindowBeginHour = [(SUControllerConfig *)v6 _decodeInteger:v4 forKey:@"autoInstallWindowBeginHour" withLimit:23];
-    v6->_autoInstallWindowBeginMinute = [(SUControllerConfig *)v6 _decodeInteger:v4 forKey:@"autoInstallWindowBeginMinute" withLimit:59];
-    v6->_autoInstallWindowEndHour = [(SUControllerConfig *)v6 _decodeInteger:v4 forKey:@"autoInstallWindowEndHour" withLimit:23];
-    v6->_autoInstallWindowEndMinute = [(SUControllerConfig *)v6 _decodeInteger:v4 forKey:@"autoInstallWindowEndMinute" withLimit:59];
-    v6->_downloadDocAsset = [v4 decodeBoolForKey:@"downloadDocAsset"];
-    v6->_ignoreRamping = [v4 decodeBoolForKey:@"ignoreRamping"];
-    v6->_supervisedMDM = [v4 decodeBoolForKey:@"supervisedMDM"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedPMV"];
+    v6->_performAutoDownloadAndPrepare = [coderCopy decodeBoolForKey:@"performAutoDownloadAndPrepare"];
+    v6->_performAutoInstall = [coderCopy decodeBoolForKey:@"performAutoInstall"];
+    v6->_autoAcceptTermsAndConditions = [coderCopy decodeBoolForKey:@"autoAcceptTermsAndConditions"];
+    v6->_autoActivityCheckPeriod = [(SUControllerConfig *)v6 _decodeInteger:coderCopy forKey:@"autoActivityCheckPeriod" withLimit:44640];
+    v6->_autoInstallForceMaxWait = [(SUControllerConfig *)v6 _decodeInteger:coderCopy forKey:@"autoInstallForceMaxWait" withLimit:1440];
+    v6->_autoInstallWindowBeginHour = [(SUControllerConfig *)v6 _decodeInteger:coderCopy forKey:@"autoInstallWindowBeginHour" withLimit:23];
+    v6->_autoInstallWindowBeginMinute = [(SUControllerConfig *)v6 _decodeInteger:coderCopy forKey:@"autoInstallWindowBeginMinute" withLimit:59];
+    v6->_autoInstallWindowEndHour = [(SUControllerConfig *)v6 _decodeInteger:coderCopy forKey:@"autoInstallWindowEndHour" withLimit:23];
+    v6->_autoInstallWindowEndMinute = [(SUControllerConfig *)v6 _decodeInteger:coderCopy forKey:@"autoInstallWindowEndMinute" withLimit:59];
+    v6->_downloadDocAsset = [coderCopy decodeBoolForKey:@"downloadDocAsset"];
+    v6->_ignoreRamping = [coderCopy decodeBoolForKey:@"ignoreRamping"];
+    v6->_supervisedMDM = [coderCopy decodeBoolForKey:@"supervisedMDM"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedPMV"];
     requestedPMV = v6->_requestedPMV;
     v6->_requestedPMV = v8;
 
-    v6->_delayPeriod = [(SUControllerConfig *)v6 _decodeInteger:v4 forKey:@"delayPeriod" withLimit:90];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installPhaseOSBackgroundImagePath"];
+    v6->_delayPeriod = [(SUControllerConfig *)v6 _decodeInteger:coderCopy forKey:@"delayPeriod" withLimit:90];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installPhaseOSBackgroundImagePath"];
     installPhaseOSBackgroundImagePath = v6->_installPhaseOSBackgroundImagePath;
     v6->_installPhaseOSBackgroundImagePath = v10;
 
-    v6->_restrictToFullReplacement = [v4 decodeBoolForKey:@"restrictToFullReplacement"];
-    v6->_allowSameVersionUpdates = [v4 decodeBoolForKey:@"allowSameVersionUpdates"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateMetricContext"];
+    v6->_restrictToFullReplacement = [coderCopy decodeBoolForKey:@"restrictToFullReplacement"];
+    v6->_allowSameVersionUpdates = [coderCopy decodeBoolForKey:@"allowSameVersionUpdates"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateMetricContext"];
     updateMetricContext = v6->_updateMetricContext;
     v6->_updateMetricContext = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prerequisiteBuildVersion"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prerequisiteBuildVersion"];
     prerequisiteBuildVersion = v6->_prerequisiteBuildVersion;
     v6->_prerequisiteBuildVersion = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prerequisiteProductVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prerequisiteProductVersion"];
     prerequisiteProductVersion = v6->_prerequisiteProductVersion;
     v6->_prerequisiteProductVersion = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asReleaseType"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asReleaseType"];
     asReleaseType = v6->_asReleaseType;
     v6->_asReleaseType = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"simulatorCommandsFile"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"simulatorCommandsFile"];
     simulatorCommandsFile = v6->_simulatorCommandsFile;
     v6->_simulatorCommandsFile = v20;
 
-    v6->_useSpecifiedInstallWindow = [v4 decodeBoolForKey:@"useSpecifiedInstallWindow"];
-    v6->_expiredSpecifiedAsExpired = [v4 decodeBoolForKey:@"expiredSpecifiedAsExpired"];
-    v6->_hideIndicationMayReboot = [v4 decodeBoolForKey:@"hideIndicationMayReboot"];
-    v6->_internalDefaultsAsExternal = [v4 decodeBoolForKey:@"internalDefaultsAsExternal"];
-    v6->_requirePrepareSize = [v4 decodeBoolForKey:@"requirePrepareSize"];
-    v6->_installWindowAsDeltas = [v4 decodeBoolForKey:@"installWindowAsDeltas"];
-    v6->_maxOptionalPSUSDownloadSize = [v4 decodeIntegerForKey:@"maxOptionalPSUSDownloadSize"];
+    v6->_useSpecifiedInstallWindow = [coderCopy decodeBoolForKey:@"useSpecifiedInstallWindow"];
+    v6->_expiredSpecifiedAsExpired = [coderCopy decodeBoolForKey:@"expiredSpecifiedAsExpired"];
+    v6->_hideIndicationMayReboot = [coderCopy decodeBoolForKey:@"hideIndicationMayReboot"];
+    v6->_internalDefaultsAsExternal = [coderCopy decodeBoolForKey:@"internalDefaultsAsExternal"];
+    v6->_requirePrepareSize = [coderCopy decodeBoolForKey:@"requirePrepareSize"];
+    v6->_installWindowAsDeltas = [coderCopy decodeBoolForKey:@"installWindowAsDeltas"];
+    v6->_maxOptionalPSUSDownloadSize = [coderCopy decodeIntegerForKey:@"maxOptionalPSUSDownloadSize"];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  [v11 encodeBool:-[SUControllerConfig useSUCore](self forKey:{"useSUCore"), @"useSUCore"}];
-  [v11 encodeBool:-[SUControllerConfig vpnOnDemandAsInternal](self forKey:{"vpnOnDemandAsInternal"), @"vpnOnDemandAsInternal"}];
-  [v11 encodeBool:-[SUControllerConfig performAutoScan](self forKey:{"performAutoScan"), @"performAutoScan"}];
-  [v11 encodeBool:-[SUControllerConfig performAutoDownloadAndPrepare](self forKey:{"performAutoDownloadAndPrepare"), @"performAutoDownloadAndPrepare"}];
-  [v11 encodeBool:-[SUControllerConfig performAutoInstall](self forKey:{"performAutoInstall"), @"performAutoInstall"}];
-  [v11 encodeBool:-[SUControllerConfig autoAcceptTermsAndConditions](self forKey:{"autoAcceptTermsAndConditions"), @"autoAcceptTermsAndConditions"}];
-  [v11 encodeInteger:-[SUControllerConfig autoActivityCheckPeriod](self forKey:{"autoActivityCheckPeriod"), @"autoActivityCheckPeriod"}];
-  [v11 encodeInteger:-[SUControllerConfig autoInstallForceMaxWait](self forKey:{"autoInstallForceMaxWait"), @"autoInstallForceMaxWait"}];
-  [v11 encodeInteger:-[SUControllerConfig autoInstallWindowBeginHour](self forKey:{"autoInstallWindowBeginHour"), @"autoInstallWindowBeginHour"}];
-  [v11 encodeInteger:-[SUControllerConfig autoInstallWindowBeginMinute](self forKey:{"autoInstallWindowBeginMinute"), @"autoInstallWindowBeginMinute"}];
-  [v11 encodeInteger:-[SUControllerConfig autoInstallWindowEndHour](self forKey:{"autoInstallWindowEndHour"), @"autoInstallWindowEndHour"}];
-  [v11 encodeInteger:-[SUControllerConfig autoInstallWindowEndMinute](self forKey:{"autoInstallWindowEndMinute"), @"autoInstallWindowEndMinute"}];
-  [v11 encodeBool:-[SUControllerConfig downloadDocAsset](self forKey:{"downloadDocAsset"), @"downloadDocAsset"}];
-  [v11 encodeBool:-[SUControllerConfig ignoreRamping](self forKey:{"ignoreRamping"), @"ignoreRamping"}];
-  [v11 encodeBool:-[SUControllerConfig supervisedMDM](self forKey:{"supervisedMDM"), @"supervisedMDM"}];
-  v4 = [(SUControllerConfig *)self requestedPMV];
-  [v11 encodeObject:v4 forKey:@"requestedPMV"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SUControllerConfig useSUCore](self forKey:{"useSUCore"), @"useSUCore"}];
+  [coderCopy encodeBool:-[SUControllerConfig vpnOnDemandAsInternal](self forKey:{"vpnOnDemandAsInternal"), @"vpnOnDemandAsInternal"}];
+  [coderCopy encodeBool:-[SUControllerConfig performAutoScan](self forKey:{"performAutoScan"), @"performAutoScan"}];
+  [coderCopy encodeBool:-[SUControllerConfig performAutoDownloadAndPrepare](self forKey:{"performAutoDownloadAndPrepare"), @"performAutoDownloadAndPrepare"}];
+  [coderCopy encodeBool:-[SUControllerConfig performAutoInstall](self forKey:{"performAutoInstall"), @"performAutoInstall"}];
+  [coderCopy encodeBool:-[SUControllerConfig autoAcceptTermsAndConditions](self forKey:{"autoAcceptTermsAndConditions"), @"autoAcceptTermsAndConditions"}];
+  [coderCopy encodeInteger:-[SUControllerConfig autoActivityCheckPeriod](self forKey:{"autoActivityCheckPeriod"), @"autoActivityCheckPeriod"}];
+  [coderCopy encodeInteger:-[SUControllerConfig autoInstallForceMaxWait](self forKey:{"autoInstallForceMaxWait"), @"autoInstallForceMaxWait"}];
+  [coderCopy encodeInteger:-[SUControllerConfig autoInstallWindowBeginHour](self forKey:{"autoInstallWindowBeginHour"), @"autoInstallWindowBeginHour"}];
+  [coderCopy encodeInteger:-[SUControllerConfig autoInstallWindowBeginMinute](self forKey:{"autoInstallWindowBeginMinute"), @"autoInstallWindowBeginMinute"}];
+  [coderCopy encodeInteger:-[SUControllerConfig autoInstallWindowEndHour](self forKey:{"autoInstallWindowEndHour"), @"autoInstallWindowEndHour"}];
+  [coderCopy encodeInteger:-[SUControllerConfig autoInstallWindowEndMinute](self forKey:{"autoInstallWindowEndMinute"), @"autoInstallWindowEndMinute"}];
+  [coderCopy encodeBool:-[SUControllerConfig downloadDocAsset](self forKey:{"downloadDocAsset"), @"downloadDocAsset"}];
+  [coderCopy encodeBool:-[SUControllerConfig ignoreRamping](self forKey:{"ignoreRamping"), @"ignoreRamping"}];
+  [coderCopy encodeBool:-[SUControllerConfig supervisedMDM](self forKey:{"supervisedMDM"), @"supervisedMDM"}];
+  requestedPMV = [(SUControllerConfig *)self requestedPMV];
+  [coderCopy encodeObject:requestedPMV forKey:@"requestedPMV"];
 
-  [v11 encodeInteger:-[SUControllerConfig delayPeriod](self forKey:{"delayPeriod"), @"delayPeriod"}];
-  v5 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
-  [v11 encodeObject:v5 forKey:@"installPhaseOSBackgroundImagePath"];
+  [coderCopy encodeInteger:-[SUControllerConfig delayPeriod](self forKey:{"delayPeriod"), @"delayPeriod"}];
+  installPhaseOSBackgroundImagePath = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
+  [coderCopy encodeObject:installPhaseOSBackgroundImagePath forKey:@"installPhaseOSBackgroundImagePath"];
 
-  [v11 encodeBool:-[SUControllerConfig restrictToFullReplacement](self forKey:{"restrictToFullReplacement"), @"restrictToFullReplacement"}];
-  [v11 encodeBool:-[SUControllerConfig allowSameVersionUpdates](self forKey:{"allowSameVersionUpdates"), @"allowSameVersionUpdates"}];
-  v6 = [(SUControllerConfig *)self updateMetricContext];
-  [v11 encodeObject:v6 forKey:@"updateMetricContext"];
+  [coderCopy encodeBool:-[SUControllerConfig restrictToFullReplacement](self forKey:{"restrictToFullReplacement"), @"restrictToFullReplacement"}];
+  [coderCopy encodeBool:-[SUControllerConfig allowSameVersionUpdates](self forKey:{"allowSameVersionUpdates"), @"allowSameVersionUpdates"}];
+  updateMetricContext = [(SUControllerConfig *)self updateMetricContext];
+  [coderCopy encodeObject:updateMetricContext forKey:@"updateMetricContext"];
 
-  v7 = [(SUControllerConfig *)self prerequisiteBuildVersion];
-  [v11 encodeObject:v7 forKey:@"prerequisiteBuildVersion"];
+  prerequisiteBuildVersion = [(SUControllerConfig *)self prerequisiteBuildVersion];
+  [coderCopy encodeObject:prerequisiteBuildVersion forKey:@"prerequisiteBuildVersion"];
 
-  v8 = [(SUControllerConfig *)self prerequisiteProductVersion];
-  [v11 encodeObject:v8 forKey:@"prerequisiteProductVersion"];
+  prerequisiteProductVersion = [(SUControllerConfig *)self prerequisiteProductVersion];
+  [coderCopy encodeObject:prerequisiteProductVersion forKey:@"prerequisiteProductVersion"];
 
-  v9 = [(SUControllerConfig *)self asReleaseType];
-  [v11 encodeObject:v9 forKey:@"asReleaseType"];
+  asReleaseType = [(SUControllerConfig *)self asReleaseType];
+  [coderCopy encodeObject:asReleaseType forKey:@"asReleaseType"];
 
-  v10 = [(SUControllerConfig *)self simulatorCommandsFile];
-  [v11 encodeObject:v10 forKey:@"simulatorCommandsFile"];
+  simulatorCommandsFile = [(SUControllerConfig *)self simulatorCommandsFile];
+  [coderCopy encodeObject:simulatorCommandsFile forKey:@"simulatorCommandsFile"];
 
-  [v11 encodeBool:-[SUControllerConfig useSpecifiedInstallWindow](self forKey:{"useSpecifiedInstallWindow"), @"useSpecifiedInstallWindow"}];
-  [v11 encodeBool:-[SUControllerConfig expiredSpecifiedAsExpired](self forKey:{"expiredSpecifiedAsExpired"), @"expiredSpecifiedAsExpired"}];
-  [v11 encodeBool:-[SUControllerConfig hideIndicationMayReboot](self forKey:{"hideIndicationMayReboot"), @"hideIndicationMayReboot"}];
-  [v11 encodeBool:-[SUControllerConfig internalDefaultsAsExternal](self forKey:{"internalDefaultsAsExternal"), @"internalDefaultsAsExternal"}];
-  [v11 encodeBool:-[SUControllerConfig requirePrepareSize](self forKey:{"requirePrepareSize"), @"requirePrepareSize"}];
-  [v11 encodeBool:-[SUControllerConfig installWindowAsDeltas](self forKey:{"installWindowAsDeltas"), @"installWindowAsDeltas"}];
-  [v11 encodeInteger:-[SUControllerConfig maxOptionalPSUSDownloadSize](self forKey:{"maxOptionalPSUSDownloadSize"), @"maxOptionalPSUSDownloadSize"}];
+  [coderCopy encodeBool:-[SUControllerConfig useSpecifiedInstallWindow](self forKey:{"useSpecifiedInstallWindow"), @"useSpecifiedInstallWindow"}];
+  [coderCopy encodeBool:-[SUControllerConfig expiredSpecifiedAsExpired](self forKey:{"expiredSpecifiedAsExpired"), @"expiredSpecifiedAsExpired"}];
+  [coderCopy encodeBool:-[SUControllerConfig hideIndicationMayReboot](self forKey:{"hideIndicationMayReboot"), @"hideIndicationMayReboot"}];
+  [coderCopy encodeBool:-[SUControllerConfig internalDefaultsAsExternal](self forKey:{"internalDefaultsAsExternal"), @"internalDefaultsAsExternal"}];
+  [coderCopy encodeBool:-[SUControllerConfig requirePrepareSize](self forKey:{"requirePrepareSize"), @"requirePrepareSize"}];
+  [coderCopy encodeBool:-[SUControllerConfig installWindowAsDeltas](self forKey:{"installWindowAsDeltas"), @"installWindowAsDeltas"}];
+  [coderCopy encodeInteger:-[SUControllerConfig maxOptionalPSUSDownloadSize](self forKey:{"maxOptionalPSUSDownloadSize"), @"maxOptionalPSUSDownloadSize"}];
 }
 
 - (id)copy
@@ -266,81 +266,81 @@
   return v3;
 }
 
-- (void)modify:(id)a3 usingMask:(int64_t)a4
+- (void)modify:(id)modify usingMask:(int64_t)mask
 {
-  v6 = a3;
-  v7 = v6;
-  v35 = v6;
-  if ((a4 & 0x10000) != 0)
+  modifyCopy = modify;
+  v7 = modifyCopy;
+  v35 = modifyCopy;
+  if ((mask & 0x10000) != 0)
   {
-    v8 = [v6 useSUCore];
+    useSUCore = [modifyCopy useSUCore];
     v7 = v35;
-    if ((v8 & 1) == 0)
+    if ((useSUCore & 1) == 0)
     {
-      v9 = [MEMORY[0x277D64428] sharedDiag];
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
       v10 = objc_alloc(MEMORY[0x277CCACA8]);
-      v11 = [v35 useSUCore];
+      useSUCore2 = [v35 useSUCore];
       v12 = @"NO";
-      if (v11)
+      if (useSUCore2)
       {
         v12 = @"YES";
       }
 
       v13 = [v10 initWithFormat:@"attempt to set %@ to %@ (only supported value is %@ [as of 4.2.1])", @"useSUCore", v12, @"YES"];
-      [v9 trackAnomaly:@"[CONFIG]" forReason:v13 withResult:8102 withError:0];
+      [mEMORY[0x277D64428] trackAnomaly:@"[CONFIG]" forReason:v13 withResult:8102 withError:0];
 
       v7 = v35;
     }
   }
 
-  if ((a4 & 0x8000000) != 0)
+  if ((mask & 0x8000000) != 0)
   {
     -[SUControllerConfig setVpnOnDemandAsInternal:](self, "setVpnOnDemandAsInternal:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUVPNOnDemandAsInternal", [v7 vpnOnDemandAsInternal], 0));
     v7 = v35;
   }
 
-  if (a4)
+  if (mask)
   {
-    v14 = [(SUControllerConfig *)self _allowedToTurnOffAutoScan];
-    v15 = [v35 performAutoScan];
-    if (v14)
+    _allowedToTurnOffAutoScan = [(SUControllerConfig *)self _allowedToTurnOffAutoScan];
+    performAutoScan = [v35 performAutoScan];
+    if (_allowedToTurnOffAutoScan)
     {
-      [(SUControllerConfig *)self setPerformAutoScan:[(SUControllerConfig *)self _storeBooleanToDefaults:@"SUDisableAutoScan" toValue:v15 isStoredInverted:1]];
+      [(SUControllerConfig *)self setPerformAutoScan:[(SUControllerConfig *)self _storeBooleanToDefaults:@"SUDisableAutoScan" toValue:performAutoScan isStoredInverted:1]];
     }
 
     else
     {
       v7 = v35;
-      if (v15)
+      if (performAutoScan)
       {
         goto LABEL_16;
       }
 
-      v16 = [MEMORY[0x277D64428] sharedDiag];
+      mEMORY[0x277D64428]2 = [MEMORY[0x277D64428] sharedDiag];
       v17 = objc_alloc(MEMORY[0x277CCACA8]);
-      v18 = [v35 performAutoScan];
+      performAutoScan2 = [v35 performAutoScan];
       v19 = @"NO";
-      if (v18)
+      if (performAutoScan2)
       {
         v19 = @"YES";
       }
 
       v20 = [v17 initWithFormat:@"attempt to set %@ to %@ (only supported value is %@ [as of 4.2.1])", @"performAutoScan", v19, @"YES"];
-      [v16 trackAnomaly:@"[CONFIG]" forReason:v20 withResult:8102 withError:0];
+      [mEMORY[0x277D64428]2 trackAnomaly:@"[CONFIG]" forReason:v20 withResult:8102 withError:0];
     }
 
     v7 = v35;
   }
 
 LABEL_16:
-  if ((a4 & 2) != 0)
+  if ((mask & 2) != 0)
   {
     -[SUControllerConfig setPerformAutoDownloadAndPrepare:](self, "setPerformAutoDownloadAndPrepare:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUDisableAutoDownloadAndPrepare", [v7 performAutoDownloadAndPrepare], 1));
     v7 = v35;
-    if ((a4 & 4) == 0)
+    if ((mask & 4) == 0)
     {
 LABEL_18:
-      if ((a4 & 8) == 0)
+      if ((mask & 8) == 0)
       {
         goto LABEL_19;
       }
@@ -349,17 +349,17 @@ LABEL_18:
     }
   }
 
-  else if ((a4 & 4) == 0)
+  else if ((mask & 4) == 0)
   {
     goto LABEL_18;
   }
 
   -[SUControllerConfig setPerformAutoInstall:](self, "setPerformAutoInstall:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUDisableAutoInstall", [v7 performAutoInstall], 1));
   v7 = v35;
-  if ((a4 & 8) == 0)
+  if ((mask & 8) == 0)
   {
 LABEL_19:
-    if ((a4 & 0x10) == 0)
+    if ((mask & 0x10) == 0)
     {
       goto LABEL_20;
     }
@@ -370,10 +370,10 @@ LABEL_19:
 LABEL_51:
   -[SUControllerConfig setAutoAcceptTermsAndConditions:](self, "setAutoAcceptTermsAndConditions:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUAutoAcceptTermsAndConditions", [v7 autoAcceptTermsAndConditions], 0));
   v7 = v35;
-  if ((a4 & 0x10) == 0)
+  if ((mask & 0x10) == 0)
   {
 LABEL_20:
-    if ((a4 & 0x2000) == 0)
+    if ((mask & 0x2000) == 0)
     {
       goto LABEL_21;
     }
@@ -384,10 +384,10 @@ LABEL_20:
 LABEL_52:
   -[SUControllerConfig setAutoActivityCheckPeriod:](self, "setAutoActivityCheckPeriod:", -[SUControllerConfig _storeIntegerToDefaults:toValue:](self, "_storeIntegerToDefaults:toValue:", @"SUAutoActivityCheckPeriod", [v7 autoActivityCheckPeriod]));
   v7 = v35;
-  if ((a4 & 0x2000) == 0)
+  if ((mask & 0x2000) == 0)
   {
 LABEL_21:
-    if ((a4 & 0x80) == 0)
+    if ((mask & 0x80) == 0)
     {
       goto LABEL_22;
     }
@@ -398,10 +398,10 @@ LABEL_21:
 LABEL_53:
   -[SUControllerConfig setAutoInstallForceMaxWait:](self, "setAutoInstallForceMaxWait:", -[SUControllerConfig _storeIntegerToDefaults:toValue:](self, "_storeIntegerToDefaults:toValue:", @"SUAutoInstallForceMaxWait", [v7 autoInstallForceMaxWait]));
   v7 = v35;
-  if ((a4 & 0x80) == 0)
+  if ((mask & 0x80) == 0)
   {
 LABEL_22:
-    if ((a4 & 0x100) == 0)
+    if ((mask & 0x100) == 0)
     {
       goto LABEL_23;
     }
@@ -412,10 +412,10 @@ LABEL_22:
 LABEL_54:
   -[SUControllerConfig setAutoInstallWindowBeginHour:](self, "setAutoInstallWindowBeginHour:", -[SUControllerConfig _storeIntegerToDefaults:toValue:](self, "_storeIntegerToDefaults:toValue:", @"SUAutoInstallWindowBeginHour", [v7 autoInstallWindowBeginHour]));
   v7 = v35;
-  if ((a4 & 0x100) == 0)
+  if ((mask & 0x100) == 0)
   {
 LABEL_23:
-    if ((a4 & 0x200) == 0)
+    if ((mask & 0x200) == 0)
     {
       goto LABEL_24;
     }
@@ -426,10 +426,10 @@ LABEL_23:
 LABEL_55:
   -[SUControllerConfig setAutoInstallWindowBeginMinute:](self, "setAutoInstallWindowBeginMinute:", -[SUControllerConfig _storeIntegerToDefaults:toValue:](self, "_storeIntegerToDefaults:toValue:", @"SUAutoInstallWindowBeginMinute", [v7 autoInstallWindowBeginMinute]));
   v7 = v35;
-  if ((a4 & 0x200) == 0)
+  if ((mask & 0x200) == 0)
   {
 LABEL_24:
-    if ((a4 & 0x400) == 0)
+    if ((mask & 0x400) == 0)
     {
       goto LABEL_25;
     }
@@ -440,10 +440,10 @@ LABEL_24:
 LABEL_56:
   -[SUControllerConfig setAutoInstallWindowEndHour:](self, "setAutoInstallWindowEndHour:", -[SUControllerConfig _storeIntegerToDefaults:toValue:](self, "_storeIntegerToDefaults:toValue:", @"SUAutoInstallWindowEndHour", [v7 autoInstallWindowEndHour]));
   v7 = v35;
-  if ((a4 & 0x400) == 0)
+  if ((mask & 0x400) == 0)
   {
 LABEL_25:
-    if ((a4 & 0x400000) == 0)
+    if ((mask & 0x400000) == 0)
     {
       goto LABEL_26;
     }
@@ -454,10 +454,10 @@ LABEL_25:
 LABEL_57:
   -[SUControllerConfig setAutoInstallWindowEndMinute:](self, "setAutoInstallWindowEndMinute:", -[SUControllerConfig _storeIntegerToDefaults:toValue:](self, "_storeIntegerToDefaults:toValue:", @"SUAutoInstallWindowEndMinute", [v7 autoInstallWindowEndMinute]));
   v7 = v35;
-  if ((a4 & 0x400000) == 0)
+  if ((mask & 0x400000) == 0)
   {
 LABEL_26:
-    if ((a4 & 0x800000) == 0)
+    if ((mask & 0x800000) == 0)
     {
       goto LABEL_27;
     }
@@ -468,10 +468,10 @@ LABEL_26:
 LABEL_58:
   -[SUControllerConfig setDownloadDocAsset:](self, "setDownloadDocAsset:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUDownloadDocAsset", [v7 downloadDocAsset], 0));
   v7 = v35;
-  if ((a4 & 0x800000) == 0)
+  if ((mask & 0x800000) == 0)
   {
 LABEL_27:
-    if ((a4 & 0x10000000) == 0)
+    if ((mask & 0x10000000) == 0)
     {
       goto LABEL_28;
     }
@@ -482,10 +482,10 @@ LABEL_27:
 LABEL_59:
   -[SUControllerConfig setIgnoreRamping:](self, "setIgnoreRamping:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUIgnoreRamping", [v7 ignoreRamping], 0));
   v7 = v35;
-  if ((a4 & 0x10000000) == 0)
+  if ((mask & 0x10000000) == 0)
   {
 LABEL_28:
-    if ((a4 & 0x20000000) == 0)
+    if ((mask & 0x20000000) == 0)
     {
       goto LABEL_29;
     }
@@ -496,10 +496,10 @@ LABEL_28:
 LABEL_60:
   -[SUControllerConfig setSupervisedMDM:](self, "setSupervisedMDM:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"supervisedMDM", [v7 supervisedMDM], 0));
   v7 = v35;
-  if ((a4 & 0x20000000) == 0)
+  if ((mask & 0x20000000) == 0)
   {
 LABEL_29:
-    if ((a4 & 0x40000000) == 0)
+    if ((mask & 0x40000000) == 0)
     {
       goto LABEL_30;
     }
@@ -508,15 +508,15 @@ LABEL_29:
   }
 
 LABEL_61:
-  v21 = [v7 requestedPMV];
-  v22 = [(SUControllerConfig *)self _storeStringToDefaults:@"requestedPMV" toValue:v21];
+  requestedPMV = [v7 requestedPMV];
+  v22 = [(SUControllerConfig *)self _storeStringToDefaults:@"requestedPMV" toValue:requestedPMV];
   [(SUControllerConfig *)self setRequestedPMV:v22];
 
   v7 = v35;
-  if ((a4 & 0x40000000) == 0)
+  if ((mask & 0x40000000) == 0)
   {
 LABEL_30:
-    if ((a4 & 0x80000000) == 0)
+    if ((mask & 0x80000000) == 0)
     {
       goto LABEL_31;
     }
@@ -527,10 +527,10 @@ LABEL_30:
 LABEL_62:
   -[SUControllerConfig setDelayPeriod:](self, "setDelayPeriod:", -[SUControllerConfig _storeIntegerToDefaults:toValue:](self, "_storeIntegerToDefaults:toValue:", @"delayPeriod", [v7 delayPeriod]));
   v7 = v35;
-  if ((a4 & 0x80000000) == 0)
+  if ((mask & 0x80000000) == 0)
   {
 LABEL_31:
-    if ((a4 & 0x20) == 0)
+    if ((mask & 0x20) == 0)
     {
       goto LABEL_32;
     }
@@ -539,15 +539,15 @@ LABEL_31:
   }
 
 LABEL_63:
-  v23 = [v7 installPhaseOSBackgroundImagePath];
-  v24 = [(SUControllerConfig *)self _storeStringToDefaults:@"installPhaseOSBackgroundImagePath" toValue:v23];
+  installPhaseOSBackgroundImagePath = [v7 installPhaseOSBackgroundImagePath];
+  v24 = [(SUControllerConfig *)self _storeStringToDefaults:@"installPhaseOSBackgroundImagePath" toValue:installPhaseOSBackgroundImagePath];
   [(SUControllerConfig *)self setInstallPhaseOSBackgroundImagePath:v24];
 
   v7 = v35;
-  if ((a4 & 0x20) == 0)
+  if ((mask & 0x20) == 0)
   {
 LABEL_32:
-    if ((a4 & 0x40) == 0)
+    if ((mask & 0x40) == 0)
     {
       goto LABEL_33;
     }
@@ -558,10 +558,10 @@ LABEL_32:
 LABEL_64:
   -[SUControllerConfig setRestrictToFullReplacement:](self, "setRestrictToFullReplacement:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SURestrictToFullReplacement", [v7 restrictToFullReplacement], 0));
   v7 = v35;
-  if ((a4 & 0x40) == 0)
+  if ((mask & 0x40) == 0)
   {
 LABEL_33:
-    if ((a4 & 0x4000000) == 0)
+    if ((mask & 0x4000000) == 0)
     {
       goto LABEL_34;
     }
@@ -572,10 +572,10 @@ LABEL_33:
 LABEL_65:
   -[SUControllerConfig setAllowSameVersionUpdates:](self, "setAllowSameVersionUpdates:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUAllowSameVersionUpdates", [v7 allowSameVersionUpdates], 0));
   v7 = v35;
-  if ((a4 & 0x4000000) == 0)
+  if ((mask & 0x4000000) == 0)
   {
 LABEL_34:
-    if ((a4 & 0x20000) == 0)
+    if ((mask & 0x20000) == 0)
     {
       goto LABEL_35;
     }
@@ -584,15 +584,15 @@ LABEL_34:
   }
 
 LABEL_66:
-  v25 = [v7 updateMetricContext];
-  v26 = [(SUControllerConfig *)self _storeStringToDefaults:@"SUUpdateMetricContext" toValue:v25];
+  updateMetricContext = [v7 updateMetricContext];
+  v26 = [(SUControllerConfig *)self _storeStringToDefaults:@"SUUpdateMetricContext" toValue:updateMetricContext];
   [(SUControllerConfig *)self setUpdateMetricContext:v26];
 
   v7 = v35;
-  if ((a4 & 0x20000) == 0)
+  if ((mask & 0x20000) == 0)
   {
 LABEL_35:
-    if ((a4 & 0x40000) == 0)
+    if ((mask & 0x40000) == 0)
     {
       goto LABEL_36;
     }
@@ -601,15 +601,15 @@ LABEL_35:
   }
 
 LABEL_67:
-  v27 = [v7 prerequisiteBuildVersion];
-  v28 = [(SUControllerConfig *)self _storeStringToDefaults:@"SUPrerequisiteBuildVersion" toValue:v27];
+  prerequisiteBuildVersion = [v7 prerequisiteBuildVersion];
+  v28 = [(SUControllerConfig *)self _storeStringToDefaults:@"SUPrerequisiteBuildVersion" toValue:prerequisiteBuildVersion];
   [(SUControllerConfig *)self setPrerequisiteBuildVersion:v28];
 
   v7 = v35;
-  if ((a4 & 0x40000) == 0)
+  if ((mask & 0x40000) == 0)
   {
 LABEL_36:
-    if ((a4 & 0x80000) == 0)
+    if ((mask & 0x80000) == 0)
     {
       goto LABEL_37;
     }
@@ -618,15 +618,15 @@ LABEL_36:
   }
 
 LABEL_68:
-  v29 = [v7 prerequisiteProductVersion];
-  v30 = [(SUControllerConfig *)self _storeStringToDefaults:@"SUPrerequisiteProductVersion" toValue:v29];
+  prerequisiteProductVersion = [v7 prerequisiteProductVersion];
+  v30 = [(SUControllerConfig *)self _storeStringToDefaults:@"SUPrerequisiteProductVersion" toValue:prerequisiteProductVersion];
   [(SUControllerConfig *)self setPrerequisiteProductVersion:v30];
 
   v7 = v35;
-  if ((a4 & 0x80000) == 0)
+  if ((mask & 0x80000) == 0)
   {
 LABEL_37:
-    if ((a4 & 0x200000) == 0)
+    if ((mask & 0x200000) == 0)
     {
       goto LABEL_38;
     }
@@ -635,15 +635,15 @@ LABEL_37:
   }
 
 LABEL_69:
-  v31 = [v7 asReleaseType];
-  v32 = [(SUControllerConfig *)self _storeStringToDefaults:@"SUAsReleaseType" toValue:v31];
+  asReleaseType = [v7 asReleaseType];
+  v32 = [(SUControllerConfig *)self _storeStringToDefaults:@"SUAsReleaseType" toValue:asReleaseType];
   [(SUControllerConfig *)self setAsReleaseType:v32];
 
   v7 = v35;
-  if ((a4 & 0x200000) == 0)
+  if ((mask & 0x200000) == 0)
   {
 LABEL_38:
-    if ((a4 & 0x800) == 0)
+    if ((mask & 0x800) == 0)
     {
       goto LABEL_39;
     }
@@ -652,15 +652,15 @@ LABEL_38:
   }
 
 LABEL_70:
-  v33 = [v7 simulatorCommandsFile];
-  v34 = [(SUControllerConfig *)self _storeStringToDefaults:@"SUSimulatorCommandsFile" toValue:v33];
+  simulatorCommandsFile = [v7 simulatorCommandsFile];
+  v34 = [(SUControllerConfig *)self _storeStringToDefaults:@"SUSimulatorCommandsFile" toValue:simulatorCommandsFile];
   [(SUControllerConfig *)self setSimulatorCommandsFile:v34];
 
   v7 = v35;
-  if ((a4 & 0x800) == 0)
+  if ((mask & 0x800) == 0)
   {
 LABEL_39:
-    if ((a4 & 0x100000) == 0)
+    if ((mask & 0x100000) == 0)
     {
       goto LABEL_40;
     }
@@ -671,10 +671,10 @@ LABEL_39:
 LABEL_71:
   -[SUControllerConfig setUseSpecifiedInstallWindow:](self, "setUseSpecifiedInstallWindow:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUUseSpecifiedInstallWindow", [v7 useSpecifiedInstallWindow], 0));
   v7 = v35;
-  if ((a4 & 0x100000) == 0)
+  if ((mask & 0x100000) == 0)
   {
 LABEL_40:
-    if ((a4 & 0x1000) == 0)
+    if ((mask & 0x1000) == 0)
     {
       goto LABEL_41;
     }
@@ -685,10 +685,10 @@ LABEL_40:
 LABEL_72:
   -[SUControllerConfig setExpiredSpecifiedAsExpired:](self, "setExpiredSpecifiedAsExpired:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUExpiredSpecifiedAsExpired", [v7 expiredSpecifiedAsExpired], 0));
   v7 = v35;
-  if ((a4 & 0x1000) == 0)
+  if ((mask & 0x1000) == 0)
   {
 LABEL_41:
-    if ((a4 & 0x2000000) == 0)
+    if ((mask & 0x2000000) == 0)
     {
       goto LABEL_42;
     }
@@ -699,10 +699,10 @@ LABEL_41:
 LABEL_73:
   -[SUControllerConfig setHideIndicationMayReboot:](self, "setHideIndicationMayReboot:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUHideIndicationMayReboot", [v7 hideIndicationMayReboot], 0));
   v7 = v35;
-  if ((a4 & 0x2000000) == 0)
+  if ((mask & 0x2000000) == 0)
   {
 LABEL_42:
-    if ((a4 & 0x4000) == 0)
+    if ((mask & 0x4000) == 0)
     {
       goto LABEL_43;
     }
@@ -713,10 +713,10 @@ LABEL_42:
 LABEL_74:
   -[SUControllerConfig setInternalDefaultsAsExternal:](self, "setInternalDefaultsAsExternal:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUInternalDefaultsAsExternal", [v7 internalDefaultsAsExternal], 0));
   v7 = v35;
-  if ((a4 & 0x4000) == 0)
+  if ((mask & 0x4000) == 0)
   {
 LABEL_43:
-    if ((a4 & 0x8000) == 0)
+    if ((mask & 0x8000) == 0)
     {
       goto LABEL_44;
     }
@@ -727,10 +727,10 @@ LABEL_43:
 LABEL_75:
   -[SUControllerConfig setRequirePrepareSize:](self, "setRequirePrepareSize:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SURequirePrepareSize", [v7 requirePrepareSize], 0));
   v7 = v35;
-  if ((a4 & 0x8000) == 0)
+  if ((mask & 0x8000) == 0)
   {
 LABEL_44:
-    if ((a4 & 0x100000000) == 0)
+    if ((mask & 0x100000000) == 0)
     {
       goto LABEL_46;
     }
@@ -741,7 +741,7 @@ LABEL_44:
 LABEL_76:
   -[SUControllerConfig setInstallWindowAsDeltas:](self, "setInstallWindowAsDeltas:", -[SUControllerConfig _storeBooleanToDefaults:toValue:isStoredInverted:](self, "_storeBooleanToDefaults:toValue:isStoredInverted:", @"SUInstallWindowAsDeltas", [v7 installWindowAsDeltas], 0));
   v7 = v35;
-  if ((a4 & 0x100000000) != 0)
+  if ((mask & 0x100000000) != 0)
   {
 LABEL_45:
     -[SUControllerConfig setMaxOptionalPSUSDownloadSize:](self, "setMaxOptionalPSUSDownloadSize:", -[SUControllerConfig _storeIntegerToDefaults:toValue:](self, "_storeIntegerToDefaults:toValue:", @"SUMaxOptionalPSUSDownloadSize", [v7 maxOptionalPSUSDownloadSize]));
@@ -752,108 +752,108 @@ LABEL_46:
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(SUControllerConfig *)self useSUCore];
-  if (v5 != [v4 useSUCore])
+  equalCopy = equal;
+  useSUCore = [(SUControllerConfig *)self useSUCore];
+  if (useSUCore != [equalCopy useSUCore])
   {
     goto LABEL_16;
   }
 
-  v6 = [(SUControllerConfig *)self vpnOnDemandAsInternal];
-  if (v6 != [v4 vpnOnDemandAsInternal])
+  vpnOnDemandAsInternal = [(SUControllerConfig *)self vpnOnDemandAsInternal];
+  if (vpnOnDemandAsInternal != [equalCopy vpnOnDemandAsInternal])
   {
     goto LABEL_16;
   }
 
-  v7 = [(SUControllerConfig *)self performAutoScan];
-  if (v7 != [v4 performAutoScan])
+  performAutoScan = [(SUControllerConfig *)self performAutoScan];
+  if (performAutoScan != [equalCopy performAutoScan])
   {
     goto LABEL_16;
   }
 
-  v8 = [(SUControllerConfig *)self performAutoDownloadAndPrepare];
-  if (v8 != [v4 performAutoDownloadAndPrepare])
+  performAutoDownloadAndPrepare = [(SUControllerConfig *)self performAutoDownloadAndPrepare];
+  if (performAutoDownloadAndPrepare != [equalCopy performAutoDownloadAndPrepare])
   {
     goto LABEL_16;
   }
 
-  v9 = [(SUControllerConfig *)self performAutoInstall];
-  if (v9 != [v4 performAutoInstall])
+  performAutoInstall = [(SUControllerConfig *)self performAutoInstall];
+  if (performAutoInstall != [equalCopy performAutoInstall])
   {
     goto LABEL_16;
   }
 
-  v10 = [(SUControllerConfig *)self autoAcceptTermsAndConditions];
-  if (v10 != [v4 autoAcceptTermsAndConditions])
+  autoAcceptTermsAndConditions = [(SUControllerConfig *)self autoAcceptTermsAndConditions];
+  if (autoAcceptTermsAndConditions != [equalCopy autoAcceptTermsAndConditions])
   {
     goto LABEL_16;
   }
 
-  v11 = [(SUControllerConfig *)self autoActivityCheckPeriod];
-  if (v11 != [v4 autoActivityCheckPeriod])
+  autoActivityCheckPeriod = [(SUControllerConfig *)self autoActivityCheckPeriod];
+  if (autoActivityCheckPeriod != [equalCopy autoActivityCheckPeriod])
   {
     goto LABEL_16;
   }
 
-  v12 = [(SUControllerConfig *)self autoInstallForceMaxWait];
-  if (v12 != [v4 autoInstallForceMaxWait])
+  autoInstallForceMaxWait = [(SUControllerConfig *)self autoInstallForceMaxWait];
+  if (autoInstallForceMaxWait != [equalCopy autoInstallForceMaxWait])
   {
     goto LABEL_16;
   }
 
-  v13 = [(SUControllerConfig *)self autoInstallWindowBeginHour];
-  if (v13 == [v4 autoInstallWindowBeginHour] && (v14 = -[SUControllerConfig autoInstallWindowBeginMinute](self, "autoInstallWindowBeginMinute"), v14 == objc_msgSend(v4, "autoInstallWindowBeginMinute")) && (v15 = -[SUControllerConfig autoInstallWindowEndHour](self, "autoInstallWindowEndHour"), v15 == objc_msgSend(v4, "autoInstallWindowEndHour")) && (v16 = -[SUControllerConfig autoInstallWindowEndMinute](self, "autoInstallWindowEndMinute"), v16 == objc_msgSend(v4, "autoInstallWindowEndMinute")) && (v17 = -[SUControllerConfig downloadDocAsset](self, "downloadDocAsset"), v17 == objc_msgSend(v4, "downloadDocAsset")) && (v18 = -[SUControllerConfig ignoreRamping](self, "ignoreRamping"), v18 == objc_msgSend(v4, "ignoreRamping")) && (v19 = -[SUControllerConfig supervisedMDM](self, "supervisedMDM"), v19 == objc_msgSend(v4, "supervisedMDM")))
+  autoInstallWindowBeginHour = [(SUControllerConfig *)self autoInstallWindowBeginHour];
+  if (autoInstallWindowBeginHour == [equalCopy autoInstallWindowBeginHour] && (v14 = -[SUControllerConfig autoInstallWindowBeginMinute](self, "autoInstallWindowBeginMinute"), v14 == objc_msgSend(equalCopy, "autoInstallWindowBeginMinute")) && (v15 = -[SUControllerConfig autoInstallWindowEndHour](self, "autoInstallWindowEndHour"), v15 == objc_msgSend(equalCopy, "autoInstallWindowEndHour")) && (v16 = -[SUControllerConfig autoInstallWindowEndMinute](self, "autoInstallWindowEndMinute"), v16 == objc_msgSend(equalCopy, "autoInstallWindowEndMinute")) && (v17 = -[SUControllerConfig downloadDocAsset](self, "downloadDocAsset"), v17 == objc_msgSend(equalCopy, "downloadDocAsset")) && (v18 = -[SUControllerConfig ignoreRamping](self, "ignoreRamping"), v18 == objc_msgSend(equalCopy, "ignoreRamping")) && (v19 = -[SUControllerConfig supervisedMDM](self, "supervisedMDM"), v19 == objc_msgSend(equalCopy, "supervisedMDM")))
   {
-    v22 = [(SUControllerConfig *)self requestedPMV];
-    v23 = [v4 requestedPMV];
-    if (doStringsMatch(v22, v23) && (v24 = -[SUControllerConfig delayPeriod](self, "delayPeriod"), v24 == [v4 delayPeriod]))
+    requestedPMV = [(SUControllerConfig *)self requestedPMV];
+    requestedPMV2 = [equalCopy requestedPMV];
+    if (doStringsMatch(requestedPMV, requestedPMV2) && (v24 = -[SUControllerConfig delayPeriod](self, "delayPeriod"), v24 == [equalCopy delayPeriod]))
     {
-      v25 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
-      v26 = [v4 installPhaseOSBackgroundImagePath];
-      if (!doStringsMatch(v25, v26))
+      installPhaseOSBackgroundImagePath = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
+      installPhaseOSBackgroundImagePath2 = [equalCopy installPhaseOSBackgroundImagePath];
+      if (!doStringsMatch(installPhaseOSBackgroundImagePath, installPhaseOSBackgroundImagePath2))
       {
         goto LABEL_36;
       }
 
-      v27 = [(SUControllerConfig *)self restrictToFullReplacement];
-      if (v27 != [v4 restrictToFullReplacement])
+      restrictToFullReplacement = [(SUControllerConfig *)self restrictToFullReplacement];
+      if (restrictToFullReplacement != [equalCopy restrictToFullReplacement])
       {
         goto LABEL_36;
       }
 
-      v28 = [(SUControllerConfig *)self allowSameVersionUpdates];
-      if (v28 != [v4 allowSameVersionUpdates])
+      allowSameVersionUpdates = [(SUControllerConfig *)self allowSameVersionUpdates];
+      if (allowSameVersionUpdates != [equalCopy allowSameVersionUpdates])
       {
         goto LABEL_36;
       }
 
-      v29 = [(SUControllerConfig *)self useSpecifiedInstallWindow];
-      if (v29 == [v4 useSpecifiedInstallWindow] && (v30 = -[SUControllerConfig expiredSpecifiedAsExpired](self, "expiredSpecifiedAsExpired"), v30 == objc_msgSend(v4, "expiredSpecifiedAsExpired")) && (v31 = -[SUControllerConfig hideIndicationMayReboot](self, "hideIndicationMayReboot"), v31 == objc_msgSend(v4, "hideIndicationMayReboot")) && (v32 = -[SUControllerConfig internalDefaultsAsExternal](self, "internalDefaultsAsExternal"), v32 == objc_msgSend(v4, "internalDefaultsAsExternal")) && (v33 = -[SUControllerConfig requirePrepareSize](self, "requirePrepareSize"), v33 == objc_msgSend(v4, "requirePrepareSize")) && (v34 = -[SUControllerConfig installWindowAsDeltas](self, "installWindowAsDeltas"), v34 == objc_msgSend(v4, "installWindowAsDeltas")) && (v35 = -[SUControllerConfig maxOptionalPSUSDownloadSize](self, "maxOptionalPSUSDownloadSize"), v35 == objc_msgSend(v4, "maxOptionalPSUSDownloadSize")))
+      useSpecifiedInstallWindow = [(SUControllerConfig *)self useSpecifiedInstallWindow];
+      if (useSpecifiedInstallWindow == [equalCopy useSpecifiedInstallWindow] && (v30 = -[SUControllerConfig expiredSpecifiedAsExpired](self, "expiredSpecifiedAsExpired"), v30 == objc_msgSend(equalCopy, "expiredSpecifiedAsExpired")) && (v31 = -[SUControllerConfig hideIndicationMayReboot](self, "hideIndicationMayReboot"), v31 == objc_msgSend(equalCopy, "hideIndicationMayReboot")) && (v32 = -[SUControllerConfig internalDefaultsAsExternal](self, "internalDefaultsAsExternal"), v32 == objc_msgSend(equalCopy, "internalDefaultsAsExternal")) && (v33 = -[SUControllerConfig requirePrepareSize](self, "requirePrepareSize"), v33 == objc_msgSend(equalCopy, "requirePrepareSize")) && (v34 = -[SUControllerConfig installWindowAsDeltas](self, "installWindowAsDeltas"), v34 == objc_msgSend(equalCopy, "installWindowAsDeltas")) && (v35 = -[SUControllerConfig maxOptionalPSUSDownloadSize](self, "maxOptionalPSUSDownloadSize"), v35 == objc_msgSend(equalCopy, "maxOptionalPSUSDownloadSize")))
       {
-        v36 = [(SUControllerConfig *)self updateMetricContext];
-        v37 = [v4 updateMetricContext];
-        if (doStringsMatch(v36, v37))
+        updateMetricContext = [(SUControllerConfig *)self updateMetricContext];
+        updateMetricContext2 = [equalCopy updateMetricContext];
+        if (doStringsMatch(updateMetricContext, updateMetricContext2))
         {
-          v38 = [(SUControllerConfig *)self prerequisiteBuildVersion];
-          v39 = [v4 prerequisiteBuildVersion];
-          v48 = v38;
-          if (doStringsMatch(v38, v39))
+          prerequisiteBuildVersion = [(SUControllerConfig *)self prerequisiteBuildVersion];
+          prerequisiteBuildVersion2 = [equalCopy prerequisiteBuildVersion];
+          v48 = prerequisiteBuildVersion;
+          if (doStringsMatch(prerequisiteBuildVersion, prerequisiteBuildVersion2))
           {
-            v40 = [(SUControllerConfig *)self prerequisiteProductVersion];
-            v46 = [v4 prerequisiteProductVersion];
-            v47 = v40;
-            if (doStringsMatch(v40, v46))
+            prerequisiteProductVersion = [(SUControllerConfig *)self prerequisiteProductVersion];
+            prerequisiteProductVersion2 = [equalCopy prerequisiteProductVersion];
+            v47 = prerequisiteProductVersion;
+            if (doStringsMatch(prerequisiteProductVersion, prerequisiteProductVersion2))
             {
-              v41 = [(SUControllerConfig *)self asReleaseType];
-              v44 = [v4 asReleaseType];
-              v45 = v41;
-              if (doStringsMatch(v41, v44))
+              asReleaseType = [(SUControllerConfig *)self asReleaseType];
+              asReleaseType2 = [equalCopy asReleaseType];
+              v45 = asReleaseType;
+              if (doStringsMatch(asReleaseType, asReleaseType2))
               {
-                v43 = [(SUControllerConfig *)self simulatorCommandsFile];
-                v42 = [v4 simulatorCommandsFile];
-                v20 = doStringsMatch(v43, v42);
+                simulatorCommandsFile = [(SUControllerConfig *)self simulatorCommandsFile];
+                simulatorCommandsFile2 = [equalCopy simulatorCommandsFile];
+                v20 = doStringsMatch(simulatorCommandsFile, simulatorCommandsFile2);
               }
 
               else
@@ -972,12 +972,12 @@ LABEL_16:
   }
 
   v51 = v9;
-  v49 = [(SUControllerConfig *)self autoActivityCheckPeriod];
-  v48 = [(SUControllerConfig *)self autoInstallForceMaxWait];
-  v47 = [(SUControllerConfig *)self autoInstallWindowBeginHour];
-  v46 = [(SUControllerConfig *)self autoInstallWindowBeginMinute];
-  v45 = [(SUControllerConfig *)self autoInstallWindowEndHour];
-  v43 = [(SUControllerConfig *)self autoInstallWindowEndMinute];
+  autoActivityCheckPeriod = [(SUControllerConfig *)self autoActivityCheckPeriod];
+  autoInstallForceMaxWait = [(SUControllerConfig *)self autoInstallForceMaxWait];
+  autoInstallWindowBeginHour = [(SUControllerConfig *)self autoInstallWindowBeginHour];
+  autoInstallWindowBeginMinute = [(SUControllerConfig *)self autoInstallWindowBeginMinute];
+  autoInstallWindowEndHour = [(SUControllerConfig *)self autoInstallWindowEndHour];
+  autoInstallWindowEndMinute = [(SUControllerConfig *)self autoInstallWindowEndMinute];
   if ([(SUControllerConfig *)self downloadDocAsset])
   {
     v10 = @"YES";
@@ -1011,27 +1011,27 @@ LABEL_16:
   }
 
   v39 = v12;
-  v13 = [(SUControllerConfig *)self requestedPMV];
-  if (v13)
+  requestedPMV = [(SUControllerConfig *)self requestedPMV];
+  if (requestedPMV)
   {
-    v14 = [(SUControllerConfig *)self requestedPMV];
+    requestedPMV2 = [(SUControllerConfig *)self requestedPMV];
   }
 
   else
   {
-    v14 = @"(default)";
+    requestedPMV2 = @"(default)";
   }
 
-  v36 = [(SUControllerConfig *)self delayPeriod];
-  v15 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
-  if (v15)
+  delayPeriod = [(SUControllerConfig *)self delayPeriod];
+  installPhaseOSBackgroundImagePath = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
+  if (installPhaseOSBackgroundImagePath)
   {
-    v50 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
+    installPhaseOSBackgroundImagePath2 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
   }
 
   else
   {
-    v50 = @"(default)";
+    installPhaseOSBackgroundImagePath2 = @"(default)";
   }
 
   if ([(SUControllerConfig *)self restrictToFullReplacement])
@@ -1056,66 +1056,66 @@ LABEL_16:
   }
 
   v32 = v17;
-  v44 = [(SUControllerConfig *)self updateMetricContext];
-  if (v44)
+  updateMetricContext = [(SUControllerConfig *)self updateMetricContext];
+  if (updateMetricContext)
   {
-    v18 = [(SUControllerConfig *)self updateMetricContext];
+    updateMetricContext2 = [(SUControllerConfig *)self updateMetricContext];
   }
 
   else
   {
-    v18 = @"(default)";
+    updateMetricContext2 = @"(default)";
   }
 
-  v19 = [(SUControllerConfig *)self prerequisiteBuildVersion];
-  if (v19)
+  prerequisiteBuildVersion = [(SUControllerConfig *)self prerequisiteBuildVersion];
+  if (prerequisiteBuildVersion)
   {
-    v20 = [(SUControllerConfig *)self prerequisiteBuildVersion];
-  }
-
-  else
-  {
-    v20 = @"(default)";
-  }
-
-  v35 = [(SUControllerConfig *)self prerequisiteProductVersion];
-  v38 = v19;
-  if (v35)
-  {
-    v21 = [(SUControllerConfig *)self prerequisiteProductVersion];
+    prerequisiteBuildVersion2 = [(SUControllerConfig *)self prerequisiteBuildVersion];
   }
 
   else
   {
-    v21 = @"(default)";
+    prerequisiteBuildVersion2 = @"(default)";
   }
 
-  v22 = [(SUControllerConfig *)self asReleaseType];
-  v53 = v15;
-  if (v22)
+  prerequisiteProductVersion = [(SUControllerConfig *)self prerequisiteProductVersion];
+  v38 = prerequisiteBuildVersion;
+  if (prerequisiteProductVersion)
   {
-    v61 = [(SUControllerConfig *)self asReleaseType];
-  }
-
-  else
-  {
-    v61 = @"(default)";
-  }
-
-  v23 = [(SUControllerConfig *)self simulatorCommandsFile];
-  v59 = v13;
-  v57 = v14;
-  v41 = v18;
-  v37 = v20;
-  v34 = v21;
-  if (v23)
-  {
-    v31 = [(SUControllerConfig *)self simulatorCommandsFile];
+    prerequisiteProductVersion2 = [(SUControllerConfig *)self prerequisiteProductVersion];
   }
 
   else
   {
-    v31 = @"(default)";
+    prerequisiteProductVersion2 = @"(default)";
+  }
+
+  asReleaseType = [(SUControllerConfig *)self asReleaseType];
+  v53 = installPhaseOSBackgroundImagePath;
+  if (asReleaseType)
+  {
+    asReleaseType2 = [(SUControllerConfig *)self asReleaseType];
+  }
+
+  else
+  {
+    asReleaseType2 = @"(default)";
+  }
+
+  simulatorCommandsFile = [(SUControllerConfig *)self simulatorCommandsFile];
+  v59 = requestedPMV;
+  v57 = requestedPMV2;
+  v41 = updateMetricContext2;
+  v37 = prerequisiteBuildVersion2;
+  v34 = prerequisiteProductVersion2;
+  if (simulatorCommandsFile)
+  {
+    simulatorCommandsFile2 = [(SUControllerConfig *)self simulatorCommandsFile];
+  }
+
+  else
+  {
+    simulatorCommandsFile2 = @"(default)";
   }
 
   if ([(SUControllerConfig *)self useSpecifiedInstallWindow])
@@ -1173,16 +1173,16 @@ LABEL_16:
     v3 = @"YES";
   }
 
-  v29 = [v60 stringWithFormat:@"\nuseSUCore: %@\nVPNOnDemandAsInternal: %@\nPerformAutoScan: %@\nPerformAutoDownloadAndPrepare: %@\nPerformAutoInstall: %@\nAutoAcceptTermsAndConditions: %@\nAutoActivityCheckPeriod: %d minutes\nAutoInstallForceMaxWait: %d minutes\nAutoInstallWindowBegin: %02d:%02d\nAutoInstallWindowEnd: %02d:%02d\nDownloadDocAsset: %@\nIgnoreRamping: %@\nSupervisedMDM: %@\nRequestedPMV: %@\nDelayPeriod: %d days\nInstallPhaseOSBackgroundImagePath: %@\nRestrictToFullReplacement: %@\nAllowSameVersionUpdates: %@\nUpdateMetricContext: %@\nPrerequisiteBuildVersion: %@\nPrerequisiteProductVersion: %@\nAsReleaseType: %@\nsimulatorCommandsFile: %@\nuseSpecifiedInstallWindow: %@\nexpiredSpecifiedAsExpired: %@\nHideIndicationMayReboot: %@\nInternalDefaultsAsExternal: %@\nRequirePrepareSize: %@\nInstallWindowAsDeltas: %@\nmaxOptionalPSUSDownloadSize: %ld", v58, v56, v55, v54, v52, v51, v49, v48, v47, v46, v45, v43, v42, v40, v39, v57, v36, v50, v33, v32, v41, v37, v34, v61, v31, v24, v25, v26, v27, v28, v3, -[SUControllerConfig maxOptionalPSUSDownloadSize](self, "maxOptionalPSUSDownloadSize")];
-  if (v23)
+  v29 = [v60 stringWithFormat:@"\nuseSUCore: %@\nVPNOnDemandAsInternal: %@\nPerformAutoScan: %@\nPerformAutoDownloadAndPrepare: %@\nPerformAutoInstall: %@\nAutoAcceptTermsAndConditions: %@\nAutoActivityCheckPeriod: %d minutes\nAutoInstallForceMaxWait: %d minutes\nAutoInstallWindowBegin: %02d:%02d\nAutoInstallWindowEnd: %02d:%02d\nDownloadDocAsset: %@\nIgnoreRamping: %@\nSupervisedMDM: %@\nRequestedPMV: %@\nDelayPeriod: %d days\nInstallPhaseOSBackgroundImagePath: %@\nRestrictToFullReplacement: %@\nAllowSameVersionUpdates: %@\nUpdateMetricContext: %@\nPrerequisiteBuildVersion: %@\nPrerequisiteProductVersion: %@\nAsReleaseType: %@\nsimulatorCommandsFile: %@\nuseSpecifiedInstallWindow: %@\nexpiredSpecifiedAsExpired: %@\nHideIndicationMayReboot: %@\nInternalDefaultsAsExternal: %@\nRequirePrepareSize: %@\nInstallWindowAsDeltas: %@\nmaxOptionalPSUSDownloadSize: %ld", v58, v56, v55, v54, v52, v51, autoActivityCheckPeriod, autoInstallForceMaxWait, autoInstallWindowBeginHour, autoInstallWindowBeginMinute, autoInstallWindowEndHour, autoInstallWindowEndMinute, v42, v40, v39, v57, delayPeriod, installPhaseOSBackgroundImagePath2, v33, v32, v41, v37, v34, asReleaseType2, simulatorCommandsFile2, v24, v25, v26, v27, v28, v3, -[SUControllerConfig maxOptionalPSUSDownloadSize](self, "maxOptionalPSUSDownloadSize")];
+  if (simulatorCommandsFile)
   {
   }
 
-  if (v22)
+  if (asReleaseType)
   {
   }
 
-  if (v35)
+  if (prerequisiteProductVersion)
   {
   }
 
@@ -1190,7 +1190,7 @@ LABEL_16:
   {
   }
 
-  if (v44)
+  if (updateMetricContext)
   {
   }
 
@@ -1275,12 +1275,12 @@ LABEL_16:
   }
 
   v51 = v9;
-  v49 = [(SUControllerConfig *)self autoActivityCheckPeriod];
-  v48 = [(SUControllerConfig *)self autoInstallForceMaxWait];
-  v47 = [(SUControllerConfig *)self autoInstallWindowBeginHour];
-  v46 = [(SUControllerConfig *)self autoInstallWindowBeginMinute];
-  v45 = [(SUControllerConfig *)self autoInstallWindowEndHour];
-  v43 = [(SUControllerConfig *)self autoInstallWindowEndMinute];
+  autoActivityCheckPeriod = [(SUControllerConfig *)self autoActivityCheckPeriod];
+  autoInstallForceMaxWait = [(SUControllerConfig *)self autoInstallForceMaxWait];
+  autoInstallWindowBeginHour = [(SUControllerConfig *)self autoInstallWindowBeginHour];
+  autoInstallWindowBeginMinute = [(SUControllerConfig *)self autoInstallWindowBeginMinute];
+  autoInstallWindowEndHour = [(SUControllerConfig *)self autoInstallWindowEndHour];
+  autoInstallWindowEndMinute = [(SUControllerConfig *)self autoInstallWindowEndMinute];
   if ([(SUControllerConfig *)self downloadDocAsset])
   {
     v10 = @"Y";
@@ -1314,27 +1314,27 @@ LABEL_16:
   }
 
   v39 = v12;
-  v13 = [(SUControllerConfig *)self requestedPMV];
-  if (v13)
+  requestedPMV = [(SUControllerConfig *)self requestedPMV];
+  if (requestedPMV)
   {
-    v14 = [(SUControllerConfig *)self requestedPMV];
+    requestedPMV2 = [(SUControllerConfig *)self requestedPMV];
   }
 
   else
   {
-    v14 = @"!";
+    requestedPMV2 = @"!";
   }
 
-  v36 = [(SUControllerConfig *)self delayPeriod];
-  v15 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
-  if (v15)
+  delayPeriod = [(SUControllerConfig *)self delayPeriod];
+  installPhaseOSBackgroundImagePath = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
+  if (installPhaseOSBackgroundImagePath)
   {
-    v50 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
+    installPhaseOSBackgroundImagePath2 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
   }
 
   else
   {
-    v50 = @"!";
+    installPhaseOSBackgroundImagePath2 = @"!";
   }
 
   if ([(SUControllerConfig *)self restrictToFullReplacement])
@@ -1359,66 +1359,66 @@ LABEL_16:
   }
 
   v32 = v17;
-  v44 = [(SUControllerConfig *)self updateMetricContext];
-  if (v44)
+  updateMetricContext = [(SUControllerConfig *)self updateMetricContext];
+  if (updateMetricContext)
   {
-    v18 = [(SUControllerConfig *)self updateMetricContext];
+    updateMetricContext2 = [(SUControllerConfig *)self updateMetricContext];
   }
 
   else
   {
-    v18 = @"!";
+    updateMetricContext2 = @"!";
   }
 
-  v19 = [(SUControllerConfig *)self prerequisiteBuildVersion];
-  if (v19)
+  prerequisiteBuildVersion = [(SUControllerConfig *)self prerequisiteBuildVersion];
+  if (prerequisiteBuildVersion)
   {
-    v20 = [(SUControllerConfig *)self prerequisiteBuildVersion];
-  }
-
-  else
-  {
-    v20 = @"!";
-  }
-
-  v35 = [(SUControllerConfig *)self prerequisiteProductVersion];
-  v38 = v19;
-  if (v35)
-  {
-    v21 = [(SUControllerConfig *)self prerequisiteProductVersion];
+    prerequisiteBuildVersion2 = [(SUControllerConfig *)self prerequisiteBuildVersion];
   }
 
   else
   {
-    v21 = @"!";
+    prerequisiteBuildVersion2 = @"!";
   }
 
-  v22 = [(SUControllerConfig *)self asReleaseType];
-  v53 = v15;
-  if (v22)
+  prerequisiteProductVersion = [(SUControllerConfig *)self prerequisiteProductVersion];
+  v38 = prerequisiteBuildVersion;
+  if (prerequisiteProductVersion)
   {
-    v61 = [(SUControllerConfig *)self asReleaseType];
-  }
-
-  else
-  {
-    v61 = @"!";
-  }
-
-  v23 = [(SUControllerConfig *)self simulatorCommandsFile];
-  v59 = v13;
-  v57 = v14;
-  v41 = v18;
-  v37 = v20;
-  v34 = v21;
-  if (v23)
-  {
-    v31 = [(SUControllerConfig *)self simulatorCommandsFile];
+    prerequisiteProductVersion2 = [(SUControllerConfig *)self prerequisiteProductVersion];
   }
 
   else
   {
-    v31 = @"!";
+    prerequisiteProductVersion2 = @"!";
+  }
+
+  asReleaseType = [(SUControllerConfig *)self asReleaseType];
+  v53 = installPhaseOSBackgroundImagePath;
+  if (asReleaseType)
+  {
+    asReleaseType2 = [(SUControllerConfig *)self asReleaseType];
+  }
+
+  else
+  {
+    asReleaseType2 = @"!";
+  }
+
+  simulatorCommandsFile = [(SUControllerConfig *)self simulatorCommandsFile];
+  v59 = requestedPMV;
+  v57 = requestedPMV2;
+  v41 = updateMetricContext2;
+  v37 = prerequisiteBuildVersion2;
+  v34 = prerequisiteProductVersion2;
+  if (simulatorCommandsFile)
+  {
+    simulatorCommandsFile2 = [(SUControllerConfig *)self simulatorCommandsFile];
+  }
+
+  else
+  {
+    simulatorCommandsFile2 = @"!";
   }
 
   if ([(SUControllerConfig *)self useSpecifiedInstallWindow])
@@ -1476,16 +1476,16 @@ LABEL_16:
     v3 = @"Y";
   }
 
-  v29 = [v60 stringWithFormat:@"useSUCore:%@, vpnAsInternal:%@, autoScan:%@, autoDownload:%@, autoInstall:%@, autoAccept:%@, activityPeriod:%d, forceMaxWait:%d, windowBegin:%02d:%02d, windowEnd:%02d:%02d, downloadDoc:%@, ignoreRamp:%@, supervisedMDM:%@, requestedPMV:%@, delayPeriod:%d, installPhaseBGImgPath:%@, restrictToFull:%@, allowSame:%@, context:%@, asBuild:%@, asProduct:%@, asRelease:%@, simFile:%@, useInstallWindow:%@, expiredAsExpired:%@, hideMayReboot:%@, asExternal:%@, requirePrepSize:%@, windowDeltas:%@, maxOptionalPSUSDownloadSize:%ld", v58, v56, v55, v54, v52, v51, v49, v48, v47, v46, v45, v43, v42, v40, v39, v57, v36, v50, v33, v32, v41, v37, v34, v61, v31, v24, v25, v26, v27, v28, v3, -[SUControllerConfig maxOptionalPSUSDownloadSize](self, "maxOptionalPSUSDownloadSize")];
-  if (v23)
+  v29 = [v60 stringWithFormat:@"useSUCore:%@, vpnAsInternal:%@, autoScan:%@, autoDownload:%@, autoInstall:%@, autoAccept:%@, activityPeriod:%d, forceMaxWait:%d, windowBegin:%02d:%02d, windowEnd:%02d:%02d, downloadDoc:%@, ignoreRamp:%@, supervisedMDM:%@, requestedPMV:%@, delayPeriod:%d, installPhaseBGImgPath:%@, restrictToFull:%@, allowSame:%@, context:%@, asBuild:%@, asProduct:%@, asRelease:%@, simFile:%@, useInstallWindow:%@, expiredAsExpired:%@, hideMayReboot:%@, asExternal:%@, requirePrepSize:%@, windowDeltas:%@, maxOptionalPSUSDownloadSize:%ld", v58, v56, v55, v54, v52, v51, autoActivityCheckPeriod, autoInstallForceMaxWait, autoInstallWindowBeginHour, autoInstallWindowBeginMinute, autoInstallWindowEndHour, autoInstallWindowEndMinute, v42, v40, v39, v57, delayPeriod, installPhaseOSBackgroundImagePath2, v33, v32, v41, v37, v34, asReleaseType2, simulatorCommandsFile2, v24, v25, v26, v27, v28, v3, -[SUControllerConfig maxOptionalPSUSDownloadSize](self, "maxOptionalPSUSDownloadSize")];
+  if (simulatorCommandsFile)
   {
   }
 
-  if (v22)
+  if (asReleaseType)
   {
   }
 
-  if (v35)
+  if (prerequisiteProductVersion)
   {
   }
 
@@ -1493,7 +1493,7 @@ LABEL_16:
   {
   }
 
-  if (v44)
+  if (updateMetricContext)
   {
   }
 
@@ -1508,9 +1508,9 @@ LABEL_16:
   return v29;
 }
 
-- (id)changeSummary:(int64_t)a3
+- (id)changeSummary:(int64_t)summary
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((summary & 0x8000000) != 0)
   {
     v6 = objc_alloc(MEMORY[0x277CCACA8]);
     if ([(SUControllerConfig *)self vpnOnDemandAsInternal])
@@ -1526,7 +1526,7 @@ LABEL_16:
     v8 = [v6 initWithFormat:@"|vpnAsInternal:%@", v7];
     v5 = [&stru_287B3F250 stringByAppendingString:v8];
 
-    if ((a3 & 1) == 0)
+    if ((summary & 1) == 0)
     {
       goto LABEL_13;
     }
@@ -1535,7 +1535,7 @@ LABEL_16:
   else
   {
     v5 = &stru_287B3F250;
-    if ((a3 & 1) == 0)
+    if ((summary & 1) == 0)
     {
       goto LABEL_13;
     }
@@ -1561,7 +1561,7 @@ LABEL_16:
   }
 
 LABEL_13:
-  if ((a3 & 2) != 0)
+  if ((summary & 2) != 0)
   {
     v24 = objc_alloc(MEMORY[0x277CCACA8]);
     if ([(SUControllerConfig *)self performAutoDownloadAndPrepare])
@@ -1578,10 +1578,10 @@ LABEL_13:
     v27 = [(__CFString *)v5 stringByAppendingString:v26];
 
     v5 = v27;
-    if ((a3 & 4) == 0)
+    if ((summary & 4) == 0)
     {
 LABEL_15:
-      if ((a3 & 8) == 0)
+      if ((summary & 8) == 0)
       {
         goto LABEL_16;
       }
@@ -1590,7 +1590,7 @@ LABEL_15:
     }
   }
 
-  else if ((a3 & 4) == 0)
+  else if ((summary & 4) == 0)
   {
     goto LABEL_15;
   }
@@ -1610,10 +1610,10 @@ LABEL_15:
   v31 = [(__CFString *)v5 stringByAppendingString:v30];
 
   v5 = v31;
-  if ((a3 & 8) == 0)
+  if ((summary & 8) == 0)
   {
 LABEL_16:
-    if ((a3 & 0x10) == 0)
+    if ((summary & 0x10) == 0)
     {
       goto LABEL_17;
     }
@@ -1637,10 +1637,10 @@ LABEL_55:
   v35 = [(__CFString *)v5 stringByAppendingString:v34];
 
   v5 = v35;
-  if ((a3 & 0x10) == 0)
+  if ((summary & 0x10) == 0)
   {
 LABEL_17:
-    if ((a3 & 0x2000) == 0)
+    if ((summary & 0x2000) == 0)
     {
       goto LABEL_19;
     }
@@ -1653,7 +1653,7 @@ LABEL_59:
   v37 = [(__CFString *)v5 stringByAppendingString:v36];
 
   v5 = v37;
-  if ((a3 & 0x2000) != 0)
+  if ((summary & 0x2000) != 0)
   {
 LABEL_18:
     v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"|forceMaxWait:%d", -[SUControllerConfig autoInstallForceMaxWait](self, "autoInstallForceMaxWait")];
@@ -1663,7 +1663,7 @@ LABEL_18:
   }
 
 LABEL_19:
-  if ((a3 & 0x180) != 0)
+  if ((summary & 0x180) != 0)
   {
     v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"|windowBegin:%02d:%02d", -[SUControllerConfig autoInstallWindowBeginHour](self, "autoInstallWindowBeginHour"), -[SUControllerConfig autoInstallWindowBeginMinute](self, "autoInstallWindowBeginMinute")];
     v16 = [(__CFString *)v5 stringByAppendingString:v15];
@@ -1671,7 +1671,7 @@ LABEL_19:
     v5 = v16;
   }
 
-  if ((a3 & 0x600) != 0)
+  if ((summary & 0x600) != 0)
   {
     v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"|windowEnd:%02d:%02d", -[SUControllerConfig autoInstallWindowEndHour](self, "autoInstallWindowEndHour"), -[SUControllerConfig autoInstallWindowEndMinute](self, "autoInstallWindowEndMinute")];
     v18 = [(__CFString *)v5 stringByAppendingString:v17];
@@ -1679,7 +1679,7 @@ LABEL_19:
     v5 = v18;
   }
 
-  if ((a3 & 0x400000) != 0)
+  if ((summary & 0x400000) != 0)
   {
     v38 = objc_alloc(MEMORY[0x277CCACA8]);
     if ([(SUControllerConfig *)self downloadDocAsset])
@@ -1696,10 +1696,10 @@ LABEL_19:
     v41 = [(__CFString *)v5 stringByAppendingString:v40];
 
     v5 = v41;
-    if ((a3 & 0x800000) == 0)
+    if ((summary & 0x800000) == 0)
     {
 LABEL_25:
-      if ((a3 & 0x10000000) == 0)
+      if ((summary & 0x10000000) == 0)
       {
         goto LABEL_26;
       }
@@ -1708,7 +1708,7 @@ LABEL_25:
     }
   }
 
-  else if ((a3 & 0x800000) == 0)
+  else if ((summary & 0x800000) == 0)
   {
     goto LABEL_25;
   }
@@ -1728,10 +1728,10 @@ LABEL_25:
   v45 = [(__CFString *)v5 stringByAppendingString:v44];
 
   v5 = v45;
-  if ((a3 & 0x10000000) == 0)
+  if ((summary & 0x10000000) == 0)
   {
 LABEL_26:
-    if ((a3 & 0x20000000) == 0)
+    if ((summary & 0x20000000) == 0)
     {
       goto LABEL_27;
     }
@@ -1755,10 +1755,10 @@ LABEL_69:
   v49 = [(__CFString *)v5 stringByAppendingString:v48];
 
   v5 = v49;
-  if ((a3 & 0x20000000) == 0)
+  if ((summary & 0x20000000) == 0)
   {
 LABEL_27:
-    if ((a3 & 0x40000000) == 0)
+    if ((summary & 0x40000000) == 0)
     {
       goto LABEL_28;
     }
@@ -1768,29 +1768,29 @@ LABEL_27:
 
 LABEL_73:
   v50 = objc_alloc(MEMORY[0x277CCACA8]);
-  v51 = [(SUControllerConfig *)self requestedPMV];
-  if (v51)
+  requestedPMV = [(SUControllerConfig *)self requestedPMV];
+  if (requestedPMV)
   {
-    v52 = [(SUControllerConfig *)self requestedPMV];
+    requestedPMV2 = [(SUControllerConfig *)self requestedPMV];
   }
 
   else
   {
-    v52 = @"!";
+    requestedPMV2 = @"!";
   }
 
-  v53 = [v50 initWithFormat:@"|requestedPMV:%@", v52];
+  v53 = [v50 initWithFormat:@"|requestedPMV:%@", requestedPMV2];
   v54 = [(__CFString *)v5 stringByAppendingString:v53];
 
-  if (v51)
+  if (requestedPMV)
   {
   }
 
   v5 = v54;
-  if ((a3 & 0x40000000) == 0)
+  if ((summary & 0x40000000) == 0)
   {
 LABEL_28:
-    if ((a3 & 0x80000000) == 0)
+    if ((summary & 0x80000000) == 0)
     {
       goto LABEL_29;
     }
@@ -1803,10 +1803,10 @@ LABEL_79:
   v56 = [(__CFString *)v5 stringByAppendingString:v55];
 
   v5 = v56;
-  if ((a3 & 0x80000000) == 0)
+  if ((summary & 0x80000000) == 0)
   {
 LABEL_29:
-    if ((a3 & 0x20) == 0)
+    if ((summary & 0x20) == 0)
     {
       goto LABEL_30;
     }
@@ -1816,29 +1816,29 @@ LABEL_29:
 
 LABEL_80:
   v57 = objc_alloc(MEMORY[0x277CCACA8]);
-  v58 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
-  if (v58)
+  installPhaseOSBackgroundImagePath = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
+  if (installPhaseOSBackgroundImagePath)
   {
-    v59 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
+    installPhaseOSBackgroundImagePath2 = [(SUControllerConfig *)self installPhaseOSBackgroundImagePath];
   }
 
   else
   {
-    v59 = @"!";
+    installPhaseOSBackgroundImagePath2 = @"!";
   }
 
-  v60 = [v57 initWithFormat:@"|installPhaseOSBgImgPath:%@", v59];
+  v60 = [v57 initWithFormat:@"|installPhaseOSBgImgPath:%@", installPhaseOSBackgroundImagePath2];
   v61 = [(__CFString *)v5 stringByAppendingString:v60];
 
-  if (v58)
+  if (installPhaseOSBackgroundImagePath)
   {
   }
 
   v5 = v61;
-  if ((a3 & 0x20) == 0)
+  if ((summary & 0x20) == 0)
   {
 LABEL_30:
-    if ((a3 & 0x40) == 0)
+    if ((summary & 0x40) == 0)
     {
       goto LABEL_31;
     }
@@ -1862,10 +1862,10 @@ LABEL_86:
   v65 = [(__CFString *)v5 stringByAppendingString:v64];
 
   v5 = v65;
-  if ((a3 & 0x40) == 0)
+  if ((summary & 0x40) == 0)
   {
 LABEL_31:
-    if ((a3 & 0x4000000) == 0)
+    if ((summary & 0x4000000) == 0)
     {
       goto LABEL_32;
     }
@@ -1889,10 +1889,10 @@ LABEL_90:
   v69 = [(__CFString *)v5 stringByAppendingString:v68];
 
   v5 = v69;
-  if ((a3 & 0x4000000) == 0)
+  if ((summary & 0x4000000) == 0)
   {
 LABEL_32:
-    if ((a3 & 0x20000) == 0)
+    if ((summary & 0x20000) == 0)
     {
       goto LABEL_33;
     }
@@ -1902,29 +1902,29 @@ LABEL_32:
 
 LABEL_94:
   v70 = objc_alloc(MEMORY[0x277CCACA8]);
-  v71 = [(SUControllerConfig *)self updateMetricContext];
-  if (v71)
+  updateMetricContext = [(SUControllerConfig *)self updateMetricContext];
+  if (updateMetricContext)
   {
-    v72 = [(SUControllerConfig *)self updateMetricContext];
+    updateMetricContext2 = [(SUControllerConfig *)self updateMetricContext];
   }
 
   else
   {
-    v72 = @"!";
+    updateMetricContext2 = @"!";
   }
 
-  v73 = [v70 initWithFormat:@"|context:%@", v72];
+  v73 = [v70 initWithFormat:@"|context:%@", updateMetricContext2];
   v74 = [(__CFString *)v5 stringByAppendingString:v73];
 
-  if (v71)
+  if (updateMetricContext)
   {
   }
 
   v5 = v74;
-  if ((a3 & 0x20000) == 0)
+  if ((summary & 0x20000) == 0)
   {
 LABEL_33:
-    if ((a3 & 0x40000) == 0)
+    if ((summary & 0x40000) == 0)
     {
       goto LABEL_34;
     }
@@ -1934,29 +1934,29 @@ LABEL_33:
 
 LABEL_100:
   v75 = objc_alloc(MEMORY[0x277CCACA8]);
-  v76 = [(SUControllerConfig *)self prerequisiteBuildVersion];
-  if (v76)
+  prerequisiteBuildVersion = [(SUControllerConfig *)self prerequisiteBuildVersion];
+  if (prerequisiteBuildVersion)
   {
-    v77 = [(SUControllerConfig *)self prerequisiteBuildVersion];
+    prerequisiteBuildVersion2 = [(SUControllerConfig *)self prerequisiteBuildVersion];
   }
 
   else
   {
-    v77 = @"!";
+    prerequisiteBuildVersion2 = @"!";
   }
 
-  v78 = [v75 initWithFormat:@"|asBuild:%@", v77];
+  v78 = [v75 initWithFormat:@"|asBuild:%@", prerequisiteBuildVersion2];
   v79 = [(__CFString *)v5 stringByAppendingString:v78];
 
-  if (v76)
+  if (prerequisiteBuildVersion)
   {
   }
 
   v5 = v79;
-  if ((a3 & 0x40000) == 0)
+  if ((summary & 0x40000) == 0)
   {
 LABEL_34:
-    if ((a3 & 0x80000) == 0)
+    if ((summary & 0x80000) == 0)
     {
       goto LABEL_35;
     }
@@ -1966,29 +1966,29 @@ LABEL_34:
 
 LABEL_106:
   v80 = objc_alloc(MEMORY[0x277CCACA8]);
-  v81 = [(SUControllerConfig *)self prerequisiteProductVersion];
-  if (v81)
+  prerequisiteProductVersion = [(SUControllerConfig *)self prerequisiteProductVersion];
+  if (prerequisiteProductVersion)
   {
-    v82 = [(SUControllerConfig *)self prerequisiteProductVersion];
+    prerequisiteProductVersion2 = [(SUControllerConfig *)self prerequisiteProductVersion];
   }
 
   else
   {
-    v82 = @"!";
+    prerequisiteProductVersion2 = @"!";
   }
 
-  v83 = [v80 initWithFormat:@"|asProduct:%@", v82];
+  v83 = [v80 initWithFormat:@"|asProduct:%@", prerequisiteProductVersion2];
   v84 = [(__CFString *)v5 stringByAppendingString:v83];
 
-  if (v81)
+  if (prerequisiteProductVersion)
   {
   }
 
   v5 = v84;
-  if ((a3 & 0x80000) == 0)
+  if ((summary & 0x80000) == 0)
   {
 LABEL_35:
-    if ((a3 & 0x200000) == 0)
+    if ((summary & 0x200000) == 0)
     {
       goto LABEL_36;
     }
@@ -1998,29 +1998,29 @@ LABEL_35:
 
 LABEL_112:
   v85 = objc_alloc(MEMORY[0x277CCACA8]);
-  v86 = [(SUControllerConfig *)self asReleaseType];
-  if (v86)
+  asReleaseType = [(SUControllerConfig *)self asReleaseType];
+  if (asReleaseType)
   {
-    v87 = [(SUControllerConfig *)self asReleaseType];
+    asReleaseType2 = [(SUControllerConfig *)self asReleaseType];
   }
 
   else
   {
-    v87 = @"!";
+    asReleaseType2 = @"!";
   }
 
-  v88 = [v85 initWithFormat:@"|asRelease:%@", v87];
+  v88 = [v85 initWithFormat:@"|asRelease:%@", asReleaseType2];
   v89 = [(__CFString *)v5 stringByAppendingString:v88];
 
-  if (v86)
+  if (asReleaseType)
   {
   }
 
   v5 = v89;
-  if ((a3 & 0x200000) == 0)
+  if ((summary & 0x200000) == 0)
   {
 LABEL_36:
-    if ((a3 & 0x800) == 0)
+    if ((summary & 0x800) == 0)
     {
       goto LABEL_37;
     }
@@ -2030,29 +2030,29 @@ LABEL_36:
 
 LABEL_118:
   v90 = objc_alloc(MEMORY[0x277CCACA8]);
-  v91 = [(SUControllerConfig *)self simulatorCommandsFile];
-  if (v91)
+  simulatorCommandsFile = [(SUControllerConfig *)self simulatorCommandsFile];
+  if (simulatorCommandsFile)
   {
-    v92 = [(SUControllerConfig *)self simulatorCommandsFile];
+    simulatorCommandsFile2 = [(SUControllerConfig *)self simulatorCommandsFile];
   }
 
   else
   {
-    v92 = @"!";
+    simulatorCommandsFile2 = @"!";
   }
 
-  v93 = [v90 initWithFormat:@"|simFile:%@", v92];
+  v93 = [v90 initWithFormat:@"|simFile:%@", simulatorCommandsFile2];
   v94 = [(__CFString *)v5 stringByAppendingString:v93];
 
-  if (v91)
+  if (simulatorCommandsFile)
   {
   }
 
   v5 = v94;
-  if ((a3 & 0x800) == 0)
+  if ((summary & 0x800) == 0)
   {
 LABEL_37:
-    if ((a3 & 0x100000) == 0)
+    if ((summary & 0x100000) == 0)
     {
       goto LABEL_38;
     }
@@ -2076,10 +2076,10 @@ LABEL_124:
   v98 = [(__CFString *)v5 stringByAppendingString:v97];
 
   v5 = v98;
-  if ((a3 & 0x100000) == 0)
+  if ((summary & 0x100000) == 0)
   {
 LABEL_38:
-    if ((a3 & 0x1000) == 0)
+    if ((summary & 0x1000) == 0)
     {
       goto LABEL_39;
     }
@@ -2099,14 +2099,14 @@ LABEL_128:
     v100 = @"N";
   }
 
-  v101 = [v99 initWithFormat:@"|expiredAsExpired:%@", v100];
-  v102 = [(__CFString *)v5 stringByAppendingString:v101];
+  v100 = [v99 initWithFormat:@"|expiredAsExpired:%@", v100];
+  v102 = [(__CFString *)v5 stringByAppendingString:v100];
 
   v5 = v102;
-  if ((a3 & 0x1000) == 0)
+  if ((summary & 0x1000) == 0)
   {
 LABEL_39:
-    if ((a3 & 0x2000000) == 0)
+    if ((summary & 0x2000000) == 0)
     {
       goto LABEL_40;
     }
@@ -2126,14 +2126,14 @@ LABEL_132:
     v104 = @"N";
   }
 
-  v105 = [v103 initWithFormat:@"|hideMayReboot:%@", v104];
-  v106 = [(__CFString *)v5 stringByAppendingString:v105];
+  v104 = [v103 initWithFormat:@"|hideMayReboot:%@", v104];
+  v106 = [(__CFString *)v5 stringByAppendingString:v104];
 
   v5 = v106;
-  if ((a3 & 0x2000000) == 0)
+  if ((summary & 0x2000000) == 0)
   {
 LABEL_40:
-    if ((a3 & 0x4000) == 0)
+    if ((summary & 0x4000) == 0)
     {
       goto LABEL_41;
     }
@@ -2153,14 +2153,14 @@ LABEL_136:
     v108 = @"N";
   }
 
-  v109 = [v107 initWithFormat:@"|asExternal:%@", v108];
-  v110 = [(__CFString *)v5 stringByAppendingString:v109];
+  v108 = [v107 initWithFormat:@"|asExternal:%@", v108];
+  v110 = [(__CFString *)v5 stringByAppendingString:v108];
 
   v5 = v110;
-  if ((a3 & 0x4000) == 0)
+  if ((summary & 0x4000) == 0)
   {
 LABEL_41:
-    if ((a3 & 0x8000) == 0)
+    if ((summary & 0x8000) == 0)
     {
       goto LABEL_42;
     }
@@ -2180,14 +2180,14 @@ LABEL_140:
     v112 = @"N";
   }
 
-  v113 = [v111 initWithFormat:@"|requirePrepSize:%@", v112];
-  v114 = [(__CFString *)v5 stringByAppendingString:v113];
+  v112 = [v111 initWithFormat:@"|requirePrepSize:%@", v112];
+  v114 = [(__CFString *)v5 stringByAppendingString:v112];
 
   v5 = v114;
-  if ((a3 & 0x8000) == 0)
+  if ((summary & 0x8000) == 0)
   {
 LABEL_42:
-    if ((a3 & 0x100000000) == 0)
+    if ((summary & 0x100000000) == 0)
     {
       goto LABEL_44;
     }
@@ -2207,11 +2207,11 @@ LABEL_144:
     v116 = @"N";
   }
 
-  v117 = [v115 initWithFormat:@"|windowDeltas:%@", v116];
-  v118 = [(__CFString *)v5 stringByAppendingString:v117];
+  v116 = [v115 initWithFormat:@"|windowDeltas:%@", v116];
+  v118 = [(__CFString *)v5 stringByAppendingString:v116];
 
   v5 = v118;
-  if ((a3 & 0x100000000) == 0)
+  if ((summary & 0x100000000) == 0)
   {
     goto LABEL_44;
   }
@@ -2234,13 +2234,13 @@ LABEL_44:
   return v5;
 }
 
-- (BOOL)_loadBooleanFromDefaults:(id)a3 usingDefault:(BOOL)a4 isStoredInverted:(BOOL)a5
+- (BOOL)_loadBooleanFromDefaults:(id)defaults usingDefault:(BOOL)default isStoredInverted:(BOOL)inverted
 {
-  v5 = a5;
+  invertedCopy = inverted;
   keyExistsAndHasValidFormat = 0;
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(a3, @"com.apple.SUController", &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(defaults, @"com.apple.SUController", &keyExistsAndHasValidFormat);
   v8 = AppBooleanValue != 0;
-  if (v5)
+  if (invertedCopy)
   {
     v8 = AppBooleanValue == 0;
   }
@@ -2252,91 +2252,91 @@ LABEL_44:
 
   else
   {
-    return a4;
+    return default;
   }
 }
 
-- (int64_t)_loadBooleanFromDefaults:(id)a3 releaseType:(int64_t)a4 externalDefault:(BOOL)a5 internalDefault:(BOOL)a6 isStoredInverted:(BOOL)a7
+- (int64_t)_loadBooleanFromDefaults:(id)defaults releaseType:(int64_t)type externalDefault:(BOOL)default internalDefault:(BOOL)internalDefault isStoredInverted:(BOOL)inverted
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  invertedCopy = inverted;
+  internalDefaultCopy = internalDefault;
+  defaultCopy = default;
   keyExistsAndHasValidFormat = 0;
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(a3, @"com.apple.SUController", &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(defaults, @"com.apple.SUController", &keyExistsAndHasValidFormat);
   if (keyExistsAndHasValidFormat)
   {
     v13 = AppBooleanValue != 0;
-    if (v7)
+    if (invertedCopy)
     {
       return AppBooleanValue == 0;
     }
   }
 
-  else if ((a4 - 3) < 0xFFFFFFFFFFFFFFFELL || self->_internalDefaultsAsExternal)
+  else if ((type - 3) < 0xFFFFFFFFFFFFFFFELL || self->_internalDefaultsAsExternal)
   {
-    return v9;
+    return defaultCopy;
   }
 
   else
   {
-    return v8;
+    return internalDefaultCopy;
   }
 
   return v13;
 }
 
-- (int64_t)_loadIntegerFromDefaults:(id)a3 usingDefault:(int64_t)a4 withLimit:(int64_t)a5
+- (int64_t)_loadIntegerFromDefaults:(id)defaults usingDefault:(int64_t)default withLimit:(int64_t)limit
 {
-  v8 = a3;
-  v9 = CFPreferencesCopyAppValue(v8, @"com.apple.SUController");
+  defaultsCopy = defaults;
+  v9 = CFPreferencesCopyAppValue(defaultsCopy, @"com.apple.SUController");
   v10 = v9;
   if (v9)
   {
-    a4 = -[SUControllerConfig _limitedInteger:checkingValue:forKey:withLimit:](self, "_limitedInteger:checkingValue:forKey:withLimit:", @"load", [v9 intValue], v8, a5);
+    default = -[SUControllerConfig _limitedInteger:checkingValue:forKey:withLimit:](self, "_limitedInteger:checkingValue:forKey:withLimit:", @"load", [v9 intValue], defaultsCopy, limit);
   }
 
-  return a4;
+  return default;
 }
 
-- (int64_t)_loadIntegerFromDefaults:(id)a3 releaseType:(int64_t)a4 externalDefault:(int64_t)a5 internalDefault:(int64_t)a6 withLimit:(int64_t)a7
+- (int64_t)_loadIntegerFromDefaults:(id)defaults releaseType:(int64_t)type externalDefault:(int64_t)default internalDefault:(int64_t)internalDefault withLimit:(int64_t)limit
 {
-  v12 = a3;
-  v13 = CFPreferencesCopyAppValue(v12, @"com.apple.SUController");
+  defaultsCopy = defaults;
+  v13 = CFPreferencesCopyAppValue(defaultsCopy, @"com.apple.SUController");
   v14 = v13;
   if (v13)
   {
-    v15 = -[SUControllerConfig _limitedInteger:checkingValue:forKey:withLimit:](self, "_limitedInteger:checkingValue:forKey:withLimit:", @"load", [v13 intValue], v12, a7);
+    internalDefaultCopy = -[SUControllerConfig _limitedInteger:checkingValue:forKey:withLimit:](self, "_limitedInteger:checkingValue:forKey:withLimit:", @"load", [v13 intValue], defaultsCopy, limit);
   }
 
-  else if ((a4 - 3) < 0xFFFFFFFFFFFFFFFELL || self->_internalDefaultsAsExternal)
+  else if ((type - 3) < 0xFFFFFFFFFFFFFFFELL || self->_internalDefaultsAsExternal)
   {
-    v15 = a5;
+    internalDefaultCopy = default;
   }
 
   else
   {
-    v15 = a6;
+    internalDefaultCopy = internalDefault;
   }
 
-  return v15;
+  return internalDefaultCopy;
 }
 
-- (id)_copyStringFromDefaults:(id)a3 usingDefault:(id)a4
+- (id)_copyStringFromDefaults:(id)defaults usingDefault:(id)default
 {
-  v5 = a4;
-  v6 = CFPreferencesCopyAppValue(a3, @"com.apple.SUController");
+  defaultCopy = default;
+  v6 = CFPreferencesCopyAppValue(defaults, @"com.apple.SUController");
   v7 = v6;
-  if (v5 && !v6)
+  if (defaultCopy && !v6)
   {
-    v7 = [v5 copy];
+    v7 = [defaultCopy copy];
   }
 
   return v7;
 }
 
-- (BOOL)_storeBooleanToDefaults:(id)a3 toValue:(BOOL)a4 isStoredInverted:(BOOL)a5
+- (BOOL)_storeBooleanToDefaults:(id)defaults toValue:(BOOL)value isStoredInverted:(BOOL)inverted
 {
-  if (a4 != a5)
+  if (value != inverted)
   {
     v6 = @"true";
   }
@@ -2346,69 +2346,69 @@ LABEL_44:
     v6 = @"false";
   }
 
-  CFPreferencesSetAppValue(a3, v6, @"com.apple.SUController");
-  return a4;
+  CFPreferencesSetAppValue(defaults, v6, @"com.apple.SUController");
+  return value;
 }
 
-- (int64_t)_storeIntegerToDefaults:(id)a3 toValue:(int64_t)a4
+- (int64_t)_storeIntegerToDefaults:(id)defaults toValue:(int64_t)value
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", a4];
-  if (v6)
+  defaultsCopy = defaults;
+  value = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", value];
+  if (value)
   {
-    CFPreferencesSetAppValue(v5, v6, @"com.apple.SUController");
+    CFPreferencesSetAppValue(defaultsCopy, value, @"com.apple.SUController");
   }
 
-  return a4;
+  return value;
 }
 
-- (id)_storeStringToDefaults:(id)a3 toValue:(id)a4
+- (id)_storeStringToDefaults:(id)defaults toValue:(id)value
 {
-  v5 = a4;
-  CFPreferencesSetAppValue(a3, v5, @"com.apple.SUController");
+  valueCopy = value;
+  CFPreferencesSetAppValue(defaults, valueCopy, @"com.apple.SUController");
 
-  return v5;
+  return valueCopy;
 }
 
-- (int64_t)_decodeInteger:(id)a3 forKey:(id)a4 withLimit:(int64_t)a5
+- (int64_t)_decodeInteger:(id)integer forKey:(id)key withLimit:(int64_t)limit
 {
-  v8 = a4;
-  v9 = -[SUControllerConfig _limitedInteger:checkingValue:forKey:withLimit:](self, "_limitedInteger:checkingValue:forKey:withLimit:", @"decode", [a3 decodeIntegerForKey:v8], v8, a5);
+  keyCopy = key;
+  v9 = -[SUControllerConfig _limitedInteger:checkingValue:forKey:withLimit:](self, "_limitedInteger:checkingValue:forKey:withLimit:", @"decode", [integer decodeIntegerForKey:keyCopy], keyCopy, limit);
 
   return v9;
 }
 
-- (int64_t)_limitedInteger:(id)a3 checkingValue:(int64_t)a4 forKey:(id)a5 withLimit:(int64_t)a6
+- (int64_t)_limitedInteger:(id)integer checkingValue:(int64_t)value forKey:(id)key withLimit:(int64_t)limit
 {
-  v9 = a3;
-  v10 = a5;
-  if (a4 < 0)
+  integerCopy = integer;
+  keyCopy = key;
+  if (value < 0)
   {
-    v11 = [MEMORY[0x277D64428] sharedDiag];
-    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"attempt to %@ %@ to negative value(%ld) - using value of 0", v9, v10, a4];
-    [v11 trackAnomaly:@"[CONFIG]" forReason:v12 withResult:8102 withError:0];
-    a6 = 0;
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    value = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"attempt to %@ %@ to negative value(%ld) - using value of 0", integerCopy, keyCopy, value];
+    [mEMORY[0x277D64428] trackAnomaly:@"[CONFIG]" forReason:value withResult:8102 withError:0];
+    limit = 0;
     goto LABEL_6;
   }
 
-  if (a6 && a4 > a6)
+  if (limit && value > limit)
   {
-    v11 = [MEMORY[0x277D64428] sharedDiag];
-    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"attempt to %@ %@ to over-limit value(%ld) - using value of %ld", v9, v10, a4, a6];
-    [v11 trackAnomaly:@"[CONFIG]" forReason:v12 withResult:8102 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    value = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"attempt to %@ %@ to over-limit value(%ld) - using value of %ld", integerCopy, keyCopy, value, limit];
+    [mEMORY[0x277D64428] trackAnomaly:@"[CONFIG]" forReason:value withResult:8102 withError:0];
 LABEL_6:
 
-    a4 = a6;
+    value = limit;
   }
 
-  return a4;
+  return value;
 }
 
 - (BOOL)_allowedToTurnOffAutoScan
 {
-  v2 = [MEMORY[0x277D64418] sharedDevice];
-  v3 = [v2 deviceClass];
-  v4 = [v3 isEqualToString:@"AppleTV"];
+  mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+  deviceClass = [mEMORY[0x277D64418] deviceClass];
+  v4 = [deviceClass isEqualToString:@"AppleTV"];
 
   return v4;
 }

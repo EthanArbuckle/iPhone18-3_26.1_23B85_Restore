@@ -1,17 +1,17 @@
 @interface SBSAIndicatorLayoutProvider
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSAIndicatorLayoutProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v95 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = objc_opt_self();
-    v7 = v5;
+    v7 = contextCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -43,34 +43,34 @@
     v9 = 0;
   }
 
-  v10 = [v9 preferences];
-  v11 = [v10 indicatorContainerViewDescription];
+  preferences = [v9 preferences];
+  indicatorContainerViewDescription = [preferences indicatorContainerViewDescription];
 
-  v12 = [v9 preferences];
-  v13 = [v12 indicatorElementDescription];
+  preferences2 = [v9 preferences];
+  indicatorElementDescription = [preferences2 indicatorElementDescription];
 
-  v14 = [v9 preferences];
-  v15 = [v14 maintainedPreferences];
+  preferences3 = [v9 preferences];
+  maintainedPreferences = [preferences3 maintainedPreferences];
 
-  v16 = [v15 indicatorAppearanceStateContext];
-  if (v11 && v13)
+  indicatorAppearanceStateContext = [maintainedPreferences indicatorAppearanceStateContext];
+  if (indicatorContainerViewDescription && indicatorElementDescription)
   {
-    v69 = v15;
+    v69 = maintainedPreferences;
     v66 = a2;
-    v17 = [v9 preferences];
-    v18 = [v17 maintainedPreferences];
-    v19 = [v18 indicatorAppearanceStateContext];
-    v20 = [v19 activeIndicatorElementContext];
+    preferences4 = [v9 preferences];
+    maintainedPreferences2 = [preferences4 maintainedPreferences];
+    indicatorAppearanceStateContext2 = [maintainedPreferences2 indicatorAppearanceStateContext];
+    activeIndicatorElementContext = [indicatorAppearanceStateContext2 activeIndicatorElementContext];
 
-    v63 = [v16 microIndicatorPhase];
-    v64 = [v16 interSensorIndicatorPhase];
-    v70 = [v16 microIndicatorEjectionPhase];
-    v21 = [v9 preferences];
-    v22 = [v21 containerViewDescriptions];
-    v23 = [v22 lastObject];
+    microIndicatorPhase = [indicatorAppearanceStateContext microIndicatorPhase];
+    interSensorIndicatorPhase = [indicatorAppearanceStateContext interSensorIndicatorPhase];
+    microIndicatorEjectionPhase = [indicatorAppearanceStateContext microIndicatorEjectionPhase];
+    preferences5 = [v9 preferences];
+    containerViewDescriptions = [preferences5 containerViewDescriptions];
+    lastObject = [containerViewDescriptions lastObject];
 
-    [v23 bounds];
-    [v23 center];
+    [lastObject bounds];
+    [lastObject center];
     SBUnintegralizedRectCenteredAboutPoint();
     v25 = v24;
     v27 = v26;
@@ -80,21 +80,21 @@
     v86 = *MEMORY[0x277CBF2C0];
     v87 = v32;
     v88 = *(MEMORY[0x277CBF2C0] + 32);
-    v65 = v20;
-    v67 = v23;
-    if ([v20 supportsMicroIndicatorPosition])
+    v65 = activeIndicatorElementContext;
+    v67 = lastObject;
+    if ([activeIndicatorElementContext supportsMicroIndicatorPosition])
     {
-      v33 = [v9 elementContexts];
-      v34 = SBSAElementContextAssociatedWithContainerViewDescription(v23, v33, 0);
+      elementContexts = [v9 elementContexts];
+      v34 = SBSAElementContextAssociatedWithContainerViewDescription(lastObject, elementContexts, 0);
 
-      v35 = [v34 layoutMode];
-      v36 = 0;
-      if (v35 == 3)
+      layoutMode = [v34 layoutMode];
+      systemApertureCustomLayout = 0;
+      if (layoutMode == 3)
       {
-        v36 = [v34 systemApertureCustomLayout];
+        systemApertureCustomLayout = [v34 systemApertureCustomLayout];
       }
 
-      v37 = SBSAMicroIndicatorFrameNearContainer(v36, v70 > 1, &v86, v16, v9, v25, v27, v29, v31);
+      v37 = SBSAMicroIndicatorFrameNearContainer(systemApertureCustomLayout, microIndicatorEjectionPhase > 1, &v86, indicatorAppearanceStateContext, v9, v25, v27, v29, v31);
       v39 = v38;
       v41 = v40;
       v43 = v42;
@@ -109,11 +109,11 @@
       v43 = v47;
     }
 
-    v68 = v5;
+    v68 = contextCopy;
     v48 = SBLogSystemAperturePreferencesStackIndicator();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
     {
-      v58 = [v9 queryIteration];
+      queryIteration = [v9 queryIteration];
       v97.origin.x = v37;
       v97.origin.y = v39;
       v97.size.width = v41;
@@ -123,7 +123,7 @@
       v61 = v60;
       v62 = @"nil";
       *buf = 134349570;
-      v90 = v58;
+      v90 = queryIteration;
       if (v60)
       {
         v62 = v60;
@@ -146,7 +146,7 @@
     *&v85[7] = v39;
     *&v85[8] = v41;
     *&v85[9] = v43;
-    v49 = [v11 copyWithBlock:v85];
+    v49 = [indicatorContainerViewDescription copyWithBlock:v85];
 
     v77[0] = MEMORY[0x277D85DD0];
     v77[1] = 3221225472;
@@ -156,27 +156,27 @@
     v77[4] = self;
     v50 = v65;
     v78 = v50;
-    v83 = v63 > 1;
+    v83 = microIndicatorPhase > 1;
     v80 = v86;
     v81 = v87;
     v82 = v88;
-    v84 = v64 > 1;
-    v51 = [v13 copyWithBlock:v77];
+    v84 = interSensorIndicatorPhase > 1;
+    v51 = [indicatorElementDescription copyWithBlock:v77];
 
-    v52 = [v9 preferences];
+    preferences6 = [v9 preferences];
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = __54__SBSAIndicatorLayoutProvider_preferencesFromContext___block_invoke_3;
     v73[3] = &unk_2783AD778;
     v76 = v66;
     v73[4] = self;
-    v13 = v51;
-    v74 = v13;
-    v11 = v49;
-    v75 = v11;
-    v53 = [v52 copyWithBlock:v73];
+    indicatorElementDescription = v51;
+    v74 = indicatorElementDescription;
+    indicatorContainerViewDescription = v49;
+    v75 = indicatorContainerViewDescription;
+    v53 = [preferences6 copyWithBlock:v73];
 
-    if ((v70 - 1) <= 1)
+    if ((microIndicatorEjectionPhase - 1) <= 1)
     {
       v72[0] = MEMORY[0x277D85DD0];
       v72[1] = 3221225472;
@@ -189,8 +189,8 @@
       v53 = v54;
     }
 
-    v5 = v68;
-    v15 = v69;
+    contextCopy = v68;
+    maintainedPreferences = v69;
     v55 = [v9 copyByUpdatingPreferences:v53];
 
     v9 = v55;

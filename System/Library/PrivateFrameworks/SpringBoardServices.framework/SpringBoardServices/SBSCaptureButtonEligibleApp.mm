@@ -1,31 +1,31 @@
 @interface SBSCaptureButtonEligibleApp
-- (BOOL)isEqual:(id)a3;
-- (SBSCaptureButtonEligibleApp)initWithBundleIdentifier:(id)a3 cameraTCCIsAuthorized:(BOOL)a4;
-- (SBSCaptureButtonEligibleApp)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSCaptureButtonEligibleApp)initWithBundleIdentifier:(id)identifier cameraTCCIsAuthorized:(BOOL)authorized;
+- (SBSCaptureButtonEligibleApp)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSCaptureButtonEligibleApp
 
-- (SBSCaptureButtonEligibleApp)initWithBundleIdentifier:(id)a3 cameraTCCIsAuthorized:(BOOL)a4
+- (SBSCaptureButtonEligibleApp)initWithBundleIdentifier:(id)identifier cameraTCCIsAuthorized:(BOOL)authorized
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = SBSCaptureButtonEligibleApp;
   v8 = [(SBSCaptureButtonEligibleApp *)&v12 init];
   if (v8)
   {
-    if (!v7)
+    if (!identifierCopy)
     {
       [SBSCaptureButtonEligibleApp initWithBundleIdentifier:a2 cameraTCCIsAuthorized:v8];
     }
 
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v9;
 
-    v8->_cameraTCCIsAuthorized = a4;
+    v8->_cameraTCCIsAuthorized = authorized;
   }
 
   return v8;
@@ -45,13 +45,13 @@
   return MEMORY[0x1EEDF0120](v5);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (BSEqualObjects())
     {
       v6 = v5[8] == self->_cameraTCCIsAuthorized;
@@ -71,27 +71,27 @@
   return v6;
 }
 
-- (SBSCaptureButtonEligibleApp)initWithCoder:(id)a3
+- (SBSCaptureButtonEligibleApp)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = SBSCaptureButtonEligibleApp;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(SBSCaptureButtonEligibleApp *)&v9 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"bundleIdentifier", v9.receiver, v9.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"bundleIdentifier", v9.receiver, v9.super_class}];
   bundleIdentifier = v4->_bundleIdentifier;
   v4->_bundleIdentifier = v5;
 
-  v7 = [v3 decodeBoolForKey:@"cameraTCCIsAuthorized"];
+  v7 = [coderCopy decodeBoolForKey:@"cameraTCCIsAuthorized"];
   v4->_cameraTCCIsAuthorized = v7;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeBool:self->_cameraTCCIsAuthorized forKey:@"cameraTCCIsAuthorized"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeBool:self->_cameraTCCIsAuthorized forKey:@"cameraTCCIsAuthorized"];
 }
 
 - (void)initWithBundleIdentifier:(uint64_t)a1 cameraTCCIsAuthorized:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

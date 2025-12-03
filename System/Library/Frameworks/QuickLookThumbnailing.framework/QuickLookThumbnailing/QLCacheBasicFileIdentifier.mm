@@ -1,29 +1,29 @@
 @interface QLCacheBasicFileIdentifier
-- (BOOL)isEqual:(id)a3;
-- (QLCacheBasicFileIdentifier)initWithCoder:(id)a3;
-- (QLCacheBasicFileIdentifier)initWithFileId:(unint64_t)a3 fsid:(fsid)a4;
-- (QLCacheBasicFileIdentifier)initWithFileURL:(id)a3 error:(id *)p_isa;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (QLCacheBasicFileIdentifier)initWithCoder:(id)coder;
+- (QLCacheBasicFileIdentifier)initWithFileId:(unint64_t)id fsid:(fsid)fsid;
+- (QLCacheBasicFileIdentifier)initWithFileURL:(id)l error:(id *)p_isa;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLCacheBasicFileIdentifier
 
-- (QLCacheBasicFileIdentifier)initWithFileId:(unint64_t)a3 fsid:(fsid)a4
+- (QLCacheBasicFileIdentifier)initWithFileId:(unint64_t)id fsid:(fsid)fsid
 {
   v7.receiver = self;
   v7.super_class = QLCacheBasicFileIdentifier;
   result = [(QLCacheBasicFileIdentifier *)&v7 init];
   if (result)
   {
-    result->_fileId = a3;
-    result->_fsid = a4;
+    result->_fileId = id;
+    result->_fsid = fsid;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   fileId = self->_fileId;
@@ -32,12 +32,12 @@
   return [v4 initWithFileId:fileId fsid:fsid];
 }
 
-- (QLCacheBasicFileIdentifier)initWithFileURL:(id)a3 error:(id *)p_isa
+- (QLCacheBasicFileIdentifier)initWithFileURL:(id)l error:(id *)p_isa
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   memset(&v14, 0, sizeof(v14));
-  if (!stat([v6 fileSystemRepresentation], &v14))
+  if (!stat([lCopy fileSystemRepresentation], &v14))
   {
     self = [(QLCacheBasicFileIdentifier *)self initWithFileId:v14.st_ino fsid:v14.st_dev];
     p_isa = &self->super.super.isa;
@@ -69,7 +69,7 @@ LABEL_6:
     v9 = MEMORY[0x1E696ABC0];
     v10 = *MEMORY[0x1E696A798];
     v15 = *MEMORY[0x1E696A998];
-    v16[0] = v6;
+    v16[0] = lCopy;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:{1, *&v14.st_dev}];
     *p_isa = [v9 errorWithDomain:v10 code:v7 userInfo:v11];
 
@@ -82,14 +82,14 @@ LABEL_8:
   return p_isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     fileId = self->_fileId;
-    v6 = fileId == [v4 fileId];
+    v6 = fileId == [equalCopy fileId];
   }
 
   else
@@ -100,25 +100,25 @@ LABEL_8:
   return v6;
 }
 
-- (QLCacheBasicFileIdentifier)initWithCoder:(id)a3
+- (QLCacheBasicFileIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"fsid_1"];
-  v6 = [v4 decodeInt32ForKey:@"fsid_2"];
-  v7 = [v4 decodeInt64ForKey:@"i"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"fsid_1"];
+  v6 = [coderCopy decodeInt32ForKey:@"fsid_2"];
+  v7 = [coderCopy decodeInt64ForKey:@"i"];
 
   return [(QLCacheBasicFileIdentifier *)self initWithFileId:v7 fsid:v5 | (v6 << 32)];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v3 = self;
+  selfCopy = self;
   fileId = self->_fileId;
-  v5 = a3;
-  [v5 encodeInt64:fileId forKey:@"i"];
-  v3 += 4;
-  [v5 encodeInt32:*v3 forKey:@"fsid_1"];
-  [v5 encodeInt32:v3[1] forKey:@"fsid_2"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:fileId forKey:@"i"];
+  selfCopy += 4;
+  [coderCopy encodeInt32:*selfCopy forKey:@"fsid_1"];
+  [coderCopy encodeInt32:selfCopy[1] forKey:@"fsid_2"];
 }
 
 - (void)initWithFileURL:(int)a3 error:.cold.1(void *a1, uint64_t a2, int a3)

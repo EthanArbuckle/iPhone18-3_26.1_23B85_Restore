@@ -1,9 +1,9 @@
 @interface HKDaemonTransaction
-+ (id)transactionWithName:(id)a3;
-+ (id)transactionWithOwner:(id)a3;
-+ (id)transactionWithOwner:(id)a3 activityName:(id)a4;
++ (id)transactionWithName:(id)name;
++ (id)transactionWithOwner:(id)owner;
++ (id)transactionWithOwner:(id)owner activityName:(id)name;
 - (HKDaemonTransaction)init;
-- (id)_initWithName:(id)a3;
+- (id)_initWithName:(id)name;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -20,10 +20,10 @@
   return 0;
 }
 
-- (id)_initWithName:(id)a3
+- (id)_initWithName:(id)name
 {
-  v5 = a3;
-  if (![v5 length])
+  nameCopy = name;
+  if (![nameCopy length])
   {
     [(HKDaemonTransaction *)a2 _initWithName:?];
   }
@@ -33,11 +33,11 @@
   v6 = [(HKDaemonTransaction *)&v13 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [nameCopy copy];
     name = v6->_name;
     v6->_name = v7;
 
-    v9 = [@"com.apple.healthd." stringByAppendingString:v5];
+    v9 = [@"com.apple.healthd." stringByAppendingString:nameCopy];
     [v9 UTF8String];
     v10 = os_transaction_create();
     transaction = v6->_transaction;
@@ -51,7 +51,7 @@
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = objc_opt_class();
-  v5 = *(a1 + 16);
+  v5 = *(self + 16);
   v8 = 138412546;
   v9 = v4;
   v10 = 2112;
@@ -62,18 +62,18 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)transactionWithName:(id)a3
++ (id)transactionWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] _initWithName:nameCopy];
 
   return v5;
 }
 
-+ (id)transactionWithOwner:(id)a3
++ (id)transactionWithOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  ownerCopy = owner;
+  v5 = [self alloc];
   v6 = objc_opt_class();
 
   v7 = NSStringFromClass(v6);
@@ -82,18 +82,18 @@
   return v8;
 }
 
-+ (id)transactionWithOwner:(id)a3 activityName:(id)a4
++ (id)transactionWithOwner:(id)owner activityName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
+  nameCopy = name;
+  ownerCopy = owner;
+  v8 = [self alloc];
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
   v10 = objc_opt_class();
 
   v11 = NSStringFromClass(v10);
-  v12 = [v9 initWithFormat:@"%@.%@", v11, v6];
+  nameCopy = [v9 initWithFormat:@"%@.%@", v11, nameCopy];
 
-  v13 = [v8 _initWithName:v12];
+  v13 = [v8 _initWithName:nameCopy];
 
   return v13;
 }

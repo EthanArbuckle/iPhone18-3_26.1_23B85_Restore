@@ -1,43 +1,43 @@
 @interface AFSUPFunctionProvider
 - (AFSUPFunctionProvider)init;
-- (AFSUPFunctionProvider)initWithLocale:(id)a3;
-- (id)_callFunction:(id)a3 withArguments:(id)a4;
-- (id)_contextDeviceName:(id)a3;
-- (id)_contextRoomName:(id)a3;
-- (id)_currentLongDate:(id)a3;
-- (id)_currentShortDate:(id)a3;
-- (id)_currentTime:(id)a3;
-- (id)_currentWeekday:(id)a3;
-- (id)_dateFormattedWithFormatter:(id)a3 arguments:(id)a4;
+- (AFSUPFunctionProvider)initWithLocale:(id)locale;
+- (id)_callFunction:(id)function withArguments:(id)arguments;
+- (id)_contextDeviceName:(id)name;
+- (id)_contextRoomName:(id)name;
+- (id)_currentLongDate:(id)date;
+- (id)_currentShortDate:(id)date;
+- (id)_currentTime:(id)time;
+- (id)_currentWeekday:(id)weekday;
+- (id)_dateFormattedWithFormatter:(id)formatter arguments:(id)arguments;
 - (id)_deviceModel;
-- (id)_lowercaseString:(id)a3;
+- (id)_lowercaseString:(id)string;
 - (id)_meCard;
-- (id)_meCardIdentifier:(id)a3;
-- (id)_peerInfoForContextIdentifier:(id)a3;
-- (id)_siriUsageDescription:(id)a3;
-- (id)_speechRecognitionUsageDescription:(id)a3;
-- (id)_tempInWeatherUnits:(id)a3;
-- (id)_userFirstName:(id)a3;
-- (id)_userFullName:(id)a3;
-- (id)_userLastName:(id)a3;
-- (id)_userMiddleName:(id)a3;
-- (id)_userNickName:(id)a3;
-- (id)stringForExpression:(id)a3 containsPrivacySensitiveContents:(BOOL *)a4;
+- (id)_meCardIdentifier:(id)identifier;
+- (id)_peerInfoForContextIdentifier:(id)identifier;
+- (id)_siriUsageDescription:(id)description;
+- (id)_speechRecognitionUsageDescription:(id)description;
+- (id)_tempInWeatherUnits:(id)units;
+- (id)_userFirstName:(id)name;
+- (id)_userFullName:(id)name;
+- (id)_userLastName:(id)name;
+- (id)_userMiddleName:(id)name;
+- (id)_userNickName:(id)name;
+- (id)stringForExpression:(id)expression containsPrivacySensitiveContents:(BOOL *)contents;
 @end
 
 @implementation AFSUPFunctionProvider
 
-- (id)stringForExpression:(id)a3 containsPrivacySensitiveContents:(BOOL *)a4
+- (id)stringForExpression:(id)expression containsPrivacySensitiveContents:(BOOL *)contents
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  expressionCopy = expression;
+  v7 = expressionCopy;
+  if (contents)
   {
-    *a4 = 0;
+    *contents = 0;
   }
 
-  v8 = [(__CFString *)v6 length];
+  v8 = [(__CFString *)expressionCopy length];
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -239,112 +239,112 @@ LABEL_37:
   return v33;
 }
 
-- (id)_callFunction:(id)a3 withArguments:(id)a4
+- (id)_callFunction:(id)function withArguments:(id)arguments
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"currentTime"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"currentTimeIn"))
+  functionCopy = function;
+  argumentsCopy = arguments;
+  if (([functionCopy isEqualToString:@"currentTime"] & 1) != 0 || objc_msgSend(functionCopy, "isEqualToString:", @"currentTimeIn"))
   {
-    v8 = [(AFSUPFunctionProvider *)self _currentTime:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _currentTime:argumentsCopy];
 LABEL_4:
-    v9 = v8;
+    v9 = _deviceModel;
     goto LABEL_5;
   }
 
-  if (([v6 isEqualToString:@"currentDateShort"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"currentDateShortIn"))
+  if (([functionCopy isEqualToString:@"currentDateShort"] & 1) != 0 || objc_msgSend(functionCopy, "isEqualToString:", @"currentDateShortIn"))
   {
-    v8 = [(AFSUPFunctionProvider *)self _currentShortDate:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _currentShortDate:argumentsCopy];
     goto LABEL_4;
   }
 
-  if (([v6 isEqualToString:@"currentDateLong"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"currentDateLongIn"))
+  if (([functionCopy isEqualToString:@"currentDateLong"] & 1) != 0 || objc_msgSend(functionCopy, "isEqualToString:", @"currentDateLongIn"))
   {
-    v8 = [(AFSUPFunctionProvider *)self _currentLongDate:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _currentLongDate:argumentsCopy];
     goto LABEL_4;
   }
 
-  if (([v6 isEqualToString:@"currentDayOfWeek"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"currentDayOfWeekIn"))
+  if (([functionCopy isEqualToString:@"currentDayOfWeek"] & 1) != 0 || objc_msgSend(functionCopy, "isEqualToString:", @"currentDayOfWeekIn"))
   {
-    v8 = [(AFSUPFunctionProvider *)self _currentWeekday:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _currentWeekday:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"tempInWeatherUnits"])
+  if ([functionCopy isEqualToString:@"tempInWeatherUnits"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _tempInWeatherUnits:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _tempInWeatherUnits:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"deviceModel"])
+  if ([functionCopy isEqualToString:@"deviceModel"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _deviceModel];
+    _deviceModel = [(AFSUPFunctionProvider *)self _deviceModel];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"lowercase"])
+  if ([functionCopy isEqualToString:@"lowercase"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _lowercaseString:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _lowercaseString:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"siriUsageDescription"])
+  if ([functionCopy isEqualToString:@"siriUsageDescription"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _siriUsageDescription:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _siriUsageDescription:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"speechRecognitionUsageDescription"])
+  if ([functionCopy isEqualToString:@"speechRecognitionUsageDescription"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _speechRecognitionUsageDescription:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _speechRecognitionUsageDescription:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"contextRoomName"])
+  if ([functionCopy isEqualToString:@"contextRoomName"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _contextRoomName:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _contextRoomName:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"contextDeviceName"])
+  if ([functionCopy isEqualToString:@"contextDeviceName"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _contextDeviceName:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _contextDeviceName:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"fullName"])
+  if ([functionCopy isEqualToString:@"fullName"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _userFullName:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _userFullName:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"firstName"])
+  if ([functionCopy isEqualToString:@"firstName"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _userFirstName:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _userFirstName:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"middleName"])
+  if ([functionCopy isEqualToString:@"middleName"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _userMiddleName:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _userMiddleName:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"lastName"])
+  if ([functionCopy isEqualToString:@"lastName"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _userLastName:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _userLastName:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"nickName"])
+  if ([functionCopy isEqualToString:@"nickName"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _userNickName:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _userNickName:argumentsCopy];
     goto LABEL_4;
   }
 
-  if ([v6 isEqualToString:@"internalGUID"])
+  if ([functionCopy isEqualToString:@"internalGUID"])
   {
-    v8 = [(AFSUPFunctionProvider *)self _meCardIdentifier:v7];
+    _deviceModel = [(AFSUPFunctionProvider *)self _meCardIdentifier:argumentsCopy];
     goto LABEL_4;
   }
 
@@ -354,7 +354,7 @@ LABEL_4:
     v13 = 136315394;
     v14 = "[AFSUPFunctionProvider _callFunction:withArguments:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = functionCopy;
     _os_log_error_impl(&dword_1912FE000, v12, OS_LOG_TYPE_ERROR, "%s Unhandled functor %@", &v13, 0x16u);
   }
 
@@ -366,11 +366,11 @@ LABEL_5:
   return v9;
 }
 
-- (id)_peerInfoForContextIdentifier:(id)a3
+- (id)_peerInfoForContextIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v3];
+  identifierCopy = identifier;
+  v4 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:identifierCopy];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -428,23 +428,23 @@ void __55__AFSUPFunctionProvider__peerInfoForContextIdentifier___block_invoke(ui
   *(v4 + 40) = 0;
 }
 
-- (id)_contextDeviceName:(id)a3
+- (id)_contextDeviceName:(id)name
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  nameCopy = name;
+  if ([nameCopy count])
   {
-    v5 = [v4 firstObject];
-    v6 = [(AFSUPFunctionProvider *)self _peerInfoForContextIdentifier:v5];
+    firstObject = [nameCopy firstObject];
+    v6 = [(AFSUPFunctionProvider *)self _peerInfoForContextIdentifier:firstObject];
 
-    v7 = [v6 name];
+    name = [v6 name];
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
     {
       v12 = 136315394;
       v13 = "[AFSUPFunctionProvider _contextDeviceName:]";
       v14 = 2112;
-      v15 = v7;
+      v15 = name;
       _os_log_debug_impl(&dword_1912FE000, v8, OS_LOG_TYPE_DEBUG, "%s Computed value: %@", &v12, 0x16u);
     }
   }
@@ -459,31 +459,31 @@ void __55__AFSUPFunctionProvider__peerInfoForContextIdentifier___block_invoke(ui
       _os_log_error_impl(&dword_1912FE000, v9, OS_LOG_TYPE_ERROR, "%s Missing argument for contextDeviceName", &v12, 0xCu);
     }
 
-    v7 = 0;
+    name = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return name;
 }
 
-- (id)_contextRoomName:(id)a3
+- (id)_contextRoomName:(id)name
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  nameCopy = name;
+  if ([nameCopy count])
   {
-    v5 = [v4 firstObject];
-    v6 = [(AFSUPFunctionProvider *)self _peerInfoForContextIdentifier:v5];
+    firstObject = [nameCopy firstObject];
+    v6 = [(AFSUPFunctionProvider *)self _peerInfoForContextIdentifier:firstObject];
 
-    v7 = [v6 roomName];
+    roomName = [v6 roomName];
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
     {
       v12 = 136315394;
       v13 = "[AFSUPFunctionProvider _contextRoomName:]";
       v14 = 2112;
-      v15 = v7;
+      v15 = roomName;
       _os_log_debug_impl(&dword_1912FE000, v8, OS_LOG_TYPE_DEBUG, "%s Computed value: %@", &v12, 0x16u);
     }
   }
@@ -498,22 +498,22 @@ void __55__AFSUPFunctionProvider__peerInfoForContextIdentifier___block_invoke(ui
       _os_log_error_impl(&dword_1912FE000, v9, OS_LOG_TYPE_ERROR, "%s Missing argument for contextRoomName", &v12, 0xCu);
     }
 
-    v7 = 0;
+    roomName = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return roomName;
 }
 
-- (id)_speechRecognitionUsageDescription:(id)a3
+- (id)_speechRecognitionUsageDescription:(id)description
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  descriptionCopy = description;
+  if ([descriptionCopy count])
   {
-    v4 = [v3 firstObject];
-    v5 = _AFLocalizedValueForInfoPlistKey(v4, @"NSSpeechRecognitionUsageDescription");
+    firstObject = [descriptionCopy firstObject];
+    v5 = _AFLocalizedValueForInfoPlistKey(firstObject, @"NSSpeechRecognitionUsageDescription");
   }
 
   else
@@ -534,14 +534,14 @@ void __55__AFSUPFunctionProvider__peerInfoForContextIdentifier___block_invoke(ui
   return v5;
 }
 
-- (id)_siriUsageDescription:(id)a3
+- (id)_siriUsageDescription:(id)description
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  descriptionCopy = description;
+  if ([descriptionCopy count])
   {
-    v4 = [v3 firstObject];
-    v5 = _AFLocalizedValueForInfoPlistKey(v4, @"NSSiriUsageDescription");
+    firstObject = [descriptionCopy firstObject];
+    v5 = _AFLocalizedValueForInfoPlistKey(firstObject, @"NSSiriUsageDescription");
   }
 
   else
@@ -562,52 +562,52 @@ void __55__AFSUPFunctionProvider__peerInfoForContextIdentifier___block_invoke(ui
   return v5;
 }
 
-- (id)_meCardIdentifier:(id)a3
+- (id)_meCardIdentifier:(id)identifier
 {
-  v3 = [(AFSUPFunctionProvider *)self _meCard];
-  v4 = [v3 internalGUID];
+  _meCard = [(AFSUPFunctionProvider *)self _meCard];
+  internalGUID = [_meCard internalGUID];
 
-  return v4;
+  return internalGUID;
 }
 
-- (id)_userNickName:(id)a3
+- (id)_userNickName:(id)name
 {
-  v3 = [(AFSUPFunctionProvider *)self _meCard];
-  v4 = [v3 nickName];
+  _meCard = [(AFSUPFunctionProvider *)self _meCard];
+  nickName = [_meCard nickName];
 
-  return v4;
+  return nickName;
 }
 
-- (id)_userLastName:(id)a3
+- (id)_userLastName:(id)name
 {
-  v3 = [(AFSUPFunctionProvider *)self _meCard];
-  v4 = [v3 lastName];
+  _meCard = [(AFSUPFunctionProvider *)self _meCard];
+  lastName = [_meCard lastName];
 
-  return v4;
+  return lastName;
 }
 
-- (id)_userMiddleName:(id)a3
+- (id)_userMiddleName:(id)name
 {
-  v3 = [(AFSUPFunctionProvider *)self _meCard];
-  v4 = [v3 middleName];
+  _meCard = [(AFSUPFunctionProvider *)self _meCard];
+  middleName = [_meCard middleName];
 
-  return v4;
+  return middleName;
 }
 
-- (id)_userFirstName:(id)a3
+- (id)_userFirstName:(id)name
 {
-  v3 = [(AFSUPFunctionProvider *)self _meCard];
-  v4 = [v3 firstName];
+  _meCard = [(AFSUPFunctionProvider *)self _meCard];
+  firstName = [_meCard firstName];
 
-  return v4;
+  return firstName;
 }
 
-- (id)_userFullName:(id)a3
+- (id)_userFullName:(id)name
 {
-  v3 = [(AFSUPFunctionProvider *)self _meCard];
-  v4 = [v3 fullName];
+  _meCard = [(AFSUPFunctionProvider *)self _meCard];
+  fullName = [_meCard fullName];
 
-  return v4;
+  return fullName;
 }
 
 - (id)_meCard
@@ -716,20 +716,20 @@ void __32__AFSUPFunctionProvider__meCard__block_invoke(uint64_t a1, void *a2, vo
   return v2;
 }
 
-- (id)_lowercaseString:(id)a3
+- (id)_lowercaseString:(id)string
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  stringCopy = string;
+  if ([stringCopy count])
   {
-    v4 = [v3 objectAtIndex:0];
+    v4 = [stringCopy objectAtIndex:0];
     v5 = +[AFPreferences sharedPreferences];
-    v6 = [v5 languageCode];
-    v7 = v6;
+    languageCode = [v5 languageCode];
+    v7 = languageCode;
     v8 = @"en-US";
-    if (v6)
+    if (languageCode)
     {
-      v8 = v6;
+      v8 = languageCode;
     }
 
     v9 = v8;
@@ -756,15 +756,15 @@ void __32__AFSUPFunctionProvider__meCard__block_invoke(uint64_t a1, void *a2, vo
   return v11;
 }
 
-- (id)_tempInWeatherUnits:(id)a3
+- (id)_tempInWeatherUnits:(id)units
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  unitsCopy = units;
   CFPreferencesAppSynchronize(@"com.apple.weather");
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"Celsius", @"com.apple.weather", 0);
-  if ([v3 count])
+  if ([unitsCopy count])
   {
-    v5 = [v3 objectAtIndex:0];
+    v5 = [unitsCopy objectAtIndex:0];
     v6 = v5;
     v7 = v5;
     if (!AppBooleanValue)
@@ -795,58 +795,58 @@ void __32__AFSUPFunctionProvider__meCard__block_invoke(uint64_t a1, void *a2, vo
   return v7;
 }
 
-- (id)_currentWeekday:(id)a3
+- (id)_currentWeekday:(id)weekday
 {
   dateFormatter = self->_dateFormatter;
-  v5 = a3;
+  weekdayCopy = weekday;
   [(NSDateFormatter *)dateFormatter setDateFormat:@"eeee"];
-  v6 = [(AFSUPFunctionProvider *)self _dateFormattedWithFormatter:self->_dateFormatter arguments:v5];
+  v6 = [(AFSUPFunctionProvider *)self _dateFormattedWithFormatter:self->_dateFormatter arguments:weekdayCopy];
 
   return v6;
 }
 
-- (id)_currentShortDate:(id)a3
+- (id)_currentShortDate:(id)date
 {
   dateFormatter = self->_dateFormatter;
-  v5 = a3;
+  dateCopy = date;
   [(NSDateFormatter *)dateFormatter setDateStyle:1];
   [(NSDateFormatter *)self->_dateFormatter setTimeStyle:0];
-  v6 = [(AFSUPFunctionProvider *)self _dateFormattedWithFormatter:self->_dateFormatter arguments:v5];
+  v6 = [(AFSUPFunctionProvider *)self _dateFormattedWithFormatter:self->_dateFormatter arguments:dateCopy];
 
   return v6;
 }
 
-- (id)_currentLongDate:(id)a3
+- (id)_currentLongDate:(id)date
 {
   dateFormatter = self->_dateFormatter;
-  v5 = a3;
+  dateCopy = date;
   [(NSDateFormatter *)dateFormatter setDateStyle:3];
   [(NSDateFormatter *)self->_dateFormatter setTimeStyle:0];
-  v6 = [(AFSUPFunctionProvider *)self _dateFormattedWithFormatter:self->_dateFormatter arguments:v5];
+  v6 = [(AFSUPFunctionProvider *)self _dateFormattedWithFormatter:self->_dateFormatter arguments:dateCopy];
 
   return v6;
 }
 
-- (id)_currentTime:(id)a3
+- (id)_currentTime:(id)time
 {
   timeFormatter = self->_timeFormatter;
-  v5 = a3;
+  timeCopy = time;
   [(NSDateFormatter *)timeFormatter setDateStyle:0];
   [(NSDateFormatter *)self->_timeFormatter setTimeStyle:1];
   v6 = MEMORY[0x1E696AB78];
-  v7 = [MEMORY[0x1E695DF58] currentLocale];
-  v8 = [v6 dateFormatFromTemplate:@"jjmma" options:0 locale:v7];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v8 = [v6 dateFormatFromTemplate:@"jjmma" options:0 locale:currentLocale];
 
   v9 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"Hk"];
   v10 = [v8 rangeOfCharacterFromSet:v9];
 
   v11 = MEMORY[0x1E696AB78];
-  v12 = [(NSDateFormatter *)self->_timeFormatter locale];
-  v13 = [v11 dateFormatFromTemplate:@"hhmma" options:0 locale:v12];
+  locale = [(NSDateFormatter *)self->_timeFormatter locale];
+  v13 = [v11 dateFormatFromTemplate:@"hhmma" options:0 locale:locale];
 
   v14 = MEMORY[0x1E696AB78];
-  v15 = [(NSDateFormatter *)self->_timeFormatter locale];
-  v16 = [v14 dateFormatFromTemplate:@"HHmm" options:0 locale:v15];
+  locale2 = [(NSDateFormatter *)self->_timeFormatter locale];
+  v16 = [v14 dateFormatFromTemplate:@"HHmm" options:0 locale:locale2];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -859,73 +859,73 @@ void __32__AFSUPFunctionProvider__meCard__block_invoke(uint64_t a1, void *a2, vo
   }
 
   [(NSDateFormatter *)self->_timeFormatter setDateFormat:v17];
-  v18 = [(AFSUPFunctionProvider *)self _dateFormattedWithFormatter:self->_timeFormatter arguments:v5];
+  v18 = [(AFSUPFunctionProvider *)self _dateFormattedWithFormatter:self->_timeFormatter arguments:timeCopy];
 
   return v18;
 }
 
-- (id)_dateFormattedWithFormatter:(id)a3 arguments:(id)a4
+- (id)_dateFormattedWithFormatter:(id)formatter arguments:(id)arguments
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
+  formatterCopy = formatter;
+  argumentsCopy = arguments;
+  v7 = [argumentsCopy count];
   if (v7)
   {
     v8 = v7;
-    v9 = [v6 objectAtIndex:0];
+    v9 = [argumentsCopy objectAtIndex:0];
     v10 = [MEMORY[0x1E695DFE8] timeZoneWithName:v9];
     if (!v10)
     {
       v10 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:v9];
     }
 
-    [v5 setTimeZone:v10];
+    [formatterCopy setTimeZone:v10];
 
     if (v8 != 1)
     {
       v11 = MEMORY[0x1E695DEE8];
-      v12 = [v6 objectAtIndex:1];
-      v13 = [v11 calendarWithIdentifier:v12];
+      locale = [argumentsCopy objectAtIndex:1];
+      currentCalendar = [v11 calendarWithIdentifier:locale];
       goto LABEL_8;
     }
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DFE8] localTimeZone];
-    [v5 setTimeZone:v14];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+    [formatterCopy setTimeZone:localTimeZone];
   }
 
-  v13 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v12 = [v5 locale];
-  [v13 setLocale:v12];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  locale = [formatterCopy locale];
+  [currentCalendar setLocale:locale];
 LABEL_8:
 
-  [v5 setCalendar:v13];
-  v15 = [MEMORY[0x1E695DF00] date];
-  v16 = [v5 stringFromDate:v15];
+  [formatterCopy setCalendar:currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v16 = [formatterCopy stringFromDate:date];
 
   return v16;
 }
 
-- (AFSUPFunctionProvider)initWithLocale:(id)a3
+- (AFSUPFunctionProvider)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v11.receiver = self;
   v11.super_class = AFSUPFunctionProvider;
-  v5 = [(AFSpeakableUtteranceParser *)&v11 initWithLocale:v4];
+  v5 = [(AFSpeakableUtteranceParser *)&v11 initWithLocale:localeCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E696AB78]);
     dateFormatter = v5->_dateFormatter;
     v5->_dateFormatter = v6;
 
-    [(NSDateFormatter *)v5->_dateFormatter setLocale:v4];
+    [(NSDateFormatter *)v5->_dateFormatter setLocale:localeCopy];
     v8 = objc_alloc_init(MEMORY[0x1E696AB78]);
     timeFormatter = v5->_timeFormatter;
     v5->_timeFormatter = v8;
 
-    [(NSDateFormatter *)v5->_timeFormatter setLocale:v4];
+    [(NSDateFormatter *)v5->_timeFormatter setLocale:localeCopy];
   }
 
   return v5;
@@ -933,8 +933,8 @@ LABEL_8:
 
 - (AFSUPFunctionProvider)init
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [(AFSUPFunctionProvider *)self initWithLocale:v3];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v4 = [(AFSUPFunctionProvider *)self initWithLocale:currentLocale];
 
   return v4;
 }

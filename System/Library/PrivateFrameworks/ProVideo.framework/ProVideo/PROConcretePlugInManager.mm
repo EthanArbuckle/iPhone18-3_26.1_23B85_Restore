@@ -1,53 +1,53 @@
 @interface PROConcretePlugInManager
-- (BOOL)bundleHandler:(id)a3 shouldAddPlugIn:(id)a4;
-- (BOOL)bundleIsDeferred:(id)a3;
-- (BOOL)checkIfShouldBlockPlugin:(id)a3 returnPluginDictionary:(id *)a4;
-- (BOOL)checkPluginVersionAgainstBlockList:(id)a3 blockDict:(id)a4;
-- (BOOL)shouldLoadBundle:(id)a3;
-- (BOOL)shouldLoadPlugIn:(id)a3;
-- (BOOL)validateProtocols:(id)a3;
+- (BOOL)bundleHandler:(id)handler shouldAddPlugIn:(id)in;
+- (BOOL)bundleIsDeferred:(id)deferred;
+- (BOOL)checkIfShouldBlockPlugin:(id)plugin returnPluginDictionary:(id *)dictionary;
+- (BOOL)checkPluginVersionAgainstBlockList:(id)list blockDict:(id)dict;
+- (BOOL)shouldLoadBundle:(id)bundle;
+- (BOOL)shouldLoadPlugIn:(id)in;
+- (BOOL)validateProtocols:(id)protocols;
 - (PROConcretePlugInManager)init;
-- (id)apiForProtocol:(id *)a3 versions:(id)a4;
+- (id)apiForProtocol:(id *)protocol versions:(id)versions;
 - (id)blockedDocumentPlugins;
 - (id)blockedLibraryPlugins;
-- (id)objectInBundlesAtIndex:(unsigned int)a3;
-- (id)plugInGroupWithUUID:(__CFUUID *)a3;
+- (id)objectInBundlesAtIndex:(unsigned int)index;
+- (id)plugInGroupWithUUID:(__CFUUID *)d;
 - (id)plugInGroups;
 - (id)plugInSearchDirectories;
-- (id)plugInWithClassName:(id)a3;
-- (id)plugInWithUUID:(__CFUUID *)a3;
+- (id)plugInWithClassName:(id)name;
+- (id)plugInWithUUID:(__CFUUID *)d;
 - (id)plugIns;
-- (id)plugInsForProtocol:(id)a3;
-- (id)plugInsForProtocols:(id)a3;
-- (id)sanitizePluginVersionString:(id)a3;
+- (id)plugInsForProtocol:(id)protocol;
+- (id)plugInsForProtocols:(id)protocols;
+- (id)sanitizePluginVersionString:(id)string;
 - (unsigned)countOfBundles;
-- (void)addDeferredPluginBundle:(id)a3;
-- (void)addDocumentBlockedPlugin:(id)a3;
-- (void)addLibraryBlockedPlugin:(id)a3 bundleName:(id)a4 pluginName:(id)a5 version:(id)a6;
-- (void)addPlugIn:(id)a3;
-- (void)addPlugInSearchDirectory:(id)a3;
-- (void)bundleHandler:(id)a3 didAddPlugIn:(id)a4;
+- (void)addDeferredPluginBundle:(id)bundle;
+- (void)addDocumentBlockedPlugin:(id)plugin;
+- (void)addLibraryBlockedPlugin:(id)plugin bundleName:(id)name pluginName:(id)pluginName version:(id)version;
+- (void)addPlugIn:(id)in;
+- (void)addPlugInSearchDirectory:(id)directory;
+- (void)bundleHandler:(id)handler didAddPlugIn:(id)in;
 - (void)dealloc;
-- (void)finishPluginSetupForBundle:(id)a3 handler:(id)a4;
-- (void)getNameOverrides:(id)a3 pluginName:(id *)a4 bundleName:(id *)a5;
-- (void)insertObject:(id)a3 inPlugInSearchDirectoriesAtIndex:(unsigned int)a4;
+- (void)finishPluginSetupForBundle:(id)bundle handler:(id)handler;
+- (void)getNameOverrides:(id)overrides pluginName:(id *)name bundleName:(id *)bundleName;
+- (void)insertObject:(id)object inPlugInSearchDirectoriesAtIndex:(unsigned int)index;
 - (void)loadDeferredPlugins;
-- (void)mergeGroupsDictionaryWith:(id)a3;
-- (void)registerAPIObject:(id)a3 forProtocol:(id)a4 version:(unsigned int)a5;
+- (void)mergeGroupsDictionaryWith:(id)with;
+- (void)registerAPIObject:(id)object forProtocol:(id)protocol version:(unsigned int)version;
 - (void)removeAllPlugIns;
-- (void)removeDeferredPluginBundle:(id)a3;
-- (void)removeObjectFromPlugInSearchDirectoriesAtIndex:(unsigned int)a3;
-- (void)removePlugin:(id)a3;
-- (void)reportError:(id)a3;
-- (void)scanForPlugInsInBundle:(id)a3 deferralNotification:(id)a4;
-- (void)scanForPlugInsInBundle:(id)a3 withPluginKitPlugIn:(id)a4 deferralNotification:(id)a5;
-- (void)scanForPlugInsInBundleHelper:(id)a3 zone:(_NSZone *)a4 withPluginKitPlugIn:(id)a5 actuallyLoad:(BOOL)a6 deferralNotification:(id)a7;
-- (void)scanForPlugInsInDirectory:(id)a3 actuallyLoad:(BOOL)a4 deferralNotification:(id)a5;
-- (void)setDelegate:(id)a3;
-- (void)setPlugInSearchDirectories:(id)a3;
-- (void)setRequiresProtocolsToBePresentWhenLoading:(BOOL)a3;
-- (void)unregisterAPIForProtocol:(id)a3;
-- (void)unregisterAPIForProtocol:(id)a3 version:(unsigned int)a4;
+- (void)removeDeferredPluginBundle:(id)bundle;
+- (void)removeObjectFromPlugInSearchDirectoriesAtIndex:(unsigned int)index;
+- (void)removePlugin:(id)plugin;
+- (void)reportError:(id)error;
+- (void)scanForPlugInsInBundle:(id)bundle deferralNotification:(id)notification;
+- (void)scanForPlugInsInBundle:(id)bundle withPluginKitPlugIn:(id)in deferralNotification:(id)notification;
+- (void)scanForPlugInsInBundleHelper:(id)helper zone:(_NSZone *)zone withPluginKitPlugIn:(id)in actuallyLoad:(BOOL)load deferralNotification:(id)notification;
+- (void)scanForPlugInsInDirectory:(id)directory actuallyLoad:(BOOL)load deferralNotification:(id)notification;
+- (void)setDelegate:(id)delegate;
+- (void)setPlugInSearchDirectories:(id)directories;
+- (void)setRequiresProtocolsToBePresentWhenLoading:(BOOL)loading;
+- (void)unregisterAPIForProtocol:(id)protocol;
+- (void)unregisterAPIForProtocol:(id)protocol version:(unsigned int)version;
 @end
 
 @implementation PROConcretePlugInManager
@@ -96,9 +96,9 @@
   [(PROConcretePlugInManager *)&v3 dealloc];
 }
 
-- (void)setRequiresProtocolsToBePresentWhenLoading:(BOOL)a3
+- (void)setRequiresProtocolsToBePresentWhenLoading:(BOOL)loading
 {
-  if (a3)
+  if (loading)
   {
     v3 = 32;
   }
@@ -111,9 +111,9 @@
   *&self->managerFlags = *&self->managerFlags & 0xDF | v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  self->delegate = a3;
+  self->delegate = delegate;
   *&self->managerFlags = *&self->managerFlags & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -161,17 +161,17 @@
   *&self->managerFlags = *&self->managerFlags & 0xEF | v7;
 }
 
-- (void)reportError:(id)a3
+- (void)reportError:(id)error
 {
   if (*&self->managerFlags)
   {
-    [self->delegate plugInManager:self didError:a3];
+    [self->delegate plugInManager:self didError:error];
   }
 }
 
-- (BOOL)shouldLoadBundle:(id)a3
+- (BOOL)shouldLoadBundle:(id)bundle
 {
-  if (-[NSMutableDictionary objectForKey:](self->bundlesDictionary, "objectForKey:", [a3 bundleIdentifier]))
+  if (-[NSMutableDictionary objectForKey:](self->bundlesDictionary, "objectForKey:", [bundle bundleIdentifier]))
   {
     return 0;
   }
@@ -183,12 +183,12 @@
 
   delegate = self->delegate;
 
-  return [delegate plugInManager:self shouldLoadBundle:a3];
+  return [delegate plugInManager:self shouldLoadBundle:bundle];
 }
 
-- (BOOL)shouldLoadPlugIn:(id)a3
+- (BOOL)shouldLoadPlugIn:(id)in
 {
-  if (-[NSMutableDictionary objectForKey:](self->uuids, "objectForKey:", [MEMORY[0x277CCAE60] valueWithPointer:{objc_msgSend(a3, "uuid")}]))
+  if (-[NSMutableDictionary objectForKey:](self->uuids, "objectForKey:", [MEMORY[0x277CCAE60] valueWithPointer:{objc_msgSend(in, "uuid")}]))
   {
     return 0;
   }
@@ -200,20 +200,20 @@
 
   delegate = self->delegate;
 
-  return [delegate plugInManager:self shouldLoadPlugIn:a3];
+  return [delegate plugInManager:self shouldLoadPlugIn:in];
 }
 
-- (void)addPlugInSearchDirectory:(id)a3
+- (void)addPlugInSearchDirectory:(id)directory
 {
-  if (!a3)
+  if (!directory)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "plugInSearchDirectory", NSStringFromSelector(a2)}];
   }
 
   [(NSRecursiveLock *)self->mutex lock];
-  if (([(NSMutableArray *)self->plugInSearchDirectories containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)self->plugInSearchDirectories containsObject:directory]& 1) == 0)
   {
-    [-[PROConcretePlugInManager mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugInSearchDirectories", "addObject:", a3}];
+    [-[PROConcretePlugInManager mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugInSearchDirectories", "addObject:", directory}];
   }
 
   mutex = self->mutex;
@@ -221,35 +221,35 @@
   [(NSRecursiveLock *)mutex unlock];
 }
 
-- (void)setPlugInSearchDirectories:(id)a3
+- (void)setPlugInSearchDirectories:(id)directories
 {
-  if (!a3)
+  if (!directories)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "searchDirectories", NSStringFromSelector(a2)}];
   }
 
   [(NSRecursiveLock *)self->mutex lock];
   [(PROConcretePlugInManager *)self willChangeValueForKey:@"plugInSearchDirectories"];
-  [(NSMutableArray *)self->plugInSearchDirectories setArray:a3];
+  [(NSMutableArray *)self->plugInSearchDirectories setArray:directories];
   [(PROConcretePlugInManager *)self didChangeValueForKey:@"plugInSearchDirectories"];
   mutex = self->mutex;
 
   [(NSRecursiveLock *)mutex unlock];
 }
 
-- (void)insertObject:(id)a3 inPlugInSearchDirectoriesAtIndex:(unsigned int)a4
+- (void)insertObject:(id)object inPlugInSearchDirectoriesAtIndex:(unsigned int)index
 {
   [(NSRecursiveLock *)self->mutex lock];
-  [(NSMutableArray *)self->plugInSearchDirectories insertObject:a3 atIndex:a4];
+  [(NSMutableArray *)self->plugInSearchDirectories insertObject:object atIndex:index];
   mutex = self->mutex;
 
   [(NSRecursiveLock *)mutex unlock];
 }
 
-- (void)removeObjectFromPlugInSearchDirectoriesAtIndex:(unsigned int)a3
+- (void)removeObjectFromPlugInSearchDirectoriesAtIndex:(unsigned int)index
 {
   [(NSRecursiveLock *)self->mutex lock];
-  [(NSMutableArray *)self->plugInSearchDirectories removeObjectAtIndex:a3];
+  [(NSMutableArray *)self->plugInSearchDirectories removeObjectAtIndex:index];
   mutex = self->mutex;
 
   [(NSRecursiveLock *)mutex unlock];
@@ -279,37 +279,37 @@
   [(NSRecursiveLock *)mutex unlock];
 }
 
-- (void)addPlugIn:(id)a3
+- (void)addPlugIn:(id)in
 {
-  -[NSMutableDictionary setObject:forKey:](self->uuids, "setObject:forKey:", a3, [MEMORY[0x277CCAE60] valueWithPointer:{objc_msgSend(a3, "uuid")}]);
-  -[NSMutableDictionary setObject:forKey:](self->classesDictionary, "setObject:forKey:", a3, [a3 className]);
-  v5 = [objc_msgSend(a3 "implementedProtocols")];
-  v6 = [v5 nextObject];
-  if (v6)
+  -[NSMutableDictionary setObject:forKey:](self->uuids, "setObject:forKey:", in, [MEMORY[0x277CCAE60] valueWithPointer:{objc_msgSend(in, "uuid")}]);
+  -[NSMutableDictionary setObject:forKey:](self->classesDictionary, "setObject:forKey:", in, [in className]);
+  v5 = [objc_msgSend(in "implementedProtocols")];
+  nextObject = [v5 nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    nextObject2 = nextObject;
     do
     {
-      [(NSMutableDictionary *)self->protocols addObject:a3 toSetForKey:v7];
-      v7 = [v5 nextObject];
+      [(NSMutableDictionary *)self->protocols addObject:in toSetForKey:nextObject2];
+      nextObject2 = [v5 nextObject];
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
-  [-[PROConcretePlugInManager mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", v7), "addObject:", a3}];
+  [-[PROConcretePlugInManager mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", nextObject2), "addObject:", in}];
   if ((*&self->managerFlags & 0x10) != 0)
   {
     delegate = self->delegate;
 
-    [delegate plugInManager:self didLoadPlugIn:a3];
+    [delegate plugInManager:self didLoadPlugIn:in];
   }
 }
 
-- (void)addDeferredPluginBundle:(id)a3
+- (void)addDeferredPluginBundle:(id)bundle
 {
   [(NSRecursiveLock *)self->mutex lock];
-  [(NSMutableArray *)self->deferredPluginBundles addObject:a3];
+  [(NSMutableArray *)self->deferredPluginBundles addObject:bundle];
   mutex = self->mutex;
 
   [(NSRecursiveLock *)mutex unlock];
@@ -353,7 +353,7 @@
   [(NSRecursiveLock *)self->mutex unlock];
 }
 
-- (BOOL)bundleIsDeferred:(id)a3
+- (BOOL)bundleIsDeferred:(id)deferred
 {
   [(NSRecursiveLock *)self->mutex lock];
   if ([(NSMutableArray *)self->deferredPluginBundles count])
@@ -362,10 +362,10 @@
     do
     {
       v6 = [-[NSMutableArray objectAtIndexedSubscript:](self->deferredPluginBundles objectAtIndexedSubscript:{v5 - 1), "getBundle"}];
-      v7 = v6 == a3;
+      v7 = v6 == deferred;
     }
 
-    while (v5++ < [(NSMutableArray *)self->deferredPluginBundles count]&& v6 != a3);
+    while (v5++ < [(NSMutableArray *)self->deferredPluginBundles count]&& v6 != deferred);
   }
 
   else
@@ -377,7 +377,7 @@
   return v7;
 }
 
-- (void)removeDeferredPluginBundle:(id)a3
+- (void)removeDeferredPluginBundle:(id)bundle
 {
   v17 = *MEMORY[0x277D85DE8];
   [(NSRecursiveLock *)self->mutex lock];
@@ -402,7 +402,7 @@
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
-        if ([v11 getBundle] == a3)
+        if ([v11 getBundle] == bundle)
         {
           v8 = v11;
         }
@@ -421,63 +421,63 @@
   [(NSRecursiveLock *)self->mutex unlock];
 }
 
-- (void)removePlugin:(id)a3
+- (void)removePlugin:(id)plugin
 {
   [(NSRecursiveLock *)self->mutex lock];
-  [-[PROConcretePlugInManager mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", "removeObject:", a3}];
+  [-[PROConcretePlugInManager mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", "removeObject:", plugin}];
   mutex = self->mutex;
 
   [(NSRecursiveLock *)mutex unlock];
 }
 
-- (void)addLibraryBlockedPlugin:(id)a3 bundleName:(id)a4 pluginName:(id)a5 version:(id)a6
+- (void)addLibraryBlockedPlugin:(id)plugin bundleName:(id)name pluginName:(id)pluginName version:(id)version
 {
-  v8 = [[BlockedPlugin alloc] init:a4 plugName:a5 plugVersion:a6];
-  -[NSMutableDictionary setObject:forKey:](self->blockedLibraryPlugins, "setObject:forKey:", v8, [a3 blockedLookupKey]);
+  v8 = [[BlockedPlugin alloc] init:name plugName:pluginName plugVersion:version];
+  -[NSMutableDictionary setObject:forKey:](self->blockedLibraryPlugins, "setObject:forKey:", v8, [plugin blockedLookupKey]);
 }
 
-- (void)addDocumentBlockedPlugin:(id)a3
+- (void)addDocumentBlockedPlugin:(id)plugin
 {
-  v5 = [objc_msgSend(a3 "bundle")];
+  v5 = [objc_msgSend(plugin "bundle")];
   if (!v5 || (v6 = v5, [v5 isEqualToString:&stru_2872E16E0]))
   {
-    v6 = [objc_msgSend(a3 "bundle")];
+    v6 = [objc_msgSend(plugin "bundle")];
   }
 
-  v7 = [objc_msgSend(a3 "bundle")];
-  v8 = [objc_msgSend(a3 "infoDictionary")];
-  v9 = [objc_msgSend(a3 "bundle")];
-  v10 = [objc_msgSend(a3 "bundle")];
-  if ([objc_msgSend(objc_msgSend(a3 "bundle")])
+  v7 = [objc_msgSend(plugin "bundle")];
+  v8 = [objc_msgSend(plugin "infoDictionary")];
+  v9 = [objc_msgSend(plugin "bundle")];
+  v10 = [objc_msgSend(plugin "bundle")];
+  if ([objc_msgSend(objc_msgSend(plugin "bundle")])
   {
-    v10 = [objc_msgSend(a3 "bundle")];
+    v10 = [objc_msgSend(plugin "bundle")];
   }
 
   v11 = [[BlockedPlugin alloc] init:v7 plugName:v9 plugVersion:v10];
-  -[NSMutableDictionary setObject:forKey:](self->blockedDocumentPlugins, "setObject:forKey:", v11, [a3 blockedLookupKey]);
+  -[NSMutableDictionary setObject:forKey:](self->blockedDocumentPlugins, "setObject:forKey:", v11, [plugin blockedLookupKey]);
 }
 
-- (id)sanitizePluginVersionString:(id)a3
+- (id)sanitizePluginVersionString:(id)string
 {
-  v3 = [a3 componentsSeparatedByString:@" "];
+  v3 = [string componentsSeparatedByString:@" "];
 
   return [v3 objectAtIndexedSubscript:0];
 }
 
-- (BOOL)checkPluginVersionAgainstBlockList:(id)a3 blockDict:(id)a4
+- (BOOL)checkPluginVersionAgainstBlockList:(id)list blockDict:(id)dict
 {
-  v6 = -[PROConcretePlugInManager sanitizePluginVersionString:](self, "sanitizePluginVersionString:", [objc_msgSend(a3 "bundle")]);
-  v7 = [objc_msgSend(a4 valueForKey:{@"Range Block", "BOOLValue"}];
-  v8 = [a4 valueForKey:@"Version Upper Limit"];
+  v6 = -[PROConcretePlugInManager sanitizePluginVersionString:](self, "sanitizePluginVersionString:", [objc_msgSend(list "bundle")]);
+  v7 = [objc_msgSend(dict valueForKey:{@"Range Block", "BOOLValue"}];
+  v8 = [dict valueForKey:@"Version Upper Limit"];
   if (!v7)
   {
     return ([v6 compare:v8 options:64] - 1) > 0xFFFFFFFFFFFFFFFDLL;
   }
 
-  v9 = [a4 valueForKey:@"Version Lower Limit"];
-  if ([objc_msgSend(objc_msgSend(a3 "bundle")])
+  v9 = [dict valueForKey:@"Version Lower Limit"];
+  if ([objc_msgSend(objc_msgSend(list "bundle")])
   {
-    v6 = [objc_msgSend(a3 "bundle")];
+    v6 = [objc_msgSend(list "bundle")];
   }
 
   v10 = [v6 compare:v8 options:64];
@@ -497,7 +497,7 @@
   return result;
 }
 
-- (BOOL)checkIfShouldBlockPlugin:(id)a3 returnPluginDictionary:(id *)a4
+- (BOOL)checkIfShouldBlockPlugin:(id)plugin returnPluginDictionary:(id *)dictionary
 {
   v49 = *MEMORY[0x277D85DE8];
   block[0] = MEMORY[0x277D85DD0];
@@ -512,9 +512,9 @@
 
   if (checkIfShouldBlockPlugin_returnPluginDictionary__pluginList)
   {
-    v7 = [a3 infoDictionary];
-    v8 = [objc_msgSend(a3 "bundle")];
-    v9 = [v7 valueForKey:@"displayName"];
+    infoDictionary = [plugin infoDictionary];
+    v8 = [objc_msgSend(plugin "bundle")];
+    v9 = [infoDictionary valueForKey:@"displayName"];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -524,7 +524,7 @@
     v31 = v10;
     if (v10)
     {
-      v28 = a4;
+      dictionaryCopy = dictionary;
       v32 = *v42;
       alloc = *MEMORY[0x277CBECE8];
       while (2)
@@ -540,7 +540,7 @@
           v12 = *(*(&v41 + 1) + 8 * v11);
           if ([objc_msgSend(v12 valueForKey:{@"Block Type", "isEqualToString:", @"UUID"}])
           {
-            v13 = CFUUIDCreateString(alloc, [a3 uuid]);
+            v13 = CFUUIDCreateString(alloc, [plugin uuid]);
             v14 = [objc_msgSend(v12 valueForKey:{@"UUID", "isEqualToString:", v13}];
 
             if (v14)
@@ -574,7 +574,7 @@ LABEL_16:
                     objc_enumerationMutation(v17);
                   }
 
-                  if ([v8 isEqualToString:*(*(&v37 + 1) + 8 * v21)] && -[PROConcretePlugInManager checkPluginVersionAgainstBlockList:blockDict:](self, "checkPluginVersionAgainstBlockList:blockDict:", a3, v12))
+                  if ([v8 isEqualToString:*(*(&v37 + 1) + 8 * v21)] && -[PROConcretePlugInManager checkPluginVersionAgainstBlockList:blockDict:](self, "checkPluginVersionAgainstBlockList:blockDict:", plugin, v12))
                   {
                     break;
                   }
@@ -592,7 +592,7 @@ LABEL_16:
                 }
 
 LABEL_36:
-                *v28 = v12;
+                *dictionaryCopy = v12;
                 LOBYTE(v10) = 1;
                 return v10;
               }
@@ -618,7 +618,7 @@ LABEL_26:
                     objc_enumerationMutation(v17);
                   }
 
-                  if ([v9 isEqualToString:*(*(&v33 + 1) + 8 * v25)] && -[PROConcretePlugInManager checkPluginVersionAgainstBlockList:blockDict:](self, "checkPluginVersionAgainstBlockList:blockDict:", a3, v12))
+                  if ([v9 isEqualToString:*(*(&v33 + 1) + 8 * v25)] && -[PROConcretePlugInManager checkPluginVersionAgainstBlockList:blockDict:](self, "checkPluginVersionAgainstBlockList:blockDict:", plugin, v12))
                   {
                     goto LABEL_36;
                   }
@@ -671,80 +671,80 @@ uint64_t __76__PROConcretePlugInManager_checkIfShouldBlockPlugin_returnPluginDic
   return result;
 }
 
-- (void)getNameOverrides:(id)a3 pluginName:(id *)a4 bundleName:(id *)a5
+- (void)getNameOverrides:(id)overrides pluginName:(id *)name bundleName:(id *)bundleName
 {
-  v8 = [a3 valueForKey:@"Name Override"];
-  v9 = [a3 valueForKey:@"Bundle Name Override"];
+  v8 = [overrides valueForKey:@"Name Override"];
+  v9 = [overrides valueForKey:@"Bundle Name Override"];
   if (v8 && ([v8 isEqualToString:&stru_2872E16E0] & 1) == 0)
   {
-    *a4 = [MEMORY[0x277CCAB68] stringWithString:v8];
+    *name = [MEMORY[0x277CCAB68] stringWithString:v8];
   }
 
   if (v9)
   {
     if (([v9 isEqualToString:&stru_2872E16E0] & 1) == 0)
     {
-      *a5 = [MEMORY[0x277CCAB68] stringWithString:v9];
+      *bundleName = [MEMORY[0x277CCAB68] stringWithString:v9];
     }
   }
 }
 
-- (void)mergeGroupsDictionaryWith:(id)a3
+- (void)mergeGroupsDictionaryWith:(id)with
 {
-  v13 = [a3 mutableCopy];
-  v5 = [a3 keyEnumerator];
-  v6 = [v5 nextObject];
-  if (v6)
+  v13 = [with mutableCopy];
+  keyEnumerator = [with keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    nextObject4 = nextObject;
     do
     {
-      v8 = [(NSMutableDictionary *)self->groupsDictionary objectForKey:v7];
+      v8 = [(NSMutableDictionary *)self->groupsDictionary objectForKey:nextObject4];
       if (v8)
       {
         v9 = v8;
-        v10 = [objc_msgSend(objc_msgSend(a3 objectForKey:{v7), "plugIns"), "objectEnumerator"}];
-        v11 = [v10 nextObject];
-        if (v11)
+        v10 = [objc_msgSend(objc_msgSend(with objectForKey:{nextObject4), "plugIns"), "objectEnumerator"}];
+        nextObject2 = [v10 nextObject];
+        if (nextObject2)
         {
-          v12 = v11;
+          nextObject3 = nextObject2;
           do
           {
             if (objc_opt_respondsToSelector())
             {
-              [v9 addPlugIn:v12];
+              [v9 addPlugIn:nextObject3];
             }
 
-            v12 = [v10 nextObject];
+            nextObject3 = [v10 nextObject];
           }
 
-          while (v12);
+          while (nextObject3);
         }
 
-        [v13 removeObjectForKey:v7];
+        [v13 removeObjectForKey:nextObject4];
       }
 
-      v7 = [v5 nextObject];
+      nextObject4 = [keyEnumerator nextObject];
     }
 
-    while (v7);
+    while (nextObject4);
   }
 
   [(NSMutableDictionary *)self->groupsDictionary addEntriesFromDictionary:v13];
 }
 
-- (void)finishPluginSetupForBundle:(id)a3 handler:(id)a4
+- (void)finishPluginSetupForBundle:(id)bundle handler:(id)handler
 {
   [(NSRecursiveLock *)self->mutex lock];
-  if ([objc_msgSend(a4 "plugIns")])
+  if ([objc_msgSend(handler "plugIns")])
   {
-    -[PROConcretePlugInManager mergeGroupsDictionaryWith:](self, "mergeGroupsDictionaryWith:", [a4 groupsDictionary]);
+    -[PROConcretePlugInManager mergeGroupsDictionaryWith:](self, "mergeGroupsDictionaryWith:", [handler groupsDictionary]);
   }
 
-  if (a4)
+  if (handler)
   {
     [(PROConcretePlugInManager *)self willChangeValueForKey:@"bundles"];
-    -[NSMutableDictionary setObject:forKey:](self->bundlesDictionary, "setObject:forKey:", a4, [a3 bundleIdentifier]);
+    -[NSMutableDictionary setObject:forKey:](self->bundlesDictionary, "setObject:forKey:", handler, [bundle bundleIdentifier]);
     [(PROConcretePlugInManager *)self didChangeValueForKey:@"bundles"];
   }
 
@@ -753,22 +753,22 @@ uint64_t __76__PROConcretePlugInManager_checkIfShouldBlockPlugin_returnPluginDic
   [(NSRecursiveLock *)mutex unlock];
 }
 
-- (void)scanForPlugInsInBundleHelper:(id)a3 zone:(_NSZone *)a4 withPluginKitPlugIn:(id)a5 actuallyLoad:(BOOL)a6 deferralNotification:(id)a7
+- (void)scanForPlugInsInBundleHelper:(id)helper zone:(_NSZone *)zone withPluginKitPlugIn:(id)in actuallyLoad:(BOOL)load deferralNotification:(id)notification
 {
-  v8 = a6;
-  v11 = [[PROBundleHandler allocWithZone:?]actuallyLoad:"initWithBundle:actuallyLoad:", a3, a6];
-  [(PROBundleHandler *)v11 setDelegate:self];
-  [(PROBundleHandler *)v11 setAPIManager:self];
-  [(PROBundleHandler *)v11 registerAndLoadPlugIns:v8];
-  [(PROBundleHandler *)v11 setRegistrationCallbackObject:self];
-  [(PROBundleHandler *)v11 setDeferralNotification:a7];
-  [(PROConcretePlugInManager *)self finishPluginSetupForBundle:a3 handler:v11];
+  loadCopy = load;
+  load = [[PROBundleHandler allocWithZone:?]actuallyLoad:"initWithBundle:actuallyLoad:", helper, load];
+  [(PROBundleHandler *)load setDelegate:self];
+  [(PROBundleHandler *)load setAPIManager:self];
+  [(PROBundleHandler *)load registerAndLoadPlugIns:loadCopy];
+  [(PROBundleHandler *)load setRegistrationCallbackObject:self];
+  [(PROBundleHandler *)load setDeferralNotification:notification];
+  [(PROConcretePlugInManager *)self finishPluginSetupForBundle:helper handler:load];
 }
 
-- (void)scanForPlugInsInDirectory:(id)a3 actuallyLoad:(BOOL)a4 deferralNotification:(id)a5
+- (void)scanForPlugInsInDirectory:(id)directory actuallyLoad:(BOOL)load deferralNotification:(id)notification
 {
-  v5 = a4;
-  if (!a3)
+  loadCopy = load;
+  if (!directory)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "directoryPath", NSStringFromSelector(a2)}];
   }
@@ -777,38 +777,38 @@ uint64_t __76__PROConcretePlugInManager_checkIfShouldBlockPlugin_returnPluginDic
   v8 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
   v9 = [(PROConcretePlugInManager *)self zone];
   [(NSRecursiveLock *)self->mutex lock];
-  v10 = [v8 nextObject];
-  if (v10)
+  nextObject = [v8 nextObject];
+  if (nextObject)
   {
-    v11 = v10;
+    nextObject2 = nextObject;
     do
     {
-      if (([v11 hasPrefix:@"."] & 1) == 0)
+      if (([nextObject2 hasPrefix:@"."] & 1) == 0)
       {
-        v12 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:{objc_msgSend(objc_msgSend(a3, "stringByAppendingPathComponent:", v11), "stringByResolvingSymlinksInPath")}];
+        v12 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:{objc_msgSend(objc_msgSend(directory, "stringByAppendingPathComponent:", nextObject2), "stringByResolvingSymlinksInPath")}];
         if ([v12 bundleIdentifier] && -[PROConcretePlugInManager shouldLoadBundle:](self, "shouldLoadBundle:", v12))
         {
-          [(PROConcretePlugInManager *)self scanForPlugInsInBundleHelper:v12 zone:v9 withPluginKitPlugIn:0 actuallyLoad:v5 deferralNotification:a5];
+          [(PROConcretePlugInManager *)self scanForPlugInsInBundleHelper:v12 zone:v9 withPluginKitPlugIn:0 actuallyLoad:loadCopy deferralNotification:notification];
           [v8 skipDescendents];
         }
       }
 
-      v11 = [v8 nextObject];
+      nextObject2 = [v8 nextObject];
     }
 
-    while (v11);
+    while (nextObject2);
   }
 
   [(NSRecursiveLock *)self->mutex unlock];
 }
 
-- (void)scanForPlugInsInBundle:(id)a3 withPluginKitPlugIn:(id)a4 deferralNotification:(id)a5
+- (void)scanForPlugInsInBundle:(id)bundle withPluginKitPlugIn:(id)in deferralNotification:(id)notification
 {
   [(NSRecursiveLock *)self->mutex lock];
-  if ([a3 bundleIdentifier] && -[PROConcretePlugInManager shouldLoadBundle:](self, "shouldLoadBundle:", a3))
+  if ([bundle bundleIdentifier] && -[PROConcretePlugInManager shouldLoadBundle:](self, "shouldLoadBundle:", bundle))
   {
     v9 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-    [(PROConcretePlugInManager *)self scanForPlugInsInBundleHelper:a3 zone:[(PROConcretePlugInManager *)self zone] withPluginKitPlugIn:a4 deferralNotification:a5];
+    [(PROConcretePlugInManager *)self scanForPlugInsInBundleHelper:bundle zone:[(PROConcretePlugInManager *)self zone] withPluginKitPlugIn:in deferralNotification:notification];
     [v9 drain];
   }
 
@@ -817,13 +817,13 @@ uint64_t __76__PROConcretePlugInManager_checkIfShouldBlockPlugin_returnPluginDic
   [(NSRecursiveLock *)mutex unlock];
 }
 
-- (void)scanForPlugInsInBundle:(id)a3 deferralNotification:(id)a4
+- (void)scanForPlugInsInBundle:(id)bundle deferralNotification:(id)notification
 {
   [(NSRecursiveLock *)self->mutex lock];
-  if ([a3 bundleIdentifier] && -[PROConcretePlugInManager shouldLoadBundle:](self, "shouldLoadBundle:", a3))
+  if ([bundle bundleIdentifier] && -[PROConcretePlugInManager shouldLoadBundle:](self, "shouldLoadBundle:", bundle))
   {
     v7 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-    [(PROConcretePlugInManager *)self scanForPlugInsInBundleHelper:a3 zone:[(PROConcretePlugInManager *)self zone] withPluginKitPlugIn:0 deferralNotification:a4];
+    [(PROConcretePlugInManager *)self scanForPlugInsInBundleHelper:bundle zone:[(PROConcretePlugInManager *)self zone] withPluginKitPlugIn:0 deferralNotification:notification];
     [v7 drain];
   }
 
@@ -832,18 +832,18 @@ uint64_t __76__PROConcretePlugInManager_checkIfShouldBlockPlugin_returnPluginDic
   [(NSRecursiveLock *)mutex unlock];
 }
 
-- (BOOL)bundleHandler:(id)a3 shouldAddPlugIn:(id)a4
+- (BOOL)bundleHandler:(id)handler shouldAddPlugIn:(id)in
 {
   [(NSRecursiveLock *)self->mutex lock];
-  LOBYTE(a4) = [(PROConcretePlugInManager *)self shouldLoadPlugIn:a4];
+  LOBYTE(in) = [(PROConcretePlugInManager *)self shouldLoadPlugIn:in];
   [(NSRecursiveLock *)self->mutex unlock];
-  return a4;
+  return in;
 }
 
-- (void)bundleHandler:(id)a3 didAddPlugIn:(id)a4
+- (void)bundleHandler:(id)handler didAddPlugIn:(id)in
 {
   [(NSRecursiveLock *)self->mutex lock];
-  [(PROConcretePlugInManager *)self addPlugIn:a4];
+  [(PROConcretePlugInManager *)self addPlugIn:in];
   mutex = self->mutex;
 
   [(NSRecursiveLock *)mutex unlock];
@@ -865,41 +865,41 @@ uint64_t __76__PROConcretePlugInManager_checkIfShouldBlockPlugin_returnPluginDic
   return v3;
 }
 
-- (id)plugInWithUUID:(__CFUUID *)a3
+- (id)plugInWithUUID:(__CFUUID *)d
 {
-  if (!a3)
+  if (!d)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "uuid", NSStringFromSelector(a2)}];
   }
 
   [(NSRecursiveLock *)self->mutex lock];
-  v5 = -[NSMutableDictionary objectForKey:](self->uuids, "objectForKey:", [MEMORY[0x277CCAE60] valueWithPointer:a3]);
+  v5 = -[NSMutableDictionary objectForKey:](self->uuids, "objectForKey:", [MEMORY[0x277CCAE60] valueWithPointer:d]);
   [(NSRecursiveLock *)self->mutex unlock];
   return v5;
 }
 
-- (id)plugInWithClassName:(id)a3
+- (id)plugInWithClassName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "className", NSStringFromSelector(a2)}];
   }
 
   [(NSRecursiveLock *)self->mutex lock];
-  v5 = [(NSMutableDictionary *)self->classesDictionary objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->classesDictionary objectForKey:name];
   [(NSRecursiveLock *)self->mutex unlock];
   return v5;
 }
 
-- (id)plugInGroupWithUUID:(__CFUUID *)a3
+- (id)plugInGroupWithUUID:(__CFUUID *)d
 {
-  if (!a3)
+  if (!d)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "uuid", NSStringFromSelector(a2)}];
   }
 
   [(NSRecursiveLock *)self->mutex lock];
-  v5 = -[NSMutableDictionary objectForKey:](self->groupsDictionary, "objectForKey:", [MEMORY[0x277CCAE60] valueWithPointer:a3]);
+  v5 = -[NSMutableDictionary objectForKey:](self->groupsDictionary, "objectForKey:", [MEMORY[0x277CCAE60] valueWithPointer:d]);
   [(NSRecursiveLock *)self->mutex unlock];
   return v5;
 }
@@ -928,7 +928,7 @@ uint64_t __76__PROConcretePlugInManager_checkIfShouldBlockPlugin_returnPluginDic
   return v3;
 }
 
-- (id)objectInBundlesAtIndex:(unsigned int)a3
+- (id)objectInBundlesAtIndex:(unsigned int)index
 {
   [(NSRecursiveLock *)self->mutex lock];
   v5 = [objc_msgSend(-[NSMutableDictionary allValues](self->bundlesDictionary "allValues")];
@@ -936,15 +936,15 @@ uint64_t __76__PROConcretePlugInManager_checkIfShouldBlockPlugin_returnPluginDic
   return v5;
 }
 
-- (id)plugInsForProtocol:(id)a3
+- (id)plugInsForProtocol:(id)protocol
 {
-  if (!a3)
+  if (!protocol)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "protocol", NSStringFromSelector(a2)}];
   }
 
   [(NSRecursiveLock *)self->mutex lock];
-  v5 = [(NSMutableDictionary *)self->protocols objectForKey:NSStringFromProtocol(a3)];
+  v5 = [(NSMutableDictionary *)self->protocols objectForKey:NSStringFromProtocol(protocol)];
   [(NSRecursiveLock *)self->mutex unlock];
   if (v5)
   {
@@ -960,28 +960,28 @@ uint64_t __76__PROConcretePlugInManager_checkIfShouldBlockPlugin_returnPluginDic
   }
 }
 
-- (id)plugInsForProtocols:(id)a3
+- (id)plugInsForProtocols:(id)protocols
 {
-  if (!a3)
+  if (!protocols)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "matchingProtocols", NSStringFromSelector(a2)}];
   }
 
   [(NSRecursiveLock *)self->mutex lock];
-  v5 = [MEMORY[0x277CBEA60] arrayWithArray:{-[NSMutableDictionary objectsInAllSetsForKeys:](self->protocols, "objectsInAllSetsForKeys:", a3)}];
+  v5 = [MEMORY[0x277CBEA60] arrayWithArray:{-[NSMutableDictionary objectsInAllSetsForKeys:](self->protocols, "objectsInAllSetsForKeys:", protocols)}];
   [(NSRecursiveLock *)self->mutex unlock];
   return v5;
 }
 
-- (id)apiForProtocol:(id *)a3 versions:(id)a4
+- (id)apiForProtocol:(id *)protocol versions:(id)versions
 {
-  if (!a3)
+  if (!protocol)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "apiProtocol", NSStringFromSelector(a2)}];
   }
 
   [(PROReadWriteLock *)self->apiLock lockForReading];
-  v7 = [(NSMutableDictionary *)self->api objectForKey:NSStringFromProtocol(*a3)];
+  v7 = [(NSMutableDictionary *)self->api objectForKey:NSStringFromProtocol(*protocol)];
   if (!v7)
   {
 LABEL_9:
@@ -990,18 +990,18 @@ LABEL_9:
   }
 
   v8 = v7;
-  if (a4)
+  if (versions)
   {
-    v9 = [a4 objectEnumerator];
+    objectEnumerator = [versions objectEnumerator];
     while (1)
     {
-      v10 = [v9 nextObject];
-      if (!v10)
+      nextObject = [objectEnumerator nextObject];
+      if (!nextObject)
       {
         goto LABEL_9;
       }
 
-      v11 = [v8 objectForKey:v10];
+      v11 = [v8 objectForKey:nextObject];
       if (v11)
       {
         v12 = v11;
@@ -1014,7 +1014,7 @@ LABEL_9:
   if (v12)
   {
 LABEL_11:
-    *a3 = [objc_msgSend(v8 objectForKey:{@"OriginalProtocolPointer", "pointerValue"}];
+    *protocol = [objc_msgSend(v8 objectForKey:{@"OriginalProtocolPointer", "pointerValue"}];
     v13 = v12;
   }
 
@@ -1023,12 +1023,12 @@ LABEL_12:
   return v12;
 }
 
-- (void)registerAPIObject:(id)a3 forProtocol:(id)a4 version:(unsigned int)a5
+- (void)registerAPIObject:(id)object forProtocol:(id)protocol version:(unsigned int)version
 {
-  v5 = *&a5;
-  if (a3)
+  v5 = *&version;
+  if (object)
   {
-    if (a4)
+    if (protocol)
     {
       goto LABEL_3;
     }
@@ -1037,7 +1037,7 @@ LABEL_12:
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "apiObject", NSStringFromSelector(a2)}];
-    if (a4)
+    if (protocol)
     {
       goto LABEL_3;
     }
@@ -1045,34 +1045,34 @@ LABEL_12:
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "apiProtocol", NSStringFromSelector(a2)}];
 LABEL_3:
-  v10 = NSStringFromProtocol(a4);
+  v10 = NSStringFromProtocol(protocol);
   v14 = [objc_msgSend(MEMORY[0x277CCABB0] allocWithZone:{-[PROConcretePlugInManager zone](self, "zone")), "initWithUnsignedInt:", v5}];
   [(PROReadWriteLock *)self->apiLock lockForWriting];
   v11 = [(NSMutableDictionary *)self->api objectForKey:v10];
   if (v11)
   {
-    [v11 setObject:a3 forKey:v14];
+    [v11 setObject:object forKey:v14];
   }
 
   else
   {
     v12 = [MEMORY[0x277CBEB38] allocWithZone:{-[PROConcretePlugInManager zone](self, "zone")}];
-    v13 = [v12 initWithObjectsAndKeys:{a3, v14, objc_msgSend(MEMORY[0x277CCAE60], "valueWithPointer:", a4), @"OriginalProtocolPointer", 0}];
+    v13 = [v12 initWithObjectsAndKeys:{object, v14, objc_msgSend(MEMORY[0x277CCAE60], "valueWithPointer:", protocol), @"OriginalProtocolPointer", 0}];
     [(NSMutableDictionary *)self->api setObject:v13 forKey:v10];
   }
 
   [(PROReadWriteLock *)self->apiLock unlock];
 }
 
-- (void)unregisterAPIForProtocol:(id)a3 version:(unsigned int)a4
+- (void)unregisterAPIForProtocol:(id)protocol version:(unsigned int)version
 {
-  v4 = *&a4;
-  if (!a3)
+  v4 = *&version;
+  if (!protocol)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "apiProtocol", NSStringFromSelector(a2)}];
   }
 
-  v7 = NSStringFromProtocol(a3);
+  v7 = NSStringFromProtocol(protocol);
   [(PROReadWriteLock *)self->apiLock lockForWriting];
   v8 = [(NSMutableDictionary *)self->api objectForKey:v7];
   [v8 removeObjectForKey:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInt:", v4)}];
@@ -1086,21 +1086,21 @@ LABEL_3:
   [(PROReadWriteLock *)apiLock unlock];
 }
 
-- (void)unregisterAPIForProtocol:(id)a3
+- (void)unregisterAPIForProtocol:(id)protocol
 {
-  if (!a3)
+  if (!protocol)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "apiProtocol", NSStringFromSelector(a2)}];
   }
 
   [(PROReadWriteLock *)self->apiLock lockForWriting];
-  [(NSMutableDictionary *)self->api removeObjectForKey:NSStringFromProtocol(a3)];
+  [(NSMutableDictionary *)self->api removeObjectForKey:NSStringFromProtocol(protocol)];
   apiLock = self->apiLock;
 
   [(PROReadWriteLock *)apiLock unlock];
 }
 
-- (BOOL)validateProtocols:(id)a3
+- (BOOL)validateProtocols:(id)protocols
 {
   if (![(PROConcretePlugInManager *)self requiresProtocolsToBePresentWhenLoading])
   {
@@ -1108,34 +1108,34 @@ LABEL_3:
   }
 
   [(PROReadWriteLock *)self->apiLock lockForReading];
-  v5 = [a3 objectEnumerator];
-  v6 = [v5 nextObject];
-  if (v6)
+  objectEnumerator = [protocols objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    nextObject3 = nextObject;
     while (2)
     {
-      v8 = [v7 objectForKey:@"protocolName"];
-      v9 = [v7 objectForKey:@"versions"];
+      v8 = [nextObject3 objectForKey:@"protocolName"];
+      v9 = [nextObject3 objectForKey:@"versions"];
       v10 = [(NSMutableDictionary *)self->api objectForKey:v8];
       v11 = v10 != 0;
       if (v10)
       {
         v12 = v10;
-        v13 = [v9 objectEnumerator];
+        objectEnumerator2 = [v9 objectEnumerator];
         do
         {
-          v14 = [v13 nextObject];
-          if (!v14)
+          nextObject2 = [objectEnumerator2 nextObject];
+          if (!nextObject2)
           {
             v11 = 0;
             goto LABEL_13;
           }
         }
 
-        while (![v12 objectForKey:v14]);
-        v7 = [v5 nextObject];
-        if (v7)
+        while (![v12 objectForKey:nextObject2]);
+        nextObject3 = [objectEnumerator nextObject];
+        if (nextObject3)
         {
           continue;
         }

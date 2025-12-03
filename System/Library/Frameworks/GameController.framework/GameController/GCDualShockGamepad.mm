@@ -1,16 +1,16 @@
 @interface GCDualShockGamepad
-- (GCDualShockGamepad)initWithCoder:(id)a3;
-- (GCDualShockGamepad)initWithController:(id)a3;
-- (GCDualShockGamepad)initWithIdentifier:(id)a3;
+- (GCDualShockGamepad)initWithCoder:(id)coder;
+- (GCDualShockGamepad)initWithController:(id)controller;
+- (GCDualShockGamepad)initWithIdentifier:(id)identifier;
 - (void)_activateExtendedSupport;
 - (void)initializeExtraControllerElements;
 @end
 
 @implementation GCDualShockGamepad
 
-- (GCDualShockGamepad)initWithController:(id)a3
+- (GCDualShockGamepad)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -33,7 +33,7 @@
   v22 = 0;
   v10.receiver = self;
   v10.super_class = GCDualShockGamepad;
-  v6 = [(GCExtendedGamepad *)&v10 initWithController:v4 initInfo:v11];
+  v6 = [(GCExtendedGamepad *)&v10 initWithController:controllerCopy initInfo:v11];
   v7 = v6;
   if (v6)
   {
@@ -48,11 +48,11 @@
   return v7;
 }
 
-- (GCDualShockGamepad)initWithCoder:(id)a3
+- (GCDualShockGamepad)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = GCDualShockGamepad;
-  v3 = [(GCExtendedGamepad *)&v6 initWithCoder:a3];
+  v3 = [(GCExtendedGamepad *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -62,11 +62,11 @@
   return v4;
 }
 
-- (GCDualShockGamepad)initWithIdentifier:(id)a3
+- (GCDualShockGamepad)initWithIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = GCDualShockGamepad;
-  v3 = [(GCExtendedGamepad *)&v6 initWithIdentifier:a3];
+  v3 = [(GCExtendedGamepad *)&v6 initWithIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -135,74 +135,74 @@
   [(GCControllerElement *)self->_touchpadSecondary setRemappable:1];
   [(GCControllerDirectionPad *)self->_touchpadSecondary setUnmappedNameLocalizationKey:@"DS4_TOUCHPAD_FINGER_TWO"];
   [(GCControllerElement *)self->_touchpadSecondary setUnmappedSfSymbolsName:@"hand.draw"];
-  v9 = [(GCExtendedGamepad *)self buttonHome];
-  [v9 setUnmappedNameLocalizationKey:@"DS4_BUTTON_HOME"];
+  buttonHome = [(GCExtendedGamepad *)self buttonHome];
+  [buttonHome setUnmappedNameLocalizationKey:@"DS4_BUTTON_HOME"];
 
-  v10 = [(GCExtendedGamepad *)self buttonOptions];
-  [v10 setUnmappedNameLocalizationKey:@"DS4_BUTTON_OPTIONS"];
+  buttonOptions = [(GCExtendedGamepad *)self buttonOptions];
+  [buttonOptions setUnmappedNameLocalizationKey:@"DS4_BUTTON_OPTIONS"];
 
-  v11 = [(GCExtendedGamepad *)self buttonMenu];
-  [v11 setUnmappedNameLocalizationKey:@"DS4_BUTTON_MENU"];
+  buttonMenu = [(GCExtendedGamepad *)self buttonMenu];
+  [buttonMenu setUnmappedNameLocalizationKey:@"DS4_BUTTON_MENU"];
 
-  v12 = [(GCExtendedGamepad *)self dpad];
-  [v12 setUnmappedNameLocalizationKey:@"DS4_DIRECTION_PAD"];
+  dpad = [(GCExtendedGamepad *)self dpad];
+  [dpad setUnmappedNameLocalizationKey:@"DS4_DIRECTION_PAD"];
 
-  v13 = [(GCExtendedGamepad *)self buttonA];
-  [v13 setUnmappedNameLocalizationKey:@"DS4_BUTTON_A"];
+  buttonA = [(GCExtendedGamepad *)self buttonA];
+  [buttonA setUnmappedNameLocalizationKey:@"DS4_BUTTON_A"];
 
-  v14 = [(GCExtendedGamepad *)self buttonB];
-  [v14 setUnmappedNameLocalizationKey:@"DS4_BUTTON_B"];
+  buttonB = [(GCExtendedGamepad *)self buttonB];
+  [buttonB setUnmappedNameLocalizationKey:@"DS4_BUTTON_B"];
 
-  v15 = [(GCExtendedGamepad *)self buttonX];
-  [v15 setUnmappedNameLocalizationKey:@"DS4_BUTTON_X"];
+  buttonX = [(GCExtendedGamepad *)self buttonX];
+  [buttonX setUnmappedNameLocalizationKey:@"DS4_BUTTON_X"];
 
-  v16 = [(GCExtendedGamepad *)self buttonY];
-  [v16 setUnmappedNameLocalizationKey:@"DS4_BUTTON_Y"];
+  buttonY = [(GCExtendedGamepad *)self buttonY];
+  [buttonY setUnmappedNameLocalizationKey:@"DS4_BUTTON_Y"];
 
-  v17 = [(GCExtendedGamepad *)self leftShoulder];
-  [v17 setUnmappedNameLocalizationKey:@"DS4_LEFT_SHOULDER"];
+  leftShoulder = [(GCExtendedGamepad *)self leftShoulder];
+  [leftShoulder setUnmappedNameLocalizationKey:@"DS4_LEFT_SHOULDER"];
 
-  v18 = [(GCExtendedGamepad *)self rightShoulder];
-  [v18 setUnmappedNameLocalizationKey:@"DS4_RIGHT_SHOULDER"];
+  rightShoulder = [(GCExtendedGamepad *)self rightShoulder];
+  [rightShoulder setUnmappedNameLocalizationKey:@"DS4_RIGHT_SHOULDER"];
 
-  v19 = [(GCExtendedGamepad *)self leftTrigger];
-  [v19 setUnmappedNameLocalizationKey:@"DS4_LEFT_TRIGGER"];
+  leftTrigger = [(GCExtendedGamepad *)self leftTrigger];
+  [leftTrigger setUnmappedNameLocalizationKey:@"DS4_LEFT_TRIGGER"];
 
-  v20 = [(GCExtendedGamepad *)self rightTrigger];
-  [v20 setUnmappedNameLocalizationKey:@"DS4_RIGHT_TRIGGER"];
+  rightTrigger = [(GCExtendedGamepad *)self rightTrigger];
+  [rightTrigger setUnmappedNameLocalizationKey:@"DS4_RIGHT_TRIGGER"];
 
-  v21 = [(GCExtendedGamepad *)self leftThumbstick];
-  [v21 setUnmappedNameLocalizationKey:@"DS4_LEFT_THUMBSTICK"];
+  leftThumbstick = [(GCExtendedGamepad *)self leftThumbstick];
+  [leftThumbstick setUnmappedNameLocalizationKey:@"DS4_LEFT_THUMBSTICK"];
 
-  v22 = [(GCExtendedGamepad *)self rightThumbstick];
-  [v22 setUnmappedNameLocalizationKey:@"DS4_RIGHT_THUMBSTICK"];
+  rightThumbstick = [(GCExtendedGamepad *)self rightThumbstick];
+  [rightThumbstick setUnmappedNameLocalizationKey:@"DS4_RIGHT_THUMBSTICK"];
 
-  v23 = [(GCExtendedGamepad *)self leftThumbstickButton];
-  [v23 setUnmappedNameLocalizationKey:@"DS4_BUTTON_LEFT_THUMBSTICK"];
+  leftThumbstickButton = [(GCExtendedGamepad *)self leftThumbstickButton];
+  [leftThumbstickButton setUnmappedNameLocalizationKey:@"DS4_BUTTON_LEFT_THUMBSTICK"];
 
-  v24 = [(GCExtendedGamepad *)self rightThumbstickButton];
-  [v24 setUnmappedNameLocalizationKey:@"DS4_BUTTON_RIGHT_THUMBSTICK"];
+  rightThumbstickButton = [(GCExtendedGamepad *)self rightThumbstickButton];
+  [rightThumbstickButton setUnmappedNameLocalizationKey:@"DS4_BUTTON_RIGHT_THUMBSTICK"];
 
-  v25 = [(GCExtendedGamepad *)self buttonA];
-  [v25 setUnmappedSfSymbolsName:@"xmark.circle"];
+  buttonA2 = [(GCExtendedGamepad *)self buttonA];
+  [buttonA2 setUnmappedSfSymbolsName:@"xmark.circle"];
 
-  v26 = [(GCExtendedGamepad *)self buttonB];
-  [v26 setUnmappedSfSymbolsName:@"circle.circle"];
+  buttonB2 = [(GCExtendedGamepad *)self buttonB];
+  [buttonB2 setUnmappedSfSymbolsName:@"circle.circle"];
 
-  v27 = [(GCExtendedGamepad *)self buttonX];
-  [v27 setUnmappedSfSymbolsName:@"square.circle"];
+  buttonX2 = [(GCExtendedGamepad *)self buttonX];
+  [buttonX2 setUnmappedSfSymbolsName:@"square.circle"];
 
-  v28 = [(GCExtendedGamepad *)self buttonY];
-  [v28 setUnmappedSfSymbolsName:@"triangle.circle"];
+  buttonY2 = [(GCExtendedGamepad *)self buttonY];
+  [buttonY2 setUnmappedSfSymbolsName:@"triangle.circle"];
 
-  v29 = [(GCExtendedGamepad *)self buttonOptions];
-  [v29 setUnmappedSfSymbolsName:@"capsule.portrait"];
+  buttonOptions2 = [(GCExtendedGamepad *)self buttonOptions];
+  [buttonOptions2 setUnmappedSfSymbolsName:@"capsule.portrait"];
 
-  v30 = [(GCExtendedGamepad *)self buttonMenu];
-  [v30 setUnmappedSfSymbolsName:@"capsule.portrait"];
+  buttonMenu2 = [(GCExtendedGamepad *)self buttonMenu];
+  [buttonMenu2 setUnmappedSfSymbolsName:@"capsule.portrait"];
 
-  v31 = [(GCExtendedGamepad *)self buttonHome];
-  [v31 setUnmappedSfSymbolsName:@"logo.playstation"];
+  buttonHome2 = [(GCExtendedGamepad *)self buttonHome];
+  [buttonHome2 setUnmappedSfSymbolsName:@"logo.playstation"];
 }
 
 - (void)_activateExtendedSupport
@@ -212,9 +212,9 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(GCPhysicalInputProfile *)self controller];
-  v3 = [v2 components];
-  v4 = [v3 copy];
+  controller = [(GCPhysicalInputProfile *)self controller];
+  components = [controller components];
+  v4 = [components copy];
 
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
@@ -237,9 +237,9 @@
 
           if (v10)
           {
-            v11 = [v10 registryID];
+            registryID = [v10 registryID];
 
-            if (v11)
+            if (registryID)
             {
               [v10 setProperty:MEMORY[0x1E695E118] forKey:@"ActivateExtendedSupport"];
             }

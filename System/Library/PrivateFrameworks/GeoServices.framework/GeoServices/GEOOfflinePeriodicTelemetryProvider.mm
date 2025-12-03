@@ -1,13 +1,13 @@
 @interface GEOOfflinePeriodicTelemetryProvider
 - (GEOOfflinePeriodicTelemetryProvider)init;
-- (void)reportTelemetryForType:(int64_t)a3 completionHandler:(id)a4;
+- (void)reportTelemetryForType:(int64_t)type completionHandler:(id)handler;
 @end
 
 @implementation GEOOfflinePeriodicTelemetryProvider
 
-- (void)reportTelemetryForType:(int64_t)a3 completionHandler:(id)a4
+- (void)reportTelemetryForType:(int64_t)type completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = +[GEOMapDataSubscriptionManager sharedManager];
   global_queue = geo_get_global_queue();
   v9[0] = _NSConcreteStackBlock;
@@ -15,8 +15,8 @@
   v9[2] = sub_10003D1AC;
   v9[3] = &unk_100083160;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [v6 fetchAllSubscriptionsWithCallbackQueue:global_queue completionHandler:v9];
 }
 

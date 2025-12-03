@@ -1,29 +1,29 @@
 @interface MBCKRefreshManifestDomainCache
-- (BOOL)_addReferences:(id)a3 forManifest:(id)a4 isPlaceholder:(BOOL)a5 error:(id *)a6;
-- (BOOL)close:(id *)a3;
-- (MBCKRefreshManifestDomainCache)initWithCacheDirPath:(id)a3 error:(id *)a4;
-- (id)domainNameForFileRecord:(id)a3 error:(id *)a4;
+- (BOOL)_addReferences:(id)references forManifest:(id)manifest isPlaceholder:(BOOL)placeholder error:(id *)error;
+- (BOOL)close:(id *)close;
+- (MBCKRefreshManifestDomainCache)initWithCacheDirPath:(id)path error:(id *)error;
+- (id)domainNameForFileRecord:(id)record error:(id *)error;
 - (void)dealloc;
 - (void)dumpContentsToLog;
 @end
 
 @implementation MBCKRefreshManifestDomainCache
 
-- (MBCKRefreshManifestDomainCache)initWithCacheDirPath:(id)a3 error:(id *)a4
+- (MBCKRefreshManifestDomainCache)initWithCacheDirPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  pathCopy = path;
+  if (!pathCopy)
   {
     __assert_rtn("[MBCKRefreshManifestDomainCache initWithCacheDirPath:error:]", "MBCKRefreshManifestDomainCache.m", 38, "cacheDirPath");
   }
 
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("[MBCKRefreshManifestDomainCache initWithCacheDirPath:error:]", "MBCKRefreshManifestDomainCache.m", 39, "error");
   }
 
-  v7 = v6;
-  v8 = [v6 stringByAppendingPathComponent:@"cloudkit_cache_refresh_temp.db"];
+  v7 = pathCopy;
+  v8 = [pathCopy stringByAppendingPathComponent:@"cloudkit_cache_refresh_temp.db"];
   v22.receiver = self;
   v22.super_class = MBCKRefreshManifestDomainCache;
   v9 = [(MBCKRefreshManifestDomainCache *)&v22 init];
@@ -38,7 +38,7 @@
       _MBLog();
     }
 
-    v11 = [[MBSQLiteDB alloc] initWithPath:v8 readOnly:0 shouldDeleteOnFailureToOpen:1 usePQLBatching:0 schemaCurrentVersion:1 schemaMinDatabaseVersionForUpgrade:0 error:a4 schemaUpgrades:0];
+    v11 = [[MBSQLiteDB alloc] initWithPath:v8 readOnly:0 shouldDeleteOnFailureToOpen:1 usePQLBatching:0 schemaCurrentVersion:1 schemaMinDatabaseVersionForUpgrade:0 error:error schemaUpgrades:0];
     database = v9->_database;
     v9->_database = v11;
 
@@ -48,7 +48,7 @@
       v23[1] = @"CREATE TEMPORARY TABLE IF NOT EXISTS PendingPlaceholderIDToManifestID (referenceID TEXT PRIMARY KEY, manifestID TEXT NOT NULL);";
       v23[2] = @"CREATE TEMPORARY TABLE IF NOT EXISTS PendingManifestIDToDomainName (manifestID TEXT PRIMARY KEY, domainName TEXT NOT NULL);";
       v13 = [NSArray arrayWithObjects:v23 count:3];
-      v14 = [(MBSQLiteDB *)v9->_database executeStatements:v13 error:a4];
+      v14 = [(MBSQLiteDB *)v9->_database executeStatements:v13 error:error];
       v15 = MBGetDefaultLog();
       p_super = v15;
       if (v14)
@@ -66,11 +66,11 @@
 
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v18 = *a4;
+        v18 = *error;
         *buf = 138412290;
         v25 = v18;
         _os_log_impl(&_mh_execute_header, p_super, OS_LOG_TYPE_ERROR, "=domaincache= Failed to create temporary tables: %@", buf, 0xCu);
-        v21 = *a4;
+        v21 = *error;
         _MBLog();
       }
 
@@ -82,11 +82,11 @@
       p_super = MBGetDefaultLog();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
-        v17 = *a4;
+        v17 = *error;
         *buf = 138412290;
         v25 = v17;
         _os_log_impl(&_mh_execute_header, p_super, OS_LOG_TYPE_ERROR, "=domaincache= Failed to initialize: %@", buf, 0xCu);
-        v20 = *a4;
+        v20 = *error;
         _MBLog();
       }
 
@@ -107,12 +107,12 @@ LABEL_17:
     v3 = MBGetDefaultLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
-      v4 = [(MBSQLiteDB *)self->_database path];
+      path = [(MBSQLiteDB *)self->_database path];
       *buf = 138412290;
-      v8 = v4;
+      v8 = path;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "=domaincache= Database (%@) was not closed before dealloc", buf, 0xCu);
 
-      v5 = [(MBSQLiteDB *)self->_database path];
+      path2 = [(MBSQLiteDB *)self->_database path];
       _MBLog();
     }
   }
@@ -122,7 +122,7 @@ LABEL_17:
   [(MBCKRefreshManifestDomainCache *)&v6 dealloc];
 }
 
-- (BOOL)close:(id *)a3
+- (BOOL)close:(id *)close
 {
   if (!self->_database)
   {
@@ -132,20 +132,20 @@ LABEL_17:
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(MBSQLiteDB *)self->_database path];
+    path = [(MBSQLiteDB *)self->_database path];
     *buf = 138412290;
-    v13 = v6;
+    v13 = path;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "=domaincache= Closing: %@", buf, 0xCu);
 
-    v11 = [(MBSQLiteDB *)self->_database path];
+    path2 = [(MBSQLiteDB *)self->_database path];
     _MBLog();
   }
 
-  v7 = [(MBSQLiteDB *)self->_database close:a3];
+  v7 = [(MBSQLiteDB *)self->_database close:close];
   if (v7)
   {
-    v8 = [(MBSQLiteDB *)self->_database path];
-    [MBSQLiteFileHandle removeAllSQLiteFilesAtPath:v8];
+    path3 = [(MBSQLiteDB *)self->_database path];
+    [MBSQLiteFileHandle removeAllSQLiteFilesAtPath:path3];
 
     database = self->_database;
     self->_database = 0;
@@ -154,71 +154,71 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)_addReferences:(id)a3 forManifest:(id)a4 isPlaceholder:(BOOL)a5 error:(id *)a6
+- (BOOL)_addReferences:(id)references forManifest:(id)manifest isPlaceholder:(BOOL)placeholder error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  referencesCopy = references;
+  manifestCopy = manifest;
   if (!self->_database)
   {
     __assert_rtn("[MBCKRefreshManifestDomainCache _addReferences:forManifest:isPlaceholder:error:]", "MBCKRefreshManifestDomainCache.m", 118, "_database");
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = manifestCopy;
+  if (!manifestCopy)
   {
     __assert_rtn("[MBCKRefreshManifestDomainCache _addReferences:forManifest:isPlaceholder:error:]", "MBCKRefreshManifestDomainCache.m", 119, "manifest");
   }
 
-  if (!a6)
+  if (!error)
   {
     __assert_rtn("[MBCKRefreshManifestDomainCache _addReferences:forManifest:isPlaceholder:error:]", "MBCKRefreshManifestDomainCache.m", 120, "error");
   }
 
-  v13 = [v11 manifestID];
-  if (!v13)
+  manifestID = [manifestCopy manifestID];
+  if (!manifestID)
   {
     __assert_rtn("[MBCKRefreshManifestDomainCache _addReferences:forManifest:isPlaceholder:error:]", "MBCKRefreshManifestDomainCache.m", 123, "manifestID");
   }
 
-  v14 = v13;
+  v14 = manifestID;
   database = self->_database;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000EA408;
   v21[3] = &unk_1003BE538;
   v22 = v12;
-  v23 = v13;
-  v24 = v10;
-  v25 = a5;
-  v16 = v10;
+  v23 = manifestID;
+  v24 = referencesCopy;
+  placeholderCopy = placeholder;
+  v16 = referencesCopy;
   v17 = v14;
   v18 = v12;
-  v19 = [(MBSQLiteDB *)database performWithConnection:a6 accessor:v21];
+  v19 = [(MBSQLiteDB *)database performWithConnection:error accessor:v21];
 
   return v19;
 }
 
-- (id)domainNameForFileRecord:(id)a3 error:(id *)a4
+- (id)domainNameForFileRecord:(id)record error:(id *)error
 {
-  v6 = a3;
+  recordCopy = record;
   if (!self->_database)
   {
     __assert_rtn("[MBCKRefreshManifestDomainCache domainNameForFileRecord:error:]", "MBCKRefreshManifestDomainCache.m", 159, "_database");
   }
 
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("[MBCKRefreshManifestDomainCache domainNameForFileRecord:error:]", "MBCKRefreshManifestDomainCache.m", 160, "error");
   }
 
-  v7 = v6;
-  v8 = [v6 recordID];
-  v9 = [v8 recordName];
+  v7 = recordCopy;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
 
-  v10 = [MBCKFile fileIDFromRecordName:v9];
-  v11 = [(MBSQLiteDB *)self->_database fetchObjectOfClass:objc_opt_class() error:a4 sql:@"SELECT domainName FROM PendingManifestIDToDomainName WHERE manifestID IN (SELECT manifestID FROM PendingFileIDToManifestID WHERE referenceID = %@) LIMIT 1", v10];
+  v10 = [MBCKFile fileIDFromRecordName:recordName];
+  v11 = [(MBSQLiteDB *)self->_database fetchObjectOfClass:objc_opt_class() error:error sql:@"SELECT domainName FROM PendingManifestIDToDomainName WHERE manifestID IN (SELECT manifestID FROM PendingFileIDToManifestID WHERE referenceID = %@) LIMIT 1", v10];
   v12 = v11;
-  if (*a4)
+  if (*error)
   {
     v13 = 0;
   }
@@ -230,9 +230,9 @@ LABEL_17:
 
   else
   {
-    v14 = [(MBSQLiteDB *)self->_database fetchObjectOfClass:objc_opt_class() error:a4 sql:@"SELECT domainName FROM PendingManifestIDToDomainName WHERE manifestID IN (SELECT manifestID FROM PendingPlaceholderIDToManifestID WHERE referenceID = %@) LIMIT 1", v10];
+    v14 = [(MBSQLiteDB *)self->_database fetchObjectOfClass:objc_opt_class() error:error sql:@"SELECT domainName FROM PendingManifestIDToDomainName WHERE manifestID IN (SELECT manifestID FROM PendingPlaceholderIDToManifestID WHERE referenceID = %@) LIMIT 1", v10];
     v15 = v14;
-    if (*a4)
+    if (*error)
     {
       v13 = 0;
     }
@@ -263,7 +263,7 @@ LABEL_17:
       }
 
       [MBError errorWithCode:1 format:@"No file record or pending file domain record found with fileID = %@", v10];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
   }
 

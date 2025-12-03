@@ -1,42 +1,42 @@
 @interface DOCProgressCollectionListViewController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (CGSize)preferredContentSize;
 - (_TtC26DocumentManagerExecutables39DOCProgressCollectionListViewController)init;
 - (_TtCC26DocumentManagerExecutables39DOCProgressCollectionListViewController19ProgressListingView)primaryScrollView;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation DOCProgressCollectionListViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DOCProgressCollectionListViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  DOCProgressCollectionListViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  DOCProgressCollectionListViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  DOCProgressCollectionListViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  DOCProgressCollectionListViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for DOCProgressCollectionListViewController(0);
   v4 = v7.receiver;
-  [(DOCViewController *)&v7 viewWillDisappear:v3];
+  [(DOCViewController *)&v7 viewWillDisappear:disappearCopy];
   v5 = *&v4[OBJC_IVAR____TtC26DocumentManagerExecutables39DOCProgressCollectionListViewController_source + 8];
   ObjectType = swift_getObjectType();
   (*(v5 + 16))(v4, 0, 0, ObjectType, v5);
@@ -44,7 +44,7 @@
 
 - (CGSize)preferredContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCProgressCollectionListViewController.collectionView.getter();
   [v3 contentSize];
   v5 = v4;
@@ -57,19 +57,19 @@
   return result;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v8.receiver = self;
   v8.super_class = type metadata accessor for DOCProgressCollectionListViewController(0);
   v6 = v8.receiver;
-  [(DOCProgressCollectionListViewController *)&v8 setEditing:v5 animated:v4];
+  [(DOCProgressCollectionListViewController *)&v8 setEditing:editingCopy animated:animatedCopy];
   v7 = DOCProgressCollectionListViewController.collectionView.getter();
   [v7 setEditing_];
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -82,7 +82,7 @@
 
 - (_TtCC26DocumentManagerExecutables39DOCProgressCollectionListViewController19ProgressListingView)primaryScrollView
 {
-  v2 = self;
+  selfCopy = self;
 
   v3 = DOCProgressCollectionListViewController.collectionView.getter();
 

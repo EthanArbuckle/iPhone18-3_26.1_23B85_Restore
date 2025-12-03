@@ -1,9 +1,9 @@
 @interface VSApplicationUserAccount
-+ (id)applicationUserAccountsFromUserAccounts:(id)a3;
-+ (id)userAccountsFromApplicationUserAccounts:(id)a3 ForProviderID:(id)a4 allowedBundleIDs:(id)a5;
++ (id)applicationUserAccountsFromUserAccounts:(id)accounts;
++ (id)userAccountsFromApplicationUserAccounts:(id)accounts ForProviderID:(id)d allowedBundleIDs:(id)ds;
 - (VSApplicationUserAccount)init;
-- (VSApplicationUserAccount)initWithUserAccount:(id)a3;
-- (id)userAccountForProviderID:(id)a3 allowedBundleIDs:(id)a4;
+- (VSApplicationUserAccount)initWithUserAccount:(id)account;
+- (id)userAccountForProviderID:(id)d allowedBundleIDs:(id)ds;
 @end
 
 @implementation VSApplicationUserAccount
@@ -15,73 +15,73 @@
   return [(VSApplicationUserAccount *)&v3 init];
 }
 
-- (VSApplicationUserAccount)initWithUserAccount:(id)a3
+- (VSApplicationUserAccount)initWithUserAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v38.receiver = self;
   v38.super_class = VSApplicationUserAccount;
   v6 = [(VSApplicationUserAccount *)&v38 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originatingUserAccount, a3);
-    v8 = [v5 updateURL];
-    v9 = [v8 absoluteString];
-    v10 = [v9 copy];
+    objc_storeStrong(&v6->_originatingUserAccount, account);
+    updateURL = [accountCopy updateURL];
+    absoluteString = [updateURL absoluteString];
+    v10 = [absoluteString copy];
     updateURL = v7->_updateURL;
     v7->_updateURL = v10;
 
-    v7->_requiresSystemTrust = [v5 requiresSystemTrust];
-    if (![v5 sourceType])
+    v7->_requiresSystemTrust = [accountCopy requiresSystemTrust];
+    if (![accountCopy sourceType])
     {
-      v12 = [v5 sourceIdentifier];
-      v13 = [v12 copy];
+      sourceIdentifier = [accountCopy sourceIdentifier];
+      v13 = [sourceIdentifier copy];
       bundleId = v7->_bundleId;
       v7->_bundleId = v13;
     }
 
-    v15 = [v5 identifier];
-    v16 = [v15 copy];
+    identifier = [accountCopy identifier];
+    v16 = [identifier copy];
     identifier = v7->_identifier;
     v7->_identifier = v16;
 
-    v7->_accountType = [v5 accountType];
-    v7->_signedOut = [v5 isSignedOut];
-    v18 = [v5 subscriptionBillingCycleEndDate];
-    v19 = [v18 copy];
+    v7->_accountType = [accountCopy accountType];
+    v7->_signedOut = [accountCopy isSignedOut];
+    subscriptionBillingCycleEndDate = [accountCopy subscriptionBillingCycleEndDate];
+    v19 = [subscriptionBillingCycleEndDate copy];
     subscriptionBillingCycleEndDate = v7->_subscriptionBillingCycleEndDate;
     v7->_subscriptionBillingCycleEndDate = v19;
 
-    v21 = [v5 tierIdentifiers];
-    v22 = [v21 copy];
+    tierIdentifiers = [accountCopy tierIdentifiers];
+    v22 = [tierIdentifiers copy];
     tierIdentifiers = v7->_tierIdentifiers;
     v7->_tierIdentifiers = v22;
 
-    v24 = [v5 billingIdentifier];
-    v25 = [v24 copy];
+    billingIdentifier = [accountCopy billingIdentifier];
+    v25 = [billingIdentifier copy];
     billingIdentifier = v7->_billingIdentifier;
     v7->_billingIdentifier = v25;
 
-    v27 = [v5 authenticationData];
-    v28 = [v27 copy];
+    authenticationData = [accountCopy authenticationData];
+    v28 = [authenticationData copy];
     authenticationData = v7->_authenticationData;
     v7->_authenticationData = v28;
 
-    v7->_deviceCategory = [v5 deviceCategory];
-    v30 = [v5 appleSubscription];
+    v7->_deviceCategory = [accountCopy deviceCategory];
+    appleSubscription = [accountCopy appleSubscription];
 
-    if (v30)
+    if (appleSubscription)
     {
       v31 = [VSApplicationAppleSubscription alloc];
-      v32 = [v5 appleSubscription];
+      appleSubscription2 = [accountCopy appleSubscription];
 
-      if (!v32)
+      if (!appleSubscription2)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [userAccount appleSubscription] parameter must not be nil."];
       }
 
-      v33 = [v5 appleSubscription];
-      v34 = [v33 copy];
+      appleSubscription3 = [accountCopy appleSubscription];
+      v34 = [appleSubscription3 copy];
       v35 = [(VSApplicationAppleSubscription *)v31 initWithAppleSubscription:v34];
       appleSubscription = v7->_appleSubscription;
       v7->_appleSubscription = v35;
@@ -91,27 +91,27 @@
   return v7;
 }
 
-- (id)userAccountForProviderID:(id)a3 allowedBundleIDs:(id)a4
+- (id)userAccountForProviderID:(id)d allowedBundleIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VSApplicationUserAccount *)self bundleId];
-  v9 = [(VSApplicationUserAccount *)self bundleId];
-  if (!v9)
+  dCopy = d;
+  dsCopy = ds;
+  bundleId = [(VSApplicationUserAccount *)self bundleId];
+  bundleId2 = [(VSApplicationUserAccount *)self bundleId];
+  if (!bundleId2)
   {
     goto LABEL_6;
   }
 
-  v10 = v9;
-  v11 = [(VSApplicationUserAccount *)self bundleId];
+  v10 = bundleId2;
+  bundleId3 = [(VSApplicationUserAccount *)self bundleId];
 
-  if (!v11)
+  if (!bundleId3)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self bundleId] parameter must not be nil."];
   }
 
-  v12 = [(VSApplicationUserAccount *)self bundleId];
-  v13 = [v7 containsObject:v12];
+  bundleId4 = [(VSApplicationUserAccount *)self bundleId];
+  v13 = [dsCopy containsObject:bundleId4];
 
   if (v13)
   {
@@ -128,35 +128,35 @@ LABEL_6:
       _os_log_impl(&dword_23AB8E000, v15, OS_LOG_TYPE_DEFAULT, "JS User Account with no bundle ID, setting source type to VSUserAccountSourceTypeProvider", v36, 2u);
     }
 
-    v16 = v6;
+    v16 = dCopy;
     v14 = 2;
-    v8 = v16;
+    bundleId = v16;
   }
 
-  v17 = [(VSApplicationUserAccount *)self updateURL];
+  updateURL = [(VSApplicationUserAccount *)self updateURL];
 
-  if (!v17)
+  if (!updateURL)
   {
     goto LABEL_13;
   }
 
   v18 = MEMORY[0x277CBEBC0];
-  v19 = [(VSApplicationUserAccount *)self updateURL];
+  updateURL2 = [(VSApplicationUserAccount *)self updateURL];
 
-  if (!v19)
+  if (!updateURL2)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self updateURL] parameter must not be nil."];
   }
 
-  v20 = [(VSApplicationUserAccount *)self updateURL];
-  v17 = [v18 URLWithString:v20];
+  updateURL3 = [(VSApplicationUserAccount *)self updateURL];
+  updateURL = [v18 URLWithString:updateURL3];
 
-  if (!v17)
+  if (!updateURL)
   {
-    v17 = VSErrorLogObject();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    updateURL = VSErrorLogObject();
+    if (os_log_type_enabled(updateURL, OS_LOG_TYPE_ERROR))
     {
-      [VSApplicationUserAccount userAccountForProviderID:v17 allowedBundleIDs:?];
+      [VSApplicationUserAccount userAccountForProviderID:updateURL allowedBundleIDs:?];
     }
 
     v21 = 0;
@@ -165,49 +165,49 @@ LABEL_6:
   else
   {
 LABEL_13:
-    v21 = [[VSUserAccount alloc] initWithAccountType:[(VSApplicationUserAccount *)self accountType] updateURL:v17 sourceType:v14 sourceIdentifier:v8];
-    v22 = [(VSApplicationUserAccount *)self identifier];
-    v23 = [v22 copy];
+    v21 = [[VSUserAccount alloc] initWithAccountType:[(VSApplicationUserAccount *)self accountType] updateURL:updateURL sourceType:v14 sourceIdentifier:bundleId];
+    identifier = [(VSApplicationUserAccount *)self identifier];
+    v23 = [identifier copy];
     [(VSUserAccount *)v21 setIdentifier:v23];
 
     [(VSUserAccount *)v21 setSignedOut:[(VSApplicationUserAccount *)self isSignedOut]];
-    v24 = [(VSApplicationUserAccount *)self subscriptionBillingCycleEndDate];
-    v25 = [v24 copy];
+    subscriptionBillingCycleEndDate = [(VSApplicationUserAccount *)self subscriptionBillingCycleEndDate];
+    v25 = [subscriptionBillingCycleEndDate copy];
     [(VSUserAccount *)v21 setSubscriptionBillingCycleEndDate:v25];
 
-    v26 = [(VSApplicationUserAccount *)self tierIdentifiers];
-    v27 = [v26 copy];
+    tierIdentifiers = [(VSApplicationUserAccount *)self tierIdentifiers];
+    v27 = [tierIdentifiers copy];
     [(VSUserAccount *)v21 setTierIdentifiers:v27];
 
-    v28 = [(VSApplicationUserAccount *)self billingIdentifier];
-    v29 = [v28 copy];
+    billingIdentifier = [(VSApplicationUserAccount *)self billingIdentifier];
+    v29 = [billingIdentifier copy];
     [(VSUserAccount *)v21 setBillingIdentifier:v29];
 
-    v30 = [(VSApplicationUserAccount *)self authenticationData];
-    v31 = [v30 copy];
+    authenticationData = [(VSApplicationUserAccount *)self authenticationData];
+    v31 = [authenticationData copy];
     [(VSUserAccount *)v21 setAuthenticationData:v31];
 
-    v32 = [(VSApplicationUserAccount *)self appleSubscription];
-    v33 = [v32 appleSubscription];
-    v34 = [v33 copy];
+    appleSubscription = [(VSApplicationUserAccount *)self appleSubscription];
+    v32AppleSubscription = [appleSubscription appleSubscription];
+    v34 = [v32AppleSubscription copy];
     [(VSUserAccount *)v21 setAppleSubscription:v34];
   }
 
   return v21;
 }
 
-+ (id)userAccountsFromApplicationUserAccounts:(id)a3 ForProviderID:(id)a4 allowedBundleIDs:(id)a5
++ (id)userAccountsFromApplicationUserAccounts:(id)accounts ForProviderID:(id)d allowedBundleIDs:(id)ds
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  accountsCopy = accounts;
+  dCopy = d;
+  dsCopy = ds;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v7;
+  v11 = accountsCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -222,7 +222,7 @@ LABEL_13:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v18 + 1) + 8 * i) userAccountForProviderID:v8 allowedBundleIDs:{v9, v18}];
+        v16 = [*(*(&v18 + 1) + 8 * i) userAccountForProviderID:dCopy allowedBundleIDs:{dsCopy, v18}];
         if (v16)
         {
           [v10 addObject:v16];
@@ -238,7 +238,7 @@ LABEL_13:
   return v10;
 }
 
-+ (id)applicationUserAccountsFromUserAccounts:(id)a3
++ (id)applicationUserAccountsFromUserAccounts:(id)accounts
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;

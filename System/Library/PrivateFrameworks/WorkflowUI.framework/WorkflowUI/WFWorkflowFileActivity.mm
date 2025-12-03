@@ -1,9 +1,9 @@
 @interface WFWorkflowFileActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (CGRect)sourceRect;
 - (WFFileRepresentation)workflowFile;
-- (WFWorkflowFileActivity)initWithPopoverModel:(id)a3;
-- (WFWorkflowFileActivity)initWithSourceView:(id)a3 sourceRect:(CGRect)a4 sourceItem:(id)a5;
+- (WFWorkflowFileActivity)initWithPopoverModel:(id)model;
+- (WFWorkflowFileActivity)initWithSourceView:(id)view sourceRect:(CGRect)rect sourceItem:(id)item;
 - (id)activityType;
 - (id)activityViewController;
 - (id)createViewController;
@@ -28,11 +28,11 @@
 - (id)createViewController
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(WFWorkflowFileActivity *)self workflowFile];
-  v4 = [v3 fileURL];
+  workflowFile = [(WFWorkflowFileActivity *)self workflowFile];
+  fileURL = [workflowFile fileURL];
 
   v5 = objc_alloc(MEMORY[0x277D546D8]);
-  v12[0] = v4;
+  v12[0] = fileURL;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   v7 = [v5 initWithActivityItems:v6 applicationActivities:0];
 
@@ -54,25 +54,25 @@
 {
   if (self->_popoverModel)
   {
-    v2 = 0;
+    createViewController = 0;
   }
 
   else
   {
-    v2 = [(WFWorkflowFileActivity *)self createViewController];
-    v4 = [v2 popoverPresentationController];
-    v5 = [(WFWorkflowFileActivity *)self sourceView];
-    [v4 setSourceView:v5];
+    createViewController = [(WFWorkflowFileActivity *)self createViewController];
+    popoverPresentationController = [createViewController popoverPresentationController];
+    sourceView = [(WFWorkflowFileActivity *)self sourceView];
+    [popoverPresentationController setSourceView:sourceView];
 
     [(WFWorkflowFileActivity *)self sourceRect];
-    [v4 setSourceRect:?];
-    v6 = [(WFWorkflowFileActivity *)self sourceItem];
-    [v4 setSourceItem:v6];
+    [popoverPresentationController setSourceRect:?];
+    sourceItem = [(WFWorkflowFileActivity *)self sourceItem];
+    [popoverPresentationController setSourceItem:sourceItem];
 
-    [v4 setPermittedArrowDirections:{-[WFWorkflowFileActivity arrowDirection](self, "arrowDirection")}];
+    [popoverPresentationController setPermittedArrowDirections:{-[WFWorkflowFileActivity arrowDirection](self, "arrowDirection")}];
   }
 
-  return v2;
+  return createViewController;
 }
 
 - (void)performActivity
@@ -80,8 +80,8 @@
   popoverModel = self->_popoverModel;
   if (popoverModel)
   {
-    v3 = [(WFWorkflowFileActivity *)self createViewController];
-    [(WFPopoverModel *)popoverModel displayFileActivityWith:v3];
+    createViewController = [(WFWorkflowFileActivity *)self createViewController];
+    [(WFPopoverModel *)popoverModel displayFileActivityWith:createViewController];
   }
 }
 
@@ -90,13 +90,13 @@
   workflowFile = self->_workflowFile;
   if (!workflowFile)
   {
-    v4 = [(WFWorkflowFileActivity *)self activityItems];
-    v5 = [v4 objectsMatchingClass:objc_opt_class()];
-    v6 = [v5 firstObject];
+    activityItems = [(WFWorkflowFileActivity *)self activityItems];
+    v5 = [activityItems objectsMatchingClass:objc_opt_class()];
+    firstObject = [v5 firstObject];
 
-    v7 = [v6 record];
-    v8 = [v7 fileRepresentation];
-    v9 = [v8 writeToDiskWithError:0];
+    record = [firstObject record];
+    fileRepresentation = [record fileRepresentation];
+    v9 = [fileRepresentation writeToDiskWithError:0];
     v10 = self->_workflowFile;
     self->_workflowFile = v9;
 
@@ -106,12 +106,12 @@
   return workflowFile;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   if ([MEMORY[0x277D7C870] shortcutFileSharingEnabled])
   {
-    v4 = [v3 objectsMatchingClass:objc_opt_class()];
+    v4 = [itemsCopy objectsMatchingClass:objc_opt_class()];
     v5 = [v4 count] != 0;
   }
 
@@ -130,38 +130,38 @@
   return [v2 activityType];
 }
 
-- (WFWorkflowFileActivity)initWithPopoverModel:(id)a3
+- (WFWorkflowFileActivity)initWithPopoverModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = WFWorkflowFileActivity;
   v6 = [(UIActivity *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_popoverModel, a3);
+    objc_storeStrong(&v6->_popoverModel, model);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (WFWorkflowFileActivity)initWithSourceView:(id)a3 sourceRect:(CGRect)a4 sourceItem:(id)a5
+- (WFWorkflowFileActivity)initWithSourceView:(id)view sourceRect:(CGRect)rect sourceItem:(id)item
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  itemCopy = item;
   v18.receiver = self;
   v18.super_class = WFWorkflowFileActivity;
   v14 = [(UIActivity *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_sourceView, a3);
-    objc_storeStrong(&v15->_sourceItem, a5);
+    objc_storeStrong(&v14->_sourceView, view);
+    objc_storeStrong(&v15->_sourceItem, item);
     v15->_sourceRect.origin.x = x;
     v15->_sourceRect.origin.y = y;
     v15->_sourceRect.size.width = width;

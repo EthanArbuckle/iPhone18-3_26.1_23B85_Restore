@@ -1,16 +1,16 @@
 @interface HUQuickControlGridItemPredicate
-- (id)matchingControlItemsForControlItems:(id)a3;
+- (id)matchingControlItemsForControlItems:(id)items;
 @end
 
 @implementation HUQuickControlGridItemPredicate
 
-- (id)matchingControlItemsForControlItems:(id)a3
+- (id)matchingControlItemsForControlItems:(id)items
 {
-  v3 = a3;
-  v4 = [v3 na_any:&__block_literal_global_1];
-  if ([v3 count] > 1 || v4 && objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
+  itemsCopy = items;
+  v4 = [itemsCopy na_any:&__block_literal_global_1];
+  if ([itemsCopy count] > 1 || v4 && objc_msgSend(MEMORY[0x277D14CE8], "isAMac"))
   {
-    v5 = v3;
+    v5 = itemsCopy;
   }
 
   else

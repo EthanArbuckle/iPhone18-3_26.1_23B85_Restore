@@ -1,21 +1,21 @@
 @interface CRLImmutableBoard
-+ (id)copyInMemoryBoardWithoutRemappingWithBoard:(id)a3 error:(id *)a4;
-- (id)qa_drawingDataAndReturnError:(id *)a3;
++ (id)copyInMemoryBoardWithoutRemappingWithBoard:(id)board error:(id *)error;
+- (id)qa_drawingDataAndReturnError:(id *)error;
 @end
 
 @implementation CRLImmutableBoard
 
-+ (id)copyInMemoryBoardWithoutRemappingWithBoard:(id)a3 error:(id *)a4
++ (id)copyInMemoryBoardWithoutRemappingWithBoard:(id)board error:(id *)error
 {
-  v4 = a3;
-  v5 = sub_100EDD510(v4);
+  boardCopy = board;
+  v5 = sub_100EDD510(boardCopy);
 
   return v5;
 }
 
-- (id)qa_drawingDataAndReturnError:(id *)a3
+- (id)qa_drawingDataAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_100EB7474();
   v6 = v5;
 

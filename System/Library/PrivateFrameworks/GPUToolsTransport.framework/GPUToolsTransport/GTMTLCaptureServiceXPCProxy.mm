@@ -1,24 +1,24 @@
 @interface GTMTLCaptureServiceXPCProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (GTMTLCaptureServiceXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (GTMTLCaptureServiceXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties;
 - (id)createCaptureDescriptor;
-- (id)query:(id)a3;
-- (id)startWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (id)update:(id)a3;
+- (id)query:(id)query;
+- (id)startWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (id)update:(id)update;
 - (unint64_t)nextRequestID;
-- (unint64_t)registerObserver:(id)a3;
+- (unint64_t)registerObserver:(id)observer;
 - (void)abort;
-- (void)deregisterObserver:(unint64_t)a3;
+- (void)deregisterObserver:(unint64_t)observer;
 - (void)resume;
 - (void)stop;
 @end
 
 @implementation GTMTLCaptureServiceXPCProxy
 
-- (GTMTLCaptureServiceXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4
+- (GTMTLCaptureServiceXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  propertiesCopy = properties;
   v21.receiver = self;
   v21.super_class = GTMTLCaptureServiceXPCProxy;
   v8 = [(GTMTLCaptureServiceXPCProxy *)&v21 init];
@@ -26,14 +26,14 @@
   {
     v9 = &unk_2860F0CF8;
     v10 = [GTServiceConnection alloc];
-    v11 = [v7 deviceUDID];
-    v12 = -[GTServiceConnection initWithConnection:device:port:](v10, "initWithConnection:device:port:", v6, v11, [v7 servicePort]);
+    deviceUDID = [propertiesCopy deviceUDID];
+    v12 = -[GTServiceConnection initWithConnection:device:port:](v10, "initWithConnection:device:port:", connectionCopy, deviceUDID, [propertiesCopy servicePort]);
     connection = v8->_connection;
     v8->_connection = v12;
 
     v14 = [GTServiceProperties protocolMethods:v9];
-    v15 = [v7 protocolMethods];
-    v16 = newSetWithArrayMinusArray(v14, v15);
+    protocolMethods = [propertiesCopy protocolMethods];
+    v16 = newSetWithArrayMinusArray(v14, protocolMethods);
     ignoreMethods = v8->_ignoreMethods;
     v8->_ignoreMethods = v16;
 
@@ -41,16 +41,16 @@
     observerIdToPort = v8->_observerIdToPort;
     v8->_observerIdToPort = v18;
 
-    objc_storeStrong(&v8->_serviceProperties, a4);
+    objc_storeStrong(&v8->_serviceProperties, properties);
   }
 
   return v8;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   ignoreMethods = self->_ignoreMethods;
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   if ([(NSSet *)ignoreMethods containsObject:v6])
   {
     v7 = 0;
@@ -60,19 +60,19 @@
   {
     v9.receiver = self;
     v9.super_class = GTMTLCaptureServiceXPCProxy;
-    v7 = [(GTMTLCaptureServiceXPCProxy *)&v9 respondsToSelector:a3];
+    v7 = [(GTMTLCaptureServiceXPCProxy *)&v9 respondsToSelector:selector];
   }
 
   return v7;
 }
 
-- (unint64_t)registerObserver:(id)a3
+- (unint64_t)registerObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  v8 = [[GTMTLCaptureServiceReplyStream alloc] initWithObserver:v5];
+  v8 = [[GTMTLCaptureServiceReplyStream alloc] initWithObserver:observerCopy];
 
   v9 = [(GTServiceConnection *)self->_connection registerDispatcher:v8];
   connection = self->_connection;
@@ -96,23 +96,23 @@
   return uint64;
 }
 
-- (void)deregisterObserver:(unint64_t)a3
+- (void)deregisterObserver:(unint64_t)observer
 {
   observerIdToPort = self->_observerIdToPort;
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
   v8 = [(NSMutableDictionary *)observerIdToPort objectForKeyedSubscript:v7];
-  v9 = [v8 unsignedLongValue];
+  unsignedLongValue = [v8 unsignedLongValue];
 
   v10 = self->_observerIdToPort;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:observer];
   [(NSMutableDictionary *)v10 removeObjectForKey:v11];
 
   xdict = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(xdict, "_cmd", Name);
-  xpc_dictionary_set_uint64(xdict, "observerId", a3);
+  xpc_dictionary_set_uint64(xdict, "observerId", observer);
   v13 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:xdict error:0];
-  [(GTServiceConnection *)self->_connection deregisterDispatcher:v9];
+  [(GTServiceConnection *)self->_connection deregisterDispatcher:unsignedLongValue];
 }
 
 - (void)abort
@@ -139,39 +139,39 @@
   [(GTServiceConnection *)self->_connection sendMessage:xdict];
 }
 
-- (id)startWithDescriptor:(id)a3 completionHandler:(id)a4
+- (id)startWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v9 = -[GTCaptureRequestToken initWithCaptureService:andTokenId:]([GTCaptureRequestToken alloc], "initWithCaptureService:andTokenId:", self, [v7 requestID]);
+    v9 = -[GTCaptureRequestToken initWithCaptureService:andTokenId:]([GTCaptureRequestToken alloc], "initWithCaptureService:andTokenId:", self, [descriptorCopy requestID]);
     if (GTCoreLogUseOsLog())
     {
       v10 = gt_tagged_log(0x10u);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [GTMTLCaptureServiceXPCProxy startWithDescriptor:v7 completionHandler:v10];
+        [GTMTLCaptureServiceXPCProxy startWithDescriptor:descriptorCopy completionHandler:v10];
       }
     }
 
     else
     {
       v12 = *MEMORY[0x277D85E08];
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"StartWithDescriptor: %@", v7];
-      fprintf(v12, "%s\n", [v13 UTF8String]);
+      descriptorCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"StartWithDescriptor: %@", descriptorCopy];
+      fprintf(v12, "%s\n", [descriptorCopy UTF8String]);
     }
 
     empty = xpc_dictionary_create_empty();
     Name = sel_getName(a2);
     xpc_dictionary_set_string(empty, "_cmd", Name);
-    xpc_dictionary_set_nsobject(empty, "descriptor", v7);
+    xpc_dictionary_set_nsobject(empty, "descriptor", descriptorCopy);
     connection = self->_connection;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __69__GTMTLCaptureServiceXPCProxy_startWithDescriptor_completionHandler___block_invoke;
     v20[3] = &unk_279661A48;
-    v22 = v8;
+    v22 = handlerCopy;
     v17 = v9;
     v21 = v17;
     [(GTServiceConnection *)connection sendMessage:empty replyHandler:v20];
@@ -302,22 +302,22 @@ void __69__GTMTLCaptureServiceXPCProxy_startWithDescriptor_completionHandler___b
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)update:(id)a3
+- (id)update:(id)update
 {
   connection = self->_connection;
-  v6 = a3;
+  updateCopy = update;
   Name = sel_getName(a2);
-  v8 = ProxyCaptureBatchRequest(connection, self, v6, Name);
+  v8 = ProxyCaptureBatchRequest(connection, self, updateCopy, Name);
 
   return v8;
 }
 
-- (id)query:(id)a3
+- (id)query:(id)query
 {
   connection = self->_connection;
-  v6 = a3;
+  queryCopy = query;
   Name = sel_getName(a2);
-  v8 = ProxyCaptureBatchRequest(connection, self, v6, Name);
+  v8 = ProxyCaptureBatchRequest(connection, self, queryCopy, Name);
 
   return v8;
 }
@@ -345,10 +345,10 @@ void __69__GTMTLCaptureServiceXPCProxy_startWithDescriptor_completionHandler___b
 - (id)createCaptureDescriptor
 {
   v3 = [[GTCaptureDescriptor alloc] initWithRequestID:[(GTMTLCaptureServiceXPCProxy *)self nextRequestID]];
-  v4 = [(GTMTLCaptureServiceXPCProxy *)self serviceProperties];
-  v5 = [v4 version];
+  serviceProperties = [(GTMTLCaptureServiceXPCProxy *)self serviceProperties];
+  version = [serviceProperties version];
 
-  if (v5 <= 2)
+  if (version <= 2)
   {
     [(GTCaptureDescriptor *)v3 setSessionID:0];
   }

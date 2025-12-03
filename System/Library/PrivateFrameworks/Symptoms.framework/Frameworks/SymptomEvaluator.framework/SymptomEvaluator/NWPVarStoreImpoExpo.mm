@@ -1,15 +1,15 @@
 @interface NWPVarStoreImpoExpo
-- (NWPVarStoreImpoExpo)initWithQueue:(id)a3;
-- (id)_initWithImpoExpo:(id)a3;
-- (id)fetchItemUnderName:(id)a3 verificationBlock:(id)a4;
+- (NWPVarStoreImpoExpo)initWithQueue:(id)queue;
+- (id)_initWithImpoExpo:(id)expo;
+- (id)fetchItemUnderName:(id)name verificationBlock:(id)block;
 @end
 
 @implementation NWPVarStoreImpoExpo
 
-- (NWPVarStoreImpoExpo)initWithQueue:(id)a3
+- (NWPVarStoreImpoExpo)initWithQueue:(id)queue
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = NWPVarStoreImpoExpo;
   v5 = [(NWPVarStoreImpoExpo *)&v18 init];
@@ -20,8 +20,8 @@
 
   v6 = MEMORY[0x277D6B500];
   v7 = +[SystemSettingsRelay defaultRelay];
-  v8 = [v7 symptomEvaluatorDatabaseContainerPath];
-  v9 = [v6 workspaceWithName:@"netusage" atPath:v8 objectModelName:*MEMORY[0x277D6B618] objectModelBundle:0 useReadOnly:0];
+  symptomEvaluatorDatabaseContainerPath = [v7 symptomEvaluatorDatabaseContainerPath];
+  v9 = [v6 workspaceWithName:@"netusage" atPath:symptomEvaluatorDatabaseContainerPath objectModelName:*MEMORY[0x277D6B618] objectModelBundle:0 useReadOnly:0];
 
   v10 = [v9 copy];
   if (!v10)
@@ -42,7 +42,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v11 = [ImpoExpoService impoExpoServiceInWorkspace:v10 andQueue:v4];
+  v11 = [ImpoExpoService impoExpoServiceInWorkspace:v10 andQueue:queueCopy];
   ieservice = v5->ieservice;
   v5->ieservice = v11;
 
@@ -68,19 +68,19 @@ LABEL_12:
   return v13;
 }
 
-- (id)fetchItemUnderName:(id)a3 verificationBlock:(id)a4
+- (id)fetchItemUnderName:(id)name verificationBlock:(id)block
 {
   ieservice = self->ieservice;
   v7 = 0;
-  v5 = [(ImpoExpoService *)ieservice exportAndUnarchiveItemUnderName:a3 lastUpdated:&v7 verificationBlock:a4];
+  v5 = [(ImpoExpoService *)ieservice exportAndUnarchiveItemUnderName:name lastUpdated:&v7 verificationBlock:block];
 
   return v5;
 }
 
-- (id)_initWithImpoExpo:(id)a3
+- (id)_initWithImpoExpo:(id)expo
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  expoCopy = expo;
   v12.receiver = self;
   v12.super_class = NWPVarStoreImpoExpo;
   v6 = [(NWPVarStoreImpoExpo *)&v12 init];
@@ -90,9 +90,9 @@ LABEL_12:
     goto LABEL_4;
   }
 
-  if (v5)
+  if (expoCopy)
   {
-    objc_storeStrong(&v6->ieservice, a3);
+    objc_storeStrong(&v6->ieservice, expo);
 LABEL_4:
     v8 = v7;
     goto LABEL_8;

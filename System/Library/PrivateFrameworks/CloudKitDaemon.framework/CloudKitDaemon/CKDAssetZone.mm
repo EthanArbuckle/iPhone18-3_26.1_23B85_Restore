@@ -1,24 +1,24 @@
 @interface CKDAssetZone
-- (CKDAssetZone)initWithAssetZoneKey:(id)a3;
+- (CKDAssetZone)initWithAssetZoneKey:(id)key;
 - (NSMutableOrderedSet)assetRecords;
 - (id)CKPropertiesDescription;
-- (void)addMMCSItem:(id)a3;
-- (void)addMMCSSectionItem:(id)a3;
-- (void)addRereferencedMMCSPackageItem:(id)a3;
+- (void)addMMCSItem:(id)item;
+- (void)addMMCSSectionItem:(id)item;
+- (void)addRereferencedMMCSPackageItem:(id)item;
 @end
 
 @implementation CKDAssetZone
 
-- (CKDAssetZone)initWithAssetZoneKey:(id)a3
+- (CKDAssetZone)initWithAssetZoneKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v13.receiver = self;
   v13.super_class = CKDAssetZone;
   v6 = [(CKDAssetZone *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetZoneKey, a3);
+    objc_storeStrong(&v6->_assetZoneKey, key);
     v8 = objc_opt_new();
     assetRecords = v7->_assetRecords;
     v7->_assetRecords = v8;
@@ -31,12 +31,12 @@
   return v7;
 }
 
-- (void)addMMCSItem:(id)a3
+- (void)addMMCSItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   assetZoneKey = self->_assetZoneKey;
-  v38 = v5;
-  v9 = objc_msgSend_assetZoneKey(v5, v7, v8);
+  v38 = itemCopy;
+  v9 = objc_msgSend_assetZoneKey(itemCopy, v7, v8);
   LOBYTE(assetZoneKey) = objc_msgSend_isEqual_(assetZoneKey, v10, v9);
 
   if ((assetZoneKey & 1) == 0)
@@ -68,12 +68,12 @@
   objc_msgSend_addMMCSItem_(v16, v17, v38);
 }
 
-- (void)addRereferencedMMCSPackageItem:(id)a3
+- (void)addRereferencedMMCSPackageItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   assetZoneKey = self->_assetZoneKey;
-  v38 = v5;
-  v9 = objc_msgSend_assetZoneKey(v5, v7, v8);
+  v38 = itemCopy;
+  v9 = objc_msgSend_assetZoneKey(itemCopy, v7, v8);
   LOBYTE(assetZoneKey) = objc_msgSend_isEqual_(assetZoneKey, v10, v9);
 
   if ((assetZoneKey & 1) == 0)
@@ -105,12 +105,12 @@
   objc_msgSend_addRereferencedMMCSPackageItem_(v16, v17, v38);
 }
 
-- (void)addMMCSSectionItem:(id)a3
+- (void)addMMCSSectionItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   assetZoneKey = self->_assetZoneKey;
-  v38 = v5;
-  v9 = objc_msgSend_assetZoneKey(v5, v7, v8);
+  v38 = itemCopy;
+  v9 = objc_msgSend_assetZoneKey(itemCopy, v7, v8);
   LOBYTE(assetZoneKey) = objc_msgSend_isEqual_(assetZoneKey, v10, v9);
 
   if ((assetZoneKey & 1) == 0)

@@ -1,33 +1,33 @@
 @interface ATXProactiveSuggestionShadowLogger
-- (ATXProactiveSuggestionShadowLogger)initWithClientModelIds:(id)a3 shadowEventPublisher:(id)a4 clientModelPublisher:(id)a5 contextPublisher:(id)a6 bookmarkURLPath:(id)a7;
-- (id)newBookmarkWithURLPath:(id)a3 versionNumber:(id)a4 bookmark:(id)a5 metadata:(id)a6;
+- (ATXProactiveSuggestionShadowLogger)initWithClientModelIds:(id)ids shadowEventPublisher:(id)publisher clientModelPublisher:(id)modelPublisher contextPublisher:(id)contextPublisher bookmarkURLPath:(id)path;
+- (id)newBookmarkWithURLPath:(id)path versionNumber:(id)number bookmark:(id)bookmark metadata:(id)metadata;
 - (id)shadowLoggingPublisher;
-- (void)enumerateShadowLoggingResultsWithBlock:(id)a3 clientModelCacheUpdatedBlock:(id)a4 completionBlock:(id)a5;
-- (void)enumerateShadowLoggingResultsWithBlock:(id)a3 completionBlock:(id)a4;
+- (void)enumerateShadowLoggingResultsWithBlock:(id)block clientModelCacheUpdatedBlock:(id)updatedBlock completionBlock:(id)completionBlock;
+- (void)enumerateShadowLoggingResultsWithBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation ATXProactiveSuggestionShadowLogger
 
-- (ATXProactiveSuggestionShadowLogger)initWithClientModelIds:(id)a3 shadowEventPublisher:(id)a4 clientModelPublisher:(id)a5 contextPublisher:(id)a6 bookmarkURLPath:(id)a7
+- (ATXProactiveSuggestionShadowLogger)initWithClientModelIds:(id)ids shadowEventPublisher:(id)publisher clientModelPublisher:(id)modelPublisher contextPublisher:(id)contextPublisher bookmarkURLPath:(id)path
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idsCopy = ids;
+  publisherCopy = publisher;
+  modelPublisherCopy = modelPublisher;
+  contextPublisherCopy = contextPublisher;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = ATXProactiveSuggestionShadowLogger;
   v17 = [(ATXProactiveSuggestionShadowLogger *)&v23 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [idsCopy copy];
     clientModelIds = v17->_clientModelIds;
     v17->_clientModelIds = v18;
 
-    objc_storeStrong(&v17->_shadowEventPublisher, a4);
-    objc_storeStrong(&v17->_clientModelPublisher, a5);
-    objc_storeStrong(&v17->_contextPublisher, a6);
-    v20 = [v16 copy];
+    objc_storeStrong(&v17->_shadowEventPublisher, publisher);
+    objc_storeStrong(&v17->_clientModelPublisher, modelPublisher);
+    objc_storeStrong(&v17->_contextPublisher, contextPublisher);
+    v20 = [pathCopy copy];
     bookmarkURLPath = v17->_bookmarkURLPath;
     v17->_bookmarkURLPath = v20;
   }
@@ -35,31 +35,31 @@
   return v17;
 }
 
-- (void)enumerateShadowLoggingResultsWithBlock:(id)a3 completionBlock:(id)a4
+- (void)enumerateShadowLoggingResultsWithBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __93__ATXProactiveSuggestionShadowLogger_enumerateShadowLoggingResultsWithBlock_completionBlock___block_invoke;
   v12[3] = &unk_2785A0740;
-  v13 = v6;
+  v13 = blockCopy;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __93__ATXProactiveSuggestionShadowLogger_enumerateShadowLoggingResultsWithBlock_completionBlock___block_invoke_3;
   v10[3] = &unk_2785A0788;
-  v11 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = completionBlockCopy;
+  v8 = completionBlockCopy;
+  v9 = blockCopy;
   [(ATXProactiveSuggestionShadowLogger *)self enumerateShadowLoggingResultsWithBlock:v12 clientModelCacheUpdatedBlock:&__block_literal_global_214 completionBlock:v10];
 }
 
-- (void)enumerateShadowLoggingResultsWithBlock:(id)a3 clientModelCacheUpdatedBlock:(id)a4 completionBlock:(id)a5
+- (void)enumerateShadowLoggingResultsWithBlock:(id)block clientModelCacheUpdatedBlock:(id)updatedBlock completionBlock:(id)completionBlock
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  updatedBlockCopy = updatedBlock;
+  completionBlockCopy = completionBlock;
   bookmarkURLPath = self->_bookmarkURLPath;
   if (bookmarkURLPath)
   {
@@ -83,29 +83,29 @@
     _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "%@ - starting enumeration with bookmark: %@", buf, 0x16u);
   }
 
-  v16 = [(ATXProactiveSuggestionShadowLogger *)self shadowLoggingPublisher];
+  shadowLoggingPublisher = [(ATXProactiveSuggestionShadowLogger *)self shadowLoggingPublisher];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v40 = 0;
-  v17 = [v12 bookmark];
+  bookmark = [v12 bookmark];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __122__ATXProactiveSuggestionShadowLogger_enumerateShadowLoggingResultsWithBlock_clientModelCacheUpdatedBlock_completionBlock___block_invoke;
   v30[3] = &unk_2785A07B0;
   v30[4] = self;
-  v18 = v10;
+  v18 = completionBlockCopy;
   v31 = v18;
   v32 = buf;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __122__ATXProactiveSuggestionShadowLogger_enumerateShadowLoggingResultsWithBlock_clientModelCacheUpdatedBlock_completionBlock___block_invoke_24;
   v27[3] = &unk_2785A07D8;
-  v19 = v9;
+  v19 = updatedBlockCopy;
   v28 = v19;
-  v20 = v8;
+  v20 = blockCopy;
   v29 = v20;
-  v21 = [v16 sinkWithBookmark:v17 completion:v30 receiveInput:v27];
+  v21 = [shadowLoggingPublisher sinkWithBookmark:bookmark completion:v30 receiveInput:v27];
 
   if ((*(*&buf[8] + 24) & 1) == 0)
   {
@@ -240,18 +240,18 @@ LABEL_6:
 - (id)shadowLoggingPublisher
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ATXProactiveSuggestionShadowLogger *)self clientModelPublisher];
+  clientModelPublisher = [(ATXProactiveSuggestionShadowLogger *)self clientModelPublisher];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__ATXProactiveSuggestionShadowLogger_shadowLoggingPublisher__block_invoke;
   v15[3] = &unk_27859A798;
   v15[4] = self;
-  v4 = [v3 filterWithIsIncluded:v15];
+  v4 = [clientModelPublisher filterWithIsIncluded:v15];
 
-  v5 = [(ATXProactiveSuggestionShadowLogger *)self contextPublisher];
-  v16[0] = v5;
-  v6 = [(ATXProactiveSuggestionShadowLogger *)self shadowEventPublisher];
-  v16[1] = v6;
+  contextPublisher = [(ATXProactiveSuggestionShadowLogger *)self contextPublisher];
+  v16[0] = contextPublisher;
+  shadowEventPublisher = [(ATXProactiveSuggestionShadowLogger *)self shadowEventPublisher];
+  v16[1] = shadowEventPublisher;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   v8 = [v4 orderedMergeWithOthers:v7 comparator:&__block_literal_global_32_2];
 
@@ -435,14 +435,14 @@ void __60__ATXProactiveSuggestionShadowLogger_shadowLoggingPublisher__block_invo
   [*(a1 + 56) addObject:v9];
 }
 
-- (id)newBookmarkWithURLPath:(id)a3 versionNumber:(id)a4 bookmark:(id)a5 metadata:(id)a6
+- (id)newBookmarkWithURLPath:(id)path versionNumber:(id)number bookmark:(id)bookmark metadata:(id)metadata
 {
   v9 = MEMORY[0x277CEBBF8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v9 alloc] initWithURLPath:v13 versionNumber:v12 bookmark:v11 metadata:v10];
+  metadataCopy = metadata;
+  bookmarkCopy = bookmark;
+  numberCopy = number;
+  pathCopy = path;
+  v14 = [[v9 alloc] initWithURLPath:pathCopy versionNumber:numberCopy bookmark:bookmarkCopy metadata:metadataCopy];
 
   return v14;
 }

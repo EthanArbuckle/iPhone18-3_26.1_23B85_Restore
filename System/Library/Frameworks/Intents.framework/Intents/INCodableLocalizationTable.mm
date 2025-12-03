@@ -1,39 +1,39 @@
 @interface INCodableLocalizationTable
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (INCodableLocalizationTable)initWithBundleIdentifier:(id)a3 tableName:(id)a4;
-- (INCodableLocalizationTable)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (INCodableLocalizationTable)initWithBundleIdentifier:(id)identifier tableName:(id)name;
+- (INCodableLocalizationTable)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INCodableLocalizationTable
 
 - (unint64_t)hash
 {
-  v3 = [(INCodableLocalizationTable *)self tableName];
-  v4 = [v3 hash];
-  v5 = [(INCodableLocalizationTable *)self bundleIdentifier];
-  v6 = [v5 hash];
+  tableName = [(INCodableLocalizationTable *)self tableName];
+  v4 = [tableName hash];
+  bundleIdentifier = [(INCodableLocalizationTable *)self bundleIdentifier];
+  v6 = [bundleIdentifier hash];
 
   return v6 ^ v4;
 }
 
-- (INCodableLocalizationTable)initWithCoder:(id)a3
+- (INCodableLocalizationTable)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = INCodableLocalizationTable;
   v5 = [(INCodableLocalizationTable *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tableName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tableName"];
     tableName = v5->_tableName;
     v5->_tableName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
   }
@@ -41,36 +41,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeObject:self->_tableName forKey:@"tableName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_tableName forKey:@"tableName"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 intents_setPlistSafeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 intents_setPlistSafeObject:self->_tableName forKey:@"tableName"];
-  v6 = [v5 copy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary intents_setPlistSafeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [dictionary intents_setPlistSafeObject:self->_tableName forKey:@"tableName"];
+  v6 = [dictionary copy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(INCodableLocalizationTable *)self tableName];
-    v6 = [v4 tableName];
-    if ([v5 isEqualToString:v6])
+    tableName = [(INCodableLocalizationTable *)self tableName];
+    tableName2 = [equalCopy tableName];
+    if ([tableName isEqualToString:tableName2])
     {
-      v7 = [(INCodableLocalizationTable *)self bundleIdentifier];
-      v8 = [v4 bundleIdentifier];
-      v9 = [v7 isEqualToString:v8];
+      bundleIdentifier = [(INCodableLocalizationTable *)self bundleIdentifier];
+      bundleIdentifier2 = [equalCopy bundleIdentifier];
+      v9 = [bundleIdentifier isEqualToString:bundleIdentifier2];
     }
 
     else
@@ -87,30 +87,30 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [INCodableLocalizationTable allocWithZone:a3];
-  v5 = [(INCodableLocalizationTable *)self bundleIdentifier];
-  v6 = [(INCodableLocalizationTable *)self tableName];
-  v7 = [(INCodableLocalizationTable *)v4 initWithBundleIdentifier:v5 tableName:v6];
+  v4 = [INCodableLocalizationTable allocWithZone:zone];
+  bundleIdentifier = [(INCodableLocalizationTable *)self bundleIdentifier];
+  tableName = [(INCodableLocalizationTable *)self tableName];
+  v7 = [(INCodableLocalizationTable *)v4 initWithBundleIdentifier:bundleIdentifier tableName:tableName];
 
   return v7;
 }
 
-- (INCodableLocalizationTable)initWithBundleIdentifier:(id)a3 tableName:(id)a4
+- (INCodableLocalizationTable)initWithBundleIdentifier:(id)identifier tableName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = INCodableLocalizationTable;
   v8 = [(INCodableLocalizationTable *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     tableName = v8->_tableName;
     v8->_tableName = v11;
   }
@@ -118,15 +118,15 @@
   return v8;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = objc_alloc_init(INCodableLocalizationTable);
-  v6 = [v4 intents_stringForKey:@"tableName"];
+  v6 = [representationCopy intents_stringForKey:@"tableName"];
   tableName = v5->_tableName;
   v5->_tableName = v6;
 
-  v8 = [v4 intents_stringForKey:@"bundleIdentifier"];
+  v8 = [representationCopy intents_stringForKey:@"bundleIdentifier"];
 
   bundleIdentifier = v5->_bundleIdentifier;
   v5->_bundleIdentifier = v8;

@@ -1,17 +1,17 @@
 @interface CrossPlatformManualDetailsViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (CrossPlatformManualDetailsViewController)init;
 - (DCTCodeDelegate)dctDelegate;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)_constructDCTUrl:(id)a3 withPasscode:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)_constructDCTUrl:(id)url withPasscode:(id)passcode;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_doneButtonTapped;
-- (void)keyboardWasShown:(id)a3;
-- (void)keyboardWillBeHidden:(id)a3;
+- (void)keyboardWasShown:(id)shown;
+- (void)keyboardWillBeHidden:(id)hidden;
 - (void)resetFirstResponder;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -55,49 +55,49 @@
 
   [(SSOBBoldTrayButton *)self->_continueButton addTarget:self action:sel__doneButtonTapped forControlEvents:64];
   [(OBBoldTrayButton *)self->_continueButton setEnabled:0];
-  v8 = [(CrossPlatformManualDetailsViewController *)self buttonTray];
-  [v8 addButton:self->_continueButton];
+  buttonTray = [(CrossPlatformManualDetailsViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
   v9 = objc_alloc(MEMORY[0x277D75B40]);
   v10 = [v9 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v10];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 registerClass:objc_opt_class() forCellReuseIdentifier:@"SSManualEntryCell"];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"SSManualEntryCell"];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  v15 = [MEMORY[0x277D75348] clearColor];
-  [v14 setBackgroundColor:v15];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView4 setBackgroundColor:clearColor];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 setDataSource:self];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setDataSource:self];
 
-  v17 = [(OBTableWelcomeController *)self tableView];
-  [v17 setDelegate:self];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setDelegate:self];
 
-  v18 = [(OBTableWelcomeController *)self tableView];
-  [v18 setScrollEnabled:1];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setScrollEnabled:1];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  [v19 setAllowsMultipleSelection:0];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 setAllowsMultipleSelection:0];
 
-  v20 = [(OBTableWelcomeController *)self tableView];
-  [v20 reloadData];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 reloadData];
 
-  v21 = [(OBTableWelcomeController *)self tableView];
-  [v21 layoutIfNeeded];
+  tableView10 = [(OBTableWelcomeController *)self tableView];
+  [tableView10 layoutIfNeeded];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(CrossPlatformManualDetailsViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(CrossPlatformManualDetailsViewController *)self view];
+  [view layoutIfNeeded];
 
   v5.receiver = self;
   v5.super_class = CrossPlatformManualDetailsViewController;
@@ -110,36 +110,36 @@
 - (void)resetFirstResponder
 {
   v6 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 cellForRowAtIndexPath:v6];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v4 = [tableView cellForRowAtIndexPath:v6];
 
-  v5 = [v4 editableTextField];
-  [v5 becomeFirstResponder];
+  editableTextField = [v4 editableTextField];
+  [editableTextField becomeFirstResponder];
 }
 
-- (void)keyboardWasShown:(id)a3
+- (void)keyboardWasShown:(id)shown
 {
-  v8 = [a3 userInfo];
+  userInfo = [shown userInfo];
   p_keyboardSize = &self->_keyboardSize;
-  v5 = [v8 objectForKey:*MEMORY[0x277D76BB8]];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v5 CGRectValue];
   p_keyboardSize->width = v6;
   p_keyboardSize->height = v7;
 }
 
-- (void)keyboardWillBeHidden:(id)a3
+- (void)keyboardWillBeHidden:(id)hidden
 {
-  v3 = [(CrossPlatformManualDetailsViewController *)self view];
-  [v3 endEditing:1];
+  view = [(CrossPlatformManualDetailsViewController *)self view];
+  [view endEditing:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"SSManualEntryCell" forIndexPath:v6];
-  [v7 setupWithDelegate:self indexPath:v6];
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"SSManualEntryCell" forIndexPath:pathCopy];
+  [v7 setupWithDelegate:self indexPath:pathCopy];
+  v8 = [pathCopy row];
   v9 = v8;
   if (v8 == 1)
   {
@@ -156,38 +156,38 @@
     v12 = @"SESSION_ID_CELL_TITLE";
 LABEL_5:
     v13 = [v10 localizedStringForKey:v12 value:&stru_28753DF48 table:@"Localizable"];
-    v14 = [v7 editableTextField];
-    [v14 setPlaceholder:v13];
+    editableTextField = [v7 editableTextField];
+    [editableTextField setPlaceholder:v13];
 
-    v15 = [v7 editableTextField];
-    [v15 setAutocapitalizationType:3];
+    editableTextField2 = [v7 editableTextField];
+    [editableTextField2 setAutocapitalizationType:3];
     goto LABEL_6;
   }
 
-  v15 = _TSLogDomain();
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  editableTextField2 = _TSLogDomain();
+  if (os_log_type_enabled(editableTextField2, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = v6;
+    v22 = pathCopy;
     v23 = 2080;
     v24 = "[CrossPlatformManualDetailsViewController tableView:cellForRowAtIndexPath:]";
-    _os_log_impl(&dword_262AA8000, v15, OS_LOG_TYPE_DEFAULT, "Error no defined cell for index: %@ @%s", &v21, 0x16u);
+    _os_log_impl(&dword_262AA8000, editableTextField2, OS_LOG_TYPE_DEFAULT, "Error no defined cell for index: %@ @%s", &v21, 0x16u);
   }
 
 LABEL_6:
 
   [v7 setSelectionStyle:0];
   [v7 setTag:v9];
-  v16 = [v7 editableTextField];
-  [v16 setTag:v9];
+  editableTextField3 = [v7 editableTextField];
+  [editableTextField3 setTag:v9];
 
   if ((v9 & 0x8000000000000000) == 0 && v9 < [(NSMutableArray *)self->_values count])
   {
     v17 = [(NSMutableArray *)self->_values objectAtIndex:v9];
     if ([v17 length])
     {
-      v18 = [v7 editableTextField];
-      [v18 setText:v17];
+      editableTextField4 = [v7 editableTextField];
+      [editableTextField4 setText:v17];
     }
   }
 
@@ -196,80 +196,80 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 text];
-  v12 = v11;
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  text = [fieldCopy text];
+  v12 = text;
   v13 = &stru_28753DF48;
-  if (v11)
+  if (text)
   {
-    v13 = v11;
+    v13 = text;
   }
 
   v14 = v13;
 
   if ([(__CFString *)v14 length]<= 6)
   {
-    v15 = [(__CFString *)v14 stringByReplacingCharactersInRange:location withString:length, v10];
-    if ([v15 length] <= 6)
+    stringCopy = [(__CFString *)v14 stringByReplacingCharactersInRange:location withString:length, stringCopy];
+    if ([stringCopy length] <= 6)
     {
-      [v9 setText:v15];
+      [fieldCopy setText:stringCopy];
     }
   }
 
-  v16 = [v9 text];
-  v17 = [v16 length];
+  text2 = [fieldCopy text];
+  v17 = [text2 length];
 
   if (v17 >= 6)
   {
-    v18 = [v9 tag];
+    v18 = [fieldCopy tag];
     v19 = [MEMORY[0x277CCAA70] indexPathForRow:v18 + 1 inSection:0];
-    v20 = [(OBTableWelcomeController *)self tableView];
-    v21 = [v20 cellForRowAtIndexPath:v19];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    v21 = [tableView cellForRowAtIndexPath:v19];
 
     if (v21 && ([v21 editableTextField], v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
     {
-      v23 = [v21 editableTextField];
-      [v23 becomeFirstResponder];
+      editableTextField = [v21 editableTextField];
+      [editableTextField becomeFirstResponder];
     }
 
     else
     {
-      [v9 resignFirstResponder];
+      [fieldCopy resignFirstResponder];
     }
   }
 
   return 0;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [v4 tag];
+  returnCopy = return;
+  v5 = [returnCopy tag];
   if (v5 <= 0)
   {
     v6 = [MEMORY[0x277CCAA70] indexPathForRow:v5 + 1 inSection:0];
-    v7 = [(OBTableWelcomeController *)self tableView];
-    v8 = [v7 cellForRowAtIndexPath:v6];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    v8 = [tableView cellForRowAtIndexPath:v6];
 
     if (v8)
     {
-      v9 = [v8 editableTextField];
+      editableTextField = [v8 editableTextField];
 
-      if (v9)
+      if (editableTextField)
       {
-        v10 = [v8 contentView];
-        [v10 setUserInteractionEnabled:1];
+        contentView = [v8 contentView];
+        [contentView setUserInteractionEnabled:1];
 
-        v11 = [v8 editableTextField];
-        [v11 setUserInteractionEnabled:1];
+        editableTextField2 = [v8 editableTextField];
+        [editableTextField2 setUserInteractionEnabled:1];
 
-        v12 = [v8 editableTextField];
-        [v12 resignFirstResponder];
+        editableTextField3 = [v8 editableTextField];
+        [editableTextField3 resignFirstResponder];
 
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
@@ -283,7 +283,7 @@ LABEL_6:
 
   else
   {
-    [v4 resignFirstResponder];
+    [returnCopy resignFirstResponder];
   }
 
   return 1;
@@ -316,10 +316,10 @@ void __66__CrossPlatformManualDetailsViewController_textFieldShouldReturn___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  if ([(UITextField *)v4 tag]== 1)
+  editingCopy = editing;
+  if ([(UITextField *)editingCopy tag]== 1)
   {
     v5 = 11;
   }
@@ -329,20 +329,20 @@ void __66__CrossPlatformManualDetailsViewController_textFieldShouldReturn___bloc
     v5 = 4;
   }
 
-  [(UITextField *)v4 setReturnKeyType:v5];
-  [(UITextField *)v4 reloadInputViews];
+  [(UITextField *)editingCopy setReturnKeyType:v5];
+  [(UITextField *)editingCopy reloadInputViews];
   activeTextField = self->_activeTextField;
-  self->_activeTextField = v4;
+  self->_activeTextField = editingCopy;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   values = self->_values;
-  v5 = a3;
-  v6 = [v5 tag];
-  v7 = [v5 text];
+  editingCopy = editing;
+  v6 = [editingCopy tag];
+  text = [editingCopy text];
 
-  [(NSMutableArray *)values replaceObjectAtIndex:v6 withObject:v7];
+  [(NSMutableArray *)values replaceObjectAtIndex:v6 withObject:text];
   v11 = [(NSMutableArray *)self->_values objectAtIndexedSubscript:0];
   if ([v11 length])
   {
@@ -365,7 +365,7 @@ void __66__CrossPlatformManualDetailsViewController_textFieldShouldReturn___bloc
 - (void)_doneButtonTapped
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E]invalid DCTCodeDelegate delegate @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E]invalid DCTCodeDelegate delegate @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -407,12 +407,12 @@ void __61__CrossPlatformManualDetailsViewController__doneButtonTapped__block_inv
   }
 }
 
-- (id)_constructDCTUrl:(id)a3 withPasscode:(id)a4
+- (id)_constructDCTUrl:(id)url withPasscode:(id)passcode
 {
   v19[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCACE0];
-  v6 = a4;
-  v7 = a3;
+  passcodeCopy = passcode;
+  urlCopy = url;
   v8 = objc_alloc_init(v5);
   [v8 setScheme:@"https"];
   [v8 setHost:@"migrate.google"];
@@ -420,23 +420,23 @@ void __61__CrossPlatformManualDetailsViewController__doneButtonTapped__block_inv
   [v8 setPath:v9];
 
   v10 = objc_alloc_init(MEMORY[0x277CCACE0]);
-  v11 = [MEMORY[0x277CCAD18] queryItemWithName:@"s" value:v7];
+  v11 = [MEMORY[0x277CCAD18] queryItemWithName:@"s" value:urlCopy];
 
   v19[0] = v11;
-  v12 = [MEMORY[0x277CCAD18] queryItemWithName:@"p" value:v6];
+  v12 = [MEMORY[0x277CCAD18] queryItemWithName:@"p" value:passcodeCopy];
 
   v19[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
   [v10 setQueryItems:v13];
 
-  v14 = [v10 percentEncodedQuery];
-  [v8 setFragment:v14];
+  percentEncodedQuery = [v10 percentEncodedQuery];
+  [v8 setFragment:percentEncodedQuery];
   v15 = [v8 URL];
-  v16 = [v15 absoluteString];
+  absoluteString = [v15 absoluteString];
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return absoluteString;
 }
 
 - (TSSIMSetupFlowDelegate)delegate

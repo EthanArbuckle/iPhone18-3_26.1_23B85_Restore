@@ -1,5 +1,5 @@
 @interface HUQuickControlPushButtonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsRotationDirectionToggle;
 - (id)_axIconIdentifier;
 - (id)accessibilityLabel;
@@ -9,13 +9,13 @@
 
 @implementation HUQuickControlPushButtonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUQuickControlPushButtonView" hasInstanceMethod:@"controlState" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"HUQuickControlPushButtonView" hasInstanceMethod:@"profile" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlViewProfile" hasInstanceMethod:@"decorationIconDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"HFIconDescriptor" hasRequiredInstanceMethod:@"identifier"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUQuickControlPushButtonView" hasInstanceMethod:@"controlState" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"HUQuickControlPushButtonView" hasInstanceMethod:@"profile" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlViewProfile" hasInstanceMethod:@"decorationIconDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"HFIconDescriptor" hasRequiredInstanceMethod:@"identifier"];
 }
 
 - (id)_axIconIdentifier
@@ -28,30 +28,30 @@
 
 - (BOOL)_axIsRotationDirectionToggle
 {
-  v2 = [(HUQuickControlPushButtonViewAccessibility *)self _axIconIdentifier];
-  v3 = [v2 axContainsString:@"HFImageIconIdentifierDecorationRotationDirection"];
+  _axIconIdentifier = [(HUQuickControlPushButtonViewAccessibility *)self _axIconIdentifier];
+  v3 = [_axIconIdentifier axContainsString:@"HFImageIconIdentifierDecorationRotationDirection"];
 
   return v3;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(HUQuickControlPushButtonViewAccessibility *)self _axIconIdentifier];
-  v4 = accessibilityLabelForIconIdentifier(v3);
+  _axIconIdentifier = [(HUQuickControlPushButtonViewAccessibility *)self _axIconIdentifier];
+  v4 = accessibilityLabelForIconIdentifier(_axIconIdentifier);
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    accessibilityLabel = v4;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = HUQuickControlPushButtonViewAccessibility;
-    v6 = [(HUQuickControlPushButtonViewAccessibility *)&v9 accessibilityLabel];
+    accessibilityLabel = [(HUQuickControlPushButtonViewAccessibility *)&v9 accessibilityLabel];
   }
 
-  v7 = v6;
+  v7 = accessibilityLabel;
 
   return v7;
 }

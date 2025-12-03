@@ -1,47 +1,47 @@
 @interface NPKRemotePassActionPassView
 + (CGSize)_passImageSize;
 + (CGSize)contactImageSize;
-+ (void)_applyShadowToView:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NPKRemotePassActionPassView)initWithPassImage:(id)a3 frame:(CGRect)a4;
++ (void)_applyShadowToView:(id)view;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NPKRemotePassActionPassView)initWithPassImage:(id)image frame:(CGRect)frame;
 - (void)_setUpContactImageView;
-- (void)_setUpPassImageViewForImage:(id)a3;
+- (void)_setUpPassImageViewForImage:(id)image;
 - (void)layoutSubviews;
-- (void)setContactImage:(id)a3;
+- (void)setContactImage:(id)image;
 - (void)shakeImage;
 @end
 
 @implementation NPKRemotePassActionPassView
 
-- (NPKRemotePassActionPassView)initWithPassImage:(id)a3 frame:(CGRect)a4
+- (NPKRemotePassActionPassView)initWithPassImage:(id)image frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  imageCopy = image;
   v18.receiver = self;
   v18.super_class = NPKRemotePassActionPassView;
-  v10 = [(NPKRemotePassActionPassView *)&v18 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(NPKRemotePassActionPassView *)&v18 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = objc_alloc_init(UIImageView);
-    passImageView = v10->_passImageView;
-    v10->_passImageView = v11;
+    passImageView = height->_passImageView;
+    height->_passImageView = v11;
 
     v13 = objc_alloc_init(UIImageView);
-    contactImageView = v10->_contactImageView;
-    v10->_contactImageView = v13;
+    contactImageView = height->_contactImageView;
+    height->_contactImageView = v13;
 
     v15 = objc_alloc_init(UIView);
-    contactBackgroundView = v10->_contactBackgroundView;
-    v10->_contactBackgroundView = v15;
+    contactBackgroundView = height->_contactBackgroundView;
+    height->_contactBackgroundView = v15;
 
-    [(NPKRemotePassActionPassView *)v10 _setUpPassImageViewForImage:v9];
-    [(NPKRemotePassActionPassView *)v10 _setUpContactImageView];
+    [(NPKRemotePassActionPassView *)height _setUpPassImageViewForImage:imageCopy];
+    [(NPKRemotePassActionPassView *)height _setUpContactImageView];
   }
 
-  return v10;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -59,17 +59,17 @@
   PKSizeAlignedInRect();
   v10 = v9 + 4.0;
   [(UIView *)self->_contactBackgroundView setFrame:v7 + -2.0, v8 + -2.0, v9 + 4.0, v11 + 4.0];
-  v12 = [(UIView *)self->_contactBackgroundView layer];
-  [v12 setCornerRadius:v10 * 0.5];
+  layer = [(UIView *)self->_contactBackgroundView layer];
+  [layer setCornerRadius:v10 * 0.5];
 
   PKContentAlignmentMake();
   PKSizeAlignedInRect();
   [(UIImageView *)self->_contactImageView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [objc_opt_class() _passImageSize];
   v5 = v4;
   [objc_opt_class() contactImageSize];
@@ -80,10 +80,10 @@
   return result;
 }
 
-- (void)setContactImage:(id)a3
+- (void)setContactImage:(id)image
 {
   [(UIImageView *)self->_contactImageView setImage:?];
-  v5 = a3 == 0;
+  v5 = image == 0;
   [(UIImageView *)self->_contactImageView setHidden:v5];
   contactBackgroundView = self->_contactBackgroundView;
 
@@ -117,22 +117,22 @@
   return result;
 }
 
-- (void)_setUpPassImageViewForImage:(id)a3
+- (void)_setUpPassImageViewForImage:(id)image
 {
   passImageView = self->_passImageView;
   if (passImageView)
   {
-    v5 = a3;
-    v6 = [(UIImageView *)passImageView layer];
-    [v6 setMasksToBounds:1];
+    imageCopy = image;
+    layer = [(UIImageView *)passImageView layer];
+    [layer setMasksToBounds:1];
 
-    v7 = [(UIImageView *)self->_passImageView layer];
-    [v7 setCornerCurve:kCACornerCurveContinuous];
+    layer2 = [(UIImageView *)self->_passImageView layer];
+    [layer2 setCornerCurve:kCACornerCurveContinuous];
 
-    v8 = [(UIImageView *)self->_passImageView layer];
-    [v8 setCornerRadius:5.5];
+    layer3 = [(UIImageView *)self->_passImageView layer];
+    [layer3 setCornerRadius:5.5];
 
-    [(UIImageView *)self->_passImageView setImage:v5];
+    [(UIImageView *)self->_passImageView setImage:imageCopy];
     [objc_opt_class() _applyShadowToView:self->_passImageView];
     [(UIImageView *)self->_passImageView setAccessibilityIgnoresInvertColors:1];
     v9 = self->_passImageView;
@@ -158,24 +158,24 @@
   }
 }
 
-+ (void)_applyShadowToView:(id)a3
++ (void)_applyShadowToView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 layer];
-  [v4 setShadowRadius:12.0];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  [layer setShadowRadius:12.0];
 
   v5 = [UIColor colorWithWhite:0.0 alpha:0.15];
-  v6 = [v5 CGColor];
-  v7 = [v3 layer];
-  [v7 setShadowColor:v6];
+  cGColor = [v5 CGColor];
+  layer2 = [viewCopy layer];
+  [layer2 setShadowColor:cGColor];
 
-  v8 = [v3 layer];
-  [v8 setShadowOffset:{0.0, 12.0}];
+  layer3 = [viewCopy layer];
+  [layer3 setShadowOffset:{0.0, 12.0}];
 
-  v10 = [v3 layer];
+  layer4 = [viewCopy layer];
 
   LODWORD(v9) = 1.0;
-  [v10 setShadowOpacity:v9];
+  [layer4 setShadowOpacity:v9];
 }
 
 @end

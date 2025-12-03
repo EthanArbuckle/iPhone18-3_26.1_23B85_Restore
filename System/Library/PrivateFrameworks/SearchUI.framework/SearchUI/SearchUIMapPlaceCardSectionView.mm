@@ -1,11 +1,11 @@
 @interface SearchUIMapPlaceCardSectionView
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5;
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview;
 - (id)setupContentView;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
 - (void)didMoveToWindow;
-- (void)placeViewControllerDidUpdateHeight:(id)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)placeViewControllerDidUpdateHeight:(id)height;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTintColorProvider;
 @end
 
@@ -15,35 +15,35 @@
 {
   [(SearchUIMapPlaceCardSectionView *)self updateTintColorProvider];
   [(SearchUIMapPlaceCardSectionView *)self setDelegate:self];
-  v3 = [(SearchUICardSectionView *)self rowModel];
-  v4 = [v3 cardSection];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
 
   v5 = [SearchUIMapsViewController alloc];
-  v6 = [v4 mapsData];
-  v7 = [v4 shouldSearchDirectionsAlongCurrentRoute];
-  v8 = [(SearchUICardSectionView *)self feedbackDelegate];
-  v9 = [(SearchUICardSectionView *)self rowModel];
-  v10 = -[SearchUIMapsViewController initWithMapsData:searchAlongTheRoute:feedbackListener:queryId:](v5, "initWithMapsData:searchAlongTheRoute:feedbackListener:queryId:", v6, v7, v8, [v9 queryId]);
+  mapsData = [cardSection mapsData];
+  shouldSearchDirectionsAlongCurrentRoute = [cardSection shouldSearchDirectionsAlongCurrentRoute];
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+  rowModel2 = [(SearchUICardSectionView *)self rowModel];
+  v10 = -[SearchUIMapsViewController initWithMapsData:searchAlongTheRoute:feedbackListener:queryId:](v5, "initWithMapsData:searchAlongTheRoute:feedbackListener:queryId:", mapsData, shouldSearchDirectionsAlongCurrentRoute, feedbackDelegate, [rowModel2 queryId]);
 
   [(MUPlaceViewController *)v10 setPlaceViewControllerDelegate:self];
   [(MUPlaceViewController *)v10 setScrollEnabled:0];
   [(SearchUIMapPlaceCardSectionView *)self setMapViewController:v10];
-  v11 = [(SearchUIMapsViewController *)v10 view];
-  [v11 setBackgroundColor:0];
+  view = [(SearchUIMapsViewController *)v10 view];
+  [view setBackgroundColor:0];
 
-  v12 = [(SearchUIMapsViewController *)v10 view];
+  view2 = [(SearchUIMapsViewController *)v10 view];
 
-  return v12;
+  return view2;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUIMapPlaceCardSectionView;
-  [(SearchUIMapPlaceCardSectionView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUIMapPlaceCardSectionView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SearchUIMapPlaceCardSectionView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUIMapPlaceCardSectionView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -51,11 +51,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUIMapPlaceCardSectionView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUIMapPlaceCardSectionView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -71,11 +71,11 @@ LABEL_5:
   [(SearchUIMapPlaceCardSectionView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v4.receiver = self;
   v4.super_class = SearchUIMapPlaceCardSectionView;
-  [(SearchUIMapPlaceCardSectionView *)&v4 tlk_updateForAppearance:a3];
+  [(SearchUIMapPlaceCardSectionView *)&v4 tlk_updateForAppearance:appearance];
   [(SearchUIMapPlaceCardSectionView *)self updateTintColorProvider];
 }
 
@@ -115,25 +115,25 @@ id __58__SearchUIMapPlaceCardSectionView_updateTintColorProvider__block_invoke(u
   return v1;
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
   v5.receiver = self;
   v5.super_class = SearchUIMapPlaceCardSectionView;
-  [(SearchUICardSectionView *)&v5 containerView:a3 willMeasureArrangedSubviewsFittingSize:a5 forReason:a4.width, a4.height];
+  [(SearchUICardSectionView *)&v5 containerView:view willMeasureArrangedSubviewsFittingSize:reason forReason:size.width, size.height];
 }
 
-- (CGSize)containerView:(id)a3 systemLayoutSizeFittingSize:(CGSize)a4 forArrangedSubview:(id)a5
+- (CGSize)containerView:(id)view systemLayoutSizeFittingSize:(CGSize)size forArrangedSubview:(id)subview
 {
-  width = a4.width;
-  v7 = a5;
-  v8 = [(SearchUICardSectionView *)self contentView];
+  width = size.width;
+  subviewCopy = subview;
+  contentView = [(SearchUICardSectionView *)self contentView];
 
-  if (v8 == v7)
+  if (contentView == subviewCopy)
   {
-    v13 = [(SearchUIMapPlaceCardSectionView *)self mapViewController];
+    mapViewController = [(SearchUIMapPlaceCardSectionView *)self mapViewController];
     LODWORD(v14) = 1148846080;
     LODWORD(v15) = 1112014848;
-    [v13 _systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v14, v15}];
+    [mapViewController _systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v14, v15}];
     v9 = v16;
     v10 = v17;
 
@@ -146,8 +146,8 @@ id __58__SearchUIMapPlaceCardSectionView_updateTintColorProvider__block_invoke(u
 
       else
       {
-        v18 = [(SearchUIMapPlaceCardSectionView *)self tlks_screen];
-        [v18 bounds];
+        tlks_screen = [(SearchUIMapPlaceCardSectionView *)self tlks_screen];
+        [tlks_screen bounds];
         v10 = v19;
       }
     }
@@ -166,7 +166,7 @@ id __58__SearchUIMapPlaceCardSectionView_updateTintColorProvider__block_invoke(u
   return result;
 }
 
-- (void)placeViewControllerDidUpdateHeight:(id)a3
+- (void)placeViewControllerDidUpdateHeight:(id)height
 {
   if (![(SearchUIMapPlaceCardSectionView *)self alreadyDispatchedOnMainQueue])
   {

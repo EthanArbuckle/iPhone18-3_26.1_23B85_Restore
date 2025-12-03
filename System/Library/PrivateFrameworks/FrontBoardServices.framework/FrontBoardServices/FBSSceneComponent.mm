@@ -1,9 +1,9 @@
 @interface FBSSceneComponent
-- (FBSSceneComponent)initWithScene:(id)a3;
+- (FBSSceneComponent)initWithScene:(id)scene;
 - (id)clientScene;
 - (id)hostScene;
 - (void)invalidate;
-- (void)setScene:(id)a3;
+- (void)setScene:(id)scene;
 @end
 
 @implementation FBSSceneComponent
@@ -62,28 +62,28 @@
   self->_invalid = 1;
 }
 
-- (FBSSceneComponent)initWithScene:(id)a3
+- (FBSSceneComponent)initWithScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v6 = [(FBSSceneComponent *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scene, a3);
+    objc_storeStrong(&v6->_scene, scene);
   }
 
   return v7;
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  v5 = a3;
-  if (!v5)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [(FBSSceneComponent *)a2 setScene:?];
   }
 
-  self->_scene = v5;
+  self->_scene = sceneCopy;
 
   MEMORY[0x1EEE66BB8]();
 }

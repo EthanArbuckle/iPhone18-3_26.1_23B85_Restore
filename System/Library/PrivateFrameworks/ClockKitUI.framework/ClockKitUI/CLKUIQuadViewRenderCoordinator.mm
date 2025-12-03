@@ -1,23 +1,23 @@
 @interface CLKUIQuadViewRenderCoordinator
-- (CLKUIQuadViewRenderCoordinator)initWithQuadView:(id)a3 synchronizeWithClockTimer:(BOOL)a4;
-- (void)_renderLinkFired:(id)a3;
-- (void)setPaused:(BOOL)a3;
+- (CLKUIQuadViewRenderCoordinator)initWithQuadView:(id)view synchronizeWithClockTimer:(BOOL)timer;
+- (void)_renderLinkFired:(id)fired;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation CLKUIQuadViewRenderCoordinator
 
-- (CLKUIQuadViewRenderCoordinator)initWithQuadView:(id)a3 synchronizeWithClockTimer:(BOOL)a4
+- (CLKUIQuadViewRenderCoordinator)initWithQuadView:(id)view synchronizeWithClockTimer:(BOOL)timer
 {
-  v4 = a4;
-  v6 = a3;
+  timerCopy = timer;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = CLKUIQuadViewRenderCoordinator;
   v7 = [(CLKUIQuadViewRenderCoordinator *)&v18 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_quadView, v6);
-    if (v4)
+    objc_storeWeak(&v7->_quadView, viewCopy);
+    if (timerCopy)
     {
       objc_initWeak(&location, v8);
       v9 = [CLKUIClockTimerLink alloc];
@@ -52,30 +52,30 @@ void __77__CLKUIQuadViewRenderCoordinator_initWithQuadView_synchronizeWithClockT
   [WeakRetained _renderLinkFired:WeakRetained];
 }
 
-- (void)_renderLinkFired:(id)a3
+- (void)_renderLinkFired:(id)fired
 {
-  v5 = a3;
+  firedCopy = fired;
   WeakRetained = objc_loadWeakRetained(&self->_quadView);
   if (WeakRetained)
   {
-    [v5 timestamp];
+    [firedCopy timestamp];
     [WeakRetained _prepareAndRenderForTime:0 inGroup:1 checkForDrawable:self->_renderDiscontinuity renderDiscontinuity:0 completion:?];
   }
 
   self->_renderDiscontinuity = 0;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  if ([(CLKUIQuadViewRenderCoordinator *)self isPaused]&& !v3)
+  pausedCopy = paused;
+  if ([(CLKUIQuadViewRenderCoordinator *)self isPaused]&& !pausedCopy)
   {
     self->_renderDiscontinuity = 1;
   }
 
   renderFrequencyLink = self->_renderFrequencyLink;
 
-  [(CLKUIRenderFrequencyLink *)renderFrequencyLink setPaused:v3];
+  [(CLKUIRenderFrequencyLink *)renderFrequencyLink setPaused:pausedCopy];
 }
 
 @end

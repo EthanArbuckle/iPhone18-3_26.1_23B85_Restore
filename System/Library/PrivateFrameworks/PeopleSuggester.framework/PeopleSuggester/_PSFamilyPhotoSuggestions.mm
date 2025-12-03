@@ -11,7 +11,7 @@
 + (id)photosContactsKnowledgeSuggestions
 {
   v46 = *MEMORY[0x1E69E9840];
-  v30 = [objc_opt_class() fetchVerifiedPersonsForFamilyPhotoSuggestionsModel];
+  fetchVerifiedPersonsForFamilyPhotoSuggestionsModel = [objc_opt_class() fetchVerifiedPersonsForFamilyPhotoSuggestionsModel];
   v2 = +[_PSLogging familyRecommenderChannel];
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
   {
@@ -37,7 +37,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v36, 8);
-  v6 = [v4 clientService];
+  clientService = [v4 clientService];
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -67,7 +67,7 @@
   v10 = *v7;
   v35 = 0;
   v11 = v10;
-  v12 = [v6 autonamingViewWithViewName:v11 error:&v35];
+  v12 = [clientService autonamingViewWithViewName:v11 error:&v35];
   v29 = v35;
 
   if (v12)
@@ -76,7 +76,7 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = v30;
+    v13 = fetchVerifiedPersonsForFamilyPhotoSuggestionsModel;
     v14 = [v13 countByEnumeratingWithState:&v31 objects:v40 count:16];
     if (v14)
     {
@@ -91,13 +91,13 @@
           }
 
           v17 = *(*(&v31 + 1) + 8 * i);
-          v18 = [v17 localIdentifier];
-          v19 = [v12 personForIdentifier:v18];
+          localIdentifier = [v17 localIdentifier];
+          v19 = [v12 personForIdentifier:localIdentifier];
 
           if (!v19 || ([v19 contactIdentifier], v20 = objc_claimAutoreleasedReturnValue(), v21 = v20 == 0, v20, v21))
           {
-            v22 = +[_PSLogging familyRecommenderChannel];
-            if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+            contactIdentifier = +[_PSLogging familyRecommenderChannel];
+            if (os_log_type_enabled(contactIdentifier, OS_LOG_TYPE_DEBUG))
             {
               [(_PSFamilyPhotoSuggestions *)&v41 photosContactsKnowledgeSuggestions:v17];
             }
@@ -105,8 +105,8 @@
 
           else
           {
-            v22 = [v19 contactIdentifier];
-            [v3 addObject:v22];
+            contactIdentifier = [v19 contactIdentifier];
+            [v3 addObject:contactIdentifier];
           }
         }
 
@@ -149,20 +149,20 @@
 + (id)photosRelationshipKnowledgeSuggestions
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() fetchVerifiedPersonsForFamilyPhotoSuggestionsModel];
+  fetchVerifiedPersonsForFamilyPhotoSuggestionsModel = [objc_opt_class() fetchVerifiedPersonsForFamilyPhotoSuggestionsModel];
   v4 = +[_PSLogging familyRecommenderChannel];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     +[(_PSFamilyPhotoSuggestions *)v4];
   }
 
-  v5 = [getPHPersonClass() batchFetchRelationshipInferencesForPersons:v3];
+  v5 = [getPHPersonClass() batchFetchRelationshipInferencesForPersons:fetchVerifiedPersonsForFamilyPhotoSuggestionsModel];
   v6 = objc_opt_new();
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __67___PSFamilyPhotoSuggestions_photosRelationshipKnowledgeSuggestions__block_invoke;
   v23[3] = &unk_1E7C26A88;
-  v25 = a1;
+  selfCopy = self;
   v7 = v6;
   v24 = v7;
   [v5 enumerateKeysAndObjectsUsingBlock:v23];
@@ -192,10 +192,10 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v19 + 1) + 8 * i) personUri];
-        if (v15)
+        personUri = [*(*(&v19 + 1) + 8 * i) personUri];
+        if (personUri)
         {
-          [v9 addObject:v15];
+          [v9 addObject:personUri];
         }
       }
 
@@ -233,25 +233,25 @@
 
   v3 = v2;
   _Block_object_dispose(&v10, 8);
-  v4 = [v2 sharedPhotoLibrary];
-  v5 = v4;
-  if (v4)
+  sharedPhotoLibrary = [v2 sharedPhotoLibrary];
+  v5 = sharedPhotoLibrary;
+  if (sharedPhotoLibrary)
   {
-    v6 = [v4 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [sharedPhotoLibrary librarySpecificFetchOptions];
     v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"verifiedType = %@ OR verifiedType = %@", &unk_1F2D8BC70, &unk_1F2D8BC88];
-    [v6 setPredicate:v7];
+    [librarySpecificFetchOptions setPredicate:v7];
 
-    [v6 setShouldPrefetchCount:1];
-    [v6 setFetchLimit:100];
-    v8 = [getPHPersonClass() fetchPersonsWithOptions:v6];
+    [librarySpecificFetchOptions setShouldPrefetchCount:1];
+    [librarySpecificFetchOptions setFetchLimit:100];
+    v8 = [getPHPersonClass() fetchPersonsWithOptions:librarySpecificFetchOptions];
   }
 
   else
   {
-    v6 = +[_PSLogging familyRecommenderChannel];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    librarySpecificFetchOptions = +[_PSLogging familyRecommenderChannel];
+    if (os_log_type_enabled(librarySpecificFetchOptions, OS_LOG_TYPE_FAULT))
     {
-      +[(_PSFamilyPhotoSuggestions *)v6];
+      +[(_PSFamilyPhotoSuggestions *)librarySpecificFetchOptions];
     }
 
     v8 = 0;
@@ -271,7 +271,7 @@
 + (void)photosRelationshipKnowledgeSuggestions
 {
   v9 = *MEMORY[0x1E69E9840];
-  [a1 count];
+  [self count];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_8(&dword_1B5ED1000, v1, v2, "photosRelationshipKnowledgeSuggestions: Resolved %lu contact ids", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];

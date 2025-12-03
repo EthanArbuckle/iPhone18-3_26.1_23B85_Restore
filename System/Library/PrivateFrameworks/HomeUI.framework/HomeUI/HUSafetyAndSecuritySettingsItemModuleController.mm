@@ -1,42 +1,42 @@
 @interface HUSafetyAndSecuritySettingsItemModuleController
-- (Class)cellClassForItem:(id)a3;
-- (HUSafetyAndSecuritySettingsItemModuleController)initWithModule:(id)a3 delegate:(id)a4;
+- (Class)cellClassForItem:(id)item;
+- (HUSafetyAndSecuritySettingsItemModuleController)initWithModule:(id)module delegate:(id)delegate;
 - (HUSafetyAndSecuritySettingsModuleControllerDelegate)delegate;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)bannerView:(id)a3 footerViewTapped:(id)a4;
-- (void)homeManager:(id)a3 didUpdateHH2State:(BOOL)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
-- (void)userSwitchCell:(id)a3 didTurnOn:(BOOL)a4;
+- (unint64_t)didSelectItem:(id)item;
+- (void)bannerView:(id)view footerViewTapped:(id)tapped;
+- (void)homeManager:(id)manager didUpdateHH2State:(BOOL)state;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
+- (void)userSwitchCell:(id)cell didTurnOn:(BOOL)on;
 @end
 
 @implementation HUSafetyAndSecuritySettingsItemModuleController
 
-- (HUSafetyAndSecuritySettingsItemModuleController)initWithModule:(id)a3 delegate:(id)a4
+- (HUSafetyAndSecuritySettingsItemModuleController)initWithModule:(id)module delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = HUSafetyAndSecuritySettingsItemModuleController;
-  v7 = [(HUItemModuleController *)&v11 initWithModule:a3];
+  v7 = [(HUItemModuleController *)&v11 initWithModule:module];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v9 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v9 addHomeManagerObserver:v8];
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8] addHomeManagerObserver:v8];
   }
 
   return v8;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -49,8 +49,8 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [v7 homeUpgradeBannerItem];
-    [v4 isEqual:v8];
+    homeUpgradeBannerItem = [v7 homeUpgradeBannerItem];
+    [itemCopy isEqual:homeUpgradeBannerItem];
   }
 
   v9 = objc_opt_class();
@@ -58,18 +58,18 @@
   return v9;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v35.receiver = self;
   v35.super_class = HUSafetyAndSecuritySettingsItemModuleController;
-  [(HUItemModuleController *)&v35 setupCell:v6 forItem:v7];
+  [(HUItemModuleController *)&v35 setupCell:cellCopy forItem:itemCopy];
   objc_opt_class();
-  v8 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = module;
   }
 
   else
@@ -79,15 +79,15 @@
 
   v10 = v9;
 
-  [v6 bounds];
+  [cellCopy bounds];
   v13 = [HUGridLayoutOptions defaultOptionsForViewSize:v11, v12];
   [(HUSafetyAndSecuritySettingsItemModuleController *)self setLayoutOptions:v13];
-  v14 = [v10 listenForSoundsItem];
-  if ([v7 isEqual:v14])
+  listenForSoundsItem = [v10 listenForSoundsItem];
+  if ([itemCopy isEqual:listenForSoundsItem])
   {
 
 LABEL_7:
-    v17 = v6;
+    v17 = cellCopy;
     [v17 setAccessoryView:0];
     [v17 setAccessoryType:1];
     [v17 setHideIcon:1];
@@ -96,21 +96,21 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v15 = [v10 notificationsItem];
-  v16 = [v7 isEqual:v15];
+  notificationsItem = [v10 notificationsItem];
+  v16 = [itemCopy isEqual:notificationsItem];
 
   if (v16)
   {
     goto LABEL_7;
   }
 
-  v21 = [v10 homeUpgradeBannerItem];
-  v22 = [v7 isEqual:v21];
+  homeUpgradeBannerItem = [v10 homeUpgradeBannerItem];
+  v22 = [itemCopy isEqual:homeUpgradeBannerItem];
 
   if (v22)
   {
     v23 = objc_opt_class();
-    v24 = v6;
+    v24 = cellCopy;
     if (v24)
     {
       if (objc_opt_isKindOfClass())
@@ -129,35 +129,35 @@ LABEL_8:
         goto LABEL_23;
       }
 
-      v26 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v26 handleFailureInFunction:v27 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v23, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v27 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v23, objc_opt_class()}];
     }
 
     v17 = 0;
 LABEL_23:
 
-    v28 = [(HUSafetyAndSecuritySettingsItemModuleController *)self layoutOptions];
-    v29 = [v28 bannerCellOptions];
-    v30 = [v24 layer];
-    [v30 cornerRadius];
-    [v29 setCellCornerRadius:?];
+    layoutOptions = [(HUSafetyAndSecuritySettingsItemModuleController *)self layoutOptions];
+    bannerCellOptions = [layoutOptions bannerCellOptions];
+    layer = [v24 layer];
+    [layer cornerRadius];
+    [bannerCellOptions setCellCornerRadius:?];
 
-    v31 = [(HUSafetyAndSecuritySettingsItemModuleController *)self layoutOptions];
-    v32 = [v31 bannerCellOptions];
-    [v17 setLayoutOptions:v32];
+    layoutOptions2 = [(HUSafetyAndSecuritySettingsItemModuleController *)self layoutOptions];
+    bannerCellOptions2 = [layoutOptions2 bannerCellOptions];
+    [v17 setLayoutOptions:bannerCellOptions2];
 
     [v17 setDelegate:self];
-    v33 = [v17 bannerView];
+    bannerView = [v17 bannerView];
     softwareUpdateBannerView = self->_softwareUpdateBannerView;
-    self->_softwareUpdateBannerView = v33;
+    self->_softwareUpdateBannerView = bannerView;
 
     goto LABEL_8;
   }
 
 LABEL_9:
   objc_opt_class();
-  v18 = v6;
+  v18 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -176,16 +176,16 @@ LABEL_9:
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v26.receiver = self;
   v26.super_class = HUSafetyAndSecuritySettingsItemModuleController;
-  [(HUItemModuleController *)&v26 updateCell:v8 forItem:v9 animated:v5];
+  [(HUItemModuleController *)&v26 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
   objc_opt_class();
-  v10 = v8;
+  v10 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -201,7 +201,7 @@ LABEL_9:
   if (v12)
   {
     objc_opt_class();
-    v13 = v9;
+    v13 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v14 = v13;
@@ -216,29 +216,29 @@ LABEL_9:
 
     if (v15)
     {
-      v16 = [v15 home];
-      v17 = [v15 user];
-      v18 = [v16 hf_handleForUser:v17];
+      home = [v15 home];
+      user = [v15 user];
+      v18 = [home hf_handleForUser:user];
       [v12 setUserHandle:v18];
 
-      v19 = [v16 homeAccessControlForUser:v17];
+      v19 = [home homeAccessControlForUser:user];
       [v12 setOn:{objc_msgSend(v19, "audioAnalysisUserDropInAccessLevel") == 2}];
-      if ([v16 hf_currentUserIsOwner])
+      if ([home hf_currentUserIsOwner])
       {
         v20 = 0;
       }
 
-      else if ([v16 hf_currentUserIsAdministrator])
+      else if ([home hf_currentUserIsAdministrator])
       {
-        v21 = [v17 uniqueIdentifier];
-        v22 = [v16 currentUser];
-        v23 = [v22 uniqueIdentifier];
-        v25 = [v21 hmf_isEqualToUUID:v23];
+        uniqueIdentifier = [user uniqueIdentifier];
+        currentUser = [home currentUser];
+        uniqueIdentifier2 = [currentUser uniqueIdentifier];
+        v25 = [uniqueIdentifier hmf_isEqualToUUID:uniqueIdentifier2];
 
-        v24 = [v16 homeAccessControlForUser:v17];
-        LODWORD(v22) = [v24 isAdministrator];
+        v24 = [home homeAccessControlForUser:user];
+        LODWORD(currentUser) = [v24 isAdministrator];
 
-        v20 = (v25 ^ 1) & v22;
+        v20 = (v25 ^ 1) & currentUser;
       }
 
       else
@@ -251,14 +251,14 @@ LABEL_9:
   }
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -268,8 +268,8 @@ LABEL_9:
 
   v7 = v6;
 
-  v8 = [v7 listenForSoundsItem];
-  v9 = [v4 isEqual:v8];
+  listenForSoundsItem = [v7 listenForSoundsItem];
+  v9 = [itemCopy isEqual:listenForSoundsItem];
 
   if (v9)
   {
@@ -278,8 +278,8 @@ LABEL_9:
 
   else
   {
-    v11 = [v7 notificationsItem];
-    v12 = [v4 isEqual:v11];
+    notificationsItem = [v7 notificationsItem];
+    v12 = [itemCopy isEqual:notificationsItem];
 
     if (!v12)
     {
@@ -291,29 +291,29 @@ LABEL_9:
   }
 
   v13 = objc_alloc(*v10);
-  v14 = [v7 home];
-  v15 = [v13 initWithHome:v14];
+  home = [v7 home];
+  v15 = [v13 initWithHome:home];
 
   v16 = [HUViewControllerPresentationRequest requestWithViewController:v15];
   v17 = 1;
   [v16 setAnimated:1];
   [v16 setPreferredPresentationType:1];
-  v18 = [(HUItemModuleController *)self host];
-  v19 = [v18 moduleController:self presentViewControllerForRequest:v16];
+  host = [(HUItemModuleController *)self host];
+  v19 = [host moduleController:self presentViewControllerForRequest:v16];
 
 LABEL_10:
   return v17;
 }
 
-- (void)bannerView:(id)a3 footerViewTapped:(id)a4
+- (void)bannerView:(id)view footerViewTapped:(id)tapped
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  viewCopy = view;
   objc_opt_class();
-  v6 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = module;
   }
 
   else
@@ -324,10 +324,10 @@ LABEL_10:
   v8 = v7;
 
   objc_opt_class();
-  v9 = [(HUSafetyAndSecuritySettingsItemModuleController *)self delegate];
+  delegate = [(HUSafetyAndSecuritySettingsItemModuleController *)self delegate];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = delegate;
   }
 
   else
@@ -337,45 +337,45 @@ LABEL_10:
 
   v11 = v10;
 
-  v12 = [(HUSafetyAndSecuritySettingsItemModuleController *)self softwareUpdateBannerView];
-  v13 = [v5 isEqual:v12];
+  softwareUpdateBannerView = [(HUSafetyAndSecuritySettingsItemModuleController *)self softwareUpdateBannerView];
+  v13 = [viewCopy isEqual:softwareUpdateBannerView];
 
   if (v13 && v11)
   {
-    v14 = [v8 home];
-    v15 = [v8 devices];
-    v16 = [v14 hf_homeHubMigrationBannerTapActionFromViewController:v11 devices:v15];
+    home = [v8 home];
+    devices = [v8 devices];
+    v16 = [home hf_homeHubMigrationBannerTapActionFromViewController:v11 devices:devices];
 
     v17 = HFLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v8 home];
-      v19 = [v8 home];
-      v20 = [v19 uniqueIdentifier];
-      v21 = [(HUSafetyAndSecuritySettingsItemModuleController *)self delegate];
+      home2 = [v8 home];
+      home3 = [v8 home];
+      uniqueIdentifier = [home3 uniqueIdentifier];
+      delegate2 = [(HUSafetyAndSecuritySettingsItemModuleController *)self delegate];
       v22 = 138413058;
-      v23 = v18;
+      v23 = home2;
       v24 = 2114;
-      v25 = v20;
+      v25 = uniqueIdentifier;
       v26 = 2112;
-      v27 = v5;
+      v27 = viewCopy;
       v28 = 2112;
-      v29 = v21;
+      v29 = delegate2;
       _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "<HUSafetyAndSecuritySettingsItemModuleController-bannerView:footerViewTapped:> User tapped softwareUpdateBannerView for home %@ (uniqueIdentifier:%{public}@ | bannerView = %@ | delegate = %@", &v22, 0x2Au);
     }
   }
 }
 
-- (void)userSwitchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)userSwitchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
+  onCopy = on;
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  cellCopy = cell;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"OFF";
-    if (v4)
+    if (onCopy)
     {
       v9 = @"ON";
     }
@@ -386,10 +386,10 @@ LABEL_10:
   }
 
   objc_opt_class();
-  v10 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = module;
   }
 
   else
@@ -399,35 +399,35 @@ LABEL_10:
 
   v12 = v11;
 
-  v13 = [v7 item];
+  item = [cellCopy item];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [v7 item];
-    v16 = [v12 enableUserPermissionSetting:v4 forItem:v15];
+    item2 = [cellCopy item];
+    v16 = [v12 enableUserPermissionSetting:onCopy forItem:item2];
 
     v28 = MEMORY[0x277D85DD0];
     v29 = 3221225472;
     v30 = __76__HUSafetyAndSecuritySettingsItemModuleController_userSwitchCell_didTurnOn___block_invoke;
     v31 = &unk_277DB7EB8;
-    v32 = v7;
-    v33 = v4;
+    v32 = cellCopy;
+    v33 = onCopy;
     v17 = [v16 addCompletionBlock:&v28];
   }
 
-  v18 = [v12 itemUpdater];
+  itemUpdater = [v12 itemUpdater];
   v19 = MEMORY[0x277D14788];
-  v20 = [v12 itemProviders];
-  v21 = [v19 requestToReloadItemProviders:v20 senderSelector:a2];
-  v22 = [v18 performItemUpdateRequest:v21];
+  itemProviders = [v12 itemProviders];
+  v21 = [v19 requestToReloadItemProviders:itemProviders senderSelector:a2];
+  v22 = [itemUpdater performItemUpdateRequest:v21];
 
   objc_opt_class();
-  v23 = [(HUItemModuleController *)self host];
+  host = [(HUItemModuleController *)self host];
   if (objc_opt_isKindOfClass())
   {
-    v24 = v23;
+    v24 = host;
   }
 
   else
@@ -440,8 +440,8 @@ LABEL_10:
   if (v25)
   {
     v26 = MEMORY[0x277D143D8];
-    v27 = [v7 item];
-    [v26 sendSwitchCellToggleEventForItem:v27 isOn:v4 title:@"userDisplayString" fromSourceViewController:v25];
+    item3 = [cellCopy item];
+    [v26 sendSwitchCellToggleEventForItem:item3 isOn:onCopy title:@"userDisplayString" fromSourceViewController:v25];
   }
 }
 
@@ -455,27 +455,27 @@ uint64_t __76__HUSafetyAndSecuritySettingsItemModuleController_userSwitchCell_di
   return result;
 }
 
-- (void)homeManager:(id)a3 didUpdateHH2State:(BOOL)a4
+- (void)homeManager:(id)manager didUpdateHH2State:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v16 = *MEMORY[0x277D85DE8];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v10 = 138412802;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v8;
     v14 = 1024;
-    v15 = v4;
+    v15 = stateCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@: didUpdateHH2State = %{BOOL}d", &v10, 0x1Cu);
   }
 
-  if (v4)
+  if (stateCopy)
   {
-    v9 = [(HUSafetyAndSecuritySettingsItemModuleController *)self delegate];
-    [v9 dismissToHomeSettings];
+    delegate = [(HUSafetyAndSecuritySettingsItemModuleController *)self delegate];
+    [delegate dismissToHomeSettings];
   }
 }
 

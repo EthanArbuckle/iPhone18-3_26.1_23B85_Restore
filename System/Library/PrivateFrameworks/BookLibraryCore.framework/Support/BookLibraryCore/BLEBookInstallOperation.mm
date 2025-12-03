@@ -1,48 +1,48 @@
 @interface BLEBookInstallOperation
-- (BLEBookInstallOperation)initWithInfo:(id)a3;
-- (BOOL)_installMediaAsset:(id)a3 assetInstalledPath:(id *)a4 fileName:(id *)a5 drmPath:(id *)a6 error:(id *)a7;
-- (BOOL)_prepareOperation:(id *)a3;
-- (BOOL)_unzipAsset:(id)a3 unzippedPath:(id *)a4 error:(id *)a5;
+- (BLEBookInstallOperation)initWithInfo:(id)info;
+- (BOOL)_installMediaAsset:(id)asset assetInstalledPath:(id *)path fileName:(id *)name drmPath:(id *)drmPath error:(id *)error;
+- (BOOL)_prepareOperation:(id *)operation;
+- (BOOL)_unzipAsset:(id)asset unzippedPath:(id *)path error:(id *)error;
 - (BOOL)sharedDownload;
 - (id)_bookManifest;
 - (id)_existingManifestEntry;
-- (id)_initWithInfo:(id)a3 syncManifest:(id)a4 purchaseManifest:(id)a5 sharedManifest:(id)a6;
-- (id)_manifestEntriesForInstallInfo:(id)a3 inManifest:(id)a4;
-- (id)_manifestEntryForInstallInfo:(id)a3 inManifest:(id)a4;
-- (id)_newManifestEntry:(BOOL)a3 withFileName:(id)a4;
-- (void)_addPurchaseManifestItem:(BOOL)a3;
-- (void)_installEpubRights:(id)a3;
-- (void)_installITunesArtwork:(id)a3 isDirectory:(BOOL)a4;
-- (void)_installITunesMetadataPlist:(id)a3 isDirectory:(BOOL)a4;
-- (void)_removeDuplicateEntry:(id)a3;
+- (id)_initWithInfo:(id)info syncManifest:(id)manifest purchaseManifest:(id)purchaseManifest sharedManifest:(id)sharedManifest;
+- (id)_manifestEntriesForInstallInfo:(id)info inManifest:(id)manifest;
+- (id)_manifestEntryForInstallInfo:(id)info inManifest:(id)manifest;
+- (id)_newManifestEntry:(BOOL)entry withFileName:(id)name;
+- (void)_addPurchaseManifestItem:(BOOL)item;
+- (void)_installEpubRights:(id)rights;
+- (void)_installITunesArtwork:(id)artwork isDirectory:(BOOL)directory;
+- (void)_installITunesMetadataPlist:(id)plist isDirectory:(BOOL)directory;
+- (void)_removeDuplicateEntry:(id)entry;
 - (void)main;
 - (void)run;
 @end
 
 @implementation BLEBookInstallOperation
 
-- (id)_initWithInfo:(id)a3 syncManifest:(id)a4 purchaseManifest:(id)a5 sharedManifest:(id)a6
+- (id)_initWithInfo:(id)info syncManifest:(id)manifest purchaseManifest:(id)purchaseManifest sharedManifest:(id)sharedManifest
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(BLEBookInstallOperation *)self initWithInfo:a3];
+  manifestCopy = manifest;
+  purchaseManifestCopy = purchaseManifest;
+  sharedManifestCopy = sharedManifest;
+  v14 = [(BLEBookInstallOperation *)self initWithInfo:info];
   p_isa = &v14->super.super.super.isa;
   if (v14)
   {
-    objc_storeStrong(&v14->_syncManifest, a4);
-    objc_storeStrong(p_isa + 8, a5);
-    objc_storeStrong(p_isa + 10, a6);
+    objc_storeStrong(&v14->_syncManifest, manifest);
+    objc_storeStrong(p_isa + 8, purchaseManifest);
+    objc_storeStrong(p_isa + 10, sharedManifest);
   }
 
   return p_isa;
 }
 
-- (BLEBookInstallOperation)initWithInfo:(id)a3
+- (BLEBookInstallOperation)initWithInfo:(id)info
 {
   v13.receiver = self;
   v13.super_class = BLEBookInstallOperation;
-  v3 = [(BLBaseBookInstallOperation *)&v13 initWithInfo:a3];
+  v3 = [(BLBaseBookInstallOperation *)&v13 initWithInfo:info];
   if (v3)
   {
     v4 = +[BLBookManifest syncedBookManifest];
@@ -63,13 +63,13 @@
   return v3;
 }
 
-- (id)_manifestEntriesForInstallInfo:(id)a3 inManifest:(id)a4
+- (id)_manifestEntriesForInstallInfo:(id)info inManifest:(id)manifest
 {
-  v5 = a3;
-  v6 = a4;
-  v41 = v5;
-  v7 = [v5 storeIdentifier];
-  v8 = [v6 manifestEntriesWithProperty:@"s" equalToNumber:v7 limitCount:0x7FFFFFFFFFFFFFFFLL];
+  infoCopy = info;
+  manifestCopy = manifest;
+  v41 = infoCopy;
+  storeIdentifier = [infoCopy storeIdentifier];
+  v8 = [manifestCopy manifestEntriesWithProperty:@"s" equalToNumber:storeIdentifier limitCount:0x7FFFFFFFFFFFFFFFLL];
 
   v9 = [v8 count];
   v10 = BLBookInstallLog();
@@ -99,8 +99,8 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[Install-Op]: Could not find restore item with key: %{public}@ ... now trying with key: %{public}@", buf, 0x16u);
   }
 
-  v13 = [v5 storeIdentifier];
-  v14 = [v6 manifestEntriesWithProperty:@"Item ID" equalToNumber:v13 limitCount:0x7FFFFFFFFFFFFFFFLL];
+  storeIdentifier2 = [infoCopy storeIdentifier];
+  v14 = [manifestCopy manifestEntriesWithProperty:@"Item ID" equalToNumber:storeIdentifier2 limitCount:0x7FFFFFFFFFFFFFFFLL];
 
   v15 = [v14 count];
   v16 = BLBookInstallLog();
@@ -127,8 +127,8 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[Install-Op]: Could not find restore item with key: %{public}@ ... now trying with key: %{public}@", buf, 0x16u);
   }
 
-  v21 = [v5 title];
-  v18 = [v6 manifestEntriesWithProperty:@"Name" equalToValue:v21 limitCount:5];
+  title = [infoCopy title];
+  v18 = [manifestCopy manifestEntriesWithProperty:@"Name" equalToValue:title limitCount:5];
 
   if ([(__CFString *)v18 count])
   {
@@ -144,8 +144,8 @@ LABEL_11:
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "[Install-Op]: Restore item found with key: %{public}@", buf, 0xCu);
       }
 
-      v25 = [(__CFString *)v18 firstObject];
-      v47 = v25;
+      firstObject = [(__CFString *)v18 firstObject];
+      v47 = firstObject;
       v19 = [NSArray arrayWithObjects:&v47 count:1];
     }
 
@@ -153,17 +153,17 @@ LABEL_11:
     {
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
-        v28 = [v41 title];
+        title2 = [v41 title];
         *buf = 138412290;
-        v49 = v28;
+        v49 = title2;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "[Install-Op]: Found multiple restore items with title: %@.  De-duping by artistName", buf, 0xCu);
       }
 
-      v29 = [v41 artistName];
+      artistName = [v41 artistName];
 
-      if (v29)
+      if (artistName)
       {
-        v40 = v6;
+        v40 = manifestCopy;
         v19 = objc_opt_new();
         v42 = 0u;
         v43 = 0u;
@@ -186,8 +186,8 @@ LABEL_11:
 
               v34 = *(*(&v42 + 1) + 8 * i);
               v35 = [v34 objectForKeyedSubscript:{@"Artist", v40}];
-              v36 = [v41 artistName];
-              v37 = [v35 isEqualToString:v36];
+              artistName2 = [v41 artistName];
+              v37 = [v35 isEqualToString:artistName2];
 
               if (v37)
               {
@@ -208,7 +208,7 @@ LABEL_11:
           while (v31);
         }
 
-        v6 = v40;
+        manifestCopy = v40;
       }
 
       else
@@ -232,9 +232,9 @@ LABEL_11:
     v26 = BLBookInstallLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      v27 = [v41 title];
+      title3 = [v41 title];
       *buf = 138412290;
-      v49 = v27;
+      v49 = title3;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "[Install-Op]: Entry not found title: %@", buf, 0xCu);
     }
 
@@ -246,9 +246,9 @@ LABEL_12:
   return v19;
 }
 
-- (id)_manifestEntryForInstallInfo:(id)a3 inManifest:(id)a4
+- (id)_manifestEntryForInstallInfo:(id)info inManifest:(id)manifest
 {
-  [(BLEBookInstallOperation *)self _manifestEntriesForInstallInfo:a3 inManifest:a4];
+  [(BLEBookInstallOperation *)self _manifestEntriesForInstallInfo:info inManifest:manifest];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -313,20 +313,20 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)_prepareOperation:(id *)a3
+- (BOOL)_prepareOperation:(id *)operation
 {
-  v5 = [(BLBaseBookInstallOperation *)self installInfo];
-  v6 = [v5 persistentIdentifier];
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  persistentIdentifier = [installInfo persistentIdentifier];
 
-  v7 = [v5 persistentIdentifier];
-  v8 = [v7 integerValue];
+  persistentIdentifier2 = [installInfo persistentIdentifier];
+  integerValue = [persistentIdentifier2 integerValue];
 
-  v9 = [v5 isRestore];
-  v10 = [v9 BOOLValue];
+  isRestore = [installInfo isRestore];
+  bOOLValue = [isRestore BOOLValue];
 
-  if (v8)
+  if (integerValue)
   {
-    v11 = v6 == 0;
+    v11 = persistentIdentifier == 0;
   }
 
   else
@@ -334,11 +334,11 @@ LABEL_15:
     v11 = 1;
   }
 
-  if (v11 && !v10)
+  if (v11 && !bOOLValue)
   {
     v12 = 0;
     v13 = 1;
-    if (!a3)
+    if (!operation)
     {
       goto LABEL_31;
     }
@@ -349,12 +349,12 @@ LABEL_15:
   v14 = BLBookInstallLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v5 persistentIdentifier];
-    v16 = [v5 storeIdentifier];
+    persistentIdentifier3 = [installInfo persistentIdentifier];
+    storeIdentifier = [installInfo storeIdentifier];
     v40 = 138543618;
-    v41 = v15;
+    v41 = persistentIdentifier3;
     v42 = 2112;
-    v43 = v16;
+    v43 = storeIdentifier;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Prepare ... persistentID == %{public}@, storeID == %@, isRestore == YES", &v40, 0x16u);
   }
 
@@ -365,8 +365,8 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[Install-Op]: Prepare ... Looking for restore entry in the purchase manifest.", &v40, 2u);
   }
 
-  v18 = [(BLEBookInstallOperation *)self purchaseManifest];
-  v19 = [(BLEBookInstallOperation *)self _manifestEntryForInstallInfo:v5 inManifest:v18];
+  purchaseManifest = [(BLEBookInstallOperation *)self purchaseManifest];
+  v19 = [(BLEBookInstallOperation *)self _manifestEntryForInstallInfo:installInfo inManifest:purchaseManifest];
 
   v20 = BLBookInstallLog();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -388,8 +388,8 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Prepare ... Looking for restore entry in the sync manifest.", &v40, 2u);
   }
 
-  v23 = [(BLEBookInstallOperation *)self syncManifest];
-  v19 = [(BLEBookInstallOperation *)self _manifestEntryForInstallInfo:v5 inManifest:v23];
+  syncManifest = [(BLEBookInstallOperation *)self syncManifest];
+  v19 = [(BLEBookInstallOperation *)self _manifestEntryForInstallInfo:installInfo inManifest:syncManifest];
 
   v24 = BLBookInstallLog();
   v20 = v24;
@@ -397,27 +397,27 @@ LABEL_15:
   {
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v35 = [v5 downloadID];
-      v36 = [v5 persistentIdentifier];
-      v37 = [v5 storeIdentifier];
-      v38 = [v5 title];
-      v39 = [v5 artistName];
+      downloadID = [installInfo downloadID];
+      persistentIdentifier4 = [installInfo persistentIdentifier];
+      storeIdentifier2 = [installInfo storeIdentifier];
+      title = [installInfo title];
+      artistName = [installInfo artistName];
       v40 = 138544386;
-      v41 = v35;
+      v41 = downloadID;
       v42 = 2114;
-      v43 = v36;
+      v43 = persistentIdentifier4;
       v44 = 2112;
-      v45 = v37;
+      v45 = storeIdentifier2;
       v46 = 2112;
-      v47 = v38;
+      v47 = title;
       v48 = 2112;
-      v49 = v39;
+      v49 = artistName;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [Install-Op]: Error: could not find manifest entry for restore book: [persistentID:%{public}@, storeID: %@, title:%@, author:%@]", &v40, 0x34u);
     }
 
     v12 = sub_1000A8F44(36, @"Bad backup plist", @"This plist entry for representing this download could not be found.");
     v13 = 0;
-    if (a3)
+    if (operation)
     {
       goto LABEL_30;
     }
@@ -442,16 +442,16 @@ LABEL_22:
   v13 = v26 != 0;
   if (v26)
   {
-    v27 = [v26 lastPathComponent];
-    [v5 setDestinationFilename:v27];
+    lastPathComponent = [v26 lastPathComponent];
+    [installInfo setDestinationFilename:lastPathComponent];
 
-    [v5 setFullRestoreFilePath:v26];
+    [installInfo setFullRestoreFilePath:v26];
     v28 = BLBookInstallLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [v5 fullRestoreFilePath];
+      fullRestoreFilePath = [installInfo fullRestoreFilePath];
       v40 = 138543362;
-      v41 = v29;
+      v41 = fullRestoreFilePath;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Prepare ... overriding install path to: %{public}@", &v40, 0xCu);
     }
 
@@ -463,23 +463,23 @@ LABEL_22:
     v30 = BLBookInstallLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v31 = [v5 persistentIdentifier];
-      v32 = [v5 title];
+      persistentIdentifier5 = [installInfo persistentIdentifier];
+      title2 = [installInfo title];
       v40 = 138543618;
-      v41 = v31;
+      v41 = persistentIdentifier5;
       v42 = 2112;
-      v43 = v32;
+      v43 = title2;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "[Install-Op]: Prepare ... backup path not found on a restore.  This is fatal ... persitentID == %{public}@, title == %@", &v40, 0x16u);
     }
 
     v12 = sub_1000A8F44(36, @"Bad backup plist", @"This backup path for this entry could not be found.");
   }
 
-  if (a3)
+  if (operation)
   {
 LABEL_30:
     v33 = v12;
-    *a3 = v12;
+    *operation = v12;
   }
 
 LABEL_31:
@@ -491,9 +491,9 @@ LABEL_31:
 {
   if (+[BLLibraryUtility _isMultiUser])
   {
-    v3 = [(BLBaseBookInstallOperation *)self installInfo];
-    v4 = [v3 isSample];
-    v5 = [v4 BOOLValue] ^ 1;
+    installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+    isSample = [installInfo isSample];
+    v5 = [isSample BOOLValue] ^ 1;
   }
 
   else
@@ -509,9 +509,9 @@ LABEL_31:
   v3 = BLBookInstallLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BLBaseBookInstallOperation *)self downloadID];
+    downloadID = [(BLBaseBookInstallOperation *)self downloadID];
     *buf = 138543362;
-    v62 = v4;
+    v62 = downloadID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: Operation began for download", buf, 0xCu);
   }
 
@@ -520,10 +520,10 @@ LABEL_31:
   v6 = v58;
   if (v5)
   {
-    v7 = [(BLBaseBookInstallOperation *)self installInfo];
-    v8 = [v7 databaseManager];
-    v9 = [(BLBaseBookInstallOperation *)self downloadID];
-    [v8 syncSaveDownloadStateWithId:v9 state:8];
+    installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+    databaseManager = [installInfo databaseManager];
+    downloadID2 = [(BLBaseBookInstallOperation *)self downloadID];
+    [databaseManager syncSaveDownloadStateWithId:downloadID2 state:8];
 
     v10 = +[NSUserDefaults standardUserDefaults];
     if ([v10 BOOLForKey:@"BKSimulateCrashAtInstallStart"])
@@ -531,9 +531,9 @@ LABEL_31:
       v11 = BLBookInstallLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(BLBaseBookInstallOperation *)self downloadID];
+        downloadID3 = [(BLBaseBookInstallOperation *)self downloadID];
         *buf = 138543362;
-        v62 = v12;
+        v62 = downloadID3;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: Simulating a crash during install start", buf, 0xCu);
       }
 
@@ -552,39 +552,39 @@ LABEL_31:
       [(BLEBookInstallOperation *)self purchaseManifest];
     }
     v15 = ;
-    v16 = [(BLBaseBookInstallOperation *)self installInfo];
-    v17 = [v16 permlink];
+    installInfo2 = [(BLBaseBookInstallOperation *)self installInfo];
+    permlink = [installInfo2 permlink];
 
-    v18 = [(BLBaseBookInstallOperation *)self installInfo];
-    v19 = [v18 isStoreDownload];
+    installInfo3 = [(BLBaseBookInstallOperation *)self installInfo];
+    isStoreDownload = [installInfo3 isStoreDownload];
 
-    if (v19)
+    if (isStoreDownload)
     {
-      v20 = [(BLBaseBookInstallOperation *)self installInfo];
-      v21 = [v20 storeIdentifier];
-      v22 = [(BLBaseBookInstallOperation *)self installInfo];
-      v23 = [v22 storePublicationVersion];
-      v24 = [v15 bookPathForAdamID:v21 withPublicationVersion:v23];
+      installInfo4 = [(BLBaseBookInstallOperation *)self installInfo];
+      storeIdentifier = [installInfo4 storeIdentifier];
+      installInfo5 = [(BLBaseBookInstallOperation *)self installInfo];
+      storePublicationVersion = [installInfo5 storePublicationVersion];
+      v24 = [v15 bookPathForAdamID:storeIdentifier withPublicationVersion:storePublicationVersion];
       [(BLEBookInstallOperation *)self setBookPath:v24];
     }
 
     else
     {
-      if (![v17 length])
+      if (![permlink length])
       {
         goto LABEL_19;
       }
 
-      v20 = [v15 bookPathPermalink:v17];
-      [(BLEBookInstallOperation *)self setBookPath:v20];
+      installInfo4 = [v15 bookPathPermalink:permlink];
+      [(BLEBookInstallOperation *)self setBookPath:installInfo4];
     }
 
 LABEL_19:
-    v25 = [(BLEBookInstallOperation *)self sharedDownload];
-    v26 = [(BLEBookInstallOperation *)self bookPath];
-    v27 = [v26 length];
+    sharedDownload = [(BLEBookInstallOperation *)self sharedDownload];
+    bookPath = [(BLEBookInstallOperation *)self bookPath];
+    v27 = [bookPath length];
 
-    if (!v25)
+    if (!sharedDownload)
     {
       v37 = BLBookInstallLog();
       v38 = os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT);
@@ -592,9 +592,9 @@ LABEL_19:
       {
         if (v38)
         {
-          v39 = [(BLBaseBookInstallOperation *)self downloadID];
+          downloadID4 = [(BLBaseBookInstallOperation *)self downloadID];
           *buf = 138543362;
-          v62 = v39;
+          v62 = downloadID4;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: We have an existing, non-shared download", buf, 0xCu);
         }
 
@@ -608,15 +608,15 @@ LABEL_36:
         else
         {
           v45 = [BLDownloadDRMOperation alloc];
-          v46 = [(BLBaseBookInstallOperation *)self installInfo];
-          v44 = [(BLDownloadDRMOperation *)v45 initWithInstallInfo:v46];
+          installInfo6 = [(BLBaseBookInstallOperation *)self installInfo];
+          v44 = [(BLDownloadDRMOperation *)v45 initWithInstallInfo:installInfo6];
 
           [(BLDownloadDRMOperation *)v44 start];
           if (![(BLDownloadDRMOperation *)v44 success])
           {
             [(BLBaseBookInstallOperation *)self setSuccess:0];
-            v47 = [(BLDownloadDRMOperation *)v44 error];
-            [(BLBaseBookInstallOperation *)self setError:v47];
+            error = [(BLDownloadDRMOperation *)v44 error];
+            [(BLBaseBookInstallOperation *)self setError:error];
 
             goto LABEL_41;
           }
@@ -633,15 +633,15 @@ LABEL_41:
           [v49 postNotificationName:BLSharedStorageUseChangedNotification object:0 userInfo:v48];
         }
 
-        v50 = [(BLBaseBookInstallOperation *)self error];
+        error2 = [(BLBaseBookInstallOperation *)self error];
 
         v51 = BLBookInstallLog();
         v52 = v51;
-        if (v50)
+        if (error2)
         {
           if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
           {
-            v53 = [(BLBaseBookInstallOperation *)self downloadID];
+            downloadID5 = [(BLBaseBookInstallOperation *)self downloadID];
             if ([(BLBaseBookInstallOperation *)self success])
             {
               v54 = @"succeeded";
@@ -652,13 +652,13 @@ LABEL_41:
               v54 = @"failed";
             }
 
-            v55 = [(BLBaseBookInstallOperation *)self error];
+            error3 = [(BLBaseBookInstallOperation *)self error];
             *buf = 138543874;
-            v62 = v53;
+            v62 = downloadID5;
             v63 = 2114;
             v64 = v54;
             v65 = 2112;
-            v66 = v55;
+            v66 = error3;
             _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [Install-Op]: Operation %{public}@ for download, error:  %@", buf, 0x20u);
 
 LABEL_54:
@@ -667,16 +667,16 @@ LABEL_54:
 
         else if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
-          v53 = [(BLBaseBookInstallOperation *)self downloadID];
-          v56 = [(BLBaseBookInstallOperation *)self success];
+          downloadID5 = [(BLBaseBookInstallOperation *)self downloadID];
+          success = [(BLBaseBookInstallOperation *)self success];
           v57 = @"failed";
-          if (v56)
+          if (success)
           {
             v57 = @"succeeded";
           }
 
           *buf = 138543618;
-          v62 = v53;
+          v62 = downloadID5;
           v63 = 2114;
           v64 = v57;
           _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: Operation %{public}@ for download", buf, 0x16u);
@@ -688,9 +688,9 @@ LABEL_54:
 
       if (v38)
       {
-        v40 = [(BLBaseBookInstallOperation *)self downloadID];
+        downloadID6 = [(BLBaseBookInstallOperation *)self downloadID];
         *buf = 138543362;
-        v62 = v40;
+        v62 = downloadID6;
         v41 = "(dID=%{public}@) [Install-Op]: We have a new, non-shared download";
         v42 = v37;
         v43 = OS_LOG_TYPE_DEFAULT;
@@ -704,51 +704,51 @@ LABEL_35:
 
     if (v27)
     {
-      v28 = [(BLEBookInstallOperation *)self _bookManifest];
-      v29 = [v28 manifestPath];
-      v30 = [v29 stringByDeletingLastPathComponent];
-      v31 = [(BLEBookInstallOperation *)self bookPath];
-      v32 = [v30 stringByAppendingPathComponent:v31];
+      _bookManifest = [(BLEBookInstallOperation *)self _bookManifest];
+      manifestPath = [_bookManifest manifestPath];
+      stringByDeletingLastPathComponent = [manifestPath stringByDeletingLastPathComponent];
+      bookPath2 = [(BLEBookInstallOperation *)self bookPath];
+      v32 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:bookPath2];
       [(BLEBookInstallOperation *)self setDrmPath:v32];
 
       [(BLEBookInstallOperation *)self setShouldSkipAssetInstallation:1];
-      v33 = BLBookInstallLog();
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+      downloadID8 = BLBookInstallLog();
+      if (os_log_type_enabled(downloadID8, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [(BLBaseBookInstallOperation *)self downloadID];
-        v35 = [(BLEBookInstallOperation *)self bookPath];
-        v36 = [(BLEBookInstallOperation *)self drmPath];
+        downloadID7 = [(BLBaseBookInstallOperation *)self downloadID];
+        bookPath3 = [(BLEBookInstallOperation *)self bookPath];
+        drmPath = [(BLEBookInstallOperation *)self drmPath];
         *buf = 138543874;
-        v62 = v34;
+        v62 = downloadID7;
         v63 = 2112;
-        v64 = v35;
+        v64 = bookPath3;
         v65 = 2112;
-        v66 = v36;
-        _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: We have an existing shared download. Book at %@, sinf at %@.", buf, 0x20u);
+        v66 = drmPath;
+        _os_log_impl(&_mh_execute_header, downloadID8, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: We have an existing shared download. Book at %@, sinf at %@.", buf, 0x20u);
       }
     }
 
     else
     {
-      v28 = BLBookInstallLog();
-      if (!os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      _bookManifest = BLBookInstallLog();
+      if (!os_log_type_enabled(_bookManifest, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_30;
       }
 
-      v33 = [(BLBaseBookInstallOperation *)self downloadID];
+      downloadID8 = [(BLBaseBookInstallOperation *)self downloadID];
       *buf = 138543362;
-      v62 = v33;
-      _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: We have a new shared download.", buf, 0xCu);
+      v62 = downloadID8;
+      _os_log_impl(&_mh_execute_header, _bookManifest, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: We have a new shared download.", buf, 0xCu);
     }
 
 LABEL_30:
     v37 = BLBookInstallLog();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
     {
-      v40 = +[IMLibraryPlist sharedRepositoryPath];
+      downloadID6 = +[IMLibraryPlist sharedRepositoryPath];
       *buf = 138543362;
-      v62 = v40;
+      v62 = downloadID6;
       v41 = "[Install-Op]: Shared book container location is: %{public}@";
       v42 = v37;
       v43 = OS_LOG_TYPE_DEBUG;
@@ -764,9 +764,9 @@ LABEL_34:
   v13 = BLBookInstallLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = [(BLBaseBookInstallOperation *)self downloadID];
+    downloadID9 = [(BLBaseBookInstallOperation *)self downloadID];
     *buf = 138543618;
-    v62 = v14;
+    v62 = downloadID9;
     v63 = 2112;
     v64 = v6;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [Install-Op]: Prepare failed. Bailing install. Error:  %@", buf, 0x16u);
@@ -779,12 +779,12 @@ LABEL_56:
 
 - (void)run
 {
-  v3 = [(BLEBookInstallOperation *)self drmPath];
+  drmPath = [(BLEBookInstallOperation *)self drmPath];
   if ([(BLEBookInstallOperation *)self shouldSkipAssetInstallation])
   {
-    if (v3)
+    if (drmPath)
     {
-      if ([v3 length])
+      if ([drmPath length])
       {
         v4 = @"not empty";
       }
@@ -803,12 +803,12 @@ LABEL_56:
     v13 = BLBookInstallLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(BLBaseBookInstallOperation *)self installInfo];
-      v15 = [v14 downloadID];
+      installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+      downloadID = [installInfo downloadID];
       *buf = 138543874;
-      v32 = v15;
+      v32 = downloadID;
       v33 = 2112;
-      v34 = v3;
+      v34 = drmPath;
       v35 = 2114;
       v36 = v4;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op] Skipping installMediaAsset because shouldSkipAssetIntallation is true. drmPath is %@ (is %{public}@).", buf, 0x20u);
@@ -821,12 +821,12 @@ LABEL_56:
 
   else
   {
-    v5 = [(BLBaseBookInstallOperation *)self installInfo];
+    installInfo2 = [(BLBaseBookInstallOperation *)self installInfo];
     v29 = 0;
     v30 = 0;
     v27 = 0;
-    v28 = v3;
-    v6 = [(BLEBookInstallOperation *)self _installMediaAsset:v5 assetInstalledPath:&v30 fileName:&v29 drmPath:&v28 error:&v27];
+    v28 = drmPath;
+    v6 = [(BLEBookInstallOperation *)self _installMediaAsset:installInfo2 assetInstalledPath:&v30 fileName:&v29 drmPath:&v28 error:&v27];
     v7 = v30;
     v8 = v29;
     v9 = v28;
@@ -836,17 +836,17 @@ LABEL_56:
     {
       v11 = 0;
       v12 = 0;
-      v3 = v9;
+      drmPath = v9;
       goto LABEL_20;
     }
 
-    v3 = v9;
+    drmPath = v9;
   }
 
-  v16 = [(BLBaseBookInstallOperation *)self installInfo];
-  v17 = [v16 databaseManager];
-  v18 = [(BLBaseBookInstallOperation *)self downloadID];
-  [v17 syncSaveDownloadStateWithId:v18 state:15];
+  installInfo3 = [(BLBaseBookInstallOperation *)self installInfo];
+  databaseManager = [installInfo3 databaseManager];
+  downloadID2 = [(BLBaseBookInstallOperation *)self downloadID];
+  [databaseManager syncSaveDownloadStateWithId:downloadID2 state:15];
 
   if (![(BLEBookInstallOperation *)self shouldSkipAssetInstallation])
   {
@@ -863,10 +863,10 @@ LABEL_56:
     v21 = BLBookInstallLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(BLBaseBookInstallOperation *)self installInfo];
-      v23 = [v22 downloadID];
+      installInfo4 = [(BLBaseBookInstallOperation *)self installInfo];
+      downloadID3 = [installInfo4 downloadID];
       *buf = 138543362;
-      v32 = v23;
+      v32 = downloadID3;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: Simulating a crash during install finish", buf, 0xCu);
     }
 
@@ -875,12 +875,12 @@ LABEL_56:
     raise(11);
   }
 
-  [(BLEBookInstallOperation *)self _installEpubRights:v3];
+  [(BLEBookInstallOperation *)self _installEpubRights:drmPath];
   [(BLEBookInstallOperation *)self _addPurchaseManifestItem:[(BLEBookInstallOperation *)self shouldSkipAssetInstallation]];
-  v24 = [(BLBaseBookInstallOperation *)self installInfo];
-  v25 = [v24 databaseManager];
-  v26 = [(BLBaseBookInstallOperation *)self downloadID];
-  [v25 syncSaveDownloadStateWithId:v26 state:16];
+  installInfo5 = [(BLBaseBookInstallOperation *)self installInfo];
+  databaseManager2 = [installInfo5 databaseManager];
+  downloadID4 = [(BLBaseBookInstallOperation *)self downloadID];
+  [databaseManager2 syncSaveDownloadStateWithId:downloadID4 state:16];
 
   v11 = 1;
   v12 = v7;
@@ -890,34 +890,34 @@ LABEL_20:
   [(BLBaseBookInstallOperation *)self setError:v10];
 }
 
-- (void)_installITunesMetadataPlist:(id)a3 isDirectory:(BOOL)a4
+- (void)_installITunesMetadataPlist:(id)plist isDirectory:(BOOL)directory
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BLEBookInstallOperation *)self _bookManifest];
-  v8 = [(BLEBookInstallOperation *)self purchaseManifest];
-  v9 = v8;
-  if (v7 == v8)
+  directoryCopy = directory;
+  plistCopy = plist;
+  _bookManifest = [(BLEBookInstallOperation *)self _bookManifest];
+  purchaseManifest = [(BLEBookInstallOperation *)self purchaseManifest];
+  v9 = purchaseManifest;
+  if (_bookManifest == purchaseManifest)
   {
-    v14 = [(BLBaseBookInstallOperation *)self plistPath];
-    v15 = [v14 length];
+    plistPath = [(BLBaseBookInstallOperation *)self plistPath];
+    v15 = [plistPath length];
 
     if (v15)
     {
-      if (v4)
+      if (directoryCopy)
       {
-        v12 = [v6 stringByAppendingPathComponent:@"iTunesMetadata.plist"];
+        v12 = [plistCopy stringByAppendingPathComponent:@"iTunesMetadata.plist"];
       }
 
       else
       {
-        v16 = [v6 stringByDeletingPathExtension];
-        v12 = [v16 stringByAppendingPathExtension:@"plist"];
+        stringByDeletingPathExtension = [plistCopy stringByDeletingPathExtension];
+        v12 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"plist"];
       }
 
-      v17 = [(BLBaseBookInstallOperation *)self plistPath];
+      plistPath2 = [(BLBaseBookInstallOperation *)self plistPath];
       v22 = 0;
-      v18 = [(BLBaseBookInstallOperation *)self _moveFile:v17 toPath:v12 error:&v22];
+      v18 = [(BLBaseBookInstallOperation *)self _moveFile:plistPath2 toPath:v12 error:&v22];
       v19 = v22;
 
       if ((v18 & 1) == 0)
@@ -925,9 +925,9 @@ LABEL_20:
         v20 = BLBookInstallLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v21 = [(BLBaseBookInstallOperation *)self downloadID];
+          downloadID = [(BLBaseBookInstallOperation *)self downloadID];
           *buf = 138543618;
-          v24 = v21;
+          v24 = downloadID;
           v25 = 2112;
           v26 = v19;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "(dID=%{public}@) [Install-Op]: Failed to install iTunesMetadata.plist. Error:  %@", buf, 0x16u);
@@ -942,17 +942,17 @@ LABEL_20:
   {
   }
 
-  v10 = [(BLBaseBookInstallOperation *)self plistPath];
-  v11 = [v10 length];
+  plistPath3 = [(BLBaseBookInstallOperation *)self plistPath];
+  v11 = [plistPath3 length];
 
   if (!v11)
   {
     v12 = BLBookInstallLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(BLBaseBookInstallOperation *)self downloadID];
+      downloadID2 = [(BLBaseBookInstallOperation *)self downloadID];
       *buf = 138543362;
-      v24 = v13;
+      v24 = downloadID2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: No iTunesMetadata.plist to install.", buf, 0xCu);
     }
 
@@ -960,56 +960,56 @@ LABEL_15:
   }
 }
 
-- (void)_installITunesArtwork:(id)a3 isDirectory:(BOOL)a4
+- (void)_installITunesArtwork:(id)artwork isDirectory:(BOOL)directory
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BLBaseBookInstallOperation *)self artworkPath];
-  v8 = [v7 length];
+  directoryCopy = directory;
+  artworkCopy = artwork;
+  artworkPath = [(BLBaseBookInstallOperation *)self artworkPath];
+  v8 = [artworkPath length];
 
   if (v8)
   {
-    if (v4)
+    if (directoryCopy)
     {
-      v9 = [v6 stringByAppendingPathComponent:@"iTunesArtwork"];
+      v9 = [artworkCopy stringByAppendingPathComponent:@"iTunesArtwork"];
     }
 
     else
     {
-      v12 = [v6 stringByDeletingPathExtension];
-      v9 = [v12 stringByAppendingPathExtension:@"jpg"];
+      stringByDeletingPathExtension = [artworkCopy stringByDeletingPathExtension];
+      v9 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"jpg"];
     }
 
     v13 = BLBookInstallLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(BLBaseBookInstallOperation *)self downloadID];
-      v15 = [(BLBaseBookInstallOperation *)self artworkPath];
+      downloadID = [(BLBaseBookInstallOperation *)self downloadID];
+      artworkPath2 = [(BLBaseBookInstallOperation *)self artworkPath];
       *buf = 138543874;
-      v25 = v14;
+      v25 = downloadID;
       v26 = 2112;
-      v27 = v15;
+      v27 = artworkPath2;
       v28 = 2112;
       v29 = v9;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: Moving asset %@ to %@.", buf, 0x20u);
     }
 
-    v16 = [(BLBaseBookInstallOperation *)self artworkPath];
+    artworkPath3 = [(BLBaseBookInstallOperation *)self artworkPath];
     v22 = 0;
     v23 = v9;
-    v17 = [(BLBaseBookInstallOperation *)self _moveFile:v16 toPath:&v23 installBehavior:0 error:&v22];
+    v17 = [(BLBaseBookInstallOperation *)self _moveFile:artworkPath3 toPath:&v23 installBehavior:0 error:&v22];
     v10 = v23;
 
     v18 = v22;
     if (v17)
     {
-      v19 = [(BLBaseBookInstallOperation *)self installInfo];
-      v20 = [v19 fileAttributes];
+      installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+      fileAttributes = [installInfo fileAttributes];
 
-      if ([v20 count])
+      if ([fileAttributes count])
       {
         v21 = +[NSFileManager defaultManager];
-        [v21 setAttributes:v20 ofItemAtPath:v10 error:0];
+        [v21 setAttributes:fileAttributes ofItemAtPath:v10 error:0];
       }
     }
   }
@@ -1019,33 +1019,33 @@ LABEL_15:
     v10 = BLBookInstallLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(BLBaseBookInstallOperation *)self downloadID];
+      downloadID2 = [(BLBaseBookInstallOperation *)self downloadID];
       *buf = 138543362;
-      v25 = v11;
+      v25 = downloadID2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: No iTunesArtwork to install.", buf, 0xCu);
     }
   }
 }
 
-- (void)_installEpubRights:(id)a3
+- (void)_installEpubRights:(id)rights
 {
-  v4 = a3;
-  v5 = [(BLBaseBookInstallOperation *)self installInfo];
-  v6 = [v5 epubRightsPath];
-  v7 = [v6 length];
+  rightsCopy = rights;
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  epubRightsPath = [installInfo epubRightsPath];
+  v7 = [epubRightsPath length];
 
   if (v7)
   {
     v8 = +[NSFileManager defaultManager];
-    v9 = [v4 stringByAppendingPathComponent:@"META-INF"];
+    v9 = [rightsCopy stringByAppendingPathComponent:@"META-INF"];
     v10 = [v9 stringByAppendingPathComponent:@"sinf.xml"];
     v11 = BLBookInstallLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(BLBaseBookInstallOperation *)self installInfo];
-      v13 = [v12 downloadID];
+      installInfo2 = [(BLBaseBookInstallOperation *)self installInfo];
+      downloadID = [installInfo2 downloadID];
       *buf = 138543618;
-      v31 = v13;
+      v31 = downloadID;
       v32 = 2112;
       v33 = v9;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: Writing EPR data for download to path: %@", buf, 0x16u);
@@ -1068,10 +1068,10 @@ LABEL_15:
         v21 = BLBookInstallLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v22 = [(BLBaseBookInstallOperation *)self installInfo];
-          v23 = [v22 downloadID];
+          installInfo3 = [(BLBaseBookInstallOperation *)self installInfo];
+          downloadID2 = [installInfo3 downloadID];
           *buf = 138543874;
-          v31 = v23;
+          v31 = downloadID2;
           v32 = 2114;
           v33 = v9;
           v34 = 2112;
@@ -1104,10 +1104,10 @@ LABEL_15:
       v21 = BLBookInstallLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [(BLBaseBookInstallOperation *)self installInfo];
-        v23 = [v22 downloadID];
+        installInfo3 = [(BLBaseBookInstallOperation *)self installInfo];
+        downloadID2 = [installInfo3 downloadID];
         *buf = 138543874;
-        v31 = v23;
+        v31 = downloadID2;
         v32 = 2114;
         v33 = v9;
         v34 = 2112;
@@ -1123,10 +1123,10 @@ LABEL_20:
 
 LABEL_9:
     v17 = v14;
-    v18 = [(BLBaseBookInstallOperation *)self installInfo];
-    v19 = [v18 epubRightsPath];
+    installInfo4 = [(BLBaseBookInstallOperation *)self installInfo];
+    epubRightsPath2 = [installInfo4 epubRightsPath];
     v26 = v14;
-    v20 = [v8 moveItemAtPath:v19 toPath:v10 error:&v26];
+    v20 = [v8 moveItemAtPath:epubRightsPath2 toPath:v10 error:&v26];
     v14 = v26;
 
     if (v20)
@@ -1139,10 +1139,10 @@ LABEL_21:
     v21 = BLBookInstallLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(BLBaseBookInstallOperation *)self installInfo];
-      v23 = [v22 downloadID];
+      installInfo3 = [(BLBaseBookInstallOperation *)self installInfo];
+      downloadID2 = [installInfo3 downloadID];
       *buf = 138543874;
-      v31 = v23;
+      v31 = downloadID2;
       v32 = 2114;
       v33 = v9;
       v34 = 2112;
@@ -1160,23 +1160,23 @@ LABEL_19:
 LABEL_22:
 }
 
-- (id)_newManifestEntry:(BOOL)a3 withFileName:(id)a4
+- (id)_newManifestEntry:(BOOL)entry withFileName:(id)name
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(BLBaseBookInstallOperation *)self installInfo];
-  v8 = [v7 manifestEntry:v4 withFileName:v6];
+  entryCopy = entry;
+  nameCopy = name;
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  v8 = [installInfo manifestEntry:entryCopy withFileName:nameCopy];
 
   return v8;
 }
 
-- (void)_removeDuplicateEntry:(id)a3
+- (void)_removeDuplicateEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(BLBaseBookInstallOperation *)self installInfo];
-  v6 = [v5 storeIdentifier];
+  entryCopy = entry;
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  storeIdentifier = [installInfo storeIdentifier];
 
-  if (v6)
+  if (storeIdentifier)
   {
     v7 = BLBookInstallLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1185,7 +1185,7 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[Install-Op]: Looking for duplicate from purchase manifest for store book", &v23, 2u);
     }
 
-    v8 = [v4 manifestEntriesWithProperty:@"s" equalToNumber:v6 limitCount:1];
+    v8 = [entryCopy manifestEntriesWithProperty:@"s" equalToNumber:storeIdentifier limitCount:1];
     v9 = [v8 count];
     v10 = BLBookInstallLog();
     v11 = v10;
@@ -1193,13 +1193,13 @@ LABEL_22:
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v12 = [v8 firstObject];
+        firstObject = [v8 firstObject];
         v23 = 138412290;
-        v24 = v12;
+        v24 = firstObject;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[Install-Op]: Removing for duplicate store book entry from purchase manifest: %@", &v23, 0xCu);
       }
 
-      [v4 removeManifestEntryWithStoreItemID:v6];
+      [entryCopy removeManifestEntryWithStoreItemID:storeIdentifier];
     }
 
     else
@@ -1216,9 +1216,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v13 = [(BLBaseBookInstallOperation *)self installInfo];
-  v14 = [v13 permlink];
-  v15 = [v14 length];
+  installInfo2 = [(BLBaseBookInstallOperation *)self installInfo];
+  permlink = [installInfo2 permlink];
+  v15 = [permlink length];
 
   if (v15)
   {
@@ -1229,30 +1229,30 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "[Install-Op]: Looking for duplicate entry from purchase manifest for edu mode book", &v23, 2u);
     }
 
-    v17 = [(BLBaseBookInstallOperation *)self installInfo];
-    v18 = [v17 permlink];
-    v8 = [v4 manifestEntriesWithProperty:@"iTunesU Permlink" equalToValue:v18 limitCount:1];
+    installInfo3 = [(BLBaseBookInstallOperation *)self installInfo];
+    permlink2 = [installInfo3 permlink];
+    v8 = [entryCopy manifestEntriesWithProperty:@"iTunesU Permlink" equalToValue:permlink2 limitCount:1];
 
     v19 = [v8 count];
     v20 = BLBookInstallLog();
-    v21 = v20;
+    installInfo4 = v20;
     if (v19 == 1)
     {
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         LOWORD(v23) = 0;
-        _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[Install-Op]: Removing for duplicate store book entry from purchase manifest", &v23, 2u);
+        _os_log_impl(&_mh_execute_header, installInfo4, OS_LOG_TYPE_INFO, "[Install-Op]: Removing for duplicate store book entry from purchase manifest", &v23, 2u);
       }
 
-      v21 = [(BLBaseBookInstallOperation *)self installInfo];
-      v22 = [v21 permlink];
-      [v4 removeManifestEntryWithDownloadPermalink:v22];
+      installInfo4 = [(BLBaseBookInstallOperation *)self installInfo];
+      permlink3 = [installInfo4 permlink];
+      [entryCopy removeManifestEntryWithDownloadPermalink:permlink3];
     }
 
     else if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       LOWORD(v23) = 0;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "[Install-Op]: Did not find a duplicate store book entry in purchase manifest", &v23, 2u);
+      _os_log_impl(&_mh_execute_header, installInfo4, OS_LOG_TYPE_DEBUG, "[Install-Op]: Did not find a duplicate store book entry in purchase manifest", &v23, 2u);
     }
 
     goto LABEL_21;
@@ -1261,9 +1261,9 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_addPurchaseManifestItem:(BOOL)a3
+- (void)_addPurchaseManifestItem:(BOOL)item
 {
-  v3 = a3;
+  itemCopy = item;
   v5 = BLBookInstallLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1271,20 +1271,20 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[Install-Op]: Adding purchase manifest", &v27, 2u);
   }
 
-  v6 = [(BLEBookInstallOperation *)self _bookManifest];
+  _bookManifest = [(BLEBookInstallOperation *)self _bookManifest];
   if ([(BLEBookInstallOperation *)self sharedDownload])
   {
     v7 = BLBookInstallLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 manifestPath];
+      manifestPath = [_bookManifest manifestPath];
       v27 = 138543362;
-      v28 = v8;
+      v28 = manifestPath;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Updating purchase manifest for shared download at user path: %{public}@", &v27, 0xCu);
     }
 
-    [(BLEBookInstallOperation *)self _removeDuplicateEntry:v6];
-    if (v3)
+    [(BLEBookInstallOperation *)self _removeDuplicateEntry:_bookManifest];
+    if (itemCopy)
     {
       bookPath = self->_bookPath;
     }
@@ -1294,57 +1294,57 @@ LABEL_22:
       bookPath = 0;
     }
 
-    v11 = [(BLEBookInstallOperation *)self _newManifestEntry:bookPath];
-    [v6 addManifestEntry:v11];
-    [v6 synchronizeData];
-    if (!v3)
+    destinationFilename = [(BLEBookInstallOperation *)self _newManifestEntry:bookPath];
+    [_bookManifest addManifestEntry:destinationFilename];
+    [_bookManifest synchronizeData];
+    if (!itemCopy)
     {
-      v13 = [(BLEBookInstallOperation *)self sharedManifest];
+      sharedManifest = [(BLEBookInstallOperation *)self sharedManifest];
       v14 = BLBookInstallLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v13 manifestPath];
+        manifestPath2 = [sharedManifest manifestPath];
         v27 = 138543362;
-        v28 = v15;
+        v28 = manifestPath2;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Updating shared manifest at path: %{public}@", &v27, 0xCu);
       }
 
-      [(BLEBookInstallOperation *)self _removeDuplicateEntry:v13];
+      [(BLEBookInstallOperation *)self _removeDuplicateEntry:sharedManifest];
       v16 = [(BLEBookInstallOperation *)self _newManifestEntry:1 withFileName:0];
-      [v13 addManifestEntry:v16];
-      [v13 synchronizeData];
+      [sharedManifest addManifestEntry:v16];
+      [sharedManifest synchronizeData];
     }
 
     goto LABEL_26;
   }
 
-  v10 = [(BLEBookInstallOperation *)self shouldSkipAssetInstallation];
-  v11 = BLBookInstallLog();
-  v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (!v10)
+  shouldSkipAssetInstallation = [(BLEBookInstallOperation *)self shouldSkipAssetInstallation];
+  destinationFilename = BLBookInstallLog();
+  v12 = os_log_type_enabled(destinationFilename, OS_LOG_TYPE_DEFAULT);
+  if (!shouldSkipAssetInstallation)
   {
     if (v12)
     {
-      v17 = [v6 manifestPath];
+      manifestPath3 = [_bookManifest manifestPath];
       v27 = 138543362;
-      v28 = v17;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Updating purchase single user manifest: %{public}@", &v27, 0xCu);
+      v28 = manifestPath3;
+      _os_log_impl(&_mh_execute_header, destinationFilename, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Updating purchase single user manifest: %{public}@", &v27, 0xCu);
     }
 
-    v11 = [(BLBaseBookInstallOperation *)self destinationFilename];
-    v18 = [(BLBaseBookInstallOperation *)self installInfo];
-    v19 = [v18 persistentIdentifier];
-    if (v19)
+    destinationFilename = [(BLBaseBookInstallOperation *)self destinationFilename];
+    installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+    persistentIdentifier = [installInfo persistentIdentifier];
+    if (persistentIdentifier)
     {
     }
 
     else
     {
-      v20 = [(BLBaseBookInstallOperation *)self installInfo];
-      v21 = [v20 isRestore];
-      v22 = [v21 BOOLValue];
+      installInfo2 = [(BLBaseBookInstallOperation *)self installInfo];
+      isRestore = [installInfo2 isRestore];
+      bOOLValue = [isRestore BOOLValue];
 
-      if ((v22 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v25 = BLBookInstallLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1353,21 +1353,21 @@ LABEL_22:
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Updating purchase manifest since isRestore == NO.", &v27, 2u);
         }
 
-        v24 = [v6 manifestEntriesWithProperty:@"Path" equalToValue:v11 limitCount:1];
+        v24 = [_bookManifest manifestEntriesWithProperty:@"Path" equalToValue:destinationFilename limitCount:1];
         if ([v24 count])
         {
           goto LABEL_25;
         }
 
-        v23 = [(BLEBookInstallOperation *)self _existingManifestEntry];
-        if (v23)
+        _existingManifestEntry = [(BLEBookInstallOperation *)self _existingManifestEntry];
+        if (_existingManifestEntry)
         {
-          [(BLEBookInstallOperation *)self _removeDuplicateEntry:v6];
+          [(BLEBookInstallOperation *)self _removeDuplicateEntry:_bookManifest];
         }
 
         v26 = [(BLEBookInstallOperation *)self _newManifestEntry:0];
-        [v6 addManifestEntry:v26];
-        [v6 synchronizeData];
+        [_bookManifest addManifestEntry:v26];
+        [_bookManifest synchronizeData];
 
 LABEL_24:
 LABEL_25:
@@ -1376,11 +1376,11 @@ LABEL_25:
       }
     }
 
-    v23 = BLBookInstallLog();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    _existingManifestEntry = BLBookInstallLog();
+    if (os_log_type_enabled(_existingManifestEntry, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v27) = 0;
-      _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Not updating purchase manifest because this is a restore download.", &v27, 2u);
+      _os_log_impl(&_mh_execute_header, _existingManifestEntry, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Not updating purchase manifest because this is a restore download.", &v27, 2u);
     }
 
     v24 = 0;
@@ -1390,7 +1390,7 @@ LABEL_25:
   if (v12)
   {
     LOWORD(v27) = 0;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Skip insertion of manifest entry for existing asset.", &v27, 2u);
+    _os_log_impl(&_mh_execute_header, destinationFilename, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Skip insertion of manifest entry for existing asset.", &v27, 2u);
   }
 
 LABEL_26:
@@ -1398,28 +1398,28 @@ LABEL_26:
 
 - (id)_bookManifest
 {
-  v3 = [(BLEBookInstallOperation *)self purchaseManifest];
-  v4 = [(BLEBookInstallOperation *)self syncManifest];
-  v5 = [(BLBaseBookInstallOperation *)self installInfo];
-  v6 = [v5 libraryItemIdentifier];
+  purchaseManifest = [(BLEBookInstallOperation *)self purchaseManifest];
+  syncManifest = [(BLEBookInstallOperation *)self syncManifest];
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  libraryItemIdentifier = [installInfo libraryItemIdentifier];
 
   v7 = BLBookInstallLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v29 = 138412290;
-    v30 = v6;
+    v30 = libraryItemIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Looking for book manifest for libraryItemIdentifier: %@ ...", &v29, 0xCu);
   }
 
-  if (!v6)
+  if (!libraryItemIdentifier)
   {
     goto LABEL_14;
   }
 
-  v8 = [v4 manifestEntriesWithProperty:@"Persistent ID" equalToValue:v6 limitCount:1];
+  v8 = [syncManifest manifestEntriesWithProperty:@"Persistent ID" equalToValue:libraryItemIdentifier limitCount:1];
   if ([v8 count] == 1)
   {
-    v9 = v4;
+    v9 = syncManifest;
     v10 = BLBookInstallLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -1430,7 +1430,7 @@ LABEL_26:
 
   else
   {
-    v11 = [v3 manifestEntriesWithProperty:@"Persistent ID" equalToValue:v6 limitCount:1];
+    v11 = [purchaseManifest manifestEntriesWithProperty:@"Persistent ID" equalToValue:libraryItemIdentifier limitCount:1];
 
     if ([v11 count] != 1)
     {
@@ -1438,7 +1438,7 @@ LABEL_26:
       goto LABEL_14;
     }
 
-    v9 = v3;
+    v9 = purchaseManifest;
     v10 = BLBookInstallLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -1455,31 +1455,31 @@ LABEL_14:
     v12 = BLBookInstallLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
+      downloadedAssetPath = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
       v29 = 138543362;
-      v30 = v13;
+      v30 = downloadedAssetPath;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Manifest not found by using the libraryItemIdentifier ... using downloadedAssetPath: %{public}@", &v29, 0xCu);
     }
 
-    v14 = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
-    v15 = [(BLBaseBookInstallOperation *)self installInfo];
-    v16 = [v15 isRestore];
-    v17 = [v16 BOOLValue];
+    downloadedAssetPath2 = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
+    installInfo2 = [(BLBaseBookInstallOperation *)self installInfo];
+    isRestore = [installInfo2 isRestore];
+    bOOLValue = [isRestore BOOLValue];
 
-    if (v17)
+    if (bOOLValue)
     {
-      v18 = [(BLBaseBookInstallOperation *)self installInfo];
-      v19 = [v18 fullRestoreFilePath];
+      installInfo3 = [(BLBaseBookInstallOperation *)self installInfo];
+      fullRestoreFilePath = [installInfo3 fullRestoreFilePath];
 
-      v14 = v19;
+      downloadedAssetPath2 = fullRestoreFilePath;
     }
 
     v20 = +[IMLibraryPlist purchasesRepositoryPath];
-    v21 = [v14 hasPrefix:v20];
+    v21 = [downloadedAssetPath2 hasPrefix:v20];
 
     if (v21)
     {
-      v9 = v3;
+      v9 = purchaseManifest;
       v22 = BLBookInstallLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -1493,12 +1493,12 @@ LABEL_26:
     else
     {
       v24 = +[NSURL bu_booksRepositoryURL];
-      v25 = [v24 path];
-      v26 = [v14 hasPrefix:v25];
+      path = [v24 path];
+      v26 = [downloadedAssetPath2 hasPrefix:path];
 
       if (v26)
       {
-        v9 = v4;
+        v9 = syncManifest;
         v22 = BLBookInstallLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
@@ -1510,7 +1510,7 @@ LABEL_26:
 
       else
       {
-        v9 = v3;
+        v9 = purchaseManifest;
         v22 = BLBookInstallLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
@@ -1529,28 +1529,28 @@ LABEL_26:
 
 - (id)_existingManifestEntry
 {
-  v3 = [(BLBaseBookInstallOperation *)self installInfo];
-  v4 = [v3 libraryItemIdentifier];
+  installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+  libraryItemIdentifier = [installInfo libraryItemIdentifier];
 
-  v5 = [(BLBaseBookInstallOperation *)self installInfo];
-  v6 = [v5 storeIdentifier];
+  installInfo2 = [(BLBaseBookInstallOperation *)self installInfo];
+  storeIdentifier = [installInfo2 storeIdentifier];
 
-  if (v4)
+  if (libraryItemIdentifier)
   {
-    v7 = [(BLEBookInstallOperation *)self syncManifest];
-    v8 = [v7 manifestEntriesWithProperty:@"Persistent ID" equalToValue:v4 limitCount:1];
+    syncManifest = [(BLEBookInstallOperation *)self syncManifest];
+    v8 = [syncManifest manifestEntriesWithProperty:@"Persistent ID" equalToValue:libraryItemIdentifier limitCount:1];
 
     if ([v8 count] == 1)
     {
       goto LABEL_9;
     }
 
-    v9 = [(BLEBookInstallOperation *)self purchaseManifest];
-    v10 = v9;
+    purchaseManifest = [(BLEBookInstallOperation *)self purchaseManifest];
+    v10 = purchaseManifest;
     v11 = @"Persistent ID";
-    v12 = v4;
+    v12 = libraryItemIdentifier;
 LABEL_7:
-    v14 = [v9 manifestEntriesWithProperty:v11 equalToValue:v12 limitCount:1];
+    v14 = [purchaseManifest manifestEntriesWithProperty:v11 equalToValue:v12 limitCount:1];
 
     if ([v14 count] != 1)
     {
@@ -1567,20 +1567,20 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v6)
+  if (storeIdentifier)
   {
-    v13 = [(BLEBookInstallOperation *)self syncManifest];
-    v8 = [v13 manifestEntriesWithProperty:@"s" equalToValue:v6 limitCount:1];
+    syncManifest2 = [(BLEBookInstallOperation *)self syncManifest];
+    v8 = [syncManifest2 manifestEntriesWithProperty:@"s" equalToValue:storeIdentifier limitCount:1];
 
     if ([v8 count] == 1)
     {
       goto LABEL_9;
     }
 
-    v9 = [(BLEBookInstallOperation *)self purchaseManifest];
-    v10 = v9;
+    purchaseManifest = [(BLEBookInstallOperation *)self purchaseManifest];
+    v10 = purchaseManifest;
     v11 = @"s";
-    v12 = v6;
+    v12 = storeIdentifier;
     goto LABEL_7;
   }
 
@@ -1590,23 +1590,23 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)_unzipAsset:(id)a3 unzippedPath:(id *)a4 error:(id *)a5
+- (BOOL)_unzipAsset:(id)asset unzippedPath:(id *)path error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 assetPath];
-  v9 = [v8 stringByAppendingPathExtension:@"ext"];
+  assetCopy = asset;
+  assetPath = [assetCopy assetPath];
+  v9 = [assetPath stringByAppendingPathExtension:@"ext"];
   v10 = [BLExtractFileOperation alloc];
-  v11 = [v7 fileAttributes];
-  v12 = [(BLExtractFileOperation *)v10 initWithSoucePath:v8 destinationPath:v9 fileAttributes:v11 installInfo:v7];
+  fileAttributes = [assetCopy fileAttributes];
+  v12 = [(BLExtractFileOperation *)v10 initWithSoucePath:assetPath destinationPath:v9 fileAttributes:fileAttributes installInfo:assetCopy];
 
   [(BLExtractFileOperation *)v12 start];
-  v13 = [(BLExtractFileOperation *)v12 success];
-  v14 = [(BLExtractFileOperation *)v12 error];
-  v15 = v14;
-  if (v13)
+  success = [(BLExtractFileOperation *)v12 success];
+  error = [(BLExtractFileOperation *)v12 error];
+  v15 = error;
+  if (success)
   {
-    v14 = v9;
-    if (!a4)
+    error = v9;
+    if (!path)
     {
       goto LABEL_6;
     }
@@ -1614,126 +1614,126 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  a4 = a5;
-  if (a5)
+  path = error;
+  if (error)
   {
 LABEL_5:
-    *a4 = v14;
+    *path = error;
   }
 
 LABEL_6:
 
-  return v13;
+  return success;
 }
 
-- (BOOL)_installMediaAsset:(id)a3 assetInstalledPath:(id *)a4 fileName:(id *)a5 drmPath:(id *)a6 error:(id *)a7
+- (BOOL)_installMediaAsset:(id)asset assetInstalledPath:(id *)path fileName:(id *)name drmPath:(id *)drmPath error:(id *)error
 {
-  v12 = a3;
+  assetCopy = asset;
   v13 = objc_alloc_init(NSFileManager);
-  v14 = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
+  downloadedAssetPath = [(BLBaseBookInstallOperation *)self downloadedAssetPath];
   v96 = 0;
-  v87 = a7;
-  if (([v13 fileExistsAtPath:v14 isDirectory:&v96] & 1) == 0)
+  errorCopy = error;
+  if (([v13 fileExistsAtPath:downloadedAssetPath isDirectory:&v96] & 1) == 0)
   {
     v38 = BLBookInstallLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v98 = v14;
+      v98 = downloadedAssetPath;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "[Install-Op]: Could not install non-existant file: %@", buf, 0xCu);
     }
 
-    v39 = [NSString stringWithFormat:@"%@: Could not install non-existant file: %@", objc_opt_class(), v14];
+    v39 = [NSString stringWithFormat:@"%@: Could not install non-existant file: %@", objc_opt_class(), downloadedAssetPath];
     v40 = sub_1000A8F44(7, 0, v39);
     goto LABEL_21;
   }
 
-  v15 = [(BLEBookInstallOperation *)self _bookManifest];
-  if (!v15)
+  _bookManifest = [(BLEBookInstallOperation *)self _bookManifest];
+  if (!_bookManifest)
   {
     v39 = BLBookInstallLog();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
-      v41 = [(BLBaseBookInstallOperation *)self installInfo];
-      v42 = [v41 downloadID];
+      installInfo = [(BLBaseBookInstallOperation *)self installInfo];
+      downloadID = [installInfo downloadID];
       *buf = 138543362;
-      v98 = v42;
+      v98 = downloadID;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "(dID=%{public}@) No manifest entry found for book.", buf, 0xCu);
     }
 
     v40 = 0;
 LABEL_21:
 
-    v19 = 0;
+    destinationFilename = 0;
     v31 = 0;
     v33 = 0;
     LOBYTE(v43) = 0;
     goto LABEL_22;
   }
 
-  v16 = v15;
-  v81 = a4;
-  v82 = a5;
-  v84 = a6;
-  v17 = [v15 manifestPath];
-  v18 = [v17 stringByDeletingLastPathComponent];
+  v16 = _bookManifest;
+  pathCopy = path;
+  nameCopy = name;
+  drmPathCopy = drmPath;
+  manifestPath = [_bookManifest manifestPath];
+  stringByDeletingLastPathComponent = [manifestPath stringByDeletingLastPathComponent];
 
-  v19 = [(BLBaseBookInstallOperation *)self destinationFilename];
-  v20 = [(BLEBookInstallOperation *)self syncManifest];
-  v86 = v12;
+  destinationFilename = [(BLBaseBookInstallOperation *)self destinationFilename];
+  syncManifest = [(BLEBookInstallOperation *)self syncManifest];
+  v86 = assetCopy;
   v83 = v16;
-  if (v16 == v20)
+  if (v16 == syncManifest)
   {
-    v21 = [(BLBaseBookInstallOperation *)self installInfo];
-    v22 = [v21 isRestore];
-    v23 = [v22 BOOLValue];
+    installInfo2 = [(BLBaseBookInstallOperation *)self installInfo];
+    isRestore = [installInfo2 isRestore];
+    bOOLValue = [isRestore BOOLValue];
 
-    if (v23)
+    if (bOOLValue)
     {
       goto LABEL_12;
     }
 
-    v20 = [v19 pathExtension];
-    v24 = [v14 lastPathComponent];
+    syncManifest = [destinationFilename pathExtension];
+    lastPathComponent = [downloadedAssetPath lastPathComponent];
 
-    if ([v20 length])
+    if ([syncManifest length])
     {
-      v25 = [v24 pathExtension];
-      v26 = [v25 length];
+      pathExtension = [lastPathComponent pathExtension];
+      v26 = [pathExtension length];
 
       if (!v26)
       {
-        v27 = [v24 stringByAppendingPathExtension:v20];
+        v27 = [lastPathComponent stringByAppendingPathExtension:syncManifest];
 
-        v24 = v27;
+        lastPathComponent = v27;
       }
     }
 
     v28 = BLBookInstallLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [(BLBaseBookInstallOperation *)self destinationFilename];
-      v30 = [v12 title];
+      destinationFilename2 = [(BLBaseBookInstallOperation *)self destinationFilename];
+      title = [assetCopy title];
       *buf = 138412802;
-      v98 = v29;
+      v98 = destinationFilename2;
       v99 = 2112;
-      v100 = v24;
+      v100 = lastPathComponent;
       v101 = 2112;
-      v102 = v30;
+      v102 = title;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Alert: just hit the unlikely code path: [original filename: %@ | new filename: %@ | book title: %@]", buf, 0x20u);
 
-      v12 = v86;
+      assetCopy = v86;
     }
 
-    v19 = v24;
+    destinationFilename = lastPathComponent;
   }
 
 LABEL_12:
-  v31 = [v18 stringByAppendingPathComponent:v19];
+  v31 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:destinationFilename];
   if ([(BLEBookInstallOperation *)self sharedDownload])
   {
     v32 = +[IMLibraryPlist sharedRepositoryPath];
-    v33 = [v32 stringByAppendingPathComponent:v19];
+    v33 = [v32 stringByAppendingPathComponent:destinationFilename];
 
     v34 = BLBookInstallLog();
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -1770,10 +1770,10 @@ LABEL_12:
   _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, v35, buf, v37);
 LABEL_28:
 
-  v45 = [(BLBaseBookInstallOperation *)self installInfo];
-  v46 = [v45 databaseManager];
-  v47 = [(BLBaseBookInstallOperation *)self downloadID];
-  [v46 syncSaveDownloadStateWithId:v47 state:13];
+  installInfo3 = [(BLBaseBookInstallOperation *)self installInfo];
+  databaseManager = [installInfo3 databaseManager];
+  downloadID2 = [(BLBaseBookInstallOperation *)self downloadID];
+  [databaseManager syncSaveDownloadStateWithId:downloadID2 state:13];
 
   v85 = +[NSUserDefaults standardUserDefaults];
   if ([v85 BOOLForKey:@"BKSimulateCrashAtInstallDuringUnzip"])
@@ -1781,10 +1781,10 @@ LABEL_28:
     v48 = BLBookInstallLog();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
     {
-      v49 = [(BLBaseBookInstallOperation *)self installInfo];
-      v50 = [v49 downloadID];
+      installInfo4 = [(BLBaseBookInstallOperation *)self installInfo];
+      downloadID3 = [installInfo4 downloadID];
       *buf = 138543362;
-      v98 = v50;
+      v98 = downloadID3;
       _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "(dID=%{public}@) [Install-Op]: Simulating a crash during unzip", buf, 0xCu);
     }
 
@@ -1795,7 +1795,7 @@ LABEL_28:
 
   if (v96 == 1)
   {
-    v51 = [v14 isEqualToString:v33];
+    v51 = [downloadedAssetPath isEqualToString:v33];
     v52 = BLBookInstallLog();
     v53 = os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT);
     if (v51)
@@ -1816,7 +1816,7 @@ LABEL_28:
     if (v53)
     {
       *buf = 138412546;
-      v98 = v14;
+      v98 = downloadedAssetPath;
       v99 = 2112;
       v100 = v33;
       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Moving file: %@ to path: %@", buf, 0x16u);
@@ -1824,7 +1824,7 @@ LABEL_28:
 
     v95 = v33;
     v94 = 0;
-    v43 = [(BLBaseBookInstallOperation *)self _moveFile:v14 toPath:&v95 installBehavior:0 error:&v94];
+    v43 = [(BLBaseBookInstallOperation *)self _moveFile:downloadedAssetPath toPath:&v95 installBehavior:0 error:&v94];
     v57 = v95;
 
     v40 = v94;
@@ -1833,10 +1833,10 @@ LABEL_28:
 
   else
   {
-    v54 = [(BLBaseBookInstallOperation *)self installInfo];
+    installInfo5 = [(BLBaseBookInstallOperation *)self installInfo];
     v92 = 0;
     v93 = 0;
-    LODWORD(v52) = [(BLEBookInstallOperation *)self _unzipAsset:v54 unzippedPath:&v93 error:&v92];
+    LODWORD(v52) = [(BLEBookInstallOperation *)self _unzipAsset:installInfo5 unzippedPath:&v93 error:&v92];
     v55 = v93;
     v56 = v92;
 
@@ -1876,15 +1876,15 @@ LABEL_28:
         }
       }
 
-      v61 = [v33 pathExtension];
-      v77 = v61;
-      if (([v61 isEqualToString:@"epub"] & 1) != 0 || objc_msgSend(v61, "isEqualToString:", @"ibooks"))
+      pathExtension2 = [v33 pathExtension];
+      v77 = pathExtension2;
+      if (([pathExtension2 isEqualToString:@"epub"] & 1) != 0 || objc_msgSend(pathExtension2, "isEqualToString:", @"ibooks"))
       {
         v62 = BLBookInstallLog();
         if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v98 = v14;
+          v98 = downloadedAssetPath;
           v99 = 2112;
           v100 = v56;
           _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "[Install-Op]: Failing install after unzip failure for file: %{public}@, error:  %@", buf, 0x16u);
@@ -1896,7 +1896,7 @@ LABEL_28:
 
       else
       {
-        v73 = [v14 isEqualToString:v33];
+        v73 = [downloadedAssetPath isEqualToString:v33];
         v74 = BLBookInstallLog();
         v75 = os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT);
         if (v73)
@@ -1917,7 +1917,7 @@ LABEL_28:
           if (v75)
           {
             *buf = 138412546;
-            v98 = v14;
+            v98 = downloadedAssetPath;
             v99 = 2112;
             v100 = v33;
             _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "[Install-Op]: Moving file: %@ to path: %@", buf, 0x16u);
@@ -1925,7 +1925,7 @@ LABEL_28:
 
           v88 = 0;
           v89 = v33;
-          v43 = [(BLBaseBookInstallOperation *)self _moveFile:v14 toPath:&v89 installBehavior:0 error:&v88];
+          v43 = [(BLBaseBookInstallOperation *)self _moveFile:downloadedAssetPath toPath:&v89 installBehavior:0 error:&v88];
           v76 = v89;
 
           v40 = v88;
@@ -1939,23 +1939,23 @@ LABEL_28:
   }
 
   v33 = v57;
-  v12 = v86;
+  assetCopy = v86;
 LABEL_56:
   if ((v52 & 1) == 0 && v43)
   {
-    v63 = [v12 fileAttributes];
-    if ([v63 count])
+    fileAttributes = [assetCopy fileAttributes];
+    if ([fileAttributes count])
     {
-      [v13 setAttributes:v63 ofItemAtPath:v33 error:0];
+      [v13 setAttributes:fileAttributes ofItemAtPath:v33 error:0];
     }
   }
 
-  v64 = [(BLBaseBookInstallOperation *)self installInfo];
-  v65 = [v64 databaseManager];
-  v66 = [(BLBaseBookInstallOperation *)self downloadID];
-  [v65 syncSaveDownloadStateWithId:v66 state:14];
+  installInfo6 = [(BLBaseBookInstallOperation *)self installInfo];
+  databaseManager2 = [installInfo6 databaseManager];
+  downloadID4 = [(BLBaseBookInstallOperation *)self downloadID];
+  [databaseManager2 syncSaveDownloadStateWithId:downloadID4 state:14];
 
-  if (v84)
+  if (drmPathCopy)
   {
     v67 = !v43;
   }
@@ -1968,12 +1968,12 @@ LABEL_56:
   if ((v67 & 1) == 0)
   {
     v68 = v33;
-    *v81 = v33;
+    *pathCopy = v33;
     v69 = v31;
-    *v84 = v31;
+    *drmPathCopy = v31;
   }
 
-  if (v19)
+  if (destinationFilename)
   {
     v70 = !v43;
   }
@@ -1985,19 +1985,19 @@ LABEL_56:
 
   if ((v70 & 1) == 0)
   {
-    v71 = v19;
-    *v82 = v19;
+    v71 = destinationFilename;
+    *nameCopy = destinationFilename;
     LOBYTE(v43) = 1;
-    v12 = v86;
+    assetCopy = v86;
     goto LABEL_71;
   }
 
-  v12 = v86;
+  assetCopy = v86;
 LABEL_22:
-  if (v87 && !v43)
+  if (errorCopy && !v43)
   {
     v44 = v40;
-    *v87 = v40;
+    *errorCopy = v40;
   }
 
 LABEL_71:

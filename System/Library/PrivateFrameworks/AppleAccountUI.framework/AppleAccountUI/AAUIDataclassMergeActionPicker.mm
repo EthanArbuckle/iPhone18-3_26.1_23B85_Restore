@@ -1,5 +1,5 @@
 @interface AAUIDataclassMergeActionPicker
-- (id)descriptionForDataclassAction:(id)a3;
+- (id)descriptionForDataclassAction:(id)action;
 - (id)message;
 - (id)title;
 @end
@@ -19,9 +19,9 @@
   else
   {
     v6 = MEMORY[0x1E69898E0];
-    v7 = [(ACUIDataclassActionPicker *)self affectedDataclasses];
-    v8 = [v7 lastObject];
-    v3 = [v6 localizedTitleForDataclass:v8];
+    affectedDataclasses = [(ACUIDataclassActionPicker *)self affectedDataclasses];
+    lastObject = [affectedDataclasses lastObject];
+    v3 = [v6 localizedTitleForDataclass:lastObject];
 
     v9 = MEMORY[0x1E696AEC0];
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -35,8 +35,8 @@
 - (id)message
 {
   v3 = MEMORY[0x1E69898E0];
-  v4 = [(ACUIDataclassActionPicker *)self affectedDataclasses];
-  v5 = [v3 localizedTextForDataclasses:v4 usedAtBeginningOfSentence:0];
+  affectedDataclasses = [(ACUIDataclassActionPicker *)self affectedDataclasses];
+  v5 = [v3 localizedTextForDataclasses:affectedDataclasses usedAtBeginningOfSentence:0];
 
   if (self->_isPerformingBatchMerge)
   {
@@ -49,9 +49,9 @@
   }
 
   v10 = MEMORY[0x1E69898E0];
-  v11 = [(ACUIDataclassActionPicker *)self affectedDataclasses];
-  v12 = [v11 lastObject];
-  v8 = [v10 localizedReferenceToLocalSourceOfDataclass:v12];
+  affectedDataclasses2 = [(ACUIDataclassActionPicker *)self affectedDataclasses];
+  lastObject = [affectedDataclasses2 lastObject];
+  v8 = [v10 localizedReferenceToLocalSourceOfDataclass:lastObject];
 
   v13 = MEMORY[0x1E696AEC0];
   v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -128,13 +128,13 @@ LABEL_18:
   return v9;
 }
 
-- (id)descriptionForDataclassAction:(id)a3
+- (id)descriptionForDataclassAction:(id)action
 {
-  v4 = a3;
-  v5 = v4;
+  actionCopy = action;
+  v5 = actionCopy;
   if (self->_isPerformingBatchMerge)
   {
-    if ([v4 type] == 5)
+    if ([actionCopy type] == 5)
     {
       v6 = @"BATCH_MERGE_OK_BUTTON";
       goto LABEL_6;

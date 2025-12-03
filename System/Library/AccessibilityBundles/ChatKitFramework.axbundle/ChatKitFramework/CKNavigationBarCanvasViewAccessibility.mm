@@ -1,18 +1,18 @@
 @interface CKNavigationBarCanvasViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setTitleView:(id)a3;
+- (void)setTitleView:(id)view;
 @end
 
 @implementation CKNavigationBarCanvasViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKNavigationBarCanvasView" hasInstanceMethod:@"buttonViewFaceTimeAudio" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKNavigationBarCanvasView" hasInstanceMethod:@"setTitleView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKNavigationBarCanvasView" hasInstanceMethod:@"isBusinessChat" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKNavigationBarCanvasView" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKNavigationBarCanvasView" hasInstanceMethod:@"buttonViewFaceTimeAudio" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKNavigationBarCanvasView" hasInstanceMethod:@"setTitleView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKNavigationBarCanvasView" hasInstanceMethod:@"isBusinessChat" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKNavigationBarCanvasView" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,25 +24,25 @@
   [(CKNavigationBarCanvasViewAccessibility *)self setTitleView:v3];
 }
 
-- (void)setTitleView:(id)a3
+- (void)setTitleView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v6.receiver = self;
   v6.super_class = CKNavigationBarCanvasViewAccessibility;
-  [(CKNavigationBarCanvasViewAccessibility *)&v6 setTitleView:v4];
+  [(CKNavigationBarCanvasViewAccessibility *)&v6 setTitleView:viewCopy];
   NSClassFromString(&cfstr_Cklabel.isa);
   if (objc_opt_isKindOfClass())
   {
-    [v4 setAccessibilityRespondsToUserInteraction:1];
+    [viewCopy setAccessibilityRespondsToUserInteraction:1];
     if ([(CKNavigationBarCanvasViewAccessibility *)self safeBoolForKey:@"isBusinessChat"])
     {
       v5 = accessibilityLocalizedString(@"conversation.verified");
-      [v4 setAccessibilityValue:v5];
+      [viewCopy setAccessibilityValue:v5];
     }
 
     else
     {
-      [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
+      [viewCopy setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
     }
   }
 }

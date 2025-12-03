@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMMessagesSharedWithYouFeedback_v3;
-  v2 = [(BMMessagesSharedWithYouFeedback *)&v4 feedbackType];
-  if (v2 < 0xB)
+  feedbackType = [(BMMessagesSharedWithYouFeedback *)&v4 feedbackType];
+  if (feedbackType < 0xB)
   {
-    return v2 + 1;
+    return feedbackType + 1;
   }
 
   else

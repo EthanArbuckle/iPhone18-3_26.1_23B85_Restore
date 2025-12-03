@@ -1,29 +1,29 @@
 @interface PhotosSeparationSharedLibraryResource
-+ (id)fetchSharedLibraryResourcesInLibrary:(id)a3 error:(id *)a4;
++ (id)fetchSharedLibraryResourcesInLibrary:(id)library error:(id *)error;
 - (BOOL)isOwnedByCurrentUser;
-- (PhotosSeparationSharedLibraryResource)initWithLibraryScope:(id)a3;
-- (void)stopSharingToParticipant:(id)a3 withCompletion:(id)a4;
-- (void)stopSharingWithCompletion:(id)a3;
+- (PhotosSeparationSharedLibraryResource)initWithLibraryScope:(id)scope;
+- (void)stopSharingToParticipant:(id)participant withCompletion:(id)completion;
+- (void)stopSharingWithCompletion:(id)completion;
 @end
 
 @implementation PhotosSeparationSharedLibraryResource
 
-- (void)stopSharingToParticipant:(id)a3 withCompletion:(id)a4
+- (void)stopSharingToParticipant:(id)participant withCompletion:(id)completion
 {
-  v6 = a3;
+  participantCopy = participant;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1D48;
   v20[3] = &unk_8300;
-  v7 = a4;
-  v21 = v7;
+  completionCopy = completion;
+  v21 = completionCopy;
   v8 = objc_retainBlock(v20);
-  v9 = [(PhotosSeparationSharedLibraryResource *)self isOwnedByCurrentUser];
+  isOwnedByCurrentUser = [(PhotosSeparationSharedLibraryResource *)self isOwnedByCurrentUser];
   libraryScope = self->_libraryScope;
-  if (v9)
+  if (isOwnedByCurrentUser)
   {
-    v11 = [v6 representedObject];
-    v22 = v11;
+    representedObject = [participantCopy representedObject];
+    v22 = representedObject;
     v12 = [NSArray arrayWithObjects:&v22 count:1];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -48,27 +48,27 @@
   }
 }
 
-- (void)stopSharingWithCompletion:(id)a3
+- (void)stopSharingWithCompletion:(id)completion
 {
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_2144;
   v27[3] = &unk_8300;
-  v4 = a3;
-  v28 = v4;
+  completionCopy = completion;
+  v28 = completionCopy;
   v5 = objc_retainBlock(v27);
   if ([(PhotosSeparationSharedLibraryResource *)self isOwnedByCurrentUser])
   {
     v6 = [NSMutableArray alloc];
-    v7 = [(PhotosSeparationSharedResource *)self participants];
-    v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+    participants = [(PhotosSeparationSharedResource *)self participants];
+    v8 = [v6 initWithCapacity:{objc_msgSend(participants, "count")}];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = [(PhotosSeparationSharedResource *)self participants];
-    v10 = [v9 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    participants2 = [(PhotosSeparationSharedResource *)self participants];
+    v10 = [participants2 countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v10)
     {
       v11 = v10;
@@ -79,18 +79,18 @@
         {
           if (*v24 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(participants2);
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
           if (([v14 isCurrentUser] & 1) == 0)
           {
-            v15 = [v14 representedObject];
-            [v8 addObject:v15];
+            representedObject = [v14 representedObject];
+            [v8 addObject:representedObject];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v11 = [participants2 countByEnumeratingWithState:&v23 objects:v29 count:16];
       }
 
       while (v11);
@@ -126,8 +126,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(PhotosSeparationSharedResource *)self participants];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  participants = [(PhotosSeparationSharedResource *)self participants];
+  v3 = [participants countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -137,7 +137,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(participants);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -148,7 +148,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [participants countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -163,15 +163,15 @@ LABEL_12:
   return v3;
 }
 
-- (PhotosSeparationSharedLibraryResource)initWithLibraryScope:(id)a3
+- (PhotosSeparationSharedLibraryResource)initWithLibraryScope:(id)scope
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  scopeCopy = scope;
+  v6 = scopeCopy;
+  if (scopeCopy)
   {
-    v7 = [v5 photoLibrary];
-    v8 = [v7 librarySpecificFetchOptions];
-    v9 = [PHShareParticipant fetchParticipantsInShare:v6 options:v8];
+    photoLibrary = [scopeCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v9 = [PHShareParticipant fetchParticipantsInShare:v6 options:librarySpecificFetchOptions];
 
     v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
     v22 = 0u;
@@ -212,34 +212,34 @@ LABEL_12:
     v18 = v17;
     if (v17)
     {
-      objc_storeStrong(&v17->_libraryScope, a3);
+      objc_storeStrong(&v17->_libraryScope, scope);
     }
 
     self = v18;
 
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-+ (id)fetchSharedLibraryResourcesInLibrary:(id)a3 error:(id *)a4
++ (id)fetchSharedLibraryResourcesInLibrary:(id)library error:(id *)error
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = +[NSMutableArray array];
-  v6 = [v4 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
 
-  v7 = [PHLibraryScope fetchActiveLibraryScopeWithOptions:v6];
-  v8 = [v7 firstObject];
+  v7 = [PHLibraryScope fetchActiveLibraryScopeWithOptions:librarySpecificFetchOptions];
+  firstObject = [v7 firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v9 = [[PhotosSeparationSharedLibraryResource alloc] initWithLibraryScope:v8];
+    v9 = [[PhotosSeparationSharedLibraryResource alloc] initWithLibraryScope:firstObject];
     if (v9)
     {
       [v5 addObject:v9];

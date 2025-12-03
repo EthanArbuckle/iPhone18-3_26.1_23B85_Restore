@@ -1,23 +1,23 @@
 @interface BMPBRemindersContentEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCompletionDateTimestamp:(BOOL)a3;
-- (void)setHasDueDateTimestamp:(BOOL)a3;
-- (void)setHasIsAllDay:(BOOL)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCompletionDateTimestamp:(BOOL)timestamp;
+- (void)setHasDueDateTimestamp:(BOOL)timestamp;
+- (void)setHasIsAllDay:(BOOL)day;
+- (void)setHasPriority:(BOOL)priority;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBRemindersContentEvent
 
-- (void)setHasIsAllDay:(BOOL)a3
+- (void)setHasIsAllDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 16;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasCompletionDateTimestamp:(BOOL)a3
+- (void)setHasCompletionDateTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDueDateTimestamp:(BOOL)a3
+- (void)setHasDueDateTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 8;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = BMPBRemindersContentEvent;
   v4 = [(BMPBRemindersContentEvent *)&v8 description];
-  v5 = [(BMPBRemindersContentEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBRemindersContentEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uniqueId = self->_uniqueId;
   if (uniqueId)
   {
-    [v3 setObject:uniqueId forKey:@"uniqueId"];
+    [dictionary setObject:uniqueId forKey:@"uniqueId"];
   }
 
   domainId = self->_domainId;
@@ -187,39 +187,39 @@ LABEL_16:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_uniqueId)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_domainId)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_notes)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
@@ -227,7 +227,7 @@ LABEL_16:
   {
     isAllDay = self->_isAllDay;
     PBDataWriterWriteBOOLField();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -248,7 +248,7 @@ LABEL_13:
 
   completionDateTimestamp = self->_completionDateTimestamp;
   PBDataWriterWriteDoubleField();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -264,68 +264,68 @@ LABEL_14:
 LABEL_25:
   dueDateTimestamp = self->_dueDateTimestamp;
   PBDataWriterWriteDoubleField();
-  v4 = v11;
+  toCopy = v11;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_15:
     priority = self->_priority;
     PBDataWriterWriteSint32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
 LABEL_16:
   if (self->_contentProtection)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_personaId)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uniqueId)
   {
-    [v4 setUniqueId:?];
-    v4 = v6;
+    [toCopy setUniqueId:?];
+    toCopy = v6;
   }
 
   if (self->_domainId)
   {
     [v6 setDomainId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_absoluteTimestamp;
-    *(v4 + 92) |= 1u;
+    *(toCopy + 1) = *&self->_absoluteTimestamp;
+    *(toCopy + 92) |= 1u;
   }
 
   if (self->_title)
   {
     [v6 setTitle:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_notes)
   {
     [v6 setNotes:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(v4 + 88) = self->_isAllDay;
-    *(v4 + 92) |= 0x10u;
+    *(toCopy + 88) = self->_isAllDay;
+    *(toCopy + 92) |= 0x10u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -344,8 +344,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 2) = *&self->_completionDateTimestamp;
-  *(v4 + 92) |= 2u;
+  *(toCopy + 2) = *&self->_completionDateTimestamp;
+  *(toCopy + 92) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -359,37 +359,37 @@ LABEL_14:
   }
 
 LABEL_25:
-  *(v4 + 3) = *&self->_dueDateTimestamp;
-  *(v4 + 92) |= 4u;
+  *(toCopy + 3) = *&self->_dueDateTimestamp;
+  *(toCopy + 92) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_15:
-    *(v4 + 16) = self->_priority;
-    *(v4 + 92) |= 8u;
+    *(toCopy + 16) = self->_priority;
+    *(toCopy + 92) |= 8u;
   }
 
 LABEL_16:
   if (self->_contentProtection)
   {
     [v6 setContentProtection:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_personaId)
   {
     [v6 setPersonaId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
-  v8 = [(NSString *)self->_domainId copyWithZone:a3];
+  v8 = [(NSString *)self->_domainId copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -399,11 +399,11 @@ LABEL_16:
     *(v5 + 92) |= 1u;
   }
 
-  v10 = [(NSString *)self->_title copyWithZone:a3];
+  v10 = [(NSString *)self->_title copyWithZone:zone];
   v11 = *(v5 + 72);
   *(v5 + 72) = v10;
 
-  v12 = [(NSString *)self->_notes copyWithZone:a3];
+  v12 = [(NSString *)self->_notes copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
@@ -455,27 +455,27 @@ LABEL_7:
   }
 
 LABEL_8:
-  v15 = [(NSString *)self->_contentProtection copyWithZone:a3];
+  v15 = [(NSString *)self->_contentProtection copyWithZone:zone];
   v16 = *(v5 + 32);
   *(v5 + 32) = v15;
 
-  v17 = [(NSString *)self->_personaId copyWithZone:a3];
+  v17 = [(NSString *)self->_personaId copyWithZone:zone];
   v18 = *(v5 + 56);
   *(v5 + 56) = v17;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   uniqueId = self->_uniqueId;
-  if (uniqueId | *(v4 + 10))
+  if (uniqueId | *(equalCopy + 10))
   {
     if (![(NSString *)uniqueId isEqual:?])
     {
@@ -484,7 +484,7 @@ LABEL_8:
   }
 
   domainId = self->_domainId;
-  if (domainId | *(v4 + 5))
+  if (domainId | *(equalCopy + 5))
   {
     if (![(NSString *)domainId isEqual:?])
     {
@@ -492,28 +492,28 @@ LABEL_8:
     }
   }
 
-  v7 = *(v4 + 92);
+  v7 = *(equalCopy + 92);
   if (*&self->_has)
   {
-    if ((*(v4 + 92) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 92) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_42;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_42;
   }
 
   title = self->_title;
-  if (title | *(v4 + 9) && ![(NSString *)title isEqual:?])
+  if (title | *(equalCopy + 9) && ![(NSString *)title isEqual:?])
   {
     goto LABEL_42;
   }
 
   notes = self->_notes;
-  if (notes | *(v4 + 6))
+  if (notes | *(equalCopy + 6))
   {
     if (![(NSString *)notes isEqual:?])
     {
@@ -521,10 +521,10 @@ LABEL_8:
     }
   }
 
-  v10 = *(v4 + 92);
+  v10 = *(equalCopy + 92);
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 92) & 0x10) == 0)
+    if ((*(equalCopy + 92) & 0x10) == 0)
     {
       goto LABEL_17;
     }
@@ -534,21 +534,21 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if ((*(v4 + 92) & 0x10) == 0)
+  if ((*(equalCopy + 92) & 0x10) == 0)
   {
     goto LABEL_42;
   }
 
-  v11 = *(v4 + 88);
+  v11 = *(equalCopy + 88);
   if (self->_isAllDay)
   {
-    if ((*(v4 + 88) & 1) == 0)
+    if ((*(equalCopy + 88) & 1) == 0)
     {
       goto LABEL_42;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_42;
   }
@@ -556,51 +556,51 @@ LABEL_42:
 LABEL_17:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 92) & 2) == 0 || self->_completionDateTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 92) & 2) == 0 || self->_completionDateTimestamp != *(equalCopy + 2))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 92) & 2) != 0)
+  else if ((*(equalCopy + 92) & 2) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 92) & 4) == 0 || self->_dueDateTimestamp != *(v4 + 3))
+    if ((*(equalCopy + 92) & 4) == 0 || self->_dueDateTimestamp != *(equalCopy + 3))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 92) & 4) != 0)
+  else if ((*(equalCopy + 92) & 4) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 92) & 8) == 0 || self->_priority != *(v4 + 16))
+    if ((*(equalCopy + 92) & 8) == 0 || self->_priority != *(equalCopy + 16))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 92) & 8) != 0)
+  else if ((*(equalCopy + 92) & 8) != 0)
   {
     goto LABEL_42;
   }
 
   contentProtection = self->_contentProtection;
-  if (contentProtection | *(v4 + 4) && ![(NSString *)contentProtection isEqual:?])
+  if (contentProtection | *(equalCopy + 4) && ![(NSString *)contentProtection isEqual:?])
   {
     goto LABEL_42;
   }
 
   personaId = self->_personaId;
-  if (personaId | *(v4 + 7))
+  if (personaId | *(equalCopy + 7))
   {
     v14 = [(NSString *)personaId isEqual:?];
   }
@@ -749,46 +749,46 @@ LABEL_17:
   return v25 ^ v26 ^ [(NSString *)self->_personaId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 10))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 10))
   {
     [(BMPBRemindersContentEvent *)self setUniqueId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BMPBRemindersContentEvent *)self setDomainId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 92))
+  if (*(fromCopy + 92))
   {
-    self->_absoluteTimestamp = *(v4 + 1);
+    self->_absoluteTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(BMPBRemindersContentEvent *)self setTitle:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBRemindersContentEvent *)self setNotes:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 92);
+  v5 = *(fromCopy + 92);
   if ((v5 & 0x10) != 0)
   {
-    self->_isAllDay = *(v4 + 88);
+    self->_isAllDay = *(fromCopy + 88);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 92);
+    v5 = *(fromCopy + 92);
     if ((v5 & 2) == 0)
     {
 LABEL_13:
@@ -801,14 +801,14 @@ LABEL_13:
     }
   }
 
-  else if ((*(v4 + 92) & 2) == 0)
+  else if ((*(fromCopy + 92) & 2) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_completionDateTimestamp = *(v4 + 2);
+  self->_completionDateTimestamp = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 92);
+  v5 = *(fromCopy + 92);
   if ((v5 & 4) == 0)
   {
 LABEL_14:
@@ -821,26 +821,26 @@ LABEL_14:
   }
 
 LABEL_25:
-  self->_dueDateTimestamp = *(v4 + 3);
+  self->_dueDateTimestamp = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 92) & 8) != 0)
+  if ((*(fromCopy + 92) & 8) != 0)
   {
 LABEL_15:
-    self->_priority = *(v4 + 16);
+    self->_priority = *(fromCopy + 16);
     *&self->_has |= 8u;
   }
 
 LABEL_16:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBRemindersContentEvent *)self setContentProtection:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BMPBRemindersContentEvent *)self setPersonaId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

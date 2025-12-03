@@ -1,8 +1,8 @@
 @interface BLStoreDownloadQueueRequest
 + (id)_downloadKindQueueIdentifierMapping;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -18,20 +18,20 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   v7 = objc_opt_class();
   if (v7 == objc_opt_class())
   {
-    v9 = [(BLStoreDownloadQueueRequest *)self accountIdentifier];
-    v10 = [v6 accountIdentifier];
-    if (v9 == v10 || (-[BLStoreDownloadQueueRequest accountIdentifier](self, "accountIdentifier"), v3 = objc_claimAutoreleasedReturnValue(), [v6 accountIdentifier], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    accountIdentifier = [(BLStoreDownloadQueueRequest *)self accountIdentifier];
+    accountIdentifier2 = [equalCopy accountIdentifier];
+    if (accountIdentifier == accountIdentifier2 || (-[BLStoreDownloadQueueRequest accountIdentifier](self, "accountIdentifier"), v3 = objc_claimAutoreleasedReturnValue(), [equalCopy accountIdentifier], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v11 = [(BLStoreDownloadQueueRequest *)self queueIdentifier];
-      v12 = [v6 queueIdentifier];
-      v13 = v12;
-      if (v11 == v12)
+      queueIdentifier = [(BLStoreDownloadQueueRequest *)self queueIdentifier];
+      queueIdentifier2 = [equalCopy queueIdentifier];
+      v13 = queueIdentifier2;
+      if (queueIdentifier == queueIdentifier2)
       {
 
         v8 = 1;
@@ -39,12 +39,12 @@
 
       else
       {
-        v14 = [(BLStoreDownloadQueueRequest *)self queueIdentifier];
-        v15 = [v6 queueIdentifier];
-        v8 = [v14 isEqual:v15];
+        queueIdentifier3 = [(BLStoreDownloadQueueRequest *)self queueIdentifier];
+        queueIdentifier4 = [equalCopy queueIdentifier];
+        v8 = [queueIdentifier3 isEqual:queueIdentifier4];
       }
 
-      if (v9 == v10)
+      if (accountIdentifier == accountIdentifier2)
       {
         goto LABEL_11;
       }
@@ -65,14 +65,14 @@ LABEL_12:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSNumber *)self->_accountIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSNumber *)self->_accountIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_queueIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_queueIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -81,7 +81,7 @@ LABEL_12:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v8[0] = @"books";
     v8[1] = @"media";

@@ -1,9 +1,9 @@
 @interface AKAuthorizationContainerViewControllerAnimator
 - (AKAuthorizationContainerViewControllerAnimator)init;
-- (AKAuthorizationContainerViewControllerAnimator)initWithPresenting:(BOOL)a3;
-- (double)transitionDuration:(id)a3;
-- (id)_viewControllerForTransitionContext:(id)a3;
-- (void)animateTransition:(id)a3;
+- (AKAuthorizationContainerViewControllerAnimator)initWithPresenting:(BOOL)presenting;
+- (double)transitionDuration:(id)duration;
+- (id)_viewControllerForTransitionContext:(id)context;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation AKAuthorizationContainerViewControllerAnimator
@@ -17,10 +17,10 @@
   return v3;
 }
 
-- (AKAuthorizationContainerViewControllerAnimator)initWithPresenting:(BOOL)a3
+- (AKAuthorizationContainerViewControllerAnimator)initWithPresenting:(BOOL)presenting
 {
   v7 = a2;
-  v6 = a3;
+  presentingCopy = presenting;
   v8 = 0;
   v5.receiver = self;
   v5.super_class = AKAuthorizationContainerViewControllerAnimator;
@@ -28,7 +28,7 @@
   objc_storeStrong(&v8, v8);
   if (v8)
   {
-    v8->_presenting = v6;
+    v8->_presenting = presentingCopy;
   }
 
   v4 = MEMORY[0x277D82BE0](v8);
@@ -36,13 +36,13 @@
   return v4;
 }
 
-- (id)_viewControllerForTransitionContext:(id)a3
+- (id)_viewControllerForTransitionContext:(id)context
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKAuthorizationContainerViewControllerAnimator *)v6 isPresenting])
+  objc_storeStrong(location, context);
+  if ([(AKAuthorizationContainerViewControllerAnimator *)selfCopy isPresenting])
   {
     v7 = [location[0] viewControllerForKey:*MEMORY[0x277D77240]];
   }
@@ -58,57 +58,57 @@
   return v3;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v34[4] = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v31 = [(AKAuthorizationContainerViewControllerAnimator *)v33 _viewControllerForTransitionContext:location[0]];
-  v30 = [v31 view];
-  v29 = [location[0] containerView];
-  [v29 addSubview:v30];
-  [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+  objc_storeStrong(location, transition);
+  v31 = [(AKAuthorizationContainerViewControllerAnimator *)selfCopy _viewControllerForTransitionContext:location[0]];
+  view = [v31 view];
+  containerView = [location[0] containerView];
+  [containerView addSubview:view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   v3 = MEMORY[0x277CCAAD0];
-  v16 = [v30 leadingAnchor];
-  v15 = [v29 leadingAnchor];
-  v14 = [v16 constraintEqualToAnchor:?];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [containerView leadingAnchor];
+  v14 = [leadingAnchor constraintEqualToAnchor:?];
   v34[0] = v14;
-  v13 = [v30 trailingAnchor];
-  v12 = [v29 trailingAnchor];
-  v11 = [v13 constraintEqualToAnchor:?];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [containerView trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:?];
   v34[1] = v11;
-  v10 = [v30 topAnchor];
-  v9 = [v29 topAnchor];
-  v8 = [v10 constraintEqualToAnchor:?];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [containerView topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:?];
   v34[2] = v8;
-  v7 = [v30 bottomAnchor];
-  v6 = [v29 bottomAnchor];
-  v5 = [v7 constraintEqualToAnchor:?];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [containerView bottomAnchor];
+  v5 = [bottomAnchor constraintEqualToAnchor:?];
   v34[3] = v5;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:4];
   [v3 activateConstraints:?];
   MEMORY[0x277D82BD8](v4);
   MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](bottomAnchor);
   MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](topAnchor);
   MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](trailingAnchor);
   MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](leadingAnchor);
   v17 = MEMORY[0x277D75D18];
   v23[1] = MEMORY[0x277D85DD0];
   v24 = -1073741824;
   v25 = 0;
   v26 = __68__AKAuthorizationContainerViewControllerAnimator_animateTransition___block_invoke;
   v27 = &unk_2784A5C90;
-  v28 = MEMORY[0x277D82BE0](v30);
+  v28 = MEMORY[0x277D82BE0](view);
   [v17 performWithoutAnimation:?];
   v18 = MEMORY[0x277D75D18];
   v19 = MEMORY[0x277D85DD0];
@@ -119,19 +119,19 @@
   [v18 _animateUsingDefaultTimingWithOptions:134 animations:&__block_literal_global_1 completion:?];
   objc_storeStrong(v23, 0);
   objc_storeStrong(&v28, 0);
-  objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&containerView, 0);
+  objc_storeStrong(&view, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, duration);
   objc_storeStrong(location, 0);
   return 0.35;
 }

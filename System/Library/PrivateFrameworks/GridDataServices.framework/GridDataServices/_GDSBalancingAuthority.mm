@@ -2,12 +2,12 @@
 + (id)currentBalancingAuthority;
 + (id)fetchBalancingAuthorityPolygons;
 + (id)loadBalancingAuthorityStatus;
-+ (id)loadNumberForPreferenceKey:(id)a3;
++ (id)loadNumberForPreferenceKey:(id)key;
 + (id)loadRegistrations;
-+ (id)loadStringForPreferenceKey:(id)a3;
++ (id)loadStringForPreferenceKey:(id)key;
 + (id)sharedInstance;
-+ (void)saveBalancingAuthority:(id)a3;
-+ (void)saveRegisteration:(id)a3 bundlePath:(id)a4;
++ (void)saveBalancingAuthority:(id)authority;
++ (void)saveRegisteration:(id)registeration bundlePath:(id)path;
 - (_GDSBalancingAuthority)init;
 @end
 
@@ -48,21 +48,21 @@
 + (id)fetchBalancingAuthorityPolygons
 {
   v2 = +[_GDSServerConnection sharedInstance];
-  v3 = [v2 fetchBalancingAuthorityPolygons];
+  fetchBalancingAuthorityPolygons = [v2 fetchBalancingAuthorityPolygons];
+
+  return fetchBalancingAuthorityPolygons;
+}
+
++ (id)loadStringForPreferenceKey:(id)key
+{
+  v3 = CFPreferencesCopyValue(key, @"com.apple.gridDataServices", *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
 
   return v3;
 }
 
-+ (id)loadStringForPreferenceKey:(id)a3
++ (id)loadNumberForPreferenceKey:(id)key
 {
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.gridDataServices", *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
-
-  return v3;
-}
-
-+ (id)loadNumberForPreferenceKey:(id)a3
-{
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.gridDataServices", *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
+  v3 = CFPreferencesCopyValue(key, @"com.apple.gridDataServices", *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
 
   return v3;
 }
@@ -95,10 +95,10 @@
   if (!v2 || !v3)
   {
 
-    v20 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
 
     v2 = @"Unknown";
-    v19 = v20;
+    v19 = distantPast;
   }
 
   v21 = [[_GDSBalancingAuthorityOutput alloc] initWithIdentifier:v2 name:v3 latitudeStart:v19 latitudeEnd:v9 longitudeStart:v12 longitudeEnd:v15 updateDate:v18];
@@ -106,54 +106,54 @@
   return v21;
 }
 
-+ (void)saveBalancingAuthority:(id)a3
++ (void)saveBalancingAuthority:(id)authority
 {
-  v3 = a3;
-  v4 = [v3 name];
+  authorityCopy = authority;
+  name = [authorityCopy name];
   v5 = *MEMORY[0x277CBF020];
   v6 = *MEMORY[0x277CBF010];
-  CFPreferencesSetValue(@"balAuthName", v4, @"com.apple.gridDataServices", *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
+  CFPreferencesSetValue(@"balAuthName", name, @"com.apple.gridDataServices", *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
 
-  v7 = [v3 identifier];
-  CFPreferencesSetValue(@"balAuthID", v7, @"com.apple.gridDataServices", v5, v6);
+  identifier = [authorityCopy identifier];
+  CFPreferencesSetValue(@"balAuthID", identifier, @"com.apple.gridDataServices", v5, v6);
 
   v8 = MEMORY[0x277CCABB0];
-  [v3 latStart];
+  [authorityCopy latStart];
   CFPreferencesSetValue(@"balAuthLatStart", [v8 numberWithDouble:?], @"com.apple.gridDataServices", v5, v6);
   v9 = MEMORY[0x277CCABB0];
-  [v3 latEnd];
+  [authorityCopy latEnd];
   CFPreferencesSetValue(@"balAuthLatEnd", [v9 numberWithDouble:?], @"com.apple.gridDataServices", v5, v6);
   v10 = MEMORY[0x277CCABB0];
-  [v3 longStart];
+  [authorityCopy longStart];
   CFPreferencesSetValue(@"balAuthLongStart", [v10 numberWithDouble:?], @"com.apple.gridDataServices", v5, v6);
   v11 = MEMORY[0x277CCABB0];
-  [v3 longEnd];
+  [authorityCopy longEnd];
   v13 = v12;
 
   CFPreferencesSetValue(@"balAuthLongEnd", [v11 numberWithDouble:v13], @"com.apple.gridDataServices", v5, v6);
   v14 = MEMORY[0x277CCABB0];
-  v15 = [MEMORY[0x277CBEAA8] date];
-  [v15 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   CFPreferencesSetValue(@"balAuthFetchDate", [v14 numberWithDouble:?], @"com.apple.gridDataServices", v5, v6);
 
   CFPreferencesSynchronize(@"com.apple.gridDataServices", v5, v6);
 }
 
-+ (void)saveRegisteration:(id)a3 bundlePath:(id)a4
++ (void)saveRegisteration:(id)registeration bundlePath:(id)path
 {
-  v10 = a3;
-  v5 = a4;
+  registerationCopy = registeration;
+  pathCopy = path;
   v6 = *MEMORY[0x277CBF020];
   v7 = *MEMORY[0x277CBF010];
   v8 = CFPreferencesCopyValue(@"registrations", @"com.apple.gridDataServices", *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
-  v9 = [v8 mutableCopy];
-  if (!v9)
+  dictionary = [v8 mutableCopy];
+  if (!dictionary)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  [v9 setObject:v5 forKeyedSubscript:v10];
-  CFPreferencesSetValue(@"registrations", v9, @"com.apple.gridDataServices", v6, v7);
+  [dictionary setObject:pathCopy forKeyedSubscript:registerationCopy];
+  CFPreferencesSetValue(@"registrations", dictionary, @"com.apple.gridDataServices", v6, v7);
 }
 
 + (id)loadRegistrations

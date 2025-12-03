@@ -1,58 +1,58 @@
 @interface _UIPreviewInteractionController
-- (BOOL)_isLongPressGestureRecognizerUsedForDelayingActions:(id)a3;
-- (BOOL)_preparePreviewViewControllerPresentationFromPreviewInteraction:(id)a3;
-- (BOOL)_previewInteractionShouldEndOnGestureCompletion:(id)a3;
-- (BOOL)_previewingIsPossibleForView:(id)a3;
-- (BOOL)_viewControllerIsChildOfTwoColumnSplitViewController:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)previewInteractionShouldBegin:(id)a3;
+- (BOOL)_isLongPressGestureRecognizerUsedForDelayingActions:(id)actions;
+- (BOOL)_preparePreviewViewControllerPresentationFromPreviewInteraction:(id)interaction;
+- (BOOL)_previewInteractionShouldEndOnGestureCompletion:(id)completion;
+- (BOOL)_previewingIsPossibleForView:(id)view;
+- (BOOL)_viewControllerIsChildOfTwoColumnSplitViewController:(id)controller;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)previewInteractionShouldBegin:(id)begin;
 - (CGPoint)initialLocationForPreviewActionsPanning;
-- (CGPoint)initialPlatterPositionForPreviewActionsController:(id)a3;
+- (CGPoint)initialPlatterPositionForPreviewActionsController:(id)controller;
 - (CGPoint)location;
-- (CGSize)maximumPreviewActionsViewSizeForPreviewActionsController:(id)a3;
+- (CGSize)maximumPreviewActionsViewSizeForPreviewActionsController:(id)controller;
 - (UIView)sourceView;
 - (UIViewController)presentingViewController;
 - (UIViewControllerPreviewing_Internal)currentPreviewingContext;
-- (_UIPreviewInteractionController)initWithView:(id)a3;
+- (_UIPreviewInteractionController)initWithView:(id)view;
 - (_UIPreviewInteractionControllerDelegate)delegate;
-- (id)_newHighlighterForPreviewingContext:(id)a3;
+- (id)_newHighlighterForPreviewingContext:(id)context;
 - (id)_preferredNavigationControllerForCommitTransition;
 - (id)_preparedInteractionEffect;
-- (id)_previewPresentationControllerForViewController:(id)a3;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)_previewPresentationControllerForViewController:(id)controller;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)_dismissPreviewViewControllerIfNeeded;
-- (void)_dismissPreviewViewControllerIfNeededWithCompletion:(id)a3;
+- (void)_dismissPreviewViewControllerIfNeededWithCompletion:(id)completion;
 - (void)_finalizeAfterPreviewViewControllerPresentation;
 - (void)_finalizeHighlighterAfterPreviewViewControllerPresentation;
-- (void)_gestureRecognizerFailed:(id)a3;
-- (void)_handlePreviewActionsGesture:(id)a3;
-- (void)_handleSteadyTouchForceGesture:(id)a3;
-- (void)_overrideSourceViewForBinaryCompatibilityIfNeeded:(id *)a3 sourceRect:(CGRect *)a4;
-- (void)_preparePreviewPresentationControllerIfNeeded:(id)a3;
+- (void)_gestureRecognizerFailed:(id)failed;
+- (void)_handlePreviewActionsGesture:(id)gesture;
+- (void)_handleSteadyTouchForceGesture:(id)gesture;
+- (void)_overrideSourceViewForBinaryCompatibilityIfNeeded:(id *)needed sourceRect:(CGRect *)rect;
+- (void)_preparePreviewPresentationControllerIfNeeded:(id)needed;
 - (void)_resetCustomPresentationHooks;
 - (void)_revertInteractionEffectToStartState;
 - (void)_stopCurrentInteractionEffect;
 - (void)commitInteractivePreview;
 - (void)dealloc;
-- (void)didDismissPreviewActionsController:(id)a3;
-- (void)previewActionsController:(id)a3 didCompleteWithSelectedAction:(id)a4;
-- (void)previewActionsController:(id)a3 didUpdatePlatterTranslation:(CGVector)a4 withVelocity:(CGVector)a5;
-- (void)previewInteraction:(id)a3 didUpdateCommitTransition:(double)a4 ended:(BOOL)a5;
-- (void)previewInteraction:(id)a3 didUpdatePreviewTransition:(double)a4 ended:(BOOL)a5;
-- (void)previewInteractionDidCancel:(id)a3;
+- (void)didDismissPreviewActionsController:(id)controller;
+- (void)previewActionsController:(id)controller didCompleteWithSelectedAction:(id)action;
+- (void)previewActionsController:(id)controller didUpdatePlatterTranslation:(CGVector)translation withVelocity:(CGVector)velocity;
+- (void)previewInteraction:(id)interaction didUpdateCommitTransition:(double)transition ended:(BOOL)ended;
+- (void)previewInteraction:(id)interaction didUpdatePreviewTransition:(double)transition ended:(BOOL)ended;
+- (void)previewInteractionDidCancel:(id)cancel;
 @end
 
 @implementation _UIPreviewInteractionController
 
-- (_UIPreviewInteractionController)initWithView:(id)a3
+- (_UIPreviewInteractionController)initWithView:(id)view
 {
-  v5 = a3;
-  if (!v5)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionController.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"view"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionController.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"view"}];
   }
 
   v17.receiver = self;
@@ -61,8 +61,8 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_sourceView, v5);
-    v8 = [[UIPreviewInteraction alloc] initWithView:v5];
+    objc_storeWeak(&v6->_sourceView, viewCopy);
+    v8 = [[UIPreviewInteraction alloc] initWithView:viewCopy];
     previewInteraction = v7->_previewInteraction;
     v7->_previewInteraction = v8;
 
@@ -72,7 +72,7 @@
     [(UIGestureRecognizer *)v10 setAllowedTouchTypes:&unk_1EFE2D1C8];
     [(UILongPressGestureRecognizer *)v10 setMinimumPressDuration:0.0];
     [(_UIPreviewInteractionGestureRecognizer *)v10 setDelegate:v7];
-    [v5 addGestureRecognizer:v10];
+    [viewCopy addGestureRecognizer:v10];
     [(_UIPreviewInteractionController *)v7 setRevealGestureRecognizer:v10];
 
     v11 = [(UILongPressGestureRecognizer *)[_UIPreviewInteractionGestureRecognizer alloc] initWithTarget:v7 action:sel__handlePreviewGesture_];
@@ -81,21 +81,21 @@
     [(UIGestureRecognizer *)v11 setCancelsTouchesInView:0];
     [(UILongPressGestureRecognizer *)v11 setMinimumPressDuration:0.0];
     [(_UIPreviewInteractionGestureRecognizer *)v11 setDelegate:v7];
-    [v5 addGestureRecognizer:v11];
+    [viewCopy addGestureRecognizer:v11];
     [(_UIPreviewInteractionController *)v7 setPreviewGestureRecognizer:v11];
 
     v12 = [[_UITouchesObservingGestureRecognizer alloc] initWithTarget:v7 action:sel__handlePreviewActionsGesture_];
     [(UIGestureRecognizer *)v12 setAllowedTouchTypes:&unk_1EFE2D1C8];
     [(UIGestureRecognizer *)v12 setCancelsTouchesInView:0];
     [(UIGestureRecognizer *)v12 setDelegate:v7];
-    [v5 addGestureRecognizer:v12];
+    [viewCopy addGestureRecognizer:v12];
     [(_UIPreviewInteractionController *)v7 setGestureRecognizerForPreviewActions:v12];
 
     v13 = [[_UISteadyTouchForceGestureRecognizer alloc] initWithTarget:v7 action:sel__handleSteadyTouchForceGesture_];
     [(UIGestureRecognizer *)v13 setAllowedTouchTypes:&unk_1EFE2D1C8];
     [(UIGestureRecognizer *)v13 setCancelsTouchesInView:0];
     [(UIGestureRecognizer *)v13 setDelegate:v7];
-    [v5 addGestureRecognizer:v13];
+    [viewCopy addGestureRecognizer:v13];
     [(_UIPreviewInteractionController *)v7 setSteadyTouchForceGestureRecognizer:v13];
 
     v14 = v7;
@@ -106,25 +106,25 @@
 
 - (void)dealloc
 {
-  v3 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
-  v4 = [v3 view];
-  v5 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
-  [v4 removeGestureRecognizer:v5];
+  revealGestureRecognizer = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
+  view = [revealGestureRecognizer view];
+  revealGestureRecognizer2 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
+  [view removeGestureRecognizer:revealGestureRecognizer2];
 
-  v6 = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
-  v7 = [v6 view];
-  v8 = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
-  [v7 removeGestureRecognizer:v8];
+  steadyTouchForceGestureRecognizer = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
+  view2 = [steadyTouchForceGestureRecognizer view];
+  steadyTouchForceGestureRecognizer2 = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
+  [view2 removeGestureRecognizer:steadyTouchForceGestureRecognizer2];
 
-  v9 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
-  v10 = [v9 view];
-  v11 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
-  [v10 removeGestureRecognizer:v11];
+  previewGestureRecognizer = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
+  view3 = [previewGestureRecognizer view];
+  previewGestureRecognizer2 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
+  [view3 removeGestureRecognizer:previewGestureRecognizer2];
 
-  v12 = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
-  v13 = [v12 view];
-  v14 = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
-  [v13 removeGestureRecognizer:v14];
+  gestureRecognizerForPreviewActions = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
+  view4 = [gestureRecognizerForPreviewActions view];
+  gestureRecognizerForPreviewActions2 = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
+  [view4 removeGestureRecognizer:gestureRecognizerForPreviewActions2];
 
   v15.receiver = self;
   v15.super_class = _UIPreviewInteractionController;
@@ -143,20 +143,20 @@
 
     else
     {
-      v3 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
-      if (v3)
+      currentPreviewViewController = [(_UIPreviewInteractionController *)self currentPreviewViewController];
+      if (currentPreviewViewController)
       {
         [(_UIPreviewInteractionController *)self _stopCurrentInteractionEffect];
         [(_UIPreviewInteractionController *)self setPerformingCommitTransition:1];
         [(_UIPreviewInteractionController *)self setCommitTransitionScheduled:0];
         [(_UIPreviewInteractionController *)self _resetCustomPresentationHooks];
-        v4 = [[_UIPreviewInteractionCommitTransition alloc] initWithPresentedViewController:v3];
+        v4 = [[_UIPreviewInteractionCommitTransition alloc] initWithPresentedViewController:currentPreviewViewController];
         v7[0] = MEMORY[0x1E69E9820];
         v7[1] = 3221225472;
         v7[2] = __59___UIPreviewInteractionController_commitInteractivePreview__block_invoke;
         v7[3] = &unk_1E70F35B8;
         v7[4] = self;
-        v8 = v3;
+        v8 = currentPreviewViewController;
         v6[0] = MEMORY[0x1E69E9820];
         v6[1] = 3221225472;
         v6[2] = __59___UIPreviewInteractionController_commitInteractivePreview__block_invoke_2;
@@ -173,73 +173,73 @@
   }
 }
 
-- (BOOL)previewInteractionShouldBegin:(id)a3
+- (BOOL)previewInteractionShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
+  beginCopy = begin;
+  currentPreviewViewController = [(_UIPreviewInteractionController *)self currentPreviewViewController];
 
-  if (v5)
+  if (currentPreviewViewController)
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v6 = [(_UIPreviewInteractionController *)self _preparePreviewViewControllerPresentationFromPreviewInteraction:v4];
-    v7 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
-    v8 = v7;
+    v6 = [(_UIPreviewInteractionController *)self _preparePreviewViewControllerPresentationFromPreviewInteraction:beginCopy];
+    revealGestureRecognizer = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
+    steadyTouchForceGestureRecognizer = revealGestureRecognizer;
     if (v6)
     {
-      [v7 recognize];
+      [revealGestureRecognizer recognize];
     }
 
     else
     {
-      [v7 cancel];
+      [revealGestureRecognizer cancel];
 
-      v9 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
-      [v9 cancel];
+      previewGestureRecognizer = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
+      [previewGestureRecognizer cancel];
 
-      v8 = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
-      [v8 cancel];
+      steadyTouchForceGestureRecognizer = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
+      [steadyTouchForceGestureRecognizer cancel];
     }
   }
 
   return v6;
 }
 
-- (void)previewInteraction:(id)a3 didUpdatePreviewTransition:(double)a4 ended:(BOOL)a5
+- (void)previewInteraction:(id)interaction didUpdatePreviewTransition:(double)transition ended:(BOOL)ended
 {
-  v5 = a5;
-  v10 = [(_UIPreviewInteractionController *)self currentPresentationTransition];
-  [v10 updateInteractiveTransition:a4];
-  if (v5)
+  endedCopy = ended;
+  currentPresentationTransition = [(_UIPreviewInteractionController *)self currentPresentationTransition];
+  [currentPresentationTransition updateInteractiveTransition:transition];
+  if (endedCopy)
   {
     [(_UIPreviewInteractionController *)self setHasTransitionedToPreview:1];
-    v8 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
-    [v8 recognize];
+    previewGestureRecognizer = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
+    [previewGestureRecognizer recognize];
 
-    v9 = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
-    [v9 cancel];
+    steadyTouchForceGestureRecognizer = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
+    [steadyTouchForceGestureRecognizer cancel];
 
-    [v10 finishTransition];
+    [currentPresentationTransition finishTransition];
   }
 }
 
-- (void)previewInteraction:(id)a3 didUpdateCommitTransition:(double)a4 ended:(BOOL)a5
+- (void)previewInteraction:(id)interaction didUpdateCommitTransition:(double)transition ended:(BOOL)ended
 {
-  v5 = a5;
-  v8 = [(_UIPreviewInteractionController *)self _preparedInteractionEffect];
-  [v8 setForceFactor:a4];
+  endedCopy = ended;
+  _preparedInteractionEffect = [(_UIPreviewInteractionController *)self _preparedInteractionEffect];
+  [_preparedInteractionEffect setForceFactor:transition];
 
-  if (v5)
+  if (endedCopy)
   {
 
     [(_UIPreviewInteractionController *)self commitInteractivePreview];
   }
 }
 
-- (void)previewInteractionDidCancel:(id)a3
+- (void)previewInteractionDidCancel:(id)cancel
 {
   if (![(_UIPreviewInteractionController *)self performingCommitTransition])
   {
@@ -248,14 +248,14 @@
   }
 }
 
-- (BOOL)_previewInteractionShouldEndOnGestureCompletion:(id)a3
+- (BOOL)_previewInteractionShouldEndOnGestureCompletion:(id)completion
 {
-  v4 = [(_UIPreviewInteractionController *)self previewActionsController];
+  previewActionsController = [(_UIPreviewInteractionController *)self previewActionsController];
 
-  if (v4)
+  if (previewActionsController)
   {
-    v5 = [(_UIPreviewInteractionController *)self previewActionsController];
-    v6 = [v5 platterPanned] ^ 1;
+    previewActionsController2 = [(_UIPreviewInteractionController *)self previewActionsController];
+    v6 = [previewActionsController2 platterPanned] ^ 1;
   }
 
   else
@@ -266,28 +266,28 @@
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v4 = objc_alloc_init(_UIPreviewInteractionDismissTransition);
-  v5 = [(_UIPreviewInteractionDismissTransition *)v4 _preparedDismissAnimator];
-  v6 = [(_UIPreviewInteractionController *)self currentPresentationController];
-  [v6 setCurrentTransitionAnimator:v5];
+  _preparedDismissAnimator = [(_UIPreviewInteractionDismissTransition *)v4 _preparedDismissAnimator];
+  currentPresentationController = [(_UIPreviewInteractionController *)self currentPresentationController];
+  [currentPresentationController setCurrentTransitionAnimator:_preparedDismissAnimator];
 
-  v7 = [(_UIPreviewInteractionController *)self currentPresentationController];
-  [v7 setInteractiveTransitionFraction:0.0];
+  currentPresentationController2 = [(_UIPreviewInteractionController *)self currentPresentationController];
+  [currentPresentationController2 setInteractiveTransitionFraction:0.0];
 
   [(_UIPreviewInteractionController *)self setCurrentDismissTransition:v4];
 
   return v4;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a4;
-  v8 = a3;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
   v9 = [_UIPreviewPresentationController2 alloc];
-  v10 = [(_UIPreviewInteractionController *)self currentPreviewingContext];
-  v11 = [(_UIPreviewPresentationController2 *)v9 initWithPresentedViewController:v8 presentingViewController:v7 previewingContext:v10];
+  currentPreviewingContext = [(_UIPreviewInteractionController *)self currentPreviewingContext];
+  v11 = [(_UIPreviewPresentationController2 *)v9 initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy previewingContext:currentPreviewingContext];
 
   [(_UIPreviewInteractionController *)self _preparePreviewPresentationControllerIfNeeded:v11];
   [(_UIPreviewInteractionController *)self setCurrentPresentationController:v11];
@@ -295,45 +295,45 @@
   return v11;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  previewGestureRecognizer = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
 
-  v9 = v8 == v7 && [(_UIPreviewInteractionController *)self _isLongPressGestureRecognizerUsedForDelayingActions:v6];
+  v9 = previewGestureRecognizer == recognizerCopy && [(_UIPreviewInteractionController *)self _isLongPressGestureRecognizerUsedForDelayingActions:gestureRecognizerCopy];
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  revealGestureRecognizer = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
 
-  if (v8 == v6)
+  if (revealGestureRecognizer == recognizerCopy)
   {
-    v12 = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
+    steadyTouchForceGestureRecognizer = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
 
-    if (v12 == v7)
+    if (steadyTouchForceGestureRecognizer == gestureRecognizerCopy)
     {
       goto LABEL_13;
     }
 
-    v13 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
+    previewGestureRecognizer = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
 
-    if (v13 == v7)
+    if (previewGestureRecognizer == gestureRecognizerCopy)
     {
       goto LABEL_13;
     }
 
-    if (_UIPreviewInteractionIsTextGestureRecognizer(v7))
+    if (_UIPreviewInteractionIsTextGestureRecognizer(gestureRecognizerCopy))
     {
       v11 = 0;
       goto LABEL_14;
     }
 
-    if ([(_UIPreviewInteractionController *)self _isLongPressGestureRecognizerUsedForDelayingActions:v7])
+    if ([(_UIPreviewInteractionController *)self _isLongPressGestureRecognizerUsedForDelayingActions:gestureRecognizerCopy])
     {
 LABEL_13:
       v11 = 1;
@@ -341,69 +341,69 @@ LABEL_13:
     }
   }
 
-  v9 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
+  previewGestureRecognizer2 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
 
-  if (v9 == v6)
+  if (previewGestureRecognizer2 == recognizerCopy)
   {
-    v14 = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
+    steadyTouchForceGestureRecognizer2 = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
 
-    if (v14 == v7)
+    if (steadyTouchForceGestureRecognizer2 == gestureRecognizerCopy)
     {
       goto LABEL_13;
     }
 
-    v15 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
+    revealGestureRecognizer2 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
 
-    if (v15 == v7 || (_UIPreviewInteractionIsTextGestureRecognizer(v7) & 1) != 0)
+    if (revealGestureRecognizer2 == gestureRecognizerCopy || (_UIPreviewInteractionIsTextGestureRecognizer(gestureRecognizerCopy) & 1) != 0)
     {
       goto LABEL_13;
     }
   }
 
-  v10 = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
-  v11 = v10 == v6;
+  steadyTouchForceGestureRecognizer3 = [(_UIPreviewInteractionController *)self steadyTouchForceGestureRecognizer];
+  v11 = steadyTouchForceGestureRecognizer3 == recognizerCopy;
 
 LABEL_14:
   return v11;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
-  v4 = a3;
-  v5 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
+  failedCopy = failed;
+  revealGestureRecognizer = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
 
-  if (v5 == v4)
+  if (revealGestureRecognizer == failedCopy)
   {
     [(_UIPreviewInteractionController *)self _dismissPreviewViewControllerIfNeeded];
-    v6 = [(_UIPreviewInteractionController *)self previewInteraction];
-    [v6 cancelInteraction];
+    previewInteraction = [(_UIPreviewInteractionController *)self previewInteraction];
+    [previewInteraction cancelInteraction];
   }
 }
 
-- (BOOL)_preparePreviewViewControllerPresentationFromPreviewInteraction:(id)a3
+- (BOOL)_preparePreviewViewControllerPresentationFromPreviewInteraction:(id)interaction
 {
-  v5 = a3;
-  v6 = [v5 view];
-  if (![(_UIPreviewInteractionController *)self _previewingIsPossibleForView:v6])
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  if (![(_UIPreviewInteractionController *)self _previewingIsPossibleForView:view])
   {
     v15 = 0;
     goto LABEL_13;
   }
 
-  v7 = [(_UIPreviewInteractionController *)self delegate];
-  [v5 locationInCoordinateSpace:v6];
+  delegate = [(_UIPreviewInteractionController *)self delegate];
+  [interactionCopy locationInCoordinateSpace:view];
   v9 = v8;
   v11 = v10;
   v27 = 0;
-  v12 = [v7 previewInteractionController:self viewControllerForPreviewingAtLocation:v6 inCoordinateSpace:&v27 presentingViewController:?];
+  v12 = [delegate previewInteractionController:self viewControllerForPreviewingAtLocation:view inCoordinateSpace:&v27 presentingViewController:?];
   v13 = v27;
   v14 = v13;
   v15 = v12 != 0;
   if (v12)
   {
     v24 = v13;
-    v16 = [v12 presentingViewController];
-    if (v16 || ([v12 isBeingPresented] & 1) != 0)
+    presentingViewController = [v12 presentingViewController];
+    if (presentingViewController || ([v12 isBeingPresented] & 1) != 0)
     {
     }
 
@@ -415,17 +415,17 @@ LABEL_6:
       [(_UIPreviewInteractionController *)self setCurrentPreviewViewController:v12];
       if (objc_opt_respondsToSelector())
       {
-        [v7 previewInteractionController:self willPresentViewController:v12 forLocation:v6 inSourceView:{v9, v11}];
+        [delegate previewInteractionController:self willPresentViewController:v12 forLocation:view inSourceView:{v9, v11}];
       }
 
       v17 = objc_alloc_init(_UIPreviewInteractionPresentationTransition);
       [(_UIPreviewInteractionController *)self setCurrentPresentationTransition:v17];
-      v18 = [(_UIPreviewInteractionController *)self currentPreviewingContext];
-      v19 = [(_UIPreviewInteractionController *)self _newHighlighterForPreviewingContext:v18];
-      [v19 prepareHighlightWithPreviewingContext:v18];
+      currentPreviewingContext = [(_UIPreviewInteractionController *)self currentPreviewingContext];
+      v19 = [(_UIPreviewInteractionController *)self _newHighlighterForPreviewingContext:currentPreviewingContext];
+      [v19 prepareHighlightWithPreviewingContext:currentPreviewingContext];
       [(_UIPreviewInteractionController *)self setCurrentHighlighter:v19];
-      v20 = [(_UIPreviewInteractionController *)self currentPresentationController];
-      [(_UIPreviewInteractionController *)self _preparePreviewPresentationControllerIfNeeded:v20];
+      currentPresentationController = [(_UIPreviewInteractionController *)self currentPresentationController];
+      [(_UIPreviewInteractionController *)self _preparePreviewPresentationControllerIfNeeded:currentPresentationController];
 
       [(_UIPreviewInteractionController *)self setPerformingPreviewTransition:1];
       v25[0] = MEMORY[0x1E69E9820];
@@ -438,15 +438,15 @@ LABEL_6:
       [v24 presentViewController:v21 animated:1 completion:v25];
       if (objc_opt_respondsToSelector())
       {
-        [v7 previewInteractionController:self willPresentViewController:v21];
+        [delegate previewInteractionController:self willPresentViewController:v21];
       }
 
       v14 = v24;
       goto LABEL_11;
     }
 
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionController.m" lineNumber:394 description:@"The view controller returned from -previewViewControllerForPosition:inSourceView: must not already be presented"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPreviewInteractionController.m" lineNumber:394 description:@"The view controller returned from -previewViewControllerForPosition:inSourceView: must not already be presented"];
 
     goto LABEL_6;
   }
@@ -460,46 +460,46 @@ LABEL_13:
 - (void)_dismissPreviewViewControllerIfNeeded
 {
   [(_UIPreviewInteractionController *)self _dismissPreviewViewControllerIfNeededWithCompletion:0];
-  v3 = [(_UIPreviewInteractionController *)self previewActionsController];
-  [v3 dismissPreviewActionsWithCompletion:0];
+  previewActionsController = [(_UIPreviewInteractionController *)self previewActionsController];
+  [previewActionsController dismissPreviewActionsWithCompletion:0];
 }
 
-- (void)_dismissPreviewViewControllerIfNeededWithCompletion:(id)a3
+- (void)_dismissPreviewViewControllerIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
-  if (v5 && ![(_UIPreviewInteractionController *)self performingCommitTransition])
+  completionCopy = completion;
+  currentPreviewViewController = [(_UIPreviewInteractionController *)self currentPreviewViewController];
+  if (currentPreviewViewController && ![(_UIPreviewInteractionController *)self performingCommitTransition])
   {
-    v6 = [v5 transitionCoordinator];
-    if ([v6 isInteractive])
+    transitionCoordinator = [currentPreviewViewController transitionCoordinator];
+    if ([transitionCoordinator isInteractive])
     {
-      v7 = [(_UIPreviewInteractionController *)self currentPresentationTransition];
-      [v7 cancelTransition];
+      currentPresentationTransition = [(_UIPreviewInteractionController *)self currentPresentationTransition];
+      [currentPresentationTransition cancelTransition];
 
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4);
+        completionCopy[2](completionCopy);
       }
     }
 
     else
     {
       [(_UIPreviewInteractionController *)self setDismissingPreview:1];
-      v8 = [(_UIPreviewInteractionController *)self delegate];
+      delegate = [(_UIPreviewInteractionController *)self delegate];
       v13 = MEMORY[0x1E69E9820];
       v14 = 3221225472;
       v15 = __87___UIPreviewInteractionController__dismissPreviewViewControllerIfNeededWithCompletion___block_invoke;
       v16 = &unk_1E70F5F08;
-      v9 = v8;
+      v9 = delegate;
       v17 = v9;
-      v18 = self;
-      v10 = v5;
+      selfCopy = self;
+      v10 = currentPreviewViewController;
       v19 = v10;
-      v20 = v4;
+      v20 = completionCopy;
       v11 = _Block_copy(&v13);
-      v12 = [v10 presentingViewController];
+      presentingViewController = [v10 presentingViewController];
 
-      if (v12)
+      if (presentingViewController)
       {
         [v10 dismissViewControllerAnimated:1 completion:v11];
       }
@@ -524,60 +524,60 @@ LABEL_13:
   [(_UIPreviewInteractionController *)self setCommitTransitionScheduled:0];
   [(_UIPreviewInteractionController *)self setCurrentPresentationTransition:0];
   [(_UIPreviewInteractionController *)self setCurrentDismissTransition:0];
-  v3 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
-  [v3 _setOverrideUseCustomPresentation:0];
+  currentPreviewViewController = [(_UIPreviewInteractionController *)self currentPreviewViewController];
+  [currentPreviewViewController _setOverrideUseCustomPresentation:0];
 
-  v4 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
-  [v4 _setOverrideTransitioningDelegate:0];
+  currentPreviewViewController2 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
+  [currentPreviewViewController2 _setOverrideTransitioningDelegate:0];
 
   [(_UIPreviewInteractionController *)self setCurrentPreviewViewController:0];
   [(_UIPreviewInteractionController *)self setCurrentPresentationController:0];
-  v5 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
-  [v5 setEnabled:0];
+  revealGestureRecognizer = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
+  [revealGestureRecognizer setEnabled:0];
 
-  v6 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
-  [v6 setEnabled:1];
+  revealGestureRecognizer2 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
+  [revealGestureRecognizer2 setEnabled:1];
 
-  v7 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
-  [v7 setEnabled:0];
+  previewGestureRecognizer = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
+  [previewGestureRecognizer setEnabled:0];
 
-  v8 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
-  [v8 setEnabled:1];
+  previewGestureRecognizer2 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
+  [previewGestureRecognizer2 setEnabled:1];
 
-  v9 = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
-  [v9 setEnabled:0];
+  gestureRecognizerForPreviewActions = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
+  [gestureRecognizerForPreviewActions setEnabled:0];
 
-  v10 = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
-  [v10 setEnabled:1];
+  gestureRecognizerForPreviewActions2 = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
+  [gestureRecognizerForPreviewActions2 setEnabled:1];
 
-  v11 = [(_UIPreviewInteractionController *)self sourceView];
-  v12 = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
-  [v11 addGestureRecognizer:v12];
+  sourceView = [(_UIPreviewInteractionController *)self sourceView];
+  gestureRecognizerForPreviewActions3 = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
+  [sourceView addGestureRecognizer:gestureRecognizerForPreviewActions3];
 
   [(_UIPreviewInteractionController *)self setPreviewActionsController:0];
   [(_UIPreviewInteractionController *)self setHasTransitionedToPreview:0];
   [(_UIPreviewInteractionController *)self setPresentedViewTouchForceProvider:0];
   [(_UIPreviewInteractionController *)self setPausingTouchForceProvider:0];
-  v13 = [(_UIPreviewInteractionController *)self previewInteraction];
-  [v13 setTouchForceProvider:0];
+  previewInteraction = [(_UIPreviewInteractionController *)self previewInteraction];
+  [previewInteraction setTouchForceProvider:0];
 }
 
 - (void)_revertInteractionEffectToStartState
 {
-  v3 = [(_UIPreviewInteractionController *)self currentInteractionEffect];
+  currentInteractionEffect = [(_UIPreviewInteractionController *)self currentInteractionEffect];
 
-  if (v3)
+  if (currentInteractionEffect)
   {
-    v4 = [(_UIPreviewInteractionController *)self currentInteractionEffect];
-    [v4 setForceFactor:0.0];
+    currentInteractionEffect2 = [(_UIPreviewInteractionController *)self currentInteractionEffect];
+    [currentInteractionEffect2 setForceFactor:0.0];
   }
 }
 
-- (id)_newHighlighterForPreviewingContext:(id)a3
+- (id)_newHighlighterForPreviewingContext:(id)context
 {
-  v3 = [a3 customViewForInteractiveHighlight];
+  customViewForInteractiveHighlight = [context customViewForInteractiveHighlight];
   v4 = off_1E70EBF28;
-  if (v3)
+  if (customViewForInteractiveHighlight)
   {
     v4 = off_1E70EBF18;
   }
@@ -589,47 +589,47 @@ LABEL_13:
 
 - (void)_finalizeHighlighterAfterPreviewViewControllerPresentation
 {
-  v3 = [(_UIPreviewInteractionController *)self currentHighlighter];
-  if (v3)
+  currentHighlighter = [(_UIPreviewInteractionController *)self currentHighlighter];
+  if (currentHighlighter)
   {
-    v5 = v3;
-    v4 = [(_UIPreviewInteractionController *)self currentPreviewingContext];
-    [v5 finalizeHighlightForPreviewingContext:v4];
+    v5 = currentHighlighter;
+    currentPreviewingContext = [(_UIPreviewInteractionController *)self currentPreviewingContext];
+    [v5 finalizeHighlightForPreviewingContext:currentPreviewingContext];
 
     [(_UIPreviewInteractionController *)self setCurrentHighlighter:0];
-    v3 = v5;
+    currentHighlighter = v5;
   }
 }
 
-- (BOOL)_isLongPressGestureRecognizerUsedForDelayingActions:(id)a3
+- (BOOL)_isLongPressGestureRecognizerUsedForDelayingActions:(id)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     isDragInteractionGestureRecognizer = 0;
   }
 
-  else if ([v3 _isGestureType:1] && (objc_msgSend(v3, "minimumPressDuration"), v5 >= 0.5))
+  else if ([actionsCopy _isGestureType:1] && (objc_msgSend(actionsCopy, "minimumPressDuration"), v5 >= 0.5))
   {
     isDragInteractionGestureRecognizer = 1;
   }
 
   else
   {
-    isDragInteractionGestureRecognizer = _isDragInteractionGestureRecognizer(v3);
+    isDragInteractionGestureRecognizer = _isDragInteractionGestureRecognizer(actionsCopy);
   }
 
   return isDragInteractionGestureRecognizer;
 }
 
-- (void)_handleSteadyTouchForceGesture:(id)a3
+- (void)_handleSteadyTouchForceGesture:(id)gesture
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 state] == 3)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 3)
   {
-    [v4 _allActiveTouches];
+    [gestureCopy _allActiveTouches];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -654,8 +654,8 @@ LABEL_13:
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v11 = [v10 gestureRecognizers];
-          v12 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          gestureRecognizers = [v10 gestureRecognizers];
+          v12 = [gestureRecognizers countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v12)
           {
             v13 = v12;
@@ -666,37 +666,37 @@ LABEL_13:
               {
                 if (*v23 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(gestureRecognizers);
                 }
 
                 v16 = *(*(&v22 + 1) + 8 * j);
                 if (-[_UIPreviewInteractionController _isLongPressGestureRecognizerUsedForDelayingActions:](self, "_isLongPressGestureRecognizerUsedForDelayingActions:", v16) && [v16 state] != 5)
                 {
-                  v17 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
+                  currentPreviewViewController = [(_UIPreviewInteractionController *)self currentPreviewViewController];
 
-                  if (v17)
+                  if (currentPreviewViewController)
                   {
-                    v18 = [(_UIPreviewInteractionController *)self previewInteraction];
-                    [v18 cancelInteraction];
+                    previewInteraction = [(_UIPreviewInteractionController *)self previewInteraction];
+                    [previewInteraction cancelInteraction];
 
-                    v19 = [(_UIPreviewInteractionController *)self previewInteraction];
-                    [(_UIPreviewInteractionController *)self previewInteractionDidCancel:v19];
+                    previewInteraction2 = [(_UIPreviewInteractionController *)self previewInteraction];
+                    [(_UIPreviewInteractionController *)self previewInteractionDidCancel:previewInteraction2];
                   }
 
                   else
                   {
-                    v20 = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
-                    [v20 cancel];
+                    revealGestureRecognizer = [(_UIPreviewInteractionController *)self revealGestureRecognizer];
+                    [revealGestureRecognizer cancel];
 
-                    v19 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
-                    [v19 cancel];
+                    previewInteraction2 = [(_UIPreviewInteractionController *)self previewGestureRecognizer];
+                    [previewInteraction2 cancel];
                   }
 
                   goto LABEL_23;
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+              v13 = [gestureRecognizers countByEnumeratingWithState:&v22 objects:v30 count:16];
               if (v13)
               {
                 continue;
@@ -719,34 +719,34 @@ LABEL_23:
   }
 }
 
-- (BOOL)_viewControllerIsChildOfTwoColumnSplitViewController:(id)a3
+- (BOOL)_viewControllerIsChildOfTwoColumnSplitViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    LODWORD(self) = [v4 _isCollapsed] ^ 1;
+    LODWORD(self) = [controllerCopy _isCollapsed] ^ 1;
   }
 
-  else if (v4)
+  else if (controllerCopy)
   {
-    v5 = [v4 parentViewController];
-    if (!v5)
+    parentViewController = [controllerCopy parentViewController];
+    if (!parentViewController)
     {
-      v6 = [v4 presentationController];
-      v7 = v6;
-      if (v6 && ([v6 shouldPresentInFullscreen] & 1) == 0)
+      presentationController = [controllerCopy presentationController];
+      v7 = presentationController;
+      if (presentationController && ([presentationController shouldPresentInFullscreen] & 1) == 0)
       {
-        v5 = [v4 presentingViewController];
+        parentViewController = [controllerCopy presentingViewController];
       }
 
       else
       {
-        v5 = 0;
+        parentViewController = 0;
       }
     }
 
-    LOBYTE(self) = [(_UIPreviewInteractionController *)self _viewControllerIsChildOfTwoColumnSplitViewController:v5];
+    LOBYTE(self) = [(_UIPreviewInteractionController *)self _viewControllerIsChildOfTwoColumnSplitViewController:parentViewController];
   }
 
   else
@@ -757,10 +757,10 @@ LABEL_23:
   return self;
 }
 
-- (BOOL)_previewingIsPossibleForView:(id)a3
+- (BOOL)_previewingIsPossibleForView:(id)view
 {
-  v4 = [a3 _viewControllerForAncestor];
-  LOBYTE(self) = [(_UIPreviewInteractionController *)self _viewControllerIsChildOfTwoColumnSplitViewController:v4];
+  _viewControllerForAncestor = [view _viewControllerForAncestor];
+  LOBYTE(self) = [(_UIPreviewInteractionController *)self _viewControllerIsChildOfTwoColumnSplitViewController:_viewControllerForAncestor];
 
   return self ^ 1;
 }
@@ -794,16 +794,16 @@ LABEL_23:
 
 - (void)_stopCurrentInteractionEffect
 {
-  v3 = [(_UIPreviewInteractionController *)self currentInteractionEffect];
-  [v3 setUpdateBlock:0];
+  currentInteractionEffect = [(_UIPreviewInteractionController *)self currentInteractionEffect];
+  [currentInteractionEffect setUpdateBlock:0];
 
   [(_UIPreviewInteractionController *)self setCurrentInteractionEffect:0];
 }
 
 - (id)_preferredNavigationControllerForCommitTransition
 {
-  v2 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
-  v3 = [v2 presentingViewController];
+  currentPreviewViewController = [(_UIPreviewInteractionController *)self currentPreviewViewController];
+  presentingViewController = [currentPreviewViewController presentingViewController];
 
   v4 = objc_opt_class();
   v9 = 0;
@@ -813,7 +813,7 @@ LABEL_23:
   v13 = __Block_byref_object_dispose__158;
   if (objc_opt_isKindOfClass())
   {
-    v5 = v3;
+    v5 = presentingViewController;
   }
 
   else
@@ -828,29 +828,29 @@ LABEL_23:
   v8[3] = &unk_1E711B270;
   v8[4] = &v9;
   v8[5] = v4;
-  [v3 _traverseViewControllerHierarchyFromLevel:0 withBlock:v8];
+  [presentingViewController _traverseViewControllerHierarchyFromLevel:0 withBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
   return v6;
 }
 
-- (void)_preparePreviewPresentationControllerIfNeeded:(id)a3
+- (void)_preparePreviewPresentationControllerIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(_UIPreviewInteractionController *)self currentHighlighter];
-  [v4 setCurrentHighlighter:v5];
+  neededCopy = needed;
+  currentHighlighter = [(_UIPreviewInteractionController *)self currentHighlighter];
+  [neededCopy setCurrentHighlighter:currentHighlighter];
 
-  v7 = [(_UIPreviewInteractionController *)self currentPresentationTransition];
-  [v7 interactiveTransitionFraction];
-  [v4 setInteractiveTransitionFraction:?];
-  v6 = [v7 _preparedPresentationAnimator];
-  [v4 setCurrentTransitionAnimator:v6];
+  currentPresentationTransition = [(_UIPreviewInteractionController *)self currentPresentationTransition];
+  [currentPresentationTransition interactiveTransitionFraction];
+  [neededCopy setInteractiveTransitionFraction:?];
+  _preparedPresentationAnimator = [currentPresentationTransition _preparedPresentationAnimator];
+  [neededCopy setCurrentTransitionAnimator:_preparedPresentationAnimator];
 }
 
-- (id)_previewPresentationControllerForViewController:(id)a3
+- (id)_previewPresentationControllerForViewController:(id)controller
 {
-  v3 = [a3 _existingPresentationControllerImmediate:1 effective:1];
+  v3 = [controller _existingPresentationControllerImmediate:1 effective:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -867,125 +867,125 @@ LABEL_23:
 
 - (void)_resetCustomPresentationHooks
 {
-  v3 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
-  [v3 _setOverrideUseCustomPresentation:0];
+  currentPreviewViewController = [(_UIPreviewInteractionController *)self currentPreviewViewController];
+  [currentPreviewViewController _setOverrideUseCustomPresentation:0];
 
-  v4 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
-  [v4 _setOverrideTransitioningDelegate:0];
+  currentPreviewViewController2 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
+  [currentPreviewViewController2 _setOverrideTransitioningDelegate:0];
 }
 
-- (void)_overrideSourceViewForBinaryCompatibilityIfNeeded:(id *)a3 sourceRect:(CGRect *)a4
+- (void)_overrideSourceViewForBinaryCompatibilityIfNeeded:(id *)needed sourceRect:(CGRect *)rect
 {
-  v7 = [(_UIPreviewInteractionController *)self currentPresentationController];
-  v13 = [v7 sourceView];
+  currentPresentationController = [(_UIPreviewInteractionController *)self currentPresentationController];
+  sourceView = [currentPresentationController sourceView];
 
-  if (v13)
+  if (sourceView)
   {
-    *a3 = v13;
-    v8 = [(_UIPreviewInteractionController *)self currentPresentationController];
-    [v8 sourceRect];
-    a4->origin.x = v9;
-    a4->origin.y = v10;
-    a4->size.width = v11;
-    a4->size.height = v12;
+    *needed = sourceView;
+    currentPresentationController2 = [(_UIPreviewInteractionController *)self currentPresentationController];
+    [currentPresentationController2 sourceRect];
+    rect->origin.x = v9;
+    rect->origin.y = v10;
+    rect->size.width = v11;
+    rect->size.height = v12;
   }
 }
 
-- (void)_handlePreviewActionsGesture:(id)a3
+- (void)_handlePreviewActionsGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(_UIPreviewInteractionController *)self currentPresentationController];
+  gestureCopy = gesture;
+  currentPresentationController = [(_UIPreviewInteractionController *)self currentPresentationController];
 
-  if (v5 && ![(_UIPreviewInteractionController *)self performingCommitTransition]&& [(_UIPreviewInteractionController *)self hasTransitionedToPreview])
+  if (currentPresentationController && ![(_UIPreviewInteractionController *)self performingCommitTransition]&& [(_UIPreviewInteractionController *)self hasTransitionedToPreview])
   {
-    v6 = [(_UIPreviewInteractionController *)self currentPresentationController];
-    v7 = [v6 containerView];
+    currentPresentationController2 = [(_UIPreviewInteractionController *)self currentPresentationController];
+    containerView = [currentPresentationController2 containerView];
 
-    v8 = [(_UIPreviewInteractionController *)self currentPresentationController];
-    v9 = [v8 contentPlatterView];
+    currentPresentationController3 = [(_UIPreviewInteractionController *)self currentPresentationController];
+    contentPlatterView = [currentPresentationController3 contentPlatterView];
 
-    v10 = [(_UIPreviewInteractionController *)self previewActionsController];
+    previewActionsController = [(_UIPreviewInteractionController *)self previewActionsController];
 
-    if (!v10)
+    if (!previewActionsController)
     {
-      v11 = [(_UIPreviewInteractionController *)self currentPresentationController];
-      v12 = [v11 presentedViewController];
+      currentPresentationController4 = [(_UIPreviewInteractionController *)self currentPresentationController];
+      presentedViewController = [currentPresentationController4 presentedViewController];
 
-      if (!v7 || !v9 || !v12)
+      if (!containerView || !contentPlatterView || !presentedViewController)
       {
 LABEL_28:
 
         goto LABEL_29;
       }
 
-      v13 = [_UIPreviewActionsController actionsControllerWithContainerView:v7 platterView:v9 presentedViewController:v12 delegate:self];
+      v13 = [_UIPreviewActionsController actionsControllerWithContainerView:containerView platterView:contentPlatterView presentedViewController:presentedViewController delegate:self];
       [(_UIPreviewInteractionController *)self setPreviewActionsController:v13];
     }
 
-    v12 = [(_UIPreviewInteractionController *)self previewActionsController];
-    if (v12)
+    presentedViewController = [(_UIPreviewInteractionController *)self previewActionsController];
+    if (presentedViewController)
     {
-      [v4 locationInView:v7];
+      [gestureCopy locationInView:containerView];
       v15 = v14;
       v17 = v16;
-      if ([v4 state] == 1 || objc_msgSend(v4, "state") == 2)
+      if ([gestureCopy state] == 1 || objc_msgSend(gestureCopy, "state") == 2)
       {
-        v18 = [(_UIPreviewInteractionController *)self previewActionsController];
-        [v18 frameForActionView];
+        previewActionsController2 = [(_UIPreviewInteractionController *)self previewActionsController];
+        [previewActionsController2 frameForActionView];
         v32.x = v15;
         v32.y = v17;
         v19 = CGRectContainsPoint(v33, v32);
 
         if (!v19)
         {
-          if ([v12 hasBegun])
+          if ([presentedViewController hasBegun])
           {
-            [v12 updatePanningLocation:{v15, v17}];
+            [presentedViewController updatePanningLocation:{v15, v17}];
           }
 
           else
           {
-            [v12 beginPanningAtLocation:{v15, v17}];
+            [presentedViewController beginPanningAtLocation:{v15, v17}];
             [(_UIPreviewInteractionController *)self setInitialLocationForPreviewActionsPanning:v15, v17];
           }
         }
       }
 
-      else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+      else if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
       {
-        if (v7)
+        if (containerView)
         {
-          v20 = [(_UIPreviewInteractionController *)self previewInteraction];
-          v21 = [v20 touchForceProvider];
-          v22 = [(_UIPreviewInteractionController *)self presentedViewTouchForceProvider];
+          previewInteraction = [(_UIPreviewInteractionController *)self previewInteraction];
+          touchForceProvider = [previewInteraction touchForceProvider];
+          presentedViewTouchForceProvider = [(_UIPreviewInteractionController *)self presentedViewTouchForceProvider];
 
-          if (v21 != v22)
+          if (touchForceProvider != presentedViewTouchForceProvider)
           {
-            v23 = [[_UIPreviewInteractionCompatibilityTouchForceProvider alloc] initWithView:v7];
+            v23 = [[_UIPreviewInteractionCompatibilityTouchForceProvider alloc] initWithView:containerView];
             [(_UIPreviewInteractionController *)self setPresentedViewTouchForceProvider:v23];
 
-            v24 = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
-            [v7 addGestureRecognizer:v24];
+            gestureRecognizerForPreviewActions = [(_UIPreviewInteractionController *)self gestureRecognizerForPreviewActions];
+            [containerView addGestureRecognizer:gestureRecognizerForPreviewActions];
           }
         }
 
-        if ([v12 hasBegun])
+        if ([presentedViewController hasBegun])
         {
-          [v12 endPanningAtLocation:{v15, v17}];
+          [presentedViewController endPanningAtLocation:{v15, v17}];
         }
 
-        [v12 totalPanningTranslation];
+        [presentedViewController totalPanningTranslation];
         v26 = v25;
         v28 = v27;
         [(_UIPreviewInteractionController *)self initialLocationForPreviewActionsPanning];
-        if (!v7 || sqrt((v15 - v29) * (v15 - v29) + (v17 - v30) * (v17 - v30)) < 45.0 && v26 <= 45.0 && v28 <= 45.0)
+        if (!containerView || sqrt((v15 - v29) * (v15 - v29) + (v17 - v30) * (v17 - v30)) < 45.0 && v26 <= 45.0 && v28 <= 45.0)
         {
           v31[0] = MEMORY[0x1E69E9820];
           v31[1] = 3221225472;
           v31[2] = __64___UIPreviewInteractionController__handlePreviewActionsGesture___block_invoke;
           v31[3] = &unk_1E70F3590;
           v31[4] = self;
-          [v12 dismissPreviewActionsWithCompletion:v31];
+          [presentedViewController dismissPreviewActionsWithCompletion:v31];
         }
       }
     }
@@ -996,10 +996,10 @@ LABEL_28:
 LABEL_29:
 }
 
-- (CGPoint)initialPlatterPositionForPreviewActionsController:(id)a3
+- (CGPoint)initialPlatterPositionForPreviewActionsController:(id)controller
 {
-  v3 = [(_UIPreviewInteractionController *)self currentPresentationController];
-  [v3 _computedPlatterFrame];
+  currentPresentationController = [(_UIPreviewInteractionController *)self currentPresentationController];
+  [currentPresentationController _computedPlatterFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1012,11 +1012,11 @@ LABEL_29:
   return result;
 }
 
-- (CGSize)maximumPreviewActionsViewSizeForPreviewActionsController:(id)a3
+- (CGSize)maximumPreviewActionsViewSizeForPreviewActionsController:(id)controller
 {
-  v3 = [(_UIPreviewInteractionController *)self currentPresentationController];
-  v4 = [v3 containerView];
-  [v4 frame];
+  currentPresentationController = [(_UIPreviewInteractionController *)self currentPresentationController];
+  containerView = [currentPresentationController containerView];
+  [containerView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1041,57 +1041,57 @@ LABEL_29:
   return result;
 }
 
-- (void)previewActionsController:(id)a3 didCompleteWithSelectedAction:(id)a4
+- (void)previewActionsController:(id)controller didCompleteWithSelectedAction:(id)action
 {
-  v5 = a4;
-  v6 = [(_UIPreviewInteractionController *)self currentPreviewViewController];
-  v7 = [(_UIPreviewInteractionController *)self previewInteraction];
-  [v7 cancelInteraction];
+  actionCopy = action;
+  currentPreviewViewController = [(_UIPreviewInteractionController *)self currentPreviewViewController];
+  previewInteraction = [(_UIPreviewInteractionController *)self previewInteraction];
+  [previewInteraction cancelInteraction];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __90___UIPreviewInteractionController_previewActionsController_didCompleteWithSelectedAction___block_invoke;
   v10[3] = &unk_1E70F35B8;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = actionCopy;
+  v12 = currentPreviewViewController;
+  v8 = currentPreviewViewController;
+  v9 = actionCopy;
   [(_UIPreviewInteractionController *)self _dismissPreviewViewControllerIfNeededWithCompletion:v10];
 }
 
-- (void)didDismissPreviewActionsController:(id)a3
+- (void)didDismissPreviewActionsController:(id)controller
 {
-  v4 = [(_UIPreviewInteractionController *)self previewInteraction];
-  [v4 cancelInteraction];
+  previewInteraction = [(_UIPreviewInteractionController *)self previewInteraction];
+  [previewInteraction cancelInteraction];
 
   [(_UIPreviewInteractionController *)self _dismissPreviewViewControllerIfNeeded];
 }
 
-- (void)previewActionsController:(id)a3 didUpdatePlatterTranslation:(CGVector)a4 withVelocity:(CGVector)a5
+- (void)previewActionsController:(id)controller didUpdatePlatterTranslation:(CGVector)translation withVelocity:(CGVector)velocity
 {
-  v6 = fabs(a4.dx) <= 22.0;
-  v7 = fabs(a4.dy) <= 44.0 && v6;
-  v8 = [(_UIPreviewInteractionController *)self pausingTouchForceProvider];
+  v6 = fabs(translation.dx) <= 22.0;
+  v7 = fabs(translation.dy) <= 44.0 && v6;
+  pausingTouchForceProvider = [(_UIPreviewInteractionController *)self pausingTouchForceProvider];
 
-  if (v8)
+  if (pausingTouchForceProvider)
   {
     if (v7)
     {
-      v9 = [(_UIPreviewInteractionController *)self presentedViewTouchForceProvider];
-      if (v9)
+      presentedViewTouchForceProvider = [(_UIPreviewInteractionController *)self presentedViewTouchForceProvider];
+      if (presentedViewTouchForceProvider)
       {
-        v10 = [(_UIPreviewInteractionController *)self presentedViewTouchForceProvider];
+        presentedViewTouchForceProvider2 = [(_UIPreviewInteractionController *)self presentedViewTouchForceProvider];
       }
 
       else
       {
-        v10 = 0;
+        presentedViewTouchForceProvider2 = 0;
       }
 
-      v12 = [(_UIPreviewInteractionController *)self previewInteraction];
-      [v12 setTouchForceProvider:v10];
+      previewInteraction = [(_UIPreviewInteractionController *)self previewInteraction];
+      [previewInteraction setTouchForceProvider:presentedViewTouchForceProvider2];
 
-      if (v9)
+      if (presentedViewTouchForceProvider)
       {
       }
 
@@ -1101,24 +1101,24 @@ LABEL_29:
 
   else if (!v7)
   {
-    v11 = [(_UIPreviewInteractionController *)self presentedViewTouchForceProvider];
-    if (v11)
+    presentedViewTouchForceProvider3 = [(_UIPreviewInteractionController *)self presentedViewTouchForceProvider];
+    if (presentedViewTouchForceProvider3)
     {
-      v17 = [(_UIPreviewInteractionController *)self presentedViewTouchForceProvider];
+      presentedViewTouchForceProvider4 = [(_UIPreviewInteractionController *)self presentedViewTouchForceProvider];
     }
 
     else
     {
-      v13 = [(_UIPreviewInteractionController *)self previewInteraction];
-      v17 = [v13 touchForceProvider];
+      previewInteraction2 = [(_UIPreviewInteractionController *)self previewInteraction];
+      presentedViewTouchForceProvider4 = [previewInteraction2 touchForceProvider];
     }
 
-    v14 = [[_UIPreviewInteractionDecayTouchForceProvider alloc] initWithTouchForceProvider:v17];
+    v14 = [[_UIPreviewInteractionDecayTouchForceProvider alloc] initWithTouchForceProvider:presentedViewTouchForceProvider4];
     [(_UIPreviewInteractionController *)self setPausingTouchForceProvider:v14];
 
-    v15 = [(_UIPreviewInteractionController *)self pausingTouchForceProvider];
-    v16 = [(_UIPreviewInteractionController *)self previewInteraction];
-    [v16 setTouchForceProvider:v15];
+    pausingTouchForceProvider2 = [(_UIPreviewInteractionController *)self pausingTouchForceProvider];
+    previewInteraction3 = [(_UIPreviewInteractionController *)self previewInteraction];
+    [previewInteraction3 setTouchForceProvider:pausingTouchForceProvider2];
 
     [(_UIPreviewInteractionController *)self _revertInteractionEffectToStartState];
   }

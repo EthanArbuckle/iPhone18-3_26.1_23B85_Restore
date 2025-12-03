@@ -1,24 +1,24 @@
 @interface SUUIStackListCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)layoutSubviewsWithFixedWidth:(CGRect)a3 size:(CGSize *)a4;
-- (BOOL)layoutSubviewsWithFlowLayout:(CGRect)a3 size:(CGSize *)a4;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIStackListCollectionViewCell)initWithFrame:(CGRect)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)layoutSubviewsWithFixedWidth:(CGRect)width size:(CGSize *)size;
+- (BOOL)layoutSubviewsWithFlowLayout:(CGRect)layout size:(CGSize *)size;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIStackListCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUIStackListCollectionViewCell
 
-- (SUUIStackListCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIStackListCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUIStackListCollectionViewCell;
-  v3 = [(SUUIViewReuseCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
@@ -29,26 +29,26 @@
   return v3;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 style];
-  -[SUUIStackListCollectionViewCell setAlignment:](self, "setAlignment:", [v10 elementAlignment]);
+  elementCopy = element;
+  contextCopy = context;
+  style = [elementCopy style];
+  -[SUUIStackListCollectionViewCell setAlignment:](self, "setAlignment:", [style elementAlignment]);
 
-  v11 = [(SUUIStackListCollectionViewCell *)self listViews];
-  [v11 removeAllObjects];
+  listViews = [(SUUIStackListCollectionViewCell *)self listViews];
+  [listViews removeAllObjects];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v14[3] = &unk_2798F5EF0;
-  v18 = a4;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v12 = v9;
-  v13 = v8;
+  widthCopy = width;
+  v15 = elementCopy;
+  v16 = contextCopy;
+  selfCopy = self;
+  v12 = contextCopy;
+  v13 = elementCopy;
   [(SUUIViewReuseCollectionViewCell *)self modifyUsingBlock:v14];
 }
 
@@ -99,16 +99,16 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
   }
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a3 children];
+  contextCopy = context;
+  children = [element children];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -120,13 +120,13 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
-        v11 |= [v7 prefetchResourcesForViewElement:*(*(&v15 + 1) + 8 * i) reason:a4];
+        v11 |= [contextCopy prefetchResourcesForViewElement:*(*(&v15 + 1) + 8 * i) reason:reason];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -140,7 +140,7 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
   return v11 & 1;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -149,16 +149,16 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a3 children];
+  contextCopy = context;
+  children = [element children];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v9 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -169,31 +169,31 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
         if ([v13 elementType] == 59)
         {
-          [SUUIStackItemView requestLayoutForViewElement:v13 width:v7 context:a4];
+          [SUUIStackItemView requestLayoutForViewElement:v13 width:contextCopy context:width];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v9 = *MEMORY[0x277CBF3A8];
   MaxY = *(MEMORY[0x277CBF3A8] + 8);
-  [v6 children];
+  [elementCopy children];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -219,7 +219,7 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [SUUIStackItemView sizeThatFitsWidth:v18 viewElement:v7 context:0 numberOfLines:a3];
+          [SUUIStackItemView sizeThatFitsWidth:v18 viewElement:contextCopy context:0 numberOfLines:width];
           v21 = v14 + 17.0;
           if (v14 <= 0.0)
           {
@@ -227,7 +227,7 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
           }
 
           v14 = v21 + v19;
-          if (v21 + v19 > a3)
+          if (v21 + v19 > width)
           {
 
             v59 = 0u;
@@ -239,7 +239,7 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
             if (v24)
             {
               v25 = v24;
-              v26 = a3 * 0.5 + -8.5;
+              v26 = width * 0.5 + -8.5;
               v27 = floorf(v26);
               v28 = *v58;
               while (2)
@@ -256,7 +256,7 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
                   if (objc_opt_isKindOfClass())
                   {
                     v56 = 0;
-                    [SUUIStackItemView sizeThatFitsWidth:v30 viewElement:v7 context:&v56 numberOfLines:v27];
+                    [SUUIStackItemView sizeThatFitsWidth:v30 viewElement:contextCopy context:&v56 numberOfLines:v27];
                     if (MaxY < v31)
                     {
                       MaxY = v31;
@@ -292,7 +292,7 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
                             objc_opt_class();
                             if (objc_opt_isKindOfClass())
                             {
-                              [SUUIStackItemView sizeThatFitsWidth:v41 viewElement:v7 context:0 numberOfLines:a3];
+                              [SUUIStackItemView sizeThatFitsWidth:v41 viewElement:contextCopy context:0 numberOfLines:width];
                               v44 = v43;
                               if (v42 >= 16.0)
                               {
@@ -308,7 +308,7 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
                               v70.origin.y = v32;
                               v70.size.width = v34;
                               v70.size.height = v35;
-                              if (v44 + CGRectGetMaxX(v70) <= a3)
+                              if (v44 + CGRectGetMaxX(v70) <= width)
                               {
                                 v33 = v33 + v44;
                               }
@@ -407,36 +407,36 @@ void __71__SUUIStackListCollectionViewCell_reloadWithViewElement_width_context__
   }
 
 LABEL_51:
-  v47 = [v6 style];
-  v48 = [v47 elementAlignment];
+  style = [elementCopy style];
+  elementAlignment = [style elementAlignment];
 
-  if (v48 == 3)
+  if (elementAlignment == 3)
   {
     MaxY = MaxY + 6.0;
   }
 
-  a3 = v9;
+  width = v9;
 LABEL_54:
 
-  v49 = a3;
+  widthCopy = width;
   v50 = MaxY;
   result.height = v50;
-  result.width = v49;
+  result.width = widthCopy;
   return result;
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUUIStackListCollectionViewCell *)self listViews];
-  v12 = [v11 keyEnumerator];
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
+  listViews = [(SUUIStackListCollectionViewCell *)self listViews];
+  keyEnumerator = [listViews keyEnumerator];
 
-  v13 = [v12 nextObject];
-  if (v13)
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v14 = v13;
+    v14 = nextObject;
     v15 = 0;
     do
     {
@@ -447,15 +447,15 @@ LABEL_54:
 
       else
       {
-        v15 = [v14 setImage:v8 forArtworkRequest:v9 context:v10];
+        v15 = [v14 setImage:imageCopy forArtworkRequest:requestCopy context:contextCopy];
       }
 
-      v16 = [v12 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v14 = v16;
+      v14 = nextObject2;
     }
 
-    while (v16);
+    while (nextObject2);
   }
 
   else
@@ -466,12 +466,12 @@ LABEL_54:
   return v15;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v8 = *MEMORY[0x277CBF3A8];
-  if (![(SUUIStackListCollectionViewCell *)self layoutSubviewsWithFlowLayout:&v8 size:0.0, 0.0, a3.width, a3.height])
+  if (![(SUUIStackListCollectionViewCell *)self layoutSubviewsWithFlowLayout:&v8 size:0.0, 0.0, fits.width, fits.height])
   {
     if ([(SUUIStackListCollectionViewCell *)self layoutSubviewsWithFixedWidth:&v8 size:0.0, 0.0, width, height])
     {
@@ -499,8 +499,8 @@ LABEL_6:
   v12.receiver = self;
   v12.super_class = SUUIStackListCollectionViewCell;
   [(SUUICollectionViewCell *)&v12 layoutSubviews];
-  v3 = [(SUUIStackListCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIStackListCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -512,12 +512,12 @@ LABEL_6:
   }
 }
 
-- (BOOL)layoutSubviewsWithFlowLayout:(CGRect)a3 size:(CGSize *)a4
+- (BOOL)layoutSubviewsWithFlowLayout:(CGRect)layout size:(CGSize *)size
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = layout.size.height;
+  width = layout.size.width;
+  y = layout.origin.y;
+  x = layout.origin.x;
   v76 = *MEMORY[0x277D85DE8];
   [(SUUIViewReuseCollectionViewCell *)self contentInset];
   rect = v10;
@@ -541,13 +541,13 @@ LABEL_6:
   v17 = *(MEMORY[0x277CBF3A0] + 8);
   v19 = *(MEMORY[0x277CBF3A0] + 16);
   v20 = *(MEMORY[0x277CBF3A0] + 24);
-  v21 = [(SUUIStackListCollectionViewCell *)self _isRightAligned];
+  _isRightAligned = [(SUUIStackListCollectionViewCell *)self _isRightAligned];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v22 = [(SUUIViewReuseCollectionViewCell *)self allExistingViews];
-  v23 = [v22 countByEnumeratingWithState:&v71 objects:v75 count:16];
+  allExistingViews = [(SUUIViewReuseCollectionViewCell *)self allExistingViews];
+  v23 = [allExistingViews countByEnumeratingWithState:&v71 objects:v75 count:16];
   v68 = v18;
   v69 = v17;
   if (!v23)
@@ -562,7 +562,7 @@ LABEL_6:
   v65 = v12;
   v62 = v16 - v14;
   v63 = v18;
-  if (v21)
+  if (_isRightAligned)
   {
     v12 = v16 - v14;
   }
@@ -582,7 +582,7 @@ LABEL_6:
       v67 = v30;
       if (*v72 != v25)
       {
-        objc_enumerationMutation(v22);
+        objc_enumerationMutation(allExistingViews);
       }
 
       v32 = *(*(&v71 + 1) + 8 * v29);
@@ -608,13 +608,13 @@ LABEL_6:
         v36 = v35;
       }
 
-      v37 = [(SUUIStackListCollectionViewCell *)self _isRightAligned];
+      _isRightAligned2 = [(SUUIStackListCollectionViewCell *)self _isRightAligned];
       v38 = v12;
       v39 = v28;
       v40 = v19;
       v20 = v36;
       v41 = v36;
-      if (v37)
+      if (_isRightAligned2)
       {
         MinX = CGRectGetMinX(*&v38);
         if (MinX >= v65 + CGRectGetMinX(v61))
@@ -658,12 +658,12 @@ LABEL_13:
       v44 = v43;
 LABEL_20:
       [v32 setFrame:{v43, v28, v19, v20}];
-      v46 = [(SUUIStackListCollectionViewCell *)self _isRightAligned];
+      _isRightAligned3 = [(SUUIStackListCollectionViewCell *)self _isRightAligned];
       v47 = v43;
       v48 = v28;
       v49 = v19;
       v50 = v20;
-      if (v46)
+      if (_isRightAligned3)
       {
         MaxX = CGRectGetMinX(*&v47);
         v52 = -17.0;
@@ -676,14 +676,14 @@ LABEL_20:
       }
 
       v12 = MaxX + v52;
-      v53 = [(SUUIStackListCollectionViewCell *)self _isRightAligned];
+      _isRightAligned4 = [(SUUIStackListCollectionViewCell *)self _isRightAligned];
       v68 = v44;
       v69 = v28;
       v54 = v43;
       v55 = v28;
       v56 = v19;
       v57 = v20;
-      if (v53)
+      if (_isRightAligned4)
       {
         v58 = v70 - CGRectGetMinX(*&v54);
       }
@@ -706,32 +706,32 @@ LABEL_20:
     }
 
     while (v24 != v29);
-    v24 = [v22 countByEnumeratingWithState:&v71 objects:v75 count:{16, v20}];
+    v24 = [allExistingViews countByEnumeratingWithState:&v71 objects:v75 count:{16, v20}];
   }
 
   while (v24);
 LABEL_32:
 
-  if (a4)
+  if (size)
   {
     v83.origin.x = v68;
     v83.origin.y = v69;
     v83.size.width = v19;
     v83.size.height = v20;
     MaxY = CGRectGetMaxY(v83);
-    a4->width = v27;
-    a4->height = MaxY;
+    size->width = v27;
+    size->height = MaxY;
   }
 
   return v26 & 1;
 }
 
-- (BOOL)layoutSubviewsWithFixedWidth:(CGRect)a3 size:(CGSize *)a4
+- (BOOL)layoutSubviewsWithFixedWidth:(CGRect)width size:(CGSize *)size
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = width.size.height;
+  width = width.size.width;
+  y = width.origin.y;
+  x = width.origin.x;
   v43 = *MEMORY[0x277D85DE8];
   [(SUUIViewReuseCollectionViewCell *)self contentInset];
   v11 = v10;
@@ -751,8 +751,8 @@ LABEL_32:
   v16 = CGRectGetWidth(v44) - v13 - v15;
   v40 = 0u;
   v41 = 0u;
-  v17 = [(SUUIViewReuseCollectionViewCell *)self allExistingViews];
-  v18 = [v17 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  allExistingViews = [(SUUIViewReuseCollectionViewCell *)self allExistingViews];
+  v18 = [allExistingViews countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v18)
   {
     v19 = v18;
@@ -767,7 +767,7 @@ LABEL_32:
       {
         if (*v39 != v21)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allExistingViews);
         }
 
         v25 = *(*(&v38 + 1) + 8 * i);
@@ -806,7 +806,7 @@ LABEL_32:
         v23 = CGRectGetMaxX(v47) + 17.0;
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v19 = [allExistingViews countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v19);
@@ -821,15 +821,15 @@ LABEL_32:
     v22 = 1;
   }
 
-  if (a4)
+  if (size)
   {
     v48.origin.x = v32;
     v48.origin.y = v31;
     v48.size.width = v27;
     v48.size.height = v29;
     MaxY = CGRectGetMaxY(v48);
-    a4->width = v16;
-    a4->height = MaxY;
+    size->width = v16;
+    size->height = MaxY;
   }
 
   return v22;

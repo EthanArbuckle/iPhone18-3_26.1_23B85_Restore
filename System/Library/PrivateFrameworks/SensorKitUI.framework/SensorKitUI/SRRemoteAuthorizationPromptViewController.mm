@@ -1,33 +1,33 @@
 @interface SRRemoteAuthorizationPromptViewController
 + (void)initialize;
-+ (void)requestViewControllerWithCompletionHandler:(id)a3;
++ (void)requestViewControllerWithCompletionHandler:(id)handler;
 - (id)serviceViewControllerProxy;
 - (void)authorizationRequestCompleted;
 - (void)authorizationRequestDidDisappear;
-- (void)authorizationRequestFailedWithError:(id)a3;
+- (void)authorizationRequestFailedWithError:(id)error;
 - (void)authorizationRequestWillDisappear;
 - (void)dealloc;
 - (void)deleteAllSamples;
-- (void)requestAuthorizationForBundle:(id)a3 services:(id)a4;
-- (void)requestAuthorizationMigrationForBundle:(id)a3 services:(id)a4;
+- (void)requestAuthorizationForBundle:(id)bundle services:(id)services;
+- (void)requestAuthorizationMigrationForBundle:(id)bundle services:(id)services;
 - (void)showAppsAndStudies;
 - (void)showFirstRunOnboarding;
 - (void)showResearchData;
-- (void)showStudyAuthorizationForBundlePath:(id)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)showStudyAuthorizationForBundlePath:(id)path;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SRRemoteAuthorizationPromptViewController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogAuthorizationPromptViewController = os_log_create("com.apple.SensorKit", "AuthorizationPromptViewController");
   }
 }
 
-+ (void)requestViewControllerWithCompletionHandler:(id)a3
++ (void)requestViewControllerWithCompletionHandler:(id)handler
 {
   location[3] = *MEMORY[0x277D85DE8];
   v12 = 0;
@@ -44,7 +44,7 @@
     }
 
 LABEL_9:
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
     goto LABEL_10;
   }
 
@@ -66,7 +66,7 @@ LABEL_9:
   v10[1] = 3221225472;
   v10[2] = __88__SRRemoteAuthorizationPromptViewController_requestViewControllerWithCompletionHandler___block_invoke;
   v10[3] = &unk_279B982D8;
-  v10[4] = a3;
+  v10[4] = handler;
   objc_copyWeak(&v11, location);
   [v7 instantiateViewControllerWithInputItems:0 connectionHandler:v10];
   objc_destroyWeak(&v11);
@@ -122,13 +122,13 @@ LABEL_12:
   return v8();
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [a3 domain];
-  if ([v5 isEqualToString:*MEMORY[0x277D77620]])
+  domain = [error domain];
+  if ([domain isEqualToString:*MEMORY[0x277D77620]])
   {
-    v6 = [a3 code] == 1;
+    v6 = [error code] == 1;
   }
 
   else
@@ -136,9 +136,9 @@ LABEL_12:
     v6 = 0;
   }
 
-  v7 = [(SRRemoteAuthorizationPromptViewController *)self delegate];
+  delegate = [(SRRemoteAuthorizationPromptViewController *)self delegate];
   v8 = SRLogAuthorizationPromptViewController;
-  if (!a3 || v6)
+  if (!error || v6)
   {
     if (os_log_type_enabled(SRLogAuthorizationPromptViewController, OS_LOG_TYPE_DEFAULT))
     {
@@ -146,7 +146,7 @@ LABEL_12:
       _os_log_impl(&dword_265602000, v8, OS_LOG_TYPE_DEFAULT, "Prompt exited", &v10, 2u);
     }
 
-    [(SRRemoteAuthorizationPromptViewControllerDelegate *)v7 authorizationRequestCompleted];
+    [(SRRemoteAuthorizationPromptViewControllerDelegate *)delegate authorizationRequestCompleted];
   }
 
   else
@@ -154,11 +154,11 @@ LABEL_12:
     if (os_log_type_enabled(SRLogAuthorizationPromptViewController, OS_LOG_TYPE_ERROR))
     {
       v10 = 138543362;
-      v11 = a3;
+      errorCopy = error;
       _os_log_error_impl(&dword_265602000, v8, OS_LOG_TYPE_ERROR, "Prompt exited, %{public}@", &v10, 0xCu);
     }
 
-    [(SRRemoteAuthorizationPromptViewControllerDelegate *)v7 authorizationRequestFailedWithError:a3];
+    [(SRRemoteAuthorizationPromptViewControllerDelegate *)delegate authorizationRequestFailedWithError:error];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -176,33 +176,33 @@ LABEL_12:
   [(SRRemoteAuthorizationPromptViewControllerDelegate *)[(SRRemoteAuthorizationPromptViewController *)self delegate] authorizationRequestCompleted];
 }
 
-- (void)authorizationRequestFailedWithError:(id)a3
+- (void)authorizationRequestFailedWithError:(id)error
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = SRLogAuthorizationPromptViewController;
   if (os_log_type_enabled(SRLogAuthorizationPromptViewController, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = a3;
+    errorCopy = error;
     _os_log_impl(&dword_265602000, v5, OS_LOG_TYPE_DEFAULT, "Prompt failed, %{public}@", &v7, 0xCu);
   }
 
-  [(SRRemoteAuthorizationPromptViewControllerDelegate *)[(SRRemoteAuthorizationPromptViewController *)self delegate] authorizationRequestFailedWithError:a3];
+  [(SRRemoteAuthorizationPromptViewControllerDelegate *)[(SRRemoteAuthorizationPromptViewController *)self delegate] authorizationRequestFailedWithError:error];
   v6 = *MEMORY[0x277D85DE8];
 }
 
 - (void)authorizationRequestWillDisappear
 {
-  v2 = [(SRRemoteAuthorizationPromptViewController *)self delegate];
+  delegate = [(SRRemoteAuthorizationPromptViewController *)self delegate];
 
-  [(SRRemoteAuthorizationPromptViewControllerDelegate *)v2 authorizationRequestWillDisappear];
+  [(SRRemoteAuthorizationPromptViewControllerDelegate *)delegate authorizationRequestWillDisappear];
 }
 
 - (void)authorizationRequestDidDisappear
 {
-  v2 = [(SRRemoteAuthorizationPromptViewController *)self delegate];
+  delegate = [(SRRemoteAuthorizationPromptViewController *)self delegate];
 
-  [(SRRemoteAuthorizationPromptViewControllerDelegate *)v2 authorizationRequestDidDisappear];
+  [(SRRemoteAuthorizationPromptViewControllerDelegate *)delegate authorizationRequestDidDisappear];
 }
 
 - (id)serviceViewControllerProxy
@@ -212,14 +212,14 @@ LABEL_12:
   return [(_UIRemoteViewController *)&v3 serviceViewControllerProxy];
 }
 
-- (void)requestAuthorizationForBundle:(id)a3 services:(id)a4
+- (void)requestAuthorizationForBundle:(id)bundle services:(id)services
 {
   v11 = *MEMORY[0x277D85DE8];
   v7 = SRLogAuthorizationPromptViewController;
   if (os_log_type_enabled(SRLogAuthorizationPromptViewController, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = a4;
+    servicesCopy = services;
     _os_log_impl(&dword_265602000, v7, OS_LOG_TYPE_DEFAULT, "Requesting authorization for services %{public}@", &v9, 0xCu);
   }
 
@@ -227,14 +227,14 @@ LABEL_12:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestAuthorizationMigrationForBundle:(id)a3 services:(id)a4
+- (void)requestAuthorizationMigrationForBundle:(id)bundle services:(id)services
 {
   v11 = *MEMORY[0x277D85DE8];
   v7 = SRLogAuthorizationPromptViewController;
   if (os_log_type_enabled(SRLogAuthorizationPromptViewController, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = a4;
+    servicesCopy = services;
     _os_log_impl(&dword_265602000, v7, OS_LOG_TYPE_DEFAULT, "Requesting authorization migration for services %{public}@", &v9, 0xCu);
   }
 
@@ -254,7 +254,7 @@ LABEL_12:
   [-[SRRemoteAuthorizationPromptViewController serviceViewControllerProxy](self "serviceViewControllerProxy")];
 }
 
-- (void)showStudyAuthorizationForBundlePath:(id)a3
+- (void)showStudyAuthorizationForBundlePath:(id)path
 {
   v5 = SRLogAuthorizationPromptViewController;
   if (os_log_type_enabled(SRLogAuthorizationPromptViewController, OS_LOG_TYPE_DEFAULT))
@@ -292,18 +292,18 @@ LABEL_12:
 
 - (void)deleteAllSamples
 {
-  v2 = [(SRRemoteAuthorizationPromptViewController *)self serviceViewControllerProxy];
+  serviceViewControllerProxy = [(SRRemoteAuthorizationPromptViewController *)self serviceViewControllerProxy];
 
-  [v2 deleteAllSamples];
+  [serviceViewControllerProxy deleteAllSamples];
 }
 
 - (void)dealloc
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(SRRemoteAuthorizationPromptViewController *)self weakExtension];
-  if (v3)
+  weakExtension = [(SRRemoteAuthorizationPromptViewController *)self weakExtension];
+  if (weakExtension)
   {
-    v4 = v3;
+    v4 = weakExtension;
     if ([(SRRemoteAuthorizationPromptViewController *)self request])
     {
       v5 = SRLogAuthorizationPromptViewController;
@@ -312,7 +312,7 @@ LABEL_12:
         *buf = 138412546;
         v9 = v4;
         v10 = 2112;
-        v11 = [(SRRemoteAuthorizationPromptViewController *)self request];
+        request = [(SRRemoteAuthorizationPromptViewController *)self request];
         _os_log_debug_impl(&dword_265602000, v5, OS_LOG_TYPE_DEBUG, "Cancel extension %@ for request %@", buf, 0x16u);
       }
 

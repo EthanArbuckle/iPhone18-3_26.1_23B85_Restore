@@ -1,32 +1,32 @@
 @interface UIKBAutoFillTestViewController
-+ (void)enumerateSubviewsOfRootView:(id)a3 usingBlock:(id)a4;
-- (UIKBAutoFillTestViewController)initWithAutoFillTestArchive:(id)a3;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
++ (void)enumerateSubviewsOfRootView:(id)view usingBlock:(id)block;
+- (UIKBAutoFillTestViewController)initWithAutoFillTestArchive:(id)archive;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_applyNavigationItemPropertiesFromTestArchive;
 - (void)viewDidLoad;
 @end
 
 @implementation UIKBAutoFillTestViewController
 
-- (UIKBAutoFillTestViewController)initWithAutoFillTestArchive:(id)a3
+- (UIKBAutoFillTestViewController)initWithAutoFillTestArchive:(id)archive
 {
-  v5 = a3;
+  archiveCopy = archive;
   v10.receiver = self;
   v10.super_class = UIKBAutoFillTestViewController;
   v6 = [(UIViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_testArchive, a3);
+    objc_storeStrong(&v6->_testArchive, archive);
     v8 = v7;
   }
 
@@ -38,19 +38,19 @@
   v7.receiver = self;
   v7.super_class = UIKBAutoFillTestViewController;
   [(UIViewController *)&v7 viewDidLoad];
-  v3 = [(UIKBAutoFillTestArchive *)self->_testArchive snapshotView];
-  [v3 setAutoresizingMask:0];
+  snapshotView = [(UIKBAutoFillTestArchive *)self->_testArchive snapshotView];
+  [snapshotView setAutoresizingMask:0];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__UIKBAutoFillTestViewController_viewDidLoad__block_invoke;
   v6[3] = &unk_1E710D920;
   v6[4] = self;
-  [UIKBAutoFillTestViewController enumerateSubviewsOfRootView:v3 usingBlock:v6];
-  v4 = [(UIViewController *)self view];
-  [v4 addSubview:v3];
+  [UIKBAutoFillTestViewController enumerateSubviewsOfRootView:snapshotView usingBlock:v6];
+  view = [(UIViewController *)self view];
+  [view addSubview:snapshotView];
 
-  v5 = [(UIKBAutoFillTestArchive *)self->_testArchive viewControllerTitle];
-  [(UIViewController *)self setTitle:v5];
+  viewControllerTitle = [(UIKBAutoFillTestArchive *)self->_testArchive viewControllerTitle];
+  [(UIViewController *)self setTitle:viewControllerTitle];
 
   [(UIKBAutoFillTestViewController *)self _applyNavigationItemPropertiesFromTestArchive];
 }
@@ -71,71 +71,71 @@ void __45__UIKBAutoFillTestViewController_viewDidLoad__block_invoke(uint64_t a1,
 
 - (void)_applyNavigationItemPropertiesFromTestArchive
 {
-  v13 = [(UIKBAutoFillTestArchive *)self->_testArchive viewControllerNavigationItem];
-  v3 = [(UIViewController *)self navigationItem];
-  v4 = [v13 title];
-  [v3 setTitle:v4];
+  viewControllerNavigationItem = [(UIKBAutoFillTestArchive *)self->_testArchive viewControllerNavigationItem];
+  navigationItem = [(UIViewController *)self navigationItem];
+  title = [viewControllerNavigationItem title];
+  [navigationItem setTitle:title];
 
-  v5 = [v13 prompt];
-  [v3 setPrompt:v5];
+  prompt = [viewControllerNavigationItem prompt];
+  [navigationItem setPrompt:prompt];
 
-  v6 = [v13 backButtonTitle];
-  [v3 setBackButtonTitle:v6];
+  backButtonTitle = [viewControllerNavigationItem backButtonTitle];
+  [navigationItem setBackButtonTitle:backButtonTitle];
 
-  v7 = [v13 backBarButtonItem];
-  [v3 setBackBarButtonItem:v7];
+  backBarButtonItem = [viewControllerNavigationItem backBarButtonItem];
+  [navigationItem setBackBarButtonItem:backBarButtonItem];
 
-  v8 = [v13 leftBarButtonItems];
-  if ([v8 count])
+  leftBarButtonItems = [viewControllerNavigationItem leftBarButtonItems];
+  if ([leftBarButtonItems count])
   {
-    [v3 setLeftBarButtonItems:v8];
+    [navigationItem setLeftBarButtonItems:leftBarButtonItems];
   }
 
   else
   {
-    v9 = [v13 leftBarButtonItem];
-    [v3 setLeftBarButtonItem:v9];
+    leftBarButtonItem = [viewControllerNavigationItem leftBarButtonItem];
+    [navigationItem setLeftBarButtonItem:leftBarButtonItem];
   }
 
-  v10 = [v13 titleView];
-  if (v10)
+  titleView = [viewControllerNavigationItem titleView];
+  if (titleView)
   {
-    [v3 setTitleView:v10];
+    [navigationItem setTitleView:titleView];
   }
 
-  v11 = [v13 rightBarButtonItems];
-  if ([v11 count])
+  rightBarButtonItems = [viewControllerNavigationItem rightBarButtonItems];
+  if ([rightBarButtonItems count])
   {
-    [v3 setRightBarButtonItems:v11];
+    [navigationItem setRightBarButtonItems:rightBarButtonItems];
   }
 
   else
   {
-    v12 = [v13 rightBarButtonItem];
-    [v3 setRightBarButtonItem:v12];
+    rightBarButtonItem = [viewControllerNavigationItem rightBarButtonItem];
+    [navigationItem setRightBarButtonItem:rightBarButtonItem];
   }
 
   if (dyld_program_sdk_at_least())
   {
-    [v3 setLargeTitleDisplayMode:{objc_msgSend(v13, "largeTitleDisplayMode")}];
+    [navigationItem setLargeTitleDisplayMode:{objc_msgSend(viewControllerNavigationItem, "largeTitleDisplayMode")}];
   }
 }
 
-+ (void)enumerateSubviewsOfRootView:(id)a3 usingBlock:(id)a4
++ (void)enumerateSubviewsOfRootView:(id)view usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
-  [v7 addObject:v5];
-  if ([v7 count])
+  viewCopy = view;
+  blockCopy = block;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array addObject:viewCopy];
+  if ([array count])
   {
     while (1)
     {
-      v9 = [v7 firstObject];
-      [v7 removeObjectAtIndex:0];
+      firstObject = [array firstObject];
+      [array removeObjectAtIndex:0];
       v11 = 0;
-      v6[2](v6, v9, &v11 + 1, &v11);
+      blockCopy[2](blockCopy, firstObject, &v11 + 1, &v11);
       if (v11 == 1)
       {
         break;
@@ -143,11 +143,11 @@ void __45__UIKBAutoFillTestViewController_viewDidLoad__block_invoke(uint64_t a1,
 
       if ((v11 & 0x100) == 0)
       {
-        v10 = [v9 subviews];
-        [v7 addObjectsFromArray:v10];
+        subviews = [firstObject subviews];
+        [array addObjectsFromArray:subviews];
       }
 
-      if (![v7 count])
+      if (![array count])
       {
         goto LABEL_8;
       }
@@ -157,89 +157,89 @@ void __45__UIKBAutoFillTestViewController_viewDidLoad__block_invoke(uint64_t a1,
 LABEL_8:
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [a3 tag]);
-  v4 = [v3 numberOfSections];
+  v3 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [view tag]);
+  numberOfSections = [v3 numberOfSections];
 
-  return v4;
+  return numberOfSections;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [a3 tag]);
-  v6 = [v5 numberOfRowsInSection:a4];
+  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [view tag]);
+  v6 = [v5 numberOfRowsInSection:section];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   testArchive = self->_testArchive;
-  v6 = a4;
-  v7 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](testArchive, "tableViewDataSourceWithTag:", [a3 tag]);
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  v7 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](testArchive, "tableViewDataSourceWithTag:", [view tag]);
+  v8 = [v7 cellForRowAtIndexPath:pathCopy];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [a3 tag]);
-  v6 = [v5 titleForHeaderInSection:a4];
+  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [view tag]);
+  v6 = [v5 titleForHeaderInSection:section];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [a3 tag]);
-  v6 = [v5 titleForFooterInSection:a4];
+  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [view tag]);
+  v6 = [v5 titleForFooterInSection:section];
 
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   testArchive = self->_testArchive;
-  v6 = a4;
-  v7 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](testArchive, "tableViewDataSourceWithTag:", [a3 tag]);
-  [v7 heightForRowAtIndexPath:v6];
+  pathCopy = path;
+  v7 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](testArchive, "tableViewDataSourceWithTag:", [view tag]);
+  [v7 heightForRowAtIndexPath:pathCopy];
   v9 = v8;
 
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [a3 tag]);
-  [v5 heightForHeaderInSection:a4];
+  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [view tag]);
+  [v5 heightForHeaderInSection:section];
   v7 = v6;
 
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [a3 tag]);
-  [v5 heightForHeaderInSection:a4];
+  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [view tag]);
+  [v5 heightForHeaderInSection:section];
   v7 = v6;
 
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [a3 tag]);
-  v6 = [v5 viewForHeaderInSection:a4];
+  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [view tag]);
+  v6 = [v5 viewForHeaderInSection:section];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [a3 tag]);
-  v6 = [v5 viewForHeaderInSection:a4];
+  v5 = -[UIKBAutoFillTestArchive tableViewDataSourceWithTag:](self->_testArchive, "tableViewDataSourceWithTag:", [view tag]);
+  v6 = [v5 viewForHeaderInSection:section];
 
   return v6;
 }

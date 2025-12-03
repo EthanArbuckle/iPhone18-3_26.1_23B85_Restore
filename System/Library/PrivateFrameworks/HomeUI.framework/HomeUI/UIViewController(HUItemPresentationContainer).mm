@@ -12,8 +12,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v1 = [a1 childViewControllers];
-  v2 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childViewControllers = [self childViewControllers];
+  v2 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v2)
   {
     v3 = v2;
@@ -24,18 +24,18 @@
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) hu_presentedItem];
-        if (v6)
+        hu_presentedItem = [*(*(&v9 + 1) + 8 * i) hu_presentedItem];
+        if (hu_presentedItem)
         {
-          v7 = v6;
+          v7 = hu_presentedItem;
           goto LABEL_11;
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -53,19 +53,19 @@ LABEL_11:
 
 - (id)hu_topmostPresentedItem
 {
-  v2 = [a1 presentedViewController];
-  if (v2)
+  presentedViewController = [self presentedViewController];
+  if (presentedViewController)
   {
-    v3 = [a1 presentedViewController];
-    v4 = [v3 hu_topmostPresentedItem];
+    presentedViewController2 = [self presentedViewController];
+    hu_topmostPresentedItem = [presentedViewController2 hu_topmostPresentedItem];
   }
 
   else
   {
-    v4 = [a1 hu_presentedItem];
+    hu_topmostPresentedItem = [self hu_presentedItem];
   }
 
-  return v4;
+  return hu_topmostPresentedItem;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface RSMajorViewInfo
 - (RSMajorViewInfo)init;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RSMajorViewInfo
@@ -17,7 +17,7 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = *self->_anon_8;

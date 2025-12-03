@@ -1,22 +1,22 @@
 @interface PRBTRssiMeasurement
-- (PRBTRssiMeasurement)initWithTime:(double)a3 rssi:(int)a4 channel:(unint64_t)a5 uuid:(id)a6;
+- (PRBTRssiMeasurement)initWithTime:(double)time rssi:(int)rssi channel:(unint64_t)channel uuid:(id)uuid;
 @end
 
 @implementation PRBTRssiMeasurement
 
-- (PRBTRssiMeasurement)initWithTime:(double)a3 rssi:(int)a4 channel:(unint64_t)a5 uuid:(id)a6
+- (PRBTRssiMeasurement)initWithTime:(double)time rssi:(int)rssi channel:(unint64_t)channel uuid:(id)uuid
 {
-  v11 = a6;
+  uuidCopy = uuid;
   v15.receiver = self;
   v15.super_class = PRBTRssiMeasurement;
   v12 = [(PRBTRssiMeasurement *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_timestamp = a3;
-    v12->_rssi = a4;
-    v12->_channel = a5;
-    objc_storeStrong(&v12->_uuid, a6);
+    v12->_timestamp = time;
+    v12->_rssi = rssi;
+    v12->_channel = channel;
+    objc_storeStrong(&v12->_uuid, uuid);
   }
 
   return v13;

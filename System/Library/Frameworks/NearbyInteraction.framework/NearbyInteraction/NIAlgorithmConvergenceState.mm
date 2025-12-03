@@ -1,24 +1,24 @@
 @interface NIAlgorithmConvergenceState
-- (BOOL)isEqual:(id)a3;
-- (NIAlgorithmConvergenceState)initWithAlgorithmConvergenceState:(id)a3;
-- (NIAlgorithmConvergenceState)initWithCoder:(id)a3;
-- (NIAlgorithmConvergenceState)initWithConvergenceStatus:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NIAlgorithmConvergenceState)initWithAlgorithmConvergenceState:(id)state;
+- (NIAlgorithmConvergenceState)initWithCoder:(id)coder;
+- (NIAlgorithmConvergenceState)initWithConvergenceStatus:(int64_t)status;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIAlgorithmConvergenceState
 
-- (NIAlgorithmConvergenceState)initWithConvergenceStatus:(int64_t)a3
+- (NIAlgorithmConvergenceState)initWithConvergenceStatus:(int64_t)status
 {
   v5.receiver = self;
   v5.super_class = NIAlgorithmConvergenceState;
   result = [(NIAlgorithmConvergenceState *)&v5 init];
   if (result)
   {
-    result->_convergence = a3;
+    result->_convergence = status;
     *&result->_insufficientSignalStrength = 0;
     result->_insufficientLighting = 0;
   }
@@ -26,52 +26,52 @@
   return result;
 }
 
-- (NIAlgorithmConvergenceState)initWithAlgorithmConvergenceState:(id)a3
+- (NIAlgorithmConvergenceState)initWithAlgorithmConvergenceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v7.receiver = self;
   v7.super_class = NIAlgorithmConvergenceState;
   v5 = [(NIAlgorithmConvergenceState *)&v7 init];
   if (v5)
   {
-    v5->_convergence = [v4 convergence];
-    v5->_insufficientSignalStrength = [v4 insufficientSignalStrength];
-    v5->_insufficientHorizontalSweep = [v4 insufficientHorizontalSweep];
-    v5->_insufficientVerticalSweep = [v4 insufficientVerticalSweep];
-    v5->_insufficientMovement = [v4 insufficientMovement];
-    v5->_insufficientLighting = [v4 insufficientLighting];
+    v5->_convergence = [stateCopy convergence];
+    v5->_insufficientSignalStrength = [stateCopy insufficientSignalStrength];
+    v5->_insufficientHorizontalSweep = [stateCopy insufficientHorizontalSweep];
+    v5->_insufficientVerticalSweep = [stateCopy insufficientVerticalSweep];
+    v5->_insufficientMovement = [stateCopy insufficientMovement];
+    v5->_insufficientLighting = [stateCopy insufficientLighting];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithAlgorithmConvergenceState:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_convergence forKey:@"convergence"];
-  [v4 encodeBool:self->_insufficientSignalStrength forKey:@"insufficientSignalStrength"];
-  [v4 encodeBool:self->_insufficientHorizontalSweep forKey:@"insufficientHorizontalSweep"];
-  [v4 encodeBool:self->_insufficientVerticalSweep forKey:@"insufficientVerticalSweep"];
-  [v4 encodeBool:self->_insufficientMovement forKey:@"insufficientMovement"];
-  [v4 encodeBool:self->_insufficientLighting forKey:@"insufficientLighting"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_convergence forKey:@"convergence"];
+  [coderCopy encodeBool:self->_insufficientSignalStrength forKey:@"insufficientSignalStrength"];
+  [coderCopy encodeBool:self->_insufficientHorizontalSweep forKey:@"insufficientHorizontalSweep"];
+  [coderCopy encodeBool:self->_insufficientVerticalSweep forKey:@"insufficientVerticalSweep"];
+  [coderCopy encodeBool:self->_insufficientMovement forKey:@"insufficientMovement"];
+  [coderCopy encodeBool:self->_insufficientLighting forKey:@"insufficientLighting"];
 }
 
-- (NIAlgorithmConvergenceState)initWithCoder:(id)a3
+- (NIAlgorithmConvergenceState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"convergence"];
-  v6 = [v4 decodeBoolForKey:@"insufficientSignalStrength"];
-  v7 = [v4 decodeBoolForKey:@"insufficientHorizontalSweep"];
-  v8 = [v4 decodeBoolForKey:@"insufficientVerticalSweep"];
-  v9 = [v4 decodeBoolForKey:@"insufficientMovement"];
-  v10 = [v4 decodeBoolForKey:@"insufficientLighting"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"convergence"];
+  v6 = [coderCopy decodeBoolForKey:@"insufficientSignalStrength"];
+  v7 = [coderCopy decodeBoolForKey:@"insufficientHorizontalSweep"];
+  v8 = [coderCopy decodeBoolForKey:@"insufficientVerticalSweep"];
+  v9 = [coderCopy decodeBoolForKey:@"insufficientMovement"];
+  v10 = [coderCopy decodeBoolForKey:@"insufficientLighting"];
   v14.receiver = self;
   v14.super_class = NIAlgorithmConvergenceState;
   v11 = [(NIAlgorithmConvergenceState *)&v14 init];
@@ -89,13 +89,13 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -105,21 +105,21 @@
     else
     {
       convergence = self->_convergence;
-      v8 = [(NIAlgorithmConvergenceState *)v5 convergence];
+      convergence = [(NIAlgorithmConvergenceState *)v5 convergence];
       insufficientSignalStrength = self->_insufficientSignalStrength;
-      v10 = [(NIAlgorithmConvergenceState *)v6 insufficientSignalStrength];
+      insufficientSignalStrength = [(NIAlgorithmConvergenceState *)v6 insufficientSignalStrength];
       insufficientHorizontalSweep = self->_insufficientHorizontalSweep;
-      v12 = [(NIAlgorithmConvergenceState *)v6 insufficientHorizontalSweep];
+      insufficientHorizontalSweep = [(NIAlgorithmConvergenceState *)v6 insufficientHorizontalSweep];
       insufficientVerticalSweep = self->_insufficientVerticalSweep;
-      v13 = [(NIAlgorithmConvergenceState *)v6 insufficientVerticalSweep];
+      insufficientVerticalSweep = [(NIAlgorithmConvergenceState *)v6 insufficientVerticalSweep];
       insufficientMovement = self->_insufficientMovement;
-      v19 = [(NIAlgorithmConvergenceState *)v6 insufficientMovement];
+      insufficientMovement = [(NIAlgorithmConvergenceState *)v6 insufficientMovement];
       insufficientLighting = self->_insufficientLighting;
-      v14 = [(NIAlgorithmConvergenceState *)v6 insufficientLighting];
+      insufficientLighting = [(NIAlgorithmConvergenceState *)v6 insufficientLighting];
       v15 = 0;
-      if (convergence == v8 && insufficientSignalStrength == v10 && insufficientHorizontalSweep == v12 && insufficientVerticalSweep == v13)
+      if (convergence == convergence && insufficientSignalStrength == insufficientSignalStrength && insufficientHorizontalSweep == insufficientHorizontalSweep && insufficientVerticalSweep == insufficientVerticalSweep)
       {
-        v15 = insufficientMovement == v19 && v14 == insufficientLighting;
+        v15 = insufficientMovement == insufficientMovement && insufficientLighting == insufficientLighting;
       }
     }
   }

@@ -1,13 +1,13 @@
 @interface HAPHTTPClientDependencyFactory
-- (id)createHTTPClientWithQueue:(id)a3;
+- (id)createHTTPClientWithQueue:(id)queue;
 @end
 
 @implementation HAPHTTPClientDependencyFactory
 
-- (id)createHTTPClientWithQueue:(id)a3
+- (id)createHTTPClientWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[HAPCoreUtilsHTTPClient alloc] initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[HAPCoreUtilsHTTPClient alloc] initWithQueue:queueCopy];
 
   return v4;
 }

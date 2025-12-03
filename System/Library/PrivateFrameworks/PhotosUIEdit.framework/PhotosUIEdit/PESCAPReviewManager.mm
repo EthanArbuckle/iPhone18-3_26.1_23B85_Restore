@@ -2,9 +2,9 @@
 + (PESCAPReviewManager)sharedReviewManager;
 - (PESCAPReviewManager)init;
 - (id)lastPasteBreadcrumb;
-- (id)payloadForAsset:(id)a3;
+- (id)payloadForAsset:(id)asset;
 - (void)clearAll;
-- (void)registerPayload:(id)a3 forAsset:(id)a4;
+- (void)registerPayload:(id)payload forAsset:(id)asset;
 @end
 
 @implementation PESCAPReviewManager
@@ -75,29 +75,29 @@ void __42__PESCAPReviewManager_lastPasteBreadcrumb__block_invoke(uint64_t a1, vo
   MEMORY[0x2821F96F8](v3, assetsMap);
 }
 
-- (id)payloadForAsset:(id)a3
+- (id)payloadForAsset:(id)asset
 {
   assetsMap = self->_assetsMap;
-  v4 = [a3 uuid];
-  v5 = [(NSMutableDictionary *)assetsMap objectForKeyedSubscript:v4];
+  uuid = [asset uuid];
+  v5 = [(NSMutableDictionary *)assetsMap objectForKeyedSubscript:uuid];
 
   return v5;
 }
 
-- (void)registerPayload:(id)a3 forAsset:(id)a4
+- (void)registerPayload:(id)payload forAsset:(id)asset
 {
-  v10 = a3;
-  v6 = a4;
+  payloadCopy = payload;
+  assetCopy = asset;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 originalFilename];
-    [v10 setFilename:v7];
+    originalFilename = [assetCopy originalFilename];
+    [payloadCopy setFilename:originalFilename];
   }
 
   assetsMap = self->_assetsMap;
-  v9 = [v6 uuid];
-  [(NSMutableDictionary *)assetsMap setObject:v10 forKeyedSubscript:v9];
+  uuid = [assetCopy uuid];
+  [(NSMutableDictionary *)assetsMap setObject:payloadCopy forKeyedSubscript:uuid];
 }
 
 - (PESCAPReviewManager)init

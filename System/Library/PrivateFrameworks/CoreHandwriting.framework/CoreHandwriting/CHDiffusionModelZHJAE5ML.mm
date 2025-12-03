@@ -1,10 +1,10 @@
 @interface CHDiffusionModelZHJAE5ML
-+ (id)E5RTFunctionDescriptorForFunction:(id)a3 inProgramLibrary:(id)a4 error:(id *)a5;
++ (id)E5RTFunctionDescriptorForFunction:(id)function inProgramLibrary:(id)library error:(id *)error;
 + (id)defaultURLOfModelInThisBundle;
 + (id)inputNames;
 + (id)outputNames;
-- (CHDiffusionModelZHJAE5ML)initWithProgramLibrary:(id)a3 functionName:(id)a4 error:(id *)a5;
-- (CHDiffusionModelZHJAE5ML)initWithProgramLibrary:(id)a3 width:(unint64_t)a4;
+- (CHDiffusionModelZHJAE5ML)initWithProgramLibrary:(id)library functionName:(id)name error:(id *)error;
+- (CHDiffusionModelZHJAE5ML)initWithProgramLibrary:(id)library width:(unint64_t)width;
 - (id)createExecutionContext;
 @end
 
@@ -58,24 +58,24 @@
   return v4;
 }
 
-+ (id)E5RTFunctionDescriptorForFunction:(id)a3 inProgramLibrary:(id)a4 error:(id *)a5
++ (id)E5RTFunctionDescriptorForFunction:(id)function inProgramLibrary:(id)library error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v13 = objc_msgSend_visionCoreProgramLibrary(a4, v8, v9, v10, v11, v12);
-  v17 = objc_msgSend_functionNamed_error_(v13, v14, v7, a5, v15, v16);
+  functionCopy = function;
+  v13 = objc_msgSend_visionCoreProgramLibrary(library, v8, v9, v10, v11, v12);
+  v17 = objc_msgSend_functionNamed_error_(v13, v14, functionCopy, error, v15, v16);
 
   if (v17)
   {
     v18 = objc_opt_class();
     v24 = objc_msgSend_inputNames(v18, v19, v20, v21, v22, v23);
-    v28 = objc_msgSend_descriptorsForInputs_error_(v17, v25, v24, a5, v26, v27);
+    v28 = objc_msgSend_descriptorsForInputs_error_(v17, v25, v24, error, v26, v27);
 
     if (v28)
     {
       v29 = objc_opt_class();
       v35 = objc_msgSend_outputNames(v29, v30, v31, v32, v33, v34);
-      v39 = objc_msgSend_descriptorsForOutputs_error_(v17, v36, v35, a5, v37, v38);
+      v39 = objc_msgSend_descriptorsForOutputs_error_(v17, v36, v35, error, v37, v38);
 
       if (v39)
       {
@@ -108,7 +108,7 @@
     if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
     {
       v51 = 138412290;
-      v52 = v7;
+      v52 = functionCopy;
       _os_log_impl(&dword_18366B000, v49, OS_LOG_TYPE_ERROR, "Failed to load function named '%@'.", &v51, 0xCu);
     }
 
@@ -118,23 +118,23 @@
   return v48;
 }
 
-- (CHDiffusionModelZHJAE5ML)initWithProgramLibrary:(id)a3 width:(unint64_t)a4
+- (CHDiffusionModelZHJAE5ML)initWithProgramLibrary:(id)library width:(unint64_t)width
 {
-  v6 = a3;
-  v11 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"main_%zu", v8, v9, v10, a4);
-  v14 = objc_msgSend_initWithProgramLibrary_functionName_error_(self, v12, v6, v11, 0, v13);
+  libraryCopy = library;
+  v11 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"main_%zu", v8, v9, v10, width);
+  v14 = objc_msgSend_initWithProgramLibrary_functionName_error_(self, v12, libraryCopy, v11, 0, v13);
 
   return v14;
 }
 
-- (CHDiffusionModelZHJAE5ML)initWithProgramLibrary:(id)a3 functionName:(id)a4 error:(id *)a5
+- (CHDiffusionModelZHJAE5ML)initWithProgramLibrary:(id)library functionName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  libraryCopy = library;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = CHDiffusionModelZHJAE5ML;
   v12 = [(CHDiffusionModelZHJAE5ML *)&v17 init];
-  if (v12 && (objc_msgSend_E5RTFunctionDescriptorForFunction_inProgramLibrary_error_(CHDiffusionModelZHJAE5ML, v10, v9, v8, a5, v11), v13 = objc_claimAutoreleasedReturnValue(), functionDescriptor = v12->_functionDescriptor, v12->_functionDescriptor = v13, functionDescriptor, v12->_functionDescriptor))
+  if (v12 && (objc_msgSend_E5RTFunctionDescriptorForFunction_inProgramLibrary_error_(CHDiffusionModelZHJAE5ML, v10, nameCopy, libraryCopy, error, v11), v13 = objc_claimAutoreleasedReturnValue(), functionDescriptor = v12->_functionDescriptor, v12->_functionDescriptor = v13, functionDescriptor, v12->_functionDescriptor))
   {
     v15 = v12;
   }

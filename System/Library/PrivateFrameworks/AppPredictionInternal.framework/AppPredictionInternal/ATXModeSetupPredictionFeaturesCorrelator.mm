@@ -1,5 +1,5 @@
 @interface ATXModeSetupPredictionFeaturesCorrelator
-- (ATXModeSetupPredictionFeaturesCorrelator)initWithMode:(unint64_t)a3 features:(id)a4;
+- (ATXModeSetupPredictionFeaturesCorrelator)initWithMode:(unint64_t)mode features:(id)features;
 - (BOOL)isDigestCurrentlyEnabled;
 - (id)featureVector;
 - (unint64_t)globalPosterConfigurationsCount;
@@ -8,17 +8,17 @@
 
 @implementation ATXModeSetupPredictionFeaturesCorrelator
 
-- (ATXModeSetupPredictionFeaturesCorrelator)initWithMode:(unint64_t)a3 features:(id)a4
+- (ATXModeSetupPredictionFeaturesCorrelator)initWithMode:(unint64_t)mode features:(id)features
 {
-  v7 = a4;
+  featuresCopy = features;
   v11.receiver = self;
   v11.super_class = ATXModeSetupPredictionFeaturesCorrelator;
   v8 = [(ATXModeSetupPredictionFeaturesCorrelator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_mode = a3;
-    objc_storeStrong(&v8->_modeSetupPredictionFeatures, a4);
+    v8->_mode = mode;
+    objc_storeStrong(&v8->_modeSetupPredictionFeatures, features);
   }
 
   return v9;
@@ -137,11 +137,11 @@
 - (unint64_t)globalPosterConfigurationsCount
 {
   v2 = +[ATXPosterConfigurationCache sharedInstance];
-  v3 = [v2 configurations];
+  configurations = [v2 configurations];
 
-  if ([v3 count] <= 0xA)
+  if ([configurations count] <= 0xA)
   {
-    v4 = [v3 count];
+    v4 = [configurations count];
   }
 
   else
@@ -155,9 +155,9 @@
 - (BOOL)isDigestCurrentlyEnabled
 {
   v2 = objc_opt_new();
-  v3 = [v2 digestSetupComplete];
+  digestSetupComplete = [v2 digestSetupComplete];
 
-  return v3;
+  return digestSetupComplete;
 }
 
 - (id)featureVector

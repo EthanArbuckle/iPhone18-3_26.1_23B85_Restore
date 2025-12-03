@@ -6,7 +6,7 @@
 
 + (id)dimmingColor
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___PKCompactNavigationContainerControllerInvertColorsAccessibility;
   v2 = objc_msgSendSuper2(&v10, "dimmingColor");
   if (!UIAccessibilityIsInvertColorsEnabled())
@@ -15,11 +15,11 @@
   }
 
   v3 = AXUIApplicationWindows();
-  v4 = [v3 firstObject];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  firstObject = [v3 firstObject];
+  traitCollection = [firstObject traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v6 == &dword_0 + 2)
+  if (userInterfaceStyle == &dword_0 + 2)
   {
     v7 = +[UIColor whiteColor];
     v8 = [v7 colorWithAlphaComponent:0.75];

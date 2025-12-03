@@ -1,36 +1,36 @@
 @interface SUCoreFSM
-- (BOOL)_activateMachineWithStateTable:(id)a3 withActionTable:(id)a4;
-- (id)_acceptEvent:(id)a3 withInfo:(id)a4 issueType:(id)a5 attachedAction:(id *)a6;
-- (id)_initMachine:(id)a3 ofInstance:(id)a4 withTable:(id)a5 startingIn:(id)a6 usingDelegate:(id)a7 registeringAllInfoClass:(Class)a8 registeringAndActivating:(BOOL)a9;
+- (BOOL)_activateMachineWithStateTable:(id)table withActionTable:(id)actionTable;
+- (id)_acceptEvent:(id)event withInfo:(id)info issueType:(id)type attachedAction:(id *)action;
+- (id)_initMachine:(id)machine ofInstance:(id)instance withTable:(id)table startingIn:(id)in usingDelegate:(id)delegate registeringAllInfoClass:(Class)class registeringAndActivating:(BOOL)activating;
 - (id)copyCurrentState;
 - (id)copyCurrentStateProtected;
-- (void)_performEvent:(id)a3 withInfo:(id)a4 issueType:(id)a5 forCell:(id)a6 attachedAction:(id)a7 checkingAttached:(BOOL)a8;
-- (void)_postEvent:(id)a3 withInfo:(id)a4;
-- (void)_registerAction:(id)a3 ForEvent:(id)a4 inState:(id)a5 usingDelegate:(id)a6 withInfoClass:(Class)a7 actionTable:(id)a8 loggingRegistration:(BOOL)a9;
-- (void)_registerAllActions:(id)a3 withInfoClass:(Class)a4 stateTable:(id)a5 actionTable:(id)a6 loggingRegistration:(BOOL)a7;
-- (void)_simulateEventAlteration:(id)a3 fsmEvent:(id *)a4 eventInfo:(id *)a5 attachedAction:(id *)a6;
-- (void)_trackEventOccurrence:(id)a3 withInfo:(id)a4 issueType:(id)a5;
-- (void)_triggerAction:(id)a3 usingAttached:(id)a4 onEvent:(id)a5 inState:(id)a6 withInfo:(id)a7 nextState:(id)a8;
+- (void)_performEvent:(id)event withInfo:(id)info issueType:(id)type forCell:(id)cell attachedAction:(id)action checkingAttached:(BOOL)attached;
+- (void)_postEvent:(id)event withInfo:(id)info;
+- (void)_registerAction:(id)action ForEvent:(id)event inState:(id)state usingDelegate:(id)delegate withInfoClass:(Class)class actionTable:(id)table loggingRegistration:(BOOL)registration;
+- (void)_registerAllActions:(id)actions withInfoClass:(Class)class stateTable:(id)table actionTable:(id)actionTable loggingRegistration:(BOOL)registration;
+- (void)_simulateEventAlteration:(id)alteration fsmEvent:(id *)event eventInfo:(id *)info attachedAction:(id *)action;
+- (void)_trackEventOccurrence:(id)occurrence withInfo:(id)info issueType:(id)type;
+- (void)_triggerAction:(id)action usingAttached:(id)attached onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState;
 - (void)activateMachine;
-- (void)dumpEventInStateOccurrences:(id)a3;
-- (void)followupEvent:(id)a3 withInfo:(id)a4;
-- (void)postEvent:(id)a3 withInfo:(id)a4;
-- (void)postProtectedEvent:(id)a3 withInfo:(id)a4;
-- (void)registerAction:(id)a3 ForEvent:(id)a4 inState:(id)a5 usingDelegate:(id)a6 withInfoClass:(Class)a7;
-- (void)registerAllActions:(id)a3 withInfoClass:(Class)a4;
+- (void)dumpEventInStateOccurrences:(id)occurrences;
+- (void)followupEvent:(id)event withInfo:(id)info;
+- (void)postEvent:(id)event withInfo:(id)info;
+- (void)postProtectedEvent:(id)event withInfo:(id)info;
+- (void)registerAction:(id)action ForEvent:(id)event inState:(id)state usingDelegate:(id)delegate withInfoClass:(Class)class;
+- (void)registerAllActions:(id)actions withInfoClass:(Class)class;
 - (void)teardownMachine;
 @end
 
 @implementation SUCoreFSM
 
-- (id)_initMachine:(id)a3 ofInstance:(id)a4 withTable:(id)a5 startingIn:(id)a6 usingDelegate:(id)a7 registeringAllInfoClass:(Class)a8 registeringAndActivating:(BOOL)a9
+- (id)_initMachine:(id)machine ofInstance:(id)instance withTable:(id)table startingIn:(id)in usingDelegate:(id)delegate registeringAllInfoClass:(Class)class registeringAndActivating:(BOOL)activating
 {
   v78 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v70 = a7;
+  machineCopy = machine;
+  instanceCopy = instance;
+  tableCopy = table;
+  inCopy = in;
+  delegateCopy = delegate;
   v71.receiver = self;
   v71.super_class = SUCoreFSM;
   v19 = [(SUCoreFSM *)&v71 init];
@@ -39,7 +39,7 @@
     goto LABEL_30;
   }
 
-  v69 = v16;
+  v69 = instanceCopy;
   v20 = +[SUCoreDiag sharedDiag];
   [v20 trackBegin:@"[FSM] API: initMachine"];
 
@@ -59,7 +59,7 @@
   registeredActionTable = v19->_registeredActionTable;
   v19->_registeredActionTable = v24;
 
-  if (!v15)
+  if (!machineCopy)
   {
     v29 = +[SUCore sharedCore];
     v30 = v29;
@@ -80,7 +80,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v16)
+  if (instanceCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -91,12 +91,12 @@ LABEL_14:
     }
   }
 
-  if (!v17)
+  if (!tableCopy)
   {
     v30 = +[SUCore sharedCore];
-    v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"FSM(%@) state table not provided", v15];
+    machineCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"FSM(%@) state table not provided", machineCopy];
 LABEL_19:
-    v36 = v34;
+    v36 = machineCopy;
     v37 = v30;
     v38 = 8101;
 LABEL_22:
@@ -109,18 +109,18 @@ LABEL_22:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v30 = +[SUCore sharedCore];
-    v35 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"FSM(%@) invalid state table", v15];
+    machineCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"FSM(%@) invalid state table", machineCopy];
 LABEL_21:
-    v36 = v35;
+    v36 = machineCopy2;
     v37 = v30;
     v38 = 8102;
     goto LABEL_22;
   }
 
-  if (!v18)
+  if (!inCopy)
   {
     v30 = +[SUCore sharedCore];
-    v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"FSM(%@) start state not provided", v15];
+    machineCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"FSM(%@) start state not provided", machineCopy];
     goto LABEL_19;
   }
 
@@ -128,12 +128,12 @@ LABEL_21:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v30 = +[SUCore sharedCore];
-    v35 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"FSM(%@) invalid start state", v15];
+    machineCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"FSM(%@) invalid start state", machineCopy];
     goto LABEL_21;
   }
 
-  objc_storeStrong(&v19->_fsmName, a3);
-  objc_storeStrong(&v19->_instanceName, a4);
+  objc_storeStrong(&v19->_fsmName, machine);
+  objc_storeStrong(&v19->_instanceName, instance);
   if (v19->_instanceName)
   {
     v26 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -156,23 +156,23 @@ LABEL_21:
   v19->_diag = v50;
 
   v52 = +[SUCore sharedCore];
-  v53 = [v52 commonDomain];
+  commonDomain = [v52 commonDomain];
 
-  v67 = v53;
-  v54 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.%@.%@", v53, @"core.fsm.extended", v19->_fullName];
-  v55 = [v54 UTF8String];
+  v67 = commonDomain;
+  v54 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@.%@.%@", commonDomain, @"core.fsm.extended", v19->_fullName];
+  uTF8String = [v54 UTF8String];
   v64 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v56 = dispatch_queue_create(v55, v64);
+  v56 = dispatch_queue_create(uTF8String, v64);
   extendedStateQueue = v19->_extendedStateQueue;
   v19->_extendedStateQueue = v56;
 
   if (v19->_extendedStateQueue)
   {
     v58 = +[SUCoreLog sharedLogger];
-    v59 = [v58 oslog];
+    oslog = [v58 oslog];
 
-    v65 = v59;
-    if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
+    v65 = oslog;
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v60 = v19->_fullName;
       *buf = 138543874;
@@ -181,7 +181,7 @@ LABEL_21:
       v75 = @"core.fsm.extended";
       v76 = 2114;
       v77 = v60;
-      _os_log_impl(&dword_1E0F71000, v59, OS_LOG_TYPE_DEFAULT, "[FSM] DISPATCH: created extended state dispatch queue domain(%{public}@.%{public}@.%{public}@)", buf, 0x20u);
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[FSM] DISPATCH: created extended state dispatch queue domain(%{public}@.%{public}@.%{public}@)", buf, 0x20u);
     }
 
     v33 = 0;
@@ -198,12 +198,12 @@ LABEL_21:
   }
 
 LABEL_23:
-  if (a9)
+  if (activating)
   {
-    [(SUCoreFSM *)v19 _registerAllActions:v70 withInfoClass:a8 stateTable:v17 actionTable:v19->_registeredActionTable loggingRegistration:0];
-    if ([(SUCoreFSM *)v19 _activateMachineWithStateTable:v17 withActionTable:v19->_registeredActionTable])
+    [(SUCoreFSM *)v19 _registerAllActions:delegateCopy withInfoClass:class stateTable:tableCopy actionTable:v19->_registeredActionTable loggingRegistration:0];
+    if ([(SUCoreFSM *)v19 _activateMachineWithStateTable:tableCopy withActionTable:v19->_registeredActionTable])
     {
-      objc_storeStrong(&v19->_currentState, a6);
+      objc_storeStrong(&v19->_currentState, in);
       v19->_isActive = 1;
     }
 
@@ -217,18 +217,18 @@ LABEL_23:
     }
   }
 
-  v42 = v18;
+  v42 = inCopy;
   if (!v33)
   {
-    objc_storeStrong(&v19->_stateTable, a5);
-    objc_storeStrong(&v19->_startState, a6);
+    objc_storeStrong(&v19->_stateTable, table);
+    objc_storeStrong(&v19->_startState, in);
     v46 = +[SUCoreDiag sharedDiag];
     [v46 trackEnd:@"[FSM] API: initMachine"];
 
-    v16 = v69;
+    instanceCopy = v69;
 LABEL_30:
     v45 = v19;
-    v42 = v18;
+    v42 = inCopy;
     goto LABEL_31;
   }
 
@@ -239,7 +239,7 @@ LABEL_30:
   [v44 trackEnd:@"[FSM] API: initMachine" withResult:objc_msgSend(v33 withError:{"code"), v33}];
 
   v45 = 0;
-  v16 = v69;
+  instanceCopy = v69;
 LABEL_31:
 
   v47 = *MEMORY[0x1E69E9840];
@@ -248,13 +248,13 @@ LABEL_31:
 
 - (void)teardownMachine
 {
-  v3 = [(SUCoreFSM *)self extendedStateQueue];
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __28__SUCoreFSM_teardownMachine__block_invoke;
   block[3] = &unk_1E86FC178;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __28__SUCoreFSM_teardownMachine__block_invoke(uint64_t a1)
@@ -309,31 +309,31 @@ void __28__SUCoreFSM_teardownMachine__block_invoke(uint64_t a1)
   [v20 trackEnd:@"[FSM] API: teardownMachine"];
 }
 
-- (void)registerAction:(id)a3 ForEvent:(id)a4 inState:(id)a5 usingDelegate:(id)a6 withInfoClass:(Class)a7
+- (void)registerAction:(id)action ForEvent:(id)event inState:(id)state usingDelegate:(id)delegate withInfoClass:(Class)class
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_not_V2(v16);
+  actionCopy = action;
+  eventCopy = event;
+  stateCopy = state;
+  delegateCopy = delegate;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_not_V2(extendedStateQueue);
 
-  v17 = [(SUCoreFSM *)self extendedStateQueue];
+  extendedStateQueue2 = [(SUCoreFSM *)self extendedStateQueue];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __73__SUCoreFSM_registerAction_ForEvent_inState_usingDelegate_withInfoClass___block_invoke;
   v22[3] = &unk_1E86FCA90;
   v22[4] = self;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = a7;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
-  dispatch_sync(v17, v22);
+  v23 = actionCopy;
+  v24 = eventCopy;
+  v25 = stateCopy;
+  v26 = delegateCopy;
+  classCopy = class;
+  v18 = delegateCopy;
+  v19 = stateCopy;
+  v20 = eventCopy;
+  v21 = actionCopy;
+  dispatch_sync(extendedStateQueue2, v22);
 }
 
 void __73__SUCoreFSM_registerAction_ForEvent_inState_usingDelegate_withInfoClass___block_invoke(void *a1)
@@ -355,22 +355,22 @@ void __73__SUCoreFSM_registerAction_ForEvent_inState_usingDelegate_withInfoClass
   [v11 trackEnd:@"[FSM] API: registerAction" atLevel:0];
 }
 
-- (void)registerAllActions:(id)a3 withInfoClass:(Class)a4
+- (void)registerAllActions:(id)actions withInfoClass:(Class)class
 {
-  v6 = a3;
-  v7 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_not_V2(v7);
+  actionsCopy = actions;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_not_V2(extendedStateQueue);
 
-  v8 = [(SUCoreFSM *)self extendedStateQueue];
+  extendedStateQueue2 = [(SUCoreFSM *)self extendedStateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__SUCoreFSM_registerAllActions_withInfoClass___block_invoke;
   block[3] = &unk_1E86FCAB8;
   block[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v9 = v6;
-  dispatch_sync(v8, block);
+  v11 = actionsCopy;
+  classCopy = class;
+  v9 = actionsCopy;
+  dispatch_sync(extendedStateQueue2, block);
 }
 
 void __46__SUCoreFSM_registerAllActions_withInfoClass___block_invoke(uint64_t a1)
@@ -389,22 +389,22 @@ void __46__SUCoreFSM_registerAllActions_withInfoClass___block_invoke(uint64_t a1
   [v8 trackEnd:@"[FSM] API: registerAllActions"];
 }
 
-- (void)_registerAllActions:(id)a3 withInfoClass:(Class)a4 stateTable:(id)a5 actionTable:(id)a6 loggingRegistration:(BOOL)a7
+- (void)_registerAllActions:(id)actions withInfoClass:(Class)class stateTable:(id)table actionTable:(id)actionTable loggingRegistration:(BOOL)registration
 {
-  v12 = a3;
-  v13 = a6;
+  actionsCopy = actions;
+  actionTableCopy = actionTable;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __90__SUCoreFSM__registerAllActions_withInfoClass_stateTable_actionTable_loggingRegistration___block_invoke;
   v16[3] = &unk_1E86FCB08;
   v16[4] = self;
-  v17 = v12;
-  v18 = v13;
-  v19 = a4;
-  v20 = a7;
-  v14 = v13;
-  v15 = v12;
-  [a5 enumerateKeysAndObjectsUsingBlock:v16];
+  v17 = actionsCopy;
+  v18 = actionTableCopy;
+  classCopy = class;
+  registrationCopy = registration;
+  v14 = actionTableCopy;
+  v15 = actionsCopy;
+  [table enumerateKeysAndObjectsUsingBlock:v16];
 }
 
 void __90__SUCoreFSM__registerAllActions_withInfoClass_stateTable_actionTable_loggingRegistration___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -437,68 +437,68 @@ void __90__SUCoreFSM__registerAllActions_withInfoClass_stateTable_actionTable_lo
   }
 }
 
-- (void)_registerAction:(id)a3 ForEvent:(id)a4 inState:(id)a5 usingDelegate:(id)a6 withInfoClass:(Class)a7 actionTable:(id)a8 loggingRegistration:(BOOL)a9
+- (void)_registerAction:(id)action ForEvent:(id)event inState:(id)state usingDelegate:(id)delegate withInfoClass:(Class)class actionTable:(id)table loggingRegistration:(BOOL)registration
 {
   v47 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  actionCopy = action;
+  eventCopy = event;
+  stateCopy = state;
+  delegateCopy = delegate;
+  tableCopy = table;
   v20 = +[SUCoreDiag sharedDiag];
-  v21 = [v19 safeObjectForKey:v17 ofClass:objc_opt_class()];
+  v21 = [tableCopy safeObjectForKey:stateCopy ofClass:objc_opt_class()];
   if (!v21)
   {
     v22 = objc_opt_new();
     if (!v22)
     {
       v35 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v36 = [(SUCoreFSM *)self fullName];
-      v37 = [v35 initWithFormat:@"FSM(%@) unable to create actions for state(%@) so dropping registration of action(%@) for event(%@)", v36, v17, v15, v16];
-      [v20 trackAnomaly:@"[FSM] REGISTER_EVENT" forReason:v37 withResult:8100 withError:0];
+      fullName = [(SUCoreFSM *)self fullName];
+      eventCopy = [v35 initWithFormat:@"FSM(%@) unable to create actions for state(%@) so dropping registration of action(%@) for event(%@)", fullName, stateCopy, actionCopy, eventCopy];
+      [v20 trackAnomaly:@"[FSM] REGISTER_EVENT" forReason:eventCopy withResult:8100 withError:0];
 
       goto LABEL_11;
     }
 
     v21 = v22;
-    [v19 setSafeObject:v22 forKey:v17];
+    [tableCopy setSafeObject:v22 forKey:stateCopy];
   }
 
-  v23 = [v16 isEqualToString:@"Teardown"];
-  if (a7 && v23)
+  v23 = [eventCopy isEqualToString:@"Teardown"];
+  if (class && v23)
   {
     v24 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v25 = [(SUCoreFSM *)self fullName];
-    v26 = [v24 initWithFormat:@"FSM(%@) action delegate registering for event(%@) with Class - not supported", v25, v16];
+    fullName2 = [(SUCoreFSM *)self fullName];
+    eventCopy2 = [v24 initWithFormat:@"FSM(%@) action delegate registering for event(%@) with Class - not supported", fullName2, eventCopy];
   }
 
   else
   {
-    v27 = [v21 objectForKey:v16];
+    v27 = [v21 objectForKey:eventCopy];
 
     if (!v27)
     {
-      v31 = [[SUCoreFSMAttachedAction alloc] initWithAction:v15 usingDelegate:v18 withInfoClass:a7];
-      [v21 setSafeObject:v31 forKey:v16];
-      [v19 setSafeObject:v21 forKey:v17];
-      if (a9)
+      v31 = [[SUCoreFSMAttachedAction alloc] initWithAction:actionCopy usingDelegate:delegateCopy withInfoClass:class];
+      [v21 setSafeObject:v31 forKey:eventCopy];
+      [tableCopy setSafeObject:v21 forKey:stateCopy];
+      if (registration)
       {
         v38 = v31;
         v32 = +[SUCoreLog sharedLogger];
-        v33 = [v32 oslog];
+        oslog = [v32 oslog];
 
-        if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [(SUCoreFSM *)self fullName];
+          fullName3 = [(SUCoreFSM *)self fullName];
           *buf = 138544130;
-          v40 = v34;
+          v40 = fullName3;
           v41 = 2114;
-          v42 = v15;
+          v42 = actionCopy;
           v43 = 2114;
-          v44 = v16;
+          v44 = eventCopy;
           v45 = 2114;
-          v46 = v17;
-          _os_log_impl(&dword_1E0F71000, v33, OS_LOG_TYPE_DEFAULT, "[FSM] REGISTER_EVENT: FSM(%{public}@) attached action(%{public}@) handling event(%{public}@) in state(%{public}@)", buf, 0x2Au);
+          v46 = stateCopy;
+          _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[FSM] REGISTER_EVENT: FSM(%{public}@) attached action(%{public}@) handling event(%{public}@) in state(%{public}@)", buf, 0x2Au);
         }
 
         v31 = v38;
@@ -508,12 +508,12 @@ void __90__SUCoreFSM__registerAllActions_withInfoClass_stateTable_actionTable_lo
     }
 
     v28 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v25 = [(SUCoreFSM *)self fullName];
-    v26 = [v28 initWithFormat:@"FSM(%@) action delegate already registered as event handler for event(%@)", v25, v16];
+    fullName2 = [(SUCoreFSM *)self fullName];
+    eventCopy2 = [v28 initWithFormat:@"FSM(%@) action delegate already registered as event handler for event(%@)", fullName2, eventCopy];
   }
 
-  v29 = v26;
-  [v20 trackAnomaly:@"[FSM] REGISTER_EVENT" forReason:v26 withResult:8111 withError:0];
+  v29 = eventCopy2;
+  [v20 trackAnomaly:@"[FSM] REGISTER_EVENT" forReason:eventCopy2 withResult:8111 withError:0];
 
 LABEL_10:
 LABEL_11:
@@ -523,16 +523,16 @@ LABEL_11:
 
 - (void)activateMachine
 {
-  v3 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_not_V2(v3);
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_not_V2(extendedStateQueue);
 
-  v4 = [(SUCoreFSM *)self extendedStateQueue];
+  extendedStateQueue2 = [(SUCoreFSM *)self extendedStateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __28__SUCoreFSM_activateMachine__block_invoke;
   block[3] = &unk_1E86FC178;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(extendedStateQueue2, block);
 }
 
 void __28__SUCoreFSM_activateMachine__block_invoke(uint64_t a1)
@@ -574,10 +574,10 @@ void __28__SUCoreFSM_activateMachine__block_invoke(uint64_t a1)
 LABEL_7:
 }
 
-- (BOOL)_activateMachineWithStateTable:(id)a3 withActionTable:(id)a4
+- (BOOL)_activateMachineWithStateTable:(id)table withActionTable:(id)actionTable
 {
-  v6 = a3;
-  v7 = a4;
+  tableCopy = table;
+  actionTableCopy = actionTable;
   v8 = +[SUCoreDiag sharedDiag];
   v19 = 0;
   v20 = &v19;
@@ -587,19 +587,19 @@ LABEL_7:
   v13[1] = 3221225472;
   v13[2] = __60__SUCoreFSM__activateMachineWithStateTable_withActionTable___block_invoke;
   v13[3] = &unk_1E86FCB58;
-  v9 = v6;
+  v9 = tableCopy;
   v14 = v9;
   v10 = v8;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v18 = &v19;
-  v11 = v7;
+  v11 = actionTableCopy;
   v17 = v11;
   [v9 enumerateKeysAndObjectsUsingBlock:v13];
-  LOBYTE(v7) = *(v20 + 24);
+  LOBYTE(actionTableCopy) = *(v20 + 24);
 
   _Block_object_dispose(&v19, 8);
-  return v7;
+  return actionTableCopy;
 }
 
 void __60__SUCoreFSM__activateMachineWithStateTable_withActionTable___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -696,21 +696,21 @@ LABEL_16:
   }
 }
 
-- (void)postEvent:(id)a3 withInfo:(id)a4
+- (void)postEvent:(id)event withInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreFSM *)self extendedStateQueue];
+  eventCopy = event;
+  infoCopy = info;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __32__SUCoreFSM_postEvent_withInfo___block_invoke;
   block[3] = &unk_1E86FC460;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = eventCopy;
+  dispatch_async(extendedStateQueue, block);
 }
 
 uint64_t __32__SUCoreFSM_postEvent_withInfo___block_invoke(void *a1)
@@ -725,63 +725,63 @@ uint64_t __32__SUCoreFSM_postEvent_withInfo___block_invoke(void *a1)
   return [v3 _postEvent:v4 withInfo:v5];
 }
 
-- (void)postProtectedEvent:(id)a3 withInfo:(id)a4
+- (void)postProtectedEvent:(id)event withInfo:(id)info
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  infoCopy = info;
+  eventCopy = event;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v8 = +[SUCoreDiag sharedDiag];
   [v8 trackBegin:@"[FSM] API: postProtectedEvent" atLevel:0];
 
-  [(SUCoreFSM *)self _postEvent:v9 withInfo:v6];
+  [(SUCoreFSM *)self _postEvent:eventCopy withInfo:infoCopy];
 }
 
-- (void)followupEvent:(id)a3 withInfo:(id)a4
+- (void)followupEvent:(id)event withInfo:(id)info
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  eventCopy = event;
+  infoCopy = info;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   if (![(SUCoreFSM *)self performingEvent])
   {
-    v9 = [(SUCoreFSM *)self diag];
+    diag = [(SUCoreFSM *)self diag];
     v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v11 = [(SUCoreFSM *)self fullName];
-    v16 = [(SUCoreFSM *)self currentState];
-    v17 = [v15 initWithFormat:@"FSM(%@) follow-up event(%@) in state(%@) ignored - not performing any event", v11, v18, v16];
-    [v9 trackAnomaly:@"[FSM] FOLLOW_UP_EVENT" forReason:v17 withResult:8115 withError:0];
+    fullName = [(SUCoreFSM *)self fullName];
+    currentState = [(SUCoreFSM *)self currentState];
+    v17 = [v15 initWithFormat:@"FSM(%@) follow-up event(%@) in state(%@) ignored - not performing any event", fullName, eventCopy, currentState];
+    [diag trackAnomaly:@"[FSM] FOLLOW_UP_EVENT" forReason:v17 withResult:8115 withError:0];
 
     goto LABEL_5;
   }
 
-  v8 = [(SUCoreFSM *)self pendingFollowupEvent];
+  pendingFollowupEvent = [(SUCoreFSM *)self pendingFollowupEvent];
 
-  if (v8)
+  if (pendingFollowupEvent)
   {
-    v9 = [(SUCoreFSM *)self diag];
+    diag = [(SUCoreFSM *)self diag];
     v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v11 = [(SUCoreFSM *)self fullName];
-    v12 = [(SUCoreFSM *)self currentState];
-    v13 = [(SUCoreFSM *)self pendingFollowupEvent];
-    v14 = [v10 initWithFormat:@"FSM(%@) follow-up event(%@) in state(%@) ignored - already have follow-up event(%@)", v11, v18, v12, v13];
-    [v9 trackAnomaly:@"[FSM] FOLLOW_UP_EVENT" forReason:v14 withResult:8111 withError:0];
+    fullName = [(SUCoreFSM *)self fullName];
+    currentState2 = [(SUCoreFSM *)self currentState];
+    pendingFollowupEvent2 = [(SUCoreFSM *)self pendingFollowupEvent];
+    v14 = [v10 initWithFormat:@"FSM(%@) follow-up event(%@) in state(%@) ignored - already have follow-up event(%@)", fullName, eventCopy, currentState2, pendingFollowupEvent2];
+    [diag trackAnomaly:@"[FSM] FOLLOW_UP_EVENT" forReason:v14 withResult:8111 withError:0];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  [(SUCoreFSM *)self setPendingFollowupEvent:v18];
-  [(SUCoreFSM *)self setPendingFollowupInfo:v6];
+  [(SUCoreFSM *)self setPendingFollowupEvent:eventCopy];
+  [(SUCoreFSM *)self setPendingFollowupInfo:infoCopy];
 LABEL_6:
 }
 
 - (id)copyCurrentState
 {
-  v3 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_not_V2(v3);
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_not_V2(extendedStateQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -789,14 +789,14 @@ LABEL_6:
   v11 = __Block_byref_object_copy__4;
   v12 = __Block_byref_object_dispose__4;
   v13 = 0;
-  v4 = [(SUCoreFSM *)self extendedStateQueue];
+  extendedStateQueue2 = [(SUCoreFSM *)self extendedStateQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__SUCoreFSM_copyCurrentState__block_invoke;
   v7[3] = &unk_1E86FC1A0;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(extendedStateQueue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -815,30 +815,30 @@ void __29__SUCoreFSM_copyCurrentState__block_invoke(uint64_t a1)
 
 - (id)copyCurrentStateProtected
 {
-  v3 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_V2(v3);
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v4 = [(SUCoreFSM *)self currentState];
-  v5 = [v4 copy];
+  currentState = [(SUCoreFSM *)self currentState];
+  v5 = [currentState copy];
 
   return v5;
 }
 
-- (void)dumpEventInStateOccurrences:(id)a3
+- (void)dumpEventInStateOccurrences:(id)occurrences
 {
-  v4 = a3;
-  v5 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_not_V2(v5);
+  occurrencesCopy = occurrences;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_not_V2(extendedStateQueue);
 
-  v6 = [(SUCoreFSM *)self extendedStateQueue];
+  extendedStateQueue2 = [(SUCoreFSM *)self extendedStateQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__SUCoreFSM_dumpEventInStateOccurrences___block_invoke;
   v8[3] = &unk_1E86FC150;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = occurrencesCopy;
+  v7 = occurrencesCopy;
+  dispatch_sync(extendedStateQueue2, v8);
 }
 
 void __41__SUCoreFSM_dumpEventInStateOccurrences___block_invoke(uint64_t a1)
@@ -975,48 +975,48 @@ LABEL_13:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_postEvent:(id)a3 withInfo:(id)a4
+- (void)_postEvent:(id)event withInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_V2(v8);
+  eventCopy = event;
+  infoCopy = info;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v39 = 0;
-  v9 = [(SUCoreFSM *)self _acceptEvent:v6 withInfo:v7 issueType:@"post" attachedAction:&v39];
+  v9 = [(SUCoreFSM *)self _acceptEvent:eventCopy withInfo:infoCopy issueType:@"post" attachedAction:&v39];
   v10 = v39;
   if (v9)
   {
-    v11 = [(SUCoreFSM *)self pendingFollowupEvent];
+    pendingFollowupEvent = [(SUCoreFSM *)self pendingFollowupEvent];
 
-    if (v11)
+    if (pendingFollowupEvent)
     {
-      v12 = [(SUCoreFSM *)self diag];
+      diag = [(SUCoreFSM *)self diag];
       v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v14 = [(SUCoreFSM *)self fullName];
-      v15 = [(SUCoreFSM *)self pendingFollowupEvent];
-      v16 = [(SUCoreFSM *)self currentState];
-      v17 = [v13 initWithFormat:@"FSM(%@) pending follow-up event(%@) [prior to performing event(%@) in state(%@)] discarded", v14, v15, v6, v16];
-      [v12 trackAnomaly:@"[FSM] POST_EVENT" forReason:v17 withResult:8117 withError:0];
+      fullName = [(SUCoreFSM *)self fullName];
+      pendingFollowupEvent2 = [(SUCoreFSM *)self pendingFollowupEvent];
+      currentState = [(SUCoreFSM *)self currentState];
+      v17 = [v13 initWithFormat:@"FSM(%@) pending follow-up event(%@) [prior to performing event(%@) in state(%@)] discarded", fullName, pendingFollowupEvent2, eventCopy, currentState];
+      [diag trackAnomaly:@"[FSM] POST_EVENT" forReason:v17 withResult:8117 withError:0];
 
       [(SUCoreFSM *)self setPendingFollowupEvent:0];
       [(SUCoreFSM *)self setPendingFollowupInfo:0];
     }
 
-    v34 = v6;
-    v18 = v6;
+    v34 = eventCopy;
+    pendingFollowupEvent5 = eventCopy;
     [(SUCoreFSM *)self setPerformingEvent:1];
     while (1)
     {
       v19 = +[SUCoreSimulate sharedSimulator];
-      v20 = [(SUCoreFSM *)self fsmName];
-      v21 = [(SUCoreFSM *)self currentState];
-      v22 = [v19 fsm:v20 forEvent:v18 inState:v21];
+      fsmName = [(SUCoreFSM *)self fsmName];
+      currentState2 = [(SUCoreFSM *)self currentState];
+      v22 = [v19 fsm:fsmName forEvent:pendingFollowupEvent5 inState:currentState2];
 
       if (v22)
       {
-        v37 = v7;
-        v38 = v18;
+        v37 = infoCopy;
+        v38 = pendingFollowupEvent5;
         v36 = v10;
         [(SUCoreFSM *)self _simulateEventAlteration:v22 fsmEvent:&v38 eventInfo:&v37 attachedAction:&v36];
         v23 = v38;
@@ -1024,12 +1024,12 @@ LABEL_13:
         v24 = v37;
         v25 = v36;
 
-        v26 = [v25 fsmAction];
-        v27 = v26 == 0;
+        fsmAction = [v25 fsmAction];
+        v27 = fsmAction == 0;
 
         v10 = v25;
-        v18 = v23;
-        v7 = v24;
+        pendingFollowupEvent5 = v23;
+        infoCopy = v24;
       }
 
       else
@@ -1037,19 +1037,19 @@ LABEL_13:
         v27 = 1;
       }
 
-      [(SUCoreFSM *)self _performEvent:v18 withInfo:v7 issueType:@"post" forCell:v9 attachedAction:v10 checkingAttached:v27];
+      [(SUCoreFSM *)self _performEvent:pendingFollowupEvent5 withInfo:infoCopy issueType:@"post" forCell:v9 attachedAction:v10 checkingAttached:v27];
 
-      v28 = [(SUCoreFSM *)self pendingFollowupEvent];
+      pendingFollowupEvent3 = [(SUCoreFSM *)self pendingFollowupEvent];
 
-      if (!v28)
+      if (!pendingFollowupEvent3)
       {
         break;
       }
 
-      v29 = [(SUCoreFSM *)self pendingFollowupEvent];
-      v30 = [(SUCoreFSM *)self pendingFollowupInfo];
+      pendingFollowupEvent4 = [(SUCoreFSM *)self pendingFollowupEvent];
+      pendingFollowupInfo = [(SUCoreFSM *)self pendingFollowupInfo];
       v35 = 0;
-      v31 = [(SUCoreFSM *)self _acceptEvent:v29 withInfo:v30 issueType:@"follow-up" attachedAction:&v35];
+      v31 = [(SUCoreFSM *)self _acceptEvent:pendingFollowupEvent4 withInfo:pendingFollowupInfo issueType:@"follow-up" attachedAction:&v35];
       v10 = v35;
 
       if (!v31)
@@ -1058,150 +1058,150 @@ LABEL_13:
         break;
       }
 
-      v18 = [(SUCoreFSM *)self pendingFollowupEvent];
-      v32 = [(SUCoreFSM *)self pendingFollowupInfo];
+      pendingFollowupEvent5 = [(SUCoreFSM *)self pendingFollowupEvent];
+      pendingFollowupInfo2 = [(SUCoreFSM *)self pendingFollowupInfo];
 
       [(SUCoreFSM *)self setPendingFollowupEvent:0];
       [(SUCoreFSM *)self setPendingFollowupInfo:0];
 
       v9 = v31;
-      v7 = v32;
-      if (!v18)
+      infoCopy = pendingFollowupInfo2;
+      if (!pendingFollowupEvent5)
       {
         goto LABEL_14;
       }
     }
 
-    v32 = v7;
+    pendingFollowupInfo2 = infoCopy;
     v31 = v9;
 LABEL_14:
     [(SUCoreFSM *)self setPerformingEvent:0];
 
-    v7 = v32;
-    v6 = v34;
+    infoCopy = pendingFollowupInfo2;
+    eventCopy = v34;
   }
 
   v33 = +[SUCoreDiag sharedDiag];
   [v33 trackEnd:@"[FSM] API: postEvent" atLevel:0];
 }
 
-- (void)_simulateEventAlteration:(id)a3 fsmEvent:(id *)a4 eventInfo:(id *)a5 attachedAction:(id *)a6
+- (void)_simulateEventAlteration:(id)alteration fsmEvent:(id *)event eventInfo:(id *)info attachedAction:(id *)action
 {
-  v10 = a3;
-  v11 = [v10 simAction];
-  if (v11 == 10)
+  alterationCopy = alteration;
+  simAction = [alterationCopy simAction];
+  if (simAction == 10)
   {
-    v18 = [v10 fsmEvent];
-    v19 = *a5;
+    fsmEvent = [alterationCopy fsmEvent];
+    v19 = *info;
     v28 = 0;
-    v20 = [(SUCoreFSM *)self _acceptEvent:v18 withInfo:v19 issueType:@"simulate" attachedAction:&v28];
+    v20 = [(SUCoreFSM *)self _acceptEvent:fsmEvent withInfo:v19 issueType:@"simulate" attachedAction:&v28];
     v21 = v28;
 
     if (v20)
     {
-      *a4 = [v10 fsmEvent];
+      *event = [alterationCopy fsmEvent];
       v22 = v21;
-      *a6 = v21;
+      *action = v21;
     }
   }
 
-  else if (v11 == 9)
+  else if (simAction == 9)
   {
-    v12 = *a6;
+    v12 = *action;
     v13 = [SUCoreFSMAttachedAction alloc];
-    v14 = [v10 alteration];
-    v15 = [v12 actionDelegate];
-    v16 = -[SUCoreFSMAttachedAction initWithAction:usingDelegate:withInfoClass:](v13, "initWithAction:usingDelegate:withInfoClass:", v14, v15, [v12 eventInfoClass]);
+    alteration = [alterationCopy alteration];
+    actionDelegate = [v12 actionDelegate];
+    v16 = -[SUCoreFSMAttachedAction initWithAction:usingDelegate:withInfoClass:](v13, "initWithAction:usingDelegate:withInfoClass:", alteration, actionDelegate, [v12 eventInfoClass]);
 
     v17 = v16;
-    *a6 = v16;
+    *action = v16;
   }
 
   else
   {
-    v23 = [(SUCoreFSM *)self diag];
+    diag = [(SUCoreFSM *)self diag];
     v24 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v25 = [(SUCoreFSM *)self fsmName];
-    v26 = [v10 summary];
-    v27 = [v24 initWithFormat:@"FSM(%@) unsupported simulate action: %@", v25, v26];
-    [v23 trackAnomaly:@"[FSM] SIMULATE" forReason:v27 withResult:8113 withError:0];
+    fsmName = [(SUCoreFSM *)self fsmName];
+    summary = [alterationCopy summary];
+    v27 = [v24 initWithFormat:@"FSM(%@) unsupported simulate action: %@", fsmName, summary];
+    [diag trackAnomaly:@"[FSM] SIMULATE" forReason:v27 withResult:8113 withError:0];
   }
 }
 
-- (id)_acceptEvent:(id)a3 withInfo:(id)a4 issueType:(id)a5 attachedAction:(id *)a6
+- (id)_acceptEvent:(id)event withInfo:(id)info issueType:(id)type attachedAction:(id *)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_V2(v13);
+  eventCopy = event;
+  infoCopy = info;
+  typeCopy = type;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!eventCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v17 = [(SUCoreFSM *)self diag];
+    diag = [(SUCoreFSM *)self diag];
     v24 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v16 = [(SUCoreFSM *)self fullName];
-    v20 = [v24 initWithFormat:@"FSM(%@) invalid %@ event", v16, v12];
-    [v17 trackFailure:@"[FSM] ACCEPT_EVENT" forReason:v20 withResult:8111 withError:0];
+    fullName = [(SUCoreFSM *)self fullName];
+    typeCopy = [v24 initWithFormat:@"FSM(%@) invalid %@ event", fullName, typeCopy];
+    [diag trackFailure:@"[FSM] ACCEPT_EVENT" forReason:typeCopy withResult:8111 withError:0];
 LABEL_12:
     v22 = 0;
 LABEL_13:
 
-    v17 = 0;
+    diag = 0;
     goto LABEL_14;
   }
 
   if (![(SUCoreFSM *)self isActive])
   {
-    v17 = [(SUCoreFSM *)self diag];
+    diag = [(SUCoreFSM *)self diag];
     v26 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v16 = [(SUCoreFSM *)self fullName];
-    v20 = [v26 initWithFormat:@"FSM(%@) not active at %@ event(%@)", v16, v12, v10];
-    [v17 trackAnomaly:@"[FSM] ACCEPT_EVENT" forReason:v20 withResult:8111 withError:0];
+    fullName = [(SUCoreFSM *)self fullName];
+    typeCopy = [v26 initWithFormat:@"FSM(%@) not active at %@ event(%@)", fullName, typeCopy, eventCopy];
+    [diag trackAnomaly:@"[FSM] ACCEPT_EVENT" forReason:typeCopy withResult:8111 withError:0];
     goto LABEL_12;
   }
 
-  v14 = [(SUCoreFSM *)self stateTable];
-  v15 = [(SUCoreFSM *)self currentState];
-  v16 = [v14 safeDictionaryForKey:v15 fromBase:@"SUCoreFSM stateTable" withKeyDescription:@"current state"];
+  stateTable = [(SUCoreFSM *)self stateTable];
+  currentState = [(SUCoreFSM *)self currentState];
+  fullName = [stateTable safeDictionaryForKey:currentState fromBase:@"SUCoreFSM stateTable" withKeyDescription:@"current state"];
 
-  v17 = [v16 safeDictionaryForKey:v10 fromBase:@"SUCoreFSM eventsForState" withKeyDescription:@"FSM event"];
-  v40 = v11;
-  if (!v16)
+  diag = [fullName safeDictionaryForKey:eventCopy fromBase:@"SUCoreFSM eventsForState" withKeyDescription:@"FSM event"];
+  v40 = infoCopy;
+  if (!fullName)
   {
-    v20 = [(SUCoreFSM *)self diag];
+    typeCopy = [(SUCoreFSM *)self diag];
     v27 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v28 = [(SUCoreFSM *)self fullName];
-    v29 = [(SUCoreFSM *)self currentState];
-    v30 = [(SUCoreFSM *)self stateTable];
-    v31 = [v27 initWithFormat:@"FSM(%@) current state(%@) does not exist in state table when checking %@ event(%@) table:\n%@", v28, v29, v12, v10, v30];
-    [v20 trackAnomaly:@"[FSM] ACCEPT_EVENT" forReason:v31 withResult:8500 withError:0];
+    fullName2 = [(SUCoreFSM *)self fullName];
+    currentState2 = [(SUCoreFSM *)self currentState];
+    stateTable2 = [(SUCoreFSM *)self stateTable];
+    v31 = [v27 initWithFormat:@"FSM(%@) current state(%@) does not exist in state table when checking %@ event(%@) table:\n%@", fullName2, currentState2, typeCopy, eventCopy, stateTable2];
+    [typeCopy trackAnomaly:@"[FSM] ACCEPT_EVENT" forReason:v31 withResult:8500 withError:0];
 
 LABEL_20:
     v22 = 0;
 LABEL_27:
-    v11 = v40;
+    infoCopy = v40;
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!diag)
   {
-    v20 = [(SUCoreFSM *)self diag];
+    typeCopy = [(SUCoreFSM *)self diag];
     v32 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v28 = [(SUCoreFSM *)self fullName];
-    v29 = [(SUCoreFSM *)self currentState];
-    v30 = [v32 initWithFormat:@"FSM(%@) current state(%@) does not support %@ event(%@)", v28, v29, v12, v10];
-    [v20 trackAnomaly:@"[FSM] ACCEPT_EVENT" forReason:v30 withResult:8501 withError:0];
+    fullName2 = [(SUCoreFSM *)self fullName];
+    currentState2 = [(SUCoreFSM *)self currentState];
+    stateTable2 = [v32 initWithFormat:@"FSM(%@) current state(%@) does not support %@ event(%@)", fullName2, currentState2, typeCopy, eventCopy];
+    [typeCopy trackAnomaly:@"[FSM] ACCEPT_EVENT" forReason:stateTable2 withResult:8501 withError:0];
     goto LABEL_20;
   }
 
-  v18 = [(SUCoreFSM *)self registeredActionTable];
-  v19 = [(SUCoreFSM *)self currentState];
-  v20 = [v18 safeDictionaryForKey:v19 fromBase:@"SUCoreFSM registeredActionTable" withKeyDescription:@"current state"];
+  registeredActionTable = [(SUCoreFSM *)self registeredActionTable];
+  currentState3 = [(SUCoreFSM *)self currentState];
+  typeCopy = [registeredActionTable safeDictionaryForKey:currentState3 fromBase:@"SUCoreFSM registeredActionTable" withKeyDescription:@"current state"];
 
-  v21 = [v20 safeObjectForKey:v10 ofClass:objc_opt_class()];
+  v21 = [typeCopy safeObjectForKey:eventCopy ofClass:objc_opt_class()];
   v22 = v21;
-  v11 = v40;
+  infoCopy = v40;
   if (v40)
   {
     if (v21)
@@ -1218,12 +1218,12 @@ LABEL_27:
         v23 = @"FSM(%@) event info Class mismatch (eventInfo of diff Class than registered): %@ event(%@) in state(%@)";
 LABEL_26:
         v39 = v23;
-        v38 = [(SUCoreFSM *)self diag];
+        diag2 = [(SUCoreFSM *)self diag];
         v34 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v35 = [(SUCoreFSM *)self fullName];
-        v36 = [(SUCoreFSM *)self currentState];
-        v37 = [v34 initWithFormat:v39, v35, v12, v10, v36];
-        [v38 trackAnomaly:@"[FSM] ACCEPT_EVENT" forReason:v37 withResult:8112 withError:0];
+        fullName3 = [(SUCoreFSM *)self fullName];
+        currentState4 = [(SUCoreFSM *)self currentState];
+        v37 = [v34 initWithFormat:v39, fullName3, typeCopy, eventCopy, currentState4];
+        [diag2 trackAnomaly:@"[FSM] ACCEPT_EVENT" forReason:v37 withResult:8112 withError:0];
 
         goto LABEL_27;
       }
@@ -1237,110 +1237,110 @@ LABEL_26:
   }
 
   v33 = v22;
-  *a6 = v22;
+  *action = v22;
 LABEL_14:
 
-  return v17;
+  return diag;
 }
 
-- (void)_performEvent:(id)a3 withInfo:(id)a4 issueType:(id)a5 forCell:(id)a6 attachedAction:(id)a7 checkingAttached:(BOOL)a8
+- (void)_performEvent:(id)event withInfo:(id)info issueType:(id)type forCell:(id)cell attachedAction:(id)action checkingAttached:(BOOL)attached
 {
-  v8 = a8;
-  v35 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_V2(v18);
+  attachedCopy = attached;
+  eventCopy = event;
+  infoCopy = info;
+  typeCopy = type;
+  cellCopy = cell;
+  actionCopy = action;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  [(SUCoreFSM *)self _trackEventOccurrence:v35 withInfo:v14 issueType:v15];
-  v19 = [(SUCoreFSM *)self currentState];
-  v20 = [v16 safeStringForKey:@"FSMNextState"];
+  [(SUCoreFSM *)self _trackEventOccurrence:eventCopy withInfo:infoCopy issueType:typeCopy];
+  currentState = [(SUCoreFSM *)self currentState];
+  v20 = [cellCopy safeStringForKey:@"FSMNextState"];
   if (v20)
   {
     [(SUCoreFSM *)self setCurrentState:v20];
   }
 
-  if ([v35 isEqualToString:@"Teardown"])
+  if ([eventCopy isEqualToString:@"Teardown"])
   {
     [(SUCoreFSM *)self setIsActive:0];
   }
 
-  if (v8)
+  if (attachedCopy)
   {
-    [v16 safeStringForKey:@"FSMAction"];
+    [cellCopy safeStringForKey:@"FSMAction"];
   }
 
   else
   {
-    [v17 fsmAction];
+    [actionCopy fsmAction];
   }
   v21 = ;
-  v22 = [(SUCoreFSM *)self diag];
-  v23 = [(SUCoreFSM *)self fullName];
-  [v22 trackStateEvent:v23 previousState:v19 handlingEvent:v35 nextState:v20 performingAction:v21 withInfo:v14];
+  diag = [(SUCoreFSM *)self diag];
+  fullName = [(SUCoreFSM *)self fullName];
+  [diag trackStateEvent:fullName previousState:currentState handlingEvent:eventCopy nextState:v20 performingAction:v21 withInfo:infoCopy];
 
-  if (v17 | v21)
+  if (actionCopy | v21)
   {
-    if (v17 && v21 && ([v17 fsmAction], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v21, "isEqualToString:", v24), v24, v25))
+    if (actionCopy && v21 && ([actionCopy fsmAction], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v21, "isEqualToString:", v24), v24, v25))
     {
-      [(SUCoreFSM *)self _triggerAction:v21 usingAttached:v17 onEvent:v35 inState:v19 withInfo:v14 nextState:v20];
+      [(SUCoreFSM *)self _triggerAction:v21 usingAttached:actionCopy onEvent:eventCopy inState:currentState withInfo:infoCopy nextState:v20];
     }
 
     else
     {
       [(SUCoreFSM *)self diag];
-      v26 = v33 = v19;
+      v26 = v33 = currentState;
       v27 = objc_alloc(MEMORY[0x1E696AEC0]);
       [(SUCoreFSM *)self fullName];
-      v34 = v16;
-      v29 = v28 = v15;
-      v30 = [(SUCoreFSM *)self currentState];
-      v31 = [v17 fsmAction];
-      v32 = [v27 initWithFormat:@"FSM(%@) event where action indicated (but table / registration mismatch) %@ event(%@) in state(%@) action(%@)!=attached(%@)", v29, v28, v35, v30, v21, v31];
+      v34 = cellCopy;
+      v29 = v28 = typeCopy;
+      currentState2 = [(SUCoreFSM *)self currentState];
+      fsmAction = [actionCopy fsmAction];
+      v32 = [v27 initWithFormat:@"FSM(%@) event where action indicated (but table / registration mismatch) %@ event(%@) in state(%@) action(%@)!=attached(%@)", v29, v28, eventCopy, currentState2, v21, fsmAction];
       [v26 trackAnomaly:@"[FSM] PERFORM_EVENT" forReason:v32 withResult:8112 withError:0];
 
-      v15 = v28;
-      v16 = v34;
+      typeCopy = v28;
+      cellCopy = v34;
 
-      v19 = v33;
+      currentState = v33;
     }
   }
 }
 
-- (void)_trackEventOccurrence:(id)a3 withInfo:(id)a4 issueType:(id)a5
+- (void)_trackEventOccurrence:(id)occurrence withInfo:(id)info issueType:(id)type
 {
-  v23 = a3;
-  v7 = a5;
-  v8 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_V2(v8);
+  occurrenceCopy = occurrence;
+  typeCopy = type;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v9 = [(SUCoreFSM *)self usageTable];
+  usageTable = [(SUCoreFSM *)self usageTable];
 
-  if (!v9)
+  if (!usageTable)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [(SUCoreFSM *)self setUsageTable:v10];
   }
 
-  v11 = [(SUCoreFSM *)self usageTable];
+  usageTable2 = [(SUCoreFSM *)self usageTable];
 
-  if (!v11)
+  if (!usageTable2)
   {
     goto LABEL_8;
   }
 
-  v12 = [(SUCoreFSM *)self usageTable];
-  v13 = [(SUCoreFSM *)self currentState];
-  v14 = [v12 safeDictionaryForKey:v13 fromBase:v7 withKeyDescription:@"current state"];
+  usageTable3 = [(SUCoreFSM *)self usageTable];
+  currentState = [(SUCoreFSM *)self currentState];
+  v14 = [usageTable3 safeDictionaryForKey:currentState fromBase:typeCopy withKeyDescription:@"current state"];
 
   if (!v14)
   {
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v15 = [(SUCoreFSM *)self usageTable];
-    v16 = [(SUCoreFSM *)self currentState];
-    [v15 setSafeObject:v14 forKey:v16];
+    usageTable4 = [(SUCoreFSM *)self usageTable];
+    currentState2 = [(SUCoreFSM *)self currentState];
+    [usageTable4 setSafeObject:v14 forKey:currentState2];
 
     if (!v14)
     {
@@ -1350,7 +1350,7 @@ LABEL_8:
     }
   }
 
-  v17 = [v14 safeDictionaryForKey:v23 fromBase:v7 withKeyDescription:@"FSM event"];
+  v17 = [v14 safeDictionaryForKey:occurrenceCopy fromBase:typeCopy withKeyDescription:@"FSM event"];
   if (v17)
   {
     v18 = v17;
@@ -1359,7 +1359,7 @@ LABEL_8:
   else
   {
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v14 setSafeObject:v18 forKey:v23];
+    [v14 setSafeObject:v18 forKey:occurrenceCopy];
     if (!v18)
     {
       [(SUCoreFSM *)self setUntrackedOccurrences:[(SUCoreFSM *)self untrackedOccurrences]+ 1];
@@ -1382,8 +1382,8 @@ LABEL_14:
   }
 
   v20 = v19;
-  v21 = [v19 unsignedLongLongValue];
-  v22 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:v21 + 1];
+  unsignedLongLongValue = [v19 unsignedLongLongValue];
+  v22 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:unsignedLongLongValue + 1];
 
   if (!v22)
   {
@@ -1398,32 +1398,32 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)_triggerAction:(id)a3 usingAttached:(id)a4 onEvent:(id)a5 inState:(id)a6 withInfo:(id)a7 nextState:(id)a8
+- (void)_triggerAction:(id)action usingAttached:(id)attached onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(SUCoreFSM *)self extendedStateQueue];
-  dispatch_assert_queue_V2(v20);
+  nextStateCopy = nextState;
+  infoCopy = info;
+  stateCopy = state;
+  eventCopy = event;
+  attachedCopy = attached;
+  actionCopy = action;
+  extendedStateQueue = [(SUCoreFSM *)self extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v21 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v22 = [(SUCoreFSM *)self fullName];
-  v23 = [v21 initWithFormat:@"[FSM] ACTION: FSM(%@), action(%@)", v22, v19];
+  fullName = [(SUCoreFSM *)self fullName];
+  actionCopy = [v21 initWithFormat:@"[FSM] ACTION: FSM(%@), action(%@)", fullName, actionCopy];
 
   v24 = +[SUCoreDiag sharedDiag];
-  [v24 trackBegin:v23 atLevel:0];
+  [v24 trackBegin:actionCopy atLevel:0];
 
-  v25 = [v18 actionDelegate];
+  actionDelegate = [attachedCopy actionDelegate];
 
   v29 = 0;
-  v26 = [v25 performAction:v19 onEvent:v17 inState:v16 withInfo:v15 nextState:v14 error:&v29];
+  v26 = [actionDelegate performAction:actionCopy onEvent:eventCopy inState:stateCopy withInfo:infoCopy nextState:nextStateCopy error:&v29];
 
   v27 = v29;
   v28 = +[SUCoreDiag sharedDiag];
-  [v28 trackEnd:v23 atLevel:0 withResult:v26 withError:v27];
+  [v28 trackEnd:actionCopy atLevel:0 withResult:v26 withError:v27];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface _AFClientInfoMutation
-- (_AFClientInfoMutation)initWithBase:(id)a3;
+- (_AFClientInfoMutation)initWithBase:(id)base;
 - (id)getProcessName;
 - (int)getProcessIdentifier;
 @end
@@ -10,15 +10,15 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_processName;
+    processName = self->_processName;
   }
 
   else
   {
-    v2 = [(AFClientInfo *)self->_base processName];
+    processName = [(AFClientInfo *)self->_base processName];
   }
 
-  return v2;
+  return processName;
 }
 
 - (int)getProcessIdentifier
@@ -34,16 +34,16 @@
   }
 }
 
-- (_AFClientInfoMutation)initWithBase:(id)a3
+- (_AFClientInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFClientInfoMutation;
   v6 = [(_AFClientInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

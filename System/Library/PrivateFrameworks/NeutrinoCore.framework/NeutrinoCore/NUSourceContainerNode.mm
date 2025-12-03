@@ -1,28 +1,28 @@
 @interface NUSourceContainerNode
-+ (id)sourceContainerNodeFromSource:(id)a3 error:(id *)a4;
-- (BOOL)isEqualToRenderNode:(id)a3;
-- (NUSourceContainerNode)initWithAssetIdentifier:(id)a3;
-- (NUSourceContainerNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)preparedSourceNodeForPipelineState:(id)a3 pipelineSettings:(id)a4 sourceSettings:(id)a5 error:(id *)a6;
-- (id)resolveSourceNodeForPipelineState:(id)a3 foundScale:(id *)a4 error:(id *)a5;
-- (id)sourceNodeForPipelineState:(id)a3 error:(id *)a4;
++ (id)sourceContainerNodeFromSource:(id)source error:(id *)error;
+- (BOOL)isEqualToRenderNode:(id)node;
+- (NUSourceContainerNode)initWithAssetIdentifier:(id)identifier;
+- (NUSourceContainerNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)preparedSourceNodeForPipelineState:(id)state pipelineSettings:(id)settings sourceSettings:(id)sourceSettings error:(id *)error;
+- (id)resolveSourceNodeForPipelineState:(id)state foundScale:(id *)scale error:(id *)error;
+- (id)sourceNodeForPipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUSourceContainerNode
 
-- (BOOL)isEqualToRenderNode:(id)a3
+- (BOOL)isEqualToRenderNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NURenderNode *)self isEqualToSettingsAndInputs:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NURenderNode *)self isEqualToSettingsAndInputs:nodeCopy];
 
   return v5;
 }
 
-- (id)resolveSourceNodeForPipelineState:(id)a3 foundScale:(id *)a4 error:(id *)a5
+- (id)resolveSourceNodeForPipelineState:(id)state foundScale:(id *)scale error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  stateCopy = state;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_317_8646);
@@ -65,8 +65,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -82,8 +82,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -97,10 +97,10 @@ LABEL_14:
   _NUAssertFailHandler("[NUSourceContainerNode resolveSourceNodeForPipelineState:foundScale:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 118, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v27, v28, v29, v30, v26);
 }
 
-- (id)sourceNodeForPipelineState:(id)a3 error:(id *)a4
+- (id)sourceNodeForPipelineState:(id)state error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_317_8646);
@@ -143,8 +143,8 @@ LABEL_8:
     {
       v13 = MEMORY[0x1E696AF00];
       v14 = v12;
-      v15 = [v13 callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v13 callStackSymbols];
+      v16 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -160,8 +160,8 @@ LABEL_8:
     v19 = MEMORY[0x1E696AF00];
     v20 = specific;
     v21 = v17;
-    v22 = [v19 callStackSymbols];
-    v23 = [v22 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v19 callStackSymbols];
+    v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;
@@ -175,13 +175,13 @@ LABEL_14:
   _NUAssertFailHandler("[NUSourceContainerNode sourceNodeForPipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 113, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v26, v27, v28, v29, v25);
 }
 
-- (id)preparedSourceNodeForPipelineState:(id)a3 pipelineSettings:(id)a4 sourceSettings:(id)a5 error:(id *)a6
+- (id)preparedSourceNodeForPipelineState:(id)state pipelineSettings:(id)settings sourceSettings:(id)sourceSettings error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  stateCopy = state;
+  settingsCopy = settings;
+  sourceSettingsCopy = sourceSettings;
+  if (!stateCopy)
   {
     v18 = NUAssertLogger_8665();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -202,8 +202,8 @@ LABEL_14:
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v51 = v32;
         v52 = 2114;
@@ -214,8 +214,8 @@ LABEL_14:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v51 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -224,7 +224,7 @@ LABEL_14:
     _NUAssertFailHandler("[NUSourceContainerNode preparedSourceNodeForPipelineState:pipelineSettings:sourceSettings:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 98, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "pipelineState != nil");
   }
 
-  if (!a6)
+  if (!error)
   {
     v25 = NUAssertLogger_8665();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -245,8 +245,8 @@ LABEL_14:
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v44 = [v42 callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v42 callStackSymbols];
+        v45 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v51 = v41;
         v52 = 2114;
@@ -257,8 +257,8 @@ LABEL_14:
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v51 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -267,12 +267,12 @@ LABEL_14:
     _NUAssertFailHandler("[NUSourceContainerNode preparedSourceNodeForPipelineState:pipelineSettings:sourceSettings:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 99, @"Invalid parameter not satisfying: %s", v46, v47, v48, v49, "error != NULL");
   }
 
-  v13 = v12;
-  v14 = [(NUSourceContainerNode *)self sourceNodeForPipelineState:v10 error:a6];
+  v13 = sourceSettingsCopy;
+  v14 = [(NUSourceContainerNode *)self sourceNodeForPipelineState:stateCopy error:error];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 preparedNodeWithSourceContainer:self pipelineState:v10 pipelineSettings:v11 sourceSettings:v13 error:a6];
+    v16 = [v14 preparedNodeWithSourceContainer:self pipelineState:stateCopy pipelineSettings:settingsCopy sourceSettings:v13 error:error];
   }
 
   else
@@ -283,11 +283,11 @@ LABEL_14:
   return v16;
 }
 
-- (NUSourceContainerNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUSourceContainerNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_317_8646);
@@ -331,8 +331,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -348,8 +348,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;
@@ -365,11 +365,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUSourceContainerNode initWithSettings:inputs:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 61, @"Initializer not available: [%@ %@], use designated initializer instead.", v30, v31, v32, v33, v29);
 }
 
-- (NUSourceContainerNode)initWithAssetIdentifier:(id)a3
+- (NUSourceContainerNode)initWithAssetIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v9 = NUAssertLogger_8665();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -390,8 +390,8 @@ LABEL_14:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v16;
         v30 = 2114;
@@ -402,8 +402,8 @@ LABEL_14:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -412,9 +412,9 @@ LABEL_14:
     _NUAssertFailHandler("[NUSourceContainerNode initWithAssetIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 52, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "identifier != nil");
   }
 
-  v5 = v4;
+  v5 = identifierCopy;
   v26 = kContainerNodeAssetIdentifierKey;
-  v27 = v4;
+  v27 = identifierCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   v25.receiver = self;
   v25.super_class = NUSourceContainerNode;
@@ -423,11 +423,11 @@ LABEL_14:
   return v7;
 }
 
-+ (id)sourceContainerNodeFromSource:(id)a3 error:(id *)a4
++ (id)sourceContainerNodeFromSource:(id)source error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a4)
+  sourceCopy = source;
+  if (!error)
   {
     v20 = NUAssertLogger_8665();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -448,8 +448,8 @@ LABEL_14:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v27;
         v39 = 2114;
@@ -460,8 +460,8 @@ LABEL_14:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -470,28 +470,28 @@ LABEL_14:
     _NUAssertFailHandler("+[NUSourceContainerNode sourceContainerNodeFromSource:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 66, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "error != NULL");
   }
 
-  v6 = v5;
+  v6 = sourceCopy;
   v7 = +[NURenderNodeCache sharedInstance];
   v8 = [NUSourceContainerNode alloc];
-  v9 = [v6 assetIdentifier];
-  v10 = [(NUSourceContainerNode *)v8 initWithAssetIdentifier:v9];
+  assetIdentifier = [v6 assetIdentifier];
+  v10 = [(NUSourceContainerNode *)v8 initWithAssetIdentifier:assetIdentifier];
 
   v11 = [v7 cachedNodeForNode:v10];
   if (!v11)
   {
-    v12 = [v6 definition];
-    if (v12)
+    definition = [v6 definition];
+    if (definition)
     {
-      v13 = [v6 assetIdentifier];
+      assetIdentifier2 = [v6 assetIdentifier];
       v36 = 0;
-      v14 = [v12 sourceContainerNodeWithIdentifier:v13 error:&v36];
+      v14 = [definition sourceContainerNodeWithIdentifier:assetIdentifier2 error:&v36];
       v15 = v36;
 
       if (v14)
       {
         v11 = [NURenderNode nodeFromCache:v14 cache:v7];
 
-        v12 = v15;
+        definition = v15;
 LABEL_9:
 
         goto LABEL_10;
@@ -508,7 +508,7 @@ LABEL_9:
     }
 
     v11 = 0;
-    *a4 = v16;
+    *error = v16;
     goto LABEL_9;
   }
 

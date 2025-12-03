@@ -1,15 +1,15 @@
 @interface MNTracePlayerTimelineStream
-- (MNTracePlayerTimelineStream)initWithData:(id)a3;
-- (void)jumpToPosition:(double)a3;
+- (MNTracePlayerTimelineStream)initWithData:(id)data;
+- (void)jumpToPosition:(double)position;
 - (void)triggerNextUpdate;
 @end
 
 @implementation MNTracePlayerTimelineStream
 
-- (void)jumpToPosition:(double)a3
+- (void)jumpToPosition:(double)position
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [[_MNTracePlayerTimelineStreamSearchObject alloc] initWithPosition:a3];
+  v4 = [[_MNTracePlayerTimelineStreamSearchObject alloc] initWithPosition:position];
   v5 = [(NSArray *)self->_data indexOfObject:v4 inSortedRange:0 options:[(NSArray *)self->_data count] usingComparator:1024, &__block_literal_global_13250];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -91,8 +91,8 @@ uint64_t __46__MNTracePlayerTimelineStream_jumpToPosition___block_invoke(uint64_
     v6 = v5;
 
     handler = self->_handler;
-    v8 = [MEMORY[0x1E695DF00] date];
-    handler[2](handler, nextIndex, v8, v6);
+    date = [MEMORY[0x1E695DF00] date];
+    handler[2](handler, nextIndex, date, v6);
   }
 
   data = self->_data;
@@ -113,16 +113,16 @@ LABEL_12:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (MNTracePlayerTimelineStream)initWithData:(id)a3
+- (MNTracePlayerTimelineStream)initWithData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = MNTracePlayerTimelineStream;
   v6 = [(MNTracePlayerTimelineStream *)&v11 init];
   if (v6)
   {
-    if (![v5 count])
+    if (![dataCopy count])
     {
       v10 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -139,7 +139,7 @@ LABEL_12:
       }
     }
 
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
     v6->_nextIndex = 0x7FFFFFFFFFFFFFFFLL;
     v6->_nextUpdatePosition = 978307200.0;
     v7 = v6;

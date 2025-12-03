@@ -1,18 +1,18 @@
 @interface PTCinematographyDecision
 + (PTCinematographyTransition)defaultTransition;
-+ (id)_decisionsWithCinematographyDictionaries:(id)a3;
-+ (id)_mutableDecisionsWithCinematographyDictionaries:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_decisionsWithCinematographyDictionaries:(id)dictionaries;
++ (id)_mutableDecisionsWithCinematographyDictionaries:(id)dictionaries;
+- (BOOL)isEqual:(id)equal;
 - (id)_asCinematographyDictionary;
-- (id)_decisionByChangingTime:(id *)a3;
-- (id)_decisionByRemovingOptions:(unint64_t)a3;
-- (id)_initWithCinematographyDictionary:(id)a3;
-- (id)_initWithTime:(id *)a3 trackIdentifier:(int64_t)a4 groupIdentifier:(int64_t)a5 transition:(id)a6 options:(unint64_t)a7;
+- (id)_decisionByChangingTime:(id *)time;
+- (id)_decisionByRemovingOptions:(unint64_t)options;
+- (id)_initWithCinematographyDictionary:(id)dictionary;
+- (id)_initWithTime:(id *)time trackIdentifier:(int64_t)identifier groupIdentifier:(int64_t)groupIdentifier transition:(id)transition options:(unint64_t)options;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setMaximumDuration:(id *)a3;
-- (void)setMinimumDuration:(id *)a3;
+- (void)setMaximumDuration:(id *)duration;
+- (void)setMinimumDuration:(id *)duration;
 @end
 
 @implementation PTCinematographyDecision
@@ -36,41 +36,41 @@ uint64_t __45__PTCinematographyDecision_defaultTransition__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_initWithTime:(id *)a3 trackIdentifier:(int64_t)a4 groupIdentifier:(int64_t)a5 transition:(id)a6 options:(unint64_t)a7
+- (id)_initWithTime:(id *)time trackIdentifier:(int64_t)identifier groupIdentifier:(int64_t)groupIdentifier transition:(id)transition options:(unint64_t)options
 {
-  v12 = a6;
+  transitionCopy = transition;
   v19.receiver = self;
   v19.super_class = PTCinematographyDecision;
   v13 = [(PTCinematographyDecision *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    v15 = *&a3->var0;
-    v13->_time.epoch = a3->var3;
+    v15 = *&time->var0;
+    v13->_time.epoch = time->var3;
     *&v13->_time.value = v15;
-    v13->_trackIdentifier = a4;
-    v13->_groupIdentifier = a5;
-    if (v12)
+    v13->_trackIdentifier = identifier;
+    v13->_groupIdentifier = groupIdentifier;
+    if (transitionCopy)
     {
-      v16 = v12;
+      defaultTransition = transitionCopy;
     }
 
     else
     {
-      v16 = [objc_opt_class() defaultTransition];
+      defaultTransition = [objc_opt_class() defaultTransition];
     }
 
     transition = v14->_transition;
-    v14->_transition = v16;
+    v14->_transition = defaultTransition;
 
-    v14->_options = a7;
+    v14->_options = options;
     v14->_type = 1;
   }
 
   return v14;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [PTCinematographyDecision alloc];
   trackIdentifier = self->_trackIdentifier;
@@ -83,34 +83,34 @@ uint64_t __45__PTCinematographyDecision_defaultTransition__block_invoke()
   return result;
 }
 
-- (id)_decisionByChangingTime:(id *)a3
+- (id)_decisionByChangingTime:(id *)time
 {
   v4 = [(PTCinematographyDecision *)self mutableCopy];
-  var3 = a3->var3;
-  *(v4 + 48) = *&a3->var0;
+  var3 = time->var3;
+  *(v4 + 48) = *&time->var0;
   *(v4 + 64) = var3;
 
   return v4;
 }
 
-- (id)_decisionByRemovingOptions:(unint64_t)a3
+- (id)_decisionByRemovingOptions:(unint64_t)options
 {
   v4 = [(PTCinematographyDecision *)self mutableCopy];
-  v4[3] &= ~a3;
+  v4[3] &= ~options;
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(PTCinematographyDecision *)self type];
+  type = [(PTCinematographyDecision *)self type];
   v4 = @"Unknown";
-  if (v3 == 1)
+  if (type == 1)
   {
     v4 = @"User";
   }
 
-  if (v3)
+  if (type)
   {
     v5 = v4;
   }
@@ -123,8 +123,8 @@ uint64_t __45__PTCinematographyDecision_defaultTransition__block_invoke()
   v6 = MEMORY[0x277CCACA8];
   [(PTCinematographyDecision *)self time];
   v7 = NSStringFromCMTime(&v17);
-  v8 = [(PTCinematographyDecision *)self trackIdentifier];
-  if (v8 == -1)
+  trackIdentifier = [(PTCinematographyDecision *)self trackIdentifier];
+  if (trackIdentifier == -1)
   {
     v9 = @"?";
   }
@@ -134,8 +134,8 @@ uint64_t __45__PTCinematographyDecision_defaultTransition__block_invoke()
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[PTCinematographyDecision trackIdentifier](self, "trackIdentifier")}];
   }
 
-  v10 = [(PTCinematographyDecision *)self groupIdentifier];
-  if (v10 == -1)
+  groupIdentifier = [(PTCinematographyDecision *)self groupIdentifier];
+  if (groupIdentifier == -1)
   {
     v11 = @"?";
   }
@@ -155,29 +155,29 @@ uint64_t __45__PTCinematographyDecision_defaultTransition__block_invoke()
     v12 = &stru_2837D16E8;
   }
 
-  v13 = [(PTCinematographyDecision *)self isStrongDecision];
+  isStrongDecision = [(PTCinematographyDecision *)self isStrongDecision];
   v14 = @"+";
-  if (!v13)
+  if (!isStrongDecision)
   {
     v14 = &stru_2837D16E8;
   }
 
   v15 = [v6 stringWithFormat:@"%@: [%@] T%@ G%@ %@%@", v7, v5, v9, v11, v12, v14];
-  if (v10 != -1)
+  if (groupIdentifier != -1)
   {
   }
 
-  if (v8 != -1)
+  if (trackIdentifier != -1)
   {
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -187,9 +187,9 @@ uint64_t __45__PTCinematographyDecision_defaultTransition__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PTCinematographyDecision *)self trackIdentifier];
-      if (v6 == [(PTCinematographyDecision *)v5 trackIdentifier]&& (v7 = [(PTCinematographyDecision *)self groupIdentifier], v7 == [(PTCinematographyDecision *)v5 groupIdentifier]) && (v8 = [(PTCinematographyDecision *)self options], v8 == [(PTCinematographyDecision *)v5 options]) && (v9 = [(PTCinematographyDecision *)self type], v9 == [(PTCinematographyDecision *)v5 type]))
+      v5 = equalCopy;
+      trackIdentifier = [(PTCinematographyDecision *)self trackIdentifier];
+      if (trackIdentifier == [(PTCinematographyDecision *)v5 trackIdentifier]&& (v7 = [(PTCinematographyDecision *)self groupIdentifier], v7 == [(PTCinematographyDecision *)v5 groupIdentifier]) && (v8 = [(PTCinematographyDecision *)self options], v8 == [(PTCinematographyDecision *)v5 options]) && (v9 = [(PTCinematographyDecision *)self type], v9 == [(PTCinematographyDecision *)v5 type]))
       {
         [(PTCinematographyDecision *)self time];
         if (v5)
@@ -222,46 +222,46 @@ uint64_t __45__PTCinematographyDecision_defaultTransition__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(PTCinematographyDecision *)self trackIdentifier];
-  v4 = [(PTCinematographyDecision *)self groupIdentifier]+ v3;
-  v5 = [(PTCinematographyDecision *)self options];
-  v6 = (v4 + v5 + [(PTCinematographyDecision *)self type]);
+  trackIdentifier = [(PTCinematographyDecision *)self trackIdentifier];
+  v4 = [(PTCinematographyDecision *)self groupIdentifier]+ trackIdentifier;
+  options = [(PTCinematographyDecision *)self options];
+  v6 = (v4 + options + [(PTCinematographyDecision *)self type]);
   [(PTCinematographyDecision *)self time];
   return (v6 + CMTimeGetSeconds(&time) * 600.0);
 }
 
-- (void)setMinimumDuration:(id *)a3
+- (void)setMinimumDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_minimumDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_minimumDuration.epoch = duration->var3;
   *&self->_minimumDuration.value = v3;
 }
 
-- (void)setMaximumDuration:(id *)a3
+- (void)setMaximumDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_maximumDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_maximumDuration.epoch = duration->var3;
   *&self->_maximumDuration.value = v3;
 }
 
-+ (id)_decisionsWithCinematographyDictionaries:(id)a3
++ (id)_decisionsWithCinematographyDictionaries:(id)dictionaries
 {
-  v3 = [a1 _mutableDecisionsWithCinematographyDictionaries:a3];
+  v3 = [self _mutableDecisionsWithCinematographyDictionaries:dictionaries];
   v4 = [v3 copy];
 
   return v4;
 }
 
-+ (id)_mutableDecisionsWithCinematographyDictionaries:(id)a3
++ (id)_mutableDecisionsWithCinematographyDictionaries:(id)dictionaries
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -291,36 +291,36 @@ uint64_t __45__PTCinematographyDecision_defaultTransition__block_invoke()
   return v4;
 }
 
-- (id)_initWithCinematographyDictionary:(id)a3
+- (id)_initWithCinematographyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PTCinematographyDecision;
   v5 = [(PTCinematographyDecision *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ptime"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ptime"];
     CMTimeFromPTCinematographyDictionary(&v19, v6);
     v5->_time = v19;
 
-    v7 = [v4 objectForKeyedSubscript:@"track_id"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"track_id"];
     v5->_trackIdentifier = [v7 integerValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"group_id"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"group_id"];
     v5->_groupIdentifier = [v8 integerValue];
 
-    v9 = [objc_opt_class() defaultTransition];
+    defaultTransition = [objc_opt_class() defaultTransition];
     transition = v5->_transition;
-    v5->_transition = v9;
+    v5->_transition = defaultTransition;
 
-    v11 = [v4 objectForKeyedSubscript:@"options"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"options"];
     v5->_options = [v11 unsignedIntegerValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"is_user"];
-    v13 = [v12 BOOLValue];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"is_user"];
+    bOOLValue = [v12 BOOLValue];
 
-    v5->_type = v13;
-    v14 = [v4 objectForKeyedSubscript:@"min_duration"];
+    v5->_type = bOOLValue;
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"min_duration"];
     v15 = v14;
     if (v14)
     {
@@ -328,7 +328,7 @@ uint64_t __45__PTCinematographyDecision_defaultTransition__block_invoke()
       v5->_minimumDuration = v19;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"max_duration"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"max_duration"];
     v17 = v16;
     if (v16)
     {

@@ -1,42 +1,42 @@
 @interface CAMInterfaceModulationView
-- (CAMInterfaceModulationView)initWithHostingView:(id)a3;
+- (CAMInterfaceModulationView)initWithHostingView:(id)view;
 - (UIView)hostingView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateModulationLayerEnabled;
-- (void)didAddSubview:(id)a3;
-- (void)modulationAnimationDidStop:(BOOL)a3;
-- (void)setInterfaceModulation:(unint64_t)a3 animated:(BOOL)a4;
+- (void)didAddSubview:(id)subview;
+- (void)modulationAnimationDidStop:(BOOL)stop;
+- (void)setInterfaceModulation:(unint64_t)modulation animated:(BOOL)animated;
 @end
 
 @implementation CAMInterfaceModulationView
 
-- (CAMInterfaceModulationView)initWithHostingView:(id)a3
+- (CAMInterfaceModulationView)initWithHostingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = CAMInterfaceModulationView;
   v5 = [(CAMInterfaceModulationView *)&v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_hostingView, v4);
+    objc_storeWeak(&v5->_hostingView, viewCopy);
     v6->_interfaceModulation = 0;
   }
 
   return v6;
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v3 = [(CAMInterfaceModulationView *)self hostingView];
-  [v3 setNeedsLayout];
+  hostingView = [(CAMInterfaceModulationView *)self hostingView];
+  [hostingView setNeedsLayout];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CAMInterfaceModulationView;
-  v5 = [(CAMInterfaceModulationView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CAMInterfaceModulationView *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 
@@ -46,55 +46,55 @@
   return v5;
 }
 
-- (void)setInterfaceModulation:(unint64_t)a3 animated:(BOOL)a4
+- (void)setInterfaceModulation:(unint64_t)modulation animated:(BOOL)animated
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  if (self->_interfaceModulation != a3)
+  if (self->_interfaceModulation != modulation)
   {
-    v4 = a4;
-    if (a3 > 2)
+    animatedCopy = animated;
+    if (modulation > 2)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = qword_1E76FBCC0[a3];
+      v6 = qword_1E76FBCC0[modulation];
     }
 
-    self->_interfaceModulation = a3;
-    v7 = [(CAMInterfaceModulationView *)self _modulationFilter];
+    self->_interfaceModulation = modulation;
+    _modulationFilter = [(CAMInterfaceModulationView *)self _modulationFilter];
     v8 = [(CAMInterfaceModulationView *)self _keyPathForFilterKey:*MEMORY[0x1E6979BF0]];
-    v9 = [(CAMInterfaceModulationView *)self layer];
-    if (!v7)
+    layer = [(CAMInterfaceModulationView *)self layer];
+    if (!_modulationFilter)
     {
-      v7 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979918]];
-      [v7 setValue:&unk_1F16C7D78 forKey:*MEMORY[0x1E6979990]];
+      _modulationFilter = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979918]];
+      [_modulationFilter setValue:&unk_1F16C7D78 forKey:*MEMORY[0x1E6979990]];
       v10 = [MEMORY[0x1E696AD98] numberWithBool:1];
-      [v7 setValue:v10 forKey:*MEMORY[0x1E6979980]];
+      [_modulationFilter setValue:v10 forKey:*MEMORY[0x1E6979980]];
 
-      [v7 setName:@"modulationFilter"];
-      [(CAMInterfaceModulationView *)self _setModulationFilter:v7];
-      v25[0] = v7;
+      [_modulationFilter setName:@"modulationFilter"];
+      [(CAMInterfaceModulationView *)self _setModulationFilter:_modulationFilter];
+      v25[0] = _modulationFilter;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
-      [v9 setFilters:v11];
+      [layer setFilters:v11];
     }
 
-    if (v4)
+    if (animatedCopy)
     {
-      v12 = [v9 presentationLayer];
-      v13 = [v12 filters];
-      if (v13)
+      presentationLayer = [layer presentationLayer];
+      filters = [presentationLayer filters];
+      if (filters)
       {
-        v14 = [v9 presentationLayer];
+        presentationLayer2 = [layer presentationLayer];
       }
 
       else
       {
-        v14 = v9;
+        presentationLayer2 = layer;
       }
 
-      v15 = v14;
+      v15 = presentationLayer2;
 
       v16 = [MEMORY[0x1E6979318] animationWithKeyPath:v8];
       v17 = [v15 valueForKeyPath:v8];
@@ -112,13 +112,13 @@
       objc_copyWeak(&v23, &location);
       [(CAMAnimationDelegate *)v18 setCompletion:&v19];
       [v16 setDelegate:{v18, v19, v20, v21, v22}];
-      [v9 addAnimation:v16 forKey:@"interfaceModulationAnimation"];
+      [layer addAnimation:v16 forKey:@"interfaceModulationAnimation"];
       objc_destroyWeak(&v23);
 
       objc_destroyWeak(&location);
     }
 
-    [v9 setValue:v6 forKeyPath:v8];
+    [layer setValue:v6 forKeyPath:v8];
     [(CAMInterfaceModulationView *)self _updateModulationLayerEnabled];
   }
 }
@@ -129,7 +129,7 @@ void __62__CAMInterfaceModulationView_setInterfaceModulation_animated___block_in
   [WeakRetained modulationAnimationDidStop:a2];
 }
 
-- (void)modulationAnimationDidStop:(BOOL)a3
+- (void)modulationAnimationDidStop:(BOOL)stop
 {
   [(CAMInterfaceModulationView *)self _setInFlightAnimationCount:[(CAMInterfaceModulationView *)self _inFlightAnimationCount]- 1];
 
@@ -138,10 +138,10 @@ void __62__CAMInterfaceModulationView_setInterfaceModulation_animated___block_in
 
 - (void)_updateModulationLayerEnabled
 {
-  v3 = [(CAMInterfaceModulationView *)self interfaceModulation];
-  if (v3 - 1 >= 2)
+  interfaceModulation = [(CAMInterfaceModulationView *)self interfaceModulation];
+  if (interfaceModulation - 1 >= 2)
   {
-    if (v3)
+    if (interfaceModulation)
     {
       v4 = 0;
     }
@@ -157,10 +157,10 @@ void __62__CAMInterfaceModulationView_setInterfaceModulation_animated___block_in
     v4 = 1;
   }
 
-  v7 = [(CAMInterfaceModulationView *)self layer];
+  layer = [(CAMInterfaceModulationView *)self layer];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:v4];
   v6 = [(CAMInterfaceModulationView *)self _keyPathForFilterKey:@"enabled"];
-  [v7 setValue:v5 forKeyPath:v6];
+  [layer setValue:v5 forKeyPath:v6];
 }
 
 - (UIView)hostingView

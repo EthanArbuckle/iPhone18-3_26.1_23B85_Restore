@@ -1,13 +1,13 @@
 @interface MFIMAPCommandPipeline
-- (MFIMAPCommandPipeline)initWithMambaID:(const char *)a3;
-- (id)failureResponsesFromSendingCommandsWithConnection:(id)a3;
-- (void)_removeFetchUnitMatchingResponse:(id)a3;
+- (MFIMAPCommandPipeline)initWithMambaID:(const char *)d;
+- (id)failureResponsesFromSendingCommandsWithConnection:(id)connection;
+- (void)_removeFetchUnitMatchingResponse:(id)response;
 - (void)dealloc;
 @end
 
 @implementation MFIMAPCommandPipeline
 
-- (MFIMAPCommandPipeline)initWithMambaID:(const char *)a3
+- (MFIMAPCommandPipeline)initWithMambaID:(const char *)d
 {
   v6 = *MEMORY[0x277D85DE8];
   v5.receiver = self;
@@ -35,7 +35,7 @@
     v12 = 2112;
     v13 = objc_opt_class();
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v5 = v13;
     _os_log_impl(&dword_2720B1000, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p deleted", buf, 0x2Au);
   }
@@ -46,26 +46,26 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeFetchUnitMatchingResponse:(id)a3
+- (void)_removeFetchUnitMatchingResponse:(id)response
 {
-  v7 = a3;
-  v4 = [v7 fetchResultWithType:8];
+  responseCopy = response;
+  v4 = [responseCopy fetchResultWithType:8];
   v5 = [v4 uid];
 
   if (v5 && [(NSMutableArray *)self->_fetchUnits count])
   {
     v6 = [(NSMutableArray *)self->_fetchUnits objectAtIndex:0];
-    if ([v6 uid] == v5 && objc_msgSend(v6, "matchesFetchResponse:", v7))
+    if ([v6 uid] == v5 && objc_msgSend(v6, "matchesFetchResponse:", responseCopy))
     {
       [(NSMutableArray *)self->_fetchUnits removeObjectAtIndex:0];
     }
   }
 }
 
-- (id)failureResponsesFromSendingCommandsWithConnection:(id)a3
+- (id)failureResponsesFromSendingCommandsWithConnection:(id)connection
 {
   v73[2] = *MEMORY[0x277D85DE8];
-  v57 = a3;
+  connectionCopy = connection;
   v69 = 0;
   v70 = 0;
   v71 = 0;
@@ -77,9 +77,9 @@
     {
       v58 = [(NSMutableArray *)self->_fetchUnits objectAtIndex:i];
       v6 = [v58 uid];
-      v59 = [v58 fetchItem];
-      v7 = [v58 bodyDataConsumer];
-      if (!v7 || ([v58 consumerSection], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 == 0, v8, v7, v9))
+      fetchItem = [v58 fetchItem];
+      bodyDataConsumer = [v58 bodyDataConsumer];
+      if (!bodyDataConsumer || ([v58 consumerSection], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 == 0, v8, bodyDataConsumer, v9))
       {
         v10 = 0;
       }
@@ -87,9 +87,9 @@
       else
       {
         v10 = objc_alloc_init(MFIMAPResponseConsumer);
-        v11 = [v58 bodyDataConsumer];
-        v12 = [v58 consumerSection];
-        [(MFIMAPResponseConsumer *)v10 addConsumer:v11 forSection:v12];
+        bodyDataConsumer2 = [v58 bodyDataConsumer];
+        consumerSection = [v58 consumerSection];
+        [(MFIMAPResponseConsumer *)v10 addConsumer:bodyDataConsumer2 forSection:consumerSection];
       }
 
       v13 = i + 1;
@@ -110,26 +110,26 @@
           {
             [(NSMutableArray *)self->_fetchUnits removeObjectAtIndex:v13];
             [(NSMutableArray *)self->_fetchUnits insertObject:v16 atIndex:++i];
-            v17 = [v16 fetchItem];
-            v18 = [v17 isEqual:v59];
+            fetchItem2 = [v16 fetchItem];
+            v18 = [fetchItem2 isEqual:fetchItem];
 
             if ((v18 & 1) == 0)
             {
               if (!v14)
               {
                 v14 = objc_msgSend(@"("), "mutableCopyWithZone:", 0;
-                [v14 appendString:v59];
+                [v14 appendString:fetchItem];
               }
 
               [v14 appendString:@" "];
-              v19 = [v16 fetchItem];
-              [v14 appendString:v19];
+              fetchItem3 = [v16 fetchItem];
+              [v14 appendString:fetchItem3];
 
-              v20 = [v16 bodyDataConsumer];
-              if (v20)
+              bodyDataConsumer3 = [v16 bodyDataConsumer];
+              if (bodyDataConsumer3)
               {
-                v21 = [v16 consumerSection];
-                v22 = v21 == 0;
+                consumerSection2 = [v16 consumerSection];
+                v22 = consumerSection2 == 0;
 
                 if (!v22)
                 {
@@ -138,9 +138,9 @@
                     v15 = objc_alloc_init(MFIMAPResponseConsumer);
                   }
 
-                  v23 = [v16 bodyDataConsumer];
-                  v24 = [v16 consumerSection];
-                  [(MFIMAPResponseConsumer *)v15 addConsumer:v23 forSection:v24];
+                  bodyDataConsumer4 = [v16 bodyDataConsumer];
+                  consumerSection3 = [v16 consumerSection];
+                  [(MFIMAPResponseConsumer *)v15 addConsumer:bodyDataConsumer4 forSection:consumerSection3];
                 }
               }
             }
@@ -166,7 +166,7 @@
 
       v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", v6];
       v27 = v26;
-      v28 = v59;
+      v28 = fetchItem;
       if (!v25)
       {
         v28 = v14;
@@ -210,11 +210,11 @@
   if (v70 != v69)
   {
     *(self + 24) |= 2u;
-    [v57 mf_lock];
+    [connectionCopy mf_lock];
     Current = CFAbsoluteTimeGetCurrent();
-    v35 = [v57 _responseFromSendingCommands:? count:?];
-    [v57 setReadBufferSizeFromElapsedTime:self->_expectedSize bytesRead:CFAbsoluteTimeGetCurrent() - Current];
-    [v57 mf_unlock];
+    v35 = [connectionCopy _responseFromSendingCommands:? count:?];
+    [connectionCopy setReadBufferSizeFromElapsedTime:self->_expectedSize bytesRead:CFAbsoluteTimeGetCurrent() - Current];
+    [connectionCopy mf_unlock];
     v36 = v69;
     v37 = v70;
     while (v36 != v37)
@@ -285,7 +285,7 @@
   self->_expectedSize = 0;
   *(self + 24) &= ~1u;
   [(MFIMAPCommandPipeline *)self mf_unlock];
-  [v57 didFinishCommands:? count:?];
+  [connectionCopy didFinishCommands:? count:?];
   v51 = [(NSMutableArray *)v49 count];
   if (v51)
   {
@@ -293,10 +293,10 @@
     do
     {
       v53 = [(NSMutableArray *)v49 objectAtIndex:v52];
-      v54 = [v53 copyFailedFetchResponse];
-      if (v54)
+      copyFailedFetchResponse = [v53 copyFailedFetchResponse];
+      if (copyFailedFetchResponse)
       {
-        [(NSMutableArray *)v49 replaceObjectAtIndex:v52++ withObject:v54];
+        [(NSMutableArray *)v49 replaceObjectAtIndex:v52++ withObject:copyFailedFetchResponse];
       }
 
       else

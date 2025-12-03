@@ -1,30 +1,30 @@
 @interface SKUISearchRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SKUISearchRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISearchRequest copyWithZone:];
   }
 
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSNumber *)self->_searchHintIndex copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSNumber *)self->_searchHintIndex copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_searchHintOriginalTerm copyWithZone:a3];
+  v8 = [(NSString *)self->_searchHintOriginalTerm copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_term copyWithZone:a3];
+  v10 = [(NSString *)self->_term copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSURL *)self->_url copyWithZone:a3];
+  v12 = [(NSURL *)self->_url copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 

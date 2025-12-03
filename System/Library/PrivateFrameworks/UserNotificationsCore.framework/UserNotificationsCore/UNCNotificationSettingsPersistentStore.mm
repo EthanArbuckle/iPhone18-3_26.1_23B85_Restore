@@ -1,7 +1,7 @@
 @interface UNCNotificationSettingsPersistentStore
 - (BOOL)hasSectionInfoLegacyFile;
 - (UNCNotificationSettingsPersistentStore)init;
-- (UNCNotificationSettingsPersistentStore)initWithDataDirectoryPath:(id)a3;
+- (UNCNotificationSettingsPersistentStore)initWithDataDirectoryPath:(id)path;
 - (id)readClearedSections;
 - (id)readSectionInfo;
 - (id)readSectionInfoLegacy;
@@ -9,17 +9,17 @@
 - (id)readSectionOrder;
 - (void)deleteSectionInfoFile;
 - (void)deleteSectionInfoLegacyFile;
-- (void)writeClearedSections:(id)a3;
-- (void)writeSectionInfo:(id)a3;
-- (void)writeSectionOrder:(id)a3;
+- (void)writeClearedSections:(id)sections;
+- (void)writeSectionInfo:(id)info;
+- (void)writeSectionOrder:(id)order;
 @end
 
 @implementation UNCNotificationSettingsPersistentStore
 
-- (UNCNotificationSettingsPersistentStore)initWithDataDirectoryPath:(id)a3
+- (UNCNotificationSettingsPersistentStore)initWithDataDirectoryPath:(id)path
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = UNCNotificationSettingsPersistentStore;
   v6 = [(UNCNotificationSettingsPersistentStore *)&v10 init];
@@ -29,11 +29,11 @@
     if (os_log_type_enabled(*MEMORY[0x1E6983388], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v5;
+      v12 = pathCopy;
       _os_log_impl(&dword_1DA7A9000, v7, OS_LOG_TYPE_DEFAULT, "Created UNPersistedStore with path %@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_dataDirectoryPath, a3);
+    objc_storeStrong(&v6->_dataDirectoryPath, path);
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -42,8 +42,8 @@
 
 - (UNCNotificationSettingsPersistentStore)init
 {
-  v3 = [@"~/Library/BulletinBoard/" stringByExpandingTildeInPath];
-  v4 = [(UNCNotificationSettingsPersistentStore *)self initWithDataDirectoryPath:v3];
+  stringByExpandingTildeInPath = [@"~/Library/BulletinBoard/" stringByExpandingTildeInPath];
+  v4 = [(UNCNotificationSettingsPersistentStore *)self initWithDataDirectoryPath:stringByExpandingTildeInPath];
 
   return v4;
 }
@@ -58,8 +58,8 @@
   }
 
   v4 = MEMORY[0x1E695DF20];
-  v5 = [(UNCNotificationSettingsPersistentStore *)self _clearedSectionsPath];
-  v6 = [v4 dictionaryWithContentsOfFile:v5];
+  _clearedSectionsPath = [(UNCNotificationSettingsPersistentStore *)self _clearedSectionsPath];
+  v6 = [v4 dictionaryWithContentsOfFile:_clearedSectionsPath];
 
   return v6;
 }
@@ -74,11 +74,11 @@
     _os_log_impl(&dword_1DA7A9000, v3, OS_LOG_TYPE_DEFAULT, "Reading UNCSectionInfo from persistence", buf, 2u);
   }
 
-  v26 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   context = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E695DF20];
-  v5 = [(UNCNotificationSettingsPersistentStore *)self _sectionInfoPath];
-  v6 = [v4 dictionaryWithContentsOfFile:v5];
+  _sectionInfoPath = [(UNCNotificationSettingsPersistentStore *)self _sectionInfoPath];
+  v6 = [v4 dictionaryWithContentsOfFile:_sectionInfoPath];
 
   v24 = v6;
   v7 = [v6 objectForKey:@"sectionInfo"];
@@ -128,7 +128,7 @@
         v17 = v29;
         if (v19)
         {
-          [v26 setObject:v19 forKey:v12];
+          [dictionary setObject:v19 forKey:v12];
         }
 
         if (v17)
@@ -161,13 +161,13 @@ LABEL_12:
   if (os_log_type_enabled(*MEMORY[0x1E6983388], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v26;
+    v36 = dictionary;
     _os_log_impl(&dword_1DA7A9000, v21, OS_LOG_TYPE_DEFAULT, "Returning sectionInfo %@", buf, 0xCu);
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v26;
+  return dictionary;
 }
 
 - (id)readSectionInfoLegacy
@@ -180,8 +180,8 @@ LABEL_12:
   }
 
   v4 = MEMORY[0x1E695DF20];
-  v5 = [(UNCNotificationSettingsPersistentStore *)self _sectionInfoLegacyPath];
-  v6 = [v4 dictionaryWithContentsOfFile:v5];
+  _sectionInfoLegacyPath = [(UNCNotificationSettingsPersistentStore *)self _sectionInfoLegacyPath];
+  v6 = [v4 dictionaryWithContentsOfFile:_sectionInfoLegacyPath];
 
   return v6;
 }
@@ -196,15 +196,15 @@ LABEL_12:
   }
 
   v4 = MEMORY[0x1E695DF20];
-  v5 = [(UNCNotificationSettingsPersistentStore *)self _sectionOrderPath];
-  v6 = [v4 dictionaryWithContentsOfFile:v5];
+  _sectionOrderPath = [(UNCNotificationSettingsPersistentStore *)self _sectionOrderPath];
+  v6 = [v4 dictionaryWithContentsOfFile:_sectionOrderPath];
 
   return v6;
 }
 
-- (void)writeClearedSections:(id)a3
+- (void)writeClearedSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v5 = MEMORY[0x1E6983388];
   v6 = *MEMORY[0x1E6983388];
   if (os_log_type_enabled(*MEMORY[0x1E6983388], OS_LOG_TYPE_DEFAULT))
@@ -213,9 +213,9 @@ LABEL_12:
     _os_log_impl(&dword_1DA7A9000, v6, OS_LOG_TYPE_DEFAULT, "Writing cleared sections to persistence", v10, 2u);
   }
 
-  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:200 options:0 error:0];
-  v8 = [(UNCNotificationSettingsPersistentStore *)self _clearedSectionsPath];
-  v9 = [v7 writeToFile:v8 options:268435457 error:0];
+  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:sectionsCopy format:200 options:0 error:0];
+  _clearedSectionsPath = [(UNCNotificationSettingsPersistentStore *)self _clearedSectionsPath];
+  v9 = [v7 writeToFile:_clearedSectionsPath options:268435457 error:0];
 
   if ((v9 & 1) == 0 && os_log_type_enabled(*v5, OS_LOG_TYPE_ERROR))
   {
@@ -223,9 +223,9 @@ LABEL_12:
   }
 }
 
-- (void)writeSectionOrder:(id)a3
+- (void)writeSectionOrder:(id)order
 {
-  v4 = a3;
+  orderCopy = order;
   v5 = MEMORY[0x1E6983388];
   v6 = *MEMORY[0x1E6983388];
   if (os_log_type_enabled(*MEMORY[0x1E6983388], OS_LOG_TYPE_DEFAULT))
@@ -234,9 +234,9 @@ LABEL_12:
     _os_log_impl(&dword_1DA7A9000, v6, OS_LOG_TYPE_DEFAULT, "Writing section order to persistence", v10, 2u);
   }
 
-  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:100 options:0 error:0];
-  v8 = [(UNCNotificationSettingsPersistentStore *)self _sectionOrderPath];
-  v9 = [v7 writeToFile:v8 options:268435457 error:0];
+  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:orderCopy format:100 options:0 error:0];
+  _sectionOrderPath = [(UNCNotificationSettingsPersistentStore *)self _sectionOrderPath];
+  v9 = [v7 writeToFile:_sectionOrderPath options:268435457 error:0];
 
   if ((v9 & 1) == 0 && os_log_type_enabled(*v5, OS_LOG_TYPE_ERROR))
   {
@@ -244,11 +244,11 @@ LABEL_12:
   }
 }
 
-- (void)writeSectionInfo:(id)a3
+- (void)writeSectionInfo:(id)info
 {
-  v20 = self;
+  selfCopy = self;
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  infoCopy = info;
   v4 = *MEMORY[0x1E6983388];
   if (os_log_type_enabled(*MEMORY[0x1E6983388], OS_LOG_TYPE_DEFAULT))
   {
@@ -257,13 +257,13 @@ LABEL_12:
   }
 
   context = objc_autoreleasePoolPush();
-  v21 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v3;
+  v6 = infoCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
@@ -279,12 +279,12 @@ LABEL_12:
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v6 objectForKey:{v11, v20}];
+        v12 = [v6 objectForKey:{v11, selfCopy}];
         if (([v12 suppressFromSettings] & 1) == 0)
         {
           v13 = objc_autoreleasePoolPush();
           v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v12 requiringSecureCoding:1 error:0];
-          [v5 setObject:v14 forKey:v11];
+          [dictionary2 setObject:v14 forKey:v11];
 
           objc_autoreleasePoolPop(v13);
         }
@@ -296,14 +296,14 @@ LABEL_12:
     while (v8);
   }
 
-  [v21 setObject:v5 forKey:@"sectionInfo"];
+  [dictionary setObject:dictionary2 forKey:@"sectionInfo"];
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:2];
-  [v21 setObject:v15 forKey:@"sectionInfoVersionNumber"];
+  [dictionary setObject:v15 forKey:@"sectionInfoVersionNumber"];
 
-  v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:v21 format:100 options:0 error:0];
-  v17 = [(UNCNotificationSettingsPersistentStore *)v20 _sectionInfoPath];
+  v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:100 options:0 error:0];
+  _sectionInfoPath = [(UNCNotificationSettingsPersistentStore *)selfCopy _sectionInfoPath];
   v23 = 0;
-  [v16 writeToFile:v17 options:268435457 error:&v23];
+  [v16 writeToFile:_sectionInfoPath options:268435457 error:&v23];
   v18 = v23;
 
   if (v18 && os_log_type_enabled(*MEMORY[0x1E6983388], OS_LOG_TYPE_ERROR))
@@ -333,9 +333,9 @@ LABEL_12:
 
 - (BOOL)hasSectionInfoLegacyFile
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(UNCNotificationSettingsPersistentStore *)self _sectionInfoLegacyPath];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _sectionInfoLegacyPath = [(UNCNotificationSettingsPersistentStore *)self _sectionInfoLegacyPath];
+  v5 = [defaultManager fileExistsAtPath:_sectionInfoLegacyPath];
 
   return v5;
 }
@@ -343,8 +343,8 @@ LABEL_12:
 - (id)readSectionInfoWithVersionNumberForMigration
 {
   v2 = MEMORY[0x1E695DF20];
-  v3 = [(UNCNotificationSettingsPersistentStore *)self _sectionInfoPath];
-  v4 = [v2 dictionaryWithContentsOfFile:v3];
+  _sectionInfoPath = [(UNCNotificationSettingsPersistentStore *)self _sectionInfoPath];
+  v4 = [v2 dictionaryWithContentsOfFile:_sectionInfoPath];
 
   return v4;
 }

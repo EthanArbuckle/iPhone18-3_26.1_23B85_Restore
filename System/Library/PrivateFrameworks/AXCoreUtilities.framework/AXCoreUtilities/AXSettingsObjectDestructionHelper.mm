@@ -1,44 +1,44 @@
 @interface AXSettingsObjectDestructionHelper
-- (AXSettingsObjectDestructionHelper)initWithListenerAddress:(void *)a3 forSettings:(id)a4;
-- (void)addPreferenceKey:(id)a3;
+- (AXSettingsObjectDestructionHelper)initWithListenerAddress:(void *)address forSettings:(id)settings;
+- (void)addPreferenceKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation AXSettingsObjectDestructionHelper
 
-- (AXSettingsObjectDestructionHelper)initWithListenerAddress:(void *)a3 forSettings:(id)a4
+- (AXSettingsObjectDestructionHelper)initWithListenerAddress:(void *)address forSettings:(id)settings
 {
-  v6 = a4;
+  settingsCopy = settings;
   v11.receiver = self;
   v11.super_class = AXSettingsObjectDestructionHelper;
   v7 = [(AXSettingsObjectDestructionHelper *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    v7->_listenerAddress = a3;
-    objc_storeWeak(&v7->_settings, v6);
+    v7->_listenerAddress = address;
+    objc_storeWeak(&v7->_settings, settingsCopy);
     v9 = v8;
   }
 
   return v8;
 }
 
-- (void)addPreferenceKey:(id)a3
+- (void)addPreferenceKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   preferenceKeys = self->_preferenceKeys;
-  v8 = v4;
+  v8 = keyCopy;
   if (!preferenceKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_preferenceKeys;
     self->_preferenceKeys = v6;
 
-    v4 = v8;
+    keyCopy = v8;
     preferenceKeys = self->_preferenceKeys;
   }
 
-  [(NSMutableArray *)preferenceKeys addObject:v4];
+  [(NSMutableArray *)preferenceKeys addObject:keyCopy];
 }
 
 - (void)dealloc

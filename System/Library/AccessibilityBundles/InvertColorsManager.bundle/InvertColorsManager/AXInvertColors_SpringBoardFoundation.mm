@@ -1,23 +1,23 @@
 @interface AXInvertColors_SpringBoardFoundation
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_SpringBoardFoundation
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFWallpaperView"];
-  [v3 validateClass:@"SBFWakeAnimationSettings" hasInstanceMethod:@"sleepColorBrightness" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFWallpaperView"];
+  [validationsCopy validateClass:@"SBFWakeAnimationSettings" hasInstanceMethod:@"sleepColorBrightness" withFullSignature:{"d", 0}];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"SBFWallpaperViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SBFWakeAnimationSettingsInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SBFLockScreenDateViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"SBFWallpaperViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SBFWakeAnimationSettingsInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SBFLockScreenDateViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

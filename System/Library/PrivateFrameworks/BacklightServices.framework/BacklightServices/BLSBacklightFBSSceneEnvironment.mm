@@ -1,6 +1,6 @@
 @interface BLSBacklightFBSSceneEnvironment
 - (BLSAlwaysOnFrameSpecifier)frameSpecifier;
-- (BLSBacklightFBSSceneEnvironment)initWithFBSScene:(id)a3;
+- (BLSBacklightFBSSceneEnvironment)initWithFBSScene:(id)scene;
 - (BLSBacklightSceneEnvironmentDelegate)delegate;
 - (BLSBacklightSceneEnvironmentUpdating)updater;
 - (BLSBacklightSceneVisualState)visualState;
@@ -14,13 +14,13 @@
 - (NSDate)presentationDate;
 - (NSString)description;
 - (NSString)identifier;
-- (id)frameSpecifierForSettings:(id)a1;
-- (void)invalidateAllTimelinesForReason:(id)a3;
-- (void)setAlwaysOnContentIs1hz:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setOptsOutOfProcessAssertions:(BOOL)a3;
-- (void)setSupportsAlwaysOn:(BOOL)a3;
-- (void)setUpdater:(id)a3;
+- (id)frameSpecifierForSettings:(id)settings;
+- (void)invalidateAllTimelinesForReason:(id)reason;
+- (void)setAlwaysOnContentIs1hz:(BOOL)is1hz;
+- (void)setDelegate:(id)delegate;
+- (void)setOptsOutOfProcessAssertions:(BOOL)assertions;
+- (void)setSupportsAlwaysOn:(BOOL)on;
+- (void)setUpdater:(id)updater;
 @end
 
 @implementation BLSBacklightFBSSceneEnvironment
@@ -36,10 +36,10 @@
 
 - (NSString)identifier
 {
-  v2 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v3 = [v2 identifier];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  identifier = [_FBSScene identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (FBSScene)_FBSScene
@@ -51,38 +51,38 @@
 
 - (BLSAlwaysOnFrameSpecifier)frameSpecifier
 {
-  v3 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v4 = [v3 settings];
-  v5 = [(BLSBacklightFBSSceneEnvironment *)self frameSpecifierForSettings:v4];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  settings = [_FBSScene settings];
+  v5 = [(BLSBacklightFBSSceneEnvironment *)self frameSpecifierForSettings:settings];
 
   return v5;
 }
 
 - (NSDate)presentationDate
 {
-  v2 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v3 = [v2 settings];
-  v4 = [v3 bls_presentationDate];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  settings = [_FBSScene settings];
+  bls_presentationDate = [settings bls_presentationDate];
 
-  return v4;
+  return bls_presentationDate;
 }
 
 - (NSString)description
 {
-  v3 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v4 = [v3 settings];
-  v5 = [v3 clientSettings];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  settings = [_FBSScene settings];
+  clientSettings = [_FBSScene clientSettings];
   v6 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v7 = [(BLSBacklightFBSSceneEnvironment *)self identifier];
-  [v6 appendString:v7 withName:@"identifier"];
+  identifier = [(BLSBacklightFBSSceneEnvironment *)self identifier];
+  [v6 appendString:identifier withName:@"identifier"];
 
-  v8 = [v6 appendBool:objc_msgSend(v4 withName:{"bls_isDelegateActive"), @"active"}];
+  v8 = [v6 appendBool:objc_msgSend(settings withName:{"bls_isDelegateActive"), @"active"}];
   v9 = [v6 appendBool:-[BLSBacklightFBSSceneEnvironment isAnimatingVisualState](self withName:"isAnimatingVisualState") ifEqualTo:{@"animatingVisualState", 1}];
-  v10 = [v6 appendBool:objc_msgSend(v4 withName:{"bls_isLiveUpdating"), @"liveUpdating"}];
-  v11 = [v6 appendBool:objc_msgSend(v4 withName:{"bls_hasUnrestrictedFramerateUpdates"), @"unrestrictedFramerate"}];
-  if ([v5 bls_supportsAlwaysOn])
+  v10 = [v6 appendBool:objc_msgSend(settings withName:{"bls_isLiveUpdating"), @"liveUpdating"}];
+  v11 = [v6 appendBool:objc_msgSend(settings withName:{"bls_hasUnrestrictedFramerateUpdates"), @"unrestrictedFramerate"}];
+  if ([clientSettings bls_supportsAlwaysOn])
   {
-    v12 = [v4 bls_isAlwaysOnEnabledForEnvironment];
+    bls_isAlwaysOnEnabledForEnvironment = [settings bls_isAlwaysOnEnabledForEnvironment];
     v13 = @"aoEnabled";
     v14 = v6;
   }
@@ -91,34 +91,34 @@
   {
     v13 = @"aoSupport";
     v14 = v6;
-    v12 = 0;
+    bls_isAlwaysOnEnabledForEnvironment = 0;
   }
 
-  v15 = [v14 appendBool:v12 withName:v13];
-  v16 = [v6 appendBool:objc_msgSend(v5 withName:{"bls_alwaysOnContentIs1hz"), @"aoContentIs1hz"}];
-  v17 = [v4 bls_visualState];
-  v18 = [v6 appendObject:v17 withName:@"visualState"];
+  v15 = [v14 appendBool:bls_isAlwaysOnEnabledForEnvironment withName:v13];
+  v16 = [v6 appendBool:objc_msgSend(clientSettings withName:{"bls_alwaysOnContentIs1hz"), @"aoContentIs1hz"}];
+  bls_visualState = [settings bls_visualState];
+  v18 = [v6 appendObject:bls_visualState withName:@"visualState"];
 
-  v19 = [v4 bls_presentationDate];
-  v20 = [v19 bls_shortLoggingString];
-  v21 = [v6 appendObject:v20 withName:@"presentationDate" skipIfNil:0];
+  bls_presentationDate = [settings bls_presentationDate];
+  bls_shortLoggingString = [bls_presentationDate bls_shortLoggingString];
+  v21 = [v6 appendObject:bls_shortLoggingString withName:@"presentationDate" skipIfNil:0];
 
-  v22 = [(BLSBacklightFBSSceneEnvironment *)self frameSpecifierForSettings:v4];
+  v22 = [(BLSBacklightFBSSceneEnvironment *)self frameSpecifierForSettings:settings];
   v23 = [v6 appendObject:v22 withName:@"frameSpecifier" skipIfNil:1];
 
   v24 = [v6 appendBool:-[BLSBacklightFBSSceneEnvironment optsOutOfProcessAssertions](self withName:"optsOutOfProcessAssertions") ifEqualTo:{@"optsOutOfProcessAssertions", 1}];
-  v25 = [v6 build];
+  build = [v6 build];
 
-  return v25;
+  return build;
 }
 
 - (BOOL)optsOutOfProcessAssertions
 {
-  v2 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 bls_optsOutOfProcessAssertions];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  clientSettings = [_FBSScene clientSettings];
+  bls_optsOutOfProcessAssertions = [clientSettings bls_optsOutOfProcessAssertions];
 
-  return v4;
+  return bls_optsOutOfProcessAssertions;
 }
 
 - (BLSBacklightSceneEnvironmentUpdating)updater
@@ -132,16 +132,16 @@
 
 - (BLSBacklightSceneVisualState)visualState
 {
-  v2 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v3 = [v2 settings];
-  v4 = [v3 bls_visualState];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  settings = [_FBSScene settings];
+  bls_visualState = [settings bls_visualState];
 
-  return v4;
+  return bls_visualState;
 }
 
-- (BLSBacklightFBSSceneEnvironment)initWithFBSScene:(id)a3
+- (BLSBacklightFBSSceneEnvironment)initWithFBSScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v11.receiver = self;
   v11.super_class = BLSBacklightFBSSceneEnvironment;
   v5 = [(BLSBacklightFBSSceneEnvironment *)&v11 init];
@@ -152,30 +152,30 @@
     v7 = bls_scenes_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(BLSBacklightFBSSceneEnvironment *)v6 initWithFBSScene:v4];
+      [(BLSBacklightFBSSceneEnvironment *)v6 initWithFBSScene:sceneCopy];
     }
 
     v8 = [[BLSBacklightSceneEnvironmentUpdater alloc] initWithEnvironment:v6];
     updater = v6->_updater;
     v6->_updater = v8;
 
-    [(BLSBacklightFBSSceneEnvironment *)v6 _setFBSScene:v4];
+    [(BLSBacklightFBSSceneEnvironment *)v6 _setFBSScene:sceneCopy];
   }
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_delegate, a3);
+  objc_storeStrong(&self->_delegate, delegate);
   os_unfair_lock_unlock(&self->_lock);
   v6 = bls_scenes_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (delegateCopy)
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
@@ -186,84 +186,84 @@
       v8 = @"NULL";
     }
 
-    v9 = [(BLSBacklightFBSSceneEnvironment *)self identifier];
+    identifier = [(BLSBacklightFBSSceneEnvironment *)self identifier];
     *buf = 134219010;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
-    v17 = v5;
+    v17 = delegateCopy;
     v18 = 2114;
     v19 = v8;
     v20 = 1024;
-    v21 = v5 != 0;
+    v21 = delegateCopy != 0;
     v22 = 2114;
-    v23 = v9;
+    v23 = identifier;
     _os_log_impl(&dword_21FE25000, v6, OS_LOG_TYPE_DEFAULT, "%p setDelegate:<%p %{public}@> hasDelegate:%{BOOL}u for environment:%{public}@", buf, 0x30u);
-    if (v5)
+    if (delegateCopy)
     {
     }
   }
 
-  v10 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __47__BLSBacklightFBSSceneEnvironment_setDelegate___block_invoke;
   v12[3] = &__block_descriptor_33_e39_v16__0__FBSMutableSceneClientSettings_8l;
-  v13 = v5 != 0;
-  [v10 updateClientSettingsWithBlock:v12];
+  v13 = delegateCopy != 0;
+  [_FBSScene updateClientSettingsWithBlock:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUpdater:(id)a3
+- (void)setUpdater:(id)updater
 {
-  v5 = a3;
+  updaterCopy = updater;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_updater, a3);
+  objc_storeStrong(&self->_updater, updater);
   os_unfair_lock_unlock(&self->_lock);
   v6 = bls_scenes_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(BLSBacklightFBSSceneEnvironment *)self setUpdater:v5, v6];
+    [(BLSBacklightFBSSceneEnvironment *)self setUpdater:updaterCopy, v6];
   }
 }
 
 - (BOOL)isDelegateActive
 {
-  v2 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v3 = [v2 settings];
-  v4 = [v3 bls_isDelegateActive];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  settings = [_FBSScene settings];
+  bls_isDelegateActive = [settings bls_isDelegateActive];
 
-  return v4;
+  return bls_isDelegateActive;
 }
 
 - (BOOL)isLiveUpdating
 {
-  v2 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v3 = [v2 settings];
-  v4 = [v3 bls_isLiveUpdating];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  settings = [_FBSScene settings];
+  bls_isLiveUpdating = [settings bls_isLiveUpdating];
 
-  return v4;
+  return bls_isLiveUpdating;
 }
 
 - (BOOL)hasUnrestrictedFramerateUpdates
 {
-  v2 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v3 = [v2 settings];
-  v4 = [v3 bls_hasUnrestrictedFramerateUpdates];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  settings = [_FBSScene settings];
+  bls_hasUnrestrictedFramerateUpdates = [settings bls_hasUnrestrictedFramerateUpdates];
 
-  return v4;
+  return bls_hasUnrestrictedFramerateUpdates;
 }
 
 - (BOOL)supportsAlwaysOn
 {
-  v2 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 bls_supportsAlwaysOn];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  clientSettings = [_FBSScene clientSettings];
+  bls_supportsAlwaysOn = [clientSettings bls_supportsAlwaysOn];
 
-  return v4;
+  return bls_supportsAlwaysOn;
 }
 
-- (void)setSupportsAlwaysOn:(BOOL)a3
+- (void)setSupportsAlwaysOn:(BOOL)on
 {
   v5 = bls_scenes_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -271,25 +271,25 @@
     [BLSBacklightFBSSceneEnvironment setSupportsAlwaysOn:?];
   }
 
-  v6 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__BLSBacklightFBSSceneEnvironment_setSupportsAlwaysOn___block_invoke;
   v7[3] = &__block_descriptor_33_e39_v16__0__FBSMutableSceneClientSettings_8l;
-  v8 = a3;
-  [v6 updateClientSettingsWithBlock:v7];
+  onCopy = on;
+  [_FBSScene updateClientSettingsWithBlock:v7];
 }
 
 - (BOOL)alwaysOnContentIs1hz
 {
-  v2 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 bls_alwaysOnContentIs1hz];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  clientSettings = [_FBSScene clientSettings];
+  bls_alwaysOnContentIs1hz = [clientSettings bls_alwaysOnContentIs1hz];
 
-  return v4;
+  return bls_alwaysOnContentIs1hz;
 }
 
-- (void)setAlwaysOnContentIs1hz:(BOOL)a3
+- (void)setAlwaysOnContentIs1hz:(BOOL)is1hz
 {
   v5 = bls_scenes_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -297,69 +297,69 @@
     [BLSBacklightFBSSceneEnvironment setAlwaysOnContentIs1hz:?];
   }
 
-  v6 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__BLSBacklightFBSSceneEnvironment_setAlwaysOnContentIs1hz___block_invoke;
   v7[3] = &__block_descriptor_33_e39_v16__0__FBSMutableSceneClientSettings_8l;
-  v8 = a3;
-  [v6 updateClientSettingsWithBlock:v7];
+  is1hzCopy = is1hz;
+  [_FBSScene updateClientSettingsWithBlock:v7];
 }
 
-- (void)setOptsOutOfProcessAssertions:(BOOL)a3
+- (void)setOptsOutOfProcessAssertions:(BOOL)assertions
 {
-  v3 = a3;
+  assertionsCopy = assertions;
   v17 = *MEMORY[0x277D85DE8];
   v5 = bls_scenes_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(BLSBacklightFBSSceneEnvironment *)self identifier];
+    identifier = [(BLSBacklightFBSSceneEnvironment *)self identifier];
     *buf = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 1024;
-    v14 = v3;
+    v14 = assertionsCopy;
     v15 = 2114;
-    v16 = v6;
+    v16 = identifier;
     _os_log_impl(&dword_21FE25000, v5, OS_LOG_TYPE_INFO, "%p setOptsOutOfProcessAssertions:%{BOOL}u for environment:%{public}@", buf, 0x1Cu);
   }
 
-  v7 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__BLSBacklightFBSSceneEnvironment_setOptsOutOfProcessAssertions___block_invoke;
   v9[3] = &__block_descriptor_33_e39_v16__0__FBSMutableSceneClientSettings_8l;
-  v10 = v3;
-  [v7 updateClientSettingsWithBlock:v9];
+  v10 = assertionsCopy;
+  [_FBSScene updateClientSettingsWithBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateAllTimelinesForReason:(id)a3
+- (void)invalidateAllTimelinesForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = bls_scenes_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [BLSBacklightFBSSceneEnvironment invalidateAllTimelinesForReason:?];
   }
 
-  v6 = [[BLSInvalidateFrameSpecifiersAction alloc] initWithReason:v4];
-  v7 = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
+  v6 = [[BLSInvalidateFrameSpecifiersAction alloc] initWithReason:reasonCopy];
+  _FBSScene = [(BLSBacklightFBSSceneEnvironment *)self _FBSScene];
   v8 = [MEMORY[0x277CBEB98] setWithObject:v6];
-  [v7 sendActions:v8];
+  [_FBSScene sendActions:v8];
 }
 
-- (id)frameSpecifierForSettings:(id)a1
+- (id)frameSpecifierForSettings:(id)settings
 {
-  v2 = a1;
-  if (a1)
+  settingsCopy = settings;
+  if (settings)
   {
-    v3 = [a2 bls_presentationDate];
-    v4 = [v2 alwaysOnSession];
-    v2 = [v4 specifierForPresentationDate:v3];
+    bls_presentationDate = [a2 bls_presentationDate];
+    alwaysOnSession = [settingsCopy alwaysOnSession];
+    settingsCopy = [alwaysOnSession specifierForPresentationDate:bls_presentationDate];
   }
 
-  return v2;
+  return settingsCopy;
 }
 
 - (void)initWithFBSScene:(uint64_t)a1 .cold.1(uint64_t a1, void *a2)

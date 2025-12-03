@@ -1,24 +1,24 @@
 @interface AMSDCloudDataChangedRecordZonesResult
-- (AMSDCloudDataChangedRecordZonesResult)initWithChangedRecordZones:(id)a3 deletedRecordZones:(id)a4 changeToken:(id)a5;
+- (AMSDCloudDataChangedRecordZonesResult)initWithChangedRecordZones:(id)zones deletedRecordZones:(id)recordZones changeToken:(id)token;
 - (NSString)hashedDescription;
 @end
 
 @implementation AMSDCloudDataChangedRecordZonesResult
 
-- (AMSDCloudDataChangedRecordZonesResult)initWithChangedRecordZones:(id)a3 deletedRecordZones:(id)a4 changeToken:(id)a5
+- (AMSDCloudDataChangedRecordZonesResult)initWithChangedRecordZones:(id)zones deletedRecordZones:(id)recordZones changeToken:(id)token
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  zonesCopy = zones;
+  recordZonesCopy = recordZones;
+  tokenCopy = token;
   v15.receiver = self;
   v15.super_class = AMSDCloudDataChangedRecordZonesResult;
   v12 = [(AMSDCloudDataChangedRecordZonesResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_changedRecordZones, a3);
-    objc_storeStrong(&v13->_changeToken, a5);
-    objc_storeStrong(&v13->_deletedRecordZones, a4);
+    objc_storeStrong(&v12->_changedRecordZones, zones);
+    objc_storeStrong(&v13->_changeToken, token);
+    objc_storeStrong(&v13->_deletedRecordZones, recordZones);
   }
 
   return v13;
@@ -27,15 +27,15 @@
 - (NSString)hashedDescription
 {
   v3 = [NSMutableString stringWithFormat:@"<%@: %p> {", objc_opt_class(), self];
-  v4 = [(AMSDCloudDataChangedRecordZonesResult *)self changedRecordZones];
+  changedRecordZones = [(AMSDCloudDataChangedRecordZonesResult *)self changedRecordZones];
   v5 = AMSHashIfNeeded();
   [v3 appendFormat:@"  changedRecordZones = %@, \n", v5];
 
-  v6 = [(AMSDCloudDataChangedRecordZonesResult *)self deletedRecordZones];
+  deletedRecordZones = [(AMSDCloudDataChangedRecordZonesResult *)self deletedRecordZones];
   v7 = AMSHashIfNeeded();
   [v3 appendFormat:@"  deletedRecordZones = %@, \n", v7];
 
-  v8 = [(AMSDCloudDataChangedRecordZonesResult *)self changeToken];
+  changeToken = [(AMSDCloudDataChangedRecordZonesResult *)self changeToken];
   v9 = AMSHashIfNeeded();
   [v3 appendFormat:@"  changeToken = %@\n", v9];
 

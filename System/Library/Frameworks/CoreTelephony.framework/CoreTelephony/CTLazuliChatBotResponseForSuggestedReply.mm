@@ -1,11 +1,11 @@
 @interface CTLazuliChatBotResponseForSuggestedReply
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotResponseForSuggestedReply:(id)a3;
-- (CTLazuliChatBotResponseForSuggestedReply)initWithCoder:(id)a3;
-- (CTLazuliChatBotResponseForSuggestedReply)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotResponseForSuggestedReply:(id)reply;
+- (CTLazuliChatBotResponseForSuggestedReply)initWithCoder:(id)coder;
+- (CTLazuliChatBotResponseForSuggestedReply)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliChatBotResponseForSuggestedReply
@@ -13,30 +13,30 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotResponseForSuggestedReply *)self displayText];
-  [v3 appendFormat:@", displayText = %@", v4];
+  displayText = [(CTLazuliChatBotResponseForSuggestedReply *)self displayText];
+  [v3 appendFormat:@", displayText = %@", displayText];
 
-  v5 = [(CTLazuliChatBotResponseForSuggestedReply *)self postBackData];
-  [v3 appendFormat:@", postBackData = %@", v5];
+  postBackData = [(CTLazuliChatBotResponseForSuggestedReply *)self postBackData];
+  [v3 appendFormat:@", postBackData = %@", postBackData];
 
-  v6 = [(CTLazuliChatBotResponseForSuggestedReply *)self inReplyToID];
-  [v3 appendFormat:@", inReplyToID = %@", v6];
+  inReplyToID = [(CTLazuliChatBotResponseForSuggestedReply *)self inReplyToID];
+  [v3 appendFormat:@", inReplyToID = %@", inReplyToID];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotResponseForSuggestedReply:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotResponseForSuggestedReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(CTLazuliChatBotResponseForSuggestedReply *)self displayText];
-  v6 = [v4 displayText];
-  if (v5 != v6)
+  replyCopy = reply;
+  displayText = [(CTLazuliChatBotResponseForSuggestedReply *)self displayText];
+  displayText2 = [replyCopy displayText];
+  if (displayText != displayText2)
   {
-    v19 = [(CTLazuliChatBotResponseForSuggestedReply *)self displayText];
-    v17 = [v4 displayText];
-    if (![v19 isEqualToString:?])
+    displayText3 = [(CTLazuliChatBotResponseForSuggestedReply *)self displayText];
+    displayText4 = [replyCopy displayText];
+    if (![displayText3 isEqualToString:?])
     {
       v7 = 0;
 LABEL_13:
@@ -45,13 +45,13 @@ LABEL_13:
     }
   }
 
-  v8 = [(CTLazuliChatBotResponseForSuggestedReply *)self postBackData];
-  v9 = [v4 postBackData];
-  if (v8 != v9)
+  postBackData = [(CTLazuliChatBotResponseForSuggestedReply *)self postBackData];
+  postBackData2 = [replyCopy postBackData];
+  if (postBackData != postBackData2)
   {
-    v18 = [(CTLazuliChatBotResponseForSuggestedReply *)self postBackData];
-    v16 = [v4 postBackData];
-    if (![v18 isEqualToCTLazuliChatBotPostbackData:?])
+    postBackData3 = [(CTLazuliChatBotResponseForSuggestedReply *)self postBackData];
+    postBackData4 = [replyCopy postBackData];
+    if (![postBackData3 isEqualToCTLazuliChatBotPostbackData:?])
     {
       v7 = 0;
 LABEL_11:
@@ -60,10 +60,10 @@ LABEL_11:
     }
   }
 
-  v10 = [(CTLazuliChatBotResponseForSuggestedReply *)self inReplyToID];
-  v11 = [v4 inReplyToID];
-  v12 = v11;
-  if (v10 == v11)
+  inReplyToID = [(CTLazuliChatBotResponseForSuggestedReply *)self inReplyToID];
+  inReplyToID2 = [replyCopy inReplyToID];
+  v12 = inReplyToID2;
+  if (inReplyToID == inReplyToID2)
   {
 
     v7 = 1;
@@ -71,19 +71,19 @@ LABEL_11:
 
   else
   {
-    v13 = [(CTLazuliChatBotResponseForSuggestedReply *)self inReplyToID];
-    v14 = [v4 inReplyToID];
-    v7 = [v13 isEqualToCTLazuliMessageID:v14];
+    inReplyToID3 = [(CTLazuliChatBotResponseForSuggestedReply *)self inReplyToID];
+    inReplyToID4 = [replyCopy inReplyToID];
+    v7 = [inReplyToID3 isEqualToCTLazuliMessageID:inReplyToID4];
   }
 
-  if (v8 != v9)
+  if (postBackData != postBackData2)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  if (v5 != v6)
+  if (displayText != displayText2)
   {
     goto LABEL_13;
   }
@@ -93,63 +93,63 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotResponseForSuggestedReply *)self isEqualToCTLazuliChatBotResponseForSuggestedReply:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotResponseForSuggestedReply *)self isEqualToCTLazuliChatBotResponseForSuggestedReply:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotResponseForSuggestedReply allocWithZone:?];
-  v6 = [(NSString *)self->_displayText copyWithZone:a3];
+  v6 = [(NSString *)self->_displayText copyWithZone:zone];
   [(CTLazuliChatBotResponseForSuggestedReply *)v5 setDisplayText:v6];
 
-  v7 = [(CTLazuliChatBotPostbackData *)self->_postBackData copyWithZone:a3];
+  v7 = [(CTLazuliChatBotPostbackData *)self->_postBackData copyWithZone:zone];
   [(CTLazuliChatBotResponseForSuggestedReply *)v5 setPostBackData:v7];
 
-  v8 = [(CTLazuliMessageID *)self->_inReplyToID copyWithZone:a3];
+  v8 = [(CTLazuliMessageID *)self->_inReplyToID copyWithZone:zone];
   [(CTLazuliChatBotResponseForSuggestedReply *)v5 setInReplyToID:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_displayText forKey:@"kDisplayTextKey"];
-  [v4 encodeObject:self->_postBackData forKey:@"kPostBackDataKey"];
-  [v4 encodeObject:self->_inReplyToID forKey:@"kInReplyToIDKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_displayText forKey:@"kDisplayTextKey"];
+  [coderCopy encodeObject:self->_postBackData forKey:@"kPostBackDataKey"];
+  [coderCopy encodeObject:self->_inReplyToID forKey:@"kInReplyToIDKey"];
 }
 
-- (CTLazuliChatBotResponseForSuggestedReply)initWithCoder:(id)a3
+- (CTLazuliChatBotResponseForSuggestedReply)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTLazuliChatBotResponseForSuggestedReply;
   v5 = [(CTLazuliChatBotResponseForSuggestedReply *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kDisplayTextKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kDisplayTextKey"];
     displayText = v5->_displayText;
     v5->_displayText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPostBackDataKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPostBackDataKey"];
     postBackData = v5->_postBackData;
     v5->_postBackData = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kInReplyToIDKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kInReplyToIDKey"];
     inReplyToID = v5->_inReplyToID;
     v5->_inReplyToID = v10;
   }
@@ -157,32 +157,32 @@ LABEL_14:
   return v5;
 }
 
-- (CTLazuliChatBotResponseForSuggestedReply)initWithReflection:(const void *)a3
+- (CTLazuliChatBotResponseForSuggestedReply)initWithReflection:(const void *)reflection
 {
   v13.receiver = self;
   v13.super_class = CTLazuliChatBotResponseForSuggestedReply;
   v4 = [(CTLazuliChatBotResponseForSuggestedReply *)&v13 init];
   if (v4)
   {
-    if (*(a3 + 23) >= 0)
+    if (*(reflection + 23) >= 0)
     {
-      v5 = a3;
+      reflectionCopy = reflection;
     }
 
     else
     {
-      v5 = *a3;
+      reflectionCopy = *reflection;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:reflectionCopy];
     displayText = v4->_displayText;
     v4->_displayText = v6;
 
-    v8 = [[CTLazuliChatBotPostbackData alloc] initWithReflection:a3 + 24];
+    v8 = [[CTLazuliChatBotPostbackData alloc] initWithReflection:reflection + 24];
     postBackData = v4->_postBackData;
     v4->_postBackData = v8;
 
-    v10 = [[CTLazuliMessageID alloc] initWithReflection:a3 + 48];
+    v10 = [[CTLazuliMessageID alloc] initWithReflection:reflection + 48];
     inReplyToID = v4->_inReplyToID;
     v4->_inReplyToID = v10;
   }

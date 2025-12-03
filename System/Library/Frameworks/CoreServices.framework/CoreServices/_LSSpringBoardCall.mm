@@ -2,13 +2,13 @@
 + (id)springBoardDeadlockPreventionQueue;
 + (id)springBoardQueue;
 - (NSDictionary)launchOptions;
-- (_LSSpringBoardCall)callWithCompletionHandler:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_LSSpringBoardCall)callWithCompletionHandler:(id)handler;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)callSpringBoardWithCompletionHandler:(id)a3;
-- (void)lieWithCompletionHandler:(id)a3;
-- (void)promptAndCallSpringBoardWithCompletionHandler:(id)a3;
-- (void)setLaunchOptions:(id)a3;
+- (void)callSpringBoardWithCompletionHandler:(id)handler;
+- (void)lieWithCompletionHandler:(id)handler;
+- (void)promptAndCallSpringBoardWithCompletionHandler:(id)handler;
+- (void)setLaunchOptions:(id)options;
 @end
 
 @implementation _LSSpringBoardCall
@@ -27,22 +27,22 @@
 
 - (NSDictionary)launchOptions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_launchOptions;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_launchOptions;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLaunchOptions:(id)a3
+- (void)setLaunchOptions:(id)options
 {
-  v17 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v17 mutableCopy];
-  schemeIfNotFileURL = v4->_schemeIfNotFileURL;
-  v4->_schemeIfNotFileURL = 0;
+  optionsCopy = options;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [optionsCopy mutableCopy];
+  schemeIfNotFileURL = selfCopy->_schemeIfNotFileURL;
+  selfCopy->_schemeIfNotFileURL = 0;
 
   FBSOpenApplicationOptionKeyPayloadURL = getFBSOpenApplicationOptionKeyPayloadURL();
   v8 = objc_opt_class();
@@ -52,7 +52,7 @@
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v11 = v10;
+      scheme = v10;
       v10 = 0;
       goto LABEL_8;
     }
@@ -68,10 +68,10 @@
     goto LABEL_9;
   }
 
-  v11 = [v10 scheme];
-  v12 = [v11 copy];
-  v13 = v4->_schemeIfNotFileURL;
-  v4->_schemeIfNotFileURL = v12;
+  scheme = [v10 scheme];
+  v12 = [scheme copy];
+  v13 = selfCopy->_schemeIfNotFileURL;
+  selfCopy->_schemeIfNotFileURL = v12;
 
 LABEL_8:
 LABEL_9:
@@ -84,26 +84,26 @@ LABEL_9:
       v14 = 0;
     }
 
-    targetServiceConnectionEndpoint = v4->_targetServiceConnectionEndpoint;
-    v4->_targetServiceConnectionEndpoint = v14;
+    targetServiceConnectionEndpoint = selfCopy->_targetServiceConnectionEndpoint;
+    selfCopy->_targetServiceConnectionEndpoint = v14;
 
     [(NSDictionary *)v5 removeObjectForKey:@"LSTargetBSServiceConnectionEndpointKey"];
   }
 
-  launchOptions = v4->_launchOptions;
-  v4->_launchOptions = v5;
+  launchOptions = selfCopy->_launchOptions;
+  selfCopy->_launchOptions = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (_LSSpringBoardCall)callWithCompletionHandler:(id)a3
+- (_LSSpringBoardCall)callWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSSpringBoardCall callWithCompletionHandler:]");
-  if (!v5)
+  if (!handlerCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LSSpringBoardCall.mm" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSSpringBoardCall.mm" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
   }
 
   if (self->_schemeIfNotFileURL)
@@ -111,21 +111,21 @@ LABEL_9:
     v6 = _LSServer_DatabaseExecutionContext();
     [(LSDBExecutionContext *)v6 assertActiveForThisThread];
 
-    v7 = [(_LSSpringBoardCall *)self clientXPCConnection];
-    v8 = [(_LSSpringBoardCall *)self bundleIdentifier];
+    clientXPCConnection = [(_LSSpringBoardCall *)self clientXPCConnection];
+    bundleIdentifier = [(_LSSpringBoardCall *)self bundleIdentifier];
     schemeIfNotFileURL = self->_schemeIfNotFileURL;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __48___LSSpringBoardCall_callWithCompletionHandler___block_invoke;
     v12[3] = &unk_1E6A1E068;
     v12[4] = self;
-    v13 = v5;
-    _LSSchemeApprovalFindWithCompletionHandler(v7, v8, schemeIfNotFileURL, 0, v12);
+    v13 = handlerCopy;
+    _LSSchemeApprovalFindWithCompletionHandler(clientXPCConnection, bundleIdentifier, schemeIfNotFileURL, 0, v12);
   }
 
   else
   {
-    [(_LSSpringBoardCall *)self callSpringBoardWithCompletionHandler:v5];
+    [(_LSSpringBoardCall *)self callSpringBoardWithCompletionHandler:handlerCopy];
   }
 
   return result;
@@ -136,34 +136,34 @@ LABEL_9:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_LSSpringBoardCall *)self bundleIdentifier];
-  v7 = [(_LSSpringBoardCall *)self clientXPCConnection];
-  v8 = [v7 processIdentifier];
-  v9 = [(_LSSpringBoardCall *)self callCompletionHandlerWhenFullyComplete];
+  bundleIdentifier = [(_LSSpringBoardCall *)self bundleIdentifier];
+  clientXPCConnection = [(_LSSpringBoardCall *)self clientXPCConnection];
+  processIdentifier = [clientXPCConnection processIdentifier];
+  callCompletionHandlerWhenFullyComplete = [(_LSSpringBoardCall *)self callCompletionHandlerWhenFullyComplete];
   v10 = @"no";
-  if (v9)
+  if (callCompletionHandlerWhenFullyComplete)
   {
     v10 = @"yes";
   }
 
-  v11 = [v3 stringWithFormat:@"<%@ %p> { bundleID = %@, client = %li, blocking = %@ }", v5, self, v6, v8, v10];
+  v11 = [v3 stringWithFormat:@"<%@ %p> { bundleID = %@, client = %li, blocking = %@ }", v5, self, bundleIdentifier, processIdentifier, v10];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
-    v5 = [(_LSSpringBoardCall *)self bundleIdentifier];
-    [v4 setBundleIdentifier:v5];
+    bundleIdentifier = [(_LSSpringBoardCall *)self bundleIdentifier];
+    [v4 setBundleIdentifier:bundleIdentifier];
 
-    v6 = [(_LSSpringBoardCall *)self launchOptions];
-    [v4 setLaunchOptions:v6];
+    launchOptions = [(_LSSpringBoardCall *)self launchOptions];
+    [v4 setLaunchOptions:launchOptions];
 
-    v7 = [(_LSSpringBoardCall *)self clientXPCConnection];
-    [v4 setClientXPCConnection:v7];
+    clientXPCConnection = [(_LSSpringBoardCall *)self clientXPCConnection];
+    [v4 setClientXPCConnection:clientXPCConnection];
 
     [v4 setCallCompletionHandlerWhenFullyComplete:{-[_LSSpringBoardCall callCompletionHandlerWhenFullyComplete](self, "callCompletionHandlerWhenFullyComplete")}];
   }
@@ -183,20 +183,20 @@ LABEL_9:
   return v3;
 }
 
-- (void)callSpringBoardWithCompletionHandler:(id)a3
+- (void)callSpringBoardWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSSpringBoardCall(Private) callSpringBoardWithCompletionHandler:]");
-  if (!v5)
+  if (!handlerCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"LSSpringBoardCall.mm" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSSpringBoardCall.mm" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
   }
 
-  v6 = [(_LSSpringBoardCall *)self targetServiceConnectionEndpoint];
-  if (v6)
+  targetServiceConnectionEndpoint = [(_LSSpringBoardCall *)self targetServiceConnectionEndpoint];
+  if (targetServiceConnectionEndpoint)
   {
-    [getFBSOpenApplicationServiceClass() serviceWithEndpoint:v6];
+    [getFBSOpenApplicationServiceClass() serviceWithEndpoint:targetServiceConnectionEndpoint];
   }
 
   else
@@ -207,40 +207,40 @@ LABEL_9:
   if (v7)
   {
     FBSOpenApplicationOptionsClass = getFBSOpenApplicationOptionsClass();
-    v9 = [(_LSSpringBoardCall *)self launchOptions];
-    v10 = [FBSOpenApplicationOptionsClass optionsWithDictionary:v9];
+    launchOptions = [(_LSSpringBoardCall *)self launchOptions];
+    v10 = [FBSOpenApplicationOptionsClass optionsWithDictionary:launchOptions];
 
-    v11 = [(_LSSpringBoardCall *)self clientXPCConnection];
+    clientXPCConnection = [(_LSSpringBoardCall *)self clientXPCConnection];
 
     Helper_x8__OBJC_CLASS___BSProcessHandle = gotLoadHelper_x8__OBJC_CLASS___BSProcessHandle(v12);
     v15 = *(v13 + 1864);
-    if (v11)
+    if (clientXPCConnection)
     {
-      v16 = [(_LSSpringBoardCall *)self clientXPCConnection];
-      v17 = [v15 processHandleForNSXPCConnection:v16];
+      clientXPCConnection2 = [(_LSSpringBoardCall *)self clientXPCConnection];
+      processHandle = [v15 processHandleForNSXPCConnection:clientXPCConnection2];
     }
 
     else
     {
-      v17 = [*(v13 + 1864) processHandle];
+      processHandle = [*(v13 + 1864) processHandle];
     }
 
     if ([(_LSSpringBoardCall *)self callCompletionHandlerWhenFullyComplete])
     {
       MEMORY[0x1865D7C40]();
-      v18 = [objc_opt_class() springBoardQueue];
+      springBoardQueue = [objc_opt_class() springBoardQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __68___LSSpringBoardCall_Private__callSpringBoardWithCompletionHandler___block_invoke;
       block[3] = &unk_1E6A1DFD0;
       v32 = v7;
-      v33 = self;
+      selfCopy = self;
       v34 = v10;
-      v35 = v17;
-      v36 = v5;
-      v19 = v17;
+      v35 = processHandle;
+      v36 = handlerCopy;
+      v19 = processHandle;
       v20 = v10;
-      dispatch_async(v18, block);
+      dispatch_async(springBoardQueue, block);
 
       v21 = v32;
     }
@@ -248,7 +248,7 @@ LABEL_9:
     else
     {
       MEMORY[0x1865D7C40]();
-      v22 = [objc_opt_class() springBoardDeadlockPreventionQueue];
+      springBoardDeadlockPreventionQueue = [objc_opt_class() springBoardDeadlockPreventionQueue];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __68___LSSpringBoardCall_Private__callSpringBoardWithCompletionHandler___block_invoke_3;
@@ -256,11 +256,11 @@ LABEL_9:
       v26[4] = self;
       v27 = v7;
       v28 = v10;
-      v29 = v17;
-      v30 = v5;
-      v23 = v17;
+      v29 = processHandle;
+      v30 = handlerCopy;
+      v23 = processHandle;
       v24 = v10;
-      dispatch_async(v22, v26);
+      dispatch_async(springBoardDeadlockPreventionQueue, v26);
 
       v21 = v27;
     }
@@ -269,53 +269,53 @@ LABEL_9:
   else
   {
     v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 45, 0, "[_LSSpringBoardCall(Private) callSpringBoardWithCompletionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSSpringBoardCall.mm", 300);
-    (*(v5 + 2))(v5, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 }
 
-- (void)lieWithCompletionHandler:(id)a3
+- (void)lieWithCompletionHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSSpringBoardCall(Private) lieWithCompletionHandler:]");
-  if (!v7)
+  if (!handlerCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"LSSpringBoardCall.mm" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSSpringBoardCall.mm" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
   }
 
   v5 = [(_LSSpringBoardCall *)self copy];
   [v5 setCallCompletionHandlerWhenFullyComplete:1];
   [v5 callWithCompletionHandler:&__block_literal_global_76_0];
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (void)promptAndCallSpringBoardWithCompletionHandler:(id)a3
+- (void)promptAndCallSpringBoardWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   _LSAssertRunningInServer("[_LSSpringBoardCall(Private) promptAndCallSpringBoardWithCompletionHandler:]");
-  if (!v5)
+  if (!handlerCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"LSSpringBoardCall.mm" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSSpringBoardCall.mm" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
   }
 
   if ([(_LSSpringBoardCall *)self callCompletionHandlerWhenFullyComplete])
   {
-    v6 = [(_LSSpringBoardCall *)self clientXPCConnection];
-    v7 = [(_LSSpringBoardCall *)self bundleIdentifier];
+    clientXPCConnection = [(_LSSpringBoardCall *)self clientXPCConnection];
+    bundleIdentifier = [(_LSSpringBoardCall *)self bundleIdentifier];
     schemeIfNotFileURL = self->_schemeIfNotFileURL;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __77___LSSpringBoardCall_Private__promptAndCallSpringBoardWithCompletionHandler___block_invoke;
     v10[3] = &unk_1E6A1E068;
     v10[4] = self;
-    v11 = v5;
-    _LSSchemeApprovalFindWithCompletionHandler(v6, v7, schemeIfNotFileURL, 3, v10);
+    v11 = handlerCopy;
+    _LSSchemeApprovalFindWithCompletionHandler(clientXPCConnection, bundleIdentifier, schemeIfNotFileURL, 3, v10);
   }
 
   else
   {
-    [(_LSSpringBoardCall *)self lieWithCompletionHandler:v5];
+    [(_LSSpringBoardCall *)self lieWithCompletionHandler:handlerCopy];
   }
 }
 

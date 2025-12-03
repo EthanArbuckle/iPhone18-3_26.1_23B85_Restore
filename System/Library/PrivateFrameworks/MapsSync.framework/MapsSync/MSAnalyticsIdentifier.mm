@@ -1,22 +1,22 @@
 @interface MSAnalyticsIdentifier
 + (Class)managedClass;
-- (MSAnalyticsIdentifier)initWithData:(id)a3 positionIndex:(int64_t)a4;
-- (MSAnalyticsIdentifier)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSAnalyticsIdentifier)initWithStore:(id)a3 data:(id)a4 positionIndex:(int64_t)a5;
+- (MSAnalyticsIdentifier)initWithData:(id)data positionIndex:(int64_t)index;
+- (MSAnalyticsIdentifier)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSAnalyticsIdentifier)initWithStore:(id)store data:(id)data positionIndex:(int64_t)index;
 - (NSData)data;
 - (int64_t)positionIndex;
-- (void)setData:(id)a3;
-- (void)setPositionIndex:(int64_t)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
+- (void)setData:(id)data;
+- (void)setPositionIndex:(int64_t)index;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
 @end
 
 @implementation MSAnalyticsIdentifier
 
-- (MSAnalyticsIdentifier)initWithData:(id)a3 positionIndex:(int64_t)a4
+- (MSAnalyticsIdentifier)initWithData:(id)data positionIndex:(int64_t)index
 {
-  if (a3)
+  if (data)
   {
-    v6 = a3;
+    dataCopy = data;
     v7 = sub_1B63BE924();
     v9 = v8;
   }
@@ -45,30 +45,30 @@
     sub_1B6284F64(v7, v9);
   }
 
-  v12 = [(MSAnalyticsIdentifier *)self initWithStore:v10 data:v11 positionIndex:a4];
+  v12 = [(MSAnalyticsIdentifier *)self initWithStore:v10 data:v11 positionIndex:index];
   sub_1B6284F64(v7, v9);
 
   return v12;
 }
 
-- (MSAnalyticsIdentifier)initWithStore:(id)a3 data:(id)a4 positionIndex:(int64_t)a5
+- (MSAnalyticsIdentifier)initWithStore:(id)store data:(id)data positionIndex:(int64_t)index
 {
-  v6 = a4;
-  if (a4)
+  dataCopy = data;
+  if (data)
   {
-    v8 = a3;
-    v9 = v6;
-    v6 = sub_1B63BE924();
+    storeCopy = store;
+    v9 = dataCopy;
+    dataCopy = sub_1B63BE924();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
+    storeCopy2 = store;
     v11 = 0xF000000000000000;
   }
 
-  return AnalyticsIdentifier.init(store:data:positionIndex:)(a3, v6, v11, a5);
+  return AnalyticsIdentifier.init(store:data:positionIndex:)(store, dataCopy, v11, index);
 }
 
 + (Class)managedClass
@@ -78,16 +78,16 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B62B2740(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B62B2740(objectCopy, load);
 }
 
 - (NSData)data
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62B0C58();
   v5 = v4;
 
@@ -106,51 +106,51 @@
   return v6;
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1B63BE924();
+    selfCopy = self;
+    v5 = dataCopy;
+    dataCopy = sub_1B63BE924();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1B62B2818(v3, v7);
-  sub_1B6284F64(v3, v7);
+  sub_1B62B2818(dataCopy, v7);
+  sub_1B6284F64(dataCopy, v7);
 }
 
 - (int64_t)positionIndex
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  v6 = *(&v5->super.super.isa + OBJC_IVAR___MSAnalyticsIdentifier__positionIndex);
+  v6 = *(&selfCopy->super.super.isa + OBJC_IVAR___MSAnalyticsIdentifier__positionIndex);
   [*(&self->super.super.isa + v3) unlock];
 
   return v6;
 }
 
-- (void)setPositionIndex:(int64_t)a3
+- (void)setPositionIndex:(int64_t)index
 {
-  v4 = self;
-  sub_1B62B1558(a3);
+  selfCopy = self;
+  sub_1B62B1558(index);
 }
 
-- (MSAnalyticsIdentifier)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSAnalyticsIdentifier)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  return sub_1B62B185C(a3, a4, v7, v6);
+  parentCopy = parent;
+  loadCopy = load;
+  objectCopy = object;
+  return sub_1B62B185C(object, store, loadCopy, parentCopy);
 }
 
 @end

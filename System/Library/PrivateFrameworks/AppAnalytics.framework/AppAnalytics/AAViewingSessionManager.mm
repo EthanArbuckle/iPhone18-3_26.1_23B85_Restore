@@ -1,9 +1,9 @@
 @interface AAViewingSessionManager
 - (AAViewingSessionManager)init;
-- (id)viewingSessionForContentIdentifier:(id)a3 object:(id)a4 onEnd:(id)a5;
+- (id)viewingSessionForContentIdentifier:(id)identifier object:(id)object onEnd:(id)end;
 - (void)endActiveViewingSession;
-- (void)endViewingSessionForContentIdentifier:(id)a3;
-- (void)removeObject:(id)a3 forContentIdentifier:(id)a4;
+- (void)endViewingSessionForContentIdentifier:(id)identifier;
+- (void)removeObject:(id)object forContentIdentifier:(id)identifier;
 @end
 
 @implementation AAViewingSessionManager
@@ -23,7 +23,7 @@
   v3 = OBJC_IVAR___AAViewingSessionManager_activeSession;
   if (*(&self->super.isa + OBJC_IVAR___AAViewingSessionManager_activeSession))
   {
-    v4 = self;
+    selfCopy = self;
 
     sub_1B6AB6C50();
 
@@ -32,15 +32,15 @@
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   *(&self->super.isa + v3) = 0;
 }
 
-- (id)viewingSessionForContentIdentifier:(id)a3 object:(id)a4 onEnd:(id)a5
+- (id)viewingSessionForContentIdentifier:(id)identifier object:(id)object onEnd:(id)end
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(end);
   v8 = sub_1B6AB92E0();
   v10 = v9;
   if (v7)
@@ -56,32 +56,32 @@
   }
 
   swift_unknownObjectRetain();
-  v12 = self;
-  v13 = ViewingSessionManager.viewingSession(for:object:onEnd:)(v8, v10, a4, v7, v11);
+  selfCopy = self;
+  v13 = ViewingSessionManager.viewingSession(for:object:onEnd:)(v8, v10, object, v7, v11);
   sub_1B69A3100(v7);
   swift_unknownObjectRelease();
 
   return v13;
 }
 
-- (void)removeObject:(id)a3 forContentIdentifier:(id)a4
+- (void)removeObject:(id)object forContentIdentifier:(id)identifier
 {
   v6 = sub_1B6AB92E0();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = self;
-  ViewingSessionManager.remove(object:for:)(a3, v6, v8);
+  selfCopy = self;
+  ViewingSessionManager.remove(object:for:)(object, v6, v8);
   swift_unknownObjectRelease();
 }
 
-- (void)endViewingSessionForContentIdentifier:(id)a3
+- (void)endViewingSessionForContentIdentifier:(id)identifier
 {
   v4 = sub_1B6AB92E0();
   v6 = v5;
   v7 = OBJC_IVAR___AAViewingSessionManager_sessions;
   swift_beginAccess();
 
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1B6AB8280((self + v7), v4, v6);
 
   v10 = *(&self->super.isa + v7);

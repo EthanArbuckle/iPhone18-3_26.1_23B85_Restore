@@ -1,7 +1,7 @@
 @interface HMNetworkConfigurationProfile
 + (id)logCategory;
 - (BOOL)isNetworkAccessRestricted;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)mergeFromNewObject:(id)object;
 - (BOOL)supportsWiFiReconfiguration;
 - (HMAccessoryNetworkAccessViolation)accessViolation;
 - (NSArray)allowedHosts;
@@ -10,14 +10,14 @@
 - (int64_t)credentialType;
 - (int64_t)currentProtectionMode;
 - (int64_t)targetProtectionMode;
-- (void)networkConfigurationProfileDidUpdateAccessViolation:(id)a3;
-- (void)networkConfigurationProfileDidUpdateAllowedHosts:(id)a3;
-- (void)networkConfigurationProfileDidUpdateNetworkAccessMode:(id)a3;
-- (void)networkConfigurationProfileDidUpdateProtectionMode:(id)a3;
-- (void)networkConfigurationProfileDidUpdateWiFiCredentialType:(id)a3;
-- (void)networkConfigurationProfileDidUpdateWiFiReconfigurationSupport:(id)a3;
-- (void)previewAllowedHostsForAutoProtectionModeWithCompletionHandler:(id)a3;
-- (void)reconfigureWiFiWithOptions:(id)a3 completionHandler:(id)a4;
+- (void)networkConfigurationProfileDidUpdateAccessViolation:(id)violation;
+- (void)networkConfigurationProfileDidUpdateAllowedHosts:(id)hosts;
+- (void)networkConfigurationProfileDidUpdateNetworkAccessMode:(id)mode;
+- (void)networkConfigurationProfileDidUpdateProtectionMode:(id)mode;
+- (void)networkConfigurationProfileDidUpdateWiFiCredentialType:(id)type;
+- (void)networkConfigurationProfileDidUpdateWiFiReconfigurationSupport:(id)support;
+- (void)previewAllowedHostsForAutoProtectionModeWithCompletionHandler:(id)handler;
+- (void)reconfigureWiFiWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation HMNetworkConfigurationProfile
@@ -124,18 +124,18 @@ uint64_t __45___HMNetworkConfigurationProfile_logCategory__block_invoke()
 
 - (id)logIdentifier
 {
-  v2 = [(HMAccessoryProfile *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMAccessoryProfile *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)networkConfigurationProfileDidUpdateWiFiCredentialType:(id)a3
+- (void)networkConfigurationProfileDidUpdateWiFiCredentialType:(id)type
 {
-  v4 = [(HMNetworkConfigurationProfile *)self delegate];
-  if ([v4 conformsToProtocol:&unk_1F0F63380])
+  delegate = [(HMNetworkConfigurationProfile *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0F63380])
   {
-    v5 = v4;
+    v5 = delegate;
   }
 
   else
@@ -147,25 +147,25 @@ uint64_t __45___HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(HMAccessoryProfile *)self accessoryProfile];
-    v8 = [v7 context];
-    v9 = [v8 delegateCaller];
+    accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+    context = [accessoryProfile context];
+    delegateCaller = [context delegateCaller];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __88__HMNetworkConfigurationProfile_networkConfigurationProfileDidUpdateWiFiCredentialType___block_invoke;
     v10[3] = &unk_1E754E5C0;
     v11 = v6;
-    v12 = self;
-    [v9 invokeBlock:v10];
+    selfCopy = self;
+    [delegateCaller invokeBlock:v10];
   }
 }
 
-- (void)networkConfigurationProfileDidUpdateWiFiReconfigurationSupport:(id)a3
+- (void)networkConfigurationProfileDidUpdateWiFiReconfigurationSupport:(id)support
 {
-  v4 = [(HMNetworkConfigurationProfile *)self delegate];
-  if ([v4 conformsToProtocol:&unk_1F0F63380])
+  delegate = [(HMNetworkConfigurationProfile *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0F63380])
   {
-    v5 = v4;
+    v5 = delegate;
   }
 
   else
@@ -177,25 +177,25 @@ uint64_t __45___HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(HMAccessoryProfile *)self accessoryProfile];
-    v8 = [v7 context];
-    v9 = [v8 delegateCaller];
+    accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+    context = [accessoryProfile context];
+    delegateCaller = [context delegateCaller];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __96__HMNetworkConfigurationProfile_networkConfigurationProfileDidUpdateWiFiReconfigurationSupport___block_invoke;
     v10[3] = &unk_1E754E5C0;
     v11 = v6;
-    v12 = self;
-    [v9 invokeBlock:v10];
+    selfCopy = self;
+    [delegateCaller invokeBlock:v10];
   }
 }
 
-- (void)networkConfigurationProfileDidUpdateAccessViolation:(id)a3
+- (void)networkConfigurationProfileDidUpdateAccessViolation:(id)violation
 {
-  v4 = [(HMNetworkConfigurationProfile *)self delegate];
-  if ([v4 conformsToProtocol:&unk_1F0F63380])
+  delegate = [(HMNetworkConfigurationProfile *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0F63380])
   {
-    v5 = v4;
+    v5 = delegate;
   }
 
   else
@@ -207,25 +207,25 @@ uint64_t __45___HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(HMAccessoryProfile *)self accessoryProfile];
-    v8 = [v7 context];
-    v9 = [v8 delegateCaller];
+    accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+    context = [accessoryProfile context];
+    delegateCaller = [context delegateCaller];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __85__HMNetworkConfigurationProfile_networkConfigurationProfileDidUpdateAccessViolation___block_invoke;
     v10[3] = &unk_1E754E5C0;
     v11 = v6;
-    v12 = self;
-    [v9 invokeBlock:v10];
+    selfCopy = self;
+    [delegateCaller invokeBlock:v10];
   }
 }
 
-- (void)networkConfigurationProfileDidUpdateAllowedHosts:(id)a3
+- (void)networkConfigurationProfileDidUpdateAllowedHosts:(id)hosts
 {
-  v4 = [(HMNetworkConfigurationProfile *)self delegate];
-  if ([v4 conformsToProtocol:&unk_1F0F63380])
+  delegate = [(HMNetworkConfigurationProfile *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0F63380])
   {
-    v5 = v4;
+    v5 = delegate;
   }
 
   else
@@ -237,43 +237,43 @@ uint64_t __45___HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(HMAccessoryProfile *)self accessoryProfile];
-    v8 = [v7 context];
-    v9 = [v8 delegateCaller];
+    accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+    context = [accessoryProfile context];
+    delegateCaller = [context delegateCaller];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __82__HMNetworkConfigurationProfile_networkConfigurationProfileDidUpdateAllowedHosts___block_invoke;
     v10[3] = &unk_1E754E5C0;
     v11 = v6;
-    v12 = self;
-    [v9 invokeBlock:v10];
+    selfCopy = self;
+    [delegateCaller invokeBlock:v10];
   }
 }
 
-- (void)networkConfigurationProfileDidUpdateNetworkAccessMode:(id)a3
+- (void)networkConfigurationProfileDidUpdateNetworkAccessMode:(id)mode
 {
-  v4 = [(HMNetworkConfigurationProfile *)self delegate];
+  delegate = [(HMNetworkConfigurationProfile *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(HMAccessoryProfile *)self accessoryProfile];
-    v6 = [v5 context];
-    v7 = [v6 delegateCaller];
+    accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+    context = [accessoryProfile context];
+    delegateCaller = [context delegateCaller];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __87__HMNetworkConfigurationProfile_networkConfigurationProfileDidUpdateNetworkAccessMode___block_invoke;
     v8[3] = &unk_1E754E5C0;
-    v9 = v4;
-    v10 = self;
-    [v7 invokeBlock:v8];
+    v9 = delegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v8];
   }
 }
 
-- (void)networkConfigurationProfileDidUpdateProtectionMode:(id)a3
+- (void)networkConfigurationProfileDidUpdateProtectionMode:(id)mode
 {
-  v4 = [(HMNetworkConfigurationProfile *)self delegate];
-  if ([v4 conformsToProtocol:&unk_1F0F63380])
+  delegate = [(HMNetworkConfigurationProfile *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0F63380])
   {
-    v5 = v4;
+    v5 = delegate;
   }
 
   else
@@ -285,16 +285,16 @@ uint64_t __45___HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(HMAccessoryProfile *)self accessoryProfile];
-    v8 = [v7 context];
-    v9 = [v8 delegateCaller];
+    accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+    context = [accessoryProfile context];
+    delegateCaller = [context delegateCaller];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __84__HMNetworkConfigurationProfile_networkConfigurationProfileDidUpdateProtectionMode___block_invoke;
     v10[3] = &unk_1E754E5C0;
     v10[4] = self;
     v11 = v6;
-    [v9 invokeBlock:v10];
+    [delegateCaller invokeBlock:v10];
   }
 }
 
@@ -323,11 +323,11 @@ uint64_t __84__HMNetworkConfigurationProfile_networkConfigurationProfileDidUpdat
 
 - (BOOL)isNetworkAccessRestricted
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -337,8 +337,8 @@ uint64_t __84__HMNetworkConfigurationProfile_networkConfigurationProfileDidUpdat
 
   v4 = v3;
 
-  v5 = [v4 isNetworkAccessRestricted];
-  return v5;
+  isNetworkAccessRestricted = [v4 isNetworkAccessRestricted];
+  return isNetworkAccessRestricted;
 }
 
 + (id)logCategory
@@ -363,14 +363,14 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (void)previewAllowedHostsForAutoProtectionModeWithCompletionHandler:(id)a3
+- (void)previewAllowedHostsForAutoProtectionModeWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(HMAccessoryProfile *)self accessoryProfile];
+  handlerCopy = handler;
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = accessoryProfile;
   }
 
   else
@@ -380,18 +380,18 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   v6 = v5;
 
-  [v6 previewAllowedHostsForAutoProtectionModeWithCompletionHandler:v7];
+  [v6 previewAllowedHostsForAutoProtectionModeWithCompletionHandler:handlerCopy];
 }
 
-- (void)reconfigureWiFiWithOptions:(id)a3 completionHandler:(id)a4
+- (void)reconfigureWiFiWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v10 = a3;
-  v7 = [(HMAccessoryProfile *)self accessoryProfile];
+  handlerCopy = handler;
+  optionsCopy = options;
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = accessoryProfile;
   }
 
   else
@@ -401,16 +401,16 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   v9 = v8;
 
-  [v9 reconfigureWiFiWithOptions:v10 completionHandler:v6];
+  [v9 reconfigureWiFiWithOptions:optionsCopy completionHandler:handlerCopy];
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = HMNetworkConfigurationProfile;
-  v5 = [(HMAccessoryProfile *)&v15 mergeFromNewObject:v4];
-  v6 = v4;
+  v5 = [(HMAccessoryProfile *)&v15 mergeFromNewObject:objectCopy];
+  v6 = objectCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -426,11 +426,11 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   if (v8)
   {
-    v9 = [(HMAccessoryProfile *)self accessoryProfile];
+    accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = accessoryProfile;
     }
 
     else
@@ -440,8 +440,8 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
     v11 = v10;
 
-    v12 = [v8 accessoryProfile];
-    v13 = [v11 mergeFromNewObject:v12];
+    accessoryProfile2 = [v8 accessoryProfile];
+    v13 = [v11 mergeFromNewObject:accessoryProfile2];
 
     v5 |= v13;
   }
@@ -451,11 +451,11 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
 - (int64_t)credentialType
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -465,17 +465,17 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   v4 = v3;
 
-  v5 = [v4 credentialType];
-  return v5;
+  credentialType = [v4 credentialType];
+  return credentialType;
 }
 
 - (BOOL)supportsWiFiReconfiguration
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -485,17 +485,17 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   v4 = v3;
 
-  v5 = [v4 supportsWiFiReconfiguration];
-  return v5;
+  supportsWiFiReconfiguration = [v4 supportsWiFiReconfiguration];
+  return supportsWiFiReconfiguration;
 }
 
 - (HMAccessoryNetworkAccessViolation)accessViolation
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -505,18 +505,18 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   v4 = v3;
 
-  v5 = [v4 accessViolation];
+  accessViolation = [v4 accessViolation];
 
-  return v5;
+  return accessViolation;
 }
 
 - (NSArray)allowedHosts
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -526,18 +526,18 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   v4 = v3;
 
-  v5 = [v4 allowedHosts];
+  allowedHosts = [v4 allowedHosts];
 
-  return v5;
+  return allowedHosts;
 }
 
 - (int64_t)targetProtectionMode
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -547,17 +547,17 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   v4 = v3;
 
-  v5 = [v4 targetProtectionMode];
-  return v5;
+  targetProtectionMode = [v4 targetProtectionMode];
+  return targetProtectionMode;
 }
 
 - (int64_t)currentProtectionMode
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -567,8 +567,8 @@ uint64_t __44__HMNetworkConfigurationProfile_logCategory__block_invoke()
 
   v4 = v3;
 
-  v5 = [v4 currentProtectionMode];
-  return v5;
+  currentProtectionMode = [v4 currentProtectionMode];
+  return currentProtectionMode;
 }
 
 @end

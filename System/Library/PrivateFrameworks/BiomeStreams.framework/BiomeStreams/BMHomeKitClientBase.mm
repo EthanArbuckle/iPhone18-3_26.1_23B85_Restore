@@ -1,9 +1,9 @@
 @interface BMHomeKitClientBase
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMHomeKitClientBase)initWithDateInterval:(id)a3 homeUniqueIdentifier:(id)a4 homeOccupancy:(int)a5 source:(id)a6 clientName:(id)a7 eventCorrelationIdentifier:(id)a8;
-- (BMHomeKitClientBase)initWithProto:(id)a3;
-- (BMHomeKitClientBase)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMHomeKitClientBase)initWithDateInterval:(id)interval homeUniqueIdentifier:(id)identifier homeOccupancy:(int)occupancy source:(id)source clientName:(id)name eventCorrelationIdentifier:(id)correlationIdentifier;
+- (BMHomeKitClientBase)initWithProto:(id)proto;
+- (BMHomeKitClientBase)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -11,30 +11,30 @@
 
 @implementation BMHomeKitClientBase
 
-- (BMHomeKitClientBase)initWithDateInterval:(id)a3 homeUniqueIdentifier:(id)a4 homeOccupancy:(int)a5 source:(id)a6 clientName:(id)a7 eventCorrelationIdentifier:(id)a8
+- (BMHomeKitClientBase)initWithDateInterval:(id)interval homeUniqueIdentifier:(id)identifier homeOccupancy:(int)occupancy source:(id)source clientName:(id)name eventCorrelationIdentifier:(id)correlationIdentifier
 {
-  v14 = a3;
-  v24 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  intervalCopy = interval;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  nameCopy = name;
+  correlationIdentifierCopy = correlationIdentifier;
   v25.receiver = self;
   v25.super_class = BMHomeKitClientBase;
   v18 = [(BMHomeKitClientBase *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_dateInterval, a3);
-    v20 = [v14 startDate];
+    objc_storeStrong(&v18->_dateInterval, interval);
+    startDate = [intervalCopy startDate];
     v19->_absoluteTimestamp = MEMORY[0x1865F69C0]();
 
-    [v14 duration];
+    [intervalCopy duration];
     v19->_duration = v21;
-    objc_storeStrong(&v19->_homeUniqueIdentifier, a4);
-    v19->_homeOccupancy = a5;
-    objc_storeStrong(&v19->_source, a6);
-    objc_storeStrong(&v19->_clientName, a7);
-    objc_storeStrong(&v19->_eventCorrelationIdentifier, a8);
+    objc_storeStrong(&v19->_homeUniqueIdentifier, identifier);
+    v19->_homeOccupancy = occupancy;
+    objc_storeStrong(&v19->_source, source);
+    objc_storeStrong(&v19->_clientName, name);
+    objc_storeStrong(&v19->_eventCorrelationIdentifier, correlationIdentifier);
   }
 
   return v19;
@@ -50,10 +50,10 @@
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
     v7 = __biome_log_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@
 
   else
   {
-    v8 = [[a1 alloc] initWithProtoData:v6];
+    v8 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   return v8;
@@ -74,19 +74,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMHomeKitClientBase *)self proto];
-  v3 = [v2 data];
+  proto = [(BMHomeKitClientBase *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMHomeKitClientBase)initWithProto:(id)a3
+- (BMHomeKitClientBase)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -103,7 +103,7 @@ LABEL_7:
   }
 
   v5 = MEMORY[0x1E696AB80];
-  v6 = v4;
+  v6 = protoCopy;
   v7 = [v5 alloc];
   v8 = MEMORY[0x1E695DF00];
   [v6 absoluteTimestamp];
@@ -111,36 +111,36 @@ LABEL_7:
   [v6 duration];
   v10 = [v7 initWithStartDate:v9 duration:?];
 
-  v11 = [v6 homeUniqueIdentifier];
-  v12 = [v6 homeOccupancy];
-  v13 = [v6 source];
-  v14 = [v6 clientName];
-  v15 = [v6 eventCorrelationIdentifier];
+  homeUniqueIdentifier = [v6 homeUniqueIdentifier];
+  homeOccupancy = [v6 homeOccupancy];
+  source = [v6 source];
+  clientName = [v6 clientName];
+  eventCorrelationIdentifier = [v6 eventCorrelationIdentifier];
 
-  self = [(BMHomeKitClientBase *)self initWithDateInterval:v10 homeUniqueIdentifier:v11 homeOccupancy:v12 source:v13 clientName:v14 eventCorrelationIdentifier:v15];
-  v16 = self;
+  self = [(BMHomeKitClientBase *)self initWithDateInterval:v10 homeUniqueIdentifier:homeUniqueIdentifier homeOccupancy:homeOccupancy source:source clientName:clientName eventCorrelationIdentifier:eventCorrelationIdentifier];
+  selfCopy = self;
 LABEL_8:
 
-  return v16;
+  return selfCopy;
 }
 
-- (BMHomeKitClientBase)initWithProtoData:(id)a3
+- (BMHomeKitClientBase)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBHomeKitClientBase alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBHomeKitClientBase alloc] initWithData:dataCopy];
 
     self = [(BMHomeKitClientBase *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -157,9 +157,9 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -167,12 +167,12 @@ LABEL_8:
     goto LABEL_36;
   }
 
-  v9 = v8;
-  v10 = [(BMHomeKitClientBase *)self dateInterval];
-  if (!v10)
+  v9 = equalCopy;
+  dateInterval = [(BMHomeKitClientBase *)self dateInterval];
+  if (!dateInterval)
   {
-    v4 = [v9 dateInterval];
-    if (!v4)
+    dateInterval2 = [v9 dateInterval];
+    if (!dateInterval2)
     {
       v30 = 1;
 LABEL_8:
@@ -181,22 +181,22 @@ LABEL_8:
     }
   }
 
-  v3 = [(BMHomeKitClientBase *)self dateInterval];
-  v5 = [v9 dateInterval];
-  v30 = [v3 isEqual:v5];
+  dateInterval3 = [(BMHomeKitClientBase *)self dateInterval];
+  dateInterval4 = [v9 dateInterval];
+  v30 = [dateInterval3 isEqual:dateInterval4];
 
-  if (!v10)
+  if (!dateInterval)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
 
-  v12 = [(BMHomeKitClientBase *)self homeUniqueIdentifier];
-  if (!v12)
+  homeUniqueIdentifier = [(BMHomeKitClientBase *)self homeUniqueIdentifier];
+  if (!homeUniqueIdentifier)
   {
-    v5 = [v9 homeUniqueIdentifier];
-    if (!v5)
+    dateInterval4 = [v9 homeUniqueIdentifier];
+    if (!dateInterval4)
     {
       v29 = 1;
 LABEL_14:
@@ -205,24 +205,24 @@ LABEL_14:
     }
   }
 
-  v3 = [(BMHomeKitClientBase *)self homeUniqueIdentifier];
-  v13 = [v9 homeUniqueIdentifier];
-  v29 = [v3 isEqual:v13];
+  dateInterval3 = [(BMHomeKitClientBase *)self homeUniqueIdentifier];
+  homeUniqueIdentifier2 = [v9 homeUniqueIdentifier];
+  v29 = [dateInterval3 isEqual:homeUniqueIdentifier2];
 
-  if (!v12)
+  if (!homeUniqueIdentifier)
   {
     goto LABEL_14;
   }
 
 LABEL_15:
 
-  v28 = [(BMHomeKitClientBase *)self homeOccupancy];
-  v14 = [v9 homeOccupancy];
-  v15 = [(BMHomeKitClientBase *)self source];
-  if (!v15)
+  homeOccupancy = [(BMHomeKitClientBase *)self homeOccupancy];
+  homeOccupancy2 = [v9 homeOccupancy];
+  source = [(BMHomeKitClientBase *)self source];
+  if (!source)
   {
-    v6 = [v9 source];
-    if (!v6)
+    source2 = [v9 source];
+    if (!source2)
     {
       v17 = 1;
 LABEL_20:
@@ -231,22 +231,22 @@ LABEL_20:
     }
   }
 
-  v3 = [(BMHomeKitClientBase *)self source];
-  v16 = [v9 source];
-  v17 = [v3 isEqual:v16];
+  dateInterval3 = [(BMHomeKitClientBase *)self source];
+  source3 = [v9 source];
+  v17 = [dateInterval3 isEqual:source3];
 
-  if (!v15)
+  if (!source)
   {
     goto LABEL_20;
   }
 
 LABEL_21:
 
-  v18 = [(BMHomeKitClientBase *)self clientName];
-  if (!v18)
+  clientName = [(BMHomeKitClientBase *)self clientName];
+  if (!clientName)
   {
-    v3 = [v9 clientName];
-    if (!v3)
+    dateInterval3 = [v9 clientName];
+    if (!dateInterval3)
     {
       v21 = 1;
 LABEL_26:
@@ -255,22 +255,22 @@ LABEL_26:
     }
   }
 
-  v19 = [(BMHomeKitClientBase *)self clientName];
-  v20 = [v9 clientName];
-  v21 = [v19 isEqual:v20];
+  clientName2 = [(BMHomeKitClientBase *)self clientName];
+  clientName3 = [v9 clientName];
+  v21 = [clientName2 isEqual:clientName3];
 
-  if (!v18)
+  if (!clientName)
   {
     goto LABEL_26;
   }
 
 LABEL_27:
 
-  v22 = [(BMHomeKitClientBase *)self eventCorrelationIdentifier];
-  if (!v22)
+  eventCorrelationIdentifier = [(BMHomeKitClientBase *)self eventCorrelationIdentifier];
+  if (!eventCorrelationIdentifier)
   {
-    v3 = [v9 eventCorrelationIdentifier];
-    if (!v3)
+    dateInterval3 = [v9 eventCorrelationIdentifier];
+    if (!dateInterval3)
     {
       v25 = 1;
 LABEL_32:
@@ -279,11 +279,11 @@ LABEL_32:
     }
   }
 
-  v23 = [(BMHomeKitClientBase *)self eventCorrelationIdentifier];
-  v24 = [v9 eventCorrelationIdentifier];
-  v25 = [v23 isEqual:v24];
+  eventCorrelationIdentifier2 = [(BMHomeKitClientBase *)self eventCorrelationIdentifier];
+  eventCorrelationIdentifier3 = [v9 eventCorrelationIdentifier];
+  v25 = [eventCorrelationIdentifier2 isEqual:eventCorrelationIdentifier3];
 
-  if (!v22)
+  if (!eventCorrelationIdentifier)
   {
     goto LABEL_32;
   }
@@ -291,7 +291,7 @@ LABEL_32:
 LABEL_33:
 
   v26 = v30 & v29;
-  if (v28 != v14)
+  if (homeOccupancy != homeOccupancy2)
   {
     v26 = 0;
   }

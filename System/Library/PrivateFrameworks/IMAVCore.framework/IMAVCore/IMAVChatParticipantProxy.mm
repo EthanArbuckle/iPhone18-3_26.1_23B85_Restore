@@ -1,24 +1,24 @@
 @interface IMAVChatParticipantProxy
 - (BOOL)_inviteDelivered;
 - (BOOL)isLocalParticipant;
-- (IMAVChatParticipantProxy)initWithDictionary:(id)a3 chat:(id)a4;
-- (void)forwardInvocation:(id)a3;
+- (IMAVChatParticipantProxy)initWithDictionary:(id)dictionary chat:(id)chat;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation IMAVChatParticipantProxy
 
-- (IMAVChatParticipantProxy)initWithDictionary:(id)a3 chat:(id)a4
+- (IMAVChatParticipantProxy)initWithDictionary:(id)dictionary chat:(id)chat
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  chatCopy = chat;
   v12.receiver = self;
   v12.super_class = IMAVChatParticipantProxy;
   v9 = [(IMAVChatParticipantProxy *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_info, a3);
-    objc_storeStrong(&v10->_chat, a4);
+    objc_storeStrong(&v9->_info, dictionary);
+    objc_storeStrong(&v10->_chat, chat);
   }
 
   return v10;
@@ -40,14 +40,14 @@
   return v9;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  invocationCopy = invocation;
   v4 = sub_254761764();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = objc_msgSend_selector(v3, v5, v6, v7, v8);
+    v9 = objc_msgSend_selector(invocationCopy, v5, v6, v7, v8);
     v10 = NSStringFromSelector(v9);
     v12 = 138412290;
     v13 = v10;

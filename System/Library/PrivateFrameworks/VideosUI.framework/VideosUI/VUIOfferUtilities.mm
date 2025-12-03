@@ -1,6 +1,6 @@
 @interface VUIOfferUtilities
-+ (void)_handleOfferDataSource:(id)a3 appContext:(id)a4;
-+ (void)fetchAndPresentOffer:(id)a3 sourceEvent:(id)a4 completion:(id)a5;
++ (void)_handleOfferDataSource:(id)source appContext:(id)context;
++ (void)fetchAndPresentOffer:(id)offer sourceEvent:(id)event completion:(id)completion;
 + (void)registerDeviceForCommerceOffers;
 @end
 
@@ -8,50 +8,50 @@
 
 + (void)registerDeviceForCommerceOffers
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"hasRegisterdDeviceForOffer"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"hasRegisterdDeviceForOffer"];
 
   if (v3)
   {
-    v4 = VUIDefaultLogObject();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    activeAccount = VUIDefaultLogObject();
+    if (os_log_type_enabled(activeAccount, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_INFO, "VUIOfferUtilities - Already registered the device for offers.", buf, 2u);
+      _os_log_impl(&dword_1E323F000, activeAccount, OS_LOG_TYPE_INFO, "VUIOfferUtilities - Already registered the device for offers.", buf, 2u);
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69D5920] activeAccount];
-    if (v4)
+    activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+    if (activeAccount)
     {
-      v5 = [MEMORY[0x1E698C7D8] vui_defaultBag];
-      v6 = [objc_alloc(MEMORY[0x1E698C8B0]) initWithAccount:v4 bag:v5];
-      v7 = [v6 perform];
-      [v7 addFinishBlock:&__block_literal_global_46_0];
+      vui_defaultBag = [MEMORY[0x1E698C7D8] vui_defaultBag];
+      v6 = [objc_alloc(MEMORY[0x1E698C8B0]) initWithAccount:activeAccount bag:vui_defaultBag];
+      perform = [v6 perform];
+      [perform addFinishBlock:&__block_literal_global_46_0];
     }
 
     else
     {
-      v5 = VUIDefaultLogObject();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+      vui_defaultBag = VUIDefaultLogObject();
+      if (os_log_type_enabled(vui_defaultBag, OS_LOG_TYPE_INFO))
       {
         *v8 = 0;
-        _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_INFO, "VUIOfferUtilities - No account is signed in, skipping device offer registration.", v8, 2u);
+        _os_log_impl(&dword_1E323F000, vui_defaultBag, OS_LOG_TYPE_INFO, "VUIOfferUtilities - No account is signed in, skipping device offer registration.", v8, 2u);
       }
     }
   }
 }
 
-+ (void)fetchAndPresentOffer:(id)a3 sourceEvent:(id)a4 completion:(id)a5
++ (void)fetchAndPresentOffer:(id)offer sourceEvent:(id)event completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  offerCopy = offer;
+  eventCopy = event;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
     v11 = VUIDefaultLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -69,26 +69,26 @@
       _os_signpost_emit_with_name_impl(&dword_1E323F000, v12, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Launch.FetchAndPresentOffer", "", buf, 2u);
     }
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"VUIJSOfferdidStartProcessing" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VUIJSOfferdidStartProcessing" object:0];
 
     v14 = +[VUIPlaybackManager sharedInstance];
-    v15 = [v14 isFullscreenPlaybackUIBeingShown];
+    isFullscreenPlaybackUIBeingShown = [v14 isFullscreenPlaybackUIBeingShown];
 
     v16 = +[VUIInterfaceFactory sharedInstance];
-    v17 = [v16 openURLHandler];
-    v18 = [v17 isLoadingSharedWatchURL];
+    openURLHandler = [v16 openURLHandler];
+    isLoadingSharedWatchURL = [openURLHandler isLoadingSharedWatchURL];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __65__VUIOfferUtilities_fetchAndPresentOffer_sourceEvent_completion___block_invoke;
     v19[3] = &unk_1E8736228;
-    v24 = v15;
-    v25 = v18;
-    v20 = v9;
-    v21 = v8;
-    v23 = a1;
-    v22 = v10;
+    v24 = isFullscreenPlaybackUIBeingShown;
+    v25 = isLoadingSharedWatchURL;
+    v20 = eventCopy;
+    v21 = offerCopy;
+    selfCopy = self;
+    v22 = completionCopy;
     [v21 evaluate:v19];
 
     v11 = v20;
@@ -291,46 +291,46 @@ void __52__VUIOfferUtilities_registerDeviceForCommerceOffers__block_invoke(uint6
   }
 }
 
-+ (void)_handleOfferDataSource:(id)a3 appContext:(id)a4
++ (void)_handleOfferDataSource:(id)source appContext:(id)context
 {
-  v16 = a4;
-  v5 = [a3 documentDataSources];
-  v6 = v5;
-  if (v5 && [v5 count])
+  contextCopy = context;
+  documentDataSources = [source documentDataSources];
+  v6 = documentDataSources;
+  if (documentDataSources && [documentDataSources count])
   {
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     v8 = +[VUIInterfaceFactory sharedInstance];
-    v9 = [v8 viewControllerWithDocumentDataSource:v7 appContext:v16];
+    v9 = [v8 viewControllerWithDocumentDataSource:firstObject appContext:contextCopy];
 
-    v10 = [v7 uiConfiguration];
+    uiConfiguration = [firstObject uiConfiguration];
   }
 
   else
   {
-    v10 = 0;
+    uiConfiguration = 0;
     v9 = 0;
   }
 
   v11 = +[VUITVAppLauncher sharedInstance];
-  v12 = [v11 appController];
-  v13 = [v12 navigationController];
+  appController = [v11 appController];
+  navigationController = [appController navigationController];
 
   if (v9)
   {
     v14 = +[VUIPlaybackManager sharedInstance];
     [v14 dismissPlaybackAnimated:0 leaveGroupActivitySession:1 completion:0];
 
-    [v13 vui_dismissViewControllerAnimated:1 completion:0];
+    [navigationController vui_dismissViewControllerAnimated:1 completion:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v15 = +[VUIApplicationRouter topPresentedViewController];
-      [VUIPresenterController presentViewController:v9 fromViewController:v15 WithConfiguration:v10 completion:0];
+      [VUIPresenterController presentViewController:v9 fromViewController:v15 WithConfiguration:uiConfiguration completion:0];
     }
 
     else
     {
-      [v13 pushViewController:v9 animated:0];
+      [navigationController pushViewController:v9 animated:0];
     }
   }
 }

@@ -1,36 +1,36 @@
 @interface HKHRLearnHypertensionJournalEntryProvider
-- (BOOL)_setAnchorsFromJournal:(id)a3;
-- (HKHRLearnHypertensionJournalEntryProvider)initWithJournal:(id)a3;
-- (id)journalEntryForSample:(id)a3;
+- (BOOL)_setAnchorsFromJournal:(id)journal;
+- (HKHRLearnHypertensionJournalEntryProvider)initWithJournal:(id)journal;
+- (id)journalEntryForSample:(id)sample;
 @end
 
 @implementation HKHRLearnHypertensionJournalEntryProvider
 
-- (HKHRLearnHypertensionJournalEntryProvider)initWithJournal:(id)a3
+- (HKHRLearnHypertensionJournalEntryProvider)initWithJournal:(id)journal
 {
-  v4 = a3;
+  journalCopy = journal;
   v10.receiver = self;
   v10.super_class = HKHRLearnHypertensionJournalEntryProvider;
   v5 = [(HKHRLearnHypertensionJournalEntryProvider *)&v10 init];
   if (v5)
   {
-    if ([v4 scheduleType])
+    if ([journalCopy scheduleType])
     {
       _HKInitializeLogging();
       v6 = HKHRBloodPressureLogForCategory(1);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        [(HKHRLearnHypertensionJournalEntryProvider *)v5 initWithJournal:v4, v6];
+        [(HKHRLearnHypertensionJournalEntryProvider *)v5 initWithJournal:journalCopy, v6];
       }
 
       goto LABEL_8;
     }
 
-    [(HKHRLearnHypertensionJournalEntryProvider *)v5 setJournal:v4];
+    [(HKHRLearnHypertensionJournalEntryProvider *)v5 setJournal:journalCopy];
     v7 = objc_alloc_init(MEMORY[0x277CCD0A0]);
     [(HKHRLearnHypertensionJournalEntryProvider *)v5 setCalendarCache:v7];
 
-    if (![(HKHRLearnHypertensionJournalEntryProvider *)v5 _setAnchorsFromJournal:v4])
+    if (![(HKHRLearnHypertensionJournalEntryProvider *)v5 _setAnchorsFromJournal:journalCopy])
     {
 LABEL_8:
       v8 = 0;
@@ -44,17 +44,17 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)_setAnchorsFromJournal:(id)a3
+- (BOOL)_setAnchorsFromJournal:(id)journal
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(HKHRLearnHypertensionJournalEntryProvider *)self journal:a3];
-  v5 = [v4 timeIntervals];
+  v4 = [(HKHRLearnHypertensionJournalEntryProvider *)self journal:journal];
+  timeIntervals = [v4 timeIntervals];
 
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [timeIntervals countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -65,38 +65,38 @@ LABEL_9:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(timeIntervals);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 dayWindowType];
-        if (v11 == 1)
+        dayWindowType = [v10 dayWindowType];
+        if (dayWindowType == 1)
         {
-          v12 = [v10 scheduledTime];
-          [(HKHRLearnHypertensionJournalEntryProvider *)self setBedtime:v12];
+          scheduledTime = [v10 scheduledTime];
+          [(HKHRLearnHypertensionJournalEntryProvider *)self setBedtime:scheduledTime];
         }
 
         else
         {
-          if (v11)
+          if (dayWindowType)
           {
             _HKInitializeLogging();
-            v13 = HKHRBloodPressureLogForCategory(1);
-            if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+            wakeup = HKHRBloodPressureLogForCategory(1);
+            if (os_log_type_enabled(wakeup, OS_LOG_TYPE_ERROR))
             {
-              [(HKHRLearnHypertensionJournalEntryProvider *)self _setAnchorsFromJournal:v10, v13];
+              [(HKHRLearnHypertensionJournalEntryProvider *)self _setAnchorsFromJournal:v10, wakeup];
             }
 
             v14 = 0;
             goto LABEL_17;
           }
 
-          v12 = [v10 scheduledTime];
-          [(HKHRLearnHypertensionJournalEntryProvider *)self setWakeup:v12];
+          scheduledTime = [v10 scheduledTime];
+          [(HKHRLearnHypertensionJournalEntryProvider *)self setWakeup:scheduledTime];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [timeIntervals countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -106,11 +106,11 @@ LABEL_9:
     }
   }
 
-  v5 = [(HKHRLearnHypertensionJournalEntryProvider *)self bedtime];
-  if (v5)
+  timeIntervals = [(HKHRLearnHypertensionJournalEntryProvider *)self bedtime];
+  if (timeIntervals)
   {
-    v13 = [(HKHRLearnHypertensionJournalEntryProvider *)self wakeup];
-    v14 = v13 != 0;
+    wakeup = [(HKHRLearnHypertensionJournalEntryProvider *)self wakeup];
+    v14 = wakeup != 0;
 LABEL_17:
   }
 
@@ -123,10 +123,10 @@ LABEL_17:
   return v14;
 }
 
-- (id)journalEntryForSample:(id)a3
+- (id)journalEntryForSample:(id)sample
 {
   v71 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sampleCopy = sample;
   _HKInitializeLogging();
   v5 = HKHRBloodPressureLogForCategory(1);
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -136,13 +136,13 @@ LABEL_17:
     v7 = HKHRBloodPressureLogForCategory(1);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [HKHRLearnHypertensionJournalEntryProvider journalEntryForSample:v4];
+      [HKHRLearnHypertensionJournalEntryProvider journalEntryForSample:sampleCopy];
     }
   }
 
-  v8 = [v4 _timeZone];
-  v9 = [(HKHRLearnHypertensionJournalEntryProvider *)self calendarCache];
-  v10 = [v9 calendarForTimeZone:v8];
+  _timeZone = [sampleCopy _timeZone];
+  calendarCache = [(HKHRLearnHypertensionJournalEntryProvider *)self calendarCache];
+  v10 = [calendarCache calendarForTimeZone:_timeZone];
 
   _HKInitializeLogging();
   v11 = HKHRBloodPressureLogForCategory(1);
@@ -153,26 +153,26 @@ LABEL_17:
     v13 = HKHRBloodPressureLogForCategory(1);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [(HKHRLearnHypertensionJournalEntryProvider *)v4 journalEntryForSample:v8];
+      [(HKHRLearnHypertensionJournalEntryProvider *)sampleCopy journalEntryForSample:_timeZone];
     }
   }
 
-  v62 = v8;
-  v14 = [v4 endDate];
-  v15 = [v10 startOfDayForDate:v14];
+  v62 = _timeZone;
+  endDate = [sampleCopy endDate];
+  v15 = [v10 startOfDayForDate:endDate];
 
-  v16 = [(HKHRLearnHypertensionJournalEntryProvider *)self bedtime];
-  v17 = [v10 nextDateAfterDate:v15 matchingComponents:v16 options:512];
+  bedtime = [(HKHRLearnHypertensionJournalEntryProvider *)self bedtime];
+  v17 = [v10 nextDateAfterDate:v15 matchingComponents:bedtime options:512];
 
-  v18 = [(HKHRLearnHypertensionJournalEntryProvider *)self wakeup];
+  wakeup = [(HKHRLearnHypertensionJournalEntryProvider *)self wakeup];
   v61 = v15;
-  v19 = [v10 nextDateAfterDate:v15 matchingComponents:v18 options:512];
+  v19 = [v10 nextDateAfterDate:v15 matchingComponents:wakeup options:512];
 
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = __67__HKHRLearnHypertensionJournalEntryProvider_journalEntryForSample___block_invoke;
   v63[3] = &unk_27860A8F0;
-  v20 = v4;
+  v20 = sampleCopy;
   v64 = v20;
   v21 = MEMORY[0x22AAC4F80](v63);
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -202,8 +202,8 @@ LABEL_17:
   while (1)
   {
     v29 = [v22 objectAtIndexedSubscript:v26];
-    v30 = [v20 endDate];
-    [v30 timeIntervalSinceDate:v29];
+    endDate2 = [v20 endDate];
+    [endDate2 timeIntervalSinceDate:v29];
     v32 = fabs(v31);
 
     _HKInitializeLogging();
@@ -215,13 +215,13 @@ LABEL_17:
       v35 = HKHRBloodPressureLogForCategory(1);
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
       {
-        v36 = [v20 UUID];
+        uUID = [v20 UUID];
         [*(v28 + 2728) hkhr_ISO8601StringForDate:v29];
         v38 = v37 = v17;
         *buf = 136446978;
         v66 = "[HKHRLearnHypertensionJournalEntryProvider journalEntryForSample:]";
         v67 = 2114;
-        v68 = v36;
+        v68 = uUID;
         v69 = 2112;
         *v70 = v38;
         *&v70[8] = 2048;
@@ -268,14 +268,14 @@ LABEL_23:
     v47 = HKHRBloodPressureLogForCategory(1);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
     {
-      v55 = [v20 UUID];
+      uUID2 = [v20 UUID];
       v56 = [MEMORY[0x277CBEAA8] hkhr_ISO8601StringForDate:v40];
       *buf = 136447234;
       v66 = "[HKHRLearnHypertensionJournalEntryProvider journalEntryForSample:]";
       v57 = "bedtime";
       v67 = 2114;
       v69 = 1024;
-      v68 = v55;
+      v68 = uUID2;
       if (v44 == v43)
       {
         v57 = "wakeup";
@@ -294,8 +294,8 @@ LABEL_23:
   v48 = v44 ^ v43;
   v49 = [v40 hk_dayIndexWithCalendar:v10];
   v50 = [HKHRLearnHypertensionJournalEntry alloc];
-  v51 = [v20 UUID];
-  v52 = [(HKHRLearnHypertensionJournalEntry *)v50 initWithSampleUUID:v51 dayWindowType:v48 dayIndex:v49];
+  uUID3 = [v20 UUID];
+  v52 = [(HKHRLearnHypertensionJournalEntry *)v50 initWithSampleUUID:uUID3 dayWindowType:v48 dayIndex:v49];
 
   v53 = *MEMORY[0x277D85DE8];
 

@@ -1,31 +1,31 @@
 @interface AXInvertColors_Sharing
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_Sharing
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIShareGroupActivityCell" hasProperty:@"imageSlotView" withType:"@"];
-  [v3 validateClass:@"UIShareGroupActivityCell" hasProperty:@"activityImageView" withType:"@"];
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"imageView" withType:"@"];
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"imageSlotView" withType:"@"];
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"transportImageView" withType:"@"];
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"transportSlotView" withType:"@"];
-  [v3 validateClass:@"UIShareGroupActivityCell" hasProperty:@"badgeSlotView" withType:"@"];
-  [v3 validateClass:@"_UIActivityUserDefaultsActivityCell" hasProperty:@"activityImageSlotView" withType:"@"];
-  [v3 validateClass:@"SHSheetSceneViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIShareGroupActivityCell" hasProperty:@"imageSlotView" withType:"@"];
+  [validationsCopy validateClass:@"UIShareGroupActivityCell" hasProperty:@"activityImageView" withType:"@"];
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"imageView" withType:"@"];
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"imageSlotView" withType:"@"];
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"transportImageView" withType:"@"];
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"transportSlotView" withType:"@"];
+  [validationsCopy validateClass:@"UIShareGroupActivityCell" hasProperty:@"badgeSlotView" withType:"@"];
+  [validationsCopy validateClass:@"_UIActivityUserDefaultsActivityCell" hasProperty:@"activityImageSlotView" withType:"@"];
+  [validationsCopy validateClass:@"SHSheetSceneViewController" isKindOfClass:@"UIViewController"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"UIShareGroupActivityCellInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"UIAirDropGroupActivityCellInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"_UIActivityUserDefaultsActivityCellInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SHSheetSceneViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"UIShareGroupActivityCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"UIAirDropGroupActivityCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"_UIActivityUserDefaultsActivityCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SHSheetSceneViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

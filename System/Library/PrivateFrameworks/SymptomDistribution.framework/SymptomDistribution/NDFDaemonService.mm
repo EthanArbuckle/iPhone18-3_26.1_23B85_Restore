@@ -1,25 +1,25 @@
 @interface NDFDaemonService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC19SymptomDistribution16NDFDaemonService)init;
-- (void)cleanupNetworkDeviceEntriesWithCompletionHandler:(id)a3;
-- (void)deliverCloudKitDevicePayload:(_TtC31SymptomNetworkDiagnosticsCommon16NDFDevicePayload *)a3 completionHandler:(id)a4;
-- (void)deliverCloudKitDevicePayloads:(NSArray *)a3 completionHandler:(id)a4;
-- (void)fetchAllNetworkDeviceEntriesWithCompletionHandler:(id)a3;
-- (void)fetchLatestNetworkDeviceEntriesWithCompletionHandler:(id)a3;
-- (void)initializeSchemaWithCompletionHandler:(id)a3;
-- (void)printDatabaseTelemetryStatsWithCompletionHandler:(id)a3;
-- (void)publishNetworkDeviceEntryWithCompletionHandler:(id)a3;
-- (void)startDelegatedDiscoveryFor:(NSString *)a3 cancelAfter:(double)a4 deviceType:(char)a5 completionHandler:(id)a6;
+- (void)cleanupNetworkDeviceEntriesWithCompletionHandler:(id)handler;
+- (void)deliverCloudKitDevicePayload:(_TtC31SymptomNetworkDiagnosticsCommon16NDFDevicePayload *)payload completionHandler:(id)handler;
+- (void)deliverCloudKitDevicePayloads:(NSArray *)payloads completionHandler:(id)handler;
+- (void)fetchAllNetworkDeviceEntriesWithCompletionHandler:(id)handler;
+- (void)fetchLatestNetworkDeviceEntriesWithCompletionHandler:(id)handler;
+- (void)initializeSchemaWithCompletionHandler:(id)handler;
+- (void)printDatabaseTelemetryStatsWithCompletionHandler:(id)handler;
+- (void)publishNetworkDeviceEntryWithCompletionHandler:(id)handler;
+- (void)startDelegatedDiscoveryFor:(NSString *)for cancelAfter:(double)after deviceType:(char)type completionHandler:(id)handler;
 @end
 
 @implementation NDFDaemonService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_2329C7F30(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_2329C7F30(connectionCopy);
 
   return v9 & 1;
 }
@@ -40,17 +40,17 @@
   return [(NDFDaemonService *)&v8 init];
 }
 
-- (void)startDelegatedDiscoveryFor:(NSString *)a3 cancelAfter:(double)a4 deviceType:(char)a5 completionHandler:(id)a6
+- (void)startDelegatedDiscoveryFor:(NSString *)for cancelAfter:(double)after deviceType:(char)type completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDBDD98, &qword_2329D4860);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v22 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  *(v16 + 16) = a3;
-  *(v16 + 24) = a4;
-  *(v16 + 32) = a5;
+  *(v16 + 16) = for;
+  *(v16 + 24) = after;
+  *(v16 + 32) = type;
   *(v16 + 40) = v15;
   *(v16 + 48) = self;
   v17 = sub_2329D3504();
@@ -65,20 +65,20 @@
   v19[3] = 0;
   v19[4] = &unk_2329D5198;
   v19[5] = v18;
-  v20 = a3;
-  v21 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_2329C7B14(0, 0, v14, &unk_2329D51A0, v19);
 }
 
-- (void)deliverCloudKitDevicePayload:(_TtC31SymptomNetworkDiagnosticsCommon16NDFDevicePayload *)a3 completionHandler:(id)a4
+- (void)deliverCloudKitDevicePayload:(_TtC31SymptomNetworkDiagnosticsCommon16NDFDevicePayload *)payload completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDBDD98, &qword_2329D4860);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = payload;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2329D3504();
@@ -93,20 +93,20 @@
   v15[3] = 0;
   v15[4] = &unk_2329D5178;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  payloadCopy = payload;
+  selfCopy = self;
   sub_2329C7B14(0, 0, v10, &unk_2329D5180, v15);
 }
 
-- (void)deliverCloudKitDevicePayloads:(NSArray *)a3 completionHandler:(id)a4
+- (void)deliverCloudKitDevicePayloads:(NSArray *)payloads completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDBDD98, &qword_2329D4860);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = payloads;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2329D3504();
@@ -121,18 +121,18 @@
   v15[3] = 0;
   v15[4] = &unk_2329D5158;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  payloadsCopy = payloads;
+  selfCopy = self;
   sub_2329C7B14(0, 0, v10, &unk_2329D5160, v15);
 }
 
-- (void)publishNetworkDeviceEntryWithCompletionHandler:(id)a3
+- (void)publishNetworkDeviceEntryWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDBDD98, &qword_2329D4860);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -148,17 +148,17 @@
   v13[3] = 0;
   v13[4] = &unk_2329D5138;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2329C7B14(0, 0, v8, &unk_2329D5140, v13);
 }
 
-- (void)fetchAllNetworkDeviceEntriesWithCompletionHandler:(id)a3
+- (void)fetchAllNetworkDeviceEntriesWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDBDD98, &qword_2329D4860);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -174,17 +174,17 @@
   v13[3] = 0;
   v13[4] = &unk_2329D5118;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2329C7B14(0, 0, v8, &unk_2329D5120, v13);
 }
 
-- (void)fetchLatestNetworkDeviceEntriesWithCompletionHandler:(id)a3
+- (void)fetchLatestNetworkDeviceEntriesWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDBDD98, &qword_2329D4860);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -200,17 +200,17 @@
   v13[3] = 0;
   v13[4] = &unk_2329D50F8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2329C7B14(0, 0, v8, &unk_2329D5100, v13);
 }
 
-- (void)initializeSchemaWithCompletionHandler:(id)a3
+- (void)initializeSchemaWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDBDD98, &qword_2329D4860);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -226,17 +226,17 @@
   v13[3] = 0;
   v13[4] = &unk_2329D50D8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2329C7B14(0, 0, v8, &unk_2329D50E0, v13);
 }
 
-- (void)cleanupNetworkDeviceEntriesWithCompletionHandler:(id)a3
+- (void)cleanupNetworkDeviceEntriesWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDBDD98, &qword_2329D4860);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -252,17 +252,17 @@
   v13[3] = 0;
   v13[4] = &unk_2329D50B8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2329C7B14(0, 0, v8, &unk_2329D50C0, v13);
 }
 
-- (void)printDatabaseTelemetryStatsWithCompletionHandler:(id)a3
+- (void)printDatabaseTelemetryStatsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DDBDD98, &qword_2329D4860);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -278,7 +278,7 @@
   v13[3] = 0;
   v13[4] = &unk_2329D5078;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2329C7B14(0, 0, v8, &unk_2329D5088, v13);
 }
 

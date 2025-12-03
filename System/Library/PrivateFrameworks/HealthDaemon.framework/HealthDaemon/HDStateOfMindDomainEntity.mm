@@ -1,8 +1,8 @@
 @interface HDStateOfMindDomainEntity
-+ (BOOL)insertDomainsForObjectID:(int64_t)a3 domains:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)domainsForObjectID:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
++ (BOOL)insertDomainsForObjectID:(int64_t)d domains:(id)domains transaction:(id)transaction error:(id *)error;
++ (id)domainsForObjectID:(int64_t)d transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
-+ (id)predicateForDomainsForObjectID:(int64_t)a3;
++ (id)predicateForDomainsForObjectID:(int64_t)d;
 @end
 
 @implementation HDStateOfMindDomainEntity
@@ -20,28 +20,28 @@
   return v3;
 }
 
-+ (id)predicateForDomainsForObjectID:(int64_t)a3
++ (id)predicateForDomainsForObjectID:(int64_t)d
 {
   v3 = MEMORY[0x277D10B18];
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
   v5 = [v3 predicateWithProperty:@"data_id" equalToValue:v4];
 
   return v5;
 }
 
-+ (id)domainsForObjectID:(int64_t)a3 transaction:(id)a4 error:(id *)a5
++ (id)domainsForObjectID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   v8 = MEMORY[0x277CBEB18];
-  v9 = a4;
-  v10 = [v8 array];
-  v11 = [v9 databaseForEntityClass:a1];
+  transactionCopy = transaction;
+  array = [v8 array];
+  v11 = [transactionCopy databaseForEntityClass:self];
 
-  v17[4] = a3;
+  v17[4] = d;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __66__HDStateOfMindDomainEntity_domainsForObjectID_transaction_error___block_invoke;
   v18[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v18[4] = a1;
+  v18[4] = self;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __66__HDStateOfMindDomainEntity_domainsForObjectID_transaction_error___block_invoke_2;
@@ -50,11 +50,11 @@
   v15[1] = 3221225472;
   v15[2] = __66__HDStateOfMindDomainEntity_domainsForObjectID_transaction_error___block_invoke_3;
   v15[3] = &unk_278614098;
-  v12 = v10;
+  v12 = array;
   v16 = v12;
-  LODWORD(a5) = [v11 executeCachedStatementForKey:&domainsForObjectID_transaction_error__selectKey error:a5 SQLGenerator:v18 bindingHandler:v17 enumerationHandler:v15];
+  LODWORD(error) = [v11 executeCachedStatementForKey:&domainsForObjectID_transaction_error__selectKey error:error SQLGenerator:v18 bindingHandler:v17 enumerationHandler:v15];
 
-  if (a5)
+  if (error)
   {
     v13 = [v12 copy];
   }
@@ -85,16 +85,16 @@ uint64_t __66__HDStateOfMindDomainEntity_domainsForObjectID_transaction_error___
   return 1;
 }
 
-+ (BOOL)insertDomainsForObjectID:(int64_t)a3 domains:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertDomainsForObjectID:(int64_t)d domains:(id)domains transaction:(id)transaction error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v22 = a5;
+  domainsCopy = domains;
+  transactionCopy = transaction;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v7;
+  obj = domainsCopy;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v8)
   {
@@ -109,12 +109,12 @@ uint64_t __66__HDStateOfMindDomainEntity_domainsForObjectID_transaction_error___
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v23 + 1) + 8 * i) integerValue];
-        v13 = v22;
+        integerValue = [*(*(&v23 + 1) + 8 * i) integerValue];
+        v13 = transactionCopy;
         v14 = objc_opt_self();
         v15 = [v13 databaseForEntityClass:v14];
 
-        v27[5] = v12;
+        v27[5] = integerValue;
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __79__HDStateOfMindDomainEntity__insertDomainForObjectID_domain_transaction_error___block_invoke;
@@ -124,10 +124,10 @@ uint64_t __66__HDStateOfMindDomainEntity_domainsForObjectID_transaction_error___
         v27[1] = 3221225472;
         v27[2] = __79__HDStateOfMindDomainEntity__insertDomainForObjectID_domain_transaction_error___block_invoke_2;
         v27[3] = &__block_descriptor_48_e23_v16__0__sqlite3_stmt__8l;
-        v27[4] = a3;
-        LODWORD(v12) = [v15 executeCachedStatementForKey:&_insertDomainForObjectID_domain_transaction_error__insertKey error:a6 SQLGenerator:v28 bindingHandler:v27 enumerationHandler:0];
+        v27[4] = d;
+        LODWORD(integerValue) = [v15 executeCachedStatementForKey:&_insertDomainForObjectID_domain_transaction_error__insertKey error:error SQLGenerator:v28 bindingHandler:v27 enumerationHandler:0];
 
-        if (!v12)
+        if (!integerValue)
         {
           v16 = 0;
           goto LABEL_11;

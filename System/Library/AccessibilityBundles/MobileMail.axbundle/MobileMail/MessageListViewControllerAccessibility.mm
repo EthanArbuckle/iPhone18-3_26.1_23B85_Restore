@@ -1,33 +1,33 @@
 @interface MessageListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)shelfButtonItem;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetCategoryButtonsTrait;
-- (void)_updateBackButtonImageWithCount:(unint64_t)a3;
+- (void)_updateBackButtonImageWithCount:(unint64_t)count;
 @end
 
 @implementation MessageListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MessageListViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"filterViewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"_updateBackButtonImageWithCount:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"scene" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"_updateToolbarButtons" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"shelfButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailMainScene" hasInstanceMethod:@"splitViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"filterButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"filterCriteriaButtonItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"filterPickerControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUIMailboxFilterViewModel" hasInstanceMethod:@"selectedFilters" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUIMailboxFilter" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFMailboxFilterBarButtonItem" hasInstanceMethod:@"isFilterEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"bucketsViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailUI.BucketsViewController" hasSwiftField:@"collectionView" withSwiftType:"Optional<UICollectionView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MessageListViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"filterViewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"_updateBackButtonImageWithCount:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"scene" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"_updateToolbarButtons" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"shelfButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailMainScene" hasInstanceMethod:@"splitViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"filterButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"filterCriteriaButtonItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"filterPickerControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUIMailboxFilterViewModel" hasInstanceMethod:@"selectedFilters" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUIMailboxFilter" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFMailboxFilterBarButtonItem" hasInstanceMethod:@"isFilterEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MUIMessageListViewController" hasInstanceMethod:@"bucketsViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailUI.BucketsViewController" hasSwiftField:@"collectionView" withSwiftType:"Optional<UICollectionView>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -103,33 +103,33 @@ id __84__MessageListViewControllerAccessibility__accessibilityLoadAccessibilityI
   return v8;
 }
 
-- (void)_updateBackButtonImageWithCount:(unint64_t)a3
+- (void)_updateBackButtonImageWithCount:(unint64_t)count
 {
   v13.receiver = self;
   v13.super_class = MessageListViewControllerAccessibility;
   [(MessageListViewControllerAccessibility *)&v13 _updateBackButtonImageWithCount:?];
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
-  v5 = [v4 navigationItem];
-  v6 = [v5 title];
+  navigationItem = [v4 navigationItem];
+  title = [navigationItem title];
 
-  if (a3 && v6)
+  if (count && title)
   {
     v7 = MEMORY[0x29EDBA0F8];
     v8 = accessibilityLocalizedString(@"unread.count");
-    v9 = [v7 localizedStringWithFormat:v8, a3];
+    navigationItem3 = [v7 localizedStringWithFormat:v8, count];
 
-    v10 = __AXStringForVariables();
-    v11 = [v4 navigationItem];
-    v12 = [v11 backBarButtonItem];
-    [v12 setAccessibilityLabel:v10];
+    backBarButtonItem2 = __AXStringForVariables();
+    navigationItem2 = [v4 navigationItem];
+    backBarButtonItem = [navigationItem2 backBarButtonItem];
+    [backBarButtonItem setAccessibilityLabel:backBarButtonItem2];
   }
 
   else
   {
-    v9 = [v4 navigationItem];
-    v10 = [v9 backBarButtonItem];
-    [v10 setAccessibilityLabel:0];
+    navigationItem3 = [v4 navigationItem];
+    backBarButtonItem2 = [navigationItem3 backBarButtonItem];
+    [backBarButtonItem2 setAccessibilityLabel:0];
   }
 }
 
@@ -137,11 +137,11 @@ id __84__MessageListViewControllerAccessibility__accessibilityLoadAccessibilityI
 {
   v5.receiver = self;
   v5.super_class = MessageListViewControllerAccessibility;
-  v2 = [(MessageListViewControllerAccessibility *)&v5 shelfButtonItem];
+  shelfButtonItem = [(MessageListViewControllerAccessibility *)&v5 shelfButtonItem];
   v3 = accessibilityLocalizedString(@"app.shelf.button");
-  [v2 setAccessibilityLabel:v3];
+  [shelfButtonItem setAccessibilityLabel:v3];
 
-  return v2;
+  return shelfButtonItem;
 }
 
 - (void)_axSetCategoryButtonsTrait
@@ -155,12 +155,12 @@ id __84__MessageListViewControllerAccessibility__accessibilityLoadAccessibilityI
   v5 = [v4 safeSwiftValueForKey:@"collectionView"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 subviews];
+  subviews = [v6 subviews];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  v8 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -171,7 +171,7 @@ id __84__MessageListViewControllerAccessibility__accessibilityLoadAccessibilityI
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -183,7 +183,7 @@ id __84__MessageListViewControllerAccessibility__accessibilityLoadAccessibilityI
         [v12 setAccessibilityTraitsBlock:v14];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v9);

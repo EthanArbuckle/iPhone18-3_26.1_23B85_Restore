@@ -1,23 +1,23 @@
 @interface PGPNGraphHelper
-+ (id)_createSocialGraphWithPersonClusterManager:(id)a3 persons:(id)a4 moments:(id)a5 inferredMePersonLocalIdentifier:(id *)a6 updateBlock:(id)a7;
-+ (id)_socialGroupsLocalIdentifiersInGraph:(id)a3 includeMeNode:(BOOL)a4 includeCouples:(BOOL)a5 includeInvalid:(BOOL)a6;
-+ (id)computeFTESocialGroupsWithPhotoLibrary:(id)a3 updateBlock:(id)a4;
-+ (id)densityClusteringForObjects:(id)a3 maximumDistance:(double)a4 minimumNumberOfObjects:(unint64_t)a5 withDistanceBlock:(id)a6;
-+ (id)multiLevelSocialGroupsWithPersonClusterManager:(id)a3 forPersons:(id)a4 updateBlock:(id)a5;
-+ (id)socialGroupsOverTheYearsWithPersonClusterManager:(id)a3 forPersons:(id)a4 updateBlock:(id)a5;
++ (id)_createSocialGraphWithPersonClusterManager:(id)manager persons:(id)persons moments:(id)moments inferredMePersonLocalIdentifier:(id *)identifier updateBlock:(id)block;
++ (id)_socialGroupsLocalIdentifiersInGraph:(id)graph includeMeNode:(BOOL)node includeCouples:(BOOL)couples includeInvalid:(BOOL)invalid;
++ (id)computeFTESocialGroupsWithPhotoLibrary:(id)library updateBlock:(id)block;
++ (id)densityClusteringForObjects:(id)objects maximumDistance:(double)distance minimumNumberOfObjects:(unint64_t)ofObjects withDistanceBlock:(id)block;
++ (id)multiLevelSocialGroupsWithPersonClusterManager:(id)manager forPersons:(id)persons updateBlock:(id)block;
++ (id)socialGroupsOverTheYearsWithPersonClusterManager:(id)manager forPersons:(id)persons updateBlock:(id)block;
 @end
 
 @implementation PGPNGraphHelper
 
-+ (id)densityClusteringForObjects:(id)a3 maximumDistance:(double)a4 minimumNumberOfObjects:(unint64_t)a5 withDistanceBlock:(id)a6
++ (id)densityClusteringForObjects:(id)objects maximumDistance:(double)distance minimumNumberOfObjects:(unint64_t)ofObjects withDistanceBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = [objc_alloc(MEMORY[0x277D3AC30]) initWithDistanceBlock:v10];
-  [v11 setMaximumDistance:a4];
-  [v11 setMinimumNumberOfObjects:a5];
-  v12 = [v11 performWithDataset:v9 progressBlock:0];
+  objectsCopy = objects;
+  blockCopy = block;
+  v11 = [objc_alloc(MEMORY[0x277D3AC30]) initWithDistanceBlock:blockCopy];
+  [v11 setMaximumDistance:distance];
+  [v11 setMinimumNumberOfObjects:ofObjects];
+  v12 = [v11 performWithDataset:objectsCopy progressBlock:0];
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count")}];
   v22 = 0u;
   v23 = 0u;
@@ -38,8 +38,8 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * i) objects];
-        [v13 addObject:v19];
+        objects = [*(*(&v22 + 1) + 8 * i) objects];
+        [v13 addObject:objects];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -53,28 +53,28 @@
   return v13;
 }
 
-+ (id)socialGroupsOverTheYearsWithPersonClusterManager:(id)a3 forPersons:(id)a4 updateBlock:(id)a5
++ (id)socialGroupsOverTheYearsWithPersonClusterManager:(id)manager forPersons:(id)persons updateBlock:(id)block
 {
   v73 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v50 = a4;
-  v49 = a5;
+  managerCopy = manager;
+  personsCopy = persons;
+  blockCopy = block;
   v48 = objc_opt_new();
   context = objc_autoreleasePoolPush();
-  v51 = v7;
-  v8 = [v7 pn_fetchMoments];
-  v9 = [v8 fetchedObjects];
+  v51 = managerCopy;
+  pn_fetchMoments = [managerCopy pn_fetchMoments];
+  fetchedObjects = [pn_fetchMoments fetchedObjects];
   v10 = objc_opt_new();
-  v52 = v9;
-  v11 = [v9 firstObject];
-  v12 = [v11 startDate];
+  v52 = fetchedObjects;
+  firstObject = [fetchedObjects firstObject];
+  startDate = [firstObject startDate];
 
   v13 = objc_opt_new();
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v14 = v8;
+  v14 = pn_fetchMoments;
   v15 = [v14 countByEnumeratingWithState:&v57 objects:v72 count:16];
   if (v15)
   {
@@ -91,16 +91,16 @@
 
         v19 = *(*(&v57 + 1) + 8 * i);
         [v13 addObject:v19];
-        v20 = [v19 startDate];
-        [v20 timeIntervalSinceDate:v12];
+        startDate2 = [v19 startDate];
+        [startDate2 timeIntervalSinceDate:startDate];
         if (v21 > 31556926.0 || ([v52 lastObject], v22 = objc_claimAutoreleasedReturnValue(), v22, v19 == v22))
         {
           v23 = [v13 copy];
           [v10 addObject:v23];
 
-          v24 = v20;
+          v24 = startDate2;
           [v13 removeAllObjects];
-          v12 = v24;
+          startDate = v24;
         }
       }
 
@@ -132,13 +132,13 @@
 
         v29 = *(*(&v53 + 1) + 8 * j);
         v30 = objc_autoreleasePoolPush();
-        v31 = [(__objc2_class *)v27[370] _createSocialGraphWithPersonClusterManager:v51 persons:v50 moments:v29 inferredMePersonLocalIdentifier:0 updateBlock:v49];
+        v31 = [(__objc2_class *)v27[370] _createSocialGraphWithPersonClusterManager:v51 persons:personsCopy moments:v29 inferredMePersonLocalIdentifier:0 updateBlock:blockCopy];
         if (!v31)
         {
           objc_autoreleasePoolPop(v30);
 
           objc_autoreleasePoolPop(context);
-          v38 = MEMORY[0x277CBEBF8];
+          allObjects = MEMORY[0x277CBEBF8];
           v37 = v48;
           goto LABEL_23;
         }
@@ -150,17 +150,17 @@
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           v42 = [v29 count];
-          v44 = [v29 firstObject];
-          v45 = [v44 startDate];
-          v43 = [v29 lastObject];
-          v35 = [v43 endDate];
+          firstObject2 = [v29 firstObject];
+          startDate3 = [firstObject2 startDate];
+          lastObject = [v29 lastObject];
+          endDate = [lastObject endDate];
           v36 = [v34 count];
           *buf = 134219010;
           v62 = v42;
           v63 = 2112;
-          v64 = v45;
+          v64 = startDate3;
           v65 = 2112;
-          v66 = v35;
+          v66 = endDate;
           v67 = 2048;
           v68 = v36;
           v69 = 2112;
@@ -184,26 +184,26 @@
 
   objc_autoreleasePoolPop(context);
   v37 = v48;
-  v38 = [v48 allObjects];
+  allObjects = [v48 allObjects];
 LABEL_23:
 
   v39 = *MEMORY[0x277D85DE8];
 
-  return v38;
+  return allObjects;
 }
 
-+ (id)multiLevelSocialGroupsWithPersonClusterManager:(id)a3 forPersons:(id)a4 updateBlock:(id)a5
++ (id)multiLevelSocialGroupsWithPersonClusterManager:(id)manager forPersons:(id)persons updateBlock:(id)block
 {
   v84 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  personsCopy = persons;
+  blockCopy = block;
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"highlyInteresting == YES"];
-  v11 = [v8 filteredSetUsingPredicate:v10];
+  v11 = [personsCopy filteredSetUsingPredicate:v10];
 
   if ([v11 count] <= 3)
   {
-    v12 = v8;
+    v12 = personsCopy;
 
     v11 = v12;
   }
@@ -228,8 +228,8 @@ LABEL_23:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v74 + 1) + 8 * i) backingMomentIdentifiers];
-        [v13 unionSet:v19];
+        backingMomentIdentifiers = [*(*(&v74 + 1) + 8 * i) backingMomentIdentifiers];
+        [v13 unionSet:backingMomentIdentifiers];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v74 objects:v83 count:16];
@@ -238,8 +238,8 @@ LABEL_23:
     while (v16);
   }
 
-  v20 = [v13 allObjects];
-  v21 = [v7 pn_fetchMomentsWithLocalIdentifiers:v20];
+  allObjects = [v13 allObjects];
+  v21 = [managerCopy pn_fetchMomentsWithLocalIdentifiers:allObjects];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -252,8 +252,8 @@ LABEL_23:
     _os_log_debug_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Generating graph with %lu persons, %lu moments", buf, 0x16u);
   }
 
-  v22 = v9;
-  v23 = [PGPNGraphHelper _createSocialGraphWithPersonClusterManager:v7 persons:v14 moments:v21 inferredMePersonLocalIdentifier:0 updateBlock:v9];
+  v22 = blockCopy;
+  v23 = [PGPNGraphHelper _createSocialGraphWithPersonClusterManager:managerCopy persons:v14 moments:v21 inferredMePersonLocalIdentifier:0 updateBlock:blockCopy];
   v24 = v23;
   if (!v23)
   {
@@ -261,9 +261,9 @@ LABEL_23:
     goto LABEL_44;
   }
 
-  v64 = v8;
-  v25 = [v23 meNode];
-  v26 = [v25 localIdentifier];
+  v64 = personsCopy;
+  meNode = [v23 meNode];
+  localIdentifier = [meNode localIdentifier];
 
   v27 = [PGPNGraphHelper _socialGroupsLocalIdentifiersInGraph:v24 includeMeNode:1 includeCouples:1 includeInvalid:0];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -285,8 +285,8 @@ LABEL_23:
     v71[3] = &unk_2788844E8;
     v63 = v27;
     v72 = v63;
-    v26 = v26;
-    v73 = v26;
+    localIdentifier = localIdentifier;
+    v73 = localIdentifier;
     v30 = [v29 predicateWithBlock:v71];
     v31 = [v64 filteredSetUsingPredicate:v30];
 
@@ -300,7 +300,7 @@ LABEL_23:
       v58 = v24;
       v59 = v21;
       v60 = v22;
-      v61 = v7;
+      v61 = managerCopy;
       v65 = objc_opt_new();
       v67 = 0u;
       v68 = 0u;
@@ -323,13 +323,13 @@ LABEL_23:
             }
 
             v37 = *(*(&v67 + 1) + 8 * j);
-            v38 = [v37 localIdentifier];
-            v39 = [v38 isEqualToString:v26];
+            localIdentifier2 = [v37 localIdentifier];
+            v39 = [localIdentifier2 isEqualToString:localIdentifier];
 
             if ((v39 & 1) == 0)
             {
-              v40 = [v37 backingMomentIdentifiers];
-              [v65 unionSet:v40];
+              backingMomentIdentifiers2 = [v37 backingMomentIdentifiers];
+              [v65 unionSet:backingMomentIdentifiers2];
             }
           }
 
@@ -339,9 +339,9 @@ LABEL_23:
         while (v34);
       }
 
-      v41 = [v65 allObjects];
-      v7 = v61;
-      v42 = [v61 pn_fetchMomentsWithLocalIdentifiers:v41];
+      allObjects2 = [v65 allObjects];
+      managerCopy = v61;
+      v42 = [v61 pn_fetchMomentsWithLocalIdentifiers:allObjects2];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
@@ -354,7 +354,7 @@ LABEL_23:
         _os_log_debug_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Generating extra graph with %lu persons, %lu moments", buf, 0x16u);
       }
 
-      v66 = v26;
+      v66 = localIdentifier;
       v57 = v42;
       v22 = v60;
       v43 = [PGPNGraphHelper _createSocialGraphWithPersonClusterManager:v61 persons:v32 moments:v42 inferredMePersonLocalIdentifier:&v66 updateBlock:v60];
@@ -397,7 +397,7 @@ LABEL_23:
         v24 = v58;
       }
 
-      v26 = v56;
+      localIdentifier = v56;
       v21 = v59;
     }
 
@@ -415,7 +415,7 @@ LABEL_23:
   v48 = v51;
 LABEL_43:
 
-  v8 = v64;
+  personsCopy = v64;
 LABEL_44:
 
   v52 = *MEMORY[0x277D85DE8];
@@ -474,19 +474,19 @@ LABEL_12:
   return v9;
 }
 
-+ (id)computeFTESocialGroupsWithPhotoLibrary:(id)a3 updateBlock:(id)a4
++ (id)computeFTESocialGroupsWithPhotoLibrary:(id)library updateBlock:(id)block
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  blockCopy = block;
   v7 = objc_alloc(MEMORY[0x277D3C7F0]);
-  v8 = [v7 initWithPhotoLibrary:v5 rawClusters:MEMORY[0x277CBEC10] includesPets:1];
+  v8 = [v7 initWithPhotoLibrary:libraryCopy rawClusters:MEMORY[0x277CBEC10] includesPets:1];
   v9 = [objc_alloc(MEMORY[0x277D3C7E0]) initWithPhotoLibrary:v8];
   v10 = [v9 pn_fetchPersonsWithType:1];
   v11 = MEMORY[0x277CBEB58];
   v39 = v10;
-  v12 = [v10 fetchedObjects];
-  v13 = [v11 setWithArray:v12];
+  fetchedObjects = [v10 fetchedObjects];
+  v13 = [v11 setWithArray:fetchedObjects];
 
   v14 = objc_opt_new();
   v45 = 0u;
@@ -508,8 +508,8 @@ LABEL_12:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v45 + 1) + 8 * i) backingMomentIdentifiers];
-        [v14 unionSet:v20];
+        backingMomentIdentifiers = [*(*(&v45 + 1) + 8 * i) backingMomentIdentifiers];
+        [v14 unionSet:backingMomentIdentifiers];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -518,8 +518,8 @@ LABEL_12:
     while (v17);
   }
 
-  v21 = [v14 allObjects];
-  v22 = [v9 pn_fetchMomentsWithLocalIdentifiers:v21];
+  allObjects = [v14 allObjects];
+  v22 = [v9 pn_fetchMomentsWithLocalIdentifiers:allObjects];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -536,18 +536,18 @@ LABEL_12:
   v43[1] = 3221225472;
   v43[2] = __70__PGPNGraphHelper_computeFTESocialGroupsWithPhotoLibrary_updateBlock___block_invoke;
   v43[3] = &unk_2788844C0;
-  v23 = v6;
+  v23 = blockCopy;
   v44 = v23;
   v40 = v9;
   v24 = [PGPNGraphHelper _createSocialGraphWithPersonClusterManager:v9 persons:v15 moments:v22 inferredMePersonLocalIdentifier:0 updateBlock:v43];
   if (v24)
   {
-    v36 = [[PGManager alloc] initWithGraph:v24 photoLibrary:v5];
+    v36 = [[PGManager alloc] initWithGraph:v24 photoLibrary:libraryCopy];
     v25 = [[PGGraphBuilder alloc] initWithGraph:v24 manager:v36];
     v26 = [[PGGraphIngestSocialGroupsProcessor alloc] initWithGraphBuilder:v25];
-    v37 = v5;
+    v37 = libraryCopy;
     v38 = v8;
-    v27 = [[PGGraphUpdate alloc] initWithPhotoLibrary:v5 updateType:3];
+    v27 = [[PGGraphUpdate alloc] initWithPhotoLibrary:libraryCopy updateType:3];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __70__PGPNGraphHelper_computeFTESocialGroupsWithPhotoLibrary_updateBlock___block_invoke_2;
@@ -569,7 +569,7 @@ LABEL_12:
     v31 = v30;
 
     v22 = v28;
-    v5 = v37;
+    libraryCopy = v37;
     v8 = v38;
   }
 
@@ -583,22 +583,22 @@ LABEL_12:
   return v31;
 }
 
-+ (id)_socialGroupsLocalIdentifiersInGraph:(id)a3 includeMeNode:(BOOL)a4 includeCouples:(BOOL)a5 includeInvalid:(BOOL)a6
++ (id)_socialGroupsLocalIdentifiersInGraph:(id)graph includeMeNode:(BOOL)node includeCouples:(BOOL)couples includeInvalid:(BOOL)invalid
 {
-  v9 = a3;
+  graphCopy = graph;
   v10 = objc_opt_new();
-  v11 = [v9 meNode];
-  v12 = [v11 localIdentifier];
+  meNode = [graphCopy meNode];
+  localIdentifier = [meNode localIdentifier];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNode_includeCouples_includeInvalid___block_invoke;
   aBlock[3] = &unk_278884498;
-  v28 = a5;
-  v29 = a4;
-  v26 = v12;
+  couplesCopy = couples;
+  nodeCopy = node;
+  v26 = localIdentifier;
   v13 = v10;
   v27 = v13;
-  v14 = v12;
+  v14 = localIdentifier;
   v15 = _Block_copy(aBlock);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -609,10 +609,10 @@ LABEL_12:
   v20[1] = 3221225472;
   v20[2] = __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNode_includeCouples_includeInvalid___block_invoke_3;
   v20[3] = &unk_278886208;
-  v22 = a6;
+  invalidCopy = invalid;
   v21 = v24;
   v16 = v24;
-  [v9 enumerateSocialGroupsIncludingMeNode:0 validGroupsBlock:v23 invalidGroupsBlock:v20 averageWeight:0];
+  [graphCopy enumerateSocialGroupsIncludingMeNode:0 validGroupsBlock:v23 invalidGroupsBlock:v20 averageWeight:0];
 
   v17 = v21;
   v18 = v13;
@@ -681,23 +681,23 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
   return result;
 }
 
-+ (id)_createSocialGraphWithPersonClusterManager:(id)a3 persons:(id)a4 moments:(id)a5 inferredMePersonLocalIdentifier:(id *)a6 updateBlock:(id)a7
++ (id)_createSocialGraphWithPersonClusterManager:(id)manager persons:(id)persons moments:(id)moments inferredMePersonLocalIdentifier:(id *)identifier updateBlock:(id)block
 {
   v111 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v76 = a4;
-  v12 = a5;
-  v77 = a7;
-  if (!v12)
+  managerCopy = manager;
+  personsCopy = persons;
+  momentsCopy = moments;
+  blockCopy = block;
+  if (!momentsCopy)
   {
-    v12 = [v11 pn_fetchMoments];
+    momentsCopy = [managerCopy pn_fetchMoments];
   }
 
   v13 = objc_alloc_init(PGMutableGraph);
-  v72 = v11;
-  if (a6)
+  v72 = managerCopy;
+  if (identifier)
   {
-    v81 = *a6;
+    v81 = *identifier;
   }
 
   else
@@ -706,12 +706,12 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
   }
 
   v99 = 0;
-  v14 = [v12 count];
+  v14 = [momentsCopy count];
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v15 = v12;
+  v15 = momentsCopy;
   v75 = [v15 countByEnumeratingWithState:&v95 objects:v110 count:16];
   if (v75)
   {
@@ -731,7 +731,7 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
 
         v18 = *(*(&v95 + 1) + 8 * v17);
         v19 = objc_autoreleasePoolPush();
-        v77[2](v77, &v99, v16);
+        blockCopy[2](blockCopy, &v99, v16);
         if (v99)
         {
           objc_autoreleasePoolPop(v19);
@@ -751,28 +751,28 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
         v109[0] = v84;
         v108[1] = @"utce";
         v21 = MEMORY[0x277CCABB0];
-        v22 = [v18 endDate];
-        [v22 timeIntervalSince1970];
+        endDate = [v18 endDate];
+        [endDate timeIntervalSince1970];
         v23 = [v21 numberWithDouble:?];
         v109[1] = v23;
         v108[2] = @"tzs";
         v24 = MEMORY[0x277CCABB0];
-        v25 = [v18 startDate];
-        [v25 timeIntervalSince1970];
+        startDate = [v18 startDate];
+        [startDate timeIntervalSince1970];
         v26 = [v24 numberWithDouble:?];
         v109[2] = v26;
         v108[3] = @"tze";
         v27 = MEMORY[0x277CCABB0];
-        v28 = [v18 endDate];
-        [v28 timeIntervalSince1970];
+        endDate2 = [v18 endDate];
+        [endDate2 timeIntervalSince1970];
         v29 = [v27 numberWithDouble:?];
         v109[3] = v29;
         v108[4] = @"cnt";
         v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v18, "estimatedAssetCount")}];
         v109[4] = v30;
         v108[5] = @"lclid";
-        v31 = [v18 localIdentifier];
-        v109[5] = v31;
+        localIdentifier = [v18 localIdentifier];
+        v109[5] = localIdentifier;
         v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v109 forKeys:v108 count:6];
 
         v13 = v82;
@@ -782,7 +782,7 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
         v92 = 0u;
         v93 = 0u;
         v94 = 0u;
-        obj = v76;
+        obj = personsCopy;
         v33 = [obj countByEnumeratingWithState:&v91 objects:v107 count:16];
         if (v33)
         {
@@ -801,28 +801,28 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
 
               v37 = *(*(&v91 + 1) + 8 * v36);
               v38 = objc_autoreleasePoolPush();
-              v39 = [v37 backingMomentIdentifiers];
-              v40 = [v18 localIdentifier];
-              v41 = [v39 containsObject:v40];
+              backingMomentIdentifiers = [v37 backingMomentIdentifiers];
+              localIdentifier2 = [v18 localIdentifier];
+              v41 = [backingMomentIdentifiers containsObject:localIdentifier2];
 
               if (v41)
               {
                 v42 = v18;
-                v43 = [v37 anonymizedName];
-                v44 = v43;
+                anonymizedName = [v37 anonymizedName];
+                v44 = anonymizedName;
                 v45 = &stru_2843F5C58;
-                if (v43)
+                if (anonymizedName)
                 {
-                  v45 = v43;
+                  v45 = anonymizedName;
                 }
 
                 v46 = v45;
 
-                v47 = [v37 localIdentifier];
+                localIdentifier3 = [v37 localIdentifier];
                 v105[0] = @"name";
                 v105[1] = @"id";
                 v106[0] = v46;
-                v106[1] = v47;
+                v106[1] = localIdentifier3;
                 v105[2] = @"usercreated";
                 v48 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v37, "isVerified")}];
                 v106[2] = v48;
@@ -833,8 +833,8 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
 
                 if (v81)
                 {
-                  v51 = [v37 localIdentifier];
-                  v52 = [v81 isEqualToString:v51];
+                  localIdentifier4 = [v37 localIdentifier];
+                  v52 = [v81 isEqualToString:localIdentifier4];
 
                   if (v52)
                   {
@@ -890,10 +890,10 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
   v55 = v72;
   if (!v81)
   {
-    v56 = [(PGGraph *)v13 inferMeNodeFromSocialGroups];
-    if (v56)
+    inferMeNodeFromSocialGroups = [(PGGraph *)v13 inferMeNodeFromSocialGroups];
+    if (inferMeNodeFromSocialGroups)
     {
-      v57 = v56;
+      v57 = inferMeNodeFromSocialGroups;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
@@ -909,7 +909,7 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
 
     else
     {
-      if (![v76 count])
+      if (![personsCopy count])
       {
         goto LABEL_42;
       }
@@ -917,18 +917,18 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
       v59 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"faceCount" ascending:0];
       v104 = v59;
       v60 = [MEMORY[0x277CBEA60] arrayWithObjects:&v104 count:1];
-      v61 = [v76 sortedArrayUsingDescriptors:v60];
+      v61 = [personsCopy sortedArrayUsingDescriptors:v60];
 
-      v62 = [v61 firstObject];
-      v63 = [v62 localIdentifier];
-      v57 = [(PGGraph *)v13 personNodeForPersonLocalIdentifier:v63];
+      firstObject = [v61 firstObject];
+      localIdentifier5 = [firstObject localIdentifier];
+      v57 = [(PGGraph *)v13 personNodeForPersonLocalIdentifier:localIdentifier5];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
         v101 = v57;
         v102 = 2112;
-        v103 = v62;
+        v103 = firstObject;
         _os_log_debug_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "inferredMeNode fallback found %@ - backing person: %@", buf, 0x16u);
       }
 
@@ -938,8 +938,8 @@ uint64_t __100__PGPNGraphHelper__socialGroupsLocalIdentifiersInGraph_includeMeNo
       }
     }
 
-    v64 = [v57 propertyDictionary];
-    v65 = [(PGMutableGraph *)v13 addUniqueNodeWithLabel:@"Me" domain:300 properties:v64 didCreate:0];
+    propertyDictionary = [v57 propertyDictionary];
+    v65 = [(PGMutableGraph *)v13 addUniqueNodeWithLabel:@"Me" domain:300 properties:propertyDictionary didCreate:0];
 
     v88[0] = MEMORY[0x277D85DD0];
     v88[1] = 3221225472;

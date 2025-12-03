@@ -1,7 +1,7 @@
 @interface AVPlayerSetRateOptions
 - (AVPlayerSetRateOptions)init;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AVPlayerSetRateOptions
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AVPlayerSetRateOptions allocWithZone:?]];
   [(AVPlayerSetRateOptions *)v4 setPreferCoordinatedPlaybackBehavior:[(AVPlayerSetRateOptions *)self preferCoordinatedPlaybackBehavior]];
@@ -23,7 +23,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -31,14 +31,14 @@
     return 0;
   }
 
-  v5 = [(AVPlayerSetRateOptions *)self preferCoordinatedPlaybackBehavior];
-  if (v5 != [a3 preferCoordinatedPlaybackBehavior])
+  preferCoordinatedPlaybackBehavior = [(AVPlayerSetRateOptions *)self preferCoordinatedPlaybackBehavior];
+  if (preferCoordinatedPlaybackBehavior != [equal preferCoordinatedPlaybackBehavior])
   {
     return 0;
   }
 
-  v7 = [(AVPlayerSetRateOptions *)self overrideAutowaitRestriction];
-  return v7 ^ [a3 overrideAutowaitRestriction] ^ 1;
+  overrideAutowaitRestriction = [(AVPlayerSetRateOptions *)self overrideAutowaitRestriction];
+  return overrideAutowaitRestriction ^ [equal overrideAutowaitRestriction] ^ 1;
 }
 
 @end

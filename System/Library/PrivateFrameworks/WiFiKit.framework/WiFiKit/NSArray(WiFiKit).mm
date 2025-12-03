@@ -21,8 +21,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v1 = a1;
-  v2 = [v1 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v2 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v2)
   {
     v3 = v2;
@@ -34,7 +34,7 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(selfCopy);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -46,7 +46,7 @@
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v3);
@@ -66,28 +66,28 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 _matchingItem:v2];
+  return [self _matchingItem:v2];
 }
 
 - (uint64_t)ipv6Settings
 {
   v2 = objc_opt_class();
 
-  return [a1 _matchingItem:v2];
+  return [self _matchingItem:v2];
 }
 
 - (uint64_t)dnsSettings
 {
   v2 = objc_opt_class();
 
-  return [a1 _matchingItem:v2];
+  return [self _matchingItem:v2];
 }
 
 - (uint64_t)proxySettings
 {
   v2 = objc_opt_class();
 
-  return [a1 _matchingItem:v2];
+  return [self _matchingItem:v2];
 }
 
 - (id)btDiagnosticsResults
@@ -98,8 +98,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -110,7 +110,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -120,7 +120,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -139,8 +139,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -151,7 +151,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -161,7 +161,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -180,8 +180,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -192,7 +192,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -202,7 +202,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -221,8 +221,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -233,7 +233,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -243,7 +243,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -257,7 +257,7 @@
 - (id)displayableHealthRecommendations
 {
   v2 = [MEMORY[0x277CCAC30] predicateWithFormat:@"subtitleOnlyIssue == NO"];
-  v3 = [a1 filteredArrayUsingPredicate:v2];
+  v3 = [self filteredArrayUsingPredicate:v2];
 
   return v3;
 }
@@ -265,15 +265,15 @@
 - (__CFString)numberArrayToJsonString
 {
   v20 = *MEMORY[0x277D85DE8];
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v3 = a1;
-    v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    selfCopy = self;
+    v4 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v4)
     {
       v5 = v4;
@@ -284,24 +284,24 @@
         {
           if (*v16 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(selfCopy);
           }
 
-          v8 = [*(*(&v15 + 1) + 8 * i) stringValue];
-          if (v8)
+          stringValue = [*(*(&v15 + 1) + 8 * i) stringValue];
+          if (stringValue)
           {
-            [v2 addObject:v8];
+            [array addObject:stringValue];
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v5 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v5);
     }
 
     v14 = 0;
-    v9 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:0 error:&v14];
+    v9 = [MEMORY[0x277CCAAA0] dataWithJSONObject:array options:0 error:&v14];
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4];

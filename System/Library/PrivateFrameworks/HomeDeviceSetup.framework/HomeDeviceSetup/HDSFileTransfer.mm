@@ -1,12 +1,12 @@
 @interface HDSFileTransfer
-+ (id)destDirectoryForTargetId:(id)a3;
++ (id)destDirectoryForTargetId:(id)id;
 + (id)tmpRapportDir;
 - (HDSFileTransfer)init;
 - (void)_invalidate;
-- (void)beginSysDropFileTransfer:(id)a3 pathToFile:(id)a4 withCompletion:(id)a5;
-- (void)invalidate:(id)a3;
-- (void)sideloadFilesForTargetId:(id)a3 pathToDirectory:(id)a4 withCompletion:(id)a5;
-- (void)waitForFilesWithTargetId:(id)a3 withCompletion:(id)a4;
+- (void)beginSysDropFileTransfer:(id)transfer pathToFile:(id)file withCompletion:(id)completion;
+- (void)invalidate:(id)invalidate;
+- (void)sideloadFilesForTargetId:(id)id pathToDirectory:(id)directory withCompletion:(id)completion;
+- (void)waitForFilesWithTargetId:(id)id withCompletion:(id)completion;
 @end
 
 @implementation HDSFileTransfer
@@ -19,14 +19,14 @@
   return v3;
 }
 
-+ (id)destDirectoryForTargetId:(id)a3
++ (id)destDirectoryForTargetId:(id)id
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  idCopy = id;
   v5 = +[HDSFileTransfer tmpRapportDir];
-  v6 = [v3 stringWithFormat:@"%@/com.apple.rapport/FileTransfer/%@.rpftd", v5, v4];
+  idCopy = [v3 stringWithFormat:@"%@/com.apple.rapport/FileTransfer/%@.rpftd", v5, idCopy];
 
-  return v6;
+  return idCopy;
 }
 
 - (HDSFileTransfer)init
@@ -48,16 +48,16 @@
   return v2;
 }
 
-- (void)waitForFilesWithTargetId:(id)a3 withCompletion:(id)a4
+- (void)waitForFilesWithTargetId:(id)id withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
   v9 = objc_opt_new();
   v10 = _fileTransferSession;
   _fileTransferSession = v9;
 
-  [_fileTransferSession setTargetID:v6];
+  [_fileTransferSession setTargetID:idCopy];
   v11 = [MEMORY[0x277CBEA90] mb_dataFromHexadecimalString:@"e905dc700dfc2c3f26692d20346463a2adf3c4c340d4ea661696a0ae736800ec"];
   [_fileTransferSession setPeerPublicKey:v11];
 
@@ -78,17 +78,17 @@
     v15 = 3221225472;
     v16 = __59__HDSFileTransfer_waitForFilesWithTargetId_withCompletion___block_invoke;
     v17 = &unk_279714108;
-    v18 = self;
-    v20 = v7;
+    selfCopy = self;
+    v20 = completionCopy;
     v19 = v13;
     [_fileTransferSession setProgressHandler:&v14];
-    [_fileTransferSession setReceivedItemHandler:{&__block_literal_global_0, v14, v15, v16, v17, v18}];
+    [_fileTransferSession setReceivedItemHandler:{&__block_literal_global_0, v14, v15, v16, v17, selfCopy}];
     [_fileTransferSession activate];
   }
 
   else
   {
-    (*(v7 + 2))(v7, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 
   objc_autoreleasePoolPop(v8);
@@ -140,17 +140,17 @@ void __59__HDSFileTransfer_waitForFilesWithTargetId_withCompletion___block_invok
   v4[2](v4, 0);
 }
 
-- (void)beginSysDropFileTransfer:(id)a3 pathToFile:(id)a4 withCompletion:(id)a5
+- (void)beginSysDropFileTransfer:(id)transfer pathToFile:(id)file withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  transferCopy = transfer;
+  fileCopy = file;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
   v12 = objc_opt_new();
   v13 = _fileTransferSession;
   _fileTransferSession = v12;
 
-  [_fileTransferSession setTargetID:v8];
+  [_fileTransferSession setTargetID:transferCopy];
   v14 = [MEMORY[0x277CBEA90] mb_dataFromHexadecimalString:@"4a631f38b46cc4c9a28685d7bbfab4ec1bf5611f43574dc73a3075251164ade8"];
   [_fileTransferSession setPeerPublicKey:v14];
 
@@ -173,31 +173,31 @@ void __59__HDSFileTransfer_waitForFilesWithTargetId_withCompletion___block_invok
     v31[2] = __70__HDSFileTransfer_beginSysDropFileTransfer_pathToFile_withCompletion___block_invoke_2;
     v31[3] = &unk_279714170;
     v31[4] = self;
-    v17 = v10;
+    v17 = completionCopy;
     v33 = v17;
     v32 = v16;
     [_fileTransferSession setCompletionHandler:v31];
-    v28 = v9;
-    v18 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v9];
+    v28 = fileCopy;
+    v18 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:fileCopy];
     if (gLogCategory_HDSFileTransfer <= 30 && (gLogCategory_HDSFileTransfer != -1 || _LogCategory_Initialize()))
     {
       [HDSFileTransfer beginSysDropFileTransfer:v18 pathToFile:? withCompletion:?];
     }
 
-    v19 = [MEMORY[0x277CCAA00] defaultManager];
-    v20 = [v18 path];
-    v21 = [v19 fileExistsAtPath:v20 isDirectory:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v18 path];
+    v21 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
     if (v21)
     {
       v22 = objc_opt_new();
       v23 = objc_alloc(MEMORY[0x277CBEBC0]);
-      v24 = [v18 path];
-      v25 = [v23 initFileURLWithPath:v24 isDirectory:0];
+      path2 = [v18 path];
+      v25 = [v23 initFileURLWithPath:path2 isDirectory:0];
       [v22 setItemURL:v25];
 
-      v26 = [v18 lastPathComponent];
-      [v22 setFilename:v26];
+      lastPathComponent = [v18 lastPathComponent];
+      [v22 setFilename:lastPathComponent];
 
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
@@ -222,12 +222,12 @@ void __59__HDSFileTransfer_waitForFilesWithTargetId_withCompletion___block_invok
 
     v11 = v27;
 
-    v9 = v28;
+    fileCopy = v28;
   }
 
   else
   {
-    (*(v10 + 2))(v10, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
   }
 
   objc_autoreleasePoolPop(v11);
@@ -314,17 +314,17 @@ LABEL_11:
   [_fileTransferSession finish];
 }
 
-- (void)sideloadFilesForTargetId:(id)a3 pathToDirectory:(id)a4 withCompletion:(id)a5
+- (void)sideloadFilesForTargetId:(id)id pathToDirectory:(id)directory withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  directoryCopy = directory;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
   v12 = objc_opt_new();
   v13 = _fileTransferSession;
   _fileTransferSession = v12;
 
-  [_fileTransferSession setTargetID:v8];
+  [_fileTransferSession setTargetID:idCopy];
   v14 = [MEMORY[0x277CBEA90] mb_dataFromHexadecimalString:@"4a631f38b46cc4c9a28685d7bbfab4ec1bf5611f43574dc73a3075251164ade8"];
   [_fileTransferSession setPeerPublicKey:v14];
 
@@ -345,11 +345,11 @@ LABEL_11:
     v27[2] = __75__HDSFileTransfer_sideloadFilesForTargetId_pathToDirectory_withCompletion___block_invoke;
     v27[3] = &unk_279714170;
     v27[4] = self;
-    v29 = v10;
+    v29 = completionCopy;
     v28 = v16;
     [_fileTransferSession setCompletionHandler:v27];
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    v18 = [v17 subpathsAtPath:v9];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v18 = [defaultManager subpathsAtPath:directoryCopy];
 
     v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -357,7 +357,7 @@ LABEL_11:
     v23[1] = 3221225472;
     v23[2] = __75__HDSFileTransfer_sideloadFilesForTargetId_pathToDirectory_withCompletion___block_invoke_3;
     v23[3] = &unk_2797141E8;
-    v24 = v9;
+    v24 = directoryCopy;
     v25 = v20;
     v21 = v19;
     v26 = v21;
@@ -374,7 +374,7 @@ LABEL_11:
 
   else
   {
-    (*(v10 + 2))(v10, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
   }
 
   objc_autoreleasePoolPop(v11);
@@ -509,17 +509,17 @@ LABEL_19:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidate:(id)a3
+- (void)invalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__HDSFileTransfer_invalidate___block_invoke;
   v7[3] = &unk_279714210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidateCopy;
+  v6 = invalidateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

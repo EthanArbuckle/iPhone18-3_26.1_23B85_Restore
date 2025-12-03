@@ -1,40 +1,40 @@
 @interface DATrustHandler
-- (BOOL)handleTrustChallenge:(id)a3 forAccount:(id)a4 completionHandler:(id)a5;
-- (BOOL)haveWarnedAboutCert:(id)a3 forHost:(id)a4;
+- (BOOL)handleTrustChallenge:(id)challenge forAccount:(id)account completionHandler:(id)handler;
+- (BOOL)haveWarnedAboutCert:(id)cert forHost:(id)host;
 - (BOOL)resetCertWarnings;
-- (DATrustHandler)initWithDelegate:(id)a3;
+- (DATrustHandler)initWithDelegate:(id)delegate;
 - (DATrustHandlerDelegate)delegate;
 - (id)_serverSuffixesToAlwaysFail;
-- (int)_actionForTrust:(__SecTrust *)a3 host:(id)a4 service:(id)a5;
-- (void)handleTrust:(__SecTrust *)a3 forHost:(id)a4 forAccount:(id)a5 withCompletionBlock:(id)a6;
-- (void)setHaveWarnedAboutCert:(id)a3 forHost:(id)a4;
+- (int)_actionForTrust:(__SecTrust *)trust host:(id)host service:(id)service;
+- (void)handleTrust:(__SecTrust *)trust forHost:(id)host forAccount:(id)account withCompletionBlock:(id)block;
+- (void)setHaveWarnedAboutCert:(id)cert forHost:(id)host;
 @end
 
 @implementation DATrustHandler
 
-- (DATrustHandler)initWithDelegate:(id)a3
+- (DATrustHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = DATrustHandler;
   v5 = [(DATrustHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (BOOL)haveWarnedAboutCert:(id)a3 forHost:(id)a4
+- (BOOL)haveWarnedAboutCert:(id)cert forHost:(id)host
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_haveWarnedAboutCertDict objectForKeyedSubscript:a3];
+  hostCopy = host;
+  v7 = [(NSMutableDictionary *)self->_haveWarnedAboutCertDict objectForKeyedSubscript:cert];
   v8 = v7;
-  if (v6)
+  if (hostCopy)
   {
-    v9 = [v7 containsObject:v6];
+    v9 = [v7 containsObject:hostCopy];
   }
 
   else
@@ -45,10 +45,10 @@
   return v9;
 }
 
-- (void)setHaveWarnedAboutCert:(id)a3 forHost:(id)a4
+- (void)setHaveWarnedAboutCert:(id)cert forHost:(id)host
 {
-  v11 = a3;
-  v6 = a4;
+  certCopy = cert;
+  hostCopy = host;
   haveWarnedAboutCertDict = self->_haveWarnedAboutCertDict;
   if (!haveWarnedAboutCertDict)
   {
@@ -59,16 +59,16 @@
     haveWarnedAboutCertDict = self->_haveWarnedAboutCertDict;
   }
 
-  v10 = [(NSMutableDictionary *)haveWarnedAboutCertDict objectForKeyedSubscript:v11];
+  v10 = [(NSMutableDictionary *)haveWarnedAboutCertDict objectForKeyedSubscript:certCopy];
   if (!v10)
   {
     v10 = [MEMORY[0x277CBEB58] set];
-    [(NSMutableDictionary *)self->_haveWarnedAboutCertDict setObject:v10 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)self->_haveWarnedAboutCertDict setObject:v10 forKeyedSubscript:certCopy];
   }
 
-  if (v6)
+  if (hostCopy)
   {
-    [v10 addObject:v6];
+    [v10 addObject:hostCopy];
   }
 }
 
@@ -80,29 +80,29 @@
   return 1;
 }
 
-- (int)_actionForTrust:(__SecTrust *)a3 host:(id)a4 service:(id)a5
+- (int)_actionForTrust:(__SecTrust *)trust host:(id)host service:(id)service
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3)
+  hostCopy = host;
+  serviceCopy = service;
+  if (trust)
   {
-    v10 = [MEMORY[0x277CF9710] defaultTrustManager];
-    v11 = [v10 actionForTrust:a3 forHost:v8 andService:v9];
+    defaultTrustManager = [MEMORY[0x277CF9710] defaultTrustManager];
+    v11 = [defaultTrustManager actionForTrust:trust forHost:hostCopy andService:serviceCopy];
 
     if (v11 == 2)
     {
-      if (SecTrustGetCertificateCount(a3))
+      if (SecTrustGetCertificateCount(trust))
       {
-        SecTrustGetCertificateAtIndex(a3, 0);
+        SecTrustGetCertificateAtIndex(trust, 0);
         v12 = SecCertificateGetSHA1Digest();
         if (v12)
         {
-          v13 = [(DATrustHandler *)self delegate];
-          v14 = [v13 exceptionsForDigest:v12];
+          delegate = [(DATrustHandler *)self delegate];
+          v14 = [delegate exceptionsForDigest:v12];
 
           if (v14)
           {
-            v15 = SecTrustCopyExceptions(a3);
+            v15 = SecTrustCopyExceptions(trust);
             if (v15)
             {
               v16 = v15;
@@ -113,11 +113,11 @@
 
               else
               {
-                v18 = [MEMORY[0x277CF9710] defaultTrustManager];
-                [v18 allowTrust:a3 forHost:v8 service:v9];
+                defaultTrustManager2 = [MEMORY[0x277CF9710] defaultTrustManager];
+                [defaultTrustManager2 allowTrust:trust forHost:hostCopy service:serviceCopy];
 
-                v19 = [(DATrustHandler *)self delegate];
-                [v19 setExceptions:0 forDigest:v12];
+                delegate2 = [(DATrustHandler *)self delegate];
+                [delegate2 setExceptions:0 forDigest:v12];
 
                 v11 = 1;
               }
@@ -166,12 +166,12 @@ uint64_t __45__DATrustHandler__serverSuffixesToAlwaysFail__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handleTrust:(__SecTrust *)a3 forHost:(id)a4 forAccount:(id)a5 withCompletionBlock:(id)a6
+- (void)handleTrust:(__SecTrust *)trust forHost:(id)host forAccount:(id)account withCompletionBlock:(id)block
 {
   v60 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v45 = a5;
-  v10 = a6;
+  hostCopy = host;
+  accountCopy = account;
+  blockCopy = block;
   v11 = DALoggingwithCategory();
   v12 = MEMORY[0x277D03988];
   v13 = *(MEMORY[0x277D03988] + 6);
@@ -182,14 +182,14 @@ uint64_t __45__DATrustHandler__serverSuffixesToAlwaysFail__block_invoke()
   }
 
   v14 = *MEMORY[0x277CF9718];
-  if (!a3)
+  if (!trust)
   {
     v15 = DALoggingwithCategory();
     v21 = *(v12 + 3);
     if (os_log_type_enabled(v15, *(v12 + 3)))
     {
       *buf = 138412290;
-      *&buf[4] = v9;
+      *&buf[4] = hostCopy;
       _os_log_impl(&dword_24844D000, v15, v21, "Terminating connection because server does not have an SSL certificate. Host: %@", buf, 0xCu);
     }
 
@@ -197,9 +197,9 @@ uint64_t __45__DATrustHandler__serverSuffixesToAlwaysFail__block_invoke()
     goto LABEL_26;
   }
 
-  v15 = [v45 accountPropertyForKey:@"DAAccountUseTrustedSSLCertificate"];
-  v16 = [MEMORY[0x277CF9710] defaultTrustManager];
-  v17 = [v16 rawTrustResultForSSLTrust:a3 hostname:v9 service:v14];
+  v15 = [accountCopy accountPropertyForKey:@"DAAccountUseTrustedSSLCertificate"];
+  defaultTrustManager = [MEMORY[0x277CF9710] defaultTrustManager];
+  v17 = [defaultTrustManager rawTrustResultForSSLTrust:trust hostname:hostCopy service:v14];
 
   if (v17 == 1)
   {
@@ -230,12 +230,12 @@ uint64_t __45__DATrustHandler__serverSuffixesToAlwaysFail__block_invoke()
         *buf = 138412546;
         *&buf[4] = @"DAAccountUseTrustedSSLCertificate";
         *&buf[12] = 2112;
-        *&buf[14] = v45;
+        *&buf[14] = accountCopy;
         _os_log_impl(&dword_24844D000, v18, v13, "Account now requires trusted certificate. Setting %@ to YES for account: %@", buf, 0x16u);
       }
 
-      [v45 setAccountProperty:MEMORY[0x277CBEC38] forKey:@"DAAccountUseTrustedSSLCertificate"];
-      [v45 updateExistingAccountProperties];
+      [accountCopy setAccountProperty:MEMORY[0x277CBEC38] forKey:@"DAAccountUseTrustedSSLCertificate"];
+      [accountCopy updateExistingAccountProperties];
     }
 
 LABEL_11:
@@ -257,7 +257,7 @@ LABEL_26:
     *&buf[16] = 0x2020000000;
     v59 = 1;
 LABEL_27:
-    v10[2](v10, v20);
+    blockCopy[2](blockCopy, v20);
     goto LABEL_28;
   }
 
@@ -269,16 +269,16 @@ LABEL_27:
     _os_log_impl(&dword_24844D000, v22, v13, "Got SecTrustEvaluate result %u. Checking if needing to prompt.", buf, 8u);
   }
 
-  v43 = [v15 BOOLValue];
+  bOOLValue = [v15 BOOLValue];
   v23 = DALoggingwithCategory();
   v24 = v23;
-  if (v43)
+  if (bOOLValue)
   {
     v25 = *(v12 + 3);
     if (os_log_type_enabled(v23, v25))
     {
       *buf = 138412290;
-      *&buf[4] = v45;
+      *&buf[4] = accountCopy;
       v26 = "Terminating connection and warning user about an untrusted SSL certificate. The account requires trusted SSL certificate. Account: %@";
       v27 = v24;
       v28 = v25;
@@ -290,17 +290,17 @@ LABEL_31:
   else if (os_log_type_enabled(v23, v13))
   {
     *buf = 138412290;
-    *&buf[4] = v45;
+    *&buf[4] = accountCopy;
     v26 = "Account does not require trusted certificate. Prompting user. Account: %@";
     v27 = v24;
     v28 = v13;
     goto LABEL_31;
   }
 
-  if (SecTrustGetCertificateCount(a3) && (SecTrustGetCertificateAtIndex(a3, 0), (v31 = SecCertificateGetSHA1Digest()) != 0))
+  if (SecTrustGetCertificateCount(trust) && (SecTrustGetCertificateAtIndex(trust, 0), (v31 = SecCertificateGetSHA1Digest()) != 0))
   {
     v29 = v31;
-    v32 = [(DATrustHandler *)self haveWarnedAboutCert:v31 forHost:v9];
+    v32 = [(DATrustHandler *)self haveWarnedAboutCert:v31 forHost:hostCopy];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
@@ -324,16 +324,16 @@ LABEL_47:
 
   if (([MEMORY[0x277D03910] promptForAllCerts] & 1) == 0)
   {
-    v33 = [v9 lowercaseString];
-    v34 = [(DATrustHandler *)self _serverSuffixesToAlwaysFail];
+    lowercaseString = [hostCopy lowercaseString];
+    _serverSuffixesToAlwaysFail = [(DATrustHandler *)self _serverSuffixesToAlwaysFail];
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __69__DATrustHandler_handleTrust_forHost_forAccount_withCompletionBlock___block_invoke;
     v53[3] = &unk_278F13998;
-    v35 = v33;
+    v35 = lowercaseString;
     v54 = v35;
     v55 = buf;
-    [v34 enumerateObjectsUsingBlock:v53];
+    [_serverSuffixesToAlwaysFail enumerateObjectsUsingBlock:v53];
   }
 
   if (!*(*&buf[8] + 24))
@@ -343,7 +343,7 @@ LABEL_47:
     if (os_log_type_enabled(v41, v42))
     {
       *v56 = 138412290;
-      v57 = v9;
+      v57 = hostCopy;
       _os_log_impl(&dword_24844D000, v41, v42, "IT'S A TARP!!! We received an untrusted cert for %@. You really think we're going to fall for that?", v56, 0xCu);
     }
 
@@ -357,19 +357,19 @@ LABEL_47:
   if (os_log_type_enabled(v36, v13))
   {
     *v56 = 138412290;
-    v57 = v9;
+    v57 = hostCopy;
     _os_log_impl(&dword_24844D000, v36, v13, "prompting certificate for host: %@", v56, 0xCu);
   }
 
   v37 = objc_opt_new();
-  [v37 setTrust:a3];
-  [v37 setHost:v9];
+  [v37 setTrust:trust];
+  [v37 setHost:hostCopy];
   [v37 setService:v14];
-  v38 = [(DATrustHandler *)self delegate];
-  v39 = [v38 accountDescription];
-  [v37 setConnectionDisplayName:v39];
+  delegate = [(DATrustHandler *)self delegate];
+  accountDescription = [delegate accountDescription];
+  [v37 setConnectionDisplayName:accountDescription];
 
-  if (v43)
+  if (bOOLValue)
   {
     v40 = objc_opt_new();
     [v40 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CF9738]];
@@ -380,18 +380,18 @@ LABEL_47:
     v40 = 0;
   }
 
-  CFRetain(a3);
+  CFRetain(trust);
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __69__DATrustHandler_handleTrust_forHost_forAccount_withCompletionBlock___block_invoke_11;
   v46[3] = &unk_278F139E8;
   v29 = v29;
   v47 = v29;
-  v48 = self;
-  v49 = v9;
-  v52 = a3;
+  selfCopy = self;
+  v49 = hostCopy;
+  trustCopy = trust;
   v50 = v14;
-  v51 = v10;
+  v51 = blockCopy;
   [v37 showPromptWithOptions:v40 responseBlock:v46];
 
 LABEL_28:
@@ -468,36 +468,36 @@ uint64_t __69__DATrustHandler_handleTrust_forHost_forAccount_withCompletionBlock
   return result;
 }
 
-- (BOOL)handleTrustChallenge:(id)a3 forAccount:(id)a4 completionHandler:(id)a5
+- (BOOL)handleTrustChallenge:(id)challenge forAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  challengeCopy = challenge;
+  accountCopy = account;
+  handlerCopy = handler;
   if (handleTrustChallenge_forAccount_completionHandler__onceToken != -1)
   {
     [DATrustHandler handleTrustChallenge:forAccount:completionHandler:];
   }
 
-  v11 = [(DATrustHandler *)self delegate];
-  v12 = [v11 persistentUUID];
+  delegate = [(DATrustHandler *)self delegate];
+  persistentUUID = [delegate persistentUUID];
 
   v13 = +[DAPowerAssertionManager sharedPowerAssertionManager];
-  [v13 dropPowerAssertionsForGroupIdentifier:v12];
+  [v13 dropPowerAssertionsForGroupIdentifier:persistentUUID];
 
   v14 = handleTrustChallenge_forAccount_completionHandler__sTrustChallengeQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__DATrustHandler_handleTrustChallenge_forAccount_completionHandler___block_invoke_2;
   block[3] = &unk_278F13A38;
-  v21 = v8;
-  v22 = self;
-  v23 = v9;
-  v24 = v12;
-  v25 = v10;
-  v15 = v10;
-  v16 = v12;
-  v17 = v9;
-  v18 = v8;
+  v21 = challengeCopy;
+  selfCopy = self;
+  v23 = accountCopy;
+  v24 = persistentUUID;
+  v25 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = persistentUUID;
+  v17 = accountCopy;
+  v18 = challengeCopy;
   dispatch_async(v14, block);
 
   return 0;

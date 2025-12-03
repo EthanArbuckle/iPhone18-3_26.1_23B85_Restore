@@ -1,19 +1,19 @@
 @interface ARMLImageTransform
-- (ARMLImageTransform)initWithScaledSize:(CGSize)a3 useOptimalMSRCoefficients:(BOOL)a4 useExplicitBGRAConversion:(BOOL)a5;
-- (id)_applyFinalTransformToScaledImage:(id)a3 rotation:(int64_t)a4 finalResultSize:(CGSize)a5 originalImageData:(id)a6;
-- (id)_preScaleImageData:(id)a3;
-- (id)fastPassDownscaledResultDataFromImageData:(id)a3 croppedRect:(CGRect)a4 rotation:(int64_t)a5 rotationOfResultTensor:(int64_t)a6;
-- (void)_calculatePreScalingPassesForInputResolution:(CGSize)a3;
-- (void)_prepareSessionAndPoolForRotation:(int64_t)a3;
+- (ARMLImageTransform)initWithScaledSize:(CGSize)size useOptimalMSRCoefficients:(BOOL)coefficients useExplicitBGRAConversion:(BOOL)conversion;
+- (id)_applyFinalTransformToScaledImage:(id)image rotation:(int64_t)rotation finalResultSize:(CGSize)size originalImageData:(id)data;
+- (id)_preScaleImageData:(id)data;
+- (id)fastPassDownscaledResultDataFromImageData:(id)data croppedRect:(CGRect)rect rotation:(int64_t)rotation rotationOfResultTensor:(int64_t)tensor;
+- (void)_calculatePreScalingPassesForInputResolution:(CGSize)resolution;
+- (void)_prepareSessionAndPoolForRotation:(int64_t)rotation;
 - (void)dealloc;
 @end
 
 @implementation ARMLImageTransform
 
-- (ARMLImageTransform)initWithScaledSize:(CGSize)a3 useOptimalMSRCoefficients:(BOOL)a4 useExplicitBGRAConversion:(BOOL)a5
+- (ARMLImageTransform)initWithScaledSize:(CGSize)size useOptimalMSRCoefficients:(BOOL)coefficients useExplicitBGRAConversion:(BOOL)conversion
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = ARMLImageTransform;
   v9 = [(ARMLImageTransform *)&v13 init];
@@ -26,8 +26,8 @@
     v10->_inputSize = *MEMORY[0x1E695F060];
     v10->_scaledSize.width = width;
     v10->_scaledSize.height = height;
-    v10->_useOptimalMSRCoefficients = a4;
-    v10->_useExplicitBGRAConversion = a5;
+    v10->_useOptimalMSRCoefficients = coefficients;
+    v10->_useExplicitBGRAConversion = conversion;
   }
 
   return v10;
@@ -64,34 +64,34 @@
   [(ARMLImageTransform *)&v6 dealloc];
 }
 
-- (id)fastPassDownscaledResultDataFromImageData:(id)a3 croppedRect:(CGRect)a4 rotation:(int64_t)a5 rotationOfResultTensor:(int64_t)a6
+- (id)fastPassDownscaledResultDataFromImageData:(id)data croppedRect:(CGRect)rect rotation:(int64_t)rotation rotationOfResultTensor:(int64_t)tensor
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v51[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  [v13 timestamp];
-  v14 = [v13 cameraType];
+  dataCopy = data;
+  [dataCopy timestamp];
+  cameraType = [dataCopy cameraType];
   v15 = *MEMORY[0x1E6986948];
-  [v14 isEqualToString:*MEMORY[0x1E6986948]];
-  [v13 imageResolution];
-  [v13 imageResolution];
+  [cameraType isEqualToString:*MEMORY[0x1E6986948]];
+  [dataCopy imageResolution];
+  [dataCopy imageResolution];
   kdebug_trace();
 
-  [v13 cameraIntrinsics];
-  [v13 cameraIntrinsics];
-  [v13 cameraIntrinsics];
+  [dataCopy cameraIntrinsics];
+  [dataCopy cameraIntrinsics];
+  [dataCopy cameraIntrinsics];
   kdebug_trace();
-  [v13 imageResolution];
+  [dataCopy imageResolution];
   [(ARMLImageTransform *)self _calculatePreScalingPassesForInputResolution:?];
-  v16 = [(ARMLImageTransform *)self _preScaleImageData:v13];
-  v17 = [v13 pixelBuffer];
-  if (v17)
+  v16 = [(ARMLImageTransform *)self _preScaleImageData:dataCopy];
+  pixelBuffer = [dataCopy pixelBuffer];
+  if (pixelBuffer)
   {
-    v18 = v17;
-    v19 = CVPixelBufferGetWidth(v17);
+    v18 = pixelBuffer;
+    v19 = CVPixelBufferGetWidth(pixelBuffer);
     v20 = CVPixelBufferGetHeight(v18);
   }
 
@@ -107,7 +107,7 @@
   v24 = v23;
   v25 = v20 * v24;
   v26 = v25;
-  if (a5 == 90 || a5 == -90)
+  if (rotation == 90 || rotation == -90)
   {
     v27 = v21;
     v28 = (v19 * v24);
@@ -124,18 +124,18 @@
   v29 = v26;
   v30 = v28;
   [v16 timestamp];
-  v31 = [v16 cameraType];
-  [v31 isEqualToString:v15];
+  cameraType2 = [v16 cameraType];
+  [cameraType2 isEqualToString:v15];
   kdebug_trace();
 
   [v16 imageResolution];
   [v16 imageResolution];
   kdebug_trace();
-  v32 = [(ARMLImageTransform *)self _applyFinalTransformToScaledImage:v16 rotation:a5 finalResultSize:v13 originalImageData:v22, v27];
-  [v13 cameraIntrinsics];
+  v32 = [(ARMLImageTransform *)self _applyFinalTransformToScaledImage:v16 rotation:rotation finalResultSize:dataCopy originalImageData:v22, v27];
+  [dataCopy cameraIntrinsics];
   v46 = v34;
   v47 = v33;
-  [v13 imageResolution];
+  [dataCopy imageResolution];
   [v32 setCameraIntrinsics:{ARAdjustIntrincisForOrientation(self->_rotationAngle, v47, v46)}];
   [v32 setMirrored:0];
   [v32 imageResolution];
@@ -152,7 +152,7 @@
   [v32 imageResolution];
   kdebug_trace();
   v50[0] = @"imageDownScalingRotationOfResultTensorKey";
-  v35 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+  v35 = [MEMORY[0x1E696AD98] numberWithInteger:tensor];
   v50[1] = @"imageDownScalingRegionOfInterest";
   v51[0] = v35;
   *v48 = v29;
@@ -161,12 +161,12 @@
   v51[1] = v36;
   v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:v50 count:2];
 
-  v38 = [v32 metaData];
+  metaData = [v32 metaData];
 
-  if (v38)
+  if (metaData)
   {
-    v39 = [v32 metaData];
-    v40 = [v39 mutableCopy];
+    metaData2 = [v32 metaData];
+    v40 = [metaData2 mutableCopy];
 
     [v40 addEntriesFromDictionary:v37];
     [v32 setMetaData:v40];
@@ -181,19 +181,19 @@
   v42 = [ARMLImageDownScalingResultData alloc];
   v49 = v41;
   v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
-  [v13 timestamp];
-  v44 = [(ARMLImageDownScalingResultData *)v42 initWithResultDataArray:v43 timestamp:a6 rotationOfResultTensor:v13 originalImageData:?];
+  [dataCopy timestamp];
+  v44 = [(ARMLImageDownScalingResultData *)v42 initWithResultDataArray:v43 timestamp:tensor rotationOfResultTensor:dataCopy originalImageData:?];
 
   return v44;
 }
 
-- (void)_calculatePreScalingPassesForInputResolution:(CGSize)a3
+- (void)_calculatePreScalingPassesForInputResolution:(CGSize)resolution
 {
-  height = a3.height;
-  width = a3.width;
+  height = resolution.height;
+  width = resolution.width;
   v36 = *MEMORY[0x1E69E9840];
-  v5 = self->_inputSize.width == a3.width;
-  if (self->_inputSize.height != a3.height)
+  v5 = self->_inputSize.width == resolution.width;
+  if (self->_inputSize.height != resolution.height)
   {
     v5 = 0;
   }
@@ -222,7 +222,7 @@
         v28 = 138543618;
         v29 = v11;
         v30 = 2048;
-        v31 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Recreating scaling passes", &v28, 0x16u);
       }
 
@@ -236,7 +236,7 @@
         v28 = 138544130;
         v29 = v14;
         v30 = 2048;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2048;
         v33 = v15;
         v34 = 2048;
@@ -252,7 +252,7 @@
         v28 = 138544130;
         v29 = v19;
         v30 = 2048;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2048;
         v33 = width;
         v34 = 2048;
@@ -285,18 +285,18 @@
   }
 }
 
-- (id)_preScaleImageData:(id)a3
+- (id)_preScaleImageData:(id)data
 {
   imageScalingTechnique = self->_imageScalingTechnique;
-  v4 = a3;
+  dataCopy = data;
   if (imageScalingTechnique)
   {
-    v5 = [(ARImageScalingTechnique *)imageScalingTechnique processData:v4];
+    v5 = [(ARImageScalingTechnique *)imageScalingTechnique processData:dataCopy];
   }
 
   else
   {
-    v5 = [[ARModifiedImageData alloc] initWithImageData:v4];
+    v5 = [[ARModifiedImageData alloc] initWithImageData:dataCopy];
   }
 
   v6 = v5;
@@ -304,11 +304,11 @@
   return v6;
 }
 
-- (void)_prepareSessionAndPoolForRotation:(int64_t)a3
+- (void)_prepareSessionAndPoolForRotation:(int64_t)rotation
 {
-  if (self->_rotationAngle != a3)
+  if (self->_rotationAngle != rotation)
   {
-    self->_rotationAngle = a3;
+    self->_rotationAngle = rotation;
     scalingSession = self->_scalingSession;
     if (scalingSession)
     {
@@ -349,15 +349,15 @@
   }
 }
 
-- (id)_applyFinalTransformToScaledImage:(id)a3 rotation:(int64_t)a4 finalResultSize:(CGSize)a5 originalImageData:(id)a6
+- (id)_applyFinalTransformToScaledImage:(id)image rotation:(int64_t)rotation finalResultSize:(CGSize)size originalImageData:(id)data
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v113 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  [(ARMLImageTransform *)self _prepareSessionAndPoolForRotation:a4];
-  v13 = [v11 pixelBuffer];
+  imageCopy = image;
+  dataCopy = data;
+  [(ARMLImageTransform *)self _prepareSessionAndPoolForRotation:rotation];
+  pixelBuffer = [imageCopy pixelBuffer];
   v103 = 0;
   v104 = &v103;
   v105 = 0x2020000000;
@@ -408,7 +408,7 @@
               *buf = 138543618;
               v108 = v40;
               v109 = 2048;
-              v110 = self;
+              selfCopy16 = self;
               _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to create pixel transfer session for image downscaling", buf, 0x16u);
             }
           }
@@ -420,7 +420,7 @@
             *buf = 138543618;
             v108 = v81;
             v109 = 2048;
-            v110 = self;
+            selfCopy16 = self;
             _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to create pixel transfer session for image downscaling", buf, 0x16u);
           }
 
@@ -448,7 +448,7 @@
               *buf = 138543618;
               v108 = v75;
               v109 = 2048;
-              v110 = self;
+              selfCopy16 = self;
               _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to update pixel transfer session properties", buf, 0x16u);
             }
           }
@@ -460,7 +460,7 @@
             *buf = 138543618;
             v108 = v87;
             v109 = 2048;
-            v110 = self;
+            selfCopy16 = self;
             _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to update pixel transfer session properties", buf, 0x16u);
           }
 
@@ -497,7 +497,7 @@
               *buf = 138543874;
               v108 = v30;
               v109 = 2048;
-              v110 = self;
+              selfCopy16 = self;
               v111 = 1024;
               v112 = v24;
               _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Creation of VTPixelRotationSession failed with error %d", buf, 0x1Cu);
@@ -511,7 +511,7 @@
             *buf = 138543874;
             v108 = v71;
             v109 = 2048;
-            v110 = self;
+            selfCopy16 = self;
             v111 = 1024;
             v112 = v24;
             _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Creation of VTPixelRotationSession failed with error %d", buf, 0x1Cu);
@@ -541,7 +541,7 @@
               *buf = 138543874;
               v108 = v69;
               v109 = 2048;
-              v110 = self;
+              selfCopy16 = self;
               v111 = 1024;
               v112 = v65;
               _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Configuration of VTPixelRotationSession failed with error %d", buf, 0x1Cu);
@@ -555,7 +555,7 @@
             *buf = 138543874;
             v108 = v85;
             v109 = 2048;
-            v110 = self;
+            selfCopy16 = self;
             v111 = 1024;
             v112 = v65;
             _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Configuration of VTPixelRotationSession failed with error %d", buf, 0x1Cu);
@@ -575,10 +575,10 @@
 
     if (self->_useExplicitBGRAConversion)
     {
-      if (v13)
+      if (pixelBuffer)
       {
-        v19 = CVPixelBufferGetWidth(v13);
-        v20 = CVPixelBufferGetHeight(v13);
+        v19 = CVPixelBufferGetWidth(pixelBuffer);
+        v20 = CVPixelBufferGetHeight(pixelBuffer);
         v21 = v19;
         v22 = v20;
       }
@@ -591,7 +591,7 @@
 
       v41 = ARCreateCVPixelBufferFromPool(&self->_conversionBufferPool, 1111970369, self, @"conversion buffer pool", v21, v22);
       v104[3] = v41;
-      v42 = VTPixelTransferSessionTransferImage(self->_conversionSession, v13, v41);
+      v42 = VTPixelTransferSessionTransferImage(self->_conversionSession, pixelBuffer, v41);
       if (v42)
       {
         if (ARShouldUseLogTypeError_onceToken_11 != -1)
@@ -611,7 +611,7 @@
             *buf = 138543874;
             v108 = v46;
             v109 = 2048;
-            v110 = self;
+            selfCopy16 = self;
             v111 = 1024;
             v112 = v42;
             _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to convert image to BGRA: %d", buf, 0x1Cu);
@@ -625,7 +625,7 @@
           *buf = 138543874;
           v108 = v63;
           v109 = 2048;
-          v110 = self;
+          selfCopy16 = self;
           v111 = 1024;
           v112 = v42;
           _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to convert image to BGRA: %d", buf, 0x1Cu);
@@ -637,7 +637,7 @@
 
     else
     {
-      v23 = CVPixelBufferRetain(v13);
+      v23 = CVPixelBufferRetain(pixelBuffer);
       v104[3] = v23;
     }
 
@@ -665,7 +665,7 @@
             *buf = 138543874;
             v108 = v52;
             v109 = 2048;
-            v110 = self;
+            selfCopy16 = self;
             v111 = 1024;
             v112 = v48;
             _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to scale: %d", buf, 0x1Cu);
@@ -679,7 +679,7 @@
           *buf = 138543874;
           v108 = v77;
           v109 = 2048;
-          v110 = self;
+          selfCopy16 = self;
           v111 = 1024;
           v112 = v48;
           _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to scale: %d", buf, 0x1Cu);
@@ -719,7 +719,7 @@
             *buf = 138543874;
             v108 = v59;
             v109 = 2048;
-            v110 = self;
+            selfCopy16 = self;
             v111 = 1024;
             v112 = v55;
             _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to scale+rotate+convert: %d", buf, 0x1Cu);
@@ -733,7 +733,7 @@
           *buf = 138543874;
           v108 = v83;
           v109 = 2048;
-          v110 = self;
+          selfCopy16 = self;
           v111 = 1024;
           v112 = v55;
           _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to scale+rotate+convert: %d", buf, 0x1Cu);
@@ -749,9 +749,9 @@
       v96[3] = v60;
     }
 
-    v61 = [[ARModifiedImageData alloc] initWithImageData:v12];
+    v61 = [[ARModifiedImageData alloc] initWithImageData:dataCopy];
     [(ARImageData *)v61 setPixelBuffer:v96[3]];
-    [v12 timestamp];
+    [dataCopy timestamp];
     [(ARImageData *)v61 setTimestamp:?];
     goto LABEL_85;
   }
@@ -775,7 +775,7 @@
       *buf = 138543618;
       v108 = v34;
       v109 = 2048;
-      v110 = self;
+      selfCopy16 = self;
       _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to create pixel transfer session for bgra conversion", buf, 0x16u);
     }
   }
@@ -787,7 +787,7 @@
     *buf = 138543618;
     v108 = v79;
     v109 = 2048;
-    v110 = self;
+    selfCopy16 = self;
     _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to create pixel transfer session for bgra conversion", buf, 0x16u);
   }
 

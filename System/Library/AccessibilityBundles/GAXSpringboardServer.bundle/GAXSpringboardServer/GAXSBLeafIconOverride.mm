@@ -11,17 +11,17 @@
   v3 = __UIAccessibilityCastAsSafeCategory();
   if ([v3 _gaxShouldAppearLaunchDisabled])
   {
-    v4 = 0;
+    isLaunchEnabled = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = GAXSBLeafIconOverride;
-    v4 = [(GAXSBLeafIconOverride *)&v6 isLaunchEnabled];
+    isLaunchEnabled = [(GAXSBLeafIconOverride *)&v6 isLaunchEnabled];
   }
 
-  return v4;
+  return isLaunchEnabled;
 }
 
 @end

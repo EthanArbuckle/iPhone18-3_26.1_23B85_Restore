@@ -1,71 +1,71 @@
 @interface SPLostModeInfo
-- (SPLostModeInfo)initWithCoder:(id)a3;
-- (SPLostModeInfo)initWithMessage:(id)a3 email:(id)a4 phoneNumber:(id)a5 timestamp:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPLostModeInfo)initWithCoder:(id)coder;
+- (SPLostModeInfo)initWithMessage:(id)message email:(id)email phoneNumber:(id)number timestamp:(id)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPLostModeInfo
 
-- (SPLostModeInfo)initWithMessage:(id)a3 email:(id)a4 phoneNumber:(id)a5 timestamp:(id)a6
+- (SPLostModeInfo)initWithMessage:(id)message email:(id)email phoneNumber:(id)number timestamp:(id)timestamp
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  messageCopy = message;
+  emailCopy = email;
+  numberCopy = number;
+  timestampCopy = timestamp;
   v18.receiver = self;
   v18.super_class = SPLostModeInfo;
   v15 = [(SPLostModeInfo *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_message, a3);
-    objc_storeStrong(&v16->_phoneNumber, a5);
-    objc_storeStrong(&v16->_timestamp, a6);
-    objc_storeStrong(&v16->_email, a4);
+    objc_storeStrong(&v15->_message, message);
+    objc_storeStrong(&v16->_phoneNumber, number);
+    objc_storeStrong(&v16->_timestamp, timestamp);
+    objc_storeStrong(&v16->_email, email);
   }
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPLostModeInfo alloc];
-  v5 = [(SPLostModeInfo *)self message];
-  v6 = [(SPLostModeInfo *)self email];
-  v7 = [(SPLostModeInfo *)self phoneNumber];
-  v8 = [(SPLostModeInfo *)self timestamp];
-  v9 = [(SPLostModeInfo *)v4 initWithMessage:v5 email:v6 phoneNumber:v7 timestamp:v8];
+  message = [(SPLostModeInfo *)self message];
+  email = [(SPLostModeInfo *)self email];
+  phoneNumber = [(SPLostModeInfo *)self phoneNumber];
+  timestamp = [(SPLostModeInfo *)self timestamp];
+  v9 = [(SPLostModeInfo *)v4 initWithMessage:message email:email phoneNumber:phoneNumber timestamp:timestamp];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeObject:timestamp forKey:@"timestamp"];
-  [v5 encodeObject:self->_message forKey:@"message"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
-  [v5 encodeObject:self->_email forKey:@"email"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_message forKey:@"message"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:self->_email forKey:@"email"];
 }
 
-- (SPLostModeInfo)initWithCoder:(id)a3
+- (SPLostModeInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
   timestamp = self->_timestamp;
   self->_timestamp = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
   message = self->_message;
   self->_message = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
   phoneNumber = self->_phoneNumber;
   self->_phoneNumber = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"email"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"email"];
 
   email = self->_email;
   self->_email = v11;

@@ -1,7 +1,7 @@
 @interface PXGGradient
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXGGradient)init;
-- (PXGGradient)initWithStartingColor:(id)a3 endingColor:(id)a4 direction:(int64_t)a5;
+- (PXGGradient)initWithStartingColor:(id)color endingColor:(id)endingColor direction:(int64_t)direction;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -18,10 +18,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -31,17 +31,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXGGradient *)self startingColor];
-      v7 = [(PXGGradient *)v5 startingColor];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      startingColor = [(PXGGradient *)self startingColor];
+      startingColor2 = [(PXGGradient *)v5 startingColor];
+      if ([startingColor isEqual:startingColor2])
       {
-        v8 = [(PXGGradient *)self endingColor];
-        v9 = [(PXGGradient *)v5 endingColor];
-        if ([v8 isEqual:v9])
+        endingColor = [(PXGGradient *)self endingColor];
+        endingColor2 = [(PXGGradient *)v5 endingColor];
+        if ([endingColor isEqual:endingColor2])
         {
-          v10 = [(PXGGradient *)self direction];
-          v11 = v10 == [(PXGGradient *)v5 direction];
+          direction = [(PXGGradient *)self direction];
+          v11 = direction == [(PXGGradient *)v5 direction];
         }
 
         else
@@ -67,27 +67,27 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXGGradient *)self startingColor];
-  v4 = [v3 hash];
-  v5 = [(PXGGradient *)self endingColor];
-  v6 = v4 ^ (2 * [v5 hash]);
+  startingColor = [(PXGGradient *)self startingColor];
+  v4 = [startingColor hash];
+  endingColor = [(PXGGradient *)self endingColor];
+  v6 = v4 ^ (2 * [endingColor hash]);
 
   return v6;
 }
 
-- (PXGGradient)initWithStartingColor:(id)a3 endingColor:(id)a4 direction:(int64_t)a5
+- (PXGGradient)initWithStartingColor:(id)color endingColor:(id)endingColor direction:(int64_t)direction
 {
-  v9 = a3;
-  v10 = a4;
+  colorCopy = color;
+  endingColorCopy = endingColor;
   v14.receiver = self;
   v14.super_class = PXGGradient;
   v11 = [(PXGGradient *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_startingColor, a3);
-    objc_storeStrong(&v12->_endingColor, a4);
-    v12->_direction = a5;
+    objc_storeStrong(&v11->_startingColor, color);
+    objc_storeStrong(&v12->_endingColor, endingColor);
+    v12->_direction = direction;
   }
 
   return v12;
@@ -95,9 +95,9 @@
 
 - (PXGGradient)init
 {
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  v5 = [(PXGGradient *)self initWithStartingColor:v3 endingColor:v4 direction:0];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  v5 = [(PXGGradient *)self initWithStartingColor:clearColor endingColor:clearColor2 direction:0];
 
   return v5;
 }

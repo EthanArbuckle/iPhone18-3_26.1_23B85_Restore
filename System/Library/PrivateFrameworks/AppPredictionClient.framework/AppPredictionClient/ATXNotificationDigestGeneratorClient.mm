@@ -1,47 +1,47 @@
 @interface ATXNotificationDigestGeneratorClient
-- (ATXNotificationDigestGeneratorClient)initWithDigestRankerClient:(id)a3;
-- (ATXNotificationDigestGeneratorClient)initWithMissedNotificationRankingBiomeStream:(id)a3 notificationDigestBiomeStream:(id)a4 modeConfigurationClient:(id)a5 modeEntityScorer:(id)a6 digestRankerClient:(id)a7;
-- (id)_flattenNestedNotificationArrays:(id)a3;
+- (ATXNotificationDigestGeneratorClient)initWithDigestRankerClient:(id)client;
+- (ATXNotificationDigestGeneratorClient)initWithMissedNotificationRankingBiomeStream:(id)stream notificationDigestBiomeStream:(id)biomeStream modeConfigurationClient:(id)client modeEntityScorer:(id)scorer digestRankerClient:(id)rankerClient;
+- (id)_flattenNestedNotificationArrays:(id)arrays;
 - (id)digestRankerClient;
-- (id)generateDigestForNotifications:(id)a3 digestTime:(int64_t)a4;
-- (void)generateDigestForAppGroupedNotificationStacks:(id)a3 maxGlobalMarqueeGroups:(unint64_t)a4 maxAppMarqueeGroups:(unint64_t)a5 reply:(id)a6;
-- (void)generateDigestForNotificationArrays:(id)a3 reply:(id)a4;
-- (void)generateMissedNotificationRankingForNotificationArrays:(id)a3 atxMode:(unint64_t)a4 reply:(id)a5;
-- (void)generateMissedNotificationRankingForNotificationArrays:(id)a3 modeUUID:(id)a4 reply:(id)a5;
+- (id)generateDigestForNotifications:(id)notifications digestTime:(int64_t)time;
+- (void)generateDigestForAppGroupedNotificationStacks:(id)stacks maxGlobalMarqueeGroups:(unint64_t)groups maxAppMarqueeGroups:(unint64_t)marqueeGroups reply:(id)reply;
+- (void)generateDigestForNotificationArrays:(id)arrays reply:(id)reply;
+- (void)generateMissedNotificationRankingForNotificationArrays:(id)arrays atxMode:(unint64_t)mode reply:(id)reply;
+- (void)generateMissedNotificationRankingForNotificationArrays:(id)arrays modeUUID:(id)d reply:(id)reply;
 @end
 
 @implementation ATXNotificationDigestGeneratorClient
 
-- (ATXNotificationDigestGeneratorClient)initWithDigestRankerClient:(id)a3
+- (ATXNotificationDigestGeneratorClient)initWithDigestRankerClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v7 = +[ATXDNDModeConfigurationClient sharedInstance];
   v8 = objc_opt_new();
-  v9 = [(ATXNotificationDigestGeneratorClient *)self initWithMissedNotificationRankingBiomeStream:v5 notificationDigestBiomeStream:v6 modeConfigurationClient:v7 modeEntityScorer:v8 digestRankerClient:v4];
+  v9 = [(ATXNotificationDigestGeneratorClient *)self initWithMissedNotificationRankingBiomeStream:v5 notificationDigestBiomeStream:v6 modeConfigurationClient:v7 modeEntityScorer:v8 digestRankerClient:clientCopy];
 
   return v9;
 }
 
-- (ATXNotificationDigestGeneratorClient)initWithMissedNotificationRankingBiomeStream:(id)a3 notificationDigestBiomeStream:(id)a4 modeConfigurationClient:(id)a5 modeEntityScorer:(id)a6 digestRankerClient:(id)a7
+- (ATXNotificationDigestGeneratorClient)initWithMissedNotificationRankingBiomeStream:(id)stream notificationDigestBiomeStream:(id)biomeStream modeConfigurationClient:(id)client modeEntityScorer:(id)scorer digestRankerClient:(id)rankerClient
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  streamCopy = stream;
+  biomeStreamCopy = biomeStream;
+  clientCopy = client;
+  scorerCopy = scorer;
+  rankerClientCopy = rankerClient;
   v21.receiver = self;
   v21.super_class = ATXNotificationDigestGeneratorClient;
   v17 = [(ATXNotificationDigestGeneratorClient *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_missedNotificationRankingStream, a3);
-    objc_storeStrong(&v18->_digestStream, a4);
-    objc_storeStrong(&v18->_modeConfigurationClient, a5);
-    objc_storeStrong(&v18->_modeEntityScorer, a6);
-    objc_storeStrong(&v18->_digestRankerClient, a7);
+    objc_storeStrong(&v17->_missedNotificationRankingStream, stream);
+    objc_storeStrong(&v18->_digestStream, biomeStream);
+    objc_storeStrong(&v18->_modeConfigurationClient, client);
+    objc_storeStrong(&v18->_modeEntityScorer, scorer);
+    objc_storeStrong(&v18->_digestRankerClient, rankerClient);
   }
 
   return v18;
@@ -62,16 +62,16 @@
   return digestRankerClient;
 }
 
-- (id)_flattenNestedNotificationArrays:(id)a3
+- (id)_flattenNestedNotificationArrays:(id)arrays
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arraysCopy = arrays;
   v4 = objc_opt_new();
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = arraysCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -98,33 +98,33 @@
   return v4;
 }
 
-- (id)generateDigestForNotifications:(id)a3 digestTime:(int64_t)a4
+- (id)generateDigestForNotifications:(id)notifications digestTime:(int64_t)time
 {
-  v6 = a3;
+  notificationsCopy = notifications;
   v7 = objc_opt_new();
-  v8 = digestTimeToMode(a4);
+  v8 = digestTimeToMode(time);
   v9 = ATXModeToString(v8);
-  [(ATXModeEntityScorerProtocol *)self->_modeEntityScorer scoreUserNotifications:v6 mode:v8];
-  v10 = [[ATXUserNotificationDigest alloc] initWithNotifications:v6 modeId:v9 ranker:v7];
+  [(ATXModeEntityScorerProtocol *)self->_modeEntityScorer scoreUserNotifications:notificationsCopy mode:v8];
+  v10 = [[ATXUserNotificationDigest alloc] initWithNotifications:notificationsCopy modeId:v9 ranker:v7];
 
   [(ATXUserNotificationDigest *)v10 setLoggingStream:self->_digestStream];
 
   return v10;
 }
 
-- (void)generateDigestForAppGroupedNotificationStacks:(id)a3 maxGlobalMarqueeGroups:(unint64_t)a4 maxAppMarqueeGroups:(unint64_t)a5 reply:(id)a6
+- (void)generateDigestForAppGroupedNotificationStacks:(id)stacks maxGlobalMarqueeGroups:(unint64_t)groups maxAppMarqueeGroups:(unint64_t)marqueeGroups reply:(id)reply
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [(ATXNotificationDigestGeneratorClient *)self digestRankerClient];
+  replyCopy = reply;
+  stacksCopy = stacks;
+  digestRankerClient = [(ATXNotificationDigestGeneratorClient *)self digestRankerClient];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __135__ATXNotificationDigestGeneratorClient_generateDigestForAppGroupedNotificationStacks_maxGlobalMarqueeGroups_maxAppMarqueeGroups_reply___block_invoke;
   v14[3] = &unk_1E80C6160;
   v14[4] = self;
-  v15 = v10;
-  v13 = v10;
-  [v12 generateDigestForAppGroupedNotificationStacks:v11 maxGlobalMarqueeGroups:a4 maxAppMarqueeGroups:a5 reply:v14];
+  v15 = replyCopy;
+  v13 = replyCopy;
+  [digestRankerClient generateDigestForAppGroupedNotificationStacks:stacksCopy maxGlobalMarqueeGroups:groups maxAppMarqueeGroups:marqueeGroups reply:v14];
 }
 
 void __135__ATXNotificationDigestGeneratorClient_generateDigestForAppGroupedNotificationStacks_maxGlobalMarqueeGroups_maxAppMarqueeGroups_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -151,19 +151,19 @@ void __135__ATXNotificationDigestGeneratorClient_generateDigestForAppGroupedNoti
   v8();
 }
 
-- (void)generateDigestForNotificationArrays:(id)a3 reply:(id)a4
+- (void)generateDigestForNotificationArrays:(id)arrays reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ATXNotificationDigestGeneratorClient *)self digestRankerClient];
+  replyCopy = reply;
+  arraysCopy = arrays;
+  digestRankerClient = [(ATXNotificationDigestGeneratorClient *)self digestRankerClient];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__ATXNotificationDigestGeneratorClient_generateDigestForNotificationArrays_reply___block_invoke;
   v10[3] = &unk_1E80C6160;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 generateDigestForNotificationStacks:v7 reply:v10];
+  v11 = replyCopy;
+  v9 = replyCopy;
+  [digestRankerClient generateDigestForNotificationStacks:arraysCopy reply:v10];
 }
 
 void __82__ATXNotificationDigestGeneratorClient_generateDigestForNotificationArrays_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -190,36 +190,36 @@ void __82__ATXNotificationDigestGeneratorClient_generateDigestForNotificationArr
   v8();
 }
 
-- (void)generateMissedNotificationRankingForNotificationArrays:(id)a3 modeUUID:(id)a4 reply:(id)a5
+- (void)generateMissedNotificationRankingForNotificationArrays:(id)arrays modeUUID:(id)d reply:(id)reply
 {
   modeConfigurationClient = self->_modeConfigurationClient;
-  v9 = a5;
-  v10 = a3;
-  [(ATXNotificationDigestGeneratorClient *)self generateMissedNotificationRankingForNotificationArrays:v10 atxMode:[(ATXDNDModeConfigurationClient *)modeConfigurationClient atxModeForDNDMode:a4] reply:v9];
+  replyCopy = reply;
+  arraysCopy = arrays;
+  [(ATXNotificationDigestGeneratorClient *)self generateMissedNotificationRankingForNotificationArrays:arraysCopy atxMode:[(ATXDNDModeConfigurationClient *)modeConfigurationClient atxModeForDNDMode:d] reply:replyCopy];
 }
 
-- (void)generateMissedNotificationRankingForNotificationArrays:(id)a3 atxMode:(unint64_t)a4 reply:(id)a5
+- (void)generateMissedNotificationRankingForNotificationArrays:(id)arrays atxMode:(unint64_t)mode reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = ATXModeToString(a4);
+  arraysCopy = arrays;
+  replyCopy = reply;
+  v10 = ATXModeToString(mode);
   v11 = objc_opt_new();
-  v12 = [(ATXNotificationDigestGeneratorClient *)self _flattenNestedNotificationArrays:v8];
+  v12 = [(ATXNotificationDigestGeneratorClient *)self _flattenNestedNotificationArrays:arraysCopy];
   modeEntityScorer = self->_modeEntityScorer;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __109__ATXNotificationDigestGeneratorClient_generateMissedNotificationRankingForNotificationArrays_atxMode_reply___block_invoke;
   v18[3] = &unk_1E80C6188;
-  v22 = self;
-  v23 = v9;
-  v19 = v8;
+  selfCopy = self;
+  v23 = replyCopy;
+  v19 = arraysCopy;
   v20 = v10;
   v21 = v11;
   v14 = v11;
   v15 = v10;
-  v16 = v8;
-  v17 = v9;
-  [(ATXModeEntityScorerProtocol *)modeEntityScorer scoreUserNotifications:v12 mode:a4 reply:v18];
+  v16 = arraysCopy;
+  v17 = replyCopy;
+  [(ATXModeEntityScorerProtocol *)modeEntityScorer scoreUserNotifications:v12 mode:mode reply:v18];
 }
 
 void __109__ATXNotificationDigestGeneratorClient_generateMissedNotificationRankingForNotificationArrays_atxMode_reply___block_invoke(void *a1, uint64_t a2)

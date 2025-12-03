@@ -1,6 +1,6 @@
 @interface PUPhotoKitRemoveActionPerformer
-- (BOOL)assetActionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (id)undoManagerForAssetActionPerformer:(id)a3;
+- (BOOL)assetActionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler;
+- (id)undoManagerForAssetActionPerformer:(id)performer;
 - (void)_performTrashTask;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
@@ -8,30 +8,30 @@
 
 @implementation PUPhotoKitRemoveActionPerformer
 
-- (BOOL)assetActionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (BOOL)assetActionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PUAssetActionPerformer *)self delegate];
-  LOBYTE(self) = [v9 assetActionPerformer:self dismissViewController:v8 completionHandler:v7];
+  handlerCopy = handler;
+  controllerCopy = controller;
+  delegate = [(PUAssetActionPerformer *)self delegate];
+  LOBYTE(self) = [delegate assetActionPerformer:self dismissViewController:controllerCopy completionHandler:handlerCopy];
 
   return self;
 }
 
-- (id)undoManagerForAssetActionPerformer:(id)a3
+- (id)undoManagerForAssetActionPerformer:(id)performer
 {
-  v4 = a3;
-  v5 = [(PUAssetActionPerformer *)self delegate];
-  v6 = [v5 undoManagerForAssetActionPerformer:v4];
+  performerCopy = performer;
+  delegate = [(PUAssetActionPerformer *)self delegate];
+  v6 = [delegate undoManagerForAssetActionPerformer:performerCopy];
 
   return v6;
 }
 
 - (void)performBackgroundTask
 {
-  v3 = [(PUPhotoKitRemoveActionPerformer *)self trashActionPerformer];
+  trashActionPerformer = [(PUPhotoKitRemoveActionPerformer *)self trashActionPerformer];
 
-  if (v3)
+  if (trashActionPerformer)
   {
 
     [(PUAssetActionPerformer *)self completeBackgroundTaskWithSuccess:1 error:0];
@@ -40,20 +40,20 @@
   else
   {
     [(PUPhotoKitActionPerformer *)self instantlyExcludeAssetsFromDataSource];
-    v4 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
+    assetsByAssetCollection = [(PUAssetActionPerformer *)self assetsByAssetCollection];
     v5 = MEMORY[0x1E69C37D0];
-    v6 = [v4 allKeys];
-    v7 = [v5 dataSourceWithAssetCollections:v6];
+    allKeys = [assetsByAssetCollection allKeys];
+    v7 = [v5 dataSourceWithAssetCollections:allKeys];
 
-    v8 = [v7 selectionSnapshotForAssetsByAssetCollection:v4];
+    v8 = [v7 selectionSnapshotForAssetsByAssetCollection:assetsByAssetCollection];
     v9 = [objc_alloc(MEMORY[0x1E69C3958]) initWithSelectionSnapshot:v8];
-    v10 = [(PUAssetActionPerformer *)self undoManager];
+    undoManager = [(PUAssetActionPerformer *)self undoManager];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __56__PUPhotoKitRemoveActionPerformer_performBackgroundTask__block_invoke;
     v11[3] = &unk_1E7B80280;
     v11[4] = self;
-    [v9 executeWithUndoManager:v10 completionHandler:v11];
+    [v9 executeWithUndoManager:undoManager completionHandler:v11];
   }
 }
 
@@ -71,9 +71,9 @@ void __56__PUPhotoKitRemoveActionPerformer_performBackgroundTask__block_invoke(u
 - (void)_performTrashTask
 {
   v3 = [PUPhotoKitTrashActionPerformer alloc];
-  v4 = [(PUAssetActionPerformer *)self assets];
-  v5 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
-  v6 = [(PUAssetActionPerformer *)v3 initWithActionType:8 assets:v4 orAssetsByAssetCollection:v5];
+  assets = [(PUAssetActionPerformer *)self assets];
+  assetsByAssetCollection = [(PUAssetActionPerformer *)self assetsByAssetCollection];
+  v6 = [(PUAssetActionPerformer *)v3 initWithActionType:8 assets:assets orAssetsByAssetCollection:assetsByAssetCollection];
 
   [(PUAssetActionPerformer *)v6 setDelegate:self];
   [(PUPhotoKitRemoveActionPerformer *)self setTrashActionPerformer:v6];
@@ -89,12 +89,12 @@ void __56__PUPhotoKitRemoveActionPerformer_performBackgroundTask__block_invoke(u
 {
   if ([(PUPhotoKitRemoveActionPerformer *)self shouldShowConfirmation])
   {
-    v4 = [(PUAssetActionPerformer *)self assets];
-    v5 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
-    v6 = [v5 allKeys];
-    v7 = [v6 firstObject];
+    assets = [(PUAssetActionPerformer *)self assets];
+    assetsByAssetCollection = [(PUAssetActionPerformer *)self assetsByAssetCollection];
+    allKeys = [assetsByAssetCollection allKeys];
+    firstObject = [allKeys firstObject];
 
-    if (v7)
+    if (firstObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -104,13 +104,13 @@ LABEL_4:
         v36 = &v35;
         v37 = 0x2020000000;
         v38 = 1;
-        v8 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
+        assetsByAssetCollection2 = [(PUAssetActionPerformer *)self assetsByAssetCollection];
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __61__PUPhotoKitRemoveActionPerformer_performUserInteractionTask__block_invoke;
         v34[3] = &unk_1E7B7BAC8;
         v34[4] = &v35;
-        [v8 enumerateKeysAndObjectsUsingBlock:v34];
+        [assetsByAssetCollection2 enumerateKeysAndObjectsUsingBlock:v34];
 
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
@@ -118,7 +118,7 @@ LABEL_4:
         aBlock[3] = &unk_1E7B7E148;
         aBlock[4] = self;
         v29 = _Block_copy(aBlock);
-        if ([v7 canPerformEditOperation:2])
+        if ([firstObject canPerformEditOperation:2])
         {
           v32[0] = MEMORY[0x1E69E9820];
           v32[1] = 3221225472;
@@ -133,7 +133,7 @@ LABEL_4:
           v9 = 0;
         }
 
-        v27 = v7;
+        v27 = firstObject;
         if (*(v36 + 24) == 1)
         {
           v31[0] = MEMORY[0x1E69E9820];
@@ -149,8 +149,8 @@ LABEL_4:
           v10 = 0;
         }
 
-        v28 = v4;
-        v11 = [MEMORY[0x1E69C37F8] warningStringForAssets:v4 isDeleting:1];
+        v28 = assets;
+        v11 = [MEMORY[0x1E69C37F8] warningStringForAssets:assets isDeleting:1];
         v12 = PULocalizedString(@"CANCEL");
         v13 = PULocalizedString(@"REMOVE_FROM_ALBUM_BUTTON");
         v14 = PULocalizedString(@"DELETE_FROM_LIBRARY_BUTTON_TITLE");
@@ -181,22 +181,22 @@ LABEL_4:
         return;
       }
 
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = objc_opt_class();
       v23 = NSStringFromClass(v24);
-      [v7 px_descriptionForAssertionMessage];
-      v26 = v25 = v7;
-      [v21 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:1056 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetsByAssetCollection.allKeys.firstObject", v23, v26}];
+      [firstObject px_descriptionForAssertionMessage];
+      v26 = v25 = firstObject;
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:1056 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetsByAssetCollection.allKeys.firstObject", v23, v26}];
 
-      v7 = v25;
+      firstObject = v25;
     }
 
     else
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
-      [v21 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:1056 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetsByAssetCollection.allKeys.firstObject", v23}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:1056 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetsByAssetCollection.allKeys.firstObject", v23}];
     }
 
     goto LABEL_4;

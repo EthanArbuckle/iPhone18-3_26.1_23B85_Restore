@@ -1,76 +1,76 @@
 @interface SSRUtils
-+ (BOOL)isCurrentDeviceCompatibleWithNewerVoiceProfileAt:(id)a3;
-+ (BOOL)isCurrentDeviceCompatibleWithVoiceProfileAt:(id)a3;
++ (BOOL)isCurrentDeviceCompatibleWithNewerVoiceProfileAt:(id)at;
++ (BOOL)isCurrentDeviceCompatibleWithVoiceProfileAt:(id)at;
 + (BOOL)isMphVTUIKeywordDetectorSupportedPlatform;
-+ (BOOL)isSpeakerRecognitionSupportedInLocale:(id)a3;
++ (BOOL)isSpeakerRecognitionSupportedInLocale:(id)locale;
 + (BOOL)ssrAudioLogsCountWithinPrivacyLimit;
-+ (id)_getUtterancesFromDirectory:(id)a3;
++ (id)_getUtterancesFromDirectory:(id)directory;
 + (id)baseDir;
-+ (id)combineScoreFromPSR:(id)a3 fromSAT:(id)a4 withCombinedWt:(float)a5;
-+ (id)concatenateDonationId:(id)a3 triggerPhraseId:(unint64_t)a4;
-+ (id)convertSchemaTypeWithLocale:(id)a3;
-+ (id)createDirectoryIfDoesNotExist:(id)a3;
-+ (id)deviceCategoryStringRepresentationForCategoryType:(unint64_t)a3;
++ (id)combineScoreFromPSR:(id)r fromSAT:(id)t withCombinedWt:(float)wt;
++ (id)concatenateDonationId:(id)id triggerPhraseId:(unint64_t)phraseId;
++ (id)convertSchemaTypeWithLocale:(id)locale;
++ (id)createDirectoryIfDoesNotExist:(id)exist;
++ (id)deviceCategoryStringRepresentationForCategoryType:(unint64_t)type;
 + (id)generateEnrollmentId;
-+ (id)getContentsOfDirectory:(id)a3;
-+ (id)getEmbeddingFileName:(id)a3;
-+ (id)getEnrollmentUtterancesFromDirectory:(id)a3;
-+ (id)getExplicitEnrollmentUtterancesFromDirectory:(id)a3;
-+ (id)getExplicitMarkedEnrollmentUtterancesFromDirectory:(id)a3;
-+ (id)getImplicitEnrollmentUtterancesFromDirectory:(id)a3;
++ (id)getContentsOfDirectory:(id)directory;
++ (id)getEmbeddingFileName:(id)name;
++ (id)getEnrollmentUtterancesFromDirectory:(id)directory;
++ (id)getExplicitEnrollmentUtterancesFromDirectory:(id)directory;
++ (id)getExplicitMarkedEnrollmentUtterancesFromDirectory:(id)directory;
++ (id)getImplicitEnrollmentUtterancesFromDirectory:(id)directory;
 + (id)getImplicitUtteranceCacheDirectory;
 + (id)getVoiceEnrollmentDownloadBaseDir;
-+ (id)getVoiceProfileForSiriProfileId:(id)a3 forLanguageCode:(id)a4;
-+ (id)getVoiceProfileIdentityFromVersionFilePath:(id)a3;
-+ (id)getVoiceProfilesForSiriProfileId:(id)a3;
-+ (id)moveContentsOfSrcDirectory:(id)a3 toDestDirectory:(id)a4;
-+ (id)psrConfigFileNameForCSSpIdType:(unint64_t)a3;
-+ (id)readJsonFileAtPath:(id)a3;
-+ (id)removeItemAtPath:(id)a3;
-+ (id)satConfigFileNameForCSSpIdType:(unint64_t)a3;
-+ (id)satConfigFileNameForCSSpIdType:(unint64_t)a3 forModelType:(unint64_t)a4 forAssetType:(unint64_t)a5;
++ (id)getVoiceProfileForSiriProfileId:(id)id forLanguageCode:(id)code;
++ (id)getVoiceProfileIdentityFromVersionFilePath:(id)path;
++ (id)getVoiceProfilesForSiriProfileId:(id)id;
++ (id)moveContentsOfSrcDirectory:(id)directory toDestDirectory:(id)destDirectory;
++ (id)psrConfigFileNameForCSSpIdType:(unint64_t)type;
++ (id)readJsonFileAtPath:(id)path;
++ (id)removeItemAtPath:(id)path;
++ (id)satConfigFileNameForCSSpIdType:(unint64_t)type;
++ (id)satConfigFileNameForCSSpIdType:(unint64_t)type forModelType:(unint64_t)modelType forAssetType:(unint64_t)assetType;
 + (id)spIdVoiceProfileImportRootDir;
 + (id)spidAudioTrainUtterancesDir;
 + (id)ssrAudioLogsDir;
-+ (id)stringForCSSpIdType:(unint64_t)a3;
-+ (id)stringForInvocationStyle:(unint64_t)a3;
-+ (id)stringForSpeakerRecognizerType:(unint64_t)a3;
-+ (id)stringForVoiceProfileRetrainerType:(unint64_t)a3;
++ (id)stringForCSSpIdType:(unint64_t)type;
++ (id)stringForInvocationStyle:(unint64_t)style;
++ (id)stringForSpeakerRecognizerType:(unint64_t)type;
++ (id)stringForVoiceProfileRetrainerType:(unint64_t)type;
 + (id)timeStampString;
-+ (int)convertToSchemaEnumWithPhId:(unint64_t)a3;
-+ (int64_t)getNumberOfAudioFilesInDirectory:(id)a3;
-+ (unint64_t)convertToEnrollmentTriggerPhraseWithPhId:(unint64_t)a3;
-+ (unint64_t)deviceCategoryForDeviceProductType:(id)a3;
-+ (unint64_t)deviceCategoryFromString:(id)a3;
-+ (unint64_t)explicitSpIdTypeForSpId:(unint64_t)a3;
++ (int)convertToSchemaEnumWithPhId:(unint64_t)id;
++ (int64_t)getNumberOfAudioFilesInDirectory:(id)directory;
++ (unint64_t)convertToEnrollmentTriggerPhraseWithPhId:(unint64_t)id;
++ (unint64_t)deviceCategoryForDeviceProductType:(id)type;
++ (unint64_t)deviceCategoryFromString:(id)string;
++ (unint64_t)explicitSpIdTypeForSpId:(unint64_t)id;
 + (unint64_t)getCurrentDeviceCategoryType;
-+ (unint64_t)getVoiceProfileProductCategoryFromVersionFilePath:(id)a3;
-+ (unint64_t)spIdTypeForString:(id)a3;
++ (unint64_t)getVoiceProfileProductCategoryFromVersionFilePath:(id)path;
++ (unint64_t)spIdTypeForString:(id)string;
 + (void)cleanupOrphanedVoiceIdGradingFiles;
-+ (void)dumpFilesInDirectory:(id)a3;
-+ (void)getEnrollmentUtterancesCountFromDirectory:(id)a3 withCountBlock:(id)a4;
-+ (void)getHomeUserIdForVoiceProfile:(id)a3 withCompletion:(id)a4;
-+ (void)logSpeakerRecognitionGradingMetadataAtFilepath:(id)a3 withScoreInfo:(id)a4;
-+ (void)segmentVoiceTriggerFromAudioFile:(id)a3 withVTEventInfo:(id)a4 withStorePayloadPortion:(BOOL)a5 withCompletion:(id)a6;
-+ (void)streamAudioFromFileUrl:(id)a3 audioStreamBasicDescriptor:(AudioStreamBasicDescription *)a4 samplesPerStreamChunk:(unint64_t)a5 audioDataAvailableHandler:(id)a6;
++ (void)dumpFilesInDirectory:(id)directory;
++ (void)getEnrollmentUtterancesCountFromDirectory:(id)directory withCountBlock:(id)block;
++ (void)getHomeUserIdForVoiceProfile:(id)profile withCompletion:(id)completion;
++ (void)logSpeakerRecognitionGradingMetadataAtFilepath:(id)filepath withScoreInfo:(id)info;
++ (void)segmentVoiceTriggerFromAudioFile:(id)file withVTEventInfo:(id)info withStorePayloadPortion:(BOOL)portion withCompletion:(id)completion;
++ (void)streamAudioFromFileUrl:(id)url audioStreamBasicDescriptor:(AudioStreamBasicDescription *)descriptor samplesPerStreamChunk:(unint64_t)chunk audioDataAvailableHandler:(id)handler;
 @end
 
 @implementation SSRUtils
 
-+ (id)getEmbeddingFileName:(id)a3
++ (id)getEmbeddingFileName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 assetHash];
-  v5 = [v3 assetVersion];
+  nameCopy = name;
+  assetHash = [nameCopy assetHash];
+  assetVersion = [nameCopy assetVersion];
 
   v6 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"nil";
-    if (v4)
+    if (assetHash)
     {
-      v8 = v4;
+      v8 = assetHash;
     }
 
     else
@@ -82,9 +82,9 @@
     v17 = "+[SSRUtils getEmbeddingFileName:]";
     v18 = 2112;
     v19 = v8;
-    if (v5)
+    if (assetVersion)
     {
-      v7 = v5;
+      v7 = assetVersion;
     }
 
     v20 = 2112;
@@ -93,17 +93,17 @@
   }
 
   v9 = @"nohash";
-  if (v4)
+  if (assetHash)
   {
-    v9 = v4;
+    v9 = assetHash;
   }
 
   v10 = v9;
 
   v11 = @"0.0";
-  if (v5)
+  if (assetVersion)
   {
-    v11 = v5;
+    v11 = assetVersion;
   }
 
   v12 = v11;
@@ -115,11 +115,11 @@
   return v13;
 }
 
-+ (unint64_t)convertToEnrollmentTriggerPhraseWithPhId:(unint64_t)a3
++ (unint64_t)convertToEnrollmentTriggerPhraseWithPhId:(unint64_t)id
 {
-  if (a3)
+  if (id)
   {
-    return 2 * (a3 == 1);
+    return 2 * (id == 1);
   }
 
   else
@@ -128,11 +128,11 @@
   }
 }
 
-+ (int)convertToSchemaEnumWithPhId:(unint64_t)a3
++ (int)convertToSchemaEnumWithPhId:(unint64_t)id
 {
-  if (a3)
+  if (id)
   {
-    return 2 * (a3 == 1);
+    return 2 * (id == 1);
   }
 
   else
@@ -141,13 +141,13 @@
   }
 }
 
-+ (id)convertSchemaTypeWithLocale:(id)a3
++ (id)convertSchemaTypeWithLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v4 = objc_alloc_init(MEMORY[0x277D5A908]);
-  if (v3)
+  if (localeCopy)
   {
-    v5 = [MEMORY[0x277D5ACF8] convertLanguageCodeToSchemaLocale:v3];
+    v5 = [MEMORY[0x277D5ACF8] convertLanguageCodeToSchemaLocale:localeCopy];
     if (v5 <= 0x3E)
     {
       v6 = dword_225EA9F7C[v5];
@@ -159,22 +159,22 @@
   return v4;
 }
 
-+ (id)concatenateDonationId:(id)a3 triggerPhraseId:(unint64_t)a4
++ (id)concatenateDonationId:(id)id triggerPhraseId:(unint64_t)phraseId
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [v5 stringWithFormat:@"%lu", a4];
-  v8 = [v6 stringByAppendingFormat:@"%@%@", @"-TriggerPhrase-", v7];
+  idCopy = id;
+  phraseId = [v5 stringWithFormat:@"%lu", phraseId];
+  v8 = [idCopy stringByAppendingFormat:@"%@%@", @"-TriggerPhrase-", phraseId];
 
   return v8;
 }
 
 + (id)generateEnrollmentId
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 + (id)timeStampString
@@ -184,8 +184,8 @@
   [v2 setLocale:v3];
 
   [v2 setDateFormat:@"yyyyMMdd-HH:mm:ss"];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v2 stringFromDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [v2 stringFromDate:date];
 
   return v5;
 }
@@ -200,18 +200,18 @@
   return CSIsAppleSiliconMac();
 }
 
-+ (id)combineScoreFromPSR:(id)a3 fromSAT:(id)a4 withCombinedWt:(float)a5
++ (id)combineScoreFromPSR:(id)r fromSAT:(id)t withCombinedWt:(float)wt
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  rCopy = r;
+  tCopy = t;
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v10 = v9;
-  if (v7 && !v8)
+  if (rCopy && !tCopy)
   {
-    [v9 addEntriesFromDictionary:v7];
+    [v9 addEntriesFromDictionary:rCopy];
     v11 = @"spIdKnownUserPSRScores";
-    v12 = v7;
+    v12 = rCopy;
 LABEL_7:
     v13 = [v12 objectForKeyedSubscript:v11];
     [v10 setObject:v13 forKeyedSubscript:@"spIdKnownUserScores"];
@@ -219,22 +219,22 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v7 && v8)
+  if (!rCopy && tCopy)
   {
-    [v9 addEntriesFromDictionary:v8];
+    [v9 addEntriesFromDictionary:tCopy];
     v11 = @"spIdKnownUserSATScores";
-    v12 = v8;
+    v12 = tCopy;
     goto LABEL_7;
   }
 
-  if (v7 && v8)
+  if (rCopy && tCopy)
   {
-    [v9 addEntriesFromDictionary:v8];
+    [v9 addEntriesFromDictionary:tCopy];
     v38 = v10;
-    [v10 addEntriesFromDictionary:v7];
-    v16 = [v7 objectForKeyedSubscript:@"spIdKnownUserPSRScores"];
-    v37 = v8;
-    v17 = [v8 objectForKeyedSubscript:@"spIdKnownUserSATScores"];
+    [v10 addEntriesFromDictionary:rCopy];
+    v16 = [rCopy objectForKeyedSubscript:@"spIdKnownUserPSRScores"];
+    v37 = tCopy;
+    v17 = [tCopy objectForKeyedSubscript:@"spIdKnownUserSATScores"];
     v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v39 = 0u;
     v40 = 0u;
@@ -269,7 +269,7 @@ LABEL_7:
             [v30 floatValue];
             v32 = v31;
 
-            *&v33 = (v32 * a5) + ((1.0 - a5) * v29);
+            *&v33 = (v32 * wt) + ((1.0 - wt) * v29);
             v34 = [MEMORY[0x277CCABB0] numberWithFloat:v33];
             [v18 setObject:v34 forKey:v25];
           }
@@ -300,7 +300,7 @@ LABEL_7:
     v10 = v38;
     [v38 setObject:v36 forKeyedSubscript:@"spIdKnownUserScores"];
 
-    v8 = v37;
+    tCopy = v37;
   }
 
 LABEL_8:
@@ -310,22 +310,22 @@ LABEL_8:
   return v10;
 }
 
-+ (id)moveContentsOfSrcDirectory:(id)a3 toDestDirectory:(id)a4
++ (id)moveContentsOfSrcDirectory:(id)directory toDestDirectory:(id)destDirectory
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  directoryCopy = directory;
+  destDirectoryCopy = destDirectory;
   v7 = 0x277CCA000uLL;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v42 = 0;
-  v9 = [v8 contentsOfDirectoryAtPath:v5 error:&v42];
+  v9 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:&v42];
   v10 = v42;
 
   if (v10)
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [v10 localizedDescription];
-    obj = [v11 stringWithFormat:@"Failed to get contents of %@ with error %@", v5, v12];
+    localizedDescription = [v10 localizedDescription];
+    obj = [v11 stringWithFormat:@"Failed to get contents of %@ with error %@", directoryCopy, localizedDescription];
 
     v13 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -343,7 +343,7 @@ LABEL_8:
 
   else
   {
-    v16 = [SSRUtils createDirectoryIfDoesNotExist:v6];
+    v16 = [SSRUtils createDirectoryIfDoesNotExist:destDirectoryCopy];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -353,7 +353,7 @@ LABEL_8:
     if (v17)
     {
       v18 = v17;
-      v36 = v6;
+      v36 = destDirectoryCopy;
       v34 = v9;
       v14 = 0;
       v19 = *v39;
@@ -369,20 +369,20 @@ LABEL_8:
           }
 
           v22 = *(*(&v38 + 1) + 8 * v20);
-          v23 = v5;
-          v24 = [v5 stringByAppendingPathComponent:v22];
+          v23 = directoryCopy;
+          v24 = [directoryCopy stringByAppendingPathComponent:v22];
           v25 = [v36 stringByAppendingPathComponent:v22];
           v26 = v7;
-          v27 = [*(v7 + 2560) defaultManager];
+          defaultManager2 = [*(v7 + 2560) defaultManager];
           v37 = v21;
-          [v27 moveItemAtPath:v24 toPath:v25 error:&v37];
+          [defaultManager2 moveItemAtPath:v24 toPath:v25 error:&v37];
           v14 = v37;
 
           if (v14)
           {
             v28 = MEMORY[0x277CCACA8];
-            v29 = [v14 localizedDescription];
-            v30 = [v28 stringWithFormat:@"Failed to move %@ to %@ with error %@", v24, v25, v29];
+            localizedDescription2 = [v14 localizedDescription];
+            v30 = [v28 stringWithFormat:@"Failed to move %@ to %@ with error %@", v24, v25, localizedDescription2];
 
             v31 = *MEMORY[0x277D01970];
             if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -398,7 +398,7 @@ LABEL_8:
           ++v20;
           v21 = v14;
           v7 = v26;
-          v5 = v23;
+          directoryCopy = v23;
         }
 
         while (v18 != v20);
@@ -408,7 +408,7 @@ LABEL_8:
       while (v18);
       v15 = 0;
       v9 = v34;
-      v6 = v36;
+      destDirectoryCopy = v36;
     }
 
     else
@@ -423,19 +423,19 @@ LABEL_8:
   return v15;
 }
 
-+ (id)removeItemAtPath:(id)a3
++ (id)removeItemAtPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v13 = 0;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3 isDirectory:&v13];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:pathCopy isDirectory:&v13];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v12 = 0;
-    v7 = [v6 removeItemAtPath:v3 error:&v12];
+    v7 = [defaultManager2 removeItemAtPath:pathCopy error:&v12];
     v8 = v12;
 
     if ((v7 & 1) == 0)
@@ -446,7 +446,7 @@ LABEL_8:
         *buf = 136315650;
         v15 = "+[SSRUtils removeItemAtPath:]";
         v16 = 2114;
-        v17 = v3;
+        v17 = pathCopy;
         v18 = 2114;
         v19 = v8;
         _os_log_error_impl(&dword_225E12000, v9, OS_LOG_TYPE_ERROR, "%s ERR: Failed to delete %{public}@ with error %{public}@", buf, 0x20u);
@@ -464,17 +464,17 @@ LABEL_8:
   return v8;
 }
 
-+ (id)_getUtterancesFromDirectory:(id)a3
++ (id)_getUtterancesFromDirectory:(id)directory
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  directoryCopy = directory;
+  if (directoryCopy)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v21[0] = *MEMORY[0x277CBE8E8];
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
     v14 = 0;
-    v6 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:v5 options:0 error:&v14];
+    v6 = [defaultManager contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:v5 options:0 error:&v14];
     v7 = v14;
 
     if (v7)
@@ -485,7 +485,7 @@ LABEL_8:
         *buf = 136315650;
         v16 = "+[SSRUtils _getUtterancesFromDirectory:]";
         v17 = 2114;
-        v18 = v3;
+        v18 = directoryCopy;
         v19 = 2114;
         v20 = v7;
         _os_log_error_impl(&dword_225E12000, v8, OS_LOG_TYPE_ERROR, "%s ERR: Fetching contents of %{public}@ failed with error - %{public}@", buf, 0x20u);
@@ -514,9 +514,9 @@ LABEL_8:
   return v10;
 }
 
-+ (id)getImplicitEnrollmentUtterancesFromDirectory:(id)a3
++ (id)getImplicitEnrollmentUtterancesFromDirectory:(id)directory
 {
-  v3 = [a1 _getUtterancesFromDirectory:a3];
+  v3 = [self _getUtterancesFromDirectory:directory];
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_408];
   v5 = [v3 filteredArrayUsingPredicate:v4];
   v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_411];
@@ -631,11 +631,11 @@ LABEL_7:
   return v7;
 }
 
-+ (void)getEnrollmentUtterancesCountFromDirectory:(id)a3 withCountBlock:(id)a4
++ (void)getEnrollmentUtterancesCountFromDirectory:(id)directory withCountBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _getUtterancesFromDirectory:v6];
+  directoryCopy = directory;
+  blockCopy = block;
+  v8 = [self _getUtterancesFromDirectory:directoryCopy];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -651,9 +651,9 @@ LABEL_7:
   v9[4] = &v10;
   v9[5] = &v14;
   [v8 enumerateObjectsUsingBlock:v9];
-  if (v7)
+  if (blockCopy)
   {
-    v7[2](v7, v15[3], v11[3]);
+    blockCopy[2](blockCopy, v15[3], v11[3]);
   }
 
   _Block_object_dispose(&v10, 8);
@@ -673,9 +673,9 @@ void __69__SSRUtils_getEnrollmentUtterancesCountFromDirectory_withCountBlock___b
   ++*(*(*(a1 + v4) + 8) + 24);
 }
 
-+ (id)getExplicitMarkedEnrollmentUtterancesFromDirectory:(id)a3
++ (id)getExplicitMarkedEnrollmentUtterancesFromDirectory:(id)directory
 {
-  v3 = [a1 _getUtterancesFromDirectory:a3];
+  v3 = [self _getUtterancesFromDirectory:directory];
   v4 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_406];
   v5 = [v3 filteredArrayUsingPredicate:v4];
 
@@ -724,11 +724,11 @@ LABEL_7:
   return v8;
 }
 
-+ (id)getExplicitEnrollmentUtterancesFromDirectory:(id)a3
++ (id)getExplicitEnrollmentUtterancesFromDirectory:(id)directory
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 _getUtterancesFromDirectory:v4];
+  directoryCopy = directory;
+  v5 = [self _getUtterancesFromDirectory:directoryCopy];
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -965,14 +965,14 @@ uint64_t __57__SSRUtils_getExplicitEnrollmentUtterancesFromDirectory___block_inv
   return v7;
 }
 
-+ (id)getEnrollmentUtterancesFromDirectory:(id)a3
++ (id)getEnrollmentUtterancesFromDirectory:(id)directory
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  directoryCopy = directory;
+  if (directoryCopy)
   {
-    v5 = [a1 getExplicitEnrollmentUtterancesFromDirectory:v4];
-    v6 = [a1 getImplicitEnrollmentUtterancesFromDirectory:v4];
+    v5 = [self getExplicitEnrollmentUtterancesFromDirectory:directoryCopy];
+    v6 = [self getImplicitEnrollmentUtterancesFromDirectory:directoryCopy];
     v7 = [v5 arrayByAddingObjectsFromArray:v6];
   }
 
@@ -994,25 +994,25 @@ uint64_t __57__SSRUtils_getExplicitEnrollmentUtterancesFromDirectory___block_inv
   return v7;
 }
 
-+ (void)segmentVoiceTriggerFromAudioFile:(id)a3 withVTEventInfo:(id)a4 withStorePayloadPortion:(BOOL)a5 withCompletion:(id)a6
++ (void)segmentVoiceTriggerFromAudioFile:(id)file withVTEventInfo:(id)info withStorePayloadPortion:(BOOL)portion withCompletion:(id)completion
 {
-  v7 = a5;
+  portionCopy = portion;
   v90[1] = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v50 = a4;
-  v9 = a6;
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v10 UUIDString];
-  v51 = [v11 stringByAppendingString:@".wav"];
+  fileCopy = file;
+  infoCopy = info;
+  completionCopy = completion;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v51 = [uUIDString stringByAppendingString:@".wav"];
 
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v13 stringByAppendingString:@".wav"];
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  v14 = [uUIDString2 stringByAppendingString:@".wav"];
 
-  v15 = [v52 URLByDeletingLastPathComponent];
-  v16 = [v15 path];
+  uRLByDeletingLastPathComponent = [fileCopy URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
 
-  v17 = [v16 stringByAppendingPathComponent:v51];
+  v17 = [path stringByAppendingPathComponent:v51];
   if (v17)
   {
     v18 = objc_alloc(MEMORY[0x277D01830]);
@@ -1021,9 +1021,9 @@ uint64_t __57__SSRUtils_getExplicitEnrollmentUtterancesFromDirectory___block_inv
     [MEMORY[0x277D01748] lpcmInt16ASBD];
     v20 = [v18 initWithURL:v19 inputFormat:buf outputFormat:v80];
 
-    if (v7)
+    if (portionCopy)
     {
-      v21 = [v16 stringByAppendingPathComponent:v14];
+      v21 = [path stringByAppendingPathComponent:v14];
       v22 = objc_alloc(MEMORY[0x277D01830]);
       v23 = [MEMORY[0x277CBEBC0] URLWithString:v21];
       [MEMORY[0x277D01748] lpcmInt16ASBD];
@@ -1076,28 +1076,28 @@ uint64_t __57__SSRUtils_getExplicitEnrollmentUtterancesFromDirectory___block_inv
       v71 = 0x2020000000;
       v72 = 0;
       v29 = *MEMORY[0x277D01E80];
-      v30 = [v50 objectForKeyedSubscript:*MEMORY[0x277D01E80]];
+      v30 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D01E80]];
 
       if (v30)
       {
-        v31 = [v50 objectForKeyedSubscript:v29];
-        v32 = [v31 integerValue];
-        v70[3] = v32;
+        v31 = [infoCopy objectForKeyedSubscript:v29];
+        integerValue = [v31 integerValue];
+        v70[3] = integerValue;
 
         v33 = *MEMORY[0x277D01970];
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           v48 = v14;
           v34 = v70[3];
-          v35 = [v50 objectForKeyedSubscript:v29];
-          v36 = [v35 integerValue];
+          v35 = [infoCopy objectForKeyedSubscript:v29];
+          integerValue2 = [v35 integerValue];
           [MEMORY[0x277D016E0] inputRecordingSampleRate];
           *buf = 136315650;
           v84 = "+[SSRUtils segmentVoiceTriggerFromAudioFile:withVTEventInfo:withStorePayloadPortion:withCompletion:]";
           v85 = 2048;
           v86 = v34;
           v87 = 2048;
-          v88 = (v36 / v37);
+          v88 = (integerValue2 / v37);
           _os_log_impl(&dword_225E12000, v33, OS_LOG_TYPE_DEFAULT, "%s Setting payloadstartSample %lu for trigger duration of %fsecs", buf, 0x20u);
 
           v14 = v48;
@@ -1114,15 +1114,15 @@ uint64_t __57__SSRUtils_getExplicitEnrollmentUtterancesFromDirectory___block_inv
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
           v45 = v43[3];
-          v49 = [v50 objectForKeyedSubscript:v29];
-          v46 = [v49 integerValue];
+          v49 = [infoCopy objectForKeyedSubscript:v29];
+          integerValue3 = [v49 integerValue];
           [MEMORY[0x277D016E0] inputRecordingSampleRate];
           *buf = 136315650;
           v84 = "+[SSRUtils segmentVoiceTriggerFromAudioFile:withVTEventInfo:withStorePayloadPortion:withCompletion:]";
           v85 = 2048;
           v86 = v45;
           v87 = 2048;
-          v88 = (v46 / v47);
+          v88 = (integerValue3 / v47);
           _os_log_error_impl(&dword_225E12000, v33, OS_LOG_TYPE_ERROR, "%s ERR: Setting max payloadstartSample %lu for trigger duration of %fsecs", buf, 0x20u);
         }
 
@@ -1134,8 +1134,8 @@ uint64_t __57__SSRUtils_getExplicitEnrollmentUtterancesFromDirectory___block_inv
       v53[1] = 3221225472;
       v53[2] = __100__SSRUtils_segmentVoiceTriggerFromAudioFile_withVTEventInfo_withStorePayloadPortion_withCompletion___block_invoke;
       v53[3] = &unk_2785787A0;
-      v54 = v52;
-      v59 = v9;
+      v54 = fileCopy;
+      v59 = completionCopy;
       v55 = v17;
       v21 = v21;
       v56 = v21;
@@ -1176,13 +1176,13 @@ uint64_t __57__SSRUtils_getExplicitEnrollmentUtterancesFromDirectory___block_inv
         v85 = 2114;
         v86 = v27;
         _os_log_error_impl(&dword_225E12000, v38, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
-        if (!v9)
+        if (!completionCopy)
         {
           goto LABEL_20;
         }
       }
 
-      else if (!v9)
+      else if (!completionCopy)
       {
 LABEL_20:
 
@@ -1194,7 +1194,7 @@ LABEL_20:
       v82 = v27;
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
       v40 = [v39 errorWithDomain:@"com.apple.speakerrecognition" code:744 userInfo:v28];
-      (*(v9 + 2))(v9, v40, 0, 0);
+      (*(completionCopy + 2))(completionCopy, v40, 0, 0);
     }
 
 LABEL_19:
@@ -1211,7 +1211,7 @@ LABEL_19:
     v85 = 2114;
     v86 = v21;
     _os_log_error_impl(&dword_225E12000, v25, OS_LOG_TYPE_ERROR, "%s %{public}@", buf, 0x16u);
-    if (!v9)
+    if (!completionCopy)
     {
       goto LABEL_21;
     }
@@ -1219,7 +1219,7 @@ LABEL_19:
     goto LABEL_6;
   }
 
-  if (v9)
+  if (completionCopy)
   {
 LABEL_6:
     v26 = MEMORY[0x277CCA9B8];
@@ -1227,7 +1227,7 @@ LABEL_6:
     v90[0] = v21;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v90 forKeys:&v89 count:1];
     v28 = [v26 errorWithDomain:@"com.apple.speakerrecognition" code:715 userInfo:v27];
-    (*(v9 + 2))(v9, v28, 0, 0);
+    (*(completionCopy + 2))(completionCopy, v28, 0, 0);
     goto LABEL_19;
   }
 
@@ -1408,18 +1408,18 @@ LABEL_32:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logSpeakerRecognitionGradingMetadataAtFilepath:(id)a3 withScoreInfo:(id)a4
++ (void)logSpeakerRecognitionGradingMetadataAtFilepath:(id)filepath withScoreInfo:(id)info
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  filepathCopy = filepath;
+  infoCopy = info;
+  v7 = infoCopy;
+  if (filepathCopy)
   {
-    if (v6)
+    if (infoCopy)
     {
       v18 = 0;
-      v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v6 options:1 error:&v18];
+      v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:infoCopy options:1 error:&v18];
       v9 = v18;
       if (v9)
       {
@@ -1444,7 +1444,7 @@ LABEL_16:
       {
         if (v8)
         {
-          [v8 writeToFile:v5 atomically:0];
+          [v8 writeToFile:filepathCopy atomically:0];
           goto LABEL_16;
         }
 
@@ -1493,14 +1493,14 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getVoiceProfileForSiriProfileId:(id)a3 forLanguageCode:(id)a4
++ (id)getVoiceProfileForSiriProfileId:(id)id forLanguageCode:(id)code
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  codeCopy = code;
   v7 = +[SSRVoiceProfileStore sharedInstance];
-  v8 = [v7 userVoiceProfilesForAppDomain:@"com.apple.siri" forLocale:v6];
-  if (!v5 && ((CSIsIOS() & 1) != 0 || CSIsOSX()) && [v8 count])
+  v8 = [v7 userVoiceProfilesForAppDomain:@"com.apple.siri" forLocale:codeCopy];
+  if (!idCopy && ((CSIsIOS() & 1) != 0 || CSIsOSX()) && [v8 count])
   {
     if ([v8 count] >= 2)
     {
@@ -1518,7 +1518,7 @@ LABEL_17:
 
   else
   {
-    v21 = v6;
+    v21 = codeCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -1538,11 +1538,11 @@ LABEL_17:
             objc_enumerationMutation(v9);
           }
 
-          if (v5)
+          if (idCopy)
           {
             v14 = *(*(&v22 + 1) + 8 * i);
-            v15 = [v14 siriProfileId];
-            v16 = [v15 isEqualToString:v5];
+            siriProfileId = [v14 siriProfileId];
+            v16 = [siriProfileId isEqualToString:idCopy];
 
             if (v16)
             {
@@ -1565,7 +1565,7 @@ LABEL_17:
 
     v17 = 0;
 LABEL_13:
-    v6 = v21;
+    codeCopy = v21;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1573,16 +1573,16 @@ LABEL_13:
   return v17;
 }
 
-+ (id)getVoiceProfilesForSiriProfileId:(id)a3
++ (id)getVoiceProfilesForSiriProfileId:(id)id
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  idCopy = id;
   v4 = +[SSRVoiceProfileStore sharedInstance];
   v5 = [v4 userVoiceProfilesForAppDomain:@"com.apple.siri"];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (CSIsIOS())
   {
-    if (!v3)
+    if (!idCopy)
     {
 LABEL_6:
       v8 = v5;
@@ -1593,7 +1593,7 @@ LABEL_6:
   else
   {
     v7 = CSIsOSX();
-    if (!v3 && (v7 & 1) != 0)
+    if (!idCopy && (v7 & 1) != 0)
     {
       goto LABEL_6;
     }
@@ -1620,8 +1620,8 @@ LABEL_6:
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 siriProfileId];
-        v16 = [v15 isEqualToString:v3];
+        siriProfileId = [v14 siriProfileId];
+        v16 = [siriProfileId isEqualToString:idCopy];
 
         if (v16)
         {
@@ -1653,11 +1653,11 @@ LABEL_20:
   return v8;
 }
 
-+ (void)getHomeUserIdForVoiceProfile:(id)a3 withCompletion:(id)a4
++ (void)getHomeUserIdForVoiceProfile:(id)profile withCompletion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  profileCopy = profile;
+  completionCopy = completion;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -1670,16 +1670,16 @@ LABEL_20:
   v10 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 siriProfileId];
+    siriProfileId = [profileCopy siriProfileId];
     *buf = 136315394;
     v43 = "+[SSRUtils getHomeUserIdForVoiceProfile:withCompletion:]";
     v44 = 2114;
-    v45 = v11;
+    v45 = siriProfileId;
     _os_log_impl(&dword_225E12000, v10, OS_LOG_TYPE_DEFAULT, "%s Fetching homeUserId for siriProfileId %{public}@", buf, 0x16u);
   }
 
   [v7 enter];
-  v12 = [v5 siriProfileId];
+  siriProfileId2 = [profileCopy siriProfileId];
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __56__SSRUtils_getHomeUserIdForVoiceProfile_withCompletion___block_invoke;
@@ -1687,19 +1687,19 @@ LABEL_20:
   v13 = v8;
   v29 = v13;
   v33 = &v34;
-  v14 = v5;
+  v14 = profileCopy;
   v30 = v14;
   v15 = v7;
   v31 = v15;
-  v16 = v6;
+  v16 = completionCopy;
   v32 = v16;
-  [v13 getHomeUserIdForSharedUserId:v12 completion:&v25];
+  [v13 getHomeUserIdForSharedUserId:siriProfileId2 completion:&v25];
 
   if ([v15 waitWithTimeout:{dispatch_time(0, 100000000)}])
   {
     v17 = MEMORY[0x277CCACA8];
-    v18 = [v14 siriProfileId];
-    v19 = [v17 stringWithFormat:@"homeUserId query for siriProfileId %@ timedout !", v18, v25, v26, v27, v28, v29, v30, v31];
+    siriProfileId3 = [v14 siriProfileId];
+    v19 = [v17 stringWithFormat:@"homeUserId query for siriProfileId %@ timedout !", siriProfileId3, v25, v26, v27, v28, v29, v30, v31];
 
     v20 = MEMORY[0x277CCA9B8];
     v40 = *MEMORY[0x277CCA450];
@@ -1797,15 +1797,15 @@ LABEL_7:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getContentsOfDirectory:(id)a3
++ (id)getContentsOfDirectory:(id)directory
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v23[0] = *MEMORY[0x277CBE8E8];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
   v16 = 0;
-  v6 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:v5 options:0 error:&v16];
+  v6 = [defaultManager contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:v5 options:0 error:&v16];
   v7 = v16;
 
   if (v7)
@@ -1821,7 +1821,7 @@ LABEL_3:
     *buf = 136315650;
     v18 = "+[SSRUtils getContentsOfDirectory:]";
     v19 = 2112;
-    v20 = v3;
+    v20 = directoryCopy;
     v21 = 2112;
     v22 = v7;
     v13 = "%s Error reading directory at %@: err: %@";
@@ -1843,7 +1843,7 @@ LABEL_12:
     *buf = 136315394;
     v18 = "+[SSRUtils getContentsOfDirectory:]";
     v19 = 2112;
-    v20 = v3;
+    v20 = directoryCopy;
     v13 = "%s %@ is empty";
     v14 = v12;
     v15 = 22;
@@ -1858,11 +1858,11 @@ LABEL_6:
   return v9;
 }
 
-+ (void)dumpFilesInDirectory:(id)a3
++ (void)dumpFilesInDirectory:(id)directory
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  directoryCopy = directory;
+  if (!directoryCopy)
   {
     v16 = *MEMORY[0x277D01970];
     if (!os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -1880,8 +1880,8 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:directoryCopy];
 
   if ((v5 & 1) == 0)
   {
@@ -1894,15 +1894,15 @@ LABEL_18:
     *buf = 136315394;
     v27 = "+[SSRUtils dumpFilesInDirectory:]";
     v28 = 2114;
-    v29 = v3;
+    v29 = directoryCopy;
     v17 = "%s ERR: %{public}@ doesnt exist - Bailing out";
     v18 = v20;
     v19 = 22;
     goto LABEL_18;
   }
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 enumeratorAtPath:v3];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager2 enumeratorAtPath:directoryCopy];
 
   v24 = 0u;
   v25 = 0u;
@@ -1931,7 +1931,7 @@ LABEL_18:
           *buf = 136315650;
           v27 = "+[SSRUtils dumpFilesInDirectory:]";
           v28 = 2114;
-          v29 = v3;
+          v29 = directoryCopy;
           v30 = 2114;
           v31 = v15;
           _os_log_impl(&dword_225E12000, v14, OS_LOG_TYPE_DEFAULT, "%s Dump content of %{public}@ - %{public}@", buf, 0x20u);
@@ -1948,17 +1948,17 @@ LABEL_16:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)getNumberOfAudioFilesInDirectory:(id)a3
++ (int64_t)getNumberOfAudioFilesInDirectory:(id)directory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  directoryCopy = directory;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v12 = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v12];
+  v5 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:&v12];
   v6 = v12;
 
   if (v6)
@@ -1969,7 +1969,7 @@ LABEL_16:
       *buf = 136315650;
       v18 = "+[SSRUtils getNumberOfAudioFilesInDirectory:]";
       v19 = 2114;
-      v20 = v3;
+      v20 = directoryCopy;
       v21 = 2114;
       v22 = v6;
       _os_log_error_impl(&dword_225E12000, v7, OS_LOG_TYPE_ERROR, "%s ERR: fetching contents of %{public}@ failed with error %{public}@", buf, 0x20u);
@@ -2006,24 +2006,24 @@ void __45__SSRUtils_getNumberOfAudioFilesInDirectory___block_invoke(uint64_t a1,
 
 + (id)getImplicitUtteranceCacheDirectory
 {
-  v2 = [a1 baseDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Caches/VoiceTrigger/ImplicitUtterences"];
+  baseDir = [self baseDir];
+  v3 = [baseDir stringByAppendingPathComponent:@"Caches/VoiceTrigger/ImplicitUtterences"];
 
   return v3;
 }
 
-+ (BOOL)isCurrentDeviceCompatibleWithVoiceProfileAt:(id)a3
++ (BOOL)isCurrentDeviceCompatibleWithVoiceProfileAt:(id)at
 {
   v74 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D018F8] deviceProductType];
-  if (v4)
+  atCopy = at;
+  deviceProductType = [MEMORY[0x277D018F8] deviceProductType];
+  if (deviceProductType)
   {
-    v5 = [SSRUtils deviceCategoryForDeviceProductType:v4];
+    v5 = [SSRUtils deviceCategoryForDeviceProductType:deviceProductType];
     v62 = 0;
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v3 stringByAppendingPathComponent:@"audio"];
-    if ([v6 fileExistsAtPath:v7 isDirectory:&v62] && v62 == 1)
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v7 = [atCopy stringByAppendingPathComponent:@"audio"];
+    if ([defaultManager fileExistsAtPath:v7 isDirectory:&v62] && v62 == 1)
     {
       v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
       if (!v8)
@@ -2043,7 +2043,7 @@ void __45__SSRUtils_getNumberOfAudioFilesInDirectory___block_invoke(uint64_t a1,
 
       v9 = v8;
       v61 = 0;
-      v10 = [v6 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:&v61];
+      v10 = [defaultManager contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:&v61];
       v11 = v61;
       if (v11)
       {
@@ -2068,7 +2068,7 @@ LABEL_56:
       v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"pathExtension='json'"];
       v17 = [v10 filteredArrayUsingPredicate:v16];
       v53 = v7;
-      v54 = v6;
+      v54 = defaultManager;
       v51 = v10;
       v52 = v9;
       v50 = v17;
@@ -2085,7 +2085,7 @@ LABEL_56:
         {
           v19 = v18;
           v47 = v5;
-          v48 = v3;
+          v48 = atCopy;
           v20 = 0;
           v21 = *v58;
           v9 = MEMORY[0x277D01970];
@@ -2148,7 +2148,7 @@ LABEL_56:
                       *buf = 136316162;
                       v64 = "+[SSRUtils isCurrentDeviceCompatibleWithVoiceProfileAt:]";
                       v65 = 2114;
-                      v66 = v4;
+                      v66 = deviceProductType;
                       v67 = 2114;
                       v68 = v38;
                       v69 = 2114;
@@ -2165,7 +2165,7 @@ LABEL_56:
                       v9 = v47;
                     }
 
-                    v3 = v48;
+                    atCopy = v48;
                     v40 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
                     LOBYTE(v9) = v9 == v35;
                     if (v9)
@@ -2229,7 +2229,7 @@ LABEL_49:
           }
 
           v33 = 1;
-          v3 = v48;
+          atCopy = v48;
         }
 
         else
@@ -2265,7 +2265,7 @@ LABEL_51:
       }
 
       v7 = v53;
-      v6 = v54;
+      defaultManager = v54;
       if (!v33)
       {
         goto LABEL_56;
@@ -2278,7 +2278,7 @@ LABEL_51:
       *buf = 136315394;
       v64 = "+[SSRUtils isCurrentDeviceCompatibleWithVoiceProfileAt:]";
       v65 = 2114;
-      v66 = v4;
+      v66 = deviceProductType;
       _os_log_impl(&dword_225E12000, v42, OS_LOG_TYPE_DEFAULT, "%s No compatible VT profile found for CurrDevice: %{public}@", buf, 0x16u);
     }
 
@@ -2302,15 +2302,15 @@ LABEL_57:
   return v9 & 1;
 }
 
-+ (BOOL)isCurrentDeviceCompatibleWithNewerVoiceProfileAt:(id)a3
++ (BOOL)isCurrentDeviceCompatibleWithNewerVoiceProfileAt:(id)at
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D018F8];
-  v4 = a3;
-  v5 = [v3 deviceProductType];
-  v6 = [v4 stringByAppendingPathComponent:@"enrollment_version.json"];
+  atCopy = at;
+  deviceProductType = [v3 deviceProductType];
+  v6 = [atCopy stringByAppendingPathComponent:@"enrollment_version.json"];
 
-  if (!v5)
+  if (!deviceProductType)
   {
     v10 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -2347,7 +2347,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v7 = [SSRUtils deviceCategoryForDeviceProductType:v5];
+  v7 = [SSRUtils deviceCategoryForDeviceProductType:deviceProductType];
   v8 = [SSRUtils getVoiceProfileProductCategoryFromVersionFilePath:v6];
   if (v7 != v8)
   {
@@ -2380,10 +2380,10 @@ LABEL_13:
 + (unint64_t)getCurrentDeviceCategoryType
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D018F8] deviceProductType];
-  if (v2)
+  deviceProductType = [MEMORY[0x277D018F8] deviceProductType];
+  if (deviceProductType)
   {
-    v3 = [SSRUtils deviceCategoryForDeviceProductType:v2];
+    v3 = [SSRUtils deviceCategoryForDeviceProductType:deviceProductType];
   }
 
   else
@@ -2405,37 +2405,37 @@ LABEL_13:
   return v3;
 }
 
-+ (unint64_t)deviceCategoryFromString:(id)a3
++ (unint64_t)deviceCategoryFromString:(id)string
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"kCSDeviceCategory_Unknown"])
+  stringCopy = string;
+  if ([stringCopy caseInsensitiveCompare:@"kCSDeviceCategory_Unknown"])
   {
-    if (![v3 caseInsensitiveCompare:@"kCSDeviceCategory_iOS_NonAop"])
+    if (![stringCopy caseInsensitiveCompare:@"kCSDeviceCategory_iOS_NonAop"])
     {
       v5 = 1;
       goto LABEL_15;
     }
 
-    if (![v3 caseInsensitiveCompare:@"kCSDeviceCategory_iOS_Aop"])
+    if (![stringCopy caseInsensitiveCompare:@"kCSDeviceCategory_iOS_Aop"])
     {
       v5 = 2;
       goto LABEL_15;
     }
 
-    if (![v3 caseInsensitiveCompare:@"kCSDeviceCategory_macOS"])
+    if (![stringCopy caseInsensitiveCompare:@"kCSDeviceCategory_macOS"])
     {
       v5 = 3;
       goto LABEL_15;
     }
 
-    if (![v3 caseInsensitiveCompare:@"kCSDeviceCategory_AudioAccessory"])
+    if (![stringCopy caseInsensitiveCompare:@"kCSDeviceCategory_AudioAccessory"])
     {
       v5 = 4;
       goto LABEL_15;
     }
 
-    if (![v3 caseInsensitiveCompare:@"kCSDeviceCategory_iOS_Aop_Explicit"])
+    if (![stringCopy caseInsensitiveCompare:@"kCSDeviceCategory_iOS_Aop_Explicit"])
     {
       v5 = 5;
       goto LABEL_15;
@@ -2447,7 +2447,7 @@ LABEL_13:
       v8 = 136315394;
       v9 = "+[SSRUtils deviceCategoryFromString:]";
       v10 = 2112;
-      v11 = v3;
+      v11 = stringCopy;
       _os_log_error_impl(&dword_225E12000, v4, OS_LOG_TYPE_ERROR, "%s %@ didn't match to any device category name. Returning unknown", &v8, 0x16u);
     }
   }
@@ -2459,14 +2459,14 @@ LABEL_15:
   return v5;
 }
 
-+ (unint64_t)deviceCategoryForDeviceProductType:(id)a3
++ (unint64_t)deviceCategoryForDeviceProductType:(id)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
+  typeCopy = type;
+  v4 = typeCopy;
   if (deviceCategoryForDeviceProductType__onceToken == -1)
   {
-    if (!v3)
+    if (!typeCopy)
     {
       goto LABEL_16;
     }
@@ -2530,58 +2530,58 @@ uint64_t __47__SSRUtils_deviceCategoryForDeviceProductType___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)deviceCategoryStringRepresentationForCategoryType:(unint64_t)a3
++ (id)deviceCategoryStringRepresentationForCategoryType:(unint64_t)type
 {
-  if (a3 - 1 > 4)
+  if (type - 1 > 4)
   {
     return @"kCSDeviceCategory_Unknown";
   }
 
   else
   {
-    return off_2785788B8[a3 - 1];
+    return off_2785788B8[type - 1];
   }
 }
 
-+ (id)getVoiceProfileIdentityFromVersionFilePath:(id)a3
++ (id)getVoiceProfileIdentityFromVersionFilePath:(id)path
 {
-  v3 = [SSRUtils readJsonFileAtPath:a3];
+  v3 = [SSRUtils readJsonFileAtPath:path];
   v4 = [v3 objectForKeyedSubscript:@"VoiceProfileIdentifier"];
 
   return v4;
 }
 
-+ (unint64_t)getVoiceProfileProductCategoryFromVersionFilePath:(id)a3
++ (unint64_t)getVoiceProfileProductCategoryFromVersionFilePath:(id)path
 {
-  v3 = [SSRUtils readJsonFileAtPath:a3];
+  v3 = [SSRUtils readJsonFileAtPath:path];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 objectForKeyedSubscript:@"VoiceProfileCategoryType"];
+    intValue = [v3 objectForKeyedSubscript:@"VoiceProfileCategoryType"];
 
-    if (v5)
+    if (intValue)
     {
       v6 = [v4 objectForKeyedSubscript:@"VoiceProfileCategoryType"];
-      v5 = [v6 intValue];
+      intValue = [v6 intValue];
     }
   }
 
   else
   {
-    v5 = 0;
+    intValue = 0;
   }
 
-  return v5;
+  return intValue;
 }
 
-+ (id)readJsonFileAtPath:(id)a3
++ (id)readJsonFileAtPath:(id)path
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = v4;
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = defaultManager;
   v21 = 0;
-  if (!v3)
+  if (!pathCopy)
   {
     v8 = *MEMORY[0x277D015C8];
     if (os_log_type_enabled(*MEMORY[0x277D015C8], OS_LOG_TYPE_DEFAULT))
@@ -2599,7 +2599,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![v4 fileExistsAtPath:v3 isDirectory:&v21])
+  if (![defaultManager fileExistsAtPath:pathCopy isDirectory:&v21])
   {
     v6 = *MEMORY[0x277D015C8];
     if (os_log_type_enabled(*MEMORY[0x277D015C8], OS_LOG_TYPE_DEFAULT))
@@ -2607,7 +2607,7 @@ LABEL_11:
       *buf = 136315394;
       v23 = "+[SSRUtils readJsonFileAtPath:]";
       v24 = 2112;
-      v25 = v3;
+      v25 = pathCopy;
       v7 = "%s ERR: file do not exist - %@";
       goto LABEL_10;
     }
@@ -2625,7 +2625,7 @@ LABEL_12:
       *buf = 136315394;
       v23 = "+[SSRUtils readJsonFileAtPath:]";
       v24 = 2112;
-      v25 = v3;
+      v25 = pathCopy;
       v7 = "%s ERR: %@ is a directory";
 LABEL_10:
       v9 = v6;
@@ -2636,7 +2636,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v14 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3];
+  v14 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy];
   if (!v14)
   {
     v18 = *MEMORY[0x277D01970];
@@ -2645,7 +2645,7 @@ LABEL_10:
       *buf = 136315394;
       v23 = "+[SSRUtils readJsonFileAtPath:]";
       v24 = 2112;
-      v25 = v3;
+      v25 = pathCopy;
       _os_log_error_impl(&dword_225E12000, v18, OS_LOG_TYPE_ERROR, "%s Unable to read data from file: %@", buf, 0x16u);
     }
 
@@ -2665,7 +2665,7 @@ LABEL_10:
       *buf = 136315650;
       v23 = "+[SSRUtils readJsonFileAtPath:]";
       v24 = 2112;
-      v25 = v3;
+      v25 = pathCopy;
       v26 = 2112;
       v27 = v17;
       _os_log_impl(&dword_225E12000, v19, OS_LOG_TYPE_DEFAULT, "%s ERR: Could not read existing %@ file: err: %@", buf, 0x20u);
@@ -2680,19 +2680,19 @@ LABEL_13:
   return v11;
 }
 
-+ (BOOL)isSpeakerRecognitionSupportedInLocale:(id)a3
++ (BOOL)isSpeakerRecognitionSupportedInLocale:(id)locale
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  localeCopy = locale;
   v4 = +[SSRAssetManager sharedManager];
-  v5 = [v4 installedAssetOfType:3 forLanguage:v3];
+  v5 = [v4 installedAssetOfType:3 forLanguage:localeCopy];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v7 = +[SSRUtils satConfigFileNameForCSSpIdType:forModelType:forAssetType:](SSRUtils, "satConfigFileNameForCSSpIdType:forModelType:forAssetType:", 3, 1, [v5 assetProvider]);
-  v8 = [v5 resourcePath];
-  v9 = [v8 stringByAppendingPathComponent:v7];
+  resourcePath = [v5 resourcePath];
+  v9 = [resourcePath stringByAppendingPathComponent:v7];
 
-  v10 = [v6 fileExistsAtPath:v9];
+  v10 = [defaultManager fileExistsAtPath:v9];
   if ((v10 & 1) == 0)
   {
     v11 = *MEMORY[0x277D015C8];
@@ -2701,7 +2701,7 @@ LABEL_13:
       v14 = 136315394;
       v15 = "+[SSRUtils isSpeakerRecognitionSupportedInLocale:]";
       v16 = 2114;
-      v17 = v3;
+      v17 = localeCopy;
       _os_log_impl(&dword_225E12000, v11, OS_LOG_TYPE_DEFAULT, "%s VoiceId not supported in language %{public}@", &v14, 0x16u);
     }
   }
@@ -2710,56 +2710,56 @@ LABEL_13:
   return v10;
 }
 
-+ (void)streamAudioFromFileUrl:(id)a3 audioStreamBasicDescriptor:(AudioStreamBasicDescription *)a4 samplesPerStreamChunk:(unint64_t)a5 audioDataAvailableHandler:(id)a6
++ (void)streamAudioFromFileUrl:(id)url audioStreamBasicDescriptor:(AudioStreamBasicDescription *)descriptor samplesPerStreamChunk:(unint64_t)chunk audioDataAvailableHandler:(id)handler
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = a4->mBitsPerChannel * a5 * a4->mChannelsPerFrame;
-  v12 = [MEMORY[0x277CBEB28] dataWithCapacity:a4->mBitsPerChannel * a5 * a4->mChannelsPerFrame];
+  urlCopy = url;
+  handlerCopy = handler;
+  v11 = descriptor->mBitsPerChannel * chunk * descriptor->mChannelsPerFrame;
+  v12 = [MEMORY[0x277CBEB28] dataWithCapacity:descriptor->mBitsPerChannel * chunk * descriptor->mChannelsPerFrame];
   outAudioFile = 0;
   *&ioData.mNumberBuffers = 1;
   ioData.mBuffers[0].mNumberChannels = 1;
   ioData.mBuffers[0].mDataByteSize = v11;
   ioData.mBuffers[0].mData = [v12 mutableBytes];
   outExtAudioFile = 0;
-  if (AudioFileOpenURL(v9, kAudioFileReadPermission, 0, &outAudioFile))
+  if (AudioFileOpenURL(urlCopy, kAudioFileReadPermission, 0, &outAudioFile))
   {
-    NSLog(&cfstr_Audiofileopenu.isa, v9);
+    NSLog(&cfstr_Audiofileopenu.isa, urlCopy);
     v13 = MEMORY[0x277CCA9B8];
     v35 = *MEMORY[0x277CCA450];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"AudioFileOpenURL failed: %@", v9];
-    v36[0] = v14;
+    urlCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"AudioFileOpenURL failed: %@", urlCopy];
+    v36[0] = urlCopy;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v16 = [v13 errorWithDomain:@"EARTests" code:1001 userInfo:v15];
 
-    v17 = v10[2];
+    v17 = handlerCopy[2];
     v29 = ioData;
-    v17(v10, &v29, 1, v16);
+    v17(handlerCopy, &v29, 1, v16);
   }
 
   else if (ExtAudioFileWrapAudioFileID(outAudioFile, 0, &outExtAudioFile))
   {
-    NSLog(&cfstr_Extaudiofilewr.isa, v9);
+    NSLog(&cfstr_Extaudiofilewr.isa, urlCopy);
     v18 = MEMORY[0x277CCA9B8];
     v33 = *MEMORY[0x277CCA450];
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"ExtAudioFileWrapAudioFileID failed: %@", v9];
-    v34 = v19;
+    urlCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"ExtAudioFileWrapAudioFileID failed: %@", urlCopy];
+    v34 = urlCopy2;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     v21 = [v18 errorWithDomain:@"EARTests" code:1002 userInfo:v20];
 
     AudioFileClose(outAudioFile);
-    v22 = v10[2];
+    v22 = handlerCopy[2];
     v29 = ioData;
-    v22(v10, &v29, 1, v21);
+    v22(handlerCopy, &v29, 1, v21);
   }
 
   else
   {
-    ExtAudioFileSetProperty(outExtAudioFile, 0x63666D74u, 0x28u, a4);
+    ExtAudioFileSetProperty(outExtAudioFile, 0x63666D74u, 0x28u, descriptor);
     for (i = 0; ; i += ioData.mBuffers[0].mDataByteSize)
     {
-      ioNumberFrames = a5;
+      ioNumberFrames = chunk;
       v24 = ExtAudioFileRead(outExtAudioFile, &ioNumberFrames, &ioData);
       if (v24)
       {
@@ -2772,16 +2772,16 @@ LABEL_13:
         break;
       }
 
-      v25 = v10[2];
+      v25 = handlerCopy[2];
       v29 = ioData;
-      v25(v10, &v29, 0, 0);
+      v25(handlerCopy, &v29, 0, 0);
     }
 
     NSLog(&cfstr_EofNumBytesRea.isa, i);
 LABEL_11:
-    v26 = v10[2];
+    v26 = handlerCopy[2];
     v29 = ioData;
-    v26(v10, &v29, 1, 0);
+    v26(handlerCopy, &v29, 1, 0);
     ExtAudioFileDispose(outExtAudioFile);
     AudioFileClose(outAudioFile);
   }
@@ -2791,8 +2791,8 @@ LABEL_11:
 
 + (id)getVoiceEnrollmentDownloadBaseDir
 {
-  v2 = [a1 baseDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Caches/VoiceTrigger"];
+  baseDir = [self baseDir];
+  v3 = [baseDir stringByAppendingPathComponent:@"Caches/VoiceTrigger"];
 
   return v3;
 }
@@ -2820,34 +2820,34 @@ LABEL_11:
   v4 = [v2 fileURLWithPath:v3];
 
   v5 = [v4 URLByAppendingPathComponent:@"VoiceProfileCache"];
-  v6 = [v5 path];
-  v7 = [SSRUtils createDirectoryIfDoesNotExist:v6];
+  path = [v5 path];
+  v7 = [SSRUtils createDirectoryIfDoesNotExist:path];
 
-  v8 = [v5 path];
+  path2 = [v5 path];
 
-  return v8;
+  return path2;
 }
 
 + (void)cleanupOrphanedVoiceIdGradingFiles
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 ssrAudioLogsDir];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:v2];
+  ssrAudioLogsDir = [self ssrAudioLogsDir];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:ssrAudioLogsDir];
   v38[0] = *MEMORY[0x277CBE8E8];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
   v30 = 0;
-  v6 = [v3 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:v5 options:0 error:&v30];
+  v6 = [defaultManager contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:v5 options:0 error:&v30];
   v7 = v30;
 
   if (v7)
   {
-    v8 = [v7 domain];
-    if ([v8 isEqual:*MEMORY[0x277CCA050]])
+    domain = [v7 domain];
+    if ([domain isEqual:*MEMORY[0x277CCA050]])
     {
-      v9 = [v7 code];
+      code = [v7 code];
 
-      if (v9 == 260)
+      if (code == 260)
       {
         goto LABEL_19;
       }
@@ -2863,7 +2863,7 @@ LABEL_11:
       *buf = 136315650;
       v33 = "+[SSRUtils cleanupOrphanedVoiceIdGradingFiles]";
       v34 = 2114;
-      v35 = v2;
+      v35 = ssrAudioLogsDir;
       v36 = 2114;
       v37 = v7;
       _os_log_error_impl(&dword_225E12000, v21, OS_LOG_TYPE_ERROR, "%s ERR: reading contents of gradingDir: %{public}@ with error %{public}@", buf, 0x20u);
@@ -2872,9 +2872,9 @@ LABEL_11:
 
   else
   {
-    v24 = v3;
-    v25 = v2;
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    v24 = defaultManager;
+    v25 = ssrAudioLogsDir;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -2896,20 +2896,20 @@ LABEL_11:
           }
 
           v16 = *(*(&v26 + 1) + 8 * i);
-          v17 = [v16 absoluteString];
-          v18 = [v17 lastPathComponent];
-          v19 = [v18 stringByDeletingPathExtension];
+          absoluteString = [v16 absoluteString];
+          lastPathComponent = [absoluteString lastPathComponent];
+          stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-          v20 = [v10 objectForKeyedSubscript:v19];
+          v20 = [dictionary objectForKeyedSubscript:stringByDeletingPathExtension];
 
           if (v20)
           {
-            [v10 removeObjectForKey:v19];
+            [dictionary removeObjectForKey:stringByDeletingPathExtension];
           }
 
           else
           {
-            [v10 setObject:v16 forKeyedSubscript:v19];
+            [dictionary setObject:v16 forKeyedSubscript:stringByDeletingPathExtension];
           }
         }
 
@@ -2919,9 +2919,9 @@ LABEL_11:
       while (v13);
     }
 
-    [v10 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_4846];
-    v3 = v24;
-    v2 = v25;
+    [dictionary enumerateKeysAndObjectsUsingBlock:&__block_literal_global_4846];
+    defaultManager = v24;
+    ssrAudioLogsDir = v25;
     v6 = v23;
   }
 
@@ -2954,9 +2954,9 @@ void __46__SSRUtils_cleanupOrphanedVoiceIdGradingFiles__block_invoke(uint64_t a1
 {
   v22 = *MEMORY[0x277D85DE8];
   v2 = +[SSRUtils ssrAudioLogsDir];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  v4 = [v3 contentsOfDirectoryAtPath:v2 error:&v15];
+  v4 = [defaultManager contentsOfDirectoryAtPath:v2 error:&v15];
   v5 = v15;
 
   if (v4)
@@ -3001,16 +3001,16 @@ void __46__SSRUtils_cleanupOrphanedVoiceIdGradingFiles__block_invoke(uint64_t a1
   return v3;
 }
 
-+ (id)createDirectoryIfDoesNotExist:(id)a3
++ (id)createDirectoryIfDoesNotExist:(id)exist
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = v4;
+  existCopy = exist;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = defaultManager;
   v19 = 0;
-  if (v3)
+  if (existCopy)
   {
-    v6 = [v4 fileExistsAtPath:v3 isDirectory:&v19];
+    v6 = [defaultManager fileExistsAtPath:existCopy isDirectory:&v19];
     v7 = MEMORY[0x277D015C8];
     if (v6)
     {
@@ -3026,11 +3026,11 @@ void __46__SSRUtils_cleanupOrphanedVoiceIdGradingFiles__block_invoke(uint64_t a1
         *buf = 136315394;
         v21 = "+[SSRUtils createDirectoryIfDoesNotExist:]";
         v22 = 2112;
-        v23 = v3;
+        v23 = existCopy;
         _os_log_impl(&dword_225E12000, v10, OS_LOG_TYPE_DEFAULT, "%s Directory with same name exists, this will be removed: %@", buf, 0x16u);
       }
 
-      [v5 removeItemAtPath:v3 error:0];
+      [v5 removeItemAtPath:existCopy error:0];
     }
 
     v11 = *v7;
@@ -3039,12 +3039,12 @@ void __46__SSRUtils_cleanupOrphanedVoiceIdGradingFiles__block_invoke(uint64_t a1
       *buf = 136315394;
       v21 = "+[SSRUtils createDirectoryIfDoesNotExist:]";
       v22 = 2112;
-      v23 = v3;
+      v23 = existCopy;
       _os_log_impl(&dword_225E12000, v11, OS_LOG_TYPE_DEFAULT, "%s Creating Directory : %@", buf, 0x16u);
     }
 
     v18 = 0;
-    [v5 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v18];
+    [v5 createDirectoryAtPath:existCopy withIntermediateDirectories:1 attributes:0 error:&v18];
     v8 = v18;
     if (v8)
     {
@@ -3052,11 +3052,11 @@ void __46__SSRUtils_cleanupOrphanedVoiceIdGradingFiles__block_invoke(uint64_t a1
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = v12;
-        v14 = [v8 localizedDescription];
+        localizedDescription = [v8 localizedDescription];
         *buf = 136315394;
         v21 = "+[SSRUtils createDirectoryIfDoesNotExist:]";
         v22 = 2112;
-        v23 = v14;
+        v23 = localizedDescription;
         _os_log_impl(&dword_225E12000, v13, OS_LOG_TYPE_DEFAULT, "%s Creating Directory failed : %@", buf, 0x16u);
       }
 
@@ -3086,24 +3086,24 @@ LABEL_18:
 
 + (id)spIdVoiceProfileImportRootDir
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 URLsForDirectory:9 inDomains:1];
-  v4 = [v3 lastObject];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager URLsForDirectory:9 inDomains:1];
+  lastObject = [v3 lastObject];
 
-  v5 = [v4 path];
-  v6 = [v5 stringByAppendingPathComponent:@"spid-imported"];
+  path = [lastObject path];
+  v6 = [path stringByAppendingPathComponent:@"spid-imported"];
 
   return v6;
 }
 
-+ (id)satConfigFileNameForCSSpIdType:(unint64_t)a3 forModelType:(unint64_t)a4 forAssetType:(unint64_t)a5
++ (id)satConfigFileNameForCSSpIdType:(unint64_t)type forModelType:(unint64_t)modelType forAssetType:(unint64_t)assetType
 {
   v17 = *MEMORY[0x277D85DE8];
   if (CSIsCommunalDevice())
   {
-    if (a3 - 1 < 5)
+    if (type - 1 < 5)
     {
-      v7 = off_278578890[a3 - 1];
+      v7 = off_278578890[type - 1];
       goto LABEL_17;
     }
 
@@ -3116,20 +3116,20 @@ LABEL_18:
     v13 = 136315394;
     v14 = "+[SSRUtils satConfigFileNameForCSSpIdType:forModelType:forAssetType:]";
     v15 = 2048;
-    v16 = a3;
+    typeCopy2 = type;
     v9 = "%s ERR: Unknown CSSpIdType: %lu";
     goto LABEL_21;
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 != 4 && a3 != 5)
+    if (type != 4 && type != 5)
     {
       goto LABEL_15;
     }
   }
 
-  else if (a3 != 1 && a3 != 3)
+  else if (type != 1 && type != 3)
   {
 LABEL_15:
     v8 = *MEMORY[0x277D01970];
@@ -3143,7 +3143,7 @@ LABEL_16:
     v13 = 136315394;
     v14 = "+[SSRUtils satConfigFileNameForCSSpIdType:forModelType:forAssetType:]";
     v15 = 2048;
-    v16 = a3;
+    typeCopy2 = type;
     v9 = "%s Unknown CSSpIdType: %lu";
 LABEL_21:
     _os_log_error_impl(&dword_225E12000, v8, OS_LOG_TYPE_ERROR, v9, &v13, 0x16u);
@@ -3151,7 +3151,7 @@ LABEL_21:
   }
 
   v10 = @"config.txt";
-  if (a4 == 1)
+  if (modelType == 1)
   {
     v10 = @"config_sr_sat.txt";
   }
@@ -3163,12 +3163,12 @@ LABEL_17:
   return v7;
 }
 
-+ (id)psrConfigFileNameForCSSpIdType:(unint64_t)a3
++ (id)psrConfigFileNameForCSSpIdType:(unint64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
 LABEL_8:
       v4 = CSIsCommunalDevice();
@@ -3177,7 +3177,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if (a3 != 5)
+    if (type != 5)
     {
 LABEL_15:
       v10 = *MEMORY[0x277D01970];
@@ -3186,7 +3186,7 @@ LABEL_15:
         v11 = 136315394;
         v12 = "+[SSRUtils psrConfigFileNameForCSSpIdType:]";
         v13 = 2048;
-        v14 = a3;
+        typeCopy = type;
         _os_log_error_impl(&dword_225E12000, v10, OS_LOG_TYPE_ERROR, "%s ERR: Unknown CSSpIdType: %lu", &v11, 0x16u);
       }
 
@@ -3195,9 +3195,9 @@ LABEL_15:
     }
   }
 
-  else if (a3 != 1)
+  else if (type != 1)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
       goto LABEL_15;
     }
@@ -3221,10 +3221,10 @@ LABEL_12:
   return v7;
 }
 
-+ (id)satConfigFileNameForCSSpIdType:(unint64_t)a3
++ (id)satConfigFileNameForCSSpIdType:(unint64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3 == 5)
+  if (type == 5)
   {
     v6 = CSIsCommunalDevice();
     v5 = @"config_sr_sat.txt";
@@ -3236,7 +3236,7 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = CSIsCommunalDevice();
     v5 = @"config.txt";
@@ -3256,7 +3256,7 @@ LABEL_8:
     v11 = 136315394;
     v12 = "+[SSRUtils satConfigFileNameForCSSpIdType:]";
     v13 = 2048;
-    v14 = a3;
+    typeCopy = type;
     _os_log_error_impl(&dword_225E12000, v8, OS_LOG_TYPE_ERROR, "%s ERR: Unknown CSSpIdType: %lu", &v11, 0x16u);
   }
 
@@ -3267,71 +3267,71 @@ LABEL_12:
   return v7;
 }
 
-+ (id)stringForVoiceProfileRetrainerType:(unint64_t)a3
++ (id)stringForVoiceProfileRetrainerType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v4 = @"SAT";
+    type = @"SAT";
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
-    v4 = @"PSR";
+    type = @"PSR";
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown VoiceProfileRetrainerType: %lu", a3];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown VoiceProfileRetrainerType: %lu", type];
   }
 
-  return v4;
+  return type;
 }
 
-+ (id)stringForSpeakerRecognizerType:(unint64_t)a3
++ (id)stringForSpeakerRecognizerType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    v4 = @"SAT";
+    type = @"SAT";
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    v4 = @"PSR";
+    type = @"PSR";
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown SpeakerRecognizerType: %lu", a3];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown SpeakerRecognizerType: %lu", type];
   }
 
-  return v4;
+  return type;
 }
 
-+ (unint64_t)spIdTypeForString:(id)a3
++ (unint64_t)spIdTypeForString:(id)string
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"td"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"td"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ti"])
+  else if ([stringCopy isEqualToString:@"ti"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"tdti"])
+  else if ([stringCopy isEqualToString:@"tdti"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"tdtiexplicit"])
+  else if ([stringCopy isEqualToString:@"tdtiexplicit"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"tdexplicit"])
+  else if ([stringCopy isEqualToString:@"tdexplicit"])
   {
     v4 = 5;
   }
@@ -3344,7 +3344,7 @@ LABEL_12:
       v8 = 136315394;
       v9 = "+[SSRUtils spIdTypeForString:]";
       v10 = 2112;
-      v11 = v3;
+      v11 = stringCopy;
       _os_log_impl(&dword_225E12000, v5, OS_LOG_TYPE_DEFAULT, "%s Unknown CSSpIdType string: %@", &v8, 0x16u);
     }
 
@@ -3355,9 +3355,9 @@ LABEL_12:
   return v4;
 }
 
-+ (unint64_t)explicitSpIdTypeForSpId:(unint64_t)a3
++ (unint64_t)explicitSpIdTypeForSpId:(unint64_t)id
 {
-  if (a3 - 3 < 2)
+  if (id - 3 < 2)
   {
     return 4;
   }
@@ -3368,34 +3368,34 @@ LABEL_12:
   }
 }
 
-+ (id)stringForCSSpIdType:(unint64_t)a3
++ (id)stringForCSSpIdType:(unint64_t)type
 {
-  if (a3 - 1 >= 5)
+  if (type - 1 >= 5)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown CSSpIdType: %lu", a3];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown CSSpIdType: %lu", type];
   }
 
   else
   {
-    v4 = off_278578868[a3 - 1];
+    type = off_278578868[type - 1];
   }
 
-  return v4;
+  return type;
 }
 
-+ (id)stringForInvocationStyle:(unint64_t)a3
++ (id)stringForInvocationStyle:(unint64_t)style
 {
-  if (a3 >= 3)
+  if (style >= 3)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown InvocationStyle: %lu", a3];
+    style = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown InvocationStyle: %lu", style];
   }
 
   else
   {
-    v4 = off_278578850[a3];
+    style = off_278578850[style];
   }
 
-  return v4;
+  return style;
 }
 
 @end

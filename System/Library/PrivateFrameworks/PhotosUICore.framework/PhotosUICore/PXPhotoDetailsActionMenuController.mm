@@ -1,22 +1,22 @@
 @interface PXPhotoDetailsActionMenuController
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (BOOL)actionPerformer:(id)a3 presentViewController:(id)a4;
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler;
+- (BOOL)actionPerformer:(id)performer presentViewController:(id)controller;
 - (BOOL)enableSectionedMenus;
-- (BOOL)sectionDisplaysInline:(int64_t)a3;
-- (PXPhotoDetailsActionMenuController)initWithActionManagers:(id)a3;
-- (PXPhotoDetailsActionMenuController)initWithSelectionManager:(id)a3 displayTitleInfo:(id)a4 blockActionManager:(id)a5;
+- (BOOL)sectionDisplaysInline:(int64_t)inline;
+- (PXPhotoDetailsActionMenuController)initWithActionManagers:(id)managers;
+- (PXPhotoDetailsActionMenuController)initWithSelectionManager:(id)manager displayTitleInfo:(id)info blockActionManager:(id)actionManager;
 - (PXPhotosDetailsActionMenuDelegate)delegate;
 - (id)assetCollectionActionManager;
 - (id)availableActionTypes;
-- (id)availableActionTypesInSection:(int64_t)a3;
+- (id)availableActionTypesInSection:(int64_t)section;
 - (id)availableInternalActionTypes;
-- (id)iconForSection:(int64_t)a3;
-- (id)presentationEnvironmentForActionPerformer:(id)a3;
-- (id)titleForSection:(int64_t)a3;
-- (id)undoManagerForActionPerformer:(id)a3;
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4;
-- (void)assetCollectionActionPerformer:(id)a3 playMovieForAssetCollection:(id)a4;
-- (void)setPeople:(id)a3;
+- (id)iconForSection:(int64_t)section;
+- (id)presentationEnvironmentForActionPerformer:(id)performer;
+- (id)titleForSection:(int64_t)section;
+- (id)undoManagerForActionPerformer:(id)performer;
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state;
+- (void)assetCollectionActionPerformer:(id)performer playMovieForAssetCollection:(id)collection;
+- (void)setPeople:(id)people;
 @end
 
 @implementation PXPhotoDetailsActionMenuController
@@ -28,38 +28,38 @@
   return WeakRetained;
 }
 
-- (void)assetCollectionActionPerformer:(id)a3 playMovieForAssetCollection:(id)a4
+- (void)assetCollectionActionPerformer:(id)performer playMovieForAssetCollection:(id)collection
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PXPhotoDetailsActionMenuController *)self delegate];
+  performerCopy = performer;
+  collectionCopy = collection;
+  delegate = [(PXPhotoDetailsActionMenuController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PXPhotoDetailsActionMenuController *)self delegate];
-    [v9 actionMenu:self assetCollectionActionPerformer:v10 playMovieForAssetCollection:v6];
+    delegate2 = [(PXPhotoDetailsActionMenuController *)self delegate];
+    [delegate2 actionMenu:self assetCollectionActionPerformer:performerCopy playMovieForAssetCollection:collectionCopy];
   }
 }
 
-- (id)undoManagerForActionPerformer:(id)a3
+- (id)undoManagerForActionPerformer:(id)performer
 {
-  v4 = [(PXPhotoDetailsActionMenuController *)self delegate];
-  v5 = [v4 undoManagerForActionMenuController:self];
+  delegate = [(PXPhotoDetailsActionMenuController *)self delegate];
+  v5 = [delegate undoManagerForActionMenuController:self];
 
   return v5;
 }
 
-- (id)presentationEnvironmentForActionPerformer:(id)a3
+- (id)presentationEnvironmentForActionPerformer:(id)performer
 {
-  v4 = a3;
-  v5 = [(PXPhotoDetailsActionMenuController *)self delegate];
+  performerCopy = performer;
+  delegate = [(PXPhotoDetailsActionMenuController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PXPhotoDetailsActionMenuController *)self delegate];
-    v8 = [v7 presentationEnvironmentForActionPerformer:v4];
+    delegate2 = [(PXPhotoDetailsActionMenuController *)self delegate];
+    v8 = [delegate2 presentationEnvironmentForActionPerformer:performerCopy];
   }
 
   else
@@ -70,68 +70,68 @@
   return v8;
 }
 
-- (void)actionPerformer:(id)a3 didChangeState:(unint64_t)a4
+- (void)actionPerformer:(id)performer didChangeState:(unint64_t)state
 {
-  v9 = a3;
-  v6 = [(PXPhotoDetailsActionMenuController *)self delegate];
+  performerCopy = performer;
+  delegate = [(PXPhotoDetailsActionMenuController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PXPhotoDetailsActionMenuController *)self delegate];
-    [v8 actionMenu:self actionPerformer:v9 didChangeState:a4];
+    delegate2 = [(PXPhotoDetailsActionMenuController *)self delegate];
+    [delegate2 actionMenu:self actionPerformer:performerCopy didChangeState:state];
   }
 }
 
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PXPhotoDetailsActionMenuController *)self delegate];
-  LOBYTE(self) = [v11 actionMenu:self actionPerformer:v10 dismissViewController:v9 completionHandler:v8];
+  handlerCopy = handler;
+  controllerCopy = controller;
+  performerCopy = performer;
+  delegate = [(PXPhotoDetailsActionMenuController *)self delegate];
+  LOBYTE(self) = [delegate actionMenu:self actionPerformer:performerCopy dismissViewController:controllerCopy completionHandler:handlerCopy];
 
   return self;
 }
 
-- (BOOL)actionPerformer:(id)a3 presentViewController:(id)a4
+- (BOOL)actionPerformer:(id)performer presentViewController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXPhotoDetailsActionMenuController *)self delegate];
-  LOBYTE(self) = [v8 actionMenu:self actionPerformer:v7 presentViewController:v6];
+  controllerCopy = controller;
+  performerCopy = performer;
+  delegate = [(PXPhotoDetailsActionMenuController *)self delegate];
+  LOBYTE(self) = [delegate actionMenu:self actionPerformer:performerCopy presentViewController:controllerCopy];
 
   return self;
 }
 
-- (BOOL)sectionDisplaysInline:(int64_t)a3
+- (BOOL)sectionDisplaysInline:(int64_t)inline
 {
-  if (a3 < 4)
+  if (inline < 4)
   {
     return 1;
   }
 
-  if (a3 != 4)
+  if (inline != 4)
   {
-    if (a3 == 5)
+    if (inline == 5)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      v5 = v4;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v5 = currentHandler;
       v6 = a2;
-      v7 = self;
+      selfCopy2 = self;
       v8 = 223;
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      v5 = v4;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v5 = currentHandler;
       v6 = a2;
-      v7 = self;
+      selfCopy2 = self;
       v8 = 226;
     }
 
-    [v4 handleFailureInMethod:v6 object:v7 file:@"PXPhotoDetailsActionMenuController.m" lineNumber:v8 description:{@"Code which should be unreachable has been reached", a2, self}];
+    [currentHandler handleFailureInMethod:v6 object:selfCopy2 file:@"PXPhotoDetailsActionMenuController.m" lineNumber:v8 description:{@"Code which should be unreachable has been reached", a2, self}];
 
     abort();
   }
@@ -139,31 +139,31 @@
   return 0;
 }
 
-- (id)iconForSection:(int64_t)a3
+- (id)iconForSection:(int64_t)section
 {
-  if (a3 >= 4)
+  if (section >= 4)
   {
-    if (a3 != 4)
+    if (section != 4)
     {
-      if (a3 == 5)
+      if (section == 5)
       {
-        v5 = [MEMORY[0x1E696AAA8] currentHandler];
-        v6 = v5;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v6 = currentHandler;
         v7 = a2;
-        v8 = self;
+        selfCopy2 = self;
         v9 = 206;
       }
 
       else
       {
-        v5 = [MEMORY[0x1E696AAA8] currentHandler];
-        v6 = v5;
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        v6 = currentHandler;
         v7 = a2;
-        v8 = self;
+        selfCopy2 = self;
         v9 = 209;
       }
 
-      [v5 handleFailureInMethod:v7 object:v8 file:@"PXPhotoDetailsActionMenuController.m" lineNumber:v9 description:{@"Code which should be unreachable has been reached", a2, self}];
+      [currentHandler handleFailureInMethod:v7 object:selfCopy2 file:@"PXPhotoDetailsActionMenuController.m" lineNumber:v9 description:{@"Code which should be unreachable has been reached", a2, self}];
 
       abort();
     }
@@ -179,34 +179,34 @@
   return v3;
 }
 
-- (id)titleForSection:(int64_t)a3
+- (id)titleForSection:(int64_t)section
 {
-  if (a3 < 4)
+  if (section < 4)
   {
     return &stru_1F1741150;
   }
 
-  if (a3 != 4)
+  if (section != 4)
   {
-    if (a3 == 5)
+    if (section == 5)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      v5 = v4;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v5 = currentHandler;
       v6 = a2;
-      v7 = self;
+      selfCopy2 = self;
       v8 = 189;
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      v5 = v4;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v5 = currentHandler;
       v6 = a2;
-      v7 = self;
+      selfCopy2 = self;
       v8 = 192;
     }
 
-    [v4 handleFailureInMethod:v6 object:v7 file:@"PXPhotoDetailsActionMenuController.m" lineNumber:v8 description:{@"Code which should be unreachable has been reached", a2, self}];
+    [currentHandler handleFailureInMethod:v6 object:selfCopy2 file:@"PXPhotoDetailsActionMenuController.m" lineNumber:v8 description:{@"Code which should be unreachable has been reached", a2, self}];
 
     abort();
   }
@@ -214,12 +214,12 @@
   return @"Internal";
 }
 
-- (id)availableActionTypesInSection:(int64_t)a3
+- (id)availableActionTypesInSection:(int64_t)section
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a3 <= 2)
+  if (section <= 2)
   {
-    switch(a3)
+    switch(section)
     {
       case 0:
         v38 = *off_1E7721D60;
@@ -255,7 +255,7 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  if (a3 == 3)
+  if (section == 3)
   {
     v12 = *off_1E7721D78;
     v27 = *off_1E7721C78;
@@ -266,34 +266,34 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (a3 != 4)
+  if (section != 4)
   {
-    if (a3 == 5)
+    if (section == 5)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      v18 = v17;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v18 = currentHandler;
       v19 = a2;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 172;
       goto LABEL_23;
     }
 
 LABEL_22:
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    v18 = v17;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v18 = currentHandler;
     v19 = a2;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 175;
 LABEL_23:
-    [v17 handleFailureInMethod:v19 object:v20 file:@"PXPhotoDetailsActionMenuController.m" lineNumber:v21 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInMethod:v19 object:selfCopy2 file:@"PXPhotoDetailsActionMenuController.m" lineNumber:v21 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
   v6 = +[PXRootSettings sharedInstance];
-  v7 = [v6 canShowInternalUI];
+  canShowInternalUI = [v6 canShowInternalUI];
 
-  if (v7)
+  if (canShowInternalUI)
   {
     v8 = *off_1E7721D18;
     v24 = *off_1E7721C38;
@@ -314,8 +314,8 @@ LABEL_16:
 
 - (BOOL)enableSectionedMenus
 {
-  v2 = [(PXPhotoDetailsActionMenuController *)self people];
-  v3 = [v2 count] != 0;
+  people = [(PXPhotoDetailsActionMenuController *)self people];
+  v3 = [people count] != 0;
 
   return v3;
 }
@@ -361,18 +361,18 @@ LABEL_16:
   return v9;
 }
 
-- (void)setPeople:(id)a3
+- (void)setPeople:(id)people
 {
-  v5 = a3;
-  if (self->_people != v5)
+  peopleCopy = people;
+  if (self->_people != peopleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_people, a3);
-    v6 = [(PXPhotoDetailsActionMenuController *)self assetCollectionActionManager];
-    [v6 setPeople:v7];
+    v7 = peopleCopy;
+    objc_storeStrong(&self->_people, people);
+    assetCollectionActionManager = [(PXPhotoDetailsActionMenuController *)self assetCollectionActionManager];
+    [assetCollectionActionManager setPeople:v7];
 
     [(PXActionMenuController *)self invalidateActions];
-    v5 = v7;
+    peopleCopy = v7;
   }
 }
 
@@ -392,63 +392,63 @@ uint64_t __66__PXPhotoDetailsActionMenuController_assetCollectionActionManager__
   return isKindOfClass & 1;
 }
 
-- (PXPhotoDetailsActionMenuController)initWithSelectionManager:(id)a3 displayTitleInfo:(id)a4 blockActionManager:(id)a5
+- (PXPhotoDetailsActionMenuController)initWithSelectionManager:(id)manager displayTitleInfo:(id)info blockActionManager:(id)actionManager
 {
   v50[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  managerCopy = manager;
+  infoCopy = info;
+  actionManagerCopy = actionManager;
+  if (!managerCopy)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PXPhotoDetailsActionMenuController.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"selectionManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoDetailsActionMenuController.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"selectionManager"}];
   }
 
-  v12 = v9;
-  v13 = [v12 selectionSnapshot];
-  v14 = [v13 isAnyItemSelected];
+  v12 = managerCopy;
+  selectionSnapshot = [v12 selectionSnapshot];
+  isAnyItemSelected = [selectionSnapshot isAnyItemSelected];
 
   v15 = v12;
-  if ((v14 & 1) == 0)
+  if ((isAnyItemSelected & 1) == 0)
   {
     v16 = [off_1E77218C8 alloc];
-    v17 = [v12 dataSourceManager];
-    v15 = [v16 initWithDataSourceManager:v17];
+    dataSourceManager = [v12 dataSourceManager];
+    v15 = [v16 initWithDataSourceManager:dataSourceManager];
 
     [v15 performChanges:&__block_literal_global_257258];
   }
 
-  v18 = [v15 dataSourceManager];
-  v19 = [v18 dataSource];
+  dataSourceManager2 = [v15 dataSourceManager];
+  dataSource = [dataSourceManager2 dataSource];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PXPhotoDetailsActionMenuController.m" lineNumber:55 description:@"Only support PXAssetsDataSource"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoDetailsActionMenuController.m" lineNumber:55 description:@"Only support PXAssetsDataSource"];
   }
 
-  if ([v19 numberOfSections] != 1)
+  if ([dataSource numberOfSections] != 1)
   {
     PXAssertGetLog();
   }
 
   v37 = v12;
-  *buf = [v19 identifier];
+  *buf = [dataSource identifier];
   v46 = xmmword_1A5380D10;
   v47 = 0x7FFFFFFFFFFFFFFFLL;
-  v20 = [v19 assetCollectionAtSectionIndexPath:buf];
-  v39 = v10;
-  v21 = [[PXPhotoKitAssetCollectionActionManager alloc] initWithAssetCollection:v20 displayTitleInfo:v10];
-  v22 = [v15 dataSourceManager];
-  [(PXAssetCollectionActionManager *)v21 setAssetsDataSourceManager:v22];
+  v20 = [dataSource assetCollectionAtSectionIndexPath:buf];
+  v39 = infoCopy;
+  v21 = [[PXPhotoKitAssetCollectionActionManager alloc] initWithAssetCollection:v20 displayTitleInfo:infoCopy];
+  dataSourceManager3 = [v15 dataSourceManager];
+  [(PXAssetCollectionActionManager *)v21 setAssetsDataSourceManager:dataSourceManager3];
 
   v23 = [[PXPhotoKitAssetActionManager alloc] initWithSelectionManager:v15];
   v24 = v23;
-  v38 = v11;
-  if (v11)
+  v38 = actionManagerCopy;
+  if (actionManagerCopy)
   {
-    v50[0] = v11;
+    v50[0] = actionManagerCopy;
     v50[1] = v21;
     v50[2] = v23;
     v25 = MEMORY[0x1E695DEC8];
@@ -500,11 +500,11 @@ uint64_t __66__PXPhotoDetailsActionMenuController_assetCollectionActionManager__
   return v33;
 }
 
-- (PXPhotoDetailsActionMenuController)initWithActionManagers:(id)a3
+- (PXPhotoDetailsActionMenuController)initWithActionManagers:(id)managers
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXPhotoDetailsActionMenuController.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXPhotoDetailsActionMenuController initWithActionManagers:]"}];
+  managersCopy = managers;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoDetailsActionMenuController.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXPhotoDetailsActionMenuController initWithActionManagers:]"}];
 
   abort();
 }

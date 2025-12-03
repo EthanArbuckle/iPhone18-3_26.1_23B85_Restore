@@ -4,19 +4,19 @@
 - (BOOL)resumeEnabled;
 - (EPRoutingSlip)routingSlip;
 - (EPRoutingSlipEntry)init;
-- (EPRoutingSlipEntry)initWithCoder:(id)a3;
-- (EPRoutingSlipEntry)initWithName:(id)a3 transactionClass:(Class)a4 operands:(id)a5;
+- (EPRoutingSlipEntry)initWithCoder:(id)coder;
+- (EPRoutingSlipEntry)initWithName:(id)name transactionClass:(Class)class operands:(id)operands;
 - (NSError)routingSlipError;
 - (NSString)printableName;
 - (OS_dispatch_queue)queue;
 - (id)description;
 - (id)newTransaction;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (id)shortDescription;
 - (id)transactionClasses;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)persist;
-- (void)setRoutingSlip:(id)a3;
+- (void)setRoutingSlip:(id)slip;
 @end
 
 @implementation EPRoutingSlipEntry
@@ -48,21 +48,21 @@
   return v2;
 }
 
-- (EPRoutingSlipEntry)initWithName:(id)a3 transactionClass:(Class)a4 operands:(id)a5
+- (EPRoutingSlipEntry)initWithName:(id)name transactionClass:(Class)class operands:(id)operands
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  operandsCopy = operands;
   v11 = [(EPRoutingSlipEntry *)self init];
   if (v11)
   {
     v12 = +[NSUUID UUID];
-    v13 = [v12 UUIDString];
+    uUIDString = [v12 UUIDString];
     identifier = v11->_identifier;
-    v11->_identifier = v13;
+    v11->_identifier = uUIDString;
 
-    objc_storeStrong(&v11->_name, a3);
-    objc_storeStrong(&v11->_transactionClass, a4);
-    v15 = [v10 mutableCopy];
+    objc_storeStrong(&v11->_name, name);
+    objc_storeStrong(&v11->_transactionClass, class);
+    v15 = [operandsCopy mutableCopy];
     operands = v11->_operands;
     v11->_operands = v15;
   }
@@ -70,15 +70,15 @@
   return v11;
 }
 
-- (void)setRoutingSlip:(id)a3
+- (void)setRoutingSlip:(id)slip
 {
-  objc_storeWeak(&self->_routingSlip, a3);
+  objc_storeWeak(&self->_routingSlip, slip);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMutableDictionary *)self->_operands allValues];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_operands allValues];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -90,7 +90,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -101,7 +101,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -111,52 +111,52 @@
 - (NSError)routingSlipError
 {
   WeakRetained = objc_loadWeakRetained(&self->_routingSlip);
-  v3 = [WeakRetained getLastFirstError];
+  getLastFirstError = [WeakRetained getLastFirstError];
 
-  return v3;
+  return getLastFirstError;
 }
 
 - (OS_dispatch_queue)queue
 {
   v2 = +[NRQueue registryDaemonQueue];
-  v3 = [v2 queue];
+  queue = [v2 queue];
 
-  return v3;
+  return queue;
 }
 
 - (BOOL)notUnrollable
 {
   WeakRetained = objc_loadWeakRetained(&self->_routingSlip);
-  v3 = [WeakRetained notUnrollable];
+  notUnrollable = [WeakRetained notUnrollable];
 
-  return v3;
+  return notUnrollable;
 }
 
 - (BOOL)persistWhilePending
 {
   WeakRetained = objc_loadWeakRetained(&self->_routingSlip);
-  v3 = [WeakRetained persistWhilePending];
+  persistWhilePending = [WeakRetained persistWhilePending];
 
-  return v3;
+  return persistWhilePending;
 }
 
 - (BOOL)resumeEnabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_routingSlip);
-  v3 = [WeakRetained resumeEnabled];
+  resumeEnabled = [WeakRetained resumeEnabled];
 
-  return v3;
+  return resumeEnabled;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = [(EPRoutingSlipEntry *)self operands];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  subscriptCopy = subscript;
+  operands = [(EPRoutingSlipEntry *)self operands];
+  v6 = [operands objectForKeyedSubscript:subscriptCopy];
 
-  v7 = [v6 value];
+  value = [v6 value];
 
-  return v7;
+  return value;
 }
 
 - (id)transactionClasses
@@ -173,30 +173,30 @@
 
 - (id)newTransaction
 {
-  v2 = [(EPRoutingSlipEntry *)self transactionClass];
+  transactionClass = [(EPRoutingSlipEntry *)self transactionClass];
 
-  return objc_alloc_init(v2);
+  return objc_alloc_init(transactionClass);
 }
 
-- (EPRoutingSlipEntry)initWithCoder:(id)a3
+- (EPRoutingSlipEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(EPRoutingSlipEntry *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
     if (!v5->_identifier)
     {
       v8 = +[NSUUID UUID];
-      v9 = [v8 UUIDString];
+      uUIDString = [v8 UUIDString];
       v10 = v5->_identifier;
-      v5->_identifier = v9;
+      v5->_identifier = uUIDString;
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v11;
 
@@ -206,11 +206,11 @@
     v14 = [NSSet setWithArray:v13];
     v15 = sub_1000E82B4();
     v16 = [v14 setByAddingObjectsFromSet:v15];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"operands"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"operands"];
     operands = v5->_operands;
     v5->_operands = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionClassName"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionClassName"];
     v20 = NSClassFromString(v19);
     transactionClass = v5->_transactionClass;
     v5->_transactionClass = v20;
@@ -219,24 +219,24 @@
     v27[1] = objc_opt_class();
     v22 = [NSArray arrayWithObjects:v27 count:2];
     v23 = [NSSet setWithArray:v22];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"errors"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"errors"];
     errors = v5->_errors;
     v5->_errors = v24;
 
-    v5->_canceled = [v4 decodeBoolForKey:@"canceled"];
+    v5->_canceled = [coderCopy decodeBoolForKey:@"canceled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_identifier forKey:@"identifier"];
-  [v4 encodeObject:self->_name forKey:@"name"];
-  [v4 encodeObject:self->_operands forKey:@"operands"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_operands forKey:@"operands"];
   v5 = NSStringFromClass(self->_transactionClass);
-  [v4 encodeObject:v5 forKey:@"transactionClassName"];
+  [coderCopy encodeObject:v5 forKey:@"transactionClassName"];
 
   if (self->_errors)
   {
@@ -261,8 +261,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v13 + 1) + 8 * v11) nr_filteredError];
-          [v6 addObject:v12];
+          nr_filteredError = [*(*(&v13 + 1) + 8 * v11) nr_filteredError];
+          [v6 addObject:nr_filteredError];
 
           v11 = v11 + 1;
         }
@@ -280,16 +280,16 @@
     v6 = 0;
   }
 
-  [v4 encodeObject:v6 forKey:{@"errors", v13}];
-  [v4 encodeBool:self->_canceled forKey:@"canceled"];
+  [coderCopy encodeObject:v6 forKey:{@"errors", v13}];
+  [coderCopy encodeBool:self->_canceled forKey:@"canceled"];
 }
 
 - (id)description
 {
-  v3 = [(EPRoutingSlipEntry *)self shortDescription];
-  v4 = [(NSMutableDictionary *)self->_operands joinedDescription];
-  v5 = [(NSMutableArray *)self->_errors joinedDescription];
-  v6 = [NSString stringWithFormat:@"%@(%@)\n%@", v3, v4, v5];
+  shortDescription = [(EPRoutingSlipEntry *)self shortDescription];
+  joinedDescription = [(NSMutableDictionary *)self->_operands joinedDescription];
+  joinedDescription2 = [(NSMutableArray *)self->_errors joinedDescription];
+  v6 = [NSString stringWithFormat:@"%@(%@)\n%@", shortDescription, joinedDescription, joinedDescription2];
 
   return v6;
 }
@@ -299,8 +299,8 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   identifier = self->_identifier;
-  v6 = [(EPRoutingSlipEntry *)self printableName];
-  v7 = [NSString stringWithFormat:@"%@[%@]: %@", v4, identifier, v6];
+  printableName = [(EPRoutingSlipEntry *)self printableName];
+  v7 = [NSString stringWithFormat:@"%@[%@]: %@", v4, identifier, printableName];
 
   return v7;
 }

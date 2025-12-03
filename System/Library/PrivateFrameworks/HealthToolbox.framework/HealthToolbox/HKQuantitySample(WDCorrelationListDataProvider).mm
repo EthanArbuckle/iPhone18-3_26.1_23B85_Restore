@@ -7,20 +7,20 @@
 - (id)quantitySampleForType:()WDCorrelationListDataProvider
 {
   v4 = a3;
-  v5 = [a1 quantityType];
-  v6 = [v4 isEqual:v5];
+  quantityType = [self quantityType];
+  v6 = [v4 isEqual:quantityType];
 
   if (v6)
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

@@ -1,66 +1,66 @@
 @interface RMStoreDeclarationKey
-+ (BOOL)assetDifferencesOnlyForOldKey:(id)a3 newKey:(id)a4;
-+ (id)newDeclarationKey:(id)a3;
-+ (id)newDeclarationKeyWithSubscriberIdentifier:(id)a3 reference:(id)a4;
-+ (id)newDeclarationKeyWithSubscriberIdentifier:(id)a3 store:(id)a4 declaration:(id)a5;
-+ (id)newDeclarationKeyWithSubscriberIdentifier:(id)a3 storeIdentifier:(id)a4 declarationIdentifier:(id)a5 declarationServerToken:(id)a6;
-+ (id)newDeclarationKeyWithSubscriberIdentifier:(id)a3 storeIdentifier:(id)a4 declarationIdentifier:(id)a5 declarationServerToken:(id)a6 assetKeys:(id)a7;
-+ (id)newDeclarationKeyWithoutAssets:(id)a3;
-+ (void)synchronizeOldKeys:(id)a3 newKeys:(id)a4 returningUnchangedKeys:(id *)a5 returningApplyKeys:(id *)a6 returningRemoveKeys:(id *)a7;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)assetDifferencesOnlyForOldKey:(id)key newKey:(id)newKey;
++ (id)newDeclarationKey:(id)key;
++ (id)newDeclarationKeyWithSubscriberIdentifier:(id)identifier reference:(id)reference;
++ (id)newDeclarationKeyWithSubscriberIdentifier:(id)identifier store:(id)store declaration:(id)declaration;
++ (id)newDeclarationKeyWithSubscriberIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token;
++ (id)newDeclarationKeyWithSubscriberIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token assetKeys:(id)keys;
++ (id)newDeclarationKeyWithoutAssets:(id)assets;
++ (void)synchronizeOldKeys:(id)keys newKeys:(id)newKeys returningUnchangedKeys:(id *)unchangedKeys returningApplyKeys:(id *)applyKeys returningRemoveKeys:(id *)removeKeys;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (RMStoreDeclarationKey)initWithCoder:(id)a3;
-- (RMStoreDeclarationKey)initWithDeclarationKey:(id)a3;
-- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)a3 store:(id)a4 declaration:(id)a5 assets:(id)a6;
-- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)a3 storeIdentifier:(id)a4 declarationIdentifier:(id)a5 declarationServerToken:(id)a6 assetKeys:(id)a7;
-- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)a3 storeIdentifier:(id)a4 declarationIdentifier:(id)a5 declarationServerToken:(id)a6 assets:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RMStoreDeclarationKey)initWithCoder:(id)coder;
+- (RMStoreDeclarationKey)initWithDeclarationKey:(id)key;
+- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)identifier store:(id)store declaration:(id)declaration assets:(id)assets;
+- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token assetKeys:(id)keys;
+- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token assets:(id)assets;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)keyByReplacingSubscriberIdentifier:(id)a3;
+- (id)keyByReplacingSubscriberIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)_parseDeclarationKey:(id)a3 completionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_parseDeclarationKey:(id)key completionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMStoreDeclarationKey
 
-+ (id)newDeclarationKey:(id)a3
++ (id)newDeclarationKey:(id)key
 {
-  v3 = a3;
-  v4 = [[RMStoreDeclarationKey alloc] initWithDeclarationKey:v3];
+  keyCopy = key;
+  v4 = [[RMStoreDeclarationKey alloc] initWithDeclarationKey:keyCopy];
 
   return v4;
 }
 
-+ (id)newDeclarationKeyWithSubscriberIdentifier:(id)a3 store:(id)a4 declaration:(id)a5
++ (id)newDeclarationKeyWithSubscriberIdentifier:(id)identifier store:(id)store declaration:(id)declaration
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[RMStoreDeclarationKey alloc] initWithSubscriberIdentifier:v9 store:v8 declaration:v7 assets:0];
+  declarationCopy = declaration;
+  storeCopy = store;
+  identifierCopy = identifier;
+  v10 = [[RMStoreDeclarationKey alloc] initWithSubscriberIdentifier:identifierCopy store:storeCopy declaration:declarationCopy assets:0];
 
   return v10;
 }
 
-+ (id)newDeclarationKeyWithSubscriberIdentifier:(id)a3 reference:(id)a4
++ (id)newDeclarationKeyWithSubscriberIdentifier:(id)identifier reference:(id)reference
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 declaration];
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  declaration = [referenceCopy declaration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 assetReferences];
-    if ([v8 count])
+    assetReferences = [declaration assetReferences];
+    if ([assetReferences count])
     {
-      v22 = v5;
-      v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+      v22 = identifierCopy;
+      v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(assetReferences, "count")}];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v10 = v8;
+      v10 = assetReferences;
       v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v11)
       {
@@ -76,8 +76,8 @@
               objc_enumerationMutation(v10);
             }
 
-            v15 = [*(*(&v23 + 1) + 8 * v14) identifier];
-            v16 = [v6 assetWithIdentifier:v15];
+            identifier = [*(*(&v23 + 1) + 8 * v14) identifier];
+            v16 = [referenceCopy assetWithIdentifier:identifier];
 
             if (v16)
             {
@@ -94,7 +94,7 @@
         while (v12);
       }
 
-      v5 = v22;
+      identifierCopy = v22;
     }
 
     else
@@ -109,51 +109,51 @@
   }
 
   v17 = [RMStoreDeclarationKey alloc];
-  v18 = [v6 store];
-  v19 = [(RMStoreDeclarationKey *)v17 initWithSubscriberIdentifier:v5 store:v18 declaration:v7 assets:v9];
+  store = [referenceCopy store];
+  v19 = [(RMStoreDeclarationKey *)v17 initWithSubscriberIdentifier:identifierCopy store:store declaration:declaration assets:v9];
 
   v20 = *MEMORY[0x277D85DE8];
   return v19;
 }
 
-+ (id)newDeclarationKeyWithSubscriberIdentifier:(id)a3 storeIdentifier:(id)a4 declarationIdentifier:(id)a5 declarationServerToken:(id)a6
++ (id)newDeclarationKeyWithSubscriberIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[RMStoreDeclarationKey alloc] initWithSubscriberIdentifier:v12 storeIdentifier:v11 declarationIdentifier:v10 declarationServerToken:v9 assets:0];
+  tokenCopy = token;
+  declarationIdentifierCopy = declarationIdentifier;
+  storeIdentifierCopy = storeIdentifier;
+  identifierCopy = identifier;
+  v13 = [[RMStoreDeclarationKey alloc] initWithSubscriberIdentifier:identifierCopy storeIdentifier:storeIdentifierCopy declarationIdentifier:declarationIdentifierCopy declarationServerToken:tokenCopy assets:0];
 
   return v13;
 }
 
-+ (id)newDeclarationKeyWithSubscriberIdentifier:(id)a3 storeIdentifier:(id)a4 declarationIdentifier:(id)a5 declarationServerToken:(id)a6 assetKeys:(id)a7
++ (id)newDeclarationKeyWithSubscriberIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token assetKeys:(id)keys
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[RMStoreDeclarationKey alloc] initWithSubscriberIdentifier:v15 storeIdentifier:v14 declarationIdentifier:v13 declarationServerToken:v12 assetKeys:v11];
+  keysCopy = keys;
+  tokenCopy = token;
+  declarationIdentifierCopy = declarationIdentifier;
+  storeIdentifierCopy = storeIdentifier;
+  identifierCopy = identifier;
+  v16 = [[RMStoreDeclarationKey alloc] initWithSubscriberIdentifier:identifierCopy storeIdentifier:storeIdentifierCopy declarationIdentifier:declarationIdentifierCopy declarationServerToken:tokenCopy assetKeys:keysCopy];
 
   return v16;
 }
 
-+ (id)newDeclarationKeyWithoutAssets:(id)a3
++ (id)newDeclarationKeyWithoutAssets:(id)assets
 {
-  v3 = a3;
-  v4 = [v3 subscriberIdentifier];
-  v5 = [v3 storeIdentifier];
-  v6 = [v3 declarationIdentifier];
-  v7 = [v3 declarationServerToken];
+  assetsCopy = assets;
+  subscriberIdentifier = [assetsCopy subscriberIdentifier];
+  storeIdentifier = [assetsCopy storeIdentifier];
+  declarationIdentifier = [assetsCopy declarationIdentifier];
+  declarationServerToken = [assetsCopy declarationServerToken];
 
-  v8 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:v4 storeIdentifier:v5 declarationIdentifier:v6 declarationServerToken:v7];
+  v8 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:subscriberIdentifier storeIdentifier:storeIdentifier declarationIdentifier:declarationIdentifier declarationServerToken:declarationServerToken];
   return v8;
 }
 
-- (RMStoreDeclarationKey)initWithDeclarationKey:(id)a3
+- (RMStoreDeclarationKey)initWithDeclarationKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v25.receiver = self;
   v25.super_class = RMStoreDeclarationKey;
   v6 = [(RMStoreDeclarationKey *)&v25 init];
@@ -171,10 +171,10 @@
     v20 = &v21;
     v8 = v6;
     v19 = v8;
-    [(RMStoreDeclarationKey *)v8 _parseDeclarationKey:v5 completionHandler:v18];
+    [(RMStoreDeclarationKey *)v8 _parseDeclarationKey:keyCopy completionHandler:v18];
     if (*(v22 + 24) == 1)
     {
-      objc_storeStrong(&v8->_key, a3);
+      objc_storeStrong(&v8->_key, key);
       v9 = MEMORY[0x277CCACA8];
       subscriberIdentifier = v8->_subscriberIdentifier;
       storeIdentifier = v8->_storeIdentifier;
@@ -226,32 +226,32 @@ void __48__RMStoreDeclarationKey_initWithDeclarationKey___block_invoke(uint64_t 
   *(v29 + 56) = v17;
 }
 
-- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)a3 store:(id)a4 declaration:(id)a5 assets:(id)a6
+- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)identifier store:(id)store declaration:(id)declaration assets:(id)assets
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [a4 identifier];
-  v14 = [v11 declarationIdentifier];
-  v15 = [v11 declarationServerToken];
+  assetsCopy = assets;
+  declarationCopy = declaration;
+  identifierCopy = identifier;
+  identifier = [store identifier];
+  declarationIdentifier = [declarationCopy declarationIdentifier];
+  declarationServerToken = [declarationCopy declarationServerToken];
 
-  v16 = [(RMStoreDeclarationKey *)self initWithSubscriberIdentifier:v12 storeIdentifier:v13 declarationIdentifier:v14 declarationServerToken:v15 assets:v10];
+  v16 = [(RMStoreDeclarationKey *)self initWithSubscriberIdentifier:identifierCopy storeIdentifier:identifier declarationIdentifier:declarationIdentifier declarationServerToken:declarationServerToken assets:assetsCopy];
   return v16;
 }
 
-- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)a3 storeIdentifier:(id)a4 declarationIdentifier:(id)a5 declarationServerToken:(id)a6 assets:(id)a7
+- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token assets:(id)assets
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (v16 && [v16 count])
+  identifierCopy = identifier;
+  storeIdentifierCopy = storeIdentifier;
+  declarationIdentifierCopy = declarationIdentifier;
+  tokenCopy = token;
+  assetsCopy = assets;
+  v17 = assetsCopy;
+  if (assetsCopy && [assetsCopy count])
   {
-    v28 = self;
-    v29 = v13;
+    selfCopy = self;
+    v29 = storeIdentifierCopy;
     v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v17, "count")}];
     v30 = 0u;
     v31 = 0u;
@@ -282,8 +282,8 @@ void __48__RMStoreDeclarationKey_initWithDeclarationKey___block_invoke(uint64_t 
       while (v21);
     }
 
-    v13 = v29;
-    self = v28;
+    storeIdentifierCopy = v29;
+    self = selfCopy;
   }
 
   else
@@ -291,32 +291,32 @@ void __48__RMStoreDeclarationKey_initWithDeclarationKey___block_invoke(uint64_t 
     v18 = 0;
   }
 
-  v25 = [(RMStoreDeclarationKey *)self initWithSubscriberIdentifier:v12 storeIdentifier:v13 declarationIdentifier:v14 declarationServerToken:v15 assetKeys:v18];
+  v25 = [(RMStoreDeclarationKey *)self initWithSubscriberIdentifier:identifierCopy storeIdentifier:storeIdentifierCopy declarationIdentifier:declarationIdentifierCopy declarationServerToken:tokenCopy assetKeys:v18];
 
   v26 = *MEMORY[0x277D85DE8];
   return v25;
 }
 
-- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)a3 storeIdentifier:(id)a4 declarationIdentifier:(id)a5 declarationServerToken:(id)a6 assetKeys:(id)a7
+- (RMStoreDeclarationKey)initWithSubscriberIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token assetKeys:(id)keys
 {
   v55 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v48 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  storeIdentifierCopy = storeIdentifier;
+  declarationIdentifierCopy = declarationIdentifier;
+  tokenCopy = token;
+  keysCopy = keys;
   v53.receiver = self;
   v53.super_class = RMStoreDeclarationKey;
   v17 = [(RMStoreDeclarationKey *)&v53 init];
   v18 = v17;
   if (v17)
   {
-    v46 = v14;
-    v47 = v13;
-    objc_storeStrong(&v17->_subscriberIdentifier, a3);
-    objc_storeStrong(&v18->_storeIdentifier, a4);
-    objc_storeStrong(&v18->_declarationIdentifier, a5);
-    objc_storeStrong(&v18->_declarationServerToken, a6);
+    v46 = storeIdentifierCopy;
+    v47 = identifierCopy;
+    objc_storeStrong(&v17->_subscriberIdentifier, identifier);
+    objc_storeStrong(&v18->_storeIdentifier, storeIdentifier);
+    objc_storeStrong(&v18->_declarationIdentifier, declarationIdentifier);
+    objc_storeStrong(&v18->_declarationServerToken, token);
     v19 = MEMORY[0x277CCACA8];
     subscriberIdentifier = v18->_subscriberIdentifier;
     storeIdentifier = v18->_storeIdentifier;
@@ -327,14 +327,14 @@ void __48__RMStoreDeclarationKey_initWithDeclarationKey___block_invoke(uint64_t 
     keyWithoutServerToken = v18->_keyWithoutServerToken;
     v18->_keyWithoutServerToken = v24;
 
-    if (v16 && [v16 count])
+    if (keysCopy && [keysCopy count])
     {
-      v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v16, "count")}];
+      v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(keysCopy, "count")}];
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v27 = v16;
+      v27 = keysCopy;
       v28 = [v27 countByEnumeratingWithState:&v49 objects:v54 count:16];
       if (v28)
       {
@@ -363,7 +363,7 @@ void __48__RMStoreDeclarationKey_initWithDeclarationKey___block_invoke(uint64_t 
         while (v29);
       }
 
-      objc_storeStrong(&v18->_declarationAssets, a7);
+      objc_storeStrong(&v18->_declarationAssets, keys);
       v33 = MEMORY[0x277CCACA8];
       v34 = v18->_keyWithoutServerToken;
       v35 = [(NSString *)v18->_declarationServerToken dataUsingEncoding:4];
@@ -387,8 +387,8 @@ void __48__RMStoreDeclarationKey_initWithDeclarationKey___block_invoke(uint64_t 
       v18->_key = v43;
     }
 
-    v14 = v46;
-    v13 = v47;
+    storeIdentifierCopy = v46;
+    identifierCopy = v47;
   }
 
   v44 = *MEMORY[0x277D85DE8];
@@ -403,29 +403,29 @@ void __48__RMStoreDeclarationKey_initWithDeclarationKey___block_invoke(uint64_t 
   return v3;
 }
 
-- (id)keyByReplacingSubscriberIdentifier:(id)a3
+- (id)keyByReplacingSubscriberIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(RMStoreDeclarationKey *)self storeIdentifier];
-  v6 = [(RMStoreDeclarationKey *)self declarationIdentifier];
-  v7 = [(RMStoreDeclarationKey *)self declarationServerToken];
-  v8 = [(RMStoreDeclarationKey *)self declarationAssets];
-  v9 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:v4 storeIdentifier:v5 declarationIdentifier:v6 declarationServerToken:v7 assetKeys:v8];
+  identifierCopy = identifier;
+  storeIdentifier = [(RMStoreDeclarationKey *)self storeIdentifier];
+  declarationIdentifier = [(RMStoreDeclarationKey *)self declarationIdentifier];
+  declarationServerToken = [(RMStoreDeclarationKey *)self declarationServerToken];
+  declarationAssets = [(RMStoreDeclarationKey *)self declarationAssets];
+  v9 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:identifierCopy storeIdentifier:storeIdentifier declarationIdentifier:declarationIdentifier declarationServerToken:declarationServerToken assetKeys:declarationAssets];
 
   return v9;
 }
 
-+ (BOOL)assetDifferencesOnlyForOldKey:(id)a3 newKey:(id)a4
++ (BOOL)assetDifferencesOnlyForOldKey:(id)key newKey:(id)newKey
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 keyWithoutServerToken];
-  v8 = [v6 keyWithoutServerToken];
-  if ([v7 isEqualToString:v8])
+  keyCopy = key;
+  newKeyCopy = newKey;
+  keyWithoutServerToken = [keyCopy keyWithoutServerToken];
+  keyWithoutServerToken2 = [newKeyCopy keyWithoutServerToken];
+  if ([keyWithoutServerToken isEqualToString:keyWithoutServerToken2])
   {
-    v9 = [v5 declarationServerToken];
-    v10 = [v6 declarationServerToken];
-    v11 = [v9 isEqualToString:v10];
+    declarationServerToken = [keyCopy declarationServerToken];
+    declarationServerToken2 = [newKeyCopy declarationServerToken];
+    v11 = [declarationServerToken isEqualToString:declarationServerToken2];
 
     if (!v11)
     {
@@ -434,12 +434,12 @@ void __48__RMStoreDeclarationKey_initWithDeclarationKey___block_invoke(uint64_t 
     }
 
     v12 = MEMORY[0x277CBEB98];
-    v13 = [v5 declarationAssets];
-    v14 = v13;
+    declarationAssets = [keyCopy declarationAssets];
+    v14 = declarationAssets;
     v15 = MEMORY[0x277CBEBF8];
-    if (v13)
+    if (declarationAssets)
     {
-      v16 = v13;
+      v16 = declarationAssets;
     }
 
     else
@@ -447,14 +447,14 @@ void __48__RMStoreDeclarationKey_initWithDeclarationKey___block_invoke(uint64_t 
       v16 = MEMORY[0x277CBEBF8];
     }
 
-    v7 = [v12 setWithArray:v16];
+    keyWithoutServerToken = [v12 setWithArray:v16];
 
     v17 = MEMORY[0x277CBEB98];
-    v18 = [v6 declarationAssets];
-    v19 = v18;
-    if (v18)
+    declarationAssets2 = [newKeyCopy declarationAssets];
+    v19 = declarationAssets2;
+    if (declarationAssets2)
     {
-      v20 = v18;
+      v20 = declarationAssets2;
     }
 
     else
@@ -462,9 +462,9 @@ void __48__RMStoreDeclarationKey_initWithDeclarationKey___block_invoke(uint64_t 
       v20 = v15;
     }
 
-    v8 = [v17 setWithArray:v20];
+    keyWithoutServerToken2 = [v17 setWithArray:v20];
 
-    v21 = [v7 isEqualToSet:v8] ^ 1;
+    v21 = [keyWithoutServerToken isEqualToSet:keyWithoutServerToken2] ^ 1;
   }
 
   else
@@ -476,12 +476,12 @@ LABEL_13:
   return v21;
 }
 
-+ (void)synchronizeOldKeys:(id)a3 newKeys:(id)a4 returningUnchangedKeys:(id *)a5 returningApplyKeys:(id *)a6 returningRemoveKeys:(id *)a7
++ (void)synchronizeOldKeys:(id)keys newKeys:(id)newKeys returningUnchangedKeys:(id *)unchangedKeys returningApplyKeys:(id *)applyKeys returningRemoveKeys:(id *)removeKeys
 {
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  keysCopy = keys;
+  newKeysCopy = newKeys;
+  v10 = keysCopy;
   v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v10, "count")}];
   v66 = 0u;
   v67 = 0u;
@@ -503,8 +503,8 @@ LABEL_13:
         }
 
         v17 = *(*(&v66 + 1) + 8 * i);
-        v18 = [v17 keyWithoutServerToken];
-        [v11 setObject:v17 forKeyedSubscript:v18];
+        keyWithoutServerToken = [v17 keyWithoutServerToken];
+        [v11 setObject:v17 forKeyedSubscript:keyWithoutServerToken];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v66 objects:v72 count:16];
@@ -513,7 +513,7 @@ LABEL_13:
     while (v14);
   }
 
-  v19 = v9;
+  v19 = newKeysCopy;
   v20 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v19, "count")}];
   v66 = 0u;
   v67 = 0u;
@@ -535,8 +535,8 @@ LABEL_13:
         }
 
         v26 = *(*(&v66 + 1) + 8 * j);
-        v27 = [v26 keyWithoutServerToken];
-        [v20 setObject:v26 forKeyedSubscript:v27];
+        keyWithoutServerToken2 = [v26 keyWithoutServerToken];
+        [v20 setObject:v26 forKeyedSubscript:keyWithoutServerToken2];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v66 objects:v72 count:16];
@@ -547,8 +547,8 @@ LABEL_13:
 
   v28 = MEMORY[0x277CBEB98];
   v50 = v20;
-  v29 = [v20 allKeys];
-  v30 = [v28 setWithArray:v29];
+  allKeys = [v20 allKeys];
+  v30 = [v28 setWithArray:allKeys];
 
   v31 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v21, "count")}];
   v54 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v21, "count")}];
@@ -581,8 +581,8 @@ LABEL_13:
 
         else
         {
-          v37 = [v36 keyWithoutServerToken];
-          v38 = [v11 objectForKeyedSubscript:v37];
+          keyWithoutServerToken3 = [v36 keyWithoutServerToken];
+          v38 = [v11 objectForKeyedSubscript:keyWithoutServerToken3];
           if (v38)
           {
             v39 = [RMStoreDeclarationKeyPair newDeclarationKeyPairWithUpdateKey:v36 replaceKey:v38];
@@ -625,8 +625,8 @@ LABEL_13:
         }
 
         v46 = *(*(&v58 + 1) + 8 * m);
-        v47 = [v46 keyWithoutServerToken];
-        v48 = [v30 containsObject:v47];
+        keyWithoutServerToken4 = [v46 keyWithoutServerToken];
+        v48 = [v30 containsObject:keyWithoutServerToken4];
 
         if (!v48 || ([v31 containsObject:v46] & 1) == 0 && (objc_msgSend(v56, "containsObject:", v46) & 1) == 0)
         {
@@ -640,27 +640,27 @@ LABEL_13:
     while (v43);
   }
 
-  *a5 = [v31 copy];
-  *a6 = [v54 copy];
-  *a7 = [v57 copy];
+  *unchangedKeys = [v31 copy];
+  *applyKeys = [v54 copy];
+  *removeKeys = [v57 copy];
 
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (RMStoreDeclarationKey)initWithCoder:(id)a3
+- (RMStoreDeclarationKey)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"declaration-key"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"declaration-key"];
 
   v6 = [(RMStoreDeclarationKey *)self initWithDeclarationKey:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(RMStoreDeclarationKey *)self key];
-  [v4 encodeObject:v5 forKey:@"declaration-key"];
+  [coderCopy encodeObject:v5 forKey:@"declaration-key"];
 }
 
 - (id)description
@@ -668,19 +668,19 @@ LABEL_13:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(RMStoreDeclarationKey *)self subscriberIdentifier];
-  v7 = [(RMStoreDeclarationKey *)self storeIdentifier];
-  v8 = [(RMStoreDeclarationKey *)self declarationIdentifier];
-  v9 = [(RMStoreDeclarationKey *)self declarationServerToken];
-  v10 = [v3 stringWithFormat:@"<%@: %p { subscriber = %@, store = %@, identifier = %@, serverToken = %@ }>", v5, self, v6, v7, v8, v9];
+  subscriberIdentifier = [(RMStoreDeclarationKey *)self subscriberIdentifier];
+  storeIdentifier = [(RMStoreDeclarationKey *)self storeIdentifier];
+  declarationIdentifier = [(RMStoreDeclarationKey *)self declarationIdentifier];
+  declarationServerToken = [(RMStoreDeclarationKey *)self declarationServerToken];
+  v10 = [v3 stringWithFormat:@"<%@: %p { subscriber = %@, store = %@, identifier = %@, serverToken = %@ }>", v5, self, subscriberIdentifier, storeIdentifier, declarationIdentifier, declarationServerToken];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -691,7 +691,7 @@ LABEL_13:
     if (objc_opt_isKindOfClass())
     {
       v5 = [(RMStoreDeclarationKey *)self key];
-      v6 = [(RMStoreDeclarationKey *)v4 key];
+      v6 = [(RMStoreDeclarationKey *)equalCopy key];
       v7 = [v5 isEqualToString:v6];
     }
 
@@ -712,7 +712,7 @@ LABEL_13:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [(RMStoreDeclarationKey *)self key];
   v4 = [RMStoreDeclarationKey newDeclarationKey:v3];
@@ -720,11 +720,11 @@ LABEL_13:
   return v4;
 }
 
-- (void)_parseDeclarationKey:(id)a3 completionHandler:(id)a4
+- (void)_parseDeclarationKey:(id)key completionHandler:(id)handler
 {
-  v32 = a3;
-  v5 = a4;
-  v6 = [v32 rangeOfString:@"/"];
+  keyCopy = key;
+  handlerCopy = handler;
+  v6 = [keyCopy rangeOfString:@"/"];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
@@ -738,8 +738,8 @@ LABEL_13:
   else
   {
     v13 = v6;
-    v12 = [v32 substringToIndex:v6];
-    v14 = [v32 substringFromIndex:v13 + 1];
+    v12 = [keyCopy substringToIndex:v6];
+    v14 = [keyCopy substringFromIndex:v13 + 1];
     v15 = [v14 componentsSeparatedByString:@":"];
     if ([v15 count] == 2)
     {
@@ -747,8 +747,8 @@ LABEL_13:
       v16 = [v15 objectAtIndexedSubscript:1];
       v17 = [v16 componentsSeparatedByString:@"$"];
 
-      v30 = [v17 firstObject];
-      v18 = [v30 componentsSeparatedByString:@"."];
+      firstObject = [v17 firstObject];
+      v18 = [firstObject componentsSeparatedByString:@"."];
       v19 = [v18 count];
       v8 = v19 == 2;
       v31 = v19 == 2;
@@ -813,7 +813,7 @@ LABEL_13:
     }
   }
 
-  v5[2](v5, v8, v12, v11, v10, v9, v7);
+  handlerCopy[2](handlerCopy, v8, v12, v11, v10, v9, v7);
 }
 
 @end

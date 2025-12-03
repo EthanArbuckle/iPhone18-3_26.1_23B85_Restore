@@ -1,6 +1,6 @@
 @interface CheckInOnboardingViewController4
-- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController4)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController4)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController4)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController4)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)notNowButtonAction;
 - (void)sendCheckIn;
 - (void)viewDidLoad;
@@ -10,37 +10,37 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CheckInOnboardingViewController4.viewDidLoad()();
 }
 
 - (void)sendCheckIn
 {
-  v2 = self;
+  selfCopy = self;
   sub_2646B72E4();
 }
 
 - (void)notNowButtonAction
 {
   v3 = objc_opt_self();
-  v6 = self;
+  selfCopy = self;
   [v3 setHasUserCompletedOnboarding_];
-  v4 = [(CheckInOnboardingViewController4 *)v6 navigationController];
-  if (v4)
+  navigationController = [(CheckInOnboardingViewController4 *)selfCopy navigationController];
+  if (navigationController)
   {
-    v5 = v4;
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    v5 = navigationController;
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController4)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController4)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController4)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController4)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

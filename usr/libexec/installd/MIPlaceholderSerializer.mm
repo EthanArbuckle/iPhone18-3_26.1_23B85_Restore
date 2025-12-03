@@ -1,17 +1,17 @@
 @interface MIPlaceholderSerializer
-+ (BOOL)materializeForInstalledAppWithBundleContainer:(id)a3 withError:(id *)a4;
++ (BOOL)materializeForInstalledAppWithBundleContainer:(id)container withError:(id *)error;
 @end
 
 @implementation MIPlaceholderSerializer
 
-+ (BOOL)materializeForInstalledAppWithBundleContainer:(id)a3 withError:(id *)a4
++ (BOOL)materializeForInstalledAppWithBundleContainer:(id)container withError:(id *)error
 {
-  v4 = a3;
+  containerCopy = container;
   v5 = +[MIFileManager defaultManager];
-  v6 = [v4 serializedPlaceholderURL];
+  serializedPlaceholderURL = [containerCopy serializedPlaceholderURL];
   v7 = +[MIHelperServiceFrameworkClient sharedInstance];
   v82 = 0;
-  v8 = [v7 stagingLocationForURL:v6 withinStagingSubsytem:1 usingUniqueName:0 error:&v82];
+  v8 = [v7 stagingLocationForURL:serializedPlaceholderURL withinStagingSubsytem:1 usingUniqueName:0 error:&v82];
   v9 = v82;
 
   v64 = v5;
@@ -21,7 +21,7 @@
     v63 = 0;
     v24 = 0;
     v11 = 0;
-    v14 = 0;
+    bundle = 0;
     v60 = 0;
     v61 = 0;
     v15 = 0;
@@ -37,7 +37,7 @@
     v62 = 0;
     v63 = 0;
     v24 = 0;
-    v14 = 0;
+    bundle = 0;
     v60 = 0;
     v61 = 0;
     v15 = 0;
@@ -45,10 +45,10 @@
     goto LABEL_26;
   }
 
-  v14 = [v4 bundle];
-  if (!v14)
+  bundle = [containerCopy bundle];
+  if (!bundle)
   {
-    v9 = sub_100010734("+[MIPlaceholderSerializer materializeForInstalledAppWithBundleContainer:withError:]", 61, MIInstallerErrorDomain, 4, 0, 0, @"Failed to locate app bundle in container %@", v13, v4);
+    v9 = sub_100010734("+[MIPlaceholderSerializer materializeForInstalledAppWithBundleContainer:withError:]", 61, MIInstallerErrorDomain, 4, 0, 0, @"Failed to locate app bundle in container %@", v13, containerCopy);
     v61 = 0;
     v62 = 0;
     v15 = 0;
@@ -86,17 +86,17 @@
     goto LABEL_25;
   }
 
-  v20 = [v14 bundleName];
+  bundleName = [bundle bundleName];
   v57 = v16;
-  v21 = [v16 URLByAppendingPathComponent:v20 isDirectory:1];
+  v21 = [v16 URLByAppendingPathComponent:bundleName isDirectory:1];
 
   v63 = v21;
-  if (![v14 isPlaceholder])
+  if (![bundle isPlaceholder])
   {
     v25 = [MIPlaceholderConstructor alloc];
-    v26 = [v14 bundleURL];
+    bundleURL = [bundle bundleURL];
     v77 = v9;
-    v12 = [v25 initWithSource:v26 byPreservingFullInfoPlist:1 error:&v77];
+    v12 = [v25 initWithSource:bundleURL byPreservingFullInfoPlist:1 error:&v77];
     v27 = v77;
 
     if (!v12)
@@ -109,21 +109,21 @@
     }
 
     v76 = v27;
-    v28 = [v4 bundleMetadataWithError:&v76];
+    v28 = [containerCopy bundleMetadataWithError:&v76];
     v29 = v76;
     v30 = v27;
     v31 = v29;
 
     if (v28)
     {
-      v32 = [v28 alternateIconName];
-      [v12 setAlternateIconName:v32];
+      alternateIconName = [v28 alternateIconName];
+      [v12 setAlternateIconName:alternateIconName];
 
       v75 = v31;
-      LOBYTE(v32) = [v12 materializeIntoBundleDirectory:v63 error:&v75];
+      LOBYTE(alternateIconName) = [v12 materializeIntoBundleDirectory:v63 error:&v75];
       v58 = v75;
 
-      if (v32)
+      if (alternateIconName)
       {
 
         v5 = v64;
@@ -148,9 +148,9 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v22 = [v14 bundleURL];
+  bundleURL2 = [bundle bundleURL];
   v78 = v9;
-  v23 = [v5 copyItemAtURL:v22 toURL:v21 error:&v78];
+  v23 = [v5 copyItemAtURL:bundleURL2 toURL:v21 error:&v78];
   v58 = v78;
 
   if ((v23 & 1) == 0)
@@ -165,8 +165,8 @@ LABEL_23:
 
 LABEL_19:
   v33 = v58;
-  v34 = [v4 containerURL];
-  v35 = [v34 URLByAppendingPathComponent:@"iTunesMetadata.plist" isDirectory:0];
+  containerURL = [containerCopy containerURL];
+  v35 = [containerURL URLByAppendingPathComponent:@"iTunesMetadata.plist" isDirectory:0];
 
   v36 = [v15 URLByAppendingPathComponent:@"iTunesMetadata.plist" isDirectory:0];
   v74 = v58;
@@ -179,8 +179,8 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  v37 = [v6 lastPathComponent];
-  v38 = [v15 URLByAppendingPathComponent:v37 isDirectory:0];
+  lastPathComponent = [serializedPlaceholderURL lastPathComponent];
+  v38 = [v15 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
 
   v39 = fopen([v38 fileSystemRepresentation], "wx");
   v24 = v57;
@@ -188,9 +188,9 @@ LABEL_19:
   if (!v39)
   {
     v49 = *__error();
-    v50 = [v38 fileSystemRepresentation];
+    fileSystemRepresentation = [v38 fileSystemRepresentation];
     strerror(v49);
-    v9 = sub_100010734("+[MIPlaceholderSerializer materializeForInstalledAppWithBundleContainer:withError:]", 110, NSPOSIXErrorDomain, v49, 0, 0, @"Failed to create output file %s: %s", v51, v50);
+    v9 = sub_100010734("+[MIPlaceholderSerializer materializeForInstalledAppWithBundleContainer:withError:]", 110, NSPOSIXErrorDomain, v49, 0, 0, @"Failed to create output file %s: %s", v51, fileSystemRepresentation);
     v12 = v58;
     goto LABEL_12;
   }
@@ -223,7 +223,7 @@ LABEL_19:
   {
     v65 = v58;
     v42 = v64;
-    v55 = [v64 moveItemAtURL:v38 toURL:v6 error:&v65];
+    v55 = [v64 moveItemAtURL:v38 toURL:serializedPlaceholderURL error:&v65];
     v43 = v65;
     v44 = v58;
     v9 = v43;
@@ -232,11 +232,11 @@ LABEL_19:
   else
   {
     v52 = MIInstallerErrorDomain;
-    v53 = [v63 path];
-    v9 = sub_100010734("+[MIPlaceholderSerializer materializeForInstalledAppWithBundleContainer:withError:]", 126, v52, 4, 0, 0, @"Failed to archive contents of %@", v54, v53);
+    path = [v63 path];
+    v9 = sub_100010734("+[MIPlaceholderSerializer materializeForInstalledAppWithBundleContainer:withError:]", 126, v52, 4, 0, 0, @"Failed to archive contents of %@", v54, path);
 
     v55 = 0;
-    v44 = v53;
+    v44 = path;
     v42 = v64;
   }
 
@@ -250,13 +250,13 @@ LABEL_19:
 
 LABEL_26:
   v45 = v9;
-  v9 = sub_100010734("+[MIPlaceholderSerializer materializeForInstalledAppWithBundleContainer:withError:]", 148, MIInstallerErrorDomain, 175, v9, 0, @"Failed to create a serialized placeholder for %@", v10, v4);
+  v9 = sub_100010734("+[MIPlaceholderSerializer materializeForInstalledAppWithBundleContainer:withError:]", 148, MIInstallerErrorDomain, 175, v9, 0, @"Failed to create a serialized placeholder for %@", v10, containerCopy);
 
-  if (a4)
+  if (error)
   {
     v46 = v9;
     v47 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else

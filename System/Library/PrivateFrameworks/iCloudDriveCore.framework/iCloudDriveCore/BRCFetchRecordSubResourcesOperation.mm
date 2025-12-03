@@ -1,35 +1,35 @@
 @interface BRCFetchRecordSubResourcesOperation
 - (BOOL)_hasRecordsPendingSubResources;
-- (BOOL)_markSubResourceRecordAsFetchedIfNecessary:(id)a3;
-- (BOOL)_willFetchRecordForDeserialize:(id)a3;
-- (BOOL)saveRecordsWithQueryCursor:(id)a3;
-- (BOOL)saveRecordsWithServerChangeToken:(id)a3 clientChangeToken:(int64_t)a4 syncStatus:(int64_t)a5;
-- (BOOL)shouldRetryForError:(id)a3;
+- (BOOL)_markSubResourceRecordAsFetchedIfNecessary:(id)necessary;
+- (BOOL)_willFetchRecordForDeserialize:(id)deserialize;
+- (BOOL)saveRecordsWithQueryCursor:(id)cursor;
+- (BOOL)saveRecordsWithServerChangeToken:(id)token clientChangeToken:(int64_t)changeToken syncStatus:(int64_t)status;
+- (BOOL)shouldRetryForError:(id)error;
 - (id)createActivity;
-- (id)initAndScheduleWithServerZone:(id)a3 parentOperation:(id)a4 pendingChangesStream:(id)a5 contentRecordsFetchedInline:(BOOL)a6 fetchResourcesHandler:(id)a7 sessionContext:(id)a8;
+- (id)initAndScheduleWithServerZone:(id)zone parentOperation:(id)operation pendingChangesStream:(id)stream contentRecordsFetchedInline:(BOOL)inline fetchResourcesHandler:(id)handler sessionContext:(id)context;
 - (id)records;
-- (int64_t)_compareRecordsForSaveWithFirstRecord:(id)a3 secondRecord:(id)a4;
+- (int64_t)_compareRecordsForSaveWithFirstRecord:(id)record secondRecord:(id)secondRecord;
 - (void)_cleanUpAfterSavingRecords;
 - (void)_createSubResourceGroupsFromPendingChangesStreamIfNecessary;
 - (void)_dump;
 - (void)_fetchRecordsBlockingSaveIfNecessary;
-- (void)_notifyWhenRecordsAreFetched:(id)a3;
+- (void)_notifyWhenRecordsAreFetched:(id)fetched;
 - (void)_prepareToSaveRecords;
-- (void)_saveRecordsToPendingChangesWithServerChangeToken:(id)a3 clientChangeToken:(int64_t)a4;
+- (void)_saveRecordsToPendingChangesWithServerChangeToken:(id)token clientChangeToken:(int64_t)changeToken;
 - (void)_scheduleDeserialize;
 - (void)_scheduleXattrFetch;
-- (void)_startWithParentOperation:(id)a3;
-- (void)addRecord:(id)a3;
-- (void)addRecordIDToDeserialize:(id)a3 recordType:(int64_t)a4;
+- (void)_startWithParentOperation:(id)operation;
+- (void)addRecord:(id)record;
+- (void)addRecordIDToDeserialize:(id)deserialize recordType:(int64_t)type;
 - (void)cancel;
 - (void)dealloc;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
-- (void)notifyWhenCaughtUp:(BOOL)a3 whenRecordsAreFetchedAndFinish:(id)a4;
-- (void)recordIDWasDeleted:(id)a3;
-- (void)shareIDWasDeleted:(id)a3;
+- (void)notifyWhenCaughtUp:(BOOL)up whenRecordsAreFetchedAndFinish:(id)finish;
+- (void)recordIDWasDeleted:(id)deleted;
+- (void)shareIDWasDeleted:(id)deleted;
 - (void)stop;
-- (void)stopWithError:(id)a3;
+- (void)stopWithError:(id)error;
 @end
 
 @implementation BRCFetchRecordSubResourcesOperation
@@ -37,8 +37,8 @@
 - (void)_prepareToSaveRecords
 {
   v88 = *MEMORY[0x277D85DE8];
-  v3 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v3);
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   v4 = brc_bread_crumbs();
   v5 = brc_default_log();
@@ -53,13 +53,13 @@
   v66 = objc_opt_new();
   do
   {
-    v6 = [(NSMutableDictionary *)self->_subResourceRecordsByID allValues];
+    allValues = [(NSMutableDictionary *)self->_subResourceRecordsByID allValues];
     v83[0] = MEMORY[0x277D85DD0];
     v83[1] = 3221225472;
     v83[2] = __60__BRCFetchRecordSubResourcesOperation__prepareToSaveRecords__block_invoke;
     v83[3] = &unk_278508170;
     v83[4] = self;
-    v7 = [v6 sortedArrayUsingComparator:v83];
+    v7 = [allValues sortedArrayUsingComparator:v83];
 
     v81 = 0u;
     v82 = 0u;
@@ -86,26 +86,26 @@
         v11 = *(*(&v79 + 1) + 8 * v10);
         if ([v11 isWaitingOnShareIDFetch])
         {
-          v12 = [v11 recordIDNeedingFetch];
-          v13 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:v12];
-          if (v13 || [(BRCPendingChangesStream *)self->_pendingChangesStream hasFetchRecordByID:v12])
+          recordIDNeedingFetch = [v11 recordIDNeedingFetch];
+          v13 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:recordIDNeedingFetch];
+          if (v13 || [(BRCPendingChangesStream *)self->_pendingChangesStream hasFetchRecordByID:recordIDNeedingFetch])
           {
 
             goto LABEL_13;
           }
 
-          v26 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:v12];
-          v27 = [v26 record];
-          v28 = v27 == 0;
+          v26 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:recordIDNeedingFetch];
+          record = [v26 record];
+          v28 = record == 0;
 
           if (v28)
           {
-            v29 = [v11 recordID];
-            v30 = [(BRCSessionContext *)self->super._sessionContext zoneAppRetriever];
-            v31 = [v29 brc_itemIDWithZoneAppRetriever:v30];
+            recordID = [v11 recordID];
+            zoneAppRetriever = [(BRCSessionContext *)self->super._sessionContext zoneAppRetriever];
+            v31 = [recordID brc_itemIDWithZoneAppRetriever:zoneAppRetriever];
 
-            v32 = [v11 recordID];
-            [v65 setObject:v32 forKeyedSubscript:v31];
+            recordID2 = [v11 recordID];
+            [v65 setObject:recordID2 forKeyedSubscript:v31];
           }
 
           else
@@ -115,12 +115,12 @@ LABEL_13:
             v15 = brc_default_log();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
             {
-              v35 = [v11 recordID];
-              v36 = [(BRCFetchRecordSubResourcesOperation *)self name];
+              recordID3 = [v11 recordID];
+              name = [(BRCFetchRecordSubResourcesOperation *)self name];
               *buf = 138412802;
-              *&buf[4] = v35;
+              *&buf[4] = recordID3;
               *&buf[12] = 2112;
-              *&buf[14] = v36;
+              *&buf[14] = name;
               *&buf[22] = 2112;
               v86 = v14;
               _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ no longer needs to fetch shareID in %@ because it's fetched in pending changes stream%@", buf, 0x20u);
@@ -131,31 +131,31 @@ LABEL_13:
           }
         }
 
-        v16 = [v11 recordIDBlockingSave];
+        recordIDBlockingSave = [v11 recordIDBlockingSave];
 
-        if (!v16)
+        if (!recordIDBlockingSave)
         {
           goto LABEL_25;
         }
 
-        v17 = [v11 recordIDBlockingSave];
-        v18 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:v17];
+        recordIDBlockingSave2 = [v11 recordIDBlockingSave];
+        v18 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:recordIDBlockingSave2];
         if (v18)
         {
         }
 
-        else if (![(BRCPendingChangesStream *)self->_pendingChangesStream hasFetchRecordByID:v17])
+        else if (![(BRCPendingChangesStream *)self->_pendingChangesStream hasFetchRecordByID:recordIDBlockingSave2])
         {
-          v21 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:v17];
+          v21 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:recordIDBlockingSave2];
           v22 = v21 == 0;
 
           if (v22)
           {
-            v23 = [(BRCSessionContext *)self->super._sessionContext zoneAppRetriever];
-            v24 = [v17 brc_itemIDWithZoneAppRetriever:v23];
+            zoneAppRetriever2 = [(BRCSessionContext *)self->super._sessionContext zoneAppRetriever];
+            v24 = [recordIDBlockingSave2 brc_itemIDWithZoneAppRetriever:zoneAppRetriever2];
 
-            v25 = [v11 recordID];
-            [v66 setObject:v25 forKeyedSubscript:v24];
+            recordID4 = [v11 recordID];
+            [v66 setObject:recordID4 forKeyedSubscript:v24];
           }
 
           goto LABEL_24;
@@ -165,12 +165,12 @@ LABEL_13:
         v20 = brc_default_log();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v33 = [v11 recordID];
-          v34 = [(BRCFetchRecordSubResourcesOperation *)self name];
+          recordID5 = [v11 recordID];
+          name2 = [(BRCFetchRecordSubResourcesOperation *)self name];
           *buf = 138412802;
-          *&buf[4] = v33;
+          *&buf[4] = recordID5;
           *&buf[12] = 2112;
-          *&buf[14] = v34;
+          *&buf[14] = name2;
           *&buf[22] = 2112;
           v86 = v19;
           _os_log_debug_impl(&dword_223E7A000, v20, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ is no longer blocked from save in %@ because the blocker is fetched in pending changes stream%@", buf, 0x20u);
@@ -198,22 +198,22 @@ LABEL_32:
     LOBYTE(v86) = 0;
     if ([v65 count] || objc_msgSend(v66, "count"))
     {
-      v38 = [(BRCServerZone *)self->_serverZone clientZone];
-      v39 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
-      v40 = [v39 workloop];
+      clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+      clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+      workloop = [clientReadWriteDatabaseFacade workloop];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __60__BRCFetchRecordSubResourcesOperation__prepareToSaveRecords__block_invoke_53;
       block[3] = &unk_2785081E8;
       v41 = v65;
       v74 = v41;
-      v42 = v38;
+      v42 = clientZone;
       v75 = v42;
-      v76 = self;
+      selfCopy = self;
       v78 = buf;
       v43 = v66;
       v77 = v43;
-      dispatch_async_and_wait(v40, block);
+      dispatch_async_and_wait(workloop, block);
 
       [v41 removeAllObjects];
       [v43 removeAllObjects];
@@ -228,8 +228,8 @@ LABEL_32:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v45 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
-  v46 = [v45 countByEnumeratingWithState:&v69 objects:v84 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
+  v46 = [objectEnumerator countByEnumeratingWithState:&v69 objects:v84 count:16];
   if (v46)
   {
     v47 = *v70;
@@ -239,7 +239,7 @@ LABEL_38:
     {
       if (*v70 != v47)
       {
-        objc_enumerationMutation(v45);
+        objc_enumerationMutation(objectEnumerator);
       }
 
       v49 = *(*(&v69 + 1) + 8 * v48);
@@ -251,8 +251,8 @@ LABEL_38:
         }
       }
 
-      v50 = [*(*(&v69 + 1) + 8 * v48) xattrSignature];
-      if (v50)
+      xattrSignature = [*(*(&v69 + 1) + 8 * v48) xattrSignature];
+      if (xattrSignature)
       {
         v51 = self->_xattrFetchingGroup == 0;
 
@@ -262,12 +262,12 @@ LABEL_38:
           v53 = brc_default_log();
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
           {
-            v62 = [(BRCFetchRecordSubResourcesOperation *)self name];
+            name3 = [(BRCFetchRecordSubResourcesOperation *)self name];
             *buf = 138412546;
-            *&buf[4] = v62;
+            *&buf[4] = name3;
             *&buf[12] = 2112;
             *&buf[14] = v52;
-            v67 = v62;
+            v67 = name3;
             _os_log_debug_impl(&dword_223E7A000, v53, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ starting to wait for xattr fetches%@", buf, 0x16u);
           }
 
@@ -280,8 +280,8 @@ LABEL_38:
         }
       }
 
-      v56 = [v49 recordIDNeedingFetch];
-      if (v56)
+      recordIDNeedingFetch2 = [v49 recordIDNeedingFetch];
+      if (recordIDNeedingFetch2)
       {
         v57 = self->_deserializeGroup == 0;
 
@@ -291,9 +291,9 @@ LABEL_38:
           v59 = brc_default_log();
           if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
           {
-            v63 = [(BRCFetchRecordSubResourcesOperation *)self name];
+            name4 = [(BRCFetchRecordSubResourcesOperation *)self name];
             *buf = 138412546;
-            *&buf[4] = v63;
+            *&buf[4] = name4;
             *&buf[12] = 2112;
             *&buf[14] = v58;
             _os_log_debug_impl(&dword_223E7A000, v59, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ starting to wait for deserialize fetches%@", buf, 0x16u);
@@ -310,7 +310,7 @@ LABEL_38:
 
       if (v46 == ++v48)
       {
-        v46 = [v45 countByEnumeratingWithState:&v69 objects:v84 count:16];
+        v46 = [objectEnumerator countByEnumeratingWithState:&v69 objects:v84 count:16];
         if (v46)
         {
           goto LABEL_38;
@@ -327,8 +327,8 @@ LABEL_38:
 
 - (void)_createSubResourceGroupsFromPendingChangesStreamIfNecessary
 {
-  v3 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v3);
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   if (!self->_xattrFetchingGroup && [(BRCPendingChangesStream *)self->_pendingChangesStream hasXattrsToFetch])
   {
@@ -372,8 +372,8 @@ LABEL_38:
 
 - (void)_cleanUpAfterSavingRecords
 {
-  v3 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v3);
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   [(NSMutableDictionary *)self->_subResourceRecordsByID removeAllObjects];
   [(NSMutableDictionary *)self->_recordsByID removeAllObjects];
@@ -390,17 +390,17 @@ LABEL_38:
 
 - (void)_fetchRecordsBlockingSaveIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   v56 = *MEMORY[0x277D85DE8];
-  v3 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v3);
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v4 = [(NSMutableDictionary *)v2->_subResourceRecordsByID objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v45 objects:v55 count:16];
+  objectEnumerator = [(NSMutableDictionary *)selfCopy->_subResourceRecordsByID objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v45 objects:v55 count:16];
   if (v5)
   {
     v7 = v5;
@@ -415,32 +415,32 @@ LABEL_38:
       {
         if (*v46 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v45 + 1) + 8 * v9);
-        v11 = [v10 recordIDNeedingFetch];
-        if (v11)
+        recordIDNeedingFetch = [v10 recordIDNeedingFetch];
+        if (recordIDNeedingFetch)
         {
         }
 
         else
         {
-          v12 = [v10 recordIDBlockingSave];
-          if (v12)
+          recordIDBlockingSave = [v10 recordIDBlockingSave];
+          if (recordIDBlockingSave)
           {
-            v13 = v12;
+            v13 = recordIDBlockingSave;
             v14 = v8;
-            v15 = v4;
-            v16 = v2;
-            subResourceRecordsByID = v2->_subResourceRecordsByID;
-            v18 = [v10 recordIDBlockingSave];
-            v19 = [(NSMutableDictionary *)subResourceRecordsByID objectForKeyedSubscript:v18];
+            v15 = objectEnumerator;
+            v16 = selfCopy;
+            subResourceRecordsByID = selfCopy->_subResourceRecordsByID;
+            recordIDBlockingSave2 = [v10 recordIDBlockingSave];
+            v19 = [(NSMutableDictionary *)subResourceRecordsByID objectForKeyedSubscript:recordIDBlockingSave2];
             if (v19)
             {
 
-              v2 = v16;
-              v4 = v15;
+              selfCopy = v16;
+              objectEnumerator = v15;
               v8 = v14;
               v7 = v44;
             }
@@ -448,11 +448,11 @@ LABEL_38:
             else
             {
               pendingChangesStream = v16->_pendingChangesStream;
-              v21 = [v10 recordIDBlockingSave];
-              LOBYTE(pendingChangesStream) = [(BRCPendingChangesStream *)pendingChangesStream hasRecordIDBlockedOnSubResources:v21];
+              recordIDBlockingSave3 = [v10 recordIDBlockingSave];
+              LOBYTE(pendingChangesStream) = [(BRCPendingChangesStream *)pendingChangesStream hasRecordIDBlockedOnSubResources:recordIDBlockingSave3];
 
-              v2 = v16;
-              v4 = v15;
+              selfCopy = v16;
+              objectEnumerator = v15;
               v8 = v14;
               v7 = v44;
               if ((pendingChangesStream & 1) == 0)
@@ -461,21 +461,21 @@ LABEL_38:
                 v23 = brc_default_log();
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
                 {
-                  v24 = [v10 recordIDBlockingSave];
-                  v25 = [v10 recordID];
+                  recordIDBlockingSave4 = [v10 recordIDBlockingSave];
+                  recordID = [v10 recordID];
                   *buf = 138412802;
-                  v50 = v24;
+                  v50 = recordIDBlockingSave4;
                   v51 = 2112;
-                  v52 = v25;
+                  v52 = recordID;
                   v53 = 2112;
                   v54 = v22;
                   _os_log_impl(&dword_223E7A000, v23, OS_LOG_TYPE_DEFAULT, "[WARNING] We need to fetch %@ to unblock %@ from saving, but it wasn't found.  Forcing fetch%@", buf, 0x20u);
                 }
 
-                v26 = [v10 recordIDBlockingSave];
-                [v10 setRecordIDNeedingFetch:v26];
+                recordIDBlockingSave5 = [v10 recordIDBlockingSave];
+                [v10 setRecordIDNeedingFetch:recordIDBlockingSave5];
 
-                if (!v2->_deserializeGroup)
+                if (!selfCopy->_deserializeGroup)
                 {
                   v27 = brc_bread_crumbs();
                   v28 = brc_default_log();
@@ -487,11 +487,11 @@ LABEL_38:
                   }
 
                   v29 = dispatch_group_create();
-                  deserializeGroup = v2->_deserializeGroup;
-                  v2->_deserializeGroup = v29;
+                  deserializeGroup = selfCopy->_deserializeGroup;
+                  selfCopy->_deserializeGroup = v29;
 
-                  dispatch_group_enter(v2->_deserializeGroup);
-                  dispatch_source_merge_data(v2->_deserializeSource, 1uLL);
+                  dispatch_group_enter(selfCopy->_deserializeGroup);
+                  dispatch_source_merge_data(selfCopy->_deserializeSource, 1uLL);
                 }
               }
             }
@@ -502,16 +502,16 @@ LABEL_38:
       }
 
       while (v7 != v9);
-      v31 = [v4 countByEnumeratingWithState:&v45 objects:v55 count:16];
+      v31 = [objectEnumerator countByEnumeratingWithState:&v45 objects:v55 count:16];
       v7 = v31;
     }
 
     while (v31);
   }
 
-  v32 = v2->_pendingChangesStream;
-  v33 = [(NSMutableDictionary *)v2->_subResourceRecordsByID objectEnumerator];
-  v34 = [(BRCPendingChangesStream *)v32 copyBlockingSaveRecordsToNeedingFetchIgnoringRecords:v33];
+  v32 = selfCopy->_pendingChangesStream;
+  objectEnumerator2 = [(NSMutableDictionary *)selfCopy->_subResourceRecordsByID objectEnumerator];
+  v34 = [(BRCPendingChangesStream *)v32 copyBlockingSaveRecordsToNeedingFetchIgnoringRecords:objectEnumerator2];
 
   if (v34)
   {
@@ -519,17 +519,17 @@ LABEL_38:
     v36 = brc_default_log();
     if (os_log_type_enabled(v36, 0x90u))
     {
-      v42 = [(BRCFetchRecordSubResourcesOperation *)v2 name];
+      name = [(BRCFetchRecordSubResourcesOperation *)selfCopy name];
       *buf = 134218498;
       v50 = v34;
       v51 = 2112;
-      v52 = v42;
+      v52 = name;
       v53 = 2112;
       v54 = v35;
       _os_log_error_impl(&dword_223E7A000, v36, 0x90u, "[ERROR] We need to fetch %llu records in the pending changes stream to allow saving for %@.  Forcing fetch%@", buf, 0x20u);
     }
 
-    if (!v2->_deserializeGroup)
+    if (!selfCopy->_deserializeGroup)
     {
       v37 = brc_bread_crumbs();
       v38 = brc_default_log();
@@ -539,11 +539,11 @@ LABEL_38:
       }
 
       v39 = dispatch_group_create();
-      v40 = v2->_deserializeGroup;
-      v2->_deserializeGroup = v39;
+      v40 = selfCopy->_deserializeGroup;
+      selfCopy->_deserializeGroup = v39;
 
-      dispatch_group_enter(v2->_deserializeGroup);
-      dispatch_source_merge_data(v2->_deserializeSource, 1uLL);
+      dispatch_group_enter(selfCopy->_deserializeGroup);
+      dispatch_source_merge_data(selfCopy->_deserializeSource, 1uLL);
     }
   }
 
@@ -624,7 +624,7 @@ uint64_t __43__BRCFetchRecordSubResourcesOperation_main__block_invoke(uint64_t a
 - (void)dealloc
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 512);
+  v1 = *(self + 512);
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x20u);
@@ -634,13 +634,13 @@ uint64_t __43__BRCFetchRecordSubResourcesOperation_main__block_invoke(uint64_t a
 - (void)main
 {
   operationGroup = self->_operationGroup;
-  v4 = [(_BRCOperation *)self callbackQueue];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__BRCFetchRecordSubResourcesOperation_main__block_invoke;
   block[3] = &unk_2784FF450;
   block[4] = self;
-  dispatch_group_notify(operationGroup, v4, block);
+  dispatch_group_notify(operationGroup, callbackQueue, block);
 }
 
 - (id)records
@@ -650,71 +650,71 @@ uint64_t __43__BRCFetchRecordSubResourcesOperation_main__block_invoke(uint64_t a
     [BRCFetchRecordSubResourcesOperation records];
   }
 
-  v3 = [(NSMutableDictionary *)self->_recordsByID allValues];
+  allValues = [(NSMutableDictionary *)self->_recordsByID allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)initAndScheduleWithServerZone:(id)a3 parentOperation:(id)a4 pendingChangesStream:(id)a5 contentRecordsFetchedInline:(BOOL)a6 fetchResourcesHandler:(id)a7 sessionContext:(id)a8
+- (id)initAndScheduleWithServerZone:(id)zone parentOperation:(id)operation pendingChangesStream:(id)stream contentRecordsFetchedInline:(BOOL)inline fetchResourcesHandler:(id)handler sessionContext:(id)context
 {
-  v15 = a3;
-  v16 = a4;
-  v74 = a5;
-  obj = a7;
-  v73 = a7;
-  v75 = a8;
-  if (!v15 || !v16)
+  zoneCopy = zone;
+  operationCopy = operation;
+  streamCopy = stream;
+  obj = handler;
+  handlerCopy = handler;
+  contextCopy = context;
+  if (!zoneCopy || !operationCopy)
   {
     [BRCFetchRecordSubResourcesOperation initAndScheduleWithServerZone:parentOperation:pendingChangesStream:contentRecordsFetchedInline:fetchResourcesHandler:sessionContext:];
   }
 
-  v17 = [v16 operationID];
-  v18 = [v17 UUIDString];
-  v19 = [@"record-fetcher" stringByAppendingPathComponent:v18];
-  v20 = [v15 metadataSyncContext];
+  operationID = [operationCopy operationID];
+  uUIDString = [operationID UUIDString];
+  v19 = [@"record-fetcher" stringByAppendingPathComponent:uUIDString];
+  metadataSyncContext = [zoneCopy metadataSyncContext];
   v81.receiver = self;
   v81.super_class = BRCFetchRecordSubResourcesOperation;
-  v21 = [(_BRCOperation *)&v81 initWithName:v19 syncContext:v20 sessionContext:v75];
+  v21 = [(_BRCOperation *)&v81 initWithName:v19 syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v21)
   {
     [v21 setNonDiscretionary:1];
-    v21[629] = a6;
-    objc_storeStrong(v21 + 63, a3);
+    v21[629] = inline;
+    objc_storeStrong(v21 + 63, zone);
     objc_opt_class();
-    v71 = v16;
+    v71 = operationCopy;
     v21[626] = objc_opt_isKindOfClass() & 1;
-    v70 = v15;
-    v22 = [v15 mangledID];
-    v23 = [BRCUserDefaults defaultsForMangledID:v22];
+    v70 = zoneCopy;
+    mangledID = [zoneCopy mangledID];
+    v23 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
     if (v21[626] == 1)
     {
       if ([v23 canSaveRecordsDirectlyForDeltaSync])
       {
-        v24 = [*(v21 + 63) failedListItemIDs];
+        failedListItemIDs = [*(v21 + 63) failedListItemIDs];
         v25 = v21 + 627;
-        v21[627] = [v24 count] == 0;
+        v21[627] = [failedListItemIDs count] == 0;
 
         goto LABEL_10;
       }
 
-      v26 = 0;
+      canSaveRecordsDirectlyForList = 0;
     }
 
     else
     {
-      v26 = [v23 canSaveRecordsDirectlyForList];
+      canSaveRecordsDirectlyForList = [v23 canSaveRecordsDirectlyForList];
     }
 
     v25 = v21 + 627;
-    v21[627] = v26;
+    v21[627] = canSaveRecordsDirectlyForList;
 LABEL_10:
-    v27 = [v23 canSaveRecordsDirectlyWithDeletes];
-    v21[628] = v27;
-    if (*v25 == 1 && (v27 & 1) == 0 && v21[626] == 1)
+    canSaveRecordsDirectlyWithDeletes = [v23 canSaveRecordsDirectlyWithDeletes];
+    v21[628] = canSaveRecordsDirectlyWithDeletes;
+    if (*v25 == 1 && (canSaveRecordsDirectlyWithDeletes & 1) == 0 && v21[626] == 1)
     {
-      *v25 = [v74 hasRecordDeletes] ^ 1;
+      *v25 = [streamCopy hasRecordDeletes] ^ 1;
     }
 
     v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -737,17 +737,17 @@ LABEL_10:
     v37 = *(v21 + 69);
     *(v21 + 69) = v36;
 
-    objc_storeStrong(v21 + 64, a5);
+    objc_storeStrong(v21 + 64, stream);
     objc_storeStrong(v21 + 79, obj);
-    v38 = [*(v21 + 63) mangledID];
-    v39 = [BRCUserDefaults defaultsForMangledID:v38];
+    mangledID2 = [*(v21 + 63) mangledID];
+    v39 = [BRCUserDefaults defaultsForMangledID:mangledID2];
     *(v21 + 150) = [v39 subResourceFetchLoopCacheSize];
 
     v40 = objc_alloc_init(MEMORY[0x277CBEB40]);
     v41 = *(v21 + 76);
     *(v21 + 76) = v40;
 
-    if (!v74)
+    if (!streamCopy)
     {
       v21[624] = 2;
     }
@@ -756,14 +756,14 @@ LABEL_10:
     v43 = *(v21 + 70);
     *(v21 + 70) = v42;
 
-    v44 = [v21 callbackQueue];
+    callbackQueue = [v21 callbackQueue];
     v45 = MEMORY[0x277D85CE8];
-    v46 = dispatch_source_create(MEMORY[0x277D85CE8], 0, 0, v44);
+    v46 = dispatch_source_create(MEMORY[0x277D85CE8], 0, 0, callbackQueue);
     v47 = *(v21 + 72);
     *(v21 + 72) = v46;
 
-    v48 = [v21 callbackQueue];
-    v49 = dispatch_source_create(v45, 0, 0, v48);
+    callbackQueue2 = [v21 callbackQueue];
+    v49 = dispatch_source_create(v45, 0, 0, callbackQueue2);
     v50 = *(v21 + 74);
     *(v21 + 74) = v49;
 
@@ -802,7 +802,7 @@ LABEL_10:
     v65 = v64;
     v66 = *v57;
     v67 = v64;
-    v16 = v71;
+    operationCopy = v71;
     if (v66)
     {
       v67 = v66(v64);
@@ -818,7 +818,7 @@ LABEL_10:
     objc_destroyWeak(&v79);
     objc_destroyWeak(&location);
 
-    v15 = v70;
+    zoneCopy = v70;
   }
 
   return v21;
@@ -878,10 +878,10 @@ void __171__BRCFetchRecordSubResourcesOperation_initAndScheduleWithServerZone_pa
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRetryForError:(id)a3
+- (BOOL)shouldRetryForError:(id)error
 {
-  v4 = a3;
-  if ([v4 brc_containsCloudKitErrorCode:11])
+  errorCopy = error;
+  if ([errorCopy brc_containsCloudKitErrorCode:11])
   {
     v5 = 0;
   }
@@ -890,24 +890,24 @@ void __171__BRCFetchRecordSubResourcesOperation_initAndScheduleWithServerZone_pa
   {
     v7.receiver = self;
     v7.super_class = BRCFetchRecordSubResourcesOperation;
-    v5 = [(_BRCOperation *)&v7 shouldRetryForError:v4];
+    v5 = [(_BRCOperation *)&v7 shouldRetryForError:errorCopy];
   }
 
   return v5;
 }
 
-- (void)addRecord:(id)a3
+- (void)addRecord:(id)record
 {
   v132 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v5);
+  recordCopy = record;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
-  v6 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
-  [v6 assertNotOnQueue];
+  clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+  [clientReadWriteDatabaseFacade assertNotOnQueue];
 
-  v7 = [(BRCSessionContext *)self->super._sessionContext serverReadWriteDatabaseFacade];
-  [v7 assertNotOnQueue];
+  serverReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext serverReadWriteDatabaseFacade];
+  [serverReadWriteDatabaseFacade assertNotOnQueue];
 
   if (!self->_error && ([(BRCFetchRecordSubResourcesOperation *)self isCancelled]& 1) == 0)
   {
@@ -916,107 +916,107 @@ void __171__BRCFetchRecordSubResourcesOperation_initAndScheduleWithServerZone_pa
       [BRCFetchRecordSubResourcesOperation addRecord:];
     }
 
-    if (([v4 brc_isInterestingRecordForSyncDown] & 1) == 0)
+    if (([recordCopy brc_isInterestingRecordForSyncDown] & 1) == 0)
     {
-      v9 = brc_bread_crumbs();
+      recordID3 = brc_bread_crumbs();
       v21 = brc_default_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [(BRCFetchRecordSubResourcesOperation *)self name];
-        v23 = [v4 recordID];
-        v24 = [v23 recordName];
+        name = [(BRCFetchRecordSubResourcesOperation *)self name];
+        recordID = [recordCopy recordID];
+        recordName = [recordID recordName];
         *buf = 138412802;
-        v127 = v22;
+        v127 = name;
         v128 = 2112;
-        v129 = v24;
+        v129 = recordName;
         v130 = 2112;
-        v131 = v9;
+        v131 = recordID3;
         _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ got a record we're not interested in: '%@'%@", buf, 0x20u);
       }
 
       goto LABEL_106;
     }
 
-    [v4 processAppLibraryDataWithMovedZoneNames:self->_movedZoneNames serverZone:self->_serverZone isDeltaSync:self->_isDeltaSync];
-    if (([v4 brc_isInterestingRecordForSave] & 1) == 0)
+    [recordCopy processAppLibraryDataWithMovedZoneNames:self->_movedZoneNames serverZone:self->_serverZone isDeltaSync:self->_isDeltaSync];
+    if (([recordCopy brc_isInterestingRecordForSave] & 1) == 0)
     {
       v25 = brc_bread_crumbs();
       v26 = brc_default_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v98 = [(BRCFetchRecordSubResourcesOperation *)self name];
-        v99 = [v4 recordID];
-        v100 = [v99 recordName];
+        name2 = [(BRCFetchRecordSubResourcesOperation *)self name];
+        recordID2 = [recordCopy recordID];
+        recordName2 = [recordID2 recordName];
         *buf = 138412802;
-        v127 = v98;
+        v127 = name2;
         v128 = 2112;
-        v129 = v100;
+        v129 = recordName2;
         v130 = 2112;
         v131 = v25;
         _os_log_debug_impl(&dword_223E7A000, v26, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ ignoring record we're not interested in saving named: %@%@", buf, 0x20u);
       }
 
       pendingChangesStream = self->_pendingChangesStream;
-      v9 = [v4 recordID];
-      [(BRCPendingChangesStream *)pendingChangesStream unblockRecordSavesWaitingOnRecordID:v9];
+      recordID3 = [recordCopy recordID];
+      [(BRCPendingChangesStream *)pendingChangesStream unblockRecordSavesWaitingOnRecordID:recordID3];
       goto LABEL_106;
     }
 
     ++self->_recordsRequested;
-    self->_recordsRequestedTotalMetadataSize += [v4 size];
-    v8 = [v4 recordID];
-    v9 = v8;
+    self->_recordsRequestedTotalMetadataSize += [recordCopy size];
+    recordID4 = [recordCopy recordID];
+    recordID3 = recordID4;
     if (!self->_contentRecordsFetchedInline)
     {
-      v10 = [(BRCFetchSubResourceRecord *)v8 recordName];
-      if ([v10 hasPrefix:@"documentStructure/"])
+      recordName3 = [(BRCFetchSubResourceRecord *)recordID4 recordName];
+      if ([recordName3 hasPrefix:@"documentStructure/"])
       {
-        v11 = [v10 substringFromIndex:{objc_msgSend(@"documentStructure/", "length")}];
+        v11 = [recordName3 substringFromIndex:{objc_msgSend(@"documentStructure/", "length")}];
         v12 = [@"documentContent/" stringByAppendingString:v11];
 
         v13 = objc_alloc(MEMORY[0x277CBC5D0]);
-        v14 = [v4 recordID];
-        v15 = [v14 zoneID];
-        v16 = [v13 initWithRecordName:v12 zoneID:v15];
+        recordID5 = [recordCopy recordID];
+        zoneID = [recordID5 zoneID];
+        v16 = [v13 initWithRecordName:v12 zoneID:zoneID];
 
         [(BRCFetchRecordSubResourcesOperation *)self addRecordIDToDeserialize:v16];
-        v10 = v12;
+        recordName3 = v12;
       }
     }
 
-    v17 = [v4 share];
+    share = [recordCopy share];
 
-    if (!v17)
+    if (!share)
     {
       v124 = 0;
       goto LABEL_24;
     }
 
-    v18 = [v4 share];
-    v19 = [v18 recordID];
+    share2 = [recordCopy share];
+    recordID6 = [share2 recordID];
 
-    v20 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:v19];
+    v20 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:recordID6];
     if (v20)
     {
     }
 
-    else if (![(BRCPendingChangesStream *)self->_pendingChangesStream hasFetchRecordByID:v19])
+    else if (![(BRCPendingChangesStream *)self->_pendingChangesStream hasFetchRecordByID:recordID6])
     {
       v83 = brc_bread_crumbs();
       v84 = brc_default_log();
       if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
       {
-        v109 = [(BRCFetchRecordSubResourcesOperation *)self name];
+        name3 = [(BRCFetchRecordSubResourcesOperation *)self name];
         *buf = 138412802;
-        v127 = v109;
+        v127 = name3;
         v128 = 2112;
-        v129 = v19;
+        v129 = recordID6;
         v130 = 2112;
         v131 = v83;
         _os_log_debug_impl(&dword_223E7A000, v84, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ needs to fetch shareID %@%@", buf, 0x20u);
       }
 
-      v124 = v19;
+      v124 = recordID6;
       goto LABEL_23;
     }
 
@@ -1024,9 +1024,9 @@ void __171__BRCFetchRecordSubResourcesOperation_initAndScheduleWithServerZone_pa
 LABEL_23:
 
 LABEL_24:
-    v28 = [v4 objectForKeyedSubscript:@"xattr"];
-    v29 = [v4 encryptedValues];
-    v30 = [v29 objectForKeyedSubscript:@"xattrSignature"];
+    v28 = [recordCopy objectForKeyedSubscript:@"xattr"];
+    encryptedValues = [recordCopy encryptedValues];
+    v30 = [encryptedValues objectForKeyedSubscript:@"xattrSignature"];
 
     objc_opt_class();
     v122 = v30;
@@ -1035,17 +1035,17 @@ LABEL_24:
     {
       if (v30)
       {
-        v31 = v30;
+        signature = v30;
       }
 
       else
       {
-        v31 = [v28 signature];
+        signature = [v28 signature];
       }
 
-      v33 = v31;
-      v34 = [(BRCSessionContext *)self->super._sessionContext xattrStager];
-      [v34 urlForXattrSignature:v33];
+      v33 = signature;
+      xattrStager = [(BRCSessionContext *)self->super._sessionContext xattrStager];
+      [xattrStager urlForXattrSignature:v33];
       v36 = v35 = v33;
 
       if ([v36 checkResourceIsReachableAndReturnError:0])
@@ -1063,9 +1063,9 @@ LABEL_24:
         v32 = v124;
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
         {
-          v108 = [(BRCFetchRecordSubResourcesOperation *)self name];
+          name4 = [(BRCFetchRecordSubResourcesOperation *)self name];
           *buf = 138412802;
-          v127 = v108;
+          v127 = name4;
           v128 = 2112;
           v129 = v125;
           v130 = 2112;
@@ -1081,25 +1081,25 @@ LABEL_24:
       v32 = v124;
     }
 
-    v39 = [v4 recordType];
-    v40 = [v39 isEqualToString:@"content"];
+    recordType = [recordCopy recordType];
+    v40 = [recordType isEqualToString:@"content"];
 
     if (v40)
     {
-      v41 = [(BRCFetchSubResourceRecord *)v9 recordName];
-      if (([v41 hasPrefix:@"documentContent/"] & 1) == 0)
+      recordName4 = [(BRCFetchSubResourceRecord *)recordID3 recordName];
+      if (([recordName4 hasPrefix:@"documentContent/"] & 1) == 0)
       {
         [BRCFetchRecordSubResourcesOperation addRecord:];
       }
 
-      v121 = v41;
-      v42 = [v41 substringFromIndex:{objc_msgSend(@"documentContent/", "length")}];
+      brc_shareItemID = recordName4;
+      v42 = [recordName4 substringFromIndex:{objc_msgSend(@"documentContent/", "length")}];
       v43 = [@"documentStructure/" stringByAppendingString:v42];
 
       v44 = objc_alloc(MEMORY[0x277CBC5D0]);
-      v45 = [(BRCFetchSubResourceRecord *)v9 zoneID];
+      zoneID2 = [(BRCFetchSubResourceRecord *)recordID3 zoneID];
       v119 = v43;
-      v46 = [v44 initWithRecordName:v43 zoneID:v45];
+      v46 = [v44 initWithRecordName:v43 zoneID:zoneID2];
 
       v47 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:v46];
       if (v47)
@@ -1108,22 +1108,22 @@ LABEL_24:
         v49 = brc_default_log();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
         {
-          v117 = [v46 recordName];
-          v103 = [v4 recordID];
-          v104 = [v103 recordName];
+          recordName5 = [v46 recordName];
+          recordID7 = [recordCopy recordID];
+          recordName6 = [recordID7 recordName];
           *buf = 138412802;
-          v127 = v117;
+          v127 = recordName5;
           v128 = 2112;
-          v129 = v104;
-          v105 = v104;
+          v129 = recordName6;
+          v105 = recordName6;
           v130 = 2112;
           v131 = v48;
           _os_log_debug_impl(&dword_223E7A000, v49, OS_LOG_TYPE_DEBUG, "[DEBUG] Release block %@ on %@%@", buf, 0x20u);
         }
 
-        v50 = [v47 recordIDBlockingSave];
-        v51 = [v4 recordID];
-        v52 = [v50 isEqual:v51];
+        recordIDBlockingSave = [v47 recordIDBlockingSave];
+        recordID8 = [recordCopy recordID];
+        v52 = [recordIDBlockingSave isEqual:recordID8];
 
         if (v52)
         {
@@ -1137,15 +1137,15 @@ LABEL_24:
           v72 = brc_default_log();
           if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
           {
-            v115 = [v4 recordID];
-            v73 = [v115 recordName];
+            recordID9 = [recordCopy recordID];
+            recordName7 = [recordID9 recordName];
             [v47 recordIDBlockingSave];
             v74 = v116 = v71;
-            v75 = [v74 recordName];
+            recordName8 = [v74 recordName];
             *buf = 138412802;
-            v127 = v73;
+            v127 = recordName7;
             v128 = 2112;
-            v129 = v75;
+            v129 = recordName8;
             v130 = 2112;
             v131 = v116;
             _os_log_impl(&dword_223E7A000, v72, OS_LOG_TYPE_DEFAULT, "[WARNING] Expected recordIDBlockingSave %@ got %@%@", buf, 0x20u);
@@ -1156,10 +1156,10 @@ LABEL_24:
       }
 
       v76 = self->_pendingChangesStream;
-      v77 = [v4 recordID];
-      [(BRCPendingChangesStream *)v76 unblockRecord:v46 waitingOnRecord:v77];
+      recordID10 = [recordCopy recordID];
+      [(BRCPendingChangesStream *)v76 unblockRecord:v46 waitingOnRecord:recordID10];
 
-      if (-[BRCServerZone isSharedZone](self->_serverZone, "isSharedZone") && ([v4 share], (v78 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (-[BRCServerZone isSharedZone](self->_serverZone, "isSharedZone") && ([recordCopy share], (v78 = objc_claimAutoreleasedReturnValue()) != 0))
       {
 
         v63 = 0;
@@ -1198,13 +1198,13 @@ LABEL_83:
           v64 = v125;
           if (os_log_type_enabled(v87, OS_LOG_TYPE_DEBUG))
           {
-            v118 = [v4 recordID];
-            v110 = [v118 recordName];
-            v111 = [v46 recordName];
+            recordID11 = [recordCopy recordID];
+            recordName9 = [recordID11 recordName];
+            recordName10 = [v46 recordName];
             *buf = 138412802;
-            v127 = v110;
+            v127 = recordName9;
             v128 = 2112;
-            v129 = v111;
+            v129 = recordName10;
             v130 = 2112;
             v131 = v86;
             _os_log_debug_impl(&dword_223E7A000, v87, OS_LOG_TYPE_DEBUG, "[DEBUG] Block %@ on %@%@", buf, 0x20u);
@@ -1220,24 +1220,24 @@ LABEL_83:
       goto LABEL_83;
     }
 
-    v53 = [v4 recordType];
-    if ([v53 isEqualToString:@"structure"])
+    recordType2 = [recordCopy recordType];
+    if ([recordType2 isEqualToString:@"structure"])
     {
-      v54 = [(BRCFetchSubResourceRecord *)v9 recordName];
-      v55 = [v54 hasPrefix:@"documentStructure/"];
+      recordName11 = [(BRCFetchSubResourceRecord *)recordID3 recordName];
+      v55 = [recordName11 hasPrefix:@"documentStructure/"];
 
       if (v55)
       {
-        v56 = [(BRCFetchSubResourceRecord *)v9 recordName];
-        v57 = [v56 substringFromIndex:{objc_msgSend(@"documentStructure/", "length")}];
+        recordName12 = [(BRCFetchSubResourceRecord *)recordID3 recordName];
+        v57 = [recordName12 substringFromIndex:{objc_msgSend(@"documentStructure/", "length")}];
         v58 = [@"documentContent/" stringByAppendingString:v57];
 
         v59 = objc_alloc(MEMORY[0x277CBC5D0]);
-        v60 = [(BRCFetchSubResourceRecord *)v9 zoneID];
-        v121 = v58;
-        v61 = [v59 initWithRecordName:v58 zoneID:v60];
+        zoneID3 = [(BRCFetchSubResourceRecord *)recordID3 zoneID];
+        brc_shareItemID = v58;
+        v61 = [v59 initWithRecordName:v58 zoneID:zoneID3];
 
-        if (-[BRCServerZone isSharedZone](self->_serverZone, "isSharedZone") && ([v4 share], (v62 = objc_claimAutoreleasedReturnValue()) != 0))
+        if (-[BRCServerZone isSharedZone](self->_serverZone, "isSharedZone") && ([recordCopy share], (v62 = objc_claimAutoreleasedReturnValue()) != 0))
         {
 
           v63 = 0;
@@ -1264,14 +1264,14 @@ LABEL_83:
               v107 = brc_default_log();
               if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
               {
-                [v4 recordID];
+                [recordCopy recordID];
                 v112 = v120 = v61;
-                v113 = [v112 recordName];
-                v114 = [v120 recordName];
+                recordName13 = [v112 recordName];
+                recordName14 = [v120 recordName];
                 *buf = 138412802;
-                v127 = v113;
+                v127 = recordName13;
                 v128 = 2112;
-                v129 = v114;
+                v129 = recordName14;
                 v130 = 2112;
                 v131 = v106;
                 _os_log_debug_impl(&dword_223E7A000, v107, OS_LOG_TYPE_DEBUG, "[DEBUG] Block %@ on %@%@", buf, 0x20u);
@@ -1294,36 +1294,36 @@ LABEL_84:
 LABEL_85:
         if (v32 || v64 || v63)
         {
-          v90 = [[BRCFetchSubResourceRecord alloc] initWithChangedRecord:v4 recordIDNeedingFetch:v32 xattrSignatureNeedingFetch:v64 recordIDBlockingSave:v63];
-          if ([(NSMutableArray *)self->_deletedShareIDs containsObject:v9])
+          v90 = [[BRCFetchSubResourceRecord alloc] initWithChangedRecord:recordCopy recordIDNeedingFetch:v32 xattrSignatureNeedingFetch:v64 recordIDBlockingSave:v63];
+          if ([(NSMutableArray *)self->_deletedShareIDs containsObject:recordID3])
           {
             [BRCFetchRecordSubResourcesOperation addRecord:];
           }
 
-          if ([(NSMutableArray *)self->_deletedRecordIDs containsObject:v9])
+          if ([(NSMutableArray *)self->_deletedRecordIDs containsObject:recordID3])
           {
             [BRCFetchRecordSubResourcesOperation addRecord:];
           }
 
           v94 = v65[450];
-          v95 = [*(&self->super.super.super.isa + v94) objectForKeyedSubscript:v9];
+          v95 = [*(&self->super.super.super.isa + v94) objectForKeyedSubscript:recordID3];
 
           if (v95)
           {
             [BRCFetchRecordSubResourcesOperation addRecord:];
           }
 
-          [(NSMutableDictionary *)self->_subResourceRecordsByID setObject:v90 forKeyedSubscript:v9];
-          [(NSMutableArray *)self->_deletedShareIDs removeObject:v9];
-          [(NSMutableArray *)self->_deletedRecordIDs removeObject:v9];
-          [*(&self->super.super.super.isa + v94) removeObjectForKey:v9];
+          [(NSMutableDictionary *)self->_subResourceRecordsByID setObject:v90 forKeyedSubscript:recordID3];
+          [(NSMutableArray *)self->_deletedShareIDs removeObject:recordID3];
+          [(NSMutableArray *)self->_deletedRecordIDs removeObject:recordID3];
+          [*(&self->super.super.super.isa + v94) removeObjectForKey:recordID3];
           v91 = brc_bread_crumbs();
           v96 = brc_default_log();
           if (os_log_type_enabled(v96, OS_LOG_TYPE_DEBUG))
           {
-            v102 = [(BRCFetchRecordSubResourcesOperation *)self name];
+            name5 = [(BRCFetchRecordSubResourcesOperation *)self name];
             *buf = 138412802;
-            v127 = v102;
+            v127 = name5;
             v128 = 2112;
             v129 = v90;
             v130 = 2112;
@@ -1334,36 +1334,36 @@ LABEL_85:
 
         else
         {
-          if ([(NSMutableArray *)self->_deletedShareIDs containsObject:v9])
+          if ([(NSMutableArray *)self->_deletedShareIDs containsObject:recordID3])
           {
             [BRCFetchRecordSubResourcesOperation addRecord:];
           }
 
-          if ([(NSMutableArray *)self->_deletedRecordIDs containsObject:v9])
+          if ([(NSMutableArray *)self->_deletedRecordIDs containsObject:recordID3])
           {
             [BRCFetchRecordSubResourcesOperation addRecord:];
           }
 
           v88 = v65[450];
-          v89 = [*(&self->super.super.super.isa + v88) objectForKeyedSubscript:v9];
+          v89 = [*(&self->super.super.super.isa + v88) objectForKeyedSubscript:recordID3];
 
           if (v89)
           {
             [BRCFetchRecordSubResourcesOperation addRecord:];
           }
 
-          [*(&self->super.super.super.isa + v88) setObject:v4 forKeyedSubscript:v9];
-          [(NSMutableArray *)self->_deletedShareIDs removeObject:v9];
-          [(NSMutableArray *)self->_deletedRecordIDs removeObject:v9];
-          [(NSMutableDictionary *)self->_subResourceRecordsByID removeObjectForKey:v9];
+          [*(&self->super.super.super.isa + v88) setObject:recordCopy forKeyedSubscript:recordID3];
+          [(NSMutableArray *)self->_deletedShareIDs removeObject:recordID3];
+          [(NSMutableArray *)self->_deletedRecordIDs removeObject:recordID3];
+          [(NSMutableDictionary *)self->_subResourceRecordsByID removeObjectForKey:recordID3];
           v90 = brc_bread_crumbs();
           v91 = brc_default_log();
           if (os_log_type_enabled(v91, OS_LOG_TYPE_DEBUG))
           {
-            v92 = [(BRCFetchRecordSubResourcesOperation *)self name];
-            v93 = [v4 debugDescription];
+            name6 = [(BRCFetchRecordSubResourcesOperation *)self name];
+            v93 = [recordCopy debugDescription];
             *buf = 138412802;
-            v127 = v92;
+            v127 = name6;
             v128 = 2112;
             v129 = v93;
             v130 = 2112;
@@ -1381,8 +1381,8 @@ LABEL_106:
     {
     }
 
-    v66 = [v4 recordType];
-    v67 = [v66 isEqualToString:*MEMORY[0x277CBC050]];
+    recordType3 = [recordCopy recordType];
+    v67 = [recordType3 isEqualToString:*MEMORY[0x277CBC050]];
 
     if (!v67)
     {
@@ -1392,8 +1392,8 @@ LABEL_106:
       goto LABEL_85;
     }
 
-    v121 = [(BRCFetchSubResourceRecord *)v9 brc_shareItemID];
-    v61 = [v4 objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
+    brc_shareItemID = [(BRCFetchSubResourceRecord *)recordID3 brc_shareItemID];
+    v61 = [recordCopy objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
     if (!v61)
     {
       v68 = brc_bread_crumbs();
@@ -1401,7 +1401,7 @@ LABEL_106:
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v127 = v4;
+        v127 = recordCopy;
         v128 = 2112;
         v129 = v68;
         _os_log_impl(&dword_223E7A000, v69, OS_LOG_TYPE_DEFAULT, "[WARNING] Couldn't determine record type for root share record %@%@", buf, 0x16u);
@@ -1411,13 +1411,13 @@ LABEL_106:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v61 isEqualToString:*MEMORY[0x277CFAD00]])
     {
-      v70 = [v121 structureRecordIDForItemType:0 zone:self->_serverZone aliasTargetZoneIsShared:1];
+      v70 = [brc_shareItemID structureRecordIDForItemType:0 zone:self->_serverZone aliasTargetZoneIsShared:1];
     }
 
     else
     {
-      v80 = [(BRCServerZone *)self->_serverZone zoneID];
-      v70 = [v121 contentsRecordIDInZoneID:v80];
+      zoneID4 = [(BRCServerZone *)self->_serverZone zoneID];
+      v70 = [brc_shareItemID contentsRecordIDInZoneID:zoneID4];
     }
 
     v65 = &OBJC_IVAR___BRCAccountSession__serverDB;
@@ -1444,65 +1444,65 @@ LABEL_107:
   v97 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRecordIDToDeserialize:(id)a3 recordType:(int64_t)a4
+- (void)addRecordIDToDeserialize:(id)deserialize recordType:(int64_t)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v7);
+  deserializeCopy = deserialize;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   if (!self->_error && ([(BRCFetchRecordSubResourcesOperation *)self isCancelled]& 1) == 0)
   {
-    v8 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:v6];
-    if (v8 || ([(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:v6], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+    v8 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:deserializeCopy];
+    if (v8 || ([(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:deserializeCopy], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
-    else if (![(BRCPendingChangesStream *)self->_pendingChangesStream hasFetchRecordByID:v6])
+    else if (![(BRCPendingChangesStream *)self->_pendingChangesStream hasFetchRecordByID:deserializeCopy])
     {
       if (self->_isDoneFetchingRecords)
       {
         [BRCFetchRecordSubResourcesOperation addRecordIDToDeserialize:recordType:];
       }
 
-      if ([(NSMutableArray *)self->_deletedShareIDs containsObject:v6])
+      if ([(NSMutableArray *)self->_deletedShareIDs containsObject:deserializeCopy])
       {
         [BRCFetchRecordSubResourcesOperation addRecordIDToDeserialize:recordType:];
       }
 
-      if ([(NSMutableArray *)self->_deletedRecordIDs containsObject:v6])
+      if ([(NSMutableArray *)self->_deletedRecordIDs containsObject:deserializeCopy])
       {
         [BRCFetchRecordSubResourcesOperation addRecordIDToDeserialize:recordType:];
       }
 
-      v13 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:v6];
+      v13 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:deserializeCopy];
 
       if (v13)
       {
         [BRCFetchRecordSubResourcesOperation addRecordIDToDeserialize:recordType:];
       }
 
-      v14 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:v6];
+      v14 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:deserializeCopy];
 
       if (v14)
       {
         [BRCFetchRecordSubResourcesOperation addRecordIDToDeserialize:recordType:];
       }
 
-      v9 = [[BRCFetchSubResourceRecord alloc] initWithRecordIDNeedingFetch:v6 recordType:a4];
-      [(NSMutableDictionary *)self->_subResourceRecordsByID setObject:v9 forKeyedSubscript:v6];
-      [(NSMutableArray *)self->_deletedShareIDs removeObject:v6];
-      [(NSMutableArray *)self->_deletedRecordIDs removeObject:v6];
-      [(NSMutableDictionary *)self->_recordsByID removeObjectForKey:v6];
+      v9 = [[BRCFetchSubResourceRecord alloc] initWithRecordIDNeedingFetch:deserializeCopy recordType:type];
+      [(NSMutableDictionary *)self->_subResourceRecordsByID setObject:v9 forKeyedSubscript:deserializeCopy];
+      [(NSMutableArray *)self->_deletedShareIDs removeObject:deserializeCopy];
+      [(NSMutableArray *)self->_deletedRecordIDs removeObject:deserializeCopy];
+      [(NSMutableDictionary *)self->_recordsByID removeObjectForKey:deserializeCopy];
       v10 = brc_bread_crumbs();
       v15 = brc_default_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [(BRCFetchRecordSubResourcesOperation *)self name];
+        name = [(BRCFetchRecordSubResourcesOperation *)self name];
         v17 = 138412802;
-        v18 = v16;
+        v18 = name;
         v19 = 2112;
-        v20 = v6;
+        v20 = deserializeCopy;
         v21 = 2112;
         v22 = v10;
         _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ scheduling recordID deserialize for %@%@", &v17, 0x20u);
@@ -1515,11 +1515,11 @@ LABEL_107:
     v10 = brc_default_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(BRCFetchRecordSubResourcesOperation *)self name];
+      name2 = [(BRCFetchRecordSubResourcesOperation *)self name];
       v17 = 138412802;
-      v18 = v11;
+      v18 = name2;
       v19 = 2112;
-      v20 = v6;
+      v20 = deserializeCopy;
       v21 = 2112;
       v22 = v9;
       _os_log_impl(&dword_223E7A000, v10, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ has no need to deserialize %@ because we've already fetch it%@", &v17, 0x20u);
@@ -1531,12 +1531,12 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordIDWasDeleted:(id)a3
+- (void)recordIDWasDeleted:(id)deleted
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v5);
+  deletedCopy = deleted;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   if (!self->_error && ([(BRCFetchRecordSubResourcesOperation *)self isCancelled]& 1) == 0)
   {
@@ -1545,86 +1545,86 @@ LABEL_8:
       self->_canSaveDirectly = 0;
     }
 
-    if ([v4 brc_isZoneRootRecordID])
+    if ([deletedCopy brc_isZoneRootRecordID])
     {
       v6 = brc_bread_crumbs();
       v7 = brc_default_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(BRCFetchRecordSubResourcesOperation *)self name];
+        name = [(BRCFetchRecordSubResourcesOperation *)self name];
         *buf = 138412802;
-        v24 = v8;
+        v24 = name;
         v25 = 2112;
-        v26 = v4;
+        v26 = deletedCopy;
         v27 = 2112;
         v28 = v6;
         _os_log_impl(&dword_223E7A000, v7, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ Zone root record ID was deleted %@%@", buf, 0x20u);
       }
 
-      v9 = [(BRCServerZone *)self->_serverZone clientZone];
-      [v9 handleRootRecordDeletion];
+      clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+      [clientZone handleRootRecordDeletion];
     }
 
-    else if ([v4 brc_isAppLibraryRootRecordID])
+    else if ([deletedCopy brc_isAppLibraryRootRecordID])
     {
       v10 = brc_bread_crumbs();
       v11 = brc_default_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(BRCFetchRecordSubResourcesOperation *)self name];
+        name2 = [(BRCFetchRecordSubResourcesOperation *)self name];
         *buf = 138412802;
-        v24 = v12;
+        v24 = name2;
         v25 = 2112;
-        v26 = v4;
+        v26 = deletedCopy;
         v27 = 2112;
         v28 = v10;
         _os_log_impl(&dword_223E7A000, v11, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ App library root record ID was deleted %@%@", buf, 0x20u);
       }
 
-      v13 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
-      v14 = [v13 workloop];
+      clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+      workloop = [clientReadWriteDatabaseFacade workloop];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __58__BRCFetchRecordSubResourcesOperation_recordIDWasDeleted___block_invoke;
       v21[3] = &unk_2784FF478;
       v21[4] = self;
-      v22 = v4;
-      dispatch_async_and_wait(v14, v21);
+      v22 = deletedCopy;
+      dispatch_async_and_wait(workloop, v21);
     }
 
     else
     {
-      if ([(NSMutableArray *)self->_deletedRecordIDs containsObject:v4])
+      if ([(NSMutableArray *)self->_deletedRecordIDs containsObject:deletedCopy])
       {
         [BRCFetchRecordSubResourcesOperation recordIDWasDeleted:];
       }
 
-      v15 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:v4];
+      v15 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:deletedCopy];
 
       if (v15)
       {
         [BRCFetchRecordSubResourcesOperation recordIDWasDeleted:];
       }
 
-      v16 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:v4];
+      v16 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectForKeyedSubscript:deletedCopy];
 
       if (v16)
       {
         [BRCFetchRecordSubResourcesOperation recordIDWasDeleted:];
       }
 
-      [(NSMutableArray *)self->_deletedRecordIDs addObject:v4];
-      [(NSMutableDictionary *)self->_recordsByID removeObjectForKey:v4];
-      [(NSMutableDictionary *)self->_subResourceRecordsByID removeObjectForKey:v4];
+      [(NSMutableArray *)self->_deletedRecordIDs addObject:deletedCopy];
+      [(NSMutableDictionary *)self->_recordsByID removeObjectForKey:deletedCopy];
+      [(NSMutableDictionary *)self->_subResourceRecordsByID removeObjectForKey:deletedCopy];
       v17 = brc_bread_crumbs();
       v18 = brc_default_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v20 = [(BRCFetchRecordSubResourcesOperation *)self name];
+        name3 = [(BRCFetchRecordSubResourcesOperation *)self name];
         *buf = 138412802;
-        v24 = v20;
+        v24 = name3;
         v25 = 2112;
-        v26 = v4;
+        v26 = deletedCopy;
         v27 = 2112;
         v28 = v17;
         _os_log_debug_impl(&dword_223E7A000, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ record ID was deleted %@%@", buf, 0x20u);
@@ -1644,38 +1644,38 @@ void __58__BRCFetchRecordSubResourcesOperation_recordIDWasDeleted___block_invoke
   [v4 clearStateBits:134217730];
 }
 
-- (void)shareIDWasDeleted:(id)a3
+- (void)shareIDWasDeleted:(id)deleted
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v5);
+  deletedCopy = deleted;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   if (!self->_error && ([(BRCFetchRecordSubResourcesOperation *)self isCancelled]& 1) == 0)
   {
-    v6 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_recordsByID objectForKeyedSubscript:deletedCopy];
 
     if (v6)
     {
       [BRCFetchRecordSubResourcesOperation shareIDWasDeleted:];
     }
 
-    if ([(NSMutableArray *)self->_deletedShareIDs containsObject:v4])
+    if ([(NSMutableArray *)self->_deletedShareIDs containsObject:deletedCopy])
     {
       [BRCFetchRecordSubResourcesOperation shareIDWasDeleted:];
     }
 
-    [(NSMutableDictionary *)self->_recordsByID removeObjectForKey:v4];
-    [(NSMutableArray *)self->_deletedShareIDs addObject:v4];
+    [(NSMutableDictionary *)self->_recordsByID removeObjectForKey:deletedCopy];
+    [(NSMutableArray *)self->_deletedShareIDs addObject:deletedCopy];
     v7 = brc_bread_crumbs();
     v8 = brc_default_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(BRCFetchRecordSubResourcesOperation *)self name];
+      name = [(BRCFetchRecordSubResourcesOperation *)self name];
       v11 = 138412802;
-      v12 = v10;
+      v12 = name;
       v13 = 2112;
-      v14 = v4;
+      v14 = deletedCopy;
       v15 = 2112;
       v16 = v7;
       _os_log_debug_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ share ID was deleted %@%@", &v11, 0x20u);
@@ -1685,15 +1685,15 @@ void __58__BRCFetchRecordSubResourcesOperation_recordIDWasDeleted___block_invoke
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyWhenRecordsAreFetched:(id)a3
+- (void)_notifyWhenRecordsAreFetched:(id)fetched
 {
-  v4 = a3;
+  fetchedCopy = fetched;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __68__BRCFetchRecordSubResourcesOperation__notifyWhenRecordsAreFetched___block_invoke;
   v15 = &unk_278500048;
-  v16 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = fetchedCopy;
   v17 = v5;
   v6 = MEMORY[0x22AA4A310](&v12);
   v7 = v6;
@@ -1742,12 +1742,12 @@ void __68__BRCFetchRecordSubResourcesOperation__notifyWhenRecordsAreFetched___bl
   }
 }
 
-- (void)notifyWhenCaughtUp:(BOOL)a3 whenRecordsAreFetchedAndFinish:(id)a4
+- (void)notifyWhenCaughtUp:(BOOL)up whenRecordsAreFetchedAndFinish:(id)finish
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v7);
+  upCopy = up;
+  finishCopy = finish;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
@@ -1772,7 +1772,7 @@ void __68__BRCFetchRecordSubResourcesOperation__notifyWhenRecordsAreFetched___bl
   }
 
   self->_deserializeState = 2;
-  if (v4)
+  if (upCopy)
   {
     [(BRCFetchRecordSubResourcesOperation *)self _fetchRecordsBlockingSaveIfNecessary];
   }
@@ -1792,8 +1792,8 @@ void __68__BRCFetchRecordSubResourcesOperation__notifyWhenRecordsAreFetched___bl
   v13[2] = __89__BRCFetchRecordSubResourcesOperation_notifyWhenCaughtUp_whenRecordsAreFetchedAndFinish___block_invoke;
   v13[3] = &unk_2784FFBC8;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
+  v14 = finishCopy;
+  v12 = finishCopy;
   [(BRCFetchRecordSubResourcesOperation *)self _notifyWhenRecordsAreFetched:v13];
 }
 
@@ -1810,28 +1810,28 @@ uint64_t __89__BRCFetchRecordSubResourcesOperation_notifyWhenCaughtUp_whenRecord
   return [*(a1 + 32) stop];
 }
 
-- (void)_startWithParentOperation:(id)a3
+- (void)_startWithParentOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   if (self->_isDoneFetchingRecords)
   {
     [BRCFetchRecordSubResourcesOperation _startWithParentOperation:];
   }
 
   dispatch_group_enter(self->_operationGroup);
-  [v4 addSubOperation:self];
+  [operationCopy addSubOperation:self];
 }
 
-- (void)stopWithError:(id)a3
+- (void)stopWithError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v6);
+  errorCopy = error;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
-  if (v5 && !self->_error)
+  if (errorCopy && !self->_error)
   {
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
   }
 
   if (!self->_isDoneFetchingRecords)
@@ -1840,11 +1840,11 @@ uint64_t __89__BRCFetchRecordSubResourcesOperation_notifyWhenCaughtUp_whenRecord
     v8 = brc_default_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(BRCFetchRecordSubResourcesOperation *)self name];
+      name = [(BRCFetchRecordSubResourcesOperation *)self name];
       v13 = 138412802;
-      v14 = v12;
+      v14 = name;
       v15 = 2112;
-      v16 = v5;
+      v16 = errorCopy;
       v17 = 2112;
       v18 = v7;
       _os_log_debug_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ stopping fetching records with error %@%@", &v13, 0x20u);
@@ -1882,13 +1882,13 @@ uint64_t __89__BRCFetchRecordSubResourcesOperation_notifyWhenCaughtUp_whenRecord
     [BRCFetchRecordSubResourcesOperation cancel];
   }
 
-  v5 = [(_BRCOperation *)self callbackQueue];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__BRCFetchRecordSubResourcesOperation_cancel__block_invoke;
   block[3] = &unk_2784FF450;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(callbackQueue, block);
 }
 
 void __45__BRCFetchRecordSubResourcesOperation_cancel__block_invoke(uint64_t a1)
@@ -1898,31 +1898,31 @@ void __45__BRCFetchRecordSubResourcesOperation_cancel__block_invoke(uint64_t a1)
   [v1 stopWithError:v2];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v8);
+  errorCopy = error;
+  resultCopy = result;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   v9 = brc_bread_crumbs();
   v10 = brc_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(BRCFetchRecordSubResourcesOperation *)self name];
-    v15 = [(_BRCOperation *)self operationID];
-    v16 = [v6 brc_isCloudKitCancellationError];
+    name = [(BRCFetchRecordSubResourcesOperation *)self name];
+    operationID = [(_BRCOperation *)self operationID];
+    brc_isCloudKitCancellationError = [errorCopy brc_isCloudKitCancellationError];
     v17 = &stru_2837504F0;
     *buf = 138413058;
-    v20 = v14;
+    v20 = name;
     v21 = 2112;
-    if (v16)
+    if (brc_isCloudKitCancellationError)
     {
       v17 = @" operation cancelled.";
     }
 
-    v22 = v15;
+    v22 = operationID;
     v23 = 2112;
     v24 = v17;
     v25 = 2112;
@@ -1940,7 +1940,7 @@ void __45__BRCFetchRecordSubResourcesOperation_cancel__block_invoke(uint64_t a1)
     [BRCFetchRecordSubResourcesOperation finishWithResult:error:];
   }
 
-  if (!v6)
+  if (!errorCopy)
   {
     if (self->_queryFinishedServerTruthCallback)
     {
@@ -1961,15 +1961,15 @@ void __45__BRCFetchRecordSubResourcesOperation_cancel__block_invoke(uint64_t a1)
 
   v18.receiver = self;
   v18.super_class = BRCFetchRecordSubResourcesOperation;
-  [(_BRCOperation *)&v18 finishWithResult:v7 error:v6];
+  [(_BRCOperation *)&v18 finishWithResult:resultCopy error:errorCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_willFetchRecordForDeserialize:(id)a3
+- (BOOL)_willFetchRecordForDeserialize:(id)deserialize
 {
-  v4 = a3;
-  v5 = [(NSMutableOrderedSet *)self->_loopDetectionCache containsObject:v4];
+  deserializeCopy = deserialize;
+  v5 = [(NSMutableOrderedSet *)self->_loopDetectionCache containsObject:deserializeCopy];
   if (v5)
   {
     v6 = brc_bread_crumbs();
@@ -1979,13 +1979,13 @@ void __45__BRCFetchRecordSubResourcesOperation_cancel__block_invoke(uint64_t a1)
       [BRCFetchRecordSubResourcesOperation _willFetchRecordForDeserialize:];
     }
 
-    v8 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Fetch loop trying to fetch %@", v4}];
+    v8 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Fetch loop trying to fetch %@", deserializeCopy}];
     [(BRCFetchRecordSubResourcesOperation *)self stopWithError:v8];
   }
 
   else
   {
-    [(NSMutableOrderedSet *)self->_loopDetectionCache addObject:v4];
+    [(NSMutableOrderedSet *)self->_loopDetectionCache addObject:deserializeCopy];
     if (self->_loopDetectionCacheSize < [(NSMutableOrderedSet *)self->_loopDetectionCache count])
     {
       [(NSMutableOrderedSet *)self->_loopDetectionCache removeObjectAtIndex:0];
@@ -1998,8 +1998,8 @@ void __45__BRCFetchRecordSubResourcesOperation_cancel__block_invoke(uint64_t a1)
 - (void)_scheduleDeserialize
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v3);
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   if (self->_error || [(BRCFetchRecordSubResourcesOperation *)self isCancelled])
   {
@@ -2007,10 +2007,10 @@ void __45__BRCFetchRecordSubResourcesOperation_cancel__block_invoke(uint64_t a1)
     v5 = brc_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v27 = [(BRCFetchRecordSubResourcesOperation *)self name];
+      name = [(BRCFetchRecordSubResourcesOperation *)self name];
       error = self->_error;
       *buf = 138412802;
-      v46 = v27;
+      v46 = name;
       if (error)
       {
         v29 = @"Operation had an error";
@@ -2046,10 +2046,10 @@ void __45__BRCFetchRecordSubResourcesOperation_cancel__block_invoke(uint64_t a1)
     }
 
     v8 = objc_opt_new();
-    v9 = [(BRCServerZone *)self->_serverZone mangledID];
-    v10 = [BRCUserDefaults defaultsForMangledID:v9];
+    mangledID = [(BRCServerZone *)self->_serverZone mangledID];
+    v10 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
-    v11 = [v10 maxRecordCountInFetchRecordsOperation];
+    maxRecordCountInFetchRecordsOperation = [v10 maxRecordCountInFetchRecordsOperation];
     pendingChangesStream = self->_pendingChangesStream;
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
@@ -2057,14 +2057,14 @@ void __45__BRCFetchRecordSubResourcesOperation_cancel__block_invoke(uint64_t a1)
     v42[3] = &unk_2785080A8;
     deserializeGroup = v8;
     v43 = deserializeGroup;
-    v44 = v11;
+    v44 = maxRecordCountInFetchRecordsOperation;
     [(BRCPendingChangesStream *)pendingChangesStream enumerateRecordsNeedingMetadataFetchWithBlock:v42];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v13 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
-    v14 = [v13 countByEnumeratingWithState:&v38 objects:v53 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
+    v14 = [objectEnumerator countByEnumeratingWithState:&v38 objects:v53 count:16];
     if (v14)
     {
       v15 = *v39;
@@ -2074,30 +2074,30 @@ LABEL_12:
       {
         if (*v39 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v17 = *(*(&v38 + 1) + 8 * v16);
-        if ([(OS_dispatch_group *)deserializeGroup count]>= v11)
+        if ([(OS_dispatch_group *)deserializeGroup count]>= maxRecordCountInFetchRecordsOperation)
         {
           break;
         }
 
-        v18 = [v17 recordIDNeedingFetch];
-        if (v18)
+        recordIDNeedingFetch = [v17 recordIDNeedingFetch];
+        if (recordIDNeedingFetch)
         {
-          if (![(BRCFetchRecordSubResourcesOperation *)self _willFetchRecordForDeserialize:v18])
+          if (![(BRCFetchRecordSubResourcesOperation *)self _willFetchRecordForDeserialize:recordIDNeedingFetch])
           {
 
             goto LABEL_33;
           }
 
-          [(OS_dispatch_group *)deserializeGroup addObject:v18];
+          [(OS_dispatch_group *)deserializeGroup addObject:recordIDNeedingFetch];
         }
 
         if (v14 == ++v16)
         {
-          v14 = [v13 countByEnumeratingWithState:&v38 objects:v53 count:16];
+          v14 = [objectEnumerator countByEnumeratingWithState:&v38 objects:v53 count:16];
           if (v14)
           {
             goto LABEL_12;
@@ -2123,10 +2123,10 @@ LABEL_12:
       v20 = brc_default_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v30 = [(BRCFetchRecordSubResourcesOperation *)self name];
+        name2 = [(BRCFetchRecordSubResourcesOperation *)self name];
         v31 = [(OS_dispatch_group *)deserializeGroup count];
         *buf = 138413058;
-        v46 = v30;
+        v46 = name2;
         v47 = 2048;
         v48 = v31;
         v49 = 2112;
@@ -2138,8 +2138,8 @@ LABEL_12:
 
       v21 = [[BRFetchRecordsOperation alloc] initWithRecordIDs:deserializeGroup];
       [(BRFetchRecordsOperation *)v21 setShouldFetchAssetContent:0];
-      v22 = [(_BRCOperation *)self callbackQueue];
-      [(BRFetchRecordsOperation *)v21 setCallbackQueue:v22];
+      callbackQueue2 = [(_BRCOperation *)self callbackQueue];
+      [(BRFetchRecordsOperation *)v21 setCallbackQueue:callbackQueue2];
 
       v23 = [MEMORY[0x277CBC5A0] desiredKeysWithMask:185];
       [(BRFetchRecordsOperation *)v21 setDesiredKeys:v23];
@@ -2484,12 +2484,12 @@ LABEL_19:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_markSubResourceRecordAsFetchedIfNecessary:(id)a3
+- (BOOL)_markSubResourceRecordAsFetchedIfNecessary:(id)necessary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 recordIDNeedingFetch];
-  if (v5 || ([v4 xattrSignature], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  necessaryCopy = necessary;
+  recordIDNeedingFetch = [necessaryCopy recordIDNeedingFetch];
+  if (recordIDNeedingFetch || ([necessaryCopy xattrSignature], (recordIDNeedingFetch = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
@@ -2497,25 +2497,25 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v9 = [v4 recordIDBlockingSave];
+  recordIDBlockingSave = [necessaryCopy recordIDBlockingSave];
 
-  if (v9)
+  if (recordIDBlockingSave)
   {
     goto LABEL_4;
   }
 
-  v10 = [v4 recordID];
-  v11 = [v4 record];
+  recordID = [necessaryCopy recordID];
+  record = [necessaryCopy record];
   v12 = brc_bread_crumbs();
   v13 = brc_default_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(BRCFetchRecordSubResourcesOperation *)self name];
-    v15 = [v11 debugDescription];
+    name = [(BRCFetchRecordSubResourcesOperation *)self name];
+    v15 = [record debugDescription];
     v16 = 138413058;
-    v17 = v14;
+    v17 = name;
     v18 = 2112;
-    v19 = v10;
+    v19 = recordID;
     v20 = 2112;
     v21 = v15;
     v22 = 2112;
@@ -2523,10 +2523,10 @@ LABEL_4:
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ has sub resource that no longer has info to fetch %@ -> %@%@", &v16, 0x2Au);
   }
 
-  [(NSMutableDictionary *)self->_subResourceRecordsByID removeObjectForKey:v10];
-  if (v11)
+  [(NSMutableDictionary *)self->_subResourceRecordsByID removeObjectForKey:recordID];
+  if (record)
   {
-    [(NSMutableDictionary *)self->_recordsByID setObject:v11 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_recordsByID setObject:record forKeyedSubscript:recordID];
   }
 
   v6 = 1;
@@ -2543,8 +2543,8 @@ LABEL_5:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v2 = [(NSMutableDictionary *)self->_subResourceRecordsByID allValues];
-  v3 = [v2 countByEnumeratingWithState:&v20 objects:v29 count:16];
+  allValues = [(NSMutableDictionary *)self->_subResourceRecordsByID allValues];
+  v3 = [allValues countByEnumeratingWithState:&v20 objects:v29 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2556,7 +2556,7 @@ LABEL_5:
       {
         if (*v21 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v7 = *(*(&v20 + 1) + 8 * v6);
@@ -2575,7 +2575,7 @@ LABEL_5:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v20 objects:v29 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v20 objects:v29 count:16];
     }
 
     while (v4);
@@ -2585,8 +2585,8 @@ LABEL_5:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [(NSMutableDictionary *)self->_recordsByID allValues];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_recordsByID allValues];
+  v11 = [allValues2 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2595,12 +2595,12 @@ LABEL_5:
     {
       if (*v17 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(allValues2);
       }
 
       if (!--v12)
       {
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v12 = [allValues2 countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (!v12)
         {
           break;
@@ -2615,20 +2615,20 @@ LABEL_5:
 - (void)_scheduleXattrFetch
 {
   v67 = *MEMORY[0x277D85DE8];
-  v2 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v2);
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
-  v3 = self;
+  selfCopy2 = self;
   if (self->_error || [(BRCFetchRecordSubResourcesOperation *)self isCancelled])
   {
     v4 = brc_bread_crumbs();
     v5 = brc_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v38 = [(BRCFetchRecordSubResourcesOperation *)self name];
+      name = [(BRCFetchRecordSubResourcesOperation *)self name];
       error = self->_error;
       *buf = 138412802;
-      *&buf[4] = v38;
+      *&buf[4] = name;
       if (error)
       {
         v40 = @"Operation had an error";
@@ -2656,16 +2656,16 @@ LABEL_5:
     if (self->_isDoneFetchingRecords)
     {
       [BRCFetchRecordSubResourcesOperation _scheduleXattrFetch];
-      v3 = self;
+      selfCopy2 = self;
     }
 
-    dispatch_suspend(v3->_xattrFetchingSource);
+    dispatch_suspend(selfCopy2->_xattrFetchingSource);
     v8 = objc_opt_new();
     v9 = objc_opt_new();
-    v10 = [(BRCServerZone *)self->_serverZone mangledID];
-    v43 = [BRCUserDefaults defaultsForMangledID:v10];
+    mangledID = [(BRCServerZone *)self->_serverZone mangledID];
+    v43 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
-    v11 = [v43 maxRecordCountInFetchRecordsOperation];
+    maxRecordCountInFetchRecordsOperation = [v43 maxRecordCountInFetchRecordsOperation];
     pendingChangesStream = self->_pendingChangesStream;
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
@@ -2675,14 +2675,14 @@ LABEL_5:
     v58 = xattrFetchingGroup;
     v44 = v9;
     v59 = v44;
-    v60 = v11;
+    v60 = maxRecordCountInFetchRecordsOperation;
     [(BRCPendingChangesStream *)pendingChangesStream enumerateRecordsNeedingXattrFetchWithBlock:v57];
     v55 = 0u;
     v56 = 0u;
     v54 = 0u;
     v53 = 0u;
-    v13 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
-    v14 = [v13 countByEnumeratingWithState:&v53 objects:v66 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
+    v14 = [objectEnumerator countByEnumeratingWithState:&v53 objects:v66 count:16];
     if (v14)
     {
       v15 = *v54;
@@ -2692,36 +2692,36 @@ LABEL_10:
       {
         if (*v54 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v17 = *(*(&v53 + 1) + 8 * v16);
-        if ([(OS_dispatch_group *)xattrFetchingGroup count]>= v11)
+        if ([(OS_dispatch_group *)xattrFetchingGroup count]>= maxRecordCountInFetchRecordsOperation)
         {
           break;
         }
 
-        v18 = [v17 xattrSignature];
-        if (v18)
+        xattrSignature = [v17 xattrSignature];
+        if (xattrSignature)
         {
-          v19 = [v17 xattrSignature];
-          v20 = [v44 containsObject:v19];
+          xattrSignature2 = [v17 xattrSignature];
+          v20 = [v44 containsObject:xattrSignature2];
 
           if ((v20 & 1) == 0)
           {
-            v21 = [v17 xattrSignature];
-            [v44 addObject:v21];
+            xattrSignature3 = [v17 xattrSignature];
+            [v44 addObject:xattrSignature3];
 
-            v22 = [v17 record];
-            v23 = [v22 etag];
-            v24 = [v17 recordID];
-            [(OS_dispatch_group *)xattrFetchingGroup setObject:v23 forKeyedSubscript:v24];
+            record = [v17 record];
+            etag = [record etag];
+            recordID = [v17 recordID];
+            [(OS_dispatch_group *)xattrFetchingGroup setObject:etag forKeyedSubscript:recordID];
           }
         }
 
         if (v14 == ++v16)
         {
-          v14 = [v13 countByEnumeratingWithState:&v53 objects:v66 count:16];
+          v14 = [objectEnumerator countByEnumeratingWithState:&v53 objects:v66 count:16];
           if (v14)
           {
             goto LABEL_10;
@@ -2742,11 +2742,11 @@ LABEL_10:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
         v41 = v52[0];
-        v42 = [(BRCFetchRecordSubResourcesOperation *)self name];
+        name2 = [(BRCFetchRecordSubResourcesOperation *)self name];
         *buf = 134218754;
         *&buf[4] = v41;
         *&buf[12] = 2112;
-        *&buf[14] = v42;
+        *&buf[14] = name2;
         *&buf[22] = 2048;
         v63 = v25;
         v64 = 2112;
@@ -2767,8 +2767,8 @@ LABEL_10:
       *buf = v50;
       *&buf[16] = v51;
       v30 = objc_alloc(MEMORY[0x277CBC3E0]);
-      v31 = [(OS_dispatch_group *)xattrFetchingGroup allKeys];
-      v32 = [v30 initWithRecordIDs:v31];
+      allKeys = [(OS_dispatch_group *)xattrFetchingGroup allKeys];
+      v32 = [v30 initWithRecordIDs:allKeys];
 
       v61[0] = @"xattr";
       v61[1] = @"xattrSignature";
@@ -2776,8 +2776,8 @@ LABEL_10:
       [v32 setDesiredKeys:v33];
 
       [v32 setRecordIDsToVersionETags:xattrFetchingGroup];
-      v34 = [(_BRCOperation *)self callbackQueue];
-      [v32 setCallbackQueue:v34];
+      callbackQueue2 = [(_BRCOperation *)self callbackQueue];
+      [v32 setCallbackQueue:callbackQueue2];
 
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
@@ -3079,25 +3079,25 @@ LABEL_46:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_compareRecordsForSaveWithFirstRecord:(id)a3 secondRecord:(id)a4
+- (int64_t)_compareRecordsForSaveWithFirstRecord:(id)record secondRecord:(id)secondRecord
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 recordType] != 3 && objc_msgSend(v6, "recordType") == 3)
+  recordCopy = record;
+  secondRecordCopy = secondRecord;
+  if ([recordCopy recordType] != 3 && objc_msgSend(secondRecordCopy, "recordType") == 3)
   {
     goto LABEL_7;
   }
 
-  if ([v5 recordType] == 3 && objc_msgSend(v6, "recordType") != 3)
+  if ([recordCopy recordType] == 3 && objc_msgSend(secondRecordCopy, "recordType") != 3)
   {
 LABEL_11:
     v7 = 1;
     goto LABEL_12;
   }
 
-  if ([v5 recordType] == 2 || objc_msgSend(v6, "recordType") != 2)
+  if ([recordCopy recordType] == 2 || objc_msgSend(secondRecordCopy, "recordType") != 2)
   {
-    if ([v5 recordType] != 2 || objc_msgSend(v6, "recordType") == 2)
+    if ([recordCopy recordType] != 2 || objc_msgSend(secondRecordCopy, "recordType") == 2)
     {
       v7 = 0;
       goto LABEL_12;
@@ -3265,30 +3265,30 @@ void __60__BRCFetchRecordSubResourcesOperation__prepareToSaveRecords__block_invo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveRecordsToPendingChangesWithServerChangeToken:(id)a3 clientChangeToken:(int64_t)a4
+- (void)_saveRecordsToPendingChangesWithServerChangeToken:(id)token clientChangeToken:(int64_t)changeToken
 {
   pendingChangesStream = self->_pendingChangesStream;
   recordsByID = self->_recordsByID;
-  v8 = a3;
-  v12 = [(NSMutableDictionary *)recordsByID objectEnumerator];
+  tokenCopy = token;
+  objectEnumerator = [(NSMutableDictionary *)recordsByID objectEnumerator];
   deletedRecordIDs = self->_deletedRecordIDs;
   deletedShareIDs = self->_deletedShareIDs;
-  v11 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
-  [(BRCPendingChangesStream *)pendingChangesStream saveEditedRecords:v12 deletedRecordIDs:deletedRecordIDs deletedShareIDs:deletedShareIDs subResourceEditedRecords:v11 serverChangeToken:v8 clientChangeToken:a4];
+  objectEnumerator2 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
+  [(BRCPendingChangesStream *)pendingChangesStream saveEditedRecords:objectEnumerator deletedRecordIDs:deletedRecordIDs deletedShareIDs:deletedShareIDs subResourceEditedRecords:objectEnumerator2 serverChangeToken:tokenCopy clientChangeToken:changeToken];
 }
 
-- (BOOL)saveRecordsWithServerChangeToken:(id)a3 clientChangeToken:(int64_t)a4 syncStatus:(int64_t)a5
+- (BOOL)saveRecordsWithServerChangeToken:(id)token clientChangeToken:(int64_t)changeToken syncStatus:(int64_t)status
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v9);
+  tokenCopy = token;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   error = self->_error;
   if (!error)
   {
     [(BRCFetchRecordSubResourcesOperation *)self _prepareToSaveRecords];
-    v11 = [(BRCFetchRecordSubResourcesOperation *)self _hasRecordsPendingSubResources];
+    _hasRecordsPendingSubResources = [(BRCFetchRecordSubResourcesOperation *)self _hasRecordsPendingSubResources];
     if (self->_queryFinishedServerTruthCallback)
     {
       [BRCFetchRecordSubResourcesOperation saveRecordsWithServerChangeToken:clientChangeToken:syncStatus:];
@@ -3303,17 +3303,17 @@ void __60__BRCFetchRecordSubResourcesOperation__prepareToSaveRecords__block_invo
     v13 = brc_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [(BRCFetchRecordSubResourcesOperation *)self name];
-      v24 = [v8 descriptionWithContext:0];
+      name = [(BRCFetchRecordSubResourcesOperation *)self name];
+      v24 = [tokenCopy descriptionWithContext:0];
       v25 = v24;
       canSaveDirectly = self->_canSaveDirectly;
       *buf = 138413570;
-      v32 = v23;
+      v32 = name;
       v27 = "YES";
       v33 = 2112;
-      v28 = a5 == 3 || canSaveDirectly;
+      v28 = status == 3 || canSaveDirectly;
       v35 = 2048;
-      if (a5 == 3)
+      if (status == 3)
       {
         v29 = "YES";
       }
@@ -3324,12 +3324,12 @@ void __60__BRCFetchRecordSubResourcesOperation__prepareToSaveRecords__block_invo
       }
 
       v34 = v24;
-      if (v11)
+      if (_hasRecordsPendingSubResources)
       {
         v27 = "NO";
       }
 
-      v36 = a4;
+      changeTokenCopy = changeToken;
       if (v28)
       {
         v30 = v27;
@@ -3349,10 +3349,10 @@ void __60__BRCFetchRecordSubResourcesOperation__prepareToSaveRecords__block_invo
       _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ saving records with server change token:%@ requestID:%llu caught up:%s directly:%s%@", buf, 0x3Eu);
     }
 
-    if (v11)
+    if (_hasRecordsPendingSubResources)
     {
-      [(BRCFetchRecordSubResourcesOperation *)self _saveRecordsToPendingChangesWithServerChangeToken:v8 clientChangeToken:a4];
-      if (a5 == 3)
+      [(BRCFetchRecordSubResourcesOperation *)self _saveRecordsToPendingChangesWithServerChangeToken:tokenCopy clientChangeToken:changeToken];
+      if (status == 3)
       {
         [(BRCFetchRecordSubResourcesOperation *)self _fetchRecordsBlockingSaveIfNecessary];
       }
@@ -3360,9 +3360,9 @@ void __60__BRCFetchRecordSubResourcesOperation__prepareToSaveRecords__block_invo
 
     else
     {
-      if (a5 == 3 || self->_canSaveDirectly)
+      if (status == 3 || self->_canSaveDirectly)
       {
-        if ([(BRCFetchRecordSubResourcesHandler *)self->_fetchResourcesHandler saveChangedRecords:self->_recordsByID deletedRecordIDs:self->_deletedRecordIDs deletedShareRecordIDs:self->_deletedShareIDs clientChangeToken:a4 serverChangeToken:v8 caughtUp:a5 == 3 pendingChanges:self->_pendingChangesStream])
+        if ([(BRCFetchRecordSubResourcesHandler *)self->_fetchResourcesHandler saveChangedRecords:self->_recordsByID deletedRecordIDs:self->_deletedRecordIDs deletedShareRecordIDs:self->_deletedShareIDs clientChangeToken:changeToken serverChangeToken:tokenCopy caughtUp:status == 3 pendingChanges:self->_pendingChangesStream])
         {
           v14 = brc_bread_crumbs();
           v15 = brc_default_log();
@@ -3383,9 +3383,9 @@ void __60__BRCFetchRecordSubResourcesOperation__prepareToSaveRecords__block_invo
         v19 = brc_default_log();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [(BRCFetchRecordSubResourcesOperation *)self name];
+          name2 = [(BRCFetchRecordSubResourcesOperation *)self name];
           *buf = 138412546;
-          v32 = v20;
+          v32 = name2;
           v33 = 2112;
           v34 = v18;
           _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ Allocating ranks failed when not caught up.  We'll save to pending changes from now on%@", buf, 0x16u);
@@ -3394,7 +3394,7 @@ void __60__BRCFetchRecordSubResourcesOperation__prepareToSaveRecords__block_invo
         self->_canSaveDirectly = 0;
       }
 
-      [(BRCFetchRecordSubResourcesOperation *)self _saveRecordsToPendingChangesWithServerChangeToken:v8 clientChangeToken:a4];
+      [(BRCFetchRecordSubResourcesOperation *)self _saveRecordsToPendingChangesWithServerChangeToken:tokenCopy clientChangeToken:changeToken];
     }
 
 LABEL_20:
@@ -3405,16 +3405,16 @@ LABEL_20:
   return error == 0;
 }
 
-- (BOOL)saveRecordsWithQueryCursor:(id)a3
+- (BOOL)saveRecordsWithQueryCursor:(id)cursor
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_BRCOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v5);
+  cursorCopy = cursor;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   if (!self->_error)
   {
-    if (v4 && !self->_pendingChangesStream)
+    if (cursorCopy && !self->_pendingChangesStream)
     {
       [BRCFetchRecordSubResourcesOperation saveRecordsWithQueryCursor:];
     }
@@ -3425,17 +3425,17 @@ LABEL_20:
     v9 = brc_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v38 = [(BRCFetchRecordSubResourcesOperation *)self name];
+      name = [(BRCFetchRecordSubResourcesOperation *)self name];
       v39 = "NO";
       *v51 = 138413058;
-      *&v51[4] = v38;
+      *&v51[4] = name;
       *&v51[12] = 2112;
       if (canSaveDirectly)
       {
         v39 = "YES";
       }
 
-      *&v51[14] = v4;
+      *&v51[14] = cursorCopy;
       *&v51[22] = 2080;
       v52 = v39;
       v53 = 2112;
@@ -3443,7 +3443,7 @@ LABEL_20:
       _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] %@ saving records with query cursor:%@ directly:%s%@", v51, 0x2Au);
     }
 
-    if (!canSaveDirectly && v4 != 0)
+    if (!canSaveDirectly && cursorCopy != 0)
     {
       pendingChangesStream = self->_pendingChangesStream;
       if (!pendingChangesStream)
@@ -3452,9 +3452,9 @@ LABEL_20:
         pendingChangesStream = *v51;
       }
 
-      v12 = [(NSMutableDictionary *)self->_recordsByID objectEnumerator];
-      v13 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
-      [(BRCPendingChangesStream *)pendingChangesStream saveEditedRecords:v12 subResourceEditedRecords:v13 queryCursor:v4];
+      objectEnumerator = [(NSMutableDictionary *)self->_recordsByID objectEnumerator];
+      objectEnumerator2 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
+      [(BRCPendingChangesStream *)pendingChangesStream saveEditedRecords:objectEnumerator subResourceEditedRecords:objectEnumerator2 queryCursor:cursorCopy];
 
       v6 = 1;
       goto LABEL_32;
@@ -3464,7 +3464,7 @@ LABEL_20:
     *&v51[8] = v51;
     *&v51[16] = 0x2020000000;
     v52 = 0;
-    if (v4)
+    if (cursorCopy)
     {
       v10 = 0;
     }
@@ -3475,7 +3475,7 @@ LABEL_20:
     }
 
     v14 = self->_serverZone;
-    v15 = [(BRCSessionContext *)self->super._sessionContext serverReadWriteDatabaseFacade];
+    serverReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext serverReadWriteDatabaseFacade];
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __66__BRCFetchRecordSubResourcesOperation_saveRecordsWithQueryCursor___block_invoke;
@@ -3485,11 +3485,11 @@ LABEL_20:
     v16 = v14;
     v44 = v16;
     v46 = v10;
-    [v15 performWithFlags:25 action:v43];
+    [serverReadWriteDatabaseFacade performWithFlags:25 action:v43];
 
     if (*(*&v51[8] + 24))
     {
-      v17 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+      clientReadWriteDatabaseFacade = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __66__BRCFetchRecordSubResourcesOperation_saveRecordsWithQueryCursor___block_invoke_2;
@@ -3497,7 +3497,7 @@ LABEL_20:
       v41[4] = self;
       v41[5] = v51;
       v42 = v10;
-      [v17 performWithFlags:41 action:v41];
+      [clientReadWriteDatabaseFacade performWithFlags:41 action:v41];
 
       if (v10)
       {
@@ -3505,21 +3505,21 @@ LABEL_20:
         v19 = brc_default_log();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
-          v20 = [(BRCFetchRecordSubResourcesOperation *)self name];
-          [(BRCFetchRecordSubResourcesOperation *)v20 saveRecordsWithQueryCursor:v18, buf, v19];
+          name2 = [(BRCFetchRecordSubResourcesOperation *)self name];
+          [(BRCFetchRecordSubResourcesOperation *)name2 saveRecordsWithQueryCursor:v18, buf, v19];
         }
 
         [(BRCPendingChangesStream *)self->_pendingChangesStream destroyDatabase];
-        v21 = self->_pendingChangesStream;
+        objectEnumerator3 = self->_pendingChangesStream;
         self->_pendingChangesStream = 0;
       }
 
       else
       {
         v32 = self->_pendingChangesStream;
-        v21 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
-        v33 = [(NSMutableDictionary *)self->_recordsByID objectEnumerator];
-        [(BRCPendingChangesStream *)v32 saveSubResourceRecords:v21 afterSavingMainTableItems:v33 queryCursor:v4];
+        objectEnumerator3 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
+        objectEnumerator4 = [(NSMutableDictionary *)self->_recordsByID objectEnumerator];
+        [(BRCPendingChangesStream *)v32 saveSubResourceRecords:objectEnumerator3 afterSavingMainTableItems:objectEnumerator4 queryCursor:cursorCopy];
       }
     }
 
@@ -3527,16 +3527,16 @@ LABEL_20:
     {
       self->_canSaveDirectly = 0;
       v22 = self->_pendingChangesStream;
-      v23 = [(NSMutableDictionary *)self->_recordsByID objectEnumerator];
-      v24 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
-      [(BRCPendingChangesStream *)v22 saveEditedRecords:v23 subResourceEditedRecords:v24 queryCursor:v4];
+      objectEnumerator5 = [(NSMutableDictionary *)self->_recordsByID objectEnumerator];
+      objectEnumerator6 = [(NSMutableDictionary *)self->_subResourceRecordsByID objectEnumerator];
+      [(BRCPendingChangesStream *)v22 saveEditedRecords:objectEnumerator5 subResourceEditedRecords:objectEnumerator6 queryCursor:cursorCopy];
 
-      v25 = [(BRCPendingChangesStream *)self->_pendingChangesStream lastError];
+      lastError = [(BRCPendingChangesStream *)self->_pendingChangesStream lastError];
 
-      if (v25)
+      if (lastError)
       {
-        v26 = [(BRCPendingChangesStream *)self->_pendingChangesStream lastError];
-        [(BRCFetchRecordSubResourcesOperation *)self stopWithError:v26];
+        lastError2 = [(BRCPendingChangesStream *)self->_pendingChangesStream lastError];
+        [(BRCFetchRecordSubResourcesOperation *)self stopWithError:lastError2];
       }
 
       if (v10)
@@ -3545,22 +3545,22 @@ LABEL_20:
         v28 = brc_default_log();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [(BRCFetchRecordSubResourcesOperation *)self name];
+          name3 = [(BRCFetchRecordSubResourcesOperation *)self name];
           *buf = 138412546;
-          v48 = v29;
+          v48 = name3;
           v49 = 2112;
           v50 = v27;
           _os_log_impl(&dword_223E7A000, v28, OS_LOG_TYPE_DEFAULT, "[WARNING] %@ got a (temporary) broken structure while listing directory contents%@", buf, 0x16u);
         }
 
-        v30 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
-        v31 = [v30 workloop];
+        clientReadWriteDatabaseFacade2 = [(BRCSessionContext *)self->super._sessionContext clientReadWriteDatabaseFacade];
+        workloop = [clientReadWriteDatabaseFacade2 workloop];
         v40[0] = MEMORY[0x277D85DD0];
         v40[1] = 3221225472;
         v40[2] = __66__BRCFetchRecordSubResourcesOperation_saveRecordsWithQueryCursor___block_invoke_61;
         v40[3] = &unk_2784FF450;
         v40[4] = self;
-        dispatch_async(v31, v40);
+        dispatch_async(workloop, v40);
 
         v6 = 0;
         goto LABEL_31;

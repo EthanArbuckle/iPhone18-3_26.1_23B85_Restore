@@ -1,16 +1,16 @@
 @interface SMMedicalIDMO
-+ (id)managedObjectWithMedicalID:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithMedicalID:(id)d managedObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation SMMedicalIDMO
 
-+ (id)managedObjectWithMedicalID:(id)a3 managedObject:(id)a4 inManagedObjectContext:(id)a5
++ (id)managedObjectWithMedicalID:(id)d managedObject:(id)object inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  dCopy = d;
+  objectCopy = object;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (!dCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -25,7 +25,7 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v9)
+  if (contextCopy)
   {
     *buf = 0;
     v21 = buf;
@@ -38,9 +38,9 @@ LABEL_12:
     v15[2] = __81__SMMedicalIDMO_managedObjectWithMedicalID_managedObject_inManagedObjectContext___block_invoke;
     v15[3] = &unk_2788C5DA0;
     v19 = buf;
-    v16 = v8;
+    v16 = objectCopy;
     v17 = v10;
-    v18 = v7;
+    v18 = dCopy;
     [v17 performBlockAndWait:v15];
     v11 = *(v21 + 5);
 

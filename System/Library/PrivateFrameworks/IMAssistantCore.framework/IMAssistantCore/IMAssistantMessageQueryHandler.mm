@@ -1,30 +1,30 @@
 @interface IMAssistantMessageQueryHandler
 + (OS_dispatch_queue)IMAssistantIMSPIQueue;
-- (BOOL)messageIsFromBlackholedChat:(id)a3;
-- (BOOL)resolvePersons:(id)a3 forIntent:(id)a4 completionHandler:(id)a5;
-- (id)allIMHandlesForHandle:(id)a3;
-- (id)chatParticipantForSPIHandle:(id)a3;
-- (id)chatParticipantsForSPIHandles:(id)a3;
-- (id)chatsContainingRequiredParticipants:(id)a3;
-- (id)chatsForChatNames:(id)a3;
-- (id)chatsWithConversationIdentifiers:(id)a3;
-- (id)messageContentsPredicate:(id)a3;
-- (id)recipientsPredicate:(id)a3;
-- (id)resolveDateTimeRange:(id)a3;
-- (id)sendersPredicate:(id)a3;
-- (id)spokenPhrasesForSpeakableStrings:(id)a3;
-- (id)unifiedContactIdentifiersForPerson:(id)a3;
-- (id)vocabularyIdentifiersFromSpeakableStrings:(id)a3;
-- (void)SPIQueryMessagesForChats:(id)a3 onlyUnread:(BOOL)a4 limit:(int64_t)a5 completion:(id)a6;
-- (void)SPIQueryMessagesForChatsWithIdentifiers:(id)a3 services:(id)a4 onlyUnread:(BOOL)a5 limit:(int64_t)a6 completion:(id)a7;
-- (void)SPIQueryMessagesForSenders:(id)a3 onlyUnread:(BOOL)a4 limit:(int64_t)a5 completion:(id)a6;
-- (void)SPIQueryMessagesWithGUIDs:(id)a3 completion:(id)a4;
-- (void)SPIQueryMessagesWithRowIDs:(id)a3 completion:(id)a4;
-- (void)SPIQueryUnreadMessages:(int64_t)a3 completion:(id)a4;
-- (void)handlesAndServicesForChatGuids:(id)a3 handles:(id *)a4 services:(id *)a5;
-- (void)handlesAndServicesForPersons:(id)a3 handles:(id *)a4 services:(id *)a5;
-- (void)messagesMatchingMessageIdentifiers:(id)a3 completion:(id)a4;
-- (void)searchMessagesWithContents:(id)a3 messageIdentifiers:(id)a4 notificationIdentifiers:(id)a5 chatNames:(id)a6 conversationIdentifiers:(id)a7 recipients:(id)a8 senders:(id)a9 dateTimeRange:(id)a10 attributes:(unint64_t)a11 completion:(id)a12;
+- (BOOL)messageIsFromBlackholedChat:(id)chat;
+- (BOOL)resolvePersons:(id)persons forIntent:(id)intent completionHandler:(id)handler;
+- (id)allIMHandlesForHandle:(id)handle;
+- (id)chatParticipantForSPIHandle:(id)handle;
+- (id)chatParticipantsForSPIHandles:(id)handles;
+- (id)chatsContainingRequiredParticipants:(id)participants;
+- (id)chatsForChatNames:(id)names;
+- (id)chatsWithConversationIdentifiers:(id)identifiers;
+- (id)messageContentsPredicate:(id)predicate;
+- (id)recipientsPredicate:(id)predicate;
+- (id)resolveDateTimeRange:(id)range;
+- (id)sendersPredicate:(id)predicate;
+- (id)spokenPhrasesForSpeakableStrings:(id)strings;
+- (id)unifiedContactIdentifiersForPerson:(id)person;
+- (id)vocabularyIdentifiersFromSpeakableStrings:(id)strings;
+- (void)SPIQueryMessagesForChats:(id)chats onlyUnread:(BOOL)unread limit:(int64_t)limit completion:(id)completion;
+- (void)SPIQueryMessagesForChatsWithIdentifiers:(id)identifiers services:(id)services onlyUnread:(BOOL)unread limit:(int64_t)limit completion:(id)completion;
+- (void)SPIQueryMessagesForSenders:(id)senders onlyUnread:(BOOL)unread limit:(int64_t)limit completion:(id)completion;
+- (void)SPIQueryMessagesWithGUIDs:(id)ds completion:(id)completion;
+- (void)SPIQueryMessagesWithRowIDs:(id)ds completion:(id)completion;
+- (void)SPIQueryUnreadMessages:(int64_t)messages completion:(id)completion;
+- (void)handlesAndServicesForChatGuids:(id)guids handles:(id *)handles services:(id *)services;
+- (void)handlesAndServicesForPersons:(id)persons handles:(id *)handles services:(id *)services;
+- (void)messagesMatchingMessageIdentifiers:(id)identifiers completion:(id)completion;
+- (void)searchMessagesWithContents:(id)contents messageIdentifiers:(id)identifiers notificationIdentifiers:(id)notificationIdentifiers chatNames:(id)names conversationIdentifiers:(id)conversationIdentifiers recipients:(id)recipients senders:(id)senders dateTimeRange:(id)self0 attributes:(unint64_t)self1 completion:(id)self2;
 @end
 
 @implementation IMAssistantMessageQueryHandler
@@ -41,36 +41,36 @@
   return v3;
 }
 
-- (BOOL)resolvePersons:(id)a3 forIntent:(id)a4 completionHandler:(id)a5
+- (BOOL)resolvePersons:(id)persons forIntent:(id)intent completionHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v36 = a4;
-  v8 = a5;
-  if ([v7 count])
+  personsCopy = persons;
+  intentCopy = intent;
+  handlerCopy = handler;
+  if ([personsCopy count])
   {
     v9 = IMLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v46 = v7;
+      v46 = personsCopy;
       v47 = 2112;
-      v48 = v36;
+      v48 = intentCopy;
       _os_log_impl(&dword_25479E000, v9, OS_LOG_TYPE_INFO, "Resolving persons: %@ for intent: %@", buf, 0x16u);
     }
 
-    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(personsCopy, "count")}];
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v12 = v7;
+    v12 = personsCopy;
     v39 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v39)
     {
-      v34 = v8;
-      v35 = v7;
+      v34 = handlerCopy;
+      v35 = personsCopy;
       v13 = *v41;
       v37 = 1;
       v38 = v11;
@@ -92,30 +92,30 @@
             _os_log_impl(&dword_25479E000, v16, OS_LOG_TYPE_INFO, "Resolving person: %@", buf, 0xCu);
           }
 
-          v17 = [v15 __im_assistant_allContactIdentifiers];
-          if ([v17 count])
+          __im_assistant_allContactIdentifiers = [v15 __im_assistant_allContactIdentifiers];
+          if ([__im_assistant_allContactIdentifiers count])
           {
             v18 = IMLogHandleForCategory();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
             {
-              v19 = [v17 count];
+              v19 = [__im_assistant_allContactIdentifiers count];
               *buf = 134218242;
               v46 = v19;
               v47 = 2112;
-              v48 = v17;
+              v48 = __im_assistant_allContactIdentifiers;
               _os_log_impl(&dword_25479E000, v18, OS_LOG_TYPE_INFO, "Successfully resolved person to %ld contact identifiers: %@", buf, 0x16u);
             }
 
             [v11 addObject:v15];
-            v20 = [MEMORY[0x277CD3EA0] successWithResolvedPerson:v15];
+            unsupported = [MEMORY[0x277CD3EA0] successWithResolvedPerson:v15];
           }
 
           else
           {
             v21 = v13;
-            v22 = [v15 personHandle];
-            v23 = [v22 value];
-            v24 = [v23 length];
+            personHandle = [v15 personHandle];
+            value = [personHandle value];
+            v24 = [value length];
 
             v25 = IMLogHandleForCategory();
             v26 = os_log_type_enabled(v25, OS_LOG_TYPE_INFO);
@@ -123,16 +123,16 @@
             {
               if (v26)
               {
-                v27 = [v15 personHandle];
-                v28 = [v27 value];
+                personHandle2 = [v15 personHandle];
+                value2 = [personHandle2 value];
                 *buf = 138412290;
-                v46 = v28;
+                v46 = value2;
                 _os_log_impl(&dword_25479E000, v25, OS_LOG_TYPE_INFO, "Successfully resolved person to handle: %@", buf, 0xCu);
               }
 
               v11 = v38;
               [v38 addObject:v15];
-              v20 = [MEMORY[0x277CD3EA0] successWithResolvedPerson:v15];
+              unsupported = [MEMORY[0x277CD3EA0] successWithResolvedPerson:v15];
               v13 = v21;
             }
 
@@ -141,21 +141,21 @@
               v13 = v21;
               if (v26)
               {
-                v29 = [v15 displayName];
+                displayName = [v15 displayName];
                 *buf = 138412546;
-                v46 = v29;
+                v46 = displayName;
                 v47 = 2112;
-                v48 = v36;
+                v48 = intentCopy;
                 _os_log_impl(&dword_25479E000, v25, OS_LOG_TYPE_INFO, "Could not resolve person %@ for intent %@", buf, 0x16u);
               }
 
-              v20 = [MEMORY[0x277CD3EA0] unsupported];
+              unsupported = [MEMORY[0x277CD3EA0] unsupported];
               v37 = 0;
               v11 = v38;
             }
           }
 
-          [v10 addObject:{v20, v34}];
+          [v10 addObject:{unsupported, v34}];
         }
 
         v39 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -163,16 +163,16 @@
 
       while (v39);
 
-      v8 = v34;
+      handlerCopy = v34;
       if ((v37 & 1) == 0)
       {
         v34[2](v34, v10, 0);
         v30 = 0;
-        v7 = v35;
+        personsCopy = v35;
         goto LABEL_30;
       }
 
-      v7 = v35;
+      personsCopy = v35;
     }
 
     else
@@ -180,7 +180,7 @@
     }
 
     v31 = [v11 copy];
-    v8[2](v8, v10, v31);
+    handlerCopy[2](handlerCopy, v10, v31);
 
     v30 = 1;
 LABEL_30:
@@ -188,7 +188,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v8[2](v8, MEMORY[0x277CBEBF8], MEMORY[0x277CBEBF8]);
+  handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], MEMORY[0x277CBEBF8]);
   v30 = 0;
 LABEL_31:
 
@@ -196,9 +196,9 @@ LABEL_31:
   return v30;
 }
 
-- (id)resolveDateTimeRange:(id)a3
+- (id)resolveDateTimeRange:(id)range
 {
-  if (a3)
+  if (range)
   {
     [MEMORY[0x277CD3B70] successWithResolvedDateComponentsRange:?];
   }
@@ -212,19 +212,19 @@ LABEL_31:
   return v3;
 }
 
-- (id)allIMHandlesForHandle:(id)a3
+- (id)allIMHandlesForHandle:(id)handle
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handleCopy = handle;
   v4 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [MEMORY[0x277D18D28] sharedInstance];
-  v6 = [v5 accounts];
+  mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+  accounts = [mEMORY[0x277D18D28] accounts];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [accounts countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -235,41 +235,41 @@ LABEL_31:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accounts);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) imHandleWithID:v3];
+        v11 = [*(*(&v15 + 1) + 8 * i) imHandleWithID:handleCopy];
         if (v11)
         {
           [v4 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [accounts countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [v4 array];
+  array = [v4 array];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return array;
 }
 
-- (void)SPIQueryMessagesForChats:(id)a3 onlyUnread:(BOOL)a4 limit:(int64_t)a5 completion:(id)a6
+- (void)SPIQueryMessagesForChats:(id)chats onlyUnread:(BOOL)unread limit:(int64_t)limit completion:(id)completion
 {
-  v29 = a4;
+  unreadCopy = unread;
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v31 = a6;
+  chatsCopy = chats;
+  completionCopy = completion;
   v9 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v10 = v8;
+  v10 = chatsCopy;
   v11 = [v10 countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v11)
   {
@@ -285,9 +285,9 @@ LABEL_31:
         }
 
         v15 = *(*(&v34 + 1) + 8 * i);
-        v16 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-        v17 = [v16 chatDataSource];
-        v18 = [v17 allGUIDsForChat:v15];
+        messageHandlerDataSource = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+        chatDataSource = [messageHandlerDataSource chatDataSource];
+        v18 = [chatDataSource allGUIDsForChat:v15];
 
         if (v18)
         {
@@ -316,27 +316,27 @@ LABEL_31:
 
   v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v23 = [v9 array];
+  array = [v9 array];
   v32 = v22;
   v33 = v21;
-  [(IMAssistantMessageQueryHandler *)self handlesAndServicesForChatGuids:v23 handles:&v33 services:&v32];
+  [(IMAssistantMessageQueryHandler *)self handlesAndServicesForChatGuids:array handles:&v33 services:&v32];
   v24 = v33;
 
   v25 = v32;
   v26 = [v24 copy];
   v27 = [v25 copy];
 
-  [(IMAssistantMessageQueryHandler *)self SPIQueryMessagesForChatsWithIdentifiers:v26 services:v27 onlyUnread:v29 limit:a5 completion:v31];
+  [(IMAssistantMessageQueryHandler *)self SPIQueryMessagesForChatsWithIdentifiers:v26 services:v27 onlyUnread:unreadCopy limit:limit completion:completionCopy];
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)SPIQueryMessagesForChatsWithIdentifiers:(id)a3 services:(id)a4 onlyUnread:(BOOL)a5 limit:(int64_t)a6 completion:(id)a7
+- (void)SPIQueryMessagesForChatsWithIdentifiers:(id)identifiers services:(id)services onlyUnread:(BOOL)unread limit:(int64_t)limit completion:(id)completion
 {
-  v9 = a5;
+  unreadCopy = unread;
   v41 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  identifiersCopy = identifiers;
+  servicesCopy = services;
+  completionCopy = completion;
   v14 = _IMAssistantCoreSearchForMessageSignpostLogHandle();
   v15 = os_signpost_id_generate(v14);
 
@@ -353,20 +353,20 @@ LABEL_31:
   v29 = sub_2547C37BC;
   v30 = &unk_279786380;
   v32 = v15;
-  v18 = v13;
+  v18 = completionCopy;
   v31 = v18;
   v19 = MEMORY[0x259C19590](&v27);
   v20 = IMLogHandleForCategory();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    v34 = v12;
+    v34 = servicesCopy;
     v35 = 2112;
-    v36 = v11;
+    v36 = identifiersCopy;
     v37 = 1024;
-    v38 = v9;
+    v38 = unreadCopy;
     v39 = 2048;
-    v40 = a6;
+    limitCopy = limit;
     _os_log_impl(&dword_25479E000, v20, OS_LOG_TYPE_INFO, "Calling IMSPIQueryMessagesWithChatIdentifiers services: %@, chatIdentifiers: %@, onlyUnread: %d, limit: %ld", buf, 0x26u);
   }
 
@@ -396,10 +396,10 @@ LABEL_31:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlesAndServicesForPersons:(id)a3 handles:(id *)a4 services:(id *)a5
+- (void)handlesAndServicesForPersons:(id)persons handles:(id *)handles services:(id *)services
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  personsCopy = persons;
   v7 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -412,7 +412,7 @@ LABEL_31:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v6;
+  obj = personsCopy;
   v9 = [obj countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v9)
   {
@@ -431,23 +431,23 @@ LABEL_31:
         }
 
         v13 = *(*(&v38 + 1) + 8 * v12);
-        v14 = [v13 __im_assistant_allContactIdentifiers];
-        v15 = [v13 personHandle];
-        v16 = [v15 value];
+        __im_assistant_allContactIdentifiers = [v13 __im_assistant_allContactIdentifiers];
+        personHandle = [v13 personHandle];
+        value = [personHandle value];
 
-        if ([v14 count])
+        if ([__im_assistant_allContactIdentifiers count])
         {
           v36 = 0u;
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v17 = v14;
+          v17 = __im_assistant_allContactIdentifiers;
           v18 = [v17 countByEnumeratingWithState:&v34 objects:v44 count:16];
           if (v18)
           {
             v19 = v18;
-            v32 = v16;
-            v33 = v14;
+            v32 = value;
+            v33 = __im_assistant_allContactIdentifiers;
             v20 = *v35;
             do
             {
@@ -459,8 +459,8 @@ LABEL_31:
                 }
 
                 v22 = [(IMAssistantMessageHandler *)self contactWithIdentifier:*(*(&v34 + 1) + 8 * i)];
-                v23 = [v22 __im_assistant_allIMHandles];
-                (v8)[2](v8, v23);
+                __im_assistant_allIMHandles = [v22 __im_assistant_allIMHandles];
+                (v8)[2](v8, __im_assistant_allIMHandles);
               }
 
               v19 = [v17 countByEnumeratingWithState:&v34 objects:v44 count:16];
@@ -469,19 +469,19 @@ LABEL_31:
             while (v19);
             v11 = v29;
             v10 = v30;
-            v16 = v32;
-            v14 = v33;
+            value = v32;
+            __im_assistant_allContactIdentifiers = v33;
           }
         }
 
         else
         {
-          if (![v16 length])
+          if (![value length])
           {
             goto LABEL_18;
           }
 
-          v17 = [(IMAssistantMessageQueryHandler *)self allIMHandlesForHandle:v16];
+          v17 = [(IMAssistantMessageQueryHandler *)self allIMHandlesForHandle:value];
           (v8)[2](v8, v17);
         }
 
@@ -496,23 +496,23 @@ LABEL_18:
     while (v10);
   }
 
-  v24 = [v26 array];
-  [(IMAssistantMessageQueryHandler *)self handlesAndServicesForChatGuids:v24 handles:a4 services:a5];
+  array = [v26 array];
+  [(IMAssistantMessageQueryHandler *)self handlesAndServicesForChatGuids:array handles:handles services:services];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlesAndServicesForChatGuids:(id)a3 handles:(id *)a4 services:(id *)a5
+- (void)handlesAndServicesForChatGuids:(id)guids handles:(id *)handles services:(id *)services
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  guidsCopy = guids;
   v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = guidsCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v8)
   {
@@ -555,27 +555,27 @@ LABEL_18:
     while (v9);
   }
 
-  if (a4)
+  if (handles)
   {
-    *a4 = [v19 copy];
+    *handles = [v19 copy];
   }
 
-  if (a5)
+  if (services)
   {
-    *a5 = [v6 copy];
+    *services = [v6 copy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)SPIQueryMessagesForSenders:(id)a3 onlyUnread:(BOOL)a4 limit:(int64_t)a5 completion:(id)a6
+- (void)SPIQueryMessagesForSenders:(id)senders onlyUnread:(BOOL)unread limit:(int64_t)limit completion:(id)completion
 {
-  v7 = a4;
+  unreadCopy = unread;
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  completionCopy = completion;
   v30 = 0;
   v31 = 0;
-  [(IMAssistantMessageQueryHandler *)self handlesAndServicesForPersons:a3 handles:&v31 services:&v30];
+  [(IMAssistantMessageQueryHandler *)self handlesAndServicesForPersons:senders handles:&v31 services:&v30];
   v11 = v31;
   v12 = v30;
   v13 = IMLogHandleForCategory();
@@ -586,9 +586,9 @@ LABEL_18:
     v34 = 2112;
     v35 = v12;
     v36 = 1024;
-    v37 = v7;
+    v37 = unreadCopy;
     v38 = 2048;
-    v39 = a5;
+    limitCopy = limit;
     _os_log_impl(&dword_25479E000, v13, OS_LOG_TYPE_INFO, "Performing query for messages from handles: %@ services: %@ onlyUnread: %d, limit: %ld", buf, 0x26u);
   }
 
@@ -608,7 +608,7 @@ LABEL_18:
   v26 = sub_2547C42AC;
   v27 = &unk_279786380;
   v29 = v15;
-  v18 = v10;
+  v18 = completionCopy;
   v28 = v18;
   v19 = MEMORY[0x259C19590](&v24);
   v20 = [IMAssistantMessageQueryHandler IMAssistantIMSPIQueue:v24];
@@ -629,9 +629,9 @@ LABEL_18:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)SPIQueryUnreadMessages:(int64_t)a3 completion:(id)a4
+- (void)SPIQueryUnreadMessages:(int64_t)messages completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = _IMAssistantCoreSearchForMessageSignpostLogHandle();
   v6 = os_signpost_id_generate(v5);
 
@@ -648,7 +648,7 @@ LABEL_18:
   v16 = sub_2547C4510;
   v17 = &unk_279786380;
   v19 = v6;
-  v9 = v4;
+  v9 = completionCopy;
   v18 = v9;
   v10 = MEMORY[0x259C19590](&v14);
   v11 = [IMAssistantMessageQueryHandler IMAssistantIMSPIQueue:v14];
@@ -667,10 +667,10 @@ LABEL_18:
   }
 }
 
-- (void)SPIQueryMessagesWithGUIDs:(id)a3 completion:(id)a4
+- (void)SPIQueryMessagesWithGUIDs:(id)ds completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
   v7 = _IMAssistantCoreSearchForMessageSignpostLogHandle();
   v8 = os_signpost_id_generate(v7);
 
@@ -687,7 +687,7 @@ LABEL_18:
   v18 = sub_2547C4784;
   v19 = &unk_279786380;
   v21 = v8;
-  v11 = v5;
+  v11 = completionCopy;
   v20 = v11;
   v12 = MEMORY[0x259C19590](&v16);
   v13 = [IMAssistantMessageQueryHandler IMAssistantIMSPIQueue:v16];
@@ -706,10 +706,10 @@ LABEL_18:
   }
 }
 
-- (void)SPIQueryMessagesWithRowIDs:(id)a3 completion:(id)a4
+- (void)SPIQueryMessagesWithRowIDs:(id)ds completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dsCopy = ds;
   v7 = _IMAssistantCoreSearchForMessageSignpostLogHandle();
   v8 = os_signpost_id_generate(v7);
 
@@ -726,7 +726,7 @@ LABEL_18:
   v18 = sub_2547C49F8;
   v19 = &unk_279786380;
   v21 = v8;
-  v11 = v5;
+  v11 = completionCopy;
   v20 = v11;
   v12 = MEMORY[0x259C19590](&v16);
   v13 = [IMAssistantMessageQueryHandler IMAssistantIMSPIQueue:v16];
@@ -745,18 +745,18 @@ LABEL_18:
   }
 }
 
-- (id)recipientsPredicate:(id)a3
+- (id)recipientsPredicate:(id)predicate
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  predicateCopy = predicate;
+  if ([predicateCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = v4;
+    v6 = predicateCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
@@ -803,18 +803,18 @@ LABEL_18:
   return v15;
 }
 
-- (id)sendersPredicate:(id)a3
+- (id)sendersPredicate:(id)predicate
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  predicateCopy = predicate;
+  if ([predicateCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = v4;
+    v6 = predicateCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
@@ -861,16 +861,16 @@ LABEL_18:
   return v15;
 }
 
-- (id)spokenPhrasesForSpeakableStrings:(id)a3
+- (id)spokenPhrasesForSpeakableStrings:(id)strings
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringsCopy = strings;
   v5 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = stringsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -886,16 +886,16 @@ LABEL_18:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 spokenPhrase];
-        if ([v12 length])
+        spokenPhrase = [v11 spokenPhrase];
+        if ([spokenPhrase length])
         {
-          [v5 addObject:v12];
+          [v5 addObject:spokenPhrase];
         }
 
-        v13 = [v11 alternativeSpeakableMatches];
-        if ([v13 count])
+        alternativeSpeakableMatches = [v11 alternativeSpeakableMatches];
+        if ([alternativeSpeakableMatches count])
         {
-          v14 = [(IMAssistantMessageQueryHandler *)self spokenPhrasesForSpeakableStrings:v13];
+          v14 = [(IMAssistantMessageQueryHandler *)self spokenPhrasesForSpeakableStrings:alternativeSpeakableMatches];
           [v5 addObjectsFromArray:v14];
         }
       }
@@ -906,23 +906,23 @@ LABEL_18:
     while (v8);
   }
 
-  v15 = [v5 array];
+  array = [v5 array];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return array;
 }
 
-- (id)vocabularyIdentifiersFromSpeakableStrings:(id)a3
+- (id)vocabularyIdentifiersFromSpeakableStrings:(id)strings
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringsCopy = strings;
   v5 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = stringsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -938,16 +938,16 @@ LABEL_18:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 vocabularyIdentifier];
-        if ([v12 length])
+        vocabularyIdentifier = [v11 vocabularyIdentifier];
+        if ([vocabularyIdentifier length])
         {
-          [v5 addObject:v12];
+          [v5 addObject:vocabularyIdentifier];
         }
 
-        v13 = [v11 alternativeSpeakableMatches];
-        if ([v13 count])
+        alternativeSpeakableMatches = [v11 alternativeSpeakableMatches];
+        if ([alternativeSpeakableMatches count])
         {
-          v14 = [(IMAssistantMessageQueryHandler *)self vocabularyIdentifiersFromSpeakableStrings:v13];
+          v14 = [(IMAssistantMessageQueryHandler *)self vocabularyIdentifiersFromSpeakableStrings:alternativeSpeakableMatches];
           [v5 addObjectsFromArray:v14];
         }
       }
@@ -958,45 +958,45 @@ LABEL_18:
     while (v8);
   }
 
-  v15 = [v5 array];
+  array = [v5 array];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return array;
 }
 
-- (id)messageContentsPredicate:(id)a3
+- (id)messageContentsPredicate:(id)predicate
 {
-  v3 = a3;
-  if ([v3 count])
+  predicateCopy = predicate;
+  if ([predicateCopy count])
   {
-    v4 = [MEMORY[0x277CCAB68] string];
-    v5 = [MEMORY[0x277CBEB18] array];
-    if ([v3 count])
+    string = [MEMORY[0x277CCAB68] string];
+    array = [MEMORY[0x277CBEB18] array];
+    if ([predicateCopy count])
     {
       v6 = 0;
       do
       {
         if (v6)
         {
-          [v4 appendString:@" AND "];
+          [string appendString:@" AND "];
         }
 
-        [v4 appendString:@"self LIKE[cd] %@"];
+        [string appendString:@"self LIKE[cd] %@"];
         v7 = MEMORY[0x277CCACA8];
-        v8 = [v3 objectAtIndexedSubscript:v6];
+        v8 = [predicateCopy objectAtIndexedSubscript:v6];
         v9 = [v7 stringWithFormat:@"*%@*", v8];
-        [v5 addObject:v9];
+        [array addObject:v9];
 
         ++v6;
       }
 
-      while (v6 < [v3 count]);
+      while (v6 < [predicateCopy count]);
     }
 
     v10 = MEMORY[0x277CCAC30];
-    v11 = [v4 copy];
-    v12 = [v10 predicateWithFormat:v11 argumentArray:v5];
+    v11 = [string copy];
+    v12 = [v10 predicateWithFormat:v11 argumentArray:array];
   }
 
   else
@@ -1007,29 +1007,29 @@ LABEL_18:
   return v12;
 }
 
-- (id)chatParticipantForSPIHandle:(id)a3
+- (id)chatParticipantForSPIHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(IMAssistantMessageHandler *)self contactIdentifiersMatchingSPIHandle:v4];
+  handleCopy = handle;
+  v5 = [(IMAssistantMessageHandler *)self contactIdentifiersMatchingSPIHandle:handleCopy];
   v6 = [IMAssistantMessageSearchChatParticipant alloc];
-  v7 = [v4 address];
-  v8 = [v4 isMe];
+  address = [handleCopy address];
+  isMe = [handleCopy isMe];
 
-  v9 = [(IMAssistantMessageSearchChatParticipant *)v6 initWithHandle:v7 contactIdentifiers:v5 isMe:v8];
+  v9 = [(IMAssistantMessageSearchChatParticipant *)v6 initWithHandle:address contactIdentifiers:v5 isMe:isMe];
 
   return v9;
 }
 
-- (id)chatParticipantsForSPIHandles:(id)a3
+- (id)chatParticipantsForSPIHandles:(id)handles
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlesCopy = handles;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = handlesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1060,16 +1060,16 @@ LABEL_18:
   return v12;
 }
 
-- (id)unifiedContactIdentifiersForPerson:(id)a3
+- (id)unifiedContactIdentifiersForPerson:(id)person
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 __im_assistant_allContactIdentifiers];
+  __im_assistant_allContactIdentifiers = [person __im_assistant_allContactIdentifiers];
   v5 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = __im_assistant_allContactIdentifiers;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1097,28 +1097,28 @@ LABEL_18:
     while (v8);
   }
 
-  v12 = [v5 array];
+  array = [v5 array];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return array;
 }
 
-- (id)chatsContainingRequiredParticipants:(id)a3
+- (id)chatsContainingRequiredParticipants:(id)participants
 {
   v89 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-  v6 = [v5 chatDataSource];
-  v7 = [v6 allExistingChats];
+  participantsCopy = participants;
+  messageHandlerDataSource = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+  chatDataSource = [messageHandlerDataSource chatDataSource];
+  allExistingChats = [chatDataSource allExistingChats];
 
-  v48 = [MEMORY[0x277CBEB18] array];
-  v58 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:512 valueOptions:0 capacity:{objc_msgSend(v4, "count")}];
+  array = [MEMORY[0x277CBEB18] array];
+  v58 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:512 valueOptions:0 capacity:{objc_msgSend(participantsCopy, "count")}];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  obj = v4;
+  obj = participantsCopy;
   v8 = [obj countByEnumeratingWithState:&v76 objects:v88 count:16];
   if (v8)
   {
@@ -1134,7 +1134,7 @@ LABEL_18:
         }
 
         v12 = *(*(&v76 + 1) + 8 * i);
-        v13 = [(IMAssistantMessageQueryHandler *)self unifiedContactIdentifiersForPerson:v12, v48];
+        v13 = [(IMAssistantMessageQueryHandler *)self unifiedContactIdentifiersForPerson:v12, array];
         [v58 setObject:v13 forKey:v12];
       }
 
@@ -1148,12 +1148,12 @@ LABEL_18:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v49 = v7;
+  v49 = allExistingChats;
   v52 = [v49 countByEnumeratingWithState:&v72 objects:v87 count:16];
   if (v52)
   {
     v50 = *v73;
-    v51 = self;
+    selfCopy = self;
     do
     {
       v14 = 0;
@@ -1166,7 +1166,7 @@ LABEL_18:
 
         v55 = v14;
         v15 = *(*(&v72 + 1) + 8 * v14);
-        v16 = [(IMAssistantMessageHandler *)self contactIdentifiersForParticipantsInChat:v15, v48];
+        v16 = [(IMAssistantMessageHandler *)self contactIdentifiersForParticipantsInChat:v15, array];
         v53 = v15;
         v17 = [v15 participantsWithState:16];
         v57 = [v17 __imArrayByApplyingBlock:&unk_2866931D8];
@@ -1267,17 +1267,17 @@ LABEL_18:
                   v25 = v56;
                 }
 
-                v35 = [v28 personHandle];
-                v36 = [v35 value];
-                v37 = [v36 length];
+                personHandle = [v28 personHandle];
+                value = [personHandle value];
+                v37 = [value length];
 
                 if (!v37)
                 {
                   goto LABEL_51;
                 }
 
-                v38 = [v28 personHandle];
-                v39 = [v38 value];
+                personHandle2 = [v28 personHandle];
+                value2 = [personHandle2 value];
                 if (MEMORY[0x259C19130]() || IMStringIsEmail())
                 {
                   v40 = IMCanonicalizeFormattedString();
@@ -1285,18 +1285,18 @@ LABEL_18:
 
                 else
                 {
-                  if (!MEMORY[0x259C19110](v39))
+                  if (!MEMORY[0x259C19110](value2))
                   {
                     v41 = IMLogHandleForCategory();
                     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
                     {
                       *buf = 138412290;
-                      v81 = v39;
+                      v81 = value2;
                       _os_log_impl(&dword_25479E000, v41, OS_LOG_TYPE_INFO, "Could not canonicalize handle %@ because it is neither a phone number nor an email address.", buf, 0xCu);
                     }
                   }
 
-                  v40 = v39;
+                  v40 = value2;
                 }
 
                 v42 = v40;
@@ -1325,11 +1325,11 @@ LABEL_48:
           }
         }
 
-        [v48 addObject:v53];
+        [array addObject:v53];
 LABEL_52:
 
         v14 = v55 + 1;
-        self = v51;
+        self = selfCopy;
       }
 
       while (v55 + 1 != v52);
@@ -1342,32 +1342,32 @@ LABEL_52:
   v44 = IMLogHandleForCategory();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
   {
-    v45 = [v48 count];
+    v45 = [array count];
     *buf = 134218242;
     v81 = v45;
     v82 = 2112;
-    v83 = v48;
+    v83 = array;
     _os_log_impl(&dword_25479E000, v44, OS_LOG_TYPE_INFO, "Found %ld chats matching participants. Chats: %@", buf, 0x16u);
   }
 
   v46 = *MEMORY[0x277D85DE8];
 
-  return v48;
+  return array;
 }
 
-- (id)chatsWithConversationIdentifiers:(id)a3
+- (id)chatsWithConversationIdentifiers:(id)identifiers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-  v6 = [v5 chatDataSource];
+  messageHandlerDataSource = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+  chatDataSource = [messageHandlerDataSource chatDataSource];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v4;
+  v7 = identifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v8)
   {
@@ -1384,7 +1384,7 @@ LABEL_52:
 
         v12 = *(*(&v21 + 1) + 8 * i);
         v13 = IMAssistantChatIdentifierFromConversationIdentifier(v12);
-        v14 = [v6 existingChatWithChatIdentifier:v13];
+        v14 = [chatDataSource existingChatWithChatIdentifier:v13];
         v15 = IMLogHandleForCategory();
         v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
         if (v14)
@@ -1426,26 +1426,26 @@ LABEL_52:
   return v17;
 }
 
-- (id)chatsForChatNames:(id)a3
+- (id)chatsForChatNames:(id)names
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  namesCopy = names;
+  if ([namesCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB40]);
-    v24 = [(IMAssistantMessageQueryHandler *)self vocabularyIdentifiersFromSpeakableStrings:v4];
+    v24 = [(IMAssistantMessageQueryHandler *)self vocabularyIdentifiersFromSpeakableStrings:namesCopy];
     v6 = [v24 __imArrayByApplyingBlock:&unk_2866931F8];
-    v25 = v4;
-    v7 = [(IMAssistantMessageQueryHandler *)self spokenPhrasesForSpeakableStrings:v4];
-    v8 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-    v9 = [v8 chatDataSource];
-    v10 = [v9 allExistingChats];
+    v25 = namesCopy;
+    v7 = [(IMAssistantMessageQueryHandler *)self spokenPhrasesForSpeakableStrings:namesCopy];
+    messageHandlerDataSource = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+    chatDataSource = [messageHandlerDataSource chatDataSource];
+    allExistingChats = [chatDataSource allExistingChats];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = v10;
+    v11 = allExistingChats;
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v38 count:16];
     if (v12)
     {
@@ -1461,9 +1461,9 @@ LABEL_52:
           }
 
           v16 = *(*(&v26 + 1) + 8 * i);
-          v17 = [v16 chatIdentifier];
-          v18 = [v16 displayName];
-          if ([v17 length] && (objc_msgSend(v6, "containsObject:", v17) & 1) != 0 || objc_msgSend(v18, "length") && objc_msgSend(v7, "containsObject:", v18))
+          chatIdentifier = [v16 chatIdentifier];
+          displayName = [v16 displayName];
+          if ([chatIdentifier length] && (objc_msgSend(v6, "containsObject:", chatIdentifier) & 1) != 0 || objc_msgSend(displayName, "length") && objc_msgSend(v7, "containsObject:", displayName))
           {
             [v5 addObject:v16];
           }
@@ -1490,38 +1490,38 @@ LABEL_52:
       _os_log_impl(&dword_25479E000, v19, OS_LOG_TYPE_INFO, "Found %ld chats matching chat names:%@ vocabularyIdentifiers:%@ chats:%@", buf, 0x2Au);
     }
 
-    v21 = [v5 array];
+    array = [v5 array];
 
-    v4 = v25;
+    namesCopy = v25;
   }
 
   else
   {
-    v21 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return array;
 }
 
-- (void)searchMessagesWithContents:(id)a3 messageIdentifiers:(id)a4 notificationIdentifiers:(id)a5 chatNames:(id)a6 conversationIdentifiers:(id)a7 recipients:(id)a8 senders:(id)a9 dateTimeRange:(id)a10 attributes:(unint64_t)a11 completion:(id)a12
+- (void)searchMessagesWithContents:(id)contents messageIdentifiers:(id)identifiers notificationIdentifiers:(id)notificationIdentifiers chatNames:(id)names conversationIdentifiers:(id)conversationIdentifiers recipients:(id)recipients senders:(id)senders dateTimeRange:(id)self0 attributes:(unint64_t)self1 completion:(id)self2
 {
   v99 = *MEMORY[0x277D85DE8];
-  v81 = a3;
-  v72 = a4;
-  v73 = a5;
-  v80 = a6;
-  v79 = a7;
-  v18 = a8;
-  v19 = a9;
-  v66 = a12;
-  v20 = a10;
+  contentsCopy = contents;
+  identifiersCopy = identifiers;
+  notificationIdentifiersCopy = notificationIdentifiers;
+  namesCopy = names;
+  conversationIdentifiersCopy = conversationIdentifiers;
+  recipientsCopy = recipients;
+  sendersCopy = senders;
+  completionCopy = completion;
+  rangeCopy = range;
   v21 = IMLogHandleForCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     v22 = @"NO";
-    if ((((a11 & 1) == 0) & (a11 >> 1)) != 0)
+    if ((((attributes & 1) == 0) & (attributes >> 1)) != 0)
     {
       v23 = @"YES";
     }
@@ -1531,7 +1531,7 @@ LABEL_52:
       v23 = @"NO";
     }
 
-    if ((a11 & ((a11 & 2) == 0)) != 0)
+    if ((attributes & ((attributes & 2) == 0)) != 0)
     {
       v22 = @"YES";
     }
@@ -1543,16 +1543,16 @@ LABEL_52:
     _os_log_impl(&dword_25479E000, v21, OS_LOG_TYPE_INFO, "Searching for messages with attributes onlyUnreadMessages: %@ | onlyReadMessages %@", buf, 0x16u);
   }
 
-  v77 = ((a11 & 1) == 0) & (a11 >> 1);
+  v77 = ((attributes & 1) == 0) & (attributes >> 1);
 
-  v24 = [v20 startDateComponents];
-  v25 = [v24 date];
+  startDateComponents = [rangeCopy startDateComponents];
+  date = [startDateComponents date];
 
-  v26 = [v20 endDateComponents];
+  endDateComponents = [rangeCopy endDateComponents];
 
-  v27 = [v26 date];
+  date2 = [endDateComponents date];
 
-  if (!(v25 | v27))
+  if (!(date | date2))
   {
     v28 = 0;
     v70 = 0;
@@ -1560,9 +1560,9 @@ LABEL_52:
     goto LABEL_22;
   }
 
-  if (!v25)
+  if (!date)
   {
-    v25 = [MEMORY[0x277CBEAA8] distantPast];
+    date = [MEMORY[0x277CBEAA8] distantPast];
     v29 = IMLogHandleForCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
@@ -1570,7 +1570,7 @@ LABEL_52:
       _os_log_impl(&dword_25479E000, v29, OS_LOG_TYPE_INFO, "No start date specified for date filtering, using open ended start date.", buf, 2u);
     }
 
-    if (v27)
+    if (date2)
     {
       goto LABEL_19;
     }
@@ -1578,10 +1578,10 @@ LABEL_52:
     goto LABEL_16;
   }
 
-  if (!v27)
+  if (!date2)
   {
 LABEL_16:
-    v27 = [MEMORY[0x277CBEAA8] distantFuture];
+    date2 = [MEMORY[0x277CBEAA8] distantFuture];
     v30 = IMLogHandleForCategory();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
@@ -1591,51 +1591,51 @@ LABEL_16:
   }
 
 LABEL_19:
-  v28 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v25 endDate:v27];
+  v28 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:date endDate:date2];
   v31 = IMLogHandleForCategory();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v96 = v25;
+    v96 = date;
     v97 = 2112;
-    v98 = v27;
+    v98 = date2;
     _os_log_impl(&dword_25479E000, v31, OS_LOG_TYPE_INFO, "Filtering the search results to date time interval: [%@, %@]", buf, 0x16u);
   }
 
-  v70 = v27;
-  v71 = v25;
+  v70 = date2;
+  v71 = date;
 
 LABEL_22:
-  v32 = [(IMAssistantMessageQueryHandler *)self messageContentsPredicate:v81];
-  v76 = v18;
-  v33 = [(IMAssistantMessageQueryHandler *)self recipientsPredicate:v18];
-  v34 = [(IMAssistantMessageQueryHandler *)self sendersPredicate:v19];
-  v35 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-  v75 = v19;
-  if ([v35 isInternationalSpamFilteringEnabled])
+  v32 = [(IMAssistantMessageQueryHandler *)self messageContentsPredicate:contentsCopy];
+  v76 = recipientsCopy;
+  v33 = [(IMAssistantMessageQueryHandler *)self recipientsPredicate:recipientsCopy];
+  v34 = [(IMAssistantMessageQueryHandler *)self sendersPredicate:sendersCopy];
+  messageHandlerDataSource = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+  v75 = sendersCopy;
+  if ([messageHandlerDataSource isInternationalSpamFilteringEnabled])
   {
-    v36 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-    v37 = [v36 chatDataSource];
-    v38 = [v37 blackholedChatsExist];
+    messageHandlerDataSource2 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+    chatDataSource = [messageHandlerDataSource2 chatDataSource];
+    blackholedChatsExist = [chatDataSource blackholedChatsExist];
   }
 
   else
   {
-    v38 = 0;
+    blackholedChatsExist = 0;
   }
 
-  v39 = v73;
+  v39 = notificationIdentifiersCopy;
 
   v87[0] = MEMORY[0x277D85DD0];
   v87[1] = 3221225472;
   v87[2] = sub_2547C7168;
   v87[3] = &unk_279786CA0;
-  v92 = v38;
+  v92 = blackholedChatsExist;
   v87[4] = self;
   v69 = v28;
   v88 = v69;
-  v93 = ((a11 & 1) == 0) & (a11 >> 1);
-  v94 = a11 & ((a11 & 2) == 0);
+  v93 = ((attributes & 1) == 0) & (attributes >> 1);
+  v94 = attributes & ((attributes & 2) == 0);
   v68 = v32;
   v89 = v68;
   v40 = v34;
@@ -1657,10 +1657,10 @@ LABEL_22:
   v83 = v44;
   v45 = v43;
   v84 = v45;
-  v46 = v66;
+  v46 = completionCopy;
   v85 = v46;
   v47 = MEMORY[0x259C19590](v82);
-  if (v72)
+  if (identifiersCopy)
   {
     v48 = IMLogHandleForCategory();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
@@ -1669,14 +1669,14 @@ LABEL_22:
       _os_log_impl(&dword_25479E000, v48, OS_LOG_TYPE_INFO, "Performing search via message identifiers search, then filter.", buf, 2u);
     }
 
-    v49 = self;
-    v50 = v72;
+    selfCopy2 = self;
+    v50 = identifiersCopy;
 LABEL_33:
-    [(IMAssistantMessageQueryHandler *)v49 messagesMatchingMessageIdentifiers:v50 completion:v47];
+    [(IMAssistantMessageQueryHandler *)selfCopy2 messagesMatchingMessageIdentifiers:v50 completion:v47];
     goto LABEL_34;
   }
 
-  if ([v73 count])
+  if ([notificationIdentifiersCopy count])
   {
     v51 = IMLogHandleForCategory();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
@@ -1685,12 +1685,12 @@ LABEL_33:
       _os_log_impl(&dword_25479E000, v51, OS_LOG_TYPE_INFO, "Performing search for messages matching the notification identifiers, then filter.", buf, 2u);
     }
 
-    v49 = self;
-    v50 = v73;
+    selfCopy2 = self;
+    v50 = notificationIdentifiersCopy;
     goto LABEL_33;
   }
 
-  if ([v80 count])
+  if ([namesCopy count])
   {
     v53 = IMLogHandleForCategory();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
@@ -1699,14 +1699,14 @@ LABEL_33:
       _os_log_impl(&dword_25479E000, v53, OS_LOG_TYPE_INFO, "Performing search via chat name search, then filter.", buf, 2u);
     }
 
-    v54 = [(IMAssistantMessageQueryHandler *)self chatsForChatNames:v80];
+    v54 = [(IMAssistantMessageQueryHandler *)self chatsForChatNames:namesCopy];
     if (![v54 count])
     {
       v55 = IMLogHandleForCategory();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v96 = v80;
+        v96 = namesCopy;
         v56 = "Failed to find any chats matching chatNames: %@";
 LABEL_53:
         _os_log_impl(&dword_25479E000, v55, OS_LOG_TYPE_INFO, v56, buf, 0xCu);
@@ -1719,7 +1719,7 @@ LABEL_53:
     goto LABEL_45;
   }
 
-  if ([v79 count])
+  if ([conversationIdentifiersCopy count])
   {
     v57 = IMLogHandleForCategory();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
@@ -1728,14 +1728,14 @@ LABEL_53:
       _os_log_impl(&dword_25479E000, v57, OS_LOG_TYPE_INFO, "Performing search via chat search, then filter.", buf, 2u);
     }
 
-    v54 = [(IMAssistantMessageQueryHandler *)self chatsWithConversationIdentifiers:v79];
+    v54 = [(IMAssistantMessageQueryHandler *)self chatsWithConversationIdentifiers:conversationIdentifiersCopy];
     if (![v54 count])
     {
       v55 = IMLogHandleForCategory();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v96 = v79;
+        v96 = conversationIdentifiersCopy;
         v56 = "Failed to find any chats matching conversation identifiers: %@";
         goto LABEL_53;
       }
@@ -1821,12 +1821,12 @@ LABEL_55:
         _os_log_impl(&dword_25479E000, v61, OS_LOG_TYPE_INFO, "Performing search via examining all chats, then filter.", buf, 2u);
       }
 
-      v64 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-      v65 = [v64 chatDataSource];
-      v78 = [v65 allExistingChats];
+      messageHandlerDataSource3 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+      chatDataSource2 = [messageHandlerDataSource3 chatDataSource];
+      allExistingChats = [chatDataSource2 allExistingChats];
 
-      [(IMAssistantMessageQueryHandler *)self SPIQueryMessagesForChats:v78 onlyUnread:0 limit:10 completion:v47];
-      v39 = v73;
+      [(IMAssistantMessageQueryHandler *)self SPIQueryMessagesForChats:allExistingChats onlyUnread:0 limit:10 completion:v47];
+      v39 = notificationIdentifiersCopy;
     }
   }
 
@@ -1835,18 +1835,18 @@ LABEL_34:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)messageIsFromBlackholedChat:(id)a3
+- (BOOL)messageIsFromBlackholedChat:(id)chat
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 chatIdentifier];
-  v6 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-  v7 = [v6 chatDataSource];
-  v8 = [v7 existingChatWithChatIdentifier:v5];
+  chatCopy = chat;
+  chatIdentifier = [chatCopy chatIdentifier];
+  messageHandlerDataSource = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+  chatDataSource = [messageHandlerDataSource chatDataSource];
+  v8 = [chatDataSource existingChatWithChatIdentifier:chatIdentifier];
 
   if (v8)
   {
-    LOBYTE(v9) = 0;
+    LOBYTE(isBlackholed) = 0;
   }
 
   else
@@ -1855,38 +1855,38 @@ LABEL_34:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v17 = 138412290;
-      v18 = v5;
+      v18 = chatIdentifier;
       _os_log_impl(&dword_25479E000, v10, OS_LOG_TYPE_INFO, "Could not find chatIdentifier %@ in chat registry, looking up IMSPIChat to determine blackhole status.", &v17, 0xCu);
     }
 
-    v11 = [v4 spiChatWithQOS:25];
-    v9 = [v11 isBlackholed];
+    v11 = [chatCopy spiChatWithQOS:25];
+    isBlackholed = [v11 isBlackholed];
     v12 = IMLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v4 guid];
-      v14 = [v11 guid];
+      guid = [chatCopy guid];
+      guid2 = [v11 guid];
       v17 = 138412802;
-      v18 = v13;
+      v18 = guid;
       v19 = 2112;
-      v20 = v14;
+      v20 = guid2;
       v21 = 1024;
-      v22 = v9;
+      v22 = isBlackholed;
       _os_log_impl(&dword_25479E000, v12, OS_LOG_TYPE_INFO, "Determined message %@ from chat %@ isBlackholed=%d", &v17, 0x1Cu);
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v9;
+  return isBlackholed;
 }
 
-- (void)messagesMatchingMessageIdentifiers:(id)a3 completion:(id)a4
+- (void)messagesMatchingMessageIdentifiers:(id)identifiers completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstObject];
-  v9 = [v8 hasPrefix:@"x-apple-sms:guid="];
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  firstObject = [identifiersCopy firstObject];
+  v9 = [firstObject hasPrefix:@"x-apple-sms:guid="];
 
   v10 = IMLogHandleForCategory();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
@@ -1895,14 +1895,14 @@ LABEL_34:
     if (v11)
     {
       v14 = 134217984;
-      v15 = [v6 count];
+      v15 = [identifiersCopy count];
       _os_log_impl(&dword_25479E000, v10, OS_LOG_TYPE_INFO, "Looking up %ld messages with IMSPIQueryMessagesWithRowIDs", &v14, 0xCu);
     }
 
-    v12 = [v6 __imArrayByApplyingBlock:&unk_286693218];
-    [(IMAssistantMessageQueryHandler *)self SPIQueryMessagesWithRowIDs:v12 completion:v7];
+    v12 = [identifiersCopy __imArrayByApplyingBlock:&unk_286693218];
+    [(IMAssistantMessageQueryHandler *)self SPIQueryMessagesWithRowIDs:v12 completion:completionCopy];
 
-    v7 = v12;
+    completionCopy = v12;
   }
 
   else
@@ -1910,11 +1910,11 @@ LABEL_34:
     if (v11)
     {
       v14 = 134217984;
-      v15 = [v6 count];
+      v15 = [identifiersCopy count];
       _os_log_impl(&dword_25479E000, v10, OS_LOG_TYPE_INFO, "Looking up %ld messages with IMSPIQueryMessagesWithGUIDs", &v14, 0xCu);
     }
 
-    [(IMAssistantMessageQueryHandler *)self SPIQueryMessagesWithGUIDs:v6 completion:v7];
+    [(IMAssistantMessageQueryHandler *)self SPIQueryMessagesWithGUIDs:identifiersCopy completion:completionCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];

@@ -1,30 +1,30 @@
 @interface CCUIButtonModuleView
-- (CCUIButtonModuleView)initWithFrame:(CGRect)a3;
+- (CCUIButtonModuleView)initWithFrame:(CGRect)frame;
 - (NSDirectionalEdgeInsets)contentEdgeInsets;
 - (double)_effectiveGlyphAlpha;
-- (id)_tintColorForSelectedState:(BOOL)a3;
-- (void)_handlePressGesture:(id)a3;
-- (void)_setGlyphAlpha:(double)a3;
-- (void)_setGlyphPackageDescription:(id)a3;
-- (void)_updateForComponentStateChange:(unint64_t)a3;
+- (id)_tintColorForSelectedState:(BOOL)state;
+- (void)_handlePressGesture:(id)gesture;
+- (void)_setGlyphAlpha:(double)alpha;
+- (void)_setGlyphPackageDescription:(id)description;
+- (void)_updateForComponentStateChange:(unint64_t)change;
 - (void)_updateGlyphImage;
 - (void)_updateGlyphImageViewVisualStyling;
 - (void)_updateGlyphScale;
 - (void)_updateGlyphViewTinting;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContentEdgeInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setGlyphAlpha:(double)a3;
-- (void)setGlyphImage:(id)a3;
-- (void)setGlyphPackageDescription:(id)a3;
-- (void)setGlyphScale:(double)a3;
-- (void)setGlyphState:(id)a3;
-- (void)setGlyphView:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelectedGlyphImage:(id)a3;
+- (void)setContentEdgeInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setContentMetrics:(id)metrics;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setGlyphAlpha:(double)alpha;
+- (void)setGlyphImage:(id)image;
+- (void)setGlyphPackageDescription:(id)description;
+- (void)setGlyphScale:(double)scale;
+- (void)setGlyphState:(id)state;
+- (void)setGlyphView:(id)view;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelectedGlyphImage:(id)image;
 @end
 
 @implementation CCUIButtonModuleView
@@ -50,8 +50,8 @@
 
   if (!v5 && [(UIImage *)v4 isSymbolImage])
   {
-    v6 = [(CCUIModuleContentMetrics *)v22 symbolConfiguration];
-    v7 = [(UIImage *)v4 imageByApplyingSymbolConfiguration:v6];
+    symbolConfiguration = [(CCUIModuleContentMetrics *)v22 symbolConfiguration];
+    v7 = [(UIImage *)v4 imageByApplyingSymbolConfiguration:symbolConfiguration];
 
     v4 = v7;
   }
@@ -84,11 +84,11 @@
     glyphImageView = self->_glyphImageView;
   }
 
-  v13 = [(UIImageView *)glyphImageView image];
-  v14 = [(UIImage *)v4 symbolConfiguration];
-  v15 = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
-  v16 = [v14 configurationByApplyingConfiguration:v15];
-  v17 = [v14 isEqualToConfiguration:v16];
+  image = [(UIImageView *)glyphImageView image];
+  symbolConfiguration2 = [(UIImage *)v4 symbolConfiguration];
+  configurationPreferringMulticolor = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
+  v16 = [symbolConfiguration2 configurationByApplyingConfiguration:configurationPreferringMulticolor];
+  v17 = [symbolConfiguration2 isEqualToConfiguration:v16];
 
   if (v17)
   {
@@ -104,7 +104,7 @@
   v20 = [(UIImage *)v4 imageWithRenderingMode:v18];
   [(UIImageView *)v19 setImage:v20];
 
-  v21 = [(UIImageView *)self->_glyphImageView image];
+  image2 = [(UIImageView *)self->_glyphImageView image];
   LOBYTE(v20) = BSEqualObjects();
 
   if ((v20 & 1) == 0)
@@ -123,10 +123,10 @@
   if (v4 && ([(CCUIModuleContentMetrics *)v4 symbolScaleFactor], v7 = v6, (BSFloatIsOne() & 1) == 0))
   {
     v8 = glyphScale * v7;
-    v9 = [(UIImageView *)self->_glyphImageView image];
-    v10 = [v9 isSymbolImage];
+    image = [(UIImageView *)self->_glyphImageView image];
+    isSymbolImage = [image isSymbolImage];
 
-    if (!v10)
+    if (!isSymbolImage)
     {
       glyphScale = v8;
     }
@@ -199,11 +199,11 @@
   return result;
 }
 
-- (CCUIButtonModuleView)initWithFrame:(CGRect)a3
+- (CCUIButtonModuleView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CCUIButtonModuleView;
-  v3 = [(CCUIButtonModuleView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CCUIButtonModuleView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -231,15 +231,15 @@
   return v4;
 }
 
-- (void)setGlyphView:(id)a3
+- (void)setGlyphView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   glyphView = self->_glyphView;
-  v8 = v5;
-  if (glyphView != v5)
+  v8 = viewCopy;
+  if (glyphView != viewCopy)
   {
     [(CCUIButtonModuleGlyph *)glyphView removeFromSuperview];
-    objc_storeStrong(&self->_glyphView, a3);
+    objc_storeStrong(&self->_glyphView, view);
     if (self->_glyphView)
     {
       [(CCUIButtonModuleView *)self addSubview:?];
@@ -253,136 +253,136 @@
   }
 }
 
-- (void)setGlyphImage:(id)a3
+- (void)setGlyphImage:(id)image
 {
-  v5 = a3;
-  if (self->_glyphImage != v5)
+  imageCopy = image;
+  if (self->_glyphImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_glyphImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_glyphImage, image);
     [(CCUIButtonModuleView *)self _updateGlyphImage];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setSelectedGlyphImage:(id)a3
+- (void)setSelectedGlyphImage:(id)image
 {
-  v5 = a3;
-  if (self->_selectedGlyphImage != v5)
+  imageCopy = image;
+  if (self->_selectedGlyphImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedGlyphImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_selectedGlyphImage, image);
     [(CCUIButtonModuleView *)self _updateGlyphImage];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setGlyphPackageDescription:(id)a3
+- (void)setGlyphPackageDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_glyphPackageDescription, a3);
-    [(CCUIButtonModuleView *)self _setGlyphPackageDescription:v5];
+    objc_storeStrong(&self->_glyphPackageDescription, description);
+    [(CCUIButtonModuleView *)self _setGlyphPackageDescription:descriptionCopy];
     [(CCUIButtonModuleView *)self _setGlyphState:self->_glyphState];
     [(CCUIButtonModuleView *)self _updateGlyphScale];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = CCUIButtonModuleView;
-  v5 = [(CCUIButtonModuleView *)&v7 isHighlighted];
+  isHighlighted = [(CCUIButtonModuleView *)&v7 isHighlighted];
   v6.receiver = self;
   v6.super_class = CCUIButtonModuleView;
-  [(CCUIButtonModuleView *)&v6 setHighlighted:v3];
-  if (v5 != v3)
+  [(CCUIButtonModuleView *)&v6 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
     [(CCUIButtonModuleView *)self _updateForComponentStateChange:0];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = CCUIButtonModuleView;
-  v5 = [(CCUIButtonModuleView *)&v7 isSelected];
+  isSelected = [(CCUIButtonModuleView *)&v7 isSelected];
   v6.receiver = self;
   v6.super_class = CCUIButtonModuleView;
-  [(CCUIButtonModuleView *)&v6 setSelected:v3];
-  if (v5 != v3)
+  [(CCUIButtonModuleView *)&v6 setSelected:selectedCopy];
+  if (isSelected != selectedCopy)
   {
     [(CCUIButtonModuleView *)self _updateForComponentStateChange:2];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = CCUIButtonModuleView;
-  v5 = [(CCUIButtonModuleView *)&v7 isEnabled];
+  isEnabled = [(CCUIButtonModuleView *)&v7 isEnabled];
   v6.receiver = self;
   v6.super_class = CCUIButtonModuleView;
-  [(CCUIButtonModuleView *)&v6 setEnabled:v3];
-  if (v5 != v3)
+  [(CCUIButtonModuleView *)&v6 setEnabled:enabledCopy];
+  if (isEnabled != enabledCopy)
   {
     [(CCUIButtonModuleView *)self _updateForComponentStateChange:1];
   }
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
-  v5 = a3;
-  if (self->_glyphState != v5)
+  stateCopy = state;
+  if (self->_glyphState != stateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_glyphState, a3);
+    v6 = stateCopy;
+    objc_storeStrong(&self->_glyphState, state);
     [(CCUIButtonModuleView *)self _setGlyphState:v6];
-    v5 = v6;
+    stateCopy = v6;
   }
 }
 
-- (void)setGlyphAlpha:(double)a3
+- (void)setGlyphAlpha:(double)alpha
 {
-  if (self->_glyphAlpha != a3)
+  if (self->_glyphAlpha != alpha)
   {
-    self->_glyphAlpha = a3;
+    self->_glyphAlpha = alpha;
     [(CCUIButtonModuleView *)self _updateForComponentStateChange:1];
   }
 }
 
-- (void)setGlyphScale:(double)a3
+- (void)setGlyphScale:(double)scale
 {
-  if (self->_glyphScale != a3)
+  if (self->_glyphScale != scale)
   {
-    self->_glyphScale = a3;
+    self->_glyphScale = scale;
     [(CCUIButtonModuleView *)self _updateGlyphScale];
   }
 }
 
-- (void)setContentEdgeInsets:(NSDirectionalEdgeInsets)a3
+- (void)setContentEdgeInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentEdgeInsets.top, v3), vceqq_f64(*&self->_contentEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentEdgeInsets = a3;
+    self->_contentEdgeInsets = insets;
     [(CCUIButtonModuleView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  v5 = a3;
+  metricsCopy = metrics;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_contentMetrics, a3);
+    objc_storeStrong(&self->_contentMetrics, metrics);
     [(CCUIButtonModuleView *)self _updateGlyphViewMetrics];
     [(CCUIButtonModuleView *)self _updateGlyphImage];
   }
@@ -393,8 +393,8 @@
   v27.receiver = self;
   v27.super_class = CCUIButtonModuleView;
   [(CCUIButtonModuleView *)&v27 layoutSubviews];
-  v3 = [(CCUIButtonModuleView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(CCUIButtonModuleView *)self traitCollection];
+  [traitCollection displayScale];
 
   [(CCUIButtonModuleView *)self glyphContentFrame];
   v5 = v4;
@@ -402,10 +402,10 @@
   v9 = v8;
   v11 = v10;
   [(CCUIButtonModuleView *)self _shouldReverseLayoutDirection];
-  v12 = [(UIImageView *)self->_glyphImageView image];
-  v13 = v12;
+  image = [(UIImageView *)self->_glyphImageView image];
+  v13 = image;
   v15 = self->_contentEdgeInsets.leading == *(MEMORY[0x1E69DC5C0] + 8) && self->_contentEdgeInsets.top == *MEMORY[0x1E69DC5C0] && self->_contentEdgeInsets.trailing == *(MEMORY[0x1E69DC5C0] + 24);
-  if (v15 && (v12 ? (v16 = self->_contentEdgeInsets.bottom == *(MEMORY[0x1E69DC5C0] + 16)) : (v16 = 0), v16))
+  if (v15 && (image ? (v16 = self->_contentEdgeInsets.bottom == *(MEMORY[0x1E69DC5C0] + 16)) : (v16 = 0), v16))
   {
     [(UIImageView *)self->_glyphImageView setContentMode:9];
     [v13 size];
@@ -468,9 +468,9 @@
   v6.receiver = self;
   v6.super_class = CCUIButtonModuleView;
   [(CCUIButtonModuleView *)&v6 didMoveToWindow];
-  v3 = [(CCUIButtonModuleView *)self window];
+  window = [(CCUIButtonModuleView *)self window];
 
-  if (v3)
+  if (window)
   {
     v4 = [(CCUIButtonModuleView *)self visualStylingProviderForCategory:1];
     visualStylingProvider = self->_visualStylingProvider;
@@ -483,26 +483,26 @@
   }
 }
 
-- (void)_handlePressGesture:(id)a3
+- (void)_handlePressGesture:(id)gesture
 {
-  v5 = a3;
-  v4 = [v5 state];
-  if (v4 == 1 || [v5 state] == 3 || objc_msgSend(v5, "state") == 4)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if (state == 1 || [gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
   {
-    [(CCUIButtonModuleView *)self setHighlighted:v4 == 1];
+    [(CCUIButtonModuleView *)self setHighlighted:state == 1];
   }
 }
 
-- (void)_updateForComponentStateChange:(unint64_t)a3
+- (void)_updateForComponentStateChange:(unint64_t)change
 {
-  v5 = [(CCUIButtonModuleView *)self window];
+  window = [(CCUIButtonModuleView *)self window];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__CCUIButtonModuleView__updateForComponentStateChange___block_invoke;
   v6[3] = &unk_1E83EA880;
   v6[4] = self;
-  v6[5] = a3;
-  [CCUIContentModuleContext performWithoutAnimationWhileHiddenInWindow:v5 actions:v6];
+  v6[5] = change;
+  [CCUIContentModuleContext performWithoutAnimationWhileHiddenInWindow:window actions:v6];
 }
 
 uint64_t __55__CCUIButtonModuleView__updateForComponentStateChange___block_invoke(uint64_t a1)
@@ -554,9 +554,9 @@ uint64_t __55__CCUIButtonModuleView__updateForComponentStateChange___block_invok
   return [v8 _setGlyphAlpha:?];
 }
 
-- (void)_setGlyphPackageDescription:(id)a3
+- (void)_setGlyphPackageDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   glyphPackageView = self->_glyphPackageView;
   if (!glyphPackageView)
   {
@@ -568,11 +568,11 @@ uint64_t __55__CCUIButtonModuleView__updateForComponentStateChange___block_invok
     [(CCUIButtonModuleView *)self _effectiveGlyphAlpha];
     [(CCUICAPackageView *)v8 setAlpha:?];
     v9 = self->_glyphPackageView;
-    v10 = [(CCUIButtonModuleView *)self glyphState];
-    [(CCUICAPackageView *)v9 setStateName:v10];
+    glyphState = [(CCUIButtonModuleView *)self glyphState];
+    [(CCUICAPackageView *)v9 setStateName:glyphState];
 
     [(CCUICAPackageView *)self->_glyphPackageView setAutoresizingMask:18];
-    if (-[CCUIButtonModuleView _shouldReverseLayoutDirection](self, "_shouldReverseLayoutDirection") && [v4 flipsForRightToLeftLayoutDirection])
+    if (-[CCUIButtonModuleView _shouldReverseLayoutDirection](self, "_shouldReverseLayoutDirection") && [descriptionCopy flipsForRightToLeftLayoutDirection])
     {
       v11 = self->_glyphPackageView;
       CGAffineTransformMakeScale(&v12, -1.0, 1.0);
@@ -586,18 +586,18 @@ uint64_t __55__CCUIButtonModuleView__updateForComponentStateChange___block_invok
   [(CCUICAPackageView *)glyphPackageView setPackageDescription:self->_glyphPackageDescription];
 }
 
-- (void)_setGlyphAlpha:(double)a3
+- (void)_setGlyphAlpha:(double)alpha
 {
   [(CCUICAPackageView *)self->_glyphPackageView setAlpha:?];
-  [(UIImageView *)self->_glyphImageView setAlpha:a3];
+  [(UIImageView *)self->_glyphImageView setAlpha:alpha];
   glyphView = self->_glyphView;
 
-  [(CCUIButtonModuleGlyph *)glyphView setAlpha:a3];
+  [(CCUIButtonModuleGlyph *)glyphView setAlpha:alpha];
 }
 
-- (id)_tintColorForSelectedState:(BOOL)a3
+- (id)_tintColorForSelectedState:(BOOL)state
 {
-  if (!a3 || (glyphColor = self->_selectedGlyphColor) == 0)
+  if (!state || (glyphColor = self->_selectedGlyphColor) == 0)
   {
     glyphColor = self->_glyphColor;
   }

@@ -1,17 +1,17 @@
 @interface ATXProactiveSuggestionWidgetRotationFeedbackSession
 - (ATXProactiveSuggestionWidgetRotationFeedbackSession)init;
-- (ATXProactiveSuggestionWidgetRotationFeedbackSession)initWithCoder:(id)a3;
-- (ATXProactiveSuggestionWidgetRotationFeedbackSession)initWithEngagementType:(int64_t)a3 metadata:(id)a4 engagementHistory:(id)a5 systemSuggestSuggestionLayout:(id)a6 sessionStartDate:(id)a7 sessionEndDate:(id)a8 dwellStartDate:(id)a9 longestDwell:(double)a10;
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXProactiveSuggestionWidgetRotationFeedbackSession:(id)a3;
+- (ATXProactiveSuggestionWidgetRotationFeedbackSession)initWithCoder:(id)coder;
+- (ATXProactiveSuggestionWidgetRotationFeedbackSession)initWithEngagementType:(int64_t)type metadata:(id)metadata engagementHistory:(id)history systemSuggestSuggestionLayout:(id)layout sessionStartDate:(id)date sessionEndDate:(id)endDate dwellStartDate:(id)startDate longestDwell:(double)self0;
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXProactiveSuggestionWidgetRotationFeedbackSession:(id)session;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)markRotationSessionEndedAtDate:(id)a3 wasUserScroll:(BOOL)a4;
-- (void)markStackHiddenAtDate:(id)a3;
-- (void)markStackShownAtDate:(id)a3;
-- (void)tryUpdateStackRotationEngagementType:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)markRotationSessionEndedAtDate:(id)date wasUserScroll:(BOOL)scroll;
+- (void)markStackHiddenAtDate:(id)date;
+- (void)markStackShownAtDate:(id)date;
+- (void)tryUpdateStackRotationEngagementType:(int64_t)type;
 @end
 
 @implementation ATXProactiveSuggestionWidgetRotationFeedbackSession
@@ -24,48 +24,48 @@
   return v4;
 }
 
-- (ATXProactiveSuggestionWidgetRotationFeedbackSession)initWithEngagementType:(int64_t)a3 metadata:(id)a4 engagementHistory:(id)a5 systemSuggestSuggestionLayout:(id)a6 sessionStartDate:(id)a7 sessionEndDate:(id)a8 dwellStartDate:(id)a9 longestDwell:(double)a10
+- (ATXProactiveSuggestionWidgetRotationFeedbackSession)initWithEngagementType:(int64_t)type metadata:(id)metadata engagementHistory:(id)history systemSuggestSuggestionLayout:(id)layout sessionStartDate:(id)date sessionEndDate:(id)endDate dwellStartDate:(id)startDate longestDwell:(double)self0
 {
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  metadataCopy = metadata;
+  historyCopy = history;
+  layoutCopy = layout;
+  dateCopy = date;
+  endDateCopy = endDate;
+  startDateCopy = startDate;
   v27.receiver = self;
   v27.super_class = ATXProactiveSuggestionWidgetRotationFeedbackSession;
   v20 = [(ATXProactiveSuggestionWidgetRotationFeedbackSession *)&v27 init];
   v21 = v20;
   if (v20)
   {
-    v20->_engagementType = a3;
-    objc_storeStrong(&v20->_metadata, a4);
-    objc_storeStrong(&v21->_engagementHistory, a5);
-    objc_storeStrong(&v21->_systemSuggestSuggestionLayout, a6);
-    objc_storeStrong(&v21->_sessionStartDate, a7);
-    objc_storeStrong(&v21->_sessionEndDate, a8);
-    objc_storeStrong(&v21->_dwellStartDate, a9);
-    v21->_longestDwell = a10;
+    v20->_engagementType = type;
+    objc_storeStrong(&v20->_metadata, metadata);
+    objc_storeStrong(&v21->_engagementHistory, history);
+    objc_storeStrong(&v21->_systemSuggestSuggestionLayout, layout);
+    objc_storeStrong(&v21->_sessionStartDate, date);
+    objc_storeStrong(&v21->_sessionEndDate, endDate);
+    objc_storeStrong(&v21->_dwellStartDate, startDate);
+    v21->_longestDwell = dwell;
   }
 
   return v21;
 }
 
-- (void)markStackShownAtDate:(id)a3
+- (void)markStackShownAtDate:(id)date
 {
-  objc_storeStrong(&self->_dwellStartDate, a3);
+  objc_storeStrong(&self->_dwellStartDate, date);
 
   [(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self tryUpdateStackRotationEngagementType:1];
 }
 
-- (void)markStackHiddenAtDate:(id)a3
+- (void)markStackHiddenAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   dwellStartDate = self->_dwellStartDate;
-  v8 = v4;
-  if (v4 && dwellStartDate)
+  v8 = dateCopy;
+  if (dateCopy && dwellStartDate)
   {
-    [v4 timeIntervalSinceDate:?];
+    [dateCopy timeIntervalSinceDate:?];
     v7 = v6;
     if (v6 >= *&kATXWidgetRotationFeedbackMinTimeIntervalToBeConsideredDwell)
     {
@@ -83,58 +83,58 @@
   self->_dwellStartDate = 0;
 }
 
-- (void)tryUpdateStackRotationEngagementType:(int64_t)a3
+- (void)tryUpdateStackRotationEngagementType:(int64_t)type
 {
   engagementHistory = self->_engagementHistory;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   [(NSMutableArray *)engagementHistory addObject:v6];
 
-  if (self->_engagementType < a3)
+  if (self->_engagementType < type)
   {
-    self->_engagementType = a3;
+    self->_engagementType = type;
   }
 }
 
-- (void)markRotationSessionEndedAtDate:(id)a3 wasUserScroll:(BOOL)a4
+- (void)markRotationSessionEndedAtDate:(id)date wasUserScroll:(BOOL)scroll
 {
-  v4 = a4;
-  v7 = a3;
-  objc_storeStrong(&self->_sessionEndDate, a3);
-  [(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self markStackHiddenAtDate:v7];
-  if (v4)
+  scrollCopy = scroll;
+  dateCopy = date;
+  objc_storeStrong(&self->_sessionEndDate, date);
+  [(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self markStackHiddenAtDate:dateCopy];
+  if (scrollCopy)
   {
     [(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self tryUpdateStackRotationEngagementType:2];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self isEqualToATXProactiveSuggestionWidgetRotationFeedbackSession:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self isEqualToATXProactiveSuggestionWidgetRotationFeedbackSession:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXProactiveSuggestionWidgetRotationFeedbackSession:(id)a3
+- (BOOL)isEqualToATXProactiveSuggestionWidgetRotationFeedbackSession:(id)session
 {
-  v4 = a3;
-  if (self->_engagementType != *(v4 + 1))
+  sessionCopy = session;
+  if (self->_engagementType != *(sessionCopy + 1))
   {
     goto LABEL_24;
   }
 
   v5 = self->_metadata;
   v6 = v5;
-  if (v5 == *(v4 + 2))
+  if (v5 == *(sessionCopy + 2))
   {
   }
 
@@ -150,7 +150,7 @@
 
   v8 = self->_engagementHistory;
   v9 = v8;
-  if (v8 == *(v4 + 3))
+  if (v8 == *(sessionCopy + 3))
   {
   }
 
@@ -166,7 +166,7 @@
 
   v11 = self->_systemSuggestSuggestionLayout;
   v12 = v11;
-  if (v11 == *(v4 + 4))
+  if (v11 == *(sessionCopy + 4))
   {
   }
 
@@ -182,7 +182,7 @@
 
   v14 = self->_sessionStartDate;
   v15 = v14;
-  if (v14 == *(v4 + 5))
+  if (v14 == *(sessionCopy + 5))
   {
   }
 
@@ -198,7 +198,7 @@
 
   v17 = self->_sessionEndDate;
   v18 = v17;
-  if (v17 == *(v4 + 6))
+  if (v17 == *(sessionCopy + 6))
   {
   }
 
@@ -214,7 +214,7 @@
 
   v20 = self->_dwellStartDate;
   v21 = v20;
-  if (v20 == *(v4 + 7))
+  if (v20 == *(sessionCopy + 7))
   {
 
     goto LABEL_27;
@@ -225,7 +225,7 @@
   if (v22)
   {
 LABEL_27:
-    v23 = self->_longestDwell == v4[8];
+    v23 = self->_longestDwell == sessionCopy[8];
     goto LABEL_25;
   }
 
@@ -253,33 +253,33 @@ LABEL_25:
   return v8;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForNSInteger:(int64_t)integer key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!integer)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -291,33 +291,33 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededFordouble:(double)fordouble key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 == 0.0)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (fordouble == 0.0)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -329,27 +329,27 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   engagementType = self->_engagementType;
-  v5 = a3;
-  [v5 encodeInteger:engagementType forKey:@"engagementType"];
-  [v5 encodeObject:self->_metadata forKey:@"metadata"];
-  [v5 encodeObject:self->_engagementHistory forKey:@"engagementHistory"];
-  [v5 encodeObject:self->_systemSuggestSuggestionLayout forKey:@"suggestionLayout"];
-  [v5 encodeObject:self->_sessionStartDate forKey:@"startDate"];
-  [v5 encodeObject:self->_sessionEndDate forKey:@"endDate"];
-  [v5 encodeObject:self->_dwellStartDate forKey:@"dwellStartDate"];
-  [v5 encodeDouble:@"longestDwell" forKey:self->_longestDwell];
+  coderCopy = coder;
+  [coderCopy encodeInteger:engagementType forKey:@"engagementType"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeObject:self->_engagementHistory forKey:@"engagementHistory"];
+  [coderCopy encodeObject:self->_systemSuggestSuggestionLayout forKey:@"suggestionLayout"];
+  [coderCopy encodeObject:self->_sessionStartDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_sessionEndDate forKey:@"endDate"];
+  [coderCopy encodeObject:self->_dwellStartDate forKey:@"dwellStartDate"];
+  [coderCopy encodeDouble:@"longestDwell" forKey:self->_longestDwell];
 }
 
-- (ATXProactiveSuggestionWidgetRotationFeedbackSession)initWithCoder:(id)a3
+- (ATXProactiveSuggestionWidgetRotationFeedbackSession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"engagementType"];
-  if ([(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self checkAndReportDecodingFailureIfNeededForNSInteger:v5 key:@"engagementType" coder:v4 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1])
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"engagementType"];
+  if ([(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self checkAndReportDecodingFailureIfNeededForNSInteger:v5 key:@"engagementType" coder:coderCopy errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1])
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -357,13 +357,13 @@ LABEL_7:
     v7 = MEMORY[0x1E69C5D78];
     v8 = objc_opt_class();
     v9 = __atxlog_handle_blending_ecosystem();
-    v10 = [v7 robustDecodeObjectOfClass:v8 forKey:@"metadata" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v9];
+    v10 = [v7 robustDecodeObjectOfClass:v8 forKey:@"metadata" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v9];
 
-    v11 = [v4 error];
+    error = [coderCopy error];
 
-    if (v11)
+    if (error)
     {
-      v6 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -375,20 +375,20 @@ LABEL_7:
       v16 = [v14 initWithObjects:{v15, objc_opt_class(), 0}];
       objc_autoreleasePoolPop(v13);
       v17 = __atxlog_handle_blending_ecosystem();
-      v18 = [v12 robustDecodeObjectOfClasses:v16 forKey:@"engagementHistory" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v17];
+      v18 = [v12 robustDecodeObjectOfClasses:v16 forKey:@"engagementHistory" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v17];
 
-      if (v18 && ([v4 error], v19 = objc_claimAutoreleasedReturnValue(), v19, !v19))
+      if (v18 && ([coderCopy error], v19 = objc_claimAutoreleasedReturnValue(), v19, !v19))
       {
         v20 = MEMORY[0x1E69C5D78];
         v21 = objc_opt_class();
         v22 = __atxlog_handle_blending_ecosystem();
-        v23 = [v20 robustDecodeObjectOfClass:v21 forKey:@"suggestionLayout" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v22];
+        v23 = [v20 robustDecodeObjectOfClass:v21 forKey:@"suggestionLayout" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v22];
 
-        v24 = [v4 error];
+        error2 = [coderCopy error];
 
-        if (v24)
+        if (error2)
         {
-          v6 = 0;
+          selfCopy = 0;
         }
 
         else
@@ -396,13 +396,13 @@ LABEL_7:
           v25 = MEMORY[0x1E69C5D78];
           v26 = objc_opt_class();
           v27 = __atxlog_handle_blending_ecosystem();
-          v28 = [v25 robustDecodeObjectOfClass:v26 forKey:@"startDate" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v27];
+          v28 = [v25 robustDecodeObjectOfClass:v26 forKey:@"startDate" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v27];
 
-          v29 = [v4 error];
+          error3 = [coderCopy error];
 
-          if (v29)
+          if (error3)
           {
-            v6 = 0;
+            selfCopy = 0;
           }
 
           else
@@ -411,13 +411,13 @@ LABEL_7:
             v30 = MEMORY[0x1E69C5D78];
             v31 = objc_opt_class();
             v32 = __atxlog_handle_blending_ecosystem();
-            v33 = [v30 robustDecodeObjectOfClass:v31 forKey:@"endDate" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v32];
+            v33 = [v30 robustDecodeObjectOfClass:v31 forKey:@"endDate" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v32];
 
-            v34 = [v4 error];
+            error4 = [coderCopy error];
 
-            if (v34)
+            if (error4)
             {
-              v6 = 0;
+              selfCopy = 0;
               v28 = v44;
             }
 
@@ -427,25 +427,25 @@ LABEL_7:
               v35 = MEMORY[0x1E69C5D78];
               v36 = objc_opt_class();
               v37 = __atxlog_handle_blending_ecosystem();
-              v38 = [v35 robustDecodeObjectOfClass:v36 forKey:@"dwellStartDate" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v37];
+              v38 = [v35 robustDecodeObjectOfClass:v36 forKey:@"dwellStartDate" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorCode:-1 logHandle:v37];
 
-              v39 = [v4 error];
+              error5 = [coderCopy error];
 
-              if (v39)
+              if (error5)
               {
-                v6 = 0;
+                selfCopy = 0;
                 v33 = v43;
                 v28 = v44;
               }
 
               else
               {
-                [v4 decodeDoubleForKey:@"longestDwell"];
+                [coderCopy decodeDoubleForKey:@"longestDwell"];
                 v41 = v40;
                 v28 = v44;
-                if ([(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self checkAndReportDecodingFailureIfNeededFordouble:@"longestDwell" key:v4 coder:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorDomain:-1 errorCode:?])
+                if ([(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self checkAndReportDecodingFailureIfNeededFordouble:@"longestDwell" key:coderCopy coder:@"com.apple.proactive.ATXProactiveSuggestionWidgetRotationFeedbackSession" errorDomain:-1 errorCode:?])
                 {
-                  v6 = 0;
+                  selfCopy = 0;
                   v33 = v43;
                 }
 
@@ -453,7 +453,7 @@ LABEL_7:
                 {
                   v33 = v43;
                   self = [(ATXProactiveSuggestionWidgetRotationFeedbackSession *)self initWithEngagementType:v5 metadata:v10 engagementHistory:v18 systemSuggestSuggestionLayout:v23 sessionStartDate:v44 sessionEndDate:v43 dwellStartDate:v41 longestDwell:v38];
-                  v6 = self;
+                  selfCopy = self;
                 }
               }
             }
@@ -463,12 +463,12 @@ LABEL_7:
 
       else
       {
-        v6 = 0;
+        selfCopy = 0;
       }
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

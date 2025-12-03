@@ -1,20 +1,20 @@
 @interface LACPSAuthorizerEntitlementsAdapter
-- (LACPSAuthorizerEntitlementsAdapter)initWithRequiredEntitlements:(id)a3;
-- (void)authorizeWithCompletion:(id)a3;
+- (LACPSAuthorizerEntitlementsAdapter)initWithRequiredEntitlements:(id)entitlements;
+- (void)authorizeWithCompletion:(id)completion;
 @end
 
 @implementation LACPSAuthorizerEntitlementsAdapter
 
-- (LACPSAuthorizerEntitlementsAdapter)initWithRequiredEntitlements:(id)a3
+- (LACPSAuthorizerEntitlementsAdapter)initWithRequiredEntitlements:(id)entitlements
 {
-  v5 = a3;
+  entitlementsCopy = entitlements;
   v11.receiver = self;
   v11.super_class = LACPSAuthorizerEntitlementsAdapter;
   v6 = [(LACPSAuthorizerEntitlementsAdapter *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requiredEntitlements, a3);
+    objc_storeStrong(&v6->_requiredEntitlements, entitlements);
     v8 = objc_alloc_init(LACEntitlementsChecker);
     entitlementsChecker = v7->_entitlementsChecker;
     v7->_entitlementsChecker = v8;
@@ -23,9 +23,9 @@
   return v7;
 }
 
-- (void)authorizeWithCompletion:(id)a3
+- (void)authorizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NSArray *)self->_requiredEntitlements count])
   {
     entitlementsChecker = self->_entitlementsChecker;
@@ -46,12 +46,12 @@
       v8 = v7;
     }
 
-    (v4)[2](v4, v8);
+    (completionCopy)[2](completionCopy, v8);
   }
 
   else
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 

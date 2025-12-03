@@ -30,29 +30,29 @@
 
 - (id)dd_contextAtLocation:()DataDetectorsSupport
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  [v5 setObject:a1 forKey:@"TextStorage"];
-  v6 = [a1 attribute:@"DDContext" atIndex:a3 effectiveRange:0];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:self forKey:@"TextStorage"];
+  v6 = [self attribute:@"DDContext" atIndex:a3 effectiveRange:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 addEntriesFromDictionary:v6];
+    [dictionary addEntriesFromDictionary:v6];
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (uint64_t)dd_resultAtLocation:()DataDetectorsSupport
 {
-  v3 = [a1 attribute:*MEMORY[0x277D041D8] atIndex:a3 effectiveRange:0];
+  v3 = [self attribute:*MEMORY[0x277D041D8] atIndex:a3 effectiveRange:0];
   objc_opt_class();
-  v4 = 0;
+  coreResult = 0;
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 coreResult];
+    coreResult = [v3 coreResult];
   }
 
-  return v4;
+  return coreResult;
 }
 
 @end

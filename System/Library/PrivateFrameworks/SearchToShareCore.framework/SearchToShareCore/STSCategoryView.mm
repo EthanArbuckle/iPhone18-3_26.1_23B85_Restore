@@ -21,8 +21,8 @@
     v3->_tableView = v5;
 
     v7 = v3->_tableView;
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(UITableView *)v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UITableView *)v7 setBackgroundColor:clearColor];
 
     [(UITableView *)v3->_tableView setSeparatorStyle:0];
     [(UITableView *)v3->_tableView setCellLayoutMarginsFollowReadableWidth:1];
@@ -31,28 +31,28 @@
     [(UITableView *)v3->_tableView setTableFooterView:v9];
     [(UITableView *)v3->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(STSCategoryView *)v3 addSubview:v3->_tableView];
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [(UITableView *)v3->_tableView leadingAnchor];
-    v12 = [(STSCategoryView *)v3 leadingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
-    [v10 addObject:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    leadingAnchor = [(UITableView *)v3->_tableView leadingAnchor];
+    leadingAnchor2 = [(STSCategoryView *)v3 leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v13];
 
-    v14 = [(UITableView *)v3->_tableView trailingAnchor];
-    v15 = [(STSCategoryView *)v3 trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
-    [v10 addObject:v16];
+    trailingAnchor = [(UITableView *)v3->_tableView trailingAnchor];
+    trailingAnchor2 = [(STSCategoryView *)v3 trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v16];
 
-    v17 = [(UITableView *)v3->_tableView topAnchor];
-    v18 = [(STSCategoryView *)v3 topAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
-    [v10 addObject:v19];
+    topAnchor = [(UITableView *)v3->_tableView topAnchor];
+    topAnchor2 = [(STSCategoryView *)v3 topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v19];
 
-    v20 = [(UITableView *)v3->_tableView bottomAnchor];
-    v21 = [(STSCategoryView *)v3 bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
-    [v10 addObject:v22];
+    bottomAnchor = [(UITableView *)v3->_tableView bottomAnchor];
+    bottomAnchor2 = [(STSCategoryView *)v3 bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v22];
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v10];
+    [MEMORY[0x277CCAAD0] activateConstraints:array];
   }
 
   return v3;

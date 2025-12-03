@@ -1,16 +1,16 @@
 @interface PNDetailsViewAssetFetcher
-+ (id)addingKeyAssetForObject:(id)a3 toAssets:(id)a4 options:(id)a5;
++ (id)addingKeyAssetForObject:(id)object toAssets:(id)assets options:(id)options;
 @end
 
 @implementation PNDetailsViewAssetFetcher
 
-+ (id)addingKeyAssetForObject:(id)a3 toAssets:(id)a4 options:(id)a5
++ (id)addingKeyAssetForObject:(id)object toAssets:(id)assets options:(id)options
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = sub_1C72D0A08(v8, v9, v10);
+  objectCopy = object;
+  assetsCopy = assets;
+  optionsCopy = options;
+  v11 = sub_1C72D0A08(objectCopy, assetsCopy, optionsCopy);
 
   return v11;
 }

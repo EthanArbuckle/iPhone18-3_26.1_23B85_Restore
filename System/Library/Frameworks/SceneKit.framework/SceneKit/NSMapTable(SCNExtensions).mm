@@ -7,7 +7,7 @@
 - (void)scn_enumerateKeysAndValuesUsingBlock:()SCNExtensions
 {
   memset(&enumerator, 0, sizeof(enumerator));
-  NSEnumerateMapTable(&enumerator, a1);
+  NSEnumerateMapTable(&enumerator, self);
   value = 0;
   key = 0;
   do

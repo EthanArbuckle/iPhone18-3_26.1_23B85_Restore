@@ -1,47 +1,47 @@
 @interface STBlueprintBackedDowntimeOverrideModifier
-- (BOOL)_saveWithError:(id *)a3;
-- (BOOL)applyDowntimeOverride:(id)a3 error:(id *)a4;
-- (BOOL)removeDowntimeOverrideWithError:(id *)a3;
-- (STBlueprintBackedDowntimeOverrideModifier)initWithDowntimeBlueprint:(id)a3;
+- (BOOL)_saveWithError:(id *)error;
+- (BOOL)applyDowntimeOverride:(id)override error:(id *)error;
+- (BOOL)removeDowntimeOverrideWithError:(id *)error;
+- (STBlueprintBackedDowntimeOverrideModifier)initWithDowntimeBlueprint:(id)blueprint;
 - (STDowntimeOverride)activeOverride;
-- (void)_deleteOrphanedOrTombstonedDowntimeOverridesInContext:(id)a3;
+- (void)_deleteOrphanedOrTombstonedDowntimeOverridesInContext:(id)context;
 - (void)_tombstoneDowntimeOverride;
 @end
 
 @implementation STBlueprintBackedDowntimeOverrideModifier
 
-- (STBlueprintBackedDowntimeOverrideModifier)initWithDowntimeBlueprint:(id)a3
+- (STBlueprintBackedDowntimeOverrideModifier)initWithDowntimeBlueprint:(id)blueprint
 {
-  v4 = a3;
+  blueprintCopy = blueprint;
   v8.receiver = self;
   v8.super_class = STBlueprintBackedDowntimeOverrideModifier;
   v5 = [(STBlueprintBackedDowntimeOverrideModifier *)&v8 init];
   downtimeBlueprint = v5->_downtimeBlueprint;
-  v5->_downtimeBlueprint = v4;
+  v5->_downtimeBlueprint = blueprintCopy;
 
   return v5;
 }
 
 - (STDowntimeOverride)activeOverride
 {
-  v2 = [(STBlueprintBackedDowntimeOverrideModifier *)self downtimeBlueprint];
-  v3 = [v2 activeOverride];
+  downtimeBlueprint = [(STBlueprintBackedDowntimeOverrideModifier *)self downtimeBlueprint];
+  activeOverride = [downtimeBlueprint activeOverride];
 
-  return v3;
+  return activeOverride;
 }
 
-- (BOOL)applyDowntimeOverride:(id)a3 error:(id *)a4
+- (BOOL)applyDowntimeOverride:(id)override error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(STBlueprintBackedDowntimeOverrideModifier *)self downtimeBlueprint];
-  v8 = [v7 managedObjectContext];
-  v9 = [v7 override];
-  v10 = [STDowntimeOverrideTransformer coreOverrideFromDowntimeOverride:v6 existingDowntimeOverride:v9 inContext:v8];
+  overrideCopy = override;
+  downtimeBlueprint = [(STBlueprintBackedDowntimeOverrideModifier *)self downtimeBlueprint];
+  managedObjectContext = [downtimeBlueprint managedObjectContext];
+  override = [downtimeBlueprint override];
+  v10 = [STDowntimeOverrideTransformer coreOverrideFromDowntimeOverride:overrideCopy existingDowntimeOverride:override inContext:managedObjectContext];
 
-  [v7 setOverride:v10];
-  [v7 setIsDirty:1];
-  [(STBlueprintBackedDowntimeOverrideModifier *)self _deleteOrphanedOrTombstonedDowntimeOverridesInContext:v8];
+  [downtimeBlueprint setOverride:v10];
+  [downtimeBlueprint setIsDirty:1];
+  [(STBlueprintBackedDowntimeOverrideModifier *)self _deleteOrphanedOrTombstonedDowntimeOverridesInContext:managedObjectContext];
   v23 = 0;
   v11 = [(STBlueprintBackedDowntimeOverrideModifier *)self _saveWithError:&v23];
   v12 = v23;
@@ -51,7 +51,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v6;
+      v25 = overrideCopy;
       _os_log_impl(&dword_1B831F000, v13, OS_LOG_TYPE_DEFAULT, "Saved downtime override: %@", buf, 0xCu);
     }
   }
@@ -65,20 +65,20 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
     v20 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   v21 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (BOOL)removeDowntimeOverrideWithError:(id *)a3
+- (BOOL)removeDowntimeOverrideWithError:(id *)error
 {
   [(STBlueprintBackedDowntimeOverrideModifier *)self _tombstoneDowntimeOverride];
-  v5 = [(STBlueprintBackedDowntimeOverrideModifier *)self _saveWithError:a3];
+  v5 = [(STBlueprintBackedDowntimeOverrideModifier *)self _saveWithError:error];
   if (v5)
   {
     v6 = +[STLog blueprint];
@@ -101,20 +101,20 @@
   return v5;
 }
 
-- (BOOL)_saveWithError:(id *)a3
+- (BOOL)_saveWithError:(id *)error
 {
-  v4 = [(STBlueprintBackedDowntimeOverrideModifier *)self downtimeBlueprint];
-  v5 = [v4 managedObjectContext];
+  downtimeBlueprint = [(STBlueprintBackedDowntimeOverrideModifier *)self downtimeBlueprint];
+  managedObjectContext = [downtimeBlueprint managedObjectContext];
 
-  if ([v5 hasChanges])
+  if ([managedObjectContext hasChanges])
   {
     v9 = 0;
-    v6 = [v5 save:&v9];
+    v6 = [managedObjectContext save:&v9];
     v7 = v9;
-    if (a3)
+    if (error)
     {
       v7 = v7;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -127,16 +127,16 @@
   return v6;
 }
 
-- (void)_deleteOrphanedOrTombstonedDowntimeOverridesInContext:(id)a3
+- (void)_deleteOrphanedOrTombstonedDowntimeOverridesInContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = +[STCoreDowntimeOverride fetchRequest];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == nil OR %K == YES", @"downtime", @"isTombstoned"];
   [v4 setPredicate:v5];
 
   v26 = 0;
-  v6 = [v3 executeFetchRequest:v4 error:&v26];
+  v6 = [contextCopy executeFetchRequest:v4 error:&v26];
   v7 = v26;
   if (v6)
   {
@@ -160,7 +160,7 @@
             objc_enumerationMutation(v8);
           }
 
-          [v3 deleteObject:*(*(&v22 + 1) + 8 * v12++)];
+          [contextCopy deleteObject:*(*(&v22 + 1) + 8 * v12++)];
         }
 
         while (v10 != v12);
@@ -195,13 +195,13 @@
 - (void)_tombstoneDowntimeOverride
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [(STBlueprintBackedDowntimeOverrideModifier *)self downtimeBlueprint];
-  v3 = [v2 override];
-  v4 = v3;
-  if (v3)
+  downtimeBlueprint = [(STBlueprintBackedDowntimeOverrideModifier *)self downtimeBlueprint];
+  override = [downtimeBlueprint override];
+  v4 = override;
+  if (override)
   {
-    [v3 setIsTombstoned:1];
-    [v2 setIsDirty:1];
+    [override setIsTombstoned:1];
+    [downtimeBlueprint setIsDirty:1];
     v5 = +[STLog blueprint];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {

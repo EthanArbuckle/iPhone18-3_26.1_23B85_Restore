@@ -1,16 +1,16 @@
 @interface ARTimeKeyedList
 - (ARTimeKeyedList)init;
-- (ARTimeKeyedList)initWithMaxSize:(unint64_t)a3;
+- (ARTimeKeyedList)initWithMaxSize:(unint64_t)size;
 - (id)description;
-- (id)nearestObjectForTime:(double)a3;
-- (unint64_t)insertionIndexForTime:(id)a3;
-- (void)appendObject:(id)a3 forTime:(double)a4;
+- (id)nearestObjectForTime:(double)time;
+- (unint64_t)insertionIndexForTime:(id)time;
+- (void)appendObject:(id)object forTime:(double)time;
 - (void)clear;
 @end
 
 @implementation ARTimeKeyedList
 
-- (ARTimeKeyedList)initWithMaxSize:(unint64_t)a3
+- (ARTimeKeyedList)initWithMaxSize:(unint64_t)size
 {
   v11.receiver = self;
   v11.super_class = ARTimeKeyedList;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_maxSize = a3;
+    v4->_maxSize = size;
     v6 = objc_opt_new();
     times = v5->_times;
     v5->_times = v6;
@@ -41,16 +41,16 @@
   return [(ARTimeKeyedList *)self initWithMaxSize:0];
 }
 
-- (unint64_t)insertionIndexForTime:(id)a3
+- (unint64_t)insertionIndexForTime:(id)time
 {
   times = self->_times;
-  v4 = a3;
-  v5 = [(NSMutableArray *)times indexOfObject:v4 inSortedRange:0 options:[(NSMutableArray *)times count] usingComparator:1024, &__block_literal_global_112];
+  timeCopy = time;
+  v5 = [(NSMutableArray *)times indexOfObject:timeCopy inSortedRange:0 options:[(NSMutableArray *)times count] usingComparator:1024, &__block_literal_global_112];
 
   return v5;
 }
 
-- (id)nearestObjectForTime:(double)a3
+- (id)nearestObjectForTime:(double)time
 {
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:?];
   v6 = [(ARTimeKeyedList *)self insertionIndexForTime:v5];
@@ -69,29 +69,29 @@
     v9 = -1.79769313e308;
   }
 
-  if (v6 < -[NSMutableArray count](self->_times, "count") && (-[NSMutableArray objectAtIndexedSubscript:](self->_times, "objectAtIndexedSubscript:", v6), v11 = objc_claimAutoreleasedReturnValue(), [v11 doubleValue], v13 = v12, v11, v13 - a3 < a3 - v9))
+  if (v6 < -[NSMutableArray count](self->_times, "count") && (-[NSMutableArray objectAtIndexedSubscript:](self->_times, "objectAtIndexedSubscript:", v6), v11 = objc_claimAutoreleasedReturnValue(), [v11 doubleValue], v13 = v12, v11, v13 - time < time - v9))
   {
-    v14 = [(NSMutableArray *)self->_objects objectAtIndexedSubscript:v6, v13 - a3];
+    time = [(NSMutableArray *)self->_objects objectAtIndexedSubscript:v6, v13 - time];
   }
 
   else
   {
-    v14 = v10;
+    time = v10;
   }
 
-  v15 = v14;
+  v15 = time;
 
   return v15;
 }
 
-- (void)appendObject:(id)a3 forTime:(double)a4
+- (void)appendObject:(id)object forTime:(double)time
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v9 = [v6 numberWithDouble:a4];
+  objectCopy = object;
+  v9 = [v6 numberWithDouble:time];
   v8 = [(ARTimeKeyedList *)self insertionIndexForTime:v9];
   [(NSMutableArray *)self->_times insertObject:v9 atIndex:v8];
-  [(NSMutableArray *)self->_objects insertObject:v7 atIndex:v8];
+  [(NSMutableArray *)self->_objects insertObject:objectCopy atIndex:v8];
 
   if ([(NSMutableArray *)self->_times count]> self->_maxSize)
   {

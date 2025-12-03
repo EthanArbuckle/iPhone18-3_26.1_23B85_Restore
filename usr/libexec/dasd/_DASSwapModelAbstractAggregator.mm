@@ -1,19 +1,19 @@
 @interface _DASSwapModelAbstractAggregator
-- (_DASSwapModelAbstractAggregator)initWithAlgorithms:(id)a3;
+- (_DASSwapModelAbstractAggregator)initWithAlgorithms:(id)algorithms;
 - (void)updateScores;
 @end
 
 @implementation _DASSwapModelAbstractAggregator
 
-- (_DASSwapModelAbstractAggregator)initWithAlgorithms:(id)a3
+- (_DASSwapModelAbstractAggregator)initWithAlgorithms:(id)algorithms
 {
-  v4 = a3;
+  algorithmsCopy = algorithms;
   v9.receiver = self;
   v9.super_class = _DASSwapModelAbstractAggregator;
   v5 = [(_DASSwapModelAbstractAggregator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [algorithmsCopy copy];
     algorithms = v5->_algorithms;
     v5->_algorithms = v6;
   }

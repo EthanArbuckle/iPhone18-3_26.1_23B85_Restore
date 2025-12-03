@@ -46,7 +46,7 @@ uint64_t __69__HUCameraEventRecordingCellAccessibility_accessibilityCustomAction
   v3 = [(HUCameraEventRecordingCellAccessibility *)self safeValueForKey:@"recordingEvent"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 hf_sortedSignificantEvents];
+  hf_sortedSignificantEvents = [v4 hf_sortedSignificantEvents];
 
   v13 = 0;
   v14 = &v13;
@@ -54,15 +54,15 @@ uint64_t __69__HUCameraEventRecordingCellAccessibility_accessibilityCustomAction
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = [&stru_2A21C2B40 mutableCopy];
-  v6 = [MEMORY[0x29EDB8DB0] date];
+  date = [MEMORY[0x29EDB8DB0] date];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __72__HUCameraEventRecordingCellAccessibility__axStringForSignificantEvents__block_invoke;
   v10[3] = &unk_29F2C6C98;
   v12 = &v13;
-  v7 = v6;
+  v7 = date;
   v11 = v7;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [hf_sortedSignificantEvents enumerateObjectsUsingBlock:v10];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);

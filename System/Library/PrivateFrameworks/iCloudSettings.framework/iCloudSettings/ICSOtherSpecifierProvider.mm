@@ -1,25 +1,25 @@
 @interface ICSOtherSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (ICSOtherSpecifierProvider)initWithAccountManager:(id)a3;
+- (ICSOtherSpecifierProvider)initWithAccountManager:(id)manager;
 - (NSArray)specifiers;
 - (id)_specifierForLookMeUpByEmail;
 - (id)_specifiersForServerProvidedFooter;
 - (id)account;
-- (void)_footerButtonTapped:(id)a3;
+- (void)_footerButtonTapped:(id)tapped;
 @end
 
 @implementation ICSOtherSpecifierProvider
 
-- (ICSOtherSpecifierProvider)initWithAccountManager:(id)a3
+- (ICSOtherSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = ICSOtherSpecifierProvider;
   v6 = [(ICSOtherSpecifierProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
@@ -27,8 +27,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -47,15 +47,15 @@
     if (([MEMORY[0x277CEC7B8] isMultiUserMode] & 1) == 0)
     {
       v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"ADVANCED_GROUP"];
-      v7 = [(ICSOtherSpecifierProvider *)self _specifierForLookMeUpByEmail];
-      if (v7)
+      _specifierForLookMeUpByEmail = [(ICSOtherSpecifierProvider *)self _specifierForLookMeUpByEmail];
+      if (_specifierForLookMeUpByEmail)
       {
         [v5 addObject:v6];
-        [v5 addObject:v7];
+        [v5 addObject:_specifierForLookMeUpByEmail];
       }
 
-      v8 = [(ICSOtherSpecifierProvider *)self _specifiersForServerProvidedFooter];
-      [v5 addObjectsFromArray:v8];
+      _specifiersForServerProvidedFooter = [(ICSOtherSpecifierProvider *)self _specifiersForServerProvidedFooter];
+      [v5 addObjectsFromArray:_specifiersForServerProvidedFooter];
     }
 
     v9 = [v5 copy];
@@ -70,8 +70,8 @@
 
 - (id)_specifierForLookMeUpByEmail
 {
-  v3 = [(ICSOtherSpecifierProvider *)self account];
-  v4 = [v3 isProvisionedForDataclass:*MEMORY[0x277CB8938]];
+  account = [(ICSOtherSpecifierProvider *)self account];
+  v4 = [account isProvisionedForDataclass:*MEMORY[0x277CB8938]];
 
   if (v4)
   {
@@ -83,10 +83,10 @@
     v10 = [v7 preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:v6 cell:2 edit:0];
 
     [v10 setIdentifier:@"CLOUD_DRIVE_PRIVACY_INFO"];
-    v11 = [(ICSOtherSpecifierProvider *)self account];
-    v12 = [v11 aa_cloudKitAccount];
+    account2 = [(ICSOtherSpecifierProvider *)self account];
+    aa_cloudKitAccount = [account2 aa_cloudKitAccount];
 
-    if (v12)
+    if (aa_cloudKitAccount)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       objc_opt_class();
@@ -95,11 +95,11 @@
       if (isKindOfClass)
       {
         v15 = objc_loadWeakRetained(&self->_delegate);
-        v16 = [v15 specifier];
-        v17 = [v16 userInfo];
-        v18 = [v17 mutableCopy];
+        specifier = [v15 specifier];
+        userInfo = [specifier userInfo];
+        v18 = [userInfo mutableCopy];
 
-        [v18 setObject:v12 forKeyedSubscript:*MEMORY[0x277CE8550]];
+        [v18 setObject:aa_cloudKitAccount forKeyedSubscript:*MEMORY[0x277CE8550]];
         v19 = [v18 copy];
         [v10 setUserInfo:v19];
       }
@@ -117,32 +117,32 @@
 - (id)_specifiersForServerProvidedFooter
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(ICSOtherSpecifierProvider *)self account];
-  v5 = [v4 aa_accountFooterText];
-  v6 = [v5 length];
+  account = [(ICSOtherSpecifierProvider *)self account];
+  aa_accountFooterText = [account aa_accountFooterText];
+  v6 = [aa_accountFooterText length];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    v8 = [(ICSOtherSpecifierProvider *)self account];
-    v9 = [v8 aa_accountFooterText];
-    [v7 setProperty:v9 forKey:*MEMORY[0x277D3FF88]];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    account2 = [(ICSOtherSpecifierProvider *)self account];
+    aa_accountFooterText2 = [account2 aa_accountFooterText];
+    [emptyGroupSpecifier setProperty:aa_accountFooterText2 forKey:*MEMORY[0x277D3FF88]];
 
-    [v7 setProperty:&unk_28849FD40 forKey:*MEMORY[0x277D3FF40]];
-    [v3 addObject:v7];
+    [emptyGroupSpecifier setProperty:&unk_28849FD40 forKey:*MEMORY[0x277D3FF40]];
+    [v3 addObject:emptyGroupSpecifier];
   }
 
-  v10 = [(ICSOtherSpecifierProvider *)self account];
-  v11 = [v10 aa_accountFooterButton];
+  account3 = [(ICSOtherSpecifierProvider *)self account];
+  aa_accountFooterButton = [account3 aa_accountFooterButton];
 
-  if (v11)
+  if (aa_accountFooterButton)
   {
-    v12 = [(ICSOtherSpecifierProvider *)self account];
-    v13 = [v12 aa_accountFooterButton];
-    v14 = [v13 objectForKey:@"title"];
+    account4 = [(ICSOtherSpecifierProvider *)self account];
+    aa_accountFooterButton2 = [account4 aa_accountFooterButton];
+    v14 = [aa_accountFooterButton2 objectForKey:@"title"];
 
-    v15 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v3 addObject:v15];
+    emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [v3 addObject:emptyGroupSpecifier2];
 
     v16 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v14 target:self set:0 get:0 detail:0 cell:13 edit:0];
     *&v16[*MEMORY[0x277D3FC80]] = sel__footerButtonTapped_;
@@ -152,11 +152,11 @@
   return v3;
 }
 
-- (void)_footerButtonTapped:(id)a3
+- (void)_footerButtonTapped:(id)tapped
 {
-  v3 = [(ICSOtherSpecifierProvider *)self account];
-  v4 = [v3 aa_accountFooterButton];
-  v6 = [v4 objectForKey:@"url"];
+  account = [(ICSOtherSpecifierProvider *)self account];
+  aa_accountFooterButton = [account aa_accountFooterButton];
+  v6 = [aa_accountFooterButton objectForKey:@"url"];
 
   v5 = [MEMORY[0x277CBEBC0] URLWithString:v6];
   [*MEMORY[0x277D76620] openURL:v5 options:MEMORY[0x277CBEC10] completionHandler:0];

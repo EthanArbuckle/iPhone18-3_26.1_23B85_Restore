@@ -1,5 +1,5 @@
 @interface CAMTimelapsePlaceholderResult
-- (CAMTimelapsePlaceholderResult)initWithAssetUUID:(id)a3 captureSession:(unsigned __int16)a4 creationDate:(id)a5 captureOrientation:(int64_t)a6 captureDevice:(int64_t)a7 videoDimensions:(CGSize)a8 duration:(double)a9 previewImageSurface:(void *)a10 localPrivateMetadataFileURL:(id)a11;
+- (CAMTimelapsePlaceholderResult)initWithAssetUUID:(id)d captureSession:(unsigned __int16)session creationDate:(id)date captureOrientation:(int64_t)orientation captureDevice:(int64_t)device videoDimensions:(CGSize)dimensions duration:(double)duration previewImageSurface:(void *)self0 localPrivateMetadataFileURL:(id)self1;
 - (CGSize)finalExpectedPixelSize;
 - (CGSize)videoDimensions;
 - (UIImage)placeholderImage;
@@ -8,36 +8,36 @@
 
 @implementation CAMTimelapsePlaceholderResult
 
-- (CAMTimelapsePlaceholderResult)initWithAssetUUID:(id)a3 captureSession:(unsigned __int16)a4 creationDate:(id)a5 captureOrientation:(int64_t)a6 captureDevice:(int64_t)a7 videoDimensions:(CGSize)a8 duration:(double)a9 previewImageSurface:(void *)a10 localPrivateMetadataFileURL:(id)a11
+- (CAMTimelapsePlaceholderResult)initWithAssetUUID:(id)d captureSession:(unsigned __int16)session creationDate:(id)date captureOrientation:(int64_t)orientation captureDevice:(int64_t)device videoDimensions:(CGSize)dimensions duration:(double)duration previewImageSurface:(void *)self0 localPrivateMetadataFileURL:(id)self1
 {
-  height = a8.height;
-  width = a8.width;
-  v20 = a3;
-  v21 = a5;
-  v22 = a11;
+  height = dimensions.height;
+  width = dimensions.width;
+  dCopy = d;
+  dateCopy = date;
+  lCopy = l;
   v30.receiver = self;
   v30.super_class = CAMTimelapsePlaceholderResult;
   v23 = [(CAMTimelapsePlaceholderResult *)&v30 init];
   if (v23)
   {
-    v24 = [v20 copy];
+    v24 = [dCopy copy];
     assetUUID = v23->_assetUUID;
     v23->_assetUUID = v24;
 
-    v23->_sessionIdentifier = a4;
-    objc_storeStrong(&v23->_creationDate, a5);
-    v23->_captureOrientation = a6;
-    v23->_captureDevice = a7;
+    v23->_sessionIdentifier = session;
+    objc_storeStrong(&v23->_creationDate, date);
+    v23->_captureOrientation = orientation;
+    v23->_captureDevice = device;
     v23->_videoDimensions.width = width;
     v23->_videoDimensions.height = height;
-    v23->_timelapseDuration = a9;
-    if (a10)
+    v23->_timelapseDuration = duration;
+    if (surface)
     {
-      v23->_previewImageSurface = a10;
-      CFRetain(a10);
+      v23->_previewImageSurface = surface;
+      CFRetain(surface);
     }
 
-    v26 = [v22 copy];
+    v26 = [lCopy copy];
     localPrivateMetadataFileURL = v23->_localPrivateMetadataFileURL;
     v23->_localPrivateMetadataFileURL = v26;
 
@@ -63,13 +63,13 @@
 
 - (UIImage)placeholderImage
 {
-  v2 = [(CAMTimelapsePlaceholderResult *)self previewImageSurface];
-  if (v2)
+  previewImageSurface = [(CAMTimelapsePlaceholderResult *)self previewImageSurface];
+  if (previewImageSurface)
   {
-    v2 = [objc_alloc(MEMORY[0x1E69DCAB8]) _initWithIOSurface:v2 scale:0 orientation:1.0];
+    previewImageSurface = [objc_alloc(MEMORY[0x1E69DCAB8]) _initWithIOSurface:previewImageSurface scale:0 orientation:1.0];
   }
 
-  return v2;
+  return previewImageSurface;
 }
 
 - (CGSize)finalExpectedPixelSize

@@ -5,17 +5,17 @@
 - (uint64_t)_stopMonitoringDeviceLockState;
 - (void)_startMonitoringDeviceLockState;
 - (void)_updateDeviceLockState;
-- (void)_updateObserversWithDeviceIsLockedState:(uint64_t)a1;
-- (void)addDeviceLockStateObserver:(id)a3;
+- (void)_updateObserversWithDeviceIsLockedState:(uint64_t)state;
+- (void)addDeviceLockStateObserver:(id)observer;
 - (void)dealloc;
-- (void)removeDeviceLockStateObserver:(id)a3;
+- (void)removeDeviceLockStateObserver:(id)observer;
 @end
 
 @implementation FigCaptureDeviceLockStateMonitor
 
 - (void)_updateDeviceLockState
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -26,11 +26,11 @@
 
     v2 = MKBGetDeviceLockState();
     v3 = (v2 < 7) & (0x46u >> v2);
-    if (*(a1 + 48) != v3)
+    if (*(self + 48) != v3)
     {
-      *(a1 + 48) = v3;
+      *(self + 48) = v3;
 
-      [(FigCaptureDeviceLockStateMonitor *)a1 _updateObserversWithDeviceIsLockedState:v3];
+      [(FigCaptureDeviceLockStateMonitor *)self _updateObserversWithDeviceIsLockedState:v3];
     }
   }
 }
@@ -92,7 +92,7 @@ FigCaptureDeviceLockStateMonitor *__64__FigCaptureDeviceLockStateMonitor_sharedD
   return result;
 }
 
-- (void)addDeviceLockStateObserver:(id)a3
+- (void)addDeviceLockStateObserver:(id)observer
 {
   monitorQueue = self->_monitorQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -100,7 +100,7 @@ FigCaptureDeviceLockStateMonitor *__64__FigCaptureDeviceLockStateMonitor_sharedD
   v4[2] = __63__FigCaptureDeviceLockStateMonitor_addDeviceLockStateObserver___block_invoke;
   v4[3] = &unk_1E798F898;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = observer;
   dispatch_async(monitorQueue, v4);
 }
 
@@ -120,7 +120,7 @@ void __63__FigCaptureDeviceLockStateMonitor_addDeviceLockStateObserver___block_i
   dispatch_async(v5, block);
 }
 
-- (void)removeDeviceLockStateObserver:(id)a3
+- (void)removeDeviceLockStateObserver:(id)observer
 {
   monitorQueue = self->_monitorQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -128,7 +128,7 @@ void __63__FigCaptureDeviceLockStateMonitor_addDeviceLockStateObserver___block_i
   v4[2] = __66__FigCaptureDeviceLockStateMonitor_removeDeviceLockStateObserver___block_invoke;
   v4[3] = &unk_1E798F898;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = observer;
   dispatch_async(monitorQueue, v4);
 }
 
@@ -194,7 +194,7 @@ uint64_t __76__FigCaptureDeviceLockStateMonitor__updateObserversWithDeviceIsLock
 
 - (void)_startMonitoringDeviceLockState
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -203,15 +203,15 @@ uint64_t __76__FigCaptureDeviceLockStateMonitor__updateObserversWithDeviceIsLock
       FigDebugAssert3();
     }
 
-    if (!*(a1 + 32))
+    if (!*(self + 32))
     {
       OUTLINED_FUNCTION_8_7();
       v5 = 3221225472;
       v6 = __67__FigCaptureDeviceLockStateMonitor__startMonitoringDeviceLockState__block_invoke;
       v7 = &unk_1E7991270;
-      v8 = a1;
+      selfCopy = self;
       notify_register_dispatch("com.apple.mobile.keybagd.lock_status", v2, v3, handler);
-      [(FigCaptureDeviceLockStateMonitor *)a1 _updateDeviceLockState];
+      [(FigCaptureDeviceLockStateMonitor *)self _updateDeviceLockState];
     }
   }
 }
@@ -239,9 +239,9 @@ uint64_t __76__FigCaptureDeviceLockStateMonitor__updateObserversWithDeviceIsLock
   return result;
 }
 
-- (void)_updateObserversWithDeviceIsLockedState:(uint64_t)a1
+- (void)_updateObserversWithDeviceIsLockedState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -251,13 +251,13 @@ uint64_t __76__FigCaptureDeviceLockStateMonitor__updateObserversWithDeviceIsLock
       FigDebugAssert3();
     }
 
-    v5 = [*(a1 + 24) copy];
+    v5 = [*(state + 24) copy];
     OUTLINED_FUNCTION_8_7();
     v10 = 3221225472;
     v11 = __76__FigCaptureDeviceLockStateMonitor__updateObserversWithDeviceIsLockedState___block_invoke;
     v12 = &unk_1E79973A0;
     v13 = v5;
-    v14 = a1;
+    stateCopy = state;
     v15 = a2;
     dispatch_async(v6, block);
   }

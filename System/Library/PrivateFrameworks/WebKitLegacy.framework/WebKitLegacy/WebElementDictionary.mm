@@ -1,6 +1,6 @@
 @interface WebElementDictionary
 + (void)initializeLookupTable;
-- (WebElementDictionary)initWithHitTestResult:(const void *)a3;
+- (WebElementDictionary)initWithHitTestResult:(const void *)result;
 - (id)_absoluteImageURL;
 - (id)_absoluteLinkURL;
 - (id)_absoluteMediaURL;
@@ -15,7 +15,7 @@
 - (id)_titleDisplayString;
 - (id)_webFrame;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
 - (void)_fillCache;
 - (void)dealloc;
@@ -257,7 +257,7 @@ LABEL_12:
   CFDictionaryAddValue(v19, v18, sel__isInScrollBar);
 }
 
-- (WebElementDictionary)initWithHitTestResult:(const void *)a3
+- (WebElementDictionary)initWithHitTestResult:(const void *)result
 {
   [objc_opt_class() initializeLookupTable];
   v10.receiver = self;
@@ -276,7 +276,7 @@ LABEL_12:
     }
 
     v8 = NonCompact;
-    MEMORY[0x1CCA64810](NonCompact, a3);
+    MEMORY[0x1CCA64810](NonCompact, result);
     v6->_result = v8;
   }
 
@@ -342,19 +342,19 @@ LABEL_12:
   return [(NSMutableDictionary *)cache keyEnumerator];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   result = [(NSMutableDictionary *)self->_cache objectForKey:?];
   if (!result)
   {
-    if (self->_cacheComplete || ([(NSMutableSet *)self->_nilValues containsObject:a3]& 1) != 0)
+    if (self->_cacheComplete || ([(NSMutableSet *)self->_nilValues containsObject:key]& 1) != 0)
     {
       return 0;
     }
 
     if (_MergedGlobals_7 == 1)
     {
-      result = CFDictionaryGetValue(qword_1EC2614C0, a3);
+      result = CFDictionaryGetValue(qword_1EC2614C0, key);
       if (!result)
       {
         return result;
@@ -365,7 +365,7 @@ LABEL_12:
     {
       qword_1EC2614C0 = 0;
       _MergedGlobals_7 = 1;
-      result = CFDictionaryGetValue(0, a3);
+      result = CFDictionaryGetValue(0, key);
       if (!result)
       {
         return result;
@@ -386,7 +386,7 @@ LABEL_10:
           self->_cache = cache;
         }
 
-        [(NSMutableDictionary *)cache setObject:v6 forKey:a3];
+        [(NSMutableDictionary *)cache setObject:v6 forKey:key];
 LABEL_19:
         v10 = [(NSMutableDictionary *)self->_cache count];
         self->_cacheComplete = [(NSMutableSet *)self->_nilValues count]+ v10 == Count;
@@ -412,7 +412,7 @@ LABEL_19:
       self->_nilValues = nilValues;
     }
 
-    [(NSMutableSet *)nilValues addObject:a3];
+    [(NSMutableSet *)nilValues addObject:key];
     goto LABEL_19;
   }
 

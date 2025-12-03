@@ -1,23 +1,23 @@
 @interface MapsPocketStateProvider
-- (MapsPocketStateProvider)initWithDelegate:(id)a3;
-- (void)_enqueueNewState:(int64_t)a3;
-- (void)_fireStateUpdate:(int64_t)a3;
+- (MapsPocketStateProvider)initWithDelegate:(id)delegate;
+- (void)_enqueueNewState:(int64_t)state;
+- (void)_fireStateUpdate:(int64_t)update;
 - (void)dealloc;
-- (void)pocketStateManager:(id)a3 didUpdateState:(int64_t)a4;
+- (void)pocketStateManager:(id)manager didUpdateState:(int64_t)state;
 @end
 
 @implementation MapsPocketStateProvider
 
-- (void)_fireStateUpdate:(int64_t)a3
+- (void)_fireStateUpdate:(int64_t)update
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didUpdatePocketStateType:a3];
+  [WeakRetained didUpdatePocketStateType:update];
 
   updateTimer = self->_updateTimer;
   self->_updateTimer = 0;
 }
 
-- (void)_enqueueNewState:(int64_t)a3
+- (void)_enqueueNewState:(int64_t)state
 {
   [(NSTimer *)self->_updateTimer invalidate];
   updateTimer = self->_updateTimer;
@@ -29,7 +29,7 @@
   v8[2] = sub_100BF9C54;
   v8[3] = &unk_10164D798;
   objc_copyWeak(v9, &location);
-  v9[1] = a3;
+  v9[1] = state;
   v6 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v8 block:10.0];
   v7 = self->_updateTimer;
   self->_updateTimer = v6;
@@ -38,9 +38,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)pocketStateManager:(id)a3 didUpdateState:(int64_t)a4
+- (void)pocketStateManager:(id)manager didUpdateState:(int64_t)state
 {
-  v6 = a3;
+  managerCopy = manager;
   if (qword_10195EAC0 != -1)
   {
     dispatch_once(&qword_10195EAC0, &stru_10164D7B8);
@@ -49,22 +49,22 @@
   v7 = qword_10195EAB8;
   if (os_log_type_enabled(qword_10195EAB8, OS_LOG_TYPE_INFO))
   {
-    if (a4 > 4)
+    if (state > 4)
     {
       v8 = @"Unknown";
     }
 
     else
     {
-      v8 = *(&off_10164D7D8 + a4);
+      v8 = *(&off_10164D7D8 + state);
     }
 
     *buf = 136315906;
     v13 = "[MapsPocketStateProvider pocketStateManager:didUpdateState:]";
     v14 = 2114;
-    v15 = v6;
+    v15 = managerCopy;
     v16 = 2048;
-    v17 = a4;
+    stateCopy = state;
     v18 = 2114;
     v19 = v8;
     v9 = v7;
@@ -77,7 +77,7 @@
   v10[2] = sub_100BF9E58;
   v10[3] = &unk_10165FBC0;
   objc_copyWeak(v11, buf);
-  v11[1] = a4;
+  v11[1] = state;
   dispatch_async(&_dispatch_main_q, v10);
   objc_destroyWeak(v11);
   objc_destroyWeak(buf);
@@ -95,16 +95,16 @@
   [(MapsPocketStateProvider *)&v4 dealloc];
 }
 
-- (MapsPocketStateProvider)initWithDelegate:(id)a3
+- (MapsPocketStateProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = MapsPocketStateProvider;
   v5 = [(MapsPocketStateProvider *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     if (+[CMPocketStateManager isPocketStateAvailable])
     {
       v7 = objc_opt_new();

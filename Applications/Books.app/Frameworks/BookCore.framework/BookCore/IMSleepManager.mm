@@ -7,13 +7,13 @@
 - (unint64_t)idleTimerDisableRefCount;
 - (void)cancelIdleTimer;
 - (void)dealloc;
-- (void)idleTimerFired:(id)a3;
-- (void)idleTimerInputCheck:(id)a3;
+- (void)idleTimerFired:(id)fired;
+- (void)idleTimerInputCheck:(id)check;
 - (void)reevaluateIdleTimerDisabled;
-- (void)releaseIdleTimerDisabledForObject:(id)a3;
-- (void)retainIdleTimerDisabledForObject:(id)a3;
-- (void)setIdleTimerDelay:(double)a3;
-- (void)startIdleTimer:(double)a3;
+- (void)releaseIdleTimerDisabledForObject:(id)object;
+- (void)retainIdleTimerDisabledForObject:(id)object;
+- (void)setIdleTimerDelay:(double)delay;
+- (void)startIdleTimer:(double)timer;
 - (void)startInputCheck;
 @end
 
@@ -21,8 +21,8 @@
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_346200)
   {
     v3 = objc_opt_new();
@@ -30,7 +30,7 @@
     qword_346200 = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = qword_346200;
 
@@ -92,7 +92,7 @@
   }
 }
 
-- (void)idleTimerInputCheck:(id)a3
+- (void)idleTimerInputCheck:(id)check
 {
   [(NSTimer *)self->_idleTimerInputCheck invalidate];
   idleTimerInputCheck = self->_idleTimerInputCheck;
@@ -115,7 +115,7 @@
   }
 }
 
-- (void)idleTimerFired:(id)a3
+- (void)idleTimerFired:(id)fired
 {
   v4 = BCSleepManagerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -128,10 +128,10 @@
   [(IMSleepManager *)self startInputCheck];
 }
 
-- (void)startIdleTimer:(double)a3
+- (void)startIdleTimer:(double)timer
 {
   [(IMSleepManager *)self cancelIdleTimer];
-  if (a3 > 0.0)
+  if (timer > 0.0)
   {
     v5 = +[UIApplication jsa_sharedApplicationIfNotExtension];
     [v5 lastEventDate];
@@ -145,9 +145,9 @@
     v8 = v7;
     [v5 lastEventDate];
     v10 = v8 - v9;
-    if (v10 < a3)
+    if (v10 < timer)
     {
-      v11 = a3 - v10;
+      v11 = timer - v10;
       v12 = [NSTimer scheduledTimerWithTimeInterval:self target:"idleTimerFired:" selector:0 userInfo:0 repeats:v11];
       idleTimerReenableTimer = self->_idleTimerReenableTimer;
       self->_idleTimerReenableTimer = v12;
@@ -190,16 +190,16 @@
   }
 }
 
-- (void)setIdleTimerDelay:(double)a3
+- (void)setIdleTimerDelay:(double)delay
 {
   v5 = +[UIApplication jsa_sharedApplicationIfNotExtension];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self->_idleTimerDelay != a3)
+    if (self->_idleTimerDelay != delay)
     {
-      self->_idleTimerDelay = a3;
-      [(IMSleepManager *)self startIdleTimer:a3];
+      self->_idleTimerDelay = delay;
+      [(IMSleepManager *)self startIdleTimer:delay];
     }
   }
 
@@ -215,8 +215,8 @@
 
 - (unint64_t)idleTimerDisableRefCount
 {
-  v2 = [(IMSleepManager *)self objectsHoldingIdleTimerDisabled];
-  v3 = [v2 count];
+  objectsHoldingIdleTimerDisabled = [(IMSleepManager *)self objectsHoldingIdleTimerDisabled];
+  v3 = [objectsHoldingIdleTimerDisabled count];
 
   return v3;
 }
@@ -236,20 +236,20 @@
   return objectsHoldingIdleTimerDisabled;
 }
 
-- (void)retainIdleTimerDisabledForObject:(id)a3
+- (void)retainIdleTimerDisabledForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(IMSleepManager *)self objectsHoldingIdleTimerDisabled];
-  [v5 addObject:v4];
+  objectCopy = object;
+  objectsHoldingIdleTimerDisabled = [(IMSleepManager *)self objectsHoldingIdleTimerDisabled];
+  [objectsHoldingIdleTimerDisabled addObject:objectCopy];
 
   [(IMSleepManager *)self reevaluateIdleTimerDisabled];
 }
 
-- (void)releaseIdleTimerDisabledForObject:(id)a3
+- (void)releaseIdleTimerDisabledForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(IMSleepManager *)self objectsHoldingIdleTimerDisabled];
-  [v5 removeObject:v4];
+  objectCopy = object;
+  objectsHoldingIdleTimerDisabled = [(IMSleepManager *)self objectsHoldingIdleTimerDisabled];
+  [objectsHoldingIdleTimerDisabled removeObject:objectCopy];
 
   [(IMSleepManager *)self reevaluateIdleTimerDisabled];
 }
@@ -261,12 +261,12 @@
   v4 = BCSleepManagerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 isIdleTimerDisabled];
-    v6 = [(IMSleepManager *)self objectsHoldingIdleTimerDisabled];
+    isIdleTimerDisabled = [v3 isIdleTimerDisabled];
+    objectsHoldingIdleTimerDisabled = [(IMSleepManager *)self objectsHoldingIdleTimerDisabled];
     v7[0] = 67109378;
-    v7[1] = v5;
+    v7[1] = isIdleTimerDisabled;
     v8 = 2112;
-    v9 = v6;
+    v9 = objectsHoldingIdleTimerDisabled;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "idleTimerDisabled set to %d with holders: %@", v7, 0x12u);
   }
 }

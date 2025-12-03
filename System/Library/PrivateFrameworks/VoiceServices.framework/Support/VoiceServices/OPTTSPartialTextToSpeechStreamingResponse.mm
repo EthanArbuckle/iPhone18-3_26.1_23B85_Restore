@@ -4,12 +4,12 @@
 - (NSString)session_id;
 - (NSString)speech_id;
 - (NSString)stream_id;
-- (OPTTSPartialTextToSpeechStreamingResponse)initWithFlatbuffData:(id)a3 root:(const PartialTextToSpeechStreamingResponse *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::PartialTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)a3;
+- (OPTTSPartialTextToSpeechStreamingResponse)initWithFlatbuffData:(id)data root:(const PartialTextToSpeechStreamingResponse *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::PartialTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int)current_pkt_number;
 - (int)error_code;
-- (void)audio:(id)a3;
+- (void)audio:(id)audio;
 @end
 
 @implementation OPTTSPartialTextToSpeechStreamingResponse
@@ -43,55 +43,55 @@ flatbuffers::DetachedBuffer *__57__OPTTSPartialTextToSpeechStreamingResponse_fla
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::PartialTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::PartialTextToSpeechStreamingResponse>)addObjectToBuffer:(void *)buffer
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = [(OPTTSPartialTextToSpeechStreamingResponse *)self speech_id];
-  v6 = v5;
-  if (!v5)
+  speech_id = [(OPTTSPartialTextToSpeechStreamingResponse *)self speech_id];
+  v6 = speech_id;
+  if (!speech_id)
   {
-    v5 = &stru_2881CBD18;
+    speech_id = &stru_2881CBD18;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(OPTTSPartialTextToSpeechStreamingResponse *)self session_id];
-  v10 = v9;
-  if (!v9)
+  session_id = [(OPTTSPartialTextToSpeechStreamingResponse *)self session_id];
+  v10 = session_id;
+  if (!session_id)
   {
-    v9 = &stru_2881CBD18;
+    session_id = &stru_2881CBD18;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  v39 = flatbuffers::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v12 = strlen(uTF8String2);
+  v39 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v12);
 
-  v13 = [(OPTTSPartialTextToSpeechStreamingResponse *)self error_code];
-  v14 = [(OPTTSPartialTextToSpeechStreamingResponse *)self error_str];
-  v15 = v14;
-  if (!v14)
+  error_code = [(OPTTSPartialTextToSpeechStreamingResponse *)self error_code];
+  error_str = [(OPTTSPartialTextToSpeechStreamingResponse *)self error_str];
+  v15 = error_str;
+  if (!error_str)
   {
-    v14 = &stru_2881CBD18;
+    error_str = &stru_2881CBD18;
   }
 
-  v16 = [(__CFString *)v14 UTF8String];
-  v17 = strlen(v16);
-  v18 = flatbuffers::FlatBufferBuilder::CreateString(a3, v16, v17);
+  uTF8String3 = [(__CFString *)error_str UTF8String];
+  v17 = strlen(uTF8String3);
+  v18 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v17);
 
-  v19 = [(OPTTSPartialTextToSpeechStreamingResponse *)self stream_id];
-  v20 = v19;
-  if (!v19)
+  stream_id = [(OPTTSPartialTextToSpeechStreamingResponse *)self stream_id];
+  v20 = stream_id;
+  if (!stream_id)
   {
-    v19 = &stru_2881CBD18;
+    stream_id = &stru_2881CBD18;
   }
 
-  v21 = [(__CFString *)v19 UTF8String];
-  v22 = strlen(v21);
-  v23 = flatbuffers::FlatBufferBuilder::CreateString(a3, v21, v22);
+  uTF8String4 = [(__CFString *)stream_id UTF8String];
+  v22 = strlen(uTF8String4);
+  v23 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v22);
 
-  v24 = [(OPTTSPartialTextToSpeechStreamingResponse *)self current_pkt_number];
+  current_pkt_number = [(OPTTSPartialTextToSpeechStreamingResponse *)self current_pkt_number];
   v50 = 0;
   v51 = &v50;
   v52 = 0x3812000000;
@@ -104,20 +104,20 @@ flatbuffers::DetachedBuffer *__57__OPTTSPartialTextToSpeechStreamingResponse_fla
   v49[2] = __63__OPTTSPartialTextToSpeechStreamingResponse_addObjectToBuffer___block_invoke;
   v49[3] = &unk_279E4B750;
   v49[4] = &v50;
-  v49[5] = a3;
+  v49[5] = buffer;
   [(OPTTSPartialTextToSpeechStreamingResponse *)self audio:v49];
   v46 = 0;
   v47 = 0;
   v48 = 0;
-  v25 = [(OPTTSPartialTextToSpeechStreamingResponse *)self word_timing_info];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::reserve(&v46, [v25 count]);
+  word_timing_info = [(OPTTSPartialTextToSpeechStreamingResponse *)self word_timing_info];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::reserve(&v46, [word_timing_info count]);
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v26 = [(OPTTSPartialTextToSpeechStreamingResponse *)self word_timing_info];
-  v27 = [v26 countByEnumeratingWithState:&v42 objects:v57 count:16];
+  word_timing_info2 = [(OPTTSPartialTextToSpeechStreamingResponse *)self word_timing_info];
+  v27 = [word_timing_info2 countByEnumeratingWithState:&v42 objects:v57 count:16];
   if (v27)
   {
     v28 = *v43;
@@ -127,14 +127,14 @@ flatbuffers::DetachedBuffer *__57__OPTTSPartialTextToSpeechStreamingResponse_fla
       {
         if (*v43 != v28)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(word_timing_info2);
         }
 
-        v41 = [*(*(&v42 + 1) + 8 * i) addObjectToBuffer:a3];
+        v41 = [*(*(&v42 + 1) + 8 * i) addObjectToBuffer:buffer];
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>::push_back[abi:ne200100](&v46, &v41);
       }
 
-      v27 = [v26 countByEnumeratingWithState:&v42 objects:v57 count:16];
+      v27 = [word_timing_info2 countByEnumeratingWithState:&v42 objects:v57 count:16];
     }
 
     while (v27);
@@ -151,21 +151,21 @@ flatbuffers::DetachedBuffer *__57__OPTTSPartialTextToSpeechStreamingResponse_fla
     v31 = v46;
   }
 
-  v32 = flatbuffers::FlatBufferBuilder::CreateVector<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>(a3, v31, (v47 - v46) >> 2);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v33 = *(a3 + 8);
-  v34 = *(a3 + 12);
-  v35 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 6, v39);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v13);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 10, v18);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 12, v23);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 14, v24);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, *(v51 + 12));
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 18, v32);
-  v36.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v33 - v34 + v35);
+  v32 = flatbuffers::FlatBufferBuilder::CreateVector<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>(buffer, v31, (v47 - v46) >> 2);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v33 = *(buffer + 8);
+  v34 = *(buffer + 12);
+  v35 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 6, v39);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, error_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 10, v18);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 12, v23);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 14, current_pkt_number);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, *(v51 + 12));
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 18, v32);
+  v36.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v33 - v34 + v35);
   if (v30)
   {
     operator delete(v30);
@@ -185,10 +185,10 @@ uint64_t __63__OPTTSPartialTextToSpeechStreamingResponse_addObjectToBuffer___blo
 
 - (NSArray)word_timing_info
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"word_timing_info"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"word_timing_info"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0x13u)
@@ -205,7 +205,7 @@ uint64_t __63__OPTTSPartialTextToSpeechStreamingResponse_addObjectToBuffer___blo
           do
           {
             v11 = [[OPTTSWordTimingInfo alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -216,20 +216,20 @@ uint64_t __63__OPTTSPartialTextToSpeechStreamingResponse_addObjectToBuffer___blo
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"word_timing_info"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"word_timing_info"];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)audio:(id)a3
+- (void)audio:(id)audio
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  audioCopy = audio;
   v7 = *root[*v5[16].var0 + *root[*v5[16].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = audioCopy;
+  (*(audio + 2))();
 }
 
 - (int)current_pkt_number
@@ -354,42 +354,42 @@ uint64_t __63__OPTTSPartialTextToSpeechStreamingResponse_addObjectToBuffer___blo
   return v6;
 }
 
-- (OPTTSPartialTextToSpeechStreamingResponse)initWithFlatbuffData:(id)a3 root:(const PartialTextToSpeechStreamingResponse *)a4 verify:(BOOL)a5
+- (OPTTSPartialTextToSpeechStreamingResponse)initWithFlatbuffData:(id)data root:(const PartialTextToSpeechStreamingResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = OPTTSPartialTextToSpeechStreamingResponse;
   v10 = [(OPTTSPartialTextToSpeechStreamingResponse *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_2728326B0;
       v27 = 0;
@@ -411,9 +411,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

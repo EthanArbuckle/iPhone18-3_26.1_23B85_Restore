@@ -1,6 +1,6 @@
 @interface BundledNotificationDelaySamePropensitiesInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation BundledNotificationDelaySamePropensitiesInput
@@ -14,13 +14,13 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   if (sub_275B7AD0C() == 0x694D74657366666FLL && v4 == 0xEA0000000000736ELL)
   {
 
 LABEL_5:
-    v6 = [objc_opt_self() featureValueWithDouble_];
+    featureValueWithDouble_ = [objc_opt_self() featureValueWithDouble_];
     goto LABEL_7;
   }
 
@@ -31,10 +31,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = 0;
+  featureValueWithDouble_ = 0;
 LABEL_7:
 
-  return v6;
+  return featureValueWithDouble_;
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface PGPotentialEarlyMomentsWithPeopleMemory
-- (PGPotentialEarlyMomentsWithPeopleMemory)initWithMomentNodes:(id)a3 personNodes:(id)a4;
-- (id)memoryFeatureNodesInGraph:(id)a3;
+- (PGPotentialEarlyMomentsWithPeopleMemory)initWithMomentNodes:(id)nodes personNodes:(id)personNodes;
+- (id)memoryFeatureNodesInGraph:(id)graph;
 @end
 
 @implementation PGPotentialEarlyMomentsWithPeopleMemory
 
-- (id)memoryFeatureNodesInGraph:(id)a3
+- (id)memoryFeatureNodesInGraph:(id)graph
 {
-  v4 = a3;
-  v5 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithSet:self->_personNodes graph:v4];
+  graphCopy = graph;
+  v5 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithSet:self->_personNodes graph:graphCopy];
 
-  v6 = [(PGGraphPersonNodeCollection *)v5 featureNodeCollection];
+  featureNodeCollection = [(PGGraphPersonNodeCollection *)v5 featureNodeCollection];
 
-  return v6;
+  return featureNodeCollection;
 }
 
-- (PGPotentialEarlyMomentsWithPeopleMemory)initWithMomentNodes:(id)a3 personNodes:(id)a4
+- (PGPotentialEarlyMomentsWithPeopleMemory)initWithMomentNodes:(id)nodes personNodes:(id)personNodes
 {
-  v7 = a4;
+  personNodesCopy = personNodes;
   v11.receiver = self;
   v11.super_class = PGPotentialEarlyMomentsWithPeopleMemory;
-  v8 = [(PGPotentialMemory *)&v11 initWithCategory:219 subcategory:0 momentNodes:a3 sourceType:2];
+  v8 = [(PGPotentialMemory *)&v11 initWithCategory:219 subcategory:0 momentNodes:nodes sourceType:2];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_personNodes, a4);
+    objc_storeStrong(&v8->_personNodes, personNodes);
   }
 
   return v9;

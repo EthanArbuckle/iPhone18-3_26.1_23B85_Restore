@@ -1,12 +1,12 @@
 @interface NDOACController
 + (NDOACController)sharedController;
-- (NDOACController)initWithSerialNumber:(id)a3;
-- (NDOACController)initWithSerialNumber:(id)a3 updateHandler:(id)a4;
+- (NDOACController)initWithSerialNumber:(id)number;
+- (NDOACController)initWithSerialNumber:(id)number updateHandler:(id)handler;
 - (NSArray)specifiers;
 - (PSListController)parentViewController;
-- (void)forceUpdateSpecifiersAndForceUpdateFollowup:(BOOL)a3 withCompletionHandler:(id)a4;
+- (void)forceUpdateSpecifiersAndForceUpdateFollowup:(BOOL)followup withCompletionHandler:(id)handler;
 - (void)loadSpecifiers;
-- (void)updateSpecifiersWithCompletionHandler:(id)a3;
+- (void)updateSpecifiersWithCompletionHandler:(id)handler;
 @end
 
 @implementation NDOACController
@@ -30,10 +30,10 @@ uint64_t __35__NDOACController_sharedController__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (NDOACController)initWithSerialNumber:(id)a3
+- (NDOACController)initWithSerialNumber:(id)number
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   v18.receiver = self;
   v18.super_class = NDOACController;
   v5 = [(NDOACController *)&v18 init];
@@ -43,11 +43,11 @@ uint64_t __35__NDOACController_sharedController__block_invoke()
     [(NDOACController *)v5 setSpecifierIDToInsertAfter:@"SerialNumber"];
     v7 = objc_opt_new();
     v8 = v7;
-    if (v4)
+    if (numberCopy)
     {
-      v9 = [v7 defaultDevice];
-      v10 = [v9 serialNumber];
-      -[NDOACController setIsDefaultDevice:](v6, "setIsDefaultDevice:", [v10 isEqualToString:v4]);
+      defaultDevice = [v7 defaultDevice];
+      serialNumber = [defaultDevice serialNumber];
+      -[NDOACController setIsDefaultDevice:](v6, "setIsDefaultDevice:", [serialNumber isEqualToString:numberCopy]);
     }
 
     else
@@ -58,35 +58,35 @@ uint64_t __35__NDOACController_sharedController__block_invoke()
     v11 = _NDOLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(NDOACController *)v6 isDefaultDevice];
+      isDefaultDevice = [(NDOACController *)v6 isDefaultDevice];
       *buf = 136315650;
       v20 = "[NDOACController initWithSerialNumber:]";
       v21 = 2112;
-      v22 = v4;
+      v22 = numberCopy;
       v23 = 1024;
-      v24 = v12;
+      v24 = isDefaultDevice;
       _os_log_impl(&dword_25BD8D000, v11, OS_LOG_TYPE_DEFAULT, "%s: initWithSerialNumber: %@ %d", buf, 0x1Cu);
     }
 
     v13 = [[NDOSpecifierDataSource alloc] initWithDefaultDevice:[(NDOACController *)v6 isDefaultDevice]];
     [(NDOACController *)v6 setNdoSpecifierDataSource:v13];
 
-    v14 = [(NDOACController *)v6 ndoSpecifierDataSource];
-    [v14 setSerialNumber:v4];
+    ndoSpecifierDataSource = [(NDOACController *)v6 ndoSpecifierDataSource];
+    [ndoSpecifierDataSource setSerialNumber:numberCopy];
 
-    v15 = [(NDOACController *)v6 ndoSpecifierDataSource];
-    [v15 setHostingController:v6];
+    ndoSpecifierDataSource2 = [(NDOACController *)v6 ndoSpecifierDataSource];
+    [ndoSpecifierDataSource2 setHostingController:v6];
   }
 
   v16 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (NDOACController)initWithSerialNumber:(id)a3 updateHandler:(id)a4
+- (NDOACController)initWithSerialNumber:(id)number updateHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = NDOACController;
   v8 = [(NDOACController *)&v16 init];
@@ -98,7 +98,7 @@ uint64_t __35__NDOACController_sharedController__block_invoke()
       *buf = 136315394;
       v18 = "[NDOACController initWithSerialNumber:updateHandler:]";
       v19 = 2112;
-      v20 = v6;
+      v20 = numberCopy;
       _os_log_impl(&dword_25BD8D000, v9, OS_LOG_TYPE_DEFAULT, "%s: serialNumber: %@", buf, 0x16u);
     }
 
@@ -106,14 +106,14 @@ uint64_t __35__NDOACController_sharedController__block_invoke()
     v10 = [[NDOSpecifierDataSource alloc] initWithDefaultDevice:[(NDOACController *)v8 isDefaultDevice]];
     [(NDOACController *)v8 setNdoSpecifierDataSource:v10];
 
-    v11 = [(NDOACController *)v8 ndoSpecifierDataSource];
-    [v11 setSerialNumber:v6];
+    ndoSpecifierDataSource = [(NDOACController *)v8 ndoSpecifierDataSource];
+    [ndoSpecifierDataSource setSerialNumber:numberCopy];
 
-    v12 = [(NDOACController *)v8 ndoSpecifierDataSource];
-    [v12 setUpdateHandler:v7];
+    ndoSpecifierDataSource2 = [(NDOACController *)v8 ndoSpecifierDataSource];
+    [ndoSpecifierDataSource2 setUpdateHandler:handlerCopy];
 
-    v13 = [(NDOACController *)v8 ndoSpecifierDataSource];
-    [v13 setHostingController:v8];
+    ndoSpecifierDataSource3 = [(NDOACController *)v8 ndoSpecifierDataSource];
+    [ndoSpecifierDataSource3 setHostingController:v8];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -122,31 +122,31 @@ uint64_t __35__NDOACController_sharedController__block_invoke()
 
 - (NSArray)specifiers
 {
-  v2 = [(NDOACController *)self ndoSpecifierDataSource];
-  v3 = [v2 ndoSpecifiers];
+  ndoSpecifierDataSource = [(NDOACController *)self ndoSpecifierDataSource];
+  ndoSpecifiers = [ndoSpecifierDataSource ndoSpecifiers];
 
-  return v3;
+  return ndoSpecifiers;
 }
 
 - (void)loadSpecifiers
 {
-  v2 = [(NDOACController *)self ndoSpecifierDataSource];
-  [v2 loadSpecifiers];
+  ndoSpecifierDataSource = [(NDOACController *)self ndoSpecifierDataSource];
+  [ndoSpecifierDataSource loadSpecifiers];
 }
 
-- (void)updateSpecifiersWithCompletionHandler:(id)a3
+- (void)updateSpecifiersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NDOACController *)self ndoSpecifierDataSource];
+  handlerCopy = handler;
+  ndoSpecifierDataSource = [(NDOACController *)self ndoSpecifierDataSource];
   v6 = dispatch_get_global_queue(0, 0);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__NDOACController_updateSpecifiersWithCompletionHandler___block_invoke;
   v9[3] = &unk_2799783F0;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = ndoSpecifierDataSource;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = ndoSpecifierDataSource;
   dispatch_async(v6, v9);
 }
 
@@ -175,18 +175,18 @@ uint64_t __57__NDOACController_updateSpecifiersWithCompletionHandler___block_inv
   return [v2 updateNDOSpecifiersWithPolicy:v3 withCompletion:v4];
 }
 
-- (void)forceUpdateSpecifiersAndForceUpdateFollowup:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)forceUpdateSpecifiersAndForceUpdateFollowup:(BOOL)followup withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(NDOACController *)self ndoSpecifierDataSource];
+  handlerCopy = handler;
+  ndoSpecifierDataSource = [(NDOACController *)self ndoSpecifierDataSource];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __85__NDOACController_forceUpdateSpecifiersAndForceUpdateFollowup_withCompletionHandler___block_invoke;
   v8[3] = &unk_2799783F0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 updateNDOSpecifiersWithPolicy:2 withCompletion:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [ndoSpecifierDataSource updateNDOSpecifiersWithPolicy:2 withCompletion:v8];
 }
 
 void __85__NDOACController_forceUpdateSpecifiersAndForceUpdateFollowup_withCompletionHandler___block_invoke(uint64_t a1)

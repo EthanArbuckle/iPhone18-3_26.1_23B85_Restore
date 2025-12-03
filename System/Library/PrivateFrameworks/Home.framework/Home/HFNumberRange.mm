@@ -1,51 +1,51 @@
 @interface HFNumberRange
-+ (HFNumberRange)rangeWithFloatRange:(id)a3;
-+ (HFNumberRange)rangeWithMaxValue:(id)a3 minValue:(id)a4;
++ (HFNumberRange)rangeWithFloatRange:(id)range;
++ (HFNumberRange)rangeWithMaxValue:(id)value minValue:(id)minValue;
 + (NAIdentity)na_identity;
-+ (id)valueWithValue:(id)a3;
++ (id)valueWithValue:(id)value;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)floatRangeValue;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFNumberRange)init;
-- (HFNumberRange)initWithType:(unint64_t)a3;
+- (HFNumberRange)initWithType:(unint64_t)type;
 - (NSNumber)maxValue;
 - (NSNumber)midValue;
 - (NSNumber)minValue;
 - (NSNumber)spanValue;
 - (NSString)description;
-- (id)intersectRange:(id)a3;
-- (id)mapValue:(id)a3 fromRange:(id)a4;
-- (id)percentageValueForValue:(id)a3;
-- (id)unionRange:(id)a3;
+- (id)intersectRange:(id)range;
+- (id)mapValue:(id)value fromRange:(id)range;
+- (id)percentageValueForValue:(id)value;
+- (id)unionRange:(id)range;
 - (unint64_t)hash;
 @end
 
 @implementation HFNumberRange
 
-+ (HFNumberRange)rangeWithMaxValue:(id)a3 minValue:(id)a4
++ (HFNumberRange)rangeWithMaxValue:(id)value minValue:(id)minValue
 {
-  v5 = a4;
-  v6 = a3;
+  minValueCopy = minValue;
+  valueCopy = value;
   v7 = [[HFNumberRange alloc] initWithType:1];
-  [(HFNumberRange *)v7 setMaxValue:v6];
+  [(HFNumberRange *)v7 setMaxValue:valueCopy];
 
-  [(HFNumberRange *)v7 setMinValue:v5];
+  [(HFNumberRange *)v7 setMinValue:minValueCopy];
 
   return v7;
 }
 
-+ (id)valueWithValue:(id)a3
++ (id)valueWithValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [[HFNumberRange alloc] initWithType:0];
-  [(HFNumberRange *)v4 setMidValue:v3];
+  [(HFNumberRange *)v4 setMidValue:valueCopy];
 
   return v4;
 }
 
-+ (HFNumberRange)rangeWithFloatRange:(id)a3
++ (HFNumberRange)rangeWithFloatRange:(id)range
 {
-  var0 = a3.var0;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3.var1];
+  var0 = range.var0;
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:range.var1];
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:var0];
   v6 = [HFNumberRange rangeWithMaxValue:v4 minValue:v5];
 
@@ -54,21 +54,21 @@
 
 - (HFNumberRange)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithType_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFNumberRange.m" lineNumber:43 description:{@"%s is unavailable; use %@ instead", "-[HFNumberRange init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFNumberRange.m" lineNumber:43 description:{@"%s is unavailable; use %@ instead", "-[HFNumberRange init]", v5}];
 
   return 0;
 }
 
-- (HFNumberRange)initWithType:(unint64_t)a3
+- (HFNumberRange)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = HFNumberRange;
   result = [(HFNumberRange *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -78,15 +78,15 @@
 {
   if ([(HFNumberRange *)self type]== 1)
   {
-    v3 = self->_maxValue;
+    midValue = self->_maxValue;
   }
 
   else
   {
-    v3 = [(HFNumberRange *)self midValue];
+    midValue = [(HFNumberRange *)self midValue];
   }
 
-  return v3;
+  return midValue;
 }
 
 - (NSNumber)midValue
@@ -94,11 +94,11 @@
   if ([(HFNumberRange *)self type]== 1)
   {
     v3 = MEMORY[0x277CCABB0];
-    v4 = [(HFNumberRange *)self maxValue];
-    [v4 doubleValue];
+    maxValue = [(HFNumberRange *)self maxValue];
+    [maxValue doubleValue];
     v6 = v5;
-    v7 = [(HFNumberRange *)self minValue];
-    [v7 doubleValue];
+    minValue = [(HFNumberRange *)self minValue];
+    [minValue doubleValue];
     v9 = [v3 numberWithDouble:(v6 + v8) * 0.5];
   }
 
@@ -114,25 +114,25 @@
 {
   if ([(HFNumberRange *)self type]== 1)
   {
-    v3 = self->_minValue;
+    midValue = self->_minValue;
   }
 
   else
   {
-    v3 = [(HFNumberRange *)self midValue];
+    midValue = [(HFNumberRange *)self midValue];
   }
 
-  return v3;
+  return midValue;
 }
 
 - (NSNumber)spanValue
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(HFNumberRange *)self maxValue];
-  [v4 doubleValue];
+  maxValue = [(HFNumberRange *)self maxValue];
+  [maxValue doubleValue];
   v6 = v5;
-  v7 = [(HFNumberRange *)self minValue];
-  [v7 doubleValue];
+  minValue = [(HFNumberRange *)self minValue];
+  [minValue doubleValue];
   v9 = [v3 numberWithDouble:v6 - v8];
 
   return v9;
@@ -140,11 +140,11 @@
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)floatRangeValue
 {
-  v3 = [(HFNumberRange *)self minValue];
-  [v3 doubleValue];
+  minValue = [(HFNumberRange *)self minValue];
+  [minValue doubleValue];
   v5 = v4;
-  v6 = [(HFNumberRange *)self maxValue];
-  [v6 doubleValue];
+  maxValue = [(HFNumberRange *)self maxValue];
+  [maxValue doubleValue];
   v8 = v7;
 
   v9 = v5;
@@ -154,21 +154,21 @@
   return result;
 }
 
-- (id)percentageValueForValue:(id)a3
+- (id)percentageValueForValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v5 = a3;
-    v6 = [(HFNumberRange *)self minValue];
-    [v6 doubleValue];
+    valueCopy = value;
+    minValue = [(HFNumberRange *)self minValue];
+    [minValue doubleValue];
     v8 = v7;
 
-    v9 = [(HFNumberRange *)self maxValue];
-    [v9 doubleValue];
+    maxValue = [(HFNumberRange *)self maxValue];
+    [maxValue doubleValue];
     v11 = v10;
 
     v12 = MEMORY[0x277CCABB0];
-    [v5 doubleValue];
+    [valueCopy doubleValue];
     v14 = v13;
 
     v15 = [v12 numberWithDouble:(v14 - v8) / (v11 - v8)];
@@ -182,21 +182,21 @@
   return v15;
 }
 
-- (id)mapValue:(id)a3 fromRange:(id)a4
+- (id)mapValue:(id)value fromRange:(id)range
 {
-  if (a3)
+  if (value)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(HFNumberRange *)self minValue];
-    [v9 doubleValue];
+    rangeCopy = range;
+    valueCopy = value;
+    minValue = [(HFNumberRange *)self minValue];
+    [minValue doubleValue];
     v11 = v10;
 
-    v12 = [(HFNumberRange *)self maxValue];
-    [v12 doubleValue];
+    maxValue = [(HFNumberRange *)self maxValue];
+    [maxValue doubleValue];
     v14 = v13;
 
-    v15 = [v7 percentageValueForValue:v8];
+    v15 = [rangeCopy percentageValueForValue:valueCopy];
 
     [v15 doubleValue];
     v17 = v16;
@@ -212,31 +212,31 @@
   return v18;
 }
 
-- (id)unionRange:(id)a3
+- (id)unionRange:(id)range
 {
-  v4 = a3;
-  v5 = [(HFNumberRange *)self maxValue];
-  v6 = [v4 maxValue];
-  v7 = [v5 na_largerNumber:v6];
-  v8 = [(HFNumberRange *)self minValue];
-  v9 = [v4 minValue];
+  rangeCopy = range;
+  maxValue = [(HFNumberRange *)self maxValue];
+  maxValue2 = [rangeCopy maxValue];
+  v7 = [maxValue na_largerNumber:maxValue2];
+  minValue = [(HFNumberRange *)self minValue];
+  minValue2 = [rangeCopy minValue];
 
-  v10 = [v8 na_smallerNumber:v9];
+  v10 = [minValue na_smallerNumber:minValue2];
   v11 = [HFNumberRange rangeWithMaxValue:v7 minValue:v10];
 
   return v11;
 }
 
-- (id)intersectRange:(id)a3
+- (id)intersectRange:(id)range
 {
-  v4 = a3;
-  v5 = [(HFNumberRange *)self maxValue];
-  v6 = [v4 maxValue];
-  v7 = [v5 na_smallerNumber:v6];
-  v8 = [(HFNumberRange *)self minValue];
-  v9 = [v4 minValue];
+  rangeCopy = range;
+  maxValue = [(HFNumberRange *)self maxValue];
+  maxValue2 = [rangeCopy maxValue];
+  v7 = [maxValue na_smallerNumber:maxValue2];
+  minValue = [(HFNumberRange *)self minValue];
+  minValue2 = [rangeCopy minValue];
 
-  v10 = [v8 na_largerNumber:v9];
+  v10 = [minValue na_largerNumber:minValue2];
   v11 = [HFNumberRange rangeWithMaxValue:v7 minValue:v10];
 
   return v11;
@@ -275,39 +275,39 @@ uint64_t __28__HFNumberRange_na_identity__block_invoke_4(uint64_t a1, void *a2)
   return [v2 numberWithUnsignedInteger:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
 - (NSString)description
 {
-  v3 = [(HFNumberRange *)self type];
+  type = [(HFNumberRange *)self type];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  if (v3 == 1)
+  if (type == 1)
   {
-    v6 = [(HFNumberRange *)self minValue];
-    v7 = [(HFNumberRange *)self maxValue];
-    v8 = [v4 stringWithFormat:@"<%@:%p (%@-%@)>", v5, self, v6, v7];
+    minValue = [(HFNumberRange *)self minValue];
+    maxValue = [(HFNumberRange *)self maxValue];
+    v8 = [v4 stringWithFormat:@"<%@:%p (%@-%@)>", v5, self, minValue, maxValue];
   }
 
   else
   {
-    v6 = [(HFNumberRange *)self midValue];
-    v8 = [v4 stringWithFormat:@"<%@:%p (%@)>", v5, self, v6];
+    minValue = [(HFNumberRange *)self midValue];
+    v8 = [v4 stringWithFormat:@"<%@:%p (%@)>", v5, self, minValue];
   }
 
   return v8;

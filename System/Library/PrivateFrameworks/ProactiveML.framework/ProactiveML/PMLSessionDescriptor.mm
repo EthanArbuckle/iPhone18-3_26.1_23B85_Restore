@@ -1,16 +1,16 @@
 @interface PMLSessionDescriptor
-+ (float)_parseFeatureVersion:(id)a3 descriptor:(id)a4;
-+ (id)descriptorForName:(id)a3 version:(id)a4 locale:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (float)_parseFeatureVersion:(id)version descriptor:(id)descriptor;
++ (id)descriptorForName:(id)name version:(id)version locale:(id)locale;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSubSessionDescriptor;
 - (NSString)description;
-- (PMLSessionDescriptor)initWithName:(id)a3 version:(id)a4 locale:(id)a5;
-- (PMLSessionDescriptor)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
+- (PMLSessionDescriptor)initWithName:(id)name version:(id)version locale:(id)locale;
+- (PMLSessionDescriptor)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
 - (float)featureVersion;
 - (id)baseSessionDescriptor;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)subSessionDescriptorForLabel:(unint64_t)a3;
-- (id)toPlistWithChunks:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)subSessionDescriptorForLabel:(unint64_t)label;
+- (id)toPlistWithChunks:(id)chunks;
 - (unint64_t)hash;
 - (unint64_t)subSessionLabel;
 @end
@@ -27,18 +27,18 @@
   return v6;
 }
 
-- (PMLSessionDescriptor)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (PMLSessionDescriptor)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"NAME"];
-  v8 = [v6 objectForKeyedSubscript:@"VERSION"];
-  v9 = [v6 objectForKeyedSubscript:@"LOCALE"];
+  plistCopy = plist;
+  v7 = [plistCopy objectForKeyedSubscript:@"NAME"];
+  v8 = [plistCopy objectForKeyedSubscript:@"VERSION"];
+  v9 = [plistCopy objectForKeyedSubscript:@"LOCALE"];
 
   v10 = [(PMLSessionDescriptor *)self initWithName:v7 version:v8 locale:v9];
   return v10;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = *&self->_name;
@@ -53,22 +53,22 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     name = self->_name;
-    v6 = [v4 name];
-    if ([(NSString *)name isEqual:v6])
+    name = [equalCopy name];
+    if ([(NSString *)name isEqual:name])
     {
       version = self->_version;
-      v8 = [v4 version];
-      if ([(NSString *)version isEqual:v8])
+      version = [equalCopy version];
+      if ([(NSString *)version isEqual:version])
       {
         locale = self->_locale;
-        v10 = [v4 locale];
-        v11 = [(NSString *)locale isEqual:v10];
+        locale = [equalCopy locale];
+        v11 = [(NSString *)locale isEqual:locale];
       }
 
       else
@@ -98,12 +98,12 @@
   return v4 ^ [(NSString *)self->_locale hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(PMLSessionDescriptor *)self name];
-  v5 = [(PMLSessionDescriptor *)self version];
-  v6 = [(PMLSessionDescriptor *)self locale];
-  v7 = [PMLSessionDescriptor descriptorForName:v4 version:v5 locale:v6];
+  name = [(PMLSessionDescriptor *)self name];
+  version = [(PMLSessionDescriptor *)self version];
+  locale = [(PMLSessionDescriptor *)self locale];
+  v7 = [PMLSessionDescriptor descriptorForName:name version:version locale:locale];
 
   return v7;
 }
@@ -117,24 +117,24 @@
   }
 
   v5 = subSessionLabel__pasExprOnceResult;
-  v6 = [(PMLSessionDescriptor *)self name];
-  v7 = [(PMLSessionDescriptor *)self name];
-  v8 = [v5 firstMatchInString:v6 options:0 range:{0, objc_msgSend(v7, "length")}];
+  name = [(PMLSessionDescriptor *)self name];
+  name2 = [(PMLSessionDescriptor *)self name];
+  v8 = [v5 firstMatchInString:name options:0 range:{0, objc_msgSend(name2, "length")}];
 
   if (!v8)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PMLSessionDescriptor.m" lineNumber:119 description:{@"Handle %@ is not a sub-model handle.", self}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSessionDescriptor.m" lineNumber:119 description:{@"Handle %@ is not a sub-model handle.", self}];
   }
 
   v9 = [v8 rangeAtIndex:1];
   v11 = v10;
-  v12 = [(PMLSessionDescriptor *)self name];
-  v13 = [v12 substringWithRange:{v9, v11}];
+  name3 = [(PMLSessionDescriptor *)self name];
+  v13 = [name3 substringWithRange:{v9, v11}];
 
-  v14 = [v13 integerValue];
+  integerValue = [v13 integerValue];
   objc_autoreleasePoolPop(v4);
-  return v14;
+  return integerValue;
 }
 
 void __39__PMLSessionDescriptor_subSessionLabel__block_invoke()
@@ -156,9 +156,9 @@ void __39__PMLSessionDescriptor_subSessionLabel__block_invoke()
   }
 
   v4 = isSubSessionDescriptor__pasExprOnceResult;
-  v5 = [(PMLSessionDescriptor *)self name];
-  v6 = [(PMLSessionDescriptor *)self name];
-  v7 = [v4 numberOfMatchesInString:v5 options:0 range:{0, objc_msgSend(v6, "length")}];
+  name = [(PMLSessionDescriptor *)self name];
+  name2 = [(PMLSessionDescriptor *)self name];
+  v7 = [v4 numberOfMatchesInString:name options:0 range:{0, objc_msgSend(name2, "length")}];
 
   objc_autoreleasePoolPop(v3);
   return v7 != 0;
@@ -183,13 +183,13 @@ void __46__PMLSessionDescriptor_isSubSessionDescriptor__block_invoke()
   }
 
   v4 = baseSessionDescriptor__pasExprOnceResult;
-  v5 = [(PMLSessionDescriptor *)self name];
-  v6 = [(PMLSessionDescriptor *)self name];
-  v7 = [v4 stringByReplacingMatchesInString:v5 options:0 range:0 withTemplate:{objc_msgSend(v6, "length"), &stru_28734BC68}];
+  name = [(PMLSessionDescriptor *)self name];
+  name2 = [(PMLSessionDescriptor *)self name];
+  v7 = [v4 stringByReplacingMatchesInString:name options:0 range:0 withTemplate:{objc_msgSend(name2, "length"), &stru_28734BC68}];
 
-  v8 = [(PMLSessionDescriptor *)self version];
-  v9 = [(PMLSessionDescriptor *)self locale];
-  v10 = [PMLSessionDescriptor descriptorForName:v7 version:v8 locale:v9];
+  version = [(PMLSessionDescriptor *)self version];
+  locale = [(PMLSessionDescriptor *)self locale];
+  v10 = [PMLSessionDescriptor descriptorForName:v7 version:version locale:locale];
 
   objc_autoreleasePoolPop(v3);
 
@@ -206,16 +206,16 @@ void __45__PMLSessionDescriptor_baseSessionDescriptor__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)subSessionDescriptorForLabel:(unint64_t)a3
+- (id)subSessionDescriptorForLabel:(unint64_t)label
 {
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
-  v7 = [(PMLSessionDescriptor *)self name];
-  v8 = [v6 initWithFormat:@"%@_label%lu", v7, a3];
+  name = [(PMLSessionDescriptor *)self name];
+  label = [v6 initWithFormat:@"%@_label%lu", name, label];
 
-  v9 = [(PMLSessionDescriptor *)self version];
-  v10 = [(PMLSessionDescriptor *)self locale];
-  v11 = [PMLSessionDescriptor descriptorForName:v8 version:v9 locale:v10];
+  version = [(PMLSessionDescriptor *)self version];
+  locale = [(PMLSessionDescriptor *)self locale];
+  v11 = [PMLSessionDescriptor descriptorForName:label version:version locale:locale];
 
   objc_autoreleasePoolPop(v5);
 
@@ -224,30 +224,30 @@ void __45__PMLSessionDescriptor_baseSessionDescriptor__block_invoke()
 
 - (float)featureVersion
 {
-  v2 = [(_PASLazyResult *)self->_featureVersion result];
-  [v2 floatValue];
+  result = [(_PASLazyResult *)self->_featureVersion result];
+  [result floatValue];
   v4 = v3;
 
   return v4;
 }
 
-- (PMLSessionDescriptor)initWithName:(id)a3 version:(id)a4 locale:(id)a5
+- (PMLSessionDescriptor)initWithName:(id)name version:(id)version locale:(id)locale
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  nameCopy = name;
+  versionCopy = version;
+  localeCopy = locale;
+  if (nameCopy)
   {
-    if (v11)
+    if (versionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PMLSessionDescriptor.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"version"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSessionDescriptor.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"version"}];
 
-    if (v12)
+    if (localeCopy)
     {
       goto LABEL_4;
     }
@@ -255,23 +255,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"PMLSessionDescriptor.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PMLSessionDescriptor.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-  if (!v11)
+  if (!versionCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (localeCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"PMLSessionDescriptor.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PMLSessionDescriptor.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
 
 LABEL_4:
   v26.receiver = self;
@@ -280,17 +280,17 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_name, a3);
-    objc_storeStrong(&v14->_version, a4);
-    objc_storeStrong(&v14->_locale, a5);
+    objc_storeStrong(&v13->_name, name);
+    objc_storeStrong(&v14->_version, version);
+    objc_storeStrong(&v14->_locale, locale);
     v15 = objc_alloc(MEMORY[0x277D425F0]);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __52__PMLSessionDescriptor_initWithName_version_locale___block_invoke;
     v22[3] = &unk_279AC05B0;
-    v23 = v11;
-    v24 = v10;
-    v25 = v12;
+    v23 = versionCopy;
+    v24 = nameCopy;
+    v25 = localeCopy;
     v16 = [v15 initWithBlock:v22];
     featureVersion = v14->_featureVersion;
     v14->_featureVersion = v16;
@@ -312,10 +312,10 @@ id __52__PMLSessionDescriptor_initWithName_version_locale___block_invoke(void *a
   return v7;
 }
 
-+ (float)_parseFeatureVersion:(id)a3 descriptor:(id)a4
++ (float)_parseFeatureVersion:(id)version descriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  versionCopy = version;
+  descriptorCopy = descriptor;
   context = objc_autoreleasePoolPush();
   if (_parseFeatureVersion_descriptor___pasOnceToken0 != -1)
   {
@@ -325,32 +325,32 @@ id __52__PMLSessionDescriptor_initWithName_version_locale___block_invoke(void *a
   v9 = _parseFeatureVersion_descriptor___pasExprOnceResult;
   if (!v9)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"PMLSessionDescriptor.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"regex"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSessionDescriptor.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"regex"}];
   }
 
-  v10 = [v9 matchesInString:v7 options:0 range:{0, objc_msgSend(v7, "length")}];
+  v10 = [v9 matchesInString:versionCopy options:0 range:{0, objc_msgSend(versionCopy, "length")}];
   v11 = [v10 count];
   v12 = MEMORY[0x277CBE658];
   if (v11 != 1)
   {
     v13 = MEMORY[0x277CBEAD8];
     v14 = *MEMORY[0x277CBE658];
-    v15 = [v9 pattern];
-    [v13 raise:v14 format:{@"Unexpected number of matches for %@; pattern: %@; descriptor: %@", v7, v15, v8, context}];
+    pattern = [v9 pattern];
+    [v13 raise:v14 format:{@"Unexpected number of matches for %@; pattern: %@; descriptor: %@", versionCopy, pattern, descriptorCopy, context}];
   }
 
-  v16 = [v10 firstObject];
-  if ([v16 numberOfRanges] != 5)
+  firstObject = [v10 firstObject];
+  if ([firstObject numberOfRanges] != 5)
   {
     v17 = MEMORY[0x277CBEAD8];
     v18 = *v12;
-    v19 = [v9 pattern];
-    [v17 raise:v18 format:{@"Unexpected number of match ranges for %@; pattern: %@; descriptor: %@", v7, v19, v8}];
+    pattern2 = [v9 pattern];
+    [v17 raise:v18 format:{@"Unexpected number of match ranges for %@; pattern: %@; descriptor: %@", versionCopy, pattern2, descriptorCopy}];
   }
 
-  v20 = [v16 rangeAtIndex:2];
-  v22 = [v7 substringWithRange:{v20, v21}];
+  v20 = [firstObject rangeAtIndex:2];
+  v22 = [versionCopy substringWithRange:{v20, v21}];
   [v22 floatValue];
   v24 = v23;
 
@@ -358,8 +358,8 @@ id __52__PMLSessionDescriptor_initWithName_version_locale___block_invoke(void *a
   {
     v25 = MEMORY[0x277CBEAD8];
     v26 = *v12;
-    v27 = [v9 pattern];
-    [v25 raise:v26 format:{@"Unexpected featureVersion extracted for %@; pattern: %@; descriptor: %@", v7, v27, v8}];
+    pattern3 = [v9 pattern];
+    [v25 raise:v26 format:{@"Unexpected featureVersion extracted for %@; pattern: %@; descriptor: %@", versionCopy, pattern3, descriptorCopy}];
   }
 
   objc_autoreleasePoolPop(context);
@@ -376,12 +376,12 @@ void __56__PMLSessionDescriptor__parseFeatureVersion_descriptor___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (id)descriptorForName:(id)a3 version:(id)a4 locale:(id)a5
++ (id)descriptorForName:(id)name version:(id)version locale:(id)locale
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 version:v9 locale:v8];
+  localeCopy = locale;
+  versionCopy = version;
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy version:versionCopy locale:localeCopy];
 
   return v11;
 }

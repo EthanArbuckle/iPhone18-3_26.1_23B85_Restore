@@ -10,7 +10,7 @@
   v7 = MEMORY[0x277D75348];
   v8 = a3;
   v9 = [v7 colorWithWhite:1.0 alpha:1.0];
-  v10 = [a1 imageWithFont:v8 border:4 color:v9 cropped:a5];
+  v10 = [self imageWithFont:v8 border:4 color:v9 cropped:a5];
 
   return v10;
 }
@@ -27,35 +27,35 @@
   v58[1] = v11;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:2];
   v14 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-  v15 = [v14 device];
+  device = [v14 device];
 
-  [a1 sizeWithAttributes:v13];
+  [self sizeWithAttributes:v13];
   CLKCeilForDevice();
   v17 = v16;
   CLKCeilForDevice();
   v18 = a4;
   v19 = v17 + a4;
   v21 = v20 + a4;
-  [v15 screenScale];
+  [device screenScale];
   v23 = v22;
   v60.width = v19;
   v60.height = v21;
   UIGraphicsBeginImageContextWithOptions(v60, 0, v23);
   v24 = (a4 >> 1);
-  [a1 drawAtPoint:v13 withAttributes:{v24, v24}];
+  [self drawAtPoint:v13 withAttributes:{v24, v24}];
   v25 = UIGraphicsGetImageFromCurrentImageContext();
-  v26 = [v25 _imageThatSuppressesAccessibilityHairlineThickening];
+  _imageThatSuppressesAccessibilityHairlineThickening = [v25 _imageThatSuppressesAccessibilityHairlineThickening];
 
   UIGraphicsEndImageContext();
   if (a6)
   {
-    v27 = [v26 CGImage];
-    Width = CGImageGetWidth(v27);
-    Height = CGImageGetHeight(v27);
-    DataProvider = CGImageGetDataProvider(v27);
+    cGImage = [_imageThatSuppressesAccessibilityHairlineThickening CGImage];
+    Width = CGImageGetWidth(cGImage);
+    Height = CGImageGetHeight(cGImage);
+    DataProvider = CGImageGetDataProvider(cGImage);
     v31 = CGDataProviderCopyData(DataProvider);
     BytePtr = CFDataGetBytePtr(v31);
-    BytesPerRow = CGImageGetBytesPerRow(v27);
+    BytesPerRow = CGImageGetBytesPerRow(cGImage);
     if (Height)
     {
       v34 = 0;
@@ -150,19 +150,19 @@
     }
 
     CFRelease(v31);
-    v53 = [v26 CGImage];
+    cGImage2 = [_imageThatSuppressesAccessibilityHairlineThickening CGImage];
     v61.origin.x = v38 - v24;
     v61.origin.y = v39 - v24;
     v61.size.width = v18 + ((v51 - v38) & 0xFFFFFFFE);
     v61.size.height = v18 + ((v52 - v39) & 0xFFFFFFFE);
-    v54 = CGImageCreateWithImageInRect(v53, v61);
+    v54 = CGImageCreateWithImageInRect(cGImage2, v61);
     v55 = [MEMORY[0x277D755B8] imageWithCGImage:v54];
 
     CGImageRelease(v54);
-    v26 = v55;
+    _imageThatSuppressesAccessibilityHairlineThickening = v55;
   }
 
-  return v26;
+  return _imageThatSuppressesAccessibilityHairlineThickening;
 }
 
 @end

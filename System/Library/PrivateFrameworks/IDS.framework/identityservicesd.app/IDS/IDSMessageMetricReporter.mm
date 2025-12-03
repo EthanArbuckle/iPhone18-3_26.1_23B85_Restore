@@ -1,71 +1,71 @@
 @interface IDSMessageMetricReporter
-+ (BOOL)_shouldIgnoreAutoBugCaptureForECFailure:(id)a3;
-+ (BOOL)_shouldIgnoreAutoBugCaptureForLegacyFailure:(id)a3;
-+ (BOOL)_shouldIgnoreMPError:(id)a3;
-+ (id)_metadataWithEndpoint:(id)a3 secondarySuccess:(id)a4 ECSuccess:(id)a5 legacySuccess:(id)a6 secondaryError:(id)a7 ECError:(id)a8 legacyError:(id)a9;
-+ (id)errorToReportForLegacyError:(id)a3;
-+ (id)errorToReportForNGMError:(id)a3;
-+ (id)messageMetadataWithEndpoint:(id)a3 secondarySuccess:(id)a4 ECSuccess:(id)a5 legacySuccess:(id)a6 secondaryError:(id)a7 ECError:(id)a8 legacyError:(id)a9;
++ (BOOL)_shouldIgnoreAutoBugCaptureForECFailure:(id)failure;
++ (BOOL)_shouldIgnoreAutoBugCaptureForLegacyFailure:(id)failure;
++ (BOOL)_shouldIgnoreMPError:(id)error;
++ (id)_metadataWithEndpoint:(id)endpoint secondarySuccess:(id)success ECSuccess:(id)cSuccess legacySuccess:(id)legacySuccess secondaryError:(id)error ECError:(id)cError legacyError:(id)legacyError;
++ (id)errorToReportForLegacyError:(id)error;
++ (id)errorToReportForNGMError:(id)error;
++ (id)messageMetadataWithEndpoint:(id)endpoint secondarySuccess:(id)success ECSuccess:(id)cSuccess legacySuccess:(id)legacySuccess secondaryError:(id)error ECError:(id)cError legacyError:(id)legacyError;
 + (void)noteKeyGenerationForMetric;
-+ (void)reportEncryptionSideMetricWithEndpoint:(id)a3 secondarySuccess:(id)a4 ECSuccess:(id)a5 legacySuccess:(id)a6 secondaryError:(id)a7 ECError:(id)a8 legacyError:(id)a9;
-+ (void)reportMessageMetricWithMetadata:(id)a3 secondarySuccess:(id)a4 ECSuccess:(id)a5 legacySuccess:(id)a6 command:(id)a7 decryptedEqual:(BOOL)a8 triedLastResort:(BOOL)a9 secondaryError:(id)a10 ECError:(id)a11 legacyError:(id)a12 fromDestination:(id)a13 fromToken:(id)a14 toToken:(id)a15;
++ (void)reportEncryptionSideMetricWithEndpoint:(id)endpoint secondarySuccess:(id)success ECSuccess:(id)cSuccess legacySuccess:(id)legacySuccess secondaryError:(id)error ECError:(id)cError legacyError:(id)legacyError;
++ (void)reportMessageMetricWithMetadata:(id)metadata secondarySuccess:(id)success ECSuccess:(id)cSuccess legacySuccess:(id)legacySuccess command:(id)command decryptedEqual:(BOOL)equal triedLastResort:(BOOL)resort secondaryError:(id)self0 ECError:(id)self1 legacyError:(id)self2 fromDestination:(id)self3 fromToken:(id)self4 toToken:(id)self5;
 @end
 
 @implementation IDSMessageMetricReporter
 
-+ (id)_metadataWithEndpoint:(id)a3 secondarySuccess:(id)a4 ECSuccess:(id)a5 legacySuccess:(id)a6 secondaryError:(id)a7 ECError:(id)a8 legacyError:(id)a9
++ (id)_metadataWithEndpoint:(id)endpoint secondarySuccess:(id)success ECSuccess:(id)cSuccess legacySuccess:(id)legacySuccess secondaryError:(id)error ECError:(id)cError legacyError:(id)legacyError
 {
-  v14 = a3;
-  v35 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a5;
+  endpointCopy = endpoint;
+  successCopy = success;
+  legacySuccessCopy = legacySuccess;
+  errorCopy = error;
+  cErrorCopy = cError;
+  legacyErrorCopy = legacyError;
+  cSuccessCopy = cSuccess;
   v20 = objc_alloc_init(NSMutableDictionary);
-  [v14 queryTimeInterval];
+  [endpointCopy queryTimeInterval];
   if (v21 > 0.0)
   {
-    [v14 queryTimeInterval];
+    [endpointCopy queryTimeInterval];
     v22 = [NSNumber numberWithDouble:?];
     [v20 setObject:v22 forKeyedSubscript:@"ids_querytime"];
   }
 
   v23 = +[FTDeviceSupport sharedInstance];
-  v24 = [v23 productBuildVersion];
-  [v20 setObject:v24 forKeyedSubscript:@"ids_build"];
+  productBuildVersion = [v23 productBuildVersion];
+  [v20 setObject:productBuildVersion forKeyedSubscript:@"ids_build"];
 
-  [v20 setObject:v19 forKeyedSubscript:@"ids_sender_EC_success"];
-  if (v17)
+  [v20 setObject:cSuccessCopy forKeyedSubscript:@"ids_sender_EC_success"];
+  if (cErrorCopy)
   {
-    v25 = [IDSMessageMetricReporter errorToReportForNGMError:v17];
+    v25 = [IDSMessageMetricReporter errorToReportForNGMError:cErrorCopy];
 
-    v26 = [v25 domain];
-    [v20 setObject:v26 forKeyedSubscript:@"ids_sender_EC_error_domain"];
+    domain = [v25 domain];
+    [v20 setObject:domain forKeyedSubscript:@"ids_sender_EC_error_domain"];
 
     v27 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v25 code]);
     [v20 setObject:v27 forKeyedSubscript:@"ids_sender_EC_enc_error_code"];
   }
 
-  [v20 setObject:v15 forKeyedSubscript:@"ids_sender_leg_success"];
-  if (v18)
+  [v20 setObject:legacySuccessCopy forKeyedSubscript:@"ids_sender_leg_success"];
+  if (legacyErrorCopy)
   {
-    v28 = [IDSMessageMetricReporter errorToReportForLegacyError:v18];
+    v28 = [IDSMessageMetricReporter errorToReportForLegacyError:legacyErrorCopy];
 
-    v29 = [v28 domain];
-    [v20 setObject:v29 forKeyedSubscript:@"ids_sender_leg_error_domain"];
+    domain2 = [v28 domain];
+    [v20 setObject:domain2 forKeyedSubscript:@"ids_sender_leg_error_domain"];
 
     v30 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v28 code]);
     [v20 setObject:v30 forKeyedSubscript:@"ids_sender_leg_error_code"];
   }
 
-  [v20 setObject:v35 forKeyedSubscript:@"ids_sender_secondary_success"];
-  if (v16)
+  [v20 setObject:successCopy forKeyedSubscript:@"ids_sender_secondary_success"];
+  if (errorCopy)
   {
-    v31 = [IDSMessageMetricReporter errorToReportForNGMError:v16];
+    v31 = [IDSMessageMetricReporter errorToReportForNGMError:errorCopy];
 
-    v32 = [v31 domain];
-    [v20 setObject:v32 forKeyedSubscript:@"ids_sender_secondary_error_domain"];
+    domain3 = [v31 domain];
+    [v20 setObject:domain3 forKeyedSubscript:@"ids_sender_secondary_error_domain"];
 
     v33 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v31 code]);
     [v20 setObject:v33 forKeyedSubscript:@"ids_sender_secondary_enc_error_code"];
@@ -74,18 +74,18 @@
   return v20;
 }
 
-+ (id)messageMetadataWithEndpoint:(id)a3 secondarySuccess:(id)a4 ECSuccess:(id)a5 legacySuccess:(id)a6 secondaryError:(id)a7 ECError:(id)a8 legacyError:(id)a9
++ (id)messageMetadataWithEndpoint:(id)endpoint secondarySuccess:(id)success ECSuccess:(id)cSuccess legacySuccess:(id)legacySuccess secondaryError:(id)error ECError:(id)cError legacyError:(id)legacyError
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  endpointCopy = endpoint;
+  successCopy = success;
+  cSuccessCopy = cSuccess;
+  legacySuccessCopy = legacySuccess;
+  errorCopy = error;
+  cErrorCopy = cError;
+  legacyErrorCopy = legacyError;
   if (CUTIsInternalInstall())
   {
-    v22 = [a1 _metadataWithEndpoint:v15 secondarySuccess:v16 ECSuccess:v17 legacySuccess:v18 secondaryError:v19 ECError:v20 legacyError:v21];
+    v22 = [self _metadataWithEndpoint:endpointCopy secondarySuccess:successCopy ECSuccess:cSuccessCopy legacySuccess:legacySuccessCopy secondaryError:errorCopy ECError:cErrorCopy legacyError:legacyErrorCopy];
     v23 = [NSKeyedArchiver archivedDataWithRootObject:v22 requiringSecureCoding:1 error:0];
   }
 
@@ -97,21 +97,21 @@
   return v23;
 }
 
-+ (void)reportEncryptionSideMetricWithEndpoint:(id)a3 secondarySuccess:(id)a4 ECSuccess:(id)a5 legacySuccess:(id)a6 secondaryError:(id)a7 ECError:(id)a8 legacyError:(id)a9
++ (void)reportEncryptionSideMetricWithEndpoint:(id)endpoint secondarySuccess:(id)success ECSuccess:(id)cSuccess legacySuccess:(id)legacySuccess secondaryError:(id)error ECError:(id)cError legacyError:(id)legacyError
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  endpointCopy = endpoint;
+  successCopy = success;
+  cSuccessCopy = cSuccess;
+  legacySuccessCopy = legacySuccess;
+  errorCopy = error;
+  cErrorCopy = cError;
+  legacyErrorCopy = legacyError;
   v22 = +[IMLockdownManager sharedInstance];
-  v23 = [v22 isInternalInstall];
+  isInternalInstall = [v22 isInternalInstall];
 
-  if (v23)
+  if (isInternalInstall)
   {
-    v24 = [a1 _metadataWithEndpoint:v15 secondarySuccess:v16 ECSuccess:v17 legacySuccess:v18 secondaryError:v19 ECError:v20 legacyError:v21];
+    v24 = [self _metadataWithEndpoint:endpointCopy secondarySuccess:successCopy ECSuccess:cSuccessCopy legacySuccess:legacySuccessCopy secondaryError:errorCopy ECError:cErrorCopy legacyError:legacyErrorCopy];
     v25 = [CUTReporting RTCSessionPromiseWithBatchingInterval:30.0];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
@@ -123,27 +123,27 @@
   }
 }
 
-+ (void)reportMessageMetricWithMetadata:(id)a3 secondarySuccess:(id)a4 ECSuccess:(id)a5 legacySuccess:(id)a6 command:(id)a7 decryptedEqual:(BOOL)a8 triedLastResort:(BOOL)a9 secondaryError:(id)a10 ECError:(id)a11 legacyError:(id)a12 fromDestination:(id)a13 fromToken:(id)a14 toToken:(id)a15
++ (void)reportMessageMetricWithMetadata:(id)metadata secondarySuccess:(id)success ECSuccess:(id)cSuccess legacySuccess:(id)legacySuccess command:(id)command decryptedEqual:(BOOL)equal triedLastResort:(BOOL)resort secondaryError:(id)self0 ECError:(id)self1 legacyError:(id)self2 fromDestination:(id)self3 fromToken:(id)self4 toToken:(id)self5
 {
-  v78 = a8;
-  v87 = a3;
-  v88 = a4;
-  v19 = a5;
-  v20 = a6;
-  v81 = a7;
-  v84 = a10;
-  v86 = a11;
-  v85 = a12;
-  v80 = a13;
-  v83 = a14;
-  v82 = a15;
+  equalCopy = equal;
+  metadataCopy = metadata;
+  successCopy = success;
+  cSuccessCopy = cSuccess;
+  legacySuccessCopy = legacySuccess;
+  commandCopy = command;
+  errorCopy = error;
+  cErrorCopy = cError;
+  legacyErrorCopy = legacyError;
+  destinationCopy = destination;
+  tokenCopy = token;
+  toTokenCopy = toToken;
   v21 = +[IMLockdownManager sharedInstance];
-  v22 = [v21 isInternalInstall];
+  isInternalInstall = [v21 isInternalInstall];
 
-  if (v22)
+  if (isInternalInstall)
   {
     v23 = objc_alloc_init(NSMutableDictionary);
-    v24 = [NSNumber numberWithBool:a9];
+    v24 = [NSNumber numberWithBool:resort];
     [v23 setObject:v24 forKeyedSubscript:@"ids_tried_last_resort"];
 
     v25 = +[IMUserDefaults sharedDefaults];
@@ -161,63 +161,63 @@
 
     [v23 setObject:v28 forKeyedSubscript:@"ids_lastgeneration"];
 
-    if (v20)
+    if (legacySuccessCopy)
     {
-      [v23 setObject:v20 forKeyedSubscript:@"ids_recieved_leg_success"];
+      [v23 setObject:legacySuccessCopy forKeyedSubscript:@"ids_recieved_leg_success"];
     }
 
-    if (v19)
+    if (cSuccessCopy)
     {
-      [v23 setObject:v19 forKeyedSubscript:@"ids_recieved_EC_success"];
+      [v23 setObject:cSuccessCopy forKeyedSubscript:@"ids_recieved_EC_success"];
     }
 
-    if (v88)
+    if (successCopy)
     {
-      [v23 setObject:v88 forKeyedSubscript:@"ids_recieved_secondary_success"];
+      [v23 setObject:successCopy forKeyedSubscript:@"ids_recieved_secondary_success"];
     }
 
-    if (v81)
+    if (commandCopy)
     {
-      [v23 setObject:v81 forKeyedSubscript:@"ids_msg_command"];
+      [v23 setObject:commandCopy forKeyedSubscript:@"ids_msg_command"];
     }
 
-    if (v19 && v20)
+    if (cSuccessCopy && legacySuccessCopy)
     {
-      v29 = [NSNumber numberWithBool:v78];
+      v29 = [NSNumber numberWithBool:equalCopy];
       [v23 setObject:v29 forKeyedSubscript:@"ids_decrypt_equal"];
     }
 
-    if (!v86)
+    if (!cErrorCopy)
     {
 LABEL_22:
-      if (v85)
+      if (legacyErrorCopy)
       {
-        v38 = [IDSMessageMetricReporter errorToReportForLegacyError:v85];
-        v39 = [v38 domain];
-        [v23 setObject:v39 forKeyedSubscript:@"ids_legacy_error_domain"];
+        v38 = [IDSMessageMetricReporter errorToReportForLegacyError:legacyErrorCopy];
+        domain = [v38 domain];
+        [v23 setObject:domain forKeyedSubscript:@"ids_legacy_error_domain"];
 
         v40 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v38 code]);
         [v23 setObject:v40 forKeyedSubscript:@"ids_legacy_error_code"];
       }
 
-      if (v84)
+      if (errorCopy)
       {
-        v41 = [IDSMessageMetricReporter errorToReportForNGMError:v84];
-        v42 = [v41 domain];
-        [v23 setObject:v42 forKeyedSubscript:@"ids_secondary_error_domain"];
+        v41 = [IDSMessageMetricReporter errorToReportForNGMError:errorCopy];
+        domain2 = [v41 domain];
+        [v23 setObject:domain2 forKeyedSubscript:@"ids_secondary_error_domain"];
 
         v43 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v41 code]);
         [v23 setObject:v43 forKeyedSubscript:@"ids_secondary_error_code"];
       }
 
-      if (v87)
+      if (metadataCopy)
       {
         v44 = objc_opt_class();
         v45 = objc_opt_class();
         v46 = objc_opt_class();
         v47 = [NSSet setWithObjects:v44, v45, v46, objc_opt_class(), 0];
         v98 = 0;
-        v48 = [NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:v47 fromData:v87 error:&v98];
+        v48 = [NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:v47 fromData:metadataCopy error:&v98];
         v49 = v98;
 
         if (v49)
@@ -228,14 +228,14 @@ LABEL_22:
             *buf = 138412546;
             v100 = v49;
             v101 = 2112;
-            v102 = v87;
+            v102 = metadataCopy;
             _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "Failed to get payload metadata {payloadMetadataError: %@, payloadMetadataData: %@}", buf, 0x16u);
           }
 
           if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
           {
             v73 = v49;
-            v74 = v87;
+            v74 = metadataCopy;
             _IDSLogV();
           }
         }
@@ -246,7 +246,7 @@ LABEL_22:
         }
       }
 
-      if (v83 && v82)
+      if (tokenCopy && toTokenCopy)
       {
         v51 = +[IMUserDefaults sharedDefaults];
         v52 = [v51 appValueForKey:@"ConversationSalt"];
@@ -273,8 +273,8 @@ LABEL_22:
 
         if (v53)
         {
-          v57 = [v83 mutableCopy];
-          [v57 appendData:v82];
+          v57 = [tokenCopy mutableCopy];
+          [v57 appendData:toTokenCopy];
           v58 = IDSSaltedHash();
           if (v58)
           {
@@ -296,7 +296,7 @@ LABEL_22:
         goto LABEL_75;
       }
 
-      if (v80)
+      if (destinationCopy)
       {
         v79 = [NSSet setWithObject:?];
       }
@@ -306,34 +306,34 @@ LABEL_22:
         v79 = 0;
       }
 
-      v61 = [v19 BOOLValue];
-      v62 = [v20 BOOLValue];
-      v63 = [v88 BOOLValue];
-      if (v61 & 1 | (v19 == 0))
+      bOOLValue = [cSuccessCopy BOOLValue];
+      bOOLValue2 = [legacySuccessCopy BOOLValue];
+      bOOLValue3 = [successCopy BOOLValue];
+      if (bOOLValue & 1 | (cSuccessCopy == 0))
       {
         v64 = 0;
       }
 
       else
       {
-        v64 = ![IDSMessageMetricReporter _shouldIgnoreAutoBugCaptureForECFailure:v86];
+        v64 = ![IDSMessageMetricReporter _shouldIgnoreAutoBugCaptureForECFailure:cErrorCopy];
       }
 
-      if ((v20 == 0) | v62 & 1)
+      if ((legacySuccessCopy == 0) | bOOLValue2 & 1)
       {
         v65 = 0;
       }
 
       else
       {
-        v65 = ![IDSMessageMetricReporter _shouldIgnoreAutoBugCaptureForLegacyFailure:v85];
+        v65 = ![IDSMessageMetricReporter _shouldIgnoreAutoBugCaptureForLegacyFailure:legacyErrorCopy];
       }
 
       if (((v64 | v65) & 1) == 0)
       {
         v68 = 0;
 LABEL_68:
-        if (!((v88 == 0) | v63 & 1))
+        if (!((successCopy == 0) | bOOLValue3 & 1))
         {
           v70 = [v60 objectForKeyedSubscript:@"ids_secondary_error_domain"];
           v71 = [v60 objectForKeyedSubscript:@"ids_secondary_error_code"];
@@ -347,7 +347,7 @@ LABEL_68:
             v89[3] = &unk_100BD88C0;
             v68 = v72;
             v90 = v68;
-            v91 = v88;
+            v91 = successCopy;
             [IDSAutoBugCapture triggerCaptureWithEvent:105 destinations:v79 context:v68 completion:v89];
           }
         }
@@ -374,7 +374,7 @@ LABEL_75:
       {
         if (!v65)
         {
-          v69 = v63;
+          v69 = bOOLValue3;
           v67 = 0;
           goto LABEL_67;
         }
@@ -382,7 +382,7 @@ LABEL_75:
         v67 = [NSString stringWithFormat:@"Legacy (%@:%@)", v76, v75];
       }
 
-      v69 = v63;
+      v69 = bOOLValue3;
 LABEL_67:
       v92[0] = _NSConcreteStackBlock;
       v92[1] = 3221225472;
@@ -390,27 +390,27 @@ LABEL_67:
       v92[3] = &unk_100BD8898;
       v68 = v67;
       v93 = v68;
-      v94 = v20;
-      v95 = v19;
+      v94 = legacySuccessCopy;
+      v95 = cSuccessCopy;
       [IDSAutoBugCapture triggerCaptureWithEvent:101 destinations:v79 context:v68 completion:v92];
-      v63 = v69;
+      bOOLValue3 = v69;
 
       goto LABEL_68;
     }
 
-    v30 = [IDSMessageMetricReporter errorToReportForNGMError:v86];
-    v31 = [v30 domain];
-    [v23 setObject:v31 forKeyedSubscript:@"ids_EC_error_domain"];
+    v30 = [IDSMessageMetricReporter errorToReportForNGMError:cErrorCopy];
+    domain3 = [v30 domain];
+    [v23 setObject:domain3 forKeyedSubscript:@"ids_EC_error_domain"];
 
     v32 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v30 code]);
     [v23 setObject:v32 forKeyedSubscript:@"ids_EC_error_code"];
 
-    v33 = [v30 domain];
-    if ([v33 isEqualToString:IDSDecryptionErrorDomain])
+    domain4 = [v30 domain];
+    if ([domain4 isEqualToString:IDSDecryptionErrorDomain])
     {
-      v34 = [v30 code];
+      code = [v30 code];
 
-      if (v34 != 13)
+      if (code != 13)
       {
 LABEL_21:
 
@@ -418,11 +418,11 @@ LABEL_21:
       }
 
       v35 = +[IDSRegistrationKeyManager sharedInstance];
-      v33 = [v35 errorContainerToReport];
+      domain4 = [v35 errorContainerToReport];
 
-      v36 = [[IDSNGMKeyLoadingMetric alloc] initWithErrorContainer:v33 missingIdentity:1 missingPrekey:1];
-      v37 = [(IDSNGMKeyLoadingMetric *)v36 dictionaryRepresentation];
-      [v23 addEntriesFromDictionary:v37];
+      v36 = [[IDSNGMKeyLoadingMetric alloc] initWithErrorContainer:domain4 missingIdentity:1 missingPrekey:1];
+      dictionaryRepresentation = [(IDSNGMKeyLoadingMetric *)v36 dictionaryRepresentation];
+      [v23 addEntriesFromDictionary:dictionaryRepresentation];
     }
 
     goto LABEL_21;
@@ -431,25 +431,25 @@ LABEL_21:
 LABEL_76:
 }
 
-+ (id)errorToReportForNGMError:(id)a3
++ (id)errorToReportForNGMError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v5 = IDSDecryptionErrorDomain;
-  if ([v4 isEqualToString:IDSDecryptionErrorDomain] && objc_msgSend(v3, "code") == 15)
+  if ([domain isEqualToString:IDSDecryptionErrorDomain] && objc_msgSend(errorCopy, "code") == 15)
   {
     goto LABEL_6;
   }
 
-  v6 = [v3 domain];
-  if ([v6 isEqualToString:IDSEncryptionErrorDomain] && objc_msgSend(v3, "code") == 15)
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:IDSEncryptionErrorDomain] && objc_msgSend(errorCopy, "code") == 15)
   {
 
 LABEL_6:
 LABEL_9:
-    v9 = [v3 userInfo];
-    v10 = [v9 objectForKeyedSubscript:NSUnderlyingErrorKey];
-    v11 = v10;
+    userInfo = [errorCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
+    v9UserInfo = v10;
     if (v10)
     {
       v12 = v10;
@@ -457,19 +457,19 @@ LABEL_9:
 
     else
     {
-      v12 = v3;
+      v12 = errorCopy;
     }
 
     v13 = v12;
     goto LABEL_13;
   }
 
-  v7 = [v3 domain];
-  if ([v7 isEqualToString:v5])
+  domain3 = [errorCopy domain];
+  if ([domain3 isEqualToString:v5])
   {
-    v8 = [v3 code];
+    code = [errorCopy code];
 
-    if (v8 == 2)
+    if (code == 2)
     {
       goto LABEL_9;
     }
@@ -479,24 +479,24 @@ LABEL_9:
   {
   }
 
-  v14 = [v3 domain];
-  if ([v14 isEqualToString:v5])
+  domain4 = [errorCopy domain];
+  if ([domain4 isEqualToString:v5])
   {
-    v15 = [v3 code];
+    code2 = [errorCopy code];
 
-    if (v15 == 12)
+    if (code2 == 12)
     {
-      v16 = [v3 userInfo];
-      v9 = [v16 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo2 = [errorCopy userInfo];
+      userInfo = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-      if (!v9)
+      if (!userInfo)
       {
-        v13 = v3;
+        v13 = errorCopy;
         goto LABEL_14;
       }
 
-      v11 = [v9 userInfo];
-      v17 = [v11 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      v9UserInfo = [userInfo userInfo];
+      v17 = [v9UserInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
       v18 = v17;
       if (v17)
       {
@@ -505,7 +505,7 @@ LABEL_9:
 
       else
       {
-        v19 = v9;
+        v19 = userInfo;
       }
 
       v13 = v19;
@@ -521,31 +521,31 @@ LABEL_14:
   {
   }
 
-  v13 = v3;
+  v13 = errorCopy;
 LABEL_25:
 
   return v13;
 }
 
-+ (id)errorToReportForLegacyError:(id)a3
++ (id)errorToReportForLegacyError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v5 = IDSDecryptionErrorDomain;
-  if ([v4 isEqualToString:IDSDecryptionErrorDomain] && objc_msgSend(v3, "code") == 11)
+  if ([domain isEqualToString:IDSDecryptionErrorDomain] && objc_msgSend(errorCopy, "code") == 11)
   {
     goto LABEL_6;
   }
 
-  v6 = [v3 domain];
-  if ([v6 isEqualToString:IDSEncryptionErrorDomain] && objc_msgSend(v3, "code") == 10)
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:IDSEncryptionErrorDomain] && objc_msgSend(errorCopy, "code") == 10)
   {
 
 LABEL_6:
 LABEL_9:
-    v9 = [v3 userInfo];
-    v10 = [v9 objectForKeyedSubscript:NSUnderlyingErrorKey];
-    v11 = v10;
+    userInfo = [errorCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
+    v9UserInfo = v10;
     if (v10)
     {
       v12 = v10;
@@ -553,19 +553,19 @@ LABEL_9:
 
     else
     {
-      v12 = v3;
+      v12 = errorCopy;
     }
 
     v13 = v12;
     goto LABEL_13;
   }
 
-  v7 = [v3 domain];
-  if ([v7 isEqualToString:v5])
+  domain3 = [errorCopy domain];
+  if ([domain3 isEqualToString:v5])
   {
-    v8 = [v3 code];
+    code = [errorCopy code];
 
-    if (v8 == 2)
+    if (code == 2)
     {
       goto LABEL_9;
     }
@@ -575,24 +575,24 @@ LABEL_9:
   {
   }
 
-  v14 = [v3 domain];
-  if ([v14 isEqualToString:v5])
+  domain4 = [errorCopy domain];
+  if ([domain4 isEqualToString:v5])
   {
-    v15 = [v3 code];
+    code2 = [errorCopy code];
 
-    if (v15 == 9)
+    if (code2 == 9)
     {
-      v16 = [v3 userInfo];
-      v9 = [v16 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo2 = [errorCopy userInfo];
+      userInfo = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-      if (!v9)
+      if (!userInfo)
       {
-        v13 = v3;
+        v13 = errorCopy;
         goto LABEL_14;
       }
 
-      v11 = [v9 userInfo];
-      v17 = [v11 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      v9UserInfo = [userInfo userInfo];
+      v17 = [v9UserInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
       v18 = v17;
       if (v17)
       {
@@ -601,7 +601,7 @@ LABEL_9:
 
       else
       {
-        v19 = v9;
+        v19 = userInfo;
       }
 
       v13 = v19;
@@ -617,7 +617,7 @@ LABEL_14:
   {
   }
 
-  v13 = v3;
+  v13 = errorCopy;
 LABEL_25:
 
   return v13;
@@ -632,23 +632,23 @@ LABEL_25:
   [v4 setAppValue:v3 forKey:@"LastKeyGeneration"];
 }
 
-+ (BOOL)_shouldIgnoreAutoBugCaptureForECFailure:(id)a3
++ (BOOL)_shouldIgnoreAutoBugCaptureForECFailure:(id)failure
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  failureCopy = failure;
+  userInfo = [failureCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v7 = [v4 domain];
-  if (![v7 isEqualToString:IDSDecryptionErrorDomain])
+  domain = [failureCopy domain];
+  if (![domain isEqualToString:IDSDecryptionErrorDomain])
   {
     goto LABEL_6;
   }
 
-  if ([v4 code] != 14)
+  if ([failureCopy code] != 14)
   {
-    if ([v4 code] == 15)
+    if ([failureCopy code] == 15)
     {
-      v8 = [a1 _shouldIgnoreMPError:v6];
+      v8 = [self _shouldIgnoreMPError:v6];
       goto LABEL_7;
     }
 
@@ -663,13 +663,13 @@ LABEL_7:
   return v8;
 }
 
-+ (BOOL)_shouldIgnoreMPError:(id)a3
++ (BOOL)_shouldIgnoreMPError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"com.apple.messageprotection"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"com.apple.messageprotection"])
   {
-    v5 = [v3 code] == 5 || objc_msgSend(v3, "code") == 801;
+    v5 = [errorCopy code] == 5 || objc_msgSend(errorCopy, "code") == 801;
   }
 
   else
@@ -680,13 +680,13 @@ LABEL_7:
   return v5;
 }
 
-+ (BOOL)_shouldIgnoreAutoBugCaptureForLegacyFailure:(id)a3
++ (BOOL)_shouldIgnoreAutoBugCaptureForLegacyFailure:(id)failure
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:IDSDecryptionErrorDomain])
+  failureCopy = failure;
+  domain = [failureCopy domain];
+  if ([domain isEqualToString:IDSDecryptionErrorDomain])
   {
-    v5 = [v3 code] == 5;
+    v5 = [failureCopy code] == 5;
   }
 
   else

@@ -1,27 +1,27 @@
 @interface HotReloadStatusHUDWindow
-- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA224HotReloadStatusHUDWindow)initWithCoder:(id)a3;
-- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA224HotReloadStatusHUDWindow)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA224HotReloadStatusHUDWindow)initWithCoder:(id)coder;
+- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA224HotReloadStatusHUDWindow)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation HotReloadStatusHUDWindow
 
-- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA224HotReloadStatusHUDWindow)initWithCoder:(id)a3
+- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA224HotReloadStatusHUDWindow)initWithCoder:(id)coder
 {
   result = sub_84AFC();
   __break(1u);
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for HotReloadStatusHUDWindow();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(HotReloadStatusHUDWindow *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(HotReloadStatusHUDWindow *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -43,7 +43,7 @@ LABEL_5:
   return v10;
 }
 
-- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA224HotReloadStatusHUDWindow)initWithFrame:(CGRect)a3
+- (_TtC5JSAppP33_E222B00B621AE7255E22C290E7F82EA224HotReloadStatusHUDWindow)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

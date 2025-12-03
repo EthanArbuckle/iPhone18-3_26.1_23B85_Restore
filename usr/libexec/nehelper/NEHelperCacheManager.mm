@@ -1,16 +1,16 @@
 @interface NEHelperCacheManager
 - (NEHelperCacheManager)init;
-- (NEHelperCacheManager)initWithFirstMessage:(id)a3;
+- (NEHelperCacheManager)initWithFirstMessage:(id)message;
 - (OS_dispatch_queue)handlerQueue;
 - (void)dealloc;
-- (void)handleMessage:(id)a3;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperCacheManager
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   selfa = sub_100020804();
   if (self)
   {
@@ -29,7 +29,7 @@
     v7 = selfa;
   }
 
-  sub_10002085C(v7, v4);
+  sub_10002085C(v7, messageCopy);
 }
 
 - (OS_dispatch_queue)handlerQueue
@@ -90,15 +90,15 @@ LABEL_3:
   return v7;
 }
 
-- (NEHelperCacheManager)initWithFirstMessage:(id)a3
+- (NEHelperCacheManager)initWithFirstMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = NEHelperCacheManager;
   v5 = [(NEHelperCacheManager *)&v12 init];
   if (v5)
   {
-    v6 = xpc_dictionary_get_remote_connection(v4);
+    v6 = xpc_dictionary_get_remote_connection(messageCopy);
     v7 = v6;
     if (v6)
     {

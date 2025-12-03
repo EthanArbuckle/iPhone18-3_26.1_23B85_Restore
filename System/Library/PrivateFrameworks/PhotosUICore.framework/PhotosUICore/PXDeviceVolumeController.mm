@@ -1,19 +1,19 @@
 @interface PXDeviceVolumeController
 + (PXDeviceVolumeController)sharedInstance;
-- (PXDeviceVolumeController)initWithIsInSilentMode:(BOOL)a3;
+- (PXDeviceVolumeController)initWithIsInSilentMode:(BOOL)mode;
 - (id)_initAsSharedInstance;
-- (void)_handleSystemVolumeChange:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)_handleSystemVolumeChange:(id)change;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PXDeviceVolumeController
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  keyCopy = key;
   v9 = NSStringFromSelector(sel_simulateSilentMode);
-  v10 = [v8 isEqualToString:v9];
+  v10 = [keyCopy isEqualToString:v9];
 
   if (v10)
   {
@@ -21,9 +21,9 @@
     v11[1] = 3221225472;
     v11[2] = __56__PXDeviceVolumeController_settings_changedValueForKey___block_invoke;
     v11[3] = &unk_1E7743B88;
-    v13 = self;
+    selfCopy = self;
     v14 = a2;
-    v12 = v7;
+    v12 = settingsCopy;
     [(PXVolumeController *)self performChanges:v11];
   }
 }
@@ -35,23 +35,23 @@ void __56__PXDeviceVolumeController_settings_changedValueForKey___block_invoke(u
   [v3 setIsInSilentMode:{objc_msgSend(v4, "simulateSilentMode")}];
 }
 
-- (void)_handleSystemVolumeChange:(id)a3
+- (void)_handleSystemVolumeChange:(id)change
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
+  userInfo = [change userInfo];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = userInfo;
     _os_log_debug_impl(&dword_1A3C1C000, log, OS_LOG_TYPE_DEBUG, "volume changed %@", &v16, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69AEA18]];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69AEA18]];
   [v6 floatValue];
   v8 = v7;
 
-  v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69AEA10]];
+  v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69AEA10]];
   v10 = [v9 isEqual:@"ExplicitVolumeChange"];
 
   if (v10)
@@ -60,7 +60,7 @@ void __56__PXDeviceVolumeController_settings_changedValueForKey___block_invoke(u
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = userInfo;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "explicit volume change %@", &v16, 0xCu);
     }
 
@@ -89,13 +89,13 @@ LABEL_19:
   v40 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v4 UTF8String];
+  uTF8String = [v4 UTF8String];
 
-  v6 = os_log_create(*MEMORY[0x1E69BFF60], v5);
-  v7 = [MEMORY[0x1E69AED10] sharedInstance];
+  v6 = os_log_create(*MEMORY[0x1E69BFF60], uTF8String);
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedInstance];
   v35 = 0.0;
   v34 = 0;
-  v8 = [v7 getActiveCategoryVolume:&v35 andName:&v34];
+  v8 = [mEMORY[0x1E69AED10] getActiveCategoryVolume:&v35 andName:&v34];
   v9 = v34;
   if (v8)
   {
@@ -219,8 +219,8 @@ LABEL_16:
 
     objc_storeStrong(&v15->_log, v6);
     v15->_lastKnownVolume = v10;
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v15 selector:sel__handleSystemVolumeChange_ name:*MEMORY[0x1E69AECE8] object:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel__handleSystemVolumeChange_ name:*MEMORY[0x1E69AECE8] object:mEMORY[0x1E69AED10]];
 
     [v11 addDeferredKeyObserver:v15];
   }
@@ -284,10 +284,10 @@ void __49__PXDeviceVolumeController__initAsSharedInstance__block_invoke_10(uint6
   [WeakRetained performChanges:v5];
 }
 
-- (PXDeviceVolumeController)initWithIsInSilentMode:(BOOL)a3
+- (PXDeviceVolumeController)initWithIsInSilentMode:(BOOL)mode
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXDeviceVolumeController.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXDeviceVolumeController initWithIsInSilentMode:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDeviceVolumeController.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXDeviceVolumeController initWithIsInSilentMode:]"}];
 
   abort();
 }

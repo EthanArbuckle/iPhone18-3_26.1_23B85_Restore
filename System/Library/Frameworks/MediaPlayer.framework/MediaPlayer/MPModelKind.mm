@@ -1,19 +1,19 @@
 @interface MPModelKind
 + (MPModelKind)identityKind;
 + (MPModelKind)unknownKind;
-+ (id)_kindWithModelClass:(Class)a3 cacheKey:(id)a4 block:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_kindWithModelClass:(Class)class cacheKey:(id)key block:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPlaylistableKind;
 - (MPModelKind)identityKind;
-- (MPModelKind)initWithCoder:(id)a3;
-- (id)_initWithModelClass:(Class)a3;
+- (MPModelKind)initWithCoder:(id)coder;
+- (id)_initWithModelClass:(Class)class;
 - (id)description;
-- (id)msv_initWithJSONValue:(id)a3;
+- (id)msv_initWithJSONValue:(id)value;
 - (id)msv_jsonValue;
-- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)a3;
+- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)property;
 - (shared_ptr<mlcore::Predicate>)representedSearchScopePredicate;
-- (void)applyToView:(shared_ptr<mlcore:(id)a4 :LibraryView>)a3 withContext:;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyToView:(shared_ptr<mlcore:(id)view :LibraryView>)a3 withContext:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelKind
@@ -23,15 +23,15 @@
   v3 = objc_opt_class();
   if (v3 == objc_opt_class())
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [objc_opt_class() identityKind];
+    selfCopy = [objc_opt_class() identityKind];
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (BOOL)isPlaylistableKind
@@ -41,10 +41,10 @@
     return 1;
   }
 
-  v4 = [(MPModelKind *)self identityKind];
+  identityKind = [(MPModelKind *)self identityKind];
   v5 = +[MPModelSongKind identityKind];
 
-  if (v4 == v5 || (+[MPModelTVEpisodeKind identityKind], v6 = objc_claimAutoreleasedReturnValue(), v6, v4 == v6))
+  if (identityKind == v5 || (+[MPModelTVEpisodeKind identityKind], v6 = objc_claimAutoreleasedReturnValue(), v6, identityKind == v6))
   {
     v3 = 1;
   }
@@ -52,13 +52,13 @@
   else
   {
     v7 = +[MPModelMovieKind identityKind];
-    v3 = v4 == v7;
+    v3 = identityKind == v7;
   }
 
   return v3;
 }
 
-- (id)_initWithModelClass:(Class)a3
+- (id)_initWithModelClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = MPModelKind;
@@ -66,7 +66,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_modelClass, a3);
+    objc_storeStrong(&v4->_modelClass, class);
   }
 
   return v5;
@@ -87,12 +87,12 @@
   return v6;
 }
 
-- (id)msv_initWithJSONValue:(id)a3
+- (id)msv_initWithJSONValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   if (_NSIsNSDictionary())
   {
-    v6 = v5;
+    v6 = valueCopy;
     v7 = [v6 objectForKeyedSubscript:@"modelKind"];
     v8 = NSClassFromString(v7);
 
@@ -131,23 +131,23 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modelClass = self->_modelClass;
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromClass(modelClass);
-  [v4 encodeObject:v5 forKey:@"modelClass"];
+  [coderCopy encodeObject:v5 forKey:@"modelClass"];
 }
 
-- (MPModelKind)initWithCoder:(id)a3
+- (MPModelKind)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = MPModelKind;
   v5 = [(MPModelKind *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelClass"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelClass"];
     v7 = NSClassFromString(v6);
     modelClass = v5->_modelClass;
     v5->_modelClass = v7;
@@ -160,27 +160,27 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPModelKind *)self humanDescription];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  humanDescription = [(MPModelKind *)self humanDescription];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, humanDescription];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if ([(MPModelKind *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(MPModelKind *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(MPModelKind *)self modelClass];
-    v7 = [(MPModelKind *)v5 modelClass];
+    v5 = equalCopy;
+    modelClass = [(MPModelKind *)self modelClass];
+    modelClass2 = [(MPModelKind *)v5 modelClass];
 
-    v8 = v6 == v7;
+    v8 = modelClass == modelClass2;
   }
 
   else
@@ -191,12 +191,12 @@
   return v8;
 }
 
-+ (id)_kindWithModelClass:(Class)a3 cacheKey:(id)a4 block:(id)a5
++ (id)_kindWithModelClass:(Class)class cacheKey:(id)key block:(id)block
 {
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  blockCopy = block;
   os_unfair_lock_lock(&_kindWithModelClass_cacheKey_block____lock);
-  v11 = [_kindWithModelClass_cacheKey_block____kinds objectForKeyedSubscript:v9];
+  v11 = [_kindWithModelClass_cacheKey_block____kinds objectForKeyedSubscript:keyCopy];
   if (v11)
   {
     v12 = v11;
@@ -212,14 +212,14 @@
       _kindWithModelClass_cacheKey_block____kinds = v13;
     }
 
-    v12 = [[a1 alloc] _initWithModelClass:a3];
-    v10[2](v10, v12);
-    [_kindWithModelClass_cacheKey_block____kinds setObject:v12 forKeyedSubscript:v9];
+    v12 = [[self alloc] _initWithModelClass:class];
+    blockCopy[2](blockCopy, v12);
+    [_kindWithModelClass_cacheKey_block____kinds setObject:v12 forKeyedSubscript:keyCopy];
     os_unfair_lock_unlock(&_kindWithModelClass_cacheKey_block____lock);
     if (!v12)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:a1 file:@"MPModelObject.m" lineNumber:701 description:@"Must have produced a model kind!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelObject.m" lineNumber:701 description:@"Must have produced a model kind!"];
     }
   }
 
@@ -238,11 +238,11 @@
   v4 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v4 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = NSStringFromSelector(a2);
-    [v7 handleFailureInMethod:a2 object:a1 file:@"MPModelObject.m" lineNumber:593 description:{@"Subclass %@ must implement -%@ defined in %@.", v9, v10, @"[MPModelKind class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelObject.m" lineNumber:593 description:{@"Subclass %@ must implement -%@ defined in %@.", v9, v10, @"[MPModelKind class]"}];
   }
 
   v5 = [[MPModelKind alloc] _initWithModelClass:objc_opt_class()];
@@ -250,7 +250,7 @@
   return v5;
 }
 
-- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)a3
+- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)property
 {
   *v3 = 0;
   v3[1] = 0;
@@ -268,7 +268,7 @@
   return result;
 }
 
-- (void)applyToView:(shared_ptr<mlcore:(id)a4 :LibraryView>)a3 withContext:
+- (void)applyToView:(shared_ptr<mlcore:(id)view :LibraryView>)a3 withContext:
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v5 = a3.var1;

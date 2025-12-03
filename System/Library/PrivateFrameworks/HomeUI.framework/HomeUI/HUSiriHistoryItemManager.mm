@@ -1,21 +1,21 @@
 @interface HUSiriHistoryItemManager
-- (HUSiriHistoryItemManager)initWithDelegate:(id)a3 accessorySettingItem:(id)a4;
-- (HUSiriHistoryItemManager)initWithDelegate:(id)a3 groupItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)didSelectItemAtIndexPath:(id)a3;
-- (id)didUpdateItemAtIndexPath:(id)a3;
+- (HUSiriHistoryItemManager)initWithDelegate:(id)delegate accessorySettingItem:(id)item;
+- (HUSiriHistoryItemManager)initWithDelegate:(id)delegate groupItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)didSelectItemAtIndexPath:(id)path;
+- (id)didUpdateItemAtIndexPath:(id)path;
 @end
 
 @implementation HUSiriHistoryItemManager
 
-- (HUSiriHistoryItemManager)initWithDelegate:(id)a3 groupItem:(id)a4
+- (HUSiriHistoryItemManager)initWithDelegate:(id)delegate groupItem:(id)item
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  delegateCopy = delegate;
+  v7 = [item copy];
   v13.receiver = self;
   v13.super_class = HUSiriHistoryItemManager;
-  v8 = [(HFItemManager *)&v13 initWithDelegate:v6 sourceItem:v7];
+  v8 = [(HFItemManager *)&v13 initWithDelegate:delegateCopy sourceItem:v7];
 
   if (v8)
   {
@@ -28,11 +28,11 @@
   return v8;
 }
 
-- (HUSiriHistoryItemManager)initWithDelegate:(id)a3 accessorySettingItem:(id)a4
+- (HUSiriHistoryItemManager)initWithDelegate:(id)delegate accessorySettingItem:(id)item
 {
   v9.receiver = self;
   v9.super_class = HUSiriHistoryItemManager;
-  v4 = [(HFItemManager *)&v9 initWithDelegate:a3 sourceItem:a4];
+  v4 = [(HFItemManager *)&v9 initWithDelegate:delegate sourceItem:item];
   if (v4)
   {
     v5 = dispatch_queue_attr_make_with_qos_class(0, 0xFFFF8000, 0);
@@ -44,7 +44,7 @@
   return v4;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277D14B38]);
@@ -58,8 +58,8 @@
 
   v6 = objc_alloc(MEMORY[0x277D14B40]);
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(HUSiriHistoryItemManager *)self deleteSiriHistoryItem];
-  v9 = [v7 setWithObject:v8];
+  deleteSiriHistoryItem = [(HUSiriHistoryItemManager *)self deleteSiriHistoryItem];
+  v9 = [v7 setWithObject:deleteSiriHistoryItem];
   v10 = [v6 initWithItems:v9];
 
   v14[0] = v10;
@@ -91,26 +91,26 @@ id __55__HUSiriHistoryItemManager__buildItemProvidersForHome___block_invoke(uint
   return v11;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v50[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  itemsCopy = items;
+  array = [v4 array];
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(HUSiriHistoryItemManager *)self deleteSiriHistoryItem];
-  v9 = [v7 setWithObject:v8];
-  v10 = [v5 intersectsSet:v9];
+  deleteSiriHistoryItem = [(HUSiriHistoryItemManager *)self deleteSiriHistoryItem];
+  v9 = [v7 setWithObject:deleteSiriHistoryItem];
+  v10 = [itemsCopy intersectsSet:v9];
 
   if (v10)
   {
-    v47 = v6;
+    v47 = array;
     v11 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"deleteSiriHistory"];
     objc_opt_class();
-    v12 = [(HFItemManager *)self sourceItem];
+    sourceItem = [(HFItemManager *)self sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v13 = v12;
+      v13 = sourceItem;
     }
 
     else
@@ -120,10 +120,10 @@ id __55__HUSiriHistoryItemManager__buildItemProvidersForHome___block_invoke(uint
 
     v14 = v13;
 
-    v15 = [v14 homeKitSettingsVendor];
-    if ([v15 conformsToProtocol:&unk_2825BCB38])
+    homeKitSettingsVendor = [v14 homeKitSettingsVendor];
+    if ([homeKitSettingsVendor conformsToProtocol:&unk_2825BCB38])
     {
-      v16 = v15;
+      v16 = homeKitSettingsVendor;
     }
 
     else
@@ -134,16 +134,16 @@ id __55__HUSiriHistoryItemManager__buildItemProvidersForHome___block_invoke(uint
     v17 = v16;
 
     v46 = v14;
-    v18 = [v14 homeKitSettingsVendor];
-    v19 = [v18 settings];
-    v20 = [v19 hf_accessorySettingAtKeyPath:*MEMORY[0x277D13970]];
+    homeKitSettingsVendor2 = [v14 homeKitSettingsVendor];
+    settings = [homeKitSettingsVendor2 settings];
+    v20 = [settings hf_accessorySettingAtKeyPath:*MEMORY[0x277D13970]];
 
     objc_opt_class();
     v45 = v20;
-    v21 = [v20 value];
+    value = [v20 value];
     if (objc_opt_isKindOfClass())
     {
-      v22 = v21;
+      v22 = value;
     }
 
     else
@@ -154,10 +154,10 @@ id __55__HUSiriHistoryItemManager__buildItemProvidersForHome___block_invoke(uint
     v23 = v22;
 
     objc_opt_class();
-    v24 = [(HFItemManager *)self sourceItem];
+    sourceItem2 = [(HFItemManager *)self sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v25 = v24;
+      v25 = sourceItem2;
     }
 
     else
@@ -167,19 +167,19 @@ id __55__HUSiriHistoryItemManager__buildItemProvidersForHome___block_invoke(uint
 
     v26 = v25;
 
-    v27 = [v26 settingValue];
+    settingValue = [v26 settingValue];
 
-    [v27 BOOLValue];
-    v28 = [v17 accessories];
+    [settingValue BOOLValue];
+    accessories = [v17 accessories];
 
-    v29 = [v28 anyObject];
-    v30 = [v29 hf_userFriendlyLocalizedLowercaseDescription];
+    anyObject = [accessories anyObject];
+    hf_userFriendlyLocalizedLowercaseDescription = [anyObject hf_userFriendlyLocalizedLowercaseDescription];
     v31 = HFLocalizedStringWithFormat();
 
-    v32 = [v26 sourceItem];
-    if ([v32 conformsToProtocol:&unk_28251B0C8])
+    sourceItem3 = [v26 sourceItem];
+    if ([sourceItem3 conformsToProtocol:&unk_28251B0C8])
     {
-      v33 = v32;
+      v33 = sourceItem3;
     }
 
     else
@@ -189,15 +189,15 @@ id __55__HUSiriHistoryItemManager__buildItemProvidersForHome___block_invoke(uint
 
     v34 = v33;
 
-    v35 = [v34 accessories];
+    accessories2 = [v34 accessories];
 
-    v36 = [v35 anyObject];
+    anyObject2 = [accessories2 anyObject];
 
-    if ([v36 hf_isSiriEndpoint])
+    if ([anyObject2 hf_isSiriEndpoint])
     {
-      [v27 BOOLValue];
-      v37 = [v36 hf_categoryOrPrimaryServiceType];
-      v38 = [v36 matterDeviceTypeID];
+      [settingValue BOOLValue];
+      hf_categoryOrPrimaryServiceType = [anyObject2 hf_categoryOrPrimaryServiceType];
+      matterDeviceTypeID = [anyObject2 matterDeviceTypeID];
       v39 = HFLocalizedCategoryOrPrimaryServiceTypeString();
 
       v31 = v39;
@@ -212,16 +212,16 @@ id __55__HUSiriHistoryItemManager__buildItemProvidersForHome___block_invoke(uint
     v41 = __61__HUSiriHistoryItemManager__buildSectionsWithDisplayedItems___block_invoke(v48);
     [v11 setAttributedFooterTitle:v41];
 
-    v42 = [(HUSiriHistoryItemManager *)self deleteSiriHistoryItem];
-    v50[0] = v42;
+    deleteSiriHistoryItem2 = [(HUSiriHistoryItemManager *)self deleteSiriHistoryItem];
+    v50[0] = deleteSiriHistoryItem2;
     v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:1];
     [v11 setItems:v43];
 
-    v6 = v47;
+    array = v47;
     [v47 addObject:v11];
   }
 
-  return v6;
+  return array;
 }
 
 id __61__HUSiriHistoryItemManager__buildSectionsWithDisplayedItems___block_invoke(uint64_t a1)
@@ -240,21 +240,21 @@ id __61__HUSiriHistoryItemManager__buildSectionsWithDisplayedItems___block_invok
   return v1;
 }
 
-- (id)didSelectItemAtIndexPath:(id)a3
+- (id)didSelectItemAtIndexPath:(id)path
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v4 = [(HFItemManager *)self displayedItemAtIndexPath:a3];
-  v5 = [(HUSiriHistoryItemManager *)self deleteSiriHistoryItem];
-  v6 = [v4 isEqual:v5];
+  v4 = [(HFItemManager *)self displayedItemAtIndexPath:path];
+  deleteSiriHistoryItem = [(HUSiriHistoryItemManager *)self deleteSiriHistoryItem];
+  v6 = [v4 isEqual:deleteSiriHistoryItem];
 
   if (v6)
   {
     v7 = HFLocalizedString();
     objc_opt_class();
-    v8 = [(HFItemManager *)self sourceItem];
+    sourceItem = [(HFItemManager *)self sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = sourceItem;
     }
 
     else
@@ -264,11 +264,11 @@ id __61__HUSiriHistoryItemManager__buildSectionsWithDisplayedItems___block_invok
 
     v10 = v9;
 
-    v11 = [v10 sourceItem];
+    sourceItem2 = [v10 sourceItem];
 
-    if ([v11 conformsToProtocol:&unk_28251B0C8])
+    if ([sourceItem2 conformsToProtocol:&unk_28251B0C8])
     {
-      v12 = v11;
+      v12 = sourceItem2;
     }
 
     else
@@ -278,14 +278,14 @@ id __61__HUSiriHistoryItemManager__buildSectionsWithDisplayedItems___block_invok
 
     v13 = v12;
 
-    v14 = [v13 accessories];
+    accessories = [v13 accessories];
 
-    v15 = [v14 anyObject];
+    anyObject = [accessories anyObject];
 
-    if ([v15 hf_isSiriEndpoint])
+    if ([anyObject hf_isSiriEndpoint])
     {
-      v16 = [v15 hf_categoryOrPrimaryServiceType];
-      v17 = [v15 matterDeviceTypeID];
+      hf_categoryOrPrimaryServiceType = [anyObject hf_categoryOrPrimaryServiceType];
+      matterDeviceTypeID = [anyObject matterDeviceTypeID];
       v18 = HFLocalizedCategoryOrPrimaryServiceTypeString();
 
       v7 = v18;
@@ -312,11 +312,11 @@ id __61__HUSiriHistoryItemManager__buildSectionsWithDisplayedItems___block_invok
   return v23;
 }
 
-- (id)didUpdateItemAtIndexPath:(id)a3
+- (id)didUpdateItemAtIndexPath:(id)path
 {
-  v4 = [(HFItemManager *)self displayedItemAtIndexPath:a3];
-  v5 = [(HUSiriHistoryItemManager *)self deleteSiriHistoryItem];
-  v6 = [v4 isEqual:v5];
+  v4 = [(HFItemManager *)self displayedItemAtIndexPath:path];
+  deleteSiriHistoryItem = [(HUSiriHistoryItemManager *)self deleteSiriHistoryItem];
+  v6 = [v4 isEqual:deleteSiriHistoryItem];
 
   if (v6)
   {

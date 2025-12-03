@@ -1,7 +1,7 @@
 @interface FCFeedTransformationUnconsumedOnly
 - (FCFeedTransformationUnconsumedOnly)init;
-- (FCFeedTransformationUnconsumedOnly)initWithFilterMethod:(unint64_t)a3 consumedArticleItems:(id)a4 minimumTimeSinceFirstConsumedToFilter:(double)a5 filterDate:(id)a6 articleIDProvider:(id)a7 dateOfArticleIDConsumptionProvider:(id)a8 maxVersionConsumedProvider:(id)a9 dateOfMaxVersionConsumptionProvider:(id)a10;
-- (id)transformFeedItems:(id)a3;
+- (FCFeedTransformationUnconsumedOnly)initWithFilterMethod:(unint64_t)method consumedArticleItems:(id)items minimumTimeSinceFirstConsumedToFilter:(double)filter filterDate:(id)date articleIDProvider:(id)provider dateOfArticleIDConsumptionProvider:(id)consumptionProvider maxVersionConsumedProvider:(id)consumedProvider dateOfMaxVersionConsumptionProvider:(id)self0;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationUnconsumedOnly
@@ -32,19 +32,19 @@
   objc_exception_throw(v6);
 }
 
-- (FCFeedTransformationUnconsumedOnly)initWithFilterMethod:(unint64_t)a3 consumedArticleItems:(id)a4 minimumTimeSinceFirstConsumedToFilter:(double)a5 filterDate:(id)a6 articleIDProvider:(id)a7 dateOfArticleIDConsumptionProvider:(id)a8 maxVersionConsumedProvider:(id)a9 dateOfMaxVersionConsumptionProvider:(id)a10
+- (FCFeedTransformationUnconsumedOnly)initWithFilterMethod:(unint64_t)method consumedArticleItems:(id)items minimumTimeSinceFirstConsumedToFilter:(double)filter filterDate:(id)date articleIDProvider:(id)provider dateOfArticleIDConsumptionProvider:(id)consumptionProvider maxVersionConsumedProvider:(id)consumedProvider dateOfMaxVersionConsumptionProvider:(id)self0
 {
   v64 = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v46 = v17;
-  if (!v17 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  dateCopy = date;
+  providerCopy = provider;
+  consumptionProviderCopy = consumptionProvider;
+  consumedProviderCopy = consumedProvider;
+  versionConsumptionProviderCopy = versionConsumptionProvider;
+  v46 = itemsCopy;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v35 = v21;
+    v35 = consumedProviderCopy;
     v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "consumedArticleItems"];
     *buf = 136315906;
     v57 = "[FCFeedTransformationUnconsumedOnly initWithFilterMethod:consumedArticleItems:minimumTimeSinceFirstConsumedToFilter:filterDate:articleIDProvider:dateOfArticleIDConsumptionProvider:maxVersionConsumedProvider:dateOfMaxVersionConsumptionProvider:]";
@@ -56,21 +56,21 @@
     v63 = v36;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    v21 = v35;
-    if (v18)
+    consumedProviderCopy = v35;
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v18)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v37 = v21;
+    v37 = consumedProviderCopy;
     v38 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "filterDate"];
     *buf = 136315906;
     v57 = "[FCFeedTransformationUnconsumedOnly initWithFilterMethod:consumedArticleItems:minimumTimeSinceFirstConsumedToFilter:filterDate:articleIDProvider:dateOfArticleIDConsumptionProvider:maxVersionConsumedProvider:dateOfMaxVersionConsumptionProvider:]";
@@ -82,13 +82,13 @@
     v63 = v38;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    v21 = v37;
+    consumedProviderCopy = v37;
   }
 
 LABEL_6:
-  if (!v19 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!providerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v39 = v21;
+    v39 = consumedProviderCopy;
     v40 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "articleIDProvider"];
     *buf = 136315906;
     v57 = "[FCFeedTransformationUnconsumedOnly initWithFilterMethod:consumedArticleItems:minimumTimeSinceFirstConsumedToFilter:filterDate:articleIDProvider:dateOfArticleIDConsumptionProvider:maxVersionConsumedProvider:dateOfMaxVersionConsumptionProvider:]";
@@ -100,21 +100,21 @@ LABEL_6:
     v63 = v40;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    v21 = v39;
-    if (v20)
+    consumedProviderCopy = v39;
+    if (consumptionProviderCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v20)
+  else if (consumptionProviderCopy)
   {
     goto LABEL_11;
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v41 = v21;
+    v41 = consumedProviderCopy;
     v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "dateOfArticleIDConsumptionProvider"];
     *buf = 136315906;
     v57 = "[FCFeedTransformationUnconsumedOnly initWithFilterMethod:consumedArticleItems:minimumTimeSinceFirstConsumedToFilter:filterDate:articleIDProvider:dateOfArticleIDConsumptionProvider:maxVersionConsumedProvider:dateOfMaxVersionConsumptionProvider:]";
@@ -126,11 +126,11 @@ LABEL_6:
     v63 = v42;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    v21 = v41;
+    consumedProviderCopy = v41;
   }
 
 LABEL_11:
-  if (!v21 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!consumedProviderCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v43 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "maxVersionConsumedProvider"];
     *buf = 136315906;
@@ -143,21 +143,21 @@ LABEL_11:
     v63 = v43;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    v21 = 0;
-    if (v22)
+    consumedProviderCopy = 0;
+    if (versionConsumptionProviderCopy)
     {
       goto LABEL_16;
     }
   }
 
-  else if (v22)
+  else if (versionConsumptionProviderCopy)
   {
     goto LABEL_16;
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v44 = v21;
+    v44 = consumedProviderCopy;
     v45 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "dateOfMaxVersionConsumptionProvider"];
     *buf = 136315906;
     v57 = "[FCFeedTransformationUnconsumedOnly initWithFilterMethod:consumedArticleItems:minimumTimeSinceFirstConsumedToFilter:filterDate:articleIDProvider:dateOfArticleIDConsumptionProvider:maxVersionConsumedProvider:dateOfMaxVersionConsumptionProvider:]";
@@ -169,7 +169,7 @@ LABEL_11:
     v63 = v45;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    v21 = v44;
+    consumedProviderCopy = v44;
   }
 
 LABEL_16:
@@ -178,30 +178,30 @@ LABEL_16:
   v23 = [(FCFeedTransformationUnconsumedOnly *)&v55 init];
   if (v23)
   {
-    if (a3 == 2)
+    if (method == 2)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __245__FCFeedTransformationUnconsumedOnly_initWithFilterMethod_consumedArticleItems_minimumTimeSinceFirstConsumedToFilter_filterDate_articleIDProvider_dateOfArticleIDConsumptionProvider_maxVersionConsumedProvider_dateOfMaxVersionConsumptionProvider___block_invoke_3;
       aBlock[3] = &unk_1E7C46600;
-      v24 = v21;
-      v54 = v21;
+      v24 = consumedProviderCopy;
+      v54 = consumedProviderCopy;
       v25 = _Block_copy(aBlock);
-      v26 = _Block_copy(v22);
+      v26 = _Block_copy(versionConsumptionProviderCopy);
     }
 
     else
     {
-      v24 = v21;
-      if (a3 == 1)
+      v24 = consumedProviderCopy;
+      if (method == 1)
       {
-        v26 = _Block_copy(v20);
+        v26 = _Block_copy(consumptionProviderCopy);
         v25 = &__block_literal_global_17_2;
       }
 
       else
       {
-        if (a3)
+        if (method)
         {
           v25 = 0;
         }
@@ -215,16 +215,16 @@ LABEL_16:
       }
     }
 
-    v27 = [v46 fc_dictionaryWithKeyBlock:v19];
+    v27 = [v46 fc_dictionaryWithKeyBlock:providerCopy];
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __245__FCFeedTransformationUnconsumedOnly_initWithFilterMethod_consumedArticleItems_minimumTimeSinceFirstConsumedToFilter_filterDate_articleIDProvider_dateOfArticleIDConsumptionProvider_maxVersionConsumedProvider_dateOfMaxVersionConsumptionProvider___block_invoke_4;
     v47[3] = &unk_1E7C46628;
     v48 = v27;
     v50 = v25;
-    v49 = v18;
+    v49 = dateCopy;
     v51 = v26;
-    v52 = a5;
+    filterCopy = filter;
     v28 = v26;
     v29 = v25;
     v30 = v27;
@@ -232,7 +232,7 @@ LABEL_16:
     innerFilter = v23->_innerFilter;
     v23->_innerFilter = v31;
 
-    v21 = v24;
+    consumedProviderCopy = v24;
   }
 
   v33 = *MEMORY[0x1E69E9840];
@@ -275,11 +275,11 @@ BOOL __245__FCFeedTransformationUnconsumedOnly_initWithFilterMethod_consumedArti
   return v11;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "feedItems"];
     *buf = 136315906;
@@ -293,8 +293,8 @@ BOOL __245__FCFeedTransformationUnconsumedOnly_initWithFilterMethod_consumedArti
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCFeedTransformationUnconsumedOnly *)self innerFilter];
-  v6 = [v5 transformFeedItems:v4];
+  innerFilter = [(FCFeedTransformationUnconsumedOnly *)self innerFilter];
+  v6 = [innerFilter transformFeedItems:itemsCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 

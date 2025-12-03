@@ -1,22 +1,22 @@
 @interface PXGadgetUICollectionViewCell
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)setGadgetContentView:(id)a3;
+- (void)setGadgetContentView:(id)view;
 @end
 
 @implementation PXGadgetUICollectionViewCell
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = PXGadgetUICollectionViewCell;
-  [(PXGadgetUICollectionViewCell *)&v10 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
-  if (v7 == self)
+  [(PXGadgetUICollectionViewCell *)&v10 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  if (nextFocusedItem == self)
   {
-    v9 = [(PXGadgetUICollectionViewCell *)self gadgetContentView];
-    if (v9)
+    gadgetContentView = [(PXGadgetUICollectionViewCell *)self gadgetContentView];
+    if (gadgetContentView)
     {
 
 LABEL_6:
@@ -25,9 +25,9 @@ LABEL_6:
     }
   }
 
-  v8 = [v6 previouslyFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-  if (v8 == self)
+  if (previouslyFocusedItem == self)
   {
     goto LABEL_6;
   }
@@ -43,27 +43,27 @@ LABEL_7:
   [(PXGadgetUICollectionViewCell *)self setGadgetContentView:0];
 }
 
-- (void)setGadgetContentView:(id)a3
+- (void)setGadgetContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   gadgetContentView = self->_gadgetContentView;
-  if (gadgetContentView != v5)
+  if (gadgetContentView != viewCopy)
   {
-    v7 = [(UIView *)gadgetContentView superview];
-    v8 = [(PXGadgetUICollectionViewCell *)self contentView];
+    superview = [(UIView *)gadgetContentView superview];
+    contentView = [(PXGadgetUICollectionViewCell *)self contentView];
 
-    if (v7 == v8)
+    if (superview == contentView)
     {
       [(UIView *)self->_gadgetContentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_gadgetContentView, a3);
+    objc_storeStrong(&self->_gadgetContentView, view);
     v9 = self->_gadgetContentView;
     if (v9)
     {
       [(UIView *)v9 setAutoresizingMask:0];
-      v10 = [(PXGadgetUICollectionViewCell *)self contentView];
-      [v10 addSubview:self->_gadgetContentView];
+      contentView2 = [(PXGadgetUICollectionViewCell *)self contentView];
+      [contentView2 addSubview:self->_gadgetContentView];
 
       if (objc_opt_respondsToSelector())
       {

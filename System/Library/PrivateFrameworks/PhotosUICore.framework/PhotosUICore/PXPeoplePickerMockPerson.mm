@@ -1,6 +1,6 @@
 @interface PXPeoplePickerMockPerson
 - (PXPeoplePickerMockPerson)init;
-- (PXPeoplePickerMockPerson)initWithLocalIdentifier:(id)a3 displayName:(id)a4;
+- (PXPeoplePickerMockPerson)initWithLocalIdentifier:(id)identifier displayName:(id)name;
 - (id)description;
 @end
 
@@ -10,21 +10,21 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PXPeoplePickerMockPerson *)self mockName];
-  v6 = [(PXPeoplePickerMockPerson *)self px_localizedName];
-  v7 = [v3 stringWithFormat:@"<%@:%p, uuid:%@, displayName:%@>", v4, self, v5, v6];
+  mockName = [(PXPeoplePickerMockPerson *)self mockName];
+  px_localizedName = [(PXPeoplePickerMockPerson *)self px_localizedName];
+  v7 = [v3 stringWithFormat:@"<%@:%p, uuid:%@, displayName:%@>", v4, self, mockName, px_localizedName];
 
   return v7;
 }
 
-- (PXPeoplePickerMockPerson)initWithLocalIdentifier:(id)a3 displayName:(id)a4
+- (PXPeoplePickerMockPerson)initWithLocalIdentifier:(id)identifier displayName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  nameCopy = name;
+  v9 = nameCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -32,8 +32,8 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockPerson.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"localIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockPerson.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"localIdentifier"}];
 
     if (v9)
     {
@@ -41,8 +41,8 @@
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockPerson.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"displayName"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockPerson.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"displayName"}];
 
 LABEL_3:
   v18.receiver = self;
@@ -54,7 +54,7 @@ LABEL_3:
     mockName = v10->_mockName;
     v10->_mockName = v11;
 
-    v13 = [v7 copy];
+    v13 = [identifierCopy copy];
     mockLocalIdentifier = v10->_mockLocalIdentifier;
     v10->_mockLocalIdentifier = v13;
   }
@@ -64,8 +64,8 @@ LABEL_3:
 
 - (PXPeoplePickerMockPerson)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockPerson.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXPeoplePickerMockPerson init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeoplePickerMockPerson.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXPeoplePickerMockPerson init]"}];
 
   abort();
 }

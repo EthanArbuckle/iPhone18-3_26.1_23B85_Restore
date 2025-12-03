@@ -4,10 +4,10 @@
 - (BOOL)_supportDragMultiLayout;
 - (BOOL)_wantsSheetGrabber;
 - (BOOL)shouldBypassViewControllerHeightCalculation;
-- (BOOL)updateHeightConstraintWithValue:(double)a3;
-- (BOOL)updateHeightConstraintWithValue:(double)a3 transitionHeight:(double)a4;
+- (BOOL)updateHeightConstraintWithValue:(double)value;
+- (BOOL)updateHeightConstraintWithValue:(double)value transitionHeight:(double)height;
 - (CGSize)sheetContentSize;
-- (CardPresentationController)initWithViewController:(id)a3;
+- (CardPresentationController)initWithViewController:(id)controller;
 - (CardView)cardView;
 - (ContaineeProtocol)viewController;
 - (ContainerViewController)containerViewController;
@@ -16,40 +16,40 @@
 - (double)cardHeight;
 - (double)contentAlpha;
 - (double)grabberSafeAreaHeight;
-- (double)transitionProgressForFlexiblePlacecardFromLayout:(unint64_t)a3;
-- (double)transitionProgressFromLayout:(unint64_t)a3 toLayout:(unint64_t)a4;
-- (double)transitionProgressToAscendingLayoutFromLayout:(unint64_t)a3;
-- (id)_detentIdentifierForContaineeLayout:(unint64_t)a3;
+- (double)transitionProgressForFlexiblePlacecardFromLayout:(unint64_t)layout;
+- (double)transitionProgressFromLayout:(unint64_t)layout toLayout:(unint64_t)toLayout;
+- (double)transitionProgressToAscendingLayoutFromLayout:(unint64_t)layout;
+- (id)_detentIdentifierForContaineeLayout:(unint64_t)layout;
 - (id)detents;
 - (id)presentedCardTraitOverrides;
-- (int64_t)_detentIndexForContaineeLayout:(unint64_t)a3;
-- (int64_t)_modalPresentationStyleIsDismissing:(BOOL)a3;
+- (int64_t)_detentIndexForContaineeLayout:(unint64_t)layout;
+- (int64_t)_modalPresentationStyleIsDismissing:(BOOL)dismissing;
 - (int64_t)preferredUserInterfaceStyle;
-- (unint64_t)_layoutforDetentIdentifier:(id)a3;
+- (unint64_t)_layoutforDetentIdentifier:(id)identifier;
 - (unint64_t)containeeLayout;
 - (unint64_t)containerStyle;
-- (void)_animateToDesiredDetentIdentifier:(id)a3 completion:(id)a4;
+- (void)_animateToDesiredDetentIdentifier:(id)identifier completion:(id)completion;
 - (void)_updateGrabberBlur;
 - (void)_updateStyle;
-- (void)applyWithAnimations:(id)a3 completion:(id)a4;
-- (void)configureForSheetPresentationWithContainer:(id)a3 layout:(unint64_t)a4;
+- (void)applyWithAnimations:(id)animations completion:(id)completion;
+- (void)configureForSheetPresentationWithContainer:(id)container layout:(unint64_t)layout;
 - (void)dealloc;
-- (void)dismiss:(BOOL)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setCardView:(id)a3 fromContainer:(id)a4;
-- (void)setContentAlpha:(double)a3;
-- (void)setGrabberBlurEnabled:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setHideGrabber:(BOOL)a3;
-- (void)setPreferredUserInterfaceStyle:(int64_t)a3;
-- (void)setPresentedModally:(BOOL)a3;
+- (void)dismiss:(BOOL)dismiss;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)setCardView:(id)view fromContainer:(id)container;
+- (void)setContentAlpha:(double)alpha;
+- (void)setGrabberBlurEnabled:(BOOL)enabled;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHideGrabber:(BOOL)grabber;
+- (void)setPreferredUserInterfaceStyle:(int64_t)style;
+- (void)setPresentedModally:(BOOL)modally;
 - (void)updateAdditionalTopMargin;
 - (void)updateDimmingBehavior;
 - (void)updateGrabber;
-- (void)updateHeightForCurrentLayoutAnimated:(BOOL)a3;
-- (void)updateHeightForLayout:(unint64_t)a3;
+- (void)updateHeightForCurrentLayoutAnimated:(BOOL)animated;
+- (void)updateHeightForLayout:(unint64_t)layout;
 - (void)wantsExpandLayout;
-- (void)wantsLayout:(unint64_t)a3 animated:(BOOL)a4;
+- (void)wantsLayout:(unint64_t)layout animated:(BOOL)animated;
 - (void)wantsMinimizeLayout;
 @end
 
@@ -90,98 +90,98 @@
     LOBYTE(v3) = 0;
   }
 
-  v4 = [(CardPresentationController *)self takesAvailableHeight];
-  if (v4)
+  takesAvailableHeight = [(CardPresentationController *)self takesAvailableHeight];
+  if (takesAvailableHeight)
   {
-    LOBYTE(v4) = [(CardPresentationController *)self presentedModally];
+    LOBYTE(takesAvailableHeight) = [(CardPresentationController *)self presentedModally];
   }
 
-  return (v3 | v4) & 1;
+  return (v3 | takesAvailableHeight) & 1;
 }
 
 - (unint64_t)containerStyle
 {
-  v3 = [(CardPresentationController *)self usingSheetPresentation];
+  usingSheetPresentation = [(CardPresentationController *)self usingSheetPresentation];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   v5 = WeakRetained;
-  if (v3)
+  if (usingSheetPresentation)
   {
-    v6 = [WeakRetained traitCollection];
+    traitCollection = [WeakRetained traitCollection];
 
     v7 = objc_loadWeakRetained(&self->_viewController);
-    v8 = [v7 sheetPresentationController];
-    v9 = [v8 containerView];
+    sheetPresentationController = [v7 sheetPresentationController];
+    containerView = [sheetPresentationController containerView];
 
     v10 = objc_loadWeakRetained(&self->_containerViewController);
-    v11 = [v10 view];
-    v12 = [v11 window];
+    view = [v10 view];
+    window = [view window];
 
-    if (!v12 && v9)
+    if (!window && containerView)
     {
-      v13 = [v9 traitCollection];
+      traitCollection2 = [containerView traitCollection];
 
-      v6 = v13;
+      traitCollection = traitCollection2;
     }
 
     v14 = objc_loadWeakRetained(&self->_containerViewController);
-    v15 = [v14 allowOnlyStandardStyle];
-    v16 = v6;
+    allowOnlyStandardStyle = [v14 allowOnlyStandardStyle];
+    v16 = traitCollection;
     v17 = v16;
     if (v16)
     {
       if ([v16 userInterfaceIdiom] == 5)
       {
-        v18 = 6;
+        containerStyle = 6;
 LABEL_25:
 
         goto LABEL_26;
       }
 
-      v19 = [v17 horizontalSizeClass];
-      if (v15)
+      horizontalSizeClass = [v17 horizontalSizeClass];
+      if (allowOnlyStandardStyle)
       {
-        if (v19 == 2 || [v17 horizontalSizeClass] == 1 && objc_msgSend(v17, "verticalSizeClass") == 1)
+        if (horizontalSizeClass == 2 || [v17 horizontalSizeClass] == 1 && objc_msgSend(v17, "verticalSizeClass") == 1)
         {
-          v18 = 2;
+          containerStyle = 2;
         }
 
         else if ([v17 userInterfaceIdiom] == 5)
         {
-          v18 = 2;
+          containerStyle = 2;
         }
 
         else
         {
-          v18 = 1;
+          containerStyle = 1;
         }
 
         goto LABEL_25;
       }
 
-      if (v19 == 1 && [v17 verticalSizeClass] == 2)
+      if (horizontalSizeClass == 1 && [v17 verticalSizeClass] == 2)
       {
-        v18 = 1;
+        containerStyle = 1;
         goto LABEL_25;
       }
 
       if ([v17 horizontalSizeClass] == 1 && objc_msgSend(v17, "verticalSizeClass") == 1 || objc_msgSend(v17, "horizontalSizeClass") == 2 && objc_msgSend(v17, "verticalSizeClass") == 1 || objc_msgSend(v17, "horizontalSizeClass") == 2 && objc_msgSend(v17, "verticalSizeClass") == 2)
       {
-        v18 = 4;
+        containerStyle = 4;
         goto LABEL_25;
       }
     }
 
-    v18 = 0;
+    containerStyle = 0;
     goto LABEL_25;
   }
 
   if (v5)
   {
     v17 = objc_loadWeakRetained(&self->_containerViewController);
-    v18 = [v17 containerStyle];
+    containerStyle = [v17 containerStyle];
 LABEL_26:
 
-    return v18;
+    return containerStyle;
   }
 
   return 0;
@@ -199,9 +199,9 @@ LABEL_26:
     return 0.0;
   }
 
-  v3 = [(CardPresentationController *)self allowResizeInFloatingStyle];
+  allowResizeInFloatingStyle = [(CardPresentationController *)self allowResizeInFloatingStyle];
   result = 20.0;
-  if ((v3 & 1) == 0)
+  if ((allowResizeInFloatingStyle & 1) == 0)
   {
     return 0.0;
   }
@@ -261,20 +261,20 @@ LABEL_26:
 - (CGSize)sheetContentSize
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  v4 = [WeakRetained view];
+  view = [WeakRetained view];
 
-  v5 = [v4 superview];
+  superview = [view superview];
 
-  if (!v5)
+  if (!superview)
   {
     v6 = objc_loadWeakRetained(&self->_viewController);
-    v7 = [v6 sheetPresentationController];
-    v8 = [v7 containerView];
+    sheetPresentationController = [v6 sheetPresentationController];
+    containerView = [sheetPresentationController containerView];
 
-    v4 = v8;
+    view = containerView;
   }
 
-  [v4 bounds];
+  [view bounds];
   Width = CGRectGetWidth(v21);
   if ([(CardPresentationController *)self isFloating])
   {
@@ -285,7 +285,7 @@ LABEL_26:
 
   else
   {
-    [v4 bounds];
+    [view bounds];
     Height = CGRectGetHeight(v22);
   }
 
@@ -423,21 +423,21 @@ LABEL_26:
     if (![(CardPresentationController *)self isFloating]&& ![(CardPresentationController *)self presentedModally])
     {
       WeakRetained = objc_loadWeakRetained(&self->_viewController);
-      v5 = [WeakRetained sheetPresentationController];
-      v6 = [v5 _detentValues];
-      v7 = [v6 count];
+      sheetPresentationController = [WeakRetained sheetPresentationController];
+      _detentValues = [sheetPresentationController _detentValues];
+      v7 = [_detentValues count];
 
       if (v7 >= 2)
       {
-        v8 = [(CardPresentationController *)self viewController];
-        if ([v8 isBeingPresented])
+        viewController = [(CardPresentationController *)self viewController];
+        if ([viewController isBeingPresented])
         {
 
 LABEL_11:
           v12 = objc_loadWeakRetained(&self->_viewController);
-          v13 = [v12 sheetPresentationController];
-          v14 = [v13 selectedDetentIdentifier];
-          if (v14 == @"SmallLayoutDetentIdentifier")
+          sheetPresentationController2 = [v12 sheetPresentationController];
+          selectedDetentIdentifier = [sheetPresentationController2 selectedDetentIdentifier];
+          if (selectedDetentIdentifier == @"SmallLayoutDetentIdentifier")
           {
             v3 = 0.0;
           }
@@ -450,10 +450,10 @@ LABEL_11:
           return v3;
         }
 
-        v10 = [(CardPresentationController *)self viewController];
-        v11 = [v10 isBeingDismissed];
+        viewController2 = [(CardPresentationController *)self viewController];
+        isBeingDismissed = [viewController2 isBeingDismissed];
 
-        if (v11)
+        if (isBeingDismissed)
         {
           goto LABEL_11;
         }
@@ -471,8 +471,8 @@ LABEL_11:
         v20 = v19;
 
         v21 = objc_loadWeakRetained(&self->_viewController);
-        v22 = [v21 sheetPresentationController];
-        [v22 _currentDetentValue];
+        sheetPresentationController3 = [v21 sheetPresentationController];
+        [sheetPresentationController3 _currentDetentValue];
         v24 = v23;
 
         v25 = objc_loadWeakRetained(&self->_containerViewController);
@@ -518,31 +518,31 @@ LABEL_11:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v5 = [WeakRetained sheetPresentationController];
-  [v5 _setGrabberTopSpacing:v3];
+  sheetPresentationController = [WeakRetained sheetPresentationController];
+  [sheetPresentationController _setGrabberTopSpacing:v3];
 
-  v6 = [(CardPresentationController *)self _wantsSheetGrabber];
+  _wantsSheetGrabber = [(CardPresentationController *)self _wantsSheetGrabber];
   v8 = objc_loadWeakRetained(&self->_viewController);
-  v7 = [v8 sheetPresentationController];
-  [v7 setPrefersGrabberVisible:v6];
+  sheetPresentationController2 = [v8 sheetPresentationController];
+  [sheetPresentationController2 setPrefersGrabberVisible:_wantsSheetGrabber];
 }
 
 - (void)updateDimmingBehavior
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v13 = [WeakRetained sheetPresentationController];
+  sheetPresentationController = [WeakRetained sheetPresentationController];
 
   v4 = [_UISheetPresentationControllerAppearance appearancePreferringDimmingVisible:0];
-  [v13 _setFloatingAppearance:v4];
+  [sheetPresentationController _setFloatingAppearance:v4];
 
   v5 = objc_loadWeakRetained(&self->_containerViewController);
   v6 = sub_10000FA08(v5);
 
   if (v6 != 5)
   {
-    [v13 _setWantsBottomAttached:{-[CardPresentationController takesAvailableWidth](self, "takesAvailableWidth")}];
-    v7 = [(CardPresentationController *)self containerStyle];
-    if (v7 <= 7 && ((1 << v7) & 0xA3) != 0)
+    [sheetPresentationController _setWantsBottomAttached:{-[CardPresentationController takesAvailableWidth](self, "takesAvailableWidth")}];
+    containerStyle = [(CardPresentationController *)self containerStyle];
+    if (containerStyle <= 7 && ((1 << containerStyle) & 0xA3) != 0)
     {
       if ([(CardPresentationController *)self presentedModally])
       {
@@ -554,16 +554,16 @@ LABEL_11:
         v8 = 0;
       }
 
-      v9 = [(CardPresentationController *)self edgeAttachedRegularHeightDimmingBehavior];
-      if (v9 == 2)
+      edgeAttachedRegularHeightDimmingBehavior = [(CardPresentationController *)self edgeAttachedRegularHeightDimmingBehavior];
+      if (edgeAttachedRegularHeightDimmingBehavior == 2)
       {
         v10 = @"SmallLayoutDetentIdentifier";
         goto LABEL_14;
       }
 
-      if (v9 != 1)
+      if (edgeAttachedRegularHeightDimmingBehavior != 1)
       {
-        if (v9)
+        if (edgeAttachedRegularHeightDimmingBehavior)
         {
           goto LABEL_16;
         }
@@ -581,7 +581,7 @@ LABEL_14:
     v11 = [_UISheetPresentationControllerAppearance appearancePreferringDimmingVisible:0];
 LABEL_15:
     v12 = v11;
-    [v13 _setStandardAppearance:v11];
+    [sheetPresentationController _setStandardAppearance:v11];
   }
 
 LABEL_16:
@@ -592,8 +592,8 @@ LABEL_16:
   if ([(CardPresentationController *)self usingSheetPresentation])
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v4 = [WeakRetained view];
-    [v4 frame];
+    view = [WeakRetained view];
+    [view frame];
     Height = CGRectGetHeight(v8);
   }
 
@@ -614,9 +614,9 @@ LABEL_16:
   return WeakRetained;
 }
 
-- (double)transitionProgressToAscendingLayoutFromLayout:(unint64_t)a3
+- (double)transitionProgressToAscendingLayoutFromLayout:(unint64_t)layout
 {
-  if (a3 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (layout - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v7 = sub_10006D178();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -645,7 +645,7 @@ LABEL_16:
     }
   }
 
-  if (a3 == 1)
+  if (layout == 1)
   {
     v5 = 2;
   }
@@ -655,13 +655,13 @@ LABEL_16:
     v5 = 3;
   }
 
-  [(CardPresentationController *)self transitionProgressFromLayout:a3 toLayout:v5];
+  [(CardPresentationController *)self transitionProgressFromLayout:layout toLayout:v5];
   return result;
 }
 
-- (double)transitionProgressForFlexiblePlacecardFromLayout:(unint64_t)a3
+- (double)transitionProgressForFlexiblePlacecardFromLayout:(unint64_t)layout
 {
-  if (a3 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (layout - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v7 = sub_10006D178();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -690,7 +690,7 @@ LABEL_16:
     }
   }
 
-  if (a3 == 1)
+  if (layout == 1)
   {
     v5 = 2;
   }
@@ -700,8 +700,8 @@ LABEL_16:
     v5 = 3;
   }
 
-  [(CardPresentationController *)self transitionProgressFromLayout:a3 toLayout:v5];
-  if (v5 >= a3)
+  [(CardPresentationController *)self transitionProgressFromLayout:layout toLayout:v5];
+  if (v5 >= layout)
   {
     return result + -1.0;
   }
@@ -709,21 +709,21 @@ LABEL_16:
   return result;
 }
 
-- (double)transitionProgressFromLayout:(unint64_t)a3 toLayout:(unint64_t)a4
+- (double)transitionProgressFromLayout:(unint64_t)layout toLayout:(unint64_t)toLayout
 {
   if ([(CardPresentationController *)self usingSheetPresentation])
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v8 = [WeakRetained sheetPresentationController];
+    sheetPresentationController = [WeakRetained sheetPresentationController];
 
-    v9 = [v8 _detentValues];
-    v10 = [v9 count];
+    _detentValues = [sheetPresentationController _detentValues];
+    v10 = [_detentValues count];
 
     if (v10 == 3)
     {
-      v11 = [(CardPresentationController *)self _detentIndexForContaineeLayout:a3];
-      v12 = [(CardPresentationController *)self _detentIndexForContaineeLayout:a4];
-      if (a3 > a4)
+      v11 = [(CardPresentationController *)self _detentIndexForContaineeLayout:layout];
+      v12 = [(CardPresentationController *)self _detentIndexForContaineeLayout:toLayout];
+      if (layout > toLayout)
       {
         v13 = v11;
       }
@@ -733,7 +733,7 @@ LABEL_16:
         v13 = v12;
       }
 
-      if (a3 > a4)
+      if (layout > toLayout)
       {
         v11 = v12;
       }
@@ -744,25 +744,25 @@ LABEL_16:
       v36[3] = &unk_10164F080;
       v36[4] = self;
       v14 = objc_retainBlock(v36);
-      v15 = [v8 _detentValues];
-      v16 = [v15 objectAtIndexedSubscript:v11];
+      _detentValues2 = [sheetPresentationController _detentValues];
+      v16 = [_detentValues2 objectAtIndexedSubscript:v11];
       [v16 floatValue];
       v18 = (*(v14 + 16))(v14, v17);
 
-      v19 = [v8 _detentValues];
-      v20 = [v19 objectAtIndexedSubscript:v13];
+      _detentValues3 = [sheetPresentationController _detentValues];
+      v20 = [_detentValues3 objectAtIndexedSubscript:v13];
       [v20 floatValue];
       v22 = (*(v14 + 16))(v14, v21);
 
-      [v8 _currentDetentValue];
+      [sheetPresentationController _currentDetentValue];
       v23 = (*(v14 + 16))(v14);
-      v24 = [v8 traitCollection];
-      [v24 displayScale];
+      traitCollection = [sheetPresentationController traitCollection];
+      [traitCollection displayScale];
       v26 = 1.0 / v25;
 
       if (vabdd_f64(v23, v18) <= v26 || v23 < v18)
       {
-        if (a3 <= a4)
+        if (layout <= toLayout)
         {
           v28 = 0.0;
         }
@@ -777,7 +777,7 @@ LABEL_16:
 
       if (vabdd_f64(v23, v22) <= v26 || v23 > v22)
       {
-        if (a3 > a4)
+        if (layout > toLayout)
         {
           v28 = 0.0;
         }
@@ -792,7 +792,7 @@ LABEL_16:
 
       if (v23 - v18 != 0.0)
       {
-        if (a3 > a4)
+        if (layout > toLayout)
         {
           v28 = 1.0 - (v23 - v18) / (v22 - v18);
         }
@@ -884,8 +884,8 @@ LABEL_43:
   v28 = 0.0;
   if (sub_100E03634())
   {
-    v8 = sub_10006D178();
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    sheetPresentationController = sub_10006D178();
+    if (!os_log_type_enabled(sheetPresentationController, OS_LOG_TYPE_ERROR))
     {
 LABEL_44:
 
@@ -895,20 +895,20 @@ LABEL_44:
     v14 = +[NSThread callStackSymbols];
     *buf = 138412290;
     v38 = v14;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, sheetPresentationController, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     goto LABEL_43;
   }
 
   return v28;
 }
 
-- (int64_t)_detentIndexForContaineeLayout:(unint64_t)a3
+- (int64_t)_detentIndexForContaineeLayout:(unint64_t)layout
 {
-  v4 = a3 - 3;
-  v5 = [(CardPresentationController *)self containerStyle];
-  v7 = (a3 & 0xFFFFFFFFFFFFFFFDLL) == 0 && v5 != 4;
+  v4 = layout - 3;
+  containerStyle = [(CardPresentationController *)self containerStyle];
+  v7 = (layout & 0xFFFFFFFFFFFFFFFDLL) == 0 && containerStyle != 4;
   v8 = 1;
-  if (v5 != 4)
+  if (containerStyle != 4)
   {
     v8 = 2;
   }
@@ -924,19 +924,19 @@ LABEL_44:
   }
 }
 
-- (int64_t)_modalPresentationStyleIsDismissing:(BOOL)a3
+- (int64_t)_modalPresentationStyleIsDismissing:(BOOL)dismissing
 {
-  v3 = a3;
+  dismissingCopy = dismissing;
   if ([(CardPresentationController *)self containerStyle]!= 6)
   {
     return 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v6 = [WeakRetained traitCollection];
-  v7 = [v6 layoutDirection] == 1;
+  traitCollection = [WeakRetained traitCollection];
+  v7 = [traitCollection layoutDirection] == 1;
 
-  if (v7 != v3)
+  if (v7 != dismissingCopy)
   {
     return 16;
   }
@@ -950,58 +950,58 @@ LABEL_44:
 - (void)updateAdditionalTopMargin
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v4 = [WeakRetained sheetPresentationController];
+  sheetPresentationController = [WeakRetained sheetPresentationController];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100C60520;
   v5[3] = &unk_101661B18;
   v5[4] = self;
-  [v4 animateChanges:v5];
+  [sheetPresentationController animateChanges:v5];
 }
 
 - (void)_updateGrabberBlur
 {
-  v3 = [(CardPresentationController *)self grabberBlurEnabled];
+  grabberBlurEnabled = [(CardPresentationController *)self grabberBlurEnabled];
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v4 = [WeakRetained sheetPresentationController];
-  [v4 _setGrabberBlurEnabled:v3];
+  sheetPresentationController = [WeakRetained sheetPresentationController];
+  [sheetPresentationController _setGrabberBlurEnabled:grabberBlurEnabled];
 }
 
-- (void)setGrabberBlurEnabled:(BOOL)a3
+- (void)setGrabberBlurEnabled:(BOOL)enabled
 {
-  if (self->_grabberBlurEnabled != a3)
+  if (self->_grabberBlurEnabled != enabled)
   {
-    self->_grabberBlurEnabled = a3;
+    self->_grabberBlurEnabled = enabled;
     [(CardPresentationController *)self _updateGrabberBlur];
   }
 }
 
-- (void)configureForSheetPresentationWithContainer:(id)a3 layout:(unint64_t)a4
+- (void)configureForSheetPresentationWithContainer:(id)container layout:(unint64_t)layout
 {
-  v6 = a3;
+  containerCopy = container;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
   [WeakRetained setModalPresentationStyle:2];
 
   [(CardPresentationController *)self setUsingSheetPresentation:1];
-  -[CardPresentationController setPreferredUserInterfaceStyle:](self, "setPreferredUserInterfaceStyle:", [v6 preferredUserInterfaceStyle]);
-  objc_storeWeak(&self->_containerViewController, v6);
-  v8 = sub_10000FA08(v6);
+  -[CardPresentationController setPreferredUserInterfaceStyle:](self, "setPreferredUserInterfaceStyle:", [containerCopy preferredUserInterfaceStyle]);
+  objc_storeWeak(&self->_containerViewController, containerCopy);
+  v8 = sub_10000FA08(containerCopy);
   v9 = objc_loadWeakRetained(&self->_viewController);
   [v9 setModalPresentationStyle:2];
 
   v10 = objc_loadWeakRetained(&self->_viewController);
-  v35 = [v10 sheetPresentationController];
+  sheetPresentationController = [v10 sheetPresentationController];
 
   v11 = objc_loadWeakRetained(&self->_viewController);
   [v11 loadViewIfNeeded];
 
-  v12 = [(CardPresentationController *)self modalPresentStyle];
+  modalPresentStyle = [(CardPresentationController *)self modalPresentStyle];
   v13 = objc_loadWeakRetained(&self->_viewController);
-  [v13 setModalTransitionStyle:v12];
+  [v13 setModalTransitionStyle:modalPresentStyle];
 
-  v14 = [(CardPresentationController *)self _supportDragMultiLayout];
+  _supportDragMultiLayout = [(CardPresentationController *)self _supportDragMultiLayout];
   v15 = objc_loadWeakRetained(&self->_viewController);
-  [v15 setModalInPresentation:v14];
+  [v15 setModalInPresentation:_supportDragMultiLayout];
 
   [(CardPresentationController *)self sheetContentSize];
   v17 = v16;
@@ -1009,24 +1009,24 @@ LABEL_44:
   v20 = objc_loadWeakRetained(&self->_viewController);
   [v20 setPreferredContentSize:{v17, v19}];
 
-  [v35 _setForcePresentationInPresenterScene:v8 == 5];
-  v21 = [(CardPresentationController *)self detents];
-  [v35 setDetents:v21];
+  [sheetPresentationController _setForcePresentationInPresenterScene:v8 == 5];
+  detents = [(CardPresentationController *)self detents];
+  [sheetPresentationController setDetents:detents];
 
-  [v35 setDelegate:v6];
-  v22 = [(CardPresentationController *)self _detentIdentifierForContaineeLayout:a4];
-  [v35 setSelectedDetentIdentifier:v22];
+  [sheetPresentationController setDelegate:containerCopy];
+  v22 = [(CardPresentationController *)self _detentIdentifierForContaineeLayout:layout];
+  [sheetPresentationController setSelectedDetentIdentifier:v22];
 
   if ([(CardPresentationController *)self isFirstCard])
   {
-    [v35 _setSheetID:@"ShowsMapID"];
+    [sheetPresentationController _setSheetID:@"ShowsMapID"];
   }
 
   else
   {
-    v23 = [(CardPresentationController *)self _fullHeightFixed];
-    v24 = [(CardPresentationController *)self containerStyle];
-    if (v23)
+    _fullHeightFixed = [(CardPresentationController *)self _fullHeightFixed];
+    containerStyle = [(CardPresentationController *)self containerStyle];
+    if (_fullHeightFixed)
     {
       v25 = 0;
     }
@@ -1036,7 +1036,7 @@ LABEL_44:
       v25 = @"ShowsMapID";
     }
 
-    if (((1 << v24) & 0xE3) != 0)
+    if (((1 << containerStyle) & 0xE3) != 0)
     {
       v26 = v25;
     }
@@ -1046,7 +1046,7 @@ LABEL_44:
       v26 = @"ShowsMapID";
     }
 
-    if (v24 <= 7)
+    if (containerStyle <= 7)
     {
       v27 = v26;
     }
@@ -1056,22 +1056,22 @@ LABEL_44:
       v27 = @"ShowsMapID";
     }
 
-    [v35 _setHiddenAncestorSheetID:v27];
+    [sheetPresentationController _setHiddenAncestorSheetID:v27];
   }
 
   if ([(CardPresentationController *)self presentedModally])
   {
-    [v35 _setShouldDismissWhenTappedOutside:1];
+    [sheetPresentationController _setShouldDismissWhenTappedOutside:1];
   }
 
-  [v35 _setHidden:{-[CardPresentationController hidden](self, "hidden")}];
-  [v35 setPrefersGrabberVisible:{-[CardPresentationController _wantsSheetGrabber](self, "_wantsSheetGrabber")}];
-  [v35 setWidthFollowsPreferredContentSizeWhenEdgeAttached:1];
-  [v35 setPrefersEdgeAttachedInCompactHeight:1];
-  [v35 _setDetentDirectionWhenFloating:1];
-  [v35 _setPeeksWhenFloating:0];
-  [v35 _setPrefersScrollingResizesWhenDetentDirectionIsDown:0];
-  [v35 _setWantsFloatingInRegularWidthCompactHeight:0];
+  [sheetPresentationController _setHidden:{-[CardPresentationController hidden](self, "hidden")}];
+  [sheetPresentationController setPrefersGrabberVisible:{-[CardPresentationController _wantsSheetGrabber](self, "_wantsSheetGrabber")}];
+  [sheetPresentationController setWidthFollowsPreferredContentSizeWhenEdgeAttached:1];
+  [sheetPresentationController setPrefersEdgeAttachedInCompactHeight:1];
+  [sheetPresentationController _setDetentDirectionWhenFloating:1];
+  [sheetPresentationController _setPeeksWhenFloating:0];
+  [sheetPresentationController _setPrefersScrollingResizesWhenDetentDirectionIsDown:0];
+  [sheetPresentationController _setWantsFloatingInRegularWidthCompactHeight:0];
   if (v8 == 5)
   {
     v28 = 2;
@@ -1082,33 +1082,33 @@ LABEL_44:
     v28 = 1;
   }
 
-  [v35 _setHorizontalAlignment:v28];
-  [v35 _setMarginInCompactHeight:8.0];
-  v29 = [(CardPresentationController *)self takesAvailableWidth];
+  [sheetPresentationController _setHorizontalAlignment:v28];
+  [sheetPresentationController _setMarginInCompactHeight:8.0];
+  takesAvailableWidth = [(CardPresentationController *)self takesAvailableWidth];
   v30 = 10.0;
-  if (v29)
+  if (takesAvailableWidth)
   {
     v30 = 0.0;
   }
 
-  [v35 _setMarginInRegularWidthRegularHeight:v30];
-  [v35 _setTucksIntoUnsafeAreaInCompactHeight:1];
-  [v35 _setAllowsAsymmetricVerticalMargins:1];
+  [sheetPresentationController _setMarginInRegularWidthRegularHeight:v30];
+  [sheetPresentationController _setTucksIntoUnsafeAreaInCompactHeight:1];
+  [sheetPresentationController _setAllowsAsymmetricVerticalMargins:1];
   v31 = objc_loadWeakRetained(&self->_containerViewController);
-  v32 = [v31 statusBarSupplementaryView];
-  [v32 frame];
-  [v35 _setAdditionalMinimumTopInset:CGRectGetHeight(v37)];
+  statusBarSupplementaryView = [v31 statusBarSupplementaryView];
+  [statusBarSupplementaryView frame];
+  [sheetPresentationController _setAdditionalMinimumTopInset:CGRectGetHeight(v37)];
 
-  [v35 _setGrabberPreferredSize:{56.0, 5.0}];
+  [sheetPresentationController _setGrabberPreferredSize:{56.0, 5.0}];
   if (objc_opt_respondsToSelector())
   {
-    [v35 _setIncludesSafeAreaInsetWhenInset:{-[CardPresentationController includesSafeAreaInsetWhenInset](self, "includesSafeAreaInsetWhenInset")}];
+    [sheetPresentationController _setIncludesSafeAreaInsetWhenInset:{-[CardPresentationController includesSafeAreaInsetWhenInset](self, "includesSafeAreaInsetWhenInset")}];
   }
 
   if (GEOConfigGetBOOL())
   {
     v33 = +[_UIViewGlass mapsSignGlass];
-    [v35 _setNonLargeBackground:v33];
+    [sheetPresentationController _setNonLargeBackground:v33];
   }
 
   if (GEOConfigGetBOOL())
@@ -1121,7 +1121,7 @@ LABEL_44:
     +[UIColor systemGroupedBackgroundColor];
   }
   v34 = ;
-  [v35 _setLargeBackground:v34];
+  [sheetPresentationController _setLargeBackground:v34];
 
   [(CardPresentationController *)self updateGrabber];
   [(CardPresentationController *)self _updateGrabberBlur];
@@ -1135,39 +1135,39 @@ LABEL_44:
     return 0;
   }
 
-  v3 = [(CardPresentationController *)self containerViewController];
-  if ([v3 transitioning])
+  containerViewController = [(CardPresentationController *)self containerViewController];
+  if ([containerViewController transitioning])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(CardPresentationController *)self containerViewController];
-    v6 = [v5 currentOrPendingViewController];
-    v7 = [(CardPresentationController *)self viewController];
-    v4 = v6 != v7;
+    containerViewController2 = [(CardPresentationController *)self containerViewController];
+    currentOrPendingViewController = [containerViewController2 currentOrPendingViewController];
+    viewController = [(CardPresentationController *)self viewController];
+    v4 = currentOrPendingViewController != viewController;
   }
 
   return v4;
 }
 
-- (unint64_t)_layoutforDetentIdentifier:(id)a3
+- (unint64_t)_layoutforDetentIdentifier:(id)identifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v6 = [WeakRetained sheetPresentationController];
+  sheetPresentationController = [WeakRetained sheetPresentationController];
 
-  if (!v6)
+  if (!sheetPresentationController)
   {
     return 1;
   }
 
-  if (a3 == @"FullLayoutDetentIdentifier")
+  if (identifier == @"FullLayoutDetentIdentifier")
   {
     return 3;
   }
 
-  if (a3 != @"MediumLayoutDetentIdentifier")
+  if (identifier != @"MediumLayoutDetentIdentifier")
   {
     return 1;
   }
@@ -1183,24 +1183,24 @@ LABEL_44:
   }
 }
 
-- (id)_detentIdentifierForContaineeLayout:(unint64_t)a3
+- (id)_detentIdentifierForContaineeLayout:(unint64_t)layout
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v6 = [WeakRetained sheetPresentationController];
+  sheetPresentationController = [WeakRetained sheetPresentationController];
 
-  if (!v6)
+  if (!sheetPresentationController)
   {
     return @"SmallLayoutDetentIdentifier";
   }
 
-  if (a3 - 3 > 2)
+  if (layout - 3 > 2)
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+    if ((layout & 0xFFFFFFFFFFFFFFFDLL) == 0)
     {
       v8 = objc_loadWeakRetained(&self->_viewController);
-      v9 = [v8 sheetPresentationController];
-      v10 = [v9 detents];
-      v11 = [v10 count];
+      sheetPresentationController2 = [v8 sheetPresentationController];
+      detents = [sheetPresentationController2 detents];
+      v11 = [detents count];
 
       if (v11 > 2)
       {
@@ -1222,33 +1222,33 @@ LABEL_44:
   }
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  if (self->_contentAlpha != a3)
+  if (self->_contentAlpha != alpha)
   {
-    self->_contentAlpha = a3;
+    self->_contentAlpha = alpha;
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v4 = [WeakRetained view];
-    [v4 setNeedsLayout];
+    view = [WeakRetained view];
+    [view setNeedsLayout];
   }
 }
 
-- (BOOL)updateHeightConstraintWithValue:(double)a3 transitionHeight:(double)a4
+- (BOOL)updateHeightConstraintWithValue:(double)value transitionHeight:(double)height
 {
   WeakRetained = objc_loadWeakRetained(&self->_cardView);
   [WeakRetained height];
   v9 = v8;
 
-  if (v9 == a3)
+  if (v9 == value)
   {
     return 0;
   }
 
   v11 = objc_loadWeakRetained(&self->_viewController);
-  v12 = [v11 view];
-  v13 = [v12 window];
+  view = [v11 view];
+  window = [view window];
 
-  if (!v13)
+  if (!window)
   {
     return 0;
   }
@@ -1268,54 +1268,54 @@ LABEL_44:
     v19 = v22;
   }
 
-  if (v19 <= a3 && v17 >= a3)
+  if (v19 <= value && v17 >= value)
   {
-    v23 = [(CardPresentationController *)self viewController];
-    v24 = [v23 cardPresentationController];
-    if ([v24 presentedModally])
+    viewController = [(CardPresentationController *)self viewController];
+    cardPresentationController = [viewController cardPresentationController];
+    if ([cardPresentationController presentedModally])
     {
     }
 
     else
     {
-      v28 = [(CardPresentationController *)self viewController];
-      v29 = [v28 cardPresentationController];
-      v30 = [v29 hidesContentInSmallLayout];
+      viewController2 = [(CardPresentationController *)self viewController];
+      cardPresentationController2 = [viewController2 cardPresentationController];
+      hidesContentInSmallLayout = [cardPresentationController2 hidesContentInSmallLayout];
 
-      if (v30)
+      if (hidesContentInSmallLayout)
       {
-        [(CardPresentationController *)self setContentAlpha:fmax(fmin((a3 - v19) / fmax(a4, 30.0), 1.0), 0.0)];
+        [(CardPresentationController *)self setContentAlpha:fmax(fmin((value - v19) / fmax(height, 30.0), 1.0), 0.0)];
       }
     }
 
     goto LABEL_18;
   }
 
-  if (v19 > a3)
+  if (v19 > value)
   {
-    v25 = [(CardPresentationController *)self viewController];
-    v26 = [v25 cardPresentationController];
-    v27 = [v26 hidesContentInSmallLayout];
+    viewController3 = [(CardPresentationController *)self viewController];
+    cardPresentationController3 = [viewController3 cardPresentationController];
+    hidesContentInSmallLayout2 = [cardPresentationController3 hidesContentInSmallLayout];
 
-    if (v27)
+    if (hidesContentInSmallLayout2)
     {
       [(CardPresentationController *)self setContentAlpha:0.0];
     }
 
-    a3 = v19;
+    value = v19;
     goto LABEL_18;
   }
 
-  if (v17 >= a3)
+  if (v17 >= value)
   {
     return 0;
   }
 
   [(CardPresentationController *)self setContentAlpha:1.0];
-  a3 = v17;
+  value = v17;
 LABEL_18:
   v31 = objc_loadWeakRetained(&self->_cardView);
-  [v31 setHeight:a3];
+  [v31 setHeight:value];
 
   v32 = objc_loadWeakRetained(&self->_cardView);
   [v32 height];
@@ -1324,14 +1324,14 @@ LABEL_18:
   return 1;
 }
 
-- (BOOL)updateHeightConstraintWithValue:(double)a3
+- (BOOL)updateHeightConstraintWithValue:(double)value
 {
   [(CardPresentationController *)self headerTransitionHeight];
 
-  return [(CardPresentationController *)self updateHeightConstraintWithValue:a3 transitionHeight:v5];
+  return [(CardPresentationController *)self updateHeightConstraintWithValue:value transitionHeight:v5];
 }
 
-- (void)updateHeightForLayout:(unint64_t)a3
+- (void)updateHeightForLayout:(unint64_t)layout
 {
   if ([(CardPresentationController *)self usingSheetPresentation])
   {
@@ -1362,8 +1362,8 @@ LABEL_18:
     return;
   }
 
-  v8 = [(CardPresentationController *)self viewController];
-  [v8 heightForLayout:a3];
+  viewController = [(CardPresentationController *)self viewController];
+  [viewController heightForLayout:layout];
   v10 = v9;
 
   if (v10 == -1.0)
@@ -1377,16 +1377,16 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  v12 = [(CardPresentationController *)self viewController];
-  v13 = [v12 cardPresentationController];
-  v14 = [v13 presentedModally];
+  viewController2 = [(CardPresentationController *)self viewController];
+  cardPresentationController = [viewController2 cardPresentationController];
+  presentedModally = [cardPresentationController presentedModally];
 
-  if (v14)
+  if (presentedModally)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v15 = [WeakRetained modalPresenter];
-    v16 = [v15 cardPresentationController];
-    [v16 updateHeightConstraintWithValue:v10];
+    modalPresenter = [WeakRetained modalPresenter];
+    cardPresentationController2 = [modalPresenter cardPresentationController];
+    [cardPresentationController2 updateHeightConstraintWithValue:v10];
 
 LABEL_12:
   }
@@ -1394,43 +1394,43 @@ LABEL_12:
   [(CardPresentationController *)self updateHeightConstraintWithValue:v10];
 }
 
-- (void)updateHeightForCurrentLayoutAnimated:(BOOL)a3
+- (void)updateHeightForCurrentLayoutAnimated:(BOOL)animated
 {
   if ([(CardPresentationController *)self usingSheetPresentation])
   {
-    v5 = [(CardPresentationController *)self viewController];
-    v6 = [v5 presentedViewController];
+    viewController = [(CardPresentationController *)self viewController];
+    presentedViewController = [viewController presentedViewController];
 
-    if (!v6 && a3 || +[UIView _isInAnimationBlock])
+    if (!presentedViewController && animated || +[UIView _isInAnimationBlock])
     {
       WeakRetained = objc_loadWeakRetained(&self->_viewController);
-      v8 = [WeakRetained sheetPresentationController];
+      sheetPresentationController = [WeakRetained sheetPresentationController];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_100C621DC;
       v16[3] = &unk_101661B18;
       v16[4] = self;
-      [v8 animateChanges:v16];
+      [sheetPresentationController animateChanges:v16];
 
       return;
     }
 
     v12 = objc_loadWeakRetained(&self->_viewController);
-    v13 = [v12 sheetPresentationController];
-    [v13 invalidateDetents];
+    sheetPresentationController2 = [v12 sheetPresentationController];
+    [sheetPresentationController2 invalidateDetents];
 
     v15 = objc_loadWeakRetained(&self->_viewController);
-    v14 = [v15 view];
-    [v14 setNeedsLayout];
+    view = [v15 view];
+    [view setNeedsLayout];
   }
 
   else
   {
     v9 = objc_loadWeakRetained(&self->_containerViewController);
-    v10 = [v9 currentViewController];
-    v11 = [(CardPresentationController *)self viewController];
+    currentViewController = [v9 currentViewController];
+    viewController2 = [(CardPresentationController *)self viewController];
 
-    if (v10 != v11)
+    if (currentViewController != viewController2)
     {
       return;
     }
@@ -1440,47 +1440,47 @@ LABEL_12:
   }
 }
 
-- (void)setCardView:(id)a3 fromContainer:(id)a4
+- (void)setCardView:(id)view fromContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeWeak(&self->_cardView, v6);
-  objc_storeWeak(&self->_containerViewController, v7);
-  v8 = [v7 preferredUserInterfaceStyle];
+  viewCopy = view;
+  containerCopy = container;
+  objc_storeWeak(&self->_cardView, viewCopy);
+  objc_storeWeak(&self->_containerViewController, containerCopy);
+  preferredUserInterfaceStyle = [containerCopy preferredUserInterfaceStyle];
 
-  [(CardPresentationController *)self setPreferredUserInterfaceStyle:v8];
-  if (v6)
+  [(CardPresentationController *)self setPreferredUserInterfaceStyle:preferredUserInterfaceStyle];
+  if (viewCopy)
   {
-    v9 = [v6 layer];
-    [v9 setAllowsGroupOpacity:0];
+    layer = [viewCopy layer];
+    [layer setAllowsGroupOpacity:0];
 
     WeakRetained = objc_loadWeakRetained(&self->_cardView);
-    v11 = [WeakRetained contentView];
+    contentView = [WeakRetained contentView];
 
     v12 = objc_loadWeakRetained(&self->_viewController);
-    v13 = [v12 view];
+    view = [v12 view];
 
-    [v11 addSubview:v13];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [contentView addSubview:view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
     v14 = objc_loadWeakRetained(&self->_cardView);
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v29 = [v11 topAnchor];
-    v28 = [v13 topAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    topAnchor = [contentView topAnchor];
+    topAnchor2 = [view topAnchor];
+    v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v31[0] = v27;
-    v26 = [v11 bottomAnchor];
-    v25 = [v13 bottomAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    bottomAnchor = [contentView bottomAnchor];
+    bottomAnchor2 = [view bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v31[1] = v24;
-    v15 = [v11 leadingAnchor];
-    v16 = [v13 leadingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    leadingAnchor = [contentView leadingAnchor];
+    leadingAnchor2 = [view leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v31[2] = v17;
-    v18 = [v11 trailingAnchor];
-    [v13 trailingAnchor];
-    v19 = v30 = v6;
-    v20 = [v18 constraintEqualToAnchor:v19];
+    trailingAnchor = [contentView trailingAnchor];
+    [view trailingAnchor];
+    v19 = v30 = viewCopy;
+    v20 = [trailingAnchor constraintEqualToAnchor:v19];
     v31[3] = v20;
     v21 = [NSArray arrayWithObjects:v31 count:4];
     [NSLayoutConstraint activateConstraints:v21];
@@ -1489,7 +1489,7 @@ LABEL_12:
     v23 = objc_loadWeakRetained(&self->_cardView);
     [v23 setHeight:cardHeight];
 
-    v6 = v30;
+    viewCopy = v30;
     [(CardPresentationController *)self _updateStyle];
   }
 }
@@ -1526,46 +1526,46 @@ LABEL_17:
     if (![(CardPresentationController *)self wantsFullscreen])
     {
       v7 = objc_loadWeakRetained(&self->_viewController);
-      v8 = [v7 modalPresentationStyle];
+      modalPresentationStyle = [v7 modalPresentationStyle];
 
-      if (v8 != 2)
+      if (modalPresentationStyle != 2)
       {
         v9 = objc_loadWeakRetained(&self->_viewController);
         [v9 setModalPresentationStyle:2];
       }
     }
 
-    v10 = [(CardPresentationController *)self _wantsSheetGrabber];
+    _wantsSheetGrabber = [(CardPresentationController *)self _wantsSheetGrabber];
     v11 = objc_loadWeakRetained(&self->_viewController);
-    v12 = [v11 sheetPresentationController];
-    [v12 setPrefersGrabberVisible:v10];
+    sheetPresentationController = [v11 sheetPresentationController];
+    [sheetPresentationController setPrefersGrabberVisible:_wantsSheetGrabber];
 
     v13 = objc_loadWeakRetained(&self->_viewController);
-    v14 = [v13 sheetPresentationController];
-    LODWORD(v12) = [v14 _isHidden];
-    v15 = [(CardPresentationController *)self hidden];
+    sheetPresentationController2 = [v13 sheetPresentationController];
+    LODWORD(sheetPresentationController) = [sheetPresentationController2 _isHidden];
+    hidden = [(CardPresentationController *)self hidden];
 
-    if (v12 != v15)
+    if (sheetPresentationController != hidden)
     {
       v16 = objc_loadWeakRetained(&self->_viewController);
-      v17 = [v16 view];
-      v18 = [v17 window];
-      if (v18)
+      view = [v16 view];
+      window = [view window];
+      if (window)
       {
-        v19 = v18;
+        v19 = window;
         v20 = objc_loadWeakRetained(&self->_viewController);
-        v21 = [v20 presentedViewController];
+        presentedViewController = [v20 presentedViewController];
 
-        if (!v21)
+        if (!presentedViewController)
         {
           v22 = objc_loadWeakRetained(&self->_viewController);
-          v23 = [v22 sheetPresentationController];
+          sheetPresentationController3 = [v22 sheetPresentationController];
           v29[0] = _NSConcreteStackBlock;
           v29[1] = 3221225472;
           v29[2] = sub_100C627F4;
           v29[3] = &unk_101661B18;
           v29[4] = self;
-          [v23 animateChanges:v29];
+          [sheetPresentationController3 animateChanges:v29];
 
           return;
         }
@@ -1575,44 +1575,44 @@ LABEL_17:
       {
       }
 
-      v26 = [(CardPresentationController *)self hidden];
+      hidden2 = [(CardPresentationController *)self hidden];
       v28 = objc_loadWeakRetained(&self->_viewController);
-      v27 = [v28 sheetPresentationController];
-      [v27 _setHidden:v26];
+      sheetPresentationController4 = [v28 sheetPresentationController];
+      [sheetPresentationController4 _setHidden:hidden2];
 
       goto LABEL_17;
     }
   }
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v13 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
   v10 = objc_loadWeakRetained(&self->_containerViewController);
-  v11 = [v10 currentViewController];
+  currentViewController = [v10 currentViewController];
 
-  if (WeakRetained == v11)
+  if (WeakRetained == currentViewController)
   {
     v12 = objc_loadWeakRetained(&self->_containerViewController);
-    [v12 presentController:v13 animated:v6 completion:v8];
+    [v12 presentController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)dismiss:(BOOL)a3
+- (void)dismiss:(BOOL)dismiss
 {
-  v3 = a3;
+  dismissCopy = dismiss;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
   v6 = objc_loadWeakRetained(&self->_containerViewController);
-  v7 = [v6 currentViewController];
+  currentViewController = [v6 currentViewController];
 
   v9 = objc_loadWeakRetained(&self->_containerViewController);
   v8 = objc_loadWeakRetained(&self->_viewController);
-  if (WeakRetained == v7)
+  if (WeakRetained == currentViewController)
   {
-    [v9 popLastViewControllerFromViewController:v8 animated:v3 useDefaultContaineeLayout:0];
+    [v9 popLastViewControllerFromViewController:v8 animated:dismissCopy useDefaultContaineeLayout:0];
   }
 
   else
@@ -1621,14 +1621,14 @@ LABEL_17:
   }
 }
 
-- (void)applyWithAnimations:(id)a3 completion:(id)a4
+- (void)applyWithAnimations:(id)animations completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(CardPresentationController *)self containerViewController];
-  v8 = [v10 cardHeightAnimation];
-  v9 = [v8 coordinatedUnitAnimation];
-  [v9 applyWithAnimations:v7 completion:v6];
+  completionCopy = completion;
+  animationsCopy = animations;
+  containerViewController = [(CardPresentationController *)self containerViewController];
+  cardHeightAnimation = [containerViewController cardHeightAnimation];
+  coordinatedUnitAnimation = [cardHeightAnimation coordinatedUnitAnimation];
+  [coordinatedUnitAnimation applyWithAnimations:animationsCopy completion:completionCopy];
 }
 
 - (void)wantsMinimizeLayout
@@ -1637,24 +1637,24 @@ LABEL_17:
   {
     if ([(CardPresentationController *)self containeeLayout]== 3)
     {
-      v3 = self;
+      selfCopy2 = self;
       v4 = 2;
     }
 
     else
     {
-      v3 = self;
+      selfCopy2 = self;
       v4 = 1;
     }
 
-    [(CardPresentationController *)v3 wantsLayout:v4];
+    [(CardPresentationController *)selfCopy2 wantsLayout:v4];
   }
 
   else
   {
-    v6 = [(CardPresentationController *)self containerViewController];
+    containerViewController = [(CardPresentationController *)self containerViewController];
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    [v6 minimizeContainee:WeakRetained];
+    [containerViewController minimizeContainee:WeakRetained];
   }
 }
 
@@ -1664,31 +1664,31 @@ LABEL_17:
   {
     if ([(CardPresentationController *)self containeeLayout]== 1)
     {
-      v3 = self;
+      selfCopy2 = self;
       v4 = 2;
     }
 
     else
     {
-      v3 = self;
+      selfCopy2 = self;
       v4 = 3;
     }
 
-    [(CardPresentationController *)v3 wantsLayout:v4];
+    [(CardPresentationController *)selfCopy2 wantsLayout:v4];
   }
 
   else
   {
-    v6 = [(CardPresentationController *)self containerViewController];
+    containerViewController = [(CardPresentationController *)self containerViewController];
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    [v6 expandContainee:WeakRetained];
+    [containerViewController expandContainee:WeakRetained];
   }
 }
 
-- (void)_animateToDesiredDetentIdentifier:(id)a3 completion:(id)a4
+- (void)_animateToDesiredDetentIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (qword_10195DF10 != -1)
   {
     dispatch_once(&qword_10195DF10, &stru_101630410);
@@ -1697,23 +1697,23 @@ LABEL_17:
   if (byte_10195DF18 == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v9 = [WeakRetained sheetPresentationController];
+    sheetPresentationController = [WeakRetained sheetPresentationController];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100C62E0C;
     v22[3] = &unk_101661A90;
     v10 = &v23;
     v22[4] = self;
-    v23 = v6;
+    v23 = identifierCopy;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100C62E90;
     v20[3] = &unk_101657DA0;
     v11 = &v21;
-    v21 = v7;
-    v12 = v7;
-    v13 = v6;
-    [v9 _animateChanges:v22 completion:v20];
+    v21 = completionCopy;
+    v12 = completionCopy;
+    v13 = identifierCopy;
+    [sheetPresentationController _animateChanges:v22 completion:v20];
   }
 
   else
@@ -1724,51 +1724,51 @@ LABEL_17:
     v18[3] = &unk_101661A90;
     v10 = &v19;
     v18[4] = self;
-    v19 = v6;
+    v19 = identifierCopy;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100C62F5C;
     v16[3] = &unk_10165F438;
     v11 = &v17;
-    v17 = v7;
-    v14 = v7;
-    v15 = v6;
+    v17 = completionCopy;
+    v14 = completionCopy;
+    v15 = identifierCopy;
     [UIView animateWithDuration:v18 animations:v16 completion:0.25];
   }
 }
 
-- (void)wantsLayout:(unint64_t)a3 animated:(BOOL)a4
+- (void)wantsLayout:(unint64_t)layout animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ([(CardPresentationController *)self usingSheetPresentation])
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v7 = [WeakRetained sheetPresentationController];
-    if (v7)
+    sheetPresentationController = [WeakRetained sheetPresentationController];
+    if (sheetPresentationController)
     {
-      v8 = v7;
+      v8 = sheetPresentationController;
       v9 = objc_loadWeakRetained(&self->_viewController);
-      v10 = [v9 view];
-      v11 = [v10 window];
+      view = [v9 view];
+      window = [view window];
 
-      if (!v11)
+      if (!window)
       {
         return;
       }
 
-      if (a3 == 2 && [(CardPresentationController *)self containerStyle]== 4)
+      if (layout == 2 && [(CardPresentationController *)self containerStyle]== 4)
       {
 
         [PPTNotificationCenter postNotificationIfNeededWithName:@"PPTTestTrayLayoutDidUpdateNotification" object:self userInfo:0];
         return;
       }
 
-      v14 = [(CardPresentationController *)self _detentIdentifierForContaineeLayout:a3];
+      v14 = [(CardPresentationController *)self _detentIdentifierForContaineeLayout:layout];
       v15 = objc_loadWeakRetained(&self->_viewController);
-      v16 = [v15 sheetPresentationController];
-      v17 = [v16 selectedDetentIdentifier];
+      sheetPresentationController2 = [v15 sheetPresentationController];
+      selectedDetentIdentifier = [sheetPresentationController2 selectedDetentIdentifier];
 
-      if (v17 == v14)
+      if (selectedDetentIdentifier == v14)
       {
 LABEL_54:
 
@@ -1782,27 +1782,27 @@ LABEL_33:
 
         v32 = objc_loadWeakRetained(&self->_containerViewController);
         v33 = objc_loadWeakRetained(&self->_viewController);
-        [v32 containee:v33 willChangeLayout:a3 source:0];
+        [v32 containee:v33 willChangeLayout:layout source:0];
 
-        if (v4)
+        if (animatedCopy)
         {
           v56[0] = _NSConcreteStackBlock;
           v56[1] = 3221225472;
           v56[2] = sub_100C636F4;
           v56[3] = &unk_101661650;
           v56[4] = self;
-          v56[5] = a3;
+          v56[5] = layout;
           [(CardPresentationController *)self _animateToDesiredDetentIdentifier:v14 completion:v56];
           goto LABEL_54;
         }
 
         v34 = objc_loadWeakRetained(&self->_viewController);
-        v35 = [v34 sheetPresentationController];
-        [v35 setSelectedDetentIdentifier:v14];
+        sheetPresentationController3 = [v34 sheetPresentationController];
+        [sheetPresentationController3 setSelectedDetentIdentifier:v14];
 
         v36 = objc_loadWeakRetained(&self->_containerViewController);
         v37 = objc_loadWeakRetained(&self->_viewController);
-        [v36 containee:v37 didChangeLayout:a3];
+        [v36 containee:v37 didChangeLayout:layout];
 
         v38 = sub_100C6180C();
         if (!os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
@@ -1846,9 +1846,9 @@ LABEL_50:
 
 LABEL_52:
           *buf = 134349826;
-          v58 = self;
+          selfCopy2 = self;
           v59 = 2048;
-          v60 = a3;
+          layoutCopy2 = layout;
           v61 = 2114;
           v62 = v45;
           v63 = 2114;
@@ -1915,9 +1915,9 @@ LABEL_30:
 LABEL_32:
 
         *buf = 134349826;
-        v58 = self;
+        selfCopy2 = self;
         v59 = 2048;
-        v60 = a3;
+        layoutCopy2 = layout;
         v61 = 2114;
         v62 = v25;
         v63 = 2114;
@@ -1952,11 +1952,11 @@ LABEL_22:
 
   else
   {
-    v53 = [(CardPresentationController *)self containerViewController];
+    containerViewController = [(CardPresentationController *)self containerViewController];
     v12 = objc_loadWeakRetained(&self->_viewController);
-    [v53 controller:v12 wantsLayout:a3];
+    [containerViewController controller:v12 wantsLayout:layout];
 
-    v13 = v53;
+    v13 = containerViewController;
   }
 }
 
@@ -1972,19 +1972,19 @@ LABEL_22:
     }
 
     v5 = objc_loadWeakRetained(&self->_containerViewController);
-    v3 = [v5 containeeLayout];
+    containeeLayout = [v5 containeeLayout];
     goto LABEL_8;
   }
 
   if ([(CardPresentationController *)self allowResizeInFloatingStyle]|| [(CardPresentationController *)self containerStyle]!= 6)
   {
     v5 = objc_loadWeakRetained(&self->_viewController);
-    v6 = [v5 sheetPresentationController];
-    v7 = [v6 selectedDetentIdentifier];
-    v3 = [(CardPresentationController *)self _layoutforDetentIdentifier:v7];
+    sheetPresentationController = [v5 sheetPresentationController];
+    selectedDetentIdentifier = [sheetPresentationController selectedDetentIdentifier];
+    containeeLayout = [(CardPresentationController *)self _layoutforDetentIdentifier:selectedDetentIdentifier];
 
 LABEL_8:
-    return v3;
+    return containeeLayout;
   }
 
   return 3;
@@ -2000,28 +2000,28 @@ LABEL_8:
   if (byte_10195DF08)
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v4 = [WeakRetained sheetPresentationController];
-    v5 = [v4 traitOverrides];
+    sheetPresentationController = [WeakRetained sheetPresentationController];
+    traitOverrides = [sheetPresentationController traitOverrides];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_cardView);
-    v5 = [WeakRetained traitOverrides];
+    traitOverrides = [WeakRetained traitOverrides];
   }
 
-  return v5;
+  return traitOverrides;
 }
 
-- (void)setPreferredUserInterfaceStyle:(int64_t)a3
+- (void)setPreferredUserInterfaceStyle:(int64_t)style
 {
-  if ([(CardPresentationController *)self preferredUserInterfaceStyle]!= a3)
+  if ([(CardPresentationController *)self preferredUserInterfaceStyle]!= style)
   {
-    v5 = [(CardPresentationController *)self presentedCardTraitOverrides];
-    v7 = v5;
-    if (a3)
+    presentedCardTraitOverrides = [(CardPresentationController *)self presentedCardTraitOverrides];
+    v7 = presentedCardTraitOverrides;
+    if (style)
     {
-      [v5 setUserInterfaceStyle:a3];
+      [presentedCardTraitOverrides setUserInterfaceStyle:style];
     }
 
     else
@@ -2034,37 +2034,37 @@ LABEL_8:
 
 - (int64_t)preferredUserInterfaceStyle
 {
-  v2 = [(CardPresentationController *)self presentedCardTraitOverrides];
+  presentedCardTraitOverrides = [(CardPresentationController *)self presentedCardTraitOverrides];
   v3 = objc_opt_self();
-  v4 = [v2 containsTrait:v3];
+  v4 = [presentedCardTraitOverrides containsTrait:v3];
 
   if (v4)
   {
-    v5 = [v2 userInterfaceStyle];
+    userInterfaceStyle = [presentedCardTraitOverrides userInterfaceStyle];
   }
 
   else
   {
-    v5 = 0;
+    userInterfaceStyle = 0;
   }
 
-  return v5;
+  return userInterfaceStyle;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (self->_hidden != a3)
+  if (self->_hidden != hidden)
   {
-    self->_hidden = a3;
+    self->_hidden = hidden;
     [(CardPresentationController *)self _updateStyle];
   }
 }
 
-- (void)setPresentedModally:(BOOL)a3
+- (void)setPresentedModally:(BOOL)modally
 {
-  v3 = a3;
-  v5 = [(CardPresentationController *)self viewController];
-  v6 = sub_10000FA08(v5);
+  modallyCopy = modally;
+  viewController = [(CardPresentationController *)self viewController];
+  v6 = sub_10000FA08(viewController);
 
   if (v6 == 5)
   {
@@ -2072,25 +2072,25 @@ LABEL_8:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Setting presentedModally to NO on Mac", &v8, 0xCu);
     }
 
-    v3 = 0;
+    modallyCopy = 0;
   }
 
-  if (self->_presentedModally != v3)
+  if (self->_presentedModally != modallyCopy)
   {
-    self->_presentedModally = v3;
+    self->_presentedModally = modallyCopy;
     [(CardPresentationController *)self _updateStyle];
   }
 }
 
-- (void)setHideGrabber:(BOOL)a3
+- (void)setHideGrabber:(BOOL)grabber
 {
-  if (self->_hideGrabber != a3)
+  if (self->_hideGrabber != grabber)
   {
-    self->_hideGrabber = a3;
+    self->_hideGrabber = grabber;
     [(CardPresentationController *)self _updateStyle];
   }
 }
@@ -2101,7 +2101,7 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -2110,9 +2110,9 @@ LABEL_8:
   [(CardPresentationController *)&v4 dealloc];
 }
 
-- (CardPresentationController)initWithViewController:(id)a3
+- (CardPresentationController)initWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = CardPresentationController;
   v5 = [(CardPresentationController *)&v14 init];
@@ -2126,7 +2126,7 @@ LABEL_12:
       [(CardPresentationController *)v5 setDefaultContaineeLayout:0];
       [(CardPresentationController *)v5 setContentAlpha:1.0];
       [(CardPresentationController *)v5 setHeaderTransitionHeight:30.0];
-      [(CardPresentationController *)v5 setViewController:v4];
+      [(CardPresentationController *)v5 setViewController:controllerCopy];
       [(CardPresentationController *)v5 setHideContentInSmallLayout:1];
       [(CardPresentationController *)v5 setBlurInCardView:1];
       [(CardPresentationController *)v5 setAllowsSwipeToDismiss:1];
@@ -2135,7 +2135,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v7 = v4;
+    v7 = controllerCopy;
     if (!v7)
     {
       v12 = @"<nil>";

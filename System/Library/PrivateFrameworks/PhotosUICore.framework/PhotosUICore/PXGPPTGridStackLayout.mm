@@ -1,16 +1,16 @@
 @interface PXGPPTGridStackLayout
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)a3 inLayout:(id)a4;
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)result;
-- (PXGAssetDecorationInfo)assetDecorationInfoForAsset:(SEL)a3 atSpriteIndex:(id)a4 inLayout:(unsigned int)a5;
-- (PXGPPTGridStackLayout)initWithSettings:(id)a3;
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)index inLayout:(id)layout;
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)result;
+- (PXGAssetDecorationInfo)assetDecorationInfoForAsset:(SEL)asset atSpriteIndex:(id)index inLayout:(unsigned int)layout;
+- (PXGPPTGridStackLayout)initWithSettings:(id)settings;
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index;
 - (void)_initializeBadgeInfos;
 - (void)_initializeSelectedItems;
 @end
 
 @implementation PXGPPTGridStackLayout
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)a3 inLayout:(id)a4
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
   v4 = *off_1E7722000;
   v5 = *(off_1E7722000 + 1);
@@ -23,9 +23,9 @@
   return result;
 }
 
-- (PXGAssetDecorationInfo)assetDecorationInfoForAsset:(SEL)a3 atSpriteIndex:(id)a4 inLayout:(unsigned int)a5
+- (PXGAssetDecorationInfo)assetDecorationInfoForAsset:(SEL)asset atSpriteIndex:(id)index inLayout:(unsigned int)layout
 {
-  v6 = &self[a5 % 0xC + 36];
+  v6 = &self[layout % 0xC + 36];
   var1 = v6->var1;
   retstr->var0 = v6->var0;
   retstr->var1 = var1;
@@ -33,7 +33,7 @@
   return self;
 }
 
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index
 {
   v5 = objc_alloc_init(off_1E7721600);
   [v5 setContentSource:self];
@@ -52,7 +52,7 @@
   return v8;
 }
 
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)result
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)result
 {
   v5 = result.width / self->_numberOfColumns * self->_estimatedNumberOfRowsPerSection;
   result.height = v5;
@@ -122,29 +122,29 @@
   self->_selectedItemsPerSection = v5;
 }
 
-- (PXGPPTGridStackLayout)initWithSettings:(id)a3
+- (PXGPPTGridStackLayout)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = [(PXGStackLayout *)self init];
   if (v5)
   {
-    v6 = [v4 numberOfSections];
-    v5->_numberOfItemsPerSection = (v6 + [v4 numberOfItems] - 1) / v6;
-    v5->_numberOfColumns = [v4 numberOfColumns];
-    v5->_useAssetBadgeDecoration = [v4 useAssetBadgeDecoration];
-    v7 = [v4 selectionDecorationStlye];
-    v5->_selectionDecorationStyle = v7;
-    v5->_decorated = v5->_useAssetBadgeDecoration || v7 != 0;
+    numberOfSections = [settingsCopy numberOfSections];
+    v5->_numberOfItemsPerSection = (numberOfSections + [settingsCopy numberOfItems] - 1) / numberOfSections;
+    v5->_numberOfColumns = [settingsCopy numberOfColumns];
+    v5->_useAssetBadgeDecoration = [settingsCopy useAssetBadgeDecoration];
+    selectionDecorationStlye = [settingsCopy selectionDecorationStlye];
+    v5->_selectionDecorationStyle = selectionDecorationStlye;
+    v5->_decorated = v5->_useAssetBadgeDecoration || selectionDecorationStlye != 0;
     v5->_estimatedNumberOfRowsPerSection = (v5->_numberOfItemsPerSection + v5->_numberOfColumns - 1) / v5->_numberOfColumns;
-    v8 = [MEMORY[0x1E69DC888] blueColor];
+    blueColor = [MEMORY[0x1E69DC888] blueColor];
     spriteColor = v5->_spriteColor;
-    v5->_spriteColor = v8;
+    v5->_spriteColor = blueColor;
 
     [(PXGPPTGridStackLayout *)v5 _initializeSelectedItems];
     [(PXGPPTGridStackLayout *)v5 _initializeBadgeInfos];
     [(PXGStackLayout *)v5 setAxis:1];
     [(PXGStackLayout *)v5 setInterlayoutSpacing:50.0];
-    [(PXGStackLayout *)v5 insertSublayoutProvider:v5 inRange:0, v6];
+    [(PXGStackLayout *)v5 insertSublayoutProvider:v5 inRange:0, numberOfSections];
   }
 
   return v5;

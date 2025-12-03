@@ -1,30 +1,30 @@
 @interface UGCPhotoWithMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GEORPPhotoMetadata)photoMetadata;
 - (NSString)identifier;
-- (UGCPhotoWithMetadata)initWithImageData:(id)a3 PHAsset:(id)a4 sourceType:(int64_t)a5;
-- (UGCPhotoWithMetadata)initWithImageData:(id)a3 date:(id)a4 location:(id)a5 source:(int64_t)a6;
+- (UGCPhotoWithMetadata)initWithImageData:(id)data PHAsset:(id)asset sourceType:(int64_t)type;
+- (UGCPhotoWithMetadata)initWithImageData:(id)data date:(id)date location:(id)location source:(int64_t)source;
 - (UIImage)image;
 @end
 
 @implementation UGCPhotoWithMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
-    v7 = v4;
-    v8 = [(UGCPhotoWithMetadata *)self image];
-    v9 = [v7 image];
-    if ([v8 isEqual:v9])
+    v7 = equalCopy;
+    image = [(UGCPhotoWithMetadata *)self image];
+    image2 = [v7 image];
+    if ([image isEqual:image2])
     {
-      v10 = [(UGCPhotoWithMetadata *)self photoMetadata];
-      v11 = [v7 photoMetadata];
-      v6 = [v10 isEqual:v11];
+      photoMetadata = [(UGCPhotoWithMetadata *)self photoMetadata];
+      photoMetadata2 = [v7 photoMetadata];
+      v6 = [photoMetadata isEqual:photoMetadata2];
     }
 
     else
@@ -58,8 +58,8 @@
   {
     v4 = [GEORPPhotoMetadata alloc];
     v5 = +[NSUUID UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v4 initWithUUID:v6 location:self->_location];
+    uUIDString = [v5 UUIDString];
+    v7 = [v4 initWithUUID:uUIDString location:self->_location];
     v8 = self->_photoMetadata;
     self->_photoMetadata = v7;
 
@@ -83,11 +83,11 @@
       photoMetadata = self->_photoMetadata;
     }
 
-    v11 = [(GEORPPhotoMetadata *)photoMetadata geotag];
-    [v11 setTimestamp:0.0];
+    geotag = [(GEORPPhotoMetadata *)photoMetadata geotag];
+    [geotag setTimestamp:0.0];
 
-    v12 = [(GEORPPhotoMetadata *)self->_photoMetadata geotag];
-    [v12 setHasTimestamp:0];
+    geotag2 = [(GEORPPhotoMetadata *)self->_photoMetadata geotag];
+    [geotag2 setHasTimestamp:0];
 
     photoMetadata = self->_photoMetadata;
   }
@@ -99,34 +99,34 @@ LABEL_7:
 
 - (NSString)identifier
 {
-  v2 = [(UGCPhotoWithMetadata *)self photoMetadata];
-  v3 = [v2 clientImageUuid];
+  photoMetadata = [(UGCPhotoWithMetadata *)self photoMetadata];
+  clientImageUuid = [photoMetadata clientImageUuid];
 
-  return v3;
+  return clientImageUuid;
 }
 
-- (UGCPhotoWithMetadata)initWithImageData:(id)a3 PHAsset:(id)a4 sourceType:(int64_t)a5
+- (UGCPhotoWithMetadata)initWithImageData:(id)data PHAsset:(id)asset sourceType:(int64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 creationDate];
-  v11 = [v8 location];
+  assetCopy = asset;
+  dataCopy = data;
+  creationDate = [assetCopy creationDate];
+  location = [assetCopy location];
 
-  v12 = [(UGCPhotoWithMetadata *)self initWithImageData:v9 date:v10 location:v11 source:a5];
+  v12 = [(UGCPhotoWithMetadata *)self initWithImageData:dataCopy date:creationDate location:location source:type];
   return v12;
 }
 
-- (UGCPhotoWithMetadata)initWithImageData:(id)a3 date:(id)a4 location:(id)a5 source:(int64_t)a6
+- (UGCPhotoWithMetadata)initWithImageData:(id)data date:(id)date location:(id)location source:(int64_t)source
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  dataCopy = data;
+  dateCopy = date;
+  locationCopy = location;
+  if (!dataCopy)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
 LABEL_13:
-      v22 = 0;
+      selfCopy = 0;
       goto LABEL_9;
     }
 
@@ -137,7 +137,7 @@ LABEL_15:
     goto LABEL_13;
   }
 
-  if (!a6)
+  if (!source)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -155,10 +155,10 @@ LABEL_15:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_rawImageData, a3);
-    objc_storeStrong(&v15->_date, a4);
-    v15->_sourceType = a6;
-    objc_storeStrong(&v15->_location, a5);
+    objc_storeStrong(&v14->_rawImageData, data);
+    objc_storeStrong(&v15->_date, date);
+    v15->_sourceType = source;
+    objc_storeStrong(&v15->_location, location);
     v16 = CGImageSourceCreateWithData(v15->_rawImageData, 0);
     if (v16)
     {
@@ -167,9 +167,9 @@ LABEL_15:
       if (Type)
       {
         v19 = [UTType typeWithIdentifier:Type];
-        v20 = [v19 preferredMIMEType];
+        preferredMIMEType = [v19 preferredMIMEType];
         mimeType = v15->_mimeType;
-        v15->_mimeType = v20;
+        v15->_mimeType = preferredMIMEType;
       }
 
       CFRelease(v17);
@@ -177,10 +177,10 @@ LABEL_15:
   }
 
   self = v15;
-  v22 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v22;
+  return selfCopy;
 }
 
 @end

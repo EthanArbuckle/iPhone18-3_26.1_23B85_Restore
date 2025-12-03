@@ -3,7 +3,7 @@
 - (BOOL)preserveBTFiles;
 - (BOOL)preserveBTPairingRecord;
 - (BOOL)shouldRestoreBluetoothPairingRecord;
-- (id)getKeychainInfoToSave:(id)a3;
+- (id)getKeychainInfoToSave:(id)save;
 - (void)removeBluetoothPairingRecordIfNeeded;
 - (void)restoreBTPairingRecordIfNeeded;
 @end
@@ -44,9 +44,9 @@
   }
 
   v4 = +[MSDPlatform sharedInstance];
-  v5 = [v4 macOS];
+  macOS = [v4 macOS];
 
-  if (v5)
+  if (macOS)
   {
     v6 = 0;
 LABEL_14:
@@ -137,9 +137,9 @@ LABEL_15:
   }
 
   v3 = +[MSDPlatform sharedInstance];
-  v4 = [v3 macOS];
+  macOS = [v3 macOS];
 
-  if ((v4 & 1) == 0)
+  if ((macOS & 1) == 0)
   {
     v5 = sub_100063A54();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -213,10 +213,10 @@ LABEL_27:
   }
 
   v7 = +[MSDPlatform sharedInstance];
-  v8 = [v7 macOS];
+  macOS = [v7 macOS];
 
   v44 = v3;
-  if (v8)
+  if (macOS)
   {
     v9 = 0;
     v10 = &off_10017BBF8;
@@ -273,8 +273,8 @@ LABEL_27:
 
       v20 = *(*(&v46 + 1) + 8 * v22);
 
-      v24 = [v20 stringByDeletingLastPathComponent];
-      v25 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/BluetoothShelter" stringByAppendingPathComponent:v24];
+      stringByDeletingLastPathComponent = [v20 stringByDeletingLastPathComponent];
+      v25 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/BluetoothShelter" stringByAppendingPathComponent:stringByDeletingLastPathComponent];
       v26 = [v2 fileExistsAtPath:v25];
 
       if ((v26 & 1) == 0)
@@ -282,8 +282,8 @@ LABEL_27:
         v27 = v2;
         v28 = p_cache;
         v29 = v19;
-        v30 = [v20 stringByDeletingLastPathComponent];
-        v31 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/BluetoothShelter" stringByAppendingPathComponent:v30];
+        stringByDeletingLastPathComponent2 = [v20 stringByDeletingLastPathComponent];
+        v31 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/BluetoothShelter" stringByAppendingPathComponent:stringByDeletingLastPathComponent2];
         v45 = v44;
         v32 = v27;
         v41 = [v27 createDirectoryAtPath:v31 withIntermediateDirectories:1 attributes:0 error:&v45];
@@ -315,8 +315,8 @@ LABEL_26:
         v2 = v33;
       }
 
-      v34 = [p_cache + 223 sharedInstance];
-      v35 = [v34 preserveBluetoothFileToShelter:v20];
+      sharedInstance = [p_cache + 223 sharedInstance];
+      v35 = [sharedInstance preserveBluetoothFileToShelter:v20];
 
       if ((v35 & 1) == 0)
       {
@@ -360,8 +360,8 @@ LABEL_28:
   v3 = +[NSFileManager defaultManager];
   if ([v2 isContentFrozen])
   {
-    v4 = [v2 getSavedRequest];
-    if ([v4 isEqualToString:@"RevertSnapshot"])
+    getSavedRequest = [v2 getSavedRequest];
+    if ([getSavedRequest isEqualToString:@"RevertSnapshot"])
     {
       v5 = [v3 fileExistsAtPath:@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata/com.apple.MobileStoreDemo.btkeychain"];
     }
@@ -391,9 +391,9 @@ LABEL_28:
   }
 }
 
-- (id)getKeychainInfoToSave:(id)a3
+- (id)getKeychainInfoToSave:(id)save
 {
-  v3 = a3;
+  saveCopy = save;
   v32[0] = kSecAttrService;
   v32[1] = kSecAttrAccount;
   v32[2] = kSecAttrLabel;
@@ -404,7 +404,7 @@ LABEL_28:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = saveCopy;
   v5 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v5)
   {

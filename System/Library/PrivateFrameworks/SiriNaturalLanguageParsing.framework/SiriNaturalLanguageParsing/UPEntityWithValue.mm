@@ -1,24 +1,24 @@
 @interface UPEntityWithValue
-- (BOOL)isEqualToEntityWithValue:(id)a3;
-- (UPEntityWithValue)initWithType:(id)a3 entityName:(id)a4 entityValue:(id)a5;
+- (BOOL)isEqualToEntityWithValue:(id)value;
+- (UPEntityWithValue)initWithType:(id)type entityName:(id)name entityValue:(id)value;
 @end
 
 @implementation UPEntityWithValue
 
-- (BOOL)isEqualToEntityWithValue:(id)a3
+- (BOOL)isEqualToEntityWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   entityType = self->_entityType;
-  v6 = [v4 entityType];
-  if ([(NSString *)entityType isEqualToString:v6])
+  entityType = [valueCopy entityType];
+  if ([(NSString *)entityType isEqualToString:entityType])
   {
     entityName = self->_entityName;
-    v8 = [v4 entityName];
-    if ([(NSString *)entityName isEqualToString:v8])
+    entityName = [valueCopy entityName];
+    if ([(NSString *)entityName isEqualToString:entityName])
     {
       entityValue = self->_entityValue;
-      v10 = [v4 entityValue];
-      v11 = [(NSString *)entityValue isEqualToString:v10];
+      entityValue = [valueCopy entityValue];
+      v11 = [(NSString *)entityValue isEqualToString:entityValue];
     }
 
     else
@@ -35,25 +35,25 @@
   return v11;
 }
 
-- (UPEntityWithValue)initWithType:(id)a3 entityName:(id)a4 entityValue:(id)a5
+- (UPEntityWithValue)initWithType:(id)type entityName:(id)name entityValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  nameCopy = name;
+  valueCopy = value;
   v19.receiver = self;
   v19.super_class = UPEntityWithValue;
   v11 = [(UPEntityWithValue *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [typeCopy copy];
     entityType = v11->_entityType;
     v11->_entityType = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     entityName = v11->_entityName;
     v11->_entityName = v14;
 
-    v16 = [v10 copy];
+    v16 = [valueCopy copy];
     entityValue = v11->_entityValue;
     v11->_entityValue = v16;
   }

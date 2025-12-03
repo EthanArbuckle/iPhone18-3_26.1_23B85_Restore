@@ -1,55 +1,55 @@
 @interface SXQuickLookRenderer
-- (SXQuickLookRenderer)initWithStyler:(id)a3;
-- (void)render:(id)a3 attributes:(id)a4;
-- (void)renderThumbnailImage:(id)a3 view:(id)a4;
+- (SXQuickLookRenderer)initWithStyler:(id)styler;
+- (void)render:(id)render attributes:(id)attributes;
+- (void)renderThumbnailImage:(id)image view:(id)view;
 @end
 
 @implementation SXQuickLookRenderer
 
-- (SXQuickLookRenderer)initWithStyler:(id)a3
+- (SXQuickLookRenderer)initWithStyler:(id)styler
 {
-  v5 = a3;
+  stylerCopy = styler;
   v9.receiver = self;
   v9.super_class = SXQuickLookRenderer;
   v6 = [(SXQuickLookRenderer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_styler, a3);
+    objc_storeStrong(&v6->_styler, styler);
   }
 
   return v7;
 }
 
-- (void)render:(id)a3 attributes:(id)a4
+- (void)render:(id)render attributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 thumbnailControl];
-  [v6 thumbnailFrame];
-  [v8 setFrame:?];
+  attributesCopy = attributes;
+  renderCopy = render;
+  thumbnailControl = [renderCopy thumbnailControl];
+  [attributesCopy thumbnailFrame];
+  [thumbnailControl setFrame:?];
 
-  v9 = [v7 thumbnailImageView];
-  [v6 thumbnailFrame];
-  [v9 setFrame:?];
+  thumbnailImageView = [renderCopy thumbnailImageView];
+  [attributesCopy thumbnailFrame];
+  [thumbnailImageView setFrame:?];
 
-  v10 = [v7 errorLabel];
-  [v6 errorLabelFrame];
+  errorLabel = [renderCopy errorLabel];
+  [attributesCopy errorLabelFrame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  [v10 setFrame:{v12, v14, v16, v18}];
-  v19 = [(SXQuickLookRenderer *)self styler];
-  [v19 styleViewController:v7];
+  [errorLabel setFrame:{v12, v14, v16, v18}];
+  styler = [(SXQuickLookRenderer *)self styler];
+  [styler styleViewController:renderCopy];
 }
 
-- (void)renderThumbnailImage:(id)a3 view:(id)a4
+- (void)renderThumbnailImage:(id)image view:(id)view
 {
-  v5 = a4;
-  [v5 setImage:a3 forState:0];
-  [v5 setContentMode:1];
+  viewCopy = view;
+  [viewCopy setImage:image forState:0];
+  [viewCopy setContentMode:1];
 }
 
 @end

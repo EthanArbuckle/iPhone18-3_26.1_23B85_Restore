@@ -1,39 +1,39 @@
 @interface CarplayDisplayManager
 - (id)_createAndSetupModel;
 - (id)_rootViewControllerForCarScene;
-- (void)_openURL:(id)a3;
-- (void)_setUpSelectedCalendarsOnModel:(id)a3;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)_openURL:(id)l;
+- (void)_setUpSelectedCalendarsOnModel:(id)model;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation CarplayDisplayManager
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v11 = kCalUILogCarplayHandle;
   if (os_log_type_enabled(kCalUILogCarplayHandle, OS_LOG_TYPE_INFO))
   {
     v29 = 138412546;
-    v30 = v8;
+    v30 = sceneCopy;
     v31 = 2112;
-    v32 = v9;
+    v32 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "scene:%@ willConnectToSession: %@", &v29, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v8;
-    v13 = [v12 screen];
-    if (([v13 _isCarScreen] & 1) != 0 && !self->_carWindow)
+    v12 = sceneCopy;
+    screen = [v12 screen];
+    if (([screen _isCarScreen] & 1) != 0 && !self->_carWindow)
     {
-      v14 = [v12 coordinateSpace];
-      [v14 bounds];
+      coordinateSpace = [v12 coordinateSpace];
+      [coordinateSpace bounds];
       v16 = v15;
       v18 = v17;
       v20 = v19;
@@ -45,8 +45,8 @@
       [v23 setWindowScene:v12];
       [v23 makeKeyAndVisible];
       [v23 setFrame:{v16, v18, v20, v22}];
-      v24 = [(CarplayDisplayManager *)self _rootViewControllerForCarScene];
-      [v23 setRootViewController:v24];
+      _rootViewControllerForCarScene = [(CarplayDisplayManager *)self _rootViewControllerForCarScene];
+      [v23 setRootViewController:_rootViewControllerForCarScene];
 
       if (CalSystemSolariumEnabled())
       {
@@ -55,8 +55,8 @@
       }
 
       objc_storeStrong(&self->_carWindow, v23);
-      v26 = [v10 URLContexts];
-      if (v26)
+      uRLContexts = [optionsCopy URLContexts];
+      if (uRLContexts)
       {
         v27 = kCalUILogCarplayHandle;
         if (os_log_type_enabled(kCalUILogCarplayHandle, OS_LOG_TYPE_INFO))
@@ -65,7 +65,7 @@
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "willConnectToSession has urlContexts", &v29, 2u);
         }
 
-        [(CarplayDisplayManager *)self scene:v12 openURLContexts:v26];
+        [(CarplayDisplayManager *)self scene:v12 openURLContexts:uRLContexts];
       }
     }
   }
@@ -81,20 +81,20 @@
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = kCalUILogCarplayHandle;
   if (os_log_type_enabled(kCalUILogCarplayHandle, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "sceneDidDisconnect %@", &v8, 0xCu);
   }
 
-  v6 = [(UIWindow *)self->_carWindow windowScene];
+  windowScene = [(UIWindow *)self->_carWindow windowScene];
 
-  if (v6 == v4)
+  if (windowScene == disconnectCopy)
   {
     [(UIWindow *)self->_carWindow setHidden:1];
     carWindow = self->_carWindow;
@@ -102,10 +102,10 @@
   }
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v5 = [a4 anyObject];
-  v6 = [v5 URL];
+  anyObject = [contexts anyObject];
+  v6 = [anyObject URL];
 
   v7 = kCalUILogCarplayHandle;
   if (os_log_type_enabled(kCalUILogCarplayHandle, OS_LOG_TYPE_INFO))
@@ -118,18 +118,18 @@
   [(CarplayDisplayManager *)self _openURL:v6];
 }
 
-- (void)_openURL:(id)a3
+- (void)_openURL:(id)l
 {
   carWindow = self->_carWindow;
-  v4 = a3;
-  v5 = [(UIWindow *)carWindow rootViewController];
-  [v5 handleURL:v4];
+  lCopy = l;
+  rootViewController = [(UIWindow *)carWindow rootViewController];
+  [rootViewController handleURL:lCopy];
 }
 
 - (id)_rootViewControllerForCarScene
 {
-  v2 = [(CarplayDisplayManager *)self _createAndSetupModel];
-  v3 = [[CarplayNavigationController alloc] initWithModel:v2];
+  _createAndSetupModel = [(CarplayDisplayManager *)self _createAndSetupModel];
+  v3 = [[CarplayNavigationController alloc] initWithModel:_createAndSetupModel];
 
   return v3;
 }
@@ -147,24 +147,24 @@
   return v3;
 }
 
-- (void)_setUpSelectedCalendarsOnModel:(id)a3
+- (void)_setUpSelectedCalendarsOnModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = [EKCalendarVisibilityManager alloc];
-  v5 = [v3 eventStore];
-  v6 = [v3 sourceForSelectedIdentity];
-  v7 = [v4 initWithEventStore:v5 limitedToSource:v6 visibilityChangedCallback:0 queue:0];
+  eventStore = [modelCopy eventStore];
+  sourceForSelectedIdentity = [modelCopy sourceForSelectedIdentity];
+  v7 = [v4 initWithEventStore:eventStore limitedToSource:sourceForSelectedIdentity visibilityChangedCallback:0 queue:0];
 
-  v8 = [v7 visibleCalendarsForAllIdentities];
+  visibleCalendarsForAllIdentities = [v7 visibleCalendarsForAllIdentities];
   if ([UIApp launchedToTest])
   {
     v22 = v7;
-    v9 = [v8 mutableCopy];
+    v9 = [visibleCalendarsForAllIdentities mutableCopy];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = v8;
+    v10 = visibleCalendarsForAllIdentities;
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v11)
     {
@@ -180,8 +180,8 @@
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [v15 title];
-          v17 = [v16 containsString:@"Legacy"];
+          title = [v15 title];
+          v17 = [title containsString:@"Legacy"];
 
           if (v17)
           {
@@ -200,7 +200,7 @@
 
   else
   {
-    v9 = v8;
+    v9 = visibleCalendarsForAllIdentities;
   }
 
   v18 = kCalUILogHandle;
@@ -214,7 +214,7 @@
   }
 
   v21 = [[NSSet alloc] initWithArray:v9];
-  [v3 setSelectedCalendars:v21];
+  [modelCopy setSelectedCalendars:v21];
 }
 
 @end

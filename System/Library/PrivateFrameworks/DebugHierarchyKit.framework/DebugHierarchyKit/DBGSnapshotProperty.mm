@@ -1,14 +1,14 @@
 @interface DBGSnapshotProperty
-+ (id)propertyWithDebugHierarchyProperty:(id)a3;
-+ (id)propertyWithName:(id)a3;
-+ (id)propertyWithName:(id)a3 runtimeTypeName:(id)a4 value:(id)a5;
++ (id)propertyWithDebugHierarchyProperty:(id)property;
++ (id)propertyWithName:(id)name;
++ (id)propertyWithName:(id)name runtimeTypeName:(id)typeName value:(id)value;
 - (BOOL)BOOLValue;
-- (BOOL)logicalTypeEquals:(id)a3;
+- (BOOL)logicalTypeEquals:(id)equals;
 - (CGPoint)pointValue;
 - (CGRect)rectValue;
 - (CGSize)sizeValue;
 - (DBGSnapshotNode)snapshotNode;
-- (DBGSnapshotProperty)initWithName:(id)a3 runtimeTypeName:(id)a4 value:(id)a5 fetchStatus:(int64_t)a6;
+- (DBGSnapshotProperty)initWithName:(id)name runtimeTypeName:(id)typeName value:(id)value fetchStatus:(int64_t)status;
 - (DebugHierarchyProperty)backingRuntimeTypeProperty;
 - (NSData)dataValue;
 - (NSString)stringValue;
@@ -21,64 +21,64 @@
 - (id)dictionaryRepresentation;
 - (id)format;
 - (id)logicalType;
-- (id)subpropertyWithName:(id)a3;
+- (id)subpropertyWithName:(id)name;
 - (int64_t)integerValue;
 - (int64_t)options;
 - (int64_t)visibility;
-- (void)addSubproperties:(id)a3;
-- (void)addSubproperty:(id)a3;
-- (void)setCGFloatValue:(double)a3;
-- (void)setIntegerValue:(int64_t)a3;
-- (void)setPointValue:(CGPoint)a3;
-- (void)setRectValue:(CGRect)a3;
-- (void)setSizeValue:(CGSize)a3;
-- (void)updateWithJSONPropertyDescription:(id)a3;
+- (void)addSubproperties:(id)subproperties;
+- (void)addSubproperty:(id)subproperty;
+- (void)setCGFloatValue:(double)value;
+- (void)setIntegerValue:(int64_t)value;
+- (void)setPointValue:(CGPoint)value;
+- (void)setRectValue:(CGRect)value;
+- (void)setSizeValue:(CGSize)value;
+- (void)updateWithJSONPropertyDescription:(id)description;
 @end
 
 @implementation DBGSnapshotProperty
 
-+ (id)propertyWithName:(id)a3
++ (id)propertyWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithName:v4 runtimeTypeName:0 value:0 fetchStatus:0];
+  nameCopy = name;
+  v5 = [[self alloc] initWithName:nameCopy runtimeTypeName:0 value:0 fetchStatus:0];
 
   return v5;
 }
 
-+ (id)propertyWithName:(id)a3 runtimeTypeName:(id)a4 value:(id)a5
++ (id)propertyWithName:(id)name runtimeTypeName:(id)typeName value:(id)value
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 runtimeTypeName:v9 value:v8 fetchStatus:4];
+  valueCopy = value;
+  typeNameCopy = typeName;
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy runtimeTypeName:typeNameCopy value:valueCopy fetchStatus:4];
 
   return v11;
 }
 
-+ (id)propertyWithDebugHierarchyProperty:(id)a3
++ (id)propertyWithDebugHierarchyProperty:(id)property
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 name];
-  v7 = [v4 runtimeTypeName];
-  v8 = [v5 initWithName:v6 runtimeTypeName:v7 value:0 fetchStatus:0];
+  propertyCopy = property;
+  v5 = [self alloc];
+  name = [propertyCopy name];
+  runtimeTypeName = [propertyCopy runtimeTypeName];
+  v8 = [v5 initWithName:name runtimeTypeName:runtimeTypeName value:0 fetchStatus:0];
 
-  [v8 setBackingRuntimeTypeProperty:v4];
+  [v8 setBackingRuntimeTypeProperty:propertyCopy];
 
   return v8;
 }
 
-- (DBGSnapshotProperty)initWithName:(id)a3 runtimeTypeName:(id)a4 value:(id)a5 fetchStatus:(int64_t)a6
+- (DBGSnapshotProperty)initWithName:(id)name runtimeTypeName:(id)typeName value:(id)value fetchStatus:(int64_t)status
 {
-  v11 = a5;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = DBGSnapshotProperty;
-  v12 = [(DBGSnapshotProperty *)&v15 initWithName:a3 runtimeTypeName:a4];
+  v12 = [(DBGSnapshotProperty *)&v15 initWithName:name runtimeTypeName:typeName];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_value, a5);
-    v13->_fetchStatus = a6;
+    objc_storeStrong(&v12->_value, value);
+    v13->_fetchStatus = status;
   }
 
   return v13;
@@ -86,52 +86,52 @@
 
 - (id)allSubproperties
 {
-  v2 = [(DBGSnapshotProperty *)self subpropertiesMap];
-  v3 = [v2 allValues];
+  subpropertiesMap = [(DBGSnapshotProperty *)self subpropertiesMap];
+  allValues = [subpropertiesMap allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)subpropertyWithName:(id)a3
+- (id)subpropertyWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(DBGSnapshotProperty *)self subpropertiesMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  subpropertiesMap = [(DBGSnapshotProperty *)self subpropertiesMap];
+  v6 = [subpropertiesMap objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (void)addSubproperty:(id)a3
+- (void)addSubproperty:(id)subproperty
 {
-  v8 = a3;
-  v4 = [(DBGSnapshotProperty *)self snapshotNode];
-  [v8 setSnapshotNode:v4];
+  subpropertyCopy = subproperty;
+  snapshotNode = [(DBGSnapshotProperty *)self snapshotNode];
+  [subpropertyCopy setSnapshotNode:snapshotNode];
 
-  v5 = [(DBGSnapshotProperty *)self subpropertiesMap];
+  subpropertiesMap = [(DBGSnapshotProperty *)self subpropertiesMap];
 
-  if (v5)
+  if (subpropertiesMap)
   {
-    v6 = [(DBGSnapshotProperty *)self subpropertiesMap];
-    v7 = [v8 name];
-    [v6 setObject:v8 forKey:v7];
+    subpropertiesMap2 = [(DBGSnapshotProperty *)self subpropertiesMap];
+    name = [subpropertyCopy name];
+    [subpropertiesMap2 setObject:subpropertyCopy forKey:name];
   }
 
   else
   {
-    v6 = [v8 name];
-    v7 = [NSMutableDictionary dictionaryWithObject:v8 forKey:v6];
-    [(DBGSnapshotProperty *)self setSubpropertiesMap:v7];
+    subpropertiesMap2 = [subpropertyCopy name];
+    name = [NSMutableDictionary dictionaryWithObject:subpropertyCopy forKey:subpropertiesMap2];
+    [(DBGSnapshotProperty *)self setSubpropertiesMap:name];
   }
 }
 
-- (void)addSubproperties:(id)a3
+- (void)addSubproperties:(id)subproperties
 {
-  v4 = a3;
+  subpropertiesCopy = subproperties;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [subpropertiesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -143,7 +143,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subpropertiesCopy);
         }
 
         [(DBGSnapshotProperty *)self addSubproperty:*(*(&v9 + 1) + 8 * v8)];
@@ -151,23 +151,23 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [subpropertiesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)logicalTypeEquals:(id)a3
+- (BOOL)logicalTypeEquals:(id)equals
 {
-  v4 = a3;
-  v5 = [(DBGSnapshotProperty *)self logicalType];
+  equalsCopy = equals;
+  logicalType = [(DBGSnapshotProperty *)self logicalType];
 
   v6 = 0;
-  if (v4 && v5)
+  if (equalsCopy && logicalType)
   {
-    v7 = [(DBGSnapshotProperty *)self logicalType];
-    v6 = [v7 isEqualToString:v4];
+    logicalType2 = [(DBGSnapshotProperty *)self logicalType];
+    v6 = [logicalType2 isEqualToString:equalsCopy];
   }
 
   return v6;
@@ -175,18 +175,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(DBGSnapshotProperty *)self value];
-  v4 = [(DBGSnapshotProperty *)self name];
-  v5 = [(DBGSnapshotProperty *)self runtimeTypeName];
-  v6 = [(DBGSnapshotProperty *)self logicalType];
-  v7 = [(DBGSnapshotProperty *)self format];
-  v8 = [(DBGSnapshotProperty *)self visibility];
-  v9 = [(DBGSnapshotProperty *)self options];
-  v10 = v3;
-  v11 = v4;
-  v12 = v5;
-  v13 = v6;
-  v14 = v7;
+  value = [(DBGSnapshotProperty *)self value];
+  name = [(DBGSnapshotProperty *)self name];
+  runtimeTypeName = [(DBGSnapshotProperty *)self runtimeTypeName];
+  logicalType = [(DBGSnapshotProperty *)self logicalType];
+  format = [(DBGSnapshotProperty *)self format];
+  visibility = [(DBGSnapshotProperty *)self visibility];
+  options = [(DBGSnapshotProperty *)self options];
+  v10 = value;
+  v11 = name;
+  v12 = runtimeTypeName;
+  v13 = logicalType;
+  v14 = format;
   Mutable = CFDictionaryCreateMutable(0, 7, &kCFCopyStringDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   v16 = Mutable;
   if (v10)
@@ -220,17 +220,17 @@
     CFDictionaryAddValue(v16, @"propertyFormat", v14);
   }
 
-  if (v8 != 1)
+  if (visibility != 1)
   {
-    valuePtr = v8;
+    valuePtr = visibility;
     v18 = CFNumberCreate(0, kCFNumberCFIndexType, &valuePtr);
     CFDictionaryAddValue(v16, @"visibility", v18);
     CFRelease(v18);
   }
 
-  if (v9)
+  if (options)
   {
-    valuePtr = v9;
+    valuePtr = options;
     v19 = CFNumberCreate(0, kCFNumberCFIndexType, &valuePtr);
     CFDictionaryAddValue(v16, @"propertyOptions", v19);
     CFRelease(v19);
@@ -243,56 +243,56 @@
 {
   v6.receiver = self;
   v6.super_class = DBGSnapshotProperty;
-  v3 = [(DBGSnapshotProperty *)&v6 logicalType];
-  if (!v3)
+  logicalType = [(DBGSnapshotProperty *)&v6 logicalType];
+  if (!logicalType)
   {
-    v4 = [(DBGSnapshotProperty *)self backingRuntimeTypeProperty];
-    v3 = [v4 logicalType];
+    backingRuntimeTypeProperty = [(DBGSnapshotProperty *)self backingRuntimeTypeProperty];
+    logicalType = [backingRuntimeTypeProperty logicalType];
   }
 
-  return v3;
+  return logicalType;
 }
 
 - (id)format
 {
   v6.receiver = self;
   v6.super_class = DBGSnapshotProperty;
-  v3 = [(DBGSnapshotProperty *)&v6 format];
-  if (!v3)
+  format = [(DBGSnapshotProperty *)&v6 format];
+  if (!format)
   {
-    v4 = [(DBGSnapshotProperty *)self backingRuntimeTypeProperty];
-    v3 = [v4 format];
+    backingRuntimeTypeProperty = [(DBGSnapshotProperty *)self backingRuntimeTypeProperty];
+    format = [backingRuntimeTypeProperty format];
   }
 
-  return v3;
+  return format;
 }
 
 - (int64_t)visibility
 {
   v6.receiver = self;
   v6.super_class = DBGSnapshotProperty;
-  v3 = [(DBGSnapshotProperty *)&v6 visibility];
-  if (!v3)
+  visibility = [(DBGSnapshotProperty *)&v6 visibility];
+  if (!visibility)
   {
-    v4 = [(DBGSnapshotProperty *)self backingRuntimeTypeProperty];
-    v3 = [v4 visibility];
+    backingRuntimeTypeProperty = [(DBGSnapshotProperty *)self backingRuntimeTypeProperty];
+    visibility = [backingRuntimeTypeProperty visibility];
   }
 
-  return v3;
+  return visibility;
 }
 
 - (int64_t)options
 {
   v6.receiver = self;
   v6.super_class = DBGSnapshotProperty;
-  v3 = [(DBGSnapshotProperty *)&v6 options];
-  if (!v3)
+  options = [(DBGSnapshotProperty *)&v6 options];
+  if (!options)
   {
-    v4 = [(DBGSnapshotProperty *)self backingRuntimeTypeProperty];
-    v3 = [v4 options];
+    backingRuntimeTypeProperty = [(DBGSnapshotProperty *)self backingRuntimeTypeProperty];
+    options = [backingRuntimeTypeProperty options];
   }
 
-  return v3;
+  return options;
 }
 
 - (DebugHierarchyProperty)backingRuntimeTypeProperty
@@ -300,10 +300,10 @@
   backingRuntimeTypeProperty = self->_backingRuntimeTypeProperty;
   if (!backingRuntimeTypeProperty)
   {
-    v4 = [(DBGSnapshotProperty *)self snapshotNode];
-    v5 = [v4 runtimeType];
-    v6 = [(DBGSnapshotProperty *)self name];
-    v7 = [v5 propertyWithName:v6];
+    snapshotNode = [(DBGSnapshotProperty *)self snapshotNode];
+    runtimeType = [snapshotNode runtimeType];
+    name = [(DBGSnapshotProperty *)self name];
+    v7 = [runtimeType propertyWithName:name];
     v8 = self->_backingRuntimeTypeProperty;
     self->_backingRuntimeTypeProperty = v7;
 
@@ -315,27 +315,27 @@
 
 - (BOOL)BOOLValue
 {
-  v3 = [(DBGSnapshotProperty *)self value];
-  if (v3)
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v4 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v5 = [(DBGSnapshotProperty *)self value];
-  v6 = [v5 BOOLValue];
+  value3 = [(DBGSnapshotProperty *)self value];
+  bOOLValue = [value3 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (int64_t)integerValue
 {
-  v3 = [(DBGSnapshotProperty *)self value];
+  value = [(DBGSnapshotProperty *)self value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(DBGSnapshotProperty *)self value];
+  value2 = [(DBGSnapshotProperty *)self value];
   objc_opt_class();
   v6 = objc_opt_isKindOfClass();
 
@@ -345,27 +345,27 @@
     return 0;
   }
 
-  v8 = [(DBGSnapshotProperty *)self value];
-  v9 = [v8 integerValue];
+  value3 = [(DBGSnapshotProperty *)self value];
+  integerValue = [value3 integerValue];
 
-  return v9;
+  return integerValue;
 }
 
-- (void)setIntegerValue:(int64_t)a3
+- (void)setIntegerValue:(int64_t)value
 {
-  v5 = [(DBGSnapshotProperty *)self value];
+  value = [(DBGSnapshotProperty *)self value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [(DBGSnapshotProperty *)self value];
+  value2 = [(DBGSnapshotProperty *)self value];
   objc_opt_class();
   v8 = objc_opt_isKindOfClass();
 
   [(DBGSnapshotProperty *)self value];
   if (isKindOfClass)
   {
-    v10 = [(DBGSnapshotProperty *)self value];
-    [v10 setIntegerValue:a3];
+    value3 = [(DBGSnapshotProperty *)self value];
+    [value3 setIntegerValue:value];
   }
 
   else
@@ -375,55 +375,55 @@
       return;
     }
 
-    v10 = [(DBGSnapshotProperty *)self value];
-    v9 = [NSNumber numberWithInteger:a3];
-    [v10 setEnumValue:v9];
+    value3 = [(DBGSnapshotProperty *)self value];
+    v9 = [NSNumber numberWithInteger:value];
+    [value3 setEnumValue:v9];
   }
 }
 
 - (double)CGFloatValue
 {
-  v3 = [(DBGSnapshotProperty *)self value];
-  if (v3)
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v4 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v5 = [(DBGSnapshotProperty *)self value];
-  [v5 CGFloatValue];
+  value3 = [(DBGSnapshotProperty *)self value];
+  [value3 CGFloatValue];
   v7 = v6;
 
   return v7;
 }
 
-- (void)setCGFloatValue:(double)a3
+- (void)setCGFloatValue:(double)value
 {
-  v5 = [(DBGSnapshotProperty *)self value];
-  if (v5)
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v6 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v7 = [(DBGSnapshotProperty *)self value];
-  [v7 setCGFloatValue:a3];
+  value3 = [(DBGSnapshotProperty *)self value];
+  [value3 setCGFloatValue:value];
 }
 
 - (CGPoint)pointValue
 {
-  v3 = [(DBGSnapshotProperty *)self value];
-  if (v3)
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v4 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v5 = [(DBGSnapshotProperty *)self value];
-  [v5 point];
+  value3 = [(DBGSnapshotProperty *)self value];
+  [value3 point];
   v7 = v6;
   v9 = v8;
 
@@ -434,34 +434,34 @@
   return result;
 }
 
-- (void)setPointValue:(CGPoint)a3
+- (void)setPointValue:(CGPoint)value
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(DBGSnapshotProperty *)self value];
-  if (v6)
+  y = value.y;
+  x = value.x;
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v7 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v8 = [(DBGSnapshotProperty *)self value];
-  [v8 setPoint:{x, y}];
+  value3 = [(DBGSnapshotProperty *)self value];
+  [value3 setPoint:{x, y}];
 }
 
 - (CGSize)sizeValue
 {
-  v3 = [(DBGSnapshotProperty *)self value];
-  if (v3)
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v4 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v5 = [(DBGSnapshotProperty *)self value];
-  [v5 size];
+  value3 = [(DBGSnapshotProperty *)self value];
+  [value3 size];
   v7 = v6;
   v9 = v8;
 
@@ -472,34 +472,34 @@
   return result;
 }
 
-- (void)setSizeValue:(CGSize)a3
+- (void)setSizeValue:(CGSize)value
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(DBGSnapshotProperty *)self value];
-  if (v6)
+  height = value.height;
+  width = value.width;
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v7 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v8 = [(DBGSnapshotProperty *)self value];
-  [v8 setSize:{width, height}];
+  value3 = [(DBGSnapshotProperty *)self value];
+  [value3 setSize:{width, height}];
 }
 
 - (CGRect)rectValue
 {
-  v3 = [(DBGSnapshotProperty *)self value];
-  if (v3)
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v4 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v5 = [(DBGSnapshotProperty *)self value];
-  [v5 rect];
+  value3 = [(DBGSnapshotProperty *)self value];
+  [value3 rect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -516,36 +516,36 @@
   return result;
 }
 
-- (void)setRectValue:(CGRect)a3
+- (void)setRectValue:(CGRect)value
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(DBGSnapshotProperty *)self value];
-  if (v8)
+  height = value.size.height;
+  width = value.size.width;
+  y = value.origin.y;
+  x = value.origin.x;
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v9 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v10 = [(DBGSnapshotProperty *)self value];
-  [v10 setRect:{x, y, width, height}];
+  value3 = [(DBGSnapshotProperty *)self value];
+  [value3 setRect:{x, y, width, height}];
 }
 
 - (float)floatValue
 {
-  v3 = [(DBGSnapshotProperty *)self value];
-  if (v3)
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v4 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v5 = [(DBGSnapshotProperty *)self value];
-  [v5 floatValue];
+  value3 = [(DBGSnapshotProperty *)self value];
+  [value3 floatValue];
   v7 = v6;
 
   return v7;
@@ -553,55 +553,55 @@
 
 - (NSString)stringValue
 {
-  v3 = [(DBGSnapshotProperty *)self value];
-  if (v3)
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v4 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v5 = [(DBGSnapshotProperty *)self value];
-  v6 = [v5 string];
+  value3 = [(DBGSnapshotProperty *)self value];
+  string = [value3 string];
 
-  return v6;
+  return string;
 }
 
 - (NSData)dataValue
 {
-  v3 = [(DBGSnapshotProperty *)self value];
-  if (v3)
+  value = [(DBGSnapshotProperty *)self value];
+  if (value)
   {
-    v4 = [(DBGSnapshotProperty *)self value];
+    value2 = [(DBGSnapshotProperty *)self value];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v5 = [(DBGSnapshotProperty *)self value];
-  v6 = [v5 data];
+  value3 = [(DBGSnapshotProperty *)self value];
+  data = [value3 data];
 
-  return v6;
+  return data;
 }
 
 - (id)debugDescription
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DBGSnapshotProperty *)self name];
-  v6 = [(DBGSnapshotProperty *)self runtimeTypeName];
-  v7 = [(DBGSnapshotProperty *)self value];
-  v8 = [(DBGSnapshotProperty *)self visibility];
-  if ((v8 - 1) > 7)
+  name = [(DBGSnapshotProperty *)self name];
+  runtimeTypeName = [(DBGSnapshotProperty *)self runtimeTypeName];
+  value = [(DBGSnapshotProperty *)self value];
+  visibility = [(DBGSnapshotProperty *)self visibility];
+  if ((visibility - 1) > 7)
   {
     v9 = @"Unsupported Visibility";
   }
 
   else
   {
-    v9 = off_24518[v8 - 1];
+    v9 = off_24518[visibility - 1];
   }
 
-  v10 = [NSString stringWithFormat:@"<%@: %p name = %@; type = %@; value = %@; visibility = %@>", v4, self, v5, v6, v7, v9];;
+  v10 = [NSString stringWithFormat:@"<%@: %p name = %@; type = %@; value = %@; visibility = %@>", v4, self, name, runtimeTypeName, value, v9];;
 
   return v10;
 }
@@ -610,9 +610,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DBGSnapshotProperty *)self name];
-  v6 = [(DBGSnapshotProperty *)self value];
-  v7 = [NSString stringWithFormat:@"<%@: %p %@ = %@>", v4, self, v5, v6];;
+  name = [(DBGSnapshotProperty *)self name];
+  value = [(DBGSnapshotProperty *)self value];
+  v7 = [NSString stringWithFormat:@"<%@: %p %@ = %@>", v4, self, name, value];;
 
   return v7;
 }
@@ -624,56 +624,56 @@
   return WeakRetained;
 }
 
-- (void)updateWithJSONPropertyDescription:(id)a3
+- (void)updateWithJSONPropertyDescription:(id)description
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"visibility"];
+  descriptionCopy = description;
+  v5 = [descriptionCopy objectForKeyedSubscript:@"visibility"];
   v6 = v5;
   if (v5)
   {
     -[DBGSnapshotProperty setVisibility:](self, "setVisibility:", [v5 integerValue]);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"propertyRuntimeType"];
+  v7 = [descriptionCopy objectForKeyedSubscript:@"propertyRuntimeType"];
   if (v7)
   {
     [(DBGSnapshotProperty *)self setRuntimeTypeName:v7];
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"propertyLogicalType"];
+  v8 = [descriptionCopy objectForKeyedSubscript:@"propertyLogicalType"];
   if (v8)
   {
     [(DBGSnapshotProperty *)self setLogicalType:v8];
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"propertyFormat"];
+  v9 = [descriptionCopy objectForKeyedSubscript:@"propertyFormat"];
   if (v9)
   {
     [(DBGSnapshotProperty *)self setFormat:v9];
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"fetchStatus"];
-  v11 = [v10 integerValue];
+  v10 = [descriptionCopy objectForKeyedSubscript:@"fetchStatus"];
+  integerValue = [v10 integerValue];
 
-  [(DBGSnapshotProperty *)self setFetchStatus:v11];
-  v12 = [v4 objectForKeyedSubscript:@"propertyValue"];
+  [(DBGSnapshotProperty *)self setFetchStatus:integerValue];
+  v12 = [descriptionCopy objectForKeyedSubscript:@"propertyValue"];
   if (v12 && [v9 length])
   {
-    v13 = [(DBGSnapshotProperty *)self logicalType];
-    v14 = [(DBGSnapshotProperty *)self format];
-    v15 = DBGValueClassForPropertyWith(v13, v14);
+    logicalType = [(DBGSnapshotProperty *)self logicalType];
+    format = [(DBGSnapshotProperty *)self format];
+    v15 = DBGValueClassForPropertyWith(logicalType, format);
 
     if ([v15 conformsToProtocol:&OBJC_PROTOCOL___DBGValueJSONSerialization])
     {
-      v16 = [(DBGSnapshotProperty *)self format];
+      format2 = [(DBGSnapshotProperty *)self format];
       v26 = 0;
-      v17 = [v15 valueWithEncodedValue:v12 format:v16 error:&v26];
+      v17 = [v15 valueWithEncodedValue:v12 format:format2 error:&v26];
       v18 = v26;
 
       if (v18)
       {
-        v19 = [v18 localizedDescription];
-        NSLog(&cfstr_SError.isa, "[DBGSnapshotProperty(JSONSerialization) updateWithJSONPropertyDescription:]", v19);
+        localizedDescription = [v18 localizedDescription];
+        NSLog(&cfstr_SError.isa, "[DBGSnapshotProperty(JSONSerialization) updateWithJSONPropertyDescription:]", localizedDescription);
 
         v20 = 0;
       }
@@ -696,28 +696,28 @@
     [(DBGSnapshotProperty *)self setValue:v20];
   }
 
-  v23 = [v4 objectForKeyedSubscript:@"propertyOptions"];
-  v24 = [v23 unsignedIntegerValue];
+  v23 = [descriptionCopy objectForKeyedSubscript:@"propertyOptions"];
+  unsignedIntegerValue = [v23 unsignedIntegerValue];
 
-  [(DBGSnapshotProperty *)self setOptions:v24];
-  v25 = [(DBGSnapshotProperty *)self snapshotNode];
-  [v25 didUpdateProperty:self];
+  [(DBGSnapshotProperty *)self setOptions:unsignedIntegerValue];
+  snapshotNode = [(DBGSnapshotProperty *)self snapshotNode];
+  [snapshotNode didUpdateProperty:self];
 }
 
 - (id)JSONPropertyDescription
 {
-  v3 = [(DBGSnapshotProperty *)self value];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___DBGValueJSONSerialization];
+  value = [(DBGSnapshotProperty *)self value];
+  v4 = [value conformsToProtocol:&OBJC_PROTOCOL___DBGValueJSONSerialization];
 
   if (v4)
   {
-    v5 = [(DBGSnapshotProperty *)self value];
-    v6 = [v5 JSONCompatibleRepresentation];
+    value2 = [(DBGSnapshotProperty *)self value];
+    jSONCompatibleRepresentation = [value2 JSONCompatibleRepresentation];
   }
 
   else
   {
-    v6 = 0;
+    jSONCompatibleRepresentation = 0;
   }
 
   v7 = *&self->DebugHierarchyProperty_opaque[OBJC_IVAR___DebugHierarchyProperty__name];
@@ -726,7 +726,7 @@
   v10 = *&self->DebugHierarchyProperty_opaque[OBJC_IVAR___DebugHierarchyProperty__format];
   v11 = *&self->DebugHierarchyProperty_opaque[OBJC_IVAR___DebugHierarchyProperty__visibility];
   v12 = *&self->DebugHierarchyProperty_opaque[OBJC_IVAR___DebugHierarchyProperty__options];
-  v13 = v6;
+  v13 = jSONCompatibleRepresentation;
   v14 = v7;
   v15 = v8;
   v16 = v9;

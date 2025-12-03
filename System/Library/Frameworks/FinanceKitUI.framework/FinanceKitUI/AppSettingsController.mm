@@ -1,15 +1,15 @@
 @interface AppSettingsController
-- (_TtC12FinanceKitUI21AppSettingsController)initWithCoder:(id)a3;
-- (_TtC12FinanceKitUI21AppSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12FinanceKitUI21AppSettingsController)initWithCoder:(id)coder;
+- (_TtC12FinanceKitUI21AppSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (void)provider:(id)a3 specifierDidChange:(id)a4;
-- (void)providerReloadSpecifiers:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)provider:(id)provider specifierDidChange:(id)change;
+- (void)providerReloadSpecifiers:(id)specifiers;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation AppSettingsController
 
-- (_TtC12FinanceKitUI21AppSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12FinanceKitUI21AppSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -19,10 +19,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = sub_23875EA80();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -30,13 +30,13 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = sub_2387207A0(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = sub_2387207A0(v6, name, bundle);
 
   return v9;
 }
 
-- (_TtC12FinanceKitUI21AppSettingsController)initWithCoder:(id)a3
+- (_TtC12FinanceKitUI21AppSettingsController)initWithCoder:(id)coder
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -56,7 +56,7 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -66,8 +66,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_238720A18(a3);
+  selfCopy = self;
+  sub_238720A18(appear);
 }
 
 - (id)specifiers
@@ -80,7 +80,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = sub_238720D80();
 
   if (v4)
@@ -97,7 +97,7 @@
   return v5;
 }
 
-- (void)providerReloadSpecifiers:(id)a3
+- (void)providerReloadSpecifiers:(id)specifiers
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -108,16 +108,16 @@
   }
 
   swift_unknownObjectRetain();
-  v5 = self;
-  if (sub_2387212DC(a3))
+  selfCopy = self;
+  if (sub_2387212DC(specifiers))
   {
-    [(AppSettingsController *)v5 reloadSpecifiers];
+    [(AppSettingsController *)selfCopy reloadSpecifiers];
   }
 
   swift_unknownObjectRelease();
 }
 
-- (void)provider:(id)a3 specifierDidChange:(id)a4
+- (void)provider:(id)provider specifierDidChange:(id)change
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -128,11 +128,11 @@
   }
 
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  if (sub_2387212DC(a3))
+  changeCopy = change;
+  selfCopy = self;
+  if (sub_2387212DC(provider))
   {
-    [(AppSettingsController *)v8 reloadSpecifier:v7];
+    [(AppSettingsController *)selfCopy reloadSpecifier:changeCopy];
   }
 
   swift_unknownObjectRelease();

@@ -4,13 +4,13 @@
 + (id)mockStatusProvider;
 + (id)userDefaultsMockStatusProvider;
 - (PXMockCPLStatusProvider)init;
-- (PXMockCPLStatusProvider)initWithUserDefaultsMocks:(BOOL)a3;
+- (PXMockCPLStatusProvider)initWithUserDefaultsMocks:(BOOL)mocks;
 - (double)nextOverrideResumeTimeInterval;
 - (void)_updateStatus;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setStatus:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setStatus:(id)status;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PXMockCPLStatusProvider
@@ -24,15 +24,15 @@
   return v4;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
+  settingsCopy = settings;
+  keyCopy = key;
   v7 = +[PXCPLStatusSettings sharedInstance];
-  if (v7 == v13)
+  if (v7 == settingsCopy)
   {
     v8 = NSStringFromSelector(sel_shouldHideMockStatusWarning);
-    v9 = [v6 isEqualToString:v8];
+    v9 = [keyCopy isEqualToString:v8];
 
     if (v9)
     {
@@ -47,14 +47,14 @@ LABEL_7:
   }
 
   v10 = +[PXRootSettings sharedInstance];
-  if (v10 != v13)
+  if (v10 != settingsCopy)
   {
 
     goto LABEL_8;
   }
 
   v11 = NSStringFromSelector(sel_canShowInternalUI);
-  v12 = [v6 isEqualToString:v11];
+  v12 = [keyCopy isEqualToString:v11];
 
   if (v12)
   {
@@ -64,9 +64,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &PXMockCPLStatusProviderUserDefaultsContext)
+  if (context == &PXMockCPLStatusProviderUserDefaultsContext)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -80,7 +80,7 @@ LABEL_8:
   {
     v6.receiver = self;
     v6.super_class = PXMockCPLStatusProvider;
-    [(PXMockCPLStatusProvider *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(PXMockCPLStatusProvider *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -90,19 +90,19 @@ LABEL_8:
   [(PXMockCPLStatusProvider *)self setStatus:v3];
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statusCopy = status;
   v5 = self->_status;
   v6 = v5;
-  if (v5 == v4)
+  if (v5 == statusCopy)
   {
   }
 
   else
   {
-    v7 = [(PXCPLStatus *)v5 isEqual:v4];
+    v7 = [(PXCPLStatus *)v5 isEqual:statusCopy];
 
     if (!v7)
     {
@@ -111,7 +111,7 @@ LABEL_8:
       v9[2] = __37__PXMockCPLStatusProvider_setStatus___block_invoke;
       v9[3] = &unk_1E77498F8;
       v9[4] = self;
-      v10 = v4;
+      v10 = statusCopy;
       [(PXMockCPLStatusProvider *)self performChanges:v9];
 
       goto LABEL_8;
@@ -122,9 +122,9 @@ LABEL_8:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = statusCopy;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "%@ Suppressing update that resulted in no change: %@", buf, 0x16u);
   }
 
@@ -153,8 +153,8 @@ uint64_t __37__PXMockCPLStatusProvider_setStatus___block_invoke(uint64_t a1)
 - (double)nextOverrideResumeTimeInterval
 {
   v2 = +[PXCPLStatusSettings sharedInstance];
-  v3 = [v2 resumeOverrideHours];
-  v4 = (3600 * [v3 integerValue]);
+  resumeOverrideHours = [v2 resumeOverrideHours];
+  v4 = (3600 * [resumeOverrideHours integerValue]);
 
   return v4;
 }
@@ -172,16 +172,16 @@ uint64_t __37__PXMockCPLStatusProvider_setStatus___block_invoke(uint64_t a1)
   [(PXMockCPLStatusProvider *)&v4 dealloc];
 }
 
-- (PXMockCPLStatusProvider)initWithUserDefaultsMocks:(BOOL)a3
+- (PXMockCPLStatusProvider)initWithUserDefaultsMocks:(BOOL)mocks
 {
-  v3 = a3;
+  mocksCopy = mocks;
   v14.receiver = self;
   v14.super_class = PXMockCPLStatusProvider;
   v4 = [(PXMockCPLStatusProvider *)&v14 init];
   v5 = v4;
   if (v4)
   {
-    v6 = !v3;
+    v6 = !mocksCopy;
   }
 
   else
@@ -213,8 +213,8 @@ uint64_t __37__PXMockCPLStatusProvider_setStatus___block_invoke(uint64_t a1)
 
 - (PXMockCPLStatusProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXMockCPLStatusProvider.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXMockCPLStatusProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMockCPLStatusProvider.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXMockCPLStatusProvider init]"}];
 
   abort();
 }
@@ -240,13 +240,13 @@ LABEL_13:
 
   v5 = [PXCPLStatus statusWithStringRepresentation:v4];
   v6 = +[PXCPLStatusSettings sharedInstance];
-  v7 = [v6 shouldHideMockStatusWarning];
-  v8 = [v7 BOOLValue];
+  shouldHideMockStatusWarning = [v6 shouldHideMockStatusWarning];
+  bOOLValue = [shouldHideMockStatusWarning BOOLValue];
 
   v9 = +[PXRootSettings sharedInstance];
-  v10 = [v9 canShowInternalUI];
+  canShowInternalUI = [v9 canShowInternalUI];
 
-  if ((v8 & 1) == 0 && v10)
+  if ((bOOLValue & 1) == 0 && canShowInternalUI)
   {
     [v5 setIsMockStatus:1];
     if (v5)
@@ -261,7 +261,7 @@ LABEL_13:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = a1;
+    selfCopy2 = self;
     _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Hiding the mock status warning", &v14, 0xCu);
   }
 
@@ -272,7 +272,7 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 138543618;
-      v15 = a1;
+      selfCopy2 = self;
       v16 = 2114;
       v17 = v4;
       _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "%{public}@ Unrecognized mock: %{public}@)", &v14, 0x16u);
@@ -288,14 +288,14 @@ LABEL_14:
 
 + (id)userDefaultsMockStatusProvider
 {
-  v2 = [[a1 alloc] initWithUserDefaultsMocks:1];
+  v2 = [[self alloc] initWithUserDefaultsMocks:1];
 
   return v2;
 }
 
 + (id)mockStatusProvider
 {
-  v2 = [[a1 alloc] initWithUserDefaultsMocks:0];
+  v2 = [[self alloc] initWithUserDefaultsMocks:0];
 
   return v2;
 }

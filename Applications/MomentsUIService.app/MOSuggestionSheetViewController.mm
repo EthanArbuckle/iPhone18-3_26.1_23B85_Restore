@@ -1,29 +1,29 @@
 @interface MOSuggestionSheetViewController
-- (_TtC16MomentsUIService31MOSuggestionSheetViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MomentsUIService31MOSuggestionSheetViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cancelSheet;
 - (void)handleContentSizeChanged;
 - (void)pressedSegmentControl;
 - (void)shouldDismissOnboarding;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MOSuggestionSheetViewController
 
 - (void)shouldDismissOnboarding
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionSheetViewController.shouldDismissOnboarding()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  MOSuggestionSheetViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  MOSuggestionSheetViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
@@ -32,18 +32,18 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService31MOSuggestionSheetViewController_suggestionCollectionView);
   if (v2)
   {
-    v6 = self;
+    selfCopy = self;
     v3 = v2;
-    v4 = [(MOSuggestionSheetViewController *)v6 traitCollection];
-    v5 = [v4 preferredContentSizeCategory];
+    traitCollection = [(MOSuggestionSheetViewController *)selfCopy traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    (*((swift_isaMask & *v3) + 0x260))(v5);
+    (*((swift_isaMask & *v3) + 0x260))(preferredContentSizeCategory);
   }
 }
 
 - (void)cancelSheet
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionSheetViewController.cancelSheet()();
 }
 
@@ -53,12 +53,12 @@
   v6.super_class = type metadata accessor for MOSuggestionSheetViewController();
   v2 = v6.receiver;
   [(MOSuggestionSheetViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() systemBackgroundColor];
-    [v4 setBackgroundColor:v5];
+    v4 = view;
+    systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
+    [v4 setBackgroundColor:systemBackgroundColor];
   }
 
   else
@@ -67,19 +67,19 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  MOSuggestionSheetViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  MOSuggestionSheetViewController.viewDidAppear(_:)(appear);
 }
 
 - (void)pressedSegmentControl
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionSheetViewController.pressedSegmentControl()();
 }
 
-- (_TtC16MomentsUIService31MOSuggestionSheetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MomentsUIService31MOSuggestionSheetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,6 +1,6 @@
 @interface PKTextInputKeyboardSuppressionPolicyDelegate
-- (BOOL)_shouldSuppressAssistantBarForDelegate:(id)a3;
-- (BOOL)_shouldSuppressKeyboardUIForDelegate:(id)a3 checkSource:(BOOL)a4;
+- (BOOL)_shouldSuppressAssistantBarForDelegate:(id)delegate;
+- (BOOL)_shouldSuppressKeyboardUIForDelegate:(id)delegate checkSource:(BOOL)source;
 - (id)_recognitionLocaleIdentifier;
 - (void)updateKeyboardSuppressionPolicy;
 @end
@@ -9,8 +9,8 @@
 
 - (void)updateKeyboardSuppressionPolicy
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:*MEMORY[0x1E69DE718] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69DE718] object:0];
 }
 
 - (id)_recognitionLocaleIdentifier
@@ -24,7 +24,7 @@
   {
     self->_isQueryingLocaleIdentifier = 1;
     v4 = +[PKTextInputSettings sharedSettings];
-    v5 = [v4 recognitionLocaleIdentifier];
+    recognitionLocaleIdentifier = [v4 recognitionLocaleIdentifier];
     self->_isQueryingLocaleIdentifier = 0;
     if ([(PKTextInputKeyboardSuppressionPolicyDelegate *)self _suppressLocaleIdentifier])
     {
@@ -33,7 +33,7 @@
 
     else
     {
-      v6 = v5;
+      v6 = recognitionLocaleIdentifier;
     }
 
     v2 = v6;
@@ -42,20 +42,20 @@
   return v2;
 }
 
-- (BOOL)_shouldSuppressAssistantBarForDelegate:(id)a3
+- (BOOL)_shouldSuppressAssistantBarForDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (!_os_feature_enabled_impl())
   {
     v8 = +[PKTextInputSettings sharedSettings];
-    v9 = [v8 UCBPaletteEnabled];
+    uCBPaletteEnabled = [v8 UCBPaletteEnabled];
 
-    if (v9 && ![(PKTextInputKeyboardSuppressionPolicyDelegate *)self isFloatingKeyboardVisible])
+    if (uCBPaletteEnabled && ![(PKTextInputKeyboardSuppressionPolicyDelegate *)self isFloatingKeyboardVisible])
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 _responderWindow], v10 = objc_claimAutoreleasedReturnValue(), v11 = +[PKToolPicker isActiveToolPickerVisibleForWindow:](PKToolPicker, "isActiveToolPickerVisibleForWindow:", v10), v10, v11))
+      if ((objc_opt_isKindOfClass() & 1) != 0 && ([delegateCopy _responderWindow], v10 = objc_claimAutoreleasedReturnValue(), v11 = +[PKToolPicker isActiveToolPickerVisibleForWindow:](PKToolPicker, "isActiveToolPickerVisibleForWindow:", v10), v10, v11))
       {
-        v12 = v4;
+        v12 = delegateCopy;
         if ([v12 isStylusDrawingEnabled])
         {
           v13 = [v12 _isHandwritingToolSelected] ^ 1;
@@ -72,7 +72,7 @@
         v13 = 1;
       }
 
-      v17 = [(PKTextInputKeyboardSuppressionPolicyDelegate *)self _shouldSuppressKeyboardUIForDelegate:v4 checkSource:v13];
+      v17 = [(PKTextInputKeyboardSuppressionPolicyDelegate *)self _shouldSuppressKeyboardUIForDelegate:delegateCopy checkSource:v13];
       goto LABEL_21;
     }
 
@@ -81,8 +81,8 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  v5 = [v4 _responderWindow];
-  v6 = [PKToolPicker isActiveToolPickerVisibleForWindow:v5];
+  _responderWindow = [delegateCopy _responderWindow];
+  v6 = [PKToolPicker isActiveToolPickerVisibleForWindow:_responderWindow];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -97,15 +97,15 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v7 = [v4 conformsToProtocol:&unk_1F4840D28];
+    v7 = [delegateCopy conformsToProtocol:&unk_1F4840D28];
   }
 
   if ((v6 & v7) != 1)
   {
 LABEL_14:
-    if (v4)
+    if (delegateCopy)
     {
-      v17 = [PKTextInputElementsFinder shouldDisableInputAssistantForTextInput:v4];
+      v17 = [PKTextInputElementsFinder shouldDisableInputAssistantForTextInput:delegateCopy];
 LABEL_21:
       v16 = v17;
       goto LABEL_22;
@@ -114,30 +114,30 @@ LABEL_21:
     goto LABEL_16;
   }
 
-  v14 = [v4 _responderWindow];
-  v15 = [PKToolPicker activeToolPickerForWindow:v14];
+  _responderWindow2 = [delegateCopy _responderWindow];
+  v15 = [PKToolPicker activeToolPickerForWindow:_responderWindow2];
 
-  v16 = -[PKTextInputKeyboardSuppressionPolicyDelegate _shouldSuppressKeyboardUIForDelegate:checkSource:](self, "_shouldSuppressKeyboardUIForDelegate:checkSource:", v4, [v15 _isHandwritingToolSelected] ^ 1);
+  v16 = -[PKTextInputKeyboardSuppressionPolicyDelegate _shouldSuppressKeyboardUIForDelegate:checkSource:](self, "_shouldSuppressKeyboardUIForDelegate:checkSource:", delegateCopy, [v15 _isHandwritingToolSelected] ^ 1);
 LABEL_22:
 
   return v16;
 }
 
-- (BOOL)_shouldSuppressKeyboardUIForDelegate:(id)a3 checkSource:(BOOL)a4
+- (BOOL)_shouldSuppressKeyboardUIForDelegate:(id)delegate checkSource:(BOOL)source
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PKTextInputKeyboardSuppressionPolicyDelegate *)self _recognitionLocaleIdentifier];
+  sourceCopy = source;
+  delegateCopy = delegate;
+  _recognitionLocaleIdentifier = [(PKTextInputKeyboardSuppressionPolicyDelegate *)self _recognitionLocaleIdentifier];
 
-  if (!v7)
+  if (!_recognitionLocaleIdentifier)
   {
     goto LABEL_7;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 _textInputSource] == 3;
-    if (!v4)
+    v8 = [delegateCopy _textInputSource] == 3;
+    if (!sourceCopy)
     {
       goto LABEL_8;
     }
@@ -146,7 +146,7 @@ LABEL_22:
   else
   {
     v8 = 0;
-    if (!v4)
+    if (!sourceCopy)
     {
       goto LABEL_8;
     }
@@ -161,13 +161,13 @@ LABEL_7:
 
 LABEL_8:
   v16 = 0;
-  v10 = [PKTextInputUtilities isResponderSupportedTextInput:v6 outTextInputTraits:&v16];
+  v10 = [PKTextInputUtilities isResponderSupportedTextInput:delegateCopy outTextInputTraits:&v16];
   v11 = v16;
-  v12 = [v11 textContentType];
-  if (v12)
+  textContentType = [v11 textContentType];
+  if (textContentType)
   {
-    v13 = [v11 textContentType];
-    v14 = [v13 isEqualToString:*MEMORY[0x1E69DE4A8]] ^ 1;
+    textContentType2 = [v11 textContentType];
+    v14 = [textContentType2 isEqualToString:*MEMORY[0x1E69DE4A8]] ^ 1;
   }
 
   else

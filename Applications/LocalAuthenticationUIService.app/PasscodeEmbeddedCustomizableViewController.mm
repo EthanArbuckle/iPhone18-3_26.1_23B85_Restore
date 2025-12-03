@@ -1,19 +1,19 @@
 @interface PasscodeEmbeddedCustomizableViewController
 - (BOOL)isVerifyingPasscode;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (PasscodeEmbeddedCustomizableViewController)initWithPasscodeLength:(int64_t)a3 alphanumeric:(BOOL)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (PasscodeEmbeddedCustomizableViewController)initWithPasscodeLength:(int64_t)length alphanumeric:(BOOL)alphanumeric;
 - (PasscodeEmbeddedViewControllerDelegate)delegate;
 - (id)alphanumericFieldPlaceholder;
-- (void)_verifyTextField:(id)a3;
-- (void)setIsVerifyingPasscode:(BOOL)a3;
+- (void)_verifyTextField:(id)field;
+- (void)setIsVerifyingPasscode:(BOOL)passcode;
 @end
 
 @implementation PasscodeEmbeddedCustomizableViewController
 
-- (PasscodeEmbeddedCustomizableViewController)initWithPasscodeLength:(int64_t)a3 alphanumeric:(BOOL)a4
+- (PasscodeEmbeddedCustomizableViewController)initWithPasscodeLength:(int64_t)length alphanumeric:(BOOL)alphanumeric
 {
-  v4 = a4;
+  alphanumericCopy = alphanumeric;
   v11.receiver = self;
   v11.super_class = PasscodeEmbeddedCustomizableViewController;
   v6 = [(PasscodeEmbeddedCustomizableViewController *)&v11 init];
@@ -21,23 +21,23 @@
   if (v6)
   {
     v6->_passcodeVerificationLock._os_unfair_lock_opaque = 0;
-    if (a3 < 1)
+    if (length < 1)
     {
-      v8 = -1;
+      lengthCopy = -1;
     }
 
     else
     {
-      v8 = a3;
+      lengthCopy = length;
     }
 
-    v6->_passcodeLength = v8;
-    if (v4)
+    v6->_passcodeLength = lengthCopy;
+    if (alphanumericCopy)
     {
       v6->_hasAlphanumericPasscode = 1;
     }
 
-    else if (a3 <= 0)
+    else if (length <= 0)
     {
       v9 = +[UIDevice currentDevice];
       v7->_hasAlphanumericPasscode = [v9 userInterfaceIdiom] != 1 || v7->_passcodeLength > 6;
@@ -45,7 +45,7 @@
 
     else
     {
-      v6->_hasAlphanumericPasscode = a3 > 6;
+      v6->_hasAlphanumericPasscode = length > 6;
     }
   }
 
@@ -56,13 +56,13 @@
 {
   v4 = [NSAttributedString alloc];
   placeholderText = self->_placeholderText;
-  v6 = placeholderText;
+  string = placeholderText;
   if (!placeholderText)
   {
     v12.receiver = self;
     v12.super_class = PasscodeEmbeddedCustomizableViewController;
-    v2 = [(PasscodeEmbeddedViewController *)&v12 alphanumericFieldPlaceholder];
-    v6 = [v2 string];
+    alphanumericFieldPlaceholder = [(PasscodeEmbeddedViewController *)&v12 alphanumericFieldPlaceholder];
+    string = [alphanumericFieldPlaceholder string];
   }
 
   v13[0] = NSParagraphStyleAttributeName;
@@ -73,7 +73,7 @@
   v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   v14[1] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
-  v10 = [v4 initWithString:v6 attributes:v9];
+  v10 = [v4 initWithString:string attributes:v9];
 
   if (!placeholderText)
   {
@@ -82,17 +82,17 @@
   return v10;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(PasscodeEmbeddedViewController *)self passcodeField];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  passcodeField = [(PasscodeEmbeddedViewController *)self passcodeField];
 
-  if (v11 != v9)
+  if (passcodeField != fieldCopy)
   {
-    [NSException raise:NSInvalidArgumentException format:@"Received delegate message for invalid text field (%@)", v9];
+    [NSException raise:NSInvalidArgumentException format:@"Received delegate message for invalid text field (%@)", fieldCopy];
     goto LABEL_10;
   }
 
@@ -101,13 +101,13 @@
     goto LABEL_10;
   }
 
-  v12 = [v9 text];
-  v13 = [v12 length];
+  text = [fieldCopy text];
+  v13 = [text length];
   if (v13 >= [(PasscodeEmbeddedCustomizableViewController *)self passcodeLength])
   {
-    v14 = [(PasscodeEmbeddedCustomizableViewController *)self passcodeLength];
+    passcodeLength = [(PasscodeEmbeddedCustomizableViewController *)self passcodeLength];
 
-    if (v14)
+    if (passcodeLength)
     {
       goto LABEL_8;
     }
@@ -117,18 +117,18 @@
   {
   }
 
-  v15 = [v9 text];
-  v16 = [v15 stringByReplacingCharactersInRange:location withString:{length, v10}];
-  [v9 setText:v16];
+  text2 = [fieldCopy text];
+  v16 = [text2 stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
+  [fieldCopy setText:v16];
 
 LABEL_8:
-  v17 = [v9 text];
-  v18 = [v17 length];
-  v19 = [(PasscodeEmbeddedCustomizableViewController *)self passcodeLength];
+  text3 = [fieldCopy text];
+  v18 = [text3 length];
+  passcodeLength2 = [(PasscodeEmbeddedCustomizableViewController *)self passcodeLength];
 
-  if (v18 >= v19)
+  if (v18 >= passcodeLength2)
   {
-    [(PasscodeEmbeddedCustomizableViewController *)self _verifyTextField:v9];
+    [(PasscodeEmbeddedCustomizableViewController *)self _verifyTextField:fieldCopy];
   }
 
 LABEL_10:
@@ -136,19 +136,19 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(PasscodeEmbeddedViewController *)self passcodeField];
+  returnCopy = return;
+  passcodeField = [(PasscodeEmbeddedViewController *)self passcodeField];
 
-  if (v5 == v4)
+  if (passcodeField == returnCopy)
   {
-    [(PasscodeEmbeddedCustomizableViewController *)self _verifyTextField:v4];
+    [(PasscodeEmbeddedCustomizableViewController *)self _verifyTextField:returnCopy];
   }
 
   else
   {
-    [NSException raise:NSInvalidArgumentException format:@"Received delegate message for invalid text field (%@)", v4];
+    [NSException raise:NSInvalidArgumentException format:@"Received delegate message for invalid text field (%@)", returnCopy];
   }
 
   return 0;
@@ -162,17 +162,17 @@ LABEL_10:
   return isVerifyingPasscode;
 }
 
-- (void)setIsVerifyingPasscode:(BOOL)a3
+- (void)setIsVerifyingPasscode:(BOOL)passcode
 {
   os_unfair_lock_lock(&self->_passcodeVerificationLock);
-  self->_isVerifyingPasscode = a3;
+  self->_isVerifyingPasscode = passcode;
 
   os_unfair_lock_unlock(&self->_passcodeVerificationLock);
 }
 
-- (void)_verifyTextField:(id)a3
+- (void)_verifyTextField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   if ([(PasscodeEmbeddedCustomizableViewController *)self isVerifyingPasscode])
   {
     v5 = LALogForCategory();
@@ -187,14 +187,14 @@ LABEL_10:
     [(PasscodeEmbeddedCustomizableViewController *)self setIsVerifyingPasscode:1];
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v4 text];
+    text = [fieldCopy text];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = __63__PasscodeEmbeddedCustomizableViewController__verifyTextField___block_invoke;
     v8[3] = &unk_1000AA968;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
-    [WeakRetained verifyPasscode:v7 reply:v8];
+    v9 = fieldCopy;
+    [WeakRetained verifyPasscode:text reply:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);

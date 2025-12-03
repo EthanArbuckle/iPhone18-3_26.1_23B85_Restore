@@ -1,52 +1,52 @@
 @interface SSBookDownload
-- (BOOL)addAsset:(id)a3 forType:(id)a4;
+- (BOOL)addAsset:(id)asset forType:(id)type;
 - (BOOL)isBackgroundNetworkingUserInitiated;
-- (BOOL)isEligibleForRestore:(id *)a3;
-- (BOOL)removeAsset:(id)a3;
-- (SSBookDownload)initWithDownloadStatus:(id)a3;
+- (BOOL)isEligibleForRestore:(id *)restore;
+- (BOOL)removeAsset:(id)asset;
+- (SSBookDownload)initWithDownloadStatus:(id)status;
 - (double)estimatedSecondsRemaining;
 - (double)percentComplete;
-- (id)assetsForType:(id)a3;
+- (id)assetsForType:(id)type;
 - (id)backgroundNetworkingJobGroupName;
 - (id)downloadPhaseIdentifier;
 - (id)downloadPolicy;
 - (id)metadata;
 - (id)networkConstraints;
 - (id)status;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 - (int64_t)bytesDownloaded;
 - (int64_t)bytesTotal;
 - (int64_t)downloadSizeLimit;
 - (void)pause;
-- (void)prioritizeAboveDownload:(id)a3 completionBlock:(id)a4;
+- (void)prioritizeAboveDownload:(id)download completionBlock:(id)block;
 - (void)restart;
 - (void)resume;
-- (void)setBackgroundNetworkingJobGroupName:(id)a3;
-- (void)setBackgroundNetworkingUserInitiated:(BOOL)a3;
-- (void)setDownloadHandler:(id)a3 completionBlock:(id)a4;
-- (void)setDownloadPolicy:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setNetworkConstraints:(id)a3;
-- (void)setStatus:(id)a3;
-- (void)setValuesWithStoreDownloadMetadata:(id)a3;
+- (void)setBackgroundNetworkingJobGroupName:(id)name;
+- (void)setBackgroundNetworkingUserInitiated:(BOOL)initiated;
+- (void)setDownloadHandler:(id)handler completionBlock:(id)block;
+- (void)setDownloadPolicy:(id)policy;
+- (void)setMetadata:(id)metadata;
+- (void)setNetworkConstraints:(id)constraints;
+- (void)setStatus:(id)status;
+- (void)setValuesWithStoreDownloadMetadata:(id)metadata;
 @end
 
 @implementation SSBookDownload
 
-- (SSBookDownload)initWithDownloadStatus:(id)a3
+- (SSBookDownload)initWithDownloadStatus:(id)status
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 downloadID];
-  v6 = [v5 numberFromHexDigits];
-  v7 = [v6 longLongValue];
+  statusCopy = status;
+  downloadID = [statusCopy downloadID];
+  numberFromHexDigits = [downloadID numberFromHexDigits];
+  longLongValue = [numberFromHexDigits longLongValue];
 
   v29.receiver = self;
   v29.super_class = SSBookDownload;
-  v8 = [(SSEntity *)&v29 _initWithPersistentIdentifier:v7];
+  v8 = [(SSEntity *)&v29 _initWithPersistentIdentifier:longLongValue];
   if (v8)
   {
-    v9 = [v4 copy];
+    v9 = [statusCopy copy];
     downloadStatus = v8->_downloadStatus;
     v8->_downloadStatus = v9;
 
@@ -54,9 +54,9 @@
     v12 = SSVWeakLinkedClassForString(&cfstr_Bldownloadqueu.isa, v11);
     if (v12)
     {
-      v13 = [v12 sharedInstance];
+      sharedInstance = [v12 sharedInstance];
       downloadQueue = v8->_downloadQueue;
-      v8->_downloadQueue = v13;
+      v8->_downloadQueue = sharedInstance;
 LABEL_15:
 
       goto LABEL_16;
@@ -68,19 +68,19 @@ LABEL_15:
       downloadQueue = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [downloadQueue shouldLog];
+    shouldLog = [downloadQueue shouldLog];
     if ([downloadQueue shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [downloadQueue OSLogObject];
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject = [downloadQueue OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v16 &= 2u;
     }
@@ -99,9 +99,9 @@ LABEL_15:
         goto LABEL_15;
       }
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v30, v28}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v20 encoding:{4, &v30, v28}];
       free(v20);
-      SSFileLog(downloadQueue, @"%@", v21, v22, v23, v24, v25, v26, v17);
+      SSFileLog(downloadQueue, @"%@", v21, v22, v23, v24, v25, v26, oSLogObject);
     }
 
     goto LABEL_15;
@@ -117,13 +117,13 @@ LABEL_16:
   downloadPhaseIdentifierOverride = self->_downloadPhaseIdentifierOverride;
   if (!downloadPhaseIdentifierOverride)
   {
-    v3 = [(SSBookDownloadStatus *)self->_downloadStatus downloadPhase];
+    downloadPhase = [(SSBookDownloadStatus *)self->_downloadStatus downloadPhase];
     v4 = 0;
-    if (v3 <= 3)
+    if (downloadPhase <= 3)
     {
-      if (v3 > 1)
+      if (downloadPhase > 1)
       {
-        if (v3 == 2)
+        if (downloadPhase == 2)
         {
           v5 = SSDownloadPhaseDownloading;
         }
@@ -134,9 +134,9 @@ LABEL_16:
         }
       }
 
-      else if (v3)
+      else if (downloadPhase)
       {
-        if (v3 != 1)
+        if (downloadPhase != 1)
         {
           goto LABEL_23;
         }
@@ -150,9 +150,9 @@ LABEL_16:
       }
     }
 
-    else if (v3 <= 5)
+    else if (downloadPhase <= 5)
     {
-      if (v3 == 4)
+      if (downloadPhase == 4)
       {
         v5 = SSDownloadPhaseCanceled;
       }
@@ -165,7 +165,7 @@ LABEL_16:
 
     else
     {
-      switch(v3)
+      switch(downloadPhase)
       {
         case 6:
           v5 = SSDownloadPhaseProcessing;
@@ -199,19 +199,19 @@ LABEL_23:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v5 &= 2u;
   }
@@ -224,8 +224,8 @@ LABEL_23:
   v7 = objc_opt_class();
   downloadStatus = self->_downloadStatus;
   v9 = v7;
-  v10 = [(SSBookDownloadStatus *)downloadStatus percentComplete];
-  [v10 doubleValue];
+  percentComplete = [(SSBookDownloadStatus *)downloadStatus percentComplete];
+  [percentComplete doubleValue];
   v24 = 138543618;
   v25 = v7;
   v26 = 2048;
@@ -235,14 +235,14 @@ LABEL_23:
 
   if (v12)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v24, v23}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v12 encoding:{4, &v24, v23}];
     free(v12);
-    SSFileLog(v3, @"%@", v13, v14, v15, v16, v17, v18, v6);
+    SSFileLog(v3, @"%@", v13, v14, v15, v16, v17, v18, oSLogObject);
 LABEL_11:
   }
 
-  v19 = [(SSBookDownloadStatus *)self->_downloadStatus percentComplete];
-  [v19 doubleValue];
+  percentComplete2 = [(SSBookDownloadStatus *)self->_downloadStatus percentComplete];
+  [percentComplete2 doubleValue];
   v21 = v20;
 
   return v21;
@@ -251,93 +251,93 @@ LABEL_11:
 - (void)pause
 {
   downloadQueue = self->_downloadQueue;
-  v3 = [(SSBookDownload *)self downloadID];
-  [(SSBookDownloadQueue *)downloadQueue pauseDownloadWithID:v3 withCompletion:0];
+  downloadID = [(SSBookDownload *)self downloadID];
+  [(SSBookDownloadQueue *)downloadQueue pauseDownloadWithID:downloadID withCompletion:0];
 }
 
 - (void)resume
 {
   downloadQueue = self->_downloadQueue;
-  v3 = [(SSBookDownload *)self downloadID];
-  [(SSBookDownloadQueue *)downloadQueue resumeDownloadWithID:v3 withCompletion:0];
+  downloadID = [(SSBookDownload *)self downloadID];
+  [(SSBookDownloadQueue *)downloadQueue resumeDownloadWithID:downloadID withCompletion:0];
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"7"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"7"])
   {
-    v5 = [(SSBookDownloadStatus *)self->_downloadStatus storeID];
+    storeID = [(SSBookDownloadStatus *)self->_downloadStatus storeID];
 LABEL_10:
-    v8 = v5;
+    v8 = storeID;
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"Q"])
+  if ([propertyCopy isEqualToString:@"Q"])
   {
-    v5 = [(SSBookDownloadStatus *)self->_downloadStatus downloadID];
+    storeID = [(SSBookDownloadStatus *)self->_downloadStatus downloadID];
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"V"])
+  if ([propertyCopy isEqualToString:@"V"])
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(SSBookDownloadStatus *)self->_downloadStatus isRestore];
+    isRestore = [(SSBookDownloadStatus *)self->_downloadStatus isRestore];
 LABEL_9:
-    v5 = [v6 numberWithBool:v7];
+    storeID = [v6 numberWithBool:isRestore];
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"M"])
+  if ([propertyCopy isEqualToString:@"M"])
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(SSBookDownloadStatus *)self->_downloadStatus isPurchase];
+    isRestore = [(SSBookDownloadStatus *)self->_downloadStatus isPurchase];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"c"])
+  if ([propertyCopy isEqualToString:@"c"])
   {
     v8 = @"com.apple.bookassetd";
   }
 
   else
   {
-    if ([v4 isEqualToString:@"1"])
+    if ([propertyCopy isEqualToString:@"1"])
     {
-      v5 = @"ebook";
+      storeID = @"ebook";
       goto LABEL_10;
     }
 
-    if (([v4 isEqualToString:@"11"] & 1) == 0)
+    if (([propertyCopy isEqualToString:@"11"] & 1) == 0)
     {
-      if ([v4 isEqualToString:@"d"])
+      if ([propertyCopy isEqualToString:@"d"])
       {
-        v5 = [(SSBookDownloadStatus *)self->_downloadStatus artistName];
+        storeID = [(SSBookDownloadStatus *)self->_downloadStatus artistName];
         goto LABEL_10;
       }
 
-      if ([v4 isEqualToString:@"i"])
+      if ([propertyCopy isEqualToString:@"i"])
       {
-        v5 = [(SSBookDownloadStatus *)self->_downloadStatus genre];
+        storeID = [(SSBookDownloadStatus *)self->_downloadStatus genre];
         goto LABEL_10;
       }
 
-      if ([v4 isEqualToString:@"2"])
+      if ([propertyCopy isEqualToString:@"2"])
       {
-        v5 = [(SSBookDownloadStatus *)self->_downloadStatus title];
+        storeID = [(SSBookDownloadStatus *)self->_downloadStatus title];
         goto LABEL_10;
       }
 
-      if ([v4 isEqualToString:@"8"])
+      if ([propertyCopy isEqualToString:@"8"])
       {
-        v5 = [(SSBookDownloadStatus *)self->_downloadStatus purchaseDate];
+        storeID = [(SSBookDownloadStatus *)self->_downloadStatus purchaseDate];
         goto LABEL_10;
       }
 
-      if ([v4 isEqualToString:@"t"])
+      if ([propertyCopy isEqualToString:@"t"])
       {
         v6 = MEMORY[0x1E696AD98];
-        v7 = [(SSBookDownloadStatus *)self->_downloadStatus isSample];
+        isRestore = [(SSBookDownloadStatus *)self->_downloadStatus isSample];
         goto LABEL_9;
       }
     }
@@ -352,24 +352,24 @@ LABEL_11:
 
 - (int64_t)bytesDownloaded
 {
-  v2 = [(SSBookDownloadStatus *)self->_downloadStatus transferBytesWritten];
-  v3 = [v2 longLongValue];
+  transferBytesWritten = [(SSBookDownloadStatus *)self->_downloadStatus transferBytesWritten];
+  longLongValue = [transferBytesWritten longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (int64_t)bytesTotal
 {
-  v2 = [(SSBookDownloadStatus *)self->_downloadStatus transferBytesExpected];
-  v3 = [v2 longLongValue];
+  transferBytesExpected = [(SSBookDownloadStatus *)self->_downloadStatus transferBytesExpected];
+  longLongValue = [transferBytesExpected longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (double)estimatedSecondsRemaining
 {
-  v2 = [(SSBookDownloadStatus *)self->_downloadStatus estimatedTimeRemaining];
-  [v2 doubleValue];
+  estimatedTimeRemaining = [(SSBookDownloadStatus *)self->_downloadStatus estimatedTimeRemaining];
+  [estimatedTimeRemaining doubleValue];
   v4 = v3;
 
   return v4;
@@ -384,19 +384,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -413,9 +413,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -431,19 +431,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -460,16 +460,16 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
   return 0;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -478,19 +478,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -507,14 +507,14 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setNetworkConstraints:(id)a3
+- (void)setNetworkConstraints:(id)constraints
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -523,19 +523,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -552,14 +552,14 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -568,19 +568,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -597,9 +597,9 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
@@ -613,19 +613,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -642,16 +642,16 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
   return 0;
 }
 
-- (id)assetsForType:(id)a3
+- (id)assetsForType:(id)type
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -660,19 +660,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -689,37 +689,37 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 
   return 0;
 }
 
-- (BOOL)addAsset:(id)a3 forType:(id)a4
+- (BOOL)addAsset:(id)asset forType:(id)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [SSLogConfig sharedStoreServicesConfig:a3];
+  v5 = [SSLogConfig sharedStoreServicesConfig:asset];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 &= 2u;
   }
@@ -736,9 +736,9 @@ LABEL_11:
 
   if (v9)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v18, v17}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v18, v17}];
     free(v9);
-    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, v8);
+    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
 LABEL_11:
   }
 
@@ -754,19 +754,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -783,9 +783,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -801,19 +801,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -830,9 +830,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -848,19 +848,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -877,9 +877,9 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
@@ -895,19 +895,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -924,16 +924,16 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v16, v15}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 
   return 0;
 }
 
-- (BOOL)isEligibleForRestore:(id *)a3
+- (BOOL)isEligibleForRestore:(id *)restore
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -942,19 +942,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -971,37 +971,37 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 
   return 0;
 }
 
-- (void)prioritizeAboveDownload:(id)a3 completionBlock:(id)a4
+- (void)prioritizeAboveDownload:(id)download completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [SSLogConfig sharedStoreServicesConfig:a3];
+  v5 = [SSLogConfig sharedStoreServicesConfig:download];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 &= 2u;
   }
@@ -1018,14 +1018,14 @@ LABEL_11:
 
   if (v9)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v17, v16}];
     free(v9);
-    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, v8);
+    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
 LABEL_11:
   }
 }
 
-- (BOOL)removeAsset:(id)a3
+- (BOOL)removeAsset:(id)asset
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1034,19 +1034,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -1063,9 +1063,9 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v17, v16}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 
@@ -1081,19 +1081,19 @@ LABEL_11:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v5 &= 2u;
   }
@@ -1110,14 +1110,14 @@ LABEL_11:
 
   if (v7)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v15, v14}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:{4, &v15, v14}];
     free(v7);
-    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, v6);
+    SSFileLog(v3, @"%@", v8, v9, v10, v11, v12, v13, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setBackgroundNetworkingJobGroupName:(id)a3
+- (void)setBackgroundNetworkingJobGroupName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1126,19 +1126,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -1155,14 +1155,14 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setBackgroundNetworkingUserInitiated:(BOOL)a3
+- (void)setBackgroundNetworkingUserInitiated:(BOOL)initiated
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1171,19 +1171,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -1200,35 +1200,35 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setDownloadHandler:(id)a3 completionBlock:(id)a4
+- (void)setDownloadHandler:(id)handler completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [SSLogConfig sharedStoreServicesConfig:a3];
+  v5 = [SSLogConfig sharedStoreServicesConfig:handler];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 &= 2u;
   }
@@ -1245,14 +1245,14 @@ LABEL_11:
 
   if (v9)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v17, v16}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v17, v16}];
     free(v9);
-    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, v8);
+    SSFileLog(v5, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setDownloadPolicy:(id)a3
+- (void)setDownloadPolicy:(id)policy
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1261,19 +1261,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -1290,14 +1290,14 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }
 
-- (void)setValuesWithStoreDownloadMetadata:(id)a3
+- (void)setValuesWithStoreDownloadMetadata:(id)metadata
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1306,19 +1306,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -1335,9 +1335,9 @@ LABEL_11:
 
   if (v8)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v16, v15}];
     free(v8);
-    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, v7);
+    SSFileLog(v4, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 }

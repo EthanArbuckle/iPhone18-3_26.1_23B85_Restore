@@ -1,23 +1,23 @@
 @interface EMMessageHeaders
-- (EMMessageHeaders)initWithCoder:(id)a3;
-- (EMMessageHeaders)initWithHeaders:(id)a3;
+- (EMMessageHeaders)initWithCoder:(id)coder;
+- (EMMessageHeaders)initWithHeaders:(id)headers;
 - (NSArray)headerKeys;
-- (id)firstHeaderForKey:(id)a3;
-- (id)headersForKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)firstHeaderForKey:(id)key;
+- (id)headersForKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMMessageHeaders
 
-- (EMMessageHeaders)initWithHeaders:(id)a3
+- (EMMessageHeaders)initWithHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   v9.receiver = self;
   v9.super_class = EMMessageHeaders;
   v5 = [(EMMessageHeaders *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [headersCopy copy];
     headers = v5->_headers;
     v5->_headers = v6;
   }
@@ -27,11 +27,11 @@
 
 - (NSArray)headerKeys
 {
-  v2 = [(NSDictionary *)self->_headers allKeys];
-  v3 = v2;
-  if (v2)
+  allKeys = [(NSDictionary *)self->_headers allKeys];
+  v3 = allKeys;
+  if (allKeys)
   {
-    v4 = v2;
+    v4 = allKeys;
   }
 
   else
@@ -44,39 +44,39 @@
   return v4;
 }
 
-- (id)headersForKey:(id)a3
+- (id)headersForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_headers objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_headers objectForKeyedSubscript:key];
 
   return v3;
 }
 
-- (id)firstHeaderForKey:(id)a3
+- (id)firstHeaderForKey:(id)key
 {
-  v3 = [(EMMessageHeaders *)self headersForKey:a3];
-  v4 = [v3 firstObject];
+  v3 = [(EMMessageHeaders *)self headersForKey:key];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (EMMessageHeaders)initWithCoder:(id)a3
+- (EMMessageHeaders)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v5 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"EFPropertyKey_headers"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"EFPropertyKey_headers"];
 
   v10 = [(EMMessageHeaders *)self initWithHeaders:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(EMMessageHeaders *)self headers];
-  [v5 encodeObject:v4 forKey:@"EFPropertyKey_headers"];
+  coderCopy = coder;
+  headers = [(EMMessageHeaders *)self headers];
+  [coderCopy encodeObject:headers forKey:@"EFPropertyKey_headers"];
 }
 
 @end

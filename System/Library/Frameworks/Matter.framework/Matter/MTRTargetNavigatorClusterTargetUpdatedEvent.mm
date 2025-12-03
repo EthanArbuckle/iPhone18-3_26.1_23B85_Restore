@@ -1,6 +1,6 @@
 @interface MTRTargetNavigatorClusterTargetUpdatedEvent
 - (MTRTargetNavigatorClusterTargetUpdatedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,32 +13,32 @@
   v2 = [(MTRTargetNavigatorClusterTargetUpdatedEvent *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     targetList = v2->_targetList;
-    v2->_targetList = v3;
+    v2->_targetList = array;
 
     currentTarget = v2->_currentTarget;
     v2->_currentTarget = &unk_284C3E588;
 
-    v6 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     data = v2->_data;
-    v2->_data = v6;
+    v2->_data = data;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTargetNavigatorClusterTargetUpdatedEvent);
-  v5 = [(MTRTargetNavigatorClusterTargetUpdatedEvent *)self targetList];
-  [(MTRTargetNavigatorClusterTargetUpdatedEvent *)v4 setTargetList:v5];
+  targetList = [(MTRTargetNavigatorClusterTargetUpdatedEvent *)self targetList];
+  [(MTRTargetNavigatorClusterTargetUpdatedEvent *)v4 setTargetList:targetList];
 
-  v6 = [(MTRTargetNavigatorClusterTargetUpdatedEvent *)self currentTarget];
-  [(MTRTargetNavigatorClusterTargetUpdatedEvent *)v4 setCurrentTarget:v6];
+  currentTarget = [(MTRTargetNavigatorClusterTargetUpdatedEvent *)self currentTarget];
+  [(MTRTargetNavigatorClusterTargetUpdatedEvent *)v4 setCurrentTarget:currentTarget];
 
-  v7 = [(MTRTargetNavigatorClusterTargetUpdatedEvent *)self data];
-  [(MTRTargetNavigatorClusterTargetUpdatedEvent *)v4 setData:v7];
+  data = [(MTRTargetNavigatorClusterTargetUpdatedEvent *)self data];
+  [(MTRTargetNavigatorClusterTargetUpdatedEvent *)v4 setData:data];
 
   return v4;
 }

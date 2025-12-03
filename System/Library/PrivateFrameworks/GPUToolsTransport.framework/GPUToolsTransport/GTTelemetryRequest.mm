@@ -1,6 +1,6 @@
 @interface GTTelemetryRequest
 - (GTTelemetryRequest)init;
-- (GTTelemetryRequest)initWithCoder:(id)a3;
+- (GTTelemetryRequest)initWithCoder:(id)coder;
 - (id)initNoRequestID;
 @end
 
@@ -35,15 +35,15 @@
   return v3;
 }
 
-- (GTTelemetryRequest)initWithCoder:(id)a3
+- (GTTelemetryRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = GTTelemetryRequest;
   v5 = [(GTTelemetryRequest *)&v8 init];
   if (v5)
   {
-    v5->_requestID = [v4 decodeInt64ForKey:@"requestID"];
+    v5->_requestID = [coderCopy decodeInt64ForKey:@"requestID"];
     v6 = v5;
   }
 

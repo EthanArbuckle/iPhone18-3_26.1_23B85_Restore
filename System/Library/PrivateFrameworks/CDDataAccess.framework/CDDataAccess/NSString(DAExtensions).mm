@@ -27,32 +27,32 @@
 
 - (id)da_removeSlashIfNeeded
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = [a1 substringToIndex:{objc_msgSend(a1, "length") - 1}];
+    selfCopy = [self substringToIndex:{objc_msgSend(self, "length") - 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)da_appendSlashIfNeeded
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [a1 stringByAppendingString:@"/"];
+    selfCopy = [self stringByAppendingString:@"/"];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (__CFString)da_stringByURLEscapingPathComponent
@@ -76,7 +76,7 @@
 
 - (id)da_trimWhiteSpace
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   CFStringTrimWhitespace(v1);
   v2 = [(__CFString *)v1 copy];
 
@@ -97,8 +97,8 @@
 
 + (id)da_new64ByteGUID
 {
-  v0 = [MEMORY[0x277CCACA8] da_newGUID];
-  v1 = [v0 mutableCopy];
+  da_newGUID = [MEMORY[0x277CCACA8] da_newGUID];
+  v1 = [da_newGUID mutableCopy];
   [v1 replaceOccurrencesOfString:@"-" withString:&stru_2854B2770 options:0 range:{0, objc_msgSend(v1, "length")}];
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%%0.%lud", 64 - objc_msgSend(v1, "length")];
   v3 = [v1 stringByAppendingFormat:v2, 0];

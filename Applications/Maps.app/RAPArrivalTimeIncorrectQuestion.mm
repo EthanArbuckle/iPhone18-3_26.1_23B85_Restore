@@ -1,64 +1,64 @@
 @interface RAPArrivalTimeIncorrectQuestion
 - (NSString)localizedTitle;
-- (RAPArrivalTimeIncorrectQuestion)initWithReport:(id)a3 parentQuestion:(id)a4;
-- (void)_fillSubmissionParameters:(id)a3;
+- (RAPArrivalTimeIncorrectQuestion)initWithReport:(id)report parentQuestion:(id)question;
+- (void)_fillSubmissionParameters:(id)parameters;
 @end
 
 @implementation RAPArrivalTimeIncorrectQuestion
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 commonContext];
+  parametersCopy = parameters;
+  commonContext = [parametersCopy commonContext];
 
-  if (!v5)
+  if (!commonContext)
   {
     v6 = objc_alloc_init(GEORPFeedbackCommonContext);
-    [v4 setCommonContext:v6];
+    [parametersCopy setCommonContext:v6];
   }
 
-  v7 = [v4 commonContext];
-  [v7 addUserPath:45];
+  commonContext2 = [parametersCopy commonContext];
+  [commonContext2 addUserPath:45];
 
-  [v4 setType:8];
-  v8 = [v4 details];
+  [parametersCopy setType:8];
+  details = [parametersCopy details];
 
-  if (!v8)
+  if (!details)
   {
     v9 = objc_alloc_init(GEORPFeedbackDetails);
-    [v4 setDetails:v9];
+    [parametersCopy setDetails:v9];
   }
 
-  v10 = [v4 details];
-  v11 = [v10 directionsFeedback];
+  details2 = [parametersCopy details];
+  directionsFeedback = [details2 directionsFeedback];
 
-  if (!v11)
+  if (!directionsFeedback)
   {
     v12 = objc_alloc_init(GEORPDirectionsFeedback);
-    v13 = [v4 details];
-    [v13 setDirectionsFeedback:v12];
+    details3 = [parametersCopy details];
+    [details3 setDirectionsFeedback:v12];
   }
 
-  v14 = [v4 details];
-  v15 = [v14 directionsFeedback];
-  [v15 setCorrectionType:5];
+  details4 = [parametersCopy details];
+  directionsFeedback2 = [details4 directionsFeedback];
+  [directionsFeedback2 setCorrectionType:5];
 
   v16.receiver = self;
   v16.super_class = RAPArrivalTimeIncorrectQuestion;
-  [(RAPCommentQuestion *)&v16 _fillSubmissionParameters:v4];
+  [(RAPCommentQuestion *)&v16 _fillSubmissionParameters:parametersCopy];
 }
 
-- (RAPArrivalTimeIncorrectQuestion)initWithReport:(id)a3 parentQuestion:(id)a4
+- (RAPArrivalTimeIncorrectQuestion)initWithReport:(id)report parentQuestion:(id)question
 {
-  v6 = a4;
-  v7 = a3;
+  questionCopy = question;
+  reportCopy = report;
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"Information [Report a Problem]" value:@"localized string not found" table:0];
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"Tell us more about how the arrival time was incorrect [Report an Issue]" value:@"localized string not found" table:0];
   v14.receiver = self;
   v14.super_class = RAPArrivalTimeIncorrectQuestion;
-  v12 = [(RAPCommentQuestion *)&v14 initWithReport:v7 parentQuestion:v6 title:v9 placeholderText:v11 emphasis:3];
+  v12 = [(RAPCommentQuestion *)&v14 initWithReport:reportCopy parentQuestion:questionCopy title:v9 placeholderText:v11 emphasis:3];
 
   return v12;
 }

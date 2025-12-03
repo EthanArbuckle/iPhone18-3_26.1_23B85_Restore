@@ -9,125 +9,125 @@
 - (BOOL)isLocallyRecognizingInDictationMode;
 - (BOOL)isStopped;
 - (id)_currentSpeechCaptureSource;
-- (id)_initWithInstanceContext:(id)a3;
+- (id)_initWithInstanceContext:(id)context;
 - (id)_interactiveLocalSpeechRecognizer;
 - (id)_recordingInfo;
 - (id)_speechCompressor;
 - (id)_speechRecorder;
-- (id)_startFixedPriorityCaptureForMode:(int64_t)a3 options:(id)a4 sessionUUID:(id)a5;
+- (id)_startFixedPriorityCaptureForMode:(int64_t)mode options:(id)options sessionUUID:(id)d;
 - (id)_volumeService;
 - (id)getRecordingInfo;
-- (id)startSpeechCaptureForDictationWithOptions:(id)a3 sessionUUID:(id)a4 secureOfflineOnly:(BOOL)a5;
-- (id)startSpeechCaptureForRequestWithOptions:(id)a3 sessionUUID:(id)a4 language:(id)a5;
-- (void)_addRecordStoppedCompletion:(id)a3;
-- (void)_cancelRecordingIfNeededAndEndSessionWhenIdleWithCompletion:(id)a3;
-- (void)_cancelRecordingWithError:(id)a3 suppressAlert:(BOOL)a4;
+- (id)startSpeechCaptureForDictationWithOptions:(id)options sessionUUID:(id)d secureOfflineOnly:(BOOL)only;
+- (id)startSpeechCaptureForRequestWithOptions:(id)options sessionUUID:(id)d language:(id)language;
+- (void)_addRecordStoppedCompletion:(id)completion;
+- (void)_cancelRecordingIfNeededAndEndSessionWhenIdleWithCompletion:(id)completion;
+- (void)_cancelRecordingWithError:(id)error suppressAlert:(BOOL)alert;
 - (void)_cleanUpDelegateInfo;
-- (void)_fetchSmartSiriVolumeForType:(unint64_t)a3 forceFetch:(BOOL)a4;
-- (void)_getAdjustedSiriOutputVolumeLevelForAudioRoute:(id)a3 withCompletion:(id)a4;
-- (void)_lastAudioBufferReceivedWithEndpointMode:(int64_t)a3 totalPacketCount:(int64_t)a4 endpointerMetrics:(id)a5;
-- (void)_prepareAudioSystemWithContext:(id)a3 audioSessionAssertion:(id)a4 completion:(id)a5;
-- (void)_recordingStoppedWithError:(id)a3 totalPacketCount:(int64_t)a4 endpointMode:(int64_t)a5 endpointerMetrics:(id)a6;
-- (void)_startCaptureForMode:(int64_t)a3 options:(id)a4 context:(id)a5;
-- (void)_stopSpeechCaptureWithOptions:(id)a3;
-- (void)_tellDelegateAboutFingerprint:(id)a3 duration:(double)a4;
-- (void)_tellDelegateAboutInputAveragePower:(float)a3 peak:(float)a4;
-- (void)_tellDelegateAboutSpeechPackets:(id)a3 atTimestamp:(double)a4 count:(int64_t)a5;
-- (void)_tellDelegateAudioFileDidFinish:(id)a3 error:(id)a4;
-- (void)_tellDelegateDidDetectLanguage:(id)a3 confidenceScores:(id)a4 isConfident:(BOOL)a5;
-- (void)_tellDelegateDidSetAudioSessionActive:(BOOL)a3;
+- (void)_fetchSmartSiriVolumeForType:(unint64_t)type forceFetch:(BOOL)fetch;
+- (void)_getAdjustedSiriOutputVolumeLevelForAudioRoute:(id)route withCompletion:(id)completion;
+- (void)_lastAudioBufferReceivedWithEndpointMode:(int64_t)mode totalPacketCount:(int64_t)count endpointerMetrics:(id)metrics;
+- (void)_prepareAudioSystemWithContext:(id)context audioSessionAssertion:(id)assertion completion:(id)completion;
+- (void)_recordingStoppedWithError:(id)error totalPacketCount:(int64_t)count endpointMode:(int64_t)mode endpointerMetrics:(id)metrics;
+- (void)_startCaptureForMode:(int64_t)mode options:(id)options context:(id)context;
+- (void)_stopSpeechCaptureWithOptions:(id)options;
+- (void)_tellDelegateAboutFingerprint:(id)fingerprint duration:(double)duration;
+- (void)_tellDelegateAboutInputAveragePower:(float)power peak:(float)peak;
+- (void)_tellDelegateAboutSpeechPackets:(id)packets atTimestamp:(double)timestamp count:(int64_t)count;
+- (void)_tellDelegateAudioFileDidFinish:(id)finish error:(id)error;
+- (void)_tellDelegateDidDetectLanguage:(id)language confidenceScores:(id)scores isConfident:(BOOL)confident;
+- (void)_tellDelegateDidSetAudioSessionActive:(BOOL)active;
 - (void)_tellDelegateEndpointWasDelayedForMusic;
 - (void)_tellDelegateMusicWasDetected;
 - (void)_tellDelegateQuickStopWasRequested;
 - (void)_tellDelegateShutdownUIWasRequested;
 - (void)_tellDelegateSpeechCanceled;
-- (void)_tellDelegateSpeechEndpointWasDetectedAtTime:(double)a3;
-- (void)_tellDelegateSpeechFailedWithError:(id)a3;
+- (void)_tellDelegateSpeechEndpointWasDetectedAtTime:(double)time;
+- (void)_tellDelegateSpeechFailedWithError:(id)error;
 - (void)_tellDelegateSpeechFinished;
-- (void)_tellDelegateSpeechReceivedLastAudioBufferWithEndpointMode:(int64_t)a3 totalPacketCount:(int64_t)a4 endpointerMetrics:(id)a5;
+- (void)_tellDelegateSpeechReceivedLastAudioBufferWithEndpointMode:(int64_t)mode totalPacketCount:(int64_t)count endpointerMetrics:(id)metrics;
 - (void)_tellDelegateSpeechRecognitionUpdateWillBegin;
-- (void)_tellDelegateSpeechShouldPreheatWithRecordingInfo:(id)a3;
-- (void)_tellDelegateSpeechStartedWithRecordingInfo:(id)a3;
-- (void)_tellDelegateSpeechStartpointWasDetectedAtTime:(double)a3;
-- (void)_tellDelegateSpeechWillBeginWithTimestamp:(double)a3 isFromFile:(BOOL)a4 isAudioPowerUpdateDisabled:(BOOL)a5;
-- (void)_tellDelegateSpeechWillStopRecordingWithSignpostID:(unint64_t)a3;
-- (void)_tellDelegateToPerformTwoShotPromptWithType:(int64_t)a3 completion:(id)a4;
-- (void)_tellDelegateUpdateAudioInfo:(id)a3;
-- (void)_tellDelegateWillSetAudioSessionActive:(BOOL)a3;
-- (void)_updateAudioDeviceInfo:(id)a3;
-- (void)_updateCapturingStateWithOptions:(id)a3;
-- (void)_updateRecordRoute:(id)a3 andDeviceIdentifier:(id)a4;
-- (void)_updateSiriOutputVolume:(BOOL)a3 completion:(id)a4;
-- (void)_updateSpeechState:(int)a3;
-- (void)addRecordedDictationAudioSampleData:(id)a3;
-- (void)adjustSiriOutputVolumeForRouteIfNeeded:(id)a3;
-- (void)asrBridgeReceivedEagerRecognitionCandidate:(id)a3 rawRecognitionResult:(id)a4 duration:(double)a5 sessionUUID:(id)a6;
-- (void)asrBridgeReceivedFinalResult:(id)a3 speechPackage:(id)a4 sessionUUID:(id)a5;
-- (void)asrBridgeReceivedPartialResult:(id)a3 language:(id)a4 tokens:(id)a5;
-- (void)audioPowerUpdaterDidUpdate:(id)a3 averagePower:(float)a4 peakPower:(float)a5;
-- (void)audioSessionCoordinator:(id)a3 prepareAudioSessionWithContext:(id)a4;
-- (void)audioSessionCoordinator:(id)a3 releaseAudioSessionWithContext:(id)a4;
+- (void)_tellDelegateSpeechShouldPreheatWithRecordingInfo:(id)info;
+- (void)_tellDelegateSpeechStartedWithRecordingInfo:(id)info;
+- (void)_tellDelegateSpeechStartpointWasDetectedAtTime:(double)time;
+- (void)_tellDelegateSpeechWillBeginWithTimestamp:(double)timestamp isFromFile:(BOOL)file isAudioPowerUpdateDisabled:(BOOL)disabled;
+- (void)_tellDelegateSpeechWillStopRecordingWithSignpostID:(unint64_t)d;
+- (void)_tellDelegateToPerformTwoShotPromptWithType:(int64_t)type completion:(id)completion;
+- (void)_tellDelegateUpdateAudioInfo:(id)info;
+- (void)_tellDelegateWillSetAudioSessionActive:(BOOL)active;
+- (void)_updateAudioDeviceInfo:(id)info;
+- (void)_updateCapturingStateWithOptions:(id)options;
+- (void)_updateRecordRoute:(id)route andDeviceIdentifier:(id)identifier;
+- (void)_updateSiriOutputVolume:(BOOL)volume completion:(id)completion;
+- (void)_updateSpeechState:(int)state;
+- (void)addRecordedDictationAudioSampleData:(id)data;
+- (void)adjustSiriOutputVolumeForRouteIfNeeded:(id)needed;
+- (void)asrBridgeReceivedEagerRecognitionCandidate:(id)candidate rawRecognitionResult:(id)result duration:(double)duration sessionUUID:(id)d;
+- (void)asrBridgeReceivedFinalResult:(id)result speechPackage:(id)package sessionUUID:(id)d;
+- (void)asrBridgeReceivedPartialResult:(id)result language:(id)language tokens:(id)tokens;
+- (void)audioPowerUpdaterDidUpdate:(id)update averagePower:(float)power peakPower:(float)peakPower;
+- (void)audioSessionCoordinator:(id)coordinator prepareAudioSessionWithContext:(id)context;
+- (void)audioSessionCoordinator:(id)coordinator releaseAudioSessionWithContext:(id)context;
 - (void)cancelLocalRecognitionIfActive;
-- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)a3;
+- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)alert;
 - (void)deactivateAudioSessionIfNoActiveAssertions;
 - (void)dealloc;
 - (void)dictationSessionDidComplete;
-- (void)disableDESWithCompletion:(id)a3;
+- (void)disableDESWithCompletion:(id)completion;
 - (void)eagerlyInitializeAudioRecording;
 - (void)endSession;
-- (void)endSession:(BOOL)a3 completion:(id)a4;
+- (void)endSession:(BOOL)session completion:(id)completion;
 - (void)enforcePreviousEndpointHint;
-- (void)getLastStartpointTimestampAndCurrentTime:(id)a3;
-- (void)getOfflineDictationStatusIgnoringCache:(BOOL)a3 completion:(id)a4;
-- (void)getRecordingInfoUsingBlock:(id)a3;
-- (void)getSpeechRecorderVTSatScore:(id)a3;
-- (void)getVolumeServiceUsingBlock:(id)a3;
-- (void)localSpeechRecognizer:(id)a3 didCompletionRecognitionWithStatistics:(id)a4 error:(id)a5;
-- (void)localSpeechRecognizer:(id)a3 didProcessAudioDuration:(double)a4;
-- (void)localSpeechRecognizer:(id)a3 didProduceLoggablePackage:(id)a4;
-- (void)localSpeechRecognizer:(id)a3 didRecognizePackage:(id)a4;
-- (void)localSpeechRecognizer:(id)a3 didRecognizeRawEagerRecognitionCandidate:(id)a4;
-- (void)localSpeechRecognizer:(id)a3 didRecognizeTokens:(id)a4;
+- (void)getLastStartpointTimestampAndCurrentTime:(id)time;
+- (void)getOfflineDictationStatusIgnoringCache:(BOOL)cache completion:(id)completion;
+- (void)getRecordingInfoUsingBlock:(id)block;
+- (void)getSpeechRecorderVTSatScore:(id)score;
+- (void)getVolumeServiceUsingBlock:(id)block;
+- (void)localSpeechRecognizer:(id)recognizer didCompletionRecognitionWithStatistics:(id)statistics error:(id)error;
+- (void)localSpeechRecognizer:(id)recognizer didProcessAudioDuration:(double)duration;
+- (void)localSpeechRecognizer:(id)recognizer didProduceLoggablePackage:(id)package;
+- (void)localSpeechRecognizer:(id)recognizer didRecognizePackage:(id)package;
+- (void)localSpeechRecognizer:(id)recognizer didRecognizeRawEagerRecognitionCandidate:(id)candidate;
+- (void)localSpeechRecognizer:(id)recognizer didRecognizeTokens:(id)tokens;
 - (void)playRecordingStartAlert;
-- (void)preheatRecognizerWithOptions:(id)a3;
-- (void)preheatWithOptions:(id)a3;
-- (void)prepareAudioSystemWithContext:(id)a3 completion:(id)a4;
+- (void)preheatRecognizerWithOptions:(id)options;
+- (void)preheatWithOptions:(id)options;
+- (void)prepareAudioSystemWithContext:(id)context completion:(id)completion;
 - (void)resetLocalRecognizer;
-- (void)setClientConfiguration:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDirtySiriOutputVolumeHostTime:(unint64_t)a3;
-- (void)setEARLanguageDetectorSpeechRequestId:(id)a3;
-- (void)setEndpointerDelayedTrigger:(BOOL)a3;
-- (void)setEndpointerThreshold:(double)a3;
+- (void)setClientConfiguration:(id)configuration;
+- (void)setDelegate:(id)delegate;
+- (void)setDirtySiriOutputVolumeHostTime:(unint64_t)time;
+- (void)setEARLanguageDetectorSpeechRequestId:(id)id;
+- (void)setEndpointerDelayedTrigger:(BOOL)trigger;
+- (void)setEndpointerThreshold:(double)threshold;
 - (void)setFingerprintWasRecognized;
-- (void)setSpeechRecognizedContext:(id)a3;
-- (void)setSuppressAudioInterruptionEndedNotifications:(BOOL)a3;
-- (void)speechCapturing:(id)a3 didInterruptAudioSession:(id)a4;
-- (void)speechCapturing:(id)a3 didLoseAudioSessionOwnerOrMediaServices:(id)a4;
-- (void)speechCapturing:(id)a3 didSetAudioSessionActive:(BOOL)a4;
-- (void)speechCapturing:(id)a3 languageDetectorDidFail:(id)a4;
-- (void)speechCapturing:(id)a3 willSetAudioSessionActive:(BOOL)a4;
-- (void)speechCapturingDidProvideConfidenceScores:(id)a3 classification:(unint64_t)a4 classifiedUser:(id)a5 unknownUserScore:(int64_t)a6 duration:(int64_t)a7 version:(int64_t)a8 thresholdingType:(id)a9 assetVersion:(id)a10;
-- (void)speechCapturingDidReceiveLastAudioBufferWithEndpointMode:(int64_t)a3 totalPacketCount:(int64_t)a4 endpointerMetrics:(id)a5;
-- (void)speechCapturingDidRecordSpeechPackets:(id)a3 atTimestamp:(double)a4 totalPacketCount:(int64_t)a5;
-- (void)speechCapturingDidRequestQuickStop:(id)a3;
-- (void)speechCapturingDidRequestShutdownUI:(id)a3;
-- (void)speechCapturingDidRequestUpdateSiriOutputVolume:(id)a3;
-- (void)speechCapturingDidStartRecordingSuccessfully:(BOOL)a3 error:(id)a4 withInfo:(id)a5;
-- (void)speechCapturingDidStopRecordingWithError:(id)a3 endpointMode:(int64_t)a4 totalPacketCount:(int64_t)a5 endpointerMetrics:(id)a6;
-- (void)speechCapturingDidUpdateRecordingInfo:(id)a3;
-- (void)startRecordedDictationCaptureWithSessionUUID:(id)a3 narrowband:(BOOL)a4 secureOfflineOnly:(BOOL)a5;
-- (void)startSpeechCaptureWithURL:(id)a3 isNarrowBand:(BOOL)a4 isDictation:(BOOL)a5 sessionUUID:(id)a6;
-- (void)stopFingerprintingForSuccess:(BOOL)a3;
-- (void)stopSpeechCaptureIfFingerprintingOnlyWithOptions:(id)a3;
-- (void)stopSpeechCaptureWithOptions:(id)a3;
-- (void)suppressAudioInterruptionEndedNotificationsAndEndSessionIfIdle:(id)a3;
-- (void)suspendAutomaticEndpointingInRange:(AFTimeRange)a3;
-- (void)updateASRFeatures:(id)a3;
-- (void)updateEndpointHintForRC:(id)a3 forceAccept:(BOOL)a4 completion:(id)a5;
-- (void)updateOptionsAfterRecognitionForElapsedTime:(double)a3 isFinal:(BOOL)a4;
-- (void)updateSpeechOptions:(id)a3;
-- (void)updateSpeechSynthesisRecord:(id)a3;
+- (void)setSpeechRecognizedContext:(id)context;
+- (void)setSuppressAudioInterruptionEndedNotifications:(BOOL)notifications;
+- (void)speechCapturing:(id)capturing didInterruptAudioSession:(id)session;
+- (void)speechCapturing:(id)capturing didLoseAudioSessionOwnerOrMediaServices:(id)services;
+- (void)speechCapturing:(id)capturing didSetAudioSessionActive:(BOOL)active;
+- (void)speechCapturing:(id)capturing languageDetectorDidFail:(id)fail;
+- (void)speechCapturing:(id)capturing willSetAudioSessionActive:(BOOL)active;
+- (void)speechCapturingDidProvideConfidenceScores:(id)scores classification:(unint64_t)classification classifiedUser:(id)user unknownUserScore:(int64_t)score duration:(int64_t)duration version:(int64_t)version thresholdingType:(id)type assetVersion:(id)self0;
+- (void)speechCapturingDidReceiveLastAudioBufferWithEndpointMode:(int64_t)mode totalPacketCount:(int64_t)count endpointerMetrics:(id)metrics;
+- (void)speechCapturingDidRecordSpeechPackets:(id)packets atTimestamp:(double)timestamp totalPacketCount:(int64_t)count;
+- (void)speechCapturingDidRequestQuickStop:(id)stop;
+- (void)speechCapturingDidRequestShutdownUI:(id)i;
+- (void)speechCapturingDidRequestUpdateSiriOutputVolume:(id)volume;
+- (void)speechCapturingDidStartRecordingSuccessfully:(BOOL)successfully error:(id)error withInfo:(id)info;
+- (void)speechCapturingDidStopRecordingWithError:(id)error endpointMode:(int64_t)mode totalPacketCount:(int64_t)count endpointerMetrics:(id)metrics;
+- (void)speechCapturingDidUpdateRecordingInfo:(id)info;
+- (void)startRecordedDictationCaptureWithSessionUUID:(id)d narrowband:(BOOL)narrowband secureOfflineOnly:(BOOL)only;
+- (void)startSpeechCaptureWithURL:(id)l isNarrowBand:(BOOL)band isDictation:(BOOL)dictation sessionUUID:(id)d;
+- (void)stopFingerprintingForSuccess:(BOOL)success;
+- (void)stopSpeechCaptureIfFingerprintingOnlyWithOptions:(id)options;
+- (void)stopSpeechCaptureWithOptions:(id)options;
+- (void)suppressAudioInterruptionEndedNotificationsAndEndSessionIfIdle:(id)idle;
+- (void)suspendAutomaticEndpointingInRange:(AFTimeRange)range;
+- (void)updateASRFeatures:(id)features;
+- (void)updateEndpointHintForRC:(id)c forceAccept:(BOOL)accept completion:(id)completion;
+- (void)updateOptionsAfterRecognitionForElapsedTime:(double)time isFinal:(BOOL)final;
+- (void)updateSpeechOptions:(id)options;
+- (void)updateSpeechSynthesisRecord:(id)record;
 @end
 
 @implementation ADSpeechManager
@@ -174,8 +174,8 @@
     audioSessionController = self->_audioSessionController;
     audioPlaybackService = self->_audioPlaybackService;
     v9 = +[ADExperimentManager sharedManager];
-    v10 = [v9 context];
-    v11 = [v4 initWithQueue:queue speechController:speechController audioSessionController:audioSessionController audioPlaybackService:audioPlaybackService experimentContext:v10];
+    context = [v9 context];
+    v11 = [v4 initWithQueue:queue speechController:speechController audioSessionController:audioSessionController audioPlaybackService:audioPlaybackService experimentContext:context];
     v12 = self->_speechRecorder;
     self->_speechRecorder = v11;
 
@@ -186,7 +186,7 @@
       v16 = 136315650;
       v17 = "[ADSpeechManager _speechRecorder]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
       v21 = v14;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s %@ created local speech recorder %@", &v16, 0x20u);
@@ -224,9 +224,9 @@
   currentCapturing = self->_currentCapturing;
   if (!currentCapturing)
   {
-    v4 = [(ADSpeechManager *)self _speechRecorder];
+    _speechRecorder = [(ADSpeechManager *)self _speechRecorder];
     v5 = self->_currentCapturing;
-    self->_currentCapturing = v4;
+    self->_currentCapturing = _speechRecorder;
 
     v6 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -245,9 +245,9 @@
   return currentCapturing;
 }
 
-- (void)asrBridgeReceivedPartialResult:(id)a3 language:(id)a4 tokens:(id)a5
+- (void)asrBridgeReceivedPartialResult:(id)result language:(id)language tokens:(id)tokens
 {
-  v6 = a5;
+  tokensCopy = tokens;
   if (+[AFFeatureFlags isSiriRequestDispatcherEnabled])
   {
     queue = self->_queue;
@@ -256,15 +256,15 @@
     v8[2] = sub_100333514;
     v8[3] = &unk_10051E010;
     v8[4] = self;
-    v9 = v6;
+    v9 = tokensCopy;
     dispatch_async(queue, v8);
   }
 }
 
-- (void)asrBridgeReceivedFinalResult:(id)a3 speechPackage:(id)a4 sessionUUID:(id)a5
+- (void)asrBridgeReceivedFinalResult:(id)result speechPackage:(id)package sessionUUID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
+  packageCopy = package;
+  dCopy = d;
   if (+[AFFeatureFlags isSiriRequestDispatcherEnabled])
   {
     queue = self->_queue;
@@ -273,16 +273,16 @@
     block[2] = sub_100333724;
     block[3] = &unk_10051DB68;
     block[4] = self;
-    v11 = v7;
-    v12 = v8;
+    v11 = packageCopy;
+    v12 = dCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)asrBridgeReceivedEagerRecognitionCandidate:(id)a3 rawRecognitionResult:(id)a4 duration:(double)a5 sessionUUID:(id)a6
+- (void)asrBridgeReceivedEagerRecognitionCandidate:(id)candidate rawRecognitionResult:(id)result duration:(double)duration sessionUUID:(id)d
 {
-  v8 = a4;
-  v9 = a6;
+  resultCopy = result;
+  dCopy = d;
   if (+[AFFeatureFlags isSiriRequestDispatcherEnabled])
   {
     queue = self->_queue;
@@ -291,48 +291,48 @@
     block[2] = sub_100333908;
     block[3] = &unk_10051DB68;
     block[4] = self;
-    v12 = v8;
-    v13 = v9;
+    v12 = resultCopy;
+    v13 = dCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)_getAdjustedSiriOutputVolumeLevelForAudioRoute:(id)a3 withCompletion:(id)a4
+- (void)_getAdjustedSiriOutputVolumeLevelForAudioRoute:(id)route withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ADSpeechManager *)self _volumeService];
-  v9 = [v6 name];
+  routeCopy = route;
+  completionCopy = completion;
+  _volumeService = [(ADSpeechManager *)self _volumeService];
+  name = [routeCopy name];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100333B20;
   v12[3] = &unk_10051C7D8;
-  v13 = v6;
-  v14 = v7;
+  v13 = routeCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v10 = v6;
-  v11 = v7;
-  [v8 getSiriOutputVolumeForAudioRoute:v10 withName:v9 completion:v12];
+  v10 = routeCopy;
+  v11 = completionCopy;
+  [_volumeService getSiriOutputVolumeForAudioRoute:v10 withName:name completion:v12];
 }
 
-- (void)adjustSiriOutputVolumeForRouteIfNeeded:(id)a3
+- (void)adjustSiriOutputVolumeForRouteIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003343F4;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = neededCopy;
+  v6 = neededCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_updateSiriOutputVolume:(BOOL)a3 completion:(id)a4
+- (void)_updateSiriOutputVolume:(BOOL)volume completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  volumeCopy = volume;
+  completionCopy = completion;
   v7 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -342,14 +342,14 @@
     v16 = 1024;
     v17 = hasUpdatedSiriOutputVolume;
     v18 = 1024;
-    v19 = v4;
+    v19 = volumeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s hasUpdatedSiriOutputVolume = %d, forceUpdate = %d", buf, 0x18u);
   }
 
-  if (self->_hasUpdatedSiriOutputVolume && !v4)
+  if (self->_hasUpdatedSiriOutputVolume && !volumeCopy)
   {
     v11 = 1;
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_14;
     }
@@ -357,9 +357,9 @@
     goto LABEL_12;
   }
 
-  v10 = [(ADSpeechManager *)self _volumeService];
-  v11 = v10 == 0;
-  if (v10)
+  _volumeService = [(ADSpeechManager *)self _volumeService];
+  v11 = _volumeService == 0;
+  if (_volumeService)
   {
     self->_hasUpdatedSiriOutputVolume = 1;
     v12[0] = _NSConcreteStackBlock;
@@ -367,25 +367,25 @@
     v12[2] = sub_100334950;
     v12[3] = &unk_10051C718;
     v12[4] = self;
-    v13 = v6;
-    [v10 updateSiriOutputVolume:v4 completion:v12];
+    v13 = completionCopy;
+    [_volumeService updateSiriOutputVolume:volumeCopy completion:v12];
   }
 
-  if (v6)
+  if (completionCopy)
   {
 LABEL_12:
     if (v11)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 
 LABEL_14:
 }
 
-- (void)_fetchSmartSiriVolumeForType:(unint64_t)a3 forceFetch:(BOOL)a4
+- (void)_fetchSmartSiriVolumeForType:(unint64_t)type forceFetch:(BOOL)fetch
 {
-  v4 = a4;
+  fetchCopy = fetch;
   v7 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -395,20 +395,20 @@ LABEL_14:
     v17 = 1024;
     v18 = hasFetchedSmartSiriVolume;
     v19 = 2048;
-    v20 = a3;
+    typeCopy = type;
     v21 = 1024;
-    v22 = v4;
+    v22 = fetchCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s hasFetchedSmartSiriVolume = %d, forType = %lu, forceFetch = %d", &v15, 0x22u);
   }
 
-  if (!self->_hasFetchedSmartSiriVolume || v4)
+  if (!self->_hasFetchedSmartSiriVolume || fetchCopy)
   {
-    v10 = [(ADSpeechManager *)self _volumeService];
-    v11 = v10;
-    if (v10)
+    _volumeService = [(ADSpeechManager *)self _volumeService];
+    v11 = _volumeService;
+    if (_volumeService)
     {
       *&self->_hasFetchedSmartSiriVolume = 1;
-      [v10 fetchSmartSiriVolumeForType:a3];
+      [_volumeService fetchSmartSiriVolumeForType:type];
       v12 = AFSiriLogContextSpeech;
       if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
       {
@@ -419,7 +419,7 @@ LABEL_14:
         v17 = 1024;
         v18 = v13;
         v19 = 1024;
-        LODWORD(v20) = hasUpdatedSiriOutputVolume;
+        LODWORD(typeCopy) = hasUpdatedSiriOutputVolume;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s hasFetchedSmartSiriVolume = %d, hasUpdatedSiriOutputVolume = %d", &v15, 0x18u);
       }
     }
@@ -476,24 +476,24 @@ LABEL_14:
   return _AFDeviceSupportsTTS();
 }
 
-- (void)setEARLanguageDetectorSpeechRequestId:(id)a3
+- (void)setEARLanguageDetectorSpeechRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100334DC8;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_addRecordStoppedCompletion:(id)a3
+- (void)_addRecordStoppedCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     recordStoppedCompletion = self->_recordStoppedCompletion;
     if (recordStoppedCompletion)
@@ -503,7 +503,7 @@ LABEL_14:
       v11[2] = sub_100334F18;
       v11[3] = &unk_10051C6F0;
       v12 = objc_retainBlock(recordStoppedCompletion);
-      v13 = v4;
+      v13 = completionCopy;
       v6 = v12;
       v7 = objc_retainBlock(v11);
       v8 = self->_recordStoppedCompletion;
@@ -512,28 +512,28 @@ LABEL_14:
 
     else
     {
-      v9 = objc_retainBlock(v4);
+      v9 = objc_retainBlock(completionCopy);
       v10 = self->_recordStoppedCompletion;
       self->_recordStoppedCompletion = v9;
     }
   }
 }
 
-- (void)setEndpointerDelayedTrigger:(BOOL)a3
+- (void)setEndpointerDelayedTrigger:(BOOL)trigger
 {
-  v3 = a3;
+  triggerCopy = trigger;
   v4 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v5 = 136315394;
     v6 = "[ADSpeechManager setEndpointerDelayedTrigger:]";
     v7 = 1024;
-    v8 = v3;
+    v8 = triggerCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s setEndpointerDelayedTrigger: %d is unused in CoreSpeech.", &v5, 0x12u);
   }
 }
 
-- (void)setEndpointerThreshold:(double)a3
+- (void)setEndpointerThreshold:(double)threshold
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -541,7 +541,7 @@ LABEL_14:
   v6[2] = sub_100335138;
   v6[3] = &unk_10051D770;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = threshold;
   dispatch_async(queue, v6);
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -549,40 +549,40 @@ LABEL_14:
     *buf = 136315394;
     v8 = "[ADSpeechManager setEndpointerThreshold:]";
     v9 = 2048;
-    v10 = a3;
+    thresholdCopy = threshold;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s setEndpointerThreshold: %f in CoreSpeech.", buf, 0x16u);
   }
 }
 
-- (void)updateSpeechSynthesisRecord:(id)a3
+- (void)updateSpeechSynthesisRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100335224;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordCopy;
+  v6 = recordCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getLastStartpointTimestampAndCurrentTime:(id)a3
+- (void)getLastStartpointTimestampAndCurrentTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10033531C;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = timeCopy;
+  v6 = timeCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)stopFingerprintingForSuccess:(BOOL)a3
+- (void)stopFingerprintingForSuccess:(BOOL)success
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -590,13 +590,13 @@ LABEL_14:
   v4[2] = sub_1003353E8;
   v4[3] = &unk_10051CBD8;
   v4[4] = self;
-  v5 = a3;
+  successCopy = success;
   dispatch_async(queue, v4);
 }
 
-- (void)updateSpeechOptions:(id)a3
+- (void)updateSpeechOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[AFAnalytics sharedAnalytics];
   [v5 logEventWithType:303 context:0];
 
@@ -606,8 +606,8 @@ LABEL_14:
   v8[2] = sub_10033551C;
   v8[3] = &unk_10051E010;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = optionsCopy;
+  v7 = optionsCopy;
   dispatch_async(queue, v8);
 }
 
@@ -622,17 +622,17 @@ LABEL_14:
   dispatch_async(queue, block);
 }
 
-- (void)setSpeechRecognizedContext:(id)a3
+- (void)setSpeechRecognizedContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100335678;
   v7[3] = &unk_10051E010;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = contextCopy;
+  selfCopy = self;
+  v6 = contextCopy;
   dispatch_async(queue, v7);
 }
 
@@ -647,25 +647,25 @@ LABEL_14:
   dispatch_async(queue, block);
 }
 
-- (void)updateEndpointHintForRC:(id)a3 forceAccept:(BOOL)a4 completion:(id)a5
+- (void)updateEndpointHintForRC:(id)c forceAccept:(BOOL)accept completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  cCopy = c;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1003358C4;
   v13[3] = &unk_10051C6C8;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = cCopy;
+  acceptCopy = accept;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = cCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)updateOptionsAfterRecognitionForElapsedTime:(double)a3 isFinal:(BOOL)a4
+- (void)updateOptionsAfterRecognitionForElapsedTime:(double)time isFinal:(BOOL)final
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -673,26 +673,26 @@ LABEL_14:
   block[2] = sub_100335998;
   block[3] = &unk_10051C6A0;
   block[4] = self;
-  *&block[5] = a3;
-  v6 = a4;
+  *&block[5] = time;
+  finalCopy = final;
   dispatch_async(queue, block);
 }
 
-- (void)updateASRFeatures:(id)a3
+- (void)updateASRFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100335A48;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = featuresCopy;
+  v6 = featuresCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)suspendAutomaticEndpointingInRange:(AFTimeRange)a3
+- (void)suspendAutomaticEndpointingInRange:(AFTimeRange)range
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -700,7 +700,7 @@ LABEL_14:
   block[2] = sub_100335B14;
   block[3] = &unk_10051C678;
   block[4] = self;
-  v5 = a3;
+  rangeCopy = range;
   dispatch_async(queue, block);
 }
 
@@ -726,17 +726,17 @@ LABEL_14:
   dispatch_async(queue, block);
 }
 
-- (void)suppressAudioInterruptionEndedNotificationsAndEndSessionIfIdle:(id)a3
+- (void)suppressAudioInterruptionEndedNotificationsAndEndSessionIfIdle:(id)idle
 {
-  v4 = a3;
+  idleCopy = idle;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100335F10;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idleCopy;
+  v6 = idleCopy;
   dispatch_async(queue, v7);
 }
 
@@ -770,9 +770,9 @@ LABEL_14:
   return speechState == 0;
 }
 
-- (void)_cancelRecordingIfNeededAndEndSessionWhenIdleWithCompletion:(id)a3
+- (void)_cancelRecordingIfNeededAndEndSessionWhenIdleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -791,7 +791,7 @@ LABEL_14:
   v27[1] = 3221225472;
   v27[2] = sub_100336584;
   v27[3] = &unk_10051C628;
-  v10 = v4;
+  v10 = completionCopy;
   v28 = v10;
   v11 = [v9 initWithBlock:v27];
   objc_initWeak(&location, self);
@@ -875,22 +875,22 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (void)endSession:(BOOL)a3 completion:(id)a4
+- (void)endSession:(BOOL)session completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v7 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[ADSpeechManager endSession:completion:]";
     *&buf[12] = 1024;
-    *&buf[14] = v4;
+    *&buf[14] = sessionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s onlyIfIdle = %d", buf, 0x12u);
   }
 
   queue = self->_queue;
-  if (v4)
+  if (sessionCopy)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -910,9 +910,9 @@ LABEL_14:
     dispatch_async(v10, buf);
 
     dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -923,7 +923,7 @@ LABEL_14:
     block[2] = sub_100336A4C;
     block[3] = &unk_10051E038;
     block[4] = self;
-    v14 = v6;
+    v14 = completionCopy;
     dispatch_async(queue, block);
   }
 }
@@ -967,7 +967,7 @@ LABEL_14:
   }
 }
 
-- (void)setSuppressAudioInterruptionEndedNotifications:(BOOL)a3
+- (void)setSuppressAudioInterruptionEndedNotifications:(BOOL)notifications
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -975,16 +975,16 @@ LABEL_14:
   v4[2] = sub_100337144;
   v4[3] = &unk_10051CBD8;
   v4[4] = self;
-  v5 = a3;
+  notificationsCopy = notifications;
   dispatch_async(queue, v4);
 }
 
-- (void)_stopSpeechCaptureWithOptions:(id)a3
+- (void)_stopSpeechCaptureWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 activationEvent];
-  v6 = [v4 suppressStopAlert];
-  v7 = [v4 stopRecordingHostTime];
+  optionsCopy = options;
+  activationEvent = [optionsCopy activationEvent];
+  suppressStopAlert = [optionsCopy suppressStopAlert];
+  stopRecordingHostTime = [optionsCopy stopRecordingHostTime];
   speechState = self->_speechState;
   v9 = AFSiriLogContextSpeech;
   if (speechState == 1)
@@ -1000,11 +1000,11 @@ LABEL_14:
     v15[1] = 3221225472;
     v15[2] = sub_1003373DC;
     v15[3] = &unk_10051C600;
-    v16 = self;
-    v17 = v5;
-    v19 = v6;
-    v18 = v7;
-    v11 = v16;
+    selfCopy = self;
+    v17 = activationEvent;
+    v19 = suppressStopAlert;
+    v18 = stopRecordingHostTime;
+    v11 = selfCopy;
     v12 = objc_retainBlock(v15);
     isa = v11[11].isa;
     v11[11].isa = v12;
@@ -1038,20 +1038,20 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Stopping speech capture", buf, 0xCu);
   }
 
-  v10 = [(ADSpeechManager *)self _currentSpeechCaptureSource];
-  [v10 stopSpeechCaptureForEvent:v5 suppressAlert:v6 hostTime:v7];
+  _currentSpeechCaptureSource = [(ADSpeechManager *)self _currentSpeechCaptureSource];
+  [_currentSpeechCaptureSource stopSpeechCaptureForEvent:activationEvent suppressAlert:suppressStopAlert hostTime:stopRecordingHostTime];
 
   [(ADSpeechManager *)self _updateSpeechState:3];
 LABEL_11:
-  if (v4)
+  if (optionsCopy)
   {
-    [(ADSpeechManager *)self _updateCapturingStateWithOptions:v4];
+    [(ADSpeechManager *)self _updateCapturingStateWithOptions:optionsCopy];
   }
 }
 
-- (void)stopSpeechCaptureIfFingerprintingOnlyWithOptions:(id)a3
+- (void)stopSpeechCaptureIfFingerprintingOnlyWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[AFAnalytics sharedAnalytics];
   [v5 logEventWithType:305 context:0];
 
@@ -1061,10 +1061,10 @@ LABEL_11:
   v12[2] = sub_100337668;
   v12[3] = &unk_10051E010;
   v12[4] = self;
-  v13 = v4;
+  v13 = optionsCopy;
   v7 = v12;
   v8 = queue;
-  v9 = v4;
+  v9 = optionsCopy;
   v10 = dispatch_semaphore_create(0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1078,12 +1078,12 @@ LABEL_11:
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)stopSpeechCaptureWithOptions:(id)a3
+- (void)stopSpeechCaptureWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[AFAnalytics sharedAnalytics];
-  v6 = [v4 stopContext];
-  [v5 logEventWithType:305 context:v6];
+  stopContext = [optionsCopy stopContext];
+  [v5 logEventWithType:305 context:stopContext];
 
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
@@ -1091,10 +1091,10 @@ LABEL_11:
   v13[2] = sub_1003377F4;
   v13[3] = &unk_10051E010;
   v13[4] = self;
-  v14 = v4;
+  v14 = optionsCopy;
   v8 = v13;
   v9 = queue;
-  v10 = v4;
+  v10 = optionsCopy;
   v11 = dispatch_semaphore_create(0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1108,7 +1108,7 @@ LABEL_11:
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)a3
+- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)alert
 {
   v5 = +[AFAnalytics sharedAnalytics];
   [v5 logEventWithType:304 context:0];
@@ -1119,7 +1119,7 @@ LABEL_11:
   v11[2] = sub_100337940;
   v11[3] = &unk_10051CBD8;
   v11[4] = self;
-  v12 = a3;
+  alertCopy = alert;
   v7 = v11;
   v8 = queue;
   v9 = dispatch_semaphore_create(0);
@@ -1135,11 +1135,11 @@ LABEL_11:
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)startSpeechCaptureWithURL:(id)a3 isNarrowBand:(BOOL)a4 isDictation:(BOOL)a5 sessionUUID:(id)a6
+- (void)startSpeechCaptureWithURL:(id)l isNarrowBand:(BOOL)band isDictation:(BOOL)dictation sessionUUID:(id)d
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [[CSSiriSpeechRecordingContext alloc] initWithSessionUUID:v11 turnIdentifier:0];
+  lCopy = l;
+  dCopy = d;
+  v12 = [[CSSiriSpeechRecordingContext alloc] initWithSessionUUID:dCopy turnIdentifier:0];
 
   queue = self->_queue;
   v16[0] = _NSConcreteStackBlock;
@@ -1148,32 +1148,32 @@ LABEL_11:
   v16[3] = &unk_10051C5D8;
   v16[4] = self;
   v17 = v12;
-  v19 = a5;
-  v18 = v10;
-  v20 = a4;
-  v14 = v10;
+  dictationCopy = dictation;
+  v18 = lCopy;
+  bandCopy = band;
+  v14 = lCopy;
   v15 = v12;
   dispatch_async(queue, v16);
 }
 
-- (void)addRecordedDictationAudioSampleData:(id)a3
+- (void)addRecordedDictationAudioSampleData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1003381FC;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)startRecordedDictationCaptureWithSessionUUID:(id)a3 narrowband:(BOOL)a4 secureOfflineOnly:(BOOL)a5
+- (void)startRecordedDictationCaptureWithSessionUUID:(id)d narrowband:(BOOL)narrowband secureOfflineOnly:(BOOL)only
 {
-  v8 = a3;
-  v9 = [[CSSiriSpeechRecordingContext alloc] initWithSessionUUID:v8 turnIdentifier:0];
+  dCopy = d;
+  v9 = [[CSSiriSpeechRecordingContext alloc] initWithSessionUUID:dCopy turnIdentifier:0];
 
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1182,27 +1182,27 @@ LABEL_11:
   block[3] = &unk_10051C5B0;
   block[4] = self;
   v13 = v9;
-  v14 = a5;
-  v15 = a4;
+  onlyCopy = only;
+  narrowbandCopy = narrowband;
   v11 = v9;
   dispatch_async(queue, block);
 }
 
-- (void)_startCaptureForMode:(int64_t)a3 options:(id)a4 context:(id)a5
+- (void)_startCaptureForMode:(int64_t)mode options:(id)options context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  contextCopy = context;
   v10 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v65 = "[ADSpeechManager _startCaptureForMode:options:context:]";
     v66 = 2048;
-    *v67 = a3;
+    *v67 = mode;
     *&v67[8] = 2112;
-    v68 = v8;
+    v68 = optionsCopy;
     v69 = 2112;
-    v70 = v9;
+    v70 = contextCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s mode = %zd, options = %@, context = %@", buf, 0x2Au);
   }
 
@@ -1223,21 +1223,21 @@ LABEL_11:
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v14 = +[ADSpeechManager _badStateError];
-    [WeakRetained speechManager:self didFailWithError:v14 context:v9];
+    [WeakRetained speechManager:self didFailWithError:v14 context:contextCopy];
     goto LABEL_42;
   }
 
   self->_shouldTalkToDelegate = 1;
   self->_hasReceivedLastAudioBuffer = 0;
-  self->_capturingMode = a3;
-  objc_storeStrong(&self->_capturingContext, a5);
+  self->_capturingMode = mode;
+  objc_storeStrong(&self->_capturingContext, context);
   [(ADSpeechManager *)self _updateAudioDeviceInfo:0];
   [(ADSpeechManager *)self _updateRecordRoute:0 andDeviceIdentifier:0];
   *&self->_isReleaseAudioSessionRequired = 1;
   self->_releasesAudioSessionWhenRecordingStopped = 0;
   self->_releasesAudioSessionWhenPrepareAudioSystemDone = 0;
-  v15 = [(ADSpeechManager *)self _speechRecorder];
-  objc_storeStrong(&self->_currentCapturing, v15);
+  _speechRecorder = [(ADSpeechManager *)self _speechRecorder];
+  objc_storeStrong(&self->_currentCapturing, _speechRecorder);
   v16 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -1249,19 +1249,19 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s Speech capturing set to %@.", buf, 0x16u);
   }
 
-  [v15 prepareForMode:a3 withOptions:v8];
-  v18 = [(NSString *)v8 activationEvent];
+  [_speechRecorder prepareForMode:mode withOptions:optionsCopy];
+  activationEvent = [(NSString *)optionsCopy activationEvent];
   if (AFSpeechEventIsBluetooth())
   {
     v19 = +[ADBluetoothManager sharedInstance];
-    v20 = [(NSString *)v8 activationDeviceIdentifier];
-    [v19 prewarmDeviceWithIdentifier:v20];
+    activationDeviceIdentifier = [(NSString *)optionsCopy activationDeviceIdentifier];
+    [v19 prewarmDeviceWithIdentifier:activationDeviceIdentifier];
   }
 
-  if ([(NSString *)v8 isMediaPlaying])
+  if ([(NSString *)optionsCopy isMediaPlaying])
   {
-    v21 = [(ADSpeechManager *)self _volumeService];
-    [v21 _mediaPlaybackVolume];
+    _volumeService = [(ADSpeechManager *)self _volumeService];
+    [_volumeService _mediaPlaybackVolume];
     v23 = v22;
 
     v24 = AFSiriLogContextSpeech;
@@ -1275,17 +1275,17 @@ LABEL_11:
     }
 
     *&v25 = v23;
-    [(NSString *)v8 setMediaPlaybackVolume:v25];
+    [(NSString *)optionsCopy setMediaPlaybackVolume:v25];
   }
 
   IsTVRemote = AFSpeechEventIsTVRemote();
   v27 = IsTVRemote;
   if (IsTVRemote)
   {
-    [(ADSpeechManager *)self _updateCapturingStateWithOptions:v8];
+    [(ADSpeechManager *)self _updateCapturingStateWithOptions:optionsCopy];
   }
 
-  if ((a3 - 1) > 1 || (AFIsNano() & 1) != 0 || v18 <= 0x10 && ((1 << v18) & 0x18900) != 0)
+  if ((mode - 1) > 1 || (AFIsNano() & 1) != 0 || activationEvent <= 0x10 && ((1 << activationEvent) & 0x18900) != 0)
   {
     if (v27)
     {
@@ -1295,22 +1295,22 @@ LABEL_11:
     goto LABEL_22;
   }
 
-  v49 = [v15 recordingInfoForPreheatWithEvent:v18];
+  v49 = [_speechRecorder recordingInfoForPreheatWithEvent:activationEvent];
   [(ADSpeechManager *)self _tellDelegateSpeechShouldPreheatWithRecordingInfo:v49];
 
   if ((v27 & 1) == 0)
   {
 LABEL_22:
-    [(ADSpeechManager *)self _updateCapturingStateWithOptions:v8];
+    [(ADSpeechManager *)self _updateCapturingStateWithOptions:optionsCopy];
   }
 
 LABEL_23:
   v28 = AFIsATVOnly();
-  if (a3 == 3)
+  if (mode == 3)
   {
-    v29 = [(AFDictationOptions *)self->_dictationOptions forceOfflineRecognition];
+    forceOfflineRecognition = [(AFDictationOptions *)self->_dictationOptions forceOfflineRecognition];
     v30 = &CoreEmbeddedSpeechRecognizerTaskDictation;
-    if (!v29)
+    if (!forceOfflineRecognition)
     {
       v30 = &CoreEmbeddedSpeechRecognizerTaskTshot;
     }
@@ -1332,7 +1332,7 @@ LABEL_23:
       *buf = 136315906;
       v65 = "[ADSpeechManager _startCaptureForMode:options:context:]";
       v66 = 2048;
-      *v67 = a3;
+      *v67 = mode;
       *&v67[8] = 2112;
       v68 = primaryDictationLanguage;
       v69 = 2112;
@@ -1343,7 +1343,7 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  if (a3 == 2 && AFOfflineDictationCapable())
+  if (mode == 2 && AFOfflineDictationCapable())
   {
     v30 = &CoreEmbeddedSpeechRecognizerTaskDictation;
 LABEL_26:
@@ -1356,7 +1356,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (a3 == 5)
+  if (mode == 5)
   {
     v43 = AFIsNano();
     v44 = &CoreEmbeddedSpeechRecognizerTaskDictation;
@@ -1378,7 +1378,7 @@ LABEL_26:
     v46 = "%s Local speech recognition forced on for Siri";
   }
 
-  else if ((_AFPreferencesSiriPersonalizedASRDisabled() & 1) != 0 || [(NSString *)v8 skipPersonalizedASR])
+  else if ((_AFPreferencesSiriPersonalizedASRDisabled() & 1) != 0 || [(NSString *)optionsCopy skipPersonalizedASR])
   {
     v50 = self->_localSpeechRecognizerTask;
     self->_localSpeechRecognizerTask = 0;
@@ -1418,40 +1418,40 @@ LABEL_26:
 
   _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, v46, buf, 0xCu);
 LABEL_27:
-  v31 = [(NSString *)v8 acousticIdEnabled];
-  if (a3 == 4)
+  acousticIdEnabled = [(NSString *)optionsCopy acousticIdEnabled];
+  if (mode == 4)
   {
     v32 = 1;
   }
 
   else
   {
-    v32 = v31;
+    v32 = acousticIdEnabled;
   }
 
-  [v15 setFingerprintingEnabled:v32];
-  [v15 setAudioFileType:{-[NSString audioFileType](v8, "audioFileType")}];
-  v33 = [(NSString *)v8 audioFileHandle];
-  [v15 setAudioFileHandle:v33];
+  [_speechRecorder setFingerprintingEnabled:v32];
+  [_speechRecorder setAudioFileType:{-[NSString audioFileType](optionsCopy, "audioFileType")}];
+  audioFileHandle = [(NSString *)optionsCopy audioFileHandle];
+  [_speechRecorder setAudioFileHandle:audioFileHandle];
 
-  [v15 setIsDriving:self->_isDriving];
-  [v15 disableSpeechPacketGeneration:{-[NSString skipGeneratingSpeechPacket](v8, "skipGeneratingSpeechPacket")}];
-  v34 = [(NSString *)v8 speechRecordingEventListeningEndpoint];
-  [v15 setSpeechRecordingEventListeningEndpoint:v34];
+  [_speechRecorder setIsDriving:self->_isDriving];
+  [_speechRecorder disableSpeechPacketGeneration:{-[NSString skipGeneratingSpeechPacket](optionsCopy, "skipGeneratingSpeechPacket")}];
+  speechRecordingEventListeningEndpoint = [(NSString *)optionsCopy speechRecordingEventListeningEndpoint];
+  [_speechRecorder setSpeechRecordingEventListeningEndpoint:speechRecordingEventListeningEndpoint];
 
-  [v15 setHybridUODEnabled:{-[NSString isHybridUODEnabled](v8, "isHybridUODEnabled")}];
+  [_speechRecorder setHybridUODEnabled:{-[NSString isHybridUODEnabled](optionsCopy, "isHybridUODEnabled")}];
   [(ADSpeechManager *)self _updateSpeechState:1];
   v58[0] = _NSConcreteStackBlock;
   v58[1] = 3221225472;
   v58[2] = sub_100338EBC;
   v58[3] = &unk_10051D650;
-  WeakRetained = v15;
+  WeakRetained = _speechRecorder;
   v59 = WeakRetained;
-  v60 = v9;
-  v61 = self;
-  v35 = v8;
+  v60 = contextCopy;
+  selfCopy = self;
+  v35 = optionsCopy;
   v62 = v35;
-  v63 = a3;
+  modeCopy = mode;
   v36 = objc_retainBlock(v58);
   if (!sub_10001A2F8(self->_instanceContext))
   {
@@ -1497,29 +1497,29 @@ LABEL_36:
 LABEL_42:
 }
 
-- (id)_startFixedPriorityCaptureForMode:(int64_t)a3 options:(id)a4 sessionUUID:(id)a5
+- (id)_startFixedPriorityCaptureForMode:(int64_t)mode options:(id)options sessionUUID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  dCopy = d;
   v10 = +[AFAnalytics sharedAnalytics];
-  v11 = [v8 startContext];
-  [v10 logEventWithType:301 context:v11];
+  startContext = [optionsCopy startContext];
+  [v10 logEventWithType:301 context:startContext];
 
   v12 = [CSSiriSpeechRecordingContext alloc];
-  v13 = [v8 turnIdentifier];
-  v14 = [v12 initWithSessionUUID:v9 turnIdentifier:v13];
+  turnIdentifier = [optionsCopy turnIdentifier];
+  v14 = [v12 initWithSessionUUID:dCopy turnIdentifier:turnIdentifier];
 
   queue = self->_queue;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1003395A0;
   v21[3] = &unk_10051DBB8;
-  v24 = a3;
+  modeCopy = mode;
   v21[4] = self;
-  v22 = v8;
+  v22 = optionsCopy;
   v16 = v14;
   v23 = v16;
-  v17 = v8;
+  v17 = optionsCopy;
   dispatch_async(queue, v21);
   v18 = v23;
   v19 = v16;
@@ -1527,17 +1527,17 @@ LABEL_42:
   return v16;
 }
 
-- (id)startSpeechCaptureForDictationWithOptions:(id)a3 sessionUUID:(id)a4 secureOfflineOnly:(BOOL)a5
+- (id)startSpeechCaptureForDictationWithOptions:(id)options sessionUUID:(id)d secureOfflineOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1003397A4;
   block[3] = &unk_10051DFE8;
   block[4] = self;
-  v9 = a4;
-  v10 = a3;
+  dCopy = d;
+  optionsCopy = options;
   dispatch_async(queue, block);
   v11 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -1545,11 +1545,11 @@ LABEL_42:
     *buf = 136315394;
     v17 = "[ADSpeechManager startSpeechCaptureForDictationWithOptions:sessionUUID:secureOfflineOnly:]";
     v18 = 1024;
-    v19 = v5;
+    v19 = onlyCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s secureOfflineOnly is %d", buf, 0x12u);
   }
 
-  if (v5)
+  if (onlyCopy)
   {
     v12 = 3;
   }
@@ -1559,28 +1559,28 @@ LABEL_42:
     v12 = 2;
   }
 
-  v13 = [(ADSpeechManager *)self _startFixedPriorityCaptureForMode:v12 options:v10 sessionUUID:v9];
+  v13 = [(ADSpeechManager *)self _startFixedPriorityCaptureForMode:v12 options:optionsCopy sessionUUID:dCopy];
 
   return v13;
 }
 
-- (id)startSpeechCaptureForRequestWithOptions:(id)a3 sessionUUID:(id)a4 language:(id)a5
+- (id)startSpeechCaptureForRequestWithOptions:(id)options sessionUUID:(id)d language:(id)language
 {
-  v8 = a5;
+  languageCopy = language;
   queue = self->_queue;
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1003398E4;
   v18 = &unk_10051E010;
-  v19 = self;
-  v20 = v8;
-  v10 = v8;
-  v11 = a4;
-  v12 = a3;
+  selfCopy = self;
+  v20 = languageCopy;
+  v10 = languageCopy;
+  dCopy = d;
+  optionsCopy = options;
   dispatch_async(queue, &v15);
-  v13 = [(ADSpeechManager *)self _startFixedPriorityCaptureForMode:1 options:v12 sessionUUID:v11, v15, v16, v17, v18, v19];
+  selfCopy = [(ADSpeechManager *)self _startFixedPriorityCaptureForMode:1 options:optionsCopy sessionUUID:dCopy, v15, v16, v17, v18, selfCopy];
 
-  return v13;
+  return selfCopy;
 }
 
 - (BOOL)isCapturing
@@ -1602,39 +1602,39 @@ LABEL_42:
   return v3;
 }
 
-- (void)setClientConfiguration:(id)a3
+- (void)setClientConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100339AE0;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100339BD4;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_prepareAudioSystemWithContext:(id)a3 audioSessionAssertion:(id)a4 completion:(id)a5
+- (void)_prepareAudioSystemWithContext:(id)context audioSessionAssertion:(id)assertion completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v49 = a5;
+  contextCopy = context;
+  assertionCopy = assertion;
+  completionCopy = completion;
   v10 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -1644,22 +1644,22 @@ LABEL_42:
     *buf = 136315650;
     v86 = "[ADSpeechManager _prepareAudioSystemWithContext:audioSessionAssertion:completion:]";
     v87 = 2112;
-    v88 = v8;
+    v88 = contextCopy;
     v89 = 2112;
     v90 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Begin preparing audio system with context %@. (speechState = %@)", buf, 0x20u);
   }
 
   self->_isReleaseAudioSessionRequired = 1;
-  v14 = [v8 speechRequestOptions];
+  speechRequestOptions = [contextCopy speechRequestOptions];
   v15 = AFAnalyticsContextCreateWithSpeechRequestOptions();
   v84[0] = v15;
   v82[0] = @"reason";
-  [v8 reason];
+  [contextCopy reason];
   v16 = AFSetAudioSessionActiveReasonGetName();
   v82[1] = @"options";
   v83[0] = v16;
-  [v8 options];
+  [contextCopy options];
   v17 = AFSetAudioSessionActiveOptionsGetNames();
   v83[1] = v17;
   v18 = [NSDictionary dictionaryWithObjects:v83 forKeys:v82 count:2];
@@ -1671,22 +1671,22 @@ LABEL_42:
   [v21 logEventWithType:244 context:v20 contextNoCopy:1];
 
   ++self->_prepareAudioSystemTransactionCount;
-  v22 = [(ADSpeechManager *)self _speechRecorder];
+  _speechRecorder = [(ADSpeechManager *)self _speechRecorder];
   v23 = [AFOneArgumentSafetyBlock alloc];
   v76[0] = _NSConcreteStackBlock;
   v76[1] = 3221225472;
   v76[2] = sub_10033A390;
   v76[3] = &unk_10051C3F8;
   v76[4] = self;
-  v24 = v22;
+  v24 = _speechRecorder;
   v77 = v24;
-  v25 = v8;
+  v25 = contextCopy;
   v78 = v25;
-  v52 = v9;
+  v52 = assertionCopy;
   v79 = v52;
   v51 = v20;
   v80 = v51;
-  v50 = v49;
+  v50 = completionCopy;
   v81 = v50;
   v26 = [AFError errorWithCode:27];
   v27 = [v23 initWithBlock:v76 defaultValue:v26];
@@ -1711,7 +1711,7 @@ LABEL_42:
   v69[3] = &unk_10051C4E8;
   v31 = v25;
   v70 = v31;
-  v71 = self;
+  selfCopy = self;
   v32 = v29;
   v72 = v32;
   v33 = objc_retainBlock(v69);
@@ -1723,7 +1723,7 @@ LABEL_42:
   v62 = v34;
   v35 = v32;
   v63 = v35;
-  v64 = self;
+  selfCopy2 = self;
   v36 = v28;
   v66 = v36;
   v37 = v30;
@@ -1735,10 +1735,10 @@ LABEL_42:
   v40 = objc_retainBlock(v61);
   if (sub_10001A2F8(self->_instanceContext))
   {
-    v41 = [v34 speechRequestOptions];
-    v42 = [v41 smartSiriVolumeTTSType];
+    speechRequestOptions2 = [v34 speechRequestOptions];
+    smartSiriVolumeTTSType = [speechRequestOptions2 smartSiriVolumeTTSType];
 
-    if (v42 == 5)
+    if (smartSiriVolumeTTSType == 5)
     {
       v43 = AFSiriLogContextSpeech;
       if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -1774,7 +1774,7 @@ LABEL_42:
         }
 
         v48 = mach_absolute_time();
-        v47 = [(ADSpeechManager *)self _volumeService];
+        _volumeService = [(ADSpeechManager *)self _volumeService];
         v55[0] = _NSConcreteStackBlock;
         v55[1] = 3221225472;
         v55[2] = sub_10033B310;
@@ -1783,7 +1783,7 @@ LABEL_42:
         v57 = dirtySiriOutputVolumeHostTime;
         v58 = v48;
         v56 = v40;
-        [v47 waitUntilSiriOutputVolumeUpdatesAfterTimestamp:dirtySiriOutputVolumeHostTime withTimeout:v55 block:1.0];
+        [_volumeService waitUntilSiriOutputVolumeUpdatesAfterTimestamp:dirtySiriOutputVolumeHostTime withTimeout:v55 block:1.0];
 
         v44 = v56;
       }
@@ -1808,16 +1808,16 @@ LABEL_42:
   }
 }
 
-- (void)prepareAudioSystemWithContext:(id)a3 completion:(id)a4
+- (void)prepareAudioSystemWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   audioSessionCoordinator = self->_audioSessionCoordinator;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10033BB44;
   v20[3] = &unk_10051C368;
-  v9 = v6;
+  v9 = contextCopy;
   v21 = v9;
   v10 = [AFAssertionContext newWithBuilder:v20];
   v11 = [(ADAudioSessionCoordinator *)audioSessionCoordinator acquireAudioSessionAssertionWithContext:v10 relinquishmentHandler:0];
@@ -1830,23 +1830,23 @@ LABEL_42:
   block[4] = self;
   v17 = v9;
   v18 = v11;
-  v19 = v7;
-  v13 = v7;
+  v19 = completionCopy;
+  v13 = completionCopy;
   v14 = v11;
   v15 = v9;
   dispatch_async(queue, block);
 }
 
-- (void)preheatRecognizerWithOptions:(id)a3
+- (void)preheatRecognizerWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v11 = "[ADSpeechManager preheatRecognizerWithOptions:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s options = %@", buf, 0x16u);
   }
 
@@ -1856,21 +1856,21 @@ LABEL_42:
   v8[2] = sub_10033BDCC;
   v8[3] = &unk_10051E010;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = optionsCopy;
+  v7 = optionsCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)preheatWithOptions:(id)a3
+- (void)preheatWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v12 = "[ADSpeechManager preheatWithOptions:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s options = %@", buf, 0x16u);
   }
 
@@ -1879,9 +1879,9 @@ LABEL_42:
   v8[1] = 3221225472;
   v8[2] = sub_10033BF58;
   v8[3] = &unk_10051E010;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = optionsCopy;
+  selfCopy = self;
+  v7 = optionsCopy;
   dispatch_async(queue, v8);
 }
 
@@ -1896,75 +1896,75 @@ LABEL_42:
   dispatch_async(queue, block);
 }
 
-- (void)localSpeechRecognizer:(id)a3 didCompletionRecognitionWithStatistics:(id)a4 error:(id)a5
+- (void)localSpeechRecognizer:(id)recognizer didCompletionRecognitionWithStatistics:(id)statistics error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recognizerCopy = recognizer;
+  statisticsCopy = statistics;
+  errorCopy = error;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10033C164;
   v15[3] = &unk_10051DB18;
-  v16 = v8;
-  v17 = self;
-  v18 = v10;
-  v19 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = recognizerCopy;
+  selfCopy = self;
+  v18 = errorCopy;
+  v19 = statisticsCopy;
+  v12 = statisticsCopy;
+  v13 = errorCopy;
+  v14 = recognizerCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)localSpeechRecognizer:(id)a3 didProduceLoggablePackage:(id)a4
+- (void)localSpeechRecognizer:(id)recognizer didProduceLoggablePackage:(id)package
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  packageCopy = package;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10033C430;
   block[3] = &unk_10051DB68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = recognizerCopy;
+  selfCopy = self;
+  v14 = packageCopy;
+  v9 = packageCopy;
+  v10 = recognizerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)localSpeechRecognizer:(id)a3 didRecognizePackage:(id)a4
+- (void)localSpeechRecognizer:(id)recognizer didRecognizePackage:(id)package
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  packageCopy = package;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10033C698;
   block[3] = &unk_10051DB68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = recognizerCopy;
+  selfCopy = self;
+  v14 = packageCopy;
+  v9 = packageCopy;
+  v10 = recognizerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)localSpeechRecognizer:(id)a3 didRecognizeRawEagerRecognitionCandidate:(id)a4
+- (void)localSpeechRecognizer:(id)recognizer didRecognizeRawEagerRecognitionCandidate:(id)candidate
 {
-  v5 = a4;
+  candidateCopy = candidate;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10033C8D4;
   v8[3] = &unk_10051E010;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = candidateCopy;
+  v7 = candidateCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)localSpeechRecognizer:(id)a3 didProcessAudioDuration:(double)a4
+- (void)localSpeechRecognizer:(id)recognizer didProcessAudioDuration:(double)duration
 {
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -1972,31 +1972,31 @@ LABEL_42:
     v6 = 136315394;
     v7 = "[ADSpeechManager localSpeechRecognizer:didProcessAudioDuration:]";
     v8 = 2048;
-    v9 = a4;
+    durationCopy = duration;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Processed %.2f", &v6, 0x16u);
   }
 }
 
-- (void)localSpeechRecognizer:(id)a3 didRecognizeTokens:(id)a4
+- (void)localSpeechRecognizer:(id)recognizer didRecognizeTokens:(id)tokens
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  tokensCopy = tokens;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10033CB9C;
   block[3] = &unk_10051DB68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = recognizerCopy;
+  selfCopy = self;
+  v14 = tokensCopy;
+  v9 = tokensCopy;
+  v10 = recognizerCopy;
   dispatch_async(queue, block);
 }
 
-- (void)audioPowerUpdaterDidUpdate:(id)a3 averagePower:(float)a4 peakPower:(float)a5
+- (void)audioPowerUpdaterDidUpdate:(id)update averagePower:(float)power peakPower:(float)peakPower
 {
-  if (self->_audioPowerUpdater == a3)
+  if (self->_audioPowerUpdater == update)
   {
     [ADSpeechManager _tellDelegateAboutInputAveragePower:"_tellDelegateAboutInputAveragePower:peak:" peak:?];
   }
@@ -2004,10 +2004,10 @@ LABEL_42:
 
 - (id)_recordingInfo
 {
-  v2 = [(ADSpeechManager *)self _speechRecorder];
-  v3 = [v2 fetchRecordingInfo];
+  _speechRecorder = [(ADSpeechManager *)self _speechRecorder];
+  fetchRecordingInfo = [_speechRecorder fetchRecordingInfo];
 
-  return v3;
+  return fetchRecordingInfo;
 }
 
 - (id)getRecordingInfo
@@ -2032,11 +2032,11 @@ LABEL_42:
   return v3;
 }
 
-- (void)getRecordingInfoUsingBlock:(id)a3
+- (void)getRecordingInfoUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -2044,16 +2044,16 @@ LABEL_42:
     v7[2] = sub_10033CFA8;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getVolumeServiceUsingBlock:(id)a3
+- (void)getVolumeServiceUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -2061,12 +2061,12 @@ LABEL_42:
     v7[2] = sub_10033D0A8;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)setDirtySiriOutputVolumeHostTime:(unint64_t)a3
+- (void)setDirtySiriOutputVolumeHostTime:(unint64_t)time
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -2074,23 +2074,23 @@ LABEL_42:
   v4[2] = sub_10033D178;
   v4[3] = &unk_10051D770;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = time;
   dispatch_async(queue, v4);
 }
 
-- (void)audioSessionCoordinator:(id)a3 releaseAudioSessionWithContext:(id)a4
+- (void)audioSessionCoordinator:(id)coordinator releaseAudioSessionWithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   v8 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v14 = "[ADSpeechManager audioSessionCoordinator:releaseAudioSessionWithContext:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = coordinatorCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s audioSessionCoordinator = %@, context = %@", buf, 0x20u);
   }
 
@@ -2101,25 +2101,25 @@ LABEL_42:
     v10[1] = 3221225472;
     v10[2] = sub_10033D39C;
     v10[3] = &unk_10051E010;
-    v11 = v6;
-    v12 = self;
+    v11 = coordinatorCopy;
+    selfCopy = self;
     dispatch_async(queue, v10);
   }
 }
 
-- (void)audioSessionCoordinator:(id)a3 prepareAudioSessionWithContext:(id)a4
+- (void)audioSessionCoordinator:(id)coordinator prepareAudioSessionWithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   v8 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v14 = "[ADSpeechManager audioSessionCoordinator:prepareAudioSessionWithContext:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = coordinatorCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s audioSessionCoordinator = %@, context = %@", buf, 0x20u);
   }
 
@@ -2130,39 +2130,39 @@ LABEL_42:
     v10[1] = 3221225472;
     v10[2] = sub_10033D6B0;
     v10[3] = &unk_10051E010;
-    v11 = v6;
-    v12 = self;
+    v11 = coordinatorCopy;
+    selfCopy = self;
     dispatch_async(queue, v10);
   }
 }
 
-- (void)speechCapturingDidProvideConfidenceScores:(id)a3 classification:(unint64_t)a4 classifiedUser:(id)a5 unknownUserScore:(int64_t)a6 duration:(int64_t)a7 version:(int64_t)a8 thresholdingType:(id)a9 assetVersion:(id)a10
+- (void)speechCapturingDidProvideConfidenceScores:(id)scores classification:(unint64_t)classification classifiedUser:(id)user unknownUserScore:(int64_t)score duration:(int64_t)duration version:(int64_t)version thresholdingType:(id)type assetVersion:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a5;
-  v20 = a3;
+  assetVersionCopy = assetVersion;
+  typeCopy = type;
+  userCopy = user;
+  scoresCopy = scores;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechManager:self didReceiveConfidenceScores:v20 classification:a4 classifiedUser:v19 unknownUserScore:a6 duration:a7 version:a8 thresholdingType:v18 assetVersion:v17];
+  [WeakRetained speechManager:self didReceiveConfidenceScores:scoresCopy classification:classification classifiedUser:userCopy unknownUserScore:score duration:duration version:version thresholdingType:typeCopy assetVersion:assetVersionCopy];
 }
 
-- (void)speechCapturing:(id)a3 languageDetectorDidFail:(id)a4
+- (void)speechCapturing:(id)capturing languageDetectorDidFail:(id)fail
 {
-  v5 = a4;
+  failCopy = fail;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechManager:self languageDetectorDidFail:v5];
+  [WeakRetained speechManager:self languageDetectorDidFail:failCopy];
 }
 
-- (void)speechCapturing:(id)a3 didLoseAudioSessionOwnerOrMediaServices:(id)a4
+- (void)speechCapturing:(id)capturing didLoseAudioSessionOwnerOrMediaServices:(id)services
 {
-  v5 = a4;
+  servicesCopy = services;
   v6 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v7 = 136315394;
     v8 = "[ADSpeechManager speechCapturing:didLoseAudioSessionOwnerOrMediaServices:]";
     v9 = 2112;
-    v10 = v5;
+    v10 = servicesCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s userInfo = %@", &v7, 0x16u);
   }
 
@@ -2170,16 +2170,16 @@ LABEL_42:
   self->_hasPreparedAudioSystemForPlayback = 0;
 }
 
-- (void)speechCapturing:(id)a3 didInterruptAudioSession:(id)a4
+- (void)speechCapturing:(id)capturing didInterruptAudioSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v7 = 136315394;
     v8 = "[ADSpeechManager speechCapturing:didInterruptAudioSession:]";
     v9 = 2112;
-    v10 = v5;
+    v10 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s userInfo = %@", &v7, 0x16u);
   }
 
@@ -2187,60 +2187,60 @@ LABEL_42:
   self->_hasPreparedAudioSystemForPlayback = 0;
 }
 
-- (void)speechCapturing:(id)a3 didSetAudioSessionActive:(BOOL)a4
+- (void)speechCapturing:(id)capturing didSetAudioSessionActive:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
+  activeCopy = active;
+  capturingCopy = capturing;
   v7 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v9 = 136315394;
     v10 = "[ADSpeechManager speechCapturing:didSetAudioSessionActive:]";
     v11 = 1024;
-    v12 = v4;
+    v12 = activeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s flag = %d", &v9, 0x12u);
   }
 
   v8 = 210;
-  if (!v4)
+  if (!activeCopy)
   {
     v8 = 211;
   }
 
-  *(&self->super.isa + v8) = v4;
-  self->_isAudioSessionLikelyActive = v4;
-  [(ADSpeechManager *)self _tellDelegateDidSetAudioSessionActive:v4];
-  [(ADAudioSessionCoordinator *)self->_audioSessionCoordinator handleDidSetAudioSessionActive:v4];
+  *(&self->super.isa + v8) = activeCopy;
+  self->_isAudioSessionLikelyActive = activeCopy;
+  [(ADSpeechManager *)self _tellDelegateDidSetAudioSessionActive:activeCopy];
+  [(ADAudioSessionCoordinator *)self->_audioSessionCoordinator handleDidSetAudioSessionActive:activeCopy];
 }
 
-- (void)speechCapturing:(id)a3 willSetAudioSessionActive:(BOOL)a4
+- (void)speechCapturing:(id)capturing willSetAudioSessionActive:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
+  activeCopy = active;
+  capturingCopy = capturing;
   v7 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v9 = 136315394;
     v10 = "[ADSpeechManager speechCapturing:willSetAudioSessionActive:]";
     v11 = 1024;
-    v12 = v4;
+    v12 = activeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s flag = %d", &v9, 0x12u);
   }
 
   v8 = 210;
-  if (!v4)
+  if (!activeCopy)
   {
     v8 = 211;
   }
 
-  *(&self->super.isa + v8) = v4;
-  [(ADSpeechManager *)self _tellDelegateWillSetAudioSessionActive:v4];
-  [(ADAudioSessionCoordinator *)self->_audioSessionCoordinator handleWillSetAudioSessionActive:v4];
+  *(&self->super.isa + v8) = activeCopy;
+  [(ADSpeechManager *)self _tellDelegateWillSetAudioSessionActive:activeCopy];
+  [(ADAudioSessionCoordinator *)self->_audioSessionCoordinator handleWillSetAudioSessionActive:activeCopy];
 }
 
-- (void)speechCapturingDidRequestUpdateSiriOutputVolume:(id)a3
+- (void)speechCapturingDidRequestUpdateSiriOutputVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -2256,7 +2256,7 @@ LABEL_42:
   }
 }
 
-- (void)speechCapturingDidRequestShutdownUI:(id)a3
+- (void)speechCapturingDidRequestShutdownUI:(id)i
 {
   v4 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -2269,7 +2269,7 @@ LABEL_42:
   [(ADSpeechManager *)self _tellDelegateShutdownUIWasRequested];
 }
 
-- (void)speechCapturingDidRequestQuickStop:(id)a3
+- (void)speechCapturingDidRequestQuickStop:(id)stop
 {
   v4 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -2282,9 +2282,9 @@ LABEL_42:
   [(ADSpeechManager *)self _tellDelegateQuickStopWasRequested];
 }
 
-- (void)speechCapturingDidRecordSpeechPackets:(id)a3 atTimestamp:(double)a4 totalPacketCount:(int64_t)a5
+- (void)speechCapturingDidRecordSpeechPackets:(id)packets atTimestamp:(double)timestamp totalPacketCount:(int64_t)count
 {
-  v8 = a3;
+  packetsCopy = packets;
   if ([(CSSiriSpeechRecordingContext *)self->_capturingContext wantsRecordedAudioBufferLogs])
   {
     v9 = AFSiriLogContextSpeech;
@@ -2294,48 +2294,48 @@ LABEL_42:
       v11 = 136315906;
       v12 = "[ADSpeechManager speechCapturingDidRecordSpeechPackets:atTimestamp:totalPacketCount:]";
       v13 = 2048;
-      v14 = [v8 count];
+      v14 = [packetsCopy count];
       v15 = 2048;
-      v16 = a4;
+      timestampCopy = timestamp;
       v17 = 2048;
-      v18 = a5;
+      countCopy = count;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s packets.count = %llu, timestamp = %f, totalPacketCount = %lld", &v11, 0x2Au);
     }
   }
 
-  [(ADSpeechLog *)self->_speechLog appendSpeechPackets:v8];
-  [(ADSpeechManager *)self _tellDelegateAboutSpeechPackets:v8 atTimestamp:a5 count:a4];
+  [(ADSpeechLog *)self->_speechLog appendSpeechPackets:packetsCopy];
+  [(ADSpeechManager *)self _tellDelegateAboutSpeechPackets:packetsCopy atTimestamp:count count:timestamp];
 }
 
-- (void)speechCapturingDidStopRecordingWithError:(id)a3 endpointMode:(int64_t)a4 totalPacketCount:(int64_t)a5 endpointerMetrics:(id)a6
+- (void)speechCapturingDidStopRecordingWithError:(id)error endpointMode:(int64_t)mode totalPacketCount:(int64_t)count endpointerMetrics:(id)metrics
 {
   queue = self->_queue;
-  v11 = a6;
-  v15 = a3;
+  metricsCopy = metrics;
+  errorCopy = error;
   dispatch_assert_queue_V2(queue);
-  recordingError = v15;
-  if (!v15)
+  recordingError = errorCopy;
+  if (!errorCopy)
   {
     recordingError = self->_recordingError;
   }
 
   v13 = recordingError;
-  [(ADSpeechManager *)self _recordingStoppedWithError:v13 totalPacketCount:a5 endpointMode:a4 endpointerMetrics:v11];
+  [(ADSpeechManager *)self _recordingStoppedWithError:v13 totalPacketCount:count endpointMode:mode endpointerMetrics:metricsCopy];
 
   v14 = self->_recordingError;
   self->_recordingError = 0;
 }
 
-- (void)speechCapturingDidReceiveLastAudioBufferWithEndpointMode:(int64_t)a3 totalPacketCount:(int64_t)a4 endpointerMetrics:(id)a5
+- (void)speechCapturingDidReceiveLastAudioBufferWithEndpointMode:(int64_t)mode totalPacketCount:(int64_t)count endpointerMetrics:(id)metrics
 {
-  v8 = a5;
+  metricsCopy = metrics;
   dispatch_assert_queue_V2(self->_queue);
   speechState = self->_speechState;
   if (speechState > 4 || ((1 << speechState) & 0x13) == 0)
   {
     if (!self->_hasReceivedLastAudioBuffer)
     {
-      [(ADSpeechManager *)self _lastAudioBufferReceivedWithEndpointMode:a3 totalPacketCount:a4 endpointerMetrics:v8];
+      [(ADSpeechManager *)self _lastAudioBufferReceivedWithEndpointMode:mode totalPacketCount:count endpointerMetrics:metricsCopy];
     }
   }
 
@@ -2355,21 +2355,21 @@ LABEL_42:
   }
 }
 
-- (void)speechCapturingDidUpdateRecordingInfo:(id)a3
+- (void)speechCapturingDidUpdateRecordingInfo:(id)info
 {
-  v6 = a3;
-  v4 = [v6 route];
-  v5 = [v6 deviceIdentifier];
-  [(ADSpeechManager *)self _updateRecordRoute:v4 andDeviceIdentifier:v5];
+  infoCopy = info;
+  route = [infoCopy route];
+  deviceIdentifier = [infoCopy deviceIdentifier];
+  [(ADSpeechManager *)self _updateRecordRoute:route andDeviceIdentifier:deviceIdentifier];
 
-  [(ADSpeechManager *)self _tellDelegateUpdateAudioInfo:v6];
+  [(ADSpeechManager *)self _tellDelegateUpdateAudioInfo:infoCopy];
 }
 
-- (void)speechCapturingDidStartRecordingSuccessfully:(BOOL)a3 error:(id)a4 withInfo:(id)a5
+- (void)speechCapturingDidStartRecordingSuccessfully:(BOOL)successfully error:(id)error withInfo:(id)info
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  successfullyCopy = successfully;
+  errorCopy = error;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_queue);
   v10 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -2377,34 +2377,34 @@ LABEL_42:
     *buf = 136315906;
     v90 = "[ADSpeechManager speechCapturingDidStartRecordingSuccessfully:error:withInfo:]";
     v91 = 1024;
-    *v92 = v6;
+    *v92 = successfullyCopy;
     *&v92[4] = 2112;
-    *&v92[6] = v8;
+    *&v92[6] = errorCopy;
     *&v92[14] = 2112;
-    *&v92[16] = v9;
+    *&v92[16] = infoCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s success = %d, error = %@, info = %@", buf, 0x26u);
   }
 
-  if (!v6)
+  if (!successfullyCopy)
   {
     [(ADSpeechManager *)self _updateSpeechState:0];
-    [(ADSpeechManager *)self _tellDelegateSpeechFailedWithError:v8];
+    [(ADSpeechManager *)self _tellDelegateSpeechFailedWithError:errorCopy];
     goto LABEL_64;
   }
 
-  v11 = [v9 route];
-  v12 = [v9 deviceIdentifier];
-  [(ADSpeechManager *)self _updateRecordRoute:v11 andDeviceIdentifier:v12];
+  route = [infoCopy route];
+  deviceIdentifier = [infoCopy deviceIdentifier];
+  [(ADSpeechManager *)self _updateRecordRoute:route andDeviceIdentifier:deviceIdentifier];
 
   [(ADSpeechManager *)self _updateSpeechState:2];
-  v13 = [v9 codec];
-  if (v13)
+  codec = [infoCopy codec];
+  if (codec)
   {
     v88 = self->_initialDictationLanguage;
-    v14 = [(AFDictationOptions *)self->_dictationOptions offlineLanguage];
-    if (v14)
+    offlineLanguage = [(AFDictationOptions *)self->_dictationOptions offlineLanguage];
+    if (offlineLanguage)
     {
-      v15 = v14;
+      v15 = offlineLanguage;
     }
 
     else
@@ -2416,7 +2416,7 @@ LABEL_42:
       }
     }
 
-    if (!self->_localSpeechRecognizerTask || !AFOfflineDictationCapable() || ([v9 isFingerprintOnly] & 1) != 0)
+    if (!self->_localSpeechRecognizerTask || !AFOfflineDictationCapable() || ([infoCopy isFingerprintOnly] & 1) != 0)
     {
 LABEL_13:
       v16 = AFSiriLogContextSpeech;
@@ -2437,22 +2437,22 @@ LABEL_13:
       }
 
 LABEL_62:
-      [(ADSpeechManager *)self _tellDelegateSpeechStartedWithRecordingInfo:v9];
-      [(ADSpeechLog *)self->_speechLog beginNewSpeechLogWithFormat:v13];
+      [(ADSpeechManager *)self _tellDelegateSpeechStartedWithRecordingInfo:infoCopy];
+      [(ADSpeechLog *)self->_speechLog beginNewSpeechLogWithFormat:codec];
 
       goto LABEL_63;
     }
 
-    v20 = [v9 codecIsNarrowband];
-    v21 = [v9 voiceTriggerEventInfo];
-    v22 = v21 != 0;
+    codecIsNarrowband = [infoCopy codecIsNarrowband];
+    voiceTriggerEventInfo = [infoCopy voiceTriggerEventInfo];
+    v22 = voiceTriggerEventInfo != 0;
 
     v86 = self->_localSpeechRecognizerTask;
     v81 = [(NSString *)v86 isEqualToString:CoreEmbeddedSpeechRecognizerTaskDictation];
     v23 = objc_alloc_init(NSMutableDictionary);
-    [v23 setObject:v13 forKeyedSubscript:@"codec"];
+    [v23 setObject:codec forKeyedSubscript:@"codec"];
     [v23 setObject:v15 forKeyedSubscript:@"language"];
-    v24 = [NSNumber numberWithBool:v20];
+    v24 = [NSNumber numberWithBool:codecIsNarrowband];
     [v23 setObject:v24 forKeyedSubscript:@"narrowband"];
 
     v25 = [NSNumber numberWithBool:v22];
@@ -2467,28 +2467,28 @@ LABEL_62:
         dictationOptions = self->_dictationOptions;
       }
 
-      v79 = [(AFDictationOptions *)dictationOptions detectUtterances];
-      v85 = [(AFDictationOptions *)self->_dictationOptions originalAudioFileURL];
-      v84 = [(AFDictationOptions *)self->_dictationOptions modelOverrideURL];
-      v83 = [(AFDictationOptions *)self->_dictationOptions inlineItemList];
-      v27 = [(AFDictationOptions *)self->_dictationOptions fieldLabel];
+      detectUtterances = [(AFDictationOptions *)dictationOptions detectUtterances];
+      originalAudioFileURL = [(AFDictationOptions *)self->_dictationOptions originalAudioFileURL];
+      modelOverrideURL = [(AFDictationOptions *)self->_dictationOptions modelOverrideURL];
+      inlineItemList = [(AFDictationOptions *)self->_dictationOptions inlineItemList];
+      fieldLabel = [(AFDictationOptions *)self->_dictationOptions fieldLabel];
       AFIsDictationRequestSpeechApiRequest();
 
-      v87 = [(AFDictationOptions *)self->_dictationOptions interactionIdentifier];
-      v28 = [(AFDictationOptions *)self->_dictationOptions applicationName];
-      v77 = [(AFDictationOptions *)self->_dictationOptions preferOnlineRecognition];
-      v78 = [(AFDictationOptions *)self->_dictationOptions forceOfflineRecognition];
-      v76 = [(AFDictationOptions *)self->_dictationOptions secureOfflineOnly];
-      v80 = v81 & v78;
+      interactionIdentifier = [(AFDictationOptions *)self->_dictationOptions interactionIdentifier];
+      applicationName = [(AFDictationOptions *)self->_dictationOptions applicationName];
+      preferOnlineRecognition = [(AFDictationOptions *)self->_dictationOptions preferOnlineRecognition];
+      forceOfflineRecognition = [(AFDictationOptions *)self->_dictationOptions forceOfflineRecognition];
+      secureOfflineOnly = [(AFDictationOptions *)self->_dictationOptions secureOfflineOnly];
+      v80 = v81 & forceOfflineRecognition;
       [(AFDictationOptions *)self->_dictationOptions emojiRecognition];
       [(AFDictationOptions *)self->_dictationOptions autoPunctuation];
-      v29 = [NSNumber numberWithBool:v79];
+      v29 = [NSNumber numberWithBool:detectUtterances];
       [v23 setObject:v29 forKeyedSubscript:@"detectUtterances"];
 
-      v82 = v28;
-      if (v28)
+      v82 = applicationName;
+      if (applicationName)
       {
-        v30 = v28;
+        v30 = applicationName;
       }
 
       else
@@ -2497,23 +2497,23 @@ LABEL_62:
       }
 
       [v23 setObject:v30 forKeyedSubscript:@"applicationName"];
-      v31 = [NSNumber numberWithBool:v77];
+      v31 = [NSNumber numberWithBool:preferOnlineRecognition];
       [v23 setObject:v31 forKeyedSubscript:@"preferOnlineRecognition"];
 
-      v32 = [NSNumber numberWithBool:v78];
+      v32 = [NSNumber numberWithBool:forceOfflineRecognition];
       [v23 setObject:v32 forKeyedSubscript:@"forceOfflineRecognition"];
 
-      v33 = [NSNumber numberWithBool:v76];
+      v33 = [NSNumber numberWithBool:secureOfflineOnly];
       [v23 setObject:v33 forKeyedSubscript:@"secureOfflineOnly"];
 
       if (v80 == 1)
       {
         v34 = v86;
-        if (v76)
+        if (secureOfflineOnly)
         {
-          if (v87)
+          if (interactionIdentifier)
           {
-            v35 = v87;
+            v35 = interactionIdentifier;
           }
 
           else
@@ -2536,11 +2536,11 @@ LABEL_62:
 
           [v23 setObject:v38 forKeyedSubscript:@"userInterfaceIdiom"];
 
-          v39 = [v9 source];
-          v40 = v39;
-          if (v39)
+          source = [infoCopy source];
+          v40 = source;
+          if (source)
           {
-            v41 = v39;
+            v41 = source;
           }
 
           else
@@ -2550,11 +2550,11 @@ LABEL_62:
 
           [v23 setObject:v41 forKeyedSubscript:@"audioSource"];
 
-          v42 = [v9 vendorId];
-          v43 = v42;
-          if (v42)
+          vendorId = [infoCopy vendorId];
+          v43 = vendorId;
+          if (vendorId)
           {
-            v44 = v42;
+            v44 = vendorId;
           }
 
           else
@@ -2564,11 +2564,11 @@ LABEL_62:
 
           [v23 setObject:v44 forKeyedSubscript:@"vendorId"];
 
-          v45 = [v9 productId];
-          v46 = v45;
-          if (v45)
+          productId = [infoCopy productId];
+          v46 = productId;
+          if (productId)
           {
-            v47 = v45;
+            v47 = productId;
           }
 
           else
@@ -2578,11 +2578,11 @@ LABEL_62:
 
           [v23 setObject:v47 forKeyedSubscript:@"productId"];
 
-          v48 = [(AFDictationOptions *)self->_dictationOptions fieldLabel];
-          v49 = v48;
-          if (v48)
+          fieldLabel2 = [(AFDictationOptions *)self->_dictationOptions fieldLabel];
+          v49 = fieldLabel2;
+          if (fieldLabel2)
           {
-            v50 = v48;
+            v50 = fieldLabel2;
           }
 
           else
@@ -2592,7 +2592,7 @@ LABEL_62:
 
           [v23 setObject:v50 forKeyedSubscript:@"fieldLabel"];
 
-          v51 = sub_10000EF08([v9 speechEvent]);
+          v51 = sub_10000EF08([infoCopy speechEvent]);
           v52 = v51;
           if (v51)
           {
@@ -2609,8 +2609,8 @@ LABEL_62:
           if (AFIsSearchDictationRequest())
           {
             v54 = +[ADDictationOfflineStatusObserver sharedDictationOfflineStatusObserver];
-            v55 = [v54 offlineDictationStatus];
-            inlineItemList = [v55 objectForKey:v15];
+            offlineDictationStatus = [v54 offlineDictationStatus];
+            inlineItemList = [offlineDictationStatus objectForKey:v15];
 
             v57 = [inlineItemList objectForKey:AFOfflineDictationStatusOnDeviceSearchKey];
             LODWORD(v54) = [v57 BOOLValue];
@@ -2618,16 +2618,16 @@ LABEL_62:
             if (!v54)
             {
               v34 = v86;
-              v58 = v87;
+              v58 = interactionIdentifier;
               goto LABEL_58;
             }
 
             v34 = CoreEmbeddedSpeechRecognizerTaskWebSearch;
 
 LABEL_52:
-            v58 = v87;
+            v58 = interactionIdentifier;
 LABEL_58:
-            v87 = v58;
+            interactionIdentifier = v58;
 
             goto LABEL_59;
           }
@@ -2669,28 +2669,28 @@ LABEL_59:
         v34 = v86;
         if (AFIsNano())
         {
-          v83 = 0;
+          inlineItemList = 0;
         }
 
         else
         {
-          v83 = self->_inlineItemList;
+          inlineItemList = self->_inlineItemList;
         }
 
         v82 = 0;
         v58 = 0;
-        v84 = 0;
-        v85 = 0;
+        modelOverrideURL = 0;
+        originalAudioFileURL = 0;
         inlineItemList = self->_inlineItemList;
         self->_inlineItemList = 0;
         goto LABEL_58;
       }
 
       v82 = 0;
-      v83 = 0;
-      v87 = 0;
-      v84 = 0;
-      v85 = 0;
+      inlineItemList = 0;
+      interactionIdentifier = 0;
+      modelOverrideURL = 0;
+      originalAudioFileURL = 0;
     }
 
     v34 = v86;
@@ -2725,7 +2725,7 @@ LABEL_64:
     self->_recordStartedCompletion = 0;
   }
 
-  if (!v6)
+  if (!successfullyCopy)
   {
     recordStoppedCompletion = self->_recordStoppedCompletion;
     if (recordStoppedCompletion)
@@ -2752,30 +2752,30 @@ LABEL_64:
   }
 }
 
-- (void)_updateCapturingStateWithOptions:(id)a3
+- (void)_updateCapturingStateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     v7 = 136315394;
     v8 = "[ADSpeechManager _updateCapturingStateWithOptions:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %@", &v7, 0x16u);
   }
 
-  if (v4)
+  if (optionsCopy)
   {
-    v6 = [(ADSpeechManager *)self _currentSpeechCaptureSource];
-    [v6 setSpeechRequestOptions:v4];
+    _currentSpeechCaptureSource = [(ADSpeechManager *)self _currentSpeechCaptureSource];
+    [_currentSpeechCaptureSource setSpeechRequestOptions:optionsCopy];
   }
 }
 
-- (void)_recordingStoppedWithError:(id)a3 totalPacketCount:(int64_t)a4 endpointMode:(int64_t)a5 endpointerMetrics:(id)a6
+- (void)_recordingStoppedWithError:(id)error totalPacketCount:(int64_t)count endpointMode:(int64_t)mode endpointerMetrics:(id)metrics
 {
-  v10 = a3;
-  v11 = a6;
+  errorCopy = error;
+  metricsCopy = metrics;
   v12 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -2785,13 +2785,13 @@ LABEL_64:
     v24 = 136316418;
     v25 = "[ADSpeechManager _recordingStoppedWithError:totalPacketCount:endpointMode:endpointerMetrics:]";
     v26 = 2112;
-    v27 = v10;
+    v27 = errorCopy;
     v28 = 2048;
-    v29 = a5;
+    modeCopy = mode;
     v30 = 2048;
-    v31 = a4;
+    countCopy = count;
     v32 = 2112;
-    v33 = v11;
+    v33 = metricsCopy;
     v34 = 2112;
     v35 = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s error = %@, endpointMode = %zd, totalPacketCount = %zd, endpointerMetrics = %@, ADSpeechState = %@", &v24, 0x3Eu);
@@ -2799,9 +2799,9 @@ LABEL_64:
 
   v16 = self->_speechState;
   [(ADSpeechManager *)self _updateSpeechState:0];
-  if (v10)
+  if (errorCopy)
   {
-    [(ADSpeechManager *)self _tellDelegateSpeechFailedWithError:v10];
+    [(ADSpeechManager *)self _tellDelegateSpeechFailedWithError:errorCopy];
   }
 
   else if (v16 == 4)
@@ -2813,7 +2813,7 @@ LABEL_64:
   {
     if (!self->_hasReceivedLastAudioBuffer)
     {
-      [(ADSpeechManager *)self _lastAudioBufferReceivedWithEndpointMode:a5 totalPacketCount:a4 endpointerMetrics:v11];
+      [(ADSpeechManager *)self _lastAudioBufferReceivedWithEndpointMode:mode totalPacketCount:count endpointerMetrics:metricsCopy];
     }
 
     [(ADSpeechManager *)self _tellDelegateSpeechFinished];
@@ -2858,9 +2858,9 @@ LABEL_64:
   }
 }
 
-- (void)_lastAudioBufferReceivedWithEndpointMode:(int64_t)a3 totalPacketCount:(int64_t)a4 endpointerMetrics:(id)a5
+- (void)_lastAudioBufferReceivedWithEndpointMode:(int64_t)mode totalPacketCount:(int64_t)count endpointerMetrics:(id)metrics
 {
-  v8 = a5;
+  metricsCopy = metrics;
   v9 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -2870,24 +2870,24 @@ LABEL_64:
     v13 = 136316162;
     v14 = "[ADSpeechManager _lastAudioBufferReceivedWithEndpointMode:totalPacketCount:endpointerMetrics:]";
     v15 = 2048;
-    v16 = a3;
+    modeCopy = mode;
     v17 = 2048;
-    v18 = a4;
+    countCopy = count;
     v19 = 2112;
-    v20 = v8;
+    v20 = metricsCopy;
     v21 = 2112;
     v22 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s %zd %zd %@ %@", &v13, 0x34u);
   }
 
   self->_hasReceivedLastAudioBuffer = 1;
-  [(ADSpeechManager *)self _tellDelegateSpeechReceivedLastAudioBufferWithEndpointMode:a3 totalPacketCount:a4 endpointerMetrics:v8];
+  [(ADSpeechManager *)self _tellDelegateSpeechReceivedLastAudioBufferWithEndpointMode:mode totalPacketCount:count endpointerMetrics:metricsCopy];
 }
 
-- (void)_cancelRecordingWithError:(id)a3 suppressAlert:(BOOL)a4
+- (void)_cancelRecordingWithError:(id)error suppressAlert:(BOOL)alert
 {
-  v4 = a4;
-  v6 = a3;
+  alertCopy = alert;
+  errorCopy = error;
   v7 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -2897,50 +2897,50 @@ LABEL_64:
     v13 = 136315906;
     v14 = "[ADSpeechManager _cancelRecordingWithError:suppressAlert:]";
     v15 = 2112;
-    v16 = v6;
+    v16 = errorCopy;
     v17 = 1024;
-    v18 = v4;
+    v18 = alertCopy;
     v19 = 2112;
     v20 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s %@ %d %@", &v13, 0x26u);
   }
 
   recordingError = self->_recordingError;
-  self->_recordingError = v6;
+  self->_recordingError = errorCopy;
 
-  v12 = [(ADSpeechManager *)self _currentSpeechCaptureSource];
-  [v12 cancelSpeechCaptureSuppressingAlert:v4];
+  _currentSpeechCaptureSource = [(ADSpeechManager *)self _currentSpeechCaptureSource];
+  [_currentSpeechCaptureSource cancelSpeechCaptureSuppressingAlert:alertCopy];
 
   [(ADSpeechManager *)self _updateSpeechState:4];
 }
 
-- (void)_tellDelegateSpeechWillStopRecordingWithSignpostID:(unint64_t)a3
+- (void)_tellDelegateSpeechWillStopRecordingWithSignpostID:(unint64_t)d
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechManager:self willStopRecordingWithSignpostID:a3];
+  [WeakRetained speechManager:self willStopRecordingWithSignpostID:d];
 }
 
-- (void)_tellDelegateDidDetectLanguage:(id)a3 confidenceScores:(id)a4 isConfident:(BOOL)a5
+- (void)_tellDelegateDidDetectLanguage:(id)language confidenceScores:(id)scores isConfident:(BOOL)confident
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  confidentCopy = confident;
+  scoresCopy = scores;
+  languageCopy = language;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechManager:self didDetectLanguage:v9 confidenceScores:v8 isConfident:v5];
+  [WeakRetained speechManager:self didDetectLanguage:languageCopy confidenceScores:scoresCopy isConfident:confidentCopy];
 }
 
-- (void)_tellDelegateDidSetAudioSessionActive:(BOOL)a3
+- (void)_tellDelegateDidSetAudioSessionActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechManager:self audioSessionDidBecomeActive:v3];
+  [WeakRetained speechManager:self audioSessionDidBecomeActive:activeCopy];
 }
 
-- (void)_tellDelegateWillSetAudioSessionActive:(BOOL)a3
+- (void)_tellDelegateWillSetAudioSessionActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechManager:self audioSessionWillBecomeActive:v3];
+  [WeakRetained speechManager:self audioSessionWillBecomeActive:activeCopy];
 }
 
 - (void)_tellDelegateShutdownUIWasRequested
@@ -2955,40 +2955,40 @@ LABEL_64:
   [WeakRetained speechManager:self didRequestQuickStopWithContext:self->_capturingContext];
 }
 
-- (void)_tellDelegateToPerformTwoShotPromptWithType:(int64_t)a3 completion:(id)a4
+- (void)_tellDelegateToPerformTwoShotPromptWithType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechManager:self performTwoShotPromptWithType:a3 context:self->_capturingContext completion:v6];
+  [WeakRetained speechManager:self performTwoShotPromptWithType:type context:self->_capturingContext completion:completionCopy];
 }
 
-- (void)_tellDelegateSpeechEndpointWasDetectedAtTime:(double)a3
+- (void)_tellDelegateSpeechEndpointWasDetectedAtTime:(double)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechManager:self didDetectEndpointAtTime:self->_capturingContext context:a3];
+  [WeakRetained speechManager:self didDetectEndpointAtTime:self->_capturingContext context:time];
 }
 
-- (void)_tellDelegateSpeechStartpointWasDetectedAtTime:(double)a3
+- (void)_tellDelegateSpeechStartpointWasDetectedAtTime:(double)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechManager:self didDetectStartpointAtTime:self->_capturingContext context:a3];
+  [WeakRetained speechManager:self didDetectStartpointAtTime:self->_capturingContext context:time];
 }
 
-- (void)_tellDelegateAudioFileDidFinish:(id)a3 error:(id)a4
+- (void)_tellDelegateAudioFileDidFinish:(id)finish error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  finishCopy = finish;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechManager:self didFinishWritingAudioFile:v7 error:v6 context:self->_capturingContext];
+  [WeakRetained speechManager:self didFinishWritingAudioFile:finishCopy error:errorCopy context:self->_capturingContext];
 }
 
-- (void)_tellDelegateAboutInputAveragePower:(float)a3 peak:(float)a4
+- (void)_tellDelegateAboutInputAveragePower:(float)power peak:(float)peak
 {
   if (self->_shouldTalkToDelegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    *&v7 = a3;
-    *&v8 = a4;
+    *&v7 = power;
+    *&v8 = peak;
     [WeakRetained speechManager:self didUpdateInputAveragePower:v7 peakPower:v8];
   }
 
@@ -3044,13 +3044,13 @@ LABEL_64:
   }
 }
 
-- (void)_tellDelegateAboutFingerprint:(id)a3 duration:(double)a4
+- (void)_tellDelegateAboutFingerprint:(id)fingerprint duration:(double)duration
 {
-  v6 = a3;
+  fingerprintCopy = fingerprint;
   if (self->_shouldTalkToDelegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained speechManager:self capturedFingerprint:v6 duration:a4];
+    [WeakRetained speechManager:self capturedFingerprint:fingerprintCopy duration:duration];
   }
 
   else
@@ -3065,13 +3065,13 @@ LABEL_64:
   }
 }
 
-- (void)_tellDelegateAboutSpeechPackets:(id)a3 atTimestamp:(double)a4 count:(int64_t)a5
+- (void)_tellDelegateAboutSpeechPackets:(id)packets atTimestamp:(double)timestamp count:(int64_t)count
 {
-  v8 = a3;
+  packetsCopy = packets;
   if (self->_shouldTalkToDelegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained speechManager:self capturedPackets:v8 atTimestamp:a5 totalCount:self->_capturingContext context:a4];
+    [WeakRetained speechManager:self capturedPackets:packetsCopy atTimestamp:count totalCount:self->_capturingContext context:timestamp];
   }
 
   else
@@ -3086,13 +3086,13 @@ LABEL_64:
   }
 }
 
-- (void)_tellDelegateUpdateAudioInfo:(id)a3
+- (void)_tellDelegateUpdateAudioInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (self->_shouldTalkToDelegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained speechManager:self didUpdateRecordingWithInfo:v4 context:self->_capturingContext];
+    [WeakRetained speechManager:self didUpdateRecordingWithInfo:infoCopy context:self->_capturingContext];
   }
 
   else
@@ -3107,13 +3107,13 @@ LABEL_64:
   }
 }
 
-- (void)_tellDelegateSpeechStartedWithRecordingInfo:(id)a3
+- (void)_tellDelegateSpeechStartedWithRecordingInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (self->_shouldTalkToDelegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained speechManager:self didStartRecordingWithInfo:v4 context:self->_capturingContext];
+    [WeakRetained speechManager:self didStartRecordingWithInfo:infoCopy context:self->_capturingContext];
   }
 
   else
@@ -3128,23 +3128,23 @@ LABEL_64:
   }
 }
 
-- (void)_tellDelegateSpeechWillBeginWithTimestamp:(double)a3 isFromFile:(BOOL)a4 isAudioPowerUpdateDisabled:(BOOL)a5
+- (void)_tellDelegateSpeechWillBeginWithTimestamp:(double)timestamp isFromFile:(BOOL)file isAudioPowerUpdateDisabled:(BOOL)disabled
 {
   if (self->_shouldTalkToDelegate)
   {
-    v5 = a5;
-    v6 = a4;
+    disabledCopy = disabled;
+    fileCopy = file;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = WeakRetained;
-    if (v5)
+    if (disabledCopy)
     {
-      [WeakRetained speechManager:self willStartRecordingAtTimestamp:v6 isFromFile:0 inputAudioPowerWrapper:self->_capturingContext context:a3];
+      [WeakRetained speechManager:self willStartRecordingAtTimestamp:fileCopy isFromFile:0 inputAudioPowerWrapper:self->_capturingContext context:timestamp];
     }
 
     else
     {
-      v11 = [(AFAudioPowerUpdater *)self->_audioPowerUpdater _createNewXPCWrapper];
-      [v12 speechManager:self willStartRecordingAtTimestamp:v6 isFromFile:v11 inputAudioPowerWrapper:self->_capturingContext context:a3];
+      _createNewXPCWrapper = [(AFAudioPowerUpdater *)self->_audioPowerUpdater _createNewXPCWrapper];
+      [v12 speechManager:self willStartRecordingAtTimestamp:fileCopy isFromFile:_createNewXPCWrapper inputAudioPowerWrapper:self->_capturingContext context:timestamp];
     }
   }
 
@@ -3180,13 +3180,13 @@ LABEL_64:
   }
 }
 
-- (void)_tellDelegateSpeechShouldPreheatWithRecordingInfo:(id)a3
+- (void)_tellDelegateSpeechShouldPreheatWithRecordingInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (self->_shouldTalkToDelegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained speechManager:self preheatWithRecordingInfo:v4 context:self->_capturingContext];
+    [WeakRetained speechManager:self preheatWithRecordingInfo:infoCopy context:self->_capturingContext];
   }
 
   else
@@ -3227,13 +3227,13 @@ LABEL_64:
   }
 }
 
-- (void)_tellDelegateSpeechReceivedLastAudioBufferWithEndpointMode:(int64_t)a3 totalPacketCount:(int64_t)a4 endpointerMetrics:(id)a5
+- (void)_tellDelegateSpeechReceivedLastAudioBufferWithEndpointMode:(int64_t)mode totalPacketCount:(int64_t)count endpointerMetrics:(id)metrics
 {
-  v8 = a5;
+  metricsCopy = metrics;
   if (self->_shouldTalkToDelegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained speechManager:self didReceiveLastAudioBufferWithEndpointMode:a3 totalPacketCount:a4 endpointerMetrics:v8 context:self->_capturingContext];
+    [WeakRetained speechManager:self didReceiveLastAudioBufferWithEndpointMode:mode totalPacketCount:count endpointerMetrics:metricsCopy context:self->_capturingContext];
   }
 
   else
@@ -3248,13 +3248,13 @@ LABEL_64:
   }
 }
 
-- (void)_tellDelegateSpeechFailedWithError:(id)a3
+- (void)_tellDelegateSpeechFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self->_shouldTalkToDelegate)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained speechManager:self didFailWithError:v4 context:self->_capturingContext];
+    [WeakRetained speechManager:self didFailWithError:errorCopy context:self->_capturingContext];
 
     [(ADSpeechManager *)self _cleanUpDelegateInfo];
   }
@@ -3352,30 +3352,30 @@ LABEL_64:
   return v3;
 }
 
-- (void)disableDESWithCompletion:(id)a3
+- (void)disableDESWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100340BEC;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getOfflineDictationStatusIgnoringCache:(BOOL)a3 completion:(id)a4
+- (void)getOfflineDictationStatusIgnoringCache:(BOOL)cache completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100340CD8;
   block[3] = &unk_10051CF58;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -3396,7 +3396,7 @@ LABEL_64:
       v9 = 136315650;
       v10 = "[ADSpeechManager _interactiveLocalSpeechRecognizer]";
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %@ created speech recognizer %@", &v9, 0x20u);
@@ -3434,14 +3434,14 @@ LABEL_64:
 
   if (AFSupportsAudioSessionCoordination())
   {
-    v5 = [(ADAudioSessionCoordinator *)self->_audioSessionCoordinator hasActiveAudioSessionAssertions];
+    hasActiveAudioSessionAssertions = [(ADAudioSessionCoordinator *)self->_audioSessionCoordinator hasActiveAudioSessionAssertions];
     v6 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEBUG))
     {
       v23 = 136315394;
       v24 = "[ADSpeechManager _releaseSession]";
       v25 = 1024;
-      v26 = v5;
+      v26 = hasActiveAudioSessionAssertions;
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%s hasActiveAudioSessionAssertions = %d", &v23, 0x12u);
       v6 = AFSiriLogContextSpeech;
     }
@@ -3454,7 +3454,7 @@ LABEL_64:
       v25 = 1024;
       v26 = isReleaseAudioSessionRequired;
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%s hasActivatedAudioSession = %d", &v23, 0x12u);
-      if (v5)
+      if (hasActiveAudioSessionAssertions)
       {
 LABEL_8:
         v8 = AFSiriLogContextSpeech;
@@ -3472,7 +3472,7 @@ LABEL_30:
       }
     }
 
-    else if (v5)
+    else if (hasActiveAudioSessionAssertions)
     {
       goto LABEL_8;
     }
@@ -3523,10 +3523,10 @@ LABEL_30:
       _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%s Stopped audio playback, if any", &v23, 0xCu);
     }
 
-    v17 = [(ADSpeechManager *)self _currentSpeechCaptureSource];
-    [(CSSiriSpeechRecorder *)v17 releaseAudioSession];
+    _currentSpeechCaptureSource = [(ADSpeechManager *)self _currentSpeechCaptureSource];
+    [(CSSiriSpeechRecorder *)_currentSpeechCaptureSource releaseAudioSession];
     speechRecorder = self->_speechRecorder;
-    if (speechRecorder != v17)
+    if (speechRecorder != _currentSpeechCaptureSource)
     {
       [(CSSiriSpeechRecorder *)speechRecorder releaseAudioSession];
     }
@@ -3576,12 +3576,12 @@ LABEL_30:
   return v11;
 }
 
-- (void)_updateRecordRoute:(id)a3 andDeviceIdentifier:(id)a4
+- (void)_updateRecordRoute:(id)route andDeviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  routeCopy = route;
+  identifierCopy = identifier;
   recordRoute = self->_recordRoute;
-  if (recordRoute != v6 && ![(NSString *)recordRoute isEqualToString:v6])
+  if (recordRoute != routeCopy && ![(NSString *)recordRoute isEqualToString:routeCopy])
   {
     v9 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -3592,17 +3592,17 @@ LABEL_30:
       v20 = 2112;
       v21 = v10;
       v22 = 2112;
-      v23 = v6;
+      v23 = routeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s recordRoute: %@ -> %@", &v18, 0x20u);
     }
 
-    v11 = [(NSString *)v6 copy];
+    v11 = [(NSString *)routeCopy copy];
     v12 = self->_recordRoute;
     self->_recordRoute = v11;
   }
 
   deviceIdentifier = self->_deviceIdentifier;
-  if (deviceIdentifier != v7 && ![(NSString *)deviceIdentifier isEqualToString:v7])
+  if (deviceIdentifier != identifierCopy && ![(NSString *)deviceIdentifier isEqualToString:identifierCopy])
   {
     v14 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
@@ -3613,21 +3613,21 @@ LABEL_30:
       v20 = 2112;
       v21 = v15;
       v22 = 2112;
-      v23 = v7;
+      v23 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s deviceIdentifier: %@ -> %@", &v18, 0x20u);
     }
 
-    v16 = [(NSString *)v7 copy];
+    v16 = [(NSString *)identifierCopy copy];
     v17 = self->_deviceIdentifier;
     self->_deviceIdentifier = v16;
   }
 }
 
-- (void)_updateAudioDeviceInfo:(id)a3
+- (void)_updateAudioDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = self->_audioDeviceInfo;
-  v6 = v4;
+  v6 = infoCopy;
   v7 = v6;
   if (v5 == v6)
   {
@@ -3670,17 +3670,17 @@ LABEL_30:
 LABEL_11:
 }
 
-- (void)_updateSpeechState:(int)a3
+- (void)_updateSpeechState:(int)state
 {
   speechState = self->_speechState;
-  if (speechState != a3)
+  if (speechState != state)
   {
     v6 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
     {
       v7 = v6;
       v8 = sub_10001A01C(speechState);
-      v9 = sub_10001A01C(a3);
+      v9 = sub_10001A01C(state);
       v11 = 136315650;
       v12 = "[ADSpeechManager _updateSpeechState:]";
       v13 = 2112;
@@ -3690,13 +3690,13 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s speechState: %@ -> %@", &v11, 0x20u);
     }
 
-    self->_speechState = a3;
+    self->_speechState = state;
   }
 
-  if ((a3 != 0) == (speechState == 0))
+  if ((state != 0) == (speechState == 0))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained speechManager:self didChangeRecordingState:a3 != 0];
+    [WeakRetained speechManager:self didChangeRecordingState:state != 0];
   }
 }
 
@@ -3711,8 +3711,8 @@ LABEL_11:
     audioSessionController = self->_audioSessionController;
     audioPlaybackService = self->_audioPlaybackService;
     v9 = +[ADExperimentManager sharedManager];
-    v10 = [v9 context];
-    v11 = [(ADSpeechCompressor *)v4 initWithQueue:queue speechController:speechController audioSessionController:audioSessionController audioPlaybackService:audioPlaybackService experimentContext:v10];
+    context = [v9 context];
+    v11 = [(ADSpeechCompressor *)v4 initWithQueue:queue speechController:speechController audioSessionController:audioSessionController audioPlaybackService:audioPlaybackService experimentContext:context];
     v12 = self->_speechCompressor;
     self->_speechCompressor = v11;
 
@@ -3723,7 +3723,7 @@ LABEL_11:
       v16 = 136315650;
       v17 = "[ADSpeechManager _speechCompressor]";
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
       v21 = speechRecorder;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s %@ created speech compressor %@", &v16, 0x20u);
@@ -3736,17 +3736,17 @@ LABEL_11:
   return speechCompressor;
 }
 
-- (void)getSpeechRecorderVTSatScore:(id)a3
+- (void)getSpeechRecorderVTSatScore:(id)score
 {
-  v4 = a3;
+  scoreCopy = score;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100341CA4;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = scoreCopy;
+  v6 = scoreCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3762,9 +3762,9 @@ LABEL_11:
   [(ADSpeechManager *)&v4 dealloc];
 }
 
-- (id)_initWithInstanceContext:(id)a3
+- (id)_initWithInstanceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v36.receiver = self;
   v36.super_class = ADSpeechManager;
   v5 = [(ADSpeechManager *)&v36 init];
@@ -3794,9 +3794,9 @@ LABEL_11:
     speechLog = v5->_speechLog;
     v5->_speechLog = v12;
 
-    if (v4)
+    if (contextCopy)
     {
-      v14 = v4;
+      v14 = contextCopy;
     }
 
     else
@@ -3827,7 +3827,7 @@ LABEL_11:
     audioPlaybackService = v5->_audioPlaybackService;
     v5->_audioPlaybackService = v23;
 
-    v25 = [[ADAudioSessionCoordinator alloc] initWithInstanceContext:v4 delegate:v5];
+    v25 = [[ADAudioSessionCoordinator alloc] initWithInstanceContext:contextCopy delegate:v5];
     audioSessionCoordinator = v5->_audioSessionCoordinator;
     v5->_audioSessionCoordinator = v25;
 

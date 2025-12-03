@@ -1,18 +1,18 @@
 @interface SBCarDoNotDisturbController
-- (BOOL)_dismissAlertItemsAnimated:(BOOL)a3;
+- (BOOL)_dismissAlertItemsAnimated:(BOOL)animated;
 - (BOOL)_hasShownSiriHeaderViewControllerDuringCurrentCarDNDSession;
 - (BOOL)_isExitConfirmationRequired;
 - (BOOL)_shouldExitConfirmationBeEnforced;
-- (BOOL)handleEvent:(id)a3;
-- (BOOL)unlockFromSource:(int)a3;
+- (BOOL)handleEvent:(id)event;
+- (BOOL)unlockFromSource:(int)source;
 - (NSString)coverSheetIdentifier;
 - (SBCarDoNotDisturbController)init;
-- (SBCarDoNotDisturbController)initWithCARAutomaticDNDStatus:(id)a3 lockScreenManager:(id)a4;
+- (SBCarDoNotDisturbController)initWithCARAutomaticDNDStatus:(id)status lockScreenManager:(id)manager;
 - (unint64_t)restrictedCapabilities;
-- (void)_queue_setExitConfirmationRequired:(BOOL)a3;
-- (void)_queue_setScreenOn:(BOOL)a3;
-- (void)_setHasShownSiriHeaderViewControllerDuringCurrentCarDNDSession:(BOOL)a3;
-- (void)_setScreenOn:(BOOL)a3;
+- (void)_queue_setExitConfirmationRequired:(BOOL)required;
+- (void)_queue_setScreenOn:(BOOL)on;
+- (void)_setHasShownSiriHeaderViewControllerDuringCurrentCarDNDSession:(BOOL)session;
+- (void)_setScreenOn:(BOOL)on;
 - (void)dealloc;
 @end
 
@@ -39,15 +39,15 @@
 
 - (BOOL)_shouldExitConfirmationBeEnforced
 {
-  v3 = [(SBCarDoNotDisturbController *)self _isExitConfirmationRequired];
-  if (v3)
+  _isExitConfirmationRequired = [(SBCarDoNotDisturbController *)self _isExitConfirmationRequired];
+  if (_isExitConfirmationRequired)
   {
     lockScreenManager = self->_lockScreenManager;
 
-    LOBYTE(v3) = [(SBLockScreenManager *)lockScreenManager isLockScreenVisible];
+    LOBYTE(_isExitConfirmationRequired) = [(SBLockScreenManager *)lockScreenManager isLockScreenVisible];
   }
 
-  return v3;
+  return _isExitConfirmationRequired;
 }
 
 - (unint64_t)restrictedCapabilities
@@ -72,11 +72,11 @@
   return v5;
 }
 
-- (SBCarDoNotDisturbController)initWithCARAutomaticDNDStatus:(id)a3 lockScreenManager:(id)a4
+- (SBCarDoNotDisturbController)initWithCARAutomaticDNDStatus:(id)status lockScreenManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  statusCopy = status;
+  managerCopy = manager;
+  if (!statusCopy)
   {
     [SBCarDoNotDisturbController initWithCARAutomaticDNDStatus:a2 lockScreenManager:self];
   }
@@ -87,9 +87,9 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_carAutomaticDNDStatus, a3);
-    objc_storeStrong(&v11->_lockScreenManager, a4);
-    v12 = [MEMORY[0x277CF0C18] serial];
+    objc_storeStrong(&v10->_carAutomaticDNDStatus, status);
+    objc_storeStrong(&v11->_lockScreenManager, manager);
+    serial = [MEMORY[0x277CF0C18] serial];
     v13 = BSDispatchQueueCreate();
     queue = v11->_queue;
     v11->_queue = v13;
@@ -110,10 +110,10 @@
     v20[3] = &unk_2783AC358;
     objc_copyWeak(&v21, &location);
     [(CARAutomaticDNDStatus *)v17 setExitConfirmationChangeObserver:v20];
-    v18 = [(SBLockScreenManager *)v11->_lockScreenManager coverSheetViewController];
-    [v18 registerExternalLockProvider:v16];
-    [v18 registerExternalEventHandler:v16];
-    [v18 registerExternalBehaviorProvider:v16];
+    coverSheetViewController = [(SBLockScreenManager *)v11->_lockScreenManager coverSheetViewController];
+    [coverSheetViewController registerExternalLockProvider:v16];
+    [coverSheetViewController registerExternalEventHandler:v16];
+    [coverSheetViewController registerExternalBehaviorProvider:v16];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -201,18 +201,18 @@ void __79__SBCarDoNotDisturbController_initWithCARAutomaticDNDStatus_lockScreenM
 - (void)dealloc
 {
   [(CARAutomaticDNDStatus *)self->_carAutomaticDNDStatus setExitConfirmationChangeObserver:0];
-  v3 = [(SBLockScreenManager *)self->_lockScreenManager coverSheetViewController];
-  [v3 unregisterExternalLockProvider:self];
+  coverSheetViewController = [(SBLockScreenManager *)self->_lockScreenManager coverSheetViewController];
+  [coverSheetViewController unregisterExternalLockProvider:self];
 
   v4.receiver = self;
   v4.super_class = SBCarDoNotDisturbController;
   [(SBCarDoNotDisturbController *)&v4 dealloc];
 }
 
-- (BOOL)unlockFromSource:(int)a3
+- (BOOL)unlockFromSource:(int)source
 {
-  v5 = [(SBCarDoNotDisturbController *)self _shouldExitConfirmationBeEnforced];
-  if (v5)
+  _shouldExitConfirmationBeEnforced = [(SBCarDoNotDisturbController *)self _shouldExitConfirmationBeEnforced];
+  if (_shouldExitConfirmationBeEnforced)
   {
     v6 = objc_alloc_init(SBCarDoNotDisturbExitConfirmationAlertItem);
     objc_initWeak(&location, v6);
@@ -222,7 +222,7 @@ void __79__SBCarDoNotDisturbController_initWithCARAutomaticDNDStatus_lockScreenM
     v13[3] = &unk_2783BE250;
     objc_copyWeak(&v14, &location);
     v13[4] = self;
-    v15 = a3;
+    sourceCopy = source;
     [(SBCarDoNotDisturbExitConfirmationAlertItem *)v6 setNotDrivingActionHandler:v13];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -231,12 +231,12 @@ void __79__SBCarDoNotDisturbController_initWithCARAutomaticDNDStatus_lockScreenM
     v12[4] = self;
     [(SBCarDoNotDisturbExitConfirmationAlertItem *)v6 setCancelActionHandler:v12];
     v7 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v8 = [v7 policyAggregator];
-    if ([v8 allowsCapability:4] && objc_msgSend(MEMORY[0x277D61990], "shouldShowCarDNDUseSiriHeaderViewController"))
+    policyAggregator = [v7 policyAggregator];
+    if ([policyAggregator allowsCapability:4] && objc_msgSend(MEMORY[0x277D61990], "shouldShowCarDNDUseSiriHeaderViewController"))
     {
-      v9 = [(SBCarDoNotDisturbController *)self _hasShownSiriHeaderViewControllerDuringCurrentCarDNDSession];
+      _hasShownSiriHeaderViewControllerDuringCurrentCarDNDSession = [(SBCarDoNotDisturbController *)self _hasShownSiriHeaderViewControllerDuringCurrentCarDNDSession];
 
-      if (!v9)
+      if (!_hasShownSiriHeaderViewControllerDuringCurrentCarDNDSession)
       {
         [(SBCarDoNotDisturbExitConfirmationAlertItem *)v6 setShowSiriHeaderViewController:1];
         [(SBCarDoNotDisturbController *)self _setHasShownSiriHeaderViewControllerDuringCurrentCarDNDSession:1];
@@ -254,7 +254,7 @@ void __79__SBCarDoNotDisturbController_initWithCARAutomaticDNDStatus_lockScreenM
     objc_destroyWeak(&location);
   }
 
-  return !v5;
+  return !_shouldExitConfirmationBeEnforced;
 }
 
 void __48__SBCarDoNotDisturbController_unlockFromSource___block_invoke(uint64_t a1)
@@ -419,16 +419,16 @@ void __48__SBCarDoNotDisturbController_unlockFromSource___block_invoke_54(uint64
   }
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 24)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type == 24)
   {
     [(SBCarDoNotDisturbController *)self _setScreenOn:1];
   }
 
-  else if (v5 == 25)
+  else if (type == 25)
   {
     state.opaque[0] = 0;
     state.opaque[1] = 0;
@@ -459,7 +459,7 @@ void __48__SBCarDoNotDisturbController_unlockFromSource___block_invoke_54(uint64
   return NSStringFromClass(v2);
 }
 
-- (void)_setScreenOn:(BOOL)a3
+- (void)_setScreenOn:(BOOL)on
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -467,18 +467,18 @@ void __48__SBCarDoNotDisturbController_unlockFromSource___block_invoke_54(uint64
   v4[2] = __44__SBCarDoNotDisturbController__setScreenOn___block_invoke;
   v4[3] = &unk_2783A9F58;
   v4[4] = self;
-  v5 = a3;
+  onCopy = on;
   dispatch_async(queue, v4);
 }
 
-- (void)_queue_setScreenOn:(BOOL)a3
+- (void)_queue_setScreenOn:(BOOL)on
 {
-  if (self->_queue_screenOn != a3)
+  if (self->_queue_screenOn != on)
   {
     v8 = v3;
     v9 = v4;
-    self->_queue_screenOn = a3;
-    if (!a3 && self->_queue_pendingExitConfirmationRequirement)
+    self->_queue_screenOn = on;
+    if (!on && self->_queue_pendingExitConfirmationRequirement)
     {
       v6 = SBLogDoNotDisturbWhileDriving();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -492,29 +492,29 @@ void __48__SBCarDoNotDisturbController_unlockFromSource___block_invoke_54(uint64
   }
 }
 
-- (BOOL)_dismissAlertItemsAnimated:(BOOL)a3
+- (BOOL)_dismissAlertItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = +[SBAlertItemsController sharedInstance];
-  v6 = [v5 deactivateAlertItemsOfClass:objc_opt_class() reason:5 animated:v3];
+  v6 = [v5 deactivateAlertItemsOfClass:objc_opt_class() reason:5 animated:animatedCopy];
 
-  v7 = [(SBCarDoNotDisturbController *)self alertDismissalHandler];
-  v8 = v7;
-  if (v7)
+  alertDismissalHandler = [(SBCarDoNotDisturbController *)self alertDismissalHandler];
+  v8 = alertDismissalHandler;
+  if (alertDismissalHandler)
   {
-    (*(v7 + 16))(v7, self, 1);
+    (*(alertDismissalHandler + 16))(alertDismissalHandler, self, 1);
   }
 
   return v6;
 }
 
-- (void)_queue_setExitConfirmationRequired:(BOOL)a3
+- (void)_queue_setExitConfirmationRequired:(BOOL)required
 {
-  v3 = a3;
+  requiredCopy = required;
   v13 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssert();
   self->_queue_pendingExitConfirmationRequirement = 0;
-  if (v3)
+  if (requiredCopy)
   {
     self->_queue_hasShownSiriHeaderViewControllerDuringCurrentCarDNDSession = 0;
   }
@@ -524,16 +524,16 @@ void __48__SBCarDoNotDisturbController_unlockFromSource___block_invoke_54(uint64
   {
     queue_exitConfirmationRequired = self->_queue_exitConfirmationRequired;
     *buf = 67109376;
-    v10 = v3;
+    v10 = requiredCopy;
     v11 = 1024;
     v12 = queue_exitConfirmationRequired;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "setting internal car automatic DnD exit-confirmation flag to %{BOOL}u (was %{BOOL}u)", buf, 0xEu);
   }
 
   self->_queue_stateValid = 1;
-  if (self->_queue_exitConfirmationRequired != v3)
+  if (self->_queue_exitConfirmationRequired != requiredCopy)
   {
-    if (self->_queue_screenOn && v3)
+    if (self->_queue_screenOn && requiredCopy)
     {
       v7 = SBLogDoNotDisturbWhileDriving();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -547,8 +547,8 @@ void __48__SBCarDoNotDisturbController_unlockFromSource___block_invoke_54(uint64
 
     else
     {
-      self->_queue_exitConfirmationRequired = v3;
-      if (!v3)
+      self->_queue_exitConfirmationRequired = requiredCopy;
+      if (!requiredCopy)
       {
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
@@ -615,7 +615,7 @@ uint64_t __66__SBCarDoNotDisturbController__queue_setExitConfirmationRequired___
   return [v2 externalLockProviderStateChanged:v3];
 }
 
-- (void)_setHasShownSiriHeaderViewControllerDuringCurrentCarDNDSession:(BOOL)a3
+- (void)_setHasShownSiriHeaderViewControllerDuringCurrentCarDNDSession:(BOOL)session
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -623,7 +623,7 @@ uint64_t __66__SBCarDoNotDisturbController__queue_setExitConfirmationRequired___
   v4[2] = __94__SBCarDoNotDisturbController__setHasShownSiriHeaderViewControllerDuringCurrentCarDNDSession___block_invoke;
   v4[3] = &unk_2783A9F58;
   v4[4] = self;
-  v5 = a3;
+  sessionCopy = session;
   dispatch_async(queue, v4);
 }
 

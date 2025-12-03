@@ -1,60 +1,60 @@
 @interface MapsDebugTableSection
 - (MapsDebugTableSection)init;
 - (MapsDebugValuesViewController)displayingViewController;
-- (id)addButtonRowWithTitle:(id)a3 action:(id)a4;
-- (id)addCheckmarkRowsGroupForConfigKey:(id)a3 content:(id)a4 get:(id)a5 set:(id)a6 change:(id)a7;
-- (id)addCheckmarkRowsGroupWithContent:(id)a3 backingGeoConfigKey:(id)a4 get:(id)a5 set:(id)a6;
-- (id)addCheckmarkRowsGroupWithContent:(id)a3 defaultsKey:(id)a4 checkedRowValueIfUnset:(id)a5 changeHandler:(id)a6;
-- (id)addCheckmarkRowsGroupWithContent:(id)a3 object:(id)a4 key:(id)a5;
-- (id)addDateFieldRowWithTitle:(id)a3 get:(id)a4 set:(id)a5;
-- (id)addEmptySectionBannerRowWithTitle:(id)a3;
-- (id)addGEODateFieldRowWithTitle:(id)a3 placeholderText:(id)a4 geoConfigKeyDate:(id)a5;
-- (id)addGEOTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 geoConfigKeyDouble:(id)a6;
-- (id)addGEOTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 geoConfigKeyInteger:(id)a6;
-- (id)addGEOTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 geoConfigKeyString:(id)a6;
-- (id)addGEOTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 geoConfigKeyUInteger:(id)a6;
-- (id)addGEOTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 geoConfigKeyUint64:(id)a6;
+- (id)addButtonRowWithTitle:(id)title action:(id)action;
+- (id)addCheckmarkRowsGroupForConfigKey:(id)key content:(id)content get:(id)get set:(id)set change:(id)change;
+- (id)addCheckmarkRowsGroupWithContent:(id)content backingGeoConfigKey:(id)key get:(id)get set:(id)set;
+- (id)addCheckmarkRowsGroupWithContent:(id)content defaultsKey:(id)key checkedRowValueIfUnset:(id)unset changeHandler:(id)handler;
+- (id)addCheckmarkRowsGroupWithContent:(id)content object:(id)object key:(id)key;
+- (id)addDateFieldRowWithTitle:(id)title get:(id)get set:(id)set;
+- (id)addEmptySectionBannerRowWithTitle:(id)title;
+- (id)addGEODateFieldRowWithTitle:(id)title placeholderText:(id)text geoConfigKeyDate:(id)date;
+- (id)addGEOTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type geoConfigKeyDouble:(id)double;
+- (id)addGEOTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type geoConfigKeyInteger:(id)integer;
+- (id)addGEOTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type geoConfigKeyString:(id)string;
+- (id)addGEOTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type geoConfigKeyUInteger:(id)integer;
+- (id)addGEOTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type geoConfigKeyUint64:(id)uint64;
 - (id)addIndeterminateProgressIndicator;
-- (id)addMenuRowWithTitle:(id)a3 menu:(id)a4;
-- (id)addNavigationRowForViewControllerClass:(Class)a3;
-- (id)addNavigationRowWithTitle:(id)a3 action:(id)a4;
-- (id)addNavigationRowWithTitle:(id)a3 viewControllerContent:(id)a4;
-- (id)addReadOnlyRowWithTitle:(id)a3 subtitle:(id)a4;
-- (id)addReadOnlyRowWithTitle:(id)a3 value:(id)a4;
-- (id)addReadOnlyRowWithTitle:(id)a3 valueFormat:(id)a4;
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 min:(double)a5 max:(double)a6 geoConfigKeyDouble:(id)a7 changeHandler:(id)a8;
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 min:(float)a5 max:(float)a6 defaultsKey:(id)a7 sliderValueIfUnset:(float)a8 changeHandler:(id)a9;
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 min:(int64_t)a5 max:(int64_t)a6 geoConfigKeyInteger:(id)a7 changeHandler:(id)a8;
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 min:(unint64_t)a5 max:(unint64_t)a6 geoConfigKeyUInteger:(id)a7 changeHandler:(id)a8;
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 min:(unint64_t)a5 max:(unint64_t)a6 geoConfigKeyUint64:(id)a7 changeHandler:(id)a8;
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 subtitleStringHandler:(id)a5 min:(float)a6 max:(float)a7 get:(id)a8 set:(id)a9;
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringHandler:(id)a4 min:(double)a5 max:(double)a6 geoConfigKeyDouble:(id)a7 changeHandler:(id)a8;
-- (id)addSwitchRowWithTitle:(id)a3 defaultsKey:(id)a4;
-- (id)addSwitchRowWithTitle:(id)a3 defaultsKey:(id)a4 switchOnStateIfUnset:(BOOL)a5 changeHandler:(id)a6;
-- (id)addSwitchRowWithTitle:(id)a3 defaultsKey:(id)a4 userDefaults:(id)a5 switchOnStateIfUnset:(BOOL)a6 changeHandler:(id)a7;
-- (id)addSwitchRowWithTitle:(id)a3 geoConfigKey:(id)a4;
-- (id)addSwitchRowWithTitle:(id)a3 geoConfigKey:(id)a4 switchOnStateIfUnset:(BOOL)a5 changeHandler:(id)a6;
-- (id)addSwitchRowWithTitle:(id)a3 get:(id)a4 set:(id)a5;
-- (id)addTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 defaultsKey:(id)a6;
-- (id)addTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 get:(id)a6 set:(id)a7;
+- (id)addMenuRowWithTitle:(id)title menu:(id)menu;
+- (id)addNavigationRowForViewControllerClass:(Class)class;
+- (id)addNavigationRowWithTitle:(id)title action:(id)action;
+- (id)addNavigationRowWithTitle:(id)title viewControllerContent:(id)content;
+- (id)addReadOnlyRowWithTitle:(id)title subtitle:(id)subtitle;
+- (id)addReadOnlyRowWithTitle:(id)title value:(id)value;
+- (id)addReadOnlyRowWithTitle:(id)title valueFormat:(id)format;
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format min:(double)min max:(double)max geoConfigKeyDouble:(id)double changeHandler:(id)handler;
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format min:(float)min max:(float)max defaultsKey:(id)key sliderValueIfUnset:(float)unset changeHandler:(id)handler;
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format min:(int64_t)min max:(int64_t)max geoConfigKeyInteger:(id)integer changeHandler:(id)handler;
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format min:(unint64_t)min max:(unint64_t)max geoConfigKeyUInteger:(id)integer changeHandler:(id)handler;
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format min:(unint64_t)min max:(unint64_t)max geoConfigKeyUint64:(id)uint64 changeHandler:(id)handler;
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format subtitleStringHandler:(id)handler min:(float)min max:(float)max get:(id)get set:(id)set;
+- (id)addSliderRowWithTitle:(id)title subtitleStringHandler:(id)handler min:(double)min max:(double)max geoConfigKeyDouble:(id)double changeHandler:(id)changeHandler;
+- (id)addSwitchRowWithTitle:(id)title defaultsKey:(id)key;
+- (id)addSwitchRowWithTitle:(id)title defaultsKey:(id)key switchOnStateIfUnset:(BOOL)unset changeHandler:(id)handler;
+- (id)addSwitchRowWithTitle:(id)title defaultsKey:(id)key userDefaults:(id)defaults switchOnStateIfUnset:(BOOL)unset changeHandler:(id)handler;
+- (id)addSwitchRowWithTitle:(id)title geoConfigKey:(id)key;
+- (id)addSwitchRowWithTitle:(id)title geoConfigKey:(id)key switchOnStateIfUnset:(BOOL)unset changeHandler:(id)handler;
+- (id)addSwitchRowWithTitle:(id)title get:(id)get set:(id)set;
+- (id)addTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type defaultsKey:(id)key;
+- (id)addTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type get:(id)get set:(id)set;
 - (id)description;
-- (void)addRow:(id)a3;
+- (void)addRow:(id)row;
 - (void)commit;
 - (void)dealloc;
 @end
 
 @implementation MapsDebugTableSection
 
-- (id)addCheckmarkRowsGroupWithContent:(id)a3 object:(id)a4 key:(id)a5
+- (id)addCheckmarkRowsGroupWithContent:(id)content object:(id)object key:(id)key
 {
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  keyCopy = key;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100AA8D7C;
   v17[3] = &unk_101654B00;
-  v18 = v8;
-  v19 = v9;
+  v18 = objectCopy;
+  v19 = keyCopy;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100AA8D88;
@@ -63,7 +63,7 @@
   v16 = v19;
   v10 = v19;
   v11 = v18;
-  v12 = [(MapsDebugTableSection *)self addCheckmarkRowsGroupWithContent:a3 get:v17 set:v14];
+  v12 = [(MapsDebugTableSection *)self addCheckmarkRowsGroupWithContent:content get:v17 set:v14];
 
   return v12;
 }
@@ -75,14 +75,14 @@
   return WeakRetained;
 }
 
-- (id)addMenuRowWithTitle:(id)a3 menu:(id)a4
+- (id)addMenuRowWithTitle:(id)title menu:(id)menu
 {
-  v6 = a4;
-  v7 = a3;
+  menuCopy = menu;
+  titleCopy = title;
   v8 = objc_alloc_init(MapsDebugMenuRow);
-  [(MapsDebugTableRow *)v8 setTitle:v7];
+  [(MapsDebugTableRow *)v8 setTitle:titleCopy];
 
-  [(MapsDebugMenuRow *)v8 setMenu:v6];
+  [(MapsDebugMenuRow *)v8 setMenu:menuCopy];
   [(MapsDebugTableRow *)v8 setSelectionAction:0];
   [(MapsDebugTableSection *)self addRow:v8];
 
@@ -97,25 +97,25 @@
   return v3;
 }
 
-- (id)addCheckmarkRowsGroupForConfigKey:(id)a3 content:(id)a4 get:(id)a5 set:(id)a6 change:(id)a7
+- (id)addCheckmarkRowsGroupForConfigKey:(id)key content:(id)content get:(id)get set:(id)set change:(id)change
 {
-  var1 = a3.var1;
-  v11 = *&a3.var0;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v27 = a7;
+  var1 = key.var1;
+  v11 = *&key.var0;
+  contentCopy = content;
+  getCopy = get;
+  setCopy = set;
+  changeCopy = change;
   v44 = 0;
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_100DC48C4;
   v40[3] = &unk_101654B28;
-  v16 = v14;
+  v16 = getCopy;
   v41 = v16;
   v42 = v11;
   v43 = var1;
-  v26 = v13;
-  v17 = [MapsDebugCheckmarkRowsGroup rowsGroupContainingRows:&v44 withContent:v13 get:v40 set:0];
+  v26 = contentCopy;
+  v17 = [MapsDebugCheckmarkRowsGroup rowsGroupContainingRows:&v44 withContent:contentCopy get:v40 set:0];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -147,14 +147,14 @@
   v32[1] = 3221225472;
   v32[2] = sub_100DC491C;
   v32[3] = &unk_101654B50;
-  v22 = v15;
+  v22 = setCopy;
   v33 = v22;
   v34 = v11;
   v35 = var1;
   [v17 setSelectionChanged:v32];
   objc_initWeak(&location, v17);
   v23 = &_dispatch_main_q;
-  v28 = v27;
+  v28 = changeCopy;
   v29 = v16;
   objc_copyWeak(&v30, &location);
   v24 = _GEOConfigAddBlockListenerForKey();
@@ -167,35 +167,35 @@
   return v17;
 }
 
-- (id)addCheckmarkRowsGroupWithContent:(id)a3 defaultsKey:(id)a4 checkedRowValueIfUnset:(id)a5 changeHandler:(id)a6
+- (id)addCheckmarkRowsGroupWithContent:(id)content defaultsKey:(id)key checkedRowValueIfUnset:(id)unset changeHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  unsetCopy = unset;
+  handlerCopy = handler;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100DC4BB8;
   v21[3] = &unk_101654B00;
-  v22 = v10;
-  v23 = v11;
+  v22 = keyCopy;
+  v23 = unsetCopy;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100DC4C24;
   v18[3] = &unk_101660BE0;
   v19 = v22;
-  v20 = v12;
-  v13 = v12;
+  v20 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v22;
-  v15 = v11;
-  v16 = [(MapsDebugTableSection *)self addCheckmarkRowsGroupWithContent:a3 get:v21 set:v18];
+  v15 = unsetCopy;
+  v16 = [(MapsDebugTableSection *)self addCheckmarkRowsGroupWithContent:content get:v21 set:v18];
 
   return v16;
 }
 
-- (id)addCheckmarkRowsGroupWithContent:(id)a3 backingGeoConfigKey:(id)a4 get:(id)a5 set:(id)a6
+- (id)addCheckmarkRowsGroupWithContent:(id)content backingGeoConfigKey:(id)key get:(id)get set:(id)set
 {
   v18 = 0;
-  v7 = [MapsDebugCheckmarkRowsGroup rowsGroupContainingRows:&v18 withContent:a3 backingGeoConfigKey:*&a4.var0 get:a4.var1 set:a5, a6];
+  v7 = [MapsDebugCheckmarkRowsGroup rowsGroupContainingRows:&v18 withContent:content backingGeoConfigKey:*&key.var0 get:key.var1 set:get, set];
   v8 = v18;
   v14 = 0u;
   v15 = 0u;
@@ -227,394 +227,394 @@
   return v7;
 }
 
-- (id)addReadOnlyRowWithTitle:(id)a3 subtitle:(id)a4
+- (id)addReadOnlyRowWithTitle:(id)title subtitle:(id)subtitle
 {
-  v6 = a4;
-  v7 = a3;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v8 = objc_alloc_init(MapsDebugReadOnlySubtitleRow);
-  [(MapsDebugTableRow *)v8 setTitle:v7];
+  [(MapsDebugTableRow *)v8 setTitle:titleCopy];
 
-  [(MapsDebugTableRow *)v8 setSubtitle:v6];
+  [(MapsDebugTableRow *)v8 setSubtitle:subtitleCopy];
   [(MapsDebugTableSection *)self addRow:v8];
 
   return v8;
 }
 
-- (id)addReadOnlyRowWithTitle:(id)a3 valueFormat:(id)a4
+- (id)addReadOnlyRowWithTitle:(id)title valueFormat:(id)format
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[NSString alloc] initWithFormat:v6 arguments:&v12];
+  formatCopy = format;
+  titleCopy = title;
+  v8 = [[NSString alloc] initWithFormat:formatCopy arguments:&v12];
 
-  v9 = [(MapsDebugTableSection *)self addReadOnlyRowWithTitle:v7 value:v8];
+  v9 = [(MapsDebugTableSection *)self addReadOnlyRowWithTitle:titleCopy value:v8];
 
   return v9;
 }
 
-- (id)addReadOnlyRowWithTitle:(id)a3 value:(id)a4
+- (id)addReadOnlyRowWithTitle:(id)title value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  titleCopy = title;
   v8 = objc_alloc_init(MapsDebugReadOnlyValueRow);
-  [(MapsDebugTableRow *)v8 setTitle:v7];
+  [(MapsDebugTableRow *)v8 setTitle:titleCopy];
 
-  [(MapsDebugTableRow *)v8 setSubtitle:v6];
+  [(MapsDebugTableRow *)v8 setSubtitle:valueCopy];
   [(MapsDebugTableSection *)self addRow:v8];
 
   return v8;
 }
 
-- (id)addDateFieldRowWithTitle:(id)a3 get:(id)a4 set:(id)a5
+- (id)addDateFieldRowWithTitle:(id)title get:(id)get set:(id)set
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  setCopy = set;
+  getCopy = get;
+  titleCopy = title;
   v11 = objc_alloc_init(MapsDebugDateFieldTableRow);
-  [(MapsDebugTableRow *)v11 setTitle:v10];
+  [(MapsDebugTableRow *)v11 setTitle:titleCopy];
 
-  [(MapsDebugDateFieldTableRow *)v11 setGet:v9];
-  [(MapsDebugDateFieldTableRow *)v11 setSet:v8];
+  [(MapsDebugDateFieldTableRow *)v11 setGet:getCopy];
+  [(MapsDebugDateFieldTableRow *)v11 setSet:setCopy];
 
   [(MapsDebugTableSection *)self addRow:v11];
 
   return v11;
 }
 
-- (id)addGEODateFieldRowWithTitle:(id)a3 placeholderText:(id)a4 geoConfigKeyDate:(id)a5
+- (id)addGEODateFieldRowWithTitle:(id)title placeholderText:(id)text geoConfigKeyDate:(id)date
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100DC5160;
   v9[3] = &unk_101654AB8;
-  v10 = a5;
+  dateCopy = date;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100DC516C;
   v7[3] = &unk_101654AD8;
-  v8 = a5;
-  v5 = [(MapsDebugTableSection *)self addDateFieldRowWithTitle:a3 get:v9 set:v7];
+  dateCopy2 = date;
+  v5 = [(MapsDebugTableSection *)self addDateFieldRowWithTitle:title get:v9 set:v7];
 
   return v5;
 }
 
-- (id)addGEOTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 geoConfigKeyDouble:(id)a6
+- (id)addGEOTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type geoConfigKeyDouble:(id)double
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100DC5240;
   v10[3] = &unk_101654A78;
-  v11 = a6;
+  doubleCopy = double;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100DC52A4;
   v8[3] = &unk_101654A98;
-  v9 = a6;
-  v6 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:a3 placeholderText:a4 inputType:a5 get:v10 set:v8];
+  doubleCopy2 = double;
+  v6 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:title placeholderText:text inputType:type get:v10 set:v8];
 
   return v6;
 }
 
-- (id)addGEOTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 geoConfigKeyUint64:(id)a6
+- (id)addGEOTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type geoConfigKeyUint64:(id)uint64
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100DC53A4;
   v10[3] = &unk_101654A78;
-  v11 = a6;
+  uint64Copy = uint64;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100DC540C;
   v8[3] = &unk_101654A98;
-  v9 = a6;
-  v6 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:a3 placeholderText:a4 inputType:a5 get:v10 set:v8];
+  uint64Copy2 = uint64;
+  v6 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:title placeholderText:text inputType:type get:v10 set:v8];
 
   return v6;
 }
 
-- (id)addGEOTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 geoConfigKeyUInteger:(id)a6
+- (id)addGEOTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type geoConfigKeyUInteger:(id)integer
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100DC5510;
   v10[3] = &unk_101654A78;
-  v11 = a6;
+  integerCopy = integer;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100DC5578;
   v8[3] = &unk_101654A98;
-  v9 = a6;
-  v6 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:a3 placeholderText:a4 inputType:a5 get:v10 set:v8];
+  integerCopy2 = integer;
+  v6 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:title placeholderText:text inputType:type get:v10 set:v8];
 
   return v6;
 }
 
-- (id)addGEOTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 geoConfigKeyInteger:(id)a6
+- (id)addGEOTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type geoConfigKeyInteger:(id)integer
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100DC567C;
   v10[3] = &unk_101654A78;
-  v11 = a6;
+  integerCopy = integer;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100DC56E4;
   v8[3] = &unk_101654A98;
-  v9 = a6;
-  v6 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:a3 placeholderText:a4 inputType:a5 get:v10 set:v8];
+  integerCopy2 = integer;
+  v6 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:title placeholderText:text inputType:type get:v10 set:v8];
 
   return v6;
 }
 
-- (id)addGEOTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 geoConfigKeyString:(id)a6
+- (id)addGEOTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type geoConfigKeyString:(id)string
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100DC57E8;
   v10[3] = &unk_101654A78;
-  v11 = a6;
+  stringCopy = string;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100DC57F4;
   v8[3] = &unk_101654A98;
-  v9 = a6;
-  v6 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:a3 placeholderText:a4 inputType:a5 get:v10 set:v8];
+  stringCopy2 = string;
+  v6 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:title placeholderText:text inputType:type get:v10 set:v8];
 
   return v6;
 }
 
-- (id)addTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 defaultsKey:(id)a6
+- (id)addTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type defaultsKey:(id)key
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100DC5934;
   v15[3] = &unk_101658E28;
-  v16 = a6;
+  keyCopy = key;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100DC59BC;
   v13[3] = &unk_10165EF00;
-  v14 = v16;
-  v10 = v16;
-  v11 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:a3 placeholderText:a4 inputType:a5 get:v15 set:v13];
+  v14 = keyCopy;
+  v10 = keyCopy;
+  v11 = [(MapsDebugTableSection *)self addTextFieldRowWithTitle:title placeholderText:text inputType:type get:v15 set:v13];
 
   return v11;
 }
 
-- (id)addTextFieldRowWithTitle:(id)a3 placeholderText:(id)a4 inputType:(int64_t)a5 get:(id)a6 set:(id)a7
+- (id)addTextFieldRowWithTitle:(id)title placeholderText:(id)text inputType:(int64_t)type get:(id)get set:(id)set
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  setCopy = set;
+  getCopy = get;
+  textCopy = text;
+  titleCopy = title;
   v16 = objc_alloc_init(MapsDebugTextFieldTableRow);
-  [(MapsDebugTableRow *)v16 setTitle:v15];
+  [(MapsDebugTableRow *)v16 setTitle:titleCopy];
 
-  [(MapsDebugTextFieldTableRow *)v16 setPlaceholderText:v14];
-  [(MapsDebugTextFieldTableRow *)v16 setInputType:a5];
-  [(MapsDebugTextFieldTableRow *)v16 setGet:v13];
+  [(MapsDebugTextFieldTableRow *)v16 setPlaceholderText:textCopy];
+  [(MapsDebugTextFieldTableRow *)v16 setInputType:type];
+  [(MapsDebugTextFieldTableRow *)v16 setGet:getCopy];
 
-  [(MapsDebugTextFieldTableRow *)v16 setSet:v12];
+  [(MapsDebugTextFieldTableRow *)v16 setSet:setCopy];
   [(MapsDebugTableSection *)self addRow:v16];
 
   return v16;
 }
 
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringHandler:(id)a4 min:(double)a5 max:(double)a6 geoConfigKeyDouble:(id)a7 changeHandler:(id)a8
+- (id)addSliderRowWithTitle:(id)title subtitleStringHandler:(id)handler min:(double)min max:(double)max geoConfigKeyDouble:(id)double changeHandler:(id)changeHandler
 {
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100DC5C80;
   v23[3] = &unk_1016549B0;
-  v24 = a7;
-  v25 = a5;
-  v26 = a6;
+  doubleCopy = double;
+  minCopy = min;
+  maxCopy = max;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100DC5CBC;
   v18[3] = &unk_1016549D8;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v19 = a8;
-  v13 = v19;
-  v11 = v25;
+  minCopy2 = min;
+  maxCopy2 = max;
+  doubleCopy2 = double;
+  changeHandlerCopy = changeHandler;
+  v13 = changeHandlerCopy;
+  v11 = minCopy;
   *&v14 = v11;
-  v12 = v26;
+  v12 = maxCopy;
   *&v15 = v12;
-  v16 = [(MapsDebugTableSection *)self addSliderRowWithTitle:a3 subtitleStringFormat:0 subtitleStringHandler:a4 min:v23 max:v18 get:v14 set:v15];
+  v16 = [(MapsDebugTableSection *)self addSliderRowWithTitle:title subtitleStringFormat:0 subtitleStringHandler:handler min:v23 max:v18 get:v14 set:v15];
 
   return v16;
 }
 
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 min:(double)a5 max:(double)a6 geoConfigKeyDouble:(id)a7 changeHandler:(id)a8
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format min:(double)min max:(double)max geoConfigKeyDouble:(id)double changeHandler:(id)handler
 {
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100DC5E88;
   v23[3] = &unk_1016549B0;
-  v24 = a7;
-  v25 = a5;
-  v26 = a6;
+  doubleCopy = double;
+  minCopy = min;
+  maxCopy = max;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100DC5EC4;
   v18[3] = &unk_1016549D8;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v19 = a8;
-  v13 = v19;
-  v11 = v25;
+  minCopy2 = min;
+  maxCopy2 = max;
+  doubleCopy2 = double;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  v11 = minCopy;
   *&v14 = v11;
-  v12 = v26;
+  v12 = maxCopy;
   *&v15 = v12;
-  v16 = [(MapsDebugTableSection *)self addSliderRowWithTitle:a3 subtitleStringFormat:a4 min:v23 max:v18 get:v14 set:v15];
+  v16 = [(MapsDebugTableSection *)self addSliderRowWithTitle:title subtitleStringFormat:format min:v23 max:v18 get:v14 set:v15];
 
   return v16;
 }
 
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 min:(unint64_t)a5 max:(unint64_t)a6 geoConfigKeyUint64:(id)a7 changeHandler:(id)a8
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format min:(unint64_t)min max:(unint64_t)max geoConfigKeyUint64:(id)uint64 changeHandler:(id)handler
 {
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100DC60A0;
   v21[3] = &unk_1016549B0;
-  v22 = a7;
-  v23 = a5;
-  v24 = a6;
+  uint64Copy = uint64;
+  minCopy = min;
+  maxCopy = max;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100DC60E4;
   v16[3] = &unk_1016549D8;
-  v19 = a6;
-  v20 = a7;
-  v17 = a8;
-  v18 = v23;
-  v11 = v17;
-  *&v12 = v23;
-  *&v13 = v24;
-  v14 = [(MapsDebugTableSection *)self addSliderRowWithTitle:a3 subtitleStringFormat:a4 min:v21 max:v16 get:v12 set:v13];
+  maxCopy2 = max;
+  uint64Copy2 = uint64;
+  handlerCopy = handler;
+  v18 = minCopy;
+  v11 = handlerCopy;
+  *&v12 = minCopy;
+  *&v13 = maxCopy;
+  v14 = [(MapsDebugTableSection *)self addSliderRowWithTitle:title subtitleStringFormat:format min:v21 max:v16 get:v12 set:v13];
   [v14 setValidate:&stru_101654A58];
 
   return v14;
 }
 
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 min:(unint64_t)a5 max:(unint64_t)a6 geoConfigKeyUInteger:(id)a7 changeHandler:(id)a8
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format min:(unint64_t)min max:(unint64_t)max geoConfigKeyUInteger:(id)integer changeHandler:(id)handler
 {
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100DC62C4;
   v21[3] = &unk_1016549B0;
-  v22 = a7;
-  v23 = a5;
-  v24 = a6;
+  integerCopy = integer;
+  minCopy = min;
+  maxCopy = max;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100DC6308;
   v16[3] = &unk_1016549D8;
-  v19 = a6;
-  v20 = a7;
-  v17 = a8;
-  v18 = v23;
-  v11 = v17;
-  *&v12 = v23;
-  *&v13 = v24;
-  v14 = [(MapsDebugTableSection *)self addSliderRowWithTitle:a3 subtitleStringFormat:a4 min:v21 max:v16 get:v12 set:v13];
+  maxCopy2 = max;
+  integerCopy2 = integer;
+  handlerCopy = handler;
+  v18 = minCopy;
+  v11 = handlerCopy;
+  *&v12 = minCopy;
+  *&v13 = maxCopy;
+  v14 = [(MapsDebugTableSection *)self addSliderRowWithTitle:title subtitleStringFormat:format min:v21 max:v16 get:v12 set:v13];
   [v14 setValidate:&stru_101654A38];
 
   return v14;
 }
 
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 min:(int64_t)a5 max:(int64_t)a6 geoConfigKeyInteger:(id)a7 changeHandler:(id)a8
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format min:(int64_t)min max:(int64_t)max geoConfigKeyInteger:(id)integer changeHandler:(id)handler
 {
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100DC64E8;
   v21[3] = &unk_1016549B0;
-  v22 = a7;
-  v23 = a5;
-  v24 = a6;
+  integerCopy = integer;
+  minCopy = min;
+  maxCopy = max;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100DC652C;
   v16[3] = &unk_1016549D8;
-  v19 = a6;
-  v20 = a7;
-  v17 = a8;
-  v18 = v23;
-  v11 = v17;
-  *&v12 = v23;
-  *&v13 = v24;
-  v14 = [(MapsDebugTableSection *)self addSliderRowWithTitle:a3 subtitleStringFormat:a4 min:v21 max:v16 get:v12 set:v13];
+  maxCopy2 = max;
+  integerCopy2 = integer;
+  handlerCopy = handler;
+  v18 = minCopy;
+  v11 = handlerCopy;
+  *&v12 = minCopy;
+  *&v13 = maxCopy;
+  v14 = [(MapsDebugTableSection *)self addSliderRowWithTitle:title subtitleStringFormat:format min:v21 max:v16 get:v12 set:v13];
   [v14 setValidate:&stru_101654A18];
 
   return v14;
 }
 
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 min:(float)a5 max:(float)a6 defaultsKey:(id)a7 sliderValueIfUnset:(float)a8 changeHandler:(id)a9
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format min:(float)min max:(float)max defaultsKey:(id)key sliderValueIfUnset:(float)unset changeHandler:(id)handler
 {
-  v16 = a7;
-  v17 = a9;
+  keyCopy = key;
+  handlerCopy = handler;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_100DC6720;
   v27[3] = &unk_101654968;
-  v28 = v16;
-  v29 = a8;
-  v30 = a6;
-  v31 = a5;
+  v28 = keyCopy;
+  unsetCopy = unset;
+  maxCopy = max;
+  minCopy = min;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100DC67A4;
   v24[3] = &unk_101654990;
   v25 = v28;
-  v26 = v17;
-  v18 = v17;
+  v26 = handlerCopy;
+  v18 = handlerCopy;
   v19 = v28;
-  *&v20 = a5;
-  *&v21 = a6;
-  v22 = [(MapsDebugTableSection *)self addSliderRowWithTitle:a3 subtitleStringFormat:a4 min:v27 max:v24 get:v20 set:v21];
+  *&v20 = min;
+  *&v21 = max;
+  v22 = [(MapsDebugTableSection *)self addSliderRowWithTitle:title subtitleStringFormat:format min:v27 max:v24 get:v20 set:v21];
 
   return v22;
 }
 
-- (id)addSliderRowWithTitle:(id)a3 subtitleStringFormat:(id)a4 subtitleStringHandler:(id)a5 min:(float)a6 max:(float)a7 get:(id)a8 set:(id)a9
+- (id)addSliderRowWithTitle:(id)title subtitleStringFormat:(id)format subtitleStringHandler:(id)handler min:(float)min max:(float)max get:(id)get set:(id)set
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  v20 = a3;
+  formatCopy = format;
+  handlerCopy = handler;
+  getCopy = get;
+  setCopy = set;
+  titleCopy = title;
   v21 = objc_alloc_init(MapsDebugSliderTableRow);
-  [(MapsDebugTableRow *)v21 setTitle:v20];
+  [(MapsDebugTableRow *)v21 setTitle:titleCopy];
 
-  *&v22 = a6;
+  *&v22 = min;
   [(MapsDebugSliderTableRow *)v21 setMinimum:v22];
-  *&v23 = a7;
+  *&v23 = max;
   [(MapsDebugSliderTableRow *)v21 setMaximum:v23];
-  [(MapsDebugSliderTableRow *)v21 setGet:v18];
-  [(MapsDebugSliderTableRow *)v21 setSet:v19];
+  [(MapsDebugSliderTableRow *)v21 setGet:getCopy];
+  [(MapsDebugSliderTableRow *)v21 setSet:setCopy];
 
-  [(MapsDebugSliderTableRow *)v21 setSubtitleFormatString:v16];
-  [(MapsDebugSliderTableRow *)v21 setSubtitleHandler:v17];
-  if (v18)
+  [(MapsDebugSliderTableRow *)v21 setSubtitleFormatString:formatCopy];
+  [(MapsDebugSliderTableRow *)v21 setSubtitleHandler:handlerCopy];
+  if (getCopy)
   {
-    if (v17)
+    if (handlerCopy)
     {
-      v18[2](v18);
-      v24 = v17[2](v17);
+      getCopy[2](getCopy);
+      v24 = handlerCopy[2](handlerCopy);
       [(MapsDebugTableRow *)v21 setSubtitle:v24];
     }
 
-    else if (v16)
+    else if (formatCopy)
     {
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_100DC6A4C;
       v28[3] = &unk_101654940;
-      v29 = v16;
+      v29 = formatCopy;
       v25 = objc_retainBlock(v28);
-      v18[2](v18);
+      getCopy[2](getCopy);
       v26 = (v25[2])(v25);
       [(MapsDebugTableRow *)v21 setSubtitle:v26];
 
@@ -627,127 +627,127 @@
   return v21;
 }
 
-- (id)addSwitchRowWithTitle:(id)a3 get:(id)a4 set:(id)a5
+- (id)addSwitchRowWithTitle:(id)title get:(id)get set:(id)set
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  setCopy = set;
+  getCopy = get;
+  titleCopy = title;
   v11 = objc_alloc_init(MapsDebugSwitchTableRow);
-  [(MapsDebugTableRow *)v11 setTitle:v10];
+  [(MapsDebugTableRow *)v11 setTitle:titleCopy];
 
-  [(MapsDebugSwitchTableRow *)v11 setGet:v9];
-  [(MapsDebugSwitchTableRow *)v11 setSet:v8];
+  [(MapsDebugSwitchTableRow *)v11 setGet:getCopy];
+  [(MapsDebugSwitchTableRow *)v11 setSet:setCopy];
 
   [(MapsDebugTableSection *)self addRow:v11];
 
   return v11;
 }
 
-- (id)addSwitchRowWithTitle:(id)a3 geoConfigKey:(id)a4 switchOnStateIfUnset:(BOOL)a5 changeHandler:(id)a6
+- (id)addSwitchRowWithTitle:(id)title geoConfigKey:(id)key switchOnStateIfUnset:(BOOL)unset changeHandler:(id)handler
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100DC6C88;
   v14[3] = &unk_1016548F0;
-  v15 = a4;
-  v16 = a5;
+  keyCopy = key;
+  unsetCopy = unset;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100DC6CDC;
   v11[3] = &unk_101654918;
-  v13 = a4;
-  v12 = a6;
-  v8 = v12;
-  v9 = [(MapsDebugTableSection *)self addSwitchRowWithTitle:a3 get:v14 set:v11];
+  keyCopy2 = key;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  v9 = [(MapsDebugTableSection *)self addSwitchRowWithTitle:title get:v14 set:v11];
 
   return v9;
 }
 
-- (id)addSwitchRowWithTitle:(id)a3 geoConfigKey:(id)a4
+- (id)addSwitchRowWithTitle:(id)title geoConfigKey:(id)key
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100DC6E04;
   v8[3] = &unk_1016548B0;
-  v9 = a4;
+  keyCopy = key;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100DC6E10;
   v6[3] = &unk_1016548D0;
-  v7 = a4;
-  v4 = [(MapsDebugTableSection *)self addSwitchRowWithTitle:a3 get:v8 set:v6];
+  keyCopy2 = key;
+  v4 = [(MapsDebugTableSection *)self addSwitchRowWithTitle:title get:v8 set:v6];
 
   return v4;
 }
 
-- (id)addSwitchRowWithTitle:(id)a3 defaultsKey:(id)a4 userDefaults:(id)a5 switchOnStateIfUnset:(BOOL)a6 changeHandler:(id)a7
+- (id)addSwitchRowWithTitle:(id)title defaultsKey:(id)key userDefaults:(id)defaults switchOnStateIfUnset:(BOOL)unset changeHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  keyCopy = key;
+  defaultsCopy = defaults;
+  handlerCopy = handler;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100DC6FA8;
   v24[3] = &unk_101654890;
-  v25 = v13;
-  v26 = v12;
-  v27 = a6;
+  v25 = defaultsCopy;
+  v26 = keyCopy;
+  unsetCopy = unset;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100DC7008;
   v20[3] = &unk_10165D3A0;
   v21 = v25;
   v22 = v26;
-  v23 = v14;
-  v15 = v14;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v26;
   v17 = v25;
-  v18 = [(MapsDebugTableSection *)self addSwitchRowWithTitle:a3 get:v24 set:v20];
+  v18 = [(MapsDebugTableSection *)self addSwitchRowWithTitle:title get:v24 set:v20];
 
   return v18;
 }
 
-- (id)addSwitchRowWithTitle:(id)a3 defaultsKey:(id)a4 switchOnStateIfUnset:(BOOL)a5 changeHandler:(id)a6
+- (id)addSwitchRowWithTitle:(id)title defaultsKey:(id)key switchOnStateIfUnset:(BOOL)unset changeHandler:(id)handler
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  unsetCopy = unset;
+  handlerCopy = handler;
+  keyCopy = key;
+  titleCopy = title;
   v13 = +[NSUserDefaults standardUserDefaults];
-  v14 = [(MapsDebugTableSection *)self addSwitchRowWithTitle:v12 defaultsKey:v11 userDefaults:v13 switchOnStateIfUnset:v6 changeHandler:v10];
+  v14 = [(MapsDebugTableSection *)self addSwitchRowWithTitle:titleCopy defaultsKey:keyCopy userDefaults:v13 switchOnStateIfUnset:unsetCopy changeHandler:handlerCopy];
 
   return v14;
 }
 
-- (id)addSwitchRowWithTitle:(id)a3 defaultsKey:(id)a4
+- (id)addSwitchRowWithTitle:(id)title defaultsKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  titleCopy = title;
   v8 = +[NSUserDefaults standardUserDefaults];
-  v9 = [(MapsDebugTableSection *)self addSwitchRowWithTitle:v7 userDefaults:v8 defaultsKey:v6];
+  v9 = [(MapsDebugTableSection *)self addSwitchRowWithTitle:titleCopy userDefaults:v8 defaultsKey:keyCopy];
 
   return v9;
 }
 
-- (id)addNavigationRowWithTitle:(id)a3 viewControllerContent:(id)a4
+- (id)addNavigationRowWithTitle:(id)title viewControllerContent:(id)content
 {
-  v6 = a4;
-  v7 = a3;
+  contentCopy = content;
+  titleCopy = title;
   v8 = objc_alloc_init(MapsDebugNavigationTableRow);
-  [(MapsDebugTableRow *)v8 setPrepareContentBlock:v6];
+  [(MapsDebugTableRow *)v8 setPrepareContentBlock:contentCopy];
 
-  [(MapsDebugTableRow *)v8 setTitle:v7];
+  [(MapsDebugTableRow *)v8 setTitle:titleCopy];
   [(MapsDebugTableSection *)self addRow:v8];
 
   return v8;
 }
 
-- (id)addNavigationRowForViewControllerClass:(Class)a3
+- (id)addNavigationRowForViewControllerClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     v5 = objc_alloc_init(MapsDebugNavigationTableRow);
-    [(MapsDebugNavigationTableRow *)v5 setViewControllerClass:a3];
+    [(MapsDebugNavigationTableRow *)v5 setViewControllerClass:class];
     [(MapsDebugTableSection *)self addRow:v5];
   }
 
@@ -759,38 +759,38 @@
   return v5;
 }
 
-- (id)addNavigationRowWithTitle:(id)a3 action:(id)a4
+- (id)addNavigationRowWithTitle:(id)title action:(id)action
 {
-  v6 = a4;
-  v7 = a3;
+  actionCopy = action;
+  titleCopy = title;
   v8 = objc_alloc_init(MapsDebugNavigationTableRow);
-  [(MapsDebugTableRow *)v8 setTitle:v7];
+  [(MapsDebugTableRow *)v8 setTitle:titleCopy];
 
-  [(MapsDebugTableRow *)v8 setSelectionAction:v6];
+  [(MapsDebugTableRow *)v8 setSelectionAction:actionCopy];
   [(MapsDebugTableSection *)self addRow:v8];
 
   return v8;
 }
 
-- (id)addEmptySectionBannerRowWithTitle:(id)a3
+- (id)addEmptySectionBannerRowWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = objc_alloc_init(MapsDebugEmptySectionBannerRow);
-  [(MapsDebugTableRow *)v5 setTitle:v4];
+  [(MapsDebugTableRow *)v5 setTitle:titleCopy];
 
   [(MapsDebugTableSection *)self addRow:v5];
 
   return v5;
 }
 
-- (id)addButtonRowWithTitle:(id)a3 action:(id)a4
+- (id)addButtonRowWithTitle:(id)title action:(id)action
 {
-  v6 = a4;
-  v7 = a3;
+  actionCopy = action;
+  titleCopy = title;
   v8 = objc_alloc_init(MapsDebugActionTableRow);
-  [(MapsDebugTableRow *)v8 setTitle:v7];
+  [(MapsDebugTableRow *)v8 setTitle:titleCopy];
 
-  [(MapsDebugActionTableRow *)v8 setSelectionAction:v6];
+  [(MapsDebugActionTableRow *)v8 setSelectionAction:actionCopy];
   [(MapsDebugTableSection *)self addRow:v8];
 
   return v8;
@@ -810,9 +810,9 @@
   }
 }
 
-- (void)addRow:(id)a3
+- (void)addRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   if (!self->_mutableRows)
   {
     rows = self->_rows;
@@ -858,16 +858,16 @@
     self->_mutableRows = v12;
   }
 
-  [v4 setSection:{self, v14}];
-  [(NSMutableArray *)self->_mutableRows addObject:v4];
+  [rowCopy setSection:{self, v14}];
+  [(NSMutableArray *)self->_mutableRows addObject:rowCopy];
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(MapsDebugTableSection *)self title];
-  v5 = [(MapsDebugTableSection *)self rows];
-  v6 = [NSString stringWithFormat:@"<%@: %p title:%@ rows:%@>", v3, self, v4, v5];
+  title = [(MapsDebugTableSection *)self title];
+  rows = [(MapsDebugTableSection *)self rows];
+  v6 = [NSString stringWithFormat:@"<%@: %p title:%@ rows:%@>", v3, self, title, rows];
 
   return v6;
 }

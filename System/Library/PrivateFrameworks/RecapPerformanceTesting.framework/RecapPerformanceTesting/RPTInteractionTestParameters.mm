@@ -1,22 +1,22 @@
 @interface RPTInteractionTestParameters
-+ (id)interactionTestParametersWithTestName:(id)a3 interaction:(id)a4 duration:(double)a5 completionHandler:(id)a6;
-- (RPTInteractionTestParameters)initWithTestName:(id)a3 interactions:(id)a4 completionHandler:(id)a5;
++ (id)interactionTestParametersWithTestName:(id)name interaction:(id)interaction duration:(double)duration completionHandler:(id)handler;
+- (RPTInteractionTestParameters)initWithTestName:(id)name interactions:(id)interactions completionHandler:(id)handler;
 - (id)composerBlock;
-- (void)setDelays:(id)a3;
-- (void)setDurations:(id)a3;
+- (void)setDelays:(id)delays;
+- (void)setDurations:(id)durations;
 @end
 
 @implementation RPTInteractionTestParameters
 
-- (void)setDurations:(id)a3
+- (void)setDurations:(id)durations
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  durationsCopy = durations;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [durationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -25,12 +25,12 @@
     {
       if (*v11 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(durationsCopy);
       }
 
       if (!--v6)
       {
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [durationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (!v6)
         {
           break;
@@ -39,20 +39,20 @@
     }
   }
 
-  v8 = [v4 copy];
+  v8 = [durationsCopy copy];
   durations = self->_durations;
   self->_durations = v8;
 }
 
-- (void)setDelays:(id)a3
+- (void)setDelays:(id)delays
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delaysCopy = delays;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [delaysCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -61,12 +61,12 @@
     {
       if (*v11 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(delaysCopy);
       }
 
       if (!--v6)
       {
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [delaysCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (!v6)
         {
           break;
@@ -75,30 +75,30 @@
     }
   }
 
-  v8 = [v4 copy];
+  v8 = [delaysCopy copy];
   delays = self->_delays;
   self->_delays = v8;
 }
 
-- (RPTInteractionTestParameters)initWithTestName:(id)a3 interactions:(id)a4 completionHandler:(id)a5
+- (RPTInteractionTestParameters)initWithTestName:(id)name interactions:(id)interactions completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  interactionsCopy = interactions;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = RPTInteractionTestParameters;
   v11 = [(RPTInteractionTestParameters *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     testName = v11->_testName;
     v11->_testName = v12;
 
-    v14 = [v9 copy];
+    v14 = [interactionsCopy copy];
     interactions = v11->_interactions;
     v11->_interactions = v14;
 
-    v16 = MEMORY[0x2667162B0](v10);
+    v16 = MEMORY[0x2667162B0](handlerCopy);
     completionHandler = v11->_completionHandler;
     v11->_completionHandler = v16;
   }
@@ -106,20 +106,20 @@
   return v11;
 }
 
-+ (id)interactionTestParametersWithTestName:(id)a3 interaction:(id)a4 duration:(double)a5 completionHandler:(id)a6
++ (id)interactionTestParametersWithTestName:(id)name interaction:(id)interaction duration:(double)duration completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
-  v13 = [a1 alloc];
-  v20[0] = v10;
+  interactionCopy = interaction;
+  handlerCopy = handler;
+  nameCopy = name;
+  v13 = [self alloc];
+  v20[0] = interactionCopy;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-  v15 = [v13 initWithTestName:v12 interactions:v14 completionHandler:v11];
+  v15 = [v13 initWithTestName:nameCopy interactions:v14 completionHandler:handlerCopy];
 
   if (v15)
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v16 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
     v19 = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
     [v15 setDurations:v17];

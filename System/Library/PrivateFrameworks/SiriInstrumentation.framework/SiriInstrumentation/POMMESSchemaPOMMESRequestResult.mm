@@ -1,29 +1,29 @@
 @interface POMMESSchemaPOMMESRequestResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESRequestResult)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESRequestResult)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESRequestResult)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESRequestResult)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsFromResponseCache:(BOOL)a3;
-- (void)setHasIsLowConfidenceKnowledgeResult:(BOOL)a3;
-- (void)setHasIsQueryDirectQuestion:(BOOL)a3;
-- (void)setHasPegasusPromptType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsFromResponseCache:(BOOL)cache;
+- (void)setHasIsLowConfidenceKnowledgeResult:(BOOL)result;
+- (void)setHasIsQueryDirectQuestion:(BOOL)question;
+- (void)setHasPegasusPromptType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESRequestResult
 
-- (POMMESSchemaPOMMESRequestResult)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESRequestResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = POMMESSchemaPOMMESRequestResult;
   v5 = [(POMMESSchemaPOMMESRequestResult *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pommesConfidenceScore"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pommesConfidenceScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(POMMESSchemaPOMMESRequestResult *)v5 setPommesConfidenceScore:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"pegasusDomain"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"pegasusDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,28 +39,28 @@
       [(POMMESSchemaPOMMESRequestResult *)v5 setPegasusDomain:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isFromResponseCache"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isFromResponseCache"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESRequestResult setIsFromResponseCache:](v5, "setIsFromResponseCache:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"pegasusPromptType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"pegasusPromptType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESRequestResult setPegasusPromptType:](v5, "setPegasusPromptType:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isLowConfidenceKnowledgeResult"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isLowConfidenceKnowledgeResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESRequestResult setIsLowConfidenceKnowledgeResult:](v5, "setIsLowConfidenceKnowledgeResult:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isQueryDirectQuestion"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isQueryDirectQuestion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESRequestResult)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESRequestResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESRequestResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESRequestResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESRequestResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,12 +109,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isQueryDirectQuestion + 1);
   if ((v4 & 2) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESRequestResult isFromResponseCache](self, "isFromResponseCache")}];
-    [v3 setObject:v15 forKeyedSubscript:@"isFromResponseCache"];
+    [dictionary setObject:v15 forKeyedSubscript:@"isFromResponseCache"];
 
     v4 = *(&self->_isQueryDirectQuestion + 1);
     if ((v4 & 8) == 0)
@@ -135,34 +135,34 @@ LABEL_3:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESRequestResult isLowConfidenceKnowledgeResult](self, "isLowConfidenceKnowledgeResult")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isLowConfidenceKnowledgeResult"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isLowConfidenceKnowledgeResult"];
 
   if ((*(&self->_isQueryDirectQuestion + 1) & 0x10) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESRequestResult isQueryDirectQuestion](self, "isQueryDirectQuestion")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isQueryDirectQuestion"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isQueryDirectQuestion"];
   }
 
 LABEL_5:
   if (self->_pegasusDomain)
   {
-    v6 = [(POMMESSchemaPOMMESRequestResult *)self pegasusDomain];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"pegasusDomain"];
+    pegasusDomain = [(POMMESSchemaPOMMESRequestResult *)self pegasusDomain];
+    v7 = [pegasusDomain copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"pegasusDomain"];
   }
 
   v8 = *(&self->_isQueryDirectQuestion + 1);
   if ((v8 & 4) != 0)
   {
-    v9 = [(POMMESSchemaPOMMESRequestResult *)self pegasusPromptType];
+    pegasusPromptType = [(POMMESSchemaPOMMESRequestResult *)self pegasusPromptType];
     v10 = @"POMMESPEGASUSPROMPTTYPE_UNKNOWN";
-    if (v9 == 1)
+    if (pegasusPromptType == 1)
     {
       v10 = @"POMMESPEGASUSPROMPTTYPE_SHARE_DEVICE_LOCATION";
     }
 
-    if (v9 == 2)
+    if (pegasusPromptType == 2)
     {
       v11 = @"POMMESPEGASUSPROMPTTYPE_SHARE_PRECISE_DEVICE_LOCATION";
     }
@@ -172,7 +172,7 @@ LABEL_5:
       v11 = v10;
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"pegasusPromptType"];
+    [dictionary setObject:v11 forKeyedSubscript:@"pegasusPromptType"];
     v8 = *(&self->_isQueryDirectQuestion + 1);
   }
 
@@ -181,12 +181,12 @@ LABEL_5:
     v12 = MEMORY[0x1E696AD98];
     [(POMMESSchemaPOMMESRequestResult *)self pommesConfidenceScore];
     v13 = [v12 numberWithDouble:?];
-    [v3 setObject:v13 forKeyedSubscript:@"pommesConfidenceScore"];
+    [dictionary setObject:v13 forKeyedSubscript:@"pommesConfidenceScore"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -277,15 +277,15 @@ LABEL_13:
   return v9 ^ v5 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  if (*(&self->_isQueryDirectQuestion + 1) != (v4[34] & 1))
+  if (*(&self->_isQueryDirectQuestion + 1) != (equalCopy[34] & 1))
   {
     goto LABEL_27;
   }
@@ -293,29 +293,29 @@ LABEL_13:
   if (*(&self->_isQueryDirectQuestion + 1))
   {
     pommesConfidenceScore = self->_pommesConfidenceScore;
-    [v4 pommesConfidenceScore];
+    [equalCopy pommesConfidenceScore];
     if (pommesConfidenceScore != v6)
     {
       goto LABEL_27;
     }
   }
 
-  v7 = [(POMMESSchemaPOMMESRequestResult *)self pegasusDomain];
-  v8 = [v4 pegasusDomain];
-  v9 = v8;
-  if ((v7 != 0) == (v8 == 0))
+  pegasusDomain = [(POMMESSchemaPOMMESRequestResult *)self pegasusDomain];
+  pegasusDomain2 = [equalCopy pegasusDomain];
+  v9 = pegasusDomain2;
+  if ((pegasusDomain != 0) == (pegasusDomain2 == 0))
   {
 
     goto LABEL_27;
   }
 
-  v10 = [(POMMESSchemaPOMMESRequestResult *)self pegasusDomain];
-  if (v10)
+  pegasusDomain3 = [(POMMESSchemaPOMMESRequestResult *)self pegasusDomain];
+  if (pegasusDomain3)
   {
-    v11 = v10;
-    v12 = [(POMMESSchemaPOMMESRequestResult *)self pegasusDomain];
-    v13 = [v4 pegasusDomain];
-    v14 = [v12 isEqual:v13];
+    v11 = pegasusDomain3;
+    pegasusDomain4 = [(POMMESSchemaPOMMESRequestResult *)self pegasusDomain];
+    pegasusDomain5 = [equalCopy pegasusDomain];
+    v14 = [pegasusDomain4 isEqual:pegasusDomain5];
 
     if (!v14)
     {
@@ -329,7 +329,7 @@ LABEL_13:
 
   v15 = *(&self->_isQueryDirectQuestion + 1);
   v16 = (v15 >> 1) & 1;
-  v17 = v4[34];
+  v17 = equalCopy[34];
   if (v16 != ((v17 >> 1) & 1))
   {
 LABEL_27:
@@ -340,13 +340,13 @@ LABEL_27:
   if (v16)
   {
     isFromResponseCache = self->_isFromResponseCache;
-    if (isFromResponseCache != [v4 isFromResponseCache])
+    if (isFromResponseCache != [equalCopy isFromResponseCache])
     {
       goto LABEL_27;
     }
 
     v15 = *(&self->_isQueryDirectQuestion + 1);
-    v17 = v4[34];
+    v17 = equalCopy[34];
   }
 
   v19 = (v15 >> 2) & 1;
@@ -358,13 +358,13 @@ LABEL_27:
   if (v19)
   {
     pegasusPromptType = self->_pegasusPromptType;
-    if (pegasusPromptType != [v4 pegasusPromptType])
+    if (pegasusPromptType != [equalCopy pegasusPromptType])
     {
       goto LABEL_27;
     }
 
     v15 = *(&self->_isQueryDirectQuestion + 1);
-    v17 = v4[34];
+    v17 = equalCopy[34];
   }
 
   v21 = (v15 >> 3) & 1;
@@ -376,10 +376,10 @@ LABEL_27:
   if (v21)
   {
     isLowConfidenceKnowledgeResult = self->_isLowConfidenceKnowledgeResult;
-    if (isLowConfidenceKnowledgeResult == [v4 isLowConfidenceKnowledgeResult])
+    if (isLowConfidenceKnowledgeResult == [equalCopy isLowConfidenceKnowledgeResult])
     {
       v15 = *(&self->_isQueryDirectQuestion + 1);
-      v17 = v4[34];
+      v17 = equalCopy[34];
       goto LABEL_23;
     }
 
@@ -396,7 +396,7 @@ LABEL_23:
   if (v23)
   {
     isQueryDirectQuestion = self->_isQueryDirectQuestion;
-    if (isQueryDirectQuestion != [v4 isQueryDirectQuestion])
+    if (isQueryDirectQuestion != [equalCopy isQueryDirectQuestion])
     {
       goto LABEL_27;
     }
@@ -408,17 +408,17 @@ LABEL_28:
   return v25;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*(&self->_isQueryDirectQuestion + 1))
   {
     PBDataWriterWriteDoubleField();
   }
 
-  v4 = [(POMMESSchemaPOMMESRequestResult *)self pegasusDomain];
+  pegasusDomain = [(POMMESSchemaPOMMESRequestResult *)self pegasusDomain];
 
-  if (v4)
+  if (pegasusDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -469,9 +469,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)setHasIsQueryDirectQuestion:(BOOL)a3
+- (void)setHasIsQueryDirectQuestion:(BOOL)question
 {
-  if (a3)
+  if (question)
   {
     v3 = 16;
   }
@@ -484,9 +484,9 @@ LABEL_10:
   *(&self->_isQueryDirectQuestion + 1) = *(&self->_isQueryDirectQuestion + 1) & 0xEF | v3;
 }
 
-- (void)setHasIsLowConfidenceKnowledgeResult:(BOOL)a3
+- (void)setHasIsLowConfidenceKnowledgeResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 8;
   }
@@ -499,9 +499,9 @@ LABEL_10:
   *(&self->_isQueryDirectQuestion + 1) = *(&self->_isQueryDirectQuestion + 1) & 0xF7 | v3;
 }
 
-- (void)setHasPegasusPromptType:(BOOL)a3
+- (void)setHasPegasusPromptType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -514,9 +514,9 @@ LABEL_10:
   *(&self->_isQueryDirectQuestion + 1) = *(&self->_isQueryDirectQuestion + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsFromResponseCache:(BOOL)a3
+- (void)setHasIsFromResponseCache:(BOOL)cache
 {
-  if (a3)
+  if (cache)
   {
     v3 = 2;
   }

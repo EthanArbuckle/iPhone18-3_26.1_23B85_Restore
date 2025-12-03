@@ -8,22 +8,22 @@
 - (id)_axRecursivelyPropertyListCoercedRepresentationWithError:()AXPropertyListCoersion
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__3;
   v19 = __Block_byref_object_dispose__3;
   v20 = 0;
-  v6 = [a1 length];
+  v6 = [self length];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __103__NSAttributedString_AXPropertyListCoersion___axRecursivelyPropertyListCoercedRepresentationWithError___block_invoke;
   v12[3] = &unk_1E80D4780;
   v14 = &v15;
-  v7 = v5;
+  v7 = array;
   v13 = v7;
-  [a1 enumerateAttributesInRange:0 options:v6 usingBlock:{0, v12}];
+  [self enumerateAttributesInRange:0 options:v6 usingBlock:{0, v12}];
   v8 = v16[5];
   if (v8)
   {
@@ -37,8 +37,8 @@
   else
   {
     v21[0] = @"String";
-    v10 = [a1 string];
-    v22[0] = v10;
+    string = [self string];
+    v22[0] = string;
     v22[1] = v7;
     v21[1] = @"Attrl";
     v21[2] = @"SmugType";

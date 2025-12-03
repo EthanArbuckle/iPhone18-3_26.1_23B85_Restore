@@ -1,18 +1,18 @@
 @interface NSUUID
-+ (id)lib_UUIDWithLegacyJobID:(int64_t)a3;
++ (id)lib_UUIDWithLegacyJobID:(int64_t)d;
 + (id)lib_shortLogKey;
-+ (id)lib_shortLogKeyWithAPIVersion:(int64_t)a3;
++ (id)lib_shortLogKeyWithAPIVersion:(int64_t)version;
 - (NSString)lib_logUUID;
 - (int64_t)lib_legacyJobID;
 - (unint64_t)lib_signpostId;
-- (void)_lib_getBytes:(void *)a3 count:(unint64_t)a4;
+- (void)_lib_getBytes:(void *)bytes count:(unint64_t)count;
 @end
 
 @implementation NSUUID
 
-+ (id)lib_UUIDWithLegacyJobID:(int64_t)a3
++ (id)lib_UUIDWithLegacyJobID:(int64_t)d
 {
-  v5[0] = a3;
+  v5[0] = d;
   v5[1] = 0;
   v3 = [[NSUUID alloc] initWithUUIDBytes:v5];
 
@@ -45,32 +45,32 @@
 + (id)lib_shortLogKey
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
-  v4 = [v3 componentsSeparatedByString:@"-"];
-  v5 = [v4 firstObject];
+  uUIDString = [v2 UUIDString];
+  v4 = [uUIDString componentsSeparatedByString:@"-"];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-+ (id)lib_shortLogKeyWithAPIVersion:(int64_t)a3
++ (id)lib_shortLogKeyWithAPIVersion:(int64_t)version
 {
-  v4 = [a1 lib_shortLogKey];
-  v5 = [NSString stringWithFormat:@"%@_SK%ld", v4, a3];
+  lib_shortLogKey = [self lib_shortLogKey];
+  version = [NSString stringWithFormat:@"%@_SK%ld", lib_shortLogKey, version];
 
-  return v5;
+  return version;
 }
 
-- (void)_lib_getBytes:(void *)a3 count:(unint64_t)a4
+- (void)_lib_getBytes:(void *)bytes count:(unint64_t)count
 {
   __src[0] = 0;
   __src[1] = 0;
   [(NSUUID *)self getUUIDBytes:__src];
-  if (a4 >= 0x11)
+  if (count >= 0x11)
   {
-    [NSException raise:NSRangeException format:@"%@: count %lu exceeds available length: %lu", self, a4, 16];
+    [NSException raise:NSRangeException format:@"%@: count %lu exceeds available length: %lu", self, count, 16];
   }
 
-  memcpy(a3, __src, a4);
+  memcpy(bytes, __src, count);
 }
 
 @end

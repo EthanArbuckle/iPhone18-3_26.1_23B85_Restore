@@ -17,8 +17,8 @@
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v4 = [v3 reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  reverseObjectEnumerator = [v3 reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (!v5)
   {
     v7 = 0;
@@ -36,7 +36,7 @@ LABEL_36:
     {
       if (*v41 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v10 = *(*(&v40 + 1) + 8 * i);
@@ -48,18 +48,18 @@ LABEL_36:
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v40 objects:v46 count:16];
+    v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v40 objects:v46 count:16];
   }
 
   while (v6);
 
   if (v7)
   {
-    v12 = [v7 _accessibilityObscuredScreenAllowedViews];
-    v13 = [v12 mutableCopy];
+    _accessibilityObscuredScreenAllowedViews = [v7 _accessibilityObscuredScreenAllowedViews];
+    v13 = [_accessibilityObscuredScreenAllowedViews mutableCopy];
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v15 = [v7 _accessibilityWindow];
+    _accessibilityWindow = [v7 _accessibilityWindow];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -104,8 +104,8 @@ LABEL_36:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v4 = v13;
-    v22 = [v4 countByEnumeratingWithState:&v32 objects:v44 count:16];
+    reverseObjectEnumerator = v13;
+    v22 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v44 count:16];
     if (v22)
     {
       v23 = v22;
@@ -116,22 +116,22 @@ LABEL_36:
         {
           if (*v33 != v24)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v26 = *(*(&v32 + 1) + 8 * k);
-          v27 = [v26 _accessibilityWindow];
-          v28 = v27;
-          if (v26 != v15)
+          _accessibilityWindow2 = [v26 _accessibilityWindow];
+          v28 = _accessibilityWindow2;
+          if (v26 != _accessibilityWindow)
           {
-            if (v15 == v27 || (AXUIKeyboardWindow(), v29 = objc_claimAutoreleasedReturnValue(), v29, v28 != v29))
+            if (_accessibilityWindow == _accessibilityWindow2 || (AXUIKeyboardWindow(), v29 = objc_claimAutoreleasedReturnValue(), v29, v28 != v29))
             {
               [v14 addObject:v26];
             }
           }
         }
 
-        v23 = [v4 countByEnumeratingWithState:&v32 objects:v44 count:16];
+        v23 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v44 count:16];
       }
 
       while (v23);
@@ -148,21 +148,21 @@ LABEL_37:
 
 - (uint64_t)_accessibilityShouldUseSupplementaryViews
 {
-  if ([a1 _accessibilityHasOrderedChildren])
+  if ([self _accessibilityHasOrderedChildren])
   {
     return 1;
   }
 
-  return [a1 isAccessibilityElement];
+  return [self isAccessibilityElement];
 }
 
 - (id)_accessibilitySubviewsForGettingElementsWithOptions:()UIAccessibilityElementTraversal
 {
   v71 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 _accessibilitySubviews];
-  v6 = [v5 reverseObjectEnumerator];
-  v7 = [v6 allObjects];
+  _accessibilitySubviews = [self _accessibilitySubviews];
+  reverseObjectEnumerator = [_accessibilitySubviews reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v8 = AXLogElementTraversal();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -172,11 +172,11 @@ LABEL_37:
 
   if ([v4 shouldUseAllSubviews])
   {
-    v9 = v7;
+    v9 = allObjects;
     goto LABEL_45;
   }
 
-  v9 = [MEMORY[0x1E69DD250] _subviewsReplacedByModalViewSubviewsIfNecessary:v7];
+  v9 = [MEMORY[0x1E69DD250] _subviewsReplacedByModalViewSubviewsIfNecessary:allObjects];
 
   v10 = AXLogElementTraversal();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -188,9 +188,9 @@ LABEL_37:
   {
     v54 = v4;
     v11 = v9;
-    v12 = a1;
-    v13 = [*MEMORY[0x1E69DDA98] _accessibilitySoftwareKeyboardActive];
-    v14 = [MEMORY[0x1E69DCBB8] activeKeyboard];
+    selfCopy = self;
+    _accessibilitySoftwareKeyboardActive = [*MEMORY[0x1E69DDA98] _accessibilitySoftwareKeyboardActive];
+    activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
     v60 = AXUIAllKeyboardWindows();
     v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
     v65 = 0u;
@@ -206,9 +206,9 @@ LABEL_37:
 
     v17 = v16;
     v18 = *v66;
-    v56 = v12;
+    v56 = selfCopy;
     v57 = v9;
-    v55 = v13;
+    v55 = _accessibilitySoftwareKeyboardActive;
     v59 = v15;
     while (1)
     {
@@ -221,16 +221,16 @@ LABEL_37:
         }
 
         v20 = *(*(&v65 + 1) + 8 * v19);
-        if (v20 != v12)
+        if (v20 != selfCopy)
         {
-          if (v20 == v14)
+          if (v20 == activeKeyboard)
           {
             v21 = 0;
           }
 
           else
           {
-            v21 = v13;
+            v21 = _accessibilitySoftwareKeyboardActive;
           }
 
           if (v21 != 1)
@@ -238,13 +238,13 @@ LABEL_37:
             goto LABEL_34;
           }
 
-          if ([*(*(&v65 + 1) + 8 * v19) _accessibilityIsDescendantOfElement:v14])
+          if ([*(*(&v65 + 1) + 8 * v19) _accessibilityIsDescendantOfElement:activeKeyboard])
           {
             goto LABEL_34;
           }
 
-          v22 = [v20 window];
-          v23 = [v60 containsObject:v22];
+          window = [v20 window];
+          v23 = [v60 containsObject:window];
 
           v15 = v59;
           if (v23)
@@ -276,7 +276,7 @@ LABEL_37:
             goto LABEL_34;
           }
 
-          [v14 accessibilityFrame];
+          [activeKeyboard accessibilityFrame];
           v77.origin.x = x;
           v77.origin.y = y;
           v77.size.width = width;
@@ -286,7 +286,7 @@ LABEL_37:
             goto LABEL_34;
           }
 
-          v58 = [v20 window];
+          window2 = [v20 window];
           v61 = 0u;
           v62 = 0u;
           v63 = 0u;
@@ -323,15 +323,15 @@ LABEL_37:
             while (v43);
           }
 
-          if (([v40 containsObject:v58] & 1) == 0)
+          if (([v40 containsObject:window2] & 1) == 0)
           {
-            [v58 level];
+            [window2 level];
             if (v49 > v42)
             {
 
-              v12 = v56;
+              selfCopy = v56;
               v9 = v57;
-              v13 = v55;
+              _accessibilitySoftwareKeyboardActive = v55;
               v15 = v59;
 LABEL_34:
               [v9 addObject:v20];
@@ -339,9 +339,9 @@ LABEL_34:
             }
           }
 
-          v12 = v56;
+          selfCopy = v56;
           v9 = v57;
-          v13 = v55;
+          _accessibilitySoftwareKeyboardActive = v55;
           v15 = v59;
         }
 
@@ -384,7 +384,7 @@ LABEL_45:
   v36 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -405,9 +405,9 @@ LABEL_45:
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [v13 _accessibilityAdditionalElements];
-        v15 = [v14 ax_filteredArrayUsingBlock:&__block_literal_global_546];
-        [v8 axSafelyAddObjectsFromArray:v15];
+        _accessibilityAdditionalElements = [v13 _accessibilityAdditionalElements];
+        v15 = [_accessibilityAdditionalElements ax_filteredArrayUsingBlock:&__block_literal_global_546];
+        [array axSafelyAddObjectsFromArray:v15];
 
         v28 = 0u;
         v29 = 0u;
@@ -428,7 +428,7 @@ LABEL_45:
                 objc_enumerationMutation(v16);
               }
 
-              [*(*(&v26 + 1) + 8 * j) _addAccessibilityElementsAndOrderedContainersWithOptions:v7 toCollection:v8];
+              [*(*(&v26 + 1) + 8 * j) _addAccessibilityElementsAndOrderedContainersWithOptions:v7 toCollection:array];
             }
 
             v18 = [v16 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -437,9 +437,9 @@ LABEL_45:
           while (v18);
         }
 
-        v21 = [v13 _accessibilityAdditionalElements];
-        v22 = [v21 ax_filteredArrayUsingBlock:&__block_literal_global_548];
-        [v8 axSafelyAddObjectsFromArray:v22];
+        _accessibilityAdditionalElements2 = [v13 _accessibilityAdditionalElements];
+        v22 = [_accessibilityAdditionalElements2 ax_filteredArrayUsingBlock:&__block_literal_global_548];
+        [array axSafelyAddObjectsFromArray:v22];
       }
 
       v10 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -450,30 +450,30 @@ LABEL_45:
 
   if (a5)
   {
-    [v8 sortUsingSelector:sel__accessibilityCompareGeometryForViewOrDictionary_];
+    [array sortUsingSelector:sel__accessibilityCompareGeometryForViewOrDictionary_];
   }
 
-  return v8;
+  return array;
 }
 
 - (id)_accessibilityViewChildrenWithOptions:()UIAccessibilityElementTraversal
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 _accessibilityIsSortingInUpperFrame];
-  if ((v5 & 1) == 0)
+  _accessibilityIsSortingInUpperFrame = [self _accessibilityIsSortingInUpperFrame];
+  if ((_accessibilityIsSortingInUpperFrame & 1) == 0)
   {
-    [a1 _accessibilitySetIsSortingInUpperFrame:1];
+    [self _accessibilitySetIsSortingInUpperFrame:1];
   }
 
   v6 = objc_opt_class();
-  v10[0] = a1;
+  v10[0] = self;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v8 = [v6 _accessibilityElementsAndContainersDescendingFromViews:v7 options:v4 sorted:{objc_msgSend(v4, "sorted") & (v5 ^ 1)}];
+  v8 = [v6 _accessibilityElementsAndContainersDescendingFromViews:v7 options:v4 sorted:{objc_msgSend(v4, "sorted") & (_accessibilityIsSortingInUpperFrame ^ 1)}];
 
-  if ((v5 & 1) == 0)
+  if ((_accessibilityIsSortingInUpperFrame & 1) == 0)
   {
-    [a1 _accessibilitySetIsSortingInUpperFrame:0];
+    [self _accessibilitySetIsSortingInUpperFrame:0];
   }
 
   return v8;
@@ -484,13 +484,13 @@ LABEL_45:
   v4 = a3;
   if ([v4 includeWindowlessViews])
   {
-    [a1 frame];
+    [self frame];
     if (v5 > 1.0)
     {
-      [a1 frame];
-      if (v6 > 1.0 && ([a1 isHidden] & 1) == 0)
+      [self frame];
+      if (v6 > 1.0 && ([self isHidden] & 1) == 0)
       {
-        [a1 alpha];
+        [self alpha];
         if (v7 > 0.0)
         {
           goto LABEL_24;
@@ -499,11 +499,11 @@ LABEL_45:
     }
   }
 
-  if (([a1 _accessibilityViewIsVisible] & 1) != 0 || objc_msgSend(v4, "includeHiddenViews"))
+  if (([self _accessibilityViewIsVisible] & 1) != 0 || objc_msgSend(v4, "includeHiddenViews"))
   {
-    [a1 accessibilityFrame];
+    [self accessibilityFrame];
     v10 = v9 < 1.0 && v8 < 1.0;
-    if (!v10 || [a1 _accessibilityOverridesInvalidFrames])
+    if (!v10 || [self _accessibilityOverridesInvalidFrames])
     {
       if ((UIAccessibilityIsWidgetExtension() & 1) == 0)
       {
@@ -513,14 +513,14 @@ LABEL_45:
           goto LABEL_24;
         }
 
-        v12 = [a1 _accessibilityAncestorIsKindOf:objc_opt_class()];
+        v12 = [self _accessibilityAncestorIsKindOf:objc_opt_class()];
         if (v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
 
           goto LABEL_24;
         }
 
-        v14 = [a1 _accessibilityAncestorIsKindOf:objc_opt_class()];
+        v14 = [self _accessibilityAncestorIsKindOf:objc_opt_class()];
 
         if (v14)
         {
@@ -528,8 +528,8 @@ LABEL_45:
         }
       }
 
-      v11 = [*MEMORY[0x1E69DDA98] _accessibilityContainerToStopVisibilityCheck];
-      if (v11)
+      _accessibilityContainerToStopVisibilityCheck = [*MEMORY[0x1E69DDA98] _accessibilityContainerToStopVisibilityCheck];
+      if (_accessibilityContainerToStopVisibilityCheck)
       {
 
 LABEL_24:
@@ -537,7 +537,7 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      if (([a1 _accessibilityIsFrameOutOfBounds] & 1) == 0)
+      if (([self _accessibilityIsFrameOutOfBounds] & 1) == 0)
       {
         goto LABEL_24;
       }

@@ -1,8 +1,8 @@
 @interface NSPersistentCloudKitContainerOptions
-- (NSPersistentCloudKitContainerOptions)initWithContainer:(id)a3;
+- (NSPersistentCloudKitContainerOptions)initWithContainer:(id)container;
 - (NSPersistentCloudKitContainerOptions)initWithContainerIdentifier:(NSString *)containerIdentifier;
 - (void)dealloc;
-- (void)setActivityVouchers:(id)a3;
+- (void)setActivityVouchers:(id)vouchers;
 @end
 
 @implementation NSPersistentCloudKitContainerOptions
@@ -41,34 +41,34 @@
   return v4;
 }
 
-- (NSPersistentCloudKitContainerOptions)initWithContainer:(id)a3
+- (NSPersistentCloudKitContainerOptions)initWithContainer:(id)container
 {
-  v4 = -[NSPersistentCloudKitContainerOptions initWithContainerIdentifier:](self, "initWithContainerIdentifier:", [a3 containerIdentifier]);
+  v4 = -[NSPersistentCloudKitContainerOptions initWithContainerIdentifier:](self, "initWithContainerIdentifier:", [container containerIdentifier]);
   if (v4)
   {
-    v4->_testContainerOverride = a3;
+    v4->_testContainerOverride = container;
   }
 
   return v4;
 }
 
-- (void)setActivityVouchers:(id)a3
+- (void)setActivityVouchers:(id)vouchers
 {
   activityVouchers = self->_activityVouchers;
-  if (activityVouchers != a3)
+  if (activityVouchers != vouchers)
   {
 
-    if (a3)
+    if (vouchers)
     {
-      v6 = a3;
+      vouchersCopy = vouchers;
     }
 
     else
     {
-      v6 = objc_alloc_init(MEMORY[0x1E695DEC8]);
+      vouchersCopy = objc_alloc_init(MEMORY[0x1E695DEC8]);
     }
 
-    self->_activityVouchers = v6;
+    self->_activityVouchers = vouchersCopy;
   }
 }
 

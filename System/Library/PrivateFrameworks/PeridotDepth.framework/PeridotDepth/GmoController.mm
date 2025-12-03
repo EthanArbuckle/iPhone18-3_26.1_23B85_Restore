@@ -1,14 +1,14 @@
 @interface GmoController
-- (BOOL)homographyRunConditionsWithTimestamp:(double)a3;
-- (GmoController)initWithUnitInfo:(PeridotUnitInfo *)a3;
+- (BOOL)homographyRunConditionsWithTimestamp:(double)timestamp;
+- (GmoController)initWithUnitInfo:(PeridotUnitInfo *)info;
 - (SessionState)sessionCalcState;
 - (id).cxx_construct;
-- (int)processFrameWithBank:(const GmoProcessBankInputs *)a3 gmoResult:(GmoResult *)a4;
+- (int)processFrameWithBank:(const GmoProcessBankInputs *)bank gmoResult:(GmoResult *)result;
 - (vector<common::PeridotSpotValues<CGPoint>,)localSpotsLocRefDist;
 - (vector<common::PeridotSpotValues<float>,)localNa;
 - (vector<std::vector<SpecsResults>,)specsOut;
-- (void)setGmoCfgBits:(GmoCfgBits)a3;
-- (void)setSessionPersistentData:(SessionStatePersistentData *)a3;
+- (void)setGmoCfgBits:(GmoCfgBits)bits;
+- (void)setSessionPersistentData:(SessionStatePersistentData *)data;
 @end
 
 @implementation GmoController
@@ -144,11 +144,11 @@
   return memcpy(v4, &self->_sessionState, sizeof(SessionState));
 }
 
-- (void)setSessionPersistentData:(SessionStatePersistentData *)a3
+- (void)setSessionPersistentData:(SessionStatePersistentData *)data
 {
-  if (a3)
+  if (data)
   {
-    memcpy(&self->_sessionState, a3, sizeof(self->_sessionState));
+    memcpy(&self->_sessionState, data, sizeof(self->_sessionState));
     self->_ca._longTermEventPersistentData.homogDoneCount = self->_sessionState.persistent.coreAnalyticsPersistentData.coreAnalyticsLongTermData.homogDoneCount;
     *&self->_ca._longTermEventPersistentData.sessionCount = *&self->_sessionState.persistent.coreAnalyticsPersistentData.coreAnalyticsLongTermData.sessionCount;
     v4 = *&self->_sessionState.persistent.coreAnalyticsPersistentData.coreAnalyticsLongTermData.calibErrP95Arr[20];
@@ -176,10 +176,10 @@
   }
 }
 
-- (BOOL)homographyRunConditionsWithTimestamp:(double)a3
+- (BOOL)homographyRunConditionsWithTimestamp:(double)timestamp
 {
   bankCounter = self->_bankCounter;
-  if (a3 - self->_lastHomographyAttemptTimeSec >= self->_timeBetweenHomographyAttemps && (self->_bankCounter & 7) == 0)
+  if (timestamp - self->_lastHomographyAttemptTimeSec >= self->_timeBetweenHomographyAttemps && (self->_bankCounter & 7) == 0)
   {
     if (self->_minFramesBetweenHomogCycle > bankCounter >> 3 && bankCounter <= 0x1DF)
     {
@@ -192,13 +192,13 @@
     return 0;
   }
 
-  self->_lastHomographyAttemptTimeSec = a3;
+  self->_lastHomographyAttemptTimeSec = timestamp;
   return 1;
 }
 
-- (int)processFrameWithBank:(const GmoProcessBankInputs *)a3 gmoResult:(GmoResult *)a4
+- (int)processFrameWithBank:(const GmoProcessBankInputs *)bank gmoResult:(GmoResult *)result
 {
-  v4 = (MEMORY[0x28223BE20])(self, a2, a3);
+  v4 = (MEMORY[0x28223BE20])(self, a2, bank);
   __p[315] = *MEMORY[0x277D85DE8];
   if (*(v4 + 64) <= 0x1DFuLL)
   {
@@ -260,7 +260,7 @@
   return 1;
 }
 
-- (void)setGmoCfgBits:(GmoCfgBits)a3
+- (void)setGmoCfgBits:(GmoCfgBits)bits
 {
   v11 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -268,12 +268,12 @@
     v7 = 136315394;
     v8 = "[GmoController setGmoCfgBits:]";
     v9 = 1024;
-    v10.all = a3.all;
+    v10.all = bits.all;
     _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: Setting GMO Config to: 0x%X", &v7, 0x12u);
   }
 
-  self->_gmoCfgBits = a3;
-  if ((a3.all & 0x80000000) != 0)
+  self->_gmoCfgBits = bits;
+  if ((bits.all & 0x80000000) != 0)
   {
     v5 = objc_alloc_init(GmoDbgServices);
     dbgSrvc = self->_dbgSrvc;
@@ -281,7 +281,7 @@
   }
 }
 
-- (GmoController)initWithUnitInfo:(PeridotUnitInfo *)a3
+- (GmoController)initWithUnitInfo:(PeridotUnitInfo *)info
 {
   v59 = *MEMORY[0x277D85DE8];
   v56.receiver = self;
@@ -299,9 +299,9 @@
     v4->_sessionState.persistent.pattern = [&unk_283811050 intValue];
     v4->_sessionState.persistent.version = [&unk_283811068 intValue];
     v4->_gmoCfgBits.all = 0;
-    v4->_unitInfo = a3;
+    v4->_unitInfo = info;
     v4->_gmoRefDist = 10000;
-    v4->_isSphere = a3->var0.operationalSpotLocations.normalRange.isSphere;
+    v4->_isSphere = info->var0.operationalSpotLocations.normalRange.isSphere;
     *&v4->_spotSizeSigma = 0x40C000003EC28F5CLL;
     v5 = [GmoEngine alloc];
     *&v6 = v4->_spotSizeSigma;

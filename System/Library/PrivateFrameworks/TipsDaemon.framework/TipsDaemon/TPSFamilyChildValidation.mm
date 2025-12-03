@@ -1,13 +1,13 @@
 @interface TPSFamilyChildValidation
-- (void)getCurrentStateWithCompletion:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (void)getCurrentStateWithCompletion:(id)completion;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSFamilyChildValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -21,7 +21,7 @@
   v7[2] = __51__TPSFamilyChildValidation_validateWithCompletion___block_invoke;
   v7[3] = &unk_2789B0F78;
   v7[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   v9 = &v10;
   [v5 startRequestWithCompletionHandler:v7];
@@ -93,16 +93,9 @@ BOOL __51__TPSFamilyChildValidation_validateWithCompletion___block_invoke_2(uint
   return v3;
 }
 
+- (void)getCurrentStateWithCompletion:(id)completion
 {
-  v2 = a2;
-  v3 = ([v2 isMe] & 1) != 0 || objc_msgSend(v2, "memberType") != 2;
-
-  return v3;
-}
-
-- (void)getCurrentStateWithCompletion:(id)a3
-{
-  v3 = a3;
+  completionCopy = completion;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -115,7 +108,7 @@ BOOL __51__TPSFamilyChildValidation_validateWithCompletion___block_invoke_2(uint
   v6[1] = 3221225472;
   v6[2] = __58__TPSFamilyChildValidation_getCurrentStateWithCompletion___block_invoke;
   v6[3] = &unk_2789AFA70;
-  v5 = v3;
+  v5 = completionCopy;
   v7 = v5;
   v8 = &v9;
   [v4 startRequestWithCompletionHandler:v6];

@@ -1,52 +1,52 @@
 @interface SearchUIOpenFileProviderItemHandler
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4;
-- (BOOL)openFileURLInPlaceInDefaultApplicationIfPossible:(id)a3;
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment;
+- (BOOL)openFileURLInPlaceInDefaultApplicationIfPossible:(id)possible;
 - (NSURL)fileProviderURL;
 - (id)blockAndFetchFileProviderURL;
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4;
+- (id)createViewControllerForCommand:(id)command environment:(id)environment;
 - (id)destinationApplicationIconImage;
 - (id)itemProvider;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
-- (void)fetchPreviewItemIfNeeded:(id)a3;
-- (void)fetchShareableURLWithCompletionHandler:(id)a3;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
+- (void)fetchPreviewItemIfNeeded:(id)needed;
+- (void)fetchShareableURLWithCompletionHandler:(id)handler;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIOpenFileProviderItemHandler
 
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 coreSpotlightIdentifier];
-  v6 = [v4 fileProviderIdentifier];
+  modelCopy = model;
+  coreSpotlightIdentifier = [modelCopy coreSpotlightIdentifier];
+  fileProviderIdentifier = [modelCopy fileProviderIdentifier];
 
   v7 = 0;
-  if (v5 && v6)
+  if (coreSpotlightIdentifier && fileProviderIdentifier)
   {
     v7 = objc_opt_new();
-    [v7 setCoreSpotlightIdentifier:v5];
-    [v7 setFileProviderIdentifier:v6];
+    [v7 setCoreSpotlightIdentifier:coreSpotlightIdentifier];
+    [v7 setFileProviderIdentifier:fileProviderIdentifier];
   }
 
   return v7;
 }
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SearchUICommandHandler *)self rowModel];
+  commandCopy = command;
+  environmentCopy = environment;
+  rowModel = [(SearchUICommandHandler *)self rowModel];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__SearchUIOpenFileProviderItemHandler_performCommand_triggerEvent_environment___block_invoke;
   v13[3] = &unk_1E85B3A08;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
-  [v10 fetchFileProviderURLWithCompletionHandler:v13];
+  v14 = commandCopy;
+  selfCopy = self;
+  v16 = environmentCopy;
+  eventCopy = event;
+  v11 = environmentCopy;
+  v12 = commandCopy;
+  [rowModel fetchFileProviderURLWithCompletionHandler:v13];
 }
 
 void __79__SearchUIOpenFileProviderItemHandler_performCommand_triggerEvent_environment___block_invoke(uint64_t a1, void *a2)
@@ -167,18 +167,18 @@ uint64_t __79__SearchUIOpenFileProviderItemHandler_performCommand_triggerEvent_e
   return [v2 notifyDelegateDidPerformCommandIfNecessary];
 }
 
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4
+- (id)createViewControllerForCommand:(id)command environment:(id)environment
 {
   v5 = objc_opt_new();
   [v5 setDataSource:self];
-  v6 = [(SearchUICommandHandler *)self rowModel];
+  rowModel = [(SearchUICommandHandler *)self rowModel];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__SearchUIOpenFileProviderItemHandler_createViewControllerForCommand_environment___block_invoke;
   v9[3] = &unk_1E85B3A30;
   v7 = v5;
   v10 = v7;
-  [v6 fetchFileProviderURLWithCompletionHandler:v9];
+  [rowModel fetchFileProviderURLWithCompletionHandler:v9];
 
   return v7;
 }
@@ -193,33 +193,33 @@ void __82__SearchUIOpenFileProviderItemHandler_createViewControllerForCommand_en
   [SearchUIUtilities dispatchMainIfNecessary:v1];
 }
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
-  v3 = [(SearchUIOpenFileProviderItemHandler *)self fileProviderURL];
-  v4 = v3 != 0;
+  fileProviderURL = [(SearchUIOpenFileProviderItemHandler *)self fileProviderURL];
+  v4 = fileProviderURL != 0;
 
   return v4;
 }
 
 - (NSURL)fileProviderURL
 {
-  v2 = [(SearchUICommandHandler *)self rowModel];
-  v3 = [v2 fileProviderFetchedURL];
+  rowModel = [(SearchUICommandHandler *)self rowModel];
+  fileProviderFetchedURL = [rowModel fileProviderFetchedURL];
 
-  return v3;
+  return fileProviderFetchedURL;
 }
 
-- (void)fetchPreviewItemIfNeeded:(id)a3
+- (void)fetchPreviewItemIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(SearchUICommandHandler *)self rowModel];
+  neededCopy = needed;
+  rowModel = [(SearchUICommandHandler *)self rowModel];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__SearchUIOpenFileProviderItemHandler_fetchPreviewItemIfNeeded___block_invoke;
   v7[3] = &unk_1E85B3A58;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchFileProviderURLWithCompletionHandler:v7];
+  v8 = neededCopy;
+  v6 = neededCopy;
+  [rowModel fetchFileProviderURLWithCompletionHandler:v7];
 }
 
 uint64_t __64__SearchUIOpenFileProviderItemHandler_fetchPreviewItemIfNeeded___block_invoke(uint64_t a1, uint64_t a2)
@@ -233,16 +233,16 @@ uint64_t __64__SearchUIOpenFileProviderItemHandler_fetchPreviewItemIfNeeded___bl
   return result;
 }
 
-- (BOOL)openFileURLInPlaceInDefaultApplicationIfPossible:(id)a3
+- (BOOL)openFileURLInPlaceInDefaultApplicationIfPossible:(id)possible
 {
-  v3 = a3;
-  if (v3)
+  possibleCopy = possible;
+  if (possibleCopy)
   {
-    v4 = [MEMORY[0x1E69CDA18] interactionControllerWithURL:v3];
-    v5 = [v4 _defaultApplication];
-    v6 = [v5 supportsOpenInPlace];
+    v4 = [MEMORY[0x1E69CDA18] interactionControllerWithURL:possibleCopy];
+    _defaultApplication = [v4 _defaultApplication];
+    supportsOpenInPlace = [_defaultApplication supportsOpenInPlace];
 
-    if (v6)
+    if (supportsOpenInPlace)
     {
       [v4 openDocumentWithDefaultApplication];
     }
@@ -250,17 +250,17 @@ uint64_t __64__SearchUIOpenFileProviderItemHandler_fetchPreviewItemIfNeeded___bl
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(supportsOpenInPlace) = 0;
   }
 
-  return v6;
+  return supportsOpenInPlace;
 }
 
-- (void)fetchShareableURLWithCompletionHandler:(id)a3
+- (void)fetchShareableURLWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SearchUICommandHandler *)self rowModel];
-  [v5 fetchFileProviderURLWithCompletionHandler:v4];
+  handlerCopy = handler;
+  rowModel = [(SearchUICommandHandler *)self rowModel];
+  [rowModel fetchFileProviderURLWithCompletionHandler:handlerCopy];
 }
 
 - (id)blockAndFetchFileProviderURL
@@ -272,7 +272,7 @@ uint64_t __64__SearchUIOpenFileProviderItemHandler_fetchPreviewItemIfNeeded___bl
   v15 = __Block_byref_object_copy__2;
   v16 = __Block_byref_object_dispose__2;
   v17 = 0;
-  v4 = [(SearchUICommandHandler *)self rowModel];
+  rowModel = [(SearchUICommandHandler *)self rowModel];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__SearchUIOpenFileProviderItemHandler_blockAndFetchFileProviderURL__block_invoke;
@@ -280,7 +280,7 @@ uint64_t __64__SearchUIOpenFileProviderItemHandler_fetchPreviewItemIfNeeded___bl
   v11 = &v12;
   v5 = v3;
   v10 = v5;
-  [v4 fetchFileProviderURLWithCompletionHandler:v9];
+  [rowModel fetchFileProviderURLWithCompletionHandler:v9];
 
   v6 = dispatch_time(0, 10000000000);
   v7 = 0;
@@ -304,14 +304,14 @@ void __67__SearchUIOpenFileProviderItemHandler_blockAndFetchFileProviderURL__blo
 - (id)itemProvider
 {
   v3 = objc_opt_new();
-  v4 = [(SearchUICommandHandler *)self rowModel];
+  rowModel = [(SearchUICommandHandler *)self rowModel];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__SearchUIOpenFileProviderItemHandler_itemProvider__block_invoke;
   v7[3] = &unk_1E85B3A30;
   v5 = v3;
   v8 = v5;
-  [v4 fetchFileProviderURLWithCompletionHandler:v7];
+  [rowModel fetchFileProviderURLWithCompletionHandler:v7];
 
   return v5;
 }
@@ -348,13 +348,13 @@ void __51__SearchUIOpenFileProviderItemHandler_itemProvider__block_invoke(uint64
 - (id)destinationApplicationIconImage
 {
   v3 = objc_opt_new();
-  v4 = [(SearchUICommandHandler *)self command];
-  v5 = [v4 coreSpotlightIdentifier];
-  [v3 setCoreSpotlightIdentifier:v5];
+  command = [(SearchUICommandHandler *)self command];
+  coreSpotlightIdentifier = [command coreSpotlightIdentifier];
+  [v3 setCoreSpotlightIdentifier:coreSpotlightIdentifier];
 
-  v6 = [(SearchUICommandHandler *)self command];
-  v7 = [v6 fileProviderIdentifier];
-  [v3 setFileProviderIdentifier:v7];
+  command2 = [(SearchUICommandHandler *)self command];
+  fileProviderIdentifier = [command2 fileProviderIdentifier];
+  [v3 setFileProviderIdentifier:fileProviderIdentifier];
 
   return v3;
 }

@@ -1,21 +1,21 @@
 @interface DigitalPresentmentRequest
 - (_TtC7CoreIDV25DigitalPresentmentRequest)init;
-- (_TtC7CoreIDV25DigitalPresentmentRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC7CoreIDV25DigitalPresentmentRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DigitalPresentmentRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  DigitalPresentmentRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  DigitalPresentmentRequest.encode(with:)(coderCopy);
 }
 
-- (_TtC7CoreIDV25DigitalPresentmentRequest)initWithCoder:(id)a3
+- (_TtC7CoreIDV25DigitalPresentmentRequest)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_21CCC53C0();
 
   return v4;

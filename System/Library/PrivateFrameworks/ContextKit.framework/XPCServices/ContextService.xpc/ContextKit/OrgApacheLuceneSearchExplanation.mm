@@ -43,14 +43,14 @@
   [(OrgApacheLuceneSearchExplanation *)self getDescription];
   [(JavaLangStringBuilder *)v3 appendWithNSString:JreStrcat("F$$", v6, v7, v8, v9, v10, v11, v12, v5)];
   [(JavaLangStringBuilder *)v3 appendWithNSString:@"<br />\n"];
-  v13 = [(OrgApacheLuceneSearchExplanation *)self getDetails];
-  if (!v13)
+  getDetails = [(OrgApacheLuceneSearchExplanation *)self getDetails];
+  if (!getDetails)
   {
     goto LABEL_9;
   }
 
-  v14 = v13;
-  if (v13[2] >= 1)
+  v14 = getDetails;
+  if (getDetails[2] >= 1)
   {
     v15 = 0;
     while (1)

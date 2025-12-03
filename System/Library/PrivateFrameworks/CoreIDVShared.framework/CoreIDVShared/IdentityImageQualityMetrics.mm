@@ -1,14 +1,14 @@
 @interface IdentityImageQualityMetrics
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityImageQualityMetrics
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityImageQualityMetrics.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityImageQualityMetrics.encode(with:)(coderCopy);
 }
 
 @end

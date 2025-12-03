@@ -15,14 +15,14 @@
 - (id)_ad_transformedMapsRequest
 {
   v3 = objc_alloc_init(STSiriLocation);
-  v4 = [(SALocalSearchShowLocalSearchResult *)self rawData];
-  [v3 setGeoResult:v4];
+  rawData = [(SALocalSearchShowLocalSearchResult *)self rawData];
+  [v3 setGeoResult:rawData];
 
   [v3 setResultType:2];
   v5 = [STShowMapsSearchResultsRequest alloc];
-  v6 = [(SALocalSearchShowLocalSearchResult *)self extSessionGuid];
-  v7 = [(SALocalSearchShowLocalSearchResult *)self extSessionGuidCreatedTimestamp];
-  v8 = [v5 _initWithLocation:v3 extSessionGuid:v6 extSessionGuidCreatedTimestamp:v7];
+  extSessionGuid = [(SALocalSearchShowLocalSearchResult *)self extSessionGuid];
+  extSessionGuidCreatedTimestamp = [(SALocalSearchShowLocalSearchResult *)self extSessionGuidCreatedTimestamp];
+  v8 = [v5 _initWithLocation:v3 extSessionGuid:extSessionGuid extSessionGuidCreatedTimestamp:extSessionGuidCreatedTimestamp];
 
   return v8;
 }

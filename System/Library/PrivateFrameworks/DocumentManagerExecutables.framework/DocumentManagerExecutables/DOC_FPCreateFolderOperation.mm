@@ -1,5 +1,5 @@
 @interface DOC_FPCreateFolderOperation
-- (_TtC26DocumentManagerExecutables27DOC_FPCreateFolderOperation)initWithParentItem:(id)a3 folderName:(id)a4;
+- (_TtC26DocumentManagerExecutables27DOC_FPCreateFolderOperation)initWithParentItem:(id)item folderName:(id)name;
 - (id)operationForRedoing;
 - (id)operationForUndoing;
 - (void)registerUndo;
@@ -9,7 +9,7 @@
 
 - (id)operationForRedoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FPCreateFolderOperation.operationForRedoing()();
 
   return v3;
@@ -17,7 +17,7 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FPCreateFolderOperation.operationForUndoing()();
 
   return v3;
@@ -31,7 +31,7 @@
   }
 }
 
-- (_TtC26DocumentManagerExecutables27DOC_FPCreateFolderOperation)initWithParentItem:(id)a3 folderName:(id)a4
+- (_TtC26DocumentManagerExecutables27DOC_FPCreateFolderOperation)initWithParentItem:(id)item folderName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

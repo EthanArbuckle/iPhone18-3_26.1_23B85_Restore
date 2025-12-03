@@ -1,5 +1,5 @@
 @interface _AFSetAudioSessionActiveResultMutation
-- (_AFSetAudioSessionActiveResultMutation)initWithBase:(id)a3;
+- (_AFSetAudioSessionActiveResultMutation)initWithBase:(id)base;
 - (id)getError;
 - (unsigned)getAudioSessionID;
 @end
@@ -23,27 +23,27 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_error;
+    error = self->_error;
   }
 
   else
   {
-    v2 = [(AFSetAudioSessionActiveResult *)self->_base error];
+    error = [(AFSetAudioSessionActiveResult *)self->_base error];
   }
 
-  return v2;
+  return error;
 }
 
-- (_AFSetAudioSessionActiveResultMutation)initWithBase:(id)a3
+- (_AFSetAudioSessionActiveResultMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFSetAudioSessionActiveResultMutation;
   v6 = [(_AFSetAudioSessionActiveResultMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,12 +1,12 @@
 @interface PKDashboardTextActionItemPresenter
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardTextActionItemPresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardTextActionItemPresenter
@@ -37,50 +37,50 @@
   return v2;
 }
 
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 action];
-  v6 = v5 != 0;
+  action = [item action];
+  v6 = action != 0;
 
   return v6;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = [v11 action];
+  itemCopy = item;
+  viewCopy = view;
+  action = [itemCopy action];
 
-  if (v9)
+  if (action)
   {
-    v10 = [v11 action];
-    (v10)[2](v10, v8);
+    action2 = [itemCopy action];
+    (action2)[2](action2, viewCopy);
   }
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"ActionItemCellReuseIdentifier" forIndexPath:v8];
-  [(PKDashboardTextActionItemPresenter *)self _configureCell:v11 forItem:v10 inCollectionView:v9 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"ActionItemCellReuseIdentifier" forIndexPath:pathCopy];
+  [(PKDashboardTextActionItemPresenter *)self _configureCell:v11 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   return v11;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  v10 = a3;
+  itemCopy = item;
   sampleCell = self->_sampleCell;
-  v12 = a6;
-  v13 = a4;
-  -[PKDashboardTextCollectionViewCell setTextLayoutStyle:](sampleCell, "setTextLayoutStyle:", [v10 layoutStyle]);
-  [(PKDashboardTextActionItemPresenter *)self _configureCell:self->_sampleCell forItem:v10 inCollectionView:v13 forIndexPath:v12];
+  pathCopy = path;
+  viewCopy = view;
+  -[PKDashboardTextCollectionViewCell setTextLayoutStyle:](sampleCell, "setTextLayoutStyle:", [itemCopy layoutStyle]);
+  [(PKDashboardTextActionItemPresenter *)self _configureCell:self->_sampleCell forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   v14 = self->_sampleCell;
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  [(PKDashboardTextCollectionViewCell *)v14 sizeThatFits:a5 + v15 * -2.0, 1.79769313e308];
+  [(PKDashboardTextCollectionViewCell *)v14 sizeThatFits:width + v15 * -2.0, 1.79769313e308];
   v17 = v16;
   v19 = v18;
 
@@ -91,51 +91,51 @@
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path
 {
-  v23 = a3;
-  v7 = a4;
-  v8 = [v7 icon];
-  [v23 setIconImage:v8];
+  cellCopy = cell;
+  itemCopy = item;
+  icon = [itemCopy icon];
+  [cellCopy setIconImage:icon];
 
-  v9 = [v7 title];
-  [v23 setTitle:v9];
+  title = [itemCopy title];
+  [cellCopy setTitle:title];
 
-  v10 = [v7 titleImage];
-  [v23 setTitleImage:v10];
+  titleImage = [itemCopy titleImage];
+  [cellCopy setTitleImage:titleImage];
 
-  v11 = [v7 titleFont];
-  [v23 setTitleFont:v11];
+  titleFont = [itemCopy titleFont];
+  [cellCopy setTitleFont:titleFont];
 
-  v12 = [v7 subtitle];
-  [v23 setSubtitle:v12];
+  subtitle = [itemCopy subtitle];
+  [cellCopy setSubtitle:subtitle];
 
-  v13 = [v7 subtitleImage];
-  [v23 setSubtitleImage:v13];
+  subtitleImage = [itemCopy subtitleImage];
+  [cellCopy setSubtitleImage:subtitleImage];
 
-  v14 = [v7 subtitleColor];
-  [v23 setSubtitleColor:v14];
+  subtitleColor = [itemCopy subtitleColor];
+  [cellCopy setSubtitleColor:subtitleColor];
 
-  v15 = [v7 subtitleFont];
-  [v23 setSubtitleFont:v15];
+  subtitleFont = [itemCopy subtitleFont];
+  [cellCopy setSubtitleFont:subtitleFont];
 
-  v16 = [v7 accessoryImage];
-  [v23 setAccessoryImage:v16];
+  accessoryImage = [itemCopy accessoryImage];
+  [cellCopy setAccessoryImage:accessoryImage];
 
-  v17 = [v7 accessoryColor];
-  [v23 setAccessoryColor:v17];
+  accessoryColor = [itemCopy accessoryColor];
+  [cellCopy setAccessoryColor:accessoryColor];
 
-  [v23 setTextLayoutStyle:{objc_msgSend(v7, "layoutStyle")}];
-  v18 = [v7 titleColor];
-  v19 = [v7 action];
+  [cellCopy setTextLayoutStyle:{objc_msgSend(itemCopy, "layoutStyle")}];
+  titleColor = [itemCopy titleColor];
+  action = [itemCopy action];
 
-  if (!v19)
+  if (!action)
   {
-    if (!v18)
+    if (!titleColor)
     {
-      v22 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
 LABEL_11:
-      v18 = v22;
+      titleColor = labelColor;
     }
 
 LABEL_12:
@@ -143,48 +143,48 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v20 = [v7 actionStyle];
-  if (v20 == 1)
+  actionStyle = [itemCopy actionStyle];
+  if (actionStyle == 1)
   {
-    if (!v18)
+    if (!titleColor)
     {
-      v22 = [MEMORY[0x1E69DC888] linkColor];
+      labelColor = [MEMORY[0x1E69DC888] linkColor];
       goto LABEL_11;
     }
 
     goto LABEL_12;
   }
 
-  if (!v20 && !v18)
+  if (!actionStyle && !titleColor)
   {
-    v18 = [MEMORY[0x1E69DC888] labelColor];
+    titleColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
   v21 = 0;
 LABEL_13:
-  [v23 setHideDisclosure:v21];
-  [v23 setDisclosureAlignment:{objc_msgSend(v7, "disclosureAlignment")}];
-  [v23 setTitleColor:v18];
+  [cellCopy setHideDisclosure:v21];
+  [cellCopy setDisclosureAlignment:{objc_msgSend(itemCopy, "disclosureAlignment")}];
+  [cellCopy setTitleColor:titleColor];
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  v15 = a3;
-  v7 = a4;
-  if (v15 && v7)
+  traitCopy = trait;
+  toTraitCopy = toTrait;
+  if (traitCopy && toTraitCopy)
   {
-    v8 = [v15 preferredContentSizeCategory];
-    v9 = [v7 preferredContentSizeCategory];
-    if (UIContentSizeCategoryCompareToCategory(v8, v9))
+    preferredContentSizeCategory = [traitCopy preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2))
     {
     }
 
     else
     {
-      v10 = [v15 legibilityWeight];
-      v11 = [v7 legibilityWeight];
+      legibilityWeight = [traitCopy legibilityWeight];
+      legibilityWeight2 = [toTraitCopy legibilityWeight];
 
-      if (v10 == v11)
+      if (legibilityWeight == legibilityWeight2)
       {
         goto LABEL_7;
       }

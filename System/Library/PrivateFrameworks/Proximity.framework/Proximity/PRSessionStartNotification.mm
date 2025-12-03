@@ -1,5 +1,5 @@
 @interface PRSessionStartNotification
-+ (id)createWithBluetoothConnectionEventCounterValue:(id)a3;
++ (id)createWithBluetoothConnectionEventCounterValue:(id)value;
 - (PRSessionStartNotification)init;
 @end
 
@@ -12,14 +12,14 @@
   return [(PRSessionStartNotification *)&v3 init];
 }
 
-+ (id)createWithBluetoothConnectionEventCounterValue:(id)a3
++ (id)createWithBluetoothConnectionEventCounterValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v3 = a3;
+    valueCopy = value;
     v4 = objc_alloc_init(PRSessionStartNotification);
     [(PRSessionStartNotification *)v4 _setType:0];
-    [(PRSessionStartNotification *)v4 _setBluetoothConnectionEventCounterValue:v3];
+    [(PRSessionStartNotification *)v4 _setBluetoothConnectionEventCounterValue:valueCopy];
   }
 
   else

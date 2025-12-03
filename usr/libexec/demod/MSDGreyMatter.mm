@@ -1,13 +1,13 @@
 @interface MSDGreyMatter
-+ (void)checkAvailabilityWithCompletion:(id)a3;
++ (void)checkAvailabilityWithCompletion:(id)completion;
 - (_TtC5demod13MSDGreyMatter)init;
 @end
 
 @implementation MSDGreyMatter
 
-+ (void)checkAvailabilityWithCompletion:(id)a3
++ (void)checkAvailabilityWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   swift_getObjCClassMetadata();

@@ -1,51 +1,51 @@
 @interface NTKCAstronomyFacesGalleryCollection
-+ (id)_gloryDefaultFacesForDevice:(id)a3;
-+ (id)_legacyDefaultFacesForDevice:(id)a3;
++ (id)_gloryDefaultFacesForDevice:(id)device;
++ (id)_legacyDefaultFacesForDevice:(id)device;
 + (id)complicationTypesBySlot;
-+ (id)facesForDevice:(id)a3;
++ (id)facesForDevice:(id)device;
 @end
 
 @implementation NTKCAstronomyFacesGalleryCollection
 
-+ (id)facesForDevice:(id)a3
++ (id)facesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 isRunningGloryGMOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningGloryGMOrLater])
   {
-    [a1 _gloryDefaultFacesForDevice:v4];
+    [self _gloryDefaultFacesForDevice:deviceCopy];
   }
 
   else
   {
-    [a1 _legacyDefaultFacesForDevice:v4];
+    [self _legacyDefaultFacesForDevice:deviceCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-+ (id)_legacyDefaultFacesForDevice:(id)a3
++ (id)_legacyDefaultFacesForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_opt_new();
-  v5 = [NTKFace defaultFaceOfStyle:9 forDevice:v3];
+  v5 = [NTKFace defaultFaceOfStyle:9 forDevice:deviceCopy];
 
   [v4 addObject:v5];
 
   return v4;
 }
 
-+ (id)_gloryDefaultFacesForDevice:(id)a3
++ (id)_gloryDefaultFacesForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_opt_new();
-  if ([NTKAstronomyVistaEditOption numberOfOptionsForDevice:v3])
+  if ([NTKAstronomyVistaEditOption numberOfOptionsForDevice:deviceCopy])
   {
     v5 = 0;
     do
     {
-      v6 = [NTKFace defaultFaceOfStyle:9 forDevice:v3];
-      v7 = [NTKAstronomyVistaEditOption optionWithAstronomyVista:v5 forDevice:v3];
+      v6 = [NTKFace defaultFaceOfStyle:9 forDevice:deviceCopy];
+      v7 = [NTKAstronomyVistaEditOption optionWithAstronomyVista:v5 forDevice:deviceCopy];
       [v6 selectOption:v7 forCustomEditMode:12 slot:0];
 
       v8 = +[NTKCAstronomyFacesGalleryCollection complicationTypesBySlot];
@@ -55,7 +55,7 @@
       ++v5;
     }
 
-    while ([NTKAstronomyVistaEditOption numberOfOptionsForDevice:v3]> v5);
+    while ([NTKAstronomyVistaEditOption numberOfOptionsForDevice:deviceCopy]> v5);
   }
 
   return v4;

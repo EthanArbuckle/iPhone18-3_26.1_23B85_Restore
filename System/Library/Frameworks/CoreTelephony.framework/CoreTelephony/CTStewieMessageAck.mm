@@ -1,12 +1,12 @@
 @interface CTStewieMessageAck
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMessageAck:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMessageAck:(id)ack;
 - (CTStewieMessageAck)init;
-- (CTStewieMessageAck)initWithCoder:(id)a3;
-- (CTStewieMessageAck)initWithError:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTStewieMessageAck)initWithCoder:(id)coder;
+- (CTStewieMessageAck)initWithError:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieMessageAck
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (CTStewieMessageAck)initWithError:(id)a3
+- (CTStewieMessageAck)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v10.receiver = self;
   v10.super_class = CTStewieMessageAck;
   v6 = [(CTStewieMessageAck *)&v10 init];
@@ -40,7 +40,7 @@
   if (v6)
   {
     v6->_success = 0;
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
     v7->_transportType = 0;
     v8 = v7;
   }
@@ -51,16 +51,16 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTStewieMessageAck *)self success];
+  success = [(CTStewieMessageAck *)self success];
   v5 = @"NO";
-  if (v4)
+  if (success)
   {
     v5 = @"YES";
   }
 
   [v3 appendFormat:@", success=%@", v5];
-  v6 = [(CTStewieMessageAck *)self error];
-  [v3 appendFormat:@", error=%@", v6];
+  error = [(CTStewieMessageAck *)self error];
+  [v3 appendFormat:@", error=%@", error];
 
   [v3 appendFormat:@", transportType=%s", CTStewieTransportTypeAsString(-[CTStewieMessageAck transportType](self, "transportType"))];
   [v3 appendString:@">"];
@@ -68,19 +68,19 @@
   return v3;
 }
 
-- (BOOL)isEqualToMessageAck:(id)a3
+- (BOOL)isEqualToMessageAck:(id)ack
 {
-  v6 = a3;
-  v7 = [(CTStewieMessageAck *)self success];
-  if (v7 == [v6 success])
+  ackCopy = ack;
+  success = [(CTStewieMessageAck *)self success];
+  if (success == [ackCopy success])
   {
-    v9 = [(CTStewieMessageAck *)self error];
-    v10 = [v6 error];
-    if (v9 == v10 || (-[CTStewieMessageAck error](self, "error"), v3 = objc_claimAutoreleasedReturnValue(), [v6 error], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    error = [(CTStewieMessageAck *)self error];
+    error2 = [ackCopy error];
+    if (error == error2 || (-[CTStewieMessageAck error](self, "error"), v3 = objc_claimAutoreleasedReturnValue(), [ackCopy error], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v11 = [(CTStewieMessageAck *)self transportType];
-      v8 = v11 == [v6 transportType];
-      if (v9 == v10)
+      transportType = [(CTStewieMessageAck *)self transportType];
+      v8 = transportType == [ackCopy transportType];
+      if (error == error2)
       {
 LABEL_8:
 
@@ -102,10 +102,10 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -113,48 +113,48 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieMessageAck *)self isEqualToMessageAck:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieMessageAck *)self isEqualToMessageAck:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setSuccess:{-[CTStewieMessageAck success](self, "success")}];
-  v6 = [(CTStewieMessageAck *)self error];
-  v7 = [v6 copyWithZone:a3];
+  error = [(CTStewieMessageAck *)self error];
+  v7 = [error copyWithZone:zone];
   [v5 setError:v7];
 
   [v5 setTransportType:{-[CTStewieMessageAck transportType](self, "transportType")}];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[CTStewieMessageAck success](self forKey:{"success"), @"success"}];
-  v4 = [(CTStewieMessageAck *)self error];
-  [v5 encodeObject:v4 forKey:@"error"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CTStewieMessageAck success](self forKey:{"success"), @"success"}];
+  error = [(CTStewieMessageAck *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 
-  [v5 encodeInteger:-[CTStewieMessageAck transportType](self forKey:{"transportType"), @"transportType"}];
+  [coderCopy encodeInteger:-[CTStewieMessageAck transportType](self forKey:{"transportType"), @"transportType"}];
 }
 
-- (CTStewieMessageAck)initWithCoder:(id)a3
+- (CTStewieMessageAck)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CTStewieMessageAck;
   v5 = [(CTStewieMessageAck *)&v10 init];
   if (v5)
   {
-    v5->_success = [v4 decodeBoolForKey:@"success"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v5->_success = [coderCopy decodeBoolForKey:@"success"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v6;
 
-    v5->_transportType = [v4 decodeIntegerForKey:@"transportType"];
+    v5->_transportType = [coderCopy decodeIntegerForKey:@"transportType"];
     v8 = v5;
   }
 

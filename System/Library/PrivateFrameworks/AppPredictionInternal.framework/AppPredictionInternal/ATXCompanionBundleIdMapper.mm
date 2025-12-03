@@ -1,11 +1,11 @@
 @interface ATXCompanionBundleIdMapper
-+ (id)generateMappingForAppBundleIds:(id)a3;
++ (id)generateMappingForAppBundleIds:(id)ids;
 - (_TtC21AppPredictionInternal26ATXCompanionBundleIdMapper)init;
 @end
 
 @implementation ATXCompanionBundleIdMapper
 
-+ (id)generateMappingForAppBundleIds:(id)a3
++ (id)generateMappingForAppBundleIds:(id)ids
 {
   v3 = sub_226836568();
   _s21AppPredictionInternal26ATXCompanionBundleIdMapperC15generateMapping3forSDyS2SGSaySSG_tFZ_0(v3);

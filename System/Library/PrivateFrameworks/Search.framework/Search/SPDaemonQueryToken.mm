@@ -1,34 +1,34 @@
 @interface SPDaemonQueryToken
 - (SPDaemonQueryDelegate)delegate;
-- (SPDaemonQueryToken)initWithQuery:(id)a3 queue:(id)a4 delegate:(id)a5;
-- (void)handleLocalQueryWithResultSet:(id)a3;
-- (void)handleMessage:(id)a3;
+- (SPDaemonQueryToken)initWithQuery:(id)query queue:(id)queue delegate:(id)delegate;
+- (void)handleLocalQueryWithResultSet:(id)set;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation SPDaemonQueryToken
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
   v84 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   if (handleMessage__onceToken != -1)
   {
     [SPDaemonQueryToken handleMessage:];
   }
 
-  v5 = [v4 info];
-  v6 = [v5 objectForKey:@"QID"];
-  v7 = [v6 unsignedIntValue];
+  info = [messageCopy info];
+  v6 = [info objectForKey:@"QID"];
+  unsignedIntValue = [v6 unsignedIntValue];
   queryID = self->_queryID;
 
-  if (v7 == queryID)
+  if (unsignedIntValue == queryID)
   {
-    v9 = [v4 name];
-    v10 = [v9 isEqualToString:@"Suggestions"];
+    name = [messageCopy name];
+    v10 = [name isEqualToString:@"Suggestions"];
 
     if (v10)
     {
-      v11 = [v4 rootObjectOfClasses:handleMessage__allowedSuggestions];
+      v11 = [messageCopy rootObjectOfClasses:handleMessage__allowedSuggestions];
       queue = self->_queue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -46,12 +46,12 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v16 = [v4 name];
-    v17 = [v16 isEqualToString:@"LocalSuggestions"];
+    name2 = [messageCopy name];
+    v17 = [name2 isEqualToString:@"LocalSuggestions"];
 
     if (v17)
     {
-      v18 = [v4 rootObjectOfClasses:handleMessage__allowedLocalSuggestions];
+      v18 = [messageCopy rootObjectOfClasses:handleMessage__allowedLocalSuggestions];
       v19 = self->_queue;
       v79[0] = MEMORY[0x1E69E9820];
       v79[1] = 3221225472;
@@ -67,13 +67,13 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v22 = [v4 name];
-    v23 = [v22 isEqualToString:@"DebugRanking"];
+    name3 = [messageCopy name];
+    v23 = [name3 isEqualToString:@"DebugRanking"];
 
     if (v23)
     {
-      v24 = [v4 info];
-      v25 = [v24 objectForKeyedSubscript:@"RD"];
+      info2 = [messageCopy info];
+      v25 = [info2 objectForKeyedSubscript:@"RD"];
       v26 = self->_queue;
       v77[0] = MEMORY[0x1E69E9820];
       v77[1] = 3221225472;
@@ -87,20 +87,20 @@ LABEL_8:
 
     else
     {
-      v28 = [v4 name];
-      v29 = [v28 isEqualToString:@"SearchResults"];
+      name4 = [messageCopy name];
+      v29 = [name4 isEqualToString:@"SearchResults"];
 
       if (v29)
       {
-        v62 = self;
-        v61 = [v4 info];
-        v30 = [v61 objectForKeyedSubscript:@"TBC"];
-        v31 = [v30 intValue];
-        v32 = v31;
+        selfCopy = self;
+        info3 = [messageCopy info];
+        v30 = [info3 objectForKeyedSubscript:@"TBC"];
+        intValue = [v30 intValue];
+        v32 = intValue;
 
-        v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:v31];
+        v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:intValue];
         v34 = MEMORY[0x1E695E738];
-        if (v31)
+        if (intValue)
         {
           v35 = *MEMORY[0x1E695E738];
           v36 = v32;
@@ -117,7 +117,7 @@ LABEL_8:
         v74[1] = 3221225472;
         v74[2] = __36__SPDaemonQueryToken_handleMessage___block_invoke_2_40;
         v74[3] = &unk_1E82F9170;
-        v75 = v4;
+        v75 = messageCopy;
         v37 = v33;
         v76 = v37;
         dispatch_apply(v32, 0, v74);
@@ -146,16 +146,16 @@ LABEL_8:
               v46 = *(*(&v70 + 1) + 8 * i);
               if (v46 != v44)
               {
-                v47 = [*(*(&v70 + 1) + 8 * i) resultSections];
-                [v38 addObjectsFromArray:v47];
+                resultSections = [*(*(&v70 + 1) + 8 * i) resultSections];
+                [v38 addObjectsFromArray:resultSections];
 
-                v48 = [v46 stableSections];
+                stableSections = [v46 stableSections];
 
-                if (v48)
+                if (stableSections)
                 {
-                  v49 = [v46 stableSections];
+                  stableSections2 = [v46 stableSections];
 
-                  v42 = v49;
+                  v42 = stableSections2;
                 }
               }
             }
@@ -172,24 +172,24 @@ LABEL_8:
         }
 
         v56 = [[SPResultSet alloc] initWithSections:v38 stableSections:v42];
-        v57 = v62->_queue;
+        v57 = selfCopy->_queue;
         v67[0] = MEMORY[0x1E69E9820];
         v67[1] = 3221225472;
         v67[2] = __36__SPDaemonQueryToken_handleMessage___block_invoke_3_42;
         v67[3] = &unk_1E82F9018;
-        v67[4] = v62;
-        v68 = v61;
+        v67[4] = selfCopy;
+        v68 = info3;
         v69 = v56;
         v58 = v56;
-        v59 = v61;
+        v59 = info3;
         v60 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, v67);
         dispatch_async(v57, v60);
       }
 
       else
       {
-        v50 = [v4 name];
-        v51 = [v50 isEqualToString:@"SearchReset"];
+        name5 = [messageCopy name];
+        v51 = [name5 isEqualToString:@"SearchReset"];
 
         if (v51)
         {
@@ -204,8 +204,8 @@ LABEL_8:
 
         else
         {
-          v53 = [v4 name];
-          v54 = [v53 isEqualToString:@"SearchError"];
+          name6 = [messageCopy name];
+          v54 = [name6 isEqualToString:@"SearchError"];
 
           if (v54)
           {
@@ -214,8 +214,8 @@ LABEL_8:
             v63[1] = 3221225472;
             v63[2] = __36__SPDaemonQueryToken_handleMessage___block_invoke_5;
             v63[3] = &unk_1E82F8E68;
-            v64 = v4;
-            v65 = self;
+            v64 = messageCopy;
+            selfCopy2 = self;
             dispatch_async(v55, v63);
           }
         }
@@ -380,17 +380,17 @@ void __36__SPDaemonQueryToken_handleMessage___block_invoke_5(uint64_t a1)
   [v5 searchDaemonQuery:*(a1 + 40) encounteredError:v6];
 }
 
-- (void)handleLocalQueryWithResultSet:(id)a3
+- (void)handleLocalQueryWithResultSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__SPDaemonQueryToken_handleLocalQueryWithResultSet___block_invoke;
   v8[3] = &unk_1E82F8E68;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = setCopy;
+  v6 = setCopy;
   v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, v8);
   dispatch_async(queue, v7);
 }
@@ -407,21 +407,21 @@ void __52__SPDaemonQueryToken_handleLocalQueryWithResultSet___block_invoke(uint6
   }
 }
 
-- (SPDaemonQueryToken)initWithQuery:(id)a3 queue:(id)a4 delegate:(id)a5
+- (SPDaemonQueryToken)initWithQuery:(id)query queue:(id)queue delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queryCopy = query;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = SPDaemonQueryToken;
   v12 = [(SPDaemonQueryToken *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_query, a3);
+    objc_storeStrong(&v12->_query, query);
     v13->_queryID = atomic_fetch_add(__queryTokenGen, 1u);
-    objc_storeStrong(&v13->_queue, a4);
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeStrong(&v13->_queue, queue);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
   }
 
   return v13;

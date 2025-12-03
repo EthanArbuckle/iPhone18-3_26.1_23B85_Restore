@@ -1,15 +1,15 @@
 @interface _UIDynamicCaretDot
-- (_UIDynamicCaretDot)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (_UIDynamicCaretDot)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _UIDynamicCaretDot
 
-- (_UIDynamicCaretDot)initWithFrame:(CGRect)a3
+- (_UIDynamicCaretDot)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIDynamicCaretDot;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor whiteColor];
@@ -23,14 +23,14 @@
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v6.receiver = self;
   v6.super_class = _UIDynamicCaretDot;
-  [(UIView *)&v6 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v5 = [(UIView *)self layer];
-  [v5 setCornerRadius:width * 0.5];
+  [(UIView *)&v6 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  layer = [(UIView *)self layer];
+  [layer setCornerRadius:width * 0.5];
 }
 
 @end

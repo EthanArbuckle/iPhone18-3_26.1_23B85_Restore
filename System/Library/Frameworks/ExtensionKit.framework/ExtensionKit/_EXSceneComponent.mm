@@ -1,23 +1,23 @@
 @interface _EXSceneComponent
 - (_EXSceneComponent)init;
-- (void)_sceneWillInvalidate:(id)a3;
-- (void)_setScene:(id)a3;
+- (void)_sceneWillInvalidate:(id)invalidate;
+- (void)_setScene:(id)scene;
 @end
 
 @implementation _EXSceneComponent
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
   v4 = *(&self->super.isa + OBJC_IVAR____EXSceneComponent__scene);
-  *(&self->super.isa + OBJC_IVAR____EXSceneComponent__scene) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____EXSceneComponent__scene) = scene;
+  sceneCopy = scene;
 }
 
-- (void)_sceneWillInvalidate:(id)a3
+- (void)_sceneWillInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D29EA2B0(v4);
+  invalidateCopy = invalidate;
+  selfCopy = self;
+  sub_1D29EA2B0(invalidateCopy);
 }
 
 - (_EXSceneComponent)init

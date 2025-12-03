@@ -1,16 +1,16 @@
 @interface ICSUserAddress
-+ (id)ICSStringFromCalendarUser:(int)a3;
-+ (id)ICSStringFromParticipationStatus:(int)a3;
-+ (id)ICSStringFromRole:(int)a3;
-+ (id)ICSStringFromScheduleAgent:(int)a3;
-+ (id)ICSStringFromScheduleForceSend:(int)a3;
-+ (id)ICSStringFromScheduleStatus:(int)a3;
-+ (int)calendarUserFromICSString:(id)a3;
-+ (int)participationStatusFromICSString:(id)a3;
-+ (int)roleFromICSString:(id)a3;
-+ (int)scheduleAgentFromICSString:(id)a3;
-+ (int)scheduleForceSendFromICSString:(id)a3;
-+ (int)scheduleStatusFromICSString:(id)a3;
++ (id)ICSStringFromCalendarUser:(int)user;
++ (id)ICSStringFromParticipationStatus:(int)status;
++ (id)ICSStringFromRole:(int)role;
++ (id)ICSStringFromScheduleAgent:(int)agent;
++ (id)ICSStringFromScheduleForceSend:(int)send;
++ (id)ICSStringFromScheduleStatus:(int)status;
++ (int)calendarUserFromICSString:(id)string;
++ (int)participationStatusFromICSString:(id)string;
++ (int)roleFromICSString:(id)string;
++ (int)scheduleAgentFromICSString:(id)string;
++ (int)scheduleForceSendFromICSString:(id)string;
++ (int)scheduleStatusFromICSString:(id)string;
 - (BOOL)hasEmailAddress;
 - (BOOL)hasPhoneNumber;
 - (BOOL)isEmailAddress;
@@ -18,46 +18,46 @@
 - (BOOL)isHTTPSAddress;
 - (BOOL)isPhoneNumber;
 - (BOOL)rsvp;
-- (BOOL)shouldObscureParameter:(id)a3;
+- (BOOL)shouldObscureParameter:(id)parameter;
 - (BOOL)x_apple_self_invited;
-- (ICSUserAddress)initWithEmailAddress:(id)a3;
-- (ICSUserAddress)initWithPhoneNumber:(id)a3;
-- (ICSUserAddress)initWithURL:(id)a3;
+- (ICSUserAddress)initWithEmailAddress:(id)address;
+- (ICSUserAddress)initWithPhoneNumber:(id)number;
+- (ICSUserAddress)initWithURL:(id)l;
 - (NSString)cn;
 - (NSString)email;
 - (id)displayName;
 - (id)emailAddress;
 - (id)phoneNumber;
-- (id)sanitizeAddressString:(id)a3;
+- (id)sanitizeAddressString:(id)string;
 - (int)cutype;
 - (int)partstat;
 - (int)role;
-- (int)scheduleAgentWithDefaultValue:(int)a3;
+- (int)scheduleAgentWithDefaultValue:(int)value;
 - (int)scheduleforcesend;
 - (int)schedulestatus;
 - (void)fixAddress;
-- (void)setAlternateTimeProposal:(id)a3;
-- (void)setCn:(id)a3;
-- (void)setCutype:(int)a3;
-- (void)setEmail:(id)a3;
-- (void)setLikenessDataString:(id)a3;
-- (void)setPartstat:(int)a3;
-- (void)setRole:(int)a3;
-- (void)setRsvp:(BOOL)a3;
-- (void)setScheduleagent:(int)a3;
-- (void)setScheduleforcesend:(int)a3;
-- (void)setSchedulestatus:(int)a3;
-- (void)setURL:(id)a3;
-- (void)setX_apple_inviterName:(id)a3;
-- (void)setX_apple_self_invited:(BOOL)a3;
-- (void)setX_apple_telephone:(id)a3;
+- (void)setAlternateTimeProposal:(id)proposal;
+- (void)setCn:(id)cn;
+- (void)setCutype:(int)cutype;
+- (void)setEmail:(id)email;
+- (void)setLikenessDataString:(id)string;
+- (void)setPartstat:(int)partstat;
+- (void)setRole:(int)role;
+- (void)setRsvp:(BOOL)rsvp;
+- (void)setScheduleagent:(int)scheduleagent;
+- (void)setScheduleforcesend:(int)scheduleforcesend;
+- (void)setSchedulestatus:(int)schedulestatus;
+- (void)setURL:(id)l;
+- (void)setX_apple_inviterName:(id)name;
+- (void)setX_apple_self_invited:(BOOL)x_apple_self_invited;
+- (void)setX_apple_telephone:(id)x_apple_telephone;
 @end
 
 @implementation ICSUserAddress
 
 - (void)fixAddress
 {
-  v3 = [(ICSProperty *)self value];
+  value = [(ICSProperty *)self value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -209,30 +209,30 @@
   }
 }
 
-+ (int)calendarUserFromICSString:(id)a3
++ (int)calendarUserFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"INDIVIDUAL"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"INDIVIDUAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GROUP"])
+  else if ([stringCopy isEqualToString:@"GROUP"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RESOURCE"])
+  else if ([stringCopy isEqualToString:@"RESOURCE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ROOM"])
+  else if ([stringCopy isEqualToString:@"ROOM"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"UNKNOWN"])
+  else if ([stringCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 5;
   }
@@ -245,50 +245,50 @@
   return v4;
 }
 
-+ (int)participationStatusFromICSString:(id)a3
++ (int)participationStatusFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NEEDS-ACTION"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"NEEDS-ACTION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ACCEPTED"])
+  else if ([stringCopy isEqualToString:@"ACCEPTED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DECLINED"])
+  else if ([stringCopy isEqualToString:@"DECLINED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TENTATIVE"])
+  else if ([stringCopy isEqualToString:@"TENTATIVE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"DELEGATED"])
+  else if ([stringCopy isEqualToString:@"DELEGATED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([stringCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"IN-PROCESS"])
+  else if ([stringCopy isEqualToString:@"IN-PROCESS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"X-UNINVITED"])
+  else if ([stringCopy isEqualToString:@"X-UNINVITED"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"X-UNDELIVERABLE"])
+  else if ([stringCopy isEqualToString:@"X-UNDELIVERABLE"])
   {
     v4 = 9;
   }
@@ -301,55 +301,55 @@
   return v4;
 }
 
-+ (int)scheduleStatusFromICSString:(id)a3
++ (int)scheduleStatusFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"1.0"])
+  stringCopy = string;
+  if ([stringCopy hasPrefix:@"1.0"])
   {
     v4 = 1;
   }
 
-  else if ([v3 hasPrefix:@"1.1"])
+  else if ([stringCopy hasPrefix:@"1.1"])
   {
     v4 = 2;
   }
 
-  else if ([v3 hasPrefix:@"1.2"])
+  else if ([stringCopy hasPrefix:@"1.2"])
   {
     v4 = 3;
   }
 
-  else if ([v3 hasPrefix:@"2.0"])
+  else if ([stringCopy hasPrefix:@"2.0"])
   {
     v4 = 4;
   }
 
-  else if ([v3 hasPrefix:@"2.3"])
+  else if ([stringCopy hasPrefix:@"2.3"])
   {
     v4 = 5;
   }
 
-  else if ([v3 hasPrefix:@"3.7"])
+  else if ([stringCopy hasPrefix:@"3.7"])
   {
     v4 = 6;
   }
 
-  else if ([v3 hasPrefix:@"3.8"])
+  else if ([stringCopy hasPrefix:@"3.8"])
   {
     v4 = 7;
   }
 
-  else if ([v3 hasPrefix:@"5.1"])
+  else if ([stringCopy hasPrefix:@"5.1"])
   {
     v4 = 8;
   }
 
-  else if ([v3 hasPrefix:@"5.2"])
+  else if ([stringCopy hasPrefix:@"5.2"])
   {
     v4 = 9;
   }
 
-  else if ([v3 hasPrefix:@"5.3"])
+  else if ([stringCopy hasPrefix:@"5.3"])
   {
     v4 = 10;
   }
@@ -362,15 +362,15 @@
   return v4;
 }
 
-+ (int)scheduleAgentFromICSString:(id)a3
++ (int)scheduleAgentFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CLIENT"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"CLIENT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NONE"])
+  else if ([stringCopy isEqualToString:@"NONE"])
   {
     v4 = 2;
   }
@@ -383,15 +383,15 @@
   return v4;
 }
 
-+ (int)scheduleForceSendFromICSString:(id)a3
++ (int)scheduleForceSendFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"REQUEST"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"REQUEST"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REPLY"])
+  else if ([stringCopy isEqualToString:@"REPLY"])
   {
     v4 = 2;
   }
@@ -404,30 +404,30 @@
   return v4;
 }
 
-+ (int)roleFromICSString:(id)a3
++ (int)roleFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CHAIR"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"CHAIR"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OPT-PARTICIPANT"])
+  else if ([stringCopy isEqualToString:@"OPT-PARTICIPANT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NON-PARTICIPANT"])
+  else if ([stringCopy isEqualToString:@"NON-PARTICIPANT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"REQ-PARTICIPANT"])
+  else if ([stringCopy isEqualToString:@"REQ-PARTICIPANT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NON-PARTICIPANT-CHAIR"])
+  else if ([stringCopy isEqualToString:@"NON-PARTICIPANT-CHAIR"])
   {
     v4 = 5;
   }
@@ -440,41 +440,41 @@
   return v4;
 }
 
-+ (id)ICSStringFromCalendarUser:(int)a3
++ (id)ICSStringFromCalendarUser:(int)user
 {
-  if ((a3 - 1) > 4)
+  if ((user - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_27A64C018[a3 - 1];
+    return off_27A64C018[user - 1];
   }
 }
 
-+ (id)ICSStringFromParticipationStatus:(int)a3
++ (id)ICSStringFromParticipationStatus:(int)status
 {
-  if ((a3 - 1) > 8)
+  if ((status - 1) > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_27A64C040[a3 - 1];
+    return off_27A64C040[status - 1];
   }
 }
 
-+ (id)ICSStringFromScheduleAgent:(int)a3
++ (id)ICSStringFromScheduleAgent:(int)agent
 {
   v3 = @"NONE";
-  if (a3 != 2)
+  if (agent != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (agent == 1)
   {
     return @"CLIENT";
   }
@@ -485,28 +485,28 @@
   }
 }
 
-+ (id)ICSStringFromScheduleStatus:(int)a3
++ (id)ICSStringFromScheduleStatus:(int)status
 {
-  if ((a3 - 1) > 9)
+  if ((status - 1) > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_27A64C088[a3 - 1];
+    return off_27A64C088[status - 1];
   }
 }
 
-+ (id)ICSStringFromScheduleForceSend:(int)a3
++ (id)ICSStringFromScheduleForceSend:(int)send
 {
   v3 = @"REPLY";
-  if (a3 != 2)
+  if (send != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (send == 1)
   {
     return @"REQUEST";
   }
@@ -517,45 +517,45 @@
   }
 }
 
-+ (id)ICSStringFromRole:(int)a3
++ (id)ICSStringFromRole:(int)role
 {
-  if ((a3 - 1) > 4)
+  if ((role - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_27A64C0D8[a3 - 1];
+    return off_27A64C0D8[role - 1];
   }
 }
 
-- (ICSUserAddress)initWithURL:(id)a3
+- (ICSUserAddress)initWithURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
-    v4 = +[ICSUserAddress URLForNoMail];
+    lCopy = +[ICSUserAddress URLForNoMail];
   }
 
   v7.receiver = self;
   v7.super_class = ICSUserAddress;
-  v5 = [(ICSProperty *)&v7 initWithValue:v4 type:5021];
+  v5 = [(ICSProperty *)&v7 initWithValue:lCopy type:5021];
 
   return v5;
 }
 
-- (id)sanitizeAddressString:(id)a3
+- (id)sanitizeAddressString:(id)string
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   if (sanitizeAddressString__onceToken != -1)
   {
     [ICSUserAddress sanitizeAddressString:];
   }
 
-  v5 = v4;
-  v6 = [v5 lowercaseString];
+  v5 = stringCopy;
+  lowercaseString = [v5 lowercaseString];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -577,7 +577,7 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v6 hasPrefix:{v13, v17}])
+        if ([lowercaseString hasPrefix:{v13, v17}])
         {
           v14 = [v5 substringFromIndex:{objc_msgSend(v13, "length") >> 1}];
 
@@ -612,33 +612,33 @@ void __40__ICSUserAddress_sanitizeAddressString___block_invoke()
   sanitizeAddressString__invalidIndexPrefixes = &unk_288428308;
 }
 
-- (ICSUserAddress)initWithEmailAddress:(id)a3
+- (ICSUserAddress)initWithEmailAddress:(id)address
 {
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    if (([v4 hasPrefix:@"/"] & 1) != 0 || (objc_msgSend(v4, "rangeOfString:", @":"), v5))
+    if (([addressCopy hasPrefix:@"/"] & 1) != 0 || (objc_msgSend(addressCopy, "rangeOfString:", @":"), v5))
     {
-      v6 = [(ICSUserAddress *)self sanitizeAddressString:v4];
+      v6 = [(ICSUserAddress *)self sanitizeAddressString:addressCopy];
       v7 = [MEMORY[0x277CBEBC0] URLWithString:v6 encodingInvalidCharacters:0];
     }
 
     else
     {
-      [v4 rangeOfString:@"@"];
+      [addressCopy rangeOfString:@"@"];
       if (!v10)
       {
         v7 = +[ICSUserAddress URLForNoMail];
         goto LABEL_7;
       }
 
-      v11 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v6 = [v4 stringByTrimmingCharactersInSet:v11];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v6 = [addressCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       v12 = MEMORY[0x277CCAB50];
-      v13 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-      v14 = [v13 bitmapRepresentation];
-      v15 = [v12 characterSetWithBitmapRepresentation:v14];
+      uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+      bitmapRepresentation = [uRLPathAllowedCharacterSet bitmapRepresentation];
+      v15 = [v12 characterSetWithBitmapRepresentation:bitmapRepresentation];
 
       v16 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v15];
       v17 = MEMORY[0x277CBEBC0];
@@ -658,22 +658,22 @@ LABEL_7:
   return v8;
 }
 
-- (ICSUserAddress)initWithPhoneNumber:(id)a3
+- (ICSUserAddress)initWithPhoneNumber:(id)number
 {
-  v4 = a3;
-  if ([v4 length])
+  numberCopy = number;
+  if ([numberCopy length])
   {
-    if ([v4 rangeOfString:@"tel:" options:9] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([numberCopy rangeOfString:@"tel:" options:9] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v6 = [v4 stringByTrimmingCharactersInSet:v5];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v6 = [numberCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       if ([v6 hasPrefix:@"+"])
       {
         v7 = MEMORY[0x277CCAB50];
-        v8 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-        v9 = [v8 bitmapRepresentation];
-        v10 = [v7 characterSetWithBitmapRepresentation:v9];
+        uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+        bitmapRepresentation = [uRLPathAllowedCharacterSet bitmapRepresentation];
+        v10 = [v7 characterSetWithBitmapRepresentation:bitmapRepresentation];
 
         v11 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v10];
         v12 = MEMORY[0x277CBEBC0];
@@ -689,7 +689,7 @@ LABEL_9:
 
     else
     {
-      v6 = [(ICSUserAddress *)self sanitizeAddressString:v4];
+      v6 = [(ICSUserAddress *)self sanitizeAddressString:numberCopy];
       v15 = [MEMORY[0x277CBEBC0] URLWithString:v6 encodingInvalidCharacters:0];
     }
 
@@ -711,59 +711,59 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [(ICSUserAddress *)self email];
-  v3 = v4 != 0;
+  email = [(ICSUserAddress *)self email];
+  v3 = email != 0;
 
   return v3;
 }
 
 - (BOOL)isEmailAddress
 {
-  v3 = [(ICSProperty *)self value];
-  v4 = [v3 scheme];
+  value = [(ICSProperty *)self value];
+  scheme = [value scheme];
 
-  if (!v4)
+  if (!scheme)
   {
     return 0;
   }
 
-  v5 = [(ICSProperty *)self value];
-  v6 = [v5 scheme];
-  v7 = [v6 caseInsensitiveCompare:@"mailto"] == 0;
+  value2 = [(ICSProperty *)self value];
+  scheme2 = [value2 scheme];
+  v7 = [scheme2 caseInsensitiveCompare:@"mailto"] == 0;
 
   return v7;
 }
 
 - (BOOL)isHTTPAddress
 {
-  v3 = [(ICSProperty *)self value];
-  v4 = [v3 scheme];
+  value = [(ICSProperty *)self value];
+  scheme = [value scheme];
 
-  if (!v4)
+  if (!scheme)
   {
     return 0;
   }
 
-  v5 = [(ICSProperty *)self value];
-  v6 = [v5 scheme];
-  v7 = [v6 caseInsensitiveCompare:@"http"] == 0;
+  value2 = [(ICSProperty *)self value];
+  scheme2 = [value2 scheme];
+  v7 = [scheme2 caseInsensitiveCompare:@"http"] == 0;
 
   return v7;
 }
 
 - (BOOL)isHTTPSAddress
 {
-  v3 = [(ICSProperty *)self value];
-  v4 = [v3 scheme];
+  value = [(ICSProperty *)self value];
+  scheme = [value scheme];
 
-  if (!v4)
+  if (!scheme)
   {
     return 0;
   }
 
-  v5 = [(ICSProperty *)self value];
-  v6 = [v5 scheme];
-  v7 = [v6 caseInsensitiveCompare:@"https"] == 0;
+  value2 = [(ICSProperty *)self value];
+  scheme2 = [value2 scheme];
+  v7 = [scheme2 caseInsensitiveCompare:@"https"] == 0;
 
   return v7;
 }
@@ -775,20 +775,20 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [(ICSUserAddress *)self x_apple_telephone];
-  v3 = v4 != 0;
+  x_apple_telephone = [(ICSUserAddress *)self x_apple_telephone];
+  v3 = x_apple_telephone != 0;
 
   return v3;
 }
 
 - (BOOL)isPhoneNumber
 {
-  v2 = [(ICSProperty *)self value];
-  v3 = [v2 scheme];
+  value = [(ICSProperty *)self value];
+  scheme = [value scheme];
 
-  if (v3)
+  if (scheme)
   {
-    v4 = [v3 caseInsensitiveCompare:@"tel"] == 0;
+    v4 = [scheme caseInsensitiveCompare:@"tel"] == 0;
   }
 
   else
@@ -803,54 +803,54 @@ LABEL_10:
 {
   if ([(ICSUserAddress *)self isEmailAddress])
   {
-    v3 = [(ICSProperty *)self value];
-    v4 = [v3 resourceSpecifier];
+    value = [(ICSProperty *)self value];
+    resourceSpecifier = [value resourceSpecifier];
   }
 
   else
   {
-    v5 = [(ICSUserAddress *)self email];
+    email = [(ICSUserAddress *)self email];
 
-    if (v5)
+    if (email)
     {
-      v4 = [(ICSUserAddress *)self email];
+      resourceSpecifier = [(ICSUserAddress *)self email];
     }
 
     else
     {
-      v4 = 0;
+      resourceSpecifier = 0;
     }
   }
 
-  v6 = [v4 stringByRemovingPercentEscapes];
+  stringByRemovingPercentEscapes = [resourceSpecifier stringByRemovingPercentEscapes];
 
-  return v6;
+  return stringByRemovingPercentEscapes;
 }
 
 - (id)phoneNumber
 {
   if ([(ICSUserAddress *)self isPhoneNumber])
   {
-    v3 = [(ICSProperty *)self value];
-    v4 = [v3 resourceSpecifier];
+    value = [(ICSProperty *)self value];
+    resourceSpecifier = [value resourceSpecifier];
   }
 
   else
   {
-    v5 = [(ICSUserAddress *)self x_apple_telephone];
+    x_apple_telephone = [(ICSUserAddress *)self x_apple_telephone];
 
-    if (v5)
+    if (x_apple_telephone)
     {
-      v4 = [(ICSUserAddress *)self x_apple_telephone];
+      resourceSpecifier = [(ICSUserAddress *)self x_apple_telephone];
     }
 
     else
     {
-      v4 = 0;
+      resourceSpecifier = 0;
     }
   }
 
-  return v4;
+  return resourceSpecifier;
 }
 
 - (id)displayName
@@ -858,47 +858,47 @@ LABEL_10:
   v3 = [(ICSUserAddress *)self cn];
   if ([v3 length])
   {
-    v4 = v3;
+    emailAddress = v3;
 LABEL_5:
-    v5 = v4;
+    lastPathComponent = emailAddress;
     goto LABEL_6;
   }
 
   if ([(ICSUserAddress *)self isEmailAddress])
   {
-    v4 = [(ICSUserAddress *)self emailAddress];
+    emailAddress = [(ICSUserAddress *)self emailAddress];
     goto LABEL_5;
   }
 
   if ([(ICSUserAddress *)self isHTTPAddress]|| [(ICSUserAddress *)self isHTTPSAddress])
   {
-    v7 = [(ICSProperty *)self value];
-    v8 = [v7 resourceSpecifier];
-    v5 = [v8 lastPathComponent];
+    value = [(ICSProperty *)self value];
+    resourceSpecifier = [value resourceSpecifier];
+    lastPathComponent = [resourceSpecifier lastPathComponent];
   }
 
   else
   {
-    v7 = [(ICSProperty *)self value];
-    v5 = [v7 absoluteString];
+    value = [(ICSProperty *)self value];
+    lastPathComponent = [value absoluteString];
   }
 
 LABEL_6:
 
-  return v5;
+  return lastPathComponent;
 }
 
-- (void)setCn:(id)a3
+- (void)setCn:(id)cn
 {
-  v6 = a3;
-  if ([v6 rangeOfString:@""] == 0x7FFFFFFFFFFFFFFFLL)
+  cnCopy = cn;
+  if ([cnCopy rangeOfString:@""] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = v6;
+    v4 = cnCopy;
   }
 
   else
   {
-    v5 = [v6 stringByReplacingOccurrencesOfString:@" withString:@"'" options:2 range:{0, objc_msgSend(v6, "length"")}];
+    v5 = [cnCopy stringByReplacingOccurrencesOfString:@" withString:@"'" options:2 range:{0, objc_msgSend(cnCopy, "length"")}];
 
     v4 = v5;
   }
@@ -920,9 +920,9 @@ LABEL_6:
   return v2;
 }
 
-- (void)setCutype:(int)a3
+- (void)setCutype:(int)cutype
 {
-  if (a3)
+  if (cutype)
   {
     v4 = [ICSCalendarUserParameter calendarUserTypeParameterFromCode:?];
     [(ICSProperty *)self setParameterValue:v4 forName:@"CUTYPE"];
@@ -945,14 +945,14 @@ LABEL_6:
   }
 
   v4 = [(ICSProperty *)self parameterValueForName:@"CUTYPE"];
-  v5 = [v4 longValue];
+  longValue = [v4 longValue];
 
-  return v5;
+  return longValue;
 }
 
-- (void)setPartstat:(int)a3
+- (void)setPartstat:(int)partstat
 {
-  if (a3)
+  if (partstat)
   {
     v4 = [ICSParticipationStatusParameter participationStatusParameterFromCode:?];
     [(ICSProperty *)self setParameterValue:v4 forName:@"PARTSTAT"];
@@ -975,14 +975,14 @@ LABEL_6:
   }
 
   v4 = [(ICSProperty *)self parameterValueForName:@"PARTSTAT"];
-  v5 = [v4 longValue];
+  longValue = [v4 longValue];
 
-  return v5;
+  return longValue;
 }
 
-- (void)setSchedulestatus:(int)a3
+- (void)setSchedulestatus:(int)schedulestatus
 {
-  if (a3)
+  if (schedulestatus)
   {
     v4 = [ICSScheduleStatusParameter scheduleStatusParameterFromCode:?];
     [(ICSProperty *)self setParameterValue:v4 forName:@"SCHEDULE-STATUS"];
@@ -1005,14 +1005,14 @@ LABEL_6:
   }
 
   v4 = [(ICSProperty *)self parameterValueForName:@"SCHEDULE-STATUS"];
-  v5 = [v4 longValue];
+  longValue = [v4 longValue];
 
-  return v5;
+  return longValue;
 }
 
-- (void)setScheduleagent:(int)a3
+- (void)setScheduleagent:(int)scheduleagent
 {
-  if (a3)
+  if (scheduleagent)
   {
     v4 = [ICSScheduleAgentParameter scheduleAgentParameterFromCode:?];
     [(ICSProperty *)self setParameterValue:v4 forName:@"SCHEDULE-AGENT"];
@@ -1025,22 +1025,22 @@ LABEL_6:
   }
 }
 
-- (int)scheduleAgentWithDefaultValue:(int)a3
+- (int)scheduleAgentWithDefaultValue:(int)value
 {
   v5 = [(ICSProperty *)self parameterValueForName:@"SCHEDULE-AGENT"];
 
   if (v5)
   {
     v6 = [(ICSProperty *)self parameterValueForName:@"SCHEDULE-AGENT"];
-    a3 = [v6 longValue];
+    value = [v6 longValue];
   }
 
-  return a3;
+  return value;
 }
 
-- (void)setScheduleforcesend:(int)a3
+- (void)setScheduleforcesend:(int)scheduleforcesend
 {
-  if (a3)
+  if (scheduleforcesend)
   {
     v4 = [ICSScheduleForceSendParameter scheduleForceSendParameterFromCode:?];
     [(ICSProperty *)self setParameterValue:v4 forName:@"SCHEDULE-FORCE-SEND"];
@@ -1063,14 +1063,14 @@ LABEL_6:
   }
 
   v4 = [(ICSProperty *)self parameterValueForName:@"SCHEDULE-FORCE-SEND"];
-  v5 = [v4 longValue];
+  longValue = [v4 longValue];
 
-  return v5;
+  return longValue;
 }
 
-- (void)setRole:(int)a3
+- (void)setRole:(int)role
 {
-  if (a3)
+  if (role)
   {
     v4 = [ICSRoleParameter roleParameterFromCode:?];
     [(ICSProperty *)self setParameterValue:v4 forName:@"ROLE"];
@@ -1093,14 +1093,14 @@ LABEL_6:
   }
 
   v4 = [(ICSProperty *)self parameterValueForName:@"ROLE"];
-  v5 = [v4 longValue];
+  longValue = [v4 longValue];
 
-  return v5;
+  return longValue;
 }
 
-- (void)setRsvp:(BOOL)a3
+- (void)setRsvp:(BOOL)rsvp
 {
-  if (a3)
+  if (rsvp)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(ICSProperty *)self setParameterValue:v4 forName:@"RSVP"];
@@ -1123,14 +1123,14 @@ LABEL_6:
   }
 
   v4 = [(ICSProperty *)self parameterValueForName:@"RSVP"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setX_apple_self_invited:(BOOL)a3
+- (void)setX_apple_self_invited:(BOOL)x_apple_self_invited
 {
-  if (a3)
+  if (x_apple_self_invited)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(ICSProperty *)self setParameterValue:v4 forName:@"X-APPLE-SELF-INVITED"];
@@ -1153,16 +1153,16 @@ LABEL_6:
   }
 
   v4 = [(ICSProperty *)self parameterValueForName:@"X-APPLE-SELF-INVITED"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setEmail:(id)a3
+- (void)setEmail:(id)email
 {
-  if (a3)
+  if (email)
   {
-    [(ICSProperty *)self setParameterValue:a3 forName:@"EMAIL"];
+    [(ICSProperty *)self setParameterValue:email forName:@"EMAIL"];
   }
 
   else
@@ -1182,11 +1182,11 @@ LABEL_6:
   return v3;
 }
 
-- (void)setX_apple_telephone:(id)a3
+- (void)setX_apple_telephone:(id)x_apple_telephone
 {
-  if (a3)
+  if (x_apple_telephone)
   {
-    [(ICSProperty *)self setParameterValue:a3 forName:@"X-APPLE-TELEPHONE"];
+    [(ICSProperty *)self setParameterValue:x_apple_telephone forName:@"X-APPLE-TELEPHONE"];
   }
 
   else
@@ -1195,11 +1195,11 @@ LABEL_6:
   }
 }
 
-- (void)setLikenessDataString:(id)a3
+- (void)setLikenessDataString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    [(ICSProperty *)self setParameterValue:a3 forName:@"TO-ALL-LIKENESS-DATA"];
+    [(ICSProperty *)self setParameterValue:string forName:@"TO-ALL-LIKENESS-DATA"];
   }
 
   else
@@ -1208,11 +1208,11 @@ LABEL_6:
   }
 }
 
-- (void)setX_apple_inviterName:(id)a3
+- (void)setX_apple_inviterName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    [(ICSProperty *)self setParameterValue:a3 forName:@"X-APPLE-INVITER-NAME"];
+    [(ICSProperty *)self setParameterValue:name forName:@"X-APPLE-INVITER-NAME"];
   }
 
   else
@@ -1221,11 +1221,11 @@ LABEL_6:
   }
 }
 
-- (void)setAlternateTimeProposal:(id)a3
+- (void)setAlternateTimeProposal:(id)proposal
 {
-  if (a3)
+  if (proposal)
   {
-    [(ICSProperty *)self setParameterValue:a3 forName:@"TO-ALL-PROPOSED-NEW-TIME"];
+    [(ICSProperty *)self setParameterValue:proposal forName:@"TO-ALL-PROPOSED-NEW-TIME"];
   }
 
   else
@@ -1234,26 +1234,26 @@ LABEL_6:
   }
 }
 
-- (BOOL)shouldObscureParameter:(id)a3
+- (BOOL)shouldObscureParameter:(id)parameter
 {
   v7 = MEMORY[0x277CBEB98];
-  v3 = a3;
+  parameterCopy = parameter;
   v4 = [v7 setWithObjects:{@"CUTYPE", @"PARTSTAT", @"ROLE", @"RSVP", @"SCHEDULE-FORCE-SEND", @"SCHEDULE-STATUS", @"SCHEDULE-AGENT", @"X-CALENDARSERVER-DTSTAMP", @"TO-ALL-PROPOSED-NEW-TIME", 0}];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:parameterCopy];
 
   return v5 ^ 1;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
-    v4 = +[ICSUserAddress URLForNoMail];
+    lCopy = +[ICSUserAddress URLForNoMail];
   }
 
-  v5 = v4;
-  [(ICSProperty *)self setValue:v4 type:5021];
+  v5 = lCopy;
+  [(ICSProperty *)self setValue:lCopy type:5021];
 }
 
 @end

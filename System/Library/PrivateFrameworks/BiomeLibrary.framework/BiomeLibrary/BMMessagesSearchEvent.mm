@@ -1,38 +1,38 @@
 @interface BMMessagesSearchEvent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMessagesSearchEvent)initWithDimensionContext:(id)a3 inputDetected:(id)a4 userInteractionDetected:(id)a5 displayContext:(id)a6 searchViewContext:(id)a7 resultReceived:(id)a8 messagesAppViewContext:(id)a9 sessionIdResetContext:(id)a10;
-- (BMMessagesSearchEvent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMessagesSearchEvent)initWithDimensionContext:(id)context inputDetected:(id)detected userInteractionDetected:(id)interactionDetected displayContext:(id)displayContext searchViewContext:(id)viewContext resultReceived:(id)received messagesAppViewContext:(id)appViewContext sessionIdResetContext:(id)self0;
+- (BMMessagesSearchEvent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMessagesSearchEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMessagesSearchEvent *)self dimensionContext];
-    v7 = [v5 dimensionContext];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    dimensionContext = [(BMMessagesSearchEvent *)self dimensionContext];
+    dimensionContext2 = [v5 dimensionContext];
+    v8 = dimensionContext2;
+    if (dimensionContext == dimensionContext2)
     {
     }
 
     else
     {
-      v9 = [(BMMessagesSearchEvent *)self dimensionContext];
-      v10 = [v5 dimensionContext];
-      v11 = [v9 isEqual:v10];
+      dimensionContext3 = [(BMMessagesSearchEvent *)self dimensionContext];
+      dimensionContext4 = [v5 dimensionContext];
+      v11 = [dimensionContext3 isEqual:dimensionContext4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMMessagesSearchEvent *)self inputDetected];
-    v14 = [v5 inputDetected];
-    v15 = v14;
-    if (v13 == v14)
+    inputDetected = [(BMMessagesSearchEvent *)self inputDetected];
+    inputDetected2 = [v5 inputDetected];
+    v15 = inputDetected2;
+    if (inputDetected == inputDetected2)
     {
     }
 
     else
     {
-      v16 = [(BMMessagesSearchEvent *)self inputDetected];
-      v17 = [v5 inputDetected];
-      v18 = [v16 isEqual:v17];
+      inputDetected3 = [(BMMessagesSearchEvent *)self inputDetected];
+      inputDetected4 = [v5 inputDetected];
+      v18 = [inputDetected3 isEqual:inputDetected4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMMessagesSearchEvent *)self userInteractionDetected];
-    v20 = [v5 userInteractionDetected];
-    v21 = v20;
-    if (v19 == v20)
+    userInteractionDetected = [(BMMessagesSearchEvent *)self userInteractionDetected];
+    userInteractionDetected2 = [v5 userInteractionDetected];
+    v21 = userInteractionDetected2;
+    if (userInteractionDetected == userInteractionDetected2)
     {
     }
 
     else
     {
-      v22 = [(BMMessagesSearchEvent *)self userInteractionDetected];
-      v23 = [v5 userInteractionDetected];
-      v24 = [v22 isEqual:v23];
+      userInteractionDetected3 = [(BMMessagesSearchEvent *)self userInteractionDetected];
+      userInteractionDetected4 = [v5 userInteractionDetected];
+      v24 = [userInteractionDetected3 isEqual:userInteractionDetected4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMMessagesSearchEvent *)self displayContext];
-    v26 = [v5 displayContext];
-    v27 = v26;
-    if (v25 == v26)
+    displayContext = [(BMMessagesSearchEvent *)self displayContext];
+    displayContext2 = [v5 displayContext];
+    v27 = displayContext2;
+    if (displayContext == displayContext2)
     {
     }
 
     else
     {
-      v28 = [(BMMessagesSearchEvent *)self displayContext];
-      v29 = [v5 displayContext];
-      v30 = [v28 isEqual:v29];
+      displayContext3 = [(BMMessagesSearchEvent *)self displayContext];
+      displayContext4 = [v5 displayContext];
+      v30 = [displayContext3 isEqual:displayContext4];
 
       if (!v30)
       {
@@ -97,18 +97,18 @@
       }
     }
 
-    v31 = [(BMMessagesSearchEvent *)self searchViewContext];
-    v32 = [v5 searchViewContext];
-    v33 = v32;
-    if (v31 == v32)
+    searchViewContext = [(BMMessagesSearchEvent *)self searchViewContext];
+    searchViewContext2 = [v5 searchViewContext];
+    v33 = searchViewContext2;
+    if (searchViewContext == searchViewContext2)
     {
     }
 
     else
     {
-      v34 = [(BMMessagesSearchEvent *)self searchViewContext];
-      v35 = [v5 searchViewContext];
-      v36 = [v34 isEqual:v35];
+      searchViewContext3 = [(BMMessagesSearchEvent *)self searchViewContext];
+      searchViewContext4 = [v5 searchViewContext];
+      v36 = [searchViewContext3 isEqual:searchViewContext4];
 
       if (!v36)
       {
@@ -116,18 +116,18 @@
       }
     }
 
-    v37 = [(BMMessagesSearchEvent *)self resultReceived];
-    v38 = [v5 resultReceived];
-    v39 = v38;
-    if (v37 == v38)
+    resultReceived = [(BMMessagesSearchEvent *)self resultReceived];
+    resultReceived2 = [v5 resultReceived];
+    v39 = resultReceived2;
+    if (resultReceived == resultReceived2)
     {
     }
 
     else
     {
-      v40 = [(BMMessagesSearchEvent *)self resultReceived];
-      v41 = [v5 resultReceived];
-      v42 = [v40 isEqual:v41];
+      resultReceived3 = [(BMMessagesSearchEvent *)self resultReceived];
+      resultReceived4 = [v5 resultReceived];
+      v42 = [resultReceived3 isEqual:resultReceived4];
 
       if (!v42)
       {
@@ -135,18 +135,18 @@
       }
     }
 
-    v43 = [(BMMessagesSearchEvent *)self messagesAppViewContext];
-    v44 = [v5 messagesAppViewContext];
-    v45 = v44;
-    if (v43 == v44)
+    messagesAppViewContext = [(BMMessagesSearchEvent *)self messagesAppViewContext];
+    messagesAppViewContext2 = [v5 messagesAppViewContext];
+    v45 = messagesAppViewContext2;
+    if (messagesAppViewContext == messagesAppViewContext2)
     {
     }
 
     else
     {
-      v46 = [(BMMessagesSearchEvent *)self messagesAppViewContext];
-      v47 = [v5 messagesAppViewContext];
-      v48 = [v46 isEqual:v47];
+      messagesAppViewContext3 = [(BMMessagesSearchEvent *)self messagesAppViewContext];
+      messagesAppViewContext4 = [v5 messagesAppViewContext];
+      v48 = [messagesAppViewContext3 isEqual:messagesAppViewContext4];
 
       if (!v48)
       {
@@ -158,18 +158,18 @@ LABEL_30:
       }
     }
 
-    v50 = [(BMMessagesSearchEvent *)self sessionIdResetContext];
-    v51 = [v5 sessionIdResetContext];
-    if (v50 == v51)
+    sessionIdResetContext = [(BMMessagesSearchEvent *)self sessionIdResetContext];
+    sessionIdResetContext2 = [v5 sessionIdResetContext];
+    if (sessionIdResetContext == sessionIdResetContext2)
     {
       v12 = 1;
     }
 
     else
     {
-      v52 = [(BMMessagesSearchEvent *)self sessionIdResetContext];
-      v53 = [v5 sessionIdResetContext];
-      v12 = [v52 isEqual:v53];
+      sessionIdResetContext3 = [(BMMessagesSearchEvent *)self sessionIdResetContext];
+      sessionIdResetContext4 = [v5 sessionIdResetContext];
+      v12 = [sessionIdResetContext3 isEqual:sessionIdResetContext4];
     }
 
     goto LABEL_30;
@@ -184,105 +184,105 @@ LABEL_31:
 - (id)jsonDictionary
 {
   v38[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMessagesSearchEvent *)self dimensionContext];
-  v4 = [v3 jsonDictionary];
+  dimensionContext = [(BMMessagesSearchEvent *)self dimensionContext];
+  jsonDictionary = [dimensionContext jsonDictionary];
 
-  v5 = [(BMMessagesSearchEvent *)self inputDetected];
-  v6 = [v5 jsonDictionary];
+  inputDetected = [(BMMessagesSearchEvent *)self inputDetected];
+  jsonDictionary2 = [inputDetected jsonDictionary];
 
-  v7 = [(BMMessagesSearchEvent *)self userInteractionDetected];
-  v8 = [v7 jsonDictionary];
+  userInteractionDetected = [(BMMessagesSearchEvent *)self userInteractionDetected];
+  jsonDictionary3 = [userInteractionDetected jsonDictionary];
 
-  v9 = [(BMMessagesSearchEvent *)self displayContext];
-  v10 = [v9 jsonDictionary];
+  displayContext = [(BMMessagesSearchEvent *)self displayContext];
+  jsonDictionary4 = [displayContext jsonDictionary];
 
-  v11 = [(BMMessagesSearchEvent *)self searchViewContext];
-  v12 = [v11 jsonDictionary];
+  searchViewContext = [(BMMessagesSearchEvent *)self searchViewContext];
+  jsonDictionary5 = [searchViewContext jsonDictionary];
 
-  v13 = [(BMMessagesSearchEvent *)self resultReceived];
-  v14 = [v13 jsonDictionary];
+  resultReceived = [(BMMessagesSearchEvent *)self resultReceived];
+  jsonDictionary6 = [resultReceived jsonDictionary];
 
-  v15 = [(BMMessagesSearchEvent *)self messagesAppViewContext];
-  v16 = [v15 jsonDictionary];
+  messagesAppViewContext = [(BMMessagesSearchEvent *)self messagesAppViewContext];
+  jsonDictionary7 = [messagesAppViewContext jsonDictionary];
 
-  v17 = [(BMMessagesSearchEvent *)self sessionIdResetContext];
-  v18 = [v17 jsonDictionary];
+  sessionIdResetContext = [(BMMessagesSearchEvent *)self sessionIdResetContext];
+  jsonDictionary8 = [sessionIdResetContext jsonDictionary];
 
   v37[0] = @"dimensionContext";
-  v19 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v19;
-  v38[0] = v19;
+  v32 = null;
+  v38[0] = null;
   v37[1] = @"inputDetected";
-  v20 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v4;
-  v31 = v20;
-  v38[1] = v20;
+  v36 = jsonDictionary;
+  v31 = null2;
+  v38[1] = null2;
   v37[2] = @"userInteractionDetected";
-  v21 = v8;
-  if (!v8)
+  null3 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v6;
-  v30 = v21;
-  v38[2] = v21;
+  v35 = jsonDictionary2;
+  v30 = null3;
+  v38[2] = null3;
   v37[3] = @"displayContext";
-  v22 = v10;
-  if (!v10)
+  null4 = jsonDictionary4;
+  if (!jsonDictionary4)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v8;
-  v38[3] = v22;
+  v34 = jsonDictionary3;
+  v38[3] = null4;
   v37[4] = @"searchViewContext";
-  v23 = v12;
-  if (!v12)
+  null5 = jsonDictionary5;
+  if (!jsonDictionary5)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v10;
-  v38[4] = v23;
+  v33 = jsonDictionary4;
+  v38[4] = null5;
   v37[5] = @"resultReceived";
-  v24 = v14;
-  if (!v14)
+  null6 = jsonDictionary6;
+  if (!jsonDictionary6)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[5] = v24;
+  v38[5] = null6;
   v37[6] = @"messagesAppViewContext";
-  v25 = v16;
-  if (!v16)
+  null7 = jsonDictionary7;
+  if (!jsonDictionary7)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[6] = v25;
+  v38[6] = null7;
   v37[7] = @"sessionIdResetContext";
-  v26 = v18;
-  if (!v18)
+  null8 = jsonDictionary8;
+  if (!jsonDictionary8)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[7] = v26;
+  v38[7] = null8;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:8];
-  if (v18)
+  if (jsonDictionary8)
   {
-    if (v16)
+    if (jsonDictionary7)
     {
       goto LABEL_19;
     }
@@ -291,18 +291,18 @@ LABEL_31:
   else
   {
 
-    if (v16)
+    if (jsonDictionary7)
     {
       goto LABEL_19;
     }
   }
 
 LABEL_19:
-  if (!v14)
+  if (!jsonDictionary6)
   {
   }
 
-  if (!v12)
+  if (!jsonDictionary5)
   {
   }
 
@@ -337,16 +337,16 @@ LABEL_29:
   return v27;
 }
 
-- (BMMessagesSearchEvent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMessagesSearchEvent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v133[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"dimensionContext"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"dimensionContext"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"inputDetected"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"inputDetected"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
@@ -365,13 +365,13 @@ LABEL_4:
 
 LABEL_7:
         v107 = v10;
-        v11 = [v6 objectForKeyedSubscript:@"userInteractionDetected"];
-        v108 = a4;
+        v11 = [dictionaryCopy objectForKeyedSubscript:@"userInteractionDetected"];
+        errorCopy = error;
         if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v106 = 0;
 LABEL_10:
-          v12 = [v6 objectForKeyedSubscript:@"displayContext"];
+          v12 = [dictionaryCopy objectForKeyedSubscript:@"displayContext"];
           if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v100 = v9;
@@ -391,10 +391,10 @@ LABEL_10:
             {
               v103 = v35;
               v27 = v106;
-              if (v108)
+              if (errorCopy)
               {
                 v36 = v36;
-                *v108 = v36;
+                *errorCopy = v36;
               }
 
               v24 = 0;
@@ -406,14 +406,14 @@ LABEL_10:
             v13 = v12;
 
 LABEL_13:
-            v14 = [v6 objectForKeyedSubscript:@"searchViewContext"];
+            v14 = [dictionaryCopy objectForKeyedSubscript:@"searchViewContext"];
             v103 = v14;
             if (!v14 || (v15 = v14, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v101 = 0;
 LABEL_16:
               v12 = v13;
-              v16 = [v6 objectForKeyedSubscript:@"resultReceived"];
+              v16 = [dictionaryCopy objectForKeyedSubscript:@"resultReceived"];
               v9 = v100;
               v98 = v16;
               if (v16 && (v17 = v16, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -421,7 +421,7 @@ LABEL_16:
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  if (!v108)
+                  if (!errorCopy)
                   {
                     v24 = 0;
                     v27 = v106;
@@ -433,11 +433,11 @@ LABEL_16:
                   v95 = *MEMORY[0x1E698F240];
                   v122 = *MEMORY[0x1E696A578];
                   v69 = v8;
-                  v70 = self;
+                  selfCopy = self;
                   v71 = objc_alloc(MEMORY[0x1E696AEC0]);
                   v87 = objc_opt_class();
                   v72 = v71;
-                  self = v70;
+                  self = selfCopy;
                   v8 = v69;
                   v23 = v107;
                   v96 = [v72 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v87, @"resultReceived"];
@@ -447,7 +447,7 @@ LABEL_16:
                   v94 = v73;
                   v75 = [v68 initWithDomain:v74 code:2 userInfo:?];
                   v24 = 0;
-                  *v108 = v75;
+                  *errorCopy = v75;
                   goto LABEL_95;
                 }
 
@@ -459,10 +459,10 @@ LABEL_16:
                 {
                   v94 = v51;
                   v27 = v106;
-                  if (v108)
+                  if (errorCopy)
                   {
                     v52 = v52;
-                    *v108 = v52;
+                    *errorCopy = v52;
                   }
 
                   v24 = 0;
@@ -476,14 +476,14 @@ LABEL_16:
                 v96 = 0;
               }
 
-              v18 = [v6 objectForKeyedSubscript:@"messagesAppViewContext"];
+              v18 = [dictionaryCopy objectForKeyedSubscript:@"messagesAppViewContext"];
               v94 = v18;
               if (v18 && (v19 = v18, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  if (!v108)
+                  if (!errorCopy)
                   {
                     v24 = 0;
                     v23 = v107;
@@ -494,11 +494,11 @@ LABEL_16:
                   v90 = *MEMORY[0x1E698F240];
                   v120 = *MEMORY[0x1E696A578];
                   v77 = v8;
-                  v78 = self;
+                  selfCopy2 = self;
                   v79 = objc_alloc(MEMORY[0x1E696AEC0]);
                   v88 = objc_opt_class();
                   v80 = v79;
-                  self = v78;
+                  self = selfCopy2;
                   v8 = v77;
                   v23 = v107;
                   v93 = [v80 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v88, @"messagesAppViewContext"];
@@ -506,7 +506,7 @@ LABEL_16:
                   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v121 forKeys:&v120 count:1];
                   v81 = [v76 initWithDomain:v90 code:2 userInfo:v21];
                   v24 = 0;
-                  *v108 = v81;
+                  *errorCopy = v81;
 LABEL_94:
 
 LABEL_95:
@@ -522,10 +522,10 @@ LABEL_96:
                 v60 = v111;
                 if (v60)
                 {
-                  if (v108)
+                  if (errorCopy)
                   {
                     v60 = v60;
-                    *v108 = v60;
+                    *errorCopy = v60;
                   }
 
                   v24 = 0;
@@ -533,27 +533,27 @@ LABEL_96:
                 }
 
                 v92 = v8;
-                v20 = self;
+                selfCopy4 = self;
               }
 
               else
               {
                 v92 = v8;
                 v93 = 0;
-                v20 = self;
+                selfCopy4 = self;
               }
 
-              v21 = [v6 objectForKeyedSubscript:@"sessionIdResetContext"];
+              v21 = [dictionaryCopy objectForKeyedSubscript:@"sessionIdResetContext"];
               if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
                 v22 = 0;
 LABEL_25:
                 v23 = v107;
-                v24 = [(BMMessagesSearchEvent *)v20 initWithDimensionContext:v92 inputDetected:v107 userInteractionDetected:v106 displayContext:v105 searchViewContext:v101 resultReceived:v96 messagesAppViewContext:v93 sessionIdResetContext:v22];
-                v20 = v24;
+                v24 = [(BMMessagesSearchEvent *)selfCopy4 initWithDimensionContext:v92 inputDetected:v107 userInteractionDetected:v106 displayContext:v105 searchViewContext:v101 resultReceived:v96 messagesAppViewContext:v93 sessionIdResetContext:v22];
+                selfCopy4 = v24;
 LABEL_93:
 
-                self = v20;
+                self = selfCopy4;
                 v8 = v92;
                 goto LABEL_94;
               }
@@ -571,10 +571,10 @@ LABEL_93:
                   goto LABEL_25;
                 }
 
-                if (v108)
+                if (errorCopy)
                 {
                   v67 = v67;
-                  *v108 = v67;
+                  *errorCopy = v67;
                 }
 
 LABEL_92:
@@ -583,7 +583,7 @@ LABEL_92:
                 goto LABEL_93;
               }
 
-              if (v108)
+              if (errorCopy)
               {
                 v91 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v89 = *MEMORY[0x1E698F240];
@@ -591,12 +591,12 @@ LABEL_92:
                 v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"sessionIdResetContext"];
                 v119 = v22;
                 v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v119 forKeys:&v118 count:1];
-                *v108 = [v91 initWithDomain:v89 code:2 userInfo:v66];
+                *errorCopy = [v91 initWithDomain:v89 code:2 userInfo:v66];
                 goto LABEL_92;
               }
 
               v24 = 0;
-              self = v20;
+              self = selfCopy4;
               v8 = v92;
 LABEL_111:
               v23 = v107;
@@ -619,10 +619,10 @@ LABEL_111:
               v98 = v42;
               v27 = v106;
               v12 = v13;
-              if (v108)
+              if (errorCopy)
               {
                 v43 = v43;
-                *v108 = v43;
+                *errorCopy = v43;
               }
 
               v24 = 0;
@@ -631,7 +631,7 @@ LABEL_111:
 
             else
             {
-              if (!v108)
+              if (!errorCopy)
               {
                 v24 = 0;
                 v27 = v106;
@@ -644,11 +644,11 @@ LABEL_111:
               v99 = objc_alloc(MEMORY[0x1E696ABC0]);
               v97 = *MEMORY[0x1E698F240];
               v124 = *MEMORY[0x1E696A578];
-              v61 = self;
+              selfCopy5 = self;
               v62 = objc_alloc(MEMORY[0x1E696AEC0]);
               v86 = objc_opt_class();
               v63 = v62;
-              self = v61;
+              self = selfCopy5;
               v23 = v107;
               v101 = [v63 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v86, @"searchViewContext"];
               v125 = v101;
@@ -656,7 +656,7 @@ LABEL_111:
               v65 = v99;
               v98 = v64;
               v24 = 0;
-              *v108 = [v65 initWithDomain:v97 code:2 userInfo:?];
+              *errorCopy = [v65 initWithDomain:v97 code:2 userInfo:?];
               v27 = v106;
               v12 = v13;
             }
@@ -667,7 +667,7 @@ LABEL_97:
             goto LABEL_98;
           }
 
-          if (v108)
+          if (errorCopy)
           {
             v53 = objc_alloc(MEMORY[0x1E696ABC0]);
             v104 = *MEMORY[0x1E698F240];
@@ -685,7 +685,7 @@ LABEL_97:
             v103 = v57;
             v59 = [v53 initWithDomain:v58 code:2 userInfo:?];
             v24 = 0;
-            *v108 = v59;
+            *errorCopy = v59;
             v27 = v106;
 LABEL_98:
 
@@ -709,10 +709,10 @@ LABEL_99:
           v28 = v115;
           if (v28)
           {
-            if (v108)
+            if (errorCopy)
             {
               v28 = v28;
-              *v108 = v28;
+              *errorCopy = v28;
             }
 
             v24 = 0;
@@ -725,9 +725,9 @@ LABEL_99:
           goto LABEL_10;
         }
 
-        if (a4)
+        if (error)
         {
-          v102 = self;
+          selfCopy6 = self;
           v44 = objc_alloc(MEMORY[0x1E696ABC0]);
           v45 = *MEMORY[0x1E698F240];
           v128 = *MEMORY[0x1E696A578];
@@ -741,10 +741,10 @@ LABEL_99:
           v129 = v27;
           v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v129 forKeys:&v128 count:1];
           v49 = v44;
-          self = v102;
+          self = selfCopy6;
           v50 = [v49 initWithDomain:v45 code:2 userInfo:v12];
           v24 = 0;
-          *v108 = v50;
+          *errorCopy = v50;
           goto LABEL_99;
         }
 
@@ -755,10 +755,10 @@ LABEL_100:
         goto LABEL_101;
       }
 
-      if (a4)
+      if (error)
       {
         v26 = v26;
-        *a4 = v26;
+        *error = v26;
       }
 
       v24 = 0;
@@ -767,10 +767,10 @@ LABEL_50:
       goto LABEL_100;
     }
 
-    if (a4)
+    if (error)
     {
-      v109 = a4;
-      v37 = self;
+      errorCopy2 = error;
+      selfCopy7 = self;
       v38 = objc_alloc(MEMORY[0x1E696ABC0]);
       v39 = *MEMORY[0x1E698F240];
       v130 = *MEMORY[0x1E696A578];
@@ -778,10 +778,10 @@ LABEL_50:
       v131 = v10;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v131 forKeys:&v130 count:1];
       v40 = v38;
-      self = v37;
+      self = selfCopy7;
       v41 = [v40 initWithDomain:v39 code:2 userInfo:v11];
       v24 = 0;
-      *v109 = v41;
+      *errorCopy2 = v41;
       goto LABEL_50;
     }
 
@@ -800,10 +800,10 @@ LABEL_101:
     v25 = v117;
     if (v25)
     {
-      if (a4)
+      if (error)
       {
         v25 = v25;
-        *a4 = v25;
+        *error = v25;
       }
 
       v24 = 0;
@@ -813,9 +813,9 @@ LABEL_101:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
-    v29 = self;
+    selfCopy8 = self;
     v30 = objc_alloc(MEMORY[0x1E696ABC0]);
     v31 = *MEMORY[0x1E698F240];
     v132 = *MEMORY[0x1E696A578];
@@ -823,11 +823,11 @@ LABEL_101:
     v133[0] = v32;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v133 forKeys:&v132 count:1];
     v33 = v30;
-    self = v29;
+    self = selfCopy8;
     v8 = v32;
     v34 = [v33 initWithDomain:v31 code:2 userInfo:v9];
     v24 = 0;
-    *a4 = v34;
+    *error = v34;
     goto LABEL_101;
   }
 
@@ -842,74 +842,74 @@ LABEL_102:
 {
   v3 = objc_opt_new();
   [(BMMessagesSearchEvent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_dimensionContext)
   {
     PBDataWriterPlaceMark();
-    [(BMMessagesSearchEventDimensionContext *)self->_dimensionContext writeTo:v4];
+    [(BMMessagesSearchEventDimensionContext *)self->_dimensionContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_inputDetected)
   {
     PBDataWriterPlaceMark();
-    [(BMMessagesSearchEventInputDetected *)self->_inputDetected writeTo:v4];
+    [(BMMessagesSearchEventInputDetected *)self->_inputDetected writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_userInteractionDetected)
   {
     PBDataWriterPlaceMark();
-    [(BMMessagesSearchEventUserInteractionDetected *)self->_userInteractionDetected writeTo:v4];
+    [(BMMessagesSearchEventUserInteractionDetected *)self->_userInteractionDetected writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_displayContext)
   {
     PBDataWriterPlaceMark();
-    [(BMMessagesSearchEventDisplayContext *)self->_displayContext writeTo:v4];
+    [(BMMessagesSearchEventDisplayContext *)self->_displayContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_searchViewContext)
   {
     PBDataWriterPlaceMark();
-    [(BMMessagesSearchEventSearchViewContext *)self->_searchViewContext writeTo:v4];
+    [(BMMessagesSearchEventSearchViewContext *)self->_searchViewContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_resultReceived)
   {
     PBDataWriterPlaceMark();
-    [(BMMessagesSearchEventResultReceived *)self->_resultReceived writeTo:v4];
+    [(BMMessagesSearchEventResultReceived *)self->_resultReceived writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_messagesAppViewContext)
   {
     PBDataWriterPlaceMark();
-    [(BMMessagesSearchEventMessagesAppViewContext *)self->_messagesAppViewContext writeTo:v4];
+    [(BMMessagesSearchEventMessagesAppViewContext *)self->_messagesAppViewContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_sessionIdResetContext)
   {
     PBDataWriterPlaceMark();
-    [(BMMessagesSearchEventSessionIdResetContext *)self->_sessionIdResetContext writeTo:v4];
+    [(BMMessagesSearchEventSessionIdResetContext *)self->_sessionIdResetContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v22.receiver = self;
   v22.super_class = BMMessagesSearchEvent;
   v5 = [(BMEventBase *)&v22 init];
@@ -918,12 +918,12 @@ LABEL_102:
     goto LABEL_60;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -934,18 +934,18 @@ LABEL_102:
       while (1)
       {
         LOBYTE(v23) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v23 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v23 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v23 & 0x7F) << v7;
@@ -962,9 +962,9 @@ LABEL_102:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -983,7 +983,7 @@ LABEL_16:
               goto LABEL_59;
             }
 
-            v16 = [[BMMessagesSearchEventMessagesAppViewContext alloc] initByReadFrom:v4];
+            v16 = [[BMMessagesSearchEventMessagesAppViewContext alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_59;
@@ -1002,7 +1002,7 @@ LABEL_16:
               goto LABEL_59;
             }
 
-            v16 = [[BMMessagesSearchEventSessionIdResetContext alloc] initByReadFrom:v4];
+            v16 = [[BMMessagesSearchEventSessionIdResetContext alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_59;
@@ -1024,7 +1024,7 @@ LABEL_16:
               goto LABEL_59;
             }
 
-            v16 = [[BMMessagesSearchEventSearchViewContext alloc] initByReadFrom:v4];
+            v16 = [[BMMessagesSearchEventSearchViewContext alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_59;
@@ -1043,7 +1043,7 @@ LABEL_16:
               goto LABEL_59;
             }
 
-            v16 = [[BMMessagesSearchEventResultReceived alloc] initByReadFrom:v4];
+            v16 = [[BMMessagesSearchEventResultReceived alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_59;
@@ -1066,7 +1066,7 @@ LABEL_16:
             goto LABEL_59;
           }
 
-          v16 = [[BMMessagesSearchEventUserInteractionDetected alloc] initByReadFrom:v4];
+          v16 = [[BMMessagesSearchEventUserInteractionDetected alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_59;
@@ -1085,7 +1085,7 @@ LABEL_16:
             goto LABEL_59;
           }
 
-          v16 = [[BMMessagesSearchEventDisplayContext alloc] initByReadFrom:v4];
+          v16 = [[BMMessagesSearchEventDisplayContext alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_59;
@@ -1107,7 +1107,7 @@ LABEL_16:
             goto LABEL_59;
           }
 
-          v16 = [[BMMessagesSearchEventDimensionContext alloc] initByReadFrom:v4];
+          v16 = [[BMMessagesSearchEventDimensionContext alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_59;
@@ -1126,7 +1126,7 @@ LABEL_16:
             goto LABEL_59;
           }
 
-          v16 = [[BMMessagesSearchEventInputDetected alloc] initByReadFrom:v4];
+          v16 = [[BMMessagesSearchEventInputDetected alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_59;
@@ -1148,13 +1148,13 @@ LABEL_53:
       }
 
 LABEL_54:
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_59:
     v20 = 0;
@@ -1172,43 +1172,43 @@ LABEL_60:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMessagesSearchEvent *)self dimensionContext];
-  v5 = [(BMMessagesSearchEvent *)self inputDetected];
-  v6 = [(BMMessagesSearchEvent *)self userInteractionDetected];
-  v7 = [(BMMessagesSearchEvent *)self displayContext];
-  v8 = [(BMMessagesSearchEvent *)self searchViewContext];
-  v9 = [(BMMessagesSearchEvent *)self resultReceived];
-  v10 = [(BMMessagesSearchEvent *)self messagesAppViewContext];
-  v11 = [(BMMessagesSearchEvent *)self sessionIdResetContext];
-  v12 = [v3 initWithFormat:@"BMMessagesSearchEvent with dimensionContext: %@, inputDetected: %@, userInteractionDetected: %@, displayContext: %@, searchViewContext: %@, resultReceived: %@, messagesAppViewContext: %@, sessionIdResetContext: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  dimensionContext = [(BMMessagesSearchEvent *)self dimensionContext];
+  inputDetected = [(BMMessagesSearchEvent *)self inputDetected];
+  userInteractionDetected = [(BMMessagesSearchEvent *)self userInteractionDetected];
+  displayContext = [(BMMessagesSearchEvent *)self displayContext];
+  searchViewContext = [(BMMessagesSearchEvent *)self searchViewContext];
+  resultReceived = [(BMMessagesSearchEvent *)self resultReceived];
+  messagesAppViewContext = [(BMMessagesSearchEvent *)self messagesAppViewContext];
+  sessionIdResetContext = [(BMMessagesSearchEvent *)self sessionIdResetContext];
+  v12 = [v3 initWithFormat:@"BMMessagesSearchEvent with dimensionContext: %@, inputDetected: %@, userInteractionDetected: %@, displayContext: %@, searchViewContext: %@, resultReceived: %@, messagesAppViewContext: %@, sessionIdResetContext: %@", dimensionContext, inputDetected, userInteractionDetected, displayContext, searchViewContext, resultReceived, messagesAppViewContext, sessionIdResetContext];
 
   return v12;
 }
 
-- (BMMessagesSearchEvent)initWithDimensionContext:(id)a3 inputDetected:(id)a4 userInteractionDetected:(id)a5 displayContext:(id)a6 searchViewContext:(id)a7 resultReceived:(id)a8 messagesAppViewContext:(id)a9 sessionIdResetContext:(id)a10
+- (BMMessagesSearchEvent)initWithDimensionContext:(id)context inputDetected:(id)detected userInteractionDetected:(id)interactionDetected displayContext:(id)displayContext searchViewContext:(id)viewContext resultReceived:(id)received messagesAppViewContext:(id)appViewContext sessionIdResetContext:(id)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v21 = a8;
-  v20 = a9;
-  v17 = a10;
+  contextCopy = context;
+  detectedCopy = detected;
+  interactionDetectedCopy = interactionDetected;
+  displayContextCopy = displayContext;
+  viewContextCopy = viewContext;
+  receivedCopy = received;
+  appViewContextCopy = appViewContext;
+  resetContextCopy = resetContext;
   v27.receiver = self;
   v27.super_class = BMMessagesSearchEvent;
   v18 = [(BMEventBase *)&v27 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_dimensionContext, a3);
-    objc_storeStrong(&v18->_inputDetected, a4);
-    objc_storeStrong(&v18->_userInteractionDetected, a5);
-    objc_storeStrong(&v18->_displayContext, a6);
-    objc_storeStrong(&v18->_searchViewContext, a7);
-    objc_storeStrong(&v18->_resultReceived, a8);
-    objc_storeStrong(&v18->_messagesAppViewContext, a9);
-    objc_storeStrong(&v18->_sessionIdResetContext, a10);
+    objc_storeStrong(&v18->_dimensionContext, context);
+    objc_storeStrong(&v18->_inputDetected, detected);
+    objc_storeStrong(&v18->_userInteractionDetected, interactionDetected);
+    objc_storeStrong(&v18->_displayContext, displayContext);
+    objc_storeStrong(&v18->_searchViewContext, viewContext);
+    objc_storeStrong(&v18->_resultReceived, received);
+    objc_storeStrong(&v18->_messagesAppViewContext, appViewContext);
+    objc_storeStrong(&v18->_sessionIdResetContext, resetContext);
   }
 
   return v18;
@@ -1346,9 +1346,9 @@ id __32__BMMessagesSearchEvent_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1356,8 +1356,8 @@ id __32__BMMessagesSearchEvent_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMessagesSearchEvent alloc] initByReadFrom:v7];
     v4 = v8;

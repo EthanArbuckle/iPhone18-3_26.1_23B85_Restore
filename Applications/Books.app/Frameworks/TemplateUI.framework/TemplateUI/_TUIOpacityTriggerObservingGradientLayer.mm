@@ -1,21 +1,21 @@
 @interface _TUIOpacityTriggerObservingGradientLayer
 - (TUIFeedControllerHosting)feedControllerHost;
-- (void)didAddLayerWithFeedControllerHost:(id)a3;
-- (void)setOpacityTriggers:(id)a3;
-- (void)willRemoveLayerWithFeedControllerHost:(id)a3;
+- (void)didAddLayerWithFeedControllerHost:(id)host;
+- (void)setOpacityTriggers:(id)triggers;
+- (void)willRemoveLayerWithFeedControllerHost:(id)host;
 @end
 
 @implementation _TUIOpacityTriggerObservingGradientLayer
 
-- (void)setOpacityTriggers:(id)a3
+- (void)setOpacityTriggers:(id)triggers
 {
-  v4 = a3;
+  triggersCopy = triggers;
   triggerObserver = self->_triggerObserver;
-  v11 = v4;
-  if (v4)
+  v11 = triggersCopy;
+  if (triggersCopy)
   {
-    v6 = [triggerObserver opacityTriggers];
-    v7 = [v11 isEqualToDictionary:v6];
+    opacityTriggers = [triggerObserver opacityTriggers];
+    v7 = [v11 isEqualToDictionary:opacityTriggers];
 
     if (v7)
     {
@@ -27,8 +27,8 @@
     self->_triggerObserver = v8;
 
     triggerObserver = objc_loadWeakRetained(&self->_feedControllerHost);
-    v10 = [triggerObserver triggerStateManager];
-    [(TUILayerOpacityTriggerObserver *)self->_triggerObserver setManager:v10];
+    triggerStateManager = [triggerObserver triggerStateManager];
+    [(TUILayerOpacityTriggerObserver *)self->_triggerObserver setManager:triggerStateManager];
   }
 
   else
@@ -39,16 +39,16 @@
 LABEL_6:
 }
 
-- (void)didAddLayerWithFeedControllerHost:(id)a3
+- (void)didAddLayerWithFeedControllerHost:(id)host
 {
-  v4 = a3;
-  objc_storeWeak(&self->_feedControllerHost, v4);
-  v5 = [v4 triggerStateManager];
+  hostCopy = host;
+  objc_storeWeak(&self->_feedControllerHost, hostCopy);
+  triggerStateManager = [hostCopy triggerStateManager];
 
-  [(TUILayerOpacityTriggerObserver *)self->_triggerObserver setManager:v5];
+  [(TUILayerOpacityTriggerObserver *)self->_triggerObserver setManager:triggerStateManager];
 }
 
-- (void)willRemoveLayerWithFeedControllerHost:(id)a3
+- (void)willRemoveLayerWithFeedControllerHost:(id)host
 {
   objc_storeWeak(&self->_feedControllerHost, 0);
   triggerObserver = self->_triggerObserver;

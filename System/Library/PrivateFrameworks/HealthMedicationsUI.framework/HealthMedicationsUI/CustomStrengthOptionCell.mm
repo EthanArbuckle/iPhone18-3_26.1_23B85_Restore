@@ -1,11 +1,11 @@
 @interface CustomStrengthOptionCell
-- (_TtC19HealthMedicationsUI24CustomStrengthOptionCell)initWithCoder:(id)a3;
+- (_TtC19HealthMedicationsUI24CustomStrengthOptionCell)initWithCoder:(id)coder;
 - (void)actionButtonTapped;
 @end
 
 @implementation CustomStrengthOptionCell
 
-- (_TtC19HealthMedicationsUI24CustomStrengthOptionCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI24CustomStrengthOptionCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC19HealthMedicationsUI24CustomStrengthOptionCell_item;
   *v4 = 0u;
@@ -21,7 +21,7 @@
 
 - (void)actionButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_22831B25C();
 }
 

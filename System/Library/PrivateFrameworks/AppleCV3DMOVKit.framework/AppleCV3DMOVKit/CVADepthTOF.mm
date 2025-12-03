@@ -1,14 +1,14 @@
 @interface CVADepthTOF
 + (id)classes;
-+ (id)withData:(id)a3;
-- (CVADepthTOF)initWithADJasperPointCloud:(id)a3 timestamp:(double)a4;
-- (CVADepthTOF)initWithAVPointCloudData:(id)a3 timestamp:(double)a4;
-- (CVADepthTOF)initWithCVDataBufferRef:(__CVBuffer *)a3 timestamp:(double)a4 projectorMode:(int64_t)a5;
-- (CVADepthTOF)initWithCoder:(id)a3;
-- (CVADepthTOF)initWithJasperDepth:(id)a3 timestamp:(double)a4 projectorMode:(int64_t)a5;
++ (id)withData:(id)data;
+- (CVADepthTOF)initWithADJasperPointCloud:(id)cloud timestamp:(double)timestamp;
+- (CVADepthTOF)initWithAVPointCloudData:(id)data timestamp:(double)timestamp;
+- (CVADepthTOF)initWithCVDataBufferRef:(__CVBuffer *)ref timestamp:(double)timestamp projectorMode:(int64_t)mode;
+- (CVADepthTOF)initWithCoder:(id)coder;
+- (CVADepthTOF)initWithJasperDepth:(id)depth timestamp:(double)timestamp projectorMode:(int64_t)mode;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVADepthTOF
@@ -29,11 +29,11 @@
   return v3;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVADepthTOF classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -51,18 +51,18 @@
   return v6;
 }
 
-- (CVADepthTOF)initWithCoder:(id)a3
+- (CVADepthTOF)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CVADepthTOF *)self init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v7;
-    if ([v4 containsValueForKey:@"p"])
+    if ([coderCopy containsValueForKey:@"p"])
     {
-      v8 = [v4 decodeIntegerForKey:@"p"];
+      v8 = [coderCopy decodeIntegerForKey:@"p"];
     }
 
     else
@@ -71,13 +71,13 @@
     }
 
     v5->_projectorMode = v8;
-    v9 = [v4 decodeObjectForKey:@"m"];
+    v9 = [coderCopy decodeObjectForKey:@"m"];
     metadata = v5->_metadata;
     v5->_metadata = v9;
 
-    v5->_syncTimestamp = [v4 decodeInt64ForKey:@"st"];
-    v5->_frameId = [v4 decodeInt64ForKey:@"fi"];
-    v11 = [v4 decodeObjectForKey:@"d"];
+    v5->_syncTimestamp = [coderCopy decodeInt64ForKey:@"st"];
+    v5->_frameId = [coderCopy decodeInt64ForKey:@"fi"];
+    v11 = [coderCopy decodeObjectForKey:@"d"];
     if (v11)
     {
       v12 = [objc_alloc(MEMORY[0x277CED0A8]) initWithDictionaryRepresentation:v11];
@@ -91,52 +91,52 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeObject:self->_data forKey:@"d"];
-  [v5 encodeDouble:@"t" forKey:self->_timestamp];
-  [v5 encodeInteger:self->_projectorMode forKey:@"p"];
-  [v5 encodeObject:self->_metadata forKey:@"m"];
-  [v5 encodeInt64:self->_syncTimestamp forKey:@"st"];
-  [v5 encodeInt64:self->_frameId forKey:@"fi"];
+  [coderCopy encodeObject:self->_data forKey:@"d"];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeInteger:self->_projectorMode forKey:@"p"];
+  [coderCopy encodeObject:self->_metadata forKey:@"m"];
+  [coderCopy encodeInt64:self->_syncTimestamp forKey:@"st"];
+  [coderCopy encodeInt64:self->_frameId forKey:@"fi"];
   objc_autoreleasePoolPop(v4);
 }
 
-- (CVADepthTOF)initWithADJasperPointCloud:(id)a3 timestamp:(double)a4
+- (CVADepthTOF)initWithADJasperPointCloud:(id)cloud timestamp:(double)timestamp
 {
-  v7 = a3;
+  cloudCopy = cloud;
   v13.receiver = self;
   v13.super_class = CVADepthTOF;
   v8 = [(CVADepthTOF *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_timestamp = a4;
-    objc_storeStrong(&v8->_pointCloud, a3);
+    v8->_timestamp = timestamp;
+    objc_storeStrong(&v8->_pointCloud, cloud);
     v9->_projectorMode = 0;
-    v10 = [(ADJasperPointCloud *)v9->_pointCloud dictionaryRepresentation];
+    dictionaryRepresentation = [(ADJasperPointCloud *)v9->_pointCloud dictionaryRepresentation];
     data = v9->_data;
-    v9->_data = v10;
+    v9->_data = dictionaryRepresentation;
   }
 
   return v9;
 }
 
-- (CVADepthTOF)initWithAVPointCloudData:(id)a3 timestamp:(double)a4
+- (CVADepthTOF)initWithAVPointCloudData:(id)data timestamp:(double)timestamp
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CED0A8] makeWithDataBuffer:{objc_msgSend(v6, "pointCloudDataBuffer")}];
-  v8 = [(CVADepthTOF *)self initWithADJasperPointCloud:v7 timestamp:a4];
+  dataCopy = data;
+  v7 = [MEMORY[0x277CED0A8] makeWithDataBuffer:{objc_msgSend(dataCopy, "pointCloudDataBuffer")}];
+  v8 = [(CVADepthTOF *)self initWithADJasperPointCloud:v7 timestamp:timestamp];
   v9 = NSSelectorFromString(&cfstr_Projectormode.isa);
   if (objc_opt_respondsToSelector())
   {
-    v10 = [objc_alloc(MEMORY[0x277CCAA80]) initWithTarget:v6 selector:v9 object:0];
+    v10 = [objc_alloc(MEMORY[0x277CCAA80]) initWithTarget:dataCopy selector:v9 object:0];
     [v10 start];
     v13 = 0;
-    v11 = [v10 result];
-    [v11 getValue:&v13];
+    result = [v10 result];
+    [result getValue:&v13];
 
     v8->_projectorMode = v13;
   }
@@ -144,22 +144,22 @@
   return v8;
 }
 
-- (CVADepthTOF)initWithCVDataBufferRef:(__CVBuffer *)a3 timestamp:(double)a4 projectorMode:(int64_t)a5
+- (CVADepthTOF)initWithCVDataBufferRef:(__CVBuffer *)ref timestamp:(double)timestamp projectorMode:(int64_t)mode
 {
-  v8 = [MEMORY[0x277CED0A8] makeWithDataBuffer:a3];
-  v9 = [(CVADepthTOF *)self initWithADJasperPointCloud:v8 timestamp:a4];
-  v9->_projectorMode = a5;
+  v8 = [MEMORY[0x277CED0A8] makeWithDataBuffer:ref];
+  v9 = [(CVADepthTOF *)self initWithADJasperPointCloud:v8 timestamp:timestamp];
+  v9->_projectorMode = mode;
   v10 = v9;
 
   return v10;
 }
 
-- (CVADepthTOF)initWithJasperDepth:(id)a3 timestamp:(double)a4 projectorMode:(int64_t)a5
+- (CVADepthTOF)initWithJasperDepth:(id)depth timestamp:(double)timestamp projectorMode:(int64_t)mode
 {
-  v8 = [a3 dictionaryRepresentation];
-  v9 = [objc_alloc(MEMORY[0x277CED0A8]) initWithDictionaryRepresentation:v8];
-  v10 = [(CVADepthTOF *)self initWithADJasperPointCloud:v9 timestamp:a4];
-  v10->_projectorMode = a5;
+  dictionaryRepresentation = [depth dictionaryRepresentation];
+  v9 = [objc_alloc(MEMORY[0x277CED0A8]) initWithDictionaryRepresentation:dictionaryRepresentation];
+  v10 = [(CVADepthTOF *)self initWithADJasperPointCloud:v9 timestamp:timestamp];
+  v10->_projectorMode = mode;
   v11 = v10;
 
   return v11;
@@ -172,8 +172,8 @@
   v3 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timestamp];
   v12[0] = v3;
   v11[1] = @"pc";
-  v4 = [(ADJasperPointCloud *)self->_pointCloud dictionaryRepresentation];
-  v12[1] = v4;
+  dictionaryRepresentation = [(ADJasperPointCloud *)self->_pointCloud dictionaryRepresentation];
+  v12[1] = dictionaryRepresentation;
   v11[2] = @"p";
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_projectorMode];
   v12[2] = v5;
@@ -194,8 +194,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVADepthTOF *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVADepthTOF *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

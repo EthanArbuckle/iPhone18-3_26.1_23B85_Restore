@@ -1,19 +1,19 @@
 @interface SFExtensionWrapper
-+ (id)extensionWrapperForContentBlockerWithComposedIdentifier:(id)a3 contentBlockerManager:(id)a4;
-+ (id)extensionWrapperForWebExtensionWithComposedIdentifier:(id)a3 webExtensionsController:(id)a4;
-- (BOOL)contentBlockerHasSameNameAsWebExtensionFromSameApp:(id)a3;
++ (id)extensionWrapperForContentBlockerWithComposedIdentifier:(id)identifier contentBlockerManager:(id)manager;
++ (id)extensionWrapperForWebExtensionWithComposedIdentifier:(id)identifier webExtensionsController:(id)controller;
+- (BOOL)contentBlockerHasSameNameAsWebExtensionFromSameApp:(id)app;
 - (BOOL)isEnabledInAnyNamedProfile;
 - (BOOL)isEnabledInAnyProfile;
 - (NSString)debugDescription;
-- (int64_t)localizedCompare:(id)a3;
+- (int64_t)localizedCompare:(id)compare;
 - (void)_postNotificationsToUpdateExtensionState;
 @end
 
 @implementation SFExtensionWrapper
 
-+ (id)extensionWrapperForWebExtensionWithComposedIdentifier:(id)a3 webExtensionsController:(id)a4
++ (id)extensionWrapperForWebExtensionWithComposedIdentifier:(id)identifier webExtensionsController:(id)controller
 {
-  v4 = [a4 webExtensionForComposedIdentifier:a3];
+  v4 = [controller webExtensionForComposedIdentifier:identifier];
   if (v4)
   {
     v5 = [[SFWebExtensionExtensionWrapper alloc] initWithWebExtensionData:v4];
@@ -27,13 +27,13 @@
   return v5;
 }
 
-+ (id)extensionWrapperForContentBlockerWithComposedIdentifier:(id)a3 contentBlockerManager:(id)a4
++ (id)extensionWrapperForContentBlockerWithComposedIdentifier:(id)identifier contentBlockerManager:(id)manager
 {
-  v5 = a4;
-  v6 = [v5 _contentBlockerWithComposedIdentifier:a3];
+  managerCopy = manager;
+  v6 = [managerCopy _contentBlockerWithComposedIdentifier:identifier];
   if (v6)
   {
-    v7 = [[SFContentBlockerExtensionWrapper alloc] initWithExtension:v6 contentBlockerManager:v5];
+    v7 = [[SFContentBlockerExtensionWrapper alloc] initWithExtension:v6 contentBlockerManager:managerCopy];
   }
 
   else
@@ -44,43 +44,43 @@
   return v7;
 }
 
-- (int64_t)localizedCompare:(id)a3
+- (int64_t)localizedCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(SFExtensionWrapper *)self containingAppDisplayName];
-  v6 = [v4 containingAppDisplayName];
-  v7 = [v5 localizedCompare:v6];
+  compareCopy = compare;
+  containingAppDisplayName = [(SFExtensionWrapper *)self containingAppDisplayName];
+  containingAppDisplayName2 = [compareCopy containingAppDisplayName];
+  v7 = [containingAppDisplayName localizedCompare:containingAppDisplayName2];
 
   if (!v7)
   {
-    v8 = [(SFExtensionWrapper *)self displayName];
-    v9 = [v4 displayName];
-    v7 = [v8 localizedCompare:v9];
+    displayName = [(SFExtensionWrapper *)self displayName];
+    displayName2 = [compareCopy displayName];
+    v7 = [displayName localizedCompare:displayName2];
   }
 
   return v7;
 }
 
-- (BOOL)contentBlockerHasSameNameAsWebExtensionFromSameApp:(id)a3
+- (BOOL)contentBlockerHasSameNameAsWebExtensionFromSameApp:(id)app
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  appCopy = app;
   if ([(SFExtensionWrapper *)self isContentBlocker])
   {
-    v5 = [(SFExtensionWrapper *)self extension];
-    v6 = [v5 _plugIn];
-    v23 = [v6 containingUrl];
+    extension = [(SFExtensionWrapper *)self extension];
+    _plugIn = [extension _plugIn];
+    containingUrl = [_plugIn containingUrl];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = v4;
+    v7 = appCopy;
     v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v8)
     {
       v9 = v8;
-      v22 = v4;
+      v22 = appCopy;
       v10 = *v25;
       while (2)
       {
@@ -94,16 +94,16 @@
           v12 = *(*(&v24 + 1) + 8 * i);
           if (v12 != self)
           {
-            v13 = [*(*(&v24 + 1) + 8 * i) extension];
-            v14 = [v13 _plugIn];
-            v15 = [v14 containingUrl];
-            v16 = [v23 isEqual:v15];
+            extension2 = [*(*(&v24 + 1) + 8 * i) extension];
+            _plugIn2 = [extension2 _plugIn];
+            containingUrl2 = [_plugIn2 containingUrl];
+            v16 = [containingUrl isEqual:containingUrl2];
 
             if (v16)
             {
-              v17 = [(SFExtensionWrapper *)self displayName];
-              v18 = [(SFExtensionWrapper *)v12 displayName];
-              v19 = [v17 isEqualToString:v18];
+              displayName = [(SFExtensionWrapper *)self displayName];
+              displayName2 = [(SFExtensionWrapper *)v12 displayName];
+              v19 = [displayName isEqualToString:displayName2];
 
               if (v19)
               {
@@ -125,7 +125,7 @@
 
       v20 = 0;
 LABEL_15:
-      v4 = v22;
+      appCopy = v22;
     }
 
     else
@@ -144,16 +144,16 @@ LABEL_15:
 
 - (BOOL)isEnabledInAnyProfile
 {
-  v2 = [(SFExtensionWrapper *)self enabledProfiles];
-  v3 = [v2 count] != 0;
+  enabledProfiles = [(SFExtensionWrapper *)self enabledProfiles];
+  v3 = [enabledProfiles count] != 0;
 
   return v3;
 }
 
 - (BOOL)isEnabledInAnyNamedProfile
 {
-  v2 = [(SFExtensionWrapper *)self enabledNamedProfiles];
-  v3 = [v2 count] != 0;
+  enabledNamedProfiles = [(SFExtensionWrapper *)self enabledNamedProfiles];
+  v3 = [enabledNamedProfiles count] != 0;
 
   return v3;
 }
@@ -163,19 +163,19 @@ LABEL_15:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SFExtensionWrapper *)self extension];
-  v7 = [v3 stringWithFormat:@"<%@: %p extension = %@>", v5, self, v6];;
+  extension = [(SFExtensionWrapper *)self extension];
+  v7 = [v3 stringWithFormat:@"<%@: %p extension = %@>", v5, self, extension];;
 
   return v7;
 }
 
 - (void)_postNotificationsToUpdateExtensionState
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 postNotificationName:*MEMORY[0x1E69C9A58] object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69C9A58] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:*MEMORY[0x1E69C9A30] object:self];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:*MEMORY[0x1E69C9A30] object:self];
 }
 
 @end

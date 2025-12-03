@@ -1,56 +1,56 @@
 @interface CHSBaseDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isLinkedOnOrAfter:(unint64_t)a3;
-- (CHSBaseDescriptor)initWithCoder:(id)a3;
-- (CHSBaseDescriptor)initWithExtensionIdentity:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isLinkedOnOrAfter:(unint64_t)after;
+- (CHSBaseDescriptor)initWithCoder:(id)coder;
+- (CHSBaseDescriptor)initWithExtensionIdentity:(id)identity;
 - (NSString)effectiveContainerBundleIdentifier;
-- (id)_initWithDescriptor:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithDescriptor:(id)descriptor;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSBaseDescriptor
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_extensionIdentity];
-  v5 = [v3 appendString:self->_nativeContainerBundleIdentifier];
-  v6 = [v3 appendString:self->_displayName];
-  v7 = [v3 appendString:self->_widgetDescription];
-  v8 = [v3 appendObject:self->_localeToken];
-  v9 = [v3 appendObject:self->_eventMachServiceName];
-  v10 = [v3 appendInteger:self->_preferredBackgroundStyle];
-  v11 = [v3 appendBool:self->_supportsVibrantContent];
-  v12 = [v3 appendString:self->_sdkVersion];
-  v13 = [v3 appendUnsignedInteger:self->_platform];
-  v14 = [v3 appendBool:self->_version != 0];
-  v15 = [v3 appendBool:self->_hiddenBySensitiveUI];
-  v16 = [v3 appendBool:self->_promptsForUserConfiguration];
-  v17 = [v3 appendUnsignedInteger:self->_enablement];
-  v18 = [v3 appendObject:self->_requiredFeatureFlags];
-  v19 = [v3 appendInteger:self->_requestedDataProtection];
-  v20 = [v3 appendObject:self->_configurationBackgroundColor];
-  v21 = [v3 appendObject:self->_configurationAccentColor];
-  v22 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_extensionIdentity];
+  v5 = [builder appendString:self->_nativeContainerBundleIdentifier];
+  v6 = [builder appendString:self->_displayName];
+  v7 = [builder appendString:self->_widgetDescription];
+  v8 = [builder appendObject:self->_localeToken];
+  v9 = [builder appendObject:self->_eventMachServiceName];
+  v10 = [builder appendInteger:self->_preferredBackgroundStyle];
+  v11 = [builder appendBool:self->_supportsVibrantContent];
+  v12 = [builder appendString:self->_sdkVersion];
+  v13 = [builder appendUnsignedInteger:self->_platform];
+  v14 = [builder appendBool:self->_version != 0];
+  v15 = [builder appendBool:self->_hiddenBySensitiveUI];
+  v16 = [builder appendBool:self->_promptsForUserConfiguration];
+  v17 = [builder appendUnsignedInteger:self->_enablement];
+  v18 = [builder appendObject:self->_requiredFeatureFlags];
+  v19 = [builder appendInteger:self->_requestedDataProtection];
+  v20 = [builder appendObject:self->_configurationBackgroundColor];
+  v21 = [builder appendObject:self->_configurationAccentColor];
+  v22 = [builder hash];
 
   return v22;
 }
 
-- (CHSBaseDescriptor)initWithExtensionIdentity:(id)a3
+- (CHSBaseDescriptor)initWithExtensionIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v18.receiver = self;
   v18.super_class = CHSBaseDescriptor;
   v5 = [(CHSBaseDescriptor *)&v18 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identityCopy copy];
     extensionIdentity = v5->_extensionIdentity;
     v5->_extensionIdentity = v6;
 
@@ -95,50 +95,50 @@
   return v5;
 }
 
-- (id)_initWithDescriptor:(id)a3
+- (id)_initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(CHSBaseDescriptor *)self initWithExtensionIdentity:*(v4 + 1)];
+  descriptorCopy = descriptor;
+  v5 = [(CHSBaseDescriptor *)self initWithExtensionIdentity:*(descriptorCopy + 1)];
   if (v5)
   {
-    v6 = [*(v4 + 3) copy];
+    v6 = [*(descriptorCopy + 3) copy];
     displayName = v5->_displayName;
     v5->_displayName = v6;
 
-    v8 = [*(v4 + 4) copy];
+    v8 = [*(descriptorCopy + 4) copy];
     widgetDescription = v5->_widgetDescription;
     v5->_widgetDescription = v8;
 
-    v10 = [*(v4 + 6) copy];
+    v10 = [*(descriptorCopy + 6) copy];
     localeToken = v5->_localeToken;
     v5->_localeToken = v10;
 
-    v12 = [*(v4 + 5) copy];
+    v12 = [*(descriptorCopy + 5) copy];
     eventMachServiceName = v5->_eventMachServiceName;
     v5->_eventMachServiceName = v12;
 
-    v5->_preferredBackgroundStyle = *(v4 + 7);
-    v5->_supportsVibrantContent = *(v4 + 64);
-    objc_storeStrong(&v5->_sdkVersion, *(v4 + 10));
-    v5->_platform = *(v4 + 11);
-    v5->_version = *(v4 + 9);
-    v14 = [*(v4 + 2) copy];
+    v5->_preferredBackgroundStyle = *(descriptorCopy + 7);
+    v5->_supportsVibrantContent = *(descriptorCopy + 64);
+    objc_storeStrong(&v5->_sdkVersion, *(descriptorCopy + 10));
+    v5->_platform = *(descriptorCopy + 11);
+    v5->_version = *(descriptorCopy + 9);
+    v14 = [*(descriptorCopy + 2) copy];
     nativeContainerBundleIdentifier = v5->_nativeContainerBundleIdentifier;
     v5->_nativeContainerBundleIdentifier = v14;
 
-    v5->_hiddenBySensitiveUI = *(v4 + 96);
-    v5->_promptsForUserConfiguration = *(v4 + 97);
-    v5->_enablement = *(v4 + 13);
-    v5->_requestedDataProtection = *(v4 + 15);
-    objc_storeStrong(&v5->_configurationBackgroundColor, *(v4 + 16));
-    objc_storeStrong(&v5->_configurationAccentColor, *(v4 + 17));
-    objc_storeStrong(&v5->_requiredFeatureFlags, *(v4 + 14));
+    v5->_hiddenBySensitiveUI = *(descriptorCopy + 96);
+    v5->_promptsForUserConfiguration = *(descriptorCopy + 97);
+    v5->_enablement = *(descriptorCopy + 13);
+    v5->_requestedDataProtection = *(descriptorCopy + 15);
+    objc_storeStrong(&v5->_configurationBackgroundColor, *(descriptorCopy + 16));
+    objc_storeStrong(&v5->_configurationAccentColor, *(descriptorCopy + 17));
+    objc_storeStrong(&v5->_requiredFeatureFlags, *(descriptorCopy + 14));
   }
 
   return v5;
 }
 
-- (BOOL)isLinkedOnOrAfter:(unint64_t)a3
+- (BOOL)isLinkedOnOrAfter:(unint64_t)after
 {
   sdkVersion = self->_sdkVersion;
   if (sdkVersion && ![(NSString *)sdkVersion isEqualToString:@"Unknown"])
@@ -146,9 +146,9 @@
     platform = self->_platform;
     if (platform)
     {
-      v10 = _CHSSystemVersionStringToCompareAgainstFromSDKAndPlatform(a3, platform);
-      v11 = [MEMORY[0x1E6963608] defaultWorkspace];
-      v7 = [v11 isVersion:self->_sdkVersion greaterThanOrEqualToVersion:v10];
+      v10 = _CHSSystemVersionStringToCompareAgainstFromSDKAndPlatform(after, platform);
+      defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+      v7 = [defaultWorkspace isVersion:self->_sdkVersion greaterThanOrEqualToVersion:v10];
 
       return v7;
     }
@@ -182,17 +182,17 @@
 
   else
   {
-    v5 = [(CHSExtensionIdentity *)self->_extensionIdentity containerBundleIdentifier];
-    v4 = [v5 copy];
+    containerBundleIdentifier = [(CHSExtensionIdentity *)self->_extensionIdentity containerBundleIdentifier];
+    v4 = [containerBundleIdentifier copy];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v32 = 1;
   }
@@ -202,7 +202,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       supportsVibrantContent = self->_supportsVibrantContent;
       v7 = v5->_supportsVibrantContent;
       if (!BSEqualBools())
@@ -308,10 +308,10 @@ LABEL_23:
 
 - (id)succinctDescription
 {
-  v2 = [(CHSBaseDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHSBaseDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -323,24 +323,24 @@ LABEL_23:
   v7[3] = &unk_1E7453000;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 appendProem:self block:v7];
   v5 = v4;
 
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSBaseDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSBaseDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -348,8 +348,8 @@ LABEL_23:
   v9[3] = &unk_1E7453000;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -395,54 +395,54 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 136) withName:@"configurationAccentColor"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"CHSBaseDescriptor.m" lineNumber:336 description:@"Not implemented - for subclasses to provide."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSBaseDescriptor.m" lineNumber:336 description:@"Not implemented - for subclasses to provide."];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_extensionIdentity forKey:@"extensionIdentity"];
-  [v6 encodeObject:self->_nativeContainerBundleIdentifier forKey:@"nativeCBI"];
-  [v6 encodeObject:self->_displayName forKey:@"displayName"];
-  [v6 encodeObject:self->_widgetDescription forKey:@"widgetDescription"];
-  [v6 encodeObject:self->_localeToken forKey:@"localeToken"];
-  [v6 encodeObject:self->_eventMachServiceName forKey:@"eventMachServiceName"];
-  [v6 encodeInteger:self->_preferredBackgroundStyle forKey:@"backgroundStyle"];
-  [v6 encodeBool:self->_supportsVibrantContent forKey:@"supportsVibrantContent"];
-  [v6 encodeObject:self->_sdkVersion forKey:@"sdkVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_extensionIdentity forKey:@"extensionIdentity"];
+  [coderCopy encodeObject:self->_nativeContainerBundleIdentifier forKey:@"nativeCBI"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_widgetDescription forKey:@"widgetDescription"];
+  [coderCopy encodeObject:self->_localeToken forKey:@"localeToken"];
+  [coderCopy encodeObject:self->_eventMachServiceName forKey:@"eventMachServiceName"];
+  [coderCopy encodeInteger:self->_preferredBackgroundStyle forKey:@"backgroundStyle"];
+  [coderCopy encodeBool:self->_supportsVibrantContent forKey:@"supportsVibrantContent"];
+  [coderCopy encodeObject:self->_sdkVersion forKey:@"sdkVersion"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_platform];
-  [v6 encodeObject:v4 forKey:@"platform"];
+  [coderCopy encodeObject:v4 forKey:@"platform"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_version];
-  [v6 encodeObject:v5 forKey:@"version"];
+  [coderCopy encodeObject:v5 forKey:@"version"];
 
-  [v6 encodeBool:self->_hiddenBySensitiveUI forKey:@"hiddenBySensitiveUI"];
-  [v6 encodeBool:self->_promptsForUserConfiguration forKey:@"promptsForUserConfiguration"];
-  [v6 encodeInt32:LODWORD(self->_enablement) forKey:@"enablement"];
-  [v6 encodeObject:self->_requiredFeatureFlags forKey:@"requiredFeatureFlags"];
-  [v6 encodeInteger:self->_requestedDataProtection forKey:@"requestedDataProtection"];
-  [v6 encodeObject:self->_configurationBackgroundColor forKey:@"configurationBackgroundColor"];
-  [v6 encodeObject:self->_configurationAccentColor forKey:@"configurationAccentColor"];
+  [coderCopy encodeBool:self->_hiddenBySensitiveUI forKey:@"hiddenBySensitiveUI"];
+  [coderCopy encodeBool:self->_promptsForUserConfiguration forKey:@"promptsForUserConfiguration"];
+  [coderCopy encodeInt32:LODWORD(self->_enablement) forKey:@"enablement"];
+  [coderCopy encodeObject:self->_requiredFeatureFlags forKey:@"requiredFeatureFlags"];
+  [coderCopy encodeInteger:self->_requestedDataProtection forKey:@"requestedDataProtection"];
+  [coderCopy encodeObject:self->_configurationBackgroundColor forKey:@"configurationBackgroundColor"];
+  [coderCopy encodeObject:self->_configurationAccentColor forKey:@"configurationAccentColor"];
 }
 
-- (CHSBaseDescriptor)initWithCoder:(id)a3
+- (CHSBaseDescriptor)initWithCoder:(id)coder
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 containsValueForKey:@"extensionIdentity"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"extensionIdentity"])
   {
-    v59 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentity"];
+    v59 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionIdentity"];
   }
 
   else
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
     v7 = v6;
     v59 = 0;
     if (v5 && v6)
@@ -455,17 +455,17 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
 
   if (v59)
   {
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nativeCBI"];
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widgetDescription"];
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localeToken"];
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventMachServiceName"];
-    v10 = [v4 decodeBoolForKey:@"transparent"];
-    v11 = [v4 decodeIntegerForKey:@"backgroundStyle"];
-    v51 = [v4 decodeBoolForKey:@"supportsVibrantContent"];
-    if ([v4 containsValueForKey:@"promptsForUserConfiguration"])
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nativeCBI"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetDescription"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localeToken"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventMachServiceName"];
+    v10 = [coderCopy decodeBoolForKey:@"transparent"];
+    v11 = [coderCopy decodeIntegerForKey:@"backgroundStyle"];
+    v51 = [coderCopy decodeBoolForKey:@"supportsVibrantContent"];
+    if ([coderCopy containsValueForKey:@"promptsForUserConfiguration"])
     {
-      v50 = [v4 decodeBoolForKey:@"promptsForUserConfiguration"];
+      v50 = [coderCopy decodeBoolForKey:@"promptsForUserConfiguration"];
     }
 
     else
@@ -473,9 +473,9 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
       v50 = 0;
     }
 
-    if ([v4 containsValueForKey:@"sdkVersion"])
+    if ([coderCopy containsValueForKey:@"sdkVersion"])
     {
-      obj = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sdkVersion"];
+      obj = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sdkVersion"];
     }
 
     else
@@ -483,15 +483,15 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
       obj = @"Unknown";
     }
 
-    if ([v4 containsValueForKey:@"platform"])
+    if ([coderCopy containsValueForKey:@"platform"])
     {
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
-      v49 = [v17 unsignedIntegerValue];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
     }
 
     else
     {
-      v49 = 0;
+      unsignedIntegerValue = 0;
     }
 
     v18 = v10 & (v11 == 0);
@@ -505,13 +505,13 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
       v19 = v11;
     }
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-    v21 = [v20 unsignedIntegerValue];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    unsignedIntegerValue2 = [v20 unsignedIntegerValue];
 
-    v22 = [v4 decodeBoolForKey:@"hiddenBySensitiveUI"];
-    if ([v4 containsValueForKey:@"enablement"])
+    v22 = [coderCopy decodeBoolForKey:@"hiddenBySensitiveUI"];
+    if ([coderCopy containsValueForKey:@"enablement"])
     {
-      v23 = [v4 decodeInt32ForKey:@"enablement"];
+      v23 = [coderCopy decodeInt32ForKey:@"enablement"];
       if (v23 >= 3)
       {
         v24 = 0;
@@ -530,9 +530,9 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
       v25 = 0;
     }
 
-    if ([v4 containsValueForKey:@"requestedDataProtection"])
+    if ([coderCopy containsValueForKey:@"requestedDataProtection"])
     {
-      v26 = [v4 decodeIntegerForKey:@"requestedDataProtection"];
+      v26 = [coderCopy decodeIntegerForKey:@"requestedDataProtection"];
       if (v26 >= 5)
       {
         v27 = 2;
@@ -549,9 +549,9 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
       v27 = 2;
     }
 
-    if ([v4 containsValueForKey:@"configurationBackgroundColor"])
+    if ([coderCopy containsValueForKey:@"configurationBackgroundColor"])
     {
-      v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configurationBackgroundColor"];
+      v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configurationBackgroundColor"];
     }
 
     else
@@ -560,16 +560,16 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
     }
 
     v48 = v27;
-    if ([v4 containsValueForKey:@"configurationAccentColor"])
+    if ([coderCopy containsValueForKey:@"configurationAccentColor"])
     {
-      v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configurationAccentColor"];
-      v29 = v21;
+      v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configurationAccentColor"];
+      v29 = unsignedIntegerValue2;
       v30 = v19;
     }
 
     else
     {
-      v29 = v21;
+      v29 = unsignedIntegerValue2;
       v30 = v19;
       v28 = 0;
     }
@@ -577,7 +577,7 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
     v31 = MEMORY[0x1E695DFD8];
     v32 = objc_opt_class();
     v33 = [v31 setWithObjects:{v32, objc_opt_class(), 0}];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"requiredFeatureFlags"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"requiredFeatureFlags"];
 
     v35 = [(CHSBaseDescriptor *)self initWithExtensionIdentity:v59];
     if (v35)
@@ -601,7 +601,7 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
       v35->_preferredBackgroundStyle = v30;
       v35->_supportsVibrantContent = (v18 | v51) & 1;
       objc_storeStrong(&v35->_sdkVersion, obj);
-      v35->_platform = v49;
+      v35->_platform = unsignedIntegerValue;
       v35->_version = v29;
       v44 = [v58 copy];
       nativeContainerBundleIdentifier = v35->_nativeContainerBundleIdentifier;
@@ -618,7 +618,7 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
 
     self = v35;
 
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -629,13 +629,13 @@ id __59__CHSBaseDescriptor_descriptionBuilderWithMultilinePrefix___block_invoke(
     v61[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:&v60 count:1];
     v15 = [v12 errorWithDomain:@"com.apple.chronoservices.descriptor" code:1 userInfo:v14];
-    [v4 failWithError:v15];
+    [coderCopy failWithError:v15];
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
   v46 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy;
 }
 
 @end

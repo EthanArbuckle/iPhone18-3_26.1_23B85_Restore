@@ -1,5 +1,5 @@
 @interface PurchaseHistoryDatabaseStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (id)storeDescriptor;
 @end
 
@@ -15,11 +15,11 @@
   return v5;
 }
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
-  if (a3)
+  if (schema)
   {
-    return sub_100252C84(a3, 19002, &stru_1005246A0, 0);
+    return sub_100252C84(schema, 19002, &stru_1005246A0, 0);
   }
 
   else

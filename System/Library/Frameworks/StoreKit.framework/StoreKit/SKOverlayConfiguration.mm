@@ -1,20 +1,20 @@
 @interface SKOverlayConfiguration
-- (SKOverlayConfiguration)initWithBacking:(id)a3;
+- (SKOverlayConfiguration)initWithBacking:(id)backing;
 - (id)_init;
 @end
 
 @implementation SKOverlayConfiguration
 
-- (SKOverlayConfiguration)initWithBacking:(id)a3
+- (SKOverlayConfiguration)initWithBacking:(id)backing
 {
-  v5 = a3;
+  backingCopy = backing;
   v9.receiver = self;
   v9.super_class = SKOverlayConfiguration;
   v6 = [(SKOverlayConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__backing, a3);
+    objc_storeStrong(&v6->__backing, backing);
   }
 
   return v7;

@@ -1,10 +1,10 @@
 @interface MTLBufferDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLBufferDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setDeallocator:(id)a3;
+- (void)setDeallocator:(id)deallocator;
 @end
 
 @implementation MTLBufferDescriptor
@@ -43,7 +43,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = v4;
@@ -66,9 +66,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v23) = 1;
   }
@@ -85,37 +85,37 @@
     }
 
     length = self->_length;
-    if (length != [a3 length])
+    if (length != [equal length])
     {
       goto LABEL_17;
     }
 
     alignment = self->_alignment;
-    if (alignment != [a3 alignment])
+    if (alignment != [equal alignment])
     {
       goto LABEL_17;
     }
 
     resourceOptions = self->_resourceOptions;
-    if (resourceOptions != [a3 resourceOptions])
+    if (resourceOptions != [equal resourceOptions])
     {
       goto LABEL_17;
     }
 
     contents = self->_contents;
-    if (contents != [a3 contents])
+    if (contents != [equal contents])
     {
       goto LABEL_17;
     }
 
     noCopy = self->_noCopy;
-    if (noCopy == [a3 noCopy] && (deallocator = self->_deallocator, deallocator == objc_msgSend(a3, "deallocator")) && (pinnedGPUAddress = self->_pinnedGPUAddress, pinnedGPUAddress == objc_msgSend(a3, "pinnedGPUAddress")) && (pointerTag = self->_pointerTag, pointerTag == objc_msgSend(a3, "pointerTag")) && (parentGPUAddress = self->_parentGPUAddress, parentGPUAddress == objc_msgSend(a3, "parentGPUAddress")) && (parentGPUSize = self->_parentGPUSize, parentGPUSize == objc_msgSend(a3, "parentGPUSize")) && (v21 = self->_addressRanges == 0, v21 != (objc_msgSend(a3, "addressRanges") != 0)))
+    if (noCopy == [equal noCopy] && (deallocator = self->_deallocator, deallocator == objc_msgSend(equal, "deallocator")) && (pinnedGPUAddress = self->_pinnedGPUAddress, pinnedGPUAddress == objc_msgSend(equal, "pinnedGPUAddress")) && (pointerTag = self->_pointerTag, pointerTag == objc_msgSend(equal, "pointerTag")) && (parentGPUAddress = self->_parentGPUAddress, parentGPUAddress == objc_msgSend(equal, "parentGPUAddress")) && (parentGPUSize = self->_parentGPUSize, parentGPUSize == objc_msgSend(equal, "parentGPUSize")) && (v21 = self->_addressRanges == 0, v21 != (objc_msgSend(equal, "addressRanges") != 0)))
     {
       addressRanges = self->_addressRanges;
-      if (!addressRanges || (v23 = -[MTLResourceAddressRangeArray isEqual:](addressRanges, "isEqual:", [a3 addressRanges])))
+      if (!addressRanges || (v23 = -[MTLResourceAddressRangeArray isEqual:](addressRanges, "isEqual:", [equal addressRanges])))
       {
         iosurface = self->_iosurface;
-        LOBYTE(v23) = iosurface == [a3 iosurface];
+        LOBYTE(v23) = iosurface == [equal iosurface];
       }
     }
 
@@ -134,30 +134,30 @@ LABEL_17:
   bzero(v5, 0x58uLL);
   v5[0] = [(MTLBufferDescriptor *)self length];
   v5[1] = [(MTLBufferDescriptor *)self resourceOptions];
-  v6 = [(MTLBufferDescriptor *)self noCopy];
-  v7 = [(MTLBufferDescriptor *)self contents];
-  v8 = [(MTLBufferDescriptor *)self deallocator];
-  v9 = [(MTLBufferDescriptor *)self alignment];
-  v11 = [(MTLBufferDescriptor *)self parentGPUAddress];
-  v12 = [(MTLBufferDescriptor *)self parentGPUSize];
-  v10 = [(MTLBufferDescriptor *)self pinnedGPUAddress];
-  v13 = [(MTLBufferDescriptor *)self pointerTag];
-  v14 = [(MTLBufferDescriptor *)self iosurface];
+  noCopy = [(MTLBufferDescriptor *)self noCopy];
+  contents = [(MTLBufferDescriptor *)self contents];
+  deallocator = [(MTLBufferDescriptor *)self deallocator];
+  alignment = [(MTLBufferDescriptor *)self alignment];
+  parentGPUAddress = [(MTLBufferDescriptor *)self parentGPUAddress];
+  parentGPUSize = [(MTLBufferDescriptor *)self parentGPUSize];
+  pinnedGPUAddress = [(MTLBufferDescriptor *)self pinnedGPUAddress];
+  pointerTag = [(MTLBufferDescriptor *)self pointerTag];
+  iosurface = [(MTLBufferDescriptor *)self iosurface];
   v3 = _MTLHashState(v5, 0x58uLL);
   return [(MTLResourceAddressRangeArray *)self->_addressRanges hash]+ v3;
 }
 
-- (void)setDeallocator:(id)a3
+- (void)setDeallocator:(id)deallocator
 {
   deallocator = self->_deallocator;
-  if (deallocator != a3)
+  if (deallocator != deallocator)
   {
     if (deallocator)
     {
       _Block_release(deallocator);
     }
 
-    self->_deallocator = _Block_copy(a3);
+    self->_deallocator = _Block_copy(deallocator);
   }
 }
 

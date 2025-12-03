@@ -20,9 +20,9 @@
     policyTrafficClassifiersDict = 0;
   }
 
-  v6 = [v3 initWithFormat:@"Active Link Preferences: %@, Policy Traffic Classifiers: %@", v4, policyTrafficClassifiersDict];
+  policyTrafficClassifiersDict = [v3 initWithFormat:@"Active Link Preferences: %@, Policy Traffic Classifiers: %@", v4, policyTrafficClassifiersDict];
 
-  return v6;
+  return policyTrafficClassifiersDict;
 }
 
 - (void)dealloc
@@ -50,7 +50,7 @@
     v7 = v6;
     v8 = _NRCopyLogObjectForNRUUID();
     v11 = 64;
-    v12 = self;
+    selfCopy = self;
     v9 = "";
     v10 = "[NRDevicePreferencesManager dealloc]";
     _NRLogWithArgs();

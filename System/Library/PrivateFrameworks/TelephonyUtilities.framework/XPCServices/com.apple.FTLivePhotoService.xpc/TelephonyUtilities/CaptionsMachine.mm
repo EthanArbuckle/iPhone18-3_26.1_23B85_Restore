@@ -1,71 +1,71 @@
 @interface CaptionsMachine
 - (NSString)description;
-- (void)captionsClient:(id)a3 didDetectGibberish:(BOOL)a4;
-- (void)captionsClient:(id)a3 didDisableCaptions:(BOOL)a4 error:(id)a5;
-- (void)captionsClient:(id)a3 didEnableCaptions:(BOOL)a4 error:(id)a5;
-- (void)captionsClient:(id)a3 didStartCaptioningWithReason:(unsigned __int8)a4;
-- (void)captionsClient:(id)a3 didStopCaptioningWithReason:(unsigned __int8)a4;
-- (void)captionsClient:(id)a3 didUpdateCaptions:(id)a4 source:(int)a5;
-- (void)captionsServerDidDie:(id)a3;
+- (void)captionsClient:(id)client didDetectGibberish:(BOOL)gibberish;
+- (void)captionsClient:(id)client didDisableCaptions:(BOOL)captions error:(id)error;
+- (void)captionsClient:(id)client didEnableCaptions:(BOOL)captions error:(id)error;
+- (void)captionsClient:(id)client didStartCaptioningWithReason:(unsigned __int8)reason;
+- (void)captionsClient:(id)client didStopCaptioningWithReason:(unsigned __int8)reason;
+- (void)captionsClient:(id)client didUpdateCaptions:(id)captions source:(int)source;
+- (void)captionsServerDidDie:(id)die;
 @end
 
 @implementation CaptionsMachine
 
-- (void)captionsClient:(id)a3 didEnableCaptions:(BOOL)a4 error:(id)a5
+- (void)captionsClient:(id)client didEnableCaptions:(BOOL)captions error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a5;
+  clientCopy = client;
+  selfCopy = self;
+  errorCopy = error;
   sub_100010B6C();
 }
 
-- (void)captionsClient:(id)a3 didDisableCaptions:(BOOL)a4 error:(id)a5
+- (void)captionsClient:(id)client didDisableCaptions:(BOOL)captions error:(id)error
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a5;
+  clientCopy = client;
+  selfCopy = self;
+  errorCopy = error;
   sub_100010B6C();
 }
 
-- (void)captionsClient:(id)a3 didStartCaptioningWithReason:(unsigned __int8)a4
+- (void)captionsClient:(id)client didStartCaptioningWithReason:(unsigned __int8)reason
 {
-  v5 = a3;
-  v6 = self;
+  clientCopy = client;
+  selfCopy = self;
   sub_100011160();
 }
 
-- (void)captionsClient:(id)a3 didStopCaptioningWithReason:(unsigned __int8)a4
+- (void)captionsClient:(id)client didStopCaptioningWithReason:(unsigned __int8)reason
 {
-  v5 = a3;
-  v6 = self;
+  clientCopy = client;
+  selfCopy = self;
   sub_100011160();
 }
 
-- (void)captionsClient:(id)a3 didDetectGibberish:(BOOL)a4
+- (void)captionsClient:(id)client didDetectGibberish:(BOOL)gibberish
 {
-  v5 = a3;
-  v6 = self;
+  clientCopy = client;
+  selfCopy = self;
   sub_100011614();
 }
 
-- (void)captionsClient:(id)a3 didUpdateCaptions:(id)a4 source:(int)a5
+- (void)captionsClient:(id)client didUpdateCaptions:(id)captions source:(int)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  clientCopy = client;
+  captionsCopy = captions;
+  selfCopy = self;
   sub_100011A24();
 }
 
-- (void)captionsServerDidDie:(id)a3
+- (void)captionsServerDidDie:(id)die
 {
-  v4 = a3;
-  v5 = self;
+  dieCopy = die;
+  selfCopy = self;
   sub_100012320();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100012680();
 
   v3 = sub_10003985C();

@@ -1,46 +1,46 @@
 @interface PLPublishingAgent
 + (BOOL)canUploadHDVideoOverCellular;
-+ (id)publishingAgentForBundleNamed:(id)a3 toPublishMedia:(id)a4;
++ (id)publishingAgentForBundleNamed:(id)named toPublishMedia:(id)media;
 - (BOOL)allowsCellularAccessForRequests;
 - (BOOL)isVideoMedia;
-- (PLPublishingAgent)initWithMedia:(id)a3;
+- (PLPublishingAgent)initWithMedia:(id)media;
 - (id)tellAFriendSubject;
 - (int)_remakerModeForSelectedOption;
-- (void)_agentIsReadyToPublish:(id)a3;
-- (void)_cancelRemaking:(id)a3;
-- (void)_networkReachabilityDidChange:(id)a3;
-- (void)_remakerDidFinish:(id)a3;
+- (void)_agentIsReadyToPublish:(id)publish;
+- (void)_cancelRemaking:(id)remaking;
+- (void)_networkReachabilityDidChange:(id)change;
+- (void)_remakerDidFinish:(id)finish;
 - (void)_setApproximateVideoUploadSizes;
 - (void)_setUpPublishingParams;
 - (void)_startNetworkObservation;
 - (void)_stopNetworkObservation;
-- (void)_transcodeVideo:(id)a3;
+- (void)_transcodeVideo:(id)video;
 - (void)_updateStatisticsFromSnapshots;
 - (void)cancelButtonClicked;
 - (void)dealloc;
 - (void)dismiss;
 - (void)doneButtonClicked;
-- (void)presentModalSheetInViewController:(id)a3;
-- (void)setMediaData:(id)a3;
-- (void)setMediaPath:(id)a3;
-- (void)setPublishing:(BOOL)a3;
-- (void)setRemakerMode:(int)a3;
-- (void)setUserInfo:(id)a3;
-- (void)showAlertWithError:(id)a3;
+- (void)presentModalSheetInViewController:(id)controller;
+- (void)setMediaData:(id)data;
+- (void)setMediaPath:(id)path;
+- (void)setPublishing:(BOOL)publishing;
+- (void)setRemakerMode:(int)mode;
+- (void)setUserInfo:(id)info;
+- (void)showAlertWithError:(id)error;
 - (void)snapshot;
-- (void)videoRemakerDidBeginRemaking:(id)a3;
-- (void)videoRemakerDidEndRemaking:(id)a3 temporaryPath:(id)a4;
+- (void)videoRemakerDidBeginRemaking:(id)remaking;
+- (void)videoRemakerDidEndRemaking:(id)remaking temporaryPath:(id)path;
 @end
 
 @implementation PLPublishingAgent
 
-- (void)showAlertWithError:(id)a3
+- (void)showAlertWithError:(id)error
 {
-  v5 = [(PLPublishingAgent *)self mediaTitle];
-  v6 = v5;
-  if (a3)
+  mediaTitle = [(PLPublishingAgent *)self mediaTitle];
+  v6 = mediaTitle;
+  if (error)
   {
-    if (v5)
+    if (mediaTitle)
     {
       PLLocalizedFrameworkString();
       v18 = v6;
@@ -62,7 +62,7 @@
     goto LABEL_13;
   }
 
-  if (v5)
+  if (mediaTitle)
   {
     PLLocalizedFrameworkString();
     v8 = PFStringWithValidatedFormat();
@@ -76,9 +76,9 @@
 
   v15 = v8;
   PLLocalizedFrameworkString();
-  v19 = [(PLPublishingAgent *)self serviceName];
+  serviceName = [(PLPublishingAgent *)self serviceName];
   v16 = PFStringWithValidatedFormat();
-  v9 = [MEMORY[0x277D75110] alertControllerWithTitle:v15 message:0 preferredStyle:{1, v19}];
+  v9 = [MEMORY[0x277D75110] alertControllerWithTitle:v15 message:0 preferredStyle:{1, serviceName}];
   [v9 addAction:{objc_msgSend(MEMORY[0x277D750F8], "actionWithTitle:style:handler:", PLLocalizedFrameworkString(), 1, 0)}];
   if ([(PLPublishingAgent *)self allowsViewingOnHost])
   {
@@ -152,28 +152,28 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   return self->_remakerMode;
 }
 
-- (void)videoRemakerDidEndRemaking:(id)a3 temporaryPath:(id)a4
+- (void)videoRemakerDidEndRemaking:(id)remaking temporaryPath:(id)path
 {
-  v6 = self;
+  selfCopy = self;
   *(self + 208) &= ~2u;
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [self->_delegate publishingAgentDidEndRemaking:self didSucceed:a4 != 0];
+    [self->_delegate publishingAgentDidEndRemaking:self didSucceed:path != 0];
   }
 
-  [(PLPublishingAgent *)self performSelector:sel__remakerDidFinish_ withObject:a4 afterDelay:0.01];
+  [(PLPublishingAgent *)self performSelector:sel__remakerDidFinish_ withObject:path afterDelay:0.01];
 }
 
-- (void)_remakerDidFinish:(id)a3
+- (void)_remakerDidFinish:(id)finish
 {
   if ((*(self + 208) & 1) == 0)
   {
-    if ([a3 length])
+    if ([finish length])
     {
       completionSelector = self->_completionSelector;
       if (completionSelector)
       {
-        [(PLPublishingAgent *)self performSelector:completionSelector withObject:a3];
+        [(PLPublishingAgent *)self performSelector:completionSelector withObject:finish];
       }
     }
 
@@ -191,9 +191,9 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   self->_remaker = 0;
 }
 
-- (void)videoRemakerDidBeginRemaking:(id)a3
+- (void)videoRemakerDidBeginRemaking:(id)remaking
 {
-  v4 = self;
+  selfCopy = self;
   *(self + 208) |= 2u;
   self->_progressMultiplier = 0.5;
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
@@ -204,11 +204,11 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)_transcodeVideo:(id)a3
+- (void)_transcodeVideo:(id)video
 {
   [(PLVideoRemaker *)self->_remaker setDelegate:0];
 
-  v5 = [[PLVideoRemaker alloc] initWithPublishingMedia:a3];
+  v5 = [[PLVideoRemaker alloc] initWithPublishingMedia:video];
   self->_remaker = v5;
   [(PLVideoRemaker *)v5 setDelegate:self];
   [(PLVideoRemaker *)self->_remaker setMode:self->_remakerMode];
@@ -223,7 +223,7 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   [(PLVideoRemaker *)remaker remake];
 }
 
-- (void)_cancelRemaking:(id)a3
+- (void)_cancelRemaking:(id)remaking
 {
   remaker = self->_remaker;
   if (remaker)
@@ -306,10 +306,10 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
 
 - (id)tellAFriendSubject
 {
-  v2 = [(PLPublishingAgent *)self mediaTitle];
-  if ([v2 length])
+  mediaTitle = [(PLPublishingAgent *)self mediaTitle];
+  if ([mediaTitle length])
   {
-    return v2;
+    return mediaTitle;
   }
 
   else
@@ -320,9 +320,9 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
 
 - (BOOL)isVideoMedia
 {
-  v2 = [(PLPublishingAgent *)self userInfo];
+  userInfo = [(PLPublishingAgent *)self userInfo];
 
-  return [v2 isVideo];
+  return [userInfo isVideo];
 }
 
 - (void)dismiss
@@ -333,25 +333,25 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   [v3 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentModalSheetInViewController:(id)a3
+- (void)presentModalSheetInViewController:(id)controller
 {
-  v5 = [(PLPublishingAgent *)self navigationController];
-  if (v5)
+  navigationController = [(PLPublishingAgent *)self navigationController];
+  if (navigationController)
   {
-    v6 = v5;
+    v6 = navigationController;
     [self->_delegate publishingAgentWillBeDisplayed:self];
     if (([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [v6 setModalPresentationStyle:2];
     }
 
-    [a3 presentViewController:v6 animated:1 completion:0];
+    [controller presentViewController:v6 animated:1 completion:0];
   }
 }
 
-- (void)_agentIsReadyToPublish:(id)a3
+- (void)_agentIsReadyToPublish:(id)publish
 {
-  if (a3)
+  if (publish)
   {
     [(PLPublishingAgent *)self setMediaPath:?];
     [(PLPublishingAgent *)self setDeleteMediaFileAfterPublishing:1];
@@ -370,24 +370,24 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   {
     self->_completionSelector = sel__agentIsReadyToPublish_;
     v5 = sel__transcodeVideo_;
-    v6 = [(PLPublishingAgent *)self userInfo];
+    userInfo = [(PLPublishingAgent *)self userInfo];
   }
 
   else
   {
-    v6 = 0;
+    userInfo = 0;
     v5 = sel_publish;
   }
 
   v7 = v4;
   v8 = v7;
 
-  [(PLPublishingAgent *)self performSelector:v5 withObject:v6 afterDelay:v8];
+  [(PLPublishingAgent *)self performSelector:v5 withObject:userInfo afterDelay:v8];
 }
 
 - (void)cancelButtonClicked
 {
-  v3 = self;
+  selfCopy = self;
   delegate = self->_delegate;
 
   [delegate publishingAgentCancelButtonClicked:self];
@@ -412,20 +412,20 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   [(PLPublishingAgent *)self setApproximateHDUploadSize:v5];
 }
 
-- (void)setRemakerMode:(int)a3
+- (void)setRemakerMode:(int)mode
 {
   if (!self->_remakerMode)
   {
-    self->_remakerMode = a3;
+    self->_remakerMode = mode;
     [(PLPublishingAgent *)self _setApproximateVideoUploadSizes];
   }
 
-  self->_remakerMode = a3;
+  self->_remakerMode = mode;
 }
 
-- (void)setPublishing:(BOOL)a3
+- (void)setPublishing:(BOOL)publishing
 {
-  if (a3)
+  if (publishing)
   {
     v3 = 4;
   }
@@ -438,52 +438,52 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   *(self + 208) = *(self + 208) & 0xFB | v3;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   userInfo = self->_userInfo;
-  if (userInfo != a3)
+  if (userInfo != info)
   {
 
-    self->_userInfo = a3;
+    self->_userInfo = info;
   }
 }
 
-- (void)setMediaData:(id)a3
+- (void)setMediaData:(id)data
 {
   mediaData = self->_mediaData;
-  if (mediaData != a3)
+  if (mediaData != data)
   {
 
-    self->_mediaData = a3;
+    self->_mediaData = data;
   }
 }
 
-- (void)setMediaPath:(id)a3
+- (void)setMediaPath:(id)path
 {
   mediaPath = self->_mediaPath;
-  if (mediaPath != a3)
+  if (mediaPath != path)
   {
 
-    self->_mediaPath = a3;
+    self->_mediaPath = path;
   }
 }
 
 - (void)_setUpPublishingParams
 {
-  v3 = [(PLPublishingAgent *)self userInfo];
-  if ([v3 isVideo])
+  userInfo = [(PLPublishingAgent *)self userInfo];
+  if ([userInfo isVideo])
   {
-    v4 = [v3 pathForVideoFile];
-    v5 = [v3 isHDVideo];
-    [(PLPublishingAgent *)self setMediaPath:v4];
+    pathForVideoFile = [userInfo pathForVideoFile];
+    isHDVideo = [userInfo isHDVideo];
+    [(PLPublishingAgent *)self setMediaPath:pathForVideoFile];
     [(PLPublishingAgent *)self setDeleteMediaFileAfterPublishing:0];
-    [(PLPublishingAgent *)self setMediaIsHDVideo:v5];
-    if (v5)
+    [(PLPublishingAgent *)self setMediaIsHDVideo:isHDVideo];
+    if (isHDVideo)
     {
       v6 = +[PLPublishingAgent canUploadHDVideoOverCellular];
       if (v6)
       {
-        v7 = 1;
+        isOnWifi = 1;
       }
 
       else
@@ -500,10 +500,10 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
           v9 = 0;
         }
 
-        v7 = [v9 isOnWifi];
+        isOnWifi = [v9 isOnWifi];
       }
 
-      [(PLPublishingAgent *)self setEnableHDUpload:v7];
+      [(PLPublishingAgent *)self setEnableHDUpload:isOnWifi];
 
       [(PLPublishingAgent *)self setAllowsHDOver3GUpload:v6];
     }
@@ -521,7 +521,7 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   [(PLPublishingAgent *)&v3 dealloc];
 }
 
-- (PLPublishingAgent)initWithMedia:(id)a3
+- (PLPublishingAgent)initWithMedia:(id)media
 {
   v8.receiver = self;
   v8.super_class = PLPublishingAgent;
@@ -529,11 +529,11 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   v5 = v4;
   if (v4)
   {
-    [(PLPublishingAgent *)v4 setUserInfo:a3];
+    [(PLPublishingAgent *)v4 setUserInfo:media];
     [(PLPublishingAgent *)v5 _startNetworkObservation];
     [(PLPublishingAgent *)v5 _setUpPublishingParams];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v5 selector:sel__cancelRemaking_ name:*MEMORY[0x277D3ADB8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__cancelRemaking_ name:*MEMORY[0x277D3ADB8] object:0];
     v5->_progressMultiplier = 1.0;
     v5->_remakerMode = 0;
   }
@@ -556,10 +556,10 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   }
 
   [v4 disableNetworkObservation];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277D3ADF0];
 
-  [v5 removeObserver:self name:v6 object:0];
+  [defaultCenter removeObserver:self name:v6 object:0];
 }
 
 - (void)_startNetworkObservation
@@ -577,20 +577,20 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   }
 
   [v4 enableNetworkObservation];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277D3ADF0];
 
-  [v5 addObserver:self selector:sel__networkReachabilityDidChange_ name:v6 object:0];
+  [defaultCenter addObserver:self selector:sel__networkReachabilityDidChange_ name:v6 object:0];
 }
 
-- (void)_networkReachabilityDidChange:(id)a3
+- (void)_networkReachabilityDidChange:(id)change
 {
-  v3 = a3;
-  v5 = [a3 userInfo];
-  v6 = [objc_msgSend(v5 objectForKey:{*MEMORY[0x277D3AE00]), "BOOLValue"}];
-  v7 = [v3 userInfo];
-  LODWORD(v3) = [objc_msgSend(v7 objectForKey:{*MEMORY[0x277D3ADF8]), "BOOLValue"}];
-  v8 = ([(PLPublishingAgent *)self allowsHDOver3GUpload]| v3 & v6) & 1;
+  changeCopy = change;
+  userInfo = [change userInfo];
+  v6 = [objc_msgSend(userInfo objectForKey:{*MEMORY[0x277D3AE00]), "BOOLValue"}];
+  userInfo2 = [changeCopy userInfo];
+  LODWORD(changeCopy) = [objc_msgSend(userInfo2 objectForKey:{*MEMORY[0x277D3ADF8]), "BOOLValue"}];
+  v8 = ([(PLPublishingAgent *)self allowsHDOver3GUpload]| changeCopy & v6) & 1;
 
   [(PLPublishingAgent *)self setEnableHDUpload:v8];
 }
@@ -626,7 +626,7 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   }
 
   _Block_object_dispose(&v15, 8);
-  v3 = [v2 sharedConnection];
+  sharedConnection = [v2 sharedConnection];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -649,20 +649,20 @@ uint64_t __40__PLPublishingAgent_showAlertWithError___block_invoke_2(uint64_t a1
   _Block_object_dispose(&v10, 8);
   if (v4)
   {
-    return [v3 effectiveBoolValueForSetting:*v4] == 1;
+    return [sharedConnection effectiveBoolValueForSetting:*v4] == 1;
   }
 
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMCFeatureCellularHDUploadsAllowed(void)"];
-  result = [v8 handleFailureInFunction:v9 file:@"PLPublishingAgent.m" lineNumber:41 description:{@"%s", dlerror(), v10}];
+  result = [currentHandler handleFailureInFunction:v9 file:@"PLPublishingAgent.m" lineNumber:41 description:{@"%s", dlerror(), v10}];
   __break(1u);
   return result;
 }
 
-+ (id)publishingAgentForBundleNamed:(id)a3 toPublishMedia:(id)a4
++ (id)publishingAgentForBundleNamed:(id)named toPublishMedia:(id)media
 {
-  v5 = [@"/System/Library/PublishingBundles/" stringByAppendingPathComponent:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@.bundle", a3)}];
-  v6 = [objc_alloc(objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] bundleWithPath:{v5), "principalClass")), "initWithMedia:", a4}];
+  v5 = [@"/System/Library/PublishingBundles/" stringByAppendingPathComponent:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@.bundle", named)}];
+  v6 = [objc_alloc(objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] bundleWithPath:{v5), "principalClass")), "initWithMedia:", media}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

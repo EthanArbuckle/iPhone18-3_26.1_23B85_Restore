@@ -1,19 +1,19 @@
 @interface ICQUISwiftHelperFunctions
-+ (id)appIconWithBundleID:(id)a3 drawBorder:(BOOL)a4;
-+ (id)platformColorFromString:(id)a3;
-+ (id)scaledImageURL:(id)a3;
++ (id)appIconWithBundleID:(id)d drawBorder:(BOOL)border;
++ (id)platformColorFromString:(id)string;
++ (id)scaledImageURL:(id)l;
 - (_TtC13iCloudQuotaUI25ICQUISwiftHelperFunctions)init;
 @end
 
 @implementation ICQUISwiftHelperFunctions
 
-+ (id)scaledImageURL:(id)a3
++ (id)scaledImageURL:(id)l
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2809FD700);
   MEMORY[0x28223BE20](v4 - 8);
   v6 = &v14 - v5;
-  v7 = a3;
-  sub_275761980(v7, v6);
+  lCopy = l;
+  sub_275761980(lCopy, v6);
 
   v8 = sub_275795CB0();
   v9 = *(v8 - 8);
@@ -29,15 +29,15 @@
   return v11;
 }
 
-+ (id)appIconWithBundleID:(id)a3 drawBorder:(BOOL)a4
++ (id)appIconWithBundleID:(id)d drawBorder:(BOOL)border
 {
   v5 = sub_275797F50();
-  v7 = sub_275762410(v5, v6, a4);
+  v7 = sub_275762410(v5, v6, border);
 
   return v7;
 }
 
-+ (id)platformColorFromString:(id)a3
++ (id)platformColorFromString:(id)string
 {
   sub_275797F50();
   v3 = sub_275762780();

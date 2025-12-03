@@ -1,23 +1,23 @@
 @interface TSPTemporaryDataStorage
 - (BOOL)isLengthPrecise;
-- (BOOL)linkOrCopyToURL:(id)a3 encryptionInfo:(id)a4 canLink:(BOOL)a5;
+- (BOOL)linkOrCopyToURL:(id)l encryptionInfo:(id)info canLink:(BOOL)link;
 - (TSPTemporaryDataStorage)init;
-- (TSPTemporaryDataStorage)initWithTemporaryDataStorageURL:(id)a3 decryptionInfo:(id)a4 isMissingOriginalData:(BOOL)a5 isMissingData:(BOOL)a6 isUnmaterializedDueToPartiallyDownloadedDocument:(BOOL)a7;
-- (id)writeData:(id)a3 toPackageWriter:(id)a4 infoMessage:(void *)a5 preferredFilename:(id)a6 shouldRemoveData:(BOOL)a7 error:(id *)a8;
+- (TSPTemporaryDataStorage)initWithTemporaryDataStorageURL:(id)l decryptionInfo:(id)info isMissingOriginalData:(BOOL)data isMissingData:(BOOL)missingData isUnmaterializedDueToPartiallyDownloadedDocument:(BOOL)document;
+- (id)writeData:(id)data toPackageWriter:(id)writer infoMessage:(void *)message preferredFilename:(id)filename shouldRemoveData:(BOOL)removeData error:(id *)error;
 - (unint64_t)length;
 - (unint64_t)materializedLength;
 - (void)dealloc;
-- (void)performIOChannelReadWithAccessor:(id)a3;
-- (void)performReadWithAccessor:(id)a3;
+- (void)performIOChannelReadWithAccessor:(id)accessor;
+- (void)performReadWithAccessor:(id)accessor;
 @end
 
 @implementation TSPTemporaryDataStorage
 
-- (TSPTemporaryDataStorage)initWithTemporaryDataStorageURL:(id)a3 decryptionInfo:(id)a4 isMissingOriginalData:(BOOL)a5 isMissingData:(BOOL)a6 isUnmaterializedDueToPartiallyDownloadedDocument:(BOOL)a7
+- (TSPTemporaryDataStorage)initWithTemporaryDataStorageURL:(id)l decryptionInfo:(id)info isMissingOriginalData:(BOOL)data isMissingData:(BOOL)missingData isUnmaterializedDueToPartiallyDownloadedDocument:(BOOL)document
 {
-  v13 = a3;
-  v46 = a4;
-  if ((objc_msgSend_isFileURL(v13, v14, v15) & 1) == 0)
+  lCopy = l;
+  infoCopy = info;
+  if ((objc_msgSend_isFileURL(lCopy, v14, v15) & 1) == 0)
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "[TSPTemporaryDataStorage initWithTemporaryDataStorageURL:decryptionInfo:isMissingOriginalData:isMissingData:isUnmaterializedDueToPartiallyDownloadedDocument:]");
@@ -33,16 +33,16 @@
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_temporaryDataStorageURL, a3);
-    objc_storeStrong(&v25->_decryptionInfo, a4);
+    objc_storeStrong(&v24->_temporaryDataStorageURL, l);
+    objc_storeStrong(&v25->_decryptionInfo, info);
     v27 = 0;
-    v25->_isMissingOriginalData = a5;
-    v25->_isMissingData = a6;
-    v25->_isUnmaterializedDueToPartiallyDownloadedDocument = a7;
-    if (!a6 && !a7)
+    v25->_isMissingOriginalData = data;
+    v25->_isMissingData = missingData;
+    v25->_isUnmaterializedDueToPartiallyDownloadedDocument = document;
+    if (!missingData && !document)
     {
       v47 = 0;
-      v28 = objc_msgSend_checkResourceIsReachableAndReturnError_(v13, v26, &v47);
+      v28 = objc_msgSend_checkResourceIsReachableAndReturnError_(lCopy, v26, &v47);
       v27 = v47;
       if ((v28 & 1) == 0)
       {
@@ -151,10 +151,10 @@
   return objc_msgSend_length(self, v4, v5);
 }
 
-- (void)performReadWithAccessor:(id)a3
+- (void)performReadWithAccessor:(id)accessor
 {
-  v4 = a3;
-  v14 = v4;
+  accessorCopy = accessor;
+  v14 = accessorCopy;
   if (self->_isMissingData)
   {
     temporaryDataStorageURL = 0;
@@ -169,7 +169,7 @@
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
     temporaryDataStorageURL = 0;
-    v4 = v14;
+    accessorCopy = v14;
   }
 
   else
@@ -177,36 +177,36 @@
     temporaryDataStorageURL = self->_temporaryDataStorageURL;
   }
 
-  (*(v4 + 2))(v4, temporaryDataStorageURL);
+  (*(accessorCopy + 2))(accessorCopy, temporaryDataStorageURL);
 }
 
-- (void)performIOChannelReadWithAccessor:(id)a3
+- (void)performIOChannelReadWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276A19300;
   v7[3] = &unk_27A6E45A0;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = accessorCopy;
+  v5 = accessorCopy;
   objc_msgSend_performReadWithAccessor_(self, v6, v7);
 }
 
-- (id)writeData:(id)a3 toPackageWriter:(id)a4 infoMessage:(void *)a5 preferredFilename:(id)a6 shouldRemoveData:(BOOL)a7 error:(id *)a8
+- (id)writeData:(id)data toPackageWriter:(id)writer infoMessage:(void *)message preferredFilename:(id)filename shouldRemoveData:(BOOL)removeData error:(id *)error
 {
-  v50 = a7;
-  v51 = a3;
-  v12 = a4;
-  v14 = a6;
-  v49 = v14;
-  if (self->_isMissingData || self->_isUnmaterializedDueToPartiallyDownloadedDocument || v50)
+  removeDataCopy = removeData;
+  dataCopy = data;
+  writerCopy = writer;
+  filenameCopy = filename;
+  v49 = filenameCopy;
+  if (self->_isMissingData || self->_isUnmaterializedDueToPartiallyDownloadedDocument || removeDataCopy)
   {
-    v15 = objc_msgSend_filenameForData_preferredFilename_(v12, v13, v51, v14);
-    v18 = objc_msgSend_encryptionKey(v12, v16, v17);
+    v15 = objc_msgSend_filenameForData_preferredFilename_(writerCopy, v13, dataCopy, filenameCopy);
+    v18 = objc_msgSend_encryptionKey(writerCopy, v16, v17);
     if (sub_276AB678C(self->_decryptionInfo, v18, 0x100000))
     {
-      if (!self->_isMissingData && !v50 && v18)
+      if (!self->_isMissingData && !removeDataCopy && v18)
       {
         v20 = MEMORY[0x277D81150];
         v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "[TSPTemporaryDataStorage writeData:toPackageWriter:infoMessage:preferredFilename:shouldRemoveData:error:]");
@@ -242,21 +242,21 @@
 
 LABEL_17:
     v41 = objc_msgSend_materializedLength(self, v39, v40);
-    if (a5 && v41 && v41 != -1)
+    if (message && v41 && v41 != -1)
     {
-      *(a5 + 4) |= 0x20000u;
-      *(a5 + 18) = v41;
+      *(message + 4) |= 0x20000u;
+      *(message + 18) = v41;
     }
 
     v42 = [TSPDataStorageWriteResult alloc];
-    v44 = objc_msgSend_initWithFilename_encryptionInfo_packageStorageType_encodedLength_isMissingData_changeCount_(v42, v43, v15, v27, 1, v38, self->_isMissingOriginalData || v50, 0);
+    v44 = objc_msgSend_initWithFilename_encryptionInfo_packageStorageType_encodedLength_isMissingData_changeCount_(v42, v43, v15, v27, 1, v38, self->_isMissingOriginalData || removeDataCopy, 0);
     goto LABEL_31;
   }
 
   temporaryDataStorageURL = self->_temporaryDataStorageURL;
   decryptionInfo = self->_decryptionInfo;
   v52 = 0;
-  v30 = objc_msgSend_linkOrCopyData_fromURL_fromTemporaryLocation_decryptionInfo_preferredFilename_error_(v12, v13, v51, temporaryDataStorageURL, 1, decryptionInfo, v14, &v52);
+  v30 = objc_msgSend_linkOrCopyData_fromURL_fromTemporaryLocation_decryptionInfo_preferredFilename_error_(writerCopy, v13, dataCopy, temporaryDataStorageURL, 1, decryptionInfo, filenameCopy, &v52);
   v33 = v52;
   if (v30)
   {
@@ -283,18 +283,18 @@ LABEL_17:
   }
 
 LABEL_26:
-  if (a8)
+  if (error)
   {
     if (v33)
     {
       v45 = v33;
       v44 = 0;
-      *a8 = v33;
+      *error = v33;
       goto LABEL_31;
     }
 
     v46 = objc_msgSend_tsp_unknownWriteErrorWithUserInfo_(MEMORY[0x277CCA9B8], v39, 0);
-    *a8 = v46;
+    *error = v46;
   }
 
   v44 = 0;
@@ -303,10 +303,10 @@ LABEL_31:
   return v44;
 }
 
-- (BOOL)linkOrCopyToURL:(id)a3 encryptionInfo:(id)a4 canLink:(BOOL)a5
+- (BOOL)linkOrCopyToURL:(id)l encryptionInfo:(id)info canLink:(BOOL)link
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  infoCopy = info;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -316,12 +316,12 @@ LABEL_31:
   v14[2] = sub_276A19B18;
   v14[3] = &unk_27A6E4618;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
+  v15 = lCopy;
+  v16 = infoCopy;
   v17 = &v19;
-  v18 = a5;
-  v10 = v9;
-  v11 = v8;
+  linkCopy = link;
+  v10 = infoCopy;
+  v11 = lCopy;
   objc_msgSend_performReadWithAccessor_(self, v12, v14);
   LOBYTE(self) = *(v20 + 24);
 

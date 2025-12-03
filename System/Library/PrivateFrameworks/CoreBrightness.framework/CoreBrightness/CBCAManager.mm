@@ -1,53 +1,53 @@
 @interface CBCAManager
-- (CBCAManager)initWithCADisplay:(id)a3 andQueue:(id)a4;
-- (void)colorRampPropertyHandler:(id)a3;
+- (CBCAManager)initWithCADisplay:(id)display andQueue:(id)queue;
+- (void)colorRampPropertyHandler:(id)handler;
 - (void)dealloc;
-- (void)displayBrightnessPropertyHandler:(id)a3;
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4;
-- (void)nitsThresholdPLCPropertyHandler:(id)a3;
-- (void)sendNotificationForKey:(id)a3 andValue:(id)a4;
-- (void)updateDigitalDimmingBrightnessScaler:(id)a3;
+- (void)displayBrightnessPropertyHandler:(id)handler;
+- (void)handleNotificationForKey:(id)key withProperty:(id)property;
+- (void)nitsThresholdPLCPropertyHandler:(id)handler;
+- (void)sendNotificationForKey:(id)key andValue:(id)value;
+- (void)updateDigitalDimmingBrightnessScaler:(id)scaler;
 @end
 
 @implementation CBCAManager
 
-- (CBCAManager)initWithCADisplay:(id)a3 andQueue:(id)a4
+- (CBCAManager)initWithCADisplay:(id)display andQueue:(id)queue
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
-  v20 = a4;
-  if (a3 && (v15 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  displayCopy = display;
+  queueCopy = queue;
+  if (display && (v15 = displayCopy, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v16.receiver = v23;
+    v16.receiver = selfCopy;
     v16.super_class = CBCAManager;
-    v23 = [(CBModule *)&v16 initWithQueue:v20];
-    if (v23)
+    selfCopy = [(CBModule *)&v16 initWithQueue:queueCopy];
+    if (selfCopy)
     {
-      v23->_digitalDimmingBrightnessScaler = 1.0;
+      selfCopy->_digitalDimmingBrightnessScaler = 1.0;
       v9 = 0x1ECDAF000uLL;
-      v23->_currentlySetMatrix[0] = 1.0;
-      v23->_currentlySetMatrix[1] = 0.0;
-      v23->_currentlySetMatrix[2] = 0.0;
-      v23->_currentlySetMatrix[3] = 0.0;
-      v23->_currentlySetMatrix[4] = 1.0;
-      v23->_currentlySetMatrix[5] = 0.0;
-      v23->_currentlySetMatrix[6] = 0.0;
-      v23->_currentlySetMatrix[7] = 0.0;
-      v23->_currentlySetMatrix[8] = 1.0;
-      v23->_currentlySetScaler = 1.0;
+      selfCopy->_currentlySetMatrix[0] = 1.0;
+      selfCopy->_currentlySetMatrix[1] = 0.0;
+      selfCopy->_currentlySetMatrix[2] = 0.0;
+      selfCopy->_currentlySetMatrix[3] = 0.0;
+      selfCopy->_currentlySetMatrix[4] = 1.0;
+      selfCopy->_currentlySetMatrix[5] = 0.0;
+      selfCopy->_currentlySetMatrix[6] = 0.0;
+      selfCopy->_currentlySetMatrix[7] = 0.0;
+      selfCopy->_currentlySetMatrix[8] = 1.0;
+      selfCopy->_currentlySetScaler = 1.0;
       context = objc_autoreleasePoolPush();
       v10 = MEMORY[0x1E696AEC0];
-      v4 = os_log_create("com.apple.CoreBrightness.CBCAManager", [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v21, "displayId"), v9), "UTF8String"]);
+      v4 = os_log_create("com.apple.CoreBrightness.CBCAManager", [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(displayCopy, "displayId"), v9), "UTF8String"]);
       v5 = context;
-      v23->super._logHandle = v4;
+      selfCopy->super._logHandle = v4;
       objc_autoreleasePoolPop(v5);
       v6 = objc_alloc(MEMORY[0x1E695DF70]);
-      v7 = [v6 initWithObjects:{v21, 0}];
-      v23->_displays = v7;
+      v7 = [v6 initWithObjects:{displayCopy, 0}];
+      selfCopy->_displays = v7;
     }
 
-    return v23;
+    return selfCopy;
   }
 
   else
@@ -72,52 +72,52 @@
       _os_log_error_impl(&dword_1DE8E5000, log, type[0], "invalid display", v17, 2u);
     }
 
-    MEMORY[0x1E69E5920](v23);
-    v23 = 0;
+    MEMORY[0x1E69E5920](selfCopy);
+    selfCopy = 0;
     return 0;
   }
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = MEMORY[0x1E69E5920](self->_displays).n128_u64[0];
-  if (v5->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    v2 = MEMORY[0x1E69E5920](v5->super._logHandle).n128_u64[0];
-    v5->super._logHandle = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->super._logHandle).n128_u64[0];
+    selfCopy->super._logHandle = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBCAManager;
   [(CBModule *)&v3 dealloc];
 }
 
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4
+- (void)handleNotificationForKey:(id)key withProperty:(id)property
 {
-  if ([a3 isEqualToString:@"ColorRamp"])
+  if ([key isEqualToString:@"ColorRamp"])
   {
-    [(CBCAManager *)self colorRampPropertyHandler:a4];
+    [(CBCAManager *)self colorRampPropertyHandler:property];
   }
 
-  else if ([a3 isEqualToString:@"DisplayBrightness"])
+  else if ([key isEqualToString:@"DisplayBrightness"])
   {
-    [(CBCAManager *)self displayBrightnessPropertyHandler:a4];
+    [(CBCAManager *)self displayBrightnessPropertyHandler:property];
   }
 
-  else if ([a3 isEqualToString:@"nitsExceedsPLCThreshold"])
+  else if ([key isEqualToString:@"nitsExceedsPLCThreshold"])
   {
-    [(CBCAManager *)self nitsThresholdPLCPropertyHandler:a4];
+    [(CBCAManager *)self nitsThresholdPLCPropertyHandler:property];
   }
 
-  else if ([a3 isEqualToString:@"UpdateDigitalDimmingBrightnessScaler"])
+  else if ([key isEqualToString:@"UpdateDigitalDimmingBrightnessScaler"])
   {
-    [(CBCAManager *)self updateDigitalDimmingBrightnessScaler:a4];
+    [(CBCAManager *)self updateDigitalDimmingBrightnessScaler:property];
   }
 }
 
-- (void)sendNotificationForKey:(id)a3 andValue:(id)a4
+- (void)sendNotificationForKey:(id)key andValue:(id)value
 {
   if (self->super._notificationBlock)
   {
@@ -125,14 +125,14 @@
   }
 }
 
-- (void)updateDigitalDimmingBrightnessScaler:(id)a3
+- (void)updateDigitalDimmingBrightnessScaler:(id)scaler
 {
-  if (a3)
+  if (scaler)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [a3 objectForKey:@"Scaler"];
+      v4 = [scaler objectForKey:@"Scaler"];
       if (v4)
       {
         [v4 floatValue];
@@ -189,7 +189,7 @@ uint64_t __52__CBCAManager_updateDigitalDimmingBrightnessScaler___block_invoke(u
   return result;
 }
 
-- (void)colorRampPropertyHandler:(id)a3
+- (void)colorRampPropertyHandler:(id)handler
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -388,30 +388,30 @@ void __40__CBCAManager_colorRampPropertyHandler___block_invoke(uint64_t a1, void
   *MEMORY[0x1E69E9840];
 }
 
-- (void)displayBrightnessPropertyHandler:(id)a3
+- (void)displayBrightnessPropertyHandler:(id)handler
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    displays = v20->_displays;
+    displays = selfCopy->_displays;
     v11 = MEMORY[0x1E69E9820];
     v12 = -1073741824;
     v13 = 0;
     v14 = __48__CBCAManager_displayBrightnessPropertyHandler___block_invoke;
     v15 = &unk_1E867BD88;
-    v16 = v18;
-    v17 = v20;
+    v16 = handlerCopy;
+    v17 = selfCopy;
     [(NSMutableArray *)displays enumerateObjectsUsingBlock:?];
   }
 
   else
   {
-    if (v20->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v20->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -587,30 +587,30 @@ void __48__CBCAManager_displayBrightnessPropertyHandler___block_invoke(uint64_t 
   *MEMORY[0x1E69E9840];
 }
 
-- (void)nitsThresholdPLCPropertyHandler:(id)a3
+- (void)nitsThresholdPLCPropertyHandler:(id)handler
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    displays = v20->_displays;
+    displays = selfCopy->_displays;
     v11 = MEMORY[0x1E69E9820];
     v12 = -1073741824;
     v13 = 0;
     v14 = __47__CBCAManager_nitsThresholdPLCPropertyHandler___block_invoke;
     v15 = &unk_1E867BD88;
-    v16 = v20;
-    v17 = v18;
+    v16 = selfCopy;
+    v17 = handlerCopy;
     [(NSMutableArray *)displays enumerateObjectsUsingBlock:?];
   }
 
   else
   {
-    if (v20->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v20->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else

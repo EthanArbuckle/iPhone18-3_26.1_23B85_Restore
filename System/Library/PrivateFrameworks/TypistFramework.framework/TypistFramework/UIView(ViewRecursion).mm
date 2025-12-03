@@ -13,13 +13,13 @@
   v7 = 0x3032000000;
   v8 = __Block_byref_object_copy__6;
   v9 = __Block_byref_object_dispose__6;
-  v10 = [MEMORY[0x277CBEB18] array];
-  [v6[5] addObject:a1];
+  array = [MEMORY[0x277CBEB18] array];
+  [v6[5] addObject:self];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __36__UIView_ViewRecursion__allSubViews__block_invoke;
   v4[3] = &unk_279DF4758;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = &v5;
   [TypistKeyboardUtilities runOnMainThread:v4];
   v2 = v6[5];
@@ -31,7 +31,7 @@
 - (id)firstSubviewOfClass:()ViewRecursion
 {
   v15 = *MEMORY[0x277D85DE8];
-  [a1 allSubViews];
+  [self allSubViews];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -89,8 +89,8 @@ LABEL_11:
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;

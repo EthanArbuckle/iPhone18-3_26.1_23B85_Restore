@@ -1,32 +1,32 @@
 @interface _UIDragSessionImpl
-+ (id)_localDragSessionForSessionDestination:(id)a3;
++ (id)_localDragSessionForSessionDestination:(id)destination;
 + (id)activeSessions;
 - (BOOL)_allowsItemsToUpdate;
 - (BOOL)allowsMoveOperation;
-- (BOOL)canLoadObjectsOfClass:(Class)a3;
-- (BOOL)draggingSessionDynamicallyUpdatesPrefersFullSizePreviews:(id)a3;
-- (BOOL)draggingSessionPrefersFullSizePreviews:(id)a3;
-- (BOOL)hasItemsConformingToTypeIdentifiers:(id)a3;
+- (BOOL)canLoadObjectsOfClass:(Class)class;
+- (BOOL)draggingSessionDynamicallyUpdatesPrefersFullSizePreviews:(id)previews;
+- (BOOL)draggingSessionPrefersFullSizePreviews:(id)previews;
+- (BOOL)hasItemsConformingToTypeIdentifiers:(id)identifiers;
 - (BOOL)isRestrictedToDraggingApplication;
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 - (UIDragInteraction)primaryInteraction;
-- (_UIDragSessionImpl)initWithInteraction:(id)a3;
-- (id)_setDownAnimation:(id)a3 customSpringAnimationBehaviorForSetDownOfDragItem:(id)a4;
-- (id)_setDownAnimation:(id)a3 prepareForSetDownOfDragItem:(id)a4 visibleDroppedItem:(id)a5;
-- (id)_windowForSetDownOfDragItem:(id)a3;
-- (unint64_t)draggingSession:(id)a3 sourceOperationMaskForDraggingWithinApp:(BOOL)a4;
-- (void)_draggingSession:(id)a3 handedOffDragImageForItem:(id)a4;
-- (void)_draggingSessionHandedOffDragImage:(id)a3;
-- (void)_itemsNeedUpdate:(id)a3;
-- (void)_setDownAnimation:(id)a3 willAnimateSetDownOfDragItem:(id)a4 withAnimator:(id)a5 preview:(id)a6;
-- (void)_setInternalDragSession:(id)a3;
-- (void)addItems:(id)a3 forDragSourceInteraction:(id)a4;
-- (void)draggingSession:(id)a3 willAddItems:(id)a4;
-- (void)draggingSessionDidEnd:(id)a3 withOperation:(unint64_t)a4;
-- (void)draggingSessionDidMove:(id)a3;
-- (void)draggingSessionDidTransferItems:(id)a3;
-- (void)draggingSessionWillBegin:(id)a3;
-- (void)draggingSessionWillEnd:(id)a3 withOperation:(unint64_t)a4;
+- (_UIDragSessionImpl)initWithInteraction:(id)interaction;
+- (id)_setDownAnimation:(id)animation customSpringAnimationBehaviorForSetDownOfDragItem:(id)item;
+- (id)_setDownAnimation:(id)animation prepareForSetDownOfDragItem:(id)item visibleDroppedItem:(id)droppedItem;
+- (id)_windowForSetDownOfDragItem:(id)item;
+- (unint64_t)draggingSession:(id)session sourceOperationMaskForDraggingWithinApp:(BOOL)app;
+- (void)_draggingSession:(id)session handedOffDragImageForItem:(id)item;
+- (void)_draggingSessionHandedOffDragImage:(id)image;
+- (void)_itemsNeedUpdate:(id)update;
+- (void)_setDownAnimation:(id)animation willAnimateSetDownOfDragItem:(id)item withAnimator:(id)animator preview:(id)preview;
+- (void)_setInternalDragSession:(id)session;
+- (void)addItems:(id)items forDragSourceInteraction:(id)interaction;
+- (void)draggingSession:(id)session willAddItems:(id)items;
+- (void)draggingSessionDidEnd:(id)end withOperation:(unint64_t)operation;
+- (void)draggingSessionDidMove:(id)move;
+- (void)draggingSessionDidTransferItems:(id)items;
+- (void)draggingSessionWillBegin:(id)begin;
+- (void)draggingSessionWillEnd:(id)end withOperation:(unint64_t)operation;
 @end
 
 @implementation _UIDragSessionImpl
@@ -38,13 +38,13 @@
   return v2;
 }
 
-- (_UIDragSessionImpl)initWithInteraction:(id)a3
+- (_UIDragSessionImpl)initWithInteraction:(id)interaction
 {
-  v5 = a3;
-  if (!v5)
+  interactionCopy = interaction;
+  if (!interactionCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIDragSession.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"interaction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragSession.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"interaction"}];
   }
 
   v15.receiver = self;
@@ -61,37 +61,37 @@
     allItems = v6->_allItems;
     v6->_allItems = v7;
 
-    v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     dragSourceInteractionByItem = v6->_dragSourceInteractionByItem;
-    v6->_dragSourceInteractionByItem = v9;
+    v6->_dragSourceInteractionByItem = strongToStrongObjectsMapTable;
 
-    v11 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     allInteractions = v6->_allInteractions;
-    v6->_allInteractions = v11;
+    v6->_allInteractions = weakObjectsHashTable;
 
-    [(NSHashTable *)v6->_allInteractions addObject:v5];
-    objc_storeWeak(&v6->_primaryInteraction, v5);
+    [(NSHashTable *)v6->_allInteractions addObject:interactionCopy];
+    objc_storeWeak(&v6->_primaryInteraction, interactionCopy);
     _UIInitializeDraggingSystem();
   }
 
   return v6;
 }
 
-- (void)addItems:(id)a3 forDragSourceInteraction:(id)a4
+- (void)addItems:(id)items forDragSourceInteraction:(id)interaction
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(NSHashTable *)self->_allInteractions addObject:v7];
-  v8 = [v6 reverseObjectEnumerator];
-  v9 = [v8 allObjects];
+  itemsCopy = items;
+  interactionCopy = interaction;
+  [(NSHashTable *)self->_allInteractions addObject:interactionCopy];
+  reverseObjectEnumerator = [itemsCopy reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  [(NSMutableArray *)self->_allItems replaceObjectsInRange:0 withObjectsFromArray:0, v9];
+  [(NSMutableArray *)self->_allItems replaceObjectsInRange:0 withObjectsFromArray:0, allObjects];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v9;
+  v10 = allObjects;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v11)
   {
@@ -106,7 +106,7 @@
           objc_enumerationMutation(v10);
         }
 
-        [(NSMapTable *)self->_dragSourceInteractionByItem setObject:v7 forKey:*(*(&v26 + 1) + 8 * i)];
+        [(NSMapTable *)self->_dragSourceInteractionByItem setObject:interactionCopy forKey:*(*(&v26 + 1) + 8 * i)];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -115,8 +115,8 @@
     while (v12);
   }
 
-  v15 = [(_UIDragSessionImpl *)self _internalDragSession];
-  if (v15)
+  _internalDragSession = [(_UIDragSessionImpl *)self _internalDragSession];
+  if (_internalDragSession)
   {
     v24 = 0u;
     v25 = 0u;
@@ -151,15 +151,15 @@
 
     if ([v16 count])
     {
-      [v15 addPublicItems:v16];
+      [_internalDragSession addPublicItems:v16];
     }
   }
 }
 
-- (void)_setInternalDragSession:(id)a3
+- (void)_setInternalDragSession:(id)session
 {
-  v5 = a3;
-  objc_storeStrong(&self->_internalDragSession, a3);
+  sessionCopy = session;
+  objc_storeStrong(&self->_internalDragSession, session);
   if (self->_internalDragSession)
   {
     [__activeDragSessionsTable addObject:self];
@@ -167,11 +167,11 @@
   }
 }
 
-+ (id)_localDragSessionForSessionDestination:(id)a3
++ (id)_localDragSessionForSessionDestination:(id)destination
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [a3 inAppSessionSource];
-  if (v3)
+  inAppSessionSource = [destination inAppSessionSource];
+  if (inAppSessionSource)
   {
     v13 = 0u;
     v14 = 0u;
@@ -192,9 +192,9 @@
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
-          v9 = [v8 _internalDragSession];
+          _internalDragSession = [v8 _internalDragSession];
 
-          if (v9 == v3)
+          if (_internalDragSession == inAppSessionSource)
           {
             v5 = v8;
             goto LABEL_12;
@@ -222,10 +222,10 @@ LABEL_12:
   return v5;
 }
 
-- (void)_itemsNeedUpdate:(id)a3
+- (void)_itemsNeedUpdate:(id)update
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   if ([(NSMutableSet *)self->_addedDraggingItemsWaitingForHandOffOfDragImage count])
   {
     v5 = objc_opt_new();
@@ -233,7 +233,7 @@ LABEL_12:
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = v4;
+    v6 = updateCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -278,7 +278,7 @@ LABEL_12:
 
   else
   {
-    _markItemsForUpdate(v4, self);
+    _markItemsForUpdate(updateCopy, self);
   }
 }
 
@@ -289,16 +289,16 @@ LABEL_12:
     return 0;
   }
 
-  v2 = [(_UIDragSessionImpl *)self _internalDragSession];
-  v3 = v2 != 0;
+  _internalDragSession = [(_UIDragSessionImpl *)self _internalDragSession];
+  v3 = _internalDragSession != 0;
 
   return v3;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  if (!v4)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"View must be non-null"];
   }
@@ -306,7 +306,7 @@ LABEL_12:
   internalDragSession = self->_internalDragSession;
   if (internalDragSession)
   {
-    [(_UIInternalDraggingSessionSource *)internalDragSession draggingLocationInCoordinateSpace:v4];
+    [(_UIInternalDraggingSessionSource *)internalDragSession draggingLocationInCoordinateSpace:viewCopy];
     v7 = v6;
     v9 = v8;
   }
@@ -314,7 +314,7 @@ LABEL_12:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_primaryInteraction);
-    [WeakRetained _locationInView:v4];
+    [WeakRetained _locationInView:viewCopy];
     v7 = v11;
     v9 = v12;
   }
@@ -331,16 +331,16 @@ LABEL_12:
   internalDragSession = self->_internalDragSession;
   if (internalDragSession)
   {
-    v4 = [(_UIInternalDraggingSessionSource *)internalDragSession withinAppSourceOperationMask];
+    withinAppSourceOperationMask = [(_UIInternalDraggingSessionSource *)internalDragSession withinAppSourceOperationMask];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_primaryInteraction);
-    v4 = [WeakRetained _session:self sourceOperationMaskForDraggingWithinApp:1];
+    withinAppSourceOperationMask = [WeakRetained _session:self sourceOperationMaskForDraggingWithinApp:1];
   }
 
-  return (v4 >> 4) & 1;
+  return (withinAppSourceOperationMask >> 4) & 1;
 }
 
 - (BOOL)isRestrictedToDraggingApplication
@@ -348,69 +348,69 @@ LABEL_12:
   internalDragSession = self->_internalDragSession;
   if (internalDragSession)
   {
-    v4 = [(_UIInternalDraggingSessionSource *)internalDragSession outsideAppSourceOperationMask];
+    outsideAppSourceOperationMask = [(_UIInternalDraggingSessionSource *)internalDragSession outsideAppSourceOperationMask];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_primaryInteraction);
-    v4 = [WeakRetained _session:self sourceOperationMaskForDraggingWithinApp:0];
+    outsideAppSourceOperationMask = [WeakRetained _session:self sourceOperationMaskForDraggingWithinApp:0];
   }
 
-  return (v4 & 1) == 0;
+  return (outsideAppSourceOperationMask & 1) == 0;
 }
 
-- (BOOL)hasItemsConformingToTypeIdentifiers:(id)a3
+- (BOOL)hasItemsConformingToTypeIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(_UIDragSessionImpl *)self items];
-  hasItemsConformingToTypeIdentifiers = _hasItemsConformingToTypeIdentifiers(v5, v4);
+  identifiersCopy = identifiers;
+  items = [(_UIDragSessionImpl *)self items];
+  hasItemsConformingToTypeIdentifiers = _hasItemsConformingToTypeIdentifiers(items, identifiersCopy);
 
   return hasItemsConformingToTypeIdentifiers;
 }
 
-- (BOOL)canLoadObjectsOfClass:(Class)a3
+- (BOOL)canLoadObjectsOfClass:(Class)class
 {
-  v4 = [(_UIDragSessionImpl *)self items];
-  LOBYTE(a3) = _canLoadObjectsOfClass(v4, a3);
+  items = [(_UIDragSessionImpl *)self items];
+  LOBYTE(class) = _canLoadObjectsOfClass(items, class);
 
-  return a3;
+  return class;
 }
 
-- (unint64_t)draggingSession:(id)a3 sourceOperationMaskForDraggingWithinApp:(BOOL)a4
+- (unint64_t)draggingSession:(id)session sourceOperationMaskForDraggingWithinApp:(BOOL)app
 {
-  v4 = a4;
+  appCopy = app;
   WeakRetained = objc_loadWeakRetained(&self->_primaryInteraction);
-  v7 = [WeakRetained _session:self sourceOperationMaskForDraggingWithinApp:v4];
+  v7 = [WeakRetained _session:self sourceOperationMaskForDraggingWithinApp:appCopy];
 
   return v7;
 }
 
-- (BOOL)draggingSessionPrefersFullSizePreviews:(id)a3
+- (BOOL)draggingSessionPrefersFullSizePreviews:(id)previews
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_primaryInteraction);
-  LOBYTE(v3) = [WeakRetained _sessionPrefersFullSizePreviews:v3];
+  LOBYTE(selfCopy) = [WeakRetained _sessionPrefersFullSizePreviews:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)draggingSessionDynamicallyUpdatesPrefersFullSizePreviews:(id)a3
+- (BOOL)draggingSessionDynamicallyUpdatesPrefersFullSizePreviews:(id)previews
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_primaryInteraction);
-  LOBYTE(v3) = [WeakRetained _sessionDynamicallyUpdatesPrefersFullSizePreviews:v3];
+  LOBYTE(selfCopy) = [WeakRetained _sessionDynamicallyUpdatesPrefersFullSizePreviews:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)draggingSessionWillBegin:(id)a3
+- (void)draggingSessionWillBegin:(id)begin
 {
   WeakRetained = objc_loadWeakRetained(&self->_primaryInteraction);
   [WeakRetained _sessionWillBegin:self];
 }
 
-- (void)_draggingSessionHandedOffDragImage:(id)a3
+- (void)_draggingSessionHandedOffDragImage:(id)image
 {
   WeakRetained = objc_loadWeakRetained(&self->_primaryInteraction);
   [WeakRetained _sessionHandedOffDragImage:self];
@@ -422,21 +422,21 @@ LABEL_12:
   }
 }
 
-- (void)_draggingSession:(id)a3 handedOffDragImageForItem:(id)a4
+- (void)_draggingSession:(id)session handedOffDragImageForItem:(id)item
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  [(NSMutableSet *)self->_addedDraggingItemsWaitingForHandOffOfDragImage removeObject:v5];
-  if (v5 && [(NSMutableSet *)self->_addedDragItemsPendingUpdate containsObject:v5])
+  itemCopy = item;
+  [(NSMutableSet *)self->_addedDraggingItemsWaitingForHandOffOfDragImage removeObject:itemCopy];
+  if (itemCopy && [(NSMutableSet *)self->_addedDragItemsPendingUpdate containsObject:itemCopy])
   {
-    [(NSMutableSet *)self->_addedDragItemsPendingUpdate removeObject:v5];
-    v7[0] = v5;
+    [(NSMutableSet *)self->_addedDragItemsPendingUpdate removeObject:itemCopy];
+    v7[0] = itemCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
     [(_UIDragSessionImpl *)self _itemsNeedUpdate:v6];
   }
 }
 
-- (void)draggingSessionDidMove:(id)a3
+- (void)draggingSessionDidMove:(id)move
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
@@ -470,12 +470,12 @@ LABEL_12:
   }
 }
 
-- (void)draggingSession:(id)a3 willAddItems:(id)a4
+- (void)draggingSession:(id)session willAddItems:(id)items
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 firstObject];
-  v7 = [(_UIDragSessionImpl *)self dragSourceInteractionForDragItem:v6];
+  itemsCopy = items;
+  firstObject = [itemsCopy firstObject];
+  v7 = [(_UIDragSessionImpl *)self dragSourceInteractionForDragItem:firstObject];
 
   addedDraggingItemsWaitingForHandOffOfDragImage = self->_addedDraggingItemsWaitingForHandOffOfDragImage;
   if (!addedDraggingItemsWaitingForHandOffOfDragImage)
@@ -487,8 +487,8 @@ LABEL_12:
     addedDraggingItemsWaitingForHandOffOfDragImage = self->_addedDraggingItemsWaitingForHandOffOfDragImage;
   }
 
-  [(NSMutableSet *)addedDraggingItemsWaitingForHandOffOfDragImage addObjectsFromArray:v5];
-  v11 = v5;
+  [(NSMutableSet *)addedDraggingItemsWaitingForHandOffOfDragImage addObjectsFromArray:itemsCopy];
+  v11 = itemsCopy;
   v12 = [qword_1ED49DB10 objectForKey:self];
   if (v12)
   {
@@ -574,7 +574,7 @@ LABEL_12:
   }
 }
 
-- (void)draggingSessionWillEnd:(id)a3 withOperation:(unint64_t)a4
+- (void)draggingSessionWillEnd:(id)end withOperation:(unint64_t)operation
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -597,7 +597,7 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) _sessionWillEnd:self withOperation:{a4, v11}];
+        [*(*(&v11 + 1) + 8 * v10++) _sessionWillEnd:self withOperation:{operation, v11}];
       }
 
       while (v8 != v10);
@@ -608,11 +608,11 @@ LABEL_12:
   }
 }
 
-- (void)draggingSessionDidEnd:(id)a3 withOperation:(unint64_t)a4
+- (void)draggingSessionDidEnd:(id)end withOperation:(unint64_t)operation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  endCopy = end;
+  if (!operation)
   {
     [__activeDragSessionsTable removeObject:self];
   }
@@ -637,7 +637,7 @@ LABEL_12:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) _sessionDidEnd:self withOperation:{a4, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) _sessionDidEnd:self withOperation:{operation, v12}];
       }
 
       while (v9 != v11);
@@ -648,7 +648,7 @@ LABEL_12:
   }
 }
 
-- (void)draggingSessionDidTransferItems:(id)a3
+- (void)draggingSessionDidTransferItems:(id)items
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
@@ -684,25 +684,25 @@ LABEL_12:
   [__activeDragSessionsTable removeObject:self];
 }
 
-- (id)_windowForSetDownOfDragItem:(id)a3
+- (id)_windowForSetDownOfDragItem:(id)item
 {
-  v3 = [(_UIDragSessionImpl *)self dragSourceInteractionForDragItem:a3];
-  v4 = [v3 view];
-  v5 = [v4 _window];
+  v3 = [(_UIDragSessionImpl *)self dragSourceInteractionForDragItem:item];
+  view = [v3 view];
+  _window = [view _window];
 
-  return v5;
+  return _window;
 }
 
-- (id)_setDownAnimation:(id)a3 prepareForSetDownOfDragItem:(id)a4 visibleDroppedItem:(id)a5
+- (id)_setDownAnimation:(id)animation prepareForSetDownOfDragItem:(id)item visibleDroppedItem:(id)droppedItem
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_UIDragSessionImpl *)self dragSourceInteractionForDragItem:v9];
+  animationCopy = animation;
+  itemCopy = item;
+  droppedItemCopy = droppedItem;
+  v11 = [(_UIDragSessionImpl *)self dragSourceInteractionForDragItem:itemCopy];
   if (os_variant_has_internal_diagnostics())
   {
-    if (!v9)
+    if (!itemCopy)
     {
       v16 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -713,7 +713,7 @@ LABEL_12:
     }
   }
 
-  else if (!v9)
+  else if (!itemCopy)
   {
     v18 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49DB00) + 8);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -725,13 +725,13 @@ LABEL_12:
 
   if (os_variant_has_internal_diagnostics())
   {
-    if (!v10)
+    if (!droppedItemCopy)
     {
       v17 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
         v21 = 138412290;
-        v22 = v9;
+        v22 = itemCopy;
         _os_log_fault_impl(&dword_188A29000, v17, OS_LOG_TYPE_FAULT, "droppedItem for dragging item (%@) in nil", &v21, 0xCu);
       }
 
@@ -739,27 +739,27 @@ LABEL_12:
     }
   }
 
-  else if (!v10)
+  else if (!droppedItemCopy)
   {
     v19 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49DB08) + 8);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v21 = 138412290;
-      v22 = v9;
+      v22 = itemCopy;
       _os_log_impl(&dword_188A29000, v19, OS_LOG_TYPE_ERROR, "droppedItem for dragging item (%@) in nil", &v21, 0xCu);
     }
 
     goto LABEL_19;
   }
 
-  if (v9)
+  if (itemCopy)
   {
-    v12 = [v10 createSnapshotView];
-    [v10 center];
-    [v12 setCenter:?];
-    v13 = [v10 preview];
-    v14 = [v8 containerView];
-    v15 = [v11 _session:self targetedPreviewForCancellingItem:v9 duiPreview:v13 snapshotView:v12 container:v14];
+    createSnapshotView = [droppedItemCopy createSnapshotView];
+    [droppedItemCopy center];
+    [createSnapshotView setCenter:?];
+    preview = [droppedItemCopy preview];
+    containerView = [animationCopy containerView];
+    v15 = [v11 _session:self targetedPreviewForCancellingItem:itemCopy duiPreview:preview snapshotView:createSnapshotView container:containerView];
 
     goto LABEL_20;
   }
@@ -771,13 +771,13 @@ LABEL_20:
   return v15;
 }
 
-- (void)_setDownAnimation:(id)a3 willAnimateSetDownOfDragItem:(id)a4 withAnimator:(id)a5 preview:(id)a6
+- (void)_setDownAnimation:(id)animation willAnimateSetDownOfDragItem:(id)item withAnimator:(id)animator preview:(id)preview
 {
-  v8 = a5;
-  v9 = a4;
+  animatorCopy = animator;
+  itemCopy = item;
   if (os_variant_has_internal_diagnostics())
   {
-    if (!v9)
+    if (!itemCopy)
     {
       v11 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -788,7 +788,7 @@ LABEL_20:
     }
   }
 
-  else if (!v9)
+  else if (!itemCopy)
   {
     v12 = *(__UILogGetCategoryCachedImpl("Assert", &_setDownAnimation_willAnimateSetDownOfDragItem_withAnimator_preview____s_category) + 8);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -798,15 +798,15 @@ LABEL_20:
     }
   }
 
-  v10 = [(_UIDragSessionImpl *)self dragSourceInteractionForDragItem:v9];
-  [v10 _session:self item:v9 willCancelWithAnimator:v8];
+  v10 = [(_UIDragSessionImpl *)self dragSourceInteractionForDragItem:itemCopy];
+  [v10 _session:self item:itemCopy willCancelWithAnimator:animatorCopy];
 }
 
-- (id)_setDownAnimation:(id)a3 customSpringAnimationBehaviorForSetDownOfDragItem:(id)a4
+- (id)_setDownAnimation:(id)animation customSpringAnimationBehaviorForSetDownOfDragItem:(id)item
 {
-  v5 = a4;
-  v6 = [(_UIDragSessionImpl *)self dragSourceInteractionForDragItem:v5];
-  v7 = [v6 _session:self customSpringAnimationBehaviorForCancellingItem:v5];
+  itemCopy = item;
+  v6 = [(_UIDragSessionImpl *)self dragSourceInteractionForDragItem:itemCopy];
+  v7 = [v6 _session:self customSpringAnimationBehaviorForCancellingItem:itemCopy];
 
   return v7;
 }

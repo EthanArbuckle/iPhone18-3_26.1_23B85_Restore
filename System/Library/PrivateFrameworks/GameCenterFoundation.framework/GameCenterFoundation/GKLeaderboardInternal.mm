@@ -1,6 +1,6 @@
 @interface GKLeaderboardInternal
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -95,23 +95,23 @@ void __48__GKLeaderboardInternal_secureCodedPropertyKeys__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKLeaderboardInternal *)self identifier];
-    v7 = [v5 identifier];
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(GKLeaderboardInternal *)self identifier];
+    identifier2 = [v5 identifier];
+    if (identifier == identifier2)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 isEqualToString:v7];
+      v8 = [identifier isEqualToString:identifier2];
     }
   }
 
@@ -125,8 +125,8 @@ void __48__GKLeaderboardInternal_secureCodedPropertyKeys__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(GKLeaderboardInternal *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(GKLeaderboardInternal *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

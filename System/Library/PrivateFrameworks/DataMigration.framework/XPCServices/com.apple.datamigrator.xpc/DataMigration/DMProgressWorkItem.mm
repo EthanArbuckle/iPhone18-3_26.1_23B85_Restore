@@ -1,22 +1,22 @@
 @interface DMProgressWorkItem
-- (DMProgressWorkItem)initWithName:(id)a3 startTimestamp:(unint64_t)a4;
+- (DMProgressWorkItem)initWithName:(id)name startTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation DMProgressWorkItem
 
-- (DMProgressWorkItem)initWithName:(id)a3 startTimestamp:(unint64_t)a4
+- (DMProgressWorkItem)initWithName:(id)name startTimestamp:(unint64_t)timestamp
 {
-  v6 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = DMProgressWorkItem;
   v7 = [(DMProgressWorkItem *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     name = v7->_name;
     v7->_name = v8;
 
-    v7->_startTimestamp = a4;
+    v7->_startTimestamp = timestamp;
   }
 
   return v7;

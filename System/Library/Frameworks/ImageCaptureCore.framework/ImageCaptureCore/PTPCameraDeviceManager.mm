@@ -1,28 +1,28 @@
 @interface PTPCameraDeviceManager
 - (PTPCameraDeviceManager)init;
 - (id)deviceManagerConnection;
-- (int64_t)checkFile:(id)a3 andDevice:(id)a4;
-- (void)deleteFileImp:(id)a3;
-- (void)downloadFileImp:(id)a3;
-- (void)ejectImp:(id)a3;
-- (void)executeCompletionBlockWithErrorCode:(int64_t)a3 info:(id)a4 file:(id)a5 completionDict:(id)a6 completionBlk:(id)a7;
-- (void)getFileDataImp:(id)a3;
-- (void)getFileMetadataImp:(id)a3;
-- (void)getFileThumbnailImp:(id)a3;
-- (void)getFingerprintImp:(id)a3;
-- (void)getSecurityScopedURLImp:(id)a3;
-- (void)handleEventImp:(id)a3;
-- (void)notifyAddedItems:(id)a3;
-- (void)notifyPtpEvent:(id)a3;
-- (void)notifyRemovedItems:(id)a3;
-- (void)notifyStatus:(id)a3;
-- (void)notifyUpdatedItems:(id)a3;
-- (void)refreshObjectHandleInfoImp:(id)a3;
-- (void)registerDevice:(id)a3 forImageCaptureEventNotificationsImp:(id)a4;
-- (void)sendDevicePTPCommandImp:(id)a3;
-- (void)startDeviceWithHandle:(id)a3;
-- (void)syncClockImp:(id)a3;
-- (void)unregisterDevice:(id)a3 forImageCaptureEventNotificationsImp:(id)a4;
+- (int64_t)checkFile:(id)file andDevice:(id)device;
+- (void)deleteFileImp:(id)imp;
+- (void)downloadFileImp:(id)imp;
+- (void)ejectImp:(id)imp;
+- (void)executeCompletionBlockWithErrorCode:(int64_t)code info:(id)info file:(id)file completionDict:(id)dict completionBlk:(id)blk;
+- (void)getFileDataImp:(id)imp;
+- (void)getFileMetadataImp:(id)imp;
+- (void)getFileThumbnailImp:(id)imp;
+- (void)getFingerprintImp:(id)imp;
+- (void)getSecurityScopedURLImp:(id)imp;
+- (void)handleEventImp:(id)imp;
+- (void)notifyAddedItems:(id)items;
+- (void)notifyPtpEvent:(id)event;
+- (void)notifyRemovedItems:(id)items;
+- (void)notifyStatus:(id)status;
+- (void)notifyUpdatedItems:(id)items;
+- (void)refreshObjectHandleInfoImp:(id)imp;
+- (void)registerDevice:(id)device forImageCaptureEventNotificationsImp:(id)imp;
+- (void)sendDevicePTPCommandImp:(id)imp;
+- (void)startDeviceWithHandle:(id)handle;
+- (void)syncClockImp:(id)imp;
+- (void)unregisterDevice:(id)device forImageCaptureEventNotificationsImp:(id)imp;
 @end
 
 @implementation PTPCameraDeviceManager
@@ -34,17 +34,17 @@
   return [(ICDeviceManager *)&v3 init];
 }
 
-- (void)notifyAddedItems:(id)a3
+- (void)notifyAddedItems:(id)items
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  itemsCopy = items;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__1;
   v26 = __Block_byref_object_dispose__1;
-  v27 = [(ICDeviceManager *)self deviceForConnection:v5];
+  v27 = [(ICDeviceManager *)self deviceForConnection:currentConnection];
   v6 = v23[5];
   if (!v6)
   {
@@ -65,9 +65,9 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v9;
-      v14 = [(__CFString *)v9 UTF8String];
+      uTF8String = [(__CFString *)v9 UTF8String];
       *buf = 136446466;
-      v29 = v14;
+      v29 = uTF8String;
       v30 = 2114;
       v31 = v11;
       _os_log_impl(&dword_1C6F19000, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -83,7 +83,7 @@
     v17 = 3221225472;
     v18 = __43__PTPCameraDeviceManager_notifyAddedItems___block_invoke;
     v19 = &unk_1E829CAC0;
-    v20 = v4;
+    v20 = itemsCopy;
     v21 = &v22;
     v8 = [v7 blockOperationWithBlock:&v16];
     [(ICDeviceManager *)self addInteractiveOperation:v8, v16, v17, v18, v19];
@@ -186,17 +186,17 @@ LABEL_19:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyRemovedItems:(id)a3
+- (void)notifyRemovedItems:(id)items
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  itemsCopy = items;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__1;
   v25 = __Block_byref_object_dispose__1;
-  v26 = [(ICDeviceManager *)self deviceForConnection:v5];
+  v26 = [(ICDeviceManager *)self deviceForConnection:currentConnection];
   if (v22[5])
   {
     v6 = MEMORY[0x1E696AAE0];
@@ -204,7 +204,7 @@ LABEL_19:
     v16 = 3221225472;
     v17 = __45__PTPCameraDeviceManager_notifyRemovedItems___block_invoke;
     v18 = &unk_1E829CAC0;
-    v19 = v4;
+    v19 = itemsCopy;
     v20 = &v21;
     v7 = [v6 blockOperationWithBlock:&v15];
     [(ICDeviceManager *)self addInteractiveOperation:v7, v15, v16, v17, v18];
@@ -231,9 +231,9 @@ LABEL_19:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v8;
-      v13 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       *buf = 136446466;
-      v28 = v13;
+      v28 = uTF8String;
       v29 = 2114;
       v30 = v10;
       _os_log_impl(&dword_1C6F19000, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -255,17 +255,17 @@ uint64_t __45__PTPCameraDeviceManager_notifyRemovedItems___block_invoke(uint64_t
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)notifyUpdatedItems:(id)a3
+- (void)notifyUpdatedItems:(id)items
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  itemsCopy = items;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__1;
   v25 = __Block_byref_object_dispose__1;
-  v26 = [(ICDeviceManager *)self deviceForConnection:v5];
+  v26 = [(ICDeviceManager *)self deviceForConnection:currentConnection];
   if (v22[5])
   {
     v6 = MEMORY[0x1E696AAE0];
@@ -273,7 +273,7 @@ uint64_t __45__PTPCameraDeviceManager_notifyRemovedItems___block_invoke(uint64_t
     v16 = 3221225472;
     v17 = __45__PTPCameraDeviceManager_notifyUpdatedItems___block_invoke;
     v18 = &unk_1E829CAC0;
-    v19 = v4;
+    v19 = itemsCopy;
     v20 = &v21;
     v7 = [v6 blockOperationWithBlock:&v15];
     [(ICDeviceManager *)self addInteractiveOperation:v7, v15, v16, v17, v18];
@@ -300,9 +300,9 @@ uint64_t __45__PTPCameraDeviceManager_notifyRemovedItems___block_invoke(uint64_t
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v8;
-      v13 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       *buf = 136446466;
-      v28 = v13;
+      v28 = uTF8String;
       v29 = 2114;
       v30 = v10;
       _os_log_impl(&dword_1C6F19000, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -354,17 +354,17 @@ void __45__PTPCameraDeviceManager_notifyUpdatedItems___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyPtpEvent:(id)a3
+- (void)notifyPtpEvent:(id)event
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  eventCopy = event;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__1;
   v26 = __Block_byref_object_dispose__1;
-  v27 = [(ICDeviceManager *)self deviceForConnection:v5];
+  v27 = [(ICDeviceManager *)self deviceForConnection:currentConnection];
   if (!v23[5])
   {
     __ICOSLogCreate();
@@ -384,9 +384,9 @@ void __45__PTPCameraDeviceManager_notifyUpdatedItems___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v7;
-      v14 = [(__CFString *)v7 UTF8String];
+      uTF8String = [(__CFString *)v7 UTF8String];
       *buf = 136446466;
-      v29 = v14;
+      v29 = uTF8String;
       v30 = 2114;
       v31 = v10;
       _os_log_impl(&dword_1C6F19000, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -395,7 +395,7 @@ void __45__PTPCameraDeviceManager_notifyUpdatedItems___block_invoke(uint64_t a1)
     goto LABEL_10;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"ICPTPEvent"];
+  v6 = [eventCopy objectForKeyedSubscript:@"ICPTPEvent"];
   v7 = v6;
   if (v6)
   {
@@ -418,17 +418,17 @@ LABEL_10:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyStatus:(id)a3
+- (void)notifyStatus:(id)status
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  statusCopy = status;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__1;
   v25 = __Block_byref_object_dispose__1;
-  v26 = [(ICDeviceManager *)self deviceForConnection:v5];
+  v26 = [(ICDeviceManager *)self deviceForConnection:currentConnection];
   if (v22[5])
   {
     v6 = MEMORY[0x1E696AAE0];
@@ -436,7 +436,7 @@ LABEL_10:
     v16 = 3221225472;
     v17 = __39__PTPCameraDeviceManager_notifyStatus___block_invoke;
     v18 = &unk_1E829CAC0;
-    v19 = v4;
+    v19 = statusCopy;
     v20 = &v21;
     v7 = [v6 blockOperationWithBlock:&v15];
     [(ICDeviceManager *)self addInteractiveOperation:v7, v15, v16, v17, v18];
@@ -463,9 +463,9 @@ LABEL_10:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v8;
-      v13 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       *buf = 136446466;
-      v28 = v13;
+      v28 = uTF8String;
       v29 = 2114;
       v30 = v10;
       _os_log_impl(&dword_1C6F19000, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -507,9 +507,9 @@ uint64_t __71__PTPCameraDeviceManager_addSelectorToInterface_selectorString_orig
 
 - (id)deviceManagerConnection
 {
-  v3 = [(ICDeviceManager *)self managerConnection];
+  managerConnection = [(ICDeviceManager *)self managerConnection];
 
-  if (!v3)
+  if (!managerConnection)
   {
     v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.ptpcamerad" options:0];
     [(ICDeviceManager *)self setManagerConnection:v4];
@@ -518,12 +518,12 @@ uint64_t __71__PTPCameraDeviceManager_addSelectorToInterface_selectorString_orig
   return [(ICDeviceManager *)self managerConnection];
 }
 
-- (void)startDeviceWithHandle:(id)a3
+- (void)startDeviceWithHandle:(id)handle
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICDeviceManager *)self devices];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  handleCopy = handle;
+  devices = [(ICDeviceManager *)self devices];
+  v6 = [devices objectForKeyedSubscript:handleCopy];
 
   if (v6)
   {
@@ -535,28 +535,28 @@ uint64_t __71__PTPCameraDeviceManager_addSelectorToInterface_selectorString_orig
       v7 = [v8 stringByAppendingString:@".."];
     }
 
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%12s : %@", "starting", v4];
+    handleCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%12s : %@", "starting", handleCopy];
     v10 = *MEMORY[0x1E69A8B08];
     if (os_log_type_enabled(*MEMORY[0x1E69A8B08], OS_LOG_TYPE_DEFAULT))
     {
       v11 = v7;
       v12 = v10;
       *buf = 136446466;
-      v20 = [(__CFString *)v7 UTF8String];
+      uTF8String = [(__CFString *)v7 UTF8String];
       v21 = 2114;
-      v22 = v9;
+      v22 = handleCopy;
       _os_log_impl(&dword_1C6F19000, v12, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 
-    v13 = [v6 remoteCamera];
+    remoteCamera = [v6 remoteCamera];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __48__PTPCameraDeviceManager_startDeviceWithHandle___block_invoke;
     v15[3] = &unk_1E829CBA8;
     v16 = v6;
-    v17 = self;
-    v18 = v4;
-    [v13 requestStartUsingDeviceWithReply:v15];
+    selfCopy = self;
+    v18 = handleCopy;
+    [remoteCamera requestStartUsingDeviceWithReply:v15];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -720,12 +720,12 @@ void __48__PTPCameraDeviceManager_startDeviceWithHandle___block_invoke(uint64_t 
   v43 = *MEMORY[0x1E69E9840];
 }
 
-- (void)syncClockImp:(id)a3
+- (void)syncClockImp:(id)imp
 {
-  v3 = a3;
-  v9 = [v3 objectForKeyedSubscript:@"device"];
-  v4 = [v3 objectForKeyedSubscript:@"info"];
-  v5 = [v3 objectForKeyedSubscript:@"cbBlock"];
+  impCopy = imp;
+  v9 = [impCopy objectForKeyedSubscript:@"device"];
+  v4 = [impCopy objectForKeyedSubscript:@"info"];
+  v5 = [impCopy objectForKeyedSubscript:@"cbBlock"];
 
   v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v9, @"device", 0}];
   v7 = v6;
@@ -743,18 +743,18 @@ void __48__PTPCameraDeviceManager_startDeviceWithHandle___block_invoke(uint64_t 
   }
 }
 
-- (void)getFileThumbnailImp:(id)a3
+- (void)getFileThumbnailImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = -9922;
-  v5 = [v4 objectForKeyedSubscript:@"file"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"device"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
-  v9 = [v4 objectForKeyedSubscript:@"options"];
+  v5 = [impCopy objectForKeyedSubscript:@"file"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"device"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
+  v9 = [impCopy objectForKeyedSubscript:@"options"];
   v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696E100]];
 
   v11 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v7, @"device", v5, @"file", 0}];
@@ -917,17 +917,17 @@ void __46__PTPCameraDeviceManager_getFileThumbnailImp___block_invoke_3(uint64_t 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getFileMetadataImp:(id)a3
+- (void)getFileMetadataImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"file"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"file"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", v7, @"file", 0}];
   v10 = [(PTPCameraDeviceManager *)self checkFile:v7 andDevice:v5];
   v21[3] = v10;
@@ -1016,18 +1016,18 @@ uint64_t __45__PTPCameraDeviceManager_getFileMetadataImp___block_invoke_3(uint64
   return [v6 executeCompletionBlockWithErrorCode:v3 info:v4 file:v5 completionDict:v7 completionBlk:v8];
 }
 
-- (void)getFileDataImp:(id)a3
+- (void)getFileDataImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v21 = [v4 objectForKeyedSubscript:@"info"];
-  v5 = [v4 objectForKeyedSubscript:@"file"];
-  v6 = [v4 objectForKeyedSubscript:@"cbBlock"];
-  v7 = [v4 objectForKeyedSubscript:@"device"];
-  v8 = [v4 objectForKeyedSubscript:@"options"];
+  v21 = [impCopy objectForKeyedSubscript:@"info"];
+  v5 = [impCopy objectForKeyedSubscript:@"file"];
+  v6 = [impCopy objectForKeyedSubscript:@"cbBlock"];
+  v7 = [impCopy objectForKeyedSubscript:@"device"];
+  v8 = [impCopy objectForKeyedSubscript:@"options"];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v7, @"device", 0}];
   v10 = [(PTPCameraDeviceManager *)self checkFile:v5 andDevice:v7];
   v31[3] = v10;
@@ -1042,9 +1042,9 @@ uint64_t __45__PTPCameraDeviceManager_getFileMetadataImp___block_invoke_3(uint64
     if (v11)
     {
       v12 = [v8 objectForKeyedSubscript:@"ICReadOffset"];
-      v13 = [v12 unsignedLongLongValue];
+      unsignedLongLongValue = [v12 unsignedLongLongValue];
 
-      v20 = v13 != 0x7FFFFFFFFFFFFFFFLL;
+      v20 = unsignedLongLongValue != 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
@@ -1145,33 +1145,33 @@ void __41__PTPCameraDeviceManager_getFileDataImp___block_invoke_3(uint64_t a1, v
   [*(a1 + 32) executeCompletionBlockWithErrorCode:*(*(*(a1 + 64) + 8) + 24) info:*(a1 + 40) file:*(a1 + 48) completionDict:v7 completionBlk:*(a1 + 56)];
 }
 
-- (void)downloadFileImp:(id)a3
+- (void)downloadFileImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"file"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"file"];
   v8 = MEMORY[0x1E695DF90];
-  v9 = [v4 objectForKeyedSubscript:@"opts"];
+  v9 = [impCopy objectForKeyedSubscript:@"opts"];
   v10 = [v8 dictionaryWithDictionary:v9];
 
   v11 = [v10 objectForKeyedSubscript:@"ICDownloadsDirectoryURL"];
-  v12 = [v11 path];
+  path = [v11 path];
 
-  v13 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v13 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v14 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", 0}];
   v15 = [(PTPCameraDeviceManager *)self checkFile:v7 andDevice:v5];
   v16 = v28;
   v28[3] = v15;
   if (!v15)
   {
-    if (v12)
+    if (path)
     {
-      [v10 setObject:v12 forKeyedSubscript:@"ICDownloadsDirectoryURL"];
+      [v10 setObject:path forKeyedSubscript:@"ICDownloadsDirectoryURL"];
       v17 = MEMORY[0x1E696AAE0];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
@@ -1254,19 +1254,19 @@ uint64_t __42__PTPCameraDeviceManager_downloadFileImp___block_invoke_3(void *a1,
   return [v5 executeCompletionBlockWithErrorCode:v4 info:v6 file:v7 completionDict:v8 completionBlk:v9];
 }
 
-- (void)deleteFileImp:(id)a3
+- (void)deleteFileImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = -9922;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"file"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"file"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v9 = MEMORY[0x1E695DF90];
-  v10 = [v4 objectForKeyedSubscript:@"opts"];
+  v10 = [impCopy objectForKeyedSubscript:@"opts"];
   v11 = [v9 dictionaryWithDictionary:v10];
 
   v12 = v5;
@@ -1369,19 +1369,19 @@ uint64_t __40__PTPCameraDeviceManager_deleteFileImp___block_invoke_3(uint64_t a1
   return result;
 }
 
-- (void)sendDevicePTPCommandImp:(id)a3
+- (void)sendDevicePTPCommandImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = -9922;
-  v5 = [v4 objectForKeyedSubscript:@"info"];
-  v6 = [v4 objectForKeyedSubscript:@"device"];
-  v7 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v5 = [impCopy objectForKeyedSubscript:@"info"];
+  v6 = [impCopy objectForKeyedSubscript:@"device"];
+  v7 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v6, @"device", 0}];
-  v9 = [v4 objectForKeyedSubscript:@"ICPTPCommandBuffer"];
-  v10 = [v4 objectForKeyedSubscript:@"ICPTPDataBuffer"];
+  v9 = [impCopy objectForKeyedSubscript:@"ICPTPCommandBuffer"];
+  v10 = [impCopy objectForKeyedSubscript:@"ICPTPDataBuffer"];
   if (v9)
   {
     v22[0] = MEMORY[0x1E69E9820];
@@ -1389,7 +1389,7 @@ uint64_t __40__PTPCameraDeviceManager_deleteFileImp___block_invoke_3(uint64_t a1
     v22[2] = __50__PTPCameraDeviceManager_sendDevicePTPCommandImp___block_invoke;
     v22[3] = &unk_1E829CBD0;
     v26 = &v27;
-    v11 = self;
+    selfCopy = self;
     v22[4] = self;
     v17 = v5;
     v12 = v5;
@@ -1407,7 +1407,7 @@ uint64_t __40__PTPCameraDeviceManager_deleteFileImp___block_invoke_3(uint64_t a1
       v18[2] = __50__PTPCameraDeviceManager_sendDevicePTPCommandImp___block_invoke_2;
       v18[3] = &unk_1E829CBF8;
       v21 = &v27;
-      v18[4] = v11;
+      v18[4] = selfCopy;
       v19 = v12;
       v20 = v13;
       [v15 sendPTPCommand:v9 andPayload:v10 withReply:v18];
@@ -1435,7 +1435,7 @@ void __50__PTPCameraDeviceManager_sendDevicePTPCommandImp___block_invoke_2(uint6
   [*(a1 + 32) executeCompletionBlockWithErrorCode:*(*(*(a1 + 56) + 8) + 24) info:*(a1 + 40) file:0 completionDict:v4 completionBlk:*(a1 + 48)];
 }
 
-- (void)ejectImp:(id)a3
+- (void)ejectImp:(id)imp
 {
   v14 = *MEMORY[0x1E69E9840];
   __ICOSLogCreate();
@@ -1453,7 +1453,7 @@ void __50__PTPCameraDeviceManager_sendDevicePTPCommandImp___block_invoke_2(uint6
     v7 = v3;
     v8 = v6;
     v10 = 136446466;
-    v11 = [(__CFString *)v3 UTF8String];
+    uTF8String = [(__CFString *)v3 UTF8String];
     v12 = 2114;
     v13 = v5;
     _os_log_impl(&dword_1C6F19000, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v10, 0x16u);
@@ -1462,41 +1462,41 @@ void __50__PTPCameraDeviceManager_sendDevicePTPCommandImp___block_invoke_2(uint6
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getSecurityScopedURLImp:(id)a3
+- (void)getSecurityScopedURLImp:(id)imp
 {
-  v4 = a3;
-  v9 = [v4 objectForKeyedSubscript:@"file"];
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"cbBlock"];
-  v7 = [v4 objectForKeyedSubscript:@"info"];
+  impCopy = imp;
+  v9 = [impCopy objectForKeyedSubscript:@"file"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"cbBlock"];
+  v7 = [impCopy objectForKeyedSubscript:@"info"];
 
   v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", 0}];
   [(PTPCameraDeviceManager *)self executeCompletionBlockWithErrorCode:-9922 info:v7 file:v9 completionDict:v8 completionBlk:v6];
 }
 
-- (void)refreshObjectHandleInfoImp:(id)a3
+- (void)refreshObjectHandleInfoImp:(id)imp
 {
-  v4 = a3;
-  v9 = [v4 objectForKeyedSubscript:@"file"];
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"cbBlock"];
-  v7 = [v4 objectForKeyedSubscript:@"info"];
+  impCopy = imp;
+  v9 = [impCopy objectForKeyedSubscript:@"file"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"cbBlock"];
+  v7 = [impCopy objectForKeyedSubscript:@"info"];
 
   v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", 0}];
   [(PTPCameraDeviceManager *)self executeCompletionBlockWithErrorCode:-9922 info:v7 file:v9 completionDict:v8 completionBlk:v6];
 }
 
-- (void)getFingerprintImp:(id)a3
+- (void)getFingerprintImp:(id)imp
 {
-  v4 = a3;
+  impCopy = imp;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [v4 objectForKeyedSubscript:@"device"];
-  v6 = [v4 objectForKeyedSubscript:@"info"];
-  v7 = [v4 objectForKeyedSubscript:@"file"];
-  v8 = [v4 objectForKeyedSubscript:@"cbBlock"];
+  v5 = [impCopy objectForKeyedSubscript:@"device"];
+  v6 = [impCopy objectForKeyedSubscript:@"info"];
+  v7 = [impCopy objectForKeyedSubscript:@"file"];
+  v8 = [impCopy objectForKeyedSubscript:@"cbBlock"];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v5, @"device", 0}];
   v10 = [(PTPCameraDeviceManager *)self checkFile:v7 andDevice:v5];
   v21[3] = v10;
@@ -1569,29 +1569,29 @@ void __44__PTPCameraDeviceManager_getFingerprintImp___block_invoke_3(uint64_t a1
   [*(a1 + 32) executeCompletionBlockWithErrorCode:v4 info:*(a1 + 40) file:*(a1 + 48) completionDict:v5 completionBlk:*(a1 + 56)];
 }
 
-- (void)registerDevice:(id)a3 forImageCaptureEventNotificationsImp:(id)a4
+- (void)registerDevice:(id)device forImageCaptureEventNotificationsImp:(id)imp
 {
-  v7 = a4;
-  v5 = [a3 remoteCamera];
-  v6 = v5;
-  if (v5)
+  impCopy = imp;
+  remoteCamera = [device remoteCamera];
+  v6 = remoteCamera;
+  if (remoteCamera)
   {
-    [v5 registerInterestedEventNotifications:v7];
+    [remoteCamera registerInterestedEventNotifications:impCopy];
   }
 }
 
-- (void)unregisterDevice:(id)a3 forImageCaptureEventNotificationsImp:(id)a4
+- (void)unregisterDevice:(id)device forImageCaptureEventNotificationsImp:(id)imp
 {
-  v7 = a4;
-  v5 = [a3 remoteCamera];
-  v6 = v5;
-  if (v5)
+  impCopy = imp;
+  remoteCamera = [device remoteCamera];
+  v6 = remoteCamera;
+  if (remoteCamera)
   {
-    [v5 unregisterInterestedEventNotifications:v7];
+    [remoteCamera unregisterInterestedEventNotifications:impCopy];
   }
 }
 
-- (void)handleEventImp:(id)a3
+- (void)handleEventImp:(id)imp
 {
   v13 = *MEMORY[0x1E69E9840];
   __ICOSLogCreate();
@@ -1636,9 +1636,9 @@ void __44__PTPCameraDeviceManager_getFingerprintImp___block_invoke_3(uint64_t a1
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)checkFile:(id)a3 andDevice:(id)a4
+- (int64_t)checkFile:(id)file andDevice:(id)device
 {
-  if (a3)
+  if (file)
   {
     v4 = 0;
   }
@@ -1648,7 +1648,7 @@ void __44__PTPCameraDeviceManager_getFingerprintImp___block_invoke_3(uint64_t a1
     v4 = -21450;
   }
 
-  if ([a4 hasOpenSession])
+  if ([device hasOpenSession])
   {
     return v4;
   }
@@ -1659,23 +1659,23 @@ void __44__PTPCameraDeviceManager_getFingerprintImp___block_invoke_3(uint64_t a1
   }
 }
 
-- (void)executeCompletionBlockWithErrorCode:(int64_t)a3 info:(id)a4 file:(id)a5 completionDict:(id)a6 completionBlk:(id)a7
+- (void)executeCompletionBlockWithErrorCode:(int64_t)code info:(id)info file:(id)file completionDict:(id)dict completionBlk:(id)blk
 {
-  v15 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  if (v15)
+  infoCopy = info;
+  fileCopy = file;
+  dictCopy = dict;
+  blkCopy = blk;
+  if (infoCopy)
   {
-    [v12 setObject:v15 forKeyedSubscript:@"info"];
+    [dictCopy setObject:infoCopy forKeyedSubscript:@"info"];
   }
 
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v12 setObject:v14 forKeyedSubscript:@"errCode"];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:code];
+  [dictCopy setObject:v14 forKeyedSubscript:@"errCode"];
 
-  if (v13)
+  if (blkCopy)
   {
-    v13[2](v13, v11, v12);
+    blkCopy[2](blkCopy, fileCopy, dictCopy);
   }
 }
 

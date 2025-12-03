@@ -28,20 +28,20 @@
 
 - (NSString)imaxWholeAnnotationDescription
 {
-  v3 = [(AEAnnotationAccessibility *)self thaxAnnotationStyle];
-  if (v3 <= 2)
+  thaxAnnotationStyle = [(AEAnnotationAccessibility *)self thaxAnnotationStyle];
+  if (thaxAnnotationStyle <= 2)
   {
-    if (v3 == 1)
+    if (thaxAnnotationStyle == 1)
     {
-      v4 = [(AEAnnotationAccessibility *)self imaxHasNote];
+      imaxHasNote = [(AEAnnotationAccessibility *)self imaxHasNote];
       v5 = @"highlight.color.green";
       v6 = @"highlight.color.green.with.note";
       goto LABEL_14;
     }
 
-    if (v3 == 2)
+    if (thaxAnnotationStyle == 2)
     {
-      v4 = [(AEAnnotationAccessibility *)self imaxHasNote];
+      imaxHasNote = [(AEAnnotationAccessibility *)self imaxHasNote];
       v5 = @"highlight.color.blue";
       v6 = @"highlight.color.blue.with.note";
       goto LABEL_14;
@@ -50,20 +50,20 @@
 
   else
   {
-    switch(v3)
+    switch(thaxAnnotationStyle)
     {
       case 3:
-        v4 = [(AEAnnotationAccessibility *)self imaxHasNote];
+        imaxHasNote = [(AEAnnotationAccessibility *)self imaxHasNote];
         v5 = @"highlight.color.yellow";
         v6 = @"highlight.color.yellow.with.note";
         goto LABEL_14;
       case 4:
-        v4 = [(AEAnnotationAccessibility *)self imaxHasNote];
+        imaxHasNote = [(AEAnnotationAccessibility *)self imaxHasNote];
         v5 = @"highlight.color.pink";
         v6 = @"highlight.color.pink.with.note";
         goto LABEL_14;
       case 5:
-        v4 = [(AEAnnotationAccessibility *)self imaxHasNote];
+        imaxHasNote = [(AEAnnotationAccessibility *)self imaxHasNote];
         v5 = @"highlight.color.purple";
         v6 = @"highlight.color.purple.with.note";
         goto LABEL_14;
@@ -72,11 +72,11 @@
 
   if ([(AEAnnotationAccessibility *)self thaxAnnotationIsUnderline])
   {
-    v4 = [(AEAnnotationAccessibility *)self imaxHasNote];
+    imaxHasNote = [(AEAnnotationAccessibility *)self imaxHasNote];
     v5 = @"highlight.underlined.text";
     v6 = @"highlight.underlined.text.with.note";
 LABEL_14:
-    if (v4)
+    if (imaxHasNote)
     {
       v7 = v6;
     }
@@ -149,17 +149,17 @@ LABEL_7:
 
 - (BOOL)imaxHasNote
 {
-  v2 = [(AEAnnotationAccessibility *)self imaxAnnotationNote];
-  v3 = [v2 length] != 0;
+  imaxAnnotationNote = [(AEAnnotationAccessibility *)self imaxAnnotationNote];
+  v3 = [imaxAnnotationNote length] != 0;
 
   return v3;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(AEAnnotationAccessibility *)self imaxWholeAnnotationDescription];
+  imaxWholeAnnotationDescription = [(AEAnnotationAccessibility *)self imaxWholeAnnotationDescription];
   v4 = [(AEAnnotationAccessibility *)self imaxValueForKey:@"annotationRepresentativeText"];
-  v12 = __IMAccessibilityStringForVariables(v3, v5, v6, v7, v8, v9, v10, v11, v4);
+  v12 = __IMAccessibilityStringForVariables(imaxWholeAnnotationDescription, v5, v6, v7, v8, v9, v10, v11, v4);
 
   return v12;
 }
@@ -184,9 +184,9 @@ LABEL_7:
 - (BOOL)thaxAnnotationIsUnderline
 {
   v2 = [(AEAnnotationAccessibility *)self imaxValueForKey:@"annotationIsUnderline"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

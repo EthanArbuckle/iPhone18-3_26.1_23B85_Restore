@@ -11,7 +11,7 @@
 - (id)pet_arrayForKey:()TypeSafeMethods
 {
   v4 = a3;
-  v5 = [a1 pet_objectForKey:v4 class:objc_opt_class()];
+  v5 = [self pet_objectForKey:v4 class:objc_opt_class()];
 
   return v5;
 }
@@ -19,7 +19,7 @@
 - (id)pet_dictForKey:()TypeSafeMethods
 {
   v4 = a3;
-  v5 = [a1 pet_objectForKey:v4 class:objc_opt_class()];
+  v5 = [self pet_objectForKey:v4 class:objc_opt_class()];
 
   return v5;
 }
@@ -27,7 +27,7 @@
 - (id)pet_numForKey:()TypeSafeMethods
 {
   v4 = a3;
-  v5 = [a1 pet_objectForKey:v4 class:objc_opt_class()];
+  v5 = [self pet_objectForKey:v4 class:objc_opt_class()];
 
   return v5;
 }
@@ -35,14 +35,14 @@
 - (id)pet_strForKey:()TypeSafeMethods
 {
   v4 = a3;
-  v5 = [a1 pet_objectForKey:v4 class:objc_opt_class()];
+  v5 = [self pet_objectForKey:v4 class:objc_opt_class()];
 
   return v5;
 }
 
 - (void)pet_objectForKey:()TypeSafeMethods class:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (objc_opt_isKindOfClass())
   {
     v2 = v1;

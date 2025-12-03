@@ -1,37 +1,37 @@
 @interface IDSPublicAccountIdentity
-- (IDSPublicAccountIdentity)initWithAccountIdentity:(id)a3 adminIdentity:(id)a4 signingIdentity:(id)a5;
-- (IDSPublicAccountIdentity)initWithCoder:(id)a3;
+- (IDSPublicAccountIdentity)initWithAccountIdentity:(id)identity adminIdentity:(id)adminIdentity signingIdentity:(id)signingIdentity;
+- (IDSPublicAccountIdentity)initWithCoder:(id)coder;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPublicAccountIdentity
 
-- (IDSPublicAccountIdentity)initWithAccountIdentity:(id)a3 adminIdentity:(id)a4 signingIdentity:(id)a5
+- (IDSPublicAccountIdentity)initWithAccountIdentity:(id)identity adminIdentity:(id)adminIdentity signingIdentity:(id)signingIdentity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identityCopy = identity;
+  adminIdentityCopy = adminIdentity;
+  signingIdentityCopy = signingIdentity;
   v15.receiver = self;
   v15.super_class = IDSPublicAccountIdentity;
   v12 = [(IDSPublicAccountIdentity *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accountIdentity, a3);
-    objc_storeStrong(&v13->_adminIdentity, a4);
-    objc_storeStrong(&v13->_signingIdentity, a5);
+    objc_storeStrong(&v12->_accountIdentity, identity);
+    objc_storeStrong(&v13->_adminIdentity, adminIdentity);
+    objc_storeStrong(&v13->_signingIdentity, signingIdentity);
   }
 
   return v13;
 }
 
-- (IDSPublicAccountIdentity)initWithCoder:(id)a3
+- (IDSPublicAccountIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIDSPublicAccountIdentityAccountData"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIDSPublicAccountIdentityAdminData"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIDSPublicAccountIdentitySigningData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIDSPublicAccountIdentityAccountData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIDSPublicAccountIdentityAdminData"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIDSPublicAccountIdentitySigningData"];
   v19 = 0;
   v8 = [IDSMPPublicAccountIdentity publicAccountIdentitywithDataRepresentation:v5 error:&v19];
   v9 = v19;
@@ -44,30 +44,30 @@
     if (v10)
     {
       v12 = v7;
-      v13 = self;
+      selfCopy = self;
       v17 = v12;
       v14 = [IDSMPPublicServiceIdentitySigning publicServiceIdentitySigningWithDataRepresentation:"publicServiceIdentitySigningWithDataRepresentation:publicAccountIdentity:error:" publicAccountIdentity:? error:?];
       v9 = v11;
 
       if (v14)
       {
-        v15 = [(IDSPublicAccountIdentity *)v13 initWithAccountIdentity:v8 adminIdentity:v10 signingIdentity:v14];
-        v13 = v15;
+        v15 = [(IDSPublicAccountIdentity *)selfCopy initWithAccountIdentity:v8 adminIdentity:v10 signingIdentity:v14];
+        selfCopy = v15;
       }
 
       else
       {
-        [v4 failWithError:v9];
+        [coderCopy failWithError:v9];
         v15 = 0;
       }
 
-      self = v13;
+      self = selfCopy;
       v7 = v17;
     }
 
     else
     {
-      [v4 failWithError:v11];
+      [coderCopy failWithError:v11];
       v15 = 0;
       v9 = v11;
     }
@@ -75,58 +75,58 @@
 
   else
   {
-    [v4 failWithError:v9];
+    [coderCopy failWithError:v9];
     v15 = 0;
   }
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSPublicAccountIdentity *)self accountIdentity];
+  coderCopy = coder;
+  accountIdentity = [(IDSPublicAccountIdentity *)self accountIdentity];
   v15 = 0;
-  v6 = [v5 dataRepresentationWithError:&v15];
+  v6 = [accountIdentity dataRepresentationWithError:&v15];
   v7 = v15;
 
   if (v6)
   {
-    v8 = [(IDSPublicAccountIdentity *)self adminIdentity];
+    adminIdentity = [(IDSPublicAccountIdentity *)self adminIdentity];
     v14 = v7;
-    v9 = [v8 dataRepresentationWithError:&v14];
+    v9 = [adminIdentity dataRepresentationWithError:&v14];
     v10 = v14;
 
     if (v9)
     {
-      v11 = [(IDSPublicAccountIdentity *)self signingIdentity];
+      signingIdentity = [(IDSPublicAccountIdentity *)self signingIdentity];
       v13 = v10;
-      v12 = [v11 dataRepresentationWithError:&v13];
+      v12 = [signingIdentity dataRepresentationWithError:&v13];
       v7 = v13;
 
       if (v12)
       {
-        [v4 encodeObject:v6 forKey:@"kIDSPublicAccountIdentityAccountData"];
-        [v4 encodeObject:v9 forKey:@"kIDSPublicAccountIdentityAdminData"];
-        [v4 encodeObject:v12 forKey:@"kIDSPublicAccountIdentitySigningData"];
+        [coderCopy encodeObject:v6 forKey:@"kIDSPublicAccountIdentityAccountData"];
+        [coderCopy encodeObject:v9 forKey:@"kIDSPublicAccountIdentityAdminData"];
+        [coderCopy encodeObject:v12 forKey:@"kIDSPublicAccountIdentitySigningData"];
       }
 
       else
       {
-        [v4 failWithError:v7];
+        [coderCopy failWithError:v7];
       }
     }
 
     else
     {
-      [v4 failWithError:v10];
+      [coderCopy failWithError:v10];
       v7 = v10;
     }
   }
 
   else
   {
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
   }
 }
 
@@ -134,10 +134,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSPublicAccountIdentity *)self accountIdentity];
-  v6 = [(IDSPublicAccountIdentity *)self adminIdentity];
-  v7 = [(IDSPublicAccountIdentity *)self signingIdentity];
-  v8 = [v3 stringWithFormat:@"<%@ %p accountIdentity: %@, adminIdentity: %@, signingIdentity: %@>", v4, self, v5, v6, v7];
+  accountIdentity = [(IDSPublicAccountIdentity *)self accountIdentity];
+  adminIdentity = [(IDSPublicAccountIdentity *)self adminIdentity];
+  signingIdentity = [(IDSPublicAccountIdentity *)self signingIdentity];
+  v8 = [v3 stringWithFormat:@"<%@ %p accountIdentity: %@, adminIdentity: %@, signingIdentity: %@>", v4, self, accountIdentity, adminIdentity, signingIdentity];
 
   return v8;
 }

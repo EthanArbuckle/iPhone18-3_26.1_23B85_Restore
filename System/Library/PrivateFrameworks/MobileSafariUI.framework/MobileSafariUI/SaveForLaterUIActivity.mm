@@ -1,9 +1,9 @@
 @interface SaveForLaterUIActivity
-- (BOOL)canPerformWithTabDocument:(id)a3;
+- (BOOL)canPerformWithTabDocument:(id)document;
 - (NSString)activityTitle;
 - (SaveForLaterUIActivity)init;
 - (id)_systemImageName;
-- (void)performActivityWithTabDocument:(id)a3;
+- (void)performActivityWithTabDocument:(id)document;
 @end
 
 @implementation SaveForLaterUIActivity
@@ -31,36 +31,36 @@
   return v2;
 }
 
-- (BOOL)canPerformWithTabDocument:(id)a3
+- (BOOL)canPerformWithTabDocument:(id)document
 {
-  v4 = a3;
-  v5 = self;
-  v6 = _sSo22SaveForLaterUIActivityC14MobileSafariUIE10canPerform4withSbSo11TabDocumentC_tF_0(v4);
+  documentCopy = document;
+  selfCopy = self;
+  v6 = _sSo22SaveForLaterUIActivityC14MobileSafariUIE10canPerform4withSbSo11TabDocumentC_tF_0(documentCopy);
 
   return v6 & 1;
 }
 
-- (void)performActivityWithTabDocument:(id)a3
+- (void)performActivityWithTabDocument:(id)document
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [v4 browserController];
-  if (!v5)
+  documentCopy = document;
+  selfCopy = self;
+  browserController = [documentCopy browserController];
+  if (!browserController)
   {
     goto LABEL_4;
   }
 
-  v6 = v5;
-  if ([v5 showDemoModeFeatureDisabledAlert])
+  v6 = browserController;
+  if ([browserController showDemoModeFeatureDisabledAlert])
   {
 
 LABEL_4:
-    [(_SFActivity *)v7 activityDidFinish:0];
+    [(_SFActivity *)selfCopy activityDidFinish:0];
     goto LABEL_6;
   }
 
   [v6 fastAddBookmarkForTabDocument_];
-  [(_SFActivity *)v7 activityDidFinish:1];
+  [(_SFActivity *)selfCopy activityDidFinish:1];
 
 LABEL_6:
 }

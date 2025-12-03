@@ -10,14 +10,14 @@
 
 - (id)nb_safeObjectAtIndex:()_NBAdditions class:
 {
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [a1 objectAtIndex:a3];
+    v5 = [self objectAtIndex:a3];
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -36,28 +36,28 @@
 {
   v5 = objc_opt_class();
 
-  return [a1 nb_safeObjectAtIndex:a3 class:v5];
+  return [self nb_safeObjectAtIndex:a3 class:v5];
 }
 
 - (uint64_t)nb_safeNumberAtIndex:()_NBAdditions
 {
   v5 = objc_opt_class();
 
-  return [a1 nb_safeObjectAtIndex:a3 class:v5];
+  return [self nb_safeObjectAtIndex:a3 class:v5];
 }
 
 - (uint64_t)nb_safeArrayAtIndex:()_NBAdditions
 {
   v5 = objc_opt_class();
 
-  return [a1 nb_safeObjectAtIndex:a3 class:v5];
+  return [self nb_safeObjectAtIndex:a3 class:v5];
 }
 
 - (uint64_t)nb_safeDataAtIndex:()_NBAdditions
 {
   v5 = objc_opt_class();
 
-  return [a1 nb_safeObjectAtIndex:a3 class:v5];
+  return [self nb_safeObjectAtIndex:a3 class:v5];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface GKRawTurnsDataSource
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4 updateNotifier:(id)a5;
-- (void)setItems:(id)a3;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info updateNotifier:(id)notifier;
+- (void)setItems:(id)items;
 @end
 
 @implementation GKRawTurnsDataSource
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4 updateNotifier:(id)a5
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info updateNotifier:(id)notifier
 {
-  v6 = a5;
+  notifierCopy = notifier;
   v7 = MEMORY[0x277D0C238];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__GKRawTurnsDataSource_refreshContentsForDataType_userInfo_updateNotifier___block_invoke;
   v9[3] = &unk_27966A8B8;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = notifierCopy;
+  selfCopy = self;
+  v8 = notifierCopy;
   [v7 loadTurnBasedMatchSummariesIncludingCompatibleBundleID:1 withCompletionHandler:v9];
 }
 
@@ -33,15 +33,15 @@ void __75__GKRawTurnsDataSource_refreshContentsForDataType_userInfo_updateNotifi
   [v6 addUpdate:v8 error:a3];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -53,14 +53,14 @@ void __75__GKRawTurnsDataSource_refreshContentsForDataType_userInfo_updateNotifi
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) setState:0];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -68,7 +68,7 @@ void __75__GKRawTurnsDataSource_refreshContentsForDataType_userInfo_updateNotifi
 
   v9.receiver = self;
   v9.super_class = GKRawTurnsDataSource;
-  [(GKBasicCollectionViewDataSource *)&v9 setItems:v4];
+  [(GKBasicCollectionViewDataSource *)&v9 setItems:itemsCopy];
 }
 
 @end

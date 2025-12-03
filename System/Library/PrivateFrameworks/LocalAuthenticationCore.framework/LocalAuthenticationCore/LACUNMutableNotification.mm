@@ -1,5 +1,5 @@
 @interface LACUNMutableNotification
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 @end
 
@@ -11,75 +11,75 @@
   v32 = MEMORY[0x1E696AEC0];
   v31 = objc_opt_class();
   v36[0] = @"identifier";
-  v3 = [(LACUNMutableNotification *)self identifier];
-  v4 = v3;
-  if (!v3)
+  identifier = [(LACUNMutableNotification *)self identifier];
+  v4 = identifier;
+  if (!identifier)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    identifier = [MEMORY[0x1E695DFB0] null];
   }
 
   v35 = v4;
-  v28 = v3;
-  v37[0] = v3;
+  v28 = identifier;
+  v37[0] = identifier;
   v36[1] = @"categoryIdentifier";
-  v5 = [(LACUNMutableNotification *)self categoryIdentifier];
-  v6 = v5;
-  if (!v5)
+  categoryIdentifier = [(LACUNMutableNotification *)self categoryIdentifier];
+  v6 = categoryIdentifier;
+  if (!categoryIdentifier)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    categoryIdentifier = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v5;
-  v37[1] = v5;
+  v27 = categoryIdentifier;
+  v37[1] = categoryIdentifier;
   v36[2] = @"shouldDisplayActionsInline";
   v33 = [MEMORY[0x1E696AD98] numberWithBool:{-[LACUNMutableNotification shouldDisplayActionsInline](self, "shouldDisplayActionsInline")}];
   v37[2] = v33;
   v36[3] = @"title";
-  v7 = [(LACUNMutableNotification *)self title];
-  v8 = v7;
-  if (!v7)
+  title = [(LACUNMutableNotification *)self title];
+  v8 = title;
+  if (!title)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    title = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v7;
-  v37[3] = v7;
+  v26 = title;
+  v37[3] = title;
   v36[4] = @"isTitleLocalized";
   v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[LACUNMutableNotification isTitleLocalized](self, "isTitleLocalized")}];
   v37[4] = v30;
   v36[5] = @"body";
-  v9 = [(LACUNMutableNotification *)self body];
-  v10 = v9;
-  if (!v9)
+  body = [(LACUNMutableNotification *)self body];
+  v10 = body;
+  if (!body)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    body = [MEMORY[0x1E695DFB0] null];
   }
 
   v34 = v6;
-  v25 = v9;
-  v37[5] = v9;
+  v25 = body;
+  v37[5] = body;
   v36[6] = @"isBodyLocalized";
   v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[LACUNMutableNotification isBodyLocalized](self, "isBodyLocalized")}];
   v37[6] = v29;
   v36[7] = @"systemIconName";
-  v11 = [(LACUNMutableNotification *)self systemIconName];
-  v12 = v11;
-  if (!v11)
+  systemIconName = [(LACUNMutableNotification *)self systemIconName];
+  v12 = systemIconName;
+  if (!systemIconName)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    systemIconName = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v11;
-  v37[7] = v11;
+  v24 = systemIconName;
+  v37[7] = systemIconName;
   v36[8] = @"defaultActionURL";
-  v13 = [(LACUNMutableNotification *)self defaultActionURL];
-  v14 = v13;
-  if (!v13)
+  defaultActionURL = [(LACUNMutableNotification *)self defaultActionURL];
+  null = defaultActionURL;
+  if (!defaultActionURL)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37[8] = v14;
+  v37[8] = null;
   v36[9] = @"isTimeSensitive";
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[LACUNMutableNotification isTimeSensitive](self, "isTimeSensitive")}];
   v37[9] = v15;
@@ -96,7 +96,7 @@
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:12];
   v21 = [v32 stringWithFormat:@"<%@ %p %@>", v31, self, v20];;
 
-  if (!v13)
+  if (!defaultActionURL)
   {
   }
 
@@ -125,24 +125,24 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F269E9F8])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F269E9F8])
   {
-    v5 = v4;
-    v6 = [(LACUNMutableNotification *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(LACUNMutableNotification *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(LACUNMutableNotification *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqualToString:v10];
+      identifier3 = [(LACUNMutableNotification *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqualToString:identifier4];
 
       if (!v11)
       {
@@ -150,18 +150,18 @@
       }
     }
 
-    v13 = [(LACUNMutableNotification *)self categoryIdentifier];
-    v14 = [v5 categoryIdentifier];
-    v15 = v14;
-    if (v13 == v14)
+    categoryIdentifier = [(LACUNMutableNotification *)self categoryIdentifier];
+    categoryIdentifier2 = [v5 categoryIdentifier];
+    v15 = categoryIdentifier2;
+    if (categoryIdentifier == categoryIdentifier2)
     {
     }
 
     else
     {
-      v16 = [(LACUNMutableNotification *)self categoryIdentifier];
-      v17 = [v5 categoryIdentifier];
-      v18 = [v16 isEqualToString:v17];
+      categoryIdentifier3 = [(LACUNMutableNotification *)self categoryIdentifier];
+      categoryIdentifier4 = [v5 categoryIdentifier];
+      v18 = [categoryIdentifier3 isEqualToString:categoryIdentifier4];
 
       if (!v18)
       {
@@ -169,21 +169,21 @@
       }
     }
 
-    v19 = [(LACUNMutableNotification *)self shouldDisplayActionsInline];
-    if (v19 == [v5 shouldDisplayActionsInline])
+    shouldDisplayActionsInline = [(LACUNMutableNotification *)self shouldDisplayActionsInline];
+    if (shouldDisplayActionsInline == [v5 shouldDisplayActionsInline])
     {
-      v20 = [(LACUNMutableNotification *)self title];
-      v21 = [v5 title];
-      v22 = v21;
-      if (v20 == v21)
+      title = [(LACUNMutableNotification *)self title];
+      title2 = [v5 title];
+      v22 = title2;
+      if (title == title2)
       {
       }
 
       else
       {
-        v23 = [(LACUNMutableNotification *)self title];
-        v24 = [v5 title];
-        v25 = [v23 isEqualToString:v24];
+        title3 = [(LACUNMutableNotification *)self title];
+        title4 = [v5 title];
+        v25 = [title3 isEqualToString:title4];
 
         if (!v25)
         {
@@ -191,18 +191,18 @@
         }
       }
 
-      v26 = [(LACUNMutableNotification *)self body];
-      v27 = [v5 body];
-      v28 = v27;
-      if (v26 == v27)
+      body = [(LACUNMutableNotification *)self body];
+      body2 = [v5 body];
+      v28 = body2;
+      if (body == body2)
       {
       }
 
       else
       {
-        v29 = [(LACUNMutableNotification *)self body];
-        v30 = [v5 body];
-        v31 = [v29 isEqualToString:v30];
+        body3 = [(LACUNMutableNotification *)self body];
+        body4 = [v5 body];
+        v31 = [body3 isEqualToString:body4];
 
         if (!v31)
         {
@@ -210,18 +210,18 @@
         }
       }
 
-      v32 = [(LACUNMutableNotification *)self systemIconName];
-      v33 = [v5 systemIconName];
-      v34 = v33;
-      if (v32 == v33)
+      systemIconName = [(LACUNMutableNotification *)self systemIconName];
+      systemIconName2 = [v5 systemIconName];
+      v34 = systemIconName2;
+      if (systemIconName == systemIconName2)
       {
       }
 
       else
       {
-        v35 = [(LACUNMutableNotification *)self systemIconName];
-        v36 = [v5 systemIconName];
-        v37 = [v35 isEqualToString:v36];
+        systemIconName3 = [(LACUNMutableNotification *)self systemIconName];
+        systemIconName4 = [v5 systemIconName];
+        v37 = [systemIconName3 isEqualToString:systemIconName4];
 
         if (!v37)
         {
@@ -229,18 +229,18 @@
         }
       }
 
-      v38 = [(LACUNMutableNotification *)self defaultActionURL];
-      v39 = [v5 defaultActionURL];
-      v40 = v39;
-      if (v38 == v39)
+      defaultActionURL = [(LACUNMutableNotification *)self defaultActionURL];
+      defaultActionURL2 = [v5 defaultActionURL];
+      v40 = defaultActionURL2;
+      if (defaultActionURL == defaultActionURL2)
       {
       }
 
       else
       {
-        v41 = [(LACUNMutableNotification *)self defaultActionURL];
-        v42 = [v5 defaultActionURL];
-        v43 = [v41 isEqual:v42];
+        defaultActionURL3 = [(LACUNMutableNotification *)self defaultActionURL];
+        defaultActionURL4 = [v5 defaultActionURL];
+        v43 = [defaultActionURL3 isEqual:defaultActionURL4];
 
         if (!v43)
         {
@@ -248,14 +248,14 @@
         }
       }
 
-      v44 = [(LACUNMutableNotification *)self isTitleLocalized];
-      if (v44 == [v5 isTitleLocalized])
+      isTitleLocalized = [(LACUNMutableNotification *)self isTitleLocalized];
+      if (isTitleLocalized == [v5 isTitleLocalized])
       {
-        v45 = [(LACUNMutableNotification *)self isBodyLocalized];
-        if (v45 == [v5 isBodyLocalized])
+        isBodyLocalized = [(LACUNMutableNotification *)self isBodyLocalized];
+        if (isBodyLocalized == [v5 isBodyLocalized])
         {
-          v46 = [(LACUNMutableNotification *)self isTimeSensitive];
-          if (v46 == [v5 isTimeSensitive])
+          isTimeSensitive = [(LACUNMutableNotification *)self isTimeSensitive];
+          if (isTimeSensitive == [v5 isTimeSensitive])
           {
             [(LACUNMutableNotification *)self withdrawInterval];
             v48 = v47;

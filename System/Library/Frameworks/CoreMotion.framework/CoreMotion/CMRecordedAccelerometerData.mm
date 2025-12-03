@@ -1,15 +1,15 @@
 @interface CMRecordedAccelerometerData
 - ($1AB5FA073B851C12C2339EC22442E995)acceleration;
-- (CMRecordedAccelerometerData)initWithCoder:(id)a3;
-- (CMRecordedAccelerometerData)initWithData:(CMAccel100 *)a3 timestamp:(unint64_t)a4 walltime:(double)a5 identifier:(unint64_t)a6;
+- (CMRecordedAccelerometerData)initWithCoder:(id)coder;
+- (CMRecordedAccelerometerData)initWithData:(CMAccel100 *)data timestamp:(unint64_t)timestamp walltime:(double)walltime identifier:(unint64_t)identifier;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)resetWithData:(CMAccel100 *)a3 timestamp:(unint64_t)a4 walltime:(double)a5 identifier:(unint64_t)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)resetWithData:(CMAccel100 *)data timestamp:(unint64_t)timestamp walltime:(double)walltime identifier:(unint64_t)identifier;
 @end
 
 @implementation CMRecordedAccelerometerData
 
-- (CMRecordedAccelerometerData)initWithData:(CMAccel100 *)a3 timestamp:(unint64_t)a4 walltime:(double)a5 identifier:(unint64_t)a6
+- (CMRecordedAccelerometerData)initWithData:(CMAccel100 *)data timestamp:(unint64_t)timestamp walltime:(double)walltime identifier:(unint64_t)identifier
 {
   v14.receiver = self;
   v14.super_class = CMRecordedAccelerometerData;
@@ -17,60 +17,60 @@
   v12 = v10;
   if (v10)
   {
-    objc_msgSend_resetWithData_timestamp_walltime_identifier_(v10, v11, a3, a4, a6, a5);
+    objc_msgSend_resetWithData_timestamp_walltime_identifier_(v10, v11, data, timestamp, identifier, walltime);
   }
 
   return v12;
 }
 
-- (CMRecordedAccelerometerData)initWithCoder:(id)a3
+- (CMRecordedAccelerometerData)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = CMRecordedAccelerometerData;
   v5 = [(CMRecordedAccelerometerData *)&v16 init];
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"timestamp");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"timestamp");
     v5->_timestampValue = v6;
-    objc_msgSend_decodeDoubleForKey_(a3, v7, @"startDate");
+    objc_msgSend_decodeDoubleForKey_(coder, v7, @"startDate");
     v5->_startDateValue = v8;
-    objc_msgSend_decodeFloatForKey_(a3, v9, @"accel_x");
+    objc_msgSend_decodeFloatForKey_(coder, v9, @"accel_x");
     v5->_accelerationValue.x = v10;
-    objc_msgSend_decodeFloatForKey_(a3, v11, @"accel_y");
+    objc_msgSend_decodeFloatForKey_(coder, v11, @"accel_y");
     v5->_accelerationValue.y = v12;
-    objc_msgSend_decodeFloatForKey_(a3, v13, @"accel_z");
+    objc_msgSend_decodeFloatForKey_(coder, v13, @"accel_z");
     v5->_accelerationValue.z = v14;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
-  objc_msgSend_encodeDouble_forKey_(a3, a2, @"timestamp", self->_timestampValue);
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"startDate", v4->_startDateValue);
-  v4 = (v4 + 32);
-  v6 = *&v4->super.super.super.isa;
-  *&v6 = *&v4->super.super.super.isa;
-  objc_msgSend_encodeFloat_forKey_(a3, v7, @"accel_x", v6);
-  v8 = *&v4->super.super._internalLogItem;
+  selfCopy = self;
+  objc_msgSend_encodeDouble_forKey_(coder, a2, @"timestamp", self->_timestampValue);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"startDate", selfCopy->_startDateValue);
+  selfCopy = (selfCopy + 32);
+  v6 = *&selfCopy->super.super.super.isa;
+  *&v6 = *&selfCopy->super.super.super.isa;
+  objc_msgSend_encodeFloat_forKey_(coder, v7, @"accel_x", v6);
+  v8 = *&selfCopy->super.super._internalLogItem;
   *&v8 = v8;
-  objc_msgSend_encodeFloat_forKey_(a3, v9, @"accel_y", v8);
-  v11 = *&v4->super._internal;
+  objc_msgSend_encodeFloat_forKey_(coder, v9, @"accel_y", v8);
+  v11 = *&selfCopy->super._internal;
   *&v11 = v11;
 
-  objc_msgSend_encodeFloat_forKey_(a3, v10, @"accel_z", v11);
+  objc_msgSend_encodeFloat_forKey_(coder, v10, @"accel_z", v11);
 }
 
-- (void)resetWithData:(CMAccel100 *)a3 timestamp:(unint64_t)a4 walltime:(double)a5 identifier:(unint64_t)a6
+- (void)resetWithData:(CMAccel100 *)data timestamp:(unint64_t)timestamp walltime:(double)walltime identifier:(unint64_t)identifier
 {
-  *&self->_accelerationValue.x = vcvtq_f64_f32(*&a3->var0);
-  self->_accelerationValue.z = a3->var2;
-  v6 = *(&a3->var2 + 1);
-  self->_startDateValue = a5 - (a4 - v6) / 1000000.0;
+  *&self->_accelerationValue.x = vcvtq_f64_f32(*&data->var0);
+  self->_accelerationValue.z = data->var2;
+  v6 = *(&data->var2 + 1);
+  self->_startDateValue = walltime - (timestamp - v6) / 1000000.0;
   self->_timestampValue = v6 / 1000000.0;
-  self->_identifier = a6;
+  self->_identifier = identifier;
 }
 
 - (void)dealloc

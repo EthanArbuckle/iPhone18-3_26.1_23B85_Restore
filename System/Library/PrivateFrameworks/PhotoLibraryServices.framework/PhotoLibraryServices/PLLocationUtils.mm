@@ -1,16 +1,16 @@
 @interface PLLocationUtils
-+ (BOOL)canUseCoordinate:(CLLocationCoordinate2D)a3;
-+ (BOOL)locationIsCoarse:(id)a3;
++ (BOOL)canUseCoordinate:(CLLocationCoordinate2D)coordinate;
++ (BOOL)locationIsCoarse:(id)coarse;
 + (CLLocationCoordinate2D)defaultLocationCoordinate2D;
-+ (PLCartesianCoordinate3D)cartesianCoordinateFromLatitude:(float)a3 longitude:(float)a4;
++ (PLCartesianCoordinate3D)cartesianCoordinateFromLatitude:(float)latitude longitude:(float)longitude;
 @end
 
 @implementation PLLocationUtils
 
-+ (PLCartesianCoordinate3D)cartesianCoordinateFromLatitude:(float)a3 longitude:(float)a4
++ (PLCartesianCoordinate3D)cartesianCoordinateFromLatitude:(float)latitude longitude:(float)longitude
 {
-  v4 = a3 * 0.017453;
-  v5 = __sincosf_stret(a4 * 0.017453);
+  v4 = latitude * 0.017453;
+  v5 = __sincosf_stret(longitude * 0.017453);
   v6 = __sincosf_stret(v4);
   v7 = v6.__cosval * v5.__sinval;
   v8 = v6.__cosval * v5.__cosval;
@@ -21,11 +21,11 @@
   return result;
 }
 
-+ (BOOL)locationIsCoarse:(id)a3
++ (BOOL)locationIsCoarse:(id)coarse
 {
-  [a3 horizontalAccuracy];
+  [coarse horizontalAccuracy];
 
-  return [a1 horizontalAccuracyIsCoarse:?];
+  return [self horizontalAccuracyIsCoarse:?];
 }
 
 + (CLLocationCoordinate2D)defaultLocationCoordinate2D
@@ -38,11 +38,11 @@
   return result;
 }
 
-+ (BOOL)canUseCoordinate:(CLLocationCoordinate2D)a3
++ (BOOL)canUseCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v5 = CLLocationCoordinate2DIsValid(a3);
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  v5 = CLLocationCoordinate2DIsValid(coordinate);
   if (v5)
   {
     v6 = latitude != 0.0;

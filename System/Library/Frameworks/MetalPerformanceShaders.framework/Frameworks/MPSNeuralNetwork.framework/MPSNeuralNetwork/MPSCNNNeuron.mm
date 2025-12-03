@@ -2,14 +2,14 @@
 - (MPSCNNNeuron)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNNeuron)initWithDevice:(id)device;
 - (MPSCNNNeuron)initWithDevice:(id)device neuronDescriptor:(MPSNNNeuronDescriptor *)neuronDescriptor;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)privateInitWithDevice:(id)a3 a:(const float *)a4 count:(unint64_t)a5 type:(int)a6;
-- (id)privateInitWithDevice:(id)a3 a:(float)a4 b:(float)a5 c:(float)a6 type:(int)a7;
+- (id)privateInitWithDevice:(id)device a:(const float *)a count:(unint64_t)count type:(int)type;
+- (id)privateInitWithDevice:(id)device a:(float)a b:(float)b c:(float)c type:(int)type;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)initializeWithNeuronType:(int)a3 neuronParameterA:(const float *)a4 count:(unint64_t)a5;
-- (void)initializeWithNeuronType:(int)a3 neuronParameterA:(float)a4 neuronParameterB:(float)a5 neuronParameterC:(float)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)initializeWithNeuronType:(int)type neuronParameterA:(const float *)a count:(unint64_t)count;
+- (void)initializeWithNeuronType:(int)type neuronParameterA:(float)a neuronParameterB:(float)b neuronParameterC:(float)c;
 @end
 
 @implementation MPSCNNNeuron
@@ -80,12 +80,12 @@ LABEL_16:
   return 0;
 }
 
-- (id)privateInitWithDevice:(id)a3 a:(float)a4 b:(float)a5 c:(float)a6 type:(int)a7
+- (id)privateInitWithDevice:(id)device a:(float)a b:(float)b c:(float)c type:(int)type
 {
-  v7 = *&a7;
+  v7 = *&type;
   v23.receiver = self;
   v23.super_class = MPSCNNNeuron;
-  result = [(MPSCNNKernel *)&v23 initWithDevice:a3];
+  result = [(MPSCNNKernel *)&v23 initWithDevice:device];
   if (result)
   {
     if (v7 >= 16)
@@ -102,9 +102,9 @@ LABEL_16:
     else
     {
       v21 = result;
-      *&v18 = a4;
-      *&v19 = a5;
-      *&v20 = a6;
+      *&v18 = a;
+      *&v19 = b;
+      *&v20 = c;
       objc_msgSend_initializeWithNeuronType_neuronParameterA_neuronParameterB_neuronParameterC_(result, v12, v7, v13, v14, v15, v16, v17, v18, v19, v20);
       return v21;
     }
@@ -113,12 +113,12 @@ LABEL_16:
   return result;
 }
 
-- (id)privateInitWithDevice:(id)a3 a:(const float *)a4 count:(unint64_t)a5 type:(int)a6
+- (id)privateInitWithDevice:(id)device a:(const float *)a count:(unint64_t)count type:(int)type
 {
-  v6 = *&a6;
+  v6 = *&type;
   v16.receiver = self;
   v16.super_class = MPSCNNNeuron;
-  result = [(MPSCNNKernel *)&v16 initWithDevice:a3];
+  result = [(MPSCNNKernel *)&v16 initWithDevice:device];
   if (result)
   {
     if (v6 >= 16)
@@ -135,7 +135,7 @@ LABEL_16:
     else
     {
       v14 = result;
-      objc_msgSend_initializeWithNeuronType_neuronParameterA_count_(result, v10, v6, a4, a5, v11, v12, v13);
+      objc_msgSend_initializeWithNeuronType_neuronParameterA_count_(result, v10, v6, a, count, v11, v12, v13);
       return v14;
     }
   }
@@ -153,12 +153,12 @@ LABEL_16:
   return 0;
 }
 
-- (void)initializeWithNeuronType:(int)a3 neuronParameterA:(float)a4 neuronParameterB:(float)a5 neuronParameterC:(float)a6
+- (void)initializeWithNeuronType:(int)type neuronParameterA:(float)a neuronParameterB:(float)b neuronParameterC:(float)c
 {
-  self->_neuronType = a3;
-  self->_a = a4;
-  self->_b = a5;
-  self->_c = a6;
+  self->_neuronType = type;
+  self->_a = a;
+  self->_b = b;
+  self->_c = c;
   self->_data = 0;
   self->_noCopy = 0;
   self->_aBuf = 0;
@@ -169,15 +169,15 @@ LABEL_16:
   self->super._encodeData = self;
 }
 
-- (void)initializeWithNeuronType:(int)a3 neuronParameterA:(const float *)a4 count:(unint64_t)a5
+- (void)initializeWithNeuronType:(int)type neuronParameterA:(const float *)a count:(unint64_t)count
 {
   v62 = *MEMORY[0x277D85DE8];
-  self->_neuronType = a3;
+  self->_neuronType = type;
   self->_a = 0.0;
   self->_b = 0.0;
   self->_c = 0.0;
   self->_aBuf = 0;
-  self->_count = a5;
+  self->_count = count;
   v8 = *MEMORY[0x277CD7350];
   v9 = (*(**(&self->super.super.super.isa + v8) + 24))(*(&self->super.super.super.isa + v8), a2);
   self->super._checkFlags |= 0x8002u;
@@ -187,22 +187,22 @@ LABEL_16:
   v17 = 16 * v9;
   if (self->_noCopy)
   {
-    if (((a4 + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0]) != a4 && MTLReportFailureTypeEnabled())
+    if (((a + *MEMORY[0x277D85FA0] - 1) & -*MEMORY[0x277D85FA0]) != a && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    v18 = 4 * a5;
+    v18 = 4 * count;
     if (((objc_msgSend_minBufferNoCopyAlignmentBytes((*(&self->super.super.super.isa + v8))[2], v10, v11, v12, v13, v14, v15, v16) - 1) & v18) != 0 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
     size = 0;
-    address = a4;
+    address = a;
     object_name = 0;
     infoCnt = 9;
-    if (vm_region_64(*MEMORY[0x277D85F48], &address, &size, 10, info, &infoCnt, &object_name) || (info[0] & 1) == 0 || address != a4 || size != v18) && (MTLReportFailureTypeEnabled())
+    if (vm_region_64(*MEMORY[0x277D85F48], &address, &size, 10, info, &infoCnt, &object_name) || (info[0] & 1) == 0 || address != a || size != v18) && (MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
@@ -213,24 +213,24 @@ LABEL_16:
     self->_aBuf = objc_msgSend_newBufferWithBytesNoCopy_length_options_deallocator_(v44, v54, v45, v53, v17, 0, v55, v56);
   }
 
-  else if (a4)
+  else if (a)
   {
-    v26 = 4 * a5;
+    v26 = 4 * count;
     v27 = objc_msgSend_newBufferWithLength_options_((*(&self->super.super.super.isa + v8))[2], v10, (v26 + 12) & 0xFFFFFFFFFFFFFFF0, v17, v13, v14, v15, v16);
     self->_aBuf = v27;
     v35 = objc_msgSend_contents(v27, v28, v29, v30, v31, v32, v33, v34);
     bzero(v35, (v26 + 12) & 0xFFFFFFFFFFFFFFF0);
     v43 = objc_msgSend_contents(self->_aBuf, v36, v37, v38, v39, v40, v41, v42);
 
-    memcpy(v43, a4, v26);
+    memcpy(v43, a, v26);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v21.receiver = self;
   v21.super_class = MPSCNNNeuron;
-  v5 = [(MPSCNNKernel *)&v21 copyWithZone:a3 device:a4];
+  v5 = [(MPSCNNKernel *)&v21 copyWithZone:zone device:device];
   v5[82] = self->_neuronType;
   v5[83] = LODWORD(self->_a);
   v5[84] = LODWORD(self->_b);
@@ -334,20 +334,20 @@ LABEL_8:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v51.receiver = self;
   v51.super_class = MPSCNNNeuron;
   [(MPSCNNKernel *)&v51 encodeWithCoder:?];
-  objc_msgSend_encodeInt32_forKey_(a3, v5, self->_neuronType, @"MPSCNNNeuronTypeName", v6, v7, v8, v9);
+  objc_msgSend_encodeInt32_forKey_(coder, v5, self->_neuronType, @"MPSCNNNeuronTypeName", v6, v7, v8, v9);
   *&v10 = self->_a;
-  objc_msgSend_encodeFloat_forKey_(a3, v11, @"MPSCNNNeuronA", v12, v13, v14, v15, v16, v10);
+  objc_msgSend_encodeFloat_forKey_(coder, v11, @"MPSCNNNeuronA", v12, v13, v14, v15, v16, v10);
   *&v17 = self->_b;
-  objc_msgSend_encodeFloat_forKey_(a3, v18, @"MPSCNNNeuronB", v19, v20, v21, v22, v23, v17);
+  objc_msgSend_encodeFloat_forKey_(coder, v18, @"MPSCNNNeuronB", v19, v20, v21, v22, v23, v17);
   *&v24 = self->_c;
-  objc_msgSend_encodeFloat_forKey_(a3, v25, @"MPSCNNNeuronC", v26, v27, v28, v29, v30, v24);
-  objc_msgSend_encodeBool_forKey_(a3, v31, self->_aBuf == 0, @"MPSCNNNeuronAArrayIsNil", v32, v33, v34, v35);
+  objc_msgSend_encodeFloat_forKey_(coder, v25, @"MPSCNNNeuronC", v26, v27, v28, v29, v30, v24);
+  objc_msgSend_encodeBool_forKey_(coder, v31, self->_aBuf == 0, @"MPSCNNNeuronAArrayIsNil", v32, v33, v34, v35);
   aBuf = self->_aBuf;
   if (aBuf)
   {
@@ -358,12 +358,12 @@ LABEL_8:
     {
       v46 = v45;
       MPSCopyToFromNetworkByteOrder32();
-      objc_msgSend_encodeBytes_length_forKey_(a3, v47, v46, 4 * count, @"MPSCNNNeuronAArray", v48, v49, v50);
+      objc_msgSend_encodeBytes_length_forKey_(coder, v47, v46, 4 * count, @"MPSCNNNeuronAArray", v48, v49, v50);
       free(v46);
     }
   }
 
-  objc_msgSend_encodeInt64_forKey_(a3, v36, self->_count, @"MPSCNNNeuronAArrayLength", v39, v40, v41, v42);
+  objc_msgSend_encodeInt64_forKey_(coder, v36, self->_count, @"MPSCNNNeuronAArrayLength", v39, v40, v41, v42);
 }
 
 - (id)debugDescription

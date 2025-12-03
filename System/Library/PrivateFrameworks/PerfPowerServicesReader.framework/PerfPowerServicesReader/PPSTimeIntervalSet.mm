@@ -1,20 +1,20 @@
 @interface PPSTimeIntervalSet
-- (PPSTimeIntervalSet)initWithCoalescePolicy:(id)a3;
-- (PPSTimeIntervalSet)initWithTimeInterval:(id)a3;
-- (PPSTimeIntervalSet)initWithTimeInterval:(id)a3 coalescePolicy:(id)a4;
-- (PPSTimeIntervalSet)initWithTimeIntervalSet:(id)a3 coalescePolicy:(id)a4;
+- (PPSTimeIntervalSet)initWithCoalescePolicy:(id)policy;
+- (PPSTimeIntervalSet)initWithTimeInterval:(id)interval;
+- (PPSTimeIntervalSet)initWithTimeInterval:(id)interval coalescePolicy:(id)policy;
+- (PPSTimeIntervalSet)initWithTimeIntervalSet:(id)set coalescePolicy:(id)policy;
 @end
 
 @implementation PPSTimeIntervalSet
 
-- (PPSTimeIntervalSet)initWithCoalescePolicy:(id)a3
+- (PPSTimeIntervalSet)initWithCoalescePolicy:(id)policy
 {
   v4.receiver = self;
   v4.super_class = PPSTimeIntervalSet;
   return [(PPSTimeIntervalSet *)&v4 init];
 }
 
-- (PPSTimeIntervalSet)initWithTimeInterval:(id)a3
+- (PPSTimeIntervalSet)initWithTimeInterval:(id)interval
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = +[PPSTimeIntervalCoalescePolicy legacyPolicy];
@@ -23,18 +23,18 @@
   return v6;
 }
 
-- (PPSTimeIntervalSet)initWithTimeInterval:(id)a3 coalescePolicy:(id)a4
+- (PPSTimeIntervalSet)initWithTimeInterval:(id)interval coalescePolicy:(id)policy
 {
-  v5 = a4;
-  v6 = [objc_alloc(objc_opt_class()) initWithCoalescePolicy:v5];
+  policyCopy = policy;
+  v6 = [objc_alloc(objc_opt_class()) initWithCoalescePolicy:policyCopy];
 
   return v6;
 }
 
-- (PPSTimeIntervalSet)initWithTimeIntervalSet:(id)a3 coalescePolicy:(id)a4
+- (PPSTimeIntervalSet)initWithTimeIntervalSet:(id)set coalescePolicy:(id)policy
 {
-  v5 = a4;
-  v6 = [objc_alloc(objc_opt_class()) initWithCoalescePolicy:v5];
+  policyCopy = policy;
+  v6 = [objc_alloc(objc_opt_class()) initWithCoalescePolicy:policyCopy];
 
   return v6;
 }

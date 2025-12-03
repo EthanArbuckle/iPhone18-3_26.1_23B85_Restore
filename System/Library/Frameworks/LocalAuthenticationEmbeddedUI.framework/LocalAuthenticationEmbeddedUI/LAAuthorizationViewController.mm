@@ -1,56 +1,56 @@
 @interface LAAuthorizationViewController
-- (LAAuthorizationViewController)initWithConfiguration:(id)a3 completion:(id)a4;
+- (LAAuthorizationViewController)initWithConfiguration:(id)configuration completion:(id)completion;
 - (LAAuthorizationViewControllerDelegate)delegate;
 - (int64_t)modalPresentationStyle;
 - (int64_t)preferredStatusBarStyle;
-- (uint64_t)_finishWithError:(uint64_t)a1;
+- (uint64_t)_finishWithError:(uint64_t)error;
 - (uint64_t)dismissFromContainerViewController;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_prepareHostedSceneWithCompletion:(void *)a1;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_prepareHostedSceneWithCompletion:(void *)completion;
 - (void)_prepareRemoteUI;
-- (void)_prepareRemoteViewServiceWithCompletion:(void *)a1;
+- (void)_prepareRemoteViewServiceWithCompletion:(void *)completion;
 - (void)_presentRemoteView;
 - (void)_startRemoteView;
-- (void)didProvideAuthorizationRequirementWithReply:(id)a3;
+- (void)didProvideAuthorizationRequirementWithReply:(id)reply;
 - (void)dismiss;
 - (void)loadView;
-- (void)presentInContainerViewController:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)presentInContainerViewController:(id)controller;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation LAAuthorizationViewController
 
-- (LAAuthorizationViewController)initWithConfiguration:(id)a3 completion:(id)a4
+- (LAAuthorizationViewController)initWithConfiguration:(id)configuration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = LAAuthorizationViewController;
   v9 = [(LAAuthorizationViewController *)&v15 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    v11 = MEMORY[0x23EE74B30](v8);
+    objc_storeStrong(&v9->_configuration, configuration);
+    v11 = MEMORY[0x23EE74B30](completionCopy);
     completion = v10->_completion;
     v10->_completion = v11;
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v10 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
   }
 
   return v10;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = LAAuthorizationViewController;
-  [(LAAuthorizationViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:?];
-  v7 = [(LAAuthorizationViewController *)self view];
-  [v7 setFrame:{0.0, 0.0, width, height}];
+  [(LAAuthorizationViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:?];
+  view = [(LAAuthorizationViewController *)self view];
+  [view setFrame:{0.0, 0.0, width, height}];
 }
 
 - (int64_t)modalPresentationStyle
@@ -73,8 +73,8 @@
     return 0;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v2 = [v3 userInterfaceIdiom] != 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v2 = [currentDevice userInterfaceIdiom] != 1;
 
   return v2;
 }
@@ -98,10 +98,10 @@
     v8[3] = &unk_278A65980;
     objc_copyWeak(&v9, &location);
     v2 = MEMORY[0x23EE74B30](v8);
-    v3 = [MEMORY[0x277D24068] sharedInstance];
-    v4 = [v3 featureFlagLaunchAngelEnabled];
+    mEMORY[0x277D24068] = [MEMORY[0x277D24068] sharedInstance];
+    featureFlagLaunchAngelEnabled = [mEMORY[0x277D24068] featureFlagLaunchAngelEnabled];
 
-    if (v4)
+    if (featureFlagLaunchAngelEnabled)
     {
       v5 = v7;
       v7[0] = MEMORY[0x277D85DD0];
@@ -162,13 +162,13 @@ void __49__LAAuthorizationViewController__prepareRemoteUI__block_invoke(uint64_t
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prepareHostedSceneWithCompletion:(void *)a1
+- (void)_prepareHostedSceneWithCompletion:(void *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     v4 = objc_alloc_init(MEMORY[0x277D241F0]);
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, completion);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __67__LAAuthorizationViewController__prepareHostedSceneWithCompletion___block_invoke;
@@ -181,12 +181,12 @@ void __49__LAAuthorizationViewController__prepareRemoteUI__block_invoke(uint64_t
   }
 }
 
-- (void)_prepareRemoteViewServiceWithCompletion:(void *)a1
+- (void)_prepareRemoteViewServiceWithCompletion:(void *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, completion);
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __73__LAAuthorizationViewController__prepareRemoteViewServiceWithCompletion___block_invoke;
@@ -358,12 +358,12 @@ void __40__LAAuthorizationViewController_dismiss__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)presentInContainerViewController:(id)a3
+- (void)presentInContainerViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(LAAuthorizationViewController *)self active])
   {
-    [v4 presentViewController:self animated:1 completion:&__block_literal_global_3];
+    [controllerCopy presentViewController:self animated:1 completion:&__block_literal_global_3];
   }
 
   else
@@ -377,20 +377,20 @@ void __40__LAAuthorizationViewController_dismiss__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)didProvideAuthorizationRequirementWithReply:(id)a3
+- (void)didProvideAuthorizationRequirementWithReply:(id)reply
 {
-  v9 = a3;
-  v4 = [(LAAuthorizationViewController *)self delegate];
-  if (v4 && (v5 = v4, [(LAAuthorizationViewController *)self delegate], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, v5, (v7 & 1) != 0))
+  replyCopy = reply;
+  delegate = [(LAAuthorizationViewController *)self delegate];
+  if (delegate && (v5 = delegate, [(LAAuthorizationViewController *)self delegate], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, v5, (v7 & 1) != 0))
   {
-    v8 = [(LAAuthorizationViewController *)self delegate];
-    [v8 authorizationController:self didProvideAuthorizationRequirementWithReply:v9];
+    delegate2 = [(LAAuthorizationViewController *)self delegate];
+    [delegate2 authorizationController:self didProvideAuthorizationRequirementWithReply:replyCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CD47F0] internalErrorWithMessage:@"Password validation not available"];
-    v9[2](v9, v8);
+    delegate2 = [MEMORY[0x277CD47F0] internalErrorWithMessage:@"Password validation not available"];
+    replyCopy[2](replyCopy, delegate2);
   }
 }
 
@@ -401,21 +401,21 @@ void __40__LAAuthorizationViewController_dismiss__block_invoke(uint64_t a1, void
   return WeakRetained;
 }
 
-- (uint64_t)_finishWithError:(uint64_t)a1
+- (uint64_t)_finishWithError:(uint64_t)error
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (error)
   {
-    v3 = *(a1 + 1008);
+    v3 = *(error + 1008);
     if (v3)
     {
       v8 = v4;
       v5 = [v3 copy];
-      v6 = *(a1 + 1008);
-      *(a1 + 1008) = 0;
+      v6 = *(error + 1008);
+      *(error + 1008) = 0;
 
-      [a1 dismissViewControllerAnimated:objc_msgSend(*(a1 + 1016) completion:{"style") == 1, &__block_literal_global_72}];
+      [error dismissViewControllerAnimated:objc_msgSend(*(error + 1016) completion:{"style") == 1, &__block_literal_global_72}];
       (v5)[2](v5, v8);
 
       v4 = v8;
@@ -427,16 +427,16 @@ void __40__LAAuthorizationViewController_dismiss__block_invoke(uint64_t a1, void
 
 - (void)_presentRemoteView
 {
-  if (a1)
+  if (self)
   {
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
-      if (a1[124])
+      if (self[124])
       {
-        v3 = [a1 view];
-        v4 = [v3 subviews];
-        v5 = [OUTLINED_FUNCTION_1() view];
-        v6 = [v4 containsObject:v5];
+        view = [self view];
+        subviews = [view subviews];
+        view2 = [OUTLINED_FUNCTION_1() view];
+        v6 = [subviews containsObject:view2];
 
         if ((v6 & 1) == 0)
         {
@@ -449,58 +449,58 @@ void __40__LAAuthorizationViewController_dismiss__block_invoke(uint64_t a1, void
             _os_log_impl(&dword_238BCD000, v8, OS_LOG_TYPE_INFO, "Presenting remote UI", buf, 2u);
           }
 
-          v9 = [a1 view];
-          v10 = [OUTLINED_FUNCTION_1() view];
-          [v9 addSubview:v10];
+          view3 = [self view];
+          view4 = [OUTLINED_FUNCTION_1() view];
+          [view3 addSubview:view4];
 
-          v11 = [OUTLINED_FUNCTION_1() view];
-          [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+          view5 = [OUTLINED_FUNCTION_1() view];
+          [view5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-          v12 = [OUTLINED_FUNCTION_1() view];
-          [v12 topAnchor];
+          view6 = [OUTLINED_FUNCTION_1() view];
+          [view6 topAnchor];
           objc_claimAutoreleasedReturnValue();
-          v13 = [OUTLINED_FUNCTION_2() view];
-          [v13 topAnchor];
+          view7 = [OUTLINED_FUNCTION_2() view];
+          [view7 topAnchor];
           objc_claimAutoreleasedReturnValue();
           v14 = [OUTLINED_FUNCTION_0() constraintEqualToAnchor:?];
           OUTLINED_FUNCTION_4(v14, v15);
 
-          v16 = [OUTLINED_FUNCTION_1() view];
-          [v16 bottomAnchor];
+          view8 = [OUTLINED_FUNCTION_1() view];
+          [view8 bottomAnchor];
           objc_claimAutoreleasedReturnValue();
-          v17 = [OUTLINED_FUNCTION_2() view];
-          [v17 bottomAnchor];
+          view9 = [OUTLINED_FUNCTION_2() view];
+          [view9 bottomAnchor];
           objc_claimAutoreleasedReturnValue();
           v18 = [OUTLINED_FUNCTION_0() constraintEqualToAnchor:?];
           OUTLINED_FUNCTION_4(v18, v19);
 
-          v20 = [OUTLINED_FUNCTION_1() view];
-          [v20 leadingAnchor];
+          view10 = [OUTLINED_FUNCTION_1() view];
+          [view10 leadingAnchor];
           objc_claimAutoreleasedReturnValue();
-          v21 = [OUTLINED_FUNCTION_2() view];
-          [v21 leadingAnchor];
+          view11 = [OUTLINED_FUNCTION_2() view];
+          [view11 leadingAnchor];
           objc_claimAutoreleasedReturnValue();
           v22 = [OUTLINED_FUNCTION_0() constraintEqualToAnchor:?];
           OUTLINED_FUNCTION_4(v22, v23);
 
-          v24 = [OUTLINED_FUNCTION_1() view];
-          [v24 trailingAnchor];
+          view12 = [OUTLINED_FUNCTION_1() view];
+          [view12 trailingAnchor];
           objc_claimAutoreleasedReturnValue();
-          v25 = [OUTLINED_FUNCTION_2() view];
-          [v25 trailingAnchor];
+          view13 = [OUTLINED_FUNCTION_2() view];
+          [view13 trailingAnchor];
           objc_claimAutoreleasedReturnValue();
           v26 = [OUTLINED_FUNCTION_0() constraintEqualToAnchor:?];
           OUTLINED_FUNCTION_4(v26, v27);
 
-          [a1 addChildViewController:a1[124]];
-          [(LAAuthorizationViewController *)a1 _startRemoteView];
+          [self addChildViewController:self[124]];
+          [(LAAuthorizationViewController *)self _startRemoteView];
         }
       }
     }
 
     else
     {
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __51__LAAuthorizationViewController__presentRemoteView__block_invoke;
@@ -526,7 +526,7 @@ void __40__LAAuthorizationViewController_dismiss__block_invoke(uint64_t a1, void
   return result;
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   v4 = [MEMORY[0x277CD47F0] errorWithCode:-4];
   [(LAAuthorizationViewController *)self _finishWithError:v4];

@@ -1,5 +1,5 @@
 @interface NTKFaceEditPageViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)layoutSubviews;
 - (void)removeAllKeylines;
@@ -7,14 +7,14 @@
 
 @implementation NTKFaceEditPageViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKFaceEditPageView" hasInstanceVariable:@"_addColorsView" withType:"_NTKAddColorsView"];
-  [v3 validateClass:@"NTKFaceEditPageView" hasInstanceVariable:@"_keylineContainers" withType:"NSMutableDictionary"];
-  [v3 validateClass:@"NTKFaceEditPageView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NTKFaceEditPageView" hasInstanceMethod:@"addKeyline:forKey:tappable:" withFullSignature:{"v", "@", "@", "B", 0}];
-  [v3 validateClass:@"NTKFaceEditPageView" hasInstanceMethod:@"removeAllKeylines" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKFaceEditPageView" hasInstanceVariable:@"_addColorsView" withType:"_NTKAddColorsView"];
+  [validationsCopy validateClass:@"NTKFaceEditPageView" hasInstanceVariable:@"_keylineContainers" withType:"NSMutableDictionary"];
+  [validationsCopy validateClass:@"NTKFaceEditPageView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NTKFaceEditPageView" hasInstanceMethod:@"addKeyline:forKey:tappable:" withFullSignature:{"v", "@", "@", "B", 0}];
+  [validationsCopy validateClass:@"NTKFaceEditPageView" hasInstanceMethod:@"removeAllKeylines" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityElements
@@ -35,8 +35,8 @@
       v6 = [(NTKFaceEditPageViewAccessibility *)self safeDictionaryForKey:@"_keylineContainers"];
       if ([v6 count])
       {
-        v7 = [v6 allValues];
-        v8 = [v7 sortedArrayUsingSelector:"accessibilityCompareGeometry:"];
+        allValues = [v6 allValues];
+        v8 = [allValues sortedArrayUsingSelector:"accessibilityCompareGeometry:"];
 
         [(NTKFaceEditPageViewAccessibility *)self _accessibilitySetRetainedValue:v8 forKey:kUIAccessibilityStorageKeyChildren];
       }

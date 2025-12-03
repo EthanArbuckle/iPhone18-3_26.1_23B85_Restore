@@ -1,33 +1,33 @@
 @interface ICSecureKeyDeliveryRequestOperation
-- (id)_createDefaultProtocolRequestBodyUsingPlaybackContextData:(id)a3;
-- (id)_createPodcastLicenseProtocolRequestBodyUsingPlaybackContextData:(id)a3;
-- (id)_createSimplifiedProtocolRequestBodyUsingPlaybackContextData:(id)a3;
-- (void)_createServerPlaybackContextWithCompletion:(id)a3;
+- (id)_createDefaultProtocolRequestBodyUsingPlaybackContextData:(id)data;
+- (id)_createPodcastLicenseProtocolRequestBodyUsingPlaybackContextData:(id)data;
+- (id)_createSimplifiedProtocolRequestBodyUsingPlaybackContextData:(id)data;
+- (void)_createServerPlaybackContextWithCompletion:(id)completion;
 - (void)execute;
 @end
 
 @implementation ICSecureKeyDeliveryRequestOperation
 
-- (void)_createServerPlaybackContextWithCompletion:(id)a3
+- (void)_createServerPlaybackContextWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICSecureKeyDeliveryRequest *)self->_request serverPlaybackContextData];
+  completionCopy = completion;
+  serverPlaybackContextData = [(ICSecureKeyDeliveryRequest *)self->_request serverPlaybackContextData];
 
-  if (v5)
+  if (serverPlaybackContextData)
   {
-    v6 = [(ICSecureKeyDeliveryRequest *)self->_request serverPlaybackContextData];
-    v4[2](v4, v6, 0);
+    serverPlaybackContextData2 = [(ICSecureKeyDeliveryRequest *)self->_request serverPlaybackContextData];
+    completionCopy[2](completionCopy, serverPlaybackContextData2, 0);
   }
 
   else
   {
-    v6 = [(ICSecureKeyDeliveryRequest *)self->_request requestContext];
+    serverPlaybackContextData2 = [(ICSecureKeyDeliveryRequest *)self->_request requestContext];
     [(ICSecureKeyDeliveryRequest *)self->_request isITunesStoreRequest];
     v7 = objc_opt_class();
-    v8 = [(ICSecureKeyDeliveryRequest *)self->_request certificateURL];
-    v9 = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:v8];
+    certificateURL = [(ICSecureKeyDeliveryRequest *)self->_request certificateURL];
+    v9 = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:certificateURL];
     [v9 setHTTPMethod:@"GET"];
-    v10 = [[v7 alloc] initWithURLRequest:v9 requestContext:v6];
+    v10 = [[v7 alloc] initWithURLRequest:v9 requestContext:serverPlaybackContextData2];
     [v10 setRequestName:@"SKDCertificate"];
     v11 = +[ICCertificateCache shared];
     v12[0] = MEMORY[0x1E69E9820];
@@ -35,7 +35,7 @@
     v12[2] = __82__ICSecureKeyDeliveryRequestOperation__createServerPlaybackContextWithCompletion___block_invoke;
     v12[3] = &unk_1E7BF9FB0;
     v12[4] = self;
-    v13 = v4;
+    v13 = completionCopy;
     [v11 getDataForCertificateRequest:v10 withCompletionHandler:v12];
   }
 }
@@ -168,31 +168,31 @@ void __82__ICSecureKeyDeliveryRequestOperation__createServerPlaybackContextWithC
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_createPodcastLicenseProtocolRequestBodyUsingPlaybackContextData:(id)a3
+- (id)_createPodcastLicenseProtocolRequestBodyUsingPlaybackContextData:(id)data
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICSecureKeyDeliveryRequestOperation *)self request];
+  dataCopy = data;
+  request = [(ICSecureKeyDeliveryRequestOperation *)self request];
   v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:8];
-  if ([v4 length])
+  if ([dataCopy length])
   {
-    v7 = [v4 base64EncodedStringWithOptions:0];
+    v7 = [dataCopy base64EncodedStringWithOptions:0];
     if ([v7 length])
     {
       [v6 setObject:v7 forKey:@"spc"];
     }
   }
 
-  v8 = [v5 contentURI];
-  if (v8)
+  contentURI = [request contentURI];
+  if (contentURI)
   {
-    [v6 setObject:v8 forKey:@"uri"];
+    [v6 setObject:contentURI forKey:@"uri"];
   }
 
-  v9 = [v5 adamID];
-  if (v9)
+  adamID = [request adamID];
+  if (adamID)
   {
-    [v6 setObject:v9 forKey:@"adam-id"];
+    [v6 setObject:adamID forKey:@"adam-id"];
   }
 
   [v6 setObject:&unk_1F2C923B0 forKey:@"id"];
@@ -207,45 +207,45 @@ void __82__ICSecureKeyDeliveryRequestOperation__createServerPlaybackContextWithC
   return v11;
 }
 
-- (id)_createSimplifiedProtocolRequestBodyUsingPlaybackContextData:(id)a3
+- (id)_createSimplifiedProtocolRequestBodyUsingPlaybackContextData:(id)data
 {
-  v4 = a3;
-  v5 = [(ICSecureKeyDeliveryRequestOperation *)self request];
-  v6 = [v5 requestContext];
+  dataCopy = data;
+  request = [(ICSecureKeyDeliveryRequestOperation *)self request];
+  requestContext = [request requestContext];
   v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:8];
-  if ([v4 length])
+  if ([dataCopy length])
   {
-    v8 = [v4 base64EncodedStringWithOptions:0];
+    v8 = [dataCopy base64EncodedStringWithOptions:0];
     if ([v8 length])
     {
       [v7 setObject:v8 forKey:@"spc"];
     }
   }
 
-  if ([v5 shouldIncludeDeviceGUID])
+  if ([request shouldIncludeDeviceGUID])
   {
-    v9 = [v6 deviceInfo];
-    v10 = [v9 deviceGUID];
+    deviceInfo = [requestContext deviceInfo];
+    deviceGUID = [deviceInfo deviceGUID];
 
-    if (v10)
+    if (deviceGUID)
     {
-      [v7 setObject:v10 forKey:@"guid"];
+      [v7 setObject:deviceGUID forKey:@"guid"];
     }
   }
 
-  v11 = [v5 contentURI];
-  if (v11)
+  contentURI = [request contentURI];
+  if (contentURI)
   {
-    [v7 setObject:v11 forKey:@"keyUri"];
+    [v7 setObject:contentURI forKey:@"keyUri"];
   }
 
-  v12 = [v5 adamID];
-  if (v12)
+  adamID = [request adamID];
+  if (adamID)
   {
-    [v7 setObject:v12 forKey:@"adamId"];
+    [v7 setObject:adamID forKey:@"adamId"];
   }
 
-  if ([v5 isOfflineDownload])
+  if ([request isOfflineDownload])
   {
     [v7 setObject:MEMORY[0x1E695E118] forKey:@"offline"];
   }
@@ -253,53 +253,53 @@ void __82__ICSecureKeyDeliveryRequestOperation__createServerPlaybackContextWithC
   return v7;
 }
 
-- (id)_createDefaultProtocolRequestBodyUsingPlaybackContextData:(id)a3
+- (id)_createDefaultProtocolRequestBodyUsingPlaybackContextData:(id)data
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICSecureKeyDeliveryRequestOperation *)self request];
-  v6 = [v5 requestContext];
+  dataCopy = data;
+  request = [(ICSecureKeyDeliveryRequestOperation *)self request];
+  requestContext = [request requestContext];
   v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:8];
-  if ([v4 length])
+  if ([dataCopy length])
   {
-    v8 = [v4 base64EncodedStringWithOptions:0];
+    v8 = [dataCopy base64EncodedStringWithOptions:0];
     if ([v8 length])
     {
       [v7 setObject:v8 forKey:@"spc"];
     }
   }
 
-  if ([v5 shouldIncludeDeviceGUID])
+  if ([request shouldIncludeDeviceGUID])
   {
-    v9 = [v6 deviceInfo];
-    v10 = [v9 deviceGUID];
+    deviceInfo = [requestContext deviceInfo];
+    deviceGUID = [deviceInfo deviceGUID];
 
-    if (v10)
+    if (deviceGUID)
     {
-      [v7 setObject:v10 forKey:@"guid"];
+      [v7 setObject:deviceGUID forKey:@"guid"];
     }
   }
 
   [v7 setObject:&unk_1F2C92398 forKey:@"id"];
-  v11 = [v5 contentURI];
-  if (v11)
+  contentURI = [request contentURI];
+  if (contentURI)
   {
-    [v7 setObject:v11 forKey:@"uri"];
+    [v7 setObject:contentURI forKey:@"uri"];
   }
 
-  v12 = [v5 rentalID];
-  if (v12)
+  rentalID = [request rentalID];
+  if (rentalID)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithLongLong:v12];
+    v13 = [MEMORY[0x1E696AD98] numberWithLongLong:rentalID];
     [v7 setObject:v13 forKey:@"rental-id"];
   }
 
-  if ([v5 skippedRentalCheckout])
+  if ([request skippedRentalCheckout])
   {
     [v7 setObject:MEMORY[0x1E695E118] forKey:@"skipped-rental-checkout"];
   }
 
-  v14 = [v5 leaseActionType] - 1;
+  v14 = [request leaseActionType] - 1;
   if (v14 <= 2)
   {
     [v7 setObject:off_1E7BF9FD0[v14] forKey:@"lease-action"];
@@ -328,39 +328,39 @@ void __82__ICSecureKeyDeliveryRequestOperation__createServerPlaybackContextWithC
   v28[3] = &unk_1E7BF9F20;
   v28[4] = self;
   v3 = MEMORY[0x1B8C781E0](v28, a2);
-  v4 = [(ICSecureKeyDeliveryRequestOperation *)self request];
+  request = [(ICSecureKeyDeliveryRequestOperation *)self request];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v30 = self;
+    selfCopy5 = self;
     v31 = 2114;
-    v32 = v4;
+    v32 = request;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Executing request %{public}@", buf, 0x16u);
   }
 
-  v6 = [v4 certificateURL];
-  v7 = [v4 keyServerURL];
-  v8 = v7;
-  if (v6 && v7)
+  certificateURL = [request certificateURL];
+  keyServerURL = [request keyServerURL];
+  v8 = keyServerURL;
+  if (certificateURL && keyServerURL)
   {
-    v9 = [v4 resourceLoadingRequest];
-    if (v9 || ([v4 contentKeyRequest], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    resourceLoadingRequest = [request resourceLoadingRequest];
+    if (resourceLoadingRequest || ([request contentKeyRequest], (resourceLoadingRequest = objc_claimAutoreleasedReturnValue()) != 0))
     {
 
       goto LABEL_8;
     }
 
-    v19 = [v4 serverPlaybackContextData];
+    serverPlaybackContextData = [request serverPlaybackContextData];
 
-    if (v19)
+    if (serverPlaybackContextData)
     {
 LABEL_8:
-      v10 = [v4 isITunesStoreRequest];
-      v11 = [v4 requestContext];
-      if (v11)
+      isITunesStoreRequest = [request isITunesStoreRequest];
+      requestContext = [request requestContext];
+      if (requestContext)
       {
-        if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+        if (!isITunesStoreRequest || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v12 = +[ICURLSessionManager highPrioritySession];
           v21[0] = MEMORY[0x1E69E9820];
@@ -369,10 +369,10 @@ LABEL_8:
           v21[3] = &unk_1E7BF9F88;
           v21[4] = self;
           v26 = v3;
-          v22 = v4;
+          v22 = request;
           v23 = v8;
-          v27 = v10;
-          v24 = v11;
+          v27 = isITunesStoreRequest;
+          v24 = requestContext;
           v25 = v12;
           v13 = v12;
           [(ICSecureKeyDeliveryRequestOperation *)self _createServerPlaybackContextWithCompletion:v21];
@@ -385,7 +385,7 @@ LABEL_22:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v30 = self;
+          selfCopy5 = self;
           v18 = "[%{public}@]: [SKD] - Requesting iTunes Store content with a non-store request context.";
           goto LABEL_20;
         }
@@ -397,7 +397,7 @@ LABEL_22:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v30 = self;
+          selfCopy5 = self;
           v18 = "[%{public}@]: [SKD] - Missing request context.";
 LABEL_20:
           _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_DEFAULT, v18, buf, 0xCu);
@@ -413,7 +413,7 @@ LABEL_20:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v30 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@]: [SKD] - Missing content key request data", buf, 0xCu);
     }
 
@@ -427,9 +427,9 @@ LABEL_20:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v30 = self;
+      selfCopy5 = self;
       v31 = 2114;
-      v32 = v6;
+      v32 = certificateURL;
       v33 = 2114;
       v34 = v8;
       _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@]: [SKD] - Missing certificate URL: %{public}@ or key server URL: %{public}@", buf, 0x20u);
@@ -439,8 +439,8 @@ LABEL_20:
     v16 = @"Missing certificate URL or key server URL";
   }
 
-  v11 = [v15 msv_errorWithDomain:@"ICError" code:-7101 debugDescription:v16];
-  (v3)[2](v3, 0, v11);
+  requestContext = [v15 msv_errorWithDomain:@"ICError" code:-7101 debugDescription:v16];
+  (v3)[2](v3, 0, requestContext);
 LABEL_23:
 }
 

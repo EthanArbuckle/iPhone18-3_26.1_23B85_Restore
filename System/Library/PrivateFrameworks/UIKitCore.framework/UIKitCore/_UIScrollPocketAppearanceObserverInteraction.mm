@@ -4,9 +4,9 @@
 - (UIView)view;
 - (_UIScrollPocketAppearanceObserver)observer;
 - (_UIScrollPocketAppearanceObserverInteraction)init;
-- (_UIScrollPocketAppearanceObserverInteraction)initWithCollectorInteraction:(id)a3;
+- (_UIScrollPocketAppearanceObserverInteraction)initWithCollectorInteraction:(id)interaction;
 - (void)_updateProperties;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation _UIScrollPocketAppearanceObserverInteraction
@@ -27,48 +27,48 @@
 
 - (UIView)view
 {
-  v2 = [(_UIScrollPocketAppearanceObserverInteraction *)self _view];
+  _view = [(_UIScrollPocketAppearanceObserverInteraction *)self _view];
 
-  return v2;
+  return _view;
 }
 
-- (_UIScrollPocketAppearanceObserverInteraction)initWithCollectorInteraction:(id)a3
+- (_UIScrollPocketAppearanceObserverInteraction)initWithCollectorInteraction:(id)interaction
 {
   *(self + OBJC_IVAR____UIScrollPocketAppearanceObserverInteraction_glassFrostValues) = MEMORY[0x1E69E7CC8];
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR____UIScrollPocketAppearanceObserverInteraction_collectorInteraction) = a3;
+  *(self + OBJC_IVAR____UIScrollPocketAppearanceObserverInteraction_collectorInteraction) = interaction;
   v7.receiver = self;
   v7.super_class = _UIScrollPocketAppearanceObserverInteraction;
-  v5 = a3;
+  interactionCopy = interaction;
   return [(_UIScrollPocketAppearanceObserverInteraction *)&v7 init];
 }
 
 - (void)_updateProperties
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890960C0();
 }
 
 - (NSString)description
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 descriptionForRootObject_];
-  if (!v5)
+  selfCopy = self;
+  descriptionForRootObject_ = [v3 descriptionForRootObject_];
+  if (!descriptionForRootObject_)
   {
     sub_18A4A7288();
-    v5 = sub_18A4A7258();
+    descriptionForRootObject_ = sub_18A4A7258();
   }
 
-  return v5;
+  return descriptionForRootObject_;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = self;
-  sub_1890963A8(v4);
+  streamCopy = stream;
+  selfCopy = self;
+  sub_1890963A8(streamCopy);
 }
 
 - (_UIScrollPocketAppearanceObserverInteraction)init

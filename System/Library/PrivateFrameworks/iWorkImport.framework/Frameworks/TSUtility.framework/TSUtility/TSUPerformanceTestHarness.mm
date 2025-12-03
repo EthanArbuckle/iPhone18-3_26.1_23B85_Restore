@@ -3,14 +3,14 @@
 - (BOOL)runTests;
 - (TSUPerformanceTestHarness)init;
 - (id)p_createResultDirectory;
-- (id)testWithName:(id)a3 selector:(SEL)a4 goalTime:(double)a5;
+- (id)testWithName:(id)name selector:(SEL)selector goalTime:(double)time;
 - (void)cleanup;
 - (void)dealloc;
-- (void)p_writeCsvResultsToDirectory:(id)a3;
-- (void)p_writeSystemConfigurationToDirectory:(id)a3;
+- (void)p_writeCsvResultsToDirectory:(id)directory;
+- (void)p_writeSystemConfigurationToDirectory:(id)directory;
 - (void)report;
-- (void)runTestWithName:(id)a3 selector:(SEL)a4 goalTime:(double)a5;
-- (void)runTestWithName:(id)a3 selector:(SEL)a4 goalTime:(double)a5 precision:(double)a6;
+- (void)runTestWithName:(id)name selector:(SEL)selector goalTime:(double)time;
+- (void)runTestWithName:(id)name selector:(SEL)selector goalTime:(double)time precision:(double)precision;
 - (void)setup;
 - (void)testSuite;
 @end
@@ -48,27 +48,27 @@
   return v2;
 }
 
-- (id)testWithName:(id)a3 selector:(SEL)a4 goalTime:(double)a5
+- (id)testWithName:(id)name selector:(SEL)selector goalTime:(double)time
 {
-  v6 = [[TSUPerformanceTest alloc] initWithName:a3 selector:a4 target:self goalTime:a5];
+  v6 = [[TSUPerformanceTest alloc] initWithName:name selector:selector target:self goalTime:time];
   [(NSMutableArray *)self->mTestCases addObject:v6];
   [(TSUPerformanceTest *)v6 setQuiet:self->mQuiet];
 
   return v6;
 }
 
-- (void)runTestWithName:(id)a3 selector:(SEL)a4 goalTime:(double)a5
+- (void)runTestWithName:(id)name selector:(SEL)selector goalTime:(double)time
 {
-  v6 = [(TSUPerformanceTestHarness *)self testWithName:a3 selector:a4 goalTime:a5];
+  v6 = [(TSUPerformanceTestHarness *)self testWithName:name selector:selector goalTime:time];
   [v6 setQuiet:self->mQuiet];
 
   MEMORY[0x2821F9670](v6, &sel_run);
 }
 
-- (void)runTestWithName:(id)a3 selector:(SEL)a4 goalTime:(double)a5 precision:(double)a6
+- (void)runTestWithName:(id)name selector:(SEL)selector goalTime:(double)time precision:(double)precision
 {
-  v8 = [(TSUPerformanceTestHarness *)self testWithName:a3 selector:a4 goalTime:a5];
-  [v8 setPrecision:a6];
+  v8 = [(TSUPerformanceTestHarness *)self testWithName:name selector:selector goalTime:time];
+  [v8 setPrecision:precision];
   [v8 setQuiet:self->mQuiet];
 
   MEMORY[0x2821F9670](v8, &sel_run);
@@ -205,11 +205,11 @@
     NSLog(@"Performance tests %s [%ld passed out of %ld]", v10, self->mPassingTests, self->mTotalTests);
   }
 
-  v11 = [(TSUPerformanceTestHarness *)self p_createResultDirectory];
-  if (v11)
+  p_createResultDirectory = [(TSUPerformanceTestHarness *)self p_createResultDirectory];
+  if (p_createResultDirectory)
   {
-    v12 = v11;
-    [(TSUPerformanceTestHarness *)self p_writeSystemConfigurationToDirectory:v11];
+    v12 = p_createResultDirectory;
+    [(TSUPerformanceTestHarness *)self p_writeSystemConfigurationToDirectory:p_createResultDirectory];
     [(TSUPerformanceTestHarness *)self p_writeCsvResultsToDirectory:v12];
   }
 
@@ -221,7 +221,7 @@
 
 - (id)p_createResultDirectory
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = [(NSArray *)NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory objectAtIndex:1), "objectAtIndex:", 0];
   if (!v3)
   {
@@ -242,14 +242,14 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if ([v2 fileExistsAtPath:v7])
+  if ([defaultManager fileExistsAtPath:v7])
   {
     NSLog(@"Not expecting the path %@ to already exist", v7, v10);
     return 0;
   }
 
   v11 = 0;
-  if (([v2 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v11] & 1) == 0)
+  if (([defaultManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v11] & 1) == 0)
   {
     NSLog(@"Unable to create a directory at %@ due to error: %@", v7, v11);
     return 0;
@@ -258,10 +258,10 @@
   return v7;
 }
 
-- (void)p_writeSystemConfigurationToDirectory:(id)a3
+- (void)p_writeSystemConfigurationToDirectory:(id)directory
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [a3 stringByAppendingPathComponent:@"system_config.txt"];
+  v3 = [directory stringByAppendingPathComponent:@"system_config.txt"];
   v4 = fopen([v3 UTF8String], "w");
   if (!v4)
   {
@@ -270,12 +270,12 @@
   }
 
   v5 = v4;
-  v6 = [MEMORY[0x277D75418] currentDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
   fwrite("*** UIDEVICE ***\n", 0x11uLL, 1uLL, v5);
-  fprintf(v5, "name:%s\n", [objc_msgSend(v6 "name")]);
-  fprintf(v5, "systemName:%s\n", [objc_msgSend(v6 "systemName")]);
-  fprintf(v5, "systemVersion:%s\n", [objc_msgSend(v6 "systemVersion")]);
-  fprintf(v5, "model:%s\n", [objc_msgSend(v6 "model")]);
+  fprintf(v5, "name:%s\n", [objc_msgSend(currentDevice "name")]);
+  fprintf(v5, "systemName:%s\n", [objc_msgSend(currentDevice "systemName")]);
+  fprintf(v5, "systemVersion:%s\n", [objc_msgSend(currentDevice "systemVersion")]);
+  fprintf(v5, "model:%s\n", [objc_msgSend(currentDevice "model")]);
   fwrite("*** UNAME ***\n", 0xEuLL, 1uLL, v5);
   memset(&v16, 0, 512);
   v7 = uname(&v16);
@@ -342,10 +342,10 @@ LABEL_10:
   fclose(v5);
 }
 
-- (void)p_writeCsvResultsToDirectory:(id)a3
+- (void)p_writeCsvResultsToDirectory:(id)directory
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a3 stringByAppendingPathComponent:@"results.csv"];
+  v4 = [directory stringByAppendingPathComponent:@"results.csv"];
   v5 = fopen([v4 UTF8String], "w");
   if (v5)
   {

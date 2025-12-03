@@ -1,44 +1,44 @@
 @interface SCLSchoolModeServer
-- (SCLSchoolModeServer)initWithQueue:(id)a3 suppressionManager:(id)a4 wakeScheduler:(id)a5;
+- (SCLSchoolModeServer)initWithQueue:(id)queue suppressionManager:(id)manager wakeScheduler:(id)scheduler;
 - (SCLState)currentState;
-- (void)_scheduleTimerForDate:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)applySchedule:(id)a3;
-- (void)assertionManager:(id)a3 didUpdateAssertionsStatus:(unint64_t)a4;
+- (void)_scheduleTimerForDate:(id)date;
+- (void)addObserver:(id)observer;
+- (void)applySchedule:(id)schedule;
+- (void)assertionManager:(id)manager didUpdateAssertionsStatus:(unint64_t)status;
 - (void)handleLocaleChange;
 - (void)handleSignificantTimeChange;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
-- (void)schedulingEngine:(id)a3 didUpdateState:(id)a4 fromState:(id)a5 nextEvaluationDate:(id)a6;
-- (void)setActive:(BOOL)a3;
-- (void)startWithScheduleSettings:(id)a3 shouldStartManuallyActive:(BOOL)a4;
+- (void)removeObserver:(id)observer;
+- (void)schedulingEngine:(id)engine didUpdateState:(id)state fromState:(id)fromState nextEvaluationDate:(id)date;
+- (void)setActive:(BOOL)active;
+- (void)startWithScheduleSettings:(id)settings shouldStartManuallyActive:(BOOL)active;
 - (void)timerFired;
 @end
 
 @implementation SCLSchoolModeServer
 
-- (SCLSchoolModeServer)initWithQueue:(id)a3 suppressionManager:(id)a4 wakeScheduler:(id)a5
+- (SCLSchoolModeServer)initWithQueue:(id)queue suppressionManager:(id)manager wakeScheduler:(id)scheduler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  managerCopy = manager;
+  schedulerCopy = scheduler;
   v21.receiver = self;
   v21.super_class = SCLSchoolModeServer;
   v12 = [(SCLSchoolModeServer *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_targetQueue, a3);
-    objc_storeStrong(&v13->_suppressionManager, a4);
-    objc_storeStrong(&v13->_wakeScheduler, a5);
-    v14 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v12->_targetQueue, queue);
+    objc_storeStrong(&v13->_suppressionManager, manager);
+    objc_storeStrong(&v13->_wakeScheduler, scheduler);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v13->_observers;
-    v13->_observers = v14;
+    v13->_observers = weakObjectsHashTable;
 
     v16 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v17 = dispatch_queue_attr_make_initially_inactive(v16);
 
-    v18 = dispatch_queue_create_with_target_V2("com.apple.schooltime.schoolmodeserver", v17, v9);
+    v18 = dispatch_queue_create_with_target_V2("com.apple.schooltime.schoolmodeserver", v17, queueCopy);
     queue = v13->_queue;
     v13->_queue = v18;
   }
@@ -48,17 +48,17 @@
 
 - (SCLState)currentState
 {
-  v2 = [(SCLSchoolModeServer *)self schedulingEngine];
-  v3 = [v2 state];
+  schedulingEngine = [(SCLSchoolModeServer *)self schedulingEngine];
+  state = [schedulingEngine state];
 
-  return v3;
+  return state;
 }
 
-- (void)startWithScheduleSettings:(id)a3 shouldStartManuallyActive:(BOOL)a4
+- (void)startWithScheduleSettings:(id)settings shouldStartManuallyActive:(BOOL)active
 {
-  v6 = a3;
-  v7 = [(SCLSchoolModeServer *)self targetQueue];
-  dispatch_assert_queue_V2(v7);
+  settingsCopy = settings;
+  targetQueue = [(SCLSchoolModeServer *)self targetQueue];
+  dispatch_assert_queue_V2(targetQueue);
 
   v8 = scl_framework_log();
   v9 = os_signpost_id_generate(v8);
@@ -73,30 +73,30 @@
 
   out_token = -1;
   objc_initWeak(&buf, self);
-  v12 = [(SCLSchoolModeServer *)self queue];
+  queue = [(SCLSchoolModeServer *)self queue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __75__SCLSchoolModeServer_startWithScheduleSettings_shouldStartManuallyActive___block_invoke;
   handler[3] = &unk_279B6C4F0;
   objc_copyWeak(&v23, &buf);
-  notify_register_dispatch("SignificantTimeChangeNotification", &out_token, v12, handler);
+  notify_register_dispatch("SignificantTimeChangeNotification", &out_token, queue, handler);
 
   [(SCLSchoolModeServer *)self setTimeChangeToken:out_token];
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 addObserver:self selector:sel_handleLocaleChange name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleLocaleChange name:*MEMORY[0x277CBE620] object:0];
 
-  v14 = [(SCLSchoolModeServer *)self suppressionManager];
-  [v14 addObserver:self];
+  suppressionManager = [(SCLSchoolModeServer *)self suppressionManager];
+  [suppressionManager addObserver:self];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__SCLSchoolModeServer_startWithScheduleSettings_shouldStartManuallyActive___block_invoke_2;
   block[3] = &unk_279B6C540;
-  v18 = v6;
-  v19 = self;
-  v21 = a4;
+  v18 = settingsCopy;
+  selfCopy = self;
+  activeCopy = active;
   v20 = v9;
-  v15 = v6;
+  v15 = settingsCopy;
   v16 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, -1, block);
   dispatch_async(self->_queue, v16);
   dispatch_activate(self->_queue);
@@ -198,49 +198,49 @@ void __75__SCLSchoolModeServer_startWithScheduleSettings_shouldStartManuallyActi
     notify_cancel([(SCLSchoolModeServer *)self timeChangeToken]);
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
-  v4 = [(SCLSchoolModeServer *)self queue];
+  queue = [(SCLSchoolModeServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__SCLSchoolModeServer_invalidate__block_invoke;
   block[3] = &unk_279B6C568;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SCLSchoolModeServer *)self targetQueue];
-  dispatch_assert_queue_V2(v5);
+  observerCopy = observer;
+  targetQueue = [(SCLSchoolModeServer *)self targetQueue];
+  dispatch_assert_queue_V2(targetQueue);
 
-  v6 = [(SCLSchoolModeServer *)self observers];
-  [v6 addObject:v4];
+  observers = [(SCLSchoolModeServer *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SCLSchoolModeServer *)self targetQueue];
-  dispatch_assert_queue_V2(v5);
+  observerCopy = observer;
+  targetQueue = [(SCLSchoolModeServer *)self targetQueue];
+  dispatch_assert_queue_V2(targetQueue);
 
-  v6 = [(SCLSchoolModeServer *)self observers];
-  [v6 removeObject:v4];
+  observers = [(SCLSchoolModeServer *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v5 = [(SCLSchoolModeServer *)self queue];
+  queue = [(SCLSchoolModeServer *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__SCLSchoolModeServer_setActive___block_invoke;
   v7[3] = &unk_279B6C5B0;
   v7[4] = self;
-  v8 = a3;
+  activeCopy = active;
   v6 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v7);
-  dispatch_async(v5, v6);
+  dispatch_async(queue, v6);
 }
 
 void __33__SCLSchoolModeServer_setActive___block_invoke(uint64_t a1)
@@ -272,19 +272,19 @@ void __33__SCLSchoolModeServer_setActive___block_invoke_2(uint64_t a1, void *a2)
   [v3 setEvaluationDate:v4];
 }
 
-- (void)applySchedule:(id)a3
+- (void)applySchedule:(id)schedule
 {
-  v4 = a3;
-  v5 = [(SCLSchoolModeServer *)self queue];
+  scheduleCopy = schedule;
+  queue = [(SCLSchoolModeServer *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__SCLSchoolModeServer_applySchedule___block_invoke;
   v8[3] = &unk_279B6C5D8;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = scheduleCopy;
+  v6 = scheduleCopy;
   v7 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v8);
-  dispatch_async(v5, v7);
+  dispatch_async(queue, v7);
 }
 
 void __37__SCLSchoolModeServer_applySchedule___block_invoke(uint64_t a1)
@@ -310,11 +310,11 @@ void __37__SCLSchoolModeServer_applySchedule___block_invoke_2(uint64_t a1, void 
 
 - (void)handleSignificantTimeChange
 {
-  v3 = [(SCLSchoolModeServer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SCLSchoolModeServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SCLSchoolModeServer *)self schedulingEngine];
-  [v4 updateParametersWithBlock:&__block_literal_global_4];
+  schedulingEngine = [(SCLSchoolModeServer *)self schedulingEngine];
+  [schedulingEngine updateParametersWithBlock:&__block_literal_global_4];
 }
 
 void __50__SCLSchoolModeServer_handleSignificantTimeChange__block_invoke(uint64_t a1, void *a2)
@@ -330,14 +330,14 @@ void __50__SCLSchoolModeServer_handleSignificantTimeChange__block_invoke(uint64_
 
 - (void)handleLocaleChange
 {
-  v3 = [(SCLSchoolModeServer *)self queue];
+  queue = [(SCLSchoolModeServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__SCLSchoolModeServer_handleLocaleChange__block_invoke;
   block[3] = &unk_279B6C568;
   block[4] = self;
   v4 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 }
 
 void __41__SCLSchoolModeServer_handleLocaleChange__block_invoke(uint64_t a1)
@@ -359,18 +359,18 @@ void __41__SCLSchoolModeServer_handleLocaleChange__block_invoke_2(uint64_t a1, v
 
 - (void)timerFired
 {
-  v3 = [(SCLSchoolModeServer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SCLSchoolModeServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(SCLSchoolModeServer *)self schedulingEngine];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v5 reevaluateStateAtDate:v4];
+  schedulingEngine = [(SCLSchoolModeServer *)self schedulingEngine];
+  date = [MEMORY[0x277CBEAA8] date];
+  [schedulingEngine reevaluateStateAtDate:date];
 }
 
-- (void)_scheduleTimerForDate:(id)a3
+- (void)_scheduleTimerForDate:(id)date
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (self->_timerSource)
   {
     v5 = scl_framework_log();
@@ -385,7 +385,7 @@ void __41__SCLSchoolModeServer_handleLocaleChange__block_invoke_2(uint64_t a1, v
     self->_timerSource = 0;
   }
 
-  if (v4)
+  if (dateCopy)
   {
     v7 = os_transaction_create();
     activeTransaction = self->_activeTransaction;
@@ -395,7 +395,7 @@ void __41__SCLSchoolModeServer_handleLocaleChange__block_invoke_2(uint64_t a1, v
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = MEMORY[0x277CCABB0];
-      [v4 timeIntervalSinceNow];
+      [dateCopy timeIntervalSinceNow];
       *&v11 = v11;
       *&v11 = roundf(*&v11);
       v12 = [v10 numberWithFloat:v11];
@@ -407,13 +407,13 @@ void __41__SCLSchoolModeServer_handleLocaleChange__block_invoke_2(uint64_t a1, v
       _os_log_impl(&dword_264829000, v9, OS_LOG_TYPE_INFO, "Setting timer for duration: %@ with transaction %@", buf, 0x16u);
     }
 
-    [(SCLSchoolModeWakeScheduler *)self->_wakeScheduler scheduleWakeForDate:v4];
+    [(SCLSchoolModeWakeScheduler *)self->_wakeScheduler scheduleWakeForDate:dateCopy];
     v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, self->_queue);
     v15 = self->_timerSource;
     self->_timerSource = v14;
 
     v16 = self->_timerSource;
-    [v4 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     v18 = dispatch_walltime(0, (v17 * 1000000000.0));
     dispatch_source_set_timer(v16, v18, 0xFFFFFFFFFFFFFFFFLL, 0x6FC23AC00uLL);
     objc_initWeak(buf, self);
@@ -445,26 +445,26 @@ void __45__SCLSchoolModeServer__scheduleTimerForDate___block_invoke(uint64_t a1)
   [WeakRetained timerFired];
 }
 
-- (void)schedulingEngine:(id)a3 didUpdateState:(id)a4 fromState:(id)a5 nextEvaluationDate:(id)a6
+- (void)schedulingEngine:(id)engine didUpdateState:(id)state fromState:(id)fromState nextEvaluationDate:(id)date
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(SCLSchoolModeServer *)self targetQueue];
-  dispatch_assert_queue_V2(v12);
+  stateCopy = state;
+  fromStateCopy = fromState;
+  dateCopy = date;
+  targetQueue = [(SCLSchoolModeServer *)self targetQueue];
+  dispatch_assert_queue_V2(targetQueue);
 
-  [(SCLSchoolModeServer *)self _scheduleTimerForDate:v11];
-  if (([v9 isEqual:v10] & 1) == 0)
+  [(SCLSchoolModeServer *)self _scheduleTimerForDate:dateCopy];
+  if (([stateCopy isEqual:fromStateCopy] & 1) == 0)
   {
-    v13 = [(SCLSchoolModeServer *)self observers];
-    v14 = [v13 allObjects];
+    observers = [(SCLSchoolModeServer *)self observers];
+    allObjects = [observers allObjects];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v15 = v14;
+    v15 = allObjects;
     v16 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v16)
     {
@@ -480,7 +480,7 @@ void __45__SCLSchoolModeServer__scheduleTimerForDate___block_invoke(uint64_t a1)
             objc_enumerationMutation(v15);
           }
 
-          [*(*(&v21 + 1) + 8 * v19++) server:self didUpdateState:v9 fromState:{v10, v21}];
+          [*(*(&v21 + 1) + 8 * v19++) server:self didUpdateState:stateCopy fromState:{fromStateCopy, v21}];
         }
 
         while (v17 != v19);
@@ -494,19 +494,19 @@ void __45__SCLSchoolModeServer__scheduleTimerForDate___block_invoke(uint64_t a1)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assertionManager:(id)a3 didUpdateAssertionsStatus:(unint64_t)a4
+- (void)assertionManager:(id)manager didUpdateAssertionsStatus:(unint64_t)status
 {
-  v6 = [(SCLSchoolModeServer *)self targetQueue];
-  dispatch_assert_queue_V2(v6);
+  targetQueue = [(SCLSchoolModeServer *)self targetQueue];
+  dispatch_assert_queue_V2(targetQueue);
 
-  v7 = [(SCLSchoolModeServer *)self schedulingEngine];
+  schedulingEngine = [(SCLSchoolModeServer *)self schedulingEngine];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__SCLSchoolModeServer_assertionManager_didUpdateAssertionsStatus___block_invoke;
   v8[3] = &unk_279B6C620;
   v8[4] = self;
-  v8[5] = a4;
-  [v7 updateParametersWithBlock:v8];
+  v8[5] = status;
+  [schedulingEngine updateParametersWithBlock:v8];
 }
 
 void __66__SCLSchoolModeServer_assertionManager_didUpdateAssertionsStatus___block_invoke(uint64_t a1, void *a2)

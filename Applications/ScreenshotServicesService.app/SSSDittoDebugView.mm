@@ -1,7 +1,7 @@
 @interface SSSDittoDebugView
-- (SSSDittoDebugView)initWithFrame:(CGRect)a3;
+- (SSSDittoDebugView)initWithFrame:(CGRect)frame;
 - (SSSDittoDebugViewDelegate)delegate;
-- (id)generatePDF:(CGRect *)a3;
+- (id)generatePDF:(CGRect *)f;
 - (void)_addScreenshotPushed;
 - (void)_uiCatalogButtonPushed;
 - (void)_updateScreenshotCount;
@@ -12,11 +12,11 @@
 
 @implementation SSSDittoDebugView
 
-- (SSSDittoDebugView)initWithFrame:(CGRect)a3
+- (SSSDittoDebugView)initWithFrame:(CGRect)frame
 {
   v44.receiver = self;
   v44.super_class = SSSDittoDebugView;
-  v3 = [(SSSDittoDebugView *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSSDittoDebugView *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = +[UIColor grayColor];
   [(SSSDittoDebugView *)v3 setBackgroundColor:v4];
 
@@ -131,37 +131,37 @@
 
 - (void)_addScreenshotPushed
 {
-  v2 = [(SSSDittoDebugView *)self blockToRunForAddScreenshotsButton];
-  if (v2)
+  blockToRunForAddScreenshotsButton = [(SSSDittoDebugView *)self blockToRunForAddScreenshotsButton];
+  if (blockToRunForAddScreenshotsButton)
   {
-    v3 = v2;
-    v2[2]();
-    v2 = v3;
+    v3 = blockToRunForAddScreenshotsButton;
+    blockToRunForAddScreenshotsButton[2]();
+    blockToRunForAddScreenshotsButton = v3;
   }
 }
 
-- (id)generatePDF:(CGRect *)a3
+- (id)generatePDF:(CGRect *)f
 {
-  v5 = [(WKWebView *)self->_webView _webViewPrintFormatter];
-  [v5 setSnapshotFirstPage:1];
+  _webViewPrintFormatter = [(WKWebView *)self->_webView _webViewPrintFormatter];
+  [_webViewPrintFormatter setSnapshotFirstPage:1];
   v6 = objc_alloc_init(DebugPrintPageRenderer);
   y = CGPointZero.y;
-  v8 = [(WKWebView *)self->_webView scrollView];
-  [v8 contentSize];
+  scrollView = [(WKWebView *)self->_webView scrollView];
+  [scrollView contentSize];
   [(DebugPrintPageRenderer *)v6 setPaperRect:CGPointZero.x, y, v9, v10];
 
   [(DebugPrintPageRenderer *)v6 paperRect];
   [(DebugPrintPageRenderer *)v6 setPrintableRect:?];
-  v37 = v5;
+  v37 = _webViewPrintFormatter;
   v11 = [NSArray arrayWithObjects:&v37 count:1];
   [(DebugPrintPageRenderer *)v6 setPrintFormatters:v11];
 
-  v12 = [(WKWebView *)self->_webView _printProvider];
-  [v12 _wk_requestDocumentForPrintFormatter:v5];
-  if (![v12 _wk_pageCountForPrintFormatter:v5])
+  _printProvider = [(WKWebView *)self->_webView _printProvider];
+  [_printProvider _wk_requestDocumentForPrintFormatter:_webViewPrintFormatter];
+  if (![_printProvider _wk_pageCountForPrintFormatter:_webViewPrintFormatter])
   {
     v14 = 0;
-    if (!a3)
+    if (!f)
     {
       goto LABEL_14;
     }
@@ -169,16 +169,16 @@
     goto LABEL_12;
   }
 
-  v13 = [v5 _printedDocument];
-  if (v13)
+  _printedDocument = [_webViewPrintFormatter _printedDocument];
+  if (_printedDocument)
   {
-    v14 = v13;
+    v14 = _printedDocument;
   }
 
   else
   {
-    v29 = +[NSBundle mainBundle];
-    v35 = [v29 URLForResource:@"ApplePDFForTestingRemoveBeforeMerging" withExtension:@"pdf"];
+    scrollView2 = +[NSBundle mainBundle];
+    v35 = [scrollView2 URLForResource:@"ApplePDFForTestingRemoveBeforeMerging" withExtension:@"pdf"];
     if (!v35)
     {
       v14 = 0;
@@ -263,15 +263,15 @@
   }
 
   UIGraphicsEndPDFContext();
-  if (a3)
+  if (f)
   {
 LABEL_12:
-    v29 = [(WKWebView *)self->_webView scrollView];
-    [v29 bounds];
-    a3->origin.x = v30;
-    a3->origin.y = v31;
-    a3->size.width = v32;
-    a3->size.height = v33;
+    scrollView2 = [(WKWebView *)self->_webView scrollView];
+    [scrollView2 bounds];
+    f->origin.x = v30;
+    f->origin.y = v31;
+    f->size.width = v32;
+    f->size.height = v33;
 LABEL_13:
   }
 
@@ -282,28 +282,28 @@ LABEL_14:
 
 - (void)advanceScrollOffset
 {
-  v3 = [(WKWebView *)self->_webView scrollView];
-  [v3 contentOffset];
+  scrollView = [(WKWebView *)self->_webView scrollView];
+  [scrollView contentOffset];
   v5 = v4;
   v7 = v6;
 
   [(SSSDittoDebugView *)self bounds];
   v9 = v7 + v8 + -20.0;
-  v10 = [(WKWebView *)self->_webView scrollView];
-  [v10 setContentOffset:1 animated:{v5, v9}];
+  scrollView2 = [(WKWebView *)self->_webView scrollView];
+  [scrollView2 setContentOffset:1 animated:{v5, v9}];
 }
 
 - (void)resetScrollOffset
 {
-  v2 = [(WKWebView *)self->_webView scrollView];
-  [v2 setContentOffset:1 animated:{CGPointZero.x, CGPointZero.y}];
+  scrollView = [(WKWebView *)self->_webView scrollView];
+  [scrollView setContentOffset:1 animated:{CGPointZero.x, CGPointZero.y}];
 }
 
 - (void)_uiCatalogButtonPushed
 {
   v4 = objc_alloc_init(SSSDebugUICatalogViewController);
-  v3 = [(SSSDittoDebugView *)self delegate];
-  [v3 dittoDebugView:self requestsPresentationOfViewController:v4];
+  delegate = [(SSSDittoDebugView *)self delegate];
+  [delegate dittoDebugView:self requestsPresentationOfViewController:v4];
 }
 
 - (void)_updateScreenshotCount

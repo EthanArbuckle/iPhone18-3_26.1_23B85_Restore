@@ -1,25 +1,25 @@
 @interface CALayer
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5;
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options;
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation CALayer
 
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"com.apple.QuartzCore.CALayer"])
+  objectCopy = object;
+  if ([d isEqualToString:@"com.apple.QuartzCore.CALayer"])
   {
-    v7 = [v6 sublayers];
+    sublayers = [objectCopy sublayers];
   }
 
   else
   {
-    v7 = 0;
+    sublayers = 0;
   }
 
-  return v7;
+  return sublayers;
 }
 
 + (id)fallback_debugHierarchyPropertyDescriptions
@@ -372,19 +372,19 @@
   return v54;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"encodedPresentationLayer"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"encodedPresentationLayer"])
   {
-    v10 = [v9 presentationLayer];
-    if (v10 || (v10 = v9) != 0)
+    presentationLayer = [objectCopy presentationLayer];
+    if (presentationLayer || (presentationLayer = objectCopy) != 0)
     {
-      v11 = v10;
+      v11 = presentationLayer;
       v12 = CAEncodeLayerTree();
 LABEL_10:
-      a6 = v12;
+      error = v12;
 LABEL_11:
 
       goto LABEL_12;
@@ -393,43 +393,43 @@ LABEL_11:
     goto LABEL_37;
   }
 
-  if ([v8 isEqualToString:@"compositingFilter"])
+  if ([nameCopy isEqualToString:@"compositingFilter"])
   {
-    v13 = [v9 compositingFilter];
+    compositingFilter = [objectCopy compositingFilter];
 LABEL_9:
-    v11 = v13;
-    v12 = [v13 description];
+    v11 = compositingFilter;
+    v12 = [compositingFilter description];
     goto LABEL_10;
   }
 
-  if ([v8 isEqualToString:@"contentsDescription"])
+  if ([nameCopy isEqualToString:@"contentsDescription"])
   {
-    v13 = [v9 contents];
+    compositingFilter = [objectCopy contents];
     goto LABEL_9;
   }
 
-  if ([v8 isEqualToString:@"renderInfoRenderingPasses"])
+  if ([nameCopy isEqualToString:@"renderInfoRenderingPasses"])
   {
     LODWORD(v35) = 0;
     v34 = 0;
-    if ([v9 getRendererInfo:&v34 size:12])
+    if ([objectCopy getRendererInfo:&v34 size:12])
     {
       v15 = [NSNumber numberWithInt:v34];
 LABEL_25:
-      a6 = v15;
+      error = v15;
       goto LABEL_12;
     }
 
 LABEL_26:
-    a6 = &off_57B20;
+    error = &off_57B20;
     goto LABEL_12;
   }
 
-  if ([v8 isEqualToString:@"renderInfoOffscreenFlags"])
+  if ([nameCopy isEqualToString:@"renderInfoOffscreenFlags"])
   {
     LODWORD(v35) = 0;
     v34 = 0;
-    if (![v9 getRendererInfo:&v34 size:12])
+    if (![objectCopy getRendererInfo:&v34 size:12])
     {
       goto LABEL_26;
     }
@@ -440,11 +440,11 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if ([v8 isEqualToString:@"renderInfoGroupFlags"])
+  if ([nameCopy isEqualToString:@"renderInfoGroupFlags"])
   {
     LODWORD(v35) = 0;
     v34 = 0;
-    if (![v9 getRendererInfo:&v34 size:12])
+    if (![objectCopy getRendererInfo:&v34 size:12])
     {
       goto LABEL_26;
     }
@@ -453,25 +453,25 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (![v8 isEqualToString:@"dbg_ListID"])
+  if (![nameCopy isEqualToString:@"dbg_ListID"])
   {
-    if ([v8 isEqualToString:@"optimizationOpportunities"])
+    if ([nameCopy isEqualToString:@"optimizationOpportunities"])
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
         goto LABEL_37;
       }
 
-      v17 = v9;
+      v17 = objectCopy;
       v18 = 0;
     }
 
     else
     {
-      if (![v8 isEqualToString:@"optimizationOpportunities_includingInternals"])
+      if (![nameCopy isEqualToString:@"optimizationOpportunities_includingInternals"])
       {
-        v11 = v9;
-        v19 = v8;
+        v11 = objectCopy;
+        v19 = nameCopy;
         if (![v19 length])
         {
           goto LABEL_50;
@@ -487,31 +487,31 @@ LABEL_24:
         {
           if ([v19 length] < 2)
           {
-            v24 = [v19 uppercaseString];
+            uppercaseString = [v19 uppercaseString];
           }
 
           else
           {
             v21 = [v19 substringToIndex:1];
-            v22 = [v21 uppercaseString];
+            uppercaseString2 = [v21 uppercaseString];
             v23 = [v19 substringFromIndex:1];
-            v24 = [v22 stringByAppendingString:v23];
+            uppercaseString = [uppercaseString2 stringByAppendingString:v23];
           }
 
-          v25 = [@"is" stringByAppendingString:v24];
+          v25 = [@"is" stringByAppendingString:uppercaseString];
           NSSelectorFromString(v25);
           v20 = (objc_opt_respondsToSelector() & 1) != 0 ? v25 : 0;
         }
 
         if (v20)
         {
-          a6 = [v11 valueForKey:v20];
+          error = [v11 valueForKey:v20];
         }
 
         else
         {
 LABEL_50:
-          if (a6)
+          if (error)
           {
             v26 = v19;
             if (v11)
@@ -545,10 +545,10 @@ LABEL_50:
             v31 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v30];
 
             v32 = v31;
-            *a6 = v31;
+            *error = v31;
 
             v20 = 0;
-            a6 = 0;
+            error = 0;
           }
 
           else
@@ -565,7 +565,7 @@ LABEL_50:
         goto LABEL_37;
       }
 
-      v17 = v9;
+      v17 = objectCopy;
       v18 = 1;
     }
 
@@ -575,15 +575,15 @@ LABEL_50:
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 swiftUI_displayListID]);
+    v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [objectCopy swiftUI_displayListID]);
     goto LABEL_25;
   }
 
 LABEL_37:
-  a6 = 0;
+  error = 0;
 LABEL_12:
 
-  return a6;
+  return error;
 }
 
 @end

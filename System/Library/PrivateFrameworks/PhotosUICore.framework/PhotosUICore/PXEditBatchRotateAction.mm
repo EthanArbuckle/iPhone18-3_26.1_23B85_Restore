@@ -1,37 +1,37 @@
 @interface PXEditBatchRotateAction
-- (PXEditBatchRotateAction)initWithPresetManager:(id)a3 syncProgress:(id)a4 asyncProgress:(id)a5 asyncLoadingStatusManager:(id)a6 forAssets:(id)a7;
-- (void)_syncRotateDidFinishWithResults:(id)a3 didCancel:(BOOL)a4 completionHandler:(id)a5;
-- (void)performAction:(id)a3;
+- (PXEditBatchRotateAction)initWithPresetManager:(id)manager syncProgress:(id)progress asyncProgress:(id)asyncProgress asyncLoadingStatusManager:(id)statusManager forAssets:(id)assets;
+- (void)_syncRotateDidFinishWithResults:(id)results didCancel:(BOOL)cancel completionHandler:(id)handler;
+- (void)performAction:(id)action;
 @end
 
 @implementation PXEditBatchRotateAction
 
-- (void)_syncRotateDidFinishWithResults:(id)a3 didCancel:(BOOL)a4 completionHandler:(id)a5
+- (void)_syncRotateDidFinishWithResults:(id)results didCancel:(BOOL)cancel completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXEditBatchAction *)self asyncAssets];
-  v11 = v10;
-  if (a4 || ![v10 count])
+  resultsCopy = results;
+  handlerCopy = handler;
+  asyncAssets = [(PXEditBatchAction *)self asyncAssets];
+  v11 = asyncAssets;
+  if (cancel || ![asyncAssets count])
   {
-    [(PXEditBatchAction *)self saveResults:v8 completion:v9];
+    [(PXEditBatchAction *)self saveResults:resultsCopy completion:handlerCopy];
   }
 
   else
   {
     objc_initWeak(&location, self);
     -[PXEditBatchAction willBeginActionIsAsync:itemCount:](self, "willBeginActionIsAsync:itemCount:", 1, [v11 count]);
-    v12 = [(PXEditBatchAction *)self manager];
-    v13 = [(PXEditBatchRotateAction *)self direction];
-    v14 = [(PXEditBatchAction *)self asyncProgress];
+    manager = [(PXEditBatchAction *)self manager];
+    direction = [(PXEditBatchRotateAction *)self direction];
+    asyncProgress = [(PXEditBatchAction *)self asyncProgress];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __87__PXEditBatchRotateAction__syncRotateDidFinishWithResults_didCancel_completionHandler___block_invoke;
     v15[3] = &unk_1E7742CE8;
-    v16 = v8;
+    v16 = resultsCopy;
     objc_copyWeak(&v18, &location);
-    v17 = v9;
-    [v12 rotateAssets:v11 direction:v13 async:1 progress:v14 completion:v15];
+    v17 = handlerCopy;
+    [manager rotateAssets:v11 direction:direction async:1 progress:asyncProgress completion:v15];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -49,14 +49,14 @@ void __87__PXEditBatchRotateAction__syncRotateDidFinishWithResults_didCancel_com
   [WeakRetained saveResults:v6 completion:*(a1 + 40)];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXEditBatchAction *)self assets];
-  if ([v5 count])
+  actionCopy = action;
+  assets = [(PXEditBatchAction *)self assets];
+  if ([assets count])
   {
-    v6 = [(PXEditBatchAction *)self manager];
-    if ([v6 isBusyWithBatchAction])
+    manager = [(PXEditBatchAction *)self manager];
+    if ([manager isBusyWithBatchAction])
     {
       v7 = PLUIGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -65,23 +65,23 @@ void __87__PXEditBatchRotateAction__syncRotateDidFinishWithResults_didCancel_com
         _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_ERROR, "Could not complete PXEditBatchRotateAction: Edit manager is busy.", buf, 2u);
       }
 
-      (*(v4 + 2))(v4, 0, 0);
+      (*(actionCopy + 2))(actionCopy, 0, 0);
     }
 
     else
     {
-      v9 = [(PXEditBatchAction *)self syncAssets];
-      -[PXEditBatchAction willBeginActionIsAsync:itemCount:](self, "willBeginActionIsAsync:itemCount:", 0, [v9 count]);
+      syncAssets = [(PXEditBatchAction *)self syncAssets];
+      -[PXEditBatchAction willBeginActionIsAsync:itemCount:](self, "willBeginActionIsAsync:itemCount:", 0, [syncAssets count]);
       objc_initWeak(buf, self);
-      v10 = [(PXEditBatchRotateAction *)self direction];
-      v11 = [(PXEditBatchAction *)self syncProgress];
+      direction = [(PXEditBatchRotateAction *)self direction];
+      syncProgress = [(PXEditBatchAction *)self syncProgress];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __41__PXEditBatchRotateAction_performAction___block_invoke;
       v12[3] = &unk_1E7742CC0;
       objc_copyWeak(&v14, buf);
-      v13 = v4;
-      [v6 rotateAssets:v9 direction:v10 async:0 progress:v11 completion:v12];
+      v13 = actionCopy;
+      [manager rotateAssets:syncAssets direction:direction async:0 progress:syncProgress completion:v12];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(buf);
@@ -97,7 +97,7 @@ void __87__PXEditBatchRotateAction__syncRotateDidFinishWithResults_didCancel_com
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_ERROR, "Could not complete PXEditBatchRotateAction: No asset found", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(actionCopy + 2))(actionCopy, 0, 0);
   }
 }
 
@@ -108,11 +108,11 @@ void __41__PXEditBatchRotateAction_performAction___block_invoke(uint64_t a1, voi
   [WeakRetained _syncRotateDidFinishWithResults:v5 didCancel:a3 completionHandler:*(a1 + 32)];
 }
 
-- (PXEditBatchRotateAction)initWithPresetManager:(id)a3 syncProgress:(id)a4 asyncProgress:(id)a5 asyncLoadingStatusManager:(id)a6 forAssets:(id)a7
+- (PXEditBatchRotateAction)initWithPresetManager:(id)manager syncProgress:(id)progress asyncProgress:(id)asyncProgress asyncLoadingStatusManager:(id)statusManager forAssets:(id)assets
 {
   v8.receiver = self;
   v8.super_class = PXEditBatchRotateAction;
-  return [(PXEditBatchAction *)&v8 initWithPresetManager:a3 syncProgress:a4 asyncProgress:a5 asyncLoadingStatusManager:a6 forAssets:a7];
+  return [(PXEditBatchAction *)&v8 initWithPresetManager:manager syncProgress:progress asyncProgress:asyncProgress asyncLoadingStatusManager:statusManager forAssets:assets];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface CASPasswordCredential
-- (BOOL)isEqual:(id)a3;
-- (CASPasswordCredential)initWithCoder:(id)a3;
-- (CASPasswordCredential)initWithUser:(id)a3 password:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CASPasswordCredential)initWithCoder:(id)coder;
+- (CASPasswordCredential)initWithUser:(id)user password:(id)password;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CASPasswordCredential
 
-- (CASPasswordCredential)initWithUser:(id)a3 password:(id)a4
+- (CASPasswordCredential)initWithUser:(id)user password:(id)password
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  userCopy = user;
+  passwordCopy = password;
+  if (!userCopy)
   {
     [CASPasswordCredential initWithUser:a2 password:?];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = passwordCopy;
+  if (!passwordCopy)
   {
     [CASPasswordCredential initWithUser:a2 password:?];
   }
@@ -28,7 +28,7 @@
   v10 = [(CASPasswordCredential *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [userCopy copy];
     user = v10->_user;
     v10->_user = v11;
 
@@ -40,19 +40,19 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x277CF0C20];
   v6 = objc_opt_self();
-  v7 = [v5 builderWithObject:v4 ofExpectedClass:v6];
+  v7 = [v5 builderWithObject:equalCopy ofExpectedClass:v6];
 
   user = self->_user;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __33__CASPasswordCredential_isEqual___block_invoke;
   v20[3] = &unk_278DF1420;
-  v9 = v4;
+  v9 = equalCopy;
   v21 = v9;
   v10 = [v7 appendString:user counterpart:v20];
   password = self->_password;
@@ -70,20 +70,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_user];
-  v5 = [v3 appendString:self->_password];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_user];
+  v5 = [builder appendString:self->_password];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (CASPasswordCredential)initWithCoder:(id)a3
+- (CASPasswordCredential)initWithCoder:(id)coder
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"user"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"user"];
 
   if (!v6)
   {
@@ -93,15 +93,15 @@
     v22[0] = @"Failed to decode CASPasswordCredential: missing user value";
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v12 = [v10 errorWithDomain:v11 code:4865 userInfo:v8];
-    [v4 failWithError:v12];
+    [coderCopy failWithError:v12];
 
 LABEL_6:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"password"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"password"];
 
   if (!v8)
   {
@@ -111,25 +111,25 @@ LABEL_6:
     v20 = @"Failed to decode CASPasswordCredential: missing password value";
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v16 = [v13 errorWithDomain:v14 code:4865 userInfo:v15];
-    [v4 failWithError:v16];
+    [coderCopy failWithError:v16];
 
     goto LABEL_6;
   }
 
   self = [(CASPasswordCredential *)self initWithUser:v6 password:v8];
-  v9 = self;
+  selfCopy = self;
 LABEL_7:
 
   v17 = *MEMORY[0x277D85DE8];
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   user = self->_user;
-  v5 = a3;
-  [v5 encodeObject:user forKey:@"user"];
-  [v5 encodeObject:self->_password forKey:@"password"];
+  coderCopy = coder;
+  [coderCopy encodeObject:user forKey:@"user"];
+  [coderCopy encodeObject:self->_password forKey:@"password"];
 }
 
 - (void)initWithUser:(const char *)a1 password:.cold.1(const char *a1)

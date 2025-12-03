@@ -1,36 +1,36 @@
 @interface CRWirelessSessionAssertionManager
-+ (id)_descriptionForTransportType:(unint64_t)a3;
++ (id)_descriptionForTransportType:(unint64_t)type;
 - (CRSessionStoredVehicleProviding)storedVehicleProvider;
-- (CRWirelessSessionAssertionManager)initWithSessionStatus:(id)a3 connectionTimeServiceAgent:(id)a4 messagingConnector:(id)a5;
-- (void)cancelledConnectionAttemptOnTransport:(unint64_t)a3;
+- (CRWirelessSessionAssertionManager)initWithSessionStatus:(id)status connectionTimeServiceAgent:(id)agent messagingConnector:(id)connector;
+- (void)cancelledConnectionAttemptOnTransport:(unint64_t)transport;
 - (void)dealloc;
-- (void)handleTimeout:(id)a3;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)handleTimeout:(id)timeout;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 - (void)startTimeoutTimer;
 - (void)startWaitingForConnection;
-- (void)startedConnectionAttemptOnTransport:(unint64_t)a3;
+- (void)startedConnectionAttemptOnTransport:(unint64_t)transport;
 - (void)stopTimeoutTimer;
 - (void)stopWaitingForConnection;
 @end
 
 @implementation CRWirelessSessionAssertionManager
 
-- (CRWirelessSessionAssertionManager)initWithSessionStatus:(id)a3 connectionTimeServiceAgent:(id)a4 messagingConnector:(id)a5
+- (CRWirelessSessionAssertionManager)initWithSessionStatus:(id)status connectionTimeServiceAgent:(id)agent messagingConnector:(id)connector
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  statusCopy = status;
+  agentCopy = agent;
+  connectorCopy = connector;
   v15.receiver = self;
   v15.super_class = CRWirelessSessionAssertionManager;
   v12 = [(CRWirelessSessionAssertionManager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sessionStatus, a3);
-    [v9 addSessionObserver:v13];
-    objc_storeStrong(&v13->_connectionTimeService, a4);
-    objc_storeStrong(&v13->_messagingConnector, a5);
+    objc_storeStrong(&v12->_sessionStatus, status);
+    [statusCopy addSessionObserver:v13];
+    objc_storeStrong(&v13->_connectionTimeService, agent);
+    objc_storeStrong(&v13->_messagingConnector, connector);
     [(CRWirelessSessionAssertionManager *)v13 setTimeoutTimer:0];
     [(CRWirelessSessionAssertionManager *)v13 setProcessTransaction:0];
   }
@@ -57,9 +57,9 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "assertion manager starting re-evaluation timer", v6, 2u);
   }
 
-  v4 = [(CRWirelessSessionAssertionManager *)self timeoutTimer];
+  timeoutTimer = [(CRWirelessSessionAssertionManager *)self timeoutTimer];
 
-  if (!v4)
+  if (!timeoutTimer)
   {
     v5 = [NSTimer scheduledTimerWithTimeInterval:self target:"handleTimeout:" selector:0 userInfo:0 repeats:60.0];
     [(CRWirelessSessionAssertionManager *)self setTimeoutTimer:v5];
@@ -68,18 +68,18 @@
 
 - (void)stopTimeoutTimer
 {
-  v3 = [(CRWirelessSessionAssertionManager *)self timeoutTimer];
-  [v3 invalidate];
+  timeoutTimer = [(CRWirelessSessionAssertionManager *)self timeoutTimer];
+  [timeoutTimer invalidate];
 
   [(CRWirelessSessionAssertionManager *)self setTimeoutTimer:0];
 }
 
-- (void)handleTimeout:(id)a3
+- (void)handleTimeout:(id)timeout
 {
-  v4 = [(CRWirelessSessionAssertionManager *)self sessionStatus];
-  v5 = [v4 currentSession];
+  sessionStatus = [(CRWirelessSessionAssertionManager *)self sessionStatus];
+  currentSession = [sessionStatus currentSession];
 
-  if (v5 && ([v5 configuration], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "transportType"), v6, v7 == 3))
+  if (currentSession && ([currentSession configuration], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "transportType"), v6, v7 == 3))
   {
     v8 = CarGeneralLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -100,9 +100,9 @@
   [(CRWirelessSessionAssertionManager *)self stopWaitingForConnection];
 }
 
-- (void)startedConnectionAttemptOnTransport:(unint64_t)a3
+- (void)startedConnectionAttemptOnTransport:(unint64_t)transport
 {
-  if (a3 == 3)
+  if (transport == 3)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
@@ -112,7 +112,7 @@
     dispatch_async(&_dispatch_main_q, v11);
   }
 
-  v5 = [CRWirelessSessionAssertionManager _descriptionForTransportType:a3];
+  v5 = [CRWirelessSessionAssertionManager _descriptionForTransportType:transport];
   v6 = CARCarKitTransportEvent;
   v7 = +[NSDate date];
   v12 = @"transportType";
@@ -127,22 +127,22 @@
   }
 }
 
-+ (id)_descriptionForTransportType:(unint64_t)a3
++ (id)_descriptionForTransportType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1000DFCB0 + a3 - 1);
+    return *(&off_1000DFCB0 + type - 1);
   }
 }
 
-- (void)cancelledConnectionAttemptOnTransport:(unint64_t)a3
+- (void)cancelledConnectionAttemptOnTransport:(unint64_t)transport
 {
-  if (a3 == 3)
+  if (transport == 3)
   {
     block[5] = v3;
     block[6] = v4;
@@ -155,27 +155,27 @@
   }
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100067CDC;
   v5[3] = &unk_1000DD580;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  connectCopy = connect;
+  selfCopy = self;
+  v4 = connectCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100067E04;
   v5[3] = &unk_1000DD580;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  v4 = disconnectCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
@@ -196,9 +196,9 @@
 
 - (void)stopWaitingForConnection
 {
-  v3 = [(CRWirelessSessionAssertionManager *)self processTransaction];
+  processTransaction = [(CRWirelessSessionAssertionManager *)self processTransaction];
 
-  if (v3)
+  if (processTransaction)
   {
     v4 = CarGeneralLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

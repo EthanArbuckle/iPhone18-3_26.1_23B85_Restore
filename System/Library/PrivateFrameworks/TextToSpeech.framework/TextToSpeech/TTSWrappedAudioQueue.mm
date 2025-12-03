@@ -5,28 +5,28 @@
 - (BOOL)audioQueueActive;
 - (BOOL)play;
 - (TTSWrappedAudioQueue)init;
-- (id)convertBufferIfNecessary:(id)a3;
+- (id)convertBufferIfNecessary:(id)necessary;
 - (unint64_t)_minimumBufferByteSize;
 - (void)_configureEffects;
 - (void)_initializeDSPGraphAU;
 - (void)_rebuildAudioQueue;
 - (void)_reconfigureQueueFormatForMultiChannelOutputIfNecessary;
-- (void)_selectChannels:(OpaqueAudioQueue *)a3;
+- (void)_selectChannels:(OpaqueAudioQueue *)channels;
 - (void)_syncGraphParameters;
 - (void)_syncGraphProperties;
 - (void)_tearDownAudioQueue;
 - (void)_tearDownDSPGraphAU;
-- (void)bufferCallback:(AudioQueueBuffer *)a3;
+- (void)bufferCallback:(AudioQueueBuffer *)callback;
 - (void)dealloc;
 - (void)handleMediaServicesReset;
-- (void)playBuffer:(id)a3 completionHandler:(id)a4;
-- (void)scheduleBuffer:(id)a3 completionHandler:(id)a4;
-- (void)setAudioSession:(id)a3;
-- (void)setChannels:(id)a3;
-- (void)setDspGraph:(id)a3;
-- (void)setGraphParameters:(id)a3;
-- (void)setGraphProperties:(id)a3;
-- (void)setOutputFormat:(id)a3;
+- (void)playBuffer:(id)buffer completionHandler:(id)handler;
+- (void)scheduleBuffer:(id)buffer completionHandler:(id)handler;
+- (void)setAudioSession:(id)session;
+- (void)setChannels:(id)channels;
+- (void)setDspGraph:(id)graph;
+- (void)setGraphParameters:(id)parameters;
+- (void)setGraphProperties:(id)properties;
+- (void)setOutputFormat:(id)format;
 - (void)stop;
 @end
 
@@ -89,17 +89,17 @@
   [(TTSWrappedAudioQueue *)&v14 dealloc];
 }
 
-- (id)convertBufferIfNecessary:(id)a3
+- (id)convertBufferIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v9 = objc_msgSend_queueFormat(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_format(v4, v10, v11, v12, v13);
+  v14 = objc_msgSend_format(necessaryCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_avFormat(v14, v15, v16, v17, v18);
   if (objc_msgSend_isEqual_(v9, v20, v19, v21, v22))
   {
 
 LABEL_8:
-    v79 = v4;
+    v79 = necessaryCopy;
     goto LABEL_12;
   }
 
@@ -116,7 +116,7 @@ LABEL_8:
     v37 = v32;
     v38 = objc_msgSend_cachedAudioConverter(self, v33, v34, v35, v36);
     v43 = objc_msgSend_inputFormat(v38, v39, v40, v41, v42);
-    v48 = objc_msgSend_format(v4, v44, v45, v46, v47);
+    v48 = objc_msgSend_format(necessaryCopy, v44, v45, v46, v47);
     v53 = objc_msgSend_avFormat(v48, v49, v50, v51, v52);
     if (objc_msgSend_isEqual_(v43, v54, v53, v55, v56))
     {
@@ -137,7 +137,7 @@ LABEL_8:
   }
 
   v80 = objc_alloc(MEMORY[0x1E69583E8]);
-  v85 = objc_msgSend_format(v4, v81, v82, v83, v84);
+  v85 = objc_msgSend_format(necessaryCopy, v81, v82, v83, v84);
   v90 = objc_msgSend_avFormat(v85, v86, v87, v88, v89);
   v95 = objc_msgSend_queueFormat(self, v91, v92, v93, v94);
   v98 = objc_msgSend_initFromFormat_toFormat_(v80, v96, v90, v95, v97);
@@ -152,13 +152,13 @@ LABEL_11:
   v119 = objc_msgSend_queueFormat(self, v75, v76, v77, v78);
   objc_msgSend_sampleRate(v119, v120, v121, v122, v123);
   v125 = v124;
-  v130 = objc_msgSend_format(v4, v126, v127, v128, v129);
+  v130 = objc_msgSend_format(necessaryCopy, v126, v127, v128, v129);
   objc_msgSend_sampleRate(v130, v131, v132, v133, v134);
   *&v125 = v125 / v135;
 
   v136 = objc_alloc(MEMORY[0x1E6958438]);
   v141 = objc_msgSend_queueFormat(self, v137, v138, v139, v140);
-  v146 = objc_msgSend_frameLength(v4, v142, v143, v144, v145);
+  v146 = objc_msgSend_frameLength(necessaryCopy, v142, v143, v144, v145);
   v149 = objc_msgSend_initWithPCMFormat_frameCapacity_(v136, v147, v141, (*&v125 * v146), v148);
 
   v167[0] = 0;
@@ -172,7 +172,7 @@ LABEL_11:
   v163[1] = 3221225472;
   v163[2] = sub_1A9330538;
   v163[3] = &unk_1E787FDF8;
-  v164 = v4;
+  v164 = necessaryCopy;
   objc_msgSend_convertToBuffer_error_withInputFromBlock_(v154, v155, v149, &v166, v163);
   v156 = v166;
 
@@ -185,18 +185,18 @@ LABEL_12:
   return v79;
 }
 
-- (void)scheduleBuffer:(id)a3 completionHandler:(id)a4
+- (void)scheduleBuffer:(id)buffer completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = v7;
-  if (v7)
+  bufferCopy = buffer;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = sub_1A9330724;
     aBlock[3] = &unk_1E787FE48;
-    v13 = v7;
+    v13 = handlerCopy;
     v11 = _Block_copy(aBlock);
   }
 
@@ -205,17 +205,17 @@ LABEL_12:
     v11 = 0;
   }
 
-  objc_msgSend_playBuffer_completionHandler_(self, v8, v6, v11, v9);
+  objc_msgSend_playBuffer_completionHandler_(self, v8, bufferCopy, v11, v9);
 }
 
-- (void)playBuffer:(id)a3 completionHandler:(id)a4
+- (void)playBuffer:(id)buffer completionHandler:(id)handler
 {
   v168 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  handlerCopy = handler;
   if (objc_msgSend_state(self, v8, v9, v10, v11))
   {
-    v15 = objc_msgSend_convertBufferIfNecessary_(self, v12, v6, v13, v14);
+    v15 = objc_msgSend_convertBufferIfNecessary_(self, v12, bufferCopy, v13, v14);
 
     v20 = objc_msgSend_frameLength(v15, v16, v17, v18, v19);
     v25 = objc_msgSend_format(v15, v21, v22, v23, v24);
@@ -254,7 +254,7 @@ LABEL_12:
       v160[4] = &unk_1E787FE20;
       v160[5] = self;
       AX_PERFORM_WITH_LOCK();
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_36;
       }
@@ -264,7 +264,7 @@ LABEL_12:
       v159[1] = 3221225472;
       v159[2] = sub_1A9330E38;
       v159[3] = &unk_1E787FE70;
-      v160[0] = v7;
+      v160[0] = handlerCopy;
       dispatch_async(v64, v159);
 
       v65 = v160;
@@ -272,7 +272,7 @@ LABEL_12:
 
     else
     {
-      objc_msgSend_setCompletionHandler_(v49, v53, v7, v54, v55);
+      objc_msgSend_setCompletionHandler_(v49, v53, handlerCopy, v54, v55);
       v70 = (v31 * v20);
       *(objc_msgSend_aqBuffer(v49, v66, v67, v68, v69) + 16) = v70;
       if (objc_msgSend_frameLength(v15, v71, v72, v73, v74) == 1)
@@ -306,7 +306,7 @@ LABEL_12:
       v153 = 3221225472;
       v154 = sub_1A9330E4C;
       v155 = &unk_1E787FE98;
-      v156 = self;
+      selfCopy = self;
       v157 = v49;
       AX_PERFORM_WITH_LOCK();
       v148 = 0;
@@ -317,7 +317,7 @@ LABEL_12:
       v142 = 3221225472;
       v143 = sub_1A9330EA0;
       v144 = &unk_1E787FEC0;
-      v145 = self;
+      selfCopy2 = self;
       v104 = v157;
       v146 = v104;
       v147 = &v148;
@@ -328,7 +328,7 @@ LABEL_12:
         v136 = 3221225472;
         v137 = sub_1A9330F78;
         v138 = &unk_1E787FE98;
-        v139 = self;
+        selfCopy3 = self;
         v140 = v104;
         AX_PERFORM_WITH_LOCK();
         if (*(v149 + 6) == -66671)
@@ -337,7 +337,7 @@ LABEL_12:
           v131 = 3221225472;
           v132 = sub_1A9330FCC;
           v133 = &unk_1E787FE20;
-          v134 = self;
+          selfCopy4 = self;
           AX_PERFORM_WITH_LOCK();
           v109 = AXTTSLogCommon();
           if (os_log_type_enabled(v109, OS_LOG_TYPE_DEBUG))
@@ -356,14 +356,14 @@ LABEL_12:
           }
         }
 
-        if (v7)
+        if (handlerCopy)
         {
           v126 = objc_msgSend_callbackQueue(self, v122, v123, v124, v125);
           v128[0] = MEMORY[0x1E69E9820];
           v128[1] = 3221225472;
           v128[2] = sub_1A9331008;
           v128[3] = &unk_1E787FE70;
-          v129 = v7;
+          v129 = handlerCopy;
           dispatch_async(v126, v128);
         }
       }
@@ -383,7 +383,7 @@ LABEL_12:
     }
 
 LABEL_36:
-    v6 = v15;
+    bufferCopy = v15;
     goto LABEL_37;
   }
 
@@ -393,14 +393,14 @@ LABEL_36:
     sub_1A9577240();
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v37 = objc_msgSend_callbackQueue(self, v33, v34, v35, v36);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1A9330DE8;
     block[3] = &unk_1E787FE70;
-    v166 = v7;
+    v166 = handlerCopy;
     dispatch_async(v37, block);
   }
 
@@ -445,14 +445,14 @@ LABEL_37:
   objc_msgSend_setState_(self, v8, 0, v10, v11);
 }
 
-- (void)setAudioSession:(id)a3
+- (void)setAudioSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v10 = objc_msgSend_audioSession(self, v6, v7, v8, v9);
   v15 = objc_msgSend_opaqueSessionID(v10, v11, v12, v13, v14);
 
-  objc_storeStrong(&self->_audioSession, a3);
-  if (v15 != objc_msgSend_opaqueSessionID(v5, v16, v17, v18, v19))
+  objc_storeStrong(&self->_audioSession, session);
+  if (v15 != objc_msgSend_opaqueSessionID(sessionCopy, v16, v17, v18, v19))
   {
     v20 = AXTTSLogCommon();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -462,19 +462,19 @@ LABEL_37:
     }
 
     objc_msgSend__tearDownAudioQueue(self, v21, v22, v23, v24);
-    v29 = objc_msgSend_opaqueSessionID(v5, v25, v26, v27, v28);
+    v29 = objc_msgSend_opaqueSessionID(sessionCopy, v25, v26, v27, v28);
     v34 = objc_msgSend_sharedInstance(MEMORY[0x1E6958468], v30, v31, v32, v33);
     v39 = v29 == objc_msgSend_opaqueSessionID(v34, v35, v36, v37, v38);
     objc_msgSend_setUsingSharedSession_(self, v40, v39, v41, v42);
   }
 }
 
-- (void)setChannels:(id)a3
+- (void)setChannels:(id)channels
 {
-  v5 = a3;
-  if ((objc_msgSend_isEqualToArray_(v5, v6, self->_channels, v7, v8) & 1) == 0)
+  channelsCopy = channels;
+  if ((objc_msgSend_isEqualToArray_(channelsCopy, v6, self->_channels, v7, v8) & 1) == 0)
   {
-    objc_storeStrong(&self->_channels, a3);
+    objc_storeStrong(&self->_channels, channels);
     objc_msgSend__reconfigureQueueFormatForMultiChannelOutputIfNecessary(self, v9, v10, v11, v12);
     v13 = AXTTSLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -487,11 +487,11 @@ LABEL_37:
   }
 }
 
-- (void)setOutputFormat:(id)a3
+- (void)setOutputFormat:(id)format
 {
-  v5 = a3;
+  formatCopy = format;
   v10 = objc_msgSend_outputFormat(self, v6, v7, v8, v9);
-  isEqual = objc_msgSend_isEqual_(v5, v11, v10, v12, v13);
+  isEqual = objc_msgSend_isEqual_(formatCopy, v11, v10, v12, v13);
 
   if ((isEqual & 1) == 0)
   {
@@ -502,7 +502,7 @@ LABEL_37:
       _os_log_impl(&dword_1A9324000, v19, OS_LOG_TYPE_INFO, "TTSAQ: Audio format changed, rebuilding audio queue.", v23, 2u);
     }
 
-    objc_storeStrong(&self->_outputFormat, a3);
+    objc_storeStrong(&self->_outputFormat, format);
     objc_msgSend_setShouldRebuildAudioQueue_(self, v20, 1, v21, v22);
   }
 
@@ -551,7 +551,7 @@ LABEL_37:
   return v6;
 }
 
-- (void)bufferCallback:(AudioQueueBuffer *)a3
+- (void)bufferCallback:(AudioQueueBuffer *)callback
 {
   outBuffer[3] = *MEMORY[0x1E69E9840];
   v113 = 0;
@@ -560,7 +560,7 @@ LABEL_37:
   v116 = sub_1A9331CB0;
   v117 = sub_1A9331CDC;
   v118 = 0;
-  v5 = a3->mUserData;
+  v5 = callback->mUserData;
   v107 = 0;
   v108 = &v107;
   v109 = 0x3032000000;
@@ -578,7 +578,7 @@ LABEL_37:
   v98 = &unk_1E787FEE8;
   v11 = v5;
   v99 = v11;
-  v100 = self;
+  selfCopy = self;
   v101 = &v107;
   v102 = &v103;
   AX_PERFORM_WITH_LOCK();
@@ -596,7 +596,7 @@ LABEL_37:
     }
 
     v26 = objc_msgSend_aqRef(self, v17, v18, v19, v20);
-    AudioQueueFreeBuffer(v26, a3);
+    AudioQueueFreeBuffer(v26, callback);
     if (v114[5])
     {
       v31 = objc_msgSend_state(self, v27, v28, v29, v30);
@@ -646,7 +646,7 @@ LABEL_37:
   {
 LABEL_12:
     v79 = objc_msgSend_aqRef(self, v58, v59, v60, v61);
-    AudioQueueFreeBuffer(v79, a3);
+    AudioQueueFreeBuffer(v79, callback);
     goto LABEL_13;
   }
 
@@ -654,7 +654,7 @@ LABEL_12:
   objc_msgSend_setCurrentSilenceBufferCount_(self, v71, v70, v72, v73);
 
   v78 = objc_msgSend_aqRef(self, v74, v75, v76, v77);
-  AudioQueueEnqueueBuffer(v78, a3, 0, 0);
+  AudioQueueEnqueueBuffer(v78, callback, 0, 0);
 LABEL_13:
   if (v69 && *(v104 + 24) == 1)
   {
@@ -944,10 +944,10 @@ LABEL_18:
   }
 }
 
-- (void)_selectChannels:(OpaqueAudioQueue *)a3
+- (void)_selectChannels:(OpaqueAudioQueue *)channels
 {
   v94 = *MEMORY[0x1E69E9840];
-  v7 = objc_msgSend_queueFormat(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_queueFormat(self, a2, channels, v3, v4);
 
   if (v7)
   {
@@ -985,7 +985,7 @@ LABEL_18:
         {
           v49 = v44;
           v82 = v41;
-          *&v83 = a3;
+          *&v83 = channels;
           v84 = &v81;
           v50 = 0;
           v51 = *v86;
@@ -1102,32 +1102,32 @@ LABEL_18:
   }
 }
 
-- (void)setDspGraph:(id)a3
+- (void)setDspGraph:(id)graph
 {
-  v5 = a3;
-  if ((objc_msgSend_isEqualToString_(self->_dspGraph, v6, v5, v7, v8) & 1) == 0)
+  graphCopy = graph;
+  if ((objc_msgSend_isEqualToString_(self->_dspGraph, v6, graphCopy, v7, v8) & 1) == 0)
   {
-    objc_storeStrong(&self->_dspGraph, a3);
+    objc_storeStrong(&self->_dspGraph, graph);
     AX_PERFORM_WITH_LOCK();
   }
 }
 
-- (void)setGraphProperties:(id)a3
+- (void)setGraphProperties:(id)properties
 {
-  v5 = a3;
-  if ((objc_msgSend_isEqualToDictionary_(self->_graphProperties, v6, v5, v7, v8) & 1) == 0)
+  propertiesCopy = properties;
+  if ((objc_msgSend_isEqualToDictionary_(self->_graphProperties, v6, propertiesCopy, v7, v8) & 1) == 0)
   {
-    objc_storeStrong(&self->_graphProperties, a3);
+    objc_storeStrong(&self->_graphProperties, properties);
     AX_PERFORM_WITH_LOCK();
   }
 }
 
-- (void)setGraphParameters:(id)a3
+- (void)setGraphParameters:(id)parameters
 {
-  v5 = a3;
-  if ((objc_msgSend_isEqualToDictionary_(self->_graphParameters, v6, v5, v7, v8) & 1) == 0)
+  parametersCopy = parameters;
+  if ((objc_msgSend_isEqualToDictionary_(self->_graphParameters, v6, parametersCopy, v7, v8) & 1) == 0)
   {
-    objc_storeStrong(&self->_graphParameters, a3);
+    objc_storeStrong(&self->_graphParameters, parameters);
     AX_PERFORM_WITH_LOCK();
   }
 }

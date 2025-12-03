@@ -1,12 +1,12 @@
 @interface NSPersistentCloudKitContainerSetupPhaseActivity
-+ (__CFString)stringForPhase:(uint64_t)a1;
-- (NSPersistentCloudKitContainerSetupPhaseActivity)initWithPhase:(unint64_t)a3 storeIdentifier:(id)a4;
++ (__CFString)stringForPhase:(uint64_t)phase;
+- (NSPersistentCloudKitContainerSetupPhaseActivity)initWithPhase:(unint64_t)phase storeIdentifier:(id)identifier;
 - (id)createDictionaryRepresentation;
 @end
 
 @implementation NSPersistentCloudKitContainerSetupPhaseActivity
 
-+ (__CFString)stringForPhase:(uint64_t)a1
++ (__CFString)stringForPhase:(uint64_t)phase
 {
   v9 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -40,14 +40,14 @@
   return result;
 }
 
-- (NSPersistentCloudKitContainerSetupPhaseActivity)initWithPhase:(unint64_t)a3 storeIdentifier:(id)a4
+- (NSPersistentCloudKitContainerSetupPhaseActivity)initWithPhase:(unint64_t)phase storeIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = NSPersistentCloudKitContainerSetupPhaseActivity;
-  result = -[NSPersistentCloudKitContainerActivity _initWithIdentifier:forStore:activityType:](&v6, sel__initWithIdentifier_forStore_activityType_, [MEMORY[0x1E696AFB0] UUID], a4, 4);
+  result = -[NSPersistentCloudKitContainerActivity _initWithIdentifier:forStore:activityType:](&v6, sel__initWithIdentifier_forStore_activityType_, [MEMORY[0x1E696AFB0] UUID], identifier, 4);
   if (result)
   {
-    result->_phase = a3;
+    result->_phase = phase;
   }
 
   return result;
@@ -57,9 +57,9 @@
 {
   v5.receiver = self;
   v5.super_class = NSPersistentCloudKitContainerSetupPhaseActivity;
-  v3 = [(NSPersistentCloudKitContainerActivity *)&v5 createDictionaryRepresentation];
-  [v3 setObject:+[NSPersistentCloudKitContainerSetupPhaseActivity stringForPhase:](NSPersistentCloudKitContainerSetupPhaseActivity forKey:{self->_phase), @"phase"}];
-  return v3;
+  createDictionaryRepresentation = [(NSPersistentCloudKitContainerActivity *)&v5 createDictionaryRepresentation];
+  [createDictionaryRepresentation setObject:+[NSPersistentCloudKitContainerSetupPhaseActivity stringForPhase:](NSPersistentCloudKitContainerSetupPhaseActivity forKey:{self->_phase), @"phase"}];
+  return createDictionaryRepresentation;
 }
 
 @end

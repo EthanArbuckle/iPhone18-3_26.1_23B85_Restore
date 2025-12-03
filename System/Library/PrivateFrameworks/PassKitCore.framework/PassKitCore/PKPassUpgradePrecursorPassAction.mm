@@ -1,19 +1,19 @@
 @interface PKPassUpgradePrecursorPassAction
-+ (id)precursorActionFromDictionary:(id)a3;
-- (PKPassUpgradePrecursorPassAction)initWithCoder:(id)a3;
-- (PKPassUpgradePrecursorPassAction)initWithDictionary:(id)a3;
-- (id)_initWithType:(unint64_t)a3;
++ (id)precursorActionFromDictionary:(id)dictionary;
+- (PKPassUpgradePrecursorPassAction)initWithCoder:(id)coder;
+- (PKPassUpgradePrecursorPassAction)initWithDictionary:(id)dictionary;
+- (id)_initWithType:(unint64_t)type;
 - (id)asDictionary;
-- (void)_dictionaryRepresentationInto:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_dictionaryRepresentationInto:(id)into;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpgradePrecursorPassAction
 
-+ (id)precursorActionFromDictionary:(id)a3
++ (id)precursorActionFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 PKStringForKey:@"type"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy PKStringForKey:@"type"];
   v5 = PKPassUpgradePrecursorPassActionTypeFromString(v4);
   if (v5 > 2)
   {
@@ -48,7 +48,7 @@
     }
 
 LABEL_14:
-    v8 = [[v6 alloc] initWithDictionary:v3];
+    v8 = [[v6 alloc] initWithDictionary:dictionaryCopy];
     goto LABEL_15;
   }
 
@@ -65,29 +65,29 @@ LABEL_15:
   return v8;
 }
 
-- (PKPassUpgradePrecursorPassAction)initWithDictionary:(id)a3
+- (PKPassUpgradePrecursorPassAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = PKPassUpgradePrecursorPassAction;
   v5 = [(PKPassUpgradePrecursorPassAction *)&v8 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"type"];
+    v6 = [dictionaryCopy PKStringForKey:@"type"];
     v5->_type = PKPassUpgradePrecursorPassActionTypeFromString(v6);
   }
 
   return v5;
 }
 
-- (id)_initWithType:(unint64_t)a3
+- (id)_initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PKPassUpgradePrecursorPassAction;
   result = [(PKPassUpgradePrecursorPassAction *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = type;
   }
 
   return result;
@@ -102,7 +102,7 @@ LABEL_15:
   return v4;
 }
 
-- (void)_dictionaryRepresentationInto:(id)a3
+- (void)_dictionaryRepresentationInto:(id)into
 {
   v4 = self->_type - 1;
   if (v4 > 4)
@@ -115,10 +115,10 @@ LABEL_15:
     v5 = off_1E79D9DB0[v4];
   }
 
-  [a3 setObject:v5 forKeyedSubscript:@"type"];
+  [into setObject:v5 forKeyedSubscript:@"type"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = self->_type - 1;
   if (v4 > 4)
@@ -131,18 +131,18 @@ LABEL_15:
     v5 = off_1E79D9DB0[v4];
   }
 
-  [a3 encodeObject:v5 forKey:@"type"];
+  [coder encodeObject:v5 forKey:@"type"];
 }
 
-- (PKPassUpgradePrecursorPassAction)initWithCoder:(id)a3
+- (PKPassUpgradePrecursorPassAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKPassUpgradePrecursorPassAction;
   v5 = [(PKPassUpgradePrecursorPassAction *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = PKPassUpgradePrecursorPassActionTypeFromString(v6);
   }
 

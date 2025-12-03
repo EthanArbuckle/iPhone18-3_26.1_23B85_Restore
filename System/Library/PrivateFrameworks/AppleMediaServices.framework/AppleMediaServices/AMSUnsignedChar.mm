@@ -1,53 +1,53 @@
 @interface AMSUnsignedChar
-+ (id)unsignedCharWithUnsignedChar:(unsigned __int8)a3;
-- (AMSUnsignedChar)initWithUnsignedChar:(unsigned __int8)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUnsignedChar:(id)a3;
++ (id)unsignedCharWithUnsignedChar:(unsigned __int8)char;
+- (AMSUnsignedChar)initWithUnsignedChar:(unsigned __int8)char;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUnsignedChar:(id)char;
 @end
 
 @implementation AMSUnsignedChar
 
-- (AMSUnsignedChar)initWithUnsignedChar:(unsigned __int8)a3
+- (AMSUnsignedChar)initWithUnsignedChar:(unsigned __int8)char
 {
   v5.receiver = self;
   v5.super_class = AMSUnsignedChar;
   result = [(AMSUnsignedChar *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = char;
   }
 
   return result;
 }
 
-+ (id)unsignedCharWithUnsignedChar:(unsigned __int8)a3
++ (id)unsignedCharWithUnsignedChar:(unsigned __int8)char
 {
-  v3 = [[a1 alloc] initWithUnsignedChar:a3];
+  v3 = [[self alloc] initWithUnsignedChar:char];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSUnsignedChar *)self isEqualToUnsignedChar:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSUnsignedChar *)self isEqualToUnsignedChar:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToUnsignedChar:(id)a3
+- (BOOL)isEqualToUnsignedChar:(id)char
 {
-  if (!a3)
+  if (!char)
   {
     return 0;
   }
 
-  v4 = a3;
+  charCopy = char;
   LODWORD(self) = [(AMSUnsignedChar *)self value];
-  v5 = [v4 value];
+  value = [charCopy value];
 
-  return self == v5;
+  return self == value;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface LIGHTHOUSE_BITACORA_PROTOScheduleStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LIGHTHOUSE_BITACORA_PROTOScheduleStatus
@@ -35,7 +35,7 @@
   return v9;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -44,19 +44,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 8) = self->_scheduled;
-    *(a3 + 12) |= 1u;
+    *(to + 8) = self->_scheduled;
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   result = objc_msgSend_init(v9, v10, v11, v12, v13);
   if (*&self->_has)
   {
@@ -67,19 +67,19 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5, v7, v8))
   {
     goto LABEL_4;
   }
 
-  v9 = (v4[12] & 1) == 0;
+  v9 = (equalCopy[12] & 1) == 0;
   if (*&self->_has)
   {
-    if ((v4[12] & 1) == 0)
+    if ((equalCopy[12] & 1) == 0)
     {
 LABEL_4:
       v9 = 0;
@@ -88,13 +88,13 @@ LABEL_4:
 
     if (self->_scheduled)
     {
-      if ((v4[8] & 1) == 0)
+      if ((equalCopy[8] & 1) == 0)
       {
         goto LABEL_4;
       }
     }
 
-    else if (v4[8])
+    else if (equalCopy[8])
     {
       goto LABEL_4;
     }
@@ -120,11 +120,11 @@ LABEL_5:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_scheduled = *(a3 + 8);
+    self->_scheduled = *(from + 8);
     *&self->_has |= 1u;
   }
 }

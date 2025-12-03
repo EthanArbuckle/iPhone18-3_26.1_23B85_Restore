@@ -1,35 +1,35 @@
 @interface StartPageController
-- (BOOL)_bookmarkFolderIsEmpty:(id)a3;
+- (BOOL)_bookmarkFolderIsEmpty:(id)empty;
 - (BOOL)_canShowPrivateRelaySection;
-- (BOOL)_setFavoritesListToFolderWithServerID:(id)a3;
-- (BOOL)isBackgroundImageEnabledForStartPageCustomizationViewController:(id)a3;
-- (BOOL)isCloudSyncAvailableForStartPageCustomizationViewController:(id)a3;
-- (BOOL)isCloudSyncEnabledForStartPageCustomizationViewController:(id)a3;
-- (BOOL)isSuggestionsCustomizationAvailableForStartPageCustomizationViewController:(id)a3;
+- (BOOL)_setFavoritesListToFolderWithServerID:(id)d;
+- (BOOL)isBackgroundImageEnabledForStartPageCustomizationViewController:(id)controller;
+- (BOOL)isCloudSyncAvailableForStartPageCustomizationViewController:(id)controller;
+- (BOOL)isCloudSyncEnabledForStartPageCustomizationViewController:(id)controller;
+- (BOOL)isSuggestionsCustomizationAvailableForStartPageCustomizationViewController:(id)controller;
 - (BOOL)isTabGroupFavoritesSectionEnabled;
-- (BOOL)startPageViewController:(id)a3 isSectionExpanded:(id)a4;
-- (BOOL)startPageViewControllerIsPrivateBrowsingEnabled:(id)a3;
+- (BOOL)startPageViewController:(id)controller isSectionExpanded:(id)expanded;
+- (BOOL)startPageViewControllerIsPrivateBrowsingEnabled:(id)enabled;
 - (FrequentlyVisitedSitesController)frequentlyVisitedSitesController;
 - (NSArray)cloudTabsSections;
 - (SFStartPageViewController)viewController;
 - (StartPageController)init;
-- (StartPageController)initWithVisualStyleProvider:(id)a3;
+- (StartPageController)initWithVisualStyleProvider:(id)provider;
 - (StartPageDataSource)dataSource;
-- (id)_banActionForSiriSuggestion:(id)a3;
-- (id)_bookmarkSectionForBookmark:(id)a3 orList:(id)a4 forFavoritesSection:(BOOL)a5 forScopedFavoritesSection:(BOOL)a6 sectionTitle:(id)a7;
-- (id)_cloudTabDeviceForIdentifier:(id)a3;
+- (id)_banActionForSiriSuggestion:(id)suggestion;
+- (id)_bookmarkSectionForBookmark:(id)bookmark orList:(id)list forFavoritesSection:(BOOL)section forScopedFavoritesSection:(BOOL)favoritesSection sectionTitle:(id)title;
+- (id)_cloudTabDeviceForIdentifier:(id)identifier;
 - (id)_cloudTabDevices;
-- (id)_cloudTabItemForIdentifier:(id)a3;
+- (id)_cloudTabItemForIdentifier:(id)identifier;
 - (id)_cloudTabStore;
 - (id)_cloudTabsConsentMessage;
 - (id)_cloudTabsConsentSection;
 - (id)_cloudTabsContextMenuCommitHandler;
 - (id)_cloudTabsContextMenuDismissHandler;
 - (id)_cloudTabsDragItemProvider;
-- (id)_cloudTabsSectionWithDevice:(id)a3;
-- (id)_contextMenuConfigurationForCloudTabWithSelectedDevice:(id)a3;
-- (id)_contextMenuConfigurationForFrequentlyVisitedSite:(id)a3 previewProvider:(id)a4;
-- (id)_downvoteActionForSiriSuggestion:(id)a3;
+- (id)_cloudTabsSectionWithDevice:(id)device;
+- (id)_contextMenuConfigurationForCloudTabWithSelectedDevice:(id)device;
+- (id)_contextMenuConfigurationForFrequentlyVisitedSite:(id)site previewProvider:(id)provider;
+- (id)_downvoteActionForSiriSuggestion:(id)suggestion;
 - (id)_effectiveProfile;
 - (id)_effectiveProfileIdentifier;
 - (id)_favoritesSection;
@@ -37,104 +37,104 @@
 - (id)_frequentlyVisitedSection;
 - (id)_highlightsSection;
 - (id)_lastCloudDeviceProfileKey;
-- (id)_openMenuElementsForSiriSuggestion:(id)a3;
+- (id)_openMenuElementsForSiriSuggestion:(id)suggestion;
 - (id)_privacyReportSection;
 - (id)_privateBrowsingExplanationSection;
 - (id)_privateBrowsingPersistentModuleSection;
 - (id)_privateRelayPromptInPrivateBrowsingSection;
 - (id)_readingListSection;
 - (id)_recentCloudTabsSection;
-- (id)_recentCloudTabsSectionWithDevice:(id)a3;
-- (id)_recentItemsForDevice:(id)a3;
-- (id)_recentlyClosedTabsForProfile:(id)a3;
+- (id)_recentCloudTabsSectionWithDevice:(id)device;
+- (id)_recentItemsForDevice:(id)device;
+- (id)_recentlyClosedTabsForProfile:(id)profile;
 - (id)_recentlyClosedTabsSection;
 - (id)_selectedCloudTabsDevice;
-- (id)_shareActionForHighlight:(id)a3;
-- (id)_shareActionForSiriSuggestion:(id)a3;
+- (id)_shareActionForHighlight:(id)highlight;
+- (id)_shareActionForSiriSuggestion:(id)suggestion;
 - (id)_siriSuggestionsSection;
-- (id)_startPageSectionForManagedBookmarksFolder:(id)a3;
+- (id)_startPageSectionForManagedBookmarksFolder:(id)folder;
 - (id)_tabGroupHeadingSection;
 - (id)_tabGroupScopedFavoritesSection;
-- (id)backgroundImageAssetControllerForCustomizationViewController:(id)a3;
-- (id)backgroundImageForStartPageCustomizationViewController:(id)a3;
-- (id)backgroundImageIdentifierForStartPageViewController:(id)a3;
-- (id)profileProviderForCustomizationViewController:(id)a3;
-- (id)sectionsForStartPageViewController:(id)a3;
+- (id)backgroundImageAssetControllerForCustomizationViewController:(id)controller;
+- (id)backgroundImageForStartPageCustomizationViewController:(id)controller;
+- (id)backgroundImageIdentifierForStartPageViewController:(id)controller;
+- (id)profileProviderForCustomizationViewController:(id)controller;
+- (id)sectionsForStartPageViewController:(id)controller;
 - (id)startPageBackgroundImageIdentifier;
-- (id)startPageCustomizationViewController:(id)a3 customizationItemsForCustomizationVariant:(int64_t)a4;
-- (id)startPageViewController:(id)a3 detailSectionForItemIdentifier:(id)a4;
-- (id)startPageViewController:(id)a3 detailSectionsForItemIdentifier:(id)a4;
-- (id)startPageViewControllerDefaultProfile:(id)a3;
+- (id)startPageCustomizationViewController:(id)controller customizationItemsForCustomizationVariant:(int64_t)variant;
+- (id)startPageViewController:(id)controller detailSectionForItemIdentifier:(id)identifier;
+- (id)startPageViewController:(id)controller detailSectionsForItemIdentifier:(id)identifier;
+- (id)startPageViewControllerDefaultProfile:(id)profile;
 - (int64_t)effectiveUpdatePolicy;
-- (void)_appendSectionModelsForIdentifier:(id)a3 toArray:(id)a4;
-- (void)_bookmarkFolderDidChange:(id)a3;
-- (void)_bookmarksDidReload:(id)a3;
+- (void)_appendSectionModelsForIdentifier:(id)identifier toArray:(id)array;
+- (void)_bookmarkFolderDidChange:(id)change;
+- (void)_bookmarksDidReload:(id)reload;
 - (void)_cloudTabsConsentSelected;
-- (void)_cloudTabsConsentStateDidChange:(id)a3;
+- (void)_cloudTabsConsentStateDidChange:(id)change;
 - (void)_cloudTabsDidChange;
-- (void)_cloudTabsDidChange:(id)a3;
+- (void)_cloudTabsDidChange:(id)change;
 - (void)_coalesceDataReload;
 - (void)_contentBlockerStatisticsStoreDidClose;
-- (void)_contextMenuCommitHandlerForFrequentlyVisitedSite:(id)a3 animator:(id)a4 sectionIdentifier:(id)a5;
-- (void)_copyBookmark:(id)a3 toFolderWithID:(int)a4;
+- (void)_contextMenuCommitHandlerForFrequentlyVisitedSite:(id)site animator:(id)animator sectionIdentifier:(id)identifier;
+- (void)_copyBookmark:(id)bookmark toFolderWithID:(int)d;
 - (void)_fetchHandoffResult;
-- (void)_fetchMetadataIfNeededForReadingListBookmark:(id)a3;
-- (void)_frequentlyVisitedSitesDidChange:(id)a3;
+- (void)_fetchMetadataIfNeededForReadingListBookmark:(id)bookmark;
+- (void)_frequentlyVisitedSitesDidChange:(id)change;
 - (void)_hideCloudTabsSection;
-- (void)_highlightsDidChange:(id)a3;
+- (void)_highlightsDidChange:(id)change;
 - (void)_historyWasAltered;
-- (void)_historyWasCleared:(id)a3;
+- (void)_historyWasCleared:(id)cleared;
 - (void)_managedBookmarksDidChange;
 - (void)_privacyProxyStateDidChange;
 - (void)_privacyReportDataDidChange;
-- (void)_readingListBookmarkMetadataDidUpdate:(id)a3;
-- (void)_recentCloudTabItemsDidRebuild:(id)a3;
-- (void)_recentCloudTabItemsDidReceiveMetadata:(id)a3;
+- (void)_readingListBookmarkMetadataDidUpdate:(id)update;
+- (void)_recentCloudTabItemsDidRebuild:(id)rebuild;
+- (void)_recentCloudTabItemsDidReceiveMetadata:(id)metadata;
 - (void)_refreshSiriSuggestions;
 - (void)_reloadPrivacyReportSection;
-- (void)_reportBookmarkNavigationAnalytics:(id)a3 withIntent:(id)a4;
-- (void)_reportBookmarkNavigationAnalytics:(id)a3 withIntent:(id)a4 bookmarkIsInFavoritesFolder:(BOOL)a5;
-- (void)_requestLeadImageForRecommendation:(id)a3;
-- (void)_sectionsDidChange:(id)a3;
-- (void)_setLeadImageForCard:(id)a3 withRecommendation:(id)a4;
-- (void)_setProfileIconOnSectionIfNeeded:(id)a3;
-- (void)_setReadingListRecommendationAsReadWithRecommendation:(id)a3;
-- (void)_setSiriSuggestions:(id)a3;
-- (void)_setUpContextMenuForBookmarksSection:(id)a3;
-- (void)_suggestionsDidChange:(id)a3;
+- (void)_reportBookmarkNavigationAnalytics:(id)analytics withIntent:(id)intent;
+- (void)_reportBookmarkNavigationAnalytics:(id)analytics withIntent:(id)intent bookmarkIsInFavoritesFolder:(BOOL)folder;
+- (void)_requestLeadImageForRecommendation:(id)recommendation;
+- (void)_sectionsDidChange:(id)change;
+- (void)_setLeadImageForCard:(id)card withRecommendation:(id)recommendation;
+- (void)_setProfileIconOnSectionIfNeeded:(id)needed;
+- (void)_setReadingListRecommendationAsReadWithRecommendation:(id)recommendation;
+- (void)_setSiriSuggestions:(id)suggestions;
+- (void)_setUpContextMenuForBookmarksSection:(id)section;
+- (void)_suggestionsDidChange:(id)change;
 - (void)_updateFavoritesListForActiveProfile;
 - (void)_updatePrivacyReportData;
 - (void)_updateRecentCloudTabsSection;
 - (void)_updateRecentItemsAndDevices;
 - (void)_updateRecommendationsForAllTopics;
-- (void)_updateRecommendationsForTopics:(id)a3;
+- (void)_updateRecommendationsForTopics:(id)topics;
 - (void)_updateSiriSuggestionsMediator;
 - (void)_updateStartPageSectionManager;
-- (void)bookmark:(id)a3 didProduceNavigationIntent:(id)a4 userInfo:(id)a5;
-- (void)bookmark:(id)a3 shareItems:(id)a4 userInfo:(id)a5;
-- (void)cloudTabDeviceProvider:(id)a3 didUpdateCloudTabsInProfileWithIdentifier:(id)a4;
+- (void)bookmark:(id)bookmark didProduceNavigationIntent:(id)intent userInfo:(id)info;
+- (void)bookmark:(id)bookmark shareItems:(id)items userInfo:(id)info;
+- (void)cloudTabDeviceProvider:(id)provider didUpdateCloudTabsInProfileWithIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)deleteBookmark:(id)a3 userInfo:(id)a4;
-- (void)didReorderSectionIdentifiersForStartPageCustomizationViewController:(id)a3;
-- (void)editBookmark:(id)a3 userInfo:(id)a4;
-- (void)openRadarProblemURLforFrequentlyVisitedSite:(id)a3 userInfo:(id)a4;
-- (void)setDataSource:(id)a3;
-- (void)setShowingAsPopover:(BOOL)a3;
-- (void)setTabGroupFavoritesSectionEnabled:(BOOL)a3;
-- (void)startPageCustomizationViewController:(id)a3 didCustomizeItems:(id)a4 withVariant:(int64_t)a5;
-- (void)startPageCustomizationViewController:(id)a3 didModifyBackgroundImageEnabled:(BOOL)a4;
-- (void)startPageCustomizationViewController:(id)a3 didSelectBuiltInBackgroundImageAtURL:(id)a4 precomputedLuminance:(double)a5;
-- (void)startPageCustomizationViewController:(id)a3 didSelectCustomBackgroundImage:(id)a4;
-- (void)startPageCustomizationViewController:(id)a3 willModifySectionWithIdentifier:(id)a4 enabled:(BOOL)a5;
-- (void)startPageCustomizationViewControllerDidDisableCloudSync:(id)a3;
-- (void)startPageCustomizationViewControllerDidEnableCloudSync:(id)a3 withPreference:(int64_t)a4;
-- (void)startPageCustomizationViewControllerDidFinish:(id)a3;
-- (void)startPageViewController:(id)a3 didSelectItemWithIdentifier:(id)a4 atGridLocation:(id)a5;
-- (void)startPageViewController:(id)a3 didUpdateSearchPattern:(id)a4;
-- (void)startPageViewController:(id)a3 toggleSectionExpanded:(id)a4;
-- (void)startPageViewControllerDidChangeRootViewVisibility:(id)a3;
-- (void)tabGroupManager:(id)a3 didUpdateProfileWithIdentifier:(id)a4 difference:(id)a5;
-- (void)tabGroupManager:(id)a3 didUpdateScopedBookmarkList:(id)a4;
+- (void)deleteBookmark:(id)bookmark userInfo:(id)info;
+- (void)didReorderSectionIdentifiersForStartPageCustomizationViewController:(id)controller;
+- (void)editBookmark:(id)bookmark userInfo:(id)info;
+- (void)openRadarProblemURLforFrequentlyVisitedSite:(id)site userInfo:(id)info;
+- (void)setDataSource:(id)source;
+- (void)setShowingAsPopover:(BOOL)popover;
+- (void)setTabGroupFavoritesSectionEnabled:(BOOL)enabled;
+- (void)startPageCustomizationViewController:(id)controller didCustomizeItems:(id)items withVariant:(int64_t)variant;
+- (void)startPageCustomizationViewController:(id)controller didModifyBackgroundImageEnabled:(BOOL)enabled;
+- (void)startPageCustomizationViewController:(id)controller didSelectBuiltInBackgroundImageAtURL:(id)l precomputedLuminance:(double)luminance;
+- (void)startPageCustomizationViewController:(id)controller didSelectCustomBackgroundImage:(id)image;
+- (void)startPageCustomizationViewController:(id)controller willModifySectionWithIdentifier:(id)identifier enabled:(BOOL)enabled;
+- (void)startPageCustomizationViewControllerDidDisableCloudSync:(id)sync;
+- (void)startPageCustomizationViewControllerDidEnableCloudSync:(id)sync withPreference:(int64_t)preference;
+- (void)startPageCustomizationViewControllerDidFinish:(id)finish;
+- (void)startPageViewController:(id)controller didSelectItemWithIdentifier:(id)identifier atGridLocation:(id)location;
+- (void)startPageViewController:(id)controller didUpdateSearchPattern:(id)pattern;
+- (void)startPageViewController:(id)controller toggleSectionExpanded:(id)expanded;
+- (void)startPageViewControllerDidChangeRootViewVisibility:(id)visibility;
+- (void)tabGroupManager:(id)manager didUpdateProfileWithIdentifier:(id)identifier difference:(id)difference;
+- (void)tabGroupManager:(id)manager didUpdateScopedBookmarkList:(id)list;
 - (void)updatePolicyDidChange;
 - (void)updatePrivacyReportIfEnabled;
 - (void)updateTabGroupHeading;
@@ -144,8 +144,8 @@
 
 - (StartPageController)init
 {
-  v3 = [MEMORY[0x277D28C38] sharedProvider];
-  v4 = [(StartPageController *)self initWithVisualStyleProvider:v3];
+  mEMORY[0x277D28C38] = [MEMORY[0x277D28C38] sharedProvider];
+  v4 = [(StartPageController *)self initWithVisualStyleProvider:mEMORY[0x277D28C38]];
 
   return v4;
 }
@@ -156,37 +156,37 @@
   if ([MEMORY[0x277D49A08] isSafariProfilesEnabled])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v4 = [WeakRetained activeProfileIdentifier];
+    activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
 
-    if ([v4 isEqualToString:*MEMORY[0x277D49BD8]])
+    if ([activeProfileIdentifier isEqualToString:*MEMORY[0x277D49BD8]])
     {
-      v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     }
 
     else
     {
       v7 = objc_alloc(MEMORY[0x277D4A7E0]);
       v8 = +[Application sharedApplication];
-      v9 = [v8 tabGroupManager];
-      v5 = [v7 initWithProfileIdentifier:v4 tabGroupManager:v9];
+      tabGroupManager = [v8 tabGroupManager];
+      standardUserDefaults = [v7 initWithProfileIdentifier:activeProfileIdentifier tabGroupManager:tabGroupManager];
     }
 
-    v10 = [objc_alloc(MEMORY[0x277D4A080]) initWithStorage:v5];
+    v10 = [objc_alloc(MEMORY[0x277D4A080]) initWithStorage:standardUserDefaults];
     startPageSectionManager = self->_startPageSectionManager;
     self->_startPageSectionManager = v10;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D4A080] defaultManager];
-    v4 = self->_startPageSectionManager;
-    self->_startPageSectionManager = v6;
+    defaultManager = [MEMORY[0x277D4A080] defaultManager];
+    activeProfileIdentifier = self->_startPageSectionManager;
+    self->_startPageSectionManager = defaultManager;
   }
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v13 = *MEMORY[0x277D4A4D0];
-  [v12 removeObserver:self name:*MEMORY[0x277D4A4D0] object:v15];
-  [v12 addObserver:self selector:sel__sectionsDidChange_ name:v13 object:self->_startPageSectionManager];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D4A4D0] object:v15];
+  [defaultCenter addObserver:self selector:sel__sectionsDidChange_ name:v13 object:self->_startPageSectionManager];
   frequentlyVisitedSitesController = self->_frequentlyVisitedSitesController;
   self->_frequentlyVisitedSitesController = 0;
 
@@ -207,13 +207,13 @@
   if (([MEMORY[0x277D49A08] is2024CloudTabsEnabled] & 1) == 0)
   {
     v3 = [(WBSStartPageSectionManager *)self->_startPageSectionManager sectionForIdentifier:*MEMORY[0x277D4A4A8]];
-    v4 = [v3 isEnabled];
+    isEnabled = [v3 isEnabled];
 
-    if (v4)
+    if (isEnabled)
     {
-      v5 = [(StartPageController *)self _selectedCloudTabsDevice];
-      v6 = [(WBSStartPageSection *)self->_cachedCloudTabsSection itemIdentifiers];
-      v7 = [v5 tabs];
+      _selectedCloudTabsDevice = [(StartPageController *)self _selectedCloudTabsDevice];
+      itemIdentifiers = [(WBSStartPageSection *)self->_cachedCloudTabsSection itemIdentifiers];
+      tabs = [_selectedCloudTabsDevice tabs];
       v8 = WBSIsEqual();
 
       if ((v8 & 1) == 0)
@@ -225,7 +225,7 @@
           _os_log_impl(&dword_215819000, v9, OS_LOG_TYPE_INFO, "Updating iCloud Tabs for selected device in Start Page", v13, 2u);
         }
 
-        v10 = [(StartPageController *)self _cloudTabsSectionWithDevice:v5];
+        v10 = [(StartPageController *)self _cloudTabsSectionWithDevice:_selectedCloudTabsDevice];
         cachedCloudTabsSection = self->_cachedCloudTabsSection;
         self->_cachedCloudTabsSection = v10;
 
@@ -254,9 +254,9 @@
 - (id)_effectiveProfile
 {
   v3 = +[Application sharedApplication];
-  v4 = [v3 tabGroupManager];
-  v5 = [(StartPageController *)self _effectiveProfileIdentifier];
-  v6 = [v4 profileWithIdentifier:v5];
+  tabGroupManager = [v3 tabGroupManager];
+  _effectiveProfileIdentifier = [(StartPageController *)self _effectiveProfileIdentifier];
+  v6 = [tabGroupManager profileWithIdentifier:_effectiveProfileIdentifier];
 
   return v6;
 }
@@ -266,15 +266,15 @@
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if ([WeakRetained isPrivateBrowsingEnabled])
   {
-    v3 = *MEMORY[0x277D49BD8];
+    activeProfileIdentifier = *MEMORY[0x277D49BD8];
   }
 
   else
   {
-    v3 = [WeakRetained activeProfileIdentifier];
+    activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
   }
 
-  v4 = v3;
+  v4 = activeProfileIdentifier;
 
   return v4;
 }
@@ -315,28 +315,28 @@
 - (id)_cloudTabStore
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v3 = [WeakRetained cloudTabStore];
+  cloudTabStore = [WeakRetained cloudTabStore];
 
-  return v3;
+  return cloudTabStore;
 }
 
 - (void)_updateRecentItemsAndDevices
 {
-  v8 = [(WBSRecentsStore *)self->_recentsStore displayableRecentItems];
-  v3 = [v8 copy];
+  displayableRecentItems = [(WBSRecentsStore *)self->_recentsStore displayableRecentItems];
+  v3 = [displayableRecentItems copy];
   recentItems = self->_recentItems;
   self->_recentItems = v3;
 
-  v9 = [(WBSRecentsStore *)self->_recentsStore availableDevices];
-  v5 = [v9 copy];
+  availableDevices = [(WBSRecentsStore *)self->_recentsStore availableDevices];
+  v5 = [availableDevices copy];
   availableDevices = self->_availableDevices;
   self->_availableDevices = v5;
 
   recentItemsByDeviceUUID = self->_recentItemsByDeviceUUID;
   self->_recentItemsByDeviceUUID = 0;
 
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  self->_cloudTabsConsentObtained = [v10 BOOLForKey:*MEMORY[0x277D4A160]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  self->_cloudTabsConsentObtained = [standardUserDefaults BOOLForKey:*MEMORY[0x277D4A160]];
 }
 
 - (SFStartPageViewController)viewController
@@ -346,9 +346,9 @@
   {
     v4 = objc_alloc(MEMORY[0x277D28D58]);
     visualStyleProvider = self->_visualStyleProvider;
-    v6 = [WeakRetained tabGroupProvider];
-    v7 = [v6 activeProfile];
-    v8 = [v4 initWithVisualStyleProvider:visualStyleProvider forProfile:v7];
+    tabGroupProvider = [WeakRetained tabGroupProvider];
+    activeProfile = [tabGroupProvider activeProfile];
+    v8 = [v4 initWithVisualStyleProvider:visualStyleProvider forProfile:activeProfile];
     viewController = self->_viewController;
     self->_viewController = v8;
 
@@ -357,9 +357,9 @@
     [(StartPageController *)self _updatePrivacyReportData];
   }
 
-  v10 = [WeakRetained tabGroupProvider];
-  v11 = [v10 activeProfile];
-  [(SFStartPageViewController *)self->_viewController setProfile:v11];
+  tabGroupProvider2 = [WeakRetained tabGroupProvider];
+  activeProfile2 = [tabGroupProvider2 activeProfile];
+  [(SFStartPageViewController *)self->_viewController setProfile:activeProfile2];
 
   v12 = self->_viewController;
   v13 = v12;
@@ -372,8 +372,8 @@
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if ([WeakRetained isPrivateBrowsingEnabled])
   {
-    v4 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v5 = [v4 safari_enableAdvancedPrivacyProtections:1];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    v5 = [safari_browserDefaults safari_enableAdvancedPrivacyProtections:1];
 
     if (v5)
     {
@@ -388,20 +388,20 @@
   }
 
   objc_initWeak(&location, self);
-  v6 = [(StartPageController *)self _effectiveProfileIdentifier];
-  v7 = [(WBSPrivacyReportData *)self->_privacyReportData profileIdentifiers];
-  if ([v7 count] != 1)
+  _effectiveProfileIdentifier = [(StartPageController *)self _effectiveProfileIdentifier];
+  profileIdentifiers = [(WBSPrivacyReportData *)self->_privacyReportData profileIdentifiers];
+  if ([profileIdentifiers count] != 1)
   {
 
 LABEL_11:
     v11 = +[Application sharedApplication];
-    v12 = [v11 historyController];
-    v13 = [v12 historyForProfileIdentifier:v6 loadIfNeeded:1];
+    historyController = [v11 historyController];
+    v13 = [historyController historyForProfileIdentifier:_effectiveProfileIdentifier loadIfNeeded:1];
 
-    if (v6 && v13)
+    if (_effectiveProfileIdentifier && v13)
     {
       v14 = objc_alloc(MEMORY[0x277D4A7C0]);
-      v15 = [MEMORY[0x277CBEB98] setWithObject:v6];
+      v15 = [MEMORY[0x277CBEB98] setWithObject:_effectiveProfileIdentifier];
       v16 = [MEMORY[0x277CBEB98] setWithObject:v13];
       v17 = [v14 initWithProfileIdentifiers:v15 histories:v16];
       privacyReportData = self->_privacyReportData;
@@ -413,9 +413,9 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v8 = [(WBSPrivacyReportData *)self->_privacyReportData profileIdentifiers];
-  v9 = [v8 anyObject];
-  v10 = [v9 isEqualToString:v6];
+  profileIdentifiers2 = [(WBSPrivacyReportData *)self->_privacyReportData profileIdentifiers];
+  anyObject = [profileIdentifiers2 anyObject];
+  v10 = [anyObject isEqualToString:_effectiveProfileIdentifier];
 
   if ((v10 & 1) == 0)
   {
@@ -437,18 +437,18 @@ LABEL_15:
 
   else
   {
-    v20 = [MEMORY[0x277CBEAA8] date];
-    v21 = [MEMORY[0x277CBEA80] currentCalendar];
-    v22 = [v21 dateByAddingUnit:16 value:-7 toDate:v20 options:0];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v22 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:date options:0];
 
-    v23 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     v24 = self->_privacyReportData;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __47__StartPageController__updatePrivacyReportData__block_invoke_3;
     v25[3] = &unk_2781D6840;
     objc_copyWeak(&v26, &location);
-    [(WBSPrivacyReportData *)v24 loadDataFromStartDate:v22 toEndDate:v23 withCompletionHandler:v25];
+    [(WBSPrivacyReportData *)v24 loadDataFromStartDate:v22 toEndDate:distantFuture withCompletionHandler:v25];
     objc_destroyWeak(&v26);
   }
 
@@ -458,10 +458,10 @@ LABEL_15:
 - (id)startPageBackgroundImageIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v3 = [WeakRetained tabGroupProvider];
-  v4 = [v3 startPageBackgroundImageIdentifier];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  startPageBackgroundImageIdentifier = [tabGroupProvider startPageBackgroundImageIdentifier];
 
-  return v4;
+  return startPageBackgroundImageIdentifier;
 }
 
 - (void)updatePrivacyReportIfEnabled
@@ -478,23 +478,23 @@ LABEL_15:
   if ([(StartPageController *)self isTabGroupFavoritesSectionEnabled])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v4 = [WeakRetained tabGroupProvider];
+    tabGroupProvider = [WeakRetained tabGroupProvider];
 
-    v5 = [v4 activeTabGroup];
-    v6 = [v5 supportsTabGroupFavorites];
+    activeTabGroup = [tabGroupProvider activeTabGroup];
+    supportsTabGroupFavorites = [activeTabGroup supportsTabGroupFavorites];
 
-    if (v6)
+    if (supportsTabGroupFavorites)
     {
-      v7 = [v4 topScopedBookmarkListForActiveTabGroup];
+      topScopedBookmarkListForActiveTabGroup = [tabGroupProvider topScopedBookmarkListForActiveTabGroup];
       tabGroupScopedFavoritesList = self->_tabGroupScopedFavoritesList;
-      self->_tabGroupScopedFavoritesList = v7;
+      self->_tabGroupScopedFavoritesList = topScopedBookmarkListForActiveTabGroup;
 
-      v9 = [v4 activeTabGroup];
-      v10 = [v9 displayTitle];
+      activeTabGroup2 = [tabGroupProvider activeTabGroup];
+      displayTitle = [activeTabGroup2 displayTitle];
 
       v11 = MEMORY[0x277CCACA8];
       v12 = _WBSLocalizedString();
-      v13 = [v11 stringWithFormat:v12, v10];
+      v13 = [v11 stringWithFormat:v12, displayTitle];
 
       v14 = [(StartPageController *)self _bookmarkSectionForBookmark:0 orList:self->_tabGroupScopedFavoritesList forFavoritesSection:0 forScopedFavoritesSection:1 sectionTitle:v13];
     }
@@ -515,54 +515,54 @@ LABEL_15:
 
 - (BOOL)isTabGroupFavoritesSectionEnabled
 {
-  v3 = [(StartPageController *)self _effectiveProfile];
-  v4 = [v3 kind];
+  _effectiveProfile = [(StartPageController *)self _effectiveProfile];
+  kind = [_effectiveProfile kind];
 
-  if (v4 == 1)
+  if (kind == 1)
   {
-    v5 = [(StartPageController *)self _effectiveProfile];
-    v6 = [v5 settingForKey:*MEMORY[0x277D4A490]];
-    v7 = [v6 BOOLValue];
+    _effectiveProfile2 = [(StartPageController *)self _effectiveProfile];
+    v6 = [_effectiveProfile2 settingForKey:*MEMORY[0x277D4A490]];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v7 = [v5 BOOLForKey:*MEMORY[0x277D4A490]];
+    _effectiveProfile2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    bOOLValue = [_effectiveProfile2 BOOLForKey:*MEMORY[0x277D4A490]];
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)_favoritesSection
 {
   [(StartPageController *)self _updateFavoritesListForActiveProfile];
-  v3 = [(StartPageController *)self _effectiveProfile];
-  if ([v3 kind])
+  _effectiveProfile = [(StartPageController *)self _effectiveProfile];
+  if ([_effectiveProfile kind])
   {
     goto LABEL_8;
   }
 
-  v4 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  if (([v4 BOOLForKey:*MEMORY[0x277D49C08]] & 1) == 0)
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  if (([safari_browserDefaults BOOLForKey:*MEMORY[0x277D49C08]] & 1) == 0)
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = [MEMORY[0x277D28CD8] sharedController];
-  v6 = [v5 managedBookmarksController];
-  v7 = [v6 managedBookmarks];
+  mEMORY[0x277D28CD8] = [MEMORY[0x277D28CD8] sharedController];
+  managedBookmarksController = [mEMORY[0x277D28CD8] managedBookmarksController];
+  managedBookmarks = [managedBookmarksController managedBookmarks];
 
-  if (v7)
+  if (managedBookmarks)
   {
     cachedManagedBookmarksSection = self->_cachedManagedBookmarksSection;
     if (!cachedManagedBookmarksSection)
     {
-      v9 = [MEMORY[0x277D28CD8] sharedController];
-      v10 = [v9 topLevelManagedBookmarkFolder];
-      v11 = [(StartPageController *)self _startPageSectionForManagedBookmarksFolder:v10];
+      mEMORY[0x277D28CD8]2 = [MEMORY[0x277D28CD8] sharedController];
+      topLevelManagedBookmarkFolder = [mEMORY[0x277D28CD8]2 topLevelManagedBookmarkFolder];
+      v11 = [(StartPageController *)self _startPageSectionForManagedBookmarksFolder:topLevelManagedBookmarkFolder];
       v12 = self->_cachedManagedBookmarksSection;
       self->_cachedManagedBookmarksSection = v11;
 
@@ -605,17 +605,17 @@ LABEL_9:
   }
 
   v13 = self->_cachedFavoritesSection;
-  v20 = [(StartPageController *)self _effectiveProfile];
-  v21 = [v20 symbolImage];
-  [(WBSStartPageSection *)v13 setIcon:v21];
+  _effectiveProfile2 = [(StartPageController *)self _effectiveProfile];
+  symbolImage = [_effectiveProfile2 symbolImage];
+  [(WBSStartPageSection *)v13 setIcon:symbolImage];
 
-  v22 = [(StartPageController *)self _effectiveProfile];
-  v23 = [v22 kind];
+  _effectiveProfile3 = [(StartPageController *)self _effectiveProfile];
+  kind = [_effectiveProfile3 kind];
 
-  if (!v23)
+  if (!kind)
   {
-    v24 = [(WBSStartPageSection *)v13 itemIdentifiers];
-    if ([v24 count])
+    itemIdentifiers = [(WBSStartPageSection *)v13 itemIdentifiers];
+    if ([itemIdentifiers count])
     {
       v25 = v13;
     }
@@ -637,10 +637,10 @@ LABEL_21:
 
 - (void)_updateFavoritesListForActiveProfile
 {
-  v3 = [(StartPageController *)self _effectiveProfile];
-  v4 = [v3 customFavoritesFolderServerID];
+  _effectiveProfile = [(StartPageController *)self _effectiveProfile];
+  customFavoritesFolderServerID = [_effectiveProfile customFavoritesFolderServerID];
   lastSeenProfileCustomFavoritesServerID = self->_lastSeenProfileCustomFavoritesServerID;
-  self->_lastSeenProfileCustomFavoritesServerID = v4;
+  self->_lastSeenProfileCustomFavoritesServerID = customFavoritesFolderServerID;
 
   if ((!self->_lastSeenProfileCustomFavoritesServerID || ![(StartPageController *)self _setFavoritesListToFolderWithServerID:?]) && [(WebBookmarkList *)self->_favoritesList folderID]!= self->_favoritesFolderIDForDefaultProfile)
   {
@@ -660,20 +660,20 @@ LABEL_21:
   {
     if (([(WebBookmark *)customFavoritesFolderBookmark isBookmarksBarFolder]& 1) != 0)
     {
-      v5 = 0;
+      safari_stringByTrimmingWhitespace = 0;
     }
 
     else
     {
-      v6 = [(WebBookmark *)self->_customFavoritesFolderBookmark title];
-      v5 = [v6 safari_stringByTrimmingWhitespace];
+      title = [(WebBookmark *)self->_customFavoritesFolderBookmark title];
+      safari_stringByTrimmingWhitespace = [title safari_stringByTrimmingWhitespace];
     }
 
-    if ([v5 length] && (objc_msgSend(v5, "isEqualToString:", v3) & 1) == 0)
+    if ([safari_stringByTrimmingWhitespace length] && (objc_msgSend(safari_stringByTrimmingWhitespace, "isEqualToString:", v3) & 1) == 0)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@", v5, v3];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@", safari_stringByTrimmingWhitespace, v3];
 
-      v5 = v3;
+      safari_stringByTrimmingWhitespace = v3;
       v3 = v7;
     }
   }
@@ -684,13 +684,13 @@ LABEL_21:
 - (void)updateTabGroupHeading
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained tabGroupProvider];
-  v8 = [v4 activeTabGroup];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  activeTabGroup = [tabGroupProvider activeTabGroup];
 
-  if ([v8 isSyncable])
+  if ([activeTabGroup isSyncable])
   {
-    v5 = [(WBSStartPageSection *)self->_cachedTabGroupHeadingSection title];
-    v6 = [v8 displayTitle];
+    title = [(WBSStartPageSection *)self->_cachedTabGroupHeadingSection title];
+    displayTitle = [activeTabGroup displayTitle];
     v7 = WBSIsEqual();
 
     if ((v7 & 1) == 0)
@@ -719,25 +719,25 @@ uint64_t __52__StartPageController__updateRecentCloudTabsSection__block_invoke(u
   if ([MEMORY[0x277D49A08] is2024CloudTabsEnabled] && -[NSArray count](self->_recentItems, "count"))
   {
     v3 = MEMORY[0x277D4A838];
-    v4 = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
-    v12[0] = v4;
+    toggleSectionExpandedAction = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
+    v12[0] = toggleSectionExpandedAction;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
     v6 = [v3 cardSectionWithIdentifier:*MEMORY[0x277D4A4A8] actions:v5 banner:0 identifiers:self->_recentItems configurationProvider:&__block_literal_global_256];
 
     [v6 setNumberOfRowsVisibleWhenCollapsed:{-[SFStartPageVisualStyleProviding numberOfRowsForSection:traitCollectionIsHorizontalCompact:](self->_visualStyleProvider, "numberOfRowsForSection:traitCollectionIsHorizontalCompact:", 3, 0)}];
     [v6 setNumberOfRowsVisibleWhenCollapsedInCompactWidth:{-[SFStartPageVisualStyleProviding numberOfRowsForSection:traitCollectionIsHorizontalCompact:](self->_visualStyleProvider, "numberOfRowsForSection:traitCollectionIsHorizontalCompact:", 3, 1)}];
     [v6 setExpandsModally:1];
-    v7 = [(StartPageController *)self _contextMenuConfigurationForRecentCloudTab];
-    [v6 setContextMenuProvider:v7];
+    _contextMenuConfigurationForRecentCloudTab = [(StartPageController *)self _contextMenuConfigurationForRecentCloudTab];
+    [v6 setContextMenuProvider:_contextMenuConfigurationForRecentCloudTab];
 
-    v8 = [(StartPageController *)self _cloudTabsContextMenuCommitHandler];
-    [v6 setContextMenuCommitHandler:v8];
+    _cloudTabsContextMenuCommitHandler = [(StartPageController *)self _cloudTabsContextMenuCommitHandler];
+    [v6 setContextMenuCommitHandler:_cloudTabsContextMenuCommitHandler];
 
-    v9 = [(StartPageController *)self _cloudTabsContextMenuDismissHandler];
-    [v6 setContextMenuDismissHandler:v9];
+    _cloudTabsContextMenuDismissHandler = [(StartPageController *)self _cloudTabsContextMenuDismissHandler];
+    [v6 setContextMenuDismissHandler:_cloudTabsContextMenuDismissHandler];
 
-    v10 = [(StartPageController *)self _cloudTabsDragItemProvider];
-    [v6 setDragItemProvider:v10];
+    _cloudTabsDragItemProvider = [(StartPageController *)self _cloudTabsDragItemProvider];
+    [v6 setDragItemProvider:_cloudTabsDragItemProvider];
 
     [v6 setMaximumNumberOfPages:4];
     if (!self->_libraryType)
@@ -779,29 +779,29 @@ LABEL_5:
 - (void)_reloadPrivacyReportSection
 {
   viewController = self->_viewController;
-  v3 = [(StartPageController *)self _privacyReportSection];
+  _privacyReportSection = [(StartPageController *)self _privacyReportSection];
   [SFStartPageViewController reloadSection:"reloadSection:animated:" animated:?];
 }
 
 - (id)_privacyReportSection
 {
-  v3 = [MEMORY[0x277D4A7B8] sharedManager];
-  v4 = [v3 initialized];
+  mEMORY[0x277D4A7B8] = [MEMORY[0x277D4A7B8] sharedManager];
+  initialized = [mEMORY[0x277D4A7B8] initialized];
 
-  if (v4)
+  if (initialized)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     objc_initWeak(&location, WeakRetained);
     v6 = MEMORY[0x277D4A828];
     cachedNumberOfTrackers = self->_cachedNumberOfTrackers;
-    v8 = [WeakRetained isPrivateBrowsingEnabled];
+    isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
     privacyReportData = self->_privacyReportData;
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __44__StartPageController__privacyReportSection__block_invoke;
     v16 = &unk_2781D6840;
     objc_copyWeak(&v17, &location);
-    v10 = [v6 privacyReportBannerWithNumberOfTrackers:cachedNumberOfTrackers privateBrowsingEnabled:v8 privacyReportData:privacyReportData selectionHandler:&v13];
+    v10 = [v6 privacyReportBannerWithNumberOfTrackers:cachedNumberOfTrackers privateBrowsingEnabled:isPrivateBrowsingEnabled privacyReportData:privacyReportData selectionHandler:&v13];
     v11 = [MEMORY[0x277D4A838] bannerSectionWithIdentifier:*MEMORY[0x277D4A4E0] banner:{v10, v13, v14, v15, v16}];
     [(StartPageController *)self _setProfileIconOnSectionIfNeeded:v11];
 
@@ -821,20 +821,20 @@ LABEL_5:
 {
   v53[1] = *MEMORY[0x277D85DE8];
   v3 = +[Application sharedApplication];
-  v4 = [v3 highlightManager];
+  highlightManager = [v3 highlightManager];
 
-  v33 = v4;
-  v30 = [v4 highlights];
+  v33 = highlightManager;
+  highlights = [highlightManager highlights];
   v5 = WBSIsEqual();
-  v6 = v30;
+  v6 = highlights;
   v7 = *MEMORY[0x277D4A4C0];
   v8 = +[Application sharedApplication];
-  v9 = [(StartPageController *)self dataSource];
-  v10 = [v9 activeProfileIdentifier];
-  v11 = [v8 suggestionsManagerForProfileIdentifier:v10];
+  dataSource = [(StartPageController *)self dataSource];
+  activeProfileIdentifier = [dataSource activeProfileIdentifier];
+  v11 = [v8 suggestionsManagerForProfileIdentifier:activeProfileIdentifier];
 
   v32 = v11;
-  v31 = [v11 suggestions];
+  suggestions = [v11 suggestions];
   v12 = [MEMORY[0x277D49A08] is2024SuggestionsEnabled] ^ 1 | v5;
   if (v12)
   {
@@ -843,7 +843,7 @@ LABEL_5:
 
   else
   {
-    v13 = v31;
+    v13 = suggestions;
 
     v14 = *MEMORY[0x277D4A518];
     v7 = v14;
@@ -854,7 +854,7 @@ LABEL_5:
   {
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v16 = [WeakRetained isPrivateBrowsingEnabled];
+    isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
 
     v17 = MEMORY[0x277D4A838];
     if (v5)
@@ -880,7 +880,7 @@ LABEL_5:
     v47 = v32;
     v25 = v33;
     v48 = v25;
-    v51 = v16;
+    v51 = isPrivateBrowsingEnabled;
     v24 = [v17 attributedRichLinkSectionWithIdentifier:v34 title:v19 actions:v18 banner:0 identifiers:v13 configurationProvider:v46];
     if ((v5 & 1) == 0)
     {
@@ -898,18 +898,18 @@ LABEL_5:
     objc_copyWeak(&v44, &location);
     v26 = v25;
     v43 = v26;
-    v45 = v16;
+    v45 = isPrivateBrowsingEnabled;
     [v24 setContextMenuProvider:v42];
-    v27 = [v24 identifier];
+    identifier = [v24 identifier];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __41__StartPageController__highlightsSection__block_invoke_2_333;
     v37[3] = &unk_2781DD220;
     objc_copyWeak(&v40, &location);
-    v28 = v27;
+    v28 = identifier;
     v38 = v28;
     v39 = v26;
-    v41 = v16;
+    v41 = isPrivateBrowsingEnabled;
     [v24 setContextMenuCommitHandler:v37];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
@@ -969,8 +969,8 @@ LABEL_5:
   {
     objc_initWeak(&location, self);
     v6 = MEMORY[0x277D4A838];
-    v7 = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
-    v18[0] = v7;
+    toggleSectionExpandedAction = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
+    v18[0] = toggleSectionExpandedAction;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
     v9 = [(WebBookmarkList *)self->_readingList bookmarkArrayRequestingCount:50];
     v12 = MEMORY[0x277D85DD0];
@@ -1006,9 +1006,9 @@ LABEL_5:
 {
   v25[2] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained tabGroupProvider];
-  v5 = [v4 activeProfile];
-  v6 = [(StartPageController *)self _recentlyClosedTabsForProfile:v5];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  activeProfile = [tabGroupProvider activeProfile];
+  v6 = [(StartPageController *)self _recentlyClosedTabsForProfile:activeProfile];
 
   if ([v6 count])
   {
@@ -1026,8 +1026,8 @@ LABEL_5:
     v10 = _WBSLocalizedString();
     v11 = MEMORY[0x277D4A838];
     v25[0] = v9;
-    v12 = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
-    v25[1] = v12;
+    toggleSectionExpandedAction = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
+    v25[1] = toggleSectionExpandedAction;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
     v14 = [v11 listSectionWithIdentifier:*MEMORY[0x277D4A508] title:v10 actions:v13 banner:0 identifiers:v6 configurationProvider:&__block_literal_global_154_1];
 
@@ -1072,9 +1072,9 @@ LABEL_5:
 {
   v59[1] = *MEMORY[0x277D85DE8];
   v3 = +[Application sharedApplication];
-  v4 = [v3 isCloudHistoryEnabled];
+  isCloudHistoryEnabled = [v3 isCloudHistoryEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isCloudHistoryEnabled & 1) == 0)
   {
     goto LABEL_34;
   }
@@ -1082,16 +1082,16 @@ LABEL_5:
   if ([MEMORY[0x277D49A08] is2024CloudTabsEnabled])
   {
     v5 = +[Application sharedApplication];
-    v6 = [(StartPageController *)self _effectiveProfileIdentifier];
-    v7 = [v5 recentsStoreForProfileWithIdentifier:v6];
+    _effectiveProfileIdentifier = [(StartPageController *)self _effectiveProfileIdentifier];
+    v7 = [v5 recentsStoreForProfileWithIdentifier:_effectiveProfileIdentifier];
     recentsStore = self->_recentsStore;
     self->_recentsStore = v7;
 
     [(StartPageController *)self _updateRecentItemsAndDevices];
     if ([(StartPageController *)self _shouldShowConsentUI])
     {
-      v9 = [(StartPageController *)self _cloudTabsConsentSection];
-      v59[0] = v9;
+      _cloudTabsConsentSection = [(StartPageController *)self _cloudTabsConsentSection];
+      v59[0] = _cloudTabsConsentSection;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:1];
 
       goto LABEL_35;
@@ -1106,9 +1106,9 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v39 = [MEMORY[0x277D49A08] isEnhancedVerticalTabsEnabled];
+      isEnhancedVerticalTabsEnabled = [MEMORY[0x277D49A08] isEnhancedVerticalTabsEnabled];
       availableDevices = self->_availableDevices;
-      if (v39)
+      if (isEnhancedVerticalTabsEnabled)
       {
         v53[0] = MEMORY[0x277D85DD0];
         v53[1] = 3221225472;
@@ -1153,9 +1153,9 @@ LABEL_34:
       cachedCloudTabsSection = self->_cachedCloudTabsSection;
       if (!cachedCloudTabsSection)
       {
-        v45 = [(StartPageController *)self _recentCloudTabsSection];
+        _recentCloudTabsSection = [(StartPageController *)self _recentCloudTabsSection];
         v46 = self->_cachedCloudTabsSection;
-        self->_cachedCloudTabsSection = v45;
+        self->_cachedCloudTabsSection = _recentCloudTabsSection;
 
         cachedCloudTabsSection = self->_cachedCloudTabsSection;
         if (!cachedCloudTabsSection)
@@ -1174,15 +1174,15 @@ LABEL_32:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v12 = [WeakRetained canShowSidebar];
+  canShowSidebar = [WeakRetained canShowSidebar];
 
-  if (((self->_libraryType == 0) & v12) != 0)
+  if (((self->_libraryType == 0) & canShowSidebar) != 0)
   {
     v13 = self->_cachedCloudTabsSection;
     if (!v13)
     {
-      v14 = [(StartPageController *)self _selectedCloudTabsDevice];
-      v15 = [(StartPageController *)self _cloudTabsSectionWithDevice:v14];
+      _selectedCloudTabsDevice = [(StartPageController *)self _selectedCloudTabsDevice];
+      v15 = [(StartPageController *)self _cloudTabsSectionWithDevice:_selectedCloudTabsDevice];
       v16 = self->_cachedCloudTabsSection;
       self->_cachedCloudTabsSection = v15;
 
@@ -1198,8 +1198,8 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v18 = [(StartPageController *)self _cloudTabDevices];
-  v19 = [v18 count];
+  _cloudTabDevices = [(StartPageController *)self _cloudTabDevices];
+  v19 = [_cloudTabDevices count];
   if (v19 || !self->_libraryType)
   {
     v51[0] = MEMORY[0x277D85DD0];
@@ -1207,7 +1207,7 @@ LABEL_32:
     v51[2] = __40__StartPageController_cloudTabsSections__block_invoke_3;
     v51[3] = &unk_2781DCC60;
     v51[4] = self;
-    v20 = [v18 safari_mapObjectsUsingBlock:v51];
+    v20 = [_cloudTabDevices safari_mapObjectsUsingBlock:v51];
     v10 = [v20 mutableCopy];
 
     if (v19 < 5)
@@ -1217,7 +1217,7 @@ LABEL_32:
 
     else
     {
-      v21 = v12;
+      v21 = canShowSidebar;
     }
 
     if ((v21 & 1) == 0)
@@ -1277,10 +1277,10 @@ LABEL_35:
   if (!frequentlyVisitedSitesController)
   {
     v4 = +[Application sharedApplication];
-    v5 = [v4 historyController];
+    historyController = [v4 historyController];
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v7 = [WeakRetained activeProfileIdentifier];
-    v8 = [v5 frequentlyVisitedSitesControllerForProfileIdentifier:v7 loadIfNeeded:1];
+    activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
+    v8 = [historyController frequentlyVisitedSitesControllerForProfileIdentifier:activeProfileIdentifier loadIfNeeded:1];
     v9 = self->_frequentlyVisitedSitesController;
     self->_frequentlyVisitedSitesController = v8;
 
@@ -1292,76 +1292,76 @@ LABEL_35:
   return v10;
 }
 
-- (StartPageController)initWithVisualStyleProvider:(id)a3
+- (StartPageController)initWithVisualStyleProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v46.receiver = self;
   v46.super_class = StartPageController;
   v6 = [(StartPageController *)&v46 init];
   if (v6)
   {
     objc_initWeak(&location, v6);
-    objc_storeStrong(&v6->_visualStyleProvider, a3);
-    v7 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+    objc_storeStrong(&v6->_visualStyleProvider, provider);
+    mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
     bookmarkCollection = v6->_bookmarkCollection;
-    v6->_bookmarkCollection = v7;
+    v6->_bookmarkCollection = mainBookmarkCollection;
 
     v9 = +[Application sharedApplication];
-    v10 = [v9 readingListLeadImageCache];
+    readingListLeadImageCache = [v9 readingListLeadImageCache];
     readingListLeadImageCache = v6->_readingListLeadImageCache;
-    v6->_readingListLeadImageCache = v10;
+    v6->_readingListLeadImageCache = readingListLeadImageCache;
 
     [(StartPageController *)v6 _updateStartPageSectionManager];
-    v12 = [MEMORY[0x277D7B590] sharedWebFilterSettings];
-    v6->_webFilterUsesOnlyAllowedSites = [v12 usesAllowedSitesOnly];
+    mEMORY[0x277D7B590] = [MEMORY[0x277D7B590] sharedWebFilterSettings];
+    v6->_webFilterUsesOnlyAllowedSites = [mEMORY[0x277D7B590] usesAllowedSitesOnly];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v6 selector:sel__cloudTabsDidChange_ name:@"CloudTabStoreDidUpdateNotification" object:0];
-    [v13 addObserver:v6 selector:sel__bookmarkFolderDidChange_ name:*MEMORY[0x277D7B618] object:v6->_bookmarkCollection];
-    [v13 addObserver:v6 selector:sel__bookmarksDidReload_ name:*MEMORY[0x277D7B608] object:v6->_bookmarkCollection];
-    [v13 addObserver:v6 selector:sel__bookmarksDidReload_ name:*MEMORY[0x277D7B640] object:v6->_bookmarkCollection];
-    v14 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v14 addObserver:v6 selector:sel__bookmarksDidReload_ name:*MEMORY[0x277D7B600] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__cloudTabsDidChange_ name:@"CloudTabStoreDidUpdateNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel__bookmarkFolderDidChange_ name:*MEMORY[0x277D7B618] object:v6->_bookmarkCollection];
+    [defaultCenter addObserver:v6 selector:sel__bookmarksDidReload_ name:*MEMORY[0x277D7B608] object:v6->_bookmarkCollection];
+    [defaultCenter addObserver:v6 selector:sel__bookmarksDidReload_ name:*MEMORY[0x277D7B640] object:v6->_bookmarkCollection];
+    defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__bookmarksDidReload_ name:*MEMORY[0x277D7B600] object:0];
 
-    [v13 addObserver:v6 selector:sel__frequentlyVisitedSitesDidChange_ name:*MEMORY[0x277D4A8F0] object:0];
-    [v13 addObserver:v6 selector:sel__refreshSiriSuggestions name:*MEMORY[0x277D4A208] object:0];
-    v15 = [MEMORY[0x277D49F68] existingSharedHistory];
-    [v13 addObserver:v6 selector:sel__historyWasAltered name:*MEMORY[0x277D4A230] object:v15];
+    [defaultCenter addObserver:v6 selector:sel__frequentlyVisitedSitesDidChange_ name:*MEMORY[0x277D4A8F0] object:0];
+    [defaultCenter addObserver:v6 selector:sel__refreshSiriSuggestions name:*MEMORY[0x277D4A208] object:0];
+    existingSharedHistory = [MEMORY[0x277D49F68] existingSharedHistory];
+    [defaultCenter addObserver:v6 selector:sel__historyWasAltered name:*MEMORY[0x277D4A230] object:existingSharedHistory];
 
-    [v13 addObserver:v6 selector:sel__historyWasCleared_ name:*MEMORY[0x277D4A240] object:0];
-    [v13 addObserver:v6 selector:sel__readingListBookmarkMetadataDidUpdate_ name:@"ReadingListBookmarkMetadataDidUpdateNotification" object:0];
-    [v13 addObserver:v6 selector:sel__contentBlockerStatisticsStoreDidClose name:*MEMORY[0x277D4A170] object:0];
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v6 selector:sel__recentCloudTabItemsDidRebuild_ name:*MEMORY[0x277D4A930] object:0];
+    [defaultCenter addObserver:v6 selector:sel__historyWasCleared_ name:*MEMORY[0x277D4A240] object:0];
+    [defaultCenter addObserver:v6 selector:sel__readingListBookmarkMetadataDidUpdate_ name:@"ReadingListBookmarkMetadataDidUpdateNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel__contentBlockerStatisticsStoreDidClose name:*MEMORY[0x277D4A170] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v6 selector:sel__recentCloudTabItemsDidRebuild_ name:*MEMORY[0x277D4A930] object:0];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v6 selector:sel__recentCloudTabItemsDidReceiveMetadata_ name:*MEMORY[0x277D4A938] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v6 selector:sel__recentCloudTabItemsDidReceiveMetadata_ name:*MEMORY[0x277D4A938] object:0];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v6 selector:sel__suggestionsDidChange_ name:*MEMORY[0x277D4A980] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v6 selector:sel__suggestionsDidChange_ name:*MEMORY[0x277D4A980] object:0];
 
-    v19 = [MEMORY[0x277CCAC78] safari_suggestionsRelativeDateTimeFormatter];
+    safari_suggestionsRelativeDateTimeFormatter = [MEMORY[0x277CCAC78] safari_suggestionsRelativeDateTimeFormatter];
     relativeDateFormatter = v6->_relativeDateFormatter;
-    v6->_relativeDateFormatter = v19;
+    v6->_relativeDateFormatter = safari_suggestionsRelativeDateTimeFormatter;
 
-    v21 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     suggestionProxiesToMetadataTokens = v6->_suggestionProxiesToMetadataTokens;
-    v6->_suggestionProxiesToMetadataTokens = v21;
+    v6->_suggestionProxiesToMetadataTokens = strongToStrongObjectsMapTable;
 
     siriSuggestions = v6->_siriSuggestions;
     v6->_siriSuggestions = MEMORY[0x277CBEBF8];
 
     [(StartPageController *)v6 updatePrivateBrowsingExplanationState];
-    [v13 addObserver:v6 selector:sel__highlightsDidChange_ name:*MEMORY[0x277D4A8F8] object:0];
-    v24 = [MEMORY[0x277D4A7B8] sharedManager];
-    [v13 addObserver:v6 selector:sel__privacyProxyStateDidChange name:*MEMORY[0x277D4A910] object:v24];
+    [defaultCenter addObserver:v6 selector:sel__highlightsDidChange_ name:*MEMORY[0x277D4A8F8] object:0];
+    mEMORY[0x277D4A7B8] = [MEMORY[0x277D4A7B8] sharedManager];
+    [defaultCenter addObserver:v6 selector:sel__privacyProxyStateDidChange name:*MEMORY[0x277D4A910] object:mEMORY[0x277D4A7B8]];
 
-    [v13 addObserver:v6 selector:sel__managedBookmarksDidChange name:*MEMORY[0x277D29058] object:0];
-    v25 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__managedBookmarksDidChange name:*MEMORY[0x277D29058] object:0];
+    defaultCenter6 = [MEMORY[0x277CCA9A0] defaultCenter];
     v26 = [MEMORY[0x277CBEBD0] safari_notificationNameForUserDefaultsKey:*MEMORY[0x277D49C08]];
-    [v25 addObserver:v6 selector:sel__managedBookmarksDidChange name:v26 object:0];
+    [defaultCenter6 addObserver:v6 selector:sel__managedBookmarksDidChange name:v26 object:0];
 
-    v27 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v28 = *MEMORY[0x277D290B8];
     v29 = MEMORY[0x277D85CD0];
     v30 = MEMORY[0x277D85CD0];
@@ -1370,23 +1370,23 @@ LABEL_35:
     v43[2] = __51__StartPageController_initWithVisualStyleProvider___block_invoke;
     v43[3] = &unk_2781DC858;
     objc_copyWeak(&v44, &location);
-    v31 = [v27 safari_observeValueForKey:v28 onQueue:v29 notifyForInitialValue:0 handler:v43];
+    v31 = [standardUserDefaults safari_observeValueForKey:v28 onQueue:v29 notifyForInitialValue:0 handler:v43];
     selectedCloudDeviceObservation = v6->_selectedCloudDeviceObservation;
     v6->_selectedCloudDeviceObservation = v31;
 
-    v33 = [(StartPageController *)v6 _effectiveProfile];
-    v34 = [v33 kind];
+    _effectiveProfile = [(StartPageController *)v6 _effectiveProfile];
+    kind = [_effectiveProfile kind];
 
-    if (v34 != 1)
+    if (kind != 1)
     {
-      v35 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
       v36 = *MEMORY[0x277D4A490];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __51__StartPageController_initWithVisualStyleProvider___block_invoke_2;
       v41[3] = &unk_2781D83F8;
       objc_copyWeak(&v42, &location);
-      v37 = [v35 safari_observeValueForKey:v36 onQueue:MEMORY[0x277D85CD0] notifyForInitialValue:0 handler:v41];
+      v37 = [standardUserDefaults2 safari_observeValueForKey:v36 onQueue:MEMORY[0x277D85CD0] notifyForInitialValue:0 handler:v41];
       tabGroupFavoritesObservation = v6->_tabGroupFavoritesObservation;
       v6->_tabGroupFavoritesObservation = v37;
 
@@ -1418,23 +1418,23 @@ void __51__StartPageController_initWithVisualStyleProvider___block_invoke_2(uint
 {
   [(WBSUserDefaultObservation *)self->_tabGroupFavoritesObservation invalidate];
   [(WBSUserDefaultObservation *)self->_selectedCloudDeviceObservation invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
-  v5 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-  [v5 cancelRequestsWithTokens:self->_siriSuggestionsMetadataTokens];
+  mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+  [mEMORY[0x277D28F58] cancelRequestsWithTokens:self->_siriSuggestionsMetadataTokens];
 
   [(WBSForYouRecommendationMediator *)self->_siriSuggestionsMediator stopListeningForURLSuggestionChanges];
   [(NSTimer *)self->_coalescedRecentCloudTabsSectionUpdateTimer invalidate];
   if ([(NSMapTable *)self->_suggestionProxiesToMetadataTokens count])
   {
-    v6 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-    v7 = [(NSMapTable *)self->_suggestionProxiesToMetadataTokens objectEnumerator];
-    v8 = [v7 allObjects];
-    [v6 cancelRequestsWithTokens:v8];
+    mEMORY[0x277D28F58]2 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+    objectEnumerator = [(NSMapTable *)self->_suggestionProxiesToMetadataTokens objectEnumerator];
+    allObjects = [objectEnumerator allObjects];
+    [mEMORY[0x277D28F58]2 cancelRequestsWithTokens:allObjects];
   }
 
   v9.receiver = self;
@@ -1442,24 +1442,24 @@ void __51__StartPageController_initWithVisualStyleProvider___block_invoke_2(uint
   [(StartPageController *)&v9 dealloc];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (WeakRetained != obj)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self name:@"ProfileDidChange" object:WeakRetained];
-    [v5 addObserver:self selector:sel__updateStartPageSectionManager name:@"ProfileDidChange" object:obj];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"ProfileDidChange" object:WeakRetained];
+    [defaultCenter addObserver:self selector:sel__updateStartPageSectionManager name:@"ProfileDidChange" object:obj];
     objc_storeWeak(&self->_dataSource, obj);
     [(StartPageController *)self updatePolicyDidChange];
     [(StartPageController *)self _updateStartPageSectionManager];
-    v6 = [obj isPrivateBrowsingEnabled];
-    v7 = v6;
-    if (v6)
+    isPrivateBrowsingEnabled = [obj isPrivateBrowsingEnabled];
+    v7 = isPrivateBrowsingEnabled;
+    if (isPrivateBrowsingEnabled)
     {
-      v8 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-      v9 = [v8 safari_enableAdvancedPrivacyProtections:1];
+      safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+      v9 = [safari_browserDefaults safari_enableAdvancedPrivacyProtections:1];
 
       self->_privateBrowsingWasEnabled = v7;
       if (v9)
@@ -1467,17 +1467,17 @@ void __51__StartPageController_initWithVisualStyleProvider___block_invoke_2(uint
         self->_cachedNumberOfTrackers = [MEMORY[0x277D49EE8] totalBlockedTrackerCount];
 LABEL_9:
         v17 = objc_alloc(MEMORY[0x277D4A7E8]);
-        v18 = [(StartPageController *)self _cloudTabStore];
-        v19 = [v17 initWithCloudTabDeviceProvider:v18];
+        _cloudTabStore = [(StartPageController *)self _cloudTabStore];
+        v19 = [v17 initWithCloudTabDeviceProvider:_cloudTabStore];
         recentCloudTabsProvider = self->_recentCloudTabsProvider;
         self->_recentCloudTabsProvider = v19;
 
-        v21 = [(StartPageController *)self _effectiveProfileIdentifier];
-        [(WBSRecentCloudTabsProvider *)self->_recentCloudTabsProvider setActiveProfileIdentifier:v21];
+        _effectiveProfileIdentifier = [(StartPageController *)self _effectiveProfileIdentifier];
+        [(WBSRecentCloudTabsProvider *)self->_recentCloudTabsProvider setActiveProfileIdentifier:_effectiveProfileIdentifier];
 
         v22 = +[Application sharedApplication];
-        v23 = [(StartPageController *)self _effectiveProfileIdentifier];
-        v24 = [v22 recentsStoreForProfileWithIdentifier:v23];
+        _effectiveProfileIdentifier2 = [(StartPageController *)self _effectiveProfileIdentifier];
+        v24 = [v22 recentsStoreForProfileWithIdentifier:_effectiveProfileIdentifier2];
         recentsStore = self->_recentsStore;
         self->_recentsStore = v24;
 
@@ -1488,22 +1488,22 @@ LABEL_9:
 
     else
     {
-      self->_privateBrowsingWasEnabled = v6;
+      self->_privateBrowsingWasEnabled = isPrivateBrowsingEnabled;
     }
 
     v10 = MEMORY[0x277D4A7C0];
-    v11 = [(StartPageController *)self _effectiveProfileIdentifier];
-    v12 = [v10 cachedNumberOfTrackersOnStartPageForProfileWithIdentifier:v11];
+    _effectiveProfileIdentifier3 = [(StartPageController *)self _effectiveProfileIdentifier];
+    v12 = [v10 cachedNumberOfTrackersOnStartPageForProfileWithIdentifier:_effectiveProfileIdentifier3];
 
     if (!v12)
     {
       v13 = MEMORY[0x277CCABB0];
-      v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
       v15 = *MEMORY[0x277D290A8];
-      v12 = [v13 numberWithInteger:{objc_msgSend(v14, "integerForKey:", *MEMORY[0x277D290A8])}];
+      v12 = [v13 numberWithInteger:{objc_msgSend(standardUserDefaults, "integerForKey:", *MEMORY[0x277D290A8])}];
 
-      v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v16 removeObjectForKey:v15];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults2 removeObjectForKey:v15];
     }
 
     self->_cachedNumberOfTrackers = [v12 integerValue];
@@ -1514,7 +1514,7 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_sectionsDidChange:(id)a3
+- (void)_sectionsDidChange:(id)change
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
@@ -1544,26 +1544,26 @@ LABEL_10:
   [(SFStartPageViewController *)viewController coalesceDataReloadWithBlock:v3 animatingDifferences:1];
 }
 
-- (void)_setProfileIconOnSectionIfNeeded:(id)a3
+- (void)_setProfileIconOnSectionIfNeeded:(id)needed
 {
-  v9 = a3;
+  neededCopy = needed;
   v4 = +[Application sharedApplication];
-  v5 = [v4 primaryBrowserController];
-  v6 = [v5 hasMultipleProfiles];
+  primaryBrowserController = [v4 primaryBrowserController];
+  hasMultipleProfiles = [primaryBrowserController hasMultipleProfiles];
 
-  if (v6)
+  if (hasMultipleProfiles)
   {
-    v7 = [(StartPageController *)self _effectiveProfile];
-    v8 = [v7 symbolImage];
-    [v9 setIcon:v8];
+    _effectiveProfile = [(StartPageController *)self _effectiveProfile];
+    symbolImage = [_effectiveProfile symbolImage];
+    [neededCopy setIcon:symbolImage];
   }
 }
 
-- (BOOL)_setFavoritesListToFolderWithServerID:(id)a3
+- (BOOL)_setFavoritesListToFolderWithServerID:(id)d
 {
-  v4 = a3;
-  v5 = [(WebBookmark *)self->_customFavoritesFolderBookmark serverID];
-  v6 = [v5 isEqualToString:v4];
+  dCopy = d;
+  serverID = [(WebBookmark *)self->_customFavoritesFolderBookmark serverID];
+  v6 = [serverID isEqualToString:dCopy];
 
   if (v6)
   {
@@ -1576,17 +1576,17 @@ LABEL_10:
   }
 
   v8 = v7;
-  v9 = [(WebBookmark *)v7 identifier];
-  if ([(WebBookmarkList *)self->_favoritesList folderID]== v9)
+  identifier = [(WebBookmark *)v7 identifier];
+  if ([(WebBookmarkList *)self->_favoritesList folderID]== identifier)
   {
     goto LABEL_8;
   }
 
   v10 = 0;
-  if (v8 && v9 != 0x7FFFFFFF)
+  if (v8 && identifier != 0x7FFFFFFF)
   {
     objc_storeStrong(&self->_customFavoritesFolderBookmark, v8);
-    v11 = [(WebBookmarkCollection *)self->_bookmarkCollection listWithID:v9];
+    v11 = [(WebBookmarkCollection *)self->_bookmarkCollection listWithID:identifier];
     favoritesList = self->_favoritesList;
     self->_favoritesList = v11;
 
@@ -1597,14 +1597,14 @@ LABEL_8:
   return v10;
 }
 
-- (id)_startPageSectionForManagedBookmarksFolder:(id)a3
+- (id)_startPageSectionForManagedBookmarksFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [v4 directChildrenAsWebBookmarks];
+  folderCopy = folder;
+  directChildrenAsWebBookmarks = [folderCopy directChildrenAsWebBookmarks];
   v6 = MEMORY[0x277D4A838];
-  v7 = [v4 uuid];
-  v8 = [v4 title];
-  v9 = [v6 iconSectionWithIdentifier:v7 title:v8 actions:MEMORY[0x277CBEBF8] banner:0 supplementaryAction:0 identifiers:v5 configurationProvider:&__block_literal_global_78];
+  uuid = [folderCopy uuid];
+  title = [folderCopy title];
+  v9 = [v6 iconSectionWithIdentifier:uuid title:title actions:MEMORY[0x277CBEBF8] banner:0 supplementaryAction:0 identifiers:directChildrenAsWebBookmarks configurationProvider:&__block_literal_global_78];
 
   [(StartPageController *)self _setUpContextMenuForBookmarksSection:v9];
 
@@ -1625,40 +1625,40 @@ void __66__StartPageController__startPageSectionForManagedBookmarksFolder___bloc
 {
   v2 = MEMORY[0x277D4A838];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained tabGroupProvider];
-  v5 = [v4 activeTabGroup];
-  v6 = [v5 displayTitle];
-  v7 = [v2 headingSectionWithIdentifier:*MEMORY[0x277D4A530] title:v6];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  activeTabGroup = [tabGroupProvider activeTabGroup];
+  displayTitle = [activeTabGroup displayTitle];
+  v7 = [v2 headingSectionWithIdentifier:*MEMORY[0x277D4A530] title:displayTitle];
 
   [v7 setUsesLargeTitle:1];
 
   return v7;
 }
 
-- (void)setTabGroupFavoritesSectionEnabled:(BOOL)a3
+- (void)setTabGroupFavoritesSectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(StartPageController *)self _effectiveProfile];
-  v6 = [v5 kind];
+  enabledCopy = enabled;
+  _effectiveProfile = [(StartPageController *)self _effectiveProfile];
+  kind = [_effectiveProfile kind];
 
-  if (v6 == 1)
+  if (kind == 1)
   {
     v7 = +[Application sharedApplication];
-    v8 = [v7 tabGroupManager];
-    v9 = [(StartPageController *)self _effectiveProfile];
-    v10 = [v9 identifier];
+    tabGroupManager = [v7 tabGroupManager];
+    _effectiveProfile2 = [(StartPageController *)self _effectiveProfile];
+    identifier = [_effectiveProfile2 identifier];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __58__StartPageController_setTabGroupFavoritesSectionEnabled___block_invoke;
     v13[3] = &__block_descriptor_33_e26_v16__0__WBMutableProfile_8l;
-    v14 = v3;
-    v11 = [v8 updateProfileWithIdentifier:v10 persist:1 usingBlock:v13 completionHandler:0];
+    v14 = enabledCopy;
+    v11 = [tabGroupManager updateProfileWithIdentifier:identifier persist:1 usingBlock:v13 completionHandler:0];
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    [v12 setBool:v3 forKey:*MEMORY[0x277D4A490]];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    [safari_browserDefaults setBool:enabledCopy forKey:*MEMORY[0x277D4A490]];
   }
 }
 
@@ -1669,19 +1669,19 @@ void __58__StartPageController_setTabGroupFavoritesSectionEnabled___block_invoke
   [v4 setSetting:v3 forKey:*MEMORY[0x277D4A490]];
 }
 
-- (void)_copyBookmark:(id)a3 toFolderWithID:(int)a4
+- (void)_copyBookmark:(id)bookmark toFolderWithID:(int)d
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&d;
+  bookmarkCopy = bookmark;
   v7 = objc_alloc(MEMORY[0x277D7B5A0]);
-  v8 = [v6 title];
-  v9 = [v6 address];
-  v10 = [v7 initWithTitle:v8 address:v9 collectionType:{objc_msgSend(v6, "collectionType")}];
+  title = [bookmarkCopy title];
+  address = [bookmarkCopy address];
+  v10 = [v7 initWithTitle:title address:address collectionType:{objc_msgSend(bookmarkCopy, "collectionType")}];
 
   if ([MEMORY[0x277D7B5A8] lockSync])
   {
-    v11 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-    [v11 saveAndMoveBookmark:v10 toFolderID:v4];
+    mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+    [mainBookmarkCollection saveAndMoveBookmark:v10 toFolderID:v4];
 
     [MEMORY[0x277D7B5A8] unlockSync];
   }
@@ -1700,28 +1700,28 @@ void __58__StartPageController_setTabGroupFavoritesSectionEnabled___block_invoke
     block[3] = &unk_2781D60B8;
     block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
-    v13 = [MEMORY[0x277D499B8] sharedLogger];
-    [v13 didPreventBookmarkActionWithBookmarkType:1 actionType:0];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didPreventBookmarkActionWithBookmarkType:1 actionType:0];
   }
 }
 
-- (id)_bookmarkSectionForBookmark:(id)a3 orList:(id)a4 forFavoritesSection:(BOOL)a5 forScopedFavoritesSection:(BOOL)a6 sectionTitle:(id)a7
+- (id)_bookmarkSectionForBookmark:(id)bookmark orList:(id)list forFavoritesSection:(BOOL)section forScopedFavoritesSection:(BOOL)favoritesSection sectionTitle:(id)title
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (!v12 || (-[WebBookmarkCollection listWithID:](self->_bookmarkCollection, "listWithID:", [v12 identifier]), v15 = objc_claimAutoreleasedReturnValue(), v13, (v13 = v15) != 0))
+  favoritesSectionCopy = favoritesSection;
+  sectionCopy = section;
+  bookmarkCopy = bookmark;
+  listCopy = list;
+  titleCopy = title;
+  if (!bookmarkCopy || (-[WebBookmarkCollection listWithID:](self->_bookmarkCollection, "listWithID:", [bookmarkCopy identifier]), v15 = objc_claimAutoreleasedReturnValue(), listCopy, (listCopy = v15) != 0))
   {
-    v16 = [v13 bookmarkArray];
-    if (v9)
+    bookmarkArray = [listCopy bookmarkArray];
+    if (sectionCopy)
     {
       if ([(StartPageController *)self effectiveUpdatePolicy]== 1)
       {
-        if ([v16 count] <= 0xC)
+        if ([bookmarkArray count] <= 0xC)
         {
-          v17 = [v16 count];
+          v17 = [bookmarkArray count];
         }
 
         else
@@ -1729,12 +1729,12 @@ void __58__StartPageController_setTabGroupFavoritesSectionEnabled___block_invoke
           v17 = 12;
         }
 
-        v23 = [v16 subarrayWithRange:{0, v17}];
+        v23 = [bookmarkArray subarrayWithRange:{0, v17}];
 
-        v16 = v23;
+        bookmarkArray = v23;
       }
 
-      if (v8)
+      if (favoritesSectionCopy)
       {
         goto LABEL_16;
       }
@@ -1744,14 +1744,14 @@ void __58__StartPageController_setTabGroupFavoritesSectionEnabled___block_invoke
 
     else
     {
-      if (v8)
+      if (favoritesSectionCopy)
       {
 LABEL_16:
         v20 = *MEMORY[0x277D4A520];
-        v38 = v16;
-        if (v14)
+        v38 = bookmarkArray;
+        if (titleCopy)
         {
-          v36 = v14;
+          v36 = titleCopy;
         }
 
         else
@@ -1762,27 +1762,27 @@ LABEL_16:
         goto LABEL_26;
       }
 
-      v18 = [v12 UUID];
-      v19 = v18;
-      if (v18)
+      uUID = [bookmarkCopy UUID];
+      v19 = uUID;
+      if (uUID)
       {
-        v20 = v18;
+        v20 = uUID;
       }
 
       else
       {
-        v37 = [v13 bookmarkArray];
-        v24 = [v37 firstObject];
-        v25 = [v24 UUID];
+        bookmarkArray2 = [listCopy bookmarkArray];
+        firstObject = [bookmarkArray2 firstObject];
+        uUID2 = [firstObject UUID];
 
-        v20 = v25;
+        v20 = uUID2;
       }
     }
 
-    v38 = v16;
-    if (v12)
+    v38 = bookmarkArray;
+    if (bookmarkCopy)
     {
-      [v12 localizedTitle];
+      [bookmarkCopy localizedTitle];
     }
 
     else
@@ -1791,10 +1791,10 @@ LABEL_16:
     }
     v36 = ;
 LABEL_26:
-    v26 = [MEMORY[0x277CBEB18] array];
-    if (v12)
+    array = [MEMORY[0x277CBEB18] array];
+    if (bookmarkCopy)
     {
-      if (!v9)
+      if (!sectionCopy)
       {
         goto LABEL_33;
       }
@@ -1802,21 +1802,21 @@ LABEL_26:
 
     else
     {
-      v27 = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
-      [v26 addObject:v27];
+      toggleSectionExpandedAction = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
+      [array addObject:toggleSectionExpandedAction];
 
-      if (!v9)
+      if (!sectionCopy)
       {
         goto LABEL_33;
       }
     }
 
-    if (!v8)
+    if (!favoritesSectionCopy)
     {
-      v28 = [(StartPageController *)self _effectiveProfile];
-      v29 = [v28 kind];
+      _effectiveProfile = [(StartPageController *)self _effectiveProfile];
+      kind = [_effectiveProfile kind];
 
-      if (v29 == 1)
+      if (kind == 1)
       {
 LABEL_34:
         v35 = v20;
@@ -1829,23 +1829,23 @@ LABEL_34:
         v47[2] = __117__StartPageController__bookmarkSectionForBookmark_orList_forFavoritesSection_forScopedFavoritesSection_sectionTitle___block_invoke;
         v47[3] = &unk_2781DC8E8;
         objc_copyWeak(&v49, location);
-        v50 = v8;
-        v48 = v13;
+        v50 = favoritesSectionCopy;
+        v48 = listCopy;
         v30 = [v31 actionWithTitle:v32 image:v33 identifier:0 handler:v47];
 
         objc_destroyWeak(&v49);
         objc_destroyWeak(location);
         v20 = v35;
 LABEL_35:
-        v22 = [MEMORY[0x277D4A838] iconSectionWithIdentifier:v20 title:v36 actions:v26 banner:0 supplementaryAction:v30 identifiers:v38 configurationProvider:&__block_literal_global_83];
+        v22 = [MEMORY[0x277D4A838] iconSectionWithIdentifier:v20 title:v36 actions:array banner:0 supplementaryAction:v30 identifiers:v38 configurationProvider:&__block_literal_global_83];
         [(StartPageController *)self _setUpContextMenuForBookmarksSection:v22];
         [(StartPageController *)self _setUpDragItemProviderForBookmarksSection:v22];
-        if (v9)
+        if (sectionCopy)
         {
           [(StartPageController *)self _setProfileIconOnSectionIfNeeded:v22];
         }
 
-        else if (!v8)
+        else if (!favoritesSectionCopy)
         {
 LABEL_40:
 
@@ -1860,7 +1860,7 @@ LABEL_40:
           v44[2] = __117__StartPageController__bookmarkSectionForBookmark_orList_forFavoritesSection_forScopedFavoritesSection_sectionTitle___block_invoke_4;
           v44[3] = &unk_2781DC938;
           objc_copyWeak(&v45, location);
-          v46 = v8;
+          v46 = favoritesSectionCopy;
           [v22 setDropOperationProvider:v44];
           objc_initWeak(&from, self);
           v39[0] = MEMORY[0x277D85DD0];
@@ -1868,8 +1868,8 @@ LABEL_40:
           v39[2] = __117__StartPageController__bookmarkSectionForBookmark_orList_forFavoritesSection_forScopedFavoritesSection_sectionTitle___block_invoke_6;
           v39[3] = &unk_2781DC9B0;
           objc_copyWeak(&v41, &from);
-          v40 = v13;
-          v42 = v8;
+          v40 = listCopy;
+          v42 = favoritesSectionCopy;
           [v22 setDropHandler:v39];
 
           objc_destroyWeak(&v41);
@@ -1887,7 +1887,7 @@ LABEL_32:
     }
 
 LABEL_33:
-    if (v8)
+    if (favoritesSectionCopy)
     {
       goto LABEL_34;
     }
@@ -2277,16 +2277,16 @@ void __117__StartPageController__bookmarkSectionForBookmark_orList_forFavoritesS
 - (id)_frequentlyVisitedSection
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(StartPageController *)self frequentlyVisitedSitesController];
-  v4 = [v3 frequentlyVisitedSites];
+  frequentlyVisitedSitesController = [(StartPageController *)self frequentlyVisitedSitesController];
+  frequentlyVisitedSites = [frequentlyVisitedSitesController frequentlyVisitedSites];
 
-  if ([v4 count])
+  if ([frequentlyVisitedSites count])
   {
     v5 = MEMORY[0x277D4A838];
-    v6 = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
-    v10[0] = v6;
+    toggleSectionExpandedAction = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
+    v10[0] = toggleSectionExpandedAction;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-    v8 = [v5 iconSectionWithIdentifier:*MEMORY[0x277D4A4B8] actions:v7 banner:0 supplementaryAction:0 identifiers:v4 configurationProvider:&__block_literal_global_94_0];
+    v8 = [v5 iconSectionWithIdentifier:*MEMORY[0x277D4A4B8] actions:v7 banner:0 supplementaryAction:0 identifiers:frequentlyVisitedSites configurationProvider:&__block_literal_global_94_0];
 
     [v8 setNumberOfRowsVisibleWhenCollapsed:{-[SFStartPageVisualStyleProviding numberOfRowsForSection:traitCollectionIsHorizontalCompact:](self->_visualStyleProvider, "numberOfRowsForSection:traitCollectionIsHorizontalCompact:", 2, 0)}];
     [(StartPageController *)self _setUpContextMenuForBookmarksSection:v8];
@@ -2409,43 +2409,43 @@ void __42__StartPageController__readingListSection__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)_fetchMetadataIfNeededForReadingListBookmark:(id)a3
+- (void)_fetchMetadataIfNeededForReadingListBookmark:(id)bookmark
 {
-  v11 = a3;
+  bookmarkCopy = bookmark;
   v4 = [(NSMutableDictionary *)self->_readingListBookmarksToMetadataStates objectForKeyedSubscript:?];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  if (!v5)
+  if (!integerValue)
   {
-    v6 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v7 = [v6 safari_shouldAutomaticallyDownloadReadingListItems];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    safari_shouldAutomaticallyDownloadReadingListItems = [safari_browserDefaults safari_shouldAutomaticallyDownloadReadingListItems];
 
-    if ((v7 & 1) == 0)
+    if ((safari_shouldAutomaticallyDownloadReadingListItems & 1) == 0)
     {
       if (!self->_readingListBookmarksToMetadataStates)
       {
-        v8 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         readingListBookmarksToMetadataStates = self->_readingListBookmarksToMetadataStates;
-        self->_readingListBookmarksToMetadataStates = v8;
+        self->_readingListBookmarksToMetadataStates = dictionary;
       }
 
-      if ([ReadingListMetadataFetcher shouldFetchMetadataForBookmark:v11])
+      if ([ReadingListMetadataFetcher shouldFetchMetadataForBookmark:bookmarkCopy])
       {
-        [(NSMutableDictionary *)self->_readingListBookmarksToMetadataStates setObject:&unk_2827FC2C8 forKeyedSubscript:v11];
+        [(NSMutableDictionary *)self->_readingListBookmarksToMetadataStates setObject:&unk_2827FC2C8 forKeyedSubscript:bookmarkCopy];
         v10 = +[ReadingListMetadataFetcher sharedMetadataFetcher];
-        [v10 fetchMetadataForReadingListBookmark:v11 withProvider:0];
+        [v10 fetchMetadataForReadingListBookmark:bookmarkCopy withProvider:0];
       }
 
       else
       {
-        if (![ReadingListMetadataFetcher shouldFetchThumbnailForBookmark:v11])
+        if (![ReadingListMetadataFetcher shouldFetchThumbnailForBookmark:bookmarkCopy])
         {
           goto LABEL_10;
         }
 
-        [(NSMutableDictionary *)self->_readingListBookmarksToMetadataStates setObject:&unk_2827FC2C8 forKeyedSubscript:v11];
+        [(NSMutableDictionary *)self->_readingListBookmarksToMetadataStates setObject:&unk_2827FC2C8 forKeyedSubscript:bookmarkCopy];
         v10 = +[ReadingListMetadataFetcher sharedMetadataFetcher];
-        [v10 fetchThumbnailForReadingListBookmark:v11 withProvider:0];
+        [v10 fetchThumbnailForReadingListBookmark:bookmarkCopy withProvider:0];
       }
     }
   }
@@ -2453,35 +2453,35 @@ void __42__StartPageController__readingListSection__block_invoke_3(uint64_t a1)
 LABEL_10:
 }
 
-- (void)_contextMenuCommitHandlerForFrequentlyVisitedSite:(id)a3 animator:(id)a4 sectionIdentifier:(id)a5
+- (void)_contextMenuCommitHandlerForFrequentlyVisitedSite:(id)site animator:(id)animator sectionIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
-  [v7 setPreferredCommitStyle:1];
-  v9 = [v7 previewViewController];
+  animatorCopy = animator;
+  identifierCopy = identifier;
+  [animatorCopy setPreferredCommitStyle:1];
+  previewViewController = [animatorCopy previewViewController];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __100__StartPageController__contextMenuCommitHandlerForFrequentlyVisitedSite_animator_sectionIdentifier___block_invoke;
   v18 = &unk_2781D61F8;
-  v19 = self;
-  v10 = v9;
+  selfCopy = self;
+  v10 = previewViewController;
   v20 = v10;
-  [v7 addAnimations:&v15];
-  if (*MEMORY[0x277D4A4B0] == v8)
+  [animatorCopy addAnimations:&v15];
+  if (*MEMORY[0x277D4A4B0] == identifierCopy)
   {
-    v13 = [MEMORY[0x277D499B8] sharedLogger];
-    [v13 didSelectFavoriteWithOpenLocation:0];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didSelectFavoriteWithOpenLocation:0];
     goto LABEL_5;
   }
 
-  if (*MEMORY[0x277D4A4B8] == v8)
+  if (*MEMORY[0x277D4A4B8] == identifierCopy)
   {
     v11 = objc_alloc(MEMORY[0x277D49A30]);
     v12 = [MEMORY[0x277CBEAA8] now];
-    v13 = [v11 initWithItemPosition:0 lastVisitedDate:v12 score:0];
+    mEMORY[0x277D499B8] = [v11 initWithItemPosition:0 lastVisitedDate:v12 score:0];
 
-    v14 = [MEMORY[0x277D499B8] sharedLogger];
-    [v14 didSelectFrequentlyVisitedSiteWithOpenLocation:0 analyticsPayload:v13];
+    mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8]2 didSelectFrequentlyVisitedSiteWithOpenLocation:0 analyticsPayload:mEMORY[0x277D499B8]];
 
 LABEL_5:
   }
@@ -2493,27 +2493,27 @@ void __100__StartPageController__contextMenuCommitHandlerForFrequentlyVisitedSit
   [WeakRetained commitLinkPreviewViewController:*(a1 + 40)];
 }
 
-- (BOOL)_bookmarkFolderIsEmpty:(id)a3
+- (BOOL)_bookmarkFolderIsEmpty:(id)empty
 {
-  v4 = a3;
-  if (([v4 isFolder] & 1) == 0 || (objc_msgSend(v4, "managedBookmarkUUID"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5) && (objc_msgSend(v4, "_sf_managedBookmark"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "children"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
+  emptyCopy = empty;
+  if (([emptyCopy isFolder] & 1) == 0 || (objc_msgSend(emptyCopy, "managedBookmarkUUID"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5) && (objc_msgSend(emptyCopy, "_sf_managedBookmark"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "children"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = -[WebBookmarkCollection listWithID:](self->_bookmarkCollection, "listWithID:", [v4 identifier]);
+    v10 = -[WebBookmarkCollection listWithID:](self->_bookmarkCollection, "listWithID:", [emptyCopy identifier]);
     v9 = [v10 bookmarkCount] == 0;
   }
 
   return v9;
 }
 
-- (id)_contextMenuConfigurationForFrequentlyVisitedSite:(id)a3 previewProvider:(id)a4
+- (id)_contextMenuConfigurationForFrequentlyVisitedSite:(id)site previewProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  siteCopy = site;
+  providerCopy = provider;
   objc_initWeak(&location, self);
   v8 = MEMORY[0x277D753B0];
   v17[0] = MEMORY[0x277D85DD0];
@@ -2521,9 +2521,9 @@ void __100__StartPageController__contextMenuCommitHandlerForFrequentlyVisitedSit
   v17[2] = __89__StartPageController__contextMenuConfigurationForFrequentlyVisitedSite_previewProvider___block_invoke;
   v17[3] = &unk_2781DCA28;
   objc_copyWeak(&v20, &location);
-  v9 = v6;
+  v9 = siteCopy;
   v18 = v9;
-  v10 = v7;
+  v10 = providerCopy;
   v19 = v10;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -2603,31 +2603,31 @@ id __89__StartPageController__contextMenuConfigurationForFrequentlyVisitedSite_p
   return v14;
 }
 
-- (void)_setUpContextMenuForBookmarksSection:(id)a3
+- (void)_setUpContextMenuForBookmarksSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__StartPageController__setUpContextMenuForBookmarksSection___block_invoke;
   v12[3] = &unk_2781DCA78;
   v12[4] = self;
-  [v4 setContextMenuProvider:v12];
-  v5 = [v4 identifier];
+  [sectionCopy setContextMenuProvider:v12];
+  identifier = [sectionCopy identifier];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__StartPageController__setUpContextMenuForBookmarksSection___block_invoke_2;
   v9[3] = &unk_2781DCAA0;
   objc_copyWeak(&v11, &location);
-  v6 = v5;
+  v6 = identifier;
   v10 = v6;
-  [v4 setContextMenuCommitHandler:v9];
+  [sectionCopy setContextMenuCommitHandler:v9];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__StartPageController__setUpContextMenuForBookmarksSection___block_invoke_3;
   v7[3] = &unk_2781DCAC8;
   objc_copyWeak(&v8, &location);
-  [v4 setContextMenuDismissHandler:v7];
+  [sectionCopy setContextMenuDismissHandler:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&v11);
@@ -2672,16 +2672,16 @@ id __65__StartPageController__setUpDragItemProviderForBookmarksSection___block_i
   return v3;
 }
 
-- (void)_bookmarkFolderDidChange:(id)a3
+- (void)_bookmarkFolderDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 objectForKey:*MEMORY[0x277D7B5E8]];
+  userInfo = [change userInfo];
+  v8 = [userInfo objectForKey:*MEMORY[0x277D7B5E8]];
 
   if (v8)
   {
-    v5 = [v8 intValue];
+    intValue = [v8 intValue];
     p_favoritesList = &self->_favoritesList;
-    if (v5 == [(WebBookmarkList *)self->_favoritesList folderID])
+    if (intValue == [(WebBookmarkList *)self->_favoritesList folderID])
     {
       if (self->_isDroppingFavorites)
       {
@@ -2691,7 +2691,7 @@ id __65__StartPageController__setUpDragItemProviderForBookmarksSection___block_i
 
     else
     {
-      if (v5 != [(WebBookmarkCollection *)self->_bookmarkCollection readingListFolderBookmarkID])
+      if (intValue != [(WebBookmarkCollection *)self->_bookmarkCollection readingListFolderBookmarkID])
       {
 LABEL_8:
         [(SFStartPageViewController *)self->_viewController reloadDataAnimatingDifferences:1];
@@ -2710,10 +2710,10 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_bookmarksDidReload:(id)a3
+- (void)_bookmarksDidReload:(id)reload
 {
-  v4 = [MEMORY[0x277D7B590] sharedWebFilterSettings];
-  self->_webFilterUsesOnlyAllowedSites = [v4 usesAllowedSitesOnly];
+  mEMORY[0x277D7B590] = [MEMORY[0x277D7B590] sharedWebFilterSettings];
+  self->_webFilterUsesOnlyAllowedSites = [mEMORY[0x277D7B590] usesAllowedSitesOnly];
 
   favoritesList = self->_favoritesList;
   self->_favoritesList = 0;
@@ -2726,11 +2726,11 @@ LABEL_9:
   [(SFStartPageViewController *)viewController reloadDataAnimatingDifferences:1];
 }
 
-- (void)_frequentlyVisitedSitesDidChange:(id)a3
+- (void)_frequentlyVisitedSitesDidChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [(WBSStartPageSectionManager *)self->_startPageSectionManager enabledSectionIdentifiers];
-  v5 = [v4 containsObject:*MEMORY[0x277D4A518]];
+  enabledSectionIdentifiers = [(WBSStartPageSectionManager *)self->_startPageSectionManager enabledSectionIdentifiers];
+  v5 = [enabledSectionIdentifiers containsObject:*MEMORY[0x277D4A518]];
 
   if (v5)
   {
@@ -2738,8 +2738,8 @@ LABEL_9:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(WBSStartPageSectionManager *)self->_startPageSectionManager suggestionsDataSourceSections];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    suggestionsDataSourceSections = [(WBSStartPageSectionManager *)self->_startPageSectionManager suggestionsDataSourceSections];
+    v7 = [suggestionsDataSourceSections countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = *v17;
@@ -2750,22 +2750,22 @@ LABEL_9:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(suggestionsDataSourceSections);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          if ([v12 isEqualToString:v9])
+          identifier = [v11 identifier];
+          if ([identifier isEqualToString:v9])
           {
-            v13 = [v11 isEnabled];
+            isEnabled = [v11 isEnabled];
 
-            if (v13)
+            if (isEnabled)
             {
 
-              v6 = [MEMORY[0x277D499B8] sharedLogger];
-              v14 = [(StartPageController *)self frequentlyVisitedSitesController];
-              v15 = [v14 frequentlyVisitedSites];
-              [v6 didRetrieveNumberOfFrequentlyVisitedSites:{objc_msgSend(v15, "count")}];
+              suggestionsDataSourceSections = [MEMORY[0x277D499B8] sharedLogger];
+              frequentlyVisitedSitesController = [(StartPageController *)self frequentlyVisitedSitesController];
+              frequentlyVisitedSites = [frequentlyVisitedSitesController frequentlyVisitedSites];
+              [suggestionsDataSourceSections didRetrieveNumberOfFrequentlyVisitedSites:{objc_msgSend(frequentlyVisitedSites, "count")}];
 
               goto LABEL_13;
             }
@@ -2776,7 +2776,7 @@ LABEL_9:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [suggestionsDataSourceSections countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
@@ -2786,29 +2786,29 @@ LABEL_13:
   }
 }
 
-- (void)_readingListBookmarkMetadataDidUpdate:(id)a3
+- (void)_readingListBookmarkMetadataDidUpdate:(id)update
 {
-  v4 = [a3 userInfo];
-  v10 = [v4 objectForKeyedSubscript:@"BookmarkWithUpdatedMetadataKey"];
+  userInfo = [update userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"BookmarkWithUpdatedMetadataKey"];
 
   if (v10)
   {
     v5 = [(NSMutableDictionary *)self->_readingListBookmarksToMetadataStates objectForKeyedSubscript:v10];
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
 
-    if (v6 == 1)
+    if (integerValue == 1)
     {
       [(NSMutableDictionary *)self->_readingListBookmarksToMetadataStates setObject:&unk_2827FC2E0 forKeyedSubscript:v10];
-      v7 = [v10 readingListIconUUID];
-      if ([v7 length])
+      readingListIconUUID = [v10 readingListIconUUID];
+      if ([readingListIconUUID length])
       {
       }
 
       else
       {
-        v8 = [v10 iconData];
+        iconData = [v10 iconData];
 
-        if (!v8)
+        if (!iconData)
         {
           goto LABEL_7;
         }
@@ -2877,13 +2877,13 @@ void __47__StartPageController__updatePrivacyReportData__block_invoke_4(uint64_t
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_historyWasCleared:(id)a3
+- (void)_historyWasCleared:(id)cleared
 {
-  v4 = [a3 object];
+  object = [cleared object];
   v5 = MEMORY[0x277D4A7C0];
   v6 = MEMORY[0x277CBEB98];
-  v7 = [v4 profileLocalIdentifier];
-  v8 = [v6 setWithObject:v7];
+  profileLocalIdentifier = [object profileLocalIdentifier];
+  v8 = [v6 setWithObject:profileLocalIdentifier];
   [v5 clearCachedDataForProfilesWithIdentifiers:v8];
 
   block[0] = MEMORY[0x277D85DD0];
@@ -2903,15 +2903,15 @@ uint64_t __42__StartPageController__historyWasCleared___block_invoke(uint64_t a1
   return [v2 reloadDataAnimatingDifferences:1];
 }
 
-- (void)setShowingAsPopover:(BOOL)a3
+- (void)setShowingAsPopover:(BOOL)popover
 {
-  if (self->_showingAsPopover != a3)
+  if (self->_showingAsPopover != popover)
   {
-    self->_showingAsPopover = a3;
+    self->_showingAsPopover = popover;
     viewController = self->_viewController;
-    v5 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+    areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
 
-    [(SFStartPageViewController *)viewController reloadDataAnimatingDifferences:v5];
+    [(SFStartPageViewController *)viewController reloadDataAnimatingDifferences:areAnimationsEnabled];
   }
 }
 
@@ -2932,37 +2932,37 @@ uint64_t __51__StartPageController_updatePrivacyReportIfEnabled__block_invoke(ui
     goto LABEL_5;
   }
 
-  v3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v4 = [v3 safari_enableAdvancedPrivacyProtections:1];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v4 = [safari_browserDefaults safari_enableAdvancedPrivacyProtections:1];
 
   if (!v4)
   {
 LABEL_5:
-    v11 = [(WBSPrivacyReportData *)self->_privacyReportData knownTrackers];
-    v5 = [v11 count];
+    knownTrackers = [(WBSPrivacyReportData *)self->_privacyReportData knownTrackers];
+    totalBlockedTrackerCount = [knownTrackers count];
 
     v6 = 0;
     goto LABEL_6;
   }
 
-  v5 = [MEMORY[0x277D49EE8] totalBlockedTrackerCount];
+  totalBlockedTrackerCount = [MEMORY[0x277D49EE8] totalBlockedTrackerCount];
   v6 = 1;
 LABEL_6:
-  if (v5 != self->_cachedNumberOfTrackers)
+  if (totalBlockedTrackerCount != self->_cachedNumberOfTrackers)
   {
-    self->_cachedNumberOfTrackers = v5;
+    self->_cachedNumberOfTrackers = totalBlockedTrackerCount;
     [(StartPageController *)self _reloadPrivacyReportSection];
     if ((v6 & 1) == 0)
     {
-      v7 = [(StartPageController *)self _effectiveProfileIdentifier];
-      if (v7)
+      _effectiveProfileIdentifier = [(StartPageController *)self _effectiveProfileIdentifier];
+      if (_effectiveProfileIdentifier)
       {
-        v12 = v7;
+        v12 = _effectiveProfileIdentifier;
         v8 = MEMORY[0x277D4A7C0];
-        v9 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+        v9 = [MEMORY[0x277CCABB0] numberWithInteger:totalBlockedTrackerCount];
         [v8 setCachedNumberOfTrackersOnStartPage:v9 forProfileWithIdentifier:v12];
 
-        v7 = v12;
+        _effectiveProfileIdentifier = v12;
       }
     }
   }
@@ -2981,9 +2981,9 @@ LABEL_6:
 - (void)_contentBlockerStatisticsStoreDidClose
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained isPrivateBrowsingEnabled];
+  isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
 
-  if (v4)
+  if (isPrivateBrowsingEnabled)
   {
 
     [(StartPageController *)self _privacyReportDataDidChange];
@@ -3042,39 +3042,39 @@ void __66__StartPageController__privateRelayPromptInPrivateBrowsingSection__bloc
 
 - (BOOL)_canShowPrivateRelaySection
 {
-  v3 = [MEMORY[0x277D4A7B8] sharedManager];
+  mEMORY[0x277D4A7B8] = [MEMORY[0x277D4A7B8] sharedManager];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v5 = [v3 shouldPromptUsersToTurnOnPrivateRelayForSafari];
-  if ([WeakRetained startPageControllerActiveTabIsBlank:self] & v5)
+  shouldPromptUsersToTurnOnPrivateRelayForSafari = [mEMORY[0x277D4A7B8] shouldPromptUsersToTurnOnPrivateRelayForSafari];
+  if ([WeakRetained startPageControllerActiveTabIsBlank:self] & shouldPromptUsersToTurnOnPrivateRelayForSafari)
   {
-    v6 = [WeakRetained isPrivateBrowsingEnabled];
+    isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
   }
 
   else
   {
-    v6 = 0;
+    isPrivateBrowsingEnabled = 0;
   }
 
-  return v6;
+  return isPrivateBrowsingEnabled;
 }
 
-- (id)_recentlyClosedTabsForProfile:(id)a3
+- (id)_recentlyClosedTabsForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained tabGroupProvider];
-  v7 = [v6 activeTabGroup];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  activeTabGroup = [tabGroupProvider activeTabGroup];
 
-  v8 = [v7 uuid];
-  v9 = [MEMORY[0x277D28F00] sharedBrowserSavedState];
-  v10 = [v4 identifier];
-  v11 = [v9 recentlyClosedTabsForProfileWithIdentifier:v10];
+  uuid = [activeTabGroup uuid];
+  mEMORY[0x277D28F00] = [MEMORY[0x277D28F00] sharedBrowserSavedState];
+  identifier = [profileCopy identifier];
+  v11 = [mEMORY[0x277D28F00] recentlyClosedTabsForProfileWithIdentifier:identifier];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __53__StartPageController__recentlyClosedTabsForProfile___block_invoke;
   v15[3] = &unk_2781DCB30;
-  v12 = v8;
+  v12 = uuid;
   v16 = v12;
   v13 = [v11 safari_mapAndFilterObjectsUsingBlock:v15];
 
@@ -3475,10 +3475,10 @@ id __49__StartPageController__recentlyClosedTabsSection__block_invoke_16(uint64_
 
 - (id)_cloudTabDevices
 {
-  v3 = [(StartPageController *)self _cloudTabStore];
+  _cloudTabStore = [(StartPageController *)self _cloudTabStore];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v5 = [WeakRetained activeProfileIdentifier];
-  v6 = [v3 syncedRemoteCloudTabDevicesForProfileWithIdentifier:v5];
+  activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
+  v6 = [_cloudTabStore syncedRemoteCloudTabDevicesForProfileWithIdentifier:activeProfileIdentifier];
 
   return v6;
 }
@@ -3522,7 +3522,7 @@ void __40__StartPageController_cloudTabsSections__block_invoke_4(uint64_t a1)
 {
   v3 = MEMORY[0x277D4A828];
   v4 = _WBSLocalizedString();
-  v5 = [(StartPageController *)self _cloudTabsConsentMessage];
+  _cloudTabsConsentMessage = [(StartPageController *)self _cloudTabsConsentMessage];
   v6 = _WBSLocalizedString();
   v7 = _WBSLocalizedString();
   v16[4] = self;
@@ -3540,7 +3540,7 @@ void __40__StartPageController_cloudTabsSections__block_invoke_4(uint64_t a1)
   v15[1] = 3221225472;
   v15[2] = __47__StartPageController__cloudTabsConsentSection__block_invoke_3;
   v15[3] = &unk_2781DCC88;
-  v8 = [v3 bannerWithTitle:v4 attributedMessage:v5 primaryButtonTitle:v6 secondaryButtonTitle:v7 primaryButtonHandler:v17 secondaryButtonHandler:v16 messageTextItemHandler:v15];
+  v8 = [v3 bannerWithTitle:v4 attributedMessage:_cloudTabsConsentMessage primaryButtonTitle:v6 secondaryButtonTitle:v7 primaryButtonHandler:v17 secondaryButtonHandler:v16 messageTextItemHandler:v15];
 
   v9 = MEMORY[0x277D4A838];
   v10 = *MEMORY[0x277D4A4A8];
@@ -3610,7 +3610,7 @@ void __47__StartPageController__cloudTabsConsentSection__block_invoke_4(uint64_t
   v3 = objc_alloc_init(MEMORY[0x277D74240]);
   [v3 setAlignment:1];
   v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v5 = [MEMORY[0x277D75348] secondaryLabelColor];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
   v6 = objc_alloc(MEMORY[0x277CCAB48]);
   v7 = *MEMORY[0x277D740A8];
   v20[0] = *MEMORY[0x277D74118];
@@ -3618,12 +3618,12 @@ void __47__StartPageController__cloudTabsConsentSection__block_invoke_4(uint64_t
   v21[0] = v3;
   v21[1] = v4;
   v20[2] = *MEMORY[0x277D740C0];
-  v21[2] = v5;
+  v21[2] = secondaryLabelColor;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
   v9 = [v6 initWithString:v2 attributes:v8];
 
-  v10 = [v9 string];
-  v11 = [v10 rangeOfString:@"{about-safari-privacy-link}"];
+  string = [v9 string];
+  v11 = [string rangeOfString:@"{about-safari-privacy-link}"];
   v13 = v12;
 
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
@@ -3643,8 +3643,8 @@ void __47__StartPageController__cloudTabsConsentSection__block_invoke_4(uint64_t
 
 - (void)_cloudTabsConsentSelected
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 safari_setBool:1 andNotifyForKey:*MEMORY[0x277D4A160]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults safari_setBool:1 andNotifyForKey:*MEMORY[0x277D4A160]];
 
   [(StartPageController *)self _updateRecentCloudTabsSection];
   recentsStore = self->_recentsStore;
@@ -3660,10 +3660,10 @@ void __47__StartPageController__cloudTabsConsentSection__block_invoke_4(uint64_t
   v18 = 0u;
   v19 = 0u;
   v2 = +[Application sharedApplication];
-  v3 = [v2 tabGroupManager];
-  v4 = [v3 profiles];
+  tabGroupManager = [v2 tabGroupManager];
+  profiles = [tabGroupManager profiles];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [profiles countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = *v17;
@@ -3674,29 +3674,29 @@ void __47__StartPageController__cloudTabsConsentSection__block_invoke_4(uint64_t
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(profiles);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         if ([v9 isDefault])
         {
-          v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
         }
 
         else
         {
           v11 = objc_alloc(MEMORY[0x277D4A7E0]);
-          v12 = [v9 identifier];
+          identifier = [v9 identifier];
           v13 = +[Application sharedApplication];
-          v14 = [v13 tabGroupManager];
-          v10 = [v11 initWithProfileIdentifier:v12 tabGroupManager:v14];
+          tabGroupManager2 = [v13 tabGroupManager];
+          standardUserDefaults = [v11 initWithProfileIdentifier:identifier tabGroupManager:tabGroupManager2];
         }
 
-        v15 = [objc_alloc(MEMORY[0x277D4A080]) initWithStorage:v10];
+        v15 = [objc_alloc(MEMORY[0x277D4A080]) initWithStorage:standardUserDefaults];
         [v15 setSectionIdentifier:v7 enabled:0];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [profiles countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -3715,14 +3715,14 @@ void __46__StartPageController__recentCloudTabsSection__block_invoke(uint64_t a1
   [v8 setCaptionText:v6 icon:v7];
 }
 
-- (id)_recentCloudTabsSectionWithDevice:(id)a3
+- (id)_recentCloudTabsSectionWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = self->_availableDevices;
   if ([(NSArray *)v5 count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v7 = [(StartPageController *)self _recentItemsForDevice:v4];
+    v7 = [(StartPageController *)self _recentItemsForDevice:deviceCopy];
     if ([(NSString *)self->_searchPattern length])
     {
       v20[0] = MEMORY[0x277D85DD0];
@@ -3730,7 +3730,7 @@ void __46__StartPageController__recentCloudTabsSection__block_invoke(uint64_t a1
       v20[2] = __57__StartPageController__recentCloudTabsSectionWithDevice___block_invoke;
       v20[3] = &unk_2781DCCD0;
       v21 = WeakRetained;
-      v22 = self;
+      selfCopy = self;
       v8 = [v7 safari_filterObjectsUsingBlock:v20];
 
       v7 = v8;
@@ -3739,26 +3739,26 @@ void __46__StartPageController__recentCloudTabsSection__block_invoke(uint64_t a1
     if ([v7 count])
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [v4 uuid];
-      v11 = [v9 stringWithFormat:@"%@-%@", *MEMORY[0x277D4A4A8], v10];
+      uuid = [deviceCopy uuid];
+      v11 = [v9 stringWithFormat:@"%@-%@", *MEMORY[0x277D4A4A8], uuid];
 
       v12 = MEMORY[0x277D4A838];
-      v13 = [v4 disambiguatedName];
-      v14 = [v12 cardSectionWithIdentifier:v11 title:v13 actions:MEMORY[0x277CBEBF8] banner:0 identifiers:v7 configurationProvider:&__block_literal_global_262];
+      disambiguatedName = [deviceCopy disambiguatedName];
+      v14 = [v12 cardSectionWithIdentifier:v11 title:disambiguatedName actions:MEMORY[0x277CBEBF8] banner:0 identifiers:v7 configurationProvider:&__block_literal_global_262];
 
       [v14 setNumberOfRowsVisibleWhenCollapsed:{-[SFStartPageVisualStyleProviding numberOfRowsForSection:traitCollectionIsHorizontalCompact:](self->_visualStyleProvider, "numberOfRowsForSection:traitCollectionIsHorizontalCompact:", 3, 0)}];
       [v14 setExpandsModally:1];
-      v15 = [(StartPageController *)self _contextMenuConfigurationForRecentCloudTab];
-      [v14 setContextMenuProvider:v15];
+      _contextMenuConfigurationForRecentCloudTab = [(StartPageController *)self _contextMenuConfigurationForRecentCloudTab];
+      [v14 setContextMenuProvider:_contextMenuConfigurationForRecentCloudTab];
 
-      v16 = [(StartPageController *)self _cloudTabsContextMenuCommitHandler];
-      [v14 setContextMenuCommitHandler:v16];
+      _cloudTabsContextMenuCommitHandler = [(StartPageController *)self _cloudTabsContextMenuCommitHandler];
+      [v14 setContextMenuCommitHandler:_cloudTabsContextMenuCommitHandler];
 
-      v17 = [(StartPageController *)self _cloudTabsContextMenuDismissHandler];
-      [v14 setContextMenuDismissHandler:v17];
+      _cloudTabsContextMenuDismissHandler = [(StartPageController *)self _cloudTabsContextMenuDismissHandler];
+      [v14 setContextMenuDismissHandler:_cloudTabsContextMenuDismissHandler];
 
-      v18 = [(StartPageController *)self _cloudTabsDragItemProvider];
-      [v14 setDragItemProvider:v18];
+      _cloudTabsDragItemProvider = [(StartPageController *)self _cloudTabsDragItemProvider];
+      [v14 setDragItemProvider:_cloudTabsDragItemProvider];
 
       if (!self->_libraryType)
       {
@@ -3801,30 +3801,30 @@ void __57__StartPageController__recentCloudTabsSectionWithDevice___block_invoke_
   [v8 setCaptionText:v6 icon:v7];
 }
 
-- (id)_cloudTabsSectionWithDevice:(id)a3
+- (id)_cloudTabsSectionWithDevice:(id)device
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(StartPageController *)self _cloudTabDevices];
-  if ([v5 count])
+  deviceCopy = device;
+  _cloudTabDevices = [(StartPageController *)self _cloudTabDevices];
+  if ([_cloudTabDevices count])
   {
     if (self->_libraryType)
     {
-      v31 = [v4 disambiguatedName];
+      disambiguatedName = [deviceCopy disambiguatedName];
     }
 
     else
     {
       v7 = MEMORY[0x277CCACA8];
       v8 = _WBSLocalizedString();
-      v9 = [v4 disambiguatedName];
-      v31 = [v7 stringWithFormat:v8, v9];
+      disambiguatedName2 = [deviceCopy disambiguatedName];
+      disambiguatedName = [v7 stringWithFormat:v8, disambiguatedName2];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v11 = [v4 tabs];
-    v12 = [v11 reverseObjectEnumerator];
-    v13 = [v12 allObjects];
+    tabs = [deviceCopy tabs];
+    reverseObjectEnumerator = [tabs reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
     if ([(NSString *)self->_searchPattern length])
     {
@@ -3833,17 +3833,17 @@ void __57__StartPageController__recentCloudTabsSectionWithDevice___block_invoke_
       v35[2] = __51__StartPageController__cloudTabsSectionWithDevice___block_invoke;
       v35[3] = &unk_2781DCCF8;
       v36 = WeakRetained;
-      v37 = self;
-      v14 = [v13 safari_filterObjectsUsingBlock:v35];
+      selfCopy = self;
+      v14 = [allObjects safari_filterObjectsUsingBlock:v35];
 
-      v13 = v14;
+      allObjects = v14;
     }
 
-    if ([v13 count])
+    if ([allObjects count])
     {
-      v15 = [WeakRetained canShowSidebar];
+      canShowSidebar = [WeakRetained canShowSidebar];
       v16 = MEMORY[0x277D4A4A8];
-      if (v15 && !self->_libraryType)
+      if (canShowSidebar && !self->_libraryType)
       {
         v19 = *MEMORY[0x277D4A4A8];
       }
@@ -3851,8 +3851,8 @@ void __57__StartPageController__recentCloudTabsSectionWithDevice___block_invoke_
       else
       {
         v17 = MEMORY[0x277CCACA8];
-        v18 = [v4 uuid];
-        v19 = [v17 stringWithFormat:@"%@-%@", *v16, v18];
+        uuid = [deviceCopy uuid];
+        v19 = [v17 stringWithFormat:@"%@-%@", *v16, uuid];
       }
 
       if (self->_libraryType)
@@ -3862,14 +3862,14 @@ void __57__StartPageController__recentCloudTabsSectionWithDevice___block_invoke_
 
       else
       {
-        v21 = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
-        v38[0] = v21;
+        toggleSectionExpandedAction = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
+        v38[0] = toggleSectionExpandedAction;
         v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
       }
 
-      v22 = [MEMORY[0x277D4A838] listSectionWithIdentifier:v19 title:v31 actions:v20 banner:0 identifiers:v13 configurationProvider:&__block_literal_global_272_0];
+      v22 = [MEMORY[0x277D4A838] listSectionWithIdentifier:v19 title:disambiguatedName actions:v20 banner:0 identifiers:allObjects configurationProvider:&__block_literal_global_272_0];
       v6 = v22;
-      if (v15)
+      if (canShowSidebar)
       {
         v23 = 8;
       }
@@ -3880,33 +3880,33 @@ void __57__StartPageController__recentCloudTabsSectionWithDevice___block_invoke_
       }
 
       [v22 setNumberOfRowsVisibleWhenCollapsed:v23];
-      [v6 setExpandsModally:v15 ^ 1u];
-      v24 = [(StartPageController *)self _contextMenuConfigurationForCloudTabWithSelectedDevice:v4];
+      [v6 setExpandsModally:canShowSidebar ^ 1u];
+      v24 = [(StartPageController *)self _contextMenuConfigurationForCloudTabWithSelectedDevice:deviceCopy];
       [v6 setContextMenuProvider:v24];
 
-      v25 = [(StartPageController *)self _cloudTabsContextMenuCommitHandler];
-      [v6 setContextMenuCommitHandler:v25];
+      _cloudTabsContextMenuCommitHandler = [(StartPageController *)self _cloudTabsContextMenuCommitHandler];
+      [v6 setContextMenuCommitHandler:_cloudTabsContextMenuCommitHandler];
 
-      v26 = [(StartPageController *)self _cloudTabsContextMenuDismissHandler];
-      [v6 setContextMenuDismissHandler:v26];
+      _cloudTabsContextMenuDismissHandler = [(StartPageController *)self _cloudTabsContextMenuDismissHandler];
+      [v6 setContextMenuDismissHandler:_cloudTabsContextMenuDismissHandler];
 
-      v27 = [(StartPageController *)self _cloudTabsDragItemProvider];
-      [v6 setDragItemProvider:v27];
+      _cloudTabsDragItemProvider = [(StartPageController *)self _cloudTabsDragItemProvider];
+      [v6 setDragItemProvider:_cloudTabsDragItemProvider];
 
       if (!self->_libraryType)
       {
         [(StartPageController *)self _setProfileIconOnSectionIfNeeded:v6];
       }
 
-      if (v15 && !self->_libraryType && [v5 count] >= 2)
+      if (canShowSidebar && !self->_libraryType && [_cloudTabDevices count] >= 2)
       {
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __51__StartPageController__cloudTabsSectionWithDevice___block_invoke_3;
         v32[3] = &unk_2781DCD68;
-        v33 = v4;
-        v34 = self;
-        v28 = [v5 safari_mapAndFilterObjectsUsingBlock:v32];
+        v33 = deviceCopy;
+        selfCopy2 = self;
+        v28 = [_cloudTabDevices safari_mapAndFilterObjectsUsingBlock:v32];
         v29 = [MEMORY[0x277D75710] menuWithChildren:v28];
         [v6 setTitleMenu:v29];
       }
@@ -4081,33 +4081,33 @@ void __57__StartPageController__cloudTabsContextMenuCommitHandler__block_invoke_
   }
 }
 
-- (id)_cloudTabItemForIdentifier:(id)a3
+- (id)_cloudTabItemForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if ([MEMORY[0x277D49A08] is2024SuggestionsEnabled])
   {
-    v4 = [v3 cloudTab];
+    cloudTab = [identifierCopy cloudTab];
 
-    v3 = v4;
+    identifierCopy = cloudTab;
   }
 
-  return v3;
+  return identifierCopy;
 }
 
-- (id)_cloudTabDeviceForIdentifier:(id)a3
+- (id)_cloudTabDeviceForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if ([MEMORY[0x277D49A08] is2024SuggestionsEnabled])
   {
-    v4 = [v3 device];
+    device = [identifierCopy device];
 
-    v3 = v4;
+    identifierCopy = device;
   }
 
-  return v3;
+  return identifierCopy;
 }
 
-- (id)_contextMenuConfigurationForCloudTabWithSelectedDevice:(id)a3
+- (id)_contextMenuConfigurationForCloudTabWithSelectedDevice:(id)device
 {
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -4356,11 +4356,11 @@ void __78__StartPageController__contextMenuConfigurationForCloudTabWithSelectedD
 - (id)_lastCloudDeviceProfileKey
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v3 = [WeakRetained activeProfileIdentifier];
-  v4 = v3;
-  if (v3)
+  activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
+  v4 = activeProfileIdentifier;
+  if (activeProfileIdentifier)
   {
-    v5 = v3;
+    v5 = activeProfileIdentifier;
   }
 
   else
@@ -4375,12 +4375,12 @@ void __78__StartPageController__contextMenuConfigurationForCloudTabWithSelectedD
 
 - (id)_selectedCloudTabsDevice
 {
-  v3 = [(StartPageController *)self _cloudTabDevices];
-  if ([v3 count])
+  _cloudTabDevices = [(StartPageController *)self _cloudTabDevices];
+  if ([_cloudTabDevices count])
   {
-    v4 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
     v5 = *MEMORY[0x277D290B8];
-    v6 = [v4 stringForKey:*MEMORY[0x277D290B8]];
+    v6 = [safari_browserDefaults stringForKey:*MEMORY[0x277D290B8]];
     v7 = v6;
     if (v6)
     {
@@ -4389,16 +4389,16 @@ void __78__StartPageController__contextMenuConfigurationForCloudTabWithSelectedD
       v18[2] = __47__StartPageController__selectedCloudTabsDevice__block_invoke;
       v18[3] = &unk_2781DCE80;
       v19 = v6;
-      [v4 safari_modifyDictionaryForKey:v5 block:v18];
+      [safari_browserDefaults safari_modifyDictionaryForKey:v5 block:v18];
     }
 
-    v8 = [v4 dictionaryForKey:v5];
-    v9 = [(StartPageController *)self _lastCloudDeviceProfileKey];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    v8 = [safari_browserDefaults dictionaryForKey:v5];
+    _lastCloudDeviceProfileKey = [(StartPageController *)self _lastCloudDeviceProfileKey];
+    v10 = [v8 objectForKeyedSubscript:_lastCloudDeviceProfileKey];
 
-    if (!v10 || (v16[0] = MEMORY[0x277D85DD0], v16[1] = 3221225472, v16[2] = __47__StartPageController__selectedCloudTabsDevice__block_invoke_2, v16[3] = &unk_2781DCC38, v17 = v10, [v3 safari_firstObjectPassingTest:v16], v11 = objc_claimAutoreleasedReturnValue(), v17, !v11))
+    if (!v10 || (v16[0] = MEMORY[0x277D85DD0], v16[1] = 3221225472, v16[2] = __47__StartPageController__selectedCloudTabsDevice__block_invoke_2, v16[3] = &unk_2781DCC38, v17 = v10, [_cloudTabDevices safari_firstObjectPassingTest:v16], v11 = objc_claimAutoreleasedReturnValue(), v17, !v11))
     {
-      v12 = [v3 objectAtIndexedSubscript:0];
+      v12 = [_cloudTabDevices objectAtIndexedSubscript:0];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __47__StartPageController__selectedCloudTabsDevice__block_invoke_3;
@@ -4406,7 +4406,7 @@ void __78__StartPageController__contextMenuConfigurationForCloudTabWithSelectedD
       v14[4] = self;
       v11 = v12;
       v15 = v11;
-      [v4 safari_modifyDictionaryForKey:v5 block:v14];
+      [safari_browserDefaults safari_modifyDictionaryForKey:v5 block:v14];
     }
   }
 
@@ -4435,16 +4435,16 @@ void __47__StartPageController__selectedCloudTabsDevice__block_invoke_3(uint64_t
   [v5 setObject:v3 forKeyedSubscript:v4];
 }
 
-- (void)_suggestionsDidChange:(id)a3
+- (void)_suggestionsDidChange:(id)change
 {
   if ([MEMORY[0x277D49A08] is2024SuggestionsEnabled])
   {
     if ([(NSMapTable *)self->_suggestionProxiesToMetadataTokens count])
     {
-      v4 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-      v5 = [(NSMapTable *)self->_suggestionProxiesToMetadataTokens objectEnumerator];
-      v6 = [v5 allObjects];
-      [v4 cancelRequestsWithTokens:v6];
+      mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+      objectEnumerator = [(NSMapTable *)self->_suggestionProxiesToMetadataTokens objectEnumerator];
+      allObjects = [objectEnumerator allObjects];
+      [mEMORY[0x277D28F58] cancelRequestsWithTokens:allObjects];
 
       [(NSMapTable *)self->_suggestionProxiesToMetadataTokens removeAllObjects];
     }
@@ -4468,7 +4468,7 @@ void __47__StartPageController__selectedCloudTabsDevice__block_invoke_3(uint64_t
   }
 }
 
-- (void)_cloudTabsConsentStateDidChange:(id)a3
+- (void)_cloudTabsConsentStateDidChange:(id)change
 {
   if ([MEMORY[0x277D49A08] is2024CloudTabsEnabled])
   {
@@ -4479,7 +4479,7 @@ void __47__StartPageController__selectedCloudTabsDevice__block_invoke_3(uint64_t
   }
 }
 
-- (void)_recentCloudTabItemsDidRebuild:(id)a3
+- (void)_recentCloudTabItemsDidRebuild:(id)rebuild
 {
   if ([MEMORY[0x277D49A08] is2024CloudTabsEnabled])
   {
@@ -4488,7 +4488,7 @@ void __47__StartPageController__selectedCloudTabsDevice__block_invoke_3(uint64_t
   }
 }
 
-- (void)_recentCloudTabItemsDidReceiveMetadata:(id)a3
+- (void)_recentCloudTabItemsDidReceiveMetadata:(id)metadata
 {
   if ([MEMORY[0x277D49A08] is2024CloudTabsEnabled])
   {
@@ -4515,23 +4515,23 @@ void __62__StartPageController__recentCloudTabItemsDidReceiveMetadata___block_in
   [WeakRetained _updateRecentCloudTabsSection];
 }
 
-- (id)_recentItemsForDevice:(id)a3
+- (id)_recentItemsForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  if (v5)
+  deviceCopy = device;
+  uuid = [deviceCopy uuid];
+  if (uuid)
   {
     recentItemsByDeviceUUID = self->_recentItemsByDeviceUUID;
     if (!recentItemsByDeviceUUID)
     {
-      v7 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v8 = self->_recentItemsByDeviceUUID;
-      self->_recentItemsByDeviceUUID = v7;
+      self->_recentItemsByDeviceUUID = dictionary;
 
       recentItemsByDeviceUUID = self->_recentItemsByDeviceUUID;
     }
 
-    v9 = [(NSMutableDictionary *)recentItemsByDeviceUUID objectForKeyedSubscript:v5];
+    v9 = [(NSMutableDictionary *)recentItemsByDeviceUUID objectForKeyedSubscript:uuid];
     if (!v9)
     {
       recentItems = self->_recentItems;
@@ -4539,7 +4539,7 @@ void __62__StartPageController__recentCloudTabItemsDidReceiveMetadata___block_in
       v14[1] = 3221225472;
       v14[2] = __45__StartPageController__recentItemsForDevice___block_invoke;
       v14[3] = &unk_2781DCEA8;
-      v11 = v5;
+      v11 = uuid;
       v15 = v11;
       v12 = [(NSArray *)recentItems safari_filterObjectsUsingBlock:v14];
       [(NSMutableDictionary *)self->_recentItemsByDeviceUUID setObject:v12 forKeyedSubscript:v11];
@@ -4565,7 +4565,7 @@ uint64_t __45__StartPageController__recentItemsForDevice___block_invoke(uint64_t
   return v5;
 }
 
-- (void)_cloudTabsDidChange:(id)a3
+- (void)_cloudTabsDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -4587,8 +4587,8 @@ uint64_t __45__StartPageController__recentItemsForDevice___block_invoke(uint64_t
   {
     objc_initWeak(&location, self);
     v3 = MEMORY[0x277D4A838];
-    v4 = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
-    v18[0] = v4;
+    toggleSectionExpandedAction = [MEMORY[0x277D4A6E8] toggleSectionExpandedAction];
+    v18[0] = toggleSectionExpandedAction;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
     siriSuggestions = self->_siriSuggestions;
     v15[0] = MEMORY[0x277D85DD0];
@@ -4833,59 +4833,59 @@ id __46__StartPageController__siriSuggestionsSection__block_invoke_10(uint64_t a
   return v3;
 }
 
-- (void)_setLeadImageForCard:(id)a3 withRecommendation:(id)a4
+- (void)_setLeadImageForCard:(id)card withRecommendation:(id)recommendation
 {
-  v16 = a3;
-  v6 = a4;
+  cardCopy = card;
+  recommendationCopy = recommendation;
   v7 = objc_alloc(MEMORY[0x277D7B5A0]);
-  v8 = titleForSiriSuggestion(v6);
-  v9 = [v6 pageURL];
-  v10 = [v9 safari_originalDataAsString];
-  v11 = [(WebBookmarkCollection *)self->_bookmarkCollection configuration];
-  v12 = [v7 initWithTitle:v8 address:v10 collectionType:{objc_msgSend(v11, "collectionType")}];
+  v8 = titleForSiriSuggestion(recommendationCopy);
+  pageURL = [recommendationCopy pageURL];
+  safari_originalDataAsString = [pageURL safari_originalDataAsString];
+  configuration = [(WebBookmarkCollection *)self->_bookmarkCollection configuration];
+  v12 = [v7 initWithTitle:v8 address:safari_originalDataAsString collectionType:{objc_msgSend(configuration, "collectionType")}];
 
-  [v16 setImageFromBookmark:v12];
-  if ([v6 prefersLeadImage] && (objc_msgSend(v6, "image"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+  [cardCopy setImageFromBookmark:v12];
+  if ([recommendationCopy prefersLeadImage] && (objc_msgSend(recommendationCopy, "image"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
-    v14 = [v6 image];
-    [v16 setImage:v14];
+    image = [recommendationCopy image];
+    [cardCopy setImage:image];
   }
 
   else
   {
-    v15 = [v6 imageURL];
+    imageURL = [recommendationCopy imageURL];
 
-    if (v15)
+    if (imageURL)
     {
-      [(StartPageController *)self _requestLeadImageForRecommendation:v6];
+      [(StartPageController *)self _requestLeadImageForRecommendation:recommendationCopy];
     }
   }
 }
 
-- (void)_requestLeadImageForRecommendation:(id)a3
+- (void)_requestLeadImageForRecommendation:(id)recommendation
 {
-  v4 = a3;
+  recommendationCopy = recommendation;
   if (!self->_siriSuggestionsMetadataTokens)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     siriSuggestionsMetadataTokens = self->_siriSuggestionsMetadataTokens;
-    self->_siriSuggestionsMetadataTokens = v5;
+    self->_siriSuggestionsMetadataTokens = array;
   }
 
   objc_initWeak(&location, self);
   v7 = MEMORY[0x277D4A798];
-  v8 = [v4 imageURL];
-  v9 = [v7 requestWithURL:v8];
+  imageURL = [recommendationCopy imageURL];
+  v9 = [v7 requestWithURL:imageURL];
 
-  v10 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+  mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__StartPageController__requestLeadImageForRecommendation___block_invoke;
   v13[3] = &unk_2781DCF90;
   objc_copyWeak(&v15, &location);
-  v11 = v4;
+  v11 = recommendationCopy;
   v14 = v11;
-  v12 = [v10 registerRequest:v9 priority:2 responseHandler:v13];
+  v12 = [mEMORY[0x277D28F58] registerRequest:v9 priority:2 responseHandler:v13];
 
   [(NSMutableArray *)self->_siriSuggestionsMetadataTokens addObject:v12];
   objc_destroyWeak(&v15);
@@ -4915,17 +4915,17 @@ void __58__StartPageController__requestLeadImageForRecommendation___block_invoke
   }
 }
 
-- (id)_openMenuElementsForSiriSuggestion:(id)a3
+- (id)_openMenuElementsForSiriSuggestion:(id)suggestion
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionCopy = suggestion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__StartPageController__openMenuElementsForSiriSuggestion___block_invoke;
   aBlock[3] = &unk_2781DCDE0;
   objc_copyWeak(&v23, &location);
-  v5 = v4;
+  v5 = suggestionCopy;
   v22 = v5;
   v6 = _Block_copy(aBlock);
   v7 = MEMORY[0x277D750C8];
@@ -4938,15 +4938,15 @@ void __58__StartPageController__requestLeadImageForRecommendation___block_invoke
   v9 = [v7 _sf_openInNewTabActionWithHandler:v19];
   v25[0] = v9;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v11 = [WeakRetained tabGroupProvider];
-  v12 = [v5 pageURL];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  pageURL = [v5 pageURL];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__StartPageController__openMenuElementsForSiriSuggestion___block_invoke_3;
   v17[3] = &unk_2781D6380;
   v13 = v8;
   v18 = v13;
-  v14 = [v11 openInTabGroupMenuWithNewTabGroupName:0 URL:v12 descendantCount:0 handler:v17];
+  v14 = [tabGroupProvider openInTabGroupMenuWithNewTabGroupName:0 URL:pageURL descendantCount:0 handler:v17];
   v25[1] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
 
@@ -4980,9 +4980,9 @@ void __58__StartPageController__openMenuElementsForSiriSuggestion___block_invoke
   }
 }
 
-- (id)_shareActionForHighlight:(id)a3
+- (id)_shareActionForHighlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D750C8];
   v6 = _WBSLocalizedString();
@@ -4992,7 +4992,7 @@ void __58__StartPageController__openMenuElementsForSiriSuggestion___block_invoke
   v11[2] = __48__StartPageController__shareActionForHighlight___block_invoke;
   v11[3] = &unk_2781DA9F8;
   objc_copyWeak(&v13, &location);
-  v8 = v4;
+  v8 = highlightCopy;
   v12 = v8;
   v9 = [v5 actionWithTitle:v6 image:v7 identifier:0 handler:v11];
 
@@ -5019,9 +5019,9 @@ void __48__StartPageController__shareActionForHighlight___block_invoke(uint64_t 
   }
 }
 
-- (id)_shareActionForSiriSuggestion:(id)a3
+- (id)_shareActionForSiriSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D750C8];
   v6 = _WBSLocalizedString();
@@ -5031,7 +5031,7 @@ void __48__StartPageController__shareActionForHighlight___block_invoke(uint64_t 
   v11[2] = __53__StartPageController__shareActionForSiriSuggestion___block_invoke;
   v11[3] = &unk_2781DA9F8;
   objc_copyWeak(&v13, &location);
-  v8 = v4;
+  v8 = suggestionCopy;
   v12 = v8;
   v9 = [v5 actionWithTitle:v6 image:v7 identifier:0 handler:v11];
 
@@ -5058,10 +5058,10 @@ void __53__StartPageController__shareActionForSiriSuggestion___block_invoke(uint
   }
 }
 
-- (id)_downvoteActionForSiriSuggestion:(id)a3
+- (id)_downvoteActionForSiriSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 source];
+  suggestionCopy = suggestion;
+  source = [suggestionCopy source];
   v6 = WBSForYouLinkRecommendationSourceDownvoteActionTitle();
   v7 = [MEMORY[0x277D755B8] systemImageNamed:@"hand.thumbsdown"];
   objc_initWeak(&location, self);
@@ -5071,7 +5071,7 @@ void __53__StartPageController__shareActionForSiriSuggestion___block_invoke(uint
   v11[2] = __56__StartPageController__downvoteActionForSiriSuggestion___block_invoke;
   v11[3] = &unk_2781DCFD8;
   objc_copyWeak(v12, &location);
-  v12[1] = v5;
+  v12[1] = source;
   v9 = [v8 actionWithTitle:v6 image:v7 identifier:0 handler:v11];
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
@@ -5097,9 +5097,9 @@ void __56__StartPageController__downvoteActionForSiriSuggestion___block_invoke(u
   }
 }
 
-- (id)_banActionForSiriSuggestion:(id)a3
+- (id)_banActionForSiriSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v5 = _WBSLocalizedString();
   v6 = [MEMORY[0x277D755B8] systemImageNamed:@"hand.thumbsdown"];
   objc_initWeak(&location, self);
@@ -5109,7 +5109,7 @@ void __56__StartPageController__downvoteActionForSiriSuggestion___block_invoke(u
   v11[2] = __51__StartPageController__banActionForSiriSuggestion___block_invoke;
   v11[3] = &unk_2781DA9F8;
   objc_copyWeak(&v13, &location);
-  v8 = v4;
+  v8 = suggestionCopy;
   v12 = v8;
   v9 = [v7 actionWithTitle:v5 image:v6 identifier:0 handler:v11];
   [v9 setAttributes:2];
@@ -5156,15 +5156,15 @@ uint64_t __51__StartPageController__banActionForSiriSuggestion___block_invoke_2(
   return a1 ^ 1;
 }
 
-- (void)_setReadingListRecommendationAsReadWithRecommendation:(id)a3
+- (void)_setReadingListRecommendationAsReadWithRecommendation:(id)recommendation
 {
-  v6 = a3;
-  if ([v6 source] == 1)
+  recommendationCopy = recommendation;
+  if ([recommendationCopy source] == 1)
   {
-    v4 = [v6 sourceID];
-    if ([v4 length])
+    sourceID = [recommendationCopy sourceID];
+    if ([sourceID length])
     {
-      v5 = [(WebBookmarkCollection *)self->_bookmarkCollection bookmarkWithUUID:v4];
+      v5 = [(WebBookmarkCollection *)self->_bookmarkCollection bookmarkWithUUID:sourceID];
       if (v5)
       {
         [(WebBookmarkCollection *)self->_bookmarkCollection markReadingListBookmark:v5 asRead:1 postNotification:1];
@@ -5173,12 +5173,12 @@ uint64_t __51__StartPageController__banActionForSiriSuggestion___block_invoke_2(
   }
 }
 
-- (void)_setSiriSuggestions:(id)a3
+- (void)_setSiriSuggestions:(id)suggestions
 {
-  v6 = a3;
+  suggestionsCopy = suggestions;
   if (([(NSArray *)self->_siriSuggestions isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [suggestionsCopy copy];
     siriSuggestions = self->_siriSuggestions;
     self->_siriSuggestions = v4;
 
@@ -5191,9 +5191,9 @@ uint64_t __51__StartPageController__banActionForSiriSuggestion___block_invoke_2(
   if (!self->_siriSuggestionsMediator)
   {
     v3 = +[Application sharedApplication];
-    v4 = [v3 createRecommendationMediatorOrReuseExistingOneIfPossible];
+    createRecommendationMediatorOrReuseExistingOneIfPossible = [v3 createRecommendationMediatorOrReuseExistingOneIfPossible];
     siriSuggestionsMediator = self->_siriSuggestionsMediator;
-    self->_siriSuggestionsMediator = v4;
+    self->_siriSuggestionsMediator = createRecommendationMediatorOrReuseExistingOneIfPossible;
   }
 
   if ([(SFStartPageViewController *)self->_viewController isShowingRootView])
@@ -5365,9 +5365,9 @@ void __57__StartPageController__updateRecommendationsForAllTopics__block_invoke(
   [WeakRetained _updateRecommendationsForTopics:v3];
 }
 
-- (void)_updateRecommendationsForTopics:(id)a3
+- (void)_updateRecommendationsForTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   objc_initWeak(&location, self);
   siriSuggestionsMediator = self->_siriSuggestionsMediator;
   v6[0] = MEMORY[0x277D85DD0];
@@ -5375,7 +5375,7 @@ void __57__StartPageController__updateRecommendationsForAllTopics__block_invoke(
   v6[2] = __55__StartPageController__updateRecommendationsForTopics___block_invoke;
   v6[3] = &unk_2781DD048;
   objc_copyWeak(&v7, &location);
-  [(ForYouRecommendationMediator *)siriSuggestionsMediator updatedRecommendationsForTopics:v4 withCompletionHandler:v6];
+  [(ForYouRecommendationMediator *)siriSuggestionsMediator updatedRecommendationsForTopics:topicsCopy withCompletionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -6014,7 +6014,7 @@ id __41__StartPageController__highlightsSection__block_invoke_5_337(uint64_t a1,
   return v7;
 }
 
-- (void)_highlightsDidChange:(id)a3
+- (void)_highlightsDidChange:(id)change
 {
   if (([MEMORY[0x277D49A08] is2024SuggestionsEnabled] & 1) == 0)
   {
@@ -6028,8 +6028,8 @@ id __41__StartPageController__highlightsSection__block_invoke_5_337(uint64_t a1,
 {
   v2 = MEMORY[0x277D4A838];
   v3 = *MEMORY[0x277D4A4F0];
-  v4 = [MEMORY[0x277D4A828] privateBrowsingPersistentModule];
-  v5 = [v2 bannerSectionWithIdentifier:v3 banner:v4];
+  privateBrowsingPersistentModule = [MEMORY[0x277D4A828] privateBrowsingPersistentModule];
+  v5 = [v2 bannerSectionWithIdentifier:v3 banner:privateBrowsingPersistentModule];
 
   return v5;
 }
@@ -6050,8 +6050,8 @@ id __41__StartPageController__highlightsSection__block_invoke_5_337(uint64_t a1,
   else
   {
     v4 = MEMORY[0x277D4A7D8];
-    v5 = [MEMORY[0x277D4A7D0] defaultConfiguration];
-    v6 = [v4 itemsForConfiguration:v5];
+    defaultConfiguration = [MEMORY[0x277D4A7D0] defaultConfiguration];
+    v6 = [v4 itemsForConfiguration:defaultConfiguration];
   }
 
   objc_initWeak(&location, self);
@@ -6089,133 +6089,133 @@ void __57__StartPageController__privateBrowsingExplanationSection__block_invoke(
   }
 }
 
-- (id)profileProviderForCustomizationViewController:(id)a3
+- (id)profileProviderForCustomizationViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained tabGroupProvider];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
 
-  return v4;
+  return tabGroupProvider;
 }
 
-- (id)backgroundImageAssetControllerForCustomizationViewController:(id)a3
+- (id)backgroundImageAssetControllerForCustomizationViewController:(id)controller
 {
   v3 = +[Application sharedApplication];
-  v4 = [v3 backgroundImageAssetController];
+  backgroundImageAssetController = [v3 backgroundImageAssetController];
 
-  return v4;
+  return backgroundImageAssetController;
 }
 
-- (BOOL)isCloudSyncAvailableForStartPageCustomizationViewController:(id)a3
+- (BOOL)isCloudSyncAvailableForStartPageCustomizationViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained tabGroupProvider];
-  v5 = [v4 activeProfile];
-  v6 = [v5 kind];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  activeProfile = [tabGroupProvider activeProfile];
+  kind = [activeProfile kind];
 
-  if (v6)
+  if (kind)
   {
     return 0;
   }
 
   v8 = +[Application sharedApplication];
-  v7 = [v8 isCloudHistoryEnabled];
+  isCloudHistoryEnabled = [v8 isCloudHistoryEnabled];
 
-  return v7;
+  return isCloudHistoryEnabled;
 }
 
-- (BOOL)isSuggestionsCustomizationAvailableForStartPageCustomizationViewController:(id)a3
+- (BOOL)isSuggestionsCustomizationAvailableForStartPageCustomizationViewController:(id)controller
 {
-  v3 = [(WBSStartPageSectionManager *)self->_startPageSectionManager enabledSectionIdentifiers];
-  v4 = [v3 containsObject:*MEMORY[0x277D4A518]];
+  enabledSectionIdentifiers = [(WBSStartPageSectionManager *)self->_startPageSectionManager enabledSectionIdentifiers];
+  v4 = [enabledSectionIdentifiers containsObject:*MEMORY[0x277D4A518]];
 
   return v4;
 }
 
-- (BOOL)isCloudSyncEnabledForStartPageCustomizationViewController:(id)a3
+- (BOOL)isCloudSyncEnabledForStartPageCustomizationViewController:(id)controller
 {
-  v3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v4 = [v3 BOOLForKey:*MEMORY[0x277D49BE8]];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v4 = [safari_browserDefaults BOOLForKey:*MEMORY[0x277D49BE8]];
 
   return v4;
 }
 
-- (void)startPageCustomizationViewControllerDidDisableCloudSync:(id)a3
+- (void)startPageCustomizationViewControllerDidDisableCloudSync:(id)sync
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 setBool:0 forKey:*MEMORY[0x277D49BE8]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:0 forKey:*MEMORY[0x277D49BE8]];
 }
 
-- (void)startPageCustomizationViewControllerDidEnableCloudSync:(id)a3 withPreference:(int64_t)a4
+- (void)startPageCustomizationViewControllerDidEnableCloudSync:(id)sync withPreference:(int64_t)preference
 {
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v6 = *MEMORY[0x277D49BE8];
-  v8 = v5;
-  [v5 setBool:1 forKey:*MEMORY[0x277D49BE8]];
+  v8 = standardUserDefaults;
+  [standardUserDefaults setBool:1 forKey:*MEMORY[0x277D49BE8]];
 
-  v9 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
   v7 = [MEMORY[0x277CBEBD0] safari_notificationNameForUserDefaultsKey:v6];
-  [v9 postNotificationName:v7 object:0];
+  [defaultCenter postNotificationName:v7 object:0];
 
-  if (a4)
+  if (preference)
   {
-    if (a4 != 1)
+    if (preference != 1)
     {
       return;
     }
 
-    v10 = [MEMORY[0x277D49B18] sharedProxy];
-    [v10 syncUpSafariSettingsSyncWithCompletion:&__block_literal_global_345];
+    mEMORY[0x277D49B18] = [MEMORY[0x277D49B18] sharedProxy];
+    [mEMORY[0x277D49B18] syncUpSafariSettingsSyncWithCompletion:&__block_literal_global_345];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D49B18] sharedProxy];
-    [v10 syncDownSafariSettingsSyncWithCompletion:&__block_literal_global_347];
+    mEMORY[0x277D49B18] = [MEMORY[0x277D49B18] sharedProxy];
+    [mEMORY[0x277D49B18] syncDownSafariSettingsSyncWithCompletion:&__block_literal_global_347];
   }
 }
 
-- (id)startPageCustomizationViewController:(id)a3 customizationItemsForCustomizationVariant:(int64_t)a4
+- (id)startPageCustomizationViewController:(id)controller customizationItemsForCustomizationVariant:(int64_t)variant
 {
-  v7 = a3;
-  if (!a4)
+  controllerCopy = controller;
+  if (!variant)
   {
-    v10 = [(WBSStartPageSectionManager *)self->_startPageSectionManager sections];
-    v14 = [v10 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_351_0];
+    sections = [(WBSStartPageSectionManager *)self->_startPageSectionManager sections];
+    v14 = [sections safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_351_0];
     goto LABEL_8;
   }
 
-  if (a4 == 2)
+  if (variant == 2)
   {
-    v10 = [(WBSStartPageSectionManager *)self->_startPageSectionManager suggestionsDataSourceSections];
-    v14 = [v10 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_353];
+    sections = [(WBSStartPageSectionManager *)self->_startPageSectionManager suggestionsDataSourceSections];
+    v14 = [sections safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_353];
 LABEL_8:
-    v4 = v14;
+    array = v14;
     goto LABEL_9;
   }
 
-  if (a4 != 1)
+  if (variant != 1)
   {
     goto LABEL_10;
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v9 = [WeakRetained tabGroupProvider];
-  v10 = [v9 activeTabGroup];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  sections = [tabGroupProvider activeTabGroup];
 
-  if ([v10 supportsTabGroupFavorites])
+  if ([sections supportsTabGroupFavorites])
   {
     v11 = MEMORY[0x277D4A830];
-    v12 = [(StartPageController *)self isTabGroupFavoritesSectionEnabled];
-    v13 = [v11 itemWithIdentifier:*MEMORY[0x277D4A520] enabled:v12];
-    [v4 addObject:v13];
+    isTabGroupFavoritesSectionEnabled = [(StartPageController *)self isTabGroupFavoritesSectionEnabled];
+    v13 = [v11 itemWithIdentifier:*MEMORY[0x277D4A520] enabled:isTabGroupFavoritesSectionEnabled];
+    [array addObject:v13];
   }
 
 LABEL_9:
 
 LABEL_10:
 
-  return v4;
+  return array;
 }
 
 id __102__StartPageController_startPageCustomizationViewController_customizationItemsForCustomizationVariant___block_invoke(uint64_t a1, void *a2)
@@ -6245,18 +6245,18 @@ id __102__StartPageController_startPageCustomizationViewController_customization
   return v5;
 }
 
-- (void)startPageCustomizationViewController:(id)a3 didCustomizeItems:(id)a4 withVariant:(int64_t)a5
+- (void)startPageCustomizationViewController:(id)controller didCustomizeItems:(id)items withVariant:(int64_t)variant
 {
   v54 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!a5 || a5 == 2)
+  controllerCopy = controller;
+  itemsCopy = items;
+  v9 = itemsCopy;
+  if (!variant || variant == 2)
   {
-    v13 = [v8 mutableCopy];
-    v34 = [(WBSStartPageSectionManager *)self->_startPageSectionManager sections];
-    v14 = [v34 indexOfObjectPassingTest:&__block_literal_global_358];
-    v15 = [v34 indexOfObjectPassingTest:&__block_literal_global_360_0];
+    v13 = [itemsCopy mutableCopy];
+    sections = [(WBSStartPageSectionManager *)self->_startPageSectionManager sections];
+    v14 = [sections indexOfObjectPassingTest:&__block_literal_global_358];
+    v15 = [sections indexOfObjectPassingTest:&__block_literal_global_360_0];
     v16 = [v9 indexOfObjectPassingTest:&__block_literal_global_363];
     v17 = [v9 indexOfObjectPassingTest:&__block_literal_global_365_0];
     v36 = [v9 objectAtIndexedSubscript:v16];
@@ -6365,13 +6365,13 @@ id __102__StartPageController_startPageCustomizationViewController_customization
     goto LABEL_37;
   }
 
-  if (a5 == 1)
+  if (variant == 1)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __90__StartPageController_startPageCustomizationViewController_didCustomizeItems_withVariant___block_invoke;
     aBlock[3] = &unk_2781DD2B0;
-    v41 = v8;
+    v41 = itemsCopy;
     v10 = _Block_copy(aBlock);
     v11 = v10[2](v10, *MEMORY[0x277D4A520]);
     v12 = v11;
@@ -6455,34 +6455,34 @@ id __90__StartPageController_startPageCustomizationViewController_didCustomizeIt
   return v6;
 }
 
-- (BOOL)isBackgroundImageEnabledForStartPageCustomizationViewController:(id)a3
+- (BOOL)isBackgroundImageEnabledForStartPageCustomizationViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained tabGroupProvider];
-  v5 = [v4 activeProfileIdentifier];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  activeProfileIdentifier = [tabGroupProvider activeProfileIdentifier];
 
   v6 = +[Application sharedApplication];
-  v7 = [v6 tabGroupManager];
-  v8 = [v7 profileWithIdentifier:v5];
+  tabGroupManager = [v6 tabGroupManager];
+  v8 = [tabGroupManager profileWithIdentifier:activeProfileIdentifier];
 
   if ([v8 kind] == 1)
   {
-    v9 = [v8 settingForKey:*MEMORY[0x277D4A478]];
-    v10 = [v9 BOOLValue];
+    standardUserDefaults = [v8 settingForKey:*MEMORY[0x277D4A478]];
+    bOOLValue = [standardUserDefaults BOOLValue];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v10 = [v9 BOOLForKey:*MEMORY[0x277D4A478]];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    bOOLValue = [standardUserDefaults BOOLForKey:*MEMORY[0x277D4A478]];
   }
 
-  v11 = v10;
+  v11 = bOOLValue;
 
   return v11;
 }
 
-- (id)backgroundImageForStartPageCustomizationViewController:(id)a3
+- (id)backgroundImageForStartPageCustomizationViewController:(id)controller
 {
   cachedItemProvider = self->_cachedItemProvider;
   if (cachedItemProvider)
@@ -6492,24 +6492,24 @@ id __90__StartPageController_startPageCustomizationViewController_didCustomizeIt
 
   else
   {
-    v6 = [MEMORY[0x277D4A820] defaultManager];
+    defaultManager = [MEMORY[0x277D4A820] defaultManager];
     v7 = +[Application sharedApplication];
-    v8 = [v7 tabGroupManager];
+    tabGroupManager = [v7 tabGroupManager];
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v10 = [WeakRetained activeProfileIdentifier];
-    v11 = [v8 profileWithIdentifier:v10];
+    activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
+    v11 = [tabGroupManager profileWithIdentifier:activeProfileIdentifier];
 
-    v12 = [(StartPageController *)self startPageBackgroundImageIdentifier];
-    v13 = [v6 imageForIdentifier:v12 forProfile:v11];
+    startPageBackgroundImageIdentifier = [(StartPageController *)self startPageBackgroundImageIdentifier];
+    v13 = [defaultManager imageForIdentifier:startPageBackgroundImageIdentifier forProfile:v11];
 
     if (v13)
     {
       v14 = [MEMORY[0x277D755B8] imageWithCGImage:{objc_msgSend(v13, "CGImage")}];
       v4 = [objc_alloc(MEMORY[0x277CCAA88]) initWithObject:v14];
-      v15 = [v6 prefetchedImageNameForProfile:v11];
+      v15 = [defaultManager prefetchedImageNameForProfile:v11];
       [(NSItemProvider *)v4 setSuggestedName:v15];
 
-      v16 = [v6 prefetchedImageThumbnailForProfile:v11];
+      v16 = [defaultManager prefetchedImageThumbnailForProfile:v11];
       v17 = v16;
       if (v16)
       {
@@ -6548,94 +6548,94 @@ void __78__StartPageController_backgroundImageForStartPageCustomizationViewContr
   v4[2](v4, v3, 0);
 }
 
-- (void)startPageCustomizationViewController:(id)a3 willModifySectionWithIdentifier:(id)a4 enabled:(BOOL)a5
+- (void)startPageCustomizationViewController:(id)controller willModifySectionWithIdentifier:(id)identifier enabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v16[2] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v8 setBool:1 forKey:*MEMORY[0x277D4A4A0]];
+  identifierCopy = identifier;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:1 forKey:*MEMORY[0x277D4A4A0]];
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v10 = [WeakRetained activeProfileIdentifier];
-  v11 = [v10 isEqualToString:*MEMORY[0x277D49BD8]];
+  activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
+  v11 = [activeProfileIdentifier isEqualToString:*MEMORY[0x277D49BD8]];
 
   if (v11)
   {
     v15[0] = @"section";
     v15[1] = @"isEnabled";
-    v16[0] = v7;
-    v12 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    v16[0] = identifierCopy;
+    v12 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
     v16[1] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotificationName:*MEMORY[0x277D4A3B0] object:0 userInfo:v13];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D4A3B0] object:0 userInfo:v13];
   }
 }
 
-- (void)didReorderSectionIdentifiersForStartPageCustomizationViewController:(id)a3
+- (void)didReorderSectionIdentifiersForStartPageCustomizationViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained activeProfileIdentifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D49BD8]];
+  activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
+  v5 = [activeProfileIdentifier isEqualToString:*MEMORY[0x277D49BD8]];
 
   if (v5)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:*MEMORY[0x277D4A4C8] object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D4A4C8] object:self];
   }
 
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v8 setBool:1 forKey:*MEMORY[0x277D4A4A0]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:1 forKey:*MEMORY[0x277D4A4A0]];
 }
 
-- (void)startPageCustomizationViewControllerDidFinish:(id)a3
+- (void)startPageCustomizationViewControllerDidFinish:(id)finish
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v3 = [WeakRetained activeProfileIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x277D49BD8]];
+  activeProfileIdentifier = [WeakRetained activeProfileIdentifier];
+  v4 = [activeProfileIdentifier isEqualToString:*MEMORY[0x277D49BD8]];
 
   if (v4)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:*MEMORY[0x277D4A3B8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D4A3B8] object:0];
   }
 }
 
-- (void)startPageCustomizationViewController:(id)a3 didModifyBackgroundImageEnabled:(BOOL)a4
+- (void)startPageCustomizationViewController:(id)controller didModifyBackgroundImageEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v7 = [WeakRetained tabGroupProvider];
-  v8 = [v7 activeProfileIdentifier];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  activeProfileIdentifier = [tabGroupProvider activeProfileIdentifier];
 
-  if ([v8 isEqualToString:*MEMORY[0x277D49BD8]])
+  if ([activeProfileIdentifier isEqualToString:*MEMORY[0x277D49BD8]])
   {
-    v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v9 setBool:v4 forKey:*MEMORY[0x277D4A478]];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:enabledCopy forKey:*MEMORY[0x277D4A478]];
   }
 
   else
   {
     v10 = +[Application sharedApplication];
-    v11 = [v10 tabGroupManager];
+    tabGroupManager = [v10 tabGroupManager];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __92__StartPageController_startPageCustomizationViewController_didModifyBackgroundImageEnabled___block_invoke;
     v16[3] = &__block_descriptor_33_e26_v16__0__WBMutableProfile_8l;
-    v17 = v4;
+    v17 = enabledCopy;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __92__StartPageController_startPageCustomizationViewController_didModifyBackgroundImageEnabled___block_invoke_2;
     v14[3] = &unk_2781D6890;
     v14[4] = self;
-    v15 = v8;
-    v12 = [v11 updateProfileWithIdentifier:v15 persist:1 usingBlock:v16 completionHandler:v14];
+    v15 = activeProfileIdentifier;
+    v12 = [tabGroupManager updateProfileWithIdentifier:v15 persist:1 usingBlock:v16 completionHandler:v14];
   }
 
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v13 setBool:1 forKey:*MEMORY[0x277D4A4A0]];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 setBool:1 forKey:*MEMORY[0x277D4A4A0]];
 }
 
 void __92__StartPageController_startPageCustomizationViewController_didModifyBackgroundImageEnabled___block_invoke(uint64_t a1, void *a2)
@@ -6660,26 +6660,26 @@ void __92__StartPageController_startPageCustomizationViewController_didModifyBac
   }
 }
 
-- (void)startPageCustomizationViewController:(id)a3 didSelectCustomBackgroundImage:(id)a4
+- (void)startPageCustomizationViewController:(id)controller didSelectCustomBackgroundImage:(id)image
 {
-  v6 = a4;
-  objc_storeStrong(&self->_cachedItemProvider, a4);
-  v7 = [MEMORY[0x277D4A820] defaultManager];
-  if (v6)
+  imageCopy = image;
+  objc_storeStrong(&self->_cachedItemProvider, image);
+  defaultManager = [MEMORY[0x277D4A820] defaultManager];
+  if (imageCopy)
   {
     os_unfair_lock_lock(&generationLock);
     v8 = ++generationToken;
     os_unfair_lock_unlock(&generationLock);
     objc_initWeak(&location, self);
-    v9 = [*MEMORY[0x277CE1DB0] identifier];
+    identifier = [*MEMORY[0x277CE1DB0] identifier];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __91__StartPageController_startPageCustomizationViewController_didSelectCustomBackgroundImage___block_invoke;
     v19[3] = &unk_2781DD3E0;
     v21[1] = v8;
-    v20 = v7;
+    v20 = defaultManager;
     objc_copyWeak(v21, &location);
-    v10 = [v6 loadFileRepresentationForTypeIdentifier:v9 completionHandler:v19];
+    v10 = [imageCopy loadFileRepresentationForTypeIdentifier:identifier completionHandler:v19];
 
     objc_destroyWeak(v21);
     objc_destroyWeak(&location);
@@ -6688,23 +6688,23 @@ void __92__StartPageController_startPageCustomizationViewController_didModifyBac
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v12 = [WeakRetained tabGroupProvider];
-    v13 = [v12 activeProfile];
-    v14 = [v13 kind];
+    tabGroupProvider = [WeakRetained tabGroupProvider];
+    activeProfile = [tabGroupProvider activeProfile];
+    kind = [activeProfile kind];
 
-    v15 = [WeakRetained tabGroupProvider];
-    v16 = [v15 activeTabGroup];
-    v17 = [v16 isUnnamed];
+    tabGroupProvider2 = [WeakRetained tabGroupProvider];
+    activeTabGroup = [tabGroupProvider2 activeTabGroup];
+    isUnnamed = [activeTabGroup isUnnamed];
 
-    v18 = [(StartPageController *)self startPageBackgroundImageIdentifier];
-    if (((v14 != 0) & v17) == 1)
+    startPageBackgroundImageIdentifier = [(StartPageController *)self startPageBackgroundImageIdentifier];
+    if (((kind != 0) & isUnnamed) == 1)
     {
-      [v7 clearImageWithIdentifier:v18 withinProfile:1];
+      [defaultManager clearImageWithIdentifier:startPageBackgroundImageIdentifier withinProfile:1];
     }
 
     else
     {
-      [v7 clearImageWithIdentifier:v18 withinProfile:0];
+      [defaultManager clearImageWithIdentifier:startPageBackgroundImageIdentifier withinProfile:0];
     }
   }
 }
@@ -6880,19 +6880,19 @@ void __91__StartPageController_startPageCustomizationViewController_didSelectCus
   }
 }
 
-- (void)startPageCustomizationViewController:(id)a3 didSelectBuiltInBackgroundImageAtURL:(id)a4 precomputedLuminance:(double)a5
+- (void)startPageCustomizationViewController:(id)controller didSelectBuiltInBackgroundImageAtURL:(id)l precomputedLuminance:(double)luminance
 {
-  v7 = a4;
-  v8 = [v7 lastPathComponent];
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
   v9 = objc_alloc_init(MEMORY[0x277CCAA88]);
   cachedItemProvider = self->_cachedItemProvider;
   self->_cachedItemProvider = v9;
 
-  [(NSItemProvider *)self->_cachedItemProvider setSuggestedName:v8];
+  [(NSItemProvider *)self->_cachedItemProvider setSuggestedName:lastPathComponent];
   os_unfair_lock_lock(&generationLock);
   v11 = ++generationToken;
   os_unfair_lock_unlock(&generationLock);
-  v12 = [MEMORY[0x277D4A820] defaultManager];
+  defaultManager = [MEMORY[0x277D4A820] defaultManager];
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -6900,12 +6900,12 @@ void __91__StartPageController_startPageCustomizationViewController_didSelectCus
   v15[3] = &unk_2781DD430;
   objc_copyWeak(v18, &location);
   v18[1] = v11;
-  v13 = v8;
+  v13 = lastPathComponent;
   v16 = v13;
-  v17 = v12;
-  v18[2] = *&a5;
-  v14 = v12;
-  [v14 prefetchImage:v7 luminance:v15 completion:a5];
+  v17 = defaultManager;
+  v18[2] = *&luminance;
+  v14 = defaultManager;
+  [v14 prefetchImage:lCopy luminance:v15 completion:luminance];
 
   objc_destroyWeak(v18);
   objc_destroyWeak(&location);
@@ -7002,79 +7002,79 @@ void __118__StartPageController_startPageCustomizationViewController_didSelectBu
   [v5 postNotificationName:*MEMORY[0x277D4A928] object:0];
 }
 
-- (id)sectionsForStartPageViewController:(id)a3
+- (id)sectionsForStartPageViewController:(id)controller
 {
   v40 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v5 = [WeakRetained isPrivateBrowsingEnabled];
-  if (self->_privateBrowsingWasEnabled != v5)
+  isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
+  if (self->_privateBrowsingWasEnabled != isPrivateBrowsingEnabled)
   {
     cachedCloudTabsSection = self->_cachedCloudTabsSection;
     self->_cachedCloudTabsSection = 0;
 
-    self->_privateBrowsingWasEnabled = v5;
+    self->_privateBrowsingWasEnabled = isPrivateBrowsingEnabled;
   }
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   libraryType = self->_libraryType;
   if (libraryType)
   {
     v9 = startPageSectionIdentifierForCollectionType(libraryType);
-    [(StartPageController *)self _appendSectionModelsForIdentifier:v9 toArray:v7];
+    [(StartPageController *)self _appendSectionModelsForIdentifier:v9 toArray:array];
 
     goto LABEL_42;
   }
 
-  if ([MEMORY[0x277D49A08] isOnboardingEnabled] && !(v5 & 1 | ((objc_msgSend(WeakRetained, "startPageControllerActiveTabIsBlank:", self) & 1) == 0)))
+  if ([MEMORY[0x277D49A08] isOnboardingEnabled] && !(isPrivateBrowsingEnabled & 1 | ((objc_msgSend(WeakRetained, "startPageControllerActiveTabIsBlank:", self) & 1) == 0)))
   {
-    v10 = [MEMORY[0x277D28D00] onboardingProvidersForStartPage];
-    if ([v10 count])
+    onboardingProvidersForStartPage = [MEMORY[0x277D28D00] onboardingProvidersForStartPage];
+    if ([onboardingProvidersForStartPage count])
     {
-      v11 = [MEMORY[0x277D4A838] onboardingSectionWithIdentifier:*MEMORY[0x277D4A4D8] items:v10];
-      [v7 addObject:v11];
+      v11 = [MEMORY[0x277D4A838] onboardingSectionWithIdentifier:*MEMORY[0x277D4A4D8] items:onboardingProvidersForStartPage];
+      [array addObject:v11];
     }
   }
 
-  if (v5)
+  if (isPrivateBrowsingEnabled)
   {
-    v12 = [(StartPageController *)self _privateBrowsingPersistentModuleSection];
-    [v7 addObject:v12];
+    _privateBrowsingPersistentModuleSection = [(StartPageController *)self _privateBrowsingPersistentModuleSection];
+    [array addObject:_privateBrowsingPersistentModuleSection];
 
     if (self->_privateBrowsingExplanationState != 1 && [WeakRetained startPageControllerActiveTabIsBlank:self])
     {
-      v13 = [(StartPageController *)self _privateBrowsingExplanationSection];
-      [v7 addObject:v13];
+      _privateBrowsingExplanationSection = [(StartPageController *)self _privateBrowsingExplanationSection];
+      [array addObject:_privateBrowsingExplanationSection];
     }
 
-    v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    if ([v14 BOOLForKey:*MEMORY[0x277D4A1B0]])
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    if ([standardUserDefaults BOOLForKey:*MEMORY[0x277D4A1B0]])
     {
       goto LABEL_17;
     }
 
-    v15 = [(StartPageController *)self _canShowPrivateRelaySection];
+    _canShowPrivateRelaySection = [(StartPageController *)self _canShowPrivateRelaySection];
 
-    if (v15)
+    if (_canShowPrivateRelaySection)
     {
-      v14 = [(StartPageController *)self _privateRelayPromptInPrivateBrowsingSection];
-      [v7 addObject:v14];
+      standardUserDefaults = [(StartPageController *)self _privateRelayPromptInPrivateBrowsingSection];
+      [array addObject:standardUserDefaults];
 LABEL_17:
     }
   }
 
-  v16 = [MEMORY[0x277CBEB18] array];
-  v17 = [(StartPageController *)self _tabGroupScopedFavoritesSection];
-  [v16 safari_addObjectUnlessNil:v17];
+  array2 = [MEMORY[0x277CBEB18] array];
+  _tabGroupScopedFavoritesSection = [(StartPageController *)self _tabGroupScopedFavoritesSection];
+  [array2 safari_addObjectUnlessNil:_tabGroupScopedFavoritesSection];
 
-  v18 = [v16 count];
+  v18 = [array2 count];
   if (v18)
   {
-    v19 = [(StartPageController *)self _tabGroupHeadingSection];
+    _tabGroupHeadingSection = [(StartPageController *)self _tabGroupHeadingSection];
     cachedTabGroupHeadingSection = self->_cachedTabGroupHeadingSection;
-    self->_cachedTabGroupHeadingSection = v19;
+    self->_cachedTabGroupHeadingSection = _tabGroupHeadingSection;
 
-    [v7 addObject:self->_cachedTabGroupHeadingSection];
-    [v7 addObjectsFromArray:v16];
+    [array addObject:self->_cachedTabGroupHeadingSection];
+    [array addObjectsFromArray:array2];
     if (!startPageSeparatorSection(void)::section)
     {
       v21 = [MEMORY[0x277D4A838] separatorSectionWithIdentifier:*MEMORY[0x277D4A528]];
@@ -7082,7 +7082,7 @@ LABEL_17:
       startPageSeparatorSection(void)::section = v21;
     }
 
-    [v7 addObject:?];
+    [array addObject:?];
   }
 
   else
@@ -7091,28 +7091,28 @@ LABEL_17:
     self->_cachedTabGroupHeadingSection = 0;
   }
 
-  v24 = [MEMORY[0x277CBEB18] array];
-  v25 = [(WBSStartPageSectionManager *)self->_startPageSectionManager enabledSectionIdentifiers];
-  v26 = [(StartPageController *)self effectiveUpdatePolicy];
-  if (v26)
+  array3 = [MEMORY[0x277CBEB18] array];
+  enabledSectionIdentifiers = [(WBSStartPageSectionManager *)self->_startPageSectionManager enabledSectionIdentifiers];
+  effectiveUpdatePolicy = [(StartPageController *)self effectiveUpdatePolicy];
+  if (effectiveUpdatePolicy)
   {
-    if (v26 == 1)
+    if (effectiveUpdatePolicy == 1)
     {
-      v31 = [v25 firstObject];
-      v32 = v31;
-      if (!v18 && v31)
+      firstObject = [enabledSectionIdentifiers firstObject];
+      v32 = firstObject;
+      if (!v18 && firstObject)
       {
-        [(StartPageController *)self _appendSectionModelsForIdentifier:v31 toArray:v24];
+        [(StartPageController *)self _appendSectionModelsForIdentifier:firstObject toArray:array3];
       }
     }
 
-    else if (v26 == 2)
+    else if (effectiveUpdatePolicy == 2)
     {
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v27 = v25;
+      v27 = enabledSectionIdentifiers;
       v28 = [v27 countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v28)
       {
@@ -7126,7 +7126,7 @@ LABEL_17:
               objc_enumerationMutation(v27);
             }
 
-            [(StartPageController *)self _appendSectionModelsForIdentifier:*(*(&v35 + 1) + 8 * i) toArray:v24, v35];
+            [(StartPageController *)self _appendSectionModelsForIdentifier:*(*(&v35 + 1) + 8 * i) toArray:array3, v35];
           }
 
           v28 = [v27 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -7141,84 +7141,84 @@ LABEL_17:
   {
     v33 = self->_cachedSections;
 
-    v24 = v33;
+    array3 = v33;
   }
 
-  objc_storeStrong(&self->_cachedSections, v24);
-  if ([v24 count])
+  objc_storeStrong(&self->_cachedSections, array3);
+  if ([array3 count])
   {
-    [v7 addObjectsFromArray:v24];
+    [array addObjectsFromArray:array3];
   }
 
 LABEL_42:
 
-  return v7;
+  return array;
 }
 
-- (void)_appendSectionModelsForIdentifier:(id)a3 toArray:(id)a4
+- (void)_appendSectionModelsForIdentifier:(id)identifier toArray:(id)array
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 isEqualToString:*MEMORY[0x277D4A4B0]])
+  identifierCopy = identifier;
+  arrayCopy = array;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D4A4B0]])
   {
-    v7 = [(StartPageController *)self _favoritesSection];
-    [v6 safari_addObjectUnlessNil:v7];
+    _favoritesSection = [(StartPageController *)self _favoritesSection];
+    [arrayCopy safari_addObjectUnlessNil:_favoritesSection];
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  if ([v8 isEqualToString:*MEMORY[0x277D4A4B8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D4A4B8]])
   {
     if (([MEMORY[0x277D49A08] is2024SuggestionsEnabled] & 1) == 0)
     {
-      v7 = [(StartPageController *)self _frequentlyVisitedSection];
-      [v6 safari_addObjectUnlessNil:v7];
+      _favoritesSection = [(StartPageController *)self _frequentlyVisitedSection];
+      [arrayCopy safari_addObjectUnlessNil:_favoritesSection];
       goto LABEL_3;
     }
   }
 
   else
   {
-    if ([v8 isEqualToString:*MEMORY[0x277D4A4E0]] && !self->_showingAsPopover)
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D4A4E0]] && !self->_showingAsPopover)
     {
-      v7 = [(StartPageController *)self _privacyReportSection];
-      [v6 safari_addObjectUnlessNil:v7];
+      _favoritesSection = [(StartPageController *)self _privacyReportSection];
+      [arrayCopy safari_addObjectUnlessNil:_favoritesSection];
       goto LABEL_3;
     }
 
-    if ([v8 isEqualToString:*MEMORY[0x277D4A4C0]] || objc_msgSend(v8, "isEqualToString:", *MEMORY[0x277D4A518]))
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D4A4C0]] || objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x277D4A518]))
     {
-      v7 = [(StartPageController *)self _highlightsSection];
-      [v6 safari_addObjectUnlessNil:v7];
+      _favoritesSection = [(StartPageController *)self _highlightsSection];
+      [arrayCopy safari_addObjectUnlessNil:_favoritesSection];
       goto LABEL_3;
     }
 
-    if (!self->_showingAsPopover && [v8 isEqualToString:*MEMORY[0x277D4A508]])
+    if (!self->_showingAsPopover && [identifierCopy isEqualToString:*MEMORY[0x277D4A508]])
     {
-      v7 = [(StartPageController *)self _recentlyClosedTabsSection];
-      [v6 safari_addObjectUnlessNil:v7];
+      _favoritesSection = [(StartPageController *)self _recentlyClosedTabsSection];
+      [arrayCopy safari_addObjectUnlessNil:_favoritesSection];
       goto LABEL_3;
     }
 
-    if ([v8 isEqualToString:*MEMORY[0x277D4A510]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D4A510]])
     {
-      v7 = [(StartPageController *)self _siriSuggestionsSection];
-      [v6 safari_addObjectUnlessNil:v7];
+      _favoritesSection = [(StartPageController *)self _siriSuggestionsSection];
+      [arrayCopy safari_addObjectUnlessNil:_favoritesSection];
       goto LABEL_3;
     }
 
-    if ([v8 isEqualToString:*MEMORY[0x277D4A500]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D4A500]])
     {
-      v7 = [(StartPageController *)self _readingListSection];
-      [v6 safari_addObjectUnlessNil:v7];
+      _favoritesSection = [(StartPageController *)self _readingListSection];
+      [arrayCopy safari_addObjectUnlessNil:_favoritesSection];
       goto LABEL_3;
     }
 
-    if ([v8 isEqualToString:*MEMORY[0x277D4A4A8]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D4A4A8]])
     {
-      v7 = [(StartPageController *)self cloudTabsSections];
-      [v6 safari_addObjectsFromArrayUnlessNil:v7];
+      _favoritesSection = [(StartPageController *)self cloudTabsSections];
+      [arrayCopy safari_addObjectsFromArrayUnlessNil:_favoritesSection];
       goto LABEL_3;
     }
   }
@@ -7226,85 +7226,85 @@ LABEL_3:
 LABEL_4:
 }
 
-- (BOOL)startPageViewController:(id)a3 isSectionExpanded:(id)a4
+- (BOOL)startPageViewController:(id)controller isSectionExpanded:(id)expanded
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  expandedCopy = expanded;
   libraryType = self->_libraryType;
   if (libraryType && ![(NSString *)libraryType isEqualToString:@"BookmarksCollection"])
   {
     v9 = 1;
   }
 
-  else if ([v7 expandsModally])
+  else if ([expandedCopy expandsModally])
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v11 = [v10 dictionaryForKey:@"startPageExpansionDictionary"];
-    v12 = [v7 identifier];
-    v9 = [v11 safari_BOOLForKey:v12];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v11 = [standardUserDefaults dictionaryForKey:@"startPageExpansionDictionary"];
+    identifier = [expandedCopy identifier];
+    v9 = [v11 safari_BOOLForKey:identifier];
   }
 
   return v9;
 }
 
-- (void)startPageViewController:(id)a3 toggleSectionExpanded:(id)a4
+- (void)startPageViewController:(id)controller toggleSectionExpanded:(id)expanded
 {
-  v24 = a4;
+  expandedCopy = expanded;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  if (![v24 expandsModally])
+  if (![expandedCopy expandsModally])
   {
-    v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v15 = [v14 dictionaryForKey:@"startPageExpansionDictionary"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v15 = [standardUserDefaults dictionaryForKey:@"startPageExpansionDictionary"];
     v16 = [v15 mutableCopy];
     v17 = v16;
     if (v16)
     {
-      v18 = v16;
+      dictionary = v16;
     }
 
     else
     {
-      v18 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v19 = v18;
+    v19 = dictionary;
 
     v20 = MEMORY[0x277CCABB0];
-    v21 = [v24 identifier];
-    v22 = [v20 numberWithBool:{objc_msgSend(v19, "safari_BOOLForKey:", v21) ^ 1}];
-    v23 = [v24 identifier];
-    [v19 setObject:v22 forKeyedSubscript:v23];
+    identifier = [expandedCopy identifier];
+    v22 = [v20 numberWithBool:{objc_msgSend(v19, "safari_BOOLForKey:", identifier) ^ 1}];
+    identifier2 = [expandedCopy identifier];
+    [v19 setObject:v22 forKeyedSubscript:identifier2];
 
-    [v14 setObject:v19 forKey:@"startPageExpansionDictionary"];
+    [standardUserDefaults setObject:v19 forKey:@"startPageExpansionDictionary"];
     goto LABEL_11;
   }
 
-  v6 = [v24 identifier];
+  identifier3 = [expandedCopy identifier];
   v7 = *MEMORY[0x277D4A4A8];
-  v8 = [v6 hasPrefix:*MEMORY[0x277D4A4A8]];
+  v8 = [identifier3 hasPrefix:*MEMORY[0x277D4A4A8]];
 
   if (v8)
   {
-    v9 = [v24 identifier];
-    v10 = [v9 substringFromIndex:{objc_msgSend(v7, "length") + 1}];
+    identifier4 = [expandedCopy identifier];
+    v10 = [identifier4 substringFromIndex:{objc_msgSend(v7, "length") + 1}];
     [WeakRetained presentCloudTabsPickerWithPrimaryDeviceUUID:v10];
   }
 
-  v11 = [v24 identifier];
-  v12 = [v11 isEqualToString:*MEMORY[0x277D4A500]];
+  identifier5 = [expandedCopy identifier];
+  v12 = [identifier5 isEqualToString:*MEMORY[0x277D4A500]];
 
   if (v12)
   {
     if ([WeakRetained canShowSidebar])
     {
       viewController = self->_viewController;
-      v14 = [v24 identifier];
-      [(SFStartPageViewController *)viewController showDetailForItemWithIdentifier:v14];
+      standardUserDefaults = [expandedCopy identifier];
+      [(SFStartPageViewController *)viewController showDetailForItemWithIdentifier:standardUserDefaults];
 LABEL_11:
 
       goto LABEL_12;
@@ -7316,60 +7316,60 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)startPageViewController:(id)a3 detailSectionForItemIdentifier:(id)a4
+- (id)startPageViewController:(id)controller detailSectionForItemIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 managedBookmarkUUID];
-    if (v6)
+    managedBookmarkUUID = [identifierCopy managedBookmarkUUID];
+    if (managedBookmarkUUID)
     {
-      v7 = [MEMORY[0x277D28CD8] sharedController];
-      v8 = [v7 topLevelManagedBookmarkFolder];
-      v9 = [v8 findChildBookmarkWithUUID:v6];
+      mEMORY[0x277D28CD8] = [MEMORY[0x277D28CD8] sharedController];
+      topLevelManagedBookmarkFolder = [mEMORY[0x277D28CD8] topLevelManagedBookmarkFolder];
+      v9 = [topLevelManagedBookmarkFolder findChildBookmarkWithUUID:managedBookmarkUUID];
 
-      v10 = [(StartPageController *)self _startPageSectionForManagedBookmarksFolder:v9];
+      _highlightsSection = [(StartPageController *)self _startPageSectionForManagedBookmarksFolder:v9];
 
       goto LABEL_13;
     }
 
-    v11 = [(StartPageController *)self _bookmarkSectionForBookmark:v5 orList:0 forFavoritesSection:1 forScopedFavoritesSection:0 sectionTitle:0];
+    v11 = [(StartPageController *)self _bookmarkSectionForBookmark:identifierCopy orList:0 forFavoritesSection:1 forScopedFavoritesSection:0 sectionTitle:0];
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 isEqualToString:*MEMORY[0x277D4A518]])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [identifierCopy isEqualToString:*MEMORY[0x277D4A518]])
     {
-      v10 = [(StartPageController *)self _highlightsSection];
-      [v10 setMaximumNumberOfPages:1];
+      _highlightsSection = [(StartPageController *)self _highlightsSection];
+      [_highlightsSection setMaximumNumberOfPages:1];
       goto LABEL_13;
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 isEqualToString:*MEMORY[0x277D4A500]])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [identifierCopy isEqualToString:*MEMORY[0x277D4A500]])
     {
-      v10 = [(StartPageController *)self _readingListSection];
-      [v10 setMaximumNumberOfPages:1];
+      _highlightsSection = [(StartPageController *)self _readingListSection];
+      [_highlightsSection setMaximumNumberOfPages:1];
       goto LABEL_13;
     }
 
     v11 = emptyBookmarksSection();
   }
 
-  v10 = v11;
+  _highlightsSection = v11;
 LABEL_13:
 
-  return v10;
+  return _highlightsSection;
 }
 
-- (id)startPageViewController:(id)a3 detailSectionsForItemIdentifier:(id)a4
+- (id)startPageViewController:(id)controller detailSectionsForItemIdentifier:(id)identifier
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 isEqualToString:*MEMORY[0x277D4A4A8]])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [identifierCopy isEqualToString:*MEMORY[0x277D4A4A8]])
   {
     availableDevices = self->_availableDevices;
     v10[0] = MEMORY[0x277D85DD0];
@@ -7397,25 +7397,25 @@ id __79__StartPageController_startPageViewController_detailSectionsForItemIdenti
   return v2;
 }
 
-- (void)startPageViewController:(id)a3 didSelectItemWithIdentifier:(id)a4 atGridLocation:(id)a5
+- (void)startPageViewController:(id)controller didSelectItemWithIdentifier:(id)identifier atGridLocation:(id)location
 {
-  var1 = a5.var1;
-  v8 = a3;
-  v9 = a4;
+  var1 = location.var1;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v9;
+    v11 = identifierCopy;
     if ([v11 isFolder] && (objc_msgSend(MEMORY[0x277D28F40], "shouldOpenBookmarkFolderAsTabs") & 1) == 0)
     {
-      [v8 showDetailForItemWithIdentifier:v11];
+      [controllerCopy showDetailForItemWithIdentifier:v11];
     }
 
     else
     {
-      v12 = [MEMORY[0x277D28F40] builder];
-      v13 = [v12 navigationIntentWithBookmark:v11];
+      builder = [MEMORY[0x277D28F40] builder];
+      v13 = [builder navigationIntentWithBookmark:v11];
 
       if (v13)
       {
@@ -7424,8 +7424,8 @@ id __79__StartPageController_startPageViewController_detailSectionsForItemIdenti
         [(StartPageController *)self _reportBookmarkNavigationAnalytics:v11 withIntent:v13 bookmarkIsInFavoritesFolder:v14];
         if (v14)
         {
-          v15 = [MEMORY[0x277D499B8] sharedLogger];
-          [v15 didSelectFavoritesRow:var1];
+          mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+          [mEMORY[0x277D499B8] didSelectFavoritesRow:var1];
         }
       }
     }
@@ -7436,26 +7436,26 @@ id __79__StartPageController_startPageViewController_detailSectionsForItemIdenti
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v9;
-    v16 = [MEMORY[0x277D28F40] builder];
-    v17 = [v11 pageURL];
-    v18 = [v16 navigationIntentWithURL:v17];
+    v11 = identifierCopy;
+    builder2 = [MEMORY[0x277D28F40] builder];
+    pageURL = [v11 pageURL];
+    mEMORY[0x277D499B8]3 = [builder2 navigationIntentWithURL:pageURL];
 
-    [WeakRetained dispatchNavigationIntent:v18];
-    v19 = [MEMORY[0x277D499B8] sharedLogger];
-    [v19 didEngageWithStartPageSection:2];
+    [WeakRetained dispatchNavigationIntent:mEMORY[0x277D499B8]3];
+    mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8]2 didEngageWithStartPageSection:2];
   }
 
   else
   {
-    if ([v9 conformsToProtocol:&unk_2828C44E0])
+    if ([identifierCopy conformsToProtocol:&unk_2828C44E0])
     {
-      v20 = [MEMORY[0x277D28F40] builder];
-      v11 = [v20 navigationIntentWithCloudTab:v9];
+      builder3 = [MEMORY[0x277D28F40] builder];
+      v11 = [builder3 navigationIntentWithCloudTab:identifierCopy];
 
       [WeakRetained dispatchNavigationIntent:v11];
-      v18 = [MEMORY[0x277D499B8] sharedLogger];
-      [v18 didEngageWithStartPageSection:5];
+      mEMORY[0x277D499B8]3 = [MEMORY[0x277D499B8] sharedLogger];
+      [mEMORY[0x277D499B8]3 didEngageWithStartPageSection:5];
       goto LABEL_13;
     }
 
@@ -7479,17 +7479,17 @@ id __79__StartPageController_startPageViewController_detailSectionsForItemIdenti
     _Block_object_dispose(&v33, 8);
     if (objc_opt_isKindOfClass())
     {
-      v11 = v9;
-      v23 = [MEMORY[0x277D28F40] builder];
-      v18 = [v23 navigationIntentWithHighlight:v11];
+      v11 = identifierCopy;
+      builder4 = [MEMORY[0x277D28F40] builder];
+      mEMORY[0x277D499B8]3 = [builder4 navigationIntentWithHighlight:v11];
 
       v24 = +[Application sharedApplication];
-      v25 = [v24 highlightManager];
-      [v25 sendFeedbackForHighlight:v11 withType:1 inPrivateBrowsing:{objc_msgSend(WeakRetained, "isPrivateBrowsingEnabled")}];
+      highlightManager = [v24 highlightManager];
+      [highlightManager sendFeedbackForHighlight:v11 withType:1 inPrivateBrowsing:{objc_msgSend(WeakRetained, "isPrivateBrowsingEnabled")}];
 
-      [WeakRetained dispatchNavigationIntent:v18];
-      v19 = [MEMORY[0x277D499B8] sharedLogger];
-      [v19 didEngageWithStartPageSection:7];
+      [WeakRetained dispatchNavigationIntent:mEMORY[0x277D499B8]3];
+      mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+      [mEMORY[0x277D499B8]2 didEngageWithStartPageSection:7];
     }
 
     else
@@ -7503,27 +7503,27 @@ id __79__StartPageController_startPageViewController_detailSectionsForItemIdenti
           goto LABEL_16;
         }
 
-        v30 = [MEMORY[0x277D28F40] builder];
-        v31 = [(StartPageController *)self _cloudTabItemForIdentifier:v9];
-        v11 = [v30 navigationIntentWithCloudTab:v31];
+        builder5 = [MEMORY[0x277D28F40] builder];
+        v31 = [(StartPageController *)self _cloudTabItemForIdentifier:identifierCopy];
+        v11 = [builder5 navigationIntentWithCloudTab:v31];
 
         [WeakRetained dispatchNavigationIntent:v11];
-        v18 = [MEMORY[0x277D499B8] sharedLogger];
-        [v18 didEngageWithStartPageSection:5];
+        mEMORY[0x277D499B8]3 = [MEMORY[0x277D499B8] sharedLogger];
+        [mEMORY[0x277D499B8]3 didEngageWithStartPageSection:5];
         goto LABEL_13;
       }
 
-      v11 = v9;
-      v26 = [MEMORY[0x277D28F40] builder];
+      v11 = identifierCopy;
+      builder6 = [MEMORY[0x277D28F40] builder];
       v27 = MEMORY[0x277CBEBC0];
       v28 = [v11 url];
       v29 = [v27 URLWithString:v28];
-      v18 = [v26 navigationIntentWithURL:v29];
+      mEMORY[0x277D499B8]3 = [builder6 navigationIntentWithURL:v29];
 
-      [WeakRetained dispatchNavigationIntent:v18];
+      [WeakRetained dispatchNavigationIntent:mEMORY[0x277D499B8]3];
       [(SFStartPageViewController *)self->_viewController reloadDataAnimatingDifferences:1];
-      v19 = [MEMORY[0x277D499B8] sharedLogger];
-      [v19 didEngageWithStartPageSection:8];
+      mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+      [mEMORY[0x277D499B8]2 didEngageWithStartPageSection:8];
     }
   }
 
@@ -7533,27 +7533,27 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)startPageViewControllerDidChangeRootViewVisibility:(id)a3
+- (void)startPageViewControllerDidChangeRootViewVisibility:(id)visibility
 {
-  v5 = a3;
+  visibilityCopy = visibility;
   if (([MEMORY[0x277D49A08] is2024SuggestionsEnabled] & 1) == 0)
   {
     [(StartPageController *)self _updateSiriSuggestionsMediator];
   }
 
-  if ([v5 isShowingRootView])
+  if ([visibilityCopy isShowingRootView])
   {
-    v4 = [(StartPageController *)self frequentlyVisitedSitesController];
-    [v4 recomputeFrequentlyVisitedSitesIfNecessary];
+    frequentlyVisitedSitesController = [(StartPageController *)self frequentlyVisitedSitesController];
+    [frequentlyVisitedSitesController recomputeFrequentlyVisitedSitesIfNecessary];
   }
 }
 
-- (void)startPageViewController:(id)a3 didUpdateSearchPattern:(id)a4
+- (void)startPageViewController:(id)controller didUpdateSearchPattern:(id)pattern
 {
-  v7 = a4;
+  patternCopy = pattern;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v5 = [v7 copy];
+    v5 = [patternCopy copy];
     searchPattern = self->_searchPattern;
     self->_searchPattern = v5;
 
@@ -7561,69 +7561,69 @@ LABEL_16:
   }
 }
 
-- (id)backgroundImageIdentifierForStartPageViewController:(id)a3
+- (id)backgroundImageIdentifierForStartPageViewController:(id)controller
 {
-  v3 = [(StartPageController *)self startPageBackgroundImageIdentifier];
+  startPageBackgroundImageIdentifier = [(StartPageController *)self startPageBackgroundImageIdentifier];
 
-  return v3;
+  return startPageBackgroundImageIdentifier;
 }
 
-- (BOOL)startPageViewControllerIsPrivateBrowsingEnabled:(id)a3
+- (BOOL)startPageViewControllerIsPrivateBrowsingEnabled:(id)enabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained isPrivateBrowsingEnabled];
+  isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
 
-  return v4;
+  return isPrivateBrowsingEnabled;
 }
 
-- (id)startPageViewControllerDefaultProfile:(id)a3
+- (id)startPageViewControllerDefaultProfile:(id)profile
 {
   v3 = +[Application sharedApplication];
-  v4 = [v3 tabGroupManager];
-  v5 = [v4 defaultProfile];
+  tabGroupManager = [v3 tabGroupManager];
+  defaultProfile = [tabGroupManager defaultProfile];
 
-  return v5;
+  return defaultProfile;
 }
 
-- (void)editBookmark:(id)a3 userInfo:(id)a4
+- (void)editBookmark:(id)bookmark userInfo:(id)info
 {
-  v5 = a3;
+  bookmarkCopy = bookmark;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  [WeakRetained editBookmark:v5];
+  [WeakRetained editBookmark:bookmarkCopy];
 }
 
-- (void)deleteBookmark:(id)a3 userInfo:(id)a4
+- (void)deleteBookmark:(id)bookmark userInfo:(id)info
 {
-  v14 = a3;
-  if ([v14 subtype] == 1)
+  bookmarkCopy = bookmark;
+  if ([bookmarkCopy subtype] == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v6 = [WeakRetained tabGroupProvider];
-    v7 = [v14 UUID];
-    [v6 deleteScopedBookmarkWithUUID:v7 completionHandler:0];
+    tabGroupProvider = [WeakRetained tabGroupProvider];
+    uUID = [bookmarkCopy UUID];
+    [tabGroupProvider deleteScopedBookmarkWithUUID:uUID completionHandler:0];
 
 LABEL_3:
     goto LABEL_8;
   }
 
-  v8 = [(StartPageController *)self frequentlyVisitedSitesController];
-  v9 = [v8 bookmarkIsFrequentlyVistedSite:v14];
+  frequentlyVisitedSitesController = [(StartPageController *)self frequentlyVisitedSitesController];
+  v9 = [frequentlyVisitedSitesController bookmarkIsFrequentlyVistedSite:bookmarkCopy];
 
   if (v9)
   {
-    v10 = [(StartPageController *)self frequentlyVisitedSitesController];
+    frequentlyVisitedSitesController2 = [(StartPageController *)self frequentlyVisitedSitesController];
     v11 = +[FeatureManager sharedFeatureManager];
-    [v10 banFrequentlyVisitedSite:v14 inMemoryBookmarkChangeTrackingAvailable:{objc_msgSend(v11, "isInMemoryBookmarkChangeTrackingAvailable")}];
+    [frequentlyVisitedSitesController2 banFrequentlyVisitedSite:bookmarkCopy inMemoryBookmarkChangeTrackingAvailable:{objc_msgSend(v11, "isInMemoryBookmarkChangeTrackingAvailable")}];
   }
 
   if (![MEMORY[0x277D7B5A8] lockSync])
   {
     v12 = +[FeatureManager sharedFeatureManager];
-    v13 = [v12 isInMemoryBookmarkChangeTrackingAvailable];
+    isInMemoryBookmarkChangeTrackingAvailable = [v12 isInMemoryBookmarkChangeTrackingAvailable];
 
-    if (v13)
+    if (isInMemoryBookmarkChangeTrackingAvailable)
     {
-      [(WebBookmarkCollection *)self->_bookmarkCollection deleteBookmarkInMemory:v14];
+      [(WebBookmarkCollection *)self->_bookmarkCollection deleteBookmarkInMemory:bookmarkCopy];
       WeakRetained = [MEMORY[0x277D499B8] sharedLogger];
       [WeakRetained didDeleteBookmarkInMemory];
     }
@@ -7638,65 +7638,65 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [(WebBookmarkCollection *)self->_bookmarkCollection deleteBookmark:v14];
+  [(WebBookmarkCollection *)self->_bookmarkCollection deleteBookmark:bookmarkCopy];
   [MEMORY[0x277D7B5A8] unlockSync];
 LABEL_8:
 }
 
-- (void)bookmark:(id)a3 didProduceNavigationIntent:(id)a4 userInfo:(id)a5
+- (void)bookmark:(id)bookmark didProduceNavigationIntent:(id)intent userInfo:(id)info
 {
-  v9 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  intentCopy = intent;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  [WeakRetained dispatchNavigationIntent:v7];
+  [WeakRetained dispatchNavigationIntent:intentCopy];
 
-  [(StartPageController *)self _reportBookmarkNavigationAnalytics:v9 withIntent:v7];
+  [(StartPageController *)self _reportBookmarkNavigationAnalytics:bookmarkCopy withIntent:intentCopy];
 }
 
-- (void)bookmark:(id)a3 shareItems:(id)a4 userInfo:(id)a5
+- (void)bookmark:(id)bookmark shareItems:(id)items userInfo:(id)info
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277D546D8]) initWithActivityItems:v7 applicationActivities:0];
-  [(SFStartPageViewController *)self->_viewController presentViewController:v8 fromItemWithIdentifier:v9];
+  bookmarkCopy = bookmark;
+  itemsCopy = items;
+  v8 = [objc_alloc(MEMORY[0x277D546D8]) initWithActivityItems:itemsCopy applicationActivities:0];
+  [(SFStartPageViewController *)self->_viewController presentViewController:v8 fromItemWithIdentifier:bookmarkCopy];
 }
 
-- (void)openRadarProblemURLforFrequentlyVisitedSite:(id)a3 userInfo:(id)a4
+- (void)openRadarProblemURLforFrequentlyVisitedSite:(id)site userInfo:(id)info
 {
-  v6 = a3;
-  v5 = [(StartPageController *)self frequentlyVisitedSitesController];
-  [v5 openNewRadarProblemURLForFrequentlyVisitedSite:v6];
+  siteCopy = site;
+  frequentlyVisitedSitesController = [(StartPageController *)self frequentlyVisitedSitesController];
+  [frequentlyVisitedSitesController openNewRadarProblemURLForFrequentlyVisitedSite:siteCopy];
 }
 
-- (void)_reportBookmarkNavigationAnalytics:(id)a3 withIntent:(id)a4
+- (void)_reportBookmarkNavigationAnalytics:(id)analytics withIntent:(id)intent
 {
-  v7 = a3;
-  v6 = a4;
-  [(StartPageController *)self _reportBookmarkNavigationAnalytics:v7 withIntent:v6 bookmarkIsInFavoritesFolder:[(WebBookmarkCollection *)self->_bookmarkCollection bookmarkIsInFavoritesFolder:v7]];
+  analyticsCopy = analytics;
+  intentCopy = intent;
+  [(StartPageController *)self _reportBookmarkNavigationAnalytics:analyticsCopy withIntent:intentCopy bookmarkIsInFavoritesFolder:[(WebBookmarkCollection *)self->_bookmarkCollection bookmarkIsInFavoritesFolder:analyticsCopy]];
 }
 
-- (void)_reportBookmarkNavigationAnalytics:(id)a3 withIntent:(id)a4 bookmarkIsInFavoritesFolder:(BOOL)a5
+- (void)_reportBookmarkNavigationAnalytics:(id)analytics withIntent:(id)intent bookmarkIsInFavoritesFolder:(BOOL)folder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WebBookmarkCollection *)self->_bookmarkCollection bookmarkIsFrequentlyVisitedSite:v8];
-  v11 = [(StartPageController *)self frequentlyVisitedSitesController];
-  v12 = [v11 displayIndexOfFrequentlyVisitedSite:v8];
+  analyticsCopy = analytics;
+  intentCopy = intent;
+  v10 = [(WebBookmarkCollection *)self->_bookmarkCollection bookmarkIsFrequentlyVisitedSite:analyticsCopy];
+  frequentlyVisitedSitesController = [(StartPageController *)self frequentlyVisitedSitesController];
+  v12 = [frequentlyVisitedSitesController displayIndexOfFrequentlyVisitedSite:analyticsCopy];
 
-  v13 = [MEMORY[0x277D499B8] sharedLogger];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __97__StartPageController__reportBookmarkNavigationAnalytics_withIntent_bookmarkIsInFavoritesFolder___block_invoke;
   v17[3] = &unk_2781DD458;
-  v14 = v9;
-  v22 = a5;
+  v14 = intentCopy;
+  folderCopy = folder;
   v18 = v14;
-  v19 = v13;
+  v19 = mEMORY[0x277D499B8];
   v23 = v10;
   v21 = v12;
-  v15 = v8;
+  v15 = analyticsCopy;
   v20 = v15;
-  v16 = v13;
+  v16 = mEMORY[0x277D499B8];
   [v16 performOnAnalyticsQueueWithDelay:0 block:v17];
 }
 
@@ -7779,63 +7779,63 @@ LABEL_14:
   [*(a1 + 40) didEngageWithStartPageSection:1];
 }
 
-- (void)tabGroupManager:(id)a3 didUpdateScopedBookmarkList:(id)a4
+- (void)tabGroupManager:(id)manager didUpdateScopedBookmarkList:(id)list
 {
-  v6 = a4;
-  v5 = [v6 folderID];
-  if (v5 == [(WebBookmarkList *)self->_tabGroupScopedFavoritesList folderID])
+  listCopy = list;
+  folderID = [listCopy folderID];
+  if (folderID == [(WebBookmarkList *)self->_tabGroupScopedFavoritesList folderID])
   {
     [(SFStartPageViewController *)self->_viewController reloadDataAnimatingDifferences:1];
   }
 }
 
-- (void)tabGroupManager:(id)a3 didUpdateProfileWithIdentifier:(id)a4 difference:(id)a5
+- (void)tabGroupManager:(id)manager didUpdateProfileWithIdentifier:(id)identifier difference:(id)difference
 {
-  v24 = a3;
-  v7 = a4;
-  v8 = [(StartPageController *)self _effectiveProfileIdentifier];
-  v9 = [v7 isEqual:v8];
+  managerCopy = manager;
+  identifierCopy = identifier;
+  _effectiveProfileIdentifier = [(StartPageController *)self _effectiveProfileIdentifier];
+  v9 = [identifierCopy isEqual:_effectiveProfileIdentifier];
 
   if (v9)
   {
-    v10 = [v24 profileWithIdentifier:v7];
-    v11 = [(SFStartPageViewController *)self->_viewController profile];
+    v10 = [managerCopy profileWithIdentifier:identifierCopy];
+    profile = [(SFStartPageViewController *)self->_viewController profile];
     v12 = *MEMORY[0x277D4A478];
-    v13 = [v11 settingForKey:*MEMORY[0x277D4A478]];
-    v14 = [v13 BOOLValue];
+    v13 = [profile settingForKey:*MEMORY[0x277D4A478]];
+    bOOLValue = [v13 BOOLValue];
 
     v15 = [v10 settingForKey:v12];
     LODWORD(v13) = [v15 BOOLValue];
 
     v16 = *MEMORY[0x277D4A490];
-    v17 = [v11 settingForKey:*MEMORY[0x277D4A490]];
-    v18 = [v17 BOOLValue];
+    v17 = [profile settingForKey:*MEMORY[0x277D4A490]];
+    bOOLValue2 = [v17 BOOLValue];
 
     v19 = [v10 settingForKey:v16];
-    v20 = [v19 BOOLValue];
+    bOOLValue3 = [v19 BOOLValue];
 
     [(SFStartPageViewController *)self->_viewController setProfile:v10];
-    if (v14 != v13)
+    if (bOOLValue != v13)
     {
-      v21 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v21 postNotificationName:*MEMORY[0x277D4A928] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:*MEMORY[0x277D4A928] object:0];
     }
 
-    if (v18 != v20 || ([v10 customFavoritesFolderServerID], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqual:", self->_lastSeenProfileCustomFavoritesServerID), v22, (v23 & 1) == 0))
+    if (bOOLValue2 != bOOLValue3 || ([v10 customFavoritesFolderServerID], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqual:", self->_lastSeenProfileCustomFavoritesServerID), v22, (v23 & 1) == 0))
     {
       [(StartPageController *)self _sectionsDidChange:0];
     }
   }
 }
 
-- (void)cloudTabDeviceProvider:(id)a3 didUpdateCloudTabsInProfileWithIdentifier:(id)a4
+- (void)cloudTabDeviceProvider:(id)provider didUpdateCloudTabsInProfileWithIdentifier:(id)identifier
 {
-  v9 = a4;
+  identifierCopy = identifier;
   if (([MEMORY[0x277D49A08] is2024CloudTabsEnabled] & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v6 = [WeakRetained tabGroupProvider];
-    v7 = [v6 activeProfileIdentifier];
+    tabGroupProvider = [WeakRetained tabGroupProvider];
+    activeProfileIdentifier = [tabGroupProvider activeProfileIdentifier];
     v8 = WBSIsEqual();
 
     if (v8)

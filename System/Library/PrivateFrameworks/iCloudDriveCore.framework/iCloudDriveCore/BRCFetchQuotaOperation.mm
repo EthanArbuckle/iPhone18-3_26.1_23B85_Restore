@@ -1,18 +1,18 @@
 @interface BRCFetchQuotaOperation
-- (BRCFetchQuotaOperation)initWithSessionContext:(id)a3;
+- (BRCFetchQuotaOperation)initWithSessionContext:(id)context;
 - (void)main;
 @end
 
 @implementation BRCFetchQuotaOperation
 
-- (BRCFetchQuotaOperation)initWithSessionContext:(id)a3
+- (BRCFetchQuotaOperation)initWithSessionContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 syncContextProvider];
-  v6 = [v5 defaultSyncContext];
+  contextCopy = context;
+  syncContextProvider = [contextCopy syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
   v9.receiver = self;
   v9.super_class = BRCFetchQuotaOperation;
-  v7 = [(_BRCOperation *)&v9 initWithName:@"fetch-quota" syncContext:v6 sessionContext:v4];
+  v7 = [(_BRCOperation *)&v9 initWithName:@"fetch-quota" syncContext:defaultSyncContext sessionContext:contextCopy];
 
   if (v7)
   {

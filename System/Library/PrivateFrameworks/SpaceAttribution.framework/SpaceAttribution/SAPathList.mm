@@ -1,11 +1,11 @@
 @interface SAPathList
 - (SAPathList)init;
 - (SATrie)pathsTrie;
-- (id)findAncestorOfPath:(id)a3;
+- (id)findAncestorOfPath:(id)path;
 - (id)generateDictionary;
-- (id)getBundleIDsForPath:(id)a3;
-- (id)getBundleIDsForSuccessorPath:(id)a3;
-- (void)updateWithAppPathList:(id)a3;
+- (id)getBundleIDsForPath:(id)path;
+- (id)getBundleIDsForSuccessorPath:(id)path;
+- (void)updateWithAppPathList:(id)list;
 @end
 
 @implementation SAPathList
@@ -25,10 +25,10 @@
   return v2;
 }
 
-- (id)getBundleIDsForPath:(id)a3
+- (id)getBundleIDsForPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_pathToBundleIDs objectForKey:v4];
+  pathCopy = path;
+  v5 = [(NSMutableDictionary *)self->_pathToBundleIDs objectForKey:pathCopy];
   if (!v5)
   {
     v6 = SALog();
@@ -41,9 +41,9 @@
   return v5;
 }
 
-- (id)getBundleIDsForSuccessorPath:(id)a3
+- (id)getBundleIDsForSuccessorPath:(id)path
 {
-  v4 = [(SAPathList *)self findAncestorOfPath:a3];
+  v4 = [(SAPathList *)self findAncestorOfPath:path];
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_pathToBundleIDs objectForKey:v4];
@@ -131,32 +131,32 @@ LABEL_7:
   return v17;
 }
 
-- (id)findAncestorOfPath:(id)a3
+- (id)findAncestorOfPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SAPathList *)self pathsTrie];
-  v6 = [v5 getAncestorOfPath:v4];
+  pathCopy = path;
+  pathsTrie = [(SAPathList *)self pathsTrie];
+  v6 = [pathsTrie getAncestorOfPath:pathCopy];
 
   return v6;
 }
 
-- (void)updateWithAppPathList:(id)a3
+- (void)updateWithAppPathList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = objc_opt_new();
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v6 = [v4 appPathList];
-  v7 = [v6 allKeys];
+  appPathList = [listCopy appPathList];
+  allKeys = [appPathList allKeys];
 
-  obj = v7;
-  v41 = [v7 countByEnumeratingWithState:&v57 objects:v65 count:16];
+  obj = allKeys;
+  v41 = [allKeys countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v41)
   {
     v40 = *v58;
-    v38 = v4;
+    v38 = listCopy;
     v48 = v5;
     do
     {
@@ -171,10 +171,10 @@ LABEL_7:
         v44 = v8;
         v9 = *(*(&v57 + 1) + 8 * v8);
         context = objc_autoreleasePoolPush();
-        v10 = [v4 appPathList];
-        v11 = [v10 objectForKey:v9];
+        appPathList2 = [listCopy appPathList];
+        v11 = [appPathList2 objectForKey:v9];
 
-        v47 = [v11 identifier];
+        identifier = [v11 identifier];
         if (([v11 isGroup] & 1) == 0)
         {
           v55 = 0u;
@@ -182,8 +182,8 @@ LABEL_7:
           v53 = 0u;
           v54 = 0u;
           v42 = v11;
-          v12 = [v11 uniquePaths];
-          v13 = [v12 countByEnumeratingWithState:&v53 objects:v64 count:16];
+          uniquePaths = [v11 uniquePaths];
+          v13 = [uniquePaths countByEnumeratingWithState:&v53 objects:v64 count:16];
           if (v13)
           {
             v14 = v13;
@@ -195,7 +195,7 @@ LABEL_7:
               {
                 if (*v54 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(uniquePaths);
                 }
 
                 v17 = *(*(&v53 + 1) + 8 * v16);
@@ -215,7 +215,7 @@ LABEL_7:
 
                 else
                 {
-                  [(NSMutableDictionary *)self->_pathToBundleIDs setObject:v47 forKey:v17];
+                  [(NSMutableDictionary *)self->_pathToBundleIDs setObject:identifier forKey:v17];
                   [v5 setValue:&off_1000689A0 forKey:v17];
                 }
 
@@ -224,7 +224,7 @@ LABEL_7:
               }
 
               while (v14 != v16);
-              v14 = [v12 countByEnumeratingWithState:&v53 objects:v64 count:16];
+              v14 = [uniquePaths countByEnumeratingWithState:&v53 objects:v64 count:16];
             }
 
             while (v14);
@@ -234,8 +234,8 @@ LABEL_7:
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v21 = [v42 sharedPaths];
-          v22 = [v21 countByEnumeratingWithState:&v49 objects:v61 count:16];
+          sharedPaths = [v42 sharedPaths];
+          v22 = [sharedPaths countByEnumeratingWithState:&v49 objects:v61 count:16];
           v23 = &SBSCopyDisplayIdentifiers_ptr;
           if (v22)
           {
@@ -250,7 +250,7 @@ LABEL_7:
               {
                 if (*v50 != v25)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(sharedPaths);
                 }
 
                 v27 = *(*(&v49 + 1) + 8 * v26);
@@ -274,28 +274,28 @@ LABEL_7:
                   if (v30)
                   {
                     v31 = [v23[171] breakCommaSeparatedStringToComponents:v30];
-                    if (([v31 containsObject:v47] & 1) == 0)
+                    if (([v31 containsObject:identifier] & 1) == 0)
                     {
-                      v32 = self;
+                      selfCopy = self;
                       v33 = [v31 mutableCopy];
-                      [v33 addObject:v47];
-                      v34 = v21;
-                      pathToBundleIDs = v32->_pathToBundleIDs;
+                      [v33 addObject:identifier];
+                      v34 = sharedPaths;
+                      pathToBundleIDs = selfCopy->_pathToBundleIDs;
                       v36 = [v23[171] createCommaSeparatedString:v33];
                       v37 = pathToBundleIDs;
-                      v21 = v34;
+                      sharedPaths = v34;
                       v24 = v46;
                       [(NSMutableDictionary *)v37 setObject:v36 forKey:v27];
 
                       v23 = &SBSCopyDisplayIdentifiers_ptr;
-                      self = v32;
+                      self = selfCopy;
                       v25 = v45;
                     }
                   }
 
                   else
                   {
-                    [(NSMutableDictionary *)self->_pathToBundleIDs setObject:v47 forKey:v27];
+                    [(NSMutableDictionary *)self->_pathToBundleIDs setObject:identifier forKey:v27];
                   }
                 }
 
@@ -304,13 +304,13 @@ LABEL_7:
               }
 
               while (v24 != v26);
-              v24 = [v21 countByEnumeratingWithState:&v49 objects:v61 count:16];
+              v24 = [sharedPaths countByEnumeratingWithState:&v49 objects:v61 count:16];
             }
 
             while (v24);
           }
 
-          v4 = v38;
+          listCopy = v38;
           v5 = v48;
           v11 = v42;
         }

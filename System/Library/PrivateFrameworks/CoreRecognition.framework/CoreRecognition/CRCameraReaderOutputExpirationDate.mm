@@ -8,26 +8,26 @@
 
 - (NSNumber)yearValue
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 yearValue];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  yearValue = [objectInternal yearValue];
 
-  return v3;
+  return yearValue;
 }
 
 - (NSNumber)monthValue
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 monthValue];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  monthValue = [objectInternal monthValue];
 
-  return v3;
+  return monthValue;
 }
 
 - (NSNumber)dayValue
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 dayValue];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  dayValue = [objectInternal dayValue];
 
-  return v3;
+  return dayValue;
 }
 
 @end

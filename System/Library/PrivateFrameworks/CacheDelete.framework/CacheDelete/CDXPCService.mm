@@ -1,17 +1,17 @@
 @interface CDXPCService
-- (CDXPCService)initWithInfo:(id)a3;
-- (id)addProcInfoForConnection:(id)a3 toDict:(id)a4;
-- (void)_serviceCallback:(id)a3 replyBlock:(id)a4;
-- (void)_serviceCancelPurge:(id)a3;
-- (void)_serviceNotify:(id)a3 replyBlock:(id)a4;
-- (void)_servicePeriodic:(int)a3 info:(id)a4 replyBlock:(id)a5;
-- (void)_servicePurge:(int)a3 info:(id)a4 replyBlock:(id)a5;
-- (void)_servicePurgeable:(int)a3 info:(id)a4 replyBlock:(id)a5;
+- (CDXPCService)initWithInfo:(id)info;
+- (id)addProcInfoForConnection:(id)connection toDict:(id)dict;
+- (void)_serviceCallback:(id)callback replyBlock:(id)block;
+- (void)_serviceCancelPurge:(id)purge;
+- (void)_serviceNotify:(id)notify replyBlock:(id)block;
+- (void)_servicePeriodic:(int)periodic info:(id)info replyBlock:(id)block;
+- (void)_servicePurge:(int)purge info:(id)info replyBlock:(id)block;
+- (void)_servicePurgeable:(int)purgeable info:(id)info replyBlock:(id)block;
 - (void)connectionWasInvalidated;
 - (void)dealloc;
-- (void)doWithProxy:(id)a3 failure:(id)a4;
+- (void)doWithProxy:(id)proxy failure:(id)failure;
 - (void)invalidateConnection;
-- (void)obtainXPCConnection:(id)a3;
+- (void)obtainXPCConnection:(id)connection;
 - (void)resumeConnection;
 @end
 
@@ -19,23 +19,23 @@
 
 - (void)resumeConnection
 {
-  v2 = [(CDXPCService *)self xpcConnection];
-  [v2 resume];
+  xpcConnection = [(CDXPCService *)self xpcConnection];
+  [xpcConnection resume];
 }
 
-- (CDXPCService)initWithInfo:(id)a3
+- (CDXPCService)initWithInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = CDXPCService;
-  return [(CDService *)&v4 initWithInfo:a3];
+  return [(CDService *)&v4 initWithInfo:info];
 }
 
 - (void)dealloc
 {
   if ([(CDService *)self _inFlight])
   {
-    v3 = [(CDService *)self requestQueue];
-    dispatch_resume(v3);
+    requestQueue = [(CDService *)self requestQueue];
+    dispatch_resume(requestQueue);
   }
 
   if ([(CDXPCService *)self isConnected])
@@ -48,12 +48,12 @@
   [(CDXPCService *)&v4 dealloc];
 }
 
-- (id)addProcInfoForConnection:(id)a3 toDict:(id)a4
+- (id)addProcInfoForConnection:(id)connection toDict:(id)dict
 {
-  v5 = a3;
-  v6 = [a4 mutableCopy];
+  connectionCopy = connection;
+  v6 = [dict mutableCopy];
   v7 = v6;
-  if (v5)
+  if (connectionCopy)
   {
     if (!v6)
     {
@@ -78,23 +78,23 @@
   return v10;
 }
 
-- (void)_servicePurgeable:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)_servicePurgeable:(int)purgeable info:(id)info replyBlock:(id)block
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __50__CDXPCService__servicePurgeable_info_replyBlock___block_invoke;
   v11[3] = &unk_100061E08;
-  v15 = a3;
-  v12 = a4;
-  v13 = self;
-  v14 = a5;
+  purgeableCopy = purgeable;
+  infoCopy = info;
+  selfCopy = self;
+  blockCopy = block;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __50__CDXPCService__servicePurgeable_info_replyBlock___block_invoke_4;
   v9[3] = &unk_100061E30;
-  v10 = v14;
-  v7 = v14;
-  v8 = v12;
+  v10 = blockCopy;
+  v7 = blockCopy;
+  v8 = infoCopy;
   [(CDXPCService *)self doWithProxy:v11 failure:v9];
 }
 
@@ -175,23 +175,23 @@ void __50__CDXPCService__servicePurgeable_info_replyBlock___block_invoke_4(uint6
   (*(v2 + 16))(v2, v4);
 }
 
-- (void)_servicePurge:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)_servicePurge:(int)purge info:(id)info replyBlock:(id)block
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __46__CDXPCService__servicePurge_info_replyBlock___block_invoke;
   v11[3] = &unk_100061E08;
-  v15 = a3;
-  v12 = a4;
-  v13 = self;
-  v14 = a5;
+  purgeCopy = purge;
+  infoCopy = info;
+  selfCopy = self;
+  blockCopy = block;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __46__CDXPCService__servicePurge_info_replyBlock___block_invoke_4;
   v9[3] = &unk_100061E30;
-  v10 = v14;
-  v7 = v14;
-  v8 = v12;
+  v10 = blockCopy;
+  v7 = blockCopy;
+  v8 = infoCopy;
   [(CDXPCService *)self doWithProxy:v11 failure:v9];
 }
 
@@ -275,23 +275,23 @@ void __46__CDXPCService__servicePurge_info_replyBlock___block_invoke_4(uint64_t 
   }
 }
 
-- (void)_servicePeriodic:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)_servicePeriodic:(int)periodic info:(id)info replyBlock:(id)block
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __49__CDXPCService__servicePeriodic_info_replyBlock___block_invoke;
   v11[3] = &unk_100061E08;
-  v15 = a3;
-  v12 = a4;
-  v13 = self;
-  v14 = a5;
+  periodicCopy = periodic;
+  infoCopy = info;
+  selfCopy = self;
+  blockCopy = block;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __49__CDXPCService__servicePeriodic_info_replyBlock___block_invoke_4;
   v9[3] = &unk_100061E30;
-  v10 = v14;
-  v7 = v14;
-  v8 = v12;
+  v10 = blockCopy;
+  v7 = blockCopy;
+  v8 = infoCopy;
   [(CDXPCService *)self doWithProxy:v11 failure:v9];
 }
 
@@ -371,21 +371,21 @@ void __49__CDXPCService__servicePeriodic_info_replyBlock___block_invoke_4(uint64
   }
 }
 
-- (void)_serviceCancelPurge:(id)a3
+- (void)_serviceCancelPurge:(id)purge
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __36__CDXPCService__serviceCancelPurge___block_invoke;
   v6[3] = &unk_100061ED0;
-  v7 = self;
-  v8 = a3;
+  selfCopy = self;
+  purgeCopy = purge;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __36__CDXPCService__serviceCancelPurge___block_invoke_4;
   v4[3] = &unk_100061E30;
-  v5 = v8;
-  v3 = v8;
-  [(CDXPCService *)v7 doWithProxy:v6 failure:v4];
+  v5 = purgeCopy;
+  v3 = purgeCopy;
+  [(CDXPCService *)selfCopy doWithProxy:v6 failure:v4];
 }
 
 void __36__CDXPCService__serviceCancelPurge___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -457,22 +457,22 @@ void __36__CDXPCService__serviceCancelPurge___block_invoke_4(uint64_t a1, void *
   }
 }
 
-- (void)_serviceNotify:(id)a3 replyBlock:(id)a4
+- (void)_serviceNotify:(id)notify replyBlock:(id)block
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __42__CDXPCService__serviceNotify_replyBlock___block_invoke;
   v10[3] = &unk_100061EF8;
-  v11 = a3;
-  v12 = self;
-  v13 = a4;
+  notifyCopy = notify;
+  selfCopy = self;
+  blockCopy = block;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __42__CDXPCService__serviceNotify_replyBlock___block_invoke_4;
   v8[3] = &unk_100061E30;
-  v9 = v13;
-  v6 = v13;
-  v7 = v11;
+  v9 = blockCopy;
+  v6 = blockCopy;
+  v7 = notifyCopy;
   [(CDXPCService *)self doWithProxy:v10 failure:v8];
 }
 
@@ -546,22 +546,22 @@ void __42__CDXPCService__serviceNotify_replyBlock___block_invoke_4(uint64_t a1, 
   }
 }
 
-- (void)_serviceCallback:(id)a3 replyBlock:(id)a4
+- (void)_serviceCallback:(id)callback replyBlock:(id)block
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __44__CDXPCService__serviceCallback_replyBlock___block_invoke;
   v10[3] = &unk_100061EF8;
-  v11 = a3;
-  v12 = self;
-  v13 = a4;
+  callbackCopy = callback;
+  selfCopy = self;
+  blockCopy = block;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __44__CDXPCService__serviceCallback_replyBlock___block_invoke_4;
   v8[3] = &unk_100061E30;
-  v9 = v13;
-  v6 = v13;
-  v7 = v11;
+  v9 = blockCopy;
+  v6 = blockCopy;
+  v7 = callbackCopy;
   [(CDXPCService *)self doWithProxy:v10 failure:v8];
 }
 
@@ -646,17 +646,17 @@ void __44__CDXPCService__serviceCallback_replyBlock___block_invoke_4(uint64_t a1
   }
 }
 
-- (void)doWithProxy:(id)a3 failure:(id)a4
+- (void)doWithProxy:(id)proxy failure:(id)failure
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  failureCopy = failure;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
   v16 = 0;
   [(CDService *)self set_inFlight:1];
-  v8 = [(CDService *)self requestQueue];
-  dispatch_suspend(v8);
+  requestQueue = [(CDService *)self requestQueue];
+  dispatch_suspend(requestQueue);
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -664,9 +664,9 @@ void __44__CDXPCService__serviceCallback_replyBlock___block_invoke_4(uint64_t a1
   v11[3] = &unk_100061F98;
   v14 = v15;
   v11[4] = self;
-  v9 = v7;
+  v9 = failureCopy;
   v12 = v9;
-  v10 = v6;
+  v10 = proxyCopy;
   v13 = v10;
   [(CDXPCService *)self obtainXPCConnection:v11];
 
@@ -964,15 +964,15 @@ LABEL_11:
   return v7;
 }
 
-- (void)obtainXPCConnection:(id)a3
+- (void)obtainXPCConnection:(id)connection
 {
-  v6 = a3;
-  v4 = [(CDXPCService *)self xpcConnection];
+  connectionCopy = connection;
+  xpcConnection = [(CDXPCService *)self xpcConnection];
 
-  if (v4)
+  if (xpcConnection)
   {
-    v5 = [(CDXPCService *)self xpcConnection];
-    v6[2](v6, v5, 0);
+    xpcConnection2 = [(CDXPCService *)self xpcConnection];
+    connectionCopy[2](connectionCopy, xpcConnection2, 0);
   }
 
   else
@@ -983,12 +983,12 @@ LABEL_11:
 
 - (void)invalidateConnection
 {
-  v3 = [(CDXPCService *)self xpcConnection];
+  xpcConnection = [(CDXPCService *)self xpcConnection];
 
-  if (v3)
+  if (xpcConnection)
   {
-    v4 = [(CDXPCService *)self xpcConnection];
-    [v4 invalidate];
+    xpcConnection2 = [(CDXPCService *)self xpcConnection];
+    [xpcConnection2 invalidate];
 
     [(CDXPCService *)self connectionWasInvalidated];
   }
@@ -1000,17 +1000,17 @@ LABEL_11:
     {
       v10 = [(CDService *)self ID];
       v11 = 138412290;
-      v12 = v10;
+      selfCopy = v10;
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%@: invalidate and connection is nil!", &v11, 0xCu);
     }
   }
 
-  v6 = [(CDXPCService *)self watchdog_timer];
+  watchdog_timer = [(CDXPCService *)self watchdog_timer];
 
-  if (v6)
+  if (watchdog_timer)
   {
-    v7 = [(CDXPCService *)self watchdog_timer];
-    dispatch_source_cancel(v7);
+    watchdog_timer2 = [(CDXPCService *)self watchdog_timer];
+    dispatch_source_cancel(watchdog_timer2);
 
     [(CDXPCService *)self setWatchdog_timer:0];
   }
@@ -1020,11 +1020,11 @@ LABEL_11:
     v8 = CDGetLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(CDXPCService *)self watchdog_timer];
+      watchdog_timer3 = [(CDXPCService *)self watchdog_timer];
       v11 = 134218240;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
-      v14 = v9;
+      v14 = watchdog_timer3;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "watchdog timer is nil, self: %p, timer: %p", &v11, 0x16u);
     }
   }
@@ -1046,8 +1046,8 @@ LABEL_11:
   if ([(CDService *)self _inFlight])
   {
     [(CDService *)self set_inFlight:0];
-    v4 = [(CDService *)self requestQueue];
-    dispatch_resume(v4);
+    requestQueue = [(CDService *)self requestQueue];
+    dispatch_resume(requestQueue);
   }
 }
 

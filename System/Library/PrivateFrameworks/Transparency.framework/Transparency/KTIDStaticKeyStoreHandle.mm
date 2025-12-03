@@ -1,54 +1,54 @@
 @interface KTIDStaticKeyStoreHandle
-- (KTIDStaticKeyStoreHandle)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (KTIDStaticKeyStoreHandle)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTIDStaticKeyStoreHandle
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[KTIDStaticKeyStoreHandle allocWithZone:](KTIDStaticKeyStoreHandle init];
-  v6 = [(KTIDStaticKeyStoreHandle *)self handle];
-  v7 = [v6 copyWithZone:a3];
+  handle = [(KTIDStaticKeyStoreHandle *)self handle];
+  v7 = [handle copyWithZone:zone];
   [(KTIDStaticKeyStoreHandle *)v5 setHandle:v7];
 
   [(KTIDStaticKeyStoreHandle *)v5 setValid:[(KTIDStaticKeyStoreHandle *)self valid]];
-  v8 = [(KTIDStaticKeyStoreHandle *)self validationDate];
-  v9 = [v8 copyWithZone:a3];
+  validationDate = [(KTIDStaticKeyStoreHandle *)self validationDate];
+  v9 = [validationDate copyWithZone:zone];
   [(KTIDStaticKeyStoreHandle *)v5 setValidationDate:v9];
 
   [(KTIDStaticKeyStoreHandle *)v5 setErrorCode:[(KTIDStaticKeyStoreHandle *)self errorCode]];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(KTIDStaticKeyStoreHandle *)self handle];
-  [v6 encodeObject:v4 forKey:@"handle"];
+  coderCopy = coder;
+  handle = [(KTIDStaticKeyStoreHandle *)self handle];
+  [coderCopy encodeObject:handle forKey:@"handle"];
 
-  [v6 encodeBool:-[KTIDStaticKeyStoreHandle valid](self forKey:{"valid"), @"valid"}];
-  v5 = [(KTIDStaticKeyStoreHandle *)self validationDate];
-  [v6 encodeObject:v5 forKey:@"validationDate"];
+  [coderCopy encodeBool:-[KTIDStaticKeyStoreHandle valid](self forKey:{"valid"), @"valid"}];
+  validationDate = [(KTIDStaticKeyStoreHandle *)self validationDate];
+  [coderCopy encodeObject:validationDate forKey:@"validationDate"];
 
-  [v6 encodeInt:-[KTIDStaticKeyStoreHandle errorCode](self forKey:{"errorCode"), @"errorCode"}];
+  [coderCopy encodeInt:-[KTIDStaticKeyStoreHandle errorCode](self forKey:{"errorCode"), @"errorCode"}];
 }
 
-- (KTIDStaticKeyStoreHandle)initWithCoder:(id)a3
+- (KTIDStaticKeyStoreHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(KTIDStaticKeyStoreHandle);
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
     [(KTIDStaticKeyStoreHandle *)v5 setHandle:v6];
 
-    -[KTIDStaticKeyStoreHandle setValid:](v5, "setValid:", [v4 decodeBoolForKey:@"valid"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"validationDate"];
+    -[KTIDStaticKeyStoreHandle setValid:](v5, "setValid:", [coderCopy decodeBoolForKey:@"valid"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"validationDate"];
     [(KTIDStaticKeyStoreHandle *)v5 setValidationDate:v7];
 
-    -[KTIDStaticKeyStoreHandle setErrorCode:](v5, "setErrorCode:", [v4 decodeIntForKey:@"errorCode"]);
+    -[KTIDStaticKeyStoreHandle setErrorCode:](v5, "setErrorCode:", [coderCopy decodeIntForKey:@"errorCode"]);
     v8 = v5;
   }
 

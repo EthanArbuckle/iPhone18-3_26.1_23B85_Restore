@@ -1,5 +1,5 @@
 @interface VCPVideoKeyFrame
-- (VCPVideoKeyFrame)initWithLivePhoto:(BOOL)a3;
+- (VCPVideoKeyFrame)initWithLivePhoto:(BOOL)photo;
 - (float)computeContentScore;
 - (float)computeExpressionScore;
 - (float)computeGlobalQuality;
@@ -8,21 +8,21 @@
 - (float)computeScoreFromColorfulness;
 - (float)computeScoreFromExposure;
 - (float)computeVisualPleasingScore;
-- (int)loadKeyFrameResult:(id)a3 timestamp:(id *)a4;
+- (int)loadKeyFrameResult:(id)result timestamp:(id *)timestamp;
 - (void)computeCurationScore;
 - (void)computeCurationScoreComponents;
 - (void)computeGlobalQualityForLivePhoto;
-- (void)copyFrom:(id)a3;
+- (void)copyFrom:(id)from;
 - (void)printStats;
-- (void)setFaceStatsFlag:(BOOL)a3 detectedFaces:(id)a4;
-- (void)setMotionStatsFlag:(BOOL)a3 cameraMotion:(float)a4 subjectAction:(float)a5 interestingness:(float)a6 obstruction:(float)a7 colorfulness:(float)a8 exposureScore:(float)a9 humanActionStatsFlag:(BOOL)a10 humanPoseScore:(float)a11 humanActionScore:(float)a12 subMb:(BOOL)a13;
-- (void)setTimestamp:(id *)a3;
+- (void)setFaceStatsFlag:(BOOL)flag detectedFaces:(id)faces;
+- (void)setMotionStatsFlag:(BOOL)flag cameraMotion:(float)motion subjectAction:(float)action interestingness:(float)interestingness obstruction:(float)obstruction colorfulness:(float)colorfulness exposureScore:(float)score humanActionStatsFlag:(BOOL)self0 humanPoseScore:(float)self1 humanActionScore:(float)self2 subMb:(BOOL)self3;
+- (void)setTimestamp:(id *)timestamp;
 - (void)storeFrameResults;
 @end
 
 @implementation VCPVideoKeyFrame
 
-- (VCPVideoKeyFrame)initWithLivePhoto:(BOOL)a3
+- (VCPVideoKeyFrame)initWithLivePhoto:(BOOL)photo
 {
   v15.receiver = self;
   v15.super_class = VCPVideoKeyFrame;
@@ -42,37 +42,37 @@
     *(v4 + 21) = 0;
     *(v4 + 22) = 0;
     *(v4 + 12) = 0;
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = *(v5 + 13);
-    *(v5 + 13) = v7;
+    *(v5 + 13) = array;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v10 = *(v5 + 14);
-    *(v5 + 14) = v9;
+    *(v5 + 14) = array2;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v12 = *(v5 + 15);
-    *(v5 + 15) = v11;
+    *(v5 + 15) = dictionary;
 
     *(v5 + 7) = 0;
     *(v5 + 8) = 0;
     *(v5 + 18) = 0;
     *(v5 + 76) = 1065353216;
     *(v5 + 23) = 0;
-    v5[28] = a3;
+    v5[28] = photo;
     v13 = v5;
   }
 
   return v5;
 }
 
-- (void)copyFrom:(id)a3
+- (void)copyFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy)
   {
-    [v4 timestamp];
+    [fromCopy timestamp];
   }
 
   else
@@ -119,11 +119,11 @@
   self->_thumbnailScore = v21;
 }
 
-- (int)loadKeyFrameResult:(id)a3 timestamp:(id *)a4
+- (int)loadKeyFrameResult:(id)result timestamp:(id *)timestamp
 {
   v47 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v6 = [v38 objectForKeyedSubscript:@"attributes"];
+  resultCopy = result;
+  v6 = [resultCopy objectForKeyedSubscript:@"attributes"];
   v39 = v6;
   if (v6)
   {
@@ -134,7 +134,7 @@
       [v7 floatValue];
       CMTimeMakeWithSeconds(&time, v8, 600);
       self->_timestamp = time;
-      time = *a4;
+      time = *timestamp;
       Seconds = CMTimeGetSeconds(&time);
       [v36 floatValue];
       if (vabdd_f64(Seconds, v10) > 0.00499999989)
@@ -288,19 +288,19 @@ LABEL_28:
   return v11;
 }
 
-- (void)setFaceStatsFlag:(BOOL)a3 detectedFaces:(id)a4
+- (void)setFaceStatsFlag:(BOOL)flag detectedFaces:(id)faces
 {
-  v4 = a3;
+  flagCopy = flag;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v4)
+  facesCopy = faces;
+  if (flagCopy)
   {
     [(NSMutableArray *)self->_detectedFaces removeAllObjects];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = v6;
+    v7 = facesCopy;
     v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v8)
     {
@@ -329,30 +329,30 @@ LABEL_28:
   }
 }
 
-- (void)setMotionStatsFlag:(BOOL)a3 cameraMotion:(float)a4 subjectAction:(float)a5 interestingness:(float)a6 obstruction:(float)a7 colorfulness:(float)a8 exposureScore:(float)a9 humanActionStatsFlag:(BOOL)a10 humanPoseScore:(float)a11 humanActionScore:(float)a12 subMb:(BOOL)a13
+- (void)setMotionStatsFlag:(BOOL)flag cameraMotion:(float)motion subjectAction:(float)action interestingness:(float)interestingness obstruction:(float)obstruction colorfulness:(float)colorfulness exposureScore:(float)score humanActionStatsFlag:(BOOL)self0 humanPoseScore:(float)self1 humanActionScore:(float)self2 subMb:(BOOL)self3
 {
   *&self->_subjectAction = 0;
   self->_obstruction = 0.0;
   self->_subMb = 0;
-  if (a3)
+  if (flag)
   {
-    self->_subjectAction = a5;
-    self->_cameraMotion = a4;
-    self->_obstruction = 1.0 - a7;
-    self->_subMb = a13;
+    self->_subjectAction = action;
+    self->_cameraMotion = motion;
+    self->_obstruction = 1.0 - obstruction;
+    self->_subMb = mb;
     self->_statsFlags |= 2uLL;
   }
 
-  if (a10)
+  if (statsFlag)
   {
-    self->_humanPoseScore = a11;
-    self->_humanActionScore = a12;
+    self->_humanPoseScore = poseScore;
+    self->_humanActionScore = actionScore;
     self->_statsFlags |= 8uLL;
   }
 
-  self->_exposureScore = a9;
-  self->_interestingness = a6;
-  self->_colorfulness = a8;
+  self->_exposureScore = score;
+  self->_interestingness = interestingness;
+  self->_colorfulness = colorfulness;
 }
 
 - (void)computeGlobalQualityForLivePhoto
@@ -487,8 +487,8 @@ LABEL_28:
     return 1.0;
   }
 
-  v3 = [(NSMutableArray *)self->_detectedFaces firstObject];
-  [v3 bounds];
+  firstObject = [(NSMutableArray *)self->_detectedFaces firstObject];
+  [firstObject bounds];
   v5 = v4;
   v7 = v6;
 
@@ -668,8 +668,8 @@ LABEL_8:
 
   if ([(NSMutableArray *)self->_detectedFaces count])
   {
-    v4 = 0;
-    v5 = 0;
+    smile = 0;
+    rightEyeClosed = 0;
     v6 = 0;
     v7 = 0.0;
     v8 = 0.0;
@@ -705,15 +705,15 @@ LABEL_8:
       v17 = v16 * v15;
       if ((v16 * v15) > v7)
       {
-        v4 = [v9 smile];
+        smile = [v9 smile];
         if ([v9 leftEyeClosed])
         {
-          v5 = 1;
+          rightEyeClosed = 1;
         }
 
         else
         {
-          v5 = [v9 rightEyeClosed];
+          rightEyeClosed = [v9 rightEyeClosed];
         }
 
         if ([(NSMutableArray *)self->_faceQualityScores count]> v6)
@@ -732,12 +732,12 @@ LABEL_8:
 
     while (v6 < [(NSMutableArray *)self->_detectedFaces count]);
     v20 = 0.3;
-    if ((v4 & 1) == 0)
+    if ((smile & 1) == 0)
     {
       v20 = 0.0;
     }
 
-    if (v5)
+    if (rightEyeClosed)
     {
       v21 = -0.9;
     }
@@ -865,10 +865,10 @@ LABEL_8:
   }
 }
 
-- (void)setTimestamp:(id *)a3
+- (void)setTimestamp:(id *)timestamp
 {
-  v3 = *&a3->var0;
-  self->_timestamp.epoch = a3->var3;
+  v3 = *&timestamp->var0;
+  self->_timestamp.epoch = timestamp->var3;
   *&self->_timestamp.value = v3;
 }
 

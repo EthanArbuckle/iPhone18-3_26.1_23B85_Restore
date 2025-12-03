@@ -1,13 +1,13 @@
 @interface NTKWorldClockGraphicCircularExtraLargeViewSecondsOnly
-+ (id)_createHandsViewForDevice:(id)a3;
++ (id)_createHandsViewForDevice:(id)device;
 @end
 
 @implementation NTKWorldClockGraphicCircularExtraLargeViewSecondsOnly
 
-+ (id)_createHandsViewForDevice:(id)a3
++ (id)_createHandsViewForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NTKWorldClockRichComplicationHandsExtraLargeViewSecondsOnly alloc] initForDevice:v3];
+  deviceCopy = device;
+  v4 = [[NTKWorldClockRichComplicationHandsExtraLargeViewSecondsOnly alloc] initForDevice:deviceCopy];
 
   return v4;
 }

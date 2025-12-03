@@ -1,12 +1,12 @@
 @interface SOConfigurationVersion
 + (void)reset;
-- (SOConfigurationVersion)initWithMode:(int64_t)a3;
+- (SOConfigurationVersion)initWithMode:(int64_t)mode;
 - (int64_t)checkVersion;
 - (unint64_t)_state;
-- (void)_setStateAndNotify:(unint64_t)a3;
+- (void)_setStateAndNotify:(unint64_t)notify;
 - (void)_state;
 - (void)dealloc;
-- (void)increaseVersionWithMessage:(id)a3;
+- (void)increaseVersionWithMessage:(id)message;
 - (void)setAppSSOUnavailable;
 @end
 
@@ -15,30 +15,30 @@
 - (int64_t)checkVersion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SOConfigurationVersion *)v2 _state];
-  v4 = v3;
-  if (v3 == -1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _state = [(SOConfigurationVersion *)selfCopy _state];
+  v4 = _state;
+  if (_state == -1)
   {
-    v2->_version = -1;
+    selfCopy->_version = -1;
     v5 = 2;
     goto LABEL_10;
   }
 
-  if (!v3)
+  if (!_state)
   {
 LABEL_9:
     v5 = 1;
     goto LABEL_10;
   }
 
-  if (v3 != v2->_version)
+  if (_state != selfCopy->_version)
   {
     v6 = SO_LOG_SOConfigurationVersion();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      version = v2->_version;
+      version = selfCopy->_version;
       v10 = 136315906;
       v11 = "[SOConfigurationVersion checkVersion]";
       v12 = 2048;
@@ -46,17 +46,17 @@ LABEL_9:
       v14 = 2048;
       v15 = v4;
       v16 = 2112;
-      v17 = v2;
+      v17 = selfCopy;
       _os_log_impl(&dword_1CA238000, v6, OS_LOG_TYPE_DEFAULT, "%s config version changed from from 0x%016llX to 0x%016llX on %@", &v10, 0x2Au);
     }
 
-    v2->_version = v4;
+    selfCopy->_version = v4;
     goto LABEL_9;
   }
 
   v5 = 0;
 LABEL_10:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x1E69E9840];
   return v5;
@@ -91,12 +91,12 @@ LABEL_7:
   return state64;
 }
 
-- (SOConfigurationVersion)initWithMode:(int64_t)a3
+- (SOConfigurationVersion)initWithMode:(int64_t)mode
 {
   v5 = SO_LOG_SOConfigurationVersion();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SOConfigurationVersion *)a3 initWithMode:v5];
+    [(SOConfigurationVersion *)mode initWithMode:v5];
   }
 
   v10.receiver = self;
@@ -106,7 +106,7 @@ LABEL_7:
   if (v6)
   {
     v6->_token = -1;
-    v6->_mode = a3;
+    v6->_mode = mode;
     v6->_version = 0;
     if (notify_register_check("/com.apple.AppSSO.version", &v6->_token))
     {
@@ -130,14 +130,14 @@ LABEL_7:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)increaseVersionWithMessage:(id)a3
+- (void)increaseVersionWithMessage:(id)message
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   if (self->_mode)
   {
-    v5 = SO_LOG_SOConfigurationVersion();
-    if (os_log_type_enabled(&v5->super, OS_LOG_TYPE_ERROR))
+    selfCopy = SO_LOG_SOConfigurationVersion();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       [SOConfigurationVersion increaseVersionWithMessage:];
     }
@@ -145,32 +145,32 @@ LABEL_7:
 
   else
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [MEMORY[0x1E695DF00] date];
-    [v6 timeIntervalSince1970];
-    v5->_version = (v7 * 1000.0);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
+    selfCopy->_version = (v7 * 1000.0);
 
     v8 = SO_LOG_SOConfigurationVersion();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(SOConfigurationVersion *)v5 _state];
-      version = v5->_version;
+      _state = [(SOConfigurationVersion *)selfCopy _state];
+      version = selfCopy->_version;
       v12 = 136316162;
       v13 = "[SOConfigurationVersion increaseVersionWithMessage:]";
       v14 = 2048;
-      v15 = v9;
+      v15 = _state;
       v16 = 2048;
       v17 = version;
       v18 = 2114;
-      v19 = v4;
+      v19 = messageCopy;
       v20 = 2112;
-      v21 = v5;
+      v21 = selfCopy;
       _os_log_impl(&dword_1CA238000, v8, OS_LOG_TYPE_DEFAULT, "%s config version increased from 0x%016llX to 0x%016llX (%{public}@) on %@", &v12, 0x34u);
     }
 
-    [(SOConfigurationVersion *)v5 _setStateAndNotify:v5->_version];
-    objc_sync_exit(v5);
+    [(SOConfigurationVersion *)selfCopy _setStateAndNotify:selfCopy->_version];
+    objc_sync_exit(selfCopy);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -185,14 +185,14 @@ LABEL_7:
     v7 = 136315394;
     v8 = "[SOConfigurationVersion setAppSSOUnavailable]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v7, 0x16u);
   }
 
   if (self->_mode)
   {
-    v4 = SO_LOG_SOConfigurationVersion();
-    if (os_log_type_enabled(&v4->super, OS_LOG_TYPE_ERROR))
+    selfCopy2 = SO_LOG_SOConfigurationVersion();
+    if (os_log_type_enabled(&selfCopy2->super, OS_LOG_TYPE_ERROR))
     {
       [SOConfigurationVersion setAppSSOUnavailable];
     }
@@ -200,9 +200,9 @@ LABEL_7:
 
   else
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v4->_version = -1;
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    selfCopy2->_version = -1;
     v5 = SO_LOG_SOConfigurationVersion();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -210,8 +210,8 @@ LABEL_7:
       _os_log_impl(&dword_1CA238000, v5, OS_LOG_TYPE_DEFAULT, "set config version to AppSSO unavailable", &v7, 2u);
     }
 
-    [(SOConfigurationVersion *)v4 _setStateAndNotify:v4->_version];
-    objc_sync_exit(v4);
+    [(SOConfigurationVersion *)selfCopy2 _setStateAndNotify:selfCopy2->_version];
+    objc_sync_exit(selfCopy2);
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -246,9 +246,9 @@ LABEL_7:
   }
 }
 
-- (void)_setStateAndNotify:(unint64_t)a3
+- (void)_setStateAndNotify:(unint64_t)notify
 {
-  if (notify_set_state(self->_token, a3))
+  if (notify_set_state(self->_token, notify))
   {
     v3 = SO_LOG_SOConfigurationVersion();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))

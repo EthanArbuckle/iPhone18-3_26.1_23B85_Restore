@@ -1,6 +1,6 @@
 @interface WBReadingListPrivate
 - (WBReadingListPrivate)init;
-- (void)_addReadingListItemWithURL:(id)a3 title:(id)a4 previewText:(id)a5;
+- (void)_addReadingListItemWithURL:(id)l title:(id)title previewText:(id)text;
 @end
 
 @implementation WBReadingListPrivate
@@ -23,25 +23,25 @@
   return v2;
 }
 
-- (void)_addReadingListItemWithURL:(id)a3 title:(id)a4 previewText:(id)a5
+- (void)_addReadingListItemWithURL:(id)l title:(id)title previewText:(id)text
 {
-  v21 = a4;
-  v8 = a5;
-  v9 = a3;
+  titleCopy = title;
+  textCopy = text;
+  lCopy = l;
   v10 = xpc_dictionary_create(0, 0, 0);
-  v11 = [v9 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  v12 = [v11 UTF8String];
-  if (v21)
+  uTF8String = [absoluteString UTF8String];
+  if (titleCopy)
   {
     v13 = [WebBookmark _trimmedTitle:?];
-    v14 = [v13 UTF8String];
+    uTF8String2 = [v13 UTF8String];
 
-    if (v8)
+    if (textCopy)
     {
 LABEL_3:
-      v15 = [WebBookmark _trimmedPreviewText:v8];
-      v16 = [v15 UTF8String];
+      v15 = [WebBookmark _trimmedPreviewText:textCopy];
+      uTF8String3 = [v15 UTF8String];
 
       goto LABEL_6;
     }
@@ -49,25 +49,25 @@ LABEL_3:
 
   else
   {
-    v14 = "";
-    if (v8)
+    uTF8String2 = "";
+    if (textCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = "";
+  uTF8String3 = "";
 LABEL_6:
-  xpc_dictionary_set_string(v10, kWebBookmarksAddressKey, v12);
-  xpc_dictionary_set_string(v10, kWebBookmarksTitleKey, v14);
-  xpc_dictionary_set_string(v10, kWebBookmarksPreviewTextKey, v16);
+  xpc_dictionary_set_string(v10, kWebBookmarksAddressKey, uTF8String);
+  xpc_dictionary_set_string(v10, kWebBookmarksTitleKey, uTF8String2);
+  xpc_dictionary_set_string(v10, kWebBookmarksPreviewTextKey, uTF8String3);
   v17 = [(WebBookmarksXPCConnection *)self->_connection messageWithName:kWebBookmarksAddToReadingListMessageName];
   xpc_dictionary_set_value(v17, kWebBookmarksItemKey, v10);
   [(WebBookmarksXPCConnection *)self->_connection sendMessage:v17];
   v18 = +[WBFeatureManager sharedFeatureManager];
-  v19 = [v18 isOfflineReadingListAvailable];
+  isOfflineReadingListAvailable = [v18 isOfflineReadingListAvailable];
 
-  if (v19)
+  if (isOfflineReadingListAvailable)
   {
     v20 = objc_alloc_init(SafariFetcherServerProxy);
     [(SafariFetcherServerProxy *)v20 startReadingListFetcher];

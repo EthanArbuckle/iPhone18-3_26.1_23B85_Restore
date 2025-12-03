@@ -10,7 +10,7 @@
 
 - (id)ska_dictionaryForKey:()StatusKitAgent
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -27,7 +27,7 @@
 
 - (id)ska_dataFrombase64EncodedStringForKey:()StatusKitAgent
 {
-  v1 = [a1 ska_stringForKey:?];
+  v1 = [self ska_stringForKey:?];
   if (v1)
   {
     v2 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v1 options:0];
@@ -43,7 +43,7 @@
 
 - (id)ska_dateFromUnixTimestampForKey:()StatusKitAgent
 {
-  v1 = [a1 ska_numberForKey:?];
+  v1 = [self ska_numberForKey:?];
   v2 = v1;
   if (v1 && ([v1 doubleValue], v3 >= 2.22044605e-16))
   {
@@ -60,7 +60,7 @@
 
 - (id)ska_stringForKey:()StatusKitAgent
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -77,7 +77,7 @@
 
 - (id)ska_numberForKey:()StatusKitAgent
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

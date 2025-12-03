@@ -1,7 +1,7 @@
 @interface AudioTemplateSceneDelegate
 - (_TtC7NewsUI226AudioTemplateSceneDelegate)init;
-- (void)templateApplicationScene:(id)a3 didConnectInterfaceController:(id)a4;
-- (void)templateApplicationScene:(id)a3 didDisconnectInterfaceController:(id)a4;
+- (void)templateApplicationScene:(id)scene didConnectInterfaceController:(id)controller;
+- (void)templateApplicationScene:(id)scene didDisconnectInterfaceController:(id)controller;
 @end
 
 @implementation AudioTemplateSceneDelegate
@@ -24,19 +24,19 @@
   return [(AudioTemplateSceneDelegate *)&v7 init];
 }
 
-- (void)templateApplicationScene:(id)a3 didConnectInterfaceController:(id)a4
+- (void)templateApplicationScene:(id)scene didConnectInterfaceController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_219117800(v7);
+  sceneCopy = scene;
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_219117800(controllerCopy);
 }
 
-- (void)templateApplicationScene:(id)a3 didDisconnectInterfaceController:(id)a4
+- (void)templateApplicationScene:(id)scene didDisconnectInterfaceController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  sceneCopy = scene;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_219117D54();
 }
 

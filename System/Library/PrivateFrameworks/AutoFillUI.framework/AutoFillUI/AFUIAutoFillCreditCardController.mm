@@ -1,48 +1,48 @@
 @interface AFUIAutoFillCreditCardController
-+ (id)dateStringTextContentType:(id)a3 date:(id)a4 placeholderHint:(id)a5;
-- (AFUIAutoFillCreditCardController)initWithDocumentTraits:(id)a3 documentState:(id)a4 presentingViewController:(id)a5 textOperationsHandler:(id)a6;
++ (id)dateStringTextContentType:(id)type date:(id)date placeholderHint:(id)hint;
+- (AFUIAutoFillCreditCardController)initWithDocumentTraits:(id)traits documentState:(id)state presentingViewController:(id)controller textOperationsHandler:(id)handler;
 - (AFUIModalUIDelegate)modalUIDelegate;
 - (UIViewController)presentingViewController;
-- (double)_maximumSuggestionsForReturnedSuggestions:(double)a3;
-- (id)_menuUIElementsForSuggestions:(id)a3;
-- (void)_generateSuggestions:(id)a3;
+- (double)_maximumSuggestionsForReturnedSuggestions:(double)suggestions;
+- (id)_menuUIElementsForSuggestions:(id)suggestions;
+- (void)_generateSuggestions:(id)suggestions;
 - (void)_openSettings;
-- (void)_performTextOperationsWithSuggestion:(id)a3;
+- (void)_performTextOperationsWithSuggestion:(id)suggestion;
 @end
 
 @implementation AFUIAutoFillCreditCardController
 
-- (AFUIAutoFillCreditCardController)initWithDocumentTraits:(id)a3 documentState:(id)a4 presentingViewController:(id)a5 textOperationsHandler:(id)a6
+- (AFUIAutoFillCreditCardController)initWithDocumentTraits:(id)traits documentState:(id)state presentingViewController:(id)controller textOperationsHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  traitsCopy = traits;
+  stateCopy = state;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = AFUIAutoFillCreditCardController;
   v15 = [(AFUIAutoFillCreditCardController *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_documentState, a4);
-    objc_storeStrong(&v16->_documentTraits, a3);
-    v17 = MEMORY[0x1D38AFC90](v14);
+    objc_storeStrong(&v15->_documentState, state);
+    objc_storeStrong(&v16->_documentTraits, traits);
+    v17 = MEMORY[0x1D38AFC90](handlerCopy);
     performTextOperations = v16->_performTextOperations;
     v16->_performTextOperations = v17;
 
-    objc_storeWeak(&v16->_presentingViewController, v13);
+    objc_storeWeak(&v16->_presentingViewController, controllerCopy);
   }
 
   return v16;
 }
 
-- (double)_maximumSuggestionsForReturnedSuggestions:(double)a3
+- (double)_maximumSuggestionsForReturnedSuggestions:(double)suggestions
 {
-  v4 = [(AFUIAutoFillCreditCardController *)self presentingViewController];
-  v5 = [v4 view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  if (([v7 interfaceOrientation] - 3) >= 2)
+  presentingViewController = [(AFUIAutoFillCreditCardController *)self presentingViewController];
+  view = [presentingViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
+  if (([windowScene interfaceOrientation] - 3) >= 2)
   {
     v8 = 3.0;
   }
@@ -62,33 +62,33 @@
     result = v8;
   }
 
-  if (result >= a3)
+  if (result >= suggestions)
   {
-    return a3;
+    return suggestions;
   }
 
   return result;
 }
 
-- (void)_generateSuggestions:(id)a3
+- (void)_generateSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x1E698E1C0] sharedInstance];
-  v6 = [(AFUIAutoFillCreditCardController *)self documentState];
-  v7 = [v6 documentState];
-  v8 = [v7 contextBeforeInput];
+  mEMORY[0x1E698E1C0] = [MEMORY[0x1E698E1C0] sharedInstance];
+  documentState = [(AFUIAutoFillCreditCardController *)self documentState];
+  v6DocumentState = [documentState documentState];
+  contextBeforeInput = [v6DocumentState contextBeforeInput];
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(AFUIAutoFillCreditCardController *)self documentTraits];
+    documentTraits = [(AFUIAutoFillCreditCardController *)self documentTraits];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __57__AFUIAutoFillCreditCardController__generateSuggestions___block_invoke;
     v10[3] = &unk_1E8424AB0;
-    v11 = v4;
+    v11 = suggestionsCopy;
     objc_copyWeak(&v12, &location);
-    [v5 generateAutoFillSuggestionsWithAutoFillMode:9 textPrefix:v8 documentTraits:v9 externalizedContext:0 completionHandler:v10];
+    [mEMORY[0x1E698E1C0] generateAutoFillSuggestionsWithAutoFillMode:9 textPrefix:contextBeforeInput documentTraits:documentTraits externalizedContext:0 completionHandler:v10];
 
     objc_destroyWeak(&v12);
   }
@@ -106,24 +106,24 @@ void __57__AFUIAutoFillCreditCardController__generateSuggestions___block_invoke(
   (*(v3 + 16))(v3, v5);
 }
 
-- (id)_menuUIElementsForSuggestions:(id)a3
+- (id)_menuUIElementsForSuggestions:(id)suggestions
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v40 = [MEMORY[0x1E695DF70] array];
+  suggestionsCopy = suggestions;
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
   [(AFUIAutoFillCreditCardController *)self setHasSuggestions:0];
   v38 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"creditcard"];
-  -[AFUIAutoFillCreditCardController _maximumSuggestionsForReturnedSuggestions:](self, "_maximumSuggestionsForReturnedSuggestions:", [v39 count]);
+  -[AFUIAutoFillCreditCardController _maximumSuggestionsForReturnedSuggestions:](self, "_maximumSuggestionsForReturnedSuggestions:", [suggestionsCopy count]);
   v5 = v4;
   if (v4 > 0.0)
   {
     v6 = 0;
     do
     {
-      v7 = [v39 objectAtIndex:v6];
-      v8 = [v7 creditCardPayload];
-      v9 = [v8 mutableCopy];
+      v7 = [suggestionsCopy objectAtIndex:v6];
+      creditCardPayload = [v7 creditCardPayload];
+      v9 = [creditCardPayload mutableCopy];
 
       v10 = [v9 objectForKey:@"cc-exp"];
       if (v10)
@@ -141,11 +141,11 @@ void __57__AFUIAutoFillCreditCardController__generateSuggestions___block_invoke(
       v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v15 = [v14 localizedStringForKey:@"Ending in " value:&stru_1F4E9A028 table:@"Localizable"];
 
-      v16 = [v7 subTitle];
-      if (v16)
+      subTitle = [v7 subTitle];
+      if (subTitle)
       {
-        v3 = [v7 subTitle];
-        v17 = v3;
+        subTitle2 = [v7 subTitle];
+        v17 = subTitle2;
       }
 
       else
@@ -155,14 +155,14 @@ void __57__AFUIAutoFillCreditCardController__generateSuggestions___block_invoke(
 
       v18 = [v15 stringByAppendingString:v17];
 
-      if (v16)
+      if (subTitle)
       {
       }
 
       v19 = objc_alloc(MEMORY[0x1E698E1B8]);
-      v20 = [v7 title];
-      v21 = [v7 subTitle];
-      v22 = [v19 initWithTitle:v20 subTitle:v21 creditCardPayload:v9 customInfoType:{objc_msgSend(v7, "customInfoType")}];
+      title = [v7 title];
+      subTitle3 = [v7 subTitle];
+      v22 = [v19 initWithTitle:title subTitle:subTitle3 creditCardPayload:v9 customInfoType:{objc_msgSend(v7, "customInfoType")}];
 
       v23 = MEMORY[0x1E69DC628];
       v43[0] = MEMORY[0x1E69E9820];
@@ -173,12 +173,12 @@ void __57__AFUIAutoFillCreditCardController__generateSuggestions___block_invoke(
       v24 = v22;
       v44 = v24;
       v25 = [v23 actionWithHandler:v43];
-      v26 = [v7 title];
-      [v25 setTitle:v26];
+      title2 = [v7 title];
+      [v25 setTitle:title2];
 
       [v25 setSubtitle:v18];
       [v25 setImage:v38];
-      [v40 addObject:v25];
+      [array addObject:v25];
 
       objc_destroyWeak(&v45);
       ++v6;
@@ -204,8 +204,8 @@ void __57__AFUIAutoFillCreditCardController__generateSuggestions___block_invoke(
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:1];
   v33 = [v31 menuWithTitle:&stru_1F4E9A028 image:0 identifier:0 options:1 children:v32];
 
-  [v40 addObject:v33];
-  v34 = [MEMORY[0x1E69DCC60] menuWithChildren:v40];
+  [array addObject:v33];
+  v34 = [MEMORY[0x1E69DCC60] menuWithChildren:array];
 
   objc_destroyWeak(&v42);
   objc_destroyWeak(&location);
@@ -227,35 +227,35 @@ void __66__AFUIAutoFillCreditCardController__menuUIElementsForSuggestions___bloc
   [WeakRetained _openSettings];
 }
 
-+ (id)dateStringTextContentType:(id)a3 date:(id)a4 placeholderHint:(id)a5
++ (id)dateStringTextContentType:(id)type date:(id)date placeholderHint:(id)hint
 {
-  v6 = a3;
+  typeCopy = type;
   v7 = MEMORY[0x1E695DEE8];
-  v8 = a4;
+  dateCopy = date;
   v9 = [v7 alloc];
   v10 = [v9 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  v11 = [v10 components:12 fromDate:v8];
+  v11 = [v10 components:12 fromDate:dateCopy];
 
-  if ([v6 isEqualToString:@"cc-exp"])
+  if ([typeCopy isEqualToString:@"cc-exp"])
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%02ld/%02ld", objc_msgSend(v11, "month"), objc_msgSend(v11, "year")];
     v14 = LABEL_8:;
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"cc-exp-month"])
+  if ([typeCopy isEqualToString:@"cc-exp-month"])
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v11 month];
+    month = [v11 month];
 LABEL_7:
-    [v12 stringWithFormat:@"%02ld", v13, v16];
+    [v12 stringWithFormat:@"%02ld", month, v16];
     goto LABEL_8;
   }
 
-  if ([v6 isEqualToString:@"cc-exp-year"])
+  if ([typeCopy isEqualToString:@"cc-exp-year"])
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v11 year];
+    month = [v11 year];
     goto LABEL_7;
   }
 
@@ -265,19 +265,19 @@ LABEL_9:
   return v14;
 }
 
-- (void)_performTextOperationsWithSuggestion:(id)a3
+- (void)_performTextOperationsWithSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__AFUIAutoFillCreditCardController__performTextOperationsWithSuggestion___block_invoke;
   v16[3] = &unk_1E84245A8;
   v16[4] = self;
-  v5 = v4;
+  v5 = suggestionCopy;
   v17 = v5;
   v6 = MEMORY[0x1D38AFC90](v16);
   v7 = self->_documentTraits;
-  v8 = [(AFUIAutoFillCreditCardController *)self modalUIDelegate];
+  modalUIDelegate = [(AFUIAutoFillCreditCardController *)self modalUIDelegate];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__AFUIAutoFillCreditCardController__performTextOperationsWithSuggestion___block_invoke_4;
@@ -288,7 +288,7 @@ LABEL_9:
   v9 = v6;
   v10 = v7;
   v11 = v5;
-  [v8 authenticationWillBeginForSessionUUID:0 completion:v12];
+  [modalUIDelegate authenticationWillBeginForSessionUUID:0 completion:v12];
 }
 
 void __73__AFUIAutoFillCreditCardController__performTextOperationsWithSuggestion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -444,9 +444,9 @@ void __73__AFUIAutoFillCreditCardController__performTextOperationsWithSuggestion
   v3 = v2;
   _Block_object_dispose(&v8, 8);
   v4 = objc_alloc_init(v2);
-  v5 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v6 = [v4 urlToListOfCards];
-  [v5 openSensitiveURL:v6 withOptions:0];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  urlToListOfCards = [v4 urlToListOfCards];
+  [defaultWorkspace openSensitiveURL:urlToListOfCards withOptions:0];
 }
 
 - (AFUIModalUIDelegate)modalUIDelegate

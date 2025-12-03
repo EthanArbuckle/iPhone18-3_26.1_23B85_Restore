@@ -2,13 +2,13 @@
 - (CGAffineTransform)coordinateAdjustment;
 - (double)scale;
 - (void)dealloc;
-- (void)setCoordinateAdjustment:(CGAffineTransform *)a3;
-- (void)setFrame:(__CTFrame *)a3;
+- (void)setCoordinateAdjustment:(CGAffineTransform *)adjustment;
+- (void)setFrame:(__CTFrame *)frame;
 @end
 
 @implementation _UIVectorTextLayoutInfo
 
-- (void)setFrame:(__CTFrame *)a3
+- (void)setFrame:(__CTFrame *)frame
 {
   frame = self->_frame;
   if (frame)
@@ -16,19 +16,19 @@
     CFRelease(frame);
   }
 
-  self->_frame = a3;
-  if (a3)
+  self->_frame = frame;
+  if (frame)
   {
 
-    CFRetain(a3);
+    CFRetain(frame);
   }
 }
 
 - (double)scale
 {
-  v2 = [(_UIVectorTextLayoutInfo *)self parameters];
-  v3 = [v2 traitCollection];
-  [v3 displayScale];
+  parameters = [(_UIVectorTextLayoutInfo *)self parameters];
+  traitCollection = [parameters traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   result = 1.0;
@@ -63,11 +63,11 @@
   return self;
 }
 
-- (void)setCoordinateAdjustment:(CGAffineTransform *)a3
+- (void)setCoordinateAdjustment:(CGAffineTransform *)adjustment
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_coordinateAdjustment.tx = *&a3->tx;
+  v3 = *&adjustment->a;
+  v4 = *&adjustment->c;
+  *&self->_coordinateAdjustment.tx = *&adjustment->tx;
   *&self->_coordinateAdjustment.c = v4;
   *&self->_coordinateAdjustment.a = v3;
 }

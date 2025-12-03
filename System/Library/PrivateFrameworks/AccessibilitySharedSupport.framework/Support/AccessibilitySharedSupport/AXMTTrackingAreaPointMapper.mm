@@ -1,25 +1,25 @@
 @interface AXMTTrackingAreaPointMapper
-+ (CGRect)trackingAreaForFaceBounds:(CGRect)a3 noseCenter:(CGPoint)a4;
-- (AXMTTrackingAreaPointMapper)initWithTrackingAreaBounds:(CGRect)a3 lockTrackingAreaPosition:(BOOL)a4;
-- (AXMTTrackingAreaPointMapper)initWithTrackingAreaBounds:(CGRect)a3 lockTrackingAreaPosition:(BOOL)a4 center:(CGPoint)a5;
-- (BOOL)updateTrackedPoint:(CGPoint)a3;
++ (CGRect)trackingAreaForFaceBounds:(CGRect)bounds noseCenter:(CGPoint)center;
+- (AXMTTrackingAreaPointMapper)initWithTrackingAreaBounds:(CGRect)bounds lockTrackingAreaPosition:(BOOL)position;
+- (AXMTTrackingAreaPointMapper)initWithTrackingAreaBounds:(CGRect)bounds lockTrackingAreaPosition:(BOOL)position center:(CGPoint)center;
+- (BOOL)updateTrackedPoint:(CGPoint)point;
 - (CGPoint)normalizedTrackedPoint;
 - (CGPoint)trackingAreaCenter;
 - (CGRect)trackingAreaBounds;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)resetTrackingAreaBounds:(CGRect)a3 lockTrackingAreaPosition:(BOOL)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)resetTrackingAreaBounds:(CGRect)bounds lockTrackingAreaPosition:(BOOL)position;
 @end
 
 @implementation AXMTTrackingAreaPointMapper
 
-- (AXMTTrackingAreaPointMapper)initWithTrackingAreaBounds:(CGRect)a3 lockTrackingAreaPosition:(BOOL)a4
+- (AXMTTrackingAreaPointMapper)initWithTrackingAreaBounds:(CGRect)bounds lockTrackingAreaPosition:(BOOL)position
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  positionCopy = position;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v12.receiver = self;
   v12.super_class = AXMTTrackingAreaPointMapper;
   v9 = [(AXMTTrackingAreaPointMapper *)&v12 init];
@@ -28,18 +28,18 @@
     v10 = NSStringFromSelector("trackingAreaBounds");
     [(AXMTTrackingAreaPointMapper *)v9 addObserver:v9 forKeyPath:v10 options:1 context:off_1000540D0];
 
-    [(AXMTTrackingAreaPointMapper *)v9 resetTrackingAreaBounds:v4 lockTrackingAreaPosition:x, y, width, height];
+    [(AXMTTrackingAreaPointMapper *)v9 resetTrackingAreaBounds:positionCopy lockTrackingAreaPosition:x, y, width, height];
     v9->__useCustomCenter = 0;
   }
 
   return v9;
 }
 
-- (AXMTTrackingAreaPointMapper)initWithTrackingAreaBounds:(CGRect)a3 lockTrackingAreaPosition:(BOOL)a4 center:(CGPoint)a5
+- (AXMTTrackingAreaPointMapper)initWithTrackingAreaBounds:(CGRect)bounds lockTrackingAreaPosition:(BOOL)position center:(CGPoint)center
 {
-  y = a5.y;
-  x = a5.x;
-  result = [(AXMTTrackingAreaPointMapper *)self initWithTrackingAreaBounds:a4 lockTrackingAreaPosition:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  y = center.y;
+  x = center.x;
+  result = [(AXMTTrackingAreaPointMapper *)self initWithTrackingAreaBounds:position lockTrackingAreaPosition:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (result)
   {
     result->_trackingAreaCenter.x = x;
@@ -60,11 +60,11 @@
   [(AXMTTrackingAreaPointMapper *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_1000540D0 == a6)
+  if (off_1000540D0 == context)
   {
-    v7 = [a5 objectForKeyedSubscript:{NSKeyValueChangeNewKey, a4}];
+    v7 = [change objectForKeyedSubscript:{NSKeyValueChangeNewKey, object}];
     [v7 rectValue];
     v9 = v8;
     v11 = v10;
@@ -84,22 +84,22 @@
   {
     v16.receiver = self;
     v16.super_class = AXMTTrackingAreaPointMapper;
-    [(AXMTTrackingAreaPointMapper *)&v16 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(AXMTTrackingAreaPointMapper *)&v16 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)resetTrackingAreaBounds:(CGRect)a3 lockTrackingAreaPosition:(BOOL)a4
+- (void)resetTrackingAreaBounds:(CGRect)bounds lockTrackingAreaPosition:(BOOL)position
 {
-  v4 = a4;
-  [(AXMTTrackingAreaPointMapper *)self setTrackingAreaBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  positionCopy = position;
+  [(AXMTTrackingAreaPointMapper *)self setTrackingAreaBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 
-  [(AXMTTrackingAreaPointMapper *)self set_trackingAreaPositionLocked:v4];
+  [(AXMTTrackingAreaPointMapper *)self set_trackingAreaPositionLocked:positionCopy];
 }
 
-- (BOOL)updateTrackedPoint:(CGPoint)a3
+- (BOOL)updateTrackedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AXMTTrackingAreaPointMapper *)self trackingAreaCenter];
   v7 = x - v6;
   [(AXMTTrackingAreaPointMapper *)self _horizontalNormalizationFactor];
@@ -118,12 +118,12 @@
   return 0;
 }
 
-+ (CGRect)trackingAreaForFaceBounds:(CGRect)a3 noseCenter:(CGPoint)a4
++ (CGRect)trackingAreaForFaceBounds:(CGRect)bounds noseCenter:(CGPoint)center
 {
-  v4 = a3.origin.x + a3.size.width * 0.2;
-  v5 = a3.size.width * 0.6;
-  v6 = a3.size.height * 0.5;
-  v7 = a4.y + v6 * -0.5;
+  v4 = bounds.origin.x + bounds.size.width * 0.2;
+  v5 = bounds.size.width * 0.6;
+  v6 = bounds.size.height * 0.5;
+  v7 = center.y + v6 * -0.5;
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v7;

@@ -1,19 +1,19 @@
 @interface MADEmbeddingResult
-- (MADEmbeddingResult)initWithCoder:(id)a3;
-- (MADEmbeddingResult)initWithVersion:(unint64_t)a3 data:(id)a4 type:(unint64_t)a5;
-- (MADEmbeddingResult)initWithVersion:(unint64_t)a3 data:(id)a4 type:(unint64_t)a5 shape:(id)a6;
+- (MADEmbeddingResult)initWithCoder:(id)coder;
+- (MADEmbeddingResult)initWithVersion:(unint64_t)version data:(id)data type:(unint64_t)type;
+- (MADEmbeddingResult)initWithVersion:(unint64_t)version data:(id)data type:(unint64_t)type shape:(id)shape;
 - (id)description;
 - (unint64_t)count;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADEmbeddingResult
 
-- (MADEmbeddingResult)initWithVersion:(unint64_t)a3 data:(id)a4 type:(unint64_t)a5 shape:(id)a6
+- (MADEmbeddingResult)initWithVersion:(unint64_t)version data:(id)data type:(unint64_t)type shape:(id)shape
 {
   v37 = *MEMORY[0x1E69E9840];
-  v25 = a4;
-  v26 = a6;
+  dataCopy = data;
+  shapeCopy = shape;
   v31.receiver = self;
   v31.super_class = MADEmbeddingResult;
   v11 = [(MADEmbeddingResult *)&v31 init];
@@ -22,14 +22,14 @@
     goto LABEL_19;
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
-    v12 = [v25 length] >> 1;
+    v12 = [dataCopy length] >> 1;
   }
 
   else
   {
-    if (a5 != 2)
+    if (type != 2)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
@@ -48,16 +48,16 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v12 = [v25 length] >> 2;
+    v12 = [dataCopy length] >> 2;
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = v26;
+  v13 = shapeCopy;
   v14 = [v13 countByEnumeratingWithState:&v27 objects:v36 count:16];
-  v24 = a3;
+  versionCopy = version;
   if (v14)
   {
     v15 = *v28;
@@ -102,10 +102,10 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v11->_version = v24;
-  objc_storeStrong(&v11->_data, a4);
-  v11->_type = a5;
-  objc_storeStrong(&v11->_shape, a6);
+  v11->_version = versionCopy;
+  objc_storeStrong(&v11->_data, data);
+  v11->_type = type;
+  objc_storeStrong(&v11->_shape, shape);
 LABEL_19:
   v22 = v11;
 LABEL_24:
@@ -113,27 +113,27 @@ LABEL_24:
   return v22;
 }
 
-- (MADEmbeddingResult)initWithVersion:(unint64_t)a3 data:(id)a4 type:(unint64_t)a5
+- (MADEmbeddingResult)initWithVersion:(unint64_t)version data:(id)data type:(unint64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (a5 == 2)
+  dataCopy = data;
+  v9 = dataCopy;
+  if (type == 2)
   {
-    v10 = [v8 length] >> 2;
+    v10 = [dataCopy length] >> 2;
     goto LABEL_5;
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
-    v10 = [v8 length] >> 1;
+    v10 = [dataCopy length] >> 1;
 LABEL_5:
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{v10, &unk_1F4925DD0}];
     v16[1] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
-    self = [(MADEmbeddingResult *)self initWithVersion:a3 data:v9 type:a5 shape:v12];
+    self = [(MADEmbeddingResult *)self initWithVersion:version data:v9 type:type shape:v12];
 
-    v13 = self;
+    selfCopy = self;
     goto LABEL_9;
   }
 
@@ -141,38 +141,38 @@ LABEL_5:
   {
     type = self->_type;
     *buf = 67109120;
-    v18 = type;
+    typeCopy = type;
     _os_log_impl(&dword_1C972C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Embedding has unknown element type (%d); cannot derive count", buf, 8u);
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_9:
 
-  return v13;
+  return selfCopy;
 }
 
-- (MADEmbeddingResult)initWithCoder:(id)a3
+- (MADEmbeddingResult)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MADEmbeddingResult;
   v5 = [(MADEmbeddingResult *)&v14 init];
   if (v5)
   {
-    v5->_version = [v4 decodeIntegerForKey:@"Version"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"Version"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
     data = v5->_data;
     v5->_data = v6;
 
-    v5->_type = [v4 decodeIntegerForKey:@"Type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"Type"];
     v8 = MEMORY[0x1E695DFD8];
     v15[0] = objc_opt_class();
     v15[1] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     v10 = [v8 setWithArray:v9];
 
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Shape"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Shape"];
     shape = v5->_shape;
     v5->_shape = v11;
   }
@@ -180,13 +180,13 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_version forKey:@"Version"];
-  [v4 encodeObject:self->_data forKey:@"Data"];
-  [v4 encodeInteger:self->_type forKey:@"Type"];
-  [v4 encodeObject:self->_shape forKey:@"Shape"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_version forKey:@"Version"];
+  [coderCopy encodeObject:self->_data forKey:@"Data"];
+  [coderCopy encodeInteger:self->_type forKey:@"Type"];
+  [coderCopy encodeObject:self->_shape forKey:@"Shape"];
 }
 
 - (unint64_t)count
@@ -216,17 +216,17 @@ LABEL_9:
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"version: %d, ", self->_version];
-  [v3 appendFormat:@"type: %d, ", self->_type];
-  [v3 appendFormat:@"shape: %@, ", self->_shape];
-  [v3 appendFormat:@"data: %@>", self->_data];
+  [string appendFormat:@"version: %d, ", self->_version];
+  [string appendFormat:@"type: %d, ", self->_type];
+  [string appendFormat:@"shape: %@, ", self->_shape];
+  [string appendFormat:@"data: %@>", self->_data];
 
-  return v3;
+  return string;
 }
 
 @end

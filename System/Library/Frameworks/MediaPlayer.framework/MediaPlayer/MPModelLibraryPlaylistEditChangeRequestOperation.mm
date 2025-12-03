@@ -1,10 +1,10 @@
 @interface MPModelLibraryPlaylistEditChangeRequestOperation
 + (id)requiredPlaylistEntryProperties;
 - (BOOL)_isCloudLibraryEnabled;
-- (BOOL)_shouldUploadTracklistToCloudForPlaylist:(id)a3;
+- (BOOL)_shouldUploadTracklistToCloudForPlaylist:(id)playlist;
 - (id)_collaborationTrackEdits;
-- (id)_getUpdatedPlaylistPropertiesWithError:(id *)a3;
-- (void)_loadUpdatedTrackListWithCompletion:(id)a3;
+- (id)_getUpdatedPlaylistPropertiesWithError:(id *)error;
+- (void)_loadUpdatedTrackListWithCompletion:(id)completion;
 - (void)execute;
 @end
 
@@ -25,28 +25,28 @@
 
 - (id)_collaborationTrackEdits
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self request];
-  v6 = [v5 trackListChanges];
-  v7 = v6;
-  if (v6 && [v6 hasChanges])
+  array = [MEMORY[0x1E695DF70] array];
+  request = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self request];
+  trackListChanges = [request trackListChanges];
+  v7 = trackListChanges;
+  if (trackListChanges && [trackListChanges hasChanges])
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    v9 = [v5 playlistEntries];
-    v18 = [v9 allItems];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    playlistEntries = [request playlistEntries];
+    allItems = [playlistEntries allItems];
 
-    v10 = [v7 insertedIndexes];
+    insertedIndexes = [v7 insertedIndexes];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __76__MPModelLibraryPlaylistEditChangeRequestOperation__collaborationTrackEdits__block_invoke;
     v31[3] = &unk_1E767B418;
-    v11 = v18;
+    v11 = allItems;
     v35 = a2;
     v32 = v11;
-    v33 = self;
-    v12 = v8;
+    selfCopy = self;
+    v12 = dictionary;
     v34 = v12;
-    [v10 enumerateIndexesUsingBlock:v31];
+    [insertedIndexes enumerateIndexesUsingBlock:v31];
 
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
@@ -55,7 +55,7 @@
     v13 = v11;
     v30 = a2;
     v27 = v13;
-    v28 = self;
+    selfCopy2 = self;
     v14 = v12;
     v29 = v14;
     [v7 enumerateMovesUsingBlock:v26];
@@ -63,22 +63,22 @@
     v24[1] = 3221225472;
     v24[2] = __76__MPModelLibraryPlaylistEditChangeRequestOperation__collaborationTrackEdits__block_invoke_4;
     v24[3] = &unk_1E767B460;
-    v15 = v4;
+    v15 = array;
     v25 = v15;
     [v14 msv_enumerateKeysAndObjectsOrderedByKeyComparator:&__block_literal_global_72 usingBlock:v24];
-    v16 = [v7 deletedIndexes];
+    deletedIndexes = [v7 deletedIndexes];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __76__MPModelLibraryPlaylistEditChangeRequestOperation__collaborationTrackEdits__block_invoke_5;
     v19[3] = &unk_1E767B418;
     v23 = a2;
-    v20 = v5;
-    v21 = self;
+    v20 = request;
+    selfCopy3 = self;
     v22 = v15;
-    [v16 enumerateIndexesUsingBlock:v19];
+    [deletedIndexes enumerateIndexesUsingBlock:v19];
   }
 
-  return v4;
+  return array;
 }
 
 void __76__MPModelLibraryPlaylistEditChangeRequestOperation__collaborationTrackEdits__block_invoke(uint64_t a1, uint64_t a2)
@@ -171,39 +171,39 @@ void __76__MPModelLibraryPlaylistEditChangeRequestOperation__collaborationTrackE
   [v6 addObject:v7];
 }
 
-- (void)_loadUpdatedTrackListWithCompletion:(id)a3
+- (void)_loadUpdatedTrackListWithCompletion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self request];
-  v6 = [v5 playlistEntries];
-  v7 = [v5 mediaLibrary];
-  v8 = [v5 playlist];
-  if (![v8 hasLoadedValueForKey:@"MPModelPropertyPlaylistType"])
+  completionCopy = completion;
+  request = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self request];
+  playlistEntries = [request playlistEntries];
+  mediaLibrary = [request mediaLibrary];
+  playlist = [request playlist];
+  if (![playlist hasLoadedValueForKey:@"MPModelPropertyPlaylistType"])
   {
     v9 = 0;
-    if (!v8)
+    if (!playlist)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v10 = 0;
+    createFolder = 0;
     goto LABEL_6;
   }
 
-  v9 = [v8 type] == 3;
-  if (v8)
+  v9 = [playlist type] == 3;
+  if (playlist)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [v5 createFolder];
+  createFolder = [request createFolder];
 LABEL_6:
-  if (v6 == 0 || v9 || v10)
+  if (playlistEntries == 0 || v9 || createFolder)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -213,7 +213,7 @@ LABEL_6:
     v42[2] = 0x3032000000;
     v42[3] = __Block_byref_object_copy__31598;
     v42[4] = __Block_byref_object_dispose__31599;
-    v43 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "totalItemCount")}];
+    v43 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(playlistEntries, "totalItemCount")}];
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v38[0] = 0;
     v38[1] = v38;
@@ -237,7 +237,7 @@ LABEL_6:
     v24[1] = 3221225472;
     v24[2] = __88__MPModelLibraryPlaylistEditChangeRequestOperation__loadUpdatedTrackListWithCompletion___block_invoke;
     v24[3] = &unk_1E767B3A0;
-    v25 = v6;
+    v25 = playlistEntries;
     v26 = v38;
     v27 = &v29;
     v28 = v42;
@@ -252,7 +252,7 @@ LABEL_6:
     v19 = v13;
     v14 = v11;
     v20 = v14;
-    v21 = v4;
+    v21 = completionCopy;
     v23 = v42;
     v15 = _Block_copy(aBlock);
     v16 = v15;
@@ -476,32 +476,32 @@ void __88__MPModelLibraryPlaylistEditChangeRequestOperation__loadUpdatedTrackLis
   }
 }
 
-- (id)_getUpdatedPlaylistPropertiesWithError:(id *)a3
+- (id)_getUpdatedPlaylistPropertiesWithError:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self request];
-  v34 = [v6 shouldCreatePlaylist];
-  v7 = [v6 playlistName];
-  v35 = v7;
-  if (v7)
+  request = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self request];
+  shouldCreatePlaylist = [request shouldCreatePlaylist];
+  playlistName = [request playlistName];
+  v35 = playlistName;
+  if (playlistName)
   {
-    [v5 setObject:v7 forKey:@"name"];
+    [v5 setObject:playlistName forKey:@"name"];
   }
 
-  v37 = [v6 playlist];
-  v36 = [v6 parentPlaylist];
-  if (v36)
+  playlist = [request playlist];
+  parentPlaylist = [request parentPlaylist];
+  if (parentPlaylist)
   {
-    v8 = [v37 identifiers];
-    v9 = [v8 library];
-    v10 = [v9 persistentID];
+    identifiers = [playlist identifiers];
+    library = [identifiers library];
+    persistentID = [library persistentID];
 
-    v11 = [v36 identifiers];
-    v12 = [v11 library];
-    v13 = [v12 persistentID];
+    identifiers2 = [parentPlaylist identifiers];
+    library2 = [identifiers2 library];
+    persistentID2 = [library2 persistentID];
 
-    if (!v13)
+    if (!persistentID2)
     {
       v17 = [MEMORY[0x1E696AD98] numberWithLongLong:0];
       [v5 setObject:v17 forKey:@"parentPersistentID"];
@@ -509,13 +509,13 @@ void __88__MPModelLibraryPlaylistEditChangeRequestOperation__loadUpdatedTrackLis
       goto LABEL_18;
     }
 
-    v14 = [v6 mediaLibrary];
-    v15 = v14;
-    if (v14 && [v14 playlistExistsWithPersistentID:v13])
+    mediaLibrary = [request mediaLibrary];
+    playlistDescription = mediaLibrary;
+    if (mediaLibrary && [mediaLibrary playlistExistsWithPersistentID:persistentID2])
     {
-      if (v10 != v13)
+      if (persistentID != persistentID2)
       {
-        v18 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
+        v18 = [MEMORY[0x1E696AD98] numberWithLongLong:persistentID2];
         [v5 setObject:v18 forKey:@"parentPersistentID"];
 
 LABEL_17:
@@ -526,11 +526,11 @@ LABEL_17:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v39 = self;
+        selfCopy2 = self;
         v40 = 2048;
-        v41 = v10;
+        v41 = persistentID;
         v42 = 2048;
-        v43 = v10;
+        v43 = persistentID;
         _os_log_impl(&dword_1A238D000, v16, OS_LOG_TYPE_ERROR, "%{public}@ Can't set parent persistent ID=%lld for playlist with persistent ID=%lld since the persistent IDs match", buf, 0x20u);
       }
     }
@@ -541,18 +541,18 @@ LABEL_17:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v39 = self;
+        selfCopy2 = self;
         v40 = 2048;
-        v41 = v13;
+        v41 = persistentID2;
         v42 = 2048;
-        v43 = v10;
+        v43 = persistentID;
         _os_log_impl(&dword_1A238D000, v16, OS_LOG_TYPE_ERROR, "%{public}@ Can't set parent persistent ID=%lld for playlist with persistent ID=%lld since the parent playlist isn't in the database", buf, 0x20u);
       }
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPModelLibraryPlaylistEditChangeRequestOperationErrorDomain" code:-10005 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPModelLibraryPlaylistEditChangeRequestOperationErrorDomain" code:-10005 userInfo:0];
       goto LABEL_54;
     }
 
@@ -560,15 +560,15 @@ LABEL_17:
   }
 
 LABEL_18:
-  v15 = [v6 playlistDescription];
-  if (v15)
+  playlistDescription = [request playlistDescription];
+  if (playlistDescription)
   {
-    [v5 setObject:v15 forKey:@"descriptionInfo"];
+    [v5 setObject:playlistDescription forKey:@"descriptionInfo"];
   }
 
-  if ([v37 hasLoadedValueForKey:@"MPModelPropertyPlaylistType"])
+  if ([playlist hasLoadedValueForKey:@"MPModelPropertyPlaylistType"])
   {
-    v19 = [v37 type] == 3;
+    v19 = [playlist type] == 3;
   }
 
   else
@@ -576,10 +576,10 @@ LABEL_18:
     v19 = 0;
   }
 
-  if (((v37 == 0) & [v6 createFolder]) == 1)
+  if (((playlist == 0) & [request createFolder]) == 1)
   {
-    v20 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v5 setObject:v20 forKey:@"isFolder"];
+    isPublicPlaylist = [MEMORY[0x1E696AD98] numberWithBool:1];
+    [v5 setObject:isPublicPlaylist forKey:@"isFolder"];
   }
 
   else
@@ -589,77 +589,77 @@ LABEL_18:
       goto LABEL_32;
     }
 
-    v20 = [v6 isPublicPlaylist];
-    if (v20)
+    isPublicPlaylist = [request isPublicPlaylist];
+    if (isPublicPlaylist)
     {
-      [v5 setObject:v20 forKey:@"cloudIsPublic"];
+      [v5 setObject:isPublicPlaylist forKey:@"cloudIsPublic"];
     }
 
-    v21 = [v6 isVisiblePlaylist];
-    if (v21)
+    isVisiblePlaylist = [request isVisiblePlaylist];
+    if (isVisiblePlaylist)
     {
-      [v5 setObject:v21 forKey:@"cloudIsVisible"];
+      [v5 setObject:isVisiblePlaylist forKey:@"cloudIsVisible"];
     }
   }
 
 LABEL_32:
-  v22 = [v6 isCuratorPlaylist];
-  if (v22)
+  isCuratorPlaylist = [request isCuratorPlaylist];
+  if (isCuratorPlaylist)
   {
-    [v5 setObject:v22 forKey:@"cloudIsCuratorPlaylist"];
+    [v5 setObject:isCuratorPlaylist forKey:@"cloudIsCuratorPlaylist"];
   }
 
-  v23 = [v6 isOwner];
-  if (v23)
+  isOwner = [request isOwner];
+  if (isOwner)
   {
-    [v5 setObject:v23 forKey:@"iO"];
+    [v5 setObject:isOwner forKey:@"iO"];
   }
 
-  v24 = [v6 authorStoreIdentifier];
-  v25 = v24;
-  if (v24)
+  authorStoreIdentifier = [request authorStoreIdentifier];
+  v25 = authorStoreIdentifier;
+  if (authorStoreIdentifier)
   {
-    v26 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v24, "integerValue")}];
+    v26 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(authorStoreIdentifier, "integerValue")}];
     [v5 setObject:v26 forKey:@"cloudAuthorStoreID"];
   }
 
-  v27 = [v6 editSessionID];
-  if (v27)
+  editSessionID = [request editSessionID];
+  if (editSessionID)
   {
-    [v5 setObject:v27 forKey:@"editSessionID"];
+    [v5 setObject:editSessionID forKey:@"editSessionID"];
   }
 
-  v28 = [v6 coverArtworkRecipe];
-  v29 = [v6 playlistEntries];
-  v30 = v29;
-  if (v34)
+  coverArtworkRecipe = [request coverArtworkRecipe];
+  playlistEntries = [request playlistEntries];
+  v30 = playlistEntries;
+  if (shouldCreatePlaylist)
   {
-    v31 = [MEMORY[0x1E695DF00] now];
-    [v5 setObject:v31 forKey:@"dateCreated"];
+    date = [MEMORY[0x1E695DF00] now];
+    [v5 setObject:date forKey:@"dateCreated"];
 LABEL_48:
 
     goto LABEL_49;
   }
 
-  if (v35 || v15 || v29 || v28 || [v6 didSetPlaylistUserImage])
+  if (v35 || playlistDescription || playlistEntries || coverArtworkRecipe || [request didSetPlaylistUserImage])
   {
-    v31 = [MEMORY[0x1E695DF00] date];
-    [v5 setObject:v31 forKey:@"dateModified"];
+    date = [MEMORY[0x1E695DF00] date];
+    [v5 setObject:date forKey:@"dateModified"];
     goto LABEL_48;
   }
 
 LABEL_49:
-  v32 = [v6 playlistUserImage];
-  if (v32)
+  playlistUserImage = [request playlistUserImage];
+  if (playlistUserImage)
   {
 
-    v28 = @"{version:0.0}";
+    coverArtworkRecipe = @"{version:0.0}";
 LABEL_52:
-    [v5 setObject:v28 forKey:@"coverArtworkRecipe"];
+    [v5 setObject:coverArtworkRecipe forKey:@"coverArtworkRecipe"];
     goto LABEL_53;
   }
 
-  if (v28)
+  if (coverArtworkRecipe)
   {
     goto LABEL_52;
   }
@@ -671,11 +671,11 @@ LABEL_54:
   return v5;
 }
 
-- (BOOL)_shouldUploadTracklistToCloudForPlaylist:(id)a3
+- (BOOL)_shouldUploadTracklistToCloudForPlaylist:(id)playlist
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 hasLoadedValueForKey:@"MPModelPropertyPlaylistUserEditableComponents"])
+  playlistCopy = playlist;
+  v4 = playlistCopy;
+  if (playlistCopy && [playlistCopy hasLoadedValueForKey:@"MPModelPropertyPlaylistUserEditableComponents"])
   {
     v5 = [v4 userEditableComponents] & 1;
   }
@@ -690,32 +690,32 @@ LABEL_54:
 
 - (BOOL)_isCloudLibraryEnabled
 {
-  v2 = [(MPAsyncOperation *)self userIdentity];
-  v3 = [MPCloudController controllerWithUserIdentity:v2];
-  v4 = [v3 isCloudLibraryEnabled];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v3 = [MPCloudController controllerWithUserIdentity:userIdentity];
+  isCloudLibraryEnabled = [v3 isCloudLibraryEnabled];
 
-  return v4;
+  return isCloudLibraryEnabled;
 }
 
 - (void)execute
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self request];
-  v4 = [v3 playlist];
-  v15 = [v3 mediaLibrary];
-  v5 = [v3 shouldCreatePlaylist];
-  v6 = [v3 createFolder];
-  if ([v4 hasLoadedValueForKey:@"MPModelPropertyPlaylistIsCollaborative"])
+  request = [(MPModelLibraryPlaylistEditChangeRequestOperation *)self request];
+  playlist = [request playlist];
+  mediaLibrary = [request mediaLibrary];
+  shouldCreatePlaylist = [request shouldCreatePlaylist];
+  createFolder = [request createFolder];
+  if ([playlist hasLoadedValueForKey:@"MPModelPropertyPlaylistIsCollaborative"])
   {
-    v7 = [v4 isCollaborative];
+    isCollaborative = [playlist isCollaborative];
   }
 
   else
   {
-    v7 = 0;
+    isCollaborative = 0;
   }
 
-  v14 = [v3 coverArtworkRecipe];
+  coverArtworkRecipe = [request coverArtworkRecipe];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -726,9 +726,9 @@ LABEL_54:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v35 = self;
+    selfCopy = self;
     v36 = 2114;
-    v37 = v4;
+    v37 = playlist;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting operation with playlist %{public}@", buf, 0x16u);
   }
 
@@ -759,19 +759,19 @@ LABEL_54:
     v18[1] = 3221225472;
     v18[2] = __59__MPModelLibraryPlaylistEditChangeRequestOperation_execute__block_invoke_5;
     v18[3] = &unk_1E767B310;
-    v13 = v3;
-    v28 = v5;
+    v13 = request;
+    v28 = shouldCreatePlaylist;
     v19 = v13;
-    v20 = self;
+    selfCopy2 = self;
     v21 = v11;
-    v22 = v15;
+    v22 = mediaLibrary;
     v27 = v16;
-    v29 = v6;
-    v23 = v4;
+    v29 = createFolder;
+    v23 = playlist;
     v25 = v9;
     v26 = v10;
-    v24 = v14;
-    v30 = v7;
+    v24 = coverArtworkRecipe;
+    v30 = isCollaborative;
     [(MPModelLibraryPlaylistEditChangeRequestOperation *)self _loadUpdatedTrackListWithCompletion:v18];
   }
 

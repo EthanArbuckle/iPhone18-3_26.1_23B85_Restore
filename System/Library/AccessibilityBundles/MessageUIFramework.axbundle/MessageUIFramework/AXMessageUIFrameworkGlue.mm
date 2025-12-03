@@ -9,8 +9,8 @@
 {
   if (!_Failover)
   {
-    v3 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v3 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_415 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_424];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_415 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_424];
 
     v4 = [objc_allocWithZone(AXMessageUIFrameworkGlue) init];
     v5 = _Failover;
@@ -20,13 +20,13 @@
   if ([*MEMORY[0x29EDC8008] _accessibilityBoolValueForKey:@"_accessibilityWebKitLoaded"])
   {
 
-    [a1 _webKitInitialized];
+    [self _webKitInitialized];
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v6 addObserver:a1 selector:sel__webKitInitialized name:@"UIApplicationLoadedWebKit" object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__webKitInitialized name:@"UIApplicationLoadedWebKit" object:0];
   }
 }
 

@@ -1,35 +1,35 @@
 @interface GKDiscoveryManager
-+ (id)parseDeviceIDFromServiceName:(id)a3;
-- (GKDiscoveryManager)initWithDomain:(id)a3 type:(id)a4;
++ (id)parseDeviceIDFromServiceName:(id)name;
+- (GKDiscoveryManager)initWithDomain:(id)domain type:(id)type;
 - (id)generateDeviceID;
 - (id)peersList;
-- (id)serviceNameforDeviceID:(id)a3 playerID:(id)a4;
-- (id)startAdvertisingLocalPlayer:(id)a3 discoveryInfo:(id)a4;
-- (void)addInterface:(unsigned int)a3 withDiscoveryInfo:(id)a4 forPeerWithServiceName:(id)a5;
+- (id)serviceNameforDeviceID:(id)d playerID:(id)iD;
+- (id)startAdvertisingLocalPlayer:(id)player discoveryInfo:(id)info;
+- (void)addInterface:(unsigned int)interface withDiscoveryInfo:(id)info forPeerWithServiceName:(id)name;
 - (void)cleanUpPeersForBrowse;
 - (void)dealloc;
-- (void)didLosePeer:(id)a3;
-- (void)forgetParticipant:(id)a3 deviceID:(id)a4;
-- (void)passDataToGKLayer:(id)a3 fromPeer:(id)a4;
-- (void)processEvent:(int)a3 forPeer:(id)a4 withUserInfo:(id)a5;
-- (void)removeInterface:(unsigned int)a3 forPeerWithServiceName:(id)a4;
-- (void)resolveForPeer:(id)a3;
-- (void)sendDataToParticipant:(id)a3 deviceID:(id)a4 data:(id)a5 withCompletionHandler:(id)a6;
-- (void)startBrowsingLocalPlayer:(id)a3;
+- (void)didLosePeer:(id)peer;
+- (void)forgetParticipant:(id)participant deviceID:(id)d;
+- (void)passDataToGKLayer:(id)layer fromPeer:(id)peer;
+- (void)processEvent:(int)event forPeer:(id)peer withUserInfo:(id)info;
+- (void)removeInterface:(unsigned int)interface forPeerWithServiceName:(id)name;
+- (void)resolveForPeer:(id)peer;
+- (void)sendDataToParticipant:(id)participant deviceID:(id)d data:(id)data withCompletionHandler:(id)handler;
+- (void)startBrowsingLocalPlayer:(id)player;
 - (void)stopAdvertising;
 - (void)stopBrowsing;
 @end
 
 @implementation GKDiscoveryManager
 
-- (GKDiscoveryManager)initWithDomain:(id)a3 type:(id)a4
+- (GKDiscoveryManager)initWithDomain:(id)domain type:(id)type
 {
   v8.receiver = self;
   v8.super_class = GKDiscoveryManager;
   v6 = [(GKDiscoveryManager *)&v8 init];
   if (v6)
   {
-    v6->_bonjour = [[GKDiscoveryBonjour alloc] initWithDomain:a3 type:a4];
+    v6->_bonjour = [[GKDiscoveryBonjour alloc] initWithDomain:domain type:type];
     v6->_peers = objc_alloc_init(MEMORY[0x277CBEB38]);
     v6->_peersQueue = dispatch_queue_create("com.apple.gamed.GKDiscoveryManager.peersQueue", 0);
     v6->_deviceID = [(GKDiscoveryManager *)v6 generateDeviceID];
@@ -66,12 +66,12 @@
   return v5;
 }
 
-- (void)resolveForPeer:(id)a3
+- (void)resolveForPeer:(id)peer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [a3 nextInterfaceIndex];
+  nextInterfaceIndex = [peer nextInterfaceIndex];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-  if (v5)
+  if (nextInterfaceIndex)
   {
     if (ErrorLogLevelForModule >= 7)
     {
@@ -79,9 +79,9 @@
       v8 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        if ([a3 serviceName])
+        if ([peer serviceName])
         {
-          v9 = [objc_msgSend(objc_msgSend(a3 "serviceName")];
+          v9 = [objc_msgSend(objc_msgSend(peer "serviceName")];
         }
 
         else
@@ -98,36 +98,36 @@
         WORD2(v22) = 2080;
         *(&v22 + 6) = v9;
         HIWORD(v22) = 1024;
-        LODWORD(v23) = [v5 intValue];
+        LODWORD(peerCopy) = [nextInterfaceIndex intValue];
         _os_log_impl(&dword_24E50C000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d peer [%s] attempting to resolve on interface [%d]", buf, 0x2Cu);
       }
     }
 
-    [a3 setChosenInterface:v5];
+    [peer setChosenInterface:nextInterfaceIndex];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3052000000;
     *&v22 = __Block_byref_object_copy_;
     *(&v22 + 1) = __Block_byref_object_dispose_;
-    v23 = a3;
+    peerCopy = peer;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __37__GKDiscoveryManager_resolveForPeer___block_invoke;
     v20[3] = &unk_2796830B0;
     v20[4] = self;
     v20[5] = buf;
-    [a3 startResolveTimerWithHandler:v20];
+    [peer startResolveTimerWithHandler:v20];
     bonjour = self->_bonjour;
-    v14 = [a3 serviceName];
-    v15 = [v5 intValue];
+    serviceName = [peer serviceName];
+    intValue = [nextInterfaceIndex intValue];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __37__GKDiscoveryManager_resolveForPeer___block_invoke_3;
     v19[3] = &unk_2796830D8;
-    v19[4] = a3;
+    v19[4] = peer;
     v19[5] = self;
-    v19[6] = v5;
-    [(GKDiscoveryBonjour *)bonjour resolveName:v14 onIndex:v15 withCompletionHandler:v19];
+    v19[6] = nextInterfaceIndex;
+    [(GKDiscoveryBonjour *)bonjour resolveName:serviceName onIndex:intValue withCompletionHandler:v19];
     _Block_object_dispose(buf, 8);
   }
 
@@ -139,9 +139,9 @@
       v11 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        if ([a3 serviceName])
+        if ([peer serviceName])
         {
-          v12 = [objc_msgSend(objc_msgSend(a3 "serviceName")];
+          v12 = [objc_msgSend(objc_msgSend(peer "serviceName")];
         }
 
         else
@@ -167,7 +167,7 @@
     block[2] = __37__GKDiscoveryManager_resolveForPeer___block_invoke_26;
     block[3] = &unk_279682BF0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = peer;
     dispatch_async(peersQueue, block);
   }
 
@@ -892,10 +892,10 @@ LABEL_14:
   return result;
 }
 
-- (void)processEvent:(int)a3 forPeer:(id)a4 withUserInfo:(id)a5
+- (void)processEvent:(int)event forPeer:(id)peer withUserInfo:(id)info
 {
   v49 = *MEMORY[0x277D85DE8];
-  v9 = -[NSMutableDictionary objectForKeyedSubscript:](self->_peers, "objectForKeyedSubscript:", [a4 deviceID]);
+  v9 = -[NSMutableDictionary objectForKeyedSubscript:](self->_peers, "objectForKeyedSubscript:", [peer deviceID]);
   if (!v9)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -904,9 +904,9 @@ LABEL_14:
       v14 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        if ([a4 serviceName])
+        if ([peer serviceName])
         {
-          v15 = [objc_msgSend(objc_msgSend(a4 "serviceName")];
+          v15 = [objc_msgSend(objc_msgSend(peer "serviceName")];
         }
 
         else
@@ -923,7 +923,7 @@ LABEL_14:
         v45 = 2080;
         v46 = v15;
         v47 = 1024;
-        LODWORD(v48) = a3;
+        LODWORD(v48) = event;
         _os_log_impl(&dword_24E50C000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d peer [%s] event [%d] not in dictionary anymore.", buf, 0x2Cu);
       }
     }
@@ -931,7 +931,7 @@ LABEL_14:
     goto LABEL_34;
   }
 
-  if (v9 != a4)
+  if (v9 != peer)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -939,9 +939,9 @@ LABEL_14:
       v11 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        if ([a4 serviceName])
+        if ([peer serviceName])
         {
-          v12 = [objc_msgSend(objc_msgSend(a4 "serviceName")];
+          v12 = [objc_msgSend(objc_msgSend(peer "serviceName")];
         }
 
         else
@@ -961,25 +961,25 @@ LABEL_14:
       }
     }
 
-    [objc_msgSend(a4 "sendDataBuffer")];
+    [objc_msgSend(peer "sendDataBuffer")];
 LABEL_32:
-    [objc_msgSend(a4 "connection")];
-    [a4 setConnection:0];
-    v20 = a4;
+    [objc_msgSend(peer "connection")];
+    [peer setConnection:0];
+    peerCopy2 = peer;
     v21 = 0;
 LABEL_33:
-    [v20 setState:v21];
+    [peerCopy2 setState:v21];
     goto LABEL_34;
   }
 
-  if (a3 <= 1002)
+  if (event <= 1002)
   {
-    if (a3 != 1000)
+    if (event != 1000)
     {
-      if (a3 == 1001)
+      if (event == 1001)
       {
         v29 = micro();
-        [a4 discoveryTimeStamp];
+        [peer discoveryTimeStamp];
         v31 = v30 - v29 + 3.0;
         if (v31 >= 0.0)
         {
@@ -997,9 +997,9 @@ LABEL_33:
           v34 = *MEMORY[0x277CE5818];
           if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
           {
-            if ([a4 serviceName])
+            if ([peer serviceName])
             {
-              v35 = [objc_msgSend(objc_msgSend(a4 "serviceName")];
+              v35 = [objc_msgSend(objc_msgSend(peer "serviceName")];
             }
 
             else
@@ -1027,21 +1027,21 @@ LABEL_33:
         v38[1] = 3221225472;
         v38[2] = __56__GKDiscoveryManager_processEvent_forPeer_withUserInfo___block_invoke;
         v38[3] = &unk_279682BF0;
-        v38[4] = a4;
+        v38[4] = peer;
         v38[5] = self;
         dispatch_after(v36, peersQueue, v38);
-        v20 = a4;
+        peerCopy2 = peer;
         v21 = 1;
         goto LABEL_33;
       }
 
-      if (a3 != 1002)
+      if (event != 1002)
       {
         goto LABEL_34;
       }
 
-      [a4 stopResolveTimer];
-      if ([a4 state] == 3)
+      [peer stopResolveTimer];
+      if ([peer state] == 3)
       {
         goto LABEL_34;
       }
@@ -1052,14 +1052,14 @@ LABEL_33:
     v23 = micro();
     v24 = *MEMORY[0x277D85DE8];
 
-    [a4 setDiscoveryTimeStamp:v23];
+    [peer setDiscoveryTimeStamp:v23];
   }
 
-  else if (a3 > 1004)
+  else if (event > 1004)
   {
-    if (a3 != 1005)
+    if (event != 1005)
     {
-      if (a3 == 1006)
+      if (event == 1006)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
@@ -1067,9 +1067,9 @@ LABEL_33:
           v18 = *MEMORY[0x277CE5818];
           if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
           {
-            if ([a4 serviceName])
+            if ([peer serviceName])
             {
-              v19 = [objc_msgSend(objc_msgSend(a4 "serviceName")];
+              v19 = [objc_msgSend(objc_msgSend(peer "serviceName")];
             }
 
             else
@@ -1086,7 +1086,7 @@ LABEL_33:
             v45 = 2080;
             v46 = v19;
             v47 = 1024;
-            LODWORD(v48) = [objc_msgSend(a4 "connection")];
+            LODWORD(v48) = [objc_msgSend(peer "connection")];
             _os_log_impl(&dword_24E50C000, v18, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d peer [%s] PeerDisconnected event! peerConnection retain count [%d]", buf, 0x2Cu);
           }
         }
@@ -1097,36 +1097,36 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v26 = [a5 objectForKeyedSubscript:@"GKDiscoveryManagerUserInfoConnectionKey"];
+    v26 = [info objectForKeyedSubscript:@"GKDiscoveryManagerUserInfoConnectionKey"];
     if (v26)
     {
       v27 = v26;
-      [a4 setConnection:v26];
-      if ([a4 trialConnection] != v27)
+      [peer setConnection:v26];
+      if ([peer trialConnection] != v27)
       {
-        [objc_msgSend(a4 "trialConnection")];
+        [objc_msgSend(peer "trialConnection")];
       }
 
-      [a4 setTrialConnection:0];
+      [peer setTrialConnection:0];
     }
 
-    [a4 setState:3];
+    [peer setState:3];
     v28 = *MEMORY[0x277D85DE8];
 
-    [a4 flushDataBuffer];
+    [peer flushDataBuffer];
   }
 
   else
   {
-    if (a3 != 1003)
+    if (event != 1003)
     {
-      if ([a4 state] != 3)
+      if ([peer state] != 3)
       {
-        [a4 setState:1];
+        [peer setState:1];
 LABEL_20:
         v16 = *MEMORY[0x277D85DE8];
 
-        [(GKDiscoveryManager *)self resolveForPeer:a4];
+        [(GKDiscoveryManager *)self resolveForPeer:peer];
         return;
       }
 
@@ -1135,15 +1135,15 @@ LABEL_34:
       return;
     }
 
-    if ([a4 state] != 1)
+    if ([peer state] != 1)
     {
       goto LABEL_34;
     }
 
-    -[GKDiscoveryManager connectToSockAddr:port:forPeer:](self, "connectToSockAddr:port:forPeer:", [objc_msgSend(a5 objectForKeyedSubscript:{@"GKDiscoveryManagerUserInfoSocketAddressKey", "sockAddr"}], objc_msgSend(objc_msgSend(a5, "objectForKeyedSubscript:", @"GKDiscoveryManagerUserInfoPortKey"), "unsignedIntValue"), a4);
+    -[GKDiscoveryManager connectToSockAddr:port:forPeer:](self, "connectToSockAddr:port:forPeer:", [objc_msgSend(info objectForKeyedSubscript:{@"GKDiscoveryManagerUserInfoSocketAddressKey", "sockAddr"}], objc_msgSend(objc_msgSend(info, "objectForKeyedSubscript:", @"GKDiscoveryManagerUserInfoPortKey"), "unsignedIntValue"), peer);
     v25 = *MEMORY[0x277D85DE8];
 
-    [a4 setState:2];
+    [peer setState:2];
   }
 }
 
@@ -1200,7 +1200,7 @@ uint64_t __56__GKDiscoveryManager_processEvent_forPeer_withUserInfo___block_invo
   return [v2 resolveForPeer:v3];
 }
 
-- (void)passDataToGKLayer:(id)a3 fromPeer:(id)a4
+- (void)passDataToGKLayer:(id)layer fromPeer:(id)peer
 {
   peersQueue = self->_peersQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1208,8 +1208,8 @@ uint64_t __56__GKDiscoveryManager_processEvent_forPeer_withUserInfo___block_invo
   block[2] = __49__GKDiscoveryManager_passDataToGKLayer_fromPeer___block_invoke;
   block[3] = &unk_279682C18;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = peer;
+  block[6] = layer;
   dispatch_async(peersQueue, block);
 }
 
@@ -1295,7 +1295,7 @@ LABEL_16:
   v7(v3, v4, v5, v6);
 }
 
-- (id)startAdvertisingLocalPlayer:(id)a3 discoveryInfo:(id)a4
+- (id)startAdvertisingLocalPlayer:(id)player discoveryInfo:(id)info
 {
   v35 = *MEMORY[0x277D85DE8];
   [(GKDiscoveryManager *)self setPlayerID:?];
@@ -1307,9 +1307,9 @@ LABEL_16:
     v10 = *v8;
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (player)
       {
-        v11 = [objc_msgSend(a3 "description")];
+        v11 = [objc_msgSend(player "description")];
       }
 
       else
@@ -1320,10 +1320,10 @@ LABEL_16:
       if ([(GKDiscoveryManager *)self localServiceName])
       {
         v12 = [objc_msgSend(-[GKDiscoveryManager localServiceName](self "localServiceName")];
-        if (a4)
+        if (info)
         {
 LABEL_8:
-          v13 = [objc_msgSend(a4 "description")];
+          v13 = [objc_msgSend(info "description")];
 LABEL_11:
           *buf = 136316418;
           v24 = v9;
@@ -1345,7 +1345,7 @@ LABEL_11:
       else
       {
         v12 = "<nil>";
-        if (a4)
+        if (info)
         {
           goto LABEL_8;
         }
@@ -1399,7 +1399,7 @@ LABEL_12:
   v21[3] = &unk_2796831C8;
   v21[4] = self;
   [(GKDiscoveryBonjour *)v18 setServiceNameCollisionCallback:v21];
-  [(GKDiscoveryBonjour *)self->_bonjour startAdvertisingServiceName:[(GKDiscoveryManager *)self localServiceName] discoveryInfo:a4];
+  [(GKDiscoveryBonjour *)self->_bonjour startAdvertisingServiceName:[(GKDiscoveryManager *)self localServiceName] discoveryInfo:info];
   v19 = *MEMORY[0x277D85DE8];
   return 0;
 }
@@ -1842,25 +1842,25 @@ uint64_t __64__GKDiscoveryManager_startAdvertisingLocalPlayer_discoveryInfo___bl
   return [v2 localServiceName];
 }
 
-- (id)serviceNameforDeviceID:(id)a3 playerID:(id)a4
+- (id)serviceNameforDeviceID:(id)d playerID:(id)iD
 {
-  if (a3 && a4)
+  if (d && iD)
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"%@+%@", a3, a4];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"%@+%@", d, iD];
   }
 
-  if (a3)
+  if (d)
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"%@", a3, v5];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"%@", d, v5];
   }
 
   return 0;
 }
 
-+ (id)parseDeviceIDFromServiceName:(id)a3
++ (id)parseDeviceIDFromServiceName:(id)name
 {
   v4 = 0;
-  [objc_msgSend(MEMORY[0x277CCAC80] scannerWithString:{a3), "scanUpToString:intoString:", @"+", &v4}];
+  [objc_msgSend(MEMORY[0x277CCAC80] scannerWithString:{name), "scanUpToString:intoString:", @"+", &v4}];
   return v4;
 }
 
@@ -2004,7 +2004,7 @@ uint64_t __43__GKDiscoveryManager_cleanUpPeersForBrowse__block_invoke(uint64_t a
   return result;
 }
 
-- (void)startBrowsingLocalPlayer:(id)a3
+- (void)startBrowsingLocalPlayer:(id)player
 {
   v19 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2036,7 +2036,7 @@ uint64_t __43__GKDiscoveryManager_cleanUpPeersForBrowse__block_invoke(uint64_t a
   }
 
   [(GKDiscoveryManager *)self cleanUpPeersForBrowse];
-  [(GKDiscoveryManager *)self setPlayerID:a3];
+  [(GKDiscoveryManager *)self setPlayerID:player];
   bonjour = self->_bonjour;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -2182,7 +2182,7 @@ void __47__GKDiscoveryManager_startBrowsingLocalPlayer___block_invoke(uint64_t a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendDataToParticipant:(id)a3 deviceID:(id)a4 data:(id)a5 withCompletionHandler:(id)a6
+- (void)sendDataToParticipant:(id)participant deviceID:(id)d data:(id)data withCompletionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2191,13 +2191,13 @@ void __47__GKDiscoveryManager_startBrowsingLocalPlayer___block_invoke(uint64_t a
     v12 = *MEMORY[0x277CE5818];
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (participant)
       {
-        v13 = [objc_msgSend(a3 "description")];
-        if (a4)
+        v13 = [objc_msgSend(participant "description")];
+        if (d)
         {
 LABEL_5:
-          v14 = [objc_msgSend(a4 "description")];
+          v14 = [objc_msgSend(d "description")];
 LABEL_8:
           *buf = 136316418;
           v20 = v11;
@@ -2210,7 +2210,7 @@ LABEL_8:
           v27 = 2080;
           v28 = v14;
           v29 = 2048;
-          v30 = [a5 length];
+          v30 = [data length];
           _os_log_impl(&dword_24E50C000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d to playerID [%s] deviceID [%s] dataSize [%lu]", buf, 0x3Au);
           goto LABEL_9;
         }
@@ -2219,7 +2219,7 @@ LABEL_8:
       else
       {
         v13 = "<nil>";
-        if (a4)
+        if (d)
         {
           goto LABEL_5;
         }
@@ -2231,17 +2231,17 @@ LABEL_8:
   }
 
 LABEL_9:
-  v15 = [a6 copy];
+  v15 = [handler copy];
   peersQueue = self->_peersQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__GKDiscoveryManager_sendDataToParticipant_deviceID_data_withCompletionHandler___block_invoke;
   block[3] = &unk_279683268;
   block[4] = self;
-  block[5] = a4;
-  block[7] = a5;
+  block[5] = d;
+  block[7] = data;
   block[8] = v15;
-  block[6] = a3;
+  block[6] = participant;
   dispatch_async(peersQueue, block);
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -2288,10 +2288,10 @@ void __80__GKDiscoveryManager_sendDataToParticipant_deviceID_data_withCompletion
   }
 }
 
-- (void)forgetParticipant:(id)a3 deviceID:(id)a4
+- (void)forgetParticipant:(id)participant deviceID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = [(GKDiscoveryManager *)self serviceNameforDeviceID:a4 playerID:a3];
+  v7 = [(GKDiscoveryManager *)self serviceNameforDeviceID:d playerID:participant];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v8 = VRTraceErrorLogLevelToCSTR();
@@ -2326,8 +2326,8 @@ void __80__GKDiscoveryManager_sendDataToParticipant_deviceID_data_withCompletion
   block[2] = __49__GKDiscoveryManager_forgetParticipant_deviceID___block_invoke;
   block[3] = &unk_279682C18;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = d;
+  block[6] = participant;
   dispatch_async(peersQueue, block);
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -2396,7 +2396,7 @@ void __49__GKDiscoveryManager_forgetParticipant_deviceID___block_invoke(uint64_t
   }
 }
 
-- (void)addInterface:(unsigned int)a3 withDiscoveryInfo:(id)a4 forPeerWithServiceName:(id)a5
+- (void)addInterface:(unsigned int)interface withDiscoveryInfo:(id)info forPeerWithServiceName:(id)name
 {
   v55 = *MEMORY[0x277D85DE8];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
@@ -2409,10 +2409,10 @@ void __49__GKDiscoveryManager_forgetParticipant_deviceID___block_invoke(uint64_t
       if ([(GKDiscoveryManager *)self peersList])
       {
         v12 = [objc_msgSend(-[GKDiscoveryManager peersList](self "peersList")];
-        if (a5)
+        if (name)
         {
 LABEL_5:
-          v13 = [objc_msgSend(a5 "description")];
+          v13 = [objc_msgSend(name "description")];
 LABEL_8:
           v47 = 136316418;
           v48 = v10;
@@ -2423,7 +2423,7 @@ LABEL_8:
           v53 = 2080;
           *v54 = v12;
           *&v54[8] = 1024;
-          *&v54[10] = a3;
+          *&v54[10] = interface;
           *&v54[14] = 2080;
           *&v54[16] = v13;
           _os_log_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d peers=[\n%s] add interface [%d] for serviceName [%s]", &v47, 0x36u);
@@ -2434,7 +2434,7 @@ LABEL_8:
       else
       {
         v12 = "<nil>";
-        if (a5)
+        if (name)
         {
           goto LABEL_5;
         }
@@ -2446,7 +2446,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  v14 = [GKDiscoveryManager parseDeviceIDFromServiceName:a5];
+  v14 = [GKDiscoveryManager parseDeviceIDFromServiceName:name];
   v15 = [(NSMutableDictionary *)self->_peers objectForKeyedSubscript:v14];
   if (v15)
   {
@@ -2459,10 +2459,10 @@ LABEL_9:
         v18 = *MEMORY[0x277CE5818];
         if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v9 intValue];
-          if (a5)
+          intValue = [v9 intValue];
+          if (name)
           {
-            v20 = [objc_msgSend(a5 "description")];
+            v20 = [objc_msgSend(name "description")];
           }
 
           else
@@ -2477,7 +2477,7 @@ LABEL_9:
           v51 = 1024;
           v52 = 812;
           v53 = 1024;
-          *v54 = v19;
+          *v54 = intValue;
           *&v54[4] = 2080;
           *&v54[6] = v20;
           v35 = " [%s] %s:%d asked to add already existing interface (%d) for service name %s";
@@ -2510,9 +2510,9 @@ LABEL_9:
           v31 = *MEMORY[0x277CE5818];
           if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
           {
-            if (a5)
+            if (name)
             {
-              v32 = [objc_msgSend(a5 "description")];
+              v32 = [objc_msgSend(name "description")];
             }
 
             else
@@ -2532,7 +2532,7 @@ LABEL_9:
           }
         }
 
-        (*(self->_playerFoundHandler + 2))(self->_playerFoundHandler, [v16 playerID], objc_msgSend(v16, "deviceID"), a4);
+        (*(self->_playerFoundHandler + 2))(self->_playerFoundHandler, [v16 playerID], objc_msgSend(v16, "deviceID"), info);
         [v16 setShouldSignalDiscovery:0];
       }
     }
@@ -2540,18 +2540,18 @@ LABEL_9:
 
   else
   {
-    v21 = [(GKDiscoveryManager *)self localServiceName];
-    if (v21)
+    localServiceName = [(GKDiscoveryManager *)self localServiceName];
+    if (localServiceName)
     {
-      v22 = v21;
-      v23 = [[GKDiscoveryPeer alloc] initWithServiceName:a5];
+      v22 = localServiceName;
+      v23 = [[GKDiscoveryPeer alloc] initWithServiceName:name];
       if (v23)
       {
         v24 = v23;
         [(NSMutableSet *)[(GKDiscoveryPeer *)v23 interfaces] addObject:v9];
         [(NSMutableDictionary *)self->_peers setObject:v24 forKeyedSubscript:v14];
-        v25 = [(GKDiscoveryPeer *)v24 playerID];
-        v26 = [(GKDiscoveryPeer *)v24 deviceID];
+        playerID = [(GKDiscoveryPeer *)v24 playerID];
+        deviceID = [(GKDiscoveryPeer *)v24 deviceID];
         if (self->_playerFoundHandler)
         {
           [(GKDiscoveryManager *)self processEvent:1000 forPeer:v24 withUserInfo:0];
@@ -2561,9 +2561,9 @@ LABEL_9:
             v28 = *MEMORY[0x277CE5818];
             if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
             {
-              if (a5)
+              if (name)
               {
-                v29 = [objc_msgSend(a5 "description")];
+                v29 = [objc_msgSend(name "description")];
               }
 
               else
@@ -2592,24 +2592,24 @@ LABEL_9:
           v42 = *MEMORY[0x277CE5818];
           if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
           {
-            if (v25)
+            if (playerID)
             {
-              v43 = [[(NSString *)v25 description] UTF8String];
+              uTF8String = [[(NSString *)playerID description] UTF8String];
             }
 
             else
             {
-              v43 = "<nil>";
+              uTF8String = "<nil>";
             }
 
-            if (v26)
+            if (deviceID)
             {
-              v46 = [[(NSString *)v26 description] UTF8String];
+              uTF8String2 = [[(NSString *)deviceID description] UTF8String];
             }
 
             else
             {
-              v46 = "<nil>";
+              uTF8String2 = "<nil>";
             }
 
             v47 = 136316162;
@@ -2619,9 +2619,9 @@ LABEL_9:
             v51 = 1024;
             v52 = 805;
             v53 = 2080;
-            *v54 = v43;
+            *v54 = uTF8String;
             *&v54[8] = 2080;
-            *&v54[10] = v46;
+            *&v54[10] = uTF8String2;
             _os_log_error_impl(&dword_24E50C000, v42, OS_LOG_TYPE_ERROR, " [%s] %s:%d playerFoundHandler is not set, found %s with device id %s, but cannot inform the GameKit layer.", &v47, 0x30u);
           }
         }
@@ -2635,9 +2635,9 @@ LABEL_9:
         v39 = *MEMORY[0x277CE5818];
         if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
         {
-          if (a5)
+          if (name)
           {
-            v40 = [objc_msgSend(a5 "description")];
+            v40 = [objc_msgSend(name "description")];
           }
 
           else
@@ -2688,7 +2688,7 @@ LABEL_46:
 - (id)peersList
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -2708,7 +2708,7 @@ LABEL_46:
           objc_enumerationMutation(peers);
         }
 
-        [v3 appendFormat:@"%@ - %@\n", *(*(&v11 + 1) + 8 * i), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_peers, "objectForKeyedSubscript:", *(*(&v11 + 1) + 8 * i)), "description")];
+        [string appendFormat:@"%@ - %@\n", *(*(&v11 + 1) + 8 * i), objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_peers, "objectForKeyedSubscript:", *(*(&v11 + 1) + 8 * i)), "description")];
       }
 
       v6 = [(NSMutableDictionary *)peers countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -2718,10 +2718,10 @@ LABEL_46:
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v3;
+  return string;
 }
 
-- (void)didLosePeer:(id)a3
+- (void)didLosePeer:(id)peer
 {
   v23 = *MEMORY[0x277D85DE8];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2730,9 +2730,9 @@ LABEL_46:
     v6 = *MEMORY[0x277CE5818];
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
-      if ([a3 serviceName])
+      if ([peer serviceName])
       {
-        v7 = [objc_msgSend(objc_msgSend(a3 "serviceName")];
+        v7 = [objc_msgSend(objc_msgSend(peer "serviceName")];
       }
 
       else
@@ -2752,8 +2752,8 @@ LABEL_46:
     }
   }
 
-  [(GKDiscoveryManager *)self processEvent:1006 forPeer:a3 withUserInfo:0];
-  [a3 flushDataBuffer];
+  [(GKDiscoveryManager *)self processEvent:1006 forPeer:peer withUserInfo:0];
+  [peer flushDataBuffer];
   playerLostHandler = self->_playerLostHandler;
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (playerLostHandler)
@@ -2764,9 +2764,9 @@ LABEL_46:
       v11 = *MEMORY[0x277CE5818];
       if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
       {
-        if ([a3 serviceName])
+        if ([peer serviceName])
         {
-          v12 = [objc_msgSend(objc_msgSend(a3 "serviceName")];
+          v12 = [objc_msgSend(objc_msgSend(peer "serviceName")];
         }
 
         else
@@ -2786,9 +2786,9 @@ LABEL_46:
       }
     }
 
-    (*(self->_playerLostHandler + 2))(self->_playerLostHandler, [a3 playerID], objc_msgSend(a3, "deviceID"));
-    [a3 invalidate];
-    -[NSMutableDictionary removeObjectForKey:](self->_peers, "removeObjectForKey:", [a3 deviceID]);
+    (*(self->_playerLostHandler + 2))(self->_playerLostHandler, [peer playerID], objc_msgSend(peer, "deviceID"));
+    [peer invalidate];
+    -[NSMutableDictionary removeObjectForKey:](self->_peers, "removeObjectForKey:", [peer deviceID]);
   }
 
   else if (ErrorLogLevelForModule >= 3)
@@ -2796,18 +2796,18 @@ LABEL_46:
     v13 = VRTraceErrorLogLevelToCSTR();
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_ERROR))
     {
-      [(GKDiscoveryManager *)v13 didLosePeer:a3];
+      [(GKDiscoveryManager *)v13 didLosePeer:peer];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeInterface:(unsigned int)a3 forPeerWithServiceName:(id)a4
+- (void)removeInterface:(unsigned int)interface forPeerWithServiceName:(id)name
 {
   v39 = *MEMORY[0x277D85DE8];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
-  v8 = [(NSMutableDictionary *)self->_peers objectForKeyedSubscript:[GKDiscoveryManager parseDeviceIDFromServiceName:a4]];
+  v8 = [(NSMutableDictionary *)self->_peers objectForKeyedSubscript:[GKDiscoveryManager parseDeviceIDFromServiceName:name]];
   if (!v8)
   {
     if (VRTraceGetErrorLogLevelForModule() < 5)
@@ -2822,10 +2822,10 @@ LABEL_46:
       goto LABEL_34;
     }
 
-    v15 = [v7 intValue];
-    if (a4)
+    intValue = [v7 intValue];
+    if (name)
     {
-      v16 = [objc_msgSend(a4 "description")];
+      v16 = [objc_msgSend(name "description")];
     }
 
     else
@@ -2840,7 +2840,7 @@ LABEL_46:
     v29 = 1024;
     v30 = 874;
     v31 = 1024;
-    *v32 = v15;
+    *v32 = intValue;
     *&v32[4] = 2080;
     *&v32[6] = v16;
     v20 = " [%s] %s:%d cannot remove interface (%d) because service name %s does not exist";
@@ -2864,10 +2864,10 @@ LABEL_22:
       goto LABEL_34;
     }
 
-    v18 = [v7 intValue];
-    if (a4)
+    intValue2 = [v7 intValue];
+    if (name)
     {
-      v19 = [objc_msgSend(a4 "description")];
+      v19 = [objc_msgSend(name "description")];
     }
 
     else
@@ -2882,7 +2882,7 @@ LABEL_22:
     v29 = 1024;
     v30 = 879;
     v31 = 1024;
-    *v32 = v18;
+    *v32 = intValue2;
     *&v32[4] = 2080;
     *&v32[6] = v19;
     v20 = " [%s] %s:%d cannot remove interface (%d) for service name %s because it is not in the interfaces set";
@@ -2896,9 +2896,9 @@ LABEL_22:
     v11 = *MEMORY[0x277CE5818];
     if (os_log_type_enabled(*MEMORY[0x277CE5818], OS_LOG_TYPE_DEFAULT))
     {
-      if (a4)
+      if (name)
       {
-        v12 = [objc_msgSend(a4 "description")];
+        v12 = [objc_msgSend(name "description")];
       }
 
       else
@@ -2916,7 +2916,7 @@ LABEL_22:
         v21 = "<nil>";
       }
 
-      v22 = [v9 connection];
+      connection = [v9 connection];
       if ([objc_msgSend(v9 "interfaces")])
       {
         v23 = [objc_msgSend(objc_msgSend(objc_msgSend(v9 "interfaces")];
@@ -2938,9 +2938,9 @@ LABEL_22:
       *&v32[8] = 2080;
       *&v32[10] = v21;
       v33 = 1024;
-      v34 = a3;
+      interfaceCopy = interface;
       v35 = 2048;
-      v36 = v22;
+      v36 = connection;
       v37 = 2080;
       v38 = v23;
       _os_log_impl(&dword_24E50C000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d peer [%s] state [%s] removed interface [%d] peerConnection [%p] remaining interfaces [%s]", &v25, 0x4Au);

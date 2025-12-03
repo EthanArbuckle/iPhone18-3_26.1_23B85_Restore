@@ -1,19 +1,19 @@
 @interface MPCSharedListeningQueueEventContentReplaced
-- (MPCSharedListeningQueueEventContentReplaced)initWithStartItem:(id)a3;
+- (MPCSharedListeningQueueEventContentReplaced)initWithStartItem:(id)item;
 @end
 
 @implementation MPCSharedListeningQueueEventContentReplaced
 
-- (MPCSharedListeningQueueEventContentReplaced)initWithStartItem:(id)a3
+- (MPCSharedListeningQueueEventContentReplaced)initWithStartItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MPCSharedListeningQueueEventContentReplaced;
   v6 = [(MPCSharedListeningQueueEventContentReplaced *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_startItem, a3);
+    objc_storeStrong(&v6->_startItem, item);
   }
 
   return v7;

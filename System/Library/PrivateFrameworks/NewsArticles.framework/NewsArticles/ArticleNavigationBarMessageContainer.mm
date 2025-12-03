@@ -1,18 +1,18 @@
 @interface ArticleNavigationBarMessageContainer
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC12NewsArticles36ArticleNavigationBarMessageContainer)initWithFrame:(CGRect)a3;
-- (id)showMessage:(int64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC12NewsArticles36ArticleNavigationBarMessageContainer)initWithFrame:(CGRect)frame;
+- (id)showMessage:(int64_t)message;
 - (void)layoutSubviews;
 @end
 
 @implementation ArticleNavigationBarMessageContainer
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles36ArticleNavigationBarMessageContainer_defaultView);
-  v5 = self;
-  [(ArticleNavigationBarMessageContainer *)v5 bounds];
+  selfCopy = self;
+  [(ArticleNavigationBarMessageContainer *)selfCopy bounds];
   [v4 sizeThatFits_];
   v9 = v8;
 
@@ -25,21 +25,21 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7B095D0();
 }
 
-- (_TtC12NewsArticles36ArticleNavigationBarMessageContainer)initWithFrame:(CGRect)a3
+- (_TtC12NewsArticles36ArticleNavigationBarMessageContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)showMessage:(int64_t)a3
+- (id)showMessage:(int64_t)message
 {
-  v4 = self;
-  ArticleNavigationBarMessageContainer.show(_:)(a3, v13);
+  selfCopy = self;
+  ArticleNavigationBarMessageContainer.show(_:)(message, v13);
 
   v5 = v14;
   if (v14)

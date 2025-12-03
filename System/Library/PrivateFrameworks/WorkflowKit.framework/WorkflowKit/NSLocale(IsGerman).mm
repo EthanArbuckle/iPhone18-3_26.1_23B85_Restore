@@ -6,12 +6,12 @@
 
 + (uint64_t)isGerman
 {
-  v0 = [MEMORY[0x1E696AAE8] mainBundle];
-  v1 = [v0 preferredLocalizations];
-  v2 = [v1 firstObject];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  v3 = [v2 lowercaseString];
-  v4 = [v3 hasPrefix:@"de"];
+  lowercaseString = [firstObject lowercaseString];
+  v4 = [lowercaseString hasPrefix:@"de"];
 
   return v4;
 }

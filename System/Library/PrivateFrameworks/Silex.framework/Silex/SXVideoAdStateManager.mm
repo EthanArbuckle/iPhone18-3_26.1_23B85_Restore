@@ -1,6 +1,6 @@
 @interface SXVideoAdStateManager
 - (SXVideoAdStateManager)init;
-- (void)failWithError:(id)a3;
+- (void)failWithError:(id)error;
 - (void)finish;
 - (void)learnMore;
 - (void)pause;
@@ -224,47 +224,47 @@ LABEL_7:
 
 - (void)play
 {
-  v3 = [(SXVideoAdStateManager *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"play" withContext:0];
+  stateMachine = [(SXVideoAdStateManager *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"play" withContext:0];
 }
 
 - (void)pause
 {
-  v3 = [(SXVideoAdStateManager *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"pause" withContext:0];
+  stateMachine = [(SXVideoAdStateManager *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"pause" withContext:0];
 }
 
 - (void)resume
 {
-  v3 = [(SXVideoAdStateManager *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"play" withContext:0];
+  stateMachine = [(SXVideoAdStateManager *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"play" withContext:0];
 }
 
 - (void)finish
 {
-  v3 = [(SXVideoAdStateManager *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"finish" withContext:0];
+  stateMachine = [(SXVideoAdStateManager *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"finish" withContext:0];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
-  v7 = [[SXVideoAdStateManagerErrorContext alloc] initWithError:v4];
+  errorCopy = error;
+  v7 = [[SXVideoAdStateManagerErrorContext alloc] initWithError:errorCopy];
 
-  v5 = [(SXVideoAdStateManager *)self stateMachine];
-  v6 = [v5 fireEventWithName:@"fail" withContext:v7];
+  stateMachine = [(SXVideoAdStateManager *)self stateMachine];
+  v6 = [stateMachine fireEventWithName:@"fail" withContext:v7];
 }
 
 - (void)learnMore
 {
-  v3 = [(SXVideoAdStateManager *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"learnMore" withContext:0];
+  stateMachine = [(SXVideoAdStateManager *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"learnMore" withContext:0];
 }
 
 - (void)skip
 {
-  v3 = [(SXVideoAdStateManager *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"skip" withContext:0];
+  stateMachine = [(SXVideoAdStateManager *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"skip" withContext:0];
 }
 
 @end

@@ -10,8 +10,8 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(NSHashTable *)self->_assertions anyObject];
-  v3 = v2 == 0;
+  anyObject = [(NSHashTable *)self->_assertions anyObject];
+  v3 = anyObject == 0;
 
   return v3;
 }
@@ -23,9 +23,9 @@
   v2 = [(SBFAlwaysOnLiveRenderingAssertionWeakCollection *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     assertions = v2->_assertions;
-    v2->_assertions = v3;
+    v2->_assertions = weakObjectsHashTable;
   }
 
   return v2;
@@ -33,8 +33,8 @@
 
 - (int64_t)count
 {
-  v2 = [(NSHashTable *)self->_assertions allObjects];
-  v3 = [v2 count];
+  allObjects = [(NSHashTable *)self->_assertions allObjects];
+  v3 = [allObjects count];
 
   return v3;
 }
@@ -46,8 +46,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(NSHashTable *)self->_assertions allObjects];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allObjects = [(NSHashTable *)self->_assertions allObjects];
+  v3 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
     v4 = v3;
@@ -59,17 +59,17 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
         if ([v8 isValid])
         {
-          v9 = [v8 createdAt];
-          [v9 timeIntervalSince1970];
+          createdAt = [v8 createdAt];
+          [createdAt timeIntervalSince1970];
           v11 = v10;
-          v12 = [v5 createdAt];
-          [v12 timeIntervalSince1970];
+          createdAt2 = [v5 createdAt];
+          [createdAt2 timeIntervalSince1970];
           v14 = v13;
 
           if (v11 > v14)
@@ -81,7 +81,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v4 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v4);
@@ -97,8 +97,8 @@
 
 - (void)invalidateAll
 {
-  v2 = [(NSHashTable *)self->_assertions allObjects];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_5];
+  allObjects = [(NSHashTable *)self->_assertions allObjects];
+  [allObjects enumerateObjectsUsingBlock:&__block_literal_global_5];
 }
 
 @end

@@ -13,7 +13,7 @@
     return 200;
   }
 
-  return [a1 statusCode];
+  return [self statusCode];
 }
 
 - (uint64_t)itunes_allHeaderFields
@@ -22,7 +22,7 @@
   if (objc_opt_isKindOfClass())
   {
 
-    return [a1 allHeaderFields];
+    return [self allHeaderFields];
   }
 
   else

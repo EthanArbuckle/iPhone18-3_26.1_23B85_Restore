@@ -1,20 +1,20 @@
 @interface FadeOutNavigationBarCompressionAnimation
-- (double)maximumBarHeightForTraitCollection:(id)a3;
-- (void)updateWithPercentage:(double)a3;
+- (double)maximumBarHeightForTraitCollection:(id)collection;
+- (void)updateWithPercentage:(double)percentage;
 @end
 
 @implementation FadeOutNavigationBarCompressionAnimation
 
-- (void)updateWithPercentage:(double)a3
+- (void)updateWithPercentage:(double)percentage
 {
-  v4 = self;
-  FadeOutNavigationBarCompressionAnimation.update(withPercentage:)(a3);
+  selfCopy = self;
+  FadeOutNavigationBarCompressionAnimation.update(withPercentage:)(percentage);
 }
 
-- (double)maximumBarHeightForTraitCollection:(id)a3
+- (double)maximumBarHeightForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   v6 = FadeOutNavigationBarCompressionAnimation.maximumBarHeight(for:)();
 
   return v6;

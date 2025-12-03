@@ -1,20 +1,20 @@
 @interface TUCallScreeningSettingsBundleController
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedStringForKey:(id)key;
 - (PSListController)parentListController;
-- (TUCallScreeningSettingsBundleController)initWithParentListController:(id)a3;
-- (id)getCallScreeningEnabled:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
+- (TUCallScreeningSettingsBundleController)initWithParentListController:(id)controller;
+- (id)getCallScreeningEnabled:(id)enabled;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (void)refreshView;
-- (void)setCallScreeningEnabled:(id)a3 specifier:(id)a4;
+- (void)setCallScreeningEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation TUCallScreeningSettingsBundleController
 
-- (TUCallScreeningSettingsBundleController)initWithParentListController:(id)a3
+- (TUCallScreeningSettingsBundleController)initWithParentListController:(id)controller
 {
   v12.receiver = self;
   v12.super_class = TUCallScreeningSettingsBundleController;
-  v3 = [(TUCallScreeningSettingsBundleController *)&v12 initWithParentListController:a3];
+  v3 = [(TUCallScreeningSettingsBundleController *)&v12 initWithParentListController:controller];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -41,16 +41,16 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = +[NSMutableArray array];
-  v5 = [(TUCallScreeningSettingsBundleController *)self tuFeatureFlags];
-  if ([v5 deviceExpertMigrationEnabled])
+  tuFeatureFlags = [(TUCallScreeningSettingsBundleController *)self tuFeatureFlags];
+  if ([tuFeatureFlags deviceExpertMigrationEnabled])
   {
-    v6 = [(TUCallScreeningSettingsBundleController *)self configurationProvider];
-    v7 = [v6 isCallScreeningAvailable];
+    configurationProvider = [(TUCallScreeningSettingsBundleController *)self configurationProvider];
+    isCallScreeningAvailable = [configurationProvider isCallScreeningAvailable];
 
-    if ((v7 & 1) == 0)
+    if ((isCallScreeningAvailable & 1) == 0)
     {
       goto LABEL_11;
     }
@@ -66,9 +66,9 @@
     }
   }
 
-  v9 = [(TUCallScreeningSettingsBundleController *)self activeSpecifier];
+  activeSpecifier = [(TUCallScreeningSettingsBundleController *)self activeSpecifier];
 
-  if (!v9)
+  if (!activeSpecifier)
   {
     v10 = [PSSpecifier groupSpecifierWithID:@"CALL_SCREENING_GROUP" name:&stru_8688];
     v11 = [TUCallScreeningSettingsBundleController localizedStringForKey:@"CALL_SCREENING_EXPLANATION"];
@@ -93,12 +93,12 @@ LABEL_11:
   return v14;
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_8688 table:v6];
+  localizationTableName = [self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_8688 table:localizationTableName];
 
   return v7;
 }
@@ -112,31 +112,31 @@ LABEL_11:
 
 - (void)refreshView
 {
-  v4 = [(TUCallScreeningSettingsBundleController *)self parentListController];
-  v3 = [(TUCallScreeningSettingsBundleController *)self activeSpecifier];
-  [v4 reloadSpecifier:v3];
+  parentListController = [(TUCallScreeningSettingsBundleController *)self parentListController];
+  activeSpecifier = [(TUCallScreeningSettingsBundleController *)self activeSpecifier];
+  [parentListController reloadSpecifier:activeSpecifier];
 }
 
-- (id)getCallScreeningEnabled:(id)a3
+- (id)getCallScreeningEnabled:(id)enabled
 {
-  v3 = [(TUCallScreeningSettingsBundleController *)self configurationProvider];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isCallScreeningEnabled]);
+  configurationProvider = [(TUCallScreeningSettingsBundleController *)self configurationProvider];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [configurationProvider isCallScreeningEnabled]);
 
   return v4;
 }
 
-- (void)setCallScreeningEnabled:(id)a3 specifier:(id)a4
+- (void)setCallScreeningEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [v5 BOOLValue];
-  v7 = [(TUCallScreeningSettingsBundleController *)self configurationProvider];
-  v8 = [v7 getSelectedIntelligentCallScreeningMenuOptionForPhone];
+  enabledCopy = enabled;
+  bOOLValue = [enabledCopy BOOLValue];
+  configurationProvider = [(TUCallScreeningSettingsBundleController *)self configurationProvider];
+  getSelectedIntelligentCallScreeningMenuOptionForPhone = [configurationProvider getSelectedIntelligentCallScreeningMenuOptionForPhone];
 
-  LOBYTE(v7) = [v5 BOOLValue];
-  if ((v7 & 1) != 0 || v8 != &dword_0 + 1)
+  LOBYTE(configurationProvider) = [enabledCopy BOOLValue];
+  if ((configurationProvider & 1) != 0 || getSelectedIntelligentCallScreeningMenuOptionForPhone != &dword_0 + 1)
   {
 
-    [(TUCallScreeningSettingsBundleController *)self setCallScreeningEnabled:v6 logAnalytics:1];
+    [(TUCallScreeningSettingsBundleController *)self setCallScreeningEnabled:bOOLValue logAnalytics:1];
   }
 
   else
@@ -157,7 +157,7 @@ LABEL_11:
     v19[2] = sub_183C;
     v19[3] = &unk_8370;
     v19[4] = self;
-    v20 = v6;
+    v20 = bOOLValue;
     v14 = [UIAlertAction actionWithTitle:v13 style:0 handler:v19];
     [v12 addAction:v14];
     v15 = [TUCallScreeningSettingsBundleController localizedStringForKey:@"CALL_SCREENING_RECEPTIONIST_WARNING_CANCEL"];
@@ -169,8 +169,8 @@ LABEL_11:
     v16 = [UIAlertAction actionWithTitle:v15 style:1 handler:v18];
     [v12 addAction:v16];
     [v12 setPreferredAction:v14];
-    v17 = [(TUCallScreeningSettingsBundleController *)self parentListController];
-    [v17 presentViewController:v12 animated:1 completion:0];
+    parentListController = [(TUCallScreeningSettingsBundleController *)self parentListController];
+    [parentListController presentViewController:v12 animated:1 completion:0];
   }
 }
 

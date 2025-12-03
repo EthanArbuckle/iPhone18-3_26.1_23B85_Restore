@@ -1,12 +1,12 @@
 @interface _LSApplicationSensitiveDataProxy
-- (_LSApplicationSensitiveDataProxy)initWithApplicationDSID:(unint64_t)a3 downloaderDSID:(unint64_t)a4 familyID:(unint64_t)a5 isRedacted:(BOOL)a6;
-- (_LSApplicationSensitiveDataProxy)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_LSApplicationSensitiveDataProxy)initWithApplicationDSID:(unint64_t)d downloaderDSID:(unint64_t)iD familyID:(unint64_t)familyID isRedacted:(BOOL)redacted;
+- (_LSApplicationSensitiveDataProxy)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)applicationDSID;
 - (unint64_t)downloaderDSID;
 - (unint64_t)familyID;
 - (void)_checkNotRedacted;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)redact;
 @end
 
@@ -18,41 +18,41 @@
   v3[1] = 3221225472;
   v4 = __42___LSApplicationSensitiveDataProxy_redact__block_invoke;
   v5 = &unk_1E6A195E0;
-  v6 = self;
+  selfCopy = self;
   v2 = v3;
   os_unfair_lock_lock(&mutationLock);
   v4(v2);
   os_unfair_lock_unlock(&mutationLock);
 }
 
-- (_LSApplicationSensitiveDataProxy)initWithApplicationDSID:(unint64_t)a3 downloaderDSID:(unint64_t)a4 familyID:(unint64_t)a5 isRedacted:(BOOL)a6
+- (_LSApplicationSensitiveDataProxy)initWithApplicationDSID:(unint64_t)d downloaderDSID:(unint64_t)iD familyID:(unint64_t)familyID isRedacted:(BOOL)redacted
 {
   v11.receiver = self;
   v11.super_class = _LSApplicationSensitiveDataProxy;
   result = [(_LSApplicationSensitiveDataProxy *)&v11 init];
   if (result)
   {
-    result->_applicationDSID = a3;
-    result->_downloaderDSID = a4;
-    result->_familyID = a5;
-    result->_redacted = a6;
+    result->_applicationDSID = d;
+    result->_downloaderDSID = iD;
+    result->_familyID = familyID;
+    result->_redacted = redacted;
   }
 
   return result;
 }
 
-- (_LSApplicationSensitiveDataProxy)initWithCoder:(id)a3
+- (_LSApplicationSensitiveDataProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"applicationDSID"];
-  v6 = [v4 decodeInt64ForKey:@"downloaderDSID"];
-  v7 = [v4 decodeInt64ForKey:@"familyID"];
-  v8 = [v4 decodeBoolForKey:@"redacted"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"applicationDSID"];
+  v6 = [coderCopy decodeInt64ForKey:@"downloaderDSID"];
+  v7 = [coderCopy decodeInt64ForKey:@"familyID"];
+  v8 = [coderCopy decodeBoolForKey:@"redacted"];
 
   return [(_LSApplicationSensitiveDataProxy *)self initWithApplicationDSID:v5 downloaderDSID:v6 familyID:v7 isRedacted:v8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11 = 0;
   v12 = &v11;
@@ -64,7 +64,7 @@
   v6[1] = 3221225472;
   v7 = __49___LSApplicationSensitiveDataProxy_copyWithZone___block_invoke;
   v8 = &unk_1E6A195B8;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&mutationLock);
@@ -77,16 +77,16 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __52___LSApplicationSensitiveDataProxy_encodeWithCoder___block_invoke;
   v9 = &unk_1E6A18F50;
-  v5 = v4;
+  v5 = coderCopy;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = v7;
   os_unfair_lock_lock(&mutationLock);
   v8(v6);
@@ -111,7 +111,7 @@
   v5[1] = 3221225472;
   v6 = __51___LSApplicationSensitiveDataProxy_applicationDSID__block_invoke;
   v7 = &unk_1E6A1A208;
-  v8 = self;
+  selfCopy = self;
   v9 = &v10;
   v2 = v5;
   os_unfair_lock_lock(&mutationLock);
@@ -133,7 +133,7 @@
   v5[1] = 3221225472;
   v6 = __50___LSApplicationSensitiveDataProxy_downloaderDSID__block_invoke;
   v7 = &unk_1E6A1A208;
-  v8 = self;
+  selfCopy = self;
   v9 = &v10;
   v2 = v5;
   os_unfair_lock_lock(&mutationLock);
@@ -155,7 +155,7 @@
   v5[1] = 3221225472;
   v6 = __44___LSApplicationSensitiveDataProxy_familyID__block_invoke;
   v7 = &unk_1E6A1A208;
-  v8 = self;
+  selfCopy = self;
   v9 = &v10;
   v2 = v5;
   os_unfair_lock_lock(&mutationLock);

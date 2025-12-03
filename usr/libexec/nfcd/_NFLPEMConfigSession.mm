@@ -1,19 +1,19 @@
 @interface _NFLPEMConfigSession
-+ (id)validateEntitlements:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
 - (BOOL)_dumpLPEMAppletLogs;
-- (void)configureHardwareForLPEMWithCompletion:(id)a3;
-- (void)didStartSession:(id)a3;
-- (void)disableLPEMFeature:(unint64_t)a3 completion:(id)a4;
-- (void)enableLPEMFeature:(unint64_t)a3 completion:(id)a4;
-- (void)getLPEMBluetoothLog:(BOOL)a3 callback:(id)a4;
-- (void)getLPEMFeaturesWithCompletion:(id)a3;
+- (void)configureHardwareForLPEMWithCompletion:(id)completion;
+- (void)didStartSession:(id)session;
+- (void)disableLPEMFeature:(unint64_t)feature completion:(id)completion;
+- (void)enableLPEMFeature:(unint64_t)feature completion:(id)completion;
+- (void)getLPEMBluetoothLog:(BOOL)log callback:(id)callback;
+- (void)getLPEMFeaturesWithCompletion:(id)completion;
 @end
 
 @implementation _NFLPEMConfigSession
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  if ([a3 lpemConfigSessionAccess])
+  if ([entitlements lpemConfigSessionAccess])
   {
     v5 = 0;
   }
@@ -25,9 +25,9 @@
     if (Logger)
     {
       v7 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v11 = 45;
       if (isMetaClass)
@@ -42,7 +42,7 @@
     v12 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = object_getClass(a1);
+      v13 = object_getClass(self);
       if (class_isMetaClass(v13))
       {
         v14 = 43;
@@ -56,7 +56,7 @@
       *buf = 67109890;
       v26 = v14;
       v27 = 2082;
-      v28 = object_getClassName(a1);
+      v28 = object_getClassName(self);
       v29 = 2082;
       v30 = sel_getName(a2);
       v31 = 1024;
@@ -84,23 +84,23 @@
   return v5;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v6.receiver = self;
   v6.super_class = _NFLPEMConfigSession;
-  v4 = a3;
-  [(_NFXPCSession *)&v6 didStartSession:v4];
+  sessionCopy = session;
+  [(_NFXPCSession *)&v6 didStartSession:sessionCopy];
   v5 = [(_NFXPCSession *)self remoteObject:v6.receiver];
-  [v5 didStartSession:v4];
+  [v5 didStartSession:sessionCopy];
 }
 
-- (void)configureHardwareForLPEMWithCompletion:(id)a3
+- (void)configureHardwareForLPEMWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if ([(_NFSession *)self didStart]&& ![(_NFSession *)self isSuspended]&& ![(_NFSession *)self didEnd])
   {
     v21 = +[_NFHardwareManager sharedHardwareManager];
-    sub_1001A1808(v21, v5);
+    sub_1001A1808(v21, completionCopy);
     goto LABEL_15;
   }
 
@@ -113,14 +113,14 @@
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v12 = [(_NFSession *)self sessionUID];
+    sessionUID = [(_NFSession *)self sessionUID];
     v13 = 45;
     if (isMetaClass)
     {
       v13 = 43;
     }
 
-    v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, ClassName, Name, 44, v12);
+    v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, ClassName, Name, 44, sessionUID);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -140,7 +140,7 @@
 
     v17 = object_getClassName(self);
     v18 = sel_getName(a2);
-    v19 = [(_NFSession *)self sessionUID];
+    sessionUID2 = [(_NFSession *)self sessionUID];
     *buf = 67110146;
     v28 = v16;
     v29 = 2082;
@@ -150,11 +150,11 @@
     v33 = 1024;
     v34 = 44;
     v35 = 2114;
-    v36 = v19;
+    v36 = sessionUID2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", buf, 0x2Cu);
   }
 
-  if (v5)
+  if (completionCopy)
   {
     v20 = [NSError alloc];
     v21 = [NSString stringWithUTF8String:"nfcd"];
@@ -163,19 +163,19 @@
     v26 = v22;
     v23 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v24 = [v20 initWithDomain:v21 code:54 userInfo:v23];
-    (*(v5 + 2))(v5, v24);
+    (*(completionCopy + 2))(completionCopy, v24);
 
 LABEL_15:
   }
 }
 
-- (void)disableLPEMFeature:(unint64_t)a3 completion:(id)a4
+- (void)disableLPEMFeature:(unint64_t)feature completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   if ([(_NFSession *)self didStart]&& ![(_NFSession *)self isSuspended]&& ![(_NFSession *)self didEnd])
   {
     v23 = +[_NFHardwareManager sharedHardwareManager];
-    [v23 disableLPEMFeature:a3 completion:v7];
+    [v23 disableLPEMFeature:feature completion:completionCopy];
     goto LABEL_15;
   }
 
@@ -188,14 +188,14 @@ LABEL_15:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v14 = [(_NFSession *)self sessionUID];
+    sessionUID = [(_NFSession *)self sessionUID];
     v15 = 45;
     if (isMetaClass)
     {
       v15 = 43;
     }
 
-    v9(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v15, ClassName, Name, 51, v14);
+    v9(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v15, ClassName, Name, 51, sessionUID);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -215,7 +215,7 @@ LABEL_15:
 
     v19 = object_getClassName(self);
     v20 = sel_getName(a2);
-    v21 = [(_NFSession *)self sessionUID];
+    sessionUID2 = [(_NFSession *)self sessionUID];
     *buf = 67110146;
     v30 = v18;
     v31 = 2082;
@@ -225,11 +225,11 @@ LABEL_15:
     v35 = 1024;
     v36 = 51;
     v37 = 2114;
-    v38 = v21;
+    v38 = sessionUID2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", buf, 0x2Cu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v22 = [NSError alloc];
     v23 = [NSString stringWithUTF8String:"nfcd"];
@@ -238,19 +238,19 @@ LABEL_15:
     v28 = v24;
     v25 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v26 = [v22 initWithDomain:v23 code:54 userInfo:v25];
-    v7[2](v7, v26);
+    completionCopy[2](completionCopy, v26);
 
 LABEL_15:
   }
 }
 
-- (void)enableLPEMFeature:(unint64_t)a3 completion:(id)a4
+- (void)enableLPEMFeature:(unint64_t)feature completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   if ([(_NFSession *)self didStart]&& ![(_NFSession *)self isSuspended]&& ![(_NFSession *)self didEnd])
   {
     v23 = +[_NFHardwareManager sharedHardwareManager];
-    sub_10019D014(v23, a3, 1, v7);
+    sub_10019D014(v23, feature, 1, completionCopy);
     goto LABEL_15;
   }
 
@@ -263,14 +263,14 @@ LABEL_15:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v14 = [(_NFSession *)self sessionUID];
+    sessionUID = [(_NFSession *)self sessionUID];
     v15 = 45;
     if (isMetaClass)
     {
       v15 = 43;
     }
 
-    v9(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v15, ClassName, Name, 59, v14);
+    v9(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v15, ClassName, Name, 59, sessionUID);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -290,7 +290,7 @@ LABEL_15:
 
     v19 = object_getClassName(self);
     v20 = sel_getName(a2);
-    v21 = [(_NFSession *)self sessionUID];
+    sessionUID2 = [(_NFSession *)self sessionUID];
     *buf = 67110146;
     v30 = v18;
     v31 = 2082;
@@ -300,11 +300,11 @@ LABEL_15:
     v35 = 1024;
     v36 = 59;
     v37 = 2114;
-    v38 = v21;
+    v38 = sessionUID2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", buf, 0x2Cu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v22 = [NSError alloc];
     v23 = [NSString stringWithUTF8String:"nfcd"];
@@ -313,19 +313,19 @@ LABEL_15:
     v28 = v24;
     v25 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v26 = [v22 initWithDomain:v23 code:54 userInfo:v25];
-    (*(v7 + 2))(v7, v26);
+    (*(completionCopy + 2))(completionCopy, v26);
 
 LABEL_15:
   }
 }
 
-- (void)getLPEMFeaturesWithCompletion:(id)a3
+- (void)getLPEMFeaturesWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if ([(_NFSession *)self didStart]&& ![(_NFSession *)self isSuspended]&& ![(_NFSession *)self didEnd])
   {
     v21 = +[_NFHardwareManager sharedHardwareManager];
-    sub_10019E0A4(v21, v5);
+    sub_10019E0A4(v21, completionCopy);
     goto LABEL_15;
   }
 
@@ -338,14 +338,14 @@ LABEL_15:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v12 = [(_NFSession *)self sessionUID];
+    sessionUID = [(_NFSession *)self sessionUID];
     v13 = 45;
     if (isMetaClass)
     {
       v13 = 43;
     }
 
-    v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, ClassName, Name, 66, v12);
+    v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, ClassName, Name, 66, sessionUID);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -365,7 +365,7 @@ LABEL_15:
 
     v17 = object_getClassName(self);
     v18 = sel_getName(a2);
-    v19 = [(_NFSession *)self sessionUID];
+    sessionUID2 = [(_NFSession *)self sessionUID];
     *buf = 67110146;
     v28 = v16;
     v29 = 2082;
@@ -375,11 +375,11 @@ LABEL_15:
     v33 = 1024;
     v34 = 66;
     v35 = 2114;
-    v36 = v19;
+    v36 = sessionUID2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", buf, 0x2Cu);
   }
 
-  if (v5)
+  if (completionCopy)
   {
     v20 = [NSError alloc];
     v21 = [NSString stringWithUTF8String:"nfcd"];
@@ -388,27 +388,27 @@ LABEL_15:
     v26 = v22;
     v23 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v24 = [v20 initWithDomain:v21 code:54 userInfo:v23];
-    (*(v5 + 2))(v5, v24, 0);
+    (*(completionCopy + 2))(completionCopy, v24, 0);
 
 LABEL_15:
   }
 }
 
-- (void)getLPEMBluetoothLog:(BOOL)a3 callback:(id)a4
+- (void)getLPEMBluetoothLog:(BOOL)log callback:(id)callback
 {
-  v7 = a4;
+  callbackCopy = callback;
   v8 = +[NSXPCConnection currentConnection];
-  v9 = [(_NFSession *)self workQueue];
+  workQueue = [(_NFSession *)self workQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100144CF4;
   v11[3] = &unk_100319668;
-  v12 = v7;
+  v12 = callbackCopy;
   v13 = a2;
   v11[4] = self;
-  v14 = a3;
-  v10 = v7;
-  dispatch_async(v9, v11);
+  logCopy = log;
+  v10 = callbackCopy;
+  dispatch_async(workQueue, v11);
 }
 
 - (BOOL)_dumpLPEMAppletLogs
@@ -529,9 +529,9 @@ LABEL_15:
     }
 
     v127 = v18;
-    v41 = [v18 secureElementWrapper];
+    secureElementWrapper = [v18 secureElementWrapper];
     v129 = 0;
-    v42 = sub_100096634(v41, 4, &v129);
+    v42 = sub_100096634(secureElementWrapper, 4, &v129);
     v43 = v129;
     v31 = v43;
     if (v42)

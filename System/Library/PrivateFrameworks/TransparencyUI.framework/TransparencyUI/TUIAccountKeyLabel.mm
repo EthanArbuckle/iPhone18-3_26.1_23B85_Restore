@@ -1,19 +1,19 @@
 @interface TUIAccountKeyLabel
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (void)copy:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (void)copy:(id)copy;
 @end
 
 @implementation TUIAccountKeyLabel
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (NSSelectorFromString(&cfstr_Define.isa) == a3 || sel_delete_ == a3)
+  senderCopy = sender;
+  if (NSSelectorFromString(&cfstr_Define.isa) == action || sel_delete_ == action)
   {
     v8 = 0;
   }
 
-  else if (sel_copy_ == a3)
+  else if (sel_copy_ == action)
   {
     v8 = 1;
   }
@@ -22,17 +22,17 @@
   {
     v10.receiver = self;
     v10.super_class = TUIAccountKeyLabel;
-    v8 = [(TUIAccountKeyLabel *)&v10 canPerformAction:a3 withSender:v6];
+    v8 = [(TUIAccountKeyLabel *)&v10 canPerformAction:action withSender:senderCopy];
   }
 
   return v8;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v5 = [MEMORY[0x277D75810] generalPasteboard];
-  v4 = [(TUIAccountKeyLabel *)self text];
-  [v5 setString:v4];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  text = [(TUIAccountKeyLabel *)self text];
+  [generalPasteboard setString:text];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface MKPerformanceData
-- (MKPerformanceData)initWithDictionary:(id)a3;
+- (MKPerformanceData)initWithDictionary:(id)dictionary;
 @end
 
 @implementation MKPerformanceData
 
-- (MKPerformanceData)initWithDictionary:(id)a3
+- (MKPerformanceData)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = MKPerformanceData;
   v5 = [(MKPerformanceData *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"data_classes"];
+    v6 = [dictionaryCopy objectForKey:@"data_classes"];
     if (v6)
     {
       v7 = v6;

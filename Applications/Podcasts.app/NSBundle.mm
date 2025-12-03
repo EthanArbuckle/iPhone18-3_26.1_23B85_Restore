@@ -1,18 +1,18 @@
 @interface NSBundle
-+ (id)appendToBundleIdentifier:(id)a3;
++ (id)appendToBundleIdentifier:(id)identifier;
 @end
 
 @implementation NSBundle
 
-+ (id)appendToBundleIdentifier:(id)a3
++ (id)appendToBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NSBundle mainBundle];
-  v5 = [v4 bundleIdentifier];
+  bundleIdentifier = [v4 bundleIdentifier];
 
-  v6 = [v5 stringByAppendingFormat:@".%@", v3];
+  identifierCopy = [bundleIdentifier stringByAppendingFormat:@".%@", identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 @end

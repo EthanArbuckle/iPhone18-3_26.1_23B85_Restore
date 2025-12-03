@@ -6,11 +6,11 @@
 
 - (id)numberFromHexDigits
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
     v6 = 0;
-    v3 = [MEMORY[0x1E696AE88] scannerWithString:a1];
+    v3 = [MEMORY[0x1E696AE88] scannerWithString:self];
     v4 = [v3 scanHexLongLong:&v6];
 
     v2 = 0;

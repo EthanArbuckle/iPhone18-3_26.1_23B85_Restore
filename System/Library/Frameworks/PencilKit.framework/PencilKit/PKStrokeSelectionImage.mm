@@ -1,22 +1,22 @@
 @interface PKStrokeSelectionImage
-- (PKStrokeSelectionImage)initWithImage:(id)a3 config:(id)a4 fullSizeConfig:(id)a5;
+- (PKStrokeSelectionImage)initWithImage:(id)image config:(id)config fullSizeConfig:(id)sizeConfig;
 - (UIImage)combinedImage;
 @end
 
 @implementation PKStrokeSelectionImage
 
-- (PKStrokeSelectionImage)initWithImage:(id)a3 config:(id)a4 fullSizeConfig:(id)a5
+- (PKStrokeSelectionImage)initWithImage:(id)image config:(id)config fullSizeConfig:(id)sizeConfig
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  imageCopy = image;
+  configCopy = config;
+  sizeConfigCopy = sizeConfig;
   v12 = [(PKStrokeSelectionImage *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_image, a3);
-    objc_storeStrong(&v13->_config, a4);
-    objc_storeStrong(&v13->_fullSizeConfig, a5);
+    objc_storeStrong(&v12->_image, image);
+    objc_storeStrong(&v13->_config, config);
+    objc_storeStrong(&v13->_fullSizeConfig, sizeConfig);
   }
 
   return v13;
@@ -27,7 +27,7 @@
   addImage = self->_addImage;
   if (addImage && self->_mulImage)
   {
-    v4 = [(UIImage *)addImage CGImage];
+    cGImage = [(UIImage *)addImage CGImage];
     v5 = CGBitmapContextCreateForFlatteningImage();
     if (!v5)
     {
@@ -35,10 +35,10 @@
     }
 
     v6 = v5;
-    Width = CGImageGetWidth(v4);
-    Height = CGImageGetHeight(v4);
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    CGContextSetFillColorWithColor(v6, [v9 CGColor]);
+    Width = CGImageGetWidth(cGImage);
+    Height = CGImageGetHeight(cGImage);
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    CGContextSetFillColorWithColor(v6, [whiteColor CGColor]);
 
     v21.origin.x = 0.0;
     v21.origin.y = 0.0;
@@ -48,34 +48,34 @@
     image = self->_image;
     if (image)
     {
-      v11 = [(UIImage *)image CGImage];
+      cGImage2 = [(UIImage *)image CGImage];
       v22.origin.x = 0.0;
       v22.origin.y = 0.0;
       v22.size.width = Width;
       v22.size.height = Height;
-      CGContextDrawImage(v6, v22, v11);
+      CGContextDrawImage(v6, v22, cGImage2);
     }
 
     if (self->_mulImage)
     {
       CGContextSetBlendMode(v6, kCGBlendModeMultiply);
-      v12 = [(UIImage *)self->_mulImage CGImage];
+      cGImage3 = [(UIImage *)self->_mulImage CGImage];
       v23.origin.x = 0.0;
       v23.origin.y = 0.0;
       v23.size.width = Width;
       v23.size.height = Height;
-      CGContextDrawImage(v6, v23, v12);
+      CGContextDrawImage(v6, v23, cGImage3);
     }
 
     if (self->_addImage)
     {
       CGContextSetBlendMode(v6, kCGBlendModePlusLighter);
-      v13 = [(UIImage *)self->_addImage CGImage];
+      cGImage4 = [(UIImage *)self->_addImage CGImage];
       v24.origin.x = 0.0;
       v24.origin.y = 0.0;
       v24.size.width = Width;
       v24.size.height = Height;
-      CGContextDrawImage(v6, v24, v13);
+      CGContextDrawImage(v6, v24, cGImage4);
     }
 
     v14 = CGBitmapContextCreateImage(v6);
@@ -83,8 +83,8 @@
     if (v14)
     {
       v15 = MEMORY[0x1E69DCAB8];
-      v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v16 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v18 = [v15 imageWithCGImage:v14 scale:-[UIImage imageOrientation](self->_addImage orientation:{"imageOrientation"), v17}];
 
       CGImageRelease(v14);

@@ -1,21 +1,21 @@
 @interface HSTAnalyticsEvent
-- (HSTAnalyticsEvent)initWithName:(id)a3 payload:(id)a4;
+- (HSTAnalyticsEvent)initWithName:(id)name payload:(id)payload;
 @end
 
 @implementation HSTAnalyticsEvent
 
-- (HSTAnalyticsEvent)initWithName:(id)a3 payload:(id)a4
+- (HSTAnalyticsEvent)initWithName:(id)name payload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  payloadCopy = payload;
   v13.receiver = self;
   v13.super_class = HSTAnalyticsEvent;
   v9 = [(HSTAnalyticsEvent *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_payload, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_payload, payload);
     v11 = v10;
   }
 

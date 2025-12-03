@@ -1,13 +1,13 @@
 @interface FILocalStorageNode
 + (id)currentSharedInstance;
-+ (id)makeWithCoder:(id)a3;
-+ (id)sharedInstanceWithDisplayName:(id)a3 domain:(id)a4;
-- (FILocalStorageNode)initWithStorageNode:(id)a3 domain:(id)a4 displayName:(id)a5;
++ (id)makeWithCoder:(id)coder;
++ (id)sharedInstanceWithDisplayName:(id)name domain:(id)domain;
+- (FILocalStorageNode)initWithStorageNode:(id)node domain:(id)domain displayName:(id)name;
 - (id)fpItem;
-- (id)propertyAsString:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6;
-- (void)encodeWithCoder:(id)a3;
+- (id)propertyAsString:(unsigned int)string async:(BOOL)async options:(unsigned int)options error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 - (void)fetchFPItemIfNeeded;
-- (void)setFpItem:(id)a3;
+- (void)setFpItem:(id)item;
 @end
 
 @implementation FILocalStorageNode
@@ -22,11 +22,11 @@
   return v3;
 }
 
-+ (id)sharedInstanceWithDisplayName:(id)a3 domain:(id)a4
++ (id)sharedInstanceWithDisplayName:(id)name domain:(id)domain
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  domainCopy = domain;
   v8 = objc_opt_class();
   objc_sync_enter(v8);
   v9 = sLocalStorageNode;
@@ -37,36 +37,36 @@ LABEL_2:
     goto LABEL_15;
   }
 
-  v11 = [v7 storageURLs];
-  v12 = [v11 firstObject];
+  storageURLs = [domainCopy storageURLs];
+  firstObject = [storageURLs firstObject];
 
-  if (v12)
+  if (firstObject)
   {
-    v13 = [FINode fiNodeFromURL:v12];
+    v13 = [FINode fiNodeFromURL:firstObject];
     if (v13)
     {
       v14 = LogObj(7);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         v22 = 138543362;
-        v23 = v6;
+        v23 = nameCopy;
         _os_log_impl(&dword_1E5674000, v14, OS_LOG_TYPE_DEBUG, "Creating FILocalStorageNode - %{public}@", &v22, 0xCu);
       }
 
-      v15 = [[a1 alloc] initWithStorageNode:v13 domain:v7 displayName:v6];
+      v15 = [[self alloc] initWithStorageNode:v13 domain:domainCopy displayName:nameCopy];
       v16 = sLocalStorageNode;
       sLocalStorageNode = v15;
 
-      v17 = [sLocalStorageNode displayName];
-      if (([v6 isEqualToString:v17] & 1) == 0)
+      displayName = [sLocalStorageNode displayName];
+      if (([nameCopy isEqualToString:displayName] & 1) == 0)
       {
         v18 = LogObj(7);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           v22 = 138543618;
-          v23 = v6;
+          v23 = nameCopy;
           v24 = 2114;
-          v25 = v17;
+          v25 = displayName;
           _os_log_impl(&dword_1E5674000, v18, OS_LOG_TYPE_ERROR, "LocalStorage node name not set. Expected: %{public}@, actual: %{public}@", &v22, 0x16u);
         }
       }
@@ -80,7 +80,7 @@ LABEL_2:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
     v22 = 138543362;
-    v23 = v7;
+    v23 = domainCopy;
     _os_log_impl(&dword_1E5674000, v19, OS_LOG_TYPE_ERROR, "Unable to load local storage root storageURL from domain %{public}@", &v22, 0xCu);
   }
 
@@ -93,14 +93,14 @@ LABEL_15:
   return v10;
 }
 
-- (FILocalStorageNode)initWithStorageNode:(id)a3 domain:(id)a4 displayName:(id)a5
+- (FILocalStorageNode)initWithStorageNode:(id)node domain:(id)domain displayName:(id)name
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nodeCopy = node;
+  domainCopy = domain;
+  nameCopy = name;
   v12 = MEMORY[0x1E695DFD8];
-  v23[0] = v9;
+  v23[0] = nodeCopy;
   v13 = +[FILocalAppContainerCollection sharedInstance];
   v23[1] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
@@ -108,28 +108,28 @@ LABEL_15:
 
   v22.receiver = self;
   v22.super_class = FILocalStorageNode;
-  v16 = [(FICompoundNode *)&v22 initWithNodes:v15 subject:v9];
-  objc_storeStrong(&v16->_storageNode, a3);
-  v17 = [FIProviderDomain providerDomainForDomain:v10];
+  v16 = [(FICompoundNode *)&v22 initWithNodes:v15 subject:nodeCopy];
+  objc_storeStrong(&v16->_storageNode, node);
+  v17 = [FIProviderDomain providerDomainForDomain:domainCopy];
   providerDomain = v16->_providerDomain;
   v16->_providerDomain = v17;
 
-  objc_storeStrong(&v16->_displayName, a5);
+  objc_storeStrong(&v16->_displayName, name);
   v19 = +[FIPresentationNodeMap shared];
-  [v19 registerPresentationNode:v16 forNode:v9];
+  [v19 registerPresentationNode:v16 forNode:nodeCopy];
 
   [(FILocalStorageNode *)v16 fetchFPItemIfNeeded];
   v20 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-+ (id)makeWithCoder:(id)a3
++ (id)makeWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"FI Display Name"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FI Display Name"];
   v5 = static_objc_cast<NSString,objc_object * {__strong}>(v4);
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"FI Domain"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FI Domain"];
   v7 = static_objc_cast<NSString,objc_object * {__strong}>(v6);
 
   v8 = [FILocalStorageNode sharedInstanceWithDisplayName:v5 domain:v7];
@@ -137,34 +137,34 @@ LABEL_15:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = FILocalStorageNode;
-  [(FIDSNode *)&v7 encodeWithCoder:v4];
-  v5 = [(FINode *)self displayName];
-  [v4 encodeObject:v5 forKey:@"FI Display Name"];
+  [(FIDSNode *)&v7 encodeWithCoder:coderCopy];
+  displayName = [(FINode *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"FI Display Name"];
 
-  v6 = [(FILocalStorageNode *)self fpDomain];
-  [v4 encodeObject:v6 forKey:@"FI Domain"];
+  fpDomain = [(FILocalStorageNode *)self fpDomain];
+  [coderCopy encodeObject:fpDomain forKey:@"FI Domain"];
 }
 
 - (void)fetchFPItemIfNeeded
 {
-  v3 = [(FILocalStorageNode *)self fpItem];
+  fpItem = [(FILocalStorageNode *)self fpItem];
 
-  if (!v3)
+  if (!fpItem)
   {
-    v4 = [objc_opt_class() defaultManager];
-    v5 = [(FILocalStorageNode *)self fpDomain];
+    defaultManager = [objc_opt_class() defaultManager];
+    fpDomain = [(FILocalStorageNode *)self fpDomain];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3321888768;
     v7[2] = __41__FILocalStorageNode_fetchFPItemIfNeeded__block_invoke;
     v7[3] = &__block_descriptor_40_ea8_32c54_ZTSKZ41__FILocalStorageNode_fetchFPItemIfNeeded_E3__0_e28_v24__0__FPItem_8__NSError_16l;
-    v6 = self;
-    v8 = v6;
-    [v4 fetchRootItemForProviderDomain:v5 completionHandler:v7];
+    selfCopy = self;
+    v8 = selfCopy;
+    [defaultManager fetchRootItemForProviderDomain:fpDomain completionHandler:v7];
   }
 }
 
@@ -194,30 +194,30 @@ void __41__FILocalStorageNode_fetchFPItemIfNeeded__block_invoke(uint64_t a1, voi
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setFpItem:(id)a3
+- (void)setFpItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   obj = self;
   objc_sync_enter(obj);
   fpItem = obj->_fpItem;
-  obj->_fpItem = v4;
+  obj->_fpItem = itemCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)fpItem
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fpItem;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fpItem;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)propertyAsString:(unsigned int)a3 async:(BOOL)a4 options:(unsigned int)a5 error:(id *)a6
+- (id)propertyAsString:(unsigned int)string async:(BOOL)async options:(unsigned int)options error:(id *)error
 {
-  if (a3 == 1886282093 || a3 == 1684955501)
+  if (string == 1886282093 || string == 1684955501)
   {
     v7 = self->_displayName;
   }

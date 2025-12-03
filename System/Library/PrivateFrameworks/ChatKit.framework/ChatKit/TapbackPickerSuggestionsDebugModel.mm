@@ -1,6 +1,6 @@
 @interface TapbackPickerSuggestionsDebugModel
 - (_TtC7ChatKit34TapbackPickerSuggestionsDebugModel)init;
-- (void)textViewDidChange:(id)a3;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation TapbackPickerSuggestionsDebugModel
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_190849D18(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_190849D18(changeCopy);
 }
 
 @end

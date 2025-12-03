@@ -1,17 +1,17 @@
 @interface AAAppSessionManager
-- (AAAppSessionManager)initWithTrackingConsent:(id)a3;
-- (AAAppSessionManager)initWithTrackingConsent:(id)a3 userDataConfiguration:(id)a4;
+- (AAAppSessionManager)initWithTrackingConsent:(id)consent;
+- (AAAppSessionManager)initWithTrackingConsent:(id)consent userDataConfiguration:(id)configuration;
 - (id)createSessionManager;
 - (id)userEventsID;
 - (void)appSessionDidTerminate;
-- (void)endAppSession:(id)a3;
+- (void)endAppSession:(id)session;
 - (void)startAppSession;
-- (void)startAppSessionWithShouldCorrelateSceneSessions:(BOOL)a3;
+- (void)startAppSessionWithShouldCorrelateSceneSessions:(BOOL)sessions;
 @end
 
 @implementation AAAppSessionManager
 
-- (AAAppSessionManager)initWithTrackingConsent:(id)a3
+- (AAAppSessionManager)initWithTrackingConsent:(id)consent
 {
   ObjectType = swift_getObjectType();
   v6 = type metadata accessor for SummaryEventConfiguration(0);
@@ -19,7 +19,7 @@
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v17 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10 = qword_1EDBCAC70;
-  v11 = a3;
+  consentCopy = consent;
   if (v10 != -1)
   {
     swift_once();
@@ -35,7 +35,7 @@
   swift_beginAccess();
   v13 = qword_1EDBCADE8;
 
-  v14 = sub_1B6A9968C(v11, v13, v9);
+  v14 = sub_1B6A9968C(consentCopy, v13, v9);
 
   *(&self->super.isa + OBJC_IVAR___AAAppSessionManager_appSessionManager) = v14;
   v18.receiver = self;
@@ -45,11 +45,11 @@
   return v15;
 }
 
-- (AAAppSessionManager)initWithTrackingConsent:(id)a3 userDataConfiguration:(id)a4
+- (AAAppSessionManager)initWithTrackingConsent:(id)consent userDataConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_1B6A99B38(v5, v6);
+  consentCopy = consent;
+  configurationCopy = configuration;
+  v7 = sub_1B6A99B38(consentCopy, configurationCopy);
 
   return v7;
 }
@@ -61,7 +61,7 @@
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = (&v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0));
   v7 = *(&self->super.isa + OBJC_IVAR___AAAppSessionManager_appSessionManager);
-  v8 = self;
+  selfCopy = self;
   sub_1B6A97CCC(v6);
   v9 = AppSessionManager.createSessionManager(with:)(v6);
   sub_1B6A9A254(v6, type metadata accessor for SessionManagerConfiguration);
@@ -79,41 +79,41 @@
   v6 = swift_allocObject();
   *(v6 + 16) = 1;
   *(v6 + 24) = v3;
-  v7 = self;
+  selfCopy = self;
 
   sub_1B69877A4(v5, sub_1B6A90A48, v6);
 }
 
-- (void)startAppSessionWithShouldCorrelateSceneSessions:(BOOL)a3
+- (void)startAppSessionWithShouldCorrelateSceneSessions:(BOOL)sessions
 {
   v5 = *(&self->super.isa + OBJC_IVAR___AAAppSessionManager_appSessionManager);
   v7 = *(v5 + 24);
   v6 = *(v5 + 32);
   v8 = swift_allocObject();
-  *(v8 + 16) = a3;
+  *(v8 + 16) = sessions;
   *(v8 + 24) = v5;
-  v9 = self;
+  selfCopy = self;
 
   sub_1B69877A4(v7, sub_1B6A90A48, v8);
 }
 
-- (void)endAppSession:(id)a3
+- (void)endAppSession:(id)session
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(session);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR___AAAppSessionManager_appSessionManager);
   v7 = swift_allocObject();
   *(v7 + 16) = sub_1B69D72B0;
   *(v7 + 24) = v5;
-  v8 = self;
+  selfCopy = self;
 
   AppSessionManager.endAppSession(_:)(sub_1B6A0BE38, v7);
 }
 
 - (void)appSessionDidTerminate
 {
-  v2 = self;
+  selfCopy = self;
   BridgedAppSessionManager.appSessionDidTerminate()();
 }
 
@@ -125,7 +125,7 @@
   v6 = &v15 - v5;
   if ((*(&self->super.isa + OBJC_IVAR___AAAppSessionManager_appSessionManager))[5])
   {
-    v7 = self;
+    selfCopy = self;
     sub_1B6A81954(v6);
     v8 = sub_1B6AB8E40();
     v9 = *(v8 - 8);

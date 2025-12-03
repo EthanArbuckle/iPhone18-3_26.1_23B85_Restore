@@ -164,7 +164,7 @@
     v22 = v31;
     v23 = v29;
     v20 = v6;
-    v21 = self;
+    selfCopy = self;
     [v13 addOperation:v19];
     v14 = +[NSNull null];
     v17[0] = _NSConcreteStackBlock;
@@ -192,16 +192,16 @@
 
   if (v5)
   {
-    v6 = [v5 scheduledDeliveryDate];
+    scheduledDeliveryDate = [v5 scheduledDeliveryDate];
     v7 = +[NSDate now];
-    v8 = [v6 compare:v7];
+    v8 = [scheduledDeliveryDate compare:v7];
 
     if (v8 == 1)
     {
-      v9 = [v6 dateByAddingTimeInterval:-30.0];
+      v9 = [scheduledDeliveryDate dateByAddingTimeInterval:-30.0];
 
       v10 = v9;
-      v6 = v10;
+      scheduledDeliveryDate = v10;
     }
 
     else
@@ -210,7 +210,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412290;
-        v16 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@: Next scheduled delivery date is in the past. Scheduling for 10m out to let things clean up.", &v15, 0xCu);
       }
 
@@ -224,7 +224,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412546;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@: Scheduled task for next action for: %@", &v15, 0x16u);
@@ -241,7 +241,7 @@ LABEL_13:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: Removing scheduled activity because there is no notification scheduled", &v15, 0xCu);
     }
 

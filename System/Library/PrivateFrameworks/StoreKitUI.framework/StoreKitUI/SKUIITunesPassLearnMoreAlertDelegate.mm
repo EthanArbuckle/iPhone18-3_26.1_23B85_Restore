@@ -1,18 +1,18 @@
 @interface SKUIITunesPassLearnMoreAlertDelegate
-+ (BOOL)shouldShowAlertForRedeem:(id)a3 configuration:(id)a4;
++ (BOOL)shouldShowAlertForRedeem:(id)redeem configuration:(id)configuration;
 + (void)beginThrottleInterval;
-- (SKUIITunesPassLearnMoreAlertDelegate)initWithRedeemConfiguration:(id)a3 clientContext:(id)a4;
+- (SKUIITunesPassLearnMoreAlertDelegate)initWithRedeemConfiguration:(id)configuration clientContext:(id)context;
 - (UIViewController)presentingViewController;
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index;
 - (void)show;
 @end
 
 @implementation SKUIITunesPassLearnMoreAlertDelegate
 
-- (SKUIITunesPassLearnMoreAlertDelegate)initWithRedeemConfiguration:(id)a3 clientContext:(id)a4
+- (SKUIITunesPassLearnMoreAlertDelegate)initWithRedeemConfiguration:(id)configuration clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -31,8 +31,8 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_clientContext, a4);
-    objc_storeStrong(&v18->_redeemConfiguration, a3);
+    objc_storeStrong(&v17->_clientContext, context);
+    objc_storeStrong(&v18->_redeemConfiguration, configuration);
   }
 
   return v18;
@@ -52,15 +52,15 @@
     }
   }
 
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v10 setDouble:@"SKUILastITunesPassLearnMoreAlertTime" forKey:CFAbsoluteTimeGetCurrent()];
-  [v10 synchronize];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setDouble:@"SKUILastITunesPassLearnMoreAlertTime" forKey:CFAbsoluteTimeGetCurrent()];
+  [standardUserDefaults synchronize];
 }
 
-+ (BOOL)shouldShowAlertForRedeem:(id)a3 configuration:(id)a4
++ (BOOL)shouldShowAlertForRedeem:(id)redeem configuration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
+  configurationCopy = configuration;
+  redeemCopy = redeem;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -73,16 +73,16 @@
     }
   }
 
-  v15 = [v5 ITunesPassConfiguration];
-  v16 = [v15 learnMoreAlertView];
+  iTunesPassConfiguration = [configurationCopy ITunesPassConfiguration];
+  learnMoreAlertView = [iTunesPassConfiguration learnMoreAlertView];
 
-  [v6 ITunesPassLearnMoreAlertInterval];
+  [redeemCopy ITunesPassLearnMoreAlertInterval];
   v18 = v17;
 
   if (v18 >= 0.0)
   {
-    v20 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v21 = [v20 objectForKey:@"SKUILastITunesPassLearnMoreAlertTime"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v21 = [standardUserDefaults objectForKey:@"SKUILastITunesPassLearnMoreAlertTime"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -93,11 +93,11 @@
       if (v24 > -v18)
       {
 
-        v16 = 0;
+        learnMoreAlertView = 0;
       }
     }
 
-    v19 = v16 != 0;
+    v19 = learnMoreAlertView != 0;
   }
 
   else
@@ -110,8 +110,8 @@
 
 - (void)show
 {
-  v3 = [(SKUIRedeemConfiguration *)self->_redeemConfiguration ITunesPassConfiguration];
-  object = [v3 learnMoreAlertView];
+  iTunesPassConfiguration = [(SKUIRedeemConfiguration *)self->_redeemConfiguration ITunesPassConfiguration];
+  object = [iTunesPassConfiguration learnMoreAlertView];
 
   [object setDelegate:self];
   objc_setAssociatedObject(object, "com.apple.StoreKitUI.SKUIITunesPassLearnMoreAlertDelegate", self, 1);
@@ -119,19 +119,19 @@
   [objc_opt_class() beginThrottleInterval];
 }
 
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index
 {
-  object = a3;
-  if ([object cancelButtonIndex] != a4)
+  object = view;
+  if ([object cancelButtonIndex] != index)
   {
-    v6 = [(SKUIITunesPassLearnMoreAlertDelegate *)self presentingViewController];
-    if (v6)
+    presentingViewController = [(SKUIITunesPassLearnMoreAlertDelegate *)self presentingViewController];
+    if (presentingViewController)
     {
       v7 = objc_alloc_init(SKUIRedeemITunesPassLearnMoreViewController);
       [(SKUIRedeemStepViewController *)v7 setClientContext:self->_clientContext];
       [(SKUIRedeemStepViewController *)v7 setConfiguration:self->_redeemConfiguration];
       v8 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v7];
-      [v6 presentViewController:v8 animated:1 completion:0];
+      [presentingViewController presentViewController:v8 animated:1 completion:0];
     }
   }
 

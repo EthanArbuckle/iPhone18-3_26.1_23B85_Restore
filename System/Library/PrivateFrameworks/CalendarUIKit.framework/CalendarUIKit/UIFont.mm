@@ -6,12 +6,12 @@
 
 - (double)cuik_lineHeight
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [a1 lineHeight];
+  [self lineHeight];
   return result;
 }
 

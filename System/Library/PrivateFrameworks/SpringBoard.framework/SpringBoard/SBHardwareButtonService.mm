@@ -1,41 +1,41 @@
 @interface SBHardwareButtonService
 + (SBHardwareButtonService)sharedInstance;
 - (BOOL)_hwButtonHintViewsSupported;
-- (BOOL)_sendEvent:(int64_t)a3 buttonKind:(int64_t)a4 withPriority:(int64_t)a5 continuation:(id *)a6;
-- (BOOL)consumeHeadsetPlayPauseSinglePressDownWithPriority:(int64_t)a3 continuation:(id *)a4;
-- (BOOL)consumeVolumeDecreaseButtonSinglePressDownWithPriority:(int64_t)a3 continuation:(id *)a4;
-- (BOOL)consumeVolumeIncreaseButtonSinglePressDownWithPriority:(int64_t)a3 continuation:(id *)a4;
+- (BOOL)_sendEvent:(int64_t)event buttonKind:(int64_t)kind withPriority:(int64_t)priority continuation:(id *)continuation;
+- (BOOL)consumeHeadsetPlayPauseSinglePressDownWithPriority:(int64_t)priority continuation:(id *)continuation;
+- (BOOL)consumeVolumeDecreaseButtonSinglePressDownWithPriority:(int64_t)priority continuation:(id *)continuation;
+- (BOOL)consumeVolumeIncreaseButtonSinglePressDownWithPriority:(int64_t)priority continuation:(id *)continuation;
 - (BOOL)hasConsumersForHomeButtonPresses;
 - (BOOL)hasConsumersForHomeButtonSinglePress;
 - (BOOL)hasConsumersForLockButtonDoublePressUp;
 - (BOOL)hasConsumersForLockButtonPresses;
-- (BOOL)systemServiceServer:(id)a3 client:(id)a4 registerAssociatedHintViewContextId:(unsigned int)a5 renderId:(unint64_t)a6 size:(CGSize)a7 buttonKind:(int64_t)a8 clientPort:(id)a9;
-- (BOOL)systemServiceServer:(id)a3 client:(id)a4 requestSystemGlowEffectWithInitialStyle:(int64_t)a5 clientPort:(id)a6;
-- (BOOL)systemServiceServer:(id)a3 getHintViewsSupportedForClient:(id)a4;
+- (BOOL)systemServiceServer:(id)server client:(id)client registerAssociatedHintViewContextId:(unsigned int)id renderId:(unint64_t)renderId size:(CGSize)size buttonKind:(int64_t)kind clientPort:(id)port;
+- (BOOL)systemServiceServer:(id)server client:(id)client requestSystemGlowEffectWithInitialStyle:(int64_t)style clientPort:(id)port;
+- (BOOL)systemServiceServer:(id)server getHintViewsSupportedForClient:(id)client;
 - (SBHardwareButtonService)init;
-- (id)_applicationForClientInfo:(id)a3;
+- (id)_applicationForClientInfo:(id)info;
 - (id)_init;
-- (id)_initWithSystemServiceServer:(id)a3;
-- (id)_mutableRegistrationsForButtonKind:(int64_t)a3 createIfNecessary:(BOOL)a4;
-- (id)addObserver:(id)a3;
-- (void)_addRegistration:(id)a3 toClient:(id)a4;
-- (void)_performButtonRegistrationChangeAndNotifyObservers:(id)a3;
-- (void)_process:(id)a3 stateDidUpdate:(id)a4;
+- (id)_initWithSystemServiceServer:(id)server;
+- (id)_mutableRegistrationsForButtonKind:(int64_t)kind createIfNecessary:(BOOL)necessary;
+- (id)addObserver:(id)observer;
+- (void)_addRegistration:(id)registration toClient:(id)client;
+- (void)_performButtonRegistrationChangeAndNotifyObservers:(id)observers;
+- (void)_process:(id)_process stateDidUpdate:(id)update;
 - (void)_reconfigureProcessMonitor;
-- (void)_reconfigureProcessMonitorForPredicates:(id)a3;
-- (void)_removeRegistration:(id)a3 fromClient:(id)a4;
-- (void)_sendXPCMessageForEvent:(int64_t)a3 buttonKind:(int64_t)a4 priority:(int64_t)a5 toClient:(id)a6;
-- (void)_setSystemServiceClient:(id)a3 buttonKind:(int64_t)a4 eventMask:(unint64_t)a5 priority:(int64_t)a6;
+- (void)_reconfigureProcessMonitorForPredicates:(id)predicates;
+- (void)_removeRegistration:(id)registration fromClient:(id)client;
+- (void)_sendXPCMessageForEvent:(int64_t)event buttonKind:(int64_t)kind priority:(int64_t)priority toClient:(id)client;
+- (void)_setSystemServiceClient:(id)client buttonKind:(int64_t)kind eventMask:(unint64_t)mask priority:(int64_t)priority;
 - (void)_updateAllButtonEventMasks;
-- (void)_updateEventMasksForButtonKind:(int64_t)a3;
-- (void)systemServiceServer:(id)a3 client:(id)a4 acquireAssertionOfType:(int64_t)a5 forReason:(id)a6 withCompletion:(id)a7;
-- (void)systemServiceServer:(id)a3 client:(id)a4 fetchHapticTypeForButtonKind:(int64_t)a5 completion:(id)a6;
-- (void)systemServiceServer:(id)a3 client:(id)a4 requestsHIDEvents:(BOOL)a5 token:(id)a6 forButtonKind:(int64_t)a7;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setEventMask:(unint64_t)a5 buttonKind:(int64_t)a6 priority:(int64_t)a7;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setHapticType:(int64_t)a5 buttonKind:(int64_t)a6;
-- (void)systemServiceServer:(id)a3 client:(id)a4 updateHintContentVisibility:(int64_t)a5 forButton:(int64_t)a6 animationSettings:(id)a7;
-- (void)systemServiceServer:(id)a3 client:(id)a4 updateSystemGlowStyle:(int64_t)a5;
-- (void)systemServiceServer:(id)a3 clientDidDisconnect:(id)a4;
+- (void)_updateEventMasksForButtonKind:(int64_t)kind;
+- (void)systemServiceServer:(id)server client:(id)client acquireAssertionOfType:(int64_t)type forReason:(id)reason withCompletion:(id)completion;
+- (void)systemServiceServer:(id)server client:(id)client fetchHapticTypeForButtonKind:(int64_t)kind completion:(id)completion;
+- (void)systemServiceServer:(id)server client:(id)client requestsHIDEvents:(BOOL)events token:(id)token forButtonKind:(int64_t)kind;
+- (void)systemServiceServer:(id)server client:(id)client setEventMask:(unint64_t)mask buttonKind:(int64_t)kind priority:(int64_t)priority;
+- (void)systemServiceServer:(id)server client:(id)client setHapticType:(int64_t)type buttonKind:(int64_t)kind;
+- (void)systemServiceServer:(id)server client:(id)client updateHintContentVisibility:(int64_t)visibility forButton:(int64_t)button animationSettings:(id)settings;
+- (void)systemServiceServer:(id)server client:(id)client updateSystemGlowStyle:(int64_t)style;
+- (void)systemServiceServer:(id)server clientDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBHardwareButtonService
@@ -66,17 +66,17 @@ void __53__SBHardwareButtonService__reconfigureProcessMonitor__block_invoke(uint
 - (BOOL)hasConsumersForHomeButtonSinglePress
 {
   v2 = [(BSMutableIntegerMap *)self->_eventMaskPerKind objectForKey:1];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return (*&v3 & 0x10002) != 0;
+  return (*&unsignedIntegerValue & 0x10002) != 0;
 }
 
 - (BOOL)hasConsumersForHomeButtonPresses
 {
   v2 = [(BSMutableIntegerMap *)self->_eventMaskPerKind objectForKey:1];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3 != 0;
+  return unsignedIntegerValue != 0;
 }
 
 + (SBHardwareButtonService)sharedInstance
@@ -98,9 +98,9 @@ void __41__SBHardwareButtonService_sharedInstance__block_invoke()
   sharedInstance___sharedInstance_13 = v0;
 }
 
-- (id)_initWithSystemServiceServer:(id)a3
+- (id)_initWithSystemServiceServer:(id)server
 {
-  v5 = a3;
+  serverCopy = server;
   v17.receiver = self;
   v17.super_class = SBHardwareButtonService;
   v6 = [(SBHardwareButtonService *)&v17 init];
@@ -121,8 +121,8 @@ void __41__SBHardwareButtonService_sharedInstance__block_invoke()
     serviceClientHintViewEntitlement = v6->_serviceClientHintViewEntitlement;
     v6->_serviceClientHintViewEntitlement = v14;
 
-    [v5 setHardwareButtonDelegate:v6];
-    objc_storeStrong(&v6->_systemServiceServer, a3);
+    [serverCopy setHardwareButtonDelegate:v6];
+    objc_storeStrong(&v6->_systemServiceServer, server);
   }
 
   return v6;
@@ -147,16 +147,16 @@ void __41__SBHardwareButtonService_sharedInstance__block_invoke()
   return [(SBHardwareButtonService *)self _init];
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = objc_alloc(MEMORY[0x277CF0CE8]);
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __39__SBHardwareButtonService_addObserver___block_invoke;
   v15 = &unk_2783B18A8;
-  v16 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = observerCopy;
   v17 = v6;
   v7 = [v5 initWithIdentifier:@"SBHardwareButtonServiceObserver" forReason:@"buttons!" invalidationBlock:&v12];
   observers = self->_observers;
@@ -169,7 +169,7 @@ void __41__SBHardwareButtonService_sharedInstance__block_invoke()
     observers = self->_observers;
   }
 
-  [(NSMutableArray *)observers addObject:v6, v12, v13, v14, v15, v16];
+  [(NSMutableArray *)observers addObject:v6, v12, v13, v14, v15, selfCopy];
 
   return v7;
 }
@@ -177,23 +177,23 @@ void __41__SBHardwareButtonService_sharedInstance__block_invoke()
 - (BOOL)hasConsumersForLockButtonPresses
 {
   v2 = [(BSMutableIntegerMap *)self->_eventMaskPerKind objectForKey:2];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3 != 0;
+  return unsignedIntegerValue != 0;
 }
 
 - (BOOL)hasConsumersForLockButtonDoublePressUp
 {
   v2 = [(BSMutableIntegerMap *)self->_eventMaskPerKind objectForKey:2];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return (*&v3 & 0x10008) != 0;
+  return (*&unsignedIntegerValue & 0x10008) != 0;
 }
 
-- (BOOL)consumeVolumeIncreaseButtonSinglePressDownWithPriority:(int64_t)a3 continuation:(id *)a4
+- (BOOL)consumeVolumeIncreaseButtonSinglePressDownWithPriority:(int64_t)priority continuation:(id *)continuation
 {
   v13 = 0;
-  v6 = [(SBHardwareButtonService *)self _sendEvent:6 buttonKind:3 withPriority:a3 continuation:&v13];
+  v6 = [(SBHardwareButtonService *)self _sendEvent:6 buttonKind:3 withPriority:priority continuation:&v13];
   v7 = MEMORY[0x223D6F7F0](v13);
   v8 = v7;
   if (v6 && v7)
@@ -203,17 +203,17 @@ void __41__SBHardwareButtonService_sharedInstance__block_invoke()
     v10[2] = __95__SBHardwareButtonService_consumeVolumeIncreaseButtonSinglePressDownWithPriority_continuation___block_invoke;
     v10[3] = &unk_2783B2E30;
     v11 = v7;
-    v12 = a3;
-    *a4 = MEMORY[0x223D6F7F0](v10);
+    priorityCopy = priority;
+    *continuation = MEMORY[0x223D6F7F0](v10);
   }
 
   return v6;
 }
 
-- (BOOL)consumeVolumeDecreaseButtonSinglePressDownWithPriority:(int64_t)a3 continuation:(id *)a4
+- (BOOL)consumeVolumeDecreaseButtonSinglePressDownWithPriority:(int64_t)priority continuation:(id *)continuation
 {
   v13 = 0;
-  v6 = [(SBHardwareButtonService *)self _sendEvent:6 buttonKind:4 withPriority:a3 continuation:&v13];
+  v6 = [(SBHardwareButtonService *)self _sendEvent:6 buttonKind:4 withPriority:priority continuation:&v13];
   v7 = MEMORY[0x223D6F7F0](v13);
   v8 = v7;
   if (v6 && v7)
@@ -223,17 +223,17 @@ void __41__SBHardwareButtonService_sharedInstance__block_invoke()
     v10[2] = __95__SBHardwareButtonService_consumeVolumeDecreaseButtonSinglePressDownWithPriority_continuation___block_invoke;
     v10[3] = &unk_2783B2E30;
     v11 = v7;
-    v12 = a3;
-    *a4 = MEMORY[0x223D6F7F0](v10);
+    priorityCopy = priority;
+    *continuation = MEMORY[0x223D6F7F0](v10);
   }
 
   return v6;
 }
 
-- (BOOL)consumeHeadsetPlayPauseSinglePressDownWithPriority:(int64_t)a3 continuation:(id *)a4
+- (BOOL)consumeHeadsetPlayPauseSinglePressDownWithPriority:(int64_t)priority continuation:(id *)continuation
 {
   v13 = 0;
-  v6 = [(SBHardwareButtonService *)self _sendEvent:6 buttonKind:5 withPriority:a3 continuation:&v13];
+  v6 = [(SBHardwareButtonService *)self _sendEvent:6 buttonKind:5 withPriority:priority continuation:&v13];
   v7 = MEMORY[0x223D6F7F0](v13);
   v8 = v7;
   if (v6 && v7)
@@ -243,45 +243,45 @@ void __41__SBHardwareButtonService_sharedInstance__block_invoke()
     v10[2] = __91__SBHardwareButtonService_consumeHeadsetPlayPauseSinglePressDownWithPriority_continuation___block_invoke;
     v10[3] = &unk_2783B2E30;
     v11 = v7;
-    v12 = a3;
-    *a4 = MEMORY[0x223D6F7F0](v10);
+    priorityCopy = priority;
+    *continuation = MEMORY[0x223D6F7F0](v10);
   }
 
   return v6;
 }
 
-- (void)_process:(id)a3 stateDidUpdate:(id)a4
+- (void)_process:(id)_process stateDidUpdate:(id)update
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  _processCopy = _process;
+  updateCopy = update;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v8 = SBLogButtonsInteraction();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 state];
-    v10 = [v9 endowmentNamespaces];
+    state = [updateCopy state];
+    endowmentNamespaces = [state endowmentNamespaces];
     *buf = 138543874;
-    *v34 = v6;
+    *v34 = _processCopy;
     *&v34[8] = 2114;
-    v35 = v7;
+    v35 = updateCopy;
     v36 = 2114;
-    v37 = v10;
+    v37 = endowmentNamespaces;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "process %{public}@ update:%{public}@ endowments:%{public}@", buf, 0x20u);
   }
 
-  v11 = v6;
-  v28 = [v6 pid];
-  v29 = self;
+  v11 = _processCopy;
+  v28 = [_processCopy pid];
+  selfCopy = self;
   v12 = [(BSMutableIntegerMap *)self->_clientsByPID objectForKey:v28];
-  v13 = [v7 state];
-  v14 = [v7 previousState];
-  v15 = [v13 taskState];
+  state2 = [updateCopy state];
+  previousState = [updateCopy previousState];
+  taskState = [state2 taskState];
   v16 = MEMORY[0x277D0AC90];
-  if (v15 == 4)
+  if (taskState == 4)
   {
-    v17 = [v13 endowmentNamespaces];
-    v18 = [v17 containsObject:*v16];
+    endowmentNamespaces2 = [state2 endowmentNamespaces];
+    v18 = [endowmentNamespaces2 containsObject:*v16];
   }
 
   else
@@ -289,10 +289,10 @@ void __41__SBHardwareButtonService_sharedInstance__block_invoke()
     v18 = 0;
   }
 
-  if ([v14 taskState] == 4)
+  if ([previousState taskState] == 4)
   {
-    v19 = [v14 endowmentNamespaces];
-    v20 = [v19 containsObject:*v16];
+    endowmentNamespaces3 = [previousState endowmentNamespaces];
+    v20 = [endowmentNamespaces3 containsObject:*v16];
   }
 
   else
@@ -300,7 +300,7 @@ void __41__SBHardwareButtonService_sharedInstance__block_invoke()
     v20 = 0;
   }
 
-  v21 = [v12 canReceiveEvents];
+  canReceiveEvents = [v12 canReceiveEvents];
   if (v20 != v18)
   {
     v22 = SBLogButtonsInteraction();
@@ -328,18 +328,18 @@ LABEL_15:
     [v12 setRunningVisible:v18];
   }
 
-  [v12 setSuspended:v15 == 3];
-  v25 = [v12 canReceiveEvents];
-  if (v21 != v25)
+  [v12 setSuspended:taskState == 3];
+  canReceiveEvents2 = [v12 canReceiveEvents];
+  if (canReceiveEvents != canReceiveEvents2)
   {
-    v26 = v25;
+    v26 = canReceiveEvents2;
     v27 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109632;
       *v34 = v28;
       *&v34[4] = 1024;
-      *&v34[6] = v21;
+      *&v34[6] = canReceiveEvents;
       LOWORD(v35) = 1024;
       *(&v35 + 2) = v26;
       _os_log_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_DEFAULT, "pid %d canReceiveEvents previously:%{BOOL}u now:%{BOOL}u", buf, 0x14u);
@@ -350,8 +350,8 @@ LABEL_15:
     v30[2] = __51__SBHardwareButtonService__process_stateDidUpdate___block_invoke;
     v30[3] = &unk_2783A92D8;
     v31 = v12;
-    v32 = v29;
-    [(SBHardwareButtonService *)v29 _performButtonRegistrationChangeAndNotifyObservers:v30];
+    v32 = selfCopy;
+    [(SBHardwareButtonService *)selfCopy _performButtonRegistrationChangeAndNotifyObservers:v30];
   }
 }
 
@@ -389,10 +389,10 @@ void __51__SBHardwareButtonService__process_stateDidUpdate___block_invoke(uint64
   }
 }
 
-- (void)_updateEventMasksForButtonKind:(int64_t)a3
+- (void)_updateEventMasksForButtonKind:(int64_t)kind
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [(SBHardwareButtonService *)self _mutableRegistrationsForButtonKind:a3 createIfNecessary:0];
+  v5 = [(SBHardwareButtonService *)self _mutableRegistrationsForButtonKind:kind createIfNecessary:0];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -413,10 +413,10 @@ void __51__SBHardwareButtonService__process_stateDidUpdate___block_invoke(uint64
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 client];
-        v13 = [v12 canReceiveEvents];
+        client = [v11 client];
+        canReceiveEvents = [client canReceiveEvents];
 
-        if (v13)
+        if (canReceiveEvents)
         {
           v8 |= [v11 eventMask];
         }
@@ -444,12 +444,12 @@ void __51__SBHardwareButtonService__process_stateDidUpdate___block_invoke(uint64
   if (v8)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
-    [(BSMutableIntegerMap *)v16 setObject:v17 forKey:a3];
+    [(BSMutableIntegerMap *)v16 setObject:v17 forKey:kind];
   }
 
   else
   {
-    [(BSMutableIntegerMap *)v16 removeObjectForKey:a3];
+    [(BSMutableIntegerMap *)v16 removeObjectForKey:kind];
   }
 
   v18 = SBLogButtonsInteraction();
@@ -472,22 +472,22 @@ void __51__SBHardwareButtonService__process_stateDidUpdate___block_invoke(uint64
   }
 }
 
-- (void)_performButtonRegistrationChangeAndNotifyObservers:(id)a3
+- (void)_performButtonRegistrationChangeAndNotifyObservers:(id)observers
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observersCopy = observers;
   v5 = [(BSMutableIntegerMap *)self->_eventMaskPerKind copy];
-  v4[2](v4);
+  observersCopy[2](observersCopy);
   v6 = self->_eventMaskPerKind;
   for (i = 1; i != 11; ++i)
   {
     v8 = [v5 objectForKey:i];
-    v9 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
     v10 = [(BSMutableIntegerMap *)v6 objectForKey:i];
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-    if (v9 != v11)
+    if (unsignedIntegerValue != unsignedIntegerValue2)
     {
       v19 = 0u;
       v20 = 0u;
@@ -509,7 +509,7 @@ void __51__SBHardwareButtonService__process_stateDidUpdate___block_invoke(uint64
               objc_enumerationMutation(v12);
             }
 
-            [*(*(&v17 + 1) + 8 * v16++) buttonService:self buttonKind:i eventsConsumedDidChange:v11];
+            [*(*(&v17 + 1) + 8 * v16++) buttonService:self buttonKind:i eventsConsumedDidChange:unsignedIntegerValue2];
           }
 
           while (v14 != v16);
@@ -522,11 +522,11 @@ void __51__SBHardwareButtonService__process_stateDidUpdate___block_invoke(uint64
   }
 }
 
-- (void)_reconfigureProcessMonitorForPredicates:(id)a3
+- (void)_reconfigureProcessMonitorForPredicates:(id)predicates
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  predicatesCopy = predicates;
+  v5 = predicatesCopy;
+  if (predicatesCopy && [predicatesCopy count])
   {
     processMonitor = self->_processMonitor;
     if (processMonitor)
@@ -595,9 +595,9 @@ void __67__SBHardwareButtonService__reconfigureProcessMonitorForPredicates___blo
   BSDispatchMain();
 }
 
-- (id)_mutableRegistrationsForButtonKind:(int64_t)a3 createIfNecessary:(BOOL)a4
+- (id)_mutableRegistrationsForButtonKind:(int64_t)kind createIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
+  necessaryCopy = necessary;
   v7 = [(BSMutableIntegerMap *)self->_registrationsByButtonKind objectForKey:?];
   if (v7)
   {
@@ -606,7 +606,7 @@ void __67__SBHardwareButtonService__reconfigureProcessMonitorForPredicates___blo
 
   else
   {
-    v8 = !v4;
+    v8 = !necessaryCopy;
   }
 
   if (!v8)
@@ -622,31 +622,31 @@ void __67__SBHardwareButtonService__reconfigureProcessMonitorForPredicates___blo
       registrationsByButtonKind = self->_registrationsByButtonKind;
     }
 
-    [(BSMutableIntegerMap *)registrationsByButtonKind setObject:v7 forKey:a3];
+    [(BSMutableIntegerMap *)registrationsByButtonKind setObject:v7 forKey:kind];
   }
 
   return v7;
 }
 
-- (void)_sendXPCMessageForEvent:(int64_t)a3 buttonKind:(int64_t)a4 priority:(int64_t)a5 toClient:(id)a6
+- (void)_sendXPCMessageForEvent:(int64_t)event buttonKind:(int64_t)kind priority:(int64_t)priority toClient:(id)client
 {
-  v10 = a6;
+  clientCopy = client;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__SBHardwareButtonService__sendXPCMessageForEvent_buttonKind_priority_toClient___block_invoke;
   v15[3] = &__block_descriptor_56_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v15[4] = a3;
-  v15[5] = a4;
-  v15[6] = a5;
+  v15[4] = event;
+  v15[5] = kind;
+  v15[6] = priority;
   v11 = [MEMORY[0x277D0AE28] messageWithPacker:v15];
   systemServiceServer = self->_systemServiceServer;
-  v13 = [MEMORY[0x277CBEB98] setWithObject:v10];
+  v13 = [MEMORY[0x277CBEB98] setWithObject:clientCopy];
   [(FBSServiceFacility *)systemServiceServer sendMessage:v11 withType:0 toClients:v13];
 
   v14 = SBLogButtonsInteraction();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [SBHardwareButtonService _sendXPCMessageForEvent:v10 buttonKind:v14 priority:? toClient:?];
+    [SBHardwareButtonService _sendXPCMessageForEvent:clientCopy buttonKind:v14 priority:? toClient:?];
   }
 }
 
@@ -660,10 +660,10 @@ void __80__SBHardwareButtonService__sendXPCMessageForEvent_buttonKind_priority_t
   xpc_dictionary_set_int64(xdict, *MEMORY[0x277D67738], a1[6]);
 }
 
-- (BOOL)_sendEvent:(int64_t)a3 buttonKind:(int64_t)a4 withPriority:(int64_t)a5 continuation:(id *)a6
+- (BOOL)_sendEvent:(int64_t)event buttonKind:(int64_t)kind withPriority:(int64_t)priority continuation:(id *)continuation
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = [(SBHardwareButtonService *)self _registrationsForButtonKind:a4];
+  v10 = [(SBHardwareButtonService *)self _registrationsForButtonKind:kind];
   v11 = SBLogButtonsInteraction();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -684,9 +684,9 @@ void __80__SBHardwareButtonService__sendXPCMessageForEvent_buttonKind_priority_t
   if (v13)
   {
     v14 = v13;
-    v37 = a4;
-    v38 = self;
-    v39 = a6;
+    kindCopy = kind;
+    selfCopy = self;
+    continuationCopy = continuation;
     v15 = *v45;
 LABEL_5:
     v16 = 0;
@@ -698,40 +698,40 @@ LABEL_5:
       }
 
       v17 = *(*(&v44 + 1) + 8 * v16);
-      v18 = [v17 client];
-      v19 = [v17 eventPriority];
-      if (v19 >= a5)
+      client = [v17 client];
+      eventPriority = [v17 eventPriority];
+      if (eventPriority >= priority)
       {
-        if ([v18 canReceiveEvents])
+        if ([client canReceiveEvents])
         {
-          v21 = [v18 systemServiceClient];
+          systemServiceClient = [client systemServiceClient];
           v25 = SBLogButtonsInteraction();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109634;
-            *v49 = a3;
+            *v49 = event;
             *&v49[4] = 2114;
-            *&v49[6] = v18;
+            *&v49[6] = client;
             *&v49[14] = 2114;
             *&v49[16] = v17;
             _os_log_impl(&dword_21ED4E000, v25, OS_LOG_TYPE_DEFAULT, "Sending event:%d to %{public}@ (%{public}@)", buf, 0x1Cu);
           }
 
-          v26 = [v17 eventMask];
-          if ((v26 & (1 << a3)) != 0)
+          eventMask = [v17 eventMask];
+          if ((eventMask & (1 << event)) != 0)
           {
             v31 = SBLogButtonsInteraction();
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109120;
-              *v49 = a3;
+              *v49 = event;
               _os_log_impl(&dword_21ED4E000, v31, OS_LOG_TYPE_DEFAULT, "Sending %d", buf, 8u);
             }
 
-            v32 = v38;
-            [(SBHardwareButtonService *)v38 _sendXPCMessageForEvent:a3 buttonKind:v37 priority:a5 toClient:v21];
-            v33 = v39;
-            if (v39)
+            v32 = selfCopy;
+            [(SBHardwareButtonService *)selfCopy _sendXPCMessageForEvent:event buttonKind:kindCopy priority:priority toClient:systemServiceClient];
+            v33 = continuationCopy;
+            if (continuationCopy)
             {
               v34 = v43;
               v43[0] = MEMORY[0x277D85DD0];
@@ -746,7 +746,7 @@ LABEL_34:
             goto LABEL_35;
           }
 
-          v27 = v26;
+          v27 = eventMask;
           v28 = SBLogButtonsInteraction();
           v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
           if ((v27 & 0x10000) != 0)
@@ -757,10 +757,10 @@ LABEL_34:
               _os_log_impl(&dword_21ED4E000, v28, OS_LOG_TYPE_DEFAULT, "Sending any", buf, 2u);
             }
 
-            v32 = v38;
-            [(SBHardwareButtonService *)v38 _sendXPCMessageForEvent:a3 buttonKind:v37 priority:a5 toClient:v21];
-            v33 = v39;
-            if (v39)
+            v32 = selfCopy;
+            [(SBHardwareButtonService *)selfCopy _sendXPCMessageForEvent:event buttonKind:kindCopy priority:priority toClient:systemServiceClient];
+            v33 = continuationCopy;
+            if (continuationCopy)
             {
               v34 = v42;
               v42[0] = MEMORY[0x277D85DD0];
@@ -770,7 +770,7 @@ LABEL_33:
               v34[2] = v35;
               v34[3] = &unk_2783B5828;
               v34[4] = v32;
-              v34[5] = v21;
+              v34[5] = systemServiceClient;
               *v33 = MEMORY[0x223D6F7F0](v34);
             }
 
@@ -786,12 +786,12 @@ LABEL_33:
           goto LABEL_22;
         }
 
-        v21 = SBLogButtonsInteraction();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        systemServiceClient = SBLogButtonsInteraction();
+        if (os_log_type_enabled(systemServiceClient, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          *v49 = v18;
-          v22 = v21;
+          *v49 = client;
+          v22 = systemServiceClient;
           v23 = "Client can't receive events: %{public}@";
           v24 = 12;
           goto LABEL_21;
@@ -800,17 +800,17 @@ LABEL_33:
 
       else
       {
-        v20 = v19;
-        v21 = SBLogButtonsInteraction();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        v20 = eventPriority;
+        systemServiceClient = SBLogButtonsInteraction();
+        if (os_log_type_enabled(systemServiceClient, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109634;
           *v49 = v20;
           *&v49[4] = 1024;
-          *&v49[6] = a5;
+          *&v49[6] = priority;
           *&v49[10] = 2114;
           *&v49[12] = v17;
-          v22 = v21;
+          v22 = systemServiceClient;
           v23 = "Registration priority %d < required %d: %{public}@";
           v24 = 24;
 LABEL_21:
@@ -839,33 +839,33 @@ LABEL_35:
   return v30;
 }
 
-- (void)_addRegistration:(id)a3 toClient:(id)a4
+- (void)_addRegistration:(id)registration toClient:(id)client
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  registrationCopy = registration;
+  clientCopy = client;
   v8 = SBLogButtonsInteraction();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v24 = v6;
+    v24 = registrationCopy;
     v25 = 2114;
-    v26 = v7;
+    v26 = clientCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Registration add: %{public}@ client:%{public}@", buf, 0x16u);
   }
 
-  v9 = [v6 buttonKind];
-  v10 = [v7 registrations];
-  if (([v10 containsObject:v6] & 1) == 0)
+  buttonKind = [registrationCopy buttonKind];
+  registrations = [clientCopy registrations];
+  if (([registrations containsObject:registrationCopy] & 1) == 0)
   {
-    if (v10)
+    if (registrations)
     {
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v10 = v10;
-      v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      registrations = registrations;
+      v11 = [registrations countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v11)
       {
         v12 = v11;
@@ -876,22 +876,22 @@ LABEL_35:
           {
             if (*v19 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(registrations);
             }
 
             v15 = *(*(&v18 + 1) + 8 * i);
-            if ([v15 buttonKind] == v9)
+            if ([v15 buttonKind] == buttonKind)
             {
-              [v15 setEventMask:{objc_msgSend(v6, "eventMask")}];
-              [v15 setEventPriority:{objc_msgSend(v6, "eventPriority")}];
+              [v15 setEventMask:{objc_msgSend(registrationCopy, "eventMask")}];
+              [v15 setEventPriority:{objc_msgSend(registrationCopy, "eventPriority")}];
               v16 = v15;
 
-              v6 = v16;
+              registrationCopy = v16;
               goto LABEL_17;
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v12 = [registrations countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v12)
           {
             continue;
@@ -904,37 +904,37 @@ LABEL_35:
 
     else
     {
-      v10 = [MEMORY[0x277CBEB58] set];
-      [v7 setRegistrations:v10];
+      registrations = [MEMORY[0x277CBEB58] set];
+      [clientCopy setRegistrations:registrations];
     }
 
-    [v10 addObject:{v6, v18}];
+    [registrations addObject:{registrationCopy, v18}];
 LABEL_17:
-    v17 = [(SBHardwareButtonService *)self _mutableRegistrationsForButtonKind:v9 createIfNecessary:1];
-    [v17 insertObject:v6 atIndex:0];
-    [(SBHardwareButtonService *)self _updateEventMasksForButtonKind:v9];
+    v17 = [(SBHardwareButtonService *)self _mutableRegistrationsForButtonKind:buttonKind createIfNecessary:1];
+    [v17 insertObject:registrationCopy atIndex:0];
+    [(SBHardwareButtonService *)self _updateEventMasksForButtonKind:buttonKind];
   }
 }
 
-- (void)_removeRegistration:(id)a3 fromClient:(id)a4
+- (void)_removeRegistration:(id)registration fromClient:(id)client
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  registrationCopy = registration;
+  clientCopy = client;
   v8 = SBLogButtonsInteraction();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v38 = v6;
+    v38 = registrationCopy;
     v39 = 2114;
-    v40 = v7;
+    v40 = clientCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Registration remove: %{public}@ client:%{public}@", buf, 0x16u);
   }
 
-  v9 = [v6 buttonKind];
-  v26 = self;
-  v10 = [(SBHardwareButtonService *)self _mutableRegistrationsForButtonKind:v9 createIfNecessary:0];
-  [v10 removeObject:v6];
+  buttonKind = [registrationCopy buttonKind];
+  selfCopy = self;
+  v10 = [(SBHardwareButtonService *)self _mutableRegistrationsForButtonKind:buttonKind createIfNecessary:0];
+  [v10 removeObject:registrationCopy];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -955,9 +955,9 @@ LABEL_17:
         }
 
         v16 = *(*(&v31 + 1) + 8 * i);
-        v17 = [v16 client];
+        client = [v16 client];
 
-        if (v17 == v7)
+        if (client == clientCopy)
         {
           [v10 removeObject:v16];
         }
@@ -971,16 +971,16 @@ LABEL_17:
 
   if (![v10 count])
   {
-    [(BSMutableIntegerMap *)v26->_registrationsByButtonKind removeObjectForKey:v9];
+    [(BSMutableIntegerMap *)selfCopy->_registrationsByButtonKind removeObjectForKey:buttonKind];
   }
 
-  v18 = [v7 registrations];
+  registrations = [clientCopy registrations];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v19 = [v7 registrations];
-  v20 = [v19 copy];
+  registrations2 = [clientCopy registrations];
+  v20 = [registrations2 copy];
 
   v21 = [v20 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v21)
@@ -997,9 +997,9 @@ LABEL_17:
         }
 
         v25 = *(*(&v27 + 1) + 8 * j);
-        if ([v25 buttonKind] == v9)
+        if ([v25 buttonKind] == buttonKind)
         {
-          [v18 removeObject:v25];
+          [registrations removeObject:v25];
           goto LABEL_24;
         }
       }
@@ -1016,14 +1016,14 @@ LABEL_17:
 
 LABEL_24:
 
-  [(SBHardwareButtonService *)v26 _updateEventMasksForButtonKind:v9];
+  [(SBHardwareButtonService *)selfCopy _updateEventMasksForButtonKind:buttonKind];
 }
 
-- (id)_applicationForClientInfo:(id)a3
+- (id)_applicationForClientInfo:(id)info
 {
-  v3 = [a3 systemServiceClient];
-  v4 = [v3 processHandle];
-  v5 = [v4 pid];
+  systemServiceClient = [info systemServiceClient];
+  processHandle = [systemServiceClient processHandle];
+  v5 = [processHandle pid];
 
   v6 = +[SBApplicationController sharedInstance];
   v7 = [v6 applicationWithPid:v5];
@@ -1031,28 +1031,28 @@ LABEL_24:
   return v7;
 }
 
-- (void)_setSystemServiceClient:(id)a3 buttonKind:(int64_t)a4 eventMask:(unint64_t)a5 priority:(int64_t)a6
+- (void)_setSystemServiceClient:(id)client buttonKind:(int64_t)kind eventMask:(unint64_t)mask priority:(int64_t)priority
 {
-  v10 = a3;
-  v11 = [v10 pid];
+  clientCopy = client;
+  v11 = [clientCopy pid];
   v12 = [(BSMutableIntegerMap *)self->_clientsByPID objectForKey:v11];
   v13 = objc_alloc_init(SBButtonConsumerRegistration);
   [(SBButtonConsumerRegistration *)v13 setClient:v12];
-  [(SBButtonConsumerRegistration *)v13 setButtonKind:a4];
-  [(SBButtonConsumerRegistration *)v13 setEventMask:a5];
-  [(SBButtonConsumerRegistration *)v13 setEventPriority:a6];
+  [(SBButtonConsumerRegistration *)v13 setButtonKind:kind];
+  [(SBButtonConsumerRegistration *)v13 setEventMask:mask];
+  [(SBButtonConsumerRegistration *)v13 setEventPriority:priority];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __81__SBHardwareButtonService__setSystemServiceClient_buttonKind_eventMask_priority___block_invoke;
   v17[3] = &unk_2783B5850;
   v21 = v13;
-  v22 = a5;
+  maskCopy = mask;
   v18 = v12;
-  v19 = v10;
+  v19 = clientCopy;
   v23 = v11;
-  v20 = self;
+  selfCopy = self;
   v14 = v13;
-  v15 = v10;
+  v15 = clientCopy;
   v16 = v12;
   [(SBHardwareButtonService *)self _performButtonRegistrationChangeAndNotifyObservers:v17];
 }
@@ -1110,10 +1110,10 @@ void __81__SBHardwareButtonService__setSystemServiceClient_buttonKind_eventMask_
   }
 }
 
-- (void)systemServiceServer:(id)a3 clientDidDisconnect:(id)a4
+- (void)systemServiceServer:(id)server clientDidDisconnect:(id)disconnect
 {
-  v5 = a4;
-  v4 = v5;
+  disconnectCopy = disconnect;
+  v4 = disconnectCopy;
   BSDispatchMain();
 }
 
@@ -1192,16 +1192,16 @@ void __67__SBHardwareButtonService_systemServiceServer_clientDidDisconnect___blo
   [*(a1 + 40) _updateEventMasksForButtonKind:a2];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setEventMask:(unint64_t)a5 buttonKind:(int64_t)a6 priority:(int64_t)a7
+- (void)systemServiceServer:(id)server client:(id)client setEventMask:(unint64_t)mask buttonKind:(int64_t)kind priority:(int64_t)priority
 {
-  v8 = a4;
+  clientCopy = client;
   serviceClientEventConsumerEntitlement = self->_serviceClientEventConsumerEntitlement;
   v14 = 0;
-  v10 = [(FBServiceClientAuthenticator *)serviceClientEventConsumerEntitlement authenticateClient:v8 error:&v14];
+  v10 = [(FBServiceClientAuthenticator *)serviceClientEventConsumerEntitlement authenticateClient:clientCopy error:&v14];
   v11 = v14;
   if (v10)
   {
-    v13 = v8;
+    v13 = clientCopy;
     BSDispatchMain();
   }
 
@@ -1210,17 +1210,17 @@ void __67__SBHardwareButtonService_systemServiceServer_clientDidDisconnect___blo
     v12 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [SBHardwareButtonService systemServiceServer:v8 client:? setEventMask:? buttonKind:? priority:?];
+      [SBHardwareButtonService systemServiceServer:clientCopy client:? setEventMask:? buttonKind:? priority:?];
     }
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 requestsHIDEvents:(BOOL)a5 token:(id)a6 forButtonKind:(int64_t)a7
+- (void)systemServiceServer:(id)server client:(id)client requestsHIDEvents:(BOOL)events token:(id)token forButtonKind:(int64_t)kind
 {
-  v8 = a4;
-  v11 = a6;
-  v9 = v11;
-  v10 = v8;
+  clientCopy = client;
+  tokenCopy = token;
+  v9 = tokenCopy;
+  v10 = clientCopy;
   BSDispatchMain();
 }
 
@@ -1241,25 +1241,25 @@ void __92__SBHardwareButtonService_systemServiceServer_client_requestsHIDEvents_
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setHapticType:(int64_t)a5 buttonKind:(int64_t)a6
+- (void)systemServiceServer:(id)server client:(id)client setHapticType:(int64_t)type buttonKind:(int64_t)kind
 {
-  v8 = a4;
+  clientCopy = client;
   serviceClientEventConsumerEntitlement = self->_serviceClientEventConsumerEntitlement;
   v13 = 0;
-  v10 = [(FBServiceClientAuthenticator *)serviceClientEventConsumerEntitlement authenticateClient:v8 error:&v13];
+  v10 = [(FBServiceClientAuthenticator *)serviceClientEventConsumerEntitlement authenticateClient:clientCopy error:&v13];
   v11 = v13;
   if (!v10)
   {
     v12 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [SBHardwareButtonService systemServiceServer:v8 client:? setHapticType:? buttonKind:?];
+      [SBHardwareButtonService systemServiceServer:clientCopy client:? setHapticType:? buttonKind:?];
     }
 
     goto LABEL_8;
   }
 
-  if (a6 != 1)
+  if (kind != 1)
   {
     v12 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1282,32 +1282,32 @@ void __79__SBHardwareButtonService_systemServiceServer_client_setHapticType_butt
   [v2 setHapticType:*(a1 + 32)];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 fetchHapticTypeForButtonKind:(int64_t)a5 completion:(id)a6
+- (void)systemServiceServer:(id)server client:(id)client fetchHapticTypeForButtonKind:(int64_t)kind completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v13)
+  serverCopy = server;
+  clientCopy = client;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [SBHardwareButtonService systemServiceServer:a2 client:self fetchHapticTypeForButtonKind:? completion:?];
   }
 
   serviceClientEventConsumerEntitlement = self->_serviceClientEventConsumerEntitlement;
   v20 = 0;
-  v15 = [(FBServiceClientAuthenticator *)serviceClientEventConsumerEntitlement authenticateClient:v12 error:&v20];
+  v15 = [(FBServiceClientAuthenticator *)serviceClientEventConsumerEntitlement authenticateClient:clientCopy error:&v20];
   v16 = v20;
   if (!v15)
   {
     v17 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [SBHardwareButtonService systemServiceServer:v12 client:? fetchHapticTypeForButtonKind:? completion:?];
+      [SBHardwareButtonService systemServiceServer:clientCopy client:? fetchHapticTypeForButtonKind:? completion:?];
     }
 
     goto LABEL_12;
   }
 
-  if (a5 != 1)
+  if (kind != 1)
   {
     v18 = SBLogButtonsInteraction();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1316,11 +1316,11 @@ void __79__SBHardwareButtonService_systemServiceServer_client_setHapticType_butt
     }
 
 LABEL_12:
-    v13[2](v13, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_13;
   }
 
-  v19 = v13;
+  v19 = completionCopy;
   BSDispatchMain();
 
 LABEL_13:
@@ -1333,25 +1333,25 @@ void __94__SBHardwareButtonService_systemServiceServer_client_fetchHapticTypeFor
   (*(v1 + 16))(v1, [v2 hapticType]);
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 acquireAssertionOfType:(int64_t)a5 forReason:(id)a6 withCompletion:(id)a7
+- (void)systemServiceServer:(id)server client:(id)client acquireAssertionOfType:(int64_t)type forReason:(id)reason withCompletion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
+  clientCopy = client;
+  reasonCopy = reason;
+  completionCopy = completion;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __102__SBHardwareButtonService_systemServiceServer_client_acquireAssertionOfType_forReason_withCompletion___block_invoke;
   v26[3] = &unk_2783AB780;
-  v30 = a5;
-  v14 = v12;
+  typeCopy = type;
+  v14 = reasonCopy;
   v27 = v14;
-  v15 = v11;
+  v15 = clientCopy;
   v28 = v15;
-  v16 = v13;
+  v16 = completionCopy;
   v29 = v16;
   v17 = MEMORY[0x223D6F7F0](v26);
-  if (a5)
+  if (type)
   {
     v18 = 0;
   }
@@ -1471,24 +1471,24 @@ uint64_t __102__SBHardwareButtonService_systemServiceServer_client_acquireAssert
 
   else
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v3 = [v4 BOOLForKey:@"SBHardwareButtonHintDropletsEnabled"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v3 = [standardUserDefaults BOOLForKey:@"SBHardwareButtonHintDropletsEnabled"];
   }
 
   return v3;
 }
 
-- (BOOL)systemServiceServer:(id)a3 getHintViewsSupportedForClient:(id)a4
+- (BOOL)systemServiceServer:(id)server getHintViewsSupportedForClient:(id)client
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  clientCopy = client;
   serviceClientHintViewEntitlement = self->_serviceClientHintViewEntitlement;
   v15 = 0;
-  v7 = [(FBServiceClientAuthenticator *)serviceClientHintViewEntitlement authenticateClient:v5 error:&v15];
+  v7 = [(FBServiceClientAuthenticator *)serviceClientHintViewEntitlement authenticateClient:clientCopy error:&v15];
   v8 = v15;
   if (v7)
   {
-    v9 = [(SBHardwareButtonService *)self _hwButtonHintViewsSupported];
+    _hwButtonHintViewsSupported = [(SBHardwareButtonService *)self _hwButtonHintViewsSupported];
   }
 
   else
@@ -1498,7 +1498,7 @@ uint64_t __102__SBHardwareButtonService_systemServiceServer_client_acquireAssert
     {
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      [v5 pid];
+      [clientCopy pid];
       v14 = BSProcessDescriptionForPID();
       *buf = 138543874;
       v17 = v13;
@@ -1509,20 +1509,20 @@ uint64_t __102__SBHardwareButtonService_systemServiceServer_client_acquireAssert
       _os_log_error_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Client process [%@] is not approved to query hardware button service: %@", buf, 0x20u);
     }
 
-    v9 = 0;
+    _hwButtonHintViewsSupported = 0;
   }
 
-  return v9;
+  return _hwButtonHintViewsSupported;
 }
 
-- (BOOL)systemServiceServer:(id)a3 client:(id)a4 registerAssociatedHintViewContextId:(unsigned int)a5 renderId:(unint64_t)a6 size:(CGSize)a7 buttonKind:(int64_t)a8 clientPort:(id)a9
+- (BOOL)systemServiceServer:(id)server client:(id)client registerAssociatedHintViewContextId:(unsigned int)id renderId:(unint64_t)renderId size:(CGSize)size buttonKind:(int64_t)kind clientPort:(id)port
 {
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a9;
+  clientCopy = client;
+  portCopy = port;
   serviceClientHintViewEntitlement = self->_serviceClientHintViewEntitlement;
   v24 = 0;
-  v14 = [(FBServiceClientAuthenticator *)serviceClientHintViewEntitlement authenticateClient:v11 error:&v24];
+  v14 = [(FBServiceClientAuthenticator *)serviceClientHintViewEntitlement authenticateClient:clientCopy error:&v24];
   v15 = v24;
   if (!v14)
   {
@@ -1531,7 +1531,7 @@ uint64_t __102__SBHardwareButtonService_systemServiceServer_client_acquireAssert
     {
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      [v11 pid];
+      [clientCopy pid];
       v21 = BSProcessDescriptionForPID();
       v22 = NSStringFromSBSHardwareButtonKind();
       *buf = 138544130;
@@ -1555,7 +1555,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v23 = v12;
+  v23 = portCopy;
   BSDispatchMain();
 
   v16 = 1;
@@ -1595,18 +1595,18 @@ void __126__SBHardwareButtonService_systemServiceServer_client_registerAssociate
   BSDispatchMain();
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 updateHintContentVisibility:(int64_t)a5 forButton:(int64_t)a6 animationSettings:(id)a7
+- (void)systemServiceServer:(id)server client:(id)client updateHintContentVisibility:(int64_t)visibility forButton:(int64_t)button animationSettings:(id)settings
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a7;
+  clientCopy = client;
+  settingsCopy = settings;
   serviceClientHintViewEntitlement = self->_serviceClientHintViewEntitlement;
   v21 = 0;
-  v13 = [(FBServiceClientAuthenticator *)serviceClientHintViewEntitlement authenticateClient:v10 error:&v21];
+  v13 = [(FBServiceClientAuthenticator *)serviceClientHintViewEntitlement authenticateClient:clientCopy error:&v21];
   v14 = v21;
   if (v13)
   {
-    v20 = v11;
+    v20 = settingsCopy;
     BSDispatchMain();
   }
 
@@ -1617,7 +1617,7 @@ void __126__SBHardwareButtonService_systemServiceServer_client_registerAssociate
     {
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      [v10 pid];
+      [clientCopy pid];
       v18 = BSProcessDescriptionForPID();
       v19 = NSStringFromSBSHardwareButtonKind();
       *buf = 138544386;
@@ -1625,7 +1625,7 @@ void __126__SBHardwareButtonService_systemServiceServer_client_registerAssociate
       v24 = 2112;
       v25 = v18;
       v26 = 2048;
-      v27 = a5;
+      visibilityCopy = visibility;
       v28 = 2114;
       v29 = v19;
       v30 = 2112;
@@ -1644,14 +1644,14 @@ void __110__SBHardwareButtonService_systemServiceServer_client_updateHintContent
   }
 }
 
-- (BOOL)systemServiceServer:(id)a3 client:(id)a4 requestSystemGlowEffectWithInitialStyle:(int64_t)a5 clientPort:(id)a6
+- (BOOL)systemServiceServer:(id)server client:(id)client requestSystemGlowEffectWithInitialStyle:(int64_t)style clientPort:(id)port
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a6;
+  clientCopy = client;
+  portCopy = port;
   serviceClientHintViewEntitlement = self->_serviceClientHintViewEntitlement;
   v21 = 0;
-  v11 = [(FBServiceClientAuthenticator *)serviceClientHintViewEntitlement authenticateClient:v8 error:&v21];
+  v11 = [(FBServiceClientAuthenticator *)serviceClientHintViewEntitlement authenticateClient:clientCopy error:&v21];
   v12 = v21;
   if (!v11)
   {
@@ -1660,7 +1660,7 @@ void __110__SBHardwareButtonService_systemServiceServer_client_updateHintContent
     {
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      [v8 pid];
+      [clientCopy pid];
       v18 = BSProcessDescriptionForPID();
       v19 = NSStringFromSBSHardwareButtonSystemGlowStyle();
       *buf = 138544130;
@@ -1684,7 +1684,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v20 = v9;
+  v20 = portCopy;
   BSDispatchMain();
 
   v13 = 1;
@@ -1715,13 +1715,13 @@ void __105__SBHardwareButtonService_systemServiceServer_client_requestSystemGlow
   BSDispatchMain();
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 updateSystemGlowStyle:(int64_t)a5
+- (void)systemServiceServer:(id)server client:(id)client updateSystemGlowStyle:(int64_t)style
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  clientCopy = client;
   serviceClientHintViewEntitlement = self->_serviceClientHintViewEntitlement;
   v15 = 0;
-  v8 = [(FBServiceClientAuthenticator *)serviceClientHintViewEntitlement authenticateClient:v6 error:&v15];
+  v8 = [(FBServiceClientAuthenticator *)serviceClientHintViewEntitlement authenticateClient:clientCopy error:&v15];
   v9 = v15;
   if (v8)
   {
@@ -1735,7 +1735,7 @@ void __105__SBHardwareButtonService_systemServiceServer_client_requestSystemGlow
     {
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      [v6 pid];
+      [clientCopy pid];
       v13 = BSProcessDescriptionForPID();
       v14 = NSStringFromSBSHardwareButtonSystemGlowStyle();
       *buf = 138544130;

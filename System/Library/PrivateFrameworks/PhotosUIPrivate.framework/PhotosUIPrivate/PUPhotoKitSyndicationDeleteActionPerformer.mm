@@ -1,45 +1,45 @@
 @interface PUPhotoKitSyndicationDeleteActionPerformer
 - (void)_createRecord;
-- (void)_recordUserConfirmation:(int64_t)a3;
-- (void)_recordVariant:(id)a3;
+- (void)_recordUserConfirmation:(int64_t)confirmation;
+- (void)_recordVariant:(id)variant;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PUPhotoKitSyndicationDeleteActionPerformer
 
-- (void)_recordVariant:(id)a3
+- (void)_recordVariant:(id)variant
 {
-  v5 = a3;
+  variantCopy = variant;
   record = self->_record;
-  v10 = v5;
+  v10 = variantCopy;
   if (!record)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2241 description:{@"Invalid parameter not satisfying: %@", @"_record != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2241 description:{@"Invalid parameter not satisfying: %@", @"_record != nil"}];
 
-    v5 = v10;
+    variantCopy = v10;
     record = self->_record;
   }
 
-  v7 = [(PXActionRecord *)record withVariant:v5];
+  v7 = [(PXActionRecord *)record withVariant:variantCopy];
   v8 = self->_record;
   self->_record = v7;
 }
 
-- (void)_recordUserConfirmation:(int64_t)a3
+- (void)_recordUserConfirmation:(int64_t)confirmation
 {
   record = self->_record;
   if (!record)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2236 description:{@"Invalid parameter not satisfying: %@", @"_record != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2236 description:{@"Invalid parameter not satisfying: %@", @"_record != nil"}];
 
     record = self->_record;
   }
 
-  v10 = [(PUAssetActionPerformer *)self assets];
-  v6 = -[PXActionRecord withUserConfirmation:assetCount:](record, "withUserConfirmation:assetCount:", a3, [v10 count]);
+  assets = [(PUAssetActionPerformer *)self assets];
+  v6 = -[PXActionRecord withUserConfirmation:assetCount:](record, "withUserConfirmation:assetCount:", confirmation, [assets count]);
   v7 = self->_record;
   self->_record = v6;
 }
@@ -48,25 +48,25 @@
 {
   if (self->_record)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2231 description:{@"Invalid parameter not satisfying: %@", @"_record == nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2231 description:{@"Invalid parameter not satisfying: %@", @"_record == nil"}];
   }
 
   v3 = objc_alloc(MEMORY[0x1E69C32F0]);
   v4 = objc_opt_class();
   v10 = NSStringFromClass(v4);
-  v5 = [(PUAssetActionPerformer *)self assets];
-  v6 = [v3 initWithSourceIdentifier:v10 assetCount:{objc_msgSend(v5, "count")}];
+  assets = [(PUAssetActionPerformer *)self assets];
+  v6 = [v3 initWithSourceIdentifier:v10 assetCount:{objc_msgSend(assets, "count")}];
   record = self->_record;
   self->_record = v6;
 }
 
 - (void)performBackgroundTask
 {
-  v4 = [MEMORY[0x1E69C3408] sharedInstance];
-  v5 = [v4 preventActualRemoveSuggestionBehavior];
+  mEMORY[0x1E69C3408] = [MEMORY[0x1E69C3408] sharedInstance];
+  preventActualRemoveSuggestionBehavior = [mEMORY[0x1E69C3408] preventActualRemoveSuggestionBehavior];
 
-  if (v5)
+  if (preventActualRemoveSuggestionBehavior)
   {
 
     [(PUAssetActionPerformer *)self completeBackgroundTaskWithSuccess:1 error:0];
@@ -74,19 +74,19 @@
 
   else
   {
-    v6 = [(PUAssetActionPerformer *)self assets];
+    assets = [(PUAssetActionPerformer *)self assets];
     v7 = self->_record;
     if (!v7)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2200 description:{@"Invalid parameter not satisfying: %@", @"record != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2200 description:{@"Invalid parameter not satisfying: %@", @"record != nil"}];
     }
 
-    v8 = [MEMORY[0x1E69C3448] actionWithAssets:v6 record:v7];
+    v8 = [MEMORY[0x1E69C3448] actionWithAssets:assets record:v7];
     if (!v8)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2202 description:{@"Invalid parameter not satisfying: %@", @"deleteAssetsAction != nil"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:2202 description:{@"Invalid parameter not satisfying: %@", @"deleteAssetsAction != nil"}];
     }
 
     v12[0] = MEMORY[0x1E69E9820];
@@ -94,8 +94,8 @@
     v12[2] = __67__PUPhotoKitSyndicationDeleteActionPerformer_performBackgroundTask__block_invoke;
     v12[3] = &unk_1E7B7FB70;
     v12[4] = self;
-    v13 = v6;
-    v9 = v6;
+    v13 = assets;
+    v9 = assets;
     [v8 executeWithUndoManager:0 completionHandler:v12];
   }
 }
@@ -191,10 +191,10 @@ LABEL_4:
 - (void)performUserInteractionTask
 {
   [(PUPhotoKitSyndicationDeleteActionPerformer *)self _createRecord];
-  v3 = [MEMORY[0x1E69C3408] sharedInstance];
-  v4 = [v3 preventActualRemoveSuggestionBehavior];
+  mEMORY[0x1E69C3408] = [MEMORY[0x1E69C3408] sharedInstance];
+  preventActualRemoveSuggestionBehavior = [mEMORY[0x1E69C3408] preventActualRemoveSuggestionBehavior];
 
-  if (v4)
+  if (preventActualRemoveSuggestionBehavior)
   {
     v16 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Remove Suggestion Prevented" message:@"Remove Suggestion is currently disabled via our internal settings (for debugging)." preferredStyle:1];
     v5 = [MEMORY[0x1E69DC648] actionWithTitle:@"OK" style:0 handler:0];
@@ -207,7 +207,7 @@ LABEL_4:
 
   else
   {
-    v6 = [(PUAssetActionPerformer *)self assets];
+    assets = [(PUAssetActionPerformer *)self assets];
     v19[5] = 0;
     v19[6] = 0;
     v7 = PXContentSyndicationRemoveConfirmationTitleAndMessageLocalizedStrings();

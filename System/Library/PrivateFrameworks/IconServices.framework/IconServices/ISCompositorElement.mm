@@ -1,44 +1,44 @@
 @interface ISCompositorElement
-- (ISCompositorElement)initWithRecipe:(id)a3 resourceProvider:(id)a4;
-- (ISCompositorElement)initWithRecipe:(id)a3 resourceProvider:(id)a4 additionalResources:(id)a5;
+- (ISCompositorElement)initWithRecipe:(id)recipe resourceProvider:(id)provider;
+- (ISCompositorElement)initWithRecipe:(id)recipe resourceProvider:(id)provider additionalResources:(id)resources;
 - (ISCompositorResourceProvider)resourceProvider;
-- (id)resourceForKey:(id)a3;
-- (id)resourceNamed:(id)a3;
+- (id)resourceForKey:(id)key;
+- (id)resourceNamed:(id)named;
 @end
 
 @implementation ISCompositorElement
 
-- (ISCompositorElement)initWithRecipe:(id)a3 resourceProvider:(id)a4
+- (ISCompositorElement)initWithRecipe:(id)recipe resourceProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  recipeCopy = recipe;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = ISCompositorElement;
   v9 = [(ISCompositorElement *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_recipe, a3);
-    objc_storeStrong(&v10->_resourceProvider, a4);
+    objc_storeStrong(&v9->_recipe, recipe);
+    objc_storeStrong(&v10->_resourceProvider, provider);
   }
 
   return v10;
 }
 
-- (ISCompositorElement)initWithRecipe:(id)a3 resourceProvider:(id)a4 additionalResources:(id)a5
+- (ISCompositorElement)initWithRecipe:(id)recipe resourceProvider:(id)provider additionalResources:(id)resources
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  recipeCopy = recipe;
+  providerCopy = provider;
+  resourcesCopy = resources;
   v17.receiver = self;
   v17.super_class = ISCompositorElement;
   v12 = [(ISCompositorElement *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_recipe, a3);
-    objc_storeStrong(&v13->_resourceProvider, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_recipe, recipe);
+    objc_storeStrong(&v13->_resourceProvider, provider);
+    v14 = [resourcesCopy copy];
     additionalResources = v13->_additionalResources;
     v13->_additionalResources = v14;
   }
@@ -53,40 +53,40 @@
     self = self->_resourceProvider;
   }
 
-  v2 = self;
+  selfCopy = self;
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)resourceForKey:(id)a3
+- (id)resourceForKey:(id)key
 {
   resourceProvider = self->_resourceProvider;
-  v5 = a3;
+  keyCopy = key;
   v6 = objc_opt_respondsToSelector();
   v7 = self->_resourceProvider;
   if (v6)
   {
-    v8 = [(ISCompositorResourceProvider *)v7 resourceForKey:v5];
+    v8 = [(ISCompositorResourceProvider *)v7 resourceForKey:keyCopy];
   }
 
   else
   {
-    v9 = [v5 name];
+    name = [keyCopy name];
 
-    v8 = [(ISCompositorResourceProvider *)v7 resourceNamed:v9];
-    v5 = v9;
+    v8 = [(ISCompositorResourceProvider *)v7 resourceNamed:name];
+    keyCopy = name;
   }
 
   return v8;
 }
 
-- (id)resourceNamed:(id)a3
+- (id)resourceNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(ISCompositorResourceProvider *)self->_resourceProvider resourceNamed:v4];
+  namedCopy = named;
+  v5 = [(ISCompositorResourceProvider *)self->_resourceProvider resourceNamed:namedCopy];
   if (!v5)
   {
-    v5 = [(NSDictionary *)self->_additionalResources _IS_resourceNamed:v4];
+    v5 = [(NSDictionary *)self->_additionalResources _IS_resourceNamed:namedCopy];
   }
 
   return v5;

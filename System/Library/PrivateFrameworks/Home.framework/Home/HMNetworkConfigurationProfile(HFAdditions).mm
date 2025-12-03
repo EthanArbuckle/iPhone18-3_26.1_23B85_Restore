@@ -22,66 +22,66 @@
 - (uint64_t)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
 {
   v2 = objc_opt_class();
-  v3 = [a1 targetProtectionMode];
+  targetProtectionMode = [self targetProtectionMode];
 
-  return [v2 hf_localizedTitleForTargetProtectionMode:v3];
+  return [v2 hf_localizedTitleForTargetProtectionMode:targetProtectionMode];
 }
 
 - (uint64_t)hf_targetProtectionModeDetailedLocalizedTitle
 {
   v2 = objc_opt_class();
-  v3 = [a1 targetProtectionMode];
+  targetProtectionMode = [self targetProtectionMode];
 
-  return [v2 hf_detailedLocalizedTitleForTargetProtectionMode:v3];
+  return [v2 hf_detailedLocalizedTitleForTargetProtectionMode:targetProtectionMode];
 }
 
 - (uint64_t)hf_targetProtectionModeDetailedLocalizedDescription
 {
   v2 = objc_opt_class();
-  v3 = [a1 targetProtectionMode];
+  targetProtectionMode = [self targetProtectionMode];
 
-  return [v2 hf_detailedLocalizedDescriptionForTargetProtectionMode:v3];
+  return [v2 hf_detailedLocalizedDescriptionForTargetProtectionMode:targetProtectionMode];
 }
 
 - (uint64_t)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
 {
   v2 = objc_opt_class();
-  v3 = [a1 credentialType];
+  credentialType = [self credentialType];
 
-  return [v2 hf_localizedDescriptionForCredentialType:v3];
+  return [v2 hf_localizedDescriptionForCredentialType:credentialType];
 }
 
 - (uint64_t)hf_targetProtectionModeIsValid
 {
   v2 = objc_opt_class();
-  v3 = [a1 targetProtectionMode];
+  targetProtectionMode = [self targetProtectionMode];
 
-  return [v2 hf_targetProtectionModeIsValid:v3];
+  return [v2 hf_targetProtectionModeIsValid:targetProtectionMode];
 }
 
 - (uint64_t)hf_hasCurrentNetworkAccessViolation
 {
-  v2 = [a1 accessViolation];
-  if (v2)
+  accessViolation = [self accessViolation];
+  if (accessViolation)
   {
-    v3 = [a1 accessViolation];
-    v4 = [v3 hasCurrentViolation];
+    accessViolation2 = [self accessViolation];
+    hasCurrentViolation = [accessViolation2 hasCurrentViolation];
   }
 
   else
   {
-    v4 = 0;
+    hasCurrentViolation = 0;
   }
 
-  return v4;
+  return hasCurrentViolation;
 }
 
 - (uint64_t)hf_requiresManualWiFiReconfiguration
 {
-  if ([a1 supportsWiFiReconfiguration])
+  if ([self supportsWiFiReconfiguration])
   {
-    v2 = [a1 accessory];
-    v3 = [v2 isReachable] ^ 1;
+    accessory = [self accessory];
+    v3 = [accessory isReachable] ^ 1;
   }
 
   else
@@ -89,7 +89,7 @@
     v3 = 1;
   }
 
-  return [a1 hf_requiresWiFiReconfiguration] & v3;
+  return [self hf_requiresWiFiReconfiguration] & v3;
 }
 
 + (id)hf_localizedTitleForTargetProtectionMode:()HFAdditions
@@ -214,7 +214,7 @@
 
 + (id)hf_localizedDescriptionForAllowedHostPurpose:()HFAdditions
 {
-  v4 = [objc_opt_class() _localizedStringForPurpose];
+  _localizedStringForPurpose = [objc_opt_class() _localizedStringForPurpose];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -225,17 +225,17 @@
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = a3;
-  v5 = [v4 allKeys];
+  allKeys = [_localizedStringForPurpose allKeys];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __91__HMNetworkConfigurationProfile_HFAdditions__hf_localizedDescriptionForAllowedHostPurpose___block_invoke;
   v17 = &unk_277DFDDB0;
   v21 = a3;
   v19 = &v26;
-  v6 = v4;
+  v6 = _localizedStringForPurpose;
   v18 = v6;
   v20 = &v22;
-  [v5 na_each:&v14];
+  [allKeys na_each:&v14];
 
   if (v23[3])
   {
@@ -245,8 +245,8 @@
   }
 
   v9 = MEMORY[0x277CCAAF0];
-  v10 = [v27[5] allObjects];
-  v11 = [v10 sortedArrayUsingSelector:sel_localizedStandardCompare_];
+  allObjects = [v27[5] allObjects];
+  v11 = [allObjects sortedArrayUsingSelector:sel_localizedStandardCompare_];
   v12 = [v9 localizedStringByJoiningStrings:v11];
 
   _Block_object_dispose(&v22, 8);
@@ -274,9 +274,9 @@
 
 + (BOOL)hf_targetProtectionModeIsValid:()HFAdditions
 {
-  v4 = [a1 _validCurrentModesForTargetModes];
+  _validCurrentModesForTargetModes = [self _validCurrentModesForTargetModes];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [_validCurrentModesForTargetModes objectForKeyedSubscript:v5];
   v7 = v6 != 0;
 
   return v7;
@@ -284,9 +284,9 @@
 
 + (uint64_t)hf_currentProtectionMode:()HFAdditions isValidForTargetProtectionMode:
 {
-  v6 = [a1 _validCurrentModesForTargetModes];
+  _validCurrentModesForTargetModes = [self _validCurrentModesForTargetModes];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [_validCurrentModesForTargetModes objectForKeyedSubscript:v7];
 
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
   v10 = [v8 containsObject:v9];

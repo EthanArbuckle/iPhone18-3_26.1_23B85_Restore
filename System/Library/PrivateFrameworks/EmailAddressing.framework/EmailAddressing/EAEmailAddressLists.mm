@@ -1,24 +1,24 @@
 @interface EAEmailAddressLists
-+ (id)addressDisplayStringWithMaxNumberOfAddresses:(unint64_t)a3 fromAddressList:(id)a4;
-+ (id)addressListFromAddressString:(id)a3;
-+ (id)addressListFromHeaderValue:(id)a3;
-+ (id)addressStringFromAddressList:(id)a3;
-+ (id)componentsSeparatedByCharactersRespectingQuotesAndParens:(id)a3 forString:(id)a4;
-+ (id)componentsSeparatedByCommaRespectingQuotesAndParensForString:(id)a3;
-+ (id)displayNameFromAddressList:(id)a3;
-+ (id)rawAddressListFromFullAddressList:(id)a3;
++ (id)addressDisplayStringWithMaxNumberOfAddresses:(unint64_t)addresses fromAddressList:(id)list;
++ (id)addressListFromAddressString:(id)string;
++ (id)addressListFromHeaderValue:(id)value;
++ (id)addressStringFromAddressList:(id)list;
++ (id)componentsSeparatedByCharactersRespectingQuotesAndParens:(id)parens forString:(id)string;
++ (id)componentsSeparatedByCommaRespectingQuotesAndParensForString:(id)string;
++ (id)displayNameFromAddressList:(id)list;
++ (id)rawAddressListFromFullAddressList:(id)list;
 @end
 
 @implementation EAEmailAddressLists
 
-+ (id)addressListFromHeaderValue:(id)a3
++ (id)addressListFromHeaderValue:(id)value
 {
   v106 = *MEMORY[0x277D85DE8];
-  theString = a3;
+  theString = value;
   v3 = [(__CFString *)theString length];
   if (v3 >= 1)
   {
-    v81 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v96 = 0u;
     v97 = 0u;
     v94 = 0u;
@@ -312,7 +312,7 @@
             }
 
             v52 = [(__CFString *)theString substringWithRange:v28, v51, v80];
-            v53 = [v52 lowercaseString];
+            lowercaseString = [v52 lowercaseString];
 
             v88 = 0u;
             v89 = 0u;
@@ -333,7 +333,7 @@ LABEL_98:
                 }
 
                 v58 = *(*(&v86 + 1) + 8 * v57);
-                if ([v53 hasPrefix:v58])
+                if ([lowercaseString hasPrefix:v58])
                 {
                   v26 = [v58 length] + v28;
                   if (v26 < v3)
@@ -481,9 +481,9 @@ LABEL_98:
             }
           }
 
-          v53 = [(__CFString *)theString substringWithRange:v7, v27 - v7, v80];
-          v54 = [EAEmailAddressParser idnaDecodedAddressForAddress:v53];
-          [v81 addObject:v54];
+          lowercaseString = [(__CFString *)theString substringWithRange:v7, v27 - v7, v80];
+          v54 = [EAEmailAddressParser idnaDecodedAddressForAddress:lowercaseString];
+          [array addObject:v54];
           v26 = v8;
           v7 = v25;
 LABEL_152:
@@ -510,12 +510,12 @@ LABEL_153:
     }
   }
 
-  v81 = MEMORY[0x277CBEBF8];
+  array = MEMORY[0x277CBEBF8];
 LABEL_5:
 
   v5 = *MEMORY[0x277D85DE8];
 
-  return v81;
+  return array;
 }
 
 void __50__EAEmailAddressLists_addressListFromHeaderValue___block_invoke()
@@ -524,30 +524,30 @@ void __50__EAEmailAddressLists_addressListFromHeaderValue___block_invoke()
   addressListFromHeaderValue__nameExtensions = &unk_285D22B58;
 }
 
-+ (id)componentsSeparatedByCommaRespectingQuotesAndParensForString:(id)a3
++ (id)componentsSeparatedByCommaRespectingQuotesAndParensForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (!componentsSeparatedByCommaRespectingQuotesAndParensForString__addressCharacterSet)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@", %C%C%C", 10, 13, 65532];
-    v6 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:v5];
+    65532 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@", %C%C%C", 10, 13, 65532];
+    v6 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:65532];
     v7 = componentsSeparatedByCommaRespectingQuotesAndParensForString__addressCharacterSet;
     componentsSeparatedByCommaRespectingQuotesAndParensForString__addressCharacterSet = v6;
   }
 
-  v8 = [a1 componentsSeparatedByCharactersRespectingQuotesAndParens:? forString:?];
+  v8 = [self componentsSeparatedByCharactersRespectingQuotesAndParens:? forString:?];
 
   return v8;
 }
 
-+ (id)componentsSeparatedByCharactersRespectingQuotesAndParens:(id)a3 forString:(id)a4
++ (id)componentsSeparatedByCharactersRespectingQuotesAndParens:(id)parens forString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v20 = [MEMORY[0x277CBEB18] array];
-  v7 = NSZoneMalloc(0, 2 * [v6 length]);
-  [v6 getCharacters:v7];
-  v8 = [v6 length];
+  parensCopy = parens;
+  stringCopy = string;
+  array = [MEMORY[0x277CBEB18] array];
+  v7 = NSZoneMalloc(0, 2 * [stringCopy length]);
+  [stringCopy getCharacters:v7];
+  v8 = [stringCopy length];
   v9 = &v7[v8];
   if (v8 >= 1)
   {
@@ -604,13 +604,13 @@ void __50__EAEmailAddressLists_addressListFromHeaderValue___block_invoke()
         }
       }
 
-      if (!(v10 & 1 | (([v5 characterIsMember:?] & 1) == 0)) && !v11)
+      if (!(v10 & 1 | (([parensCopy characterIsMember:?] & 1) == 0)) && !v11)
       {
-        v17 = [v6 substringWithRange:{v14 - v7, v13 - v14}];
+        v17 = [stringCopy substringWithRange:{v14 - v7, v13 - v14}];
 
         if ([v17 length])
         {
-          [v20 addObject:v17];
+          [array addObject:v17];
         }
 
         v11 = 0;
@@ -636,37 +636,37 @@ LABEL_22:
 LABEL_25:
   if (v14 < v9)
   {
-    v18 = [v6 substringWithRange:{v14 - v7, v9 - v14}];
+    v18 = [stringCopy substringWithRange:{v14 - v7, v9 - v14}];
 
     v17 = v18;
     if ([v18 length])
     {
-      [v20 addObject:v18];
+      [array addObject:v18];
     }
   }
 
   NSZoneFree(0, v7);
 
-  return v20;
+  return array;
 }
 
-+ (id)addressListFromAddressString:(id)a3
++ (id)addressListFromAddressString:(id)string
 {
-  v3 = [a3 componentsSeparatedByString:{@", "}];
+  v3 = [string componentsSeparatedByString:{@", "}];
 
   return v3;
 }
 
-+ (id)addressStringFromAddressList:(id)a3
++ (id)addressStringFromAddressList:(id)list
 {
   v44 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v24, "count")}];
+  listCopy = list;
+  v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(listCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v24;
+  obj = listCopy;
   v4 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v4)
   {
@@ -848,11 +848,11 @@ LABEL_25:
   return v21;
 }
 
-+ (id)rawAddressListFromFullAddressList:(id)a3
++ (id)rawAddressListFromFullAddressList:(id)list
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  listCopy = list;
+  v4 = [listCopy count];
   if (v4)
   {
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
@@ -860,7 +860,7 @@ LABEL_25:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v3;
+    v6 = listCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -904,16 +904,16 @@ LABEL_25:
   return v5;
 }
 
-+ (id)displayNameFromAddressList:(id)a3
++ (id)displayNameFromAddressList:(id)list
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  listCopy = list;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(listCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = listCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -944,24 +944,24 @@ LABEL_25:
   return v10;
 }
 
-+ (id)addressDisplayStringWithMaxNumberOfAddresses:(unint64_t)a3 fromAddressList:(id)a4
++ (id)addressDisplayStringWithMaxNumberOfAddresses:(unint64_t)addresses fromAddressList:(id)list
 {
-  v5 = a4;
-  v6 = [v5 count];
+  listCopy = list;
+  v6 = [listCopy count];
   v7 = v6;
   if (v6)
   {
     if (v6 == 1)
     {
-      v8 = [v5 objectAtIndexedSubscript:0];
+      v8 = [listCopy objectAtIndexedSubscript:0];
     }
 
     else
     {
-      v9 = [MEMORY[0x277CCAB68] string];
-      if (v7 >= a3)
+      string = [MEMORY[0x277CCAB68] string];
+      if (v7 >= addresses)
       {
-        v10 = v7 - a3;
+        v10 = v7 - addresses;
       }
 
       else
@@ -970,28 +970,28 @@ LABEL_25:
       }
 
       v11 = objc_alloc(MEMORY[0x277CCAA78]);
-      if (v7 <= a3)
+      if (v7 <= addresses)
       {
-        v12 = v7 - 1;
+        addressesCopy = v7 - 1;
       }
 
       else
       {
-        v12 = a3;
+        addressesCopy = addresses;
       }
 
-      v13 = [v11 initWithIndexesInRange:{0, v12}];
+      v13 = [v11 initWithIndexesInRange:{0, addressesCopy}];
       v18 = MEMORY[0x277D85DD0];
       v19 = 3221225472;
       v20 = __84__EAEmailAddressLists_addressDisplayStringWithMaxNumberOfAddresses_fromAddressList___block_invoke;
       v21 = &unk_278FC0060;
-      v8 = v9;
+      v8 = string;
       v22 = v8;
-      [v5 enumerateObjectsAtIndexes:v13 options:0 usingBlock:&v18];
-      if (v7 <= a3)
+      [listCopy enumerateObjectsAtIndexes:v13 options:0 usingBlock:&v18];
+      if (v7 <= addresses)
       {
         v15 = _EFLocalizedString();
-        v16 = [v5 objectAtIndexedSubscript:v7 - 1];
+        v16 = [listCopy objectAtIndexedSubscript:v7 - 1];
         [(__CFString *)v8 appendFormat:v15, v16, v18, v19, v20, v21];
       }
 

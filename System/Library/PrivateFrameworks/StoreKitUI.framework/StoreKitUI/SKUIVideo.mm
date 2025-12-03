@@ -1,12 +1,12 @@
 @interface SKUIVideo
-- (SKUIVideo)initWithVideoDictionary:(id)a3;
+- (SKUIVideo)initWithVideoDictionary:(id)dictionary;
 @end
 
 @implementation SKUIVideo
 
-- (SKUIVideo)initWithVideoDictionary:(id)a3
+- (SKUIVideo)initWithVideoDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIVideo initWithVideoDictionary:];
@@ -17,12 +17,12 @@
   v5 = [(SKUIVideo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"previewFrame"];
+    v6 = [dictionaryCopy objectForKey:@"previewFrame"];
     v7 = [SKUIArtworkProvidingFactory artworkProviderForStoreResponse:v6];
     artworks = v5->_artworks;
     v5->_artworks = v7;
 
-    v9 = [v4 objectForKey:@"video"];
+    v9 = [dictionaryCopy objectForKey:@"video"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

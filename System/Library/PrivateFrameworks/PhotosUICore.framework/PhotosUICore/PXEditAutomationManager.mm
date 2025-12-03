@@ -9,19 +9,19 @@
 {
   v2 = MEMORY[0x1E69E7D40];
   v3 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x60);
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
   if (v5)
   {
     v6 = v5;
-    v7 = [objc_opt_self() defaultCenter];
-    [v7 removeObserver_];
+    defaultCenter = [objc_opt_self() defaultCenter];
+    [defaultCenter removeObserver_];
 
-    (*((*v2 & v4->super.isa) + 0x68))(0);
+    (*((*v2 & selfCopy->super.isa) + 0x68))(0);
     swift_unknownObjectRelease();
   }
 
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = type metadata accessor for PXEditAutomationManager();
   [(PXEditAutomationManager *)&v8 dealloc];
 }

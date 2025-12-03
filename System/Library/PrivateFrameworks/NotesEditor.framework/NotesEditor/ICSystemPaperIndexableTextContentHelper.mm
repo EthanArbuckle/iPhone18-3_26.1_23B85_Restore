@@ -1,9 +1,9 @@
 @interface ICSystemPaperIndexableTextContentHelper
 - (ICSystemPaperIndexableTextContentHelper)init;
-- (ICSystemPaperIndexableTextContentHelper)initWithPaperAttachment:(id)a3;
+- (ICSystemPaperIndexableTextContentHelper)initWithPaperAttachment:(id)attachment;
 - (PKDrawing)drawing;
-- (id)searchWithQuery:(id)a3;
-- (void)setDrawing:(id)a3;
+- (id)searchWithQuery:(id)query;
+- (void)setDrawing:(id)drawing;
 @end
 
 @implementation ICSystemPaperIndexableTextContentHelper
@@ -30,15 +30,15 @@
   return v10;
 }
 
-- (void)setDrawing:(id)a3
+- (void)setDrawing:(id)drawing
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA5E660);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  if (a3)
+  if (drawing)
   {
-    v8 = self;
-    v9 = a3;
+    selfCopy = self;
+    drawingCopy = drawing;
     sub_2154A1C4C();
 
     v10 = sub_2154A1C5C();
@@ -49,7 +49,7 @@
   {
     v11 = sub_2154A1C5C();
     (*(*(v11 - 8) + 56))(v7, 1, 1, v11);
-    v12 = self;
+    selfCopy2 = self;
   }
 
   v13 = OBJC_IVAR___ICSystemPaperIndexableTextContentHelper_drawing;
@@ -58,19 +58,19 @@
   swift_endAccess();
 }
 
-- (ICSystemPaperIndexableTextContentHelper)initWithPaperAttachment:(id)a3
+- (ICSystemPaperIndexableTextContentHelper)initWithPaperAttachment:(id)attachment
 {
-  v3 = a3;
-  v4 = sub_21549852C(v3);
+  attachmentCopy = attachment;
+  v4 = sub_21549852C(attachmentCopy);
 
   return v4;
 }
 
-- (id)searchWithQuery:(id)a3
+- (id)searchWithQuery:(id)query
 {
   v4 = sub_2154A1D6C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   ICSystemPaperIndexableTextContentHelper.search(query:)(v4, v6);
 
   sub_215498D8C();

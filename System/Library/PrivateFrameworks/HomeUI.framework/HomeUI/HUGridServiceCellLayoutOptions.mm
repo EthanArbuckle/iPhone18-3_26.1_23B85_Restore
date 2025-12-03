@@ -1,14 +1,14 @@
 @interface HUGridServiceCellLayoutOptions
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUGridServiceCellLayoutOptions
 
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass
 {
   v22[5] = *MEMORY[0x277D85DE8];
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___HUGridServiceCellLayoutOptions;
   v4 = objc_msgSendSuper2(&v14, sel_defaultOptionsForCellSizeSubclass_);
   v21[0] = &unk_282492288;
@@ -22,7 +22,7 @@
   v21[4] = &unk_2824922B8;
   v22[4] = &unk_282493660;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:5];
-  v6 = HUConstantForCellSizeSubclass(a3, v5);
+  v6 = HUConstantForCellSizeSubclass(subclass, v5);
 
   v7 = [MEMORY[0x277D74300] systemFontOfSize:v6 weight:*MEMORY[0x277D743F8]];
   [v4 setFont:v7];
@@ -38,7 +38,7 @@
   v19[4] = &unk_2824922B8;
   v20[4] = &unk_282493740;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:5];
-  [v4 setLineSpacing:{HUConstantForCellSizeSubclass(a3, v8)}];
+  [v4 setLineSpacing:{HUConstantForCellSizeSubclass(subclass, v8)}];
 
   [v4 setIconToTitleSpacing:6.0];
   [v4 setCellCornerRadius:24.0];
@@ -59,7 +59,7 @@
     v18[2] = &unk_282493740;
     v18[3] = &unk_282493750;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:4];
-    [v4 setLineSpacing:{HUConstantForCellSizeSubclass(a3, v11)}];
+    [v4 setLineSpacing:{HUConstantForCellSizeSubclass(subclass, v11)}];
 
     v15[0] = &unk_282492288;
     v15[1] = &unk_282492270;
@@ -70,17 +70,17 @@
     v16[2] = &unk_282493680;
     v16[3] = &unk_282493650;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
-    [v4 setCellInnerMargin:{HUConstantForCellSizeSubclass(a3, v12)}];
+    [v4 setCellInnerMargin:{HUConstantForCellSizeSubclass(subclass, v12)}];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = HUGridServiceCellLayoutOptions;
-  v4 = [(HUGridCellLayoutOptions *)&v6 copyWithZone:a3];
+  v4 = [(HUGridCellLayoutOptions *)&v6 copyWithZone:zone];
   [(HUGridServiceCellLayoutOptions *)self lineSpacing];
   [v4 setLineSpacing:?];
   [(HUGridServiceCellLayoutOptions *)self iconToTitleSpacing];

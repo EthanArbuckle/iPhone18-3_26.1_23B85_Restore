@@ -1,5 +1,5 @@
 @interface ASUSQLiteStatement
-- (ASUSQLiteStatement)initWithStatement:(sqlite3_stmt *)a3 onConnection:(id)a4;
+- (ASUSQLiteStatement)initWithStatement:(sqlite3_stmt *)statement onConnection:(id)connection;
 - (BOOL)isReadOnly;
 - (NSDictionary)columnIndexByName;
 - (NSString)SQL;
@@ -7,31 +7,31 @@
 - (int)finalizeStatement;
 - (int)reset;
 - (int)step;
-- (void)bindData:(id)a3 atPosition:(int)a4;
-- (void)bindDataCopy:(id)a3 atPosition:(int)a4;
-- (void)bindDouble:(double)a3 atPosition:(int)a4;
-- (void)bindFloat:(float)a3 atPosition:(int)a4;
-- (void)bindInt64:(int64_t)a3 atPosition:(int)a4;
-- (void)bindInt:(int)a3 atPosition:(int)a4;
-- (void)bindNullAtPosition:(int)a3;
-- (void)bindNumber:(id)a3 atPosition:(int)a4;
-- (void)bindString:(id)a3 atPosition:(int)a4;
-- (void)bindStringCopy:(id)a3 atPosition:(int)a4;
+- (void)bindData:(id)data atPosition:(int)position;
+- (void)bindDataCopy:(id)copy atPosition:(int)position;
+- (void)bindDouble:(double)double atPosition:(int)position;
+- (void)bindFloat:(float)float atPosition:(int)position;
+- (void)bindInt64:(int64_t)int64 atPosition:(int)position;
+- (void)bindInt:(int)int atPosition:(int)position;
+- (void)bindNullAtPosition:(int)position;
+- (void)bindNumber:(id)number atPosition:(int)position;
+- (void)bindString:(id)string atPosition:(int)position;
+- (void)bindStringCopy:(id)copy atPosition:(int)position;
 @end
 
 @implementation ASUSQLiteStatement
 
-- (ASUSQLiteStatement)initWithStatement:(sqlite3_stmt *)a3 onConnection:(id)a4
+- (ASUSQLiteStatement)initWithStatement:(sqlite3_stmt *)statement onConnection:(id)connection
 {
-  v7 = a4;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = ASUSQLiteStatement;
   v8 = [(ASUSQLiteStatement *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connection, a4);
-    v9->_statement = a3;
+    objc_storeStrong(&v8->_connection, connection);
+    v9->_statement = statement;
     objc_storeStrong(&v9->_strongSelf, v9);
   }
 
@@ -145,15 +145,15 @@
   }
 }
 
-- (void)bindData:(id)a3 atPosition:(int)a4
+- (void)bindData:(id)data atPosition:(int)position
 {
-  v6 = a3;
+  dataCopy = data;
   statement = self->_statement;
-  v9 = v6;
+  v9 = dataCopy;
   if (statement)
   {
-    v8 = v6;
-    sqlite3_bind_blob(statement, a4, [v9 bytes], objc_msgSend(v9, "length"), 0);
+    v8 = dataCopy;
+    sqlite3_bind_blob(statement, position, [v9 bytes], objc_msgSend(v9, "length"), 0);
   }
 
   else
@@ -162,15 +162,15 @@
   }
 }
 
-- (void)bindDataCopy:(id)a3 atPosition:(int)a4
+- (void)bindDataCopy:(id)copy atPosition:(int)position
 {
-  v6 = a3;
+  copyCopy = copy;
   statement = self->_statement;
-  v9 = v6;
+  v9 = copyCopy;
   if (statement)
   {
-    v8 = v6;
-    sqlite3_bind_blob(statement, a4, [v9 bytes], objc_msgSend(v9, "length"), 0xFFFFFFFFFFFFFFFFLL);
+    v8 = copyCopy;
+    sqlite3_bind_blob(statement, position, [v9 bytes], objc_msgSend(v9, "length"), 0xFFFFFFFFFFFFFFFFLL);
   }
 
   else
@@ -179,40 +179,26 @@
   }
 }
 
-- (void)bindDouble:(double)a3 atPosition:(int)a4
+- (void)bindDouble:(double)double atPosition:(int)position
 {
   statement = self->_statement;
   if (statement)
   {
-    sqlite3_bind_double(statement, a4, a3);
+    sqlite3_bind_double(statement, position, double);
   }
 
   else
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Statement already finalized", a3}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Statement already finalized", double}];
   }
 }
 
-- (void)bindFloat:(float)a3 atPosition:(int)a4
+- (void)bindFloat:(float)float atPosition:(int)position
 {
   statement = self->_statement;
   if (statement)
   {
-    sqlite3_bind_double(statement, a4, a3);
-  }
-
-  else
-  {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Statement already finalized"];
-  }
-}
-
-- (void)bindInt:(int)a3 atPosition:(int)a4
-{
-  statement = self->_statement;
-  if (statement)
-  {
-    sqlite3_bind_int(statement, a4, a3);
+    sqlite3_bind_double(statement, position, float);
   }
 
   else
@@ -221,12 +207,12 @@
   }
 }
 
-- (void)bindInt64:(int64_t)a3 atPosition:(int)a4
+- (void)bindInt:(int)int atPosition:(int)position
 {
   statement = self->_statement;
   if (statement)
   {
-    sqlite3_bind_int64(statement, a4, a3);
+    sqlite3_bind_int(statement, position, int);
   }
 
   else
@@ -235,12 +221,12 @@
   }
 }
 
-- (void)bindNullAtPosition:(int)a3
+- (void)bindInt64:(int64_t)int64 atPosition:(int)position
 {
   statement = self->_statement;
   if (statement)
   {
-    sqlite3_bind_null(statement, a3);
+    sqlite3_bind_int64(statement, position, int64);
   }
 
   else
@@ -249,13 +235,27 @@
   }
 }
 
-- (void)bindNumber:(id)a3 atPosition:(int)a4
+- (void)bindNullAtPosition:(int)position
 {
-  v6 = a3;
-  v10 = v6;
+  statement = self->_statement;
+  if (statement)
+  {
+    sqlite3_bind_null(statement, position);
+  }
+
+  else
+  {
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Statement already finalized"];
+  }
+}
+
+- (void)bindNumber:(id)number atPosition:(int)position
+{
+  numberCopy = number;
+  v10 = numberCopy;
   if (self->_statement)
   {
-    Type = CFNumberGetType(v6);
+    Type = CFNumberGetType(numberCopy);
     if (Type > kCFNumberCGFloatType)
     {
       goto LABEL_8;
@@ -263,7 +263,7 @@
 
     if (((1 << Type) & 0x38E) != 0)
     {
-      sqlite3_bind_int(self->_statement, a4, [(__CFNumber *)v10 intValue]);
+      sqlite3_bind_int(self->_statement, position, [(__CFNumber *)v10 intValue]);
       goto LABEL_9;
     }
 
@@ -271,13 +271,13 @@
     {
       statement = self->_statement;
       [(__CFNumber *)v10 doubleValue];
-      sqlite3_bind_double(statement, a4, v9);
+      sqlite3_bind_double(statement, position, v9);
     }
 
     else
     {
 LABEL_8:
-      sqlite3_bind_int64(self->_statement, a4, [(__CFNumber *)v10 longLongValue]);
+      sqlite3_bind_int64(self->_statement, position, [(__CFNumber *)v10 longLongValue]);
     }
   }
 
@@ -289,17 +289,17 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)bindString:(id)a3 atPosition:(int)a4
+- (void)bindString:(id)string atPosition:(int)position
 {
-  v6 = a3;
-  theString = v6;
+  stringCopy = string;
+  theString = stringCopy;
   if (!self->_statement)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Statement already finalized"];
     goto LABEL_12;
   }
 
-  FastestEncoding = CFStringGetFastestEncoding(v6);
+  FastestEncoding = CFStringGetFastestEncoding(stringCopy);
   if (FastestEncoding == 256)
   {
     CharactersPtr = CFStringGetCharactersPtr(theString);
@@ -308,7 +308,7 @@ LABEL_9:
     {
       statement = self->_statement;
       Length = CFStringGetLength(theString);
-      sqlite3_bind_text16(statement, a4, CharactersPtr, 2 * Length, 0);
+      sqlite3_bind_text16(statement, position, CharactersPtr, 2 * Length, 0);
       goto LABEL_12;
     }
 
@@ -323,27 +323,27 @@ LABEL_10:
     v17 = self->_statement;
     CStringPtr = [(__CFString *)v9 UTF8String];
     v11 = v17;
-    v12 = a4;
+    positionCopy2 = position;
     v13 = -1;
     goto LABEL_11;
   }
 
   v11 = self->_statement;
-  v12 = a4;
+  positionCopy2 = position;
   v13 = 0;
 LABEL_11:
-  sqlite3_bind_text(v11, v12, CStringPtr, -1, v13);
+  sqlite3_bind_text(v11, positionCopy2, CStringPtr, -1, v13);
 LABEL_12:
 }
 
-- (void)bindStringCopy:(id)a3 atPosition:(int)a4
+- (void)bindStringCopy:(id)copy atPosition:(int)position
 {
   statement = self->_statement;
   if (statement)
   {
-    v6 = [a3 UTF8String];
+    uTF8String = [copy UTF8String];
 
-    sqlite3_bind_text(statement, a4, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_text(statement, position, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   else

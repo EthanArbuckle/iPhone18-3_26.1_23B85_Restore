@@ -1,7 +1,7 @@
 @interface CLCppContainer
-+ (id)containerWithObject:(void *)a3 destructor:(id)a4 binaryVersion:(unint64_t)a5 typeSize:(unint64_t)a6;
-- (CLCppContainer)initWithCoder:(id)a3;
-- (CLCppContainer)initWithObject:(void *)a3 destructor:(id)a4 binaryVersion:(unint64_t)a5 typeSize:(unint64_t)a6;
++ (id)containerWithObject:(void *)object destructor:(id)destructor binaryVersion:(unint64_t)version typeSize:(unint64_t)size;
+- (CLCppContainer)initWithCoder:(id)coder;
+- (CLCppContainer)initWithObject:(void *)object destructor:(id)destructor binaryVersion:(unint64_t)version typeSize:(unint64_t)size;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -10,12 +10,12 @@
 
 - (void)dealloc
 {
-  v3 = [(CLCppContainer *)self destructor];
+  destructor = [(CLCppContainer *)self destructor];
 
-  if (v3)
+  if (destructor)
   {
-    v4 = [(CLCppContainer *)self destructor];
-    v4[2]();
+    destructor2 = [(CLCppContainer *)self destructor];
+    destructor2[2]();
   }
 
   [(CLCppContainer *)self setDestructor:0];
@@ -26,44 +26,44 @@
 
 - (void)invalidate
 {
-  v3 = [(CLCppContainer *)self destructor];
+  destructor = [(CLCppContainer *)self destructor];
 
-  if (v3)
+  if (destructor)
   {
-    v4 = [(CLCppContainer *)self destructor];
-    v4[2]();
+    destructor2 = [(CLCppContainer *)self destructor];
+    destructor2[2]();
   }
 
   [(CLCppContainer *)self setDestructor:0];
 }
 
-+ (id)containerWithObject:(void *)a3 destructor:(id)a4 binaryVersion:(unint64_t)a5 typeSize:(unint64_t)a6
++ (id)containerWithObject:(void *)object destructor:(id)destructor binaryVersion:(unint64_t)version typeSize:(unint64_t)size
 {
-  v9 = a4;
-  v10 = [[CLCppContainer alloc] initWithObject:a3 destructor:v9 binaryVersion:a5 typeSize:a6];
+  destructorCopy = destructor;
+  v10 = [[CLCppContainer alloc] initWithObject:object destructor:destructorCopy binaryVersion:version typeSize:size];
 
   return v10;
 }
 
-- (CLCppContainer)initWithObject:(void *)a3 destructor:(id)a4 binaryVersion:(unint64_t)a5 typeSize:(unint64_t)a6
+- (CLCppContainer)initWithObject:(void *)object destructor:(id)destructor binaryVersion:(unint64_t)version typeSize:(unint64_t)size
 {
-  v10 = a4;
+  destructorCopy = destructor;
   v14.receiver = self;
   v14.super_class = CLCppContainer;
   v11 = [(CLCppContainer *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(CLCppContainer *)v11 setCppObjectPtr:a3];
-    [(CLCppContainer *)v12 setDestructor:v10];
-    v12->_binaryVersion = a5;
-    v12->_sizeOfType = a6;
+    [(CLCppContainer *)v11 setCppObjectPtr:object];
+    [(CLCppContainer *)v12 setDestructor:destructorCopy];
+    v12->_binaryVersion = version;
+    v12->_sizeOfType = size;
   }
 
   return v12;
 }
 
-- (CLCppContainer)initWithCoder:(id)a3
+- (CLCppContainer)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = CLCppContainer;

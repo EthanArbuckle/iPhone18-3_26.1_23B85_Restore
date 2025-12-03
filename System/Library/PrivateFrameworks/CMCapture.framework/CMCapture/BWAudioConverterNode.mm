@@ -2,19 +2,19 @@
 - (BWAudioConverterNode)init;
 - (NSDictionary)gaplessPlaybackInfo;
 - (const)_isAPACConversion;
-- (uint64_t)_setupAudioCompressionSBPForInputFormat:(uint64_t)a1;
-- (uint64_t)createFormatDescriptionWithAudioExtension:(const __CFData *)a3 withMagicCookie:(CMAudioFormatDescriptionRef *)a4 outputFormatDescription:;
-- (void)_handleUpdatedRecordingSettings:(uint64_t)a1;
+- (uint64_t)_setupAudioCompressionSBPForInputFormat:(uint64_t)format;
+- (uint64_t)createFormatDescriptionWithAudioExtension:(const __CFData *)extension withMagicCookie:(CMAudioFormatDescriptionRef *)cookie outputFormatDescription:;
+- (void)_handleUpdatedRecordingSettings:(uint64_t)settings;
 - (void)_resetAudioCompressionSBP;
 - (void)_teardownAudioCompressionSBP;
 - (void)acquireHardware;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
 - (void)relinquishHardware;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setSettings:(id)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setSettings:(id)settings;
 @end
 
 @implementation BWAudioConverterNode
@@ -48,31 +48,31 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  v5 = [BWAudioFormat formatForAVAudioSettings:self->_settings inputFormat:a3];
+  v5 = [BWAudioFormat formatForAVAudioSettings:self->_settings inputFormat:format];
   output = self->super._output;
 
   [(BWNodeOutput *)output setFormat:v5];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if (a4)
+  if (format)
   {
-    [(BWNodeOutput *)self->super._output setFormat:[BWAudioFormat formatForAVAudioSettings:self->_settings inputFormat:a4]];
+    [(BWNodeOutput *)self->super._output setFormat:[BWAudioFormat formatForAVAudioSettings:self->_settings inputFormat:format]];
     if (self->_settings)
     {
-      [(BWAudioConverterNode *)self _setupAudioCompressionSBPForInputFormat:a4];
+      [(BWAudioConverterNode *)self _setupAudioCompressionSBPForInputFormat:format];
     }
   }
 
   v9.receiver = self;
   v9.super_class = BWAudioConverterNode;
-  [(BWNode *)&v9 configurationWithID:a3 updatedFormat:a4 didBecomeLiveForInput:a5];
+  [(BWNode *)&v9 configurationWithID:d updatedFormat:format didBecomeLiveForInput:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v6 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -81,19 +81,19 @@
   }
 
   cf = 0;
-  if (!a3)
+  if (!buffer)
   {
     [BWAudioConverterNode renderSampleBuffer:forInput:];
     goto LABEL_9;
   }
 
-  if (CMSampleBufferGetDataBuffer(a3) || CMSampleBufferGetImageBuffer(a3))
+  if (CMSampleBufferGetDataBuffer(buffer) || CMSampleBufferGetImageBuffer(buffer))
   {
     audioCompressionSBP = self->_audioCompressionSBP;
     if (audioCompressionSBP)
     {
       v8 = *(*(CMBaseObjectGetVTable() + 16) + 16);
-      if (!v8 || v8(audioCompressionSBP, a3))
+      if (!v8 || v8(audioCompressionSBP, buffer))
       {
         [BWAudioConverterNode renderSampleBuffer:forInput:];
       }
@@ -107,7 +107,7 @@
 
   else
   {
-    v9 = CMGetAttachment(a3, @"FileWriterAction", 0);
+    v9 = CMGetAttachment(buffer, @"FileWriterAction", 0);
     if (([v9 isEqualToString:0x1F21A9C50] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", 0x1F21A9CB0))
     {
       v10 = self->_audioCompressionSBP;
@@ -127,14 +127,14 @@
             goto LABEL_9;
           }
 
-          CMSetAttachment(a3, @"TrackFormatDescription", cf, 1u);
+          CMSetAttachment(buffer, @"TrackFormatDescription", cf, 1u);
           [(BWAudioConverterNode *)self _resetAudioCompressionSBP];
         }
       }
     }
 
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
-    v12 = CMGetAttachment(a3, @"RecordingSettings", 0);
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
+    v12 = CMGetAttachment(buffer, @"RecordingSettings", 0);
     if (v12)
     {
       [(BWAudioConverterNode *)self _handleUpdatedRecordingSettings:v12];
@@ -194,21 +194,21 @@ LABEL_9:
   return audioCompressionSBP;
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
   settings = self->_settings;
-  if (settings != a3)
+  if (settings != settings)
   {
 
-    self->_settings = [a3 copy];
+    self->_settings = [settings copy];
   }
 }
 
 - (void)_teardownAudioCompressionSBP
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 136);
+    v2 = *(self + 136);
     if (v2)
     {
       v3 = *(*(CMBaseObjectGetVTable() + 16) + 24);
@@ -217,25 +217,25 @@ LABEL_9:
         v3(v2);
       }
 
-      v4 = *(a1 + 136);
+      v4 = *(self + 136);
       if (v4)
       {
         CFRelease(v4);
-        *(a1 + 136) = 0;
+        *(self + 136) = 0;
       }
     }
   }
 }
 
-- (uint64_t)_setupAudioCompressionSBPForInputFormat:(uint64_t)a1
+- (uint64_t)_setupAudioCompressionSBPForInputFormat:(uint64_t)format
 {
-  if (!a1)
+  if (!format)
   {
     return 0;
   }
 
   desc = 0;
-  if (*(a1 + 136))
+  if (*(format + 136))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_45();
@@ -243,16 +243,16 @@ LABEL_9:
     FigDebugAssert3();
   }
 
-  v4 = [*(a1 + 16) format];
-  v5 = [v4 formatDescription];
-  CMAudioFormatDescriptionGetStreamBasicDescription(v5);
+  format = [*(format + 16) format];
+  formatDescription = [format formatDescription];
+  CMAudioFormatDescriptionGetStreamBasicDescription(formatDescription);
   sizeOut = 0;
-  CMAudioFormatDescriptionGetChannelLayout(v5, &sizeOut);
-  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:{objc_msgSend(v4, "audioCompressionSBPOptions")}];
-  v7 = [a2 formatDescription];
-  if (*(a1 + 144) == 1)
+  CMAudioFormatDescriptionGetChannelLayout(formatDescription, &sizeOut);
+  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:{objc_msgSend(format, "audioCompressionSBPOptions")}];
+  formatDescription2 = [a2 formatDescription];
+  if (*(format + 144) == 1)
   {
-    v13 = [(BWAudioConverterNode *)a1 createFormatDescriptionWithAudioExtension:v7 withMagicCookie:0 outputFormatDescription:&desc];
+    v13 = [(BWAudioConverterNode *)format createFormatDescriptionWithAudioExtension:formatDescription2 withMagicCookie:0 outputFormatDescription:&desc];
     v8 = desc;
     if (v13 || !desc)
     {
@@ -261,7 +261,7 @@ LABEL_9:
 
     CMAudioFormatDescriptionGetChannelLayout(desc, &sizeOut);
     [v6 setObject:&unk_1F2243C00 forKeyedSubscript:*MEMORY[0x1E6971650]];
-    if ([(BWAudioConverterNode *)a1 _isAPACConversion])
+    if ([(BWAudioConverterNode *)format _isAPACConversion])
     {
       [v6 setObject:&unk_1F2243C18 forKeyedSubscript:*MEMORY[0x1E6971638]];
       [v6 setObject:&unk_1F2243C30 forKeyedSubscript:*MEMORY[0x1E6971658]];
@@ -282,7 +282,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v10 = *(a1 + 136);
+  v10 = *(format + 136);
   v11 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (!v11)
   {
@@ -293,14 +293,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v12 = v11(v10, acn_sampleBufferProcessorOutputCallback, a1);
+  v12 = v11(v10, acn_sampleBufferProcessorOutputCallback, format);
   if (v12)
   {
     v13 = v12;
     goto LABEL_12;
   }
 
-  if (*(a1 + 144) != 1 || ![(BWAudioConverterNode *)a1 _isAPACConversion])
+  if (*(format + 144) != 1 || ![(BWAudioConverterNode *)format _isAPACConversion])
   {
 LABEL_10:
     v13 = 0;
@@ -315,7 +315,7 @@ LABEL_10:
     v17 = v16(FigBaseObject, *MEMORY[0x1E69736D0], 0, &cf);
     if (!v17)
     {
-      [*(a1 + 16) setFormat:+[BWAudioFormat formatWithAudioFormatDescription:](BWAudioFormat, "formatWithAudioFormatDescription:", cf)];
+      [*(format + 16) setFormat:+[BWAudioFormat formatWithAudioFormatDescription:](BWAudioFormat, "formatWithAudioFormatDescription:", cf)];
       if (cf)
       {
         CFRelease(cf);
@@ -346,12 +346,12 @@ LABEL_14:
   return v13;
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   [(BWAudioConverterNode *)self _teardownAudioCompressionSBP];
   v7.receiver = self;
   v7.super_class = BWAudioConverterNode;
-  [(BWNode *)&v7 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v7 didReachEndOfDataForConfigurationID:d input:input];
 }
 
 - (const)_isAPACConversion
@@ -371,27 +371,27 @@ LABEL_14:
 
 - (void)_resetAudioCompressionSBP
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 136);
+    v2 = *(self + 136);
     if (v2)
     {
       CFRelease(v2);
-      *(a1 + 136) = 0;
+      *(self + 136) = 0;
     }
 
-    if ((*(a1 + 146) & 1) == 0)
+    if ((*(self + 146) & 1) == 0)
     {
-      v3 = [*(a1 + 8) format];
+      format = [*(self + 8) format];
 
-      [(BWAudioConverterNode *)a1 _setupAudioCompressionSBPForInputFormat:v3];
+      [(BWAudioConverterNode *)self _setupAudioCompressionSBPForInputFormat:format];
     }
   }
 }
 
-- (void)_handleUpdatedRecordingSettings:(uint64_t)a1
+- (void)_handleUpdatedRecordingSettings:(uint64_t)settings
 {
-  if (!a1)
+  if (!settings)
   {
     return;
   }
@@ -409,28 +409,28 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  if (*(a1 + 144) != 1)
+  if (*(settings + 144) != 1)
   {
 LABEL_6:
-    v4 = [a2 audioSettings];
+    audioSettings = [a2 audioSettings];
     goto LABEL_7;
   }
 
-  v4 = [a2 cinematicAudioSettings];
+  audioSettings = [a2 cinematicAudioSettings];
 LABEL_7:
-  v5 = v4;
-  if (v4)
+  v5 = audioSettings;
+  if (audioSettings)
   {
-    if (*(a1 + 128) && ([v4 isEqual:?] & 1) == 0)
+    if (*(settings + 128) && ([audioSettings isEqual:?] & 1) == 0)
     {
-      [(BWAudioConverterNode *)a1 _teardownAudioCompressionSBP];
+      [(BWAudioConverterNode *)settings _teardownAudioCompressionSBP];
 
-      *(a1 + 128) = 0;
+      *(settings + 128) = 0;
     }
 
-    if ((*(a1 + 146) & 1) != 0 && !*(a1 + 136))
+    if ((*(settings + 146) & 1) != 0 && !*(settings + 136))
     {
-      if (*(a1 + 128))
+      if (*(settings + 128))
       {
         v14 = 0;
         v13 = 0;
@@ -438,19 +438,19 @@ LABEL_7:
         os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
         fig_log_call_emit_and_clean_up_after_send_and_compose();
 
-        *(a1 + 128) = 0;
+        *(settings + 128) = 0;
       }
     }
 
-    if (!*(a1 + 128))
+    if (!*(settings + 128))
     {
-      *(a1 + 128) = v5;
-      v7 = [*(a1 + 8) format];
-      v8 = [BWAudioFormat formatForAVAudioSettings:*(a1 + 128) inputFormat:v7];
+      *(settings + 128) = v5;
+      format = [*(settings + 8) format];
+      v8 = [BWAudioFormat formatForAVAudioSettings:*(settings + 128) inputFormat:format];
       v9 = v8;
-      if (*(a1 + 144) == 1)
+      if (*(settings + 144) == 1)
       {
-        if ([(BWAudioConverterNode *)a1 createFormatDescriptionWithAudioExtension:0 withMagicCookie:&v15 outputFormatDescription:?])
+        if ([(BWAudioConverterNode *)settings createFormatDescriptionWithAudioExtension:0 withMagicCookie:&v15 outputFormatDescription:?])
         {
           fig_log_get_emitter();
           FigDebugAssert3();
@@ -472,8 +472,8 @@ LABEL_7:
         v10 = 0;
       }
 
-      [*(a1 + 16) setFormat:v9, v11, v12];
-      [(BWAudioConverterNode *)a1 _setupAudioCompressionSBPForInputFormat:v7];
+      [*(settings + 16) setFormat:v9, v11, v12];
+      [(BWAudioConverterNode *)settings _setupAudioCompressionSBPForInputFormat:format];
       if (!v10)
       {
         return;
@@ -485,9 +485,9 @@ LABEL_22:
   }
 }
 
-- (uint64_t)createFormatDescriptionWithAudioExtension:(const __CFData *)a3 withMagicCookie:(CMAudioFormatDescriptionRef *)a4 outputFormatDescription:
+- (uint64_t)createFormatDescriptionWithAudioExtension:(const __CFData *)extension withMagicCookie:(CMAudioFormatDescriptionRef *)cookie outputFormatDescription:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -496,7 +496,7 @@ LABEL_22:
   Extensions = CMFormatDescriptionGetExtensions(desc);
   v9 = CFGetAllocator(desc);
   sizeOut = 0;
-  if (*(a1 + 145))
+  if (*(self + 145))
   {
     v10 = 1885958241;
   }
@@ -567,9 +567,9 @@ LABEL_37:
 LABEL_38:
       StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(desc);
       ChannelLayout = CMAudioFormatDescriptionGetChannelLayout(desc, &sizeOut);
-      if (a3)
+      if (extension)
       {
-        Length = CFDataGetLength(a3);
+        Length = CFDataGetLength(extension);
       }
 
       else
@@ -577,7 +577,7 @@ LABEL_38:
         Length = 0;
       }
 
-      v34 = CMAudioFormatDescriptionCreate(v9, StreamBasicDescription, sizeOut, ChannelLayout, Length, a3, v26, &formatDescriptionOut);
+      v34 = CMAudioFormatDescriptionCreate(v9, StreamBasicDescription, sizeOut, ChannelLayout, Length, extension, v26, &formatDescriptionOut);
       if (v34)
       {
         fig_log_get_emitter();
@@ -597,7 +597,7 @@ LABEL_44:
 
       else
       {
-        *a4 = formatDescriptionOut;
+        *cookie = formatDescriptionOut;
         formatDescriptionOut = 0;
         if (!v39)
         {
@@ -672,7 +672,7 @@ LABEL_35:
   }
 
   v34 = 0;
-  *a4 = v23;
+  *cookie = v23;
   return v34;
 }
 

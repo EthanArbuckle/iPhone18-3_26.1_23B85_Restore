@@ -1,16 +1,16 @@
 @interface SBSaturatedIconView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBSaturatedIconView)initWithImage:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBSaturatedIconView)initWithImage:(id)image;
 @end
 
 @implementation SBSaturatedIconView
 
-- (SBSaturatedIconView)initWithImage:(id)a3
+- (SBSaturatedIconView)initWithImage:(id)image
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = SBSaturatedIconView;
-  v3 = [(SBSaturatedIconView *)&v13 initWithImage:a3];
+  v3 = [(SBSaturatedIconView *)&v13 initWithImage:image];
   if (v3)
   {
     v4 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2C8]];
@@ -18,33 +18,33 @@
     [v4 setValue:&unk_28336F360 forKey:@"inputAmount"];
     [(SBSaturatedIconView *)v3 setContentMode:1];
     [(SBSaturatedIconView *)v3 setAlpha:0.899999976];
-    v5 = [(SBSaturatedIconView *)v3 layer];
+    layer = [(SBSaturatedIconView *)v3 layer];
     v14[0] = v4;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-    [v5 setFilters:v6];
+    [layer setFilters:v6];
 
-    v7 = [(SBSaturatedIconView *)v3 layer];
-    [v7 setCompositingFilter:*MEMORY[0x277CDA5D0]];
+    layer2 = [(SBSaturatedIconView *)v3 layer];
+    [layer2 setCompositingFilter:*MEMORY[0x277CDA5D0]];
 
-    v8 = [(SBSaturatedIconView *)v3 layer];
-    [v8 setShouldRasterize:1];
+    layer3 = [(SBSaturatedIconView *)v3 layer];
+    [layer3 setShouldRasterize:1];
 
-    v9 = [(SBSaturatedIconView *)v3 layer];
-    [v9 setRasterizationScale:SBScreenScale()];
+    layer4 = [(SBSaturatedIconView *)v3 layer];
+    [layer4 setRasterizationScale:SBScreenScale()];
 
-    v10 = [(SBSaturatedIconView *)v3 layer];
-    [v10 setAllowsGroupOpacity:0];
+    layer5 = [(SBSaturatedIconView *)v3 layer];
+    [layer5 setAllowsGroupOpacity:0];
 
-    v11 = [(SBSaturatedIconView *)v3 layer];
-    [v11 setAllowsGroupBlending:0];
+    layer6 = [(SBSaturatedIconView *)v3 layer];
+    [layer6 setAllowsGroupBlending:0];
   }
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(SBSaturatedIconView *)self image:a3.width];
+  v3 = [(SBSaturatedIconView *)self image:fits.width];
   [v3 size];
   v5 = v4;
   v7 = v6;

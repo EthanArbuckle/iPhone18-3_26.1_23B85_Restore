@@ -1,50 +1,50 @@
 @interface _CDSocialInteractionAdvisor
-- (_CDSocialInteractionAdvisor)initWithStore:(id)a3;
-- (id)adviseInteractionsForDate:(id)a3 andSeedContacts:(id)a4 usingSettings:(id)a5;
-- (id)inSeedPredicateForSeed:(id)a3;
-- (id)keyForModelWithSettings:(id)a3;
-- (id)rankContacts:(id)a3 withSeedContacts:(id)a4 usingSettings:(id)a5;
-- (id)recentPredicateForDate:(id)a3 lambda:(float)a4 lookAheadWeeks:(int)a5;
-- (void)tuneUsingSettings:(id)a3 heartBeatHandler:(id)a4;
+- (_CDSocialInteractionAdvisor)initWithStore:(id)store;
+- (id)adviseInteractionsForDate:(id)date andSeedContacts:(id)contacts usingSettings:(id)settings;
+- (id)inSeedPredicateForSeed:(id)seed;
+- (id)keyForModelWithSettings:(id)settings;
+- (id)rankContacts:(id)contacts withSeedContacts:(id)seedContacts usingSettings:(id)settings;
+- (id)recentPredicateForDate:(id)date lambda:(float)lambda lookAheadWeeks:(int)weeks;
+- (void)tuneUsingSettings:(id)settings heartBeatHandler:(id)handler;
 @end
 
 @implementation _CDSocialInteractionAdvisor
 
-- (_CDSocialInteractionAdvisor)initWithStore:(id)a3
+- (_CDSocialInteractionAdvisor)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _CDSocialInteractionAdvisor;
   v6 = [(_CDSocialInteractionAdvisor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)keyForModelWithSettings:(id)a3
+- (id)keyForModelWithSettings:(id)settings
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 interactionPredicate];
-  v5 = [v3 stringWithFormat:@"%@", v4];
+  interactionPredicate = [settings interactionPredicate];
+  v5 = [v3 stringWithFormat:@"%@", interactionPredicate];
 
   return v5;
 }
 
-- (id)rankContacts:(id)a3 withSeedContacts:(id)a4 usingSettings:(id)a5
+- (id)rankContacts:(id)contacts withSeedContacts:(id)seedContacts usingSettings:(id)settings
 {
   v57[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contactsCopy = contacts;
+  seedContactsCopy = seedContacts;
+  settingsCopy = settings;
   v56 = 0;
   v55 = 0;
-  v50 = [[_CDPSimpleModelParameterManager alloc] initWithSettings:v10];
+  v50 = [[_CDPSimpleModelParameterManager alloc] initWithSettings:settingsCopy];
   [(_CDPSimpleModelParameterManager *)v50 getLambda:&v56 + 4 w0:&v56 threshold:&v55];
-  if ([v10 useFuture])
+  if ([settingsCopy useFuture])
   {
     v11 = 4;
   }
@@ -54,36 +54,36 @@
     v11 = 0;
   }
 
-  v12 = [v10 interactionDate];
-  v13 = v12;
-  if (v12)
+  interactionDate = [settingsCopy interactionDate];
+  v13 = interactionDate;
+  if (interactionDate)
   {
-    v14 = v12;
+    date = interactionDate;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v15 = v14;
+  v15 = date;
 
   LODWORD(v16) = HIDWORD(v56);
   v49 = v15;
   v17 = [(_CDSocialInteractionAdvisor *)self recentPredicateForDate:v15 lambda:v11 lookAheadWeeks:v16];
-  v18 = [(_CDSocialInteractionAdvisor *)self inSeedPredicateForSeed:v9];
+  v18 = [(_CDSocialInteractionAdvisor *)self inSeedPredicateForSeed:seedContactsCopy];
   v19 = MEMORY[0x1E696AB28];
   v48 = v17;
   v57[0] = v17;
-  v20 = [v10 interactionPredicate];
-  v57[1] = v20;
+  interactionPredicate = [settingsCopy interactionPredicate];
+  v57[1] = interactionPredicate;
   v57[2] = v18;
   v47 = v18;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:3];
   v22 = [v19 andPredicateWithSubpredicates:v21];
 
   v23 = objc_alloc_init(_CDPSimpleModel);
-  -[_CDPSimpleModel setRequireOutgoingInteraction:](v23, "setRequireOutgoingInteraction:", [v10 requireOutgoingInteraction]);
+  -[_CDPSimpleModel setRequireOutgoingInteraction:](v23, "setRequireOutgoingInteraction:", [settingsCopy requireOutgoingInteraction]);
   v24 = objc_alloc_init(_CDPInteractionStoreDataHarvester);
   [(_CDPInteractionStoreDataHarvester *)v24 setStore:self->_store];
   v46 = v22;
@@ -102,39 +102,39 @@
   LODWORD(v27) = HIDWORD(v56);
   LODWORD(v28) = v56;
   [(_CDPSimpleModel *)v23 setLambda:v27 w0:v28];
-  v44 = [v9 valueForKey:@"identifier"];
+  v44 = [seedContactsCopy valueForKey:@"identifier"];
   v29 = [_CDPSimpleModel _newIdsForPeople:v23 length:"_newIdsForPeople:length:"];
-  v52 = v9;
-  v30 = -[_CDPSimpleModel _newPredictionResultWithSeed:seedLength:realSeedLength:maxTrainingEmailID:](v23, "_newPredictionResultWithSeed:seedLength:realSeedLength:maxTrainingEmailID:", v29, 0, [v9 count], 0xFFFFFFFFLL);
-  v43 = [v8 valueForKey:@"identifier"];
+  v52 = seedContactsCopy;
+  v30 = -[_CDPSimpleModel _newPredictionResultWithSeed:seedLength:realSeedLength:maxTrainingEmailID:](v23, "_newPredictionResultWithSeed:seedLength:realSeedLength:maxTrainingEmailID:", v29, 0, [seedContactsCopy count], 0xFFFFFFFFLL);
+  v43 = [contactsCopy valueForKey:@"identifier"];
   v31 = [_CDPSimpleModel _newIdsForPeople:v23 length:"_newIdsForPeople:length:"];
   v32 = malloc_type_calloc(0, 0x10uLL, 0x1000040451B5BE8uLL);
   v42 = v31;
-  v51 = v10;
+  v51 = settingsCopy;
   free(v30);
   free(v29);
   qsort_b(v32, 0, 0x10uLL, &__block_literal_global_72);
-  v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  v34 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v8, "count")}];
-  if ([v8 count])
+  v33 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(contactsCopy, "count")}];
+  v34 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(contactsCopy, "count")}];
+  if ([contactsCopy count])
   {
     v35 = 0;
     do
     {
-      v36 = [v8 objectAtIndexedSubscript:v35];
-      v37 = [v36 identifier];
-      v38 = [v34 containsObject:v37];
+      v36 = [contactsCopy objectAtIndexedSubscript:v35];
+      identifier = [v36 identifier];
+      v38 = [v34 containsObject:identifier];
 
       if ((v38 & 1) == 0)
       {
-        v39 = [v8 objectAtIndexedSubscript:v35];
+        v39 = [contactsCopy objectAtIndexedSubscript:v35];
         [v33 addObject:v39];
       }
 
       ++v35;
     }
 
-    while ([v8 count] > v35);
+    while ([contactsCopy count] > v35);
   }
 
   free(v42);
@@ -145,18 +145,18 @@
   return v33;
 }
 
-- (id)adviseInteractionsForDate:(id)a3 andSeedContacts:(id)a4 usingSettings:(id)a5
+- (id)adviseInteractionsForDate:(id)date andSeedContacts:(id)contacts usingSettings:(id)settings
 {
   v69[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[_CDPSimpleModelParameterManager alloc] initWithSettings:v10];
+  dateCopy = date;
+  contactsCopy = contacts;
+  settingsCopy = settings;
+  v11 = [[_CDPSimpleModelParameterManager alloc] initWithSettings:settingsCopy];
   v67 = 0;
   v65 = 0.0;
   v66 = 0;
   [(_CDPSimpleModelParameterManager *)v11 getLambda:&v67 w0:&v66 threshold:&v65];
-  if ([v10 useFuture])
+  if ([settingsCopy useFuture])
   {
     v13 = 4;
   }
@@ -167,21 +167,21 @@
   }
 
   LODWORD(v12) = v67;
-  v14 = [(_CDSocialInteractionAdvisor *)self recentPredicateForDate:v8 lambda:v13 lookAheadWeeks:v12];
-  v60 = v9;
-  v15 = [(_CDSocialInteractionAdvisor *)self inSeedPredicateForSeed:v9];
-  v16 = [v10 interactionPredicate];
-  v17 = [v10 callerBundleId];
+  v14 = [(_CDSocialInteractionAdvisor *)self recentPredicateForDate:dateCopy lambda:v13 lookAheadWeeks:v12];
+  v60 = contactsCopy;
+  v15 = [(_CDSocialInteractionAdvisor *)self inSeedPredicateForSeed:contactsCopy];
+  interactionPredicate = [settingsCopy interactionPredicate];
+  callerBundleId = [settingsCopy callerBundleId];
   v57 = v11;
-  v58 = v8;
-  if ([v17 isEqualToString:@"com.apple.mobilemail"])
+  v58 = dateCopy;
+  if ([callerBundleId isEqualToString:@"com.apple.mobilemail"])
   {
 
 LABEL_7:
     v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(direction == %@)", &unk_1F05EEEB0];
     v21 = MEMORY[0x1E696AB28];
-    v22 = [v10 interactionPredicate];
-    v69[0] = v22;
+    interactionPredicate2 = [settingsCopy interactionPredicate];
+    v69[0] = interactionPredicate2;
     v69[1] = v20;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:2];
     v24 = [v21 andPredicateWithSubpredicates:v23];
@@ -189,15 +189,15 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v18 = [v10 callerBundleId];
-  v19 = [v18 isEqualToString:@"com.apple.mail"];
+  callerBundleId2 = [settingsCopy callerBundleId];
+  v19 = [callerBundleId2 isEqualToString:@"com.apple.mail"];
 
   if (v19)
   {
     goto LABEL_7;
   }
 
-  v24 = v16;
+  v24 = interactionPredicate;
 LABEL_9:
   v25 = MEMORY[0x1E696AB28];
   v55 = v15;
@@ -216,7 +216,7 @@ LABEL_9:
   }
 
   v29 = objc_alloc_init(_CDPSimpleModel);
-  -[_CDPSimpleModel setRequireOutgoingInteraction:](v29, "setRequireOutgoingInteraction:", [v10 requireOutgoingInteraction]);
+  -[_CDPSimpleModel setRequireOutgoingInteraction:](v29, "setRequireOutgoingInteraction:", [settingsCopy requireOutgoingInteraction]);
   v30 = objc_alloc_init(_CDPInteractionStoreDataHarvester);
   [(_CDPInteractionStoreDataHarvester *)v30 setStore:self->_store];
   v53 = v27;
@@ -240,7 +240,7 @@ LABEL_9:
   v50 = [(_CDPSimpleModel *)v29 _newIdsForPeople:v51 length:&v62];
   v59 = -[_CDPSimpleModel _newPredictionResultWithSeed:seedLength:realSeedLength:maxTrainingEmailID:](v29, "_newPredictionResultWithSeed:seedLength:realSeedLength:maxTrainingEmailID:", v50, v62, [v51 count], 0xFFFFFFFFLL);
   qsort_b(v59, [(_CDPSimpleModel *)v29 nPeople], 0x10uLL, &__block_literal_global_38_2);
-  v61 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(_CDPSimpleModel *)v29 nPeople])
   {
     v35 = 0;
@@ -254,23 +254,23 @@ LABEL_9:
         break;
       }
 
-      v39 = [(_CDPSimpleModel *)v29 people];
-      v40 = [v39 objectAtIndexedSubscript:*(p_var1 - 1)];
+      people = [(_CDPSimpleModel *)v29 people];
+      v40 = [people objectAtIndexedSubscript:*(p_var1 - 1)];
 
       v41 = [(_CDPInteractionStoreDataHarvester *)v30 contactForIdentifier:v40];
-      v42 = [v10 contactPrefix];
-      v43 = [v42 length];
+      contactPrefix = [settingsCopy contactPrefix];
+      v43 = [contactPrefix length];
 
-      if (!v43 || ([v10 contactPrefix], v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v41, "mayContainPrefix:", v44), v44, v45))
+      if (!v43 || ([settingsCopy contactPrefix], v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v41, "mayContainPrefix:", v44), v44, v45))
       {
         v46 = objc_alloc_init(_CDAdvisedInteraction);
         [(_CDAdvisedInteraction *)v46 setScore:v38];
         [(_CDAdvisedInteraction *)v46 setContact:v41];
-        [v61 addObject:v46];
+        [array addObject:v46];
         ++v36;
-        v47 = [v10 resultLimit];
+        resultLimit = [settingsCopy resultLimit];
 
-        if (v36 >= v47)
+        if (v36 >= resultLimit)
         {
 
           break;
@@ -289,19 +289,19 @@ LABEL_9:
 
   v48 = *MEMORY[0x1E69E9840];
 
-  return v61;
+  return array;
 }
 
-- (void)tuneUsingSettings:(id)a3 heartBeatHandler:(id)a4
+- (void)tuneUsingSettings:(id)settings heartBeatHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 interactionPredicate];
+  settingsCopy = settings;
+  handlerCopy = handler;
+  interactionPredicate = [settingsCopy interactionPredicate];
   v9 = objc_alloc_init(_CDPSimpleModel);
-  -[_CDPSimpleModel setRequireOutgoingInteraction:](v9, "setRequireOutgoingInteraction:", [v6 requireOutgoingInteraction]);
+  -[_CDPSimpleModel setRequireOutgoingInteraction:](v9, "setRequireOutgoingInteraction:", [settingsCopy requireOutgoingInteraction]);
   v10 = objc_alloc_init(_CDPInteractionStoreDataHarvester);
   [(_CDPInteractionStoreDataHarvester *)v10 setStore:self->_store];
-  [(_CDPInteractionStoreDataHarvester *)v10 setPredicate:v8];
+  [(_CDPInteractionStoreDataHarvester *)v10 setPredicate:interactionPredicate];
   [(_CDPSimpleModel *)v9 setHarvester:v10];
   v11 = dispatch_semaphore_create(0);
   v27[0] = MEMORY[0x1E69E9820];
@@ -313,25 +313,25 @@ LABEL_9:
   [(_CDPSimpleModel *)v9 loadModel:v27];
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
   v13 = objc_alloc_init(_CDPModelTuning);
-  v14 = [(_CDPSimpleModel *)v9 _testingIndices];
-  [(_CDPModelTuning *)v13 setTestIndices:v14];
+  _testingIndices = [(_CDPSimpleModel *)v9 _testingIndices];
+  [(_CDPModelTuning *)v13 setTestIndices:_testingIndices];
 
   v15 = +[_CDPModelTuning f2Score];
   [(_CDPModelTuning *)v13 setScorer:v15];
 
-  v16 = [(_CDPSimpleModel *)v9 _testingIndices];
-  [(_CDPModelTuning *)v13 setTestIndices:v16];
+  _testingIndices2 = [(_CDPSimpleModel *)v9 _testingIndices];
+  [(_CDPModelTuning *)v13 setTestIndices:_testingIndices2];
 
   [(_CDPModelTuning *)v13 setModel:v9];
   Current = CFAbsoluteTimeGetCurrent();
-  v18 = [[_CDPSimpleModelParameterManager alloc] initWithSettings:v6];
+  v18 = [[_CDPSimpleModelParameterManager alloc] initWithSettings:settingsCopy];
   objc_initWeak(&location, v13);
   [(_CDPSimpleModelParameterManager *)v18 modelTunerWillResume:v13];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __66___CDSocialInteractionAdvisor_tuneUsingSettings_heartBeatHandler___block_invoke_41;
   v22[3] = &unk_1E736A690;
-  v19 = v7;
+  v19 = handlerCopy;
   v23 = v19;
   v20 = v18;
   v24 = v20;
@@ -339,8 +339,8 @@ LABEL_9:
   v25[1] = *&Current;
   v25[2] = 0x402E000000000000;
   [(_CDPModelTuning *)v13 setHeartBeat:v22];
-  v21 = [(_CDPSimpleModelParameterManager *)v20 lastTuningState];
-  [(_CDPModelTuning *)v13 resumeTuningWithState:v21];
+  lastTuningState = [(_CDPSimpleModelParameterManager *)v20 lastTuningState];
+  [(_CDPModelTuning *)v13 resumeTuningWithState:lastTuningState];
 
   [(_CDPSimpleModelParameterManager *)v20 modelTunerWillStop:v13];
   objc_destroyWeak(v25);
@@ -348,12 +348,12 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (id)recentPredicateForDate:(id)a3 lambda:(float)a4 lookAheadWeeks:(int)a5
+- (id)recentPredicateForDate:(id)date lambda:(float)lambda lookAheadWeeks:(int)weeks
 {
-  v6 = a4 * *"" * 86400.0;
-  v7 = a3;
-  v8 = [v7 dateByAddingTimeInterval:v6];
-  v9 = [v7 dateByAddingTimeInterval:a5 * 604800.0];
+  v6 = lambda * *"" * 86400.0;
+  dateCopy = date;
+  v8 = [dateCopy dateByAddingTimeInterval:v6];
+  v9 = [dateCopy dateByAddingTimeInterval:weeks * 604800.0];
 
   v10 = MEMORY[0x1E696AE18];
   [v8 timeIntervalSinceReferenceDate];
@@ -364,18 +364,18 @@ LABEL_9:
   return v14;
 }
 
-- (id)inSeedPredicateForSeed:(id)a3
+- (id)inSeedPredicateForSeed:(id)seed
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AE18];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [v4 setWithArray:v5];
+  seedCopy = seed;
+  v6 = [v4 setWithArray:seedCopy];
   v7 = [_CDInteractionAdvisorSettings extractContactIdentifiers:v6];
   v8 = [v3 predicateWithFormat:@"(sender.identifier IN %@)", v7];
 
   v9 = MEMORY[0x1E696AE18];
-  v10 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+  v10 = [MEMORY[0x1E695DFD8] setWithArray:seedCopy];
 
   v11 = [_CDInteractionAdvisorSettings extractContactIdentifiers:v10];
   v12 = [v9 predicateWithFormat:@"(ANY recipients.identifier IN %@)", v11];

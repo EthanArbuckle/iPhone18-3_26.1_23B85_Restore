@@ -1,7 +1,7 @@
 @interface CoreDAVContainer
-+ (id)convertPushTransportsForNSServerNotificationCenter:(id)a3;
++ (id)convertPushTransportsForNSServerNotificationCenter:(id)center;
 + (id)copyPropertyMappingsForParser;
-- (BOOL)_anyPrivilegesMatches:(id)a3;
+- (BOOL)_anyPrivilegesMatches:(id)matches;
 - (BOOL)hasBindPrivileges;
 - (BOOL)hasReadPrivileges;
 - (BOOL)hasUnbindPrivileges;
@@ -10,13 +10,13 @@
 - (BOOL)isPrincipal;
 - (BOOL)supportsPrincipalPropertySearchReport;
 - (BOOL)supportsSyncCollectionReport;
-- (CoreDAVContainer)initWithURL:(id)a3 andProperties:(id)a4;
+- (CoreDAVContainer)initWithURL:(id)l andProperties:(id)properties;
 - (NSSet)privilegesAsStringSet;
 - (NSSet)resourceTypeAsStringSet;
 - (NSSet)supportedReports;
 - (NSSet)supportedReportsAsStringSet;
 - (id)description;
-- (void)applyParsedProperties:(id)a3;
+- (void)applyParsedProperties:(id)properties;
 @end
 
 @implementation CoreDAVContainer
@@ -40,16 +40,16 @@
   return v2;
 }
 
-- (CoreDAVContainer)initWithURL:(id)a3 andProperties:(id)a4
+- (CoreDAVContainer)initWithURL:(id)l andProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  propertiesCopy = properties;
   v9 = [(CoreDAVContainer *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    [(CoreDAVContainer *)v10 applyParsedProperties:v8];
+    objc_storeStrong(&v9->_url, l);
+    [(CoreDAVContainer *)v10 applyParsedProperties:propertiesCopy];
   }
 
   return v10;
@@ -69,136 +69,136 @@
   v8 = [(CoreDAVContainer *)self url];
   [v7 appendFormat:@"\n\turl: %@", v8];
 
-  v9 = [(CoreDAVContainer *)self resourceType];
-  [v7 appendFormat:@"\n\tresourceType: %@", v9];
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  [v7 appendFormat:@"\n\tresourceType: %@", resourceType];
 
-  v10 = [(CoreDAVContainer *)self isUnauthenticated];
+  isUnauthenticated = [(CoreDAVContainer *)self isUnauthenticated];
   v11 = @"NO";
-  if (v10)
+  if (isUnauthenticated)
   {
     v11 = @"YES";
   }
 
   [v7 appendFormat:@"\n\tisUnauthenticated: %@", v11];
-  v12 = [(CoreDAVContainer *)self containerTitle];
-  [v7 appendFormat:@"\n\tcontainerTitle: %@", v12];
+  containerTitle = [(CoreDAVContainer *)self containerTitle];
+  [v7 appendFormat:@"\n\tcontainerTitle: %@", containerTitle];
 
-  v13 = [(CoreDAVContainer *)self privilegesAsStringSet];
-  [v7 appendFormat:@"\n\tprivileges: %@", v13];
+  privilegesAsStringSet = [(CoreDAVContainer *)self privilegesAsStringSet];
+  [v7 appendFormat:@"\n\tprivileges: %@", privilegesAsStringSet];
 
-  v14 = [(CoreDAVContainer *)self pushKey];
-  [v7 appendFormat:@"\n\tpushKey: %@", v14];
+  pushKey = [(CoreDAVContainer *)self pushKey];
+  [v7 appendFormat:@"\n\tpushKey: %@", pushKey];
 
-  v15 = [(CoreDAVContainer *)self resourceID];
-  [v7 appendFormat:@"\n\tresourceID: %@", v15];
+  resourceID = [(CoreDAVContainer *)self resourceID];
+  [v7 appendFormat:@"\n\tresourceID: %@", resourceID];
 
-  v16 = [(CoreDAVContainer *)self quotaAvailable];
-  [v7 appendFormat:@"\n\tquotaAvailable: %@", v16];
+  quotaAvailable = [(CoreDAVContainer *)self quotaAvailable];
+  [v7 appendFormat:@"\n\tquotaAvailable: %@", quotaAvailable];
 
-  v17 = [(CoreDAVContainer *)self quotaUsed];
-  [v7 appendFormat:@"\n\tquotaUsed: %@", v17];
+  quotaUsed = [(CoreDAVContainer *)self quotaUsed];
+  [v7 appendFormat:@"\n\tquotaUsed: %@", quotaUsed];
 
-  v18 = [(CoreDAVContainer *)self supportedReportsAsStringSet];
-  [v7 appendFormat:@"\n\tsupportedReports: %@", v18];
+  supportedReportsAsStringSet = [(CoreDAVContainer *)self supportedReportsAsStringSet];
+  [v7 appendFormat:@"\n\tsupportedReports: %@", supportedReportsAsStringSet];
 
-  v19 = [(CoreDAVContainer *)self pushTransports];
-  [v7 appendFormat:@"\n\tpushTransports: %@", v19];
+  pushTransports = [(CoreDAVContainer *)self pushTransports];
+  [v7 appendFormat:@"\n\tpushTransports: %@", pushTransports];
 
-  v20 = [(CoreDAVContainer *)self bulkRequests];
-  [v7 appendFormat:@"\n\tbulkRequests: %@", v20];
+  bulkRequests = [(CoreDAVContainer *)self bulkRequests];
+  [v7 appendFormat:@"\n\tbulkRequests: %@", bulkRequests];
 
-  v21 = [(CoreDAVContainer *)self syncToken];
-  [v7 appendFormat:@"\n\tsyncToken: %@", v21];
+  syncToken = [(CoreDAVContainer *)self syncToken];
+  [v7 appendFormat:@"\n\tsyncToken: %@", syncToken];
 
   return v7;
 }
 
-- (void)applyParsedProperties:(id)a3
+- (void)applyParsedProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [v4 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"resourcetype"];
+  propertiesCopy = properties;
+  v5 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"resourcetype"];
   [(CoreDAVContainer *)self setResourceType:v5];
 
-  v6 = [(CoreDAVContainer *)self resourceType];
-  v7 = [v6 unauthenticated];
-  [(CoreDAVContainer *)self setIsUnauthenticated:v7 != 0];
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  unauthenticated = [resourceType unauthenticated];
+  [(CoreDAVContainer *)self setIsUnauthenticated:unauthenticated != 0];
 
-  v8 = [v4 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"displayname"];
-  v9 = [v8 payloadAsString];
-  [(CoreDAVContainer *)self setContainerTitle:v9];
+  v8 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"displayname"];
+  payloadAsString = [v8 payloadAsString];
+  [(CoreDAVContainer *)self setContainerTitle:payloadAsString];
 
-  v10 = [v4 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"current-user-privilege-set"];
-  v11 = [v10 privileges];
-  [(CoreDAVContainer *)self setPrivileges:v11];
+  v10 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"current-user-privilege-set"];
+  privileges = [v10 privileges];
+  [(CoreDAVContainer *)self setPrivileges:privileges];
 
-  v12 = [v4 CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"pushkey"];
-  v13 = [v12 payloadAsString];
-  [(CoreDAVContainer *)self setPushKey:v13];
+  v12 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"pushkey"];
+  payloadAsString2 = [v12 payloadAsString];
+  [(CoreDAVContainer *)self setPushKey:payloadAsString2];
 
-  v14 = [v4 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"resource-id"];
-  v15 = [v14 href];
-  v16 = [v15 payloadAsFullURL];
-  [(CoreDAVContainer *)self setResourceID:v16];
+  v14 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"resource-id"];
+  href = [v14 href];
+  payloadAsFullURL = [href payloadAsFullURL];
+  [(CoreDAVContainer *)self setResourceID:payloadAsFullURL];
 
-  v17 = [v4 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"quota-available-bytes"];
-  v18 = [v17 payloadAsString];
-  [(CoreDAVContainer *)self setQuotaAvailable:v18];
+  v17 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"quota-available-bytes"];
+  payloadAsString3 = [v17 payloadAsString];
+  [(CoreDAVContainer *)self setQuotaAvailable:payloadAsString3];
 
-  v19 = [v4 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"quota-used-bytes"];
-  v20 = [v19 payloadAsString];
-  [(CoreDAVContainer *)self setQuotaUsed:v20];
+  v19 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"quota-used-bytes"];
+  payloadAsString4 = [v19 payloadAsString];
+  [(CoreDAVContainer *)self setQuotaUsed:payloadAsString4];
 
-  v21 = [v4 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"supported-report-set"];
+  v21 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"supported-report-set"];
   [(CoreDAVContainer *)self setSupportedReportSetItem:v21];
 
-  v22 = [v4 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"owner"];
-  v23 = [v22 href];
-  v24 = [v23 payloadAsFullURL];
-  [(CoreDAVContainer *)self setOwner:v24];
+  v22 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"owner"];
+  href2 = [v22 href];
+  payloadAsFullURL2 = [href2 payloadAsFullURL];
+  [(CoreDAVContainer *)self setOwner:payloadAsFullURL2];
 
-  v25 = [v4 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"add-member"];
-  v26 = [v25 href];
-  v27 = [v26 payloadAsFullURL];
-  [(CoreDAVContainer *)self setAddMemberURL:v27];
+  v25 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"add-member"];
+  href3 = [v25 href];
+  payloadAsFullURL3 = [href3 payloadAsFullURL];
+  [(CoreDAVContainer *)self setAddMemberURL:payloadAsFullURL3];
 
-  v28 = [v4 CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"push-transports"];
+  v28 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"push-transports"];
   v29 = [CoreDAVContainer convertPushTransportsForNSServerNotificationCenter:v28];
   [(CoreDAVContainer *)self setPushTransports:v29];
 
-  v30 = [v4 CDVObjectForKeyWithNameSpace:@"http://me.com/_namespace/" andName:@"bulk-requests"];
-  v31 = [v30 dictRepresentation];
-  [(CoreDAVContainer *)self setBulkRequests:v31];
+  v30 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"http://me.com/_namespace/" andName:@"bulk-requests"];
+  dictRepresentation = [v30 dictRepresentation];
+  [(CoreDAVContainer *)self setBulkRequests:dictRepresentation];
 
-  v33 = [v4 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"sync-token"];
+  v33 = [propertiesCopy CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"sync-token"];
 
-  v32 = [v33 payloadAsString];
-  [(CoreDAVContainer *)self setSyncToken:v32];
+  payloadAsString5 = [v33 payloadAsString];
+  [(CoreDAVContainer *)self setSyncToken:payloadAsString5];
 }
 
 - (NSSet)supportedReports
 {
-  v2 = [(CoreDAVContainer *)self supportedReportSetItem];
-  v3 = [v2 supportedReports];
+  supportedReportSetItem = [(CoreDAVContainer *)self supportedReportSetItem];
+  supportedReports = [supportedReportSetItem supportedReports];
 
-  return v3;
+  return supportedReports;
 }
 
 - (NSSet)resourceTypeAsStringSet
 {
-  v2 = [(CoreDAVContainer *)self resourceType];
-  v3 = [v2 stringSet];
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  stringSet = [resourceType stringSet];
 
-  return v3;
+  return stringSet;
 }
 
 - (BOOL)isPrincipal
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 principal];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    principal = [resourceType2 principal];
+    v6 = principal != 0;
   }
 
   else
@@ -236,8 +236,8 @@
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v6 = [v5 extraChildItems];
-        v7 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        extraChildItems = [v5 extraChildItems];
+        v7 = [extraChildItems countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v7)
         {
           v8 = v7;
@@ -248,19 +248,19 @@
             {
               if (*v22 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(extraChildItems);
               }
 
               v11 = *(*(&v21 + 1) + 8 * j);
               v12 = objc_alloc(MEMORY[0x277CCACA8]);
-              v13 = [v11 nameSpace];
-              v14 = [v11 name];
-              v15 = [v12 initWithCDVNameSpace:v13 andName:v14];
+              nameSpace = [v11 nameSpace];
+              name = [v11 name];
+              v15 = [v12 initWithCDVNameSpace:nameSpace andName:name];
 
               [v3 addObject:v15];
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v8 = [extraChildItems countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v8);
@@ -284,16 +284,16 @@
   return v3;
 }
 
-- (BOOL)_anyPrivilegesMatches:(id)a3
+- (BOOL)_anyPrivilegesMatches:(id)matches
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchesCopy = matches;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(CoreDAVContainer *)self privileges];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  privileges = [(CoreDAVContainer *)self privileges];
+  v6 = [privileges countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -304,7 +304,7 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(privileges);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
@@ -312,8 +312,8 @@
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v11 = [v10 extraChildItems];
-        v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        extraChildItems = [v10 extraChildItems];
+        v12 = [extraChildItems countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v12)
         {
           v13 = v12;
@@ -324,10 +324,10 @@
             {
               if (*v20 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(extraChildItems);
               }
 
-              if (v4[2](v4, *(*(&v19 + 1) + 8 * j)))
+              if (matchesCopy[2](matchesCopy, *(*(&v19 + 1) + 8 * j)))
               {
 
                 v16 = 1;
@@ -335,7 +335,7 @@
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v13 = [extraChildItems countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v13)
             {
               continue;
@@ -346,7 +346,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [privileges countByEnumeratingWithState:&v23 objects:v28 count:16];
       v16 = 0;
     }
 
@@ -556,10 +556,10 @@ uint64_t __39__CoreDAVContainer_hasUnbindPrivileges__block_invoke(uint64_t a1, v
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v6 = [v5 report];
-        v7 = [v6 extraChildItems];
+        report = [v5 report];
+        extraChildItems = [report extraChildItems];
 
-        v8 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v8 = [extraChildItems countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v8)
         {
           v9 = v8;
@@ -570,19 +570,19 @@ uint64_t __39__CoreDAVContainer_hasUnbindPrivileges__block_invoke(uint64_t a1, v
             {
               if (*v23 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(extraChildItems);
               }
 
               v12 = *(*(&v22 + 1) + 8 * j);
               v13 = objc_alloc(MEMORY[0x277CCACA8]);
-              v14 = [v12 nameSpace];
-              v15 = [v12 name];
-              v16 = [v13 initWithCDVNameSpace:v14 andName:v15];
+              nameSpace = [v12 nameSpace];
+              name = [v12 name];
+              v16 = [v13 initWithCDVNameSpace:nameSpace andName:name];
 
               [v3 addObject:v16];
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v9 = [extraChildItems countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v9);
@@ -608,29 +608,29 @@ uint64_t __39__CoreDAVContainer_hasUnbindPrivileges__block_invoke(uint64_t a1, v
 
 - (BOOL)supportsPrincipalPropertySearchReport
 {
-  v2 = [(CoreDAVContainer *)self supportedReportSetItem];
-  v3 = [v2 supportsReportWithNameSpace:@"DAV:" andName:@"principal-property-search"];
+  supportedReportSetItem = [(CoreDAVContainer *)self supportedReportSetItem];
+  v3 = [supportedReportSetItem supportsReportWithNameSpace:@"DAV:" andName:@"principal-property-search"];
 
   return v3;
 }
 
 - (BOOL)supportsSyncCollectionReport
 {
-  v2 = [(CoreDAVContainer *)self supportedReportSetItem];
-  v3 = [v2 supportsReportWithNameSpace:@"DAV:" andName:@"sync-collection"];
+  supportedReportSetItem = [(CoreDAVContainer *)self supportedReportSetItem];
+  v3 = [supportedReportSetItem supportsReportWithNameSpace:@"DAV:" andName:@"sync-collection"];
 
   return v3;
 }
 
-+ (id)convertPushTransportsForNSServerNotificationCenter:(id)a3
++ (id)convertPushTransportsForNSServerNotificationCenter:(id)center
 {
   v75 = *MEMORY[0x277D85DE8];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v47 = a3;
-  obj = [v47 transports];
+  centerCopy = center;
+  obj = [centerCopy transports];
   v59 = [obj countByEnumeratingWithState:&v68 objects:v74 count:16];
   if (v59)
   {
@@ -650,8 +650,8 @@ uint64_t __39__CoreDAVContainer_hasUnbindPrivileges__block_invoke(uint64_t a1, v
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v5 = [v4 attributes];
-        v6 = [v5 countByEnumeratingWithState:&v64 objects:v73 count:16];
+        attributes = [v4 attributes];
+        v6 = [attributes countByEnumeratingWithState:&v64 objects:v73 count:16];
         if (v6)
         {
           v7 = v6;
@@ -662,12 +662,12 @@ LABEL_8:
           {
             if (*v65 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(attributes);
             }
 
             v10 = *(*(&v64 + 1) + 8 * v9);
-            v11 = [v10 name];
-            v12 = [v11 isEqualToString:@"type"];
+            name = [v10 name];
+            v12 = [name isEqualToString:@"type"];
 
             if (v12)
             {
@@ -676,7 +676,7 @@ LABEL_8:
 
             if (v7 == ++v9)
             {
-              v7 = [v5 countByEnumeratingWithState:&v64 objects:v73 count:16];
+              v7 = [attributes countByEnumeratingWithState:&v64 objects:v73 count:16];
               if (v7)
               {
                 goto LABEL_8;
@@ -686,97 +686,97 @@ LABEL_8:
             }
           }
 
-          v13 = [v10 value];
+          value = [v10 value];
 
-          if (!v13)
+          if (!value)
           {
             continue;
           }
 
-          v56 = v13;
+          v56 = value;
           v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v15 = [v4 subscriptionURL];
-          v16 = [v15 href];
-          v17 = [v16 payloadAsFullURL];
+          subscriptionURL = [v4 subscriptionURL];
+          href = [subscriptionURL href];
+          payloadAsFullURL = [href payloadAsFullURL];
 
-          if (v17)
+          if (payloadAsFullURL)
           {
-            v18 = [v17 absoluteString];
-            [v14 setObject:v18 forKey:@"subscription-url"];
+            absoluteString = [payloadAsFullURL absoluteString];
+            [v14 setObject:absoluteString forKey:@"subscription-url"];
           }
 
-          v19 = [v4 tokenURL];
-          v20 = [v19 href];
-          v21 = [v20 payloadAsFullURL];
+          tokenURL = [v4 tokenURL];
+          href2 = [tokenURL href];
+          payloadAsFullURL2 = [href2 payloadAsFullURL];
 
-          if (v21)
+          if (payloadAsFullURL2)
           {
-            v22 = [v21 absoluteString];
-            [v14 setObject:v22 forKey:@"token-url"];
+            absoluteString2 = [payloadAsFullURL2 absoluteString];
+            [v14 setObject:absoluteString2 forKey:@"token-url"];
           }
 
-          v23 = [v4 apsBundleID];
-          v24 = [v23 payloadAsString];
+          apsBundleID = [v4 apsBundleID];
+          payloadAsString = [apsBundleID payloadAsString];
 
-          if (v24)
+          if (payloadAsString)
           {
-            [v14 setObject:v24 forKey:@"apsbundleid"];
+            [v14 setObject:payloadAsString forKey:@"apsbundleid"];
           }
 
-          v54 = v21;
-          v25 = [v4 courierServer];
-          v26 = [v25 payloadAsString];
+          v54 = payloadAsFullURL2;
+          courierServer = [v4 courierServer];
+          payloadAsString2 = [courierServer payloadAsString];
 
-          if (v26)
+          if (payloadAsString2)
           {
-            [v14 setObject:v26 forKey:@"courierserver"];
+            [v14 setObject:payloadAsString2 forKey:@"courierserver"];
           }
 
-          v27 = v17;
-          v28 = [v4 apsEnv];
-          v29 = [v28 payloadAsString];
+          v27 = payloadAsFullURL;
+          apsEnv = [v4 apsEnv];
+          payloadAsString3 = [apsEnv payloadAsString];
 
-          if (v29)
+          if (payloadAsString3)
           {
-            [v14 setObject:v29 forKey:@"env"];
+            [v14 setObject:payloadAsString3 forKey:@"env"];
           }
 
-          v30 = [v4 refreshInterval];
-          v31 = [v30 payloadAsString];
+          refreshInterval = [v4 refreshInterval];
+          payloadAsString4 = [refreshInterval payloadAsString];
 
-          if (v31)
+          if (payloadAsString4)
           {
-            [v14 setObject:v31 forKey:@"refresh-interval"];
+            [v14 setObject:payloadAsString4 forKey:@"refresh-interval"];
           }
 
-          v50 = v31;
-          v53 = v24;
+          v50 = payloadAsString4;
+          v53 = payloadAsString;
           v55 = v27;
-          v32 = [v4 xmppServer];
-          v33 = [v32 payloadAsString];
+          xmppServer = [v4 xmppServer];
+          payloadAsString5 = [xmppServer payloadAsString];
 
-          if (v33)
+          if (payloadAsString5)
           {
-            [v14 setObject:v33 forKey:@"xmpp-server"];
+            [v14 setObject:payloadAsString5 forKey:@"xmpp-server"];
           }
 
-          v49 = v33;
-          v51 = v29;
-          v52 = v26;
-          v34 = [v4 xmppURI];
-          v35 = [v34 payloadAsString];
+          v49 = payloadAsString5;
+          v51 = payloadAsString3;
+          v52 = payloadAsString2;
+          xmppURI = [v4 xmppURI];
+          payloadAsString6 = [xmppURI payloadAsString];
 
-          if (v35)
+          if (payloadAsString6)
           {
-            [v14 setObject:v35 forKey:@"xmpp-uri"];
+            [v14 setObject:payloadAsString6 forKey:@"xmpp-uri"];
           }
 
           v62 = 0u;
           v63 = 0u;
           v60 = 0u;
           v61 = 0u;
-          v36 = [v4 extraChildItems];
-          v37 = [v36 countByEnumeratingWithState:&v60 objects:v72 count:16];
+          extraChildItems = [v4 extraChildItems];
+          v37 = [extraChildItems countByEnumeratingWithState:&v60 objects:v72 count:16];
           if (v37)
           {
             v38 = v37;
@@ -787,19 +787,19 @@ LABEL_8:
               {
                 if (*v61 != v39)
                 {
-                  objc_enumerationMutation(v36);
+                  objc_enumerationMutation(extraChildItems);
                 }
 
                 v41 = *(*(&v60 + 1) + 8 * j);
-                v42 = [v41 payloadAsString];
-                if (v42)
+                payloadAsString7 = [v41 payloadAsString];
+                if (payloadAsString7)
                 {
-                  v43 = [v41 name];
-                  [v14 setObject:v42 forKey:v43];
+                  name2 = [v41 name];
+                  [v14 setObject:payloadAsString7 forKey:name2];
                 }
               }
 
-              v38 = [v36 countByEnumeratingWithState:&v60 objects:v72 count:16];
+              v38 = [extraChildItems countByEnumeratingWithState:&v60 objects:v72 count:16];
             }
 
             while (v38);
@@ -814,7 +814,7 @@ LABEL_8:
           v57 = v44;
           [v44 setObject:v14 forKey:v56];
 
-          v5 = v56;
+          attributes = v56;
         }
 
 LABEL_44:

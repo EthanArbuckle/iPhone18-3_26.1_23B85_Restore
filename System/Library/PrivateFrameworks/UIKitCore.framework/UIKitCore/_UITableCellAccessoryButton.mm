@@ -1,17 +1,17 @@
 @interface _UITableCellAccessoryButton
-- (_UITableCellAccessoryButton)initWithFrame:(CGRect)a3 backgroundImageProvider:(id)a4 accessoryType:(int64_t)a5;
+- (_UITableCellAccessoryButton)initWithFrame:(CGRect)frame backgroundImageProvider:(id)provider accessoryType:(int64_t)type;
 - (id)_backgroundImageView;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_reloadBackgroundImage;
-- (void)setAccessoryTintColor:(id)a3;
+- (void)setAccessoryTintColor:(id)color;
 @end
 
 @implementation _UITableCellAccessoryButton
 
 - (void)_reloadBackgroundImage
 {
-  v3 = [(_UITableCellAccessoryButton *)self backgroundImageProvider];
-  v4 = (v3)[2](v3, self->_accessoryTintColor);
+  backgroundImageProvider = [(_UITableCellAccessoryButton *)self backgroundImageProvider];
+  v4 = (backgroundImageProvider)[2](backgroundImageProvider, self->_accessoryTintColor);
 
   [(UIButton *)self setBackgroundImage:v4 forStates:0];
 }
@@ -24,51 +24,51 @@
   [(_UITableCellAccessoryButton *)self _reloadBackgroundImage];
 }
 
-- (_UITableCellAccessoryButton)initWithFrame:(CGRect)a3 backgroundImageProvider:(id)a4 accessoryType:(int64_t)a5
+- (_UITableCellAccessoryButton)initWithFrame:(CGRect)frame backgroundImageProvider:(id)provider accessoryType:(int64_t)type
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = _UITableCellAccessoryButton;
-  v13 = [(UIButton *)&v16 initWithFrame:x, y, width, height];
-  if (v13)
+  height = [(UIButton *)&v16 initWithFrame:x, y, width, height];
+  if (height)
   {
-    if (!v12)
+    if (!providerCopy)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v13 file:@"UICollectionTableSharedSupport.m" lineNumber:498 description:{@"Invalid parameter not satisfying: %@", @"backgroundImageProvider != NULL"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:height file:@"UICollectionTableSharedSupport.m" lineNumber:498 description:{@"Invalid parameter not satisfying: %@", @"backgroundImageProvider != NULL"}];
     }
 
-    [(_UITableCellAccessoryButton *)v13 setBackgroundImageProvider:v12];
-    [(UIView *)v13 setOpaque:0];
-    [(UIView *)v13 setUserInteractionEnabled:0];
-    v13->_accessoryType = a5;
-    [(_UITableCellAccessoryButton *)v13 _reloadBackgroundImage];
+    [(_UITableCellAccessoryButton *)height setBackgroundImageProvider:providerCopy];
+    [(UIView *)height setOpaque:0];
+    [(UIView *)height setUserInteractionEnabled:0];
+    height->_accessoryType = type;
+    [(_UITableCellAccessoryButton *)height _reloadBackgroundImage];
   }
 
-  return v13;
+  return height;
 }
 
-- (void)setAccessoryTintColor:(id)a3
+- (void)setAccessoryTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (![(UIColor *)self->_accessoryTintColor isEqual:?])
   {
-    objc_storeStrong(&self->_accessoryTintColor, a3);
+    objc_storeStrong(&self->_accessoryTintColor, color);
     [(_UITableCellAccessoryButton *)self _reloadBackgroundImage];
   }
 }
 
 - (id)_backgroundImageView
 {
-  v2 = [(UIButton *)self _backgroundView];
+  _backgroundView = [(UIButton *)self _backgroundView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = _backgroundView;
   }
 
   else

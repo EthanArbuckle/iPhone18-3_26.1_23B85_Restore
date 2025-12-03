@@ -1,24 +1,24 @@
 @interface PUVitalityTransformProducer
 - (AVAsset)videoAsset;
 - (PHAsset)photoKitAsset;
-- (PUVitalityTransformProducer)initWithDidChangeHandler:(id)a3;
+- (PUVitalityTransformProducer)initWithDidChangeHandler:(id)handler;
 - (__n128)transform;
-- (double)setComputedTransform:(__n128)a3;
+- (double)setComputedTransform:(__n128)transform;
 - (id)didChangeHandler;
-- (void)handleTransform:(float32x4_t)a3 limitingAllowed:(float32x4_t)a4;
+- (void)handleTransform:(float32x4_t)transform limitingAllowed:(float32x4_t)allowed;
 - (void)produceVitalityTransform;
-- (void)setAssetMetadataTransform:(__n128)a3;
-- (void)setHasProducedAssetMetadataTransform:(BOOL)a3;
-- (void)setPhotoKitAsset:(id)a3;
-- (void)setVideoAsset:(id)a3;
+- (void)setAssetMetadataTransform:(__n128)transform;
+- (void)setHasProducedAssetMetadataTransform:(BOOL)transform;
+- (void)setPhotoKitAsset:(id)asset;
+- (void)setVideoAsset:(id)asset;
 - (void)updateAssetMetadataTransform;
 @end
 
 @implementation PUVitalityTransformProducer
 
-- (PUVitalityTransformProducer)initWithDidChangeHandler:(id)a3
+- (PUVitalityTransformProducer)initWithDidChangeHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   return sub_1B37FFEC8(sub_1B37568D0, v4);
@@ -31,11 +31,11 @@
   return v2;
 }
 
-- (void)setPhotoKitAsset:(id)a3
+- (void)setPhotoKitAsset:(id)asset
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3800264(a3, &OBJC_IVAR___PUVitalityTransformProducer_photoKitAsset, sub_1B38000C0);
+  assetCopy = asset;
+  selfCopy = self;
+  sub_1B3800264(asset, &OBJC_IVAR___PUVitalityTransformProducer_photoKitAsset, sub_1B38000C0);
 }
 
 - (AVAsset)videoAsset
@@ -45,16 +45,16 @@
   return v2;
 }
 
-- (void)setVideoAsset:(id)a3
+- (void)setVideoAsset:(id)asset
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3800264(a3, &OBJC_IVAR___PUVitalityTransformProducer_videoAsset, sub_1B38002D0);
+  assetCopy = asset;
+  selfCopy = self;
+  sub_1B3800264(asset, &OBJC_IVAR___PUVitalityTransformProducer_videoAsset, sub_1B38002D0);
 }
 
 - (__n128)transform
 {
-  v1 = a1;
+  selfCopy = self;
   sub_1B3800350(&v4);
   v3 = v4;
 
@@ -74,49 +74,49 @@
   return v3;
 }
 
-- (void)setAssetMetadataTransform:(__n128)a3
+- (void)setAssetMetadataTransform:(__n128)transform
 {
   v5[0] = a2;
-  v5[1] = a3;
+  v5[1] = transform;
   v5[2] = a4;
-  v4 = a1;
+  selfCopy = self;
   sub_1B3800560(v5);
 }
 
-- (void)setHasProducedAssetMetadataTransform:(BOOL)a3
+- (void)setHasProducedAssetMetadataTransform:(BOOL)transform
 {
-  v3 = a3;
-  v4 = self;
-  sub_1B380061C(v3);
+  transformCopy = transform;
+  selfCopy = self;
+  sub_1B380061C(transformCopy);
 }
 
 - (void)produceVitalityTransform
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3800650();
 }
 
-- (void)handleTransform:(float32x4_t)a3 limitingAllowed:(float32x4_t)a4
+- (void)handleTransform:(float32x4_t)transform limitingAllowed:(float32x4_t)allowed
 {
   v8[0] = a2;
-  v8[1] = a3;
-  v8[2] = a4;
-  v7 = a1;
+  v8[1] = transform;
+  v8[2] = allowed;
+  selfCopy = self;
   sub_1B3800BCC(v8, a6);
 }
 
-- (double)setComputedTransform:(__n128)a3
+- (double)setComputedTransform:(__n128)transform
 {
-  v4[0] = a1;
+  v4[0] = self;
   v4[1] = a2;
-  v4[2] = a3;
+  v4[2] = transform;
   *&result = sub_1B3800DEC(v4).n128_u64[0];
   return result;
 }
 
 - (void)updateAssetMetadataTransform
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3800E7C();
 }
 

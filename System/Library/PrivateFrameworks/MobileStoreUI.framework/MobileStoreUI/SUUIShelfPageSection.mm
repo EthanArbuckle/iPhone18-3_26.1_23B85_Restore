@@ -1,59 +1,59 @@
 @interface SUUIShelfPageSection
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)updateCellWithIndexPath:(id)a3 itemState:(id)a4 animated:(BOOL)a5;
-- (CGSize)cellSizeForIndexPath:(id)a3;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)updateCellWithIndexPath:(id)path itemState:(id)state animated:(BOOL)animated;
+- (CGSize)cellSizeForIndexPath:(id)path;
 - (SUUIScrollViewDelegateObserver)scrollViewDelegateObserver;
-- (SUUIShelfPageSection)initWithPageComponent:(id)a3 configuration:(id)a4;
+- (SUUIShelfPageSection)initWithPageComponent:(id)component configuration:(id)configuration;
 - (UIEdgeInsets)sectionContentInset;
-- (id)_normalizedShelfItemIndexPathFromActualIndexPath:(id)a3;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4;
-- (int64_t)applyUpdateType:(int64_t)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_performDefaultSelectActionForEffectiveViewElement:(id)a3;
+- (id)_normalizedShelfItemIndexPathFromActualIndexPath:(id)path;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location;
+- (int64_t)applyUpdateType:(int64_t)type;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_performDefaultSelectActionForEffectiveViewElement:(id)element;
 - (void)_reloadViewElementProperties;
-- (void)_setContext:(id)a3;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)collectionView:(id)a3 didConfirmButtonElement:(id)a4 withClickInfo:(id)a5 forItemAtIndexPath:(id)a6;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 layout:(id)a4 willApplyLayoutAttributes:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
+- (void)_setContext:(id)context;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)collectionView:(id)view didConfirmButtonElement:(id)element withClickInfo:(id)info forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view layout:(id)layout willApplyLayoutAttributes:(id)attributes;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)deselectItemsAnimated:(BOOL)a3;
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4;
-- (void)getModalSourceViewForViewElement:(id)a3 completionBlock:(id)a4;
+- (void)deselectItemsAnimated:(BOOL)animated;
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context;
+- (void)getModalSourceViewForViewElement:(id)element completionBlock:(id)block;
 - (void)invalidateCachedLayoutInformation;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setTopSection:(BOOL)a3;
-- (void)viewElementSlideshowWillDismiss:(id)a3;
-- (void)willAppearInContext:(id)a3;
-- (void)willPresentPreviewViewController:(id)a3 forLocation:(CGPoint)a4 inSourceView:(id)a5;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setTopSection:(BOOL)section;
+- (void)viewElementSlideshowWillDismiss:(id)dismiss;
+- (void)willAppearInContext:(id)context;
+- (void)willPresentPreviewViewController:(id)controller forLocation:(CGPoint)location inSourceView:(id)view;
 @end
 
 @implementation SUUIShelfPageSection
 
-- (SUUIShelfPageSection)initWithPageComponent:(id)a3 configuration:(id)a4
+- (SUUIShelfPageSection)initWithPageComponent:(id)component configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SUUIShelfPageSection;
-  v7 = [(SUUIStorePageSection *)&v11 initWithPageComponent:a3];
+  v7 = [(SUUIStorePageSection *)&v11 initWithPageComponent:component];
   if (v7)
   {
-    if (v6)
+    if (configurationCopy)
     {
-      v8 = v6;
+      v8 = configurationCopy;
     }
 
     else
@@ -84,22 +84,22 @@
   [(SUUIStorePageSection *)&v3 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SUUIStorePageSection *)self pageComponent];
-  v7 = [v6 viewElement];
-  [v5 addItemViewElement:v7];
+  sessionCopy = session;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 
-  v8 = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-  v9 = [v8 indexPathsForVisibleItems];
+  existingShelfCollectionView = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+  indexPathsForVisibleItems = [existingShelfCollectionView indexPathsForVisibleItems];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v9;
+  v10 = indexPathsForVisibleItems;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -116,7 +116,7 @@
         }
 
         v15 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [*(*(&v16 + 1) + 8 * v14) item]);
-        [v5 addItemViewElement:v15];
+        [sessionCopy addItemViewElement:v15];
 
         ++v14;
       }
@@ -129,7 +129,7 @@
   }
 }
 
-- (int64_t)applyUpdateType:(int64_t)a3
+- (int64_t)applyUpdateType:(int64_t)type
 {
   [(SUUIShelfPageSection *)self _reloadViewElementProperties];
   if (![(SUUIShelfPageSectionConfiguration *)self->_configuration needsShelfCollectionViewReload])
@@ -139,30 +139,30 @@
 
   v6.receiver = self;
   v6.super_class = SUUIShelfPageSection;
-  return [(SUUIStorePageSection *)&v6 applyUpdateType:a3];
+  return [(SUUIStorePageSection *)&v6 applyUpdateType:type];
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(SUUIShelfPageSectionConfiguration *)self->_configuration backgroundColorForShelfViewElement:self->_shelfViewElement];
   if (!v5)
   {
     v7.receiver = self;
     v7.super_class = SUUIShelfPageSection;
-    v5 = [(SUUIStorePageSection *)&v7 backgroundColorForIndexPath:v4];
+    v5 = [(SUUIStorePageSection *)&v7 backgroundColorForIndexPath:pathCopy];
   }
 
   return v5;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
   configuration = self->_configuration;
   shelfViewElement = self->_shelfViewElement;
   viewElements = self->_viewElements;
-  v6 = a3;
-  [(SUUIShelfPageSectionConfiguration *)configuration cellSizeForShelfViewElement:shelfViewElement indexPath:v6 numberOfShelfItems:[(NSArray *)viewElements count]];
+  pathCopy = path;
+  [(SUUIShelfPageSectionConfiguration *)configuration cellSizeForShelfViewElement:shelfViewElement indexPath:pathCopy numberOfShelfItems:[(NSArray *)viewElements count]];
   v8 = v7;
   v10 = v9;
 
@@ -173,56 +173,56 @@
   return result;
 }
 
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes
 {
   v5.receiver = self;
   v5.super_class = SUUIShelfPageSection;
-  v4 = a3;
-  [(SUUIStorePageSection *)&v5 collectionViewWillApplyLayoutAttributes:v4];
-  [(SUUIShelfPageSectionConfiguration *)self->_configuration collectionViewWillApplyLayoutAttributes:v4, v5.receiver, v5.super_class];
+  attributesCopy = attributes;
+  [(SUUIStorePageSection *)&v5 collectionViewWillApplyLayoutAttributes:attributesCopy];
+  [(SUUIShelfPageSectionConfiguration *)self->_configuration collectionViewWillApplyLayoutAttributes:attributesCopy, v5.receiver, v5.super_class];
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 beginActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIShelfPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 endActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIShelfPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)deselectItemsAnimated:(BOOL)a3
+- (void)deselectItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-  v6 = [v5 indexPathsForSelectedItems];
+  existingShelfCollectionView = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+  indexPathsForSelectedItems = [existingShelfCollectionView indexPathsForSelectedItems];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -234,14 +234,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
-        [v5 deselectItemAtIndexPath:*(*(&v12 + 1) + 8 * v10++) animated:v3];
+        [existingShelfCollectionView deselectItemAtIndexPath:*(*(&v12 + 1) + 8 * v10++) animated:animatedCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -249,26 +249,26 @@
 
   v11.receiver = self;
   v11.super_class = SUUIShelfPageSection;
-  [(SUUIStorePageSection *)&v11 deselectItemsAnimated:v3];
+  [(SUUIStorePageSection *)&v11 deselectItemsAnimated:animatedCopy];
 }
 
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context
 {
   configuration = self->_configuration;
   shelfViewElement = self->_shelfViewElement;
   viewElements = self->_viewElements;
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  providerCopy = provider;
   [(SUUIShelfPageSectionConfiguration *)configuration reloadShelfLayoutDataForShelfViewElement:shelfViewElement withShelfItemViewElements:viewElements requestCellLayouts:1 numberOfShelfItems:[(NSArray *)viewElements count]];
   v11.receiver = self;
   v11.super_class = SUUIShelfPageSection;
-  [(SUUIStorePageSection *)&v11 entityProvider:v10 didInvalidateWithContext:v9];
+  [(SUUIStorePageSection *)&v11 entityProvider:providerCopy didInvalidateWithContext:contextCopy];
 }
 
-- (void)getModalSourceViewForViewElement:(id)a3 completionBlock:(id)a4
+- (void)getModalSourceViewForViewElement:(id)element completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  blockCopy = block;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -281,7 +281,7 @@
   v17[2] = __73__SUUIShelfPageSection_getModalSourceViewForViewElement_completionBlock___block_invoke;
   v17[3] = &unk_2798F6E20;
   v17[4] = self;
-  v9 = v6;
+  v9 = elementCopy;
   v18 = v9;
   v19 = &v20;
   [(NSArray *)viewElements enumerateObjectsUsingBlock:v17];
@@ -294,11 +294,11 @@
 
     v10 = objc_alloc_init(SUUIModalSourceViewProvider);
     [(SUUIModalSourceViewProvider *)v10 setUserInfo:v9];
-    v13 = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-    v14 = [v13 cellForItemAtIndexPath:v21[5]];
+    existingShelfCollectionView = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+    v14 = [existingShelfCollectionView cellForItemAtIndexPath:v21[5]];
 
-    v15 = [v9 itmlID];
-    v16 = [v14 viewForElementIdentifier:v15];
+    itmlID = [v9 itmlID];
+    v16 = [v14 viewForElementIdentifier:itmlID];
 
     if (v16)
     {
@@ -311,7 +311,7 @@
     }
   }
 
-  v7[2](v7, v10);
+  blockCopy[2](blockCopy, v10);
 
   _Block_object_dispose(&v20, 8);
 }
@@ -333,15 +333,15 @@ void __73__SUUIShelfPageSection_getModalSourceViewForViewElement_completionBlock
 - (void)invalidateCachedLayoutInformation
 {
   [(SUUIShelfPageSectionConfiguration *)self->_configuration setNeedsShelfCollectionViewLayout:1];
-  v3 = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-  [v3 reloadData];
+  existingShelfCollectionView = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+  [existingShelfCollectionView reloadData];
 
   v4.receiver = self;
   v4.super_class = SUUIShelfPageSection;
   [(SUUIStorePageSection *)&v4 invalidateCachedLayoutInformation];
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
   v8[0] = 0;
   v8[1] = v8;
@@ -353,12 +353,12 @@ void __73__SUUIShelfPageSection_getModalSourceViewForViewElement_completionBlock
   v7[2] = __52__SUUIShelfPageSection_prefetchResourcesWithReason___block_invoke;
   v7[3] = &unk_2798F7768;
   v7[5] = v8;
-  v7[6] = a3;
+  v7[6] = reason;
   v7[4] = self;
   [(NSArray *)viewElements enumerateObjectsUsingBlock:v7];
   v6.receiver = self;
   v6.super_class = SUUIShelfPageSection;
-  [(SUUIStorePageSection *)&v6 prefetchResourcesWithReason:a3];
+  [(SUUIStorePageSection *)&v6 prefetchResourcesWithReason:reason];
   _Block_object_dispose(v8, 8);
 }
 
@@ -373,44 +373,44 @@ uint64_t __52__SUUIShelfPageSection_prefetchResourcesWithReason___block_invoke(v
   return result;
 }
 
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   configuration = self->_configuration;
-  v8 = a3;
-  v9 = [(SUUIShelfPageSectionConfiguration *)configuration existingShelfCollectionView];
-  v10 = [v8 sourceView];
+  contextCopy = context;
+  existingShelfCollectionView = [(SUUIShelfPageSectionConfiguration *)configuration existingShelfCollectionView];
+  sourceView = [contextCopy sourceView];
 
-  [v9 convertPoint:v10 fromView:{x, y}];
-  v11 = [v9 indexPathForItemAtPoint:?];
+  [existingShelfCollectionView convertPoint:sourceView fromView:{x, y}];
+  v11 = [existingShelfCollectionView indexPathForItemAtPoint:?];
   v12 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [v11 item]);
-  v13 = [(SUUIStorePageSection *)self context];
-  v14 = [v13 clientContext];
-  v15 = [v14 previewViewControllerForViewElement:v12];
+  context = [(SUUIStorePageSection *)self context];
+  clientContext = [context clientContext];
+  v15 = [clientContext previewViewControllerForViewElement:v12];
 
   return v15;
 }
 
-- (void)willPresentPreviewViewController:(id)a3 forLocation:(CGPoint)a4 inSourceView:(id)a5
+- (void)willPresentPreviewViewController:(id)controller forLocation:(CGPoint)location inSourceView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   configuration = self->_configuration;
-  v9 = a5;
-  v10 = a3;
-  v18 = [(SUUIShelfPageSectionConfiguration *)configuration existingShelfCollectionView];
-  [v18 convertPoint:v9 fromView:{x, y}];
+  viewCopy = view;
+  controllerCopy = controller;
+  existingShelfCollectionView = [(SUUIShelfPageSectionConfiguration *)configuration existingShelfCollectionView];
+  [existingShelfCollectionView convertPoint:viewCopy fromView:{x, y}];
   v12 = v11;
   v14 = v13;
 
-  v15 = [v18 indexPathForItemAtPoint:{v12, v14}];
-  v16 = [v18 cellForItemAtIndexPath:v15];
-  v17 = [v10 presentationController];
+  v15 = [existingShelfCollectionView indexPathForItemAtPoint:{v12, v14}];
+  v16 = [existingShelfCollectionView cellForItemAtIndexPath:v15];
+  presentationController = [controllerCopy presentationController];
 
-  [v17 setSourceView:v16];
+  [presentationController setSourceView:v16];
   [v16 bounds];
-  [v17 setSourceRect:?];
+  [presentationController setSourceRect:?];
 }
 
 - (UIEdgeInsets)sectionContentInset
@@ -427,22 +427,22 @@ uint64_t __52__SUUIShelfPageSection_prefetchResourcesWithReason___block_invoke(v
   return result;
 }
 
-- (void)setTopSection:(BOOL)a3
+- (void)setTopSection:(BOOL)section
 {
-  v3 = a3;
+  sectionCopy = section;
   v5.receiver = self;
   v5.super_class = SUUIShelfPageSection;
   [(SUUIStorePageSection *)&v5 setTopSection:?];
-  [(SUUIShelfPageSectionConfiguration *)self->_configuration setTopSection:v3];
+  [(SUUIShelfPageSectionConfiguration *)self->_configuration setTopSection:sectionCopy];
 }
 
-- (BOOL)updateCellWithIndexPath:(id)a3 itemState:(id)a4 animated:(BOOL)a5
+- (BOOL)updateCellWithIndexPath:(id)path itemState:(id)state animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v28 = *MEMORY[0x277D85DE8];
-  v22 = a4;
-  v7 = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-  [v7 indexPathsForVisibleItems];
+  stateCopy = state;
+  existingShelfCollectionView = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+  [existingShelfCollectionView indexPathsForVisibleItems];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -462,13 +462,13 @@ uint64_t __52__SUUIShelfPageSection_prefetchResourcesWithReason___block_invoke(v
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v7 cellForItemAtIndexPath:v12];
-        if ([v13 updateWithItemState:v22 context:self->_cellLayoutContext animated:v5])
+        v13 = [existingShelfCollectionView cellForItemAtIndexPath:v12];
+        if ([v13 updateWithItemState:stateCopy context:self->_cellLayoutContext animated:animatedCopy])
         {
-          v15 = [v12 item];
-          v16 = [(NSArray *)self->_viewElements objectAtIndex:v15];
-          v17 = [(SUUIShelfPageSectionConfiguration *)self->_configuration shelfLayoutData];
-          [v17 sizeForItemAtIndex:v15];
+          item = [v12 item];
+          v16 = [(NSArray *)self->_viewElements objectAtIndex:item];
+          shelfLayoutData = [(SUUIShelfPageSectionConfiguration *)self->_configuration shelfLayoutData];
+          [shelfLayoutData sizeForItemAtIndex:item];
           v19 = v18;
 
           [objc_opt_class() requestLayoutForViewElement:v16 width:self->_cellLayoutContext context:v19];
@@ -493,14 +493,14 @@ LABEL_11:
   return v14;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [(SUUIShelfPageSectionConfiguration *)self->_configuration registerReusableClassesForCollectionView:v5];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF9C20];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [(SUUIShelfPageSectionConfiguration *)self->_configuration registerReusableClassesForCollectionView:collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF9C20];
   v6 = self->_cellLayoutContext;
-  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:v4 previousLayoutContext:v6];
+  v7 = [[SUUIViewElementLayoutContext alloc] initWithStorePageSectionContext:contextCopy previousLayoutContext:v6];
   cellLayoutContext = self->_cellLayoutContext;
   self->_cellLayoutContext = v7;
 
@@ -517,31 +517,31 @@ LABEL_11:
 
   v9.receiver = self;
   v9.super_class = SUUIShelfPageSection;
-  [(SUUIStorePageSection *)&v9 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v9 willAppearInContext:contextCopy];
 }
 
-- (void)_setContext:(id)a3
+- (void)_setContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = SUUIShelfPageSection;
-  v4 = a3;
-  [(SUUIStorePageSection *)&v5 _setContext:v4];
-  [(SUUIShelfPageSectionConfiguration *)self->_configuration setPageSectionContext:v4, v5.receiver, v5.super_class];
+  contextCopy = context;
+  [(SUUIStorePageSection *)&v5 _setContext:contextCopy];
+  [(SUUIShelfPageSectionConfiguration *)self->_configuration setPageSectionContext:contextCopy, v5.receiver, v5.super_class];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-  v9 = [v8 indexPathsForVisibleItems];
+  requestCopy = request;
+  imageCopy = image;
+  existingShelfCollectionView = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+  indexPathsForVisibleItems = [existingShelfCollectionView indexPathsForVisibleItems];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v9;
+  obj = indexPathsForVisibleItems;
   v10 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -558,10 +558,10 @@ LABEL_11:
         }
 
         v14 = *(*(&v18 + 1) + 8 * v13);
-        v15 = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-        v16 = [v15 cellForItemAtIndexPath:v14];
+        existingShelfCollectionView2 = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+        v16 = [existingShelfCollectionView2 cellForItemAtIndexPath:v14];
 
-        [v16 setImage:v7 forArtworkRequest:v6 context:self->_cellLayoutContext];
+        [v16 setImage:imageCopy forArtworkRequest:requestCopy context:self->_cellLayoutContext];
         ++v13;
       }
 
@@ -573,10 +573,10 @@ LABEL_11:
   }
 }
 
-- (void)viewElementSlideshowWillDismiss:(id)a3
+- (void)viewElementSlideshowWillDismiss:(id)dismiss
 {
   slideshowController = self->_slideshowController;
-  if (slideshowController == a3)
+  if (slideshowController == dismiss)
   {
     [(SUUIViewElementSlideshowController *)slideshowController setDelegate:0];
     [(SUUIViewElementSlideshowController *)self->_slideshowController setLayoutContext:0];
@@ -585,16 +585,16 @@ LABEL_11:
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(SUUIShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:v5];
-  v7 = [v6 item];
-  v8 = [(NSArray *)self->_viewElements objectAtIndex:v7];
-  v9 = [(SUUIShelfPageSectionConfiguration *)self->_configuration cellForShelfItemViewElement:v8 indexPath:v5];
+  pathCopy = path;
+  v6 = [(SUUIShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:pathCopy];
+  item = [v6 item];
+  v8 = [(NSArray *)self->_viewElements objectAtIndex:item];
+  v9 = [(SUUIShelfPageSectionConfiguration *)self->_configuration cellForShelfItemViewElement:v8 indexPath:pathCopy];
 
   v10 = [(NSArray *)self->_viewElements count];
-  if (self->_lastNeedsMoreCount < v10 && v7 + 10 > v10)
+  if (self->_lastNeedsMoreCount < v10 && item + 10 > v10)
   {
     self->_lastNeedsMoreCount = v10;
     [(SUUIShelfViewElement *)self->_shelfViewElement dispatchEventOfType:16 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
@@ -603,28 +603,28 @@ LABEL_11:
   return v9;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   configuration = self->_configuration;
-  v5 = [(NSArray *)self->_viewElements count:a3];
+  v5 = [(NSArray *)self->_viewElements count:view];
 
   return [(SUUIShelfPageSectionConfiguration *)configuration numberOfCellsForNumberOfShelfItems:v5];
 }
 
-- (void)collectionView:(id)a3 didConfirmButtonElement:(id)a4 withClickInfo:(id)a5 forItemAtIndexPath:(id)a6
+- (void)collectionView:(id)view didConfirmButtonElement:(id)element withClickInfo:(id)info forItemAtIndexPath:(id)path
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = [(SUUIShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:a6];
+  infoCopy = info;
+  elementCopy = element;
+  v12 = [(SUUIShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:path];
   v11 = [MEMORY[0x277CCAA70] indexPathForItem:objc_msgSend(v12 inSection:{"item"), -[SUUIStorePageSection sectionIndex](self, "sectionIndex")}];
-  [(SUUIStorePageSection *)self collectionViewDidConfirmButtonElement:v10 withClickInfo:v9 forItemAtIndexPath:v11];
+  [(SUUIStorePageSection *)self collectionViewDidConfirmButtonElement:elementCopy withClickInfo:infoCopy forItemAtIndexPath:v11];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SUUIShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:pathCopy];
   v9 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [v8 item]);
   v10 = [(SUUIShelfPageSectionConfiguration *)self->_configuration effectiveViewElementForShelfItemViewElement:v9];
   v11 = v10;
@@ -667,7 +667,7 @@ LABEL_11:
     }
   }
 
-  [v6 deselectItemAtIndexPath:v7 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
 LABEL_9:
 }
 
@@ -693,126 +693,126 @@ void __64__SUUIShelfPageSection_collectionView_didSelectItemAtIndexPath___block_
   [WeakRetained _performDefaultSelectActionForEffectiveViewElement:*(a1 + 32)];
 }
 
-- (void)collectionView:(id)a3 layout:(id)a4 willApplyLayoutAttributes:(id)a5
+- (void)collectionView:(id)view layout:(id)layout willApplyLayoutAttributes:(id)attributes
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 indexPath];
-  v12 = [(SUUIShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:v9];
+  attributesCopy = attributes;
+  viewCopy = view;
+  indexPath = [attributesCopy indexPath];
+  v12 = [(SUUIShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:indexPath];
 
-  v10 = [v12 item];
-  v11 = [(NSArray *)self->_viewElements objectAtIndex:v10];
-  [(SUUIShelfPageSectionConfiguration *)self->_configuration shelfItemsCollectionView:v8 willApplyLayoutAttributes:v7 forViewElement:v11 withItemIndex:v10];
+  item = [v12 item];
+  v11 = [(NSArray *)self->_viewElements objectAtIndex:item];
+  [(SUUIShelfPageSectionConfiguration *)self->_configuration shelfItemsCollectionView:viewCopy willApplyLayoutAttributes:attributesCopy forViewElement:v11 withItemIndex:item];
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = [(SUUIShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:a4];
+  v5 = [(SUUIShelfPageSection *)self _normalizedShelfItemIndexPathFromActualIndexPath:path];
   v6 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [v5 item]);
   v7 = [(SUUIShelfPageSectionConfiguration *)self->_configuration effectiveViewElementForShelfItemViewElement:v6];
-  v8 = [v7 isEnabled];
+  isEnabled = [v7 isEnabled];
 
-  return v8;
+  return isEnabled;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [a5 item]);
-  v6 = [(SUUIStorePageSection *)self context];
-  v7 = [v6 activeMetricsImpressionSession];
-  [v7 beginActiveImpressionForViewElement:v8];
+  v8 = -[NSArray objectAtIndex:](self->_viewElements, "objectAtIndex:", [path item]);
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:v8];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = [a5 item];
-  if (v6 < [(NSArray *)self->_viewElements count])
+  item = [path item];
+  if (item < [(NSArray *)self->_viewElements count])
   {
-    v9 = [(NSArray *)self->_viewElements objectAtIndex:v6];
-    v7 = [(SUUIStorePageSection *)self context];
-    v8 = [v7 activeMetricsImpressionSession];
-    [v8 endActiveImpressionForViewElement:v9];
+    v9 = [(NSArray *)self->_viewElements objectAtIndex:item];
+    context = [(SUUIStorePageSection *)self context];
+    activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+    [activeMetricsImpressionSession endActiveImpressionForViewElement:v9];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v5 = a3;
+  deceleratingCopy = decelerating;
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewDelegateObserver);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained observedScrollViewDidEndDecelerating:v5];
+    [WeakRetained observedScrollViewDidEndDecelerating:deceleratingCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v6 = a3;
+  scrollCopy = scroll;
   if ([(SUUIShelfPageSectionConfiguration *)self->_configuration rendersWithParallax])
   {
-    v4 = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
-    SUUICollectionViewUpdatePerspectiveCells(v4, 0);
+    existingShelfCollectionView = [(SUUIShelfPageSectionConfiguration *)self->_configuration existingShelfCollectionView];
+    SUUICollectionViewUpdatePerspectiveCells(existingShelfCollectionView, 0);
   }
 
-  [(SUUIShelfPageSectionConfiguration *)self->_configuration scrollViewDidScroll:v6];
+  [(SUUIShelfPageSectionConfiguration *)self->_configuration scrollViewDidScroll:scrollCopy];
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewDelegateObserver);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained observedScrollViewDidScroll:v6];
+    [WeakRetained observedScrollViewDidScroll:scrollCopy];
   }
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v5 = a3;
+  deceleratingCopy = decelerating;
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewDelegateObserver);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained observedScrollViewWillBeginDecelerating:v5];
+    [WeakRetained observedScrollViewWillBeginDecelerating:deceleratingCopy];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v5 = a3;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewDelegateObserver);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained observedScrollViewWillBeginDragging:v5];
+    [WeakRetained observedScrollViewWillBeginDragging:draggingCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewDelegateObserver);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained observedScrollViewWillEndDragging:v10 withVelocity:x targetContentOffset:{y, a5->x, a5->y}];
+    [WeakRetained observedScrollViewWillEndDragging:draggingCopy withVelocity:x targetContentOffset:{y, offset->x, offset->y}];
   }
 }
 
-- (id)_normalizedShelfItemIndexPathFromActualIndexPath:(id)a3
+- (id)_normalizedShelfItemIndexPathFromActualIndexPath:(id)path
 {
   configuration = self->_configuration;
   viewElements = self->_viewElements;
-  v5 = a3;
-  v6 = [(SUUIShelfPageSectionConfiguration *)configuration normalizedShelfItemIndexPathFromActualIndexPath:v5 numberOfShelfItems:[(NSArray *)viewElements count]];
+  pathCopy = path;
+  v6 = [(SUUIShelfPageSectionConfiguration *)configuration normalizedShelfItemIndexPathFromActualIndexPath:pathCopy numberOfShelfItems:[(NSArray *)viewElements count]];
 
   return v6;
 }
 
-- (void)_performDefaultSelectActionForEffectiveViewElement:(id)a3
+- (void)_performDefaultSelectActionForEffectiveViewElement:(id)element
 {
-  v11 = a3;
-  if (!-[SUUIStorePageSection performDefaultActionForViewElement:](self, "performDefaultActionForViewElement:") && [v11 elementType] == 66)
+  elementCopy = element;
+  if (!-[SUUIStorePageSection performDefaultActionForViewElement:](self, "performDefaultActionForViewElement:") && [elementCopy elementType] == 66)
   {
     v4 = [SUUIViewElementSlideshowController alloc];
-    v5 = [(SUUIStorePageSection *)self pageComponent];
-    v6 = [v5 viewElement];
-    v7 = [(SUUIViewElementSlideshowController *)v4 initWithShelf:v6 selectedLockup:v11];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
+    v7 = [(SUUIViewElementSlideshowController *)v4 initWithShelf:viewElement selectedLockup:elementCopy];
 
     if ([(SUUIViewElementSlideshowController *)v7 numberOfSlideshowItems]>= 1)
     {
@@ -820,23 +820,23 @@ void __64__SUUIShelfPageSection_collectionView_didSelectItemAtIndexPath___block_
       [(SUUIViewElementSlideshowController *)self->_slideshowController setDelegate:self];
       [(SUUIViewElementSlideshowController *)self->_slideshowController setLayoutContext:self->_cellLayoutContext];
       slideshowController = self->_slideshowController;
-      v9 = [(SUUIStorePageSection *)self context];
-      v10 = [v9 parentViewController];
-      [(SUUIViewElementSlideshowController *)slideshowController presentFromParentViewController:v10];
+      context = [(SUUIStorePageSection *)self context];
+      parentViewController = [context parentViewController];
+      [(SUUIViewElementSlideshowController *)slideshowController presentFromParentViewController:parentViewController];
     }
   }
 }
 
 - (void)_reloadViewElementProperties
 {
-  v3 = [(SUUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
   shelfViewElement = self->_shelfViewElement;
-  self->_shelfViewElement = v4;
+  self->_shelfViewElement = viewElement;
 
-  v6 = [(SUUIViewElement *)self->_shelfViewElement flattenedChildren];
+  flattenedChildren = [(SUUIViewElement *)self->_shelfViewElement flattenedChildren];
   viewElements = self->_viewElements;
-  self->_viewElements = v6;
+  self->_viewElements = flattenedChildren;
 
   [(SUUIShelfPageSectionConfiguration *)self->_configuration setRendersWithPerspective:[(SUUIViewElement *)self->_shelfViewElement rendersWithPerspective]];
   [(SUUIShelfPageSectionConfiguration *)self->_configuration setRendersWithParallax:[(SUUIViewElement *)self->_shelfViewElement rendersWithParallax]];
@@ -846,8 +846,8 @@ void __64__SUUIShelfPageSection_collectionView_didSelectItemAtIndexPath___block_
   [(SUUIShelfPageSectionConfiguration *)configuration setShelfCollectionViewBackgroundColor:v10];
 
   v11 = self->_configuration;
-  v12 = [(SUUIShelfViewElement *)self->_shelfViewElement style];
-  [(SUUIShelfPageSectionConfiguration *)v11 setShelfViewElementStyle:v12];
+  style = [(SUUIShelfViewElement *)self->_shelfViewElement style];
+  [(SUUIShelfPageSectionConfiguration *)v11 setShelfViewElementStyle:style];
 
   v13 = self->_configuration;
   v14 = self->_shelfViewElement;

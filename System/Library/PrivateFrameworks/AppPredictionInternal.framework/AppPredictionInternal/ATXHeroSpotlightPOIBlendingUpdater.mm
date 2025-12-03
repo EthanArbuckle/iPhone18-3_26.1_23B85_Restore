@@ -1,19 +1,19 @@
 @interface ATXHeroSpotlightPOIBlendingUpdater
 + (id)clientModelForHeroSpotlightPOIPredictions;
 + (id)clientModelSpecForHeroSpotlightPOIPredictions;
-+ (void)updateBlendingLayerWithHeroAppPredictions:(id)a3;
++ (void)updateBlendingLayerWithHeroAppPredictions:(id)predictions;
 @end
 
 @implementation ATXHeroSpotlightPOIBlendingUpdater
 
-+ (void)updateBlendingLayerWithHeroAppPredictions:(id)a3
++ (void)updateBlendingLayerWithHeroAppPredictions:(id)predictions
 {
-  v4 = a3;
-  v7 = [a1 clientModelSpecForHeroSpotlightPOIPredictions];
-  v5 = [ATXProactiveSuggestionBuilder proactiveSuggestionsForSpotlightPOIWithHeroAppPredictions:v4 clientModelSpec:v7];
+  predictionsCopy = predictions;
+  clientModelSpecForHeroSpotlightPOIPredictions = [self clientModelSpecForHeroSpotlightPOIPredictions];
+  v5 = [ATXProactiveSuggestionBuilder proactiveSuggestionsForSpotlightPOIWithHeroAppPredictions:predictionsCopy clientModelSpec:clientModelSpecForHeroSpotlightPOIPredictions];
 
-  v6 = [a1 clientModelForHeroSpotlightPOIPredictions];
-  [v6 updateSuggestions:v5];
+  clientModelForHeroSpotlightPOIPredictions = [self clientModelForHeroSpotlightPOIPredictions];
+  [clientModelForHeroSpotlightPOIPredictions updateSuggestions:v5];
 }
 
 + (id)clientModelSpecForHeroSpotlightPOIPredictions
@@ -29,8 +29,8 @@
   v2 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:45];
   v3 = objc_alloc(MEMORY[0x277D42070]);
   v4 = +[ATXClientModelSuggestionReceiver sharedInstance];
-  v5 = [v4 blendingLayerServer];
-  v6 = [v3 initWithClientModelId:v2 blendingLayerServer:v5];
+  blendingLayerServer = [v4 blendingLayerServer];
+  v6 = [v3 initWithClientModelId:v2 blendingLayerServer:blendingLayerServer];
 
   return v6;
 }

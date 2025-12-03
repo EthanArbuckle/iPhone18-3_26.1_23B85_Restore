@@ -20,18 +20,18 @@
 
 + (id)hre_stringKeyWithKey:()HREAdditions argumentKeys:
 {
-  v2 = [a1 stringKeyWithKey:? argumentKeys:?];
-  v3 = [a1 hre_localizationBlock];
-  [v2 setStringLocalizationBlock:v3];
+  v2 = [self stringKeyWithKey:? argumentKeys:?];
+  hre_localizationBlock = [self hre_localizationBlock];
+  [v2 setStringLocalizationBlock:hre_localizationBlock];
 
   return v2;
 }
 
 + (id)hre_stringKeyWithKey:()HREAdditions arguments:
 {
-  v2 = [a1 stringKeyWithKey:? arguments:?];
-  v3 = [a1 hre_localizationBlock];
-  [v2 setStringLocalizationBlock:v3];
+  v2 = [self stringKeyWithKey:? arguments:?];
+  hre_localizationBlock = [self hre_localizationBlock];
+  [v2 setStringLocalizationBlock:hre_localizationBlock];
 
   return v2;
 }

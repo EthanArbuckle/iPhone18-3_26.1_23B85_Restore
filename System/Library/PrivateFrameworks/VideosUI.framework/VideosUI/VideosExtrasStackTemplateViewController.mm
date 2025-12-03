@@ -1,27 +1,27 @@
 @interface VideosExtrasStackTemplateViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (VideosExtrasStackTemplateViewController)initWithDocument:(id)a3 options:(id)a4 context:(id)a5;
-- (id)_viewControllerForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (VideosExtrasStackTemplateViewController)initWithDocument:(id)document options:(id)options context:(id)context;
+- (id)_viewControllerForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)sectionStyle;
 - (id)templateElement;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (void)_dynamicTypeDidChange;
 - (void)_prepareLayout;
 - (void)dealloc;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VideosExtrasStackTemplateViewController
 
-- (VideosExtrasStackTemplateViewController)initWithDocument:(id)a3 options:(id)a4 context:(id)a5
+- (VideosExtrasStackTemplateViewController)initWithDocument:(id)document options:(id)options context:(id)context
 {
   v12.receiver = self;
   v12.super_class = VideosExtrasStackTemplateViewController;
-  v5 = [(VideosExtrasTemplateViewController *)&v12 initWithDocument:a3 options:a4 context:a5];
+  v5 = [(VideosExtrasTemplateViewController *)&v12 initWithDocument:document options:options context:context];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -32,8 +32,8 @@
     sizes = v5->_sizes;
     v5->_sizes = v8;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v5 selector:sel__dynamicTypeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__dynamicTypeDidChange name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v5;
@@ -41,8 +41,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VideosExtrasStackTemplateViewController;
@@ -52,12 +52,12 @@
 - (void)_dynamicTypeDidChange
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(UICollectionView *)self->_collectionView visibleCells];
+  visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -69,21 +69,21 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleCells);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * v7) viewController];
-        v9 = [v8 collectionView];
-        v10 = [v9 collectionViewLayout];
+        viewController = [*(*(&v11 + 1) + 8 * v7) viewController];
+        collectionView = [viewController collectionView];
+        collectionViewLayout = [collectionView collectionViewLayout];
 
-        [v10 invalidateLayout];
-        [v10 prepareLayout];
+        [collectionViewLayout invalidateLayout];
+        [collectionViewLayout prepareLayout];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [visibleCells countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -98,15 +98,15 @@
   v35.receiver = self;
   v35.super_class = VideosExtrasStackTemplateViewController;
   [(VideosExtrasTemplateViewController *)&v35 viewDidLoad];
-  v3 = [(VideosExtrasStackTemplateViewController *)self templateElement];
-  v4 = [v3 background];
-  v36[0] = v4;
+  templateElement = [(VideosExtrasStackTemplateViewController *)self templateElement];
+  background = [templateElement background];
+  v36[0] = background;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
   [(VideosExtrasTemplateViewController *)self configureBackgroundWithElements:v5];
 
-  v6 = [(VideosExtrasStackTemplateViewController *)self templateElement];
-  v7 = [v6 documentBanner];
-  [(VideosExtrasElementViewController *)self _configureBannerWithElement:v7];
+  templateElement2 = [(VideosExtrasStackTemplateViewController *)self templateElement];
+  documentBanner = [templateElement2 documentBanner];
+  [(VideosExtrasElementViewController *)self _configureBannerWithElement:documentBanner];
 
   v8 = objc_alloc_init(MEMORY[0x1E69DC840]);
   collectionViewLayout = self->_collectionViewLayout;
@@ -123,11 +123,11 @@
   [(UICollectionView *)self->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"VideosExtrasStackCollectionCellIdentifier"];
   [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"VideosExtrasStackCollectionHeaderIdentifier"];
-  v13 = [(VideosExtrasStackTemplateViewController *)self view];
-  [v13 addSubview:self->_collectionView];
+  view = [(VideosExtrasStackTemplateViewController *)self view];
+  [view addSubview:self->_collectionView];
 
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v14];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_collectionView setDataSource:self];
   [(UICollectionView *)self->_collectionView setDelegate:self];
@@ -139,31 +139,31 @@
   v34[4] = self;
   _MPUEnumerateItemsOfCollectionView(v15, 0, v34);
   v16 = [VideosExtrasBannerController alloc];
-  v17 = [(VideosExtrasStackTemplateViewController *)self templateElement];
-  v18 = [v17 documentBanner];
-  v19 = [(VideosExtrasBannerController *)v16 initWithBannerElement:v18];
+  templateElement3 = [(VideosExtrasStackTemplateViewController *)self templateElement];
+  documentBanner2 = [templateElement3 documentBanner];
+  v19 = [(VideosExtrasBannerController *)v16 initWithBannerElement:documentBanner2];
   bannerViewController = self->_bannerViewController;
   self->_bannerViewController = v19;
 
   [(VideosExtrasBannerController *)self->_bannerViewController setVignetteType:4];
   v21 = self->_bannerViewController;
-  v22 = [(VideosExtrasStackTemplateViewController *)self view];
-  [(VideosExtrasBannerController *)v21 installBannerOnView:v22 anchoredToScrollView:self->_collectionView];
+  view2 = [(VideosExtrasStackTemplateViewController *)self view];
+  [(VideosExtrasBannerController *)v21 installBannerOnView:view2 anchoredToScrollView:self->_collectionView];
 
   v23 = MEMORY[0x1E696ACD8];
   v24 = self->_collectionView;
-  v25 = [(VideosExtrasStackTemplateViewController *)self view];
-  v26 = [v23 constraintsByAttachingView:v24 toView:v25 alongEdges:14 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  view3 = [(VideosExtrasStackTemplateViewController *)self view];
+  v26 = [v23 constraintsByAttachingView:v24 toView:view3 alongEdges:14 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
   v27 = MEMORY[0x1E696ACD8];
   v28 = self->_collectionView;
-  v29 = [(VideosExtrasStackTemplateViewController *)self view];
-  v30 = [v29 safeAreaLayoutGuide];
-  v31 = [v27 constraintWithItem:v28 attribute:3 relatedBy:0 toItem:v30 attribute:3 multiplier:1.0 constant:0.0];
+  view4 = [(VideosExtrasStackTemplateViewController *)self view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  v31 = [v27 constraintWithItem:v28 attribute:3 relatedBy:0 toItem:safeAreaLayoutGuide attribute:3 multiplier:1.0 constant:0.0];
 
   v32 = [v26 arrayByAddingObject:v31];
-  v33 = [(VideosExtrasStackTemplateViewController *)self view];
-  [v33 addConstraints:v32];
+  view5 = [(VideosExtrasStackTemplateViewController *)self view];
+  [view5 addConstraints:v32];
 }
 
 void __54__VideosExtrasStackTemplateViewController_viewDidLoad__block_invoke(uint64_t a1, uint64_t a2)
@@ -174,19 +174,19 @@ void __54__VideosExtrasStackTemplateViewController_viewDidLoad__block_invoke(uin
   [v3 prepareLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = VideosExtrasStackTemplateViewController;
-  [(VideosExtrasElementViewController *)&v14 viewWillAppear:a3];
+  [(VideosExtrasElementViewController *)&v14 viewWillAppear:appear];
   [(UICollectionView *)self->_collectionView reloadData];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSMutableDictionary *)self->_viewControllers allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_viewControllers allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -198,20 +198,20 @@ void __54__VideosExtrasStackTemplateViewController_viewDidLoad__block_invoke(uin
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) contentScrollView];
+        contentScrollView = [*(*(&v10 + 1) + 8 * v8) contentScrollView];
         if (objc_opt_respondsToSelector())
         {
-          [v9 reloadData];
+          [contentScrollView reloadData];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);
@@ -220,20 +220,20 @@ void __54__VideosExtrasStackTemplateViewController_viewDidLoad__block_invoke(uin
 
 - (id)templateElement
 {
-  v2 = [(VideosExtrasTemplateViewController *)self document];
-  v3 = [v2 templateElement];
+  document = [(VideosExtrasTemplateViewController *)self document];
+  templateElement = [document templateElement];
 
-  return v3;
+  return templateElement;
 }
 
 - (id)sectionStyle
 {
-  v2 = [(VideosExtrasElementViewController *)self extrasSize];
-  if (v2 > 2)
+  extrasSize = [(VideosExtrasElementViewController *)self extrasSize];
+  if (extrasSize > 2)
   {
-    if (v2 != 3)
+    if (extrasSize != 3)
     {
-      if (v2 == 4)
+      if (extrasSize == 4)
       {
         v3 = +[VideosExtrasGridElementViewController wideStackGridStyle];
         goto LABEL_11;
@@ -247,9 +247,9 @@ void __54__VideosExtrasStackTemplateViewController_viewDidLoad__block_invoke(uin
 
   else
   {
-    if (v2 != 1)
+    if (extrasSize != 1)
     {
-      if (v2 == 2)
+      if (extrasSize == 2)
       {
         v3 = +[VideosExtrasGridElementViewController largeStackGridStyle];
         goto LABEL_11;
@@ -265,9 +265,9 @@ LABEL_8:
 
 LABEL_11:
   v4 = v3;
-  v5 = [v3 sectionHeaderStyle];
+  sectionHeaderStyle = [v3 sectionHeaderStyle];
 
-  return v5;
+  return sectionHeaderStyle;
 }
 
 - (void)_prepareLayout
@@ -276,33 +276,33 @@ LABEL_11:
   v24.super_class = VideosExtrasStackTemplateViewController;
   [(VideosExtrasElementViewController *)&v24 _prepareLayout];
   [(UICollectionView *)self->_collectionView contentInset];
-  v3 = [(VideosExtrasElementViewController *)self isWide];
-  v4 = [(VideosExtrasStackTemplateViewController *)self navigationController];
-  v5 = [v4 view];
-  [v5 safeAreaInsets];
+  isWide = [(VideosExtrasElementViewController *)self isWide];
+  navigationController = [(VideosExtrasStackTemplateViewController *)self navigationController];
+  view = [navigationController view];
+  [view safeAreaInsets];
   v7 = v6;
 
-  v8 = [(VideosExtrasStackTemplateViewController *)self navigationController];
-  v9 = [v8 view];
-  [v9 safeAreaInsets];
+  navigationController2 = [(VideosExtrasStackTemplateViewController *)self navigationController];
+  view2 = [navigationController2 view];
+  [view2 safeAreaInsets];
   v11 = v10;
 
-  v12 = [(VideosExtrasStackTemplateViewController *)self parentViewController];
-  LOBYTE(v9) = objc_opt_respondsToSelector();
+  parentViewController = [(VideosExtrasStackTemplateViewController *)self parentViewController];
+  LOBYTE(view2) = objc_opt_respondsToSelector();
 
-  if (v9)
+  if (view2)
   {
-    v13 = [(VideosExtrasStackTemplateViewController *)self navigationController];
-    v14 = [v13 mainTemplateViewController];
-    v15 = [v14 view];
-    [v15 bounds];
+    navigationController3 = [(VideosExtrasStackTemplateViewController *)self navigationController];
+    mainTemplateViewController = [navigationController3 mainTemplateViewController];
+    view3 = [mainTemplateViewController view];
+    [view3 bounds];
     v17 = v16;
 
     v18 = 60.0;
     if (v17 > 60.0)
     {
-      v19 = [v14 menuBarView];
-      [v19 bounds];
+      menuBarView = [mainTemplateViewController menuBarView];
+      [menuBarView bounds];
       v21 = v20;
 
       v18 = fmax(v21, 60.0);
@@ -315,66 +315,66 @@ LABEL_11:
   }
 
   v22 = 112.0;
-  if (v3)
+  if (isWide)
   {
     v22 = 260.0;
   }
 
   [(UICollectionView *)self->_collectionView setContentInset:v22, v7, v18, v11];
-  v23 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  [v23 invalidateLayout];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"VideosExtrasStackCollectionCellIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"VideosExtrasStackCollectionCellIdentifier" forIndexPath:pathCopy];
   [v7 setParentViewController:self];
-  v8 = [(VideosExtrasStackTemplateViewController *)self _viewControllerForIndexPath:v6];
+  v8 = [(VideosExtrasStackTemplateViewController *)self _viewControllerForIndexPath:pathCopy];
 
   [v7 setViewController:v8];
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = [a3 dequeueReusableSupplementaryViewOfKind:a4 withReuseIdentifier:@"VideosExtrasStackCollectionHeaderIdentifier" forIndexPath:v8];
-  v10 = [v8 section];
+  pathCopy = path;
+  v9 = [view dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"VideosExtrasStackCollectionHeaderIdentifier" forIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v11 = [(VideosExtrasStackTemplateViewController *)self templateElement];
-  v12 = [v11 collectionList];
-  v13 = [v12 collections];
-  v14 = [v13 objectAtIndex:v10];
+  templateElement = [(VideosExtrasStackTemplateViewController *)self templateElement];
+  collectionList = [templateElement collectionList];
+  collections = [collectionList collections];
+  v14 = [collections objectAtIndex:section];
 
-  v15 = [v14 header];
-  v16 = [(VideosExtrasStackTemplateViewController *)self sectionStyle];
-  [v9 configureForHeaderElement:v15 headerStyle:v16];
+  header = [v14 header];
+  sectionStyle = [(VideosExtrasStackTemplateViewController *)self sectionStyle];
+  [v9 configureForHeaderElement:header headerStyle:sectionStyle];
 
   return v9;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  layoutCopy = layout;
   if (collectionView_layout_referenceSizeForHeaderInSection__onceToken_0 != -1)
   {
     [VideosExtrasStackTemplateViewController collectionView:layout:referenceSizeForHeaderInSection:];
   }
 
-  v10 = [(VideosExtrasStackTemplateViewController *)self templateElement];
-  v11 = [v10 collectionList];
-  v12 = [v11 collections];
-  v13 = [v12 objectAtIndex:a5];
+  templateElement = [(VideosExtrasStackTemplateViewController *)self templateElement];
+  collectionList = [templateElement collectionList];
+  collections = [collectionList collections];
+  v13 = [collections objectAtIndex:section];
 
-  v14 = [v13 header];
-  if (v14)
+  header = [v13 header];
+  if (header)
   {
     v15 = collectionView_layout_referenceSizeForHeaderInSection____sizingView_0;
-    v16 = [(VideosExtrasStackTemplateViewController *)self sectionStyle];
-    [v15 configureForHeaderElement:v14 headerStyle:v16];
+    sectionStyle = [(VideosExtrasStackTemplateViewController *)self sectionStyle];
+    [v15 configureForHeaderElement:header headerStyle:sectionStyle];
 
     [collectionView_layout_referenceSizeForHeaderInSection____sizingView_0 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
     v18 = v17;
@@ -401,23 +401,23 @@ void __97__VideosExtrasStackTemplateViewController_collectionView_layout_referen
   collectionView_layout_referenceSizeForHeaderInSection____sizingView_0 = v0;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(VideosExtrasStackTemplateViewController *)self templateElement];
-  v4 = [v3 collectionList];
-  v5 = [v4 collections];
-  v6 = [v5 count];
+  templateElement = [(VideosExtrasStackTemplateViewController *)self templateElement];
+  collectionList = [templateElement collectionList];
+  collections = [collectionList collections];
+  v6 = [collections count];
 
   return v6;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = [(NSMutableDictionary *)self->_sizes objectForKey:a5, a4];
-  v7 = v6;
-  if (v6)
+  layout = [(NSMutableDictionary *)self->_sizes objectForKey:path, layout];
+  v7 = layout;
+  if (layout)
   {
-    [v6 CGSizeValue];
+    [layout CGSizeValue];
     v9 = v8;
   }
 
@@ -436,16 +436,16 @@ void __97__VideosExtrasStackTemplateViewController_collectionView_layout_referen
   return result;
 }
 
-- (id)_viewControllerForIndexPath:(id)a3
+- (id)_viewControllerForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_viewControllers objectForKey:v4];
+  pathCopy = path;
+  v5 = [(NSMutableDictionary *)self->_viewControllers objectForKey:pathCopy];
   if (!v5)
   {
-    v6 = [(VideosExtrasStackTemplateViewController *)self templateElement];
-    v7 = [v6 collectionList];
-    v8 = [v7 collections];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v4, "section")}];
+    templateElement = [(VideosExtrasStackTemplateViewController *)self templateElement];
+    collectionList = [templateElement collectionList];
+    collections = [collectionList collections];
+    v9 = [collections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
     v5 = objc_alloc_init(VideosExtrasGridElementViewController);
     v10 = +[VideosExtrasGridElementViewController smallStackGridStyle];
@@ -463,26 +463,26 @@ void __97__VideosExtrasStackTemplateViewController_collectionView_layout_referen
     v14 = +[VideosExtrasGridElementViewController wideStackGridStyle];
     [(VideosExtrasGridElementViewController *)v5 setWideStyle:v14];
 
-    v15 = [(VideosExtrasGridElementViewController *)v5 view];
-    v16 = [(VideosExtrasStackTemplateViewController *)self view];
-    [v16 frame];
-    [v15 setBounds:{0.0, 0.0}];
+    view = [(VideosExtrasGridElementViewController *)v5 view];
+    view2 = [(VideosExtrasStackTemplateViewController *)self view];
+    [view2 frame];
+    [view setBounds:{0.0, 0.0}];
 
     [(VideosExtrasGridElementViewController *)v5 setViewElement:v9];
     [(VideosExtrasGridElementViewController *)v5 setShelfStyle:1];
-    v17 = [(VideosExtrasGridElementViewController *)v5 collectionView];
-    v18 = [v17 collectionViewLayout];
-    [v18 prepareLayout];
+    collectionView = [(VideosExtrasGridElementViewController *)v5 collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    [collectionViewLayout prepareLayout];
 
     [(VideosExtrasGridElementViewController *)v5 preferredContentSize];
     if (*MEMORY[0x1E695F060] != v20 || *(MEMORY[0x1E695F060] + 8) != v19)
     {
       sizes = self->_sizes;
       v22 = [MEMORY[0x1E696B098] valueWithCGSize:?];
-      [(NSMutableDictionary *)sizes setObject:v22 forKey:v4];
+      [(NSMutableDictionary *)sizes setObject:v22 forKey:pathCopy];
     }
 
-    [(NSMutableDictionary *)self->_viewControllers setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_viewControllers setObject:v5 forKey:pathCopy];
   }
 
   return v5;

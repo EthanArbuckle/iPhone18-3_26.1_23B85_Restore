@@ -2,11 +2,11 @@
 + (id)transforms;
 - (id).cxx_construct;
 - (id)accessor;
-- (tvec3<float>)projectPoint:(void *)a3;
+- (tvec3<float>)projectPoint:(void *)point;
 - (tvec3<float>)samples;
 - (void)p_projector;
 - (void)p_stageToWorld;
-- (void)resetWithScene:(id)a3 camera:(id)a4;
+- (void)resetWithScene:(id)scene camera:(id)camera;
 - (void)unitToWorld;
 - (void)worldToStage;
 @end
@@ -15,17 +15,17 @@
 
 + (id)transforms
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)resetWithScene:(id)a3 camera:(id)a4
+- (void)resetWithScene:(id)scene camera:(id)camera
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend_setScene_(self, v8, v9, v10, v11, v6);
-  objc_msgSend_setCamera_(self, v12, v13, v14, v15, v7);
+  sceneCopy = scene;
+  cameraCopy = camera;
+  objc_msgSend_setScene_(self, v8, v9, v10, v11, sceneCopy);
+  objc_msgSend_setCamera_(self, v12, v13, v14, v15, cameraCopy);
   p_validBits = &self->_validBits;
   v17 = 0;
   sub_27635C4F0(&p_validBits, 5uLL);
@@ -235,15 +235,15 @@
   return &self->_projector;
 }
 
-- (tvec3<float>)projectPoint:(void *)a3
+- (tvec3<float>)projectPoint:(void *)point
 {
   v9 = v3;
   v10 = objc_msgSend_p_projector(self, a2, v4, v5, v6);
-  v11 = *(a3 + 1);
-  LODWORD(v12) = *(a3 + 2);
-  *v13.i32 = v10[7].f32[1] + (((v11 * v10[3].f32[1]) + (v10[1].f32[1] * *a3)) + (v10[5].f32[1] * *&v12));
-  v14 = (v10[7].f32[0] + (((v11 * v10[3].f32[0]) + (v10[1].f32[0] * *a3)) + (v10[5].f32[0] * *&v12))) / *v13.i32;
-  v15 = vadd_f32(vdiv_f32(vadd_f32(v10[6], vmla_n_f32(vmla_n_f32(vmul_n_f32(v10[2], v11), *v10, *a3), v10[4], *&v12)), vdup_lane_s32(v13, 0)), 0x3F0000003F000000);
+  v11 = *(point + 1);
+  LODWORD(v12) = *(point + 2);
+  *v13.i32 = v10[7].f32[1] + (((v11 * v10[3].f32[1]) + (v10[1].f32[1] * *point)) + (v10[5].f32[1] * *&v12));
+  v14 = (v10[7].f32[0] + (((v11 * v10[3].f32[0]) + (v10[1].f32[0] * *point)) + (v10[5].f32[0] * *&v12))) / *v13.i32;
+  v15 = vadd_f32(vdiv_f32(vadd_f32(v10[6], vmla_n_f32(vmla_n_f32(vmul_n_f32(v10[2], v11), *v10, *point), v10[4], *&v12)), vdup_lane_s32(v13, 0)), 0x3F0000003F000000);
   v16 = vrndm_f32(v15);
   v18 = objc_msgSend_samples(self, v17, *&v15, 0.0000305175853, v12);
   *v9 = vmul_f32(v20, v16);

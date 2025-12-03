@@ -1,20 +1,20 @@
 @interface SiriResourceAvailabilityInfo
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriResourceAvailabilityInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SiriResourceAvailabilityInfo.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SiriResourceAvailabilityInfo.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SiriResourceAvailabilityInfo.description.getter();
 
   v3 = sub_18E44EA8C();

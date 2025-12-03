@@ -1,5 +1,5 @@
 @interface NLDataProvider
-- (NLDataProvider)initWithConfiguration:(id)a3 dataURL:(id)a4;
+- (NLDataProvider)initWithConfiguration:(id)configuration dataURL:(id)l;
 - (NSString)recognizedLanguage;
 - (id)documentFrequencyMap;
 - (id)inverseLabelMap;
@@ -8,37 +8,37 @@
 - (unint64_t)numberOfLabels;
 - (unint64_t)numberOfTokens;
 - (unint64_t)numberOfVocabularyEntries;
-- (void)_generateMapsWithModelTrainer:(id)a3;
+- (void)_generateMapsWithModelTrainer:(id)trainer;
 - (void)_performLanguageRecognition;
 - (void)dealloc;
-- (void)generateMapsWithModelTrainer:(id)a3;
+- (void)generateMapsWithModelTrainer:(id)trainer;
 @end
 
 @implementation NLDataProvider
 
-- (NLDataProvider)initWithConfiguration:(id)a3 dataURL:(id)a4
+- (NLDataProvider)initWithConfiguration:(id)configuration dataURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = NLDataProvider;
   v8 = [(NLDataProvider *)&v20 init];
   if (v8)
   {
-    v9 = [v6 type];
+    type = [configurationCopy type];
     v10 = off_1E76288F0;
-    if (v9 != 1)
+    if (type != 1)
     {
       v10 = off_1E7628810;
     }
 
     v11 = *v10;
     v12 = objc_opt_class();
-    v13 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:v7 encoding:4 error:0];
+    v13 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:lCopy encoding:4 error:0];
     v21.location = 0;
     v21.length = 0;
     v14 = CFStringTokenizerCreate(0, &stru_1F10C6540, v21, 0, 0);
-    v15 = [v6 copy];
+    v15 = [configurationCopy copy];
     configuration = v8->_configuration;
     v8->_configuration = v15;
 
@@ -65,19 +65,19 @@
   [(NLDataProvider *)&v4 dealloc];
 }
 
-- (void)_generateMapsWithModelTrainer:(id)a3
+- (void)_generateMapsWithModelTrainer:(id)trainer
 {
   v94 = *MEMORY[0x1E69E9840];
-  v63 = a3;
-  v3 = [(NLDataProvider *)self numberOfInstances];
-  v60 = [MEMORY[0x1E695DF90] dictionary];
-  v61 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v71 = [MEMORY[0x1E695DF90] dictionary];
-  v68 = [MEMORY[0x1E695DF90] dictionary];
-  v58 = [MEMORY[0x1E695DF90] dictionary];
-  v59 = v3;
-  if (v3)
+  trainerCopy = trainer;
+  numberOfInstances = [(NLDataProvider *)self numberOfInstances];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary6 = [MEMORY[0x1E695DF90] dictionary];
+  v59 = numberOfInstances;
+  if (numberOfInstances)
   {
     v5 = 0;
     v67 = 0;
@@ -86,16 +86,16 @@
     {
       v66 = v5;
       v6 = [(NLDataProvider *)self instanceAtIndex:v5];
-      v7 = [v6 tokens];
+      tokens = [v6 tokens];
       v65 = v6;
-      v8 = [v6 labels];
+      labels = [v6 labels];
       v9 = [MEMORY[0x1E695DFA8] set];
-      v64 = [v7 count];
+      v64 = [tokens count];
       v86 = 0u;
       v87 = 0u;
       v88 = 0u;
       v89 = 0u;
-      obj = v8;
+      obj = labels;
       v10 = [obj countByEnumeratingWithState:&v86 objects:v93 count:16];
       if (v10)
       {
@@ -111,13 +111,13 @@
             }
 
             v14 = *(*(&v86 + 1) + 8 * i);
-            v15 = [(NSDictionary *)v60 objectForKey:v14];
+            v15 = [(NSDictionary *)dictionary objectForKey:v14];
 
             if (!v15)
             {
               v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v70];
-              [(NSDictionary *)v60 setObject:v16 forKey:v14];
-              [(NSDictionary *)v61 setObject:v14 forKey:v16];
+              [(NSDictionary *)dictionary setObject:v16 forKey:v14];
+              [(NSDictionary *)dictionary2 setObject:v14 forKey:v16];
               ++v70;
             }
           }
@@ -132,7 +132,7 @@
       v85 = 0u;
       v82 = 0u;
       v83 = 0u;
-      v17 = v7;
+      v17 = tokens;
       v18 = [v17 countByEnumeratingWithState:&v82 objects:v92 count:16];
       if (v18)
       {
@@ -148,11 +148,11 @@
             }
 
             v22 = *(*(&v82 + 1) + 8 * j);
-            v23 = [v4 objectForKey:v22];
-            v24 = [v23 unsignedIntegerValue];
+            v23 = [dictionary3 objectForKey:v22];
+            unsignedIntegerValue = [v23 unsignedIntegerValue];
 
-            v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v24 + 1];
-            [v4 setObject:v25 forKey:v22];
+            v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+            [dictionary3 setObject:v25 forKey:v22];
 
             [v9 addObject:v22];
           }
@@ -183,11 +183,11 @@
             }
 
             v31 = *(*(&v78 + 1) + 8 * k);
-            v32 = [v71 objectForKey:v31];
-            v33 = [v32 unsignedIntegerValue];
+            v32 = [dictionary4 objectForKey:v31];
+            unsignedIntegerValue2 = [v32 unsignedIntegerValue];
 
-            v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v33 + 1];
-            [v71 setObject:v34 forKey:v31];
+            v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue2 + 1];
+            [dictionary4 setObject:v34 forKey:v31];
           }
 
           v28 = [v26 countByEnumeratingWithState:&v78 objects:v91 count:16];
@@ -198,7 +198,7 @@
 
       v67 += v64;
 
-      reportInstanceCompletionToTrainer(v63, v66, v59, 0);
+      reportInstanceCompletionToTrainer(trainerCopy, v66, v59, 0);
       v5 = v66 + 1;
     }
 
@@ -211,14 +211,14 @@
     v70 = 1;
   }
 
-  v35 = [v4 allKeys];
+  allKeys = [dictionary3 allKeys];
   v76[0] = MEMORY[0x1E69E9820];
   v76[1] = 3221225472;
   v76[2] = __48__NLDataProvider__generateMapsWithModelTrainer___block_invoke;
   v76[3] = &unk_1E7628EA8;
-  v36 = v4;
+  v36 = dictionary3;
   v77 = v36;
-  v37 = [v35 sortedArrayUsingComparator:v76];
+  v37 = [allKeys sortedArrayUsingComparator:v76];
 
   v74 = 0u;
   v75 = 0u;
@@ -227,7 +227,7 @@
   v38 = v37;
   v39 = 16;
   v40 = [v38 countByEnumeratingWithState:&v72 objects:v90 count:16];
-  v41 = v68;
+  v41 = dictionary5;
   if (v40)
   {
     v42 = v40;
@@ -246,12 +246,12 @@
         if (tokenIDFromTokenAndVocabularyMap(v45, v41) == 3)
         {
           v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v39];
-          v47 = [v71 objectForKey:v45];
-          [(NSDictionary *)v68 setObject:v46 forKey:v45];
-          [(NSDictionary *)v58 setObject:v47 forKey:v46];
+          v47 = [dictionary4 objectForKey:v45];
+          [(NSDictionary *)dictionary5 setObject:v46 forKey:v45];
+          [(NSDictionary *)dictionary6 setObject:v47 forKey:v46];
           ++v39;
 
-          v41 = v68;
+          v41 = dictionary5;
         }
       }
 
@@ -262,21 +262,21 @@
   }
 
   labelMap = self->_labelMap;
-  self->_labelMap = v60;
-  v49 = v60;
+  self->_labelMap = dictionary;
+  v49 = dictionary;
 
   inverseLabelMap = self->_inverseLabelMap;
-  self->_inverseLabelMap = v61;
+  self->_inverseLabelMap = dictionary2;
   v51 = v41;
-  v52 = v61;
+  v52 = dictionary2;
 
   vocabularyMap = self->_vocabularyMap;
   self->_vocabularyMap = v51;
   v54 = v51;
 
   documentFrequencyMap = self->_documentFrequencyMap;
-  self->_documentFrequencyMap = v58;
-  v56 = v58;
+  self->_documentFrequencyMap = dictionary6;
+  v56 = dictionary6;
 
   self->_numberOfLabels = v70;
   self->_numberOfVocabularyEntries = v39;
@@ -310,51 +310,51 @@ uint64_t __48__NLDataProvider__generateMapsWithModelTrainer___block_invoke(uint6
 - (void)_performLanguageRecognition
 {
   v35 = *MEMORY[0x1E69E9840];
-  v2 = [(NLDataProvider *)self numberOfInstances];
+  numberOfInstances = [(NLDataProvider *)self numberOfInstances];
   v3 = objc_alloc_init(NLLanguageRecognizer);
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  if (v2)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (numberOfInstances)
   {
     v5 = 0;
-    v6 = 0;
+    dominantLanguage = 0;
     do
     {
-      v7 = v6;
+      v7 = dominantLanguage;
       v8 = [(NLDataProvider *)self instanceAtIndex:v5];
       [(NLLanguageRecognizer *)v3 reset];
-      v9 = [v8 string];
-      [(NLLanguageRecognizer *)v3 processString:v9];
+      string = [v8 string];
+      [(NLLanguageRecognizer *)v3 processString:string];
 
-      v6 = [(NLLanguageRecognizer *)v3 dominantLanguage];
+      dominantLanguage = [(NLLanguageRecognizer *)v3 dominantLanguage];
 
-      if (v6)
+      if (dominantLanguage)
       {
-        v10 = [v4 objectForKey:v6];
-        v11 = [v10 unsignedIntegerValue];
+        v10 = [dictionary objectForKey:dominantLanguage];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11 + 1];
-        [v4 setObject:v12 forKey:v6];
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+        [dictionary setObject:v12 forKey:dominantLanguage];
       }
 
       ++v5;
     }
 
-    while (v2 != v5);
+    while (numberOfInstances != v5);
   }
 
   else
   {
-    v6 = 0;
+    dominantLanguage = 0;
   }
 
-  v27 = v6;
+  v27 = dominantLanguage;
   v28 = v3;
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = [v4 allKeys];
-  v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  allKeys = [dictionary allKeys];
+  v14 = [allKeys countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v14)
   {
     v15 = v14;
@@ -367,23 +367,23 @@ uint64_t __48__NLDataProvider__generateMapsWithModelTrainer___block_invoke(uint6
       {
         if (*v31 != v18)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         v20 = *(*(&v30 + 1) + 8 * i);
-        v21 = [v4 objectForKey:v20];
-        v22 = [v21 unsignedIntegerValue];
+        v21 = [dictionary objectForKey:v20];
+        unsignedIntegerValue2 = [v21 unsignedIntegerValue];
 
-        if (v22 > v16)
+        if (unsignedIntegerValue2 > v16)
         {
           v23 = v20;
 
-          v16 = v22;
+          v16 = unsignedIntegerValue2;
           v17 = v23;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v15 = [allKeys countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v15);
@@ -402,11 +402,11 @@ uint64_t __48__NLDataProvider__generateMapsWithModelTrainer___block_invoke(uint6
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generateMapsWithModelTrainer:(id)a3
+- (void)generateMapsWithModelTrainer:(id)trainer
 {
   if (!self->_generatedMaps)
   {
-    [(NLDataProvider *)self _generateMapsWithModelTrainer:a3];
+    [(NLDataProvider *)self _generateMapsWithModelTrainer:trainer];
   }
 }
 

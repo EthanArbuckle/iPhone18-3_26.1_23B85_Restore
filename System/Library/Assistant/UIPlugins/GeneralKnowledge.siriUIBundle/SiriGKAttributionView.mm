@@ -1,26 +1,26 @@
 @interface SiriGKAttributionView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SiriGKAttributionView)initWithAppPunchOut:(id)a3 usingPersistentStore:(id)a4;
-- (void)_configureWithImage:(id)a3;
+- (SiriGKAttributionView)initWithAppPunchOut:(id)out usingPersistentStore:(id)store;
+- (void)_configureWithImage:(id)image;
 - (void)updateConstraints;
 @end
 
 @implementation SiriGKAttributionView
 
-- (SiriGKAttributionView)initWithAppPunchOut:(id)a3 usingPersistentStore:(id)a4
+- (SiriGKAttributionView)initWithAppPunchOut:(id)out usingPersistentStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  outCopy = out;
+  storeCopy = store;
   v37.receiver = self;
   v37.super_class = SiriGKAttributionView;
   v8 = [(SiriGKAttributionView *)&v37 init];
   v9 = v8;
   if (v8)
   {
-    [(SiriGKView *)v8 setCommand:v6];
+    [(SiriGKView *)v8 setCommand:outCopy];
     [(SiriGKView *)v9 setEdgeInsets:0.0, SiriUIPlatterStyle[32], 0.0, SiriUIPlatterStyle[34]];
-    v10 = [v6 punchOutName];
-    v11 = [v10 length];
+    punchOutName = [outCopy punchOutName];
+    v11 = [punchOutName length];
 
     if (v11)
     {
@@ -34,8 +34,8 @@
       [(SiriSharedUIContentLabel *)v14 setFont:v15];
 
       v16 = v9->_attributionLabel;
-      v17 = [v6 punchOutName];
-      [(SiriSharedUIContentLabel *)v16 setText:v17];
+      punchOutName2 = [outCopy punchOutName];
+      [(SiriSharedUIContentLabel *)v16 setText:punchOutName2];
 
       v18 = v9->_attributionLabel;
       v19 = +[UIColor siriui_maskingColor];
@@ -58,11 +58,11 @@
       LODWORD(v23) = 1148846080;
       [(UIImageView *)v9->_attributionImageView setContentHuggingPriority:1 forAxis:v23];
       [(SiriGKAttributionView *)v9 addSubview:v9->_attributionImageView];
-      v24 = [v6 appIcon];
-      v25 = [v24 resourceUrl];
-      v26 = [v25 absoluteString];
+      appIcon = [outCopy appIcon];
+      resourceUrl = [appIcon resourceUrl];
+      absoluteString = [resourceUrl absoluteString];
 
-      v27 = [v7 imageForKey:v26];
+      v27 = [storeCopy imageForKey:absoluteString];
       if (v27)
       {
         [(SiriGKAttributionView *)v9 _configureWithImage:v27];
@@ -71,16 +71,16 @@
       else
       {
         v28 = +[SiriUIURLSession sharedURLSession];
-        v29 = [v6 appIcon];
-        v30 = [v29 resourceUrl];
+        appIcon2 = [outCopy appIcon];
+        resourceUrl2 = [appIcon2 resourceUrl];
         v33[0] = _NSConcreteStackBlock;
         v33[1] = 3221225472;
         v33[2] = sub_19C8;
         v33[3] = &unk_18540;
-        v34 = v7;
-        v35 = v26;
+        v34 = storeCopy;
+        v35 = absoluteString;
         v36 = v9;
-        v31 = [v28 imageTaskWithHTTPGetRequest:v30 client:v36 completionHandler:v33];
+        v31 = [v28 imageTaskWithHTTPGetRequest:resourceUrl2 client:v36 completionHandler:v33];
       }
 
       [(SiriGKAttributionView *)v9 setNeedsUpdateConstraints];
@@ -90,11 +90,11 @@
   return v9;
 }
 
-- (void)_configureWithImage:(id)a3
+- (void)_configureWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = +[UIColor siriui_maskingColor];
-  v6 = [v4 _flatImageWithColor:v5];
+  v6 = [imageCopy _flatImageWithColor:v5];
 
   [(UIImageView *)self->_attributionImageView setImage:v6];
   [(UIImageView *)self->_attributionImageView sizeToFit];

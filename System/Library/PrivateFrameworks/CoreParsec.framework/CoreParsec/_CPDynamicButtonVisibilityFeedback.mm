@@ -1,11 +1,11 @@
 @interface _CPDynamicButtonVisibilityFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPDynamicButtonVisibilityFeedback)init;
-- (_CPDynamicButtonVisibilityFeedback)initWithFacade:(id)a3;
+- (_CPDynamicButtonVisibilityFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)addVisibleDynamicButton2s:(id)a3;
-- (void)setVisibleDynamicButton2s:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addVisibleDynamicButton2s:(id)button2s;
+- (void)setVisibleDynamicButton2s:(id)button2s;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPDynamicButtonVisibilityFeedback
@@ -17,34 +17,34 @@
   return v4 ^ [(NSArray *)self->_visibleDynamicButton2s hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_13;
   }
 
-  v6 = [(_CPDynamicButtonVisibilityFeedback *)self cardSectionIdentifier];
-  v7 = [v4 cardSectionIdentifier];
-  if ((v6 != 0) == (v7 == 0))
+  cardSectionIdentifier = [(_CPDynamicButtonVisibilityFeedback *)self cardSectionIdentifier];
+  cardSectionIdentifier2 = [equalCopy cardSectionIdentifier];
+  if ((cardSectionIdentifier != 0) == (cardSectionIdentifier2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(_CPDynamicButtonVisibilityFeedback *)self cardSectionIdentifier];
-  if (v8)
+  cardSectionIdentifier3 = [(_CPDynamicButtonVisibilityFeedback *)self cardSectionIdentifier];
+  if (cardSectionIdentifier3)
   {
-    v9 = v8;
-    v10 = [(_CPDynamicButtonVisibilityFeedback *)self cardSectionIdentifier];
-    v11 = [v4 cardSectionIdentifier];
-    v12 = [v10 isEqual:v11];
+    v9 = cardSectionIdentifier3;
+    cardSectionIdentifier4 = [(_CPDynamicButtonVisibilityFeedback *)self cardSectionIdentifier];
+    cardSectionIdentifier5 = [equalCopy cardSectionIdentifier];
+    v12 = [cardSectionIdentifier4 isEqual:cardSectionIdentifier5];
 
     if (!v12)
     {
@@ -56,12 +56,12 @@
   {
   }
 
-  v6 = [(_CPDynamicButtonVisibilityFeedback *)self visibleDynamicButton2s];
-  v7 = [v4 visibleDynamicButton2s];
-  if ((v6 != 0) != (v7 == 0))
+  cardSectionIdentifier = [(_CPDynamicButtonVisibilityFeedback *)self visibleDynamicButton2s];
+  cardSectionIdentifier2 = [equalCopy visibleDynamicButton2s];
+  if ((cardSectionIdentifier != 0) != (cardSectionIdentifier2 == 0))
   {
-    v13 = [(_CPDynamicButtonVisibilityFeedback *)self visibleDynamicButton2s];
-    if (!v13)
+    visibleDynamicButton2s = [(_CPDynamicButtonVisibilityFeedback *)self visibleDynamicButton2s];
+    if (!visibleDynamicButton2s)
     {
 
 LABEL_16:
@@ -69,10 +69,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(_CPDynamicButtonVisibilityFeedback *)self visibleDynamicButton2s];
-    v16 = [v4 visibleDynamicButton2s];
-    v17 = [v15 isEqual:v16];
+    v14 = visibleDynamicButton2s;
+    visibleDynamicButton2s2 = [(_CPDynamicButtonVisibilityFeedback *)self visibleDynamicButton2s];
+    visibleDynamicButton2s3 = [equalCopy visibleDynamicButton2s];
+    v17 = [visibleDynamicButton2s2 isEqual:visibleDynamicButton2s3];
 
     if (v17)
     {
@@ -92,19 +92,19 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_CPDynamicButtonVisibilityFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v6 = [(_CPDynamicButtonVisibilityFeedback *)self cardSectionIdentifier];
+  cardSectionIdentifier = [(_CPDynamicButtonVisibilityFeedback *)self cardSectionIdentifier];
 
-  if (v6)
+  if (cardSectionIdentifier)
   {
     cardSectionIdentifier = self->_cardSectionIdentifier;
     PBDataWriterWriteStringField();
@@ -145,27 +145,27 @@ LABEL_14:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addVisibleDynamicButton2s:(id)a3
+- (void)addVisibleDynamicButton2s:(id)button2s
 {
-  v4 = a3;
+  button2sCopy = button2s;
   visibleDynamicButton2s = self->_visibleDynamicButton2s;
-  v8 = v4;
+  v8 = button2sCopy;
   if (!visibleDynamicButton2s)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_visibleDynamicButton2s;
-    self->_visibleDynamicButton2s = v6;
+    self->_visibleDynamicButton2s = array;
 
-    v4 = v8;
+    button2sCopy = v8;
     visibleDynamicButton2s = self->_visibleDynamicButton2s;
   }
 
-  [(NSArray *)visibleDynamicButton2s addObject:v4];
+  [(NSArray *)visibleDynamicButton2s addObject:button2sCopy];
 }
 
-- (void)setVisibleDynamicButton2s:(id)a3
+- (void)setVisibleDynamicButton2s:(id)button2s
 {
-  v4 = [a3 mutableCopy];
+  v4 = [button2s mutableCopy];
   visibleDynamicButton2s = self->_visibleDynamicButton2s;
   self->_visibleDynamicButton2s = v4;
 
@@ -186,16 +186,16 @@ LABEL_14:
   return v2;
 }
 
-- (_CPDynamicButtonVisibilityFeedback)initWithFacade:(id)a3
+- (_CPDynamicButtonVisibilityFeedback)initWithFacade:(id)facade
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPDynamicButtonVisibilityFeedback *)self init];
   if (v5)
   {
-    -[_CPDynamicButtonVisibilityFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 buttons];
-    v7 = [v6 count];
+    -[_CPDynamicButtonVisibilityFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    buttons = [facadeCopy buttons];
+    v7 = [buttons count];
 
     if (v7)
     {
@@ -204,8 +204,8 @@ LABEL_14:
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v9 = [v4 buttons];
-      v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      buttons2 = [facadeCopy buttons];
+      v10 = [buttons2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v10)
       {
         v11 = v10;
@@ -217,7 +217,7 @@ LABEL_14:
           {
             if (*v22 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(buttons2);
             }
 
             v14 = [[_CPButtonForFeedback alloc] initWithFacade:*(*(&v21 + 1) + 8 * v13)];
@@ -227,7 +227,7 @@ LABEL_14:
           }
 
           while (v11 != v13);
-          v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v11 = [buttons2 countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v11);
@@ -236,13 +236,13 @@ LABEL_14:
       [(_CPDynamicButtonVisibilityFeedback *)v5 setVisibleDynamicButton2s:v8];
     }
 
-    v15 = [v4 cardSection];
+    cardSection = [facadeCopy cardSection];
 
-    if (v15)
+    if (cardSection)
     {
-      v16 = [v4 cardSection];
-      v17 = [v16 cardSectionId];
-      [(_CPDynamicButtonVisibilityFeedback *)v5 setCardSectionIdentifier:v17];
+      cardSection2 = [facadeCopy cardSection];
+      cardSectionId = [cardSection2 cardSectionId];
+      [(_CPDynamicButtonVisibilityFeedback *)v5 setCardSectionIdentifier:cardSectionId];
     }
 
     v18 = v5;

@@ -1,29 +1,29 @@
 @interface PHEntityKeyMap
-+ (id)transposePropertyKeysByEntityKey:(id)a3;
-+ (void)assertPropertyKey:(id)a3 doesNotExistForEntityKey:(id)a4 inEntityKeysByProperty:(id)a5;
-- (PHEntityKeyMap)initWithPropertyKeysByEntityKey:(id)a3;
-- (id)propertyKeyForEntityKey:(id)a3;
++ (id)transposePropertyKeysByEntityKey:(id)key;
++ (void)assertPropertyKey:(id)key doesNotExistForEntityKey:(id)entityKey inEntityKeysByProperty:(id)property;
+- (PHEntityKeyMap)initWithPropertyKeysByEntityKey:(id)key;
+- (id)propertyKeyForEntityKey:(id)key;
 @end
 
 @implementation PHEntityKeyMap
 
-- (id)propertyKeyForEntityKey:(id)a3
+- (id)propertyKeyForEntityKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_propertyKeysByEntityKey objectForKeyedSubscript:a3];
-  v4 = [v3 firstObject];
+  v3 = [(NSDictionary *)self->_propertyKeysByEntityKey objectForKeyedSubscript:key];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (PHEntityKeyMap)initWithPropertyKeysByEntityKey:(id)a3
+- (PHEntityKeyMap)initWithPropertyKeysByEntityKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = PHEntityKeyMap;
   v5 = [(PHEntityKeyMap *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [keyCopy copy];
     propertyKeysByEntityKey = v5->_propertyKeysByEntityKey;
     v5->_propertyKeysByEntityKey = v6;
 
@@ -37,40 +37,40 @@
   return v5;
 }
 
-+ (void)assertPropertyKey:(id)a3 doesNotExistForEntityKey:(id)a4 inEntityKeysByProperty:(id)a5
++ (void)assertPropertyKey:(id)key doesNotExistForEntityKey:(id)entityKey inEntityKeysByProperty:(id)property
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 objectForKeyedSubscript:v11];
+  keyCopy = key;
+  entityKeyCopy = entityKey;
+  propertyCopy = property;
+  v9 = [propertyCopy objectForKeyedSubscript:keyCopy];
   if (v9)
   {
     v12[0] = @"existingEntityKey";
     v12[1] = @"entityKey";
     v13[0] = v9;
-    v13[1] = v7;
+    v13[1] = entityKeyCopy;
     v12[2] = @"propertyKey";
-    v13[2] = v11;
+    v13[2] = keyCopy;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
     v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Duplicate property key" userInfo:objc_claimAutoreleasedReturnValue()];
     objc_exception_throw(v10);
   }
 }
 
-+ (id)transposePropertyKeysByEntityKey:(id)a3
++ (id)transposePropertyKeysByEntityKey:(id)key
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
+  keyCopy = key;
+  dictionary = [v4 dictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__PHEntityKeyMap_transposePropertyKeysByEntityKey___block_invoke;
   v9[3] = &unk_1E75A4780;
-  v11 = a1;
-  v7 = v6;
+  selfCopy = self;
+  v7 = dictionary;
   v10 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [keyCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }

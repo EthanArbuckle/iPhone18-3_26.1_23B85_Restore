@@ -1,77 +1,77 @@
 @interface TPSCollectionStatus
-- (TPSCollectionStatus)initWithCoder:(id)a3;
-- (TPSCollectionStatus)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSCollectionStatus)initWithCoder:(id)coder;
+- (TPSCollectionStatus)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSCollectionStatus
 
-- (TPSCollectionStatus)initWithCoder:(id)a3
+- (TPSCollectionStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = TPSCollectionStatus;
   v5 = [(TPSCollectionStatus *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activatedDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activatedDate"];
     activatedDate = v5->_activatedDate;
     v5->_activatedDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstViewedDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstViewedDate"];
     firstViewedDate = v5->_firstViewedDate;
     v5->_firstViewedDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featuredDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featuredDate"];
     featuredDate = v5->_featuredDate;
     v5->_featuredDate = v12;
 
-    v5->_canNotify = [v4 decodeBoolForKey:@"canNotify"];
+    v5->_canNotify = [coderCopy decodeBoolForKey:@"canNotify"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_activatedDate forKey:@"activatedDate"];
-  [v5 encodeObject:self->_firstViewedDate forKey:@"firstViewedDate"];
-  [v5 encodeObject:self->_featuredDate forKey:@"featuredDate"];
-  [v5 encodeBool:self->_canNotify forKey:@"canNotify"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_activatedDate forKey:@"activatedDate"];
+  [coderCopy encodeObject:self->_firstViewedDate forKey:@"firstViewedDate"];
+  [coderCopy encodeObject:self->_featuredDate forKey:@"featuredDate"];
+  [coderCopy encodeBool:self->_canNotify forKey:@"canNotify"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TPSCollectionStatus allocWithZone:a3];
+  v4 = [TPSCollectionStatus allocWithZone:zone];
   [(TPSCollectionStatus *)v4 setIdentifier:self->_identifier];
   [(TPSCollectionStatus *)v4 setActivatedDate:self->_activatedDate];
   [(TPSCollectionStatus *)v4 setFirstViewedDate:self->_firstViewedDate];
   [(TPSCollectionStatus *)v4 setFeaturedDate:self->_featuredDate];
   [(TPSCollectionStatus *)v4 setCanNotify:self->_canNotify];
-  v5 = self;
+  selfCopy = self;
 
-  return v5;
+  return selfCopy;
 }
 
-- (TPSCollectionStatus)initWithIdentifier:(id)a3
+- (TPSCollectionStatus)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = TPSCollectionStatus;
   v6 = [(TPSCollectionStatus *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v7->_canNotify = 1;
   }
 

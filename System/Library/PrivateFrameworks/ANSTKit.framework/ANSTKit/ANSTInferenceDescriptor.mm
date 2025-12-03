@@ -1,39 +1,39 @@
 @interface ANSTInferenceDescriptor
-- (ANSTInferenceDescriptor)initWithCoder:(id)a3;
-- (ANSTInferenceDescriptor)initWithName:(id)a3 error:(id *)a4;
-- (ANSTInferenceDescriptor)initWithName:(id)a3 version:(unint64_t)a4 assetURL:(id)a5 assetType:(int64_t)a6 e5FunctionName:(id)a7 inputDescriptors:(id)a8 outputDescriptors:(id)a9 error:(id *)a10;
-- (BOOL)_buildCategorizedDescriptorsCacheWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ANSTInferenceDescriptor)initWithCoder:(id)coder;
+- (ANSTInferenceDescriptor)initWithName:(id)name error:(id *)error;
+- (ANSTInferenceDescriptor)initWithName:(id)name version:(unint64_t)version assetURL:(id)l assetType:(int64_t)type e5FunctionName:(id)functionName inputDescriptors:(id)descriptors outputDescriptors:(id)outputDescriptors error:(id *)self0;
+- (BOOL)_buildCategorizedDescriptorsCacheWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSTInferenceDescriptor
 
-- (ANSTInferenceDescriptor)initWithName:(id)a3 error:(id *)a4
+- (ANSTInferenceDescriptor)initWithName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   result = objc_msgSend_doesNotRecognizeSelector_(self, v7, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTInferenceDescriptor)initWithName:(id)a3 version:(unint64_t)a4 assetURL:(id)a5 assetType:(int64_t)a6 e5FunctionName:(id)a7 inputDescriptors:(id)a8 outputDescriptors:(id)a9 error:(id *)a10
+- (ANSTInferenceDescriptor)initWithName:(id)name version:(unint64_t)version assetURL:(id)l assetType:(int64_t)type e5FunctionName:(id)functionName inputDescriptors:(id)descriptors outputDescriptors:(id)outputDescriptors error:(id *)self0
 {
-  v16 = a10;
+  selfCopy = error;
   v49[1] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v23 = v21;
-  if (!v18 || !v20 || !v21)
+  nameCopy = name;
+  lCopy = l;
+  functionNameCopy = functionName;
+  descriptorsCopy = descriptors;
+  outputDescriptorsCopy = outputDescriptors;
+  v23 = outputDescriptorsCopy;
+  if (!lCopy || !descriptorsCopy || !outputDescriptorsCopy)
   {
-    if (!a10)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -42,30 +42,30 @@
     v48 = *MEMORY[0x277CCA068];
     v49[0] = @"ANSTInferenceDescriptor initialization requires nonnil assetURL, inputDescriptors, and outputDescriptors.";
     v43 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v22, v49, &v48, 1);
-    *a10 = objc_msgSend_errorWithDomain_code_userInfo_(v42, v44, @"ANSTErrorDomain", 2, v43);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v42, v44, @"ANSTErrorDomain", 2, v43);
 
 LABEL_9:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
   v47.receiver = self;
   v47.super_class = ANSTInferenceDescriptor;
-  v24 = [(ANSTDescriptor *)&v47 initWithName:v17 error:a10];
+  v24 = [(ANSTDescriptor *)&v47 initWithName:nameCopy error:error];
   self = v24;
   if (v24)
   {
-    v24->_version = a4;
-    v27 = objc_msgSend_copy(v18, v25, v26);
+    v24->_version = version;
+    v27 = objc_msgSend_copy(lCopy, v25, v26);
     assetURL = self->_assetURL;
     self->_assetURL = v27;
 
-    self->_assetType = a6;
-    v31 = objc_msgSend_copy(v19, v29, v30);
+    self->_assetType = type;
+    v31 = objc_msgSend_copy(functionNameCopy, v29, v30);
     e5FunctionName = self->_e5FunctionName;
     self->_e5FunctionName = v31;
 
-    v35 = objc_msgSend_copy(v20, v33, v34);
+    v35 = objc_msgSend_copy(descriptorsCopy, v33, v34);
     inputDescriptors = self->_inputDescriptors;
     self->_inputDescriptors = v35;
 
@@ -73,24 +73,24 @@ LABEL_9:
     outputDescriptors = self->_outputDescriptors;
     self->_outputDescriptors = v39;
 
-    if (!objc_msgSend__buildCategorizedDescriptorsCacheWithError_(self, v41, a10))
+    if (!objc_msgSend__buildCategorizedDescriptorsCacheWithError_(self, v41, error))
     {
       goto LABEL_9;
     }
   }
 
   self = self;
-  v16 = self;
+  selfCopy = self;
 LABEL_10:
 
   v45 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
-- (BOOL)_buildCategorizedDescriptorsCacheWithError:(id *)a3
+- (BOOL)_buildCategorizedDescriptorsCacheWithError:(id *)error
 {
   v127 = *MEMORY[0x277D85DE8];
-  v95 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, a3);
+  v95 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, error);
   v94 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v4, v5);
   v8 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v6, v7);
   v93 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v9, v10);
@@ -98,7 +98,7 @@ LABEL_10:
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v90 = self;
+  selfCopy = self;
   outputPixelBufferDescriptors = self->_inputDescriptors;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(outputPixelBufferDescriptors, v12, &v101, v126, 16);
   v96 = v8;
@@ -123,8 +123,8 @@ LABEL_10:
           v23 = v20;
           if (!v20 || !objc_msgSend_length(v20, v21, v22))
           {
-            v74 = a3;
-            if (a3)
+            errorCopy10 = error;
+            if (error)
             {
               v75 = MEMORY[0x277CCA9B8];
               v124[0] = *MEMORY[0x277CCA068];
@@ -132,7 +132,7 @@ LABEL_10:
               v125[0] = @"Descriptor name should not be empty.";
               v125[1] = v17;
               v76 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v21, v125, v124, 2);
-              objc_msgSend_errorWithDomain_code_userInfo_(v75, v77, @"ANSTErrorDomain", 10, v76, v90);
+              objc_msgSend_errorWithDomain_code_userInfo_(v75, v77, @"ANSTErrorDomain", 10, v76, selfCopy);
               goto LABEL_62;
             }
 
@@ -143,15 +143,15 @@ LABEL_10:
 
           if (v24)
           {
-            v74 = a3;
-            if (a3)
+            errorCopy10 = error;
+            if (error)
             {
               v83 = MEMORY[0x277CCA9B8];
               v122[0] = *MEMORY[0x277CCA068];
               v122[1] = @"ANSTDescriptor";
               v123[0] = @"Descriptors should not have duplicated names.";
               v123[1] = v17;
-              objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v25, v123, v122, 2, v90);
+              objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v25, v123, v122, 2, selfCopy);
               goto LABEL_61;
             }
 
@@ -171,8 +171,8 @@ LABEL_58:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v81 = a3;
-            if (!a3)
+            errorCopy8 = error;
+            if (!error)
             {
 LABEL_55:
               v73 = 0;
@@ -187,10 +187,10 @@ LABEL_55:
             v116[1] = @"ANSTDescriptor";
             v117[0] = @"Invalid descriptor, expects either tensor or pixel buffer descriptor.";
             v117[1] = v17;
-            objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v26, v117, v116, 2, v90);
+            objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v26, v117, v116, 2, selfCopy);
             v23 = LABEL_52:;
             v8 = v96;
-            *v81 = objc_msgSend_errorWithDomain_code_userInfo_(v82, v86, @"ANSTErrorDomain", 10, v23);
+            *errorCopy8 = objc_msgSend_errorWithDomain_code_userInfo_(v82, v86, @"ANSTErrorDomain", 10, v23);
 LABEL_53:
             v60 = v94;
             v55 = v95;
@@ -205,9 +205,9 @@ LABEL_54:
           {
             v60 = v94;
             v55 = v95;
-            v74 = a3;
+            errorCopy10 = error;
             v69 = v93;
-            if (a3)
+            if (error)
             {
               v78 = MEMORY[0x277CCA9B8];
               v120[0] = *MEMORY[0x277CCA068];
@@ -229,15 +229,15 @@ LABEL_65:
 
           if (v31)
           {
-            v74 = a3;
-            if (a3)
+            errorCopy10 = error;
+            if (error)
             {
               v83 = MEMORY[0x277CCA9B8];
               v118[0] = *MEMORY[0x277CCA068];
               v118[1] = @"ANSTDescriptor";
               v119[0] = @"Descriptors should not have duplicated names.";
               v119[1] = v17;
-              objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v32, v119, v118, 2, v90);
+              objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v32, v119, v118, 2, selfCopy);
               goto LABEL_61;
             }
 
@@ -258,7 +258,7 @@ LABEL_65:
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  outputPixelBufferDescriptors = v90->_outputDescriptors;
+  outputPixelBufferDescriptors = selfCopy->_outputDescriptors;
   v35 = objc_msgSend_countByEnumeratingWithState_objects_count_(outputPixelBufferDescriptors, v34, &v97, v115, 16);
   if (v35)
   {
@@ -281,8 +281,8 @@ LABEL_20:
         v23 = v42;
         if (!v42 || !objc_msgSend_length(v42, v43, v44))
         {
-          v74 = a3;
-          if (!a3)
+          errorCopy10 = error;
+          if (!error)
           {
             goto LABEL_53;
           }
@@ -292,7 +292,7 @@ LABEL_20:
           v113[1] = @"ANSTDescriptor";
           v114[0] = @"Descriptor name should not be empty.";
           v114[1] = v39;
-          objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v43, v114, v113, 2, v90);
+          objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v43, v114, v113, 2, selfCopy);
           goto LABEL_61;
         }
 
@@ -300,8 +300,8 @@ LABEL_20:
 
         if (v45)
         {
-          v74 = a3;
-          if (!a3)
+          errorCopy10 = error;
+          if (!error)
           {
             goto LABEL_58;
           }
@@ -311,7 +311,7 @@ LABEL_20:
           v111[1] = @"ANSTDescriptor";
           v112[0] = @"Descriptors should not have duplicated names.";
           v112[1] = v39;
-          objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v46, v112, v111, 2, v90);
+          objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v46, v112, v111, 2, selfCopy);
           goto LABEL_61;
         }
 
@@ -324,8 +324,8 @@ LABEL_20:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v81 = a3;
-          if (!a3)
+          errorCopy8 = error;
+          if (!error)
           {
             goto LABEL_55;
           }
@@ -335,7 +335,7 @@ LABEL_20:
           v105[1] = @"ANSTDescriptor";
           v106[0] = @"Invalid descriptor, expects either tensor or pixel buffer descriptor.";
           v106[1] = v39;
-          objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v47, v106, v105, 2, v90);
+          objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v47, v106, v105, 2, selfCopy);
           goto LABEL_52;
         }
 
@@ -345,8 +345,8 @@ LABEL_20:
         {
           v60 = v94;
           v55 = v95;
-          v74 = a3;
-          if (!a3)
+          errorCopy10 = error;
+          if (!error)
           {
             goto LABEL_54;
           }
@@ -365,8 +365,8 @@ LABEL_20:
 
         if (v52)
         {
-          v74 = a3;
-          if (!a3)
+          errorCopy10 = error;
+          if (!error)
           {
             goto LABEL_53;
           }
@@ -376,7 +376,7 @@ LABEL_20:
           v107[1] = @"ANSTDescriptor";
           v108[0] = @"Descriptors should not have duplicated names.";
           v108[1] = v39;
-          objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v53, v108, v107, 2, v90);
+          objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v53, v108, v107, 2, selfCopy);
           v76 = LABEL_61:;
           objc_msgSend_errorWithDomain_code_userInfo_(v83, v87, @"ANSTErrorDomain", 10, v76, v91);
           v80 = LABEL_62:;
@@ -385,7 +385,7 @@ LABEL_20:
 LABEL_63:
           v69 = v93;
 LABEL_64:
-          *v74 = v80;
+          *errorCopy10 = v80;
 
           v8 = v96;
           goto LABEL_65;
@@ -409,22 +409,22 @@ LABEL_64:
 
   v55 = v95;
   v58 = objc_msgSend_copy(v95, v56, v57);
-  inputTensorDescriptors = v90->_inputTensorDescriptors;
-  v90->_inputTensorDescriptors = v58;
+  inputTensorDescriptors = selfCopy->_inputTensorDescriptors;
+  selfCopy->_inputTensorDescriptors = v58;
 
   v60 = v94;
   v63 = objc_msgSend_copy(v94, v61, v62);
-  outputTensorDescriptors = v90->_outputTensorDescriptors;
-  v90->_outputTensorDescriptors = v63;
+  outputTensorDescriptors = selfCopy->_outputTensorDescriptors;
+  selfCopy->_outputTensorDescriptors = v63;
 
   v67 = objc_msgSend_copy(v8, v65, v66);
-  inputPixelBufferDescriptors = v90->_inputPixelBufferDescriptors;
-  v90->_inputPixelBufferDescriptors = v67;
+  inputPixelBufferDescriptors = selfCopy->_inputPixelBufferDescriptors;
+  selfCopy->_inputPixelBufferDescriptors = v67;
 
   v69 = v93;
   v72 = objc_msgSend_copy(v93, v70, v71);
-  outputPixelBufferDescriptors = v90->_outputPixelBufferDescriptors;
-  v90->_outputPixelBufferDescriptors = v72;
+  outputPixelBufferDescriptors = selfCopy->_outputPixelBufferDescriptors;
+  selfCopy->_outputPixelBufferDescriptors = v72;
   v73 = 1;
 LABEL_66:
 
@@ -432,25 +432,25 @@ LABEL_66:
   return v73;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v53.receiver = self;
   v53.super_class = ANSTInferenceDescriptor;
-  if ([(ANSTDescriptor *)&v53 isEqual:v4])
+  if ([(ANSTDescriptor *)&v53 isEqual:equalCopy])
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       isEqualToString = 1;
       goto LABEL_22;
     }
 
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = equalCopy;
         v8 = objc_msgSend_assetType(self, v6, v7);
         if (v8 != objc_msgSend_assetType(v5, v9, v10))
         {
@@ -594,10 +594,10 @@ LABEL_22:
   return v45;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_name(self, v8, v9);
   v13 = objc_msgSend_version(self, v11, v12);
   v16 = objc_msgSend_assetURL(self, v14, v15);
@@ -610,35 +610,35 @@ LABEL_22:
   return v30;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v44.receiver = self;
   v44.super_class = ANSTInferenceDescriptor;
-  [(ANSTDescriptor *)&v44 encodeWithCoder:v4];
+  [(ANSTDescriptor *)&v44 encodeWithCoder:coderCopy];
   v5 = MEMORY[0x277CCABB0];
   v8 = objc_msgSend_version(self, v6, v7);
   v10 = objc_msgSend_numberWithUnsignedInteger_(v5, v9, v8);
   v11 = NSStringFromSelector(sel_version);
-  objc_msgSend_encodeObject_forKey_(v4, v12, v10, v11);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v10, v11);
 
   v15 = objc_msgSend_assetURL(self, v13, v14);
   v16 = NSStringFromSelector(sel_assetURL);
-  objc_msgSend_encodeObject_forKey_(v4, v17, v15, v16);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v17, v15, v16);
 
   v18 = MEMORY[0x277CCABB0];
   v21 = objc_msgSend_assetType(self, v19, v20);
   v23 = objc_msgSend_numberWithInteger_(v18, v22, v21);
   v24 = NSStringFromSelector(sel_assetType);
-  objc_msgSend_encodeObject_forKey_(v4, v25, v23, v24);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v25, v23, v24);
 
   v28 = objc_msgSend_inputDescriptors(self, v26, v27);
   v29 = NSStringFromSelector(sel_inputDescriptors);
-  objc_msgSend_encodeObject_forKey_(v4, v30, v28, v29);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v30, v28, v29);
 
   v33 = objc_msgSend_outputDescriptors(self, v31, v32);
   v34 = NSStringFromSelector(sel_outputDescriptors);
-  objc_msgSend_encodeObject_forKey_(v4, v35, v33, v34);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v35, v33, v34);
 
   v38 = objc_msgSend_e5FunctionName(self, v36, v37);
 
@@ -646,17 +646,17 @@ LABEL_22:
   {
     v41 = objc_msgSend_e5FunctionName(self, v39, v40);
     v42 = NSStringFromSelector(sel_e5FunctionName);
-    objc_msgSend_encodeObject_forKey_(v4, v43, v41, v42);
+    objc_msgSend_encodeObject_forKey_(coderCopy, v43, v41, v42);
   }
 }
 
-- (ANSTInferenceDescriptor)initWithCoder:(id)a3
+- (ANSTInferenceDescriptor)initWithCoder:(id)coder
 {
   v106[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v91.receiver = self;
   v91.super_class = ANSTInferenceDescriptor;
-  v5 = [(ANSTDescriptor *)&v91 initWithCoder:v4];
+  v5 = [(ANSTDescriptor *)&v91 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_15;
@@ -664,7 +664,7 @@ LABEL_22:
 
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(sel_version);
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v6, v7);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v6, v7);
 
   if (!v9)
   {
@@ -678,7 +678,7 @@ LABEL_22:
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v41, v106, v105, 2);
     v37 = LABEL_10:;
     v44 = objc_msgSend_errorWithDomain_code_userInfo_(v39, v43, v40, 4865, v37);
-    objc_msgSend_failWithError_(v4, v45, v44);
+    objc_msgSend_failWithError_(coderCopy, v45, v44);
 LABEL_22:
 
     v66 = 0;
@@ -688,7 +688,7 @@ LABEL_22:
   v5->_version = objc_msgSend_unsignedIntegerValue(v9, v10, v11);
   v12 = objc_opt_class();
   v13 = NSStringFromSelector(sel_assetURL);
-  v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v12, v13);
+  v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v12, v13);
   assetURL = v5->_assetURL;
   v5->_assetURL = v15;
 
@@ -707,7 +707,7 @@ LABEL_22:
 
   v19 = objc_opt_class();
   v20 = NSStringFromSelector(sel_assetType);
-  v22 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v19, v20);
+  v22 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v19, v20);
 
   if (!v22)
   {
@@ -726,14 +726,14 @@ LABEL_22:
   v5->_assetType = objc_msgSend_integerValue(v22, v23, v24);
   v25 = objc_opt_class();
   v26 = NSStringFromSelector(sel_e5FunctionName);
-  v28 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v27, v25, v26);
+  v28 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v27, v25, v26);
   e5FunctionName = v5->_e5FunctionName;
   v5->_e5FunctionName = v28;
 
   if (!v5->_e5FunctionName)
   {
     v30 = NSStringFromSelector(sel_e5FunctionName);
-    v32 = objc_msgSend_containsValueForKey_(v4, v31, v30);
+    v32 = objc_msgSend_containsValueForKey_(coderCopy, v31, v30);
 
     if (v32)
     {
@@ -747,7 +747,7 @@ LABEL_22:
       objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v38, v100, v99, 2);
       v44 = LABEL_17:;
       v70 = objc_msgSend_errorWithDomain_code_userInfo_(v35, v69, v36, 4865, v44);
-      objc_msgSend_failWithError_(v4, v71, v70);
+      objc_msgSend_failWithError_(coderCopy, v71, v70);
 LABEL_21:
 
       goto LABEL_22;
@@ -761,7 +761,7 @@ LABEL_21:
   v37 = objc_msgSend_setWithArray_(v46, v49, v48);
 
   v50 = NSStringFromSelector(sel_inputDescriptors);
-  v52 = objc_msgSend_decodeArrayOfObjectsOfClasses_forKey_(v4, v51, v37, v50);
+  v52 = objc_msgSend_decodeArrayOfObjectsOfClasses_forKey_(coderCopy, v51, v37, v50);
   inputDescriptors = v5->_inputDescriptors;
   v5->_inputDescriptors = v52;
 
@@ -777,13 +777,13 @@ LABEL_21:
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v74, v97, v96, 2);
     v70 = LABEL_20:;
     v77 = objc_msgSend_errorWithDomain_code_userInfo_(v72, v76, v73, 4865, v70);
-    objc_msgSend_failWithError_(v4, v78, v77);
+    objc_msgSend_failWithError_(coderCopy, v78, v77);
 
     goto LABEL_21;
   }
 
   v56 = NSStringFromSelector(sel_outputDescriptors);
-  v58 = objc_msgSend_decodeArrayOfObjectsOfClasses_forKey_(v4, v57, v37, v56);
+  v58 = objc_msgSend_decodeArrayOfObjectsOfClasses_forKey_(coderCopy, v57, v37, v56);
   outputDescriptors = v5->_outputDescriptors;
   v5->_outputDescriptors = v58;
 
@@ -818,7 +818,7 @@ LABEL_21:
     v93[2] = v44;
     v86 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v85, v93, v92, 3);
     v88 = objc_msgSend_errorWithDomain_code_userInfo_(v81, v87, v82, 4864, v86);
-    objc_msgSend_failWithError_(v4, v89, v88);
+    objc_msgSend_failWithError_(coderCopy, v89, v88);
 
     goto LABEL_22;
   }

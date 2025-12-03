@@ -1,15 +1,15 @@
 @interface KmlSettingsManager
-- (BOOL)BOOLValueForSetting:(unint64_t)a3 manufacturer:(id)a4 brand:(id)a5 uuid:(id)a6 error:(id *)a7;
-- (BOOL)BOOLValueForUserDefault:(id)a3;
-- (BOOL)defaultBoolValueForSetting:(unint64_t)a3;
-- (BOOL)isManufacturerSupported:(id)a3 error:(id *)a4;
+- (BOOL)BOOLValueForSetting:(unint64_t)setting manufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid error:(id *)error;
+- (BOOL)BOOLValueForUserDefault:(id)default;
+- (BOOL)defaultBoolValueForSetting:(unint64_t)setting;
+- (BOOL)isManufacturerSupported:(id)supported error:(id *)error;
 - (KmlSettingsManager)init;
 - (double)opt2AuthDeletionAlarmDurationSeconds;
-- (double)timeIntervalForUserDefault:(id)a3 minTimeInterval:(double)a4 maxTimeInterval:(double)a5 defaultTimeInterval:(double)a6;
+- (double)timeIntervalForUserDefault:(id)default minTimeInterval:(double)interval maxTimeInterval:(double)timeInterval defaultTimeInterval:(double)defaultTimeInterval;
 - (id)buildNonOSPPreShareTlvOverride;
-- (id)fleetManufacturerAllowListWithError:(id *)a3;
-- (id)fleetServiceProviderAllowListWithError:(id *)a3;
-- (id)getRootCertificateFor:(id)a3 keyId:(id)a4;
+- (id)fleetManufacturerAllowListWithError:(id *)error;
+- (id)fleetServiceProviderAllowListWithError:(id *)error;
+- (id)getRootCertificateFor:(id)for keyId:(id)id;
 - (id)keyRoleToShareOverride;
 - (id)kmlVersionOverride;
 - (id)mockFleetEndpointCert;
@@ -61,7 +61,7 @@
   return v3;
 }
 
-- (BOOL)defaultBoolValueForSetting:(unint64_t)a3
+- (BOOL)defaultBoolValueForSetting:(unint64_t)setting
 {
   v22 = *MEMORY[0x277D85DE8];
   defaultSLGValues = self->_defaultSLGValues;
@@ -71,7 +71,7 @@
   if (v7)
   {
     v8 = self->_defaultSLGValues;
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:setting];
     v10 = [(NSDictionary *)v8 objectForKeyedSubscript:v9];
     LOBYTE(v8) = [v10 BOOLValue];
 
@@ -84,7 +84,7 @@
     v13 = KmlLogger();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:setting];
       v16 = 136315650;
       v17 = "[KmlSettingsManager defaultBoolValueForSetting:]";
       v18 = 1024;
@@ -99,14 +99,14 @@
   }
 }
 
-- (BOOL)BOOLValueForSetting:(unint64_t)a3 manufacturer:(id)a4 brand:(id)a5 uuid:(id)a6 error:(id *)a7
+- (BOOL)BOOLValueForSetting:(unint64_t)setting manufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (a7)
+  manufacturerCopy = manufacturer;
+  brandCopy = brand;
+  uuidCopy = uuid;
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
   if (!self->_dckConfig)
@@ -116,31 +116,31 @@
     self->_dckConfig = v15;
   }
 
-  v17 = [(KmlSettingsManager *)self defaultBoolValueForSetting:a3];
+  bOOLValue = [(KmlSettingsManager *)self defaultBoolValueForSetting:setting];
   v18 = self->_dckConfig;
   v23 = 0;
-  v19 = [(SESConfigDCK *)v18 BOOLValueForSetting:a3 manufacturer:v12 brand:v13 uuid:v14 error:&v23];
+  v19 = [(SESConfigDCK *)v18 BOOLValueForSetting:setting manufacturer:manufacturerCopy brand:brandCopy uuid:uuidCopy error:&v23];
   v20 = v23;
   if (v19)
   {
-    v17 = [v19 BOOLValue];
+    bOOLValue = [v19 BOOLValue];
   }
 
-  if (a7 && v20)
+  if (error && v20)
   {
     v21 = v20;
-    *a7 = v20;
+    *error = v20;
   }
 
-  return v17;
+  return bOOLValue;
 }
 
-- (BOOL)isManufacturerSupported:(id)a3 error:(id *)a4
+- (BOOL)isManufacturerSupported:(id)supported error:(id *)error
 {
-  v6 = a3;
-  if (a4)
+  supportedCopy = supported;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   dckConfig = self->_dckConfig;
@@ -154,22 +154,22 @@
   }
 
   v13 = 0;
-  v10 = [(SESConfigDCK *)dckConfig isDCKConfigurationAvailableFor:v6 error:&v13];
+  v10 = [(SESConfigDCK *)dckConfig isDCKConfigurationAvailableFor:supportedCopy error:&v13];
   v11 = v13;
-  if (a4 && v11)
+  if (error && v11)
   {
     v11 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v10;
 }
 
-- (id)fleetServiceProviderAllowListWithError:(id *)a3
+- (id)fleetServiceProviderAllowListWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   dckConfig = self->_dckConfig;
@@ -185,20 +185,20 @@
   v11 = 0;
   v8 = [(SESConfigDCK *)dckConfig getSettingForKey:@"AllowedFleetServiceProviders" error:&v11];
   v9 = v11;
-  if (a3 && v9)
+  if (error && v9)
   {
     v9 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-- (id)fleetManufacturerAllowListWithError:(id *)a3
+- (id)fleetManufacturerAllowListWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   dckConfig = self->_dckConfig;
@@ -214,19 +214,19 @@
   v11 = 0;
   v8 = [(SESConfigDCK *)dckConfig getSettingForKey:@"AllowedFleetManufacturers" error:&v11];
   v9 = v11;
-  if (a3 && v9)
+  if (error && v9)
   {
     v9 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-- (id)getRootCertificateFor:(id)a3 keyId:(id)a4
+- (id)getRootCertificateFor:(id)for keyId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  idCopy = id;
   dckConfig = self->_dckConfig;
   if (!dckConfig)
   {
@@ -237,7 +237,7 @@
     dckConfig = self->_dckConfig;
   }
 
-  v11 = [(SESConfigDCK *)dckConfig getRootCertificateFor:v6 keyID:v7 error:0];
+  v11 = [(SESConfigDCK *)dckConfig getRootCertificateFor:forCopy keyID:idCopy error:0];
 
   return v11;
 }
@@ -352,9 +352,9 @@
   return result;
 }
 
-- (BOOL)BOOLValueForUserDefault:(id)a3
+- (BOOL)BOOLValueForUserDefault:(id)default
 {
-  v4 = a3;
+  defaultCopy = default;
   userDefaults = self->_userDefaults;
   if (!userDefaults)
   {
@@ -365,15 +365,15 @@
     userDefaults = self->_userDefaults;
   }
 
-  v8 = [(NSUserDefaults *)userDefaults objectForKey:v4];
-  v9 = [v8 BOOLValue];
+  v8 = [(NSUserDefaults *)userDefaults objectForKey:defaultCopy];
+  bOOLValue = [v8 BOOLValue];
 
-  return v9;
+  return bOOLValue;
 }
 
-- (double)timeIntervalForUserDefault:(id)a3 minTimeInterval:(double)a4 maxTimeInterval:(double)a5 defaultTimeInterval:(double)a6
+- (double)timeIntervalForUserDefault:(id)default minTimeInterval:(double)interval maxTimeInterval:(double)timeInterval defaultTimeInterval:(double)defaultTimeInterval
 {
-  v10 = a3;
+  defaultCopy = default;
   userDefaults = self->_userDefaults;
   if (!userDefaults)
   {
@@ -384,23 +384,23 @@
     userDefaults = self->_userDefaults;
   }
 
-  [(NSUserDefaults *)userDefaults doubleForKey:v10];
-  if (v14 >= a5)
+  [(NSUserDefaults *)userDefaults doubleForKey:defaultCopy];
+  if (v14 >= timeInterval)
   {
-    v15 = a5;
+    timeIntervalCopy = timeInterval;
   }
 
   else
   {
-    v15 = v14;
+    timeIntervalCopy = v14;
   }
 
-  if (v14 >= a4)
+  if (v14 >= interval)
   {
-    a6 = v15;
+    defaultTimeInterval = timeIntervalCopy;
   }
 
-  return a6;
+  return defaultTimeInterval;
 }
 
 @end

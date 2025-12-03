@@ -1,23 +1,23 @@
 @interface SRUIFSpeechRecognitionHypothesis
-- (SRUIFSpeechRecognitionHypothesis)initWithUserUtterance:(id)a3 backingAceObject:(id)a4 isFinal:(BOOL)a5;
+- (SRUIFSpeechRecognitionHypothesis)initWithUserUtterance:(id)utterance backingAceObject:(id)object isFinal:(BOOL)final;
 - (id)description;
 @end
 
 @implementation SRUIFSpeechRecognitionHypothesis
 
-- (SRUIFSpeechRecognitionHypothesis)initWithUserUtterance:(id)a3 backingAceObject:(id)a4 isFinal:(BOOL)a5
+- (SRUIFSpeechRecognitionHypothesis)initWithUserUtterance:(id)utterance backingAceObject:(id)object isFinal:(BOOL)final
 {
-  v9 = a3;
-  v10 = a4;
+  utteranceCopy = utterance;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = SRUIFSpeechRecognitionHypothesis;
   v11 = [(SRUIFSpeechRecognitionHypothesis *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_userUtterance, a3);
-    v12->_final = a5;
-    objc_storeStrong(&v12->_backingAceObject, a4);
+    objc_storeStrong(&v11->_userUtterance, utterance);
+    v12->_final = final;
+    objc_storeStrong(&v12->_backingAceObject, object);
   }
 
   return v12;
@@ -27,8 +27,8 @@
 {
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"<%@ %p:", objc_opt_class(), self];
   [v3 appendString:@" userUtterance="];
-  v4 = [(SRUIFSpeechRecognitionHypothesis *)self userUtterance];
-  v5 = [v4 description];
+  userUtterance = [(SRUIFSpeechRecognitionHypothesis *)self userUtterance];
+  v5 = [userUtterance description];
   [v3 appendString:v5];
 
   [v3 appendString:@"; isFinal="];

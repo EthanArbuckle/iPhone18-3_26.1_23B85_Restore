@@ -1,57 +1,57 @@
 @interface ISMigrator
-+ (id)migratorForNewUserAccountWithVersion:(id)a3;
-+ (id)migratorFromSchemaVersion:(unint64_t)a3;
-+ (id)migratorFromVersion:(id)a3 toVersion:(id)a4;
-- (BOOL)previousVersionIsOlderThanMacOS:(id)a3 iOS:(id)a4 watchOS:(id)a5 tvOS:(id)a6;
++ (id)migratorForNewUserAccountWithVersion:(id)version;
++ (id)migratorFromSchemaVersion:(unint64_t)version;
++ (id)migratorFromVersion:(id)version toVersion:(id)toVersion;
+- (BOOL)previousVersionIsOlderThanMacOS:(id)s iOS:(id)oS watchOS:(id)watchOS tvOS:(id)tvOS;
 @end
 
 @implementation ISMigrator
 
-+ (id)migratorFromVersion:(id)a3 toVersion:(id)a4
++ (id)migratorFromVersion:(id)version toVersion:(id)toVersion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 migratorFromVersion:v7 toVersion:v6 platform:{objc_msgSend(objc_opt_class(), "currentPlatform")}];
+  toVersionCopy = toVersion;
+  versionCopy = version;
+  v8 = [self migratorFromVersion:versionCopy toVersion:toVersionCopy platform:{objc_msgSend(objc_opt_class(), "currentPlatform")}];
 
   return v8;
 }
 
-+ (id)migratorForNewUserAccountWithVersion:(id)a3
++ (id)migratorForNewUserAccountWithVersion:(id)version
 {
-  v4 = a3;
-  v5 = [a1 migratorFromVersion:&stru_28419F558 toVersion:v4 platform:objc_msgSend(objc_opt_class() newUserAccount:{"currentPlatform"), 1}];
+  versionCopy = version;
+  v5 = [self migratorFromVersion:&stru_28419F558 toVersion:versionCopy platform:objc_msgSend(objc_opt_class() newUserAccount:{"currentPlatform"), 1}];
 
   return v5;
 }
 
-+ (id)migratorFromSchemaVersion:(unint64_t)a3
++ (id)migratorFromSchemaVersion:(unint64_t)version
 {
   v4 = objc_opt_new();
   [v4 setPlatform:{objc_msgSend(objc_opt_class(), "currentPlatform")}];
-  [v4 setPreviousSchemaVersion:a3];
+  [v4 setPreviousSchemaVersion:version];
 
   return v4;
 }
 
-- (BOOL)previousVersionIsOlderThanMacOS:(id)a3 iOS:(id)a4 watchOS:(id)a5 tvOS:(id)a6
+- (BOOL)previousVersionIsOlderThanMacOS:(id)s iOS:(id)oS watchOS:(id)watchOS tvOS:(id)tvOS
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ISMigrator *)self platform];
+  sCopy = s;
+  oSCopy = oS;
+  watchOSCopy = watchOS;
+  tvOSCopy = tvOS;
+  platform = [(ISMigrator *)self platform];
   v15 = 0;
-  if (v14 > 2)
+  if (platform > 2)
   {
-    v16 = v12;
-    if (v14 != 3)
+    v16 = watchOSCopy;
+    if (platform != 3)
     {
-      if (v14 != 4)
+      if (platform != 4)
       {
         goto LABEL_9;
       }
 
-      v16 = v13;
+      v16 = tvOSCopy;
     }
 
 LABEL_8:
@@ -59,21 +59,21 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = v10;
-  if (v14 == 1)
+  v16 = sCopy;
+  if (platform == 1)
   {
     goto LABEL_8;
   }
 
-  v16 = v11;
-  if (v14 == 2)
+  v16 = oSCopy;
+  if (platform == 2)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  v17 = [(ISMigrator *)self previousVersion];
-  v18 = [v17 compare:v15 options:64] == -1;
+  previousVersion = [(ISMigrator *)self previousVersion];
+  v18 = [previousVersion compare:v15 options:64] == -1;
 
   return v18;
 }

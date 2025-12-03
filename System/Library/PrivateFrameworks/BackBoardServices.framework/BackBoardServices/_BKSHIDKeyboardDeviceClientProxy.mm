@@ -1,7 +1,7 @@
 @interface _BKSHIDKeyboardDeviceClientProxy
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
-- (_BKSHIDKeyboardDeviceClientProxy)initWithDevice:(id)a3 lifetimeAssertion:(id)a4;
+- (_BKSHIDKeyboardDeviceClientProxy)initWithDevice:(id)device lifetimeAssertion:(id)assertion;
 - (void)dealloc;
 @end
 
@@ -10,17 +10,17 @@
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -62,17 +62,17 @@
   [(_BKSHIDKeyboardDeviceClientProxy *)&v3 dealloc];
 }
 
-- (_BKSHIDKeyboardDeviceClientProxy)initWithDevice:(id)a3 lifetimeAssertion:(id)a4
+- (_BKSHIDKeyboardDeviceClientProxy)initWithDevice:(id)device lifetimeAssertion:(id)assertion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  deviceCopy = device;
+  assertionCopy = assertion;
   v35.receiver = self;
   v35.super_class = _BKSHIDKeyboardDeviceClientProxy;
   v10 = [(_BKSHIDKeyboardDeviceClientProxy *)&v35 init];
   if (v10)
   {
-    v11 = v8;
+    v11 = deviceCopy;
     if (!v11)
     {
       v15 = MEMORY[0x1E696AEC0];
@@ -113,13 +113,13 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v22 = MEMORY[0x1E696AEC0];
-      v23 = [v12 classForCoder];
-      if (!v23)
+      classForCoder = [v12 classForCoder];
+      if (!classForCoder)
       {
-        v23 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v24 = NSStringFromClass(v23);
+      v24 = NSStringFromClass(classForCoder);
       objc_opt_class();
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
@@ -151,7 +151,7 @@
       JUMPOUT(0x186354504);
     }
 
-    if (!v9)
+    if (!assertionCopy)
     {
       v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"assertion != ((void *)0)"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -180,8 +180,8 @@
       JUMPOUT(0x1863545FCLL);
     }
 
-    objc_storeStrong(&v10->_device, a3);
-    objc_storeStrong(&v10->_lifetimeAssertion, a4);
+    objc_storeStrong(&v10->_device, device);
+    objc_storeStrong(&v10->_lifetimeAssertion, assertion);
   }
 
   v13 = *MEMORY[0x1E69E9840];

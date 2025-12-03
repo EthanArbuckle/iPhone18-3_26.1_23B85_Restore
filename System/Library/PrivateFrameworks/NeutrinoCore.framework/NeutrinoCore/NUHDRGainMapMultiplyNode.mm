@@ -1,36 +1,36 @@
 @interface NUHDRGainMapMultiplyNode
-- (NUHDRGainMapMultiplyNode)initWithInput:(id)a3 settings:(id)a4;
-- (NUHDRGainMapMultiplyNode)initWithSettings:(id)a3 inputs:(id)a4;
+- (NUHDRGainMapMultiplyNode)initWithInput:(id)input settings:(id)settings;
+- (NUHDRGainMapMultiplyNode)initWithSettings:(id)settings inputs:(id)inputs;
 - (id)inputNode;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUHDRGainMapMultiplyNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v9 evaluationMode])
+  cacheCopy = cache;
+  stateCopy = state;
+  if ([stateCopy evaluationMode])
   {
-    if ([v9 auxiliaryImageType] == 1)
+    if ([stateCopy auxiliaryImageType] == 1)
     {
-      v10 = [v9 copy];
-      [v10 setAuxiliaryImageType:7];
-      v11 = [(NUHDRGainMapMultiplyNode *)self inputNode];
-      v12 = [v11 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+      inputNode3 = [stateCopy copy];
+      [inputNode3 setAuxiliaryImageType:7];
+      inputNode = [(NUHDRGainMapMultiplyNode *)self inputNode];
+      v12 = [inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:inputNode3 error:error];
 
       if (v12)
       {
-        v13 = [(NUHDRGainMapMultiplyNode *)self inputNode];
-        v14 = [v13 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+        inputNode2 = [(NUHDRGainMapMultiplyNode *)self inputNode];
+        v14 = [inputNode2 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
 
         if (v14)
         {
-          v15 = [(NURenderNode *)self settings];
-          v16 = [v15 mutableCopy];
+          settings = [(NURenderNode *)self settings];
+          v16 = [settings mutableCopy];
 
           [v16 setObject:@"inputImage" forKeyedSubscript:@"__dominantInputSettingsKey"];
           [v16 setObject:&unk_1F3F823B0 forKeyedSubscript:@"__gainMapMode"];
@@ -40,7 +40,7 @@
           v23[1] = v12;
           v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
           v18 = [[NUFilterNode alloc] initWithFilterName:@"NUHDRMultiplyGainMapFilter" settings:v16 inputs:v17];
-          v19 = [(NURenderNode *)v18 resolvedNodeWithCachedInputs:v17 cache:v8 pipelineState:v9 error:a5];
+          v19 = [(NURenderNode *)v18 resolvedNodeWithCachedInputs:v17 cache:cacheCopy pipelineState:stateCopy error:error];
         }
 
         else
@@ -57,8 +57,8 @@
 
     else
     {
-      v10 = [(NUHDRGainMapMultiplyNode *)self inputNode];
-      v19 = [v10 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+      inputNode3 = [(NUHDRGainMapMultiplyNode *)self inputNode];
+      v19 = [inputNode3 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
     }
   }
 
@@ -66,35 +66,35 @@
   {
     v21.receiver = self;
     v21.super_class = NUHDRGainMapMultiplyNode;
-    v19 = [(NURenderNode *)&v21 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    v19 = [(NURenderNode *)&v21 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   }
 
   return v19;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = NUHDRGainMapMultiplyNode;
-  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
 - (id)inputNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
   return v3;
 }
 
-- (NUHDRGainMapMultiplyNode)initWithInput:(id)a3 settings:(id)a4
+- (NUHDRGainMapMultiplyNode)initWithInput:(id)input settings:(id)settings
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  inputCopy = input;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v12 = NUAssertLogger_11533();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -115,8 +115,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v19;
         v33 = 2114;
@@ -127,8 +127,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -137,9 +137,9 @@
     _NUAssertFailHandler("[NUHDRGainMapMultiplyNode initWithInput:settings:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUHDRGainMapNode.m", 512, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "input != nil");
   }
 
-  v8 = v7;
+  v8 = settingsCopy;
   v29 = *MEMORY[0x1E695FAB0];
-  v30 = v6;
+  v30 = inputCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
   v28.receiver = self;
   v28.super_class = NUHDRGainMapMultiplyNode;
@@ -148,11 +148,11 @@
   return v10;
 }
 
-- (NUHDRGainMapMultiplyNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUHDRGainMapMultiplyNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_311);
@@ -196,8 +196,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -213,8 +213,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

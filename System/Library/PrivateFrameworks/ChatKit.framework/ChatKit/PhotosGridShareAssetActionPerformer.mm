@@ -1,33 +1,33 @@
 @interface PhotosGridShareAssetActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
-+ (id)systemImageNameForActionManager:(id)a3;
-- (_TtC7ChatKit35PhotosGridShareAssetActionPerformer)initWithActionType:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
++ (id)systemImageNameForActionManager:(id)manager;
+- (_TtC7ChatKit35PhotosGridShareAssetActionPerformer)initWithActionType:(id)type;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PhotosGridShareAssetActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  [v9 fetchPropertySetsIfNeeded];
-  v13 = [v9 curationProperties];
-  v14 = [v13 syndicationIdentifier];
+  assetCopy = asset;
+  collectionCopy = collection;
+  personCopy = person;
+  groupCopy = group;
+  [assetCopy fetchPropertySetsIfNeeded];
+  curationProperties = [assetCopy curationProperties];
+  syndicationIdentifier = [curationProperties syndicationIdentifier];
 
-  if (v14)
+  if (syndicationIdentifier)
   {
   }
 
-  return v14 != 0;
+  return syndicationIdentifier != 0;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
-  v4 = a4;
+  managerCopy = manager;
   result = CKFrameworkBundle();
   if (result)
   {
@@ -50,7 +50,7 @@
   return result;
 }
 
-+ (id)systemImageNameForActionManager:(id)a3
++ (id)systemImageNameForActionManager:(id)manager
 {
   v3 = sub_190D56ED0();
 
@@ -59,15 +59,15 @@
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908B8D20();
 }
 
-- (_TtC7ChatKit35PhotosGridShareAssetActionPerformer)initWithActionType:(id)a3
+- (_TtC7ChatKit35PhotosGridShareAssetActionPerformer)initWithActionType:(id)type
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for PhotosGridShareAssetActionPerformer();
-  return [(PXActionPerformer *)&v5 initWithActionType:a3];
+  return [(PXActionPerformer *)&v5 initWithActionType:type];
 }
 
 @end

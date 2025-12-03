@@ -1,6 +1,6 @@
 @interface CarUserTrackingButtonView
-+ (id)buttonWithUserTrackingView:(id)a3;
-- (CarUserTrackingButtonView)initWithUserTrackingView:(id)a3;
++ (id)buttonWithUserTrackingView:(id)view;
+- (CarUserTrackingButtonView)initWithUserTrackingView:(id)view;
 - (UIEdgeInsets)touchInsets;
 - (id)focusOrderSubItems;
 - (id)preferredFocusEnvironments;
@@ -42,7 +42,7 @@
     self->_lastRoundedCorners = self->_roundedCorners;
   }
 
-  v13 = [(CarUserTrackingButton *)self->_button isFocused];
+  isFocused = [(CarUserTrackingButton *)self->_button isFocused];
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   if (!self->_focusShapeLayer)
@@ -55,11 +55,11 @@
     v16 = +[UIColor clearColor];
     -[CAShapeLayer setBorderColor:](self->_focusShapeLayer, "setBorderColor:", [v16 CGColor]);
 
-    v17 = [(CarUserTrackingButtonView *)self layer];
-    [v17 insertSublayer:self->_focusShapeLayer atIndex:0];
+    layer = [(CarUserTrackingButtonView *)self layer];
+    [layer insertSublayer:self->_focusShapeLayer atIndex:0];
   }
 
-  if (v13)
+  if (isFocused)
   {
     +[UIColor _carSystemFocusColor];
   }
@@ -122,15 +122,15 @@
   return v2;
 }
 
-- (CarUserTrackingButtonView)initWithUserTrackingView:(id)a3
+- (CarUserTrackingButtonView)initWithUserTrackingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = CarUserTrackingButtonView;
   v5 = [(CarUserTrackingButtonView *)&v16 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v5)
   {
-    v6 = [CarUserTrackingButton buttonWithUserTrackingView:v4];
+    v6 = [CarUserTrackingButton buttonWithUserTrackingView:viewCopy];
     button = v5->_button;
     v5->_button = v6;
 
@@ -142,25 +142,25 @@
       v10 = v8[2];
       v8[2] = v9;
 
-      v11 = [v8[2] contentView];
+      contentView = [v8[2] contentView];
 
-      v8 = v11;
+      v8 = contentView;
     }
 
     [v8 addSubview:v5->_button];
     LODWORD(v12) = 1148846080;
     v13 = [(CarUserTrackingButton *)v5->_button _maps_constraintsEqualToEdgesOfView:v8 priority:v12];
-    v14 = [v13 allConstraints];
-    [NSLayoutConstraint activateConstraints:v14];
+    allConstraints = [v13 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
   }
 
   return v5;
 }
 
-+ (id)buttonWithUserTrackingView:(id)a3
++ (id)buttonWithUserTrackingView:(id)view
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithUserTrackingView:v4];
+  viewCopy = view;
+  v5 = [[self alloc] initWithUserTrackingView:viewCopy];
 
   return v5;
 }

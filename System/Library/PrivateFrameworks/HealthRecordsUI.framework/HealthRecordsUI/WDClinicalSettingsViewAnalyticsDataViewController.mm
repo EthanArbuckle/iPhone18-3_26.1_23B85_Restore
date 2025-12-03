@@ -1,9 +1,9 @@
 @interface WDClinicalSettingsViewAnalyticsDataViewController
 - (id)description;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)fetchClinicalOptInDataCollectionFilePaths;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -17,22 +17,22 @@
   v3 = HRLocalizedString(@"CLINICAL_ACCOUNTS_SETTINGS_VIEW_ANALYTICS_DATA_TITLE");
   [(WDClinicalSettingsViewAnalyticsDataViewController *)self setTitle:v3];
 
-  v4 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self tableView];
+  tableView = [(WDClinicalSettingsViewAnalyticsDataViewController *)self tableView];
   v5 = objc_opt_class();
   v6 = +[WDClinicalSettingsViewAnalyticsDataViewControllerFileCell defaultReuseIdentifier];
-  [v4 registerClass:v5 forCellReuseIdentifier:v6];
+  [tableView registerClass:v5 forCellReuseIdentifier:v6];
 
   v7 = objc_alloc(MEMORY[0x1E69DD418]);
   v8 = HRLocalizedString(@"CLINICAL_ACCOUNTS_SETTINGS_VIEW_ANALYTICS_DATA_NO_DATA");
   v9 = [v7 initWithFrame:v8 title:0 style:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(WDClinicalSettingsViewAnalyticsDataViewController *)self setNoDataView:v9];
 
-  v10 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self noDataView];
-  [v10 setHidden:1];
+  noDataView = [(WDClinicalSettingsViewAnalyticsDataViewController *)self noDataView];
+  [noDataView setHidden:1];
 
-  v11 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self noDataView];
-  v12 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self tableView];
-  [v12 setBackgroundView:v11];
+  noDataView2 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self noDataView];
+  tableView2 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self tableView];
+  [tableView2 setBackgroundView:noDataView2];
 
   [(WDClinicalSettingsViewAnalyticsDataViewController *)self fetchClinicalOptInDataCollectionFilePaths];
 }
@@ -40,14 +40,14 @@
 - (void)fetchClinicalOptInDataCollectionFilePaths
 {
   objc_initWeak(&location, self);
-  v3 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self healthRecordsStore];
+  healthRecordsStore = [(WDClinicalSettingsViewAnalyticsDataViewController *)self healthRecordsStore];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __94__WDClinicalSettingsViewAnalyticsDataViewController_fetchClinicalOptInDataCollectionFilePaths__block_invoke;
   v4[3] = &unk_1E83DCF68;
   objc_copyWeak(&v5, &location);
   v4[4] = self;
-  [v3 fetchClinicalOptInDataCollectionFilePathsWithCompletion:v4];
+  [healthRecordsStore fetchClinicalOptInDataCollectionFilePathsWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -82,53 +82,53 @@ void __94__WDClinicalSettingsViewAnalyticsDataViewController_fetchClinicalOptInD
   [v4 reloadData];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self filePaths:a3];
+  v5 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self filePaths:view];
   v6 = [v5 count];
 
-  v7 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self tableView];
-  [v7 setSeparatorStyle:v6 != 0];
+  tableView = [(WDClinicalSettingsViewAnalyticsDataViewController *)self tableView];
+  [tableView setSeparatorStyle:v6 != 0];
 
-  v8 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self noDataView];
-  [v8 setHidden:v6 != 0];
+  noDataView = [(WDClinicalSettingsViewAnalyticsDataViewController *)self noDataView];
+  [noDataView setHidden:v6 != 0];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[WDClinicalSettingsViewAnalyticsDataViewControllerFileCell defaultReuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
   v10 = MEMORY[0x1E695DFF8];
-  v11 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self filePaths];
-  v12 = [v6 row];
+  filePaths = [(WDClinicalSettingsViewAnalyticsDataViewController *)self filePaths];
+  v12 = [pathCopy row];
 
-  v13 = [v11 objectAtIndexedSubscript:v12];
+  v13 = [filePaths objectAtIndexedSubscript:v12];
   v14 = [v10 fileURLWithPath:v13];
   [v9 setFileURL:v14];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = [a3 cellForRowAtIndexPath:a4];
+  v12 = [view cellForRowAtIndexPath:path];
   v5 = objc_alloc_init(MEMORY[0x1E69A4390]);
-  v6 = [v12 fileURL];
-  v7 = [v6 lastPathComponent];
-  [v5 setTitle:v7];
+  fileURL = [v12 fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
+  [v5 setTitle:lastPathComponent];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v12 fileURL];
-  v10 = [v8 stringWithContentsOfURL:v9 encoding:4 error:0];
+  fileURL2 = [v12 fileURL];
+  v10 = [v8 stringWithContentsOfURL:fileURL2 encoding:4 error:0];
   [v5 setDetailText:v10];
 
-  v11 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self navigationController];
-  [v11 pushViewController:v5 animated:1];
+  navigationController = [(WDClinicalSettingsViewAnalyticsDataViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
 - (id)description
@@ -136,8 +136,8 @@ void __94__WDClinicalSettingsViewAnalyticsDataViewController_fetchClinicalOptInD
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WDClinicalSettingsViewAnalyticsDataViewController *)self filePaths];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, v6];
+  filePaths = [(WDClinicalSettingsViewAnalyticsDataViewController *)self filePaths];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, filePaths];
 
   return v7;
 }

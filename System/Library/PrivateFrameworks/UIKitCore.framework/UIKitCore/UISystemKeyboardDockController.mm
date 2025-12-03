@@ -1,19 +1,19 @@
 @interface UISystemKeyboardDockController
-- (id)configuredGlyphWithName:(id)a3;
+- (id)configuredGlyphWithName:(id)name;
 - (id)imageConfig;
-- (void)_dictationDidBeginNotification:(id)a3;
-- (void)customDockItemWasTapped:(id)a3 withEvent:(id)a4;
+- (void)_dictationDidBeginNotification:(id)notification;
+- (void)customDockItemWasTapped:(id)tapped withEvent:(id)event;
 - (void)dealloc;
-- (void)dictationItemButtonWasPressed:(id)a3 withEvent:(id)a4 isRunningButton:(BOOL)a5;
-- (void)globeItemButtonWasPressed:(id)a3 withEvent:(id)a4;
-- (void)keyboardDockView:(id)a3 didPressDockItem:(id)a4 withEvent:(id)a5;
-- (void)keyboardItemButtonWasTapped:(id)a3 withEvent:(id)a4;
+- (void)dictationItemButtonWasPressed:(id)pressed withEvent:(id)event isRunningButton:(BOOL)button;
+- (void)globeItemButtonWasPressed:(id)pressed withEvent:(id)event;
+- (void)keyboardDockView:(id)view didPressDockItem:(id)item withEvent:(id)event;
+- (void)keyboardItemButtonWasTapped:(id)tapped withEvent:(id)event;
 - (void)loadView;
 - (void)setKeyboardDockItem;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateDockItemsVisibility;
-- (void)updateDockItemsVisibilityWithCustomDictationAction:(id)a3;
-- (void)updateRightButtonItemWithCustomAction:(id)a3;
+- (void)updateDockItemsVisibilityWithCustomDictationAction:(id)action;
+- (void)updateRightButtonItemWithCustomAction:(id)action;
 - (void)viewDidLoad;
 @end
 
@@ -65,8 +65,8 @@
   if (+[UIKeyboardImpl showsGlobeAndDictationKeysExternallyForFloatingKeyboard])
   {
     v25 = [UIDotsInputSwitcherView alloc];
-    v26 = [(UIView *)v28 _inheritedRenderConfig];
-    v27 = [(UIDotsInputSwitcherView *)v25 initWithRenderConfig:v26];
+    _inheritedRenderConfig = [(UIView *)v28 _inheritedRenderConfig];
+    v27 = [(UIDotsInputSwitcherView *)v25 initWithRenderConfig:_inheritedRenderConfig];
     [(UIKeyboardDockView *)v28 setCenterView:v27];
   }
 
@@ -110,44 +110,44 @@
   [(UIViewController *)&v5 viewDidLoad];
   if (!+[UIKeyboard inputUIOOP](UIKeyboard, "inputUIOOP") || +[UIKeyboard isKeyboardProcess])
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:self selector:sel__dictationDidBeginNotification_ name:@"UIKeyboardDidBeginDictationNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__dictationDidBeginNotification_ name:@"UIKeyboardDidBeginDictationNotification" object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel_updateDockItemsVisibility name:@"UIKeyboardDictationAvailabilityDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_updateDockItemsVisibility name:@"UIKeyboardDictationAvailabilityDidChangeNotification" object:0];
   }
 }
 
 - (void)updateDockItemsVisibility
 {
-  v5 = [(UISystemKeyboardDockController *)self dockView];
-  v3 = [v5 rightDockItem];
-  v4 = [v3 customAction];
-  [(UISystemKeyboardDockController *)self updateDockItemsVisibilityWithCustomDictationAction:v4];
+  dockView = [(UISystemKeyboardDockController *)self dockView];
+  rightDockItem = [dockView rightDockItem];
+  customAction = [rightDockItem customAction];
+  [(UISystemKeyboardDockController *)self updateDockItemsVisibilityWithCustomDictationAction:customAction];
 }
 
 - (void)dealloc
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIKeyboardDidBeginDictationNotification";
   v6[1] = @"UIKeyboardDictationAvailabilityDidChangeNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = UISystemKeyboardDockController;
   [(UIViewController *)&v5 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = UISystemKeyboardDockController;
-  v4 = a3;
-  [(UIViewController *)&v7 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UIViewController *)&v7 traitCollectionDidChange:changeCopy];
   v5 = [(UIViewController *)self traitCollection:v7.receiver];
-  v6 = [v4 hasDifferentColorAppearanceComparedToTraitCollection:v5];
+  v6 = [changeCopy hasDifferentColorAppearanceComparedToTraitCollection:v5];
 
   if (v6)
   {
@@ -159,11 +159,11 @@
 {
   v3 = +[UIDictationController isRunning];
   v4 = +[UIKeyboardInputMode dictationInputMode];
-  v5 = [v4 isCurrentDictationLanguageOnDevice];
+  isCurrentDictationLanguageOnDevice = [v4 isCurrentDictationLanguageOnDevice];
 
-  v6 = [(UIKeyboardDockItem *)self->_globeDockItem enabled];
-  v7 = v3 & v5;
-  if (v6)
+  enabled = [(UIKeyboardDockItem *)self->_globeDockItem enabled];
+  v7 = v3 & isCurrentDictationLanguageOnDevice;
+  if (enabled)
   {
     v8 = v7 == 0;
     v9 = 3;
@@ -181,90 +181,90 @@
     v10 = 1016;
 LABEL_7:
     v11 = *(&self->super.super.super.isa + v10);
-    v12 = [(UISystemKeyboardDockController *)self dockView];
-    [v12 setRightDockItem:v11];
+    dockView = [(UISystemKeyboardDockController *)self dockView];
+    [dockView setRightDockItem:v11];
 
-    v13 = [(UISystemKeyboardDockController *)self dockView];
-    [v13 setCenterDockItem:0];
+    dockView2 = [(UISystemKeyboardDockController *)self dockView];
+    [dockView2 setCenterDockItem:0];
     goto LABEL_9;
   }
 
   keyboardDockItem = self->_keyboardDockItem;
-  v15 = [(UISystemKeyboardDockController *)self dockView];
-  [v15 setCenterDockItem:keyboardDockItem];
+  dockView3 = [(UISystemKeyboardDockController *)self dockView];
+  [dockView3 setCenterDockItem:keyboardDockItem];
 
-  v13 = [(UISystemKeyboardDockController *)self dockView];
-  [v13 setRightDockItem:0];
+  dockView2 = [(UISystemKeyboardDockController *)self dockView];
+  [dockView2 setRightDockItem:0];
 LABEL_9:
 
-  v16 = [(UIViewController *)self view];
-  [v16 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   [(UIButton *)self->_stopDictationButton setFrame:?];
 
-  v17 = [(UIViewController *)self view];
-  [v17 insertSubview:self->_stopDictationButton atIndex:0];
+  view2 = [(UIViewController *)self view];
+  [view2 insertSubview:self->_stopDictationButton atIndex:0];
 }
 
-- (void)updateRightButtonItemWithCustomAction:(id)a3
+- (void)updateRightButtonItemWithCustomAction:(id)action
 {
-  v4 = a3;
-  v19 = v4;
-  if (v4)
+  actionCopy = action;
+  v19 = actionCopy;
+  if (actionCopy)
   {
-    v5 = [v4 image];
-    v6 = [(UISystemKeyboardDockController *)self imageConfig];
-    v7 = [v5 imageByApplyingSymbolConfiguration:v6];
+    image = [actionCopy image];
+    imageConfig = [(UISystemKeyboardDockController *)self imageConfig];
+    dockView3 = [image imageByApplyingSymbolConfiguration:imageConfig];
 
-    v8 = [(UISystemKeyboardDockController *)self dockView];
-    v9 = [v8 rightDockItem];
+    dockView = [(UISystemKeyboardDockController *)self dockView];
+    rightDockItem = [dockView rightDockItem];
 
-    if (!v9)
+    if (!rightDockItem)
     {
       v10 = [UIKeyboardDockItem alloc];
-      v11 = [v19 title];
-      v12 = [v19 identifier];
-      if (v12)
+      title = [v19 title];
+      identifier = [v19 identifier];
+      if (identifier)
       {
-        v9 = [(UIKeyboardDockItem *)v10 initWithTitle:v11 image:v7 identifier:v12];
+        rightDockItem = [(UIKeyboardDockItem *)v10 initWithTitle:title image:dockView3 identifier:identifier];
       }
 
       else
       {
         v14 = MEMORY[0x1E696AEC0];
-        v15 = [v19 title];
-        v16 = [v14 stringWithFormat:@"CustomAction_%@", v15];
-        v9 = [(UIKeyboardDockItem *)v10 initWithTitle:v11 image:v7 identifier:v16];
+        title2 = [v19 title];
+        v16 = [v14 stringWithFormat:@"CustomAction_%@", title2];
+        rightDockItem = [(UIKeyboardDockItem *)v10 initWithTitle:title image:dockView3 identifier:v16];
       }
 
-      v17 = [(UISystemKeyboardDockController *)self dockView];
-      [v17 setRightDockItem:v9];
+      dockView2 = [(UISystemKeyboardDockController *)self dockView];
+      [dockView2 setRightDockItem:rightDockItem];
     }
 
-    v18 = [v19 title];
-    [(UIKeyboardDockItem *)v9 setTitle:v18 image:v7];
+    title3 = [v19 title];
+    [(UIKeyboardDockItem *)rightDockItem setTitle:title3 image:dockView3];
 
-    [(UIKeyboardDockItem *)v9 setCustomAction:v19];
+    [(UIKeyboardDockItem *)rightDockItem setCustomAction:v19];
   }
 
   else
   {
     dictationDockItem = self->_dictationDockItem;
-    v7 = [(UISystemKeyboardDockController *)self dockView];
-    [v7 setRightDockItem:dictationDockItem];
+    dockView3 = [(UISystemKeyboardDockController *)self dockView];
+    [dockView3 setRightDockItem:dictationDockItem];
   }
 }
 
-- (void)_dictationDidBeginNotification:(id)a3
+- (void)_dictationDidBeginNotification:(id)notification
 {
-  if (!+[UIKeyboard isKeyboardProcess](UIKeyboard, "isKeyboardProcess", a3) && +[UIKeyboard usesInputSystemUI])
+  if (!+[UIKeyboard isKeyboardProcess](UIKeyboard, "isKeyboardProcess", notification) && +[UIKeyboard usesInputSystemUI])
   {
     return;
   }
 
   v4 = +[UIKeyboardInputMode dictationInputMode];
-  v5 = [v4 isCurrentDictationLanguageOnDevice];
+  isCurrentDictationLanguageOnDevice = [v4 isCurrentDictationLanguageOnDevice];
 
-  if (v5)
+  if (isCurrentDictationLanguageOnDevice)
   {
     return;
   }
@@ -277,9 +277,9 @@ LABEL_9:
   }
 
   v7 = +[UIKeyboardImpl activeInstance];
-  v8 = [v7 isMinimized];
+  isMinimized = [v7 isMinimized];
 
-  if (v8)
+  if (isMinimized)
   {
 LABEL_7:
     if (!self->_dictationHasUsedServerManualEndpointing)
@@ -304,17 +304,17 @@ LABEL_7:
   [(UIView *)stopDictationButton removeFromSuperview];
 }
 
-- (void)dictationItemButtonWasPressed:(id)a3 withEvent:(id)a4 isRunningButton:(BOOL)a5
+- (void)dictationItemButtonWasPressed:(id)pressed withEvent:(id)event isRunningButton:(BOOL)button
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  pressedCopy = pressed;
+  eventCopy = event;
+  v10 = eventCopy;
+  if (eventCopy)
   {
-    v11 = [v9 touchesForView:v8];
-    v12 = [v11 anyObject];
+    v11 = [eventCopy touchesForView:pressedCopy];
+    anyObject = [v11 anyObject];
 
-    if (!+[UIDictationController isRunning](UIDictationController, "isRunning") || [v12 phase] || a5)
+    if (!+[UIDictationController isRunning](UIDictationController, "isRunning") || [anyObject phase] || button)
     {
       v56 = 0;
       v57 = &v56;
@@ -322,23 +322,23 @@ LABEL_7:
       v60 = 0;
       v61 = 0;
       v59 = "";
-      [v12 locationInView:v8];
+      [anyObject locationInView:pressedCopy];
       v60 = v19;
       v61 = v20;
-      v21 = [v8 pointInsideTapActionRegion:{v57[2].x, v57[2].y}];
-      if (![v12 phase] && !self->_dictationItemButtonTouchDownTime)
+      v21 = [pressedCopy pointInsideTapActionRegion:{v57[2].x, v57[2].y}];
+      if (![anyObject phase] && !self->_dictationItemButtonTouchDownTime)
       {
-        v22 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         dictationItemButtonTouchDownTime = self->_dictationItemButtonTouchDownTime;
-        self->_dictationItemButtonTouchDownTime = v22;
+        self->_dictationItemButtonTouchDownTime = date;
 
         self->_dictationItemButtonTouchDownLocationInView = v57[2];
       }
 
-      [v8 bounds];
+      [pressedCopy bounds];
       MidX = CGRectGetMidX(v63);
-      [v8 bounds];
-      [v8 convertPoint:0 toView:{MidX, CGRectGetMinY(v64)}];
+      [pressedCopy bounds];
+      [pressedCopy convertPoint:0 toView:{MidX, CGRectGetMinY(v64)}];
       v26 = v25;
       v28 = v27;
       v29 = +[UIInputSwitcherView sharedInstance];
@@ -354,22 +354,22 @@ LABEL_7:
         v50[2] = __90__UISystemKeyboardDockController_dictationItemButtonWasPressed_withEvent_isRunningButton___block_invoke;
         v50[3] = &unk_1E7117A98;
         v50[4] = self;
-        v51 = v12;
-        v54 = a5;
-        v52 = v8;
+        v51 = anyObject;
+        buttonCopy = button;
+        v52 = pressedCopy;
         v53 = &v56;
         v55 = v21;
         v30 = [v29 buttonPressed:v52 withEvent:v10 location:v21 isLocationInsideViewHitArea:1 isForDictation:v50 tapAction:{v26, v28}];
       }
 
-      v31 = [v12 phase];
-      if ((v31 - 3) < 2)
+      phase = [anyObject phase];
+      if ((phase - 3) < 2)
       {
         self->_dictationUsingServerManualEndpointing = 0;
         [v29 hide];
       }
 
-      else if (v31 == 1)
+      else if (phase == 1)
       {
         if ([v29 isVisible])
         {
@@ -378,7 +378,7 @@ LABEL_7:
           v37 = v36;
           v39 = v38;
           v41 = v40;
-          [v12 locationInView:v29];
+          [anyObject locationInView:v29];
           v62.x = v42;
           v62.y = v43;
           v65.origin.x = v35;
@@ -392,7 +392,7 @@ LABEL_7:
         }
       }
 
-      else if (!v31 && !a5 && +[UIDictationController usingServerManualEndpointingThreshold])
+      else if (!phase && !button && +[UIDictationController usingServerManualEndpointingThreshold])
       {
         self->_dictationUsingServerManualEndpointing = 1;
         self->_dictationHasUsedServerManualEndpointing = 0;
@@ -403,9 +403,9 @@ LABEL_7:
         block[2] = __90__UISystemKeyboardDockController_dictationItemButtonWasPressed_withEvent_isRunningButton___block_invoke_71;
         block[3] = &unk_1E70FF800;
         v45 = v30;
-        v46 = self;
+        selfCopy = self;
         v49 = v21;
-        v47 = v12;
+        v47 = anyObject;
         v48 = v29;
         dispatch_after(v33, MEMORY[0x1E69E96A0], block);
       }
@@ -416,8 +416,8 @@ LABEL_7:
     else
     {
       dictationDockItem = self->_dictationDockItem;
-      v14 = [(UISystemKeyboardDockController *)self dockView];
-      [v14 setRightDockItem:dictationDockItem];
+      dockView = [(UISystemKeyboardDockController *)self dockView];
+      [dockView setRightDockItem:dictationDockItem];
 
       v15 = +[UIDictationController specificReasonTypeMicButtonOnKeyboard];
       v16 = +[UIDictationController sharedInstance];
@@ -561,28 +561,28 @@ uint64_t __90__UISystemKeyboardDockController_dictationItemButtonWasPressed_with
   return result;
 }
 
-- (void)globeItemButtonWasPressed:(id)a3 withEvent:(id)a4
+- (void)globeItemButtonWasPressed:(id)pressed withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 touchesForView:v6];
-  v9 = [v8 anyObject];
+  pressedCopy = pressed;
+  eventCopy = event;
+  v8 = [eventCopy touchesForView:pressedCopy];
+  anyObject = [v8 anyObject];
 
-  [v6 bounds];
+  [pressedCopy bounds];
   MidX = CGRectGetMidX(v37);
-  [v6 bounds];
-  [v6 convertPoint:0 toView:{MidX, CGRectGetMinY(v38)}];
+  [pressedCopy bounds];
+  [pressedCopy convertPoint:0 toView:{MidX, CGRectGetMinY(v38)}];
   v12 = v11;
   v14 = v13;
-  [v9 locationInView:v6];
+  [anyObject locationInView:pressedCopy];
   v16 = v15;
   v18 = v17;
-  v19 = [v6 pointInsideTapActionRegion:?];
-  if (![v9 phase] && !self->_globeItemButtonTouchDownTime)
+  v19 = [pressedCopy pointInsideTapActionRegion:?];
+  if (![anyObject phase] && !self->_globeItemButtonTouchDownTime)
   {
-    v20 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     globeItemButtonTouchDownTime = self->_globeItemButtonTouchDownTime;
-    self->_globeItemButtonTouchDownTime = v20;
+    self->_globeItemButtonTouchDownTime = date;
 
     self->_globeItemButtonTouchDownLocationInView.x = v16;
     self->_globeItemButtonTouchDownLocationInView.y = v18;
@@ -590,17 +590,17 @@ uint64_t __90__UISystemKeyboardDockController_dictationItemButtonWasPressed_with
 
   v22 = +[UIKeyboardInputMode dictationInputMode];
   v23 = +[UIKeyboardInputModeController sharedInputModeController];
-  v24 = [v23 currentInputMode];
-  v25 = [v22 isEqual:v24];
+  currentInputMode = [v23 currentInputMode];
+  v25 = [v22 isEqual:currentInputMode];
 
   if (v25)
   {
     v26 = +[UIDictationView sharedInstance];
-    [v26 globeButtonPressed:v6 withEvent:v7 location:{v12, v14}];
+    [v26 globeButtonPressed:pressedCopy withEvent:eventCopy location:{v12, v14}];
 
     v27 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v28 = [v27 _textInputSessionAnalytics];
-    [v28 didInsertKeyPressWithInputSource:1];
+    _textInputSessionAnalytics = [v27 _textInputSessionAnalytics];
+    [_textInputSessionAnalytics didInsertKeyPressWithInputSource:1];
   }
 
   else
@@ -611,12 +611,12 @@ uint64_t __90__UISystemKeyboardDockController_dictationItemButtonWasPressed_with
     v31[2] = __70__UISystemKeyboardDockController_globeItemButtonWasPressed_withEvent___block_invoke;
     v31[3] = &unk_1E70F8E18;
     v31[4] = self;
-    v32 = v9;
+    v32 = anyObject;
     v36 = v19;
-    v33 = v6;
+    v33 = pressedCopy;
     v34 = v16;
     v35 = v18;
-    v30 = [v29 buttonPressed:v33 withEvent:v7 location:v19 isLocationInsideViewHitArea:0 isForDictation:v31 tapAction:{v12, v14}];
+    v30 = [v29 buttonPressed:v33 withEvent:eventCopy location:v19 isLocationInsideViewHitArea:0 isForDictation:v31 tapAction:{v12, v14}];
   }
 }
 
@@ -681,12 +681,12 @@ void __70__UISystemKeyboardDockController_globeItemButtonWasPressed_withEvent___
   [v3 didKeyboardDockItemButtonPress:1 buttonType:2 buttonSize:objc_msgSend(*(a1 + 56) touchDown:"inputSource") touchUp:v4 touchDuration:v5 inputSource:{*(*(a1 + 48) + 1072), *(*(a1 + 48) + 1080), *(a1 + 64), *(a1 + 72), *(a1 + 80)}];
 }
 
-- (void)keyboardItemButtonWasTapped:(id)a3 withEvent:(id)a4
+- (void)keyboardItemButtonWasTapped:(id)tapped withEvent:(id)event
 {
-  v5 = [a4 touchesForView:a3];
-  v10 = [v5 anyObject];
+  v5 = [event touchesForView:tapped];
+  anyObject = [v5 anyObject];
 
-  if ([v10 phase] == 3)
+  if ([anyObject phase] == 3)
   {
     if (+[UIDictationController isRunning])
     {
@@ -707,57 +707,57 @@ void __70__UISystemKeyboardDockController_globeItemButtonWasPressed_withEvent___
   }
 }
 
-- (void)customDockItemWasTapped:(id)a3 withEvent:(id)a4
+- (void)customDockItemWasTapped:(id)tapped withEvent:(id)event
 {
-  v22 = a3;
-  v5 = a4;
-  v6 = [v22 customAction];
+  tappedCopy = tapped;
+  eventCopy = event;
+  customAction = [tappedCopy customAction];
 
-  if (v6)
+  if (customAction)
   {
-    v7 = [v22 view];
-    v8 = [v5 touchesForView:v7];
-    v9 = [v8 anyObject];
+    view = [tappedCopy view];
+    v8 = [eventCopy touchesForView:view];
+    anyObject = [v8 anyObject];
 
-    v10 = [v22 view];
-    [v9 locationInView:v10];
+    view2 = [tappedCopy view];
+    [anyObject locationInView:view2];
     v12 = v11;
     v14 = v13;
 
-    v15 = [v22 view];
-    v16 = [v15 pointInsideTapActionRegion:{v12, v14}];
+    view3 = [tappedCopy view];
+    v16 = [view3 pointInsideTapActionRegion:{v12, v14}];
 
-    if ([v9 phase] == 3)
+    if ([anyObject phase] == 3)
     {
-      v17 = [v22 lastTouchUp];
-      v18 = ([v9 isEqual:v17] ^ 1) & v16;
+      lastTouchUp = [tappedCopy lastTouchUp];
+      v18 = ([anyObject isEqual:lastTouchUp] ^ 1) & v16;
 
       if (v18 == 1)
       {
-        [v22 setLastTouchUp:v9];
-        v19 = [v22 customAction];
-        v20 = [v22 customAction];
-        v21 = [v20 sender];
-        [v19 performWithSender:v21 target:0];
+        [tappedCopy setLastTouchUp:anyObject];
+        customAction2 = [tappedCopy customAction];
+        customAction3 = [tappedCopy customAction];
+        sender = [customAction3 sender];
+        [customAction2 performWithSender:sender target:0];
       }
     }
   }
 }
 
-- (void)keyboardDockView:(id)a3 didPressDockItem:(id)a4 withEvent:(id)a5
+- (void)keyboardDockView:(id)view didPressDockItem:(id)item withEvent:(id)event
 {
-  v17 = a4;
-  v7 = a5;
-  v8 = [(UIKeyboardDockItem *)v17 view];
-  v9 = [v7 touchesForView:v8];
-  v10 = [v9 anyObject];
+  itemCopy = item;
+  eventCopy = event;
+  view = [(UIKeyboardDockItem *)itemCopy view];
+  v9 = [eventCopy touchesForView:view];
+  anyObject = [v9 anyObject];
 
-  if (![v10 phase])
+  if (![anyObject phase])
   {
     v11 = +[UIKeyboardImpl activeInstance];
-    v12 = [v11 continuousPathUnderway];
+    continuousPathUnderway = [v11 continuousPathUnderway];
 
-    if (v12)
+    if (continuousPathUnderway)
     {
       self->_isSuppressingDockItemTouch = 1;
     }
@@ -765,68 +765,68 @@ void __70__UISystemKeyboardDockController_globeItemButtonWasPressed_withEvent___
 
   if (!self->_isSuppressingDockItemTouch)
   {
-    v13 = [(UIKeyboardDockItem *)v17 customAction];
+    customAction = [(UIKeyboardDockItem *)itemCopy customAction];
 
-    if (v13)
+    if (customAction)
     {
-      [(UISystemKeyboardDockController *)self customDockItemWasTapped:v17 withEvent:v7];
+      [(UISystemKeyboardDockController *)self customDockItemWasTapped:itemCopy withEvent:eventCopy];
       goto LABEL_15;
     }
 
-    if (self->_dictationDockItem == v17 || self->_dictationRunningDockItem == v17)
+    if (self->_dictationDockItem == itemCopy || self->_dictationRunningDockItem == itemCopy)
     {
-      v16 = [(UIKeyboardDockItem *)v17 view];
-      [(UISystemKeyboardDockController *)self dictationItemButtonWasPressed:v16 withEvent:v7 isRunningButton:self->_dictationRunningDockItem == v17];
+      view2 = [(UIKeyboardDockItem *)itemCopy view];
+      [(UISystemKeyboardDockController *)self dictationItemButtonWasPressed:view2 withEvent:eventCopy isRunningButton:self->_dictationRunningDockItem == itemCopy];
       goto LABEL_14;
     }
 
-    if (self->_keyboardDockItem == v17)
+    if (self->_keyboardDockItem == itemCopy)
     {
-      v16 = [(UIKeyboardDockItem *)v17 view];
-      [(UISystemKeyboardDockController *)self keyboardItemButtonWasTapped:v16 withEvent:v7];
+      view2 = [(UIKeyboardDockItem *)itemCopy view];
+      [(UISystemKeyboardDockController *)self keyboardItemButtonWasTapped:view2 withEvent:eventCopy];
       goto LABEL_14;
     }
 
     globeDockItem = self->_globeDockItem;
-    if (globeDockItem == v17)
+    if (globeDockItem == itemCopy)
     {
-      v15 = [(UIKeyboardDockItem *)globeDockItem customAction];
+      customAction2 = [(UIKeyboardDockItem *)globeDockItem customAction];
 
-      if (!v15)
+      if (!customAction2)
       {
-        v16 = [(UIKeyboardDockItem *)v17 view];
-        [(UISystemKeyboardDockController *)self globeItemButtonWasPressed:v16 withEvent:v7];
+        view2 = [(UIKeyboardDockItem *)itemCopy view];
+        [(UISystemKeyboardDockController *)self globeItemButtonWasPressed:view2 withEvent:eventCopy];
 LABEL_14:
       }
     }
   }
 
 LABEL_15:
-  if ([v10 phase] == 3 || objc_msgSend(v10, "phase") == 4)
+  if ([anyObject phase] == 3 || objc_msgSend(anyObject, "phase") == 4)
   {
     self->_isSuppressingDockItemTouch = 0;
   }
 }
 
-- (void)updateDockItemsVisibilityWithCustomDictationAction:(id)a3
+- (void)updateDockItemsVisibilityWithCustomDictationAction:(id)action
 {
-  v59 = a3;
+  actionCopy = action;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 isCurrentEditResponderInEditingMode];
+  isCurrentEditResponderInEditingMode = [v4 isCurrentEditResponderInEditingMode];
 
-  if (v5)
+  if (isCurrentEditResponderInEditingMode)
   {
-    v6 = [(UIViewController *)self view];
-    v7 = [v6 _inheritedRenderConfig];
-    v8 = [v7 animatedBackground];
+    view = [(UIViewController *)self view];
+    _inheritedRenderConfig = [view _inheritedRenderConfig];
+    animatedBackground = [_inheritedRenderConfig animatedBackground];
 
-    v9 = [(UIViewController *)self view];
-    v10 = [v9 layer];
-    [v10 setAllowsGroupOpacity:v8 ^ 1u];
+    view2 = [(UIViewController *)self view];
+    layer = [view2 layer];
+    [layer setAllowsGroupOpacity:animatedBackground ^ 1u];
 
-    v11 = [(UIViewController *)self view];
-    v12 = [v11 layer];
-    [v12 setAllowsGroupBlending:v8 ^ 1u];
+    view3 = [(UIViewController *)self view];
+    layer2 = [view3 layer];
+    [layer2 setAllowsGroupBlending:animatedBackground ^ 1u];
 
     v13 = @"globe";
     v14 = +[UIKeyboardImpl activeInstance];
@@ -842,7 +842,7 @@ LABEL_15:
     }
 
     v17 = +[UIKeyboardInputModeController sharedInputModeController];
-    v18 = [v17 lastInputModeSwitchTriggeredByASCIIToggle];
+    lastInputModeSwitchTriggeredByASCIIToggle = [v17 lastInputModeSwitchTriggeredByASCIIToggle];
 
     if (v16)
     {
@@ -851,16 +851,16 @@ LABEL_15:
 
     else
     {
-      if (!v18)
+      if (!lastInputModeSwitchTriggeredByASCIIToggle)
       {
         v31 = +[UIKeyboardImpl activeInstance];
-        v32 = [v31 internationalKeyDisplayStringOnEmojiKeyboard];
+        internationalKeyDisplayStringOnEmojiKeyboard = [v31 internationalKeyDisplayStringOnEmojiKeyboard];
 
-        v33 = [(__CFString *)v32 length];
+        v33 = [(__CFString *)internationalKeyDisplayStringOnEmojiKeyboard length];
         v21 = v33 != 0;
         if (v33)
         {
-          v20 = v32;
+          v20 = internationalKeyDisplayStringOnEmojiKeyboard;
         }
 
         else
@@ -868,33 +868,33 @@ LABEL_15:
           v20 = v13;
         }
 
-        if (v32 == @"")
+        if (internationalKeyDisplayStringOnEmojiKeyboard == @"")
         {
           v54 = @"hand.draw";
 
-          v13 = v32;
+          v13 = internationalKeyDisplayStringOnEmojiKeyboard;
           v20 = v54;
         }
 
         else
         {
-          v13 = v32;
+          v13 = internationalKeyDisplayStringOnEmojiKeyboard;
         }
 
 LABEL_10:
 
-        v22 = [(UISystemKeyboardDockController *)self dockView];
-        v23 = [v22 leftDockItem];
+        dockView = [(UISystemKeyboardDockController *)self dockView];
+        leftDockItem = [dockView leftDockItem];
         v24 = [(UISystemKeyboardDockController *)self configuredGlyphWithName:v20];
-        [v23 setTitle:v20 image:v24];
+        [leftDockItem setTitle:v20 image:v24];
 
         v25 = +[UIKBAnalyticsDispatcher sharedInstance];
         [v25 setGlomojiTitle:v20];
 
         v26 = +[UIKeyboardImpl activeInstance];
-        v27 = [v26 isUsingDictationLayout];
+        isUsingDictationLayout = [v26 isUsingDictationLayout];
 
-        if (v59)
+        if (actionCopy)
         {
           [(UISystemKeyboardDockController *)self updateRightButtonItemWithCustomAction:?];
 LABEL_38:
@@ -902,11 +902,11 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        if (v27)
+        if (isUsingDictationLayout)
         {
           v28 = +[UIKeyboardInputModeController sharedInputModeController];
-          v29 = [v28 enabledDictationLanguages];
-          v30 = [v29 count] > 1;
+          enabledDictationLanguages = [v28 enabledDictationLanguages];
+          v30 = [enabledDictationLanguages count] > 1;
 
           [(UIKeyboardDockItem *)self->_globeDockItem setEnabled:v30];
           [(UISystemKeyboardDockController *)self setKeyboardDockItem];
@@ -916,42 +916,42 @@ LABEL_38:
         }
 
         v34 = +[UIKeyboardImpl activeInstance];
-        v35 = [v34 shouldShowInternationalKey];
+        shouldShowInternationalKey = [v34 shouldShowInternationalKey];
 
-        [(UIKeyboardDockItem *)self->_globeDockItem setEnabled:v35];
-        LODWORD(v35) = +[UIDictationController isRunning];
+        [(UIKeyboardDockItem *)self->_globeDockItem setEnabled:shouldShowInternationalKey];
+        LODWORD(shouldShowInternationalKey) = +[UIDictationController isRunning];
         v36 = +[UIKeyboardInputMode dictationInputMode];
-        v37 = [v36 isCurrentDictationLanguageOnDevice];
+        isCurrentDictationLanguageOnDevice = [v36 isCurrentDictationLanguageOnDevice];
 
-        if (v35)
+        if (shouldShowInternationalKey)
         {
           v38 = 3;
-          if (v37)
+          if (isCurrentDictationLanguageOnDevice)
           {
             v38 = 2;
           }
 
           v39 = *(&self->super.super.super.isa + OBJC_IVAR___UISystemKeyboardDockController__globeDockItem[v38]);
-          v40 = [(UISystemKeyboardDockController *)self dockView];
-          [(__CFString *)v40 setRightDockItem:v39];
+          dockView2 = [(UISystemKeyboardDockController *)self dockView];
+          [(__CFString *)dockView2 setRightDockItem:v39];
 LABEL_28:
 
           v48 = +[UIKeyboardInputModeController sharedInputModeController];
-          v49 = [v48 currentInputMode];
-          if ([v49 isExtensionInputMode])
+          currentInputMode = [v48 currentInputMode];
+          if ([currentInputMode isExtensionInputMode])
           {
             v50 = +[UIKeyboardInputModeController sharedInputModeController];
-            v51 = [v50 currentInputMode];
-            v52 = [v51 extensionInputModeHasDictation];
+            currentInputMode2 = [v50 currentInputMode];
+            extensionInputModeHasDictation = [currentInputMode2 extensionInputModeHasDictation];
 
-            if (v52)
+            if (extensionInputModeHasDictation)
             {
               v53 = 0;
 LABEL_37:
               [(UIKeyboardDockItem *)self->_dictationDockItem setEnabled:v53];
               [(UIKeyboardDockItem *)self->_dictationDockItem setActive:v53 & +[UIDictationController dictationIsFunctional]];
-              v58 = [(UISystemKeyboardDockController *)self dockView];
-              [v58 setCenterDockItem:0];
+              dockView3 = [(UISystemKeyboardDockController *)self dockView];
+              [dockView3 setCenterDockItem:0];
 
               [(UIView *)self->_stopDictationButton removeFromSuperview];
               goto LABEL_38;
@@ -966,8 +966,8 @@ LABEL_37:
           if ([v55 shouldShowDictationKey])
           {
             v56 = +[UIKeyboardInputModeController sharedInputModeController];
-            v57 = [v56 enabledDictationLanguages];
-            v53 = [v57 count] != 0;
+            enabledDictationLanguages2 = [v56 enabledDictationLanguages];
+            v53 = [enabledDictationLanguages2 count] != 0;
           }
 
           else
@@ -978,7 +978,7 @@ LABEL_37:
           goto LABEL_37;
         }
 
-        v40 = @"mic";
+        dockView2 = @"mic";
         v41 = +[UIKeyboard activeKeyboard];
         if (([v41 _lightStyleRenderConfig] & 1) == 0)
         {
@@ -987,22 +987,22 @@ LABEL_37:
           {
 LABEL_27:
             dictationDockItem = self->_dictationDockItem;
-            v43 = [(UISystemKeyboardDockController *)self configuredGlyphWithName:v40];
-            [(UIKeyboardDockItem *)dictationDockItem setTitle:v40 image:v43];
+            v43 = [(UISystemKeyboardDockController *)self configuredGlyphWithName:dockView2];
+            [(UIKeyboardDockItem *)dictationDockItem setTitle:dockView2 image:v43];
 
             dictationRunningDockItem = self->_dictationRunningDockItem;
-            v45 = [(UISystemKeyboardDockController *)self configuredGlyphWithName:v40];
-            [(UIKeyboardDockItem *)dictationRunningDockItem setTitle:v40 image:v45];
+            v45 = [(UISystemKeyboardDockController *)self configuredGlyphWithName:dockView2];
+            [(UIKeyboardDockItem *)dictationRunningDockItem setTitle:dockView2 image:v45];
 
             v46 = self->_dictationDockItem;
-            v47 = [(UISystemKeyboardDockController *)self dockView];
-            [v47 setRightDockItem:v46];
+            dockView4 = [(UISystemKeyboardDockController *)self dockView];
+            [dockView4 setRightDockItem:v46];
 
             goto LABEL_28;
           }
 
-          v41 = v40;
-          v40 = @"mic.fill";
+          v41 = dockView2;
+          dockView2 = @"mic.fill";
         }
 
         goto LABEL_27;
@@ -1019,9 +1019,9 @@ LABEL_27:
 LABEL_39:
 }
 
-- (id)configuredGlyphWithName:(id)a3
+- (id)configuredGlyphWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (!self->_priorityGlyphBundle)
   {
     v5 = [MEMORY[0x1E696AAE8] bundleWithPath:@"/System/Library/PrivateFrameworks/SFSymbols.framework/CoreGlyphsPriority.bundle"];
@@ -1029,11 +1029,11 @@ LABEL_39:
     self->_priorityGlyphBundle = v5;
   }
 
-  v7 = [(UISystemKeyboardDockController *)self imageConfig];
-  v8 = [UIImage imageNamed:v4 inBundle:self->_priorityGlyphBundle withConfiguration:v7];
+  imageConfig = [(UISystemKeyboardDockController *)self imageConfig];
+  v8 = [UIImage imageNamed:nameCopy inBundle:self->_priorityGlyphBundle withConfiguration:imageConfig];
   if (!v8)
   {
-    v8 = [UIImage _systemImageNamed:v4 withConfiguration:v7];
+    v8 = [UIImage _systemImageNamed:nameCopy withConfiguration:imageConfig];
   }
 
   return v8;

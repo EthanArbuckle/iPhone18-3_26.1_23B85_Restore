@@ -1,18 +1,18 @@
 @interface HMDMediaActionRouter
 - (HMDHome)home;
 - (HMDMediaActionRouter)init;
-- (HMDMediaActionRouter)initWithDataSource:(id)a3;
+- (HMDMediaActionRouter)initWithDataSource:(id)source;
 - (HMDMediaActionRouterDataSource)dataSource;
 - (HMDResidentDevice)targetResidentDeviceOverride;
 - (NSUUID)messageTargetUUID;
 - (OS_dispatch_queue)messageReceiveQueue;
-- (id)mediaProfileWithUUID:(id)a3;
+- (id)mediaProfileWithUUID:(id)d;
 - (void)_registerForMessages;
 - (void)dealloc;
-- (void)executeMediaActionWithSessionData:(id)a3 completion:(id)a4;
-- (void)gatherTargetDevicesForExecutingMediaActionWithProfiles:(id)a3 targetSystemMediaApplication:(BOOL)a4 outResidentDevicesInMediaAction:(id *)a5 outHomePodsInMediaAction:(id *)a6 outResidentDevicesSupportingMediaActions:(id *)a7 outHomePodsSupportingMediaActions:(id *)a8 outNonOdeonHomePodsSupportingMediaActions:(id *)a9 outNonOdeonResidentDevicesSupportingMediaActions:(id *)a10 outNonOdeonResidentDevicesInMediaAction:(id *)a11 outNonOdeonHomePodsInMediaAction:(id *)a12 dataSource:(id)a13;
-- (void)routeMediaActionForExecution:(id)a3 source:(unint64_t)a4 clientName:(id)a5 completion:(id)a6;
-- (void)routeMessage:(id)a3;
+- (void)executeMediaActionWithSessionData:(id)data completion:(id)completion;
+- (void)gatherTargetDevicesForExecutingMediaActionWithProfiles:(id)profiles targetSystemMediaApplication:(BOOL)application outResidentDevicesInMediaAction:(id *)action outHomePodsInMediaAction:(id *)mediaAction outResidentDevicesSupportingMediaActions:(id *)actions outHomePodsSupportingMediaActions:(id *)mediaActions outNonOdeonHomePodsSupportingMediaActions:(id *)supportingMediaActions outNonOdeonResidentDevicesSupportingMediaActions:(id *)self0 outNonOdeonResidentDevicesInMediaAction:(id *)self1 outNonOdeonHomePodsInMediaAction:(id *)self2 dataSource:(id)self3;
+- (void)routeMediaActionForExecution:(id)execution source:(unint64_t)source clientName:(id)name completion:(id)completion;
+- (void)routeMessage:(id)message;
 @end
 
 @implementation HMDMediaActionRouter
@@ -31,46 +31,46 @@
   return WeakRetained;
 }
 
-- (id)mediaProfileWithUUID:(id)a3
+- (id)mediaProfileWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDMediaActionRouter *)self dataSource];
-  v6 = [v5 mediaProfileWithUUID:v4];
+  dCopy = d;
+  dataSource = [(HMDMediaActionRouter *)self dataSource];
+  v6 = [dataSource mediaProfileWithUUID:dCopy];
 
   return v6;
 }
 
 - (HMDHome)home
 {
-  v2 = [(HMDMediaActionRouter *)self dataSource];
-  v3 = [v2 home];
+  dataSource = [(HMDMediaActionRouter *)self dataSource];
+  home = [dataSource home];
 
-  return v3;
+  return home;
 }
 
 - (OS_dispatch_queue)messageReceiveQueue
 {
-  v2 = [(HMDMediaActionRouter *)self dataSource];
-  v3 = [v2 workQueue];
+  dataSource = [(HMDMediaActionRouter *)self dataSource];
+  workQueue = [dataSource workQueue];
 
-  return v3;
+  return workQueue;
 }
 
 - (NSUUID)messageTargetUUID
 {
-  v2 = [(HMDMediaActionRouter *)self dataSource];
-  v3 = [v2 uuid];
+  dataSource = [(HMDMediaActionRouter *)self dataSource];
+  uuid = [dataSource uuid];
 
-  return v3;
+  return uuid;
 }
 
-- (void)executeMediaActionWithSessionData:(id)a3 completion:(id)a4
+- (void)executeMediaActionWithSessionData:(id)data completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -81,8 +81,8 @@
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDMediaActionRouter *)v9 mpcSessionController];
-  [v12 executeSessionWithSessionData:v6 completion:v7];
+  mpcSessionController = [(HMDMediaActionRouter *)selfCopy mpcSessionController];
+  [mpcSessionController executeSessionWithSessionData:dataCopy completion:completionCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -117,49 +117,49 @@ uint64_t __109__HMDMediaActionRouter_targetResidentDeviceForExecutingMediaAction
   return v3 & 1;
 }
 
-- (void)gatherTargetDevicesForExecutingMediaActionWithProfiles:(id)a3 targetSystemMediaApplication:(BOOL)a4 outResidentDevicesInMediaAction:(id *)a5 outHomePodsInMediaAction:(id *)a6 outResidentDevicesSupportingMediaActions:(id *)a7 outHomePodsSupportingMediaActions:(id *)a8 outNonOdeonHomePodsSupportingMediaActions:(id *)a9 outNonOdeonResidentDevicesSupportingMediaActions:(id *)a10 outNonOdeonResidentDevicesInMediaAction:(id *)a11 outNonOdeonHomePodsInMediaAction:(id *)a12 dataSource:(id)a13
+- (void)gatherTargetDevicesForExecutingMediaActionWithProfiles:(id)profiles targetSystemMediaApplication:(BOOL)application outResidentDevicesInMediaAction:(id *)action outHomePodsInMediaAction:(id *)mediaAction outResidentDevicesSupportingMediaActions:(id *)actions outHomePodsSupportingMediaActions:(id *)mediaActions outNonOdeonHomePodsSupportingMediaActions:(id *)supportingMediaActions outNonOdeonResidentDevicesSupportingMediaActions:(id *)self0 outNonOdeonResidentDevicesInMediaAction:(id *)self1 outNonOdeonHomePodsInMediaAction:(id *)self2 dataSource:(id)self3
 {
   v88 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a13;
+  profilesCopy = profiles;
+  sourceCopy = source;
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     v20 = HMFGetLogIdentifier();
-    v21 = [v16 enabledResidents];
+    enabledResidents = [sourceCopy enabledResidents];
     *buf = 138543618;
     v85 = v20;
     v86 = 2112;
-    v87 = v21;
+    v87 = enabledResidents;
     _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_DEBUG, "%{public}@Available residents: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v17);
-  v22 = [v16 enabledResidents];
+  enabledResidents2 = [sourceCopy enabledResidents];
   v81[0] = MEMORY[0x277D85DD0];
   v81[1] = 3221225472;
   v81[2] = __415__HMDMediaActionRouter_gatherTargetDevicesForExecutingMediaActionWithProfiles_targetSystemMediaApplication_outResidentDevicesInMediaAction_outHomePodsInMediaAction_outResidentDevicesSupportingMediaActions_outHomePodsSupportingMediaActions_outNonOdeonHomePodsSupportingMediaActions_outNonOdeonResidentDevicesSupportingMediaActions_outNonOdeonResidentDevicesInMediaAction_outNonOdeonHomePodsInMediaAction_dataSource___block_invoke;
   v81[3] = &unk_279729A80;
-  v83 = a4;
-  v82 = v16;
-  v58 = v16;
-  v23 = [v22 na_filter:v81];
+  applicationCopy = application;
+  v82 = sourceCopy;
+  v58 = sourceCopy;
+  v23 = [enabledResidents2 na_filter:v81];
 
-  v24 = [v58 appleMediaAccessories];
+  appleMediaAccessories = [v58 appleMediaAccessories];
   v79[0] = MEMORY[0x277D85DD0];
   v79[1] = 3221225472;
   v79[2] = __415__HMDMediaActionRouter_gatherTargetDevicesForExecutingMediaActionWithProfiles_targetSystemMediaApplication_outResidentDevicesInMediaAction_outHomePodsInMediaAction_outResidentDevicesSupportingMediaActions_outHomePodsSupportingMediaActions_outNonOdeonHomePodsSupportingMediaActions_outNonOdeonResidentDevicesSupportingMediaActions_outNonOdeonResidentDevicesInMediaAction_outNonOdeonHomePodsInMediaAction_dataSource___block_invoke_2;
   v79[3] = &unk_27972AE10;
-  v25 = v24;
+  v25 = appleMediaAccessories;
   v80 = v25;
   v56 = [v23 na_filter:v79];
   v77[0] = MEMORY[0x277D85DD0];
   v77[1] = 3221225472;
   v77[2] = __415__HMDMediaActionRouter_gatherTargetDevicesForExecutingMediaActionWithProfiles_targetSystemMediaApplication_outResidentDevicesInMediaAction_outHomePodsInMediaAction_outResidentDevicesSupportingMediaActions_outHomePodsSupportingMediaActions_outNonOdeonHomePodsSupportingMediaActions_outNonOdeonResidentDevicesSupportingMediaActions_outNonOdeonResidentDevicesInMediaAction_outNonOdeonHomePodsInMediaAction_dataSource___block_invoke_4;
   v77[3] = &unk_27972AE10;
-  v26 = v15;
+  v26 = profilesCopy;
   v78 = v26;
   v27 = [v23 na_filter:v77];
   v75[0] = MEMORY[0x277D85DD0];
@@ -216,22 +216,22 @@ uint64_t __109__HMDMediaActionRouter_targetResidentDeviceForExecutingMediaAction
   v43 = v40;
   v44 = [v42 na_filter:v63];
   v45 = v23;
-  *a7 = v23;
+  *actions = v23;
   v46 = v56;
-  *a8 = v46;
+  *mediaActions = v46;
   v47 = v46;
   v48 = v27;
-  *a5 = v27;
+  *action = v27;
   v49 = v29;
-  *a6 = v29;
+  *mediaAction = v29;
   v50 = v38;
-  *a11 = v38;
+  *inMediaAction = v38;
   v51 = v39;
-  *a12 = v39;
+  *podsInMediaAction = v39;
   v52 = v42;
-  *a10 = v42;
+  *devicesSupportingMediaActions = v42;
   v53 = v44;
-  *a9 = v44;
+  *supportingMediaActions = v44;
 
   v54 = *MEMORY[0x277D85DE8];
 }
@@ -603,25 +603,25 @@ uint64_t __415__HMDMediaActionRouter_gatherTargetDevicesForExecutingMediaActionW
   return v8;
 }
 
-- (void)routeMessage:(id)a3
+- (void)routeMessage:(id)message
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = [HMDMPCSessionData alloc];
-  v6 = [v4 messagePayload];
-  v7 = [(HMDMPCSessionData *)v5 initWithDictionaryRepresentation:v6 profileSource:self];
+  messagePayload = [messageCopy messagePayload];
+  v7 = [(HMDMPCSessionData *)v5 initWithDictionaryRepresentation:messagePayload profileSource:self];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __37__HMDMediaActionRouter_routeMessage___block_invoke;
   aBlock[3] = &unk_2797359D8;
-  v8 = v4;
+  v8 = messageCopy;
   v25 = v8;
   v9 = _Block_copy(aBlock);
   if (v7)
   {
-    v10 = [v8 messagePayload];
-    if ([v10 hmf_BOOLForKey:@"kDoNotForwardMessageKey"])
+    messagePayload2 = [v8 messagePayload];
+    if ([messagePayload2 hmf_BOOLForKey:@"kDoNotForwardMessageKey"])
     {
 
 LABEL_11:
@@ -629,8 +629,8 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v16 = [v8 messagePayload];
-    v17 = [v16 objectForKeyedSubscript:@"kDoNotForwardMessageKey"];
+    messagePayload3 = [v8 messagePayload];
+    v17 = [messagePayload3 objectForKeyedSubscript:@"kDoNotForwardMessageKey"];
 
     if (!v17)
     {
@@ -638,28 +638,28 @@ LABEL_11:
     }
 
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v8 remoteSourceDevice];
+      remoteSourceDevice = [v8 remoteSourceDevice];
       *buf = 138543618;
       v27 = v21;
       v28 = 2112;
-      v29 = v22;
+      v29 = remoteSourceDevice;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@Forwarding media action for remote device: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v18);
-    [(HMDMediaActionRouter *)v19 routeSessionDataForExecution:v7 encodePlaybackArchive:1 completion:v9];
+    [(HMDMediaActionRouter *)selfCopy routeSessionDataForExecution:v7 encodePlaybackArchive:1 completion:v9];
   }
 
   else
   {
     v11 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2955];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -766,25 +766,25 @@ uint64_t __110__HMDMediaActionRouter_handleNonResidentMediaActionExecutionWithSe
   }
 }
 
-- (void)routeMediaActionForExecution:(id)a3 source:(unint64_t)a4 clientName:(id)a5 completion:(id)a6
+- (void)routeMediaActionForExecution:(id)execution source:(unint64_t)source clientName:(id)name completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v27 = a6;
+  executionCopy = execution;
+  nameCopy = name;
+  completionCopy = completion;
   v11 = [HMDMPCSessionData alloc];
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v25 = [(HMDMPCSessionData *)v11 initWithMediaAction:v9 source:v12 clientName:v10];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
+  v25 = [(HMDMPCSessionData *)v11 initWithMediaAction:executionCopy source:v12 clientName:nameCopy];
 
-  v13 = [v9 mediaProfiles];
-  v14 = [v13 na_map:&__block_literal_global_89194];
+  mediaProfiles = [executionCopy mediaProfiles];
+  v14 = [mediaProfiles na_map:&__block_literal_global_89194];
 
   v15 = [HMDMediaPlaybackActionEvent alloc];
-  v16 = [v9 playbackArchive];
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "state")}];
-  v18 = [v9 volume];
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v20 = [v14 allObjects];
-  v21 = [(HMDMediaPlaybackActionEvent *)v15 initWithIsPlaybackArchivePresent:v16 != 0 playbackStateNumber:v17 volumeNumber:v18 sourceNumber:v19 sourceClientName:v10 accessories:v20];
+  playbackArchive = [executionCopy playbackArchive];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(executionCopy, "state")}];
+  volume = [executionCopy volume];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:source];
+  allObjects = [v14 allObjects];
+  v21 = [(HMDMediaPlaybackActionEvent *)v15 initWithIsPlaybackArchivePresent:playbackArchive != 0 playbackStateNumber:v17 volumeNumber:volume sourceNumber:v19 sourceClientName:nameCopy accessories:allObjects];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -794,10 +794,10 @@ uint64_t __110__HMDMediaActionRouter_handleNonResidentMediaActionExecutionWithSe
   objc_copyWeak(&v31, &location);
   v22 = v21;
   v29 = v22;
-  v23 = v27;
+  v23 = completionCopy;
   v30 = v23;
   v24 = _Block_copy(aBlock);
-  -[HMDMediaActionRouter routeSessionDataForExecution:encodePlaybackArchive:completion:](self, "routeSessionDataForExecution:encodePlaybackArchive:completion:", v25, [v9 encodePlaybackArchiveForExecution], v24);
+  -[HMDMediaActionRouter routeSessionDataForExecution:encodePlaybackArchive:completion:](self, "routeSessionDataForExecution:encodePlaybackArchive:completion:", v25, [executionCopy encodePlaybackArchiveForExecution], v24);
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(&location);
@@ -817,17 +817,17 @@ void __82__HMDMediaActionRouter_routeMediaActionForExecution_source_clientName_c
 - (void)_registerForMessages
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaActionRouter *)self dataSource];
-  v4 = [v3 home];
-  if (!isWatch() && v4)
+  dataSource = [(HMDMediaActionRouter *)self dataSource];
+  home = [dataSource home];
+  if (!isWatch() && home)
   {
-    v5 = [v3 msgDispatcher];
+    msgDispatcher = [dataSource msgDispatcher];
     v6 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
     v10[0] = v6;
-    v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:0 remoteAccessRequired:1];
+    v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:0 remoteAccessRequired:1];
     v10[1] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
-    [v5 registerForMessage:@"HMDMAR.RouteMediaAction" receiver:self policies:v8 selector:sel_routeMessage_];
+    [msgDispatcher registerForMessage:@"HMDMAR.RouteMediaAction" receiver:self policies:v8 selector:sel_routeMessage_];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -837,9 +837,9 @@ void __82__HMDMediaActionRouter_routeMediaActionForExecution_source_clientName_c
 {
   if (!isWatch())
   {
-    v3 = [(HMDMediaActionRouter *)self dataSource];
-    v4 = [v3 msgDispatcher];
-    [v4 deregisterForMessage:@"HMDMAR.RouteMediaAction" receiver:self];
+    dataSource = [(HMDMediaActionRouter *)self dataSource];
+    msgDispatcher = [dataSource msgDispatcher];
+    [msgDispatcher deregisterForMessage:@"HMDMAR.RouteMediaAction" receiver:self];
   }
 
   v5.receiver = self;
@@ -860,46 +860,46 @@ void __82__HMDMediaActionRouter_routeMediaActionForExecution_source_clientName_c
   objc_exception_throw(v7);
 }
 
-- (HMDMediaActionRouter)initWithDataSource:(id)a3
+- (HMDMediaActionRouter)initWithDataSource:(id)source
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   v54.receiver = self;
   v54.super_class = HMDMediaActionRouter;
   v5 = [(HMDMediaActionRouter *)&v54 init];
   if (v5)
   {
     v6 = [HMDMPCSessionController alloc];
-    v7 = [v4 logEventSubmitter];
-    v8 = [(HMDMPCSessionController *)v6 initWithLogEventSubmitter:v7];
+    logEventSubmitter = [sourceCopy logEventSubmitter];
+    v8 = [(HMDMPCSessionController *)v6 initWithLogEventSubmitter:logEventSubmitter];
     mpcSessionController = v5->_mpcSessionController;
     v5->_mpcSessionController = v8;
 
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
     [(HMDMediaActionRouter *)v5 _registerForMessages];
     if (isInternalBuild())
     {
-      v10 = [v4 home];
-      v11 = [MEMORY[0x277D0F8D0] sharedPreferences];
-      v12 = [v11 preferenceForKey:@"TargetResidentDeviceForMediaActions"];
-      v13 = [v12 stringValue];
+      home = [sourceCopy home];
+      mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+      v12 = [mEMORY[0x277D0F8D0] preferenceForKey:@"TargetResidentDeviceForMediaActions"];
+      stringValue = [v12 stringValue];
 
-      v14 = v13;
+      v14 = stringValue;
       v48 = v5;
-      if (v13)
+      if (stringValue)
       {
         v52 = 0u;
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v47 = v4;
-        obj = [v4 enabledResidents];
+        v47 = sourceCopy;
+        obj = [sourceCopy enabledResidents];
         v15 = [obj countByEnumeratingWithState:&v50 objects:v63 count:16];
         if (v15)
         {
           v16 = v15;
           v17 = *v51;
-          v46 = v10;
+          v46 = home;
 LABEL_6:
           v18 = 0;
           while (1)
@@ -910,17 +910,17 @@ LABEL_6:
             }
 
             v19 = *(*(&v50 + 1) + 8 * v18);
-            v20 = [v19 device];
-            v21 = [v20 name];
-            if ([v21 isEqualToString:v14])
+            device = [v19 device];
+            name = [device name];
+            if ([name isEqualToString:v14])
             {
               break;
             }
 
-            v22 = [v19 identifier];
-            v23 = [v22 UUIDString];
+            identifier = [v19 identifier];
+            uUIDString = [identifier UUIDString];
             v24 = v14;
-            v25 = [v23 isEqualToString:v14];
+            v25 = [uUIDString isEqualToString:v14];
 
             if (v25)
             {
@@ -932,7 +932,7 @@ LABEL_6:
             if (v16 == v18)
             {
               v16 = [obj countByEnumeratingWithState:&v50 objects:v63 count:16];
-              v10 = v46;
+              home = v46;
               if (v16)
               {
                 goto LABEL_6;
@@ -948,24 +948,24 @@ LABEL_19:
           v34 = objc_autoreleasePoolPush();
           v35 = v48;
           v36 = HMFGetOSLogHandle();
-          v10 = v46;
+          home = v46;
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
             HMFGetLogIdentifier();
             v37 = v45 = v34;
-            v38 = [v46 name];
-            v44 = [v19 device];
-            v39 = [v44 name];
-            v40 = [v19 identifier];
-            v41 = [v40 UUIDString];
+            name2 = [v46 name];
+            device2 = [v19 device];
+            name3 = [device2 name];
+            identifier2 = [v19 identifier];
+            uUIDString2 = [identifier2 UUIDString];
             *buf = 138544130;
             v56 = v37;
             v57 = 2112;
-            v58 = v38;
+            v58 = name2;
             v59 = 2112;
-            v60 = v39;
+            v60 = name3;
             v61 = 2112;
-            v62 = v41;
+            v62 = uUIDString2;
             _os_log_impl(&dword_2531F8000, v36, OS_LOG_TYPE_DEFAULT, "%{public}@For home %@, always using resident %@:%@ to execute Media Action scenes", buf, 0x2Au);
 
             v34 = v45;
@@ -975,7 +975,7 @@ LABEL_19:
           v33 = v19;
 
           objc_storeWeak(v35 + 3, v33);
-          v4 = v47;
+          sourceCopy = v47;
           v5 = v48;
           if (!v33)
           {
@@ -987,7 +987,7 @@ LABEL_19:
 
 LABEL_13:
 
-        v4 = v47;
+        sourceCopy = v47;
         v5 = v48;
       }
 
@@ -1000,17 +1000,17 @@ LABEL_15:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         v29 = HMFGetLogIdentifier();
-        v30 = [v10 name];
-        v31 = [v10 uuid];
-        v32 = [v31 UUIDString];
+        name4 = [home name];
+        uuid = [home uuid];
+        uUIDString3 = [uuid UUIDString];
         *buf = 138544130;
         v56 = v29;
         v57 = 2112;
         v58 = v24;
         v59 = 2112;
-        v60 = v30;
+        v60 = name4;
         v61 = 2112;
-        v62 = v32;
+        v62 = uUIDString3;
         _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@Couldn't find TargetResidentDevice %@ in home %@:%@", buf, 0x2Au);
       }
 

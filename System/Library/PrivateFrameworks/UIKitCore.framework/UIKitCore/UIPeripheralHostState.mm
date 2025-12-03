@@ -1,29 +1,29 @@
 @interface UIPeripheralHostState
-+ (id)stateWithGeometry:(UIPeripheralAnimationGeometry *)a3 inPositionIsDestination:(BOOL)a4;
++ (id)stateWithGeometry:(UIPeripheralAnimationGeometry *)geometry inPositionIsDestination:(BOOL)destination;
 - (UIPeripheralAnimationGeometry)geometry;
 - (void)dealloc;
-- (void)setGeometry:(UIPeripheralAnimationGeometry *)a3;
+- (void)setGeometry:(UIPeripheralAnimationGeometry *)geometry;
 @end
 
 @implementation UIPeripheralHostState
 
-+ (id)stateWithGeometry:(UIPeripheralAnimationGeometry *)a3 inPositionIsDestination:(BOOL)a4
++ (id)stateWithGeometry:(UIPeripheralAnimationGeometry *)geometry inPositionIsDestination:(BOOL)destination
 {
-  v4 = a4;
+  destinationCopy = destination;
   v6 = objc_alloc_init(UIPeripheralHostState);
-  v7 = *&a3->transform.c;
-  v11[4] = *&a3->transform.a;
+  v7 = *&geometry->transform.c;
+  v11[4] = *&geometry->transform.a;
   v11[5] = v7;
-  v11[6] = *&a3->transform.tx;
-  targetFrameHeightDelta = a3->targetFrameHeightDelta;
-  inPosition = a3->inPosition;
-  v11[0] = a3->outPosition;
+  v11[6] = *&geometry->transform.tx;
+  targetFrameHeightDelta = geometry->targetFrameHeightDelta;
+  inPosition = geometry->inPosition;
+  v11[0] = geometry->outPosition;
   v11[1] = inPosition;
-  size = a3->bounds.size;
-  v11[2] = a3->bounds.origin;
+  size = geometry->bounds.size;
+  v11[2] = geometry->bounds.origin;
   v11[3] = size;
   [(UIPeripheralHostState *)v6 setGeometry:v11];
-  [(UIPeripheralHostState *)v6 setInPositionIsDestination:v4];
+  [(UIPeripheralHostState *)v6 setInPositionIsDestination:destinationCopy];
 
   return v6;
 }
@@ -52,19 +52,19 @@
   return self;
 }
 
-- (void)setGeometry:(UIPeripheralAnimationGeometry *)a3
+- (void)setGeometry:(UIPeripheralAnimationGeometry *)geometry
 {
-  outPosition = a3->outPosition;
-  inPosition = a3->inPosition;
-  origin = a3->bounds.origin;
-  self->_geometry.bounds.size = a3->bounds.size;
+  outPosition = geometry->outPosition;
+  inPosition = geometry->inPosition;
+  origin = geometry->bounds.origin;
+  self->_geometry.bounds.size = geometry->bounds.size;
   self->_geometry.bounds.origin = origin;
   self->_geometry.inPosition = inPosition;
   self->_geometry.outPosition = outPosition;
-  v6 = *&a3->transform.a;
-  v7 = *&a3->transform.c;
-  v8 = *&a3->transform.tx;
-  self->_geometry.targetFrameHeightDelta = a3->targetFrameHeightDelta;
+  v6 = *&geometry->transform.a;
+  v7 = *&geometry->transform.c;
+  v8 = *&geometry->transform.tx;
+  self->_geometry.targetFrameHeightDelta = geometry->targetFrameHeightDelta;
   *&self->_geometry.transform.tx = v8;
   *&self->_geometry.transform.c = v7;
   *&self->_geometry.transform.a = v6;

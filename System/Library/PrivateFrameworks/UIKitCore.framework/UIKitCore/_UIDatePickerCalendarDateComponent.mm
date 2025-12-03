@@ -1,26 +1,26 @@
 @interface _UIDatePickerCalendarDateComponent
-+ (id)inlineDescriptionForComponents:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)inlineDescriptionForComponents:(id)components;
+- (BOOL)isEqual:(id)equal;
 - (NSCalendar)calendar;
 - (NSDate)date;
 - (NSDateComponents)components;
-- (_UIDatePickerCalendarDateComponent)initWithDate:(id)a3 calendar:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIDatePickerCalendarDateComponent)initWithDate:(id)date calendar:(id)calendar;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation _UIDatePickerCalendarDateComponent
 
-+ (id)inlineDescriptionForComponents:(id)a3
++ (id)inlineDescriptionForComponents:(id)components
 {
-  v4 = a3;
-  v5 = [a1 representedCalendarUnits];
+  componentsCopy = components;
+  representedCalendarUnits = [self representedCalendarUnits];
   v6 = objc_opt_new();
   for (i = 1; i != 64; ++i)
   {
-    if (((1 << i) & v5) != 0)
+    if (((1 << i) & representedCalendarUnits) != 0)
     {
-      v8 = [v4 valueForComponent:?];
+      v8 = [componentsCopy valueForComponent:?];
       v9 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
       [v6 addObject:v9];
     }
@@ -31,14 +31,14 @@
   return v10;
 }
 
-- (_UIDatePickerCalendarDateComponent)initWithDate:(id)a3 calendar:(id)a4
+- (_UIDatePickerCalendarDateComponent)initWithDate:(id)date calendar:(id)calendar
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dateCopy = date;
+  calendarCopy = calendar;
+  v9 = calendarCopy;
+  if (dateCopy)
   {
-    if (v8)
+    if (calendarCopy)
     {
       goto LABEL_3;
     }
@@ -46,8 +46,8 @@
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDateComponent.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDateComponent.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"date"}];
 
     if (v9)
     {
@@ -55,8 +55,8 @@
     }
   }
 
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDateComponent.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDateComponent.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
 
 LABEL_3:
   v20.receiver = self;
@@ -66,12 +66,12 @@ LABEL_3:
   {
     v11 = [v9 copy];
 
-    v12 = [objc_opt_class() representedCalendarUnits];
+    representedCalendarUnits = [objc_opt_class() representedCalendarUnits];
     v9 = v11;
-    v13 = [v9 components:v12 fromDate:v7];
+    v13 = [v9 components:representedCalendarUnits fromDate:dateCopy];
     v14 = [v9 dateFromComponents:v13];
 
-    v15 = [v9 components:v12 | 0x100000 fromDate:v14];
+    v15 = [v9 components:representedCalendarUnits | 0x100000 fromDate:v14];
     components = v10->_components;
     v10->_components = v15;
   }
@@ -79,7 +79,7 @@ LABEL_3:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -94,16 +94,16 @@ LABEL_3:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && [(_UIDatePickerCalendarDateComponent *)self isMemberOfClass:objc_opt_class()])
+  else if (equalCopy && [(_UIDatePickerCalendarDateComponent *)self isMemberOfClass:objc_opt_class()])
   {
     v6 = [(NSDateComponents *)self->_components isEqual:v5->_components];
   }
@@ -121,8 +121,8 @@ LABEL_3:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_UIDatePickerCalendarDateComponent *)self calendar];
-  v7 = [v6 description];
+  calendar = [(_UIDatePickerCalendarDateComponent *)self calendar];
+  v7 = [calendar description];
   v8 = [objc_opt_class() inlineDescriptionForComponents:self->_components];
   v9 = [v3 stringWithFormat:@"<%@: %p calendar: %@; components: %@>", v5, self, v7, v8];;
 
@@ -141,16 +141,16 @@ LABEL_3:
   date = self->_date;
   if (!date)
   {
-    v4 = [(NSDateComponents *)self->_components date];
-    if (!v4)
+    date = [(NSDateComponents *)self->_components date];
+    if (!date)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[_UIDatePickerCalendarDateComponent date]"];
-      [v7 handleFailureInFunction:v8 file:@"_UIDatePickerCalendarDateComponent.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+      [currentHandler handleFailureInFunction:v8 file:@"_UIDatePickerCalendarDateComponent.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"date"}];
     }
 
     v5 = self->_date;
-    self->_date = v4;
+    self->_date = date;
 
     date = self->_date;
   }
@@ -160,14 +160,14 @@ LABEL_3:
 
 - (NSCalendar)calendar
 {
-  v4 = [(NSDateComponents *)self->_components calendar];
-  if (!v4)
+  calendar = [(NSDateComponents *)self->_components calendar];
+  if (!calendar)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDateComponent.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerCalendarDateComponent.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"calendar"}];
   }
 
-  v5 = [v4 copy];
+  v5 = [calendar copy];
 
   return v5;
 }

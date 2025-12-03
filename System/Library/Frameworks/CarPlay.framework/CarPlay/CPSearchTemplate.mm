@@ -1,27 +1,27 @@
 @interface CPSearchTemplate
-- (CPSearchTemplate)searchTemplateWithIdentifier:(id)a3 selectedResultWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (CPSearchTemplate)searchTemplateWithIdentifier:(id)a3 updateSearchResultsForSearchText:(id)a4 completionResults:(id)a5;
+- (CPSearchTemplate)searchTemplateWithIdentifier:(id)identifier selectedResultWithIdentifier:(id)withIdentifier completionHandler:(id)handler;
+- (CPSearchTemplate)searchTemplateWithIdentifier:(id)identifier updateSearchResultsForSearchText:(id)text completionResults:(id)results;
 - (id)delegate;
-- (void)searchTemplateSearchButtonPressedWithIdentifier:(id)a3;
+- (void)searchTemplateSearchButtonPressedWithIdentifier:(id)identifier;
 @end
 
 @implementation CPSearchTemplate
 
-- (CPSearchTemplate)searchTemplateWithIdentifier:(id)a3 updateSearchResultsForSearchText:(id)a4 completionResults:(id)a5
+- (CPSearchTemplate)searchTemplateWithIdentifier:(id)identifier updateSearchResultsForSearchText:(id)text completionResults:(id)results
 {
-  v7 = a4;
-  v8 = a5;
+  textCopy = text;
+  resultsCopy = results;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __100__CPSearchTemplate_searchTemplateWithIdentifier_updateSearchResultsForSearchText_completionResults___block_invoke;
   block[3] = &unk_278A11768;
   block[4] = self;
-  v13 = v7;
-  v9 = v7;
+  v13 = textCopy;
+  v9 = textCopy;
   objc_copyWeak(&v15, &location);
-  v14 = v8;
-  v10 = v8;
+  v14 = resultsCopy;
+  v10 = resultsCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v15);
@@ -59,19 +59,19 @@ void __100__CPSearchTemplate_searchTemplateWithIdentifier_updateSearchResultsFor
   (*(*(a1 + 32) + 16))();
 }
 
-- (CPSearchTemplate)searchTemplateWithIdentifier:(id)a3 selectedResultWithIdentifier:(id)a4 completionHandler:(id)a5
+- (CPSearchTemplate)searchTemplateWithIdentifier:(id)identifier selectedResultWithIdentifier:(id)withIdentifier completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  withIdentifierCopy = withIdentifier;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__CPSearchTemplate_searchTemplateWithIdentifier_selectedResultWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_278A112F8;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
+  v13 = withIdentifierCopy;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = withIdentifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   return result;
@@ -159,14 +159,14 @@ LABEL_16:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)searchTemplateSearchButtonPressedWithIdentifier:(id)a3
+- (void)searchTemplateSearchButtonPressedWithIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = CarPlayFrameworkGeneralLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_236ED4000, v4, OS_LOG_TYPE_DEFAULT, "Search template search button pressed: %{public}@", buf, 0xCu);
   }
 

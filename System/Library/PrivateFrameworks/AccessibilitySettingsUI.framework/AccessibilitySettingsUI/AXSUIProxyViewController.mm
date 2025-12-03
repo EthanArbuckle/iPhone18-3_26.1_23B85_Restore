@@ -6,9 +6,9 @@
 
 - (AXSUIProxyViewController)init
 {
-  v3 = [(AXSUIProxyViewController *)self makeController];
+  makeController = [(AXSUIProxyViewController *)self makeController];
 
-  return v3;
+  return makeController;
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface TMBLControl
-- (BOOL)_setPropertyWithKey:(id)a3 property:(id)a4 client:(id)a5;
-- (BOOL)addDisplayModuleForBrightnessControlProxy:(id)a3;
+- (BOOL)_setPropertyWithKey:(id)key property:(id)property client:(id)client;
+- (BOOL)addDisplayModuleForBrightnessControlProxy:(id)proxy;
 - (BOOL)findDisplays;
-- (BOOL)handleDisplayModeUpdatePropertyHandler:(id)a3;
-- (BOOL)removeDisplayModuleWithID:(int)a3;
-- (BOOL)setInternalPropertyWithKey:(id)a3 property:(id)a4;
-- (BOOL)setPropertyWithKey:(id)a3 property:(id)a4 client:(id)a5;
+- (BOOL)handleDisplayModeUpdatePropertyHandler:(id)handler;
+- (BOOL)removeDisplayModuleWithID:(int)d;
+- (BOOL)setInternalPropertyWithKey:(id)key property:(id)property;
+- (BOOL)setPropertyWithKey:(id)key property:(id)property client:(id)client;
 - (BOOL)start;
-- (BOOL)useSyncBrightnessTransactionForDisplay:(id)a3;
+- (BOOL)useSyncBrightnessTransactionForDisplay:(id)display;
 - (TMBLControl)init;
 - (id)copyDisplayInfo;
 - (id)copyDisplayList;
 - (id)copyIdentifiers;
-- (id)copyPropertyInternalForKey:(id)a3;
-- (id)copyPropertyWithKey:(id)a3 client:(id)a4;
+- (id)copyPropertyInternalForKey:(id)key;
+- (id)copyPropertyWithKey:(id)key client:(id)client;
 - (id)copyStatusInfo;
-- (void)callBlockWithProperty:(id)a3 value:(id)a4;
+- (void)callBlockWithProperty:(id)property value:(id)value;
 - (void)clearDisplaySet;
 - (void)dealloc;
-- (void)handleCAWindowServerDisplay:(id)a3;
-- (void)registerNotificationBlock:(id)a3;
-- (void)scheduleDisplayModeCompletionTimerIn:(float)a3 forDisplayMode:(int64_t)a4;
-- (void)sendNotificationFor:(id)a3 withValue:(id)a4;
-- (void)sendSyncNotificationFor:(id)a3 withValue:(id)a4;
+- (void)handleCAWindowServerDisplay:(id)display;
+- (void)registerNotificationBlock:(id)block;
+- (void)scheduleDisplayModeCompletionTimerIn:(float)in forDisplayMode:(int64_t)mode;
+- (void)sendNotificationFor:(id)for withValue:(id)value;
+- (void)sendSyncNotificationFor:(id)for withValue:(id)value;
 - (void)stop;
 @end
 
@@ -30,29 +30,29 @@
 
 - (TMBLControl)init
 {
-  v29 = self;
+  selfCopy = self;
   v28 = a2;
   v27.receiver = self;
   v27.super_class = TMBLControl;
-  v29 = [(BLControl *)&v27 init];
-  if (!v29)
+  selfCopy = [(BLControl *)&v27 init];
+  if (!selfCopy)
   {
-    return v29;
+    return selfCopy;
   }
 
   v2 = os_log_create("com.apple.CoreBrightness.TMBacklightControl", "default");
-  v29->_logHandle = v2;
+  selfCopy->_logHandle = v2;
   v3 = dispatch_queue_create("BacklightControl - Primary", 0);
-  v29->_queue = v3;
-  if (v29->_queue)
+  selfCopy->_queue = v3;
+  if (selfCopy->_queue)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v29->_displays = v4;
-    if (!v29->_displays)
+    selfCopy->_displays = v4;
+    if (!selfCopy->_displays)
     {
-      if (v29->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        logHandle = v29->_logHandle;
+        logHandle = selfCopy->_logHandle;
       }
 
       else
@@ -83,12 +83,12 @@
       goto LABEL_23;
     }
 
-    return v29;
+    return selfCopy;
   }
 
-  if (v29->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v17 = v29->_logHandle;
+    v17 = selfCopy->_logHandle;
   }
 
   else
@@ -117,9 +117,9 @@
   }
 
 LABEL_23:
-  if (v29->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v9 = v29->_logHandle;
+    v9 = selfCopy->_logHandle;
   }
 
   else
@@ -147,14 +147,14 @@ LABEL_23:
     _os_log_error_impl(&dword_1DE8E5000, v6, v7, "error creating the TMBacklightControl", v18, 2u);
   }
 
-  MEMORY[0x1E69E5920](v29);
-  v29 = 0;
+  MEMORY[0x1E69E5920](selfCopy);
+  selfCopy = 0;
   return 0;
 }
 
 - (BOOL)start
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   v12 = 0;
   v13 = &v12;
@@ -167,7 +167,7 @@ LABEL_23:
   v7 = 0;
   v8 = __20__TMBLControl_start__block_invoke;
   v9 = &unk_1E867C080;
-  v10 = v18;
+  v10 = selfCopy;
   v11 = &v12;
   dispatch_sync(queue, &block);
   v4 = *(v13 + 24);
@@ -216,7 +216,7 @@ uint64_t __20__TMBLControl_start__block_invoke(uint64_t a1)
 
 - (void)stop
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   queue = self->_queue;
   block = MEMORY[0x1E69E9820];
@@ -224,7 +224,7 @@ uint64_t __20__TMBLControl_start__block_invoke(uint64_t a1)
   v5 = 0;
   v6 = __19__TMBLControl_stop__block_invoke;
   v7 = &unk_1E867B480;
-  v8 = v10;
+  v8 = selfCopy;
   dispatch_sync(queue, &block);
 }
 
@@ -267,31 +267,31 @@ uint64_t __19__TMBLControl_stop__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v2 = MEMORY[0x1E69E5920](self->_displays).n128_u64[0];
-  if (v6->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    v2 = MEMORY[0x1E69E5920](v6->_logHandle).n128_u64[0];
-    v6->_logHandle = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->_logHandle).n128_u64[0];
+    selfCopy->_logHandle = 0;
   }
 
-  if (v6->_queue)
+  if (selfCopy->_queue)
   {
     v3 = &OBJC_IVAR___CBAODState__thresholdsAPDeltaPBrightenBuckets;
-    dispatch_release(v6->_queue);
-    v6->_queue = 0;
+    dispatch_release(selfCopy->_queue);
+    selfCopy->_queue = 0;
   }
 
-  v4.receiver = v6;
+  v4.receiver = selfCopy;
   v4.super_class = TMBLControl;
   [(BLControl *)&v4 dealloc:*&v2];
 }
 
-- (id)copyPropertyInternalForKey:(id)a3
+- (id)copyPropertyInternalForKey:(id)key
 {
   v4 = 0;
-  if ([a3 isEqual:@"CBDisplayList"])
+  if ([key isEqual:@"CBDisplayList"])
   {
     return [(TMBLControl *)self copyDisplayList];
   }
@@ -299,13 +299,13 @@ uint64_t __19__TMBLControl_stop__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)copyPropertyWithKey:(id)a3 client:(id)a4
+- (id)copyPropertyWithKey:(id)key client:(id)client
 {
   v30 = *MEMORY[0x1E69E9840];
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
-  v25 = a4;
+  keyCopy = key;
+  clientCopy = client;
   v18 = 0;
   v19 = &v18;
   v20 = 1375731712;
@@ -320,13 +320,13 @@ uint64_t __19__TMBLControl_stop__block_invoke(uint64_t a1)
   v12 = __42__TMBLControl_copyPropertyWithKey_client___block_invoke;
   v13 = &unk_1E867C2B0;
   v17 = &v18;
-  v14 = v28;
-  v15 = a3;
-  v16 = a4;
+  v14 = selfCopy;
+  keyCopy2 = key;
+  clientCopy2 = client;
   dispatch_sync(queue, &block);
-  if (v28->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v28->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -346,7 +346,7 @@ uint64_t __19__TMBLControl_stop__block_invoke(uint64_t a1)
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v29, v26, v19[5]);
+    __os_log_helper_16_2_2_8_64_8_64(v29, keyCopy, v19[5]);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "key=%@ result=%@", v29, 0x16u);
   }
 
@@ -460,24 +460,24 @@ void __42__TMBLControl_copyPropertyWithKey_client___block_invoke(uint64_t a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setInternalPropertyWithKey:(id)a3 property:(id)a4
+- (BOOL)setInternalPropertyWithKey:(id)key property:(id)property
 {
   v5 = 0;
-  if ([a3 isEqual:@"DisplayMode"])
+  if ([key isEqual:@"DisplayMode"])
   {
-    return [(TMBLControl *)self handleDisplayModeUpdatePropertyHandler:a4];
+    return [(TMBLControl *)self handleDisplayModeUpdatePropertyHandler:property];
   }
 
   return v5;
 }
 
-- (BOOL)setPropertyWithKey:(id)a3 property:(id)a4 client:(id)a5
+- (BOOL)setPropertyWithKey:(id)key property:(id)property client:(id)client
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
+  keyCopy = key;
+  propertyCopy = property;
+  clientCopy = client;
   v18 = 0;
   v19 = &v18;
   v20 = 0x20000000;
@@ -490,10 +490,10 @@ void __42__TMBLControl_copyPropertyWithKey_client___block_invoke(uint64_t a1)
   v11 = __50__TMBLControl_setPropertyWithKey_property_client___block_invoke;
   v12 = &unk_1E867C2D8;
   v17 = &v18;
-  v13 = v27;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  v13 = selfCopy;
+  keyCopy2 = key;
+  propertyCopy2 = property;
+  clientCopy2 = client;
   dispatch_sync(queue, &block);
   v7 = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
@@ -507,23 +507,23 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
   return result;
 }
 
-- (BOOL)_setPropertyWithKey:(id)a3 property:(id)a4 client:(id)a5
+- (BOOL)_setPropertyWithKey:(id)key property:(id)property client:(id)client
 {
   v27 = *MEMORY[0x1E69E9840];
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
-  v21 = a4;
-  v20 = a5;
-  v19 = [(TMBLControl *)self setInternalPropertyWithKey:a3 property:a4];
+  keyCopy = key;
+  propertyCopy = property;
+  clientCopy = client;
+  v19 = [(TMBLControl *)self setInternalPropertyWithKey:key property:property];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [objc_msgSend(v22 "getKeyDisplayIDRef")];
-    v17 = -[NSMutableDictionary objectForKey:](v24->_displays, "objectForKey:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v18]);
+    v18 = [objc_msgSend(keyCopy "getKeyDisplayIDRef")];
+    v17 = -[NSMutableDictionary objectForKey:](selfCopy->_displays, "objectForKey:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v18]);
     if (v17)
     {
-      v19 = (v19 | [v17 setProperty:v21 forKey:{objc_msgSend(v22, "getKeyString")}]) != 0;
+      v19 = (v19 | [v17 setProperty:propertyCopy forKey:{objc_msgSend(keyCopy, "getKeyString")}]) != 0;
     }
   }
 
@@ -533,7 +533,7 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
     if (objc_opt_isKindOfClass())
     {
       memset(__b, 0, sizeof(__b));
-      obj = [(NSMutableDictionary *)v24->_displays allValues];
+      obj = [(NSMutableDictionary *)selfCopy->_displays allValues];
       v14 = [obj countByEnumeratingWithState:__b objects:v26 count:16];
       if (v14)
       {
@@ -550,7 +550,7 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
 
           v16 = 0;
           v16 = *(__b[1] + 8 * v11);
-          v5 = [v16 setProperty:v21 forKey:v22];
+          v5 = [v16 setProperty:propertyCopy forKey:keyCopy];
           v19 = (v19 | v5) != 0;
           ++v11;
           if (v9 + 1 >= v12)
@@ -567,9 +567,9 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
     }
   }
 
-  if (v24->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v24->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -589,7 +589,7 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_3_8_64_8_64_4_0(v25, v22, v21, v19);
+    __os_log_helper_16_2_3_8_64_8_64_4_0(v25, keyCopy, propertyCopy, v19);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "key=%@ property=%@ result=%d", v25, 0x1Cu);
   }
 
@@ -600,16 +600,16 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
 - (BOOL)findDisplays
 {
   v30 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
   v24 = 0;
-  v23 = [MEMORY[0x1E6979550] serverIfRunning];
-  if (v23)
+  serverIfRunning = [MEMORY[0x1E6979550] serverIfRunning];
+  if (serverIfRunning)
   {
-    v19 = [v23 displays];
-    if (v26->_logHandle)
+    displays = [serverIfRunning displays];
+    if (selfCopy->_logHandle)
     {
-      logHandle = v26->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -631,13 +631,13 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
     v17 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_1_8_66(v29, v19);
+      __os_log_helper_16_2_1_8_66(v29, displays);
       _os_log_impl(&dword_1DE8E5000, oslog, v17, "displays: %{public}@", v29, 0xCu);
     }
 
     memset(__b, 0, sizeof(__b));
-    obj = v19;
-    v8 = [v19 countByEnumeratingWithState:__b objects:v28 count:16];
+    obj = displays;
+    v8 = [displays countByEnumeratingWithState:__b objects:v28 count:16];
     if (v8)
     {
       v4 = *__b[2];
@@ -653,9 +653,9 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
 
         v16 = 0;
         v16 = *(__b[1] + 8 * v5);
-        if ([(TMBLControl *)v26 useSyncBrightnessTransactionForDisplay:v16])
+        if ([(TMBLControl *)selfCopy useSyncBrightnessTransactionForDisplay:v16])
         {
-          [(TMBLControl *)v26 handleCAWindowServerDisplay:v16];
+          [(TMBLControl *)selfCopy handleCAWindowServerDisplay:v16];
           v24 = 1;
         }
 
@@ -677,9 +677,9 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
 
   else
   {
-    if (v26->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v14 = v26->_logHandle;
+      v14 = selfCopy->_logHandle;
     }
 
     else
@@ -714,14 +714,14 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
   return v27 & 1;
 }
 
-- (BOOL)useSyncBrightnessTransactionForDisplay:(id)a3
+- (BOOL)useSyncBrightnessTransactionForDisplay:(id)display
 {
   v10 = *MEMORY[0x1E69E9840];
   v6 = 0;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ![a3 displayType])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ![display displayType])
   {
-    v6 = (CBU_IsSyncBrightnessTransactionsSupported() & 1) != 0 || ([a3 brightnessAvailable] & 1) != 0;
+    v6 = (CBU_IsSyncBrightnessTransactionsSupported() & 1) != 0 || ([display brightnessAvailable] & 1) != 0;
   }
 
   if (self->_logHandle)
@@ -746,7 +746,7 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_2_4_0_4_0(v9, [a3 displayId], v6);
+    __os_log_helper_16_0_2_4_0_4_0(v9, [display displayId], v6);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Display ID: %d, UseSyncBrightnessTransactionForDisplay: %d", v9, 0xEu);
   }
 
@@ -754,9 +754,9 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
   return v6;
 }
 
-- (void)handleCAWindowServerDisplay:(id)a3
+- (void)handleCAWindowServerDisplay:(id)display
 {
-  v3 = [[CBBrightnessProxyCA alloc] initWithCABrightnessControl:a3];
+  v3 = [[CBBrightnessProxyCA alloc] initWithCABrightnessControl:display];
   if (v3)
   {
     [(TMBLControl *)self addDisplayModuleForBrightnessControlProxy:v3];
@@ -764,21 +764,21 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
   }
 }
 
-- (BOOL)addDisplayModuleForBrightnessControlProxy:(id)a3
+- (BOOL)addDisplayModuleForBrightnessControlProxy:(id)proxy
 {
   v28 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
+  proxyCopy = proxy;
   v23 = 1;
-  -[TMBLControl removeDisplayModuleWithID:](self, "removeDisplayModuleWithID:", [a3 displayId]);
-  v22 = [[TMDisplayModule alloc] initWithBrightnessControl:v24 andQueue:v26->_queue];
+  -[TMBLControl removeDisplayModuleWithID:](self, "removeDisplayModuleWithID:", [proxy displayId]);
+  v22 = [[TMDisplayModule alloc] initWithBrightnessControl:proxyCopy andQueue:selfCopy->_queue];
   if (v22)
   {
     context = objc_autoreleasePoolPush();
-    if (v26->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v26->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -800,7 +800,7 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
     v20 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v27, [v24 displayId]);
+      __os_log_helper_16_0_1_4_0(v27, [proxyCopy displayId]);
       _os_log_impl(&dword_1DE8E5000, v21, v20, "Adding module for display with ID = %d", v27, 8u);
     }
 
@@ -809,18 +809,18 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
     v16 = 0;
     v17 = __57__TMBLControl_addDisplayModuleForBrightnessControlProxy___block_invoke;
     v18 = &unk_1E867B558;
-    v19 = v26;
+    v19 = selfCopy;
     [(CBModule *)v22 registerNotificationBlock:?];
-    -[NSMutableDictionary setObject:forKey:](v26->_displays, "setObject:forKey:", v22, [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v24, "displayId")}]);
+    -[NSMutableDictionary setObject:forKey:](selfCopy->_displays, "setObject:forKey:", v22, [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(proxyCopy, "displayId")}]);
     [(CBDisplayModule *)v22 start];
     objc_autoreleasePoolPop(context);
   }
 
   else
   {
-    if (v26->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v7 = v26->_logHandle;
+      v7 = selfCopy->_logHandle;
     }
 
     else
@@ -856,11 +856,11 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
   return v23 & 1;
 }
 
-- (BOOL)removeDisplayModuleWithID:(int)a3
+- (BOOL)removeDisplayModuleWithID:(int)d
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 1;
-  v6 = -[NSMutableDictionary objectForKey:](self->_displays, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:a3]);
+  v6 = -[NSMutableDictionary objectForKey:](self->_displays, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInt:d]);
   if (v6)
   {
     if (self->_logHandle)
@@ -885,13 +885,13 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_4_0(v10, v6, a3);
+      __os_log_helper_16_2_2_8_64_4_0(v10, v6, d);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Removing container %@ for ID %d", v10, 0x12u);
     }
 
     [v6 stop];
     [v6 unregisterNotificationBlock];
-    -[NSMutableDictionary removeObjectForKey:](self->_displays, "removeObjectForKey:", [MEMORY[0x1E696AD98] numberWithInt:a3]);
+    -[NSMutableDictionary removeObjectForKey:](self->_displays, "removeObjectForKey:", [MEMORY[0x1E696AD98] numberWithInt:d]);
   }
 
   else
@@ -906,10 +906,10 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
 - (void)clearDisplaySet
 {
   v13 = *MEMORY[0x1E69E9840];
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = v11->_displays;
+  obj = selfCopy->_displays;
   v7 = [(NSMutableDictionary *)obj countByEnumeratingWithState:__b objects:v12 count:16];
   if (v7)
   {
@@ -941,23 +941,23 @@ uint64_t __50__TMBLControl_setPropertyWithKey_property_client___block_invoke(uin
     }
   }
 
-  [(NSMutableDictionary *)v11->_displays removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_displays removeAllObjects];
   *MEMORY[0x1E69E9840];
 }
 
-- (void)registerNotificationBlock:(id)a3
+- (void)registerNotificationBlock:(id)block
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  blockCopy = block;
   queue = self->_queue;
   block = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __41__TMBLControl_registerNotificationBlock___block_invoke;
   v8 = &unk_1E867C300;
-  v9 = v13;
-  v10 = a3;
+  v9 = selfCopy;
+  blockCopy2 = block;
   dispatch_sync(queue, &block);
 }
 
@@ -975,17 +975,17 @@ void __41__TMBLControl_registerNotificationBlock___block_invoke(uint64_t a1)
   }
 }
 
-- (void)callBlockWithProperty:(id)a3 value:(id)a4
+- (void)callBlockWithProperty:(id)property value:(id)value
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  propertyCopy = property;
+  valueCopy = value;
   if (self->_callback)
   {
-    v13 = _Block_copy(v17->_callback);
-    MEMORY[0x1E69E5928](v15);
-    MEMORY[0x1E69E5928](v14);
+    v13 = _Block_copy(selfCopy->_callback);
+    MEMORY[0x1E69E5928](propertyCopy);
+    MEMORY[0x1E69E5928](valueCopy);
     global_queue = dispatch_get_global_queue(2, 0);
     v5 = MEMORY[0x1E69E9820];
     v6 = -1073741824;
@@ -993,8 +993,8 @@ void __41__TMBLControl_registerNotificationBlock___block_invoke(uint64_t a1)
     v8 = __43__TMBLControl_callBlockWithProperty_value___block_invoke;
     v9 = &unk_1E867C0A8;
     v12 = v13;
-    v10 = v15;
-    v11 = v14;
+    v10 = propertyCopy;
+    v11 = valueCopy;
     dispatch_async(global_queue, &v5);
   }
 }
@@ -1010,22 +1010,22 @@ double __43__TMBLControl_callBlockWithProperty_value___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)handleDisplayModeUpdatePropertyHandler:(id)a3
+- (BOOL)handleDisplayModeUpdatePropertyHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [a3 objectForKey:@"Value"];
-    v11 = [a3 objectForKey:@"TransitionLength"];
+    v12 = [handler objectForKey:@"Value"];
+    v11 = [handler objectForKey:@"TransitionLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v12 integerValue];
+        integerValue = [v12 integerValue];
         [v11 floatValue];
         v9 = v3;
         if (self->_logHandle)
@@ -1050,12 +1050,12 @@ double __43__TMBLControl_callBlockWithProperty_value___block_invoke(uint64_t a1)
 
         if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
         {
-          __os_log_helper_16_2_3_8_66_4_0_8_0(v15, [CBDisplayStateUtilities stringForDisplayMode:v10], v10, COERCE__INT64(v9));
+          __os_log_helper_16_2_3_8_66_4_0_8_0(v15, [CBDisplayStateUtilities stringForDisplayMode:integerValue], integerValue, COERCE__INT64(v9));
           _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "[Display Mode] Update handler - new mode: %{public}@ (%d), transition length: %f", v15, 0x1Cu);
         }
 
         *&v4 = v9 + 0.02;
-        [(TMBLControl *)self scheduleDisplayModeCompletionTimerIn:v10 forDisplayMode:v4];
+        [(TMBLControl *)self scheduleDisplayModeCompletionTimerIn:integerValue forDisplayMode:v4];
       }
     }
   }
@@ -1065,20 +1065,20 @@ double __43__TMBLControl_callBlockWithProperty_value___block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)scheduleDisplayModeCompletionTimerIn:(float)a3 forDisplayMode:(int64_t)a4
+- (void)scheduleDisplayModeCompletionTimerIn:(float)in forDisplayMode:(int64_t)mode
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = a4;
+  inCopy = in;
+  modeCopy = mode;
   queue = self->_queue;
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __67__TMBLControl_scheduleDisplayModeCompletionTimerIn_forDisplayMode___block_invoke;
   v9 = &unk_1E867B9D8;
-  v10 = v15;
-  v11 = a4;
+  v10 = selfCopy;
+  modeCopy2 = mode;
   dispatch_async(queue, &v5);
 }
 
@@ -1117,7 +1117,7 @@ void __67__TMBLControl_scheduleDisplayModeCompletionTimerIn_forDisplayMode___blo
   *MEMORY[0x1E69E9840];
 }
 
-- (void)sendSyncNotificationFor:(id)a3 withValue:(id)a4
+- (void)sendSyncNotificationFor:(id)for withValue:(id)value
 {
   v10 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -1143,11 +1143,11 @@ void __67__TMBLControl_scheduleDisplayModeCompletionTimerIn_forDisplayMode___blo
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v9, a3, a4);
+    __os_log_helper_16_2_2_8_64_8_64(v9, for, value);
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "key=%@ value=%@", v9, 0x16u);
   }
 
-  [(TMBLControl *)self handleNotificationInternalForKey:a3 withValue:a4];
+  [(TMBLControl *)self handleNotificationInternalForKey:for withValue:value];
   if (self->_callback)
   {
     (*(self->_callback + 2))();
@@ -1156,23 +1156,23 @@ void __67__TMBLControl_scheduleDisplayModeCompletionTimerIn_forDisplayMode___blo
   *MEMORY[0x1E69E9840];
 }
 
-- (void)sendNotificationFor:(id)a3 withValue:(id)a4
+- (void)sendNotificationFor:(id)for withValue:(id)value
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  v13 = a4;
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](v13);
-  queue = v16->_queue;
+  forCopy = for;
+  valueCopy = value;
+  MEMORY[0x1E69E5928](for);
+  MEMORY[0x1E69E5928](valueCopy);
+  queue = selfCopy->_queue;
   block = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __45__TMBLControl_sendNotificationFor_withValue___block_invoke;
   v9 = &unk_1E867B750;
-  v10 = v16;
-  v11 = v14;
-  v12 = v13;
+  v10 = selfCopy;
+  v11 = forCopy;
+  v12 = valueCopy;
   dispatch_async(queue, &block);
 }
 
@@ -1186,13 +1186,13 @@ double __45__TMBLControl_sendNotificationFor_withValue___block_invoke(uint64_t a
 
 - (id)copyDisplayList
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4 = 0;
   if ([(NSMutableDictionary *)self->_displays count])
   {
     v3 = objc_alloc(MEMORY[0x1E695DF20]);
-    return [v3 initWithObjectsAndKeys:{-[NSMutableDictionary allKeys](v6->_displays, "allKeys"), @"CBDisplayDeviceIDs", 0}];
+    return [v3 initWithObjectsAndKeys:{-[NSMutableDictionary allKeys](selfCopy->_displays, "allKeys"), @"CBDisplayDeviceIDs", 0}];
   }
 
   return v4;
@@ -1200,10 +1200,10 @@ double __45__TMBLControl_sendNotificationFor_withValue___block_invoke(uint64_t a
 
 - (id)copyDisplayInfo
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  displays = v12->_displays;
+  displays = selfCopy->_displays;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
@@ -1234,9 +1234,9 @@ double __30__TMBLControl_copyDisplayInfo__block_invoke(uint64_t a1, uint64_t a2,
 - (id)copyStatusInfo
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(TMBLControl *)self copyIdentifiers];
-  [v4 enumerateObjectsUsingBlock:?];
-  MEMORY[0x1E69E5920](v4);
+  copyIdentifiers = [(TMBLControl *)self copyIdentifiers];
+  [copyIdentifiers enumerateObjectsUsingBlock:?];
+  MEMORY[0x1E69E5920](copyIdentifiers);
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (v3)
   {
@@ -1278,7 +1278,7 @@ double __29__TMBLControl_copyStatusInfo__block_invoke_2(uint64_t a1, uint64_t a2
 
 - (id)copyIdentifiers
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{@"CBDisplayList", @"CBDisplayInfo", @"BLControlAlsSupported", @"CBClamshellState", 0}];
 }

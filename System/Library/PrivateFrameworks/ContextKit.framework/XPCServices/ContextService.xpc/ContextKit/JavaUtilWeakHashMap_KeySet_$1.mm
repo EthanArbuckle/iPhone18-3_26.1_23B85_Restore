@@ -1,17 +1,17 @@
 @interface JavaUtilWeakHashMap_KeySet_$1
-- (id)getWithJavaUtilMap_Entry:(id)a3;
+- (id)getWithJavaUtilMap_Entry:(id)entry;
 @end
 
 @implementation JavaUtilWeakHashMap_KeySet_$1
 
-- (id)getWithJavaUtilMap_Entry:(id)a3
+- (id)getWithJavaUtilMap_Entry:(id)entry
 {
-  if (!a3)
+  if (!entry)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 getKey];
+  return [entry getKey];
 }
 
 @end

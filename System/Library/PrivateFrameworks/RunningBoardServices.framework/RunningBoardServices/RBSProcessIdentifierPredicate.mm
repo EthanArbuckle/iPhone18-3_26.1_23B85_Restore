@@ -1,7 +1,7 @@
 @interface RBSProcessIdentifierPredicate
-- (BOOL)isEqual:(id)a3;
-- (RBSProcessIdentifierPredicate)initWithIdentifier:(id)a3;
-- (RBSProcessIdentifierPredicate)initWithRBSXPCCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RBSProcessIdentifierPredicate)initWithIdentifier:(id)identifier;
+- (RBSProcessIdentifierPredicate)initWithRBSXPCCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -25,10 +25,10 @@
   return v5;
 }
 
-- (RBSProcessIdentifierPredicate)initWithIdentifier:(id)a3
+- (RBSProcessIdentifierPredicate)initWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(RBSProcessIdentifierPredicate *)a2 initWithIdentifier:?];
   }
@@ -39,16 +39,16 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_identifier, a3);
+    objc_storeStrong(&v7->_identifier, identifier);
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_10;
   }
@@ -60,7 +60,7 @@
   }
 
   identifier = self->_identifier;
-  v8 = v4->_identifier;
+  v8 = equalCopy->_identifier;
   if (identifier == v8)
   {
 LABEL_10:
@@ -91,15 +91,15 @@ LABEL_11:
   return v6;
 }
 
-- (RBSProcessIdentifierPredicate)initWithRBSXPCCoder:(id)a3
+- (RBSProcessIdentifierPredicate)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RBSProcessIdentifierPredicate;
   v5 = [(RBSProcessIdentifierPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }

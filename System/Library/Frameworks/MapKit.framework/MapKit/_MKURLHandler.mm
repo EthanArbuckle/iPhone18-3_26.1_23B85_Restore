@@ -1,39 +1,39 @@
 @interface _MKURLHandler
-+ (unsigned)_MKGetURLSchemeTypeFor:(id)a3;
-- (BOOL)_handleMapItemHandlesURL:(id)a3 sourceApplication:(id)a4 context:(id)a5;
-- (BOOL)_handleMapItemURL:(id)a3 sourceApplication:(id)a4 context:(id)a5;
-- (BOOL)_handleMapItems:(id)a3 withOptions:(id)a4 url:(id)a5 sourceApplication:(id)a6 context:(id)a7;
-- (BOOL)_handleMapsURL:(id)a3 sourceApplication:(id)a4 context:(id)a5;
-- (BOOL)_handleSharedMapURL:(id)a3 sourceApplication:(id)a4 context:(id)a5;
-- (BOOL)_handleShortURL:(id)a3 sourceApplication:(id)a4 context:(id)a5;
-- (BOOL)_treatAllCuratedCollectionsFrom:(id)a3;
-- (BOOL)_treatCarDestinationsFrom:(id)a3;
-- (BOOL)_treatCollectionFrom:(id)a3;
-- (BOOL)_treatContentProvider:(id)a3;
-- (BOOL)_treatCuratedCollectionFrom:(id)a3;
-- (BOOL)_treatExploreGuidesFrom:(id)a3;
-- (BOOL)_treatFavoritesFrom:(id)a3;
-- (BOOL)_treatMuninViewStateFrom:(id)a3;
-- (BOOL)_treatNavigationDirectionsFrom:(id)a3;
-- (BOOL)_treatOfflineDownloadFrom:(id)a3;
-- (BOOL)_treatPinPositionFrom:(id)a3;
-- (BOOL)_treatPublisherFrom:(id)a3;
-- (BOOL)_treatRegionFrom:(id)a3;
-- (BOOL)_treatReportAProblemFrom:(id)a3;
-- (BOOL)_treatReportAnIncidentFrom:(id)a3;
-- (BOOL)_treatSearchFrom:(id)a3;
-- (BOOL)_treatSearchRegionFrom:(id)a3;
-- (BOOL)_treatShowMyLocationCardFrom:(id)a3;
-- (BOOL)_treatShowParkedCarFrom:(id)a3;
-- (BOOL)_treatTesterFrom:(id)a3;
-- (BOOL)_treatTransitLineFrom:(id)a3;
-- (BOOL)handleURL:(id)a3 sourceApplication:(id)a4 context:(id)a5;
++ (unsigned)_MKGetURLSchemeTypeFor:(id)for;
+- (BOOL)_handleMapItemHandlesURL:(id)l sourceApplication:(id)application context:(id)context;
+- (BOOL)_handleMapItemURL:(id)l sourceApplication:(id)application context:(id)context;
+- (BOOL)_handleMapItems:(id)items withOptions:(id)options url:(id)url sourceApplication:(id)application context:(id)context;
+- (BOOL)_handleMapsURL:(id)l sourceApplication:(id)application context:(id)context;
+- (BOOL)_handleSharedMapURL:(id)l sourceApplication:(id)application context:(id)context;
+- (BOOL)_handleShortURL:(id)l sourceApplication:(id)application context:(id)context;
+- (BOOL)_treatAllCuratedCollectionsFrom:(id)from;
+- (BOOL)_treatCarDestinationsFrom:(id)from;
+- (BOOL)_treatCollectionFrom:(id)from;
+- (BOOL)_treatContentProvider:(id)provider;
+- (BOOL)_treatCuratedCollectionFrom:(id)from;
+- (BOOL)_treatExploreGuidesFrom:(id)from;
+- (BOOL)_treatFavoritesFrom:(id)from;
+- (BOOL)_treatMuninViewStateFrom:(id)from;
+- (BOOL)_treatNavigationDirectionsFrom:(id)from;
+- (BOOL)_treatOfflineDownloadFrom:(id)from;
+- (BOOL)_treatPinPositionFrom:(id)from;
+- (BOOL)_treatPublisherFrom:(id)from;
+- (BOOL)_treatRegionFrom:(id)from;
+- (BOOL)_treatReportAProblemFrom:(id)from;
+- (BOOL)_treatReportAnIncidentFrom:(id)from;
+- (BOOL)_treatSearchFrom:(id)from;
+- (BOOL)_treatSearchRegionFrom:(id)from;
+- (BOOL)_treatShowMyLocationCardFrom:(id)from;
+- (BOOL)_treatShowParkedCarFrom:(id)from;
+- (BOOL)_treatTesterFrom:(id)from;
+- (BOOL)_treatTransitLineFrom:(id)from;
+- (BOOL)handleURL:(id)l sourceApplication:(id)application context:(id)context;
 - (_MKURLHandlerDelegate)delegate;
-- (id)_createMKURLHandlerError:(id)a3;
-- (void)_treatGenericOptionsFrom:(id)a3;
-- (void)_treatMapTypeFrom:(id)a3;
-- (void)_treatTrackingModeFrom:(id)a3;
-- (void)adjustOptionsForRAP:(id)a3 options:(id *)a4;
+- (id)_createMKURLHandlerError:(id)error;
+- (void)_treatGenericOptionsFrom:(id)from;
+- (void)_treatMapTypeFrom:(id)from;
+- (void)_treatTrackingModeFrom:(id)from;
+- (void)adjustOptionsForRAP:(id)p options:(id *)options;
 @end
 
 @implementation _MKURLHandler
@@ -45,34 +45,34 @@
   return WeakRetained;
 }
 
-- (BOOL)_handleMapItems:(id)a3 withOptions:(id)a4 url:(id)a5 sourceApplication:(id)a6 context:(id)a7
+- (BOOL)_handleMapItems:(id)items withOptions:(id)options url:(id)url sourceApplication:(id)application context:(id)context
 {
   v150[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  itemsCopy = items;
+  optionsCopy = options;
+  urlCopy = url;
+  applicationCopy = application;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
-    v112 = v16;
-    v147 = v13;
-    [(_MKURLHandler *)self adjustOptionsForRAP:v14 options:&v147];
+    v112 = contextCopy;
+    v147 = optionsCopy;
+    [(_MKURLHandler *)self adjustOptionsForRAP:urlCopy options:&v147];
     v18 = v147;
 
-    if (![v15 length])
+    if (![applicationCopy length])
     {
       v19 = [v18 objectForKey:@"MKLaunchOptionsReferralIdentifierKey"];
 
-      v15 = v19;
+      applicationCopy = v19;
     }
 
     v20 = [v18 objectForKey:@"MKLaunchOptionsFromTimeToLeaveNotificationKey"];
-    v21 = [v20 BOOLValue];
+    bOOLValue = [v20 BOOLValue];
 
-    if (v21)
+    if (bOOLValue)
     {
       v22 = [v18 objectForKey:@"_MKLaunchOptionsRoutingArrivalDateKey"];
       objc_opt_class();
@@ -93,29 +93,29 @@
     }
 
     v24 = objc_loadWeakRetained(&self->_delegate);
-    v25 = [v14 scheme];
-    [v24 URLHandler:self setSchemeForCapture:v25 sourceApplication:v15 isLaunchedFromTTL:v21 ttlEventTime:v113];
+    scheme = [urlCopy scheme];
+    [v24 URLHandler:self setSchemeForCapture:scheme sourceApplication:applicationCopy isLaunchedFromTTL:bOOLValue ttlEventTime:v113];
 
     v114 = [v18 objectForKey:@"MKLaunchOptionsMapType"];
     if (v114)
     {
-      v26 = [v114 unsignedIntegerValue];
+      unsignedIntegerValue = [v114 unsignedIntegerValue];
       v27 = objc_loadWeakRetained(&self->_delegate);
-      [v27 URLHandler:self setMapType:v26];
+      [v27 URLHandler:self setMapType:unsignedIntegerValue];
     }
 
     v28 = [v18 objectForKey:@"MKLaunchOptionsShowsTraffic"];
     v29 = v28;
     if (v28)
     {
-      v30 = [v28 BOOLValue];
+      bOOLValue2 = [v28 BOOLValue];
       v31 = objc_loadWeakRetained(&self->_delegate);
-      [v31 URLHandler:self setShowTraffic:v30];
+      [v31 URLHandler:self setShowTraffic:bOOLValue2];
     }
 
-    if ([v12 indexOfObjectPassingTest:&__block_literal_global_4863] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([itemsCopy indexOfObjectPassingTest:&__block_literal_global_4863] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([v12 count])
+      if ([itemsCopy count])
       {
         v32 = [v18 objectForKey:@"MKLaunchOptionsDirectionsMode"];
         if (v32)
@@ -138,7 +138,7 @@ LABEL_24:
           v139[3] = &unk_1E76C7038;
           v139[4] = &v141;
           v139[5] = v140;
-          [v12 enumerateObjectsUsingBlock:v139];
+          [itemsCopy enumerateObjectsUsingBlock:v139];
           v40 = objc_loadWeakRetained(&self->_delegate);
           v41 = objc_opt_respondsToSelector();
 
@@ -150,7 +150,7 @@ LABEL_24:
             if ((v43 & 1) == 0)
             {
               v47 = objc_loadWeakRetained(&self->_delegate);
-              v23 = [v47 URLHandler:self launchIntoDirectionsWithMapItems:v12 options:v18 context:v112];
+              v23 = [v47 URLHandler:self launchIntoDirectionsWithMapItems:itemsCopy options:v18 context:v112];
 LABEL_67:
 
               _Block_object_dispose(v140, 8);
@@ -166,37 +166,37 @@ LABEL_67:
             if ([v44 _hasResolvablePartialInformation])
             {
               v45 = +[MKMapService sharedService];
-              v46 = [v142[5] _addressFormattedAsSinglelineAddress];
-              v47 = [v45 ticketForForwardGeocodeString:v46 traits:0];
+              _addressFormattedAsSinglelineAddress = [v142[5] _addressFormattedAsSinglelineAddress];
+              v47 = [v45 ticketForForwardGeocodeString:_addressFormattedAsSinglelineAddress traits:0];
 
               v133[0] = MEMORY[0x1E69E9820];
               v133[1] = 3221225472;
               v133[2] = __75___MKURLHandler__handleMapItems_withOptions_url_sourceApplication_context___block_invoke_2;
               v133[3] = &unk_1E76C7060;
               v138 = v140;
-              v134 = v12;
-              v135 = self;
+              v134 = itemsCopy;
+              selfCopy = self;
               v136 = v18;
               v137 = v112;
               [v47 submitWithHandler:v133 networkActivity:0];
 
               v23 = 1;
-              v48 = v134;
+              lastObject = v134;
 LABEL_66:
 
               goto LABEL_67;
             }
 
-            v50 = [v142[5] _geoAddress];
-            v51 = [v50 structuredAddress];
-            if (v51)
+            _geoAddress = [v142[5] _geoAddress];
+            structuredAddress = [_geoAddress structuredAddress];
+            if (structuredAddress)
             {
             }
 
             else
             {
-              v65 = [v142[5] _geoAddress];
-              v66 = [v65 formattedAddressLinesCount] == 0;
+              _geoAddress2 = [v142[5] _geoAddress];
+              v66 = [_geoAddress2 formattedAddressLinesCount] == 0;
 
               if (!v66)
               {
@@ -208,22 +208,22 @@ LABEL_66:
                 v127[2] = __75___MKURLHandler__handleMapItems_withOptions_url_sourceApplication_context___block_invoke_3;
                 v127[3] = &unk_1E76C7060;
                 v132 = v140;
-                v128 = v12;
-                v129 = self;
+                v128 = itemsCopy;
+                selfCopy2 = self;
                 v130 = v18;
                 v131 = v112;
                 [v47 submitWithHandler:v127 networkActivity:0];
 
                 v23 = 1;
-                v48 = v128;
+                lastObject = v128;
                 goto LABEL_66;
               }
             }
           }
 
-          if ([v12 count] > 1)
+          if ([itemsCopy count] > 1)
           {
-            [v12 firstObject];
+            [itemsCopy firstObject];
           }
 
           else
@@ -231,7 +231,7 @@ LABEL_66:
             +[MKMapItem mapItemForCurrentLocation];
           }
           v47 = ;
-          v48 = [v12 lastObject];
+          lastObject = [itemsCopy lastObject];
           if ([v47 isCurrentLocation])
           {
             v52 = 0;
@@ -244,14 +244,14 @@ LABEL_66:
             v52 = fabs(v55) > 90.0 || v54;
           }
 
-          if ([v48 isCurrentLocation])
+          if ([lastObject isCurrentLocation])
           {
             v56 = 0;
           }
 
           else
           {
-            [v48 _coordinate];
+            [lastObject _coordinate];
             v56 = fabs(v57) > 180.0;
             if (fabs(v58) > 90.0)
             {
@@ -268,13 +268,13 @@ LABEL_66:
             }
 
             v63 = objc_alloc(MEMORY[0x1E69A26D8]);
-            v64 = [v47 _addressFormattedAsSinglelineAddress];
-            v59 = [v63 initWithQueryItemValue:v64];
+            _addressFormattedAsSinglelineAddress2 = [v47 _addressFormattedAsSinglelineAddress];
+            v59 = [v63 initWithQueryItemValue:_addressFormattedAsSinglelineAddress2];
 
             if (([v59 isValid] & 1) == 0)
             {
 LABEL_54:
-              if ([v48 isCurrentLocation])
+              if ([lastObject isCurrentLocation])
               {
                 v109 = 0;
               }
@@ -282,8 +282,8 @@ LABEL_54:
               else
               {
                 v110 = objc_alloc(MEMORY[0x1E69A26D8]);
-                v68 = [v48 _addressFormattedAsSinglelineAddress];
-                v109 = [v110 initWithQueryItemValue:v68];
+                _addressFormattedAsSinglelineAddress3 = [lastObject _addressFormattedAsSinglelineAddress];
+                v109 = [v110 initWithQueryItemValue:_addressFormattedAsSinglelineAddress3];
 
                 if (([v109 isValid] & 1) == 0)
                 {
@@ -305,7 +305,7 @@ LABEL_64:
           else
           {
             v59 = objc_loadWeakRetained(&self->_delegate);
-            v23 = [v59 URLHandler:self launchIntoDirectionsWithMapItems:v12 options:v18 context:v112];
+            v23 = [v59 URLHandler:self launchIntoDirectionsWithMapItems:itemsCopy options:v18 context:v112];
           }
 
 LABEL_65:
@@ -326,8 +326,8 @@ LABEL_65:
         if (v60)
         {
           v61 = objc_loadWeakRetained(&self->_delegate);
-          v62 = [v12 firstObject];
-          v23 = [v61 URLHandler:self launchIntoRAPForMapItem:v62 options:v18 context:v112];
+          firstObject = [itemsCopy firstObject];
+          v23 = [v61 URLHandler:self launchIntoRAPForMapItem:firstObject options:v18 context:v112];
 
           goto LABEL_68;
         }
@@ -341,18 +341,18 @@ LABEL_65:
 
           if (v72)
           {
-            v74 = 0;
+            unsignedIntegerValue2 = 0;
           }
 
           else
           {
             v73 = [v18 objectForKeyedSubscript:@"MKLaunchOptionsPhotoThumbnailGalleryAlbumIndex"];
-            v74 = [v73 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v73 unsignedIntegerValue];
           }
 
           v79 = objc_loadWeakRetained(&self->_delegate);
-          v80 = [v12 firstObject];
-          v23 = [v79 URLHandler:self launchIntoPhotoThumbnailGalleryForMapItem:v80 albumIndex:v74 options:v18 context:v112];
+          firstObject2 = [itemsCopy firstObject];
+          v23 = [v79 URLHandler:self launchIntoPhotoThumbnailGalleryForMapItem:firstObject2 albumIndex:unsignedIntegerValue2 options:v18 context:v112];
 
           goto LABEL_68;
         }
@@ -362,38 +362,38 @@ LABEL_65:
         if (v76)
         {
           v77 = objc_loadWeakRetained(&self->_delegate);
-          v78 = [v12 firstObject];
-          v23 = [v77 URLHandler:self launchIntoTableBookingForMapItem:v78 options:v18 context:v112];
+          firstObject3 = [itemsCopy firstObject];
+          v23 = [v77 URLHandler:self launchIntoTableBookingForMapItem:firstObject3 options:v18 context:v112];
 
           goto LABEL_68;
         }
 
-        if ([v12 count] != 1)
+        if ([itemsCopy count] != 1)
         {
           v89 = objc_loadWeakRetained(&self->_delegate);
-          v23 = [v89 URLHandler:self launchIntoSearchWithMapItems:v12 options:v18 context:v112];
+          v23 = [v89 URLHandler:self launchIntoSearchWithMapItems:itemsCopy options:v18 context:v112];
 
           goto LABEL_68;
         }
 
-        v111 = [v12 firstObject];
-        [v111 _coordinate];
+        firstObject4 = [itemsCopy firstObject];
+        [firstObject4 _coordinate];
         if (fabs(v82) > 180.0 || fabs(v81) > 90.0)
         {
-          v90 = [v111 _addressFormattedAsSinglelineAddress];
-          if ([v90 length])
+          _addressFormattedAsSinglelineAddress4 = [firstObject4 _addressFormattedAsSinglelineAddress];
+          if ([_addressFormattedAsSinglelineAddress4 length])
           {
             v91 = objc_loadWeakRetained(&self->_delegate);
-            v92 = [v111 name];
-            if ([v92 length])
+            name = [firstObject4 name];
+            if ([name length])
             {
-              v93 = [v111 name];
-              v23 = [v91 URLHandler:self showAddress:v90 label:v93];
+              name2 = [firstObject4 name];
+              v23 = [v91 URLHandler:self showAddress:_addressFormattedAsSinglelineAddress4 label:name2];
             }
 
             else
             {
-              v23 = [v91 URLHandler:self showAddress:v90 label:v90];
+              v23 = [v91 URLHandler:self showAddress:_addressFormattedAsSinglelineAddress4 label:_addressFormattedAsSinglelineAddress4];
             }
           }
 
@@ -405,17 +405,17 @@ LABEL_65:
           goto LABEL_100;
         }
 
-        if ([v111 _hasResolvablePartialInformation])
+        if ([firstObject4 _hasResolvablePartialInformation])
         {
           v83 = objc_loadWeakRetained(&self->_delegate);
           v84 = objc_opt_respondsToSelector();
 
           if ((v84 & 1) != 0 && (v85 = objc_loadWeakRetained(&self->_delegate), v86 = [v85 URLHandlerShouldPerformForwardGeocoding:self], v85, (v86 & 1) == 0))
           {
-            v90 = objc_loadWeakRetained(&self->_delegate);
-            v150[0] = v111;
+            _addressFormattedAsSinglelineAddress4 = objc_loadWeakRetained(&self->_delegate);
+            v150[0] = firstObject4;
             v104 = [MEMORY[0x1E695DEC8] arrayWithObjects:v150 count:1];
-            v23 = [v90 URLHandler:self launchIntoSearchWithMapItems:v104 options:v18 context:v112];
+            v23 = [_addressFormattedAsSinglelineAddress4 URLHandler:self launchIntoSearchWithMapItems:v104 options:v18 context:v112];
           }
 
           else
@@ -424,11 +424,11 @@ LABEL_65:
             v121[1] = 3221225472;
             v121[2] = __75___MKURLHandler__handleMapItems_withOptions_url_sourceApplication_context___block_invoke_4;
             v121[3] = &unk_1E76C9D60;
-            v122 = v111;
-            v123 = self;
+            v122 = firstObject4;
+            selfCopy3 = self;
             v124 = v18;
             v125 = v112;
-            v126 = v12;
+            v126 = itemsCopy;
             v87 = MEMORY[0x1A58E9F30](v121);
             v88 = +[MKLocationManager sharedLocationManager];
             if ([v88 isLocationServicesApproved] && (objc_msgSend(v88, "hasLocation") & 1) == 0)
@@ -451,22 +451,22 @@ LABEL_65:
             }
 
             v23 = 1;
-            v90 = v122;
+            _addressFormattedAsSinglelineAddress4 = v122;
           }
 
           goto LABEL_100;
         }
 
-        v94 = [v111 _geoAddress];
-        v95 = [v94 structuredAddress];
-        if (v95)
+        _geoAddress3 = [firstObject4 _geoAddress];
+        structuredAddress2 = [_geoAddress3 structuredAddress];
+        if (structuredAddress2)
         {
         }
 
         else
         {
-          v97 = [v111 _geoAddress];
-          v98 = [v97 formattedAddressLinesCount] == 0;
+          _geoAddress4 = [firstObject4 _geoAddress];
+          v98 = [_geoAddress4 formattedAddressLinesCount] == 0;
 
           if (!v98)
           {
@@ -475,16 +475,16 @@ LABEL_65:
 
             if ((v100 & 1) != 0 && (v101 = objc_loadWeakRetained(&self->_delegate), v102 = [v101 URLHandlerShouldPerformRefinementRequest:self], v101, (v102 & 1) == 0))
             {
-              v90 = objc_loadWeakRetained(&self->_delegate);
-              v149 = v111;
+              _addressFormattedAsSinglelineAddress4 = objc_loadWeakRetained(&self->_delegate);
+              v149 = firstObject4;
               v108 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v149 count:1];
-              v23 = [v90 URLHandler:self launchIntoSearchWithMapItems:v108 options:v18 context:v112];
+              v23 = [_addressFormattedAsSinglelineAddress4 URLHandler:self launchIntoSearchWithMapItems:v108 options:v18 context:v112];
             }
 
             else
             {
               v103 = +[MKMapService sharedService];
-              v90 = [v103 ticketForMapItemToRefine:v111 traits:0];
+              _addressFormattedAsSinglelineAddress4 = [v103 ticketForMapItemToRefine:firstObject4 traits:0];
 
               v115[0] = MEMORY[0x1E69E9820];
               v115[1] = 3221225472;
@@ -493,8 +493,8 @@ LABEL_65:
               v115[4] = self;
               v116 = v18;
               v117 = v112;
-              v118 = v12;
-              [v90 submitWithHandler:v115 networkActivity:0];
+              v118 = itemsCopy;
+              [_addressFormattedAsSinglelineAddress4 submitWithHandler:v115 networkActivity:0];
 
               v23 = 1;
             }
@@ -503,10 +503,10 @@ LABEL_65:
           }
         }
 
-        v90 = objc_loadWeakRetained(&self->_delegate);
-        v148 = v111;
+        _addressFormattedAsSinglelineAddress4 = objc_loadWeakRetained(&self->_delegate);
+        v148 = firstObject4;
         v96 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v148 count:1];
-        v23 = [v90 URLHandler:self launchIntoShowMapItems:v96 options:v18 context:v112];
+        v23 = [_addressFormattedAsSinglelineAddress4 URLHandler:self launchIntoShowMapItems:v96 options:v18 context:v112];
 
 LABEL_100:
         goto LABEL_68;
@@ -538,11 +538,11 @@ LABEL_100:
     }
 
     v33 = objc_loadWeakRetained(&self->_delegate);
-    v23 = [v33 URLHandler:self launchIntoDirectionsWithMapItems:v12 options:v18 context:v112];
+    v23 = [v33 URLHandler:self launchIntoDirectionsWithMapItems:itemsCopy options:v18 context:v112];
 
 LABEL_68:
-    v13 = v18;
-    v16 = v112;
+    optionsCopy = v18;
+    contextCopy = v112;
     goto LABEL_69;
   }
 
@@ -552,11 +552,11 @@ LABEL_69:
   return v23;
 }
 
-- (BOOL)_handleMapItemHandlesURL:(id)a3 sourceApplication:(id)a4 context:(id)a5
+- (BOOL)_handleMapItemHandlesURL:(id)l sourceApplication:(id)application context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  applicationCopy = application;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = objc_opt_respondsToSelector();
 
@@ -570,83 +570,83 @@ LABEL_69:
   v18[1] = 3221225472;
   v18[2] = __68___MKURLHandler__handleMapItemHandlesURL_sourceApplication_context___block_invoke;
   v18[3] = &unk_1E76C6FF0;
-  v19 = v8;
-  v20 = self;
-  v21 = v9;
-  v22 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v19 = lCopy;
+  selfCopy = self;
+  v21 = applicationCopy;
+  v22 = contextCopy;
+  v14 = contextCopy;
+  v15 = applicationCopy;
+  v16 = lCopy;
   [MKMapItem _mapItemsFromHandleURL:v16 completionHandler:v18];
 
   return 1;
 }
 
-- (void)adjustOptionsForRAP:(id)a3 options:(id *)a4
+- (void)adjustOptionsForRAP:(id)p options:(id *)options
 {
-  v9 = a3;
-  v5 = *a4;
-  if (!*a4)
+  pCopy = p;
+  v5 = *options;
+  if (!*options)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF20]);
-    *a4 = v5;
+    *options = v5;
   }
 
   v6 = [v5 mutableCopy];
-  v7 = [v9 absoluteString];
-  [v6 setObject:v7 forKey:@"MKLaunchOptionsURLKey"];
+  absoluteString = [pCopy absoluteString];
+  [v6 setObject:absoluteString forKey:@"MKLaunchOptionsURLKey"];
 
   v8 = v6;
-  *a4 = v6;
+  *options = v6;
 }
 
-- (BOOL)_handleMapItemURL:(id)a3 sourceApplication:(id)a4 context:(id)a5
+- (BOOL)_handleMapItemURL:(id)l sourceApplication:(id)application context:(id)context
 {
   v14 = 0;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [MKMapItem mapItemsFromURL:v10 options:&v14];
+  contextCopy = context;
+  applicationCopy = application;
+  lCopy = l;
+  v11 = [MKMapItem mapItemsFromURL:lCopy options:&v14];
   v12 = v14;
-  LOBYTE(self) = [(_MKURLHandler *)self _handleMapItems:v11 withOptions:v12 url:v10 sourceApplication:v9 context:v8];
+  LOBYTE(self) = [(_MKURLHandler *)self _handleMapItems:v11 withOptions:v12 url:lCopy sourceApplication:applicationCopy context:contextCopy];
 
   return self;
 }
 
-- (BOOL)_handleSharedMapURL:(id)a3 sourceApplication:(id)a4 context:(id)a5
+- (BOOL)_handleSharedMapURL:(id)l sourceApplication:(id)application context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  applicationCopy = application;
+  lCopy = l;
   v11 = objc_alloc_init(MKURLSerializer);
   v15 = 0;
-  v12 = [(MKURLSerializer *)v11 mapItemsFromUrl:v10 options:&v15];
+  v12 = [(MKURLSerializer *)v11 mapItemsFromUrl:lCopy options:&v15];
   v13 = v15;
-  LOBYTE(self) = [(_MKURLHandler *)self _handleMapItems:v12 withOptions:v13 url:v10 sourceApplication:v9 context:v8];
+  LOBYTE(self) = [(_MKURLHandler *)self _handleMapItems:v12 withOptions:v13 url:lCopy sourceApplication:applicationCopy context:contextCopy];
 
   return self;
 }
 
-- (BOOL)_handleMapsURL:(id)a3 sourceApplication:(id)a4 context:(id)a5
+- (BOOL)_handleMapsURL:(id)l sourceApplication:(id)application context:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  applicationCopy = application;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11 = [v8 scheme];
-  [WeakRetained URLHandler:self setSchemeForCapture:v11 sourceApplication:v9 isLaunchedFromTTL:0 ttlEventTime:0];
+  scheme = [lCopy scheme];
+  [WeakRetained URLHandler:self setSchemeForCapture:scheme sourceApplication:applicationCopy isLaunchedFromTTL:0 ttlEventTime:0];
 
-  if ([_MKURLParser isValidMapURL:v8])
+  if ([_MKURLParser isValidMapURL:lCopy])
   {
-    v12 = [[_MKURLParser alloc] initWithURL:v8];
+    v12 = [[_MKURLParser alloc] initWithURL:lCopy];
     [(_MKURLParser *)v12 parseIncludingCustomParameters:1];
-    v13 = [(_MKURLParser *)v12 userSessionEntity];
+    userSessionEntity = [(_MKURLParser *)v12 userSessionEntity];
 
-    if (v13)
+    if (userSessionEntity)
     {
-      v14 = [(_MKURLParser *)v12 userSessionEntity];
-      v15 = [MEMORY[0x1E69A2710] sharedInstance];
-      [v15 setMapsUserSessionEntity:v14];
+      userSessionEntity2 = [(_MKURLParser *)v12 userSessionEntity];
+      mEMORY[0x1E69A2710] = [MEMORY[0x1E69A2710] sharedInstance];
+      [mEMORY[0x1E69A2710] setMapsUserSessionEntity:userSessionEntity2];
     }
 
     [(_MKURLHandler *)self _treatGenericOptionsFrom:v12];
@@ -662,7 +662,7 @@ LABEL_69:
       v20 = 138543618;
       v21 = v18;
       v22 = 2114;
-      v23 = v8;
+      v23 = lCopy;
       _os_log_impl(&dword_1A2EA0000, v17, OS_LOG_TYPE_ERROR, "%{public}@ thinks this is not a valid URL: %{public}@", &v20, 0x16u);
     }
 
@@ -672,11 +672,11 @@ LABEL_69:
   return v16;
 }
 
-- (BOOL)_handleShortURL:(id)a3 sourceApplication:(id)a4 context:(id)a5
+- (BOOL)_handleShortURL:(id)l sourceApplication:(id)application context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  applicationCopy = application;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = objc_opt_respondsToSelector();
 
@@ -686,7 +686,7 @@ LABEL_69:
     [v13 URLHandlerWillStartAsynchronousHandling:self];
   }
 
-  v14 = _MKPerformShortURLTransformationIfNeeded(v8);
+  v14 = _MKPerformShortURLTransformationIfNeeded(lCopy);
 
   v15 = objc_alloc_init(MKURLShortener);
   objc_initWeak(&location, self);
@@ -699,9 +699,9 @@ LABEL_69:
   v23[2] = __59___MKURLHandler__handleShortURL_sourceApplication_context___block_invoke;
   v23[3] = &unk_1E76C6FC8;
   objc_copyWeak(&v26, &location);
-  v20 = v9;
+  v20 = applicationCopy;
   v24 = v20;
-  v21 = v10;
+  v21 = contextCopy;
   v25 = v21;
   [(MKURLShortener *)v15 lengthenURL:v14 timeout:v18 queue:v23 completion:v17];
 
@@ -711,10 +711,10 @@ LABEL_69:
   return 1;
 }
 
-- (id)_createMKURLHandlerError:(id)a3
+- (id)_createMKURLHandlerError:(id)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  errorCopy = error;
   if (MKCurrentNetworkConnectionFailureDiagnosis())
   {
     v4 = MEMORY[0x1E696ABC0];
@@ -727,7 +727,7 @@ LABEL_3:
 
   v8 = MEMORY[0x1E696ABC0];
   v9 = MKErrorDomain;
-  if (!v3)
+  if (!errorCopy)
   {
     v4 = MEMORY[0x1E696ABC0];
     v5 = MKErrorDomain;
@@ -736,7 +736,7 @@ LABEL_3:
   }
 
   v13 = @"MKErrorGEOError";
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "code")}];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   v14[0] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v7 = [v8 errorWithDomain:v9 code:102 userInfo:v11];
@@ -746,31 +746,31 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)_treatExploreGuidesFrom:(id)a3
+- (BOOL)_treatExploreGuidesFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (fromCopy)
   {
-    if ([v5 actionType] == 6)
+    if ([fromCopy actionType] == 6)
     {
-      v7 = [v6 exploreGuides];
-      if (v7)
+      exploreGuides = [v6 exploreGuides];
+      if (exploreGuides)
       {
 
 LABEL_10:
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v13 = [v6 exploreGuides];
-        v14 = [v6 cityName];
-        v10 = [WeakRetained URLHandlerShowExploreGuides:self exploreGuides:v13 cityName:v14];
+        exploreGuides2 = [v6 exploreGuides];
+        cityName = [v6 cityName];
+        v10 = [WeakRetained URLHandlerShowExploreGuides:self exploreGuides:exploreGuides2 cityName:cityName];
 
         goto LABEL_11;
       }
 
-      v11 = [v6 cityName];
+      cityName2 = [v6 cityName];
 
-      if (v11)
+      if (cityName2)
       {
         goto LABEL_10;
       }
@@ -797,12 +797,12 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_treatReportAnIncidentFrom:(id)a3
+- (BOOL)_treatReportAnIncidentFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -818,7 +818,7 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  if (![v5 reportedIncidentType])
+  if (![fromCopy reportedIncidentType])
   {
 LABEL_7:
     v8 = 0;
@@ -832,14 +832,14 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_treatReportAProblemFrom:(id)a3
+- (BOOL)_treatReportAProblemFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (fromCopy)
   {
-    if ([v5 actionType] == 7)
+    if ([fromCopy actionType] == 7)
     {
       if ([v6 showReports])
       {
@@ -850,13 +850,13 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v11 = [v6 locationQueryItem];
+      locationQueryItem = [v6 locationQueryItem];
 
-      if (v11)
+      if (locationQueryItem)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v12 = [v6 locationQueryItem];
-        v8 = [WeakRetained URLHandler:self showReportAProblemWithLocationQuery:v12];
+        locationQueryItem2 = [v6 locationQueryItem];
+        v8 = [WeakRetained URLHandler:self showReportAProblemWithLocationQuery:locationQueryItem2];
 
         goto LABEL_11;
       }
@@ -883,12 +883,12 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)_treatAllCuratedCollectionsFrom:(id)a3
+- (BOOL)_treatAllCuratedCollectionsFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -904,26 +904,26 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (![v5 showAllCuratedCollections])
+  if (![fromCopy showAllCuratedCollections])
   {
 LABEL_7:
     v8 = 0;
     goto LABEL_8;
   }
 
-  v7 = [(_MKURLHandler *)self delegate];
-  v8 = [v7 URLHandlerShowAllCuratedCollections:self];
+  delegate = [(_MKURLHandler *)self delegate];
+  v8 = [delegate URLHandlerShowAllCuratedCollections:self];
 
 LABEL_8:
   return v8;
 }
 
-- (BOOL)_treatPublisherFrom:(id)a3
+- (BOOL)_treatPublisherFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -939,29 +939,29 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v7 = [v5 publisherMUID];
-  v8 = [v6 searchProviderID];
-  if (!v7)
+  publisherMUID = [fromCopy publisherMUID];
+  searchProviderID = [v6 searchProviderID];
+  if (!publisherMUID)
   {
 LABEL_7:
     v11 = 0;
     goto LABEL_8;
   }
 
-  v9 = v8;
-  v10 = [(_MKURLHandler *)self delegate];
-  v11 = [v10 URLHandler:self showPublisherWithID:v7 resultProviderID:v9];
+  v9 = searchProviderID;
+  delegate = [(_MKURLHandler *)self delegate];
+  v11 = [delegate URLHandler:self showPublisherWithID:publisherMUID resultProviderID:v9];
 
 LABEL_8:
   return v11;
 }
 
-- (BOOL)_treatCuratedCollectionFrom:(id)a3
+- (BOOL)_treatCuratedCollectionFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -977,29 +977,29 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v7 = [v5 curatedCollectionMUID];
-  v8 = [v6 searchProviderID];
-  if (!v7)
+  curatedCollectionMUID = [fromCopy curatedCollectionMUID];
+  searchProviderID = [v6 searchProviderID];
+  if (!curatedCollectionMUID)
   {
 LABEL_7:
     v11 = 0;
     goto LABEL_8;
   }
 
-  v9 = v8;
-  v10 = [(_MKURLHandler *)self delegate];
-  v11 = [v10 URLHandler:self showCuratedCollectionWithID:v7 resultProviderID:v9];
+  v9 = searchProviderID;
+  delegate = [(_MKURLHandler *)self delegate];
+  v11 = [delegate URLHandler:self showCuratedCollectionWithID:curatedCollectionMUID resultProviderID:v9];
 
 LABEL_8:
   return v11;
 }
 
-- (BOOL)_treatShowMyLocationCardFrom:(id)a3
+- (BOOL)_treatShowMyLocationCardFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1015,26 +1015,26 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if (![v5 showMyLocationCard])
+  if (![fromCopy showMyLocationCard])
   {
 LABEL_7:
     v8 = 0;
     goto LABEL_8;
   }
 
-  v7 = [(_MKURLHandler *)self delegate];
-  v8 = [v7 URLHandlerShowMyLocationCard:self];
+  delegate = [(_MKURLHandler *)self delegate];
+  v8 = [delegate URLHandlerShowMyLocationCard:self];
 
 LABEL_8:
   return v8;
 }
 
-- (BOOL)_treatShowParkedCarFrom:(id)a3
+- (BOOL)_treatShowParkedCarFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1050,26 +1050,26 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if (![v5 showParkedCar])
+  if (![fromCopy showParkedCar])
   {
 LABEL_7:
     v8 = 0;
     goto LABEL_8;
   }
 
-  v7 = [(_MKURLHandler *)self delegate];
-  v8 = [v7 URLHandlerShowParkedCar:self];
+  delegate = [(_MKURLHandler *)self delegate];
+  v8 = [delegate URLHandlerShowParkedCar:self];
 
 LABEL_8:
   return v8;
 }
 
-- (BOOL)_treatCarDestinationsFrom:(id)a3
+- (BOOL)_treatCarDestinationsFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1085,26 +1085,26 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if (![v5 showCarDestinations])
+  if (![fromCopy showCarDestinations])
   {
 LABEL_7:
     v8 = 0;
     goto LABEL_8;
   }
 
-  v7 = [(_MKURLHandler *)self delegate];
-  v8 = [v7 URLHandlerShowCarDestinations:self];
+  delegate = [(_MKURLHandler *)self delegate];
+  v8 = [delegate URLHandlerShowCarDestinations:self];
 
 LABEL_8:
   return v8;
 }
 
-- (BOOL)_treatCollectionFrom:(id)a3
+- (BOOL)_treatCollectionFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1120,9 +1120,9 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v7 = [v5 collectionStorage];
+  collectionStorage = [fromCopy collectionStorage];
 
-  if (!v7)
+  if (!collectionStorage)
   {
 LABEL_7:
     v10 = 0;
@@ -1130,8 +1130,8 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v6 collectionStorage];
-  [WeakRetained URLHandler:self showCollection:v9];
+  collectionStorage2 = [v6 collectionStorage];
+  [WeakRetained URLHandler:self showCollection:collectionStorage2];
 
   v10 = 1;
 LABEL_8:
@@ -1139,12 +1139,12 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)_treatOfflineDownloadFrom:(id)a3
+- (BOOL)_treatOfflineDownloadFrom:(id)from
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1160,9 +1160,9 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v7 = [v5 offlineDownloadRegion];
+  offlineDownloadRegion = [fromCopy offlineDownloadRegion];
 
-  if (!v7)
+  if (!offlineDownloadRegion)
   {
 LABEL_7:
     v11 = 0;
@@ -1170,20 +1170,20 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v6 offlineDownloadRegion];
-  v10 = [v6 label];
-  v11 = [WeakRetained URLHandler:self initiateOfflineDownloadForRegion:v9 displayName:v10];
+  offlineDownloadRegion2 = [v6 offlineDownloadRegion];
+  label = [v6 label];
+  v11 = [WeakRetained URLHandler:self initiateOfflineDownloadForRegion:offlineDownloadRegion2 displayName:label];
 
 LABEL_8:
   return v11;
 }
 
-- (BOOL)_treatMuninViewStateFrom:(id)a3
+- (BOOL)_treatMuninViewStateFrom:(id)from
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1199,19 +1199,19 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v7 = [v5 muninViewState];
+  muninViewState = [fromCopy muninViewState];
 
-  if (!v7)
+  if (!muninViewState)
   {
     if ([v6 actionType] == 5)
     {
-      v13 = [v6 locationQueryItem];
+      locationQueryItem = [v6 locationQueryItem];
 
-      if (v13)
+      if (locationQueryItem)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v15 = [v6 locationQueryItem];
-        v10 = [WeakRetained URLHandler:self enterLookAroundWithLocationQueryItem:v15];
+        locationQueryItem2 = [v6 locationQueryItem];
+        v10 = [WeakRetained URLHandler:self enterLookAroundWithLocationQueryItem:locationQueryItem2];
 
         goto LABEL_11;
       }
@@ -1223,8 +1223,8 @@ LABEL_10:
   }
 
   v8 = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v6 muninViewState];
-  [v8 URLHandler:self enterLookAroundWithViewState:v9];
+  muninViewState2 = [v6 muninViewState];
+  [v8 URLHandler:self enterLookAroundWithViewState:muninViewState2];
 
   v10 = 1;
 LABEL_11:
@@ -1232,12 +1232,12 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_treatTesterFrom:(id)a3
+- (BOOL)_treatTesterFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1253,7 +1253,7 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  if (![v5 tester] || (WeakRetained = objc_loadWeakRetained(&self->_delegate), v8 = objc_opt_respondsToSelector(), WeakRetained, (v8 & 1) == 0))
+  if (![fromCopy tester] || (WeakRetained = objc_loadWeakRetained(&self->_delegate), v8 = objc_opt_respondsToSelector(), WeakRetained, (v8 & 1) == 0))
   {
 LABEL_8:
     v10 = 0;
@@ -1269,20 +1269,20 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)_treatTransitLineFrom:(id)a3
+- (BOOL)_treatTransitLineFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  fromCopy = from;
+  if (fromCopy)
   {
-    [(_MKURLHandler *)self _treatRegionFrom:v5];
-    v6 = [v5 lineMUID];
-    v7 = [v5 lineName];
-    v8 = v7;
-    if (v6 && [v7 length])
+    [(_MKURLHandler *)self _treatRegionFrom:fromCopy];
+    lineMUID = [fromCopy lineMUID];
+    lineName = [fromCopy lineName];
+    v8 = lineName;
+    if (lineMUID && [lineName length])
     {
-      v9 = [(_MKURLHandler *)self delegate];
-      v10 = [v9 URLHandler:self showLineWithID:v6 name:v8];
+      delegate = [(_MKURLHandler *)self delegate];
+      v10 = [delegate URLHandler:self showLineWithID:lineMUID name:v8];
     }
 
     else
@@ -1310,12 +1310,12 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)_treatFavoritesFrom:(id)a3
+- (BOOL)_treatFavoritesFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  fromCopy = from;
+  v6 = fromCopy;
+  if (!fromCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1331,29 +1331,29 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  if (([v5 favoritesType] - 1) > 1)
+  if (([fromCopy favoritesType] - 1) > 1)
   {
 LABEL_7:
     v8 = 0;
     goto LABEL_8;
   }
 
-  v7 = [(_MKURLHandler *)self delegate];
-  v8 = [v7 URLHandler:self showFavoritesType:{objc_msgSend(v6, "favoritesType")}];
+  delegate = [(_MKURLHandler *)self delegate];
+  v8 = [delegate URLHandler:self showFavoritesType:{objc_msgSend(v6, "favoritesType")}];
 
 LABEL_8:
   return v8;
 }
 
-- (void)_treatGenericOptionsFrom:(id)a3
+- (void)_treatGenericOptionsFrom:(id)from
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  fromCopy = from;
+  if (fromCopy)
   {
-    [(_MKURLHandler *)self _treatMapTypeFrom:v5];
-    [(_MKURLHandler *)self _treatTrackingModeFrom:v5];
-    [(_MKURLHandler *)self _treatContentProvider:v5];
+    [(_MKURLHandler *)self _treatMapTypeFrom:fromCopy];
+    [(_MKURLHandler *)self _treatTrackingModeFrom:fromCopy];
+    [(_MKURLHandler *)self _treatContentProvider:fromCopy];
   }
 
   else
@@ -1371,20 +1371,20 @@ LABEL_8:
   }
 }
 
-- (BOOL)_treatContentProvider:(id)a3
+- (BOOL)_treatContentProvider:(id)provider
 {
-  v4 = [a3 contentProvider];
+  contentProvider = [provider contentProvider];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained URLHandler:self setContentProvider:v4];
+  LOBYTE(self) = [WeakRetained URLHandler:self setContentProvider:contentProvider];
 
   return self;
 }
 
-- (BOOL)_treatSearchFrom:(id)a3
+- (BOOL)_treatSearchFrom:(id)from
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  fromCopy = from;
+  if (!fromCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1409,15 +1409,15 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v7 = [v5 searchQuery];
-  [v5 searchCoordinate];
-  if (v7)
+  searchQuery = [fromCopy searchQuery];
+  [fromCopy searchCoordinate];
+  if (searchQuery)
   {
     v10 = v8;
     v11 = v9;
-    [(_MKURLHandler *)self _treatSearchRegionFrom:v5];
+    [(_MKURLHandler *)self _treatSearchRegionFrom:fromCopy];
     v12 = objc_loadWeakRetained(&self->_delegate);
-    v13 = [v12 URLHandler:self search:v7 at:{v10, v11}];
+    v13 = [v12 URLHandler:self search:searchQuery at:{v10, v11}];
   }
 
   else
@@ -1429,11 +1429,11 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)_treatSearchRegionFrom:(id)a3
+- (BOOL)_treatSearchRegionFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  fromCopy = from;
+  if (!fromCopy)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1470,11 +1470,11 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  [v5 searchRegion];
-  if (fabs(v10) > 180.0 || fabs(v7) > 90.0 || v8 < 0.0 || v8 > 180.0 || v9 < 0.0 || v9 > 360.0 || (v11 = objc_loadWeakRetained(&self->_delegate), [v5 searchRegion], v12 = objc_msgSend(v11, "URLHandler:setRegion:", self), v11, (v12 & 1) == 0))
+  [fromCopy searchRegion];
+  if (fabs(v10) > 180.0 || fabs(v7) > 90.0 || v8 < 0.0 || v8 > 180.0 || v9 < 0.0 || v9 > 360.0 || (v11 = objc_loadWeakRetained(&self->_delegate), [fromCopy searchRegion], v12 = objc_msgSend(v11, "URLHandler:setRegion:", self), v11, (v12 & 1) == 0))
   {
-    [v5 searchCoordinate];
-    if (fabs(v14) > 180.0 || fabs(v13) > 90.0 || (v15 = objc_loadWeakRetained(&self->_delegate), [v5 searchCoordinate], v16 = objc_msgSend(v15, "URLHandler:setRegionWithCenter:", self), v15, (v16 & 1) == 0))
+    [fromCopy searchCoordinate];
+    if (fabs(v14) > 180.0 || fabs(v13) > 90.0 || (v15 = objc_loadWeakRetained(&self->_delegate), [fromCopy searchCoordinate], v16 = objc_msgSend(v15, "URLHandler:setRegionWithCenter:", self), v15, (v16 & 1) == 0))
     {
       v20 = objc_loadWeakRetained(&self->_delegate);
       [v20 URLHandler:self setRegion:{-180.0, -180.0, NAN, NAN}];
@@ -1491,11 +1491,11 @@ LABEL_22:
   return v17;
 }
 
-- (BOOL)_treatRegionFrom:(id)a3
+- (BOOL)_treatRegionFrom:(id)from
 {
   v82 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  fromCopy = from;
+  if (!fromCopy)
   {
     v21 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1534,31 +1534,31 @@ LABEL_18:
 
   v7 = objc_loadWeakRetained(&self->_delegate);
 
-  if (v7 && ([v5 trackingModeSpecified] & 1) == 0)
+  if (v7 && ([fromCopy trackingModeSpecified] & 1) == 0)
   {
-    [v5 centerCoordinate];
+    [fromCopy centerCoordinate];
     if (fabs(v9) <= 180.0 && fabs(v8) <= 90.0)
     {
-      [v5 cameraCenterBasedAltitude];
+      [fromCopy cameraCenterBasedAltitude];
       if (v10 > 0.0)
       {
-        [v5 rotation];
+        [fromCopy rotation];
         if (v11 <= 0.01)
         {
-          [v5 rotation];
+          [fromCopy rotation];
           if (v12 >= -0.01)
           {
-            [v5 tilt];
+            [fromCopy tilt];
             if (v13 <= 0.01)
             {
-              [v5 tilt];
+              [fromCopy tilt];
               if (v14 >= -0.01)
               {
                 v15 = objc_loadWeakRetained(&self->_delegate);
-                [v5 centerCoordinate];
+                [fromCopy centerCoordinate];
                 v53 = v52;
                 v55 = v54;
-                [v5 cameraCenterBasedAltitude];
+                [fromCopy cameraCenterBasedAltitude];
                 v38 = [v15 URLHandler:self setRegionWithCenter:v53 altitude:{v55, v56}];
                 goto LABEL_35;
               }
@@ -1567,59 +1567,59 @@ LABEL_18:
         }
 
         v15 = objc_loadWeakRetained(&self->_delegate);
-        [v5 centerCoordinate];
+        [fromCopy centerCoordinate];
         v17 = v16;
         v19 = v18;
-        [v5 cameraCenterBasedAltitude];
+        [fromCopy cameraCenterBasedAltitude];
         goto LABEL_29;
       }
 
-      [v5 zoomLevel];
+      [fromCopy zoomLevel];
       if (v26 >= 0.0)
       {
-        [v5 rotation];
-        if (v39 > 0.01 || ([v5 rotation], v40 < -0.01) || (objc_msgSend(v5, "tilt"), v41 > 0.01) || (objc_msgSend(v5, "tilt"), v42 < -0.01))
+        [fromCopy rotation];
+        if (v39 > 0.01 || ([fromCopy rotation], v40 < -0.01) || (objc_msgSend(fromCopy, "tilt"), v41 > 0.01) || (objc_msgSend(fromCopy, "tilt"), v42 < -0.01))
         {
           v15 = objc_loadWeakRetained(&self->_delegate);
-          [v5 centerCoordinate];
+          [fromCopy centerCoordinate];
           v44 = v43;
           v46 = v45;
-          [v5 zoomLevel];
+          [fromCopy zoomLevel];
           v48 = v47;
-          [v5 tilt];
+          [fromCopy tilt];
           v50 = v49;
-          [v5 rotation];
+          [fromCopy rotation];
           v38 = [v15 URLHandler:self setRegionWithCenterAndCamera:v44 zoomLevel:v46 pitch:v48 yaw:{v50, v51}];
           goto LABEL_35;
         }
 
         v15 = objc_loadWeakRetained(&self->_delegate);
-        [v5 centerCoordinate];
+        [fromCopy centerCoordinate];
         v58 = v57;
         v60 = v59;
-        [v5 zoomLevel];
+        [fromCopy zoomLevel];
         v62 = v61;
         v63 = v15;
-        v64 = self;
+        selfCopy2 = self;
         v65 = v58;
         v66 = v60;
       }
 
       else
       {
-        [v5 altitude];
-        if (v27 > 0.01 || ([v5 rotation], v28 > 0.01) || (objc_msgSend(v5, "rotation"), v29 < -0.01) || (objc_msgSend(v5, "tilt"), v30 > 0.01) || (objc_msgSend(v5, "tilt"), v31 < -0.01))
+        [fromCopy altitude];
+        if (v27 > 0.01 || ([fromCopy rotation], v28 > 0.01) || (objc_msgSend(fromCopy, "rotation"), v29 < -0.01) || (objc_msgSend(fromCopy, "tilt"), v30 > 0.01) || (objc_msgSend(fromCopy, "tilt"), v31 < -0.01))
         {
           v15 = objc_loadWeakRetained(&self->_delegate);
-          [v5 centerCoordinate];
+          [fromCopy centerCoordinate];
           v17 = v32;
           v19 = v33;
-          [v5 altitude];
+          [fromCopy altitude];
 LABEL_29:
           v34 = v20;
-          [v5 tilt];
+          [fromCopy tilt];
           v36 = v35;
-          [v5 rotation];
+          [fromCopy rotation];
           v38 = [v15 URLHandler:self setRegionWithCenterAndCamera:v17 altitude:v19 pitch:v34 yaw:{v36, v37}];
 LABEL_35:
           v23 = v38;
@@ -1627,16 +1627,16 @@ LABEL_35:
           goto LABEL_20;
         }
 
-        [v5 span];
+        [fromCopy span];
         if (v67 >= 0.0 && v67 <= 180.0 && v68 >= 0.0 && v68 <= 360.0)
         {
-          [v5 span];
+          [fromCopy span];
           if (v69 > 0.0)
           {
-            [v5 centerCoordinate];
+            [fromCopy centerCoordinate];
             v71 = v70;
             v73 = v72;
-            [v5 span];
+            [fromCopy span];
             v75 = v74;
             v77 = v76;
             v15 = objc_loadWeakRetained(&self->_delegate);
@@ -1646,13 +1646,13 @@ LABEL_35:
         }
 
         v15 = objc_loadWeakRetained(&self->_delegate);
-        [v5 centerCoordinate];
+        [fromCopy centerCoordinate];
         v62 = *&_MKURLHandlerDefaultZoomLevel;
         v63 = v15;
-        v64 = self;
+        selfCopy2 = self;
       }
 
-      v38 = [v63 URLHandler:v64 setRegionWithCenter:v65 zoomLevel:{v66, v62}];
+      v38 = [v63 URLHandler:selfCopy2 setRegionWithCenter:v65 zoomLevel:{v66, v62}];
       goto LABEL_35;
     }
 
@@ -1667,21 +1667,21 @@ LABEL_20:
   return v23;
 }
 
-- (BOOL)_treatNavigationDirectionsFrom:(id)a3
+- (BOOL)_treatNavigationDirectionsFrom:(id)from
 {
   v68 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  fromCopy = from;
+  if (!fromCopy)
   {
-    v7 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    sourceLocationQueryItem = GEOFindOrCreateLog();
+    if (os_log_type_enabled(sourceLocationQueryItem, OS_LOG_TYPE_ERROR))
     {
       v34 = NSStringFromSelector(a2);
       *buf = 138543618;
       v65 = v34;
       v66 = 2082;
       v67 = "nil == parsed";
-      _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_ERROR, "%{public}@ forbids: %{public}s", buf, 0x16u);
+      _os_log_impl(&dword_1A2EA0000, sourceLocationQueryItem, OS_LOG_TYPE_ERROR, "%{public}@ forbids: %{public}s", buf, 0x16u);
     }
 
     LOBYTE(WeakRetained) = 0;
@@ -1692,15 +1692,15 @@ LABEL_20:
 
   if (WeakRetained)
   {
-    v7 = [v5 sourceLocationQueryItem];
-    v8 = [v5 directionsLocationQueryItems];
-    v9 = v8;
-    if (v7 || [v8 count])
+    sourceLocationQueryItem = [fromCopy sourceLocationQueryItem];
+    directionsLocationQueryItems = [fromCopy directionsLocationQueryItems];
+    v9 = directionsLocationQueryItems;
+    if (sourceLocationQueryItem || [directionsLocationQueryItems count])
     {
-      v10 = [v5 transportType];
-      if (v10)
+      transportType = [fromCopy transportType];
+      if (transportType)
       {
-        v11 = v10;
+        v11 = transportType;
       }
 
       else
@@ -1708,17 +1708,17 @@ LABEL_20:
         v11 = 0xFFFFFFFLL;
       }
 
-      v12 = [v5 label];
-      v13 = [v5 searchUID];
+      label = [fromCopy label];
+      searchUID = [fromCopy searchUID];
       v14 = objc_loadWeakRetained(&self->_delegate);
       v15 = objc_opt_respondsToSelector();
 
       if (v15)
       {
-        v51 = v13;
+        v51 = searchUID;
         v52 = v11;
-        v54 = v7;
-        v55 = v5;
+        v54 = sourceLocationQueryItem;
+        v55 = fromCopy;
         v58 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
         v59 = 0u;
         v60 = 0u;
@@ -1754,19 +1754,19 @@ LABEL_20:
                 [v22 setObject:v26 forKeyedSubscript:@"muid"];
 
                 v27 = MEMORY[0x1E696AD98];
-                v28 = [v21 mapItemIdentifier];
-                v29 = [v27 numberWithInt:{objc_msgSend(v28, "resultProviderID")}];
+                mapItemIdentifier = [v21 mapItemIdentifier];
+                v29 = [v27 numberWithInt:{objc_msgSend(mapItemIdentifier, "resultProviderID")}];
                 [v22 setObject:v29 forKeyedSubscript:@"providerID"];
 
                 v19 = v24;
                 v17 = v56;
               }
 
-              v30 = [v21 resolvedLocation];
-              [v22 setObject:v30 forKeyedSubscript:v19];
+              resolvedLocation = [v21 resolvedLocation];
+              [v22 setObject:resolvedLocation forKeyedSubscript:v19];
 
-              v31 = [v21 name];
-              [v22 setObject:v31 forKeyedSubscript:@"label"];
+              name = [v21 name];
+              [v22 setObject:name forKeyedSubscript:@"label"];
 
               [v58 addObject:v22];
               ++v20;
@@ -1779,31 +1779,31 @@ LABEL_20:
           while (v17);
         }
 
-        v7 = v54;
-        v5 = v55;
+        sourceLocationQueryItem = v54;
+        fromCopy = v55;
         if (v51)
         {
           v32 = [v58 count];
           if (v32)
           {
-            v33 = [v58 lastObject];
+            lastObject = [v58 lastObject];
           }
 
           else
           {
-            v33 = objc_opt_new();
+            lastObject = objc_opt_new();
           }
 
-          v41 = v33;
+          v41 = lastObject;
           v42 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v51];
           [v41 setObject:v42 forKeyedSubscript:@"muid"];
 
           v43 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v55, "searchProviderID")}];
           [v41 setObject:v43 forKeyedSubscript:@"providerID"];
 
-          if ([v12 length])
+          if ([label length])
           {
-            [v41 setObject:v12 forKeyedSubscript:@"label"];
+            [v41 setObject:label forKeyedSubscript:@"label"];
           }
 
           if (!v32)
@@ -1814,30 +1814,30 @@ LABEL_20:
 
         v44 = objc_loadWeakRetained(&self->_delegate);
         v45 = [v58 copy];
-        v46 = [v55 directionsOptions];
-        LOBYTE(WeakRetained) = [v44 URLHandler:self showDirectionsFrom:v54 toDestinationItems:v45 using:v52 directionsOptions:v46];
+        directionsOptions = [v55 directionsOptions];
+        LOBYTE(WeakRetained) = [v44 URLHandler:self showDirectionsFrom:v54 toDestinationItems:v45 using:v52 directionsOptions:directionsOptions];
 
         v9 = v53;
       }
 
-      else if (v13 || [v12 length])
+      else if (searchUID || [label length])
       {
-        v35 = [v5 searchProviderID];
+        searchProviderID = [fromCopy searchProviderID];
         v36 = objc_loadWeakRetained(&self->_delegate);
         [v9 lastObject];
-        v37 = WeakRetained = v13;
-        v38 = [v5 directionsOptions];
+        v37 = WeakRetained = searchUID;
+        directionsOptions2 = [fromCopy directionsOptions];
         v39 = v11;
-        v40 = v38;
-        LOBYTE(WeakRetained) = [v36 URLHandler:self showDirectionsFrom:v7 to:v37 using:v39 muid:WeakRetained providerId:v35 showLabel:v12 directionsOptions:v38];
+        v40 = directionsOptions2;
+        LOBYTE(WeakRetained) = [v36 URLHandler:self showDirectionsFrom:sourceLocationQueryItem to:v37 using:v39 muid:WeakRetained providerId:searchProviderID showLabel:label directionsOptions:directionsOptions2];
       }
 
       else
       {
         v48 = objc_loadWeakRetained(&self->_delegate);
-        v49 = [v9 lastObject];
-        v50 = [v5 directionsOptions];
-        LOBYTE(WeakRetained) = [v48 URLHandler:self showDirectionsFrom:v7 to:v49 using:v11 directionsOptions:v50];
+        lastObject2 = [v9 lastObject];
+        directionsOptions3 = [fromCopy directionsOptions];
+        LOBYTE(WeakRetained) = [v48 URLHandler:self showDirectionsFrom:sourceLocationQueryItem to:lastObject2 using:v11 directionsOptions:directionsOptions3];
       }
     }
 
@@ -1852,18 +1852,18 @@ LABEL_37:
   return WeakRetained;
 }
 
-- (void)_treatTrackingModeFrom:(id)a3
+- (void)_treatTrackingModeFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  fromCopy = from;
+  if (fromCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
-    if (WeakRetained && [v5 trackingModeSpecified])
+    if (WeakRetained && [fromCopy trackingModeSpecified])
     {
       v7 = objc_loadWeakRetained(&self->_delegate);
-      [v7 URLHandler:self setUserTrackingMode:{objc_msgSend(v5, "trackingMode")}];
+      [v7 URLHandler:self setUserTrackingMode:{objc_msgSend(fromCopy, "trackingMode")}];
     }
   }
 
@@ -1882,21 +1882,21 @@ LABEL_37:
   }
 }
 
-- (BOOL)_treatPinPositionFrom:(id)a3
+- (BOOL)_treatPinPositionFrom:(id)from
 {
   v93 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  fromCopy = from;
+  if (!fromCopy)
   {
-    v7 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    contentProvider = GEOFindOrCreateLog();
+    if (os_log_type_enabled(contentProvider, OS_LOG_TYPE_ERROR))
     {
       v12 = NSStringFromSelector(a2);
       *buf = 138543618;
       *&buf[4] = v12;
       *&buf[12] = 2082;
       *&buf[14] = "nil == parsed";
-      _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_ERROR, "%{public}@ forbids: %{public}s", buf, 0x16u);
+      _os_log_impl(&dword_1A2EA0000, contentProvider, OS_LOG_TYPE_ERROR, "%{public}@ forbids: %{public}s", buf, 0x16u);
     }
 
     v11 = 0;
@@ -1907,18 +1907,18 @@ LABEL_37:
 
   if (WeakRetained)
   {
-    if (![(_MKURLHandler *)self _treatRegionFrom:v5])
+    if (![(_MKURLHandler *)self _treatRegionFrom:fromCopy])
     {
-      [(_MKURLHandler *)self _treatSearchRegionFrom:v5];
+      [(_MKURLHandler *)self _treatSearchRegionFrom:fromCopy];
     }
 
-    v7 = [v5 contentProvider];
-    v8 = [v5 contentProviderID];
-    v9 = v8;
-    if (v7 && v8)
+    contentProvider = [fromCopy contentProvider];
+    contentProviderID = [fromCopy contentProviderID];
+    v9 = contentProviderID;
+    if (contentProvider && contentProviderID)
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      v11 = [v10 URLHandler:self showExternalBusinessID:v9 ofContentProvider:v7];
+      v11 = [v10 URLHandler:self showExternalBusinessID:v9 ofContentProvider:contentProvider];
 
 LABEL_52:
 LABEL_53:
@@ -1926,36 +1926,36 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    v13 = [v5 searchUID];
-    v14 = [v5 searchProviderID];
-    if (v13)
+    searchUID = [fromCopy searchUID];
+    searchProviderID = [fromCopy searchProviderID];
+    if (searchUID)
     {
-      v15 = v14;
-      v16 = [v5 directionsDestinationAddressString];
-      v17 = [v16 length];
+      v15 = searchProviderID;
+      directionsDestinationAddressString = [fromCopy directionsDestinationAddressString];
+      v17 = [directionsDestinationAddressString length];
 
       if (!v17)
       {
         v47 = objc_loadWeakRetained(&self->_delegate);
-        [v5 centerCoordinate];
+        [fromCopy centerCoordinate];
         v49 = v48;
         v51 = v50;
-        v52 = [v5 searchQuery];
-        v11 = [v47 URLHandler:self showMUID:v13 resultProviderID:v15 coordinate:v52 query:{v49, v51}];
+        searchQuery = [fromCopy searchQuery];
+        v11 = [v47 URLHandler:self showMUID:searchUID resultProviderID:v15 coordinate:searchQuery query:{v49, v51}];
 
         goto LABEL_52;
       }
     }
 
-    v18 = [v5 cnContactIdentifier];
-    v19 = [v5 cnAddressIdentifier];
-    v81 = v18;
-    if ([v18 length])
+    cnContactIdentifier = [fromCopy cnContactIdentifier];
+    cnAddressIdentifier = [fromCopy cnAddressIdentifier];
+    v81 = cnContactIdentifier;
+    if ([cnContactIdentifier length])
     {
-      if ([v19 length])
+      if ([cnAddressIdentifier length])
       {
         v20 = objc_loadWeakRetained(&self->_delegate);
-        v21 = [v20 URLHandler:self showAddressByCNContactIdentifier:v18 addressIdentifier:v19];
+        v21 = [v20 URLHandler:self showAddressByCNContactIdentifier:cnContactIdentifier addressIdentifier:cnAddressIdentifier];
 
         if (v21)
         {
@@ -1967,16 +1967,16 @@ LABEL_51:
       }
     }
 
-    v22 = [v5 abRecordID];
-    v23 = [v5 abAddressID];
-    v24 = v23;
-    v80 = v22;
-    if (v22)
+    abRecordID = [fromCopy abRecordID];
+    abAddressID = [fromCopy abAddressID];
+    v24 = abAddressID;
+    v80 = abRecordID;
+    if (abRecordID)
     {
-      if (v23)
+      if (abAddressID)
       {
         v25 = objc_loadWeakRetained(&self->_delegate);
-        v26 = [v25 URLHandler:self showAddressByRecordID:v22 addressID:v24];
+        v26 = [v25 URLHandler:self showAddressByRecordID:abRecordID addressID:v24];
 
         if (v26)
         {
@@ -1989,18 +1989,18 @@ LABEL_50:
     }
 
     v79 = v24;
-    [v5 centerCoordinate];
+    [fromCopy centerCoordinate];
     v28 = v27;
     v30 = v29;
     *buf = v27;
     *&buf[8] = v29;
     v31 = fabs(v29) <= 180.0;
     v32 = fabs(v27) <= 90.0 && v31;
-    v33 = [v5 addressString];
-    v34 = [v33 length];
+    addressString = [fromCopy addressString];
+    v34 = [addressString length];
 
-    v35 = [v5 searchQuery];
-    v36 = [v35 length];
+    searchQuery2 = [fromCopy searchQuery];
+    v36 = [searchQuery2 length];
 
     v78 = v32;
     v37 = !v32;
@@ -2022,9 +2022,9 @@ LABEL_50:
           if (v43)
           {
             v44 = objc_loadWeakRetained(&self->_delegate);
-            v45 = [v5 addressString];
-            v46 = [v5 searchQuery];
-            v11 = [v44 URLHandler:self showAddress:v45 label:v46 at:{v28, v30}];
+            addressString2 = [fromCopy addressString];
+            searchQuery3 = [fromCopy searchQuery];
+            v11 = [v44 URLHandler:self showAddress:addressString2 label:searchQuery3 at:{v28, v30}];
 
 LABEL_49:
             v24 = v79;
@@ -2034,19 +2034,19 @@ LABEL_49:
       }
 
       v60 = +[MKMapService sharedService];
-      v61 = [v5 addressString];
-      [v5 searchQuery];
-      v63 = v62 = v19;
-      v64 = [v60 ticketForPlaceRefinementRequestWithCoordinate:buf addressLine:v61 placeName:v63 traits:0];
+      addressString3 = [fromCopy addressString];
+      [fromCopy searchQuery];
+      v63 = v62 = cnAddressIdentifier;
+      v64 = [v60 ticketForPlaceRefinementRequestWithCoordinate:buf addressLine:addressString3 placeName:v63 traits:0];
 
-      v19 = v62;
+      cnAddressIdentifier = v62;
       v87[0] = MEMORY[0x1E69E9820];
       v87[1] = 3221225472;
       v87[2] = __39___MKURLHandler__treatPinPositionFrom___block_invoke;
       v87[3] = &unk_1E76C6FA0;
       v90 = *buf;
-      v88 = v5;
-      v89 = self;
+      v88 = fromCopy;
+      selfCopy = self;
       v91 = v78;
       [v64 submitWithHandler:v87 networkActivity:0];
     }
@@ -2060,15 +2060,15 @@ LABEL_49:
 
       if ((v37 & 1) == 0)
       {
-        v65 = v19;
+        v65 = cnAddressIdentifier;
         v66 = objc_loadWeakRetained(&self->_delegate);
         v67 = objc_opt_respondsToSelector();
 
         if (v67 & 1) != 0 && (v68 = objc_loadWeakRetained(&self->_delegate), v69 = [v68 URLHandlerShouldPerformReverseGeocoding:self], v68, (v69 & 1) == 0) && (v70 = objc_loadWeakRetained(&self->_delegate), v71 = objc_opt_respondsToSelector(), v70, (v71))
         {
           v72 = objc_loadWeakRetained(&self->_delegate);
-          v73 = [v5 searchQuery];
-          v11 = [v72 URLHandler:self showLabel:v73 at:{v28, v30}];
+          searchQuery4 = [fromCopy searchQuery];
+          v11 = [v72 URLHandler:self showLabel:searchQuery4 at:{v28, v30}];
         }
 
         else
@@ -2081,21 +2081,21 @@ LABEL_49:
           v82[2] = __39___MKURLHandler__treatPinPositionFrom___block_invoke_2;
           v82[3] = &unk_1E76C6FA0;
           v85 = *buf;
-          v83 = v5;
-          v84 = self;
+          v83 = fromCopy;
+          selfCopy2 = self;
           v86 = v32;
           [v75 submitWithHandler:v82 networkActivity:0];
 
           v11 = 1;
         }
 
-        v19 = v65;
+        cnAddressIdentifier = v65;
         goto LABEL_49;
       }
 
-      if (!v34 || (v77 = v19, v53 = objc_loadWeakRetained(&self->_delegate), [v5 addressString], v54 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "searchQuery"), v55 = objc_claimAutoreleasedReturnValue(), v56 = objc_msgSend(v53, "URLHandler:showAddress:label:", self, v54, v55), v55, v54, v53, v19 = v77, (v56 & 1) == 0))
+      if (!v34 || (v77 = cnAddressIdentifier, v53 = objc_loadWeakRetained(&self->_delegate), [fromCopy addressString], v54 = objc_claimAutoreleasedReturnValue(), objc_msgSend(fromCopy, "searchQuery"), v55 = objc_claimAutoreleasedReturnValue(), v56 = objc_msgSend(v53, "URLHandler:showAddress:label:", self, v54, v55), v55, v54, v53, cnAddressIdentifier = v77, (v56 & 1) == 0))
       {
-        if (!v32 || (v57 = v19, v58 = objc_loadWeakRetained(&self->_delegate), v59 = [v58 URLHandler:self showMapWithoutPinAt:{v28, v30}], v58, v19 = v57, (v59 & 1) == 0))
+        if (!v32 || (v57 = cnAddressIdentifier, v58 = objc_loadWeakRetained(&self->_delegate), v59 = [v58 URLHandler:self showMapWithoutPinAt:{v28, v30}], v58, cnAddressIdentifier = v57, (v59 & 1) == 0))
         {
           v11 = 0;
           goto LABEL_49;
@@ -2113,21 +2113,21 @@ LABEL_54:
   return v11;
 }
 
-- (void)_treatMapTypeFrom:(id)a3
+- (void)_treatMapTypeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  fromCopy = from;
+  if (fromCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
     if (WeakRetained)
     {
-      v7 = [v5 mapType];
-      if (v7 < 5 || v7 == 108 || v7 == 104)
+      mapType = [fromCopy mapType];
+      if (mapType < 5 || mapType == 108 || mapType == 104)
       {
         v8 = objc_loadWeakRetained(&self->_delegate);
-        [v8 URLHandler:self setMapType:{objc_msgSend(v5, "mapType")}];
+        [v8 URLHandler:self setMapType:{objc_msgSend(fromCopy, "mapType")}];
       }
     }
   }
@@ -2147,15 +2147,15 @@ LABEL_54:
   }
 }
 
-- (BOOL)handleURL:(id)a3 sourceApplication:(id)a4 context:(id)a5
+- (BOOL)handleURL:(id)l sourceApplication:(id)application context:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  applicationCopy = application;
+  contextCopy = context;
   v12 = GEOFindOrCreateLog();
   v13 = v12;
-  if (!v9)
+  if (!lCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -2175,11 +2175,11 @@ LABEL_12:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v21 = 138477827;
-    v22 = v9;
+    v22 = lCopy;
     _os_log_impl(&dword_1A2EA0000, v13, OS_LOG_TYPE_DEBUG, "Handling URL: '%{private}@'", &v21, 0xCu);
   }
 
-  v14 = [_MKURLHandler _MKGetURLSchemeTypeFor:v9];
+  v14 = [_MKURLHandler _MKGetURLSchemeTypeFor:lCopy];
   v15 = 0;
   if (v14 <= 3)
   {
@@ -2187,12 +2187,12 @@ LABEL_12:
     {
       if (v14 == 2)
       {
-        v17 = [(_MKURLHandler *)self _handleSharedMapURL:v9 sourceApplication:v10 context:v11];
+        v17 = [(_MKURLHandler *)self _handleSharedMapURL:lCopy sourceApplication:applicationCopy context:contextCopy];
       }
 
       else
       {
-        v17 = [(_MKURLHandler *)self _handleMapItemURL:v9 sourceApplication:v10 context:v11];
+        v17 = [(_MKURLHandler *)self _handleMapItemURL:lCopy sourceApplication:applicationCopy context:contextCopy];
       }
 
       goto LABEL_27;
@@ -2211,9 +2211,9 @@ LABEL_12:
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v9 scheme];
+      scheme = [lCopy scheme];
       v21 = 138543362;
-      v22 = v19;
+      v22 = scheme;
       _os_log_impl(&dword_1A2EA0000, v18, OS_LOG_TYPE_ERROR, "Scheme '%{public}@' is not supported.", &v21, 0xCu);
     }
 
@@ -2224,12 +2224,12 @@ LABEL_12:
   {
     if (v14 == 4)
     {
-      v17 = [(_MKURLHandler *)self _handleMapItemHandlesURL:v9 sourceApplication:v10 context:v11];
+      v17 = [(_MKURLHandler *)self _handleMapItemHandlesURL:lCopy sourceApplication:applicationCopy context:contextCopy];
       goto LABEL_27;
     }
 
 LABEL_20:
-    v17 = [(_MKURLHandler *)self _handleMapsURL:v9 sourceApplication:v10 context:v11];
+    v17 = [(_MKURLHandler *)self _handleMapsURL:lCopy sourceApplication:applicationCopy context:contextCopy];
 LABEL_27:
     v15 = v17;
     goto LABEL_28;
@@ -2237,7 +2237,7 @@ LABEL_27:
 
   if (v14 == 6)
   {
-    v17 = [(_MKURLHandler *)self _handleShortURL:v9 sourceApplication:v10 context:v11];
+    v17 = [(_MKURLHandler *)self _handleShortURL:lCopy sourceApplication:applicationCopy context:contextCopy];
     goto LABEL_27;
   }
 
@@ -2251,13 +2251,13 @@ LABEL_28:
   return v15;
 }
 
-+ (unsigned)_MKGetURLSchemeTypeFor:(id)a3
++ (unsigned)_MKGetURLSchemeTypeFor:(id)for
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (for)
   {
 
-    return _MKURLGetSchemeType(a3);
+    return _MKURLGetSchemeType(for);
   }
 
   else

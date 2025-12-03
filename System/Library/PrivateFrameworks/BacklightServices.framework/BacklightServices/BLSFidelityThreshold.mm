@@ -1,18 +1,18 @@
 @interface BLSFidelityThreshold
-+ (int64_t)fidelityForUpdateInterval:(double)a3;
++ (int64_t)fidelityForUpdateInterval:(double)interval;
 @end
 
 @implementation BLSFidelityThreshold
 
-+ (int64_t)fidelityForUpdateInterval:(double)a3
++ (int64_t)fidelityForUpdateInterval:(double)interval
 {
   v3 = 2;
-  if (a3 > 15.0)
+  if (interval > 15.0)
   {
     v3 = 1;
   }
 
-  if (a3 >= 0.5)
+  if (interval >= 0.5)
   {
     return v3;
   }

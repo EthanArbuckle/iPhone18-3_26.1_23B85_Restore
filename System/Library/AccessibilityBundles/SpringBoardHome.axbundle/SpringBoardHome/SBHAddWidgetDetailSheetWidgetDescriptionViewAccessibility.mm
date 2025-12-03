@@ -1,5 +1,5 @@
 @interface SBHAddWidgetDetailSheetWidgetDescriptionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -7,11 +7,11 @@
 
 @implementation SBHAddWidgetDetailSheetWidgetDescriptionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHAddWidgetDetailSheetWidgetDescriptionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHAddWidgetDetailSheetWidgetDescriptionView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHAddWidgetDetailSheetWidgetDescriptionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHAddWidgetDetailSheetWidgetDescriptionView" isKindOfClass:@"UIView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

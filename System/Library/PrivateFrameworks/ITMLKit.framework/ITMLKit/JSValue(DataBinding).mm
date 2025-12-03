@@ -10,11 +10,11 @@
 - (id)ikdt_prototype
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if ([a1 isObject])
+  if ([self isObject])
   {
-    v2 = [a1 _ikdt_globalObject];
-    v3 = [v2 objectForKeyedSubscript:@"getPrototypeOf"];
-    v8[0] = a1;
+    _ikdt_globalObject = [self _ikdt_globalObject];
+    v3 = [_ikdt_globalObject objectForKeyedSubscript:@"getPrototypeOf"];
+    v8[0] = self;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
     v5 = [v3 callWithArguments:v4];
   }
@@ -31,25 +31,25 @@
 
 - (uint64_t)ikdt_isArray
 {
-  v1 = [a1 ikdt_prototype];
-  v2 = [v1 isArray];
+  ikdt_prototype = [self ikdt_prototype];
+  isArray = [ikdt_prototype isArray];
 
-  return v2;
+  return isArray;
 }
 
 - (uint64_t)ikdt_isObject
 {
-  v1 = [a1 ikdt_prototype];
-  v2 = [v1 isObject];
+  ikdt_prototype = [self ikdt_prototype];
+  isObject = [ikdt_prototype isObject];
 
-  return v2;
+  return isObject;
 }
 
 - (id)_ikdt_globalObject
 {
   v0 = +[IKAppContext currentAppContext];
-  v1 = [v0 jsContext];
-  v2 = [v1 objectForKeyedSubscript:@"Object"];
+  jsContext = [v0 jsContext];
+  v2 = [jsContext objectForKeyedSubscript:@"Object"];
 
   return v2;
 }

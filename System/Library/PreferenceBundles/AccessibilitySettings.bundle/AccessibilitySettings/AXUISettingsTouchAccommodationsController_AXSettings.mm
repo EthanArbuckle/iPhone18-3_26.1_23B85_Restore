@@ -9,14 +9,14 @@
 - (double)touchAccommodationsIgnoreRepeatDuration;
 - (double)touchAccommodationsTapActivationTimeout;
 - (int64_t)touchAccommodationsTapActivationMethod;
-- (void)setTouchAccommodationsAllowsSwipeGesturesToBypass:(BOOL)a3;
-- (void)setTouchAccommodationsEnabled:(BOOL)a3;
-- (void)setTouchAccommodationsHoldDuration:(double)a3;
-- (void)setTouchAccommodationsHoldDurationEnabled:(BOOL)a3;
-- (void)setTouchAccommodationsIgnoreRepeatDuration:(double)a3;
-- (void)setTouchAccommodationsIgnoreRepeatEnabled:(BOOL)a3;
-- (void)setTouchAccommodationsTapActivationMethod:(int64_t)a3;
-- (void)setTouchAccommodationsTapActivationTimeout:(double)a3;
+- (void)setTouchAccommodationsAllowsSwipeGesturesToBypass:(BOOL)bypass;
+- (void)setTouchAccommodationsEnabled:(BOOL)enabled;
+- (void)setTouchAccommodationsHoldDuration:(double)duration;
+- (void)setTouchAccommodationsHoldDurationEnabled:(BOOL)enabled;
+- (void)setTouchAccommodationsIgnoreRepeatDuration:(double)duration;
+- (void)setTouchAccommodationsIgnoreRepeatEnabled:(BOOL)enabled;
+- (void)setTouchAccommodationsTapActivationMethod:(int64_t)method;
+- (void)setTouchAccommodationsTapActivationTimeout:(double)timeout;
 @end
 
 @implementation AXUISettingsTouchAccommodationsController_AXSettings
@@ -45,73 +45,73 @@
   return v2;
 }
 
-- (void)setTouchAccommodationsEnabled:(BOOL)a3
+- (void)setTouchAccommodationsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(AXUISettingsTouchAccommodationsController_AXSettings *)self setShouldIgnoreNextEnabledChangedNotification:1];
   v4 = +[AXSettings sharedInstance];
-  [v4 setTouchAccommodationsEnabled:v3];
+  [v4 setTouchAccommodationsEnabled:enabledCopy];
 }
 
 - (BOOL)touchAccommodationsEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 touchAccommodationsEnabled];
+  touchAccommodationsEnabled = [v2 touchAccommodationsEnabled];
 
-  return v3;
+  return touchAccommodationsEnabled;
 }
 
 - (BOOL)touchAccommodationsAreConfigured
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 touchAccommodationsAreConfigured];
+  touchAccommodationsAreConfigured = [v2 touchAccommodationsAreConfigured];
 
-  return v3;
+  return touchAccommodationsAreConfigured;
 }
 
 - (BOOL)touchAccommodationsHoldDurationEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 touchAccommodationsHoldDurationEnabled];
+  touchAccommodationsHoldDurationEnabled = [v2 touchAccommodationsHoldDurationEnabled];
 
-  return v3;
+  return touchAccommodationsHoldDurationEnabled;
 }
 
-- (void)setTouchAccommodationsHoldDurationEnabled:(BOOL)a3
+- (void)setTouchAccommodationsHoldDurationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[AXSettings sharedInstance];
-  [v4 setTouchAccommodationsHoldDurationEnabled:v3];
+  [v4 setTouchAccommodationsHoldDurationEnabled:enabledCopy];
 }
 
 - (BOOL)touchAccommodationsIgnoreRepeatEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 touchAccommodationsIgnoreRepeatEnabled];
+  touchAccommodationsIgnoreRepeatEnabled = [v2 touchAccommodationsIgnoreRepeatEnabled];
 
-  return v3;
+  return touchAccommodationsIgnoreRepeatEnabled;
 }
 
-- (void)setTouchAccommodationsIgnoreRepeatEnabled:(BOOL)a3
+- (void)setTouchAccommodationsIgnoreRepeatEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[AXSettings sharedInstance];
-  [v4 setTouchAccommodationsIgnoreRepeatEnabled:v3];
+  [v4 setTouchAccommodationsIgnoreRepeatEnabled:enabledCopy];
 }
 
 - (BOOL)touchAccommodationsAllowsSwipeGesturesToBypass
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 touchAccommodationsAllowsSwipeGesturesToBypass];
+  touchAccommodationsAllowsSwipeGesturesToBypass = [v2 touchAccommodationsAllowsSwipeGesturesToBypass];
 
-  return v3;
+  return touchAccommodationsAllowsSwipeGesturesToBypass;
 }
 
-- (void)setTouchAccommodationsAllowsSwipeGesturesToBypass:(BOOL)a3
+- (void)setTouchAccommodationsAllowsSwipeGesturesToBypass:(BOOL)bypass
 {
-  v3 = a3;
+  bypassCopy = bypass;
   v4 = +[AXSettings sharedInstance];
-  [v4 setTouchAccommodationsAllowsSwipeGesturesToBypass:v3];
+  [v4 setTouchAccommodationsAllowsSwipeGesturesToBypass:bypassCopy];
 }
 
 - (double)touchAccommodationsHoldDuration
@@ -123,10 +123,10 @@
   return v4;
 }
 
-- (void)setTouchAccommodationsHoldDuration:(double)a3
+- (void)setTouchAccommodationsHoldDuration:(double)duration
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setTouchAccommodationsHoldDuration:a3];
+  [v4 setTouchAccommodationsHoldDuration:duration];
 }
 
 - (double)touchAccommodationsIgnoreRepeatDuration
@@ -138,10 +138,10 @@
   return v4;
 }
 
-- (void)setTouchAccommodationsIgnoreRepeatDuration:(double)a3
+- (void)setTouchAccommodationsIgnoreRepeatDuration:(double)duration
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setTouchAccommodationsIgnoreRepeatDuration:a3];
+  [v4 setTouchAccommodationsIgnoreRepeatDuration:duration];
 }
 
 - (double)touchAccommodationsTapActivationTimeout
@@ -153,24 +153,24 @@
   return v4;
 }
 
-- (void)setTouchAccommodationsTapActivationTimeout:(double)a3
+- (void)setTouchAccommodationsTapActivationTimeout:(double)timeout
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setTouchAccommodationsTapActivationTimeout:a3];
+  [v4 setTouchAccommodationsTapActivationTimeout:timeout];
 }
 
 - (int64_t)touchAccommodationsTapActivationMethod
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 touchAccommodationsTapActivationMethod];
+  touchAccommodationsTapActivationMethod = [v2 touchAccommodationsTapActivationMethod];
 
-  return v3;
+  return touchAccommodationsTapActivationMethod;
 }
 
-- (void)setTouchAccommodationsTapActivationMethod:(int64_t)a3
+- (void)setTouchAccommodationsTapActivationMethod:(int64_t)method
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setTouchAccommodationsTapActivationMethod:a3];
+  [v4 setTouchAccommodationsTapActivationMethod:method];
 }
 
 @end

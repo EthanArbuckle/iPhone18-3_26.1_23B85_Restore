@@ -1,13 +1,13 @@
 @interface OSChargingPhoneOnPluginPredictorWithSignals
-- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7;
+- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log;
 @end
 
 @implementation OSChargingPhoneOnPluginPredictorWithSignals
 
-- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)a3 withPluginDate:(unint64_t)a4 withPluginBatteryLevel:(id)a5 forDate:(double)a6 withLog:(id)a7
+- (OSChargingTwoStagePredictorQueryResult)chargingDecision:(SEL)decision withPluginDate:(unint64_t)date withPluginBatteryLevel:(id)level forDate:(double)forDate withLog:(id)log
 {
-  v14 = a5;
-  v15 = a7;
+  levelCopy = level;
+  logCopy = log;
   v16 = a8;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -26,12 +26,12 @@
   retstr->var2 = 0.0;
   v27.receiver = self;
   v27.super_class = OSChargingPhoneOnPluginPredictorWithSignals;
-  [(OSChargingTwoStagePredictorQueryResult *)&v27 chargingDecision:a4 withPluginDate:v14 withPluginBatteryLevel:v15 forDate:v16 withLog:a6];
-  v20 = [(OSChargingPhoneOnPluginPredictorWithSignals *)self signals];
-  v21 = [v20 determineNextEvent];
+  [(OSChargingTwoStagePredictorQueryResult *)&v27 chargingDecision:date withPluginDate:levelCopy withPluginBatteryLevel:logCopy forDate:v16 withLog:forDate];
+  signals = [(OSChargingPhoneOnPluginPredictorWithSignals *)self signals];
+  determineNextEvent = [signals determineNextEvent];
 
   v22 = +[NSDate distantPast];
-  LODWORD(v19) = [v21 isEqualToDate:v22];
+  LODWORD(v19) = [determineNextEvent isEqualToDate:v22];
 
   if (v19)
   {
@@ -41,11 +41,11 @@
   else
   {
     v23 = +[NSDate distantFuture];
-    v24 = [v21 isEqualToDate:v23];
+    v24 = [determineNextEvent isEqualToDate:v23];
 
     if ((v24 & 1) == 0)
     {
-      [v21 timeIntervalSinceNow];
+      [determineNextEvent timeIntervalSinceNow];
       retstr->var1 = v25;
     }
   }

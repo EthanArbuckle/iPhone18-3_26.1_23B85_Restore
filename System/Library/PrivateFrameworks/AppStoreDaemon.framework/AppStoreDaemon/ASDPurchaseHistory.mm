@@ -3,11 +3,11 @@
 + (id)sharedInstance;
 - (ASDPurchaseHistory)init;
 - (void)dealloc;
-- (void)executeQuery:(id)a3 withResultHandler:(id)a4;
-- (void)setHidden:(BOOL)a3 forStoreItemID:(int64_t)a4 withCompletionHandler:(id)a5;
-- (void)showAllWithCompletionHandler:(id)a3;
-- (void)updateForAccountID:(int64_t)a3 withContext:(unint64_t)a4 withCompletionHandler:(id)a5;
-- (void)updateWithContext:(unint64_t)a3 withCompletionHandler:(id)a4;
+- (void)executeQuery:(id)query withResultHandler:(id)handler;
+- (void)setHidden:(BOOL)hidden forStoreItemID:(int64_t)d withCompletionHandler:(id)handler;
+- (void)showAllWithCompletionHandler:(id)handler;
+- (void)updateForAccountID:(int64_t)d withContext:(unint64_t)context withCompletionHandler:(id)handler;
+- (void)updateWithContext:(unint64_t)context withCompletionHandler:(id)handler;
 @end
 
 @implementation ASDPurchaseHistory
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __36__ASDPurchaseHistory_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D5A0 != -1)
   {
     dispatch_once(&qword_1ED90D5A0, block);
@@ -100,19 +100,19 @@ void __26__ASDPurchaseHistory_init__block_invoke(uint64_t a1)
   [(ASDPurchaseHistory *)&v3 dealloc];
 }
 
-- (void)executeQuery:(id)a3 withResultHandler:(id)a4
+- (void)executeQuery:(id)query withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__ASDPurchaseHistory_executeQuery_withResultHandler___block_invoke;
   v11[3] = &unk_1E7CDD030;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = queryCopy;
+  v13 = handlerCopy;
+  v9 = queryCopy;
+  v10 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseHistoryServiceWithCompletionHandler:v11];
 }
 
@@ -144,18 +144,18 @@ void __53__ASDPurchaseHistory_executeQuery_withResultHandler___block_invoke(uint
   }
 }
 
-- (void)setHidden:(BOOL)a3 forStoreItemID:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)setHidden:(BOOL)hidden forStoreItemID:(int64_t)d withCompletionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__ASDPurchaseHistory_setHidden_forStoreItemID_withCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CDD058;
-  v14 = a3;
-  v12 = v8;
-  v13 = a4;
-  v10 = v8;
+  hiddenCopy = hidden;
+  v12 = handlerCopy;
+  dCopy = d;
+  v10 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseHistoryServiceWithCompletionHandler:v11];
 }
 
@@ -213,16 +213,16 @@ uint64_t __69__ASDPurchaseHistory_setHidden_forStoreItemID_withCompletionHandler
   return result;
 }
 
-- (void)showAllWithCompletionHandler:(id)a3
+- (void)showAllWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__ASDPurchaseHistory_showAllWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDD080;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseHistoryServiceWithCompletionHandler:v7];
 }
 
@@ -278,18 +278,18 @@ uint64_t __51__ASDPurchaseHistory_showAllWithCompletionHandler___block_invoke_3(
   return result;
 }
 
-- (void)updateForAccountID:(int64_t)a3 withContext:(unint64_t)a4 withCompletionHandler:(id)a5
+- (void)updateForAccountID:(int64_t)d withContext:(unint64_t)context withCompletionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __75__ASDPurchaseHistory_updateForAccountID_withContext_withCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CDD0A8;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
-  v10 = v8;
+  v12 = handlerCopy;
+  dCopy = d;
+  contextCopy = context;
+  v10 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseHistoryServiceWithCompletionHandler:v11];
 }
 
@@ -347,17 +347,17 @@ uint64_t __75__ASDPurchaseHistory_updateForAccountID_withContext_withCompletionH
   return result;
 }
 
-- (void)updateWithContext:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)updateWithContext:(unint64_t)context withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__ASDPurchaseHistory_updateWithContext_withCompletionHandler___block_invoke;
   v9[3] = &unk_1E7CDD0D0;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  contextCopy = context;
+  v8 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getPurchaseHistoryServiceWithCompletionHandler:v9];
 }
 

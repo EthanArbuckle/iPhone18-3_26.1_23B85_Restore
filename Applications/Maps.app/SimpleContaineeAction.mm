@@ -1,7 +1,7 @@
 @interface SimpleContaineeAction
 - (NSString)accessibilityIdentifier;
 - (NSString)labelAccessibilityIdentifier;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SimpleContaineeAction
@@ -10,14 +10,14 @@
 {
   if (!self->_labelAccessibilityIdentifier)
   {
-    v3 = [(SimpleContaineeAction *)self title];
-    v4 = [v3 length];
+    title = [(SimpleContaineeAction *)self title];
+    v4 = [title length];
 
     if (v4)
     {
-      v5 = [(SimpleContaineeAction *)self title];
+      title2 = [(SimpleContaineeAction *)self title];
       labelAccessibilityIdentifier = self->_labelAccessibilityIdentifier;
-      self->_labelAccessibilityIdentifier = v5;
+      self->_labelAccessibilityIdentifier = title2;
     }
   }
 
@@ -30,13 +30,13 @@
 {
   if (!self->_accessibilityIdentifier)
   {
-    v3 = [(SimpleContaineeAction *)self title];
-    v4 = [v3 length];
+    title = [(SimpleContaineeAction *)self title];
+    v4 = [title length];
 
     if (v4)
     {
-      v5 = [(SimpleContaineeAction *)self title];
-      v6 = [v5 stringByReplacingOccurrencesOfString:@" " withString:&stru_1016631F0];
+      title2 = [(SimpleContaineeAction *)self title];
+      v6 = [title2 stringByReplacingOccurrencesOfString:@" " withString:&stru_1016631F0];
 
       v7 = [NSString stringWithFormat:@"%@Action", v6];
       accessibilityIdentifier = self->_accessibilityIdentifier;
@@ -49,9 +49,9 @@
   return v9;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 

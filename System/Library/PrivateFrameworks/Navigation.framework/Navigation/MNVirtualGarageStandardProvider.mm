@@ -4,15 +4,15 @@
 - (MNVirtualGarageStandardProvider)init;
 - (id)_selectedVehicle;
 - (unint64_t)vehiclesCount;
-- (void)_forceVirtualGarageSyncWithHandler:(id)a3;
-- (void)_sendVirtualGarageUpdateForSelectedVehicle:(id)a3;
-- (void)_setVirtualGarage:(id)a3;
-- (void)_updateCachedPropertiesForGarage:(id)a3;
+- (void)_forceVirtualGarageSyncWithHandler:(id)handler;
+- (void)_sendVirtualGarageUpdateForSelectedVehicle:(id)vehicle;
+- (void)_setVirtualGarage:(id)garage;
+- (void)_updateCachedPropertiesForGarage:(id)garage;
 - (void)dealloc;
 - (void)startVirtualGarageUpdates;
 - (void)stopVirtualGarageUpdates;
-- (void)updatedVehicleStateWithHandler:(id)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)updatedVehicleStateWithHandler:(id)handler;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation MNVirtualGarageStandardProvider
@@ -24,35 +24,35 @@
   return WeakRetained;
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 selectedVehicle];
-  v6 = [(MNVirtualGarageStandardProvider *)self _selectedVehicle];
-  if (!(v6 | v5))
+  updateCopy = update;
+  selectedVehicle = [updateCopy selectedVehicle];
+  _selectedVehicle = [(MNVirtualGarageStandardProvider *)self _selectedVehicle];
+  if (!(_selectedVehicle | selectedVehicle))
   {
     goto LABEL_9;
   }
 
-  v7 = [v5 identifier];
-  v8 = [v6 identifier];
-  if (([v7 isEqualToString:v8] & 1) == 0)
+  identifier = [selectedVehicle identifier];
+  identifier2 = [_selectedVehicle identifier];
+  if (([identifier isEqualToString:identifier2] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v9 = [v5 currentVehicleState];
-  v10 = [v6 currentVehicleState];
-  v11 = [v9 isSignificantlyDifferentFromVehicleState:v10];
+  currentVehicleState = [selectedVehicle currentVehicleState];
+  currentVehicleState2 = [_selectedVehicle currentVehicleState];
+  v11 = [currentVehicleState isSignificantlyDifferentFromVehicleState:currentVehicleState2];
 
   if (v11)
   {
 LABEL_8:
-    [(MNVirtualGarageStandardProvider *)self _setVirtualGarage:v4];
-    v15 = [v4 selectedVehicle];
-    [(MNVirtualGarageStandardProvider *)self _sendVirtualGarageUpdateForSelectedVehicle:v15];
+    [(MNVirtualGarageStandardProvider *)self _setVirtualGarage:updateCopy];
+    selectedVehicle2 = [updateCopy selectedVehicle];
+    [(MNVirtualGarageStandardProvider *)self _sendVirtualGarageUpdateForSelectedVehicle:selectedVehicle2];
 
     goto LABEL_9;
   }
@@ -60,12 +60,12 @@ LABEL_8:
   v12 = MNGetMNVirtualGarageManagerLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v5 currentVehicleState];
-    v14 = [v6 currentVehicleState];
+    currentVehicleState3 = [selectedVehicle currentVehicleState];
+    currentVehicleState4 = [_selectedVehicle currentVehicleState];
     v17 = 138412546;
-    v18 = v13;
+    v18 = currentVehicleState3;
     v19 = 2112;
-    v20 = v14;
+    v20 = currentVehicleState4;
     _os_log_impl(&dword_1D311E000, v12, OS_LOG_TYPE_INFO, "MNVirtualGarageStandardProvider received an update to the selected vehicle that was not significantly different from the previous one. Will ignore this update. newSelectedVehicle.state: %@\n currentVehicle.state: %@", &v17, 0x16u);
   }
 
@@ -73,16 +73,16 @@ LABEL_9:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendVirtualGarageUpdateForSelectedVehicle:(id)a3
+- (void)_sendVirtualGarageUpdateForSelectedVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __78__MNVirtualGarageStandardProvider__sendVirtualGarageUpdateForSelectedVehicle___block_invoke;
   v6[3] = &unk_1E8430D50;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = vehicleCopy;
+  v5 = vehicleCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -144,19 +144,19 @@ void __78__MNVirtualGarageStandardProvider__sendVirtualGarageUpdateForSelectedVe
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_forceVirtualGarageSyncWithHandler:(id)a3
+- (void)_forceVirtualGarageSyncWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x1E69DF8B8] sharedService];
+  mEMORY[0x1E69DF8B8] = [MEMORY[0x1E69DF8B8] sharedService];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__MNVirtualGarageStandardProvider__forceVirtualGarageSyncWithHandler___block_invoke;
   v8[3] = &unk_1E8430DA0;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = handlerCopy;
   v10 = v6;
-  v7 = v5;
+  v7 = mEMORY[0x1E69DF8B8];
   v9 = v7;
   [v7 virtualGarageGetGarageWithReply:v8];
 
@@ -222,18 +222,18 @@ uint64_t __70__MNVirtualGarageStandardProvider__forceVirtualGarageSyncWithHandle
 {
   v5 = self->_garageIsolater;
   _geo_isolate_lock_data();
-  v3 = [(VGVirtualGarage *)self->_garage selectedVehicle];
+  selectedVehicle = [(VGVirtualGarage *)self->_garage selectedVehicle];
   _geo_isolate_unlock();
 
-  return v3;
+  return selectedVehicle;
 }
 
-- (void)_updateCachedPropertiesForGarage:(id)a3
+- (void)_updateCachedPropertiesForGarage:(id)garage
 {
-  v4 = a3;
+  garageCopy = garage;
   garageIsolater = self->_garageIsolater;
-  v7 = v4;
-  v6 = v4;
+  v7 = garageCopy;
+  v6 = garageCopy;
   geo_isolate_sync_data();
 }
 
@@ -247,26 +247,26 @@ uint64_t __68__MNVirtualGarageStandardProvider__updateCachedPropertiesForGarage_
   return result;
 }
 
-- (void)_setVirtualGarage:(id)a3
+- (void)_setVirtualGarage:(id)garage
 {
-  v4 = a3;
+  garageCopy = garage;
   garageIsolater = self->_garageIsolater;
   v7 = MEMORY[0x1E69E9820];
-  v8 = v4;
-  v6 = v4;
+  v8 = garageCopy;
+  v6 = garageCopy;
   geo_isolate_sync_data();
   [(MNVirtualGarageStandardProvider *)self _updateCachedPropertiesForGarage:v6, v7, 3221225472, __53__MNVirtualGarageStandardProvider__setVirtualGarage___block_invoke, &unk_1E8430D50, self];
 }
 
 - (BOOL)assumesFullCharge
 {
-  v2 = self;
+  selfCopy = self;
   v4 = self->_garageIsolater;
   _geo_isolate_lock_data();
-  LOBYTE(v2) = v2->_assumesFullCharge;
+  LOBYTE(selfCopy) = selfCopy->_assumesFullCharge;
   _geo_isolate_unlock();
 
-  return v2;
+  return selfCopy;
 }
 
 - (unint64_t)vehiclesCount
@@ -279,23 +279,23 @@ uint64_t __68__MNVirtualGarageStandardProvider__updateCachedPropertiesForGarage_
   return vehiclesCount;
 }
 
-- (void)updatedVehicleStateWithHandler:(id)a3
+- (void)updatedVehicleStateWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [MEMORY[0x1E69DF8B8] sharedService];
-    [v6 openForClient:v5];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    mEMORY[0x1E69DF8B8] = [MEMORY[0x1E69DF8B8] sharedService];
+    [mEMORY[0x1E69DF8B8] openForClient:uUID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__MNVirtualGarageStandardProvider_updatedVehicleStateWithHandler___block_invoke;
     v9[3] = &unk_1E8430D28;
-    v10 = v6;
-    v11 = v5;
-    v12 = v4;
-    v7 = v5;
-    v8 = v6;
+    v10 = mEMORY[0x1E69DF8B8];
+    v11 = uUID;
+    v12 = handlerCopy;
+    v7 = uUID;
+    v8 = mEMORY[0x1E69DF8B8];
     [(MNVirtualGarageStandardProvider *)self _forceVirtualGarageSyncWithHandler:v9];
   }
 }
@@ -323,8 +323,8 @@ void __66__MNVirtualGarageStandardProvider_updatedVehicleStateWithHandler___bloc
     forceUpdateTimer = self->_forceUpdateTimer;
     self->_forceUpdateTimer = 0;
 
-    v7 = [MEMORY[0x1E69DF8B8] sharedService];
-    [v7 unregisterObserver:self];
+    mEMORY[0x1E69DF8B8] = [MEMORY[0x1E69DF8B8] sharedService];
+    [mEMORY[0x1E69DF8B8] unregisterObserver:self];
     v8 = MNGetMNVirtualGarageManagerLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -332,8 +332,8 @@ void __66__MNVirtualGarageStandardProvider_updatedVehicleStateWithHandler___bloc
       _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_DEFAULT, "MNVirtualGarageStandardProvider stopping VGVirtualGarage connection.", v9, 2u);
     }
 
-    [v7 virtualGarageEndContinuousUpdates];
-    [v7 closeForClient:self];
+    [mEMORY[0x1E69DF8B8] virtualGarageEndContinuousUpdates];
+    [mEMORY[0x1E69DF8B8] closeForClient:self];
     [(MNVirtualGarageStandardProvider *)self _setVirtualGarage:0];
     self->_isStarted = 0;
   }
@@ -347,9 +347,9 @@ void __66__MNVirtualGarageStandardProvider_updatedVehicleStateWithHandler___bloc
     v10 = v3;
     GEOConfigGetDouble();
     self->_forcePeriodicUpdateInterval = v5;
-    v6 = [MEMORY[0x1E69DF8B8] sharedService];
-    [v6 openForClient:self];
-    [v6 registerObserver:self];
+    mEMORY[0x1E69DF8B8] = [MEMORY[0x1E69DF8B8] sharedService];
+    [mEMORY[0x1E69DF8B8] openForClient:self];
+    [mEMORY[0x1E69DF8B8] registerObserver:self];
     v7 = MNGetMNVirtualGarageManagerLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -357,7 +357,7 @@ void __66__MNVirtualGarageStandardProvider_updatedVehicleStateWithHandler___bloc
       _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_DEFAULT, "MNVirtualGarageStandardProvider starting VGVirtualGarage connection.", v8, 2u);
     }
 
-    [v6 virtualGarageStartContinuousUpdatesIfNeeded];
+    [mEMORY[0x1E69DF8B8] virtualGarageStartContinuousUpdatesIfNeeded];
     self->_isStarted = 1;
     [(MNVirtualGarageStandardProvider *)self _forceVirtualGarageSyncWithHandler:0];
   }

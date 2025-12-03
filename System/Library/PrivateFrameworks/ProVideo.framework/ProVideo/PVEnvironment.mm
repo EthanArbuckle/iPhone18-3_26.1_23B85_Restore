@@ -319,8 +319,8 @@ LABEL_25:
 
 + (BOOL)PVHighlightHDRRegions
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"PVHighlightHDRRegions"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"PVHighlightHDRRegions"];
   v4 = v3;
   if (v3)
   {

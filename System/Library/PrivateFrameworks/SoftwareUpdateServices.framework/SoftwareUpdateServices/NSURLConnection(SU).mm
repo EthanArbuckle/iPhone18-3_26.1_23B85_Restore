@@ -13,7 +13,7 @@
   v11 = objc_alloc_init(MEMORY[0x277CCABD8]);
   [v11 addOperation:v10];
   [v11 waitUntilAllOperationsAreFinished];
-  v12 = [(SUHttpOperation *)v10 data];
+  data = [(SUHttpOperation *)v10 data];
   if (a5)
   {
     *a5 = [(SUHttpOperation *)v10 response];
@@ -24,7 +24,7 @@
     *a6 = [(SUHttpOperation *)v10 error];
   }
 
-  return v12;
+  return data;
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface AKFollowUpRequestProvider
-- (BOOL)signRequest:(id)a3 error:(id *)a4;
+- (BOOL)signRequest:(id)request error:(id *)error;
 @end
 
 @implementation AKFollowUpRequestProvider
 
-- (BOOL)signRequest:(id)a3 error:(id *)a4
+- (BOOL)signRequest:(id)request error:(id *)error
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11[1] = a4;
-  v6 = [(AKURLRequestProviderImpl *)v13 concreteAuthenticationContext];
-  [(AKAppleIDAuthenticationContext *)v6 set_shouldSendIdentityTokenForRemoteUI:0];
-  _objc_release(v6);
+  objc_storeStrong(location, request);
+  v11[1] = error;
+  concreteAuthenticationContext = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
+  [(AKAppleIDAuthenticationContext *)concreteAuthenticationContext set_shouldSendIdentityTokenForRemoteUI:0];
+  _objc_release(concreteAuthenticationContext);
   v7 = [AKDServerUIController alloc];
-  v10 = [(AKURLRequestProviderImpl *)v13 client];
+  client = [(AKURLRequestProviderImpl *)selfCopy client];
   v9 = [(AKDServerUIController *)v7 initWithClient:?];
-  v8 = [(AKURLRequestProviderImpl *)v13 concreteAuthenticationContext];
+  concreteAuthenticationContext2 = [(AKURLRequestProviderImpl *)selfCopy concreteAuthenticationContext];
   v11[0] = [(AKDServerUIController *)v9 resourceLoadDelegateWithContext:?];
-  _objc_release(v8);
+  _objc_release(concreteAuthenticationContext2);
   _objc_release(v9);
-  _objc_release(v10);
+  _objc_release(client);
   [v11[0] setBagUrlKey:AKURLBagKeyFetchFollowUps];
   [location[0] setValue:? forHTTPHeaderField:?];
   [location[0] setValue:@"application/json" forHTTPHeaderField:@"Accept"];

@@ -1,24 +1,24 @@
 @interface SFCertificateViewController
-- (SFCertificateViewController)initWithCertificatePresentationRequest:(id)a3;
+- (SFCertificateViewController)initWithCertificatePresentationRequest:(id)request;
 - (SFCertificateViewControllerDelegate)delegate;
 - (void)_viewDidDisappear;
 - (void)dismiss;
-- (void)layoutViewWithCertificatePresentationRequest:(id)a3;
+- (void)layoutViewWithCertificatePresentationRequest:(id)request;
 - (void)viewDidLoad;
 @end
 
 @implementation SFCertificateViewController
 
-- (SFCertificateViewController)initWithCertificatePresentationRequest:(id)a3
+- (SFCertificateViewController)initWithCertificatePresentationRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = SFCertificateViewController;
   v6 = [(SFCertificateViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presentationRequest, a3);
+    objc_storeStrong(&v6->_presentationRequest, request);
   }
 
   return v7;
@@ -34,7 +34,7 @@
 
 - (void)_viewDidDisappear
 {
-  v3 = [(SFCertificateViewController *)self delegate];
+  delegate = [(SFCertificateViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -46,8 +46,8 @@
       _os_log_impl(&dword_23AA9F000, v5, OS_LOG_TYPE_DEFAULT, "calling certificateViewControllerDidDismiss", v7, 2u);
     }
 
-    v6 = [(SFCertificateViewController *)self delegate];
-    [v6 certificateViewControllerDidDismiss:self];
+    delegate2 = [(SFCertificateViewController *)self delegate];
+    [delegate2 certificateViewControllerDidDismiss:self];
   }
 }
 
@@ -70,11 +70,11 @@
   [(SFCertificateViewController *)self dismissViewControllerAnimated:1 completion:&__block_literal_global];
 }
 
-- (void)layoutViewWithCertificatePresentationRequest:(id)a3
+- (void)layoutViewWithCertificatePresentationRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  SFCertificateViewController.layoutView(with:)(v4);
+  requestCopy = request;
+  selfCopy = self;
+  SFCertificateViewController.layoutView(with:)(requestCopy);
 }
 
 @end

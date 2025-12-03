@@ -12,8 +12,8 @@
   v4 = [(HLPHelpItem *)&v8 debugDescription];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(HLPHelpSectionItem *)self children];
-  [v5 appendFormat:@"children: %@\n", v6];
+  children = [(HLPHelpSectionItem *)self children];
+  [v5 appendFormat:@"children: %@\n", children];
 
   return v5;
 }

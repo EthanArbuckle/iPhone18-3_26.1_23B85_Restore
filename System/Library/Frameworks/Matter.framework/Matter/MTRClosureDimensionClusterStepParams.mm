@@ -1,8 +1,8 @@
 @interface MTRClosureDimensionClusterStepParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRClosureDimensionClusterStepParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRClosureDimensionClusterStepParams);
-  v5 = [(MTRClosureDimensionClusterStepParams *)self direction];
-  [(MTRClosureDimensionClusterStepParams *)v4 setDirection:v5];
+  direction = [(MTRClosureDimensionClusterStepParams *)self direction];
+  [(MTRClosureDimensionClusterStepParams *)v4 setDirection:direction];
 
-  v6 = [(MTRClosureDimensionClusterStepParams *)self numberOfSteps];
-  [(MTRClosureDimensionClusterStepParams *)v4 setNumberOfSteps:v6];
+  numberOfSteps = [(MTRClosureDimensionClusterStepParams *)self numberOfSteps];
+  [(MTRClosureDimensionClusterStepParams *)v4 setNumberOfSteps:numberOfSteps];
 
-  v7 = [(MTRClosureDimensionClusterStepParams *)self speed];
-  [(MTRClosureDimensionClusterStepParams *)v4 setSpeed:v7];
+  speed = [(MTRClosureDimensionClusterStepParams *)self speed];
+  [(MTRClosureDimensionClusterStepParams *)v4 setSpeed:speed];
 
-  v8 = [(MTRClosureDimensionClusterStepParams *)self timedInvokeTimeoutMs];
-  [(MTRClosureDimensionClusterStepParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRClosureDimensionClusterStepParams *)self timedInvokeTimeoutMs];
+  [(MTRClosureDimensionClusterStepParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRClosureDimensionClusterStepParams *)self serverSideProcessingTimeout];
-  [(MTRClosureDimensionClusterStepParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRClosureDimensionClusterStepParams *)self serverSideProcessingTimeout];
+  [(MTRClosureDimensionClusterStepParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,27 +66,27 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v25[0] = 0;
-  v26 = 0;
+  unsignedShortValue = 0;
   LOBYTE(v27) = 0;
   v24[0] = 0;
   v24[1] = 0;
   v23 = v24;
-  v5 = [(MTRClosureDimensionClusterStepParams *)self direction];
-  v25[0] = [v5 unsignedCharValue];
+  direction = [(MTRClosureDimensionClusterStepParams *)self direction];
+  v25[0] = [direction unsignedCharValue];
 
-  v6 = [(MTRClosureDimensionClusterStepParams *)self numberOfSteps];
-  v26 = [v6 unsignedShortValue];
+  numberOfSteps = [(MTRClosureDimensionClusterStepParams *)self numberOfSteps];
+  unsignedShortValue = [numberOfSteps unsignedShortValue];
 
-  v7 = [(MTRClosureDimensionClusterStepParams *)self speed];
+  speed = [(MTRClosureDimensionClusterStepParams *)self speed];
 
-  if (v7)
+  if (speed)
   {
     v27 = 1;
-    v8 = [(MTRClosureDimensionClusterStepParams *)self speed];
-    HIBYTE(v27) = [v8 unsignedCharValue];
+    speed2 = [(MTRClosureDimensionClusterStepParams *)self speed];
+    HIBYTE(v27) = [speed2 unsignedCharValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v22);
@@ -108,8 +108,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v22);
-      v9 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v22);
+      v9 = sub_2393C7114(reader, 21, 256);
       v12 = v16;
       v11 = v9;
     }
@@ -137,19 +137,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRClosureDimensionClusterStepParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -160,7 +160,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x5A7500000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

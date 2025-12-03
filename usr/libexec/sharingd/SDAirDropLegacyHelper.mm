@@ -1,24 +1,24 @@
 @interface SDAirDropLegacyHelper
-+ (__SecKey)copyReceiverPublicKeyForIdentifier:(id)a3;
-+ (id)convertWideGamutToClampedPhotoForURLs:(id)a3 outTmpDirectory:(id *)a4;
-+ (id)internetLocationFile:(__CFURL *)a3;
-+ (id)preprocessItems:(id)a3 forClientBundleID:(id)a4 receiverIdentifier:(id)a5 receiverSupportsURLs:(BOOL)a6 receiverIsUnknown:(BOOL)a7;
-+ (id)realPathURL:(__CFURL *)a3;
-+ (id)temporaryWeblocURL:(__CFURL *)a3;
++ (__SecKey)copyReceiverPublicKeyForIdentifier:(id)identifier;
++ (id)convertWideGamutToClampedPhotoForURLs:(id)ls outTmpDirectory:(id *)directory;
++ (id)internetLocationFile:(__CFURL *)file;
++ (id)preprocessItems:(id)items forClientBundleID:(id)d receiverIdentifier:(id)identifier receiverSupportsURLs:(BOOL)ls receiverIsUnknown:(BOOL)unknown;
++ (id)realPathURL:(__CFURL *)l;
++ (id)temporaryWeblocURL:(__CFURL *)l;
 + (id)tmpDirectory;
-+ (id)webURLFromInternetLocationFile:(id)a3;
-+ (void)convertLivePhotoBundleIfNeeded:(id)a3 capabilities:(id)a4 conversionManager:(id)a5 queue:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8;
-+ (void)convertMediaItemFromURL:(id)a3 forMediaCapabilities:(id)a4 conversionManager:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7;
-+ (void)convertMediaItemsWithFileURLs:(id)a3 clientBundleID:(id)a4 conversionManager:(id)a5 mediaCapabilities:(id)a6 supportsLivePhoto:(BOOL)a7 supportsAssetBundles:(BOOL)a8 supportsWideGamut:(BOOL)a9 queue:(id)a10 progressHandler:(id)a11 completionHandler:(id)a12;
-+ (void)presentEnableRadiosAlertForBluetooth:(BOOL)a3 andWLAN:(BOOL)a4;
++ (id)webURLFromInternetLocationFile:(id)file;
++ (void)convertLivePhotoBundleIfNeeded:(id)needed capabilities:(id)capabilities conversionManager:(id)manager queue:(id)queue progressHandler:(id)handler completionHandler:(id)completionHandler;
++ (void)convertMediaItemFromURL:(id)l forMediaCapabilities:(id)capabilities conversionManager:(id)manager progressHandler:(id)handler completionHandler:(id)completionHandler;
++ (void)convertMediaItemsWithFileURLs:(id)ls clientBundleID:(id)d conversionManager:(id)manager mediaCapabilities:(id)capabilities supportsLivePhoto:(BOOL)photo supportsAssetBundles:(BOOL)bundles supportsWideGamut:(BOOL)gamut queue:(id)self0 progressHandler:(id)self1 completionHandler:(id)self2;
++ (void)presentEnableRadiosAlertForBluetooth:(BOOL)bluetooth andWLAN:(BOOL)n;
 @end
 
 @implementation SDAirDropLegacyHelper
 
-+ (id)realPathURL:(__CFURL *)a3
++ (id)realPathURL:(__CFURL *)l
 {
   cf = 0;
-  v3 = CFURLCreateFilePathURL(0, a3, &cf);
+  v3 = CFURLCreateFilePathURL(0, l, &cf);
   if (v3)
   {
     v4 = v3;
@@ -81,26 +81,26 @@ LABEL_16:
   return v7;
 }
 
-+ (void)convertMediaItemsWithFileURLs:(id)a3 clientBundleID:(id)a4 conversionManager:(id)a5 mediaCapabilities:(id)a6 supportsLivePhoto:(BOOL)a7 supportsAssetBundles:(BOOL)a8 supportsWideGamut:(BOOL)a9 queue:(id)a10 progressHandler:(id)a11 completionHandler:(id)a12
++ (void)convertMediaItemsWithFileURLs:(id)ls clientBundleID:(id)d conversionManager:(id)manager mediaCapabilities:(id)capabilities supportsLivePhoto:(BOOL)photo supportsAssetBundles:(BOOL)bundles supportsWideGamut:(BOOL)gamut queue:(id)self0 progressHandler:(id)self1 completionHandler:(id)self2
 {
-  v86 = a7;
-  v87 = a8;
-  v15 = a3;
-  v82 = a4;
-  v16 = a5;
-  v92 = a6;
-  v85 = a10;
-  v91 = a11;
-  v83 = a12;
-  v84 = v15;
+  photoCopy = photo;
+  bundlesCopy = bundles;
+  lsCopy = ls;
+  dCopy = d;
+  managerCopy = manager;
+  capabilitiesCopy = capabilities;
+  queueCopy = queue;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v84 = lsCopy;
   if (SFIsDeviceAudioAccessory())
   {
-    v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v15 count]);
+    v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [lsCopy count]);
     v101 = 0u;
     v102 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v18 = v15;
+    v18 = lsCopy;
     v19 = [v18 countByEnumeratingWithState:&v99 objects:v148 count:16];
     if (v19)
     {
@@ -126,20 +126,20 @@ LABEL_16:
       while (v19);
     }
 
-    (*(v83 + 2))(v83, v17, &__NSArray0__struct, &__NSArray0__struct, &__kCFBooleanFalse, 4, 0, v16, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, v17, &__NSArray0__struct, &__NSArray0__struct, &__kCFBooleanFalse, 4, 0, managerCopy, 0);
   }
 
   else
   {
-    if (!v16)
+    if (!managerCopy)
     {
-      v16 = objc_opt_new();
+      managerCopy = objc_opt_new();
       v24 = +[PLPhotoLibrary systemPhotoLibrary];
-      v25 = [v24 photoOutboundSharingTmpDirectoryURL];
+      photoOutboundSharingTmpDirectoryURL = [v24 photoOutboundSharingTmpDirectoryURL];
 
-      if (v25)
+      if (photoOutboundSharingTmpDirectoryURL)
       {
-        [v16 setDirectoryForTemporaryFiles:v25];
+        [managerCopy setDirectoryForTemporaryFiles:photoOutboundSharingTmpDirectoryURL];
       }
 
       else
@@ -151,7 +151,7 @@ LABEL_16:
         }
 
         v27 = +[SDAirDropLegacyHelper tmpDirectory];
-        [v16 setDirectoryForTemporaryFiles:v27];
+        [managerCopy setDirectoryForTemporaryFiles:v27];
       }
     }
 
@@ -171,9 +171,9 @@ LABEL_16:
     v139 = sub_1001ECC68;
     v140 = sub_1001ECC78;
     v141 = 0;
-    v28 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v15 count]);
-    v29 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v15 count]);
-    v95 = v16;
+    v28 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [lsCopy count]);
+    v29 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [lsCopy count]);
+    v95 = managerCopy;
     v30 = +[NSMutableArray array];
     v31 = dispatch_group_create();
     v129[0] = _NSConcreteStackBlock;
@@ -195,7 +195,7 @@ LABEL_16:
     v128 = 0u;
     v125 = 0u;
     v126 = 0u;
-    obj = v15;
+    obj = lsCopy;
     v93 = [obj countByEnumeratingWithState:&v125 objects:v153 count:16];
     if (v93)
     {
@@ -212,34 +212,34 @@ LABEL_16:
           }
 
           v32 = *(*(&v125 + 1) + 8 * j);
-          v33 = [v32 pathExtension];
-          v34 = [v33 isEqual:v89];
+          pathExtension = [v32 pathExtension];
+          v34 = [pathExtension isEqual:v89];
 
-          v35 = [v32 pathExtension];
-          v36 = [v35 isEqual:v94];
+          pathExtension2 = [v32 pathExtension];
+          v36 = [pathExtension2 isEqual:v94];
 
           if (v34)
           {
             v37 = airdrop_log();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
-              v38 = [v32 lastPathComponent];
+              lastPathComponent = [v32 lastPathComponent];
               *buf = 138412290;
-              v150 = v38;
+              v150 = lastPathComponent;
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "attempting to send asset bundle %@", buf, 0xCu);
             }
 
             v39 = [[PFAssetBundle alloc] initWithAssetBundleAtURL:v32];
             if (v39)
             {
-              if (v87)
+              if (bundlesCopy)
               {
                 v40 = airdrop_log();
                 if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
                 {
-                  v41 = [v32 lastPathComponent];
+                  lastPathComponent2 = [v32 lastPathComponent];
                   *buf = 138412290;
-                  v150 = v41;
+                  v150 = lastPathComponent2;
                   _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "receiver supports receiving asset bundle %@", buf, 0xCu);
                 }
 
@@ -253,17 +253,17 @@ LABEL_16:
                 v43 = airdrop_log();
                 if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
                 {
-                  v44 = [v32 lastPathComponent];
+                  lastPathComponent3 = [v32 lastPathComponent];
                   *buf = 138412290;
-                  v150 = v44;
+                  v150 = lastPathComponent3;
                   _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "receiver does not support receiving asset bundle %@. Conversion required.", buf, 0xCu);
                 }
 
                 v45 = +[NSUUID UUID];
-                v46 = [v45 UUIDString];
+                uUIDString = [v45 UUIDString];
 
-                v47 = [v95 directoryForTemporaryFiles];
-                v48 = [v47 URLByAppendingPathComponent:v46];
+                directoryForTemporaryFiles = [v95 directoryForTemporaryFiles];
+                v48 = [directoryForTemporaryFiles URLByAppendingPathComponent:uUIDString];
 
                 v124 = 0;
                 v49 = [v39 writeDowngradedRepresentationToDirectory:v48 error:&v124];
@@ -294,7 +294,7 @@ LABEL_16:
                   v143[3] = 10;
                   v53 = v137;
                   v54 = v50;
-                  v55 = v53[5];
+                  pathExtension3 = v53[5];
                   v53[5] = v54;
                 }
 
@@ -303,15 +303,15 @@ LABEL_16:
                   v56 = airdrop_log();
                   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
                   {
-                    v58 = [v49 lastPathComponent];
+                    lastPathComponent4 = [v49 lastPathComponent];
                     *buf = 138412290;
-                    v150 = v58;
+                    v150 = lastPathComponent4;
                     _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "asset bundle was downgraded to: %@", buf, 0xCu);
                   }
 
                   v59 = v49;
-                  v55 = [v59 pathExtension];
-                  v36 = [v55 isEqual:v94];
+                  pathExtension3 = [v59 pathExtension];
+                  v36 = [pathExtension3 isEqual:v94];
                   v32 = v59;
                 }
               }
@@ -334,25 +334,25 @@ LABEL_16:
           v118[3] = &unk_1008D3C98;
           v60 = group;
           v119 = v60;
-          v61 = v92;
+          v61 = capabilitiesCopy;
           v120 = v61;
           v62 = v95;
           v121 = v62;
-          v63 = v91;
+          v63 = handlerCopy;
           v122 = v63;
           v64 = v97;
           v123 = v64;
           v65 = objc_retainBlock(v118);
           if (v36 && (v66 = [[PFVideoComplement alloc] initWithBundleAtURL:v32]) != 0)
           {
-            if (v86)
+            if (photoCopy)
             {
               v67 = airdrop_log();
               if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
               {
-                v68 = [v32 lastPathComponent];
+                lastPathComponent5 = [v32 lastPathComponent];
                 *buf = 138412290;
-                v150 = v68;
+                v150 = lastPathComponent5;
                 _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "attempting conversion of live photo bundle %@", buf, 0xCu);
               }
 
@@ -365,9 +365,9 @@ LABEL_16:
               v69 = v32;
               v115 = v69;
               v116 = v64;
-              [SDAirDropLegacyHelper convertLivePhotoBundleIfNeeded:v69 capabilities:v61 conversionManager:v62 queue:v85 progressHandler:v63 completionHandler:v114];
+              [SDAirDropLegacyHelper convertLivePhotoBundleIfNeeded:v69 capabilities:v61 conversionManager:v62 queue:queueCopy progressHandler:v63 completionHandler:v114];
 
-              v70 = v115;
+              imagePath = v115;
             }
 
             else
@@ -375,14 +375,14 @@ LABEL_16:
               v71 = airdrop_log();
               if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
               {
-                v72 = [v32 lastPathComponent];
+                lastPathComponent6 = [v32 lastPathComponent];
                 *buf = 138412290;
-                v150 = v72;
+                v150 = lastPathComponent6;
                 _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "attempting conversion of extracted photo from live photo bundle %@", buf, 0xCu);
               }
 
-              v70 = [v66 imagePath];
-              v73 = [NSURL fileURLWithPath:v70];
+              imagePath = [v66 imagePath];
+              v73 = [NSURL fileURLWithPath:imagePath];
               (v65[2])(v65, v73);
             }
           }
@@ -406,11 +406,11 @@ LABEL_16:
     block[3] = &unk_1008D3D10;
     v104 = group;
     v110 = &v142;
-    v109 = v83;
+    v109 = completionHandlerCopy;
     v111 = &v136;
-    v113 = a9;
-    v16 = v95;
-    v105 = v16;
+    gamutCopy = gamut;
+    managerCopy = v95;
+    v105 = managerCopy;
     v106 = v80;
     v107 = v81;
     v108 = v79;
@@ -427,29 +427,29 @@ LABEL_16:
   }
 }
 
-+ (void)convertLivePhotoBundleIfNeeded:(id)a3 capabilities:(id)a4 conversionManager:(id)a5 queue:(id)a6 progressHandler:(id)a7 completionHandler:(id)a8
++ (void)convertLivePhotoBundleIfNeeded:(id)needed capabilities:(id)capabilities conversionManager:(id)manager queue:(id)queue progressHandler:(id)handler completionHandler:(id)completionHandler
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001ED5C0;
   v15[3] = &unk_1008D3D38;
-  v16 = a6;
-  v17 = a8;
-  v13 = v17;
-  v14 = v16;
-  [SDAirDropLegacyHelper convertMediaItemFromURL:a3 forMediaCapabilities:a4 conversionManager:a5 progressHandler:a7 completionHandler:v15];
+  queueCopy = queue;
+  completionHandlerCopy = completionHandler;
+  v13 = completionHandlerCopy;
+  v14 = queueCopy;
+  [SDAirDropLegacyHelper convertMediaItemFromURL:needed forMediaCapabilities:capabilities conversionManager:manager progressHandler:handler completionHandler:v15];
 }
 
-+ (void)convertMediaItemFromURL:(id)a3 forMediaCapabilities:(id)a4 conversionManager:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7
++ (void)convertMediaItemFromURL:(id)l forMediaCapabilities:(id)capabilities conversionManager:(id)manager progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [PHMediaFormatConversionSource sourceForFileURL:v11];
+  lCopy = l;
+  capabilitiesCopy = capabilities;
+  managerCopy = manager;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v16 = [PHMediaFormatConversionSource sourceForFileURL:lCopy];
   v17 = v16;
-  if (!v12 || !v16)
+  if (!capabilitiesCopy || !v16)
   {
     if (!v16)
     {
@@ -459,50 +459,50 @@ LABEL_16:
     v24 = airdrop_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v17 fileURL];
-      v26 = [v25 lastPathComponent];
+      fileURL = [v17 fileURL];
+      lastPathComponent = [fileURL lastPathComponent];
       *buf = 138412290;
-      v57 = v26;
+      v57 = lastPathComponent;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Assuming no conversion needed for %@", buf, 0xCu);
     }
 
-    v27 = [v17 fileURL];
-    v28 = v27;
-    if (v27)
+    fileURL2 = [v17 fileURL];
+    v28 = fileURL2;
+    if (fileURL2)
     {
-      v29 = v27;
+      v29 = fileURL2;
     }
 
     else
     {
-      v29 = v11;
+      v29 = lCopy;
     }
 
     v30 = v29;
 
-    v31 = [v17 fileType];
-    if ([v31 isEqualToString:@"com.apple.live-photo-bundle"])
+    fileType = [v17 fileType];
+    if ([fileType isEqualToString:@"com.apple.live-photo-bundle"])
     {
     }
 
     else
     {
-      v34 = [v17 fileType];
-      v35 = [v34 isEqualToString:@"com.apple.private.live-photo-bundle"];
+      fileType2 = [v17 fileType];
+      v35 = [fileType2 isEqualToString:@"com.apple.private.live-photo-bundle"];
 
       if (!v35)
       {
         if ([v17 containsVideoWithFormatEligibleForTranscoding])
         {
-          v39 = 1;
+          containsHEIFImage = 1;
         }
 
         else
         {
-          v39 = [v17 containsHEIFImage];
+          containsHEIFImage = [v17 containsHEIFImage];
         }
 
-        v36 = [NSNumber numberWithInt:v39];
+        v36 = [NSNumber numberWithInt:containsHEIFImage];
         goto LABEL_31;
       }
     }
@@ -510,32 +510,32 @@ LABEL_16:
     v36 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v17 containsHEIFImage]);
 LABEL_31:
     v20 = v36;
-    v15[2](v15, v30, 0, v36);
+    completionHandlerCopy[2](completionHandlerCopy, v30, 0, v36);
 LABEL_32:
 
     goto LABEL_33;
   }
 
   v55 = 0;
-  v18 = [PHMediaFormatConversionRequest requestForSource:v16 destinationCapabilities:v12 error:&v55];
+  v18 = [PHMediaFormatConversionRequest requestForSource:v16 destinationCapabilities:capabilitiesCopy error:&v55];
   v19 = v55;
   v20 = v19;
   if (v18)
   {
-    v44 = v14;
-    v45 = v13;
-    v21 = [v17 fileURL];
-    v22 = [v21 lastPathComponent];
+    v44 = handlerCopy;
+    v45 = managerCopy;
+    fileURL3 = [v17 fileURL];
+    lastPathComponent2 = [fileURL3 lastPathComponent];
 
-    v23 = [v17 fileType];
-    if ([v23 isEqualToString:@"com.apple.live-photo-bundle"])
+    fileType3 = [v17 fileType];
+    if ([fileType3 isEqualToString:@"com.apple.live-photo-bundle"])
     {
     }
 
     else
     {
-      v37 = [v17 fileType];
-      v38 = [v37 isEqualToString:@"com.apple.private.live-photo-bundle"];
+      fileType4 = [v17 fileType];
+      v38 = [fileType4 isEqualToString:@"com.apple.private.live-photo-bundle"];
 
       if ((v38 & 1) == 0)
       {
@@ -552,7 +552,7 @@ LABEL_26:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v57 = v22;
+      v57 = lastPathComponent2;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Determining if conversion required for %@", buf, 0xCu);
     }
 
@@ -561,13 +561,13 @@ LABEL_26:
     v46[2] = sub_1001EDCA4;
     v46[3] = &unk_1008D3D88;
     v47 = v18;
-    v52 = v15;
-    v48 = v11;
-    v49 = v22;
-    v41 = v22;
-    v14 = v44;
+    v52 = completionHandlerCopy;
+    v48 = lCopy;
+    v49 = lastPathComponent2;
+    v41 = lastPathComponent2;
+    handlerCopy = v44;
     v53 = v44;
-    v13 = v45;
+    managerCopy = v45;
     v50 = v45;
     v51 = v17;
     v54 = v43;
@@ -579,31 +579,31 @@ LABEL_26:
   }
 
 LABEL_15:
-  v32 = [v17 fileURL];
-  v20 = v32;
-  if (v32)
+  fileURL4 = [v17 fileURL];
+  v20 = fileURL4;
+  if (fileURL4)
   {
-    v33 = v32;
+    v33 = fileURL4;
   }
 
   else
   {
-    v33 = v11;
+    v33 = lCopy;
   }
 
-  v15[2](v15, v33, 0, 0);
+  completionHandlerCopy[2](completionHandlerCopy, v33, 0, 0);
 LABEL_33:
 }
 
-+ (id)convertWideGamutToClampedPhotoForURLs:(id)a3 outTmpDirectory:(id *)a4
++ (id)convertWideGamutToClampedPhotoForURLs:(id)ls outTmpDirectory:(id *)directory
 {
-  v4 = a3;
+  lsCopy = ls;
   v33 = +[NSMutableDictionary dictionary];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v5 = v4;
+  v5 = lsCopy;
   v6 = [v5 countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v6)
   {
@@ -625,21 +625,21 @@ LABEL_33:
         }
 
         v11 = *(*(&v42 + 1) + 8 * v10);
-        v12 = [v11 pathExtension];
-        PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(v9, v12, 0);
+        pathExtension = [v11 pathExtension];
+        PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(v9, pathExtension, 0);
         if (SFIsImage())
         {
           if (!v40)
           {
             v40 = +[SDAirDropLegacyHelper tmpDirectory];
-            if (a4)
+            if (directory)
             {
-              *a4 = v40;
+              *directory = v40;
             }
           }
 
-          v14 = [v11 lastPathComponent];
-          v15 = [v40 URLByAppendingPathComponent:v14];
+          lastPathComponent = [v11 lastPathComponent];
+          v15 = [v40 URLByAppendingPathComponent:lastPathComponent];
 
           v16 = CGImageSourceCreateWithURL(v11, 0);
           if (v16)
@@ -739,9 +739,9 @@ LABEL_33:
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 path];
+      path = [v4 path];
       *buf = 138412290;
-      v12 = v8;
+      v12 = path;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "created temporary directory %@", buf, 0xCu);
     }
   }
@@ -754,20 +754,20 @@ LABEL_33:
   return v4;
 }
 
-+ (id)preprocessItems:(id)a3 forClientBundleID:(id)a4 receiverIdentifier:(id)a5 receiverSupportsURLs:(BOOL)a6 receiverIsUnknown:(BOOL)a7
++ (id)preprocessItems:(id)items forClientBundleID:(id)d receiverIdentifier:(id)identifier receiverSupportsURLs:(BOOL)ls receiverIsUnknown:(BOOL)unknown
 {
-  v57 = a7;
-  v58 = a6;
-  v9 = a3;
-  v10 = a4;
-  v59 = a5;
+  unknownCopy = unknown;
+  lsCopy = ls;
+  itemsCopy = items;
+  dCopy = d;
+  identifierCopy = identifier;
   v62 = +[NSMutableArray array];
   v63 = +[NSMutableArray array];
   v11 = +[NSMutableArray array];
   v60 = +[NSMutableArray array];
   v12 = objc_alloc_init(SDAirDropPreprocessItemsResult);
   [(SDAirDropPreprocessItemsResult *)v12 setSuccess:1];
-  v13 = [v9 count];
+  v13 = [itemsCopy count];
   if (v13 >= 1)
   {
     v14 = v13;
@@ -781,7 +781,7 @@ LABEL_33:
         goto LABEL_78;
       }
 
-      v17 = [v9 objectAtIndexedSubscript:v15];
+      v17 = [itemsCopy objectAtIndexedSubscript:v15];
 
       v18 = CFURLGetTypeID();
       if (v18 != CFGetTypeID(v17))
@@ -809,14 +809,14 @@ LABEL_33:
       v19 = CFURLCopyScheme(v17);
       if (!v19)
       {
-        v26 = [v17 absoluteString];
-        v27 = [v26 UTF8String];
+        absoluteString = [v17 absoluteString];
+        uTF8String = [absoluteString UTF8String];
 
         v28 = airdrop_log();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315138;
-          v69 = v27;
+          v69 = uTF8String;
           _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "SDAirDropClient: splitOutFileURLs url %s has no scheme", buf, 0xCu);
         }
 
@@ -828,8 +828,8 @@ LABEL_33:
       if (CFEqual(v19, cf2))
       {
         v21 = v17;
-        v22 = [v21 pathExtension];
-        v23 = [v22 isEqualToString:@"webloc"];
+        pathExtension = [v21 pathExtension];
+        v23 = [pathExtension isEqualToString:@"webloc"];
 
         if (v23)
         {
@@ -845,7 +845,7 @@ LABEL_33:
 
             else
             {
-              v54 = v10;
+              v54 = dCopy;
               v39 = airdrop_log();
               if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
               {
@@ -854,7 +854,7 @@ LABEL_33:
                 _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "### Could not create URL from webloc string: %@", buf, 0xCu);
               }
 
-              v10 = v54;
+              dCopy = v54;
             }
           }
 
@@ -886,7 +886,7 @@ LABEL_33:
         }
       }
 
-      if (v58 && (+[SDStatusMonitor sharedMonitor](SDStatusMonitor, "sharedMonitor"), v36 = objc_claimAutoreleasedReturnValue(), v37 = [v36 enableWebloc], v36, (v37 & 1) == 0))
+      if (lsCopy && (+[SDStatusMonitor sharedMonitor](SDStatusMonitor, "sharedMonitor"), v36 = objc_claimAutoreleasedReturnValue(), v37 = [v36 enableWebloc], v36, (v37 & 1) == 0))
       {
         [v11 addObject:CFURLGetString(v17)];
         if (!v17)
@@ -951,14 +951,14 @@ LABEL_49:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v69 = v10;
+        v69 = dCopy;
         _os_log_error_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "### Sending credentials from %@ is not permitted", buf, 0xCu);
       }
 
       goto LABEL_42;
     }
 
-    if (v57)
+    if (unknownCopy)
     {
       v35 = airdrop_log();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -973,7 +973,7 @@ LABEL_42:
     }
 
     v21 = SFSharablePasswordForURL();
-    if (v59)
+    if (identifierCopy)
     {
       v41 = [SDAirDropLegacyHelper copyReceiverPublicKeyForIdentifier:?];
       if (v41 && (v42 = v41, SFSharablePasswordAirDropURLEncryptedString(), v43 = objc_claimAutoreleasedReturnValue(), v44 = v42, v45 = v43, CFRelease(v44), v45))
@@ -1072,13 +1072,13 @@ LABEL_78:
   return v12;
 }
 
-+ (id)temporaryWeblocURL:(__CFURL *)a3
++ (id)temporaryWeblocURL:(__CFURL *)l
 {
   v4 = sub_1001F1724(0, 65537);
   if (v4)
   {
     v5 = v4;
-    v6 = CFURLCopyHostName(a3);
+    v6 = CFURLCopyHostName(l);
     if (v6)
     {
       v7 = v6;
@@ -1154,12 +1154,12 @@ LABEL_78:
   return v13;
 }
 
-+ (id)internetLocationFile:(__CFURL *)a3
++ (id)internetLocationFile:(__CFURL *)file
 {
   v4 = [SDAirDropLegacyHelper temporaryWeblocURL:?];
   if (v4)
   {
-    v5 = CFURLGetString(a3);
+    v5 = CFURLGetString(file);
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     CFDictionarySetValue(Mutable, @"URL", v5);
     v7 = CFWriteStreamCreateWithFile(0, v4);
@@ -1210,9 +1210,9 @@ LABEL_78:
   return v4;
 }
 
-+ (id)webURLFromInternetLocationFile:(id)a3
++ (id)webURLFromInternetLocationFile:(id)file
 {
-  v3 = [NSData dataWithContentsOfURL:a3];
+  v3 = [NSData dataWithContentsOfURL:file];
   v4 = [NSPropertyListSerialization propertyListWithData:v3 options:0 format:0 error:0];
 
   v5 = [v4 objectForKeyedSubscript:@"URL"];
@@ -1225,10 +1225,10 @@ LABEL_78:
   return v6;
 }
 
-+ (__SecKey)copyReceiverPublicKeyForIdentifier:(id)a3
++ (__SecKey)copyReceiverPublicKeyForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (!v3)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v8 = airdrop_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1240,7 +1240,7 @@ LABEL_78:
   }
 
   v4 = +[SDStatusMonitor sharedMonitor];
-  v5 = [v4 copyCertificateForRealName:v3];
+  v5 = [v4 copyCertificateForRealName:identifierCopy];
 
   if (!v5)
   {
@@ -1272,14 +1272,14 @@ LABEL_13:
   return v6;
 }
 
-+ (void)presentEnableRadiosAlertForBluetooth:(BOOL)a3 andWLAN:(BOOL)a4
++ (void)presentEnableRadiosAlertForBluetooth:(BOOL)bluetooth andWLAN:(BOOL)n
 {
-  v4 = a4;
+  nCopy = n;
   v6 = objc_opt_new();
   v7 = SFLocalizedStringForKey();
   [v6 setTitle:v7];
 
-  if (a3 || v4)
+  if (bluetooth || nCopy)
   {
     v8 = SFLocalizedStringForKey();
     [v6 setMessage:v8];
@@ -1296,8 +1296,8 @@ LABEL_13:
   v15[1] = 3221225472;
   v15[2] = sub_1001EF7FC;
   v15[3] = &unk_1008D3DB0;
-  v17 = v4;
-  v18 = a3;
+  v17 = nCopy;
+  bluetoothCopy = bluetooth;
   objc_copyWeak(&v16, &location);
   [v6 setResponseHandler:v15];
   v13[0] = _NSConcreteStackBlock;

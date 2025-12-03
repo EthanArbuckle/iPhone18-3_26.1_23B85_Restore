@@ -54,7 +54,7 @@
   v12 = sub_100001E84;
   v13 = &unk_100010508;
   objc_copyWeak(&v15, buf);
-  v14 = self;
+  selfCopy = self;
   v4 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, &v10);
   absenceEventBlock = self->_absenceEventBlock;
   self->_absenceEventBlock = v4;

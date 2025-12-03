@@ -1,24 +1,24 @@
 @interface NTKGreyhoundFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_complicationSlotDescriptors;
 - (id)_defaultColorForDevice;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)editOptionThatHidesAllComplications;
 - (id)orderedComplicationSlots;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKGreyhoundFace
 
 - (id)_faceDescription
 {
-  v2 = [(NTKGreyhoundFace *)self device];
-  v3 = [v2 supportsPDRCapability:360081074];
+  device = [(NTKGreyhoundFace *)self device];
+  v3 = [device supportsPDRCapability:360081074];
 
   if (v3)
   {
@@ -35,130 +35,130 @@
   return v5;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v4 = [v3 supportsPDRCapability:3588072423] ^ 1;
+    v4 = [deviceCopy supportsPDRCapability:3588072423] ^ 1;
   }
 
   return v4;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = [CLKDevice currentDevice:a3];
-  v7 = [v6 isTinker];
+  v6 = [CLKDevice currentDevice:mode];
+  isTinker = [v6 isTinker];
 
-  v8 = 0;
-  if (!v7)
+  _defaultColorForDevice = 0;
+  if (!isTinker)
   {
-    if (a3 <= 12)
+    if (mode <= 12)
     {
-      if (a3 == 10)
+      if (mode == 10)
       {
-        v8 = [(NTKGreyhoundFace *)self _defaultColorForDevice];
+        _defaultColorForDevice = [(NTKGreyhoundFace *)self _defaultColorForDevice];
         goto LABEL_21;
       }
 
-      if (a3 != 11)
+      if (mode != 11)
       {
         goto LABEL_21;
       }
 
-      v9 = [(NTKGreyhoundFace *)self device];
+      device = [(NTKGreyhoundFace *)self device];
       v10 = 0;
       goto LABEL_10;
     }
 
-    if (a3 == 13)
+    if (mode == 13)
     {
-      v9 = [(NTKGreyhoundFace *)self device];
+      device = [(NTKGreyhoundFace *)self device];
       v12 = 0;
       goto LABEL_19;
     }
 
 LABEL_14:
-    if (a3 != 15)
+    if (mode != 15)
     {
       goto LABEL_21;
     }
 
-    v9 = [(NTKGreyhoundFace *)self device];
-    v11 = [NTKGreyhoundStyleEditOption defaultOptionForDevice:v9];
+    device = [(NTKGreyhoundFace *)self device];
+    v11 = [NTKGreyhoundStyleEditOption defaultOptionForDevice:device];
     goto LABEL_20;
   }
 
-  if (a3 > 12)
+  if (mode > 12)
   {
-    if (a3 == 13)
+    if (mode == 13)
     {
-      v9 = [(NTKGreyhoundFace *)self device];
+      device = [(NTKGreyhoundFace *)self device];
       v12 = 2;
 LABEL_19:
-      v11 = [NTKGreyhoundTypefaceEditOption optionWithTypeface:v12 forDevice:v9];
+      v11 = [NTKGreyhoundTypefaceEditOption optionWithTypeface:v12 forDevice:device];
       goto LABEL_20;
     }
 
     goto LABEL_14;
   }
 
-  if (a3 == 10)
+  if (mode == 10)
   {
-    v9 = [(NTKGreyhoundFace *)self device];
-    v11 = [NTKGreyhoundColorEditOption optionWithCaliforniaColor:3004 forDevice:v9];
+    device = [(NTKGreyhoundFace *)self device];
+    v11 = [NTKGreyhoundColorEditOption optionWithCaliforniaColor:3004 forDevice:device];
     goto LABEL_20;
   }
 
-  if (a3 != 11)
+  if (mode != 11)
   {
     goto LABEL_21;
   }
 
-  v9 = [(NTKGreyhoundFace *)self device];
+  device = [(NTKGreyhoundFace *)self device];
   v10 = 1;
 LABEL_10:
-  v11 = [NTKGreyhoundDensityEditOption optionWithDensity:v10 forDevice:v9];
+  v11 = [NTKGreyhoundDensityEditOption optionWithDensity:v10 forDevice:device];
 LABEL_20:
-  v8 = v11;
+  _defaultColorForDevice = v11;
 
 LABEL_21:
 
-  return v8;
+  return _defaultColorForDevice;
 }
 
 - (id)_defaultColorForDevice
 {
-  v3 = [(NTKGreyhoundFace *)self device];
-  v4 = [v3 collectionType];
+  device = [(NTKGreyhoundFace *)self device];
+  collectionType = [device collectionType];
 
   v5 = 3003;
-  if (v4 > 7)
+  if (collectionType > 7)
   {
     v8 = 3008;
-    if (v4 == (&dword_8 + 1))
+    if (collectionType == (&dword_8 + 1))
     {
       v5 = 3005;
     }
 
-    if (v4 == (&dword_8 + 2))
+    if (collectionType == (&dword_8 + 2))
     {
       v5 = 3006;
     }
 
-    v9 = v4 == &dword_8;
+    v9 = collectionType == &dword_8;
     goto LABEL_10;
   }
 
-  if (v4 - 5 >= 2)
+  if (collectionType - 5 >= 2)
   {
-    v9 = v4 == (&dword_4 + 3);
+    v9 = collectionType == (&dword_4 + 3);
     v8 = 3007;
 LABEL_10:
     if (v9)
@@ -171,23 +171,23 @@ LABEL_10:
       v10 = v5;
     }
 
-    v6 = [(NTKGreyhoundFace *)self device];
-    v7 = [NTKGreyhoundColorEditOption optionWithCaliforniaColor:v10 forDevice:v6];
+    device2 = [(NTKGreyhoundFace *)self device];
+    v7 = [NTKGreyhoundColorEditOption optionWithCaliforniaColor:v10 forDevice:device2];
     goto LABEL_14;
   }
 
-  v6 = [(NTKGreyhoundFace *)self device];
-  v7 = [NTKGreyhoundColorEditOption optionAtIndex:0 forDevice:v6];
+  device2 = [(NTKGreyhoundFace *)self device];
+  v7 = [NTKGreyhoundColorEditOption optionAtIndex:0 forDevice:device2];
 LABEL_14:
   v11 = v7;
 
   return v11;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  v4 = a3 - 10;
-  if (a3 - 10) <= 5 && ((0x2Bu >> v4))
+  v4 = mode - 10;
+  if (mode - 10) <= 5 && ((0x2Bu >> v4))
   {
     v5 = *(&off_14438)[v4];
     v6 = objc_opt_class();
@@ -201,38 +201,38 @@ LABEL_14:
   return v6;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKGreyhoundFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKGreyhoundFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKGreyhoundFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKGreyhoundFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKGreyhoundFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKGreyhoundFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKGreyhoundFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKGreyhoundFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKGreyhoundFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKGreyhoundFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKGreyhoundFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKGreyhoundFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v6 = a4;
-  switch(a3)
+  deviceCopy = device;
+  switch(mode)
   {
     case 11:
       v7 = @"EDIT_OPTION_LABEL_DENSITY";
@@ -247,9 +247,9 @@ LABEL_7:
       goto LABEL_9;
   }
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___NTKGreyhoundFace;
-  v8 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, v6);
+  v8 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, deviceCopy);
 LABEL_9:
   v9 = v8;
 
@@ -277,8 +277,8 @@ LABEL_9:
 
 - (id)editOptionThatHidesAllComplications
 {
-  v2 = [(NTKGreyhoundFace *)self device];
-  v3 = [NTKGreyhoundDensityEditOption optionWithDensity:0 forDevice:v2];
+  device = [(NTKGreyhoundFace *)self device];
+  v3 = [NTKGreyhoundDensityEditOption optionWithDensity:0 forDevice:device];
 
   return v3;
 }

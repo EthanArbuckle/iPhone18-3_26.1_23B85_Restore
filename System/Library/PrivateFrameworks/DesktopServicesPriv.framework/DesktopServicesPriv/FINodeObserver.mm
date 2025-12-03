@@ -1,17 +1,17 @@
 @interface FINodeObserver
-+ (id)observerForFINode:(id)a3 withObserver:(id)a4;
-+ (id)observerForProxy:(id)a3 subjectNode:(id)a4;
-+ (id)propertyName:(unsigned int)a3;
++ (id)observerForFINode:(id)node withObserver:(id)observer;
++ (id)observerForProxy:(id)proxy subjectNode:(id)node;
++ (id)propertyName:(unsigned int)name;
 - (id)debugDescription;
 - (void)dealloc;
 @end
 
 @implementation FINodeObserver
 
-+ (id)observerForFINode:(id)a3 withObserver:(id)a4
++ (id)observerForFINode:(id)node withObserver:(id)observer
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  observerCopy = observer;
   {
     {
       v17[0] = MEMORY[0x1E69E9820];
@@ -22,9 +22,9 @@
     }
   }
 
-  objc_initWeak(&location, v6);
-  objc_initWeak(&from, v7);
-  objc_storeStrong(objc_alloc_init(FINodeObserver) + 1, a3);
+  objc_initWeak(&location, nodeCopy);
+  objc_initWeak(&from, observerCopy);
+  objc_storeStrong(objc_alloc_init(FINodeObserver) + 1, node);
   v8 = +[FINodeObserver observerForFINode:withObserver:]::sNodeEventQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3321888768;
@@ -51,10 +51,10 @@ void __49__FINodeObserver_observerForFINode_withObserver___block_invoke_27(uint6
   }
 }
 
-+ (id)observerForProxy:(id)a3 subjectNode:(id)a4
++ (id)observerForProxy:(id)proxy subjectNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
+  proxyCopy = proxy;
+  nodeCopy = node;
   {
     {
       v13[0] = MEMORY[0x1E69E9820];
@@ -65,8 +65,8 @@ void __49__FINodeObserver_observerForFINode_withObserver___block_invoke_27(uint6
     }
   }
 
-  objc_initWeak(&location, v5);
-  objc_storeStrong(objc_alloc_init(FINodeObserver) + 1, a4);
+  objc_initWeak(&location, proxyCopy);
+  objc_storeStrong(objc_alloc_init(FINodeObserver) + 1, node);
   v7 = +[FINodeObserver observerForProxy:subjectNode:]::sNodeEventQueue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3321888768;
@@ -84,9 +84,9 @@ void __47__FINodeObserver_observerForProxy_subjectNode___block_invoke_33(uint64_
   [WeakRetained dispatchNodeEvent:v3];
 }
 
-+ (id)propertyName:(unsigned int)a3
++ (id)propertyName:(unsigned int)name
 {
-  PropertyToString(a3, &v5);
+  PropertyToString(name, &v5);
   v3 = v5;
   TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v5);
 

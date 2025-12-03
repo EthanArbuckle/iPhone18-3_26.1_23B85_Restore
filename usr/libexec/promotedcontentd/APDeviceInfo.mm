@@ -5,7 +5,7 @@
 - (BOOL)personalizedAdsAcknowledged;
 - (NSString)deviceModel;
 - (NSString)osVersionAndBuild;
-- (id)userAgentStringForBundleID:(id)a3 storefront:(id)a4;
+- (id)userAgentStringForBundleID:(id)d storefront:(id)storefront;
 - (int64_t)connectionType;
 - (void)_retrievePersonalizedAdsValue;
 @end
@@ -68,15 +68,15 @@
   if (+[APSystemInternal isAppleInternalInstall](APSystemInternal, "isAppleInternalInstall") && (+[APDeviceInfoSettings settings](APDeviceInfoSettings, "settings"), v2 = objc_claimAutoreleasedReturnValue(), [v2 deviceTypeOverride], v3 = objc_claimAutoreleasedReturnValue(), v3, v2, v3))
   {
     v4 = +[APDeviceInfoSettings settings];
-    v5 = [v4 deviceTypeOverride];
+    deviceTypeOverride = [v4 deviceTypeOverride];
   }
 
   else
   {
-    v5 = +[APSystemInfo deviceModel];
+    deviceTypeOverride = +[APSystemInfo deviceModel];
   }
 
-  return v5;
+  return deviceTypeOverride;
 }
 
 - (NSString)osVersionAndBuild
@@ -84,34 +84,34 @@
   if (+[APSystemInternal isAppleInternalInstall](APSystemInternal, "isAppleInternalInstall") && (+[APDeviceInfoSettings settings](APDeviceInfoSettings, "settings"), v2 = objc_claimAutoreleasedReturnValue(), [v2 osVersionOverride], v3 = objc_claimAutoreleasedReturnValue(), v3, v2, v3))
   {
     v4 = +[APDeviceInfoSettings settings];
-    v5 = [v4 osVersionOverride];
+    osVersionOverride = [v4 osVersionOverride];
   }
 
   else
   {
-    v5 = +[APSystemInfo systemDescription];
+    osVersionOverride = +[APSystemInfo systemDescription];
   }
 
-  return v5;
+  return osVersionOverride;
 }
 
-- (id)userAgentStringForBundleID:(id)a3 storefront:(id)a4
+- (id)userAgentStringForBundleID:(id)d storefront:(id)storefront
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(APDeviceInfo *)self deviceModel];
-  v9 = [(APDeviceInfo *)self osVersionAndBuild];
-  v10 = [NSString stringWithFormat:@"%@ %@; %@; %@", v8, v9, v7, v6];;
+  storefrontCopy = storefront;
+  dCopy = d;
+  deviceModel = [(APDeviceInfo *)self deviceModel];
+  osVersionAndBuild = [(APDeviceInfo *)self osVersionAndBuild];
+  storefrontCopy = [NSString stringWithFormat:@"%@ %@; %@; %@", deviceModel, osVersionAndBuild, dCopy, storefrontCopy];;
 
-  return v10;
+  return storefrontCopy;
 }
 
 - (BOOL)educationModeEnabled
 {
   v2 = +[UMUserManager sharedManager];
-  v3 = [v2 isSharedIPad];
+  isSharedIPad = [v2 isSharedIPad];
 
-  return v3;
+  return isSharedIPad;
 }
 
 - (int64_t)connectionType

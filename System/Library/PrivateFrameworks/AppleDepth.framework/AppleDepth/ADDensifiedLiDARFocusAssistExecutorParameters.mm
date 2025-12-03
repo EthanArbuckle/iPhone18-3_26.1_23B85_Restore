@@ -1,20 +1,20 @@
 @interface ADDensifiedLiDARFocusAssistExecutorParameters
 - (ADDensifiedLiDARFocusAssistExecutorParameters)init;
-- (ADDensifiedLiDARFocusAssistExecutorParameters)initWithPipelineParameters:(id)a3;
+- (ADDensifiedLiDARFocusAssistExecutorParameters)initWithPipelineParameters:(id)parameters;
 @end
 
 @implementation ADDensifiedLiDARFocusAssistExecutorParameters
 
-- (ADDensifiedLiDARFocusAssistExecutorParameters)initWithPipelineParameters:(id)a3
+- (ADDensifiedLiDARFocusAssistExecutorParameters)initWithPipelineParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v9.receiver = self;
   v9.super_class = ADDensifiedLiDARFocusAssistExecutorParameters;
   v6 = [(ADExecutorParameters *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineParameters, a3);
+    objc_storeStrong(&v6->_pipelineParameters, parameters);
   }
 
   return v7;

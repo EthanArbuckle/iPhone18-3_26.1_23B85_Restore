@@ -1,16 +1,16 @@
 @interface HFTimeIntervalFormatter
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation HFTimeIntervalFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 doubleValue];
+    [valueCopy doubleValue];
     v6 = v5;
 
     v7 = [(NSDateComponentsFormatter *)self stringFromTimeInterval:v6];
@@ -20,7 +20,7 @@
   {
     v9.receiver = self;
     v9.super_class = HFTimeIntervalFormatter;
-    v7 = [(NSDateComponentsFormatter *)&v9 stringForObjectValue:v4];
+    v7 = [(NSDateComponentsFormatter *)&v9 stringForObjectValue:valueCopy];
   }
 
   return v7;

@@ -1,27 +1,27 @@
 @interface VTAudioCircularBuffer
-- (VTAudioCircularBuffer)initWithNumChannels:(unint64_t)a3 recordingDuration:(unint64_t)a4 samplingRate:(unint64_t)a5;
-- (id)copyBufferWithNumSamplesCopiedIn:(unint64_t *)a3;
-- (id)copySamplesFrom:(unint64_t)a3 to:(unint64_t)a4 withNumSamplesCopiedIn:(unint64_t *)a5;
-- (void)addSamples:(void *)a3 numSamples:(unint64_t)a4;
+- (VTAudioCircularBuffer)initWithNumChannels:(unint64_t)channels recordingDuration:(unint64_t)duration samplingRate:(unint64_t)rate;
+- (id)copyBufferWithNumSamplesCopiedIn:(unint64_t *)in;
+- (id)copySamplesFrom:(unint64_t)from to:(unint64_t)to withNumSamplesCopiedIn:(unint64_t *)in;
+- (void)addSamples:(void *)samples numSamples:(unint64_t)numSamples;
 - (void)reset;
-- (void)saveRecordingBufferFrom:(unint64_t)a3 to:(unint64_t)a4 toURL:(id)a5;
+- (void)saveRecordingBufferFrom:(unint64_t)from to:(unint64_t)to toURL:(id)l;
 @end
 
 @implementation VTAudioCircularBuffer
 
-- (void)saveRecordingBufferFrom:(unint64_t)a3 to:(unint64_t)a4 toURL:(id)a5
+- (void)saveRecordingBufferFrom:(unint64_t)from to:(unint64_t)to toURL:(id)l
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  lCopy = l;
   v9 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349570;
-    *&buf[4] = a3;
+    *&buf[4] = from;
     *&buf[12] = 2050;
-    *&buf[14] = a4;
+    *&buf[14] = to;
     *&buf[22] = 2114;
-    *&v23 = v8;
+    *&v23 = lCopy;
     _os_log_impl(&dword_223A31000, v9, OS_LOG_TYPE_DEFAULT, "saveRecordingBufferFrom: %{public}lu to: %{public}lu toURL: %{public}@", buf, 0x20u);
   }
 
@@ -33,14 +33,14 @@
   v19 = v10;
   v20 = xmmword_223B13210;
   v21 = xmmword_223B13220;
-  v12 = [(AudioFileWriter *)v11 initWithURL:v8 inputFormat:buf outputFormat:&v19];
+  v12 = [(AudioFileWriter *)v11 initWithURL:lCopy inputFormat:buf outputFormat:&v19];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__VTAudioCircularBuffer_saveRecordingBufferFrom_to_toURL___block_invoke;
   block[3] = &unk_2784EC3C0;
-  v17 = a3;
-  v18 = a4;
+  fromCopy = from;
+  toCopy = to;
   block[4] = self;
   v16 = v12;
   v14 = v12;
@@ -373,7 +373,7 @@ LABEL_40:
   ptr[5] = 0;
 }
 
-- (id)copyBufferWithNumSamplesCopiedIn:(unint64_t *)a3
+- (id)copyBufferWithNumSamplesCopiedIn:(unint64_t *)in
 {
   v20 = *MEMORY[0x277D85DE8];
   ptr = self->_vtAudioCircularBufferImpl.__ptr_;
@@ -394,7 +394,7 @@ LABEL_40:
   v11 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = *a3;
+    v12 = *in;
     v14 = 134349568;
     v15 = v10;
     v16 = 2050;
@@ -404,10 +404,10 @@ LABEL_40:
     _os_log_impl(&dword_223A31000, v11, OS_LOG_TYPE_DEFAULT, "copyBuffer: oldestSample: %{public}lu latestSample: %{public}lu, numSamplesCopied: %{public}lu", &v14, 0x20u);
   }
 
-  return [(VTAudioCircularBuffer *)self copySamplesFrom:v10 to:v6 withNumSamplesCopiedIn:a3];
+  return [(VTAudioCircularBuffer *)self copySamplesFrom:v10 to:v6 withNumSamplesCopiedIn:in];
 }
 
-- (id)copySamplesFrom:(unint64_t)a3 to:(unint64_t)a4 withNumSamplesCopiedIn:(unint64_t *)a5
+- (id)copySamplesFrom:(unint64_t)from to:(unint64_t)to withNumSamplesCopiedIn:(unint64_t *)in
 {
   v9 = 0;
   v10 = &v9;
@@ -420,11 +420,11 @@ LABEL_40:
   block[1] = 3221225472;
   block[2] = __67__VTAudioCircularBuffer_copySamplesFrom_to_withNumSamplesCopiedIn___block_invoke;
   block[3] = &unk_2784EC398;
-  block[6] = a3;
-  block[7] = a4;
+  block[6] = from;
+  block[7] = to;
   block[4] = self;
   block[5] = &v9;
-  block[8] = a5;
+  block[8] = in;
   dispatch_sync(queue, block);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -481,7 +481,7 @@ void __67__VTAudioCircularBuffer_copySamplesFrom_to_withNumSamplesCopiedIn___blo
   }
 }
 
-- (void)addSamples:(void *)a3 numSamples:(unint64_t)a4
+- (void)addSamples:(void *)samples numSamples:(unint64_t)numSamples
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -489,8 +489,8 @@ void __67__VTAudioCircularBuffer_copySamplesFrom_to_withNumSamplesCopiedIn___blo
   block[2] = __47__VTAudioCircularBuffer_addSamples_numSamples___block_invoke;
   block[3] = &unk_2784EC370;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = samples;
+  block[6] = numSamples;
   dispatch_sync(queue, block);
 }
 
@@ -583,7 +583,7 @@ void *__47__VTAudioCircularBuffer_addSamples_numSamples___block_invoke(void *res
   return result;
 }
 
-- (VTAudioCircularBuffer)initWithNumChannels:(unint64_t)a3 recordingDuration:(unint64_t)a4 samplingRate:(unint64_t)a5
+- (VTAudioCircularBuffer)initWithNumChannels:(unint64_t)channels recordingDuration:(unint64_t)duration samplingRate:(unint64_t)rate
 {
   v7 = *MEMORY[0x277D85DE8];
   v6.receiver = self;

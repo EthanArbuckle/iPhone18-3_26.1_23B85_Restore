@@ -41,7 +41,7 @@
 
   else
   {
-    v15 = [a1 _hk_OAuth2_defaultDescriptionForErrorCode:a3];
+    v15 = [self _hk_OAuth2_defaultDescriptionForErrorCode:a3];
     [v12 setObject:v15 forKeyedSubscript:v13];
   }
 
@@ -60,7 +60,7 @@
 
   [v12 setObject:v19 forKeyedSubscript:v16];
 
-  v20 = [a1 errorWithDomain:@"com.apple.healthkit.private.oauth2" code:a3 userInfo:v12];
+  v20 = [self errorWithDomain:@"com.apple.healthkit.private.oauth2" code:a3 userInfo:v12];
 
   return v20;
 }
@@ -140,7 +140,7 @@
   v10 = @"HKOAuth2ErrorResponseErrorNameErrorKey";
   v11[0] = v4;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [a1 _hk_OAuth2_error:v5 userInfo:v6 underlyingError:0];
+  v7 = [self _hk_OAuth2_error:v5 userInfo:v6 underlyingError:0];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -149,7 +149,7 @@
 
 - (__CFString)hk_OAuth2_errorCode
 {
-  if ([a1 hk_OAuth2_isOAuth2Error] && (v2 = objc_msgSend(a1, "code"), (v2 - 1) <= 9))
+  if ([self hk_OAuth2_isOAuth2Error] && (v2 = objc_msgSend(self, "code"), (v2 - 1) <= 9))
   {
     return off_1E7382F60[v2 - 1];
   }
@@ -164,7 +164,7 @@
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v8 = a4;
-  v9 = [a1 _hk_OAuth2_rawErrorForRequest:a3 response:v8 data:a5];
+  v9 = [self _hk_OAuth2_rawErrorForRequest:a3 response:v8 data:a5];
   if (v9)
   {
     v15 = @"HKOAuth2ErrorHTTPStatusCodeErrorKey";
@@ -190,17 +190,17 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v9 statusCode];
-  switch(v11)
+  statusCode = [v9 statusCode];
+  switch(statusCode)
   {
     case 400:
-      v12 = [a1 _hk_OAuth2_errorForBadRequestStatusWithResponse:v9 data:v10];
+      v12 = [self _hk_OAuth2_errorForBadRequestStatusWithResponse:v9 data:v10];
       goto LABEL_7;
     case 401:
-      v12 = [a1 _hk_OAuth2_errorForUnauthorizedStatusWithRequest:v8 response:v9];
+      v12 = [self _hk_OAuth2_errorForUnauthorizedStatusWithRequest:v8 response:v9];
       goto LABEL_7;
     case 403:
-      v12 = [a1 hk_OAuth2_error:7];
+      v12 = [self hk_OAuth2_error:7];
 LABEL_7:
       v13 = v12;
       goto LABEL_9;
@@ -218,13 +218,13 @@ LABEL_9:
   v7 = a4;
   v8 = a3;
   v9 = objc_alloc_init(v6);
-  v10 = [v8 allHTTPHeaderFields];
+  allHTTPHeaderFields = [v8 allHTTPHeaderFields];
 
-  v11 = [v10 objectForKeyedSubscript:@"Authorization"];
+  v11 = [allHTTPHeaderFields objectForKeyedSubscript:@"Authorization"];
 
-  v12 = [v7 allHeaderFields];
+  allHeaderFields = [v7 allHeaderFields];
 
-  v13 = [v12 objectForKeyedSubscript:@"WWW-Authenticate"];
+  v13 = [allHeaderFields objectForKeyedSubscript:@"WWW-Authenticate"];
 
   v14 = [v11 hasPrefix:@"Bearer "];
   v15 = 11;
@@ -234,7 +234,7 @@ LABEL_9:
     v15 = 12;
   }
 
-  v16 = [a1 _hk_OAuth2_error:v15 userInfo:v9 underlyingError:0];
+  v16 = [self _hk_OAuth2_error:v15 userInfo:v9 underlyingError:0];
 
   return v16;
 }
@@ -245,7 +245,7 @@ LABEL_9:
   v7 = a4;
   v8 = [MEMORY[0x1E696ABC0] hk_OAuth2_error:1];
   v14 = 0;
-  v9 = [a1 _hk_OAuth2_errorFromResponseData:v7 defaultError:v8 parseError:&v14];
+  v9 = [self _hk_OAuth2_errorFromResponseData:v7 defaultError:v8 parseError:&v14];
   v10 = v14;
   if (v10)
   {
@@ -309,7 +309,7 @@ LABEL_9:
 
         if (v14)
         {
-          v20 = [a1 hk_OAuth2_errorFromErrorValue:v14];
+          v20 = [self hk_OAuth2_errorFromErrorValue:v14];
         }
 
         else
@@ -343,18 +343,18 @@ LABEL_9:
 
 - (uint64_t)hk_OAuth2_isOAuth2Error
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:@"com.apple.healthkit.private.oauth2"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"com.apple.healthkit.private.oauth2"];
 
   return v2;
 }
 
 - (uint64_t)hk_OAuth2_isOAuth2ErrorWithCode:()HKOAuth2
 {
-  result = [a1 hk_OAuth2_isOAuth2Error];
+  result = [self hk_OAuth2_isOAuth2Error];
   if (result)
   {
-    return [a1 code] == a3;
+    return [self code] == a3;
   }
 
   return result;
@@ -363,13 +363,13 @@ LABEL_9:
 - (id)_hk_OAuth2_errorByAddingItemsToUserInfo:()HKOAuth2
 {
   v4 = a3;
-  v5 = [a1 userInfo];
-  v6 = [v5 mutableCopy];
+  userInfo = [self userInfo];
+  v6 = [userInfo mutableCopy];
 
   [v6 addEntriesFromDictionary:v4];
   v7 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v8 = [a1 domain];
-  v9 = [v7 initWithDomain:v8 code:objc_msgSend(a1 userInfo:{"code"), v6}];
+  domain = [self domain];
+  v9 = [v7 initWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v6}];
 
   return v9;
 }

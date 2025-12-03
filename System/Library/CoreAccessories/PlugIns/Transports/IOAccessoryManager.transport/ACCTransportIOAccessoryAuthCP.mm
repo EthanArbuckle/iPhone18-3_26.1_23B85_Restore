@@ -1,23 +1,23 @@
 @interface ACCTransportIOAccessoryAuthCP
 - (ACCTransportIOAccessoryAuthCPProtocol)delegate;
-- (BOOL)_authInternalModuleWithCert:(const __CFData *)a3 withError:(int *)a4;
-- (BOOL)_authWithAuthIC:(unsigned int)a3 withCert:(const __CFData *)a4 withError:(int *)a5;
-- (BOOL)_copyCertificateAttribute:(__CFData *)a3 forAttributeKey:(__CFNumber *)a4 withAttributeValue:(const __CFData *)a5;
-- (BOOL)_handleAuthCertSerialNumber:(__CFString *)a3 certData:(const __CFData *)a4;
-- (BOOL)_handleAuthCertificate:(__CFData *)a3 serialNumber:(__CFString *)a4 authError:(int *)a5;
-- (BOOL)_handleAuthDeviceInfo:(int)a3 versionMajor:(unsigned __int8)a4 versionMinor:(unsigned __int8)a5;
-- (BOOL)_handleAuthSignature:(__CFData *)a3 certData:(__CFData *)a4 nonceData:(__CFData *)a5;
-- (BOOL)_validateCertCapsForCertificate:(__CFData *)a3 authError:(int *)a4;
+- (BOOL)_authInternalModuleWithCert:(const __CFData *)cert withError:(int *)error;
+- (BOOL)_authWithAuthIC:(unsigned int)c withCert:(const __CFData *)cert withError:(int *)error;
+- (BOOL)_copyCertificateAttribute:(__CFData *)attribute forAttributeKey:(__CFNumber *)key withAttributeValue:(const __CFData *)value;
+- (BOOL)_handleAuthCertSerialNumber:(__CFString *)number certData:(const __CFData *)data;
+- (BOOL)_handleAuthCertificate:(__CFData *)certificate serialNumber:(__CFString *)number authError:(int *)error;
+- (BOOL)_handleAuthDeviceInfo:(int)info versionMajor:(unsigned __int8)major versionMinor:(unsigned __int8)minor;
+- (BOOL)_handleAuthSignature:(__CFData *)signature certData:(__CFData *)data nonceData:(__CFData *)nonceData;
+- (BOOL)_validateCertCapsForCertificate:(__CFData *)certificate authError:(int *)error;
 - (BOOL)requiresAuthenticationProcess;
-- (__CFDictionary)_copyOrCreateStatsSubDict:(__CFDictionary *)a3 forSerialNumber:(__CFString *)a4;
+- (__CFDictionary)_copyOrCreateStatsSubDict:(__CFDictionary *)dict forSerialNumber:(__CFString *)number;
 - (int)_fdrCertCheck;
 - (void)_fdrCertCheck;
-- (void)_finishAuthentication:(BOOL)a3 authCert:(__CFData *)a4;
+- (void)_finishAuthentication:(BOOL)authentication authCert:(__CFData *)cert;
 - (void)_handleAuthTimerTimeout;
-- (void)_incrementAuthStat:(const __CFString *)a3 dict:(__CFDictionary *)a4;
+- (void)_incrementAuthStat:(const __CFString *)stat dict:(__CFDictionary *)dict;
 - (void)_logToAnalytics;
-- (void)_publishAuth:(BOOL)a3 fdrStatus:(int)a4 trusted:(BOOL)a5 publishToUI:(BOOL)a6 ioconnect:(unsigned int)a7;
-- (void)_publishAuthStats:(BOOL)a3 fdrStatus:(int)a4;
+- (void)_publishAuth:(BOOL)auth fdrStatus:(int)status trusted:(BOOL)trusted publishToUI:(BOOL)i ioconnect:(unsigned int)ioconnect;
+- (void)_publishAuthStats:(BOOL)stats fdrStatus:(int)status;
 - (void)_validateAuthCPFlagsForCertificate;
 - (void)_validateDownstreamCertSerialNumber;
 - (void)dealloc;
@@ -170,7 +170,7 @@ uint64_t __78__ACCTransportIOAccessoryAuthCP_initWithDelegate_andIOService_conne
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v13 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     _os_log_impl(&dword_233656000, v5, OS_LOG_TYPE_DEFAULT, "Starting shutdown process for authCP service %d", buf, 8u);
   }
 
@@ -230,7 +230,7 @@ uint64_t __78__ACCTransportIOAccessoryAuthCP_initWithDelegate_andIOService_conne
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v16 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     _os_log_impl(&dword_233656000, v5, OS_LOG_TYPE_INFO, "Deallocating authCP service %d", buf, 8u);
   }
 
@@ -276,8 +276,8 @@ LABEL_2:
 
   if ([(ACCTransportIOAccessoryAuthCP *)self _representsHardwareComponent])
   {
-    v4 = [(ACCTransportIOAccessoryBase *)self ioService];
-    CFProperty = IORegistryEntryCreateCFProperty(v4, @"AuthPassed", *MEMORY[0x277CBECE8], 0);
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
+    CFProperty = IORegistryEntryCreateCFProperty(ioService, @"AuthPassed", *MEMORY[0x277CBECE8], 0);
     if (CFProperty)
     {
       v6 = CFProperty;
@@ -367,21 +367,21 @@ LABEL_9:
   {
     block[7] = v2;
     block[8] = v3;
-    v5 = [(ACCTransportIOAccessoryAuthCP *)self authWorkQueue];
+    authWorkQueue = [(ACCTransportIOAccessoryAuthCP *)self authWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__ACCTransportIOAccessoryAuthCP_doPostAuthentication__block_invoke;
     block[3] = &unk_2789E8690;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(authWorkQueue, block);
   }
 }
 
-- (BOOL)_authInternalModuleWithCert:(const __CFData *)a3 withError:(int *)a4
+- (BOOL)_authInternalModuleWithCert:(const __CFData *)cert withError:(int *)error
 {
   v4 = 0;
   v76 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (cert && error)
   {
     if (self->_representsInternalModule)
     {
@@ -497,8 +497,8 @@ LABEL_9:
       v19 = MEMORY[0x2383A9E30](v45);
       arc4random_buf(__buf, 0x20uLL);
       v43 = [MEMORY[0x277CBEA90] dataWithBytes:__buf length:32];
-      v20 = [MEMORY[0x277CFD218] sharedManager];
-      v21 = v20;
+      mEMORY[0x277CFD218] = [MEMORY[0x277CFD218] sharedManager];
+      v21 = mEMORY[0x277CFD218];
       representsInternalModule = self->_representsInternalModule;
       if (representsInternalModule > 2)
       {
@@ -509,7 +509,7 @@ LABEL_9:
             v16 = 10;
           }
 
-          [v20 authenticateTouchControllerWithChallenge:0 completionHandler:v19 updateRegistry:0];
+          [mEMORY[0x277CFD218] authenticateTouchControllerWithChallenge:0 completionHandler:v19 updateRegistry:0];
           v23 = @"Touch";
           goto LABEL_50;
         }
@@ -521,7 +521,7 @@ LABEL_9:
             v16 = 10;
           }
 
-          [v20 authenticateLASWithChallenge:v43 completionHandler:v19 updateRegistry:0];
+          [mEMORY[0x277CFD218] authenticateLASWithChallenge:v43 completionHandler:v19 updateRegistry:0];
           v23 = @"LAS";
           goto LABEL_50;
         }
@@ -536,7 +536,7 @@ LABEL_9:
             v16 = 10;
           }
 
-          [v20 authenticateBatteryWithChallenge:v43 completionHandler:v19];
+          [mEMORY[0x277CFD218] authenticateBatteryWithChallenge:v43 completionHandler:v19];
           goto LABEL_46;
         }
 
@@ -547,7 +547,7 @@ LABEL_9:
             v16 = 80;
           }
 
-          [v20 authenticateVeridianWithChallenge:v43 completionHandler:v19];
+          [mEMORY[0x277CFD218] authenticateVeridianWithChallenge:v43 completionHandler:v19];
 LABEL_46:
           v23 = @"Battery";
 LABEL_50:
@@ -617,8 +617,8 @@ LABEL_50:
           }
 
           self->_fdrValidationStatus = v31;
-          *a4 = *(v62 + 6);
-          *a3 = v56[5];
+          *error = *(v62 + 6);
+          *cert = v56[5];
           v4 = *(v66 + 24);
           if (!v10)
           {
@@ -751,11 +751,11 @@ void __71__ACCTransportIOAccessoryAuthCP__authInternalModuleWithCert_withError__
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_authWithAuthIC:(unsigned int)a3 withCert:(const __CFData *)a4 withError:(int *)a5
+- (BOOL)_authWithAuthIC:(unsigned int)c withCert:(const __CFData *)cert withError:(int *)error
 {
   LOBYTE(v5) = 0;
   v57 = *MEMORY[0x277D85DE8];
-  if (a4 && a5)
+  if (cert && error)
   {
     v53 = 0;
     v52 = 0;
@@ -799,12 +799,12 @@ void __71__ACCTransportIOAccessoryAuthCP__authInternalModuleWithCert_withError__
       _os_log_impl(&dword_233656000, v12, OS_LOG_TYPE_DEFAULT, "Starting auth try:%02X of max:%02X", buf, 0xEu);
     }
 
-    if (*a4)
+    if (*cert)
     {
-      CFRelease(*a4);
+      CFRelease(*cert);
     }
 
-    *a4 = 0;
+    *cert = 0;
     DeviceInfo = cpGetDeviceInfo([(ACCTransportIOAccessoryBase *)self ioService], &v53 + 1, &v53, &v52 + 1, &v52, &v51);
     if (![(ACCTransportIOAccessoryAuthCP *)self _handleAuthDeviceInfo:DeviceInfo versionMajor:HIBYTE(v52) versionMinor:v52])
     {
@@ -880,8 +880,8 @@ LABEL_94:
         }
 
 LABEL_96:
-        *a5 = v50;
-        *a4 = v49;
+        *error = v50;
+        *cert = v49;
         goto LABEL_97;
       }
 
@@ -987,7 +987,7 @@ LABEL_96:
       }
 
       v38 = v37;
-      if (cpCreateSignature(a3, v37, &cf))
+      if (cpCreateSignature(c, v37, &cf))
       {
         if (gLogObjects && gNumLogObjects >= 7)
         {
@@ -1078,14 +1078,14 @@ LABEL_97:
     v11[2] = 0x3032000000;
     v11[3] = __Block_byref_object_copy__1;
     v11[4] = __Block_byref_object_dispose__1;
-    v2 = self;
-    v3 = v2;
-    v12 = v2;
-    if (v2->_accConnectionType == 1)
+    selfCopy = self;
+    v3 = selfCopy;
+    v12 = selfCopy;
+    if (selfCopy->_accConnectionType == 1)
     {
       LOWORD(v14) = 0;
       *buf = 0;
-      [(ACCTransportIOAccessoryAuthCP *)v2 ioServiceUpstream];
+      [(ACCTransportIOAccessoryAuthCP *)selfCopy ioServiceUpstream];
       if (!IOAccessoryManagerGetDigitalID() && (v14 & 0x10) != 0 && (buf[1] & 1) == 0)
       {
         parent = 0;
@@ -1156,14 +1156,14 @@ LABEL_97:
       }
     }
 
-    v4 = [(ACCTransportIOAccessoryAuthCP *)v3 authWorkQueue];
+    authWorkQueue = [(ACCTransportIOAccessoryAuthCP *)v3 authWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__ACCTransportIOAccessoryAuthCP_startAuthenticationProcess__block_invoke;
     block[3] = &unk_2789E9490;
     block[4] = v3;
     block[5] = v11;
-    dispatch_async(v4, block);
+    dispatch_async(authWorkQueue, block);
 
     _Block_object_dispose(v11, 8);
   }
@@ -1561,10 +1561,10 @@ LABEL_52:
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (BOOL)_handleAuthDeviceInfo:(int)a3 versionMajor:(unsigned __int8)a4 versionMinor:(unsigned __int8)a5
+- (BOOL)_handleAuthDeviceInfo:(int)info versionMajor:(unsigned __int8)major versionMinor:(unsigned __int8)minor
 {
-  v5 = a5;
-  v6 = a4;
+  minorCopy = minor;
+  majorCopy = major;
   v24 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
   {
@@ -1595,11 +1595,11 @@ LABEL_52:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v19[0] = 67109632;
-    v19[1] = a3;
+    v19[1] = info;
     v20 = 1024;
-    v21 = v6;
+    v21 = majorCopy;
     v22 = 1024;
-    v23 = v5;
+    v23 = minorCopy;
     _os_log_impl(&dword_233656000, v11, OS_LOG_TYPE_DEFAULT, "_handleAuthDeviceInfo: ioretStatus %02X, authVerMajor:%02X, authVerMinor:%02X", v19, 0x14u);
   }
 
@@ -1608,7 +1608,7 @@ LABEL_52:
     goto LABEL_40;
   }
 
-  if (a3)
+  if (info)
   {
     if (gLogObjects && gNumLogObjects >= 7)
     {
@@ -1638,8 +1638,8 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v14 = v6 == 4 || (v6 & 0xFE) == 2;
-  if (v5 || !v14)
+  v14 = majorCopy == 4 || (majorCopy & 0xFE) == 2;
+  if (minorCopy || !v14)
   {
     if (gLogObjects && gNumLogObjects >= 7)
     {
@@ -1671,14 +1671,14 @@ LABEL_41:
   return result;
 }
 
-- (BOOL)_handleAuthCertSerialNumber:(__CFString *)a3 certData:(const __CFData *)a4
+- (BOOL)_handleAuthCertSerialNumber:(__CFString *)number certData:(const __CFData *)data
 {
   if (self->_bIsShuttingDown || self->_authStatus)
   {
     return 0;
   }
 
-  if (a3)
+  if (number)
   {
     pAuthCertCache = self->_pAuthCertCache;
     v7 = MFAACreateCertDataFromSerialNumber();
@@ -1689,14 +1689,14 @@ LABEL_41:
     v7 = 0;
   }
 
-  *a4 = v7;
+  *data = v7;
   return 1;
 }
 
-- (BOOL)_copyCertificateAttribute:(__CFData *)a3 forAttributeKey:(__CFNumber *)a4 withAttributeValue:(const __CFData *)a5
+- (BOOL)_copyCertificateAttribute:(__CFData *)attribute forAttributeKey:(__CFNumber *)key withAttributeValue:(const __CFData *)value
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (!a3 || !a4 || !a5)
+  if (!attribute || !key || !value)
   {
     v9 = logObjectForModule_1(6);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1713,8 +1713,8 @@ LABEL_18:
     goto LABEL_11;
   }
 
-  v8 = [MEMORY[0x277D24E20] sharedManager];
-  v9 = [v8 copyParsedCertificateChainInfo:a3];
+  mEMORY[0x277D24E20] = [MEMORY[0x277D24E20] sharedManager];
+  v9 = [mEMORY[0x277D24E20] copyParsedCertificateChainInfo:attribute];
 
   if (!v9)
   {
@@ -1743,11 +1743,11 @@ LABEL_18:
   if (v13)
   {
     v14 = v13;
-    Value = CFDictionaryGetValue(v13, a4);
+    Value = CFDictionaryGetValue(v13, key);
     v16 = Value != 0;
     if (Value)
     {
-      *a5 = Value;
+      *value = Value;
       CFRetain(Value);
     }
 
@@ -1772,11 +1772,11 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)_handleAuthCertificate:(__CFData *)a3 serialNumber:(__CFString *)a4 authError:(int *)a5
+- (BOOL)_handleAuthCertificate:(__CFData *)certificate serialNumber:(__CFString *)number authError:(int *)error
 {
   v61 = *MEMORY[0x277D85DE8];
   self->_certType = -1;
-  *a5 = 0;
+  *error = 0;
   if (self->_bIsShuttingDown || self->_authStatus)
   {
     v6 = 0;
@@ -1784,15 +1784,15 @@ LABEL_11:
   }
 
   v11 = 0x2812FE000uLL;
-  if (a3)
+  if (certificate)
   {
-    v13 = [MEMORY[0x277D24E20] sharedManager];
-    v14 = [v13 copyParsedCertificateChainInfo:a3];
+    mEMORY[0x277D24E20] = [MEMORY[0x277D24E20] sharedManager];
+    v14 = [mEMORY[0x277D24E20] copyParsedCertificateChainInfo:certificate];
 
     if (v14)
     {
-      v15 = [MEMORY[0x277D24E20] sharedManager];
-      v16 = [v15 copyEvaluatedCertificateChainInfo:v14];
+      mEMORY[0x277D24E20]2 = [MEMORY[0x277D24E20] sharedManager];
+      v16 = [mEMORY[0x277D24E20]2 copyEvaluatedCertificateChainInfo:v14];
 
       v17 = v14;
       if (v16)
@@ -1889,15 +1889,15 @@ LABEL_11:
     {
       if (v17)
       {
-        v28 = [MEMORY[0x277D24E20] sharedManager];
-        v29 = [v28 verifyCertificateChainInfoSerialNumber:v17];
+        mEMORY[0x277D24E20]3 = [MEMORY[0x277D24E20] sharedManager];
+        v29 = [mEMORY[0x277D24E20]3 verifyCertificateChainInfoSerialNumber:v17];
 
         if (v29)
         {
-          if (a4)
+          if (number)
           {
-            v30 = [MEMORY[0x277D24E20] sharedManager];
-            v31 = [v30 copyLeafCertificateSerialNumber:v17];
+            mEMORY[0x277D24E20]4 = [MEMORY[0x277D24E20] sharedManager];
+            v31 = [mEMORY[0x277D24E20]4 copyLeafCertificateSerialNumber:v17];
 
             goto LABEL_70;
           }
@@ -1917,7 +1917,7 @@ LABEL_88:
 
       else if (MFAAVerifyCertificateSerialNumber())
       {
-        if (a4)
+        if (number)
         {
           v31 = MFAACreateCertificateSerialNumber();
 LABEL_70:
@@ -1927,7 +1927,7 @@ LABEL_70:
             if (v40)
             {
               v41 = v40;
-              v42 = CFStringCompare(a4, v40, 1uLL);
+              v42 = CFStringCompare(number, v40, 1uLL);
               v6 = v42 == kCFCompareEqualTo;
               if (v42)
               {
@@ -1937,7 +1937,7 @@ LABEL_70:
                   [ACCTransportIOAccessoryAuthCP _handleAuthCertificate:serialNumber:authError:];
                 }
 
-                *a5 = 8;
+                *error = 8;
               }
 
               CFRelease(v41);
@@ -1952,7 +1952,7 @@ LABEL_70:
               }
 
               v6 = 0;
-              *a5 = 7;
+              *error = 7;
             }
 
             CFRelease(v31);
@@ -1967,7 +1967,7 @@ LABEL_70:
             }
 
             v6 = 0;
-            *a5 = 6;
+            *error = 6;
           }
 
           goto LABEL_92;
@@ -1979,7 +1979,7 @@ LABEL_70:
       v6 = 0;
       v44 = 5;
 LABEL_87:
-      *a5 = v44;
+      *error = v44;
 LABEL_92:
 
       goto LABEL_4;
@@ -2031,9 +2031,9 @@ LABEL_91:
     if (Mutable)
     {
       v36 = Mutable;
-      CFArrayAppendValue(Mutable, a3);
-      v37 = [MEMORY[0x277D24E20] sharedManager];
-      v38 = [v37 validateCertificateChain:v36 type:3 realtime:1 error:0];
+      CFArrayAppendValue(Mutable, certificate);
+      mEMORY[0x277D24E20]5 = [MEMORY[0x277D24E20] sharedManager];
+      v38 = [mEMORY[0x277D24E20]5 validateCertificateChain:v36 type:3 realtime:1 error:0];
 
       if (v38 == 1 && acc_userDefaults_BOOLForKey(@"EnableDEVNCertSupport"))
       {
@@ -2115,13 +2115,13 @@ LABEL_91:
   }
 
   v6 = 0;
-  *a5 = 3;
+  *error = 3;
 LABEL_4:
   v7 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (BOOL)_handleAuthSignature:(__CFData *)a3 certData:(__CFData *)a4 nonceData:(__CFData *)a5
+- (BOOL)_handleAuthSignature:(__CFData *)signature certData:(__CFData *)data nonceData:(__CFData *)nonceData
 {
   v20 = *MEMORY[0x277D85DE8];
   if (self->_bIsShuttingDown || self->_authStatus)
@@ -2129,7 +2129,7 @@ LABEL_4:
     goto LABEL_21;
   }
 
-  if (!a4 || !a3 || !a5)
+  if (!data || !signature || !nonceData)
   {
     if (gLogObjects)
     {
@@ -2160,11 +2160,11 @@ LABEL_4:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = 134218496;
-      v15 = a3;
+      signatureCopy = signature;
       v16 = 2048;
-      v17 = a5;
+      nonceDataCopy = nonceData;
       v18 = 2048;
-      v19 = a4;
+      dataCopy = data;
       _os_log_error_impl(&dword_233656000, v11, OS_LOG_TYPE_ERROR, "Parameter fail pkNonceSignature:%04lX, pkNonceData:%04lX, pCFCertData:%04lX", &v14, 0x20u);
     }
 
@@ -2180,29 +2180,29 @@ LABEL_21:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return MEMORY[0x282182FD0](a4, a5, a3);
+  return MEMORY[0x282182FD0](data, nonceData, signature);
 }
 
 - (void)_handleAuthTimerTimeout
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_11_0(&dword_233656000, a1, a3, "AppleAuthCP:%s timeout TTR", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_11_0(&dword_233656000, self, a3, "AppleAuthCP:%s timeout TTR", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishAuthentication:(BOOL)a3 authCert:(__CFData *)a4
+- (void)_finishAuthentication:(BOOL)authentication authCert:(__CFData *)cert
 {
   v69 = *MEMORY[0x277D85DE8];
   v5 = 0x2812FE000;
   if (!self->_bIsShuttingDown)
   {
-    v7 = a3;
+    authenticationCopy = authentication;
     dispatch_source_set_timer(self->_authTimerSource, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
     if (!self->_authStatus)
     {
-      v8 = v7 ? 2 : 1;
+      v8 = authenticationCopy ? 2 : 1;
       self->_authStatus = v8;
-      if (v7)
+      if (authenticationCopy)
       {
         self->_authErrorDescription = 0;
       }
@@ -2211,7 +2211,7 @@ LABEL_21:
     if (gbAppleIDAuthAlwaysPasses == 1 && self->_authStatus != 2)
     {
       self->_authStatus = 2;
-      if (a4 && !(self->_authCertCaps.authCertCaps0 | self->_authCertCaps.authCertCaps1 | self->_authCertCaps.authCertCaps2 | self->_authCertCaps.authCertCaps3))
+      if (cert && !(self->_authCertCaps.authCertCaps0 | self->_authCertCaps.authCertCaps1 | self->_authCertCaps.authCertCaps2 | self->_authCertCaps.authCertCaps3))
       {
         if (gLogObjects && gNumLogObjects >= 7)
         {
@@ -2386,9 +2386,9 @@ LABEL_21:
     {
       [(ACCTransportIOAccessoryAuthCP *)self _validateAuthCPFlagsForCertificate];
       [(ACCTransportIOAccessoryAuthCP *)self _validateModuleCertificate];
-      v30 = [(ACCTransportIOAccessoryAuthCP *)self authStatus];
+      authStatus = [(ACCTransportIOAccessoryAuthCP *)self authStatus];
       v31 = authStatus == 2 && self->_fdrValidationStatus == 2;
-      if (v30 == 3 && self->_softwareErrorRetry <= 2u)
+      if (authStatus == 3 && self->_softwareErrorRetry <= 2u)
       {
         v32 = dispatch_time(0, 60000000000);
         v33 = MEMORY[0x277D85CD0];
@@ -2414,10 +2414,10 @@ LABEL_21:
 
     if (authStatus == 2)
     {
-      if (a4)
+      if (cert)
       {
-        CFRetain(a4);
-        objc_storeStrong(&self->_pAuthCertificate, a4);
+        CFRetain(cert);
+        objc_storeStrong(&self->_pAuthCertificate, cert);
         pAuthCertCache = self->_pAuthCertCache;
         if ((MFAAAddCertDataEntryToCache() & 1) == 0)
         {
@@ -2446,7 +2446,7 @@ LABEL_21:
       }
     }
 
-    else if (a4)
+    else if (cert)
     {
       v38 = MFAACreateCertificateSerialNumber();
       v39 = MFAACreateSerialNumberStringFromData();
@@ -2487,10 +2487,10 @@ LABEL_21:
       }
     }
 
-    v44 = [(ACCTransportIOAccessoryAuthCP *)self delegate];
-    if (v44)
+    delegate = [(ACCTransportIOAccessoryAuthCP *)self delegate];
+    if (delegate)
     {
-      v45 = [(ACCTransportIOAccessoryAuthCP *)self delegate];
+      delegate2 = [(ACCTransportIOAccessoryAuthCP *)self delegate];
       v46 = objc_opt_respondsToSelector();
 
       if (v46)
@@ -2500,12 +2500,12 @@ LABEL_21:
           LOWORD(v64) = 0;
           *buf = 0;
           [(ACCTransportIOAccessoryAuthCP *)self ioServiceUpstream];
-          v44 = (IOAccessoryManagerGetDigitalID() == 0) & buf[2];
+          delegate = (IOAccessoryManagerGetDigitalID() == 0) & buf[2];
         }
 
         else
         {
-          v44 = 0;
+          delegate = 0;
         }
 
         v47 = 1;
@@ -2514,7 +2514,7 @@ LABEL_21:
       else
       {
         v47 = 0;
-        v44 = 0;
+        delegate = 0;
       }
     }
 
@@ -2568,11 +2568,11 @@ LABEL_21:
     [(ACCTransportIOAccessoryAuthCP *)self _resetAfterAuthCompletion];
     if (v47)
     {
-      v54 = [(ACCTransportIOAccessoryAuthCP *)self delegate];
-      v55 = [(ACCTransportIOAccessoryAuthCP *)self authStatus];
-      v56 = [(ACCTransportIOAccessoryAuthCP *)self authType];
-      v57 = [(ACCTransportIOAccessoryAuthCP *)self pAuthCertificate];
-      [v54 IOAccessoryAuthCPServiceAuthStatusChanged:v55 authType:v56 authCert:v57 certType:-[ACCTransportIOAccessoryAuthCP certType](self authCTA:"certType") service:{v44, -[ACCTransportIOAccessoryBase ioService](self, "ioService")}];
+      delegate3 = [(ACCTransportIOAccessoryAuthCP *)self delegate];
+      authStatus2 = [(ACCTransportIOAccessoryAuthCP *)self authStatus];
+      authType = [(ACCTransportIOAccessoryAuthCP *)self authType];
+      pAuthCertificate = [(ACCTransportIOAccessoryAuthCP *)self pAuthCertificate];
+      [delegate3 IOAccessoryAuthCPServiceAuthStatusChanged:authStatus2 authType:authType authCert:pAuthCertificate certType:-[ACCTransportIOAccessoryAuthCP certType](self authCTA:"certType") service:{delegate, -[ACCTransportIOAccessoryBase ioService](self, "ioService")}];
     }
 
     v5 = 0x2812FE000uLL;
@@ -2627,7 +2627,7 @@ uint64_t __64__ACCTransportIOAccessoryAuthCP__finishAuthentication_authCert___bl
   return result;
 }
 
-- (BOOL)_validateCertCapsForCertificate:(__CFData *)a3 authError:(int *)a4
+- (BOOL)_validateCertCapsForCertificate:(__CFData *)certificate authError:(int *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   if (gLogObjects)
@@ -2707,7 +2707,7 @@ uint64_t __64__ACCTransportIOAccessoryAuthCP__finishAuthentication_authCert___bl
 
     v12 = 0;
     v19 = 13;
-    if (a4)
+    if (error)
     {
       goto LABEL_72;
     }
@@ -2863,10 +2863,10 @@ LABEL_71:
   *&self->_authCertCaps.authCertCaps0 = *v13;
   *&self->_authCertCaps.authCertCaps2 = v26;
   MFAADeallocAuthCertCaps();
-  if (a4)
+  if (error)
   {
 LABEL_72:
-    *a4 = v19;
+    *error = v19;
   }
 
 LABEL_73:
@@ -2959,9 +2959,9 @@ LABEL_25:
     goto LABEL_80;
   }
 
-  v7 = [MEMORY[0x277D24E20] sharedManager];
-  v8 = v7;
-  if (!v7)
+  mEMORY[0x277D24E20] = [MEMORY[0x277D24E20] sharedManager];
+  v8 = mEMORY[0x277D24E20];
+  if (!mEMORY[0x277D24E20])
   {
     [ACCTransportIOAccessoryAuthCP _fdrCertCheck];
     v10 = 0;
@@ -2971,7 +2971,7 @@ LABEL_70:
     goto LABEL_77;
   }
 
-  v9 = [v7 copyParsedCertificateChainInfo:v3];
+  v9 = [mEMORY[0x277D24E20] copyParsedCertificateChainInfo:v3];
   if (!v9)
   {
     [ACCTransportIOAccessoryAuthCP _fdrCertCheck];
@@ -3159,10 +3159,10 @@ LABEL_80:
   return v22;
 }
 
-- (void)_incrementAuthStat:(const __CFString *)a3 dict:(__CFDictionary *)a4
+- (void)_incrementAuthStat:(const __CFString *)stat dict:(__CFDictionary *)dict
 {
   valuePtr = -1431655766;
-  Value = CFDictionaryGetValue(a4, a3);
+  Value = CFDictionaryGetValue(dict, stat);
   if (!Value)
   {
     [ACCTransportIOAccessoryAuthCP _incrementAuthStat:dict:];
@@ -3181,7 +3181,7 @@ LABEL_80:
     }
 
     v7 = v8;
-    CFDictionarySetValue(a4, a3, v8);
+    CFDictionarySetValue(dict, stat, v8);
   }
 
   else
@@ -3200,12 +3200,12 @@ LABEL_80:
   }
 }
 
-- (void)_publishAuth:(BOOL)a3 fdrStatus:(int)a4 trusted:(BOOL)a5 publishToUI:(BOOL)a6 ioconnect:(unsigned int)a7
+- (void)_publishAuth:(BOOL)auth fdrStatus:(int)status trusted:(BOOL)trusted publishToUI:(BOOL)i ioconnect:(unsigned int)ioconnect
 {
-  v8 = a6;
-  v9 = a5;
+  iCopy = i;
+  trustedCopy = trusted;
   v29 = *MEMORY[0x277D85DE8];
-  if (cpSetFdrValidationStatus(a7, a4))
+  if (cpSetFdrValidationStatus(ioconnect, status))
   {
     if (gLogObjects)
     {
@@ -3268,19 +3268,19 @@ LABEL_80:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = "no";
-    if (a4 == 2)
+    if (status == 2)
     {
       v17 = "yes";
     }
 
     v25 = 67109378;
-    v26 = a4;
+    statusCopy = status;
     v27 = 2080;
     v28 = v17;
     _os_log_impl(&dword_233656000, v16, OS_LOG_TYPE_DEFAULT, "authFlags need FDRValidation, FDRValidationStatus = %d, pass = %s", &v25, 0x12u);
   }
 
-  if (cpSetTrustStatus(a7, v9))
+  if (cpSetTrustStatus(ioconnect, trustedCopy))
   {
     if (gLogObjects && gNumLogObjects >= 7)
     {
@@ -3323,13 +3323,13 @@ LABEL_80:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 67109376;
-    v26 = v8;
+    statusCopy = iCopy;
     v27 = 1024;
-    LODWORD(v28) = v9;
+    LODWORD(v28) = trustedCopy;
     _os_log_impl(&dword_233656000, v20, OS_LOG_TYPE_DEFAULT, "publishToUI=%d, cpSetTrustStatusForUI=%d", &v25, 0xEu);
   }
 
-  if (v8 && cpSetTrustStatusForUI(a7, v9))
+  if (iCopy && cpSetTrustStatusForUI(ioconnect, trustedCopy))
   {
     if (gLogObjects && gNumLogObjects >= 7)
     {
@@ -3440,22 +3440,22 @@ LABEL_80:
       {
 LABEL_23:
         v23 = MEMORY[0x277CCACA8];
-        v24 = [(ACCTransportIOAccessoryAuthCP *)self fdrValidationStatus];
-        if (v24 > 2)
+        fdrValidationStatus = [(ACCTransportIOAccessoryAuthCP *)self fdrValidationStatus];
+        if (fdrValidationStatus > 2)
         {
           v25 = "AuthSuccess";
         }
 
         else
         {
-          v25 = kACCTransport_IOAccessoryAuthCP_FDRStatus_Strings[v24];
+          v25 = kACCTransport_IOAccessoryAuthCP_FDRStatus_Strings[fdrValidationStatus];
         }
 
         v26 = [v23 stringWithUTF8String:v25];
         [v15 setObject:v26 forKey:@"FDRStatus"];
 
-        v27 = [MEMORY[0x277CCAC38] processInfo];
-        [v27 systemUptime];
+        processInfo = [MEMORY[0x277CCAC38] processInfo];
+        [processInfo systemUptime];
         v29 = v28;
 
         v30 = [MEMORY[0x277CCABB0] numberWithDouble:v29];
@@ -3483,51 +3483,51 @@ LABEL_27:
 
   if (v33)
   {
-    v34 = [v33 accessoryInfoLock];
-    [v34 lock];
+    accessoryInfoLock = [v33 accessoryInfoLock];
+    [accessoryInfoLock lock];
 
-    v35 = [v33 deviceName];
+    deviceName = [v33 deviceName];
 
-    if (v35)
+    if (deviceName)
     {
-      v36 = [v33 deviceName];
-      [v15 setObject:v36 forKey:@"accessoryName"];
+      deviceName2 = [v33 deviceName];
+      [v15 setObject:deviceName2 forKey:@"accessoryName"];
     }
 
-    v37 = [v33 deviceVendorName];
+    deviceVendorName = [v33 deviceVendorName];
 
-    if (v37)
+    if (deviceVendorName)
     {
-      v38 = [v33 deviceVendorName];
-      [v15 setObject:v38 forKey:@"accessoryManufacturer"];
+      deviceVendorName2 = [v33 deviceVendorName];
+      [v15 setObject:deviceVendorName2 forKey:@"accessoryManufacturer"];
     }
 
-    v39 = [v33 deviceModelNumber];
+    deviceModelNumber = [v33 deviceModelNumber];
 
-    if (v39)
+    if (deviceModelNumber)
     {
-      v40 = [v33 deviceModelNumber];
-      [v15 setObject:v40 forKey:@"accessoryModel"];
+      deviceModelNumber2 = [v33 deviceModelNumber];
+      [v15 setObject:deviceModelNumber2 forKey:@"accessoryModel"];
     }
 
-    v41 = [v33 deviceHardwareRevision];
+    deviceHardwareRevision = [v33 deviceHardwareRevision];
 
-    if (v41)
+    if (deviceHardwareRevision)
     {
-      v42 = [v33 deviceHardwareRevision];
-      [v15 setObject:v42 forKey:@"accessoryHardwareVersion"];
+      deviceHardwareRevision2 = [v33 deviceHardwareRevision];
+      [v15 setObject:deviceHardwareRevision2 forKey:@"accessoryHardwareVersion"];
     }
 
-    v43 = [v33 deviceFirmwareRevision];
+    deviceFirmwareRevision = [v33 deviceFirmwareRevision];
 
-    if (v43)
+    if (deviceFirmwareRevision)
     {
-      v44 = [v33 deviceFirmwareRevision];
-      [v15 setObject:v44 forKey:@"accessoryFirmwareVersionActive"];
+      deviceFirmwareRevision2 = [v33 deviceFirmwareRevision];
+      [v15 setObject:deviceFirmwareRevision2 forKey:@"accessoryFirmwareVersionActive"];
     }
 
-    v45 = [v33 accessoryInfoLock];
-    [v45 unlock];
+    accessoryInfoLock2 = [v33 accessoryInfoLock];
+    [accessoryInfoLock2 unlock];
   }
 
   if (gLogObjects && gNumLogObjects >= 7)
@@ -3657,9 +3657,9 @@ uint64_t __53__ACCTransportIOAccessoryAuthCP_doPostAuthentication__block_invoke(
   return result;
 }
 
-- (__CFDictionary)_copyOrCreateStatsSubDict:(__CFDictionary *)a3 forSerialNumber:(__CFString *)a4
+- (__CFDictionary)_copyOrCreateStatsSubDict:(__CFDictionary *)dict forSerialNumber:(__CFString *)number
 {
-  v6 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x277D85DE8];
   if (![(ACCTransportIOAccessoryAuthCP *)self _representsHardwareComponent])
   {
@@ -3668,7 +3668,7 @@ LABEL_7:
     goto LABEL_16;
   }
 
-  Value = CFDictionaryGetValue(a3, a4);
+  Value = CFDictionaryGetValue(dict, number);
   if (!Value)
   {
     valuePtr = 0;
@@ -3685,16 +3685,16 @@ LABEL_7:
         OUTLINED_FUNCTION_12_1(v14, @"FDRFailedCount");
         OUTLINED_FUNCTION_12_1(v15, @"FDRUnknownCount");
         CFRelease(v11);
-        v16 = v6->_representsInternalModule - 1;
+        v16 = selfCopy->_representsInternalModule - 1;
         if (v16 <= 3)
         {
           CFDictionarySetValue(Mutable, @"AccessoryType", off_2789E94B0[v16]);
         }
 
-        v6 = objc_alloc_init(MEMORY[0x277CCA968]);
-        [(ACCTransportIOAccessoryAuthCP *)v6 setDateFormat:@"MM-dd-yyyy HH:mm:ss Z"];
-        v17 = [MEMORY[0x277CBEAA8] date];
-        v18 = [(ACCTransportIOAccessoryAuthCP *)v6 stringFromDate:v17];
+        selfCopy = objc_alloc_init(MEMORY[0x277CCA968]);
+        [(ACCTransportIOAccessoryAuthCP *)selfCopy setDateFormat:@"MM-dd-yyyy HH:mm:ss Z"];
+        date = [MEMORY[0x277CBEAA8] date];
+        v18 = [(ACCTransportIOAccessoryAuthCP *)selfCopy stringFromDate:date];
 
         if (v18)
         {
@@ -3719,11 +3719,11 @@ LABEL_7:
       if (OUTLINED_FUNCTION_13_0(v22))
       {
         v37 = 138412290;
-        v38 = a4;
+        numberCopy = number;
         v23 = &dword_233656000;
         v24 = "_copyOrCreateStatsSubDict: Failed to create sub-dictionary associated with certSn = %@";
         v25 = &v37;
-        p_super = &v6->super.super;
+        p_super = &selfCopy->super.super;
         v27 = OS_LOG_TYPE_ERROR;
         v28 = 12;
 LABEL_21:
@@ -3755,9 +3755,9 @@ LABEL_16:
   return Mutable;
 }
 
-- (void)_publishAuthStats:(BOOL)a3 fdrStatus:(int)a4
+- (void)_publishAuthStats:(BOOL)stats fdrStatus:(int)status
 {
-  v6 = a3;
+  statsCopy = stats;
   v75 = *MEMORY[0x277D85DE8];
   if (![(ACCTransportIOAccessoryAuthCP *)self _representsHardwareComponent])
   {
@@ -3807,7 +3807,7 @@ LABEL_11:
     v14 = [(ACCTransportIOAccessoryAuthCP *)self _copyOrCreateStatsSubDict:v12 forSerialNumber:Copy];
     if (v14)
     {
-      if (v6)
+      if (statsCopy)
       {
         v15 = @"AuthPassedCount";
       }
@@ -3896,12 +3896,12 @@ LABEL_40:
           }
 
           v35 = @"FDRUnknownCount";
-          if (a4 == 2)
+          if (status == 2)
           {
             v35 = @"FDRPassedCount";
           }
 
-          if (a4 == 1)
+          if (status == 1)
           {
             v36 = @"FDRFailedCount";
           }

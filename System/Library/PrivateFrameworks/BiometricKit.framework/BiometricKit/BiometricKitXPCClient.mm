@@ -2,19 +2,19 @@
 + (id)clientUUID;
 + (void)clientUUID;
 + (void)initialize;
-- (BOOL)fileRadarWithLogs:(id)a3 withDescription:(id)a4;
+- (BOOL)fileRadarWithLogs:(id)logs withDescription:(id)description;
 - (BOOL)isAriadneSignpostsEnabled;
 - (BOOL)isFingerOn;
 - (BOOL)isXARTAvailable;
 - (BiometricKitXPCClient)init;
-- (BiometricKitXPCClient)initWithDeviceType:(int64_t)a3 clientType:(int64_t)a4;
+- (BiometricKitXPCClient)initWithDeviceType:(int64_t)type clientType:(int64_t)clientType;
 - (BiometricKitXPCClientDelegate)delegate;
 - (id)getCalibrationDataInfo;
-- (id)getIdentityFromUUID:(id)a3;
-- (id)getNodeTopologyForIdentity:(id)a3;
+- (id)getIdentityFromUUID:(id)d;
+- (id)getNodeTopologyForIdentity:(id)identity;
 - (id)getSensorInfo;
 - (id)getSystemProtectedConfiguration;
-- (id)identities:(id)a3;
+- (id)identities:(id)identities;
 - (id)pullAlignmentData;
 - (id)pullCalibrationData;
 - (id)pullCaptureBuffer;
@@ -23,20 +23,20 @@
 - (int)connect;
 - (int)dropUnlockToken;
 - (int)enrollContinue;
-- (int)getCountersignedStoreToken:(id *)a3;
-- (int)getDeviceHardwareState:(unsigned int *)a3;
-- (int)getLastMatchEvent:(id *)a3;
-- (int)getPreferencesValue:(id *)a3 forKey:(id)a4;
+- (int)getCountersignedStoreToken:(id *)token;
+- (int)getDeviceHardwareState:(unsigned int *)state;
+- (int)getLastMatchEvent:(id *)event;
+- (int)getPreferencesValue:(id *)value forKey:(id)key;
 - (int)initializeConnection;
-- (int)isPeriocularEnrollmentSupported:(BOOL *)a3;
-- (int)listAccessories:(id *)a3;
-- (int)prewarmCamera:(unint64_t)a3;
-- (int)registerDSID:(unint64_t)a3 withOptions:(id)a4;
-- (int)registerStoreToken:(id)a3;
+- (int)isPeriocularEnrollmentSupported:(BOOL *)supported;
+- (int)listAccessories:(id *)accessories;
+- (int)prewarmCamera:(unint64_t)camera;
+- (int)registerDSID:(unint64_t)d withOptions:(id)options;
+- (int)registerStoreToken:(id)token;
 - (int)resetAppleConnectCounter;
-- (int)setPreferencesValue:(id)a3 forKey:(id)a4;
-- (int)setTemplate:(id)a3 forIdentity:(id)a4;
-- (int)setUserDSID:(unint64_t)a3 withOptions:(id)a4;
+- (int)setPreferencesValue:(id)value forKey:(id)key;
+- (int)setTemplate:(id)template forIdentity:(id)identity;
+- (int)setUserDSID:(unint64_t)d withOptions:(id)options;
 - (int)startNewMatchAttempt;
 - (int64_t)getDeviceState;
 - (int64_t)getProvisioningState;
@@ -45,7 +45,7 @@
 - (void)completeEnrollment;
 - (void)connect;
 - (void)dealloc;
-- (void)detectPresenceWithOptions:(id)a3 async:(BOOL)a4 withReply:(id)a5;
+- (void)detectPresenceWithOptions:(id)options async:(BOOL)async withReply:(id)reply;
 - (void)disconnect;
 - (void)dropUnlockToken;
 - (void)enrollContinue;
@@ -61,19 +61,19 @@
 - (void)isAriadneSignpostsEnabled;
 - (void)isFingerOn;
 - (void)isXARTAvailable;
-- (void)logEventOrCode:(unint64_t)a3;
-- (void)match:(id)a3 withOptions:(id)a4 async:(BOOL)a5 withReply:(id)a6;
+- (void)logEventOrCode:(unint64_t)code;
+- (void)match:(id)match withOptions:(id)options async:(BOOL)async withReply:(id)reply;
 - (void)pullAlignmentData;
 - (void)pullCalibrationData;
 - (void)pullCaptureBuffer;
 - (void)pullMatchPolicyInfoData;
-- (void)removeIdentity:(id)a3 withOptions:(id)a4 async:(BOOL)a5 withReply:(id)a6;
-- (void)removePeriocularTemplatesWithOptions:(id)a3 async:(BOOL)a4 withReply:(id)a5;
+- (void)removeIdentity:(id)identity withOptions:(id)options async:(BOOL)async withReply:(id)reply;
+- (void)removePeriocularTemplatesWithOptions:(id)options async:(BOOL)async withReply:(id)reply;
 - (void)resetAppleConnectCounter;
-- (void)setSystemProtectedConfiguration:(id)a3 withOptions:(id)a4 async:(BOOL)a5 withReply:(id)a6;
+- (void)setSystemProtectedConfiguration:(id)configuration withOptions:(id)options async:(BOOL)async withReply:(id)reply;
 - (void)startNewMatchAttempt;
-- (void)timestampEvent:(unint64_t)a3 absoluteTime:(unint64_t)a4;
-- (void)updateIdentity:(id)a3 withOptions:(id)a4 async:(BOOL)a5 withReply:(id)a6;
+- (void)timestampEvent:(unint64_t)event absoluteTime:(unint64_t)time;
+- (void)updateIdentity:(id)identity withOptions:(id)options async:(BOOL)async withReply:(id)reply;
 @end
 
 @implementation BiometricKitXPCClient
@@ -137,44 +137,44 @@
 
 - (int)initializeConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_connectionInterrupted)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_connectionInterrupted)
   {
-    v2->_connectionInterrupted = 0;
-    v2->_connectionInitialized = 0;
+    selfCopy->_connectionInterrupted = 0;
+    selfCopy->_connectionInitialized = 0;
   }
 
-  else if (v2->_connectionInitialized)
+  else if (selfCopy->_connectionInitialized)
   {
 LABEL_5:
     v3 = 0;
     goto LABEL_8;
   }
 
-  if (v2->_connectionInvalidated)
+  if (selfCopy->_connectionInvalidated)
   {
     goto LABEL_5;
   }
 
-  v4 = [(BiometricKitXPCClient *)v2 connect];
-  if (v4)
+  connect = [(BiometricKitXPCClient *)selfCopy connect];
+  if (connect)
   {
-    [(BiometricKitXPCClient *)v4 initializeConnection];
+    [(BiometricKitXPCClient *)connect initializeConnection];
     v3 = v7;
   }
 
   else
   {
-    WeakRetained = objc_loadWeakRetained(&v2->_delegate);
-    -[BiometricKitXPCClient registerDelegateCall:](v2, "registerDelegateCall:", [WeakRetained isDelegate]);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    -[BiometricKitXPCClient registerDelegateCall:](selfCopy, "registerDelegateCall:", [WeakRetained isDelegate]);
 
     v3 = 0;
-    v2->_connectionInitialized = 1;
+    selfCopy->_connectionInitialized = 1;
   }
 
 LABEL_8:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -191,9 +191,9 @@ LABEL_8:
   v26 = __Block_byref_object_copy_;
   v27 = __Block_byref_object_dispose_;
   v28 = 0;
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [v4 bundleIdentifier];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   if (isInternalBuild())
   {
@@ -202,46 +202,46 @@ LABEL_8:
     v24[5] = v6;
   }
 
-  if (v5)
+  if (bundleIdentifier)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"BKClientBundleIdentifier"];
+    [dictionary setObject:bundleIdentifier forKeyedSubscript:@"BKClientBundleIdentifier"];
   }
 
   v8 = MEMORY[0x1E696AD98];
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  v10 = [v8 numberWithInt:{objc_msgSend(v9, "processIdentifier")}];
-  [v3 setObject:v10 forKeyedSubscript:@"BKClientProcessId"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v10 = [v8 numberWithInt:{objc_msgSend(processInfo, "processIdentifier")}];
+  [dictionary setObject:v10 forKeyedSubscript:@"BKClientProcessId"];
 
-  v11 = [MEMORY[0x1E696AE30] processInfo];
-  v12 = [v11 processName];
-  [v3 setObject:v12 forKeyedSubscript:@"BKClientProcessName"];
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo2 processName];
+  [dictionary setObject:processName forKeyedSubscript:@"BKClientProcessName"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithInteger:self->_clientType];
-  [v3 setObject:v13 forKeyedSubscript:@"BKClientType"];
+  [dictionary setObject:v13 forKeyedSubscript:@"BKClientType"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[BiometricKitXPCClient connectionId](self, "connectionId")}];
-  [v3 setObject:v14 forKeyedSubscript:@"BKClientConnectionId"];
+  [dictionary setObject:v14 forKeyedSubscript:@"BKClientConnectionId"];
 
-  [v3 setObject:v24[5] forKeyedSubscript:@"BKClientUUID"];
+  [dictionary setObject:v24[5] forKeyedSubscript:@"BKClientUUID"];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v16 = [WeakRetained xpcConnection];
+  xpcConnection = [WeakRetained xpcConnection];
 
-  if (v16)
+  if (xpcConnection)
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __32__BiometricKitXPCClient_connect__block_invoke;
     v22[3] = &unk_1E8303DE8;
     v22[4] = &v29;
-    v17 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v22];
-    v18 = [(BiometricKitXPCClient *)self clientID];
+    v17 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v22];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __32__BiometricKitXPCClient_connect__block_invoke_2;
     v21[3] = &unk_1E8303E10;
     v21[4] = &v23;
     v21[5] = &v29;
-    [v17 connect:v3 client:v18 replyBlock:v21];
+    [v17 connect:dictionary client:clientID replyBlock:v21];
 
     v19 = *(v30[0] + 24);
   }
@@ -331,11 +331,11 @@ LABEL_12:
   +[BiometricKitXPCClient clientUUID];
 LABEL_13:
   v15 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v20];
-  v16 = [v15 UUIDString];
+  uUIDString = [v15 UUIDString];
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return uUIDString;
 }
 
 void __32__BiometricKitXPCClient_connect__block_invoke_2(uint64_t a1, int a2)
@@ -387,8 +387,8 @@ void __32__BiometricKitXPCClient_connect__block_invoke_2(uint64_t a1, int a2)
 - (void)disconnect
 {
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v3 = [WeakRetained xpcConnection];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global];
+  xpcConnection = [WeakRetained xpcConnection];
+  v4 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global];
   [v4 disconnect:-[BiometricKitXPCClient clientID](self replyBlock:{"clientID"), &__block_literal_global_300}];
 }
 
@@ -396,7 +396,7 @@ void __32__BiometricKitXPCClient_connect__block_invoke_2(uint64_t a1, int a2)
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     _clientIDs = objc_alloc_init(MEMORY[0x1E695DFA8]);
 
@@ -424,10 +424,10 @@ void __32__BiometricKitXPCClient_connect__block_invoke_2(uint64_t a1, int a2)
   return [(BiometricKitXPCClient *)self initWithDeviceType:v3 clientType:1];
 }
 
-- (BiometricKitXPCClient)initWithDeviceType:(int64_t)a3 clientType:(int64_t)a4
+- (BiometricKitXPCClient)initWithDeviceType:(int64_t)type clientType:(int64_t)clientType
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = [BiometricKitXPCClientConnection connectionWithDeviceType:a3];
+  v6 = [BiometricKitXPCClientConnection connectionWithDeviceType:type];
   if (!v6)
   {
     if (__osLog)
@@ -460,7 +460,7 @@ LABEL_13:
     goto LABEL_26;
   }
 
-  if ((a4 - 4) <= 0xFFFFFFFFFFFFFFFCLL)
+  if ((clientType - 4) <= 0xFFFFFFFFFFFFFFFCLL)
   {
     if (__osLog)
     {
@@ -498,7 +498,7 @@ LABEL_13:
     [BiometricKitXPCClient initWithDeviceType:clientType:];
 LABEL_30:
     self = self;
-    v14 = self;
+    selfCopy = self;
     goto LABEL_27;
   }
 
@@ -564,7 +564,7 @@ LABEL_19:
   if ([v6 addClient:self])
   {
     objc_storeWeak(&self->_connection, v6);
-    self->_clientType = a4;
+    self->_clientType = clientType;
     goto LABEL_30;
   }
 
@@ -594,11 +594,11 @@ LABEL_19:
   }
 
 LABEL_26:
-  v14 = 0;
+  selfCopy = 0;
 LABEL_27:
 
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (void)interruptConnection
@@ -618,7 +618,7 @@ LABEL_27:
   {
     v4 = v3;
     *buf = 134217984;
-    v10 = [(BiometricKitXPCClient *)self connectionId];
+    connectionId = [(BiometricKitXPCClient *)self connectionId];
     _os_log_impl(&dword_1C82AD000, v4, OS_LOG_TYPE_DEFAULT, "BiometricKitXPCClient::interruptConnection (_cid:%lu)\n", buf, 0xCu);
   }
 
@@ -684,12 +684,12 @@ uint64_t __68__BiometricKitXPCClient_enroll_forUser_withOptions_async_withReply_
   return v4(v2, v3);
 }
 
-- (void)match:(id)a3 withOptions:(id)a4 async:(BOOL)a5 withReply:(id)a6
+- (void)match:(id)match withOptions:(id)options async:(BOOL)async withReply:(id)reply
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  asyncCopy = async;
+  matchCopy = match;
+  optionsCopy = options;
+  replyCopy = reply;
   if ([(BiometricKitXPCClient *)self initializeConnection])
   {
     [BiometricKitXPCClient match:withOptions:async:withReply:];
@@ -698,23 +698,23 @@ uint64_t __68__BiometricKitXPCClient_enroll_forUser_withOptions_async_withReply_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v14 = [WeakRetained xpcConnection];
-    if (v7)
+    xpcConnection = [WeakRetained xpcConnection];
+    if (asyncCopy)
     {
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __59__BiometricKitXPCClient_match_withOptions_async_withReply___block_invoke;
       v28[3] = &unk_1E8303EA0;
-      v15 = v12;
+      v15 = replyCopy;
       v29 = v15;
-      v16 = [v14 remoteObjectProxyWithErrorHandler:v28];
-      v17 = [(BiometricKitXPCClient *)self clientID];
+      v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v28];
+      clientID = [(BiometricKitXPCClient *)self clientID];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __59__BiometricKitXPCClient_match_withOptions_async_withReply___block_invoke_2;
       v26[3] = &unk_1E8303EC8;
       v27 = v15;
-      [v16 match:v10 options:v11 async:1 client:v17 replyBlock:v26];
+      [v16 match:matchCopy options:optionsCopy async:1 client:clientID replyBlock:v26];
 
       v18 = v29;
     }
@@ -725,16 +725,16 @@ uint64_t __68__BiometricKitXPCClient_enroll_forUser_withOptions_async_withReply_
       v24[1] = 3221225472;
       v24[2] = __59__BiometricKitXPCClient_match_withOptions_async_withReply___block_invoke_3;
       v24[3] = &unk_1E8303EA0;
-      v19 = v12;
+      v19 = replyCopy;
       v25 = v19;
-      v20 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
-      v21 = [(BiometricKitXPCClient *)self clientID];
+      v20 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v24];
+      clientID2 = [(BiometricKitXPCClient *)self clientID];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __59__BiometricKitXPCClient_match_withOptions_async_withReply___block_invoke_4;
       v22[3] = &unk_1E8303EC8;
       v23 = v19;
-      [v20 match:v10 options:v11 async:0 client:v21 replyBlock:v22];
+      [v20 match:matchCopy options:optionsCopy async:0 client:clientID2 replyBlock:v22];
 
       v18 = v25;
     }
@@ -759,11 +759,11 @@ uint64_t __59__BiometricKitXPCClient_match_withOptions_async_withReply___block_i
   return v4(v2, v3);
 }
 
-- (void)detectPresenceWithOptions:(id)a3 async:(BOOL)a4 withReply:(id)a5
+- (void)detectPresenceWithOptions:(id)options async:(BOOL)async withReply:(id)reply
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  asyncCopy = async;
+  optionsCopy = options;
+  replyCopy = reply;
   if ([(BiometricKitXPCClient *)self initializeConnection])
   {
     [BiometricKitXPCClient detectPresenceWithOptions:async:withReply:];
@@ -772,23 +772,23 @@ uint64_t __59__BiometricKitXPCClient_match_withOptions_async_withReply___block_i
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v11 = [WeakRetained xpcConnection];
-    if (v6)
+    xpcConnection = [WeakRetained xpcConnection];
+    if (asyncCopy)
     {
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __67__BiometricKitXPCClient_detectPresenceWithOptions_async_withReply___block_invoke;
       v25[3] = &unk_1E8303EA0;
-      v12 = v9;
+      v12 = replyCopy;
       v26 = v12;
-      v13 = [v11 remoteObjectProxyWithErrorHandler:v25];
-      v14 = [(BiometricKitXPCClient *)self clientID];
+      v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v25];
+      clientID = [(BiometricKitXPCClient *)self clientID];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __67__BiometricKitXPCClient_detectPresenceWithOptions_async_withReply___block_invoke_2;
       v23[3] = &unk_1E8303EC8;
       v24 = v12;
-      [v13 detectPresenceWithOptions:v8 async:1 client:v14 replyBlock:v23];
+      [v13 detectPresenceWithOptions:optionsCopy async:1 client:clientID replyBlock:v23];
 
       v15 = v26;
     }
@@ -799,16 +799,16 @@ uint64_t __59__BiometricKitXPCClient_match_withOptions_async_withReply___block_i
       v21[1] = 3221225472;
       v21[2] = __67__BiometricKitXPCClient_detectPresenceWithOptions_async_withReply___block_invoke_3;
       v21[3] = &unk_1E8303EA0;
-      v16 = v9;
+      v16 = replyCopy;
       v22 = v16;
-      v17 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v21];
-      v18 = [(BiometricKitXPCClient *)self clientID];
+      v17 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v21];
+      clientID2 = [(BiometricKitXPCClient *)self clientID];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __67__BiometricKitXPCClient_detectPresenceWithOptions_async_withReply___block_invoke_4;
       v19[3] = &unk_1E8303EC8;
       v20 = v16;
-      [v17 detectPresenceWithOptions:v8 async:0 client:v18 replyBlock:v19];
+      [v17 detectPresenceWithOptions:optionsCopy async:0 client:clientID2 replyBlock:v19];
 
       v15 = v22;
     }
@@ -833,12 +833,12 @@ uint64_t __67__BiometricKitXPCClient_detectPresenceWithOptions_async_withReply__
   return v4(v2, v3);
 }
 
-- (void)updateIdentity:(id)a3 withOptions:(id)a4 async:(BOOL)a5 withReply:(id)a6
+- (void)updateIdentity:(id)identity withOptions:(id)options async:(BOOL)async withReply:(id)reply
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  asyncCopy = async;
+  identityCopy = identity;
+  optionsCopy = options;
+  replyCopy = reply;
   if ([(BiometricKitXPCClient *)self initializeConnection])
   {
     [BiometricKitXPCClient updateIdentity:withOptions:async:withReply:];
@@ -847,23 +847,23 @@ uint64_t __67__BiometricKitXPCClient_detectPresenceWithOptions_async_withReply__
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v14 = [WeakRetained xpcConnection];
-    if (v7)
+    xpcConnection = [WeakRetained xpcConnection];
+    if (asyncCopy)
     {
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __68__BiometricKitXPCClient_updateIdentity_withOptions_async_withReply___block_invoke;
       v28[3] = &unk_1E8303EA0;
-      v15 = v12;
+      v15 = replyCopy;
       v29 = v15;
-      v16 = [v14 remoteObjectProxyWithErrorHandler:v28];
-      v17 = [(BiometricKitXPCClient *)self clientID];
+      v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v28];
+      clientID = [(BiometricKitXPCClient *)self clientID];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __68__BiometricKitXPCClient_updateIdentity_withOptions_async_withReply___block_invoke_2;
       v26[3] = &unk_1E8303EC8;
       v27 = v15;
-      [v16 updateIdentity:v10 options:v11 async:1 client:v17 replyBlock:v26];
+      [v16 updateIdentity:identityCopy options:optionsCopy async:1 client:clientID replyBlock:v26];
 
       v18 = v29;
     }
@@ -874,16 +874,16 @@ uint64_t __67__BiometricKitXPCClient_detectPresenceWithOptions_async_withReply__
       v24[1] = 3221225472;
       v24[2] = __68__BiometricKitXPCClient_updateIdentity_withOptions_async_withReply___block_invoke_3;
       v24[3] = &unk_1E8303EA0;
-      v19 = v12;
+      v19 = replyCopy;
       v25 = v19;
-      v20 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
-      v21 = [(BiometricKitXPCClient *)self clientID];
+      v20 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v24];
+      clientID2 = [(BiometricKitXPCClient *)self clientID];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __68__BiometricKitXPCClient_updateIdentity_withOptions_async_withReply___block_invoke_4;
       v22[3] = &unk_1E8303EC8;
       v23 = v19;
-      [v20 updateIdentity:v10 options:v11 async:0 client:v21 replyBlock:v22];
+      [v20 updateIdentity:identityCopy options:optionsCopy async:0 client:clientID2 replyBlock:v22];
 
       v18 = v25;
     }
@@ -908,12 +908,12 @@ uint64_t __68__BiometricKitXPCClient_updateIdentity_withOptions_async_withReply_
   return v4(v2, v3);
 }
 
-- (void)removeIdentity:(id)a3 withOptions:(id)a4 async:(BOOL)a5 withReply:(id)a6
+- (void)removeIdentity:(id)identity withOptions:(id)options async:(BOOL)async withReply:(id)reply
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  asyncCopy = async;
+  identityCopy = identity;
+  optionsCopy = options;
+  replyCopy = reply;
   if ([(BiometricKitXPCClient *)self initializeConnection])
   {
     [BiometricKitXPCClient removeIdentity:withOptions:async:withReply:];
@@ -922,23 +922,23 @@ uint64_t __68__BiometricKitXPCClient_updateIdentity_withOptions_async_withReply_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v14 = [WeakRetained xpcConnection];
-    if (v7)
+    xpcConnection = [WeakRetained xpcConnection];
+    if (asyncCopy)
     {
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __68__BiometricKitXPCClient_removeIdentity_withOptions_async_withReply___block_invoke;
       v28[3] = &unk_1E8303EA0;
-      v15 = v12;
+      v15 = replyCopy;
       v29 = v15;
-      v16 = [v14 remoteObjectProxyWithErrorHandler:v28];
-      v17 = [(BiometricKitXPCClient *)self clientID];
+      v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v28];
+      clientID = [(BiometricKitXPCClient *)self clientID];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __68__BiometricKitXPCClient_removeIdentity_withOptions_async_withReply___block_invoke_2;
       v26[3] = &unk_1E8303EC8;
       v27 = v15;
-      [v16 removeIdentity:v10 options:v11 async:1 client:v17 replyBlock:v26];
+      [v16 removeIdentity:identityCopy options:optionsCopy async:1 client:clientID replyBlock:v26];
 
       v18 = v29;
     }
@@ -949,16 +949,16 @@ uint64_t __68__BiometricKitXPCClient_updateIdentity_withOptions_async_withReply_
       v24[1] = 3221225472;
       v24[2] = __68__BiometricKitXPCClient_removeIdentity_withOptions_async_withReply___block_invoke_3;
       v24[3] = &unk_1E8303EA0;
-      v19 = v12;
+      v19 = replyCopy;
       v25 = v19;
-      v20 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
-      v21 = [(BiometricKitXPCClient *)self clientID];
+      v20 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v24];
+      clientID2 = [(BiometricKitXPCClient *)self clientID];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __68__BiometricKitXPCClient_removeIdentity_withOptions_async_withReply___block_invoke_4;
       v22[3] = &unk_1E8303EC8;
       v23 = v19;
-      [v20 removeIdentity:v10 options:v11 async:0 client:v21 replyBlock:v22];
+      [v20 removeIdentity:identityCopy options:optionsCopy async:0 client:clientID2 replyBlock:v22];
 
       v18 = v25;
     }
@@ -1001,9 +1001,9 @@ uint64_t __80__BiometricKitXPCClient_removeAllIdentitiesForUser_withOptions_asyn
   return v4(v2, v3);
 }
 
-- (id)getIdentityFromUUID:(id)a3
+- (id)getIdentityFromUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1018,15 +1018,15 @@ uint64_t __80__BiometricKitXPCClient_removeAllIdentitiesForUser_withOptions_asyn
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v6 = [WeakRetained xpcConnection];
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_316];
-    v8 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_316];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __45__BiometricKitXPCClient_getIdentityFromUUID___block_invoke_2;
     v11[3] = &unk_1E8303EF0;
     v11[4] = &v12;
-    [v7 getIdentityFromUUID:v4 client:v8 replyBlock:v11];
+    [v7 getIdentityFromUUID:dCopy client:clientID replyBlock:v11];
   }
 
   v9 = v13[5];
@@ -1035,9 +1035,9 @@ uint64_t __80__BiometricKitXPCClient_removeAllIdentitiesForUser_withOptions_asyn
   return v9;
 }
 
-- (id)identities:(id)a3
+- (id)identities:(id)identities
 {
-  v4 = a3;
+  identitiesCopy = identities;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1052,15 +1052,15 @@ uint64_t __80__BiometricKitXPCClient_removeAllIdentitiesForUser_withOptions_asyn
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v6 = [WeakRetained xpcConnection];
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_319];
-    v8 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_319];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __36__BiometricKitXPCClient_identities___block_invoke_2;
     v11[3] = &unk_1E8303F18;
     v11[4] = &v12;
-    [v7 identities:v4 client:v8 replyBlock:v11];
+    [v7 identities:identitiesCopy client:clientID replyBlock:v11];
   }
 
   v9 = v13[5];
@@ -1075,9 +1075,9 @@ uint64_t __80__BiometricKitXPCClient_removeAllIdentitiesForUser_withOptions_asyn
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v3 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v13 + 6) = v3;
-  if (v3)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v13 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient enrollContinue];
   }
@@ -1085,20 +1085,20 @@ uint64_t __80__BiometricKitXPCClient_removeAllIdentitiesForUser_withOptions_asyn
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v5 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __39__BiometricKitXPCClient_enrollContinue__block_invoke;
     v11[3] = &unk_1E8303DE8;
     v11[4] = &v12;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v11];
-    v7 = [(BiometricKitXPCClient *)self clientID];
+    v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __39__BiometricKitXPCClient_enrollContinue__block_invoke_2;
     v10[3] = &unk_1E8303F68;
     v10[4] = &v12;
-    [v6 enrollContinue:v7 replyBlock:v10];
+    [v6 enrollContinue:clientID replyBlock:v10];
   }
 
   v8 = *(v13 + 6);
@@ -1129,15 +1129,15 @@ uint64_t __39__BiometricKitXPCClient_enrollContinue__block_invoke(uint64_t a1, v
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_327];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_327];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __42__BiometricKitXPCClient_pullAlignmentData__block_invoke_2;
     v9[3] = &unk_1E8303F90;
     v9[4] = &v10;
-    [v5 pullAlignmentData:v6 replyBlock:v9];
+    [v5 pullAlignmentData:clientID replyBlock:v9];
   }
 
   v7 = v11[5];
@@ -1162,15 +1162,15 @@ uint64_t __39__BiometricKitXPCClient_enrollContinue__block_invoke(uint64_t a1, v
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_330];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_330];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48__BiometricKitXPCClient_pullMatchPolicyInfoData__block_invoke_2;
     v9[3] = &unk_1E8303F90;
     v9[4] = &v10;
-    [v5 pullMatchPolicyInfoData:v6 replyBlock:v9];
+    [v5 pullMatchPolicyInfoData:clientID replyBlock:v9];
   }
 
   v7 = v11[5];
@@ -1179,9 +1179,9 @@ uint64_t __39__BiometricKitXPCClient_enrollContinue__block_invoke(uint64_t a1, v
   return v7;
 }
 
-- (id)getNodeTopologyForIdentity:(id)a3
+- (id)getNodeTopologyForIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1196,15 +1196,15 @@ uint64_t __39__BiometricKitXPCClient_enrollContinue__block_invoke(uint64_t a1, v
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v6 = [WeakRetained xpcConnection];
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_332];
-    v8 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_332];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __52__BiometricKitXPCClient_getNodeTopologyForIdentity___block_invoke_2;
     v11[3] = &unk_1E8303F90;
     v11[4] = &v12;
-    [v7 getNodeTopologyForIdentity:v4 client:v8 replyBlock:v11];
+    [v7 getNodeTopologyForIdentity:identityCopy client:clientID replyBlock:v11];
   }
 
   v9 = v13[5];
@@ -1229,15 +1229,15 @@ uint64_t __39__BiometricKitXPCClient_enrollContinue__block_invoke(uint64_t a1, v
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_337];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_337];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __56__BiometricKitXPCClient_getSystemProtectedConfiguration__block_invoke_2;
     v9[3] = &unk_1E8303FB8;
     v9[4] = &v10;
-    [v5 getSystemProtectedConfiguration:v6 replyBlock:v9];
+    [v5 getSystemProtectedConfiguration:clientID replyBlock:v9];
   }
 
   v7 = v11[5];
@@ -1264,12 +1264,12 @@ uint64_t __87__BiometricKitXPCClient_setProtectedConfiguration_forUser_withOptio
   return v4(v2, v3);
 }
 
-- (void)setSystemProtectedConfiguration:(id)a3 withOptions:(id)a4 async:(BOOL)a5 withReply:(id)a6
+- (void)setSystemProtectedConfiguration:(id)configuration withOptions:(id)options async:(BOOL)async withReply:(id)reply
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  asyncCopy = async;
+  configurationCopy = configuration;
+  optionsCopy = options;
+  replyCopy = reply;
   if ([(BiometricKitXPCClient *)self initializeConnection])
   {
     [BiometricKitXPCClient setSystemProtectedConfiguration:withOptions:async:withReply:];
@@ -1278,23 +1278,23 @@ uint64_t __87__BiometricKitXPCClient_setProtectedConfiguration_forUser_withOptio
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v14 = [WeakRetained xpcConnection];
-    if (v7)
+    xpcConnection = [WeakRetained xpcConnection];
+    if (asyncCopy)
     {
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __85__BiometricKitXPCClient_setSystemProtectedConfiguration_withOptions_async_withReply___block_invoke;
       v28[3] = &unk_1E8303EA0;
-      v15 = v12;
+      v15 = replyCopy;
       v29 = v15;
-      v16 = [v14 remoteObjectProxyWithErrorHandler:v28];
-      v17 = [(BiometricKitXPCClient *)self clientID];
+      v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v28];
+      clientID = [(BiometricKitXPCClient *)self clientID];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __85__BiometricKitXPCClient_setSystemProtectedConfiguration_withOptions_async_withReply___block_invoke_2;
       v26[3] = &unk_1E8303EC8;
       v27 = v15;
-      [v16 setSystemProtectedConfiguration:v10 options:v11 async:1 client:v17 replyBlock:v26];
+      [v16 setSystemProtectedConfiguration:configurationCopy options:optionsCopy async:1 client:clientID replyBlock:v26];
 
       v18 = v29;
     }
@@ -1305,16 +1305,16 @@ uint64_t __87__BiometricKitXPCClient_setProtectedConfiguration_forUser_withOptio
       v24[1] = 3221225472;
       v24[2] = __85__BiometricKitXPCClient_setSystemProtectedConfiguration_withOptions_async_withReply___block_invoke_3;
       v24[3] = &unk_1E8303EA0;
-      v19 = v12;
+      v19 = replyCopy;
       v25 = v19;
-      v20 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v24];
-      v21 = [(BiometricKitXPCClient *)self clientID];
+      v20 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v24];
+      clientID2 = [(BiometricKitXPCClient *)self clientID];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __85__BiometricKitXPCClient_setSystemProtectedConfiguration_withOptions_async_withReply___block_invoke_4;
       v22[3] = &unk_1E8303EC8;
       v23 = v19;
-      [v20 setSystemProtectedConfiguration:v10 options:v11 async:0 client:v21 replyBlock:v22];
+      [v20 setSystemProtectedConfiguration:configurationCopy options:optionsCopy async:0 client:clientID2 replyBlock:v22];
 
       v18 = v25;
     }
@@ -1383,15 +1383,15 @@ uint64_t __53__BiometricKitXPCClient_getExpressModeState_forUser___block_invoke_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_341];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_341];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45__BiometricKitXPCClient_getProvisioningState__block_invoke_2;
     v9[3] = &unk_1E8303F40;
     v9[4] = &v10;
-    [v5 getProvisioningState:v6 replyBlock:v9];
+    [v5 getProvisioningState:clientID replyBlock:v9];
   }
 
   v7 = v11[3];
@@ -1405,9 +1405,9 @@ uint64_t __53__BiometricKitXPCClient_getExpressModeState_forUser___block_invoke_
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v3 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v13 + 6) = v3;
-  if (v3)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v13 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient dropUnlockToken];
   }
@@ -1415,20 +1415,20 @@ uint64_t __53__BiometricKitXPCClient_getExpressModeState_forUser___block_invoke_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v5 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __40__BiometricKitXPCClient_dropUnlockToken__block_invoke;
     v11[3] = &unk_1E8303DE8;
     v11[4] = &v12;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v11];
-    v7 = [(BiometricKitXPCClient *)self clientID];
+    v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __40__BiometricKitXPCClient_dropUnlockToken__block_invoke_2;
     v10[3] = &unk_1E8303F68;
     v10[4] = &v12;
-    [v6 dropUnlockToken:v7 replyBlock:v10];
+    [v6 dropUnlockToken:clientID replyBlock:v10];
   }
 
   v8 = *(v13 + 6);
@@ -1450,16 +1450,16 @@ uint64_t __60__BiometricKitXPCClient_forceBioLockoutForUser_withOptions___block_
   return result;
 }
 
-- (int)registerDSID:(unint64_t)a3 withOptions:(id)a4
+- (int)registerDSID:(unint64_t)d withOptions:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v7 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v17 + 6) = v7;
-  if (v7)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v17 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient registerDSID:withOptions:];
   }
@@ -1467,20 +1467,20 @@ uint64_t __60__BiometricKitXPCClient_forceBioLockoutForUser_withOptions___block_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v9 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __50__BiometricKitXPCClient_registerDSID_withOptions___block_invoke;
     v15[3] = &unk_1E8303DE8;
     v15[4] = &v16;
-    v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    v11 = [(BiometricKitXPCClient *)self clientID];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __50__BiometricKitXPCClient_registerDSID_withOptions___block_invoke_2;
     v14[3] = &unk_1E8303F68;
     v14[4] = &v16;
-    [v10 registerDSID:a3 options:v6 client:v11 replyBlock:v14];
+    [v10 registerDSID:d options:optionsCopy client:clientID replyBlock:v14];
   }
 
   v12 = *(v17 + 6);
@@ -1502,9 +1502,9 @@ uint64_t __50__BiometricKitXPCClient_registerDSID_withOptions___block_invoke(uin
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v3 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v13 + 6) = v3;
-  if (v3)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v13 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient resetAppleConnectCounter];
   }
@@ -1512,20 +1512,20 @@ uint64_t __50__BiometricKitXPCClient_registerDSID_withOptions___block_invoke(uin
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v5 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __49__BiometricKitXPCClient_resetAppleConnectCounter__block_invoke;
     v11[3] = &unk_1E8303DE8;
     v11[4] = &v12;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v11];
-    v7 = [(BiometricKitXPCClient *)self clientID];
+    v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __49__BiometricKitXPCClient_resetAppleConnectCounter__block_invoke_2;
     v10[3] = &unk_1E8303F68;
     v10[4] = &v12;
-    [v6 resetAppleConnectCounter:v7 replyBlock:v10];
+    [v6 resetAppleConnectCounter:clientID replyBlock:v10];
   }
 
   v8 = *(v13 + 6);
@@ -1540,16 +1540,16 @@ uint64_t __49__BiometricKitXPCClient_resetAppleConnectCounter__block_invoke(uint
   return result;
 }
 
-- (int)registerStoreToken:(id)a3
+- (int)registerStoreToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v15 + 6) = v5;
-  if (v5)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v15 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient registerStoreToken:];
   }
@@ -1557,20 +1557,20 @@ uint64_t __49__BiometricKitXPCClient_resetAppleConnectCounter__block_invoke(uint
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v7 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __44__BiometricKitXPCClient_registerStoreToken___block_invoke;
     v13[3] = &unk_1E8303DE8;
     v13[4] = &v14;
-    v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
-    v9 = [(BiometricKitXPCClient *)self clientID];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __44__BiometricKitXPCClient_registerStoreToken___block_invoke_2;
     v12[3] = &unk_1E8303F68;
     v12[4] = &v14;
-    [v8 registerStoreToken:v4 client:v9 replyBlock:v12];
+    [v8 registerStoreToken:tokenCopy client:clientID replyBlock:v12];
   }
 
   v10 = *(v15 + 6);
@@ -1586,7 +1586,7 @@ uint64_t __44__BiometricKitXPCClient_registerStoreToken___block_invoke(uint64_t 
   return result;
 }
 
-- (int)getCountersignedStoreToken:(id *)a3
+- (int)getCountersignedStoreToken:(id *)token
 {
   v20 = 0;
   v21 = &v20;
@@ -1598,9 +1598,9 @@ uint64_t __44__BiometricKitXPCClient_registerStoreToken___block_invoke(uint64_t 
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  v5 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v21 + 6) = v5;
-  if (v5)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v21 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient getCountersignedStoreToken:];
   }
@@ -1608,25 +1608,25 @@ uint64_t __44__BiometricKitXPCClient_registerStoreToken___block_invoke(uint64_t 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v7 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __52__BiometricKitXPCClient_getCountersignedStoreToken___block_invoke;
     v13[3] = &unk_1E8303DE8;
     v13[4] = &v20;
-    v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
-    v9 = [(BiometricKitXPCClient *)self clientID];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __52__BiometricKitXPCClient_getCountersignedStoreToken___block_invoke_2;
     v12[3] = &unk_1E8304008;
     v12[4] = &v20;
     v12[5] = &v14;
-    [v8 getCountersignedStoreToken:v9 replyBlock:v12];
+    [v8 getCountersignedStoreToken:clientID replyBlock:v12];
 
-    if (a3)
+    if (token)
     {
-      *a3 = v15[5];
+      *token = v15[5];
     }
   }
 
@@ -1658,7 +1658,7 @@ void __68__BiometricKitXPCClient_diagnostics_withOptions_passed_withDetails___bl
   objc_storeStrong((*(a1[6] + 8) + 40), obj);
 }
 
-- (void)timestampEvent:(unint64_t)a3 absoluteTime:(unint64_t)a4
+- (void)timestampEvent:(unint64_t)event absoluteTime:(unint64_t)time
 {
   if ([(BiometricKitXPCClient *)self initializeConnection])
   {
@@ -1668,22 +1668,22 @@ void __68__BiometricKitXPCClient_diagnostics_withOptions_passed_withDetails___bl
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v7 = [WeakRetained xpcConnection];
-    v8 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_350];
-    [v8 timestampEvent:a3 absoluteTime:a4 client:-[BiometricKitXPCClient clientID](self replyBlock:{"clientID"), &__block_literal_global_352}];
+    xpcConnection = [WeakRetained xpcConnection];
+    v8 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_350];
+    [v8 timestampEvent:event absoluteTime:time client:-[BiometricKitXPCClient clientID](self replyBlock:{"clientID"), &__block_literal_global_352}];
   }
 }
 
-- (int)setUserDSID:(unint64_t)a3 withOptions:(id)a4
+- (int)setUserDSID:(unint64_t)d withOptions:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v7 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v17 + 6) = v7;
-  if (v7)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v17 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient setUserDSID:withOptions:];
   }
@@ -1691,20 +1691,20 @@ void __68__BiometricKitXPCClient_diagnostics_withOptions_passed_withDetails___bl
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v9 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __49__BiometricKitXPCClient_setUserDSID_withOptions___block_invoke;
     v15[3] = &unk_1E8303DE8;
     v15[4] = &v16;
-    v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    v11 = [(BiometricKitXPCClient *)self clientID];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __49__BiometricKitXPCClient_setUserDSID_withOptions___block_invoke_2;
     v14[3] = &unk_1E8303F68;
     v14[4] = &v16;
-    [v10 setUserDSID:a3 options:v6 client:v11 replyBlock:v14];
+    [v10 setUserDSID:d options:optionsCopy client:clientID replyBlock:v14];
   }
 
   v12 = *(v17 + 6);
@@ -1734,15 +1734,15 @@ uint64_t __49__BiometricKitXPCClient_setUserDSID_withOptions___block_invoke(uint
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_354];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_354];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __51__BiometricKitXPCClient_getSensorCalibrationStatus__block_invoke_2;
     v9[3] = &unk_1E8303F40;
     v9[4] = &v10;
-    [v5 getSensorCalibrationStatus:v6 replyBlock:v9];
+    [v5 getSensorCalibrationStatus:clientID replyBlock:v9];
   }
 
   v7 = v11[3];
@@ -1766,15 +1766,15 @@ uint64_t __49__BiometricKitXPCClient_setUserDSID_withOptions___block_invoke(uint
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_356];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_356];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __47__BiometricKitXPCClient_getCalibrationDataInfo__block_invoke_2;
     v9[3] = &unk_1E8303F90;
     v9[4] = &v10;
-    [v5 getCalibrationDataInfo:v6 replyBlock:v9];
+    [v5 getCalibrationDataInfo:clientID replyBlock:v9];
   }
 
   v7 = v11[5];
@@ -1799,15 +1799,15 @@ uint64_t __49__BiometricKitXPCClient_setUserDSID_withOptions___block_invoke(uint
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_358];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_358];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __38__BiometricKitXPCClient_getSensorInfo__block_invoke_2;
     v9[3] = &unk_1E8303F90;
     v9[4] = &v10;
-    [v5 getSensorInfo:v6 replyBlock:v9];
+    [v5 getSensorInfo:clientID replyBlock:v9];
   }
 
   v7 = v11[5];
@@ -1832,15 +1832,15 @@ uint64_t __49__BiometricKitXPCClient_setUserDSID_withOptions___block_invoke(uint
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_360];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_360];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __44__BiometricKitXPCClient_pullCalibrationData__block_invoke_2;
     v9[3] = &unk_1E8303F90;
     v9[4] = &v10;
-    [v5 pullCalibrationData:v6 replyBlock:v9];
+    [v5 pullCalibrationData:clientID replyBlock:v9];
   }
 
   v7 = v11[5];
@@ -1865,15 +1865,15 @@ uint64_t __49__BiometricKitXPCClient_setUserDSID_withOptions___block_invoke(uint
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_362];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_362];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __42__BiometricKitXPCClient_pullCaptureBuffer__block_invoke_2;
     v9[3] = &unk_1E8303F90;
     v9[4] = &v10;
-    [v5 pullCaptureBuffer:v6 replyBlock:v9];
+    [v5 pullCaptureBuffer:clientID replyBlock:v9];
   }
 
   v7 = v11[5];
@@ -1913,10 +1913,10 @@ void __45__BiometricKitXPCClient_getLogs_withDetails___block_invoke_2(uint64_t a
   *(v9 + 40) = v6;
 }
 
-- (BOOL)fileRadarWithLogs:(id)a3 withDescription:(id)a4
+- (BOOL)fileRadarWithLogs:(id)logs withDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  logsCopy = logs;
+  descriptionCopy = description;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1929,15 +1929,15 @@ void __45__BiometricKitXPCClient_getLogs_withDetails___block_invoke_2(uint64_t a
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v9 = [WeakRetained xpcConnection];
-    v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_374];
-    v11 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_374];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __59__BiometricKitXPCClient_fileRadarWithLogs_withDescription___block_invoke_2;
     v14[3] = &unk_1E83040D0;
     v14[4] = &v15;
-    [v10 fileRadarWithLogs:v6 description:v7 client:v11 replyBlock:v14];
+    [v10 fileRadarWithLogs:logsCopy description:descriptionCopy client:clientID replyBlock:v14];
   }
 
   v12 = *(v16 + 24);
@@ -1960,15 +1960,15 @@ void __45__BiometricKitXPCClient_getLogs_withDetails___block_invoke_2(uint64_t a
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_377];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_377];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __35__BiometricKitXPCClient_isFingerOn__block_invoke_2;
     v9[3] = &unk_1E83040D0;
     v9[4] = &v10;
-    [v5 isFingerOn:v6 replyBlock:v9];
+    [v5 isFingerOn:clientID replyBlock:v9];
   }
 
   v7 = *(v11 + 24);
@@ -1997,15 +1997,15 @@ uint64_t __46__BiometricKitXPCClient_enableBackgroundFdet___block_invoke(uint64_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_379];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_379];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __50__BiometricKitXPCClient_isAriadneSignpostsEnabled__block_invoke_2;
     v9[3] = &unk_1E83040D0;
     v9[4] = &v10;
-    [v5 isAriadneSignpostsEnabled:v6 replyBlock:v9];
+    [v5 isAriadneSignpostsEnabled:clientID replyBlock:v9];
   }
 
   v7 = *(v11 + 24);
@@ -2027,15 +2027,15 @@ uint64_t __46__BiometricKitXPCClient_enableBackgroundFdet___block_invoke(uint64_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_381];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_381];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __40__BiometricKitXPCClient_isXARTAvailable__block_invoke_2;
     v9[3] = &unk_1E83040D0;
     v9[4] = &v10;
-    [v5 isXARTAvailable:v6 replyBlock:v9];
+    [v5 isXARTAvailable:clientID replyBlock:v9];
   }
 
   v7 = *(v11 + 24);
@@ -2057,15 +2057,15 @@ uint64_t __46__BiometricKitXPCClient_enableBackgroundFdet___block_invoke(uint64_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained xpcConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_383];
-    v6 = [(BiometricKitXPCClient *)self clientID];
+    xpcConnection = [WeakRetained xpcConnection];
+    v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_383];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __39__BiometricKitXPCClient_getDeviceState__block_invoke_2;
     v9[3] = &unk_1E8303F40;
     v9[4] = &v10;
-    [v5 getDeviceState:v6 replyBlock:v9];
+    [v5 getDeviceState:clientID replyBlock:v9];
   }
 
   v7 = v11[3];
@@ -2079,9 +2079,9 @@ uint64_t __46__BiometricKitXPCClient_enableBackgroundFdet___block_invoke(uint64_
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v3 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v13 + 6) = v3;
-  if (v3)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v13 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient startNewMatchAttempt];
   }
@@ -2089,20 +2089,20 @@ uint64_t __46__BiometricKitXPCClient_enableBackgroundFdet___block_invoke(uint64_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v5 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __45__BiometricKitXPCClient_startNewMatchAttempt__block_invoke;
     v11[3] = &unk_1E8303DE8;
     v11[4] = &v12;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v11];
-    v7 = [(BiometricKitXPCClient *)self clientID];
+    v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __45__BiometricKitXPCClient_startNewMatchAttempt__block_invoke_2;
     v10[3] = &unk_1E8303F68;
     v10[4] = &v12;
-    [v6 startNewMatchAttempt:v7 replyBlock:v10];
+    [v6 startNewMatchAttempt:clientID replyBlock:v10];
   }
 
   v8 = *(v13 + 6);
@@ -2142,9 +2142,9 @@ uint64_t __57__BiometricKitXPCClient_getBiometryAvailability_forUser___block_inv
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v3 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v13 + 6) = v3;
-  if (v3)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v13 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient completeEnrollment];
   }
@@ -2152,20 +2152,20 @@ uint64_t __57__BiometricKitXPCClient_getBiometryAvailability_forUser___block_inv
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v5 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __43__BiometricKitXPCClient_completeEnrollment__block_invoke;
     v11[3] = &unk_1E8303DE8;
     v11[4] = &v12;
-    v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v11];
-    v7 = [(BiometricKitXPCClient *)self clientID];
+    v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v11];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __43__BiometricKitXPCClient_completeEnrollment__block_invoke_2;
     v10[3] = &unk_1E8303F68;
     v10[4] = &v12;
-    [v6 completeEnrollment:v7 replyBlock:v10];
+    [v6 completeEnrollment:clientID replyBlock:v10];
   }
 
   v8 = *(v13 + 6);
@@ -2187,17 +2187,17 @@ uint64_t __43__BiometricKitXPCClient_suspendEnrollment___block_invoke(uint64_t a
   return result;
 }
 
-- (int)setTemplate:(id)a3 forIdentity:(id)a4
+- (int)setTemplate:(id)template forIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  templateCopy = template;
+  identityCopy = identity;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v18 + 6) = v8;
-  if (v8)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v18 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient setTemplate:forIdentity:];
   }
@@ -2205,20 +2205,20 @@ uint64_t __43__BiometricKitXPCClient_suspendEnrollment___block_invoke(uint64_t a
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v10 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __49__BiometricKitXPCClient_setTemplate_forIdentity___block_invoke;
     v16[3] = &unk_1E8303DE8;
     v16[4] = &v17;
-    v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v16];
-    v12 = [(BiometricKitXPCClient *)self clientID];
+    v11 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __49__BiometricKitXPCClient_setTemplate_forIdentity___block_invoke_2;
     v15[3] = &unk_1E8303F68;
     v15[4] = &v17;
-    [v11 setTemplate:v6 forIdentity:v7 client:v12 replyBlock:v15];
+    [v11 setTemplate:templateCopy forIdentity:identityCopy client:clientID replyBlock:v15];
   }
 
   v13 = *(v18 + 6);
@@ -2234,17 +2234,17 @@ uint64_t __49__BiometricKitXPCClient_setTemplate_forIdentity___block_invoke(uint
   return result;
 }
 
-- (int)isPeriocularEnrollmentSupported:(BOOL *)a3
+- (int)isPeriocularEnrollmentSupported:(BOOL *)supported
 {
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  if (a3)
+  if (supported)
   {
-    v5 = [(BiometricKitXPCClient *)self initializeConnection];
-    *(v15 + 6) = v5;
-    if (v5)
+    initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+    *(v15 + 6) = initializeConnection;
+    if (initializeConnection)
     {
       [BiometricKitXPCClient isPeriocularEnrollmentSupported:];
     }
@@ -2252,21 +2252,21 @@ uint64_t __49__BiometricKitXPCClient_setTemplate_forIdentity___block_invoke(uint
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_connection);
-      v7 = [WeakRetained xpcConnection];
+      xpcConnection = [WeakRetained xpcConnection];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __57__BiometricKitXPCClient_isPeriocularEnrollmentSupported___block_invoke;
       v13[3] = &unk_1E8303DE8;
       v13[4] = &v14;
-      v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
-      v9 = [(BiometricKitXPCClient *)self clientID];
+      v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
+      clientID = [(BiometricKitXPCClient *)self clientID];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __57__BiometricKitXPCClient_isPeriocularEnrollmentSupported___block_invoke_2;
       v12[3] = &unk_1E83040F8;
       v12[4] = &v14;
-      v12[5] = a3;
-      [v8 isPeriocularEnrollmentSupported:v9 replyBlock:v12];
+      v12[5] = supported;
+      [v8 isPeriocularEnrollmentSupported:clientID replyBlock:v12];
     }
   }
 
@@ -2310,11 +2310,11 @@ uint64_t __55__BiometricKitXPCClient_getPeriocularMatchState_state___block_invok
   return result;
 }
 
-- (void)removePeriocularTemplatesWithOptions:(id)a3 async:(BOOL)a4 withReply:(id)a5
+- (void)removePeriocularTemplatesWithOptions:(id)options async:(BOOL)async withReply:(id)reply
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  asyncCopy = async;
+  optionsCopy = options;
+  replyCopy = reply;
   if ([(BiometricKitXPCClient *)self initializeConnection])
   {
     [BiometricKitXPCClient removePeriocularTemplatesWithOptions:async:withReply:];
@@ -2323,23 +2323,23 @@ uint64_t __55__BiometricKitXPCClient_getPeriocularMatchState_state___block_invok
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v11 = [WeakRetained xpcConnection];
-    if (v6)
+    xpcConnection = [WeakRetained xpcConnection];
+    if (asyncCopy)
     {
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __78__BiometricKitXPCClient_removePeriocularTemplatesWithOptions_async_withReply___block_invoke;
       v25[3] = &unk_1E8303EA0;
-      v12 = v9;
+      v12 = replyCopy;
       v26 = v12;
-      v13 = [v11 remoteObjectProxyWithErrorHandler:v25];
-      v14 = [(BiometricKitXPCClient *)self clientID];
+      v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v25];
+      clientID = [(BiometricKitXPCClient *)self clientID];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __78__BiometricKitXPCClient_removePeriocularTemplatesWithOptions_async_withReply___block_invoke_2;
       v23[3] = &unk_1E8303EC8;
       v24 = v12;
-      [v13 removePeriocularTemplatesWithOptions:v8 async:1 client:v14 replyBlock:v23];
+      [v13 removePeriocularTemplatesWithOptions:optionsCopy async:1 client:clientID replyBlock:v23];
 
       v15 = v26;
     }
@@ -2350,16 +2350,16 @@ uint64_t __55__BiometricKitXPCClient_getPeriocularMatchState_state___block_invok
       v21[1] = 3221225472;
       v21[2] = __78__BiometricKitXPCClient_removePeriocularTemplatesWithOptions_async_withReply___block_invoke_3;
       v21[3] = &unk_1E8303EA0;
-      v16 = v9;
+      v16 = replyCopy;
       v22 = v16;
-      v17 = [v11 synchronousRemoteObjectProxyWithErrorHandler:v21];
-      v18 = [(BiometricKitXPCClient *)self clientID];
+      v17 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v21];
+      clientID2 = [(BiometricKitXPCClient *)self clientID];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __78__BiometricKitXPCClient_removePeriocularTemplatesWithOptions_async_withReply___block_invoke_4;
       v19[3] = &unk_1E8303EC8;
       v20 = v16;
-      [v17 removePeriocularTemplatesWithOptions:v8 async:0 client:v18 replyBlock:v19];
+      [v17 removePeriocularTemplatesWithOptions:optionsCopy async:0 client:clientID2 replyBlock:v19];
 
       v15 = v22;
     }
@@ -2403,7 +2403,7 @@ uint64_t __75__BiometricKitXPCClient_queryIdentityMigrationFailureForUser_failed
   return result;
 }
 
-- (void)logEventOrCode:(unint64_t)a3
+- (void)logEventOrCode:(unint64_t)code
 {
   if ([(BiometricKitXPCClient *)self initializeConnection])
   {
@@ -2413,9 +2413,9 @@ uint64_t __75__BiometricKitXPCClient_queryIdentityMigrationFailureForUser_failed
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v5 = [WeakRetained xpcConnection];
-    v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_387];
-    [v6 logEventOrCode:a3];
+    xpcConnection = [WeakRetained xpcConnection];
+    v6 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_387];
+    [v6 logEventOrCode:code];
   }
 }
 
@@ -2433,7 +2433,7 @@ uint64_t __46__BiometricKitXPCClient_pauseFaceDetectTimer___block_invoke(uint64_
   return result;
 }
 
-- (int)getLastMatchEvent:(id *)a3
+- (int)getLastMatchEvent:(id *)event
 {
   v20 = 0;
   v21 = &v20;
@@ -2445,9 +2445,9 @@ uint64_t __46__BiometricKitXPCClient_pauseFaceDetectTimer___block_invoke(uint64_
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  v5 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v21 + 6) = v5;
-  if (v5)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v21 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient getLastMatchEvent:];
   }
@@ -2455,25 +2455,25 @@ uint64_t __46__BiometricKitXPCClient_pauseFaceDetectTimer___block_invoke(uint64_
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v7 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __43__BiometricKitXPCClient_getLastMatchEvent___block_invoke;
     v13[3] = &unk_1E8303DE8;
     v13[4] = &v20;
-    v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
-    v9 = [(BiometricKitXPCClient *)self clientID];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __43__BiometricKitXPCClient_getLastMatchEvent___block_invoke_2;
     v12[3] = &unk_1E8304120;
     v12[4] = &v20;
     v12[5] = &v14;
-    [v8 getLastMatchEvent:v9 replyBlock:v12];
+    [v8 getLastMatchEvent:clientID replyBlock:v12];
 
-    if (a3)
+    if (event)
     {
-      *a3 = v15[5];
+      *event = v15[5];
     }
   }
 
@@ -2502,7 +2502,7 @@ void __43__BiometricKitXPCClient_getLastMatchEvent___block_invoke_2(uint64_t a1,
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), a3);
 }
 
-- (int)getDeviceHardwareState:(unsigned int *)a3
+- (int)getDeviceHardwareState:(unsigned int *)state
 {
   v18 = 0;
   v19 = &v18;
@@ -2512,9 +2512,9 @@ void __43__BiometricKitXPCClient_getLastMatchEvent___block_invoke_2(uint64_t a1,
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v19 + 6) = v5;
-  if (v5)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v19 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient getDeviceHardwareState:];
   }
@@ -2522,25 +2522,25 @@ void __43__BiometricKitXPCClient_getLastMatchEvent___block_invoke_2(uint64_t a1,
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v7 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __48__BiometricKitXPCClient_getDeviceHardwareState___block_invoke;
     v13[3] = &unk_1E8303DE8;
     v13[4] = &v18;
-    v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
-    v9 = [(BiometricKitXPCClient *)self clientID];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __48__BiometricKitXPCClient_getDeviceHardwareState___block_invoke_2;
     v12[3] = &unk_1E8304148;
     v12[4] = &v18;
     v12[5] = &v14;
-    [v8 getDeviceHardwareState:v9 replyBlock:v12];
+    [v8 getDeviceHardwareState:clientID replyBlock:v12];
 
-    if (a3)
+    if (state)
     {
-      *a3 = *(v15 + 6);
+      *state = *(v15 + 6);
     }
   }
 
@@ -2569,7 +2569,7 @@ uint64_t __48__BiometricKitXPCClient_getDeviceHardwareState___block_invoke_2(uin
   return result;
 }
 
-- (int)listAccessories:(id *)a3
+- (int)listAccessories:(id *)accessories
 {
   v20 = 0;
   v21 = &v20;
@@ -2581,9 +2581,9 @@ uint64_t __48__BiometricKitXPCClient_getDeviceHardwareState___block_invoke_2(uin
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  v5 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v21 + 6) = v5;
-  if (v5)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v21 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient listAccessories:];
   }
@@ -2591,25 +2591,25 @@ uint64_t __48__BiometricKitXPCClient_getDeviceHardwareState___block_invoke_2(uin
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v7 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __41__BiometricKitXPCClient_listAccessories___block_invoke;
     v13[3] = &unk_1E8303DE8;
     v13[4] = &v20;
-    v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
-    v9 = [(BiometricKitXPCClient *)self clientID];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __41__BiometricKitXPCClient_listAccessories___block_invoke_2;
     v12[3] = &unk_1E8304170;
     v12[4] = &v20;
     v12[5] = &v14;
-    [v8 listAccessories:v9 replyBlock:v12];
+    [v8 listAccessories:clientID replyBlock:v12];
 
-    if (a3)
+    if (accessories)
     {
-      *a3 = v15[5];
+      *accessories = v15[5];
     }
   }
 
@@ -2657,9 +2657,9 @@ uint64_t __69__BiometricKitXPCClient_getFreeIdentityCount_forUser_accessoryGroup
   return result;
 }
 
-- (int)getPreferencesValue:(id *)a3 forKey:(id)a4
+- (int)getPreferencesValue:(id *)value forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -2670,9 +2670,9 @@ uint64_t __69__BiometricKitXPCClient_getFreeIdentityCount_forUser_accessoryGroup
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  v7 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v23 + 6) = v7;
-  if (v7)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v23 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient getPreferencesValue:forKey:];
   }
@@ -2680,21 +2680,21 @@ uint64_t __69__BiometricKitXPCClient_getFreeIdentityCount_forUser_accessoryGroup
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v9 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __52__BiometricKitXPCClient_getPreferencesValue_forKey___block_invoke;
     v15[3] = &unk_1E8303DE8;
     v15[4] = &v22;
-    v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v15];
-    v11 = [(BiometricKitXPCClient *)self clientID];
+    v10 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __52__BiometricKitXPCClient_getPreferencesValue_forKey___block_invoke_2;
     v14[3] = &unk_1E83041C0;
     v14[4] = &v22;
     v14[5] = &v16;
-    [v10 getPreferencesValueForKey:v6 client:v11 replyBlock:v14];
+    [v10 getPreferencesValueForKey:keyCopy client:clientID replyBlock:v14];
 
     if (*(v23 + 6))
     {
@@ -2703,7 +2703,7 @@ uint64_t __69__BiometricKitXPCClient_getFreeIdentityCount_forUser_accessoryGroup
 
     else
     {
-      *a3 = v17[5];
+      *value = v17[5];
     }
   }
 
@@ -2721,17 +2721,17 @@ uint64_t __52__BiometricKitXPCClient_getPreferencesValue_forKey___block_invoke(u
   return result;
 }
 
-- (int)setPreferencesValue:(id)a3 forKey:(id)a4
+- (int)setPreferencesValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v18 + 6) = v8;
-  if (v8)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v18 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient setPreferencesValue:forKey:];
   }
@@ -2739,20 +2739,20 @@ uint64_t __52__BiometricKitXPCClient_getPreferencesValue_forKey___block_invoke(u
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v10 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __52__BiometricKitXPCClient_setPreferencesValue_forKey___block_invoke;
     v16[3] = &unk_1E8303DE8;
     v16[4] = &v17;
-    v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v16];
-    v12 = [(BiometricKitXPCClient *)self clientID];
+    v11 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __52__BiometricKitXPCClient_setPreferencesValue_forKey___block_invoke_2;
     v15[3] = &unk_1E8303F68;
     v15[4] = &v17;
-    [v11 setPreferencesValue:v6 forKey:v7 client:v12 replyBlock:v15];
+    [v11 setPreferencesValue:valueCopy forKey:keyCopy client:clientID replyBlock:v15];
   }
 
   v13 = *(v18 + 6);
@@ -2768,15 +2768,15 @@ uint64_t __52__BiometricKitXPCClient_setPreferencesValue_forKey___block_invoke(u
   return result;
 }
 
-- (int)prewarmCamera:(unint64_t)a3
+- (int)prewarmCamera:(unint64_t)camera
 {
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(BiometricKitXPCClient *)self initializeConnection];
-  *(v15 + 6) = v5;
-  if (v5)
+  initializeConnection = [(BiometricKitXPCClient *)self initializeConnection];
+  *(v15 + 6) = initializeConnection;
+  if (initializeConnection)
   {
     [BiometricKitXPCClient prewarmCamera:];
   }
@@ -2784,20 +2784,20 @@ uint64_t __52__BiometricKitXPCClient_setPreferencesValue_forKey___block_invoke(u
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v7 = [WeakRetained xpcConnection];
+    xpcConnection = [WeakRetained xpcConnection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __39__BiometricKitXPCClient_prewarmCamera___block_invoke;
     v13[3] = &unk_1E8303DE8;
     v13[4] = &v14;
-    v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
-    v9 = [(BiometricKitXPCClient *)self clientID];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
+    clientID = [(BiometricKitXPCClient *)self clientID];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __39__BiometricKitXPCClient_prewarmCamera___block_invoke_2;
     v12[3] = &unk_1E8303F68;
     v12[4] = &v14;
-    [v8 prewarmCamera:a3 client:v9 replyBlock:v12];
+    [v8 prewarmCamera:camera client:clientID replyBlock:v12];
   }
 
   v10 = *(v15 + 6);
@@ -2862,7 +2862,7 @@ uint64_t __39__BiometricKitXPCClient_prewarmCamera___block_invoke(uint64_t a1, v
     OUTLINED_FUNCTION_3_1(&dword_1C82AD000, v2, v3, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", v4, v5, v6, v7, v9);
   }
 
-  *(*a1 + 24) = 1;
+  *(*self + 24) = 1;
   v8 = *MEMORY[0x1E69E9840];
 }
 

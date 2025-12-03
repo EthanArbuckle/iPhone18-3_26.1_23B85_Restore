@@ -1,22 +1,22 @@
 @interface PXPhotoKitPeopleSuggestionsDataSource
-- (PXPhotoKitPeopleSuggestionsDataSource)initWithState:(id)a3;
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (PXPhotoKitPeopleSuggestionsDataSource)initWithState:(id)state;
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 @end
 
 @implementation PXPhotoKitPeopleSuggestionsDataSource
 
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference
 {
   v6 = a4;
-  v22 = 0u;
+  identifier = 0u;
   v23 = 0u;
   v21.receiver = self;
   v21.super_class = PXPhotoKitPeopleSuggestionsDataSource;
   [(PXSimpleIndexPath *)&v21 indexPathForObjectReference:v6];
-  v7 = v22;
-  if (v22 == *off_1E7721F68)
+  v7 = identifier;
+  if (identifier == *off_1E7721F68)
   {
     if (v6)
     {
@@ -34,21 +34,21 @@
 
     if (v8 != v7 && !v9 && *(&v20 + 1) == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [v6 itemObject];
+      itemObject = [v6 itemObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v12 = [(PXPhotoKitPeopleSuggestionsDataSource *)self _state];
-        v13 = [v12 people];
-        v14 = [v6 itemObject];
-        v15 = [v14 person];
-        v16 = [v13 indexOfObject:v15];
+        _state = [(PXPhotoKitPeopleSuggestionsDataSource *)self _state];
+        people = [_state people];
+        itemObject2 = [v6 itemObject];
+        person = [itemObject2 person];
+        v16 = [people indexOfObject:person];
 
         if (v16 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v22 = [(PXPhotoKitPeopleSuggestionsDataSource *)self identifier];
+          identifier = [(PXPhotoKitPeopleSuggestionsDataSource *)self identifier];
           *&v23 = v16;
           *(&v23 + 1) = 0x7FFFFFFFFFFFFFFFLL;
         }
@@ -57,57 +57,57 @@
   }
 
   v17 = v23;
-  *&retstr->dataSourceIdentifier = v22;
+  *&retstr->dataSourceIdentifier = identifier;
   *&retstr->item = v17;
 
   return result;
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = [(PXPhotoKitPeopleSuggestionsDataSource *)self _state];
-  v5 = v4;
-  if (a3->dataSourceIdentifier != *off_1E7721F68 && a3->item != 0x7FFFFFFFFFFFFFFFLL && a3->subitem == 0x7FFFFFFFFFFFFFFFLL)
+  _state = [(PXPhotoKitPeopleSuggestionsDataSource *)self _state];
+  v5 = _state;
+  if (path->dataSourceIdentifier != *off_1E7721F68 && path->item != 0x7FFFFFFFFFFFFFFFLL && path->subitem == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v4 people];
-    v10 = [v9 objectAtIndexedSubscript:a3->item];
+    people = [_state people];
+    v10 = [people objectAtIndexedSubscript:path->item];
 
-    v11 = [v5 personSuggestionsByPerson];
-    v8 = [v11 objectForKeyedSubscript:v10];
+    personSuggestionsByPerson = [v5 personSuggestionsByPerson];
+    null = [personSuggestionsByPerson objectForKeyedSubscript:v10];
 
-    if (!v8)
+    if (!null)
     {
-      v8 = [PXPhotoKitPersonSuggestion personSuggestionWithPerson:v10];
+      null = [PXPhotoKitPersonSuggestion personSuggestionWithPerson:v10];
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  return v8;
+  return null;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v3 = [(PXPhotoKitPeopleSuggestionsDataSource *)self _state];
-  v4 = [v3 people];
-  v5 = [v4 count];
+  _state = [(PXPhotoKitPeopleSuggestionsDataSource *)self _state];
+  people = [_state people];
+  v5 = [people count];
 
   return v5;
 }
 
-- (PXPhotoKitPeopleSuggestionsDataSource)initWithState:(id)a3
+- (PXPhotoKitPeopleSuggestionsDataSource)initWithState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = PXPhotoKitPeopleSuggestionsDataSource;
   v6 = [(PXPhotoKitPeopleSuggestionsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__state, a3);
+    objc_storeStrong(&v6->__state, state);
   }
 
   return v7;

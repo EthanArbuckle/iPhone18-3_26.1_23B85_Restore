@@ -70,8 +70,8 @@
     [SKUIAppDeviceConfig screenSize];
   }
 
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -130,12 +130,12 @@
     }
   }
 
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v11 = [v10 arrayForKey:@"AppleLanguages"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v11 = [standardUserDefaults arrayForKey:@"AppleLanguages"];
 
-  v12 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
 - (id)timeZone
@@ -152,9 +152,9 @@
     }
   }
 
-  v10 = [MEMORY[0x277CBEBB0] systemTimeZone];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
 
-  return v10;
+  return systemTimeZone;
 }
 
 - (void)screenSize

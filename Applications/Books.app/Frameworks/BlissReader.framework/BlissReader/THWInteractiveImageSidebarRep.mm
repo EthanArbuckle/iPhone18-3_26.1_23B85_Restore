@@ -1,18 +1,18 @@
 @interface THWInteractiveImageSidebarRep
 - (id)additionalLayersUnderLayer;
-- (id)animationForChildRep:(id)a3 layer:(id)a4 withEvent:(id)a5;
-- (id)animationForRepLayer:(id)a3 withEvent:(id)a4;
-- (id)p_animationForEvent:(id)a3 duration:(double)a4 delayFactor:(double)a5 durationFactor:(double)a6;
-- (id)p_calloutForRep:(id)a3;
+- (id)animationForChildRep:(id)rep layer:(id)layer withEvent:(id)event;
+- (id)animationForRepLayer:(id)layer withEvent:(id)event;
+- (id)p_animationForEvent:(id)event duration:(double)duration delayFactor:(double)factor durationFactor:(double)durationFactor;
+- (id)p_calloutForRep:(id)rep;
 - (id)p_host;
-- (id)p_layerForCallout:(id)a3;
-- (void)control:(id)a3 repWasAdded:(id)a4;
-- (void)control:(id)a3 repWillBeRemoved:(id)a4;
+- (id)p_layerForCallout:(id)callout;
+- (void)control:(id)control repWasAdded:(id)added;
+- (void)control:(id)control repWillBeRemoved:(id)removed;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
-- (void)p_addFrameAnimationForLayer:(id)a3 duration:(double)a4;
+- (void)didUpdateLayer:(id)layer;
+- (void)p_addFrameAnimationForLayer:(id)layer duration:(double)duration;
 - (void)p_createGradientBackgroundLayerIfNeeded;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation THWInteractiveImageSidebarRep
@@ -28,9 +28,9 @@
 
 - (id)p_host
 {
-  v3 = [(THWInteractiveImageSidebarRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWInteractiveImageSidebarRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWInteractiveImageSidebarRepHosting];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWInteractiveImageSidebarRepHosting];
 }
 
 - (void)p_createGradientBackgroundLayerIfNeeded
@@ -66,15 +66,15 @@
   return [NSArray arrayWithObjects:&gradientLayer count:1];
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(THWInteractiveImageSidebarRep *)self interactiveCanvasController];
-  if (v4)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  interactiveCanvasController = [(THWInteractiveImageSidebarRep *)self interactiveCanvasController];
+  if (animatedCopy)
   {
-    v8 = v7;
-    [v7 beginAnimations:@"sidebar visibility" context:0];
+    v8 = interactiveCanvasController;
+    [interactiveCanvasController beginAnimations:@"sidebar visibility" context:0];
     [-[THWInteractiveImageSidebarRep p_host](self "p_host")];
     [v8 setAnimationDuration:?];
     [v8 setAnimationUseRepFiltering:1];
@@ -86,33 +86,33 @@
 
   else
   {
-    v9 = [(THWInteractiveImageSidebarRep *)self layout];
+    layout = [(THWInteractiveImageSidebarRep *)self layout];
 
-    [v9 setHidden:!v5];
+    [layout setHidden:!visibleCopy];
   }
 }
 
-- (void)p_addFrameAnimationForLayer:(id)a3 duration:(double)a4
+- (void)p_addFrameAnimationForLayer:(id)layer duration:(double)duration
 {
-  [a3 bounds];
+  [layer bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [a3 position];
+  [layer position];
   v13 = v12;
-  v14 = -0.35 / a4 + 1.0;
+  v14 = -0.35 / duration + 1.0;
   v15 = [CABasicAnimation animationWithKeyPath:@"bounds"];
-  v16 = v14 * a4;
-  [(CABasicAnimation *)v15 setBeginTime:v14 * a4];
+  v16 = v14 * duration;
+  [(CABasicAnimation *)v15 setBeginTime:v14 * duration];
   v17 = kCAAnimationRelative;
   [(CABasicAnimation *)v15 setBeginTimeMode:kCAAnimationRelative];
   [(CABasicAnimation *)v15 setFillMode:kCAFillModeBoth];
   [(CABasicAnimation *)v15 setRemovedOnCompletion:1];
-  v18 = (1.0 - v14) * a4;
+  v18 = (1.0 - v14) * duration;
   [(CABasicAnimation *)v15 setDuration:v18];
   [(CABasicAnimation *)v15 setFromValue:[NSValue valueWithCGRect:v7, v9, v11, 0.0]];
   [(CABasicAnimation *)v15 setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-  [a3 addAnimation:v15 forKey:@"bounds"];
+  [layer addAnimation:v15 forKey:@"bounds"];
   v19 = [CABasicAnimation animationWithKeyPath:@"position"];
   [(CABasicAnimation *)v19 setBeginTime:v16];
   [(CABasicAnimation *)v19 setBeginTimeMode:v17];
@@ -122,10 +122,10 @@
   [(CABasicAnimation *)v19 setFromValue:[NSValue valueWithCGPoint:v13, 0.0]];
   [(CABasicAnimation *)v19 setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
 
-  [a3 addAnimation:v19 forKey:@"position"];
+  [layer addAnimation:v19 forKey:@"position"];
 }
 
-- (id)p_layerForCallout:(id)a3
+- (id)p_layerForCallout:(id)callout
 {
   v4 = [-[THWInteractiveImageSidebarRep layout](self "layout")];
   if (!v4)
@@ -140,16 +140,16 @@
   }
 
   v6 = v5;
-  v7 = [(THWInteractiveImageSidebarRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWInteractiveImageSidebarRep *)self interactiveCanvasController];
 
-  return [v7 layerForRep:v6];
+  return [interactiveCanvasController layerForRep:v6];
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v13.receiver = self;
   v13.super_class = THWInteractiveImageSidebarRep;
-  [(THWInteractiveImageSidebarRep *)&v13 didUpdateLayer:a3];
+  [(THWInteractiveImageSidebarRep *)&v13 didUpdateLayer:layer];
   v4 = [-[THWInteractiveImageSidebarRep p_host](self "p_host")];
   v5 = [-[THWInteractiveImageSidebarRep interactiveCanvasController](self "interactiveCanvasController")];
   v7 = v5;
@@ -200,11 +200,11 @@ LABEL_10:
   }
 }
 
-- (id)p_animationForEvent:(id)a3 duration:(double)a4 delayFactor:(double)a5 durationFactor:(double)a6
+- (id)p_animationForEvent:(id)event duration:(double)duration delayFactor:(double)factor durationFactor:(double)durationFactor
 {
-  v9 = [CABasicAnimation animationWithKeyPath:a3];
-  [(CABasicAnimation *)v9 setDuration:a4 * a6];
-  [(CABasicAnimation *)v9 setBeginTime:a4 * a5];
+  v9 = [CABasicAnimation animationWithKeyPath:event];
+  [(CABasicAnimation *)v9 setDuration:duration * durationFactor];
+  [(CABasicAnimation *)v9 setBeginTime:duration * factor];
   [(CABasicAnimation *)v9 setBeginTimeMode:kCAAnimationRelative];
   [(CABasicAnimation *)v9 setFillMode:kCAFillModeBoth];
   [(CABasicAnimation *)v9 setRemovedOnCompletion:1];
@@ -212,7 +212,7 @@ LABEL_10:
   return v9;
 }
 
-- (id)animationForRepLayer:(id)a3 withEvent:(id)a4
+- (id)animationForRepLayer:(id)layer withEvent:(id)event
 {
   v7 = [-[THWInteractiveImageSidebarRep p_host](self "p_host")];
   [-[THWInteractiveImageSidebarRep interactiveCanvasController](self "interactiveCanvasController")];
@@ -222,7 +222,7 @@ LABEL_10:
   }
 
   v9 = v8;
-  if (v7 && (![-[THWInteractiveImageSidebarRep layout](self "layout")] || !objc_msgSend(-[THWInteractiveImageSidebarRep layout](self, "layout"), "currentCallout")) && ((objc_msgSend(a4, "isEqualToString:", @"bounds") & 1) != 0 || objc_msgSend(a4, "isEqualToString:", @"position")) && (objc_msgSend(-[THWInteractiveImageSidebarRep interactiveCanvasController](self, "interactiveCanvasController"), "layerForRep:", self) == a3 || self->_gradientLayer == a3))
+  if (v7 && (![-[THWInteractiveImageSidebarRep layout](self "layout")] || !objc_msgSend(-[THWInteractiveImageSidebarRep layout](self, "layout"), "currentCallout")) && ((objc_msgSend(event, "isEqualToString:", @"bounds") & 1) != 0 || objc_msgSend(event, "isEqualToString:", @"position")) && (objc_msgSend(-[THWInteractiveImageSidebarRep interactiveCanvasController](self, "interactiveCanvasController"), "layerForRep:", self) == layer || self->_gradientLayer == layer))
   {
 
     return +[NSNull null];
@@ -230,13 +230,13 @@ LABEL_10:
 
   else
   {
-    if ((([a4 isEqualToString:@"position"] & 1) != 0 || objc_msgSend(a4, "isEqualToString:", @"bounds")) && (self->_gradientLayer == a3 || objc_msgSend(-[THWInteractiveImageSidebarRep interactiveCanvasController](self, "interactiveCanvasController"), "layerForRep:", self) == a3))
+    if ((([event isEqualToString:@"position"] & 1) != 0 || objc_msgSend(event, "isEqualToString:", @"bounds")) && (self->_gradientLayer == layer || objc_msgSend(-[THWInteractiveImageSidebarRep interactiveCanvasController](self, "interactiveCanvasController"), "layerForRep:", self) == layer))
     {
       if (v7)
       {
         v11 = 1.0 - (-0.25 / v9 + 1.0);
-        v12 = self;
-        v13 = a4;
+        selfCopy3 = self;
+        eventCopy3 = event;
         v14 = v9;
         v15 = -0.25 / v9 + 1.0;
       }
@@ -244,8 +244,8 @@ LABEL_10:
       else
       {
         v15 = 0.0;
-        v12 = self;
-        v13 = a4;
+        selfCopy3 = self;
+        eventCopy3 = event;
         v14 = v9;
         v11 = -0.25 / v9 + 1.0;
       }
@@ -253,44 +253,44 @@ LABEL_10:
 
     else
     {
-      if (![a4 isEqualToString:@"opacity"] || objc_msgSend(-[THWInteractiveImageSidebarRep interactiveCanvasController](self, "interactiveCanvasController"), "containerLayerForRep:", self) != a3)
+      if (![event isEqualToString:@"opacity"] || objc_msgSend(-[THWInteractiveImageSidebarRep interactiveCanvasController](self, "interactiveCanvasController"), "containerLayerForRep:", self) != layer)
       {
         return 0;
       }
 
       v15 = -0.25 / v9 + 1.0;
       v11 = 1.0 - v15;
-      v12 = self;
-      v13 = a4;
+      selfCopy3 = self;
+      eventCopy3 = event;
       v14 = v9;
     }
 
-    return [(THWInteractiveImageSidebarRep *)v12 p_animationForEvent:v13 duration:v14 delayFactor:v15 durationFactor:v11];
+    return [(THWInteractiveImageSidebarRep *)selfCopy3 p_animationForEvent:eventCopy3 duration:v14 delayFactor:v15 durationFactor:v11];
   }
 }
 
-- (id)animationForChildRep:(id)a3 layer:(id)a4 withEvent:(id)a5
+- (id)animationForChildRep:(id)rep layer:(id)layer withEvent:(id)event
 {
-  if (![a5 isEqualToString:@"opacity"] || -[THWInteractiveImageSidebarRep p_layerForCallout:](self, "p_layerForCallout:", objc_msgSend(-[THWInteractiveImageSidebarRep layout](self, "layout"), "previousCallout")) != a4)
+  if (![event isEqualToString:@"opacity"] || -[THWInteractiveImageSidebarRep p_layerForCallout:](self, "p_layerForCallout:", objc_msgSend(-[THWInteractiveImageSidebarRep layout](self, "layout"), "previousCallout")) != layer)
   {
     return 0;
   }
 
   [-[THWInteractiveImageSidebarRep interactiveCanvasController](self "interactiveCanvasController")];
 
-  return [THWInteractiveImageSidebarRep p_animationForEvent:"p_animationForEvent:duration:delayFactor:durationFactor:" duration:a5 delayFactor:? durationFactor:?];
+  return [THWInteractiveImageSidebarRep p_animationForEvent:"p_animationForEvent:duration:delayFactor:durationFactor:" duration:event delayFactor:? durationFactor:?];
 }
 
-- (id)p_calloutForRep:(id)a3
+- (id)p_calloutForRep:(id)rep
 {
   objc_opt_class();
-  [a3 info];
+  [rep info];
   v4 = TSUDynamicCast();
 
   return [v4 instanceData];
 }
 
-- (void)control:(id)a3 repWasAdded:(id)a4
+- (void)control:(id)control repWasAdded:(id)added
 {
   objc_opt_class();
   v5 = TSUDynamicCast();
@@ -298,7 +298,7 @@ LABEL_10:
   [v5 setDelegate:self];
 }
 
-- (void)control:(id)a3 repWillBeRemoved:(id)a4
+- (void)control:(id)control repWillBeRemoved:(id)removed
 {
   objc_opt_class();
   v4 = TSUDynamicCast();

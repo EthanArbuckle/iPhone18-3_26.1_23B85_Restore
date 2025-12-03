@@ -1,10 +1,10 @@
 @interface DMTSharingDiscoveryPrimitives
 - (DMTSharingDiscoveryPrimitives)init;
-- (id)sessionForDevice:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (id)sessionForDevice:(id)device;
+- (void)activateWithCompletion:(id)completion;
 - (void)addDependencyHandlers;
 - (void)deactivate;
-- (void)handleDevice:(id)a3;
+- (void)handleDevice:(id)device;
 @end
 
 @implementation DMTSharingDiscoveryPrimitives
@@ -38,20 +38,20 @@
   return v2;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(DMTSharingDiscoveryPrimitives *)self addDependencyHandlers];
   objc_initWeak(&location, self);
-  v5 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
+  deviceDiscovery = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__DMTSharingDiscoveryPrimitives_activateWithCompletion___block_invoke;
   v7[3] = &unk_278F5E3B8;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 activateWithCompletion:v7];
+  [deviceDiscovery activateWithCompletion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -70,16 +70,16 @@ void __56__DMTSharingDiscoveryPrimitives_activateWithCompletion___block_invoke(u
 
 - (void)deactivate
 {
-  v2 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
-  [v2 invalidate];
+  deviceDiscovery = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
+  [deviceDiscovery invalidate];
 }
 
-- (id)sessionForDevice:(id)a3
+- (id)sessionForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [DMTCatalystSharingBackedDeviceSession alloc];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [(DMTCatalystSharingBackedDeviceSession *)v4 initWithDevice:v3 locale:v5];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v6 = [(DMTCatalystSharingBackedDeviceSession *)v4 initWithDevice:deviceCopy locale:currentLocale];
 
   return v6;
 }
@@ -92,40 +92,40 @@ void __56__DMTSharingDiscoveryPrimitives_activateWithCompletion___block_invoke(u
   v17[2] = __54__DMTSharingDiscoveryPrimitives_addDependencyHandlers__block_invoke;
   v17[3] = &unk_278F5E3E0;
   objc_copyWeak(&v18, &location);
-  v3 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
-  [v3 setInvalidationHandler:v17];
+  deviceDiscovery = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
+  [deviceDiscovery setInvalidationHandler:v17];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __54__DMTSharingDiscoveryPrimitives_addDependencyHandlers__block_invoke_2;
   v15[3] = &unk_278F5E3E0;
   objc_copyWeak(&v16, &location);
-  v4 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
-  [v4 setInterruptionHandler:v15];
+  deviceDiscovery2 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
+  [deviceDiscovery2 setInterruptionHandler:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__DMTSharingDiscoveryPrimitives_addDependencyHandlers__block_invoke_10;
   v13[3] = &unk_278F5E408;
   objc_copyWeak(&v14, &location);
-  v5 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
-  [v5 setDeviceLostHandler:v13];
+  deviceDiscovery3 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
+  [deviceDiscovery3 setDeviceLostHandler:v13];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__DMTSharingDiscoveryPrimitives_addDependencyHandlers__block_invoke_12;
   v11[3] = &unk_278F5E408;
   objc_copyWeak(&v12, &location);
-  v6 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
-  [v6 setDeviceFoundHandler:v11];
+  deviceDiscovery4 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
+  [deviceDiscovery4 setDeviceFoundHandler:v11];
 
   v9 = MEMORY[0x277D85DD0];
   objc_copyWeak(&v10, &location);
   v7 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery:v9];
   [v7 setDeviceChangedHandler:&v9];
 
-  v8 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
-  [v8 setTimeoutHandler:&__block_literal_global_1];
+  deviceDiscovery5 = [(DMTSharingDiscoveryPrimitives *)self deviceDiscovery];
+  [deviceDiscovery5 setTimeoutHandler:&__block_literal_global_1];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
@@ -264,33 +264,33 @@ void __54__DMTSharingDiscoveryPrimitives_addDependencyHandlers__block_invoke_15(
   }
 }
 
-- (void)handleDevice:(id)a3
+- (void)handleDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 deviceActionType] == 21)
+  deviceCopy = device;
+  if ([deviceCopy deviceActionType] == 21)
   {
-    v5 = [(DMTSharingDiscoveryPrimitives *)self foundDevicesByIdentifier];
-    v6 = [v4 identifier];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    foundDevicesByIdentifier = [(DMTSharingDiscoveryPrimitives *)self foundDevicesByIdentifier];
+    identifier = [deviceCopy identifier];
+    v7 = [foundDevicesByIdentifier objectForKeyedSubscript:identifier];
 
     if (v7)
     {
-      v8 = _DMTLogGeneral_0();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      deviceFoundHandler = _DMTLogGeneral_0();
+      if (os_log_type_enabled(deviceFoundHandler, OS_LOG_TYPE_ERROR))
       {
-        [(DMTSharingDiscoveryPrimitives *)v7 handleDevice:v8];
+        [(DMTSharingDiscoveryPrimitives *)v7 handleDevice:deviceFoundHandler];
       }
     }
 
     else
     {
-      v7 = [[DMTSharingDevice alloc] initWithDevice:v4];
-      v9 = [(DMTSharingDiscoveryPrimitives *)self foundDevicesByIdentifier];
-      v10 = [(CATSharingDevice *)v7 identifier];
-      [v9 setObject:v7 forKeyedSubscript:v10];
+      v7 = [[DMTSharingDevice alloc] initWithDevice:deviceCopy];
+      foundDevicesByIdentifier2 = [(DMTSharingDiscoveryPrimitives *)self foundDevicesByIdentifier];
+      identifier2 = [(CATSharingDevice *)v7 identifier];
+      [foundDevicesByIdentifier2 setObject:v7 forKeyedSubscript:identifier2];
 
-      v8 = [(DMTSharingDiscoveryPrimitives *)self deviceFoundHandler];
-      (*(v8 + 16))(v8, v7);
+      deviceFoundHandler = [(DMTSharingDiscoveryPrimitives *)self deviceFoundHandler];
+      (*(deviceFoundHandler + 16))(deviceFoundHandler, v7);
     }
   }
 }

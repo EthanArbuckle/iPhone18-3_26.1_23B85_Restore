@@ -1,11 +1,11 @@
 @interface PrivacyBadgeView
-- (_TtC9MomentsUI16PrivacyBadgeView)initWithCoder:(id)a3;
-- (_TtC9MomentsUI16PrivacyBadgeView)initWithEffect:(id)a3;
+- (_TtC9MomentsUI16PrivacyBadgeView)initWithCoder:(id)coder;
+- (_TtC9MomentsUI16PrivacyBadgeView)initWithEffect:(id)effect;
 @end
 
 @implementation PrivacyBadgeView
 
-- (_TtC9MomentsUI16PrivacyBadgeView)initWithCoder:(id)a3
+- (_TtC9MomentsUI16PrivacyBadgeView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI16PrivacyBadgeView_iconView;
   v5 = CGRectMake_0();
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC9MomentsUI16PrivacyBadgeView)initWithEffect:(id)a3
+- (_TtC9MomentsUI16PrivacyBadgeView)initWithEffect:(id)effect
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

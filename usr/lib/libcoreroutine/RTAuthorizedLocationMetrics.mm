@@ -1,19 +1,19 @@
 @interface RTAuthorizedLocationMetrics
-- (RTAuthorizedLocationMetrics)initWithDaemonStartDate:(id)a3;
+- (RTAuthorizedLocationMetrics)initWithDaemonStartDate:(id)date;
 - (double)timeSinceDaemonStart;
 - (double)timeSinceLastQueryMetricsSubmission;
 - (id)convertToDictionary;
-- (void)printMetricDictionary:(id)a3;
+- (void)printMetricDictionary:(id)dictionary;
 - (void)submitToCoreAnalytics;
 @end
 
 @implementation RTAuthorizedLocationMetrics
 
-- (RTAuthorizedLocationMetrics)initWithDaemonStartDate:(id)a3
+- (RTAuthorizedLocationMetrics)initWithDaemonStartDate:(id)date
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  dateCopy = date;
+  if (!dateCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -42,7 +42,7 @@
     v8->_initializationMetrics = 0;
 
     *&v8->_locationServicesEnabled = 0;
-    objc_storeStrong(&v8->_daemonStartDate, a3);
+    objc_storeStrong(&v8->_daemonStartDate, date);
     v12 = [MEMORY[0x277CBEAA8] now];
     lastQueryMetricSubmissionDate = v8->_lastQueryMetricSubmissionDate;
     v8->_lastQueryMetricSubmissionDate = v12;
@@ -355,18 +355,18 @@ LABEL_6:
   return v43;
 }
 
-- (void)printMetricDictionary:(id)a3
+- (void)printMetricDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+    v5 = [dictionaryCopy countByEnumeratingWithState:&v12 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;

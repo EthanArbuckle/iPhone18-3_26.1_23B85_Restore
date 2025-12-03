@@ -1,21 +1,21 @@
 @interface NDODeviceServicesInterface
 - (NDODeviceServicesInterface)init;
-- (id)createFirmwareUpdateRequestPayload:(id)a3;
-- (id)createPairingRequestPayload:(id)a3;
+- (id)createFirmwareUpdateRequestPayload:(id)payload;
+- (id)createPairingRequestPayload:(id)payload;
 - (id)firmwareUpdateURL;
 - (id)firstPairingDataRequestURL;
-- (id)generatePEMDataWithCertificateChain:(id)a3;
-- (id)pemFormattedCertificateData:(id)a3;
-- (id)signData:(id)a3 withPrivateKey:(__SecKey *)a4;
-- (void)_appendBase64Data:(id)a3 toString:(id)a4;
-- (void)createSignedFirmwareUpdateRequest:(id)a3 completionHandler:(id)a4;
-- (void)createSignedPairingRequest:(id)a3 completionHandler:(id)a4;
-- (void)createSignedRequestDictionary:(id)a3 completionHandler:(id)a4;
-- (void)sendDictionaryData:(id)a3 toServer:(id)a4 forNotification:(int64_t)a5 completionHandler:(id)a6;
-- (void)sendFirmwareUpdateRequest:(id)a3 completionHandler:(id)a4;
-- (void)sendPairingRequest:(id)a3 completionHandler:(id)a4;
-- (void)signPayload:(id)a3 completionHandler:(id)a4;
-- (void)writeCertsToDevice:(id)a3;
+- (id)generatePEMDataWithCertificateChain:(id)chain;
+- (id)pemFormattedCertificateData:(id)data;
+- (id)signData:(id)data withPrivateKey:(__SecKey *)key;
+- (void)_appendBase64Data:(id)data toString:(id)string;
+- (void)createSignedFirmwareUpdateRequest:(id)request completionHandler:(id)handler;
+- (void)createSignedPairingRequest:(id)request completionHandler:(id)handler;
+- (void)createSignedRequestDictionary:(id)dictionary completionHandler:(id)handler;
+- (void)sendDictionaryData:(id)data toServer:(id)server forNotification:(int64_t)notification completionHandler:(id)handler;
+- (void)sendFirmwareUpdateRequest:(id)request completionHandler:(id)handler;
+- (void)sendPairingRequest:(id)request completionHandler:(id)handler;
+- (void)signPayload:(id)payload completionHandler:(id)handler;
+- (void)writeCertsToDevice:(id)device;
 @end
 
 @implementation NDODeviceServicesInterface
@@ -65,14 +65,14 @@
   return v5;
 }
 
-- (id)signData:(id)a3 withPrivateKey:(__SecKey *)a4
+- (id)signData:(id)data withPrivateKey:(__SecKey *)key
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = 0;
   error = 0;
-  if (v5 && a4)
+  if (dataCopy && key)
   {
-    v7 = SecKeyCreateSignature(a4, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, v5, &error);
+    v7 = SecKeyCreateSignature(key, kSecKeyAlgorithmECDSASignatureMessageX962SHA256, dataCopy, &error);
     if (v7)
     {
       goto LABEL_8;
@@ -93,17 +93,17 @@ LABEL_8:
   return v7;
 }
 
-- (id)generatePEMDataWithCertificateChain:(id)a3
+- (id)generatePEMDataWithCertificateChain:(id)chain
 {
-  v4 = a3;
-  if ([v4 count])
+  chainCopy = chain;
+  if ([chainCopy count])
   {
     v5 = objc_alloc_init(NSMutableString);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = chainCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v7)
     {
@@ -156,30 +156,30 @@ LABEL_8:
   return v13;
 }
 
-- (id)pemFormattedCertificateData:(id)a3
+- (id)pemFormattedCertificateData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[NSMutableString string];
   [v5 appendString:@"-----BEGIN CERTIFICATE-----\n"];
-  [(NDODeviceServicesInterface *)self _appendBase64Data:v4 toString:v5];
+  [(NDODeviceServicesInterface *)self _appendBase64Data:dataCopy toString:v5];
 
   [v5 appendString:@"\n-----END CERTIFICATE-----\n"];
 
   return v5;
 }
 
-- (void)_appendBase64Data:(id)a3 toString:(id)a4
+- (void)_appendBase64Data:(id)data toString:(id)string
 {
-  v5 = a4;
-  v6 = [a3 base64EncodedStringWithOptions:33];
-  [v5 appendString:v6];
+  stringCopy = string;
+  v6 = [data base64EncodedStringWithOptions:33];
+  [stringCopy appendString:v6];
 }
 
-- (void)writeCertsToDevice:(id)a3
+- (void)writeCertsToDevice:(id)device
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count] > 1)
+  deviceCopy = device;
+  v4 = deviceCopy;
+  if (deviceCopy && [deviceCopy count] > 1)
   {
     v6 = [v4 objectAtIndex:0];
     v7 = [v4 objectAtIndex:1];
@@ -199,10 +199,10 @@ LABEL_8:
   }
 }
 
-- (void)signPayload:(id)a3 completionHandler:(id)a4
+- (void)signPayload:(id)payload completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  handlerCopy = handler;
   v8 = _NDOLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -226,10 +226,10 @@ LABEL_8:
   v12 = v11;
   v21 = v12;
   p_buf = &buf;
-  v13 = v7;
+  v13 = handlerCopy;
   v24 = v13;
-  v22 = self;
-  v14 = v6;
+  selfCopy = self;
+  v14 = payloadCopy;
   v23 = v14;
   if (([v9 generateBAACertficate:v20] & 1) == 0)
   {
@@ -252,11 +252,11 @@ LABEL_8:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)createSignedRequestDictionary:(id)a3 completionHandler:(id)a4
+- (void)createSignedRequestDictionary:(id)dictionary completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v17 = 0;
-  v7 = [NSPropertyListSerialization dataWithPropertyList:a3 format:100 options:0 error:&v17];
+  v7 = [NSPropertyListSerialization dataWithPropertyList:dictionary format:100 options:0 error:&v17];
   v8 = v7;
   v9 = v17;
   if (v7)
@@ -276,82 +276,82 @@ LABEL_8:
     v14[2] = sub_10000E640;
     v14[3] = &unk_10009AAB8;
     v15 = v7;
-    v16 = v6;
+    v16 = handlerCopy;
     v13 = v9;
     [(NDODeviceServicesInterface *)self signPayload:v15 completionHandler:v14];
   }
 
   else
   {
-    v11 = v6[2];
+    v11 = handlerCopy[2];
     v12 = v17;
-    v11(v6, 0);
+    v11(handlerCopy, 0);
   }
 }
 
-- (id)createPairingRequestPayload:(id)a3
+- (id)createPairingRequestPayload:(id)payload
 {
-  v3 = a3;
-  if (v3)
+  payloadCopy = payload;
+  if (payloadCopy)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
     v5 = objc_alloc_init(NSMutableDictionary);
     v6 = objc_alloc_init(NSMutableDictionary);
     v7 = objc_alloc_init(NSMutableDictionary);
-    v8 = [v3 objectForKeyedSubscript:@"caseSerialNumber"];
+    v8 = [payloadCopy objectForKeyedSubscript:@"caseSerialNumber"];
     [NDOTypeChecking safeAddValue:v8 forKey:@"SerialNumber" toDictionary:v5];
 
-    v9 = [v3 objectForKeyedSubscript:@"caseModelNumber"];
+    v9 = [payloadCopy objectForKeyedSubscript:@"caseModelNumber"];
     [NDOTypeChecking safeAddValue:v9 forKey:@"ModelNumber" toDictionary:v5];
 
-    v10 = [v3 objectForKeyedSubscript:@"caseFirmwareVersion"];
+    v10 = [payloadCopy objectForKeyedSubscript:@"caseFirmwareVersion"];
     [NDOTypeChecking safeAddValue:v10 forKey:@"FirmwareVersion" toDictionary:v5];
 
-    v11 = [v3 objectForKeyedSubscript:@"caseFirmwareMarketingName"];
+    v11 = [payloadCopy objectForKeyedSubscript:@"caseFirmwareMarketingName"];
     [NDOTypeChecking safeAddValue:v11 forKey:@"FirmwareMarketingName" toDictionary:v5];
 
-    v12 = [v3 objectForKeyedSubscript:@"caseVersion"];
+    v12 = [payloadCopy objectForKeyedSubscript:@"caseVersion"];
     [NDOTypeChecking safeAddValue:v12 forKey:@"CaseVersion" toDictionary:v5];
 
-    v13 = [v3 objectForKeyedSubscript:@"caseFirstPairingDate"];
+    v13 = [payloadCopy objectForKeyedSubscript:@"caseFirstPairingDate"];
     [NDOTypeChecking safeAddValue:v13 forKey:@"FirstPairingDate" toDictionary:v5];
 
     [v4 setObject:v5 forKeyedSubscript:@"AudioDeviceInfo"];
-    v14 = [v3 objectForKeyedSubscript:@"isAirPodsMax"];
+    v14 = [payloadCopy objectForKeyedSubscript:@"isAirPodsMax"];
     LOBYTE(v13) = [v14 BOOLValue];
 
     if ((v13 & 1) == 0)
     {
-      [v3 objectForKeyedSubscript:@"leftBudSerialNumber"];
+      [payloadCopy objectForKeyedSubscript:@"leftBudSerialNumber"];
       v15 = v27 = v4;
       [NDOTypeChecking safeAddValue:v15 forKey:@"SerialNumber" toDictionary:v6];
 
-      v16 = [v3 objectForKeyedSubscript:@"leftBudModelNumber"];
+      v16 = [payloadCopy objectForKeyedSubscript:@"leftBudModelNumber"];
       [NDOTypeChecking safeAddValue:v16 forKey:@"ModelNumber" toDictionary:v6];
 
-      v17 = [v3 objectForKeyedSubscript:@"leftBudFirmwareVersion"];
+      v17 = [payloadCopy objectForKeyedSubscript:@"leftBudFirmwareVersion"];
       [NDOTypeChecking safeAddValue:v17 forKey:@"FirmwareVersion" toDictionary:v6];
 
-      v18 = [v3 objectForKeyedSubscript:@"leftBudFirmwareMarketingName"];
+      v18 = [payloadCopy objectForKeyedSubscript:@"leftBudFirmwareMarketingName"];
       [NDOTypeChecking safeAddValue:v18 forKey:@"FirmwareMarketingName" toDictionary:v6];
 
-      v19 = [v3 objectForKeyedSubscript:@"leftBudFirstPairingDate"];
+      v19 = [payloadCopy objectForKeyedSubscript:@"leftBudFirstPairingDate"];
       [NDOTypeChecking safeAddValue:v19 forKey:@"FirstPairingDate" toDictionary:v6];
 
-      v20 = [v3 objectForKeyedSubscript:@"rightBudSerialNumber"];
+      v20 = [payloadCopy objectForKeyedSubscript:@"rightBudSerialNumber"];
       [NDOTypeChecking safeAddValue:v20 forKey:@"SerialNumber" toDictionary:v7];
 
-      v21 = [v3 objectForKeyedSubscript:@"rightBudModelNumber"];
+      v21 = [payloadCopy objectForKeyedSubscript:@"rightBudModelNumber"];
       [NDOTypeChecking safeAddValue:v21 forKey:@"ModelNumber" toDictionary:v7];
 
-      v22 = [v3 objectForKeyedSubscript:@"rightBudFirmwareVersion"];
+      v22 = [payloadCopy objectForKeyedSubscript:@"rightBudFirmwareVersion"];
       v4 = v27;
       [NDOTypeChecking safeAddValue:v22 forKey:@"FirmwareVersion" toDictionary:v7];
 
-      v23 = [v3 objectForKeyedSubscript:@"rightBudFirmwareMarketingName"];
+      v23 = [payloadCopy objectForKeyedSubscript:@"rightBudFirmwareMarketingName"];
       [NDOTypeChecking safeAddValue:v23 forKey:@"FirmwareMarketingName" toDictionary:v7];
 
-      v24 = [v3 objectForKeyedSubscript:@"rightBudFirstPairingDate"];
+      v24 = [payloadCopy objectForKeyedSubscript:@"rightBudFirstPairingDate"];
       [NDOTypeChecking safeAddValue:v24 forKey:@"FirstPairingDate" toDictionary:v7];
 
       if ([v6 count])
@@ -377,88 +377,88 @@ LABEL_8:
   return v4;
 }
 
-- (void)createSignedPairingRequest:(id)a3 completionHandler:(id)a4
+- (void)createSignedPairingRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(NDODeviceServicesInterface *)self createPairingRequestPayload:a3];
+  handlerCopy = handler;
+  v7 = [(NDODeviceServicesInterface *)self createPairingRequestPayload:request];
   if (v7)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10000ED40;
     v8[3] = &unk_10009A818;
-    v9 = v6;
+    v9 = handlerCopy;
     [(NDODeviceServicesInterface *)self createSignedRequestDictionary:v7 completionHandler:v8];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (id)createFirmwareUpdateRequestPayload:(id)a3
+- (id)createFirmwareUpdateRequestPayload:(id)payload
 {
-  v3 = a3;
-  if (v3)
+  payloadCopy = payload;
+  if (payloadCopy)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
     v5 = objc_alloc_init(NSMutableDictionary);
     v6 = objc_alloc_init(NSMutableDictionary);
     v7 = objc_alloc_init(NSMutableDictionary);
-    v8 = [v3 objectForKeyedSubscript:@"caseSerialNumber"];
+    v8 = [payloadCopy objectForKeyedSubscript:@"caseSerialNumber"];
     [NDOTypeChecking safeAddValue:v8 forKey:@"SerialNumber" toDictionary:v5];
 
-    v9 = [v3 objectForKeyedSubscript:@"caseModelNumber"];
+    v9 = [payloadCopy objectForKeyedSubscript:@"caseModelNumber"];
     [NDOTypeChecking safeAddValue:v9 forKey:@"ModelNumber" toDictionary:v5];
 
-    v10 = [v3 objectForKeyedSubscript:@"caseFirmwareVersion"];
+    v10 = [payloadCopy objectForKeyedSubscript:@"caseFirmwareVersion"];
     [NDOTypeChecking safeAddValue:v10 forKey:@"FirmwareVersion" toDictionary:v5];
 
-    v11 = [v3 objectForKeyedSubscript:@"caseFirmwareMarketingName"];
+    v11 = [payloadCopy objectForKeyedSubscript:@"caseFirmwareMarketingName"];
     [NDOTypeChecking safeAddValue:v11 forKey:@"FirmwareMarketingName" toDictionary:v5];
 
-    v12 = [v3 objectForKeyedSubscript:@"caseVersion"];
+    v12 = [payloadCopy objectForKeyedSubscript:@"caseVersion"];
     [NDOTypeChecking safeAddValue:v12 forKey:@"CaseVersion" toDictionary:v5];
 
-    v13 = [v3 objectForKeyedSubscript:@"firmwareUpdateDate"];
+    v13 = [payloadCopy objectForKeyedSubscript:@"firmwareUpdateDate"];
     [NDOTypeChecking safeAddValue:v13 forKey:@"FirmwareUpdateDate" toDictionary:v5];
 
     [v4 setObject:v5 forKeyedSubscript:@"AudioDeviceInfo"];
-    v14 = [v3 objectForKeyedSubscript:@"isAirPodsMax"];
+    v14 = [payloadCopy objectForKeyedSubscript:@"isAirPodsMax"];
     LOBYTE(v13) = [v14 BOOLValue];
 
     if ((v13 & 1) == 0)
     {
-      v15 = [v3 objectForKeyedSubscript:@"leftBudSerialNumber"];
+      v15 = [payloadCopy objectForKeyedSubscript:@"leftBudSerialNumber"];
       [NDOTypeChecking safeAddValue:v15 forKey:@"SerialNumber" toDictionary:v6];
 
-      [v3 objectForKeyedSubscript:@"leftBudModelNumber"];
+      [payloadCopy objectForKeyedSubscript:@"leftBudModelNumber"];
       v16 = v27 = v4;
       [NDOTypeChecking safeAddValue:v16 forKey:@"ModelNumber" toDictionary:v6];
 
-      v17 = [v3 objectForKeyedSubscript:@"leftBudFirmwareVersion"];
+      v17 = [payloadCopy objectForKeyedSubscript:@"leftBudFirmwareVersion"];
       [NDOTypeChecking safeAddValue:v17 forKey:@"FirmwareVersion" toDictionary:v6];
 
-      v18 = [v3 objectForKeyedSubscript:@"leftBudFirmwareMarketingName"];
+      v18 = [payloadCopy objectForKeyedSubscript:@"leftBudFirmwareMarketingName"];
       [NDOTypeChecking safeAddValue:v18 forKey:@"FirmwareMarketingName" toDictionary:v6];
 
-      v19 = [v3 objectForKeyedSubscript:@"firmwareUpdateDate"];
+      v19 = [payloadCopy objectForKeyedSubscript:@"firmwareUpdateDate"];
       [NDOTypeChecking safeAddValue:v19 forKey:@"FirmwareUpdateDate" toDictionary:v6];
 
-      v20 = [v3 objectForKeyedSubscript:@"rightBudSerialNumber"];
+      v20 = [payloadCopy objectForKeyedSubscript:@"rightBudSerialNumber"];
       [NDOTypeChecking safeAddValue:v20 forKey:@"SerialNumber" toDictionary:v7];
 
-      v21 = [v3 objectForKeyedSubscript:@"rightBudModelNumber"];
+      v21 = [payloadCopy objectForKeyedSubscript:@"rightBudModelNumber"];
       [NDOTypeChecking safeAddValue:v21 forKey:@"ModelNumber" toDictionary:v7];
 
-      v22 = [v3 objectForKeyedSubscript:@"rightBudFirmwareVersion"];
+      v22 = [payloadCopy objectForKeyedSubscript:@"rightBudFirmwareVersion"];
       [NDOTypeChecking safeAddValue:v22 forKey:@"FirmwareVersion" toDictionary:v7];
 
-      v23 = [v3 objectForKeyedSubscript:@"rightBudFirmwareMarketingName"];
+      v23 = [payloadCopy objectForKeyedSubscript:@"rightBudFirmwareMarketingName"];
       [NDOTypeChecking safeAddValue:v23 forKey:@"FirmwareMarketingName" toDictionary:v7];
 
-      v24 = [v3 objectForKeyedSubscript:@"firmwareUpdateDate"];
+      v24 = [payloadCopy objectForKeyedSubscript:@"firmwareUpdateDate"];
       [NDOTypeChecking safeAddValue:v24 forKey:@"FirmwareUpdateDate" toDictionary:v7];
 
       v4 = v27;
@@ -485,42 +485,42 @@ LABEL_8:
   return v4;
 }
 
-- (void)createSignedFirmwareUpdateRequest:(id)a3 completionHandler:(id)a4
+- (void)createSignedFirmwareUpdateRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(NDODeviceServicesInterface *)self createFirmwareUpdateRequestPayload:a3];
+  handlerCopy = handler;
+  v7 = [(NDODeviceServicesInterface *)self createFirmwareUpdateRequestPayload:request];
   if (v7)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10000F334;
     v8[3] = &unk_10009A818;
-    v9 = v6;
+    v9 = handlerCopy;
     [(NDODeviceServicesInterface *)self createSignedRequestDictionary:v7 completionHandler:v8];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)sendDictionaryData:(id)a3 toServer:(id)a4 forNotification:(int64_t)a5 completionHandler:(id)a6
+- (void)sendDictionaryData:(id)data toServer:(id)server forNotification:(int64_t)notification completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = v11;
-  if (v9 && v10)
+  dataCopy = data;
+  serverCopy = server;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (dataCopy && serverCopy)
   {
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10000F47C;
     v21[3] = &unk_10009AB08;
-    v24 = v11;
-    v22 = v9;
-    v23 = v10;
-    v25 = a5;
+    v24 = handlerCopy;
+    v22 = dataCopy;
+    v23 = serverCopy;
+    notificationCopy = notification;
     [_TtC8ndoagent28NDODeviceServicesComposition isAccCheckInDisabledWithCompletionHandler:v21];
   }
 
@@ -536,51 +536,51 @@ LABEL_8:
   }
 }
 
-- (void)sendFirmwareUpdateRequest:(id)a3 completionHandler:(id)a4
+- (void)sendFirmwareUpdateRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NDODeviceServicesInterface *)self firmwareUpdateURL];
-  v9 = v8;
-  if (v8)
+  requestCopy = request;
+  handlerCopy = handler;
+  firmwareUpdateURL = [(NDODeviceServicesInterface *)self firmwareUpdateURL];
+  v9 = firmwareUpdateURL;
+  if (firmwareUpdateURL)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000F954;
     v10[3] = &unk_10009AB30;
     v10[4] = self;
-    v11 = v8;
-    v12 = v7;
-    [(NDODeviceServicesInterface *)self createSignedFirmwareUpdateRequest:v6 completionHandler:v10];
+    v11 = firmwareUpdateURL;
+    v12 = handlerCopy;
+    [(NDODeviceServicesInterface *)self createSignedFirmwareUpdateRequest:requestCopy completionHandler:v10];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)sendPairingRequest:(id)a3 completionHandler:(id)a4
+- (void)sendPairingRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NDODeviceServicesInterface *)self firstPairingDataRequestURL];
-  v9 = v8;
-  if (v8)
+  requestCopy = request;
+  handlerCopy = handler;
+  firstPairingDataRequestURL = [(NDODeviceServicesInterface *)self firstPairingDataRequestURL];
+  v9 = firstPairingDataRequestURL;
+  if (firstPairingDataRequestURL)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10000FA74;
     v10[3] = &unk_10009AB30;
     v10[4] = self;
-    v11 = v8;
-    v12 = v7;
-    [(NDODeviceServicesInterface *)self createSignedPairingRequest:v6 completionHandler:v10];
+    v11 = firstPairingDataRequestURL;
+    v12 = handlerCopy;
+    [(NDODeviceServicesInterface *)self createSignedPairingRequest:requestCopy completionHandler:v10];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

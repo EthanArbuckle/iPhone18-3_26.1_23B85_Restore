@@ -1,5 +1,5 @@
 @interface PGContextualOptions
-- (PGContextualOptions)initWithGraph:(id)a3 photoLibrary:(id)a4 curationManager:(id)a5 options:(id)a6 loggingConnection:(id)a7;
+- (PGContextualOptions)initWithGraph:(id)graph photoLibrary:(id)library curationManager:(id)manager options:(id)options loggingConnection:(id)connection;
 - (id)availableContextualRules;
 @end
 
@@ -46,24 +46,24 @@
   return v3;
 }
 
-- (PGContextualOptions)initWithGraph:(id)a3 photoLibrary:(id)a4 curationManager:(id)a5 options:(id)a6 loggingConnection:(id)a7
+- (PGContextualOptions)initWithGraph:(id)graph photoLibrary:(id)library curationManager:(id)manager options:(id)options loggingConnection:(id)connection
 {
   v36[4] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  graphCopy = graph;
+  libraryCopy = library;
+  managerCopy = manager;
+  optionsCopy = options;
+  connectionCopy = connection;
   v35.receiver = self;
   v35.super_class = PGContextualOptions;
   v17 = [(PGContextualOptions *)&v35 init];
   if (v17)
   {
-    v18 = [[PGBirthdayContextualRule alloc] initWithGraph:v12 photoLibrary:v13 curationManager:v14 loggingConnection:v16];
+    v18 = [[PGBirthdayContextualRule alloc] initWithGraph:graphCopy photoLibrary:libraryCopy curationManager:managerCopy loggingConnection:connectionCopy];
     v36[0] = v18;
-    v19 = [[PGHolidayContextualRule alloc] initWithGraph:v12 photoLibrary:v13 loggingConnection:v16];
+    v19 = [[PGHolidayContextualRule alloc] initWithGraph:graphCopy photoLibrary:libraryCopy loggingConnection:connectionCopy];
     v36[1] = v19;
-    v20 = [[PGPublicEventContextualRule alloc] initWithGraph:v12 photoLibrary:v13 loggingConnection:v16];
+    v20 = [[PGPublicEventContextualRule alloc] initWithGraph:graphCopy photoLibrary:libraryCopy loggingConnection:connectionCopy];
     v36[2] = v20;
     v21 = objc_alloc_init(PGOnThisDayContextualRule);
     v36[3] = v21;
@@ -71,26 +71,26 @@
     contextualRules = v17->_contextualRules;
     v17->_contextualRules = v22;
 
-    v24 = [MEMORY[0x277CBEA80] currentCalendar];
-    v25 = [v15 objectForKeyedSubscript:*MEMORY[0x277D3AE28]];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v25 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D3AE28]];
     if (v25)
     {
       objc_storeStrong(&v17->_localToday, v25);
-      v26 = [v24 timeZone];
+      timeZone = [currentCalendar timeZone];
     }
 
     else
     {
-      v27 = [MEMORY[0x277D27690] currentLocalDate];
+      currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
       localToday = v17->_localToday;
-      v17->_localToday = v27;
+      v17->_localToday = currentLocalDate;
 
-      v29 = [MEMORY[0x277CBEAA8] date];
-      [v29 timeIntervalSinceDate:v17->_localToday];
-      v26 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:v30];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:v17->_localToday];
+      timeZone = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:v30];
     }
 
-    v31 = [v24 componentsInTimeZone:v26 fromDate:v17->_localToday];
+    v31 = [currentCalendar componentsInTimeZone:timeZone fromDate:v17->_localToday];
     localTodayComponents = v17->_localTodayComponents;
     v17->_localTodayComponents = v31;
   }

@@ -1,37 +1,37 @@
 @interface IMSuggestedActionsMessagePartChatItem
-- (BOOL)isEqual:(id)a3;
-- (IMSuggestedActionsMessagePartChatItem)initWithItem:(id)a3 suggestedActionsList:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (IMSuggestedActionsMessagePartChatItem)initWithItem:(id)item suggestedActionsList:(id)list;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMSuggestedActionsMessagePartChatItem
 
-- (IMSuggestedActionsMessagePartChatItem)initWithItem:(id)a3 suggestedActionsList:(id)a4
+- (IMSuggestedActionsMessagePartChatItem)initWithItem:(id)item suggestedActionsList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  listCopy = list;
   v16.receiver = self;
   v16.super_class = IMSuggestedActionsMessagePartChatItem;
-  v10 = [(IMChatItem *)&v16 _initWithItem:v6];
+  v10 = [(IMChatItem *)&v16 _initWithItem:itemCopy];
   if (v10)
   {
-    v11 = objc_msgSend_guid(v6, v8, v9);
+    v11 = objc_msgSend_guid(itemCopy, v8, v9);
     v12 = sub_1A83AC604();
     objc_msgSend__setGUID_(v10, v13, v12);
 
-    objc_msgSend_setSuggestedActionsList_(v10, v14, v7);
+    objc_msgSend_setSuggestedActionsList_(v10, v14, listCopy);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_guid(self, v6, v7);
     v11 = objc_msgSend_guid(v5, v9, v10);
     if (objc_msgSend_isEqualToString_(v8, v12, v11))
@@ -55,7 +55,7 @@
   return isEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IMSuggestedActionsMessagePartChatItem alloc];
   v7 = objc_msgSend_messageItem(self, v5, v6);

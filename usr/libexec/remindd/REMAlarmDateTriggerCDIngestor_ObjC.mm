@@ -1,16 +1,16 @@
 @interface REMAlarmDateTriggerCDIngestor_ObjC
-+ (id)storageFrom:(id)a3 accountID:(id)a4 alarmID:(id)a5;
++ (id)storageFrom:(id)from accountID:(id)d alarmID:(id)iD;
 - (_TtC7remindd34REMAlarmDateTriggerCDIngestor_ObjC)init;
 @end
 
 @implementation REMAlarmDateTriggerCDIngestor_ObjC
 
-+ (id)storageFrom:(id)a3 accountID:(id)a4 alarmID:(id)a5
++ (id)storageFrom:(id)from accountID:(id)d alarmID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_1001D3E38(v7, v8, v9);
+  fromCopy = from;
+  dCopy = d;
+  iDCopy = iD;
+  v10 = sub_1001D3E38(fromCopy, dCopy, iDCopy);
 
   return v10;
 }

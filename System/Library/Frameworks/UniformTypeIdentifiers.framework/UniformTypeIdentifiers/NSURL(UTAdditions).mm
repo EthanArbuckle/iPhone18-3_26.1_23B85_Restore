@@ -20,8 +20,8 @@
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"UTAdditions.mm" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"partialName != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTAdditions.mm" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"partialName != nil"}];
 
     if (v9)
     {
@@ -29,12 +29,12 @@
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:a1 file:@"UTAdditions.mm" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"contentType != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UTAdditions.mm" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"contentType != nil"}];
 
 LABEL_3:
   v10 = [v7 stringByAppendingPathExtensionForType:v9];
-  v11 = [a1 URLByAppendingPathComponent:v10 isDirectory:{objc_msgSend(v9, "conformsToType:", &off_1ED40C660)}];
+  v11 = [self URLByAppendingPathComponent:v10 isDirectory:{objc_msgSend(v9, "conformsToType:", &off_1ED40C660)}];
 
   return v11;
 }
@@ -44,29 +44,29 @@ LABEL_3:
   v5 = a3;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"UTAdditions.mm" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"contentType != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTAdditions.mm" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"contentType != nil"}];
   }
 
-  v6 = [a1 lastPathComponent];
-  v7 = v6;
-  if (v6)
+  lastPathComponent = [self lastPathComponent];
+  v7 = lastPathComponent;
+  if (lastPathComponent)
   {
-    v8 = [v6 stringByAppendingPathExtensionForType:v5];
+    v8 = [lastPathComponent stringByAppendingPathExtensionForType:v5];
 
     v9 = [v5 conformsToType:&off_1ED40C660];
-    v10 = [a1 URLByDeletingLastPathComponent];
-    v7 = [v10 URLByAppendingPathComponent:v8 isDirectory:v9];
+    uRLByDeletingLastPathComponent = [self URLByDeletingLastPathComponent];
+    v7 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v8 isDirectory:v9];
   }
 
   if (v7)
   {
-    a1 = v7;
+    self = v7;
   }
 
-  v11 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
 @end

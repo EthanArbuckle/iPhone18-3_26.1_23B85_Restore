@@ -1,19 +1,19 @@
 @interface CACSystemAperatureBorderItem
-+ (id)borderItemsForRect:(CGRect)a3 minimumRect:(CGRect)a4;
++ (id)borderItemsForRect:(CGRect)rect minimumRect:(CGRect)minimumRect;
 - (CGRect)elementFrame;
 - (CGSize)elementLabelContainerSize;
 @end
 
 @implementation CACSystemAperatureBorderItem
 
-+ (id)borderItemsForRect:(CGRect)a3 minimumRect:(CGRect)a4
++ (id)borderItemsForRect:(CGRect)rect minimumRect:(CGRect)minimumRect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v40[9] = *MEMORY[0x277D85DE8];
-  v42 = CGRectInset(a3, 10.0, 10.0);
+  v42 = CGRectInset(rect, 10.0, 10.0);
   v38 = v42.origin.x;
   v8 = v42.origin.y;
   v9 = v42.size.width;
@@ -139,7 +139,7 @@
   v32->_frame.size.width = 1.0;
   v32->_frame.size.height = v10;
   v35 = objc_alloc_init(CACSystemAperatureBorderItem);
-  v35->_frame = CGRectInset(a4, 2.0, 2.0);
+  v35->_frame = CGRectInset(minimumRect, 2.0, 2.0);
   v40[0] = v11;
   v40[1] = v14;
   v40[2] = v17;

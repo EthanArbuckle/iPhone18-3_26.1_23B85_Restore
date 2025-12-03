@@ -1,16 +1,16 @@
 @interface ICSystemPaperDismissAction
-- (ICSystemPaperDismissAction)initWithReason:(id)a3;
+- (ICSystemPaperDismissAction)initWithReason:(id)reason;
 - (NSString)dismissalReason;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation ICSystemPaperDismissAction
 
-- (ICSystemPaperDismissAction)initWithReason:(id)a3
+- (ICSystemPaperDismissAction)initWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_alloc_init(BSMutableSettings);
-  [v5 setObject:v4 forSetting:1];
+  [v5 setObject:reasonCopy forSetting:1];
 
   v8.receiver = self;
   v8.super_class = ICSystemPaperDismissAction;
@@ -21,15 +21,15 @@
 
 - (NSString)dismissalReason
 {
-  v2 = [(ICSystemPaperDismissAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(ICSystemPaperDismissAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"dismissalReason";
   }

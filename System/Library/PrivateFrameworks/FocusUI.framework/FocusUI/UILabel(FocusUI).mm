@@ -14,15 +14,15 @@
   v18 = a10;
   if (v31 && a8)
   {
-    v19 = [v31 fcui_numberOfLinesInFrame:0 maximum:v18 drawingContext:{a1, a2, a3, 1.79769313e308}];
+    v19 = [v31 fcui_numberOfLinesInFrame:0 maximum:v18 drawingContext:{self, a2, a3, 1.79769313e308}];
     [v31 fcui_drawingHeightWithNumberOfLines:v19];
-    v20 = [v17 text];
-    v21 = [v20 length];
+    text = [v17 text];
+    v21 = [text length];
 
     if (v21)
     {
       [v31 fcui_measuringHeightWithNumberOfLines:v19];
-      v22 = [v17 fcui_numberOfLinesInFrame:0 maximum:v18 drawingContext:{a1, a2, a3, 1.79769313e308}];
+      v22 = [v17 fcui_numberOfLinesInFrame:0 maximum:v18 drawingContext:{self, a2, a3, 1.79769313e308}];
       [v17 fcui_measuringHeightWithNumberOfLines:v22];
       UIRectCenteredYInRect();
       CGRectGetMaxY(v33);
@@ -48,18 +48,18 @@
 - (uint64_t)fcui_numberOfLinesInFrame:()FocusUI maximum:drawingContext:
 {
   v14 = a8;
-  v15 = [a1 font];
-  v16 = [a1 text];
-  v17 = [v15 fcui_numberOfLinesForText:v16 inFrame:a7 maximum:v14 drawingContext:{a2, a3, a4, a5}];
+  font = [self font];
+  text = [self text];
+  v17 = [font fcui_numberOfLinesForText:text inFrame:a7 maximum:v14 drawingContext:{a2, a3, a4, a5}];
 
   return v17;
 }
 
 - (double)fcui_measuringHeightWithNumberOfLines:()FocusUI
 {
-  v5 = [a1 font];
-  v6 = [a1 text];
-  [v5 fcui_measuringHeightForText:v6 withNumberOfLines:a3];
+  font = [self font];
+  text = [self text];
+  [font fcui_measuringHeightForText:text withNumberOfLines:a3];
   v8 = v7;
 
   return v8;
@@ -67,9 +67,9 @@
 
 - (double)fcui_drawingHeightWithNumberOfLines:()FocusUI
 {
-  v5 = [a1 font];
-  v6 = [a1 text];
-  [v5 fcui_drawingHeightForText:v6 withNumberOfLines:a3 additionalPadding:2.0];
+  font = [self font];
+  text = [self text];
+  [font fcui_drawingHeightForText:text withNumberOfLines:a3 additionalPadding:2.0];
   v8 = v7;
 
   return v8;

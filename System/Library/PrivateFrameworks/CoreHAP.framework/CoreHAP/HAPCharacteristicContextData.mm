@@ -1,12 +1,12 @@
 @interface HAPCharacteristicContextData
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicContextData)init;
-- (HAPCharacteristicContextData)initWithContextIdentifier:(id)a3;
+- (HAPCharacteristicContextData)initWithContextIdentifier:(id)identifier;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicContextData
@@ -14,16 +14,16 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HAPCharacteristicContextData *)self contextIdentifier];
-  v4 = [v2 stringWithFormat:@"<HAPCharacteristicContextData contextIdentifier=%@>", v3];
+  contextIdentifier = [(HAPCharacteristicContextData *)self contextIdentifier];
+  v4 = [v2 stringWithFormat:@"<HAPCharacteristicContextData contextIdentifier=%@>", contextIdentifier];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -33,19 +33,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAPCharacteristicContextData *)self contextIdentifier];
-      v7 = [(HAPCharacteristicContextData *)v5 contextIdentifier];
-      if (v6 == v7)
+      v5 = equalCopy;
+      contextIdentifier = [(HAPCharacteristicContextData *)self contextIdentifier];
+      contextIdentifier2 = [(HAPCharacteristicContextData *)v5 contextIdentifier];
+      if (contextIdentifier == contextIdentifier2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HAPCharacteristicContextData *)self contextIdentifier];
-        v9 = [(HAPCharacteristicContextData *)v5 contextIdentifier];
-        v10 = [v8 isEqual:v9];
+        contextIdentifier3 = [(HAPCharacteristicContextData *)self contextIdentifier];
+        contextIdentifier4 = [(HAPCharacteristicContextData *)v5 contextIdentifier];
+        v10 = [contextIdentifier3 isEqual:contextIdentifier4];
       }
     }
 
@@ -58,16 +58,16 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicContextData allocWithZone:a3];
-  v5 = [(HAPCharacteristicContextData *)self contextIdentifier];
-  v6 = [(HAPCharacteristicContextData *)v4 initWithContextIdentifier:v5];
+  v4 = [HAPCharacteristicContextData allocWithZone:zone];
+  contextIdentifier = [(HAPCharacteristicContextData *)self contextIdentifier];
+  v6 = [(HAPCharacteristicContextData *)v4 initWithContextIdentifier:contextIdentifier];
 
   return v6;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   v34 = 0u;
@@ -92,16 +92,16 @@
   v15 = 0u;
   v16 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPCharacteristicContextData *)self contextIdentifier];
+  contextIdentifier = [(HAPCharacteristicContextData *)self contextIdentifier];
 
-  if (!v5)
+  if (!contextIdentifier)
   {
     goto LABEL_8;
   }
 
-  v6 = [(HAPCharacteristicContextData *)self contextIdentifier];
+  contextIdentifier2 = [(HAPCharacteristicContextData *)self contextIdentifier];
   v14 = 0;
-  v7 = [v6 serializeWithError:&v14];
+  v7 = [contextIdentifier2 serializeWithError:&v14];
   v8 = v14;
 
   if (!v8)
@@ -112,11 +112,11 @@
 
     if (v11)
     {
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v11);
         v8 = 0;
-        *a3 = v10 = 0;
+        *error = v10 = 0;
         goto LABEL_11;
       }
 
@@ -130,11 +130,11 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (error)
   {
     v9 = v8;
     v10 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_11;
   }
 
@@ -148,26 +148,26 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
 LABEL_16:
-    [(HAPCharacteristicContextData *)self setContextIdentifier:v9, v20];
+    [(HAPCharacteristicContextData *)self setContextIdentifier:v9, selfCopy];
     v10 = 0;
     v17 = 1;
   }
 
   else
   {
-    v20 = self;
+    selfCopy = self;
     v9 = 0;
     v10 = 0;
-    v11 = v7 + v8;
+    v11 = bytes + v8;
     while (1)
     {
       v25 = 0;
@@ -209,11 +209,11 @@ LABEL_16:
         if (v10)
         {
 LABEL_9:
-          if (a4)
+          if (error)
           {
             v16 = v10;
             v17 = 0;
-            *a4 = v10;
+            *error = v10;
             goto LABEL_18;
           }
 
@@ -221,15 +221,15 @@ LABEL_9:
         }
 
 LABEL_15:
-        self = v20;
+        self = selfCopy;
         goto LABEL_16;
       }
     }
 
-    if (a4)
+    if (error)
     {
       HMErrorFromOSStatus(Next);
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_18;
     }
 
@@ -242,16 +242,16 @@ LABEL_18:
   return v17;
 }
 
-- (HAPCharacteristicContextData)initWithContextIdentifier:(id)a3
+- (HAPCharacteristicContextData)initWithContextIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HAPCharacteristicContextData;
   v6 = [(HAPCharacteristicContextData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contextIdentifier, a3);
+    objc_storeStrong(&v6->_contextIdentifier, identifier);
   }
 
   return v7;
@@ -264,24 +264,24 @@ LABEL_18:
   return [(HAPCharacteristicContextData *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicContextData);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicContextData *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicContextData *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

@@ -1,22 +1,22 @@
 @interface DMCEnrollmentAuthenticationViewController
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (DMCEnrollmentAuthenticationViewController)init;
 - (DMCEnrollmentAuthenticationViewControllerDelegate)delegate;
 - (void)_setupNavigationBar;
 - (void)continueButtonTapped;
 - (void)dmc_viewControllerHasBeenDismissed;
-- (void)leftBarButtonTapped:(id)a3;
-- (void)setBottomText:(id)a3;
-- (void)setCancelButtonTitle:(id)a3;
-- (void)setInProgress:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setUsername:(id)a3;
-- (void)setUsernameEditable:(BOOL)a3;
-- (void)showPasswordField:(BOOL)a3;
-- (void)textFieldDidChange:(id)a3;
+- (void)leftBarButtonTapped:(id)tapped;
+- (void)setBottomText:(id)text;
+- (void)setCancelButtonTitle:(id)title;
+- (void)setInProgress:(BOOL)progress;
+- (void)setStyle:(unint64_t)style;
+- (void)setUsername:(id)username;
+- (void)setUsernameEditable:(BOOL)editable;
+- (void)showPasswordField:(BOOL)field;
+- (void)textFieldDidChange:(id)change;
 - (void)updateContinueButtonStatus;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DMCEnrollmentAuthenticationViewController
@@ -35,11 +35,11 @@
     usernameCell = v4->_usernameCell;
     v4->_usernameCell = v5;
 
-    v7 = [(DMCEnrollmentTableViewTextFieldCell *)v4->_usernameCell textField];
-    [v7 setDelegate:v4];
+    textField = [(DMCEnrollmentTableViewTextFieldCell *)v4->_usernameCell textField];
+    [textField setDelegate:v4];
 
-    v8 = [(DMCEnrollmentTableViewTextFieldCell *)v4->_usernameCell textField];
-    [v8 addTarget:v4 action:sel_textFieldDidChange_ forControlEvents:0x20000];
+    textField2 = [(DMCEnrollmentTableViewTextFieldCell *)v4->_usernameCell textField];
+    [textField2 addTarget:v4 action:sel_textFieldDidChange_ forControlEvents:0x20000];
 
     v16[0] = v4->_usernameCell;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
@@ -49,11 +49,11 @@
     passwordCell = v4->_passwordCell;
     v4->_passwordCell = v10;
 
-    v12 = [(DMCEnrollmentTableViewTextFieldCell *)v4->_passwordCell textField];
-    [v12 setDelegate:v4];
+    textField3 = [(DMCEnrollmentTableViewTextFieldCell *)v4->_passwordCell textField];
+    [textField3 setDelegate:v4];
 
-    v13 = [(DMCEnrollmentTableViewTextFieldCell *)v4->_passwordCell textField];
-    [v13 addTarget:v4 action:sel_textFieldDidChange_ forControlEvents:0x20000];
+    textField4 = [(DMCEnrollmentTableViewTextFieldCell *)v4->_passwordCell textField];
+    [textField4 addTarget:v4 action:sel_textFieldDidChange_ forControlEvents:0x20000];
 
     v4->_usernameEditable = 1;
   }
@@ -61,26 +61,26 @@
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v23.receiver = self;
   v23.super_class = DMCEnrollmentAuthenticationViewController;
-  [(DMCEnrollmentTemplateTableViewController *)&v23 viewWillAppear:a3];
+  [(DMCEnrollmentTemplateTableViewController *)&v23 viewWillAppear:appear];
   if (([(DMCEnrollmentAuthenticationViewController *)self isBeingPresented]& 1) != 0 || [(DMCEnrollmentAuthenticationViewController *)self isMovingToParentViewController])
   {
     [(DMCEnrollmentAuthenticationViewController *)self _setupNavigationBar];
-    v4 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+    bottomView = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
 
-    if (!v4)
+    if (!bottomView)
     {
-      v5 = [(DMCEnrollmentAuthenticationViewController *)self bottomViewText];
-      v6 = [v5 length];
+      bottomViewText = [(DMCEnrollmentAuthenticationViewController *)self bottomViewText];
+      v6 = [bottomViewText length];
 
       if (v6)
       {
         v7 = [DMCEnrollmentLinkLabelView alloc];
-        v8 = [(DMCEnrollmentAuthenticationViewController *)self bottomViewText];
-        v9 = [(DMCEnrollmentLinkLabelView *)v7 initWithIcon:0 message:v8 linkMessage:0 linkHandler:0];
+        bottomViewText2 = [(DMCEnrollmentAuthenticationViewController *)self bottomViewText];
+        v9 = [(DMCEnrollmentLinkLabelView *)v7 initWithIcon:0 message:bottomViewText2 linkMessage:0 linkHandler:0];
       }
 
       else
@@ -104,9 +104,9 @@
       [(DMCEnrollmentAuthenticationViewController *)self setBottomLinkView:v9];
     }
 
-    v13 = [(DMCEnrollmentAuthenticationViewController *)self confirmationView];
+    confirmationView = [(DMCEnrollmentAuthenticationViewController *)self confirmationView];
 
-    if (!v13)
+    if (!confirmationView)
     {
       objc_initWeak(&location, self);
       v14 = [DMCEnrollmentConfirmationView alloc];
@@ -152,21 +152,21 @@ void __60__DMCEnrollmentAuthenticationViewController_viewWillAppear___block_invo
 
 - (void)dmc_viewControllerHasBeenDismissed
 {
-  v3 = [(DMCEnrollmentAuthenticationViewController *)self delegate];
-  [v3 authenticationViewControllerDidCancel:self];
+  delegate = [(DMCEnrollmentAuthenticationViewController *)self delegate];
+  [delegate authenticationViewControllerDidCancel:self];
 }
 
 - (void)_setupNavigationBar
 {
   [(DMCEnrollmentTemplateTableViewController *)self updateNavBarButtonType:1 forButtonPosition:0 enabled:1];
-  v3 = [(DMCEnrollmentAuthenticationViewController *)self cancelButtonTitle];
+  cancelButtonTitle = [(DMCEnrollmentAuthenticationViewController *)self cancelButtonTitle];
 
-  if (v3)
+  if (cancelButtonTitle)
   {
     cancelButtonTitle = self->_cancelButtonTitle;
-    v6 = [(DMCEnrollmentAuthenticationViewController *)self navigationItem];
-    v5 = [v6 leftBarButtonItem];
-    [v5 setTitle:cancelButtonTitle];
+    navigationItem = [(DMCEnrollmentAuthenticationViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setTitle:cancelButtonTitle];
   }
 }
 
@@ -174,28 +174,28 @@ void __60__DMCEnrollmentAuthenticationViewController_viewWillAppear___block_invo
 {
   if ([(DMCEnrollmentTemplateTableViewController *)self inProgress])
   {
-    v14 = [(DMCEnrollmentAuthenticationViewController *)self confirmationView];
-    [v14 setInProgress:1];
+    confirmationView = [(DMCEnrollmentAuthenticationViewController *)self confirmationView];
+    [confirmationView setInProgress:1];
   }
 
   else
   {
-    v3 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
-    v4 = [v3 textField];
-    v5 = [v4 text];
-    v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v14 = [v5 stringByTrimmingCharactersInSet:v6];
+    usernameCell = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
+    textField = [usernameCell textField];
+    text = [textField text];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    confirmationView = [text stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-    LODWORD(v3) = [(DMCEnrollmentAuthenticationViewController *)self isDisplayingPasswordCell];
-    v7 = [v14 length];
-    if (v3)
+    LODWORD(usernameCell) = [(DMCEnrollmentAuthenticationViewController *)self isDisplayingPasswordCell];
+    v7 = [confirmationView length];
+    if (usernameCell)
     {
       if (v7)
       {
-        v8 = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
-        v9 = [v8 textField];
-        v10 = [v9 text];
-        v11 = [v10 length] != 0;
+        passwordCell = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
+        textField2 = [passwordCell textField];
+        text2 = [textField2 text];
+        v11 = [text2 length] != 0;
       }
 
       else
@@ -209,23 +209,23 @@ void __60__DMCEnrollmentAuthenticationViewController_viewWillAppear___block_invo
       v11 = v7 != 0;
     }
 
-    v12 = [(DMCEnrollmentAuthenticationViewController *)self confirmationView];
-    [v12 setInProgress:0];
+    confirmationView2 = [(DMCEnrollmentAuthenticationViewController *)self confirmationView];
+    [confirmationView2 setInProgress:0];
 
-    v13 = [(DMCEnrollmentAuthenticationViewController *)self confirmationView];
-    [v13 setConfirmationButtonEnabled:v11];
+    confirmationView3 = [(DMCEnrollmentAuthenticationViewController *)self confirmationView];
+    [confirmationView3 setConfirmationButtonEnabled:v11];
   }
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  v5 = a3;
-  objc_storeStrong(&self->_username, a3);
-  v6 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
-  v7 = [v6 textField];
-  [v7 setText:v5];
+  usernameCopy = username;
+  objc_storeStrong(&self->_username, username);
+  usernameCell = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
+  textField = [usernameCell textField];
+  [textField setText:usernameCopy];
 
-  if (![v5 length])
+  if (![usernameCopy length])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -236,86 +236,86 @@ void __60__DMCEnrollmentAuthenticationViewController_viewWillAppear___block_invo
   }
 }
 
-- (void)setCancelButtonTitle:(id)a3
+- (void)setCancelButtonTitle:(id)title
 {
-  v9 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_cancelButtonTitle isEqualToString:?])
   {
-    v4 = [v9 copy];
+    v4 = [titleCopy copy];
     cancelButtonTitle = self->_cancelButtonTitle;
     self->_cancelButtonTitle = v4;
 
     v6 = self->_cancelButtonTitle;
-    v7 = [(DMCEnrollmentAuthenticationViewController *)self navigationItem];
-    v8 = [v7 leftBarButtonItem];
-    [v8 setTitle:v6];
+    navigationItem = [(DMCEnrollmentAuthenticationViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setTitle:v6];
   }
 }
 
-- (void)setBottomText:(id)a3
+- (void)setBottomText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_bottomViewText isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     bottomViewText = self->_bottomViewText;
     self->_bottomViewText = v4;
   }
 }
 
-- (void)setInProgress:(BOOL)a3
+- (void)setInProgress:(BOOL)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   v6.receiver = self;
   v6.super_class = DMCEnrollmentAuthenticationViewController;
   [(DMCEnrollmentTemplateTableViewController *)&v6 setInProgress:?];
-  [(DMCEnrollmentTemplateTableViewController *)self updateNavBarButtonType:1 forButtonPosition:0 enabled:!v3];
-  v5 = [(DMCEnrollmentAuthenticationViewController *)self bottomLinkView];
-  [v5 setEnabled:!v3];
+  [(DMCEnrollmentTemplateTableViewController *)self updateNavBarButtonType:1 forButtonPosition:0 enabled:!progressCopy];
+  bottomLinkView = [(DMCEnrollmentAuthenticationViewController *)self bottomLinkView];
+  [bottomLinkView setEnabled:!progressCopy];
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    if (a3 == 1)
+    self->_style = style;
+    if (style == 1)
     {
       [(DMCEnrollmentTemplateTableViewController *)self setIconName:@"icloud"];
       v5 = DMCLocalizedString();
       [(DMCEnrollmentTemplateTableViewController *)self setTitleText:v5];
 
-      v6 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
-      v7 = [v6 textField];
-      v8 = [v7 text];
+      usernameCell = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
+      textField = [usernameCell textField];
+      text = [textField text];
       v9 = DMCLocalizedFormat();
-      [(DMCEnrollmentTemplateTableViewController *)self setSubtitleText:v9, v8];
+      [(DMCEnrollmentTemplateTableViewController *)self setSubtitleText:v9, text];
 
-      v10 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
-      [v10 setAlpha:0.0];
+      bottomView = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+      [bottomView setAlpha:0.0];
 
       [(DMCEnrollmentAuthenticationViewController *)self setModalInPresentation:1];
     }
 
-    else if (!a3)
+    else if (!style)
     {
       [(DMCEnrollmentTemplateTableViewController *)self setIconName:@"person.lanyardcard"];
       v4 = DMCLocalizedString();
       [(DMCEnrollmentTemplateTableViewController *)self setTitleText:v4];
 
       [(DMCEnrollmentTemplateTableViewController *)self setSubtitleText:0];
-      v11 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
-      [v11 setAlpha:1.0];
+      bottomView2 = [(DMCEnrollmentTemplateTableViewController *)self bottomView];
+      [bottomView2 setAlpha:1.0];
     }
   }
 }
 
-- (void)setUsernameEditable:(BOOL)a3
+- (void)setUsernameEditable:(BOOL)editable
 {
-  if (self->_usernameEditable != a3)
+  if (self->_usernameEditable != editable)
   {
-    self->_usernameEditable = a3;
-    if (a3)
+    self->_usernameEditable = editable;
+    if (editable)
     {
       [MEMORY[0x277D75348] labelColor];
     }
@@ -325,19 +325,19 @@ void __60__DMCEnrollmentAuthenticationViewController_viewWillAppear___block_invo
       [MEMORY[0x277D75348] placeholderTextColor];
     }
     v7 = ;
-    v5 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
-    v6 = [v5 textField];
-    [v6 setTextColor:v7];
+    usernameCell = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
+    textField = [usernameCell textField];
+    [textField setTextColor:v7];
   }
 }
 
-- (void)showPasswordField:(BOOL)a3
+- (void)showPasswordField:(BOOL)field
 {
-  v3 = a3;
+  fieldCopy = field;
   v11[1] = *MEMORY[0x277D85DE8];
-  if ([(DMCEnrollmentAuthenticationViewController *)self isDisplayingPasswordCell]!= a3)
+  if ([(DMCEnrollmentAuthenticationViewController *)self isDisplayingPasswordCell]!= field)
   {
-    if (v3)
+    if (fieldCopy)
     {
       [(DMCEnrollmentAuthenticationViewController *)self setIsDisplayingPasswordCell:1];
       v10[0] = MEMORY[0x277D85DD0];
@@ -356,14 +356,14 @@ void __60__DMCEnrollmentAuthenticationViewController_viewWillAppear___block_invo
     else
     {
       [(DMCEnrollmentAuthenticationViewController *)self setIsDisplayingPasswordCell:0];
-      v5 = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
-      v11[0] = v5;
+      passwordCell = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
+      v11[0] = passwordCell;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
       [(DMCEnrollmentTemplateTableViewController *)self removeCellData:v6 fromSection:[(DMCEnrollmentAuthenticationViewController *)self userInputSection] animated:1];
 
-      v7 = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
-      v8 = [v7 textField];
-      [v8 setText:0];
+      passwordCell2 = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
+      textField = [passwordCell2 textField];
+      [textField setText:0];
     }
 
     [(DMCEnrollmentAuthenticationViewController *)self updateContinueButtonStatus];
@@ -387,52 +387,52 @@ void __63__DMCEnrollmentAuthenticationViewController_showPasswordField___block_i
   [v1 becomeFirstResponder];
 }
 
-- (void)leftBarButtonTapped:(id)a3
+- (void)leftBarButtonTapped:(id)tapped
 {
-  v4 = [(DMCEnrollmentAuthenticationViewController *)self delegate];
-  [v4 authenticationViewControllerDidCancel:self];
+  delegate = [(DMCEnrollmentAuthenticationViewController *)self delegate];
+  [delegate authenticationViewControllerDidCancel:self];
 }
 
 - (void)continueButtonTapped
 {
   if ([(DMCEnrollmentAuthenticationViewController *)self isDisplayingPasswordCell])
   {
-    v3 = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
-    v4 = [v3 textField];
-    [v4 resignFirstResponder];
+    passwordCell = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
+    textField = [passwordCell textField];
+    [textField resignFirstResponder];
 
-    v13 = [(DMCEnrollmentAuthenticationViewController *)self delegate];
-    v5 = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
-    v6 = [v5 textField];
-    v7 = [v6 text];
-    v8 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
-    v9 = [v8 textField];
-    v10 = [v9 text];
-    [v13 authenticationViewController:self didReceivePassword:v7 forUsername:v10];
+    delegate = [(DMCEnrollmentAuthenticationViewController *)self delegate];
+    passwordCell2 = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
+    textField2 = [passwordCell2 textField];
+    text = [textField2 text];
+    usernameCell = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
+    textField3 = [usernameCell textField];
+    text2 = [textField3 text];
+    [delegate authenticationViewController:self didReceivePassword:text forUsername:text2];
   }
 
   else
   {
-    v11 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
-    v12 = [v11 textField];
-    [v12 resignFirstResponder];
+    usernameCell2 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
+    textField4 = [usernameCell2 textField];
+    [textField4 resignFirstResponder];
 
-    v13 = [(DMCEnrollmentAuthenticationViewController *)self delegate];
-    v5 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
-    v6 = [v5 textField];
-    v7 = [v6 text];
-    v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v9 = [v7 stringByTrimmingCharactersInSet:v8];
-    [v13 authenticationViewController:self didReceiveUsername:v9];
+    delegate = [(DMCEnrollmentAuthenticationViewController *)self delegate];
+    passwordCell2 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
+    textField2 = [passwordCell2 textField];
+    text = [textField2 text];
+    usernameCell = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    textField3 = [text stringByTrimmingCharactersInSet:usernameCell];
+    [delegate authenticationViewController:self didReceiveUsername:textField3];
   }
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
-  v6 = [v5 textField];
-  v7 = [v4 isEqual:v6];
+  editingCopy = editing;
+  usernameCell = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
+  textField = [usernameCell textField];
+  v7 = [editingCopy isEqual:textField];
 
   if (!v7)
   {
@@ -442,21 +442,21 @@ void __63__DMCEnrollmentAuthenticationViewController_showPasswordField___block_i
   return [(DMCEnrollmentAuthenticationViewController *)self isUsernameEditable];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  returnCopy = return;
+  text = [returnCopy text];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v7 = [text stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v8 = [v7 length];
 
   if (v8)
   {
-    if (-[DMCEnrollmentAuthenticationViewController isDisplayingPasswordCell](self, "isDisplayingPasswordCell") && (-[DMCEnrollmentAuthenticationViewController usernameCell](self, "usernameCell"), v9 = objc_claimAutoreleasedReturnValue(), [v9 textField], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v4, "isEqual:", v10), v10, v9, v11))
+    if (-[DMCEnrollmentAuthenticationViewController isDisplayingPasswordCell](self, "isDisplayingPasswordCell") && (-[DMCEnrollmentAuthenticationViewController usernameCell](self, "usernameCell"), v9 = objc_claimAutoreleasedReturnValue(), [v9 textField], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(returnCopy, "isEqual:", v10), v10, v9, v11))
     {
-      v12 = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
-      v13 = [v12 textField];
-      [v13 becomeFirstResponder];
+      passwordCell = [(DMCEnrollmentAuthenticationViewController *)self passwordCell];
+      textField = [passwordCell textField];
+      [textField becomeFirstResponder];
     }
 
     else
@@ -468,19 +468,19 @@ void __63__DMCEnrollmentAuthenticationViewController_showPasswordField___block_i
   return v8 != 0;
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v12 = a3;
-  v4 = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
-  v5 = [v4 textField];
-  v6 = [v12 isEqual:v5];
+  changeCopy = change;
+  usernameCell = [(DMCEnrollmentAuthenticationViewController *)self usernameCell];
+  textField = [usernameCell textField];
+  v6 = [changeCopy isEqual:textField];
 
   if (v6)
   {
-    v7 = [v12 text];
-    if (-[DMCEnrollmentAuthenticationViewController isUsernameEditable](self, "isUsernameEditable") || (-[DMCEnrollmentAuthenticationViewController username](self, "username"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqualToString:v8], v8, (v9 & 1) != 0))
+    text = [changeCopy text];
+    if (-[DMCEnrollmentAuthenticationViewController isUsernameEditable](self, "isUsernameEditable") || (-[DMCEnrollmentAuthenticationViewController username](self, "username"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [text isEqualToString:v8], v8, (v9 & 1) != 0))
     {
-      v10 = v7;
+      v10 = text;
       username = self->_username;
       self->_username = v10;
     }
@@ -488,7 +488,7 @@ void __63__DMCEnrollmentAuthenticationViewController_showPasswordField___block_i
     else
     {
       username = [(DMCEnrollmentAuthenticationViewController *)self username];
-      [v12 setText:username];
+      [changeCopy setText:username];
     }
   }
 

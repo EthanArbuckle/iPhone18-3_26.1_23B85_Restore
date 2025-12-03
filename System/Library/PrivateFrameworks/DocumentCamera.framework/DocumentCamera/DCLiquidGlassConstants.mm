@@ -2,7 +2,7 @@
 + (UIColor)backgroundColor;
 + (double)bottomPlacardSpacingToBottomPortrait;
 + (double)gradientBlurBarHeight;
-+ (double)topPlacardSpacingFor:(id)a3 isPortrait:(BOOL)a4;
++ (double)topPlacardSpacingFor:(id)for isPortrait:(BOOL)portrait;
 + (double)topPlacardSpacingToTopLandscape;
 - (_TtC14DocumentCamera22DCLiquidGlassConstants)init;
 @end
@@ -31,18 +31,18 @@
   return *&qword_27EEE20B0 + 48.0;
 }
 
-+ (double)topPlacardSpacingFor:(id)a3 isPortrait:(BOOL)a4
++ (double)topPlacardSpacingFor:(id)for isPortrait:(BOOL)portrait
 {
-  if (a4)
+  if (portrait)
   {
-    v5 = a3;
+    forCopy = for;
     v6 = 48.0;
   }
 
   else
   {
     v7 = qword_27EEE1848;
-    v8 = a3;
+    forCopy2 = for;
     if (v7 != -1)
     {
       swift_once();
@@ -51,7 +51,7 @@
     v6 = *&qword_27EEE20B0 + 48.0;
   }
 
-  [a3 safeAreaInsets];
+  [for safeAreaInsets];
   v10 = v9;
 
   return v6 + v10;

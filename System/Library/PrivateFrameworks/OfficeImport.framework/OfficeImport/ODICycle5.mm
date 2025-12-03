@@ -1,19 +1,19 @@
 @interface ODICycle5
-+ (BOOL)map1NodeWithState:(id)a3;
-+ (CGRect)mapGSpaceWithState:(id)a3;
-+ (CGSize)nodeSizeWithState:(id)a3;
-+ (float)intersectionAngleNextToAngle:(float)a3 isAfter:(BOOL)a4 state:(id)a5;
-+ (void)addShapeForNode:(id)a3 relativeBounds:(CGRect)a4 state:(id)a5;
-+ (void)addShapeForTransition:(id)a3 startAngle:(float)a4 endAngle:(float)a5 state:(id)a6;
-+ (void)mapNode:(id)a3 index:(unsigned int)a4 state:(id)a5;
-+ (void)mapTransition:(id)a3 index:(unsigned int)a4 state:(id)a5;
++ (BOOL)map1NodeWithState:(id)state;
++ (CGRect)mapGSpaceWithState:(id)state;
++ (CGSize)nodeSizeWithState:(id)state;
++ (float)intersectionAngleNextToAngle:(float)angle isAfter:(BOOL)after state:(id)state;
++ (void)addShapeForNode:(id)node relativeBounds:(CGRect)bounds state:(id)state;
++ (void)addShapeForTransition:(id)transition startAngle:(float)angle endAngle:(float)endAngle state:(id)state;
++ (void)mapNode:(id)node index:(unsigned int)index state:(id)state;
++ (void)mapTransition:(id)transition index:(unsigned int)index state:(id)state;
 @end
 
 @implementation ODICycle5
 
-+ (CGSize)nodeSizeWithState:(id)a3
++ (CGSize)nodeSizeWithState:(id)state
 {
-  v3 = sin(3.14159265 / [a1 nodeCountWithState:a3]);
+  v3 = sin(3.14159265 / [self nodeCountWithState:state]);
   *&v3 = (v3 + v3) * 0.6;
   v4 = *&v3 * 0.7;
   v5 = *&v3;
@@ -23,9 +23,9 @@
   return result;
 }
 
-+ (CGRect)mapGSpaceWithState:(id)a3
++ (CGRect)mapGSpaceWithState:(id)state
 {
-  [a1 boundingBoxWithIsTight:0 state:a3];
+  [self boundingBoxWithIsTight:0 state:state];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -33,38 +33,38 @@
   return result;
 }
 
-+ (void)addShapeForNode:(id)a3 relativeBounds:(CGRect)a4 state:(id)a5
++ (void)addShapeForNode:(id)node relativeBounds:(CGRect)bounds state:(id)state
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v10 = a5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  nodeCopy = node;
+  stateCopy = state;
   LODWORD(v11) = 1045220557;
   v12 = [ODIDrawable shapeGeometryForRoundedRectangleWithRadius:v11];
-  v13 = [ODIDrawable addShapeWithBounds:v12 rotation:v10 geometry:x state:y, width, height, 0.0];
-  [ODIDrawable mapStyleAndTextFromPoint:v14 shape:v13 state:v10];
+  v13 = [ODIDrawable addShapeWithBounds:v12 rotation:stateCopy geometry:x state:y, width, height, 0.0];
+  [ODIDrawable mapStyleAndTextFromPoint:nodeCopy shape:v13 state:stateCopy];
 }
 
-+ (void)mapNode:(id)a3 index:(unsigned int)a4 state:(id)a5
++ (void)mapNode:(id)node index:(unsigned int)index state:(id)state
 {
-  v6 = *&a4;
-  v9 = a3;
-  v8 = a5;
-  [a1 nodeBoundsWithIndex:v6 state:v8];
-  [a1 addShapeForNode:v9 relativeBounds:v8 state:?];
+  v6 = *&index;
+  nodeCopy = node;
+  stateCopy = state;
+  [self nodeBoundsWithIndex:v6 state:stateCopy];
+  [self addShapeForNode:nodeCopy relativeBounds:stateCopy state:?];
 }
 
-+ (void)addShapeForTransition:(id)a3 startAngle:(float)a4 endAngle:(float)a5 state:(id)a6
++ (void)addShapeForTransition:(id)transition startAngle:(float)angle endAngle:(float)endAngle state:(id)state
 {
-  v10 = a3;
-  v11 = a6;
-  *&v12 = a4;
-  [a1 normalizedAngle:v12];
+  transitionCopy = transition;
+  stateCopy = state;
+  *&v12 = angle;
+  [self normalizedAngle:v12];
   v14 = v13;
-  *&v15 = a5;
-  [a1 normalizedAngle:v15];
+  *&v15 = endAngle;
+  [self normalizedAngle:v15];
   if (v16 >= v14)
   {
     v17 = v16;
@@ -85,22 +85,22 @@
   [(OITSUBezierPath *)v26 moveToPoint:vaddq_f64(*&v29.tx, vaddq_f64(*&v29.a, vmulq_f64(*&v29.c, 0)))];
   [(OITSUBezierPath *)v26 appendBezierPathWithArcWithCenter:v17 < v14 radius:*v18 startAngle:v18[1] endAngle:1.0 clockwise:v14, v17];
   v27 = [ODIDrawable shapeGeometryForBezierPath:v26 gSpace:v19, v21, v23, v25];
-  v28 = [ODIDrawable addShapeWithBounds:v27 rotation:v11 geometry:v19 state:v21, v23, v25, 0.0];
-  [a1 mapStyleForTransition:v10 shape:v28 state:v11];
+  v28 = [ODIDrawable addShapeWithBounds:v27 rotation:stateCopy geometry:v19 state:v21, v23, v25, 0.0];
+  [self mapStyleForTransition:transitionCopy shape:v28 state:stateCopy];
 }
 
-+ (float)intersectionAngleNextToAngle:(float)a3 isAfter:(BOOL)a4 state:(id)a5
++ (float)intersectionAngleNextToAngle:(float)angle isAfter:(BOOL)after state:(id)state
 {
-  v5 = a4;
+  afterCopy = after;
   v57[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  stateCopy = state;
   v57[0] = 0;
-  *&v9 = a3;
-  [a1 normalizedAngle:v9];
+  *&v9 = angle;
+  [self normalizedAngle:v9];
   v11 = v10;
-  v50 = v5;
-  v51 = v8;
-  [a1 nodeSizeWithState:v8];
+  v50 = afterCopy;
+  v51 = stateCopy;
+  [self nodeSizeWithState:stateCopy];
   v52 = v13;
   v54 = v12;
   v15 = __sincos_stret(v11 * 3.14159265 / 180.0);
@@ -157,7 +157,7 @@
 
             v40 = (atan2f(v38, v39) * 180.0) / 3.14159265;
             *&v40 = v40;
-            [a1 normalizedAngle:v40];
+            [self normalizedAngle:v40];
             *(v57 + v17++) = v25.i32[0];
           }
 
@@ -212,24 +212,24 @@
 
   while ((v44 & 1) != 0);
   v25.f32[0] = v11 + v41;
-  [a1 normalizedAngle:*v25.i64];
+  [self normalizedAngle:*v25.i64];
   v48 = v47;
 
   return v48;
 }
 
-+ (void)mapTransition:(id)a3 index:(unsigned int)a4 state:(id)a5
++ (void)mapTransition:(id)transition index:(unsigned int)index state:(id)state
 {
-  v17 = a3;
-  v8 = a5;
-  v9 = [a1 nodeCountWithState:v8];
-  v10 = a4 * 360.0 / v9 + -90.0;
+  transitionCopy = transition;
+  stateCopy = state;
+  v9 = [self nodeCountWithState:stateCopy];
+  v10 = index * 360.0 / v9 + -90.0;
   *&v10 = v10;
-  [a1 intersectionAngleNextToAngle:1 isAfter:v8 state:v10];
+  [self intersectionAngleNextToAngle:1 isAfter:stateCopy state:v10];
   v12 = v11;
-  v13 = (a4 + 1) * 360.0 / v9 + -90.0;
+  v13 = (index + 1) * 360.0 / v9 + -90.0;
   *&v13 = v13;
-  [a1 intersectionAngleNextToAngle:0 isAfter:v8 state:v13];
+  [self intersectionAngleNextToAngle:0 isAfter:stateCopy state:v13];
   if (*&v14 < v12)
   {
     *&v14 = *&v14 + 360.0;
@@ -239,19 +239,19 @@
   *&v15 = ((*&v14 - v12) * 0.7) * 0.5;
   *&v14 = v16 - *&v15;
   *&v15 = v16 + *&v15;
-  [a1 addShapeForTransition:v17 startAngle:v8 endAngle:v14 state:v15];
+  [self addShapeForTransition:transitionCopy startAngle:stateCopy endAngle:v14 state:v15];
 }
 
-+ (BOOL)map1NodeWithState:(id)a3
++ (BOOL)map1NodeWithState:(id)state
 {
-  v4 = a3;
-  [v4 setLogicalBounds:{0.0, 0.0, 1.0, 0.699999988}];
-  v5 = [v4 diagram];
-  v6 = [v5 documentPoint];
-  v7 = [v6 children];
-  v8 = [v7 objectAtIndex:0];
+  stateCopy = state;
+  [stateCopy setLogicalBounds:{0.0, 0.0, 1.0, 0.699999988}];
+  diagram = [stateCopy diagram];
+  documentPoint = [diagram documentPoint];
+  children = [documentPoint children];
+  v8 = [children objectAtIndex:0];
 
-  [a1 addShapeForNode:v8 relativeBounds:v4 state:{0.0, 0.0, 1.0, 0.699999988}];
+  [self addShapeForNode:v8 relativeBounds:stateCopy state:{0.0, 0.0, 1.0, 0.699999988}];
   return 1;
 }
 

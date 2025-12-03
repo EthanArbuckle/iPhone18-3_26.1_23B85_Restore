@@ -1,21 +1,21 @@
 @interface NFMSEIParser
-+ (unsigned)parseResponseAPDU:(id)a3;
++ (unsigned)parseResponseAPDU:(id)u;
 @end
 
 @implementation NFMSEIParser
 
-+ (unsigned)parseResponseAPDU:(id)a3
++ (unsigned)parseResponseAPDU:(id)u
 {
   v200 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (objc_msgSend_length(v5, v6, v7) >= 2)
+  uCopy = u;
+  if (objc_msgSend_length(uCopy, v6, v7) >= 2)
   {
-    v11 = objc_msgSend_length(v5, v8, v9);
-    v13 = objc_msgSend_subdataWithRange_(v5, v12, 0, v11 - 2);
-    v14 = v5;
+    v11 = objc_msgSend_length(uCopy, v8, v9);
+    v13 = objc_msgSend_subdataWithRange_(uCopy, v12, 0, v11 - 2);
+    v14 = uCopy;
     v17 = objc_msgSend_bytes(v14, v15, v16);
-    v20 = *(v17 + objc_msgSend_length(v5, v18, v19) - 2);
-    if ((*(v17 + objc_msgSend_length(v5, v21, v22) - 1) | (v20 << 8)) != 0x9000)
+    v20 = *(v17 + objc_msgSend_length(uCopy, v18, v19) - 2);
+    if ((*(v17 + objc_msgSend_length(uCopy, v21, v22) - 1) | (v20 << 8)) != 0x9000)
     {
       goto LABEL_70;
     }
@@ -28,8 +28,8 @@
       goto LABEL_101;
     }
 
-    v180 = a1;
-    v181 = v5;
+    selfCopy = self;
+    v181 = uCopy;
     v31 = 0;
     v32 = 0;
     v182 = v26 + 1;
@@ -47,9 +47,9 @@ LABEL_6:
       v95 = *(&off_27DA9DE50 + specific);
       if (v95)
       {
-        Class = object_getClass(v180);
+        Class = object_getClass(selfCopy);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(v180);
+        ClassName = object_getClassName(selfCopy);
         Name = sel_getName(a2);
         v99 = 45;
         if (isMetaClass)
@@ -61,7 +61,7 @@ LABEL_6:
         v93 = kNFLOG_DISPATCH_SPECIFIC_KEY;
       }
 
-      v5 = v181;
+      uCopy = v181;
       v100 = dispatch_get_specific(v93);
       v92 = NFSharedLogGetLogger(v100);
       if (!os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
@@ -69,7 +69,7 @@ LABEL_6:
         goto LABEL_99;
       }
 
-      v101 = object_getClass(v180);
+      v101 = object_getClass(selfCopy);
       if (class_isMetaClass(v101))
       {
         v102 = 43;
@@ -80,7 +80,7 @@ LABEL_6:
         v102 = 45;
       }
 
-      v103 = object_getClassName(v180);
+      v103 = object_getClassName(selfCopy);
       v104 = sel_getName(a2);
       *buf = 67109890;
       v189 = v102;
@@ -117,7 +117,7 @@ LABEL_6:
                     goto LABEL_72;
                   }
 
-                  v5 = v181;
+                  uCopy = v181;
                   if (*(v35 + v39) == 230)
                   {
                     v42 = *(v36 + 3);
@@ -210,7 +210,7 @@ LABEL_76:
                       v92 = v49;
 
                       v13 = v178;
-                      v5 = v181;
+                      uCopy = v181;
 LABEL_100:
 
                       goto LABEL_101;
@@ -229,9 +229,9 @@ LABEL_70:
                   v147 = *(&off_27DA9DE50 + v146);
                   if (v147)
                   {
-                    v148 = object_getClass(v180);
+                    v148 = object_getClass(selfCopy);
                     v149 = class_isMetaClass(v148);
-                    v150 = object_getClassName(v180);
+                    v150 = object_getClassName(selfCopy);
                     v174 = sel_getName(a2);
                     v151 = 45;
                     if (v149)
@@ -243,7 +243,7 @@ LABEL_70:
                     v145 = kNFLOG_DISPATCH_SPECIFIC_KEY;
                   }
 
-                  v5 = v181;
+                  uCopy = v181;
                   v152 = dispatch_get_specific(v145);
                   v92 = NFSharedLogGetLogger(v152);
                   if (!os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
@@ -251,7 +251,7 @@ LABEL_70:
                     goto LABEL_99;
                   }
 
-                  v153 = object_getClass(v180);
+                  v153 = object_getClass(selfCopy);
                   if (class_isMetaClass(v153))
                   {
                     v154 = 43;
@@ -262,7 +262,7 @@ LABEL_70:
                     v154 = 45;
                   }
 
-                  v155 = object_getClassName(v180);
+                  v155 = object_getClassName(selfCopy);
                   v156 = sel_getName(a2);
                   *buf = 67110402;
                   v189 = v154;
@@ -291,9 +291,9 @@ LABEL_43:
                 v76 = *(&off_27DA9DE50 + v75);
                 if (v76)
                 {
-                  v77 = object_getClass(v180);
+                  v77 = object_getClass(selfCopy);
                   v78 = class_isMetaClass(v77);
-                  v79 = object_getClassName(v180);
+                  v79 = object_getClassName(selfCopy);
                   v80 = sel_getName(a2);
                   v81 = 45;
                   if (v78)
@@ -309,7 +309,7 @@ LABEL_43:
                 v83 = NFSharedLogGetLogger(v82);
                 if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
                 {
-                  v84 = object_getClass(v180);
+                  v84 = object_getClass(selfCopy);
                   if (class_isMetaClass(v84))
                   {
                     v85 = 43;
@@ -320,7 +320,7 @@ LABEL_43:
                     v85 = 45;
                   }
 
-                  v86 = object_getClassName(v180);
+                  v86 = object_getClassName(selfCopy);
                   v87 = sel_getName(a2);
                   v88 = *(v35 + v39);
                   *buf = 67110146;
@@ -377,9 +377,9 @@ LABEL_43:
             v136 = *(&off_27DA9DE50 + v135);
             if (v136)
             {
-              v137 = object_getClass(v180);
+              v137 = object_getClass(selfCopy);
               v138 = class_isMetaClass(v137);
-              v168 = object_getClassName(v180);
+              v168 = object_getClassName(selfCopy);
               v173 = sel_getName(a2);
               v139 = 45;
               if (v138)
@@ -391,7 +391,7 @@ LABEL_43:
               v134 = kNFLOG_DISPATCH_SPECIFIC_KEY;
             }
 
-            v5 = v181;
+            uCopy = v181;
             v140 = dispatch_get_specific(v134);
             v92 = NFSharedLogGetLogger(v140);
             if (!os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
@@ -399,7 +399,7 @@ LABEL_43:
               goto LABEL_99;
             }
 
-            v141 = object_getClass(v180);
+            v141 = object_getClass(selfCopy);
             if (class_isMetaClass(v141))
             {
               v142 = 43;
@@ -410,7 +410,7 @@ LABEL_43:
               v142 = 45;
             }
 
-            v143 = object_getClassName(v180);
+            v143 = object_getClassName(selfCopy);
             v144 = sel_getName(a2);
             *buf = 67110146;
             v189 = v142;
@@ -493,9 +493,9 @@ LABEL_67:
             v159 = *(&off_27DA9DE50 + v158);
             if (v159)
             {
-              v160 = object_getClass(v180);
+              v160 = object_getClass(selfCopy);
               v161 = class_isMetaClass(v160);
-              v169 = object_getClassName(v180);
+              v169 = object_getClassName(selfCopy);
               v175 = sel_getName(a2);
               v162 = 45;
               if (v161)
@@ -507,7 +507,7 @@ LABEL_67:
               v157 = kNFLOG_DISPATCH_SPECIFIC_KEY;
             }
 
-            v5 = v181;
+            uCopy = v181;
             v163 = dispatch_get_specific(v157);
             v92 = NFSharedLogGetLogger(v163);
             if (!os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
@@ -515,7 +515,7 @@ LABEL_67:
               goto LABEL_99;
             }
 
-            v164 = object_getClass(v180);
+            v164 = object_getClass(selfCopy);
             if (class_isMetaClass(v164))
             {
               v165 = 43;
@@ -526,7 +526,7 @@ LABEL_67:
               v165 = 45;
             }
 
-            v166 = object_getClassName(v180);
+            v166 = object_getClassName(selfCopy);
             v167 = sel_getName(a2);
             *buf = 67110146;
             v189 = v165;
@@ -571,9 +571,9 @@ LABEL_67:
               v124 = *(&off_27DA9DE50 + v123);
               if (v124)
               {
-                v125 = object_getClass(v180);
+                v125 = object_getClass(selfCopy);
                 v126 = class_isMetaClass(v125);
-                v127 = object_getClassName(v180);
+                v127 = object_getClassName(selfCopy);
                 v172 = sel_getName(a2);
                 v128 = 45;
                 if (v126)
@@ -585,7 +585,7 @@ LABEL_67:
                 v122 = kNFLOG_DISPATCH_SPECIFIC_KEY;
               }
 
-              v5 = v181;
+              uCopy = v181;
               v129 = dispatch_get_specific(v122);
               v92 = NFSharedLogGetLogger(v129);
               if (!os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
@@ -593,7 +593,7 @@ LABEL_67:
                 goto LABEL_99;
               }
 
-              v130 = object_getClass(v180);
+              v130 = object_getClass(selfCopy);
               if (class_isMetaClass(v130))
               {
                 v131 = 43;
@@ -604,7 +604,7 @@ LABEL_67:
                 v131 = 45;
               }
 
-              v132 = object_getClassName(v180);
+              v132 = object_getClassName(selfCopy);
               v133 = sel_getName(a2);
               *buf = 67110402;
               v189 = v131;
@@ -639,7 +639,7 @@ LABEL_145:
 LABEL_72:
         v10 = 16;
 LABEL_73:
-        v5 = v181;
+        uCopy = v181;
 LABEL_101:
 
         goto LABEL_102;
@@ -655,9 +655,9 @@ LABEL_101:
       v108 = *(&off_27DA9DE50 + v107);
       if (v108)
       {
-        v109 = object_getClass(v180);
+        v109 = object_getClass(selfCopy);
         v110 = class_isMetaClass(v109);
-        v111 = object_getClassName(v180);
+        v111 = object_getClassName(selfCopy);
         v171 = sel_getName(a2);
         v112 = 45;
         if (v110)
@@ -669,7 +669,7 @@ LABEL_101:
         v106 = kNFLOG_DISPATCH_SPECIFIC_KEY;
       }
 
-      v5 = v181;
+      uCopy = v181;
       v113 = dispatch_get_specific(v106);
       v92 = NFSharedLogGetLogger(v113);
       if (!os_log_type_enabled(v92, OS_LOG_TYPE_DEFAULT))
@@ -677,7 +677,7 @@ LABEL_101:
         goto LABEL_99;
       }
 
-      v114 = object_getClass(v180);
+      v114 = object_getClass(selfCopy);
       if (class_isMetaClass(v114))
       {
         v115 = 43;
@@ -688,7 +688,7 @@ LABEL_101:
         v115 = 45;
       }
 
-      v116 = object_getClassName(v180);
+      v116 = object_getClassName(selfCopy);
       v117 = sel_getName(a2);
       *buf = 67109890;
       v189 = v115;

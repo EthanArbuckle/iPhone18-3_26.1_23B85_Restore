@@ -10,17 +10,17 @@
   v5 = a3;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"NSError+MTLModelException.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"exception != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSError+MTLModelException.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"exception != nil"}];
   }
 
   v13[0] = *MEMORY[0x1E696A578];
   v6 = [v5 description];
   v14[0] = v6;
   v13[1] = *MEMORY[0x1E696A588];
-  v7 = [v5 reason];
+  reason = [v5 reason];
   v13[2] = @"MTLModelThrownException";
-  v14[1] = v7;
+  v14[1] = reason;
   v14[2] = v5;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
 

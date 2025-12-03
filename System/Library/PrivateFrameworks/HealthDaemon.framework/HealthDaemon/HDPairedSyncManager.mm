@@ -1,39 +1,39 @@
 @interface HDPairedSyncManager
-- (HDPairedSyncManager)initWithProfile:(id)a3 queue:(id)a4;
-- (__CFString)_typeStringForSyncSession:(__CFString *)a1;
+- (HDPairedSyncManager)initWithProfile:(id)profile queue:(id)queue;
+- (__CFString)_typeStringForSyncSession:(__CFString *)session;
 - (id)diagnosticDescription;
 - (void)dealloc;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4;
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session;
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction;
 @end
 
 @implementation HDPairedSyncManager
 
-- (HDPairedSyncManager)initWithProfile:(id)a3 queue:(id)a4
+- (HDPairedSyncManager)initWithProfile:(id)profile queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = HDPairedSyncManager;
   v8 = [(HDPairedSyncManager *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_queue, a4);
-    v10 = [v6 daemon];
-    v11 = [v10 pairedSyncCoordinatorWithServiceName:@"com.apple.pairedsync.healthd"];
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_queue, queue);
+    daemon = [profileCopy daemon];
+    v11 = [daemon pairedSyncCoordinatorWithServiceName:@"com.apple.pairedsync.healthd"];
     pairedSyncCoordinator = v9->_pairedSyncCoordinator;
     v9->_pairedSyncCoordinator = v11;
 
     [(PSYSyncCoordinator *)v9->_pairedSyncCoordinator setDelegate:v9 queue:v9->_queue];
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     unfinishedSyncSessions = v9->_unfinishedSyncSessions;
-    v9->_unfinishedSyncSessions = v13;
+    v9->_unfinishedSyncSessions = weakObjectsHashTable;
 
-    v15 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v15 addObject:v9];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v9];
   }
 
   return v9;
@@ -41,33 +41,33 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-  [v3 removeObject:self];
+  mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+  [mEMORY[0x277D10AF8] removeObject:self];
 
   v4.receiver = self;
   v4.super_class = HDPairedSyncManager;
   [(HDPairedSyncManager *)&v4 dealloc];
 }
 
-- (__CFString)_typeStringForSyncSession:(__CFString *)a1
+- (__CFString)_typeStringForSyncSession:(__CFString *)session
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (session)
   {
-    v5 = [v3 syncSessionType];
-    if (v5 > 2)
+    syncSessionType = [v3 syncSessionType];
+    if (syncSessionType > 2)
     {
-      a1 = 0;
+      session = 0;
     }
 
     else
     {
-      a1 = off_278622BF0[v5];
+      session = off_278622BF0[syncSessionType];
     }
   }
 
-  return a1;
+  return session;
 }
 
 void __60__HDPairedSyncManager__queue_pairedSyncDidStartWithSession___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -196,41 +196,41 @@ void __60__HDPairedSyncManager__queue_pairedSyncDidStartWithSession___block_invo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
   v26 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v6 = a4;
+  sessionCopy = session;
   dispatch_assert_queue_V2(queue);
-  v7 = v6;
+  v7 = sessionCopy;
   _HKInitializeLogging();
   v8 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     v10 = [(HDPairedSyncManager *)self _typeStringForSyncSession:v7];
-    v11 = [v7 sessionIdentifier];
-    v12 = [v11 UUIDString];
-    v13 = [v7 pairedDevice];
-    v14 = [v13 hd_shortDescription];
+    sessionIdentifier = [v7 sessionIdentifier];
+    uUIDString = [sessionIdentifier UUIDString];
+    pairedDevice = [v7 pairedDevice];
+    hd_shortDescription = [pairedDevice hd_shortDescription];
     *buf = 138412802;
     *&buf[4] = v10;
     *&buf[12] = 2114;
-    *&buf[14] = v12;
+    *&buf[14] = uUIDString;
     *&buf[22] = 2114;
-    v23 = v14;
+    v23 = hd_shortDescription;
     _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%@ %{public}@ did start for device %{public}@", buf, 0x20u);
   }
 
   [(NSHashTable *)self->_unfinishedSyncSessions addObject:v7];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v16 = [WeakRetained nanoSyncManager];
-  v17 = [v7 pairedDevice];
+  nanoSyncManager = [WeakRetained nanoSyncManager];
+  pairedDevice2 = [v7 pairedDevice];
   *buf = MEMORY[0x277D85DD0];
   *&buf[8] = 3221225472;
   *&buf[16] = __60__HDPairedSyncManager__queue_pairedSyncDidStartWithSession___block_invoke;
   v23 = &unk_278616020;
-  v24 = self;
+  selfCopy = self;
   v25 = v7;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -239,35 +239,35 @@ void __60__HDPairedSyncManager__queue_pairedSyncDidStartWithSession___block_invo
   v20[4] = self;
   v19 = v25;
   v21 = v19;
-  [v16 pairedSyncDidBeginForDevice:v17 messagesSentHandler:buf completion:v20];
+  [nanoSyncManager pairedSyncDidBeginForDevice:pairedDevice2 messagesSentHandler:buf completion:v20];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCoordinator:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator didInvalidateSyncSession:(id)session
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_queue);
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [(HDPairedSyncManager *)self _typeStringForSyncSession:v5];
-    v9 = [v5 sessionIdentifier];
-    v10 = [v9 UUIDString];
+    v8 = [(HDPairedSyncManager *)self _typeStringForSyncSession:sessionCopy];
+    sessionIdentifier = [sessionCopy sessionIdentifier];
+    uUIDString = [sessionIdentifier UUIDString];
     v12 = 138412546;
     v13 = v8;
     v14 = 2114;
-    v15 = v10;
+    v15 = uUIDString;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_INFO, "%@ %{public}@ was invalidated", &v12, 0x16u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction
 {
   v13 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -277,14 +277,14 @@ void __60__HDPairedSyncManager__queue_pairedSyncDidStartWithSession___block_invo
   {
     pairedSyncCoordinator = self->_pairedSyncCoordinator;
     v6 = v4;
-    v7 = [(PSYSyncCoordinator *)pairedSyncCoordinator syncRestriction];
+    syncRestriction = [(PSYSyncCoordinator *)pairedSyncCoordinator syncRestriction];
     v8 = @"limit push";
-    if (v7 != 1)
+    if (syncRestriction != 1)
     {
       v8 = 0;
     }
 
-    if (!v7)
+    if (!syncRestriction)
     {
       v8 = @"none";
     }
@@ -301,17 +301,17 @@ void __60__HDPairedSyncManager__queue_pairedSyncDidStartWithSession___block_invo
 - (id)diagnosticDescription
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   if (self)
   {
-    v4 = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator syncRestriction];
+    syncRestriction = [(PSYSyncCoordinator *)self->_pairedSyncCoordinator syncRestriction];
     v5 = @"limit push";
-    if (v4 != 1)
+    if (syncRestriction != 1)
     {
       v5 = 0;
     }
 
-    if (!v4)
+    if (!syncRestriction)
     {
       v5 = @"none";
     }
@@ -322,17 +322,17 @@ void __60__HDPairedSyncManager__queue_pairedSyncDidStartWithSession___block_invo
     v5 = 0;
   }
 
-  [v3 appendFormat:@"\n\tSync Restriction: %@", v5];
-  v6 = [(NSHashTable *)self->_unfinishedSyncSessions allObjects];
-  if ([v6 count])
+  [string appendFormat:@"\n\tSync Restriction: %@", v5];
+  allObjects = [(NSHashTable *)self->_unfinishedSyncSessions allObjects];
+  if ([allObjects count])
   {
-    [v3 appendFormat:@"\n\tUnfinished Sync Sessions:"];
+    [string appendFormat:@"\n\tUnfinished Sync Sessions:"];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v19 = v6;
-    obj = v6;
+    v19 = allObjects;
+    obj = allObjects;
     v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
@@ -348,12 +348,12 @@ void __60__HDPairedSyncManager__queue_pairedSyncDidStartWithSession___block_invo
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 sessionIdentifier];
-          v13 = [v12 UUIDString];
+          sessionIdentifier = [v11 sessionIdentifier];
+          uUIDString = [sessionIdentifier UUIDString];
           v14 = [(HDPairedSyncManager *)self _typeStringForSyncSession:v11];
-          v15 = [v11 pairedDevice];
-          v16 = [v15 hd_shortDescription];
-          [v3 appendFormat:@"\n\t\t%@ (%@): %@", v13, v14, v16];
+          pairedDevice = [v11 pairedDevice];
+          hd_shortDescription = [pairedDevice hd_shortDescription];
+          [string appendFormat:@"\n\t\t%@ (%@): %@", uUIDString, v14, hd_shortDescription];
         }
 
         v8 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -362,12 +362,12 @@ void __60__HDPairedSyncManager__queue_pairedSyncDidStartWithSession___block_invo
       while (v8);
     }
 
-    v6 = v19;
+    allObjects = v19;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
 @end

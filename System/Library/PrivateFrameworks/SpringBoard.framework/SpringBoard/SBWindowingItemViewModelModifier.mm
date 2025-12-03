@@ -2,15 +2,15 @@
 - (CGPoint)perspectiveAngle;
 - (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributes;
 - (SBWindowingItemShadow)shadow;
-- (SBWindowingItemViewModelModifier)initWithItem:(id)a3;
+- (SBWindowingItemViewModelModifier)initWithItem:(id)item;
 @end
 
 @implementation SBWindowingItemViewModelModifier
 
-- (SBWindowingItemViewModelModifier)initWithItem:(id)a3
+- (SBWindowingItemViewModelModifier)initWithItem:(id)item
 {
-  v6 = a3;
-  if (!v6)
+  itemCopy = item;
+  if (!itemCopy)
   {
     [(SBWindowingItemViewModelModifier *)a2 initWithItem:?];
   }
@@ -21,7 +21,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_item, a3);
+    objc_storeStrong(&v7->_item, item);
   }
 
   return v8;

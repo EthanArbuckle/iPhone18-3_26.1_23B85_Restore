@@ -1,22 +1,22 @@
 @interface SavingsAccountDetails
-+ (id)_commonDictionaryForSavingsDetails:(id)a3;
-+ (id)_predicateForAccountPID:(int64_t)a3;
++ (id)_commonDictionaryForSavingsDetails:(id)details;
++ (id)_predicateForAccountPID:(int64_t)d;
 + (id)_propertySettersForSavingsAccountDetails;
-+ (id)accountDetailsForAccountPID:(int64_t)a3 inDatabase:(id)a4;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)insertOrUpdateSavingsAccountDetails:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5;
-+ (void)deleteSavingsAccountDetailsForAccountPID:(int64_t)a3 inDatabase:(id)a4;
++ (id)accountDetailsForAccountPID:(int64_t)d inDatabase:(id)database;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)insertOrUpdateSavingsAccountDetails:(id)details forAccountPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteSavingsAccountDetailsForAccountPID:(int64_t)d inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
-- (SavingsAccountDetails)initWithSavingsAccountDetails:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5;
+- (SavingsAccountDetails)initWithSavingsAccountDetails:(id)details forAccountPID:(int64_t)d inDatabase:(id)database;
 - (id)accountDetails;
-- (void)updateWithDetails:(id)a3;
+- (void)updateWithDetails:(id)details;
 @end
 
 @implementation SavingsAccountDetails
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"a";
   }
@@ -27,113 +27,113 @@
   }
 }
 
-- (SavingsAccountDetails)initWithSavingsAccountDetails:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5
+- (SavingsAccountDetails)initWithSavingsAccountDetails:(id)details forAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [a3 savingsDetails];
-  v10 = [objc_opt_class() _commonDictionaryForSavingsDetails:v9];
-  v11 = [NSNumber numberWithLongLong:a4];
+  databaseCopy = database;
+  savingsDetails = [details savingsDetails];
+  v10 = [objc_opt_class() _commonDictionaryForSavingsDetails:savingsDetails];
+  v11 = [NSNumber numberWithLongLong:d];
   [v10 setObjectOrNull:v11 forKey:@"a"];
 
-  v12 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:v8];
-  v13 = [(SQLiteEntity *)v12 persistentID];
-  v14 = [v9 accountSummary];
-  v15 = [SavingsAccountSummary insertSavingsAccountSummary:v14 forSavingsAccountDetailsPID:v13 inDatabase:v8];
+  v12 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:databaseCopy];
+  persistentID = [(SQLiteEntity *)v12 persistentID];
+  accountSummary = [savingsDetails accountSummary];
+  v15 = [SavingsAccountSummary insertSavingsAccountSummary:accountSummary forSavingsAccountDetailsPID:persistentID inDatabase:databaseCopy];
 
-  v16 = [v9 fccStepUpDetails];
-  if (v16)
+  fccStepUpDetails = [savingsDetails fccStepUpDetails];
+  if (fccStepUpDetails)
   {
-    v17 = [SavingsAccountStepUpDetails insertSavingsAccountStepUpDetails:v16 forSavingsAccountDetailsPID:v13 inDatabase:v8];
+    v17 = [SavingsAccountStepUpDetails insertSavingsAccountStepUpDetails:fccStepUpDetails forSavingsAccountDetailsPID:persistentID inDatabase:databaseCopy];
   }
 
   else
   {
-    [SavingsAccountStepUpDetails deleteSavingsAccountStepUpForSavingsAccountDetailsPID:v13 inDatabase:v8];
+    [SavingsAccountStepUpDetails deleteSavingsAccountStepUpForSavingsAccountDetailsPID:persistentID inDatabase:databaseCopy];
   }
 
   return v12;
 }
 
-+ (id)insertOrUpdateSavingsAccountDetails:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertOrUpdateSavingsAccountDetails:(id)details forAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _predicateForAccountPID:a4];
-  v11 = [a1 anyInDatabase:v9 predicate:v10];
+  detailsCopy = details;
+  databaseCopy = database;
+  v10 = [self _predicateForAccountPID:d];
+  v11 = [self anyInDatabase:databaseCopy predicate:v10];
 
   if (v11)
   {
-    [v11 updateWithDetails:v8];
+    [v11 updateWithDetails:detailsCopy];
   }
 
   else
   {
-    v11 = [objc_alloc(objc_opt_class()) initWithSavingsAccountDetails:v8 forAccountPID:a4 inDatabase:v9];
+    v11 = [objc_alloc(objc_opt_class()) initWithSavingsAccountDetails:detailsCopy forAccountPID:d inDatabase:databaseCopy];
   }
 
   return v11;
 }
 
-+ (void)deleteSavingsAccountDetailsForAccountPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteSavingsAccountDetailsForAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   [v8 deleteFromDatabase];
 }
 
 - (BOOL)deleteFromDatabase
 {
-  v2 = self;
-  v3 = [(SQLiteEntity *)self persistentID];
-  v4 = [(SQLiteEntity *)v2 database];
-  [SavingsAccountSummary deleteSavingsAccountSummaryForSavingsAccountDetailsPID:v3 inDatabase:v4];
-  [SavingsAccountStepUpDetails deleteSavingsAccountStepUpForSavingsAccountDetailsPID:v3 inDatabase:v4];
-  v6.receiver = v2;
+  selfCopy = self;
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)selfCopy database];
+  [SavingsAccountSummary deleteSavingsAccountSummaryForSavingsAccountDetailsPID:persistentID inDatabase:database];
+  [SavingsAccountStepUpDetails deleteSavingsAccountStepUpForSavingsAccountDetailsPID:persistentID inDatabase:database];
+  v6.receiver = selfCopy;
   v6.super_class = SavingsAccountDetails;
-  LOBYTE(v2) = [(SQLiteEntity *)&v6 deleteFromDatabase];
+  LOBYTE(selfCopy) = [(SQLiteEntity *)&v6 deleteFromDatabase];
 
-  return v2;
+  return selfCopy;
 }
 
-+ (id)accountDetailsForAccountPID:(int64_t)a3 inDatabase:(id)a4
++ (id)accountDetailsForAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 accountDetails];
+  accountDetails = [v8 accountDetails];
 
-  return v9;
+  return accountDetails;
 }
 
-- (void)updateWithDetails:(id)a3
+- (void)updateWithDetails:(id)details
 {
-  v9 = [a3 savingsDetails];
-  v4 = [objc_opt_class() _commonDictionaryForSavingsDetails:v9];
-  v5 = [(SQLiteEntity *)self persistentID];
-  v6 = [(SQLiteEntity *)self database];
-  v7 = [v9 accountSummary];
-  [SavingsAccountSummary updateSavingsAccountSummary:v7 forSavingsAccountDetailsPID:v5 inDatabase:v6];
+  savingsDetails = [details savingsDetails];
+  v4 = [objc_opt_class() _commonDictionaryForSavingsDetails:savingsDetails];
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  accountSummary = [savingsDetails accountSummary];
+  [SavingsAccountSummary updateSavingsAccountSummary:accountSummary forSavingsAccountDetailsPID:persistentID inDatabase:database];
 
-  v8 = [v9 fccStepUpDetails];
-  if (v8)
+  fccStepUpDetails = [savingsDetails fccStepUpDetails];
+  if (fccStepUpDetails)
   {
-    [SavingsAccountStepUpDetails updateSavingsAccountStepUpDetails:v8 forSavingsAccountDetailsPID:v5 inDatabase:v6];
+    [SavingsAccountStepUpDetails updateSavingsAccountStepUpDetails:fccStepUpDetails forSavingsAccountDetailsPID:persistentID inDatabase:database];
   }
 
   else
   {
-    [SavingsAccountStepUpDetails deleteSavingsAccountStepUpForSavingsAccountDetailsPID:v5 inDatabase:v6];
+    [SavingsAccountStepUpDetails deleteSavingsAccountStepUpForSavingsAccountDetailsPID:persistentID inDatabase:database];
   }
 
   [(SQLiteEntity *)self setValuesWithDictionary:v4];
 }
 
-+ (id)_predicateForAccountPID:(int64_t)a3
++ (id)_predicateForAccountPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;
@@ -179,25 +179,25 @@
 - (id)accountDetails
 {
   v3 = objc_alloc_init(PKSavingsAccountDetails);
-  v4 = [objc_opt_class() _propertySettersForSavingsAccountDetails];
-  v5 = [v4 allKeys];
+  _propertySettersForSavingsAccountDetails = [objc_opt_class() _propertySettersForSavingsAccountDetails];
+  allKeys = [_propertySettersForSavingsAccountDetails allKeys];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100102E2C;
   v14[3] = &unk_10083BEE0;
   v14[4] = self;
-  v15 = v4;
+  v15 = _propertySettersForSavingsAccountDetails;
   v16 = v3;
   v6 = v3;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v14];
+  v7 = _propertySettersForSavingsAccountDetails;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v14];
 
-  v8 = [(SQLiteEntity *)self persistentID];
-  v9 = [(SQLiteEntity *)self database];
-  v10 = [SavingsAccountSummary savingsAccountSummaryForSavingsAccountDetailsPID:v8 inDatabase:v9];
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  v10 = [SavingsAccountSummary savingsAccountSummaryForSavingsAccountDetailsPID:persistentID inDatabase:database];
   [v6 setAccountSummary:v10];
 
-  v11 = [SavingsAccountStepUpDetails savingsAccountStepUpDetailsForSavingsAccountDetailsPID:v8 inDatabase:v9];
+  v11 = [SavingsAccountStepUpDetails savingsAccountStepUpDetailsForSavingsAccountDetailsPID:persistentID inDatabase:database];
   [v6 setFccStepUpDetails:v11];
 
   v12 = [[PKAccountDetails alloc] initWithSavingsDetails:v6];
@@ -205,54 +205,54 @@
   return v12;
 }
 
-+ (id)_commonDictionaryForSavingsDetails:(id)a3
++ (id)_commonDictionaryForSavingsDetails:(id)details
 {
-  v3 = a3;
+  detailsCopy = details;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 lastUpdatedDate];
+  lastUpdatedDate = [detailsCopy lastUpdatedDate];
   v6 = _SQLValueForDate();
   [v4 setObjectOrNull:v6 forKey:@"b"];
 
-  v7 = [v3 createdDate];
+  createdDate = [detailsCopy createdDate];
   v8 = _SQLValueForDate();
   [v4 setObjectOrNull:v8 forKey:@"c"];
 
-  v9 = [v3 countryCode];
-  [v4 setObjectOrNull:v9 forKey:@"d"];
+  countryCode = [detailsCopy countryCode];
+  [v4 setObjectOrNull:countryCode forKey:@"d"];
 
-  v10 = [v3 currencyCode];
-  [v4 setObjectOrNull:v10 forKey:@"e"];
+  currencyCode = [detailsCopy currencyCode];
+  [v4 setObjectOrNull:currencyCode forKey:@"e"];
 
-  v11 = [v3 productTimeZone];
-  v12 = [v11 name];
-  [v4 setObjectOrNull:v12 forKey:@"f"];
+  productTimeZone = [detailsCopy productTimeZone];
+  name = [productTimeZone name];
+  [v4 setObjectOrNull:name forKey:@"f"];
 
-  [v4 setBool:objc_msgSend(v3 forKey:{"moreInfoRequired"), @"g"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"fccStepUpRequired"), @"fcc_step_up_required"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"termsAcceptanceRequired"), @"h"}];
-  v13 = [v3 termsIdentifier];
-  [v4 setObjectOrNull:v13 forKey:@"i"];
+  [v4 setBool:objc_msgSend(detailsCopy forKey:{"moreInfoRequired"), @"g"}];
+  [v4 setBool:objc_msgSend(detailsCopy forKey:{"fccStepUpRequired"), @"fcc_step_up_required"}];
+  [v4 setBool:objc_msgSend(detailsCopy forKey:{"termsAcceptanceRequired"), @"h"}];
+  termsIdentifier = [detailsCopy termsIdentifier];
+  [v4 setObjectOrNull:termsIdentifier forKey:@"i"];
 
-  v14 = [v3 privacyPolicyURL];
+  privacyPolicyURL = [detailsCopy privacyPolicyURL];
   v15 = _SQLValueForURL();
   [v4 setObjectOrNull:v15 forKey:@"k"];
 
-  v16 = [v3 businessChatIdentifier];
-  [v4 setObjectOrNull:v16 forKey:@"l"];
+  businessChatIdentifier = [detailsCopy businessChatIdentifier];
+  [v4 setObjectOrNull:businessChatIdentifier forKey:@"l"];
 
-  v17 = [v3 contactWebsite];
+  contactWebsite = [detailsCopy contactWebsite];
   v18 = _SQLValueForURL();
   [v4 setObjectOrNull:v18 forKey:@"m"];
 
-  v19 = [v3 contactNumber];
-  [v4 setObjectOrNull:v19 forKey:@"n"];
+  contactNumber = [detailsCopy contactNumber];
+  [v4 setObjectOrNull:contactNumber forKey:@"n"];
 
-  v20 = [v3 routingNumber];
-  [v4 setObjectOrNull:v20 forKey:@"o"];
+  routingNumber = [detailsCopy routingNumber];
+  [v4 setObjectOrNull:routingNumber forKey:@"o"];
 
-  v21 = [v3 accountNumber];
+  accountNumber = [detailsCopy accountNumber];
 
-  [v4 setObjectOrNull:v21 forKey:@"p"];
+  [v4 setObjectOrNull:accountNumber forKey:@"p"];
 
   return v4;
 }

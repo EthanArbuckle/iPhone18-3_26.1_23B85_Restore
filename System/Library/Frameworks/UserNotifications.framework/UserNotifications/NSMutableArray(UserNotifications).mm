@@ -10,7 +10,7 @@
   v5 = UNSafeCast(a4, a3);
   if (v5)
   {
-    [a1 addObject:v5];
+    [self addObject:v5];
   }
 
   return MEMORY[0x1EEE66BB8]();
@@ -21,7 +21,7 @@
   v5 = UNSafeCastAny(a4, a3);
   if (v5)
   {
-    [a1 addObject:v5];
+    [self addObject:v5];
   }
 
   return MEMORY[0x1EEE66BB8]();

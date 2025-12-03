@@ -29,11 +29,11 @@
 - (id)stsParameters
 {
   v3 = objc_alloc(getSTSTapToProvisionParametersClass[0]());
-  v4 = [MEMORY[0x1E696AB90] zero];
-  v5 = v4;
-  if (v4)
+  zero = [MEMORY[0x1E696AB90] zero];
+  v5 = zero;
+  if (zero)
   {
-    [v4 decimalValue];
+    [zero decimalValue];
   }
 
   else

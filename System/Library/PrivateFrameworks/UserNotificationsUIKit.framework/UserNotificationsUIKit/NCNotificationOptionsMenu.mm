@@ -1,64 +1,64 @@
 @interface NCNotificationOptionsMenu
 - (BOOL)_canAddToContacts;
-- (BOOL)_didApplicationBreakthroughMode:(id)a3;
-- (BOOL)_didBreakthroughMode:(id)a3;
-- (BOOL)_didContactBreakthroughMode:(id)a3;
-- (BOOL)_isApplicationAllowedForMode:(id)a3;
+- (BOOL)_didApplicationBreakthroughMode:(id)mode;
+- (BOOL)_didBreakthroughMode:(id)mode;
+- (BOOL)_didContactBreakthroughMode:(id)mode;
+- (BOOL)_isApplicationAllowedForMode:(id)mode;
 - (BOOL)_isCommunicationThread;
-- (BOOL)_isContactAllowedForMode:(id)a3;
-- (NCNotificationOptionsMenu)initWithNotificationRequest:(id)a3 presentingView:(id)a4 settingsDelegate:(id)a5 optionsForSection:(BOOL)a6;
+- (BOOL)_isContactAllowedForMode:(id)mode;
+- (NCNotificationOptionsMenu)initWithNotificationRequest:(id)request presentingView:(id)view settingsDelegate:(id)delegate optionsForSection:(BOOL)section;
 - (id)_addToContactsAction;
 - (id)_clearSectionAction;
 - (id)_criticalOffAction;
 - (id)_criticalOnAction;
-- (id)_customSettingsActionForSectionSettings:(id)a3;
+- (id)_customSettingsActionForSectionSettings:(id)settings;
 - (id)_deliverImmediatelyAcion;
 - (id)_muteForOneHourAction;
 - (id)_muteForTodayAction;
-- (id)_offActionForApplicationForMode:(id)a3;
-- (id)_offActionForContactForMode:(id)a3;
-- (id)_offActionWithSectionDisplayName:(id)a3;
-- (id)_onActionWithSectionDisplayName:(id)a3;
-- (id)_priorityFeedbackFileRadarWithFeedbackManager:(id)a3;
-- (id)_priorityFeedbackNegativeWithFeedbackManager:(id)a3;
-- (id)_priorityFeedbackPositiveWithFeedbackManager:(id)a3;
+- (id)_offActionForApplicationForMode:(id)mode;
+- (id)_offActionForContactForMode:(id)mode;
+- (id)_offActionWithSectionDisplayName:(id)name;
+- (id)_onActionWithSectionDisplayName:(id)name;
+- (id)_priorityFeedbackFileRadarWithFeedbackManager:(id)manager;
+- (id)_priorityFeedbackNegativeWithFeedbackManager:(id)manager;
+- (id)_priorityFeedbackPositiveWithFeedbackManager:(id)manager;
 - (id)_sectionIdentifier;
 - (id)_sendToDigestAction;
 - (id)_sender;
-- (id)_settingsActionForSectionSettings:(id)a3;
-- (id)_stopPrioritizingActionForRequest:(id)a3 displayName:(id)a4;
-- (id)_stopSummarizingActionForRequest:(id)a3 displayName:(id)a4;
-- (id)_summaryFeedbackNegativeWithFeedbackManager:(id)a3;
-- (id)_summaryFeedbackPositiveWithFeedbackManager:(id)a3;
-- (id)_summaryFeedbackReportConcernWithFeedbackManager:(id)a3;
+- (id)_settingsActionForSectionSettings:(id)settings;
+- (id)_stopPrioritizingActionForRequest:(id)request displayName:(id)name;
+- (id)_stopSummarizingActionForRequest:(id)request displayName:(id)name;
+- (id)_summaryFeedbackNegativeWithFeedbackManager:(id)manager;
+- (id)_summaryFeedbackPositiveWithFeedbackManager:(id)manager;
+- (id)_summaryFeedbackReportConcernWithFeedbackManager:(id)manager;
 - (id)_threadIdentifierOrNil;
 - (id)_threadName;
 - (id)_timeSensitiveOffAction;
 - (id)_timeSensitiveOnAction;
-- (id)_unmuteActionForMuteAssertionLevel:(unint64_t)a3;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (id)_unmuteActionForMuteAssertionLevel:(unint64_t)level;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)presentMenu;
 @end
 
 @implementation NCNotificationOptionsMenu
 
-- (NCNotificationOptionsMenu)initWithNotificationRequest:(id)a3 presentingView:(id)a4 settingsDelegate:(id)a5 optionsForSection:(BOOL)a6
+- (NCNotificationOptionsMenu)initWithNotificationRequest:(id)request presentingView:(id)view settingsDelegate:(id)delegate optionsForSection:(BOOL)section
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  requestCopy = request;
+  viewCopy = view;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = NCNotificationOptionsMenu;
   v14 = [(NCNotificationOptionsMenu *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_request, a3);
-    objc_storeStrong(&v15->_presentingView, a4);
-    objc_storeStrong(&v15->_settingsDelegate, a5);
-    v15->_optionsForSection = a6;
+    objc_storeStrong(&v14->_request, request);
+    objc_storeStrong(&v15->_presentingView, view);
+    objc_storeStrong(&v15->_settingsDelegate, delegate);
+    v15->_optionsForSection = section;
     v16 = [objc_alloc(MEMORY[0x277D753B8]) initWithDelegate:v15];
     menu = v15->_menu;
     v15->_menu = v16;
@@ -77,7 +77,7 @@
   [(UIContextMenuInteraction *)menu _presentMenuAtLocation:?];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -357,7 +357,7 @@ LABEL_14:
   return v81;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   v6 = objc_alloc_init(MEMORY[0x277D758D8]);
   v7 = objc_alloc_init(MEMORY[0x277D75208]);
@@ -365,14 +365,14 @@ LABEL_14:
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(UIView *)self->_presentingView visiblePathForPreview];
-    [v6 setVisiblePath:v8];
+    visiblePathForPreview = [(UIView *)self->_presentingView visiblePathForPreview];
+    [v6 setVisiblePath:visiblePathForPreview];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [v6 setBackgroundColor:v8];
+    visiblePathForPreview = [MEMORY[0x277D75348] clearColor];
+    [v6 setBackgroundColor:visiblePathForPreview];
   }
 
   v9 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:self->_presentingView parameters:v6];
@@ -380,22 +380,22 @@ LABEL_14:
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = [(NCNotificationOptionsMenu *)self settingsDelegate:a3];
+  v6 = [(NCNotificationOptionsMenu *)self settingsDelegate:interaction];
   [v6 notificationOptionsMenuWillDismiss:self];
 }
 
-- (id)_customSettingsActionForSectionSettings:(id)a3
+- (id)_customSettingsActionForSectionSettings:(id)settings
 {
-  v4 = a3;
-  if ([v4 showsCustomSettingsLink])
+  settingsCopy = settings;
+  if ([settingsCopy showsCustomSettingsLink])
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = NCUserNotificationsUIKitFrameworkBundle();
     v7 = [v6 localizedStringForKey:@"NOTIFICATION_OPTIONS_CONFIGURE_IN_APP_FORMAT" value:&stru_282FE84F8 table:0];
-    v8 = [v4 displayName];
-    v9 = [v5 stringWithFormat:v7, v8];
+    displayName = [settingsCopy displayName];
+    v9 = [v5 stringWithFormat:v7, displayName];
 
     objc_initWeak(&location, self);
     v10 = MEMORY[0x277D750C8];
@@ -405,7 +405,7 @@ LABEL_14:
     v14[2] = __69__NCNotificationOptionsMenu__customSettingsActionForSectionSettings___block_invoke;
     v14[3] = &unk_278371940;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
+    v15 = settingsCopy;
     v12 = [v10 actionWithTitle:v9 image:v11 identifier:0 handler:v14];
 
     objc_destroyWeak(&v16);
@@ -469,12 +469,12 @@ void __69__NCNotificationOptionsMenu__customSettingsActionForSectionSettings___b
   }
 }
 
-- (id)_settingsActionForSectionSettings:(id)a3
+- (id)_settingsActionForSectionSettings:(id)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [v3 sectionIdentifier];
-  v6 = [v4 nc_notificationSettingsURLForSectionIdentifier:v5 isAppClip:{objc_msgSend(v3, "isAppClip")}];
+  sectionIdentifier = [settingsCopy sectionIdentifier];
+  v6 = [v4 nc_notificationSettingsURLForSectionIdentifier:sectionIdentifier isAppClip:{objc_msgSend(settingsCopy, "isAppClip")}];
 
   v7 = MEMORY[0x277D750C8];
   v8 = NCUserNotificationsUIKitFrameworkBundle();
@@ -485,8 +485,8 @@ void __69__NCNotificationOptionsMenu__customSettingsActionForSectionSettings___b
   v15[2] = __63__NCNotificationOptionsMenu__settingsActionForSectionSettings___block_invoke;
   v15[3] = &unk_278371968;
   v16 = v6;
-  v17 = v3;
-  v11 = v3;
+  v17 = settingsCopy;
+  v11 = settingsCopy;
   v12 = v6;
   v13 = [v7 actionWithTitle:v9 image:v10 identifier:0 handler:v15];
 
@@ -540,11 +540,11 @@ void __63__NCNotificationOptionsMenu__settingsActionForSectionSettings___block_i
   }
 }
 
-- (id)_stopSummarizingActionForRequest:(id)a3 displayName:(id)a4
+- (id)_stopSummarizingActionForRequest:(id)request displayName:(id)name
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = MEMORY[0x277D755B8];
-  v7 = a4;
+  nameCopy = name;
   v8 = NCUserNotificationsUIKitFrameworkBundle();
   v9 = [v6 imageNamed:@"text.line.3.summary.badge.xmark" inBundle:v8];
   v10 = [v9 imageWithRenderingMode:2];
@@ -553,15 +553,15 @@ void __63__NCNotificationOptionsMenu__settingsActionForSectionSettings___block_i
   v12 = MEMORY[0x277CCACA8];
   v13 = NCUserNotificationsUIKitFrameworkBundle();
   v14 = [v13 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_SUMMARY" value:&stru_282FE84F8 table:0];
-  v15 = [v12 stringWithFormat:v14, v7];
+  nameCopy = [v12 stringWithFormat:v14, nameCopy];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __74__NCNotificationOptionsMenu__stopSummarizingActionForRequest_displayName___block_invoke;
   v19[3] = &unk_278371990;
-  v20 = v5;
-  v16 = v5;
-  v17 = [v11 actionWithTitle:v15 image:v10 identifier:0 handler:v19];
+  v20 = requestCopy;
+  v16 = requestCopy;
+  v17 = [v11 actionWithTitle:nameCopy image:v10 identifier:0 handler:v19];
 
   return v17;
 }
@@ -581,11 +581,11 @@ void __74__NCNotificationOptionsMenu__stopSummarizingActionForRequest_displayNam
   [v8 replaceNotificationSettings:v6 forNotificationSourceIdentifier:v7];
 }
 
-- (id)_stopPrioritizingActionForRequest:(id)a3 displayName:(id)a4
+- (id)_stopPrioritizingActionForRequest:(id)request displayName:(id)name
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = MEMORY[0x277D755B8];
-  v7 = a4;
+  nameCopy = name;
   v8 = NCUserNotificationsUIKitFrameworkBundle();
   v9 = [v6 imageNamed:@"apple.intelligence.badge.xmark" inBundle:v8];
   v10 = [v9 imageWithRenderingMode:2];
@@ -594,15 +594,15 @@ void __74__NCNotificationOptionsMenu__stopSummarizingActionForRequest_displayNam
   v12 = MEMORY[0x277CCACA8];
   v13 = NCUserNotificationsUIKitFrameworkBundle();
   v14 = [v13 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_PRIORITY" value:&stru_282FE84F8 table:0];
-  v15 = [v12 stringWithFormat:v14, v7];
+  nameCopy = [v12 stringWithFormat:v14, nameCopy];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __75__NCNotificationOptionsMenu__stopPrioritizingActionForRequest_displayName___block_invoke;
   v19[3] = &unk_278371990;
-  v20 = v5;
-  v16 = v5;
-  v17 = [v11 actionWithTitle:v15 image:v10 identifier:0 handler:v19];
+  v20 = requestCopy;
+  v16 = requestCopy;
+  v17 = [v11 actionWithTitle:nameCopy image:v10 identifier:0 handler:v19];
 
   return v17;
 }
@@ -622,22 +622,22 @@ void __75__NCNotificationOptionsMenu__stopPrioritizingActionForRequest_displayNa
   [v8 replaceNotificationSettings:v6 forNotificationSourceIdentifier:v7];
 }
 
-- (id)_offActionWithSectionDisplayName:(id)a3
+- (id)_offActionWithSectionDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_initWeak(&location, self);
   if ([(NCNotificationOptionsMenu *)self _isCommunicationThread])
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = NCUserNotificationsUIKitFrameworkBundle();
     v7 = [v6 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_ALL_FORMAT" value:&stru_282FE84F8 table:0];
-    v8 = [v5 stringWithFormat:v7, v4];
+    nameCopy = [v5 stringWithFormat:v7, nameCopy];
   }
 
   else
   {
     v6 = NCUserNotificationsUIKitFrameworkBundle();
-    v8 = [v6 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF" value:&stru_282FE84F8 table:0];
+    nameCopy = [v6 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF" value:&stru_282FE84F8 table:0];
   }
 
   v9 = MEMORY[0x277D750C8];
@@ -647,7 +647,7 @@ void __75__NCNotificationOptionsMenu__stopPrioritizingActionForRequest_displayNa
   v13[2] = __62__NCNotificationOptionsMenu__offActionWithSectionDisplayName___block_invoke;
   v13[3] = &unk_27836F428;
   objc_copyWeak(&v14, &location);
-  v11 = [v9 actionWithTitle:v8 image:v10 identifier:0 handler:v13];
+  v11 = [v9 actionWithTitle:nameCopy image:v10 identifier:0 handler:v13];
 
   [v11 setAttributes:2];
   objc_destroyWeak(&v14);
@@ -677,22 +677,22 @@ void __62__NCNotificationOptionsMenu__offActionWithSectionDisplayName___block_in
   }
 }
 
-- (id)_onActionWithSectionDisplayName:(id)a3
+- (id)_onActionWithSectionDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_initWeak(&location, self);
   if ([(NCNotificationOptionsMenu *)self _isCommunicationThread])
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = NCUserNotificationsUIKitFrameworkBundle();
     v7 = [v6 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_ON_ALL_FORMAT" value:&stru_282FE84F8 table:0];
-    v8 = [v5 stringWithFormat:v7, v4];
+    nameCopy = [v5 stringWithFormat:v7, nameCopy];
   }
 
   else
   {
     v6 = NCUserNotificationsUIKitFrameworkBundle();
-    v8 = [v6 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_ON" value:&stru_282FE84F8 table:0];
+    nameCopy = [v6 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_ON" value:&stru_282FE84F8 table:0];
   }
 
   v9 = MEMORY[0x277D750C8];
@@ -702,7 +702,7 @@ void __62__NCNotificationOptionsMenu__offActionWithSectionDisplayName___block_in
   v13[2] = __61__NCNotificationOptionsMenu__onActionWithSectionDisplayName___block_invoke;
   v13[3] = &unk_27836F428;
   objc_copyWeak(&v14, &location);
-  v11 = [v9 actionWithTitle:v8 image:v10 identifier:0 handler:v13];
+  v11 = [v9 actionWithTitle:nameCopy image:v10 identifier:0 handler:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -848,110 +848,110 @@ void __51__NCNotificationOptionsMenu__timeSensitiveOnAction__block_invoke(uint64
   [v1 notificationOptionsMenu:WeakRetained setAllowsTimeSensitive:1 forNotificationRequest:v2 withSectionIdentifier:v3];
 }
 
-- (id)_summaryFeedbackPositiveWithFeedbackManager:(id)a3
+- (id)_summaryFeedbackPositiveWithFeedbackManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = MEMORY[0x277D750C8];
   v5 = NCUserNotificationsUIKitFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"NOTIFICATION_OPTIONS_SUMMARY_FEEDBACK_POSITIVE" value:&stru_282FE84F8 table:0];
-  v7 = [v3 thumbsUpImage];
+  thumbsUpImage = [managerCopy thumbsUpImage];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__NCNotificationOptionsMenu__summaryFeedbackPositiveWithFeedbackManager___block_invoke;
   v11[3] = &unk_278371990;
-  v12 = v3;
-  v8 = v3;
-  v9 = [v4 actionWithTitle:v6 image:v7 identifier:0 handler:v11];
+  v12 = managerCopy;
+  v8 = managerCopy;
+  v9 = [v4 actionWithTitle:v6 image:thumbsUpImage identifier:0 handler:v11];
 
   return v9;
 }
 
-- (id)_summaryFeedbackNegativeWithFeedbackManager:(id)a3
+- (id)_summaryFeedbackNegativeWithFeedbackManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = MEMORY[0x277D750C8];
   v5 = NCUserNotificationsUIKitFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"NOTIFICATION_OPTIONS_SUMMARY_FEEDBACK_NEGATIVE" value:&stru_282FE84F8 table:0];
-  v7 = [v3 thumbsDownImage];
+  thumbsDownImage = [managerCopy thumbsDownImage];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __73__NCNotificationOptionsMenu__summaryFeedbackNegativeWithFeedbackManager___block_invoke;
   v11[3] = &unk_278371990;
-  v12 = v3;
-  v8 = v3;
-  v9 = [v4 actionWithTitle:v6 image:v7 identifier:0 handler:v11];
+  v12 = managerCopy;
+  v8 = managerCopy;
+  v9 = [v4 actionWithTitle:v6 image:thumbsDownImage identifier:0 handler:v11];
 
   return v9;
 }
 
-- (id)_summaryFeedbackReportConcernWithFeedbackManager:(id)a3
+- (id)_summaryFeedbackReportConcernWithFeedbackManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = MEMORY[0x277D750C8];
   v5 = NCUserNotificationsUIKitFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"NOTIFICATION_OPTIONS_SUMMARY_FEEDBACK_REPORT_CONCERN" value:&stru_282FE84F8 table:0];
-  v7 = [v3 reportConcernImage];
+  reportConcernImage = [managerCopy reportConcernImage];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__NCNotificationOptionsMenu__summaryFeedbackReportConcernWithFeedbackManager___block_invoke;
   v11[3] = &unk_278371990;
-  v12 = v3;
-  v8 = v3;
-  v9 = [v4 actionWithTitle:v6 image:v7 identifier:0 handler:v11];
+  v12 = managerCopy;
+  v8 = managerCopy;
+  v9 = [v4 actionWithTitle:v6 image:reportConcernImage identifier:0 handler:v11];
 
   return v9;
 }
 
-- (id)_priorityFeedbackPositiveWithFeedbackManager:(id)a3
+- (id)_priorityFeedbackPositiveWithFeedbackManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = MEMORY[0x277D750C8];
   v5 = NCUserNotificationsUIKitFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"NOTIFICATION_OPTIONS_PRIORITY_FEEDBACK_POSITIVE" value:&stru_282FE84F8 table:0];
-  v7 = [v3 thumbsUpImage];
+  thumbsUpImage = [managerCopy thumbsUpImage];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__NCNotificationOptionsMenu__priorityFeedbackPositiveWithFeedbackManager___block_invoke;
   v11[3] = &unk_278371990;
-  v12 = v3;
-  v8 = v3;
-  v9 = [v4 actionWithTitle:v6 image:v7 identifier:0 handler:v11];
+  v12 = managerCopy;
+  v8 = managerCopy;
+  v9 = [v4 actionWithTitle:v6 image:thumbsUpImage identifier:0 handler:v11];
 
   return v9;
 }
 
-- (id)_priorityFeedbackNegativeWithFeedbackManager:(id)a3
+- (id)_priorityFeedbackNegativeWithFeedbackManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = MEMORY[0x277D750C8];
   v5 = NCUserNotificationsUIKitFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"NOTIFICATION_OPTIONS_PRIORITY_FEEDBACK_NEGATIVE" value:&stru_282FE84F8 table:0];
-  v7 = [v3 thumbsDownImage];
+  thumbsDownImage = [managerCopy thumbsDownImage];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__NCNotificationOptionsMenu__priorityFeedbackNegativeWithFeedbackManager___block_invoke;
   v11[3] = &unk_278371990;
-  v12 = v3;
-  v8 = v3;
-  v9 = [v4 actionWithTitle:v6 image:v7 identifier:0 handler:v11];
+  v12 = managerCopy;
+  v8 = managerCopy;
+  v9 = [v4 actionWithTitle:v6 image:thumbsDownImage identifier:0 handler:v11];
 
   return v9;
 }
 
-- (id)_priorityFeedbackFileRadarWithFeedbackManager:(id)a3
+- (id)_priorityFeedbackFileRadarWithFeedbackManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = MEMORY[0x277D750C8];
   v5 = NCUserNotificationsUIKitFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"NOTIFICATION_OPTIONS_PRIORITY_FEEDBACK_REPORT_CONCERN" value:&stru_282FE84F8 table:0];
-  v7 = [v3 reportConcernImage];
+  reportConcernImage = [managerCopy reportConcernImage];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__NCNotificationOptionsMenu__priorityFeedbackFileRadarWithFeedbackManager___block_invoke;
   v11[3] = &unk_278371990;
-  v12 = v3;
-  v8 = v3;
-  v9 = [v4 actionWithTitle:v6 image:v7 identifier:0 handler:v11];
+  v12 = managerCopy;
+  v8 = managerCopy;
+  v9 = [v4 actionWithTitle:v6 image:reportConcernImage identifier:0 handler:v11];
 
   return v9;
 }
@@ -1018,16 +1018,16 @@ void __48__NCNotificationOptionsMenu__muteForTodayAction__block_invoke(uint64_t 
   [v1 notificationOptionsMenu:WeakRetained setMuted:1 untilDate:v2 forNotificationRequest:v3 withSectionIdentifier:v4 threadIdentifier:v5];
 }
 
-- (id)_unmuteActionForMuteAssertionLevel:(unint64_t)a3
+- (id)_unmuteActionForMuteAssertionLevel:(unint64_t)level
 {
-  if (a3 == 1)
+  if (level == 1)
   {
-    v4 = [(NCNotificationOptionsMenu *)self _threadIdentifierOrNil];
+    _threadIdentifierOrNil = [(NCNotificationOptionsMenu *)self _threadIdentifierOrNil];
   }
 
   else
   {
-    v4 = 0;
+    _threadIdentifierOrNil = 0;
   }
 
   objc_initWeak(&location, self);
@@ -1040,7 +1040,7 @@ void __48__NCNotificationOptionsMenu__muteForTodayAction__block_invoke(uint64_t 
   v12[2] = __64__NCNotificationOptionsMenu__unmuteActionForMuteAssertionLevel___block_invoke;
   v12[3] = &unk_278371940;
   objc_copyWeak(&v14, &location);
-  v9 = v4;
+  v9 = _threadIdentifierOrNil;
   v13 = v9;
   v10 = [v5 actionWithTitle:v7 image:v8 identifier:0 handler:v12];
 
@@ -1174,25 +1174,25 @@ void __48__NCNotificationOptionsMenu__clearSectionAction__block_invoke(uint64_t 
   [v1 notificationOptionsMenu:WeakRetained requestsClearingSectionWithIdentifier:v2];
 }
 
-- (id)_offActionForApplicationForMode:(id)a3
+- (id)_offActionForApplicationForMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   objc_initWeak(&location, self);
-  v5 = [v4 mode];
-  v6 = [v5 semanticType];
+  mode = [modeCopy mode];
+  semanticType = [mode semanticType];
 
-  if (v6 > 3)
+  if (semanticType > 3)
   {
-    if (v6 > 5)
+    if (semanticType > 5)
     {
-      if (v6 == 6)
+      if (semanticType == 6)
       {
         v7 = NCUserNotificationsUIKitFrameworkBundle();
         v8 = [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_APPLICATION_DURING_READING" value:&stru_282FE84F8 table:0];
         goto LABEL_19;
       }
 
-      if (v6 == 7)
+      if (semanticType == 7)
       {
         v7 = NCUserNotificationsUIKitFrameworkBundle();
         v8 = [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_APPLICATION_DURING_GAMING" value:&stru_282FE84F8 table:0];
@@ -1203,7 +1203,7 @@ void __48__NCNotificationOptionsMenu__clearSectionAction__block_invoke(uint64_t 
     }
 
     NCUserNotificationsUIKitFrameworkBundle();
-    if (v6 == 4)
+    if (semanticType == 4)
       v7 = {;
       [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_APPLICATION_DURING_WORK" value:&stru_282FE84F8 table:0];
     }
@@ -1217,10 +1217,10 @@ void __48__NCNotificationOptionsMenu__clearSectionAction__block_invoke(uint64_t 
     goto LABEL_19;
   }
 
-  if (v6 > 1)
+  if (semanticType > 1)
   {
     NCUserNotificationsUIKitFrameworkBundle();
-    if (v6 == 2)
+    if (semanticType == 2)
       v7 = {;
       [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_APPLICATION_DURING_DRIVING" value:&stru_282FE84F8 table:0];
     }
@@ -1233,14 +1233,14 @@ void __48__NCNotificationOptionsMenu__clearSectionAction__block_invoke(uint64_t 
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!semanticType)
   {
     v7 = NCUserNotificationsUIKitFrameworkBundle();
     v8 = [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_APPLICATION_DURING_DO_NOT_DISTURB" value:&stru_282FE84F8 table:0];
     goto LABEL_19;
   }
 
-  if (v6 == 1)
+  if (semanticType == 1)
   {
     v7 = NCUserNotificationsUIKitFrameworkBundle();
     v8 = [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_APPLICATION_DURING_SLEEP" value:&stru_282FE84F8 table:0];
@@ -1253,22 +1253,22 @@ LABEL_23:
   v17 = MEMORY[0x277CCACA8];
   v7 = NCUserNotificationsUIKitFrameworkBundle();
   v18 = [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_APPLICATION_DURING_FOCUS" value:&stru_282FE84F8 table:0];
-  v19 = [v4 mode];
-  v20 = [v19 name];
-  v9 = [v17 stringWithFormat:v18, v20];
+  mode2 = [modeCopy mode];
+  name = [mode2 name];
+  v9 = [v17 stringWithFormat:v18, name];
 
 LABEL_20:
-  v10 = [v4 mode];
-  v11 = [v10 symbolImageName];
+  mode3 = [modeCopy mode];
+  symbolImageName = [mode3 symbolImageName];
 
   v12 = MEMORY[0x277D750C8];
-  v13 = [MEMORY[0x277D755B8] systemImageNamed:v11];
+  v13 = [MEMORY[0x277D755B8] systemImageNamed:symbolImageName];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __61__NCNotificationOptionsMenu__offActionForApplicationForMode___block_invoke;
   v21[3] = &unk_278371940;
   objc_copyWeak(&v23, &location);
-  v14 = v4;
+  v14 = modeCopy;
   v22 = v14;
   v15 = [v12 actionWithTitle:v9 image:v13 identifier:0 handler:v21];
 
@@ -1293,25 +1293,25 @@ void __61__NCNotificationOptionsMenu__offActionForApplicationForMode___block_inv
   [v6 notificationOptionsMenu:WeakRetained setModeConfiguration:v2];
 }
 
-- (id)_offActionForContactForMode:(id)a3
+- (id)_offActionForContactForMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   objc_initWeak(&location, self);
-  v5 = [v4 mode];
-  v6 = [v5 semanticType];
+  mode = [modeCopy mode];
+  semanticType = [mode semanticType];
 
-  if (v6 > 3)
+  if (semanticType > 3)
   {
-    if (v6 > 5)
+    if (semanticType > 5)
     {
-      if (v6 == 6)
+      if (semanticType == 6)
       {
         v7 = NCUserNotificationsUIKitFrameworkBundle();
         v8 = [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_CONTACT_DURING_READING" value:&stru_282FE84F8 table:0];
         goto LABEL_19;
       }
 
-      if (v6 == 7)
+      if (semanticType == 7)
       {
         v7 = NCUserNotificationsUIKitFrameworkBundle();
         v8 = [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_CONTACT_DURING_GAMING" value:&stru_282FE84F8 table:0];
@@ -1322,7 +1322,7 @@ void __61__NCNotificationOptionsMenu__offActionForApplicationForMode___block_inv
     }
 
     NCUserNotificationsUIKitFrameworkBundle();
-    if (v6 == 4)
+    if (semanticType == 4)
       v7 = {;
       [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_CONTACT_DURING_WORK" value:&stru_282FE84F8 table:0];
     }
@@ -1336,10 +1336,10 @@ void __61__NCNotificationOptionsMenu__offActionForApplicationForMode___block_inv
     goto LABEL_19;
   }
 
-  if (v6 > 1)
+  if (semanticType > 1)
   {
     NCUserNotificationsUIKitFrameworkBundle();
-    if (v6 == 2)
+    if (semanticType == 2)
       v7 = {;
       [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_CONTACT_DURING_DRIVING" value:&stru_282FE84F8 table:0];
     }
@@ -1352,14 +1352,14 @@ void __61__NCNotificationOptionsMenu__offActionForApplicationForMode___block_inv
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!semanticType)
   {
     v7 = NCUserNotificationsUIKitFrameworkBundle();
     v8 = [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_CONTACT_DURING_DO_NOT_DISTURB" value:&stru_282FE84F8 table:0];
     goto LABEL_19;
   }
 
-  if (v6 == 1)
+  if (semanticType == 1)
   {
     v7 = NCUserNotificationsUIKitFrameworkBundle();
     v8 = [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_CONTACT_DURING_SLEEP" value:&stru_282FE84F8 table:0];
@@ -1372,24 +1372,24 @@ LABEL_23:
   v17 = MEMORY[0x277CCACA8];
   v7 = NCUserNotificationsUIKitFrameworkBundle();
   v18 = [v7 localizedStringForKey:@"NOTIFICATION_OPTIONS_TURN_OFF_CONTACT_DURING_FOCUS" value:&stru_282FE84F8 table:0];
-  v19 = [v4 mode];
-  v20 = [v19 name];
-  v9 = [v17 stringWithFormat:v18, v20];
+  mode2 = [modeCopy mode];
+  name = [mode2 name];
+  v9 = [v17 stringWithFormat:v18, name];
 
 LABEL_20:
-  v10 = [v4 mode];
-  v11 = [v10 symbolImageName];
+  mode3 = [modeCopy mode];
+  symbolImageName = [mode3 symbolImageName];
 
   v12 = MEMORY[0x277D750C8];
-  v13 = [MEMORY[0x277D755B8] systemImageNamed:v11];
+  v13 = [MEMORY[0x277D755B8] systemImageNamed:symbolImageName];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __57__NCNotificationOptionsMenu__offActionForContactForMode___block_invoke;
   v21[3] = &unk_2783719B8;
   objc_copyWeak(&v24, &location);
-  v14 = v4;
+  v14 = modeCopy;
   v22 = v14;
-  v23 = self;
+  selfCopy = self;
   v15 = [v12 actionWithTitle:v9 image:v13 identifier:0 handler:v21];
 
   objc_destroyWeak(&v24);
@@ -1418,82 +1418,82 @@ void __57__NCNotificationOptionsMenu__offActionForContactForMode___block_invoke(
   [v11 notificationOptionsMenu:WeakRetained setModeConfiguration:v2];
 }
 
-- (BOOL)_didBreakthroughMode:(id)a3
+- (BOOL)_didBreakthroughMode:(id)mode
 {
-  v4 = [a3 mode];
-  v5 = [v4 identifier];
+  mode = [mode mode];
+  identifier = [mode identifier];
 
-  v6 = [(NCNotificationOptionsMenu *)self request];
-  v7 = [v6 alertOptions];
+  request = [(NCNotificationOptionsMenu *)self request];
+  alertOptions = [request alertOptions];
 
-  if ([v7 shouldSuppress])
+  if ([alertOptions shouldSuppress])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v7 activeModeUUID];
-    v8 = [v5 isEqual:v9];
+    activeModeUUID = [alertOptions activeModeUUID];
+    v8 = [identifier isEqual:activeModeUUID];
   }
 
   return v8;
 }
 
-- (BOOL)_didApplicationBreakthroughMode:(id)a3
+- (BOOL)_didApplicationBreakthroughMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(NCNotificationOptionsMenu *)self request];
-  v6 = [v5 alertOptions];
-  v7 = [v6 reason];
+  modeCopy = mode;
+  request = [(NCNotificationOptionsMenu *)self request];
+  alertOptions = [request alertOptions];
+  reason = [alertOptions reason];
 
-  v8 = [(NCNotificationOptionsMenu *)self _didBreakthroughMode:v4];
-  return v7 == 2 && v8;
+  v8 = [(NCNotificationOptionsMenu *)self _didBreakthroughMode:modeCopy];
+  return reason == 2 && v8;
 }
 
-- (BOOL)_didContactBreakthroughMode:(id)a3
+- (BOOL)_didContactBreakthroughMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(NCNotificationOptionsMenu *)self request];
-  v6 = [v5 alertOptions];
-  v7 = [v6 reason];
+  modeCopy = mode;
+  request = [(NCNotificationOptionsMenu *)self request];
+  alertOptions = [request alertOptions];
+  reason = [alertOptions reason];
 
-  v8 = [(NCNotificationOptionsMenu *)self _didBreakthroughMode:v4];
-  return v7 == 3 && v8;
+  v8 = [(NCNotificationOptionsMenu *)self _didBreakthroughMode:modeCopy];
+  return reason == 3 && v8;
 }
 
-- (BOOL)_isApplicationAllowedForMode:(id)a3
+- (BOOL)_isApplicationAllowedForMode:(id)mode
 {
-  v4 = [a3 configuration];
-  v5 = [(NCNotificationOptionsMenu *)self request];
-  v6 = [v5 sectionIdentifier];
+  configuration = [mode configuration];
+  request = [(NCNotificationOptionsMenu *)self request];
+  sectionIdentifier = [request sectionIdentifier];
 
-  LOBYTE(v5) = [v4 exceptionForApplication:v6] == 0;
-  return v5;
+  LOBYTE(request) = [configuration exceptionForApplication:sectionIdentifier] == 0;
+  return request;
 }
 
-- (BOOL)_isContactAllowedForMode:(id)a3
+- (BOOL)_isContactAllowedForMode:(id)mode
 {
-  v4 = [a3 configuration];
-  v5 = [(NCNotificationOptionsMenu *)self request];
-  v6 = [v5 content];
-  v7 = [v6 communicationContext];
-  v8 = [v7 sender];
-  v9 = [v8 cnContactIdentifier];
+  configuration = [mode configuration];
+  request = [(NCNotificationOptionsMenu *)self request];
+  content = [request content];
+  communicationContext = [content communicationContext];
+  sender = [communicationContext sender];
+  cnContactIdentifier = [sender cnContactIdentifier];
 
   v10 = objc_alloc_init(MEMORY[0x277D05A30]);
-  [v10 setContactIdentifier:v9];
-  LOBYTE(v6) = [v4 exceptionForContactHandle:v10] == 0;
+  [v10 setContactIdentifier:cnContactIdentifier];
+  LOBYTE(content) = [configuration exceptionForContactHandle:v10] == 0;
 
-  return v6;
+  return content;
 }
 
 - (id)_sectionIdentifier
 {
-  v2 = [(NCNotificationOptionsMenu *)self request];
-  v3 = [v2 topLevelSectionIdentifier];
+  request = [(NCNotificationOptionsMenu *)self request];
+  topLevelSectionIdentifier = [request topLevelSectionIdentifier];
 
-  return v3;
+  return topLevelSectionIdentifier;
 }
 
 - (BOOL)_isCommunicationThread
@@ -1503,71 +1503,71 @@ void __57__NCNotificationOptionsMenu__offActionForContactForMode___block_invoke(
     return 0;
   }
 
-  v4 = [(NCNotificationOptionsMenu *)self request];
-  v5 = [v4 content];
-  v6 = [v5 isMessagingType];
+  request = [(NCNotificationOptionsMenu *)self request];
+  content = [request content];
+  isMessagingType = [content isMessagingType];
 
-  return v6;
+  return isMessagingType;
 }
 
 - (id)_threadName
 {
   if ([(NCNotificationOptionsMenu *)self _isCommunicationThread])
   {
-    v3 = [(NCNotificationOptionsMenu *)self request];
-    v4 = [v3 content];
-    v5 = [v4 communicationContext];
-    v6 = [v5 preferredDescription];
+    request = [(NCNotificationOptionsMenu *)self request];
+    content = [request content];
+    communicationContext = [content communicationContext];
+    preferredDescription = [communicationContext preferredDescription];
   }
 
   else
   {
-    v6 = 0;
+    preferredDescription = 0;
   }
 
-  return v6;
+  return preferredDescription;
 }
 
 - (id)_threadIdentifierOrNil
 {
   if ([(NCNotificationOptionsMenu *)self _isCommunicationThread])
   {
-    v3 = [(NCNotificationOptionsMenu *)self request];
-    v4 = [v3 uniqueThreadIdentifier];
+    request = [(NCNotificationOptionsMenu *)self request];
+    uniqueThreadIdentifier = [request uniqueThreadIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    uniqueThreadIdentifier = 0;
   }
 
-  return v4;
+  return uniqueThreadIdentifier;
 }
 
 - (id)_sender
 {
-  v2 = [(NCNotificationOptionsMenu *)self request];
-  v3 = [v2 content];
-  v4 = [v3 communicationContext];
-  v5 = [v4 sender];
+  request = [(NCNotificationOptionsMenu *)self request];
+  content = [request content];
+  communicationContext = [content communicationContext];
+  sender = [communicationContext sender];
 
-  return v5;
+  return sender;
 }
 
 - (BOOL)_canAddToContacts
 {
-  v3 = [(NCNotificationOptionsMenu *)self _sender];
+  _sender = [(NCNotificationOptionsMenu *)self _sender];
 
-  if (!v3)
+  if (!_sender)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277D77F58] sharedInstance];
-  v5 = [(NCNotificationOptionsMenu *)self _sender];
-  v6 = [(NCNotificationOptionsMenu *)self request];
-  v7 = [v6 topLevelSectionIdentifier];
-  v8 = [v4 canAddToCuratedContacts:v5 bundleIdentifier:v7];
+  mEMORY[0x277D77F58] = [MEMORY[0x277D77F58] sharedInstance];
+  _sender2 = [(NCNotificationOptionsMenu *)self _sender];
+  request = [(NCNotificationOptionsMenu *)self request];
+  topLevelSectionIdentifier = [request topLevelSectionIdentifier];
+  v8 = [mEMORY[0x277D77F58] canAddToCuratedContacts:_sender2 bundleIdentifier:topLevelSectionIdentifier];
 
   return v8;
 }

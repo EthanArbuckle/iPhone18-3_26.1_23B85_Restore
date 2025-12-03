@@ -1,10 +1,10 @@
 @interface ICSearchToken
-+ (id)iconImageNameForCSToken:(id)a3;
-+ (id)iconImageNameForSuggestionType:(unint64_t)a3;
-+ (unint64_t)suggestionTypeOfFirstItemInTokens:(id)a3;
++ (id)iconImageNameForCSToken:(id)token;
++ (id)iconImageNameForSuggestionType:(unint64_t)type;
++ (unint64_t)suggestionTypeOfFirstItemInTokens:(id)tokens;
 - (BOOL)hasMultipleScopes;
-- (ICSearchToken)initWithCSSuggestionToken:(id)a3;
-- (ICSearchToken)initWithTitle:(id)a3 subQueryString:(id)a4 suggestionType:(unint64_t)a5;
+- (ICSearchToken)initWithCSSuggestionToken:(id)token;
+- (ICSearchToken)initWithTitle:(id)title subQueryString:(id)string suggestionType:(unint64_t)type;
 - (NSArray)availableScopes;
 - (NSString)scopeName;
 - (unint64_t)selectedScopeIndex;
@@ -13,10 +13,10 @@
 
 @implementation ICSearchToken
 
-- (ICSearchToken)initWithTitle:(id)a3 subQueryString:(id)a4 suggestionType:(unint64_t)a5
+- (ICSearchToken)initWithTitle:(id)title subQueryString:(id)string suggestionType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  titleCopy = title;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = ICSearchToken;
   v11 = [(ICSearchToken *)&v17 init];
@@ -26,10 +26,10 @@
     csToken = v11->_csToken;
     v11->_csToken = 0;
 
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v12->_subQueryString, a4);
-    v12->_suggestionType = a5;
-    v14 = [ICSearchToken iconImageNameForSuggestionType:a5];
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v12->_subQueryString, string);
+    v12->_suggestionType = type;
+    v14 = [ICSearchToken iconImageNameForSuggestionType:type];
     iconImageName = v12->_iconImageName;
     v12->_iconImageName = v14;
   }
@@ -37,26 +37,26 @@
   return v12;
 }
 
-- (ICSearchToken)initWithCSSuggestionToken:(id)a3
+- (ICSearchToken)initWithCSSuggestionToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v15.receiver = self;
   v15.super_class = ICSearchToken;
   v6 = [(ICSearchToken *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_csToken, a3);
-    v8 = [v5 displayText];
-    v9 = [v8 string];
+    objc_storeStrong(&v6->_csToken, token);
+    displayText = [tokenCopy displayText];
+    string = [displayText string];
     title = v7->_title;
-    v7->_title = v9;
+    v7->_title = string;
 
     subQueryString = v7->_subQueryString;
     v7->_subQueryString = 0;
 
     v7->_suggestionType = 0;
-    v12 = [ICSearchToken iconImageNameForCSToken:v5];
+    v12 = [ICSearchToken iconImageNameForCSToken:tokenCopy];
     iconImageName = v7->_iconImageName;
     v7->_iconImageName = v12;
   }
@@ -70,14 +70,14 @@
   csToken = self->_csToken;
   if (csToken)
   {
-    v5 = [(_CSSuggestionToken *)csToken selectedScope];
-    v6 = [(_CSSuggestionToken *)*p_csToken scopes];
-    v7 = [v6 count];
+    selectedScope = [(_CSSuggestionToken *)csToken selectedScope];
+    scopes = [(_CSSuggestionToken *)*p_csToken scopes];
+    v7 = [scopes count];
 
-    if (v5 < v7)
+    if (selectedScope < v7)
     {
-      v8 = [(_CSSuggestionToken *)*p_csToken scopes];
-      v9 = [v8 objectAtIndexedSubscript:v5];
+      scopes2 = [(_CSSuggestionToken *)*p_csToken scopes];
+      v9 = [scopes2 objectAtIndexedSubscript:selectedScope];
 
       goto LABEL_8;
     }
@@ -126,51 +126,51 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [(_CSSuggestionToken *)csToken scopes];
-  v4 = [v3 count] != 0;
+  scopes = [(_CSSuggestionToken *)csToken scopes];
+  v4 = [scopes count] != 0;
 
   return v4;
 }
 
-+ (unint64_t)suggestionTypeOfFirstItemInTokens:(id)a3
++ (unint64_t)suggestionTypeOfFirstItemInTokens:(id)tokens
 {
-  v3 = a3;
-  if ([v3 count])
+  tokensCopy = tokens;
+  if ([tokensCopy count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [tokensCopy objectAtIndexedSubscript:0];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 suggestionType];
+      suggestionType = [v4 suggestionType];
     }
 
     else
     {
-      v6 = 0;
+      suggestionType = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    suggestionType = 0;
   }
 
-  return v6;
+  return suggestionType;
 }
 
-+ (id)iconImageNameForSuggestionType:(unint64_t)a3
++ (id)iconImageNameForSuggestionType:(unint64_t)type
 {
   v5 = @"person.crop.circle";
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         v5 = @"checklist";
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         return @"lock.fill";
       }
@@ -197,27 +197,27 @@ LABEL_8:
   {
     v6 = @"doc.viewfinder";
     v7 = @"paperclip";
-    if (a3 != 7)
+    if (type != 7)
     {
       v7 = @"person.crop.circle";
     }
 
-    if (a3 != 6)
+    if (type != 6)
     {
       v6 = v7;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v5 = @"pencil.tip.crop.circle";
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       v5 = @"number";
     }
 
-    if (a3 <= 5)
+    if (type <= 5)
     {
       return v5;
     }
@@ -229,30 +229,30 @@ LABEL_8:
   }
 }
 
-+ (id)iconImageNameForCSToken:(id)a3
++ (id)iconImageNameForCSToken:(id)token
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  tokenCopy = token;
+  v4 = tokenCopy;
+  if (!tokenCopy)
   {
     goto LABEL_31;
   }
 
-  v5 = [v3 tokenKind];
-  if (v5 <= 15)
+  tokenKind = [tokenCopy tokenKind];
+  if (tokenKind <= 15)
   {
-    if (v5 <= 6)
+    if (tokenKind <= 6)
     {
-      if (v5 <= 4)
+      if (tokenKind <= 4)
       {
-        if (v5 == 2)
+        if (tokenKind == 2)
         {
           v6 = @"paperclip";
           goto LABEL_32;
         }
 
-        if (v5 == 3)
+        if (tokenKind == 3)
         {
           v6 = @"music.note";
           goto LABEL_32;
@@ -261,7 +261,7 @@ LABEL_8:
         goto LABEL_44;
       }
 
-      if (v5 != 5)
+      if (tokenKind != 5)
       {
         v6 = @"doc";
         goto LABEL_32;
@@ -272,14 +272,14 @@ LABEL_36:
       goto LABEL_32;
     }
 
-    if (v5 <= 9)
+    if (tokenKind <= 9)
     {
-      if (v5 == 7)
+      if (tokenKind == 7)
       {
         goto LABEL_36;
       }
 
-      if (v5 == 8)
+      if (tokenKind == 8)
       {
         v6 = @"folder";
         goto LABEL_32;
@@ -290,7 +290,7 @@ LABEL_44:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v14 = 134217984;
-        v15 = [v4 tokenKind];
+        tokenKind2 = [v4 tokenKind];
         _os_log_impl(&dword_214D51000, v13, OS_LOG_TYPE_INFO, "Got token kind with unknown icon image name: %ld", &v14, 0xCu);
       }
 
@@ -298,9 +298,9 @@ LABEL_44:
       goto LABEL_32;
     }
 
-    if (v5 != 10)
+    if (tokenKind != 10)
     {
-      if (v5 == 15)
+      if (tokenKind == 15)
       {
         v6 = @"note";
         goto LABEL_32;
@@ -314,17 +314,17 @@ LABEL_35:
     goto LABEL_32;
   }
 
-  if (v5 <= 35)
+  if (tokenKind <= 35)
   {
-    if (v5 > 23)
+    if (tokenKind > 23)
     {
-      if (v5 == 24)
+      if (tokenKind == 24)
       {
         v6 = @"number";
         goto LABEL_32;
       }
 
-      if (v5 == 34)
+      if (tokenKind == 34)
       {
         v6 = @"textformat.size.larger";
         goto LABEL_32;
@@ -333,13 +333,13 @@ LABEL_35:
       goto LABEL_44;
     }
 
-    if (v5 == 16)
+    if (tokenKind == 16)
     {
       v6 = @"person";
       goto LABEL_32;
     }
 
-    if (v5 != 17)
+    if (tokenKind != 17)
     {
       goto LABEL_44;
     }
@@ -347,15 +347,15 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if (v5 <= 42)
+  if (tokenKind <= 42)
   {
-    if (v5 == 36)
+    if (tokenKind == 36)
     {
       v6 = @"video";
       goto LABEL_32;
     }
 
-    if (v5 == 37)
+    if (tokenKind == 37)
     {
       v6 = @"link";
       goto LABEL_32;
@@ -364,9 +364,9 @@ LABEL_35:
     goto LABEL_44;
   }
 
-  if (v5 != 43)
+  if (tokenKind != 43)
   {
-    if (v5 != 45)
+    if (tokenKind != 45)
     {
       goto LABEL_44;
     }
@@ -377,9 +377,9 @@ LABEL_31:
   }
 
   v8 = MEMORY[0x277CBEAF8];
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v9 languageCode];
-  v11 = [v8 lineDirectionForLanguage:v10];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  languageCode = [currentLocale languageCode];
+  v11 = [v8 lineDirectionForLanguage:languageCode];
   v12 = @"text.alignright";
   if (v11 == 1)
   {
@@ -396,14 +396,14 @@ LABEL_32:
 - (void)scopeName
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = [*a2 selectedScope];
-  v7 = [*a2 scopes];
+  selectedScope = [*a2 selectedScope];
+  scopes = [*a2 scopes];
   v8 = 138412802;
-  v9 = a1;
+  selfCopy = self;
   v10 = 2048;
-  v11 = v6;
+  v11 = selectedScope;
   v12 = 2048;
-  v13 = [v7 count];
+  v13 = [scopes count];
   _os_log_error_impl(&dword_214D51000, a3, OS_LOG_TYPE_ERROR, "Search token %@ has selected scope out of range of available scopes (%lu/%lu).", &v8, 0x20u);
 }
 

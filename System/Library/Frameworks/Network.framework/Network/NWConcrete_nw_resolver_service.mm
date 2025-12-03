@@ -6,13 +6,13 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v11 = 0;
-  if (v2)
+  if (selfCopy)
   {
-    v3 = v2;
-    priority = v2->priority;
-    v5 = v2->service_host;
+    v3 = selfCopy;
+    priority = selfCopy->priority;
+    v5 = selfCopy->service_host;
     v6 = v5;
     if (priority)
     {
@@ -48,16 +48,16 @@
 
     if (v9)
     {
-      v2 = CFStringCreateWithCStringNoCopy(*MEMORY[0x1E695E480], v9, 0x8000100u, *MEMORY[0x1E695E488]);
+      selfCopy = CFStringCreateWithCStringNoCopy(*MEMORY[0x1E695E480], v9, 0x8000100u, *MEMORY[0x1E695E488]);
     }
 
     else
     {
-      v2 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

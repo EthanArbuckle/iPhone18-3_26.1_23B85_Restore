@@ -2,7 +2,7 @@
 + (id)Category;
 + (id)configurationForCategory;
 + (id)storeConfigurationForCategory;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)Category
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCategory];
+  configurationForCategory = [self configurationForCategory];
   v3 = +[BMLocationPointOfInterestCategory columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Location.PointOfInterest.Category" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.PointOfInterest.Category" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Location.PointOfInterest.Category" schema:v9 configuration:configurationForCategory];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForCategory
 {
-  v3 = [a1 storeConfigurationForCategory];
-  v4 = [a1 syncPolicyForCategory];
+  storeConfigurationForCategory = [self storeConfigurationForCategory];
+  syncPolicyForCategory = [self syncPolicyForCategory];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"FD53D167-D32E-477A-98F7-65C5C0CA6BC4"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Location.PointOfInterest.Category" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E8790 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Location.PointOfInterest.Category" eventClass:objc_opt_class() storeConfig:storeConfigurationForCategory syncPolicy:syncPolicyForCategory legacyNames:&unk_1EF3E8790 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Category"])
+  if ([name isEqualToString:@"Category"])
   {
-    v4 = [a1 Category];
+    category = [self Category];
   }
 
   else
   {
-    v4 = 0;
+    category = 0;
   }
 
-  return v4;
+  return category;
 }
 
 + (id)validKeyPaths

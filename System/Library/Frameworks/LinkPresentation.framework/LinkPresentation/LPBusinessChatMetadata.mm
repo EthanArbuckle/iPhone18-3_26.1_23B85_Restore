@@ -1,22 +1,22 @@
 @interface LPBusinessChatMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPBusinessChatMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPBusinessChatMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
 @end
 
 @implementation LPBusinessChatMetadata
 
-- (LPBusinessChatMetadata)initWithCoder:(id)a3
+- (LPBusinessChatMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = LPBusinessChatMetadata;
   v5 = [(LPBusinessChatMetadata *)&v10 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"subtitle");
+    v6 = decodeStringForKey(coderCopy, @"subtitle");
     subtitle = v5->_subtitle;
     v5->_subtitle = v6;
 
@@ -26,13 +26,13 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPBusinessChatMetadata allocWithZone:a3];
+  v4 = [LPBusinessChatMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPBusinessChatMetadata *)self subtitle];
-    [(LPBusinessChatMetadata *)v4 setSubtitle:v5];
+    subtitle = [(LPBusinessChatMetadata *)self subtitle];
+    [(LPBusinessChatMetadata *)v4 setSubtitle:subtitle];
 
     v6 = v4;
   }
@@ -40,12 +40,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = LPBusinessChatMetadata;
-  if ([(LPBusinessChatMetadata *)&v7 isEqual:v4])
+  if ([(LPBusinessChatMetadata *)&v7 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -55,7 +55,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = objectsAreEqual_0(v4[2], self->_subtitle);
+      v5 = objectsAreEqual_0(equalCopy[2], self->_subtitle);
     }
 
     else
@@ -67,41 +67,41 @@
   return v5;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = [a3 unspecializedPresentationProperties];
-  v5 = [(LPBusinessChatMetadata *)self subtitle];
+  unspecializedPresentationProperties = [transformer unspecializedPresentationProperties];
+  subtitle = [(LPBusinessChatMetadata *)self subtitle];
 
-  if (v5)
+  if (subtitle)
   {
-    v6 = [(LPBusinessChatMetadata *)self subtitle];
-    v7 = [v4 captionBar];
-    v8 = [v7 bottom];
-    v9 = [v8 leading];
-    [v9 setText:v6];
+    subtitle2 = [(LPBusinessChatMetadata *)self subtitle];
+    captionBar = [unspecializedPresentationProperties captionBar];
+    bottom = [captionBar bottom];
+    leading = [bottom leading];
+    [leading setText:subtitle2];
   }
 
-  return v4;
+  return unspecializedPresentationProperties;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 metadata];
-  v6 = [v5 title];
-  if ([v6 length])
+  transformerCopy = transformer;
+  metadata = [transformerCopy metadata];
+  title = [metadata title];
+  if ([title length])
   {
-    v7 = [(LPBusinessChatMetadata *)self subtitle];
-    v8 = [v7 length];
+    subtitle = [(LPBusinessChatMetadata *)self subtitle];
+    v8 = [subtitle length];
 
     if (v8)
     {
       v9 = MEMORY[0x1E696AEC0];
-      v10 = LPLocalizedString(@"%@: %@");
-      v11 = [(LPBusinessChatMetadata *)self subtitle];
-      v12 = [v4 metadata];
-      v13 = [v12 title];
-      v14 = [v9 localizedStringWithFormat:v10, v11, v13];
+      metadata4 = LPLocalizedString(@"%@: %@");
+      subtitle2 = [(LPBusinessChatMetadata *)self subtitle];
+      metadata2 = [transformerCopy metadata];
+      title2 = [metadata2 title];
+      title4 = [v9 localizedStringWithFormat:metadata4, subtitle2, title2];
 
       goto LABEL_7;
     }
@@ -111,14 +111,14 @@
   {
   }
 
-  v15 = [v4 metadata];
-  v16 = [v15 title];
-  v17 = [v16 length];
+  metadata3 = [transformerCopy metadata];
+  title3 = [metadata3 title];
+  v17 = [title3 length];
 
   if (!v17)
   {
-    v18 = [(LPBusinessChatMetadata *)self subtitle];
-    v19 = [v18 length];
+    subtitle3 = [(LPBusinessChatMetadata *)self subtitle];
+    v19 = [subtitle3 length];
 
     if (v19)
     {
@@ -129,17 +129,17 @@
     {
       LPLocalizedString(@"Messages for Business");
     }
-    v14 = ;
+    title4 = ;
     goto LABEL_12;
   }
 
-  v10 = [v4 metadata];
-  v14 = [v10 title];
+  metadata4 = [transformerCopy metadata];
+  title4 = [metadata4 title];
 LABEL_7:
 
 LABEL_12:
 
-  return v14;
+  return title4;
 }
 
 @end

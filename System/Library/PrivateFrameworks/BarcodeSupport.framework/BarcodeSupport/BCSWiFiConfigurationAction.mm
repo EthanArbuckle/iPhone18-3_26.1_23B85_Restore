@@ -1,18 +1,18 @@
 @interface BCSWiFiConfigurationAction
-- (BCSWiFiConfigurationAction)initWithData:(id)a3 codePayload:(id)a4;
+- (BCSWiFiConfigurationAction)initWithData:(id)data codePayload:(id)payload;
 - (BOOL)_startAirplaySetupIfNeeded;
 - (id)actionPickerItems;
 - (id)debugDescriptionExtraInfoDictionary;
 - (id)localizedDefaultActionDescription;
-- (void)performDefaultActionWithCompletionHandler:(id)a3;
+- (void)performDefaultActionWithCompletionHandler:(id)handler;
 @end
 
 @implementation BCSWiFiConfigurationAction
 
-- (BCSWiFiConfigurationAction)initWithData:(id)a3 codePayload:(id)a4
+- (BCSWiFiConfigurationAction)initWithData:(id)data codePayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  payloadCopy = payload;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -21,32 +21,32 @@
 
   v11.receiver = self;
   v11.super_class = BCSWiFiConfigurationAction;
-  v8 = [(BCSAction *)&v11 initWithData:v6 codePayload:v7];
+  v8 = [(BCSAction *)&v11 initWithData:dataCopy codePayload:payloadCopy];
   if (!v8)
   {
     self = 0;
 LABEL_5:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
   self = v8;
-  v9 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)localizedDefaultActionDescription
 {
-  v2 = [(BCSWiFiConfigurationAction *)self _wiFiConfigurationData];
-  v3 = [v2 ssid];
+  _wiFiConfigurationData = [(BCSWiFiConfigurationAction *)self _wiFiConfigurationData];
+  ssid = [_wiFiConfigurationData ssid];
 
-  if ([v3 length])
+  if ([ssid length])
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = _BCSLocalizedString(@"Join “%@” Network", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
-    v6 = [v4 stringWithFormat:v5, v3];
+    v6 = [v4 stringWithFormat:v5, ssid];
   }
 
   else
@@ -60,15 +60,15 @@ LABEL_6:
 - (id)debugDescriptionExtraInfoDictionary
 {
   v17[5] = *MEMORY[0x277D85DE8];
-  v2 = [(BCSWiFiConfigurationAction *)self _wiFiConfigurationData];
-  v3 = [v2 ssid];
-  v4 = [v2 password];
-  v5 = [v2 isWEP];
-  v6 = [v2 isHidden];
-  v7 = &stru_2853953A0;
-  if (v3)
+  _wiFiConfigurationData = [(BCSWiFiConfigurationAction *)self _wiFiConfigurationData];
+  ssid = [_wiFiConfigurationData ssid];
+  password = [_wiFiConfigurationData password];
+  isWEP = [_wiFiConfigurationData isWEP];
+  isHidden = [_wiFiConfigurationData isHidden];
+  airplayBrokerID = &stru_2853953A0;
+  if (ssid)
   {
-    v8 = v3;
+    v8 = ssid;
   }
 
   else
@@ -78,9 +78,9 @@ LABEL_6:
 
   v16[0] = @"ssid";
   v16[1] = @"password";
-  if (v4)
+  if (password)
   {
-    v9 = v4;
+    v9 = password;
   }
 
   else
@@ -93,7 +93,7 @@ LABEL_6:
   v10 = @"false";
   v16[2] = @"isWEP";
   v16[3] = @"isHidden";
-  if (v5)
+  if (isWEP)
   {
     v11 = @"true";
   }
@@ -103,7 +103,7 @@ LABEL_6:
     v11 = @"false";
   }
 
-  if (v6)
+  if (isHidden)
   {
     v10 = @"true";
   }
@@ -111,15 +111,15 @@ LABEL_6:
   v17[2] = v11;
   v17[3] = v10;
   v16[4] = @"airplayPlayload";
-  v12 = [v2 hasAirplayPayload];
-  if (v12)
+  hasAirplayPayload = [_wiFiConfigurationData hasAirplayPayload];
+  if (hasAirplayPayload)
   {
-    v7 = [v2 airplayBrokerID];
+    airplayBrokerID = [_wiFiConfigurationData airplayBrokerID];
   }
 
-  v17[4] = v7;
+  v17[4] = airplayBrokerID;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:5];
-  if (v12)
+  if (hasAirplayPayload)
   {
   }
 
@@ -128,41 +128,41 @@ LABEL_6:
   return v13;
 }
 
-- (void)performDefaultActionWithCompletionHandler:(id)a3
+- (void)performDefaultActionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BCSWiFiConfigurationAction *)self _wiFiConfigurationData];
-  v6 = [v5 ssid];
-  if (![v6 length])
+  handlerCopy = handler;
+  _wiFiConfigurationData = [(BCSWiFiConfigurationAction *)self _wiFiConfigurationData];
+  ssid = [_wiFiConfigurationData ssid];
+  if (![ssid length])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [BCSWiFiConfigurationAction performDefaultActionWithCompletionHandler:];
     }
 
-    v8 = BCSActionError(0);
-    v4[2](v4, v8);
+    password = BCSActionError(0);
+    handlerCopy[2](handlerCopy, password);
     goto LABEL_20;
   }
 
   if (![(BCSWiFiConfigurationAction *)self _startAirplaySetupIfNeeded])
   {
-    v8 = [v5 password];
-    v9 = [v5 isWEP];
-    v10 = [v8 length];
+    password = [_wiFiConfigurationData password];
+    isWEP = [_wiFiConfigurationData isWEP];
+    v10 = [password length];
     v11 = objc_alloc(getNEHotspotConfigurationClass());
     if (v10)
     {
-      v12 = [v11 initWithSSID:v6 passphrase:v8 isWEP:v9];
+      v12 = [v11 initWithSSID:ssid passphrase:password isWEP:isWEP];
     }
 
     else
     {
-      v12 = [v11 initWithSSID:v6];
+      v12 = [v11 initWithSSID:ssid];
     }
 
     v13 = v12;
-    if ([v5 isHidden])
+    if ([_wiFiConfigurationData isHidden])
     {
       [v13 setHidden:1];
     }
@@ -175,13 +175,13 @@ LABEL_6:
         _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSWiFiConfigurationAction: applying wifi configuration", buf, 2u);
       }
 
-      v14 = [getNEHotspotConfigurationManagerClass() sharedManager];
+      sharedManager = [getNEHotspotConfigurationManagerClass() sharedManager];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __72__BCSWiFiConfigurationAction_performDefaultActionWithCompletionHandler___block_invoke;
       v17[3] = &unk_278CFED28;
-      v18 = v4;
-      [v14 applyConfiguration:v13 completionHandler:v17];
+      v18 = handlerCopy;
+      [sharedManager applyConfiguration:v13 completionHandler:v17];
 
       v15 = +[BCSAWDLogger sharedLogger];
       [v15 logBarcodeActivatedEventForAction:self];
@@ -197,7 +197,7 @@ LABEL_6:
       }
 
       v16 = BCSActionError(0);
-      v4[2](v4, v16);
+      handlerCopy[2](handlerCopy, v16);
     }
 
 LABEL_20:
@@ -207,7 +207,7 @@ LABEL_20:
   v7 = +[BCSAWDLogger sharedLogger];
   [v7 logBarcodeActivatedEventForAction:self];
 
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_21:
 }
 
@@ -251,8 +251,8 @@ void __72__BCSWiFiConfigurationAction_performDefaultActionWithCompletionHandler_
 
 - (BOOL)_startAirplaySetupIfNeeded
 {
-  v2 = [(BCSWiFiConfigurationAction *)self _wiFiConfigurationData];
-  if ([v2 hasAirplayPayload] && _bcs_airplayInWifiEnabled())
+  _wiFiConfigurationData = [(BCSWiFiConfigurationAction *)self _wiFiConfigurationData];
+  if ([_wiFiConfigurationData hasAirplayPayload] && _bcs_airplayInWifiEnabled())
   {
     v29 = 0;
     v30 = &v29;
@@ -273,14 +273,14 @@ void __72__BCSWiFiConfigurationAction_performDefaultActionWithCompletionHandler_
     v4 = v3;
     _Block_object_dispose(&v29, 8);
     v5 = objc_alloc_init(v3);
-    v6 = [v2 ssid];
-    [v5 setSSID:v6];
+    ssid = [_wiFiConfigurationData ssid];
+    [v5 setSSID:ssid];
 
-    v7 = [v2 password];
-    [v5 setPassphrase:v7];
+    password = [_wiFiConfigurationData password];
+    [v5 setPassphrase:password];
 
-    v8 = [v2 captivePortalToken];
-    [v5 setCaptivePortalBypassToken:v8];
+    captivePortalToken = [_wiFiConfigurationData captivePortalToken];
+    [v5 setCaptivePortalBypassToken:captivePortalToken];
 
     v29 = 0;
     v30 = &v29;
@@ -301,8 +301,8 @@ void __72__BCSWiFiConfigurationAction_performDefaultActionWithCompletionHandler_
     v10 = v9;
     _Block_object_dispose(&v29, 8);
     v11 = objc_alloc_init(v9);
-    v12 = [v2 airplayBrokerID];
-    [v11 setAuthToken:v12];
+    airplayBrokerID = [_wiFiConfigurationData airplayBrokerID];
+    [v11 setAuthToken:airplayBrokerID];
 
     v29 = 0;
     v30 = &v29;
@@ -323,8 +323,8 @@ void __72__BCSWiFiConfigurationAction_performDefaultActionWithCompletionHandler_
     v14 = v13;
     _Block_object_dispose(&v29, 8);
     v15 = objc_alloc_init(v13);
-    v16 = [v2 airplayBrokerPin];
-    [v15 setAuthString:v16];
+    airplayBrokerPin = [_wiFiConfigurationData airplayBrokerPin];
+    [v15 setAuthString:airplayBrokerPin];
 
     v29 = 0;
     v30 = &v29;
@@ -381,10 +381,10 @@ void __72__BCSWiFiConfigurationAction_performDefaultActionWithCompletionHandler_
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = _BCSLocalizedString(@"Join Network", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
-  v4 = [(BCSWiFiConfigurationAction *)self _wiFiConfigurationData];
-  v5 = [v4 hasAirplayPayload];
+  _wiFiConfigurationData = [(BCSWiFiConfigurationAction *)self _wiFiConfigurationData];
+  hasAirplayPayload = [_wiFiConfigurationData hasAirplayPayload];
 
-  if (v5)
+  if (hasAirplayPayload)
   {
     v6 = _BCSLocalizedString(@"Connect TV", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
 
@@ -392,8 +392,8 @@ void __72__BCSWiFiConfigurationAction_performDefaultActionWithCompletionHandler_
   }
 
   v7 = [(BCSActionPickerItem *)[BCSWiFiConfigurationActionPickerItem alloc] initWithLabel:v3 action:self];
-  v8 = [(BCSAction *)self actionIcon];
-  [(BCSWiFiConfigurationActionPickerItem *)v7 setIcon:v8];
+  actionIcon = [(BCSAction *)self actionIcon];
+  [(BCSWiFiConfigurationActionPickerItem *)v7 setIcon:actionIcon];
 
   v12[0] = v7;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];

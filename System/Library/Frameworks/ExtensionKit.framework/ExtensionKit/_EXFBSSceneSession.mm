@@ -1,20 +1,20 @@
 @interface _EXFBSSceneSession
-- (id)makeSceneWithError:(id *)a3;
-- (void)connectWithFBSScene:(id)a3;
+- (id)makeSceneWithError:(id *)error;
+- (void)connectWithFBSScene:(id)scene;
 @end
 
 @implementation _EXFBSSceneSession
 
-- (id)makeSceneWithError:(id *)a3
+- (id)makeSceneWithError:(id *)error
 {
-  v4 = [(_EXSceneSession *)self extension];
-  v5 = [v4 hasSwiftEntryPoint];
+  extension = [(_EXSceneSession *)self extension];
+  hasSwiftEntryPoint = [extension hasSwiftEntryPoint];
 
-  if (v5)
+  if (hasSwiftEntryPoint)
   {
-    v6 = [(_EXSceneSession *)self configuration];
-    v7 = [(_EXSceneSession *)self extension];
-    v8 = [v7 makeSceneWithConfiguration:v6];
+    configuration = [(_EXSceneSession *)self configuration];
+    extension2 = [(_EXSceneSession *)self extension];
+    v8 = [extension2 makeSceneWithConfiguration:configuration];
   }
 
   else
@@ -25,29 +25,29 @@
   return v8;
 }
 
-- (void)connectWithFBSScene:(id)a3
+- (void)connectWithFBSScene:(id)scene
 {
-  v5 = a3;
-  objc_storeStrong(&self->_fbsScene, a3);
-  v6 = [v5 identifier];
-  v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v6];
+  sceneCopy = scene;
+  objc_storeStrong(&self->_fbsScene, scene);
+  identifier = [sceneCopy identifier];
+  v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:identifier];
   if (v7)
   {
     [(_EXSceneSession *)self setIdentifier:v7];
     v8 = objc_alloc_init(MEMORY[0x1E6966D20]);
-    v9 = [v5 settings];
-    v10 = [v9 ex_role];
-    [v8 setSceneIdentifier:v10];
+    settings = [sceneCopy settings];
+    ex_role = [settings ex_role];
+    [v8 setSceneIdentifier:ex_role];
 
     v11 = [(_EXSceneSession *)self makeConfigurationWithParameters:v8];
     [(_EXSceneSession *)self setConfiguration:v11];
 
-    v12 = [(_EXSceneSession *)self extension];
-    v13 = [(_EXSceneSession *)self configuration];
-    [v12 prepareForSceneConnectionWithConfiguration:v13];
+    extension = [(_EXSceneSession *)self extension];
+    configuration = [(_EXSceneSession *)self configuration];
+    [extension prepareForSceneConnectionWithConfiguration:configuration];
 
-    v14 = [MEMORY[0x1E6966D18] sharedInstance];
-    [v14 addSession:self];
+    mEMORY[0x1E6966D18] = [MEMORY[0x1E6966D18] sharedInstance];
+    [mEMORY[0x1E6966D18] addSession:self];
 
     v16 = 0;
     v15 = [(_EXFBSSceneSession *)self makeSceneWithError:&v16];
@@ -63,7 +63,7 @@
     v8 = _EXDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [(_EXFBSSceneSession *)v6 connectWithFBSScene:v8];
+      [(_EXFBSSceneSession *)identifier connectWithFBSScene:v8];
     }
   }
 }

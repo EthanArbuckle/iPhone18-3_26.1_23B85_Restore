@@ -1,149 +1,149 @@
 @interface HUServiceDetailsViewController
-+ (id)_buildNetworkSymptomsAnalyticsDataForAccessory:(id)a3 interactionType:(int64_t)a4;
++ (id)_buildNetworkSymptomsAnalyticsDataForAccessory:(id)accessory interactionType:(int64_t)type;
 + (id)acceptableItemClasses;
-- (BOOL)_allowRowHighlightForItem:(id)a3;
-- (BOOL)_allowRowSelectionForItem:(id)a3;
+- (BOOL)_allowRowHighlightForItem:(id)item;
+- (BOOL)_allowRowSelectionForItem:(id)item;
 - (BOOL)_isCameraItem;
-- (BOOL)_notifyOfHomeTheaterReconfigurationIfNecessary:(id)a3;
-- (BOOL)_shouldFollowTitleValueTintColorforItem:(id)a3;
+- (BOOL)_notifyOfHomeTheaterReconfigurationIfNecessary:(id)necessary;
+- (BOOL)_shouldFollowTitleValueTintColorforItem:(id)item;
 - (BOOL)_shouldPresentRemoveRouterConfirmation;
-- (BOOL)_shouldShowAddButtonForOptionItem:(id)a3;
-- (BOOL)_shouldShowDetailDisclosureForItem:(id)a3;
+- (BOOL)_shouldShowAddButtonForOptionItem:(id)item;
+- (BOOL)_shouldShowDetailDisclosureForItem:(id)item;
 - (BOOL)_shouldShowHomeTheaterPrompt;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)hasDetailsActionFor:(id)a3 item:(id)a4;
-- (BOOL)itemManager:(id)a3 shouldShowControlPanelItem:(id)a4;
-- (BOOL)itemManager:(id)a3 shouldShowSectionTitleForControlPanelItem:(id)a4;
-- (BOOL)shouldHideFooterBelowSection:(int64_t)a3;
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3;
-- (BOOL)shouldHideSeparatorsForCell:(id)a3 indexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)hasDetailsActionFor:(id)for item:(id)item;
+- (BOOL)itemManager:(id)manager shouldShowControlPanelItem:(id)item;
+- (BOOL)itemManager:(id)manager shouldShowSectionTitleForControlPanelItem:(id)item;
+- (BOOL)shouldHideFooterBelowSection:(int64_t)section;
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section;
+- (BOOL)shouldHideSeparatorsForCell:(id)cell indexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HFServiceLikeItem)item;
 - (HUPresentationDelegate)presentationDelegate;
 - (HUServiceDetailsItemManager)detailsItemManager;
-- (HUServiceDetailsViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
-- (HUServiceDetailsViewController)initWithServiceLikeItem:(id)a3;
+- (HUServiceDetailsViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
+- (HUServiceDetailsViewController)initWithServiceLikeItem:(id)item;
 - (NSString)description;
-- (id)_characteristicsAffectedByControlItem:(id)a3;
+- (id)_characteristicsAffectedByControlItem:(id)item;
 - (id)_commitBuilder;
-- (id)_commitBuilderFor:(id)a3 with:(id)a4;
-- (id)_createMenuWithValues:(id)a3 cell:(id)a4 currentItem:(id)a5;
-- (id)_currentAssociatedNetworkInfoForFirstPartyAccessory:(id)a3;
-- (id)_magicallyUpdateNavigationStackForNewRootItem:(id)a3 topViewController:(id)a4;
+- (id)_commitBuilderFor:(id)for with:(id)with;
+- (id)_createMenuWithValues:(id)values cell:(id)cell currentItem:(id)item;
+- (id)_currentAssociatedNetworkInfoForFirstPartyAccessory:(id)accessory;
+- (id)_magicallyUpdateNavigationStackForNewRootItem:(id)item topViewController:(id)controller;
 - (id)_microphoneStatus;
-- (id)_primaryStatusTextForLatestResults:(id)a3 showingSecondaryStatus:(BOOL)a4;
-- (id)_recoverItemBuilder:(id)a3 fromError:(id)a4;
+- (id)_primaryStatusTextForLatestResults:(id)results showingSecondaryStatus:(BOOL)status;
+- (id)_recoverItemBuilder:(id)builder fromError:(id)error;
 - (id)_removeItem;
-- (id)_roomForItem:(id)a3;
-- (id)_roomUpdateBuilderFor:(id)a3;
-- (id)_secondaryStatusTextForLatestResults:(id)a3;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (id)childServiceEditorModuleController:(id)a3 didSelectItem:(id)a4;
-- (id)createAccessoryDetailInfoListModuleControllerWith:(id)a3;
-- (id)detailsViewControllerFor:(id)a3 item:(id)a4;
-- (id)detailsViewControllerForContainedMediaAccessoryGridViewController:(id)a3 item:(id)a4;
-- (id)detailsViewControllerForContainedServiceGridViewController:(id)a3 item:(id)a4;
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4;
-- (id)itemManager:(id)a3 sectionFooterForControlPanelItem:(id)a4 forServiceItem:(id)a5;
-- (id)itemManager:(id)a3 sectionTitleForControlPanelItem:(id)a4 forServiceItem:(id)a5;
+- (id)_roomForItem:(id)item;
+- (id)_roomUpdateBuilderFor:(id)for;
+- (id)_secondaryStatusTextForLatestResults:(id)results;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (id)childServiceEditorModuleController:(id)controller didSelectItem:(id)item;
+- (id)createAccessoryDetailInfoListModuleControllerWith:(id)with;
+- (id)detailsViewControllerFor:(id)for item:(id)item;
+- (id)detailsViewControllerForContainedMediaAccessoryGridViewController:(id)controller item:(id)item;
+- (id)detailsViewControllerForContainedServiceGridViewController:(id)controller item:(id)item;
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated;
+- (id)itemManager:(id)manager sectionFooterForControlPanelItem:(id)item forServiceItem:(id)serviceItem;
+- (id)itemManager:(id)manager sectionTitleForControlPanelItem:(id)item forServiceItem:(id)serviceItem;
 - (id)itemModuleControllers;
-- (id)pickerViewCell:(id)a3 titleForValueAtIndex:(int64_t)a4;
+- (id)pickerViewCell:(id)cell titleForValueAtIndex:(int64_t)index;
 - (id)showConnectedEcosystems;
-- (id)softwareUpdateModuleController:(id)a3 dismissViewController:(id)a4;
-- (id)softwareUpdateModuleController:(id)a3 navigateToViewController:(id)a4;
-- (int64_t)numberOfValuesForPickerViewCell:(id)a3;
-- (unint64_t)automaticDisablingReasonsForItem:(id)a3;
-- (void)_closeButtonPressed:(id)a3;
-- (void)_didRemoveHomeKitObject:(id)a3;
-- (void)_didSelectRoomItem:(id)a3;
+- (id)softwareUpdateModuleController:(id)controller dismissViewController:(id)viewController;
+- (id)softwareUpdateModuleController:(id)controller navigateToViewController:(id)viewController;
+- (int64_t)numberOfValuesForPickerViewCell:(id)cell;
+- (unint64_t)automaticDisablingReasonsForItem:(id)item;
+- (void)_closeButtonPressed:(id)pressed;
+- (void)_didRemoveHomeKitObject:(id)object;
+- (void)_didSelectRoomItem:(id)item;
 - (void)_executeSilentSoftwareUpdateCheck;
-- (void)_exportDiagnosticsForItem:(id)a3;
+- (void)_exportDiagnosticsForItem:(id)item;
 - (void)_fetchAccessoryDiagnosticInfo;
 - (void)_identifyHomePod;
-- (void)_longPressRecognized:(id)a3;
-- (void)_notifyOfHomePodPairingIfNecessary:(id)a3;
-- (void)_offerToCreateHomeTheaterIfPossible:(id)a3;
+- (void)_longPressRecognized:(id)recognized;
+- (void)_notifyOfHomePodPairingIfNecessary:(id)necessary;
+- (void)_offerToCreateHomeTheaterIfPossible:(id)possible;
 - (void)_presentContainedItems;
-- (void)_presentEcosystemAccessoryRemoveConfirmation:(id)a3;
+- (void)_presentEcosystemAccessoryRemoveConfirmation:(id)confirmation;
 - (void)_presentGroupPicker;
-- (void)_presentHomeAccessoryRemoveConfirmation:(id)a3;
-- (void)_presentRemoveConfirmation:(id)a3;
-- (void)_presentRemoveFromGroupConfirmation:(id)a3;
+- (void)_presentHomeAccessoryRemoveConfirmation:(id)confirmation;
+- (void)_presentRemoveConfirmation:(id)confirmation;
+- (void)_presentRemoveFromGroupConfirmation:(id)confirmation;
 - (void)_presentRemoveRouterConfirmation;
-- (void)_presentResetHomePodConfirmation:(id)a3;
-- (void)_presentTriggerEditorForProgrammableSwitchEventOptionItem:(id)a3;
-- (void)_presentWiFiPickerForItem:(id)a3;
-- (void)_registerButtonActionHandler:(id)a3 item:(id)a4;
+- (void)_presentResetHomePodConfirmation:(id)confirmation;
+- (void)_presentTriggerEditorForProgrammableSwitchEventOptionItem:(id)item;
+- (void)_presentWiFiPickerForItem:(id)item;
+- (void)_registerButtonActionHandler:(id)handler item:(id)item;
 - (void)_restartGroupedHomePodAccessory;
 - (void)_restartHomePod;
 - (void)_separateOrUnifyTile;
-- (void)_setDismissedHomePodHasNonMemberMediaAccountWarning:(BOOL)a3;
-- (void)_setupProgrammableSwitchCell:(id)a3 forItem:(id)a4;
-- (void)_setupWiFiPickerManagerForFirstPartyAccessory:(id)a3;
-- (void)_submitMetricsSymptomsInteractionForAccessory:(id)a3 interactionType:(int64_t)a4;
+- (void)_setDismissedHomePodHasNonMemberMediaAccountWarning:(BOOL)warning;
+- (void)_setupProgrammableSwitchCell:(id)cell forItem:(id)item;
+- (void)_setupWiFiPickerManagerForFirstPartyAccessory:(id)accessory;
+- (void)_submitMetricsSymptomsInteractionForAccessory:(id)accessory interactionType:(int64_t)type;
 - (void)_updateAssociatedServiceTypeCells;
-- (void)_updateCheckedStateForAssociatedServiceTypeCell:(id)a3 item:(id)a4;
+- (void)_updateCheckedStateForAssociatedServiceTypeCell:(id)cell item:(id)item;
 - (void)_updateControlStatusText;
-- (void)_updateIconDescriptorAnimated:(BOOL)a3;
-- (void)_updateName:(id)a3;
-- (void)accessory:(id)a3 service:(id)a4 didUpdateValueForCharacteristic:(id)a5;
-- (void)accessoryDidUpdateControllable:(id)a3;
-- (void)accessoryDidUpdateServices:(id)a3;
-- (void)addRoomButtonPressed:(id)a3;
+- (void)_updateIconDescriptorAnimated:(BOOL)animated;
+- (void)_updateName:(id)name;
+- (void)accessory:(id)accessory service:(id)service didUpdateValueForCharacteristic:(id)characteristic;
+- (void)accessoryDidUpdateControllable:(id)controllable;
+- (void)accessoryDidUpdateServices:(id)services;
+- (void)addRoomButtonPressed:(id)pressed;
 - (void)beginScan;
 - (void)checkForAccessoriesNeedingReprovisioning;
 - (void)commitChanges;
-- (void)controlPanelController:(id)a3 didEndPossibleWritesForControlItem:(id)a4;
-- (void)controlPanelController:(id)a3 willBeginPossibleWritesForControlItem:(id)a4;
+- (void)controlPanelController:(id)controller didEndPossibleWritesForControlItem:(id)item;
+- (void)controlPanelController:(id)controller willBeginPossibleWritesForControlItem:(id)item;
 - (void)dealloc;
 - (void)didJoinNewNetwork;
-- (void)didRemoveCHIPPairingforAccessory:(id)a3;
-- (void)didSelectHeaderWarningAction:(id)a3;
-- (void)didSelectHomeAssistantDeviceSplitAccountAction:(unint64_t)a3;
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6;
-- (void)diffableDataItemManager:(id)a3 willUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6 isInitialLoad:(BOOL)a7;
-- (void)dismissTriggerActionEditorViewController:(id)a3;
-- (void)editRoomViewControllerDidFinish:(id)a3 withNewRoom:(id)a4;
+- (void)didRemoveCHIPPairingforAccessory:(id)accessory;
+- (void)didSelectHeaderWarningAction:(id)action;
+- (void)didSelectHomeAssistantDeviceSplitAccountAction:(unint64_t)action;
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems;
+- (void)diffableDataItemManager:(id)manager willUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems isInitialLoad:(BOOL)load;
+- (void)dismissTriggerActionEditorViewController:(id)controller;
+- (void)editRoomViewControllerDidFinish:(id)finish withNewRoom:(id)room;
 - (void)endScan;
-- (void)handleTimer:(id)a3;
-- (void)itemManager:(id)a3 didUpdateResultsForItem:(id)a4 atIndexPath:(id)a5;
-- (void)itemManager:(id)a3 didUpdateResultsForSourceItem:(id)a4;
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4;
-- (void)mediaSystemEditor:(id)a3 didAbortDueTo:(id)a4;
-- (void)mediaSystemEditor:(id)a3 didCreate:(id)a4;
-- (void)moduleController:(id)a3 expandModule:(id)a4;
-- (void)moduleController:(id)a3 presentSettingDetailsViewController:(id)a4;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)pickerViewCell:(id)a3 didSelectValueAtIndex:(int64_t)a4;
-- (void)serviceGroupEditor:(id)a3 didCreateServiceGroup:(id)a4;
-- (void)setShouldIncludeRoomNameInHeaderTitle:(BOOL)a3;
-- (void)setShouldTrackProgrammableSwitchActivations:(BOOL)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5;
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4;
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
-- (void)updateCurrentWiFiNetwork:(id)a3;
-- (void)updateScannedWiFiNetworks:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)handleTimer:(id)timer;
+- (void)itemManager:(id)manager didUpdateResultsForItem:(id)item atIndexPath:(id)path;
+- (void)itemManager:(id)manager didUpdateResultsForSourceItem:(id)item;
+- (void)itemManager:(id)manager performUpdateRequest:(id)request;
+- (void)mediaSystemEditor:(id)editor didAbortDueTo:(id)to;
+- (void)mediaSystemEditor:(id)editor didCreate:(id)create;
+- (void)moduleController:(id)controller expandModule:(id)module;
+- (void)moduleController:(id)controller presentSettingDetailsViewController:(id)viewController;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)pickerViewCell:(id)cell didSelectValueAtIndex:(int64_t)index;
+- (void)serviceGroupEditor:(id)editor didCreateServiceGroup:(id)group;
+- (void)setShouldIncludeRoomNameInHeaderTitle:(BOOL)title;
+- (void)setShouldTrackProgrammableSwitchActivations:(BOOL)activations;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item;
+- (void)textFieldDidEndEditing:(id)editing item:(id)item;
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
+- (void)updateCurrentWiFiNetwork:(id)network;
+- (void)updateScannedWiFiNetworks:(id)networks;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillDismiss;
 - (void)wifiPickerViewDidDisappear;
 @end
 
 @implementation HUServiceDetailsViewController
 
-- (id)createAccessoryDetailInfoListModuleControllerWith:(id)a3
+- (id)createAccessoryDetailInfoListModuleControllerWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = HUServiceDetailsViewController.createAccessoryDetailInfoListModuleController(with:)(v4);
+  withCopy = with;
+  selfCopy = self;
+  v6 = HUServiceDetailsViewController.createAccessoryDetailInfoListModuleController(with:)(withCopy);
 
   return v6;
 }
@@ -175,31 +175,31 @@ void __55__HUServiceDetailsViewController_acceptableItemClasses__block_invoke_2(
   qword_27C837F50 = v8;
 }
 
-- (HUServiceDetailsViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUServiceDetailsViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithServiceLikeItem_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:182 description:{@"%s is unavailable; use %@ instead", "-[HUServiceDetailsViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:182 description:{@"%s is unavailable; use %@ instead", "-[HUServiceDetailsViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (HUServiceDetailsViewController)initWithServiceLikeItem:(id)a3
+- (HUServiceDetailsViewController)initWithServiceLikeItem:(id)item
 {
   v102 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() acceptableItemClasses];
+  itemCopy = item;
+  acceptableItemClasses = [objc_opt_class() acceptableItemClasses];
   v93[0] = MEMORY[0x277D85DD0];
   v93[1] = 3221225472;
   v93[2] = __58__HUServiceDetailsViewController_initWithServiceLikeItem___block_invoke;
   v93[3] = &unk_277DB8AD8;
-  v6 = v4;
+  v6 = itemCopy;
   v94 = v6;
-  if (([v5 na_any:v93] & 1) == 0)
+  if (([acceptableItemClasses na_any:v93] & 1) == 0)
   {
     v7 = objc_opt_class();
-    v8 = [v5 allObjects];
-    v9 = [v8 na_map:&__block_literal_global_107_2];
+    allObjects = [acceptableItemClasses allObjects];
+    v9 = [allObjects na_map:&__block_literal_global_107_2];
     v10 = [v9 componentsJoinedByString:@"/"];
     NSLog(&cfstr_RequiresAObjec.isa, v7, v10);
   }
@@ -224,8 +224,8 @@ void __55__HUServiceDetailsViewController_acceptableItemClasses__block_invoke_2(
 
     v16 = v15;
 
-    v17 = [v16 isItemGroup];
-    v12->_isItemGroup = v17;
+    isItemGroup = [v16 isItemGroup];
+    v12->_isItemGroup = isItemGroup;
     v12->_isMultiServiceAccessory = 0;
     v12->_shouldIncludeRoomNameInHeaderTitle = 0;
     objc_opt_class();
@@ -245,8 +245,8 @@ void __55__HUServiceDetailsViewController_acceptableItemClasses__block_invoke_2(
 
       v20 = v19;
 
-      v21 = [v20 accessory];
-      v12->_isMultiServiceAccessory = [v21 hf_isMultiServiceAccessory];
+      accessory = [v20 accessory];
+      v12->_isMultiServiceAccessory = [accessory hf_isMultiServiceAccessory];
     }
 
     else
@@ -260,17 +260,17 @@ LABEL_31:
         controlPanelController = v12->_controlPanelController;
         v12->_controlPanelController = v53;
 
-        v55 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         expandedControlPanelItems = v12->_expandedControlPanelItems;
-        v12->_expandedControlPanelItems = v55;
+        v12->_expandedControlPanelItems = weakObjectsHashTable;
 
         v57 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v12 action:sel__longPressRecognized_];
         longPressRecognizer = v12->_longPressRecognizer;
         v12->_longPressRecognizer = v57;
 
         [(UILongPressGestureRecognizer *)v12->_longPressRecognizer setDelegate:v12];
-        v59 = [(HUServiceDetailsViewController *)v12 tableView];
-        [v59 addGestureRecognizer:v12->_longPressRecognizer];
+        tableView = [(HUServiceDetailsViewController *)v12 tableView];
+        [tableView addGestureRecognizer:v12->_longPressRecognizer];
 
         v60 = objc_alloc_init(HUServiceDetailsTextViewDelegate);
         textViewDelegate = v12->_textViewDelegate;
@@ -278,18 +278,18 @@ LABEL_31:
 
         [(HUServiceDetailsTextViewDelegate *)v12->_textViewDelegate setItemManager:v11];
         [(HUServiceDetailsTextViewDelegate *)v12->_textViewDelegate setViewController:v12];
-        v62 = [v13 namingComponentForHomeKitObject];
+        namingComponentForHomeKitObject = [v13 namingComponentForHomeKitObject];
         namingComponent = v12->_namingComponent;
-        v12->_namingComponent = v62;
+        v12->_namingComponent = namingComponentForHomeKitObject;
 
-        v64 = [MEMORY[0x277D146E8] sharedDispatcher];
-        [v64 addHomeObserver:v12];
+        mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+        [mEMORY[0x277D146E8] addHomeObserver:v12];
 
-        v65 = [MEMORY[0x277D146E8] sharedDispatcher];
-        [v65 addAccessoryObserver:v12];
+        mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+        [mEMORY[0x277D146E8]2 addAccessoryObserver:v12];
 
-        v66 = [v13 latestResults];
-        v67 = [v66 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+        latestResults = [v13 latestResults];
+        v67 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
         [(HUServiceDetailsViewController *)v12 setTitle:v67];
 
         v68 = objc_alloc_init(HUQuickControlSummaryNavigationBarTitleView);
@@ -298,23 +298,23 @@ LABEL_31:
         if (([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation] & 1) == 0)
         {
           v69 = [[HUBaseIconViewConfiguration alloc] initWithItem:v13 appearance:3];
-          v70 = [(HUServiceDetailsViewController *)v12 navigationBarTitleView];
-          v71 = [v70 summaryView];
-          v72 = [v71 baseIconView];
-          [v72 setConfiguration:v69];
+          navigationBarTitleView = [(HUServiceDetailsViewController *)v12 navigationBarTitleView];
+          summaryView = [navigationBarTitleView summaryView];
+          baseIconView = [summaryView baseIconView];
+          [baseIconView setConfiguration:v69];
         }
 
         if ([MEMORY[0x277D14CE8] isProxHandOffV2Config])
         {
           v73 = [HUQuickControlProxHandOffSummaryViewUpdater alloc];
-          v74 = [(HUServiceDetailsViewController *)v12 navigationBarTitleView];
-          v75 = [(HUQuickControlProxHandOffSummaryViewUpdater *)v73 initWithNavigationBarTitleView:v74];
+          navigationBarTitleView2 = [(HUServiceDetailsViewController *)v12 navigationBarTitleView];
+          v75 = [(HUQuickControlProxHandOffSummaryViewUpdater *)v73 initWithNavigationBarTitleView:navigationBarTitleView2];
           [(HUServiceDetailsViewController *)v12 setProxHandOffSummaryViewUpdater:v75];
         }
 
-        v76 = [(HUServiceDetailsViewController *)v12 detailsItemManager];
-        v77 = [v76 sourceItemAccessory];
-        [(HUServiceDetailsViewController *)v12 _submitMetricsSymptomsInteractionForAccessory:v77 interactionType:0];
+        detailsItemManager = [(HUServiceDetailsViewController *)v12 detailsItemManager];
+        sourceItemAccessory = [detailsItemManager sourceItemAccessory];
+        [(HUServiceDetailsViewController *)v12 _submitMetricsSymptomsInteractionForAccessory:sourceItemAccessory interactionType:0];
 
         goto LABEL_36;
       }
@@ -348,18 +348,18 @@ LABEL_31:
         v82 = v11;
         v89 = v82;
         [HUHomeFeatureOnboardingUtilities fetchSupportedVoiceRecognitionLanguagesWithCompletion:v88];
-        v25 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v26 = [v25 home];
-        v27 = [v26 hf_currentUserIsOwner];
+        mEMORY[0x277D146E8]3 = [MEMORY[0x277D146E8] sharedDispatcher];
+        home = [mEMORY[0x277D146E8]3 home];
+        hf_currentUserIsOwner = [home hf_currentUserIsOwner];
 
-        if (v27)
+        if (hf_currentUserIsOwner)
         {
-          v80 = [MEMORY[0x277D14400] sharedInstance];
-          v28 = [MEMORY[0x277D146E8] sharedDispatcher];
-          v29 = [v28 home];
-          v30 = [v29 uniqueIdentifier];
-          v31 = [v30 UUIDString];
-          v83 = [v80 mediaAccountForHomeIdentifier:v31];
+          mEMORY[0x277D14400] = [MEMORY[0x277D14400] sharedInstance];
+          mEMORY[0x277D146E8]4 = [MEMORY[0x277D146E8] sharedDispatcher];
+          home2 = [mEMORY[0x277D146E8]4 home];
+          uniqueIdentifier = [home2 uniqueIdentifier];
+          uUIDString = [uniqueIdentifier UUIDString];
+          v83 = [mEMORY[0x277D14400] mediaAccountForHomeIdentifier:uUIDString];
 
           if (v83)
           {
@@ -367,54 +367,54 @@ LABEL_31:
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
               v33 = NSStringFromSelector(a2);
-              v81 = [MEMORY[0x277D146E8] sharedDispatcher];
-              v79 = [v81 home];
-              v34 = [v79 uniqueIdentifier];
-              v35 = [v34 UUIDString];
+              mEMORY[0x277D146E8]5 = [MEMORY[0x277D146E8] sharedDispatcher];
+              home3 = [mEMORY[0x277D146E8]5 home];
+              uniqueIdentifier2 = [home3 uniqueIdentifier];
+              uUIDString2 = [uniqueIdentifier2 UUIDString];
               *buf = 138412802;
               v97 = v33;
               v98 = 2112;
               v99 = v83;
               v100 = 2112;
-              v101 = v35;
+              v101 = uUIDString2;
               _os_log_impl(&dword_20CEB6000, v32, OS_LOG_TYPE_DEFAULT, "%@ Setting media account - [%@]  for home with identifier - [%@]", buf, 0x20u);
             }
 
             [(HUServiceDetailsItemManager *)v82 setHomeMediaAccount:v83];
-            v36 = [(HUServiceDetailsViewController *)v12 detailsItemManager];
-            v37 = [v36 reloadAndUpdateAllItemsFromSenderSelector:a2];
+            detailsItemManager2 = [(HUServiceDetailsViewController *)v12 detailsItemManager];
+            v37 = [detailsItemManager2 reloadAndUpdateAllItemsFromSenderSelector:a2];
 
-            v38 = [(HUServiceDetailsViewController *)v12 detailsItemManager];
-            v39 = [v38 diffableDataSourceDisabled];
+            detailsItemManager3 = [(HUServiceDetailsViewController *)v12 detailsItemManager];
+            diffableDataSourceDisabled = [detailsItemManager3 diffableDataSourceDisabled];
 
-            if (v39)
+            if (diffableDataSourceDisabled)
             {
-              v40 = [(HUServiceDetailsViewController *)v12 tableView];
+              tableView2 = [(HUServiceDetailsViewController *)v12 tableView];
               v41 = [MEMORY[0x277CCAA78] indexSetWithIndex:0];
-              [v40 reloadSections:v41 withRowAnimation:5];
+              [tableView2 reloadSections:v41 withRowAnimation:5];
             }
 
             else
             {
-              v49 = [(HUItemTableViewController *)v12 itemManager];
-              v50 = [v49 itemSectionForSectionIndex:0];
+              itemManager = [(HUItemTableViewController *)v12 itemManager];
+              v50 = [itemManager itemSectionForSectionIndex:0];
 
               if (v50)
               {
-                v51 = [(HUServiceDetailsViewController *)v12 detailsItemManager];
+                detailsItemManager4 = [(HUServiceDetailsViewController *)v12 detailsItemManager];
                 v95 = v50;
                 v52 = [MEMORY[0x277CBEA60] arrayWithObjects:&v95 count:1];
-                [v51 reloadUIRepresentationForSections:v52 withAnimation:0];
+                [detailsItemManager4 reloadUIRepresentationForSections:v52 withAnimation:0];
               }
             }
           }
 
           else
           {
-            v42 = [MEMORY[0x277D14400] sharedInstance];
-            v43 = [MEMORY[0x277D146E8] sharedDispatcher];
-            v44 = [v43 home];
-            v45 = [v42 executeHomeMediaAccountFetchForHome:v44];
+            mEMORY[0x277D14400]2 = [MEMORY[0x277D14400] sharedInstance];
+            mEMORY[0x277D146E8]6 = [MEMORY[0x277D146E8] sharedDispatcher];
+            home4 = [mEMORY[0x277D146E8]6 home];
+            v45 = [mEMORY[0x277D14400]2 executeHomeMediaAccountFetchForHome:home4];
             accountFuture = v12->_accountFuture;
             v12->_accountFuture = v45;
 
@@ -624,8 +624,8 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [(HUServiceDetailsViewController *)self accountFuture];
-  [v3 cancel];
+  accountFuture = [(HUServiceDetailsViewController *)self accountFuture];
+  [accountFuture cancel];
 
   v4.receiver = self;
   v4.super_class = HUServiceDetailsViewController;
@@ -634,17 +634,17 @@ LABEL_10:
 
 - (void)viewWillDismiss
 {
-  v2 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  [v2 tearDown];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  [detailsItemManager tearDown];
 }
 
 - (NSString)description
 {
   objc_opt_class();
-  v3 = [(HUServiceDetailsViewController *)self item];
+  item = [(HUServiceDetailsViewController *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = item;
   }
 
   else
@@ -658,28 +658,28 @@ LABEL_10:
   {
     v6 = [MEMORY[0x277D2C8F8] builderWithObject:self];
     v7 = MEMORY[0x277CCACA8];
-    v8 = [v5 latestResults];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-    v10 = [v5 mediaProfileContainer];
-    v11 = [v7 stringWithFormat:@"%p '%@' %@'", v5, v9, v10];
+    latestResults = [v5 latestResults];
+    v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    mediaProfileContainer = [v5 mediaProfileContainer];
+    v11 = [v7 stringWithFormat:@"%p '%@' %@'", v5, v9, mediaProfileContainer];
 
     [v6 appendString:v11 withName:@"HFMediaAccessoryItem"];
-    v12 = [v6 build];
+    build = [v6 build];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = HUServiceDetailsViewController;
-    v12 = [(HUItemTableViewController *)&v14 description];
+    build = [(HUItemTableViewController *)&v14 description];
   }
 
-  return v12;
+  return build;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -689,24 +689,24 @@ LABEL_10:
 
   v32.receiver = self;
   v32.super_class = HUServiceDetailsViewController;
-  [(HUItemTableViewController *)&v32 viewWillAppear:v3];
-  v6 = [(HUServiceDetailsViewController *)self item];
-  if (v6)
+  [(HUItemTableViewController *)&v32 viewWillAppear:appearCopy];
+  item = [(HUServiceDetailsViewController *)self item];
+  if (item)
   {
-    v7 = v6;
-    v8 = [(HUServiceDetailsViewController *)self item];
+    v7 = item;
+    item2 = [(HUServiceDetailsViewController *)self item];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
       v10 = objc_opt_class();
-      v11 = [(HUServiceDetailsViewController *)self item];
-      if (v11)
+      item3 = [(HUServiceDetailsViewController *)self item];
+      if (item3)
       {
         if (objc_opt_isKindOfClass())
         {
-          v12 = v11;
+          v12 = item3;
         }
 
         else
@@ -714,15 +714,15 @@ LABEL_10:
           v12 = 0;
         }
 
-        v13 = v11;
+        v13 = item3;
         if (v12)
         {
           goto LABEL_12;
         }
 
-        v14 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-        [v14 handleFailureInFunction:v15 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v10, objc_opt_class()}];
+        [currentHandler handleFailureInFunction:v15 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v10, objc_opt_class()}];
       }
 
       v13 = 0;
@@ -730,59 +730,59 @@ LABEL_12:
 
       if (v13)
       {
-        v16 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v17 = [v16 shouldShowDeviceOptionsForAccessoryItem:v13];
+        detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+        v17 = [detailsItemManager shouldShowDeviceOptionsForAccessoryItem:v13];
 
         if (v17)
         {
-          v18 = [(HUServiceDetailsViewController *)self detailsItemManager];
-          [v18 registerKVO];
+          detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+          [detailsItemManager2 registerKVO];
         }
       }
     }
   }
 
   [(HUServiceDetailsViewController *)self checkForAccessoriesNeedingReprovisioning];
-  v19 = [(HUServiceDetailsViewController *)self navigationController];
-  v20 = [v19 viewControllers];
-  v21 = [v20 count];
+  navigationController = [(HUServiceDetailsViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v21 = [viewControllers count];
 
   if (v21 == 1)
   {
     v22 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__closeButtonPressed_];
     [v22 setAccessibilityIdentifier:@"AccessoryDetails.Close"];
-    v23 = [(HUServiceDetailsViewController *)self navigationItem];
-    [v23 setRightBarButtonItem:v22];
+    navigationItem = [(HUServiceDetailsViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v22];
 
-    v24 = [(HUServiceDetailsViewController *)self parentViewController];
-    v25 = [v24 navigationItem];
-    v26 = [v25 titleView];
+    parentViewController = [(HUServiceDetailsViewController *)self parentViewController];
+    navigationItem2 = [parentViewController navigationItem];
+    titleView = [navigationItem2 titleView];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(HUServiceDetailsViewController *)self setNavigationBarTitleView:v26];
+      [(HUServiceDetailsViewController *)self setNavigationBarTitleView:titleView];
     }
 
-    v27 = [(HUServiceDetailsViewController *)self navigationBarTitleView];
-    v28 = [(HUServiceDetailsViewController *)self navigationItem];
-    [v28 setTitleView:v27];
+    navigationBarTitleView = [(HUServiceDetailsViewController *)self navigationBarTitleView];
+    navigationItem3 = [(HUServiceDetailsViewController *)self navigationItem];
+    [navigationItem3 setTitleView:navigationBarTitleView];
 
-    v29 = [MEMORY[0x277D75348] clearColor];
-    v30 = [(HUServiceDetailsViewController *)self navigationBarTitleView];
-    [v30 setBackgroundColor:v29];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    navigationBarTitleView2 = [(HUServiceDetailsViewController *)self navigationBarTitleView];
+    [navigationBarTitleView2 setBackgroundColor:clearColor];
 
-    v31 = [(HUServiceDetailsViewController *)self navigationController];
-    [v31 setDelegate:self];
+    navigationController2 = [(HUServiceDetailsViewController *)self navigationController];
+    [navigationController2 setDelegate:self];
   }
 
   [(HUServiceDetailsViewController *)self _updateControlStatusText];
   [(HUServiceDetailsViewController *)self _updateIconDescriptorAnimated:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -793,12 +793,12 @@ LABEL_12:
 
   v9.receiver = self;
   v9.super_class = HUServiceDetailsViewController;
-  [(HUItemTableViewController *)&v9 viewDidAppear:v3];
+  [(HUItemTableViewController *)&v9 viewDidAppear:appearCopy];
   [(HUServiceDetailsViewController *)self setShouldTrackProgrammableSwitchActivations:1];
   v6 = MEMORY[0x277D143D8];
   v11 = *MEMORY[0x277D133C8];
-  v7 = [(HUServiceDetailsViewController *)self item];
-  v12[0] = v7;
+  item = [(HUServiceDetailsViewController *)self item];
+  v12[0] = item;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   [v6 sendEvent:33 withData:v8];
 
@@ -806,19 +806,19 @@ LABEL_12:
   [(HUServiceDetailsViewController *)self _fetchAccessoryDiagnosticInfo];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v21.receiver = self;
   v21.super_class = HUServiceDetailsViewController;
-  [(HUItemTableViewController *)&v21 viewWillDisappear:a3];
-  v4 = [(HUServiceDetailsViewController *)self item];
-  if (!v4)
+  [(HUItemTableViewController *)&v21 viewWillDisappear:disappear];
+  item = [(HUServiceDetailsViewController *)self item];
+  if (!item)
   {
     goto LABEL_14;
   }
 
-  v5 = v4;
-  v6 = [(HUServiceDetailsViewController *)self item];
+  v5 = item;
+  item2 = [(HUServiceDetailsViewController *)self item];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -828,12 +828,12 @@ LABEL_12:
   }
 
   v8 = objc_opt_class();
-  v9 = [(HUServiceDetailsViewController *)self item];
-  if (v9)
+  item3 = [(HUServiceDetailsViewController *)self item];
+  if (item3)
   {
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = item3;
     }
 
     else
@@ -841,15 +841,15 @@ LABEL_12:
       v10 = 0;
     }
 
-    v11 = v9;
+    v11 = item3;
     if (v10)
     {
       goto LABEL_10;
     }
 
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v12 handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
   }
 
   v11 = 0;
@@ -857,65 +857,65 @@ LABEL_10:
 
   if (v11)
   {
-    v14 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v15 = [v14 shouldShowDeviceOptionsForAccessoryItem:v11];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    v15 = [detailsItemManager shouldShowDeviceOptionsForAccessoryItem:v11];
 
     if (v15)
     {
-      v16 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      [v16 unregisterKVO];
+      detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      [detailsItemManager2 unregisterKVO];
     }
   }
 
 LABEL_14:
   if ([(HUServiceDetailsViewController *)self isMovingFromParentViewController])
   {
-    v17 = [(HUServiceDetailsViewController *)self navigationController];
-    v18 = [v17 viewControllers];
-    v19 = [v18 count];
+    navigationController = [(HUServiceDetailsViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v19 = [viewControllers count];
 
     if (v19 >= 2)
     {
-      v20 = [(HUServiceDetailsViewController *)self _commitBuilder];
+      _commitBuilder = [(HUServiceDetailsViewController *)self _commitBuilder];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUServiceDetailsViewController;
-  [(HUItemTableViewController *)&v5 viewDidDisappear:a3];
+  [(HUItemTableViewController *)&v5 viewDidDisappear:disappear];
   [(HUServiceDetailsViewController *)self setShouldTrackProgrammableSwitchActivations:0];
-  v4 = [(HUServiceDetailsViewController *)self nameItemModuleController];
-  [v4 cancelNameEdit];
+  nameItemModuleController = [(HUServiceDetailsViewController *)self nameItemModuleController];
+  [nameItemModuleController cancelNameEdit];
 }
 
-- (void)setShouldIncludeRoomNameInHeaderTitle:(BOOL)a3
+- (void)setShouldIncludeRoomNameInHeaderTitle:(BOOL)title
 {
-  if (self->_shouldIncludeRoomNameInHeaderTitle != a3)
+  if (self->_shouldIncludeRoomNameInHeaderTitle != title)
   {
-    self->_shouldIncludeRoomNameInHeaderTitle = a3;
+    self->_shouldIncludeRoomNameInHeaderTitle = title;
     [(HUServiceDetailsViewController *)self _updateControlStatusText];
   }
 }
 
 - (void)commitChanges
 {
-  v3 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v4 = [v3 nameModule];
-  v5 = [v4 nameAndIconItem];
-  v9 = [(HUItemTableViewController *)self textFieldForVisibleItem:v5];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  nameModule = [detailsItemManager nameModule];
+  nameAndIconItem = [nameModule nameAndIconItem];
+  v9 = [(HUItemTableViewController *)self textFieldForVisibleItem:nameAndIconItem];
 
   if (![v9 isEditing] || (objc_msgSend(v9, "endEditing:", 1), objc_msgSend(MEMORY[0x277D14CE8], "isAMac")))
   {
-    v6 = [(HUServiceDetailsViewController *)self _commitBuilder];
-    v7 = [(HUServiceDetailsViewController *)self presentationDelegate];
-    v8 = [v7 finishPresentation:self animated:1];
+    _commitBuilder = [(HUServiceDetailsViewController *)self _commitBuilder];
+    presentationDelegate = [(HUServiceDetailsViewController *)self presentationDelegate];
+    v8 = [presentationDelegate finishPresentation:self animated:1];
   }
 }
 
-- (void)_closeButtonPressed:(id)a3
+- (void)_closeButtonPressed:(id)pressed
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -927,36 +927,36 @@ LABEL_14:
   [(HUServiceDetailsViewController *)self commitChanges];
 }
 
-- (id)_commitBuilderFor:(id)a3 with:(id)a4
+- (id)_commitBuilderFor:(id)for with:(id)with
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  forCopy = for;
+  withCopy = with;
+  if (!withCopy)
   {
-    NSLog(&cfstr_BuilderForItem.isa, v6);
+    NSLog(&cfstr_BuilderForItem.isa, forCopy);
   }
 
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = forCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = withCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "User committing builder for %@, builder: %@", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v9 = [v7 commitItem];
+  commitItem = [withCopy commitItem];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __57__HUServiceDetailsViewController__commitBuilderFor_with___block_invoke;
   v20[3] = &unk_277DBBE38;
   objc_copyWeak(&v22, buf);
-  v10 = v7;
+  v10 = withCopy;
   v21 = v10;
-  v11 = [v9 recover:v20];
+  v11 = [commitItem recover:v20];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -968,7 +968,7 @@ LABEL_14:
   v16[1] = 3221225472;
   v16[2] = __57__HUServiceDetailsViewController__commitBuilderFor_with___block_invoke_3;
   v16[3] = &unk_277DBA338;
-  v13 = v6;
+  v13 = forCopy;
   v17 = v13;
   v14 = [v11 addSuccessBlock:v16];
 
@@ -1038,36 +1038,36 @@ void __57__HUServiceDetailsViewController__commitBuilderFor_with___block_invoke_
 
 - (id)_commitBuilder
 {
-  v3 = [(HUServiceDetailsViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
-  [v4 setEnabled:0];
+  navigationItem = [(HUServiceDetailsViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
-  v5 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v6 = [v5 sourceItem];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItem = [detailsItemManager sourceItem];
 
-  v7 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v8 = [v7 serviceLikeBuilder];
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  serviceLikeBuilder = [detailsItemManager2 serviceLikeBuilder];
 
   objc_initWeak(&location, self);
-  v9 = [(HUServiceDetailsViewController *)self nameItemModuleController];
-  v10 = [v9 prepareForCommit];
+  nameItemModuleController = [(HUServiceDetailsViewController *)self nameItemModuleController];
+  prepareForCommit = [nameItemModuleController prepareForCommit];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __48__HUServiceDetailsViewController__commitBuilder__block_invoke;
   v20[3] = &unk_277DB7530;
   v20[4] = self;
-  v11 = [v10 addCompletionBlock:v20];
+  v11 = [prepareForCommit addCompletionBlock:v20];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __48__HUServiceDetailsViewController__commitBuilder__block_invoke_2;
   v16[3] = &unk_277DBED88;
   objc_copyWeak(&v19, &location);
-  v12 = v6;
+  v12 = sourceItem;
   v17 = v12;
-  v13 = v8;
+  v13 = serviceLikeBuilder;
   v18 = v13;
-  v14 = [v10 flatMap:v16];
+  v14 = [prepareForCommit flatMap:v16];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -1094,17 +1094,17 @@ id __48__HUServiceDetailsViewController__commitBuilder__block_invoke_2(uint64_t 
 {
   v40 = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v4 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v5 = [v4 serviceLikeBuilder];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  serviceLikeBuilder = [detailsItemManager serviceLikeBuilder];
 
-  if (v5)
+  if (serviceLikeBuilder)
   {
     objc_opt_class();
-    v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v7 = [v6 sourceItem];
+    detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    sourceItem = [detailsItemManager2 sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = sourceItem;
     }
 
     else
@@ -1117,28 +1117,28 @@ id __48__HUServiceDetailsViewController__commitBuilder__block_invoke_2(uint64_t 
     if ([v9 isHomePodMediaSystem])
     {
       [(HUServiceDetailsViewController *)self setRequiresPresentingViewControllerDismissal:1];
-      v10 = [(HUServiceDetailsViewController *)self presentationDelegate];
-      v11 = [v10 finishPresentation:self animated:1];
+      presentationDelegate = [(HUServiceDetailsViewController *)self presentationDelegate];
+      futureWithNoResult = [presentationDelegate finishPresentation:self animated:1];
     }
 
     else
     {
-      v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
-    v14 = [(HUServiceDetailsViewController *)self navigationItem];
-    v15 = [v14 rightBarButtonItem];
-    [v15 setEnabled:0];
+    navigationItem = [(HUServiceDetailsViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
 
     v16 = HFLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v18 = [v17 sourceItem];
+      detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      sourceItem2 = [detailsItemManager3 sourceItem];
       *buf = 138412546;
-      v37 = v18;
+      v37 = sourceItem2;
       v38 = 2112;
-      v39 = v5;
+      v39 = serviceLikeBuilder;
       _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "Preparing to remove item '%@' using builder '%@'", buf, 0x16u);
     }
 
@@ -1146,14 +1146,14 @@ id __48__HUServiceDetailsViewController__commitBuilder__block_invoke_2(uint64_t 
     v32[1] = 3221225472;
     v32[2] = __45__HUServiceDetailsViewController__removeItem__block_invoke;
     v32[3] = &unk_277DBEDB0;
-    v19 = v5;
+    v19 = serviceLikeBuilder;
     v33 = v19;
     objc_copyWeak(&v34, &location);
-    v20 = [v11 flatMap:v32];
-    if (!v11)
+    v20 = [futureWithNoResult flatMap:v32];
+    if (!futureWithNoResult)
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
-      [v25 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:612 description:{@"Invalid parameter not satisfying: %@", @"removalFuture"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:612 description:{@"Invalid parameter not satisfying: %@", @"removalFuture"}];
     }
 
     v30[0] = MEMORY[0x277D85DD0];
@@ -1161,14 +1161,14 @@ id __48__HUServiceDetailsViewController__commitBuilder__block_invoke_2(uint64_t 
     v30[2] = __45__HUServiceDetailsViewController__removeItem__block_invoke_3;
     v30[3] = &unk_277DB8CA8;
     objc_copyWeak(&v31, &location);
-    v21 = [v11 addCompletionBlock:v30];
+    v21 = [futureWithNoResult addCompletionBlock:v30];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __45__HUServiceDetailsViewController__removeItem__block_invoke_4;
     v27[3] = &unk_277DB9368;
     objc_copyWeak(&v29, &location);
     v28 = v19;
-    v22 = [v11 addFailureBlock:v27];
+    v22 = [futureWithNoResult addFailureBlock:v27];
     if ([v9 supportsDirectObliteration])
     {
       v26[0] = MEMORY[0x277D85DD0];
@@ -1176,7 +1176,7 @@ id __48__HUServiceDetailsViewController__commitBuilder__block_invoke_2(uint64_t 
       v26[2] = __45__HUServiceDetailsViewController__removeItem__block_invoke_2_241;
       v26[3] = &unk_277DBA338;
       v26[4] = self;
-      v23 = [v11 addSuccessBlock:v26];
+      v23 = [futureWithNoResult addSuccessBlock:v26];
     }
 
     objc_destroyWeak(&v29);
@@ -1186,16 +1186,16 @@ id __48__HUServiceDetailsViewController__commitBuilder__block_invoke_2(uint64_t 
 
   else
   {
-    v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v13 = [v12 sourceItem];
-    NSLog(&cfstr_BuilderForItem_0.isa, v13);
+    detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    sourceItem3 = [detailsItemManager4 sourceItem];
+    NSLog(&cfstr_BuilderForItem_0.isa, sourceItem3);
 
-    v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   objc_destroyWeak(&location);
 
-  return v11;
+  return futureWithNoResult;
 }
 
 id __45__HUServiceDetailsViewController__removeItem__block_invoke(uint64_t a1, void *a2)
@@ -1283,35 +1283,35 @@ void __45__HUServiceDetailsViewController__removeItem__block_invoke_2_241(uint64
   {
     v5 = NSStringFromSelector(a2);
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped restart HomePod", &v7, 0x16u);
   }
 
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  [v6 restartAccessory];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  [detailsItemManager restartAccessory];
 }
 
-- (void)_updateCheckedStateForAssociatedServiceTypeCell:(id)a3 item:(id)a4
+- (void)_updateCheckedStateForAssociatedServiceTypeCell:(id)cell item:(id)item
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  if ([v7 showAssociatedServiceTypeList])
+  cellCopy = cell;
+  itemCopy = item;
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  if ([detailsItemManager showAssociatedServiceTypeList])
   {
-    v8 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v9 = [v8 selectedAssociatedServiceTypeItem];
-    [v10 setChecked:{objc_msgSend(v9, "isEqual:", v6)}];
+    detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    selectedAssociatedServiceTypeItem = [detailsItemManager2 selectedAssociatedServiceTypeItem];
+    [cellCopy setChecked:{objc_msgSend(selectedAssociatedServiceTypeItem, "isEqual:", itemCopy)}];
   }
 
   else
   {
-    [v10 setChecked:0];
+    [cellCopy setChecked:0];
   }
 }
 
-- (void)addRoomButtonPressed:(id)a3
+- (void)addRoomButtonPressed:(id)pressed
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1321,9 +1321,9 @@ void __45__HUServiceDetailsViewController__removeItem__block_invoke_2_241(uint64
   }
 
   v5 = objc_alloc(MEMORY[0x277D149D8]);
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 home];
-  v8 = [v5 initWithExistingObject:0 inHome:v7];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager home];
+  v8 = [v5 initWithExistingObject:0 inHome:home];
 
   v9 = [[HUEditRoomViewController alloc] initWithRoomBuilder:v8 presentationDelegate:self addRoomDelegate:0];
   v10 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v9];
@@ -1333,41 +1333,41 @@ void __45__HUServiceDetailsViewController__removeItem__block_invoke_2_241(uint64
 
 - (HFServiceLikeItem)item
 {
-  v2 = [(HUItemTableViewController *)self itemManager];
-  v3 = [v2 sourceItem];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  sourceItem = [itemManager sourceItem];
 
-  return v3;
+  return sourceItem;
 }
 
 - (void)_updateControlStatusText
 {
-  v3 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v20 = [v3 headerItem];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  headerItem = [detailsItemManager headerItem];
 
-  v4 = [v20 latestResults];
+  latestResults = [headerItem latestResults];
 
-  if (!v4)
+  if (!latestResults)
   {
-    v5 = [(HUServiceDetailsViewController *)self item];
+    item = [(HUServiceDetailsViewController *)self item];
 
-    v20 = v5;
+    headerItem = item;
   }
 
-  v6 = [(HUServiceDetailsViewController *)self navigationBarTitleView];
-  v7 = [v6 summaryView];
+  navigationBarTitleView = [(HUServiceDetailsViewController *)self navigationBarTitleView];
+  summaryView = [navigationBarTitleView summaryView];
 
   if (([MEMORY[0x277D14CE8] isProxHandOffV2Config] & 1) == 0)
   {
-    v8 = [v20 latestResults];
-    v9 = [(HUServiceDetailsViewController *)self _primaryStatusTextForLatestResults:v8 showingSecondaryStatus:1];
-    [v7 setPrimaryText:v9];
+    latestResults2 = [headerItem latestResults];
+    v9 = [(HUServiceDetailsViewController *)self _primaryStatusTextForLatestResults:latestResults2 showingSecondaryStatus:1];
+    [summaryView setPrimaryText:v9];
 
-    v10 = [v20 latestResults];
-    v11 = [(HUServiceDetailsViewController *)self _secondaryStatusTextForLatestResults:v10];
+    latestResults3 = [headerItem latestResults];
+    v11 = [(HUServiceDetailsViewController *)self _secondaryStatusTextForLatestResults:latestResults3];
 
     if (v11)
     {
-      v12 = v7;
+      v12 = summaryView;
       v13 = v11;
 LABEL_6:
       [v12 setSecondaryText:v13];
@@ -1376,28 +1376,28 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v14 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v15 = [v14 sourceItemAccessory];
-    v16 = [v15 hf_siriEndpointProfile];
-    if (v16)
+    detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    sourceItemAccessory = [detailsItemManager2 sourceItemAccessory];
+    hf_siriEndpointProfile = [sourceItemAccessory hf_siriEndpointProfile];
+    if (hf_siriEndpointProfile)
     {
     }
 
     else
     {
-      v17 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v18 = [v17 sourceItemIsHomePod];
+      detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      sourceItemIsHomePod = [detailsItemManager3 sourceItemIsHomePod];
 
-      if (!v18)
+      if (!sourceItemIsHomePod)
       {
-        v12 = v7;
+        v12 = summaryView;
         v13 = 0;
         goto LABEL_6;
       }
     }
 
-    v19 = [(HUServiceDetailsViewController *)self _microphoneStatus];
-    [v7 setMicrophoneStatusText:v19];
+    _microphoneStatus = [(HUServiceDetailsViewController *)self _microphoneStatus];
+    [summaryView setMicrophoneStatusText:_microphoneStatus];
 
     goto LABEL_11;
   }
@@ -1405,26 +1405,26 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_updateIconDescriptorAnimated:(BOOL)a3
+- (void)_updateIconDescriptorAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v17 = [(HUServiceDetailsViewController *)self item];
-  v5 = [v17 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+  animatedCopy = animated;
+  item = [(HUServiceDetailsViewController *)self item];
+  latestResults = [item latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E88]];
 
   if (([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation] & 1) == 0)
   {
-    v9 = [[HUBaseIconViewConfiguration alloc] initWithItem:v17 appearance:3];
-    v10 = [(HUServiceDetailsViewController *)self navigationBarTitleView];
-    v11 = [v10 summaryView];
-    v12 = [v11 baseIconView];
-    [v12 setConfiguration:v9];
+    v9 = [[HUBaseIconViewConfiguration alloc] initWithItem:item appearance:3];
+    navigationBarTitleView = [(HUServiceDetailsViewController *)self navigationBarTitleView];
+    summaryView = [navigationBarTitleView summaryView];
+    baseIconView = [summaryView baseIconView];
+    [baseIconView setConfiguration:v9];
 
     goto LABEL_12;
   }
 
-  v7 = [v17 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D140C8]];
+  latestResults2 = [item latestResults];
+  v8 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D140C8]];
   if (v8)
   {
     v9 = v8;
@@ -1432,8 +1432,8 @@ LABEL_12:
 
   else
   {
-    v13 = [v17 latestResults];
-    v9 = [v13 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+    latestResults3 = [item latestResults];
+    v9 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D14068]];
 
     if (!v9)
     {
@@ -1459,40 +1459,40 @@ LABEL_12:
 LABEL_7:
   v14 = 1;
 LABEL_11:
-  v15 = [(HUServiceDetailsViewController *)self navigationBarTitleView];
-  v16 = [v15 summaryView];
-  v10 = [v16 iconView];
+  navigationBarTitleView2 = [(HUServiceDetailsViewController *)self navigationBarTitleView];
+  summaryView2 = [navigationBarTitleView2 summaryView];
+  navigationBarTitleView = [summaryView2 iconView];
 
-  [v10 updateWithIconDescriptor:v6 displayStyle:v14 animated:v3];
+  [navigationBarTitleView updateWithIconDescriptor:v6 displayStyle:v14 animated:animatedCopy];
 LABEL_12:
 }
 
-- (id)_primaryStatusTextForLatestResults:(id)a3 showingSecondaryStatus:(BOOL)a4
+- (id)_primaryStatusTextForLatestResults:(id)results showingSecondaryStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  resultsCopy = results;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v18 = 136315650;
     v19 = "[HUServiceDetailsViewController _primaryStatusTextForLatestResults:showingSecondaryStatus:]";
     v20 = 2112;
-    v21 = v6;
+    v21 = resultsCopy;
     v22 = 1024;
-    v23 = v4;
+    v23 = statusCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_INFO, "%s %@ %d", &v18, 0x1Cu);
   }
 
-  if (!v4)
+  if (!statusCopy)
   {
-    v15 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E40]];
+    v15 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13E40]];
     if (v15)
     {
       goto LABEL_15;
     }
 
-    v15 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E68]];
+    v15 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13E68]];
     if (v15)
     {
       goto LABEL_15;
@@ -1500,15 +1500,15 @@ LABEL_12:
   }
 
   v8 = *MEMORY[0x277D13F00];
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13F00]];
-  v10 = [v9 serviceName];
-  v11 = [v10 length];
+  v9 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13F00]];
+  serviceName = [v9 serviceName];
+  v11 = [serviceName length];
 
   if (!v11)
   {
-    v12 = [(HUServiceDetailsViewController *)self item];
-    v13 = [v12 latestResults];
-    v14 = [v13 objectForKeyedSubscript:v8];
+    item = [(HUServiceDetailsViewController *)self item];
+    latestResults = [item latestResults];
+    v14 = [latestResults objectForKeyedSubscript:v8];
 
     v9 = v14;
   }
@@ -1526,10 +1526,10 @@ LABEL_12:
 
   if (!v16)
   {
-    v15 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
+    v15 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
     if (!v15)
     {
-      v15 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+      v15 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13E20]];
     }
 
 LABEL_15:
@@ -1539,19 +1539,19 @@ LABEL_15:
   return v16;
 }
 
-- (id)_secondaryStatusTextForLatestResults:(id)a3
+- (id)_secondaryStatusTextForLatestResults:(id)results
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D13E40]];
+  resultsCopy = results;
+  v4 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13E40]];
   if (!v4)
   {
-    v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D13E38]];
+    v4 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13E38]];
     if (!v4)
     {
-      v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
+      v4 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
       if (!v4)
       {
-        v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+        v4 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13E20]];
       }
     }
   }
@@ -1564,33 +1564,33 @@ LABEL_15:
 - (id)_microphoneStatus
 {
   v3 = objc_opt_new();
-  v4 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v5 = [v4 sourceItemAccessory];
-  v6 = [v5 mediaProfile];
-  v7 = [v6 hf_mediaAccessoryCommonSettingsManager];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItemAccessory = [detailsItemManager sourceItemAccessory];
+  mediaProfile = [sourceItemAccessory mediaProfile];
+  hf_mediaAccessoryCommonSettingsManager = [mediaProfile hf_mediaAccessoryCommonSettingsManager];
 
-  v8 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v9 = [v8 sourceItemAccessory];
-  v10 = [v9 hf_siriEndpointProfile];
-  v11 = [v10 manuallyDisabled];
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItemAccessory2 = [detailsItemManager2 sourceItemAccessory];
+  hf_siriEndpointProfile = [sourceItemAccessory2 hf_siriEndpointProfile];
+  manuallyDisabled = [hf_siriEndpointProfile manuallyDisabled];
 
-  v12 = [v7 settingValueForKeyPath:*MEMORY[0x277D133B0]];
-  v13 = [v12 BOOLValue];
+  v12 = [hf_mediaAccessoryCommonSettingsManager settingValueForKeyPath:*MEMORY[0x277D133B0]];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [(HUServiceDetailsViewController *)self view];
-  v15 = [v14 effectiveUserInterfaceLayoutDirection];
+  view = [(HUServiceDetailsViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  v16 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v17 = [v16 sourceItemIsHomePod];
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItemIsHomePod = [detailsItemManager3 sourceItemIsHomePod];
 
-  if (v17)
+  if (sourceItemIsHomePod)
   {
     objc_opt_class();
-    v18 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v19 = [v18 sourceItem];
+    detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    sourceItem = [detailsItemManager4 sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v20 = v19;
+      v20 = sourceItem;
     }
 
     else
@@ -1600,22 +1600,22 @@ LABEL_15:
 
     v21 = v20;
 
-    v22 = [v21 isSiriDisabled];
-    v13 = v22 ^ 1;
+    isSiriDisabled = [v21 isSiriDisabled];
+    bOOLValue = isSiriDisabled ^ 1;
   }
 
-  if (v11 & 1 | ((v13 & 1) == 0))
+  if (manuallyDisabled & 1 | ((bOOLValue & 1) == 0))
   {
-    if (v11)
+    if (manuallyDisabled)
     {
       v23 = _HULocalizedStringWithDefaultValue(@"HUSiriEndpoint_MicrophoneOff", @"HUSiriEndpoint_MicrophoneOff", 1);
     }
 
     else
     {
-      v24 = [(HUItemTableViewController *)self itemManager];
-      v25 = [v24 home];
-      v26 = HULocalizedSiriTriggerPhrase(v25);
+      itemManager = [(HUItemTableViewController *)self itemManager];
+      home = [itemManager home];
+      v26 = HULocalizedSiriTriggerPhrase(home);
       v23 = HULocalizedStringWithFormat(@"HUSiriEndpoint_HeySiriTurnedOff", @"%@", v27, v28, v29, v30, v31, v32, v26);
     }
 
@@ -1625,14 +1625,14 @@ LABEL_15:
     v36 = [v34 initWithString:v35];
 
     v37 = MEMORY[0x277D755B8];
-    v38 = [MEMORY[0x277D75348] systemGrayColor];
-    v39 = [v37 hu_mutedMicrophoneImageWithTintColor:v38];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    v39 = [v37 hu_mutedMicrophoneImageWithTintColor:systemGrayColor];
 
     v40 = objc_opt_new();
     [v40 setImage:v39];
     v41 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v40];
     v42 = v41;
-    if (v15 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v43 = v33;
     }
@@ -1642,7 +1642,7 @@ LABEL_15:
       v43 = v41;
     }
 
-    if (v15 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v44 = v41;
     }
@@ -1660,98 +1660,98 @@ LABEL_15:
   return v3;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v5 = a3;
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 nameModule];
+  moduleCopy = module;
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  nameModule = [detailsItemManager nameModule];
 
-  if (v7 == v5)
+  if (nameModule == moduleCopy)
   {
-    v18 = [[HUNameItemModuleController alloc] initWithModule:v5 host:self];
+    v18 = [[HUNameItemModuleController alloc] initWithModule:moduleCopy host:self];
     [(HUServiceDetailsViewController *)self setNameItemModuleController:v18];
 
-    v19 = [(HUServiceDetailsViewController *)self nameItemModuleController];
-    [v19 setNameFieldHasClearButton:1];
+    nameItemModuleController = [(HUServiceDetailsViewController *)self nameItemModuleController];
+    [nameItemModuleController setNameFieldHasClearButton:1];
 
-    v20 = [(HUItemTableViewController *)self itemManager];
-    v21 = [v20 home];
-    v22 = [v21 hf_currentUserIsRestrictedGuest];
-    v23 = [(HUServiceDetailsViewController *)self nameItemModuleController];
-    [v23 setNameFieldHasClearButton:v22 ^ 1u];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    home = [itemManager home];
+    hf_currentUserIsRestrictedGuest = [home hf_currentUserIsRestrictedGuest];
+    nameItemModuleController2 = [(HUServiceDetailsViewController *)self nameItemModuleController];
+    [nameItemModuleController2 setNameFieldHasClearButton:hf_currentUserIsRestrictedGuest ^ 1u];
 
-    v24 = [(HUServiceDetailsViewController *)self nameItemModuleController];
+    nameItemModuleController3 = [(HUServiceDetailsViewController *)self nameItemModuleController];
   }
 
   else
   {
-    v8 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v9 = [v8 accessoryRepresentableItemModule];
+    detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    accessoryRepresentableItemModule = [detailsItemManager2 accessoryRepresentableItemModule];
 
-    if (v9 == v5)
+    if (accessoryRepresentableItemModule == moduleCopy)
     {
-      v24 = [(HUServiceDetailsViewController *)self createAccessoryDetailInfoListModuleControllerWith:v5];
+      nameItemModuleController3 = [(HUServiceDetailsViewController *)self createAccessoryDetailInfoListModuleControllerWith:moduleCopy];
     }
 
     else
     {
-      v10 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v11 = [v10 sceneAndTriggerModule];
+      detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      sceneAndTriggerModule = [detailsItemManager3 sceneAndTriggerModule];
 
-      if (v11 == v5)
+      if (sceneAndTriggerModule == moduleCopy)
       {
-        v25 = [(HUItemModuleController *)[HUAssociatedSceneAndTriggerModuleController alloc] initWithModule:v5];
+        v25 = [(HUItemModuleController *)[HUAssociatedSceneAndTriggerModuleController alloc] initWithModule:moduleCopy];
         [(HUServiceDetailsViewController *)self setSceneAndTriggerModuleController:v25];
 
-        v24 = [(HUServiceDetailsViewController *)self sceneAndTriggerModuleController];
+        nameItemModuleController3 = [(HUServiceDetailsViewController *)self sceneAndTriggerModuleController];
       }
 
       else
       {
-        v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v13 = [v12 relatedTriggerItemModule];
+        detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        relatedTriggerItemModule = [detailsItemManager4 relatedTriggerItemModule];
 
-        if (v13 == v5)
+        if (relatedTriggerItemModule == moduleCopy)
         {
-          v26 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
-          v27 = [[HUAvailableRelatedTriggerItemModuleController alloc] initWithModule:v5];
+          associatedTriggerModuleController = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
+          v27 = [[HUAvailableRelatedTriggerItemModuleController alloc] initWithModule:moduleCopy];
           [(HUServiceDetailsViewController *)self setAssociatedTriggerModuleController:v27];
 
-          v28 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
-          [v28 setHost:self];
+          associatedTriggerModuleController2 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
+          [associatedTriggerModuleController2 setHost:self];
 
-          v29 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
-          [v26 updatePresentedViewControllerForNewModuleController:v29];
+          associatedTriggerModuleController3 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
+          [associatedTriggerModuleController updatePresentedViewControllerForNewModuleController:associatedTriggerModuleController3];
 
-          v17 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
+          associatedTriggerModuleController4 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
 
           goto LABEL_13;
         }
 
-        v14 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v15 = [v14 connectedServicesItemModule];
+        detailsItemManager5 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        connectedServicesItemModule = [detailsItemManager5 connectedServicesItemModule];
 
-        if (v15 != v5)
+        if (connectedServicesItemModule != moduleCopy)
         {
-          v16 = [MEMORY[0x277CCA890] currentHandler];
-          [v16 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:862 description:{@"Unexpected module %@", v5}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:862 description:{@"Unexpected module %@", moduleCopy}];
 
-          v17 = 0;
+          associatedTriggerModuleController4 = 0;
           goto LABEL_13;
         }
 
-        v30 = [(HUItemModuleController *)[HUMatterConnectedServicesItemModuleController alloc] initWithModule:v5];
+        v30 = [(HUItemModuleController *)[HUMatterConnectedServicesItemModuleController alloc] initWithModule:moduleCopy];
         [(HUServiceDetailsViewController *)self setConnectedServicesItemModuleController:v30];
 
-        v24 = [(HUServiceDetailsViewController *)self connectedServicesItemModuleController];
+        nameItemModuleController3 = [(HUServiceDetailsViewController *)self connectedServicesItemModuleController];
       }
     }
   }
 
-  v17 = v24;
+  associatedTriggerModuleController4 = nameItemModuleController3;
 LABEL_13:
 
-  return v17;
+  return associatedTriggerModuleController4;
 }
 
 - (id)itemModuleControllers
@@ -1760,69 +1760,69 @@ LABEL_13:
   v3 = objc_opt_new();
   v86.receiver = self;
   v86.super_class = HUServiceDetailsViewController;
-  v4 = [(HUItemTableViewController *)&v86 itemModuleControllers];
-  [(HUHomeKitAccessorySettingsItemModuleController *)v3 unionSet:v4];
+  itemModuleControllers = [(HUItemTableViewController *)&v86 itemModuleControllers];
+  [(HUHomeKitAccessorySettingsItemModuleController *)v3 unionSet:itemModuleControllers];
 
-  v5 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
-  if (!v5)
+  associatedTriggerModuleController = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
+  if (!associatedTriggerModuleController)
   {
-    v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v7 = [v6 relatedTriggerItemModule];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    relatedTriggerItemModule = [detailsItemManager relatedTriggerItemModule];
 
-    if (!v7)
+    if (!relatedTriggerItemModule)
     {
       goto LABEL_5;
     }
 
     v8 = [HUAvailableRelatedTriggerItemModuleController alloc];
-    v9 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v10 = [v9 relatedTriggerItemModule];
-    v11 = [(HUAvailableRelatedTriggerItemModuleController *)v8 initWithModule:v10];
+    detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    relatedTriggerItemModule2 = [detailsItemManager2 relatedTriggerItemModule];
+    v11 = [(HUAvailableRelatedTriggerItemModuleController *)v8 initWithModule:relatedTriggerItemModule2];
     [(HUServiceDetailsViewController *)self setAssociatedTriggerModuleController:v11];
 
-    v5 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
-    [v5 setHost:self];
+    associatedTriggerModuleController = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
+    [associatedTriggerModuleController setHost:self];
   }
 
 LABEL_5:
-  v12 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
-  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:v12];
+  associatedTriggerModuleController2 = [(HUServiceDetailsViewController *)self associatedTriggerModuleController];
+  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:associatedTriggerModuleController2];
 
-  v13 = [(HUServiceDetailsViewController *)self accessorySettingsItemModuleController];
-  if (!v13)
+  accessorySettingsItemModuleController = [(HUServiceDetailsViewController *)self accessorySettingsItemModuleController];
+  if (!accessorySettingsItemModuleController)
   {
-    v14 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v15 = [v14 accessorySettingsItemModule];
+    detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    accessorySettingsItemModule = [detailsItemManager3 accessorySettingsItemModule];
 
-    if (!v15)
+    if (!accessorySettingsItemModule)
     {
       goto LABEL_9;
     }
 
     v16 = [HUAccessorySettingsItemModuleController alloc];
-    v13 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v17 = [v13 accessorySettingsItemModule];
-    v18 = [(HUAccessorySettingsItemModuleController *)v16 initWithModule:v17 delegate:self];
+    accessorySettingsItemModuleController = [(HUServiceDetailsViewController *)self detailsItemManager];
+    accessorySettingsItemModule2 = [accessorySettingsItemModuleController accessorySettingsItemModule];
+    v18 = [(HUAccessorySettingsItemModuleController *)v16 initWithModule:accessorySettingsItemModule2 delegate:self];
     [(HUServiceDetailsViewController *)self setAccessorySettingsItemModuleController:v18];
   }
 
 LABEL_9:
-  v19 = [(HUServiceDetailsViewController *)self accessorySettingsItemModuleController];
-  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:v19];
+  accessorySettingsItemModuleController2 = [(HUServiceDetailsViewController *)self accessorySettingsItemModuleController];
+  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:accessorySettingsItemModuleController2];
 
-  v20 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v21 = [v20 homeKitAccessorySettingsModules];
+  detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  homeKitAccessorySettingsModules = [detailsItemManager4 homeKitAccessorySettingsModules];
 
-  if (v21)
+  if (homeKitAccessorySettingsModules)
   {
     v81 = v3;
     v22 = HFLogForCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      v79 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v80 = [v79 homeKitAccessorySettingsModules];
+      detailsItemManager5 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      homeKitAccessorySettingsModules2 = [detailsItemManager5 homeKitAccessorySettingsModules];
       *buf = 138412290;
-      v88 = v80;
+      v88 = homeKitAccessorySettingsModules2;
       _os_log_debug_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEBUG, "Creating Item Module Controllers from  homeKitAccessorySettingsModules = [%@]", buf, 0xCu);
     }
 
@@ -1830,10 +1830,10 @@ LABEL_9:
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v23 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v24 = [v23 homeKitAccessorySettingsModules];
+    detailsItemManager6 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    homeKitAccessorySettingsModules3 = [detailsItemManager6 homeKitAccessorySettingsModules];
 
-    v25 = [v24 countByEnumeratingWithState:&v82 objects:v91 count:16];
+    v25 = [homeKitAccessorySettingsModules3 countByEnumeratingWithState:&v82 objects:v91 count:16];
     if (v25)
     {
       v26 = v25;
@@ -1845,7 +1845,7 @@ LABEL_9:
         {
           if (*v83 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(homeKitAccessorySettingsModules3);
           }
 
           v29 = *(*(&v82 + 1) + 8 * v28);
@@ -1865,18 +1865,18 @@ LABEL_9:
 
           if (v32)
           {
-            v33 = [(HUServiceDetailsViewController *)self moduleToModuleControllerMap];
-            v34 = [v33 objectForKey:v32];
+            moduleToModuleControllerMap = [(HUServiceDetailsViewController *)self moduleToModuleControllerMap];
+            v34 = [moduleToModuleControllerMap objectForKey:v32];
 
             if (!v34)
             {
               v35 = [[HUHomeKitAccessorySettingsItemModuleController alloc] initWithModule:v32 delegate:self];
-              v36 = [(HUServiceDetailsViewController *)self moduleToModuleControllerMap];
+              moduleToModuleControllerMap2 = [(HUServiceDetailsViewController *)self moduleToModuleControllerMap];
 
-              if (!v36)
+              if (!moduleToModuleControllerMap2)
               {
-                v37 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-                [(HUServiceDetailsViewController *)self setModuleToModuleControllerMap:v37];
+                strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+                [(HUServiceDetailsViewController *)self setModuleToModuleControllerMap:strongToStrongObjectsMapTable];
               }
 
               v38 = HFLogForCategory();
@@ -1889,8 +1889,8 @@ LABEL_9:
                 _os_log_debug_impl(&dword_20CEB6000, v38, OS_LOG_TYPE_DEBUG, "Setting moduleController = [%@] for Module = [%@] in moduleToModuleControllerMap", buf, 0x16u);
               }
 
-              v39 = [(HUServiceDetailsViewController *)self moduleToModuleControllerMap];
-              [v39 setObject:v35 forKey:v32];
+              moduleToModuleControllerMap3 = [(HUServiceDetailsViewController *)self moduleToModuleControllerMap];
+              [moduleToModuleControllerMap3 setObject:v35 forKey:v32];
             }
           }
 
@@ -1898,29 +1898,29 @@ LABEL_9:
         }
 
         while (v26 != v28);
-        v26 = [v24 countByEnumeratingWithState:&v82 objects:v91 count:16];
+        v26 = [homeKitAccessorySettingsModules3 countByEnumeratingWithState:&v82 objects:v91 count:16];
       }
 
       while (v26);
     }
 
-    v40 = [(HUServiceDetailsViewController *)self moduleToModuleControllerMap];
-    v41 = [v40 objectEnumerator];
+    moduleToModuleControllerMap4 = [(HUServiceDetailsViewController *)self moduleToModuleControllerMap];
+    objectEnumerator = [moduleToModuleControllerMap4 objectEnumerator];
 
-    v42 = [v41 nextObject];
+    nextObject = [objectEnumerator nextObject];
     v3 = v81;
-    if (v42)
+    if (nextObject)
     {
-      v43 = v42;
+      v43 = nextObject;
       do
       {
         [(HUHomeKitAccessorySettingsItemModuleController *)v81 na_safeAddObject:v43];
-        v44 = [v41 nextObject];
+        nextObject2 = [objectEnumerator nextObject];
 
-        v43 = v44;
+        v43 = nextObject2;
       }
 
-      while (v44);
+      while (nextObject2);
     }
   }
 
@@ -1932,175 +1932,175 @@ LABEL_9:
     _os_log_debug_impl(&dword_20CEB6000, v45, OS_LOG_TYPE_DEBUG, "itemModuleControllers = [%@]", buf, 0xCu);
   }
 
-  v46 = [(HUServiceDetailsViewController *)self softwareUpdateItemModuleController];
-  if (v46)
+  softwareUpdateItemModuleController = [(HUServiceDetailsViewController *)self softwareUpdateItemModuleController];
+  if (softwareUpdateItemModuleController)
   {
     goto LABEL_38;
   }
 
-  v47 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v48 = [v47 softwareUpdateItemModule];
+  detailsItemManager7 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  softwareUpdateItemModule = [detailsItemManager7 softwareUpdateItemModule];
 
-  if (v48)
+  if (softwareUpdateItemModule)
   {
     v49 = [HUSoftwareUpdateItemModuleController alloc];
-    v46 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v50 = [v46 softwareUpdateItemModule];
-    v51 = [(HUSoftwareUpdateItemModuleController *)v49 initWithModule:v50 delegate:self expandableTextViewCellDelegate:self];
+    softwareUpdateItemModuleController = [(HUServiceDetailsViewController *)self detailsItemManager];
+    softwareUpdateItemModule2 = [softwareUpdateItemModuleController softwareUpdateItemModule];
+    v51 = [(HUSoftwareUpdateItemModuleController *)v49 initWithModule:softwareUpdateItemModule2 delegate:self expandableTextViewCellDelegate:self];
     [(HUServiceDetailsViewController *)self setSoftwareUpdateItemModuleController:v51];
 
 LABEL_38:
   }
 
-  v52 = [(HUServiceDetailsViewController *)self softwareUpdateItemModuleController];
-  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:v52];
+  softwareUpdateItemModuleController2 = [(HUServiceDetailsViewController *)self softwareUpdateItemModuleController];
+  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:softwareUpdateItemModuleController2];
 
-  v53 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v54 = [v53 valveEditorItemModule];
+  detailsItemManager8 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  valveEditorItemModule = [detailsItemManager8 valveEditorItemModule];
 
-  if (v54)
+  if (valveEditorItemModule)
   {
-    v55 = [(HUServiceDetailsViewController *)self valveEditorItemModuleController];
+    valveEditorItemModuleController = [(HUServiceDetailsViewController *)self valveEditorItemModuleController];
 
-    if (!v55)
+    if (!valveEditorItemModuleController)
     {
-      v56 = [[HUChildServiceItemModuleController alloc] initWithModule:v54 delegate:self];
+      v56 = [[HUChildServiceItemModuleController alloc] initWithModule:valveEditorItemModule delegate:self];
       [(HUServiceDetailsViewController *)self setValveEditorItemModuleController:v56];
     }
   }
 
-  v57 = [(HUServiceDetailsViewController *)self valveEditorItemModuleController];
-  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:v57];
+  valveEditorItemModuleController2 = [(HUServiceDetailsViewController *)self valveEditorItemModuleController];
+  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:valveEditorItemModuleController2];
 
-  v58 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v59 = [v58 accessoryServicesEditorItemModule];
+  detailsItemManager9 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  accessoryServicesEditorItemModule = [detailsItemManager9 accessoryServicesEditorItemModule];
 
-  if (v59)
+  if (accessoryServicesEditorItemModule)
   {
-    v60 = [(HUServiceDetailsViewController *)self accessoryServicesEditorItemModuleController];
-    if (!v60)
+    accessoryServicesEditorItemModuleController = [(HUServiceDetailsViewController *)self accessoryServicesEditorItemModuleController];
+    if (!accessoryServicesEditorItemModuleController)
     {
       if (![(HUServiceDetailsViewController *)self isMultiServiceAccessory])
       {
         goto LABEL_47;
       }
 
-      v60 = [[HUChildServiceItemModuleController alloc] initWithModule:v59 delegate:self];
-      [(HUServiceDetailsViewController *)self setAccessoryServicesEditorItemModuleController:v60];
+      accessoryServicesEditorItemModuleController = [[HUChildServiceItemModuleController alloc] initWithModule:accessoryServicesEditorItemModule delegate:self];
+      [(HUServiceDetailsViewController *)self setAccessoryServicesEditorItemModuleController:accessoryServicesEditorItemModuleController];
     }
   }
 
 LABEL_47:
-  v61 = [(HUServiceDetailsViewController *)self accessoryServicesEditorItemModuleController];
-  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:v61];
+  accessoryServicesEditorItemModuleController2 = [(HUServiceDetailsViewController *)self accessoryServicesEditorItemModuleController];
+  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:accessoryServicesEditorItemModuleController2];
 
-  v62 = [(HUServiceDetailsViewController *)self televisionSettingsItemModuleController];
-  if (v62)
+  televisionSettingsItemModuleController = [(HUServiceDetailsViewController *)self televisionSettingsItemModuleController];
+  if (televisionSettingsItemModuleController)
   {
 LABEL_50:
 
     goto LABEL_51;
   }
 
-  v63 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v64 = [v63 televisionSettingsItemModule];
+  detailsItemManager10 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  televisionSettingsItemModule = [detailsItemManager10 televisionSettingsItemModule];
 
-  if (v64)
+  if (televisionSettingsItemModule)
   {
     v65 = [HUTelevisionSettingsItemModuleController alloc];
-    v62 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v66 = [v62 televisionSettingsItemModule];
-    v67 = [(HUItemModuleController *)v65 initWithModule:v66];
+    televisionSettingsItemModuleController = [(HUServiceDetailsViewController *)self detailsItemManager];
+    televisionSettingsItemModule2 = [televisionSettingsItemModuleController televisionSettingsItemModule];
+    v67 = [(HUItemModuleController *)v65 initWithModule:televisionSettingsItemModule2];
     [(HUServiceDetailsViewController *)self setTelevisionSettingsItemModuleController:v67];
 
     goto LABEL_50;
   }
 
 LABEL_51:
-  v68 = [(HUServiceDetailsViewController *)self televisionSettingsItemModuleController];
-  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:v68];
+  televisionSettingsItemModuleController2 = [(HUServiceDetailsViewController *)self televisionSettingsItemModuleController];
+  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:televisionSettingsItemModuleController2];
 
-  v69 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v70 = [v69 inputSourceItemModule];
+  detailsItemManager11 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  inputSourceItemModule = [detailsItemManager11 inputSourceItemModule];
 
-  if (v70)
+  if (inputSourceItemModule)
   {
-    v71 = [(HUServiceDetailsViewController *)self inputSourceItemModuleController];
-    if (!v71 || (v72 = v71, -[HUServiceDetailsViewController inputSourceItemModuleController](self, "inputSourceItemModuleController"), v73 = objc_claimAutoreleasedReturnValue(), [v73 module], v74 = objc_claimAutoreleasedReturnValue(), v75 = objc_msgSend(v74, "isEqual:", v70), v74, v73, v72, (v75 & 1) == 0))
+    inputSourceItemModuleController = [(HUServiceDetailsViewController *)self inputSourceItemModuleController];
+    if (!inputSourceItemModuleController || (v72 = inputSourceItemModuleController, -[HUServiceDetailsViewController inputSourceItemModuleController](self, "inputSourceItemModuleController"), v73 = objc_claimAutoreleasedReturnValue(), [v73 module], v74 = objc_claimAutoreleasedReturnValue(), v75 = objc_msgSend(v74, "isEqual:", inputSourceItemModule), v74, v73, v72, (v75 & 1) == 0))
     {
-      v76 = [[HUChildServiceItemModuleController alloc] initWithModule:v70 delegate:self];
+      v76 = [[HUChildServiceItemModuleController alloc] initWithModule:inputSourceItemModule delegate:self];
       [(HUServiceDetailsViewController *)self setInputSourceItemModuleController:v76];
     }
   }
 
-  v77 = [(HUServiceDetailsViewController *)self inputSourceItemModuleController];
-  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:v77];
+  inputSourceItemModuleController2 = [(HUServiceDetailsViewController *)self inputSourceItemModuleController];
+  [(HUHomeKitAccessorySettingsItemModuleController *)v3 na_safeAddObject:inputSourceItemModuleController2];
 
   return v3;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_8;
   }
 
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 headerItem];
-  v8 = [v5 isEqual:v7];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  headerItem = [detailsItemManager headerItem];
+  v8 = [itemCopy isEqual:headerItem];
 
   if (v8)
   {
     goto LABEL_8;
   }
 
-  v9 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v10 = [v9 symptomsTitleItem];
-  v11 = [v5 isEqual:v10];
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  symptomsTitleItem = [detailsItemManager2 symptomsTitleItem];
+  v11 = [itemCopy isEqual:symptomsTitleItem];
 
   if (v11)
   {
     goto LABEL_8;
   }
 
-  v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v13 = [v12 symptomsWiFiPickerItem];
-  if ([v5 isEqual:v13])
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  symptomsWiFiPickerItem = [detailsItemManager3 symptomsWiFiPickerItem];
+  if ([itemCopy isEqual:symptomsWiFiPickerItem])
   {
     goto LABEL_16;
   }
 
-  v14 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v15 = [v14 symptomsLearnMoreItem];
-  v16 = [v5 isEqual:v15];
+  detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  symptomsLearnMoreItem = [detailsItemManager4 symptomsLearnMoreItem];
+  v16 = [itemCopy isEqual:symptomsLearnMoreItem];
 
   if (v16)
   {
     goto LABEL_8;
   }
 
-  v19 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v20 = [v19 splitMediaAccountTitleItem];
-  v21 = [v5 isEqual:v20];
+  detailsItemManager5 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  splitMediaAccountTitleItem = [detailsItemManager5 splitMediaAccountTitleItem];
+  v21 = [itemCopy isEqual:splitMediaAccountTitleItem];
 
   if (v21)
   {
     goto LABEL_8;
   }
 
-  v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v13 = [v12 splitMediaAccountUseDefaultAccountItem];
-  if ([v5 isEqual:v13])
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  symptomsWiFiPickerItem = [detailsItemManager3 splitMediaAccountUseDefaultAccountItem];
+  if ([itemCopy isEqual:symptomsWiFiPickerItem])
   {
     goto LABEL_16;
   }
 
-  v22 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v23 = [v22 splitMediaAccountSignoutAccountItem];
-  v24 = [v5 isEqual:v23];
+  detailsItemManager6 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  splitMediaAccountSignoutAccountItem = [detailsItemManager6 splitMediaAccountSignoutAccountItem];
+  v24 = [itemCopy isEqual:splitMediaAccountSignoutAccountItem];
 
   if (v24)
   {
@@ -2109,72 +2109,72 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v13 = [v12 favoriteItem];
-  if ([v5 isEqual:v13])
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  symptomsWiFiPickerItem = [detailsItemManager3 favoriteItem];
+  if ([itemCopy isEqual:symptomsWiFiPickerItem])
   {
 LABEL_16:
 
     goto LABEL_8;
   }
 
-  v25 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v26 = [v25 showInHomeDashboardItem];
-  v27 = [v5 isEqual:v26];
+  detailsItemManager7 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  showInHomeDashboardItem = [detailsItemManager7 showInHomeDashboardItem];
+  v27 = [itemCopy isEqual:showInHomeDashboardItem];
 
   if (v27)
   {
     goto LABEL_8;
   }
 
-  v28 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v29 = [v28 pairingModeItem];
-  v30 = [v5 isEqual:v29];
+  detailsItemManager8 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  pairingModeItem = [detailsItemManager8 pairingModeItem];
+  v30 = [itemCopy isEqual:pairingModeItem];
 
   if (v30)
   {
     goto LABEL_8;
   }
 
-  v31 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v32 = [v31 exportDiagnosticsItem];
-  v33 = [v5 isEqual:v32];
+  detailsItemManager9 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  exportDiagnosticsItem = [detailsItemManager9 exportDiagnosticsItem];
+  v33 = [itemCopy isEqual:exportDiagnosticsItem];
 
   if (v33)
   {
     goto LABEL_8;
   }
 
-  v34 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v35 = [v34 removeFromGroupItem];
-  v36 = [v5 isEqual:v35];
+  detailsItemManager10 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  removeFromGroupItem = [detailsItemManager10 removeFromGroupItem];
+  v36 = [itemCopy isEqual:removeFromGroupItem];
 
   if (v36)
   {
     goto LABEL_8;
   }
 
-  v37 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v38 = [v37 removeItem];
-  v39 = [v5 isEqual:v38];
+  detailsItemManager11 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  removeItem = [detailsItemManager11 removeItem];
+  v39 = [itemCopy isEqual:removeItem];
 
   if (v39)
   {
     goto LABEL_8;
   }
 
-  v40 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v41 = [v40 resetItem];
-  v42 = [v5 isEqual:v41];
+  detailsItemManager12 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  resetItem = [detailsItemManager12 resetItem];
+  v42 = [itemCopy isEqual:resetItem];
 
   if (v42)
   {
     goto LABEL_8;
   }
 
-  v43 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v44 = [v43 restartItem];
-  v45 = [v5 isEqual:v44];
+  detailsItemManager13 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  restartItem = [detailsItemManager13 restartItem];
+  v45 = [itemCopy isEqual:restartItem];
 
   if (v45)
   {
@@ -2184,8 +2184,8 @@ LABEL_16:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v47 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v48 = [v47 isCharacteristicStateItem:v5];
+    detailsItemManager14 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    v48 = [detailsItemManager14 isCharacteristicStateItem:itemCopy];
 
     if (v48)
     {
@@ -2210,40 +2210,40 @@ LABEL_16:
       goto LABEL_8;
     }
 
-    v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v13 = [v12 addGroupItem];
-    if ([v5 isEqual:v13])
+    detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    symptomsWiFiPickerItem = [detailsItemManager3 addGroupItem];
+    if ([itemCopy isEqual:symptomsWiFiPickerItem])
     {
       goto LABEL_16;
     }
 
-    v49 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v50 = [v49 createNewRoomItem];
-    if ([v5 isEqual:v50])
+    detailsItemManager15 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    createNewRoomItem = [detailsItemManager15 createNewRoomItem];
+    if ([itemCopy isEqual:createNewRoomItem])
     {
       goto LABEL_44;
     }
 
-    v51 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v52 = [v51 separateTileItem];
-    if (([v5 isEqual:v52] & 1) == 0)
+    detailsItemManager16 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    separateTileItem = [detailsItemManager16 separateTileItem];
+    if (([itemCopy isEqual:separateTileItem] & 1) == 0)
     {
-      v70 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v53 = [v70 collectDiagnosticsItem];
-      if (([v5 isEqual:v53] & 1) == 0)
+      detailsItemManager17 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      collectDiagnosticsItem = [detailsItemManager17 collectDiagnosticsItem];
+      if (([itemCopy isEqual:collectDiagnosticsItem] & 1) == 0)
       {
-        v68 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v54 = [v68 identifyHomePodItem];
-        v69 = [v5 isEqual:v54];
+        detailsItemManager18 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        identifyHomePodItem = [detailsItemManager18 identifyHomePodItem];
+        v69 = [itemCopy isEqual:identifyHomePodItem];
 
         if (v69)
         {
           goto LABEL_8;
         }
 
-        v55 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v56 = [v55 roomItem];
-        v57 = [v5 isEqual:v56];
+        detailsItemManager19 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        roomItem = [detailsItemManager19 roomItem];
+        v57 = [itemCopy isEqual:roomItem];
 
         if (v57)
         {
@@ -2251,40 +2251,40 @@ LABEL_16:
           goto LABEL_8;
         }
 
-        v58 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v59 = [v58 roomListItem];
-        v60 = [v5 isEqual:v59];
+        detailsItemManager20 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        roomListItem = [detailsItemManager20 roomListItem];
+        v60 = [itemCopy isEqual:roomListItem];
 
         if (v60)
         {
           goto LABEL_8;
         }
 
-        v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v13 = [v12 cameraStatusLightItem];
-        if ([v5 isEqual:v13])
+        detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        symptomsWiFiPickerItem = [detailsItemManager3 cameraStatusLightItem];
+        if ([itemCopy isEqual:symptomsWiFiPickerItem])
         {
           goto LABEL_16;
         }
 
-        v49 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v50 = [v49 cameraNightModeItem];
-        if (([v5 isEqual:v50] & 1) == 0)
+        detailsItemManager15 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        createNewRoomItem = [detailsItemManager15 cameraNightModeItem];
+        if (([itemCopy isEqual:createNewRoomItem] & 1) == 0)
         {
-          v61 = [(HUServiceDetailsViewController *)self detailsItemManager];
-          v62 = [v61 cameraDoorbellChimeMuteItem];
-          v63 = [v5 isEqual:v62];
+          detailsItemManager21 = [(HUServiceDetailsViewController *)self detailsItemManager];
+          cameraDoorbellChimeMuteItem = [detailsItemManager21 cameraDoorbellChimeMuteItem];
+          v63 = [itemCopy isEqual:cameraDoorbellChimeMuteItem];
 
           if ((v63 & 1) == 0)
           {
-            v64 = [(HUServiceDetailsViewController *)self detailsItemManager];
-            v65 = [v64 lockAddHomeKeyToWalletItem];
-            v66 = [v5 isEqual:v65];
+            detailsItemManager22 = [(HUServiceDetailsViewController *)self detailsItemManager];
+            lockAddHomeKeyToWalletItem = [detailsItemManager22 lockAddHomeKeyToWalletItem];
+            v66 = [itemCopy isEqual:lockAddHomeKeyToWalletItem];
 
             if (!v66)
             {
-              v67 = [(HUServiceDetailsViewController *)self detailsItemManager];
-              [v67 supportsWiFiStrengthDisplay:v5];
+              detailsItemManager23 = [(HUServiceDetailsViewController *)self detailsItemManager];
+              [detailsItemManager23 supportsWiFiStrengthDisplay:itemCopy];
             }
           }
 
@@ -2299,32 +2299,32 @@ LABEL_44:
     goto LABEL_16;
   }
 
-  v46 = [(HUServiceDetailsViewController *)self controlPanelController];
-  v17 = [v46 cellClassForItem:v5];
+  controlPanelController = [(HUServiceDetailsViewController *)self controlPanelController];
+  v17 = [controlPanelController cellClassForItem:itemCopy];
 
 LABEL_9:
 
   return v17;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(HUServiceDetailsViewController *)self _setupProgrammableSwitchCell:v7 forItem:v8];
+      [(HUServiceDetailsViewController *)self _setupProgrammableSwitchCell:cellCopy forItem:itemCopy];
     }
   }
 
-  v9 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v10 = [v9 splitMediaAccountTitleItem];
-  v11 = v10;
-  if (v10 == v8)
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  splitMediaAccountTitleItem = [detailsItemManager splitMediaAccountTitleItem];
+  v11 = splitMediaAccountTitleItem;
+  if (splitMediaAccountTitleItem == itemCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -2335,7 +2335,7 @@ LABEL_9:
     }
 
     objc_opt_class();
-    v13 = v7;
+    v13 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v14 = v13;
@@ -2346,18 +2346,18 @@ LABEL_9:
       v14 = 0;
     }
 
-    v9 = v14;
+    detailsItemManager = v14;
 
     v15 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D76988] traits:32770];
-    [v9 setTitleFont:v15];
+    [detailsItemManager setTitleFont:v15];
 
-    [v9 setMaxNumberOfTitleLines:0];
+    [detailsItemManager setMaxNumberOfTitleLines:0];
     v16 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D76968] traits:0x8000];
-    [v9 setDescriptionFont:v16];
+    [detailsItemManager setDescriptionFont:v16];
 
-    [v9 setMaxNumberOfDescriptionLines:0];
-    [v9 setHideIcon:1];
-    [v9 setSelectionStyle:0];
+    [detailsItemManager setMaxNumberOfDescriptionLines:0];
+    [detailsItemManager setHideIcon:1];
+    [detailsItemManager setSelectionStyle:0];
   }
 
   else
@@ -2365,10 +2365,10 @@ LABEL_9:
   }
 
 LABEL_12:
-  v17 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v18 = [v17 symptomsTitleItem];
-  v19 = v18;
-  if (v18 == v8)
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  symptomsTitleItem = [detailsItemManager2 symptomsTitleItem];
+  v19 = symptomsTitleItem;
+  if (symptomsTitleItem == itemCopy)
   {
     objc_opt_class();
     v20 = objc_opt_isKindOfClass();
@@ -2379,7 +2379,7 @@ LABEL_12:
     }
 
     objc_opt_class();
-    v21 = v7;
+    v21 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v22 = v21;
@@ -2390,20 +2390,20 @@ LABEL_12:
       v22 = 0;
     }
 
-    v17 = v22;
+    detailsItemManager2 = v22;
 
     v23 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D76918] traits:32770];
-    [v17 setTitleFont:v23];
+    [detailsItemManager2 setTitleFont:v23];
 
-    [v17 setMaxNumberOfTitleLines:0];
+    [detailsItemManager2 setMaxNumberOfTitleLines:0];
     v24 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D769D0] traits:0x8000];
-    [v17 setDescriptionFont:v24];
+    [detailsItemManager2 setDescriptionFont:v24];
 
-    [v17 setMaxNumberOfDescriptionLines:0];
-    [v17 setHideIcon:1];
-    [v17 setSelectionStyle:0];
-    [v17 setTitleLabelBottomPadding:4.0];
-    [v17 setContainerViewBottomPadding:4.0];
+    [detailsItemManager2 setMaxNumberOfDescriptionLines:0];
+    [detailsItemManager2 setHideIcon:1];
+    [detailsItemManager2 setSelectionStyle:0];
+    [detailsItemManager2 setTitleLabelBottomPadding:4.0];
+    [detailsItemManager2 setContainerViewBottomPadding:4.0];
   }
 
   else
@@ -2411,9 +2411,9 @@ LABEL_12:
   }
 
 LABEL_20:
-  v25 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v26 = [v25 symptomsWiFiPickerItem];
-  if (v26 == v8)
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  symptomsWiFiPickerItem = [detailsItemManager3 symptomsWiFiPickerItem];
+  if (symptomsWiFiPickerItem == itemCopy)
   {
     objc_opt_class();
     v27 = objc_opt_isKindOfClass();
@@ -2424,7 +2424,7 @@ LABEL_20:
     }
 
     objc_opt_class();
-    v28 = v7;
+    v28 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v29 = v28;
@@ -2435,17 +2435,17 @@ LABEL_20:
       v29 = 0;
     }
 
-    v26 = v29;
+    symptomsWiFiPickerItem = v29;
 
-    [v26 setAccessoryType:1];
-    v25 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D76918] traits:0x8000];
-    [v26 setFont:v25];
+    [symptomsWiFiPickerItem setAccessoryType:1];
+    detailsItemManager3 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D76918] traits:0x8000];
+    [symptomsWiFiPickerItem setFont:detailsItemManager3];
   }
 
 LABEL_27:
-  v30 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v31 = [v30 symptomsLearnMoreItem];
-  if (v31 != v8)
+  detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  symptomsLearnMoreItem = [detailsItemManager4 symptomsLearnMoreItem];
+  if (symptomsLearnMoreItem != itemCopy)
   {
 LABEL_33:
 
@@ -2458,7 +2458,7 @@ LABEL_33:
   if (v32)
   {
     objc_opt_class();
-    v33 = v7;
+    v33 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v34 = v33;
@@ -2471,12 +2471,12 @@ LABEL_33:
 
     v35 = v34;
 
-    v30 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.up.right"];
-    v31 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v30];
-    v36 = [MEMORY[0x277D75348] systemMidGrayColor];
-    [v31 setTintColor:v36];
+    detailsItemManager4 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.up.right"];
+    symptomsLearnMoreItem = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:detailsItemManager4];
+    systemMidGrayColor = [MEMORY[0x277D75348] systemMidGrayColor];
+    [symptomsLearnMoreItem setTintColor:systemMidGrayColor];
 
-    [v35 setAccessoryView:v31];
+    [v35 setAccessoryView:symptomsLearnMoreItem];
     v37 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D76918] traits:0x8000];
     [v35 setFont:v37];
 
@@ -2487,15 +2487,15 @@ LABEL_34:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v38 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v39 = [v38 roomItem];
-    v40 = [v8 isEqual:v39];
+    detailsItemManager5 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    roomItem = [detailsItemManager5 roomItem];
+    v40 = [itemCopy isEqual:roomItem];
 
     if (v40)
     {
       objc_opt_class();
-      v106 = v7;
-      v41 = v7;
+      v106 = cellCopy;
+      v41 = cellCopy;
       if (objc_opt_isKindOfClass())
       {
         v42 = v41;
@@ -2509,55 +2509,55 @@ LABEL_34:
       v43 = v42;
 
       v105 = v43;
-      [v43 setItem:v8];
-      v44 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v45 = [v44 serviceLikeBuilder];
-      v46 = [v45 room];
-      v47 = [v46 room];
-      v48 = [v47 uniqueIdentifier];
-      v49 = v48;
-      if (v48)
+      [v43 setItem:itemCopy];
+      detailsItemManager6 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      serviceLikeBuilder = [detailsItemManager6 serviceLikeBuilder];
+      room = [serviceLikeBuilder room];
+      v46Room = [room room];
+      uniqueIdentifier = [v46Room uniqueIdentifier];
+      v49 = uniqueIdentifier;
+      if (uniqueIdentifier)
       {
-        v50 = v48;
+        uniqueIdentifier2 = uniqueIdentifier;
       }
 
       else
       {
-        v104 = [(HUServiceDetailsViewController *)self item];
-        v103 = [v104 accessories];
-        v51 = [v103 anyObject];
-        v52 = [v51 room];
-        v50 = [v52 uniqueIdentifier];
+        item = [(HUServiceDetailsViewController *)self item];
+        accessories = [item accessories];
+        anyObject = [accessories anyObject];
+        room2 = [anyObject room];
+        uniqueIdentifier2 = [room2 uniqueIdentifier];
       }
 
-      v53 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v54 = [v53 orderedRoomSectionItems];
+      detailsItemManager7 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      orderedRoomSectionItems = [detailsItemManager7 orderedRoomSectionItems];
       v107[0] = MEMORY[0x277D85DD0];
       v107[1] = 3221225472;
       v107[2] = __62__HUServiceDetailsViewController_setupCell_forItem_indexPath___block_invoke;
       v107[3] = &unk_277DB85D8;
-      v108 = v50;
-      v55 = v50;
-      v56 = [v54 na_firstObjectPassingTest:v107];
+      v108 = uniqueIdentifier2;
+      v55 = uniqueIdentifier2;
+      v56 = [orderedRoomSectionItems na_firstObjectPassingTest:v107];
 
-      v57 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v58 = [v57 orderedRoomSectionItems];
-      v59 = [v58 copy];
+      detailsItemManager8 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      orderedRoomSectionItems2 = [detailsItemManager8 orderedRoomSectionItems];
+      v59 = [orderedRoomSectionItems2 copy];
       v60 = [(HUServiceDetailsViewController *)self _createMenuWithValues:v59 cell:v105 currentItem:v56];
-      v61 = [v105 button];
-      [v61 setMenu:v60];
+      button = [v105 button];
+      [button setMenu:v60];
 
-      v7 = v106;
+      cellCopy = v106;
     }
   }
 
-  v62 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v63 = [v62 roomListItem];
+  detailsItemManager9 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  roomListItem = [detailsItemManager9 roomListItem];
 
-  if (v63 == v8)
+  if (roomListItem == itemCopy)
   {
     objc_opt_class();
-    v93 = v7;
+    v93 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v94 = v93;
@@ -2578,7 +2578,7 @@ LABEL_34:
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v64 = v7;
+    v64 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v65 = v64;
@@ -2591,20 +2591,20 @@ LABEL_34:
 
     v66 = v65;
 
-    v67 = [(HUServiceDetailsViewController *)self traitCollection];
+    traitCollection = [(HUServiceDetailsViewController *)self traitCollection];
     _UITableViewDefaultSectionCornerRadiusForTraitCollection();
     [v66 _setCornerRadius:?];
 
-    v68 = [(HUServiceDetailsViewController *)self textViewDelegate];
-    v69 = [v66 messageTextView];
-    [v69 setDelegate:v68];
+    textViewDelegate = [(HUServiceDetailsViewController *)self textViewDelegate];
+    messageTextView = [v66 messageTextView];
+    [messageTextView setDelegate:textViewDelegate];
 
-    v70 = [v66 actionButton];
-    [v70 removeTarget:self action:sel_didSelectHeaderWarningAction_ forControlEvents:64];
+    actionButton = [v66 actionButton];
+    [actionButton removeTarget:self action:sel_didSelectHeaderWarningAction_ forControlEvents:64];
 
-    v71 = [v66 actionButton];
+    actionButton2 = [v66 actionButton];
 
-    [v71 addTarget:self action:sel_didSelectHeaderWarningAction_ forControlEvents:64];
+    [actionButton2 addTarget:self action:sel_didSelectHeaderWarningAction_ forControlEvents:64];
   }
 
   objc_opt_class();
@@ -2613,11 +2613,11 @@ LABEL_34:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v72 = [(HUServiceDetailsViewController *)self controlPanelController];
-      [v72 setupCell:v7 forItem:v8];
+      controlPanelController = [(HUServiceDetailsViewController *)self controlPanelController];
+      [controlPanelController setupCell:cellCopy forItem:itemCopy];
 
       objc_opt_class();
-      v73 = v7;
+      v73 = cellCopy;
       if (objc_opt_isKindOfClass())
       {
         v74 = v73;
@@ -2632,8 +2632,8 @@ LABEL_34:
 
       if (v75)
       {
-        v76 = [(HUServiceDetailsViewController *)self expandedControlPanelItems];
-        [v75 setWheelViewVisible:{objc_msgSend(v76, "containsObject:", v8)}];
+        expandedControlPanelItems = [(HUServiceDetailsViewController *)self expandedControlPanelItems];
+        [v75 setWheelViewVisible:{objc_msgSend(expandedControlPanelItems, "containsObject:", itemCopy)}];
       }
 
       else
@@ -2654,7 +2654,7 @@ LABEL_83:
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      v77 = v7;
+      v77 = cellCopy;
       if (objc_opt_isKindOfClass())
       {
         v78 = v77;
@@ -2667,37 +2667,37 @@ LABEL_83:
 
       v79 = v78;
 
-      [v79 setValueColorFollowsTintColor:{-[HUServiceDetailsViewController _shouldFollowTitleValueTintColorforItem:](self, "_shouldFollowTitleValueTintColorforItem:", v8)}];
-      v80 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v81 = [v80 accessoryInfoItemProvider];
-      v82 = [v81 items];
-      [v79 setAllowCopyValueToPasteboard:{objc_msgSend(v82, "containsObject:", v8)}];
+      [v79 setValueColorFollowsTintColor:{-[HUServiceDetailsViewController _shouldFollowTitleValueTintColorforItem:](self, "_shouldFollowTitleValueTintColorforItem:", itemCopy)}];
+      detailsItemManager10 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      accessoryInfoItemProvider = [detailsItemManager10 accessoryInfoItemProvider];
+      items = [accessoryInfoItemProvider items];
+      [v79 setAllowCopyValueToPasteboard:{objc_msgSend(items, "containsObject:", itemCopy)}];
     }
 
-    v73 = v7;
-    v83 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v84 = [v83 pairingModeItem];
-    v85 = [v8 isEqual:v84];
+    v73 = cellCopy;
+    detailsItemManager11 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    pairingModeItem = [detailsItemManager11 pairingModeItem];
+    v85 = [itemCopy isEqual:pairingModeItem];
 
     if (v85)
     {
       [v73 setDestructive:0];
     }
 
-    v86 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v87 = [v86 removeItem];
-    v88 = [v8 isEqual:v87];
+    detailsItemManager12 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    removeItem = [detailsItemManager12 removeItem];
+    v88 = [itemCopy isEqual:removeItem];
 
     if (v88)
     {
       [v73 setDestructive:1];
     }
 
-    v89 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v90 = [v89 resetItem];
-    if ([v8 isEqual:v90])
+    detailsItemManager13 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    resetItem = [detailsItemManager13 resetItem];
+    if ([itemCopy isEqual:resetItem])
     {
-      v91 = [(HUServiceDetailsViewController *)self item];
+      item2 = [(HUServiceDetailsViewController *)self item];
       objc_opt_class();
       v92 = objc_opt_isKindOfClass();
 
@@ -2711,11 +2711,11 @@ LABEL_83:
     {
     }
 
-    v95 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v96 = [v95 restartItem];
-    if ([v8 isEqual:v96])
+    detailsItemManager14 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    restartItem = [detailsItemManager14 restartItem];
+    if ([itemCopy isEqual:restartItem])
     {
-      v97 = [(HUServiceDetailsViewController *)self item];
+      item3 = [(HUServiceDetailsViewController *)self item];
       objc_opt_class();
       v98 = objc_opt_isKindOfClass();
 
@@ -2729,11 +2729,11 @@ LABEL_83:
     {
     }
 
-    v99 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v100 = [v99 exportDiagnosticsItem];
-    if ([v8 isEqual:v100])
+    detailsItemManager15 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    exportDiagnosticsItem = [detailsItemManager15 exportDiagnosticsItem];
+    if ([itemCopy isEqual:exportDiagnosticsItem])
     {
-      v101 = [(HUServiceDetailsViewController *)self item];
+      item4 = [(HUServiceDetailsViewController *)self item];
       objc_opt_class();
       v102 = objc_opt_isKindOfClass();
 
@@ -2747,7 +2747,7 @@ LABEL_83:
     {
     }
 
-    [v73 setAccessoryType:{-[HUServiceDetailsViewController _shouldShowDetailDisclosureForItem:](self, "_shouldShowDetailDisclosureForItem:", v8)}];
+    [v73 setAccessoryType:{-[HUServiceDetailsViewController _shouldShowDetailDisclosureForItem:](self, "_shouldShowDetailDisclosureForItem:", itemCopy)}];
     [v73 setHideIcon:1];
     goto LABEL_83;
   }
@@ -2764,48 +2764,48 @@ uint64_t __62__HUServiceDetailsViewController_setupCell_forItem_indexPath___bloc
   return v5;
 }
 
-- (BOOL)_shouldFollowTitleValueTintColorforItem:(id)a3
+- (BOOL)_shouldFollowTitleValueTintColorforItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v6 = [v5 accessoryInfoItemProvider];
-  v7 = [v6 items];
-  v8 = [v7 containsObject:v4];
+  itemCopy = item;
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  accessoryInfoItemProvider = [detailsItemManager accessoryInfoItemProvider];
+  items = [accessoryInfoItemProvider items];
+  v8 = [items containsObject:itemCopy];
 
-  v9 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v10 = [v9 isCharacteristicStateItem:v4];
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v10 = [detailsItemManager2 isCharacteristicStateItem:itemCopy];
 
-  v11 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v12 = [v11 homeTheaterAudioOutputItem];
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  homeTheaterAudioOutputItem = [detailsItemManager3 homeTheaterAudioOutputItem];
 
-  v13 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v14 = [v13 managedConfigurationProfilesItem];
+  detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  managedConfigurationProfilesItem = [detailsItemManager4 managedConfigurationProfilesItem];
 
   v15 = 0;
   if ((v8 & 1) == 0 && (v10 & 1) == 0)
   {
-    v15 = v12 != v4 && v14 != v4;
+    v15 = homeTheaterAudioOutputItem != itemCopy && managedConfigurationProfilesItem != itemCopy;
   }
 
   return v15;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
+  pathCopy = path;
   v96.receiver = self;
   v96.super_class = HUServiceDetailsViewController;
-  [(HUItemTableViewController *)&v96 updateCell:v10 forItem:v11 indexPath:v12 animated:v6];
+  [(HUItemTableViewController *)&v96 updateCell:cellCopy forItem:itemCopy indexPath:pathCopy animated:animatedCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(HUServiceDetailsViewController *)self _setupProgrammableSwitchCell:v10 forItem:v11];
+      [(HUServiceDetailsViewController *)self _setupProgrammableSwitchCell:cellCopy forItem:itemCopy];
       goto LABEL_20;
     }
   }
@@ -2816,23 +2816,23 @@ uint64_t __62__HUServiceDetailsViewController_setupCell_forItem_indexPath___bloc
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [(HUServiceDetailsViewController *)self controlPanelController];
-      [v13 updateCell:v10 forItem:v11 animated:v6];
+      controlPanelController = [(HUServiceDetailsViewController *)self controlPanelController];
+      [controlPanelController updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
 
       goto LABEL_20;
     }
   }
 
-  v14 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v15 = [v14 favoriteItem];
-  if ([v11 isEqual:v15])
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  favoriteItem = [detailsItemManager favoriteItem];
+  if ([itemCopy isEqual:favoriteItem])
   {
     goto LABEL_14;
   }
 
-  v16 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v17 = [v16 showInHomeDashboardItem];
-  if ([v11 isEqual:v17])
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  showInHomeDashboardItem = [detailsItemManager2 showInHomeDashboardItem];
+  if ([itemCopy isEqual:showInHomeDashboardItem])
   {
 LABEL_13:
 
@@ -2840,48 +2840,48 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v91 = v12;
-  v18 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v19 = [v18 cameraStatusLightItem];
-  if ([v11 isEqual:v19])
+  v91 = pathCopy;
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  cameraStatusLightItem = [detailsItemManager3 cameraStatusLightItem];
+  if ([itemCopy isEqual:cameraStatusLightItem])
   {
 LABEL_12:
 
-    v12 = v91;
+    pathCopy = v91;
     goto LABEL_13;
   }
 
-  v89 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v20 = [v89 cameraNightModeItem];
-  if ([v11 isEqual:v20])
+  detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  cameraNightModeItem = [detailsItemManager4 cameraNightModeItem];
+  if ([itemCopy isEqual:cameraNightModeItem])
   {
 
     goto LABEL_12;
   }
 
-  v85 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v83 = [v85 cameraDoorbellChimeMuteItem];
-  v87 = [v11 isEqual:v83];
+  detailsItemManager5 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  cameraDoorbellChimeMuteItem = [detailsItemManager5 cameraDoorbellChimeMuteItem];
+  v87 = [itemCopy isEqual:cameraDoorbellChimeMuteItem];
 
-  v12 = v91;
+  pathCopy = v91;
   if ((v87 & 1) == 0)
   {
-    v24 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v25 = [v24 isCharacteristicStateItem:v11];
+    detailsItemManager6 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    v25 = [detailsItemManager6 isCharacteristicStateItem:itemCopy];
 
     if (v25)
     {
-      v26 = [v11 latestResults];
-      v27 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+      latestResults = [itemCopy latestResults];
+      v27 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
 
-      v28 = [(HUItemTableViewController *)self itemManager];
-      v29 = [v28 displayedItemsInSection:{objc_msgSend(v91, "section")}];
+      itemManager = [(HUItemTableViewController *)self itemManager];
+      v29 = [itemManager displayedItemsInSection:{objc_msgSend(v91, "section")}];
       v30 = [v29 count];
 
       if (v30 >= 2)
       {
-        v31 = [v11 latestResults];
-        v32 = [v31 objectForKeyedSubscript:*MEMORY[0x277D13E80]];
+        latestResults2 = [itemCopy latestResults];
+        v32 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E80]];
         v33 = v32;
         if (v32)
         {
@@ -2898,13 +2898,13 @@ LABEL_12:
         v27 = v35;
       }
 
-      v36 = v10;
+      v36 = cellCopy;
       [v36 setTitleText:v27];
-      v37 = [v11 latestResults];
-      v38 = [v37 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+      latestResults3 = [itemCopy latestResults];
+      v38 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
       v39 = [v38 stringWithAttributes:MEMORY[0x277CBEC10]];
-      v40 = [v39 string];
-      [v36 setValueText:v40];
+      string = [v39 string];
+      [v36 setValueText:string];
     }
 
     else
@@ -2924,17 +2924,17 @@ LABEL_12:
           goto LABEL_20;
         }
 
-        v27 = v10;
-        v41 = [v11 latestResults];
-        v42 = [v41 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-        v43 = [v27 textLabel];
-        [v43 setText:v42];
+        v27 = cellCopy;
+        latestResults4 = [itemCopy latestResults];
+        v42 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+        textLabel = [v27 textLabel];
+        [textLabel setText:v42];
 
-        v44 = [v11 latestResults];
-        v45 = [v44 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+        latestResults5 = [itemCopy latestResults];
+        v45 = [latestResults5 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
         [v27 setAccessibilityIdentifier:v45];
 
-        [(HUServiceDetailsViewController *)self _updateCheckedStateForAssociatedServiceTypeCell:v27 item:v11];
+        [(HUServiceDetailsViewController *)self _updateCheckedStateForAssociatedServiceTypeCell:v27 item:itemCopy];
       }
 
       else
@@ -2942,42 +2942,42 @@ LABEL_12:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v90 = v10;
-          v46 = [(HUServiceDetailsViewController *)self detailsItemManager];
-          v47 = [v46 serviceLikeBuilder];
-          v48 = [v47 room];
-          v49 = [v48 room];
-          v50 = [v49 uniqueIdentifier];
-          v51 = v50;
-          if (v50)
+          v90 = cellCopy;
+          detailsItemManager7 = [(HUServiceDetailsViewController *)self detailsItemManager];
+          serviceLikeBuilder = [detailsItemManager7 serviceLikeBuilder];
+          room = [serviceLikeBuilder room];
+          v48Room = [room room];
+          uniqueIdentifier = [v48Room uniqueIdentifier];
+          v51 = uniqueIdentifier;
+          if (uniqueIdentifier)
           {
-            v52 = v50;
+            v52 = uniqueIdentifier;
           }
 
           else
           {
-            v86 = [(HUServiceDetailsViewController *)self item];
-            v84 = [v86 accessories];
-            v63 = [v84 anyObject];
-            v64 = [v63 room];
-            [v64 uniqueIdentifier];
-            v65 = v88 = v46;
+            item = [(HUServiceDetailsViewController *)self item];
+            accessories = [item accessories];
+            anyObject = [accessories anyObject];
+            room2 = [anyObject room];
+            [room2 uniqueIdentifier];
+            v65 = v88 = detailsItemManager7;
 
             v52 = v65;
-            v46 = v88;
+            detailsItemManager7 = v88;
 
-            v12 = v91;
+            pathCopy = v91;
           }
 
-          v66 = [(HUServiceDetailsViewController *)self detailsItemManager];
-          v67 = [v66 orderedRoomSectionItems];
+          detailsItemManager8 = [(HUServiceDetailsViewController *)self detailsItemManager];
+          orderedRoomSectionItems = [detailsItemManager8 orderedRoomSectionItems];
           v94[0] = MEMORY[0x277D85DD0];
           v94[1] = 3221225472;
           v94[2] = __72__HUServiceDetailsViewController_updateCell_forItem_indexPath_animated___block_invoke;
           v94[3] = &unk_277DBEDD8;
           v68 = v52;
           v95 = v68;
-          v69 = [v67 indexOfObjectPassingTest:v94];
+          v69 = [orderedRoomSectionItems indexOfObjectPassingTest:v94];
 
           if ((v69 & 0x8000000000000000) == 0 && v69 < [(HUServiceDetailsViewController *)self numberOfValuesForPickerViewCell:v90])
           {
@@ -2987,40 +2987,40 @@ LABEL_12:
           goto LABEL_20;
         }
 
-        v53 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v54 = [v53 canToggleAccessoryInfoItem:v11];
+        detailsItemManager9 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        v54 = [detailsItemManager9 canToggleAccessoryInfoItem:itemCopy];
 
         if (v54)
         {
-          [v10 setSelectionStyle:0];
+          [cellCopy setSelectionStyle:0];
           goto LABEL_20;
         }
 
-        v55 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v56 = [v55 lockAddHomeKeyToWalletItem];
-        v57 = [v11 isEqual:v56];
+        detailsItemManager10 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        lockAddHomeKeyToWalletItem = [detailsItemManager10 lockAddHomeKeyToWalletItem];
+        v57 = [itemCopy isEqual:lockAddHomeKeyToWalletItem];
 
         if (v57)
         {
-          v22 = [MEMORY[0x277D756E0] valueCellConfiguration];
-          v58 = [v11 latestResults];
-          v59 = [v58 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-          [v22 setText:v59];
+          valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+          latestResults6 = [itemCopy latestResults];
+          v59 = [latestResults6 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+          [valueCellConfiguration setText:v59];
 
-          v60 = [MEMORY[0x277D75348] hf_keyColor];
-          v61 = [v22 textProperties];
-          [v61 setColor:v60];
+          hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+          textProperties = [valueCellConfiguration textProperties];
+          [textProperties setColor:hf_keyColor];
 
-          v62 = [MEMORY[0x277D755B8] hu_walletAppIconImage];
-          [v22 setImage:v62];
+          hu_walletAppIconImage = [MEMORY[0x277D755B8] hu_walletAppIconImage];
+          [valueCellConfiguration setImage:hu_walletAppIconImage];
 
-          [v10 setContentConfiguration:v22];
+          [cellCopy setContentConfiguration:valueCellConfiguration];
           goto LABEL_19;
         }
 
-        v70 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v71 = [v70 exportDiagnosticsItem];
-        v72 = [v11 isEqual:v71];
+        detailsItemManager11 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        exportDiagnosticsItem = [detailsItemManager11 exportDiagnosticsItem];
+        v72 = [itemCopy isEqual:exportDiagnosticsItem];
 
         if (!v72)
         {
@@ -3028,7 +3028,7 @@ LABEL_12:
         }
 
         objc_opt_class();
-        v73 = v10;
+        v73 = cellCopy;
         if (objc_opt_isKindOfClass())
         {
           v74 = v73;
@@ -3041,8 +3041,8 @@ LABEL_12:
 
         v27 = v74;
 
-        v75 = [v11 latestResults];
-        v76 = [v75 objectForKeyedSubscript:*MEMORY[0x277D13D30]];
+        latestResults7 = [itemCopy latestResults];
+        v76 = [latestResults7 objectForKeyedSubscript:*MEMORY[0x277D13D30]];
 
         if (v76)
         {
@@ -3055,10 +3055,10 @@ LABEL_12:
         }
 
         objc_opt_class();
-        v78 = [v27 accessoryView];
+        accessoryView = [v27 accessoryView];
         if (objc_opt_isKindOfClass())
         {
-          v79 = v78;
+          v79 = accessoryView;
         }
 
         else
@@ -3072,11 +3072,11 @@ LABEL_12:
         {
           if (v80)
           {
-            v81 = v78;
+            v81 = accessoryView;
 
             [v27 setDisabled:1];
             [v81 startAnimating];
-            [(HUServiceDetailsViewController *)self _registerButtonActionHandler:v76 item:v11];
+            [(HUServiceDetailsViewController *)self _registerButtonActionHandler:v76 item:itemCopy];
             v80 = v81;
           }
 
@@ -3091,7 +3091,7 @@ LABEL_12:
             v80 = __72__HUServiceDetailsViewController_updateCell_forItem_indexPath_animated___block_invoke_2(v92);
             [v82 setDisabled:1];
             [v80 startAnimating];
-            [(HUServiceDetailsViewController *)self _registerButtonActionHandler:v76 item:v11];
+            [(HUServiceDetailsViewController *)self _registerButtonActionHandler:v76 item:itemCopy];
           }
         }
 
@@ -3116,10 +3116,10 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = v10;
+    v21 = cellCopy;
     [v21 setDelegate:self];
-    v22 = [v11 latestResults];
-    v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+    valueCellConfiguration = [itemCopy latestResults];
+    v23 = [valueCellConfiguration objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
     [v21 setAccessibilityIdentifier:v23];
 
 LABEL_19:
@@ -3145,12 +3145,12 @@ id __72__HUServiceDetailsViewController_updateCell_forItem_indexPath_animated___
   return v2;
 }
 
-- (void)_registerButtonActionHandler:(id)a3 item:(id)a4
+- (void)_registerButtonActionHandler:(id)handler item:(id)item
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HUServiceDetailsViewController *)self registeredButtonFutures];
-  v10 = [v9 containsObject:v7];
+  handlerCopy = handler;
+  itemCopy = item;
+  registeredButtonFutures = [(HUServiceDetailsViewController *)self registeredButtonFutures];
+  v10 = [registeredButtonFutures containsObject:handlerCopy];
 
   if ((v10 & 1) == 0)
   {
@@ -3160,10 +3160,10 @@ id __72__HUServiceDetailsViewController_updateCell_forItem_indexPath_animated___
     aBlock[2] = __68__HUServiceDetailsViewController__registerButtonActionHandler_item___block_invoke;
     aBlock[3] = &unk_277DBEE28;
     objc_copyWeak(v25, &location);
-    v24 = v8;
+    v24 = itemCopy;
     v25[1] = a2;
     v11 = _Block_copy(aBlock);
-    objc_initWeak(&from, v7);
+    objc_initWeak(&from, handlerCopy);
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __68__HUServiceDetailsViewController__registerButtonActionHandler_item___block_invoke_2;
@@ -3172,9 +3172,9 @@ id __72__HUServiceDetailsViewController_updateCell_forItem_indexPath_animated___
     v12 = v11;
     v19 = v12;
     objc_copyWeak(&v21, &from);
-    v13 = [v7 addCompletionBlock:&v15];
+    v13 = [handlerCopy addCompletionBlock:&v15];
     v14 = [(HUServiceDetailsViewController *)self registeredButtonFutures:v15];
-    [v14 na_safeAddObject:v7];
+    [v14 na_safeAddObject:handlerCopy];
 
     v12[2](v12);
     objc_destroyWeak(&v21);
@@ -3219,11 +3219,11 @@ void __68__HUServiceDetailsViewController__registerButtonActionHandler_item___bl
   [v6 removeObject:v7];
 }
 
-- (id)_createMenuWithValues:(id)a3 cell:(id)a4 currentItem:(id)a5
+- (id)_createMenuWithValues:(id)values cell:(id)cell currentItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valuesCopy = values;
+  cellCopy = cell;
+  itemCopy = item;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   objc_initWeak(&location, self);
   v18 = MEMORY[0x277D85DD0];
@@ -3231,11 +3231,11 @@ void __68__HUServiceDetailsViewController__registerButtonActionHandler_item___bl
   v20 = __73__HUServiceDetailsViewController__createMenuWithValues_cell_currentItem___block_invoke;
   v21 = &unk_277DBEEA0;
   objc_copyWeak(&v26, &location);
-  v12 = v8;
+  v12 = valuesCopy;
   v22 = v12;
-  v13 = v9;
+  v13 = cellCopy;
   v23 = v13;
-  v14 = v10;
+  v14 = itemCopy;
   v24 = v14;
   v15 = v11;
   v25 = v15;
@@ -3280,45 +3280,45 @@ void __73__HUServiceDetailsViewController__createMenuWithValues_cell_currentItem
   [v3 setMenu:v2];
 }
 
-- (void)_updateName:(id)a3
+- (void)_updateName:(id)name
 {
-  v20 = a3;
-  if (v20)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v4 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v5 = [v4 serviceLikeBuilder];
-    v6 = [v5 name];
-    v7 = [v20 isEqualToString:v6];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    serviceLikeBuilder = [detailsItemManager serviceLikeBuilder];
+    name = [serviceLikeBuilder name];
+    v7 = [nameCopy isEqualToString:name];
 
     if ((v7 & 1) == 0)
     {
-      [(HUServiceDetailsViewController *)self setTitle:v20];
-      v8 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v9 = [v8 serviceLikeBuilder];
-      [v9 setName:v20];
+      [(HUServiceDetailsViewController *)self setTitle:nameCopy];
+      detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      serviceLikeBuilder2 = [detailsItemManager2 serviceLikeBuilder];
+      [serviceLikeBuilder2 setName:nameCopy];
 
       v10 = objc_alloc_init(MEMORY[0x277D14D40]);
       v11 = [MEMORY[0x277D14B50] policyWithDecision:0];
       [v10 setReadPolicy:v11];
 
-      v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
       v13 = MEMORY[0x277CBEB98];
       WeakRetained = objc_loadWeakRetained(&self->_detailsItemManager);
-      v15 = [WeakRetained headerItem];
+      headerItem = [WeakRetained headerItem];
       v16 = objc_loadWeakRetained(&self->_detailsItemManager);
-      v17 = [v16 sourceItem];
-      v18 = [v13 setWithObjects:{v15, v17, 0}];
-      v19 = [v12 _updateResultsForItems:v18 context:v10];
+      sourceItem = [v16 sourceItem];
+      v18 = [v13 setWithObjects:{headerItem, sourceItem, 0}];
+      v19 = [detailsItemManager3 _updateResultsForItems:v18 context:v10];
     }
   }
 }
 
-- (void)textDidChange:(id)a3 forTextField:(id)a4 item:(id)a5
+- (void)textDidChange:(id)change forTextField:(id)field item:(id)item
 {
-  v13 = a3;
-  v7 = a5;
+  changeCopy = change;
+  itemCopy = item;
   objc_opt_class();
-  v8 = v7;
+  v8 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -3333,22 +3333,22 @@ void __73__HUServiceDetailsViewController__createMenuWithValues_cell_currentItem
 
   if (!v10 || ([v10 service], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hf_isChildService"), v11, (v12 & 1) == 0))
   {
-    [(HUServiceDetailsViewController *)self _updateName:v13];
+    [(HUServiceDetailsViewController *)self _updateName:changeCopy];
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3 item:(id)a4
+- (void)textFieldDidEndEditing:(id)editing item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  editingCopy = editing;
+  itemCopy = item;
   objc_initWeak(&location, self);
-  v8 = [(HUServiceDetailsViewController *)self _commitBuilder];
+  _commitBuilder = [(HUServiceDetailsViewController *)self _commitBuilder];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__HUServiceDetailsViewController_textFieldDidEndEditing_item___block_invoke;
   v10[3] = &unk_277DB8CA8;
   objc_copyWeak(&v11, &location);
-  v9 = [v8 addCompletionBlock:v10];
+  v9 = [_commitBuilder addCompletionBlock:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -3377,71 +3377,71 @@ void __62__HUServiceDetailsViewController_textFieldDidEndEditing_item___block_in
   }
 }
 
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section
 {
   v14.receiver = self;
   v14.super_class = HUServiceDetailsViewController;
   v5 = [(HUItemTableViewController *)&v14 shouldHideHeaderAboveSection:?];
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 displayedSectionIdentifierForSectionIndex:a3];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v7 = [detailsItemManager displayedSectionIdentifierForSectionIndex:section];
   v8 = v5 | [v7 isEqualToString:@"HUServiceDetailsHeaderSectionIdentifier"];
 
-  v9 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v10 = [v9 displayedSectionIdentifierForSectionIndex:a3];
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v10 = [detailsItemManager2 displayedSectionIdentifierForSectionIndex:section];
   LODWORD(v7) = [v10 isEqualToString:@"HUServiceDetailsFirmwareUpdateSectionPromptIdentifier"];
 
-  v11 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v12 = [v11 displayedSectionIdentifierForSectionIndex:a3];
-  LODWORD(v9) = v7 | [v12 isEqualToString:@"HUServiceDetailsFirmwareUpdateAppStoreSectionIdentifier"];
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v12 = [detailsItemManager3 displayedSectionIdentifierForSectionIndex:section];
+  LODWORD(detailsItemManager2) = v7 | [v12 isEqualToString:@"HUServiceDetailsFirmwareUpdateAppStoreSectionIdentifier"];
 
-  return v8 | v9;
+  return v8 | detailsItemManager2;
 }
 
-- (BOOL)shouldHideFooterBelowSection:(int64_t)a3
+- (BOOL)shouldHideFooterBelowSection:(int64_t)section
 {
   v14.receiver = self;
   v14.super_class = HUServiceDetailsViewController;
   v5 = [(HUItemTableViewController *)&v14 shouldHideHeaderAboveSection:?];
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 displayedSectionIdentifierForSectionIndex:a3];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v7 = [detailsItemManager displayedSectionIdentifierForSectionIndex:section];
   v8 = v5 | [v7 isEqualToString:@"HUServiceDetailsHeaderSectionIdentifier"];
 
-  v9 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v10 = [v9 displayedSectionIdentifierForSectionIndex:a3];
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v10 = [detailsItemManager2 displayedSectionIdentifierForSectionIndex:section];
   LODWORD(v7) = [v10 isEqualToString:@"HUServiceDetailsFirmwareUpdateSectionPromptIdentifier"];
 
-  v11 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v12 = [v11 displayedSectionIdentifierForSectionIndex:a3];
-  LODWORD(v9) = v7 | [v12 isEqualToString:@"HUServiceDetailsFirmwareUpdateAppStoreSectionIdentifier"];
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v12 = [detailsItemManager3 displayedSectionIdentifierForSectionIndex:section];
+  LODWORD(detailsItemManager2) = v7 | [v12 isEqualToString:@"HUServiceDetailsFirmwareUpdateAppStoreSectionIdentifier"];
 
-  return v8 | v9;
+  return v8 | detailsItemManager2;
 }
 
-- (BOOL)shouldHideSeparatorsForCell:(id)a3 indexPath:(id)a4
+- (BOOL)shouldHideSeparatorsForCell:(id)cell indexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = HUServiceDetailsViewController;
-  v5 = a3;
-  LOBYTE(a4) = [(HUItemTableViewController *)&v8 shouldHideSeparatorsForCell:v5 indexPath:a4];
+  cellCopy = cell;
+  LOBYTE(path) = [(HUItemTableViewController *)&v8 shouldHideSeparatorsForCell:cellCopy indexPath:path];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  return (a4 | isKindOfClass) & 1;
+  return (path | isKindOfClass) & 1;
 }
 
-- (unint64_t)automaticDisablingReasonsForItem:(id)a3
+- (unint64_t)automaticDisablingReasonsForItem:(id)item
 {
   v12.receiver = self;
   v12.super_class = HUServiceDetailsViewController;
-  v4 = a3;
-  v5 = [(HUItemTableViewController *)&v12 automaticDisablingReasonsForItem:v4];
+  itemCopy = item;
+  v5 = [(HUItemTableViewController *)&v12 automaticDisablingReasonsForItem:itemCopy];
   v6 = [(HUServiceDetailsViewController *)self detailsItemManager:v12.receiver];
-  v7 = [v6 showContainedItems];
+  showContainedItems = [v6 showContainedItems];
 
-  v8 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v9 = [v8 statusAndNotificationItem];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  statusAndNotificationItem = [detailsItemManager statusAndNotificationItem];
 
-  if (v7 == v4 || v9 == v4)
+  if (showContainedItems == itemCopy || statusAndNotificationItem == itemCopy)
   {
     return 1;
   }
@@ -3459,10 +3459,10 @@ void __62__HUServiceDetailsViewController_textFieldDidEndEditing_item___block_in
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(HUServiceDetailsViewController *)self tableView];
-  v4 = [v3 indexPathsForVisibleRows];
+  tableView = [(HUServiceDetailsViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [indexPathsForVisibleRows countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3474,19 +3474,19 @@ void __62__HUServiceDetailsViewController_textFieldDidEndEditing_item___block_in
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleRows);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
-        v10 = [(HUItemTableViewController *)self itemManager];
-        v11 = [v10 displayedItemAtIndexPath:v9];
+        itemManager = [(HUItemTableViewController *)self itemManager];
+        v11 = [itemManager displayedItemAtIndexPath:v9];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           objc_opt_class();
-          v12 = [(HUServiceDetailsViewController *)self tableView];
-          v13 = [v12 cellForRowAtIndexPath:v9];
+          tableView2 = [(HUServiceDetailsViewController *)self tableView];
+          v13 = [tableView2 cellForRowAtIndexPath:v9];
           if (objc_opt_isKindOfClass())
           {
             v14 = v13;
@@ -3506,26 +3506,26 @@ void __62__HUServiceDetailsViewController_textFieldDidEndEditing_item___block_in
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [indexPathsForVisibleRows countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)itemManager:(id)a3 didUpdateResultsForItem:(id)a4 atIndexPath:(id)a5
+- (void)itemManager:(id)manager didUpdateResultsForItem:(id)item atIndexPath:(id)path
 {
-  v8 = a4;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = HUServiceDetailsViewController;
-  [(HUItemTableViewController *)&v13 itemManager:a3 didUpdateResultsForItem:v8 atIndexPath:a5];
+  [(HUItemTableViewController *)&v13 itemManager:manager didUpdateResultsForItem:itemCopy atIndexPath:path];
   WeakRetained = objc_loadWeakRetained(&self->_detailsItemManager);
-  v10 = [WeakRetained headerItem];
+  headerItem = [WeakRetained headerItem];
 
-  if (v10 == v8)
+  if (headerItem == itemCopy)
   {
-    v11 = [v8 latestResults];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    latestResults = [itemCopy latestResults];
+    v12 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
     [(HUServiceDetailsViewController *)self setTitle:v12];
   }
 
@@ -3535,18 +3535,18 @@ void __62__HUServiceDetailsViewController_textFieldDidEndEditing_item___block_in
 
 - (BOOL)_isCameraItem
 {
-  v2 = [(HUServiceDetailsViewController *)self item];
+  item = [(HUServiceDetailsViewController *)self item];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v10 = a3;
-  v7 = a4;
-  if (v7 == self)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  if (viewControllerCopy == self)
   {
     v8 = 0;
   }
@@ -3557,17 +3557,17 @@ void __62__HUServiceDetailsViewController_textFieldDidEndEditing_item___block_in
     v8 = objc_opt_isKindOfClass() ^ 1;
   }
 
-  v9 = [(HUServiceDetailsViewController *)self navigationBarTitleView];
-  [v9 setHidden:v8 & 1];
+  navigationBarTitleView = [(HUServiceDetailsViewController *)self navigationBarTitleView];
+  [navigationBarTitleView setHidden:v8 & 1];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v9 = [detailsItemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -3583,7 +3583,7 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  v10 = [v6 cellForRowAtIndexPath:v7];
+  v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -3595,10 +3595,10 @@ LABEL_17:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v10 allControlViews];
-  v12 = [v11 allObjects];
+  allControlViews = [v10 allControlViews];
+  allObjects = [allControlViews allObjects];
 
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v13 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v13)
   {
     v14 = *v19;
@@ -3608,7 +3608,7 @@ LABEL_17:
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allObjects);
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
@@ -3619,7 +3619,7 @@ LABEL_17:
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v13)
       {
         continue;
@@ -3635,43 +3635,43 @@ LABEL_20:
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v310[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v299.receiver = self;
   v299.super_class = HUServiceDetailsViewController;
-  [(HUItemTableViewController *)&v299 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  [(HUItemTableViewController *)&v299 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v9 = [detailsItemManager displayedItemAtIndexPath:pathCopy];
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v10 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v11 = [v10 internalDebuggingItem];
-  v12 = v9 == v11;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  internalDebuggingItem = [detailsItemManager2 internalDebuggingItem];
+  v12 = v9 == internalDebuggingItem;
 
-  v13 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v14 = v13;
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v14 = detailsItemManager3;
   if (v12)
   {
-    v26 = [v13 sourceItemHomeKitObject];
+    sourceItemHomeKitObject = [detailsItemManager3 sourceItemHomeKitObject];
 
-    v27 = [(HUServiceDetailsViewController *)self navigationController];
-    v28 = [[HUAccessoryDebugViewController alloc] initWithHomeKitObject:v26];
-    v29 = [v27 hu_pushPreloadableViewController:v28 animated:1];
+    navigationController = [(HUServiceDetailsViewController *)self navigationController];
+    v28 = [[HUAccessoryDebugViewController alloc] initWithHomeKitObject:sourceItemHomeKitObject];
+    v29 = [navigationController hu_pushPreloadableViewController:v28 animated:1];
 
     goto LABEL_63;
   }
 
-  v15 = [v13 audioSettingsItem];
-  v16 = v9 == v15;
+  audioSettingsItem = [detailsItemManager3 audioSettingsItem];
+  v16 = v9 == audioSettingsItem;
 
   if (v16)
   {
-    v30 = [(HUServiceDetailsViewController *)self item];
-    v31 = [v30 latestResults];
-    v32 = [v31 objectForKeyedSubscript:*MEMORY[0x277D13BD0]];
+    item = [(HUServiceDetailsViewController *)self item];
+    latestResults = [item latestResults];
+    v32 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13BD0]];
     if ([v32 conformsToProtocol:&unk_2825BCB38])
     {
       v33 = v32;
@@ -3682,9 +3682,9 @@ LABEL_20:
       v33 = 0;
     }
 
-    v34 = v33;
+    sourceItemAccessory4 = v33;
 
-    if (![v34 hf_showsAudioSettings])
+    if (![sourceItemAccessory4 hf_showsAudioSettings])
     {
       goto LABEL_165;
     }
@@ -3696,17 +3696,17 @@ LABEL_20:
     }
 
     v35 = objc_alloc(MEMORY[0x277D14830]);
-    v36 = [(HUItemTableViewController *)self itemManager];
-    v37 = [v36 home];
-    v38 = [v35 initWithExistingObject:v34 inHome:v37];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    home = [itemManager home];
+    v38 = [v35 initWithExistingObject:sourceItemAccessory4 inHome:home];
 
     v39 = objc_opt_class();
-    v40 = [(HUServiceDetailsViewController *)self item];
-    if (v40)
+    item2 = [(HUServiceDetailsViewController *)self item];
+    if (item2)
     {
       if (objc_opt_isKindOfClass())
       {
-        v41 = v40;
+        v41 = item2;
       }
 
       else
@@ -3714,15 +3714,15 @@ LABEL_20:
         v41 = 0;
       }
 
-      v42 = v40;
+      v42 = item2;
       if (v41)
       {
         goto LABEL_25;
       }
 
-      v43 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v43 handleFailureInFunction:v44 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v39, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v44 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v39, objc_opt_class()}];
     }
 
     v42 = 0;
@@ -3730,8 +3730,8 @@ LABEL_25:
 
     v45 = [[HUMediaAccessoryAudioSettingsViewController alloc] initWithMediaSystemBuilder:v38 mediaAccessoryItem:v42];
     [(HUMediaAccessoryAudioSettingsViewController *)v45 setPresentationDelegate:self];
-    v46 = [(HUServiceDetailsViewController *)self navigationController];
-    v47 = [v46 hu_pushPreloadableViewController:v45 animated:1];
+    navigationController2 = [(HUServiceDetailsViewController *)self navigationController];
+    v47 = [navigationController2 hu_pushPreloadableViewController:v45 animated:1];
 
     goto LABEL_165;
   }
@@ -3759,17 +3759,17 @@ LABEL_25:
         goto LABEL_11;
       }
 
-      v21 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v21 handleFailureInFunction:v22 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v17, objc_opt_class()}];
+      [currentHandler2 handleFailureInFunction:v22 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v17, objc_opt_class()}];
     }
 
     v20 = 0;
 LABEL_11:
 
     v23 = [HUAccessorySettingsDetailsViewControllerFactory viewControllerForGroup:v20];
-    v24 = [(HUServiceDetailsViewController *)self navigationController];
-    v25 = [v24 hu_pushPreloadableViewController:v23 animated:1];
+    navigationController3 = [(HUServiceDetailsViewController *)self navigationController];
+    v25 = [navigationController3 hu_pushPreloadableViewController:v23 animated:1];
 
     goto LABEL_63;
   }
@@ -3791,19 +3791,19 @@ LABEL_11:
 
     v50 = v49;
 
-    v51 = objc_opt_new();
-    [v51 addObject:*MEMORY[0x277D13990]];
-    [v51 addObject:*MEMORY[0x277D138C0]];
-    [v51 addObject:*MEMORY[0x277D138C8]];
-    [v51 addObject:*MEMORY[0x277D138B8]];
-    v52 = [v50 settingKeyPath];
-    v53 = [v51 na_safeContainsObject:v52];
+    anyObject = objc_opt_new();
+    [anyObject addObject:*MEMORY[0x277D13990]];
+    [anyObject addObject:*MEMORY[0x277D138C0]];
+    [anyObject addObject:*MEMORY[0x277D138C8]];
+    [anyObject addObject:*MEMORY[0x277D138B8]];
+    settingKeyPath = [v50 settingKeyPath];
+    v53 = [anyObject na_safeContainsObject:settingKeyPath];
 
     if (v53)
     {
       v54 = [HUAccessorySettingsDetailsViewControllerFactory viewControllerForSettingItem:v50];
-      v55 = [(HUServiceDetailsViewController *)self navigationController];
-      v56 = [v55 hu_pushPreloadableViewController:v54 animated:1];
+      navigationController4 = [(HUServiceDetailsViewController *)self navigationController];
+      v56 = [navigationController4 hu_pushPreloadableViewController:v54 animated:1];
     }
 
     goto LABEL_62;
@@ -3831,44 +3831,44 @@ LABEL_11:
       {
 LABEL_43:
 
-        v62 = [v50 controlItems];
-        v51 = [v62 anyObject];
+        controlItems = [v50 controlItems];
+        anyObject = [controlItems anyObject];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v63 = [(HUServiceDetailsViewController *)self expandedControlPanelItems];
-          v64 = [v63 containsObject:v50];
+          expandedControlPanelItems = [(HUServiceDetailsViewController *)self expandedControlPanelItems];
+          v64 = [expandedControlPanelItems containsObject:v50];
 
-          v65 = [(HUServiceDetailsViewController *)self expandedControlPanelItems];
-          v66 = v65;
+          expandedControlPanelItems2 = [(HUServiceDetailsViewController *)self expandedControlPanelItems];
+          v66 = expandedControlPanelItems2;
           if (v64)
           {
-            [v65 removeObject:v50];
+            [expandedControlPanelItems2 removeObject:v50];
           }
 
           else
           {
-            [v65 addObject:v50];
+            [expandedControlPanelItems2 addObject:v50];
           }
 
-          v89 = [(HUServiceDetailsViewController *)self detailsItemManager];
-          v90 = [v89 diffableDataSourceDisabled];
+          detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+          diffableDataSourceDisabled = [detailsItemManager4 diffableDataSourceDisabled];
 
-          if (v90)
+          if (diffableDataSourceDisabled)
           {
-            v85 = [(HUServiceDetailsViewController *)self tableView];
-            v310[0] = v7;
-            v86 = [MEMORY[0x277CBEA60] arrayWithObjects:v310 count:1];
-            [(HUTemperatureUnitPickerViewController *)v85 reloadRowsAtIndexPaths:v86 withRowAnimation:0];
+            tableView = [(HUServiceDetailsViewController *)self tableView];
+            v310[0] = pathCopy;
+            navigationController5 = [MEMORY[0x277CBEA60] arrayWithObjects:v310 count:1];
+            [(HUTemperatureUnitPickerViewController *)tableView reloadRowsAtIndexPaths:navigationController5 withRowAnimation:0];
           }
 
           else
           {
-            v85 = [(HUServiceDetailsViewController *)self detailsItemManager];
+            tableView = [(HUServiceDetailsViewController *)self detailsItemManager];
             v309 = v50;
-            v86 = [MEMORY[0x277CBEA60] arrayWithObjects:&v309 count:1];
-            [(HUTemperatureUnitPickerViewController *)v85 reloadUIRepresentationForItems:v86 withAnimation:1];
+            navigationController5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v309 count:1];
+            [(HUTemperatureUnitPickerViewController *)tableView reloadUIRepresentationForItems:navigationController5 withAnimation:1];
           }
         }
 
@@ -3882,60 +3882,60 @@ LABEL_62:
             goto LABEL_63;
           }
 
-          v84 = v51;
-          v85 = [[HUTemperatureUnitPickerViewController alloc] initWithUnitItem:v84];
+          v84 = anyObject;
+          tableView = [[HUTemperatureUnitPickerViewController alloc] initWithUnitItem:v84];
 
-          v86 = [(HUServiceDetailsViewController *)self navigationController];
-          [v86 pushViewController:v85 animated:1];
+          navigationController5 = [(HUServiceDetailsViewController *)self navigationController];
+          [navigationController5 pushViewController:tableView animated:1];
         }
 
         goto LABEL_62;
       }
 
-      v60 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v61 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v60 handleFailureInFunction:v61 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v57, objc_opt_class()}];
+      [currentHandler3 handleFailureInFunction:v61 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v57, objc_opt_class()}];
     }
 
     v50 = 0;
     goto LABEL_43;
   }
 
-  v67 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v68 = [v67 roomItem];
-  v69 = [v9 isEqual:v68];
+  detailsItemManager5 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  roomItem = [detailsItemManager5 roomItem];
+  v69 = [v9 isEqual:roomItem];
 
-  v70 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v50 = v70;
+  detailsItemManager6 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v50 = detailsItemManager6;
   if (!v69)
   {
-    v79 = [v70 associatedServiceTypeItem];
-    v80 = [v9 isEqual:v79];
+    associatedServiceTypeItem = [detailsItemManager6 associatedServiceTypeItem];
+    v80 = [v9 isEqual:associatedServiceTypeItem];
 
-    v81 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v82 = v81;
+    detailsItemManager7 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    v82 = detailsItemManager7;
     if (v80)
     {
-      [v81 setShowAssociatedServiceTypeList:1];
+      [detailsItemManager7 setShowAssociatedServiceTypeList:1];
 
-      v83 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      [v83 setShowRoomsList:0];
+      detailsItemManager8 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      [detailsItemManager8 setShowRoomsList:0];
 
       goto LABEL_63;
     }
 
-    v87 = [v81 createNewRoomItem];
-    v88 = [v9 isEqual:v87];
+    createNewRoomItem = [detailsItemManager7 createNewRoomItem];
+    v88 = [v9 isEqual:createNewRoomItem];
 
     if (v88)
     {
-      [(HUServiceDetailsViewController *)self addRoomButtonPressed:v6];
+      [(HUServiceDetailsViewController *)self addRoomButtonPressed:viewCopy];
       goto LABEL_63;
     }
 
-    v91 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v92 = [v91 addGroupItem];
-    v93 = [v9 isEqual:v92];
+    detailsItemManager9 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    addGroupItem = [detailsItemManager9 addGroupItem];
+    v93 = [v9 isEqual:addGroupItem];
 
     if (v93)
     {
@@ -3943,9 +3943,9 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v94 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v95 = [v94 identifyHomePodItem];
-    v96 = [v9 isEqual:v95];
+    detailsItemManager10 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    identifyHomePodItem = [detailsItemManager10 identifyHomePodItem];
+    v96 = [v9 isEqual:identifyHomePodItem];
 
     if (v96)
     {
@@ -3953,9 +3953,9 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v97 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v98 = [v97 separateTileItem];
-    v99 = [v9 isEqual:v98];
+    detailsItemManager11 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    separateTileItem = [detailsItemManager11 separateTileItem];
+    v99 = [v9 isEqual:separateTileItem];
 
     if (v99)
     {
@@ -3963,9 +3963,9 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v100 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v101 = [v100 showContainedItems];
-    v102 = [v9 isEqual:v101];
+    detailsItemManager12 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    showContainedItems = [detailsItemManager12 showContainedItems];
+    v102 = [v9 isEqual:showContainedItems];
 
     if (v102)
     {
@@ -3973,57 +3973,57 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v103 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v104 = [v103 lockPinCodesItem];
-    v105 = v9 == v104;
+    detailsItemManager13 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    lockPinCodesItem = [detailsItemManager13 lockPinCodesItem];
+    v105 = v9 == lockPinCodesItem;
 
-    v106 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v107 = v106;
+    detailsItemManager14 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    v107 = detailsItemManager14;
     if (v105)
     {
-      v117 = [v106 lockPinCodesItem];
-      v118 = [v117 latestResults];
-      v119 = [v118 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-      v120 = [v119 BOOLValue];
+      lockPinCodesItem2 = [detailsItemManager14 lockPinCodesItem];
+      latestResults2 = [lockPinCodesItem2 latestResults];
+      v119 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+      bOOLValue = [v119 BOOLValue];
 
-      if ((v120 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
-        v121 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v122 = [(HUItemTableViewController *)self itemManager];
-        v123 = [v122 home];
-        v124 = [v121 pinCodeManagerForHome:v123];
+        mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+        itemManager2 = [(HUItemTableViewController *)self itemManager];
+        home2 = [itemManager2 home];
+        v124 = [mEMORY[0x277D146E8] pinCodeManagerForHome:home2];
 
-        v125 = [v124 fetchFromAccessoryCache];
-        v126 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v127 = [v126 sourceItemAccessory];
+        fetchFromAccessoryCache = [v124 fetchFromAccessoryCache];
+        detailsItemManager15 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        sourceItemAccessory = [detailsItemManager15 sourceItemAccessory];
 
-        v128 = [(HUItemTableViewController *)self itemManager];
-        v129 = [v128 home];
+        itemManager3 = [(HUItemTableViewController *)self itemManager];
+        home3 = [itemManager3 home];
 
         v130 = [HUUsersAndGuestsPinCodeViewController alloc];
-        v131 = [(HUServiceDetailsViewController *)self item];
-        v132 = [(HUUsersAndGuestsPinCodeViewController *)v130 initWithSourceItem:v131 pinCodeManager:v124 home:v129 forAccessory:v127];
+        item3 = [(HUServiceDetailsViewController *)self item];
+        v132 = [(HUUsersAndGuestsPinCodeViewController *)v130 initWithSourceItem:item3 pinCodeManager:v124 home:home3 forAccessory:sourceItemAccessory];
 
-        v133 = [(HUServiceDetailsViewController *)self navigationController];
-        v134 = [v133 hu_pushPreloadableViewController:v132 animated:1];
+        navigationController6 = [(HUServiceDetailsViewController *)self navigationController];
+        v134 = [navigationController6 hu_pushPreloadableViewController:v132 animated:1];
       }
 
       goto LABEL_63;
     }
 
-    v108 = [v106 statusAndNotificationItem];
-    v109 = [v9 isEqual:v108];
+    statusAndNotificationItem = [detailsItemManager14 statusAndNotificationItem];
+    v109 = [v9 isEqual:statusAndNotificationItem];
 
     if (v109)
     {
       v110 = [HUStatusAndNotificationsViewController alloc];
-      v111 = [(HUServiceDetailsViewController *)self item];
-      v112 = [(HUItemTableViewController *)self itemManager];
-      v113 = [v112 home];
-      v114 = [(HUStatusAndNotificationsViewController *)v110 initWithServiceItem:v111 inHome:v113 displayingDetails:1];
+      item4 = [(HUServiceDetailsViewController *)self item];
+      itemManager4 = [(HUItemTableViewController *)self itemManager];
+      home4 = [itemManager4 home];
+      v114 = [(HUStatusAndNotificationsViewController *)v110 initWithServiceItem:item4 inHome:home4 displayingDetails:1];
 
-      v115 = [(HUServiceDetailsViewController *)self navigationController];
-      v116 = [v115 hu_pushPreloadableViewController:v114 animated:1];
+      navigationController7 = [(HUServiceDetailsViewController *)self navigationController];
+      v116 = [navigationController7 hu_pushPreloadableViewController:v114 animated:1];
 
       goto LABEL_63;
     }
@@ -4032,47 +4032,47 @@ LABEL_62:
     if (objc_opt_isKindOfClass())
     {
       v135 = objc_alloc(MEMORY[0x277D14398]);
-      v136 = [v9 actionSet];
-      v137 = [(HUServiceDetailsViewController *)self home];
-      v138 = [v135 initWithExistingObject:v136 inHome:v137];
+      actionSet = [v9 actionSet];
+      home5 = [(HUServiceDetailsViewController *)self home];
+      v138 = [v135 initWithExistingObject:actionSet inHome:home5];
 
       v139 = [[HUSceneActionEditorViewController alloc] initWithActionSetBuilder:v138 mode:0];
       [(HUSceneActionEditorViewController *)v139 setShowCancelButton:0];
       [(HUSceneActionEditorViewController *)v139 setPresentationDelegate:self];
-      v140 = [(HUServiceDetailsViewController *)self navigationController];
-      v141 = [v140 hu_pushPreloadableViewController:v139 animated:1];
+      navigationController8 = [(HUServiceDetailsViewController *)self navigationController];
+      v141 = [navigationController8 hu_pushPreloadableViewController:v139 animated:1];
 
       goto LABEL_63;
     }
 
-    v142 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v143 = [v142 pairingModeItem];
-    v144 = [v9 isEqual:v143];
+    detailsItemManager16 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    pairingModeItem = [detailsItemManager16 pairingModeItem];
+    v144 = [v9 isEqual:pairingModeItem];
 
     if (v144)
     {
-      v145 = [(HUServiceDetailsViewController *)self item];
-      v146 = [v145 accessories];
-      v147 = [v146 anyObject];
-      objc_initWeak(&location, v147);
+      item5 = [(HUServiceDetailsViewController *)self item];
+      accessories = [item5 accessories];
+      anyObject2 = [accessories anyObject];
+      objc_initWeak(&location, anyObject2);
 
       v148 = objc_loadWeakRetained(&location);
-      LODWORD(v145) = v148 == 0;
+      LODWORD(item5) = v148 == 0;
 
-      if (v145)
+      if (item5)
       {
         v156 = HFLogForCategory();
         if (os_log_type_enabled(v156, OS_LOG_TYPE_ERROR))
         {
-          v184 = [(HUServiceDetailsViewController *)self item];
+          item6 = [(HUServiceDetailsViewController *)self item];
           *from = 138412290;
-          *&from[4] = v184;
+          *&from[4] = item6;
           _os_log_error_impl(&dword_20CEB6000, v156, OS_LOG_TYPE_ERROR, "Attempted to activate pairing mode for chip accessory but found nil accessory %@", from, 0xCu);
         }
 
         v157 = [MEMORY[0x277CCA9B8] hf_errorWithCode:38];
-        v158 = [MEMORY[0x277D14640] sharedHandler];
-        [v158 handleError:v157];
+        mEMORY[0x277D14640] = [MEMORY[0x277D14640] sharedHandler];
+        [mEMORY[0x277D14640] handleError:v157];
       }
 
       else
@@ -4096,9 +4096,9 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v150 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v151 = [v150 exportDiagnosticsItem];
-    v152 = [v9 isEqual:v151];
+    detailsItemManager17 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    exportDiagnosticsItem = [detailsItemManager17 exportDiagnosticsItem];
+    v152 = [v9 isEqual:exportDiagnosticsItem];
 
     if (v152)
     {
@@ -4106,39 +4106,39 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v153 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v154 = [v153 removeItem];
-    v155 = [v9 isEqual:v154];
+    detailsItemManager18 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    removeItem = [detailsItemManager18 removeItem];
+    v155 = [v9 isEqual:removeItem];
 
     if (v155)
     {
-      [(HUServiceDetailsViewController *)self _presentRemoveConfirmation:v7];
+      [(HUServiceDetailsViewController *)self _presentRemoveConfirmation:pathCopy];
       goto LABEL_63;
     }
 
-    v159 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v160 = [v159 removeFromGroupItem];
-    v161 = [v9 isEqual:v160];
+    detailsItemManager19 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    removeFromGroupItem = [detailsItemManager19 removeFromGroupItem];
+    v161 = [v9 isEqual:removeFromGroupItem];
 
     if (v161)
     {
-      [(HUServiceDetailsViewController *)self _presentRemoveFromGroupConfirmation:v7];
+      [(HUServiceDetailsViewController *)self _presentRemoveFromGroupConfirmation:pathCopy];
       goto LABEL_63;
     }
 
-    v162 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v163 = [v162 resetItem];
-    v164 = [v9 isEqual:v163];
+    detailsItemManager20 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    resetItem = [detailsItemManager20 resetItem];
+    v164 = [v9 isEqual:resetItem];
 
     if (v164)
     {
-      [(HUServiceDetailsViewController *)self _presentResetHomePodConfirmation:v7];
+      [(HUServiceDetailsViewController *)self _presentResetHomePodConfirmation:pathCopy];
       goto LABEL_63;
     }
 
-    v165 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v166 = [v165 restartItem];
-    v167 = [v9 isEqual:v166];
+    detailsItemManager21 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    restartItem = [detailsItemManager21 restartItem];
+    v167 = [v9 isEqual:restartItem];
 
     if (v167)
     {
@@ -4146,37 +4146,37 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v168 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v169 = [v168 accessoryItem];
-    v170 = [v9 isEqual:v169];
+    detailsItemManager22 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    accessoryItem = [detailsItemManager22 accessoryItem];
+    v170 = [v9 isEqual:accessoryItem];
 
     if (v170)
     {
-      v171 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v172 = [v171 sourceItemAccessory];
+      detailsItemManager23 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      sourceItemAccessory2 = [detailsItemManager23 sourceItemAccessory];
 
-      v173 = [v172 hf_owningBridgeAccessory];
-      if ([v172 hf_isBridge])
+      hf_owningBridgeAccessory = [sourceItemAccessory2 hf_owningBridgeAccessory];
+      if ([sourceItemAccessory2 hf_isBridge])
       {
-        if (([v172 hf_isPureBridge] & 1) == 0)
+        if (([sourceItemAccessory2 hf_isPureBridge] & 1) == 0)
         {
-          v174 = [(HUServiceDetailsViewController *)self detailsItemManager];
-          v175 = [v174 sourceItemIsService];
+          detailsItemManager24 = [(HUServiceDetailsViewController *)self detailsItemManager];
+          sourceItemIsService = [detailsItemManager24 sourceItemIsService];
 
-          if (v175)
+          if (sourceItemIsService)
           {
-            v176 = v172;
+            v176 = sourceItemAccessory2;
 
-            v173 = v176;
+            hf_owningBridgeAccessory = v176;
           }
         }
       }
 
-      v177 = [v173 hf_primaryService];
-      v178 = [v173 hf_isVisibleAsBridge];
-      if (v177)
+      hf_primaryService = [hf_owningBridgeAccessory hf_primaryService];
+      hf_isVisibleAsBridge = [hf_owningBridgeAccessory hf_isVisibleAsBridge];
+      if (hf_primaryService)
       {
-        v179 = v178;
+        v179 = hf_isVisibleAsBridge;
       }
 
       else
@@ -4184,28 +4184,28 @@ LABEL_62:
         v179 = 1;
       }
 
-      if (v179 & 1) != 0 || ([v173 hf_showAsIndividualServices] & 1) == 0 && (objc_msgSend(v173, "hf_isMultiServiceAccessory"))
+      if (v179 & 1) != 0 || ([hf_owningBridgeAccessory hf_showAsIndividualServices] & 1) == 0 && (objc_msgSend(hf_owningBridgeAccessory, "hf_isMultiServiceAccessory"))
       {
         v180 = objc_alloc(MEMORY[0x277D142E8]);
-        v181 = [(HUServiceDetailsViewController *)self item];
-        v182 = [v181 valueSource];
-        v183 = [v180 initWithAccessory:v173 valueSource:v182];
+        item7 = [(HUServiceDetailsViewController *)self item];
+        valueSource = [item7 valueSource];
+        v183 = [v180 initWithAccessory:hf_owningBridgeAccessory valueSource:valueSource];
       }
 
       else
       {
         v194 = MEMORY[0x277D14AC8];
-        v181 = [(HUServiceDetailsViewController *)self item];
-        v182 = [v181 valueSource];
-        v183 = [v194 serviceItemForService:v177 valueSource:v182];
+        item7 = [(HUServiceDetailsViewController *)self item];
+        valueSource = [item7 valueSource];
+        v183 = [v194 serviceItemForService:hf_primaryService valueSource:valueSource];
       }
 
       v195 = v183;
 
       v196 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:v195];
       [(HUServiceDetailsViewController *)v196 setPresentationDelegate:self];
-      v197 = [(HUServiceDetailsViewController *)self navigationController];
-      v198 = [v197 hu_pushPreloadableViewController:v196 animated:1];
+      navigationController9 = [(HUServiceDetailsViewController *)self navigationController];
+      v198 = [navigationController9 hu_pushPreloadableViewController:v196 animated:1];
 
       goto LABEL_63;
     }
@@ -4213,22 +4213,22 @@ LABEL_62:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v185 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v186 = [v185 showAssociatedServiceTypeList];
+      detailsItemManager25 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      showAssociatedServiceTypeList = [detailsItemManager25 showAssociatedServiceTypeList];
 
-      if (v186)
+      if (showAssociatedServiceTypeList)
       {
-        v187 = v9;
-        v188 = [v187 latestResults];
-        v189 = [v188 objectForKeyedSubscript:*MEMORY[0x277D136E0]];
+        detailsItemManager27 = v9;
+        latestResults3 = [detailsItemManager27 latestResults];
+        v189 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D136E0]];
 
         if (!v189)
         {
-          NSLog(&cfstr_AssociatedServ.isa, v187);
+          NSLog(&cfstr_AssociatedServ.isa, detailsItemManager27);
         }
 
-        v190 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v191 = [v190 selectAssociatedServiceType:v189];
+        detailsItemManager26 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        v191 = [detailsItemManager26 selectAssociatedServiceType:v189];
 
         objc_initWeak(from, self);
         v293[0] = MEMORY[0x277D85DD0];
@@ -4244,8 +4244,8 @@ LABEL_62:
 
       else
       {
-        v187 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        [v187 setShowAssociatedServiceTypeList:1];
+        detailsItemManager27 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        [detailsItemManager27 setShowAssociatedServiceTypeList:1];
       }
 
       [(HUServiceDetailsViewController *)self _updateAssociatedServiceTypeCells];
@@ -4259,8 +4259,8 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v199 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v200 = [v199 canShowWiFiPickerForItem:v9];
+    detailsItemManager28 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    v200 = [detailsItemManager28 canShowWiFiPickerForItem:v9];
 
     if (v200)
     {
@@ -4268,41 +4268,41 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v201 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v202 = [v201 canToggleAccessoryInfoItem:v9];
+    detailsItemManager29 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    v202 = [detailsItemManager29 canToggleAccessoryInfoItem:v9];
 
-    v203 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v204 = v203;
+    detailsItemManager30 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    v204 = detailsItemManager30;
     if (v202)
     {
-      [v203 toggleAccessoryInfoItem:v9];
+      [detailsItemManager30 toggleAccessoryInfoItem:v9];
 
       goto LABEL_63;
     }
 
-    v205 = [v203 symptomsLearnMoreItem];
-    v206 = v9 == v205;
+    symptomsLearnMoreItem = [detailsItemManager30 symptomsLearnMoreItem];
+    v206 = v9 == symptomsLearnMoreItem;
 
-    v207 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v208 = v207;
+    detailsItemManager31 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    v208 = detailsItemManager31;
     if (v206)
     {
-      v229 = [v207 sourceItem];
-      v230 = [v229 latestResults];
-      v231 = [v230 objectForKeyedSubscript:*MEMORY[0x277D13F48]];
+      sourceItem = [detailsItemManager31 sourceItem];
+      latestResults4 = [sourceItem latestResults];
+      v231 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13F48]];
 
-      v232 = [MEMORY[0x277D148E8] sharedInstance];
-      v233 = [v232 openURL:v231];
+      mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+      v233 = [mEMORY[0x277D148E8] openURL:v231];
 
-      v234 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v235 = [v234 sourceItemAccessory];
-      [(HUServiceDetailsViewController *)self _submitMetricsSymptomsInteractionForAccessory:v235 interactionType:1];
+      detailsItemManager32 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      sourceItemAccessory3 = [detailsItemManager32 sourceItemAccessory];
+      [(HUServiceDetailsViewController *)self _submitMetricsSymptomsInteractionForAccessory:sourceItemAccessory3 interactionType:1];
 
       goto LABEL_63;
     }
 
-    v209 = [v207 splitMediaAccountUseDefaultAccountItem];
-    v210 = v9 == v209;
+    splitMediaAccountUseDefaultAccountItem = [detailsItemManager31 splitMediaAccountUseDefaultAccountItem];
+    v210 = v9 == splitMediaAccountUseDefaultAccountItem;
 
     if (v210)
     {
@@ -4310,9 +4310,9 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v211 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v212 = [v211 splitMediaAccountSignoutAccountItem];
-    v213 = v9 == v212;
+    detailsItemManager33 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    splitMediaAccountSignoutAccountItem = [detailsItemManager33 splitMediaAccountSignoutAccountItem];
+    v213 = v9 == splitMediaAccountSignoutAccountItem;
 
     if (v213)
     {
@@ -4320,17 +4320,17 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v214 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v215 = [v214 homeTheaterAudioOutputItem];
-    v216 = v9 == v215;
+    detailsItemManager34 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    homeTheaterAudioOutputItem = [detailsItemManager34 homeTheaterAudioOutputItem];
+    v216 = v9 == homeTheaterAudioOutputItem;
 
     if (v216)
     {
       objc_opt_class();
-      v236 = [(HUServiceDetailsViewController *)self item];
+      item8 = [(HUServiceDetailsViewController *)self item];
       if (objc_opt_isKindOfClass())
       {
-        v237 = v236;
+        v237 = item8;
       }
 
       else
@@ -4338,30 +4338,30 @@ LABEL_62:
         v237 = 0;
       }
 
-      v34 = v237;
+      sourceItemAccessory4 = v237;
 
-      if (v34)
+      if (sourceItemAccessory4)
       {
-        v238 = [[HUHomeTheaterAudioViewController alloc] initWithMediaAccessoryItem:v34];
-        v239 = [(HUServiceDetailsViewController *)self navigationController];
-        v240 = [v239 hu_pushPreloadableViewController:v238 animated:1];
+        v238 = [[HUHomeTheaterAudioViewController alloc] initWithMediaAccessoryItem:sourceItemAccessory4];
+        navigationController10 = [(HUServiceDetailsViewController *)self navigationController];
+        v240 = [navigationController10 hu_pushPreloadableViewController:v238 animated:1];
       }
     }
 
     else
     {
-      v217 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v218 = [v217 cameraActivityZonesItem];
-      v219 = v9 == v218;
+      detailsItemManager35 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      cameraActivityZonesItem = [detailsItemManager35 cameraActivityZonesItem];
+      v219 = v9 == cameraActivityZonesItem;
 
       if (v219)
       {
         objc_opt_class();
-        v241 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v242 = [v241 sourceItem];
+        detailsItemManager36 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        sourceItem2 = [detailsItemManager36 sourceItem];
         if (objc_opt_isKindOfClass())
         {
-          v243 = v242;
+          v243 = sourceItem2;
         }
 
         else
@@ -4374,10 +4374,10 @@ LABEL_62:
         if (v50)
         {
           v244 = [HUCameraActivityZoneEditorViewController alloc];
-          v245 = [v50 profile];
-          v51 = [(HUCameraActivityZoneEditorViewController *)v244 initWithCameraProfile:v245];
+          profile = [v50 profile];
+          anyObject = [(HUCameraActivityZoneEditorViewController *)v244 initWithCameraProfile:profile];
 
-          v246 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v51];
+          v246 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:anyObject];
           [v246 setToolbarHidden:0];
           [v246 setModalPresentationStyle:2];
           [(HUServiceDetailsViewController *)self presentViewController:v246 animated:1 completion:0];
@@ -4385,84 +4385,84 @@ LABEL_62:
 
         else
         {
-          v51 = HFLogForCategory();
-          if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
+          anyObject = HFLogForCategory();
+          if (os_log_type_enabled(anyObject, OS_LOG_TYPE_ERROR))
           {
             *from = 138412290;
             *&from[4] = v9;
-            _os_log_error_impl(&dword_20CEB6000, v51, OS_LOG_TYPE_ERROR, "Unable to launch editor for invalid item:%@", from, 0xCu);
+            _os_log_error_impl(&dword_20CEB6000, anyObject, OS_LOG_TYPE_ERROR, "Unable to launch editor for invalid item:%@", from, 0xCu);
           }
         }
 
         goto LABEL_62;
       }
 
-      v220 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v221 = [v220 cameraRecordingOptionsItem];
-      v222 = [v9 isEqual:v221];
+      detailsItemManager37 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      cameraRecordingOptionsItem = [detailsItemManager37 cameraRecordingOptionsItem];
+      v222 = [v9 isEqual:cameraRecordingOptionsItem];
 
       if (v222)
       {
-        v223 = [(HUServiceDetailsViewController *)self navigationController];
+        navigationController11 = [(HUServiceDetailsViewController *)self navigationController];
         v224 = [HUCameraRecordingOptionsTableViewController alloc];
-        v225 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v226 = [v225 sourceItem];
-        v227 = [(HUCameraRecordingOptionsTableViewController *)v224 initWithServiceLikeItem:v226];
-        v228 = [v223 hu_pushPreloadableViewController:v227 animated:1];
+        detailsItemManager38 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        sourceItem3 = [detailsItemManager38 sourceItem];
+        v227 = [(HUCameraRecordingOptionsTableViewController *)v224 initWithServiceLikeItem:sourceItem3];
+        v228 = [navigationController11 hu_pushPreloadableViewController:v227 animated:1];
 
         goto LABEL_63;
       }
 
-      v247 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v248 = [v247 cameraFaceRecognitionItem];
-      v249 = [v9 isEqual:v248];
+      detailsItemManager39 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      cameraFaceRecognitionItem = [detailsItemManager39 cameraFaceRecognitionItem];
+      v249 = [v9 isEqual:cameraFaceRecognitionItem];
 
       if (v249)
       {
         v250 = [HUFaceRecognitionLibraryListViewController alloc];
-        v251 = [(HUItemTableViewController *)self itemManager];
-        v252 = [v251 home];
-        v253 = [(HUFaceRecognitionLibraryListViewController *)v250 initWithHome:v252];
+        itemManager5 = [(HUItemTableViewController *)self itemManager];
+        home6 = [itemManager5 home];
+        v253 = [(HUFaceRecognitionLibraryListViewController *)v250 initWithHome:home6];
 
-        v254 = [(HUServiceDetailsViewController *)self navigationController];
-        v255 = [v254 hu_pushPreloadableViewController:v253 animated:1];
+        navigationController12 = [(HUServiceDetailsViewController *)self navigationController];
+        v255 = [navigationController12 hu_pushPreloadableViewController:v253 animated:1];
 
         goto LABEL_63;
       }
 
-      v256 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v257 = [v256 collectDiagnosticsItem];
-      v258 = v9 == v257;
+      detailsItemManager40 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      collectDiagnosticsItem = [detailsItemManager40 collectDiagnosticsItem];
+      v258 = v9 == collectDiagnosticsItem;
 
       if (v258)
       {
         v278 = [HUAccessoryDiagnosticsViewController alloc];
-        v279 = [(HUServiceDetailsViewController *)self item];
-        v280 = [(HUAccessoryDiagnosticsViewController *)v278 initWithSourceItem:v279];
+        item9 = [(HUServiceDetailsViewController *)self item];
+        v280 = [(HUAccessoryDiagnosticsViewController *)v278 initWithSourceItem:item9];
 
-        v281 = [(HUServiceDetailsViewController *)self navigationController];
-        v282 = [v281 hu_pushPreloadableViewController:v280 animated:1];
+        navigationController13 = [(HUServiceDetailsViewController *)self navigationController];
+        v282 = [navigationController13 hu_pushPreloadableViewController:v280 animated:1];
 
         goto LABEL_63;
       }
 
-      v259 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v260 = [v259 lockAddHomeKeyToWalletItem];
-      v261 = [v9 isEqual:v260];
+      detailsItemManager41 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      lockAddHomeKeyToWalletItem = [detailsItemManager41 lockAddHomeKeyToWalletItem];
+      v261 = [v9 isEqual:lockAddHomeKeyToWalletItem];
 
-      v262 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v263 = v262;
+      detailsItemManager42 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      v263 = detailsItemManager42;
       if (v261)
       {
-        v264 = [v262 sourceItem];
-        v265 = [v264 conformsToProtocol:&unk_28251B0C8];
+        sourceItem4 = [detailsItemManager42 sourceItem];
+        v265 = [sourceItem4 conformsToProtocol:&unk_28251B0C8];
 
         if (v265)
         {
-          v266 = [(HUServiceDetailsViewController *)self detailsItemManager];
-          v267 = [v266 sourceItem];
+          detailsItemManager43 = [(HUServiceDetailsViewController *)self detailsItemManager];
+          sourceItem5 = [detailsItemManager43 sourceItem];
 
-          v268 = [v267 home];
+          home7 = [sourceItem5 home];
           v269 = HFLogForCategory();
           if (os_log_type_enabled(v269, OS_LOG_TYPE_DEFAULT))
           {
@@ -4474,13 +4474,13 @@ LABEL_62:
             v303 = 2112;
             v304 = v9;
             v305 = 2112;
-            v306 = v267;
+            v306 = sourceItem5;
             v307 = 2112;
-            v308 = v268;
+            v308 = home7;
             _os_log_impl(&dword_20CEB6000, v269, OS_LOG_TYPE_DEFAULT, "(%@:%s) user tapped %@ of %@ in home %@", from, 0x34u);
           }
 
-          v271 = [v6 cellForRowAtIndexPath:v7];
+          v271 = [viewCopy cellForRowAtIndexPath:pathCopy];
           objc_opt_class();
           v272 = v271;
           if (objc_opt_isKindOfClass())
@@ -4496,7 +4496,7 @@ LABEL_62:
           v274 = v273;
 
           [v274 setShowSpinner:1];
-          v275 = [MEMORY[0x277D14D08] handleAddOrShowHomeKeyButtonTapForHome:v268];
+          v275 = [MEMORY[0x277D14D08] handleAddOrShowHomeKeyButtonTapForHome:home7];
           v291[0] = MEMORY[0x277D85DD0];
           v291[1] = 3221225472;
           v291[2] = __68__HUServiceDetailsViewController_tableView_didSelectRowAtIndexPath___block_invoke_618;
@@ -4509,8 +4509,8 @@ LABEL_62:
         goto LABEL_63;
       }
 
-      v283 = [v262 managedConfigurationProfilesItem];
-      v284 = [v9 isEqual:v283];
+      managedConfigurationProfilesItem = [detailsItemManager42 managedConfigurationProfilesItem];
+      v284 = [v9 isEqual:managedConfigurationProfilesItem];
 
       if (!v284)
       {
@@ -4518,10 +4518,10 @@ LABEL_62:
       }
 
       objc_opt_class();
-      v285 = [(HUItemTableViewController *)self itemManager];
+      itemManager6 = [(HUItemTableViewController *)self itemManager];
       if (objc_opt_isKindOfClass())
       {
-        v286 = v285;
+        v286 = itemManager6;
       }
 
       else
@@ -4531,13 +4531,13 @@ LABEL_62:
 
       v287 = v286;
 
-      v34 = [v287 sourceItemAccessory];
+      sourceItemAccessory4 = [v287 sourceItemAccessory];
 
-      if (v34)
+      if (sourceItemAccessory4)
       {
-        v288 = [[HUManagedConfigurationProfilesViewController alloc] initWithAccessory:v34];
-        v289 = [(HUServiceDetailsViewController *)self navigationController];
-        [v289 pushViewController:v288 animated:1];
+        v288 = [[HUManagedConfigurationProfilesViewController alloc] initWithAccessory:sourceItemAccessory4];
+        navigationController14 = [(HUServiceDetailsViewController *)self navigationController];
+        [navigationController14 pushViewController:v288 animated:1];
       }
     }
 
@@ -4546,28 +4546,28 @@ LABEL_165:
     goto LABEL_63;
   }
 
-  v51 = [v70 home];
-  if (([v51 hf_currentUserIsAdministrator]& 1) == 0)
+  anyObject = [detailsItemManager6 home];
+  if (([anyObject hf_currentUserIsAdministrator]& 1) == 0)
   {
     goto LABEL_62;
   }
 
-  v71 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v72 = [v71 sourceItem];
-  v73 = [v72 latestResults];
-  v74 = [v73 objectForKeyedSubscript:*MEMORY[0x277D14148]];
-  v290 = [v74 BOOLValue];
+  detailsItemManager44 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItem6 = [detailsItemManager44 sourceItem];
+  latestResults5 = [sourceItem6 latestResults];
+  v74 = [latestResults5 objectForKeyedSubscript:*MEMORY[0x277D14148]];
+  bOOLValue2 = [v74 BOOLValue];
 
-  if ((v290 & 1) == 0)
+  if ((bOOLValue2 & 1) == 0)
   {
     [(HUServiceDetailsViewController *)self setIsPresentingRoomsList:1];
-    v75 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v76 = [v75 showRoomsList];
-    v77 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    [v77 setShowRoomsList:v76 ^ 1u];
+    detailsItemManager45 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    showRoomsList = [detailsItemManager45 showRoomsList];
+    detailsItemManager46 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    [detailsItemManager46 setShowRoomsList:showRoomsList ^ 1u];
 
-    v78 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    [v78 setShowAssociatedServiceTypeList:0];
+    detailsItemManager47 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    [detailsItemManager47 setShowAssociatedServiceTypeList:0];
   }
 
 LABEL_63:
@@ -4733,27 +4733,27 @@ void __68__HUServiceDetailsViewController_tableView_didSelectRowAtIndexPath___bl
   [v4 logError:v3 operationDescription:@"HUServiceDetailsViewController.updateAssociatedServiceType"];
 }
 
-- (void)diffableDataItemManager:(id)a3 willUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6 isInitialLoad:(BOOL)a7
+- (void)diffableDataItemManager:(id)manager willUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems isInitialLoad:(BOOL)load
 {
-  v7 = a7;
+  loadCopy = load;
   v16.receiver = self;
   v16.super_class = HUServiceDetailsViewController;
-  v12 = a6;
-  v13 = a5;
-  [(HUItemTableViewController *)&v16 diffableDataItemManager:a3 willUpdateItems:a4 addItems:v13 removeItems:v12 isInitialLoad:v7];
+  removeItemsCopy = removeItems;
+  addItemsCopy = addItems;
+  [(HUItemTableViewController *)&v16 diffableDataItemManager:manager willUpdateItems:items addItems:addItemsCopy removeItems:removeItemsCopy isInitialLoad:loadCopy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __109__HUServiceDetailsViewController_diffableDataItemManager_willUpdateItems_addItems_removeItems_isInitialLoad___block_invoke;
   v15[3] = &unk_277DBAF68;
   v15[4] = self;
-  [v12 na_each:v15];
+  [removeItemsCopy na_each:v15];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __109__HUServiceDetailsViewController_diffableDataItemManager_willUpdateItems_addItems_removeItems_isInitialLoad___block_invoke_2;
   v14[3] = &unk_277DBAF68;
   v14[4] = self;
-  [v13 na_each:v14];
+  [addItemsCopy na_each:v14];
 }
 
 void __109__HUServiceDetailsViewController_diffableDataItemManager_willUpdateItems_addItems_removeItems_isInitialLoad___block_invoke(uint64_t a1, void *a2)
@@ -4811,21 +4811,21 @@ void __109__HUServiceDetailsViewController_diffableDataItemManager_willUpdateIte
   }
 }
 
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems
 {
   v13.receiver = self;
   v13.super_class = HUServiceDetailsViewController;
-  v10 = a4;
-  [(HUItemTableViewController *)&v13 diffableDataItemManager:a3 didUpdateItems:v10 addItems:a5 removeItems:a6];
-  v11 = [(HUServiceDetailsViewController *)self inputSourceItemModuleController];
-  [v11 updateAllConfigurationDisabled];
+  itemsCopy = items;
+  [(HUItemTableViewController *)&v13 diffableDataItemManager:manager didUpdateItems:itemsCopy addItems:addItems removeItems:removeItems];
+  inputSourceItemModuleController = [(HUServiceDetailsViewController *)self inputSourceItemModuleController];
+  [inputSourceItemModuleController updateAllConfigurationDisabled];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __94__HUServiceDetailsViewController_diffableDataItemManager_didUpdateItems_addItems_removeItems___block_invoke;
   v12[3] = &unk_277DBAF68;
   v12[4] = self;
-  [v10 na_each:v12];
+  [itemsCopy na_each:v12];
 }
 
 void __94__HUServiceDetailsViewController_diffableDataItemManager_didUpdateItems_addItems_removeItems___block_invoke(uint64_t a1, void *a2)
@@ -4845,19 +4845,19 @@ void __94__HUServiceDetailsViewController_diffableDataItemManager_didUpdateItems
   [*(a1 + 32) _updateIconDescriptorAnimated:1];
 }
 
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4
+- (void)itemManager:(id)manager performUpdateRequest:(id)request
 {
   v25 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  requestCopy = request;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v6 changes];
-  v8 = [v7 itemOperations];
+  changes = [requestCopy changes];
+  itemOperations = [changes itemOperations];
 
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [itemOperations countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -4869,15 +4869,15 @@ void __94__HUServiceDetailsViewController_diffableDataItemManager_didUpdateItems
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(itemOperations);
         }
 
         v13 = *(*(&v20 + 1) + 8 * v12);
         objc_opt_class();
-        v14 = [v13 item];
+        item = [v13 item];
         if (objc_opt_isKindOfClass())
         {
-          v15 = v14;
+          v15 = item;
         }
 
         else
@@ -4891,8 +4891,8 @@ void __94__HUServiceDetailsViewController_diffableDataItemManager_didUpdateItems
         {
           if ([v13 type] == 1)
           {
-            v17 = [(HUServiceDetailsViewController *)self controlPanelController];
-            [v17 addItem:v16];
+            controlPanelController = [(HUServiceDetailsViewController *)self controlPanelController];
+            [controlPanelController addItem:v16];
           }
 
           else
@@ -4902,8 +4902,8 @@ void __94__HUServiceDetailsViewController_diffableDataItemManager_didUpdateItems
               goto LABEL_15;
             }
 
-            v17 = [(HUServiceDetailsViewController *)self controlPanelController];
-            [v17 removeItem:v16];
+            controlPanelController = [(HUServiceDetailsViewController *)self controlPanelController];
+            [controlPanelController removeItem:v16];
           }
         }
 
@@ -4913,7 +4913,7 @@ LABEL_15:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [itemOperations countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
@@ -4921,116 +4921,116 @@ LABEL_15:
 
   v19.receiver = self;
   v19.super_class = HUServiceDetailsViewController;
-  [(HUItemTableViewController *)&v19 itemManager:v18 performUpdateRequest:v6];
+  [(HUItemTableViewController *)&v19 itemManager:managerCopy performUpdateRequest:requestCopy];
 }
 
-- (BOOL)itemManager:(id)a3 shouldShowControlPanelItem:(id)a4
+- (BOOL)itemManager:(id)manager shouldShowControlPanelItem:(id)item
 {
-  v5 = a4;
-  v6 = [(HUServiceDetailsViewController *)self controlPanelController];
-  v7 = [v6 shouldDisplayItem:v5];
+  itemCopy = item;
+  controlPanelController = [(HUServiceDetailsViewController *)self controlPanelController];
+  v7 = [controlPanelController shouldDisplayItem:itemCopy];
 
   return v7;
 }
 
-- (BOOL)itemManager:(id)a3 shouldShowSectionTitleForControlPanelItem:(id)a4
+- (BOOL)itemManager:(id)manager shouldShowSectionTitleForControlPanelItem:(id)item
 {
-  v5 = a4;
-  v6 = [(HUServiceDetailsViewController *)self controlPanelController];
-  v7 = [v6 shouldShowSectionTitleForItem:v5];
+  itemCopy = item;
+  controlPanelController = [(HUServiceDetailsViewController *)self controlPanelController];
+  v7 = [controlPanelController shouldShowSectionTitleForItem:itemCopy];
 
   return v7;
 }
 
-- (id)itemManager:(id)a3 sectionTitleForControlPanelItem:(id)a4 forServiceItem:(id)a5
+- (id)itemManager:(id)manager sectionTitleForControlPanelItem:(id)item forServiceItem:(id)serviceItem
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HUServiceDetailsViewController *)self controlPanelController];
-  v10 = [v9 sectionTitleForItem:v8 forSourceItem:v7];
+  serviceItemCopy = serviceItem;
+  itemCopy = item;
+  controlPanelController = [(HUServiceDetailsViewController *)self controlPanelController];
+  v10 = [controlPanelController sectionTitleForItem:itemCopy forSourceItem:serviceItemCopy];
 
   return v10;
 }
 
-- (id)itemManager:(id)a3 sectionFooterForControlPanelItem:(id)a4 forServiceItem:(id)a5
+- (id)itemManager:(id)manager sectionFooterForControlPanelItem:(id)item forServiceItem:(id)serviceItem
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HUServiceDetailsViewController *)self controlPanelController];
-  v10 = [v9 sectionFooterForItem:v8 forSourceItem:v7];
+  serviceItemCopy = serviceItem;
+  itemCopy = item;
+  controlPanelController = [(HUServiceDetailsViewController *)self controlPanelController];
+  v10 = [controlPanelController sectionFooterForItem:itemCopy forSourceItem:serviceItemCopy];
 
   return v10;
 }
 
-- (void)itemManager:(id)a3 didUpdateResultsForSourceItem:(id)a4
+- (void)itemManager:(id)manager didUpdateResultsForSourceItem:(id)item
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = [(HUServiceDetailsViewController *)self _roomForItem:a4];
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 serviceLikeBuilder];
-  v8 = [v7 room];
-  v9 = [v8 room];
-  v10 = [v9 uniqueIdentifier];
+  v5 = [(HUServiceDetailsViewController *)self _roomForItem:item];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  serviceLikeBuilder = [detailsItemManager serviceLikeBuilder];
+  room = [serviceLikeBuilder room];
+  v8Room = [room room];
+  uniqueIdentifier = [v8Room uniqueIdentifier];
 
-  if (!v10)
+  if (!uniqueIdentifier)
   {
-    v21 = HFLogForCategory();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    detailsItemManager4 = HFLogForCategory();
+    if (os_log_type_enabled(detailsItemManager4, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v23 = [v22 serviceLikeBuilder];
+      detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      serviceLikeBuilder2 = [detailsItemManager2 serviceLikeBuilder];
       v24 = 136315394;
       v25 = "[HUServiceDetailsViewController itemManager:didUpdateResultsForSourceItem:]";
       v26 = 2112;
-      v27 = v23;
-      _os_log_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEFAULT, "%s The source item has been changed, but we can't confirm that the room has changed because the self.detailsItemManager.serviceLikeBuilder (%@) has a nil room - which seems wrong.", &v24, 0x16u);
+      v27 = serviceLikeBuilder2;
+      _os_log_impl(&dword_20CEB6000, detailsItemManager4, OS_LOG_TYPE_DEFAULT, "%s The source item has been changed, but we can't confirm that the room has changed because the self.detailsItemManager.serviceLikeBuilder (%@) has a nil room - which seems wrong.", &v24, 0x16u);
     }
 
     goto LABEL_9;
   }
 
-  v11 = [v5 uniqueIdentifier];
+  uniqueIdentifier2 = [v5 uniqueIdentifier];
 
-  if (v11)
+  if (uniqueIdentifier2)
   {
-    v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v13 = [v12 serviceLikeBuilder];
-    v14 = [v13 room];
-    v15 = [v14 room];
-    v16 = [v15 uniqueIdentifier];
-    v17 = [v5 uniqueIdentifier];
-    v18 = [v16 isEqual:v17];
+    detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    serviceLikeBuilder3 = [detailsItemManager3 serviceLikeBuilder];
+    room2 = [serviceLikeBuilder3 room];
+    v14Room = [room2 room];
+    uniqueIdentifier3 = [v14Room uniqueIdentifier];
+    uniqueIdentifier4 = [v5 uniqueIdentifier];
+    v18 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
     if ((v18 & 1) == 0)
     {
       v19 = HFLogForCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v5 name];
+        name = [v5 name];
         v24 = 136315394;
         v25 = "[HUServiceDetailsViewController itemManager:didUpdateResultsForSourceItem:]";
         v26 = 2112;
-        v27 = v20;
+        v27 = name;
         _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "%s The room has changed to (%@), thus the items in this view are stale. Resetting.", &v24, 0x16u);
       }
 
-      v21 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      [v21 resetServiceLikeItemBuilder];
+      detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      [detailsItemManager4 resetServiceLikeItemBuilder];
 LABEL_9:
     }
   }
 }
 
-- (int64_t)numberOfValuesForPickerViewCell:(id)a3
+- (int64_t)numberOfValuesForPickerViewCell:(id)cell
 {
-  v3 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v4 = [v3 orderedRoomSectionItems];
-  v5 = [v4 count];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  orderedRoomSectionItems = [detailsItemManager orderedRoomSectionItems];
+  v5 = [orderedRoomSectionItems count];
 
   return v5;
 }
 
-- (void)pickerViewCell:(id)a3 didSelectValueAtIndex:(int64_t)a4
+- (void)pickerViewCell:(id)cell didSelectValueAtIndex:(int64_t)index
 {
   if ([(HUServiceDetailsViewController *)self isPresentingRoomsList])
   {
@@ -5040,56 +5040,56 @@ LABEL_9:
 
   else
   {
-    v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v7 = [v6 orderedRoomSectionItems];
-    v8 = [v7 count];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    orderedRoomSectionItems = [detailsItemManager orderedRoomSectionItems];
+    v8 = [orderedRoomSectionItems count];
 
-    if (v8 > a4)
+    if (v8 > index)
     {
-      v9 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v10 = [v9 orderedRoomSectionItems];
-      v11 = [v10 objectAtIndexedSubscript:a4];
+      detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      orderedRoomSectionItems2 = [detailsItemManager2 orderedRoomSectionItems];
+      v11 = [orderedRoomSectionItems2 objectAtIndexedSubscript:index];
 
       [(HUServiceDetailsViewController *)self _didSelectRoomItem:v11];
     }
   }
 }
 
-- (id)pickerViewCell:(id)a3 titleForValueAtIndex:(int64_t)a4
+- (id)pickerViewCell:(id)cell titleForValueAtIndex:(int64_t)index
 {
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 orderedRoomSectionItems];
-  v8 = [v7 count];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  orderedRoomSectionItems = [detailsItemManager orderedRoomSectionItems];
+  v8 = [orderedRoomSectionItems count];
 
-  if (v8 <= a4)
+  if (v8 <= index)
   {
     v13 = 0;
   }
 
   else
   {
-    v9 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v10 = [v9 orderedRoomSectionItems];
-    v11 = [v10 objectAtIndexedSubscript:a4];
+    detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    orderedRoomSectionItems2 = [detailsItemManager2 orderedRoomSectionItems];
+    v11 = [orderedRoomSectionItems2 objectAtIndexedSubscript:index];
 
-    v12 = [v11 latestResults];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    latestResults = [v11 latestResults];
+    v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   }
 
   return v13;
 }
 
-- (id)_characteristicsAffectedByControlItem:(id)a3
+- (id)_characteristicsAffectedByControlItem:(id)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   v4 = [MEMORY[0x277CBEB58] set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 characteristicOptions];
-  v6 = [v5 objectForKeyedSubscript:&unk_282491988];
+  characteristicOptions = [itemCopy characteristicOptions];
+  v6 = [characteristicOptions objectForKeyedSubscript:&unk_282491988];
 
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
@@ -5106,8 +5106,8 @@ LABEL_9:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v3 valueSource];
-        v13 = [v12 allCharacteristicsForCharacteristicType:v11];
+        valueSource = [itemCopy valueSource];
+        v13 = [valueSource allCharacteristicsForCharacteristicType:v11];
         [v4 unionSet:v13];
       }
 
@@ -5120,28 +5120,28 @@ LABEL_9:
   return v4;
 }
 
-- (void)controlPanelController:(id)a3 willBeginPossibleWritesForControlItem:(id)a4
+- (void)controlPanelController:(id)controller willBeginPossibleWritesForControlItem:(id)item
 {
-  v5 = a4;
-  v7 = [(HUItemTableViewController *)self itemManager];
-  v6 = [(HUServiceDetailsViewController *)self _characteristicsAffectedByControlItem:v5];
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v6 = [(HUServiceDetailsViewController *)self _characteristicsAffectedByControlItem:itemCopy];
 
-  [v7 beginSuppressingUpdatesForCharacteristics:v6 withReason:@"serviceDetailsControlInteraction"];
+  [itemManager beginSuppressingUpdatesForCharacteristics:v6 withReason:@"serviceDetailsControlInteraction"];
 }
 
-- (void)controlPanelController:(id)a3 didEndPossibleWritesForControlItem:(id)a4
+- (void)controlPanelController:(id)controller didEndPossibleWritesForControlItem:(id)item
 {
-  v4 = [(HUItemTableViewController *)self itemManager:a3];
+  v4 = [(HUItemTableViewController *)self itemManager:controller];
   [v4 endSuppressingUpdatesForCharacteristicsWithReason:@"serviceDetailsControlInteraction" updateAffectedItems:1];
 }
 
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 conformsToProtocol:&unk_2824C3AE0])
+  animatedCopy = animated;
+  presentationCopy = presentation;
+  if ([presentationCopy conformsToProtocol:&unk_2824C3AE0])
   {
-    v7 = v6;
+    v7 = presentationCopy;
   }
 
   else
@@ -5153,8 +5153,8 @@ LABEL_9:
   if ([v8 requiresPresentingViewControllerDismissal])
   {
     [(HUServiceDetailsViewController *)self setRequiresPresentingViewControllerDismissal:1];
-    v9 = [(HUServiceDetailsViewController *)self presentationDelegate];
-    v10 = [v9 finishPresentation:self animated:v4];
+    presentationDelegate = [(HUServiceDetailsViewController *)self presentationDelegate];
+    v10 = [presentationDelegate finishPresentation:self animated:animatedCopy];
   }
 
   else
@@ -5162,105 +5162,105 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v11 = [(UIViewController *)self hu_dismissViewControllerAnimated:v4];
+      futureWithNoResult = [(UIViewController *)self hu_dismissViewControllerAnimated:animatedCopy];
     }
 
     else
     {
-      v13 = [(HUServiceDetailsViewController *)self navigationController];
-      v14 = [v13 popViewControllerAnimated:v4];
+      navigationController = [(HUServiceDetailsViewController *)self navigationController];
+      v14 = [navigationController popViewControllerAnimated:animatedCopy];
 
-      v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
-    v10 = v11;
+    v10 = futureWithNoResult;
   }
 
   return v10;
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUServiceDetailsViewController *)self tableView];
-  v41 = [v7 indexPathForCell:v6];
+  onCopy = on;
+  cellCopy = cell;
+  tableView = [(HUServiceDetailsViewController *)self tableView];
+  v41 = [tableView indexPathForCell:cellCopy];
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v41];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:v41];
 
-  v10 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v11 = [v10 favoriteItem];
-  v12 = [v9 isEqual:v11];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  favoriteItem = [detailsItemManager favoriteItem];
+  v12 = [v9 isEqual:favoriteItem];
 
-  v13 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v14 = v13;
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v14 = detailsItemManager2;
   if (v12)
   {
-    v15 = [v13 serviceLikeBuilder];
+    serviceLikeBuilder = [detailsItemManager2 serviceLikeBuilder];
 
-    [v15 setIsFavorite:v4];
+    [serviceLikeBuilder setIsFavorite:onCopy];
 LABEL_5:
-    v20 = [v15 commitItem];
+    commitItem = [serviceLikeBuilder commitItem];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v16 = [v13 showInHomeDashboardItem];
-  v17 = [v9 isEqual:v16];
+  showInHomeDashboardItem = [detailsItemManager2 showInHomeDashboardItem];
+  v17 = [v9 isEqual:showInHomeDashboardItem];
 
-  v18 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v19 = v18;
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v19 = detailsItemManager3;
   if (v17)
   {
-    v15 = [v18 serviceLikeBuilder];
+    serviceLikeBuilder = [detailsItemManager3 serviceLikeBuilder];
 
-    [v15 setShowInHomeDashboard:v4];
+    [serviceLikeBuilder setShowInHomeDashboard:onCopy];
     goto LABEL_5;
   }
 
-  v33 = [v18 cameraStatusLightItem];
-  v34 = [v9 isEqual:v33];
+  cameraStatusLightItem = [detailsItemManager3 cameraStatusLightItem];
+  v34 = [v9 isEqual:cameraStatusLightItem];
 
-  v35 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v15 = v35;
+  detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  serviceLikeBuilder = detailsItemManager4;
   if (v34)
   {
-    [v35 updateCameraStatusLight:v4];
+    [detailsItemManager4 updateCameraStatusLight:onCopy];
     goto LABEL_6;
   }
 
-  v36 = [v35 cameraNightModeItem];
-  v37 = [v9 isEqual:v36];
+  cameraNightModeItem = [detailsItemManager4 cameraNightModeItem];
+  v37 = [v9 isEqual:cameraNightModeItem];
 
-  v38 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v15 = v38;
+  detailsItemManager5 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  serviceLikeBuilder = detailsItemManager5;
   if (v37)
   {
-    [v38 updateCameraNightMode:v4];
+    [detailsItemManager5 updateCameraNightMode:onCopy];
     goto LABEL_6;
   }
 
-  v39 = [v38 cameraDoorbellChimeMuteItem];
-  v40 = [v9 isEqual:v39];
+  cameraDoorbellChimeMuteItem = [detailsItemManager5 cameraDoorbellChimeMuteItem];
+  v40 = [v9 isEqual:cameraDoorbellChimeMuteItem];
 
   if (v40)
   {
-    v15 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    [v15 updateDoorbellChimeMuteMode:v4];
+    serviceLikeBuilder = [(HUServiceDetailsViewController *)self detailsItemManager];
+    [serviceLikeBuilder updateDoorbellChimeMuteMode:onCopy];
     goto LABEL_6;
   }
 
 LABEL_7:
-  v21 = [v9 latestResults];
+  latestResults = [v9 latestResults];
   v22 = *MEMORY[0x277D13F68];
-  v23 = [v21 objectForKey:*MEMORY[0x277D13F68]];
+  v23 = [latestResults objectForKey:*MEMORY[0x277D13F68]];
 
   if (v23)
   {
-    v24 = [v9 latestResults];
-    v25 = [v24 objectForKeyedSubscript:v22];
+    latestResults2 = [v9 latestResults];
+    v25 = [latestResults2 objectForKeyedSubscript:v22];
   }
 
   else
@@ -5283,113 +5283,113 @@ LABEL_7:
 
   if (![v25 length] && v28)
   {
-    v29 = [v28 itemTitleLocalizationKey];
+    itemTitleLocalizationKey = [v28 itemTitleLocalizationKey];
 
-    v25 = v29;
+    v25 = itemTitleLocalizationKey;
   }
 
   v30 = MEMORY[0x277D143D8];
-  v31 = [(HUItemTableViewController *)self itemManager];
-  v32 = [v31 sourceItem];
-  [v30 sendSwitchCellToggleEventForItem:v32 isOn:v4 title:v25 fromSourceViewController:self];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  sourceItem = [itemManager2 sourceItem];
+  [v30 sendSwitchCellToggleEventForItem:sourceItem isOn:onCopy title:v25 fromSourceViewController:self];
 }
 
-- (void)mediaSystemEditor:(id)a3 didCreate:(id)a4
+- (void)mediaSystemEditor:(id)editor didCreate:(id)create
 {
-  v18 = a3;
-  v7 = a4;
-  if (!v7)
+  editorCopy = editor;
+  createCopy = create;
+  if (!createCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:2120 description:{@"Invalid parameter not satisfying: %@", @"mediaSystem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:2120 description:{@"Invalid parameter not satisfying: %@", @"mediaSystem"}];
   }
 
   v8 = objc_alloc(MEMORY[0x277D147E8]);
-  v9 = [(HUServiceDetailsViewController *)self item];
-  v10 = [v9 valueSource];
-  v11 = [v8 initWithValueSource:v10 mediaProfileContainer:v7];
+  item = [(HUServiceDetailsViewController *)self item];
+  valueSource = [item valueSource];
+  v11 = [v8 initWithValueSource:valueSource mediaProfileContainer:createCopy];
 
   v12 = objc_alloc(MEMORY[0x277D14830]);
-  v13 = [v7 home];
-  v14 = [v12 initWithExistingObject:v7 inHome:v13];
+  home = [createCopy home];
+  v14 = [v12 initWithExistingObject:createCopy inHome:home];
 
   v15 = [[HUMediaAccessoryAudioSettingsViewController alloc] initWithMediaSystemBuilder:v14 mediaAccessoryItem:v11];
   [(HUMediaAccessoryAudioSettingsViewController *)v15 setPresentationDelegate:self];
   v16 = [(HUServiceDetailsViewController *)self _magicallyUpdateNavigationStackForNewRootItem:v11 topViewController:v15];
-  [v18 setPresentationDelegate:v16];
+  [editorCopy setPresentationDelegate:v16];
 }
 
-- (void)mediaSystemEditor:(id)a3 didAbortDueTo:(id)a4
+- (void)mediaSystemEditor:(id)editor didAbortDueTo:(id)to
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 mediaProfile];
+  toCopy = to;
+  editorCopy = editor;
+  mediaProfile = [toCopy mediaProfile];
 
-  if (!v9)
+  if (!mediaProfile)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:2134 description:{@"Invalid parameter not satisfying: %@", @"accessoryNeedingUpdate.mediaProfile"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:2134 description:{@"Invalid parameter not satisfying: %@", @"accessoryNeedingUpdate.mediaProfile"}];
   }
 
-  v10 = [v7 hf_fetchAvailableSoftwareUpdateWithOptions:0];
+  v10 = [toCopy hf_fetchAvailableSoftwareUpdateWithOptions:0];
   v11 = objc_alloc(MEMORY[0x277D147E8]);
-  v12 = [(HUServiceDetailsViewController *)self item];
-  v13 = [v12 valueSource];
-  v14 = [v7 mediaProfile];
+  item = [(HUServiceDetailsViewController *)self item];
+  valueSource = [item valueSource];
+  mediaProfile2 = [toCopy mediaProfile];
 
-  v17 = [v11 initWithValueSource:v13 mediaProfileContainer:v14];
+  v17 = [v11 initWithValueSource:valueSource mediaProfileContainer:mediaProfile2];
   v15 = [(HUServiceDetailsViewController *)self _magicallyUpdateNavigationStackForNewRootItem:v17 topViewController:0];
-  [v8 setPresentationDelegate:v15];
+  [editorCopy setPresentationDelegate:v15];
 }
 
-- (void)serviceGroupEditor:(id)a3 didCreateServiceGroup:(id)a4
+- (void)serviceGroupEditor:(id)editor didCreateServiceGroup:(id)group
 {
-  v14 = a3;
-  v7 = a4;
-  if (!v7)
+  editorCopy = editor;
+  groupCopy = group;
+  if (!groupCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:2147 description:{@"Invalid parameter not satisfying: %@", @"serviceGroup"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:2147 description:{@"Invalid parameter not satisfying: %@", @"serviceGroup"}];
   }
 
   v8 = objc_alloc(MEMORY[0x277D14AB0]);
-  v9 = [(HUServiceDetailsViewController *)self item];
-  v10 = [v9 valueSource];
-  v11 = [v8 initWithValueSource:v10 serviceGroup:v7];
+  item = [(HUServiceDetailsViewController *)self item];
+  valueSource = [item valueSource];
+  v11 = [v8 initWithValueSource:valueSource serviceGroup:groupCopy];
 
   v12 = [(HUServiceDetailsViewController *)self _magicallyUpdateNavigationStackForNewRootItem:v11 topViewController:0];
-  [v14 setPresentationDelegate:v12];
+  [editorCopy setPresentationDelegate:v12];
 }
 
-- (id)_magicallyUpdateNavigationStackForNewRootItem:(id)a3 topViewController:(id)a4
+- (id)_magicallyUpdateNavigationStackForNewRootItem:(id)item topViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  itemCopy = item;
+  controllerCopy = controller;
+  if (!itemCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:2163 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:2163 description:{@"Invalid parameter not satisfying: %@", @"item"}];
   }
 
-  v9 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:v7];
-  v10 = [(HUServiceDetailsViewController *)self presentationDelegate];
-  [(HUServiceDetailsViewController *)v9 setPresentationDelegate:v10];
+  v9 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:itemCopy];
+  presentationDelegate = [(HUServiceDetailsViewController *)self presentationDelegate];
+  [(HUServiceDetailsViewController *)v9 setPresentationDelegate:presentationDelegate];
 
   [(HUServiceDetailsViewController *)v9 setRequiresPresentingViewControllerDismissal:0];
   v11 = [MEMORY[0x277CBEB18] arrayWithObject:v9];
-  [v11 na_safeAddObject:v8];
-  v12 = [(HUServiceDetailsViewController *)self navigationController];
-  v13 = [(HUServiceDetailsViewController *)self presentingViewController];
+  [v11 na_safeAddObject:controllerCopy];
+  navigationController = [(HUServiceDetailsViewController *)self navigationController];
+  presentingViewController = [(HUServiceDetailsViewController *)self presentingViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     objc_opt_class();
-    v15 = [(HUServiceDetailsViewController *)self presentingViewController];
+    presentingViewController2 = [(HUServiceDetailsViewController *)self presentingViewController];
     if (objc_opt_isKindOfClass())
     {
-      v16 = v15;
+      v16 = presentingViewController2;
     }
 
     else
@@ -5399,17 +5399,17 @@ LABEL_7:
 
     v17 = v16;
 
-    v18 = [v17 viewControllers];
-    v19 = [v18 na_firstObjectPassingTest:&__block_literal_global_668];
+    viewControllers = [v17 viewControllers];
+    v19 = [viewControllers na_firstObjectPassingTest:&__block_literal_global_668];
 
-    v20 = [v19 quickControlViewController];
-    v21 = [v20 presentationDelegate];
-    [(HUServiceDetailsViewController *)v9 setPresentationDelegate:v21];
+    quickControlViewController = [v19 quickControlViewController];
+    presentationDelegate2 = [quickControlViewController presentationDelegate];
+    [(HUServiceDetailsViewController *)v9 setPresentationDelegate:presentationDelegate2];
 
-    v12 = v17;
+    navigationController = v17;
   }
 
-  [v12 setViewControllers:v11 animated:0];
+  [navigationController setViewControllers:v11 animated:0];
 
   return v9;
 }
@@ -5423,25 +5423,25 @@ uint64_t __98__HUServiceDetailsViewController__magicallyUpdateNavigationStackFor
   return isKindOfClass & 1;
 }
 
-- (id)detailsViewControllerFor:(id)a3 item:(id)a4
+- (id)detailsViewControllerFor:(id)for item:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:v6];
+  forCopy = for;
+  itemCopy = item;
+  v7 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:itemCopy];
 
-  v8 = [v5 serviceContainingItem];
+  serviceContainingItem = [forCopy serviceContainingItem];
   objc_opt_class();
-  LOBYTE(v6) = objc_opt_isKindOfClass();
+  LOBYTE(itemCopy) = objc_opt_isKindOfClass();
 
-  if (v6)
+  if (itemCopy)
   {
-    v9 = [(HUServiceDetailsViewController *)v7 detailsItemManager];
-    [v9 setShouldHideAccessoryItem:1];
+    detailsItemManager = [(HUServiceDetailsViewController *)v7 detailsItemManager];
+    [detailsItemManager setShouldHideAccessoryItem:1];
   }
 
   else
   {
-    v10 = [v5 serviceContainingItem];
+    serviceContainingItem2 = [forCopy serviceContainingItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -5450,8 +5450,8 @@ uint64_t __98__HUServiceDetailsViewController__magicallyUpdateNavigationStackFor
       goto LABEL_6;
     }
 
-    v9 = [(HUServiceDetailsViewController *)v7 detailsItemManager];
-    [v9 setShouldHideSeparateTileItem:1];
+    detailsItemManager = [(HUServiceDetailsViewController *)v7 detailsItemManager];
+    [detailsItemManager setShouldHideSeparateTileItem:1];
   }
 
 LABEL_6:
@@ -5459,10 +5459,10 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)hasDetailsActionFor:(id)a3 item:(id)a4
+- (BOOL)hasDetailsActionFor:(id)for item:(id)item
 {
-  v4 = a4;
-  if ([v4 conformsToProtocol:&unk_28251B0C8])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_28251B0C8])
   {
     isKindOfClass = 1;
   }
@@ -5476,33 +5476,33 @@ LABEL_6:
   return isKindOfClass & 1;
 }
 
-- (id)detailsViewControllerForContainedMediaAccessoryGridViewController:(id)a3 item:(id)a4
+- (id)detailsViewControllerForContainedMediaAccessoryGridViewController:(id)controller item:(id)item
 {
-  v4 = a4;
-  v5 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:v4];
+  itemCopy = item;
+  v5 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:itemCopy];
 
   return v5;
 }
 
-- (id)detailsViewControllerForContainedServiceGridViewController:(id)a3 item:(id)a4
+- (id)detailsViewControllerForContainedServiceGridViewController:(id)controller item:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:v6];
+  controllerCopy = controller;
+  itemCopy = item;
+  v7 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:itemCopy];
 
-  v8 = [v5 serviceContainerItem];
+  serviceContainerItem = [controllerCopy serviceContainerItem];
   objc_opt_class();
-  LOBYTE(v6) = objc_opt_isKindOfClass();
+  LOBYTE(itemCopy) = objc_opt_isKindOfClass();
 
-  if (v6)
+  if (itemCopy)
   {
-    v9 = [(HUServiceDetailsViewController *)v7 detailsItemManager];
-    [v9 setShouldHideAccessoryItem:1];
+    detailsItemManager = [(HUServiceDetailsViewController *)v7 detailsItemManager];
+    [detailsItemManager setShouldHideAccessoryItem:1];
   }
 
   else
   {
-    v10 = [v5 serviceContainerItem];
+    serviceContainerItem2 = [controllerCopy serviceContainerItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -5511,8 +5511,8 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v9 = [(HUServiceDetailsViewController *)v7 detailsItemManager];
-    [v9 setShouldHideSeparateTileItem:1];
+    detailsItemManager = [(HUServiceDetailsViewController *)v7 detailsItemManager];
+    [detailsItemManager setShouldHideSeparateTileItem:1];
   }
 
 LABEL_6:
@@ -5520,18 +5520,18 @@ LABEL_6:
   return v7;
 }
 
-- (void)editRoomViewControllerDidFinish:(id)a3 withNewRoom:(id)a4
+- (void)editRoomViewControllerDidFinish:(id)finish withNewRoom:(id)room
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  finishCopy = finish;
+  roomCopy = room;
+  if (roomCopy)
   {
     v8 = objc_alloc(MEMORY[0x277D149D8]);
-    v9 = [v7 home];
-    v10 = [v8 initWithExistingObject:v7 inHome:v9];
+    home = [roomCopy home];
+    v10 = [v8 initWithExistingObject:roomCopy inHome:home];
 
-    v11 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v12 = [v11 selectRoom:v10];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    v12 = [detailsItemManager selectRoom:v10];
 
     objc_initWeak(&location, self);
     v17[0] = MEMORY[0x277D85DD0];
@@ -5551,7 +5551,7 @@ LABEL_6:
       v15[2] = __78__HUServiceDetailsViewController_editRoomViewControllerDidFinish_withNewRoom___block_invoke_2;
       v15[3] = &unk_277DB7E68;
       v15[4] = self;
-      v16 = v7;
+      v16 = roomCopy;
       v14 = [v12 addSuccessBlock:v15];
     }
   }
@@ -5576,26 +5576,26 @@ void __78__HUServiceDetailsViewController_editRoomViewControllerDidFinish_withNe
   [v1 _notifyOfHomeTheaterReconfigurationIfNecessary:v2];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(HUServiceDetailsViewController *)self tableView];
-  [v4 locationInView:v5];
+  beginCopy = begin;
+  tableView = [(HUServiceDetailsViewController *)self tableView];
+  [beginCopy locationInView:tableView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(HUServiceDetailsViewController *)self tableView];
-  v11 = [v10 indexPathForRowAtPoint:{v7, v9}];
+  tableView2 = [(HUServiceDetailsViewController *)self tableView];
+  v11 = [tableView2 indexPathForRowAtPoint:{v7, v9}];
 
   if (v11)
   {
-    v12 = [(HUItemTableViewController *)self itemManager];
-    v13 = [v12 displayedItemAtIndexPath:v11];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    v13 = [itemManager displayedItemAtIndexPath:v11];
 
-    v14 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v15 = [v14 accessoryInfoItemProvider];
-    v16 = [v15 items];
-    v17 = [v16 containsObject:v13];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    accessoryInfoItemProvider = [detailsItemManager accessoryInfoItemProvider];
+    items = [accessoryInfoItemProvider items];
+    v17 = [items containsObject:v13];
   }
 
   else
@@ -5606,22 +5606,22 @@ void __78__HUServiceDetailsViewController_editRoomViewControllerDidFinish_withNe
   return v17;
 }
 
-- (void)_longPressRecognized:(id)a3
+- (void)_longPressRecognized:(id)recognized
 {
-  v17 = a3;
-  if ([v17 state] == 1)
+  recognizedCopy = recognized;
+  if ([recognizedCopy state] == 1)
   {
-    v4 = [(HUServiceDetailsViewController *)self tableView];
-    [v17 locationInView:v4];
+    tableView = [(HUServiceDetailsViewController *)self tableView];
+    [recognizedCopy locationInView:tableView];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(HUServiceDetailsViewController *)self tableView];
-    v10 = [v9 indexPathForRowAtPoint:{v6, v8}];
+    tableView2 = [(HUServiceDetailsViewController *)self tableView];
+    v10 = [tableView2 indexPathForRowAtPoint:{v6, v8}];
 
     objc_opt_class();
-    v11 = [(HUServiceDetailsViewController *)self tableView];
-    v12 = [v11 cellForRowAtIndexPath:v10];
+    tableView3 = [(HUServiceDetailsViewController *)self tableView];
+    v12 = [tableView3 cellForRowAtIndexPath:v10];
     if (objc_opt_isKindOfClass())
     {
       v13 = v12;
@@ -5636,20 +5636,20 @@ void __78__HUServiceDetailsViewController_editRoomViewControllerDidFinish_withNe
 
     if (v14 && [v14 allowCopyValueToPasteboard])
     {
-      v15 = [MEMORY[0x277D75718] sharedMenuController];
+      mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
       [v14 becomeFirstResponder];
-      v16 = [(HUServiceDetailsViewController *)self view];
+      view = [(HUServiceDetailsViewController *)self view];
       [v14 frame];
-      [v15 showMenuFromView:v16 rect:?];
+      [mEMORY[0x277D75718] showMenuFromView:view rect:?];
     }
   }
 }
 
-- (BOOL)_allowRowSelectionForItem:(id)a3
+- (BOOL)_allowRowSelectionForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || ([v4 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (-[HUServiceDetailsViewController detailsItemManager](self, "detailsItemManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "canToggleAccessoryInfoItem:", v4), v5, (v6))
+  if (objc_opt_isKindOfClass() & 1) != 0 || ([itemCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (-[HUServiceDetailsViewController detailsItemManager](self, "detailsItemManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "canToggleAccessoryInfoItem:", itemCopy), v5, (v6))
   {
     v7 = 1;
   }
@@ -5657,159 +5657,159 @@ void __78__HUServiceDetailsViewController_editRoomViewControllerDidFinish_withNe
   else
   {
     v9 = [MEMORY[0x277CBEB58] set];
-    v10 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v11 = [v10 addGroupItem];
-    [v9 na_safeAddObject:v11];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    addGroupItem = [detailsItemManager addGroupItem];
+    [v9 na_safeAddObject:addGroupItem];
 
-    v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v13 = [v12 identifyHomePodItem];
-    [v9 na_safeAddObject:v13];
+    detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    identifyHomePodItem = [detailsItemManager2 identifyHomePodItem];
+    [v9 na_safeAddObject:identifyHomePodItem];
 
-    v14 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v15 = [v14 separateTileItem];
-    [v9 na_safeAddObject:v15];
+    detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    separateTileItem = [detailsItemManager3 separateTileItem];
+    [v9 na_safeAddObject:separateTileItem];
 
-    v16 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v17 = [v16 showContainedItems];
-    [v9 na_safeAddObject:v17];
+    detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    showContainedItems = [detailsItemManager4 showContainedItems];
+    [v9 na_safeAddObject:showContainedItems];
 
-    v18 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v19 = [v18 createNewRoomItem];
-    [v9 na_safeAddObject:v19];
+    detailsItemManager5 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    createNewRoomItem = [detailsItemManager5 createNewRoomItem];
+    [v9 na_safeAddObject:createNewRoomItem];
 
-    v20 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v21 = [v20 pairingModeItem];
-    [v9 na_safeAddObject:v21];
+    detailsItemManager6 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    pairingModeItem = [detailsItemManager6 pairingModeItem];
+    [v9 na_safeAddObject:pairingModeItem];
 
-    v22 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v23 = [v22 exportDiagnosticsItem];
-    v24 = [v4 isEqual:v23];
+    detailsItemManager7 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    exportDiagnosticsItem = [detailsItemManager7 exportDiagnosticsItem];
+    v24 = [itemCopy isEqual:exportDiagnosticsItem];
 
     if (v24)
     {
-      v25 = [v4 latestResults];
-      v26 = [v25 objectForKeyedSubscript:*MEMORY[0x277D13D30]];
+      latestResults = [itemCopy latestResults];
+      v26 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13D30]];
 
       if (!v26 || [v26 isFinished])
       {
-        v27 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v28 = [v27 exportDiagnosticsItem];
-        [v9 na_safeAddObject:v28];
+        detailsItemManager8 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        exportDiagnosticsItem2 = [detailsItemManager8 exportDiagnosticsItem];
+        [v9 na_safeAddObject:exportDiagnosticsItem2];
       }
     }
 
-    v29 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v30 = [v29 removeItem];
-    [v9 na_safeAddObject:v30];
+    detailsItemManager9 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    removeItem = [detailsItemManager9 removeItem];
+    [v9 na_safeAddObject:removeItem];
 
-    v31 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v32 = [v31 removeFromGroupItem];
-    [v9 na_safeAddObject:v32];
+    detailsItemManager10 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    removeFromGroupItem = [detailsItemManager10 removeFromGroupItem];
+    [v9 na_safeAddObject:removeFromGroupItem];
 
-    v33 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v34 = [v33 resetItem];
-    [v9 na_safeAddObject:v34];
+    detailsItemManager11 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    resetItem = [detailsItemManager11 resetItem];
+    [v9 na_safeAddObject:resetItem];
 
-    v35 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v36 = [v35 restartItem];
-    [v9 na_safeAddObject:v36];
+    detailsItemManager12 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    restartItem = [detailsItemManager12 restartItem];
+    [v9 na_safeAddObject:restartItem];
 
-    v37 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v38 = [v37 accessoryItem];
-    [v9 na_safeAddObject:v38];
+    detailsItemManager13 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    accessoryItem = [detailsItemManager13 accessoryItem];
+    [v9 na_safeAddObject:accessoryItem];
 
-    v39 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v40 = [v39 alarmItem];
-    [v9 na_safeAddObject:v40];
+    detailsItemManager14 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    alarmItem = [detailsItemManager14 alarmItem];
+    [v9 na_safeAddObject:alarmItem];
 
-    v41 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v42 = [v41 lockPinCodesItem];
-    [v9 na_safeAddObject:v42];
+    detailsItemManager15 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    lockPinCodesItem = [detailsItemManager15 lockPinCodesItem];
+    [v9 na_safeAddObject:lockPinCodesItem];
 
-    v43 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v44 = [v43 statusAndNotificationItem];
-    [v9 na_safeAddObject:v44];
+    detailsItemManager16 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    statusAndNotificationItem = [detailsItemManager16 statusAndNotificationItem];
+    [v9 na_safeAddObject:statusAndNotificationItem];
 
-    v45 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v46 = [v45 homeTheaterAudioOutputItem];
-    [v9 na_safeAddObject:v46];
+    detailsItemManager17 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    homeTheaterAudioOutputItem = [detailsItemManager17 homeTheaterAudioOutputItem];
+    [v9 na_safeAddObject:homeTheaterAudioOutputItem];
 
-    v47 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v48 = [v47 managedConfigurationProfilesItem];
-    [v9 na_safeAddObject:v48];
+    detailsItemManager18 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    managedConfigurationProfilesItem = [detailsItemManager18 managedConfigurationProfilesItem];
+    [v9 na_safeAddObject:managedConfigurationProfilesItem];
 
-    v49 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v50 = [v49 roomItem];
-    [v9 na_safeAddObject:v50];
+    detailsItemManager19 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    roomItem = [detailsItemManager19 roomItem];
+    [v9 na_safeAddObject:roomItem];
 
-    v51 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v52 = [v51 associatedServiceTypeItem];
-    [v9 na_safeAddObject:v52];
+    detailsItemManager20 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    associatedServiceTypeItem = [detailsItemManager20 associatedServiceTypeItem];
+    [v9 na_safeAddObject:associatedServiceTypeItem];
 
-    v53 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v54 = [v53 audioSettingsItem];
-    [v9 na_safeAddObject:v54];
+    detailsItemManager21 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    audioSettingsItem = [detailsItemManager21 audioSettingsItem];
+    [v9 na_safeAddObject:audioSettingsItem];
 
-    v55 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v56 = [v55 internalDebuggingItem];
-    [v9 na_safeAddObject:v56];
+    detailsItemManager22 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    internalDebuggingItem = [detailsItemManager22 internalDebuggingItem];
+    [v9 na_safeAddObject:internalDebuggingItem];
 
-    v57 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v58 = [v57 symptomsLearnMoreItem];
-    [v9 na_safeAddObject:v58];
+    detailsItemManager23 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    symptomsLearnMoreItem = [detailsItemManager23 symptomsLearnMoreItem];
+    [v9 na_safeAddObject:symptomsLearnMoreItem];
 
-    v59 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v60 = [v59 symptomsWiFiPickerItem];
-    [v9 na_safeAddObject:v60];
+    detailsItemManager24 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    symptomsWiFiPickerItem = [detailsItemManager24 symptomsWiFiPickerItem];
+    [v9 na_safeAddObject:symptomsWiFiPickerItem];
 
-    v61 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v62 = [v61 splitMediaAccountUseDefaultAccountItem];
-    [v9 na_safeAddObject:v62];
+    detailsItemManager25 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    splitMediaAccountUseDefaultAccountItem = [detailsItemManager25 splitMediaAccountUseDefaultAccountItem];
+    [v9 na_safeAddObject:splitMediaAccountUseDefaultAccountItem];
 
-    v63 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v64 = [v63 splitMediaAccountSignoutAccountItem];
-    [v9 na_safeAddObject:v64];
+    detailsItemManager26 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    splitMediaAccountSignoutAccountItem = [detailsItemManager26 splitMediaAccountSignoutAccountItem];
+    [v9 na_safeAddObject:splitMediaAccountSignoutAccountItem];
 
-    v65 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v66 = [v65 cameraActivityZonesItem];
-    [v9 na_safeAddObject:v66];
+    detailsItemManager27 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    cameraActivityZonesItem = [detailsItemManager27 cameraActivityZonesItem];
+    [v9 na_safeAddObject:cameraActivityZonesItem];
 
-    v67 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v68 = [v67 cameraRecordingOptionsItem];
-    [v9 na_safeAddObject:v68];
+    detailsItemManager28 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    cameraRecordingOptionsItem = [detailsItemManager28 cameraRecordingOptionsItem];
+    [v9 na_safeAddObject:cameraRecordingOptionsItem];
 
-    v69 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v70 = [v69 cameraFaceRecognitionItem];
-    [v9 na_safeAddObject:v70];
+    detailsItemManager29 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    cameraFaceRecognitionItem = [detailsItemManager29 cameraFaceRecognitionItem];
+    [v9 na_safeAddObject:cameraFaceRecognitionItem];
 
-    v71 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v72 = [v71 collectDiagnosticsItem];
-    [v9 na_safeAddObject:v72];
+    detailsItemManager30 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    collectDiagnosticsItem = [detailsItemManager30 collectDiagnosticsItem];
+    [v9 na_safeAddObject:collectDiagnosticsItem];
 
-    v73 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v74 = [v73 lockAddHomeKeyToWalletItem];
-    [v9 na_safeAddObject:v74];
+    detailsItemManager31 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    lockAddHomeKeyToWalletItem = [detailsItemManager31 lockAddHomeKeyToWalletItem];
+    [v9 na_safeAddObject:lockAddHomeKeyToWalletItem];
 
-    if ([v9 containsObject:v4])
+    if ([v9 containsObject:itemCopy])
     {
       v7 = 1;
     }
 
     else
     {
-      v75 = [(HUItemTableViewController *)self moduleControllerForItem:v4];
+      v75 = [(HUItemTableViewController *)self moduleControllerForItem:itemCopy];
       v76 = v75;
-      if (v75 && ([v75 canSelectItem:v4] & 1) != 0 || (-[HUServiceDetailsViewController detailsItemManager](self, "detailsItemManager"), v77 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v77, "existingRoomItemProvider"), v78 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v78, "items"), v79 = objc_claimAutoreleasedReturnValue(), v80 = objc_msgSend(v79, "containsObject:", v4), v79, v78, v77, (v80 & 1) != 0))
+      if (v75 && ([v75 canSelectItem:itemCopy] & 1) != 0 || (-[HUServiceDetailsViewController detailsItemManager](self, "detailsItemManager"), v77 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v77, "existingRoomItemProvider"), v78 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v78, "items"), v79 = objc_claimAutoreleasedReturnValue(), v80 = objc_msgSend(v79, "containsObject:", itemCopy), v79, v78, v77, (v80 & 1) != 0))
       {
         v7 = 1;
       }
 
       else
       {
-        v81 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v82 = [v81 suggestedRoomItemProvider];
-        v83 = [v82 items];
-        v7 = [v83 containsObject:v4];
+        detailsItemManager32 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        suggestedRoomItemProvider = [detailsItemManager32 suggestedRoomItemProvider];
+        items = [suggestedRoomItemProvider items];
+        v7 = [items containsObject:itemCopy];
       }
     }
   }
@@ -5817,65 +5817,65 @@ void __78__HUServiceDetailsViewController_editRoomViewControllerDidFinish_withNe
   return v7;
 }
 
-- (BOOL)_allowRowHighlightForItem:(id)a3
+- (BOOL)_allowRowHighlightForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v6 = [v5 canToggleAccessoryInfoItem:v4];
+  itemCopy = item;
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v6 = [detailsItemManager canToggleAccessoryInfoItem:itemCopy];
 
-  v7 = (v6 & 1) == 0 && [(HUServiceDetailsViewController *)self _allowRowSelectionForItem:v4];
+  v7 = (v6 & 1) == 0 && [(HUServiceDetailsViewController *)self _allowRowSelectionForItem:itemCopy];
   return v7;
 }
 
-- (BOOL)_shouldShowDetailDisclosureForItem:(id)a3
+- (BOOL)_shouldShowDetailDisclosureForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 showContainedItems];
-  [v5 na_safeAddObject:v7];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  showContainedItems = [detailsItemManager showContainedItems];
+  [v5 na_safeAddObject:showContainedItems];
 
-  v8 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v9 = [v8 accessoryItem];
-  [v5 na_safeAddObject:v9];
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  accessoryItem = [detailsItemManager2 accessoryItem];
+  [v5 na_safeAddObject:accessoryItem];
 
-  v10 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v11 = [v10 alarmItem];
-  [v5 na_safeAddObject:v11];
+  detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  alarmItem = [detailsItemManager3 alarmItem];
+  [v5 na_safeAddObject:alarmItem];
 
-  v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v13 = [v12 lockPinCodesItem];
-  [v5 na_safeAddObject:v13];
+  detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  lockPinCodesItem = [detailsItemManager4 lockPinCodesItem];
+  [v5 na_safeAddObject:lockPinCodesItem];
 
-  v14 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v15 = [v14 statusAndNotificationItem];
-  [v5 na_safeAddObject:v15];
+  detailsItemManager5 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  statusAndNotificationItem = [detailsItemManager5 statusAndNotificationItem];
+  [v5 na_safeAddObject:statusAndNotificationItem];
 
-  v16 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v17 = [v16 homeTheaterAudioOutputItem];
-  [v5 na_safeAddObject:v17];
+  detailsItemManager6 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  homeTheaterAudioOutputItem = [detailsItemManager6 homeTheaterAudioOutputItem];
+  [v5 na_safeAddObject:homeTheaterAudioOutputItem];
 
-  v18 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v19 = [v18 audioSettingsItem];
-  [v5 na_safeAddObject:v19];
+  detailsItemManager7 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  audioSettingsItem = [detailsItemManager7 audioSettingsItem];
+  [v5 na_safeAddObject:audioSettingsItem];
 
-  v20 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v21 = [v20 internalDebuggingItem];
-  [v5 na_safeAddObject:v21];
+  detailsItemManager8 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  internalDebuggingItem = [detailsItemManager8 internalDebuggingItem];
+  [v5 na_safeAddObject:internalDebuggingItem];
 
-  v22 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v23 = [v22 cameraRecordingOptionsItem];
-  [v5 na_safeAddObject:v23];
+  detailsItemManager9 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  cameraRecordingOptionsItem = [detailsItemManager9 cameraRecordingOptionsItem];
+  [v5 na_safeAddObject:cameraRecordingOptionsItem];
 
-  v24 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v25 = [v24 cameraFaceRecognitionItem];
-  [v5 na_safeAddObject:v25];
+  detailsItemManager10 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  cameraFaceRecognitionItem = [detailsItemManager10 cameraFaceRecognitionItem];
+  [v5 na_safeAddObject:cameraFaceRecognitionItem];
 
-  v26 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v27 = [v26 cameraActivityZonesItem];
-  [v5 na_safeAddObject:v27];
+  detailsItemManager11 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  cameraActivityZonesItem = [detailsItemManager11 cameraActivityZonesItem];
+  [v5 na_safeAddObject:cameraActivityZonesItem];
 
-  if ([v5 containsObject:v4])
+  if ([v5 containsObject:itemCopy])
   {
     goto LABEL_2;
   }
@@ -5883,7 +5883,7 @@ void __78__HUServiceDetailsViewController_editRoomViewControllerDidFinish_withNe
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    LODWORD(self) = ![(HUServiceDetailsViewController *)self _shouldShowAddButtonForOptionItem:v4];
+    LODWORD(self) = ![(HUServiceDetailsViewController *)self _shouldShowAddButtonForOptionItem:itemCopy];
     goto LABEL_5;
   }
 
@@ -5899,8 +5899,8 @@ LABEL_2:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      LOBYTE(self) = [v29 canShowWiFiPickerForItem:v4];
+      detailsItemManager12 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      LOBYTE(self) = [detailsItemManager12 canShowWiFiPickerForItem:itemCopy];
     }
 
     else
@@ -5914,31 +5914,31 @@ LABEL_5:
   return self;
 }
 
-- (BOOL)_shouldShowAddButtonForOptionItem:(id)a3
+- (BOOL)_shouldShowAddButtonForOptionItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 characteristics];
-  v5 = [v4 anyObject];
+  itemCopy = item;
+  characteristics = [itemCopy characteristics];
+  anyObject = [characteristics anyObject];
 
-  v6 = [v3 triggerValue];
-  v7 = [v5 hf_designatedEventTriggerForProgrammableSwitchWithTriggerValue:v6];
+  triggerValue = [itemCopy triggerValue];
+  v7 = [anyObject hf_designatedEventTriggerForProgrammableSwitchWithTriggerValue:triggerValue];
 
-  v8 = [v3 latestResults];
+  latestResults = [itemCopy latestResults];
 
-  v9 = [v8 objectForKey:@"itemIsEditable"];
-  v10 = [v9 BOOLValue];
+  v9 = [latestResults objectForKey:@"itemIsEditable"];
+  bOOLValue = [v9 BOOLValue];
 
-  return (v7 == 0) & v10;
+  return (v7 == 0) & bOOLValue;
 }
 
 - (void)checkForAccessoriesNeedingReprovisioning
 {
   v13 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v3 = [(HUItemTableViewController *)self itemManager];
+  itemManager = [(HUItemTableViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = itemManager;
   }
 
   else
@@ -5948,26 +5948,26 @@ LABEL_5:
 
   v5 = v4;
 
-  v6 = [v5 sourceItemAccessory];
+  sourceItemAccessory = [v5 sourceItemAccessory];
 
-  v7 = [v6 home];
-  if (![v6 accessoryReprovisionState])
+  home = [sourceItemAccessory home];
+  if (![sourceItemAccessory accessoryReprovisionState])
   {
-    if (![v6 hf_needsReprovisioningCheck])
+    if (![sourceItemAccessory hf_needsReprovisioningCheck])
     {
       goto LABEL_10;
     }
 
-    [v7 startSearchForAccessoriesNeedingReprovisioning];
+    [home startSearchForAccessoriesNeedingReprovisioning];
   }
 
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = sourceItemAccessory;
     v11 = 2048;
-    v12 = [v6 accessoryReprovisionState];
+    accessoryReprovisionState = [sourceItemAccessory accessoryReprovisionState];
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "checkForAccessoriesNeedingReprovisioning accessory %@ state %lu", &v9, 0x16u);
   }
 
@@ -5985,16 +5985,16 @@ LABEL_10:
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v5, 0xCu);
   }
 
-  v4 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  [v4 restartAccessory];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  [detailsItemManager restartAccessory];
 }
 
-- (void)_presentResetHomePodConfirmation:(id)a3
+- (void)_presentResetHomePodConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   v5 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsRestartHomePodAlertButtonTitle", @"HUServiceDetailsRestartHomePodAlertButtonTitle", 1);
   v6 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsRemoveDeviceName", @"HUServiceDetailsRemoveDeviceName", 1);
-  v7 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:0 indexPath:v4];
+  v7 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:0 indexPath:confirmationCopy];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __67__HUServiceDetailsViewController__presentResetHomePodConfirmation___block_invoke;
@@ -6009,8 +6009,8 @@ LABEL_10:
   v16[2] = __67__HUServiceDetailsViewController__presentResetHomePodConfirmation___block_invoke_677;
   v16[3] = &unk_277DBBD90;
   v16[4] = self;
-  v17 = v4;
-  v10 = v4;
+  v17 = confirmationCopy;
+  v10 = confirmationCopy;
   v11 = [v9 actionWithTitle:v6 style:2 handler:v16];
   [v7 addAction:v11];
 
@@ -6019,8 +6019,8 @@ LABEL_10:
   v14 = [v12 actionWithTitle:v13 style:1 handler:&__block_literal_global_683];
   [v7 addAction:v14];
 
-  v15 = [(HUServiceDetailsViewController *)self hf_topmostViewController];
-  [v15 presentViewController:v7 animated:1 completion:0];
+  hf_topmostViewController = [(HUServiceDetailsViewController *)self hf_topmostViewController];
+  [hf_topmostViewController presentViewController:v7 animated:1 completion:0];
 }
 
 void __67__HUServiceDetailsViewController__presentResetHomePodConfirmation___block_invoke(uint64_t a1, void *a2)
@@ -6075,26 +6075,26 @@ void __67__HUServiceDetailsViewController__presentResetHomePodConfirmation___blo
   }
 }
 
-- (void)_exportDiagnosticsForItem:(id)a3
+- (void)_exportDiagnosticsForItem:(id)item
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v24 = "[HUServiceDetailsViewController _exportDiagnosticsForItem:]";
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%s(%@)initiating 'Export Diagnostics'", buf, 0x16u);
   }
 
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 sourceItemAccessory];
-  v8 = [v7 mediaProfile];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItemAccessory = [detailsItemManager sourceItemAccessory];
+  mediaProfile = [sourceItemAccessory mediaProfile];
 
-  v9 = [v8 hf_settingsAdapterManager];
-  v10 = [v9 adapterForIdentifier:*MEMORY[0x277D13320]];
+  hf_settingsAdapterManager = [mediaProfile hf_settingsAdapterManager];
+  v10 = [hf_settingsAdapterManager adapterForIdentifier:*MEMORY[0x277D13320]];
   v11 = &unk_2825BD7E0;
   if ([v10 conformsToProtocol:v11])
   {
@@ -6127,7 +6127,7 @@ void __67__HUServiceDetailsViewController__presentResetHomePodConfirmation___blo
   v19[2] = __60__HUServiceDetailsViewController__exportDiagnosticsForItem___block_invoke;
   v19[3] = &unk_277DBED88;
   objc_copyWeak(&v22, buf);
-  v16 = v4;
+  v16 = itemCopy;
   v20 = v16;
   v17 = v13;
   v21 = v17;
@@ -6257,14 +6257,14 @@ void __60__HUServiceDetailsViewController__exportDiagnosticsForItem___block_invo
   }
 }
 
-- (void)_presentRemoveFromGroupConfirmation:(id)a3
+- (void)_presentRemoveFromGroupConfirmation:(id)confirmation
 {
-  v4 = a3;
-  v5 = [(HUServiceDetailsViewController *)self namingComponent];
-  v6 = [v5 name];
-  v13 = HULocalizedStringWithFormat(@"HURemoveFromGroupMessage", @"%@", v7, v8, v9, v10, v11, v12, v6);
+  confirmationCopy = confirmation;
+  namingComponent = [(HUServiceDetailsViewController *)self namingComponent];
+  name = [namingComponent name];
+  v13 = HULocalizedStringWithFormat(@"HURemoveFromGroupMessage", @"%@", v7, v8, v9, v10, v11, v12, name);
 
-  v14 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v13 indexPath:v4];
+  v14 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v13 indexPath:confirmationCopy];
 
   v15 = MEMORY[0x277D750F8];
   v16 = _HULocalizedStringWithDefaultValue(@"HURemoveTitle", @"HURemoveTitle", 1);
@@ -6281,8 +6281,8 @@ void __60__HUServiceDetailsViewController__exportDiagnosticsForItem___block_invo
   v20 = [v18 actionWithTitle:v19 style:1 handler:&__block_literal_global_715];
   [v14 addAction:v20];
 
-  v21 = [(HUServiceDetailsViewController *)self hf_topmostViewController];
-  [v21 presentViewController:v14 animated:1 completion:0];
+  hf_topmostViewController = [(HUServiceDetailsViewController *)self hf_topmostViewController];
+  [hf_topmostViewController presentViewController:v14 animated:1 completion:0];
 }
 
 void __70__HUServiceDetailsViewController__presentRemoveFromGroupConfirmation___block_invoke(uint64_t a1, void *a2)
@@ -6319,35 +6319,35 @@ void __70__HUServiceDetailsViewController__presentRemoveFromGroupConfirmation___
   }
 }
 
-- (void)_presentRemoveConfirmation:(id)a3
+- (void)_presentRemoveConfirmation:(id)confirmation
 {
-  v7 = a3;
-  v4 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v5 = [v4 sourceItemAccessory];
-  v6 = [v5 supportsCHIP];
+  confirmationCopy = confirmation;
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItemAccessory = [detailsItemManager sourceItemAccessory];
+  supportsCHIP = [sourceItemAccessory supportsCHIP];
 
-  if (v6)
+  if (supportsCHIP)
   {
-    [(HUServiceDetailsViewController *)self _presentEcosystemAccessoryRemoveConfirmation:v7];
+    [(HUServiceDetailsViewController *)self _presentEcosystemAccessoryRemoveConfirmation:confirmationCopy];
   }
 
   else
   {
-    [(HUServiceDetailsViewController *)self _presentHomeAccessoryRemoveConfirmation:v7];
+    [(HUServiceDetailsViewController *)self _presentHomeAccessoryRemoveConfirmation:confirmationCopy];
   }
 }
 
-- (void)_presentEcosystemAccessoryRemoveConfirmation:(id)a3
+- (void)_presentEcosystemAccessoryRemoveConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   objc_initWeak(&location, self);
   objc_opt_class();
-  v5 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v6 = [v5 connectedServicesItemModule];
-  v7 = [v6 connectedServicesItemProvider];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  connectedServicesItemModule = [detailsItemManager connectedServicesItemModule];
+  connectedServicesItemProvider = [connectedServicesItemModule connectedServicesItemProvider];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = connectedServicesItemProvider;
   }
 
   else
@@ -6357,15 +6357,15 @@ void __70__HUServiceDetailsViewController__presentRemoveFromGroupConfirmation___
 
   v9 = v8;
 
-  v10 = [v9 connectedEcosystemsFuture];
+  connectedEcosystemsFuture = [v9 connectedEcosystemsFuture];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__HUServiceDetailsViewController__presentEcosystemAccessoryRemoveConfirmation___block_invoke;
   v13[3] = &unk_277DBEF18;
   objc_copyWeak(&v15, &location);
-  v11 = v4;
+  v11 = confirmationCopy;
   v14 = v11;
-  v12 = [v10 addCompletionBlock:v13];
+  v12 = [connectedEcosystemsFuture addCompletionBlock:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -6631,13 +6631,13 @@ void __79__HUServiceDetailsViewController__presentEcosystemAccessoryRemoveConfir
   }
 }
 
-- (void)_presentHomeAccessoryRemoveConfirmation:(id)a3
+- (void)_presentHomeAccessoryRemoveConfirmation:(id)confirmation
 {
-  v4 = a3;
-  v5 = [(HUServiceDetailsViewController *)self item];
-  if ([v5 conformsToProtocol:&unk_28251B268])
+  confirmationCopy = confirmation;
+  item = [(HUServiceDetailsViewController *)self item];
+  if ([item conformsToProtocol:&unk_28251B268])
   {
-    v6 = v5;
+    v6 = item;
   }
 
   else
@@ -6650,10 +6650,10 @@ void __79__HUServiceDetailsViewController__presentEcosystemAccessoryRemoveConfir
   v8 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsRemoveGroupAlertTitle", @"HUServiceDetailsRemoveGroupAlertTitle", 1);
   v9 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsRemoveGroupAlertButton", @"HUServiceDetailsRemoveGroupAlertButton", 1);
   objc_opt_class();
-  v10 = [(HUServiceDetailsViewController *)self item];
+  item2 = [(HUServiceDetailsViewController *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = item2;
   }
 
   else
@@ -6663,21 +6663,21 @@ void __79__HUServiceDetailsViewController__presentEcosystemAccessoryRemoveConfir
 
   v12 = v11;
 
-  v13 = [v7 isItemGroup];
-  if ((v13 & 1) == 0)
+  isItemGroup = [v7 isItemGroup];
+  if ((isItemGroup & 1) == 0)
   {
-    v117 = v4;
-    v14 = [(HUServiceDetailsViewController *)self namingComponent];
-    v15 = [v14 name];
-    v22 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveDeviceAlertTitle", @"%@", v16, v17, v18, v19, v20, v21, v15);
+    v117 = confirmationCopy;
+    namingComponent = [(HUServiceDetailsViewController *)self namingComponent];
+    name = [namingComponent name];
+    v22 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveDeviceAlertTitle", @"%@", v16, v17, v18, v19, v20, v21, name);
 
     v23 = _HULocalizedStringWithDefaultValue(@"HURemoveTitle", @"HURemoveTitle", 1);
 
     objc_opt_class();
-    v24 = [(HUServiceDetailsViewController *)self item];
+    item3 = [(HUServiceDetailsViewController *)self item];
     if (objc_opt_isKindOfClass())
     {
-      v25 = v24;
+      v25 = item3;
     }
 
     else
@@ -6687,14 +6687,14 @@ void __79__HUServiceDetailsViewController__presentEcosystemAccessoryRemoveConfir
 
     v26 = v25;
 
-    v27 = [v26 profile];
+    profile = [v26 profile];
 
-    LODWORD(v26) = [v27 hf_supportsRecordingEvents];
+    LODWORD(v26) = [profile hf_supportsRecordingEvents];
     if (v26)
     {
-      v28 = [(HUServiceDetailsViewController *)self namingComponent];
-      v29 = [v28 name];
-      v36 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveCameraWithClipsAlertTitle", @"%@", v30, v31, v32, v33, v34, v35, v29);
+      namingComponent2 = [(HUServiceDetailsViewController *)self namingComponent];
+      name2 = [namingComponent2 name];
+      v36 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveCameraWithClipsAlertTitle", @"%@", v30, v31, v32, v33, v34, v35, name2);
 
       v37 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsRemoveDeviceAlertRemoveCameraButton", @"HUServiceDetailsRemoveDeviceAlertRemoveCameraButton", 1);
 
@@ -6704,10 +6704,10 @@ void __79__HUServiceDetailsViewController__presentEcosystemAccessoryRemoveConfir
 
     v116 = v23;
     objc_opt_class();
-    v38 = [(HUServiceDetailsViewController *)self item];
+    item4 = [(HUServiceDetailsViewController *)self item];
     if (objc_opt_isKindOfClass())
     {
-      v39 = v38;
+      v39 = item4;
     }
 
     else
@@ -6719,32 +6719,32 @@ void __79__HUServiceDetailsViewController__presentEcosystemAccessoryRemoveConfir
     {
       v40 = MEMORY[0x277CCACA8];
       v41 = HULocalizedWiFiString(@"HUServiceDetailsRemoveRouterAlertTitle");
-      v42 = [(HUServiceDetailsViewController *)self namingComponent];
-      v43 = [v42 name];
-      v44 = [v40 stringWithValidatedFormat:v41 validFormatSpecifiers:@"%@" error:0, v43];
+      namingComponent3 = [(HUServiceDetailsViewController *)self namingComponent];
+      name3 = [namingComponent3 name];
+      v44 = [v40 stringWithValidatedFormat:v41 validFormatSpecifiers:@"%@" error:0, name3];
 
       v22 = v44;
     }
 
-    v45 = [v12 accessories];
-    v46 = [v45 na_any:&__block_literal_global_752];
+    accessories = [v12 accessories];
+    v46 = [accessories na_any:&__block_literal_global_752];
 
-    v47 = [v12 accessories];
-    v48 = [v47 na_firstObjectPassingTest:&__block_literal_global_754];
-    v49 = [v48 hf_displayName];
+    accessories2 = [v12 accessories];
+    v48 = [accessories2 na_firstObjectPassingTest:&__block_literal_global_754];
+    hf_displayName = [v48 hf_displayName];
 
     if (v46)
     {
-      v56 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveHomePodAlertTitle", @"%@", v50, v51, v52, v53, v54, v55, v49);
+      v56 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveHomePodAlertTitle", @"%@", v50, v51, v52, v53, v54, v55, hf_displayName);
 
       v22 = v56;
     }
 
     objc_opt_class();
-    v57 = [(HUServiceDetailsViewController *)self item];
+    item5 = [(HUServiceDetailsViewController *)self item];
     if (objc_opt_isKindOfClass())
     {
-      v58 = v57;
+      v58 = item5;
     }
 
     else
@@ -6756,68 +6756,68 @@ void __79__HUServiceDetailsViewController__presentEcosystemAccessoryRemoveConfir
 
     if (v59)
     {
-      v60 = [v59 service];
-      v61 = [v60 accessory];
-      v62 = [v61 hf_isHomePod];
+      service = [v59 service];
+      accessory = [service accessory];
+      hf_isHomePod = [accessory hf_isHomePod];
 
-      if (v62)
+      if (hf_isHomePod)
       {
-        v63 = [v59 service];
-        v64 = [v63 accessory];
-        v65 = [v64 hf_displayName];
+        service2 = [v59 service];
+        accessory2 = [service2 accessory];
+        hf_displayName2 = [accessory2 hf_displayName];
 
-        v66 = [v59 service];
-        v67 = [v66 name];
+        service3 = [v59 service];
+        name4 = [service3 name];
 
-        v74 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveAccessoryWithServiceAlertTitle", @"%@%@", v68, v69, v70, v71, v72, v73, v67);
+        v74 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveAccessoryWithServiceAlertTitle", @"%@%@", v68, v69, v70, v71, v72, v73, name4);
 
-        v49 = v65;
+        hf_displayName = hf_displayName2;
         v22 = v74;
       }
     }
 
-    v75 = [v12 accessories];
-    v76 = [v75 allObjects];
-    v77 = [v76 firstObject];
+    accessories3 = [v12 accessories];
+    allObjects = [accessories3 allObjects];
+    firstObject = [allObjects firstObject];
 
-    v78 = [v12 home];
-    v79 = [v78 hf_enabledResidentDevices];
-    if ([v79 count] != 1)
+    home = [v12 home];
+    hf_enabledResidentDevices = [home hf_enabledResidentDevices];
+    if ([hf_enabledResidentDevices count] != 1)
     {
       goto LABEL_31;
     }
 
     v80 = v12;
-    v81 = v49;
+    v81 = hf_displayName;
     v114 = v80;
     v115 = v22;
-    v82 = [v80 home];
-    v83 = [v82 hf_enabledResidentDevices];
-    v84 = [v77 hf_linkedResidentDevice];
-    v85 = [v83 containsObject:v84];
+    home2 = [v80 home];
+    hf_enabledResidentDevices2 = [home2 hf_enabledResidentDevices];
+    hf_linkedResidentDevice = [firstObject hf_linkedResidentDevice];
+    v85 = [hf_enabledResidentDevices2 containsObject:hf_linkedResidentDevice];
 
     if (v85)
     {
-      v49 = v81;
-      if (([v77 hf_isHomePod] & 1) != 0 || objc_msgSend(v77, "hf_isAppleTV"))
+      hf_displayName = v81;
+      if (([firstObject hf_isHomePod] & 1) != 0 || objc_msgSend(firstObject, "hf_isAppleTV"))
       {
-        v78 = [v77 hf_displayName];
-        v22 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveLastResidentAlertTitle", @"%@", v86, v87, v88, v89, v90, v91, v78);
+        home = [firstObject hf_displayName];
+        v22 = HULocalizedStringWithFormat(@"HUServiceDetailsRemoveLastResidentAlertTitle", @"%@", v86, v87, v88, v89, v90, v91, home);
         v12 = v114;
-        v79 = v115;
+        hf_enabledResidentDevices = v115;
 LABEL_31:
 
 LABEL_34:
         v8 = v22;
         v9 = v116;
-        v4 = v117;
+        confirmationCopy = v117;
         goto LABEL_35;
       }
     }
 
     else
     {
-      v49 = v81;
+      hf_displayName = v81;
     }
 
     v12 = v114;
@@ -6826,9 +6826,9 @@ LABEL_34:
   }
 
 LABEL_35:
-  v92 = [(HUServiceDetailsViewController *)self item];
-  v93 = [v92 accessories];
-  v94 = [v93 na_any:&__block_literal_global_765];
+  item6 = [(HUServiceDetailsViewController *)self item];
+  accessories4 = [item6 accessories];
+  v94 = [accessories4 na_any:&__block_literal_global_765];
 
   if (v94)
   {
@@ -6840,10 +6840,10 @@ LABEL_35:
 
   if ([v12 mediaAccessoryItemType] == 4)
   {
-    v102 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v103 = [v102 home];
-    v104 = [v12 mediaProfileContainer];
-    v105 = [v103 hf_relatedHomeTheaterMediaProfileContainerFor:v104];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    home3 = [detailsItemManager home];
+    mediaProfileContainer = [v12 mediaProfileContainer];
+    v105 = [home3 hf_relatedHomeTheaterMediaProfileContainerFor:mediaProfileContainer];
 
     if (v105)
     {
@@ -6853,7 +6853,7 @@ LABEL_35:
     }
   }
 
-  v107 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v8 indexPath:v4];
+  v107 = [(UITableViewController *)self hu_actionSheetWithTitle:0 message:v8 indexPath:confirmationCopy];
   v118[0] = MEMORY[0x277D85DD0];
   v118[1] = 3221225472;
   v118[2] = __74__HUServiceDetailsViewController__presentHomeAccessoryRemoveConfirmation___block_invoke_5;
@@ -6867,8 +6867,8 @@ LABEL_35:
   v111 = [v109 actionWithTitle:v110 style:1 handler:&__block_literal_global_780];
   [v107 addAction:v111];
 
-  v112 = [(HUServiceDetailsViewController *)self hf_topmostViewController];
-  [v112 presentViewController:v107 animated:1 completion:0];
+  hf_topmostViewController = [(HUServiceDetailsViewController *)self hf_topmostViewController];
+  [hf_topmostViewController presentViewController:v107 animated:1 completion:0];
 }
 
 uint64_t __74__HUServiceDetailsViewController__presentHomeAccessoryRemoveConfirmation___block_invoke(uint64_t a1, void *a2)
@@ -6933,10 +6933,10 @@ void __74__HUServiceDetailsViewController__presentHomeAccessoryRemoveConfirmatio
 - (BOOL)_shouldPresentRemoveRouterConfirmation
 {
   objc_opt_class();
-  v3 = [(HUServiceDetailsViewController *)self item];
+  item = [(HUServiceDetailsViewController *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = item;
   }
 
   else
@@ -6947,10 +6947,10 @@ void __74__HUServiceDetailsViewController__presentHomeAccessoryRemoveConfirmatio
   v5 = v4;
   if (v5)
   {
-    v6 = [(HUItemTableViewController *)self itemManager];
-    v7 = [v6 home];
-    v8 = [v7 hf_accessoriesRequiringManualWiFiReconfiguration];
-    v9 = [v8 count] != 0;
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    home = [itemManager home];
+    hf_accessoriesRequiringManualWiFiReconfiguration = [home hf_accessoriesRequiringManualWiFiReconfiguration];
+    v9 = [hf_accessoriesRequiringManualWiFiReconfiguration count] != 0;
   }
 
   else
@@ -6976,10 +6976,10 @@ void __74__HUServiceDetailsViewController__presentHomeAccessoryRemoveConfirmatio
   v26 = &unk_277DBEEF0;
   objc_copyWeak(&v27, &location);
   v4 = _Block_copy(&v23);
-  v5 = [(HUItemTableViewController *)self itemManager];
-  v6 = [v5 home];
-  v7 = [v6 hf_accessoriesRequiringManualWiFiReconfiguration];
-  v8 = [v7 count];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager home];
+  hf_accessoriesRequiringManualWiFiReconfiguration = [home hf_accessoriesRequiringManualWiFiReconfiguration];
+  v8 = [hf_accessoriesRequiringManualWiFiReconfiguration count];
 
   v9 = HULocalizedWiFiString(@"HUNetworkRouterRemoveAlertTitle");
   v10 = MEMORY[0x277CCACA8];
@@ -7027,12 +7027,12 @@ void __66__HUServiceDetailsViewController__presentRemoveRouterConfirmation__bloc
   [WeakRetained presentViewController:v5 animated:1 completion:0];
 }
 
-- (id)_roomForItem:(id)a3
+- (id)_roomForItem:(id)item
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&unk_28251B0C8])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_28251B0C8])
   {
-    v4 = v3;
+    v4 = itemCopy;
   }
 
   else
@@ -7040,11 +7040,11 @@ void __66__HUServiceDetailsViewController__presentRemoveRouterConfirmation__bloc
     v4 = 0;
   }
 
-  v5 = [v4 homeKitObject];
+  homeKitObject = [v4 homeKitObject];
 
-  if ([v5 conformsToProtocol:&unk_282547DB8])
+  if ([homeKitObject conformsToProtocol:&unk_282547DB8])
   {
-    v6 = v5;
+    v6 = homeKitObject;
   }
 
   else
@@ -7056,30 +7056,30 @@ void __66__HUServiceDetailsViewController__presentRemoveRouterConfirmation__bloc
 
   if (v7)
   {
-    v8 = [v7 hf_parentRoom];
+    hf_parentRoom = [v7 hf_parentRoom];
   }
 
   else
   {
-    v8 = 0;
+    hf_parentRoom = 0;
   }
 
-  return v8;
+  return hf_parentRoom;
 }
 
-- (void)_presentWiFiPickerForItem:(id)a3
+- (void)_presentWiFiPickerForItem:(id)item
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUServiceDetailsViewController *)self pickerManager];
+  itemCopy = item;
+  pickerManager = [(HUServiceDetailsViewController *)self pickerManager];
 
-  if (v5)
+  if (pickerManager)
   {
-    v6 = HFLogForCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    sourceItemAccessory = HFLogForCategory();
+    if (os_log_type_enabled(sourceItemAccessory, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_ERROR, "Picker is already presented. Returning.", buf, 2u);
+      _os_log_error_impl(&dword_20CEB6000, sourceItemAccessory, OS_LOG_TYPE_ERROR, "Picker is already presented. Returning.", buf, 2u);
     }
 
 LABEL_17:
@@ -7087,19 +7087,19 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v7 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v8 = [v7 canShowWiFiPickerForItem:v4];
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  v8 = [detailsItemManager canShowWiFiPickerForItem:itemCopy];
 
   if (v8)
   {
-    v9 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v6 = [v9 sourceItemAccessory];
+    detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    sourceItemAccessory = [detailsItemManager2 sourceItemAccessory];
 
     objc_opt_class();
-    v10 = [(HUServiceDetailsViewController *)self item];
+    item = [(HUServiceDetailsViewController *)self item];
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = item;
     }
 
     else
@@ -7109,76 +7109,76 @@ LABEL_17:
 
     v12 = v11;
 
-    v13 = [v12 mediaProfileContainer];
-    v14 = [v12 mediaAccessoryItemType];
+    mediaProfileContainer = [v12 mediaProfileContainer];
+    mediaAccessoryItemType = [v12 mediaAccessoryItemType];
 
-    if (v14 == 4)
+    if (mediaAccessoryItemType == 4)
     {
-      v15 = [v13 topSymptomsHandlerAccessory];
+      topSymptomsHandlerAccessory = [mediaProfileContainer topSymptomsHandlerAccessory];
 
-      v6 = v15;
+      sourceItemAccessory = topSymptomsHandlerAccessory;
     }
 
-    [(HUServiceDetailsViewController *)self _setupWiFiPickerManagerForFirstPartyAccessory:v6];
-    v16 = [(HUServiceDetailsViewController *)self pickerManager];
-    v17 = [v16 presentingViewController];
+    [(HUServiceDetailsViewController *)self _setupWiFiPickerManagerForFirstPartyAccessory:sourceItemAccessory];
+    pickerManager2 = [(HUServiceDetailsViewController *)self pickerManager];
+    presentingViewController = [pickerManager2 presentingViewController];
 
     v18 = HFLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v31 = v17;
+      selfCopy = presentingViewController;
       v32 = 2112;
-      v33 = v6;
+      v33 = sourceItemAccessory;
       _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "Now presenting WiFi Picker VC %@ for %@", buf, 0x16u);
     }
 
-    v19 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v20 = [v19 symptomsWiFiPickerItem];
-    v21 = [v4 isEqual:v20];
+    detailsItemManager3 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    symptomsWiFiPickerItem = [detailsItemManager3 symptomsWiFiPickerItem];
+    v21 = [itemCopy isEqual:symptomsWiFiPickerItem];
 
     if (v21)
     {
       v22 = HFLogForCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [(HUServiceDetailsViewController *)self detailsItemManager];
-        v23 = [v29 symptomsWiFiPickerItem];
-        v24 = [v6 symptomsHandler];
-        v25 = [v24 hf_symptomsSortedByPriority];
-        v26 = [v25 firstObject];
+        detailsItemManager4 = [(HUServiceDetailsViewController *)self detailsItemManager];
+        symptomsWiFiPickerItem2 = [detailsItemManager4 symptomsWiFiPickerItem];
+        symptomsHandler = [sourceItemAccessory symptomsHandler];
+        hf_symptomsSortedByPriority = [symptomsHandler hf_symptomsSortedByPriority];
+        firstObject = [hf_symptomsSortedByPriority firstObject];
         *buf = 138413058;
-        v31 = self;
+        selfCopy = self;
         v32 = 2112;
-        v33 = v23;
+        v33 = symptomsWiFiPickerItem2;
         v34 = 2112;
-        v35 = v26;
+        v35 = firstObject;
         v36 = 2112;
-        v37 = v6;
+        v37 = sourceItemAccessory;
         _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "%@: User tapped symptomsWiFiPickerItem: %@ for symptom: %@ for accessory: %@", buf, 0x2Au);
       }
     }
 
     v27 = HFLocalizedWiFiString();
-    [(HUServiceDetailsViewController *)v17 setTitle:v27];
+    [(HUServiceDetailsViewController *)presentingViewController setTitle:v27];
 
-    v28 = [(HUServiceDetailsViewController *)self navigationController];
-    [v28 pushViewController:v17 animated:1];
+    navigationController = [(HUServiceDetailsViewController *)self navigationController];
+    [navigationController pushViewController:presentingViewController animated:1];
 
-    [(HUServiceDetailsViewController *)self _submitMetricsSymptomsInteractionForAccessory:v6 interactionType:2];
+    [(HUServiceDetailsViewController *)self _submitMetricsSymptomsInteractionForAccessory:sourceItemAccessory interactionType:2];
     goto LABEL_17;
   }
 
 LABEL_18:
 }
 
-- (void)_setupWiFiPickerManagerForFirstPartyAccessory:(id)a3
+- (void)_setupWiFiPickerManagerForFirstPartyAccessory:(id)accessory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUServiceDetailsViewController *)self pickerManager];
+  accessoryCopy = accessory;
+  pickerManager = [(HUServiceDetailsViewController *)self pickerManager];
 
-  if (v5)
+  if (pickerManager)
   {
     v6 = HFLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -7190,16 +7190,16 @@ LABEL_18:
 
   else
   {
-    v6 = [(HUServiceDetailsViewController *)self _currentAssociatedNetworkInfoForFirstPartyAccessory:v4];
+    v6 = [(HUServiceDetailsViewController *)self _currentAssociatedNetworkInfoForFirstPartyAccessory:accessoryCopy];
     v7 = objc_alloc(MEMORY[0x277D7BB58]);
     v8 = [v7 initWithNetworks:MEMORY[0x277CBEBF8] currentNetwork:v6];
-    v9 = [v4 hf_displayName];
-    [v8 setAccessoryName:v9];
+    hf_displayName = [accessoryCopy hf_displayName];
+    [v8 setAccessoryName:hf_displayName];
 
     v10 = [_TtC6HomeUI21HomeWiFiPickerContext alloc];
-    v11 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v12 = [v11 home];
-    v13 = [(HomeWiFiPickerContext *)v10 initWithMediaAccessory:v4 home:v12 delegate:self];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    home = [detailsItemManager home];
+    v13 = [(HomeWiFiPickerContext *)v10 initWithMediaAccessory:accessoryCopy home:home delegate:self];
     wifiPickerContext = self->_wifiPickerContext;
     self->_wifiPickerContext = v13;
 
@@ -7210,7 +7210,7 @@ LABEL_18:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412802;
-      v18 = v4;
+      v18 = accessoryCopy;
       v19 = 2112;
       v20 = v6;
       v21 = 2112;
@@ -7220,48 +7220,48 @@ LABEL_18:
   }
 }
 
-- (id)_currentAssociatedNetworkInfoForFirstPartyAccessory:(id)a3
+- (id)_currentAssociatedNetworkInfoForFirstPartyAccessory:(id)accessory
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 wifiNetworkInfo];
-  if (v4)
+  accessoryCopy = accessory;
+  wifiNetworkInfo = [accessoryCopy wifiNetworkInfo];
+  if (wifiNetworkInfo)
   {
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v6 = [v5 diagnosticInfoManager];
-  v4 = [v6 wifiNetworkInfoForAccessory:v3];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  diagnosticInfoManager = [mEMORY[0x277D146E8] diagnosticInfoManager];
+  wifiNetworkInfo = [diagnosticInfoManager wifiNetworkInfoForAccessory:accessoryCopy];
 
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v4;
+    v15 = wifiNetworkInfo;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "Using wifiInfo from diagnosticInfoManager: %@", &v14, 0xCu);
   }
 
-  if (v4)
+  if (wifiNetworkInfo)
   {
 LABEL_5:
     v8 = objc_alloc(MEMORY[0x277D7BB50]);
-    v9 = [v4 SSID];
-    v10 = [v4 MACAddress];
-    v11 = [v10 formattedString];
-    v12 = [v8 initWithSSID:v9 securityType:0 rssi:0 macAddress:v11];
+    sSID = [wifiNetworkInfo SSID];
+    mACAddress = [wifiNetworkInfo MACAddress];
+    formattedString = [mACAddress formattedString];
+    v12 = [v8 initWithSSID:sSID securityType:0 rssi:0 macAddress:formattedString];
   }
 
   else
   {
-    v9 = HFLogForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    sSID = HFLogForCategory();
+    if (os_log_type_enabled(sSID, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v14) = 0;
-      _os_log_error_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_ERROR, "Error: currentlyAssociatedNetwork not found", &v14, 2u);
+      _os_log_error_impl(&dword_20CEB6000, sSID, OS_LOG_TYPE_ERROR, "Error: currentlyAssociatedNetwork not found", &v14, 2u);
     }
 
-    v4 = 0;
+    wifiNetworkInfo = 0;
     v12 = 0;
   }
 
@@ -7270,14 +7270,14 @@ LABEL_5:
 
 - (void)beginScan
 {
-  v2 = [(HUServiceDetailsViewController *)self pickerManager];
-  [v2 beginScan];
+  pickerManager = [(HUServiceDetailsViewController *)self pickerManager];
+  [pickerManager beginScan];
 }
 
 - (void)endScan
 {
-  v2 = [(HUServiceDetailsViewController *)self pickerManager];
-  [v2 endScan];
+  pickerManager = [(HUServiceDetailsViewController *)self pickerManager];
+  [pickerManager endScan];
 }
 
 - (void)didJoinNewNetwork
@@ -7338,38 +7338,38 @@ void __51__HUServiceDetailsViewController_didJoinNewNetwork__block_invoke(uint64
   }
 }
 
-- (void)handleTimer:(id)a3
+- (void)handleTimer:(id)timer
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  timerCopy = timer;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v3 userInfo];
-    v5 = [v4 anyObject];
+    userInfo = [timerCopy userInfo];
+    anyObject = [userInfo anyObject];
     v6 = HFLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v5;
+      v8 = anyObject;
       _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "Timer to hide Network Diagnostics symptoms has ended accessory: %@", &v7, 0xCu);
     }
 
-    [v5 hf_toggleSymptomsToShowAfterWiFiPickerFix:0];
+    [anyObject hf_toggleSymptomsToShowAfterWiFiPickerFix:0];
   }
 }
 
-- (void)updateCurrentWiFiNetwork:(id)a3
+- (void)updateCurrentWiFiNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [(HUServiceDetailsViewController *)self pickerManager];
-  [v5 updateCurrentNetwork:v4];
+  networkCopy = network;
+  pickerManager = [(HUServiceDetailsViewController *)self pickerManager];
+  [pickerManager updateCurrentNetwork:networkCopy];
 }
 
-- (void)updateScannedWiFiNetworks:(id)a3
+- (void)updateScannedWiFiNetworks:(id)networks
 {
-  v4 = a3;
-  v5 = [(HUServiceDetailsViewController *)self pickerManager];
-  [v5 updateScannedNetworks:v4];
+  networksCopy = networks;
+  pickerManager = [(HUServiceDetailsViewController *)self pickerManager];
+  [pickerManager updateScannedNetworks:networksCopy];
 }
 
 - (void)wifiPickerViewDidDisappear
@@ -7379,46 +7379,46 @@ void __51__HUServiceDetailsViewController_didJoinNewNetwork__block_invoke(uint64
   [(HUServiceDetailsViewController *)self setPickerManager:0];
 }
 
-- (void)_presentTriggerEditorForProgrammableSwitchEventOptionItem:(id)a3
+- (void)_presentTriggerEditorForProgrammableSwitchEventOptionItem:(id)item
 {
-  v35 = a3;
-  v4 = [v35 characteristics];
-  v5 = [v4 anyObject];
-  v6 = [v5 hf_home];
+  itemCopy = item;
+  characteristics = [itemCopy characteristics];
+  anyObject = [characteristics anyObject];
+  hf_home = [anyObject hf_home];
 
-  v7 = [v35 characteristics];
-  v8 = [v7 na_firstObjectPassingTest:&__block_literal_global_814];
+  characteristics2 = [itemCopy characteristics];
+  v8 = [characteristics2 na_firstObjectPassingTest:&__block_literal_global_814];
 
   if (v8)
   {
-    if ([v6 hf_currentUserIsAdministrator])
+    if ([hf_home hf_currentUserIsAdministrator])
     {
-      v9 = [v35 latestResults];
-      v10 = [v9 objectForKey:@"itemIsEditable"];
-      v11 = [v10 BOOLValue];
+      latestResults = [itemCopy latestResults];
+      v10 = [latestResults objectForKey:@"itemIsEditable"];
+      bOOLValue = [v10 BOOLValue];
 
-      if (v11)
+      if (bOOLValue)
       {
-        v12 = [v35 triggerValue];
-        v13 = [v8 hf_designatedEventTriggerForProgrammableSwitchWithTriggerValue:v12];
+        triggerValue = [itemCopy triggerValue];
+        v13 = [v8 hf_designatedEventTriggerForProgrammableSwitchWithTriggerValue:triggerValue];
 
         v14 = [HUTriggerBuilderContext alloc];
-        v15 = [v35 latestResults];
-        v16 = [v15 objectForKey:@"triggerBuilderContext"];
+        latestResults2 = [itemCopy latestResults];
+        v16 = [latestResults2 objectForKey:@"triggerBuilderContext"];
         v17 = [(HUTriggerBuilderContext *)v14 initWithTriggerBuilderContext:v16];
 
         if (v13)
         {
-          v18 = [objc_alloc(MEMORY[0x277D14668]) initWithExistingObject:v13 inHome:v6 context:v17];
+          v18 = [objc_alloc(MEMORY[0x277D14668]) initWithExistingObject:v13 inHome:hf_home context:v17];
           v19 = [[HUTriggerSummaryViewController alloc] initWithTriggerBuilder:v18 mode:1 isPresentedModally:1 delegate:self];
         }
 
         else
         {
-          v20 = [(HUServiceDetailsViewController *)self home];
-          v21 = [v20 hf_currentUserIsAdministrator];
+          home = [(HUServiceDetailsViewController *)self home];
+          hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-          if (v21)
+          if (hf_currentUserIsAdministrator)
           {
             NSLog(&cfstr_UserIsNotAnAdm.isa);
             v19 = 0;
@@ -7427,10 +7427,10 @@ void __51__HUServiceDetailsViewController_didJoinNewNetwork__block_invoke(uint64
 
           else
           {
-            v18 = [objc_alloc(MEMORY[0x277D14668]) initWithHome:v6 context:v17];
-            v22 = [v18 characteristicInterface];
-            v23 = [v35 triggerValue];
-            [v22 setCharacteristic:v8 triggerValue:v23];
+            v18 = [objc_alloc(MEMORY[0x277D14668]) initWithHome:hf_home context:v17];
+            characteristicInterface = [v18 characteristicInterface];
+            triggerValue2 = [itemCopy triggerValue];
+            [characteristicInterface setCharacteristic:v8 triggerValue:triggerValue2];
 
             v19 = [[HUTriggerActionPickerViewController alloc] initWithTriggerBuilder:v18 mode:0 delegate:self];
             v24 = objc_alloc(MEMORY[0x277D751E0]);
@@ -7438,21 +7438,21 @@ void __51__HUServiceDetailsViewController_didJoinNewNetwork__block_invoke(uint64
             v34 = [v24 initWithTitle:v25 style:2 target:self action:sel_dismissTriggerActionEditorViewController_];
 
             v26 = MEMORY[0x277CBEB18];
-            v27 = [(HUTriggerSummaryViewController *)v19 navigationItem];
-            v28 = [v27 leftBarButtonItems];
-            v29 = [v26 arrayWithArray:v28];
+            navigationItem = [(HUTriggerSummaryViewController *)v19 navigationItem];
+            leftBarButtonItems = [navigationItem leftBarButtonItems];
+            v29 = [v26 arrayWithArray:leftBarButtonItems];
 
             [v29 addObject:v34];
-            v30 = [(HUTriggerSummaryViewController *)v19 navigationItem];
-            [v30 setLeftBarButtonItems:v29];
+            navigationItem2 = [(HUTriggerSummaryViewController *)v19 navigationItem];
+            [navigationItem2 setLeftBarButtonItems:v29];
           }
         }
 
         [v18 setShouldMarkTriggerAsHomeAppCreated:{1, v34}];
         v31 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v19];
         [v31 setModalPresentationStyle:2];
-        v32 = [(HUServiceDetailsViewController *)self navigationController];
-        v33 = [v32 hu_presentPreloadableViewController:v31 animated:1];
+        navigationController = [(HUServiceDetailsViewController *)self navigationController];
+        v33 = [navigationController hu_presentPreloadableViewController:v31 animated:1];
       }
     }
   }
@@ -7460,7 +7460,7 @@ void __51__HUServiceDetailsViewController_didJoinNewNetwork__block_invoke(uint64
   else
   {
     NSLog(&cfstr_UnableToFindHu.isa);
-    [v6 hf_currentUserIsAdministrator];
+    [hf_home hf_currentUserIsAdministrator];
   }
 }
 
@@ -7484,24 +7484,24 @@ uint64_t __92__HUServiceDetailsViewController__presentTriggerEditorForProgrammab
   return v7;
 }
 
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder
 {
-  v17 = a3;
-  v6 = [(HUServiceDetailsViewController *)self navigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 containsObject:v17];
+  editorCopy = editor;
+  navigationController = [(HUServiceDetailsViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v8 = [viewControllers containsObject:editorCopy];
 
   if (v8)
   {
-    v9 = [(HUServiceDetailsViewController *)self navigationController];
-    v10 = [v9 popToRootViewControllerAnimated:1];
+    navigationController2 = [(HUServiceDetailsViewController *)self navigationController];
+    v10 = [navigationController2 popToRootViewControllerAnimated:1];
     goto LABEL_11;
   }
 
-  v11 = [(HUServiceDetailsViewController *)self presentedViewController];
-  v12 = [v17 navigationController];
-  v13 = v11;
-  v14 = v12;
+  presentedViewController = [(HUServiceDetailsViewController *)self presentedViewController];
+  navigationController3 = [editorCopy navigationController];
+  v13 = presentedViewController;
+  v14 = navigationController3;
   v15 = v14;
   if (v13 == v14)
   {
@@ -7519,46 +7519,46 @@ uint64_t __92__HUServiceDetailsViewController__presentTriggerEditorForProgrammab
     }
 
 LABEL_8:
-    v9 = [(HUServiceDetailsViewController *)self navigationController];
-    [v9 dismissViewControllerAnimated:1 completion:0];
+    navigationController2 = [(HUServiceDetailsViewController *)self navigationController];
+    [navigationController2 dismissViewControllerAnimated:1 completion:0];
     goto LABEL_11;
   }
 
 LABEL_10:
-  v9 = [MEMORY[0x277CCA890] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:3047 description:@"triggerEditor:didFinishWithTriggerBuilder: shouldn't get here.  Ever."];
+  navigationController2 = [MEMORY[0x277CCA890] currentHandler];
+  [navigationController2 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:3047 description:@"triggerEditor:didFinishWithTriggerBuilder: shouldn't get here.  Ever."];
 LABEL_11:
 }
 
-- (void)dismissTriggerActionEditorViewController:(id)a3
+- (void)dismissTriggerActionEditorViewController:(id)controller
 {
-  v3 = [(HUServiceDetailsViewController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(HUServiceDetailsViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_setupProgrammableSwitchCell:(id)a3 forItem:(id)a4
+- (void)_setupProgrammableSwitchCell:(id)cell forItem:(id)item
 {
-  v19 = a3;
-  v5 = a4;
-  v6 = [v5 characteristics];
-  v7 = [v6 anyObject];
+  cellCopy = cell;
+  itemCopy = item;
+  characteristics = [itemCopy characteristics];
+  anyObject = [characteristics anyObject];
 
-  v8 = [v5 triggerValue];
-  v9 = [v7 hf_designatedEventTriggerForProgrammableSwitchWithTriggerValue:v8];
+  triggerValue = [itemCopy triggerValue];
+  v9 = [anyObject hf_designatedEventTriggerForProgrammableSwitchWithTriggerValue:triggerValue];
 
-  v10 = [v5 latestResults];
-  v11 = [v10 objectForKey:@"itemIsEditable"];
-  v12 = [v11 BOOLValue];
+  latestResults = [itemCopy latestResults];
+  v11 = [latestResults objectForKey:@"itemIsEditable"];
+  bOOLValue = [v11 BOOLValue];
 
-  v13 = [v5 latestResults];
+  latestResults2 = [itemCopy latestResults];
 
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D140D0]];
+  v14 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D140D0]];
   LODWORD(v11) = [v14 BOOLValue];
 
-  [v19 setHideIcon:1];
-  [v19 setDisabled:v12 ^ 1];
-  [v19 setHideDescriptionIcon:v11 ^ 1];
-  if ([v19 isDisabled])
+  [cellCopy setHideIcon:1];
+  [cellCopy setDisabled:bOOLValue ^ 1];
+  [cellCopy setHideDescriptionIcon:v11 ^ 1];
+  if ([cellCopy isDisabled])
   {
     v15 = 0;
   }
@@ -7568,14 +7568,14 @@ LABEL_11:
     v15 = 3;
   }
 
-  [v19 setSelectionStyle:v15];
-  v16 = [MEMORY[0x277D755B8] hu_exclamationMarkImage];
-  [v19 setDescriptionIcon:v16];
+  [cellCopy setSelectionStyle:v15];
+  hu_exclamationMarkImage = [MEMORY[0x277D755B8] hu_exclamationMarkImage];
+  [cellCopy setDescriptionIcon:hu_exclamationMarkImage];
 
-  [v19 setIconForegroundColorFollowsTintColor:1];
-  [v19 setAccessoryView:0];
-  [v19 setAccessoryType:v12];
-  if (!v9 && v12)
+  [cellCopy setIconForegroundColorFollowsTintColor:1];
+  [cellCopy setAccessoryView:0];
+  [cellCopy setAccessoryType:bOOLValue];
+  if (!v9 && bOOLValue)
   {
     v17 = objc_opt_new();
     [v17 _setTextColorFollowsTintColor:1];
@@ -7583,41 +7583,41 @@ LABEL_11:
     [v17 setText:v18];
 
     [v17 sizeToFit];
-    [v19 setAccessoryView:v17];
+    [cellCopy setAccessoryView:v17];
   }
 }
 
-- (void)setShouldTrackProgrammableSwitchActivations:(BOOL)a3
+- (void)setShouldTrackProgrammableSwitchActivations:(BOOL)activations
 {
-  if (self->_shouldTrackProgrammableSwitchActivations != a3)
+  if (self->_shouldTrackProgrammableSwitchActivations != activations)
   {
-    self->_shouldTrackProgrammableSwitchActivations = a3;
+    self->_shouldTrackProgrammableSwitchActivations = activations;
   }
 }
 
-- (void)accessory:(id)a3 service:(id)a4 didUpdateValueForCharacteristic:(id)a5
+- (void)accessory:(id)accessory service:(id)service didUpdateValueForCharacteristic:(id)characteristic
 {
-  v7 = a4;
-  v8 = a5;
+  serviceCopy = service;
+  characteristicCopy = characteristic;
   if ([(HUServiceDetailsViewController *)self shouldTrackProgrammableSwitchActivations])
   {
-    v9 = [MEMORY[0x277CD1D90] hf_programmableSwitchServiceTypes];
-    v10 = [v7 serviceType];
-    if (([v9 containsObject:v10] & 1) == 0)
+    hf_programmableSwitchServiceTypes = [MEMORY[0x277CD1D90] hf_programmableSwitchServiceTypes];
+    serviceType = [serviceCopy serviceType];
+    if (([hf_programmableSwitchServiceTypes containsObject:serviceType] & 1) == 0)
     {
       goto LABEL_7;
     }
 
-    v11 = [v8 characteristicType];
-    v12 = [v11 isEqualToString:*MEMORY[0x277CCF910]];
+    characteristicType = [characteristicCopy characteristicType];
+    v12 = [characteristicType isEqualToString:*MEMORY[0x277CCF910]];
 
     if (v12)
     {
       v13 = +[HOActivationManager sharedInstance];
-      v9 = [v13 lastEnteredForegroundDate];
+      hf_programmableSwitchServiceTypes = [v13 lastEnteredForegroundDate];
 
-      v14 = [v8 valueUpdatedTime];
-      v15 = [v14 compare:v9];
+      valueUpdatedTime = [characteristicCopy valueUpdatedTime];
+      v15 = [valueUpdatedTime compare:hf_programmableSwitchServiceTypes];
 
       if (v15 == -1)
       {
@@ -7626,18 +7626,18 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v10 = [v8 value];
-      if (v10)
+      serviceType = [characteristicCopy value];
+      if (serviceType)
       {
-        v16 = [(HUItemTableViewController *)self itemManager];
-        v17 = [v16 allDisplayedItems];
+        itemManager = [(HUItemTableViewController *)self itemManager];
+        allDisplayedItems = [itemManager allDisplayedItems];
         v19 = MEMORY[0x277D85DD0];
         v20 = 3221225472;
         v21 = __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCharacteristic___block_invoke;
         v22 = &unk_277DB95B0;
-        v23 = v8;
-        v24 = v10;
-        v18 = [v17 na_firstObjectPassingTest:&v19];
+        v23 = characteristicCopy;
+        v24 = serviceType;
+        v18 = [allDisplayedItems na_firstObjectPassingTest:&v19];
 
         [(HUItemTableViewController *)self highlightItemAnimated:v18, v19, v20, v21, v22];
       }
@@ -7682,7 +7682,7 @@ BOOL __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCha
   return v10;
 }
 
-- (id)softwareUpdateModuleController:(id)a3 dismissViewController:(id)a4
+- (id)softwareUpdateModuleController:(id)controller dismissViewController:(id)viewController
 {
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
   v8[0] = MEMORY[0x277D85DD0];
@@ -7696,32 +7696,32 @@ BOOL __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCha
   return v6;
 }
 
-- (id)softwareUpdateModuleController:(id)a3 navigateToViewController:(id)a4
+- (id)softwareUpdateModuleController:(id)controller navigateToViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(HUServiceDetailsViewController *)self navigationController];
-  v7 = [v6 hu_pushPreloadableViewController:v5 animated:1];
+  viewControllerCopy = viewController;
+  navigationController = [(HUServiceDetailsViewController *)self navigationController];
+  v7 = [navigationController hu_pushPreloadableViewController:viewControllerCopy animated:1];
 
   return v7;
 }
 
-- (void)didRemoveCHIPPairingforAccessory:(id)a3
+- (void)didRemoveCHIPPairingforAccessory:(id)accessory
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412290;
-    v24 = v4;
+    v24 = accessoryCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "Receive CHIPPairing removal for: %@", &v23, 0xCu);
   }
 
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 sourceItem];
-  if ([v7 conformsToProtocol:&unk_2824C0788])
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItem = [detailsItemManager sourceItem];
+  if ([sourceItem conformsToProtocol:&unk_2824C0788])
   {
-    v8 = v7;
+    v8 = sourceItem;
   }
 
   else
@@ -7730,32 +7730,32 @@ BOOL __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCha
   }
 
   v9 = v8;
-  v10 = [v9 homeKitObject];
+  homeKitObject = [v9 homeKitObject];
 
-  if ([v10 isEqual:v4] & 1) != 0 || (v14 = objc_msgSend(v10, "isEqual:", v4), v4) && (v14 & 1) == 0 && ((objc_msgSend(v4, "cameraProfiles"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "containsObject:", v10), v15, (v16) || (objc_msgSend(v4, "mediaProfile"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqual:", v10), v17, (v18) || (objc_msgSend(v4, "profiles"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "containsObject:", v10), v19, (v20) || (objc_msgSend(v4, "services"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "containsObject:", v10), v21, v22)))
+  if ([homeKitObject isEqual:accessoryCopy] & 1) != 0 || (v14 = objc_msgSend(homeKitObject, "isEqual:", accessoryCopy), accessoryCopy) && (v14 & 1) == 0 && ((objc_msgSend(accessoryCopy, "cameraProfiles"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "containsObject:", homeKitObject), v15, (v16) || (objc_msgSend(accessoryCopy, "mediaProfile"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqual:", homeKitObject), v17, (v18) || (objc_msgSend(accessoryCopy, "profiles"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "containsObject:", homeKitObject), v19, (v20) || (objc_msgSend(accessoryCopy, "services"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "containsObject:", homeKitObject), v21, v22)))
   {
     v11 = HFLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = v10;
+      v24 = homeKitObject;
       _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "Dismissing card after CHIPPairing removal of currently displayed homekitObject: %@", &v23, 0xCu);
     }
 
     [(HUServiceDetailsViewController *)self setRequiresPresentingViewControllerDismissal:1];
-    v12 = [(HUServiceDetailsViewController *)self presentationDelegate];
-    v13 = [v12 finishPresentation:self animated:1];
+    presentationDelegate = [(HUServiceDetailsViewController *)self presentationDelegate];
+    v13 = [presentationDelegate finishPresentation:self animated:1];
   }
 }
 
-- (id)childServiceEditorModuleController:(id)a3 didSelectItem:(id)a4
+- (id)childServiceEditorModuleController:(id)controller didSelectItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v6 = v5;
+    v6 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -7768,57 +7768,57 @@ BOOL __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCha
 
     v8 = v7;
 
-    v9 = [[HUValveEditorViewController alloc] initWithSourceItem:v8 editorMode:0];
-    v10 = [(HUServiceDetailsViewController *)self navigationController];
-    v11 = [v10 hu_pushPreloadableViewController:v9 animated:1];
+    navigationController2 = [[HUValveEditorViewController alloc] initWithSourceItem:v8 editorMode:0];
+    navigationController = [(HUServiceDetailsViewController *)self navigationController];
+    v11 = [navigationController hu_pushPreloadableViewController:navigationController2 animated:1];
   }
 
   else
   {
-    v8 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:v5];
-    v9 = [(HUServiceDetailsViewController *)self navigationController];
-    v11 = [(HUValveEditorViewController *)v9 hu_pushPreloadableViewController:v8 animated:1];
+    v8 = [[HUServiceDetailsViewController alloc] initWithServiceLikeItem:itemCopy];
+    navigationController2 = [(HUServiceDetailsViewController *)self navigationController];
+    v11 = [(HUValveEditorViewController *)navigationController2 hu_pushPreloadableViewController:v8 animated:1];
   }
 
   return v11;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v21 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a3;
+  lCopy = l;
+  viewCopy = view;
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412546;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v11;
+    v20 = lCopy;
     _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v17, 0x16u);
   }
 
-  v14 = [(HUServiceDetailsViewController *)self textViewDelegate];
-  v15 = [v14 textView:v12 shouldInteractWithURL:v11 inRange:location interaction:{length, a6}];
+  textViewDelegate = [(HUServiceDetailsViewController *)self textViewDelegate];
+  v15 = [textViewDelegate textView:viewCopy shouldInteractWithURL:lCopy inRange:location interaction:{length, interaction}];
 
   return v15;
 }
 
-- (void)moduleController:(id)a3 expandModule:(id)a4
+- (void)moduleController:(id)controller expandModule:(id)module
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [[HUHomeKitAccessorySettingsDetailsViewController alloc] initWithCollapsedAccessorySettingItemModule:v5];
-  v7 = [(HUServiceDetailsViewController *)self navigationController];
-  v8 = [v7 hu_pushPreloadableViewController:v6 animated:1];
+  moduleCopy = module;
+  v6 = [[HUHomeKitAccessorySettingsDetailsViewController alloc] initWithCollapsedAccessorySettingItemModule:moduleCopy];
+  navigationController = [(HUServiceDetailsViewController *)self navigationController];
+  v8 = [navigationController hu_pushPreloadableViewController:v6 animated:1];
 
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = moduleCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "Now expanding module [%@] to show settings", &v11, 0xCu);
   }
 
@@ -7826,25 +7826,25 @@ BOOL __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCha
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = moduleCopy;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "User tapped to expand module %@", &v11, 0xCu);
   }
 }
 
-- (void)moduleController:(id)a3 presentSettingDetailsViewController:(id)a4
+- (void)moduleController:(id)controller presentSettingDetailsViewController:(id)viewController
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5)
+  viewControllerCopy = viewController;
+  if (viewControllerCopy)
   {
-    v6 = [(HUServiceDetailsViewController *)self navigationController];
-    v7 = [v6 hu_pushPreloadableViewController:v5 animated:1];
+    navigationController = [(HUServiceDetailsViewController *)self navigationController];
+    v7 = [navigationController hu_pushPreloadableViewController:viewControllerCopy animated:1];
 
     v8 = HFLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = viewControllerCopy;
       _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "Now presenting settings details view controller [%@]", &v10, 0xCu);
     }
 
@@ -7852,7 +7852,7 @@ BOOL __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCha
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = viewControllerCopy;
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "User tapped to present settings details view controller [%@]", &v10, 0xCu);
     }
   }
@@ -7860,8 +7860,8 @@ BOOL __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCha
 
 - (void)_presentContainedItems
 {
-  v5 = [(HUServiceDetailsViewController *)self isItemGroup];
-  if (v5)
+  isItemGroup = [(HUServiceDetailsViewController *)self isItemGroup];
+  if (isItemGroup)
   {
     v6 = a2;
     v7 = 0;
@@ -7870,8 +7870,8 @@ BOOL __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCha
 
   else
   {
-    v2 = [(HUServiceDetailsViewController *)self item];
-    if ([v2 conformsToProtocol:&unk_282587E50])
+    item = [(HUServiceDetailsViewController *)self item];
+    if ([item conformsToProtocol:&unk_282587E50])
     {
       v6 = a2;
       v7 = 0;
@@ -7880,9 +7880,9 @@ BOOL __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCha
 
     else
     {
-      v9 = [(HUServiceDetailsViewController *)self item];
-      v25 = v9;
-      if ([v9 conformsToProtocol:&unk_282587D40])
+      item2 = [(HUServiceDetailsViewController *)self item];
+      v25 = item2;
+      if ([item2 conformsToProtocol:&unk_282587D40])
       {
         v6 = a2;
         v7 = 0;
@@ -7891,19 +7891,19 @@ BOOL __84__HUServiceDetailsViewController_accessory_service_didUpdateValueForCha
 
       else
       {
-        v10 = [(HUServiceDetailsViewController *)self item];
-        if (([v10 conformsToProtocol:&unk_28251B268] & 1) == 0)
+        item3 = [(HUServiceDetailsViewController *)self item];
+        if (([item3 conformsToProtocol:&unk_28251B268] & 1) == 0)
         {
 
 LABEL_17:
-          v13 = [MEMORY[0x277CCA890] currentHandler];
-          v14 = [(HUServiceDetailsViewController *)self item];
-          [v13 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:3240 description:{@"Selected 'showContainedServices' row, but the displayed item doesn't conform to the right protocols: %@", v14}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          item4 = [(HUServiceDetailsViewController *)self item];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:3240 description:{@"Selected 'showContainedServices' row, but the displayed item doesn't conform to the right protocols: %@", item4}];
 
           goto LABEL_18;
         }
 
-        v24 = v10;
+        v24 = item3;
         v6 = a2;
         v7 = 1;
         v8 = 1;
@@ -7911,8 +7911,8 @@ LABEL_17:
     }
   }
 
-  v11 = [(HUServiceDetailsViewController *)self item];
-  v12 = [v11 conformsToProtocol:&unk_2824C0828];
+  item5 = [(HUServiceDetailsViewController *)self item];
+  v12 = [item5 conformsToProtocol:&unk_2824C0828];
 
   if (!v7)
   {
@@ -7930,7 +7930,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  if (!v5)
+  if (!isItemGroup)
   {
   }
 
@@ -7942,10 +7942,10 @@ LABEL_14:
 
 LABEL_18:
   objc_opt_class();
-  v15 = [(HUServiceDetailsViewController *)self item];
+  item6 = [(HUServiceDetailsViewController *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = item6;
   }
 
   else
@@ -7955,38 +7955,38 @@ LABEL_18:
 
   v26 = v16;
 
-  v17 = [(HUServiceDetailsViewController *)self item];
-  if ([v17 conformsToProtocol:&unk_282587E50])
+  item7 = [(HUServiceDetailsViewController *)self item];
+  if ([item7 conformsToProtocol:&unk_282587E50])
   {
 
 LABEL_24:
-    v20 = [(HUServiceDetailsViewController *)self item];
+    item8 = [(HUServiceDetailsViewController *)self item];
     goto LABEL_26;
   }
 
-  v18 = [(HUServiceDetailsViewController *)self item];
-  v19 = [v18 conformsToProtocol:&unk_282587D40];
+  item9 = [(HUServiceDetailsViewController *)self item];
+  v19 = [item9 conformsToProtocol:&unk_282587D40];
 
   if (v19)
   {
     goto LABEL_24;
   }
 
-  v20 = 0;
+  item8 = 0;
 LABEL_26:
-  if (v26 | v20)
+  if (v26 | item8)
   {
-    v21 = [[HUContainedAccessoryElementsGridViewController alloc] initWithServiceContainingItem:v20 mediaItem:v26 isPresentedModally:0 shouldGroupByRoom:1 valueSource:0];
+    v21 = [[HUContainedAccessoryElementsGridViewController alloc] initWithServiceContainingItem:item8 mediaItem:v26 isPresentedModally:0 shouldGroupByRoom:1 valueSource:0];
     [(HUContainedAccessoryElementsGridViewController *)v21 setServiceGridDelegate:self];
     [(HUContainedAccessoryElementsGridViewController *)v21 setPresentationDelegate:self];
-    v22 = [(HUServiceDetailsViewController *)self navigationController];
-    v23 = [v22 hu_pushPreloadableViewController:v21 animated:1];
+    navigationController = [(HUServiceDetailsViewController *)self navigationController];
+    v23 = [navigationController hu_pushPreloadableViewController:v21 animated:1];
   }
 
   else
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:3292 description:@"Unable to present grouped accessory view controller; please file a radar on Home App | New Bugs"];
+    item8 = [MEMORY[0x277CCA890] currentHandler];
+    [item8 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:3292 description:@"Unable to present grouped accessory view controller; please file a radar on Home App | New Bugs"];
   }
 }
 
@@ -7996,26 +7996,26 @@ LABEL_26:
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HUServiceDetailsViewController *)self item];
+    item = [(HUServiceDetailsViewController *)self item];
     v24 = 136315650;
     v25 = "[HUServiceDetailsViewController _presentGroupPicker]";
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
-    v29 = v4;
+    v29 = item;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "User selected %s(%@) for %@", &v24, 0x20u);
   }
 
   if ((_os_feature_enabled_impl() & 1) != 0 || ([(HUServiceDetailsViewController *)self item], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) == 0))
   {
-    v14 = [(HUServiceDetailsViewController *)self item];
-    v8 = [v14 services];
+    item2 = [(HUServiceDetailsViewController *)self item];
+    services = [item2 services];
 
     objc_opt_class();
-    v15 = [(HUServiceDetailsViewController *)self item];
+    item3 = [(HUServiceDetailsViewController *)self item];
     if (objc_opt_isKindOfClass())
     {
-      v16 = v15;
+      v16 = item3;
     }
 
     else
@@ -8027,16 +8027,16 @@ LABEL_26:
 
     if (v12)
     {
-      v17 = [(HUMediaSystemEditorViewController *)v12 accessory];
-      v18 = [v17 hf_groupableServices];
+      accessory = [(HUMediaSystemEditorViewController *)v12 accessory];
+      hf_groupableServices = [accessory hf_groupableServices];
 
-      v8 = v18;
+      services = hf_groupableServices;
     }
 
-    v19 = [v8 allObjects];
-    v20 = [(HUItemTableViewController *)self itemManager];
-    v21 = [v20 home];
-    v22 = [HUServiceGroupEditorViewController forCreatingNewServiceGroupWithServices:v19 inHome:v21];
+    allObjects = [services allObjects];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    home = [itemManager home];
+    v22 = [HUServiceGroupEditorViewController forCreatingNewServiceGroupWithServices:allObjects inHome:home];
 
     [v22 setPresentationDelegate:self];
     [v22 setServiceGroupEditorDelegate:self];
@@ -8045,13 +8045,13 @@ LABEL_26:
 
   else
   {
-    v7 = [(HUServiceDetailsViewController *)self item];
-    v8 = [v7 accessories];
+    item4 = [(HUServiceDetailsViewController *)self item];
+    services = [item4 accessories];
 
     v9 = [HUMediaSystemEditorViewController alloc];
-    v10 = [(HUItemTableViewController *)self itemManager];
-    v11 = [v10 home];
-    v12 = [(HUMediaSystemEditorViewController *)v9 initWithAccessories:v8 home:v11];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    home2 = [itemManager2 home];
+    v12 = [(HUMediaSystemEditorViewController *)v9 initWithAccessories:services home:home2];
 
     [(HUMediaSystemEditorViewController *)v12 setPresentationDelegate:self];
     [(HUMediaSystemEditorViewController *)v12 setDelegate:self];
@@ -8065,34 +8065,34 @@ LABEL_26:
 - (void)_identifyHomePod
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [(HUServiceDetailsViewController *)self homePodIdentifyFuture];
-  if (v4 && (v5 = v4, -[HUServiceDetailsViewController homePodIdentifyFuture](self, "homePodIdentifyFuture"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isFinished], v6, v5, (v7 & 1) == 0))
+  homePodIdentifyFuture = [(HUServiceDetailsViewController *)self homePodIdentifyFuture];
+  if (homePodIdentifyFuture && (v5 = homePodIdentifyFuture, -[HUServiceDetailsViewController homePodIdentifyFuture](self, "homePodIdentifyFuture"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isFinished], v6, v5, (v7 & 1) == 0))
   {
     v10 = HFLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NSStringFromSelector(a2);
-      v12 = [(HUServiceDetailsViewController *)self homePodIdentifyFuture];
-      v13 = [(HUServiceDetailsViewController *)self homePodIdentifyFuture];
+      homePodIdentifyFuture2 = [(HUServiceDetailsViewController *)self homePodIdentifyFuture];
+      homePodIdentifyFuture3 = [(HUServiceDetailsViewController *)self homePodIdentifyFuture];
       *buf = 138413058;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
       v18 = v11;
       v19 = 2112;
-      v20 = v12;
+      v20 = homePodIdentifyFuture2;
       v21 = 1024;
-      v22 = [v13 isFinished];
+      isFinished = [homePodIdentifyFuture3 isFinished];
       _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@:%@ Ignoring because previous Identify future not completed: %@ isFinished = %{BOOL}d", buf, 0x26u);
     }
   }
 
   else
   {
-    v8 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v14 = [v8 sourceItemAccessory];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    sourceItemAccessory = [detailsItemManager sourceItemAccessory];
 
-    v9 = [v14 hf_identifyHomePod];
-    [(HUServiceDetailsViewController *)self setHomePodIdentifyFuture:v9];
+    hf_identifyHomePod = [sourceItemAccessory hf_identifyHomePod];
+    [(HUServiceDetailsViewController *)self setHomePodIdentifyFuture:hf_identifyHomePod];
   }
 }
 
@@ -8100,10 +8100,10 @@ LABEL_26:
 {
   v32 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v3 = [(HUServiceDetailsViewController *)self item];
+  item = [(HUServiceDetailsViewController *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = item;
   }
 
   else
@@ -8114,10 +8114,10 @@ LABEL_26:
   v5 = v4;
 
   objc_opt_class();
-  v6 = [(HUServiceDetailsViewController *)self item];
+  item2 = [(HUServiceDetailsViewController *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = item2;
   }
 
   else
@@ -8128,10 +8128,10 @@ LABEL_26:
   v8 = v7;
 
   objc_opt_class();
-  v9 = [(HUServiceDetailsViewController *)self item];
+  item3 = [(HUServiceDetailsViewController *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = item3;
   }
 
   else
@@ -8143,8 +8143,8 @@ LABEL_26:
 
   if (v5)
   {
-    v12 = [v5 accessory];
-    if (!v12)
+    accessory = [v5 accessory];
+    if (!accessory)
     {
       goto LABEL_23;
     }
@@ -8154,7 +8154,7 @@ LABEL_26:
   {
     if (v8)
     {
-      v13 = [v8 service];
+      service = [v8 service];
     }
 
     else
@@ -8164,31 +8164,31 @@ LABEL_26:
         goto LABEL_23;
       }
 
-      v13 = [v11 profile];
+      service = [v11 profile];
     }
 
-    v14 = v13;
-    v12 = [v13 accessory];
+    v14 = service;
+    accessory = [service accessory];
 
-    if (!v12)
+    if (!accessory)
     {
       goto LABEL_23;
     }
   }
 
-  v15 = [v12 hf_showAsIndividualServices];
-  v16 = [v12 hf_setShowAsIndividualServices:v15 ^ 1u];
+  hf_showAsIndividualServices = [accessory hf_showAsIndividualServices];
+  v16 = [accessory hf_setShowAsIndividualServices:hf_showAsIndividualServices ^ 1u];
   v17 = HFLogForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = @"YES";
-    if (v15)
+    if (hf_showAsIndividualServices)
     {
       v18 = @"NO";
     }
 
     *buf = 138412546;
-    v29 = v12;
+    v29 = accessory;
     v30 = 2112;
     v31 = v18;
     _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "Service Details Updating accessory %@ to show individual services %@", buf, 0x16u);
@@ -8198,9 +8198,9 @@ LABEL_26:
   v23 = 3221225472;
   v24 = __54__HUServiceDetailsViewController__separateOrUnifyTile__block_invoke;
   v25 = &unk_277DB7E68;
-  v26 = v12;
-  v27 = self;
-  v19 = v12;
+  v26 = accessory;
+  selfCopy = self;
+  v19 = accessory;
   v20 = [v16 addSuccessBlock:&v22];
   v21 = [v16 addFailureBlock:{&__block_literal_global_879, v22, v23, v24, v25}];
 
@@ -8299,40 +8299,40 @@ void __54__HUServiceDetailsViewController__separateOrUnifyTile__block_invoke_4(u
   [v4 handleError:v3];
 }
 
-- (void)_didSelectRoomItem:(id)a3
+- (void)_didSelectRoomItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v5 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v6 = [v5 serviceLikeBuilder];
-    v7 = [v6 room];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    serviceLikeBuilder = [detailsItemManager serviceLikeBuilder];
+    room = [serviceLikeBuilder room];
 
-    v8 = [v4 latestResults];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D14088]];
+    latestResults = [itemCopy latestResults];
+    v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14088]];
 
-    v10 = [v7 room];
-    v11 = [v10 uniqueIdentifier];
-    v12 = [v9 room];
-    v13 = [v12 uniqueIdentifier];
-    v14 = [v11 isEqual:v13];
+    v7Room = [room room];
+    uniqueIdentifier = [v7Room uniqueIdentifier];
+    room2 = [v9 room];
+    uniqueIdentifier2 = [room2 uniqueIdentifier];
+    v14 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
     if ((v14 & 1) == 0)
     {
-      v15 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v16 = [v15 selectRoom:v9];
+      detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+      v16 = [detailsItemManager2 selectRoom:v9];
 
       v23 = MEMORY[0x277D85DD0];
       v24 = 3221225472;
       v25 = __53__HUServiceDetailsViewController__didSelectRoomItem___block_invoke;
       v26 = &unk_277DB7E68;
-      v27 = self;
+      selfCopy = self;
       v28 = v9;
       v17 = [v16 addSuccessBlock:&v23];
       v18 = [(HUServiceDetailsViewController *)self detailsItemManager:v23];
-      v19 = [v18 suggestedRoomItemProvider];
-      v20 = [v19 items];
-      v21 = [v20 containsObject:v4];
+      suggestedRoomItemProvider = [v18 suggestedRoomItemProvider];
+      items = [suggestedRoomItemProvider items];
+      v21 = [items containsObject:itemCopy];
 
       if (v21)
       {
@@ -8368,18 +8368,18 @@ void __53__HUServiceDetailsViewController__didSelectRoomItem___block_invoke_2(ui
   [v4 handleError:v3 operationType:*MEMORY[0x277D13BE8] options:0 retryBlock:0 cancelBlock:0];
 }
 
-- (void)_notifyOfHomePodPairingIfNecessary:(id)a3
+- (void)_notifyOfHomePodPairingIfNecessary:(id)necessary
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 home];
+  necessaryCopy = necessary;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager home];
 
   objc_opt_class();
-  v8 = [(HUServiceDetailsViewController *)self item];
+  item = [(HUServiceDetailsViewController *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = item;
   }
 
   else
@@ -8391,23 +8391,23 @@ void __53__HUServiceDetailsViewController__didSelectRoomItem___block_invoke_2(ui
 
   if (v10)
   {
-    v11 = [v10 mediaProfileContainer];
-    v12 = [v11 accessories];
-    v13 = [v12 count];
+    mediaProfileContainer = [v10 mediaProfileContainer];
+    accessories = [mediaProfileContainer accessories];
+    v13 = [accessories count];
 
-    if (v13 <= 1 && [v11 hf_supportsStereoPairing])
+    if (v13 <= 1 && [mediaProfileContainer hf_supportsStereoPairing])
     {
-      v14 = [v11 hf_backingAccessory];
-      v15 = [v14 supportedStereoPairVersions];
+      hf_backingAccessory = [mediaProfileContainer hf_backingAccessory];
+      supportedStereoPairVersions = [hf_backingAccessory supportedStereoPairVersions];
 
-      if (v15)
+      if (supportedStereoPairVersions)
       {
         v16 = MEMORY[0x277CBEB98];
-        v17 = [v5 availableHomePodsSupportingStereoPairingVersions:v15];
+        v17 = [necessaryCopy availableHomePodsSupportingStereoPairingVersions:supportedStereoPairVersions];
         v18 = [v16 setWithArray:v17];
 
-        v19 = [v10 accessories];
-        v20 = [v18 na_setByRemovingObjectsFromSet:v19];
+        accessories2 = [v10 accessories];
+        v20 = [v18 na_setByRemovingObjectsFromSet:accessories2];
 
         v21 = [v20 na_any:&__block_literal_global_883];
         if ([v20 count] && (v21 & 1) == 0)
@@ -8427,7 +8427,7 @@ void __53__HUServiceDetailsViewController__didSelectRoomItem___block_invoke_2(ui
           objc_copyWeak(&v41, location);
           v38 = v20;
           v39 = v10;
-          v40 = v7;
+          v40 = home;
           v28 = [v26 actionWithTitle:v27 style:0 handler:&v34];
           [v25 addAction:{v28, v34, v35, v36, v37}];
 
@@ -8436,8 +8436,8 @@ void __53__HUServiceDetailsViewController__didSelectRoomItem___block_invoke_2(ui
           v31 = [v29 actionWithTitle:v30 style:0 handler:0];
           [v25 addAction:v31];
 
-          v32 = [(HUServiceDetailsViewController *)self hf_topmostViewController];
-          [v32 presentViewController:v25 animated:1 completion:0];
+          hf_topmostViewController = [(HUServiceDetailsViewController *)self hf_topmostViewController];
+          [hf_topmostViewController presentViewController:v25 animated:1 completion:0];
 
           objc_destroyWeak(&v41);
           objc_destroyWeak(location);
@@ -8455,7 +8455,7 @@ void __53__HUServiceDetailsViewController__didSelectRoomItem___block_invoke_2(ui
           v43 = 2112;
           v44 = v33;
           v45 = 2112;
-          v46 = v11;
+          v46 = mediaProfileContainer;
           _os_log_error_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_ERROR, "%@:%@ HomePod has no stereo pairing versions: %@", location, 0x20u);
         }
       }
@@ -8561,27 +8561,27 @@ void __69__HUServiceDetailsViewController__notifyOfHomePodPairingIfNecessary___b
   }
 }
 
-- (BOOL)_notifyOfHomeTheaterReconfigurationIfNecessary:(id)a3
+- (BOOL)_notifyOfHomeTheaterReconfigurationIfNecessary:(id)necessary
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  necessaryCopy = necessary;
   if ([(HUServiceDetailsViewController *)self _shouldShowHomeTheaterPrompt])
   {
     v6 = MEMORY[0x277D14810];
-    v7 = [(HUServiceDetailsViewController *)self item];
-    v8 = [v6 mediaProfileContainerForItem:v7 forTopLevel:1];
+    item = [(HUServiceDetailsViewController *)self item];
+    v8 = [v6 mediaProfileContainerForItem:item forTopLevel:1];
 
     v43 = [MEMORY[0x277D14810] isAppleTV:v8];
-    v9 = [(HUItemTableViewController *)self itemManager];
-    v10 = [v9 home];
-    v11 = [v10 hf_relatedHomeTheaterMediaProfileContainerFor:v8];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    home = [itemManager home];
+    v11 = [home hf_relatedHomeTheaterMediaProfileContainerFor:v8];
 
     v12 = HFLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v57 = self;
+      selfCopy2 = self;
       v58 = 2112;
       v59 = v13;
       v60 = 2112;
@@ -8592,10 +8592,10 @@ void __69__HUServiceDetailsViewController__notifyOfHomePodPairingIfNecessary___b
     }
 
     objc_opt_class();
-    v14 = [(HUServiceDetailsViewController *)self item];
+    item2 = [(HUServiceDetailsViewController *)self item];
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      v15 = item2;
     }
 
     else
@@ -8612,7 +8612,7 @@ void __69__HUServiceDetailsViewController__notifyOfHomePodPairingIfNecessary___b
       {
         v19 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v57 = v19;
+        selfCopy2 = v19;
         v58 = 2112;
         v59 = v8;
         v60 = 2112;
@@ -8646,13 +8646,13 @@ void __69__HUServiceDetailsViewController__notifyOfHomePodPairingIfNecessary___b
         v28 = @"HUMoveHomeTheaterAlert_HomePod_Button";
       }
 
-      v17 = HULocalizedStringWithFormat(v27, @"%@", v20, v21, v22, v23, v24, v25, v5);
+      v17 = HULocalizedStringWithFormat(v27, @"%@", v20, v21, v22, v23, v24, v25, necessaryCopy);
       _HULocalizedStringWithDefaultValue(v28, v28, 1);
       v29 = v44 = v8;
       v30 = MEMORY[0x277D75110];
       v31 = _HULocalizedStringWithDefaultValue(@"HUMoveHomeTheaterAlert_Title", @"HUMoveHomeTheaterAlert_Title", 1);
       [v30 alertControllerWithTitle:v31 message:v17 preferredStyle:1];
-      v32 = v45 = v5;
+      v32 = v45 = necessaryCopy;
 
       v33 = MEMORY[0x277D750F8];
       v51[0] = MEMORY[0x277D85DD0];
@@ -8683,10 +8683,10 @@ void __69__HUServiceDetailsViewController__notifyOfHomePodPairingIfNecessary___b
       v39 = [v37 actionWithTitle:v38 style:0 handler:v46];
       [v32 addAction:v39];
 
-      v40 = [(HUServiceDetailsViewController *)self hf_topmostViewController];
-      [v40 presentViewController:v32 animated:1 completion:0];
+      hf_topmostViewController = [(HUServiceDetailsViewController *)self hf_topmostViewController];
+      [hf_topmostViewController presentViewController:v32 animated:1 completion:0];
 
-      v5 = v45;
+      necessaryCopy = v45;
       v8 = v44;
       v16 = 1;
     }
@@ -8695,7 +8695,7 @@ void __69__HUServiceDetailsViewController__notifyOfHomePodPairingIfNecessary___b
     {
       v41 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v57 = self;
+      selfCopy2 = self;
       v58 = 2112;
       v59 = v41;
       _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "%@:%@ Did not find any related Home Theaters, skipping move prompt.", buf, 0x16u);
@@ -8913,25 +8913,25 @@ void __81__HUServiceDetailsViewController__notifyOfHomeTheaterReconfigurationIfN
   [*(a1 + 40) addAccessory:v3];
 }
 
-- (void)_offerToCreateHomeTheaterIfPossible:(id)a3
+- (void)_offerToCreateHomeTheaterIfPossible:(id)possible
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5 && [(HUServiceDetailsViewController *)self _shouldShowHomeTheaterPrompt])
+  possibleCopy = possible;
+  if (possibleCopy && [(HUServiceDetailsViewController *)self _shouldShowHomeTheaterPrompt])
   {
     objc_opt_class();
-    v6 = [(HUServiceDetailsViewController *)self item];
-    v7 = (objc_opt_isKindOfClass() & 1) != 0 ? v6 : 0;
+    item = [(HUServiceDetailsViewController *)self item];
+    v7 = (objc_opt_isKindOfClass() & 1) != 0 ? item : 0;
     v8 = v7;
 
     if (!v8)
     {
       v9 = MEMORY[0x277D14810];
-      v10 = [(HUServiceDetailsViewController *)self item];
-      v11 = [v9 mediaProfileContainerForItem:v10 forTopLevel:1];
+      item2 = [(HUServiceDetailsViewController *)self item];
+      v11 = [v9 mediaProfileContainerForItem:item2 forTopLevel:1];
 
       v12 = [MEMORY[0x277D14810] isAppleTV:v11];
-      v13 = [v5 availableHomeTheaterMediaPartnerFor:v11];
+      v13 = [possibleCopy availableHomeTheaterMediaPartnerFor:v11];
       if ([v13 hf_supportsHomeTheater])
       {
         v14 = HFLogForCategory();
@@ -8942,7 +8942,7 @@ void __81__HUServiceDetailsViewController__notifyOfHomeTheaterReconfigurationIfN
           {
             v16 = NSStringFromSelector(a2);
             *buf = 138413058;
-            v43 = self;
+            selfCopy2 = self;
             v44 = 2112;
             v45 = v16;
             v46 = 2112;
@@ -8987,16 +8987,16 @@ void __81__HUServiceDetailsViewController__notifyOfHomeTheaterReconfigurationIfN
           v25 = [v23 actionWithTitle:v24 style:0 handler:0];
           [v36 addAction:v25];
 
-          v26 = [(HUServiceDetailsViewController *)self hf_topmostViewController];
-          [v26 presentViewController:v36 animated:1 completion:0];
+          hf_topmostViewController = [(HUServiceDetailsViewController *)self hf_topmostViewController];
+          [hf_topmostViewController presentViewController:v36 animated:1 completion:0];
 
           v27 = objc_alloc(MEMORY[0x277D14C98]);
-          v28 = [(HUItemTableViewController *)self itemManager];
-          v29 = [v28 home];
-          v30 = [(HUItemTableViewController *)self itemManager];
-          v31 = [v30 home];
-          v32 = [v31 currentUser];
-          v33 = [v27 initWithHome:v29 user:v32 nameStyle:0];
+          itemManager = [(HUItemTableViewController *)self itemManager];
+          home = [itemManager home];
+          itemManager2 = [(HUItemTableViewController *)self itemManager];
+          home2 = [itemManager2 home];
+          currentUser = [home2 currentUser];
+          v33 = [v27 initWithHome:home user:currentUser nameStyle:0];
 
           v34 = [v33 setDismissHomeTheaterOnboarding:1];
           objc_destroyWeak(v40);
@@ -9007,7 +9007,7 @@ void __81__HUServiceDetailsViewController__notifyOfHomeTheaterReconfigurationIfN
         {
           v35 = NSStringFromSelector(a2);
           *buf = 138412546;
-          v43 = self;
+          selfCopy2 = self;
           v44 = 2112;
           v45 = v35;
           _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@:%@ Did not find any Home Theater candidates, skipping creation prompt.", buf, 0x16u);
@@ -9123,20 +9123,20 @@ void __70__HUServiceDetailsViewController__offerToCreateHomeTheaterIfPossible___
   }
 }
 
-- (id)_roomUpdateBuilderFor:(id)a3
+- (id)_roomUpdateBuilderFor:(id)for
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([MEMORY[0x277D14810] isHomePodMediaSystem:v5] && (-[HUServiceDetailsViewController detailsItemManager](self, "detailsItemManager"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "serviceLikeBuilder"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_class(), LOBYTE(v8) = objc_msgSend(v8, "isEqual:", objc_opt_class()), v7, v6, (v8 & 1) == 0))
+  forCopy = for;
+  if ([MEMORY[0x277D14810] isHomePodMediaSystem:forCopy] && (-[HUServiceDetailsViewController detailsItemManager](self, "detailsItemManager"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "serviceLikeBuilder"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_class(), LOBYTE(v8) = objc_msgSend(v8, "isEqual:", objc_opt_class()), v7, v6, (v8 & 1) == 0))
   {
     v10 = HFLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = NSStringFromSelector(a2);
-      v12 = [(HUServiceDetailsViewController *)self detailsItemManager];
-      v13 = [v12 serviceLikeBuilder];
+      detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+      serviceLikeBuilder = [detailsItemManager serviceLikeBuilder];
       v25 = 138412802;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = v11;
       v29 = 2112;
@@ -9145,20 +9145,20 @@ void __70__HUServiceDetailsViewController__offerToCreateHomeTheaterIfPossible___
     }
 
     v14 = objc_alloc(MEMORY[0x277D14830]);
-    v15 = [(HUItemTableViewController *)self itemManager];
-    v16 = [v15 home];
-    v17 = [v14 initWithExistingObject:v5 inHome:v16];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    home = [itemManager home];
+    v17 = [v14 initWithExistingObject:forCopy inHome:home];
 
-    v18 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v19 = [v18 serviceLikeBuilder];
-    v20 = [v19 room];
-    [v17 setRoom:v20];
+    detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+    serviceLikeBuilder2 = [detailsItemManager2 serviceLikeBuilder];
+    room = [serviceLikeBuilder2 room];
+    [v17 setRoom:room];
 
     objc_opt_class();
-    v21 = [(HUServiceDetailsViewController *)self item];
+    item = [(HUServiceDetailsViewController *)self item];
     if (objc_opt_isKindOfClass())
     {
-      v22 = v21;
+      v22 = item;
     }
 
     else
@@ -9167,42 +9167,42 @@ void __70__HUServiceDetailsViewController__offerToCreateHomeTheaterIfPossible___
     }
 
     v23 = v22;
-    v9 = [(HUServiceDetailsViewController *)self _commitBuilderFor:v23 with:v17];
+    _commitBuilder = [(HUServiceDetailsViewController *)self _commitBuilderFor:v23 with:v17];
   }
 
   else
   {
-    v9 = [(HUServiceDetailsViewController *)self _commitBuilder];
+    _commitBuilder = [(HUServiceDetailsViewController *)self _commitBuilder];
   }
 
-  return v9;
+  return _commitBuilder;
 }
 
 - (BOOL)_shouldShowHomeTheaterPrompt
 {
   v2 = MEMORY[0x277D14810];
-  v3 = [(HUServiceDetailsViewController *)self item];
-  v4 = [v2 mediaProfileContainerForItem:v3 forTopLevel:1];
+  item = [(HUServiceDetailsViewController *)self item];
+  v4 = [v2 mediaProfileContainerForItem:item forTopLevel:1];
 
   if (v4)
   {
-    v5 = [v4 hf_supportsHomeTheater];
+    hf_supportsHomeTheater = [v4 hf_supportsHomeTheater];
   }
 
   else
   {
-    v5 = 0;
+    hf_supportsHomeTheater = 0;
   }
 
-  return v5;
+  return hf_supportsHomeTheater;
 }
 
 - (void)_executeSilentSoftwareUpdateCheck
 {
-  v2 = [(HUServiceDetailsViewController *)self item];
-  if ([v2 conformsToProtocol:&unk_28251B2F8])
+  item = [(HUServiceDetailsViewController *)self item];
+  if ([item conformsToProtocol:&unk_28251B2F8])
   {
-    v3 = v2;
+    v3 = item;
   }
 
   else
@@ -9212,20 +9212,20 @@ void __70__HUServiceDetailsViewController__offerToCreateHomeTheaterIfPossible___
 
   v4 = v3;
 
-  v5 = [v4 accessoriesSupportingSoftwareUpdate];
+  accessoriesSupportingSoftwareUpdate = [v4 accessoriesSupportingSoftwareUpdate];
 
-  if ([v5 count])
+  if ([accessoriesSupportingSoftwareUpdate count])
   {
-    v6 = [v5 anyObject];
-    v7 = [v6 home];
+    anyObject = [accessoriesSupportingSoftwareUpdate anyObject];
+    home = [anyObject home];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __67__HUServiceDetailsViewController__executeSilentSoftwareUpdateCheck__block_invoke;
     v10[3] = &unk_277DB8EC0;
-    v11 = v7;
-    v8 = v7;
-    if (([v5 na_all:v10] & 1) == 0)
+    v11 = home;
+    v8 = home;
+    if (([accessoriesSupportingSoftwareUpdate na_all:v10] & 1) == 0)
     {
       NSLog(&cfstr_AccessoriesSho.isa);
     }
@@ -9247,10 +9247,10 @@ BOOL __67__HUServiceDetailsViewController__executeSilentSoftwareUpdateCheck__blo
 {
   v26 = *MEMORY[0x277D85DE8];
   objc_opt_class();
-  v3 = [(HUServiceDetailsViewController *)self item];
+  item = [(HUServiceDetailsViewController *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = item;
   }
 
   else
@@ -9260,19 +9260,19 @@ BOOL __67__HUServiceDetailsViewController__executeSilentSoftwareUpdateCheck__blo
 
   v5 = v4;
 
-  v6 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v7 = [v6 home];
-  if ([v7 hf_currentUserIsOwner])
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  home = [mEMORY[0x277D146E8] home];
+  if ([home hf_currentUserIsOwner])
   {
   }
 
   else
   {
-    v8 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v9 = [v8 home];
-    v10 = [v9 hf_currentUserIsAdministrator];
+    mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+    home2 = [mEMORY[0x277D146E8]2 home];
+    hf_currentUserIsAdministrator = [home2 hf_currentUserIsAdministrator];
 
-    if (!v10)
+    if (!hf_currentUserIsAdministrator)
     {
       goto LABEL_9;
     }
@@ -9280,30 +9280,30 @@ BOOL __67__HUServiceDetailsViewController__executeSilentSoftwareUpdateCheck__blo
 
   if (v5)
   {
-    v11 = [v5 accessories];
-    [v11 na_each:&__block_literal_global_956];
+    accessories = [v5 accessories];
+    [accessories na_each:&__block_literal_global_956];
     goto LABEL_11;
   }
 
 LABEL_9:
-  v11 = HFLogForCategory();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  accessories = HFLogForCategory();
+  if (os_log_type_enabled(accessories, OS_LOG_TYPE_DEFAULT))
   {
     v12 = MEMORY[0x277CCABB0];
-    v13 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v14 = [v13 home];
-    v15 = [v12 numberWithBool:{objc_msgSend(v14, "hf_currentUserIsOwner")}];
+    mEMORY[0x277D146E8]3 = [MEMORY[0x277D146E8] sharedDispatcher];
+    home3 = [mEMORY[0x277D146E8]3 home];
+    v15 = [v12 numberWithBool:{objc_msgSend(home3, "hf_currentUserIsOwner")}];
     v16 = MEMORY[0x277CCABB0];
-    v17 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v18 = [v17 home];
-    v19 = [v16 numberWithBool:{objc_msgSend(v18, "hf_currentUserIsAdministrator")}];
+    mEMORY[0x277D146E8]4 = [MEMORY[0x277D146E8] sharedDispatcher];
+    home4 = [mEMORY[0x277D146E8]4 home];
+    v19 = [v16 numberWithBool:{objc_msgSend(home4, "hf_currentUserIsAdministrator")}];
     v20 = 138412802;
     v21 = v15;
     v22 = 2112;
     v23 = v19;
     v24 = 2112;
     v25 = v5;
-    _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "Not fetching diagnostic info: [isOwner:%@], [isAdmin:%@], [mediaAccessoryItem:%@]", &v20, 0x20u);
+    _os_log_impl(&dword_20CEB6000, accessories, OS_LOG_TYPE_DEFAULT, "Not fetching diagnostic info: [isOwner:%@], [isAdmin:%@], [mediaAccessoryItem:%@]", &v20, 0x20u);
   }
 
 LABEL_11:
@@ -9321,23 +9321,23 @@ void __63__HUServiceDetailsViewController__fetchAccessoryDiagnosticInfo__block_i
   }
 }
 
-- (void)didSelectHeaderWarningAction:(id)a3
+- (void)didSelectHeaderWarningAction:(id)action
 {
   v67 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  actionCopy = action;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v61 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: User tapped header warning/symptom", buf, 0xCu);
   }
 
   objc_opt_class();
-  v7 = [(HUItemTableViewController *)self itemManager];
+  itemManager = [(HUItemTableViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = itemManager;
   }
 
   else
@@ -9347,30 +9347,30 @@ void __63__HUServiceDetailsViewController__fetchAccessoryDiagnosticInfo__block_i
 
   v9 = v8;
 
-  v10 = [v9 sourceItemAccessory];
-  v11 = [v10 hf_needsReprovisioningCheck];
+  sourceItemAccessory = [v9 sourceItemAccessory];
+  hf_needsReprovisioningCheck = [sourceItemAccessory hf_needsReprovisioningCheck];
 
-  if (v11)
+  if (hf_needsReprovisioningCheck)
   {
-    v12 = [v9 sourceItemAccessory];
-    v13 = [v12 home];
+    sourceItemAccessory2 = [v9 sourceItemAccessory];
+    home = [sourceItemAccessory2 home];
 
-    v14 = [v9 sourceItemAccessory];
-    [(HUServiceDetailsViewController *)v13 hf_startReprovisioningAccessory:v14];
+    sourceItemAccessory3 = [v9 sourceItemAccessory];
+    [(HUServiceDetailsViewController *)home hf_startReprovisioningAccessory:sourceItemAccessory3];
 
     v15 = MEMORY[0x277CBEB98];
-    v16 = [v9 sourceItem];
-    v17 = [v15 setWithObject:v16];
-    v18 = [v9 updateResultsForItems:v17 senderSelector:a2];
+    sourceItem = [v9 sourceItem];
+    mEMORY[0x277D148E8] = [v15 setWithObject:sourceItem];
+    v18 = [v9 updateResultsForItems:mEMORY[0x277D148E8] senderSelector:a2];
 LABEL_37:
 
     goto LABEL_38;
   }
 
   objc_opt_class();
-  v19 = [v9 headerItem];
-  v20 = [v19 latestResults];
-  v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277D140C0]];
+  headerItem = [v9 headerItem];
+  latestResults = [headerItem latestResults];
+  v21 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D140C0]];
   if (objc_opt_isKindOfClass())
   {
     v22 = v21;
@@ -9381,39 +9381,39 @@ LABEL_37:
     v22 = 0;
   }
 
-  v13 = v22;
+  home = v22;
 
-  v52 = self;
-  v23 = [(HUItemTableViewController *)self itemManager];
-  v24 = [v23 sourceItem];
-  v25 = [v24 latestResults];
-  v16 = [v25 objectForKey:*MEMORY[0x277D13BD0]];
+  selfCopy2 = self;
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  sourceItem2 = [itemManager2 sourceItem];
+  latestResults2 = [sourceItem2 latestResults];
+  sourceItem = [latestResults2 objectForKey:*MEMORY[0x277D13BD0]];
 
-  if (!v16)
+  if (!sourceItem)
   {
     obj = [v9 sourceItem];
-    v34 = [obj accessories];
-    v16 = [v34 anyObject];
+    accessories = [obj accessories];
+    sourceItem = [accessories anyObject];
 LABEL_26:
 
 LABEL_27:
     goto LABEL_28;
   }
 
-  if ([(HUServiceDetailsViewController *)v13 type]== 1 || [(HUServiceDetailsViewController *)v13 type]== 2 || [(HUServiceDetailsViewController *)v13 type]== 20)
+  if ([(HUServiceDetailsViewController *)home type]== 1 || [(HUServiceDetailsViewController *)home type]== 2 || [(HUServiceDetailsViewController *)home type]== 20)
   {
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    obj = [v16 accessories];
+    obj = [sourceItem accessories];
     v26 = [obj countByEnumeratingWithState:&v56 objects:v66 count:16];
     if (v26)
     {
       v27 = v26;
       v49 = v21;
-      v50 = v16;
-      v51 = v5;
+      v50 = sourceItem;
+      v51 = actionCopy;
       v28 = *v57;
       while (2)
       {
@@ -9425,21 +9425,21 @@ LABEL_27:
           }
 
           v30 = *(*(&v56 + 1) + 8 * i);
-          v31 = [v30 symptomsHandler];
-          v32 = [v31 symptoms];
+          symptomsHandler = [v30 symptomsHandler];
+          symptoms = [symptomsHandler symptoms];
           v54[0] = MEMORY[0x277D85DD0];
           v54[1] = 3221225472;
           v54[2] = __63__HUServiceDetailsViewController_didSelectHeaderWarningAction___block_invoke;
           v54[3] = &unk_277DBF138;
-          v55 = v13;
-          v33 = [v32 na_firstObjectPassingTest:v54];
+          v55 = home;
+          v33 = [symptoms na_firstObjectPassingTest:v54];
 
           if (v33)
           {
-            v16 = v30;
+            sourceItem = v30;
 
-            v34 = v55;
-            v5 = v51;
+            accessories = v55;
+            actionCopy = v51;
             v21 = v49;
             goto LABEL_26;
           }
@@ -9454,7 +9454,7 @@ LABEL_27:
         break;
       }
 
-      v5 = v51;
+      actionCopy = v51;
       v21 = v49;
     }
 
@@ -9465,55 +9465,55 @@ LABEL_28:
   v35 = HFLogForCategory();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = [(HUServiceDetailsViewController *)v13 type];
+    type = [(HUServiceDetailsViewController *)home type];
     *buf = 138412802;
-    v61 = v13;
+    selfCopy = home;
     v62 = 2048;
-    v63 = v36;
+    v63 = type;
     v64 = 2112;
-    v65 = v16;
+    v65 = sourceItem;
     _os_log_impl(&dword_20CEB6000, v35, OS_LOG_TYPE_DEFAULT, "Trying to fix symptom %@ (type %lu) for object %@", buf, 0x20u);
   }
 
-  if (v16)
+  if (sourceItem)
   {
-    if ([(HUServiceDetailsViewController *)v13 type]== 7)
+    if ([(HUServiceDetailsViewController *)home type]== 7)
     {
       v37 = HFLocalizedString();
-      v17 = [MEMORY[0x277D75110] hu_actionSheetWithTitle:v37 message:0 anchorView:v5];
+      mEMORY[0x277D148E8] = [MEMORY[0x277D75110] hu_actionSheetWithTitle:v37 message:0 anchorView:actionCopy];
       v38 = MEMORY[0x277D750F8];
       v39 = HFLocalizedString();
       v40 = [v38 actionWithTitle:v39 style:0 handler:&__block_literal_global_967];
-      [v17 addAction:v40];
+      [mEMORY[0x277D148E8] addAction:v40];
 
       v41 = MEMORY[0x277D750F8];
       v42 = HFLocalizedString();
       v43 = [v41 actionWithTitle:v42 style:0 handler:&__block_literal_global_976];
-      [v17 addAction:v43];
+      [mEMORY[0x277D148E8] addAction:v43];
 
       v44 = MEMORY[0x277D750F8];
       v45 = HFLocalizedString();
       v46 = [v44 actionWithTitle:v45 style:1 handler:0];
-      [v17 addAction:v46];
+      [mEMORY[0x277D148E8] addAction:v46];
 
-      [(HUServiceDetailsViewController *)v52 presentViewController:v17 animated:0 completion:0];
+      [(HUServiceDetailsViewController *)selfCopy2 presentViewController:mEMORY[0x277D148E8] animated:0 completion:0];
       goto LABEL_37;
     }
 
-    if ([(HUServiceDetailsViewController *)v13 type]== 14)
+    if ([(HUServiceDetailsViewController *)home type]== 14)
     {
-      v17 = [MEMORY[0x277D148E8] sharedInstance];
-      v47 = [MEMORY[0x277CBEBC0] hf_wifiSettingsURL];
-      v48 = [v17 openURL:v47];
+      mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+      hf_wifiSettingsURL = [MEMORY[0x277CBEBC0] hf_wifiSettingsURL];
+      v48 = [mEMORY[0x277D148E8] openURL:hf_wifiSettingsURL];
 
       goto LABEL_37;
     }
 
-    if (v13)
+    if (home)
     {
-      v17 = [MEMORY[0x277D14B80] sharedManager];
-      [v17 fixSymptom:v13 forFixableObject:v16 presentingViewController:v52];
-      v13 = v21;
+      mEMORY[0x277D148E8] = [MEMORY[0x277D14B80] sharedManager];
+      [mEMORY[0x277D148E8] fixSymptom:home forFixableObject:sourceItem presentingViewController:selfCopy2];
+      home = v21;
       goto LABEL_37;
     }
   }
@@ -9535,14 +9535,14 @@ void __63__HUServiceDetailsViewController_didSelectHeaderWarningAction___block_i
   v1 = [v0 openURL:v2];
 }
 
-- (id)_recoverItemBuilder:(id)a3 fromError:(id)a4
+- (id)_recoverItemBuilder:(id)builder fromError:(id)error
 {
-  v5 = a4;
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 sourceItem];
-  if ([v7 conformsToProtocol:&unk_2824C0788])
+  errorCopy = error;
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItem = [detailsItemManager sourceItem];
+  if ([sourceItem conformsToProtocol:&unk_2824C0788])
   {
-    v8 = v7;
+    v8 = sourceItem;
   }
 
   else
@@ -9552,31 +9552,31 @@ void __63__HUServiceDetailsViewController_didSelectHeaderWarningAction___block_i
 
   v9 = v8;
 
-  v10 = [v9 homeKitObject];
+  homeKitObject = [v9 homeKitObject];
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v10 hf_isValidObject] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([homeKitObject hf_isValidObject] & 1) == 0)
   {
-    v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
-    v11 = [MEMORY[0x277D2C900] futureWithError:v5];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithError:errorCopy];
   }
 
-  v12 = v11;
+  v12 = futureWithNoResult;
 
   return v12;
 }
 
-- (void)accessoryDidUpdateControllable:(id)a3
+- (void)accessoryDidUpdateControllable:(id)controllable
 {
-  v5 = a3;
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 sourceItem];
-  if ([v7 conformsToProtocol:&unk_2824C0788])
+  controllableCopy = controllable;
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItem = [detailsItemManager sourceItem];
+  if ([sourceItem conformsToProtocol:&unk_2824C0788])
   {
-    v8 = v7;
+    v8 = sourceItem;
   }
 
   else
@@ -9585,13 +9585,13 @@ void __63__HUServiceDetailsViewController_didSelectHeaderWarningAction___block_i
   }
 
   v9 = v8;
-  v10 = [v9 homeKitObject];
+  homeKitObject = [v9 homeKitObject];
 
-  v11 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v12 = [v11 sourceItem];
-  if ([v12 conformsToProtocol:&unk_28251AC90])
+  detailsItemManager2 = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItem2 = [detailsItemManager2 sourceItem];
+  if ([sourceItem2 conformsToProtocol:&unk_28251AC90])
   {
-    v13 = v12;
+    v13 = sourceItem2;
   }
 
   else
@@ -9600,22 +9600,22 @@ void __63__HUServiceDetailsViewController_didSelectHeaderWarningAction___block_i
   }
 
   v14 = v13;
-  v15 = [v14 accessoryRepresentableObject];
+  accessoryRepresentableObject = [v14 accessoryRepresentableObject];
 
-  if (v15 || ((v15 = v10, ![v15 conformsToProtocol:&unk_2825BCA78]) ? (v16 = 0) : (v16 = v15), v17 = v16, v15, v17))
+  if (accessoryRepresentableObject || ((accessoryRepresentableObject = homeKitObject, ![accessoryRepresentableObject conformsToProtocol:&unk_2825BCA78]) ? (v16 = 0) : (v16 = accessoryRepresentableObject), v17 = v16, accessoryRepresentableObject, v17))
   {
-    v18 = [v15 hf_associatedAccessories];
+    hf_associatedAccessories = [accessoryRepresentableObject hf_associatedAccessories];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __65__HUServiceDetailsViewController_accessoryDidUpdateControllable___block_invoke;
     v22[3] = &unk_277DB8EC0;
-    v23 = v5;
-    v19 = [v18 na_any:v22];
+    v23 = controllableCopy;
+    v19 = [hf_associatedAccessories na_any:v22];
 
     if (v19)
     {
-      v20 = [(HUItemTableViewController *)self itemManager];
-      v21 = [v20 reloadAndUpdateAllItemsFromSenderSelector:a2];
+      itemManager = [(HUItemTableViewController *)self itemManager];
+      v21 = [itemManager reloadAndUpdateAllItemsFromSenderSelector:a2];
     }
   }
 }
@@ -9638,13 +9638,13 @@ uint64_t __65__HUServiceDetailsViewController_accessoryDidUpdateControllable___b
   return v4;
 }
 
-- (void)accessoryDidUpdateServices:(id)a3
+- (void)accessoryDidUpdateServices:(id)services
 {
-  v4 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v5 = [v4 sourceItem];
-  if ([v5 conformsToProtocol:&unk_2824C0788])
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItem = [detailsItemManager sourceItem];
+  if ([sourceItem conformsToProtocol:&unk_2824C0788])
   {
-    v6 = v5;
+    v6 = sourceItem;
   }
 
   else
@@ -9658,10 +9658,10 @@ uint64_t __65__HUServiceDetailsViewController_accessoryDidUpdateControllable___b
   if (v11)
   {
     objc_opt_class();
-    v8 = [v11 homeKitObject];
+    homeKitObject = [v11 homeKitObject];
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = homeKitObject;
     }
 
     else
@@ -9680,21 +9680,21 @@ uint64_t __65__HUServiceDetailsViewController_accessoryDidUpdateControllable___b
   }
 }
 
-- (void)_didRemoveHomeKitObject:(id)a3
+- (void)_didRemoveHomeKitObject:(id)object
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:4009 description:{@"Invalid parameter not satisfying: %@", @"homeKitObject"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsViewController.m" lineNumber:4009 description:{@"Invalid parameter not satisfying: %@", @"homeKitObject"}];
   }
 
-  v6 = [(HUServiceDetailsViewController *)self detailsItemManager];
-  v7 = [v6 sourceItem];
-  if ([v7 conformsToProtocol:&unk_2824C0788])
+  detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+  sourceItem = [detailsItemManager sourceItem];
+  if ([sourceItem conformsToProtocol:&unk_2824C0788])
   {
-    v8 = v7;
+    v8 = sourceItem;
   }
 
   else
@@ -9703,15 +9703,15 @@ uint64_t __65__HUServiceDetailsViewController_accessoryDidUpdateControllable___b
   }
 
   v9 = v8;
-  v10 = [v9 homeKitObject];
+  homeKitObject = [v9 homeKitObject];
 
-  if (v10 == v5)
+  if (homeKitObject == objectCopy)
   {
     goto LABEL_15;
   }
 
   objc_opt_class();
-  v11 = v5;
+  v11 = objectCopy;
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -9726,14 +9726,14 @@ uint64_t __65__HUServiceDetailsViewController_accessoryDidUpdateControllable___b
 
   if (v13)
   {
-    v14 = [v13 cameraProfiles];
-    v15 = [v14 containsObject:v10];
+    cameraProfiles = [v13 cameraProfiles];
+    v15 = [cameraProfiles containsObject:homeKitObject];
 
-    if (v15 & 1) != 0 || ([v13 mediaProfile], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", v10), v16, (v17) || (objc_msgSend(v13, "profiles"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "containsObject:", v10), v18, v19))
+    if (v15 & 1) != 0 || ([v13 mediaProfile], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", homeKitObject), v16, (v17) || (objc_msgSend(v13, "profiles"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "containsObject:", homeKitObject), v18, v19))
     {
 
 LABEL_15:
-      if ([v5 hf_isValidObject])
+      if ([objectCopy hf_isValidObject])
       {
         NSLog(&cfstr_ThisObjectIsVa.isa);
       }
@@ -9742,18 +9742,18 @@ LABEL_15:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v27 = v5;
+        v27 = objectCopy;
         _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "HomeKit Object '%@' was removed; dismissing presented serviceDetailsViewController", buf, 0xCu);
       }
 
       [(HUServiceDetailsViewController *)self setRequiresPresentingViewControllerDismissal:1];
-      v21 = [(HUServiceDetailsViewController *)self presentationDelegate];
-      v22 = [v21 finishPresentation:self animated:1];
+      presentationDelegate = [(HUServiceDetailsViewController *)self presentationDelegate];
+      v22 = [presentationDelegate finishPresentation:self animated:1];
       goto LABEL_20;
     }
 
-    v23 = [v13 services];
-    v24 = [v23 containsObject:v10];
+    services = [v13 services];
+    v24 = [services containsObject:homeKitObject];
 
     if (v24)
     {
@@ -9761,22 +9761,22 @@ LABEL_15:
     }
   }
 
-  v21 = HFLogForCategory();
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  presentationDelegate = HFLogForCategory();
+  if (os_log_type_enabled(presentationDelegate, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v27 = v11;
-    _os_log_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEFAULT, "HomeKit Object '%@' was not removed; Unable to validate backing source item.", buf, 0xCu);
+    _os_log_impl(&dword_20CEB6000, presentationDelegate, OS_LOG_TYPE_DEFAULT, "HomeKit Object '%@' was not removed; Unable to validate backing source item.", buf, 0xCu);
   }
 
 LABEL_20:
 }
 
-- (void)didSelectHomeAssistantDeviceSplitAccountAction:(unint64_t)a3
+- (void)didSelectHomeAssistantDeviceSplitAccountAction:(unint64_t)action
 {
-  if (a3 != 1)
+  if (action != 1)
   {
-    if (a3 != 2)
+    if (action != 2)
     {
       v13 = HFLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -9788,16 +9788,16 @@ LABEL_20:
       goto LABEL_10;
     }
 
-    v4 = [(HUServiceDetailsViewController *)self detailsItemManager];
-    v5 = [v4 sourceItemIsHomePod];
+    detailsItemManager = [(HUServiceDetailsViewController *)self detailsItemManager];
+    sourceItemIsHomePod = [detailsItemManager sourceItemIsHomePod];
 
-    if (v5)
+    if (sourceItemIsHomePod)
     {
       objc_opt_class();
-      v6 = [(HUServiceDetailsViewController *)self item];
+      item = [(HUServiceDetailsViewController *)self item];
       if (objc_opt_isKindOfClass())
       {
-        v7 = v6;
+        v7 = item;
       }
 
       else
@@ -9808,15 +9808,15 @@ LABEL_20:
       v8 = v7;
 
       v9 = MEMORY[0x277D143F8];
-      v10 = [v8 mediaProfileContainer];
-      v11 = [v10 accessories];
-      v12 = [v9 logoutAccessories:v11];
+      mediaProfileContainer = [v8 mediaProfileContainer];
+      accessories = [mediaProfileContainer accessories];
+      v12 = [v9 logoutAccessories:accessories];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __81__HUServiceDetailsViewController_didSelectHomeAssistantDeviceSplitAccountAction___block_invoke;
       v16[3] = &unk_277DB7720;
       v17 = v8;
-      v18 = self;
+      selfCopy = self;
       v13 = v8;
       v14 = [v12 addCompletionBlock:v16];
 
@@ -9848,14 +9848,14 @@ void __81__HUServiceDetailsViewController_didSelectHomeAssistantDeviceSplitAccou
   }
 }
 
-- (void)_setDismissedHomePodHasNonMemberMediaAccountWarning:(BOOL)a3
+- (void)_setDismissedHomePodHasNonMemberMediaAccountWarning:(BOOL)warning
 {
-  v3 = a3;
+  warningCopy = warning;
   objc_opt_class();
-  v6 = [(HUServiceDetailsViewController *)self item];
+  item = [(HUServiceDetailsViewController *)self item];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = item;
   }
 
   else
@@ -9865,13 +9865,13 @@ void __81__HUServiceDetailsViewController_didSelectHomeAssistantDeviceSplitAccou
 
   v8 = v7;
 
-  v9 = [v8 mediaProfileContainer];
+  mediaProfileContainer = [v8 mediaProfileContainer];
 
-  v10 = [v9 hf_settingsValueManager];
-  v11 = [v10 settings];
+  hf_settingsValueManager = [mediaProfileContainer hf_settingsValueManager];
+  settings = [hf_settingsValueManager settings];
 
-  v12 = [v11 hf_accessorySettingAtKeyPath:*MEMORY[0x277D138E8]];
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v12 = [settings hf_accessorySettingAtKeyPath:*MEMORY[0x277D138E8]];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:warningCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __86__HUServiceDetailsViewController__setDismissedHomePodHasNonMemberMediaAccountWarning___block_invoke;
@@ -9987,34 +9987,34 @@ id __57__HUServiceDetailsViewController_showConnectedEcosystems__block_invoke_2(
   return v5;
 }
 
-+ (id)_buildNetworkSymptomsAnalyticsDataForAccessory:(id)a3 interactionType:(int64_t)a4
++ (id)_buildNetworkSymptomsAnalyticsDataForAccessory:(id)accessory interactionType:(int64_t)type
 {
-  v5 = a3;
-  if ([v5 hf_isHomePod] && (objc_msgSend(v5, "home"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "homeLocationStatus"), v6, v7 == 1))
+  accessoryCopy = accessory;
+  if ([accessoryCopy hf_isHomePod] && (objc_msgSend(accessoryCopy, "home"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "homeLocationStatus"), v6, v7 == 1))
   {
-    v8 = [v5 symptomsHandler];
-    v9 = [v8 hf_symptomsSortedByPriority];
+    symptomsHandler = [accessoryCopy symptomsHandler];
+    hf_symptomsSortedByPriority = [symptomsHandler hf_symptomsSortedByPriority];
 
-    v10 = [MEMORY[0x277CD1E88] hf_nextSymptomAfterInternetOutageInSortedList:v9];
+    v10 = [MEMORY[0x277CD1E88] hf_nextSymptomAfterInternetOutageInSortedList:hf_symptomsSortedByPriority];
     v11 = v10;
     if (v10 && [MEMORY[0x277CD1E80] hf_isNetworkDiagnosticsIssueForSymptomType:{objc_msgSend(v10, "type")}] && objc_msgSend(v11, "type") != 114)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v11, "type")}];
-      [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x277D13648]];
+      [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x277D13648]];
 
-      [v14 setObject:&unk_2824919A0 forKeyedSubscript:*MEMORY[0x277D13628]];
-      if (a4 <= 2)
+      [dictionary setObject:&unk_2824919A0 forKeyedSubscript:*MEMORY[0x277D13628]];
+      if (type <= 2)
       {
-        v16 = qword_277DBF1C0[a4];
-        v17 = qword_277DBF1D8[a4];
-        v18 = qword_277DBF1F0[a4];
-        [v14 setObject:v16 forKeyedSubscript:*MEMORY[0x277D13638]];
-        [v14 setObject:v17 forKeyedSubscript:*MEMORY[0x277D13630]];
-        [v14 setObject:v18 forKeyedSubscript:*MEMORY[0x277D13640]];
+        v16 = qword_277DBF1C0[type];
+        v17 = qword_277DBF1D8[type];
+        v18 = qword_277DBF1F0[type];
+        [dictionary setObject:v16 forKeyedSubscript:*MEMORY[0x277D13638]];
+        [dictionary setObject:v17 forKeyedSubscript:*MEMORY[0x277D13630]];
+        [dictionary setObject:v18 forKeyedSubscript:*MEMORY[0x277D13640]];
       }
 
-      v12 = [v14 copy];
+      v12 = [dictionary copy];
     }
 
     else
@@ -10031,10 +10031,10 @@ id __57__HUServiceDetailsViewController_showConnectedEcosystems__block_invoke_2(
   return v12;
 }
 
-- (void)_submitMetricsSymptomsInteractionForAccessory:(id)a3 interactionType:(int64_t)a4
+- (void)_submitMetricsSymptomsInteractionForAccessory:(id)accessory interactionType:(int64_t)type
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = [HUServiceDetailsViewController _buildNetworkSymptomsAnalyticsDataForAccessory:a3 interactionType:a4];
+  v4 = [HUServiceDetailsViewController _buildNetworkSymptomsAnalyticsDataForAccessory:accessory interactionType:type];
   if (v4)
   {
     v5 = HFLogForCategory();

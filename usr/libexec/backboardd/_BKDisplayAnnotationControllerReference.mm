@@ -1,5 +1,5 @@
 @interface _BKDisplayAnnotationControllerReference
-- (_BKDisplayAnnotationControllerReference)initWithController:(id)a3;
+- (_BKDisplayAnnotationControllerReference)initWithController:(id)controller;
 - (void)dealloc;
 @end
 
@@ -57,13 +57,13 @@
         }
 
         os_unfair_lock_lock(&displayController->_lock);
-        v8 = [(BKDisplayAnnotationController *)v6 display];
-        v9 = [v8 uniqueId];
-        v10 = [v9 length];
+        display = [(BKDisplayAnnotationController *)v6 display];
+        uniqueId = [display uniqueId];
+        v10 = [uniqueId length];
         v11 = BKSDisplayUUIDMainKey;
         if (v10)
         {
-          v11 = v9;
+          v11 = uniqueId;
         }
 
         v12 = v11;
@@ -83,21 +83,21 @@
   [(_BKDisplayAnnotationControllerReference *)&v17 dealloc];
 }
 
-- (_BKDisplayAnnotationControllerReference)initWithController:(id)a3
+- (_BKDisplayAnnotationControllerReference)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = _BKDisplayAnnotationControllerReference;
   v6 = [(_BKDisplayAnnotationControllerReference *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
-    if (v5)
+    objc_storeStrong(&v6->_controller, controller);
+    if (controllerCopy)
     {
-      os_unfair_lock_lock(v5 + 8);
-      ++*&v5[10]._os_unfair_lock_opaque;
-      os_unfair_lock_unlock(v5 + 8);
+      os_unfair_lock_lock(controllerCopy + 8);
+      ++*&controllerCopy[10]._os_unfair_lock_opaque;
+      os_unfair_lock_unlock(controllerCopy + 8);
     }
   }
 

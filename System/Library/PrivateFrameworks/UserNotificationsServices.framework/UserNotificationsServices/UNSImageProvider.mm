@@ -1,20 +1,20 @@
 @interface UNSImageProvider
-+ (id)_contactForImageRenderingFromContentURLWithContext:(id)a3 bundleIdentifier:(id)a4;
-+ (id)_contactsForImageRenderingFromRecipientsWithContext:(id)a3 bundleIdentifier:(id)a4 descriptorForRequiredKeys:(id)a5;
-+ (id)_imageDataFromFileSystemForContactURL:(id)a3;
-+ (id)_imageDataFromIntentsForContentURL:(id)a3;
-+ (id)generateEphemeralContactsForImageRenderingWithContext:(id)a3 bundleIdentifier:(id)a4 descriptorForRequiredKeys:(id)a5;
-+ (id)imageDataForContentURL:(id)a3;
++ (id)_contactForImageRenderingFromContentURLWithContext:(id)context bundleIdentifier:(id)identifier;
++ (id)_contactsForImageRenderingFromRecipientsWithContext:(id)context bundleIdentifier:(id)identifier descriptorForRequiredKeys:(id)keys;
++ (id)_imageDataFromFileSystemForContactURL:(id)l;
++ (id)_imageDataFromIntentsForContentURL:(id)l;
++ (id)generateEphemeralContactsForImageRenderingWithContext:(id)context bundleIdentifier:(id)identifier descriptorForRequiredKeys:(id)keys;
++ (id)imageDataForContentURL:(id)l;
 @end
 
 @implementation UNSImageProvider
 
-+ (id)imageDataForContentURL:(id)a3
++ (id)imageDataForContentURL:(id)l
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (!lCopy)
   {
     v12 = UNSLogImageProvider();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -28,13 +28,13 @@
     goto LABEL_19;
   }
 
-  v6 = [v4 isFileURL];
-  if (!v6)
+  isFileURL = [lCopy isFileURL];
+  if (!isFileURL)
   {
     goto LABEL_13;
   }
 
-  v7 = [a1 _imageDataFromFileSystemForContactURL:v5];
+  v7 = [self _imageDataFromFileSystemForContactURL:v5];
   v8 = UNSLogImageProvider();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -50,14 +50,14 @@
   if (!v7)
   {
 LABEL_13:
-    v7 = [a1 _imageDataFromIntentsForContentURL:v5];
+    v7 = [self _imageDataFromIntentsForContentURL:v5];
     v9 = UNSLogImageProvider();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"FIRST";
       v15 = 136446978;
       v16 = "+[UNSImageProvider imageDataForContentURL:]";
-      if (v6)
+      if (isFileURL)
       {
         v10 = @"SECOND";
       }
@@ -71,10 +71,10 @@ LABEL_13:
       _os_log_impl(&dword_270B08000, v9, OS_LOG_TYPE_DEFAULT, "%{public}s: contentURL:%{public}@ Trying to fetch from intents %{public}@. Success:%{public}d", &v15, 0x26u);
     }
 
-    v11 = v7 ? 1 : v6;
+    v11 = v7 ? 1 : isFileURL;
     if ((v11 & 1) == 0)
     {
-      v7 = [a1 _imageDataFromFileSystemForContactURL:v5];
+      v7 = [self _imageDataFromFileSystemForContactURL:v5];
       v12 = UNSLogImageProvider();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -96,46 +96,46 @@ LABEL_19:
   return v7;
 }
 
-+ (id)generateEphemeralContactsForImageRenderingWithContext:(id)a3 bundleIdentifier:(id)a4 descriptorForRequiredKeys:(id)a5
++ (id)generateEphemeralContactsForImageRenderingWithContext:(id)context bundleIdentifier:(id)identifier descriptorForRequiredKeys:(id)keys
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  identifierCopy = identifier;
+  keysCopy = keys;
   v11 = UNSLogImageProvider();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 identifier];
-    v13 = [v12 un_logDigest];
+    identifier = [contextCopy identifier];
+    un_logDigest = [identifier un_logDigest];
     *buf = 138543874;
-    v31 = v9;
+    v31 = identifierCopy;
     v32 = 2082;
     v33 = "+[UNSImageProvider generateEphemeralContactsForImageRenderingWithContext:bundleIdentifier:descriptorForRequiredKeys:]";
     v34 = 2114;
-    v35 = v13;
+    v35 = un_logDigest;
     _os_log_impl(&dword_270B08000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}s: Context identifier:%{public}@ Start getting contacts", buf, 0x20u);
   }
 
-  if (!v8)
+  if (!contextCopy)
   {
     v19 = MEMORY[0x277CBEBF8];
     goto LABEL_15;
   }
 
-  v14 = [a1 _contactForImageRenderingFromContentURLWithContext:v8 bundleIdentifier:v9];
+  v14 = [self _contactForImageRenderingFromContentURLWithContext:contextCopy bundleIdentifier:identifierCopy];
   if (v14)
   {
     v15 = UNSLogImageProvider();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v8 identifier];
-      v17 = [v16 un_logDigest];
+      identifier2 = [contextCopy identifier];
+      un_logDigest2 = [identifier2 un_logDigest];
       *buf = 138543874;
-      v31 = v9;
+      v31 = identifierCopy;
       v32 = 2082;
       v33 = "+[UNSImageProvider generateEphemeralContactsForImageRenderingWithContext:bundleIdentifier:descriptorForRequiredKeys:]";
       v34 = 2114;
-      v35 = v17;
+      v35 = un_logDigest2;
       _os_log_impl(&dword_270B08000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}s: Context identifier:%{public}@ Contact created from content URL", buf, 0x20u);
     }
 
@@ -145,21 +145,21 @@ LABEL_19:
 
   else
   {
-    v20 = [v9 un_isFirstPartyIdentifier];
+    un_isFirstPartyIdentifier = [identifierCopy un_isFirstPartyIdentifier];
     v21 = UNSLogImageProvider();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-    if (!v20)
+    if (!un_isFirstPartyIdentifier)
     {
       if (v22)
       {
-        v27 = [v8 identifier];
-        v28 = [v27 un_logDigest];
+        identifier3 = [contextCopy identifier];
+        un_logDigest3 = [identifier3 un_logDigest];
         *buf = 138543874;
-        v31 = v9;
+        v31 = identifierCopy;
         v32 = 2082;
         v33 = "+[UNSImageProvider generateEphemeralContactsForImageRenderingWithContext:bundleIdentifier:descriptorForRequiredKeys:]";
         v34 = 2114;
-        v35 = v28;
+        v35 = un_logDigest3;
         _os_log_impl(&dword_270B08000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}s: Context identifier:%{public}@ No contact created because no data found content URL provided", buf, 0x20u);
       }
 
@@ -169,18 +169,18 @@ LABEL_19:
 
     if (v22)
     {
-      v23 = [v8 identifier];
-      v24 = [v23 un_logDigest];
+      identifier4 = [contextCopy identifier];
+      un_logDigest4 = [identifier4 un_logDigest];
       *buf = 138543874;
-      v31 = v9;
+      v31 = identifierCopy;
       v32 = 2082;
       v33 = "+[UNSImageProvider generateEphemeralContactsForImageRenderingWithContext:bundleIdentifier:descriptorForRequiredKeys:]";
       v34 = 2114;
-      v35 = v24;
+      v35 = un_logDigest4;
       _os_log_impl(&dword_270B08000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}s: Context identifier:%{public}@ Contacts created from recipients for snowglobe (1st party only)", buf, 0x20u);
     }
 
-    v18 = [a1 _contactsForImageRenderingFromRecipientsWithContext:v8 bundleIdentifier:v9 descriptorForRequiredKeys:v10];
+    v18 = [self _contactsForImageRenderingFromRecipientsWithContext:contextCopy bundleIdentifier:identifierCopy descriptorForRequiredKeys:keysCopy];
   }
 
   v19 = v18;
@@ -192,10 +192,10 @@ LABEL_15:
   return v19;
 }
 
-+ (id)_imageDataFromIntentsForContentURL:(id)a3
++ (id)_imageDataFromIntentsForContentURL:(id)l
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v4 = [MEMORY[0x277CBEAA8] now];
   v5 = UNSLogImageProvider();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -203,16 +203,16 @@ LABEL_15:
     *buf = 136446466;
     v26 = "+[UNSImageProvider _imageDataFromIntentsForContentURL:]";
     v27 = 2114;
-    v28 = v3;
+    v28 = lCopy;
     _os_log_impl(&dword_270B08000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: contentURL:%{public}@ Starting Read", buf, 0x16u);
   }
 
-  v6 = [MEMORY[0x277CD3D10] imageWithURL:v3];
+  v6 = [MEMORY[0x277CD3D10] imageWithURL:lCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 _imageData];
-    if (v8)
+    _imageData = [v6 _imageData];
+    if (_imageData)
     {
 LABEL_20:
       v18 = [MEMORY[0x277CBEAA8] now];
@@ -224,9 +224,9 @@ LABEL_20:
         *buf = 136446978;
         v26 = "+[UNSImageProvider _imageDataFromIntentsForContentURL:]";
         v27 = 2114;
-        v28 = v3;
+        v28 = lCopy;
         v29 = 1026;
-        *v30 = v8 != 0;
+        *v30 = _imageData != 0;
         *&v30[4] = 2050;
         *&v30[6] = v20;
         _os_log_impl(&dword_270B08000, v21, OS_LOG_TYPE_DEFAULT, "%{public}s: contentURL:%{public}@ Ending Read. Success:%{public}d. Finished in:%{public}f milliseconds", buf, 0x26u);
@@ -235,21 +235,21 @@ LABEL_20:
       goto LABEL_23;
     }
 
-    v9 = [v7 _uri];
-    if ([v9 isFileURL])
+    _uri = [v7 _uri];
+    if ([_uri isFileURL])
     {
       v10 = *MEMORY[0x277D861B8];
-      [v9 fileSystemRepresentation];
+      [_uri fileSystemRepresentation];
       v11 = sandbox_extension_issue_file();
       if (!v11)
       {
         v15 = UNSLogImageProvider();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          [(UNSImageProvider *)v3 _imageDataFromIntentsForContentURL:v9, v15];
+          [(UNSImageProvider *)lCopy _imageDataFromIntentsForContentURL:_uri, v15];
         }
 
-        v8 = 0;
+        _imageData = 0;
         goto LABEL_19;
       }
 
@@ -257,9 +257,9 @@ LABEL_20:
       [v7 _setSandboxExtensionData:v12];
     }
 
-    v13 = [MEMORY[0x277CD3D20] sharedConnection];
+    mEMORY[0x277CD3D20] = [MEMORY[0x277CD3D20] sharedConnection];
     v24 = 0;
-    v14 = [v13 loadDataImageFromImage:v7 scaledSize:&v24 error:{*MEMORY[0x277CD3840], *(MEMORY[0x277CD3840] + 8)}];
+    v14 = [mEMORY[0x277CD3D20] loadDataImageFromImage:v7 scaledSize:&v24 error:{*MEMORY[0x277CD3840], *(MEMORY[0x277CD3840] + 8)}];
     v15 = v24;
 
     if (!v14 || v15)
@@ -270,7 +270,7 @@ LABEL_20:
         *buf = 136446978;
         v26 = "+[UNSImageProvider _imageDataFromIntentsForContentURL:]";
         v27 = 2114;
-        v28 = v3;
+        v28 = lCopy;
         v29 = 2114;
         *v30 = v7;
         *&v30[8] = 2114;
@@ -278,22 +278,22 @@ LABEL_20:
         _os_log_error_impl(&dword_270B08000, v16, OS_LOG_TYPE_ERROR, "%{public}s: contentURL:%{public}@ Failed to fetch icon data from INImage %{public}@ with error %{public}@", buf, 0x2Au);
       }
 
-      v8 = 0;
+      _imageData = 0;
     }
 
     else
     {
-      v8 = [v14 _imageData];
+      _imageData = [v14 _imageData];
       v16 = UNSLogImageProvider();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v7 _identifier];
+        _identifier = [v7 _identifier];
         *buf = 136446722;
         v26 = "+[UNSImageProvider _imageDataFromIntentsForContentURL:]";
         v27 = 2114;
-        v28 = v3;
+        v28 = lCopy;
         v29 = 2114;
-        *v30 = v17;
+        *v30 = _identifier;
         _os_log_impl(&dword_270B08000, v16, OS_LOG_TYPE_DEFAULT, "%{public}s: contentURL:%{public}@ Successfully fetched identity image with identifier '%{public}@'", buf, 0x20u);
       }
     }
@@ -305,21 +305,21 @@ LABEL_19:
   v18 = UNSLogImageProvider();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    [(UNSImageProvider *)v3 _imageDataFromIntentsForContentURL:v18];
+    [(UNSImageProvider *)lCopy _imageDataFromIntentsForContentURL:v18];
   }
 
-  v8 = 0;
+  _imageData = 0;
 LABEL_23:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return _imageData;
 }
 
-+ (id)_imageDataFromFileSystemForContactURL:(id)a3
++ (id)_imageDataFromFileSystemForContactURL:(id)l
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v4 = [MEMORY[0x277CBEAA8] now];
   v5 = UNSLogImageProvider();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -327,12 +327,12 @@ LABEL_23:
     *buf = 136446466;
     v17 = "+[UNSImageProvider _imageDataFromFileSystemForContactURL:]";
     v18 = 2114;
-    v19 = v3;
+    v19 = lCopy;
     _os_log_impl(&dword_270B08000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: contentURL:%{public}@ Starting Read", buf, 0x16u);
   }
 
   v15 = 0;
-  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v3 options:1 error:&v15];
+  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:1 error:&v15];
   v7 = v15;
   if (v7)
   {
@@ -342,7 +342,7 @@ LABEL_23:
       *buf = 136446722;
       v17 = "+[UNSImageProvider _imageDataFromFileSystemForContactURL:]";
       v18 = 2114;
-      v19 = v3;
+      v19 = lCopy;
       v20 = 2114;
       v21[0] = v7;
       _os_log_impl(&dword_270B08000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s: contentURL:%{public}@ Error reading image data %{public}@", buf, 0x20u);
@@ -358,7 +358,7 @@ LABEL_23:
     *buf = 136446978;
     v17 = "+[UNSImageProvider _imageDataFromFileSystemForContactURL:]";
     v18 = 2114;
-    v19 = v3;
+    v19 = lCopy;
     v20 = 1026;
     LODWORD(v21[0]) = v6 != 0;
     WORD2(v21[0]) = 2050;
@@ -371,47 +371,47 @@ LABEL_23:
   return v6;
 }
 
-+ (id)_contactForImageRenderingFromContentURLWithContext:(id)a3 bundleIdentifier:(id)a4
++ (id)_contactForImageRenderingFromContentURLWithContext:(id)context bundleIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  identifierCopy = identifier;
   v8 = UNSLogImageProvider();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 identifier];
-    v10 = [v9 un_logDigest];
-    v11 = [v6 contentURL];
-    v12 = [v6 contentURL];
+    identifier = [contextCopy identifier];
+    un_logDigest = [identifier un_logDigest];
+    contentURL = [contextCopy contentURL];
+    contentURL2 = [contextCopy contentURL];
     v21 = 138544386;
-    v22 = v7;
+    v22 = identifierCopy;
     v23 = 2082;
     v24 = "+[UNSImageProvider _contactForImageRenderingFromContentURLWithContext:bundleIdentifier:]";
     v25 = 2114;
-    v26 = v10;
+    v26 = un_logDigest;
     v27 = 1026;
-    v28 = v11 != 0;
+    v28 = contentURL != 0;
     v29 = 2114;
-    v30 = v12;
+    v30 = contentURL2;
     _os_log_impl(&dword_270B08000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}s: Context identifier:%{public}@ Will attempt to get image data:%{public}d withURL:%{public}@", &v21, 0x30u);
   }
 
-  v13 = [v6 contentURL];
-  if (v13 && ([a1 imageDataForContentURL:v13], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+  contentURL3 = [contextCopy contentURL];
+  if (contentURL3 && ([self imageDataForContentURL:contentURL3], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v15 = v14;
     v16 = objc_alloc_init(MEMORY[0x277CBDB38]);
     [v16 setImageData:v15];
-    v17 = [v13 absoluteString];
-    if (v17)
+    absoluteString = [contentURL3 absoluteString];
+    if (absoluteString)
     {
-      [v16 setGivenName:v17];
+      [v16 setGivenName:absoluteString];
     }
 
-    [v16 setFamilyName:v7];
+    [v16 setFamilyName:identifierCopy];
   }
 
-  else if ([v6 isBusinessCorrespondence])
+  else if ([contextCopy isBusinessCorrespondence])
   {
     v16 = objc_alloc_init(MEMORY[0x277CBDB38]);
     [v16 setContactType:1];
@@ -430,19 +430,19 @@ LABEL_23:
   return v16;
 }
 
-+ (id)_contactsForImageRenderingFromRecipientsWithContext:(id)a3 bundleIdentifier:(id)a4 descriptorForRequiredKeys:(id)a5
++ (id)_contactsForImageRenderingFromRecipientsWithContext:(id)context bundleIdentifier:(id)identifier descriptorForRequiredKeys:(id)keys
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v28 = a4;
-  v8 = a5;
+  contextCopy = context;
+  identifierCopy = identifier;
+  keysCopy = keys;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v26 = v7;
-  obj = [v7 allContacts];
+  v26 = contextCopy;
+  obj = [contextCopy allContacts];
   v10 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v10)
   {
@@ -458,33 +458,33 @@ LABEL_23:
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
-        v15 = [v14 cnContactIdentifier];
-        if (!v15)
+        cnContactIdentifier = [v14 cnContactIdentifier];
+        if (!cnContactIdentifier)
         {
           goto LABEL_8;
         }
 
         v16 = +[UNSNotificationContactService sharedInstance];
-        v33 = v8;
+        v33 = keysCopy;
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
-        v18 = [v16 curatedContactForContact:v14 bundleIdentifier:v28 keysToFetch:v17];
+        v18 = [v16 curatedContactForContact:v14 bundleIdentifier:identifierCopy keysToFetch:v17];
 
         if (!v18)
         {
 LABEL_8:
-          v19 = [v14 displayName];
-          v20 = [v19 rangeOfString:@" "];
+          displayName = [v14 displayName];
+          v20 = [displayName rangeOfString:@" "];
           v18 = objc_alloc_init(MEMORY[0x277CBDB38]);
-          v21 = [v19 length] < 3 || v20 == 0;
-          if (v21 || v20 >= [v19 length] - 1)
+          v21 = [displayName length] < 3 || v20 == 0;
+          if (v21 || v20 >= [displayName length] - 1)
           {
-            [v18 setGivenName:v19];
+            [v18 setGivenName:displayName];
           }
 
           else
           {
-            v22 = [v19 substringWithRange:{0, v20}];
-            v23 = [v19 substringWithRange:{v20 + 1, objc_msgSend(v19, "length") + ~v20}];
+            v22 = [displayName substringWithRange:{0, v20}];
+            v23 = [displayName substringWithRange:{v20 + 1, objc_msgSend(displayName, "length") + ~v20}];
             [v18 setGivenName:v22];
             [v18 setFamilyName:v23];
           }

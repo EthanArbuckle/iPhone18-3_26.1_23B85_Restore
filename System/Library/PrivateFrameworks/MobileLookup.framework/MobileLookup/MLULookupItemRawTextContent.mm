@@ -1,29 +1,29 @@
 @interface MLULookupItemRawTextContent
-- (MLULookupItemRawTextContent)initWithText:(id)a3 range:(_NSRange)a4;
+- (MLULookupItemRawTextContent)initWithText:(id)text range:(_NSRange)range;
 - (void)dismissViewController;
 - (void)setupViewControllerInCommitMode;
 @end
 
 @implementation MLULookupItemRawTextContent
 
-- (MLULookupItemRawTextContent)initWithText:(id)a3 range:(_NSRange)a4
+- (MLULookupItemRawTextContent)initWithText:(id)text range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   v13.receiver = self;
   v13.super_class = MLULookupItemRawTextContent;
   v8 = [(MLULookupItemRawTextContent *)&v13 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277D04330]) initWithString:v7 range:{location, length}];
+    v9 = [objc_alloc(MEMORY[0x277D04330]) initWithString:textCopy range:{location, length}];
     [(MLULookupItemContent *)v8 setPreviewViewController:v9];
 
-    v10 = [(MLULookupItemContent *)v8 previewViewController];
-    [v10 setModalPresentationStyle:6];
+    previewViewController = [(MLULookupItemContent *)v8 previewViewController];
+    [previewViewController setModalPresentationStyle:6];
 
-    v11 = [(MLULookupItemRawTextContent *)v8 parsecCollectionViewController];
-    [v11 setPreviewMode:1];
+    parsecCollectionViewController = [(MLULookupItemRawTextContent *)v8 parsecCollectionViewController];
+    [parsecCollectionViewController setPreviewMode:1];
 
     [(MLULookupItemContent *)v8 setValid:1];
   }
@@ -40,8 +40,8 @@
 
 - (void)setupViewControllerInCommitMode
 {
-  v2 = [(MLULookupItemRawTextContent *)self parsecCollectionViewController];
-  [v2 setPreviewMode:0];
+  parsecCollectionViewController = [(MLULookupItemRawTextContent *)self parsecCollectionViewController];
+  [parsecCollectionViewController setPreviewMode:0];
 }
 
 @end

@@ -6,11 +6,11 @@
 
 - (uint64_t)getLinkState:()CoreCECInterfaceProperties physicalAddress:
 {
-  result = [a1 objectForKey:@"kCECInterfacePropertyHasLink"];
+  result = [self objectForKey:@"kCECInterfacePropertyHasLink"];
   if (result)
   {
     *a3 = [result BOOLValue];
-    result = [a1 objectForKey:@"kCECInterfacePropertyPhysicalAddress"];
+    result = [self objectForKey:@"kCECInterfacePropertyPhysicalAddress"];
     if (result)
     {
       *a4 = [result unsignedIntegerValue];

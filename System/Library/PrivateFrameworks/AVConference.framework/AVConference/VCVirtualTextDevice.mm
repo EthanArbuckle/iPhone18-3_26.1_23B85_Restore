@@ -1,20 +1,20 @@
 @interface VCVirtualTextDevice
-- (VCVirtualTextDevice)initWithSendDelegate:(id)a3 clientPid:(int)a4 delegate:(id)a5 delegateFunctions:(const tagVCMediaStreamDelegateRealtimeInstanceVTable *)a6 delegateQueue:(id)a7;
+- (VCVirtualTextDevice)initWithSendDelegate:(id)delegate clientPid:(int)pid delegate:(id)a5 delegateFunctions:(const tagVCMediaStreamDelegateRealtimeInstanceVTable *)functions delegateQueue:(id)queue;
 - (id)pause;
 - (id)resume;
-- (id)setPause:(BOOL)a3;
+- (id)setPause:(BOOL)pause;
 - (id)start;
-- (id)stopWithError:(id)a3;
+- (id)stopWithError:(id)error;
 - (void)dealloc;
-- (void)didReceiveText:(id)a3;
-- (void)sendCharacter:(unsigned __int16)a3;
-- (void)sendText:(id)a3;
-- (void)setMediaStreamDelegateQueue:(id)a3;
+- (void)didReceiveText:(id)text;
+- (void)sendCharacter:(unsigned __int16)character;
+- (void)sendText:(id)text;
+- (void)setMediaStreamDelegateQueue:(id)queue;
 @end
 
 @implementation VCVirtualTextDevice
 
-- (VCVirtualTextDevice)initWithSendDelegate:(id)a3 clientPid:(int)a4 delegate:(id)a5 delegateFunctions:(const tagVCMediaStreamDelegateRealtimeInstanceVTable *)a6 delegateQueue:(id)a7
+- (VCVirtualTextDevice)initWithSendDelegate:(id)delegate clientPid:(int)pid delegate:(id)a5 delegateFunctions:(const tagVCMediaStreamDelegateRealtimeInstanceVTable *)functions delegateQueue:(id)queue
 {
   v37 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
@@ -23,13 +23,13 @@
   v13 = v12;
   if (v12)
   {
-    v12->_clientPid = a4;
-    objc_storeWeak(&v12->_sendDelegate, a3);
+    v12->_clientPid = pid;
+    objc_storeWeak(&v12->_sendDelegate, delegate);
     objc_storeWeak(&v13->_mediaStreamDelegate, a5);
-    updateFrequencyLevel = a6->updateFrequencyLevel;
-    v13->_mediaStreamDelegateQueue = a7;
+    updateFrequencyLevel = functions->updateFrequencyLevel;
+    v13->_mediaStreamDelegateQueue = queue;
     v13->_mediaStreamDelegateFunctions.updateFrequencyLevel = updateFrequencyLevel;
-    dispatch_retain(a7);
+    dispatch_retain(queue);
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
     v16 = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCVirtualTextDevice.queue", 0, CustomRootQueue);
     v13->_state = 0;
@@ -110,7 +110,7 @@ LABEL_13:
   [(VCVirtualTextDevice *)&v3 dealloc];
 }
 
-- (void)setMediaStreamDelegateQueue:(id)a3
+- (void)setMediaStreamDelegateQueue:(id)queue
 {
   mediaStreamDelegateQueue = self->_mediaStreamDelegateQueue;
   if (mediaStreamDelegateQueue)
@@ -119,11 +119,11 @@ LABEL_13:
     self->_mediaStreamDelegateQueue = 0;
   }
 
-  if (a3)
+  if (queue)
   {
-    self->_mediaStreamDelegateQueue = a3;
+    self->_mediaStreamDelegateQueue = queue;
 
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 }
 
@@ -180,7 +180,7 @@ LABEL_11:
         WORD2(v16) = 2112;
         *(&v16 + 6) = v3;
         HIWORD(v16) = 2048;
-        v17 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -194,7 +194,7 @@ LABEL_11:
   *&buf[16] = 0x3052000000;
   *&v16 = __Block_byref_object_copy__29;
   *(&v16 + 1) = __Block_byref_object_dispose__29;
-  v17 = 0;
+  selfCopy = 0;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -227,7 +227,7 @@ uint64_t __28__VCVirtualTextDevice_start__block_invoke(uint64_t result)
   return result;
 }
 
-- (id)stopWithError:(id)a3
+- (id)stopWithError:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -280,7 +280,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v4;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v7 = " [%s] %s:%d %@(%p) ";
         v8 = v11;
         v9 = 48;
@@ -352,7 +352,7 @@ LABEL_11:
         WORD2(v16) = 2112;
         *(&v16 + 6) = v3;
         HIWORD(v16) = 2048;
-        v17 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -366,7 +366,7 @@ LABEL_11:
   *&buf[16] = 0x3052000000;
   *&v16 = __Block_byref_object_copy__29;
   *(&v16 + 1) = __Block_byref_object_dispose__29;
-  v17 = 0;
+  selfCopy = 0;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -452,7 +452,7 @@ LABEL_11:
         WORD2(v16) = 2112;
         *(&v16 + 6) = v3;
         HIWORD(v16) = 2048;
-        v17 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -466,7 +466,7 @@ LABEL_11:
   *&buf[16] = 0x3052000000;
   *&v16 = __Block_byref_object_copy__29;
   *(&v16 + 1) = __Block_byref_object_dispose__29;
-  v17 = 0;
+  selfCopy = 0;
   queue = self->_queue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -499,9 +499,9 @@ uint64_t __29__VCVirtualTextDevice_resume__block_invoke(uint64_t result)
   return result;
 }
 
-- (id)setPause:(BOOL)a3
+- (id)setPause:(BOOL)pause
 {
-  if (a3)
+  if (pause)
   {
     return [(VCVirtualTextDevice *)self pause];
   }
@@ -512,7 +512,7 @@ uint64_t __29__VCVirtualTextDevice_resume__block_invoke(uint64_t result)
   }
 }
 
-- (void)sendCharacter:(unsigned __int16)a3
+- (void)sendCharacter:(unsigned __int16)character
 {
   v28 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -577,7 +577,7 @@ LABEL_13:
           v24 = 2112;
           v25 = v5;
           v26 = 2048;
-          v27 = self;
+          selfCopy2 = self;
           v9 = " [%s] %s:%d %@(%p) ";
           v10 = v13;
           v11 = 48;
@@ -596,7 +596,7 @@ LABEL_13:
         v24 = 2112;
         v25 = v5;
         v26 = 2048;
-        v27 = self;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) ", buf, 0x30u);
       }
     }
@@ -608,7 +608,7 @@ LABEL_13:
   v16[2] = __37__VCVirtualTextDevice_sendCharacter___block_invoke;
   v16[3] = &unk_1E85F41F8;
   v16[4] = self;
-  v17 = a3;
+  characterCopy = character;
   dispatch_async(queue, v16);
 }
 
@@ -626,7 +626,7 @@ void *__37__VCVirtualTextDevice_sendCharacter___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)sendText:(id)a3
+- (void)sendText:(id)text
 {
   v27 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -691,7 +691,7 @@ LABEL_13:
           v23 = 2112;
           v24 = v5;
           v25 = 2048;
-          v26 = self;
+          selfCopy2 = self;
           v9 = " [%s] %s:%d %@(%p) ";
           v10 = v13;
           v11 = 48;
@@ -710,7 +710,7 @@ LABEL_13:
         v23 = 2112;
         v24 = v5;
         v25 = 2048;
-        v26 = self;
+        selfCopy2 = self;
         _os_log_debug_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEBUG, " [%s] %s:%d %@(%p) ", buf, 0x30u);
       }
     }
@@ -722,7 +722,7 @@ LABEL_13:
   v16[2] = __32__VCVirtualTextDevice_sendText___block_invoke;
   v16[3] = &unk_1E85F37F0;
   v16[4] = self;
-  v16[5] = a3;
+  v16[5] = text;
   dispatch_async(queue, v16);
 }
 
@@ -740,7 +740,7 @@ void *__32__VCVirtualTextDevice_sendText___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)didReceiveText:(id)a3
+- (void)didReceiveText:(id)text
 {
   block[6] = *MEMORY[0x1E69E9840];
   mediaStreamDelegateQueue = self->_mediaStreamDelegateQueue;
@@ -749,7 +749,7 @@ void *__32__VCVirtualTextDevice_sendText___block_invoke(uint64_t a1)
   block[2] = __38__VCVirtualTextDevice_didReceiveText___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = text;
   dispatch_async(mediaStreamDelegateQueue, block);
 }
 

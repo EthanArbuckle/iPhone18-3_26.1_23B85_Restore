@@ -1,6 +1,6 @@
 @interface PREditorElementLayoutAttributes
 - (CGRect)rect;
-- (PREditorElementLayoutAttributes)initWithRect:(CGRect)a3 variant:(unint64_t)a4 resolvedTitleLayout:(unint64_t)a5;
+- (PREditorElementLayoutAttributes)initWithRect:(CGRect)rect variant:(unint64_t)variant resolvedTitleLayout:(unint64_t)layout;
 @end
 
 @implementation PREditorElementLayoutAttributes
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (PREditorElementLayoutAttributes)initWithRect:(CGRect)a3 variant:(unint64_t)a4 resolvedTitleLayout:(unint64_t)a5
+- (PREditorElementLayoutAttributes)initWithRect:(CGRect)rect variant:(unint64_t)variant resolvedTitleLayout:(unint64_t)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12.receiver = self;
   v12.super_class = PREditorElementLayoutAttributes;
   result = [(PREditorElementLayoutAttributes *)&v12 init];
@@ -33,8 +33,8 @@
     result->_rect.origin.y = y;
     result->_rect.size.width = width;
     result->_rect.size.height = height;
-    result->_variant = a4;
-    result->_resolvedTitleLayout = a5;
+    result->_variant = variant;
+    result->_resolvedTitleLayout = layout;
   }
 
   return result;

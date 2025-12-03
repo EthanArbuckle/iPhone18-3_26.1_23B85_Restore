@@ -1,14 +1,14 @@
 @interface WBSHistoryConnectionProxyForTesting
-- (WBSHistoryConnectionProxyForTesting)initWithListenerEndpoint:(id)a3;
+- (WBSHistoryConnectionProxyForTesting)initWithListenerEndpoint:(id)endpoint;
 - (id)_createConnection;
 @end
 
 @implementation WBSHistoryConnectionProxyForTesting
 
-- (WBSHistoryConnectionProxyForTesting)initWithListenerEndpoint:(id)a3
+- (WBSHistoryConnectionProxyForTesting)initWithListenerEndpoint:(id)endpoint
 {
-  objc_storeStrong(&self->_listenerEndpoint, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_listenerEndpoint, endpoint);
+  endpointCopy = endpoint;
   v8.receiver = self;
   v8.super_class = WBSHistoryConnectionProxyForTesting;
   v6 = [(WBSHistoryConnectionProxy *)&v8 init];

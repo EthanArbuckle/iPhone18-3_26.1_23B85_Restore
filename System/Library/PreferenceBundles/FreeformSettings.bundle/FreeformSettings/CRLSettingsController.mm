@@ -1,11 +1,11 @@
 @interface CRLSettingsController
 - (id)p_alignmentGuidesSpecifiers;
 - (id)p_appAnalyticsResetUserIdentifierSpecifiers;
-- (id)p_linkListSpecifierWithTitle:(id)a3 userDefaultKey:(id)a4 values:(id)a5 titles:(id)a6 shortTitles:(id)a7 rowIdentifier:(id)a8;
+- (id)p_linkListSpecifierWithTitle:(id)title userDefaultKey:(id)key values:(id)values titles:(id)titles shortTitles:(id)shortTitles rowIdentifier:(id)identifier;
 - (id)p_mathPaperSpecifiers;
 - (id)p_pencilSpecifiers;
 - (id)p_snapToGridSpecifiers;
-- (id)p_switchSpecifierWithTitle:(id)a3 userDefaultKey:(id)a4 rowIdentifier:(id)a5;
+- (id)p_switchSpecifierWithTitle:(id)title userDefaultKey:(id)key rowIdentifier:(id)identifier;
 - (id)p_systemPolicy;
 - (id)p_systemPolicySpecifiers;
 - (id)specifiers;
@@ -20,8 +20,8 @@
   v3 = [_NSLocalizedStringResource alloc];
   v4 = +[NSLocale currentLocale];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 bundleURL];
-  v7 = [v3 initWithKey:@"Freeform" table:@"SettingsStrings" locale:v4 bundleURL:v6];
+  bundleURL = [v5 bundleURL];
+  v7 = [v3 initWithKey:@"Freeform" table:@"SettingsStrings" locale:v4 bundleURL:bundleURL];
 
   v8 = CRLAppBundleIdentifier();
   [(CRLSettingsController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:v8 title:v7 localizedNavigationComponents:&__NSArray0__struct deepLink:v9];
@@ -30,31 +30,31 @@
 - (id)specifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLSettingsController *)self p_systemPolicySpecifiers];
-  [v3 addObjectsFromArray:v4];
+  p_systemPolicySpecifiers = [(CRLSettingsController *)self p_systemPolicySpecifiers];
+  [v3 addObjectsFromArray:p_systemPolicySpecifiers];
 
   if (_os_feature_enabled_impl())
   {
-    v5 = [(CRLSettingsController *)self p_snapToGridSpecifiers];
-    [v3 addObjectsFromArray:v5];
+    p_snapToGridSpecifiers = [(CRLSettingsController *)self p_snapToGridSpecifiers];
+    [v3 addObjectsFromArray:p_snapToGridSpecifiers];
   }
 
-  v6 = [(CRLSettingsController *)self p_alignmentGuidesSpecifiers];
-  [v3 addObjectsFromArray:v6];
+  p_alignmentGuidesSpecifiers = [(CRLSettingsController *)self p_alignmentGuidesSpecifiers];
+  [v3 addObjectsFromArray:p_alignmentGuidesSpecifiers];
 
-  v7 = [(CRLSettingsController *)self p_pencilSpecifiers];
-  [v3 addObjectsFromArray:v7];
+  p_pencilSpecifiers = [(CRLSettingsController *)self p_pencilSpecifiers];
+  [v3 addObjectsFromArray:p_pencilSpecifiers];
 
   if (_os_feature_enabled_impl())
   {
-    v8 = [(CRLSettingsController *)self p_appAnalyticsResetUserIdentifierSpecifiers];
-    [v3 addObjectsFromArray:v8];
+    p_appAnalyticsResetUserIdentifierSpecifiers = [(CRLSettingsController *)self p_appAnalyticsResetUserIdentifierSpecifiers];
+    [v3 addObjectsFromArray:p_appAnalyticsResetUserIdentifierSpecifiers];
   }
 
   if (_os_feature_enabled_impl())
   {
-    v9 = [(CRLSettingsController *)self p_mathPaperSpecifiers];
-    [v3 addObjectsFromArray:v9];
+    p_mathPaperSpecifiers = [(CRLSettingsController *)self p_mathPaperSpecifiers];
+    [v3 addObjectsFromArray:p_mathPaperSpecifiers];
   }
 
   v10 = OBJC_IVAR___PSListController__specifiers;
@@ -88,8 +88,8 @@
 
 - (id)p_systemPolicySpecifiers
 {
-  v2 = [(CRLSettingsController *)self p_systemPolicy];
-  v3 = [v2 specifiersForPolicyOptions:-134348803 force:0];
+  p_systemPolicy = [(CRLSettingsController *)self p_systemPolicy];
+  v3 = [p_systemPolicy specifiersForPolicyOptions:-134348803 force:0];
 
   return v3;
 }
@@ -210,18 +210,18 @@
   return v11;
 }
 
-- (id)p_switchSpecifierWithTitle:(id)a3 userDefaultKey:(id)a4 rowIdentifier:(id)a5
+- (id)p_switchSpecifierWithTitle:(id)title userDefaultKey:(id)key rowIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [PSSpecifier preferenceSpecifierNamed:a3 target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
-  [v10 setIdentifier:v8];
+  identifierCopy = identifier;
+  keyCopy = key;
+  v10 = [PSSpecifier preferenceSpecifierNamed:title target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
+  [v10 setIdentifier:identifierCopy];
 
-  v11 = [v9 copy];
+  v11 = [keyCopy copy];
   [v10 setObject:v11 forKeyedSubscript:PSKeyNameKey];
 
   v12 = +[CRLUserDefaults defaultDefaults];
-  v13 = [v12 objectForKeyedSubscript:v9];
+  v13 = [v12 objectForKeyedSubscript:keyCopy];
 
   [v10 setObject:v13 forKeyedSubscript:PSDefaultValueKey];
   v14 = CRLAppBundleIdentifier();
@@ -230,28 +230,28 @@
   return v10;
 }
 
-- (id)p_linkListSpecifierWithTitle:(id)a3 userDefaultKey:(id)a4 values:(id)a5 titles:(id)a6 shortTitles:(id)a7 rowIdentifier:(id)a8
+- (id)p_linkListSpecifierWithTitle:(id)title userDefaultKey:(id)key values:(id)values titles:(id)titles shortTitles:(id)shortTitles rowIdentifier:(id)identifier
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:objc_opt_class() cell:2 edit:0];
+  identifierCopy = identifier;
+  shortTitlesCopy = shortTitles;
+  titlesCopy = titles;
+  valuesCopy = values;
+  keyCopy = key;
+  titleCopy = title;
+  v19 = [PSSpecifier preferenceSpecifierNamed:titleCopy target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:objc_opt_class() cell:2 edit:0];
 
-  [v19 setIdentifier:v13];
-  v20 = [v17 copy];
+  [v19 setIdentifier:identifierCopy];
+  v20 = [keyCopy copy];
   [v19 setObject:v20 forKeyedSubscript:PSKeyNameKey];
 
   v21 = +[CRLUserDefaults defaultDefaults];
-  v22 = [v21 objectForKeyedSubscript:v17];
+  v22 = [v21 objectForKeyedSubscript:keyCopy];
 
   [v19 setObject:v22 forKeyedSubscript:PSDefaultValueKey];
   v23 = CRLAppBundleIdentifier();
   [v19 setObject:v23 forKeyedSubscript:PSDefaultsKey];
 
-  [v19 setValues:v16 titles:v15 shortTitles:v14 usingLocalizedTitleSorting:0];
+  [v19 setValues:valuesCopy titles:titlesCopy shortTitles:shortTitlesCopy usingLocalizedTitleSorting:0];
 
   return v19;
 }

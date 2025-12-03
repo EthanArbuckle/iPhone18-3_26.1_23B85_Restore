@@ -1,5 +1,5 @@
 @interface PUAirPlayActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (BOOL)isRouteAvailable;
 - (NSString)localizedRouteUnavailabilityMessage;
 - (PUAirPlayActivity)init;
@@ -25,23 +25,23 @@
 
 - (void)performActivity
 {
-  v3 = [(PUAirPlayActivity *)self isRouteAvailable];
-  if (v3)
+  isRouteAvailable = [(PUAirPlayActivity *)self isRouteAvailable];
+  if (isRouteAvailable)
   {
     [(PUAirPlayActivity *)self _unregisterForAirPlayNotifications];
     v4 = +[PHAirPlayScreenController sharedInstance];
     [v4 notifyDidPresentAirPlayRoutesFromShareSheet];
   }
 
-  [(UIActivity *)self activityDidFinish:v3];
+  [(UIActivity *)self activityDidFinish:isRouteAvailable];
 }
 
 - (NSString)localizedRouteUnavailabilityMessage
 {
   v2 = +[PHAirPlayScreenController sharedInstance];
-  v3 = [v2 routeUnavailableReason];
+  routeUnavailableReason = [v2 routeUnavailableReason];
 
-  if (v3 == 2)
+  if (routeUnavailableReason == 2)
   {
     v4 = @"SHARING_AIRPLAY_ERROR_MESSAGE_EXTERNAL_DISPLAY_CONNECTED";
   }
@@ -59,17 +59,17 @@
 - (BOOL)isRouteAvailable
 {
   v2 = +[PHAirPlayScreenController sharedInstance];
-  v3 = [v2 pu_hasAvailableRoute];
+  pu_hasAvailableRoute = [v2 pu_hasAvailableRoute];
 
-  return v3;
+  return pu_hasAvailableRoute;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [(PXActivity *)self itemSourceController];
-  v4 = [v3 isPreparingIndividualItems];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  isPreparingIndividualItems = [itemSourceController isPreparingIndividualItems];
 
-  return v4;
+  return isPreparingIndividualItems;
 }
 
 - (void)dealloc

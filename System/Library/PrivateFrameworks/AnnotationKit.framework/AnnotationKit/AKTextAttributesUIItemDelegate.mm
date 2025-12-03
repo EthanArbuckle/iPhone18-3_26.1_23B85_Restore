@@ -1,25 +1,25 @@
 @interface AKTextAttributesUIItemDelegate
 - (AKTextAttributesViewController)parentController;
-- (id)convertTextAttributes:(id)a3;
-- (void)syncTextAttributesToUI:(id)a3;
+- (id)convertTextAttributes:(id)attributes;
+- (void)syncTextAttributesToUI:(id)i;
 @end
 
 @implementation AKTextAttributesUIItemDelegate
 
-- (id)convertTextAttributes:(id)a3
+- (id)convertTextAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(AKTextAttributesUIItemDelegate *)self parentController];
-  v6 = [v5 convertTextAttributes:v4];
+  attributesCopy = attributes;
+  parentController = [(AKTextAttributesUIItemDelegate *)self parentController];
+  v6 = [parentController convertTextAttributes:attributesCopy];
 
   return v6;
 }
 
-- (void)syncTextAttributesToUI:(id)a3
+- (void)syncTextAttributesToUI:(id)i
 {
-  v4 = a3;
-  v5 = [(AKTextAttributesUIItemDelegate *)self parentController];
-  [v5 syncTextAttributesToUI:v4];
+  iCopy = i;
+  parentController = [(AKTextAttributesUIItemDelegate *)self parentController];
+  [parentController syncTextAttributesToUI:iCopy];
 }
 
 - (AKTextAttributesViewController)parentController

@@ -6,14 +6,14 @@
 
 - (id)_ad_connectionModeFromEnabledState
 {
-  v3 = [(AFPreferences *)self assistantIsEnabled];
-  v4 = [(AFPreferences *)self dictationIsEnabled];
-  v5 = v4 ^ 1;
-  if (((v3 ^ 1) & 1) != 0 || v5)
+  assistantIsEnabled = [(AFPreferences *)self assistantIsEnabled];
+  dictationIsEnabled = [(AFPreferences *)self dictationIsEnabled];
+  v5 = dictationIsEnabled ^ 1;
+  if (((assistantIsEnabled ^ 1) & 1) != 0 || v5)
   {
-    if ((v3 ^ 1 | v4))
+    if ((assistantIsEnabled ^ 1 | dictationIsEnabled))
     {
-      if ((v3 | v5))
+      if ((assistantIsEnabled | v5))
       {
         v7 = 0;
         goto LABEL_10;

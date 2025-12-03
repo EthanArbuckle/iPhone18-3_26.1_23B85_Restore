@@ -1,48 +1,48 @@
 @interface _UIDatePickerOverlayPresentation
 - (BOOL)isBeingDismissedOrPresented;
 - (BOOL)isPresentingOverlay;
-- (CGPoint)_adjustedAnchorPointForFrame:(CGRect)a3 alignment:(unint64_t)a4 anchorPoint:(CGPoint)a5;
-- (CGPoint)_normalizedSourcePointForAnchorPoint:(CGPoint)a3 menuFrame:(CGRect)a4;
-- (CGRect)_adjustedFrameForInputSize:(CGSize)a3 outputFrame:(CGRect)a4;
+- (CGPoint)_adjustedAnchorPointForFrame:(CGRect)frame alignment:(unint64_t)alignment anchorPoint:(CGPoint)point;
+- (CGPoint)_normalizedSourcePointForAnchorPoint:(CGPoint)point menuFrame:(CGRect)frame;
+- (CGRect)_adjustedFrameForInputSize:(CGSize)size outputFrame:(CGRect)frame;
 - (CGRect)resolvedSourceBounds;
 - (CGRect)resolvedSourceRect;
 - (CGRect)sourceRect;
 - (UIDatePicker)activeDatePicker;
 - (UIView)sourceView;
-- (_UIDatePickerOverlayPlatterLayout)_computedLayoutForPlatterView:(SEL)a3;
-- (_UIDatePickerOverlayPresentation)initWithSourceView:(id)a3;
+- (_UIDatePickerOverlayPlatterLayout)_computedLayoutForPlatterView:(SEL)view;
+- (_UIDatePickerOverlayPresentation)initWithSourceView:(id)view;
 - (_UIDatePickerOverlayPresentationDelegate)delegate;
 - (double)_layoutArbiterAnchorAlignmentOffset;
 - (int64_t)_overlayAlignment;
 - (unint64_t)_overlayAlignmentEdge;
-- (void)_prepareDatePickerPresentationWithCompletion:(id)a3;
-- (void)_presentNewDatePicker:(id)a3;
-- (void)_transitionToDatePicker:(id)a3;
-- (void)activateEmptyPresentationWithMode:(int64_t)a3 onDismiss:(id)a4;
-- (void)animateDismissalWithAnimations:(id)a3 completion:(id)a4;
-- (void)animatePresentWithAnimations:(id)a3 completion:(id)a4;
-- (void)animateTransitionWithAnimations:(id)a3 completion:(id)a4;
-- (void)dismissPresentationAnimated:(BOOL)a3;
-- (void)presentDatePicker:(id)a3 onDismiss:(id)a4;
+- (void)_prepareDatePickerPresentationWithCompletion:(id)completion;
+- (void)_presentNewDatePicker:(id)picker;
+- (void)_transitionToDatePicker:(id)picker;
+- (void)activateEmptyPresentationWithMode:(int64_t)mode onDismiss:(id)dismiss;
+- (void)animateDismissalWithAnimations:(id)animations completion:(id)completion;
+- (void)animatePresentWithAnimations:(id)animations completion:(id)completion;
+- (void)animateTransitionWithAnimations:(id)animations completion:(id)completion;
+- (void)dismissPresentationAnimated:(BOOL)animated;
+- (void)presentDatePicker:(id)picker onDismiss:(id)dismiss;
 - (void)retargetCurrentPresentationToSourceView;
-- (void)setAccessoryViewIgnoresDefaultInsets:(BOOL)a3;
-- (void)setActiveMode:(int64_t)a3;
-- (void)setAlignment:(int64_t)a3;
-- (void)setDefersAutomaticKeyboardAvoidanceAdjustments:(BOOL)a3;
+- (void)setAccessoryViewIgnoresDefaultInsets:(BOOL)insets;
+- (void)setActiveMode:(int64_t)mode;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setDefersAutomaticKeyboardAvoidanceAdjustments:(BOOL)adjustments;
 @end
 
 @implementation _UIDatePickerOverlayPresentation
 
-- (_UIDatePickerOverlayPresentation)initWithSourceView:(id)a3
+- (_UIDatePickerOverlayPresentation)initWithSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = _UIDatePickerOverlayPresentation;
   v5 = [(_UIDatePickerOverlayPresentation *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sourceView, v4);
+    objc_storeWeak(&v5->_sourceView, viewCopy);
     *&v6->_alignment = xmmword_18A65B680;
     v7 = *(MEMORY[0x1E695F050] + 16);
     v6->_sourceRect.origin = *MEMORY[0x1E695F050];
@@ -54,8 +54,8 @@
 
 - (BOOL)isPresentingOverlay
 {
-  v2 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
-  v3 = v2 != 0;
+  containerViewController = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+  v3 = containerViewController != 0;
 
   return v3;
 }
@@ -67,10 +67,10 @@
     return 1;
   }
 
-  v4 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
-  v5 = [v4 isBeingDismissed];
+  containerViewController = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+  isBeingDismissed = [containerViewController isBeingDismissed];
 
-  return v5;
+  return isBeingDismissed;
 }
 
 - (CGRect)resolvedSourceRect
@@ -78,8 +78,8 @@
   [(_UIDatePickerOverlayPresentation *)self sourceRect];
   if (CGRectIsNull(v20))
   {
-    v3 = [(_UIDatePickerOverlayPresentation *)self sourceView];
-    [v3 bounds];
+    sourceView = [(_UIDatePickerOverlayPresentation *)self sourceView];
+    [sourceView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -119,8 +119,8 @@
 
   else
   {
-    v11 = [(_UIDatePickerOverlayPresentation *)self sourceView];
-    [v11 bounds];
+    sourceView = [(_UIDatePickerOverlayPresentation *)self sourceView];
+    [sourceView bounds];
     v4 = v12;
     v6 = v13;
     v8 = v14;
@@ -138,30 +138,30 @@
   return result;
 }
 
-- (void)presentDatePicker:(id)a3 onDismiss:(id)a4
+- (void)presentDatePicker:(id)picker onDismiss:(id)dismiss
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeWeak(&self->_activeDatePicker, v6);
+  pickerCopy = picker;
+  dismissCopy = dismiss;
+  objc_storeWeak(&self->_activeDatePicker, pickerCopy);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64___UIDatePickerOverlayPresentation_presentDatePicker_onDismiss___block_invoke;
   v10[3] = &unk_1E7129030;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = dismissCopy;
+  v11 = pickerCopy;
+  v8 = pickerCopy;
+  v9 = dismissCopy;
   [(_UIDatePickerOverlayPresentation *)self _prepareDatePickerPresentationWithCompletion:v10];
 }
 
-- (void)activateEmptyPresentationWithMode:(int64_t)a3 onDismiss:(id)a4
+- (void)activateEmptyPresentationWithMode:(int64_t)mode onDismiss:(id)dismiss
 {
-  v10 = a4;
+  dismissCopy = dismiss;
   activeMode = self->_activeMode;
   if (activeMode)
   {
-    v7 = activeMode == a3;
+    v7 = activeMode == mode;
   }
 
   else
@@ -171,48 +171,48 @@
 
   if (!v7)
   {
-    v8 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
+    dismissHandler = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
 
-    if (v8)
+    if (dismissHandler)
     {
-      v9 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
-      v9[2](v9, 1);
+      dismissHandler2 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
+      dismissHandler2[2](dismissHandler2, 1);
     }
   }
 
-  [(_UIDatePickerOverlayPresentation *)self setActiveMode:a3];
-  [(_UIDatePickerOverlayPresentation *)self setDismissHandler:v10];
+  [(_UIDatePickerOverlayPresentation *)self setActiveMode:mode];
+  [(_UIDatePickerOverlayPresentation *)self setDismissHandler:dismissCopy];
 }
 
-- (void)dismissPresentationAnimated:(BOOL)a3
+- (void)dismissPresentationAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
+  animatedCopy = animated;
+  dismissHandler = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
 
-  if (v5)
+  if (dismissHandler)
   {
-    v6 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
-    v6[2](v6, 0);
+    dismissHandler2 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
+    dismissHandler2[2](dismissHandler2, 0);
 
     [(_UIDatePickerOverlayPresentation *)self setDismissHandler:0];
   }
 
-  v7 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+  containerViewController = [(_UIDatePickerOverlayPresentation *)self containerViewController];
 
-  if (v7)
+  if (containerViewController)
   {
-    v8 = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
-    [v8 resignFirstResponder];
+    activeDatePicker = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
+    [activeDatePicker resignFirstResponder];
 
     v48[0] = 0;
     v48[1] = v48;
     v48[2] = 0x3032000000;
     v48[3] = __Block_byref_object_copy__234;
     v48[4] = __Block_byref_object_dispose__234;
-    v9 = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
-    v49 = [v9 _style];
+    activeDatePicker2 = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
+    _style = [activeDatePicker2 _style];
 
-    v10 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+    containerViewController2 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
     v42 = 0;
     v43 = &v42;
     v44 = 0x3032000000;
@@ -229,18 +229,18 @@
     if (platterView)
     {
       v12 = [UIView alloc];
-      v13 = [v10 view];
-      [v13 frame];
+      view = [containerViewController2 view];
+      [view frame];
       v14 = [(UIView *)v12 initWithFrame:?];
       v15 = v37[5];
       v37[5] = v14;
 
-      v16 = [v10 view];
-      v17 = [v16 contentView];
-      v18 = v17;
-      if (v17)
+      view2 = [containerViewController2 view];
+      contentView = [view2 contentView];
+      v18 = contentView;
+      if (contentView)
       {
-        [v17 transform];
+        [contentView transform];
       }
 
       else
@@ -281,22 +281,22 @@
       aBlock[3] = &unk_1E71188B0;
       aBlock[4] = v48;
       aBlock[5] = &v42;
-      v22 = _Block_copy(aBlock);
+      presentingViewController2 = _Block_copy(aBlock);
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __64___UIDatePickerOverlayPresentation_dismissPresentationAnimated___block_invoke_2;
       v30[3] = &unk_1E7129058;
       v30[4] = &v36;
       v23 = _Block_copy(v30);
-      v24 = [v10 view];
-      v25 = [v24 window];
-      [v25 addSubview:v37[5]];
+      view3 = [containerViewController2 view];
+      window = [view3 window];
+      [window addSubview:v37[5]];
 
       [v37[5] addSubview:v43[5]];
-      v26 = [v10 presentingViewController];
-      [v26 dismissViewControllerAnimated:0 completion:0];
+      presentingViewController = [containerViewController2 presentingViewController];
+      [presentingViewController dismissViewControllerAnimated:0 completion:0];
 
-      if (v3)
+      if (animatedCopy)
       {
         if (_AXSReduceMotionEnabled())
         {
@@ -315,21 +315,21 @@
 
         else
         {
-          [(_UIDatePickerOverlayPresentation *)self animateDismissalWithAnimations:v22 completion:v23];
+          [(_UIDatePickerOverlayPresentation *)self animateDismissalWithAnimations:presentingViewController2 completion:v23];
         }
       }
 
       else
       {
-        v22[2](v22);
+        presentingViewController2[2](presentingViewController2);
         (*(v23 + 2))(v23, 1, 0);
       }
     }
 
     else
     {
-      v22 = [v10 presentingViewController];
-      [v22 dismissViewControllerAnimated:0 completion:0];
+      presentingViewController2 = [containerViewController2 presentingViewController];
+      [presentingViewController2 dismissViewControllerAnimated:0 completion:0];
     }
 
     _Block_object_dispose(&v36, 8);
@@ -345,29 +345,29 @@
   }
 }
 
-- (void)_prepareDatePickerPresentationWithCompletion:(id)a3
+- (void)_prepareDatePickerPresentationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
-  v6 = [v5 _style];
+  completionCopy = completion;
+  activeDatePicker = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
+  _style = [activeDatePicker _style];
 
-  v7 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
-  v8 = [(_UIDatePickerOverlayPresentation *)self sourceView];
-  v9 = [v8 _viewControllerForAncestor];
+  containerViewController = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+  sourceView = [(_UIDatePickerOverlayPresentation *)self sourceView];
+  _viewControllerForAncestor = [sourceView _viewControllerForAncestor];
 
-  if (!v7)
+  if (!containerViewController)
   {
-    v7 = [[_UIDatePickerContainerViewController alloc] initWithPresentation:self];
-    v10 = [(UIViewController *)v7 presentationController];
-    [v10 _setContainerIgnoresDirectTouchEvents:1];
+    containerViewController = [[_UIDatePickerContainerViewController alloc] initWithPresentation:self];
+    presentationController = [(UIViewController *)containerViewController presentationController];
+    [presentationController _setContainerIgnoresDirectTouchEvents:1];
 
-    -[UIViewController setModalPresentationStyle:](v7, "setModalPresentationStyle:", [v6 datePickerModalPresentationStyle]);
+    -[UIViewController setModalPresentationStyle:](containerViewController, "setModalPresentationStyle:", [_style datePickerModalPresentationStyle]);
   }
 
-  [(_UIDatePickerOverlayPresentation *)self setContainerViewController:v7];
-  v11 = [(UIViewController *)v7 presentingViewController];
+  [(_UIDatePickerOverlayPresentation *)self setContainerViewController:containerViewController];
+  presentingViewController = [(UIViewController *)containerViewController presentingViewController];
 
-  if (v11)
+  if (presentingViewController)
   {
     if ([(_UIDatePickerOverlayPresentation *)self isPresentingContainerViewController])
     {
@@ -377,14 +377,14 @@
         containerPresentCompletion[2](containerPresentCompletion, 0, 1);
       }
 
-      v13 = _Block_copy(v4);
+      v13 = _Block_copy(completionCopy);
       v14 = self->_containerPresentCompletion;
       self->_containerPresentCompletion = v13;
     }
 
     else
     {
-      (*(v4 + 2))(v4, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
       v14 = self->_containerPresentCompletion;
       self->_containerPresentCompletion = 0;
     }
@@ -392,25 +392,25 @@
     goto LABEL_16;
   }
 
-  v15 = [v9 presentedViewController];
+  presentedViewController = [_viewControllerForAncestor presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v9 presentedViewController];
-    v17 = [v16 isBeingDismissed];
+    presentedViewController2 = [_viewControllerForAncestor presentedViewController];
+    isBeingDismissed = [presentedViewController2 isBeingDismissed];
 
-    if (v17)
+    if (isBeingDismissed)
     {
       goto LABEL_12;
     }
 
-    v15 = [v9 presentedViewController];
-    v18 = [v15 presentation];
-    [v18 dismissPresentationAnimated:1];
+    presentedViewController = [_viewControllerForAncestor presentedViewController];
+    presentation = [presentedViewController presentation];
+    [presentation dismissPresentationAnimated:1];
   }
 
 LABEL_12:
-  v19 = _Block_copy(v4);
+  v19 = _Block_copy(completionCopy);
   v20 = self->_containerPresentCompletion;
   self->_containerPresentCompletion = v19;
 
@@ -422,20 +422,20 @@ LABEL_12:
     v21[2] = __81___UIDatePickerOverlayPresentation__prepareDatePickerPresentationWithCompletion___block_invoke;
     v21[3] = &unk_1E70F3590;
     v21[4] = self;
-    [v9 presentViewController:v7 animated:0 completion:v21];
+    [_viewControllerForAncestor presentViewController:containerViewController animated:0 completion:v21];
   }
 
 LABEL_16:
 }
 
-- (void)setAlignment:(int64_t)a3
+- (void)setAlignment:(int64_t)alignment
 {
-  if (self->_alignment != a3)
+  if (self->_alignment != alignment)
   {
-    self->_alignment = a3;
-    v4 = [(_UIDatePickerOverlayPresentation *)self platterView];
+    self->_alignment = alignment;
+    platterView = [(_UIDatePickerOverlayPresentation *)self platterView];
 
-    if (v4)
+    if (platterView)
     {
 
       [(_UIDatePickerOverlayPresentation *)self _transitionToDatePicker:0];
@@ -443,54 +443,54 @@ LABEL_16:
   }
 }
 
-- (void)setActiveMode:(int64_t)a3
+- (void)setActiveMode:(int64_t)mode
 {
-  if (self->_activeMode != a3)
+  if (self->_activeMode != mode)
   {
-    self->_activeMode = a3;
-    v6 = [(_UIDatePickerOverlayPresentation *)self delegate];
-    [v6 _datePickerPresentation:self didChangeActiveMode:a3];
+    self->_activeMode = mode;
+    delegate = [(_UIDatePickerOverlayPresentation *)self delegate];
+    [delegate _datePickerPresentation:self didChangeActiveMode:mode];
   }
 }
 
-- (void)setDefersAutomaticKeyboardAvoidanceAdjustments:(BOOL)a3
+- (void)setDefersAutomaticKeyboardAvoidanceAdjustments:(BOOL)adjustments
 {
-  if (self->_defersAutomaticKeyboardAvoidanceAdjustments != a3)
+  if (self->_defersAutomaticKeyboardAvoidanceAdjustments != adjustments)
   {
-    self->_defersAutomaticKeyboardAvoidanceAdjustments = a3;
-    v4 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
-    [v4 didChangeKeyboardAvoidanceAdjustmentDeferral];
+    self->_defersAutomaticKeyboardAvoidanceAdjustments = adjustments;
+    containerViewController = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+    [containerViewController didChangeKeyboardAvoidanceAdjustmentDeferral];
   }
 }
 
-- (void)setAccessoryViewIgnoresDefaultInsets:(BOOL)a3
+- (void)setAccessoryViewIgnoresDefaultInsets:(BOOL)insets
 {
-  v3 = a3;
-  self->_accessoryViewIgnoresDefaultInsets = a3;
-  v4 = [(_UIDatePickerOverlayPresentation *)self platterView];
-  [v4 setAccessoryViewIgnoresDefaultInsets:v3];
+  insetsCopy = insets;
+  self->_accessoryViewIgnoresDefaultInsets = insets;
+  platterView = [(_UIDatePickerOverlayPresentation *)self platterView];
+  [platterView setAccessoryViewIgnoresDefaultInsets:insetsCopy];
 }
 
-- (void)_presentNewDatePicker:(id)a3
+- (void)_presentNewDatePicker:(id)picker
 {
-  v4 = a3;
-  v5 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
+  pickerCopy = picker;
+  dismissHandler = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
 
-  if (v5)
+  if (dismissHandler)
   {
-    v6 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
-    v6[2](v6, 0);
+    dismissHandler2 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
+    dismissHandler2[2](dismissHandler2, 0);
 
     [(_UIDatePickerOverlayPresentation *)self setDismissHandler:0];
   }
 
-  v7 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
-  v8 = [v7 view];
+  containerViewController = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+  view = [containerViewController view];
 
-  v9 = [[_UIDatePickerOverlayPlatterView alloc] initWithDatePicker:v4 accessoryView:self->_accessoryView];
+  v9 = [[_UIDatePickerOverlayPlatterView alloc] initWithDatePicker:pickerCopy accessoryView:self->_accessoryView];
   [(_UIDatePickerOverlayPlatterView *)v9 setAccessoryViewIgnoresDefaultInsets:[(_UIDatePickerOverlayPresentation *)self accessoryViewIgnoresDefaultInsets]];
-  v10 = [v8 contentView];
-  [v10 addSubview:v9];
+  contentView = [view contentView];
+  [contentView addSubview:v9];
 
   objc_storeStrong(&self->_platterView, v9);
   v64 = 0u;
@@ -500,15 +500,15 @@ LABEL_16:
   [(_UIDatePickerOverlayPresentation *)self _computedLayoutForPlatterView:v9];
   [(UIView *)v9 setCenter:v63];
   [(_UIDatePickerOverlayPlatterView *)v9 setContentBounds:*&v62.origin, *&v62.size];
-  v11 = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
-  v12 = [v11 _style];
+  activeDatePicker = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
+  _style = [activeDatePicker _style];
 
-  [v12 overlayPlatterInitialScale];
+  [_style overlayPlatterInitialScale];
   v14 = v13;
   CGAffineTransformMakeScale(&v61, v13, v13);
   v60 = v61;
   [(UIView *)v9 setTransform:&v60];
-  [v12 overlayPlatterInitialHeight];
+  [_style overlayPlatterInitialHeight];
   v16 = v15;
   origin = v62.origin;
   size = v62.size;
@@ -531,17 +531,17 @@ LABEL_16:
   [(UIView *)v9 setAnchorPoint:v64];
   [(UIView *)v9 layoutIfNeeded];
   v59 = v65;
-  v21 = [v8 contentView];
+  contentView2 = [view contentView];
   v60 = v59;
-  [v21 setTransform:&v60];
+  [contentView2 setTransform:&v60];
 
-  [v8 bounds];
+  [view bounds];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [v8 contentView];
-  [v30 frame];
+  contentView3 = [view contentView];
+  [contentView3 frame];
   y = v67.origin.y;
   width = v67.size.width;
   v32 = v67.size.height;
@@ -584,8 +584,8 @@ LABEL_16:
   v74.size.height = v32;
   v38 = MaxX - CGRectGetMaxX(v74);
 
-  v39 = [v8 contentView];
-  [v39 setHitTestInsets:{-v47, -rect_24, -rect_16, -v38}];
+  contentView4 = [view contentView];
+  [contentView4 setHitTestInsets:{-v47, -rect_24, -rect_16, -v38}];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -622,24 +622,24 @@ LABEL_16:
   }
 }
 
-- (void)_transitionToDatePicker:(id)a3
+- (void)_transitionToDatePicker:(id)picker
 {
-  v4 = a3;
+  pickerCopy = picker;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
   v44 = __Block_byref_object_copy__234;
   v45 = __Block_byref_object_dispose__234;
-  v46 = [(_UIDatePickerOverlayPresentation *)self platterView];
+  platterView = [(_UIDatePickerOverlayPresentation *)self platterView];
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x3032000000;
   v39[3] = __Block_byref_object_copy__234;
   v39[4] = __Block_byref_object_dispose__234;
-  v5 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
-  v40 = [v5 view];
+  containerViewController = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+  view = [containerViewController view];
 
-  [v42[5] prepareDatePickerTransitionWithDatePicker:v4];
+  [v42[5] prepareDatePickerTransitionWithDatePicker:pickerCopy];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -656,12 +656,12 @@ LABEL_16:
   [v42[5] setAnchorPoint:0];
   [v42[5] setFrame:{v7, v9, v11, v13}];
   [v42[5] setContentBounds:{0, 0}];
-  v14 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
+  dismissHandler = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
 
-  if (v14)
+  if (dismissHandler)
   {
-    v15 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
-    v15[2](v15, 1);
+    dismissHandler2 = [(_UIDatePickerOverlayPresentation *)self dismissHandler];
+    dismissHandler2[2](dismissHandler2, 1);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -715,7 +715,7 @@ LABEL_16:
 
 - (void)retargetCurrentPresentationToSourceView
 {
-  v3 = [(_UIDatePickerOverlayPresentation *)self platterView];
+  platterView = [(_UIDatePickerOverlayPresentation *)self platterView];
   v9 = 0u;
   v10 = 0u;
   v7 = 0u;
@@ -723,23 +723,23 @@ LABEL_16:
   v5 = 0u;
   v6 = 0u;
   v4 = 0u;
-  [(_UIDatePickerOverlayPresentation *)self _computedLayoutForPlatterView:v3];
-  [v3 setContentBounds:{v4, v5}];
-  [v3 setBounds:{v4, v5}];
-  [v3 setCenter:v6];
-  [v3 layoutIfNeeded];
+  [(_UIDatePickerOverlayPresentation *)self _computedLayoutForPlatterView:platterView];
+  [platterView setContentBounds:{v4, v5}];
+  [platterView setBounds:{v4, v5}];
+  [platterView setCenter:v6];
+  [platterView layoutIfNeeded];
 }
 
-- (_UIDatePickerOverlayPlatterLayout)_computedLayoutForPlatterView:(SEL)a3
+- (_UIDatePickerOverlayPlatterLayout)_computedLayoutForPlatterView:(SEL)view
 {
   v6 = a4;
-  v7 = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
-  v8 = [v7 _style];
+  activeDatePicker = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
+  _style = [activeDatePicker _style];
 
   v9 = [_UIContextMenuLayoutArbiter alloc];
-  v10 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
-  v11 = [v10 view];
-  v12 = [(_UIContextMenuLayoutArbiter *)v9 initWithContainerView:v11 layout:1];
+  containerViewController = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+  view = [containerViewController view];
+  v12 = [(_UIContextMenuLayoutArbiter *)v9 initWithContainerView:view layout:1];
 
   v13 = objc_opt_new();
   [(_UIDatePickerOverlayPresentation *)self resolvedSourceRect];
@@ -747,10 +747,10 @@ LABEL_16:
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(_UIDatePickerOverlayPresentation *)self sourceView];
-  v23 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
-  v24 = [v23 view];
-  [v22 convertRect:v24 toView:{v15, v17, v19, v21}];
+  sourceView = [(_UIDatePickerOverlayPresentation *)self sourceView];
+  containerViewController2 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+  view2 = [containerViewController2 view];
+  [sourceView convertRect:view2 toView:{v15, v17, v19, v21}];
   v26 = v25;
   v28 = v27;
 
@@ -784,7 +784,7 @@ LABEL_16:
   v40 = v39;
 
   [v13 setPreferredMenuSize:{v38, v40}];
-  [v8 overlayPlatterDefaultSpacing];
+  [_style overlayPlatterDefaultSpacing];
   [v13 setPreferredContentSpacing:?];
   v41 = COERCE_DOUBLE([(_UIDatePickerOverlayPresentation *)self _overlayAlignmentEdge]);
   [(_UIDatePickerOverlayPresentation *)self _layoutArbiterAnchorAlignmentOffset];
@@ -926,25 +926,25 @@ LABEL_16:
 
 - (int64_t)_overlayAlignment
 {
-  v3 = [(_UIDatePickerOverlayPresentation *)self alignment];
+  alignment = [(_UIDatePickerOverlayPresentation *)self alignment];
   v4 = 1;
-  if (v3 > 3)
+  if (alignment > 3)
   {
-    if (v3 == 4)
+    if (alignment == 4)
     {
-      v6 = [(_UIDatePickerOverlayPresentation *)self sourceView];
-      v7 = v6[13] >> 21;
+      sourceView = [(_UIDatePickerOverlayPresentation *)self sourceView];
+      v7 = sourceView[13] >> 21;
     }
 
     else
     {
-      if (v3 != 5)
+      if (alignment != 5)
       {
         return v4;
       }
 
-      v6 = [(_UIDatePickerOverlayPresentation *)self sourceView];
-      LODWORD(v7) = ~(*(v6 + 26) >> 21);
+      sourceView = [(_UIDatePickerOverlayPresentation *)self sourceView];
+      LODWORD(v7) = ~(*(sourceView + 26) >> 21);
     }
 
     v4 = v7 & 2;
@@ -953,12 +953,12 @@ LABEL_16:
   }
 
   v5 = 2;
-  if (v3 != 2)
+  if (alignment != 2)
   {
     v5 = 1;
   }
 
-  if (v3 == 1)
+  if (alignment == 1)
   {
     return 0;
   }
@@ -971,14 +971,14 @@ LABEL_16:
 
 - (unint64_t)_overlayAlignmentEdge
 {
-  v2 = [(_UIDatePickerOverlayPresentation *)self _overlayAlignment];
+  _overlayAlignment = [(_UIDatePickerOverlayPresentation *)self _overlayAlignment];
   v3 = 2;
-  if (v2 == 2)
+  if (_overlayAlignment == 2)
   {
     v3 = 8;
   }
 
-  if (v2 == 1)
+  if (_overlayAlignment == 1)
   {
     return 0;
   }
@@ -989,34 +989,34 @@ LABEL_16:
   }
 }
 
-- (CGRect)_adjustedFrameForInputSize:(CGSize)a3 outputFrame:(CGRect)a4
+- (CGRect)_adjustedFrameForInputSize:(CGSize)size outputFrame:(CGRect)frame
 {
-  v4 = a4.origin.x - (a3.width - a4.size.width) * 0.5;
-  if (a4.size.width == a3.width)
+  v4 = frame.origin.x - (size.width - frame.size.width) * 0.5;
+  if (frame.size.width == size.width)
   {
-    x = a4.origin.x;
+    x = frame.origin.x;
   }
 
   else
   {
-    a4.size.width = a3.width;
+    frame.size.width = size.width;
     x = v4;
   }
 
-  v6 = a4.origin.y - (a3.height - a4.size.height) * 0.5;
-  if (a4.size.height == a3.height)
+  v6 = frame.origin.y - (size.height - frame.size.height) * 0.5;
+  if (frame.size.height == size.height)
   {
-    y = a4.origin.y;
+    y = frame.origin.y;
   }
 
   else
   {
-    a4.size.height = a3.height;
+    frame.size.height = size.height;
     y = v6;
   }
 
-  width = a4.size.width;
-  height = a4.size.height;
+  width = frame.size.width;
+  height = frame.size.height;
   result.size.height = height;
   result.size.width = width;
   result.origin.y = y;
@@ -1026,28 +1026,28 @@ LABEL_16:
 
 - (double)_layoutArbiterAnchorAlignmentOffset
 {
-  v3 = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
-  v4 = [v3 _style];
+  activeDatePicker = [(_UIDatePickerOverlayPresentation *)self activeDatePicker];
+  _style = [activeDatePicker _style];
 
-  v5 = [(_UIDatePickerOverlayPresentation *)self _overlayAlignment];
-  if (v5 == 2)
+  _overlayAlignment = [(_UIDatePickerOverlayPresentation *)self _overlayAlignment];
+  if (_overlayAlignment == 2)
   {
     [(_UIDatePickerOverlayPresentation *)self resolvedSourceBounds];
     MaxX = CGRectGetMaxX(v27);
     [(_UIDatePickerOverlayPresentation *)self resolvedSourceRect];
     v14 = MaxX - CGRectGetMaxX(v28);
-    [v4 overlayPlatterDefaultSpacing];
+    [_style overlayPlatterDefaultSpacing];
     v6 = v14 - v15;
     if ([(_UIDatePickerOverlayPresentation *)self overlayAnchor]== 1)
     {
-      v10 = [(_UIDatePickerOverlayPresentation *)self sourceView];
-      [v10 layoutMargins];
+      sourceView = [(_UIDatePickerOverlayPresentation *)self sourceView];
+      [sourceView layoutMargins];
       v6 = v6 - v16;
       goto LABEL_9;
     }
   }
 
-  else if (v5 == 1)
+  else if (_overlayAlignment == 1)
   {
     [(_UIDatePickerOverlayPresentation *)self resolvedSourceBounds];
     MidX = CGRectGetMidX(v25);
@@ -1058,45 +1058,45 @@ LABEL_16:
   else
   {
     v6 = 0.0;
-    if (!v5)
+    if (!_overlayAlignment)
     {
       [(_UIDatePickerOverlayPresentation *)self resolvedSourceBounds];
       MinX = CGRectGetMinX(v23);
       [(_UIDatePickerOverlayPresentation *)self resolvedSourceRect];
       v8 = MinX - CGRectGetMinX(v24);
-      [v4 overlayPlatterDefaultSpacing];
+      [_style overlayPlatterDefaultSpacing];
       v6 = v8 + v9;
       if ([(_UIDatePickerOverlayPresentation *)self overlayAnchor]== 1)
       {
-        v10 = [(_UIDatePickerOverlayPresentation *)self sourceView];
-        [v10 layoutMargins];
+        sourceView = [(_UIDatePickerOverlayPresentation *)self sourceView];
+        [sourceView layoutMargins];
         v6 = v6 + v11;
 LABEL_9:
       }
     }
   }
 
-  v17 = [(_UIDatePickerOverlayPresentation *)self sourceView];
-  v18 = [v17 traitCollection];
-  [v18 displayScale];
+  sourceView2 = [(_UIDatePickerOverlayPresentation *)self sourceView];
+  traitCollection = [sourceView2 traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale(v6, v19);
   v21 = v20;
 
   return v21;
 }
 
-- (CGPoint)_normalizedSourcePointForAnchorPoint:(CGPoint)a3 menuFrame:(CGRect)a4
+- (CGPoint)_normalizedSourcePointForAnchorPoint:(CGPoint)point menuFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a3.y;
-  v7 = a4.origin.x + a4.size.width * 0.5;
-  v8 = a4.origin.y + a4.size.height * 0.5;
-  v9 = a3.x + -0.5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = point.y;
+  v7 = frame.origin.x + frame.size.width * 0.5;
+  v8 = frame.origin.y + frame.size.height * 0.5;
+  v9 = point.x + -0.5;
   v14.origin.x = 0.0;
   v14.origin.y = 0.0;
-  v14.size.width = a4.size.width;
-  v14.size.height = a4.size.height;
+  v14.size.width = frame.size.width;
+  v14.size.height = frame.size.height;
   v10 = v7 + v9 * CGRectGetWidth(v14);
   v15.origin.x = 0.0;
   v15.origin.y = 0.0;
@@ -1109,25 +1109,25 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)_adjustedAnchorPointForFrame:(CGRect)a3 alignment:(unint64_t)a4 anchorPoint:(CGPoint)a5
+- (CGPoint)_adjustedAnchorPointForFrame:(CGRect)frame alignment:(unint64_t)alignment anchorPoint:(CGPoint)point
 {
-  width = a3.size.width;
-  y = a5.y;
-  x = a5.x;
-  height = a3.size.height;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
+  width = frame.size.width;
+  y = point.y;
+  x = point.x;
+  height = frame.size.height;
+  v8 = frame.origin.y;
+  v9 = frame.origin.x;
   [(_UIDatePickerOverlayPresentation *)self resolvedSourceRect];
   v12 = v11;
   v14 = v13;
   [(_UIDatePickerOverlayPresentation *)self resolvedSourceBounds];
   v16 = v15;
   v18 = v17;
-  if (a4 <= 3)
+  if (alignment <= 3)
   {
-    if (a4 != 1)
+    if (alignment != 1)
     {
-      if (a4 != 2)
+      if (alignment != 2)
       {
         goto LABEL_12;
       }
@@ -1137,8 +1137,8 @@ LABEL_9:
 
 LABEL_7:
     v19 = v12 + v14 * 0.5;
-    v20 = [(_UIDatePickerOverlayPresentation *)self _overlayAlignment];
-    switch(v20)
+    _overlayAlignment = [(_UIDatePickerOverlayPresentation *)self _overlayAlignment];
+    switch(_overlayAlignment)
     {
       case 2:
         x = 1.0 - (v16 + v18 - v19) / width;
@@ -1154,15 +1154,15 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  if (a4 == 8)
+  if (alignment == 8)
   {
 LABEL_11:
-    v21 = [(_UIDatePickerOverlayPresentation *)self containerViewController];
-    v22 = [v21 view];
+    containerViewController = [(_UIDatePickerOverlayPresentation *)self containerViewController];
+    view = [containerViewController view];
 
-    v23 = [(_UIDatePickerOverlayPresentation *)self sourceView];
+    sourceView = [(_UIDatePickerOverlayPresentation *)self sourceView];
     [(_UIDatePickerOverlayPresentation *)self resolvedSourceRect];
-    [v23 convertPoint:v22 toView:{v25 + v24 * 0.5, v27 + v26 * 0.5}];
+    [sourceView convertPoint:view toView:{v25 + v24 * 0.5, v27 + v26 * 0.5}];
     v29 = v28;
     v31 = v30;
 
@@ -1190,7 +1190,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a4 == 4)
+  if (alignment == 4)
   {
     goto LABEL_7;
   }
@@ -1203,40 +1203,40 @@ LABEL_12:
   return result;
 }
 
-- (void)animatePresentWithAnimations:(id)a3 completion:(id)a4
+- (void)animatePresentWithAnimations:(id)animations completion:(id)completion
 {
-  v5 = a3;
+  animationsCopy = animations;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76___UIDatePickerOverlayPresentation_animatePresentWithAnimations_completion___block_invoke;
   v7[3] = &unk_1E70F0F78;
-  v8 = v5;
-  v6 = v5;
-  [UIView _animateUsingSpringWithDampingRatio:1 response:v7 tracking:a4 dampingRatioSmoothing:0.8 responseSmoothing:0.32 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
+  v8 = animationsCopy;
+  v6 = animationsCopy;
+  [UIView _animateUsingSpringWithDampingRatio:1 response:v7 tracking:completion dampingRatioSmoothing:0.8 responseSmoothing:0.32 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
 }
 
-- (void)animateTransitionWithAnimations:(id)a3 completion:(id)a4
+- (void)animateTransitionWithAnimations:(id)animations completion:(id)completion
 {
-  v5 = a3;
+  animationsCopy = animations;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79___UIDatePickerOverlayPresentation_animateTransitionWithAnimations_completion___block_invoke;
   v7[3] = &unk_1E70F0F78;
-  v8 = v5;
-  v6 = v5;
-  [UIView _animateUsingSpringWithDampingRatio:0 response:v7 tracking:a4 dampingRatioSmoothing:1.0 responseSmoothing:0.25 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
+  v8 = animationsCopy;
+  v6 = animationsCopy;
+  [UIView _animateUsingSpringWithDampingRatio:0 response:v7 tracking:completion dampingRatioSmoothing:1.0 responseSmoothing:0.25 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
 }
 
-- (void)animateDismissalWithAnimations:(id)a3 completion:(id)a4
+- (void)animateDismissalWithAnimations:(id)animations completion:(id)completion
 {
-  v5 = a3;
+  animationsCopy = animations;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78___UIDatePickerOverlayPresentation_animateDismissalWithAnimations_completion___block_invoke;
   v7[3] = &unk_1E70F0F78;
-  v8 = v5;
-  v6 = v5;
-  [UIView _animateUsingSpringWithDampingRatio:0 response:v7 tracking:a4 dampingRatioSmoothing:0.85 responseSmoothing:0.35 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
+  v8 = animationsCopy;
+  v6 = animationsCopy;
+  [UIView _animateUsingSpringWithDampingRatio:0 response:v7 tracking:completion dampingRatioSmoothing:0.85 responseSmoothing:0.35 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
 }
 
 - (UIDatePicker)activeDatePicker

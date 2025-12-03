@@ -13,8 +13,8 @@
 
 - (id)strip
 {
-  v2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v3;
 }
@@ -23,7 +23,7 @@
 {
   v4 = a3;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x1E696AE88] scannerWithString:a1];
+  v6 = [MEMORY[0x1E696AE88] scannerWithString:self];
   v7 = objc_opt_new();
   if (([v6 isAtEnd] & 1) == 0)
   {
@@ -58,7 +58,7 @@
 {
   v31 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{a1, 0}];
+  v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{self, 0}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -79,7 +79,7 @@
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
@@ -100,7 +100,7 @@
               }
 
               v17 = [*(*(&v21 + 1) + 8 * j) tokenizedByString:v10];
-              [v11 addObjectsFromArray:v17];
+              [array addObjectsFromArray:v17];
             }
 
             v14 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -109,7 +109,7 @@
           while (v14);
         }
 
-        v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v11];
+        v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array];
       }
 
       v7 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -146,7 +146,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v7 |= [a1 caseInsensitiveCompare:*(*(&v12 + 1) + 8 * i)] == 0;
+        v7 |= [self caseInsensitiveCompare:*(*(&v12 + 1) + 8 * i)] == 0;
       }
 
       v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -187,7 +187,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v7 |= [a1 rangeOfString:*(*(&v12 + 1) + 8 * i)] != 0x7FFFFFFFFFFFFFFFLL;
+        v7 |= [self rangeOfString:*(*(&v12 + 1) + 8 * i)] != 0x7FFFFFFFFFFFFFFFLL;
       }
 
       v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -208,7 +208,7 @@
 - (uint64_t)compareFloat:()PowerlogExtensions
 {
   v4 = a3;
-  [a1 floatValue];
+  [self floatValue];
   v6 = v5;
   [v4 floatValue];
   v8 = v7;
@@ -233,16 +233,16 @@
 - (uint64_t)compareInt:()PowerlogExtensions
 {
   v4 = a3;
-  v5 = [a1 intValue];
-  v6 = [v4 intValue];
+  intValue = [self intValue];
+  intValue2 = [v4 intValue];
 
   v7 = -1;
-  if (v5 >= v6)
+  if (intValue >= intValue2)
   {
     v7 = 1;
   }
 
-  if (v5 == v6)
+  if (intValue == intValue2)
   {
     return 0;
   }
@@ -258,7 +258,7 @@
   v21 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = a1;
+  selfCopy = self;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -271,7 +271,7 @@
     do
     {
       v12 = 0;
-      v13 = v8;
+      v13 = selfCopy;
       do
       {
         if (*v17 != v11)
@@ -279,10 +279,10 @@
           objc_enumerationMutation(v6);
         }
 
-        v8 = [v13 stringByReplacingOccurrencesOfString:*(*(&v16 + 1) + 8 * v12) withString:v7];
+        selfCopy = [v13 stringByReplacingOccurrencesOfString:*(*(&v16 + 1) + 8 * v12) withString:v7];
 
         ++v12;
-        v13 = v8;
+        v13 = selfCopy;
       }
 
       while (v10 != v12);
@@ -294,7 +294,7 @@
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return selfCopy;
 }
 
 @end

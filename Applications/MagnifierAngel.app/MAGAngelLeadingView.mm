@@ -1,12 +1,12 @@
 @interface MAGAngelLeadingView
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (_TtC14MagnifierAngel19MAGAngelLeadingView)initWithCoder:(id)a3;
-- (_TtC14MagnifierAngel19MAGAngelLeadingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (_TtC14MagnifierAngel19MAGAngelLeadingView)initWithCoder:(id)coder;
+- (_TtC14MagnifierAngel19MAGAngelLeadingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MAGAngelLeadingView
 
-- (_TtC14MagnifierAngel19MAGAngelLeadingView)initWithCoder:(id)a3
+- (_TtC14MagnifierAngel19MAGAngelLeadingView)initWithCoder:(id)coder
 {
   v5 = self + OBJC_IVAR____TtC14MagnifierAngel19MAGAngelLeadingView_compressedElementSize;
   *v5 = MAGAngelContentState.hash(into:)(19.0, 19.0);
@@ -16,8 +16,8 @@
   *(v7 + 1) = v8;
   v12.receiver = self;
   v12.super_class = type metadata accessor for MAGAngelLeadingView();
-  v9 = a3;
-  v10 = [(MAGAngelLeadingView *)&v12 initWithCoder:v9];
+  coderCopy = coder;
+  v10 = [(MAGAngelLeadingView *)&v12 initWithCoder:coderCopy];
 
   if (v10)
   {
@@ -26,10 +26,10 @@
   return v10;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
   v4 = &OBJC_IVAR____TtC14MagnifierAngel19MAGAngelLeadingView_customElementSize;
-  if (a4 != 4)
+  if (mode != 4)
   {
     v4 = &OBJC_IVAR____TtC14MagnifierAngel19MAGAngelLeadingView_compressedElementSize;
   }
@@ -42,7 +42,7 @@
   return result;
 }
 
-- (_TtC14MagnifierAngel19MAGAngelLeadingView)initWithFrame:(CGRect)a3
+- (_TtC14MagnifierAngel19MAGAngelLeadingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

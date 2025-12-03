@@ -1,19 +1,19 @@
 @interface VNFrameworkResourceDescriptor
-+ (id)descriptorForFrameworkContainingClass:(Class)a3 error:(id *)a4;
-+ (id)descriptorForFrameworkContainingClassNamed:(id)a3 error:(id *)a4;
-+ (id)descriptorForFrameworkIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (VNFrameworkResourceDescriptor)initWithBundle:(id)a3;
++ (id)descriptorForFrameworkContainingClass:(Class)class error:(id *)error;
++ (id)descriptorForFrameworkContainingClassNamed:(id)named error:(id *)error;
++ (id)descriptorForFrameworkIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (VNFrameworkResourceDescriptor)initWithBundle:(id)bundle;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation VNFrameworkResourceDescriptor
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -23,11 +23,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNFrameworkResourceDescriptor *)self frameworkBundle];
-      v7 = [(VNFrameworkResourceDescriptor *)v5 frameworkBundle];
+      v5 = equalCopy;
+      frameworkBundle = [(VNFrameworkResourceDescriptor *)self frameworkBundle];
+      frameworkBundle2 = [(VNFrameworkResourceDescriptor *)v5 frameworkBundle];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [frameworkBundle isEqual:frameworkBundle2];
     }
 
     else
@@ -41,8 +41,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VNFrameworkResourceDescriptor *)self frameworkBundle];
-  v3 = [v2 hash];
+  frameworkBundle = [(VNFrameworkResourceDescriptor *)self frameworkBundle];
+  v3 = [frameworkBundle hash];
 
   return v3;
 }
@@ -52,88 +52,88 @@
   v8.receiver = self;
   v8.super_class = VNFrameworkResourceDescriptor;
   v3 = [(VNFrameworkResourceDescriptor *)&v8 description];
-  v4 = [(VNFrameworkResourceDescriptor *)self frameworkBundle];
-  v5 = [v4 bundlePath];
-  v6 = [v3 stringByAppendingFormat:@" %@", v5];
+  frameworkBundle = [(VNFrameworkResourceDescriptor *)self frameworkBundle];
+  bundlePath = [frameworkBundle bundlePath];
+  v6 = [v3 stringByAppendingFormat:@" %@", bundlePath];
 
   return v6;
 }
 
-- (VNFrameworkResourceDescriptor)initWithBundle:(id)a3
+- (VNFrameworkResourceDescriptor)initWithBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = VNFrameworkResourceDescriptor;
-  v6 = [(VNResourceDescriptor *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(VNResourceDescriptor *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, bundle);
   }
 
   return v7;
 }
 
-+ (id)descriptorForFrameworkContainingClassNamed:(id)a3 error:(id *)a4
++ (id)descriptorForFrameworkContainingClassNamed:(id)named error:(id *)error
 {
-  v6 = a3;
-  v7 = NSClassFromString(v6);
+  namedCopy = named;
+  v7 = NSClassFromString(namedCopy);
   if (v7)
   {
-    a4 = [a1 descriptorForFrameworkContainingClass:v7 error:a4];
+    error = [self descriptorForFrameworkContainingClass:v7 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"The class %@ could not be resolved at runtime", v6];
-    *a4 = [VNError errorForDataUnavailableWithLocalizedDescription:v8];
+    namedCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"The class %@ could not be resolved at runtime", namedCopy];
+    *error = [VNError errorForDataUnavailableWithLocalizedDescription:namedCopy];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-+ (id)descriptorForFrameworkContainingClass:(Class)a3 error:(id *)a4
++ (id)descriptorForFrameworkContainingClass:(Class)class error:(id *)error
 {
   v7 = [MEMORY[0x1E696AAE8] bundleForClass:?];
   if (v7)
   {
-    a4 = [[a1 alloc] initWithBundle:v7];
+    error = [[self alloc] initWithBundle:v7];
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = NSStringFromClass(a3);
+    v9 = NSStringFromClass(class);
     v10 = [v8 initWithFormat:@"Could not locate framework containing %@", v9];
 
-    *a4 = [VNError errorForDataUnavailableWithLocalizedDescription:v10];
+    *error = [VNError errorForDataUnavailableWithLocalizedDescription:v10];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-+ (id)descriptorForFrameworkIdentifier:(id)a3 error:(id *)a4
++ (id)descriptorForFrameworkIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:identifierCopy];
   if (v7)
   {
-    a4 = [[a1 alloc] initWithBundle:v7];
+    error = [[self alloc] initWithBundle:v7];
   }
 
-  else if (a4)
+  else if (error)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not locate framework with identifier %@", v6];
-    *a4 = [VNError errorForDataUnavailableWithLocalizedDescription:v8];
+    identifierCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not locate framework with identifier %@", identifierCopy];
+    *error = [VNError errorForDataUnavailableWithLocalizedDescription:identifierCopy];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
 @end

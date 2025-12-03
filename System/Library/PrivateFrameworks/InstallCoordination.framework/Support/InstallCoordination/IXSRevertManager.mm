@@ -1,10 +1,10 @@
 @interface IXSRevertManager
-+ (void)revertAppWithIdentity:(id)a3 forClientWithName:(id)a4 completion:(id)a5;
++ (void)revertAppWithIdentity:(id)identity forClientWithName:(id)name completion:(id)completion;
 - (IXSRevertManager)init;
-- (id)_acquireTerminationAssertionForIdentity:(id)a3 withError:(id *)a4;
-- (void)_revertAppWithIdentity:(id)a3 forClientWithName:(id)a4 completion:(id)a5;
+- (id)_acquireTerminationAssertionForIdentity:(id)identity withError:(id *)error;
+- (void)_revertAppWithIdentity:(id)identity forClientWithName:(id)name completion:(id)completion;
 - (void)dealloc;
-- (void)setTerminationAssertion:(id)a3;
+- (void)setTerminationAssertion:(id)assertion;
 @end
 
 @implementation IXSRevertManager
@@ -25,14 +25,14 @@
   return v2;
 }
 
-- (void)setTerminationAssertion:(id)a3
+- (void)setTerminationAssertion:(id)assertion
 {
-  v5 = a3;
-  v6 = [(IXSRevertManager *)self internalQueue];
-  dispatch_assert_queue_V2(v6);
+  assertionCopy = assertion;
+  internalQueue = [(IXSRevertManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   terminationAssertion = self->_terminationAssertion;
-  if (v5 && terminationAssertion == v5)
+  if (assertionCopy && terminationAssertion == assertionCopy)
   {
     v8 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -48,20 +48,20 @@
       [(IXTerminationAssertion *)terminationAssertion invalidate];
     }
 
-    objc_storeStrong(&self->_terminationAssertion, a3);
+    objc_storeStrong(&self->_terminationAssertion, assertion);
   }
 }
 
-- (id)_acquireTerminationAssertionForIdentity:(id)a3 withError:(id *)a4
+- (id)_acquireTerminationAssertionForIdentity:(id)identity withError:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bundleID];
-  v7 = [NSString stringWithFormat:@"IX terminating appIdentity for reverting %@", v5];
+  identityCopy = identity;
+  bundleID = [identityCopy bundleID];
+  identityCopy = [NSString stringWithFormat:@"IX terminating appIdentity for reverting %@", identityCopy];
 
   v8 = [IXTerminationAssertion alloc];
-  v9 = [NSSet setWithObject:v6];
+  v9 = [NSSet setWithObject:bundleID];
   v17 = 0;
-  v10 = [(IXTerminationAssertion *)v8 initForBundleIDs:v9 description:v7 terminationResistance:50 error:&v17];
+  v10 = [(IXTerminationAssertion *)v8 initForBundleIDs:v9 description:identityCopy terminationResistance:50 error:&v17];
   v11 = v17;
 
   if (v10)
@@ -77,7 +77,7 @@
 
     [v10 invalidate];
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -86,7 +86,7 @@
   else
   {
     v13 = v11;
-    if (!a4)
+    if (!error)
     {
 LABEL_4:
       v10 = 0;
@@ -96,48 +96,48 @@ LABEL_4:
 
   v14 = v13;
   v10 = 0;
-  *a4 = v13;
+  *error = v13;
 LABEL_7:
 
   return v10;
 }
 
-- (void)_revertAppWithIdentity:(id)a3 forClientWithName:(id)a4 completion:(id)a5
+- (void)_revertAppWithIdentity:(id)identity forClientWithName:(id)name completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  identityCopy = identity;
+  completionCopy = completion;
   +[IXSCoordinatorManager sharedInstance];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100005E5C;
   v13 = v12[3] = &unk_1001010C8;
-  v14 = v7;
-  v15 = self;
-  v16 = v8;
-  v9 = v8;
-  v10 = v7;
+  v14 = identityCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  v9 = completionCopy;
+  v10 = identityCopy;
   v11 = v13;
   [v11 performCreationBlockingOperation:v12];
 }
 
-+ (void)revertAppWithIdentity:(id)a3 forClientWithName:(id)a4 completion:(id)a5
++ (void)revertAppWithIdentity:(id)identity forClientWithName:(id)name completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  nameCopy = name;
+  identityCopy = identity;
   v10 = objc_alloc_init(IXSRevertManager);
-  [(IXSRevertManager *)v10 _revertAppWithIdentity:v9 forClientWithName:v8 completion:v7];
+  [(IXSRevertManager *)v10 _revertAppWithIdentity:identityCopy forClientWithName:nameCopy completion:completionCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [(IXSRevertManager *)self internalQueue];
+  internalQueue = [(IXSRevertManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100006334;
   block[3] = &unk_1001010A0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(internalQueue, block);
 
   v4.receiver = self;
   v4.super_class = IXSRevertManager;

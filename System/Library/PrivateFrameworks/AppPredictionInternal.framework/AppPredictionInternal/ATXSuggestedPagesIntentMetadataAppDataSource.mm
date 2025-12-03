@@ -1,20 +1,20 @@
 @interface ATXSuggestedPagesIntentMetadataAppDataSource
-- (id)_appsMatchingShortcutAvailability:(unint64_t)a3;
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4;
+- (id)_appsMatchingShortcutAvailability:(unint64_t)availability;
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesIntentMetadataAppDataSource
 
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment
 {
-  v6 = a4;
-  if (a3 == 4)
+  environmentCopy = environment;
+  if (type == 4)
   {
     v7 = 127;
     goto LABEL_5;
   }
 
-  if (a3 == 11)
+  if (type == 11)
   {
     v7 = 15;
 LABEL_5:
@@ -28,20 +28,20 @@ LABEL_7:
   return v8;
 }
 
-- (id)_appsMatchingShortcutAvailability:(unint64_t)a3
+- (id)_appsMatchingShortcutAvailability:(unint64_t)availability
 {
   v4 = objc_opt_new();
   v5 = BiomeLibrary();
   v6 = [v5 App];
-  v7 = [v6 Intent];
+  intent = [v6 Intent];
 
-  v8 = [v7 atx_publisherFromStartDate:0];
+  v8 = [intent atx_publisherFromStartDate:0];
   v9 = [v8 filterWithIsIncluded:&__block_literal_global_6];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__ATXSuggestedPagesIntentMetadataAppDataSource__appsMatchingShortcutAvailability___block_invoke_3;
   v13[3] = &unk_278596E30;
-  v15 = a3;
+  availabilityCopy = availability;
   v10 = v4;
   v14 = v10;
   v11 = [v9 sinkWithCompletion:&__block_literal_global_20 receiveInput:v13];

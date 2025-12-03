@@ -1,19 +1,19 @@
 @interface EncryptionTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation EncryptionTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
-  if (v3)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 dataUsingEncoding:4];
+      v4 = [valueCopy dataUsingEncoding:4];
       goto LABEL_8;
     }
 
@@ -32,21 +32,21 @@ LABEL_8:
   return v4;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
-  if (v3)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4 = MEMORY[0x1E696AEC0];
-      v5 = v3;
+      v5 = valueCopy;
       v6 = [v4 alloc];
-      v7 = [v5 bytes];
+      bytes = [v5 bytes];
       v8 = [v5 length];
 
-      v9 = [v6 initWithBytes:v7 length:v8 encoding:4];
+      v9 = [v6 initWithBytes:bytes length:v8 encoding:4];
       goto LABEL_8;
     }
 

@@ -1,34 +1,34 @@
 @interface MDLTransformRotateOp
-- (MDLTransformRotateOp)initWithName:(id)a3 inverse:(BOOL)a4 order:(unint64_t)a5 data:(id)a6;
-- (void)double4x4AtTime:(uint64_t)a3@<X2>;
-- (void)float4x4AtTime:(uint64_t)a3;
+- (MDLTransformRotateOp)initWithName:(id)name inverse:(BOOL)inverse order:(unint64_t)order data:(id)data;
+- (void)double4x4AtTime:(uint64_t)time@<X2>;
+- (void)float4x4AtTime:(uint64_t)time;
 @end
 
 @implementation MDLTransformRotateOp
 
-- (MDLTransformRotateOp)initWithName:(id)a3 inverse:(BOOL)a4 order:(unint64_t)a5 data:(id)a6
+- (MDLTransformRotateOp)initWithName:(id)name inverse:(BOOL)inverse order:(unint64_t)order data:(id)data
 {
-  v11 = a3;
-  v12 = a6;
+  nameCopy = name;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = MDLTransformRotateOp;
   v13 = [(MDLTransformRotateOp *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_animatedValue, a6);
-    objc_storeStrong(&v14->_name, a3);
-    v14->_order = a5;
-    v14->_inverse = a4;
+    objc_storeStrong(&v13->_animatedValue, data);
+    objc_storeStrong(&v14->_name, name);
+    v14->_order = order;
+    v14->_inverse = inverse;
     v15 = v14;
   }
 
   return v14;
 }
 
-- (void)float4x4AtTime:(uint64_t)a3
+- (void)float4x4AtTime:(uint64_t)time
 {
-  objc_msgSend_float3AtTime_(*(a1 + 24), a2, a3);
+  objc_msgSend_float3AtTime_(*(self + 24), a2, time);
   v248 = v42;
   *&STACK[0x5F0] = 0u;
   *&STACK[0x600] = 0u;
@@ -70,7 +70,7 @@
   a22 = 0u;
   a19 = 0u;
   a20 = 0u;
-  v48 = *(a1 + 32);
+  v48 = *(self + 32);
   if (v48 > 3)
   {
     switch(v48)
@@ -661,7 +661,7 @@ LABEL_37:
   }
 
   while (v241 != 4);
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     v251.columns[0] = *&STACK[0x610];
     v251.columns[1] = *&STACK[0x620];
@@ -671,12 +671,12 @@ LABEL_37:
   }
 }
 
-- (void)double4x4AtTime:(uint64_t)a3@<X2>
+- (void)double4x4AtTime:(uint64_t)time@<X2>
 {
-  v45 = *(a1 + 24);
+  v45 = *(self + 24);
   if (v45)
   {
-    objc_msgSend_double3AtTime_(v45, a2, a3);
+    objc_msgSend_double3AtTime_(v45, a2, time);
     v46 = a42;
     *&v215 = vextq_s8(v46, v46, 8uLL).u64[0];
     v47 = a43;
@@ -727,7 +727,7 @@ LABEL_37:
   v54 = *(MEMORY[0x277D860A0] + 80);
   v57 = *(MEMORY[0x277D860A0] + 96);
   v56 = *(MEMORY[0x277D860A0] + 112);
-  v58 = *(a1 + 32);
+  v58 = *(self + 32);
   if (v58 > 3)
   {
     switch(v58)
@@ -1175,7 +1175,7 @@ LABEL_37:
   v57 = v222;
   v56 = v223;
 LABEL_41:
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     *&STACK[0x500] = v51;
     *&STACK[0x510] = v50;

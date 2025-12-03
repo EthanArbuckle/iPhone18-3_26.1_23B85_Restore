@@ -1,27 +1,27 @@
 @interface SIRINLUINTERNALTokenChain
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTokens:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTokens:(id)tokens;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALTokenChain
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(SIRINLUINTERNALTokenChain *)self setStringValue:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(SIRINLUINTERNALTokenChain *)self setLocale:?];
   }
@@ -30,7 +30,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -64,13 +64,13 @@
   return v4 ^ [(NSMutableArray *)self->_tokens hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((stringValue = self->_stringValue, !(stringValue | v4[2])) || -[NSString isEqual:](stringValue, "isEqual:")) && ((locale = self->_locale, !(locale | v4[1])) || -[NSString isEqual:](locale, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((stringValue = self->_stringValue, !(stringValue | equalCopy[2])) || -[NSString isEqual:](stringValue, "isEqual:")) && ((locale = self->_locale, !(locale | equalCopy[1])) || -[NSString isEqual:](locale, "isEqual:")))
   {
     tokens = self->_tokens;
-    if (tokens | v4[3])
+    if (tokens | equalCopy[3])
     {
       v8 = [(NSMutableArray *)tokens isEqual:?];
     }
@@ -89,15 +89,15 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_stringValue copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_locale copyWithZone:a3];
+  v8 = [(NSString *)self->_locale copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -121,7 +121,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addTokens:v15];
 
         ++v14;
@@ -138,39 +138,39 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_stringValue)
   {
-    [v8 setStringValue:?];
+    [toCopy setStringValue:?];
   }
 
   if (self->_locale)
   {
-    [v8 setLocale:?];
+    [toCopy setLocale:?];
   }
 
   if ([(SIRINLUINTERNALTokenChain *)self tokensCount])
   {
-    [v8 clearTokens];
-    v4 = [(SIRINLUINTERNALTokenChain *)self tokensCount];
-    if (v4)
+    [toCopy clearTokens];
+    tokensCount = [(SIRINLUINTERNALTokenChain *)self tokensCount];
+    if (tokensCount)
     {
-      v5 = v4;
+      v5 = tokensCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALTokenChain *)self tokensAtIndex:i];
-        [v8 addTokens:v7];
+        [toCopy addTokens:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
@@ -219,12 +219,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    [v3 setObject:stringValue forKey:@"string_value"];
+    [dictionary setObject:stringValue forKey:@"string_value"];
   }
 
   locale = self->_locale;
@@ -255,8 +255,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -279,28 +279,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALTokenChain;
   v4 = [(SIRINLUINTERNALTokenChain *)&v8 description];
-  v5 = [(SIRINLUINTERNALTokenChain *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALTokenChain *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addTokens:(id)a3
+- (void)addTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   tokens = self->_tokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!tokens)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_tokens;
     self->_tokens = v6;
 
-    v4 = v8;
+    tokensCopy = v8;
     tokens = self->_tokens;
   }
 
-  [(NSMutableArray *)tokens addObject:v4];
+  [(NSMutableArray *)tokens addObject:tokensCopy];
 }
 
 @end

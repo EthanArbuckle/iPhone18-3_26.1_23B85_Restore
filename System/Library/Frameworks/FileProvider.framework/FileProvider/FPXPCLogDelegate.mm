@@ -1,32 +1,32 @@
 @interface FPXPCLogDelegate
-+ (void)setupWithLog:(id)a3 forConnection:(id)a4;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
++ (void)setupWithLog:(id)log forConnection:(id)connection;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
 @end
 
 @implementation FPXPCLogDelegate
 
-+ (void)setupWithLog:(id)a3 forConnection:(id)a4
++ (void)setupWithLog:(id)log forConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  value = objc_alloc_init(a1);
+  logCopy = log;
+  connectionCopy = connection;
+  value = objc_alloc_init(self);
   v8 = value[1];
-  value[1] = v6;
-  v9 = v6;
+  value[1] = logCopy;
+  v9 = logCopy;
 
-  [v7 setDelegate:value];
+  [connectionCopy setDelegate:value];
   v10 = objc_opt_class();
 
-  objc_setAssociatedObject(v7, v10, value, 0x301);
+  objc_setAssociatedObject(connectionCopy, v10, value, 0x301);
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v8 = a3;
-  v9 = a4;
+  connectionCopy = connection;
+  invocationCopy = invocation;
   v10 = fpfs_adopt_log(self->_log);
-  fpfs_setup_log_for_invocation(v8, v9, a5);
-  [v9 invoke];
+  fpfs_setup_log_for_invocation(connectionCopy, invocationCopy, reply);
+  [invocationCopy invoke];
   __fp_pop_log(&v10);
 }
 

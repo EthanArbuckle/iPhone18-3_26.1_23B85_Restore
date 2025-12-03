@@ -1,30 +1,30 @@
 @interface BWMeteorHeadroomNode
-- (BWMeteorHeadroomNode)initWithNodeConfiguration:(id)a3 sensorConfigurationsByPortType:(id)a4;
+- (BWMeteorHeadroomNode)initWithNodeConfiguration:(id)configuration sensorConfigurationsByPortType:(id)type;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
 - (void)_releaseResources;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
+- (void)didReachEndOfDataForInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWMeteorHeadroomNode
 
-- (BWMeteorHeadroomNode)initWithNodeConfiguration:(id)a3 sensorConfigurationsByPortType:(id)a4
+- (BWMeteorHeadroomNode)initWithNodeConfiguration:(id)configuration sensorConfigurationsByPortType:(id)type
 {
   v22.receiver = self;
   v22.super_class = BWMeteorHeadroomNode;
   v5 = [(BWNode *)&v22 init];
   if (v5)
   {
-    if (a4)
+    if (type)
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a4, "count")}];
+      v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(type, "count")}];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v7 = [a4 countByEnumeratingWithState:&v18 objects:v17 count:16];
+      v7 = [type countByEnumeratingWithState:&v18 objects:v17 count:16];
       if (v7)
       {
         v8 = v7;
@@ -36,15 +36,15 @@
           {
             if (*v19 != v9)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(type);
             }
 
-            -[NSDictionary setObject:forKeyedSubscript:](v6, "setObject:forKeyedSubscript:", [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * v10)), "sensorIDDictionary"), "objectForKeyedSubscript:", @"MeteorHeadroom"}], *(*(&v18 + 1) + 8 * v10));
+            -[NSDictionary setObject:forKeyedSubscript:](v6, "setObject:forKeyedSubscript:", [objc_msgSend(objc_msgSend(type objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * v10)), "sensorIDDictionary"), "objectForKeyedSubscript:", @"MeteorHeadroom"}], *(*(&v18 + 1) + 8 * v10));
             ++v10;
           }
 
           while (v8 != v10);
-          v8 = [a4 countByEnumeratingWithState:&v18 objects:v17 count:16];
+          v8 = [type countByEnumeratingWithState:&v18 objects:v17 count:16];
         }
 
         while (v8);
@@ -123,30 +123,30 @@ LABEL_12:
 
 - (void)_releaseResources
 {
-  if (a1)
+  if (self)
   {
 
-    *(a1 + 160) = 0;
-    *(a1 + 152) = 0;
+    *(self + 160) = 0;
+    *(self + 152) = 0;
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   [(BWMeteorHeadroomNode *)self _releaseResources];
   v5.receiver = self;
   v5.super_class = BWMeteorHeadroomNode;
-  [(BWNode *)&v5 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v5 didReachEndOfDataForInput:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F21AAE10);
-  v8 = CMGetAttachment(a3, @"StillImageSettings", 0);
-  v9 = [v8 captureRequestIdentifier];
-  v10 = CMGetAttachment(a3, @"BWStillImageCaptureSettings", 0);
-  v11 = [CMGetAttachment(a3 @"StillImageProcessingFlags"];
+  v6 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AAE10);
+  v8 = CMGetAttachment(buffer, @"StillImageSettings", 0);
+  captureRequestIdentifier = [v8 captureRequestIdentifier];
+  v10 = CMGetAttachment(buffer, @"BWStillImageCaptureSettings", 0);
+  v11 = [CMGetAttachment(buffer @"StillImageProcessingFlags"];
   lastMeteorHeadroom = 0.0;
   if (v11)
   {
@@ -155,14 +155,14 @@ LABEL_12:
   }
 
   v14 = v11;
-  if (![(NSString *)self->_lastCaptureRequestIdentifier isEqualToString:v9])
+  if (![(NSString *)self->_lastCaptureRequestIdentifier isEqualToString:captureRequestIdentifier])
   {
 
-    self->_lastCaptureRequestIdentifier = [v9 copy];
+    self->_lastCaptureRequestIdentifier = [captureRequestIdentifier copy];
     self->_lastMeteorHeadroom = 0.0;
   }
 
-  v15 = [v10 captureType];
+  captureType = [v10 captureType];
   if (([v10 captureType] == 10 || objc_msgSend(v10, "captureType") == 12 || objc_msgSend(v10, "captureType") == 13) && (objc_msgSend(v10, "captureFlags") & 0x100000) != 0)
   {
     v16 = ([v10 sceneFlags] >> 2) & 1;
@@ -177,7 +177,7 @@ LABEL_12:
   v18 = self->_gainMapMainImageDownscalingFactor != 0.0 && v17 == 0;
   if (v18)
   {
-    v19 = BWSampleBufferGetAttachedMedia(a3, 0x1F217BF50);
+    v19 = BWSampleBufferGetAttachedMedia(buffer, 0x1F217BF50);
     LOBYTE(v16) = (v19 != 0) | v16;
   }
 
@@ -186,7 +186,7 @@ LABEL_12:
     v19 = 0;
   }
 
-  v18 = v15 == 3;
+  v18 = captureType == 3;
   v20 = 0x1E696A000;
   if (!v18 && (v16 & 1) == 0)
   {
@@ -218,13 +218,13 @@ LABEL_12:
   v24 = *(MEMORY[0x1E695F050] + 8);
   v27 = *(MEMORY[0x1E695F050] + 16);
   v26 = *(MEMORY[0x1E695F050] + 24);
-  v28 = [v8 outputWidth];
-  v29 = v28 / [v8 outputHeight];
+  outputWidth = [v8 outputWidth];
+  v29 = outputWidth / [v8 outputHeight];
   if (!v19 || (v30 = CMSampleBufferGetImageBuffer(v19)) == 0)
   {
 LABEL_34:
     bzero(v65, 0x200uLL);
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     if (!ImageBuffer)
     {
       goto LABEL_42;
@@ -329,7 +329,7 @@ LABEL_48:
     while (v47 != 1024);
     v48 = v46 / *&v45;
     *&v45 = v46 / *&v45;
-    CMSetAttachment(a3, @"MeteorPlusGainMapAverage", [*(v20 + 3480) numberWithFloat:v45], 1u);
+    CMSetAttachment(buffer, @"MeteorPlusGainMapAverage", [*(v20 + 3480) numberWithFloat:v45], 1u);
     if (AttachedMedia)
     {
       *&v49 = v48;
@@ -342,14 +342,14 @@ LABEL_48:
 
 LABEL_42:
   *&v12 = lastMeteorHeadroom;
-  CMSetAttachment(a3, @"MeteorHeadroom", [*(v20 + 3480) numberWithFloat:v12], 1u);
+  CMSetAttachment(buffer, @"MeteorHeadroom", [*(v20 + 3480) numberWithFloat:v12], 1u);
   if (AttachedMedia)
   {
     *&v62 = lastMeteorHeadroom;
     CMSetAttachment(AttachedMedia, @"MeteorHeadroom", [*(v20 + 3480) numberWithFloat:v62], 1u);
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 }
 
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive

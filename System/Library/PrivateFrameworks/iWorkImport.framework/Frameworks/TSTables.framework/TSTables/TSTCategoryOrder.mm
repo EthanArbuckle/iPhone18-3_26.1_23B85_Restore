@@ -1,49 +1,49 @@
 @interface TSTCategoryOrder
 - (BOOL)hasValidInfo;
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)groupUidsGivenRowUids:(SEL)a3 selectedLevels:(const void *)a4;
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedRowUidsFromUids:(SEL)a3;
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)groupUidsGivenRowUids:(SEL)uids selectedLevels:(const void *)levels;
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedRowUidsFromUids:(SEL)uids;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedRowUidsWithLabels;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)rowOrder;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)setRowOrderUsingViewOrder;
-- (TSTCategoryOrder)initWithContext:(id)a3;
-- (TSTCategoryOrder)initWithContext:(id)a3 tableInfo:(id)a4 rowUids:(const void *)a5;
-- (TSTCategoryOrder)initWithTableInfo:(id)a3;
-- (TSTCategoryOrder)initWithTableInfo:(id)a3 rowUids:(const void *)a4;
+- (TSTCategoryOrder)initWithContext:(id)context;
+- (TSTCategoryOrder)initWithContext:(id)context tableInfo:(id)info rowUids:(const void *)uids;
+- (TSTCategoryOrder)initWithTableInfo:(id)info;
+- (TSTCategoryOrder)initWithTableInfo:(id)info rowUids:(const void *)uids;
 - (TSTTableInfo)tableInfo;
-- (id)copyWithContext:(id)a3 tableInfo:(id)a4;
-- (id)sortedArrayFromArray:(id)a3;
-- (id)targetGroupFromRowIndex:(unsigned int)a3 minSourceLevel:(unsigned __int8)a4 templateRowUID:(TSKUIDStruct *)a5;
-- (unsigned)minimumCategoryLevelInRowRange:(_NSRange)a3;
-- (void)insertRowUids:(const void *)a3 beforeUid:(const TSKUIDStruct *)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)removeRowUids:(const void *)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setRowOrder:(const void *)a3;
-- (void)setTemporaryRowOrder:(const void *)a3;
+- (id)copyWithContext:(id)context tableInfo:(id)info;
+- (id)sortedArrayFromArray:(id)array;
+- (id)targetGroupFromRowIndex:(unsigned int)index minSourceLevel:(unsigned __int8)level templateRowUID:(TSKUIDStruct *)d;
+- (unsigned)minimumCategoryLevelInRowRange:(_NSRange)range;
+- (void)insertRowUids:(const void *)uids beforeUid:(const TSKUIDStruct *)uid;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)removeRowUids:(const void *)uids;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setRowOrder:(const void *)order;
+- (void)setTemporaryRowOrder:(const void *)order;
 @end
 
 @implementation TSTCategoryOrder
 
-- (TSTCategoryOrder)initWithContext:(id)a3 tableInfo:(id)a4 rowUids:(const void *)a5
+- (TSTCategoryOrder)initWithContext:(id)context tableInfo:(id)info rowUids:(const void *)uids
 {
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  infoCopy = info;
   v20.receiver = self;
   v20.super_class = TSTCategoryOrder;
-  v10 = [(TSTCategoryOrder *)&v20 initWithContext:v8];
+  v10 = [(TSTCategoryOrder *)&v20 initWithContext:contextCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_tableInfo, v9);
-    if (v9)
+    objc_storeWeak(&v10->_tableInfo, infoCopy);
+    if (infoCopy)
     {
       v12 = [TSTColumnRowUIDMap alloc];
       __p = 0;
       v18 = 0;
       v19 = 0;
-      v14 = objc_msgSend_initWithContext_columnUIDs_rowUIDs_(v12, v13, v8, &__p, a5);
+      v14 = objc_msgSend_initWithContext_columnUIDs_rowUIDs_(v12, v13, contextCopy, &__p, uids);
       uidMap = v11->_uidMap;
       v11->_uidMap = v14;
 
@@ -60,23 +60,23 @@
   return v11;
 }
 
-- (TSTCategoryOrder)initWithTableInfo:(id)a3 rowUids:(const void *)a4
+- (TSTCategoryOrder)initWithTableInfo:(id)info rowUids:(const void *)uids
 {
-  v6 = a3;
-  v11 = objc_msgSend_context(v6, v7, v8, v9, v10);
-  v13 = objc_msgSend_initWithContext_tableInfo_rowUids_(self, v12, v11, v6, a4);
+  infoCopy = info;
+  v11 = objc_msgSend_context(infoCopy, v7, v8, v9, v10);
+  v13 = objc_msgSend_initWithContext_tableInfo_rowUids_(self, v12, v11, infoCopy, uids);
 
   return v13;
 }
 
-- (TSTCategoryOrder)initWithTableInfo:(id)a3
+- (TSTCategoryOrder)initWithTableInfo:(id)info
 {
-  v4 = a3;
-  v9 = objc_msgSend_context(v4, v5, v6, v7, v8);
+  infoCopy = info;
+  v9 = objc_msgSend_context(infoCopy, v5, v6, v7, v8);
   __p = 0;
   v14 = 0;
   v15 = 0;
-  v11 = objc_msgSend_initWithContext_tableInfo_rowUids_(self, v10, v9, v4, &__p);
+  v11 = objc_msgSend_initWithContext_tableInfo_rowUids_(self, v10, v9, infoCopy, &__p);
   if (__p)
   {
     v14 = __p;
@@ -86,12 +86,12 @@
   return v11;
 }
 
-- (TSTCategoryOrder)initWithContext:(id)a3
+- (TSTCategoryOrder)initWithContext:(id)context
 {
   __p = 0;
   v6 = 0;
   v7 = 0;
-  v3 = objc_msgSend_initWithContext_tableInfo_rowUids_(self, a2, a3, 0, &__p);
+  v3 = objc_msgSend_initWithContext_tableInfo_rowUids_(self, a2, context, 0, &__p);
   if (__p)
   {
     v6 = __p;
@@ -101,21 +101,21 @@
   return v3;
 }
 
-- (id)copyWithContext:(id)a3 tableInfo:(id)a4
+- (id)copyWithContext:(id)context tableInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  infoCopy = info;
   v8 = [TSTCategoryOrder alloc];
-  v12 = objc_msgSend_initWithContext_(v8, v9, v6, v10, v11);
-  objc_storeWeak((v12 + 72), v7);
-  v16 = objc_msgSend_copyWithContext_(self->_uidMap, v13, v6, v14, v15);
+  v12 = objc_msgSend_initWithContext_(v8, v9, contextCopy, v10, v11);
+  objc_storeWeak((v12 + 72), infoCopy);
+  v16 = objc_msgSend_copyWithContext_(self->_uidMap, v13, contextCopy, v14, v15);
   v17 = *(v12 + 80);
   *(v12 + 80) = v16;
 
   return v12;
 }
 
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedRowUidsFromUids:(SEL)a3
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)orderedRowUidsFromUids:(SEL)uids
 {
   v7 = *(a4 + 1);
   v8 = *a4;
@@ -230,10 +230,10 @@
   return result;
 }
 
-- (id)targetGroupFromRowIndex:(unsigned int)a3 minSourceLevel:(unsigned __int8)a4 templateRowUID:(TSKUIDStruct *)a5
+- (id)targetGroupFromRowIndex:(unsigned int)index minSourceLevel:(unsigned __int8)level templateRowUID:(TSKUIDStruct *)d
 {
-  v127 = a4;
-  v6 = *&a3;
+  levelCopy = level;
+  v6 = *&index;
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   __p.origin = objc_msgSend_bodyRange(WeakRetained, v9, v10, v11, v12);
   __p.size = v13;
@@ -249,8 +249,8 @@
     v17 = v23;
   }
 
-  a5->_lower = v18;
-  a5->_upper = v17;
+  d->_lower = v18;
+  d->_upper = v17;
   if (v6 <= v14)
   {
 LABEL_8:
@@ -286,8 +286,8 @@ LABEL_8:
 
   if ((isSummaryRow & 1) == 0)
   {
-    a5->_lower = v34;
-    a5->_upper = v36;
+    d->_lower = v34;
+    d->_upper = v36;
   }
 
 LABEL_9:
@@ -299,8 +299,8 @@ LABEL_9:
       v42 = objc_msgSend_groupBy(v37, v38, v39, v40, v41);
       v47 = objc_msgSend_topLevelGroupNode(v42, v43, v44, v45, v46);
 
-      a5->_lower = 0;
-      a5->_upper = 0;
+      d->_lower = 0;
+      d->_upper = 0;
       goto LABEL_36;
     }
   }
@@ -317,10 +317,10 @@ LABEL_9:
     abort();
   }
 
-  v126 = a5;
+  dCopy = d;
   v48 = objc_loadWeakRetained(&self->_tableInfo);
   v53 = objc_msgSend_groupBy(v48, v49, v50, v51, v52);
-  v54 = self;
+  selfCopy = self;
   v55 = objc_loadWeakRetained(&self->_tableInfo);
   v60 = objc_msgSend_groupBy(v55, v56, v57, v58, v59);
   v65 = objc_msgSend_numberOfLevels(v60, v61, v62, v63, v64);
@@ -334,34 +334,34 @@ LABEL_9:
   else
   {
     v125 = v48;
-    v70 = objc_loadWeakRetained(&v54->_tableInfo);
+    v70 = objc_loadWeakRetained(&selfCopy->_tableInfo);
     v75 = objc_msgSend_groupBy(v70, v71, v72, v73, v74);
     v69 = objc_msgSend_groupNodeForGroupUid_(v75, v76, v34, v36, v77);
 
     v48 = v125;
   }
 
-  if (v127 == 253)
+  if (levelCopy == 253)
   {
-    v82 = v126;
-    v83 = v54;
+    v82 = dCopy;
+    v83 = selfCopy;
   }
 
   else
   {
-    if (v127 <= 1)
+    if (levelCopy <= 1)
     {
       v92 = 1;
     }
 
     else
     {
-      v92 = v127;
+      v92 = levelCopy;
     }
 
     v93 = v92 - 1;
-    v82 = v126;
-    v83 = v54;
+    v82 = dCopy;
+    v83 = selfCopy;
     for (i = objc_msgSend_groupLevel(v69, v78, v79, v80, v81); i > v93; i = objc_msgSend_groupLevel(v99, v100, v101, v102, v103))
     {
       v99 = objc_msgSend_parentNode(v69, v95, v96, v97, v98);
@@ -403,9 +403,9 @@ LABEL_36:
   return v47;
 }
 
-- (unsigned)minimumCategoryLevelInRowRange:(_NSRange)a3
+- (unsigned)minimumCategoryLevelInRowRange:(_NSRange)range
 {
-  v5 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], a2, a3.location, a3.length, v3);
+  v5 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAA78], a2, range.location, range.length, v3);
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
   v11 = objc_msgSend_indexesForSummaryRows(WeakRetained, v7, v8, v9, v10);
   v15 = objc_msgSend_tsu_indexSetByIntersectingWithIndexes_(v5, v12, v11, v13, v14);
@@ -431,23 +431,23 @@ LABEL_36:
   return v23;
 }
 
-- (id)sortedArrayFromArray:(id)a3
+- (id)sortedArrayFromArray:(id)array
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v5 = MEMORY[0x277CBEB18];
-  v10 = objc_msgSend_count(v4, v6, v7, v8, v9);
+  v10 = objc_msgSend_count(arrayCopy, v6, v7, v8, v9);
   v14 = objc_msgSend_arrayWithCapacity_(v5, v11, v10, v12, v13);
-  if (objc_msgSend_count(v4, v15, v16, v17, v18))
+  if (objc_msgSend_count(arrayCopy, v15, v16, v17, v18))
   {
-    if (objc_msgSend_count(v4, v19, v20, v21, v22) == 1)
+    if (objc_msgSend_count(arrayCopy, v19, v20, v21, v22) == 1)
     {
-      objc_msgSend_addObjectsFromArray_(v14, v23, v4, v24, v25);
+      objc_msgSend_addObjectsFromArray_(v14, v23, arrayCopy, v24, v25);
     }
 
     else
     {
-      v52 = self;
+      selfCopy = self;
       __p = 0;
       v61 = 0;
       v62 = 0;
@@ -457,7 +457,7 @@ LABEL_36:
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v26 = v4;
+      v26 = arrayCopy;
       v32 = objc_msgSend_countByEnumeratingWithState_objects_count_(v26, v27, &v54, v64, 16);
       if (v32)
       {
@@ -474,7 +474,7 @@ LABEL_36:
               objc_enumerationMutation(v26);
             }
 
-            *&v53 = objc_msgSend_groupUid(*(*(&v54 + 1) + 8 * v35), v28, v29, v30, v31, v52, 0, 0);
+            *&v53 = objc_msgSend_groupUid(*(*(&v54 + 1) + 8 * v35), v28, v29, v30, v31, selfCopy, 0, 0);
             *(&v53 + 1) = v37;
             sub_221083454(&__p, &v53);
             v63 = &v53;
@@ -491,7 +491,7 @@ LABEL_36:
         while (v32);
       }
 
-      objc_msgSend_orderedRowUidsFromUids_(v52, v38, &__p, v39, v40);
+      objc_msgSend_orderedRowUidsFromUids_(selfCopy, v38, &__p, v39, v40);
       v42 = *(&v53 + 1);
       v41 = v53;
       if (v53 != *(&v53 + 1))
@@ -549,17 +549,17 @@ LABEL_36:
   return sub_221086EBC(retstr, v8, v9, v10);
 }
 
-- (void)setRowOrder:(const void *)a3
+- (void)setRowOrder:(const void *)order
 {
-  objc_msgSend_reset(self->_uidMap, a2, a3, v3, v4);
-  objc_msgSend_replaceRowsWithUids_(self->_uidMap, v7, a3, v8, v9);
+  objc_msgSend_reset(self->_uidMap, a2, order, v3, v4);
+  objc_msgSend_replaceRowsWithUids_(self->_uidMap, v7, order, v8, v9);
   self->_isRowOrderTemporary = 0;
 }
 
-- (void)setTemporaryRowOrder:(const void *)a3
+- (void)setTemporaryRowOrder:(const void *)order
 {
-  objc_msgSend_reset(self->_uidMap, a2, a3, v3, v4);
-  objc_msgSend_replaceRowsWithUids_(self->_uidMap, v7, a3, v8, v9);
+  objc_msgSend_reset(self->_uidMap, a2, order, v3, v4);
+  objc_msgSend_replaceRowsWithUids_(self->_uidMap, v7, order, v8, v9);
   self->_isRowOrderTemporary = 1;
 }
 
@@ -680,30 +680,30 @@ LABEL_36:
   return result;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812E4498[304], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[304], v5, v6);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, v10, v9);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, unarchiverCopy, v9);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (objc_msgSend_fileFormatVersion(v6, v7, v8, v9, v10) == 0x300020000000ALL)
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_fileFormatVersion(unarchiverCopy, v7, v8, v9, v10) == 0x300020000000ALL)
   {
     objc_msgSend_willModifyForUpgrade(self, v11, v12, v13, v14);
   }
 
-  v15 = *(a3 + 3);
+  v15 = *(archive + 3);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = sub_22149B74C;
   v25[3] = &unk_278462738;
   v25[4] = self;
-  v16 = v6;
+  v16 = unarchiverCopy;
   v18 = objc_opt_class();
   v19 = MEMORY[0x277D80A18];
   if (v15)
@@ -716,7 +716,7 @@ LABEL_36:
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v16, v17, MEMORY[0x277D80A18], v18, 0, v25);
   }
 
-  v20 = *(a3 + 4);
+  v20 = *(archive + 4);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = sub_22149B760;
@@ -735,61 +735,61 @@ LABEL_36:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
-  objc_msgSend_setMessageVersion_(v4, v5, 0x300020000000ALL, v6, v7);
-  v13 = v4;
+  archiverCopy = archiver;
+  objc_msgSend_setMessageVersion_(archiverCopy, v5, 0x300020000000ALL, v6, v7);
+  v13 = archiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v10 = objc_msgSend_messageWithNewFunction_descriptor_(v13, v8, sub_22149BE60, off_2812E4498[304], v9);
 
   objc_msgSend_saveToArchive_archiver_(self, v11, v10, v13, v12);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v17 = a4;
+  archiverCopy = archiver;
   WeakRetained = objc_loadWeakRetained(&self->_tableInfo);
-  v9 = v17;
-  *(a3 + 4) |= 1u;
-  v10 = *(a3 + 3);
+  v9 = archiverCopy;
+  *(archive + 4) |= 1u;
+  v10 = *(archive + 3);
   if (!v10)
   {
-    v11 = *(a3 + 1);
+    v11 = *(archive + 1);
     if (v11)
     {
       v11 = *(v11 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v10 = MEMORY[0x223DA0390](v11);
-    *(a3 + 3) = v10;
-    v9 = v17;
+    *(archive + 3) = v10;
+    v9 = archiverCopy;
   }
 
   objc_msgSend_setWeakReference_message_(v9, v6, WeakRetained, v10, v7);
 
   uidMap = self->_uidMap;
-  *(a3 + 4) |= 2u;
-  v15 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v15 = *(archive + 4);
   if (!v15)
   {
-    v16 = *(a3 + 1);
+    v16 = *(archive + 1);
     if (v16)
     {
       v16 = *(v16 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v15 = MEMORY[0x223DA0390](v16);
-    *(a3 + 4) = v15;
+    *(archive + 4) = v15;
   }
 
-  objc_msgSend_setStrongReference_message_(v17, v12, uidMap, v15, v13);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v12, uidMap, v15, v13);
 }
 
-- (void)insertRowUids:(const void *)a3 beforeUid:(const TSKUIDStruct *)a4
+- (void)insertRowUids:(const void *)uids beforeUid:(const TSKUIDStruct *)uid
 {
-  lower = a4->_lower;
-  upper = a4->_upper;
+  lower = uid->_lower;
+  upper = uid->_upper;
   if (!(lower | upper) || (upper = objc_msgSend_rowIndexForRowUID_(self->_uidMap, a2, lower, upper, v4), upper == 0x7FFFFFFF))
   {
     upper = objc_msgSend_numberOfRows(self->_uidMap, a2, lower, upper, v4);
@@ -797,19 +797,19 @@ LABEL_36:
 
   uidMap = self->_uidMap;
 
-  objc_msgSend_insertRowsWithUIDs_atIndex_(uidMap, a2, a3, upper, v4);
+  objc_msgSend_insertRowsWithUIDs_atIndex_(uidMap, a2, uids, upper, v4);
 }
 
-- (void)removeRowUids:(const void *)a3
+- (void)removeRowUids:(const void *)uids
 {
-  v14 = objc_msgSend_rowIndexesForUIDs_(self->_uidMap, a2, a3, v3, v4);
-  if (objc_msgSend_count(v14, v7, v8, v9, v10) == (*(a3 + 1) - *a3) >> 4)
+  v14 = objc_msgSend_rowIndexesForUIDs_(self->_uidMap, a2, uids, v3, v4);
+  if (objc_msgSend_count(v14, v7, v8, v9, v10) == (*(uids + 1) - *uids) >> 4)
   {
     objc_msgSend_removeRowsAtIndexes_(self->_uidMap, v11, v14, v12, v13);
   }
 }
 
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)groupUidsGivenRowUids:(SEL)a3 selectedLevels:(const void *)a4
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)groupUidsGivenRowUids:(SEL)uids selectedLevels:(const void *)levels
 {
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
@@ -819,7 +819,7 @@ LABEL_36:
   sub_22149BD7C(v37, v14);
 
   v15 = [TSCEUIDSet alloc];
-  v19 = objc_msgSend_initWithUUIDVector_(v15, v16, a4, v17, v18);
+  v19 = objc_msgSend_initWithUUIDVector_(v15, v16, levels, v17, v18);
   sub_22149CC78(v37, v19);
   sub_22149CD08(v37);
   v20 = objc_loadWeakRetained(&self->_tableInfo);

@@ -1,12 +1,12 @@
 @interface HDCloudSyncOperationPipelineStage
-- (HDCloudSyncOperationPipelineStage)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncOperationPipelineStage)initWithOperation:(id)a3;
+- (HDCloudSyncOperationPipelineStage)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncOperationPipelineStage)initWithOperation:(id)operation;
 - (id)description;
 @end
 
 @implementation HDCloudSyncOperationPipelineStage
 
-- (HDCloudSyncOperationPipelineStage)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncOperationPipelineStage)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -16,18 +16,18 @@
   return 0;
 }
 
-- (HDCloudSyncOperationPipelineStage)initWithOperation:(id)a3
+- (HDCloudSyncOperationPipelineStage)initWithOperation:(id)operation
 {
-  v5 = a3;
-  v6 = [v5 configuration];
-  v7 = [v5 cloudState];
+  operationCopy = operation;
+  configuration = [operationCopy configuration];
+  cloudState = [operationCopy cloudState];
   v10.receiver = self;
   v10.super_class = HDCloudSyncOperationPipelineStage;
-  v8 = [(HDCloudSyncPipelineStage *)&v10 initWithConfiguration:v6 cloudState:v7];
+  v8 = [(HDCloudSyncPipelineStage *)&v10 initWithConfiguration:configuration cloudState:cloudState];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_operation, a3);
+    objc_storeStrong(&v8->_operation, operation);
   }
 
   return v8;
@@ -36,8 +36,8 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDCloudSyncOperationPipelineStage *)self operation];
-  v4 = [v2 stringWithFormat:@"[Wrap: %@]", v3];
+  operation = [(HDCloudSyncOperationPipelineStage *)self operation];
+  v4 = [v2 stringWithFormat:@"[Wrap: %@]", operation];
 
   return v4;
 }

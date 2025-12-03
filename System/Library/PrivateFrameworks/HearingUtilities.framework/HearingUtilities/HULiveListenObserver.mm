@@ -1,27 +1,27 @@
 @interface HULiveListenObserver
-- (HULiveListenObserver)initWithController:(id)a3;
+- (HULiveListenObserver)initWithController:(id)controller;
 - (void)_notifyListenersAndPollAudioLevelIfLiveListenIsRunning;
 - (void)_pollLiveListenAudioLevelAfterDelay;
-- (void)registerUpdateBlock:(id)a3 withListener:(id)a4;
-- (void)removeListener:(id)a3;
+- (void)registerUpdateBlock:(id)block withListener:(id)listener;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation HULiveListenObserver
 
-- (HULiveListenObserver)initWithController:(id)a3
+- (HULiveListenObserver)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = HULiveListenObserver;
   v6 = [(HULiveListenObserver *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
-    [v5 setDelegate:v7];
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_controller, controller);
+    [controllerCopy setDelegate:v7];
+    array = [MEMORY[0x1E695DF70] array];
     updateBlocks = v7->_updateBlocks;
-    v7->_updateBlocks = v8;
+    v7->_updateBlocks = array;
 
     v10 = objc_opt_new();
     updateLock = v7->_updateLock;
@@ -34,57 +34,57 @@
   return v7;
 }
 
-- (void)registerUpdateBlock:(id)a3 withListener:(id)a4
+- (void)registerUpdateBlock:(id)block withListener:(id)listener
 {
-  aBlock = a3;
-  v6 = a4;
+  aBlock = block;
+  listenerCopy = listener;
   if (aBlock)
   {
     v7 = [HUIdentifierAndBlockPair alloc];
     v8 = _Block_copy(aBlock);
-    v9 = [(HUIdentifierAndBlockPair *)v7 initWithIdentifier:v6 andBlock:v8];
+    v9 = [(HUIdentifierAndBlockPair *)v7 initWithIdentifier:listenerCopy andBlock:v8];
 
-    v10 = [(HULiveListenObserver *)self updateLock];
-    [v10 lock];
+    updateLock = [(HULiveListenObserver *)self updateLock];
+    [updateLock lock];
 
-    v11 = [(HULiveListenObserver *)self updateBlocks];
-    [v11 addObject:v9];
+    updateBlocks = [(HULiveListenObserver *)self updateBlocks];
+    [updateBlocks addObject:v9];
 
-    v12 = [(HULiveListenObserver *)self updateLock];
-    [v12 unlock];
+    updateLock2 = [(HULiveListenObserver *)self updateLock];
+    [updateLock2 unlock];
 
-    v13 = [HUListenerHelper listenerHelperWithListener:v6 andDelegate:self];
+    v13 = [HUListenerHelper listenerHelperWithListener:listenerCopy andDelegate:self];
   }
 
   else
   {
-    [(HULiveListenObserver *)self removeListener:v6];
+    [(HULiveListenObserver *)self removeListener:listenerCopy];
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(HULiveListenObserver *)self updateLock];
-  [v5 lock];
+  listenerCopy = listener;
+  updateLock = [(HULiveListenObserver *)self updateLock];
+  [updateLock lock];
 
-  v6 = [(HULiveListenObserver *)self updateBlocks];
+  updateBlocks = [(HULiveListenObserver *)self updateBlocks];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __39__HULiveListenObserver_removeListener___block_invoke;
   v11[3] = &unk_1E85CC0C8;
-  v12 = v4;
-  v7 = v4;
-  v8 = [v6 indexesOfObjectsPassingTest:v11];
+  v12 = listenerCopy;
+  v7 = listenerCopy;
+  v8 = [updateBlocks indexesOfObjectsPassingTest:v11];
 
   if ([v8 count])
   {
-    v9 = [(HULiveListenObserver *)self updateBlocks];
-    [v9 removeObjectsAtIndexes:v8];
+    updateBlocks2 = [(HULiveListenObserver *)self updateBlocks];
+    [updateBlocks2 removeObjectsAtIndexes:v8];
   }
 
-  v10 = [(HULiveListenObserver *)self updateLock];
-  [v10 unlock];
+  updateLock2 = [(HULiveListenObserver *)self updateLock];
+  [updateLock2 unlock];
 }
 
 BOOL __39__HULiveListenObserver_removeListener___block_invoke(uint64_t a1, void *a2)
@@ -98,27 +98,27 @@ BOOL __39__HULiveListenObserver_removeListener___block_invoke(uint64_t a1, void 
 - (void)_notifyListenersAndPollAudioLevelIfLiveListenIsRunning
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(HULiveListenObserver *)self controller];
-  v4 = [v3 isListening];
+  controller = [(HULiveListenObserver *)self controller];
+  isListening = [controller isListening];
 
-  v5 = [(HULiveListenObserver *)self controller];
-  [v5 audioLevel];
+  controller2 = [(HULiveListenObserver *)self controller];
+  [controller2 audioLevel];
   v7 = v6;
 
-  v8 = [(HULiveListenObserver *)self controller];
-  v9 = [v8 isPlayingBack];
+  controller3 = [(HULiveListenObserver *)self controller];
+  isPlayingBack = [controller3 isPlayingBack];
 
-  v10 = [(HULiveListenObserver *)self controller];
-  v11 = [v10 combinedSessionTranscription];
+  controller4 = [(HULiveListenObserver *)self controller];
+  combinedSessionTranscription = [controller4 combinedSessionTranscription];
 
-  v12 = [(HULiveListenObserver *)self updateLock];
-  [v12 lock];
+  updateLock = [(HULiveListenObserver *)self updateLock];
+  [updateLock lock];
 
-  v13 = [(HULiveListenObserver *)self updateBlocks];
-  v14 = [v13 copy];
+  updateBlocks = [(HULiveListenObserver *)self updateBlocks];
+  v14 = [updateBlocks copy];
 
-  v15 = [(HULiveListenObserver *)self updateLock];
-  [v15 unlock];
+  updateLock2 = [(HULiveListenObserver *)self updateLock];
+  [updateLock2 unlock];
 
   v26 = 0u;
   v27 = 0u;
@@ -140,8 +140,8 @@ BOOL __39__HULiveListenObserver_removeListener___block_invoke(uint64_t a1, void 
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * v20) block];
-        (v21)[2](v21, v4, v9, v11, v7);
+        block = [*(*(&v24 + 1) + 8 * v20) block];
+        (block)[2](block, isListening, isPlayingBack, combinedSessionTranscription, v7);
 
         ++v20;
       }
@@ -153,15 +153,15 @@ BOOL __39__HULiveListenObserver_removeListener___block_invoke(uint64_t a1, void 
     while (v18);
   }
 
-  if (v4)
+  if (isListening)
   {
     [(HULiveListenObserver *)self _pollLiveListenAudioLevelAfterDelay];
   }
 
   else
   {
-    v22 = [(HULiveListenObserver *)self liveListenLevelsTimer];
-    [v22 cancel];
+    liveListenLevelsTimer = [(HULiveListenObserver *)self liveListenLevelsTimer];
+    [liveListenLevelsTimer cancel];
 
     [(HULiveListenObserver *)self setLiveListenLevelsTimer:0];
   }
@@ -171,25 +171,25 @@ BOOL __39__HULiveListenObserver_removeListener___block_invoke(uint64_t a1, void 
 
 - (void)_pollLiveListenAudioLevelAfterDelay
 {
-  v3 = [(HULiveListenObserver *)self liveListenLevelsTimer];
+  liveListenLevelsTimer = [(HULiveListenObserver *)self liveListenLevelsTimer];
 
-  if (!v3)
+  if (!liveListenLevelsTimer)
   {
     v4 = objc_opt_new();
     [(HULiveListenObserver *)self setLiveListenLevelsTimer:v4];
   }
 
-  v5 = [(HULiveListenObserver *)self liveListenLevelsTimer];
-  [v5 cancel];
+  liveListenLevelsTimer2 = [(HULiveListenObserver *)self liveListenLevelsTimer];
+  [liveListenLevelsTimer2 cancel];
 
   objc_initWeak(&location, self);
-  v6 = [(HULiveListenObserver *)self liveListenLevelsTimer];
+  liveListenLevelsTimer3 = [(HULiveListenObserver *)self liveListenLevelsTimer];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__HULiveListenObserver__pollLiveListenAudioLevelAfterDelay__block_invoke;
   v7[3] = &unk_1E85C9F10;
   objc_copyWeak(&v8, &location);
-  [v6 afterDelay:v7 processBlock:0.05];
+  [liveListenLevelsTimer3 afterDelay:v7 processBlock:0.05];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

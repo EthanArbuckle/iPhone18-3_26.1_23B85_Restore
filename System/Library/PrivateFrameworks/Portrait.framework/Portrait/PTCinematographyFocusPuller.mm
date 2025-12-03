@@ -4,17 +4,17 @@
 + (float)defaultResistance;
 + (unint64_t)defaultStrategy;
 - (PTCinematographyFocusPuller)init;
-- (PTCinematographyFocusPuller)initWithExponentialMovingAverageAlpha:(float)a3;
-- (PTCinematographyFocusPuller)initWithExponentialMovingAverageSampleCount:(unint64_t)a3;
-- (PTCinematographyFocusPuller)initWithMaximumVelocity:(float)a3 resistance:(float)a4;
-- (float)_weightedDialDelta:(float)a3 timeDelta:(float)a4;
-- (float)pullTowardFocusDistance:(float)a3 time:(id *)a4;
-- (float)pullTowardFocusDistance:(float)a3 time:(id *)a4 missing:(BOOL)a5;
+- (PTCinematographyFocusPuller)initWithExponentialMovingAverageAlpha:(float)alpha;
+- (PTCinematographyFocusPuller)initWithExponentialMovingAverageSampleCount:(unint64_t)count;
+- (PTCinematographyFocusPuller)initWithMaximumVelocity:(float)velocity resistance:(float)resistance;
+- (float)_weightedDialDelta:(float)delta timeDelta:(float)timeDelta;
+- (float)pullTowardFocusDistance:(float)distance time:(id *)time;
+- (float)pullTowardFocusDistance:(float)distance time:(id *)time missing:(BOOL)missing;
 - (id)_asCinematographyDictionary;
-- (id)_initWithCinematographyDictionary:(id)a3;
-- (void)setAlpha:(float)a3;
-- (void)setFocusDistance:(float)a3 time:(id *)a4;
-- (void)setSampleCount:(unint64_t)a3;
+- (id)_initWithCinematographyDictionary:(id)dictionary;
+- (void)setAlpha:(float)alpha;
+- (void)setFocusDistance:(float)distance time:(id *)time;
+- (void)setSampleCount:(unint64_t)count;
 @end
 
 @implementation PTCinematographyFocusPuller
@@ -61,9 +61,9 @@
 
 - (PTCinematographyFocusPuller)init
 {
-  v3 = [objc_opt_class() defaultStrategy];
+  defaultStrategy = [objc_opt_class() defaultStrategy];
   v4 = objc_opt_class();
-  if (v3 == 1)
+  if (defaultStrategy == 1)
   {
     [v4 defaultMaximumVelocity];
     v6 = v5;
@@ -84,7 +84,7 @@
   return v12;
 }
 
-- (PTCinematographyFocusPuller)initWithExponentialMovingAverageAlpha:(float)a3
+- (PTCinematographyFocusPuller)initWithExponentialMovingAverageAlpha:(float)alpha
 {
   v9.receiver = self;
   v9.super_class = PTCinematographyFocusPuller;
@@ -93,7 +93,7 @@
   if (v4)
   {
     v4->_strategy = 0;
-    *&v5 = a3;
+    *&v5 = alpha;
     [(PTCinematographyFocusPuller *)v4 setAlpha:v5];
     v7 = _PTLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -105,7 +105,7 @@
   return v6;
 }
 
-- (PTCinematographyFocusPuller)initWithExponentialMovingAverageSampleCount:(unint64_t)a3
+- (PTCinematographyFocusPuller)initWithExponentialMovingAverageSampleCount:(unint64_t)count
 {
   v8.receiver = self;
   v8.super_class = PTCinematographyFocusPuller;
@@ -114,7 +114,7 @@
   if (v4)
   {
     v4->_strategy = 0;
-    [(PTCinematographyFocusPuller *)v4 setSampleCount:a3];
+    [(PTCinematographyFocusPuller *)v4 setSampleCount:count];
     v6 = _PTLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
@@ -125,14 +125,14 @@
   return v5;
 }
 
-- (void)setAlpha:(float)a3
+- (void)setAlpha:(float)alpha
 {
-  if (a3 < 0.0)
+  if (alpha < 0.0)
   {
-    a3 = 0.0;
+    alpha = 0.0;
   }
 
-  v3 = fminf(a3, 1.0);
+  v3 = fminf(alpha, 1.0);
   self->_alpha = v3;
   if (v3 <= 0.0)
   {
@@ -147,23 +147,23 @@
   self->_sampleCount = v4;
 }
 
-- (void)setSampleCount:(unint64_t)a3
+- (void)setSampleCount:(unint64_t)count
 {
-  if (a3 <= 1)
+  if (count <= 1)
   {
-    v3 = 1;
+    countCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    countCopy = count;
   }
 
-  self->_sampleCount = v3;
-  self->_alpha = 2.0 / (v3 + 1.0);
+  self->_sampleCount = countCopy;
+  self->_alpha = 2.0 / (countCopy + 1.0);
 }
 
-- (PTCinematographyFocusPuller)initWithMaximumVelocity:(float)a3 resistance:(float)a4
+- (PTCinematographyFocusPuller)initWithMaximumVelocity:(float)velocity resistance:(float)resistance
 {
   v13.receiver = self;
   v13.super_class = PTCinematographyFocusPuller;
@@ -171,13 +171,13 @@
   v7 = v6;
   if (v6)
   {
-    v8 = fabsf(a4);
+    v8 = fabsf(resistance);
     v6->_resistance = v8;
     v6->_strategy = 1;
-    v9 = fabsf(a3);
+    v9 = fabsf(velocity);
     v6->_maximumVelocity = v9;
     v10 = v9 / v8;
-    if (a4 == 0.0)
+    if (resistance == 0.0)
     {
       v10 = INFINITY;
     }
@@ -193,24 +193,24 @@
   return v7;
 }
 
-- (void)setFocusDistance:(float)a3 time:(id *)a4
+- (void)setFocusDistance:(float)distance time:(id *)time
 {
-  v4 = *&a4->var0;
-  self->_time.epoch = a4->var3;
+  v4 = *&time->var0;
+  self->_time.epoch = time->var3;
   *&self->_time.value = v4;
   self->_velocity = 0.0;
-  self->_focusDistance = a3;
-  self->_targetDistance = a3;
+  self->_focusDistance = distance;
+  self->_targetDistance = distance;
 }
 
-- (float)_weightedDialDelta:(float)a3 timeDelta:(float)a4
+- (float)_weightedDialDelta:(float)delta timeDelta:(float)timeDelta
 {
-  v21 = *&a3;
+  v21 = *&delta;
   [(PTCinematographyFocusPuller *)self maximumVelocity];
   v7 = v6;
   [(PTCinematographyFocusPuller *)self maximumAcceleration];
   v8 = v21;
-  *v9.i32 = (*v10.i32 * a4) * a4;
+  *v9.i32 = (*v10.i32 * timeDelta) * timeDelta;
   *v10.i32 = fabsf(*v21.i32);
   v20 = v9;
   if (*v10.i32 > *v9.i32)
@@ -224,11 +224,11 @@
     *v10.i32 = fabsf(*v10.i32);
   }
 
-  *v9.i32 = v7 * a4;
+  *v9.i32 = v7 * timeDelta;
   v11.i64[0] = 0x8000000080000000;
   v11.i64[1] = 0x8000000080000000;
   v12 = vbslq_s8(v11, v9, v8).u32[0];
-  if (*v10.i32 <= (v7 * a4))
+  if (*v10.i32 <= (v7 * timeDelta))
   {
     v13 = *v8.i32;
   }
@@ -239,7 +239,7 @@
   }
 
   [(PTCinematographyFocusPuller *)self velocity];
-  v15 = v14 * a4;
+  v15 = v14 * timeDelta;
   *v16.i32 = v13 - v15;
   v17 = vabds_f32(v13, v15);
   v18.i64[0] = 0x8000000080000000;
@@ -253,14 +253,14 @@
   return result;
 }
 
-- (float)pullTowardFocusDistance:(float)a3 time:(id *)a4
+- (float)pullTowardFocusDistance:(float)distance time:(id *)time
 {
   [(PTCinematographyFocusPuller *)self time];
   if (v22)
   {
-    self->_targetDistance = a3;
+    self->_targetDistance = distance;
     [(PTCinematographyFocusPuller *)self time];
-    v19 = *a4;
+    v19 = *time;
     CMTimeSubtract(&time, &v19, &rhs);
     Seconds = CMTimeGetSeconds(&time);
     v9 = LODWORD(Seconds) & 0x7FFFFFFF;
@@ -268,7 +268,7 @@
     if ((LODWORD(Seconds) & 0x7FFFFFFFu) <= 0x7F800000 && v9 != 2139095040 && v9 != 0)
     {
       v12 = fabsf(Seconds);
-      v13 = a3 - result;
+      v13 = distance - result;
       if ([(PTCinematographyFocusPuller *)self strategy])
       {
         *&v14 = v13;
@@ -283,8 +283,8 @@
       }
 
       v17 = v16;
-      v18 = *&a4->var0;
-      self->_time.epoch = a4->var3;
+      v18 = *&time->var0;
+      self->_time.epoch = time->var3;
       *&self->_time.value = v18;
       result = v17 + self->_focusDistance;
       self->_focusDistance = result;
@@ -294,67 +294,67 @@
 
   else
   {
-    [(PTCinematographyFocusPuller *)self setFocusDistance:&time time:COERCE_DOUBLE(__PAIR64__(HIDWORD(a4->var0), LODWORD(a3)))];
-    return a3;
+    [(PTCinematographyFocusPuller *)self setFocusDistance:&time time:COERCE_DOUBLE(__PAIR64__(HIDWORD(time->var0), LODWORD(distance)))];
+    return distance;
   }
 
   return result;
 }
 
-- (float)pullTowardFocusDistance:(float)a3 time:(id *)a4 missing:(BOOL)a5
+- (float)pullTowardFocusDistance:(float)distance time:(id *)time missing:(BOOL)missing
 {
-  v7 = self;
-  if (!a5)
+  selfCopy = self;
+  if (!missing)
   {
-    v8 = *&a4->var0;
-    v11 = *a4;
-    *&v8 = a3;
+    v8 = *&time->var0;
+    v11 = *time;
+    *&v8 = distance;
     goto LABEL_5;
   }
 
   [(PTCinematographyFocusPuller *)self time];
   if (v12)
   {
-    *&v8 = v7->_targetDistance;
-    v11 = *a4;
-    self = v7;
+    *&v8 = selfCopy->_targetDistance;
+    v11 = *time;
+    self = selfCopy;
 LABEL_5:
     [(PTCinematographyFocusPuller *)self pullTowardFocusDistance:&v11 time:*&v8, *&v11.var0, v11.var3];
     return v9;
   }
 
-  return a3;
+  return distance;
 }
 
-- (id)_initWithCinematographyDictionary:(id)a3
+- (id)_initWithCinematographyDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"_alpha"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"_alpha"];
   [v5 floatValue];
   v7 = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"_maxv"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"_maxv"];
   [v8 floatValue];
   v10 = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"_resistance"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"_resistance"];
 
   [v11 floatValue];
   v13 = v12;
 
   if (v7 > 0.0)
   {
-    v16 = self;
+    selfCopy2 = self;
     *&v14 = v7;
 LABEL_6:
-    v17 = [(PTCinematographyFocusPuller *)v16 initWithExponentialMovingAverageAlpha:v14];
+    v17 = [(PTCinematographyFocusPuller *)selfCopy2 initWithExponentialMovingAverageAlpha:v14];
     goto LABEL_7;
   }
 
   if (v10 <= 0.0)
   {
     LODWORD(v14) = 1.0;
-    v16 = self;
+    selfCopy2 = self;
     goto LABEL_6;
   }
 

@@ -1,36 +1,36 @@
 @interface ATXContactNotificationEngagementEventProvider
-- (ATXContactNotificationEngagementEventProvider)initWithModeEventProvider:(id)a3;
-- (BOOL)notificationEventOccurredWhileInMode:(id)a3 modeTransitionEvent:(id)a4;
+- (ATXContactNotificationEngagementEventProvider)initWithModeEventProvider:(id)provider;
+- (BOOL)notificationEventOccurredWhileInMode:(id)mode modeTransitionEvent:(id)event;
 - (BOOL)successfullyCalculatedNotificationEvents;
-- (double)classConditionalOfNotificationsClearedForContactId:(id)a3;
-- (double)classConditionalOfNotificationsReceivedForContactId:(id)a3;
-- (double)globalNotificationsClearedRateForContactId:(id)a3;
-- (double)globalPopularityOfNotificationsReceivedForContactId:(id)a3;
-- (double)localNotificationsClearedRateForContactId:(id)a3;
-- (double)localPopularityOfNotificationsReceivedForContactId:(id)a3;
-- (double)ratioOfLocalToGlobalNotificationsClearedRateForContactId:(id)a3;
-- (double)ratioOfLocalToGlobalPopularityOfNotificationsReceivedForContactId:(id)a3;
-- (id)dateIntervalFromNotificationEvent:(id)a3;
+- (double)classConditionalOfNotificationsClearedForContactId:(id)id;
+- (double)classConditionalOfNotificationsReceivedForContactId:(id)id;
+- (double)globalNotificationsClearedRateForContactId:(id)id;
+- (double)globalPopularityOfNotificationsReceivedForContactId:(id)id;
+- (double)localNotificationsClearedRateForContactId:(id)id;
+- (double)localPopularityOfNotificationsReceivedForContactId:(id)id;
+- (double)ratioOfLocalToGlobalNotificationsClearedRateForContactId:(id)id;
+- (double)ratioOfLocalToGlobalPopularityOfNotificationsReceivedForContactId:(id)id;
+- (id)dateIntervalFromNotificationEvent:(id)event;
 - (unint64_t)globalCountOfNotificationsCleared;
 - (unint64_t)globalCountOfNotificationsReceived;
 - (unint64_t)modeCountOfNotificationsCleared;
 - (unint64_t)modeCountOfNotificationsReceived;
 - (void)successfullyCalculatedNotificationEvents;
-- (void)trackNewNotificationEvent:(id)a3;
+- (void)trackNewNotificationEvent:(id)event;
 @end
 
 @implementation ATXContactNotificationEngagementEventProvider
 
-- (ATXContactNotificationEngagementEventProvider)initWithModeEventProvider:(id)a3
+- (ATXContactNotificationEngagementEventProvider)initWithModeEventProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = ATXContactNotificationEngagementEventProvider;
   v6 = [(ATXContactNotificationEngagementEventProvider *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modeEventProvider, a3);
+    objc_storeStrong(&v6->_modeEventProvider, provider);
     v8 = objc_alloc_init(MEMORY[0x277CCA940]);
     modeCountOfNotificationsCleared = v7->_modeCountOfNotificationsCleared;
     v7->_modeCountOfNotificationsCleared = v8;
@@ -55,11 +55,11 @@
 {
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
   v4 = BiomeLibrary();
-  v5 = [v4 Notification];
-  v6 = [v5 Usage];
+  notification = [v4 Notification];
+  usage = [notification Usage];
 
   v7 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v3 endDate:0 maxEvents:0 lastN:0 reversed:0];
-  v8 = [v6 publisherWithUseCase:*MEMORY[0x277CEBB48] options:v7];
+  v8 = [usage publisherWithUseCase:*MEMORY[0x277CEBB48] options:v7];
   v9 = [(ATXModeEntityEventProviderProtocol *)self->_modeEventProvider biomePublisherWithBookmark:0];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -245,24 +245,24 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dateIntervalFromNotificationEvent:(id)a3
+- (id)dateIntervalFromNotificationEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 eventBody];
+    v4 = eventCopy;
+    eventBody = [v4 eventBody];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [v4 eventBody];
+      eventBody2 = [v4 eventBody];
       v8 = objc_alloc(MEMORY[0x277CCA970]);
-      v9 = [v7 absoluteTimestamp];
-      v10 = [v7 absoluteTimestamp];
-      v11 = [v8 initWithStartDate:v9 endDate:v10];
+      absoluteTimestamp = [eventBody2 absoluteTimestamp];
+      absoluteTimestamp2 = [eventBody2 absoluteTimestamp];
+      v11 = [v8 initWithStartDate:absoluteTimestamp endDate:absoluteTimestamp2];
     }
 
     else
@@ -279,22 +279,22 @@ LABEL_10:
   return v11;
 }
 
-- (void)trackNewNotificationEvent:(id)a3
+- (void)trackNewNotificationEvent:(id)event
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = [a3 eventBody];
-  if ([v4 usageType] == 4)
+  eventBody = [event eventBody];
+  if ([eventBody usageType] == 4)
   {
-    v5 = [v4 contactIDs];
+    contactIDs = [eventBody contactIDs];
 
-    if (v5)
+    if (contactIDs)
     {
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v6 = [v4 contactIDs];
-      v7 = [v6 countByEnumeratingWithState:&v40 objects:v47 count:16];
+      contactIDs2 = [eventBody contactIDs];
+      v7 = [contactIDs2 countByEnumeratingWithState:&v40 objects:v47 count:16];
       if (v7)
       {
         v8 = v7;
@@ -306,27 +306,27 @@ LABEL_10:
           {
             if (*v41 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(contactIDs2);
             }
 
             [(NSCountedSet *)self->_globalCountOfNotificationsCleared addObject:*(*(&v40 + 1) + 8 * v10++)];
           }
 
           while (v8 != v10);
-          v8 = [v6 countByEnumeratingWithState:&v40 objects:v47 count:16];
+          v8 = [contactIDs2 countByEnumeratingWithState:&v40 objects:v47 count:16];
         }
 
         while (v8);
       }
 
-      if ([(ATXContactNotificationEngagementEventProvider *)self notificationEventOccurredWhileInMode:v4 modeTransitionEvent:self->_mostRecentModeEvent])
+      if ([(ATXContactNotificationEngagementEventProvider *)self notificationEventOccurredWhileInMode:eventBody modeTransitionEvent:self->_mostRecentModeEvent])
       {
         v38 = 0u;
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v11 = [v4 contactIDs];
-        v12 = [v11 countByEnumeratingWithState:&v36 objects:v46 count:16];
+        contactIDs3 = [eventBody contactIDs];
+        v12 = [contactIDs3 countByEnumeratingWithState:&v36 objects:v46 count:16];
         if (v12)
         {
           v13 = v12;
@@ -338,14 +338,14 @@ LABEL_10:
             {
               if (*v37 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(contactIDs3);
               }
 
               [(NSCountedSet *)self->_modeCountOfNotificationsCleared addObject:*(*(&v36 + 1) + 8 * v15++)];
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v36 objects:v46 count:16];
+            v13 = [contactIDs3 countByEnumeratingWithState:&v36 objects:v46 count:16];
           }
 
           while (v13);
@@ -354,18 +354,18 @@ LABEL_10:
     }
   }
 
-  if ([v4 usageType] == 17 || objc_msgSend(v4, "usageType") == 18)
+  if ([eventBody usageType] == 17 || objc_msgSend(eventBody, "usageType") == 18)
   {
-    v16 = [v4 contactIDs];
+    contactIDs4 = [eventBody contactIDs];
 
-    if (v16)
+    if (contactIDs4)
     {
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v17 = [v4 contactIDs];
-      v18 = [v17 countByEnumeratingWithState:&v32 objects:v45 count:16];
+      contactIDs5 = [eventBody contactIDs];
+      v18 = [contactIDs5 countByEnumeratingWithState:&v32 objects:v45 count:16];
       if (v18)
       {
         v19 = v18;
@@ -377,27 +377,27 @@ LABEL_10:
           {
             if (*v33 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(contactIDs5);
             }
 
             [(NSCountedSet *)self->_globalCountOfNotificationsReceived addObject:*(*(&v32 + 1) + 8 * v21++)];
           }
 
           while (v19 != v21);
-          v19 = [v17 countByEnumeratingWithState:&v32 objects:v45 count:16];
+          v19 = [contactIDs5 countByEnumeratingWithState:&v32 objects:v45 count:16];
         }
 
         while (v19);
       }
 
-      if ([(ATXContactNotificationEngagementEventProvider *)self notificationEventOccurredWhileInMode:v4 modeTransitionEvent:self->_mostRecentModeEvent])
+      if ([(ATXContactNotificationEngagementEventProvider *)self notificationEventOccurredWhileInMode:eventBody modeTransitionEvent:self->_mostRecentModeEvent])
       {
         v30 = 0u;
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v22 = [v4 contactIDs];
-        v23 = [v22 countByEnumeratingWithState:&v28 objects:v44 count:16];
+        contactIDs6 = [eventBody contactIDs];
+        v23 = [contactIDs6 countByEnumeratingWithState:&v28 objects:v44 count:16];
         if (v23)
         {
           v24 = v23;
@@ -409,14 +409,14 @@ LABEL_10:
             {
               if (*v29 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(contactIDs6);
               }
 
               [(NSCountedSet *)self->_modeCountOfNotificationsReceived addObject:*(*(&v28 + 1) + 8 * v26++)];
             }
 
             while (v24 != v26);
-            v24 = [v22 countByEnumeratingWithState:&v28 objects:v44 count:16];
+            v24 = [contactIDs6 countByEnumeratingWithState:&v28 objects:v44 count:16];
           }
 
           while (v24);
@@ -428,15 +428,15 @@ LABEL_10:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)notificationEventOccurredWhileInMode:(id)a3 modeTransitionEvent:(id)a4
+- (BOOL)notificationEventOccurredWhileInMode:(id)mode modeTransitionEvent:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 absoluteTimestamp];
-  [v7 timeIntervalSince1970];
+  modeCopy = mode;
+  eventCopy = event;
+  absoluteTimestamp = [modeCopy absoluteTimestamp];
+  [absoluteTimestamp timeIntervalSince1970];
   v9 = v8;
-  v10 = [v6 startDate];
-  [v10 timeIntervalSince1970];
+  startDate = [eventCopy startDate];
+  [startDate timeIntervalSince1970];
   if (v9 <= v11)
   {
     v17 = 0;
@@ -444,11 +444,11 @@ LABEL_10:
 
   else
   {
-    v12 = [v5 absoluteTimestamp];
-    [v12 timeIntervalSince1970];
+    absoluteTimestamp2 = [modeCopy absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSince1970];
     v14 = v13;
-    v15 = [v6 endDate];
-    [v15 timeIntervalSince1970];
+    endDate = [eventCopy endDate];
+    [endDate timeIntervalSince1970];
     v17 = v14 < v16;
   }
 
@@ -537,44 +537,44 @@ LABEL_10:
   return v6;
 }
 
-- (double)localNotificationsClearedRateForContactId:(id)a3
+- (double)localNotificationsClearedRateForContactId:(id)id
 {
-  v4 = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsClearedForContactId:a3];
-  v5 = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsCleared];
+  v4 = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsClearedForContactId:id];
+  modeCountOfNotificationsCleared = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsCleared];
   result = 0.0;
   if (v4)
   {
-    if (v5)
+    if (modeCountOfNotificationsCleared)
     {
-      return v4 / v5;
+      return v4 / modeCountOfNotificationsCleared;
     }
   }
 
   return result;
 }
 
-- (double)globalNotificationsClearedRateForContactId:(id)a3
+- (double)globalNotificationsClearedRateForContactId:(id)id
 {
-  v4 = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsClearedForContactId:a3];
-  v5 = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsCleared];
+  v4 = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsClearedForContactId:id];
+  globalCountOfNotificationsCleared = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsCleared];
   result = 0.0;
   if (v4)
   {
-    if (v5)
+    if (globalCountOfNotificationsCleared)
     {
-      return v4 / v5;
+      return v4 / globalCountOfNotificationsCleared;
     }
   }
 
   return result;
 }
 
-- (double)ratioOfLocalToGlobalNotificationsClearedRateForContactId:(id)a3
+- (double)ratioOfLocalToGlobalNotificationsClearedRateForContactId:(id)id
 {
-  v4 = a3;
-  [(ATXContactNotificationEngagementEventProvider *)self localNotificationsClearedRateForContactId:v4];
+  idCopy = id;
+  [(ATXContactNotificationEngagementEventProvider *)self localNotificationsClearedRateForContactId:idCopy];
   v6 = v5;
-  [(ATXContactNotificationEngagementEventProvider *)self globalNotificationsClearedRateForContactId:v4];
+  [(ATXContactNotificationEngagementEventProvider *)self globalNotificationsClearedRateForContactId:idCopy];
   v8 = v7;
 
   result = 0.0;
@@ -586,11 +586,11 @@ LABEL_10:
   return result;
 }
 
-- (double)classConditionalOfNotificationsClearedForContactId:(id)a3
+- (double)classConditionalOfNotificationsClearedForContactId:(id)id
 {
-  v4 = a3;
-  v5 = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsClearedForContactId:v4];
-  v6 = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsClearedForContactId:v4];
+  idCopy = id;
+  v5 = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsClearedForContactId:idCopy];
+  v6 = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsClearedForContactId:idCopy];
 
   result = 0.0;
   if (v5)
@@ -686,44 +686,44 @@ LABEL_10:
   return v6;
 }
 
-- (double)globalPopularityOfNotificationsReceivedForContactId:(id)a3
+- (double)globalPopularityOfNotificationsReceivedForContactId:(id)id
 {
-  v4 = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsReceivedForContactId:a3];
-  v5 = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsReceived];
+  v4 = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsReceivedForContactId:id];
+  globalCountOfNotificationsReceived = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsReceived];
   result = 0.0;
   if (v4)
   {
-    if (v5)
+    if (globalCountOfNotificationsReceived)
     {
-      return v4 / v5;
+      return v4 / globalCountOfNotificationsReceived;
     }
   }
 
   return result;
 }
 
-- (double)localPopularityOfNotificationsReceivedForContactId:(id)a3
+- (double)localPopularityOfNotificationsReceivedForContactId:(id)id
 {
-  v4 = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsReceivedForContactId:a3];
-  v5 = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsReceived];
+  v4 = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsReceivedForContactId:id];
+  modeCountOfNotificationsReceived = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsReceived];
   result = 0.0;
   if (v4)
   {
-    if (v5)
+    if (modeCountOfNotificationsReceived)
     {
-      return v4 / v5;
+      return v4 / modeCountOfNotificationsReceived;
     }
   }
 
   return result;
 }
 
-- (double)ratioOfLocalToGlobalPopularityOfNotificationsReceivedForContactId:(id)a3
+- (double)ratioOfLocalToGlobalPopularityOfNotificationsReceivedForContactId:(id)id
 {
-  v4 = a3;
-  [(ATXContactNotificationEngagementEventProvider *)self localPopularityOfNotificationsReceivedForContactId:v4];
+  idCopy = id;
+  [(ATXContactNotificationEngagementEventProvider *)self localPopularityOfNotificationsReceivedForContactId:idCopy];
   v6 = v5;
-  [(ATXContactNotificationEngagementEventProvider *)self globalPopularityOfNotificationsReceivedForContactId:v4];
+  [(ATXContactNotificationEngagementEventProvider *)self globalPopularityOfNotificationsReceivedForContactId:idCopy];
   v8 = v7;
 
   result = 0.0;
@@ -735,11 +735,11 @@ LABEL_10:
   return result;
 }
 
-- (double)classConditionalOfNotificationsReceivedForContactId:(id)a3
+- (double)classConditionalOfNotificationsReceivedForContactId:(id)id
 {
-  v4 = a3;
-  v5 = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsReceivedForContactId:v4];
-  v6 = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsReceivedForContactId:v4];
+  idCopy = id;
+  v5 = [(ATXContactNotificationEngagementEventProvider *)self modeCountOfNotificationsReceivedForContactId:idCopy];
+  v6 = [(ATXContactNotificationEngagementEventProvider *)self globalCountOfNotificationsReceivedForContactId:idCopy];
 
   result = 0.0;
   if (v5)
@@ -756,7 +756,7 @@ LABEL_10:
 - (void)successfullyCalculatedNotificationEvents
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*(*a1 + 40));
+  v9 = HIDWORD(*(*self + 40));
   OUTLINED_FUNCTION_0(&dword_2263AA000, a2, a3, "ATXContactNotificationEngagementEventProvider: Error from merged publishers: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }

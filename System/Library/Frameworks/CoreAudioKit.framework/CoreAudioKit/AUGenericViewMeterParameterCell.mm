@@ -5,7 +5,7 @@
 - (UILabel)minLabel;
 - (UILabel)unitLabel;
 - (_TtC12CoreAudioKit11AUMeterView)meter;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation AUGenericViewMeterParameterCell
@@ -49,18 +49,18 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for AUGenericViewMeterParameterCell();
-  v2 = [(AUGenericViewParameterCellBase *)&v4 tintColor];
+  tintColor = [(AUGenericViewParameterCellBase *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for AUGenericViewMeterParameterCell();
-  v4 = a3;
+  colorCopy = color;
   v5 = v6.receiver;
-  [(AUGenericViewParameterCellBase *)&v6 setTintColor:v4];
+  [(AUGenericViewParameterCellBase *)&v6 setTintColor:colorCopy];
   sub_237149010();
 }
 

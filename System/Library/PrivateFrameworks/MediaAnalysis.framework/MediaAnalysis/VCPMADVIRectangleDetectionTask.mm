@@ -1,26 +1,26 @@
 @interface VCPMADVIRectangleDetectionTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (VCPMADVIRectangleDetectionTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (VCPMADVIRectangleDetectionTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (int)run;
 - (void)cancel;
 @end
 
 @implementation VCPMADVIRectangleDetectionTask
 
-- (VCPMADVIRectangleDetectionTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADVIRectangleDetectionTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = VCPMADVIRectangleDetectionTask;
   v12 = [(VCPMADVIRectangleDetectionTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
     v14 = dispatch_queue_create("VCPMADVIRectangleDetectionTask", 0);
     cancelQueue = v13->_cancelQueue;
     v13->_cancelQueue = v14;
@@ -29,15 +29,15 @@
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -103,8 +103,8 @@ void __40__VCPMADVIRectangleDetectionTask_cancel__block_invoke(uint64_t a1)
     v9 = objc_alloc_init(MEMORY[0x1E69844E0]);
     if (DeviceHasANE())
     {
-      v10 = [MEMORY[0x1E6984608] defaultANEDevice];
-      [v9 setProcessingDevice:v10];
+      defaultANEDevice = [MEMORY[0x1E6984608] defaultANEDevice];
+      [v9 setProcessingDevice:defaultANEDevice];
     }
 
     [(MADVIRectangleDetectionRequest *)self->_request minimumAspectRatio];
@@ -125,10 +125,10 @@ void __40__VCPMADVIRectangleDetectionTask_cancel__block_invoke(uint64_t a1)
 
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v9 processingDevice];
+        processingDevice = [v9 processingDevice];
         preferredMetalDevice = self->_preferredMetalDevice;
         *buf = 138412546;
-        v58 = v12;
+        v58 = processingDevice;
         v59 = 2112;
         v60 = preferredMetalDevice;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[RectangleDetection] Set VNProcessingDevice: %@ (%@)", buf, 0x16u);
@@ -170,8 +170,8 @@ LABEL_39:
     v22 = objc_alloc(MEMORY[0x1E69845B8]);
     v23 = v54;
     v24 = v53;
-    v25 = [v5 session];
-    v48 = [v22 initWithCVPixelBuffer:v23 orientation:v24 options:MEMORY[0x1E695E0F8] session:v25];
+    session = [v5 session];
+    v48 = [v22 initWithCVPixelBuffer:v23 orientation:v24 options:MEMORY[0x1E695E0F8] session:session];
 
     v26 = VCPSignPostLog();
     v27 = v26;
@@ -216,15 +216,15 @@ LABEL_39:
     {
       request = self->_request;
       v40 = objc_alloc(MEMORY[0x1E69AE440]);
-      v41 = [v15 results];
-      v42 = [v40 initWithObservations:v41];
+      results = [v15 results];
+      v42 = [v40 initWithObservations:results];
       v55 = v42;
       v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
       [(MADVIRectangleDetectionRequest *)request setResults:v43];
 
-      v44 = [(MADVIRectangleDetectionRequest *)self->_request results];
-      v45 = [v44 firstObject];
-      [v45 setExecutionNanoseconds:{objc_msgSend(v15, "executionNanoseconds")}];
+      results2 = [(MADVIRectangleDetectionRequest *)self->_request results];
+      firstObject = [results2 firstObject];
+      [firstObject setExecutionNanoseconds:{objc_msgSend(v15, "executionNanoseconds")}];
     }
 
     else

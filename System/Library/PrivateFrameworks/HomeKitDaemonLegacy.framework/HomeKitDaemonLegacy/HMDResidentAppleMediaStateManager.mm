@@ -1,22 +1,22 @@
 @interface HMDResidentAppleMediaStateManager
-- (BOOL)hasRegistrationsForMediaProfileIdentifier:(_BOOL8)a1;
-- (HMDResidentAppleMediaStateManager)initWithDataSource:(id)a3 delegate:(id)a4;
-- (void)configureWithNotificationRegistry:(id)a3 notificationCenter:(id)a4;
-- (void)handleAppleMediaAccessoryReachabilityChanged:(id)a3;
-- (void)mediaPropertyRegistrationsDidChangeForMediaProfiles:(id)a3;
-- (void)refreshStateForMediaProfile:(void *)a1;
+- (BOOL)hasRegistrationsForMediaProfileIdentifier:(_BOOL8)identifier;
+- (HMDResidentAppleMediaStateManager)initWithDataSource:(id)source delegate:(id)delegate;
+- (void)configureWithNotificationRegistry:(id)registry notificationCenter:(id)center;
+- (void)handleAppleMediaAccessoryReachabilityChanged:(id)changed;
+- (void)mediaPropertyRegistrationsDidChangeForMediaProfiles:(id)profiles;
+- (void)refreshStateForMediaProfile:(void *)profile;
 - (void)startRetryTimer;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDResidentAppleMediaStateManager
 
-- (void)mediaPropertyRegistrationsDidChangeForMediaProfiles:(id)a3
+- (void)mediaPropertyRegistrationsDidChangeForMediaProfiles:(id)profiles
 {
   v116 = *MEMORY[0x277D85DE8];
-  v86 = a3;
+  profilesCopy = profiles;
   v4 = objc_autoreleasePoolPush();
-  v95 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -24,7 +24,7 @@
     *buf = 138543618;
     *&buf[4] = v6;
     *&buf[12] = 2112;
-    *&buf[14] = v86;
+    *&buf[14] = profilesCopy;
     _os_log_impl(&dword_2531F8000, v5, OS_LOG_TYPE_INFO, "%{public}@Notified that media profile registrations did change: %@", buf, 0x16u);
   }
 
@@ -34,8 +34,8 @@
   v105[1] = 3221225472;
   v105[2] = __89__HMDResidentAppleMediaStateManager_mediaPropertyRegistrationsDidChangeForMediaProfiles___block_invoke;
   v105[3] = &unk_2797358A0;
-  v105[4] = v95;
-  v8 = [v86 na_filter:v105];
+  v105[4] = selfCopy;
+  v8 = [profilesCopy na_filter:v105];
   v9 = [v7 setWithArray:v8];
 
   v10 = MEMORY[0x277CBEB98];
@@ -43,13 +43,13 @@
   v104[1] = 3221225472;
   v104[2] = __89__HMDResidentAppleMediaStateManager_mediaPropertyRegistrationsDidChangeForMediaProfiles___block_invoke_2;
   v104[3] = &unk_2797358A0;
-  v104[4] = v95;
-  v11 = [v86 na_filter:v104];
+  v104[4] = selfCopy;
+  v11 = [profilesCopy na_filter:v104];
   v87 = [v10 setWithArray:v11];
 
-  if (v95)
+  if (selfCopy)
   {
-    WeakRetained = objc_loadWeakRetained(&v95->_dataSource);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_dataSource);
   }
 
   else
@@ -81,27 +81,27 @@
         if (v14)
         {
           v16 = v14;
-          if (v95)
+          if (selfCopy)
           {
             v17 = objc_autoreleasePoolPush();
-            v18 = v95;
+            v18 = selfCopy;
             v19 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
             {
               v20 = HMFGetLogIdentifier();
-              v21 = [v16 uniqueIdentifier];
+              uniqueIdentifier = [v16 uniqueIdentifier];
               *v112 = 138543618;
               v113 = v20;
               v114 = 2112;
-              v115 = v21;
+              v115 = uniqueIdentifier;
               _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@Subscribing to updates for media profile identifier: %@", v112, 0x16u);
             }
 
             objc_autoreleasePoolPop(v17);
             os_unfair_lock_lock_with_options();
             v23 = objc_getProperty(v18, v22, 32, 1);
-            v24 = [v16 uniqueIdentifier];
-            v25 = [v23 containsObject:v24];
+            uniqueIdentifier2 = [v16 uniqueIdentifier];
+            v25 = [v23 containsObject:uniqueIdentifier2];
 
             if (v25)
             {
@@ -111,11 +111,11 @@
               if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
               {
                 v30 = HMFGetLogIdentifier();
-                v31 = [v16 uniqueIdentifier];
+                uniqueIdentifier3 = [v16 uniqueIdentifier];
                 *v112 = 138543618;
                 v113 = v30;
                 v114 = 2112;
-                v115 = v31;
+                v115 = uniqueIdentifier3;
                 _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_INFO, "%{public}@Already registered for updates for media profile identifier: %@", v112, 0x16u);
               }
 
@@ -126,15 +126,15 @@
             else
             {
               v36 = objc_getProperty(v18, v26, 32, 1);
-              v37 = [v16 uniqueIdentifier];
-              [v36 addObject:v37];
+              uniqueIdentifier4 = [v16 uniqueIdentifier];
+              [v36 addObject:uniqueIdentifier4];
 
               os_unfair_lock_unlock(&v18->_lock);
-              v38 = [v16 accessory];
+              accessory = [v16 accessory];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v39 = v38;
+                v39 = accessory;
               }
 
               else
@@ -184,7 +184,7 @@
         else
         {
           v32 = objc_autoreleasePoolPush();
-          v33 = v95;
+          v33 = selfCopy;
           v34 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
@@ -230,40 +230,40 @@
         if (v49)
         {
           v51 = v49;
-          if (v95)
+          if (selfCopy)
           {
             v52 = objc_autoreleasePoolPush();
-            v53 = v95;
+            v53 = selfCopy;
             v54 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
             {
               v55 = HMFGetLogIdentifier();
-              v56 = [v51 uniqueIdentifier];
+              uniqueIdentifier5 = [v51 uniqueIdentifier];
               *v112 = 138543618;
               v113 = v55;
               v114 = 2112;
-              v115 = v56;
+              v115 = uniqueIdentifier5;
               _os_log_impl(&dword_2531F8000, v54, OS_LOG_TYPE_INFO, "%{public}@Unsubscribing to updates for media profile identifier: %@", v112, 0x16u);
             }
 
             objc_autoreleasePoolPop(v52);
             os_unfair_lock_lock_with_options();
             v58 = objc_getProperty(v53, v57, 32, 1);
-            v59 = [v51 uniqueIdentifier];
-            v60 = [v58 containsObject:v59];
+            uniqueIdentifier6 = [v51 uniqueIdentifier];
+            v60 = [v58 containsObject:uniqueIdentifier6];
 
             if (v60)
             {
               v62 = objc_getProperty(v53, v61, 32, 1);
-              v63 = [v51 uniqueIdentifier];
-              [v62 removeObject:v63];
+              uniqueIdentifier7 = [v51 uniqueIdentifier];
+              [v62 removeObject:uniqueIdentifier7];
 
               os_unfair_lock_unlock(&v53->_lock);
-              v64 = [v51 accessory];
+              accessory2 = [v51 accessory];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v65 = v64;
+                v65 = accessory2;
               }
 
               else
@@ -314,11 +314,11 @@
               if (os_log_type_enabled(v77, OS_LOG_TYPE_INFO))
               {
                 v78 = HMFGetLogIdentifier();
-                v79 = [v51 uniqueIdentifier];
+                uniqueIdentifier8 = [v51 uniqueIdentifier];
                 *v112 = 138543618;
                 v113 = v78;
                 v114 = 2112;
-                v115 = v79;
+                v115 = uniqueIdentifier8;
                 _os_log_impl(&dword_2531F8000, v77, OS_LOG_TYPE_INFO, "%{public}@Already unsubscribed for updates for media profile identifier: %@", v112, 0x16u);
               }
 
@@ -331,7 +331,7 @@
         else
         {
           v71 = objc_autoreleasePoolPush();
-          v72 = v95;
+          v72 = selfCopy;
           v73 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
           {
@@ -354,7 +354,7 @@
   }
 
   v81 = objc_autoreleasePoolPush();
-  v82 = v95;
+  v82 = selfCopy;
   v83 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v83, OS_LOG_TYPE_INFO))
   {
@@ -428,10 +428,10 @@ void __73__HMDResidentAppleMediaStateManager_unsubscribeToUpdatesForMediaProfile
 {
   v24 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  if (*(a1 + 48))
+  if (*(self + 48))
   {
     v2 = objc_autoreleasePoolPush();
-    v3 = a1;
+    selfCopy = self;
     v4 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -447,11 +447,11 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = *(a1 + 56);
+  v6 = *(self + 56);
   if (v6 > 8)
   {
     v2 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy2 = self;
     v4 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
@@ -465,10 +465,10 @@ LABEL_10:
   }
 
   v7 = v6 + 1;
-  *(a1 + 56) = v7;
+  *(self + 56) = v7;
   v8 = HMDResidentAppleMediaStateManagerRetryIntervals[v7];
   v9 = objc_autoreleasePoolPush();
-  v10 = a1;
+  selfCopy3 = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -482,15 +482,15 @@ LABEL_10:
   }
 
   objc_autoreleasePoolPop(v9);
-  WeakRetained = objc_loadWeakRetained(v10 + 2);
+  WeakRetained = objc_loadWeakRetained(selfCopy3 + 2);
   v15 = [WeakRetained timerWithTimerInterval:v8];
-  v16 = v10[6];
-  v10[6] = v15;
+  v16 = selfCopy3[6];
+  selfCopy3[6] = v15;
 
-  [v10[6] setDelegate:v10];
-  [v10[6] resume];
+  [selfCopy3[6] setDelegate:selfCopy3];
+  [selfCopy3[6] resume];
 LABEL_11:
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((self + 8));
   v19 = *MEMORY[0x277D85DE8];
 }
 
@@ -546,32 +546,32 @@ void __71__HMDResidentAppleMediaStateManager_subscribeToUpdatesForMediaProfile__
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshStateForMediaProfile:(void *)a1
+- (void)refreshStateForMediaProfile:(void *)profile
 {
   v29 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (profile)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = a1;
+    profileCopy = profile;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = HMFGetLogIdentifier();
-      v8 = [v3 uniqueIdentifier];
+      uniqueIdentifier = [v3 uniqueIdentifier];
       *buf = 138543618;
       v22 = v7;
       v23 = 2112;
-      v24 = v8;
+      v24 = uniqueIdentifier;
       _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@Refreshing state for media profile with unique identifier: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v4);
-    v9 = [v3 accessory];
+    accessory = [v3 accessory];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = accessory;
     }
 
     else
@@ -581,19 +581,19 @@ void __71__HMDResidentAppleMediaStateManager_subscribeToUpdatesForMediaProfile__
 
     v11 = v10;
 
-    v12 = [v11 device];
-    if (v12)
+    device = [v11 device];
+    if (device)
     {
-      WeakRetained = objc_loadWeakRetained(v5 + 3);
+      WeakRetained = objc_loadWeakRetained(profileCopy + 3);
       v20 = v3;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
-      [WeakRetained readProfileState:v14 viaDevice:v12 forStateManager:v5];
+      [WeakRetained readProfileState:v14 viaDevice:device forStateManager:profileCopy];
     }
 
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = v5;
+      v16 = profileCopy;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -616,36 +616,36 @@ void __71__HMDResidentAppleMediaStateManager_subscribeToUpdatesForMediaProfile__
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasRegistrationsForMediaProfileIdentifier:(_BOOL8)a1
+- (BOOL)hasRegistrationsForMediaProfileIdentifier:(_BOOL8)identifier
 {
-  v2 = a1;
-  if (a1)
+  identifierCopy = identifier;
+  if (identifier)
   {
     v3 = a2;
-    WeakRetained = objc_loadWeakRetained((v2 + 16));
+    WeakRetained = objc_loadWeakRetained((identifierCopy + 16));
     v5 = [WeakRetained propertiesRegisteredForMediaProfileUniqueIdentifier:v3];
 
-    v2 = [v5 count] != 0;
+    identifierCopy = [v5 count] != 0;
   }
 
-  return v2;
+  return identifierCopy;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   os_unfair_lock_lock_with_options();
   retryTimer = self->_retryTimer;
-  if (retryTimer == v4)
+  if (retryTimer == fireCopy)
   {
     self->_retryTimer = 0;
 
-    v6 = [(NSMutableSet *)self->_mediaProfilesToRetry allObjects];
+    allObjects = [(NSMutableSet *)self->_mediaProfilesToRetry allObjects];
     [(NSMutableSet *)self->_mediaProfilesToRetry removeAllObjects];
     os_unfair_lock_unlock(&self->_lock);
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -653,28 +653,28 @@ void __71__HMDResidentAppleMediaStateManager_subscribeToUpdatesForMediaProfile__
       v12 = 138543618;
       v13 = v10;
       v14 = 2112;
-      v15 = v6;
+      v15 = allObjects;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Retrying media subscription for profiles: %@", &v12, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDResidentAppleMediaStateManager *)v8 mediaPropertyRegistrationsDidChangeForMediaProfiles:v6];
+    [(HMDResidentAppleMediaStateManager *)selfCopy mediaPropertyRegistrationsDidChangeForMediaProfiles:allObjects];
   }
 
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    v6 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAppleMediaAccessoryReachabilityChanged:(id)a3
+- (void)handleAppleMediaAccessoryReachabilityChanged:(id)changed
 {
-  v14 = a3;
-  v4 = [v14 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HMDAccessoryNotificationKey"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HMDAccessoryNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -691,43 +691,43 @@ void __71__HMDResidentAppleMediaStateManager_subscribeToUpdatesForMediaProfile__
 
   if (v7)
   {
-    v8 = [v7 mediaProfile];
-    if (v8)
+    mediaProfile = [v7 mediaProfile];
+    if (mediaProfile)
     {
       os_unfair_lock_lock_with_options();
       v10 = self ? objc_getProperty(self, v9, 32, 1) : 0;
       v11 = v10;
-      v12 = [v8 uniqueIdentifier];
-      v13 = [v11 containsObject:v12];
+      uniqueIdentifier = [mediaProfile uniqueIdentifier];
+      v13 = [v11 containsObject:uniqueIdentifier];
 
       os_unfair_lock_unlock(&self->_lock);
       if (v13)
       {
-        [(HMDResidentAppleMediaStateManager *)self refreshStateForMediaProfile:v8];
+        [(HMDResidentAppleMediaStateManager *)self refreshStateForMediaProfile:mediaProfile];
       }
     }
   }
 }
 
-- (void)configureWithNotificationRegistry:(id)a3 notificationCenter:(id)a4
+- (void)configureWithNotificationRegistry:(id)registry notificationCenter:(id)center
 {
-  v6 = a4;
-  [a3 addDelegate:self];
-  [v6 addObserver:self selector:sel_handleAppleMediaAccessoryReachabilityChanged_ name:@"HMDAppleMediaAccessoryDeviceIsReachableNotification" object:0];
+  centerCopy = center;
+  [registry addDelegate:self];
+  [centerCopy addObserver:self selector:sel_handleAppleMediaAccessoryReachabilityChanged_ name:@"HMDAppleMediaAccessoryDeviceIsReachableNotification" object:0];
 }
 
-- (HMDResidentAppleMediaStateManager)initWithDataSource:(id)a3 delegate:(id)a4
+- (HMDResidentAppleMediaStateManager)initWithDataSource:(id)source delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = HMDResidentAppleMediaStateManager;
   v8 = [(HMDResidentAppleMediaStateManager *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v9->_lock._os_unfair_lock_opaque = 0;
     v10 = [MEMORY[0x277CBEB58] set];
     subscribedMediaProfiles = v9->_subscribedMediaProfiles;

@@ -1,7 +1,7 @@
 @interface DMDSetEffectivePolicyOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,41 +21,41 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DMDTaskOperation *)self configurationEngine];
-  v6 = [v5 policyPersistence];
-  v7 = [v4 policy];
-  v8 = [v4 type];
-  v9 = [v4 identifiers];
-  v10 = [v4 priority];
-  v11 = [v4 organizationIdentifier];
-  v12 = [v4 declarationIdentifier];
+  requestCopy = request;
+  configurationEngine = [(DMDTaskOperation *)self configurationEngine];
+  policyPersistence = [configurationEngine policyPersistence];
+  policy = [requestCopy policy];
+  type = [requestCopy type];
+  identifiers = [requestCopy identifiers];
+  priority = [requestCopy priority];
+  organizationIdentifier = [requestCopy organizationIdentifier];
+  declarationIdentifier = [requestCopy declarationIdentifier];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10006DA9C;
   v13[3] = &unk_1000CEE68;
   v13[4] = self;
-  [v6 setEffectivePolicy:v7 forType:v8 identifiers:v9 priority:v10 organizationIdentifier:v11 declarationIdentifier:v12 completionHandler:v13];
+  [policyPersistence setEffectivePolicy:policy forType:type identifiers:identifiers priority:priority organizationIdentifier:organizationIdentifier declarationIdentifier:declarationIdentifier completionHandler:v13];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v14.receiver = a1;
+  requestCopy = request;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___DMDSetEffectivePolicyOperation;
-  if (!objc_msgSendSuper2(&v14, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v14, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_13;
   }
 
-  v7 = [v6 organizationIdentifier];
+  organizationIdentifier = [requestCopy organizationIdentifier];
 
-  if (!v7)
+  if (!organizationIdentifier)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -67,11 +67,11 @@
     goto LABEL_12;
   }
 
-  v8 = [v6 declarationIdentifier];
+  declarationIdentifier = [requestCopy declarationIdentifier];
 
-  if (!v8)
+  if (!declarationIdentifier)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -83,11 +83,11 @@
     goto LABEL_12;
   }
 
-  v9 = [v6 type];
+  type = [requestCopy type];
 
-  if (!v9)
+  if (!type)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -98,17 +98,17 @@
     v11 = &v15;
 LABEL_12:
     v12 = [NSDictionary dictionaryWithObjects:v10 forKeys:v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_13:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_14;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_14:
 
-  return a4;
+  return error;
 }
 
 @end

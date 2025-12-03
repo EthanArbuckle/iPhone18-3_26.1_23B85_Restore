@@ -9,14 +9,14 @@
 - (void)_removeOccurrencesOfCharacter:()TIExtras
 {
   v2 = [MEMORY[0x1E696AEC0] _stringWithUnichar:?];
-  [a1 replaceOccurrencesOfString:v2 withString:&stru_1EF56D550 options:2 range:{0, objc_msgSend(a1, "length")}];
+  [self replaceOccurrencesOfString:v2 withString:&stru_1EF56D550 options:2 range:{0, objc_msgSend(self, "length")}];
 }
 
 - (void)_replaceOccurrencesOfCharacter:()TIExtras withCharacter:
 {
   v7 = [MEMORY[0x1E696AEC0] _stringWithUnichar:?];
   v6 = [MEMORY[0x1E696AEC0] _stringWithUnichar:a4];
-  [a1 replaceOccurrencesOfString:v7 withString:v6 options:2 range:{0, objc_msgSend(a1, "length")}];
+  [self replaceOccurrencesOfString:v7 withString:v6 options:2 range:{0, objc_msgSend(self, "length")}];
 }
 
 - (void)_removeCharactersFromSet:()TIExtras

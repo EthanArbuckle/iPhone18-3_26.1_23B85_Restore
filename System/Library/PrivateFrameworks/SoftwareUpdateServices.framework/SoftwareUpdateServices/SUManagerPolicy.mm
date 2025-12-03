@@ -12,71 +12,71 @@
 - (BOOL)isRollingBack;
 - (BOOL)isScanning;
 - (BOOL)isSplatOnlyUpdateRollbackSuggested;
-- (BOOL)rollbackUpdateWithOptions:(id)a3 withResult:(id)a4;
-- (BOOL)splatRollbackAllowed:(id *)a3;
+- (BOOL)rollbackUpdateWithOptions:(id)options withResult:(id)result;
+- (BOOL)splatRollbackAllowed:(id *)allowed;
 - (NSDictionary)mandatoryUpdateDictionary;
 - (SUAutoUpdatePasscodePolicy)passcodePolicy;
 - (SUManagerDelegate)delegate;
 - (SUManagerPolicy)init;
-- (SUManagerPolicy)initWithCore:(id)a3;
+- (SUManagerPolicy)initWithCore:(id)core;
 - (id)alternateLastScannedDescriptor;
 - (id)delayEndDate;
 - (id)download;
-- (id)eligibleRollbackWithOptions:(id)a3;
+- (id)eligibleRollbackWithOptions:(id)options;
 - (id)installPolicy;
 - (id)preferredLastScannedDescriptor;
-- (id)previousRollbackWithOptions:(id)a3;
+- (id)previousRollbackWithOptions:(id)options;
 - (id)slaVersion;
 - (unint64_t)softwareUpdatePathRestriction;
-- (void)addObserver:(id)a3;
-- (void)addUnlockCallback:(SEL)a3 forKey:(id)a4;
-- (void)autoSUFailedWithError:(id)a3;
-- (void)autoScanAndDownloadIfAvailable:(int)a3 downloadNow:(BOOL)a4 withResult:(id)a5;
-- (void)autoScanAndDownloadIfAvailable:(int)a3 withResult:(id)a4;
-- (void)badgeSettingsForManualSoftwareUpdate:(id)a3;
-- (void)cancelDownloadWithOptions:(id)a3 withResult:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)addUnlockCallback:(SEL)callback forKey:(id)key;
+- (void)autoSUFailedWithError:(id)error;
+- (void)autoScanAndDownloadIfAvailable:(int)available downloadNow:(BOOL)now withResult:(id)result;
+- (void)autoScanAndDownloadIfAvailable:(int)available withResult:(id)result;
+- (void)badgeSettingsForManualSoftwareUpdate:(id)update;
+- (void)cancelDownloadWithOptions:(id)options withResult:(id)result;
 - (void)checkAndPostSplatFollowUpIfNeeded;
-- (void)createInstallationKeybag:(id)a3 withResult:(id)a4;
+- (void)createInstallationKeybag:(id)keybag withResult:(id)result;
 - (void)destroyInstallationKeybag;
-- (void)disableReserveSpace:(BOOL)a3 withResult:(id)a4;
+- (void)disableReserveSpace:(BOOL)space withResult:(id)result;
 - (void)dismissAutoUpdateBanner;
 - (void)endAutoDownloadTasksAndResetState;
-- (void)installUpdateWithInstallOptions:(id)a3 withResult:(id)a4;
-- (void)isUpdateReadyForInstallationWithOptions:(id)a3 withResult:(id)a4;
+- (void)installUpdateWithInstallOptions:(id)options withResult:(id)result;
+- (void)isUpdateReadyForInstallationWithOptions:(id)options withResult:(id)result;
 - (void)loadBrainOnUnlock;
 - (void)managedInstallRequested;
 - (void)networkMonitorDetectOverrides;
-- (void)noteAutoDownloadFailedToStartWithError:(id)a3;
-- (void)overrideSoftwareUpdateReserve:(id)a3 systemGrowthMarginSize:(id)a4 withResult:(id)a5;
-- (void)pauseDownload:(id)a3;
+- (void)noteAutoDownloadFailedToStartWithError:(id)error;
+- (void)overrideSoftwareUpdateReserve:(id)reserve systemGrowthMarginSize:(id)size withResult:(id)result;
+- (void)pauseDownload:(id)download;
 - (void)persistStashOnUnlock;
-- (void)presentAutoUpdateBanner:(id)a3;
-- (void)purgeDownloadWithOptions:(id)a3 withResult:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)removeUnlockCallback:(id)a3;
+- (void)presentAutoUpdateBanner:(id)banner;
+- (void)purgeDownloadWithOptions:(id)options withResult:(id)result;
+- (void)removeObserver:(id)observer;
+- (void)removeUnlockCallback:(id)callback;
 - (void)reportOTAAutoTriggeredEvent;
-- (void)reportPostponedEvent:(id)a3 withStatus:(id)a4;
+- (void)reportPostponedEvent:(id)event withStatus:(id)status;
 - (void)reportSimulatedOTAAutoTriggeredEvent;
-- (void)resumeDownload:(id)a3;
+- (void)resumeDownload:(id)download;
 - (void)resumeOrResetIfNecessary;
 - (void)rollbackReadyForReboot;
-- (void)scanForUpdates:(id)a3 complete:(id)a4;
-- (void)securityResponseRollbackSuggested:(id)a3 withResult:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setForeground:(BOOL)a3;
-- (void)setIsInstallTonight:(BOOL)a3;
-- (void)setIsInstallTonightScheduled:(BOOL)a3;
-- (void)setMandatoryUpdateDictionary:(id)a3;
-- (void)setPasscodePolicy:(id)a3;
-- (void)softwareUpdateReserveSizes:(id)a3;
-- (void)startDownloadWithMetadata:(id)a3 withResult:(id)a4;
-- (void)startDownloadWithOptions:(id)a3 withResult:(id)a4;
+- (void)scanForUpdates:(id)updates complete:(id)complete;
+- (void)securityResponseRollbackSuggested:(id)suggested withResult:(id)result;
+- (void)setDelegate:(id)delegate;
+- (void)setForeground:(BOOL)foreground;
+- (void)setIsInstallTonight:(BOOL)tonight;
+- (void)setIsInstallTonightScheduled:(BOOL)scheduled;
+- (void)setMandatoryUpdateDictionary:(id)dictionary;
+- (void)setPasscodePolicy:(id)policy;
+- (void)softwareUpdateReserveSizes:(id)sizes;
+- (void)startDownloadWithMetadata:(id)metadata withResult:(id)result;
+- (void)startDownloadWithOptions:(id)options withResult:(id)result;
 - (void)tryAutoDownload;
 - (void)unbadgeSettingsForManualSoftwareUpdate;
-- (void)updateDownloadMetadata:(id)a3 withResult:(id)a4;
-- (void)updateDownloadOptions:(id)a3 withResult:(id)a4;
-- (void)updateInstallPolicyType:(unint64_t)a3;
-- (void)updatesDownloadableWithOptions:(id)a3 alternateDownloadOptions:(id)a4 replyHandler:(id)a5;
+- (void)updateDownloadMetadata:(id)metadata withResult:(id)result;
+- (void)updateDownloadOptions:(id)options withResult:(id)result;
+- (void)updateInstallPolicyType:(unint64_t)type;
+- (void)updatesDownloadableWithOptions:(id)options alternateDownloadOptions:(id)downloadOptions replyHandler:(id)handler;
 @end
 
 @implementation SUManagerPolicy
@@ -98,44 +98,44 @@
   return v2;
 }
 
-- (SUManagerPolicy)initWithCore:(id)a3
+- (SUManagerPolicy)initWithCore:(id)core
 {
-  v5 = a3;
+  coreCopy = core;
   v9.receiver = self;
   v9.super_class = SUManagerPolicy;
   v6 = [(SUManagerPolicy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_core, a3);
+    objc_storeStrong(&v6->_core, core);
     objc_storeWeak(&v7->_delegate, 0);
   }
 
   return v7;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
-  v5 = [(SUManagerPolicy *)self core];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  core = [(SUManagerPolicy *)self core];
+  [core setDelegate:delegateCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(SUManagerPolicy *)self core];
-    v6 = [v5 workQueue];
+    core = [(SUManagerPolicy *)self core];
+    workQueue = [core workQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __31__SUManagerPolicy_addObserver___block_invoke;
     v7[3] = &unk_279CAA7C0;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v6, v7);
+    v8 = observerCopy;
+    dispatch_async(workQueue, v7);
   }
 }
 
@@ -146,20 +146,20 @@ void __31__SUManagerPolicy_addObserver___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = [(SUManagerPolicy *)self core];
-    v6 = [v5 workQueue];
+    core = [(SUManagerPolicy *)self core];
+    workQueue = [core workQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __34__SUManagerPolicy_removeObserver___block_invoke;
     v7[3] = &unk_279CAA7C0;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v6, v7);
+    v8 = observerCopy;
+    dispatch_async(workQueue, v7);
   }
 }
 
@@ -172,28 +172,28 @@ void __34__SUManagerPolicy_removeObserver___block_invoke(uint64_t a1)
 
 - (BOOL)isScanning
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __29__SUManagerPolicy_isScanning__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __29__SUManagerPolicy_isScanning__block_invoke(uint64_t a1)
@@ -204,28 +204,28 @@ void __29__SUManagerPolicy_isScanning__block_invoke(uint64_t a1)
 
 - (BOOL)isDownloading
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __32__SUManagerPolicy_isDownloading__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __32__SUManagerPolicy_isDownloading__block_invoke(uint64_t a1)
@@ -236,28 +236,28 @@ void __32__SUManagerPolicy_isDownloading__block_invoke(uint64_t a1)
 
 - (BOOL)isDownloaded
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__SUManagerPolicy_isDownloaded__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __31__SUManagerPolicy_isDownloaded__block_invoke(uint64_t a1)
@@ -268,28 +268,28 @@ void __31__SUManagerPolicy_isDownloaded__block_invoke(uint64_t a1)
 
 - (BOOL)isInstalling
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__SUManagerPolicy_isInstalling__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __31__SUManagerPolicy_isInstalling__block_invoke(uint64_t a1)
@@ -300,28 +300,28 @@ void __31__SUManagerPolicy_isInstalling__block_invoke(uint64_t a1)
 
 - (BOOL)isForeground
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__SUManagerPolicy_isForeground__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __31__SUManagerPolicy_isForeground__block_invoke(uint64_t a1)
@@ -330,17 +330,17 @@ void __31__SUManagerPolicy_isForeground__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 isForeground];
 }
 
-- (void)setForeground:(BOOL)a3
+- (void)setForeground:(BOOL)foreground
 {
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__SUManagerPolicy_setForeground___block_invoke;
   v7[3] = &unk_279CAAD00;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  foregroundCopy = foreground;
+  dispatch_async(workQueue, v7);
 }
 
 void __33__SUManagerPolicy_setForeground___block_invoke(uint64_t a1)
@@ -351,28 +351,28 @@ void __33__SUManagerPolicy_setForeground___block_invoke(uint64_t a1)
 
 - (BOOL)isClearingSpace
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__SUManagerPolicy_isClearingSpace__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __34__SUManagerPolicy_isClearingSpace__block_invoke(uint64_t a1)
@@ -383,28 +383,28 @@ void __34__SUManagerPolicy_isClearingSpace__block_invoke(uint64_t a1)
 
 - (BOOL)isInstallTonight
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__SUManagerPolicy_isInstallTonight__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __35__SUManagerPolicy_isInstallTonight__block_invoke(uint64_t a1)
@@ -413,17 +413,17 @@ void __35__SUManagerPolicy_isInstallTonight__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 isInstallTonight];
 }
 
-- (void)setIsInstallTonight:(BOOL)a3
+- (void)setIsInstallTonight:(BOOL)tonight
 {
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SUManagerPolicy_setIsInstallTonight___block_invoke;
   v7[3] = &unk_279CAAD00;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  tonightCopy = tonight;
+  dispatch_async(workQueue, v7);
 }
 
 void __39__SUManagerPolicy_setIsInstallTonight___block_invoke(uint64_t a1)
@@ -434,28 +434,28 @@ void __39__SUManagerPolicy_setIsInstallTonight___block_invoke(uint64_t a1)
 
 - (BOOL)isInstallTonightScheduled
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__SUManagerPolicy_isInstallTonightScheduled__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __44__SUManagerPolicy_isInstallTonightScheduled__block_invoke(uint64_t a1)
@@ -464,17 +464,17 @@ void __44__SUManagerPolicy_isInstallTonightScheduled__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 isInstallTonightScheduled];
 }
 
-- (void)setIsInstallTonightScheduled:(BOOL)a3
+- (void)setIsInstallTonightScheduled:(BOOL)scheduled
 {
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SUManagerPolicy_setIsInstallTonightScheduled___block_invoke;
   v7[3] = &unk_279CAAD00;
   v7[4] = self;
-  v8 = a3;
-  dispatch_async(v6, v7);
+  scheduledCopy = scheduled;
+  dispatch_async(workQueue, v7);
 }
 
 void __48__SUManagerPolicy_setIsInstallTonightScheduled___block_invoke(uint64_t a1)
@@ -491,19 +491,19 @@ void __48__SUManagerPolicy_setIsInstallTonightScheduled___block_invoke(uint64_t 
   v13 = __Block_byref_object_copy__14;
   v14 = __Block_byref_object_dispose__14;
   v15 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __33__SUManagerPolicy_passcodePolicy__block_invoke;
   v9[3] = &unk_279CAA858;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(workQueue2, v9);
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -520,19 +520,19 @@ void __33__SUManagerPolicy_passcodePolicy__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setPasscodePolicy:(id)a3
+- (void)setPasscodePolicy:(id)policy
 {
-  v4 = a3;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  policyCopy = policy;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__SUManagerPolicy_setPasscodePolicy___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = policyCopy;
+  v7 = policyCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __37__SUManagerPolicy_setPasscodePolicy___block_invoke(uint64_t a1)
@@ -543,18 +543,18 @@ void __37__SUManagerPolicy_setPasscodePolicy___block_invoke(uint64_t a1)
 
 - (void)resumeOrResetIfNecessary
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__SUManagerPolicy_resumeOrResetIfNecessary__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(workQueue2, block);
 }
 
 void __43__SUManagerPolicy_resumeOrResetIfNecessary__block_invoke(uint64_t a1)
@@ -563,20 +563,20 @@ void __43__SUManagerPolicy_resumeOrResetIfNecessary__block_invoke(uint64_t a1)
   [v1 resumeOrResetIfNecessary];
 }
 
-- (void)autoScanAndDownloadIfAvailable:(int)a3 withResult:(id)a4
+- (void)autoScanAndDownloadIfAvailable:(int)available withResult:(id)result
 {
-  v6 = a4;
-  v7 = [(SUManagerPolicy *)self core];
-  v8 = [v7 workQueue];
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__SUManagerPolicy_autoScanAndDownloadIfAvailable_withResult___block_invoke;
   block[3] = &unk_279CAC848;
-  v12 = a3;
+  availableCopy = available;
   block[4] = self;
-  v11 = v6;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v11 = resultCopy;
+  v9 = resultCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __61__SUManagerPolicy_autoScanAndDownloadIfAvailable_withResult___block_invoke(uint64_t a1)
@@ -585,21 +585,21 @@ void __61__SUManagerPolicy_autoScanAndDownloadIfAvailable_withResult___block_inv
   [v2 autoScanAndDownloadIfAvailable:*(a1 + 48) withResult:*(a1 + 40)];
 }
 
-- (void)autoScanAndDownloadIfAvailable:(int)a3 downloadNow:(BOOL)a4 withResult:(id)a5
+- (void)autoScanAndDownloadIfAvailable:(int)available downloadNow:(BOOL)now withResult:(id)result
 {
-  v8 = a5;
-  v9 = [(SUManagerPolicy *)self core];
-  v10 = [v9 workQueue];
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__SUManagerPolicy_autoScanAndDownloadIfAvailable_downloadNow_withResult___block_invoke;
   block[3] = &unk_279CAC870;
-  v14 = a3;
-  v15 = a4;
+  availableCopy = available;
+  nowCopy = now;
   block[4] = self;
-  v13 = v8;
-  v11 = v8;
-  dispatch_async(v10, block);
+  v13 = resultCopy;
+  v11 = resultCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __73__SUManagerPolicy_autoScanAndDownloadIfAvailable_downloadNow_withResult___block_invoke(uint64_t a1)
@@ -610,14 +610,14 @@ void __73__SUManagerPolicy_autoScanAndDownloadIfAvailable_downloadNow_withResult
 
 - (void)loadBrainOnUnlock
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__SUManagerPolicy_loadBrainOnUnlock__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __36__SUManagerPolicy_loadBrainOnUnlock__block_invoke(uint64_t a1)
@@ -628,14 +628,14 @@ void __36__SUManagerPolicy_loadBrainOnUnlock__block_invoke(uint64_t a1)
 
 - (void)tryAutoDownload
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__SUManagerPolicy_tryAutoDownload__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __34__SUManagerPolicy_tryAutoDownload__block_invoke(uint64_t a1)
@@ -644,19 +644,19 @@ void __34__SUManagerPolicy_tryAutoDownload__block_invoke(uint64_t a1)
   [v1 tryAutoDownload];
 }
 
-- (void)noteAutoDownloadFailedToStartWithError:(id)a3
+- (void)noteAutoDownloadFailedToStartWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  errorCopy = error;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__SUManagerPolicy_noteAutoDownloadFailedToStartWithError___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = errorCopy;
+  v7 = errorCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __58__SUManagerPolicy_noteAutoDownloadFailedToStartWithError___block_invoke(uint64_t a1)
@@ -667,14 +667,14 @@ void __58__SUManagerPolicy_noteAutoDownloadFailedToStartWithError___block_invoke
 
 - (void)endAutoDownloadTasksAndResetState
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SUManagerPolicy_endAutoDownloadTasksAndResetState__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __52__SUManagerPolicy_endAutoDownloadTasksAndResetState__block_invoke(uint64_t a1)
@@ -691,19 +691,19 @@ void __52__SUManagerPolicy_endAutoDownloadTasksAndResetState__block_invoke(uint6
   v13 = __Block_byref_object_copy__14;
   v14 = __Block_byref_object_dispose__14;
   v15 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__SUManagerPolicy_preferredLastScannedDescriptor__block_invoke;
   v9[3] = &unk_279CAA858;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(workQueue2, v9);
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -728,19 +728,19 @@ void __49__SUManagerPolicy_preferredLastScannedDescriptor__block_invoke(uint64_t
   v13 = __Block_byref_object_copy__14;
   v14 = __Block_byref_object_dispose__14;
   v15 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__SUManagerPolicy_alternateLastScannedDescriptor__block_invoke;
   v9[3] = &unk_279CAA858;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(workQueue2, v9);
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -757,19 +757,19 @@ void __49__SUManagerPolicy_alternateLastScannedDescriptor__block_invoke(uint64_t
   *(v3 + 40) = v2;
 }
 
-- (void)presentAutoUpdateBanner:(id)a3
+- (void)presentAutoUpdateBanner:(id)banner
 {
-  v4 = a3;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  bannerCopy = banner;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__SUManagerPolicy_presentAutoUpdateBanner___block_invoke;
   v8[3] = &unk_279CAA8D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = bannerCopy;
+  v7 = bannerCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __43__SUManagerPolicy_presentAutoUpdateBanner___block_invoke(uint64_t a1)
@@ -780,14 +780,14 @@ void __43__SUManagerPolicy_presentAutoUpdateBanner___block_invoke(uint64_t a1)
 
 - (void)dismissAutoUpdateBanner
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SUManagerPolicy_dismissAutoUpdateBanner__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __42__SUManagerPolicy_dismissAutoUpdateBanner__block_invoke(uint64_t a1)
@@ -798,14 +798,14 @@ void __42__SUManagerPolicy_dismissAutoUpdateBanner__block_invoke(uint64_t a1)
 
 - (void)checkAndPostSplatFollowUpIfNeeded
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SUManagerPolicy_checkAndPostSplatFollowUpIfNeeded__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __52__SUManagerPolicy_checkAndPostSplatFollowUpIfNeeded__block_invoke(uint64_t a1)
@@ -816,14 +816,14 @@ void __52__SUManagerPolicy_checkAndPostSplatFollowUpIfNeeded__block_invoke(uint6
 
 - (void)unbadgeSettingsForManualSoftwareUpdate
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__SUManagerPolicy_unbadgeSettingsForManualSoftwareUpdate__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __57__SUManagerPolicy_unbadgeSettingsForManualSoftwareUpdate__block_invoke(uint64_t a1)
@@ -832,19 +832,19 @@ void __57__SUManagerPolicy_unbadgeSettingsForManualSoftwareUpdate__block_invoke(
   [v1 unbadgeSettingsForManualSoftwareUpdate];
 }
 
-- (void)badgeSettingsForManualSoftwareUpdate:(id)a3
+- (void)badgeSettingsForManualSoftwareUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  updateCopy = update;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__SUManagerPolicy_badgeSettingsForManualSoftwareUpdate___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = updateCopy;
+  v7 = updateCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __56__SUManagerPolicy_badgeSettingsForManualSoftwareUpdate___block_invoke(uint64_t a1)
@@ -853,22 +853,22 @@ void __56__SUManagerPolicy_badgeSettingsForManualSoftwareUpdate___block_invoke(u
   [v2 badgeSettingsForManualSoftwareUpdate:*(a1 + 40)];
 }
 
-- (void)scanForUpdates:(id)a3 complete:(id)a4
+- (void)scanForUpdates:(id)updates complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  updatesCopy = updates;
+  completeCopy = complete;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__SUManagerPolicy_scanForUpdates_complete___block_invoke;
   block[3] = &unk_279CAA8F8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = updatesCopy;
+  v14 = completeCopy;
+  v10 = completeCopy;
+  v11 = updatesCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __43__SUManagerPolicy_scanForUpdates_complete___block_invoke(uint64_t a1)
@@ -877,20 +877,20 @@ void __43__SUManagerPolicy_scanForUpdates_complete___block_invoke(uint64_t a1)
   [v2 scanForUpdates:*(a1 + 40) complete:*(a1 + 48)];
 }
 
-- (void)disableReserveSpace:(BOOL)a3 withResult:(id)a4
+- (void)disableReserveSpace:(BOOL)space withResult:(id)result
 {
-  v6 = a4;
-  v7 = [(SUManagerPolicy *)self core];
-  v8 = [v7 workQueue];
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SUManagerPolicy_disableReserveSpace_withResult___block_invoke;
   block[3] = &unk_279CAB3E8;
-  v12 = a3;
+  spaceCopy = space;
   block[4] = self;
-  v11 = v6;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v11 = resultCopy;
+  v9 = resultCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __50__SUManagerPolicy_disableReserveSpace_withResult___block_invoke(uint64_t a1)
@@ -909,25 +909,25 @@ uint64_t __50__SUManagerPolicy_disableReserveSpace_withResult___block_invoke(uin
   return result;
 }
 
-- (void)overrideSoftwareUpdateReserve:(id)a3 systemGrowthMarginSize:(id)a4 withResult:(id)a5
+- (void)overrideSoftwareUpdateReserve:(id)reserve systemGrowthMarginSize:(id)size withResult:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUManagerPolicy *)self core];
-  v12 = [v11 workQueue];
+  reserveCopy = reserve;
+  sizeCopy = size;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __83__SUManagerPolicy_overrideSoftwareUpdateReserve_systemGrowthMarginSize_withResult___block_invoke;
   v16[3] = &unk_279CAB438;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, v16);
+  v17 = reserveCopy;
+  v18 = sizeCopy;
+  v19 = resultCopy;
+  v13 = resultCopy;
+  v14 = sizeCopy;
+  v15 = reserveCopy;
+  dispatch_async(workQueue, v16);
 }
 
 uint64_t __83__SUManagerPolicy_overrideSoftwareUpdateReserve_systemGrowthMarginSize_withResult___block_invoke(uint64_t a1)
@@ -946,19 +946,19 @@ uint64_t __83__SUManagerPolicy_overrideSoftwareUpdateReserve_systemGrowthMarginS
   return result;
 }
 
-- (void)softwareUpdateReserveSizes:(id)a3
+- (void)softwareUpdateReserveSizes:(id)sizes
 {
-  v4 = a3;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  sizesCopy = sizes;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__SUManagerPolicy_softwareUpdateReserveSizes___block_invoke;
   v8[3] = &unk_279CAA8D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = sizesCopy;
+  v7 = sizesCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __46__SUManagerPolicy_softwareUpdateReserveSizes___block_invoke(uint64_t a1)
@@ -980,22 +980,22 @@ void __46__SUManagerPolicy_softwareUpdateReserveSizes___block_invoke(uint64_t a1
   }
 }
 
-- (void)cancelDownloadWithOptions:(id)a3 withResult:(id)a4
+- (void)cancelDownloadWithOptions:(id)options withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  optionsCopy = options;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SUManagerPolicy_cancelDownloadWithOptions_withResult___block_invoke;
   block[3] = &unk_279CAA8F8;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = optionsCopy;
+  selfCopy = self;
+  v15 = resultCopy;
+  v10 = resultCopy;
+  v11 = optionsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __56__SUManagerPolicy_cancelDownloadWithOptions_withResult___block_invoke(id *a1)
@@ -1028,22 +1028,22 @@ void __56__SUManagerPolicy_cancelDownloadWithOptions_withResult___block_invoke(i
   }
 }
 
-- (void)purgeDownloadWithOptions:(id)a3 withResult:(id)a4
+- (void)purgeDownloadWithOptions:(id)options withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  optionsCopy = options;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SUManagerPolicy_purgeDownloadWithOptions_withResult___block_invoke;
   block[3] = &unk_279CAA8F8;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = optionsCopy;
+  selfCopy = self;
+  v15 = resultCopy;
+  v10 = resultCopy;
+  v11 = optionsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __55__SUManagerPolicy_purgeDownloadWithOptions_withResult___block_invoke(id *a1)
@@ -1076,62 +1076,62 @@ void __55__SUManagerPolicy_purgeDownloadWithOptions_withResult___block_invoke(id
   }
 }
 
-- (void)pauseDownload:(id)a3
+- (void)pauseDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v11 = 0;
   [SUUtility assignError:&v11 withCode:60];
   v5 = v11;
-  if (v4)
+  if (downloadCopy)
   {
-    v6 = [(SUManagerPolicy *)self core];
-    v7 = [v6 externWorkQueue];
+    core = [(SUManagerPolicy *)self core];
+    externWorkQueue = [core externWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __33__SUManagerPolicy_pauseDownload___block_invoke;
     block[3] = &unk_279CAAF08;
-    v10 = v4;
+    v10 = downloadCopy;
     v9 = v5;
-    dispatch_async(v7, block);
+    dispatch_async(externWorkQueue, block);
   }
 }
 
-- (void)resumeDownload:(id)a3
+- (void)resumeDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v11 = 0;
   [SUUtility assignError:&v11 withCode:60];
   v5 = v11;
-  if (v4)
+  if (downloadCopy)
   {
-    v6 = [(SUManagerPolicy *)self core];
-    v7 = [v6 externWorkQueue];
+    core = [(SUManagerPolicy *)self core];
+    externWorkQueue = [core externWorkQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__SUManagerPolicy_resumeDownload___block_invoke;
     block[3] = &unk_279CAAF08;
-    v10 = v4;
+    v10 = downloadCopy;
     v9 = v5;
-    dispatch_async(v7, block);
+    dispatch_async(externWorkQueue, block);
   }
 }
 
-- (void)startDownloadWithMetadata:(id)a3 withResult:(id)a4
+- (void)startDownloadWithMetadata:(id)metadata withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  metadataCopy = metadata;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SUManagerPolicy_startDownloadWithMetadata_withResult___block_invoke;
   block[3] = &unk_279CAA8F8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = metadataCopy;
+  v14 = resultCopy;
+  v10 = resultCopy;
+  v11 = metadataCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __56__SUManagerPolicy_startDownloadWithMetadata_withResult___block_invoke(uint64_t a1)
@@ -1140,22 +1140,22 @@ void __56__SUManagerPolicy_startDownloadWithMetadata_withResult___block_invoke(u
   [v2 startDownloadWithMetadata:*(a1 + 40) withResult:*(a1 + 48)];
 }
 
-- (void)startDownloadWithOptions:(id)a3 withResult:(id)a4
+- (void)startDownloadWithOptions:(id)options withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  optionsCopy = options;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SUManagerPolicy_startDownloadWithOptions_withResult___block_invoke;
   block[3] = &unk_279CAA8F8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = optionsCopy;
+  v14 = resultCopy;
+  v10 = resultCopy;
+  v11 = optionsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __55__SUManagerPolicy_startDownloadWithOptions_withResult___block_invoke(uint64_t a1)
@@ -1164,34 +1164,34 @@ void __55__SUManagerPolicy_startDownloadWithOptions_withResult___block_invoke(ui
   [v2 startDownloadWithOptions:*(a1 + 40) withResult:*(a1 + 48)];
 }
 
-- (void)updateDownloadMetadata:(id)a3 withResult:(id)a4
+- (void)updateDownloadMetadata:(id)metadata withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  metadataCopy = metadata;
   v8 = [SUDownloadOptions alloc];
-  v9 = [(SUManagerPolicy *)self download];
-  v10 = [v9 descriptor];
-  v11 = [(SUDownloadOptions *)v8 initWithMetadata:v7 andDescriptor:v10];
+  download = [(SUManagerPolicy *)self download];
+  descriptor = [download descriptor];
+  v11 = [(SUDownloadOptions *)v8 initWithMetadata:metadataCopy andDescriptor:descriptor];
 
-  [(SUManagerPolicy *)self updateDownloadOptions:v11 withResult:v6];
+  [(SUManagerPolicy *)self updateDownloadOptions:v11 withResult:resultCopy];
 }
 
-- (void)updateDownloadOptions:(id)a3 withResult:(id)a4
+- (void)updateDownloadOptions:(id)options withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  optionsCopy = options;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__SUManagerPolicy_updateDownloadOptions_withResult___block_invoke;
   block[3] = &unk_279CAA8F8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = optionsCopy;
+  v14 = resultCopy;
+  v10 = resultCopy;
+  v11 = optionsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __52__SUManagerPolicy_updateDownloadOptions_withResult___block_invoke(uint64_t a1)
@@ -1200,25 +1200,25 @@ void __52__SUManagerPolicy_updateDownloadOptions_withResult___block_invoke(uint6
   [v2 updateDownloadOptions:*(a1 + 40) withResult:*(a1 + 48)];
 }
 
-- (void)updatesDownloadableWithOptions:(id)a3 alternateDownloadOptions:(id)a4 replyHandler:(id)a5
+- (void)updatesDownloadableWithOptions:(id)options alternateDownloadOptions:(id)downloadOptions replyHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUManagerPolicy *)self core];
-  v12 = [v11 workQueue];
+  optionsCopy = options;
+  downloadOptionsCopy = downloadOptions;
+  handlerCopy = handler;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __88__SUManagerPolicy_updatesDownloadableWithOptions_alternateDownloadOptions_replyHandler___block_invoke;
   v16[3] = &unk_279CAB438;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, v16);
+  v17 = optionsCopy;
+  v18 = downloadOptionsCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = downloadOptionsCopy;
+  v15 = optionsCopy;
+  dispatch_async(workQueue, v16);
 }
 
 void __88__SUManagerPolicy_updatesDownloadableWithOptions_alternateDownloadOptions_replyHandler___block_invoke(uint64_t a1)
@@ -1227,22 +1227,22 @@ void __88__SUManagerPolicy_updatesDownloadableWithOptions_alternateDownloadOptio
   [v2 updatesDownloadableWithOptions:*(a1 + 40) alternateDownloadOptions:*(a1 + 48) replyHandler:*(a1 + 56)];
 }
 
-- (void)isUpdateReadyForInstallationWithOptions:(id)a3 withResult:(id)a4
+- (void)isUpdateReadyForInstallationWithOptions:(id)options withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  optionsCopy = options;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SUManagerPolicy_isUpdateReadyForInstallationWithOptions_withResult___block_invoke;
   block[3] = &unk_279CAA8F8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = optionsCopy;
+  v14 = resultCopy;
+  v10 = resultCopy;
+  v11 = optionsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __70__SUManagerPolicy_isUpdateReadyForInstallationWithOptions_withResult___block_invoke(uint64_t a1)
@@ -1278,19 +1278,19 @@ void __70__SUManagerPolicy_isUpdateReadyForInstallationWithOptions_withResult___
   }
 }
 
-- (void)autoSUFailedWithError:(id)a3
+- (void)autoSUFailedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  errorCopy = error;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__SUManagerPolicy_autoSUFailedWithError___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = errorCopy;
+  v7 = errorCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __41__SUManagerPolicy_autoSUFailedWithError___block_invoke(uint64_t a1)
@@ -1299,22 +1299,22 @@ void __41__SUManagerPolicy_autoSUFailedWithError___block_invoke(uint64_t a1)
   [v2 autoSUFailedWithError:*(a1 + 40)];
 }
 
-- (void)installUpdateWithInstallOptions:(id)a3 withResult:(id)a4
+- (void)installUpdateWithInstallOptions:(id)options withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  optionsCopy = options;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SUManagerPolicy_installUpdateWithInstallOptions_withResult___block_invoke;
   block[3] = &unk_279CAA8F8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = optionsCopy;
+  v14 = resultCopy;
+  v10 = resultCopy;
+  v11 = optionsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __62__SUManagerPolicy_installUpdateWithInstallOptions_withResult___block_invoke(uint64_t a1)
@@ -1323,26 +1323,26 @@ void __62__SUManagerPolicy_installUpdateWithInstallOptions_withResult___block_in
   [v2 installUpdateWithInstallOptions:*(a1 + 40) withResult:*(a1 + 48)];
 }
 
-- (id)eligibleRollbackWithOptions:(id)a3
+- (id)eligibleRollbackWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__14;
   v17 = __Block_byref_object_dispose__14;
   v18 = 0;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SUManagerPolicy_eligibleRollbackWithOptions___block_invoke;
   block[3] = &unk_279CAB740;
-  v11 = v4;
+  v11 = optionsCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = optionsCopy;
+  dispatch_sync(workQueue, block);
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -1359,22 +1359,22 @@ void __47__SUManagerPolicy_eligibleRollbackWithOptions___block_invoke(uint64_t a
   *(v3 + 40) = v2;
 }
 
-- (BOOL)rollbackUpdateWithOptions:(id)a3 withResult:(id)a4
+- (BOOL)rollbackUpdateWithOptions:(id)options withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  optionsCopy = options;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SUManagerPolicy_rollbackUpdateWithOptions_withResult___block_invoke;
   block[3] = &unk_279CAA8F8;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_sync(v9, block);
+  v14 = optionsCopy;
+  v15 = resultCopy;
+  v10 = resultCopy;
+  v11 = optionsCopy;
+  dispatch_sync(workQueue, block);
 
   return 0;
 }
@@ -1385,26 +1385,26 @@ void __56__SUManagerPolicy_rollbackUpdateWithOptions_withResult___block_invoke(u
   [v2 rollbackUpdateWithOptions:*(a1 + 40) withResult:*(a1 + 48)];
 }
 
-- (id)previousRollbackWithOptions:(id)a3
+- (id)previousRollbackWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__14;
   v17 = __Block_byref_object_dispose__14;
   v18 = 0;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SUManagerPolicy_previousRollbackWithOptions___block_invoke;
   block[3] = &unk_279CAB740;
-  v11 = v4;
+  v11 = optionsCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = optionsCopy;
+  dispatch_sync(workQueue, block);
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -1423,24 +1423,24 @@ void __47__SUManagerPolicy_previousRollbackWithOptions___block_invoke(uint64_t a
 
 - (BOOL)isRollingBack
 {
-  v2 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__SUManagerPolicy_isRollingBack__block_invoke;
   v6[3] = &unk_279CAA858;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(workQueue, v6);
 
-  LOBYTE(v2) = v8[3] != 0;
+  LOBYTE(selfCopy) = v8[3] != 0;
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __32__SUManagerPolicy_isRollingBack__block_invoke(uint64_t a1)
@@ -1451,14 +1451,14 @@ void __32__SUManagerPolicy_isRollingBack__block_invoke(uint64_t a1)
 
 - (void)rollbackReadyForReboot
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__SUManagerPolicy_rollbackReadyForReboot__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __41__SUManagerPolicy_rollbackReadyForReboot__block_invoke(uint64_t a1)
@@ -1467,22 +1467,22 @@ void __41__SUManagerPolicy_rollbackReadyForReboot__block_invoke(uint64_t a1)
   [v1 rollbackReadyForReboot];
 }
 
-- (void)securityResponseRollbackSuggested:(id)a3 withResult:(id)a4
+- (void)securityResponseRollbackSuggested:(id)suggested withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  suggestedCopy = suggested;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__SUManagerPolicy_securityResponseRollbackSuggested_withResult___block_invoke;
   block[3] = &unk_279CAA8F8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = suggestedCopy;
+  v14 = resultCopy;
+  v10 = resultCopy;
+  v11 = suggestedCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __64__SUManagerPolicy_securityResponseRollbackSuggested_withResult___block_invoke(uint64_t a1)
@@ -1499,19 +1499,19 @@ void __64__SUManagerPolicy_securityResponseRollbackSuggested_withResult___block_
   v13 = __Block_byref_object_copy__14;
   v14 = __Block_byref_object_dispose__14;
   v15 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __29__SUManagerPolicy_slaVersion__block_invoke;
   v9[3] = &unk_279CAA858;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(workQueue2, v9);
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -1528,22 +1528,22 @@ void __29__SUManagerPolicy_slaVersion__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)createInstallationKeybag:(id)a3 withResult:(id)a4
+- (void)createInstallationKeybag:(id)keybag withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  keybagCopy = keybag;
+  resultCopy = result;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SUManagerPolicy_createInstallationKeybag_withResult___block_invoke;
   block[3] = &unk_279CAA8F8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = keybagCopy;
+  v14 = resultCopy;
+  v10 = resultCopy;
+  v11 = keybagCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __55__SUManagerPolicy_createInstallationKeybag_withResult___block_invoke(uint64_t a1)
@@ -1580,14 +1580,14 @@ void __55__SUManagerPolicy_createInstallationKeybag_withResult___block_invoke_2(
 
 - (void)destroyInstallationKeybag
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__SUManagerPolicy_destroyInstallationKeybag__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __44__SUManagerPolicy_destroyInstallationKeybag__block_invoke(uint64_t a1)
@@ -1598,28 +1598,28 @@ void __44__SUManagerPolicy_destroyInstallationKeybag__block_invoke(uint64_t a1)
 
 - (BOOL)isAutoUpdateEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__SUManagerPolicy_isAutoUpdateEnabled__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __38__SUManagerPolicy_isAutoUpdateEnabled__block_invoke(uint64_t a1)
@@ -1630,28 +1630,28 @@ void __38__SUManagerPolicy_isAutoUpdateEnabled__block_invoke(uint64_t a1)
 
 - (BOOL)isCurrentUpdateAutoUpdate
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__SUManagerPolicy_isCurrentUpdateAutoUpdate__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __44__SUManagerPolicy_isCurrentUpdateAutoUpdate__block_invoke(uint64_t a1)
@@ -1677,19 +1677,19 @@ void __44__SUManagerPolicy_isCurrentUpdateAutoUpdate__block_invoke(uint64_t a1)
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__SUManagerPolicy_softwareUpdatePathRestriction__block_invoke;
   v9[3] = &unk_279CAA858;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(workQueue2, v9);
 
   v7 = v11[3];
   _Block_object_dispose(&v10, 8);
@@ -1704,28 +1704,28 @@ void __48__SUManagerPolicy_softwareUpdatePathRestriction__block_invoke(uint64_t 
 
 - (BOOL)isDelayingUpdates
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __36__SUManagerPolicy_isDelayingUpdates__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __36__SUManagerPolicy_isDelayingUpdates__block_invoke(uint64_t a1)
@@ -1742,19 +1742,19 @@ void __36__SUManagerPolicy_isDelayingUpdates__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__14;
   v14 = __Block_byref_object_dispose__14;
   v15 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __31__SUManagerPolicy_delayEndDate__block_invoke;
   v9[3] = &unk_279CAA858;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(workQueue2, v9);
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -1771,30 +1771,30 @@ void __31__SUManagerPolicy_delayEndDate__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)splatRollbackAllowed:(id *)a3
+- (BOOL)splatRollbackAllowed:(id *)allowed
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 1;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_not_V2(v6);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v7 = [(SUManagerPolicy *)self core];
-  v8 = [v7 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__SUManagerPolicy_splatRollbackAllowed___block_invoke;
   block[3] = &unk_279CAA880;
   block[4] = self;
   block[5] = &v11;
-  block[6] = a3;
-  dispatch_sync(v8, block);
+  block[6] = allowed;
+  dispatch_sync(workQueue2, block);
 
-  LOBYTE(a3) = *(v12 + 24);
+  LOBYTE(allowed) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return a3;
+  return allowed;
 }
 
 void __40__SUManagerPolicy_splatRollbackAllowed___block_invoke(uint64_t a1)
@@ -1805,28 +1805,28 @@ void __40__SUManagerPolicy_splatRollbackAllowed___block_invoke(uint64_t a1)
 
 - (BOOL)isSplatOnlyUpdateRollbackSuggested
 {
-  v2 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 1;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)v2 core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)selfCopy core];
+  workQueue2 = [core2 workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__SUManagerPolicy_isSplatOnlyUpdateRollbackSuggested__block_invoke;
   v8[3] = &unk_279CAA858;
-  v8[4] = v2;
+  v8[4] = selfCopy;
   v8[5] = &v9;
-  dispatch_sync(v6, v8);
+  dispatch_sync(workQueue2, v8);
 
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __53__SUManagerPolicy_isSplatOnlyUpdateRollbackSuggested__block_invoke(uint64_t a1)
@@ -1837,18 +1837,18 @@ void __53__SUManagerPolicy_isSplatOnlyUpdateRollbackSuggested__block_invoke(uint
 
 - (void)managedInstallRequested
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SUManagerPolicy_managedInstallRequested__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(workQueue2, block);
 }
 
 void __42__SUManagerPolicy_managedInstallRequested__block_invoke(uint64_t a1)
@@ -1865,19 +1865,19 @@ void __42__SUManagerPolicy_managedInstallRequested__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__14;
   v14 = __Block_byref_object_dispose__14;
   v15 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__SUManagerPolicy_mandatoryUpdateDictionary__block_invoke;
   v9[3] = &unk_279CAA858;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(workQueue2, v9);
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -1894,19 +1894,19 @@ void __44__SUManagerPolicy_mandatoryUpdateDictionary__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setMandatoryUpdateDictionary:(id)a3
+- (void)setMandatoryUpdateDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  dictionaryCopy = dictionary;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__SUManagerPolicy_setMandatoryUpdateDictionary___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = dictionaryCopy;
+  v7 = dictionaryCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __48__SUManagerPolicy_setMandatoryUpdateDictionary___block_invoke(uint64_t a1)
@@ -1915,22 +1915,22 @@ void __48__SUManagerPolicy_setMandatoryUpdateDictionary___block_invoke(uint64_t 
   [v2 setMandatoryUpdateDictionary:*(a1 + 40)];
 }
 
-- (void)reportPostponedEvent:(id)a3 withStatus:(id)a4
+- (void)reportPostponedEvent:(id)event withStatus:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerPolicy *)self core];
-  v9 = [v8 workQueue];
+  eventCopy = event;
+  statusCopy = status;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SUManagerPolicy_reportPostponedEvent_withStatus___block_invoke;
   block[3] = &unk_279CAA798;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = eventCopy;
+  v14 = statusCopy;
+  v10 = statusCopy;
+  v11 = eventCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __51__SUManagerPolicy_reportPostponedEvent_withStatus___block_invoke(uint64_t a1)
@@ -1941,14 +1941,14 @@ void __51__SUManagerPolicy_reportPostponedEvent_withStatus___block_invoke(uint64
 
 - (void)reportSimulatedOTAAutoTriggeredEvent
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SUManagerPolicy_reportSimulatedOTAAutoTriggeredEvent__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __55__SUManagerPolicy_reportSimulatedOTAAutoTriggeredEvent__block_invoke(uint64_t a1)
@@ -1959,14 +1959,14 @@ void __55__SUManagerPolicy_reportSimulatedOTAAutoTriggeredEvent__block_invoke(ui
 
 - (void)reportOTAAutoTriggeredEvent
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SUManagerPolicy_reportOTAAutoTriggeredEvent__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __46__SUManagerPolicy_reportOTAAutoTriggeredEvent__block_invoke(uint64_t a1)
@@ -1983,19 +1983,19 @@ void __46__SUManagerPolicy_reportOTAAutoTriggeredEvent__block_invoke(uint64_t a1
   v13 = __Block_byref_object_copy__14;
   v14 = __Block_byref_object_dispose__14;
   v15 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __27__SUManagerPolicy_download__block_invoke;
   v9[3] = &unk_279CAA858;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(workQueue2, v9);
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -2020,19 +2020,19 @@ void __27__SUManagerPolicy_download__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__14;
   v14 = __Block_byref_object_dispose__14;
   v15 = 0;
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_not_V2(v4);
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
+  dispatch_assert_queue_not_V2(workQueue);
 
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core2 = [(SUManagerPolicy *)self core];
+  workQueue2 = [core2 workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __32__SUManagerPolicy_installPolicy__block_invoke;
   v9[3] = &unk_279CAA858;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(workQueue2, v9);
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -2049,17 +2049,17 @@ void __32__SUManagerPolicy_installPolicy__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)updateInstallPolicyType:(unint64_t)a3
+- (void)updateInstallPolicyType:(unint64_t)type
 {
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SUManagerPolicy_updateInstallPolicyType___block_invoke;
   v7[3] = &unk_279CAA9C0;
   v7[4] = self;
-  v7[5] = a3;
-  dispatch_async(v6, v7);
+  v7[5] = type;
+  dispatch_async(workQueue, v7);
 }
 
 void __43__SUManagerPolicy_updateInstallPolicyType___block_invoke(uint64_t a1)
@@ -2068,20 +2068,20 @@ void __43__SUManagerPolicy_updateInstallPolicyType___block_invoke(uint64_t a1)
   [v2 updateInstallPolicyType:*(a1 + 40)];
 }
 
-- (void)addUnlockCallback:(SEL)a3 forKey:(id)a4
+- (void)addUnlockCallback:(SEL)callback forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(SUManagerPolicy *)self core];
-  v8 = [v7 workQueue];
+  keyCopy = key;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__SUManagerPolicy_addUnlockCallback_forKey___block_invoke;
   block[3] = &unk_279CAA8A8;
-  v11 = v6;
-  v12 = a3;
+  v11 = keyCopy;
+  callbackCopy = callback;
   block[4] = self;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v9 = keyCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __44__SUManagerPolicy_addUnlockCallback_forKey___block_invoke(uint64_t a1)
@@ -2090,19 +2090,19 @@ void __44__SUManagerPolicy_addUnlockCallback_forKey___block_invoke(uint64_t a1)
   [v2 addUnlockCallback:*(a1 + 48) forKey:*(a1 + 40)];
 }
 
-- (void)removeUnlockCallback:(id)a3
+- (void)removeUnlockCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(SUManagerPolicy *)self core];
-  v6 = [v5 workQueue];
+  callbackCopy = callback;
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__SUManagerPolicy_removeUnlockCallback___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = callbackCopy;
+  v7 = callbackCopy;
+  dispatch_async(workQueue, v8);
 }
 
 void __40__SUManagerPolicy_removeUnlockCallback___block_invoke(uint64_t a1)
@@ -2113,14 +2113,14 @@ void __40__SUManagerPolicy_removeUnlockCallback___block_invoke(uint64_t a1)
 
 - (void)persistStashOnUnlock
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__SUManagerPolicy_persistStashOnUnlock__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __39__SUManagerPolicy_persistStashOnUnlock__block_invoke(uint64_t a1)
@@ -2131,14 +2131,14 @@ void __39__SUManagerPolicy_persistStashOnUnlock__block_invoke(uint64_t a1)
 
 - (void)networkMonitorDetectOverrides
 {
-  v3 = [(SUManagerPolicy *)self core];
-  v4 = [v3 workQueue];
+  core = [(SUManagerPolicy *)self core];
+  workQueue = [core workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__SUManagerPolicy_networkMonitorDetectOverrides__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __48__SUManagerPolicy_networkMonitorDetectOverrides__block_invoke(uint64_t a1)

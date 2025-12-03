@@ -1,19 +1,19 @@
 @interface IDSTemporaryPhoneUserSynchronizer
-- (IDSTemporaryPhoneUserSynchronizer)initWithUserStore:(id)a3 ctAdapter:(id)a4;
-- (id)updatedUserDescriptionSetForRealm:(int64_t)a3 currentUserDescriptions:(id)a4;
-- (void)expirationManager:(id)a3 didExpireUser:(id)a4;
-- (void)forceRemoveUser:(id)a3 silently:(BOOL)a4;
-- (void)userStore:(id)a3 didAddUser:(id)a4;
-- (void)userStore:(id)a3 didRemoveUser:(id)a4 withAuthenticationCertificate:(id)a5;
-- (void)userStore:(id)a3 didUpdateUser:(id)a4;
+- (IDSTemporaryPhoneUserSynchronizer)initWithUserStore:(id)store ctAdapter:(id)adapter;
+- (id)updatedUserDescriptionSetForRealm:(int64_t)realm currentUserDescriptions:(id)descriptions;
+- (void)expirationManager:(id)manager didExpireUser:(id)user;
+- (void)forceRemoveUser:(id)user silently:(BOOL)silently;
+- (void)userStore:(id)store didAddUser:(id)user;
+- (void)userStore:(id)store didRemoveUser:(id)user withAuthenticationCertificate:(id)certificate;
+- (void)userStore:(id)store didUpdateUser:(id)user;
 @end
 
 @implementation IDSTemporaryPhoneUserSynchronizer
 
-- (IDSTemporaryPhoneUserSynchronizer)initWithUserStore:(id)a3 ctAdapter:(id)a4
+- (IDSTemporaryPhoneUserSynchronizer)initWithUserStore:(id)store ctAdapter:(id)adapter
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  adapterCopy = adapter;
   v15.receiver = self;
   v15.super_class = IDSTemporaryPhoneUserSynchronizer;
   v9 = [(IDSTemporaryPhoneUserSynchronizer *)&v15 init];
@@ -23,24 +23,24 @@
     transactionQueue = v9->_transactionQueue;
     v9->_transactionQueue = v10;
 
-    objc_storeStrong(&v9->_userStore, a3);
-    objc_storeStrong(&v9->_ctAdapter, a4);
-    v12 = [[IDSTemporaryPhoneUserExpirationManager alloc] initWithUserStore:v7 delegate:v9];
+    objc_storeStrong(&v9->_userStore, store);
+    objc_storeStrong(&v9->_ctAdapter, adapter);
+    v12 = [[IDSTemporaryPhoneUserExpirationManager alloc] initWithUserStore:storeCopy delegate:v9];
     expirationManager = v9->_expirationManager;
     v9->_expirationManager = v12;
 
-    [v7 addActionListener:v9 forRealm:0];
+    [storeCopy addActionListener:v9 forRealm:0];
   }
 
   return v9;
 }
 
-- (void)forceRemoveUser:(id)a3 silently:(BOOL)a4
+- (void)forceRemoveUser:(id)user silently:(BOOL)silently
 {
-  v5 = a3;
-  if ([v5 realm] == 2)
+  userCopy = user;
+  if ([userCopy realm] == 2)
   {
-    v6 = [[IDSTemporaryPhoneUserRemoveTransaction alloc] initWithUser:v5 alertType:0];
+    v6 = [[IDSTemporaryPhoneUserRemoveTransaction alloc] initWithUser:userCopy alertType:0];
     v7 = +[IMRGLog registration];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -49,22 +49,22 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "User removed. Prepending transaction %@", &v10, 0xCu);
     }
 
-    v8 = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
-    [v8 prependItem:v6];
+    transactionQueue = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
+    [transactionQueue prependItem:v6];
 
-    v9 = [(IDSTemporaryPhoneUserSynchronizer *)self userStore];
-    [v9 reloadUsersForRealm:2];
+    userStore = [(IDSTemporaryPhoneUserSynchronizer *)self userStore];
+    [userStore reloadUsersForRealm:2];
   }
 }
 
-- (id)updatedUserDescriptionSetForRealm:(int64_t)a3 currentUserDescriptions:(id)a4
+- (id)updatedUserDescriptionSetForRealm:(int64_t)realm currentUserDescriptions:(id)descriptions
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 2)
+  descriptionsCopy = descriptions;
+  v7 = descriptionsCopy;
+  if (realm == 2)
   {
-    v8 = [v6 mutableCopy];
-    v9 = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
+    v8 = [descriptionsCopy mutableCopy];
+    transactionQueue = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1006DB6F8;
@@ -72,7 +72,7 @@
     v14[4] = self;
     v10 = v8;
     v15 = v10;
-    [v9 executeReadyItemsWithBlock:v14];
+    [transactionQueue executeReadyItemsWithBlock:v14];
 
     v11 = v15;
     v12 = v10;
@@ -80,19 +80,19 @@
 
   else
   {
-    v12 = v6;
+    v12 = descriptionsCopy;
   }
 
   return v12;
 }
 
-- (void)userStore:(id)a3 didAddUser:(id)a4
+- (void)userStore:(id)store didAddUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 realm])
+  storeCopy = store;
+  userCopy = user;
+  if (![userCopy realm])
   {
-    v8 = [[IDSTemporaryPhoneUser alloc] initWithPhoneUser:v7];
+    v8 = [[IDSTemporaryPhoneUser alloc] initWithPhoneUser:userCopy];
     v9 = [[IDSTemporaryPhoneUserRemoveTransaction alloc] initWithUser:v8 alertType:0];
     v10 = +[IMRGLog registration];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -102,20 +102,20 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Phone user added. Adding transaction %@", &v12, 0xCu);
     }
 
-    v11 = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
-    [v11 appendItem:v9];
+    transactionQueue = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
+    [transactionQueue appendItem:v9];
 
-    [v6 reloadUsersForRealm:2];
+    [storeCopy reloadUsersForRealm:2];
   }
 }
 
-- (void)userStore:(id)a3 didUpdateUser:(id)a4
+- (void)userStore:(id)store didUpdateUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 realm])
+  storeCopy = store;
+  userCopy = user;
+  if (![userCopy realm])
   {
-    v8 = [[IDSTemporaryPhoneUser alloc] initWithPhoneUser:v7];
+    v8 = [[IDSTemporaryPhoneUser alloc] initWithPhoneUser:userCopy];
     v9 = [[IDSTemporaryPhoneUserRemoveTransaction alloc] initWithUser:v8 alertType:0];
     v10 = +[IMRGLog registration];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -125,43 +125,43 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Phone user changed. Adding transaction %@", &v12, 0xCu);
     }
 
-    v11 = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
-    [v11 appendItem:v9];
+    transactionQueue = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
+    [transactionQueue appendItem:v9];
 
-    [v6 reloadUsersForRealm:2];
+    [storeCopy reloadUsersForRealm:2];
   }
 }
 
-- (void)userStore:(id)a3 didRemoveUser:(id)a4 withAuthenticationCertificate:(id)a5
+- (void)userStore:(id)store didRemoveUser:(id)user withAuthenticationCertificate:(id)certificate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![(IDSTemporaryPhoneUserAddTransaction *)v9 realm])
+  storeCopy = store;
+  userCopy = user;
+  certificateCopy = certificate;
+  if (![(IDSTemporaryPhoneUserAddTransaction *)userCopy realm])
   {
-    if (!v10)
+    if (!certificateCopy)
     {
       v11 = +[IMRGLog registration];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v28 = 138412290;
-        v29 = v9;
+        v29 = userCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Not provisioning for Home Number because nil authenticationCertificate for user: %@", &v28, 0xCu);
       }
 
       goto LABEL_19;
     }
 
-    v11 = v9;
-    v12 = [(IDSTemporaryPhoneUserSynchronizer *)self ctAdapter];
-    v13 = [v11 uniqueIdentifier];
-    v14 = [v12 SIMForIdentifier:v13];
+    v11 = userCopy;
+    ctAdapter = [(IDSTemporaryPhoneUserSynchronizer *)self ctAdapter];
+    uniqueIdentifier = [v11 uniqueIdentifier];
+    v14 = [ctAdapter SIMForIdentifier:uniqueIdentifier];
 
     if (v14)
     {
-      v15 = [v14 phoneNumber];
-      v16 = [v11 phoneNumber];
-      v17 = [IDSCTAdapter isPhoneNumber:v15 equivalentToExistingPhoneNumber:v16];
+      phoneNumber = [v14 phoneNumber];
+      phoneNumber2 = [v11 phoneNumber];
+      v17 = [IDSCTAdapter isPhoneNumber:phoneNumber equivalentToExistingPhoneNumber:phoneNumber2];
 
       if (v17)
       {
@@ -187,9 +187,9 @@ LABEL_11:
     v22 = +[FTUserConfiguration sharedInstance];
     if ([v22 isDeviceInDualPhoneIdentityMode])
     {
-      v23 = [v11 isDefaultUser];
+      isDefaultUser = [v11 isDefaultUser];
 
-      if ((v23 & 1) == 0)
+      if ((isDefaultUser & 1) == 0)
       {
         v18 = +[IMRGLog registration];
         if (os_log_type_enabled(&v18->super, OS_LOG_TYPE_DEFAULT))
@@ -214,7 +214,7 @@ LABEL_19:
     }
 
     v18 = [[IDSTemporaryPhoneUser alloc] initWithPhoneUser:v11];
-    v24 = [[IDSTemporaryPhoneUserCredential alloc] initWithPhoneAuthenticationCertificate:v10];
+    v24 = [[IDSTemporaryPhoneUserCredential alloc] initWithPhoneAuthenticationCertificate:certificateCopy];
     v25 = [[IDSTemporaryPhoneUserAddTransaction alloc] initWithUser:v18 credential:v24];
     v26 = +[IMRGLog registration];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -224,20 +224,20 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Phone user removed. Adding transaction %@", &v28, 0xCu);
     }
 
-    v27 = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
-    [v27 appendItem:v25];
+    transactionQueue = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
+    [transactionQueue appendItem:v25];
 
-    [v8 reloadUsersForRealm:2];
+    [storeCopy reloadUsersForRealm:2];
     goto LABEL_18;
   }
 
 LABEL_20:
 }
 
-- (void)expirationManager:(id)a3 didExpireUser:(id)a4
+- (void)expirationManager:(id)manager didExpireUser:(id)user
 {
-  v5 = a4;
-  v6 = [[IDSTemporaryPhoneUserRemoveTransaction alloc] initWithUser:v5 alertType:1];
+  userCopy = user;
+  v6 = [[IDSTemporaryPhoneUserRemoveTransaction alloc] initWithUser:userCopy alertType:1];
 
   v7 = +[IMRGLog registration];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -247,11 +247,11 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "User expired. Prepending transaction %@", &v10, 0xCu);
   }
 
-  v8 = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
-  [v8 prependItem:v6];
+  transactionQueue = [(IDSTemporaryPhoneUserSynchronizer *)self transactionQueue];
+  [transactionQueue prependItem:v6];
 
-  v9 = [(IDSTemporaryPhoneUserSynchronizer *)self userStore];
-  [v9 reloadUsersForRealm:2];
+  userStore = [(IDSTemporaryPhoneUserSynchronizer *)self userStore];
+  [userStore reloadUsersForRealm:2];
 }
 
 @end

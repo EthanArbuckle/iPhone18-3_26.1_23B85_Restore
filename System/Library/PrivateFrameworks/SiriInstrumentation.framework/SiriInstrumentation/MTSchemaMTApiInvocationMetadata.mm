@@ -1,25 +1,25 @@
 @interface MTSchemaMTApiInvocationMetadata
-- (BOOL)isEqual:(id)a3;
-- (MTSchemaMTApiInvocationMetadata)initWithDictionary:(id)a3;
-- (MTSchemaMTApiInvocationMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSchemaMTApiInvocationMetadata)initWithDictionary:(id)dictionary;
+- (MTSchemaMTApiInvocationMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTApiInvocationMetadata
 
-- (MTSchemaMTApiInvocationMetadata)initWithDictionary:(id)a3
+- (MTSchemaMTApiInvocationMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = MTSchemaMTApiInvocationMetadata;
   v5 = [(MTSchemaMTApiInvocationMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"localePair"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"localePair"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (MTSchemaMTApiInvocationMetadata)initWithJSON:(id)a3
+- (MTSchemaMTApiInvocationMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTApiInvocationMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTApiInvocationMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTApiInvocationMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_localePair)
   {
-    v4 = [(MTSchemaMTApiInvocationMetadata *)self localePair];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    localePair = [(MTSchemaMTApiInvocationMetadata *)self localePair];
+    dictionaryRepresentation = [localePair dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"localePair"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"localePair"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"localePair"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"localePair"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(MTSchemaMTApiInvocationMetadata *)self localePair];
-    v6 = [v4 localePair];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    localePair = [(MTSchemaMTApiInvocationMetadata *)self localePair];
+    localePair2 = [equalCopy localePair];
+    v7 = localePair2;
+    if ((localePair != 0) != (localePair2 == 0))
     {
-      v8 = [(MTSchemaMTApiInvocationMetadata *)self localePair];
-      if (!v8)
+      localePair3 = [(MTSchemaMTApiInvocationMetadata *)self localePair];
+      if (!localePair3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(MTSchemaMTApiInvocationMetadata *)self localePair];
-      v11 = [v4 localePair];
-      v12 = [v10 isEqual:v11];
+      v9 = localePair3;
+      localePair4 = [(MTSchemaMTApiInvocationMetadata *)self localePair];
+      localePair5 = [equalCopy localePair];
+      v12 = [localePair4 isEqual:localePair5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(MTSchemaMTApiInvocationMetadata *)self localePair];
+  toCopy = to;
+  localePair = [(MTSchemaMTApiInvocationMetadata *)self localePair];
 
-  if (v4)
+  if (localePair)
   {
-    v5 = [(MTSchemaMTApiInvocationMetadata *)self localePair];
+    localePair2 = [(MTSchemaMTApiInvocationMetadata *)self localePair];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MTSchemaMTApiInvocationMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MTSchemaMTApiInvocationMetadata *)self localePair:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(MTSchemaMTApiInvocationMetadata *)self deleteLocalePair];
   }

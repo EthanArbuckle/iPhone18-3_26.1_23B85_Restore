@@ -1,9 +1,9 @@
 @interface GameControllerConfigService
 + (id)sharedInstance;
 + (void)run;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (GameControllerConfigService)init;
-- (id)serviceFor:(id)a3 client:(id)a4;
+- (id)serviceFor:(id)for client:(id)client;
 @end
 
 @implementation GameControllerConfigService
@@ -45,9 +45,9 @@
   return v2;
 }
 
-- (id)serviceFor:(id)a3 client:(id)a4
+- (id)serviceFor:(id)for client:(id)client
 {
-  if (&OBJC_PROTOCOL___GCConfigurationAssetManagementService == a3 || &OBJC_PROTOCOL___GCConfigurationBundleAssetSource == a3)
+  if (&OBJC_PROTOCOL___GCConfigurationAssetManagementService == for || &OBJC_PROTOCOL___GCConfigurationBundleAssetSource == for)
   {
     v5 = sub_100005308(self);
   }
@@ -62,15 +62,15 @@
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = _os_activity_create(&_mh_execute_header, "Incoming Connection", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v18.opaque[0] = 0;
   v18.opaque[1] = 0;
   os_activity_scope_enter(v8, &v18);
-  v9 = [[GCConfigXPCServiceClientConnection alloc] initWithConnection:v7];
+  v9 = [[GCConfigXPCServiceClientConnection alloc] initWithConnection:connectionCopy];
   v10 = [v9 peerValueForEntitlement:@"com.apple.private.gamecontroller.config.client"];
   if ([v10 isEqual:&__kCFBooleanTrue])
   {
@@ -87,7 +87,7 @@ LABEL_5:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v20 = v7;
+      v20 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Accepting connection %@.", buf, 0xCu);
     }
 
@@ -111,7 +111,7 @@ LABEL_5:
     sub_100008740(v9, v17);
   }
 
-  [v7 invalidate];
+  [connectionCopy invalidate];
   v13 = 0;
 LABEL_8:
 

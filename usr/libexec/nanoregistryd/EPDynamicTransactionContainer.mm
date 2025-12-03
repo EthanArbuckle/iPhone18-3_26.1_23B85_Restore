@@ -2,48 +2,48 @@
 - (BOOL)notUnrollable;
 - (BOOL)persistWhilePending;
 - (BOOL)resumeEnabled;
-- (EPDynamicTransactionContainer)initWithCoder:(id)a3;
+- (EPDynamicTransactionContainer)initWithCoder:(id)coder;
 - (EPRoutingSlip)routingSlip;
 - (NSObject)userInfo;
 - (id)description;
 - (id)transactionName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EPDynamicTransactionContainer
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(EPDynamicTransactionContainer *)self routingSlip];
-  [v5 encodeObject:v4 forKey:@"routingSlip"];
+  coderCopy = coder;
+  routingSlip = [(EPDynamicTransactionContainer *)self routingSlip];
+  [coderCopy encodeObject:routingSlip forKey:@"routingSlip"];
 
-  [v5 encodeInteger:self->_runningStatusCode forKey:@"runningStatusCode"];
-  [v5 encodeObject:self->_operationType forKey:@"operationType"];
-  [v5 encodeObject:self->_targetPairingID forKey:@"targetPairingID"];
-  [v5 encodeObject:self->_transactionStartTimestamp forKey:@"transactionStartTimestamp"];
+  [coderCopy encodeInteger:self->_runningStatusCode forKey:@"runningStatusCode"];
+  [coderCopy encodeObject:self->_operationType forKey:@"operationType"];
+  [coderCopy encodeObject:self->_targetPairingID forKey:@"targetPairingID"];
+  [coderCopy encodeObject:self->_transactionStartTimestamp forKey:@"transactionStartTimestamp"];
 }
 
-- (EPDynamicTransactionContainer)initWithCoder:(id)a3
+- (EPDynamicTransactionContainer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(EPDynamicTransactionContainer *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routingSlip"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routingSlip"];
     routingSlip = v5->_routingSlip;
     v5->_routingSlip = v6;
 
-    v5->_runningStatusCode = [v4 decodeIntegerForKey:@"runningStatusCode"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operationType"];
+    v5->_runningStatusCode = [coderCopy decodeIntegerForKey:@"runningStatusCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operationType"];
     operationType = v5->_operationType;
     v5->_operationType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetPairingID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetPairingID"];
     targetPairingID = v5->_targetPairingID;
     v5->_targetPairingID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionStartTimestamp"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionStartTimestamp"];
     transactionStartTimestamp = v5->_transactionStartTimestamp;
     v5->_transactionStartTimestamp = v12;
   }
@@ -53,11 +53,11 @@
 
 - (id)transactionName
 {
-  v2 = [(EPDynamicTransactionContainer *)self routingSlip];
-  v3 = [v2 currentEntry];
-  v4 = [v3 printableName];
+  routingSlip = [(EPDynamicTransactionContainer *)self routingSlip];
+  currentEntry = [routingSlip currentEntry];
+  printableName = [currentEntry printableName];
 
-  return v4;
+  return printableName;
 }
 
 - (EPRoutingSlip)routingSlip
@@ -139,9 +139,9 @@
 
 - (id)description
 {
-  v3 = [(EPDynamicTransactionContainer *)self transactionName];
+  transactionName = [(EPDynamicTransactionContainer *)self transactionName];
   routingSlip = self->_routingSlip;
-  v5 = [NSString stringWithFormat:@"EPDynamicTransactionContainer %@: %@ [%@]", v3, routingSlip, self->_transactionStartTimestamp];
+  v5 = [NSString stringWithFormat:@"EPDynamicTransactionContainer %@: %@ [%@]", transactionName, routingSlip, self->_transactionStartTimestamp];
 
   return v5;
 }

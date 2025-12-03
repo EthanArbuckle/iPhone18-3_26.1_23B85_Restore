@@ -1,8 +1,8 @@
 @interface GKMultiplayerBulletin
 + (BOOL)shouldProcessNotification;
-- (GKMultiplayerBulletin)initWithPushNotification:(id)a3;
-- (id)customInviteSoundPathForBundleID:(id)a3;
-- (void)loadLocalizedGameNameForBundleID:(id)a3 handler:(id)a4;
+- (GKMultiplayerBulletin)initWithPushNotification:(id)notification;
+- (id)customInviteSoundPathForBundleID:(id)d;
+- (void)loadLocalizedGameNameForBundleID:(id)d handler:(id)handler;
 - (void)setGameInviteMessage;
 @end
 
@@ -22,7 +22,7 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "GKMultiplayerBulletin shouldProcessNotification", buf, 2u);
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___GKMultiplayerBulletin;
   if (!objc_msgSendSuper2(&v8, "shouldProcessNotification"))
   {
@@ -35,9 +35,9 @@
   return v6;
 }
 
-- (GKMultiplayerBulletin)initWithPushNotification:(id)a3
+- (GKMultiplayerBulletin)initWithPushNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -52,21 +52,21 @@
 
   v18.receiver = self;
   v18.super_class = GKMultiplayerBulletin;
-  v7 = [(GKBulletin *)&v18 initWithPushNotification:v4];
+  v7 = [(GKBulletin *)&v18 initWithPushNotification:notificationCopy];
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"g"];
+    v8 = [notificationCopy objectForKeyedSubscript:@"g"];
     [(GKGameplayBulletin *)v7 setReceiverGuestPlayerID:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"i"];
+    v9 = [notificationCopy objectForKeyedSubscript:@"i"];
     [(GKGameplayBulletin *)v7 setReceiverPlayerID:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"I"];
+    v10 = [notificationCopy objectForKeyedSubscript:@"I"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 firstObject];
-      [(GKGameplayBulletin *)v7 setOriginatorPlayerID:v11];
+      firstObject = [v10 firstObject];
+      [(GKGameplayBulletin *)v7 setOriginatorPlayerID:firstObject];
     }
 
     else
@@ -78,10 +78,10 @@
       }
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"G"];
+    v12 = [notificationCopy objectForKeyedSubscript:@"G"];
     [(GKGameplayBulletin *)v7 setOriginatorGuestPlayerID:v12];
 
-    v13 = [v4 objectForKeyedSubscript:@"d"];
+    v13 = [notificationCopy objectForKeyedSubscript:@"d"];
     v14 = [[GKGameDescriptor alloc] initWithPushDictionary:v13];
     [(GKBulletin *)v7 setGameDescriptor:v14];
 
@@ -95,10 +95,10 @@
   return v7;
 }
 
-- (void)loadLocalizedGameNameForBundleID:(id)a3 handler:(id)a4
+- (void)loadLocalizedGameNameForBundleID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -111,19 +111,19 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "GKMultiplayerBulletin loadLocalizedGameNameForBundleID: handler:", buf, 2u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v10 = +[GKClientProxy gameCenterClient];
     v11 = [(GKService *)GKGameServicePrivate serviceWithTransport:0 forClient:v10 localPlayer:0];
-    v20 = v6;
+    v20 = dCopy;
     v12 = [NSArray arrayWithObjects:&v20 count:1];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10018589C;
     v15[3] = &unk_100361A58;
-    v16 = v6;
-    v17 = self;
-    v18 = v7;
+    v16 = dCopy;
+    selfCopy = self;
+    v18 = handlerCopy;
     [v11 getGameMetadataForBundleIDs:v12 handler:v15];
   }
 
@@ -137,7 +137,7 @@
     v14 = os_log_GKError;
     if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
     {
-      sub_10029511C(v6, v14);
+      sub_10029511C(dCopy, v14);
     }
   }
 }
@@ -153,25 +153,25 @@
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
-    v6 = [(GKBulletin *)self message];
+    message = [(GKBulletin *)self message];
     *buf = 138412290;
-    v22 = v6;
+    v22 = message;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "GKMultiplayerBulletin setGameInviteMessage original message:  %@", buf, 0xCu);
   }
 
-  v7 = [(GKBulletin *)self gameName];
-  v8 = [(GKGameplayBulletin *)self originatorPlayer];
-  v9 = [v8 displayNameWithOptions:0];
+  gameName = [(GKBulletin *)self gameName];
+  originatorPlayer = [(GKGameplayBulletin *)self originatorPlayer];
+  v9 = [originatorPlayer displayNameWithOptions:0];
 
-  if (![v9 length] || !objc_msgSend(v7, "length"))
+  if (![v9 length] || !objc_msgSend(gameName, "length"))
   {
     [(GKBulletin *)self setMessage:0];
   }
 
-  v10 = [(GKGameplayBulletin *)self gameLocation];
-  v11 = [(GKBulletin *)self message];
-  v12 = [v11 length];
-  if (v10 == 2)
+  gameLocation = [(GKGameplayBulletin *)self gameLocation];
+  message2 = [(GKBulletin *)self message];
+  v12 = [message2 length];
+  if (gameLocation == 2)
   {
     if (v12)
     {
@@ -196,8 +196,8 @@
   v13 = ;
   v14 = v13;
 
-  v15 = [(GKBulletin *)self message];
-  v16 = [NSString stringWithFormat:v14, v9, v15];
+  message3 = [(GKBulletin *)self message];
+  v16 = [NSString stringWithFormat:v14, v9, message3];
   [(GKBulletin *)self setMessage:v16];
 
   if (!os_log_GKGeneral)
@@ -209,16 +209,16 @@
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
     v19 = v18;
-    v20 = [(GKBulletin *)self message];
+    message4 = [(GKBulletin *)self message];
     *buf = 138412290;
-    v22 = v20;
+    v22 = message4;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "GKMultiplayerBulletin setGameInviteMessage: %@", buf, 0xCu);
   }
 }
 
-- (id)customInviteSoundPathForBundleID:(id)a3
+- (id)customInviteSoundPathForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -233,11 +233,11 @@
 
   v6 = GKGetBundlePathForIdentifier();
   v7 = [NSBundle bundleWithPath:v6];
-  v8 = [v7 _gkPathForInviteSound];
-  v9 = v8;
-  if (v8)
+  _gkPathForInviteSound = [v7 _gkPathForInviteSound];
+  v9 = _gkPathForInviteSound;
+  if (_gkPathForInviteSound)
   {
-    v10 = v8;
+    v10 = _gkPathForInviteSound;
   }
 
   else

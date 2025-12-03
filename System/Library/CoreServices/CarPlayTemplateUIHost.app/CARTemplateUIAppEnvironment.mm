@@ -1,41 +1,41 @@
 @interface CARTemplateUIAppEnvironment
 - (BOOL)canBeInvalidated;
-- (BOOL)ownsWindowScene:(id)a3;
-- (CARTemplateUIAppEnvironment)initWithBundleIdentifier:(id)a3;
+- (BOOL)ownsWindowScene:(id)scene;
+- (CARTemplateUIAppEnvironment)initWithBundleIdentifier:(id)identifier;
 - (NSArray)instrumentClusterWindowScenes;
 - (void)_invalidateDashboardGuidanceScene;
 - (void)_invalidateDashboardMapScene;
-- (void)_invalidateInstrumentClusterWindowScene:(id)a3;
-- (void)_updateRunningInCarPlayAssertionIfNecessary:(id)a3;
-- (void)applicationWindowSceneConnected:(id)a3 options:(id)a4;
-- (void)dashboardGuidanceWindowSceneConnected:(id)a3 options:(id)a4;
-- (void)dashboardMapWindowSceneConnected:(id)a3 options:(id)a4;
-- (void)instrumentClusterWindowSceneConnected:(id)a3 options:(id)a4;
+- (void)_invalidateInstrumentClusterWindowScene:(id)scene;
+- (void)_updateRunningInCarPlayAssertionIfNecessary:(id)necessary;
+- (void)applicationWindowSceneConnected:(id)connected options:(id)options;
+- (void)dashboardGuidanceWindowSceneConnected:(id)connected options:(id)options;
+- (void)dashboardMapWindowSceneConnected:(id)connected options:(id)options;
+- (void)instrumentClusterWindowSceneConnected:(id)connected options:(id)options;
 - (void)invalidate;
 - (void)invalidateApplicationScene;
-- (void)invalidateWindowScene:(id)a3;
+- (void)invalidateWindowScene:(id)scene;
 - (void)prepare;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)sceneManager:(id)a3 didAddScene:(id)a4;
-- (void)sceneWillDeactivate:(id)a3 withContext:(id)a4;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)sceneManager:(id)manager didAddScene:(id)scene;
+- (void)sceneWillDeactivate:(id)deactivate withContext:(id)context;
 @end
 
 @implementation CARTemplateUIAppEnvironment
 
-- (CARTemplateUIAppEnvironment)initWithBundleIdentifier:(id)a3
+- (CARTemplateUIAppEnvironment)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = CARTemplateUIAppEnvironment;
   v5 = [(CARTemplateUIAppEnvironment *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v8 = [[CPSTemplateInstance alloc] initWithBundleIdentifier:v4];
+    v8 = [[CPSTemplateInstance alloc] initWithBundleIdentifier:identifierCopy];
     templateInstance = v5->_templateInstance;
     v5->_templateInstance = v8;
 
@@ -47,32 +47,32 @@
   return v5;
 }
 
-- (void)applicationWindowSceneConnected:(id)a3 options:(id)a4
+- (void)applicationWindowSceneConnected:(id)connected options:(id)options
 {
-  v27 = a3;
-  objc_storeStrong(&self->_applicationWindowScene, a3);
-  v7 = a4;
+  connectedCopy = connected;
+  objc_storeStrong(&self->_applicationWindowScene, connected);
+  optionsCopy = options;
   [(CPSTemplateInstance *)self->_templateInstance setWindowSceneForTemplateApplicationScene:self->_applicationWindowScene];
-  v8 = [v27 _FBSScene];
+  _FBSScene = [connectedCopy _FBSScene];
   v9 = [CPSWindow alloc];
-  v10 = [v8 settings];
-  [v10 bounds];
+  settings = [_FBSScene settings];
+  [settings bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v8 identifier];
-  v20 = [v9 _initWithFrame:v19 debugName:self->_applicationWindowScene windowScene:{v12, v14, v16, v18}];
+  identifier = [_FBSScene identifier];
+  v20 = [v9 _initWithFrame:identifier debugName:self->_applicationWindowScene windowScene:{v12, v14, v16, v18}];
   applicationWindow = self->_applicationWindow;
   self->_applicationWindow = v20;
 
   [(CPSWindow *)self->_applicationWindow setHidden:0];
   [(CPSWindow *)self->_applicationWindow makeKeyWindow];
   objc_opt_class();
-  v22 = [v8 settings];
-  if (v22 && (objc_opt_isKindOfClass() & 1) != 0)
+  settings2 = [_FBSScene settings];
+  if (settings2 && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v23 = v22;
+    v23 = settings2;
   }
 
   else
@@ -80,22 +80,22 @@
     v23 = 0;
   }
 
-  v24 = [v23 proxiedApplicationBundleIdentifier];
-  [(CPSWindow *)self->_applicationWindow setAccessibilityLabel:v24];
+  proxiedApplicationBundleIdentifier = [v23 proxiedApplicationBundleIdentifier];
+  [(CPSWindow *)self->_applicationWindow setAccessibilityLabel:proxiedApplicationBundleIdentifier];
 
-  v25 = [[CARTemplateUIApplicationSceneViewController alloc] initWithWindowScene:self->_applicationWindowScene templateInstance:self->_templateInstance options:v7];
+  v25 = [[CARTemplateUIApplicationSceneViewController alloc] initWithWindowScene:self->_applicationWindowScene templateInstance:self->_templateInstance options:optionsCopy];
   appViewController = self->_appViewController;
   self->_appViewController = v25;
 
   [(CPSWindow *)self->_applicationWindow setRootViewController:self->_appViewController];
 }
 
-- (void)dashboardMapWindowSceneConnected:(id)a3 options:(id)a4
+- (void)dashboardMapWindowSceneConnected:(id)connected options:(id)options
 {
-  v41 = a3;
-  objc_storeStrong(&self->_dashboardMapWindowScene, a3);
-  v6 = [(CARTemplateUIAppEnvironment *)self templateInstance];
-  [v6 setWindowSceneForMapWidgetScene:self->_dashboardMapWindowScene];
+  connectedCopy = connected;
+  objc_storeStrong(&self->_dashboardMapWindowScene, connected);
+  templateInstance = [(CARTemplateUIAppEnvironment *)self templateInstance];
+  [templateInstance setWindowSceneForMapWidgetScene:self->_dashboardMapWindowScene];
 
   dashboardMapWindow = self->_dashboardMapWindow;
   if (dashboardMapWindow)
@@ -104,51 +104,51 @@
   }
 
   v8 = [CRSUIDashboardWidgetWindow alloc];
-  v9 = [(CARTemplateUIAppEnvironment *)self dashboardMapWindowScene];
-  v10 = [v8 initWithWindowScene:v9];
+  dashboardMapWindowScene = [(CARTemplateUIAppEnvironment *)self dashboardMapWindowScene];
+  v10 = [v8 initWithWindowScene:dashboardMapWindowScene];
 
   [v10 setHidden:0];
   v11 = [CARTemplateUIDashboardSceneViewController alloc];
   dashboardMapWindowScene = self->_dashboardMapWindowScene;
   templateInstance = self->_templateInstance;
-  v14 = [(CARTemplateUIAppEnvironment *)self bundleIdentifier];
-  v15 = [(CARTemplateUISceneViewController *)v11 initWithWindowScene:dashboardMapWindowScene templateInstance:templateInstance bundleIdentifier:v14];
+  bundleIdentifier = [(CARTemplateUIAppEnvironment *)self bundleIdentifier];
+  v15 = [(CARTemplateUISceneViewController *)v11 initWithWindowScene:dashboardMapWindowScene templateInstance:templateInstance bundleIdentifier:bundleIdentifier];
   mapWidgetViewController = self->_mapWidgetViewController;
   self->_mapWidgetViewController = v15;
 
   [v10 setRootViewController:self->_mapWidgetViewController];
   [v10 makeKeyWindow];
   v17 = self->_mapWidgetViewController;
-  v18 = [(CARTemplateUIAppEnvironment *)self templateInstance];
-  v19 = [v18 dashboardEstimatesViewController];
+  templateInstance2 = [(CARTemplateUIAppEnvironment *)self templateInstance];
+  dashboardEstimatesViewController = [templateInstance2 dashboardEstimatesViewController];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_10000C480;
   v42[3] = &unk_10001C6E8;
   v42[4] = self;
-  [(CARTemplateUIDashboardSceneViewController *)v17 bs_addChildViewController:v19 animated:0 transitionBlock:v42];
+  [(CARTemplateUIDashboardSceneViewController *)v17 bs_addChildViewController:dashboardEstimatesViewController animated:0 transitionBlock:v42];
 
   v20 = objc_alloc_init(UIView);
-  v21 = [v20 layer];
-  [v21 setHitTestsAsOpaque:1];
+  layer = [v20 layer];
+  [layer setHitTestsAsOpaque:1];
 
   [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v10 addSubview:v20];
-  v40 = [v20 topAnchor];
-  v39 = [v10 topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  topAnchor = [v20 topAnchor];
+  topAnchor2 = [v10 topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v47[0] = v38;
-  v37 = [v20 leftAnchor];
-  v36 = [v10 leftAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  leftAnchor = [v20 leftAnchor];
+  leftAnchor2 = [v10 leftAnchor];
+  v35 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v47[1] = v35;
-  v22 = [v20 rightAnchor];
-  v23 = [v10 rightAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  rightAnchor = [v20 rightAnchor];
+  rightAnchor2 = [v10 rightAnchor];
+  v24 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v47[2] = v24;
-  v25 = [v20 bottomAnchor];
-  v26 = [v10 bottomAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  bottomAnchor = [v20 bottomAnchor];
+  bottomAnchor2 = [v10 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v47[3] = v27;
   v28 = [NSArray arrayWithObjects:v47 count:4];
   [NSLayoutConstraint activateConstraints:v28];
@@ -158,32 +158,32 @@
   self->_dashboardMapWindow = v10;
   v31 = v10;
 
-  if ([v41 activationState] != 1)
+  if ([connectedCopy activationState] != 1)
   {
-    v29 = [v41 activationState] == 0;
+    v29 = [connectedCopy activationState] == 0;
   }
 
   v32 = sub_100001280(7uLL);
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
     v33 = NSStringFromBOOL();
-    v34 = [(CARTemplateUIAppEnvironment *)self bundleIdentifier];
+    bundleIdentifier2 = [(CARTemplateUIAppEnvironment *)self bundleIdentifier];
     *buf = 138543618;
     v44 = v33;
     v45 = 2114;
-    v46 = v34;
+    v46 = bundleIdentifier2;
     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Sending scene update with foreground: %{public}@ for bundle identifier: %{public}@", buf, 0x16u);
   }
 
   [(CARTemplateUISceneViewController *)self->_mapWidgetViewController sendSceneUpdate:v29 openURLContexts:0];
 }
 
-- (void)dashboardGuidanceWindowSceneConnected:(id)a3 options:(id)a4
+- (void)dashboardGuidanceWindowSceneConnected:(id)connected options:(id)options
 {
-  v17 = a3;
-  objc_storeStrong(&self->_dashboardGuidanceWindowScene, a3);
-  v6 = [(CARTemplateUIAppEnvironment *)self templateInstance];
-  [v6 setWindowSceneForGuidanceWidgetScene:self->_dashboardGuidanceWindowScene];
+  connectedCopy = connected;
+  objc_storeStrong(&self->_dashboardGuidanceWindowScene, connected);
+  templateInstance = [(CARTemplateUIAppEnvironment *)self templateInstance];
+  [templateInstance setWindowSceneForGuidanceWidgetScene:self->_dashboardGuidanceWindowScene];
 
   dashboardGuidanceWindow = self->_dashboardGuidanceWindow;
   if (dashboardGuidanceWindow)
@@ -192,8 +192,8 @@
   }
 
   v8 = [CRSUIDashboardWidgetWindow alloc];
-  v9 = [(CARTemplateUIAppEnvironment *)self dashboardGuidanceWindowScene];
-  v10 = [v8 initWithWindowScene:v9];
+  dashboardGuidanceWindowScene = [(CARTemplateUIAppEnvironment *)self dashboardGuidanceWindowScene];
+  v10 = [v8 initWithWindowScene:dashboardGuidanceWindowScene];
 
   [v10 setHidden:0];
   [v10 makeKeyWindow];
@@ -201,25 +201,25 @@
   self->_dashboardGuidanceWindow = v10;
   v12 = v10;
 
-  v13 = [(CARTemplateUIAppEnvironment *)self templateInstance];
-  v14 = [v13 dashboardGuidanceViewController];
-  [v12 setRootViewController:v14];
+  templateInstance2 = [(CARTemplateUIAppEnvironment *)self templateInstance];
+  dashboardGuidanceViewController = [templateInstance2 dashboardGuidanceViewController];
+  [v12 setRootViewController:dashboardGuidanceViewController];
 
-  v15 = [(CARTemplateUIAppEnvironment *)self templateInstance];
-  v16 = [v15 dashboardGuidanceViewController];
-  [v16 setContentReadyIfNecessary];
+  templateInstance3 = [(CARTemplateUIAppEnvironment *)self templateInstance];
+  dashboardGuidanceViewController2 = [templateInstance3 dashboardGuidanceViewController];
+  [dashboardGuidanceViewController2 setContentReadyIfNecessary];
 }
 
 - (void)prepare
 {
-  v2 = [(CARTemplateUIAppEnvironment *)self appViewController];
-  [v2 sendSceneUpdate:0 openURLContexts:0];
+  appViewController = [(CARTemplateUIAppEnvironment *)self appViewController];
+  [appViewController sendSceneUpdate:0 openURLContexts:0];
 }
 
-- (void)instrumentClusterWindowSceneConnected:(id)a3 options:(id)a4
+- (void)instrumentClusterWindowSceneConnected:(id)connected options:(id)options
 {
-  v25 = a3;
-  v6 = a4;
+  connectedCopy = connected;
+  optionsCopy = options;
   internalInstrumentClusterWindowScenes = self->_internalInstrumentClusterWindowScenes;
   if (!internalInstrumentClusterWindowScenes)
   {
@@ -230,7 +230,7 @@
     internalInstrumentClusterWindowScenes = self->_internalInstrumentClusterWindowScenes;
   }
 
-  [(NSMutableArray *)internalInstrumentClusterWindowScenes addObject:v25];
+  [(NSMutableArray *)internalInstrumentClusterWindowScenes addObject:connectedCopy];
   if (!self->_instrumentClusterWindows)
   {
     v10 = objc_alloc_init(NSMutableDictionary);
@@ -238,19 +238,19 @@
     self->_instrumentClusterWindows = v10;
   }
 
-  v12 = [v25 _FBSScene];
-  v13 = [v12 settings];
-  v14 = [v13 displayConfiguration];
+  _FBSScene = [connectedCopy _FBSScene];
+  settings = [_FBSScene settings];
+  displayConfiguration = [settings displayConfiguration];
 
-  v15 = [v14 hardwareIdentifier];
-  v16 = [[CRSUIClusterWindow alloc] initWithWindowScene:v25];
-  v17 = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindows];
-  [v17 setObject:v16 forKey:v15];
+  hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+  v16 = [[CRSUIClusterWindow alloc] initWithWindowScene:connectedCopy];
+  instrumentClusterWindows = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindows];
+  [instrumentClusterWindows setObject:v16 forKey:hardwareIdentifier];
 
   v18 = [CARTemplateUIHostInstrumentClusterViewController alloc];
-  v19 = [(CARTemplateUIAppEnvironment *)self templateInstance];
-  v20 = [(CARTemplateUIAppEnvironment *)self bundleIdentifier];
-  v21 = [(CARTemplateUIHostInstrumentClusterViewController *)v18 initWithWindowScene:v25 templateInstance:v19 bundleIdentifier:v20];
+  templateInstance = [(CARTemplateUIAppEnvironment *)self templateInstance];
+  bundleIdentifier = [(CARTemplateUIAppEnvironment *)self bundleIdentifier];
+  v21 = [(CARTemplateUIHostInstrumentClusterViewController *)v18 initWithWindowScene:connectedCopy templateInstance:templateInstance bundleIdentifier:bundleIdentifier];
 
   [v16 setRootViewController:v21];
   [v16 addClusterSettingsObserver:v21];
@@ -261,8 +261,8 @@
     self->_instrumentClusterViewControllers = v22;
   }
 
-  v24 = [(CARTemplateUIAppEnvironment *)self instrumentClusterViewControllers];
-  [v24 setObject:v21 forKey:v15];
+  instrumentClusterViewControllers = [(CARTemplateUIAppEnvironment *)self instrumentClusterViewControllers];
+  [instrumentClusterViewControllers setObject:v21 forKey:hardwareIdentifier];
 
   [v16 makeKeyAndVisible];
 }
@@ -274,35 +274,35 @@
   return v2;
 }
 
-- (BOOL)ownsWindowScene:(id)a3
+- (BOOL)ownsWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(CARTemplateUIAppEnvironment *)self applicationWindowScene];
-  if (v5 == v4)
+  sceneCopy = scene;
+  applicationWindowScene = [(CARTemplateUIAppEnvironment *)self applicationWindowScene];
+  if (applicationWindowScene == sceneCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = [(CARTemplateUIAppEnvironment *)self dashboardGuidanceWindowScene];
-    if (v6 == v4)
+    dashboardGuidanceWindowScene = [(CARTemplateUIAppEnvironment *)self dashboardGuidanceWindowScene];
+    if (dashboardGuidanceWindowScene == sceneCopy)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(CARTemplateUIAppEnvironment *)self dashboardMapWindowScene];
-      if (v7 == v4)
+      dashboardMapWindowScene = [(CARTemplateUIAppEnvironment *)self dashboardMapWindowScene];
+      if (dashboardMapWindowScene == sceneCopy)
       {
         v9 = 1;
       }
 
       else
       {
-        v8 = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindowScenes];
-        v9 = [v8 containsObject:v4];
+        instrumentClusterWindowScenes = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindowScenes];
+        v9 = [instrumentClusterWindowScenes containsObject:sceneCopy];
       }
     }
   }
@@ -310,63 +310,63 @@
   return v9;
 }
 
-- (void)invalidateWindowScene:(id)a3
+- (void)invalidateWindowScene:(id)scene
 {
-  v9 = a3;
-  v4 = [(CARTemplateUIAppEnvironment *)self applicationWindowScene];
+  sceneCopy = scene;
+  applicationWindowScene = [(CARTemplateUIAppEnvironment *)self applicationWindowScene];
 
-  if (v4 == v9)
+  if (applicationWindowScene == sceneCopy)
   {
     [(CARTemplateUIAppEnvironment *)self invalidateApplicationScene];
   }
 
-  v5 = [(CARTemplateUIAppEnvironment *)self dashboardMapWindowScene];
+  dashboardMapWindowScene = [(CARTemplateUIAppEnvironment *)self dashboardMapWindowScene];
 
-  if (v5 == v9)
+  if (dashboardMapWindowScene == sceneCopy)
   {
     [(CARTemplateUIAppEnvironment *)self _invalidateDashboardMapScene];
   }
 
-  v6 = [(CARTemplateUIAppEnvironment *)self dashboardGuidanceWindowScene];
+  dashboardGuidanceWindowScene = [(CARTemplateUIAppEnvironment *)self dashboardGuidanceWindowScene];
 
-  if (v6 == v9)
+  if (dashboardGuidanceWindowScene == sceneCopy)
   {
     [(CARTemplateUIAppEnvironment *)self _invalidateDashboardGuidanceScene];
   }
 
-  v7 = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindowScenes];
-  v8 = [v7 containsObject:v9];
+  instrumentClusterWindowScenes = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindowScenes];
+  v8 = [instrumentClusterWindowScenes containsObject:sceneCopy];
 
   if (v8)
   {
-    [(CARTemplateUIAppEnvironment *)self _invalidateInstrumentClusterWindowScene:v9];
+    [(CARTemplateUIAppEnvironment *)self _invalidateInstrumentClusterWindowScene:sceneCopy];
   }
 }
 
 - (void)invalidate
 {
-  v3 = [(CARTemplateUIAppEnvironment *)self carplayAssertion];
-  [v3 invalidate];
+  carplayAssertion = [(CARTemplateUIAppEnvironment *)self carplayAssertion];
+  [carplayAssertion invalidate];
 
-  v4 = [(CARTemplateUIAppEnvironment *)self templateInstance];
-  [v4 invalidate];
+  templateInstance = [(CARTemplateUIAppEnvironment *)self templateInstance];
+  [templateInstance invalidate];
 }
 
 - (void)invalidateApplicationScene
 {
-  v3 = [(CARTemplateUIAppEnvironment *)self appViewController];
-  v4 = [v3 scene];
-  v5 = [v4 identifier];
+  appViewController = [(CARTemplateUIAppEnvironment *)self appViewController];
+  scene = [appViewController scene];
+  identifier = [scene identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [(CARTemplateUIAppEnvironment *)self appViewController];
-    v7 = [v6 scene];
-    [v7 updateSettingsWithBlock:&stru_10001C728];
+    appViewController2 = [(CARTemplateUIAppEnvironment *)self appViewController];
+    scene2 = [appViewController2 scene];
+    [scene2 updateSettingsWithBlock:&stru_10001C728];
 
-    v8 = [(CARTemplateUIAppEnvironment *)self appViewController];
-    v9 = [v8 scene];
-    [v9 invalidate:0];
+    appViewController3 = [(CARTemplateUIAppEnvironment *)self appViewController];
+    scene3 = [appViewController3 scene];
+    [scene3 invalidate:0];
   }
 
   applicationWindowScene = self->_applicationWindowScene;
@@ -375,22 +375,22 @@
 
 - (void)_invalidateDashboardMapScene
 {
-  v3 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
-  [v3 invalidate];
+  mapWidgetViewController = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
+  [mapWidgetViewController invalidate];
 
-  v4 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
-  v5 = [v4 scene];
-  v6 = [v5 identifier];
+  mapWidgetViewController2 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
+  scene = [mapWidgetViewController2 scene];
+  identifier = [scene identifier];
 
-  if (v6)
+  if (identifier)
   {
-    v7 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
-    v8 = [v7 scene];
-    [v8 updateSettingsWithBlock:&stru_10001C748];
+    mapWidgetViewController3 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
+    scene2 = [mapWidgetViewController3 scene];
+    [scene2 updateSettingsWithBlock:&stru_10001C748];
 
-    v9 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
-    v10 = [v9 scene];
-    [v10 invalidate:0];
+    mapWidgetViewController4 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
+    scene3 = [mapWidgetViewController4 scene];
+    [scene3 invalidate:0];
   }
 
   [(CRSUIDashboardWidgetWindow *)self->_dashboardMapWindow invalidate];
@@ -413,15 +413,15 @@
   self->_dashboardGuidanceWindowScene = 0;
 }
 
-- (void)_invalidateInstrumentClusterWindowScene:(id)a3
+- (void)_invalidateInstrumentClusterWindowScene:(id)scene
 {
-  v21 = a3;
+  sceneCopy = scene;
   objc_opt_class();
-  v4 = [v21 _FBSScene];
-  v5 = [v4 settings];
-  if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
+  _FBSScene = [sceneCopy _FBSScene];
+  settings = [_FBSScene settings];
+  if (settings && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = v5;
+    v6 = settings;
   }
 
   else
@@ -431,36 +431,36 @@
 
   if (v6)
   {
-    v7 = [v6 displayConfiguration];
-    v8 = [v7 hardwareIdentifier];
-    v9 = [(CARTemplateUIAppEnvironment *)self instrumentClusterViewControllers];
-    v10 = [v9 objectForKey:v8];
+    displayConfiguration = [v6 displayConfiguration];
+    hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+    instrumentClusterViewControllers = [(CARTemplateUIAppEnvironment *)self instrumentClusterViewControllers];
+    v10 = [instrumentClusterViewControllers objectForKey:hardwareIdentifier];
 
-    v11 = [(CARTemplateUIAppEnvironment *)self instrumentClusterViewControllers];
-    [v11 removeObjectForKey:v8];
+    instrumentClusterViewControllers2 = [(CARTemplateUIAppEnvironment *)self instrumentClusterViewControllers];
+    [instrumentClusterViewControllers2 removeObjectForKey:hardwareIdentifier];
 
-    v12 = [v10 scene];
-    v13 = [v12 identifier];
+    scene = [v10 scene];
+    identifier = [scene identifier];
 
-    if (v13)
+    if (identifier)
     {
-      v14 = [v10 scene];
-      [v14 updateSettingsWithBlock:&stru_10001C768];
+      scene2 = [v10 scene];
+      [scene2 updateSettingsWithBlock:&stru_10001C768];
 
-      v15 = [v10 scene];
-      [v15 invalidate:0];
+      scene3 = [v10 scene];
+      [scene3 invalidate:0];
     }
 
     [v10 invalidate];
-    v16 = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindows];
-    [v16 removeObjectForKey:v8];
+    instrumentClusterWindows = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindows];
+    [instrumentClusterWindows removeObjectForKey:hardwareIdentifier];
 
-    v17 = [(CARTemplateUIAppEnvironment *)self internalInstrumentClusterWindowScenes];
-    [v17 removeObject:v21];
+    internalInstrumentClusterWindowScenes = [(CARTemplateUIAppEnvironment *)self internalInstrumentClusterWindowScenes];
+    [internalInstrumentClusterWindowScenes removeObject:sceneCopy];
   }
 
-  v18 = [(CARTemplateUIAppEnvironment *)self internalInstrumentClusterWindowScenes];
-  v19 = [v18 count];
+  internalInstrumentClusterWindowScenes2 = [(CARTemplateUIAppEnvironment *)self internalInstrumentClusterWindowScenes];
+  v19 = [internalInstrumentClusterWindowScenes2 count];
 
   if (!v19)
   {
@@ -469,15 +469,15 @@
   }
 }
 
-- (void)_updateRunningInCarPlayAssertionIfNecessary:(id)a3
+- (void)_updateRunningInCarPlayAssertionIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [v4 settings];
-  v6 = [v5 isForeground];
+  necessaryCopy = necessary;
+  settings = [necessaryCopy settings];
+  isForeground = [settings isForeground];
 
   v7 = sub_100001280(7uLL);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isForeground)
   {
     if (v8)
     {
@@ -485,20 +485,20 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Foreground scene exists, need assertion", buf, 2u);
     }
 
-    v9 = [(CARTemplateUIAppEnvironment *)self carplayAssertion];
-    if (v9)
+    carplayAssertion = [(CARTemplateUIAppEnvironment *)self carplayAssertion];
+    if (carplayAssertion)
     {
-      v10 = v9;
-      v11 = [(CARTemplateUIAppEnvironment *)self carplayAssertion];
-      v12 = [v11 isValid];
+      v10 = carplayAssertion;
+      carplayAssertion2 = [(CARTemplateUIAppEnvironment *)self carplayAssertion];
+      isValid = [carplayAssertion2 isValid];
 
-      if (v12)
+      if (isValid)
       {
-        v13 = sub_100001280(7uLL);
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        processHandle = sub_100001280(7uLL);
+        if (os_log_type_enabled(processHandle, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Assertion already exists and is valid", buf, 2u);
+          _os_log_impl(&_mh_execute_header, processHandle, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Assertion already exists and is valid", buf, 2u);
         }
 
         goto LABEL_30;
@@ -512,13 +512,13 @@
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Creating assertion", buf, 2u);
     }
 
-    v17 = [v4 clientHandle];
-    v13 = [v17 processHandle];
+    clientHandle = [necessaryCopy clientHandle];
+    processHandle = [clientHandle processHandle];
 
-    if (v13)
+    if (processHandle)
     {
-      v18 = [v13 identity];
-      v14 = [RBSTarget targetWithProcessIdentity:v18];
+      identity = [processHandle identity];
+      v14 = [RBSTarget targetWithProcessIdentity:identity];
 
       v19 = [RBSDomainAttribute attributeWithDomain:@"com.apple.carplay" name:@"RenderUI"];
       v27 = v19;
@@ -571,10 +571,10 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] No assertion needed", buf, 2u);
   }
 
-  v13 = [(CARTemplateUIAppEnvironment *)self carplayAssertion];
+  processHandle = [(CARTemplateUIAppEnvironment *)self carplayAssertion];
   v14 = sub_100001280(7uLL);
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (!v13)
+  if (!processHandle)
   {
     if (v15)
     {
@@ -591,24 +591,24 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[CarPlayUI Assertion] Invalidating assertion", buf, 2u);
   }
 
-  [v13 invalidate];
+  [processHandle invalidate];
   [(CARTemplateUIAppEnvironment *)self setCarplayAssertion:0];
 LABEL_30:
 }
 
-- (void)sceneManager:(id)a3 didAddScene:(id)a4
+- (void)sceneManager:(id)manager didAddScene:(id)scene
 {
-  v5 = a4;
+  sceneCopy = scene;
   v6 = sub_100001280(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v23 = 138412290;
-    v24 = v5;
+    v24 = sceneCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "didAddScene: %@", &v23, 0xCu);
   }
 
-  v7 = [v5 clientProcess];
-  v8 = [v7 pid];
+  clientProcess = [sceneCopy clientProcess];
+  v8 = [clientProcess pid];
   v9 = getpid();
 
   if (v8 != v9)
@@ -617,15 +617,15 @@ LABEL_30:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = v5;
+      v24 = sceneCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "presenting the scene: %@", &v23, 0xCu);
     }
 
     objc_opt_class();
-    v11 = [v5 settings];
-    if (v11 && (objc_opt_isKindOfClass() & 1) != 0)
+    settings = [sceneCopy settings];
+    if (settings && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v12 = v11;
+      v12 = settings;
     }
 
     else
@@ -634,10 +634,10 @@ LABEL_30:
     }
 
     objc_opt_class();
-    v13 = [v5 settings];
-    if (v13 && (objc_opt_isKindOfClass() & 1) != 0)
+    settings2 = [sceneCopy settings];
+    if (settings2 && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v14 = v13;
+      v14 = settings2;
     }
 
     else
@@ -646,10 +646,10 @@ LABEL_30:
     }
 
     objc_opt_class();
-    v15 = [v5 settings];
-    if (v15 && (objc_opt_isKindOfClass() & 1) != 0)
+    settings3 = [sceneCopy settings];
+    if (settings3 && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v16 = v15;
+      v16 = settings3;
     }
 
     else
@@ -657,13 +657,13 @@ LABEL_30:
       v16 = 0;
     }
 
-    v17 = [(CARTemplateUIAppEnvironment *)self scenes];
-    [v17 addObject:v5];
+    scenes = [(CARTemplateUIAppEnvironment *)self scenes];
+    [scenes addObject:sceneCopy];
 
-    [v5 addObserver:self];
+    [sceneCopy addObserver:self];
     if (v12)
     {
-      v18 = [(CARTemplateUIAppEnvironment *)self appViewController];
+      appViewController = [(CARTemplateUIAppEnvironment *)self appViewController];
     }
 
     else
@@ -672,165 +672,165 @@ LABEL_30:
       {
         if (v16)
         {
-          v19 = [v16 displayConfiguration];
-          v20 = [v19 hardwareIdentifier];
-          v21 = [(CARTemplateUIAppEnvironment *)self instrumentClusterViewControllers];
-          v22 = [v21 objectForKey:v20];
+          displayConfiguration = [v16 displayConfiguration];
+          hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+          instrumentClusterViewControllers = [(CARTemplateUIAppEnvironment *)self instrumentClusterViewControllers];
+          v22 = [instrumentClusterViewControllers objectForKey:hardwareIdentifier];
 
-          [v22 setScene:v5];
+          [v22 setScene:sceneCopy];
         }
 
         else
         {
-          v19 = sub_100001280(7uLL);
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+          displayConfiguration = sub_100001280(7uLL);
+          if (os_log_type_enabled(displayConfiguration, OS_LOG_TYPE_ERROR))
           {
-            sub_10000E508(v5, v19);
+            sub_10000E508(sceneCopy, displayConfiguration);
           }
         }
 
         goto LABEL_23;
       }
 
-      v18 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
+      appViewController = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
     }
 
-    v19 = v18;
-    [v18 setScene:v5];
+    displayConfiguration = appViewController;
+    [appViewController setScene:sceneCopy];
 LABEL_23:
   }
 }
 
-- (void)sceneWillDeactivate:(id)a3 withContext:(id)a4
+- (void)sceneWillDeactivate:(id)deactivate withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  deactivateCopy = deactivate;
+  contextCopy = context;
   v8 = sub_100001280(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v6;
+    v25 = deactivateCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "sceneWillDeactivate: %@ withContext: %@. Invalidating associated view controller", buf, 0x16u);
   }
 
-  v9 = [(CARTemplateUIAppEnvironment *)self scenes];
-  [v9 removeObject:v6];
+  scenes = [(CARTemplateUIAppEnvironment *)self scenes];
+  [scenes removeObject:deactivateCopy];
 
-  v10 = [(CARTemplateUIAppEnvironment *)self instrumentClusterViewControllers];
+  instrumentClusterViewControllers = [(CARTemplateUIAppEnvironment *)self instrumentClusterViewControllers];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10000DC1C;
   v22[3] = &unk_10001C790;
-  v11 = v6;
+  v11 = deactivateCopy;
   v23 = v11;
-  [v10 enumerateKeysAndObjectsUsingBlock:v22];
+  [instrumentClusterViewControllers enumerateKeysAndObjectsUsingBlock:v22];
 
-  v12 = [(CARTemplateUIAppEnvironment *)self appViewController];
-  v13 = [v12 scene];
+  appViewController = [(CARTemplateUIAppEnvironment *)self appViewController];
+  scene = [appViewController scene];
 
-  if (v13 == v11)
+  if (scene == v11)
   {
     v14 = sub_100001280(7uLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(CARTemplateUIAppEnvironment *)self appViewController];
+      appViewController2 = [(CARTemplateUIAppEnvironment *)self appViewController];
       *buf = 138412290;
-      v25 = v15;
+      v25 = appViewController2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Invalidating app view controller: %@", buf, 0xCu);
     }
 
-    v16 = [(CARTemplateUIAppEnvironment *)self appViewController];
-    [v16 invalidate];
+    appViewController3 = [(CARTemplateUIAppEnvironment *)self appViewController];
+    [appViewController3 invalidate];
   }
 
-  v17 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
-  v18 = [v17 scene];
+  mapWidgetViewController = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
+  scene2 = [mapWidgetViewController scene];
 
-  if (v18 == v11)
+  if (scene2 == v11)
   {
     v19 = sub_100001280(7uLL);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
+      mapWidgetViewController2 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
       *buf = 138412290;
-      v25 = v20;
+      v25 = mapWidgetViewController2;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Invalidating map widget view controller: %@", buf, 0xCu);
     }
 
-    v21 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
-    [v21 invalidate];
+    mapWidgetViewController3 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
+    [mapWidgetViewController3 invalidate];
   }
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CARTemplateUIAppEnvironment *)self scenes];
-  [v8 removeObject:v6];
+  invalidateCopy = invalidate;
+  contextCopy = context;
+  scenes = [(CARTemplateUIAppEnvironment *)self scenes];
+  [scenes removeObject:invalidateCopy];
 
   v9 = sub_100001280(7uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v6;
+    v17 = invalidateCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = contextCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "sceneDidInvalidate: %@ withContext: %@", &v16, 0x16u);
   }
 
-  v10 = [(CARTemplateUIAppEnvironment *)self appViewController];
-  v11 = [v10 scene];
+  appViewController = [(CARTemplateUIAppEnvironment *)self appViewController];
+  scene = [appViewController scene];
 
-  if (v11 == v6)
+  if (scene == invalidateCopy)
   {
-    v12 = [(CARTemplateUIAppEnvironment *)self appViewController];
-    [v12 setScene:0];
+    appViewController2 = [(CARTemplateUIAppEnvironment *)self appViewController];
+    [appViewController2 setScene:0];
   }
 
-  v13 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
-  v14 = [v13 scene];
+  mapWidgetViewController = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
+  scene2 = [mapWidgetViewController scene];
 
-  if (v14 == v6)
+  if (scene2 == invalidateCopy)
   {
-    v15 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
-    [v15 setScene:0];
+    mapWidgetViewController2 = [(CARTemplateUIAppEnvironment *)self mapWidgetViewController];
+    [mapWidgetViewController2 setScene:0];
   }
 }
 
 - (BOOL)canBeInvalidated
 {
-  v3 = [(CARTemplateUIAppEnvironment *)self dashboardGuidanceWindowScene];
-  if (v3)
+  dashboardGuidanceWindowScene = [(CARTemplateUIAppEnvironment *)self dashboardGuidanceWindowScene];
+  if (dashboardGuidanceWindowScene)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(CARTemplateUIAppEnvironment *)self dashboardMapWindowScene];
-    if (v5)
+    dashboardMapWindowScene = [(CARTemplateUIAppEnvironment *)self dashboardMapWindowScene];
+    if (dashboardMapWindowScene)
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(CARTemplateUIAppEnvironment *)self applicationWindowScene];
-      if (v6)
+      applicationWindowScene = [(CARTemplateUIAppEnvironment *)self applicationWindowScene];
+      if (applicationWindowScene)
       {
         v4 = 0;
       }
 
       else
       {
-        v7 = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindowScenes];
-        if ([v7 count])
+        instrumentClusterWindowScenes = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindowScenes];
+        if ([instrumentClusterWindowScenes count])
         {
-          v8 = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindowScenes];
-          v4 = v8 == 0;
+          instrumentClusterWindowScenes2 = [(CARTemplateUIAppEnvironment *)self instrumentClusterWindowScenes];
+          v4 = instrumentClusterWindowScenes2 == 0;
         }
 
         else
@@ -844,15 +844,15 @@ LABEL_23:
   return v4;
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v8 = a3;
-  v6 = [a4 settingsDiff];
-  v7 = [v6 containsProperty:"isForeground"];
+  sceneCopy = scene;
+  settingsDiff = [settings settingsDiff];
+  v7 = [settingsDiff containsProperty:"isForeground"];
 
   if (v7)
   {
-    [(CARTemplateUIAppEnvironment *)self _updateRunningInCarPlayAssertionIfNecessary:v8];
+    [(CARTemplateUIAppEnvironment *)self _updateRunningInCarPlayAssertionIfNecessary:sceneCopy];
   }
 }
 

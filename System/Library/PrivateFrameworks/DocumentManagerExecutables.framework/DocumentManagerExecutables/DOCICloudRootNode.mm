@@ -15,12 +15,12 @@
 - (NSString)typeIdentifier;
 - (NSURL)fileURL;
 - (_TtC26DocumentManagerExecutables17DOCICloudRootNode)init;
-- (_TtC26DocumentManagerExecutables17DOCICloudRootNode)initWithCoder:(id)a3;
+- (_TtC26DocumentManagerExecutables17DOCICloudRootNode)initWithCoder:(id)coder;
 - (char)source;
 - (id)identifier;
-- (unint64_t)nodeIs:(unint64_t)a3 error:(id *)a4;
-- (unsigned)nodePermissions:(unsigned int)a3 error:(id *)a4;
-- (unsigned)volumeIs:(unsigned int)a3 error:(id *)a4;
+- (unint64_t)nodeIs:(unint64_t)is error:(id *)error;
+- (unsigned)nodePermissions:(unsigned int)permissions error:(id *)error;
+- (unsigned)volumeIs:(unsigned int)is error:(id *)error;
 @end
 
 @implementation DOCICloudRootNode
@@ -30,7 +30,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation3URLVSgMd);
   MEMORY[0x28223BE20](v3 - 8, v4);
   v6 = &v15 - v5;
-  v7 = self;
+  selfCopy = self;
   DOCICloudRootNode.fileURL.getter(v6);
 
   v8 = type metadata accessor for URL();
@@ -50,14 +50,14 @@
 
 - (FPItem)fpfs_fpItem
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) fpfs_fpItem];
+  fpfs_fpItem = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) fpfs_fpItem];
 
-  return v2;
+  return fpfs_fpItem;
 }
 
 - (NSString)displayName
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCICloudRootNode.displayName.getter();
   v5 = v4;
 
@@ -66,23 +66,23 @@
   return v6;
 }
 
-- (unint64_t)nodeIs:(unint64_t)a3 error:(id *)a4
+- (unint64_t)nodeIs:(unint64_t)is error:(id *)error
 {
   result = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer);
   if (result)
   {
-    return [result nodeIs:a3 error:a4];
+    return [result nodeIs:is error:error];
   }
 
   return result;
 }
 
-- (unsigned)nodePermissions:(unsigned int)a3 error:(id *)a4
+- (unsigned)nodePermissions:(unsigned int)permissions error:(id *)error
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer);
   if (v4)
   {
-    LODWORD(v4) = [v4 nodePermissions:*&a3 error:a4] & 0xFFEDDC04;
+    LODWORD(v4) = [v4 nodePermissions:*&permissions error:error] & 0xFFEDDC04;
   }
 
   return v4;
@@ -90,24 +90,24 @@
 
 - (char)source
 {
-  v1 = *&a1[OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer];
+  v1 = *&self[OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer];
   if (v1)
   {
-    v2 = *&a1[OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer];
+    selfCopy = *&self[OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
     v1 = 0;
   }
 
   v3 = v1;
 
-  return v2;
+  return selfCopy;
 }
 
-- (_TtC26DocumentManagerExecutables17DOCICloudRootNode)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables17DOCICloudRootNode)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_deferredCreationNode) = 0;
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_observerBlock);
@@ -129,21 +129,21 @@
 
 - (FINode)fileParent
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) fileParent];
+  fileParent = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) fileParent];
 
-  return v2;
+  return fileParent;
 }
 
 - (FINode)parent
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) parent];
+  parent = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) parent];
 
-  return v2;
+  return parent;
 }
 
 - (id)identifier
 {
-  v2 = self;
+  selfCopy = self;
   DOCICloudRootNode.identifier.getter(v5);
 
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);
@@ -158,8 +158,8 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 typeIdentifier];
+    selfCopy = self;
+    typeIdentifier = [v2 typeIdentifier];
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
   }
@@ -177,16 +177,16 @@
 
 - (NSNumber)fileSize
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) fileSize];
+  fileSize = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) fileSize];
 
-  return v2;
+  return fileSize;
 }
 
 - (NSNumber)childItemCount
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) childItemCount];
+  childItemCount = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) childItemCount];
 
-  return v2;
+  return childItemCount;
 }
 
 - (NSString)filename
@@ -194,8 +194,8 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 filename];
+    selfCopy = self;
+    filename = [v2 filename];
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
   }
@@ -213,23 +213,23 @@
 
 - (NSProgress)downloadingProgress
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) downloadingProgress];
+  downloadingProgress = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) downloadingProgress];
 
-  return v2;
+  return downloadingProgress;
 }
 
 - (NSProgress)uploadingProgress
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) uploadingProgress];
+  uploadingProgress = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) uploadingProgress];
 
-  return v2;
+  return uploadingProgress;
 }
 
 - (NSProgress)copyingProgress
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) copyingProgress];
+  copyingProgress = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer) copyingProgress];
 
-  return v2;
+  return copyingProgress;
 }
 
 - (NSPersonNameComponents)ownerNameComponents
@@ -237,7 +237,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation20PersonNameComponentsVSgMd);
   MEMORY[0x28223BE20](v3 - 8, v4);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   DOCICloudRootNode.ownerNameComponents.getter(v6);
 
   v8 = type metadata accessor for PersonNameComponents();
@@ -259,21 +259,21 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 itemDecorations];
-    if (v4)
+    selfCopy2 = self;
+    itemDecorations = [v2 itemDecorations];
+    if (itemDecorations)
     {
-      v5 = v4;
+      v5 = itemDecorations;
       type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for FPItemDecoration);
       static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
-      v3 = v5;
+      selfCopy2 = v5;
     }
   }
 
   else
   {
-    v3 = self;
+    selfCopy2 = self;
   }
 
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for FPItemDecoration);
@@ -287,11 +287,11 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 tags];
-    if (v4)
+    selfCopy = self;
+    tags = [v2 tags];
+    if (tags)
     {
-      v5 = v4;
+      v5 = tags;
       type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for FPTag);
       static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -308,12 +308,12 @@ LABEL_6:
   return v7;
 }
 
-- (unsigned)volumeIs:(unsigned int)a3 error:(id *)a4
+- (unsigned)volumeIs:(unsigned int)is error:(id *)error
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables17DOCICloudRootNode_iCloudContainer);
   if (v4)
   {
-    LODWORD(v4) = [v4 volumeIs:*&a3 error:a4];
+    LODWORD(v4) = [v4 volumeIs:*&is error:error];
   }
 
   return v4;

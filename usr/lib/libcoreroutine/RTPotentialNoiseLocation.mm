@@ -1,13 +1,13 @@
 @interface RTPotentialNoiseLocation
-- (RTPotentialNoiseLocation)initWithLocation:(id)a3;
+- (RTPotentialNoiseLocation)initWithLocation:(id)location;
 @end
 
 @implementation RTPotentialNoiseLocation
 
-- (RTPotentialNoiseLocation)initWithLocation:(id)a3
+- (RTPotentialNoiseLocation)initWithLocation:(id)location
 {
-  v5 = a3;
-  if (v5)
+  locationCopy = location;
+  if (locationCopy)
   {
     v11.receiver = self;
     v11.super_class = RTPotentialNoiseLocation;
@@ -15,12 +15,12 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_location, a3);
+      objc_storeStrong(&v6->_location, location);
       v7->_isNoise = 0;
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -32,10 +32,10 @@
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: location != nil", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

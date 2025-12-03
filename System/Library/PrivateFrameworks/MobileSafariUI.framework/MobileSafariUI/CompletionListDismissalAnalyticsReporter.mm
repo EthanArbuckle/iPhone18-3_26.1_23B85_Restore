@@ -6,8 +6,8 @@
 
 - (void)reportAnalytics
 {
-  v3 = [MEMORY[0x277D499B8] sharedLogger];
-  [v3 didDismissCompletionListWithItemAccepted:self->_acceptedCompletionListItem goKeyTapped:self->_goKeyTapped unifiedFieldContentType:self->_unifiedFieldContentType];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didDismissCompletionListWithItemAccepted:self->_acceptedCompletionListItem goKeyTapped:self->_goKeyTapped unifiedFieldContentType:self->_unifiedFieldContentType];
 }
 
 @end

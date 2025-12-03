@@ -1,12 +1,12 @@
 @interface LPVerticalTextStackViewStyle
-- (LPVerticalTextStackViewStyle)initWithPlatform:(int64_t)a3 sizeClass:(unint64_t)a4 fontScalingFactor:(double)a5;
-- (void)applyToAllTextViewStyles:(id)a3;
-- (void)applyToLowerTextRowStyles:(id)a3;
+- (LPVerticalTextStackViewStyle)initWithPlatform:(int64_t)platform sizeClass:(unint64_t)class fontScalingFactor:(double)factor;
+- (void)applyToAllTextViewStyles:(id)styles;
+- (void)applyToLowerTextRowStyles:(id)styles;
 @end
 
 @implementation LPVerticalTextStackViewStyle
 
-- (LPVerticalTextStackViewStyle)initWithPlatform:(int64_t)a3 sizeClass:(unint64_t)a4 fontScalingFactor:(double)a5
+- (LPVerticalTextStackViewStyle)initWithPlatform:(int64_t)platform sizeClass:(unint64_t)class fontScalingFactor:(double)factor
 {
   v53.receiver = self;
   v53.super_class = LPVerticalTextStackViewStyle;
@@ -25,69 +25,69 @@
   v8->_lastLineDescent = v11;
 
   v8->_shouldAlignToBaselines = 1;
-  v13 = topCaptionFont(a3, a4);
-  v14 = [[LPTextRowStyle alloc] initWithPlatform:a3 fontScalingFactor:a5];
+  v13 = topCaptionFont(platform, class);
+  v14 = [[LPTextRowStyle alloc] initWithPlatform:platform fontScalingFactor:factor];
   aboveTopCaption = v8->_aboveTopCaption;
   v8->_aboveTopCaption = v14;
 
-  v16 = [(LPTextRowStyle *)v8->_aboveTopCaption leading];
-  [v16 setFont:v13];
+  leading = [(LPTextRowStyle *)v8->_aboveTopCaption leading];
+  [leading setFont:v13];
 
-  v17 = [(LPTextRowStyle *)v8->_aboveTopCaption trailing];
-  [v17 setFont:v13];
+  trailing = [(LPTextRowStyle *)v8->_aboveTopCaption trailing];
+  [trailing setFont:v13];
 
-  v18 = [[LPTextRowStyle alloc] initWithPlatform:a3 fontScalingFactor:a5];
+  v18 = [[LPTextRowStyle alloc] initWithPlatform:platform fontScalingFactor:factor];
   topCaption = v8->_topCaption;
   v8->_topCaption = v18;
 
-  v20 = [(LPTextRowStyle *)v8->_topCaption leading];
-  [v20 setFont:v13];
+  leading2 = [(LPTextRowStyle *)v8->_topCaption leading];
+  [leading2 setFont:v13];
 
-  v21 = [(LPTextRowStyle *)v8->_topCaption trailing];
-  [v21 setFont:v13];
+  trailing2 = [(LPTextRowStyle *)v8->_topCaption trailing];
+  [trailing2 setFont:v13];
 
-  v22 = bottomCaptionFont(a3, a4);
-  v23 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v24 = [[LPTextRowStyle alloc] initWithPlatform:a3 fontScalingFactor:a5];
+  v22 = bottomCaptionFont(platform, class);
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v24 = [[LPTextRowStyle alloc] initWithPlatform:platform fontScalingFactor:factor];
   bottomCaption = v8->_bottomCaption;
   v8->_bottomCaption = v24;
 
-  v26 = [(LPTextRowStyle *)v8->_bottomCaption leading];
-  [v26 setFont:v22];
+  leading3 = [(LPTextRowStyle *)v8->_bottomCaption leading];
+  [leading3 setFont:v22];
 
-  v27 = [(LPTextRowStyle *)v8->_bottomCaption trailing];
-  [v27 setFont:v22];
+  trailing3 = [(LPTextRowStyle *)v8->_bottomCaption trailing];
+  [trailing3 setFont:v22];
 
-  v28 = [(LPTextRowStyle *)v8->_bottomCaption leading];
-  [v28 setColor:v23];
+  leading4 = [(LPTextRowStyle *)v8->_bottomCaption leading];
+  [leading4 setColor:secondaryLabelColor];
 
-  v29 = [(LPTextRowStyle *)v8->_bottomCaption trailing];
-  [v29 setColor:v23];
+  trailing4 = [(LPTextRowStyle *)v8->_bottomCaption trailing];
+  [trailing4 setColor:secondaryLabelColor];
 
-  v30 = [[LPTextRowStyle alloc] initWithPlatform:a3 fontScalingFactor:a5];
+  v30 = [[LPTextRowStyle alloc] initWithPlatform:platform fontScalingFactor:factor];
   belowBottomCaption = v8->_belowBottomCaption;
   v8->_belowBottomCaption = v30;
 
-  v32 = [(LPTextRowStyle *)v8->_belowBottomCaption leading];
-  [v32 setFont:v22];
+  leading5 = [(LPTextRowStyle *)v8->_belowBottomCaption leading];
+  [leading5 setFont:v22];
 
-  v33 = [(LPTextRowStyle *)v8->_belowBottomCaption trailing];
-  [v33 setFont:v22];
+  trailing5 = [(LPTextRowStyle *)v8->_belowBottomCaption trailing];
+  [trailing5 setFont:v22];
 
-  v34 = [(LPTextRowStyle *)v8->_belowBottomCaption leading];
-  [v34 setColor:v23];
+  leading6 = [(LPTextRowStyle *)v8->_belowBottomCaption leading];
+  [leading6 setColor:secondaryLabelColor];
 
-  v35 = [(LPTextRowStyle *)v8->_belowBottomCaption trailing];
-  [v35 setColor:v23];
+  trailing6 = [(LPTextRowStyle *)v8->_belowBottomCaption trailing];
+  [trailing6 setColor:secondaryLabelColor];
 
-  if (a3 > 2)
+  if (platform > 2)
   {
-    if ((a3 - 3) >= 2)
+    if ((platform - 3) >= 2)
     {
-      if (a3 == 5)
+      if (platform == 5)
       {
         v37 = [LPPointUnit alloc];
-        if (a4 == 5)
+        if (class == 5)
         {
           v38 = 17.0;
         }
@@ -100,7 +100,7 @@
         goto LABEL_13;
       }
 
-      if (a3 != 6)
+      if (platform != 6)
       {
         goto LABEL_15;
       }
@@ -111,7 +111,7 @@
     goto LABEL_11;
   }
 
-  switch(a3)
+  switch(platform)
   {
     case 0:
 LABEL_12:
@@ -129,7 +129,7 @@ LABEL_14:
       v37 = [LPPointUnit alloc];
       v38 = 12.5;
 LABEL_13:
-      v39 = a5 * v38;
+      v39 = factor * v38;
       goto LABEL_14;
   }
 
@@ -145,10 +145,10 @@ LABEL_15:
   captionTextPadding = v8->_captionTextPadding;
   v8->_captionTextPadding = v41;
 
-  v43 = outerHorizontalTextMargin(a3);
+  v43 = outerHorizontalTextMargin(platform);
   [(LPPadding *)v8->_captionTextPadding setLeading:v43];
 
-  v44 = outerHorizontalTextMargin(a3);
+  v44 = outerHorizontalTextMargin(platform);
   [(LPPadding *)v8->_captionTextPadding setTrailing:v44];
 
   v45 = objc_alloc_init(LPPadding);
@@ -170,20 +170,20 @@ LABEL_18:
   return v8;
 }
 
-- (void)applyToAllTextViewStyles:(id)a3
+- (void)applyToAllTextViewStyles:(id)styles
 {
-  v4 = a3;
+  stylesCopy = styles;
   [(LPTextRowStyle *)self->_aboveTopCaption applyToAllTextViewStyles:?];
-  [(LPTextRowStyle *)self->_topCaption applyToAllTextViewStyles:v4];
-  [(LPTextRowStyle *)self->_bottomCaption applyToAllTextViewStyles:v4];
-  [(LPTextRowStyle *)self->_belowBottomCaption applyToAllTextViewStyles:v4];
+  [(LPTextRowStyle *)self->_topCaption applyToAllTextViewStyles:stylesCopy];
+  [(LPTextRowStyle *)self->_bottomCaption applyToAllTextViewStyles:stylesCopy];
+  [(LPTextRowStyle *)self->_belowBottomCaption applyToAllTextViewStyles:stylesCopy];
 }
 
-- (void)applyToLowerTextRowStyles:(id)a3
+- (void)applyToLowerTextRowStyles:(id)styles
 {
-  v4 = a3;
-  v4[2](v4, self->_bottomCaption);
-  v4[2](v4, self->_belowBottomCaption);
+  stylesCopy = styles;
+  stylesCopy[2](stylesCopy, self->_bottomCaption);
+  stylesCopy[2](stylesCopy, self->_belowBottomCaption);
 }
 
 @end

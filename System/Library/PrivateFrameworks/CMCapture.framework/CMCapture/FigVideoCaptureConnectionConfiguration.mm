@@ -1,23 +1,23 @@
 @interface FigVideoCaptureConnectionConfiguration
-+ (BOOL)cameraIntrinsicMatrixDeliveryEnabled:(id)a3 doingFaceTracking:(BOOL)a4;
-+ (id)videoStabilizationMethods:(id)a3 includeIris:(BOOL)a4;
++ (BOOL)cameraIntrinsicMatrixDeliveryEnabled:(id)enabled doingFaceTracking:(BOOL)tracking;
++ (id)videoStabilizationMethods:(id)methods includeIris:(BOOL)iris;
 - ($2825F4736939C4A6D3AD43837233062D)nonRotatedOutputDimensions;
 - (BOOL)irisVISEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)portraitAutoSuggestEnabled;
 - (BOOL)previewDepthDataDeliveryEnabled;
 - (BOOL)previewDepthFilterRenderingEnabled;
 - (BOOL)previewFilterRenderingEnabled;
-- (BOOL)requiresScalingForInputTransForm:(FigCaptureVideoTransform)a3 nodeName:(id)a4;
+- (BOOL)requiresScalingForInputTransForm:(FigCaptureVideoTransform)form nodeName:(id)name;
 - (FigCaptureVideoTransform)depthDataTransform;
 - (FigCaptureVideoTransform)depthDataTransformWithSourceDimensions;
 - (FigCaptureVideoTransform)transform;
-- (FigVideoCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FigVideoCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)description;
 - (int)irisVISMethod;
-- (uint64_t)_transformWithSourceDimensions:(int)a3 forceSourceDimensions:;
+- (uint64_t)_transformWithSourceDimensions:(int)dimensions forceSourceDimensions:;
 @end
 
 @implementation FigVideoCaptureConnectionConfiguration
@@ -31,11 +31,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v3 = [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] depthDataFormat];
-  v4 = v3;
-  if (v3)
+  depthDataFormat = [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] depthDataFormat];
+  v4 = depthDataFormat;
+  if (depthDataFormat)
   {
-    if (![(FigCaptureSourceFormat *)v3 dimensions])
+    if (![(FigCaptureSourceFormat *)depthDataFormat dimensions])
     {
       LODWORD(v4) = [(FigCaptureSourceFormat *)v4 dimensions]>> 32 == 0;
       goto LABEL_5;
@@ -50,29 +50,29 @@ LABEL_5:
     return 0;
   }
 
-  v6 = [(FigCaptureConnectionConfiguration *)self videoPreviewSinkConfiguration];
+  videoPreviewSinkConfiguration = [(FigCaptureConnectionConfiguration *)self videoPreviewSinkConfiguration];
 
-  return [(FigCaptureVideoPreviewSinkConfiguration *)v6 filterRenderingEnabled];
+  return [(FigCaptureVideoPreviewSinkConfiguration *)videoPreviewSinkConfiguration filterRenderingEnabled];
 }
 
 - (BOOL)previewDepthDataDeliveryEnabled
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self videoPreviewSinkConfiguration];
+  videoPreviewSinkConfiguration = [(FigCaptureConnectionConfiguration *)self videoPreviewSinkConfiguration];
 
-  return [(FigCaptureVideoPreviewSinkConfiguration *)v2 depthDataDeliveryEnabled];
+  return [(FigCaptureVideoPreviewSinkConfiguration *)videoPreviewSinkConfiguration depthDataDeliveryEnabled];
 }
 
 - (BOOL)irisVISEnabled
 {
-  v3 = [(FigCaptureIrisSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self irisSinkConfiguration] irisMovieCaptureEnabled];
-  if (v3)
+  irisMovieCaptureEnabled = [(FigCaptureIrisSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self irisSinkConfiguration] irisMovieCaptureEnabled];
+  if (irisMovieCaptureEnabled)
   {
-    v4 = [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] requiredFormat];
+    requiredFormat = [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] requiredFormat];
 
-    LOBYTE(v3) = [(FigCaptureSourceVideoFormat *)v4 isIrisVideoStabilizationSupported];
+    LOBYTE(irisMovieCaptureEnabled) = [(FigCaptureSourceVideoFormat *)requiredFormat isIrisVideoStabilizationSupported];
   }
 
-  return v3;
+  return irisMovieCaptureEnabled;
 }
 
 - (int)irisVISMethod
@@ -97,15 +97,15 @@ LABEL_5:
 
 - (BOOL)portraitAutoSuggestEnabled
 {
-  v3 = [(FigCaptureVideoPreviewSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self videoPreviewSinkConfiguration] portraitAutoSuggestEnabled];
-  if (v3)
+  portraitAutoSuggestEnabled = [(FigCaptureVideoPreviewSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self videoPreviewSinkConfiguration] portraitAutoSuggestEnabled];
+  if (portraitAutoSuggestEnabled)
   {
-    v4 = [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] requiredFormat];
+    requiredFormat = [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] requiredFormat];
 
-    LOBYTE(v3) = [(FigCaptureSourceVideoFormat *)v4 isPortraitAutoSuggestSupported];
+    LOBYTE(portraitAutoSuggestEnabled) = [(FigCaptureSourceVideoFormat *)requiredFormat isPortraitAutoSuggestSupported];
   }
 
-  return v3;
+  return portraitAutoSuggestEnabled;
 }
 
 - (BOOL)previewFilterRenderingEnabled
@@ -115,16 +115,16 @@ LABEL_5:
     return 1;
   }
 
-  v4 = [(FigCaptureConnectionConfiguration *)self videoPreviewSinkConfiguration];
+  videoPreviewSinkConfiguration = [(FigCaptureConnectionConfiguration *)self videoPreviewSinkConfiguration];
 
-  return [(FigCaptureVideoPreviewSinkConfiguration *)v4 semanticStyleRenderingEnabled];
+  return [(FigCaptureVideoPreviewSinkConfiguration *)videoPreviewSinkConfiguration semanticStyleRenderingEnabled];
 }
 
 - (id)description
 {
-  v3 = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
+  underlyingDeviceType = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
   v4 = &stru_1F216A3D0;
-  if (v3 != [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] sourceDeviceType])
+  if (underlyingDeviceType != [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] sourceDeviceType])
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (SUB-DEVICE:%@)", +[FigCaptureSourceConfiguration stringForSourceDeviceType:](FigCaptureSourceConfiguration, "stringForSourceDeviceType:", -[FigCaptureConnectionConfiguration underlyingDeviceType](self, "underlyingDeviceType"))];
   }
@@ -150,28 +150,28 @@ LABEL_5:
 {
   v5.receiver = self;
   v5.super_class = FigVideoCaptureConnectionConfiguration;
-  v3 = [(FigCaptureConnectionConfiguration *)&v5 copyXPCEncoding];
-  xpc_dictionary_set_int64(v3, "outputFormat", [(FigVideoCaptureConnectionConfiguration *)self outputFormat]);
-  xpc_dictionary_set_int64(v3, "outputWidth", [(FigVideoCaptureConnectionConfiguration *)self outputWidth]);
-  xpc_dictionary_set_int64(v3, "outputHeight", [(FigVideoCaptureConnectionConfiguration *)self outputHeight]);
-  xpc_dictionary_set_int64(v3, "videoStabilizationMethod", [(FigVideoCaptureConnectionConfiguration *)self videoStabilizationMethod]);
-  xpc_dictionary_set_BOOL(v3, "mirroringEnabled", [(FigVideoCaptureConnectionConfiguration *)self mirroringEnabled]);
-  xpc_dictionary_set_BOOL(v3, "physicalMirroringForMovieRecordingEnabled", [(FigVideoCaptureConnectionConfiguration *)self physicalMirroringForMovieRecordingEnabled]);
-  xpc_dictionary_set_int64(v3, "rotationDegrees", [(FigVideoCaptureConnectionConfiguration *)self rotationDegrees]);
-  xpc_dictionary_set_BOOL(v3, "deviceOrientationCorrectionEnabled", [(FigVideoCaptureConnectionConfiguration *)self deviceOrientationCorrectionEnabled]);
-  xpc_dictionary_set_BOOL(v3, "zoomSmoothingEnabled", [(FigVideoCaptureConnectionConfiguration *)self zoomSmoothingEnabled]);
-  xpc_dictionary_set_BOOL(v3, "videoGreenGhostMitigationEnabled", [(FigVideoCaptureConnectionConfiguration *)self videoGreenGhostMitigationEnabled]);
-  xpc_dictionary_set_int64(v3, "retainedBufferCount", [(FigVideoCaptureConnectionConfiguration *)self retainedBufferCount]);
-  xpc_dictionary_set_BOOL(v3, "cameraIntrinsicMatrixDeliveryEnabled", [(FigVideoCaptureConnectionConfiguration *)self cameraIntrinsicMatrixDeliveryEnabled]);
-  xpc_dictionary_set_BOOL(v3, "livePhotoMetadataWritingEnabled", [(FigVideoCaptureConnectionConfiguration *)self livePhotoMetadataWritingEnabled]);
-  xpc_dictionary_set_BOOL(v3, "stereoVideoCaptureEnabled", [(FigVideoCaptureConnectionConfiguration *)self stereoVideoCaptureEnabled]);
-  xpc_dictionary_set_BOOL(v3, "attachMetadataToVideoBuffers", [(FigVideoCaptureConnectionConfiguration *)self attachMetadataToVideoBuffers]);
-  return v3;
+  copyXPCEncoding = [(FigCaptureConnectionConfiguration *)&v5 copyXPCEncoding];
+  xpc_dictionary_set_int64(copyXPCEncoding, "outputFormat", [(FigVideoCaptureConnectionConfiguration *)self outputFormat]);
+  xpc_dictionary_set_int64(copyXPCEncoding, "outputWidth", [(FigVideoCaptureConnectionConfiguration *)self outputWidth]);
+  xpc_dictionary_set_int64(copyXPCEncoding, "outputHeight", [(FigVideoCaptureConnectionConfiguration *)self outputHeight]);
+  xpc_dictionary_set_int64(copyXPCEncoding, "videoStabilizationMethod", [(FigVideoCaptureConnectionConfiguration *)self videoStabilizationMethod]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "mirroringEnabled", [(FigVideoCaptureConnectionConfiguration *)self mirroringEnabled]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "physicalMirroringForMovieRecordingEnabled", [(FigVideoCaptureConnectionConfiguration *)self physicalMirroringForMovieRecordingEnabled]);
+  xpc_dictionary_set_int64(copyXPCEncoding, "rotationDegrees", [(FigVideoCaptureConnectionConfiguration *)self rotationDegrees]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "deviceOrientationCorrectionEnabled", [(FigVideoCaptureConnectionConfiguration *)self deviceOrientationCorrectionEnabled]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "zoomSmoothingEnabled", [(FigVideoCaptureConnectionConfiguration *)self zoomSmoothingEnabled]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "videoGreenGhostMitigationEnabled", [(FigVideoCaptureConnectionConfiguration *)self videoGreenGhostMitigationEnabled]);
+  xpc_dictionary_set_int64(copyXPCEncoding, "retainedBufferCount", [(FigVideoCaptureConnectionConfiguration *)self retainedBufferCount]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "cameraIntrinsicMatrixDeliveryEnabled", [(FigVideoCaptureConnectionConfiguration *)self cameraIntrinsicMatrixDeliveryEnabled]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "livePhotoMetadataWritingEnabled", [(FigVideoCaptureConnectionConfiguration *)self livePhotoMetadataWritingEnabled]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "stereoVideoCaptureEnabled", [(FigVideoCaptureConnectionConfiguration *)self stereoVideoCaptureEnabled]);
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "attachMetadataToVideoBuffers", [(FigVideoCaptureConnectionConfiguration *)self attachMetadataToVideoBuffers]);
+  return copyXPCEncoding;
 }
 
 - (FigCaptureVideoTransform)transform
 {
-  v3 = [(FigCaptureSourceFormat *)[(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] requiredFormat] dimensions];
+  dimensions = [(FigCaptureSourceFormat *)[(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] requiredFormat] dimensions];
 
   v4 = [(FigVideoCaptureConnectionConfiguration *)self _transformWithSourceDimensions:0 forceSourceDimensions:?];
   result.dimensions = v5;
@@ -180,15 +180,15 @@ LABEL_5:
   return result;
 }
 
-+ (id)videoStabilizationMethods:(id)a3 includeIris:(BOOL)a4
++ (id)videoStabilizationMethods:(id)methods includeIris:(BOOL)iris
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  irisCopy = iris;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  v7 = [methods countByEnumeratingWithState:&v17 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -200,32 +200,32 @@ LABEL_5:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(methods);
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 sinkConfiguration];
-          if ([v12 sinkType] == 4 || objc_msgSend(v12, "sinkType") == 6 || objc_msgSend(v12, "sinkType") == 1)
+          sinkConfiguration = [v11 sinkConfiguration];
+          if ([sinkConfiguration sinkType] == 4 || objc_msgSend(sinkConfiguration, "sinkType") == 6 || objc_msgSend(sinkConfiguration, "sinkType") == 1)
           {
-            v13 = [v11 videoStabilizationMethod];
+            videoStabilizationMethod = [v11 videoStabilizationMethod];
           }
 
           else
           {
-            if (!v4 || ![v11 irisVISEnabled])
+            if (!irisCopy || ![v11 irisVISEnabled])
             {
               goto LABEL_13;
             }
 
-            v13 = [v11 irisVISMethod];
+            videoStabilizationMethod = [v11 irisVISMethod];
           }
 
-          if (v13)
+          if (videoStabilizationMethod)
           {
-            [v6 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v13)}];
+            [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", videoStabilizationMethod)}];
           }
         }
 
@@ -234,23 +234,23 @@ LABEL_13:
       }
 
       while (v8 != v10);
-      v14 = [a3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      v14 = [methods countByEnumeratingWithState:&v17 objects:v16 count:16];
       v8 = v14;
     }
 
     while (v14);
   }
 
-  return v6;
+  return array;
 }
 
-+ (BOOL)cameraIntrinsicMatrixDeliveryEnabled:(id)a3 doingFaceTracking:(BOOL)a4
++ (BOOL)cameraIntrinsicMatrixDeliveryEnabled:(id)enabled doingFaceTracking:(BOOL)tracking
 {
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+  v6 = [enabled countByEnumeratingWithState:&v17 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -262,19 +262,19 @@ LABEL_13:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(enabled);
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
-        v11 = [v10 sinkConfiguration];
+        sinkConfiguration = [v10 sinkConfiguration];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ([v11 sinkType] == 6)
+          if ([sinkConfiguration sinkType] == 6)
           {
-            v12 = [v10 cameraIntrinsicMatrixDeliveryEnabled];
+            cameraIntrinsicMatrixDeliveryEnabled = [v10 cameraIntrinsicMatrixDeliveryEnabled];
             LOBYTE(v6) = 1;
-            if ((v12 & 1) != 0 || a4)
+            if ((cameraIntrinsicMatrixDeliveryEnabled & 1) != 0 || tracking)
             {
               return v6;
             }
@@ -296,7 +296,7 @@ LABEL_26:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if ([v11 sinkType] == 8)
+            if ([sinkConfiguration sinkType] == 8)
             {
               v15 = 0;
               if (FigCaptureMetadataObjectConfigurationRequiresFaceTracking(v10))
@@ -328,7 +328,7 @@ LABEL_26:
       }
 
       while (v7 != v9);
-      v6 = [a3 countByEnumeratingWithState:&v17 objects:v16 count:16];
+      v6 = [enabled countByEnumeratingWithState:&v17 objects:v16 count:16];
       v7 = v6;
       if (v6)
       {
@@ -342,27 +342,27 @@ LABEL_26:
   return v6;
 }
 
-- (uint64_t)_transformWithSourceDimensions:(int)a3 forceSourceDimensions:
+- (uint64_t)_transformWithSourceDimensions:(int)dimensions forceSourceDimensions:
 {
-  if (a1)
+  if (self)
   {
     LODWORD(v13) = 0;
-    v6 = [a1 mirroringEnabled];
-    LOBYTE(v14) = v6;
-    v7 = [a1 outputWidth];
-    v8 = [a1 outputHeight];
-    v15 = __PAIR64__(v8, v7);
-    v9 = FigCaptureRotationDegreesWithMirroring([a1 rotationDegrees], v6);
+    mirroringEnabled = [self mirroringEnabled];
+    LOBYTE(v14) = mirroringEnabled;
+    outputWidth = [self outputWidth];
+    outputHeight = [self outputHeight];
+    v15 = __PAIR64__(outputHeight, outputWidth);
+    v9 = FigCaptureRotationDegreesWithMirroring([self rotationDegrees], mirroringEnabled);
     HIDWORD(v14) = v9;
-    v10 = [objc_msgSend(a1 "sourceConfiguration")];
-    IsExtensionDeviceType = BWDeviceTypeIsExtensionDeviceType([objc_msgSend(a1 "sourceConfiguration")]);
-    if (v10 == 2 && !FigCaptureCameraRequires180DegreesRotation(1, IsExtensionDeviceType) && [a1 deviceOrientationCorrectionEnabled])
+    v10 = [objc_msgSend(self "sourceConfiguration")];
+    IsExtensionDeviceType = BWDeviceTypeIsExtensionDeviceType([objc_msgSend(self "sourceConfiguration")]);
+    if (v10 == 2 && !FigCaptureCameraRequires180DegreesRotation(1, IsExtensionDeviceType) && [self deviceOrientationCorrectionEnabled])
     {
       v9 -= 180;
       HIDWORD(v14) = v9;
     }
 
-    if (a3 || !v7 || !v8)
+    if (dimensions || !outputWidth || !outputHeight)
     {
       v15 = a2;
       FigCaptureSwapVideoDimensionsFor90Or270Rotation(&v15, v9);
@@ -380,7 +380,7 @@ LABEL_26:
 
 - (FigCaptureVideoTransform)depthDataTransform
 {
-  v3 = [(FigCaptureSourceFormat *)[(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] depthDataFormat] dimensions];
+  dimensions = [(FigCaptureSourceFormat *)[(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] depthDataFormat] dimensions];
 
   v4 = [(FigVideoCaptureConnectionConfiguration *)self _transformWithSourceDimensions:0 forceSourceDimensions:?];
   result.dimensions = v5;
@@ -391,7 +391,7 @@ LABEL_26:
 
 - (FigCaptureVideoTransform)depthDataTransformWithSourceDimensions
 {
-  v3 = [(FigCaptureSourceFormat *)[(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] depthDataFormat] dimensions];
+  dimensions = [(FigCaptureSourceFormat *)[(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] depthDataFormat] dimensions];
 
   v4 = [(FigVideoCaptureConnectionConfiguration *)self _transformWithSourceDimensions:1 forceSourceDimensions:?];
   result.dimensions = v5;
@@ -400,16 +400,16 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)requiresScalingForInputTransForm:(FigCaptureVideoTransform)a3 nodeName:(id)a4
+- (BOOL)requiresScalingForInputTransForm:(FigCaptureVideoTransform)form nodeName:(id)name
 {
-  dimensions = a3.dimensions;
-  rotationDegrees = a3.rotationDegrees;
+  dimensions = form.dimensions;
+  rotationDegrees = form.rotationDegrees;
   result = 0;
   if ((![(NSString *)[(FigCaptureSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self sinkConfiguration] sinkID] isEqualToString:@"CMCaptureLocalSessionSinkID_MainVideo"]|| ![(FigCaptureVideoDataSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self videoDataSinkConfiguration] cinematicFramingSupported]) && ![(NSString *)[(FigCaptureSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self sinkConfiguration] sinkID] isEqualToString:@"CMCaptureLocalSessionSinkID_DeskcamVideo"])
   {
-    v8 = [(FigVideoCaptureConnectionConfiguration *)self transform];
+    transform = [(FigVideoCaptureConnectionConfiguration *)self transform];
     v10 = v9;
-    v11 = HIDWORD(v8);
+    v11 = HIDWORD(transform);
     v12 = dimensions;
     FigCaptureSwapVideoDimensionsFor90Or270Rotation(&v12, rotationDegrees);
     v13 = v10;
@@ -423,30 +423,30 @@ LABEL_26:
   return result;
 }
 
-- (FigVideoCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3
+- (FigVideoCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding
 {
-  if (a3)
+  if (encoding)
   {
     v6.receiver = self;
     v6.super_class = FigVideoCaptureConnectionConfiguration;
     v4 = [(FigCaptureConnectionConfiguration *)&v6 initWithXPCEncoding:?];
     if (v4)
     {
-      *(&v4->super._enabled + 1) = xpc_dictionary_get_int64(a3, "outputFormat");
-      v4->_outputFormat = xpc_dictionary_get_int64(a3, "outputWidth");
-      v4->_outputWidth = xpc_dictionary_get_int64(a3, "outputHeight");
-      v4->_outputHeight = xpc_dictionary_get_int64(a3, "videoStabilizationMethod");
-      LOBYTE(v4->_videoStabilizationType) = xpc_dictionary_get_BOOL(a3, "mirroringEnabled");
-      BYTE1(v4->_videoStabilizationType) = xpc_dictionary_get_BOOL(a3, "physicalMirroringForMovieRecordingEnabled");
-      *&v4->_mirroringEnabled = xpc_dictionary_get_int64(a3, "rotationDegrees");
-      LOBYTE(v4->_rotationDegrees) = xpc_dictionary_get_BOOL(a3, "deviceOrientationCorrectionEnabled");
-      BYTE1(v4->_rotationDegrees) = xpc_dictionary_get_BOOL(a3, "zoomSmoothingEnabled");
-      BYTE2(v4->_rotationDegrees) = xpc_dictionary_get_BOOL(a3, "videoGreenGhostMitigationEnabled");
-      *&v4->_deviceOrientationCorrectionEnabled = xpc_dictionary_get_int64(a3, "retainedBufferCount");
-      LOBYTE(v4->_retainedBufferCount) = xpc_dictionary_get_BOOL(a3, "cameraIntrinsicMatrixDeliveryEnabled");
-      BYTE1(v4->_retainedBufferCount) = xpc_dictionary_get_BOOL(a3, "livePhotoMetadataWritingEnabled");
-      BYTE2(v4->_retainedBufferCount) = xpc_dictionary_get_BOOL(a3, "stereoVideoCaptureEnabled");
-      HIBYTE(v4->_retainedBufferCount) = xpc_dictionary_get_BOOL(a3, "attachMetadataToVideoBuffers");
+      *(&v4->super._enabled + 1) = xpc_dictionary_get_int64(encoding, "outputFormat");
+      v4->_outputFormat = xpc_dictionary_get_int64(encoding, "outputWidth");
+      v4->_outputWidth = xpc_dictionary_get_int64(encoding, "outputHeight");
+      v4->_outputHeight = xpc_dictionary_get_int64(encoding, "videoStabilizationMethod");
+      LOBYTE(v4->_videoStabilizationType) = xpc_dictionary_get_BOOL(encoding, "mirroringEnabled");
+      BYTE1(v4->_videoStabilizationType) = xpc_dictionary_get_BOOL(encoding, "physicalMirroringForMovieRecordingEnabled");
+      *&v4->_mirroringEnabled = xpc_dictionary_get_int64(encoding, "rotationDegrees");
+      LOBYTE(v4->_rotationDegrees) = xpc_dictionary_get_BOOL(encoding, "deviceOrientationCorrectionEnabled");
+      BYTE1(v4->_rotationDegrees) = xpc_dictionary_get_BOOL(encoding, "zoomSmoothingEnabled");
+      BYTE2(v4->_rotationDegrees) = xpc_dictionary_get_BOOL(encoding, "videoGreenGhostMitigationEnabled");
+      *&v4->_deviceOrientationCorrectionEnabled = xpc_dictionary_get_int64(encoding, "retainedBufferCount");
+      LOBYTE(v4->_retainedBufferCount) = xpc_dictionary_get_BOOL(encoding, "cameraIntrinsicMatrixDeliveryEnabled");
+      BYTE1(v4->_retainedBufferCount) = xpc_dictionary_get_BOOL(encoding, "livePhotoMetadataWritingEnabled");
+      BYTE2(v4->_retainedBufferCount) = xpc_dictionary_get_BOOL(encoding, "stereoVideoCaptureEnabled");
+      HIBYTE(v4->_retainedBufferCount) = xpc_dictionary_get_BOOL(encoding, "attachMetadataToVideoBuffers");
     }
   }
 
@@ -459,11 +459,11 @@ LABEL_26:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigVideoCaptureConnectionConfiguration;
-  v4 = [(FigCaptureConnectionConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(FigCaptureConnectionConfiguration *)&v6 copyWithZone:zone];
   [v4 setOutputFormat:-[FigVideoCaptureConnectionConfiguration outputFormat](self, "outputFormat")];
   [v4 setOutputWidth:{-[FigVideoCaptureConnectionConfiguration outputWidth](self, "outputWidth")}];
   [v4 setOutputHeight:{-[FigVideoCaptureConnectionConfiguration outputHeight](self, "outputHeight")}];
@@ -483,7 +483,7 @@ LABEL_26:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v23.receiver = self;
   v23.super_class = FigVideoCaptureConnectionConfiguration;
@@ -491,10 +491,10 @@ LABEL_26:
   if (v5)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = -[FigVideoCaptureConnectionConfiguration outputFormat](self, "outputFormat"), v6 == [a3 outputFormat]) && (v7 = -[FigVideoCaptureConnectionConfiguration outputWidth](self, "outputWidth"), v7 == objc_msgSend(a3, "outputWidth")) && (v8 = -[FigVideoCaptureConnectionConfiguration outputHeight](self, "outputHeight"), v8 == objc_msgSend(a3, "outputHeight")) && (v9 = -[FigVideoCaptureConnectionConfiguration videoStabilizationMethod](self, "videoStabilizationMethod"), v9 == objc_msgSend(a3, "videoStabilizationMethod")) && (v10 = -[FigVideoCaptureConnectionConfiguration videoStabilizationType](self, "videoStabilizationType"), v10 == objc_msgSend(a3, "videoStabilizationType")) && (v11 = -[FigVideoCaptureConnectionConfiguration mirroringEnabled](self, "mirroringEnabled"), v11 == objc_msgSend(a3, "mirroringEnabled")) && (v12 = -[FigVideoCaptureConnectionConfiguration physicalMirroringForMovieRecordingEnabled](self, "physicalMirroringForMovieRecordingEnabled"), v12 == objc_msgSend(a3, "physicalMirroringForMovieRecordingEnabled")) && (v13 = -[FigVideoCaptureConnectionConfiguration rotationDegrees](self, "rotationDegrees"), v13 == objc_msgSend(a3, "rotationDegrees")) && (v14 = -[FigVideoCaptureConnectionConfiguration deviceOrientationCorrectionEnabled](self, "deviceOrientationCorrectionEnabled"), v14 == objc_msgSend(a3, "deviceOrientationCorrectionEnabled")) && (v15 = -[FigVideoCaptureConnectionConfiguration zoomSmoothingEnabled](self, "zoomSmoothingEnabled"), v15 == objc_msgSend(a3, "zoomSmoothingEnabled")) && (v16 = -[FigVideoCaptureConnectionConfiguration videoGreenGhostMitigationEnabled](self, "videoGreenGhostMitigationEnabled"), v16 == objc_msgSend(a3, "videoGreenGhostMitigationEnabled")) && (v17 = -[FigVideoCaptureConnectionConfiguration retainedBufferCount](self, "retainedBufferCount"), v17 == objc_msgSend(a3, "retainedBufferCount")) && (v18 = -[FigVideoCaptureConnectionConfiguration cameraIntrinsicMatrixDeliveryEnabled](self, "cameraIntrinsicMatrixDeliveryEnabled"), v18 == objc_msgSend(a3, "cameraIntrinsicMatrixDeliveryEnabled")) && (v19 = -[FigVideoCaptureConnectionConfiguration livePhotoMetadataWritingEnabled](self, "livePhotoMetadataWritingEnabled"), v19 == objc_msgSend(a3, "livePhotoMetadataWritingEnabled")) && (v20 = -[FigVideoCaptureConnectionConfiguration stereoVideoCaptureEnabled](self, "stereoVideoCaptureEnabled"), v20 == objc_msgSend(a3, "stereoVideoCaptureEnabled")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = -[FigVideoCaptureConnectionConfiguration outputFormat](self, "outputFormat"), v6 == [equal outputFormat]) && (v7 = -[FigVideoCaptureConnectionConfiguration outputWidth](self, "outputWidth"), v7 == objc_msgSend(equal, "outputWidth")) && (v8 = -[FigVideoCaptureConnectionConfiguration outputHeight](self, "outputHeight"), v8 == objc_msgSend(equal, "outputHeight")) && (v9 = -[FigVideoCaptureConnectionConfiguration videoStabilizationMethod](self, "videoStabilizationMethod"), v9 == objc_msgSend(equal, "videoStabilizationMethod")) && (v10 = -[FigVideoCaptureConnectionConfiguration videoStabilizationType](self, "videoStabilizationType"), v10 == objc_msgSend(equal, "videoStabilizationType")) && (v11 = -[FigVideoCaptureConnectionConfiguration mirroringEnabled](self, "mirroringEnabled"), v11 == objc_msgSend(equal, "mirroringEnabled")) && (v12 = -[FigVideoCaptureConnectionConfiguration physicalMirroringForMovieRecordingEnabled](self, "physicalMirroringForMovieRecordingEnabled"), v12 == objc_msgSend(equal, "physicalMirroringForMovieRecordingEnabled")) && (v13 = -[FigVideoCaptureConnectionConfiguration rotationDegrees](self, "rotationDegrees"), v13 == objc_msgSend(equal, "rotationDegrees")) && (v14 = -[FigVideoCaptureConnectionConfiguration deviceOrientationCorrectionEnabled](self, "deviceOrientationCorrectionEnabled"), v14 == objc_msgSend(equal, "deviceOrientationCorrectionEnabled")) && (v15 = -[FigVideoCaptureConnectionConfiguration zoomSmoothingEnabled](self, "zoomSmoothingEnabled"), v15 == objc_msgSend(equal, "zoomSmoothingEnabled")) && (v16 = -[FigVideoCaptureConnectionConfiguration videoGreenGhostMitigationEnabled](self, "videoGreenGhostMitigationEnabled"), v16 == objc_msgSend(equal, "videoGreenGhostMitigationEnabled")) && (v17 = -[FigVideoCaptureConnectionConfiguration retainedBufferCount](self, "retainedBufferCount"), v17 == objc_msgSend(equal, "retainedBufferCount")) && (v18 = -[FigVideoCaptureConnectionConfiguration cameraIntrinsicMatrixDeliveryEnabled](self, "cameraIntrinsicMatrixDeliveryEnabled"), v18 == objc_msgSend(equal, "cameraIntrinsicMatrixDeliveryEnabled")) && (v19 = -[FigVideoCaptureConnectionConfiguration livePhotoMetadataWritingEnabled](self, "livePhotoMetadataWritingEnabled"), v19 == objc_msgSend(equal, "livePhotoMetadataWritingEnabled")) && (v20 = -[FigVideoCaptureConnectionConfiguration stereoVideoCaptureEnabled](self, "stereoVideoCaptureEnabled"), v20 == objc_msgSend(equal, "stereoVideoCaptureEnabled")))
     {
-      v21 = [(FigVideoCaptureConnectionConfiguration *)self attachMetadataToVideoBuffers];
-      LOBYTE(v5) = v21 ^ [a3 attachMetadataToVideoBuffers] ^ 1;
+      attachMetadataToVideoBuffers = [(FigVideoCaptureConnectionConfiguration *)self attachMetadataToVideoBuffers];
+      LOBYTE(v5) = attachMetadataToVideoBuffers ^ [equal attachMetadataToVideoBuffers] ^ 1;
     }
 
     else

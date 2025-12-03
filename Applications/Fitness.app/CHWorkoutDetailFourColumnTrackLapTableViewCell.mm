@@ -1,33 +1,33 @@
 @interface CHWorkoutDetailFourColumnTrackLapTableViewCell
-- (CHWorkoutDetailFourColumnTrackLapTableViewCell)initWithCoder:(id)a3;
-- (CHWorkoutDetailFourColumnTrackLapTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureHeaderWithWorkout:(id)a3 activityMoveMode:(int64_t)a4 formattingManager:(id)a5;
-- (void)configureWithTrackLap:(id)a3 lapIndex:(int64_t)a4 workout:(id)a5 distanceUnit:(unint64_t)a6 activityType:(id)a7 activityMoveMode:(int64_t)a8 isLastCell:(BOOL)a9 formattingManager:(id)a10;
+- (CHWorkoutDetailFourColumnTrackLapTableViewCell)initWithCoder:(id)coder;
+- (CHWorkoutDetailFourColumnTrackLapTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureHeaderWithWorkout:(id)workout activityMoveMode:(int64_t)mode formattingManager:(id)manager;
+- (void)configureWithTrackLap:(id)lap lapIndex:(int64_t)index workout:(id)workout distanceUnit:(unint64_t)unit activityType:(id)type activityMoveMode:(int64_t)mode isLastCell:(BOOL)cell formattingManager:(id)self0;
 @end
 
 @implementation CHWorkoutDetailFourColumnTrackLapTableViewCell
 
-- (void)configureHeaderWithWorkout:(id)a3 activityMoveMode:(int64_t)a4 formattingManager:(id)a5
+- (void)configureHeaderWithWorkout:(id)workout activityMoveMode:(int64_t)mode formattingManager:(id)manager
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_100588458(v8, a4, v9);
+  workoutCopy = workout;
+  managerCopy = manager;
+  selfCopy = self;
+  sub_100588458(workoutCopy, mode, managerCopy);
 }
 
-- (void)configureWithTrackLap:(id)a3 lapIndex:(int64_t)a4 workout:(id)a5 distanceUnit:(unint64_t)a6 activityType:(id)a7 activityMoveMode:(int64_t)a8 isLastCell:(BOOL)a9 formattingManager:(id)a10
+- (void)configureWithTrackLap:(id)lap lapIndex:(int64_t)index workout:(id)workout distanceUnit:(unint64_t)unit activityType:(id)type activityMoveMode:(int64_t)mode isLastCell:(BOOL)cell formattingManager:(id)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a7;
-  v19 = a10;
-  v20 = self;
-  sub_100588DE0(a3, v17, a6, v18, a8, a9, v19);
+  lapCopy = lap;
+  workoutCopy = workout;
+  typeCopy = type;
+  managerCopy = manager;
+  selfCopy = self;
+  sub_100588DE0(lap, workoutCopy, unit, typeCopy, mode, cell, managerCopy);
 }
 
-- (CHWorkoutDetailFourColumnTrackLapTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailFourColumnTrackLapTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = String._bridgeToObjectiveC()();
@@ -40,17 +40,17 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for WorkoutDetailFourColumnTrackLapTableViewCell();
-  v7 = [(CHWorkoutDetailFourColumnTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(CHWorkoutDetailFourColumnTableViewCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (CHWorkoutDetailFourColumnTrackLapTableViewCell)initWithCoder:(id)a3
+- (CHWorkoutDetailFourColumnTrackLapTableViewCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for WorkoutDetailFourColumnTrackLapTableViewCell();
-  v4 = a3;
-  v5 = [(CHWorkoutDetailFourColumnTableViewCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CHWorkoutDetailFourColumnTableViewCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

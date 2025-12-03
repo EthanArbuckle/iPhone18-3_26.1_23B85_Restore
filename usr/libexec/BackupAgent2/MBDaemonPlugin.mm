@@ -1,16 +1,16 @@
 @interface MBDaemonPlugin
-- (id)endedRestoreWithPolicy:(id)a3 engine:(id)a4 error:(id)a5;
-- (id)endingBackupWithEngine:(id)a3;
-- (id)preparingRestoreWithPolicy:(id)a3 engine:(id)a4;
-- (id)startingBackupWithEngine:(id)a3;
+- (id)endedRestoreWithPolicy:(id)policy engine:(id)engine error:(id)error;
+- (id)endingBackupWithEngine:(id)engine;
+- (id)preparingRestoreWithPolicy:(id)policy engine:(id)engine;
+- (id)startingBackupWithEngine:(id)engine;
 - (void)_waitForRebootSignal;
 @end
 
 @implementation MBDaemonPlugin
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  if (([a3 isDeviceTransferEngine] & 1) == 0)
+  if (([engine isDeviceTransferEngine] & 1) == 0)
   {
     v3 = MBGetDefaultLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -26,9 +26,9 @@
   return 0;
 }
 
-- (id)endingBackupWithEngine:(id)a3
+- (id)endingBackupWithEngine:(id)engine
 {
-  if (([a3 isDeviceTransferEngine] & 1) == 0)
+  if (([engine isDeviceTransferEngine] & 1) == 0)
   {
     v3 = MBGetDefaultLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -44,11 +44,11 @@
   return 0;
 }
 
-- (id)preparingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)preparingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 isDeviceTransferEngine] & 1) != 0 || (objc_msgSend(v7, "settingsContext"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "shouldNotifySpringBoard"), v8, !v9))
+  policyCopy = policy;
+  engineCopy = engine;
+  if (([engineCopy isDeviceTransferEngine] & 1) != 0 || (objc_msgSend(engineCopy, "settingsContext"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "shouldNotifySpringBoard"), v8, !v9))
   {
     v21 = MBGetDefaultLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -66,14 +66,14 @@
   v29 = v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v10 = [SBSReadyForRestoreNotification UTF8String];
+  uTF8String = [SBSReadyForRestoreNotification UTF8String];
   v11 = &_dispatch_main_q;
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10003CAB8;
   handler[3] = &unk_1000FDB28;
   handler[4] = v28;
-  v12 = notify_register_dispatch(v10, &out_token, &_dispatch_main_q, handler);
+  v12 = notify_register_dispatch(uTF8String, &out_token, &_dispatch_main_q, handler);
 
   if (v12)
   {
@@ -177,11 +177,11 @@ LABEL_15:
   }
 }
 
-- (id)endedRestoreWithPolicy:(id)a3 engine:(id)a4 error:(id)a5
+- (id)endedRestoreWithPolicy:(id)policy engine:(id)engine error:(id)error
 {
-  v6 = a4;
+  engineCopy = engine;
   [(MBDaemonPlugin *)self _waitForRebootSignal];
-  if (([v6 isDeviceTransferEngine] & 1) == 0 && self->_restoreStarted && (objc_msgSend(v6, "settingsContext"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "shouldNotifySpringBoard"), v7, v8))
+  if (([engineCopy isDeviceTransferEngine] & 1) == 0 && self->_restoreStarted && (objc_msgSend(engineCopy, "settingsContext"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "shouldNotifySpringBoard"), v7, v8))
   {
     v9 = MBGetDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))

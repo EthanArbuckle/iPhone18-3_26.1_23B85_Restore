@@ -9,18 +9,18 @@
 {
   v2 = [[NSURLComponents alloc] initWithString:self];
   [v2 setScheme:NSURLFileScheme];
-  v3 = [v2 string];
+  string = [v2 string];
 
-  return v3;
+  return string;
 }
 
 - (id)assetPathFromFileURL
 {
   v2 = [NSURLComponents componentsWithString:self];
   [v2 setScheme:0];
-  v3 = [v2 string];
+  string = [v2 string];
 
-  return v3;
+  return string;
 }
 
 @end

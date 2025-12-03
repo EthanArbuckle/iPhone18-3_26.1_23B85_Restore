@@ -1,15 +1,15 @@
 @interface PXStoryDemoActivity
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)assets;
 @end
 
 @implementation PXStoryDemoActivity
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   v9 = [PXStoryConfiguration alloc];
   [(PXActivity *)self itemSourceController];
   [objc_claimAutoreleasedReturnValue() assets];
@@ -18,30 +18,30 @@
   PXDisplayAssetFetchResultFromArray();
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v4 = +[PXRootSettings sharedInstance];
-  v5 = [v4 canShowInternalUI];
+  canShowInternalUI = [v4 canShowInternalUI];
 
-  if (!v5)
+  if (!canShowInternalUI)
   {
     return 0;
   }
 
-  v6 = [(PXActivity *)self itemSourceController];
-  v7 = [v6 assets];
-  v8 = [v7 count] != 0;
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
+  v8 = [assets count] != 0;
 
   return v8;
 }
 
 - (id)assets
 {
-  v2 = [(PXActivity *)self itemSourceController];
+  itemSourceController = [(PXActivity *)self itemSourceController];
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [v2 assets];
-  v5 = [v4 array];
-  v6 = [v3 arrayWithArray:v5];
+  assets = [itemSourceController assets];
+  array = [assets array];
+  v6 = [v3 arrayWithArray:array];
 
   return v6;
 }

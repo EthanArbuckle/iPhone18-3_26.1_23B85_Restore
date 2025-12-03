@@ -1,38 +1,38 @@
 @interface BRShareSaveOperation
-+ (BOOL)shouldRetryShareSaveOnError:(id)a3;
-- (BRShareSaveOperation)initWithShare:(id)a3;
-- (BRShareSaveOperation)initWithShare:(id)a3 fileURL:(id)a4;
-- (void)finishWithResult:(id)a3 error:(id)a4;
++ (BOOL)shouldRetryShareSaveOnError:(id)error;
+- (BRShareSaveOperation)initWithShare:(id)share;
+- (BRShareSaveOperation)initWithShare:(id)share fileURL:(id)l;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRShareSaveOperation
 
-- (BRShareSaveOperation)initWithShare:(id)a3
+- (BRShareSaveOperation)initWithShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   v8.receiver = self;
   v8.super_class = BRShareSaveOperation;
-  v5 = [(BRShareOperation *)&v8 initWithShare:v4];
+  v5 = [(BRShareOperation *)&v8 initWithShare:shareCopy];
   v6 = v5;
   if (v5)
   {
-    [(BRShareSaveOperation *)v5 setShare:v4];
+    [(BRShareSaveOperation *)v5 setShare:shareCopy];
   }
 
   return v6;
 }
 
-- (BRShareSaveOperation)initWithShare:(id)a3 fileURL:(id)a4
+- (BRShareSaveOperation)initWithShare:(id)share fileURL:(id)l
 {
-  v6 = a3;
+  shareCopy = share;
   v10.receiver = self;
   v10.super_class = BRShareSaveOperation;
-  v7 = [(BRShareOperation *)&v10 initWithURL:a4];
+  v7 = [(BRShareOperation *)&v10 initWithURL:l];
   v8 = v7;
   if (v7)
   {
-    [(BRShareSaveOperation *)v7 setShare:v6];
+    [(BRShareSaveOperation *)v7 setShare:shareCopy];
   }
 
   return v8;
@@ -40,7 +40,7 @@
 
 - (void)main
 {
-  v3 = [(BRShareOperation *)self remoteObject];
+  remoteObject = [(BRShareOperation *)self remoteObject];
   v4 = [(CKShare *)self->_share copy];
   br_setShareAssociatedURL(v4, 0);
   v5[0] = MEMORY[0x1E69E9820];
@@ -48,7 +48,7 @@
   v5[2] = __28__BRShareSaveOperation_main__block_invoke;
   v5[3] = &unk_1E7A14BE0;
   v5[4] = self;
-  [v3 startOperation:self toSaveSharingInfo:v4 reply:v5];
+  [remoteObject startOperation:self toSaveSharingInfo:v4 reply:v5];
 }
 
 void __28__BRShareSaveOperation_main__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -62,39 +62,39 @@ void __28__BRShareSaveOperation_main__block_invoke(uint64_t a1, void *a2, void *
   [*(a1 + 32) completedWithResult:v8 error:v6];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRShareSaveOperation *)self shareSaveCompletionBlock];
-  v9 = v8;
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  shareSaveCompletionBlock = [(BRShareSaveOperation *)self shareSaveCompletionBlock];
+  v9 = shareSaveCompletionBlock;
+  if (shareSaveCompletionBlock)
   {
-    (*(v8 + 16))(v8, v6, v7);
+    (*(shareSaveCompletionBlock + 16))(shareSaveCompletionBlock, resultCopy, errorCopy);
     [(BRShareSaveOperation *)self setShareSaveCompletionBlock:0];
   }
 
   v10.receiver = self;
   v10.super_class = BRShareSaveOperation;
-  [(BROperation *)&v10 finishWithResult:v6 error:v7];
+  [(BROperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
-+ (BOOL)shouldRetryShareSaveOnError:(id)a3
++ (BOOL)shouldRetryShareSaveOnError:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"BRCloudDocsErrorDomain"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"BRCloudDocsErrorDomain"];
 
   if (!v6)
   {
-    v10 = [v4 domain];
+    domain2 = [errorCopy domain];
     v11 = getCKErrorDomain();
-    if ([v10 isEqualToString:v11])
+    if ([domain2 isEqualToString:v11])
     {
-      v12 = [v4 code];
+      code = [errorCopy code];
 
-      if (v12 == 14)
+      if (code == 14)
       {
 LABEL_24:
         v9 = 1;
@@ -106,29 +106,29 @@ LABEL_24:
     {
     }
 
-    v13 = [v4 domain];
-    v14 = getCKErrorDomain();
-    if ([v13 isEqualToString:v14])
+    domain3 = [errorCopy domain];
+    objectEnumerator = getCKErrorDomain();
+    if ([domain3 isEqualToString:objectEnumerator])
     {
-      v15 = [v4 code];
+      code2 = [errorCopy code];
 
-      if (v15 != 2)
+      if (code2 != 2)
       {
 LABEL_23:
         v9 = 0;
         goto LABEL_25;
       }
 
-      v16 = [v4 userInfo];
+      userInfo = [errorCopy userInfo];
       v17 = getCKPartialErrorsByItemIDKey();
-      v13 = [v16 objectForKeyedSubscript:v17];
+      domain3 = [userInfo objectForKeyedSubscript:v17];
 
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v14 = [v13 objectEnumerator];
-      v18 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      objectEnumerator = [domain3 objectEnumerator];
+      v18 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v18)
       {
         v19 = v18;
@@ -139,17 +139,17 @@ LABEL_23:
           {
             if (*v29 != v20)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v22 = *(*(&v28 + 1) + 8 * i);
-            v23 = [v22 domain];
+            domain4 = [v22 domain];
             v24 = getCKErrorDomain();
-            if ([v23 isEqualToString:v24])
+            if ([domain4 isEqualToString:v24])
             {
-              v25 = [v22 code];
+              code3 = [v22 code];
 
-              if (v25 == 14)
+              if (code3 == 14)
               {
 
                 goto LABEL_24;
@@ -161,7 +161,7 @@ LABEL_23:
             }
           }
 
-          v19 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v19 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v19);
@@ -171,15 +171,15 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  userInfo2 = [errorCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-  if (v8 == v4)
+  if (v8 == errorCopy)
   {
     +[BRShareSaveOperation shouldRetryShareSaveOnError:];
   }
 
-  v9 = [a1 shouldRetryShareSaveOnError:v8];
+  v9 = [self shouldRetryShareSaveOnError:v8];
 
 LABEL_25:
   v26 = *MEMORY[0x1E69E9840];

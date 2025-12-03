@@ -1,40 +1,40 @@
 @interface HMBSQLContext
 + (id)logCategory;
-- (BOOL)fetchSQLite3:(sqlite3_stmt *)a3 limit:(unint64_t)a4 error:(id *)a5 block:(id)a6;
-- (BOOL)fetchSQLite3One:(sqlite3_stmt *)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)initializeNewlyCreatedDatabaseWithError:(id *)a3;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)runSQLite3:(const char *)a3 error:(id *)a4;
-- (BOOL)setSchemaVersion:(int64_t)a3 error:(id *)a4;
-- (HMBSQLContext)initWithURL:(id)a3;
-- (HMBSQLContext)initWithURL:(id)a3 preparedStatementsCache:(id)a4 memoryMonitor:(id)a5;
-- (id)_performBlockWithContextManagedStatementForString:(const char *)a3 block:(id)a4;
+- (BOOL)fetchSQLite3:(sqlite3_stmt *)lite3 limit:(unint64_t)limit error:(id *)error block:(id)block;
+- (BOOL)fetchSQLite3One:(sqlite3_stmt *)one error:(id *)error block:(id)block;
+- (BOOL)initializeNewlyCreatedDatabaseWithError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)runSQLite3:(const char *)lite3 error:(id *)error;
+- (BOOL)setSchemaVersion:(int64_t)version error:(id *)error;
+- (HMBSQLContext)initWithURL:(id)l;
+- (HMBSQLContext)initWithURL:(id)l preparedStatementsCache:(id)cache memoryMonitor:(id)monitor;
+- (id)_performBlockWithContextManagedStatementForString:(const char *)string block:(id)block;
 - (id)attributeDescriptions;
 - (id)commit;
-- (id)execSQLite3:(sqlite3_stmt *)a3;
-- (id)runSQLite3:(const char *)a3;
-- (id)sqlBlockWithActivity:(id)a3 block:(id)a4;
-- (id)sqlTransactionWithActivity:(id)a3 block:(id)a4;
-- (int64_t)migrateFromSchemaVersion:(int64_t)a3 error:(id *)a4;
-- (sqlite3_stmt)_statementForString:(const char *)a3 error:(id *)a4;
-- (unint64_t)insertSQLite3:(sqlite3_stmt *)a3 error:(id *)a4;
+- (id)execSQLite3:(sqlite3_stmt *)lite3;
+- (id)runSQLite3:(const char *)lite3;
+- (id)sqlBlockWithActivity:(id)activity block:(id)block;
+- (id)sqlTransactionWithActivity:(id)activity block:(id)block;
+- (int64_t)migrateFromSchemaVersion:(int64_t)version error:(id *)error;
+- (sqlite3_stmt)_statementForString:(const char *)string error:(id *)error;
+- (unint64_t)insertSQLite3:(sqlite3_stmt *)lite3 error:(id *)error;
 - (void)_clearPreparedStatementsCache;
 - (void)_configureMemoryPressureHandler;
 - (void)dealloc;
 - (void)finalize;
-- (void)memoryMonitor:(id)a3 didReceiveMemoryEvent:(int64_t)a4;
+- (void)memoryMonitor:(id)monitor didReceiveMemoryEvent:(int64_t)event;
 - (void)rollback;
 @end
 
 @implementation HMBSQLContext
 
-- (void)memoryMonitor:(id)a3 didReceiveMemoryEvent:(int64_t)a4
+- (void)memoryMonitor:(id)monitor didReceiveMemoryEvent:(int64_t)event
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  monitorCopy = monitor;
   os_unfair_lock_lock_with_options();
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -45,7 +45,7 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  [(HMBSQLContext *)v7 _clearPreparedStatementsCache];
+  [(HMBSQLContext *)selfCopy _clearPreparedStatementsCache];
   os_unfair_lock_unlock(&self->_lock);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -69,19 +69,19 @@
   return v9;
 }
 
-- (BOOL)fetchSQLite3One:(sqlite3_stmt *)a3 error:(id *)a4 block:(id)a5
+- (BOOL)fetchSQLite3One:(sqlite3_stmt *)one error:(id *)error block:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (a4 && *a4)
+  blockCopy = block;
+  if (error && *error)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = *a4;
+      v13 = *error;
       v25 = 138543618;
       v26 = v12;
       v27 = 2112;
@@ -93,13 +93,13 @@
     goto LABEL_6;
   }
 
-  v15 = sqlite3_step(a3);
+  v15 = sqlite3_step(one);
   if (v15 == 101)
   {
 LABEL_10:
-    v16 = sqlite3_reset(a3);
+    v16 = sqlite3_reset(one);
     v14 = 0;
-    if (!a4 || !v16)
+    if (!error || !v16)
     {
       goto LABEL_20;
     }
@@ -114,14 +114,14 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    sqlite3_reset(a3);
-    if (a4)
+    sqlite3_reset(one);
+    if (error)
     {
 LABEL_18:
-      v20 = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Statement:a3];
+      v20 = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Statement:one];
 LABEL_19:
       v14 = 0;
-      *a4 = v20;
+      *error = v20;
       goto LABEL_20;
     }
 
@@ -130,27 +130,27 @@ LABEL_6:
     goto LABEL_20;
   }
 
-  v17 = v8[2](v8, a3);
+  v17 = blockCopy[2](blockCopy, one);
   if (v17)
   {
     v18 = v17;
-    sqlite3_reset(a3);
-    if (a4)
+    sqlite3_reset(one);
+    if (error)
     {
       v19 = v18;
-      *a4 = v18;
+      *error = v18;
     }
 
     goto LABEL_6;
   }
 
-  v23 = sqlite3_step(a3);
+  v23 = sqlite3_step(one);
   if (v23 != 101)
   {
     if (v23 == 100)
     {
-      sqlite3_reset(a3);
-      if (a4)
+      sqlite3_reset(one);
+      if (error)
       {
         v20 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
         goto LABEL_19;
@@ -161,19 +161,19 @@ LABEL_6:
 
     if (v23)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Statement:a3];
+        *error = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Statement:one];
       }
 
-      sqlite3_reset(a3);
+      sqlite3_reset(one);
       goto LABEL_6;
     }
   }
 
-  v24 = sqlite3_reset(a3);
+  v24 = sqlite3_reset(one);
   v14 = v24 == 0;
-  if (v24 && a4)
+  if (v24 && error)
   {
     goto LABEL_18;
   }
@@ -184,19 +184,19 @@ LABEL_20:
   return v14;
 }
 
-- (BOOL)fetchSQLite3:(sqlite3_stmt *)a3 limit:(unint64_t)a4 error:(id *)a5 block:(id)a6
+- (BOOL)fetchSQLite3:(sqlite3_stmt *)lite3 limit:(unint64_t)limit error:(id *)error block:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  if (a5 && *a5)
+  blockCopy = block;
+  if (error && *error)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = *a5;
+      v15 = *error;
       v24 = 138543618;
       v25 = v14;
       v26 = 2112;
@@ -214,41 +214,41 @@ LABEL_27:
     LOBYTE(v24) = 0;
     while (1)
     {
-      v16 = sqlite3_step(a3);
+      v16 = sqlite3_step(lite3);
       if (v16 != 100)
       {
         break;
       }
 
-      if (a4 == -1)
+      if (limit == -1)
       {
         if (v24)
         {
           goto LABEL_20;
         }
 
-        a4 = -1;
+        limit = -1;
       }
 
       else
       {
-        if (!a4 || (v24 & 1) != 0)
+        if (!limit || (v24 & 1) != 0)
         {
           goto LABEL_20;
         }
 
-        --a4;
+        --limit;
       }
 
-      v17 = v10[2](v10, a3, &v24);
+      v17 = blockCopy[2](blockCopy, lite3, &v24);
       if (v17)
       {
         v18 = v17;
-        sqlite3_reset(a3);
-        if (a5)
+        sqlite3_reset(lite3);
+        if (error)
         {
           v19 = v18;
-          *a5 = v18;
+          *error = v18;
         }
 
         goto LABEL_27;
@@ -257,27 +257,27 @@ LABEL_27:
 
     if (v16 && v16 != 101)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Statement:a3];
+        *error = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Statement:lite3];
       }
 
-      sqlite3_reset(a3);
+      sqlite3_reset(lite3);
       goto LABEL_27;
     }
 
 LABEL_20:
-    v20 = sqlite3_reset(a3);
+    v20 = sqlite3_reset(lite3);
     v21 = 1;
     if ((v20 - 100) >= 2 && v20)
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_27;
       }
 
-      [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Statement:a3];
-      *a5 = v21 = 0;
+      [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Statement:lite3];
+      *error = v21 = 0;
     }
   }
 
@@ -285,35 +285,35 @@ LABEL_20:
   return v21;
 }
 
-- (unint64_t)insertSQLite3:(sqlite3_stmt *)a3 error:(id *)a4
+- (unint64_t)insertSQLite3:(sqlite3_stmt *)lite3 error:(id *)error
 {
-  if (!a4)
+  if (!error)
   {
-    if (sqlite3_step(a3) == 101)
+    if (sqlite3_step(lite3) == 101)
     {
       goto LABEL_7;
     }
 
-    sqlite3_reset(a3);
+    sqlite3_reset(lite3);
     return 0;
   }
 
-  if (*a4)
+  if (*error)
   {
     return 0;
   }
 
-  if (sqlite3_step(a3) != 101)
+  if (sqlite3_step(lite3) != 101)
   {
-    *a4 = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Statement:a3];
-    if (sqlite3_reset(a3))
+    *error = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Statement:lite3];
+    if (sqlite3_reset(lite3))
     {
       v6 = MEMORY[0x277CCA9B8];
 LABEL_13:
-      v11 = [v6 hmbErrorWithSQLite3Statement:a3];
+      v11 = [v6 hmbErrorWithSQLite3Statement:lite3];
       v12 = v11;
       result = 0;
-      *a4 = v11;
+      *error = v11;
       return result;
     }
 
@@ -321,9 +321,9 @@ LABEL_13:
   }
 
 LABEL_7:
-  v7 = sqlite3_db_handle(a3);
+  v7 = sqlite3_db_handle(lite3);
   insert_rowid = sqlite3_last_insert_rowid(v7);
-  v9 = sqlite3_reset(a3);
+  v9 = sqlite3_reset(lite3);
   if (v9)
   {
     result = 0;
@@ -334,7 +334,7 @@ LABEL_7:
     result = insert_rowid;
   }
 
-  if (a4 && v9)
+  if (error && v9)
   {
     v6 = MEMORY[0x277CCA9B8];
     goto LABEL_13;
@@ -343,16 +343,16 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)runSQLite3:(const char *)a3 error:(id *)a4
+- (BOOL)runSQLite3:(const char *)lite3 error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (!a4 || !*a4)
+  if (!error || !*error)
   {
-    if (sqlite3_exec(self->_connection, a3, 0, 0, 0))
+    if (sqlite3_exec(self->_connection, lite3, 0, 0, 0))
     {
-      v8 = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Connection:self->_connection statement:a3];
+      v8 = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Connection:self->_connection statement:lite3];
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -360,14 +360,14 @@ LABEL_7:
         v16 = 138543874;
         v17 = v12;
         v18 = 2080;
-        v19 = a3;
+        lite3Copy = lite3;
         v20 = 2112;
         v21 = v8;
         _os_log_impl(&dword_22AD27000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to run SQL statement %s: %@", &v16, 0x20u);
       }
 
       objc_autoreleasePoolPop(v9);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -376,14 +376,14 @@ LABEL_7:
     else
     {
       v8 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_9;
       }
     }
 
     v13 = v8;
-    *a4 = v8;
+    *error = v8;
 LABEL_9:
     v7 = v8 == 0;
 
@@ -396,24 +396,24 @@ LABEL_10:
   return v7;
 }
 
-- (id)execSQLite3:(sqlite3_stmt *)a3
+- (id)execSQLite3:(sqlite3_stmt *)lite3
 {
   v5 = 0;
-  __execSQLite3(self, a3, &v5);
+  __execSQLite3(self, lite3, &v5);
   v3 = v5;
 
   return v3;
 }
 
-- (id)runSQLite3:(const char *)a3
+- (id)runSQLite3:(const char *)lite3
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = __removeExtraWhitespace(a3);
+  v5 = __removeExtraWhitespace(lite3);
   if (sqlite3_exec(self->_connection, [v5 UTF8String], 0, 0, 0))
   {
-    v6 = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Connection:self->_connection statement:a3];
+    v6 = [MEMORY[0x277CCA9B8] hmbErrorWithSQLite3Connection:self->_connection statement:lite3];
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -421,7 +421,7 @@ LABEL_10:
       v13 = 138543874;
       v14 = v10;
       v15 = 2080;
-      v16 = a3;
+      lite3Copy = lite3;
       v17 = 2112;
       v18 = v6;
       _os_log_impl(&dword_22AD27000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to run SQL statement %s: %@", &v13, 0x20u);
@@ -518,87 +518,87 @@ id __22__HMBSQLContext_begin__block_invoke(int a1, sqlite3_stmt *a2)
   return v3;
 }
 
-- (id)sqlTransactionWithActivity:(id)a3 block:(id)a4
+- (id)sqlTransactionWithActivity:(id)activity block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  blockCopy = block;
   os_unfair_lock_lock_with_options();
-  v8 = [(HMBSQLContext *)self begin];
-  v9 = v8;
-  if (v8)
+  begin = [(HMBSQLContext *)self begin];
+  v9 = begin;
+  if (begin)
   {
-    v10 = v8;
+    commit = begin;
   }
 
   else
   {
-    v11 = v7[2](v7, self);
+    v11 = blockCopy[2](blockCopy, self);
     if (v11)
     {
       [(HMBSQLContext *)self rollback];
-      v10 = v11;
+      commit = v11;
     }
 
     else
     {
-      v10 = [(HMBSQLContext *)self commit];
-      if (v10)
+      commit = [(HMBSQLContext *)self commit];
+      if (commit)
       {
         [(HMBSQLContext *)self rollback];
-        v12 = v10;
+        v12 = commit;
       }
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v10;
+  return commit;
 }
 
-- (id)sqlBlockWithActivity:(id)a3 block:(id)a4
+- (id)sqlBlockWithActivity:(id)activity block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  blockCopy = block;
   os_unfair_lock_lock_with_options();
-  v8 = v7[2](v7, self);
+  v8 = blockCopy[2](blockCopy, self);
   os_unfair_lock_unlock(&self->_lock);
 
   return v8;
 }
 
-- (BOOL)setSchemaVersion:(int64_t)a3 error:(id *)a4
+- (BOOL)setSchemaVersion:(int64_t)version error:(id *)error
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA user_version = %ld", a3];;
-  v7 = [(HMBSQLContext *)self connection];
-  v8 = [v6 UTF8String];
+  version = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA user_version = %ld", version];;
+  connection = [(HMBSQLContext *)self connection];
+  uTF8String = [version UTF8String];
   v14 = 0;
-  v9 = selectSQLite3(v7, v8, MEMORY[0x277CBEC10], &v14);
+  v9 = selectSQLite3(connection, uTF8String, MEMORY[0x277CBEC10], &v14);
   v10 = v14;
   v11 = v10;
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v12 = v10;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v9 != 0;
 }
 
-- (int64_t)migrateFromSchemaVersion:(int64_t)a3 error:(id *)a4
+- (int64_t)migrateFromSchemaVersion:(int64_t)version error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0;
-  v5 = [(HMBSQLContext *)self prepareWithError:&v14, a4];
+  error = [(HMBSQLContext *)self prepareWithError:&v14, error];
   v6 = v14;
-  if (v5)
+  if (error)
   {
-    v7 = 3;
+    hmbIsSQLiteDatabaseCorruptedError = 3;
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -611,14 +611,14 @@ id __22__HMBSQLContext_begin__block_invoke(int a1, sqlite3_stmt *a2)
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = [v6 hmbIsSQLiteDatabaseCorruptedError];
+    hmbIsSQLiteDatabaseCorruptedError = [v6 hmbIsSQLiteDatabaseCorruptedError];
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v7;
+  return hmbIsSQLiteDatabaseCorruptedError;
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = [(HMBSQLContext *)self runSQLite3:"PRAGMA foreign_keys = ON"];;
@@ -630,7 +630,7 @@ id __22__HMBSQLContext_begin__block_invoke(int a1, sqlite3_stmt *a2)
     {
       v6 = v14;
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -661,18 +661,18 @@ LABEL_18:
       }
 
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
 LABEL_14:
 
         objc_autoreleasePoolPop(v15);
-        if (a3)
+        if (error)
         {
           v22 = v6;
           v12 = 0;
-          *a3 = v6;
+          *error = v6;
         }
 
         else
@@ -700,7 +700,7 @@ LABEL_14:
 
   v6 = v5;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy3 = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -713,11 +713,11 @@ LABEL_14:
   }
 
   objc_autoreleasePoolPop(v7);
-  if (a3)
+  if (error)
   {
     v11 = v6;
     v12 = 0;
-    *a3 = v6;
+    *error = v6;
   }
 
   else
@@ -731,7 +731,7 @@ LABEL_19:
   return v12;
 }
 
-- (BOOL)initializeNewlyCreatedDatabaseWithError:(id *)a3
+- (BOOL)initializeNewlyCreatedDatabaseWithError:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0;
@@ -740,7 +740,7 @@ LABEL_19:
   if (!v5)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -753,10 +753,10 @@ LABEL_19:
     }
 
     objc_autoreleasePoolPop(v7);
-    if (a3)
+    if (error)
     {
       v11 = v6;
-      *a3 = v6;
+      *error = v6;
     }
   }
 
@@ -768,7 +768,7 @@ LABEL_19:
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -776,22 +776,22 @@ LABEL_19:
     v9 = 138543618;
     v10 = v6;
     v11 = 2112;
-    v12 = v4;
+    v12 = selfCopy;
     _os_log_impl(&dword_22AD27000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@Finalizing %@", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  os_unfair_lock_assert_owner(&v4->_lock);
-  if (v4->_finalized)
+  os_unfair_lock_assert_owner(&selfCopy->_lock);
+  if (selfCopy->_finalized)
   {
     _HMFPreconditionFailure();
   }
 
-  v4->_finalized = 1;
-  v7 = [(HMBSQLContext *)v4 memoryMonitor];
-  [v7 removeObserver:v4];
+  selfCopy->_finalized = 1;
+  memoryMonitor = [(HMBSQLContext *)selfCopy memoryMonitor];
+  [memoryMonitor removeObserver:selfCopy];
 
-  [(HMBSQLContext *)v4 _clearPreparedStatementsCache];
+  [(HMBSQLContext *)selfCopy _clearPreparedStatementsCache];
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -799,12 +799,12 @@ LABEL_19:
 {
   v14 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(HMBPreparedStatementsCache *)self->_preparedStatementsCache evictAllStatements];
+  evictAllStatements = [(HMBPreparedStatementsCache *)self->_preparedStatementsCache evictAllStatements];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [evictAllStatements countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -816,14 +816,14 @@ LABEL_19:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(evictAllStatements);
         }
 
         sqlite3_finalize(*(*(&v9 + 1) + 8 * v7++));
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [evictAllStatements countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -832,17 +832,17 @@ LABEL_19:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_performBlockWithContextManagedStatementForString:(const char *)a3 block:(id)a4
+- (id)_performBlockWithContextManagedStatementForString:(const char *)string block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   os_unfair_lock_assert_owner(&self->_lock);
   v13 = 0;
-  v7 = [(HMBSQLContext *)self _statementForString:a3 error:&v13];
+  v7 = [(HMBSQLContext *)self _statementForString:string error:&v13];
   v8 = v13;
   v9 = v8;
   if (v7)
   {
-    v10 = v6[2](v6, v7);
+    v10 = blockCopy[2](blockCopy, v7);
   }
 
   else
@@ -855,14 +855,14 @@ LABEL_19:
   return v11;
 }
 
-- (sqlite3_stmt)_statementForString:(const char *)a3 error:(id *)a4
+- (sqlite3_stmt)_statementForString:(const char *)string error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_finalized)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -878,7 +878,7 @@ LABEL_19:
 
   else
   {
-    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:a3];
+    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:string];
     v11 = [(HMBPreparedStatementsCache *)self->_preparedStatementsCache statementForString:v12];
     if (!v11)
     {
@@ -888,7 +888,7 @@ LABEL_19:
       }
 
       v21 = 0;
-      v11 = prepareSQLite3([(HMBSQLContext *)self connection], a3, &v21);
+      v11 = prepareSQLite3([(HMBSQLContext *)self connection], string, &v21);
       v13 = v21;
       if (v11)
       {
@@ -898,7 +898,7 @@ LABEL_19:
       else
       {
         v14 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy2 = self;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
@@ -911,11 +911,11 @@ LABEL_19:
         }
 
         objc_autoreleasePoolPop(v14);
-        if (a4)
+        if (error)
         {
           v18 = v13;
           v11 = 0;
-          *a4 = v13;
+          *error = v13;
         }
 
         else
@@ -933,8 +933,8 @@ LABEL_19:
 - (void)_configureMemoryPressureHandler
 {
   v4 = [MEMORY[0x277CBEB98] setWithArray:&unk_283EB9ED0];
-  v3 = [(HMBSQLContext *)self memoryMonitor];
-  [v3 addObserver:self debounceInterval:v4 events:1.0];
+  memoryMonitor = [(HMBSQLContext *)self memoryMonitor];
+  [memoryMonitor addObserver:self debounceInterval:v4 events:1.0];
 }
 
 - (void)dealloc
@@ -949,36 +949,36 @@ LABEL_19:
   [(HMBSQLContext *)&v3 dealloc];
 }
 
-- (HMBSQLContext)initWithURL:(id)a3 preparedStatementsCache:(id)a4 memoryMonitor:(id)a5
+- (HMBSQLContext)initWithURL:(id)l preparedStatementsCache:(id)cache memoryMonitor:(id)monitor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  cacheCopy = cache;
+  monitorCopy = monitor;
   v20.receiver = self;
   v20.super_class = HMBSQLContext;
   v12 = [(HMBSQLContext *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_url, a3);
-    v14 = [v9 scheme];
-    v15 = [v14 isEqualToString:@"memory"];
+    objc_storeStrong(&v12->_url, l);
+    scheme = [lCopy scheme];
+    v15 = [scheme isEqualToString:@"memory"];
 
     if (v15)
     {
-      [v9 description];
+      [lCopy description];
     }
 
     else
     {
-      [v9 lastPathComponent];
+      [lCopy lastPathComponent];
     }
     v16 = ;
     logIdentifier = v13->_logIdentifier;
     v13->_logIdentifier = v16;
 
-    objc_storeStrong(&v13->_preparedStatementsCache, a4);
-    objc_storeStrong(&v13->_memoryMonitor, a5);
+    objc_storeStrong(&v13->_preparedStatementsCache, cache);
+    objc_storeStrong(&v13->_memoryMonitor, monitor);
     [(HMBSQLContext *)v13 _configureMemoryPressureHandler];
     v18 = v13;
   }
@@ -986,12 +986,12 @@ LABEL_19:
   return v13;
 }
 
-- (HMBSQLContext)initWithURL:(id)a3
+- (HMBSQLContext)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(HMBPreparedStatementsCache);
-  v6 = [MEMORY[0x277D0F810] memoryMonitor];
-  v7 = [(HMBSQLContext *)self initWithURL:v4 preparedStatementsCache:v5 memoryMonitor:v6];
+  memoryMonitor = [MEMORY[0x277D0F810] memoryMonitor];
+  v7 = [(HMBSQLContext *)self initWithURL:lCopy preparedStatementsCache:v5 memoryMonitor:memoryMonitor];
 
   return v7;
 }

@@ -1,22 +1,22 @@
 @interface AKSignatureAnnotationRenderer
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
 @end
 
 @implementation AKSignatureAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  v3 = a3;
-  [v3 rectangle];
+  annotationCopy = annotation;
+  [annotationCopy rectangle];
   v16 = CGRectInset(v15, -1.0, -1.0);
   x = v16.origin.x;
   y = v16.origin.y;
   width = v16.size.width;
   height = v16.size.height;
-  [v3 rotationAngle];
+  [annotationCopy rotationAngle];
   v9 = v8;
 
   [AKGeometryHelper boundsOfRotatedRectangle:x angle:y, width, height, v9];
@@ -27,7 +27,7 @@
   return result;
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = -5.0;
   v4 = -5.0;
@@ -36,43 +36,43 @@
   return result;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
   v102 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  [v11 allowHDR];
-  CGContextSaveGState(a4);
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v10 forDisplay:objc_msgSend(v11 pageControllerOrNil:{"forDisplay"), v12}];
+  annotationCopy = annotation;
+  optionsCopy = options;
+  nilCopy = nil;
+  [optionsCopy allowHDR];
+  CGContextSaveGState(context);
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:objc_msgSend(optionsCopy pageControllerOrNil:{"forDisplay"), nilCopy}];
   memset(&v100, 0, sizeof(v100));
-  [AKGeometryHelper rotationTransformForRectangularAnnotation:v10 hasRotation:0];
+  [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:0];
   transform = v100;
-  CGContextConcatCTM(a4, &transform);
-  [v10 rectangle];
-  CGContextTranslateCTM(a4, v13, v14);
-  v15 = +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", [v10 originalExifOrientation]);
+  CGContextConcatCTM(context, &transform);
+  [annotationCopy rectangle];
+  CGContextTranslateCTM(context, v13, v14);
+  v15 = +[AKGeometryHelper inverseExifOrientation:](AKGeometryHelper, "inverseExifOrientation:", [annotationCopy originalExifOrientation]);
   memset(&transform, 0, sizeof(transform));
-  [v10 rectangle];
+  [annotationCopy rectangle];
   [AKGeometryHelper affineTransformRecenteringAboutOriginForExifOrientation:v15 withOriginalSize:v16, v17];
   v98 = transform;
-  CGContextConcatCTM(a4, &v98);
-  v18 = [v10 signature];
-  v19 = [v18 drawing];
+  CGContextConcatCTM(context, &v98);
+  signature = [annotationCopy signature];
+  drawing = [signature drawing];
 
-  if (!v19)
+  if (!drawing)
   {
 LABEL_7:
-    v27 = [v10 signature];
-    v28 = [v27 path];
+    signature2 = [annotationCopy signature];
+    path = [signature2 path];
 
-    if (v28)
+    if (path)
     {
-      v29 = [v10 strokeColor];
+      strokeColor = [annotationCopy strokeColor];
 
-      if (v29)
+      if (strokeColor)
       {
-        [v10 strokeColorForOptions:v11];
+        [annotationCopy strokeColorForOptions:optionsCopy];
       }
 
       else
@@ -80,16 +80,16 @@ LABEL_7:
         [MEMORY[0x277D75348] blackColor];
       }
       v30 = ;
-      CGContextSetFillColorWithColor(a4, [v30 CGColor]);
+      CGContextSetFillColorWithColor(context, [v30 CGColor]);
 
-      v31 = [v10 signature];
-      [v31 pathBounds];
+      signature3 = [annotationCopy signature];
+      [signature3 pathBounds];
       v33 = v32;
       v35 = v34;
       v37 = v36;
       v39 = v38;
 
-      [v10 rectangle];
+      [annotationCopy rectangle];
       [AKGeometryHelper adjustRect:"adjustRect:forExifOrientation:aboutCenter:" forExifOrientation:v15 aboutCenter:?];
       v42 = v40 / v37;
       if (v40 / v37 >= v41 / v39)
@@ -103,32 +103,32 @@ LABEL_7:
         v43 = (v40 / v42 - v37) * 0.5;
       }
 
-      CGContextScaleCTM(a4, v42, v42);
-      CGContextTranslateCTM(a4, v43 - v33, -v35);
-      v44 = [v10 signature];
-      CGContextAddPath(a4, [v44 path]);
+      CGContextScaleCTM(context, v42, v42);
+      CGContextTranslateCTM(context, v43 - v33, -v35);
+      signature4 = [annotationCopy signature];
+      CGContextAddPath(context, [signature4 path]);
 
-      CGContextFillPath(a4);
+      CGContextFillPath(context);
     }
 
     goto LABEL_44;
   }
 
-  v20 = [v11 forDisplay];
-  if (v12 && v20)
+  forDisplay = [optionsCopy forDisplay];
+  if (nilCopy && forDisplay)
   {
-    v21 = [MEMORY[0x277CCACC8] currentThread];
-    v22 = [v21 threadDictionary];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v23 = [v22 objectForKey:@"AKAnnotationRendererIsFastPathRenderingOnCurrentThread"];
-    v24 = [v23 BOOLValue];
+    v23 = [threadDictionary objectForKey:@"AKAnnotationRendererIsFastPathRenderingOnCurrentThread"];
+    bOOLValue = [v23 BOOLValue];
 
-    if (v24)
+    if (bOOLValue)
     {
-      v25 = [v10 signature];
-      v26 = [v25 path];
+      signature5 = [annotationCopy signature];
+      path2 = [signature5 path];
 
-      if (v26)
+      if (path2)
       {
 
         goto LABEL_7;
@@ -141,40 +141,40 @@ LABEL_7:
     }
   }
 
-  v45 = [v10 signature];
-  v46 = [v45 drawing];
+  signature6 = [annotationCopy signature];
+  drawing2 = [signature6 drawing];
 
-  v47 = [v10 strokeColor];
-  if (v47)
+  strokeColor2 = [annotationCopy strokeColor];
+  if (strokeColor2)
   {
-    v91 = v12;
-    v48 = [MEMORY[0x277D75348] blackColor];
-    v49 = [v47 isEqual:v48];
+    v91 = nilCopy;
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v49 = [strokeColor2 isEqual:blackColor];
 
     if (v49)
     {
-      v50 = v46;
-      v12 = v91;
+      v50 = drawing2;
+      nilCopy = v91;
     }
 
     else
     {
       v88 = v15;
-      v89 = v11;
-      v90 = v10;
+      v89 = optionsCopy;
+      v90 = annotationCopy;
       v51 = objc_alloc(MEMORY[0x277CBEB70]);
-      v52 = [v46 strokes];
-      v53 = [v51 initWithArray:v52];
+      strokes = [drawing2 strokes];
+      v53 = [v51 initWithArray:strokes];
 
       v86 = v53;
-      v87 = v46;
-      v50 = [objc_alloc(MEMORY[0x277CD95F8]) initWithStrokes:v53 fromDrawing:v46];
+      v87 = drawing2;
+      v50 = [objc_alloc(MEMORY[0x277CD95F8]) initWithStrokes:v53 fromDrawing:drawing2];
       v94 = 0u;
       v95 = 0u;
       v96 = 0u;
       v97 = 0u;
-      v54 = [v50 strokes];
-      v55 = [v54 countByEnumeratingWithState:&v94 objects:v101 count:16];
+      strokes2 = [v50 strokes];
+      v55 = [strokes2 countByEnumeratingWithState:&v94 objects:v101 count:16];
       if (v55)
       {
         v56 = v55;
@@ -185,33 +185,33 @@ LABEL_7:
           {
             if (*v95 != v57)
             {
-              objc_enumerationMutation(v54);
+              objc_enumerationMutation(strokes2);
             }
 
             v59 = *(*(&v94 + 1) + 8 * i);
             v60 = MEMORY[0x277CD9638];
             v61 = [v59 ink];
-            v62 = [v60 inkFromInk:v61 color:v47];
+            v62 = [v60 inkFromInk:v61 color:strokeColor2];
 
             v63 = [v50 setStroke:v59 ink:v62];
           }
 
-          v56 = [v54 countByEnumeratingWithState:&v94 objects:v101 count:16];
+          v56 = [strokes2 countByEnumeratingWithState:&v94 objects:v101 count:16];
         }
 
         while (v56);
       }
 
-      v10 = v90;
+      annotationCopy = v90;
       v15 = v88;
-      v11 = v89;
-      v12 = v91;
+      optionsCopy = v89;
+      nilCopy = v91;
     }
   }
 
   else
   {
-    v50 = v46;
+    v50 = drawing2;
   }
 
   [v50 bounds];
@@ -219,7 +219,7 @@ LABEL_7:
   v67 = v66;
   v69 = v68;
   v71 = v70;
-  [v10 rectangle];
+  [annotationCopy rectangle];
   [AKGeometryHelper adjustRect:"adjustRect:forExifOrientation:aboutCenter:" forExifOrientation:v15 aboutCenter:?];
   v74 = v72 / v69;
   if (v72 / v69 >= v73 / v71)
@@ -233,11 +233,11 @@ LABEL_7:
     v75 = (v72 / v74 - v69) * 0.5;
   }
 
-  CGContextScaleCTM(a4, v74, v74);
+  CGContextScaleCTM(context, v74, v74);
   v92 = v65;
-  CGContextTranslateCTM(a4, v75 - v65, -v67);
+  CGContextTranslateCTM(context, v75 - v65, -v67);
   memset(&v98, 0, sizeof(v98));
-  CGContextGetCTM(&v98, a4);
+  CGContextGetCTM(&v98, context);
   v93 = v98;
   v103.origin.x = 0.0;
   v103.origin.y = 0.0;
@@ -273,28 +273,28 @@ LABEL_7:
   v84 = [AKInkRendererHelper renderDrawing:v50 clippedToStrokeSpaceRect:v92 scale:v67, v69, v71, v82];
   if (v84)
   {
-    CGContextSetInterpolationQuality(a4, kCGInterpolationHigh);
-    v85 = [v84 akCGImage];
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+    akCGImage = [v84 akCGImage];
     v106.origin.x = v92;
     v106.origin.y = v67;
     v106.size.width = v69;
     v106.size.height = v71;
-    CGContextDrawImage(a4, v106, v85);
+    CGContextDrawImage(context, v106, akCGImage);
   }
 
 LABEL_44:
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [objc_opt_class() _concreteDraggingBoundsInsetsForAnnotation:v7];
+  y = border.y;
+  x = border.x;
+  annotationCopy = annotation;
+  [objc_opt_class() _concreteDraggingBoundsInsetsForAnnotation:annotationCopy];
   v9 = v8;
   v11 = v10;
-  [v7 rectangle];
+  [annotationCopy rectangle];
   v26 = CGRectInset(v25, v9, v11);
   v12 = v26.origin.x;
   v13 = v26.origin.y;
@@ -302,7 +302,7 @@ LABEL_44:
   height = v26.size.height;
   v22 = 0;
   memset(&v21, 0, sizeof(v21));
-  [AKGeometryHelper rotationTransformForRectangularAnnotation:v7 hasRotation:&v22];
+  [AKGeometryHelper rotationTransformForRectangularAnnotation:annotationCopy hasRotation:&v22];
 
   if (v22)
   {

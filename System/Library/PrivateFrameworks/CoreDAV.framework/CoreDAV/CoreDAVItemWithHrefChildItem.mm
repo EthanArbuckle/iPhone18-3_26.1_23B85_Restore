@@ -1,7 +1,7 @@
 @interface CoreDAVItemWithHrefChildItem
 + (id)copyParseRules;
 - (id)description;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation CoreDAVItemWithHrefChildItem
@@ -14,8 +14,8 @@
   v4 = [(CoreDAVItem *)&v7 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVItemWithHrefChildItem *)self href];
-  [v3 appendFormat:@"\n  HREF: [%@]", v5];
+  href = [(CoreDAVItemWithHrefChildItem *)self href];
+  [v3 appendFormat:@"\n  HREF: [%@]", href];
 
   return v3;
 }
@@ -23,7 +23,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -34,24 +34,24 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, 0}];
 
     v9 = +[CoreDAVItem parseRuleCache];
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v5 forKey:v10];
   }
 
   return v5;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v4 = a3;
-  v5 = [(CoreDAVItem *)self name];
-  v6 = [(CoreDAVItem *)self nameSpace];
-  [v4 startElement:v5 inNamespace:v6 withAttributes:0];
+  writeCopy = write;
+  name = [(CoreDAVItem *)self name];
+  nameSpace = [(CoreDAVItem *)self nameSpace];
+  [writeCopy startElement:name inNamespace:nameSpace withAttributes:0];
 
-  [(CoreDAVHrefItem *)self->_href write:v4];
-  v8 = [(CoreDAVItem *)self name];
-  v7 = [(CoreDAVItem *)self nameSpace];
-  [v4 endElement:v8 inNamespace:v7];
+  [(CoreDAVHrefItem *)self->_href write:writeCopy];
+  name2 = [(CoreDAVItem *)self name];
+  nameSpace2 = [(CoreDAVItem *)self nameSpace];
+  [writeCopy endElement:name2 inNamespace:nameSpace2];
 }
 
 @end

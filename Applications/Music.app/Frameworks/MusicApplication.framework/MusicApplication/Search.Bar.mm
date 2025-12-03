@@ -2,47 +2,47 @@
 - (NSArray)scopeButtonTitles;
 - (NSString)placeholder;
 - (NSString)text;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setPlaceholder:(id)a3;
-- (void)setShowsScopeBar:(BOOL)a3 animated:(BOOL)a4;
-- (void)setText:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidChange:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setShowsScopeBar:(BOOL)bar animated:(BOOL)animated;
+- (void)setText:(id)text;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidChange:(id)change;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation Search.Bar
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_293974();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_293AD4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_293AD4(change);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_293C64(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_293C64(event, x, y);
 
   return v10;
 }
 
-- (void)setShowsScopeBar:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsScopeBar:(BOOL)bar animated:(BOOL)animated
 {
-  v6 = self;
-  sub_293E4C(a3, a4);
+  selfCopy = self;
+  sub_293E4C(bar, animated);
 }
 
 - (NSArray)scopeButtonTitles
@@ -70,9 +70,9 @@
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_AB92A0();
     v6 = v5;
@@ -88,14 +88,14 @@
   swift_beginAccess();
   *v7 = v4;
   v7[1] = v6;
-  v8 = self;
+  selfCopy = self;
 
   sub_294A9C();
 }
 
 - (NSString)placeholder
 {
-  v2 = self;
+  selfCopy = self;
   sub_2946A8();
   v4 = v3;
 
@@ -112,9 +112,9 @@
   return v5;
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  if (a3)
+  if (placeholder)
   {
     v4 = sub_AB92A0();
     v6 = v5;
@@ -130,29 +130,29 @@
   swift_beginAccess();
   *(v7 + 4) = v4;
   *(v7 + 5) = v6;
-  v8 = self;
+  selfCopy = self;
 
   sub_294A9C();
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v3 = self;
+  selfCopy = self;
   sub_294A9C();
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_296F10();
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_2948B8(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2948B8(changeCopy);
 }
 
 @end

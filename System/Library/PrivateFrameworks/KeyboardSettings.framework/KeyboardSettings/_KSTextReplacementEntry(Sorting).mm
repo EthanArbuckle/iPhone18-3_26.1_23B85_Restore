@@ -6,7 +6,7 @@
 
 - (__CFString)shortcutForSorting
 {
-  result = [a1 shortcut];
+  result = [self shortcut];
   if (!result)
   {
     return &stru_28679E3A8;

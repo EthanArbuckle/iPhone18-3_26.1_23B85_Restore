@@ -1,47 +1,47 @@
 @interface BKTOCWebViewController2
-+ (id)classNameFromChapterInfo:(id)a3 excludedFromSample:(BOOL)a4;
-+ (id)hairlineImageURIWithColor:(id)a3 horizontal:(BOOL)a4;
-+ (id)pageNumberStringForChapter:(id)a3 directoryDelegate:(id)a4;
-+ (id)tocHTMLWithFetchedResultsController:(id)a3 directoryDelegate:(id)a4 chapterTopLevelFont:(id)a5 chapterSubLevelFont:(id)a6 pageLabelFont:(id)a7 themeContentBackgroundColor:(id)a8 textColor:(id)a9 selectedTextColor:(id)a10 pageNumberTextColor:(id)a11 separatorColor:(id)a12 highlightedBackgroundColor:(id)a13 highlightedTextColor:(id)a14 contentInsets:(UIEdgeInsets)a15 completionBlock:(id)a16;
-+ (int64_t)pageNumberForChapter:(id)a3 directoryDelegate:(id)a4;
-- (BOOL)_webViewWantsToLoadURL:(id)a3 navigationIsClickOrOther:(BOOL)a4;
++ (id)classNameFromChapterInfo:(id)info excludedFromSample:(BOOL)sample;
++ (id)hairlineImageURIWithColor:(id)color horizontal:(BOOL)horizontal;
++ (id)pageNumberStringForChapter:(id)chapter directoryDelegate:(id)delegate;
++ (id)tocHTMLWithFetchedResultsController:(id)controller directoryDelegate:(id)delegate chapterTopLevelFont:(id)font chapterSubLevelFont:(id)levelFont pageLabelFont:(id)labelFont themeContentBackgroundColor:(id)color textColor:(id)textColor selectedTextColor:(id)self0 pageNumberTextColor:(id)self1 separatorColor:(id)self2 highlightedBackgroundColor:(id)self3 highlightedTextColor:(id)self4 contentInsets:(UIEdgeInsets)self5 completionBlock:(id)self6;
++ (int64_t)pageNumberForChapter:(id)chapter directoryDelegate:(id)delegate;
+- (BOOL)_webViewWantsToLoadURL:(id)l navigationIsClickOrOther:(BOOL)other;
 - (CGSize)contentSize;
-- (id)_indexPathForURL:(id)a3;
+- (id)_indexPathForURL:(id)l;
 - (id)chapterInfoForCurrentNode;
-- (id)chapterInfoForPageNumber:(id)a3;
-- (id)elementIdForChapterInfo:(id)a3;
+- (id)chapterInfoForPageNumber:(id)number;
+- (id)elementIdForChapterInfo:(id)info;
 - (id)elementIdForCurrentNode;
 - (id)htmlMarkup;
 - (id)pageLabelFont;
 - (id)tocDelegate;
-- (unint64_t)pageIndexForLocation:(id)a3;
-- (unint64_t)tocDataIndexFromChapterHref:(id)a3;
+- (unint64_t)pageIndexForLocation:(id)location;
+- (unint64_t)tocDataIndexFromChapterHref:(id)href;
 - (void)_doInitialWebViewPositionAndLoad;
 - (void)_updateContentInsets;
-- (void)applyClassName:(id)a3 toOnlyLinkWithHref:(id)a4;
+- (void)applyClassName:(id)name toOnlyLinkWithHref:(id)href;
 - (void)centerWebView;
-- (void)highlightCurrentNodeWithCompletionBlock:(id)a3;
-- (void)installJavaScriptWithCompletionBlock:(id)a3;
+- (void)highlightCurrentNodeWithCompletionBlock:(id)block;
+- (void)installJavaScriptWithCompletionBlock:(id)block;
 - (void)invalidateFollowingThemeChange;
 - (void)loadHTML;
 - (void)releaseViews;
-- (void)scrollToItemId:(id)a3 completionBlock:(id)a4;
-- (void)setTheme:(id)a3;
+- (void)scrollToItemId:(id)id completionBlock:(id)block;
+- (void)setTheme:(id)theme;
 - (void)updatePageNumberStrings;
 - (void)updatePageStylesheet;
 - (void)updateView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation BKTOCWebViewController2
 
 - (id)tocDelegate
 {
-  v2 = [(BKDirectoryContent *)self directoryDelegate];
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
   v3 = BUProtocolCast();
 
   return v3;
@@ -65,24 +65,24 @@
   [(BKTOCViewController *)&v6 releaseViews];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   v6.receiver = self;
   v6.super_class = BKTOCWebViewController2;
-  [(BKTOCViewController *)&v6 setTheme:a3];
+  [(BKTOCViewController *)&v6 setTheme:theme];
   [(BKTOCWebViewController2 *)self updateView];
-  v4 = [(BKTOCWebViewController2 *)self theme];
-  v5 = [(BKTOCWebViewController2 *)self scrollView];
-  [v4 stylizeScrollView:v5];
+  theme = [(BKTOCWebViewController2 *)self theme];
+  scrollView = [(BKTOCWebViewController2 *)self scrollView];
+  [theme stylizeScrollView:scrollView];
 }
 
-+ (id)pageNumberStringForChapter:(id)a3 directoryDelegate:(id)a4
++ (id)pageNumberStringForChapter:(id)chapter directoryDelegate:(id)delegate
 {
-  v5 = a3;
-  v6 = [a4 tocViewController:0 pageTitleForChapter:v5];
-  v7 = [v5 isExcludedFromSample];
+  chapterCopy = chapter;
+  v6 = [delegate tocViewController:0 pageTitleForChapter:chapterCopy];
+  isExcludedFromSample = [chapterCopy isExcludedFromSample];
 
-  if (v7)
+  if (isExcludedFromSample)
   {
     v8 = &stru_1E7188;
   }
@@ -106,18 +106,18 @@ LABEL_6:
   return v6;
 }
 
-+ (int64_t)pageNumberForChapter:(id)a3 directoryDelegate:(id)a4
++ (int64_t)pageNumberForChapter:(id)chapter directoryDelegate:(id)delegate
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isExcludedFromSample])
+  chapterCopy = chapter;
+  delegateCopy = delegate;
+  if ([chapterCopy isExcludedFromSample])
   {
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v7 = [v6 tocViewController:0 pageNumberForChapter:v5];
+    v7 = [delegateCopy tocViewController:0 pageNumberForChapter:chapterCopy];
   }
 
   return v7;
@@ -131,11 +131,11 @@ LABEL_6:
   v20 = sub_467B4;
   v21 = sub_467C4;
   v22 = +[NSMutableArray array];
-  v3 = [(BKTOCViewController *)self fetchedResultsController];
-  v4 = [v3 fetchedObjects];
+  fetchedResultsController = [(BKTOCViewController *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
 
-  v5 = [(BKTOCWebViewController2 *)self tocData];
-  v6 = [v5 objectForKeyedSubscript:@"chapters"];
+  tocData = [(BKTOCWebViewController2 *)self tocData];
+  v6 = [tocData objectForKeyedSubscript:@"chapters"];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -145,7 +145,7 @@ LABEL_6:
   v16 = &v17;
   v7 = v6;
   v15 = v7;
-  [v4 enumerateObjectsUsingBlock:v14];
+  [fetchedObjects enumerateObjectsUsingBlock:v14];
   v8 = v18[5];
   v13 = 0;
   v9 = [NSJSONSerialization dataWithJSONObject:v8 options:1 error:&v13];
@@ -160,13 +160,13 @@ LABEL_6:
   _Block_object_dispose(&v17, 8);
 }
 
-+ (id)classNameFromChapterInfo:(id)a3 excludedFromSample:(BOOL)a4
++ (id)classNameFromChapterInfo:(id)info excludedFromSample:(BOOL)sample
 {
-  v4 = a4;
-  v5 = [a3 objectForKeyedSubscript:@"indentationLevel"];
+  sampleCopy = sample;
+  v5 = [info objectForKeyedSubscript:@"indentationLevel"];
   v6 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"indentation%lu", [v5 unsignedLongValue]);
 
-  if (v4)
+  if (sampleCopy)
   {
     [v6 appendString:@" notPageExists"];
   }
@@ -174,52 +174,52 @@ LABEL_6:
   return v6;
 }
 
-+ (id)hairlineImageURIWithColor:(id)a3 horizontal:(BOOL)a4
++ (id)hairlineImageURIWithColor:(id)color horizontal:(BOOL)horizontal
 {
-  [a3 CGColor];
+  [color CGColor];
   v4 = +[UIScreen mainScreen];
   [v4 scale];
   v5 = BCCreateHairlineImageAsDataForColor();
 
   if (v5)
   {
-    v6 = [v5 bu_dataURIString];
+    bu_dataURIString = [v5 bu_dataURIString];
     CFRelease(v5);
   }
 
   else
   {
-    v6 = &stru_1E7188;
+    bu_dataURIString = &stru_1E7188;
   }
 
-  return v6;
+  return bu_dataURIString;
 }
 
-+ (id)tocHTMLWithFetchedResultsController:(id)a3 directoryDelegate:(id)a4 chapterTopLevelFont:(id)a5 chapterSubLevelFont:(id)a6 pageLabelFont:(id)a7 themeContentBackgroundColor:(id)a8 textColor:(id)a9 selectedTextColor:(id)a10 pageNumberTextColor:(id)a11 separatorColor:(id)a12 highlightedBackgroundColor:(id)a13 highlightedTextColor:(id)a14 contentInsets:(UIEdgeInsets)a15 completionBlock:(id)a16
++ (id)tocHTMLWithFetchedResultsController:(id)controller directoryDelegate:(id)delegate chapterTopLevelFont:(id)font chapterSubLevelFont:(id)levelFont pageLabelFont:(id)labelFont themeContentBackgroundColor:(id)color textColor:(id)textColor selectedTextColor:(id)self0 pageNumberTextColor:(id)self1 separatorColor:(id)self2 highlightedBackgroundColor:(id)self3 highlightedTextColor:(id)self4 contentInsets:(UIEdgeInsets)self5 completionBlock:(id)self6
 {
-  right = a15.right;
-  left = a15.left;
-  v78 = a3;
-  v76 = a4;
-  v24 = a5;
-  v79 = a6;
-  v75 = a7;
-  v25 = a8;
-  v83 = a9;
-  v26 = a10;
-  v80 = a11;
-  v27 = a12;
-  v82 = a13;
-  v81 = a14;
-  v74 = a16;
+  right = insets.right;
+  left = insets.left;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  fontCopy = font;
+  levelFontCopy = levelFont;
+  labelFontCopy = labelFont;
+  colorCopy = color;
+  textColorCopy = textColor;
+  selectedTextColorCopy = selectedTextColor;
+  numberTextColorCopy = numberTextColor;
+  separatorColorCopy = separatorColor;
+  backgroundColorCopy = backgroundColor;
+  highlightedTextColorCopy = highlightedTextColor;
+  blockCopy = block;
   v28 = +[NSMutableDictionary dictionary];
-  v72 = v27;
-  v29 = [a1 hairlineImageURIWithColor:v27 horizontal:0];
+  v72 = separatorColorCopy;
+  v29 = [self hairlineImageURIWithColor:separatorColorCopy horizontal:0];
   [v28 setObject:@"vertical-rl" forKeyedSubscript:@"toc_writing_mode"];
   v30 = +[NSMutableArray array];
   [v28 setObject:v30 forKeyedSubscript:@"chapters"];
 
-  v31 = [v76 tocViewControllerTocIdCssRules:0];
+  v31 = [delegateCopy tocViewControllerTocIdCssRules:0];
   v32 = v31;
   if (v31)
   {
@@ -233,62 +233,62 @@ LABEL_6:
 
   [v28 setObject:v33 forKeyedSubscript:@"idCssRules"];
 
-  v73 = v26;
-  v34 = [v26 bc_rgbaString];
-  v35 = [NSString stringWithFormat:@"%@", v34];
+  v73 = selectedTextColorCopy;
+  bc_rgbaString = [selectedTextColorCopy bc_rgbaString];
+  v35 = [NSString stringWithFormat:@"%@", bc_rgbaString];
   [v28 setObject:v35 forKeyedSubscript:@"selectedTextColor"];
 
   v36 = +[UIColor grayColor];
-  v37 = [v36 bc_rgbaString];
-  v38 = [NSString stringWithFormat:@"%@", v37];
+  bc_rgbaString2 = [v36 bc_rgbaString];
+  v38 = [NSString stringWithFormat:@"%@", bc_rgbaString2];
   [v28 setObject:v38 forKeyedSubscript:@"textNotPageExistsColor"];
 
   [v28 setObject:v29 forKeyedSubscript:@"dividerImageURI"];
-  v39 = [v24 bc_cssFontFamily];
-  [v28 setObject:v39 forKeyedSubscript:@"chapterTopLevelFontFamily"];
+  bc_cssFontFamily = [fontCopy bc_cssFontFamily];
+  [v28 setObject:bc_cssFontFamily forKeyedSubscript:@"chapterTopLevelFontFamily"];
 
-  v40 = [v24 bc_cssFontWeight];
-  [v28 setObject:v40 forKeyedSubscript:@"chapterTopLevelFontWeight"];
+  bc_cssFontWeight = [fontCopy bc_cssFontWeight];
+  [v28 setObject:bc_cssFontWeight forKeyedSubscript:@"chapterTopLevelFontWeight"];
 
-  v41 = [v24 bc_cssFontSize];
-  [v28 setObject:v41 forKeyedSubscript:@"chapterTopLevelFontSize"];
+  bc_cssFontSize = [fontCopy bc_cssFontSize];
+  [v28 setObject:bc_cssFontSize forKeyedSubscript:@"chapterTopLevelFontSize"];
 
-  v42 = [v79 bc_cssFontFamily];
-  [v28 setObject:v42 forKeyedSubscript:@"chapterSubLevelFontFamily"];
+  bc_cssFontFamily2 = [levelFontCopy bc_cssFontFamily];
+  [v28 setObject:bc_cssFontFamily2 forKeyedSubscript:@"chapterSubLevelFontFamily"];
 
-  v43 = [v79 bc_cssFontWeight];
-  [v28 setObject:v43 forKeyedSubscript:@"chapterSubLevelFontWeight"];
+  bc_cssFontWeight2 = [levelFontCopy bc_cssFontWeight];
+  [v28 setObject:bc_cssFontWeight2 forKeyedSubscript:@"chapterSubLevelFontWeight"];
 
-  v44 = [v79 bc_cssFontSize];
-  [v28 setObject:v44 forKeyedSubscript:@"chapterSubLevelFontSize"];
+  bc_cssFontSize2 = [levelFontCopy bc_cssFontSize];
+  [v28 setObject:bc_cssFontSize2 forKeyedSubscript:@"chapterSubLevelFontSize"];
 
-  v45 = [v75 bc_cssFontFamily];
-  [v28 setObject:v45 forKeyedSubscript:@"pageLabelFontFamily"];
+  bc_cssFontFamily3 = [labelFontCopy bc_cssFontFamily];
+  [v28 setObject:bc_cssFontFamily3 forKeyedSubscript:@"pageLabelFontFamily"];
 
-  v46 = [v75 bc_cssFontWeight];
-  [v28 setObject:v46 forKeyedSubscript:@"pageLabelFontWeight"];
+  bc_cssFontWeight3 = [labelFontCopy bc_cssFontWeight];
+  [v28 setObject:bc_cssFontWeight3 forKeyedSubscript:@"pageLabelFontWeight"];
 
-  v47 = [v75 bc_cssFontSize];
-  [v28 setObject:v47 forKeyedSubscript:@"pageLabelFontSize"];
+  bc_cssFontSize3 = [labelFontCopy bc_cssFontSize];
+  [v28 setObject:bc_cssFontSize3 forKeyedSubscript:@"pageLabelFontSize"];
 
-  v48 = [v25 bc_rgbaString];
-  v49 = [NSString stringWithFormat:@"%@", v48];
+  bc_rgbaString3 = [colorCopy bc_rgbaString];
+  v49 = [NSString stringWithFormat:@"%@", bc_rgbaString3];
   [v28 setObject:v49 forKeyedSubscript:@"themeContentBackgroundColor"];
 
-  v50 = [v83 bc_rgbaString];
-  v51 = [NSString stringWithFormat:@"%@", v50];
+  bc_rgbaString4 = [textColorCopy bc_rgbaString];
+  v51 = [NSString stringWithFormat:@"%@", bc_rgbaString4];
   [v28 setObject:v51 forKeyedSubscript:@"textColor"];
 
-  v52 = [v80 bc_rgbaString];
-  v53 = [NSString stringWithFormat:@"%@", v52];
+  bc_rgbaString5 = [numberTextColorCopy bc_rgbaString];
+  v53 = [NSString stringWithFormat:@"%@", bc_rgbaString5];
   [v28 setObject:v53 forKeyedSubscript:@"pageNumberTextColor"];
 
-  v54 = [v82 bc_rgbaString];
-  v55 = [NSString stringWithFormat:@"%@", v54];
+  bc_rgbaString6 = [backgroundColorCopy bc_rgbaString];
+  v55 = [NSString stringWithFormat:@"%@", bc_rgbaString6];
   [v28 setObject:v55 forKeyedSubscript:@"highlightedBackgroundColor"];
 
-  v56 = [v81 bc_rgbaString];
-  v57 = [NSString stringWithFormat:@"%@", v56];
+  bc_rgbaString7 = [highlightedTextColorCopy bc_rgbaString];
+  v57 = [NSString stringWithFormat:@"%@", bc_rgbaString7];
   [v28 setObject:v57 forKeyedSubscript:@"highlightedTextColor"];
 
   v58 = [NSString stringWithFormat:@"%ldpx", llround(left)];
@@ -309,7 +309,7 @@ LABEL_6:
   v63 = [NSString stringWithFormat:@"%ldpx", llround(34.0)];
   [v28 setObject:v63 forKeyedSubscript:@"rightIndent"];
 
-  v64 = [v78 fetchedObjects];
+  fetchedObjects = [controllerCopy fetchedObjects];
   v90[0] = 0;
   v90[1] = v90;
   v90[2] = 0x2020000000;
@@ -319,21 +319,21 @@ LABEL_6:
   v85[2] = sub_47324;
   v85[3] = &unk_1E3C38;
   v88 = v90;
-  v89 = a1;
-  v65 = v76;
+  selfCopy = self;
+  v65 = delegateCopy;
   v86 = v65;
   v66 = v28;
   v87 = v66;
-  [v64 enumerateObjectsUsingBlock:v85];
+  [fetchedObjects enumerateObjectsUsingBlock:v85];
   v67 = AEBundle();
   v68 = [v67 URLForResource:@"BEVerticalTOC.xhtml" withExtension:@"tmpl"];
 
   v84 = 0;
   v69 = [AEMinimalTemplate evaluateTemplateWithURL:v68 data:v66 error:&v84];
   v70 = v84;
-  if (v74)
+  if (blockCopy)
   {
-    v74[2](v74, v66);
+    blockCopy[2](blockCopy, v66);
   }
 
   _Block_object_dispose(v90, 8);
@@ -356,37 +356,37 @@ LABEL_6:
   [(BKActivityIndicatorOverlayView *)self->_activityIndicator setBackgroundColor:v5];
 
   v6 = +[UIColor clearColor];
-  v7 = [(BKActivityIndicatorOverlayView *)self->_activityIndicator scrollView];
-  [v7 setBackgroundColor:v6];
+  scrollView = [(BKActivityIndicatorOverlayView *)self->_activityIndicator scrollView];
+  [scrollView setBackgroundColor:v6];
 
   [(BKActivityIndicatorOverlayView *)self->_activityIndicator setOpaque:0];
-  v8 = [(BKActivityIndicatorOverlayView *)self->_activityIndicator configuration];
-  v9 = [v8 defaultWebpagePreferences];
-  [v9 _setMouseEventPolicy:1];
+  configuration = [(BKActivityIndicatorOverlayView *)self->_activityIndicator configuration];
+  defaultWebpagePreferences = [configuration defaultWebpagePreferences];
+  [defaultWebpagePreferences _setMouseEventPolicy:1];
 
-  v10 = [(BKTOCWebViewController2 *)self scrollView];
-  [v10 setBounces:1];
-  [v10 setAlwaysBounceVertical:0];
-  [v10 setDecelerationRate:UIScrollViewDecelerationRateNormal];
-  [v10 setContentInsetAdjustmentBehavior:2];
-  [v10 _setShowsBackgroundShadow:0];
-  v11 = [(BKTOCWebViewController2 *)self theme];
-  v12 = [(BKTOCWebViewController2 *)self scrollView];
-  [v11 stylizeScrollView:v12];
+  scrollView2 = [(BKTOCWebViewController2 *)self scrollView];
+  [scrollView2 setBounces:1];
+  [scrollView2 setAlwaysBounceVertical:0];
+  [scrollView2 setDecelerationRate:UIScrollViewDecelerationRateNormal];
+  [scrollView2 setContentInsetAdjustmentBehavior:2];
+  [scrollView2 _setShowsBackgroundShadow:0];
+  theme = [(BKTOCWebViewController2 *)self theme];
+  scrollView3 = [(BKTOCWebViewController2 *)self scrollView];
+  [theme stylizeScrollView:scrollView3];
 
   v13 = [BKActivityIndicatorOverlayView alloc];
-  v14 = [(BKTOCWebViewController2 *)self theme];
-  v15 = [v14 contentTextColor];
-  v16 = [v15 colorWithAlphaComponent:0.7];
-  v17 = [(BKTOCWebViewController2 *)self theme];
-  v18 = [v17 backgroundColorForTraitEnvironment:self];
+  theme2 = [(BKTOCWebViewController2 *)self theme];
+  contentTextColor = [theme2 contentTextColor];
+  v16 = [contentTextColor colorWithAlphaComponent:0.7];
+  theme3 = [(BKTOCWebViewController2 *)self theme];
+  v18 = [theme3 backgroundColorForTraitEnvironment:self];
   v19 = [(BKActivityIndicatorOverlayView *)v13 initWithBackgroundColor:v16 foregroundColor:v18];
   v20 = *&self->_htmlLoaded;
   *&self->_htmlLoaded = v19;
 
   v21 = *&self->_htmlLoaded;
-  v22 = [(BKTOCWebViewController2 *)self view];
-  [v21 showIndicatorCenteredInView:v22 animated:1 animationDelay:0.0];
+  view = [(BKTOCWebViewController2 *)self view];
+  [v21 showIndicatorCenteredInView:view animated:1 animationDelay:0.0];
 
   v23 = +[NSNotificationCenter defaultCenter];
   [v23 addObserver:self selector:"preferredContentSizeChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -394,17 +394,17 @@ LABEL_6:
 
 - (void)_doInitialWebViewPositionAndLoad
 {
-  v8 = [(BKTOCWebViewController2 *)self view];
-  [v8 bounds];
+  view = [(BKTOCWebViewController2 *)self view];
+  [view bounds];
   [(BKActivityIndicatorOverlayView *)self->_activityIndicator setFrame:?];
-  [v8 insertSubview:self->_activityIndicator atIndex:0];
+  [view insertSubview:self->_activityIndicator atIndex:0];
   [(BKTOCWebViewController2 *)self _updateContentInsets];
   if ([(BKTOCViewController *)self isVertical])
   {
     [(BKContentViewController *)self contentInsets];
     v4 = v3;
-    v5 = [(BKTOCWebViewController2 *)self view];
-    [v5 bounds];
+    view2 = [(BKTOCWebViewController2 *)self view];
+    [view2 bounds];
     [(BKActivityIndicatorOverlayView *)self->_activityIndicator setFrame:v6 + 0.0, v4 + v7];
   }
 
@@ -413,16 +413,16 @@ LABEL_6:
 
 - (void)_updateContentInsets
 {
-  v3 = [(BKContentViewController *)self layoutDelegate];
+  layoutDelegate = [(BKContentViewController *)self layoutDelegate];
 
-  if (v3)
+  if (layoutDelegate)
   {
-    v4 = [(BKContentViewController *)self layoutDelegate];
-    [v4 edgeInsetsForContentViewController:self];
+    layoutDelegate2 = [(BKContentViewController *)self layoutDelegate];
+    [layoutDelegate2 edgeInsetsForContentViewController:self];
     [(BKContentViewController *)self setContentInsets:?];
 
-    v5 = [(BKContentViewController *)self layoutDelegate];
-    [v5 separatorInsetsForContentViewController:self];
+    layoutDelegate3 = [(BKContentViewController *)self layoutDelegate];
+    [layoutDelegate3 separatorInsetsForContentViewController:self];
     [(BKContentViewController *)self setSeparatorInsets:?];
   }
 }
@@ -434,8 +434,8 @@ LABEL_6:
     [(BKContentViewController *)self contentInsets];
     v4 = v3;
     v6 = v5;
-    v7 = [(BKTOCWebViewController2 *)self view];
-    [v7 bounds];
+    view = [(BKTOCWebViewController2 *)self view];
+    [view bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -461,8 +461,8 @@ LABEL_6:
         v21 = [NSString stringWithFormat:@"document.getElementById('setupWritingMode').style.height = '%ldpx'", llround(CGRectGetHeight(v24))];;
         [(BKActivityIndicatorOverlayView *)self->_activityIndicator evaluateJavaScript:v21 completionHandler:&stru_1E3C58];
         [(BKActivityIndicatorOverlayView *)self->_activityIndicator setFrame:v18, v19, v13, v17];
-        v20 = [(BKActivityIndicatorOverlayView *)self->_activityIndicator scrollView];
-        [v20 setContentSize:{v13, v17}];
+        scrollView = [(BKActivityIndicatorOverlayView *)self->_activityIndicator scrollView];
+        [scrollView setContentSize:{v13, v17}];
       }
     }
   }
@@ -482,18 +482,18 @@ LABEL_6:
 
 - (void)invalidateFollowingThemeChange
 {
-  v2 = [(BKTOCWebViewController2 *)self viewIfLoaded];
-  [v2 setNeedsLayout];
+  viewIfLoaded = [(BKTOCWebViewController2 *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = BKTOCWebViewController2;
-  [(BKTOCViewController *)&v5 viewWillAppear:a3];
+  [(BKTOCViewController *)&v5 viewWillAppear:appear];
   [(BKTOCWebViewController2 *)self _doInitialWebViewPositionAndLoad];
-  v4 = [(BKTOCWebViewController2 *)self view];
-  [v4 setNeedsLayout];
+  view = [(BKTOCWebViewController2 *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewWillLayoutSubviews
@@ -508,15 +508,15 @@ LABEL_6:
   }
 }
 
-- (id)_indexPathForURL:(id)a3
+- (id)_indexPathForURL:(id)l
 {
-  v3 = [a3 lastPathComponent];
-  if ([v3 hasPrefix:@"row-"])
+  lastPathComponent = [l lastPathComponent];
+  if ([lastPathComponent hasPrefix:@"row-"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"row-", "length")}];
-    v5 = [v4 integerValue];
+    v4 = [lastPathComponent substringFromIndex:{objc_msgSend(@"row-", "length")}];
+    integerValue = [v4 integerValue];
 
-    v6 = [NSIndexPath indexPathForRow:v5 inSection:0];
+    v6 = [NSIndexPath indexPathForRow:integerValue inSection:0];
   }
 
   else
@@ -527,27 +527,27 @@ LABEL_6:
   return v6;
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v19 = a5;
-  v7 = a4;
-  v8 = [v7 request];
-  v9 = [v8 URL];
+  handlerCopy = handler;
+  actionCopy = action;
+  request = [actionCopy request];
+  v9 = [request URL];
   v10 = [(BKTOCWebViewController2 *)self _indexPathForURL:v9];
 
-  v11 = [v7 navigationType];
-  if (v11 + 1 <= 1 && v10)
+  navigationType = [actionCopy navigationType];
+  if (navigationType + 1 <= 1 && v10)
   {
-    v12 = [(BKTOCViewController *)self fetchedResultsController];
-    v13 = [v12 objectAtIndexPath:v10];
+    fetchedResultsController = [(BKTOCViewController *)self fetchedResultsController];
+    v13 = [fetchedResultsController objectAtIndexPath:v10];
 
     if (v13)
     {
-      v14 = [(BKTOCViewController *)self eventEngagement];
-      [v14 sendReaderEventNewSectionViaToC];
+      eventEngagement = [(BKTOCViewController *)self eventEngagement];
+      [eventEngagement sendReaderEventNewSectionViaToC];
 
-      v15 = [(BKTOCWebViewController2 *)self tocDelegate];
-      [v15 tocViewController:self didSelectChapter:v13];
+      tocDelegate = [(BKTOCWebViewController2 *)self tocDelegate];
+      [tocDelegate tocViewController:self didSelectChapter:v13];
 
       activityIndicator = self->_activityIndicator;
       if (activityIndicator)
@@ -557,7 +557,7 @@ LABEL_6:
     }
   }
 
-  v17 = objc_retainBlock(v19);
+  v17 = objc_retainBlock(handlerCopy);
   v18 = v17;
   if (v17)
   {
@@ -565,30 +565,30 @@ LABEL_6:
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_48054;
   v4[3] = &unk_1E2C20;
   v4[4] = self;
-  [(BKTOCWebViewController2 *)self installJavaScriptWithCompletionBlock:v4, a4];
+  [(BKTOCWebViewController2 *)self installJavaScriptWithCompletionBlock:v4, navigation];
 }
 
-- (BOOL)_webViewWantsToLoadURL:(id)a3 navigationIsClickOrOther:(BOOL)a4
+- (BOOL)_webViewWantsToLoadURL:(id)l navigationIsClickOrOther:(BOOL)other
 {
-  v4 = a4;
-  v6 = [(BKTOCWebViewController2 *)self _indexPathForURL:a3];
+  otherCopy = other;
+  v6 = [(BKTOCWebViewController2 *)self _indexPathForURL:l];
   v7 = v6;
-  if (v4 && v6)
+  if (otherCopy && v6)
   {
-    v8 = [(BKTOCViewController *)self fetchedResultsController];
-    v9 = [v8 objectAtIndexPath:v7];
+    fetchedResultsController = [(BKTOCViewController *)self fetchedResultsController];
+    v9 = [fetchedResultsController objectAtIndexPath:v7];
 
     if (v9)
     {
-      v10 = [(BKTOCWebViewController2 *)self tocDelegate];
-      [v10 tocViewController:self didSelectChapter:v9];
+      tocDelegate = [(BKTOCWebViewController2 *)self tocDelegate];
+      [tocDelegate tocViewController:self didSelectChapter:v9];
     }
   }
 
@@ -602,17 +602,17 @@ LABEL_6:
   return [UIFont systemFontOfSize:?];
 }
 
-- (void)scrollToItemId:(id)a3 completionBlock:(id)a4
+- (void)scrollToItemId:(id)id completionBlock:(id)block
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_483E0;
   v13[3] = &unk_1E3CA0;
-  v6 = a4;
-  v14 = v6;
-  v7 = a3;
+  blockCopy = block;
+  v14 = blockCopy;
+  idCopy = id;
   v8 = objc_retainBlock(v13);
-  v9 = [NSString stringWithFormat:@"scrollToItemWithId(%@)", v7];
+  idCopy = [NSString stringWithFormat:@"scrollToItemWithId(%@)", idCopy];
 
   activityIndicator = self->_activityIndicator;
   if (activityIndicator)
@@ -622,44 +622,44 @@ LABEL_6:
     v11[2] = sub_48460;
     v11[3] = &unk_1E3550;
     v12 = v8;
-    [(BKActivityIndicatorOverlayView *)activityIndicator evaluateJavaScript:v9 completionHandler:v11];
+    [(BKActivityIndicatorOverlayView *)activityIndicator evaluateJavaScript:idCopy completionHandler:v11];
   }
 }
 
-- (id)chapterInfoForPageNumber:(id)a3
+- (id)chapterInfoForPageNumber:(id)number
 {
-  v4 = a3;
-  if (v4)
+  numberCopy = number;
+  if (numberCopy)
   {
-    v5 = [(BKTOCWebViewController2 *)self tocData];
-    v6 = [v5 objectForKeyedSubscript:@"chapters"];
+    tocData = [(BKTOCWebViewController2 *)self tocData];
+    v6 = [tocData objectForKeyedSubscript:@"chapters"];
 
-    v7 = [v6 reverseObjectEnumerator];
-    v8 = [v7 nextObject];
-    if (v8)
+    reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+    nextObject = [reverseObjectEnumerator nextObject];
+    if (nextObject)
     {
       while (1)
       {
-        v9 = [v8 objectForKeyedSubscript:@"pageInteger"];
+        v9 = [nextObject objectForKeyedSubscript:@"pageInteger"];
         if ([v9 integerValue] != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v10 = [v4 integerValue];
-          if (v10 >= [v9 integerValue])
+          integerValue = [numberCopy integerValue];
+          if (integerValue >= [v9 integerValue])
           {
             break;
           }
         }
 
-        v11 = [v7 nextObject];
+        nextObject2 = [reverseObjectEnumerator nextObject];
 
-        v8 = v11;
-        if (!v11)
+        nextObject = nextObject2;
+        if (!nextObject2)
         {
           goto LABEL_9;
         }
       }
 
-      v8 = v8;
+      nextObject = nextObject;
     }
 
 LABEL_9:
@@ -667,19 +667,19 @@ LABEL_9:
 
   else
   {
-    v8 = 0;
+    nextObject = 0;
   }
 
-  return v8;
+  return nextObject;
 }
 
-- (unint64_t)tocDataIndexFromChapterHref:(id)a3
+- (unint64_t)tocDataIndexFromChapterHref:(id)href
 {
-  v4 = a3;
-  if (v4)
+  hrefCopy = href;
+  if (hrefCopy)
   {
-    v5 = [(BKTOCWebViewController2 *)self tocData];
-    v6 = [v5 objectForKeyedSubscript:@"chapters"];
+    tocData = [(BKTOCWebViewController2 *)self tocData];
+    v6 = [tocData objectForKeyedSubscript:@"chapters"];
 
     v19 = 0u;
     v20 = 0u;
@@ -704,7 +704,7 @@ LABEL_4:
         }
 
         v14 = [*(*(&v17 + 1) + 8 * v12) objectForKeyedSubscript:{@"href", v17}];
-        v15 = [v14 isEqualToString:v4];
+        v15 = [v14 isEqualToString:hrefCopy];
 
         if (v15)
         {
@@ -740,43 +740,43 @@ LABEL_10:
   return v13;
 }
 
-- (void)applyClassName:(id)a3 toOnlyLinkWithHref:(id)a4
+- (void)applyClassName:(id)name toOnlyLinkWithHref:(id)href
 {
-  v5 = [NSString stringWithFormat:@"applyClassNameToOnlyLinkWithHref(%@, %@)", a4, a3];;
+  name = [NSString stringWithFormat:@"applyClassNameToOnlyLinkWithHref(%@, %@)", href, name];;
   activityIndicator = self->_activityIndicator;
   if (activityIndicator)
   {
-    v7 = v5;
-    activityIndicator = [(BKActivityIndicatorOverlayView *)activityIndicator evaluateJavaScript:v5 completionHandler:&stru_1E3CC0];
-    v5 = v7;
+    v7 = name;
+    activityIndicator = [(BKActivityIndicatorOverlayView *)activityIndicator evaluateJavaScript:name completionHandler:&stru_1E3CC0];
+    name = v7;
   }
 
-  _objc_release_x1(activityIndicator, v5);
+  _objc_release_x1(activityIndicator, name);
 }
 
-- (unint64_t)pageIndexForLocation:(id)a3
+- (unint64_t)pageIndexForLocation:(id)location
 {
-  if (!a3)
+  if (!location)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = a3;
-  v5 = [(BKDirectoryContent *)self directoryDelegate];
-  v6 = [v5 directoryContent:self pageNumberForLocation:v4];
+  locationCopy = location;
+  directoryDelegate = [(BKDirectoryContent *)self directoryDelegate];
+  v6 = [directoryDelegate directoryContent:self pageNumberForLocation:locationCopy];
 
   return v6;
 }
 
 - (id)chapterInfoForCurrentNode
 {
-  v3 = [(BKTOCWebViewController2 *)self tocDelegate];
-  v4 = [v3 tocViewControllerCurrentLocation:self];
+  tocDelegate = [(BKTOCWebViewController2 *)self tocDelegate];
+  v4 = [tocDelegate tocViewControllerCurrentLocation:self];
 
   v5 = [(BKTOCWebViewController2 *)self pageIndexForLocation:v4];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
   else
@@ -786,35 +786,35 @@ LABEL_10:
     v9 = v8;
     if (v8)
     {
-      v6 = v8;
+      firstObject = v8;
     }
 
     else
     {
-      v10 = [(BKTOCWebViewController2 *)self tocData];
-      v11 = [v10 objectForKeyedSubscript:@"chapters"];
-      v6 = [v11 firstObject];
+      tocData = [(BKTOCWebViewController2 *)self tocData];
+      v11 = [tocData objectForKeyedSubscript:@"chapters"];
+      firstObject = [v11 firstObject];
     }
   }
 
-  return v6;
+  return firstObject;
 }
 
 - (id)elementIdForCurrentNode
 {
-  v3 = [(BKTOCWebViewController2 *)self chapterInfoForCurrentNode];
-  v4 = [(BKTOCWebViewController2 *)self elementIdForChapterInfo:v3];
+  chapterInfoForCurrentNode = [(BKTOCWebViewController2 *)self chapterInfoForCurrentNode];
+  v4 = [(BKTOCWebViewController2 *)self elementIdForChapterInfo:chapterInfoForCurrentNode];
 
   return v4;
 }
 
-- (id)elementIdForChapterInfo:(id)a3
+- (id)elementIdForChapterInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"href"];
+    v6 = [infoCopy objectForKeyedSubscript:@"href"];
     if (!v6)
     {
       v17 = BCIMLog();
@@ -880,8 +880,8 @@ LABEL_21:
     }
 
     v19 = v7;
-    v20 = [(BKTOCWebViewController2 *)self tocData];
-    v21 = [v20 objectForKeyedSubscript:@"chapters"];
+    tocData = [(BKTOCWebViewController2 *)self tocData];
+    v21 = [tocData objectForKeyedSubscript:@"chapters"];
     v22 = [v21 objectAtIndexedSubscript:v19];
     v16 = [v22 objectForKeyedSubscript:@"id"];
 
@@ -914,8 +914,8 @@ LABEL_21:
 
   else
   {
-    v11 = [(BKTOCWebViewController2 *)self tocDelegate];
-    v12 = [v11 tocViewControllerCurrentLocation:self];
+    tocDelegate = [(BKTOCWebViewController2 *)self tocDelegate];
+    v12 = [tocDelegate tocViewControllerCurrentLocation:self];
     v13 = [(BKTOCWebViewController2 *)self pageIndexForLocation:v12];
 
     v14 = BCIMLog();
@@ -947,31 +947,31 @@ LABEL_22:
   return v16;
 }
 
-- (void)highlightCurrentNodeWithCompletionBlock:(id)a3
+- (void)highlightCurrentNodeWithCompletionBlock:(id)block
 {
-  v8 = a3;
-  v4 = [(BKTOCWebViewController2 *)self elementIdForCurrentNode];
-  if (v4)
+  blockCopy = block;
+  elementIdForCurrentNode = [(BKTOCWebViewController2 *)self elementIdForCurrentNode];
+  if (elementIdForCurrentNode)
   {
-    [(BKTOCWebViewController2 *)self scrollToItemId:v4 completionBlock:v8];
+    [(BKTOCWebViewController2 *)self scrollToItemId:elementIdForCurrentNode completionBlock:blockCopy];
     activityIndicator = self->_activityIndicator;
-    v6 = [NSString stringWithFormat:@"selectItemWithId(%@)", v4];;
-    [(BKActivityIndicatorOverlayView *)activityIndicator evaluateJavaScript:v6 completionHandler:&stru_1E3CE0];
+    tocDelegate = [NSString stringWithFormat:@"selectItemWithId(%@)", elementIdForCurrentNode];;
+    [(BKActivityIndicatorOverlayView *)activityIndicator evaluateJavaScript:tocDelegate completionHandler:&stru_1E3CE0];
   }
 
   else
   {
-    v6 = [(BKTOCWebViewController2 *)self tocDelegate];
-    v7 = [v6 tocViewControllerCurrentLocation:self];
-    v8[2](v8, v7 == 0);
+    tocDelegate = [(BKTOCWebViewController2 *)self tocDelegate];
+    v7 = [tocDelegate tocViewControllerCurrentLocation:self];
+    blockCopy[2](blockCopy, v7 == 0);
   }
 }
 
-- (void)installJavaScriptWithCompletionBlock:(id)a3
+- (void)installJavaScriptWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(BKTOCWebViewController2 *)self tocData];
-  v6 = [v5 objectForKeyedSubscript:@"chapters"];
+  blockCopy = block;
+  tocData = [(BKTOCWebViewController2 *)self tocData];
+  v6 = [tocData objectForKeyedSubscript:@"chapters"];
   v19 = 0;
   v7 = [NSJSONSerialization dataWithJSONObject:v6 options:1 error:&v19];
   v8 = v19;
@@ -985,7 +985,7 @@ LABEL_22:
     v16[2] = sub_491E0;
     v16[3] = &unk_1E3D48;
     v16[4] = self;
-    v18 = v4;
+    v18 = blockCopy;
     v17 = v8;
     v11 = objc_retainBlock(v16);
     v12 = v11;
@@ -1003,17 +1003,17 @@ LABEL_22:
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
 - (id)htmlMarkup
 {
   [(BKTOCViewController *)self establishChapterFonts];
-  v3 = [(BKTOCWebViewController2 *)self themePage];
-  v25 = [v3 separatorColor];
-  v4 = [(BKTOCWebViewController2 *)self traitCollection];
-  v5 = dbl_193280[[v4 userInterfaceStyle] == &dword_0 + 2];
+  themePage = [(BKTOCWebViewController2 *)self themePage];
+  separatorColor = [themePage separatorColor];
+  traitCollection = [(BKTOCWebViewController2 *)self traitCollection];
+  v5 = dbl_193280[[traitCollection userInterfaceStyle] == &dword_0 + 2];
 
   v6 = +[UIColor tintColor];
   v7 = [v6 colorWithAlphaComponent:v5];
@@ -1021,65 +1021,65 @@ LABEL_22:
   v24 = v7;
   if ([(BKTOCViewController *)self usesPopoverStyle])
   {
-    v8 = v7;
+    tableViewCellSelectedColor = v7;
   }
 
   else
   {
-    v8 = [v3 tableViewCellSelectedColor];
+    tableViewCellSelectedColor = [themePage tableViewCellSelectedColor];
   }
 
-  v9 = v8;
-  v19 = v8;
+  v9 = tableViewCellSelectedColor;
+  v19 = tableViewCellSelectedColor;
   v23 = +[UIColor clearColor];
-  v10 = [v3 primaryTextColor];
-  v11 = [v3 tintColor];
-  v12 = [v3 tocPageNumberTextColor];
+  primaryTextColor = [themePage primaryTextColor];
+  tintColor = [themePage tintColor];
+  tocPageNumberTextColor = [themePage tocPageNumberTextColor];
   v20 = objc_opt_class();
-  v18 = [(BKTOCViewController *)self fetchedResultsController];
-  v22 = [(BKTOCWebViewController2 *)self tocDelegate];
+  fetchedResultsController = [(BKTOCViewController *)self fetchedResultsController];
+  tocDelegate = [(BKTOCWebViewController2 *)self tocDelegate];
   v13 = BUProtocolCast();
-  v14 = [(BKTOCViewController *)self chapterTopLevelFont];
-  v15 = [(BKTOCViewController *)self chapterSubLevelFont];
-  v16 = [(BKTOCWebViewController2 *)self pageLabelFont];
+  chapterTopLevelFont = [(BKTOCViewController *)self chapterTopLevelFont];
+  chapterSubLevelFont = [(BKTOCViewController *)self chapterSubLevelFont];
+  pageLabelFont = [(BKTOCWebViewController2 *)self pageLabelFont];
   [(BKContentViewController *)self contentInsets];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_4972C;
   v26[3] = &unk_1E3D70;
   v26[4] = self;
-  v21 = [v20 tocHTMLWithFetchedResultsController:v18 directoryDelegate:v13 chapterTopLevelFont:v14 chapterSubLevelFont:v15 pageLabelFont:v16 themeContentBackgroundColor:v23 textColor:v10 selectedTextColor:v11 pageNumberTextColor:v12 separatorColor:v25 highlightedBackgroundColor:v9 highlightedTextColor:v10 contentInsets:v26 completionBlock:?];
+  v21 = [v20 tocHTMLWithFetchedResultsController:fetchedResultsController directoryDelegate:v13 chapterTopLevelFont:chapterTopLevelFont chapterSubLevelFont:chapterSubLevelFont pageLabelFont:pageLabelFont themeContentBackgroundColor:v23 textColor:primaryTextColor selectedTextColor:tintColor pageNumberTextColor:tocPageNumberTextColor separatorColor:separatorColor highlightedBackgroundColor:v9 highlightedTextColor:primaryTextColor contentInsets:v26 completionBlock:?];
 
   return v21;
 }
 
 - (void)loadHTML
 {
-  v13 = [(BKTOCWebViewController2 *)self htmlMarkup];
-  v3 = [(BKContentViewController *)self book];
-  v4 = [v3 tocPageHref];
-  v5 = [v3 urlForHref:v4];
+  htmlMarkup = [(BKTOCWebViewController2 *)self htmlMarkup];
+  book = [(BKContentViewController *)self book];
+  tocPageHref = [book tocPageHref];
+  v5 = [book urlForHref:tocPageHref];
 
-  v6 = [v5 absoluteString];
-  v7 = [(BKTOCWebViewController2 *)self elementIdForCurrentNode];
-  v8 = [NSString stringWithFormat:@"%@#%@", v6, v7];
+  absoluteString = [v5 absoluteString];
+  elementIdForCurrentNode = [(BKTOCWebViewController2 *)self elementIdForCurrentNode];
+  v8 = [NSString stringWithFormat:@"%@#%@", absoluteString, elementIdForCurrentNode];
 
   v9 = [NSURL URLWithString:v8];
   v10 = BEURLHandleriBooksImgUrlFromiBooksURL();
 
-  v11 = [v13 dataUsingEncoding:4];
+  v11 = [htmlMarkup dataUsingEncoding:4];
   v12 = [(BKActivityIndicatorOverlayView *)self->_activityIndicator loadData:v11 MIMEType:BEXBEHTMLContentType characterEncodingName:BEUTF8StringEncodingName baseURL:v10];
 }
 
 - (void)updatePageStylesheet
 {
-  v3 = [(BKTOCWebViewController2 *)self htmlMarkup];
+  htmlMarkup = [(BKTOCWebViewController2 *)self htmlMarkup];
   v4 = AEBundle();
   v5 = [v4 URLForResource:@"BEVerticalTOC.xhtml" withExtension:@"tmpl"];
 
-  v6 = [(BKTOCWebViewController2 *)self tocData];
+  tocData = [(BKTOCWebViewController2 *)self tocData];
   v21 = 0;
-  v7 = [AEMinimalTemplate evaluateTemplateWithURL:v5 data:v6 error:&v21];
+  v7 = [AEMinimalTemplate evaluateTemplateWithURL:v5 data:tocData error:&v21];
   v8 = v21;
 
   v9 = [v7 rangeOfString:@"<style"];
@@ -1092,8 +1092,8 @@ LABEL_22:
   v15 = v20;
 
   v16 = [[NSString alloc] initWithData:v14 encoding:4];
-  v17 = [(BKTOCWebViewController2 *)self elementIdForCurrentNode];
-  v18 = [NSString stringWithFormat:@"updatePageStylesheet(%@) clearSelectedLink(); scrollToItemWithId(%@)", v16, v17];;
+  elementIdForCurrentNode = [(BKTOCWebViewController2 *)self elementIdForCurrentNode];
+  v18 = [NSString stringWithFormat:@"updatePageStylesheet(%@) clearSelectedLink(); scrollToItemWithId(%@)", v16, elementIdForCurrentNode];;
   activityIndicator = self->_activityIndicator;
   if (activityIndicator)
   {

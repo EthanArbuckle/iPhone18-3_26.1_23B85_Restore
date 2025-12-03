@@ -1,10 +1,10 @@
 @interface CPListImageRowItemImageGridElement
 + (CGSize)maximumImageSize;
-- (CPListImageRowItemImageGridElement)initWithCoder:(id)a3;
-- (CPListImageRowItemImageGridElement)initWithImage:(id)a3 imageShape:(int64_t)a4 title:(id)a5 accessorySymbolName:(id)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccessorySymbolName:(id)a3;
-- (void)setTitle:(id)a3;
+- (CPListImageRowItemImageGridElement)initWithCoder:(id)coder;
+- (CPListImageRowItemImageGridElement)initWithImage:(id)image imageShape:(int64_t)shape title:(id)title accessorySymbolName:(id)name;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccessorySymbolName:(id)name;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CPListImageRowItemImageGridElement
@@ -24,22 +24,22 @@
   return result;
 }
 
-- (CPListImageRowItemImageGridElement)initWithImage:(id)a3 imageShape:(int64_t)a4 title:(id)a5 accessorySymbolName:(id)a6
+- (CPListImageRowItemImageGridElement)initWithImage:(id)image imageShape:(int64_t)shape title:(id)title accessorySymbolName:(id)name
 {
-  v10 = a5;
-  v11 = a6;
+  titleCopy = title;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = CPListImageRowItemImageGridElement;
-  v12 = [(CPListImageRowItemElement *)&v19 initWithImage:a3];
+  v12 = [(CPListImageRowItemElement *)&v19 initWithImage:image];
   v13 = v12;
   if (v12)
   {
-    v12->_imageShape = a4;
-    v14 = [v10 copy];
+    v12->_imageShape = shape;
+    v14 = [titleCopy copy];
     title = v13->_title;
     v13->_title = v14;
 
-    v16 = [v11 copy];
+    v16 = [nameCopy copy];
     accessorySymbolName = v13->_accessorySymbolName;
     v13->_accessorySymbolName = v16;
   }
@@ -47,12 +47,12 @@
   return v13;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
@@ -60,12 +60,12 @@
   }
 }
 
-- (void)setAccessorySymbolName:(id)a3
+- (void)setAccessorySymbolName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_accessorySymbolName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     accessorySymbolName = self->_accessorySymbolName;
     self->_accessorySymbolName = v4;
 
@@ -73,20 +73,20 @@
   }
 }
 
-- (CPListImageRowItemImageGridElement)initWithCoder:(id)a3
+- (CPListImageRowItemImageGridElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CPListImageRowItemImageGridElement;
-  v5 = [(CPListImageRowItemElement *)&v11 initWithCoder:v4];
+  v5 = [(CPListImageRowItemElement *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_imageShape = [v4 decodeIntegerForKey:@"kCPListImageRowItemImageGridElementImageShapeKey"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemImageGridElementTitleKey"];
+    v5->_imageShape = [coderCopy decodeIntegerForKey:@"kCPListImageRowItemImageGridElementImageShapeKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemImageGridElementTitleKey"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemImageGridElementAccessorySymbolNameKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemImageGridElementAccessorySymbolNameKey"];
     accessorySymbolName = v5->_accessorySymbolName;
     v5->_accessorySymbolName = v8;
   }
@@ -94,19 +94,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPListImageRowItemImageGridElement;
-  v4 = a3;
-  [(CPListImageRowItemElement *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPListImageRowItemElement *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CPListImageRowItemImageGridElement *)self title:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPListImageRowItemImageGridElementTitleKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPListImageRowItemImageGridElementTitleKey"];
 
-  v6 = [(CPListImageRowItemImageGridElement *)self accessorySymbolName];
-  [v4 encodeObject:v6 forKey:@"kCPListImageRowItemImageGridElementAccessorySymbolNameKey"];
+  accessorySymbolName = [(CPListImageRowItemImageGridElement *)self accessorySymbolName];
+  [coderCopy encodeObject:accessorySymbolName forKey:@"kCPListImageRowItemImageGridElementAccessorySymbolNameKey"];
 
-  [v4 encodeInteger:-[CPListImageRowItemImageGridElement imageShape](self forKey:{"imageShape"), @"kCPListImageRowItemImageGridElementImageShapeKey"}];
+  [coderCopy encodeInteger:-[CPListImageRowItemImageGridElement imageShape](self forKey:{"imageShape"), @"kCPListImageRowItemImageGridElementImageShapeKey"}];
 }
 
 @end

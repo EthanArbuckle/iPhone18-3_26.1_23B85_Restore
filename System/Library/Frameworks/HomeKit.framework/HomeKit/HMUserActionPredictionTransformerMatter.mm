@@ -1,16 +1,16 @@
 @interface HMUserActionPredictionTransformerMatter
-+ (id)matchingMatterAccessoryForTargetIdentifier:(id)a3 home:(id)a4;
++ (id)matchingMatterAccessoryForTargetIdentifier:(id)identifier home:(id)home;
 - (HMUserActionPredictionTransformerMatter)init;
 @end
 
 @implementation HMUserActionPredictionTransformerMatter
 
-+ (id)matchingMatterAccessoryForTargetIdentifier:(id)a3 home:(id)a4
++ (id)matchingMatterAccessoryForTargetIdentifier:(id)identifier home:(id)home
 {
   v5 = sub_19BE0DFAC();
   v7 = v6;
-  v8 = a4;
-  v9 = sub_19BB618C8(v5, v7, v8);
+  homeCopy = home;
+  v9 = sub_19BB618C8(v5, v7, homeCopy);
 
   return v9;
 }

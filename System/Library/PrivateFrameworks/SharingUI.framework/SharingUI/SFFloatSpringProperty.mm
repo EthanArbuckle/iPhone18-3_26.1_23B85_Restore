@@ -1,11 +1,11 @@
 @interface SFFloatSpringProperty
-+ (void)_withoutAnimation:(id)a3;
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4;
++ (void)_withoutAnimation:(id)animation;
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState;
 - (SFFloatSpringProperty)init;
-- (double)projectForDeceleration:(double)a3;
-- (double)projectForTime:(double)a3;
-- (void)setInput:(double)a3;
-- (void)setOutput:(double)a3;
+- (double)projectForDeceleration:(double)deceleration;
+- (double)projectForTime:(double)time;
+- (void)setInput:(double)input;
+- (void)setOutput:(double)output;
 @end
 
 @implementation SFFloatSpringProperty
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (void)setInput:(double)a3
+- (void)setInput:(double)input
 {
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DD250];
@@ -36,7 +36,7 @@
   v7[2] = __34__SFFloatSpringProperty_setInput___block_invoke;
   v7[3] = &unk_1E7EE3D58;
   objc_copyWeak(v8, &location);
-  v8[1] = *&a3;
+  v8[1] = *&input;
   [v5 _animateUsingSpringBehavior:self tracking:tracking animations:v7 completion:0];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -78,18 +78,18 @@ LABEL_8:
   [v11 setValue:v10];
 }
 
-- (void)setOutput:(double)a3
+- (void)setOutput:(double)output
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __35__SFFloatSpringProperty_setOutput___block_invoke;
   v3[3] = &unk_1E7EE36B0;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = output;
   [SFFloatSpringProperty _withoutAnimation:v3];
 }
 
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState
 {
   *&retstr->var7 = 0u;
   *&retstr->var9 = 0u;
@@ -106,32 +106,32 @@ LABEL_8:
   return self;
 }
 
-- (double)projectForDeceleration:(double)a3
+- (double)projectForDeceleration:(double)deceleration
 {
   [(SFFloatSpringProperty *)self output];
   v6 = v5;
   [(UIViewFloatAnimatableProperty *)self velocity];
-  return v6 + v7 / 1000.0 * a3 / (1.0 - a3);
+  return v6 + v7 / 1000.0 * deceleration / (1.0 - deceleration);
 }
 
-- (double)projectForTime:(double)a3
+- (double)projectForTime:(double)time
 {
   [(SFFloatSpringProperty *)self output];
   v6 = v5;
   [(UIViewFloatAnimatableProperty *)self velocity];
-  return v6 + v7 * a3;
+  return v6 + v7 * time;
 }
 
-+ (void)_withoutAnimation:(id)a3
++ (void)_withoutAnimation:(id)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v4 = MEMORY[0x1E69DD250];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__SFFloatSpringProperty__withoutAnimation___block_invoke;
   v6[3] = &unk_1E7EE3CE0;
-  v7 = v3;
-  v5 = v3;
+  v7 = animationCopy;
+  v5 = animationCopy;
   [v4 performWithoutAnimation:v6];
 }
 

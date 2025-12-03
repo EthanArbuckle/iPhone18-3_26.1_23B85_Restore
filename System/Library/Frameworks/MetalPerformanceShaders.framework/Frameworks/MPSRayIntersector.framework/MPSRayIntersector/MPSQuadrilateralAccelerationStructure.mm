@@ -1,25 +1,25 @@
 @interface MPSQuadrilateralAccelerationStructure
-- (MPSQuadrilateralAccelerationStructure)initWithDevice:(id)a3;
-- (MPSQuadrilateralAccelerationStructure)initWithGroup:(id)a3;
+- (MPSQuadrilateralAccelerationStructure)initWithDevice:(id)device;
+- (MPSQuadrilateralAccelerationStructure)initWithGroup:(id)group;
 - (id)vertexBuffer;
-- (void)setPolygonType:(unint64_t)a3;
+- (void)setPolygonType:(unint64_t)type;
 @end
 
 @implementation MPSQuadrilateralAccelerationStructure
 
-- (void)setPolygonType:(unint64_t)a3
+- (void)setPolygonType:(unint64_t)type
 {
-  if (a3 != 1)
+  if (type != 1)
   {
     sub_239E2074C();
   }
 }
 
-- (MPSQuadrilateralAccelerationStructure)initWithDevice:(id)a3
+- (MPSQuadrilateralAccelerationStructure)initWithDevice:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSQuadrilateralAccelerationStructure;
-  v3 = [(MPSPolygonAccelerationStructure *)&v7 initWithDevice:a3];
+  v3 = [(MPSPolygonAccelerationStructure *)&v7 initWithDevice:device];
   v4 = v3;
   if (v3)
   {
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (MPSQuadrilateralAccelerationStructure)initWithGroup:(id)a3
+- (MPSQuadrilateralAccelerationStructure)initWithGroup:(id)group
 {
   v7.receiver = self;
   v7.super_class = MPSQuadrilateralAccelerationStructure;
-  v3 = [(MPSPolygonAccelerationStructure *)&v7 initWithGroup:a3];
+  v3 = [(MPSPolygonAccelerationStructure *)&v7 initWithGroup:group];
   v4 = v3;
   if (v3)
   {

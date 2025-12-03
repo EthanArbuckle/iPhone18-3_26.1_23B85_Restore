@@ -5,7 +5,7 @@
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)handleActionResponse;
-- (void)setAction:(int)a3;
+- (void)setAction:(int)action;
 - (void)unlockScheduled;
 @end
 
@@ -38,20 +38,20 @@
 {
   if ([(CellDataActivationFailureAlertState *)self scheduled])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(tryLock) = 0;
   }
 
   else
   {
-    v3 = [(NSLock *)self->fLockMain tryLock];
-    if (v3)
+    tryLock = [(NSLock *)self->fLockMain tryLock];
+    if (tryLock)
     {
       [(CellDataActivationFailureAlertState *)self setAction:0];
-      LOBYTE(v3) = 1;
+      LOBYTE(tryLock) = 1;
     }
   }
 
-  return v3;
+  return tryLock;
 }
 
 - (void)unlockScheduled
@@ -61,10 +61,10 @@
   [(CellDataActivationFailureAlertState *)self setScheduled:0];
 }
 
-- (void)setAction:(int)a3
+- (void)setAction:(int)action
 {
-  self->fAction = a3;
-  if (!a3)
+  self->fAction = action;
+  if (!action)
   {
     v9[3] = v3;
     v9[4] = v4;

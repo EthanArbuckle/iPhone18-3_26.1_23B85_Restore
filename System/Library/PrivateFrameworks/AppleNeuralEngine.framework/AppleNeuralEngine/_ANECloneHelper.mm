@@ -1,19 +1,19 @@
 @interface _ANECloneHelper
-+ (BOOL)shouldSkipCloneFor:(id)a3 isEncryptedModel:(BOOL)a4;
++ (BOOL)shouldSkipCloneFor:(id)for isEncryptedModel:(BOOL)model;
 @end
 
 @implementation _ANECloneHelper
 
-+ (BOOL)shouldSkipCloneFor:(id)a3 isEncryptedModel:(BOOL)a4
++ (BOOL)shouldSkipCloneFor:(id)for isEncryptedModel:(BOOL)model
 {
-  v4 = a4;
+  modelCopy = model;
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 modelURL];
+  forCopy = for;
+  modelURL = [forCopy modelURL];
   v28 = 0;
   v8 = *MEMORY[0x1E695DDC0];
   v27 = 0;
-  v9 = [v7 getResourceValue:&v28 forKey:v8 error:&v27];
+  v9 = [modelURL getResourceValue:&v28 forKey:v8 error:&v27];
   v10 = v28;
   v11 = v27;
 
@@ -32,11 +32,11 @@
 
   else
   {
-    v16 = [v6 modelURL];
+    modelURL2 = [forCopy modelURL];
     v26 = 0;
     v17 = *MEMORY[0x1E695DDB0];
     v25 = 0;
-    v13 = [v16 getResourceValue:&v26 forKey:v17 error:&v25];
+    v13 = [modelURL2 getResourceValue:&v26 forKey:v17 error:&v25];
     v12 = v26;
     v15 = v25;
 
@@ -57,7 +57,7 @@
     }
   }
 
-  if (v4)
+  if (modelCopy)
   {
     v19 = +[_ANELog common];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -74,11 +74,11 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v23 = NSStringFromSelector(a2);
-      v24 = [v6 modelURL];
+      modelURL3 = [forCopy modelURL];
       *buf = 138412802;
       v30 = v23;
       v31 = 2112;
-      v32 = v24;
+      v32 = modelURL3;
       v33 = 2112;
       v34 = v15;
       _os_log_error_impl(&dword_1AD246000, v20, OS_LOG_TYPE_ERROR, "%@: modelURL=%@ getResourceValue:forKey:error: FAILED. err=%@", buf, 0x20u);

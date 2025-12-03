@@ -1,5 +1,5 @@
 @interface WFFileStorageUtilities
-+ (id)documentsDirectoryWithError:(id *)a3;
++ (id)documentsDirectoryWithError:(id *)error;
 + (void)createDocumentsDirectoryIfNecessary;
 @end
 
@@ -54,30 +54,30 @@ void __61__WFFileStorageUtilities_createDocumentsDirectoryIfNecessary__block_inv
   [v5 createFileAtPath:v4 contents:0 attributes:0];
 }
 
-+ (id)documentsDirectoryWithError:(id *)a3
++ (id)documentsDirectoryWithError:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [a1 containerIdentifier];
-  v7 = [v5 URLForUbiquityContainerIdentifier:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  containerIdentifier = [self containerIdentifier];
+  v7 = [defaultManager URLForUbiquityContainerIdentifier:containerIdentifier];
   v8 = [v7 URLByAppendingPathComponent:@"Documents" isDirectory:1];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v8 path];
-    v11 = [v9 fileExistsAtPath:v10];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v8 path];
+    v11 = [defaultManager2 fileExistsAtPath:path];
 
-    if ((v11 & 1) != 0 || ([MEMORY[0x1E696AC08] defaultManager], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v8, 1, 0, a3), v12, v13))
+    if ((v11 & 1) != 0 || ([MEMORY[0x1E696AC08] defaultManager], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v8, 1, 0, error), v12, v13))
     {
-      a3 = v8;
+      error = v8;
       goto LABEL_8;
     }
   }
 
   else
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -88,15 +88,15 @@ void __61__WFFileStorageUtilities_createDocumentsDirectoryIfNecessary__block_inv
     v16 = WFLocalizedString(@"The iCloud Container could not be found.");
     v21[0] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    *a3 = [v14 errorWithDomain:v15 code:4 userInfo:v17];
+    *error = [v14 errorWithDomain:v15 code:4 userInfo:v17];
   }
 
-  a3 = 0;
+  error = 0;
 LABEL_8:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return a3;
+  return error;
 }
 
 @end

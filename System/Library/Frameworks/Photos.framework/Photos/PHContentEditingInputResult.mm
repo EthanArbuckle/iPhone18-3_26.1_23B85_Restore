@@ -2,13 +2,13 @@
 - (BOOL)containsValidData;
 - (id)description;
 - (id)uniformTypeIdentifier;
-- (void)addAdjustmentDataResult:(id)a3;
-- (void)addAdjustmentSecondaryDataResult:(id)a3;
-- (void)addFlipImageURL:(id)a3 forAssetResourceType:(int64_t)a4;
-- (void)addFlipVideoURL:(id)a3 forAssetResourceType:(int64_t)a4;
-- (void)addImageResult:(id)a3;
-- (void)addVideoResult:(id)a3;
-- (void)mergeInfoDictionaryFromResult:(id)a3;
+- (void)addAdjustmentDataResult:(id)result;
+- (void)addAdjustmentSecondaryDataResult:(id)result;
+- (void)addFlipImageURL:(id)l forAssetResourceType:(int64_t)type;
+- (void)addFlipVideoURL:(id)l forAssetResourceType:(int64_t)type;
+- (void)addImageResult:(id)result;
+- (void)addVideoResult:(id)result;
+- (void)mergeInfoDictionaryFromResult:(id)result;
 @end
 
 @implementation PHContentEditingInputResult
@@ -18,16 +18,16 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PHContentEditingInputResult *)self imageURL];
-  v7 = [(PHContentEditingInputResult *)self videoURL];
-  v8 = [v3 stringWithFormat:@"<%@ %p> imageURL: %@, videoURL: %@", v5, self, v6, v7];
+  imageURL = [(PHContentEditingInputResult *)self imageURL];
+  videoURL = [(PHContentEditingInputResult *)self videoURL];
+  v8 = [v3 stringWithFormat:@"<%@ %p> imageURL: %@, videoURL: %@", v5, self, imageURL, videoURL];
 
   return v8;
 }
 
-- (void)addFlipVideoURL:(id)a3 forAssetResourceType:(int64_t)a4
+- (void)addFlipVideoURL:(id)l forAssetResourceType:(int64_t)type
 {
-  v10 = a3;
+  lCopy = l;
   flipVideoURLs = self->_flipVideoURLs;
   if (!flipVideoURLs)
   {
@@ -38,13 +38,13 @@
     flipVideoURLs = self->_flipVideoURLs;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [(NSMutableDictionary *)flipVideoURLs setObject:v10 forKeyedSubscript:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [(NSMutableDictionary *)flipVideoURLs setObject:lCopy forKeyedSubscript:v9];
 }
 
-- (void)addFlipImageURL:(id)a3 forAssetResourceType:(int64_t)a4
+- (void)addFlipImageURL:(id)l forAssetResourceType:(int64_t)type
 {
-  v10 = a3;
+  lCopy = l;
   flipImageURLs = self->_flipImageURLs;
   if (!flipImageURLs)
   {
@@ -55,91 +55,91 @@
     flipImageURLs = self->_flipImageURLs;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [(NSMutableDictionary *)flipImageURLs setObject:v10 forKeyedSubscript:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [(NSMutableDictionary *)flipImageURLs setObject:lCopy forKeyedSubscript:v9];
 }
 
-- (void)addVideoResult:(id)a3
+- (void)addVideoResult:(id)result
 {
-  objc_storeStrong(&self->_videoResult, a3);
-  v5 = a3;
-  [(PHContentEditingInputResult *)self mergeInfoDictionaryFromResult:v5];
+  objc_storeStrong(&self->_videoResult, result);
+  resultCopy = result;
+  [(PHContentEditingInputResult *)self mergeInfoDictionaryFromResult:resultCopy];
 }
 
-- (void)addImageResult:(id)a3
+- (void)addImageResult:(id)result
 {
-  v13 = a3;
+  resultCopy = result;
   if (!self->_imageResult)
   {
     v4 = [PHImageResult alloc];
-    v5 = [v13 info];
-    v6 = [v5 objectForKeyedSubscript:@"PHImageResultRequestIDKey"];
+    info = [resultCopy info];
+    v6 = [info objectForKeyedSubscript:@"PHImageResultRequestIDKey"];
     v7 = -[PHCompositeMediaResult initWithRequestID:](v4, "initWithRequestID:", [v6 intValue]);
     imageResult = self->_imageResult;
     self->_imageResult = v7;
   }
 
-  v9 = [v13 imageURL];
+  imageURL = [resultCopy imageURL];
 
-  if (v9)
+  if (imageURL)
   {
-    v10 = [v13 imageURL];
-    [(PHImageResult *)self->_imageResult setImageURL:v10];
+    imageURL2 = [resultCopy imageURL];
+    [(PHImageResult *)self->_imageResult setImageURL:imageURL2];
 
-    v11 = [v13 uniformTypeIdentifier];
-    [(PHImageResult *)self->_imageResult setUniformTypeIdentifier:v11];
+    uniformTypeIdentifier = [resultCopy uniformTypeIdentifier];
+    [(PHImageResult *)self->_imageResult setUniformTypeIdentifier:uniformTypeIdentifier];
 
-    v12 = [v13 exifOrientation];
-    [(PHImageResult *)self->_imageResult setExifOrientation:v12];
+    exifOrientation = [resultCopy exifOrientation];
+    [(PHImageResult *)self->_imageResult setExifOrientation:exifOrientation];
   }
 
-  if ([v13 imageRef])
+  if ([resultCopy imageRef])
   {
-    -[PHImageResult setImageRef:](self->_imageResult, "setImageRef:", [v13 imageRef]);
+    -[PHImageResult setImageRef:](self->_imageResult, "setImageRef:", [resultCopy imageRef]);
   }
 
-  [(PHContentEditingInputResult *)self mergeInfoDictionaryFromResult:v13];
+  [(PHContentEditingInputResult *)self mergeInfoDictionaryFromResult:resultCopy];
 }
 
-- (void)addAdjustmentSecondaryDataResult:(id)a3
+- (void)addAdjustmentSecondaryDataResult:(id)result
 {
-  objc_storeStrong(&self->_adjustmentSecondaryDataResult, a3);
-  v5 = a3;
-  [(PHContentEditingInputResult *)self mergeInfoDictionaryFromResult:v5];
+  objc_storeStrong(&self->_adjustmentSecondaryDataResult, result);
+  resultCopy = result;
+  [(PHContentEditingInputResult *)self mergeInfoDictionaryFromResult:resultCopy];
 }
 
-- (void)addAdjustmentDataResult:(id)a3
+- (void)addAdjustmentDataResult:(id)result
 {
-  v6 = a3;
-  v4 = [v6 adjustmentData];
+  resultCopy = result;
+  adjustmentData = [resultCopy adjustmentData];
   adjustmentData = self->_adjustmentData;
-  self->_adjustmentData = v4;
+  self->_adjustmentData = adjustmentData;
 
-  [(PHContentEditingInputResult *)self mergeInfoDictionaryFromResult:v6];
+  [(PHContentEditingInputResult *)self mergeInfoDictionaryFromResult:resultCopy];
 }
 
-- (void)mergeInfoDictionaryFromResult:(id)a3
+- (void)mergeInfoDictionaryFromResult:(id)result
 {
-  v8 = a3;
-  v4 = [v8 error];
-  if (v4)
+  resultCopy = result;
+  error = [resultCopy error];
+  if (error)
   {
-    v5 = v4;
-    v6 = [(PHContentEditingInputResult *)self error];
+    v5 = error;
+    error2 = [(PHContentEditingInputResult *)self error];
 
-    if (!v6)
+    if (!error2)
     {
-      v7 = [v8 error];
-      [(PHContentEditingInputResult *)self setError:v7];
+      error3 = [resultCopy error];
+      [(PHContentEditingInputResult *)self setError:error3];
     }
   }
 
-  if ([v8 isInCloud])
+  if ([resultCopy isInCloud])
   {
     [(PHCompositeMediaResult *)self setIsInCloud:1];
   }
 
-  if ([v8 isCancelled])
+  if ([resultCopy isCancelled])
   {
     [(PHCompositeMediaResult *)self setCancelled:1];
   }
@@ -162,7 +162,7 @@
   imageResult = self->_imageResult;
   if (imageResult)
   {
-    v4 = [(PHImageResult *)imageResult containsValidData];
+    containsValidData = [(PHImageResult *)imageResult containsValidData];
     videoResult = self->_videoResult;
   }
 
@@ -174,12 +174,12 @@
       return videoResult;
     }
 
-    v4 = 1;
+    containsValidData = 1;
   }
 
   if (videoResult)
   {
-    v6 = v4 == 0;
+    v6 = containsValidData == 0;
   }
 
   else
@@ -189,7 +189,7 @@
 
   if (v6)
   {
-    LOBYTE(videoResult) = (videoResult == 0) & v4;
+    LOBYTE(videoResult) = (videoResult == 0) & containsValidData;
   }
 
   else

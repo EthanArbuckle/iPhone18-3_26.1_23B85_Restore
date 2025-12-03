@@ -1,8 +1,8 @@
 @interface ODRDatabaseStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (id)storeDescriptor;
-- (void)asyncModifyUsingTransaction:(id)a3 completion:(id)a4;
-- (void)modifyUsingTransaction:(id)a3;
+- (void)asyncModifyUsingTransaction:(id)transaction completion:(id)completion;
+- (void)modifyUsingTransaction:(id)transaction;
 @end
 
 @implementation ODRDatabaseStore
@@ -17,11 +17,11 @@
   return v5;
 }
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
-  if (a3)
+  if (schema)
   {
-    return sub_100252C84(a3, 14000, &stru_10051CF90, 0);
+    return sub_100252C84(schema, 14000, &stru_10051CF90, 0);
   }
 
   else
@@ -30,30 +30,30 @@
   }
 }
 
-- (void)modifyUsingTransaction:(id)a3
+- (void)modifyUsingTransaction:(id)transaction
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1002092A0;
   v6[3] = &unk_10051CFB8;
-  v7 = a3;
+  transactionCopy = transaction;
   v5.receiver = self;
   v5.super_class = ODRDatabaseStore;
-  v4 = v7;
+  v4 = transactionCopy;
   [(SQLiteDatabaseStore *)&v5 modifyUsingTransaction:v6];
 }
 
-- (void)asyncModifyUsingTransaction:(id)a3 completion:(id)a4
+- (void)asyncModifyUsingTransaction:(id)transaction completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1002093B0;
   v8[3] = &unk_10051CFB8;
-  v9 = a3;
+  transactionCopy = transaction;
   v7.receiver = self;
   v7.super_class = ODRDatabaseStore;
-  v6 = v9;
-  [(SQLiteDatabaseStore *)&v7 asyncModifyUsingTransaction:v8 completion:a4];
+  v6 = transactionCopy;
+  [(SQLiteDatabaseStore *)&v7 asyncModifyUsingTransaction:v8 completion:completion];
 }
 
 @end

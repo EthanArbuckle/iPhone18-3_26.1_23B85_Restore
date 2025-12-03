@@ -1,34 +1,34 @@
 @interface JavaTextSimpleDateFormat
 + (const)defaultPattern;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (JavaTextSimpleDateFormat)initWithNSString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JavaTextSimpleDateFormat)initWithNSString:(id)string;
 - (id)clone;
-- (id)formatToCharacterIteratorWithId:(id)a3;
+- (id)formatToCharacterIteratorWithId:(id)id;
 - (id)get2DigitYearStart;
 - (id)getDateFormatSymbols;
-- (id)parseWithNSString:(id)a3 withJavaTextParsePosition:(id)a4;
+- (id)parseWithNSString:(id)string withJavaTextParsePosition:(id)position;
 - (id)toLocalizedPattern;
 - (unint64_t)hash;
-- (void)applyLocalizedPatternWithNSString:(id)a3;
-- (void)applyPatternWithNSString:(id)a3;
+- (void)applyLocalizedPatternWithNSString:(id)string;
+- (void)applyPatternWithNSString:(id)string;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)set2DigitYearStartWithJavaUtilDate:(id)a3;
-- (void)setDateFormatSymbolsWithJavaTextDateFormatSymbols:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)set2DigitYearStartWithJavaUtilDate:(id)date;
+- (void)setDateFormatSymbolsWithJavaTextDateFormatSymbols:(id)symbols;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaTextSimpleDateFormat
 
-- (JavaTextSimpleDateFormat)initWithNSString:(id)a3
+- (JavaTextSimpleDateFormat)initWithNSString:(id)string
 {
   Default = JavaUtilLocale_getDefault();
-  JavaTextSimpleDateFormat_initWithNSString_withJavaUtilLocale_(self, a3, Default);
+  JavaTextSimpleDateFormat_initWithNSString_withJavaUtilLocale_(self, string, Default);
   return self;
 }
 
-- (void)applyLocalizedPatternWithNSString:(id)a3
+- (void)applyLocalizedPatternWithNSString:(id)string
 {
   formatData = self->formatData_;
   if (!formatData)
@@ -36,26 +36,26 @@
     JreThrowNullPointerException();
   }
 
-  v6 = [(JavaTextDateFormatSymbols *)formatData getLocalPatternChars];
-  v7 = sub_1002017F4(a3, v6, JavaTextSimpleDateFormat_PATTERN_CHARS_, 1);
+  getLocalPatternChars = [(JavaTextDateFormatSymbols *)formatData getLocalPatternChars];
+  v7 = sub_1002017F4(string, getLocalPatternChars, JavaTextSimpleDateFormat_PATTERN_CHARS_, 1);
 
   JreStrongAssign(&self->pattern_, v7);
 }
 
-- (void)applyPatternWithNSString:(id)a3
+- (void)applyPatternWithNSString:(id)string
 {
-  sub_1002012F4(a3);
+  sub_1002012F4(string);
 
-  JreStrongAssign(&self->pattern_, a3);
+  JreStrongAssign(&self->pattern_, string);
 }
 
 - (id)clone
 {
   v9.receiver = self;
   v9.super_class = JavaTextSimpleDateFormat;
-  v3 = [(JavaTextDateFormat *)&v9 clone];
+  clone = [(JavaTextDateFormat *)&v9 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_8;
   }
@@ -71,9 +71,9 @@
     goto LABEL_8;
   }
 
-  v5 = [(JavaTextDateFormatSymbols *)formatData clone];
+  clone2 = [(JavaTextDateFormatSymbols *)formatData clone];
   objc_opt_class();
-  if (v5)
+  if (clone2)
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -82,7 +82,7 @@ LABEL_9:
     }
   }
 
-  JreStrongAssign(v3 + 4, v5);
+  JreStrongAssign(clone + 4, clone2);
   defaultCenturyStart = self->defaultCenturyStart_;
   if (!defaultCenturyStart)
   {
@@ -91,13 +91,13 @@ LABEL_8:
   }
 
   v7 = new_JavaUtilDate_initWithLong_([(JavaUtilDate *)defaultCenturyStart getTime]);
-  JreStrongAssignAndConsume(v3 + 6, v7);
-  return v3;
+  JreStrongAssignAndConsume(clone + 6, v7);
+  return clone;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -112,23 +112,23 @@ LABEL_8:
     }
 
     objc_opt_class();
-    if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (equal && (objc_opt_isKindOfClass() & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
     v9.receiver = self;
     v9.super_class = JavaTextSimpleDateFormat;
-    v5 = [(JavaTextDateFormat *)&v9 isEqual:a3];
+    v5 = [(JavaTextDateFormat *)&v9 isEqual:equal];
     if (v5)
     {
       pattern = self->pattern_;
-      if (!pattern || !a3)
+      if (!pattern || !equal)
       {
         goto LABEL_14;
       }
 
-      v5 = [(NSString *)pattern isEqual:*(a3 + 3)];
+      v5 = [(NSString *)pattern isEqual:*(equal + 3)];
       if (!v5)
       {
         return v5;
@@ -141,16 +141,16 @@ LABEL_14:
         JreThrowNullPointerException();
       }
 
-      LOBYTE(v5) = [(JavaTextDateFormatSymbols *)formatData isEqual:*(a3 + 4)];
+      LOBYTE(v5) = [(JavaTextDateFormatSymbols *)formatData isEqual:*(equal + 4)];
     }
   }
 
   return v5;
 }
 
-- (id)formatToCharacterIteratorWithId:(id)a3
+- (id)formatToCharacterIteratorWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     v8 = new_JavaLangNullPointerException_initWithNSString_(@"object == null");
     goto LABEL_14;
@@ -162,8 +162,8 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = self;
-      v6 = a3;
+      selfCopy2 = self;
+      idCopy = id;
       goto LABEL_8;
     }
 
@@ -174,7 +174,7 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [a3 getClass];
+    [id getClass];
     v16 = JreStrcat("$@", v9, v10, v11, v12, v13, v14, v15, @"Bad class: ");
     v8 = new_JavaLangIllegalArgumentException_initWithNSString_(v16);
 LABEL_14:
@@ -187,11 +187,11 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v6 = new_JavaUtilDate_initWithLong_([a3 longLongValue]);
-  v5 = self;
+  idCopy = new_JavaUtilDate_initWithLong_([id longLongValue]);
+  selfCopy2 = self;
 LABEL_8:
 
-  return sub_100201CF4(v5, v6);
+  return sub_100201CF4(selfCopy2, idCopy);
 }
 
 - (id)get2DigitYearStart
@@ -202,14 +202,14 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaUtilDate *)defaultCenturyStart clone];
+  clone = [(JavaUtilDate *)defaultCenturyStart clone];
   objc_opt_class();
-  if (v3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v3;
+  return clone;
 }
 
 - (id)getDateFormatSymbols
@@ -220,14 +220,14 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  v3 = [(JavaTextDateFormatSymbols *)formatData clone];
+  clone = [(JavaTextDateFormatSymbols *)formatData clone];
   objc_opt_class();
-  if (v3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v3;
+  return clone;
 }
 
 - (unint64_t)hash
@@ -244,22 +244,22 @@ LABEL_8:
   return (v5 + v3 + [(JavaTextDateFormatSymbols *)self->formatData_ hash]+ self->creationYear_);
 }
 
-- (id)parseWithNSString:(id)a3 withJavaTextParsePosition:(id)a4
+- (id)parseWithNSString:(id)string withJavaTextParsePosition:(id)position
 {
-  if (!a4)
+  if (!position)
   {
     goto LABEL_47;
   }
 
-  v4 = a4;
-  v7 = [a4 getIndex];
-  if (!a3)
+  positionCopy = position;
+  getIndex = [position getIndex];
+  if (!string)
   {
     goto LABEL_47;
   }
 
-  v8 = v7;
-  v29 = [a3 length];
+  v8 = getIndex;
+  v29 = [string length];
   calendar = self->super.calendar_;
   if (!calendar)
   {
@@ -267,7 +267,7 @@ LABEL_8:
   }
 
   [(JavaUtilCalendar *)calendar clear];
-  v10 = [(JavaUtilCalendar *)self->super.calendar_ getTimeZone];
+  getTimeZone = [(JavaUtilCalendar *)self->super.calendar_ getTimeZone];
   pattern = self->pattern_;
   if (!pattern)
   {
@@ -280,8 +280,8 @@ LABEL_8:
     goto LABEL_41;
   }
 
-  v28 = v4;
-  v27 = v10;
+  v28 = positionCopy;
+  v27 = getTimeZone;
   v13 = 0;
   v14 = 0;
   v15 = 0;
@@ -293,7 +293,7 @@ LABEL_8:
     {
       if (v15 >= 1)
       {
-        v8 = sub_1002030E0(self, a3, v8, v16, v15);
+        v8 = sub_1002030E0(self, string, v8, v16, v15);
         if ((v8 & 0x80000000) != 0)
         {
           goto LABEL_42;
@@ -304,7 +304,7 @@ LABEL_8:
 
       if (v16 == 39)
       {
-        if (v8 >= v29 || [a3 charAtWithInt:v8] != 39)
+        if (v8 >= v29 || [string charAtWithInt:v8] != 39)
         {
           goto LABEL_35;
         }
@@ -327,7 +327,7 @@ LABEL_8:
     {
       if (v15 >= 1)
       {
-        v8 = sub_1002030E0(self, a3, v8, v16, v15);
+        v8 = sub_1002030E0(self, string, v8, v16, v15);
         if ((v8 & 0x80000000) != 0)
         {
           goto LABEL_42;
@@ -336,7 +336,7 @@ LABEL_8:
         v15 = 0;
       }
 
-      if (v8 >= v29 || [a3 charAtWithInt:v8] != v18)
+      if (v8 >= v29 || [string charAtWithInt:v8] != v18)
       {
 LABEL_35:
         v20 = v28;
@@ -362,16 +362,16 @@ LABEL_30:
     {
       if (v15 < 1)
       {
-        v10 = v27;
-        v4 = v28;
+        getTimeZone = v27;
+        positionCopy = v28;
       }
 
       else
       {
-        v22 = sub_1002030E0(self, a3, v8, v16, v15);
+        v22 = sub_1002030E0(self, string, v8, v16, v15);
         v8 = v22;
-        v10 = v27;
-        v4 = v28;
+        getTimeZone = v27;
+        positionCopy = v28;
         if ((v22 & 0x80000000) != 0)
         {
           [v28 setErrorIndexWithInt:~v22];
@@ -388,14 +388,14 @@ LABEL_47:
       }
 
 LABEL_41:
-      v25 = [(JavaUtilCalendar *)self->super.calendar_ getTime];
-      [v4 setIndexWithInt:v8];
-      [(JavaUtilCalendar *)self->super.calendar_ setTimeZoneWithJavaUtilTimeZone:v10];
-      return v25;
+      getTime = [(JavaUtilCalendar *)self->super.calendar_ getTime];
+      [positionCopy setIndexWithInt:v8];
+      [(JavaUtilCalendar *)self->super.calendar_ setTimeZoneWithJavaUtilTimeZone:getTimeZone];
+      return getTime;
     }
   }
 
-  if (v15 < 1 || (v8 = sub_1002030E0(self, a3, v8, v16, -v15), (v8 & 0x80000000) == 0))
+  if (v15 < 1 || (v8 = sub_1002030E0(self, string, v8, v16, -v15), (v8 & 0x80000000) == 0))
   {
     v14 = 0;
     v15 = 1;
@@ -420,41 +420,41 @@ LABEL_45:
   return 0;
 }
 
-- (void)set2DigitYearStartWithJavaUtilDate:(id)a3
+- (void)set2DigitYearStartWithJavaUtilDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 clone];
+  clone = [date clone];
   objc_opt_class();
-  if (v4 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  JreStrongAssign(&self->defaultCenturyStart_, v4);
+  JreStrongAssign(&self->defaultCenturyStart_, clone);
   v5 = new_JavaUtilGregorianCalendar_init();
   [(JavaUtilCalendar *)v5 setTimeWithJavaUtilDate:self->defaultCenturyStart_];
   self->creationYear_ = [(JavaUtilCalendar *)v5 getWithInt:1];
 }
 
-- (void)setDateFormatSymbolsWithJavaTextDateFormatSymbols:(id)a3
+- (void)setDateFormatSymbolsWithJavaTextDateFormatSymbols:(id)symbols
 {
-  if (!a3)
+  if (!symbols)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 clone];
+  clone = [symbols clone];
   objc_opt_class();
-  if (v4 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  JreStrongAssign(&self->formatData_, v4);
+  JreStrongAssign(&self->formatData_, clone);
 }
 
 - (id)toLocalizedPattern
@@ -466,14 +466,14 @@ LABEL_45:
 
   v2 = JavaTextSimpleDateFormat_PATTERN_CHARS_;
   pattern = self->pattern_;
-  v4 = [(JavaTextDateFormatSymbols *)self->formatData_ getLocalPatternChars];
+  getLocalPatternChars = [(JavaTextDateFormatSymbols *)self->formatData_ getLocalPatternChars];
 
-  return sub_1002017F4(pattern, v2, v4, 0);
+  return sub_1002017F4(pattern, v2, getLocalPatternChars, 0);
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3 || (v5 = [a3 putFields]) == 0)
+  if (!stream || (v5 = [stream putFields]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -484,12 +484,12 @@ LABEL_45:
   [v6 putWithNSString:@"pattern" withId:self->pattern_];
   [v6 putWithNSString:@"serialVersionOnStream" withInt:1];
 
-  [a3 writeFields];
+  [stream writeFields];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3 || (v4 = [a3 readFields]) == 0)
+  if (!stream || (v4 = [stream readFields]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -528,7 +528,7 @@ LABEL_14:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = JavaUtilDate_class_();
     v6[0] = new_JavaIoObjectStreamField_initWithNSString_withIOSClass_(@"defaultCenturyStart", v2);

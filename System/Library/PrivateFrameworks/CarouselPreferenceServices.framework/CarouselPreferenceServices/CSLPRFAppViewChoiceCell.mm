@@ -1,23 +1,23 @@
 @interface CSLPRFAppViewChoiceCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (CSLPRFAppViewChoiceCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (CSLPRFAppViewChoiceCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)bundleID;
 - (id)bundle;
-- (id)localize:(id)a3;
+- (id)localize:(id)localize;
 - (void)launcherViewModeSettingChanged;
 - (void)layoutSubviews;
-- (void)retrieveImageForLauncherViewMode:(int64_t)a3 size:(CGSize)a4 completion:(id)a5;
-- (void)watchChooser:(id)a3 madeChoice:(int64_t)a4;
+- (void)retrieveImageForLauncherViewMode:(int64_t)mode size:(CGSize)size completion:(id)completion;
+- (void)watchChooser:(id)chooser madeChoice:(int64_t)choice;
 @end
 
 @implementation CSLPRFAppViewChoiceCell
 
-- (void)retrieveImageForLauncherViewMode:(int64_t)a3 size:(CGSize)a4 completion:(id)a5
+- (void)retrieveImageForLauncherViewMode:(int64_t)mode size:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -31,9 +31,9 @@
   v12[3] = &unk_278745090;
   v12[4] = self;
   v14 = &v15;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [v10 retrieveImageForLauncherViewMode:a3 size:v12 completion:{width, height}];
+  [v10 retrieveImageForLauncherViewMode:mode size:v12 completion:{width, height}];
 
   _Block_object_dispose(&v15, 8);
 }
@@ -72,27 +72,27 @@ void __76__CSLPRFAppViewChoiceCell_retrieveImageForLauncherViewMode_size_complet
 - (void)launcherViewModeSettingChanged
 {
   appViewChoiceView = self->_appViewChoiceView;
-  v3 = [(CSLPRFLauncherViewModeSetting *)self->_appViewSetting launcherViewMode];
+  launcherViewMode = [(CSLPRFLauncherViewModeSetting *)self->_appViewSetting launcherViewMode];
 
-  [(CSLPRFAppViewChoiceView *)appViewChoiceView setWatchChoice:v3];
+  [(CSLPRFAppViewChoiceView *)appViewChoiceView setWatchChoice:launcherViewMode];
 }
 
-- (void)watchChooser:(id)a3 madeChoice:(int64_t)a4
+- (void)watchChooser:(id)chooser madeChoice:(int64_t)choice
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  chooserCopy = chooser;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v6;
+    v9 = chooserCopy;
     v10 = 1024;
-    v11 = a4;
+    choiceCopy = choice;
     _os_log_impl(&dword_22CE92000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, ">>>> watchChoiceProvider %@ madeChoice %d", &v8, 0x12u);
   }
 
-  if ([(CSLPRFLauncherViewModeSetting *)self->_appViewSetting launcherViewMode]!= a4)
+  if ([(CSLPRFLauncherViewModeSetting *)self->_appViewSetting launcherViewMode]!= choice)
   {
-    [(CSLPRFLauncherViewModeSetting *)self->_appViewSetting setLauncherViewMode:a4 reason:2];
+    [(CSLPRFLauncherViewModeSetting *)self->_appViewSetting setLauncherViewMode:choice reason:2];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -100,35 +100,35 @@ void __76__CSLPRFAppViewChoiceCell_retrieveImageForLauncherViewMode_size_complet
 
 - (NSString)bundleID
 {
-  v2 = [(CSLPRFAppViewChoiceCell *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(CSLPRFAppViewChoiceCell *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (id)localize:(id)a3
+- (id)localize:(id)localize
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localizeCopy = localize;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CSLPRFAppViewChoiceCell *)self bundle];
+    bundle = [(CSLPRFAppViewChoiceCell *)self bundle];
     v11 = 138412802;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = localizeCopy;
     v15 = 2112;
-    v16 = v5;
+    v16 = bundle;
     _os_log_impl(&dword_22CE92000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, ">>>> %@ bundle for %@ is %@", &v11, 0x20u);
   }
 
-  v6 = [(CSLPRFAppViewChoiceCell *)self bundle];
-  v7 = [v6 localizedStringForKey:v4 value:0 table:@"CarouselAppViewChoice"];
+  bundle2 = [(CSLPRFAppViewChoiceCell *)self bundle];
+  v7 = [bundle2 localizedStringForKey:localizeCopy value:0 table:@"CarouselAppViewChoice"];
 
   if (!v7)
   {
-    v8 = [(CSLPRFAppViewChoiceCell *)self bundle];
-    v7 = [v8 localizedStringForKey:v4 value:0 table:@"CompanionAppViewSetup"];
+    bundle3 = [(CSLPRFAppViewChoiceCell *)self bundle];
+    v7 = [bundle3 localizedStringForKey:localizeCopy value:0 table:@"CompanionAppViewSetup"];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -149,26 +149,26 @@ void __76__CSLPRFAppViewChoiceCell_retrieveImageForLauncherViewMode_size_complet
   v9.receiver = self;
   v9.super_class = CSLPRFAppViewChoiceCell;
   [(PSTableCell *)&v9 layoutSubviews];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
-  v6 = [(CSLPRFAppViewChoiceCell *)self contentView];
-  [v6 bounds];
+  contentView = [(CSLPRFAppViewChoiceCell *)self contentView];
+  [contentView bounds];
   v8 = (v5 - v7) * 0.5;
 
   [(CSLPRFAppViewChoiceView *)self->_appViewChoiceView setHorizontalOffset:v8];
   [(CSLPRFAppViewChoiceView *)self->_appViewChoiceView setNeedsLayout];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  [(CSLPRFAppViewChoiceView *)self->_appViewChoiceView systemLayoutSizeFittingSize:a3.width, a3.height];
+  [(CSLPRFAppViewChoiceView *)self->_appViewChoiceView systemLayoutSizeFittingSize:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(CSLPRFAppViewChoiceCell *)self systemLayoutSizeFittingSize:*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)];
   result.height = v4;
@@ -176,12 +176,12 @@ void __76__CSLPRFAppViewChoiceCell_retrieveImageForLauncherViewMode_size_complet
   return result;
 }
 
-- (CSLPRFAppViewChoiceCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CSLPRFAppViewChoiceCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v37[4] = *MEMORY[0x277D85DE8];
   v36.receiver = self;
   v36.super_class = CSLPRFAppViewChoiceCell;
-  v4 = [(PSTableCell *)&v36 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v36 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(CSLPRFLauncherViewModeSetting);
@@ -206,29 +206,29 @@ void __76__CSLPRFAppViewChoiceCell_retrieveImageForLauncherViewMode_size_complet
     v10 = v33 = v4;
     [v10 addSubview:v7[151]];
 
-    v11 = [v7 contentView];
-    v12 = [MEMORY[0x277D75348] blackColor];
-    [v11 setBackgroundColor:v12];
+    contentView = [v7 contentView];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [contentView setBackgroundColor:blackColor];
 
-    v30 = [v7[151] topAnchor];
-    v31 = [v7 contentView];
-    v29 = [v31 topAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    topAnchor = [v7[151] topAnchor];
+    contentView2 = [v7 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v37[0] = v28;
-    v26 = [v7[151] leadingAnchor];
-    v27 = [v7 contentView];
-    v25 = [v27 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    leadingAnchor = [v7[151] leadingAnchor];
+    contentView3 = [v7 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v37[1] = v24;
-    v13 = [v7[151] trailingAnchor];
-    v14 = [v7 contentView];
-    v15 = [v14 trailingAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    trailingAnchor = [v7[151] trailingAnchor];
+    contentView4 = [v7 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v37[2] = v16;
-    v17 = [v7[151] bottomAnchor];
-    v18 = [v7 contentView];
-    v19 = [v18 bottomAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    bottomAnchor = [v7[151] bottomAnchor];
+    contentView5 = [v7 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v37[3] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:4];
 

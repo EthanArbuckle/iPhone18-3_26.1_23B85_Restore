@@ -1,30 +1,30 @@
 @interface HDActiveQuantityDataAggregator
-- (id)aggregateForState:(id)a3 collector:(id)a4 device:(id)a5 requestedAggregationDate:(id)a6 mode:(int64_t)a7 options:(unint64_t)a8 error:(id *)a9;
+- (id)aggregateForState:(id)state collector:(id)collector device:(id)device requestedAggregationDate:(id)date mode:(int64_t)mode options:(unint64_t)options error:(id *)error;
 - (id)description;
-- (id)initForQuantityType:(id)a3 dataCollectionManager:(id)a4;
+- (id)initForQuantityType:(id)type dataCollectionManager:(id)manager;
 @end
 
 @implementation HDActiveQuantityDataAggregator
 
-- (id)initForQuantityType:(id)a3 dataCollectionManager:(id)a4
+- (id)initForQuantityType:(id)type dataCollectionManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  managerCopy = manager;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HDActiveQuantityDataAggregator.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"[quantityType isKindOfClass:[HKQuantityType class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDActiveQuantityDataAggregator.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"[quantityType isKindOfClass:[HKQuantityType class]]"}];
   }
 
   v17.receiver = self;
   v17.super_class = HDActiveQuantityDataAggregator;
-  v10 = [(HDActiveDataAggregator *)&v17 initWithDataCollectionManager:v9];
+  v10 = [(HDActiveDataAggregator *)&v17 initWithDataCollectionManager:managerCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_quantityType, a3);
-    v12 = v8;
+    objc_storeStrong(&v10->_quantityType, type);
+    v12 = typeCopy;
     if (([MEMORY[0x277CCDD30] isDataCollectionForwarderDisabled] & 1) != 0 || (objc_msgSend(v12, "code") - 280) > 2)
     {
       v13 = 0;
@@ -42,33 +42,33 @@
   return v11;
 }
 
-- (id)aggregateForState:(id)a3 collector:(id)a4 device:(id)a5 requestedAggregationDate:(id)a6 mode:(int64_t)a7 options:(unint64_t)a8 error:(id *)a9
+- (id)aggregateForState:(id)state collector:(id)collector device:(id)device requestedAggregationDate:(id)date mode:(int64_t)mode options:(unint64_t)options error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  [(HDActiveDataAggregator *)self aggregationIntervalForCollector:v15];
+  stateCopy = state;
+  collectorCopy = collector;
+  deviceCopy = device;
+  dateCopy = date;
+  [(HDActiveDataAggregator *)self aggregationIntervalForCollector:collectorCopy];
   v19 = v18;
-  v20 = v14;
-  v21 = v17;
+  v20 = stateCopy;
+  v21 = dateCopy;
   if (self)
   {
-    v22 = [(HDActiveQuantityDataAggregator *)self additionalMetadataForCollector:v15];
-    v23 = [v20 unaggregatedSensorData];
+    v22 = [(HDActiveQuantityDataAggregator *)self additionalMetadataForCollector:collectorCopy];
+    unaggregatedSensorData = [v20 unaggregatedSensorData];
     if (v21)
     {
       quantityType = self->_quantityType;
-      v25 = [MEMORY[0x277CBEAA8] date];
-      HDAggregateQuantitySensorDataThroughDate(v23, quantityType, v25, v21, a7 == 0, v22, v19);
+      date = [MEMORY[0x277CBEAA8] date];
+      HDAggregateQuantitySensorDataThroughDate(unaggregatedSensorData, quantityType, date, v21, mode == 0, v22, v19);
     }
 
     else
     {
       v26 = self->_quantityType;
-      v25 = [MEMORY[0x277CBEAA8] date];
-      HDAggregateQuantitySensorData(v23, v26, v25, v22, v19);
+      date = [MEMORY[0x277CBEAA8] date];
+      HDAggregateQuantitySensorData(unaggregatedSensorData, v26, date, v22, v19);
     }
     v27 = ;
   }
@@ -90,7 +90,7 @@
         v41 = objc_opt_class();
         v42 = NSStringFromClass(v41);
         *buf = 138543618;
-        v48 = self;
+        selfCopy = self;
         v49 = 2114;
         v50 = v42;
         _os_log_fault_impl(&dword_228986000, v40, OS_LOG_TYPE_FAULT, "%{public}@: unexpected state object %{public}@", buf, 0x16u);
@@ -98,26 +98,26 @@
     }
 
     v29 = [HDDataAggregationState alloc];
-    v30 = [v27 remainingSensorData];
-    v31 = [(HDDataAggregationState *)v29 initWithRemainingSensorData:v30];
+    remainingSensorData = [v27 remainingSensorData];
+    v31 = [(HDDataAggregationState *)v29 initWithRemainingSensorData:remainingSensorData];
 
-    v32 = [v27 aggregatedSamples];
-    v33 = [v32 count];
+    aggregatedSamples = [v27 aggregatedSamples];
+    v33 = [aggregatedSamples count];
 
     v34 = [HDDataAggregationResult alloc];
     v35 = v34;
     if (v33)
     {
-      v36 = [v27 consumedSensorData];
+      consumedSensorData = [v27 consumedSensorData];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __113__HDActiveQuantityDataAggregator_aggregateForState_collector_device_requestedAggregationDate_mode_options_error___block_invoke;
       v43[3] = &unk_2786149F0;
       v43[4] = self;
       v44 = v27;
-      v45 = v16;
-      v46 = v15;
-      v37 = [(HDDataAggregationResult *)v35 initWithResultingAggregationState:v31 consumedSensorData:v36 persistenceHandler:v43];
+      v45 = deviceCopy;
+      v46 = collectorCopy;
+      v37 = [(HDDataAggregationResult *)v35 initWithResultingAggregationState:v31 consumedSensorData:consumedSensorData persistenceHandler:v43];
     }
 
     else
@@ -175,8 +175,8 @@ uint64_t __113__HDActiveQuantityDataAggregator_aggregateForState_collector_devic
   v8.receiver = self;
   v8.super_class = HDActiveQuantityDataAggregator;
   v4 = [(HDActiveQuantityDataAggregator *)&v8 description];
-  v5 = [(HKQuantityType *)self->_quantityType identifier];
-  v6 = [v3 stringWithFormat:@"<%@ %@>", v4, v5];
+  identifier = [(HKQuantityType *)self->_quantityType identifier];
+  v6 = [v3 stringWithFormat:@"<%@ %@>", v4, identifier];
 
   return v6;
 }

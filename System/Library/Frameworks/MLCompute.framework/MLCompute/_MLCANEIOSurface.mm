@@ -1,9 +1,9 @@
 @interface _MLCANEIOSurface
-+ (id)objectWithDataLength:(unint64_t)a3 liveIOStatus:(id)a4;
++ (id)objectWithDataLength:(unint64_t)length liveIOStatus:(id)status;
 + (void)initialize;
-- (_MLCANEIOSurface)initWithDataLength:(unint64_t)a3 liveIOStatus:(id)a4;
-- (__IOSurface)createIOSurface1x1WithLength:(unint64_t)a3;
-- (id)aneIOSurfaceObjectWithDataLength:(unint64_t)a3;
+- (_MLCANEIOSurface)initWithDataLength:(unint64_t)length liveIOStatus:(id)status;
+- (__IOSurface)createIOSurface1x1WithLength:(unint64_t)length;
+- (id)aneIOSurfaceObjectWithDataLength:(unint64_t)length;
 @end
 
 @implementation _MLCANEIOSurface
@@ -16,17 +16,17 @@
   }
 }
 
-+ (id)objectWithDataLength:(unint64_t)a3 liveIOStatus:(id)a4
++ (id)objectWithDataLength:(unint64_t)length liveIOStatus:(id)status
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithDataLength:a3 liveIOStatus:v6];
+  statusCopy = status;
+  v7 = [[self alloc] initWithDataLength:length liveIOStatus:statusCopy];
 
   return v7;
 }
 
-- (_MLCANEIOSurface)initWithDataLength:(unint64_t)a3 liveIOStatus:(id)a4
+- (_MLCANEIOSurface)initWithDataLength:(unint64_t)length liveIOStatus:(id)status
 {
-  v8 = a4;
+  statusCopy = status;
   if ((gIsAppleNeuralEngineAvailable & 1) == 0)
   {
     v9 = +[MLCLog framework];
@@ -38,7 +38,7 @@
     goto LABEL_11;
   }
 
-  v9 = [(_MLCANEIOSurface *)self aneIOSurfaceObjectWithDataLength:a3];
+  v9 = [(_MLCANEIOSurface *)self aneIOSurfaceObjectWithDataLength:length];
   if (!v9)
   {
     v13 = +[MLCLog framework];
@@ -48,7 +48,7 @@
     }
 
 LABEL_11:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
@@ -59,25 +59,25 @@ LABEL_11:
   if (v10)
   {
     objc_storeStrong(&v10->_ioSurfaceObject, v9);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(p_isa + 2, status);
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v12;
+  return selfCopy;
 }
 
-- (__IOSurface)createIOSurface1x1WithLength:(unint64_t)a3
+- (__IOSurface)createIOSurface1x1WithLength:(unint64_t)length
 {
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x277CBEC10] mutableCopy];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:length];
   [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD2B88]];
 
   [v5 setObject:&unk_284BA59C0 forKeyedSubscript:*MEMORY[0x277CD2A28]];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:length];
   [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x277CD2968]];
 
   Copy = CFDictionaryCreateCopy(*MEMORY[0x277CBECE8], v5);
@@ -88,9 +88,9 @@ LABEL_12:
   return v9;
 }
 
-- (id)aneIOSurfaceObjectWithDataLength:(unint64_t)a3
+- (id)aneIOSurfaceObjectWithDataLength:(unint64_t)length
 {
-  v4 = [(_MLCANEIOSurface *)self createIOSurface1x1WithLength:a3];
+  v4 = [(_MLCANEIOSurface *)self createIOSurface1x1WithLength:length];
   if (v4)
   {
     v5 = v4;

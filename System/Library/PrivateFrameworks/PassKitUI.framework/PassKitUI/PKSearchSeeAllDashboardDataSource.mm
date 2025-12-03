@@ -1,35 +1,35 @@
 @interface PKSearchSeeAllDashboardDataSource
-- (PKSearchSeeAllDashboardDataSource)initWithItems:(id)a3 searchQuery:(id)a4;
-- (id)itemAtIndexPath:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
-- (void)setDataSourceDelegate:(id)a3;
-- (void)updateWithItems:(id)a3;
+- (PKSearchSeeAllDashboardDataSource)initWithItems:(id)items searchQuery:(id)query;
+- (id)itemAtIndexPath:(id)path;
+- (id)titleForSection:(unint64_t)section;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
+- (void)setDataSourceDelegate:(id)delegate;
+- (void)updateWithItems:(id)items;
 @end
 
 @implementation PKSearchSeeAllDashboardDataSource
 
-- (PKSearchSeeAllDashboardDataSource)initWithItems:(id)a3 searchQuery:(id)a4
+- (PKSearchSeeAllDashboardDataSource)initWithItems:(id)items searchQuery:(id)query
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  queryCopy = query;
   v12.receiver = self;
   v12.super_class = PKSearchSeeAllDashboardDataSource;
   v9 = [(PKSearchSeeAllDashboardDataSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_items, a3);
-    objc_storeStrong(&v10->_searchQuery, a4);
+    objc_storeStrong(&v9->_items, items);
+    objc_storeStrong(&v10->_searchQuery, query);
   }
 
   return v10;
 }
 
-- (void)updateWithItems:(id)a3
+- (void)updateWithItems:(id)items
 {
-  v6 = a3;
-  objc_storeStrong(&self->_items, a3);
+  itemsCopy = items;
+  objc_storeStrong(&self->_items, items);
   if ([(NSArray *)self->_items count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -37,18 +37,18 @@
   }
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  if (a3 != 1 || ![(NSArray *)self->_items count])
+  if (section != 1 || ![(NSArray *)self->_items count])
   {
     goto LABEL_22;
   }
 
-  v4 = [(PKSearchQuery *)self->_searchQuery type];
+  type = [(PKSearchQuery *)self->_searchQuery type];
   v5 = 0;
-  if (v4 <= 7)
+  if (type <= 7)
   {
-    switch(v4)
+    switch(type)
     {
       case 1:
         v6 = @"SEARCH_TITLE_PAYMENT_PASSES";
@@ -64,15 +64,15 @@
     }
   }
 
-  else if (v4 > 12)
+  else if (type > 12)
   {
-    if (v4 == 13)
+    if (type == 13)
     {
       v7 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPen_1.isa);
       goto LABEL_20;
     }
 
-    if (v4 != 14)
+    if (type != 14)
     {
       goto LABEL_23;
     }
@@ -80,14 +80,14 @@
     v6 = @"SEARCH_TITLE_EXPIRED_PASSES";
   }
 
-  else if (v4 == 8)
+  else if (type == 8)
   {
     v6 = @"SEARCH_TITLE_ORDERS";
   }
 
   else
   {
-    if (v4 != 9)
+    if (type != 9)
     {
       goto LABEL_23;
     }
@@ -112,14 +112,14 @@ LABEL_23:
   return v5;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
-  if (!a3)
+  if (!section)
   {
     return 1;
   }
 
-  if (a3 == 1)
+  if (section == 1)
   {
     return [(NSArray *)self->_items count];
   }
@@ -127,18 +127,18 @@ LABEL_23:
   return 0;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
 
-  if (v5 == 1)
+  if (section == 1)
   {
     v7 = [(NSArray *)self->_items objectAtIndexedSubscript:v6];
   }
 
-  else if (v5)
+  else if (section)
   {
     v7 = 0;
   }
@@ -153,13 +153,13 @@ LABEL_23:
   return v7;
 }
 
-- (void)setDataSourceDelegate:(id)a3
+- (void)setDataSourceDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   if ([(NSArray *)self->_items count])
   {
-    [v4 contentIsLoaded];
+    [delegateCopy contentIsLoaded];
   }
 }
 

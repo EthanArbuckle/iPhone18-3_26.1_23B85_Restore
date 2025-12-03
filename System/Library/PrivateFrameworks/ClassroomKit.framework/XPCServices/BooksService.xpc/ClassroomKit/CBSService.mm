@@ -1,5 +1,5 @@
 @interface CBSService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CBSService)init;
 - (int)run;
 @end
@@ -30,19 +30,19 @@
   return 0;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.ClassroomKit.BooksService-access"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.ClassroomKit.BooksService-access"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    [v5 setExportedObject:self->mRequestServicer];
+    [connectionCopy setExportedObject:self->mRequestServicer];
     v8 = CRKBooksServiceXPCInterface();
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   else
@@ -55,11 +55,11 @@
     v9 = qword_100011EA0;
     if (os_log_type_enabled(qword_100011EA0, OS_LOG_TYPE_ERROR))
     {
-      sub_10000522C(v9, v5);
+      sub_10000522C(v9, connectionCopy);
     }
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 @end

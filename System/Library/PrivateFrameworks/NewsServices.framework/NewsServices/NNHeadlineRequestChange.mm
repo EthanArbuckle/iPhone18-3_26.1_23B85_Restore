@@ -1,24 +1,24 @@
 @interface NNHeadlineRequestChange
-- (NNHeadlineRequestChange)initWithResultIdentifier:(id)a3 requestDate:(id)a4;
+- (NNHeadlineRequestChange)initWithResultIdentifier:(id)identifier requestDate:(id)date;
 - (NSString)sequencer;
 @end
 
 @implementation NNHeadlineRequestChange
 
-- (NNHeadlineRequestChange)initWithResultIdentifier:(id)a3 requestDate:(id)a4
+- (NNHeadlineRequestChange)initWithResultIdentifier:(id)identifier requestDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = NNHeadlineRequestChange;
   v8 = [(NNHeadlineRequestChange *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     resultIdentifier = v8->_resultIdentifier;
     v8->_resultIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [dateCopy copy];
     requestDate = v8->_requestDate;
     v8->_requestDate = v11;
   }
@@ -31,9 +31,9 @@
   v2 = +[NSDate date];
   [v2 timeIntervalSinceReferenceDate];
   v3 = [NSNumber numberWithDouble:?];
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
 @end

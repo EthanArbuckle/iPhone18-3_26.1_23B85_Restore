@@ -1,35 +1,35 @@
 @interface CSFOnDeviceCachedIrPurgingUtils
-+ (void)cleanUpLegacyCachedIrDir:(id)a3;
-+ (void)cleanUpPreviousBuildBnnsIrInCachedIrDir:(id)a3;
-+ (void)purgeCachedIrExceptActiveCachedIrs:(id)a3 cachedIrDir:(id)a4;
-+ (void)purgeCachedIrForTrialAssetExcludingCurrentAsset:(id)a3 baseCachedIrDir:(id)a4;
++ (void)cleanUpLegacyCachedIrDir:(id)dir;
++ (void)cleanUpPreviousBuildBnnsIrInCachedIrDir:(id)dir;
++ (void)purgeCachedIrExceptActiveCachedIrs:(id)irs cachedIrDir:(id)dir;
++ (void)purgeCachedIrForTrialAssetExcludingCurrentAsset:(id)asset baseCachedIrDir:(id)dir;
 + (void)removeOnDeviceCachedPath;
 @end
 
 @implementation CSFOnDeviceCachedIrPurgingUtils
 
-+ (void)purgeCachedIrForTrialAssetExcludingCurrentAsset:(id)a3 baseCachedIrDir:(id)a4
++ (void)purgeCachedIrForTrialAssetExcludingCurrentAsset:(id)asset baseCachedIrDir:(id)dir
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  assetCopy = asset;
+  dirCopy = dir;
+  if (dirCopy)
   {
-    v7 = [CSOnDeviceCompilationUtils getCachedIrsFromCSAsset:v5 cachedIrDir:v6];
+    v7 = [CSOnDeviceCompilationUtils getCachedIrsFromCSAsset:assetCopy cachedIrDir:dirCopy];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __99__CSFOnDeviceCachedIrPurgingUtils_purgeCachedIrForTrialAssetExcludingCurrentAsset_baseCachedIrDir___block_invoke;
     v15 = &unk_1E865C030;
-    v16 = v6;
+    v16 = dirCopy;
     v8 = v7;
     v17 = v8;
     v9 = MEMORY[0x1E12BA300](&v12);
-    if (![v5 assetType])
+    if (![assetCopy assetType])
     {
       (v9)[2](v9, CSOnDeviceCompileSupportedVoiceTriggerModelTypes);
     }
 
-    if ([v5 assetType] == 6)
+    if ([assetCopy assetType] == 6)
     {
       v9[2](v9, CSOnDeviceCompileSupportedMitigationModelTypes);
     }
@@ -92,11 +92,11 @@ void __99__CSFOnDeviceCachedIrPurgingUtils_purgeCachedIrForTrialAssetExcludingCu
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = +[CSFPreferences sharedPreferences];
-  v3 = [v2 getOnDeviceCompilationCacheDirectory];
+  getOnDeviceCompilationCacheDirectory = [v2 getOnDeviceCompilationCacheDirectory];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v8 = 0;
-  [v4 removeItemAtPath:v3 error:&v8];
+  [defaultManager removeItemAtPath:getOnDeviceCompilationCacheDirectory error:&v8];
   v5 = v8;
 
   if (v5)
@@ -115,18 +115,18 @@ void __99__CSFOnDeviceCachedIrPurgingUtils_purgeCachedIrForTrialAssetExcludingCu
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)cleanUpLegacyCachedIrDir:(id)a3
++ (void)cleanUpLegacyCachedIrDir:(id)dir
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  dirCopy = dir;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:dirCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v10 = 0;
-    [v6 removeItemAtPath:v3 error:&v10];
+    [defaultManager2 removeItemAtPath:dirCopy error:&v10];
     v7 = v10;
 
     if (v7)
@@ -146,12 +146,12 @@ void __99__CSFOnDeviceCachedIrPurgingUtils_purgeCachedIrForTrialAssetExcludingCu
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)cleanUpPreviousBuildBnnsIrInCachedIrDir:(id)a3
++ (void)cleanUpPreviousBuildBnnsIrInCachedIrDir:(id)dir
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:0];
+  dirCopy = dir;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager contentsOfDirectoryAtPath:dirCopy error:0];
 
   if (v5 && [v5 count])
   {
@@ -178,25 +178,25 @@ void __99__CSFOnDeviceCachedIrPurgingUtils_purgeCachedIrForTrialAssetExcludingCu
           v11 = *(*(&v24 + 1) + 8 * i);
           if (![CSOnDeviceCompilationUtils isBnnsIrNameForCurrentBuild:v11])
           {
-            v12 = [v3 stringByAppendingPathComponent:v11];
-            v13 = [v12 stringByStandardizingPath];
+            v12 = [dirCopy stringByAppendingPathComponent:v11];
+            stringByStandardizingPath = [v12 stringByStandardizingPath];
 
             v23 = 0;
-            v14 = [MEMORY[0x1E696AC08] defaultManager];
-            v15 = [v14 fileExistsAtPath:v13 isDirectory:&v23];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+            v15 = [defaultManager2 fileExistsAtPath:stringByStandardizingPath isDirectory:&v23];
 
             if (v15)
             {
               if (v23 == 1)
               {
-                [a1 cleanUpPreviousBuildBnnsIrInCachedIrDir:v13];
+                [self cleanUpPreviousBuildBnnsIrInCachedIrDir:stringByStandardizingPath];
               }
 
               else
               {
-                v16 = [MEMORY[0x1E696AC08] defaultManager];
+                defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
                 v22 = 0;
-                [v16 removeItemAtPath:v13 error:&v22];
+                [defaultManager3 removeItemAtPath:stringByStandardizingPath error:&v22];
                 v17 = v22;
 
                 v18 = CSLogContextFacilityCoreSpeech;
@@ -205,7 +205,7 @@ void __99__CSFOnDeviceCachedIrPurgingUtils_purgeCachedIrForTrialAssetExcludingCu
                   *buf = 136315650;
                   v29 = "+[CSFOnDeviceCachedIrPurgingUtils cleanUpPreviousBuildBnnsIrInCachedIrDir:]";
                   v30 = 2112;
-                  v31 = v13;
+                  v31 = stringByStandardizingPath;
                   v32 = 2112;
                   v33 = v17;
                   _os_log_impl(&dword_1DDA4B000, v18, OS_LOG_TYPE_DEFAULT, "%s remove folders or file for daemon start cleanup: %@ with error: %@", buf, 0x20u);
@@ -227,24 +227,24 @@ void __99__CSFOnDeviceCachedIrPurgingUtils_purgeCachedIrForTrialAssetExcludingCu
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)purgeCachedIrExceptActiveCachedIrs:(id)a3 cachedIrDir:(id)a4
++ (void)purgeCachedIrExceptActiveCachedIrs:(id)irs cachedIrDir:(id)dir
 {
   v85 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  irsCopy = irs;
+  dirCopy = dir;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v76 = "+[CSFOnDeviceCachedIrPurgingUtils purgeCachedIrExceptActiveCachedIrs:cachedIrDir:]";
     v77 = 2112;
-    v78 = v5;
+    v78 = irsCopy;
     _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s Current active Irs: %@", buf, 0x16u);
   }
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v74 = 0;
-  v9 = [v8 contentsOfDirectoryAtPath:v6 error:&v74];
+  v9 = [defaultManager contentsOfDirectoryAtPath:dirCopy error:&v74];
   v10 = v74;
 
   if (v10)
@@ -268,7 +268,7 @@ void __99__CSFOnDeviceCachedIrPurgingUtils_purgeCachedIrForTrialAssetExcludingCu
     if (v13 && [v13 count])
     {
       v51 = v9;
-      v53 = v5;
+      v53 = irsCopy;
       v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v70 = 0u;
       v71 = 0u;
@@ -292,9 +292,9 @@ void __99__CSFOnDeviceCachedIrPurgingUtils_purgeCachedIrForTrialAssetExcludingCu
 
             if (*(*(&v70 + 1) + 8 * i))
             {
-              v20 = [v6 stringByAppendingPathComponent:?];
-              v21 = [v20 stringByStandardizingPath];
-              [v14 addObject:v21];
+              v20 = [dirCopy stringByAppendingPathComponent:?];
+              stringByStandardizingPath = [v20 stringByStandardizingPath];
+              [v14 addObject:stringByStandardizingPath];
             }
           }
 
@@ -324,8 +324,8 @@ void __99__CSFOnDeviceCachedIrPurgingUtils_purgeCachedIrForTrialAssetExcludingCu
               objc_enumerationMutation(v23);
             }
 
-            v28 = [*(*(&v66 + 1) + 8 * j) stringByStandardizingPath];
-            [v22 addObject:v28];
+            stringByStandardizingPath2 = [*(*(&v66 + 1) + 8 * j) stringByStandardizingPath];
+            [v22 addObject:stringByStandardizingPath2];
           }
 
           v25 = [v23 countByEnumeratingWithState:&v66 objects:v83 count:16];
@@ -407,9 +407,9 @@ LABEL_44:
             }
 
             v45 = *(*(&v58 + 1) + 8 * v42);
-            v46 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
             v57 = v44;
-            [v46 removeItemAtPath:v45 error:&v57];
+            [defaultManager2 removeItemAtPath:v45 error:&v57];
             v10 = v57;
 
             v47 = CSLogContextFacilityCoreSpeech;
@@ -452,14 +452,14 @@ LABEL_44:
         }
 
         v13 = v52;
-        v5 = v53;
+        irsCopy = v53;
         v36 = v50;
       }
 
       else
       {
         v38 = CSLogContextFacilityCoreSpeech;
-        v5 = v53;
+        irsCopy = v53;
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315394;
@@ -483,7 +483,7 @@ LABEL_44:
         *buf = 136315394;
         v76 = "+[CSFOnDeviceCachedIrPurgingUtils purgeCachedIrExceptActiveCachedIrs:cachedIrDir:]";
         v77 = 2112;
-        v78 = v6;
+        v78 = dirCopy;
         _os_log_impl(&dword_1DDA4B000, v39, OS_LOG_TYPE_DEFAULT, "%s No Cached Irs found in directory: %@", buf, 0x16u);
       }
 

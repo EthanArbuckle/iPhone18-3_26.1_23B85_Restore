@@ -3,51 +3,51 @@
 - (AVExternalPlaybackMonitor)externalPlaybackMonitor;
 - (BOOL)_isSelectedRouteInRoutes;
 - (BOOL)canDismissPresentedContent;
-- (BOOL)mediaControlsCollectionViewController:(id)a3 canSelectItemAtIndex:(int64_t)a4;
+- (BOOL)mediaControlsCollectionViewController:(id)controller canSelectItemAtIndex:(int64_t)index;
 - (MediaControlsEndpointsViewController)init;
 - (double)preferredExpandedContentHeight;
 - (double)preferredItemHeight;
-- (double)preferredItemHeightGivenWidth:(double)a3;
-- (id)mediaControlsCollectionViewController:(id)a3 viewControllerForItemAtIndex:(int64_t)a4;
-- (int64_t)defaultSelectedItemIndexForCollectionViewController:(id)a3;
-- (int64_t)numberOfItemsInCollectionViewController:(id)a3;
+- (double)preferredItemHeightGivenWidth:(double)width;
+- (id)mediaControlsCollectionViewController:(id)controller viewControllerForItemAtIndex:(int64_t)index;
+- (int64_t)defaultSelectedItemIndexForCollectionViewController:(id)controller;
+- (int64_t)numberOfItemsInCollectionViewController:(id)controller;
 - (void)_assignRouteViewControllerToSelectedPanelViewController;
-- (void)_routeDidChangeNotification:(id)a3;
+- (void)_routeDidChangeNotification:(id)notification;
 - (void)_selectActiveSystemRouteIfNeeded;
-- (void)_setSelectedRoute:(id)a3 isUserSelected:(BOOL)a4 animated:(BOOL)a5;
+- (void)_setSelectedRoute:(id)route isUserSelected:(BOOL)selected animated:(BOOL)animated;
 - (void)_setupEndpointsManager;
 - (void)_setupRoutingViewController;
-- (void)_supportedModesForSelectedRoute:(unint64_t *)a3 selectedMode:(int64_t *)a4;
-- (void)_transitionToVisible:(BOOL)a3;
+- (void)_supportedModesForSelectedRoute:(unint64_t *)route selectedMode:(int64_t *)mode;
+- (void)_transitionToVisible:(BOOL)visible;
 - (void)_transitionToVisibleIfNeeded;
 - (void)_updateDiscoveryMode;
-- (void)_updateEndpointRouteForOutputDeviceDataSource:(id)a3;
+- (void)_updateEndpointRouteForOutputDeviceDataSource:(id)source;
 - (void)_updateModesForSelectedPlatterViewController;
 - (void)_updateSupportedModesForSelectedPlatterViewController;
 - (void)dealloc;
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion;
 - (void)endUpdates;
-- (void)endpointsManager:(id)a3 activeSystemRouteDidChange:(id)a4;
-- (void)endpointsManager:(id)a3 defersRoutesReplacement:(id)a4;
-- (void)mediaControlsCollectionViewController:(id)a3 didDisplayViewController:(id)a4 forItemAtIndex:(int64_t)a5;
-- (void)mediaControlsCollectionViewController:(id)a3 didEndDisplayingViewController:(id)a4 forItemAtIndex:(int64_t)a5;
-- (void)mediaControlsCollectionViewController:(id)a3 willDisplayViewController:(id)a4 forItemAtIndex:(int64_t)a5;
-- (void)mediaControlsCollectionViewController:(id)a3 willSelectItemAtIndex:(int64_t)a4 withReason:(int64_t)a5;
-- (void)platterViewController:(id)a3 didPickRoute:(id)a4;
-- (void)platterViewController:(id)a3 didToggleRoutingPicker:(BOOL)a4;
-- (void)platterViewController:(id)a3 willToggleRoutingPicker:(BOOL)a4;
+- (void)endpointsManager:(id)manager activeSystemRouteDidChange:(id)change;
+- (void)endpointsManager:(id)manager defersRoutesReplacement:(id)replacement;
+- (void)mediaControlsCollectionViewController:(id)controller didDisplayViewController:(id)viewController forItemAtIndex:(int64_t)index;
+- (void)mediaControlsCollectionViewController:(id)controller didEndDisplayingViewController:(id)viewController forItemAtIndex:(int64_t)index;
+- (void)mediaControlsCollectionViewController:(id)controller willDisplayViewController:(id)viewController forItemAtIndex:(int64_t)index;
+- (void)mediaControlsCollectionViewController:(id)controller willSelectItemAtIndex:(int64_t)index withReason:(int64_t)reason;
+- (void)platterViewController:(id)controller didPickRoute:(id)route;
+- (void)platterViewController:(id)controller didToggleRoutingPicker:(BOOL)picker;
+- (void)platterViewController:(id)controller willToggleRoutingPicker:(BOOL)picker;
 - (void)reloadData;
-- (void)setConfiguration:(id)a3;
-- (void)setDisplayMode:(int64_t)a3;
-- (void)setExpandModuleBlock:(id)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setRoutingContextUID:(id)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setDisplayMode:(int64_t)mode;
+- (void)setExpandModuleBlock:(id)block;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setRoutingContextUID:(id)d;
 - (void)updateContentInsets;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MediaControlsEndpointsViewController
@@ -86,26 +86,26 @@
   [(MediaControlsEndpointsViewController *)self reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = MediaControlsEndpointsViewController;
-  [(MediaControlsCollectionViewController *)&v15 viewWillAppear:a3];
+  [(MediaControlsCollectionViewController *)&v15 viewWillAppear:appear];
   [(MediaControlsEndpointsViewController *)self setDismissing:0];
   [(MediaControlsEndpointsViewController *)self setOnScreen:1];
-  v4 = [(MediaControlsEndpointsViewController *)self view];
-  v5 = [v4 window];
+  view = [(MediaControlsEndpointsViewController *)self view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [(MediaControlsEndpointsViewController *)self configuration];
-    v7 = [v6 style];
+    configuration = [(MediaControlsEndpointsViewController *)self configuration];
+    style = [configuration style];
 
-    if (v7)
+    if (style)
     {
-      v8 = [(MediaControlsEndpointsViewController *)self configuration];
-      v9 = [v8 presentingAppBundleID];
-      v10 = [v9 isEqualToString:@"com.apple.Music"];
+      configuration2 = [(MediaControlsEndpointsViewController *)self configuration];
+      presentingAppBundleID = [configuration2 presentingAppBundleID];
+      v10 = [presentingAppBundleID isEqualToString:@"com.apple.Music"];
 
       if (v10)
       {
@@ -114,9 +114,9 @@
 
       else
       {
-        v12 = [(MediaControlsEndpointsViewController *)self configuration];
-        v13 = [v12 presentingAppBundleID];
-        v14 = [v13 isEqualToString:@"com.apple.springboard"];
+        configuration3 = [(MediaControlsEndpointsViewController *)self configuration];
+        presentingAppBundleID2 = [configuration3 presentingAppBundleID];
+        v14 = [presentingAppBundleID2 isEqualToString:@"com.apple.springboard"];
 
         if (v14)
         {
@@ -139,27 +139,27 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = MediaControlsEndpointsViewController;
   [(MediaControlsCollectionViewController *)&v5 viewWillDisappear:?];
-  [(MPAVRoutingViewController *)self->_routingViewController viewWillDisappear:v3];
+  [(MPAVRoutingViewController *)self->_routingViewController viewWillDisappear:disappearCopy];
   [(MediaControlsEndpointsViewController *)self setDismissing:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = MediaControlsEndpointsViewController;
   [(MediaControlsCollectionViewController *)&v6 viewDidDisappear:?];
   [(MediaControlsEndpointsViewController *)self stopPrewarming];
   [(MediaControlsEndpointsViewController *)self setDismissing:0];
   [(MediaControlsEndpointsViewController *)self setOnScreen:0];
-  v5 = [(MediaControlsEndpointsViewController *)self routingViewController];
-  [v5 viewDidDisappear:v3];
+  routingViewController = [(MediaControlsEndpointsViewController *)self routingViewController];
+  [routingViewController viewDidDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -172,38 +172,38 @@
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   if (([(MPMediaControlsConfiguration *)self->_configuration isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_configuration, a3);
-    v5 = [(MPMediaControlsConfiguration *)self->_configuration routingContextUID];
-    [(MediaControlsEndpointsViewController *)self setRoutingContextUID:v5];
+    objc_storeStrong(&self->_configuration, configuration);
+    routingContextUID = [(MPMediaControlsConfiguration *)self->_configuration routingContextUID];
+    [(MediaControlsEndpointsViewController *)self setRoutingContextUID:routingContextUID];
 
     [(MediaControlsEndpointsViewController *)self _setupEndpointsManager];
     [(MediaControlsEndpointsViewController *)self _setupRoutingViewController];
   }
 }
 
-- (void)setExpandModuleBlock:(id)a3
+- (void)setExpandModuleBlock:(id)block
 {
-  if (self->_expandModuleBlock != a3)
+  if (self->_expandModuleBlock != block)
   {
-    v4 = _Block_copy(a3);
+    v4 = _Block_copy(block);
     expandModuleBlock = self->_expandModuleBlock;
     self->_expandModuleBlock = v4;
 
-    v6 = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
-    [v6 setExpandModuleBlock:self->_expandModuleBlock];
+    viewControllerForSelectedItem = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
+    [viewControllerForSelectedItem setExpandModuleBlock:self->_expandModuleBlock];
   }
 }
 
 - (double)preferredExpandedContentHeight
 {
-  v2 = [(MediaControlsEndpointsViewController *)self view];
-  v3 = [v2 window];
-  [v3 bounds];
+  view = [(MediaControlsEndpointsViewController *)self view];
+  window = [view window];
+  [window bounds];
   Height = CGRectGetHeight(v6);
 
   return Height;
@@ -211,27 +211,27 @@
 
 - (BOOL)canDismissPresentedContent
 {
-  v2 = [(MediaControlsEndpointsViewController *)self presentedViewController];
-  v3 = v2 != 0;
+  presentedViewController = [(MediaControlsEndpointsViewController *)self presentedViewController];
+  v3 = presentedViewController != 0;
 
   return v3;
 }
 
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v8 = [(MediaControlsEndpointsViewController *)self presentedViewController];
-  v7 = [v8 presentedViewController];
-  [v7 dismissViewControllerAnimated:v4 completion:0];
+  animatedCopy = animated;
+  completionCopy = completion;
+  presentedViewController = [(MediaControlsEndpointsViewController *)self presentedViewController];
+  v8PresentedViewController = [presentedViewController presentedViewController];
+  [v8PresentedViewController dismissViewControllerAnimated:animatedCopy completion:0];
 
-  [v8 dismissViewControllerAnimated:v4 completion:v6];
+  [presentedViewController dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
-- (void)platterViewController:(id)a3 didToggleRoutingPicker:(BOOL)a4
+- (void)platterViewController:(id)controller didToggleRoutingPicker:(BOOL)picker
 {
   routingViewController = self->_routingViewController;
-  if (a4)
+  if (picker)
   {
     [(MPAVRoutingViewController *)routingViewController setDiscoveryModeOverride:&unk_1F148B100];
   }
@@ -242,35 +242,35 @@
   }
 }
 
-- (void)platterViewController:(id)a3 willToggleRoutingPicker:(BOOL)a4
+- (void)platterViewController:(id)controller willToggleRoutingPicker:(BOOL)picker
 {
-  if (a4)
+  if (picker)
   {
     [(MPAVRoutingViewController *)self->_routingViewController resetScrollPosition];
   }
 }
 
-- (void)platterViewController:(id)a3 didPickRoute:(id)a4
+- (void)platterViewController:(id)controller didPickRoute:(id)route
 {
-  v12 = a3;
-  v5 = [(MPMediaControlsConfiguration *)self->_configuration style];
-  if (v5 == 4)
+  controllerCopy = controller;
+  style = [(MPMediaControlsConfiguration *)self->_configuration style];
+  if (style == 4)
   {
     [(MediaControlsCollectionViewController *)self dismissViewControllerAnimated:1 completion:0];
-    v6 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-    v7 = [(MediaControlsEndpointsViewController *)self configuration];
-    v8 = [v7 presentingAppBundleID];
-    [v6 setAttribute:v8 forKey:*MEMORY[0x1E69AE9E8] error:0];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    configuration = [(MediaControlsEndpointsViewController *)self configuration];
+    presentingAppBundleID = [configuration presentingAppBundleID];
+    [mEMORY[0x1E69AED10] setAttribute:presentingAppBundleID forKey:*MEMORY[0x1E69AE9E8] error:0];
   }
 
-  else if (v5 == 1)
+  else if (style == 1)
   {
     [(MediaControlsCollectionViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 
-  v9 = [v12 endpointController];
-  v10 = [v9 route];
-  if ([v10 isDeviceRoute])
+  endpointController = [controllerCopy endpointController];
+  route = [endpointController route];
+  if ([route isDeviceRoute])
   {
     v11 = 7;
   }
@@ -283,12 +283,12 @@
   [MediaControlsAnalytics postAnalyticKind:v11];
 }
 
-- (void)setRoutingContextUID:(id)a3
+- (void)setRoutingContextUID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   if (![(NSString *)self->_routingContextUID isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [dCopy copy];
     routingContextUID = self->_routingContextUID;
     self->_routingContextUID = v4;
 
@@ -299,11 +299,11 @@
   }
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    self->_onScreen = a3;
+    self->_onScreen = screen;
     [(MediaControlsEndpointsViewController *)self _updateDiscoveryMode];
   }
 }
@@ -313,9 +313,9 @@
   externalPlaybackMonitor = self->_externalPlaybackMonitor;
   if (!externalPlaybackMonitor)
   {
-    v4 = [MEMORY[0x1E6987F98] longFormVideoExternalPlaybackMonitor];
+    longFormVideoExternalPlaybackMonitor = [MEMORY[0x1E6987F98] longFormVideoExternalPlaybackMonitor];
     v5 = self->_externalPlaybackMonitor;
-    self->_externalPlaybackMonitor = v4;
+    self->_externalPlaybackMonitor = longFormVideoExternalPlaybackMonitor;
 
     externalPlaybackMonitor = self->_externalPlaybackMonitor;
   }
@@ -325,10 +325,10 @@
 
 - (void)updateContentInsets
 {
-  v3 = [(MediaControlsEndpointsViewController *)self configuration];
-  v4 = [v3 style];
+  configuration = [(MediaControlsEndpointsViewController *)self configuration];
+  style = [configuration style];
 
-  if (v4)
+  if (style)
   {
     v13.receiver = self;
     v13.super_class = MediaControlsEndpointsViewController;
@@ -341,11 +341,11 @@
     v8 = v7;
     CCUIExpandedModuleEdgeInsets();
     v10 = v9;
-    v11 = [(MediaControlsCollectionViewController *)self scrollView];
-    [v11 setAlwaysBounceVertical:1];
+    scrollView = [(MediaControlsCollectionViewController *)self scrollView];
+    [scrollView setAlwaysBounceVertical:1];
 
-    v12 = [(MediaControlsCollectionViewController *)self scrollView];
-    [v12 setContentInset:{v8, 0.0, v10, 0.0}];
+    scrollView2 = [(MediaControlsCollectionViewController *)self scrollView];
+    [scrollView2 setContentInset:{v8, 0.0, v10, 0.0}];
   }
 
   else
@@ -356,22 +356,22 @@
   }
 }
 
-- (void)setDisplayMode:(int64_t)a3
+- (void)setDisplayMode:(int64_t)mode
 {
   v10.receiver = self;
   v10.super_class = MediaControlsEndpointsViewController;
   [(MediaControlsCollectionViewController *)&v10 setDisplayMode:?];
   [(MediaControlsEndpointsViewController *)self _updateDiscoveryMode];
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v5 = [(MediaControlsEndpointsViewController *)self configuration];
-    v6 = [v5 style];
+    configuration = [(MediaControlsEndpointsViewController *)self configuration];
+    style = [configuration style];
 
-    if (!v6)
+    if (!style)
     {
-      v7 = [MEMORY[0x1E696AAE8] mainBundle];
-      v8 = [v7 bundleIdentifier];
-      v9 = [v8 isEqualToString:@"com.apple.springboard"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v9 = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 
       if (v9)
       {
@@ -389,18 +389,18 @@
   [(MediaControlsEndpointsViewController *)self _transitionToVisibleIfNeeded];
 }
 
-- (void)_transitionToVisible:(BOOL)a3
+- (void)_transitionToVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v24 = *MEMORY[0x1E69E9840];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__MediaControlsEndpointsViewController__transitionToVisible___block_invoke;
   aBlock[3] = &unk_1E7663F38;
   aBlock[4] = self;
-  v22 = a3;
+  visibleCopy2 = visible;
   v5 = _Block_copy(aBlock);
-  if ([(MediaControlsEndpointsViewController *)self _isReadyForAppearanceTransition]|| !v3)
+  if ([(MediaControlsEndpointsViewController *)self _isReadyForAppearanceTransition]|| !visibleCopy)
   {
     v5[2](v5);
   }
@@ -411,8 +411,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(MediaControlsCollectionViewController *)self visibleViewControllers];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    visibleViewControllers = [(MediaControlsCollectionViewController *)self visibleViewControllers];
+    v7 = [visibleViewControllers countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -424,17 +424,17 @@
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(visibleViewControllers);
           }
 
-          v11 = [*(*(&v17 + 1) + 8 * v10) view];
-          [v11 setHidden:1];
+          view = [*(*(&v17 + 1) + 8 * v10) view];
+          [view setHidden:1];
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v8 = [visibleViewControllers countByEnumeratingWithState:&v17 objects:v23 count:16];
       }
 
       while (v8);
@@ -518,10 +518,10 @@ void __61__MediaControlsEndpointsViewController__transitionToVisible___block_inv
   return result;
 }
 
-- (double)preferredItemHeightGivenWidth:(double)a3
+- (double)preferredItemHeightGivenWidth:(double)width
 {
-  v5 = [(MediaControlsEndpointsViewController *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(MediaControlsEndpointsViewController *)self traitCollection];
+  [traitCollection displayScale];
 
   UIRoundToScale();
   v7 = v6;
@@ -531,26 +531,26 @@ void __61__MediaControlsEndpointsViewController__transitionToVisible___block_inv
   v11 = v10;
   UIRoundToScale();
   v13 = v12;
-  v14 = [(MPMediaControlsConfiguration *)self->_configuration style];
-  if (v14 > 6)
+  style = [(MPMediaControlsConfiguration *)self->_configuration style];
+  if (style > 6)
   {
     return 0.0;
   }
 
-  if (((1 << v14) & 0x2F) != 0)
+  if (((1 << style) & 0x2F) != 0)
   {
     return v11 + v7 + v9 + v13;
   }
 
-  v16 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-  v17 = -[MediaControlsCollectionViewController viewControllerForItemAtIndex:](self, "viewControllerForItemAtIndex:", [v16 indexOfObject:self->_selectedRoute]);
+  routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+  v17 = -[MediaControlsCollectionViewController viewControllerForItemAtIndex:](self, "viewControllerForItemAtIndex:", [routes indexOfObject:self->_selectedRoute]);
 
   if ([v17 style] == 5)
   {
     if (v17)
     {
-      v18 = [v17 effectiveHeaderView];
-      [v18 sizeThatFits:{a3, 1.79769313e308}];
+      effectiveHeaderView = [v17 effectiveHeaderView];
+      [effectiveHeaderView sizeThatFits:{width, 1.79769313e308}];
       v9 = v19;
     }
 
@@ -571,23 +571,23 @@ void __61__MediaControlsEndpointsViewController__transitionToVisible___block_inv
   return v15;
 }
 
-- (int64_t)numberOfItemsInCollectionViewController:(id)a3
+- (int64_t)numberOfItemsInCollectionViewController:(id)controller
 {
-  v3 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-  v4 = [v3 count];
+  routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+  v4 = [routes count];
 
   return v4;
 }
 
-- (id)mediaControlsCollectionViewController:(id)a3 viewControllerForItemAtIndex:(int64_t)a4
+- (id)mediaControlsCollectionViewController:(id)controller viewControllerForItemAtIndex:(int64_t)index
 {
-  v5 = [a3 dequeueReusableViewControllerForItemAtIndex:a4];
+  v5 = [controller dequeueReusableViewControllerForItemAtIndex:index];
   if (!v5)
   {
-    v6 = [(MPMediaControlsConfiguration *)self->_configuration style];
-    if (v6 <= 3)
+    style = [(MPMediaControlsConfiguration *)self->_configuration style];
+    if (style <= 3)
     {
-      if (v6 >= 4)
+      if (style >= 4)
       {
         goto LABEL_6;
       }
@@ -595,18 +595,18 @@ void __61__MediaControlsEndpointsViewController__transitionToVisible___block_inv
       goto LABEL_4;
     }
 
-    switch(v6)
+    switch(style)
     {
       case 4:
         v7 = [[MRPlatterViewController alloc] initWithStyle:5];
         goto LABEL_5;
       case 6:
-        v9 = [(MediaControlsEndpointsViewController *)self externalPlaybackMonitor];
-        v10 = [v9 isAirPlayVideoActive];
+        externalPlaybackMonitor = [(MediaControlsEndpointsViewController *)self externalPlaybackMonitor];
+        isAirPlayVideoActive = [externalPlaybackMonitor isAirPlayVideoActive];
 
         v11 = MCLogCategoryRouting();
         v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-        if (v10)
+        if (isAirPlayVideoActive)
         {
           if (v12)
           {
@@ -653,15 +653,15 @@ LABEL_6:
   return v5;
 }
 
-- (int64_t)defaultSelectedItemIndexForCollectionViewController:(id)a3
+- (int64_t)defaultSelectedItemIndexForCollectionViewController:(id)controller
 {
-  v4 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-  v5 = [v4 indexOfObject:self->_selectedRoute];
+  routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+  v5 = [routes indexOfObject:self->_selectedRoute];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-    v7 = [v6 count];
+    routes2 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+    v7 = [routes2 count];
 
     if (v7)
     {
@@ -677,69 +677,69 @@ LABEL_6:
   return v5;
 }
 
-- (void)mediaControlsCollectionViewController:(id)a3 willDisplayViewController:(id)a4 forItemAtIndex:(int64_t)a5
+- (void)mediaControlsCollectionViewController:(id)controller willDisplayViewController:(id)viewController forItemAtIndex:(int64_t)index
 {
-  v15 = a4;
-  v7 = [(MediaControlsEndpointsViewController *)self configuration];
-  v8 = [v7 style];
-  if (v8 > 8)
+  viewControllerCopy = viewController;
+  configuration = [(MediaControlsEndpointsViewController *)self configuration];
+  style = [configuration style];
+  if (style > 8)
   {
     v9 = @"MediaControls-<Unknown>";
   }
 
   else
   {
-    v9 = off_1E7663FF8[v8];
+    v9 = off_1E7663FF8[style];
   }
 
-  [v15 setLabel:v9];
+  [viewControllerCopy setLabel:v9];
 
-  v10 = [(MediaControlsEndpointsViewController *)self expandModuleBlock];
-  [v15 setExpandModuleBlock:v10];
+  expandModuleBlock = [(MediaControlsEndpointsViewController *)self expandModuleBlock];
+  [viewControllerCopy setExpandModuleBlock:expandModuleBlock];
 
-  v11 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+  routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
 
-  if (v11)
+  if (routes)
   {
-    v12 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-    v13 = [v12 objectAtIndex:a5];
+    routes2 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+    v13 = [routes2 objectAtIndex:index];
 
     v14 = [(MediaControlsEndpointsManager *)self->_endpointsManager endpointControllerForRoute:v13];
     [v14 setAllowsAutomaticResponseLoading:1];
-    [v15 setEndpointController:v14];
+    [viewControllerCopy setEndpointController:v14];
   }
 
-  [v15 setDelegate:self];
-  if ([(MediaControlsCollectionViewController *)self selectedItemIndex]== a5)
+  [viewControllerCopy setDelegate:self];
+  if ([(MediaControlsCollectionViewController *)self selectedItemIndex]== index)
   {
     [(MediaControlsEndpointsViewController *)self _assignRouteViewControllerToSelectedPanelViewController];
     [(MediaControlsEndpointsViewController *)self _updateSupportedModesForSelectedPlatterViewController];
   }
 }
 
-- (void)mediaControlsCollectionViewController:(id)a3 didDisplayViewController:(id)a4 forItemAtIndex:(int64_t)a5
+- (void)mediaControlsCollectionViewController:(id)controller didDisplayViewController:(id)viewController forItemAtIndex:(int64_t)index
 {
-  v6 = [a4 view];
-  [v6 setHidden:self->_shouldTransitionToVisibleWhenReady];
+  view = [viewController view];
+  [view setHidden:self->_shouldTransitionToVisibleWhenReady];
 }
 
-- (void)mediaControlsCollectionViewController:(id)a3 didEndDisplayingViewController:(id)a4 forItemAtIndex:(int64_t)a5
+- (void)mediaControlsCollectionViewController:(id)controller didEndDisplayingViewController:(id)viewController forItemAtIndex:(int64_t)index
 {
-  v8 = a4;
-  if ([(MediaControlsCollectionViewController *)self selectedItemIndex]== a5)
+  viewControllerCopy = viewController;
+  if ([(MediaControlsCollectionViewController *)self selectedItemIndex]== index)
   {
-    self->_lastSelectedModeForActivePlatterViewController = [v8 selectedMode];
+    self->_lastSelectedModeForActivePlatterViewController = [viewControllerCopy selectedMode];
   }
 
-  v7 = [v8 endpointController];
-  [v7 setAllowsAutomaticResponseLoading:0];
+  endpointController = [viewControllerCopy endpointController];
+  [endpointController setAllowsAutomaticResponseLoading:0];
 }
 
-- (BOOL)mediaControlsCollectionViewController:(id)a3 canSelectItemAtIndex:(int64_t)a4
+- (BOOL)mediaControlsCollectionViewController:(id)controller canSelectItemAtIndex:(int64_t)index
 {
-  v6 = [(MPMediaControlsConfiguration *)self->_configuration style];
+  style = [(MPMediaControlsConfiguration *)self->_configuration style];
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"WHADoNotExpandOnSelection", @"com.apple.Music", 0);
-  if (v6)
+  if (style)
   {
     v8 = AppBooleanValue == 0;
   }
@@ -751,7 +751,7 @@ LABEL_6:
 
   if (v8)
   {
-    if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+    if (index != 0x7FFFFFFFFFFFFFFFLL)
     {
       return 1;
     }
@@ -759,18 +759,18 @@ LABEL_6:
 
   else
   {
-    v10 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-    v11 = [v10 objectAtIndex:a4];
+    routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+    v11 = [routes objectAtIndex:index];
 
     [MEMORY[0x1E6970490] setActiveRoute:v11 reason:@"Analytics: User selected" completion:0];
   }
 
-  v12 = [(MediaControlsCollectionViewController *)self dismissalBlock];
+  dismissalBlock = [(MediaControlsCollectionViewController *)self dismissalBlock];
 
-  if (v12)
+  if (dismissalBlock)
   {
-    v13 = [(MediaControlsCollectionViewController *)self dismissalBlock];
-    v13[2](v13, 0);
+    dismissalBlock2 = [(MediaControlsCollectionViewController *)self dismissalBlock];
+    dismissalBlock2[2](dismissalBlock2, 0);
   }
 
   else
@@ -781,31 +781,31 @@ LABEL_6:
   return 0;
 }
 
-- (void)mediaControlsCollectionViewController:(id)a3 willSelectItemAtIndex:(int64_t)a4 withReason:(int64_t)a5
+- (void)mediaControlsCollectionViewController:(id)controller willSelectItemAtIndex:(int64_t)index withReason:(int64_t)reason
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  controllerCopy = controller;
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-    v10 = [v9 objectAtIndex:a4];
+    routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+    v10 = [routes objectAtIndex:index];
 
     v11 = [(MediaControlsEndpointsManager *)self->_endpointsManager endpointControllerForRoute:v10];
-    if (!a5)
+    if (!reason)
     {
       v12 = MCLogCategoryRouting();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v10 routeName];
+        routeName = [v10 routeName];
         *buf = 138543362;
-        v26 = v13;
+        v26 = routeName;
         _os_log_impl(&dword_1A20FC000, v12, OS_LOG_TYPE_DEFAULT, "User selected platter: %{public}@", buf, 0xCu);
       }
 
       [MediaControlsAnalytics postAnalyticKind:6];
     }
 
-    [(MediaControlsEndpointsViewController *)self _setSelectedRoute:v10 isUserSelected:a5 == 0 animated:a5 == 0];
+    [(MediaControlsEndpointsViewController *)self _setSelectedRoute:v10 isUserSelected:reason == 0 animated:reason == 0];
     objc_initWeak(buf, self);
     v14 = dispatch_group_create();
     dispatch_group_enter(v14);
@@ -816,7 +816,7 @@ LABEL_6:
     objc_copyWeak(v24, buf);
     v15 = v10;
     v23 = v15;
-    v24[1] = a5;
+    v24[1] = reason;
     dispatch_group_notify(v14, MEMORY[0x1E69E96A0], block);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -882,36 +882,36 @@ uint64_t __111__MediaControlsEndpointsViewController_mediaControlsCollectionView
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)endpointsManager:(id)a3 activeSystemRouteDidChange:(id)a4
+- (void)endpointsManager:(id)manager activeSystemRouteDidChange:(id)change
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  changeCopy = change;
   self->_didRetrieveActiveSystemRouteOnce = 1;
   self->_shouldReselectActiveSystemRoute = 1;
   v6 = MCLogCategoryRouting();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
+    presentingAppBundleID = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
     v8 = 138543618;
-    v9 = v5;
+    v9 = changeCopy;
     v10 = 2114;
-    v11 = v7;
+    v11 = presentingAppBundleID;
     _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "activeSystemRouteDidChange %{public}@ : %{public}@", &v8, 0x16u);
   }
 
   [(MediaControlsEndpointsViewController *)self _selectActiveSystemRouteIfNeeded];
-  [(MediaControlsEndpointsViewController *)self _updateEndpointRouteForOutputDeviceDataSource:v5];
+  [(MediaControlsEndpointsViewController *)self _updateEndpointRouteForOutputDeviceDataSource:changeCopy];
   [(MediaControlsEndpointsViewController *)self _transitionToVisibleIfNeeded];
 }
 
-- (void)endpointsManager:(id)a3 defersRoutesReplacement:(id)a4
+- (void)endpointsManager:(id)manager defersRoutesReplacement:(id)replacement
 {
-  v5 = a4;
+  replacementCopy = replacement;
   if (([(MediaControlsEndpointsViewController *)self isViewLoaded]& 1) != 0)
   {
     if (self->_shouldTransitionToVisibleWhenReady || !self->_onScreen)
     {
-      v7 = v5[2](v5);
+      v7 = replacementCopy[2](replacementCopy);
       if (v7)
       {
         [(MediaControlsEndpointsViewController *)self reloadData];
@@ -926,7 +926,7 @@ uint64_t __111__MediaControlsEndpointsViewController_mediaControlsCollectionView
       v9[2] = __81__MediaControlsEndpointsViewController_endpointsManager_defersRoutesReplacement___block_invoke;
       v9[3] = &unk_1E7663FD8;
       v9[4] = self;
-      v10 = v5;
+      v10 = replacementCopy;
       [(MediaControlsCollectionViewController *)self performBatchUpdates:v9];
     }
 
@@ -940,7 +940,7 @@ uint64_t __111__MediaControlsEndpointsViewController_mediaControlsCollectionView
 
   else
   {
-    v6 = (v5[2])(v5);
+    v6 = (replacementCopy[2])(replacementCopy);
   }
 }
 
@@ -1066,11 +1066,11 @@ void __81__MediaControlsEndpointsViewController_endpointsManager_defersRoutesRep
 
 - (BOOL)_isSelectedRouteInRoutes
 {
-  v2 = self;
-  v3 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-  LOBYTE(v2) = [v3 indexOfObject:v2->_selectedRoute] != 0x7FFFFFFFFFFFFFFFLL;
+  selfCopy = self;
+  routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+  LOBYTE(selfCopy) = [routes indexOfObject:selfCopy->_selectedRoute] != 0x7FFFFFFFFFFFFFFFLL;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_updateDiscoveryMode
@@ -1095,102 +1095,102 @@ void __81__MediaControlsEndpointsViewController_endpointsManager_defersRoutesRep
 
 - (void)_assignRouteViewControllerToSelectedPanelViewController
 {
-  v3 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-  v11 = -[MediaControlsCollectionViewController viewControllerForItemAtIndex:](self, "viewControllerForItemAtIndex:", [v3 indexOfObject:self->_selectedRoute]);
+  routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+  v11 = -[MediaControlsCollectionViewController viewControllerForItemAtIndex:](self, "viewControllerForItemAtIndex:", [routes indexOfObject:self->_selectedRoute]);
 
-  v4 = [(MPAVRoutingViewController *)self->_routingViewController parentViewController];
-  v5 = v4;
-  if (v4)
+  parentViewController = [(MPAVRoutingViewController *)self->_routingViewController parentViewController];
+  v5 = parentViewController;
+  if (parentViewController)
   {
-    v6 = [v4 routingViewController];
-    [v6 willMoveToParentViewController:0];
+    routingViewController = [parentViewController routingViewController];
+    [routingViewController willMoveToParentViewController:0];
     [v5 setRoutingViewController:0];
-    [v6 endAppearanceTransition];
+    [routingViewController endAppearanceTransition];
   }
 
-  v7 = [v11 routingViewController];
-  if (!v11 || v7 == self->_routingViewController)
+  routingViewController2 = [v11 routingViewController];
+  if (!v11 || routingViewController2 == self->_routingViewController)
   {
-    v8 = v7;
+    routingViewController3 = routingViewController2;
   }
 
   else
   {
-    v8 = [v11 routingViewController];
+    routingViewController3 = [v11 routingViewController];
 
-    [v8 willMoveToParentViewController:0];
+    [routingViewController3 willMoveToParentViewController:0];
     [v11 setRoutingViewController:0];
-    [v8 endAppearanceTransition];
+    [routingViewController3 endAppearanceTransition];
     [v11 addChildViewController:self->_routingViewController];
     [v11 setRoutingViewController:self->_routingViewController];
     [(MPAVRoutingViewController *)self->_routingViewController didMoveToParentViewController:v11];
-    v9 = [(MPMediaControlsConfiguration *)self->_configuration style];
-    if ([v11 selectedMode] == 1 || v9 != 0)
+    style = [(MPMediaControlsConfiguration *)self->_configuration style];
+    if ([v11 selectedMode] == 1 || style != 0)
     {
       [(MPAVRoutingViewController *)self->_routingViewController setDiscoveryModeOverride:&unk_1F148B100];
     }
   }
 }
 
-- (void)_updateEndpointRouteForOutputDeviceDataSource:(id)a3
+- (void)_updateEndpointRouteForOutputDeviceDataSource:(id)source
 {
-  v6 = a3;
-  if (!v6 || (v4 = [v6 isDeviceRoute], v6, (v4 & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  sourceCopy = source;
+  if (!sourceCopy || (v4 = [sourceCopy isDeviceRoute], sourceCopy, (v4 & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [(MPAVOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setEndpointRoute:v6];
-    v5 = [(MPAVOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource endpointRoute];
-    [(MPAVRoutingViewController *)self->_routingViewController setEndpointRoute:v5];
+    [(MPAVOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setEndpointRoute:sourceCopy];
+    endpointRoute = [(MPAVOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource endpointRoute];
+    [(MPAVRoutingViewController *)self->_routingViewController setEndpointRoute:endpointRoute];
   }
 }
 
-- (void)_supportedModesForSelectedRoute:(unint64_t *)a3 selectedMode:(int64_t *)a4
+- (void)_supportedModesForSelectedRoute:(unint64_t *)route selectedMode:(int64_t *)mode
 {
   if ([(MPAVEndpointRoute *)self->_selectedRoute canModifyGroupMembership])
   {
     if (([(MPAVEndpointRoute *)self->_selectedRoute supportsGrouping]& 1) != 0)
     {
-      v7 = 1;
+      isDeviceRoute = 1;
     }
 
     else
     {
-      v7 = [(MPAVEndpointRoute *)self->_selectedRoute isDeviceRoute];
+      isDeviceRoute = [(MPAVEndpointRoute *)self->_selectedRoute isDeviceRoute];
     }
   }
 
   else
   {
-    v7 = 0;
+    isDeviceRoute = 0;
   }
 
-  v8 = [(MediaControlsEndpointsViewController *)self configuration];
-  v9 = [v8 style];
+  configuration = [(MediaControlsEndpointsViewController *)self configuration];
+  style = [configuration style];
 
-  if (v9 > 3)
+  if (style > 3)
   {
     v11 = 2;
     lastSelectedModeForActivePlatterViewController = 1;
     v12 = 3;
-    if (!v7)
+    if (!isDeviceRoute)
     {
       v12 = 1;
     }
 
-    if (v9 != 5)
+    if (style != 5)
     {
       v12 = 0;
     }
 
-    if (v9 != 4)
+    if (style != 4)
     {
       lastSelectedModeForActivePlatterViewController = 0;
       v11 = v12;
     }
   }
 
-  else if ((v9 - 1) >= 3)
+  else if ((style - 1) >= 3)
   {
-    if (v9)
+    if (style)
     {
       lastSelectedModeForActivePlatterViewController = 0;
       v11 = 0;
@@ -1198,8 +1198,8 @@ void __81__MediaControlsEndpointsViewController_endpointsManager_defersRoutesRep
 
     else
     {
-      v13 = [(MediaControlsCollectionViewController *)self displayMode];
-      if (v7)
+      displayMode = [(MediaControlsCollectionViewController *)self displayMode];
+      if (isDeviceRoute)
       {
         v11 = 3;
       }
@@ -1209,7 +1209,7 @@ void __81__MediaControlsEndpointsViewController_endpointsManager_defersRoutesRep
         v11 = 1;
       }
 
-      if (v13)
+      if (displayMode)
       {
         lastSelectedModeForActivePlatterViewController = self->_lastSelectedModeForActivePlatterViewController;
       }
@@ -1223,46 +1223,46 @@ void __81__MediaControlsEndpointsViewController_endpointsManager_defersRoutesRep
 
   else
   {
-    lastSelectedModeForActivePlatterViewController = v7;
+    lastSelectedModeForActivePlatterViewController = isDeviceRoute;
     v11 = 1;
-    if (v7)
+    if (isDeviceRoute)
     {
       v11 = 2;
     }
   }
 
-  if (a3)
+  if (route)
   {
-    *a3 = v11;
+    *route = v11;
   }
 
-  if (a4)
+  if (mode)
   {
-    *a4 = lastSelectedModeForActivePlatterViewController;
+    *mode = lastSelectedModeForActivePlatterViewController;
   }
 }
 
 - (void)_updateModesForSelectedPlatterViewController
 {
-  v3 = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
-  if (v3)
+  viewControllerForSelectedItem = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
+  if (viewControllerForSelectedItem)
   {
     v4 = 0;
     v5 = 0;
     [(MediaControlsEndpointsViewController *)self _supportedModesForSelectedRoute:&v5 selectedMode:&v4];
-    [v3 setSupportedModes:v5];
-    [v3 setSelectedMode:v4];
+    [viewControllerForSelectedItem setSupportedModes:v5];
+    [viewControllerForSelectedItem setSelectedMode:v4];
   }
 }
 
 - (void)_updateSupportedModesForSelectedPlatterViewController
 {
-  v3 = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
-  if (v3)
+  viewControllerForSelectedItem = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
+  if (viewControllerForSelectedItem)
   {
     v4 = 0;
     [(MediaControlsEndpointsViewController *)self _supportedModesForSelectedRoute:&v4 selectedMode:0];
-    [v3 setSupportedModes:v4];
+    [viewControllerForSelectedItem setSupportedModes:v4];
   }
 }
 
@@ -1277,8 +1277,8 @@ void __81__MediaControlsEndpointsViewController_endpointsManager_defersRoutesRep
     [(MediaControlsEndpointsManager *)self->_endpointsManager setDelegate:self];
     [(MediaControlsEndpointsViewController *)self _updateDiscoveryMode];
     [(MediaControlsEndpointsViewController *)self reloadData];
-    v5 = [(MediaControlsEndpointsManager *)self->_endpointsManager activeSystemRoute];
-    [(MediaControlsEndpointsViewController *)self _setSelectedRoute:v5 isUserSelected:0 animated:0];
+    activeSystemRoute = [(MediaControlsEndpointsManager *)self->_endpointsManager activeSystemRoute];
+    [(MediaControlsEndpointsViewController *)self _setSelectedRoute:activeSystemRoute isUserSelected:0 animated:0];
   }
 }
 
@@ -1303,19 +1303,19 @@ void __81__MediaControlsEndpointsViewController_endpointsManager_defersRoutesRep
     [(MPAVOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setRoutingContextUID:?];
   }
 
-  v8 = [(MPMediaControlsConfiguration *)self->_configuration style];
+  style = [(MPMediaControlsConfiguration *)self->_configuration style];
   v9 = 0;
   v10 = 0;
-  if (v8 > 3)
+  if (style > 3)
   {
-    if (v8 != 4)
+    if (style != 4)
     {
-      if (v8 == 5)
+      if (style == 5)
       {
         goto LABEL_17;
       }
 
-      if (v8 != 6)
+      if (style != 6)
       {
         goto LABEL_18;
       }
@@ -1326,13 +1326,13 @@ void __81__MediaControlsEndpointsViewController_endpointsManager_defersRoutesRep
     goto LABEL_17;
   }
 
-  if ((v8 - 2) < 2 || v8 == 0)
+  if ((style - 2) < 2 || style == 0)
   {
     v9 = 0;
     v10 = 1;
   }
 
-  else if (v8 != 1)
+  else if (style != 1)
   {
     goto LABEL_18;
   }
@@ -1341,15 +1341,15 @@ LABEL_17:
   [(MPAVOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setSupportsMultipleSelection:v10];
   [(MPAVOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setFilterMode:v9];
 LABEL_18:
-  v12 = [(MPMediaControlsConfiguration *)self->_configuration initatorStyle];
-  if (v12 <= 7 && ((0xDDu >> v12) & 1) != 0)
+  initatorStyle = [(MPMediaControlsConfiguration *)self->_configuration initatorStyle];
+  if (initatorStyle <= 7 && ((0xDDu >> initatorStyle) & 1) != 0)
   {
-    [(MPAVOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setInitiator:**(&unk_1E7664040 + v12)];
+    [(MPAVOutputDeviceRoutingDataSource *)self->_outputDeviceRoutingDataSource setInitiator:**(&unk_1E7664040 + initatorStyle)];
   }
 
   v13 = [objc_alloc(MEMORY[0x1E6970490]) initWithDataSource:self->_outputDeviceRoutingDataSource name:v17];
-  v14 = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
-  [v13 setPresentedBundleID:v14];
+  presentingAppBundleID = [(MPMediaControlsConfiguration *)self->_configuration presentingAppBundleID];
+  [v13 setPresentedBundleID:presentingAppBundleID];
 
   v15 = [(MPAVRoutingViewController *)[MediaControlsRoutingViewController alloc] initWithStyle:3 routingController:v13];
   routingViewController = self->_routingViewController;
@@ -1368,10 +1368,10 @@ LABEL_18:
   [(MPAVRoutingViewController *)routingViewController _endUpdates];
 }
 
-- (void)_setSelectedRoute:(id)a3 isUserSelected:(BOOL)a4 animated:(BOOL)a5
+- (void)_setSelectedRoute:(id)route isUserSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v5 = a5;
-  v21 = a3;
+  animatedCopy = animated;
+  routeCopy = route;
   if (([(MPAVEndpointRoute *)self->_selectedRoute isEqual:?]& 1) != 0)
   {
     goto LABEL_20;
@@ -1380,28 +1380,28 @@ LABEL_18:
   v9 = MEMORY[0x1E696F860];
   if (self->_selectedRoute)
   {
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 removeObserver:self name:*v9 object:self->_selectedRoute];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*v9 object:self->_selectedRoute];
   }
 
-  objc_storeStrong(&self->_selectedRoute, a3);
+  objc_storeStrong(&self->_selectedRoute, route);
   if (self->_selectedRoute)
   {
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:self selector:sel__routeDidChangeNotification_ name:*v9 object:self->_selectedRoute];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__routeDidChangeNotification_ name:*v9 object:self->_selectedRoute];
   }
 
-  if (v5)
+  if (animatedCopy)
   {
     if (self->_didTransitionToVisible)
     {
       goto LABEL_13;
     }
 
-    v12 = [(MediaControlsEndpointsViewController *)self configuration];
-    v13 = [v12 style] == 0;
+    configuration = [(MediaControlsEndpointsViewController *)self configuration];
+    v13 = [configuration style] == 0;
 
-    if (a4)
+    if (selected)
     {
       goto LABEL_13;
     }
@@ -1410,7 +1410,7 @@ LABEL_18:
   else
   {
     v13 = 0;
-    if (a4)
+    if (selected)
     {
 LABEL_13:
       v14 = [(MediaControlsCollectionViewController *)self selectedItemIndex]!= 0x7FFFFFFFFFFFFFFFLL;
@@ -1427,23 +1427,23 @@ LABEL_13:
   v14 = 0;
   v15 = 0;
 LABEL_14:
-  if (v21)
+  if (routeCopy)
   {
-    v16 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-    -[MediaControlsCollectionViewController setSelectedItemIndex:animated:shouldScroll:](self, "setSelectedItemIndex:animated:shouldScroll:", [v16 indexOfObject:v21], v14, v15);
+    routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+    -[MediaControlsCollectionViewController setSelectedItemIndex:animated:shouldScroll:](self, "setSelectedItemIndex:animated:shouldScroll:", [routes indexOfObject:routeCopy], v14, v15);
   }
 
   [(MediaControlsEndpointsViewController *)self _updateEndpointRouteForOutputDeviceDataSource:?];
-  v17 = [(MPAVRoutingViewController *)self->_routingViewController _tableView];
-  [v17 reloadData];
+  _tableView = [(MPAVRoutingViewController *)self->_routingViewController _tableView];
+  [_tableView reloadData];
 
   [(MediaControlsEndpointsViewController *)self _assignRouteViewControllerToSelectedPanelViewController];
   [(MediaControlsEndpointsViewController *)self _updateModesForSelectedPlatterViewController];
-  if (!a4)
+  if (!selected)
   {
-    v18 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-    v19 = [(MediaControlsEndpointsManager *)self->_endpointsManager activeSystemRoute];
-    v20 = [v18 containsObject:v19];
+    routes2 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+    activeSystemRoute = [(MediaControlsEndpointsManager *)self->_endpointsManager activeSystemRoute];
+    v20 = [routes2 containsObject:activeSystemRoute];
 
     if ((v20 & 1) == 0)
     {
@@ -1455,7 +1455,7 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)_routeDidChangeNotification:(id)a3
+- (void)_routeDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1467,25 +1467,25 @@ LABEL_20:
 
 - (void)_selectActiveSystemRouteIfNeeded
 {
-  v3 = [(MediaControlsEndpointsManager *)self->_endpointsManager resolvedActiveSystemRoute];
-  v4 = v3;
+  resolvedActiveSystemRoute = [(MediaControlsEndpointsManager *)self->_endpointsManager resolvedActiveSystemRoute];
+  v4 = resolvedActiveSystemRoute;
   if (self->_shouldReselectActiveSystemRoute)
   {
-    v7 = v3;
-    v5 = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
-    v6 = [v5 containsObject:v7];
+    v7 = resolvedActiveSystemRoute;
+    routes = [(MediaControlsEndpointsManager *)self->_endpointsManager routes];
+    v6 = [routes containsObject:v7];
 
     v4 = v7;
     if (v6)
     {
-      v3 = [(MediaControlsEndpointsViewController *)self setSelectedRoute:v7];
+      resolvedActiveSystemRoute = [(MediaControlsEndpointsViewController *)self setSelectedRoute:v7];
       v4 = v7;
       self->_shouldReselectActiveSystemRoute = 0;
       self->_didRetrieveActiveSystemRouteOnce = 1;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v3, v4);
+  MEMORY[0x1EEE66BB8](resolvedActiveSystemRoute, v4);
 }
 
 - (void)_transitionToVisibleIfNeeded

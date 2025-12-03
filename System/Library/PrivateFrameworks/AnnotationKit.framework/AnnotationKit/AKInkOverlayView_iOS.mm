@@ -1,7 +1,7 @@
 @interface AKInkOverlayView_iOS
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)_viewsToHitTestForEvent:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)_viewsToHitTestForEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)commonInit;
 @end
 
@@ -15,36 +15,36 @@
   [(AKInkOverlayView_iOS *)self setUserInteractionEnabled:0];
 }
 
-- (id)_viewsToHitTestForEvent:(id)a3
+- (id)_viewsToHitTestForEvent:(id)event
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AKInkOverlayView *)self canvasView];
-  v6 = [v4 type];
+  eventCopy = event;
+  canvasView = [(AKInkOverlayView *)self canvasView];
+  type = [eventCopy type];
 
-  if (v6 == 9)
+  if (type == 9)
   {
-    v10[0] = v5;
-    v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
+    v10[0] = canvasView;
+    _adornmentViewsToHitTest = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   }
 
   else
   {
-    v7 = [v5 _adornmentViewsToHitTest];
+    _adornmentViewsToHitTest = [canvasView _adornmentViewsToHitTest];
   }
 
-  v8 = v7;
+  v8 = _adornmentViewsToHitTest;
 
   return v8;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  [(AKInkOverlayView_iOS *)self _viewsToHitTestForEvent:v7];
+  eventCopy = event;
+  [(AKInkOverlayView_iOS *)self _viewsToHitTestForEvent:eventCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -67,7 +67,7 @@
         if (v13)
         {
           [(AKInkOverlayView_iOS *)self convertPoint:*(*(&v16 + 1) + 8 * i) toView:x, y, v16];
-          if ([v13 pointInside:v7 withEvent:?])
+          if ([v13 pointInside:eventCopy withEvent:?])
           {
             v14 = 1;
             goto LABEL_12;
@@ -91,18 +91,18 @@ LABEL_12:
   return v14;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  eventCopy = event;
   v25.receiver = self;
   v25.super_class = AKInkOverlayView_iOS;
-  v8 = [(AKInkOverlayView_iOS *)&v25 hitTest:v7 withEvent:x, y];
+  v8 = [(AKInkOverlayView_iOS *)&v25 hitTest:eventCopy withEvent:x, y];
   if (!v8)
   {
-    [(AKInkOverlayView_iOS *)self _viewsToHitTestForEvent:v7];
+    [(AKInkOverlayView_iOS *)self _viewsToHitTestForEvent:eventCopy];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -127,9 +127,9 @@ LABEL_12:
             [(AKInkOverlayView_iOS *)self convertPoint:*(*(&v21 + 1) + 8 * i) toView:x, y, v21];
             v16 = v15;
             v18 = v17;
-            if ([v14 pointInside:v7 withEvent:?])
+            if ([v14 pointInside:eventCopy withEvent:?])
             {
-              v19 = [v14 hitTest:v7 withEvent:{v16, v18}];
+              v19 = [v14 hitTest:eventCopy withEvent:{v16, v18}];
               if (v19)
               {
                 v8 = v19;

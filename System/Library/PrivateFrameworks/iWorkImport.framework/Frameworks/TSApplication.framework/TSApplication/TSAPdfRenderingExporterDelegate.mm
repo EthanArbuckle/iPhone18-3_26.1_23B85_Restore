@@ -1,25 +1,25 @@
 @interface TSAPdfRenderingExporterDelegate
-- (BOOL)validatePassphrases:(id *)a3;
-- (CGContext)newCGContextForURL:(id)a3;
-- (TSAPdfRenderingExporterDelegate)initWithRenderingExporter:(id)a3;
-- (void)releaseCGContext:(CGContext *)a3;
-- (void)setCopyPassphrase:(id)a3 hint:(id)a4;
-- (void)setPassphrase:(id)a3 hint:(id)a4;
-- (void)setPrintPassphrase:(id)a3 hint:(id)a4;
+- (BOOL)validatePassphrases:(id *)passphrases;
+- (CGContext)newCGContextForURL:(id)l;
+- (TSAPdfRenderingExporterDelegate)initWithRenderingExporter:(id)exporter;
+- (void)releaseCGContext:(CGContext *)context;
+- (void)setCopyPassphrase:(id)passphrase hint:(id)hint;
+- (void)setPassphrase:(id)passphrase hint:(id)hint;
+- (void)setPrintPassphrase:(id)passphrase hint:(id)hint;
 @end
 
 @implementation TSAPdfRenderingExporterDelegate
 
-- (TSAPdfRenderingExporterDelegate)initWithRenderingExporter:(id)a3
+- (TSAPdfRenderingExporterDelegate)initWithRenderingExporter:(id)exporter
 {
-  v4 = a3;
+  exporterCopy = exporter;
   v8.receiver = self;
   v8.super_class = TSAPdfRenderingExporterDelegate;
   v5 = [(TSAPdfRenderingExporterDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mRenderingExporter, v4);
+    objc_storeWeak(&v5->mRenderingExporter, exporterCopy);
     v6->mRenderingQuality = 2;
     v6->mTaggingCondition = 0;
   }
@@ -27,35 +27,35 @@
   return v6;
 }
 
-- (void)setPassphrase:(id)a3 hint:(id)a4
+- (void)setPassphrase:(id)passphrase hint:(id)hint
 {
-  v10 = a3;
-  objc_storeStrong(&self->mPassphraseOpen, a3);
-  v9 = self->mRequireOpenPassword || objc_msgSend_length(v10, v6, v7, v8) != 0;
+  passphraseCopy = passphrase;
+  objc_storeStrong(&self->mPassphraseOpen, passphrase);
+  v9 = self->mRequireOpenPassword || objc_msgSend_length(passphraseCopy, v6, v7, v8) != 0;
   self->mRequireOpenPassword = v9;
 }
 
-- (void)setPrintPassphrase:(id)a3 hint:(id)a4
+- (void)setPrintPassphrase:(id)passphrase hint:(id)hint
 {
-  objc_storeStrong(&self->mPassphrasePrintCopy, a3);
-  v6 = a3;
-  v10 = objc_msgSend_length(v6, v7, v8, v9);
+  objc_storeStrong(&self->mPassphrasePrintCopy, passphrase);
+  passphraseCopy = passphrase;
+  v10 = objc_msgSend_length(passphraseCopy, v7, v8, v9);
 
   self->mRequirePrintPassword = v10 != 0;
 }
 
-- (void)setCopyPassphrase:(id)a3 hint:(id)a4
+- (void)setCopyPassphrase:(id)passphrase hint:(id)hint
 {
-  objc_storeStrong(&self->mPassphrasePrintCopy, a3);
-  v6 = a3;
-  v10 = objc_msgSend_length(v6, v7, v8, v9);
+  objc_storeStrong(&self->mPassphrasePrintCopy, passphrase);
+  passphraseCopy = passphrase;
+  v10 = objc_msgSend_length(passphraseCopy, v7, v8, v9);
 
   self->mRequireCopyPassword = v10 != 0;
 }
 
-- (CGContext)newCGContextForURL:(id)a3
+- (CGContext)newCGContextForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->mRenderingExporter);
   objc_msgSend_boundsRect(WeakRetained, v6, v7, v8);
   v10 = v9;
@@ -64,7 +64,7 @@
   mediaBox.origin = *MEMORY[0x277CBF348];
   mediaBox.size.width = v10;
   mediaBox.size.height = v12;
-  v16 = objc_msgSend_lastPathComponent(v4, v13, v14, v15);
+  v16 = objc_msgSend_lastPathComponent(lCopy, v13, v14, v15);
   v20 = objc_msgSend_stringByDeletingPathExtension(v16, v17, v18, v19);
 
   if (!v20)
@@ -118,19 +118,19 @@ LABEL_10:
   }
 
 LABEL_12:
-  v46 = CGPDFContextCreateWithURL(v4, &mediaBox, v40);
+  v46 = CGPDFContextCreateWithURL(lCopy, &mediaBox, v40);
 
   return v46;
 }
 
-- (void)releaseCGContext:(CGContext *)a3
+- (void)releaseCGContext:(CGContext *)context
 {
-  CGPDFContextClose(a3);
+  CGPDFContextClose(context);
 
-  CGContextRelease(a3);
+  CGContextRelease(context);
 }
 
-- (BOOL)validatePassphrases:(id *)a3
+- (BOOL)validatePassphrases:(id *)passphrases
 {
   if (self->mRequireOpenPassword)
   {
@@ -166,9 +166,9 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (a3 && (v7 & 1) == 0)
+  if (passphrases && (v7 & 1) == 0)
   {
-    v8 = objc_msgSend_tsu_resourcesBundle(MEMORY[0x277CCA8D8], a2, a3, v3);
+    v8 = objc_msgSend_tsu_resourcesBundle(MEMORY[0x277CCA8D8], a2, passphrases, v3);
     v10 = objc_msgSend_localizedStringForKey_value_table_(v8, v9, @"Couldn’t Create PDF", &stru_288512028, @"TSApplication");
 
     v14 = objc_msgSend_tsu_resourcesBundle(MEMORY[0x277CCA8D8], v11, v12, v13);
@@ -176,7 +176,7 @@ LABEL_10:
 
     v17 = MEMORY[0x277CCA9B8];
     v19 = objc_msgSend_dictionaryWithObject_forKey_(MEMORY[0x277CBEAC0], v18, v16, *MEMORY[0x277CCA470]);
-    *a3 = objc_msgSend_tsu_errorWithDomain_code_alertTitle_alertMessage_userInfo_(v17, v20, @"com.apple.iWork.TSApplication", 1, v10, v16, v19);
+    *passphrases = objc_msgSend_tsu_errorWithDomain_code_alertTitle_alertMessage_userInfo_(v17, v20, @"com.apple.iWork.TSApplication", 1, v10, v16, v19);
   }
 
   return v7 & 1;

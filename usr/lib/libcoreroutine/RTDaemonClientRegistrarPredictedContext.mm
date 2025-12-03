@@ -1,32 +1,32 @@
 @interface RTDaemonClientRegistrarPredictedContext
 - (BOOL)invocationsPending;
 - (BOOL)registered;
-- (BOOL)startMonitoringForPredictedContextWithOptions:(id)a3 error:(id *)a4;
+- (BOOL)startMonitoringForPredictedContextWithOptions:(id)options error:(id *)error;
 - (NSString)description;
-- (RTDaemonClientRegistrarPredictedContext)initWithCoder:(id)a3;
-- (RTDaemonClientRegistrarPredictedContext)initWithPredictedContextManager:(id)a3 queue:(id)a4 clientIdentity:(id)a5;
+- (RTDaemonClientRegistrarPredictedContext)initWithCoder:(id)coder;
+- (RTDaemonClientRegistrarPredictedContext)initWithPredictedContextManager:(id)manager queue:(id)queue clientIdentity:(id)identity;
 - (RTDaemonClientRegistrarPredictedContextProtocol)delegate;
 - (int64_t)countOfPendingInvocations;
-- (void)addPendingPredictedContextUpdateBlock:(id)a3 failBlock:(id)a4 description:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)addPendingPredictedContextUpdateBlock:(id)block failBlock:(id)failBlock description:(id)description;
+- (void)encodeWithCoder:(id)coder;
 - (void)stopMonitoringForPredictedContext;
 @end
 
 @implementation RTDaemonClientRegistrarPredictedContext
 
-- (RTDaemonClientRegistrarPredictedContext)initWithPredictedContextManager:(id)a3 queue:(id)a4 clientIdentity:(id)a5
+- (RTDaemonClientRegistrarPredictedContext)initWithPredictedContextManager:(id)manager queue:(id)queue clientIdentity:(id)identity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  managerCopy = manager;
+  queueCopy = queue;
+  identityCopy = identity;
+  if (!managerCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v16 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -37,7 +37,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v10)
+  if (!queueCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -56,31 +56,31 @@ LABEL_12:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a4);
+    objc_storeStrong(&v12->_queue, queue);
     v14 = [[RTInvocationDispatcher alloc] initWithQueue:v13->_queue];
     dispatcher = v13->_dispatcher;
     v13->_dispatcher = v14;
 
-    objc_storeStrong(&v13->_predictedContextManager, a3);
-    objc_storeStrong(&v13->_clientIdentity, a5);
+    objc_storeStrong(&v13->_predictedContextManager, manager);
+    objc_storeStrong(&v13->_clientIdentity, identity);
   }
 
   self = v13;
-  v16 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v16;
+  return selfCopy;
 }
 
-- (RTDaemonClientRegistrarPredictedContext)initWithCoder:(id)a3
+- (RTDaemonClientRegistrarPredictedContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RTDaemonClientRegistrarPredictedContext;
-  v5 = [(RTDaemonClientRegistrar *)&v9 initWithCoder:v4];
+  v5 = [(RTDaemonClientRegistrar *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
     options = v5->_options;
     v5->_options = v6;
   }
@@ -88,42 +88,42 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RTDaemonClientRegistrarPredictedContext;
-  v4 = a3;
-  [(RTDaemonClientRegistrar *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_options forKey:{@"options", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RTDaemonClientRegistrar *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_options forKey:{@"options", v5.receiver, v5.super_class}];
 }
 
-- (BOOL)startMonitoringForPredictedContextWithOptions:(id)a3 error:(id *)a4
+- (BOOL)startMonitoringForPredictedContextWithOptions:(id)options error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  optionsCopy = options;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = NSStringFromSelector(a2);
-      v10 = [(RTDaemonClientRegistrarPredictedContext *)self options];
+      options = [(RTDaemonClientRegistrarPredictedContext *)self options];
       *buf = 138412546;
       v25 = v9;
       v26 = 2112;
-      v27 = v10;
+      v27 = options;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@, options, %@", buf, 0x16u);
     }
   }
 
   if ([(RTDaemonClientRegistrarPredictedContext *)self invocationsPending])
   {
-    v11 = [(RTDaemonClientRegistrarPredictedContext *)self dispatcher];
-    [v11 dispatchPendingInvocations];
+    dispatcher = [(RTDaemonClientRegistrarPredictedContext *)self dispatcher];
+    [dispatcher dispatchPendingInvocations];
   }
 
-  v12 = [(RTDaemonClientRegistrarPredictedContext *)self registered];
-  if (v12)
+  registered = [(RTDaemonClientRegistrarPredictedContext *)self registered];
+  if (registered)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277D01448];
@@ -132,30 +132,30 @@ LABEL_10:
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v16 = [v13 errorWithDomain:v14 code:11 userInfo:v15];
 
-    if (a4)
+    if (error)
     {
       v17 = v16;
-      *a4 = v16;
+      *error = v16;
     }
   }
 
   else
   {
-    [(RTDaemonClientRegistrarPredictedContext *)self setOptions:v7];
-    v18 = [(RTDaemonClientRegistrarPredictedContext *)self predictedContextManager];
-    v19 = [(RTDaemonClientRegistrarPredictedContext *)self options];
+    [(RTDaemonClientRegistrarPredictedContext *)self setOptions:optionsCopy];
+    predictedContextManager = [(RTDaemonClientRegistrarPredictedContext *)self predictedContextManager];
+    options2 = [(RTDaemonClientRegistrarPredictedContext *)self options];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __95__RTDaemonClientRegistrarPredictedContext_startMonitoringForPredictedContextWithOptions_error___block_invoke;
     v21[3] = &unk_2788D37A0;
     v21[4] = self;
     v21[5] = a2;
-    [v18 startMonitoringForClient:self options:v19 handler:v21];
+    [predictedContextManager startMonitoringForClient:self options:options2 handler:v21];
 
     v16 = 0;
   }
 
-  return !v12;
+  return !registered;
 }
 
 void __95__RTDaemonClientRegistrarPredictedContext_startMonitoringForPredictedContextWithOptions_error___block_invoke(uint64_t a1, void *a2)
@@ -216,56 +216,56 @@ void __95__RTDaemonClientRegistrarPredictedContext_startMonitoringForPredictedCo
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = NSStringFromSelector(a2);
-      v6 = [(RTDaemonClientRegistrarPredictedContext *)self options];
+      options = [(RTDaemonClientRegistrarPredictedContext *)self options];
       v9 = 138412546;
       v10 = v5;
       v11 = 2112;
-      v12 = v6;
+      v12 = options;
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "%@, options, %@", &v9, 0x16u);
     }
   }
 
-  v7 = [(RTDaemonClientRegistrarPredictedContext *)self dispatcher];
-  [v7 removeAllPendingInvocations];
+  dispatcher = [(RTDaemonClientRegistrarPredictedContext *)self dispatcher];
+  [dispatcher removeAllPendingInvocations];
 
   if ([(RTDaemonClientRegistrarPredictedContext *)self registered])
   {
-    v8 = [(RTDaemonClientRegistrarPredictedContext *)self predictedContextManager];
-    [v8 stopMonitoringForClient:self reply:0];
+    predictedContextManager = [(RTDaemonClientRegistrarPredictedContext *)self predictedContextManager];
+    [predictedContextManager stopMonitoringForClient:self reply:0];
 
     [(RTDaemonClientRegistrarPredictedContext *)self setOptions:0];
   }
 }
 
-- (void)addPendingPredictedContextUpdateBlock:(id)a3 failBlock:(id)a4 description:(id)a5
+- (void)addPendingPredictedContextUpdateBlock:(id)block failBlock:(id)failBlock description:(id)description
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(RTDaemonClientRegistrarPredictedContext *)self dispatcher];
-  [v11 enqueueBlock:v10 failureBlock:v9 description:{@"%@", v8}];
+  descriptionCopy = description;
+  failBlockCopy = failBlock;
+  blockCopy = block;
+  dispatcher = [(RTDaemonClientRegistrarPredictedContext *)self dispatcher];
+  [dispatcher enqueueBlock:blockCopy failureBlock:failBlockCopy description:{@"%@", descriptionCopy}];
 }
 
 - (int64_t)countOfPendingInvocations
 {
-  v2 = [(RTDaemonClientRegistrarPredictedContext *)self dispatcher];
-  v3 = [v2 countOfPendingInvocations];
+  dispatcher = [(RTDaemonClientRegistrarPredictedContext *)self dispatcher];
+  countOfPendingInvocations = [dispatcher countOfPendingInvocations];
 
-  return v3;
+  return countOfPendingInvocations;
 }
 
 - (BOOL)invocationsPending
 {
-  v2 = [(RTDaemonClientRegistrarPredictedContext *)self dispatcher];
-  v3 = [v2 countOfPendingInvocations] != 0;
+  dispatcher = [(RTDaemonClientRegistrarPredictedContext *)self dispatcher];
+  v3 = [dispatcher countOfPendingInvocations] != 0;
 
   return v3;
 }
 
 - (BOOL)registered
 {
-  v2 = [(RTDaemonClientRegistrarPredictedContext *)self options];
-  v3 = v2 != 0;
+  options = [(RTDaemonClientRegistrarPredictedContext *)self options];
+  v3 = options != 0;
 
   return v3;
 }

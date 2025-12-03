@@ -1,10 +1,10 @@
 @interface MusicUIServiceAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (MusicUIServiceAppDelegate)init;
 - (UIWindow)activeWindow;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)_sceneWillEnterForeground:(id)a3;
-- (void)appEnvironmentWillDisconnect:(id)a3;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)_sceneWillEnterForeground:(id)foreground;
+- (void)appEnvironmentWillDisconnect:(id)disconnect;
 @end
 
 @implementation MusicUIServiceAppDelegate
@@ -27,9 +27,9 @@
   return v2;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = [MPMediaLibrary defaultMediaLibrary:a3];
+  v5 = [MPMediaLibrary defaultMediaLibrary:application];
   [v5 beginGeneratingLibraryChangeNotifications];
 
   v6 = objc_alloc_init(MusicUIServiceScreenManager);
@@ -39,48 +39,48 @@
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 configuration];
-  v7 = [v5 role];
+  sessionCopy = session;
+  configuration = [sessionCopy configuration];
+  role = [sessionCopy role];
 
-  LODWORD(v5) = [v7 isEqualToString:_UIWindowSceneSessionRoleCarPlay];
-  if (v5)
+  LODWORD(sessionCopy) = [role isEqualToString:_UIWindowSceneSessionRoleCarPlay];
+  if (sessionCopy)
   {
-    [v6 setDelegateClass:objc_opt_class()];
+    [configuration setDelegateClass:objc_opt_class()];
   }
 
-  return v6;
+  return configuration;
 }
 
-- (void)appEnvironmentWillDisconnect:(id)a3
+- (void)appEnvironmentWillDisconnect:(id)disconnect
 {
-  v5 = [a3 applicationIdentifier];
-  v4 = [(MusicUIServiceAppDelegate *)self environments];
-  [v4 setObject:0 forKeyedSubscript:v5];
+  applicationIdentifier = [disconnect applicationIdentifier];
+  environments = [(MusicUIServiceAppDelegate *)self environments];
+  [environments setObject:0 forKeyedSubscript:applicationIdentifier];
 }
 
-- (void)_sceneWillEnterForeground:(id)a3
+- (void)_sceneWillEnterForeground:(id)foreground
 {
-  v4 = [a3 object];
-  v5 = [v4 _FBSScene];
-  v6 = [v5 settings];
+  object = [foreground object];
+  _FBSScene = [object _FBSScene];
+  settings = [_FBSScene settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 settings];
-    v9 = [v8 proxiedApplicationBundleIdentifier];
-    if (v9)
+    settings2 = [_FBSScene settings];
+    proxiedApplicationBundleIdentifier = [settings2 proxiedApplicationBundleIdentifier];
+    if (proxiedApplicationBundleIdentifier)
     {
-      v10 = [(MusicUIServiceAppDelegate *)self environments];
-      v11 = [v10 objectForKeyedSubscript:v9];
+      environments = [(MusicUIServiceAppDelegate *)self environments];
+      delegate2 = [environments objectForKeyedSubscript:proxiedApplicationBundleIdentifier];
 
-      if (!v11)
+      if (!delegate2)
       {
-        v12 = [v4 delegate];
+        delegate = [object delegate];
         objc_opt_class();
         v13 = objc_opt_isKindOfClass();
 
@@ -90,7 +90,7 @@
           if (v14)
           {
             v17 = 138543362;
-            v18 = v9;
+            v18 = proxiedApplicationBundleIdentifier;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "No available environment for app %{public}@", &v17, 0xCu);
           }
 
@@ -100,19 +100,19 @@
         if (v14)
         {
           v17 = 138543362;
-          v18 = v9;
+          v18 = proxiedApplicationBundleIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Assigning environment for app %{public}@", &v17, 0xCu);
         }
 
-        v11 = [v4 delegate];
-        v15 = [(MusicUIServiceAppDelegate *)self environments];
-        [v15 setObject:v11 forKeyedSubscript:v9];
+        delegate2 = [object delegate];
+        environments2 = [(MusicUIServiceAppDelegate *)self environments];
+        [environments2 setObject:delegate2 forKeyedSubscript:proxiedApplicationBundleIdentifier];
 
-        [v11 setDelegate:self];
+        [delegate2 setDelegate:self];
       }
 
-      v16 = [v11 window];
-      [(MusicUIServiceAppDelegate *)self setActiveWindow:v16];
+      window = [delegate2 window];
+      [(MusicUIServiceAppDelegate *)self setActiveWindow:window];
     }
 
 LABEL_9:

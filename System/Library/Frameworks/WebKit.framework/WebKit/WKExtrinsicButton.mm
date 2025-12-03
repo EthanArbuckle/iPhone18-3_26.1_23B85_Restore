@@ -1,8 +1,8 @@
 @interface WKExtrinsicButton
 - (CGSize)extrinsicContentSize;
 - (CGSize)intrinsicContentSize;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation WKExtrinsicButton
@@ -16,19 +16,19 @@
   return result;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v6.receiver = self;
   v6.super_class = WKExtrinsicButton;
-  [(WKExtrinsicButton *)&v6 contextMenuInteraction:a3 willDisplayMenuForConfiguration:a4 animator:a5];
+  [(WKExtrinsicButton *)&v6 contextMenuInteraction:interaction willDisplayMenuForConfiguration:configuration animator:animator];
   [objc_loadWeak(&self->_delegate) wkExtrinsicButtonWillDisplayMenu:self];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v6.receiver = self;
   v6.super_class = WKExtrinsicButton;
-  [(WKExtrinsicButton *)&v6 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:a5];
+  [(WKExtrinsicButton *)&v6 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animator];
   [objc_loadWeak(&self->_delegate) wkExtrinsicButtonWillDismissMenu:self];
 }
 

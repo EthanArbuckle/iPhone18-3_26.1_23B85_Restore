@@ -1,7 +1,7 @@
 @interface VOTActiveSiriVoiceManager
 + (id)sharedInstance;
 - (id)_init;
-- (id)siriVoiceIdentifierForLanguage:(id)a3;
+- (id)siriVoiceIdentifierForLanguage:(id)language;
 - (void)_deregisterForNotifications;
 - (void)_handleSiriVoiceUpdate;
 - (void)_registerForNotifications;
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000B5B44;
   block[3] = &unk_1001C78B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001FED50 != -1)
   {
     dispatch_once(&qword_1001FED50, block);
@@ -104,9 +104,9 @@
   [(NSLock *)self->_cachedSiriVoiceLock unlock];
 }
 
-- (id)siriVoiceIdentifierForLanguage:(id)a3
+- (id)siriVoiceIdentifierForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = +[AFConnection outputVoice];
   v6 = AXLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -123,15 +123,15 @@
   }
 
   [(NSLock *)self->_cachedSiriVoiceLock lock];
-  if (![(TTSVoiceAsset *)self->_cachedSiriVoiceAsset isEligibleForVOTWithVoiceInfo:v5 language:v4])
+  if (![(TTSVoiceAsset *)self->_cachedSiriVoiceAsset isEligibleForVOTWithVoiceInfo:v5 language:languageCopy])
   {
     [(NSLock *)self->_cachedSiriVoiceLock unlock];
     goto LABEL_9;
   }
 
-  v7 = [(TTSVoiceAsset *)self->_cachedSiriVoiceAsset identifier];
+  identifier = [(TTSVoiceAsset *)self->_cachedSiriVoiceAsset identifier];
   [(NSLock *)self->_cachedSiriVoiceLock unlock];
-  if (!v7)
+  if (!identifier)
   {
 LABEL_9:
     [TTSSiriAssetManager installedAssetsForLanguage:0 voiceType:4];
@@ -145,7 +145,7 @@ LABEL_9:
     {
       v12 = v10;
       location = &self->_cachedSiriVoiceAsset;
-      v21 = self;
+      selfCopy = self;
       v13 = *v23;
       while (2)
       {
@@ -165,12 +165,12 @@ LABEL_9:
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "checking asset: %@", buf, 0xCu);
           }
 
-          if ([v15 isEligibleForVOTWithVoiceInfo:v5 language:v4])
+          if ([v15 isEligibleForVOTWithVoiceInfo:v5 language:languageCopy])
           {
-            [(NSLock *)v21->_cachedSiriVoiceLock lock];
+            [(NSLock *)selfCopy->_cachedSiriVoiceLock lock];
             objc_storeStrong(location, v15);
-            [(NSLock *)v21->_cachedSiriVoiceLock unlock];
-            v17 = [v15 identifier];
+            [(NSLock *)selfCopy->_cachedSiriVoiceLock unlock];
+            identifier2 = [v15 identifier];
             goto LABEL_21;
           }
         }
@@ -184,29 +184,29 @@ LABEL_9:
         break;
       }
 
-      v17 = 0;
+      identifier2 = 0;
 LABEL_21:
       v11 = "@<VOTExplorerElementManagerDelegate>" + 19;
     }
 
     else
     {
-      v17 = 0;
+      identifier2 = 0;
     }
 
     v18 = AXLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = *(v11 + 27);
-      v28 = v17;
+      v28 = identifier2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Using siri identifier: %@", buf, 0xCu);
     }
 
-    v8 = v17;
+    v8 = identifier2;
     goto LABEL_26;
   }
 
-  v8 = v7;
+  v8 = identifier;
 LABEL_26:
 
 LABEL_27:

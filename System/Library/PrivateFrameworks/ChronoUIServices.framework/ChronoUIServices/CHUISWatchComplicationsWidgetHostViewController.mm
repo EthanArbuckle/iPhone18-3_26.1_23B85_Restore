@@ -1,35 +1,35 @@
 @interface CHUISWatchComplicationsWidgetHostViewController
 - (CGPoint)bezelContentCenter;
-- (CHUISWatchComplicationsWidgetHostViewController)initWithWidget:(id)a3 metrics:(id)a4 widgetConfigurationIdentifier:(id)a5;
+- (CHUISWatchComplicationsWidgetHostViewController)initWithWidget:(id)widget metrics:(id)metrics widgetConfigurationIdentifier:(id)identifier;
 - (CHUISWatchComplicationsWidgetHostViewControllerDelegate)watchComplicationsDelegate;
 - (double)curvedTextAngularWidth;
 - (id)additionalSnapshotPresentationContext;
-- (id)handleActions:(id)a3;
+- (id)handleActions:(id)actions;
 - (id)sceneSpecification;
 - (void)_translateCurvedLabelMetrics;
-- (void)sceneDidUpdateClientSettingsWithDiff:(id)a3 oldClientSettings:(id)a4 newClientSettings:(id)a5 transitionContext:(id)a6;
-- (void)sceneDidUpdateToSceneIdentifier:(id)a3;
-- (void)setBezelContentCenter:(CGPoint)a3;
-- (void)setComplicationsCurvedLabelMetrics:(id)a3;
-- (void)setCornerPosition:(int64_t)a3;
-- (void)setCurvedLabelMetrics:(id)a3;
-- (void)setGenerateSnapshotMetadata:(BOOL)a3;
-- (void)setIncludeAccessoryViews:(BOOL)a3;
-- (void)setShouldReceiveWatchGestureInteractions:(BOOL)a3;
-- (void)willModifySceneClientSettings:(id)a3;
-- (void)willModifySceneSettings:(id)a3;
+- (void)sceneDidUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings newClientSettings:(id)clientSettings transitionContext:(id)context;
+- (void)sceneDidUpdateToSceneIdentifier:(id)identifier;
+- (void)setBezelContentCenter:(CGPoint)center;
+- (void)setComplicationsCurvedLabelMetrics:(id)metrics;
+- (void)setCornerPosition:(int64_t)position;
+- (void)setCurvedLabelMetrics:(id)metrics;
+- (void)setGenerateSnapshotMetadata:(BOOL)metadata;
+- (void)setIncludeAccessoryViews:(BOOL)views;
+- (void)setShouldReceiveWatchGestureInteractions:(BOOL)interactions;
+- (void)willModifySceneClientSettings:(id)settings;
+- (void)willModifySceneSettings:(id)settings;
 @end
 
 @implementation CHUISWatchComplicationsWidgetHostViewController
 
-- (CHUISWatchComplicationsWidgetHostViewController)initWithWidget:(id)a3 metrics:(id)a4 widgetConfigurationIdentifier:(id)a5
+- (CHUISWatchComplicationsWidgetHostViewController)initWithWidget:(id)widget metrics:(id)metrics widgetConfigurationIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  widgetCopy = widget;
+  metricsCopy = metrics;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = CHUISWatchComplicationsWidgetHostViewController;
-  v11 = [(CHUISWidgetHostViewController *)&v21 initWithWidget:v8 metrics:v9 widgetConfigurationIdentifier:v10];
+  v11 = [(CHUISWidgetHostViewController *)&v21 initWithWidget:widgetCopy metrics:metricsCopy widgetConfigurationIdentifier:identifierCopy];
   if (v11)
   {
     v12 = objc_alloc_init(CHUISWatchComplicationsWidgetSceneClientSettingsDiffInspector);
@@ -77,7 +77,7 @@ void __104__CHUISWatchComplicationsWidgetHostViewController_initWithWidget_metri
 - (void)_translateCurvedLabelMetrics
 {
   v3 = [CHUISWatchComplicationsCurvedLabelMetrics alloc];
-  v4 = [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics interior];
+  interior = [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics interior];
   [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics tracking];
   v6 = v5;
   [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics circleCenter];
@@ -91,28 +91,28 @@ void __104__CHUISWatchComplicationsWidgetHostViewController_initWithWidget_metri
   v16 = v15;
   [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics fontSize];
   v18 = v17;
-  v26 = [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics textColor];
-  v19 = [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics accessoryPlacement];
+  textColor = [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics textColor];
+  accessoryPlacement = [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics accessoryPlacement];
   [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics accessoryPadding];
   v21 = v20;
   [(CHSWatchComplicationsCurvedLabelMetrics *)self->_curvedLabelMetrics accessoryMaxSize];
-  v24 = [(CHUISWatchComplicationsCurvedLabelMetrics *)v3 initWithInterior:v4 tracking:v26 circleCenter:v19 circleRadius:v6 maximumAngularWidth:v8 centerAngle:v10 fontSize:v12 textColor:v14 accessoryPlacement:v16 accessoryPadding:v18 accessoryMaxSize:v21, v22, v23];
+  v24 = [(CHUISWatchComplicationsCurvedLabelMetrics *)v3 initWithInterior:interior tracking:textColor circleCenter:accessoryPlacement circleRadius:v6 maximumAngularWidth:v8 centerAngle:v10 fontSize:v12 textColor:v14 accessoryPlacement:v16 accessoryPadding:v18 accessoryMaxSize:v21, v22, v23];
   complicationsCurvedLabelMetrics = self->_complicationsCurvedLabelMetrics;
   self->_complicationsCurvedLabelMetrics = v24;
 }
 
-- (void)setCornerPosition:(int64_t)a3
+- (void)setCornerPosition:(int64_t)position
 {
-  if (self->_cornerPosition != a3)
+  if (self->_cornerPosition != position)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_cornerPosition = a3;
+    self->_cornerPosition = position;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __69__CHUISWatchComplicationsWidgetHostViewController_setCornerPosition___block_invoke;
     v5[3] = &__block_descriptor_40_e78___UIApplicationSceneTransitionContext_16__0__CHUISMutableWidgetSceneSettings_8l;
-    v5[4] = a3;
+    v5[4] = position;
     [(CHUISWidgetHostViewController *)self modifySceneSettings:v5];
   }
 }
@@ -146,13 +146,13 @@ uint64_t __69__CHUISWatchComplicationsWidgetHostViewController_setCornerPosition
   return 0;
 }
 
-- (void)setCurvedLabelMetrics:(id)a3
+- (void)setCurvedLabelMetrics:(id)metrics
 {
-  v5 = a3;
+  metricsCopy = metrics;
   curvedLabelMetrics = self->_curvedLabelMetrics;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_curvedLabelMetrics, a3);
+    objc_storeStrong(&self->_curvedLabelMetrics, metrics);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __73__CHUISWatchComplicationsWidgetHostViewController_setCurvedLabelMetrics___block_invoke;
@@ -191,26 +191,26 @@ uint64_t __73__CHUISWatchComplicationsWidgetHostViewController_setCurvedLabelMet
   return 0;
 }
 
-- (void)setComplicationsCurvedLabelMetrics:(id)a3
+- (void)setComplicationsCurvedLabelMetrics:(id)metrics
 {
-  v6 = a3;
-  objc_storeStrong(&self->_complicationsCurvedLabelMetrics, a3);
-  v5 = [v6 copy];
+  metricsCopy = metrics;
+  objc_storeStrong(&self->_complicationsCurvedLabelMetrics, metrics);
+  v5 = [metricsCopy copy];
   [(CHUISWatchComplicationsWidgetHostViewController *)self setCurvedLabelMetrics:v5];
 }
 
-- (void)setBezelContentCenter:(CGPoint)a3
+- (void)setBezelContentCenter:(CGPoint)center
 {
-  if (self->_bezelContentCenter.x != a3.x || self->_bezelContentCenter.y != a3.y)
+  if (self->_bezelContentCenter.x != center.x || self->_bezelContentCenter.y != center.y)
   {
     v8 = v3;
     v9 = v4;
-    self->_bezelContentCenter = a3;
+    self->_bezelContentCenter = center;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __73__CHUISWatchComplicationsWidgetHostViewController_setBezelContentCenter___block_invoke;
     v6[3] = &__block_descriptor_48_e78___UIApplicationSceneTransitionContext_16__0__CHUISMutableWidgetSceneSettings_8l;
-    v7 = a3;
+    centerCopy = center;
     [(CHUISWidgetHostViewController *)self modifySceneSettings:v6];
   }
 }
@@ -244,18 +244,18 @@ uint64_t __73__CHUISWatchComplicationsWidgetHostViewController_setBezelContentCe
   return 0;
 }
 
-- (void)setIncludeAccessoryViews:(BOOL)a3
+- (void)setIncludeAccessoryViews:(BOOL)views
 {
-  if (self->_includeAccessoryViews != a3)
+  if (self->_includeAccessoryViews != views)
   {
     v7 = v3;
     v8 = v4;
-    self->_includeAccessoryViews = a3;
+    self->_includeAccessoryViews = views;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __76__CHUISWatchComplicationsWidgetHostViewController_setIncludeAccessoryViews___block_invoke;
     v5[3] = &__block_descriptor_33_e78___UIApplicationSceneTransitionContext_16__0__CHUISMutableWidgetSceneSettings_8l;
-    v6 = a3;
+    viewsCopy = views;
     [(CHUISWidgetHostViewController *)self modifySceneSettings:v5];
   }
 }
@@ -289,18 +289,18 @@ uint64_t __76__CHUISWatchComplicationsWidgetHostViewController_setIncludeAccesso
   return 0;
 }
 
-- (void)setGenerateSnapshotMetadata:(BOOL)a3
+- (void)setGenerateSnapshotMetadata:(BOOL)metadata
 {
-  if (self->_generateSnapshotMetadata != a3)
+  if (self->_generateSnapshotMetadata != metadata)
   {
     v7 = v3;
     v8 = v4;
-    self->_generateSnapshotMetadata = a3;
+    self->_generateSnapshotMetadata = metadata;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __79__CHUISWatchComplicationsWidgetHostViewController_setGenerateSnapshotMetadata___block_invoke;
     v5[3] = &__block_descriptor_33_e78___UIApplicationSceneTransitionContext_16__0__CHUISMutableWidgetSceneSettings_8l;
-    v6 = a3;
+    metadataCopy = metadata;
     [(CHUISWidgetHostViewController *)self modifySceneSettings:v5];
   }
 }
@@ -336,9 +336,9 @@ uint64_t __79__CHUISWatchComplicationsWidgetHostViewController_setGenerateSnapsh
 
 - (double)curvedTextAngularWidth
 {
-  v2 = [(CHUISWidgetHostViewController *)self clientSettings];
+  clientSettings = [(CHUISWidgetHostViewController *)self clientSettings];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = clientSettings;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -365,13 +365,13 @@ uint64_t __79__CHUISWatchComplicationsWidgetHostViewController_setGenerateSnapsh
   return v8;
 }
 
-- (void)setShouldReceiveWatchGestureInteractions:(BOOL)a3
+- (void)setShouldReceiveWatchGestureInteractions:(BOOL)interactions
 {
-  v3 = a3;
+  interactionsCopy = interactions;
   BSDispatchQueueAssertMain();
-  if (self->_shouldReceiveWatchGestureInteractions != v3)
+  if (self->_shouldReceiveWatchGestureInteractions != interactionsCopy)
   {
-    self->_shouldReceiveWatchGestureInteractions = v3;
+    self->_shouldReceiveWatchGestureInteractions = interactionsCopy;
 
     [(CHUISWatchComplicationsWidgetHostViewController *)self updateWatchGestureInteraction];
   }
@@ -384,14 +384,14 @@ uint64_t __79__CHUISWatchComplicationsWidgetHostViewController_setGenerateSnapsh
   return v2;
 }
 
-- (void)willModifySceneSettings:(id)a3
+- (void)willModifySceneSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = CHUISWatchComplicationsWidgetHostViewController;
-  [(CHUISWidgetHostViewController *)&v9 willModifySceneSettings:v4];
+  [(CHUISWidgetHostViewController *)&v9 willModifySceneSettings:settingsCopy];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = settingsCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -420,34 +420,34 @@ uint64_t __79__CHUISWatchComplicationsWidgetHostViewController_setGenerateSnapsh
   [v8 setGenerateSnapshotMetadata:self->_generateSnapshotMetadata];
 }
 
-- (void)willModifySceneClientSettings:(id)a3
+- (void)willModifySceneClientSettings:(id)settings
 {
   v3.receiver = self;
   v3.super_class = CHUISWatchComplicationsWidgetHostViewController;
-  [(CHUISWidgetHostViewController *)&v3 willModifySceneClientSettings:a3];
+  [(CHUISWidgetHostViewController *)&v3 willModifySceneClientSettings:settings];
 }
 
-- (void)sceneDidUpdateClientSettingsWithDiff:(id)a3 oldClientSettings:(id)a4 newClientSettings:(id)a5 transitionContext:(id)a6
+- (void)sceneDidUpdateClientSettingsWithDiff:(id)diff oldClientSettings:(id)settings newClientSettings:(id)clientSettings transitionContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  diffCopy = diff;
+  settingsCopy = settings;
+  clientSettingsCopy = clientSettings;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = CHUISWatchComplicationsWidgetHostViewController;
-  [(CHUISWidgetHostViewController *)&v15 sceneDidUpdateClientSettingsWithDiff:v10 oldClientSettings:v11 newClientSettings:v12 transitionContext:v13];
-  v14 = [[CHUISWidgetSceneClientSettingsDiffContext alloc] initWithPreviousClientSettings:v11 currentClientSettings:v12 transitionContext:v13];
-  [(CHUISWidgetSceneClientSettingsDiffInspector *)self->_clientSettingsDiffInspector inspectDiff:v10 withContext:v14];
+  [(CHUISWidgetHostViewController *)&v15 sceneDidUpdateClientSettingsWithDiff:diffCopy oldClientSettings:settingsCopy newClientSettings:clientSettingsCopy transitionContext:contextCopy];
+  v14 = [[CHUISWidgetSceneClientSettingsDiffContext alloc] initWithPreviousClientSettings:settingsCopy currentClientSettings:clientSettingsCopy transitionContext:contextCopy];
+  [(CHUISWidgetSceneClientSettingsDiffInspector *)self->_clientSettingsDiffInspector inspectDiff:diffCopy withContext:v14];
 }
 
 - (id)additionalSnapshotPresentationContext
 {
   v13.receiver = self;
   v13.super_class = CHUISWatchComplicationsWidgetHostViewController;
-  v3 = [(CHUISWidgetHostViewController *)&v13 additionalSnapshotPresentationContext];
-  if (v3)
+  additionalSnapshotPresentationContext = [(CHUISWidgetHostViewController *)&v13 additionalSnapshotPresentationContext];
+  if (additionalSnapshotPresentationContext)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, ", v3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, ", additionalSnapshotPresentationContext];
   }
 
   else
@@ -465,8 +465,8 @@ uint64_t __79__CHUISWatchComplicationsWidgetHostViewController_setGenerateSnapsh
   curvedLabelMetrics = self->_curvedLabelMetrics;
   if (curvedLabelMetrics)
   {
-    v7 = [(CHSWatchComplicationsCurvedLabelMetrics *)curvedLabelMetrics _filenameSafeStableHash];
-    v8 = [(__CFString *)v4 stringByAppendingFormat:@", curveMetrics=%@", v7];
+    _filenameSafeStableHash = [(CHSWatchComplicationsCurvedLabelMetrics *)curvedLabelMetrics _filenameSafeStableHash];
+    v8 = [(__CFString *)v4 stringByAppendingFormat:@", curveMetrics=%@", _filenameSafeStableHash];
 
     v4 = v8;
   }
@@ -482,13 +482,13 @@ uint64_t __79__CHUISWatchComplicationsWidgetHostViewController_setGenerateSnapsh
   return v4;
 }
 
-- (id)handleActions:(id)a3
+- (id)handleActions:(id)actions
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionsCopy = actions;
   v32.receiver = self;
   v32.super_class = CHUISWatchComplicationsWidgetHostViewController;
-  v21 = [(CHUISWidgetHostViewController *)&v32 handleActions:v4];
+  v21 = [(CHUISWidgetHostViewController *)&v32 handleActions:actionsCopy];
 
   v23 = objc_opt_new();
   v5 = objc_opt_new();
@@ -550,12 +550,12 @@ uint64_t __79__CHUISWatchComplicationsWidgetHostViewController_setGenerateSnapsh
         }
 
         v15 = *(*(&v24 + 1) + 8 * j);
-        v16 = [v15 metadata];
+        metadata = [v15 metadata];
         snapshotMetadata = self->_snapshotMetadata;
-        self->_snapshotMetadata = v16;
+        self->_snapshotMetadata = metadata;
 
-        v18 = [MEMORY[0x1E698E600] response];
-        [v15 sendResponse:v18];
+        response = [MEMORY[0x1E698E600] response];
+        [v15 sendResponse:response];
       }
 
       v12 = [v11 countByEnumeratingWithState:&v24 objects:v33 count:16];
@@ -569,9 +569,9 @@ uint64_t __79__CHUISWatchComplicationsWidgetHostViewController_setGenerateSnapsh
   return v23;
 }
 
-- (void)sceneDidUpdateToSceneIdentifier:(id)a3
+- (void)sceneDidUpdateToSceneIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_sceneIdentifier, a3);
+  objc_storeStrong(&self->_sceneIdentifier, identifier);
 
   [(CHUISWatchComplicationsWidgetHostViewController *)self updateWatchGestureInteraction];
 }

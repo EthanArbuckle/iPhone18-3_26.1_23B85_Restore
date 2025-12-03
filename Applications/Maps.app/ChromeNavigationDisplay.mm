@@ -2,55 +2,55 @@
 + (id)defaultConfiguration;
 - (BOOL)_isAuthorizedForPreciseLocation;
 - (BOOL)_isRunningFullGuidance;
-- (BOOL)mapView:(id)a3 shouldSelectLabelMarker:(id)a4;
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3;
-- (ChromeNavigationDisplay)initWithChromeViewController:(id)a3;
+- (BOOL)mapView:(id)view shouldSelectLabelMarker:(id)marker;
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration;
+- (ChromeNavigationDisplay)initWithChromeViewController:(id)controller;
 - (ChromeNavigationDisplayDelegate)delegate;
 - (ChromeViewController)chromeViewController;
 - (MKMapView)mapView;
 - (double)_horizontalCameraOffset;
-- (unint64_t)_routeMarkerOptionsForCameraStyle:(int64_t)a3 incidentAlert:(id)a4;
-- (void)_applyHorizontalCameraOffset:(BOOL)a3 animated:(BOOL)a4;
+- (unint64_t)_routeMarkerOptionsForCameraStyle:(int64_t)style incidentAlert:(id)alert;
+- (void)_applyHorizontalCameraOffset:(BOOL)offset animated:(BOOL)animated;
 - (void)_applyStaticCameraStyle;
 - (void)_captureCurrentNavigationState;
 - (void)_cleanupNavigationDisplay;
 - (void)_clearAnnotations;
-- (void)_ioHIDRepeatCurrentGuidance:(id)a3;
-- (void)_locationManagerApprovalDidChange:(id)a3;
+- (void)_ioHIDRepeatCurrentGuidance:(id)guidance;
+- (void)_locationManagerApprovalDidChange:(id)change;
 - (void)_pauseNavigationCameraMotion;
 - (void)_prepareNavigationDisplay;
-- (void)_setConfiguration:(id)a3 animated:(BOOL)a4;
-- (void)_setRoute:(id)a3;
-- (void)_startNavigationCameraMotionIfNeededAnimated:(BOOL)a3;
+- (void)_setConfiguration:(id)configuration animated:(BOOL)animated;
+- (void)_setRoute:(id)route;
+- (void)_startNavigationCameraMotionIfNeededAnimated:(BOOL)animated;
 - (void)_stopNavigationCameraMotion;
-- (void)_transitionToCameraStyle:(int64_t)a3 animated:(BOOL)a4;
+- (void)_transitionToCameraStyle:(int64_t)style animated:(BOOL)animated;
 - (void)_updateDirectionsAnnotationManagerDisplayedRoutes;
 - (void)_updateForCurrentRoute;
-- (void)_updateWithMatchedLocation:(id)a3;
-- (void)_updateWithRouteGeniusEntry:(id)a3;
-- (void)configureDisplay:(id)a3 animated:(BOOL)a4;
+- (void)_updateWithMatchedLocation:(id)location;
+- (void)_updateWithRouteGeniusEntry:(id)entry;
+- (void)configureDisplay:(id)display animated:(BOOL)animated;
 - (void)dealloc;
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4;
-- (void)mapInsetsDidChangeAnimated:(BOOL)a3;
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8;
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
-- (void)navigationDisplay:(id)a3 didChangeUserTrackingMode:(int64_t)a4;
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didDismissTrafficIncidentAlert:(id)a4;
-- (void)navigationService:(id)a3 didInvalidateTrafficIncidentAlert:(id)a4;
-- (void)navigationService:(id)a3 didReceiveTrafficIncidentAlert:(id)a4 responseCallback:(id)a5;
-- (void)navigationService:(id)a3 didUpdateTrafficForRouteID:(id)a4;
-- (void)navigationService:(id)a3 didUpdateTrafficIncidentAlert:(id)a4;
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)recenterCameraAnimated:(BOOL)a3;
-- (void)setCameraPanning:(BOOL)a3 animated:(BOOL)a4;
-- (void)setNonDefaultZoom:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSuppressed:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTrafficAlert:(id)a3;
-- (void)startRunningNavigationAnimated:(BOOL)a3;
-- (void)stopRunningNavigationAnimated:(BOOL)a3;
-- (void)updateWithRoute:(id)a3;
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point;
+- (void)mapInsetsDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection;
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated;
+- (void)navigationDisplay:(id)display didChangeUserTrackingMode:(int64_t)mode;
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didDismissTrafficIncidentAlert:(id)alert;
+- (void)navigationService:(id)service didInvalidateTrafficIncidentAlert:(id)alert;
+- (void)navigationService:(id)service didReceiveTrafficIncidentAlert:(id)alert responseCallback:(id)callback;
+- (void)navigationService:(id)service didUpdateTrafficForRouteID:(id)d;
+- (void)navigationService:(id)service didUpdateTrafficIncidentAlert:(id)alert;
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)recenterCameraAnimated:(BOOL)animated;
+- (void)setCameraPanning:(BOOL)panning animated:(BOOL)animated;
+- (void)setNonDefaultZoom:(BOOL)zoom animated:(BOOL)animated;
+- (void)setSuppressed:(BOOL)suppressed animated:(BOOL)animated;
+- (void)setTrafficAlert:(id)alert;
+- (void)startRunningNavigationAnimated:(BOOL)animated;
+- (void)stopRunningNavigationAnimated:(BOOL)animated;
+- (void)updateWithRoute:(id)route;
 - (void)zoomIn;
 - (void)zoomOut;
 @end
@@ -59,20 +59,20 @@
 
 - (double)_horizontalCameraOffset
 {
-  v3 = [(ChromeNavigationDisplay *)self chromeViewController];
-  v4 = [v3 view];
-  [v4 layoutIfNeeded];
+  chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
+  view = [chromeViewController view];
+  [view layoutIfNeeded];
 
-  v5 = [(ChromeNavigationDisplay *)self chromeViewController];
-  [v5 unobscuredMapContentBoundsInContainingView];
+  chromeViewController2 = [(ChromeNavigationDisplay *)self chromeViewController];
+  [chromeViewController2 unobscuredMapContentBoundsInContainingView];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(ChromeNavigationDisplay *)self chromeViewController];
-  v15 = [v14 mapView];
-  [v15 frame];
+  chromeViewController3 = [(ChromeNavigationDisplay *)self chromeViewController];
+  mapView = [chromeViewController3 mapView];
+  [mapView frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -99,10 +99,10 @@
 
 - (MKMapView)mapView
 {
-  v2 = [(ChromeNavigationDisplay *)self chromeViewController];
-  v3 = [v2 mapView];
+  chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (ChromeNavigationDisplayDelegate)delegate
@@ -112,19 +112,19 @@
   return WeakRetained;
 }
 
-- (void)navigationService:(id)a3 didUpdateTrafficForRouteID:(id)a4
+- (void)navigationService:(id)service didUpdateTrafficForRouteID:(id)d
 {
-  v5 = a4;
-  v6 = [(ChromeNavigationDisplay *)self chromeViewController];
-  v7 = [v6 routeAnnotationsController];
-  v8 = [v7 configuration];
+  dCopy = d;
+  chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
+  routeAnnotationsController = [chromeViewController routeAnnotationsController];
+  configuration = [routeAnnotationsController configuration];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 routes];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  routes = [configuration routes];
+  v10 = [routes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -135,12 +135,12 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(routes);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        v15 = [v14 uniqueRouteID];
-        v16 = [v15 isEqual:v5];
+        uniqueRouteID = [v14 uniqueRouteID];
+        v16 = [uniqueRouteID isEqual:dCopy];
 
         if (v16)
         {
@@ -148,89 +148,89 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [routes countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)navigationService:(id)a3 didDismissTrafficIncidentAlert:(id)a4
+- (void)navigationService:(id)service didDismissTrafficIncidentAlert:(id)alert
 {
-  v4 = a4;
+  alertCopy = alert;
   v5 = sub_10009B590();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 alertTitles];
-    v7 = [v6 firstObject];
+    alertTitles = [alertCopy alertTitles];
+    firstObject = [alertTitles firstObject];
     v8 = 138412290;
-    v9 = v7;
+    v9 = firstObject;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "(alert:%@)", &v8, 0xCu);
   }
 }
 
-- (void)navigationService:(id)a3 didInvalidateTrafficIncidentAlert:(id)a4
+- (void)navigationService:(id)service didInvalidateTrafficIncidentAlert:(id)alert
 {
-  v4 = a4;
+  alertCopy = alert;
   v5 = sub_10009B590();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 alertTitles];
-    v7 = [v6 firstObject];
+    alertTitles = [alertCopy alertTitles];
+    firstObject = [alertTitles firstObject];
     v8 = 138412290;
-    v9 = v7;
+    v9 = firstObject;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "(alert:%@)", &v8, 0xCu);
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateTrafficIncidentAlert:(id)a4
+- (void)navigationService:(id)service didUpdateTrafficIncidentAlert:(id)alert
 {
-  v4 = a4;
+  alertCopy = alert;
   v5 = sub_10009B590();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 alertTitles];
-    v7 = [v6 firstObject];
+    alertTitles = [alertCopy alertTitles];
+    firstObject = [alertTitles firstObject];
     v8 = 138412290;
-    v9 = v7;
+    v9 = firstObject;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "(alert:%@)", &v8, 0xCu);
   }
 }
 
-- (void)navigationService:(id)a3 didReceiveTrafficIncidentAlert:(id)a4 responseCallback:(id)a5
+- (void)navigationService:(id)service didReceiveTrafficIncidentAlert:(id)alert responseCallback:(id)callback
 {
-  v5 = a4;
+  alertCopy = alert;
   v6 = sub_10009B590();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 alertTitles];
-    v8 = [v7 firstObject];
+    alertTitles = [alertCopy alertTitles];
+    firstObject = [alertTitles firstObject];
     v9 = 138412290;
-    v10 = v8;
+    v10 = firstObject;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "(alert:%@)", &v9, 0xCu);
   }
 }
 
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v7 = a3;
+  serviceCopy = service;
   [(ChromeNavigationDisplay *)self _updateDirectionsAnnotationManagerDisplayedRoutes];
-  v8 = [v7 route];
+  route = [serviceCopy route];
 
-  self->_hasArrived = [v8 isLegIndexOfLastLeg:a5];
+  self->_hasArrived = [route isLegIndexOfLastLeg:index];
 }
 
-- (BOOL)mapView:(id)a3 shouldSelectLabelMarker:(id)a4
+- (BOOL)mapView:(id)view shouldSelectLabelMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ChromeNavigationDisplay *)self chromeViewController];
+  viewCopy = view;
+  markerCopy = marker;
+  chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(ChromeNavigationDisplay *)self chromeViewController];
-    v11 = [v10 mapView:v6 shouldSelectLabelMarker:v7];
+    chromeViewController2 = [(ChromeNavigationDisplay *)self chromeViewController];
+    v11 = [chromeViewController2 mapView:viewCopy shouldSelectLabelMarker:markerCopy];
   }
 
   else
@@ -241,7 +241,7 @@
   return v11;
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   if ((MNNavigationServiceStateChangedToNavigating() & 1) != 0 || MNNavigationServiceStateChangedFromNavigatingToStopped())
   {
@@ -249,14 +249,14 @@
     [(ChromeNavigationDisplay *)self _captureCurrentNavigationState];
   }
 
-  else if (a5 != a4 && (a5 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  else if (toState != state && (toState & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
 
     [(ChromeNavigationDisplay *)self _updateDirectionsAnnotationManagerDisplayedRoutes];
   }
 }
 
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   if (MNNavigationServiceStateChangedToNavigating())
   {
@@ -265,41 +265,41 @@
   }
 }
 
-- (void)didTapMapView:(id)a3 atPoint:(CGPoint)a4
+- (void)didTapMapView:(id)view atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v7 = [(ChromeNavigationDisplay *)self delegate];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  delegate = [(ChromeNavigationDisplay *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(ChromeNavigationDisplay *)self delegate];
-    [v9 chromeNavigationDisplay:self userDidTapMap:v10 atPoint:{x, y}];
+    delegate2 = [(ChromeNavigationDisplay *)self delegate];
+    [delegate2 chromeNavigationDisplay:self userDidTapMap:viewCopy atPoint:{x, y}];
   }
 }
 
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection
 {
-  if (!a4)
+  if (!gesture)
   {
-    [(ChromeNavigationDisplay *)self mapViewNavigationCameraHasStoppedPanning:a3, 0, a5, a6, a7, a8];
+    [(ChromeNavigationDisplay *)self mapViewNavigationCameraHasStoppedPanning:view, 0, direction, type, decelerate, tiltDirection];
   }
 }
 
-- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view willStartRespondingToGesture:(int64_t)gesture animated:(BOOL)animated
 {
-  if (!a4)
+  if (!gesture)
   {
-    [(ChromeNavigationDisplay *)self mapViewNavigationCameraHasStartedPanning:a3, 0, a5];
+    [(ChromeNavigationDisplay *)self mapViewNavigationCameraHasStartedPanning:view, 0, animated];
   }
 }
 
-- (void)navigationDisplay:(id)a3 didChangeUserTrackingMode:(int64_t)a4
+- (void)navigationDisplay:(id)display didChangeUserTrackingMode:(int64_t)mode
 {
   v5 = +[UIApplication sharedMapsDelegate];
-  [v5 setTrackingMode:a4 monitorBatteryState:0];
+  [v5 setTrackingMode:mode monitorBatteryState:0];
 }
 
 - (void)_applyStaticCameraStyle
@@ -309,16 +309,16 @@
     [(NavigationDisplay *)self->_navigationDisplay stopCameraMotion];
   }
 
-  v3 = [(ChromeNavigationDisplay *)self configuration];
-  v4 = [v3 cameraStyle] == 5;
+  configuration = [(ChromeNavigationDisplay *)self configuration];
+  v4 = [configuration cameraStyle] == 5;
 
-  v5 = [(ChromeNavigationDisplay *)self configuration];
-  v6 = v5;
+  configuration2 = [(ChromeNavigationDisplay *)self configuration];
+  v6 = configuration2;
   if (!v4)
   {
-    v10 = [v5 cameraStyle];
+    cameraStyle = [configuration2 cameraStyle];
 
-    if (v10 != 6)
+    if (cameraStyle != 6)
     {
       v44 = sub_10006D178();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -347,27 +347,27 @@
       }
     }
 
-    v11 = [(ChromeNavigationDisplay *)self configuration];
-    v12 = [v11 staticMapCamera];
+    configuration3 = [(ChromeNavigationDisplay *)self configuration];
+    staticMapCamera = [configuration3 staticMapCamera];
 
-    if (v12)
+    if (staticMapCamera)
     {
       v13 = sub_10009B590();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138477827;
-        v50 = v12;
+        v50 = staticMapCamera;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Will apply static map camera: %{private}@", buf, 0xCu);
       }
 
-      v14 = [(ChromeNavigationDisplay *)self mapView];
-      [v14 setCamera:v12 animated:1];
+      mapView = [(ChromeNavigationDisplay *)self mapView];
+      [mapView setCamera:staticMapCamera animated:1];
     }
 
     else
     {
-      v21 = [(ChromeNavigationDisplay *)self configuration];
-      [v21 staticMapRect];
+      configuration4 = [(ChromeNavigationDisplay *)self configuration];
+      [configuration4 staticMapRect];
       v23 = v22;
       v25 = v24;
       v27 = v26;
@@ -392,17 +392,17 @@
 
         if (!sub_100E03634())
         {
-          v12 = 0;
+          staticMapCamera = 0;
           goto LABEL_37;
         }
 
-        v14 = sub_10006D178();
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        mapView = sub_10006D178();
+        if (os_log_type_enabled(mapView, OS_LOG_TYPE_ERROR))
         {
           v32 = +[NSThread callStackSymbols];
           *buf = 138412290;
           v50 = v32;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, mapView, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
 
@@ -415,8 +415,8 @@
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Will apply static map rect", buf, 2u);
         }
 
-        v14 = [(ChromeNavigationDisplay *)self mapView];
-        [v14 setVisibleMapRect:1 animated:v23, v25, v27, v29];
+        mapView = [(ChromeNavigationDisplay *)self mapView];
+        [mapView setVisibleMapRect:1 animated:v23, v25, v27, v29];
       }
     }
 
@@ -424,29 +424,29 @@ LABEL_37:
     return;
   }
 
-  v7 = [v5 staticStepIndex];
+  staticStepIndex = [configuration2 staticStepIndex];
 
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+  if (staticStepIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = +[MNNavigationService sharedService];
-    v9 = [v8 displayedStepIndex];
-    if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+    configuration5 = +[MNNavigationService sharedService];
+    displayedStepIndex = [configuration5 displayedStepIndex];
+    if (displayedStepIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [v8 stepIndex];
+      displayedStepIndex = [configuration5 stepIndex];
     }
   }
 
   else
   {
-    v8 = [(ChromeNavigationDisplay *)self configuration];
-    v9 = [v8 staticStepIndex];
+    configuration5 = [(ChromeNavigationDisplay *)self configuration];
+    displayedStepIndex = [configuration5 staticStepIndex];
   }
 
-  v15 = v9;
+  v15 = displayedStepIndex;
 
   if (v15 < [(GEOComposedRoute *)self->_route stepsCount])
   {
-    v12 = [(GEOComposedRoute *)self->_route stepAtIndex:v15];
+    staticMapCamera = [(GEOComposedRoute *)self->_route stepAtIndex:v15];
     if ([(GEOComposedRoute *)self->_route transportType]== 1)
     {
       if (!self->_transitStepFramer)
@@ -456,8 +456,8 @@ LABEL_37:
         self->_transitStepFramer = v16;
       }
 
-      v18 = [(ChromeNavigationDisplay *)self configuration];
-      v19 = [v18 cameraStyle];
+      configuration6 = [(ChromeNavigationDisplay *)self configuration];
+      cameraStyle2 = [configuration6 cameraStyle];
 
       objc_initWeak(buf, self);
       v20 = self->_transitStepFramer;
@@ -466,8 +466,8 @@ LABEL_37:
       v47[2] = sub_100F0B6AC;
       v47[3] = &unk_10165CD58;
       objc_copyWeak(v48, buf);
-      v48[1] = v19;
-      [(TransitSteppingCameraFramer *)v20 rectForStep:v12 currentStepIndex:v15 handler:v47];
+      v48[1] = cameraStyle2;
+      [(TransitSteppingCameraFramer *)v20 rectForStep:staticMapCamera currentStepIndex:v15 handler:v47];
       objc_destroyWeak(v48);
       objc_destroyWeak(buf);
     }
@@ -477,12 +477,12 @@ LABEL_37:
       v33 = +[MNNavigationService sharedService];
       if ([v33 navigationType] == 3)
       {
-        v34 = sub_100AF171C(v12);
+        v34 = sub_100AF171C(staticMapCamera);
       }
 
       else
       {
-        v34 = sub_100AF1870(v12);
+        v34 = sub_100AF1870(staticMapCamera);
       }
 
       v39 = v34;
@@ -491,8 +491,8 @@ LABEL_37:
       v42 = v37;
       if (v34 != MKMapRectNull.origin.x || v35 != MKMapRectNull.origin.y)
       {
-        v43 = [(ChromeNavigationDisplay *)self mapView];
-        [v43 animateToVisibleMapRect:1 usingDefaultAnimationDuration:0 completion:{v39, v40, v41, v42}];
+        mapView2 = [(ChromeNavigationDisplay *)self mapView];
+        [mapView2 animateToVisibleMapRect:1 usingDefaultAnimationDuration:0 completion:{v39, v40, v41, v42}];
       }
     }
 
@@ -500,22 +500,22 @@ LABEL_37:
   }
 }
 
-- (unint64_t)_routeMarkerOptionsForCameraStyle:(int64_t)a3 incidentAlert:(id)a4
+- (unint64_t)_routeMarkerOptionsForCameraStyle:(int64_t)style incidentAlert:(id)alert
 {
   result = 3;
-  if (a3 > 4)
+  if (style > 4)
   {
-    if ((a3 - 5) < 2)
+    if ((style - 5) < 2)
     {
       return 0;
     }
   }
 
-  else if (a3)
+  else if (style)
   {
-    if (a3 == 1 || a3 == 4)
+    if (style == 1 || style == 4)
     {
-      if (a4)
+      if (alert)
       {
         return 3;
       }
@@ -535,24 +535,24 @@ LABEL_37:
   return result;
 }
 
-- (void)_transitionToCameraStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)_transitionToCameraStyle:(int64_t)style animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = sub_10009B590();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 6)
+    if (style > 6)
     {
       v8 = @".Unknown";
     }
 
     else
     {
-      v8 = *(&off_10165CD98 + a3);
+      v8 = *(&off_10165CD98 + style);
     }
 
     v9 = @"NO";
-    if (v4)
+    if (animatedCopy)
     {
       v9 = @"YES";
     }
@@ -567,27 +567,27 @@ LABEL_37:
 
   if ([(ChromeNavigationDisplay *)self isCameraPanning])
   {
-    [(ChromeNavigationDisplay *)self setCameraPanning:0 animated:v4];
+    [(ChromeNavigationDisplay *)self setCameraPanning:0 animated:animatedCopy];
   }
 
-  v11 = [(ChromeNavigationDisplayConfiguration *)self->_lastAppliedConfiguration cameraStyle];
-  if (a3 > 2)
+  cameraStyle = [(ChromeNavigationDisplayConfiguration *)self->_lastAppliedConfiguration cameraStyle];
+  if (style > 2)
   {
-    if ((a3 - 5) < 2)
+    if ((style - 5) < 2)
     {
       [(ChromeNavigationDisplay *)self _stopNavigationCameraMotion];
       [(ChromeNavigationDisplay *)self _applyStaticCameraStyle];
       goto LABEL_23;
     }
 
-    if (a3 == 3)
+    if (style == 3)
     {
       v12 = 2;
     }
 
     else
     {
-      if (a3 != 4)
+      if (style != 4)
       {
         goto LABEL_23;
       }
@@ -598,18 +598,18 @@ LABEL_37:
 
   else
   {
-    if (!a3)
+    if (!style)
     {
       return;
     }
 
-    if (a3 == 1)
+    if (style == 1)
     {
       self->_currentCameraMode = 0;
       goto LABEL_23;
     }
 
-    if (a3 != 2)
+    if (style != 2)
     {
       goto LABEL_23;
     }
@@ -620,69 +620,69 @@ LABEL_37:
   self->_currentCameraMode = v12;
 LABEL_23:
   [(NavigationDisplay *)self->_navigationDisplay setNavigationCameraMode:self->_currentCameraMode];
-  [(ChromeNavigationDisplay *)self _startNavigationCameraMotionIfNeededAnimated:v4];
-  if (v11 != a3)
+  [(ChromeNavigationDisplay *)self _startNavigationCameraMotionIfNeededAnimated:animatedCopy];
+  if (cameraStyle != style)
   {
-    v13 = [(ChromeNavigationDisplay *)self chromeViewController];
-    [v13 setNeedsUpdateMapInsets];
+    chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
+    [chromeViewController setNeedsUpdateMapInsets];
 
-    v14 = [(ChromeNavigationDisplay *)self mapView];
-    v15 = [v14 _mapLayer];
-    v16 = [v15 carDisplayType] != 2;
+    mapView = [(ChromeNavigationDisplay *)self mapView];
+    _mapLayer = [mapView _mapLayer];
+    v16 = [_mapLayer carDisplayType] != 2;
 
-    v17 = [(ChromeNavigationDisplay *)self chromeViewController];
-    v18 = [v17 routeAnnotationsController];
+    chromeViewController2 = [(ChromeNavigationDisplay *)self chromeViewController];
+    routeAnnotationsController = [chromeViewController2 routeAnnotationsController];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100F0BABC;
     v19[3] = &unk_10165CD30;
     v19[4] = self;
-    v19[5] = a3;
+    v19[5] = style;
     v20 = v16;
-    [v18 updateConfigurationWithBlock:v19];
+    [routeAnnotationsController updateConfigurationWithBlock:v19];
   }
 }
 
-- (void)setNonDefaultZoom:(BOOL)a3 animated:(BOOL)a4
+- (void)setNonDefaultZoom:(BOOL)zoom animated:(BOOL)animated
 {
-  if (self->_nonDefaultZoom != a3)
+  if (self->_nonDefaultZoom != zoom)
   {
-    v4 = a4;
-    self->_nonDefaultZoom = a3;
-    v6 = [(ChromeNavigationDisplay *)self delegate];
+    animatedCopy = animated;
+    self->_nonDefaultZoom = zoom;
+    delegate = [(ChromeNavigationDisplay *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(ChromeNavigationDisplay *)self delegate];
+      delegate2 = [(ChromeNavigationDisplay *)self delegate];
       v9 = self->_nonDefaultZoom || self->_cameraPanning;
-      v10 = v8;
-      [v8 chromeNavigationDisplay:self didChangePanning:v9 animated:v4];
+      v10 = delegate2;
+      [delegate2 chromeNavigationDisplay:self didChangePanning:v9 animated:animatedCopy];
     }
   }
 }
 
-- (void)setCameraPanning:(BOOL)a3 animated:(BOOL)a4
+- (void)setCameraPanning:(BOOL)panning animated:(BOOL)animated
 {
-  if (self->_cameraPanning != a3)
+  if (self->_cameraPanning != panning)
   {
-    v4 = a4;
-    self->_cameraPanning = a3;
-    if (!a3)
+    animatedCopy = animated;
+    self->_cameraPanning = panning;
+    if (!panning)
     {
-      v6 = [(ChromeNavigationDisplay *)self chromeViewController];
-      [v6 clearMapGesturesAndAnimations];
+      chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
+      [chromeViewController clearMapGesturesAndAnimations];
     }
 
-    v7 = [(ChromeNavigationDisplay *)self delegate];
+    delegate = [(ChromeNavigationDisplay *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(ChromeNavigationDisplay *)self delegate];
+      delegate2 = [(ChromeNavigationDisplay *)self delegate];
       v10 = self->_nonDefaultZoom || self->_cameraPanning;
-      v11 = v9;
-      [v9 chromeNavigationDisplay:self didChangePanning:v10 animated:v4];
+      v11 = delegate2;
+      [delegate2 chromeNavigationDisplay:self didChangePanning:v10 animated:animatedCopy];
     }
   }
 }
@@ -711,21 +711,21 @@ LABEL_23:
   [(NavigationDisplay *)self->_navigationDisplay pauseCameraMotion];
 }
 
-- (void)_startNavigationCameraMotionIfNeededAnimated:(BOOL)a3
+- (void)_startNavigationCameraMotionIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ChromeNavigationDisplay *)self configuration];
-  v6 = [v5 cameraPaused];
-  v7 = [v6 BOOLValue];
+  animatedCopy = animated;
+  configuration = [(ChromeNavigationDisplay *)self configuration];
+  cameraPaused = [configuration cameraPaused];
+  bOOLValue = [cameraPaused BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = sub_10009B590();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(ChromeNavigationDisplay *)self configuration];
-      v10 = [v9 cameraPaused];
-      if ([v10 BOOLValue])
+      configuration2 = [(ChromeNavigationDisplay *)self configuration];
+      cameraPaused2 = [configuration2 cameraPaused];
+      if ([cameraPaused2 BOOLValue])
       {
         v11 = @"YES";
       }
@@ -736,7 +736,7 @@ LABEL_23:
       }
 
       v12 = v11;
-      if (v3)
+      if (animatedCopy)
       {
         v13 = @"YES";
       }
@@ -757,19 +757,19 @@ LABEL_23:
 
   else
   {
-    v15 = [(ChromeNavigationDisplay *)self configuration];
-    v16 = [v15 requiresCameraMotion];
+    configuration3 = [(ChromeNavigationDisplay *)self configuration];
+    requiresCameraMotion = [configuration3 requiresCameraMotion];
 
-    if (v16)
+    if (requiresCameraMotion)
     {
-      v17 = [(NavigationDisplay *)self->_navigationDisplay mapView];
-      [v17 setUserTrackingMode:0];
+      mapView = [(NavigationDisplay *)self->_navigationDisplay mapView];
+      [mapView setUserTrackingMode:0];
 
       v18 = sub_10009B590();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v19 = @"NO";
-        if (v3)
+        if (animatedCopy)
         {
           v19 = @"YES";
         }
@@ -781,10 +781,10 @@ LABEL_23:
       }
 
       [(ChromeNavigationDisplay *)self setCameraPanning:0];
-      v21 = [(ChromeNavigationDisplay *)self configuration];
-      -[ChromeNavigationDisplay _applyHorizontalCameraOffset:animated:](self, "_applyHorizontalCameraOffset:animated:", ([v21 cameraStyle] & 0xFFFFFFFFFFFFFFFDLL) != 0, v3);
+      configuration4 = [(ChromeNavigationDisplay *)self configuration];
+      -[ChromeNavigationDisplay _applyHorizontalCameraOffset:animated:](self, "_applyHorizontalCameraOffset:animated:", ([configuration4 cameraStyle] & 0xFFFFFFFFFFFFFFFDLL) != 0, animatedCopy);
 
-      [(NavigationDisplay *)self->_navigationDisplay startMotion:v3];
+      [(NavigationDisplay *)self->_navigationDisplay startMotion:animatedCopy];
     }
 
     else
@@ -792,8 +792,8 @@ LABEL_23:
       v22 = sub_10009B590();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(ChromeNavigationDisplay *)self configuration];
-        v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v23 cameraStyle]);
+        configuration5 = [(ChromeNavigationDisplay *)self configuration];
+        v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [configuration5 cameraStyle]);
         v25 = 138412290;
         v26 = v24;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Will not start navigation camera (cameraStyle:%@)", &v25, 0xCu);
@@ -802,31 +802,31 @@ LABEL_23:
   }
 }
 
-- (void)mapInsetsDidChangeAnimated:(BOOL)a3
+- (void)mapInsetsDidChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ChromeNavigationDisplay *)self configuration];
-  v6 = [v5 requiresCameraMotion];
+  animatedCopy = animated;
+  configuration = [(ChromeNavigationDisplay *)self configuration];
+  requiresCameraMotion = [configuration requiresCameraMotion];
 
-  v10 = [(ChromeNavigationDisplay *)self configuration];
-  v7 = [v10 cameraStyle];
-  if (v6)
+  configuration2 = [(ChromeNavigationDisplay *)self configuration];
+  cameraStyle = [configuration2 cameraStyle];
+  if (requiresCameraMotion)
   {
-    [(ChromeNavigationDisplay *)self _applyHorizontalCameraOffset:(v7 & 0xFFFFFFFFFFFFFFFDLL) != 0 animated:v3];
+    [(ChromeNavigationDisplay *)self _applyHorizontalCameraOffset:(cameraStyle & 0xFFFFFFFFFFFFFFFDLL) != 0 animated:animatedCopy];
   }
 
   else
   {
-    if (v7 == 5)
+    if (cameraStyle == 5)
     {
     }
 
     else
     {
-      v8 = [(ChromeNavigationDisplay *)self configuration];
-      v9 = [v8 cameraStyle];
+      configuration3 = [(ChromeNavigationDisplay *)self configuration];
+      cameraStyle2 = [configuration3 cameraStyle];
 
-      if (v9 != 6)
+      if (cameraStyle2 != 6)
       {
         return;
       }
@@ -836,12 +836,12 @@ LABEL_23:
   }
 }
 
-- (void)_applyHorizontalCameraOffset:(BOOL)a3 animated:(BOOL)a4
+- (void)_applyHorizontalCameraOffset:(BOOL)offset animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  offsetCopy = offset;
   v7 = 0.0;
-  if (a3 && self->_navigationDisplay)
+  if (offset && self->_navigationDisplay)
   {
     [(ChromeNavigationDisplay *)self _horizontalCameraOffset];
     v7 = v8;
@@ -851,7 +851,7 @@ LABEL_23:
   {
     self->_currentCameraOffset = v7;
     v9 = &kCAMediaTimingFunctionEaseInEaseOut;
-    if (v4)
+    if (animatedCopy)
     {
       v10 = 2.5;
     }
@@ -861,7 +861,7 @@ LABEL_23:
       v10 = 0.0;
     }
 
-    if (!v5)
+    if (!offsetCopy)
     {
       v9 = &kCAMediaTimingFunctionDefault;
     }
@@ -875,54 +875,54 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Will set camera offset (offset:%lf)", &v17, 0xCu);
     }
 
-    v13 = [(ChromeNavigationDisplay *)self chromeViewController];
-    v14 = [v13 mapView];
+    chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
+    mapView = [chromeViewController mapView];
 
-    v15 = [v14 _mapLayer];
+    _mapLayer = [mapView _mapLayer];
     v16 = [CAMediaTimingFunction functionWithName:v11];
 
-    [v15 setCameraHorizontalOffset:v16 duration:v7 timingFunction:v10];
+    [_mapLayer setCameraHorizontalOffset:v16 duration:v7 timingFunction:v10];
   }
 }
 
-- (void)recenterCameraAnimated:(BOOL)a3
+- (void)recenterCameraAnimated:(BOOL)animated
 {
-  v3 = a3;
-  [(ChromeNavigationDisplay *)self setCameraPanning:0 animated:a3];
-  [(ChromeNavigationDisplay *)self setNonDefaultZoom:0 animated:v3];
+  animatedCopy = animated;
+  [(ChromeNavigationDisplay *)self setCameraPanning:0 animated:animated];
+  [(ChromeNavigationDisplay *)self setNonDefaultZoom:0 animated:animatedCopy];
   v5 = sub_100798240();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ChromeNavigationDisplay *)self mapView];
+    mapView = [(ChromeNavigationDisplay *)self mapView];
     v13 = 136315394;
     v14 = "[ChromeNavigationDisplay recenterCameraAnimated:]";
     v15 = 2114;
-    v16 = v6;
+    v16 = mapView;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s, navigationCameraReturnToPuck! on mapView: %{public}@", &v13, 0x16u);
   }
 
-  v7 = [(ChromeNavigationDisplay *)self configuration];
-  v8 = [v7 requiresCameraMotion];
+  configuration = [(ChromeNavigationDisplay *)self configuration];
+  requiresCameraMotion = [configuration requiresCameraMotion];
 
-  if (v8)
+  if (requiresCameraMotion)
   {
-    v9 = [(ChromeNavigationDisplay *)self mapView];
-    [v9 navigationCameraReturnToPuck];
+    mapView2 = [(ChromeNavigationDisplay *)self mapView];
+    [mapView2 navigationCameraReturnToPuck];
 
     return;
   }
 
-  v10 = [(ChromeNavigationDisplay *)self configuration];
-  if ([v10 cameraStyle] == 5)
+  configuration2 = [(ChromeNavigationDisplay *)self configuration];
+  if ([configuration2 cameraStyle] == 5)
   {
   }
 
   else
   {
-    v11 = [(ChromeNavigationDisplay *)self configuration];
-    v12 = [v11 cameraStyle];
+    configuration3 = [(ChromeNavigationDisplay *)self configuration];
+    cameraStyle = [configuration3 cameraStyle];
 
-    if (v12 != 6)
+    if (cameraStyle != 6)
     {
       return;
     }
@@ -934,18 +934,18 @@ LABEL_23:
 - (BOOL)_isAuthorizedForPreciseLocation
 {
   v2 = +[MKLocationManager sharedLocationManager];
-  v3 = [v2 isLocationServicesApproved];
-  v4 = [v2 isAuthorizedForPreciseLocation];
+  isLocationServicesApproved = [v2 isLocationServicesApproved];
+  isAuthorizedForPreciseLocation = [v2 isAuthorizedForPreciseLocation];
 
-  return v3 & v4;
+  return isLocationServicesApproved & isAuthorizedForPreciseLocation;
 }
 
 - (BOOL)_isRunningFullGuidance
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 isInNavigatingState];
+  isInNavigatingState = [v2 isInNavigatingState];
 
-  if (!v3)
+  if (!isInNavigatingState)
   {
     return 0;
   }
@@ -956,13 +956,13 @@ LABEL_23:
   return v5;
 }
 
-- (void)_locationManagerApprovalDidChange:(id)a3
+- (void)_locationManagerApprovalDidChange:(id)change
 {
   if (![(ChromeNavigationDisplay *)self _isRunningFullGuidance])
   {
-    v4 = [(ChromeNavigationDisplay *)self _isAuthorizedForPreciseLocation];
-    v5 = [(ChromeNavigationDisplay *)self mapView];
-    [v5 _setShowHeadingIndicatorForStepping:v4];
+    _isAuthorizedForPreciseLocation = [(ChromeNavigationDisplay *)self _isAuthorizedForPreciseLocation];
+    mapView = [(ChromeNavigationDisplay *)self mapView];
+    [mapView _setShowHeadingIndicatorForStepping:_isAuthorizedForPreciseLocation];
   }
 }
 
@@ -970,11 +970,11 @@ LABEL_23:
 {
   if ([(ChromeNavigationDisplay *)self isSuppressed])
   {
-    v3 = sub_10009B590();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    mapView = sub_10009B590();
+    if (os_log_type_enabled(mapView, OS_LOG_TYPE_INFO))
     {
       LOWORD(buf[0]) = 0;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Will not prepare navigation display, currently paused", buf, 2u);
+      _os_log_impl(&_mh_execute_header, mapView, OS_LOG_TYPE_INFO, "Will not prepare navigation display, currently paused", buf, 2u);
     }
   }
 
@@ -989,71 +989,71 @@ LABEL_23:
       [(NavigationDisplay *)self->_navigationDisplay setDelegate:self];
     }
 
-    v3 = [(ChromeNavigationDisplay *)self mapView];
-    v6 = [(NavigationDisplay *)self->_navigationDisplay mapView];
+    mapView = [(ChromeNavigationDisplay *)self mapView];
+    mapView2 = [(NavigationDisplay *)self->_navigationDisplay mapView];
 
-    if (v3 != v6)
+    if (mapView != mapView2)
     {
-      self->_mapClearsUserLocationOnReset = [v3 _clearUserLocationOnLocationReset];
+      self->_mapClearsUserLocationOnReset = [mapView _clearUserLocationOnLocationReset];
     }
 
-    v7 = [(ChromeNavigationDisplay *)self chromeViewController];
-    [(NavigationDisplay *)self->_navigationDisplay setChromeViewController:v7];
+    chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
+    [(NavigationDisplay *)self->_navigationDisplay setChromeViewController:chromeViewController];
 
     v8 = +[MNNavigationService sharedService];
-    v9 = [v8 isInNavigatingState];
+    isInNavigatingState = [v8 isInNavigatingState];
 
-    if (v9)
+    if (isInNavigatingState)
     {
       v10 = +[MNNavigationService sharedService];
-      v11 = [v10 route];
-      v12 = [v11 destination];
+      route = [v10 route];
+      destination = [route destination];
 
-      [(NavigationDisplay *)self->_navigationDisplay setDestinationWaypoint:v12];
+      [(NavigationDisplay *)self->_navigationDisplay setDestinationWaypoint:destination];
     }
 
     if ([(ChromeNavigationDisplay *)self _isRunningFullGuidance])
     {
-      v13 = 0;
+      _isAuthorizedForPreciseLocation = 0;
     }
 
     else
     {
-      [v3 _setAlwaysShowHeadingIndicatorIfSupported:0];
-      v13 = [(ChromeNavigationDisplay *)self _isAuthorizedForPreciseLocation];
+      [mapView _setAlwaysShowHeadingIndicatorIfSupported:0];
+      _isAuthorizedForPreciseLocation = [(ChromeNavigationDisplay *)self _isAuthorizedForPreciseLocation];
     }
 
-    [v3 _setShowHeadingIndicatorForStepping:v13];
-    v14 = [(ChromeNavigationDisplay *)self carChromeViewController];
+    [mapView _setShowHeadingIndicatorForStepping:_isAuthorizedForPreciseLocation];
+    carChromeViewController = [(ChromeNavigationDisplay *)self carChromeViewController];
 
     v15 = self->_navigationDisplay;
-    if (v14)
+    if (carChromeViewController)
     {
       [(NavigationDisplay *)v15 setSky:2];
-      [v3 _setCanSelectPOIs:0];
-      [v3 setShowsTraffic:0];
+      [mapView _setCanSelectPOIs:0];
+      [mapView setShowsTraffic:0];
       v16 = self->_navigationDisplay;
-      v17 = 0;
+      transportType = 0;
     }
 
     else
     {
       [(NavigationDisplay *)v15 setSky:0];
       v18 = self->_navigationDisplay;
-      v17 = [(GEOComposedRoute *)self->_route transportType];
+      transportType = [(GEOComposedRoute *)self->_route transportType];
       v16 = v18;
     }
 
-    [(NavigationDisplay *)v16 setTransportType:v17];
-    v19 = [(ChromeNavigationDisplay *)self chromeViewController];
-    v20 = [v19 userLocationView];
-    [(NavigationDisplay *)self->_navigationDisplay setUserLocationAnnotationView:v20];
+    [(NavigationDisplay *)v16 setTransportType:transportType];
+    chromeViewController2 = [(ChromeNavigationDisplay *)self chromeViewController];
+    userLocationView = [chromeViewController2 userLocationView];
+    [(NavigationDisplay *)self->_navigationDisplay setUserLocationAnnotationView:userLocationView];
 
-    v21 = [(NavigationDisplay *)self->_navigationDisplay userLocationAnnotationView];
-    [v21 setInNavMode:1 animated:0];
+    userLocationAnnotationView = [(NavigationDisplay *)self->_navigationDisplay userLocationAnnotationView];
+    [userLocationAnnotationView setInNavMode:1 animated:0];
 
-    [v3 _setClearUserLocationOnLocationReset:0];
-    [v3 _setShouldSplitRouteLine:1];
+    [mapView _setClearUserLocationOnLocationReset:0];
+    [mapView _setShouldSplitRouteLine:1];
     if (!self->_locationAuthorisationApprovalObserver)
     {
       objc_initWeak(buf, self);
@@ -1104,26 +1104,26 @@ LABEL_23:
     v7 = 1;
   }
 
-  v8 = [(ChromeNavigationDisplay *)self mapView];
-  [v8 setShowsTraffic:v7];
+  mapView = [(ChromeNavigationDisplay *)self mapView];
+  [mapView setShowsTraffic:v7];
 
-  v9 = [(NavigationDisplay *)self->_navigationDisplay mapView];
-  v10 = [v9 _mapLayer];
-  [v10 setFocusedLabelsPolyline:0];
+  mapView2 = [(NavigationDisplay *)self->_navigationDisplay mapView];
+  _mapLayer = [mapView2 _mapLayer];
+  [_mapLayer setFocusedLabelsPolyline:0];
 
   mapClearsUserLocationOnReset = self->_mapClearsUserLocationOnReset;
-  v12 = [(NavigationDisplay *)self->_navigationDisplay mapView];
-  [v12 _setClearUserLocationOnLocationReset:mapClearsUserLocationOnReset];
+  mapView3 = [(NavigationDisplay *)self->_navigationDisplay mapView];
+  [mapView3 _setClearUserLocationOnLocationReset:mapClearsUserLocationOnReset];
 
-  v13 = [(NavigationDisplay *)self->_navigationDisplay mapView];
-  [v13 _setShouldSplitRouteLine:0];
+  mapView4 = [(NavigationDisplay *)self->_navigationDisplay mapView];
+  [mapView4 _setShouldSplitRouteLine:0];
 
   [(NavigationDisplay *)self->_navigationDisplay clearAllAnnotations];
-  v14 = [(NavigationDisplay *)self->_navigationDisplay cameraController];
-  [v14 resetMapViewNavigationState];
+  cameraController = [(NavigationDisplay *)self->_navigationDisplay cameraController];
+  [cameraController resetMapViewNavigationState];
 
-  v15 = [(NavigationDisplay *)self->_navigationDisplay userLocationAnnotationView];
-  [v15 setInNavMode:0 animated:0];
+  userLocationAnnotationView = [(NavigationDisplay *)self->_navigationDisplay userLocationAnnotationView];
+  [userLocationAnnotationView setInNavMode:0 animated:0];
 
   [(NavigationDisplay *)self->_navigationDisplay setUserLocationAnnotationView:0];
   [(NavigationDisplay *)self->_navigationDisplay setChromeViewController:0];
@@ -1132,9 +1132,9 @@ LABEL_23:
   self->_navigationDisplay = 0;
 }
 
-- (void)startRunningNavigationAnimated:(BOOL)a3
+- (void)startRunningNavigationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   isRunning = self->_isRunning;
   v6 = sub_10009B590();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
@@ -1152,7 +1152,7 @@ LABEL_23:
     if (v7)
     {
       v8 = @"NO";
-      if (v3)
+      if (animatedCopy)
       {
         v8 = @"YES";
       }
@@ -1167,17 +1167,17 @@ LABEL_23:
     [(ChromeNavigationDisplay *)self _captureCurrentNavigationState];
     self->_currentStepIndex = 0x7FFFFFFFFFFFFFFFLL;
     [(ChromeNavigationDisplay *)self _prepareNavigationDisplay];
-    v10 = [(ChromeNavigationDisplay *)self configuration];
-    [(ChromeNavigationDisplay *)self _setConfiguration:v10 animated:v3];
+    configuration = [(ChromeNavigationDisplay *)self configuration];
+    [(ChromeNavigationDisplay *)self _setConfiguration:configuration animated:animatedCopy];
 
     v6 = +[MNNavigationService sharedService];
     [v6 registerObserver:self];
   }
 }
 
-- (void)stopRunningNavigationAnimated:(BOOL)a3
+- (void)stopRunningNavigationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   isRunning = self->_isRunning;
   v6 = sub_10009B590();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
@@ -1186,7 +1186,7 @@ LABEL_23:
     if (v7)
     {
       v8 = @"NO";
-      if (v3)
+      if (animatedCopy)
       {
         v8 = @"YES";
       }
@@ -1210,7 +1210,7 @@ LABEL_23:
     if (v7)
     {
       v11 = @"NO";
-      if (v3)
+      if (animatedCopy)
       {
         v11 = @"YES";
       }
@@ -1223,38 +1223,38 @@ LABEL_23:
   }
 }
 
-- (void)setSuppressed:(BOOL)a3 animated:(BOOL)a4
+- (void)setSuppressed:(BOOL)suppressed animated:(BOOL)animated
 {
-  if (self->_suppressed == a3)
+  if (self->_suppressed == suppressed)
   {
     return;
   }
 
-  v4 = a4;
-  v5 = a3;
-  self->_suppressed = a3;
+  animatedCopy = animated;
+  suppressedCopy = suppressed;
+  self->_suppressed = suppressed;
   isRunning = self->_isRunning;
-  v8 = sub_10009B590();
-  v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
+  configuration2 = sub_10009B590();
+  v9 = os_log_type_enabled(configuration2, OS_LOG_TYPE_INFO);
   if (!isRunning)
   {
     if (v9)
     {
       LOWORD(v12) = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Not navigating, will not pause", &v12, 2u);
+      _os_log_impl(&_mh_execute_header, configuration2, OS_LOG_TYPE_INFO, "Not navigating, will not pause", &v12, 2u);
     }
 
     goto LABEL_15;
   }
 
-  if (!v5)
+  if (!suppressedCopy)
   {
     if (v9)
     {
-      v11 = [(ChromeNavigationDisplay *)self configuration];
+      configuration = [(ChromeNavigationDisplay *)self configuration];
       v12 = 138412290;
-      v13 = v11;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Will unsuppress navigation display and unpause camera display by refreshing current configuration (configuration:%@)", &v12, 0xCu);
+      v13 = configuration;
+      _os_log_impl(&_mh_execute_header, configuration2, OS_LOG_TYPE_INFO, "Will unsuppress navigation display and unpause camera display by refreshing current configuration (configuration:%@)", &v12, 0xCu);
     }
 
     if (self->_route)
@@ -1268,8 +1268,8 @@ LABEL_23:
     }
 
     [(ChromeNavigationDisplay *)self _prepareNavigationDisplay];
-    v8 = [(ChromeNavigationDisplay *)self configuration];
-    [(ChromeNavigationDisplay *)self _setConfiguration:v8 animated:v4];
+    configuration2 = [(ChromeNavigationDisplay *)self configuration];
+    [(ChromeNavigationDisplay *)self _setConfiguration:configuration2 animated:animatedCopy];
 LABEL_15:
 
     return;
@@ -1278,7 +1278,7 @@ LABEL_15:
   if (v9)
   {
     LOWORD(v12) = 0;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Will suppress navigation display and pause camera", &v12, 2u);
+    _os_log_impl(&_mh_execute_header, configuration2, OS_LOG_TYPE_INFO, "Will suppress navigation display and pause camera", &v12, 2u);
   }
 
   lastAppliedConfiguration = self->_lastAppliedConfiguration;
@@ -1296,13 +1296,13 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Will zoom out", v7, 2u);
   }
 
-  v4 = [(ChromeNavigationDisplay *)self configuration];
-  v5 = [v4 cameraStyle];
+  configuration = [(ChromeNavigationDisplay *)self configuration];
+  cameraStyle = [configuration cameraStyle];
 
-  if ((v5 - 1) <= 5)
+  if ((cameraStyle - 1) <= 5)
   {
-    v6 = [(NavigationDisplay *)self->_navigationDisplay mapView];
-    [v6 _zoomOut];
+    mapView = [(NavigationDisplay *)self->_navigationDisplay mapView];
+    [mapView _zoomOut];
   }
 }
 
@@ -1315,17 +1315,17 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Will zoom in", v7, 2u);
   }
 
-  v4 = [(ChromeNavigationDisplay *)self configuration];
-  v5 = [v4 cameraStyle];
+  configuration = [(ChromeNavigationDisplay *)self configuration];
+  cameraStyle = [configuration cameraStyle];
 
-  if ((v5 - 1) <= 5)
+  if ((cameraStyle - 1) <= 5)
   {
-    v6 = [(NavigationDisplay *)self->_navigationDisplay mapView];
-    [v6 _zoomIn];
+    mapView = [(NavigationDisplay *)self->_navigationDisplay mapView];
+    [mapView _zoomIn];
   }
 }
 
-- (void)_ioHIDRepeatCurrentGuidance:(id)a3
+- (void)_ioHIDRepeatCurrentGuidance:(id)guidance
 {
   v3 = sub_10009B590();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1338,13 +1338,13 @@ LABEL_15:
   [v4 repeatCurrentGuidance:0];
 }
 
-- (void)setTrafficAlert:(id)a3
+- (void)setTrafficAlert:(id)alert
 {
-  v12 = a3;
-  v5 = [(MNTrafficIncidentAlert *)self->_trafficAlert alertID];
-  v6 = [v12 alertID];
-  v7 = v5;
-  v8 = v6;
+  alertCopy = alert;
+  alertID = [(MNTrafficIncidentAlert *)self->_trafficAlert alertID];
+  alertID2 = [alertCopy alertID];
+  v7 = alertID;
+  v8 = alertID2;
   if (v7 | v8)
   {
     v9 = v8;
@@ -1352,23 +1352,23 @@ LABEL_15:
 
     if ((v10 & 1) == 0)
     {
-      objc_storeStrong(&self->_trafficAlert, a3);
-      v11 = [(ChromeNavigationDisplay *)self cameraController];
-      [v11 setTrafficIncidentAlert:v12];
+      objc_storeStrong(&self->_trafficAlert, alert);
+      cameraController = [(ChromeNavigationDisplay *)self cameraController];
+      [cameraController setTrafficIncidentAlert:alertCopy];
 
       [(ChromeNavigationDisplay *)self _updateDirectionsAnnotationManagerDisplayedRoutes];
     }
   }
 }
 
-- (void)_updateWithMatchedLocation:(id)a3
+- (void)_updateWithMatchedLocation:(id)location
 {
-  v6 = a3;
-  v4 = [(ChromeNavigationDisplay *)self chromeViewController];
-  v5 = [v4 routeAnnotationsController];
-  [v5 updateMatchedLocation:v6];
+  locationCopy = location;
+  chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
+  routeAnnotationsController = [chromeViewController routeAnnotationsController];
+  [routeAnnotationsController updateMatchedLocation:locationCopy];
 
-  [(NavigationDisplay *)self->_navigationDisplay updateWithLocation:v6];
+  [(NavigationDisplay *)self->_navigationDisplay updateWithLocation:locationCopy];
 }
 
 - (void)_clearAnnotations
@@ -1380,79 +1380,79 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Clearing annotations", v7, 2u);
   }
 
-  v4 = [(ChromeNavigationDisplay *)self chromeViewController];
-  v5 = [v4 searchPinsManager];
-  [v5 clearDirectionsPins];
+  chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
+  [searchPinsManager clearDirectionsPins];
 
-  v6 = [(ChromeNavigationDisplay *)self chromeViewController];
-  [v6 setNeedsUpdateComponent:@"routeAnnotations" animated:1];
+  chromeViewController2 = [(ChromeNavigationDisplay *)self chromeViewController];
+  [chromeViewController2 setNeedsUpdateComponent:@"routeAnnotations" animated:1];
 }
 
 - (void)_updateDirectionsAnnotationManagerDisplayedRoutes
 {
-  v2 = [(ChromeNavigationDisplay *)self chromeViewController];
-  [v2 setNeedsUpdateComponent:@"routeAnnotations" animated:1];
+  chromeViewController = [(ChromeNavigationDisplay *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"routeAnnotations" animated:1];
 }
 
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 updateNavConfigurationWithCurrentRoute:self->_route incidentAlert:self->_trafficAlert];
-  v5 = [(ChromeNavigationDisplay *)self mapView];
-  v6 = [v5 _mapLayer];
-  v7 = [v6 carDisplayType] != 2;
+  configurationCopy = configuration;
+  [configurationCopy updateNavConfigurationWithCurrentRoute:self->_route incidentAlert:self->_trafficAlert];
+  mapView = [(ChromeNavigationDisplay *)self mapView];
+  _mapLayer = [mapView _mapLayer];
+  v7 = [_mapLayer carDisplayType] != 2;
 
-  v8 = [(ChromeNavigationDisplay *)self configuration];
-  if ([v8 cameraStyle] != 2 && !self->_trafficAlert)
+  configuration = [(ChromeNavigationDisplay *)self configuration];
+  if ([configuration cameraStyle] != 2 && !self->_trafficAlert)
   {
     v7 = 0;
   }
 
-  [v4 setAlternateRoutesEnabled:v7];
+  [configurationCopy setAlternateRoutesEnabled:v7];
 
-  v9 = [(ChromeNavigationDisplayConfiguration *)self->_configuration cameraStyle];
-  v10 = [(ChromeNavigationDisplay *)self trafficAlert];
-  [v4 setRouteMarkerOptions:{-[ChromeNavigationDisplay _routeMarkerOptionsForCameraStyle:incidentAlert:](self, "_routeMarkerOptionsForCameraStyle:incidentAlert:", v9, v10)}];
+  cameraStyle = [(ChromeNavigationDisplayConfiguration *)self->_configuration cameraStyle];
+  trafficAlert = [(ChromeNavigationDisplay *)self trafficAlert];
+  [configurationCopy setRouteMarkerOptions:{-[ChromeNavigationDisplay _routeMarkerOptionsForCameraStyle:incidentAlert:](self, "_routeMarkerOptionsForCameraStyle:incidentAlert:", cameraStyle, trafficAlert)}];
 
   v11 = +[MNNavigationService sharedService];
-  v12 = [v11 arrivalInfo];
-  v13 = v12;
-  if (v12 && [v12 isInArrivalState])
+  arrivalInfo = [v11 arrivalInfo];
+  v13 = arrivalInfo;
+  if (arrivalInfo && [arrivalInfo isInArrivalState])
   {
-    v14 = [v13 destination];
+    destination = [v13 destination];
     v15 = 2;
   }
 
   else
   {
     v16 = -[GEOComposedRoute legIndexForStepIndex:](self->_route, "legIndexForStepIndex:", [v11 stepIndex]);
-    v17 = [(GEOComposedRoute *)self->_route legs];
-    if (v16 >= [v17 count])
+    legs = [(GEOComposedRoute *)self->_route legs];
+    if (v16 >= [legs count])
     {
       v19 = 0;
     }
 
     else
     {
-      v18 = [(GEOComposedRoute *)self->_route legs];
-      v19 = [v18 objectAtIndexedSubscript:v16];
+      legs2 = [(GEOComposedRoute *)self->_route legs];
+      v19 = [legs2 objectAtIndexedSubscript:v16];
     }
 
-    v14 = [v19 destination];
-    v15 = v14 != 0;
+    destination = [v19 destination];
+    v15 = destination != 0;
   }
 
-  [v4 setCurrentNavigationWaypoint:v14];
-  [v4 setProximityToCurrentNavigationWaypoint:v15];
+  [configurationCopy setCurrentNavigationWaypoint:destination];
+  [configurationCopy setProximityToCurrentNavigationWaypoint:v15];
   if (self->_route)
   {
-    v20 = [(ChromeNavigationDisplay *)self delegate];
+    delegate = [(ChromeNavigationDisplay *)self delegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(ChromeNavigationDisplay *)self delegate];
-      [v22 chromeNavigationDisplayDidRenderRoute:self];
+      delegate2 = [(ChromeNavigationDisplay *)self delegate];
+      [delegate2 chromeNavigationDisplayDidRenderRoute:self];
     }
   }
 
@@ -1495,27 +1495,27 @@ LABEL_11:
 
   if (v6)
   {
-    v7 = [(GEOComposedRoute *)self->_route uniqueRouteID];
-    v8 = [v7 UUIDString];
+    uniqueRouteID = [(GEOComposedRoute *)self->_route uniqueRouteID];
+    uUIDString = [uniqueRouteID UUIDString];
     v9 = 138412290;
-    v10 = v8;
+    v10 = uUIDString;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Updating for the current route: %@", &v9, 0xCu);
   }
 
   [(ChromeNavigationDisplay *)self _updateDirectionsAnnotationManagerDisplayedRoutes];
 }
 
-- (void)_setRoute:(id)a3
+- (void)_setRoute:(id)route
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  routeCopy = route;
+  v5 = routeCopy;
+  if (routeCopy)
   {
-    if ([(GEOComposedRoute *)v4 transportType])
+    if ([(GEOComposedRoute *)routeCopy transportType])
     {
-      v6 = [(ChromeNavigationDisplay *)self carChromeViewController];
+      carChromeViewController = [(ChromeNavigationDisplay *)self carChromeViewController];
 
-      if (v6)
+      if (carChromeViewController)
       {
         v7 = sub_10009B590();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1536,10 +1536,10 @@ LABEL_11:
     v9 = sub_10009B590();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [(GEOComposedRoute *)*p_route uniqueRouteID];
-      v11 = [v10 UUIDString];
+      uniqueRouteID = [(GEOComposedRoute *)*p_route uniqueRouteID];
+      uUIDString = [uniqueRouteID UUIDString];
       v12 = 138412290;
-      v13 = v11;
+      v13 = uUIDString;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Got a new route: %@", &v12, 0xCu);
     }
 
@@ -1567,10 +1567,10 @@ LABEL_11:
       v6 = sub_10009B590();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(GEOComposedRoute *)v5 destination];
-        v8 = [v7 navDisplayName];
+        destination = [(GEOComposedRoute *)v5 destination];
+        navDisplayName = [destination navDisplayName];
         v10 = 138412290;
-        v11 = v8;
+        v11 = navDisplayName;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Will capture current navigation state (route:%@)", &v10, 0xCu);
       }
 
@@ -1594,50 +1594,50 @@ LABEL_11:
   self->_hasArrived = [v3 navigationState] == 6;
 }
 
-- (void)_updateWithRouteGeniusEntry:(id)a3
+- (void)_updateWithRouteGeniusEntry:(id)entry
 {
   [(NavigationDisplay *)self->_navigationDisplay setRouteGeniusEntry:?];
-  if (a3)
+  if (entry)
   {
 
     [(ChromeNavigationDisplay *)self updateWithRoute:0];
   }
 }
 
-- (void)updateWithRoute:(id)a3
+- (void)updateWithRoute:(id)route
 {
-  v4 = a3;
-  [(NavigationDisplay *)self->_navigationDisplay updateWithRoute:v4];
-  if (self->_route == v4)
+  routeCopy = route;
+  [(NavigationDisplay *)self->_navigationDisplay updateWithRoute:routeCopy];
+  if (self->_route == routeCopy)
   {
     [(ChromeNavigationDisplay *)self _updateForCurrentRoute];
   }
 
   else
   {
-    [(ChromeNavigationDisplay *)self _setRoute:v4];
+    [(ChromeNavigationDisplay *)self _setRoute:routeCopy];
   }
 }
 
-- (void)_setConfiguration:(id)a3 animated:(BOOL)a4
+- (void)_setConfiguration:(id)configuration animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 cameraStyle];
-  if (!v7)
+  animatedCopy = animated;
+  configurationCopy = configuration;
+  cameraStyle = [configurationCopy cameraStyle];
+  if (!cameraStyle)
   {
-    v8 = [v6 copy];
+    v8 = [configurationCopy copy];
 
     [v8 setCameraStyle:{-[ChromeNavigationDisplayConfiguration cameraStyle](self->_configuration, "cameraStyle")}];
-    v6 = v8;
+    configurationCopy = v8;
   }
 
-  objc_storeStrong(&self->_configuration, v6);
+  objc_storeStrong(&self->_configuration, configurationCopy);
   v9 = sub_10009B590();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = v6;
+    v21 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@", &v20, 0xCu);
   }
 
@@ -1655,22 +1655,22 @@ LABEL_18:
 
   else if (self->_navigationDisplay)
   {
-    if (v7)
+    if (cameraStyle)
     {
-      [(ChromeNavigationDisplay *)self _transitionToCameraStyle:v7 animated:v4];
+      [(ChromeNavigationDisplay *)self _transitionToCameraStyle:cameraStyle animated:animatedCopy];
     }
 
-    v12 = [(ChromeNavigationDisplayConfiguration *)self->_configuration routeGeniusEntry];
-    [(ChromeNavigationDisplay *)self _updateWithRouteGeniusEntry:v12];
+    routeGeniusEntry = [(ChromeNavigationDisplayConfiguration *)self->_configuration routeGeniusEntry];
+    [(ChromeNavigationDisplay *)self _updateWithRouteGeniusEntry:routeGeniusEntry];
 
-    v13 = [(ChromeNavigationDisplayConfiguration *)self->_configuration cameraPaused];
+    cameraPaused = [(ChromeNavigationDisplayConfiguration *)self->_configuration cameraPaused];
 
-    if (v13)
+    if (cameraPaused)
     {
-      v14 = [(ChromeNavigationDisplayConfiguration *)self->_configuration cameraPaused];
-      v15 = [v14 BOOLValue];
+      cameraPaused2 = [(ChromeNavigationDisplayConfiguration *)self->_configuration cameraPaused];
+      bOOLValue = [cameraPaused2 BOOLValue];
 
-      if (v15)
+      if (bOOLValue)
       {
         v16 = sub_10009B590();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1679,22 +1679,22 @@ LABEL_18:
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Will force stop navigation camera motion", &v20, 2u);
         }
 
-        [(ChromeNavigationDisplay *)self setCameraPanning:0 animated:v4];
+        [(ChromeNavigationDisplay *)self setCameraPanning:0 animated:animatedCopy];
         [(ChromeNavigationDisplay *)self _stopNavigationCameraMotion];
       }
 
       else
       {
-        [(ChromeNavigationDisplay *)self _startNavigationCameraMotionIfNeededAnimated:v4];
+        [(ChromeNavigationDisplay *)self _startNavigationCameraMotionIfNeededAnimated:animatedCopy];
       }
     }
 
-    v17 = [(ChromeNavigationDisplayConfiguration *)self->_configuration showsRoadLabel];
+    showsRoadLabel = [(ChromeNavigationDisplayConfiguration *)self->_configuration showsRoadLabel];
 
-    if (v17)
+    if (showsRoadLabel)
     {
-      v18 = [(ChromeNavigationDisplayConfiguration *)self->_configuration showsRoadLabel];
-      -[NavigationDisplay setShowsRoadLabel:](self->_navigationDisplay, "setShowsRoadLabel:", [v18 BOOLValue]);
+      showsRoadLabel2 = [(ChromeNavigationDisplayConfiguration *)self->_configuration showsRoadLabel];
+      -[NavigationDisplay setShowsRoadLabel:](self->_navigationDisplay, "setShowsRoadLabel:", [showsRoadLabel2 BOOLValue]);
     }
 
     else
@@ -1719,51 +1719,51 @@ LABEL_18:
   }
 }
 
-- (void)configureDisplay:(id)a3 animated:(BOOL)a4
+- (void)configureDisplay:(id)display animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ChromeNavigationDisplay *)self configuration];
-  v8 = [v7 copy];
+  animatedCopy = animated;
+  displayCopy = display;
+  configuration = [(ChromeNavigationDisplay *)self configuration];
+  v8 = [configuration copy];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    defaultConfiguration = v8;
   }
 
   else
   {
-    v10 = [objc_opt_class() defaultConfiguration];
+    defaultConfiguration = [objc_opt_class() defaultConfiguration];
   }
 
-  v15 = v10;
+  v15 = defaultConfiguration;
 
-  v6[2](v6, v15);
-  [(ChromeNavigationDisplay *)self _setConfiguration:v15 animated:v4];
-  v11 = [(ChromeNavigationDisplay *)self delegate];
+  displayCopy[2](displayCopy, v15);
+  [(ChromeNavigationDisplay *)self _setConfiguration:v15 animated:animatedCopy];
+  delegate = [(ChromeNavigationDisplay *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(ChromeNavigationDisplay *)self delegate];
+    delegate2 = [(ChromeNavigationDisplay *)self delegate];
     v14 = [(ChromeNavigationDisplayConfiguration *)self->_configuration copy];
-    [v13 chromeNavigationDisplay:self configurationDidChange:v14];
+    [delegate2 chromeNavigationDisplay:self configurationDidChange:v14];
   }
 }
 
-- (ChromeNavigationDisplay)initWithChromeViewController:(id)a3
+- (ChromeNavigationDisplay)initWithChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = ChromeNavigationDisplay;
   v5 = [(ChromeNavigationDisplay *)&v9 init];
   if (v5)
   {
-    v6 = [objc_opt_class() defaultConfiguration];
+    defaultConfiguration = [objc_opt_class() defaultConfiguration];
     configuration = v5->_configuration;
-    v5->_configuration = v6;
+    v5->_configuration = defaultConfiguration;
 
-    [(ChromeNavigationDisplay *)v5 setChromeViewController:v4];
+    [(ChromeNavigationDisplay *)v5 setChromeViewController:controllerCopy];
   }
 
   return v5;

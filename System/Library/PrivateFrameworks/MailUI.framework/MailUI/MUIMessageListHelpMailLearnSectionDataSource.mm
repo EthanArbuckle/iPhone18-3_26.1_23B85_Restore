@@ -1,21 +1,21 @@
 @interface MUIMessageListHelpMailLearnSectionDataSource
-- (MUIMessageListHelpMailLearnSectionDataSource)initWithConfiguration:(id)a3;
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6;
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5;
-- (void)_hideHelpMailLearn:(id)a3;
-- (void)_hideHelpMailLearnUntilDate:(id)a3;
+- (MUIMessageListHelpMailLearnSectionDataSource)initWithConfiguration:(id)configuration;
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier;
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d;
+- (void)_hideHelpMailLearn:(id)learn;
+- (void)_hideHelpMailLearnUntilDate:(id)date;
 - (void)_showFeedbackView;
-- (void)beginObservingAnimated:(BOOL)a3 nextUpdateNeedsCleanSnapshot:(BOOL)a4;
+- (void)beginObservingAnimated:(BOOL)animated nextUpdateNeedsCleanSnapshot:(BOOL)snapshot;
 @end
 
 @implementation MUIMessageListHelpMailLearnSectionDataSource
 
-- (MUIMessageListHelpMailLearnSectionDataSource)initWithConfiguration:(id)a3
+- (MUIMessageListHelpMailLearnSectionDataSource)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = MUIMessageListHelpMailLearnSectionDataSource;
-  v5 = [(MessageListSectionDataSource *)&v20 initWithConfiguration:v4];
+  v5 = [(MessageListSectionDataSource *)&v20 initWithConfiguration:configurationCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -51,22 +51,22 @@ void __70__MUIMessageListHelpMailLearnSectionDataSource_initWithConfiguration___
   [WeakRetained _configureCell:v9 atIndexPath:v8 itemID:v7];
 }
 
-- (void)beginObservingAnimated:(BOOL)a3 nextUpdateNeedsCleanSnapshot:(BOOL)a4
+- (void)beginObservingAnimated:(BOOL)animated nextUpdateNeedsCleanSnapshot:(BOOL)snapshot
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __100__MUIMessageListHelpMailLearnSectionDataSource_beginObservingAnimated_nextUpdateNeedsCleanSnapshot___block_invoke;
   v4[3] = &unk_278188EE0;
   v4[4] = self;
-  [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:a3 cleanSnapshot:1 isLastUpdate:1 prepare:0 update:v4 completion:0];
+  [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:animated cleanSnapshot:1 isLastUpdate:1 prepare:0 update:v4 completion:0];
 }
 
-- (void)_hideHelpMailLearnUntilDate:(id)a3
+- (void)_hideHelpMailLearnUntilDate:(id)date
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
-  v6 = [v4 em_userDefaults];
-  [v6 setObject:v5 forKey:*MEMORY[0x277D06CE8]];
+  dateCopy = date;
+  em_userDefaults = [v4 em_userDefaults];
+  [em_userDefaults setObject:dateCopy forKey:*MEMORY[0x277D06CE8]];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -76,31 +76,31 @@ void __70__MUIMessageListHelpMailLearnSectionDataSource_initWithConfiguration___
   [(MessageListSectionDataSource *)self _performDataSourceUpdateAnimated:1 cleanSnapshot:0 isLastUpdate:1 prepare:0 update:v7 completion:0];
 }
 
-- (void)_configureCell:(id)a3 atIndexPath:(id)a4 itemID:(id)a5
+- (void)_configureCell:(id)cell atIndexPath:(id)path itemID:(id)d
 {
-  v6 = a3;
-  v7 = [v6 helpMailLearnButton];
-  [v7 addTarget:self action:sel__showFeedbackView forControlEvents:64];
+  cellCopy = cell;
+  helpMailLearnButton = [cellCopy helpMailLearnButton];
+  [helpMailLearnButton addTarget:self action:sel__showFeedbackView forControlEvents:64];
 
-  v8 = [v6 cancelButton];
+  cancelButton = [cellCopy cancelButton];
 
-  [v8 addTarget:self action:sel__hideHelpMailLearn_ forControlEvents:64];
+  [cancelButton addTarget:self action:sel__hideHelpMailLearn_ forControlEvents:64];
 }
 
 - (void)_showFeedbackView
 {
-  v7 = [(MessageListSectionDataSource *)self delegate];
-  v3 = [(MessageListSectionDataSource *)self delegate];
-  v4 = [v3 presentingViewControllerForHelpMailLearnSectionDataSource:self];
+  delegate = [(MessageListSectionDataSource *)self delegate];
+  delegate2 = [(MessageListSectionDataSource *)self delegate];
+  v4 = [delegate2 presentingViewControllerForHelpMailLearnSectionDataSource:self];
 
-  v5 = [v7 feedbackListViewModelForHelpMailLearnSectionDataSource:self];
+  v5 = [delegate feedbackListViewModelForHelpMailLearnSectionDataSource:self];
   v6 = [_TtC6MailUI26FeedbackListViewController createWithViewModel:v5];
   [v4 presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)_hideHelpMailLearn:(id)a3
+- (void)_hideHelpMailLearn:(id)learn
 {
-  v20 = a3;
+  learnCopy = learn;
   v4 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
   v5 = MEMORY[0x277D750F8];
   v6 = _EFLocalizedString();
@@ -137,19 +137,19 @@ void __70__MUIMessageListHelpMailLearnSectionDataSource_initWithConfiguration___
   [v4 addAction:v10];
   [v4 addAction:v13];
   [v4 addAction:v16];
-  v17 = [(MessageListSectionDataSource *)self delegate];
-  v18 = [v17 presentingViewControllerForHelpMailLearnSectionDataSource:self];
+  delegate = [(MessageListSectionDataSource *)self delegate];
+  v18 = [delegate presentingViewControllerForHelpMailLearnSectionDataSource:self];
 
   if (MUISolariumFeatureEnabled())
   {
-    v19 = v20;
-    [v4 mf_presentFromViewController:v18 withSource:v20];
+    v19 = learnCopy;
+    [v4 mf_presentFromViewController:v18 withSource:learnCopy];
   }
 
   else
   {
     [v18 presentViewController:v4 animated:1 completion:0];
-    v19 = v20;
+    v19 = learnCopy;
   }
 }
 
@@ -260,7 +260,7 @@ id __76__MUIMessageListHelpMailLearnSectionDataSource__hideHelpMailLearnUntilDat
   return v12;
 }
 
-- (id)configuredCollectionViewCellForCollectionView:(id)a3 indexPath:(id)a4 itemID:(id)a5 cellIdentifier:(id)a6
+- (id)configuredCollectionViewCellForCollectionView:(id)view indexPath:(id)path itemID:(id)d cellIdentifier:(id)identifier
 {
   if (self)
   {
@@ -272,7 +272,7 @@ id __76__MUIMessageListHelpMailLearnSectionDataSource__hideHelpMailLearnUntilDat
     cellRegistration = 0;
   }
 
-  return [a3 dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:a4 item:{a5, a6}];
+  return [view dequeueConfiguredReusableCellWithRegistration:cellRegistration forIndexPath:path item:{d, identifier}];
 }
 
 @end

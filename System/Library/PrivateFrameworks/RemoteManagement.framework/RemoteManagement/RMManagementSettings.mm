@@ -1,12 +1,12 @@
 @interface RMManagementSettings
 + (RMManagementSettings)sharedSettings;
 + (void)reset;
-- (RMManagementSettings)initWithURL:(id)a3;
-- (id)valueForKey:(id)a3;
+- (RMManagementSettings)initWithURL:(id)l;
+- (id)valueForKey:(id)key;
 - (void)_readCachedSettings;
 - (void)_writeCachedSettings;
-- (void)removeValueForKey:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)removeValueForKey:(id)key;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation RMManagementSettings
@@ -25,28 +25,28 @@
 
 + (void)reset
 {
-  v5 = [a1 sharedSettings];
+  sharedSettings = [self sharedSettings];
   v2 = [RMLocations dataVaultDirectoryURLCreateIfNeeded:1];
   v3 = [v2 URLByAppendingPathComponent:@"ManagementSettings.plist"];
-  [v5 setSettingsURL:v3];
+  [sharedSettings setSettingsURL:v3];
 
-  [v5 _readCachedSettings];
-  v4 = [v5 cachedSettings];
-  [v4 removeAllObjects];
+  [sharedSettings _readCachedSettings];
+  cachedSettings = [sharedSettings cachedSettings];
+  [cachedSettings removeAllObjects];
 
-  [v5 _writeCachedSettings];
+  [sharedSettings _writeCachedSettings];
 }
 
-- (RMManagementSettings)initWithURL:(id)a3
+- (RMManagementSettings)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = RMManagementSettings;
   v6 = [(RMManagementSettings *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settingsURL, a3);
+    objc_storeStrong(&v6->_settingsURL, l);
     v8 = objc_opt_new();
     settingsLock = v7->_settingsLock;
     v7->_settingsLock = v8;
@@ -55,42 +55,42 @@
   return v7;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = self->_settingsLock;
   objc_sync_enter(v5);
   [(RMManagementSettings *)self _readCachedSettings];
-  v6 = [(RMManagementSettings *)self cachedSettings];
-  v7 = [v6 valueForKey:v4];
+  cachedSettings = [(RMManagementSettings *)self cachedSettings];
+  v7 = [cachedSettings valueForKey:keyCopy];
 
   objc_sync_exit(v5);
 
   return v7;
 }
 
-- (void)removeValueForKey:(id)a3
+- (void)removeValueForKey:(id)key
 {
-  v6 = a3;
+  keyCopy = key;
   v4 = self->_settingsLock;
   objc_sync_enter(v4);
   [(RMManagementSettings *)self _readCachedSettings];
-  v5 = [(RMManagementSettings *)self cachedSettings];
-  [v5 setObject:0 forKeyedSubscript:v6];
+  cachedSettings = [(RMManagementSettings *)self cachedSettings];
+  [cachedSettings setObject:0 forKeyedSubscript:keyCopy];
 
   [(RMManagementSettings *)self _writeCachedSettings];
   objc_sync_exit(v4);
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v7 = self->_settingsLock;
   objc_sync_enter(v7);
   [(RMManagementSettings *)self _readCachedSettings];
-  v8 = [(RMManagementSettings *)self cachedSettings];
-  [v8 setObject:v9 forKeyedSubscript:v6];
+  cachedSettings = [(RMManagementSettings *)self cachedSettings];
+  [cachedSettings setObject:valueCopy forKeyedSubscript:keyCopy];
 
   [(RMManagementSettings *)self _writeCachedSettings];
   objc_sync_exit(v7);
@@ -98,12 +98,12 @@
 
 - (void)_readCachedSettings
 {
-  v3 = [(RMManagementSettings *)self cachedSettings];
+  cachedSettings = [(RMManagementSettings *)self cachedSettings];
 
-  if (!v3)
+  if (!cachedSettings)
   {
-    v4 = [(RMManagementSettings *)self settingsURL];
-    v5 = [NSInputStream inputStreamWithURL:v4];
+    settingsURL = [(RMManagementSettings *)self settingsURL];
+    v5 = [NSInputStream inputStreamWithURL:settingsURL];
 
     [v5 open];
     v17 = 0;
@@ -140,17 +140,17 @@ LABEL_20:
       return;
     }
 
-    v11 = [v7 userInfo];
-    v12 = [v11 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [v7 userInfo];
+    v12 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
     if (v12)
     {
-      v13 = [v12 domain];
-      if ([v13 isEqualToString:NSPOSIXErrorDomain])
+      domain = [v12 domain];
+      if ([domain isEqualToString:NSPOSIXErrorDomain])
       {
-        v14 = [v12 code];
+        code = [v12 code];
 
-        if (v14 == 2)
+        if (code == 2)
         {
           v15 = +[RMLog managementSettings];
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -184,13 +184,13 @@ LABEL_18:
 
 - (void)_writeCachedSettings
 {
-  v3 = [(RMManagementSettings *)self settingsURL];
-  v4 = [NSOutputStream outputStreamWithURL:v3 append:0];
+  settingsURL = [(RMManagementSettings *)self settingsURL];
+  v4 = [NSOutputStream outputStreamWithURL:settingsURL append:0];
 
   [v4 open];
-  v5 = [(RMManagementSettings *)self cachedSettings];
+  cachedSettings = [(RMManagementSettings *)self cachedSettings];
   v10 = 0;
-  v6 = [NSPropertyListSerialization writePropertyList:v5 toStream:v4 format:100 options:0 error:&v10];
+  v6 = [NSPropertyListSerialization writePropertyList:cachedSettings toStream:v4 format:100 options:0 error:&v10];
   v7 = v10;
 
   [v4 close];

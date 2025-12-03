@@ -1,21 +1,21 @@
 @interface MusicStoreCuratorPlaylistsRequestOperation
-- (id)configurationForLoadingModelDataWithStoreURLBag:(id)a3 error:(id *)a4;
-- (void)_produceIncrementalResponseWithLoadedItemMetadataResponse:(id)a3 completion:(id)a4;
-- (void)_produceInitialResponseWithLoadedItemMetadataResponse:(id)a3 completion:(id)a4;
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4;
+- (id)configurationForLoadingModelDataWithStoreURLBag:(id)bag error:(id *)error;
+- (void)_produceIncrementalResponseWithLoadedItemMetadataResponse:(id)response completion:(id)completion;
+- (void)_produceInitialResponseWithLoadedItemMetadataResponse:(id)response completion:(id)completion;
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion;
 @end
 
 @implementation MusicStoreCuratorPlaylistsRequestOperation
 
-- (id)configurationForLoadingModelDataWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)configurationForLoadingModelDataWithStoreURLBag:(id)bag error:(id *)error
 {
-  v6 = [(MusicStoreCuratorPlaylistsRequestOperation *)self request];
-  v7 = [v6 previousResponse];
-  v8 = [v7 additionalPlaylistIdentifiers];
-  v9 = [v8 count];
+  request = [(MusicStoreCuratorPlaylistsRequestOperation *)self request];
+  previousResponse = [request previousResponse];
+  additionalPlaylistIdentifiers = [previousResponse additionalPlaylistIdentifiers];
+  v9 = [additionalPlaylistIdentifiers count];
   if (!v9)
   {
-    v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 curatorStoreAdamID]);
+    v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [request curatorStoreAdamID]);
     v18 = MPStoreItemMetadataStringNormalizeStoreIDValue();
 
     if (v18)
@@ -26,10 +26,10 @@
       v15 = [v19 initWithRequestedItemIdentifiers:v20 reason:2];
     }
 
-    else if (a4)
+    else if (error)
     {
       SSError();
-      *a4 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -47,7 +47,7 @@
   }
 
   v10 = v9;
-  v11 = v8;
+  v11 = additionalPlaylistIdentifiers;
   v12 = +[MPStoreItemMetadataRequestController optimalBatchSize];
   if (v10 > v12)
   {
@@ -76,11 +76,11 @@ LABEL_6:
   return v15;
 }
 
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  outputCopy = output;
+  completionCopy = completion;
+  v8 = outputCopy;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -97,72 +97,72 @@ LABEL_6:
   {
     if (v9 == 1)
     {
-      [(MusicStoreCuratorPlaylistsRequestOperation *)self _produceIncrementalResponseWithLoadedItemMetadataResponse:v8 completion:v7];
+      [(MusicStoreCuratorPlaylistsRequestOperation *)self _produceIncrementalResponseWithLoadedItemMetadataResponse:v8 completion:completionCopy];
     }
   }
 
   else
   {
-    [(MusicStoreCuratorPlaylistsRequestOperation *)self _produceInitialResponseWithLoadedItemMetadataResponse:v8 completion:v7];
+    [(MusicStoreCuratorPlaylistsRequestOperation *)self _produceInitialResponseWithLoadedItemMetadataResponse:v8 completion:completionCopy];
   }
 
   _Block_object_dispose(&v11, 8);
 }
 
-- (void)_produceInitialResponseWithLoadedItemMetadataResponse:(id)a3 completion:(id)a4
+- (void)_produceInitialResponseWithLoadedItemMetadataResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 itemIdentifiers];
-  v9 = [v8 firstObject];
+  responseCopy = response;
+  completionCopy = completion;
+  itemIdentifiers = [responseCopy itemIdentifiers];
+  firstObject = [itemIdentifiers firstObject];
 
-  if (!v9)
+  if (!firstObject)
   {
     v10 = 0;
     goto LABEL_10;
   }
 
-  v10 = [v6 storeItemMetadataForItemIdentifier:v9];
+  v10 = [responseCopy storeItemMetadataForItemIdentifier:firstObject];
   if (!v10)
   {
 LABEL_10:
     v29 = SSError();
-    v7[2](v7, 0, v29);
+    completionCopy[2](completionCopy, 0, v29);
 
     goto LABEL_14;
   }
 
-  v45 = v6;
-  v11 = [(MusicStoreCuratorPlaylistsRequestOperation *)self request];
-  v12 = [v11 sectionProperties];
-  v13 = [v11 itemProperties];
-  v14 = [[MPStoreModelCuratorBuilder alloc] initWithRequestedPropertySet:v12];
-  v15 = [(MusicStoreCuratorPlaylistsRequestOperation *)self userIdentity];
-  v16 = [v14 modelObjectWithStoreItemMetadata:v10 userIdentity:v15];
+  v45 = responseCopy;
+  request = [(MusicStoreCuratorPlaylistsRequestOperation *)self request];
+  sectionProperties = [request sectionProperties];
+  itemProperties = [request itemProperties];
+  v14 = [[MPStoreModelCuratorBuilder alloc] initWithRequestedPropertySet:sectionProperties];
+  userIdentity = [(MusicStoreCuratorPlaylistsRequestOperation *)self userIdentity];
+  v16 = [v14 modelObjectWithStoreItemMetadata:v10 userIdentity:userIdentity];
 
   if (!v16)
   {
 
-    v6 = v45;
+    responseCopy = v45;
     goto LABEL_10;
   }
 
   v17 = v16;
-  v41 = self;
-  v42 = v9;
-  v44 = v13;
+  selfCopy = self;
+  v42 = firstObject;
+  v44 = itemProperties;
   v18 = objc_alloc_init(MPMutableSectionedCollection);
   [v18 appendSection:v17];
-  v19 = [[MusicStoreCuratorPlaylistsResponse alloc] initWithRequest:v11];
-  v20 = [v10 playlistIdentifiers];
-  v21 = [v20 count];
+  v19 = [[MusicStoreCuratorPlaylistsResponse alloc] initWithRequest:request];
+  playlistIdentifiers = [v10 playlistIdentifiers];
+  v21 = [playlistIdentifiers count];
   v43 = v14;
   if (v21)
   {
     v22 = v21;
     v36 = v17;
-    v39 = v12;
-    v23 = v20;
+    v39 = sectionProperties;
+    v23 = playlistIdentifiers;
     v24 = +[MPStoreItemMetadataRequestController optimalBatchSize];
     v25 = v22 > v24;
     v26 = v22 - v24;
@@ -185,8 +185,8 @@ LABEL_10:
     v46[1] = 3221225472;
     v46[2] = sub_100107EA8;
     v46[3] = &unk_1010988D0;
-    v46[4] = v41;
-    v52 = v7;
+    v46[4] = selfCopy;
+    v52 = completionCopy;
     v30 = v44;
     v47 = v44;
     v48 = v23;
@@ -199,34 +199,34 @@ LABEL_10:
     [v32 requestStoreItemMetadataForReason:1 withItemIdentifiers:v35 responseHandler:v46];
 
     v19 = v33;
-    v11 = v38;
-    v12 = v40;
+    request = v38;
+    sectionProperties = v40;
     v17 = v37;
   }
 
   else
   {
     [(MusicStoreCuratorPlaylistsResponse *)v19 setResults:v18];
-    (v7)[2](v7, v19, 0);
-    v30 = v13;
+    (completionCopy)[2](completionCopy, v19, 0);
+    v30 = itemProperties;
   }
 
-  v6 = v45;
-  v9 = v42;
+  responseCopy = v45;
+  firstObject = v42;
 LABEL_14:
 }
 
-- (void)_produceIncrementalResponseWithLoadedItemMetadataResponse:(id)a3 completion:(id)a4
+- (void)_produceIncrementalResponseWithLoadedItemMetadataResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v45 = a4;
-  v49 = self;
-  v7 = [(MusicStoreCuratorPlaylistsRequestOperation *)self request];
-  v8 = [v7 previousResponse];
-  v9 = [v8 additionalPlaylistIdentifiers];
-  v10 = [v9 count];
+  responseCopy = response;
+  completionCopy = completion;
+  selfCopy = self;
+  request = [(MusicStoreCuratorPlaylistsRequestOperation *)self request];
+  previousResponse = [request previousResponse];
+  additionalPlaylistIdentifiers = [previousResponse additionalPlaylistIdentifiers];
+  v10 = [additionalPlaylistIdentifiers count];
   v11 = +[MPStoreItemMetadataRequestController optimalBatchSize];
-  v12 = v9;
+  v12 = additionalPlaylistIdentifiers;
   v13 = v12;
   v14 = v10 > v11;
   v15 = v10 - v11;
@@ -243,26 +243,26 @@ LABEL_14:
     v16 = v12;
   }
 
-  v17 = [v8 request];
-  v18 = [v17 itemProperties];
-  v19 = v18;
-  v44 = v7;
+  request2 = [previousResponse request];
+  itemProperties = [request2 itemProperties];
+  v19 = itemProperties;
+  v44 = request;
   v42 = v13;
-  if (v18)
+  if (itemProperties)
   {
-    v20 = v18;
+    itemProperties2 = itemProperties;
   }
 
   else
   {
-    v20 = [v7 itemProperties];
+    itemProperties2 = [request itemProperties];
   }
 
-  v21 = v20;
+  v21 = itemProperties2;
 
-  v43 = v8;
-  v22 = [v8 results];
-  v23 = [v22 mutableCopy];
+  v43 = previousResponse;
+  results = [previousResponse results];
+  v23 = [results mutableCopy];
 
   v46 = [v23 numberOfSections] - 1;
   v47 = v23;
@@ -289,11 +289,11 @@ LABEL_14:
           objc_enumerationMutation(obj);
         }
 
-        v31 = [v6 storeItemMetadataForItemIdentifier:*(*(&v52 + 1) + 8 * i)];
+        v31 = [responseCopy storeItemMetadataForItemIdentifier:*(*(&v52 + 1) + 8 * i)];
         if (v31)
         {
-          v32 = [(MusicStoreCuratorPlaylistsRequestOperation *)v49 userIdentity];
-          v33 = [v26 modelObjectWithStoreItemMetadata:v31 userIdentity:v32];
+          userIdentity = [(MusicStoreCuratorPlaylistsRequestOperation *)selfCopy userIdentity];
+          v33 = [v26 modelObjectWithStoreItemMetadata:v31 userIdentity:userIdentity];
 
           if (v33)
           {
@@ -334,7 +334,7 @@ LABEL_14:
   [(MusicStoreCuratorPlaylistsResponse *)v39 setResults:v47];
   [(MusicStoreCuratorPlaylistsResponse *)v39 setChangeDetails:v37];
   [(MusicStoreCuratorPlaylistsResponse *)v39 setAdditionalPlaylistIdentifiers:v41];
-  v45[2](v45, v39, 0);
+  completionCopy[2](completionCopy, v39, 0);
 }
 
 @end

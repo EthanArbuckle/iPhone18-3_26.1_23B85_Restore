@@ -1,13 +1,13 @@
 @interface NCSetFocusPointRequest
-- (BOOL)isEqual:(id)a3;
-- (float)pointAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)pointAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NCSetFocusPointRequest
@@ -20,18 +20,18 @@
   [(NCSetFocusPointRequest *)&v3 dealloc];
 }
 
-- (float)pointAtIndex:(unint64_t)a3
+- (float)pointAtIndex:(unint64_t)index
 {
   p_points = &self->_points;
   count = self->_points.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_points->list[a3];
+  return p_points->list[index];
 }
 
 - (id)description
@@ -39,8 +39,8 @@
   v7.receiver = self;
   v7.super_class = NCSetFocusPointRequest;
   v3 = [(NCSetFocusPointRequest *)&v7 description];
-  v4 = [(NCSetFocusPointRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NCSetFocusPointRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -54,9 +54,9 @@
   return v2;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   p_points = &self->_points;
   if (p_points->count)
   {
@@ -78,36 +78,36 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(NCSetFocusPointRequest *)self pointsCount])
   {
-    [v7 clearPoints];
-    v4 = [(NCSetFocusPointRequest *)self pointsCount];
-    if (v4)
+    [toCopy clearPoints];
+    pointsCount = [(NCSetFocusPointRequest *)self pointsCount];
+    if (pointsCount)
     {
-      v5 = v4;
+      v5 = pointsCount;
       for (i = 0; i != v5; ++i)
       {
         [(NCSetFocusPointRequest *)self pointAtIndex:i];
-        [v7 addPoint:?];
+        [toCopy addPoint:?];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedFloatCopy();
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     IsEqual = PBRepeatedFloatIsEqual();
   }
@@ -120,16 +120,16 @@
   return IsEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v7 = a3;
-  v4 = [v7 pointsCount];
-  if (v4)
+  fromCopy = from;
+  pointsCount = [fromCopy pointsCount];
+  if (pointsCount)
   {
-    v5 = v4;
+    v5 = pointsCount;
     for (i = 0; i != v5; ++i)
     {
-      [v7 pointAtIndex:i];
+      [fromCopy pointAtIndex:i];
       [(NCSetFocusPointRequest *)self addPoint:?];
     }
   }

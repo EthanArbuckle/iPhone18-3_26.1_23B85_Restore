@@ -1,16 +1,16 @@
 @interface SUUIPlaceholderImageKey
-- (BOOL)isEqual:(id)a3;
-- (SUUIPlaceholderImageKey)initWithSize:(CGSize)a3 imageTreatment:(int64_t)a4 placeholderBackgroundColor:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (SUUIPlaceholderImageKey)initWithSize:(CGSize)size imageTreatment:(int64_t)treatment placeholderBackgroundColor:(id)color;
 - (id)description;
 @end
 
 @implementation SUUIPlaceholderImageKey
 
-- (SUUIPlaceholderImageKey)initWithSize:(CGSize)a3 imageTreatment:(int64_t)a4 placeholderBackgroundColor:(id)a5
+- (SUUIPlaceholderImageKey)initWithSize:(CGSize)size imageTreatment:(int64_t)treatment placeholderBackgroundColor:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = SUUIPlaceholderImageKey;
   v11 = [(SUUIPlaceholderImageKey *)&v14 init];
@@ -18,22 +18,22 @@
   if (v11)
   {
     v11->_height = height;
-    v11->_imageTreatment = a4;
+    v11->_imageTreatment = treatment;
     v11->_width = width;
-    objc_storeStrong(&v11->_placeholderBackgroundColor, a5);
+    objc_storeStrong(&v11->_placeholderBackgroundColor, color);
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && self->_height == v4[1] && self->_width == v4[3] && self->_imageTreatment == v4[2])
+  if (v5 == objc_opt_class() && self->_height == equalCopy[1] && self->_width == equalCopy[3] && self->_imageTreatment == equalCopy[2])
   {
     placeholderBackgroundColor = self->_placeholderBackgroundColor;
-    if (placeholderBackgroundColor == v4[4])
+    if (placeholderBackgroundColor == equalCopy[4])
     {
       v7 = 1;
     }

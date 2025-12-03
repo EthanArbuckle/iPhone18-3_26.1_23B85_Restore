@@ -1,5 +1,5 @@
 @interface ABPhoneNumber
-- (ABPhoneNumber)initWithPhoneNumberString:(id)a3 countryCode:(id)a4;
+- (ABPhoneNumber)initWithPhoneNumberString:(id)string countryCode:(id)code;
 - (void)dealloc;
 @end
 
@@ -18,7 +18,7 @@
   [(ABPhoneNumber *)&v4 dealloc];
 }
 
-- (ABPhoneNumber)initWithPhoneNumberString:(id)a3 countryCode:(id)a4
+- (ABPhoneNumber)initWithPhoneNumberString:(id)string countryCode:(id)code
 {
   v10.receiver = self;
   v10.super_class = ABPhoneNumber;
@@ -26,11 +26,11 @@
   v7 = v6;
   if (v6)
   {
-    v8 = ABCreateNormalizedPhoneNumberAndDecompose(a3, a4, 1, v6 + 10, v6 + 8);
+    v8 = ABCreateNormalizedPhoneNumberAndDecompose(string, code, 1, v6 + 10, v6 + 8);
     v7->_phoneNumberBytes = v8;
     if (v8)
     {
-      v7->_originalStringValue = [a3 copy];
+      v7->_originalStringValue = [string copy];
     }
 
     else

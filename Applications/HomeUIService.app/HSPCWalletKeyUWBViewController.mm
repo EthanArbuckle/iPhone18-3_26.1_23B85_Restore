@@ -1,23 +1,23 @@
 @interface HSPCWalletKeyUWBViewController
 - (BOOL)_shouldIncludeTapToUnlock;
-- (HSPCWalletKeyUWBViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCWalletKeyUWBViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)_addWalletKeyWithUWB;
-- (id)_addWalletKeyWithiPhoneUWBOptions:(int64_t)a3 pairedWatchesUWBOptions:(int64_t)a4;
+- (id)_addWalletKeyWithiPhoneUWBOptions:(int64_t)options pairedWatchesUWBOptions:(int64_t)bOptions;
 - (id)_notNowTapped;
 - (id)_shouldShowSingleContinueButton;
 - (id)_turnOnUnlockOnApproach;
 - (id)commitConfiguration;
 - (id)dismissButtonBlock;
-- (void)_enableUWBOfExistingWalletKeyAfterAuthWithPromise:(id)a3;
-- (void)_updateHasOnboardedForWalletKey:(id)a3;
+- (void)_enableUWBOfExistingWalletKeyAfterAuthWithPromise:(id)promise;
+- (void)_updateHasOnboardedForWalletKey:(id)key;
 @end
 
 @implementation HSPCWalletKeyUWBViewController
 
-- (HSPCWalletKeyUWBViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCWalletKeyUWBViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v55 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v8 = [PRXImageView imageViewWithStyle:0];
   [v8 setContentMode:1];
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -28,8 +28,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a4);
-    objc_storeStrong(&v10->_coordinator, a3);
+    objc_storeStrong(&v9->_config, config);
+    objc_storeStrong(&v10->_coordinator, coordinator);
     v11 = objc_opt_new();
     door = v10->_door;
     v10->_door = v11;
@@ -48,24 +48,24 @@
     [(UIImageView *)v10->_door setContentMode:1];
     [(UIImageView *)v10->_door setSemanticContentAttribute:3];
     [v8 addSubview:v10->_door];
-    v18 = [(UIImageView *)v10->_door centerYAnchor];
-    v19 = [v8 centerYAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerYAnchor = [(UIImageView *)v10->_door centerYAnchor];
+    centerYAnchor2 = [v8 centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v20 setActive:1];
 
-    v21 = [(UIImageView *)v10->_door centerXAnchor];
-    v22 = [v8 centerXAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerXAnchor = [(UIImageView *)v10->_door centerXAnchor];
+    centerXAnchor2 = [v8 centerXAnchor];
+    v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v23 setActive:1];
 
-    v24 = [(UIImageView *)v10->_door widthAnchor];
-    v25 = [v8 widthAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    widthAnchor = [(UIImageView *)v10->_door widthAnchor];
+    widthAnchor2 = [v8 widthAnchor];
+    v26 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v26 setActive:1];
 
-    v27 = [(UIImageView *)v10->_door heightAnchor];
-    v28 = [v8 heightAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 multiplier:0.85];
+    heightAnchor = [(UIImageView *)v10->_door heightAnchor];
+    heightAnchor2 = [v8 heightAnchor];
+    v29 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.85];
     [v29 setActive:1];
 
     [(UIImageView *)v10->_door setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -82,24 +82,24 @@
     [(UIImageView *)v33 setTintColor:v34];
 
     [v8 addSubview:v10->_figureStand];
-    v35 = [(UIImageView *)v10->_figureStand centerXAnchor];
-    v36 = [v8 centerXAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    centerXAnchor3 = [(UIImageView *)v10->_figureStand centerXAnchor];
+    centerXAnchor4 = [v8 centerXAnchor];
+    v37 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v37 setActive:1];
 
-    v38 = [(UIImageView *)v10->_figureStand bottomAnchor];
-    v39 = [v8 bottomAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    bottomAnchor = [(UIImageView *)v10->_figureStand bottomAnchor];
+    bottomAnchor2 = [v8 bottomAnchor];
+    v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v40 setActive:1];
 
-    v41 = [(UIImageView *)v10->_figureStand widthAnchor];
-    v42 = [v8 widthAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 multiplier:0.5];
+    widthAnchor3 = [(UIImageView *)v10->_figureStand widthAnchor];
+    widthAnchor4 = [v8 widthAnchor];
+    v43 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:0.5];
     [v43 setActive:1];
 
-    v44 = [(UIImageView *)v10->_figureStand heightAnchor];
-    v45 = [v8 heightAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45 multiplier:0.6];
+    heightAnchor3 = [(UIImageView *)v10->_figureStand heightAnchor];
+    heightAnchor4 = [v8 heightAnchor];
+    v46 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4 multiplier:0.6];
     [v46 setActive:1];
 
     [(UIImageView *)v10->_figureStand setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -111,14 +111,14 @@
     [(HSPCWalletKeyUWBViewController *)v10 setSubtitle:v48];
 
     objc_initWeak(&location, v10);
-    v49 = [v7 home];
-    v50 = [v49 hf_fetchWalletKeyDeviceStateForCurrentDevice];
+    home = [configCopy home];
+    hf_fetchWalletKeyDeviceStateForCurrentDevice = [home hf_fetchWalletKeyDeviceStateForCurrentDevice];
     v58[0] = _NSConcreteStackBlock;
     v58[1] = 3221225472;
     v58[2] = sub_100035850;
     v58[3] = &unk_1000C6740;
     objc_copyWeak(&v59, &location);
-    v51 = [v50 flatMap:v58];
+    v51 = [hf_fetchWalletKeyDeviceStateForCurrentDevice flatMap:v58];
     v56[0] = _NSConcreteStackBlock;
     v56[1] = 3221225472;
     v56[2] = sub_100035A40;
@@ -135,9 +135,9 @@
 
 - (id)commitConfiguration
 {
-  v4 = [(HSPCWalletKeyUWBViewController *)self continueAction];
+  continueAction = [(HSPCWalletKeyUWBViewController *)self continueAction];
 
-  if (v4)
+  if (continueAction)
   {
     v5 = HFLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -152,15 +152,15 @@
     }
 
     [(HSPCWalletKeyUWBViewController *)self _updateHasOnboardedForWalletKey:0];
-    v8 = [NAFuture futureWithResult:&off_1000CD720];
+    _turnOnUnlockOnApproach = [NAFuture futureWithResult:&off_1000CD720];
   }
 
   else
   {
-    v8 = [(HSPCWalletKeyUWBViewController *)self _turnOnUnlockOnApproach];
+    _turnOnUnlockOnApproach = [(HSPCWalletKeyUWBViewController *)self _turnOnUnlockOnApproach];
   }
 
-  return v8;
+  return _turnOnUnlockOnApproach;
 }
 
 - (id)_turnOnUnlockOnApproach
@@ -169,40 +169,40 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v22 = self;
+    selfCopy4 = self;
     v23 = 2080;
     v24 = "[HSPCWalletKeyUWBViewController _turnOnUnlockOnApproach]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped turn on unlock on approach button", buf, 0x16u);
   }
 
-  v4 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-  v5 = [v4 walletKey];
-  v6 = [v5 isUWBUnlockEnabled];
+  walletKeyDeviceState = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+  walletKey = [walletKeyDeviceState walletKey];
+  isUWBUnlockEnabled = [walletKey isUWBUnlockEnabled];
 
-  if (v6)
+  if (isUWBUnlockEnabled)
   {
     v7 = HFLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+      walletKeyDeviceState2 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
       *buf = 138412802;
-      v22 = self;
+      selfCopy4 = self;
       v23 = 2080;
       v24 = "[HSPCWalletKeyUWBViewController _turnOnUnlockOnApproach]";
       v25 = 2112;
-      v26 = v8;
+      v26 = walletKeyDeviceState2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(%@:%s) Wallet key exists and UWB is enabled. Continuing to next prox card.\nDevice state = %@", buf, 0x20u);
     }
 
-    v9 = [NAFuture futureWithResult:&off_1000CD720];
+    _addWalletKeyWithUWB = [NAFuture futureWithResult:&off_1000CD720];
 LABEL_14:
-    v16 = v9;
+    v16 = _addWalletKeyWithUWB;
     goto LABEL_15;
   }
 
-  v10 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-  v11 = [v10 walletKey];
-  v12 = v11 == 0;
+  walletKeyDeviceState3 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+  walletKey2 = [walletKeyDeviceState3 walletKey];
+  v12 = walletKey2 == 0;
 
   v13 = HFLogForCategory();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -210,29 +210,29 @@ LABEL_14:
   {
     if (v14)
     {
-      v17 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+      walletKeyDeviceState4 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
       *buf = 138412802;
-      v22 = self;
+      selfCopy4 = self;
       v23 = 2080;
       v24 = "[HSPCWalletKeyUWBViewController _turnOnUnlockOnApproach]";
       v25 = 2112;
-      v26 = v17;
+      v26 = walletKeyDeviceState4;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "(%@:%s) Wallet key does NOT exist.\nDevice state = %@", buf, 0x20u);
     }
 
-    v9 = [(HSPCWalletKeyUWBViewController *)self _addWalletKeyWithUWB];
+    _addWalletKeyWithUWB = [(HSPCWalletKeyUWBViewController *)self _addWalletKeyWithUWB];
     goto LABEL_14;
   }
 
   if (v14)
   {
-    v15 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+    walletKeyDeviceState5 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
     *buf = 138412802;
-    v22 = self;
+    selfCopy4 = self;
     v23 = 2080;
     v24 = "[HSPCWalletKeyUWBViewController _turnOnUnlockOnApproach]";
     v25 = 2112;
-    v26 = v15;
+    v26 = walletKeyDeviceState5;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "(%@:%s) Wallet key exists, but UWB is NOT enabled. Enabling UBW of existing wallet key after auth.\nDevice state = %@", buf, 0x20u);
   }
 
@@ -263,15 +263,15 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped not now button", &v12, 0x16u);
   }
 
-  v5 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-  v6 = [v5 walletKey];
+  walletKeyDeviceState = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+  walletKey = [walletKeyDeviceState walletKey];
 
-  if (v6)
+  if (walletKey)
   {
-    v7 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-    v8 = [v7 walletKey];
-    v9 = [v8 UUID];
-    [(HSPCWalletKeyUWBViewController *)self _updateHasOnboardedForWalletKey:v9];
+    walletKeyDeviceState2 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+    walletKey2 = [walletKeyDeviceState2 walletKey];
+    uUID = [walletKey2 UUID];
+    [(HSPCWalletKeyUWBViewController *)self _updateHasOnboardedForWalletKey:uUID];
   }
 
   v10 = [NAFuture futureWithResult:&off_1000CD720];
@@ -298,7 +298,7 @@ LABEL_15:
         }
 
         *buf = 136315394;
-        v23 = "[HSPCWalletKeyUWBViewController _shouldShowSingleContinueButton]";
+        selfCopy2 = "[HSPCWalletKeyUWBViewController _shouldShowSingleContinueButton]";
         v24 = 2112;
         v25 = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(%s) %@ do local authentication.", buf, 0x16u);
@@ -314,14 +314,14 @@ LABEL_19:
       }
     }
 
-    v9 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-    v10 = [v9 walletKey];
-    v11 = [v10 isUWBUnlockEnabled];
+    walletKeyDeviceState = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+    walletKey = [walletKeyDeviceState walletKey];
+    isUWBUnlockEnabled = [walletKey isUWBUnlockEnabled];
 
     v12 = HFLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      if (v11)
+      if (isUWBUnlockEnabled)
       {
         v13 = @"single continue button";
       }
@@ -331,25 +331,25 @@ LABEL_19:
         v13 = @"two buttons";
       }
 
-      v14 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-      v15 = [v14 walletKey];
-      v16 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-      v17 = [v16 walletKey];
-      v18 = [v17 isUWBUnlockEnabled];
+      walletKeyDeviceState2 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+      walletKey2 = [walletKeyDeviceState2 walletKey];
+      walletKeyDeviceState3 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+      walletKey3 = [walletKeyDeviceState3 walletKey];
+      isUWBUnlockEnabled2 = [walletKey3 isUWBUnlockEnabled];
       *buf = 138413314;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2080;
       v25 = "[HSPCWalletKeyUWBViewController _shouldShowSingleContinueButton]";
       v26 = 2112;
       v27 = v13;
       v28 = 2112;
-      v29 = v15;
+      v29 = walletKey2;
       v30 = 1024;
-      v31 = v18;
+      v31 = isUWBUnlockEnabled2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "(%@:%s) Showing %@ because walletKeyDeviceState.walletKey = %@. isUWBUnlockEnabled = %{BOOL}d", buf, 0x30u);
     }
 
-    v5 = [NSNumber numberWithBool:v11];
+    v5 = [NSNumber numberWithBool:isUWBUnlockEnabled];
     v19 = v5;
     goto LABEL_19;
   }
@@ -358,7 +358,7 @@ LABEL_19:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2080;
     v25 = "[HSPCWalletKeyUWBViewController _shouldShowSingleContinueButton]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "(%@:%s) Showing single continue button for iPad", buf, 0x16u);
@@ -382,10 +382,10 @@ LABEL_20:
     v3 = 5;
   }
 
-  v4 = [(HSPCWalletKeyUWBViewController *)self config];
-  v5 = [v4 delegate];
-  v6 = [(HSPCWalletKeyUWBViewController *)self config];
-  v7 = [v5 stateMachineConfigurationGetLaunchReason:v6];
+  config = [(HSPCWalletKeyUWBViewController *)self config];
+  delegate = [config delegate];
+  config2 = [(HSPCWalletKeyUWBViewController *)self config];
+  v7 = [delegate stateMachineConfigurationGetLaunchReason:config2];
 
   if (v7)
   {
@@ -400,7 +400,7 @@ LABEL_20:
   return [(HSPCWalletKeyUWBViewController *)self _addWalletKeyWithiPhoneUWBOptions:v3 pairedWatchesUWBOptions:v8];
 }
 
-- (id)_addWalletKeyWithiPhoneUWBOptions:(int64_t)a3 pairedWatchesUWBOptions:(int64_t)a4
+- (id)_addWalletKeyWithiPhoneUWBOptions:(int64_t)options pairedWatchesUWBOptions:(int64_t)bOptions
 {
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -419,9 +419,9 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "(%@:%s) iPhone Wallet Key Options = %@. Paired Apple Watches Options = %@", buf, 0x2Au);
   }
 
-  v11 = [(HSPCWalletKeyUWBViewController *)self config];
-  v12 = [v11 home];
-  v13 = [v12 hf_addWalletKeyWithOptions:a3];
+  config = [(HSPCWalletKeyUWBViewController *)self config];
+  home = [config home];
+  v13 = [home hf_addWalletKeyWithOptions:options];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100036A40;
@@ -429,11 +429,11 @@ LABEL_20:
   v29[4] = self;
   v14 = [v13 addCompletionBlock:v29];
 
-  v15 = [(HSPCWalletKeyUWBViewController *)self config];
-  v16 = [v15 home];
-  v17 = [v16 hf_addWalletKeyToPairedWatchesWithOptions:a4 | 1];
-  v18 = [v17 recoverIgnoringError];
-  v19 = [v18 flatMap:&stru_1000C6F30];
+  config2 = [(HSPCWalletKeyUWBViewController *)self config];
+  home2 = [config2 home];
+  v17 = [home2 hf_addWalletKeyToPairedWatchesWithOptions:bOptions | 1];
+  recoverIgnoringError = [v17 recoverIgnoringError];
+  v19 = [recoverIgnoringError flatMap:&stru_1000C6F30];
 
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
@@ -455,13 +455,13 @@ LABEL_20:
   return v23;
 }
 
-- (void)_enableUWBOfExistingWalletKeyAfterAuthWithPromise:(id)a3
+- (void)_enableUWBOfExistingWalletKeyAfterAuthWithPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-  v6 = [v5 walletKey];
+  promiseCopy = promise;
+  walletKeyDeviceState = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+  walletKey = [walletKeyDeviceState walletKey];
 
-  if (v6)
+  if (walletKey)
   {
     v7 = objc_alloc_init(LAContext);
     v20 = 0;
@@ -477,7 +477,7 @@ LABEL_20:
       v16[3] = &unk_1000C6828;
       objc_copyWeak(&v19, location);
       v17 = v7;
-      v18 = v4;
+      v18 = promiseCopy;
       [v17 evaluatePolicy:2 localizedReason:v10 reply:v16];
 
       objc_destroyWeak(&v19);
@@ -499,7 +499,7 @@ LABEL_20:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "(%@:%s) Cannot local authenticate. Error = %@", location, 0x20u);
       }
 
-      [v4 finishWithResult:&off_1000CD738];
+      [promiseCopy finishWithResult:&off_1000CD738];
     }
   }
 
@@ -508,51 +508,51 @@ LABEL_20:
     v11 = HFLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(HSPCWalletKeyUWBViewController *)self config];
-      v13 = [v12 home];
+      config = [(HSPCWalletKeyUWBViewController *)self config];
+      home = [config home];
       *location = 138412802;
       *&location[4] = self;
       v22 = 2080;
       v23 = "[HSPCWalletKeyUWBViewController _enableUWBOfExistingWalletKeyAfterAuthWithPromise:]";
       v24 = 2112;
-      v25 = v13;
+      v25 = home;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "(%@:%s) wallet key does not exist for home %@.", location, 0x20u);
     }
 
-    [v4 finishWithResult:&off_1000CD720];
+    [promiseCopy finishWithResult:&off_1000CD720];
   }
 }
 
-- (void)_updateHasOnboardedForWalletKey:(id)a3
+- (void)_updateHasOnboardedForWalletKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HSPCWalletKeyUWBViewController *)self config];
-    v7 = [v6 home];
+    config = [(HSPCWalletKeyUWBViewController *)self config];
+    home = [config home];
     *buf = 136315650;
     v16 = "[HSPCWalletKeyUWBViewController _updateHasOnboardedForWalletKey:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = keyCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = home;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Updating hasOnboarded for Wallet Key (%@) for home %@", buf, 0x20u);
   }
 
-  v8 = [(HSPCWalletKeyUWBViewController *)self config];
-  v9 = [v8 home];
-  v10 = [v9 hf_setHasOnboardedForWalletKey];
+  config2 = [(HSPCWalletKeyUWBViewController *)self config];
+  home2 = [config2 home];
+  hf_setHasOnboardedForWalletKey = [home2 hf_setHasOnboardedForWalletKey];
 
   objc_initWeak(buf, self);
-  v11 = [(HSPCWalletKeyUWBViewController *)self config];
-  v12 = [v11 home];
+  config3 = [(HSPCWalletKeyUWBViewController *)self config];
+  home3 = [config3 home];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100037AD8;
   v13[3] = &unk_1000C5D18;
   objc_copyWeak(&v14, buf);
-  [v12 setDismissedWalletKeyUWBUnlockOnboardingWithCompletion:v13];
+  [home3 setDismissedWalletKeyUWBUnlockOnboardingWithCompletion:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -560,44 +560,44 @@ LABEL_20:
 
 - (BOOL)_shouldIncludeTapToUnlock
 {
-  v3 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-  v4 = [v3 walletKey];
+  walletKeyDeviceState = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+  walletKey = [walletKeyDeviceState walletKey];
 
-  if (v4)
+  if (walletKey)
   {
-    v5 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-    v6 = [v5 walletKey];
-    v7 = [v6 isExpressEnabled];
+    walletKeyDeviceState2 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+    walletKey2 = [walletKeyDeviceState2 walletKey];
+    isExpressEnabled = [walletKey2 isExpressEnabled];
 
     v8 = HFLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-      v10 = [v9 walletKey];
-      v11 = [(HSPCWalletKeyUWBViewController *)self config];
-      v12 = [v11 home];
-      v13 = [v12 name];
-      v14 = v13;
+      walletKeyDeviceState3 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+      walletKey3 = [walletKeyDeviceState3 walletKey];
+      config = [(HSPCWalletKeyUWBViewController *)self config];
+      home = [config home];
+      name = [home name];
+      v14 = name;
       v22 = 138413570;
       v15 = @"NOT";
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2080;
       v25 = "[HSPCWalletKeyUWBViewController _shouldIncludeTapToUnlock]";
-      if (v7)
+      if (isExpressEnabled)
       {
         v15 = &stru_1000C89F8;
       }
 
       v16 = @"YES";
       v26 = 2112;
-      v27 = v10;
+      v27 = walletKey3;
       v28 = 2112;
-      if (v7)
+      if (isExpressEnabled)
       {
         v16 = @"NO";
       }
 
-      v29 = v13;
+      v29 = name;
       v30 = 2112;
       v31 = v15;
       v32 = 2112;
@@ -605,7 +605,7 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "(%@:%s) Wallet key exists (%@) for home %@. Express is %@ enabled. Returning %@.", &v22, 0x3Eu);
     }
 
-    return v7 ^ 1;
+    return isExpressEnabled ^ 1;
   }
 
   else
@@ -613,15 +613,15 @@ LABEL_20:
     v18 = HFLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(HSPCWalletKeyUWBViewController *)self config];
-      v20 = [v19 home];
-      v21 = [v20 name];
+      config2 = [(HSPCWalletKeyUWBViewController *)self config];
+      home2 = [config2 home];
+      name2 = [home2 name];
       v22 = 138412802;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2080;
       v25 = "[HSPCWalletKeyUWBViewController _shouldIncludeTapToUnlock]";
       v26 = 2112;
-      v27 = v21;
+      v27 = name2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "(%@:%s) Wallet key does NOT exist for home %@. Including both UWB and NFC for this prox card.", &v22, 0x20u);
     }
 
@@ -634,14 +634,14 @@ LABEL_20:
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
-    v5 = [v4 walletKey];
+    walletKeyDeviceState = [(HSPCWalletKeyUWBViewController *)self walletKeyDeviceState];
+    walletKey = [walletKeyDeviceState walletKey];
     *buf = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[HSPCWalletKeyUWBViewController dismissButtonBlock]";
     v13 = 2112;
-    v14 = v5;
+    v14 = walletKey;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "(%@:%s) User tapped dismiss button. walletKey = %@", buf, 0x20u);
   }
 

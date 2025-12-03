@@ -1,48 +1,48 @@
 @interface KeybagRequestOperation
-- (KeybagRequestOperation)initWithKeybagRequest:(id)a3 client:(id)a4;
-- (KeybagRequestOperation)initWithKeybagRequest:(id)a3 clientIdentifierHeader:(id)a4 userAgent:(id)a5;
-- (void)_getDownloaderIdentifier:(id *)a3 purchaserIdentifier:(id *)a4 forApplication:(id)a5;
+- (KeybagRequestOperation)initWithKeybagRequest:(id)request client:(id)client;
+- (KeybagRequestOperation)initWithKeybagRequest:(id)request clientIdentifierHeader:(id)header userAgent:(id)agent;
+- (void)_getDownloaderIdentifier:(id *)identifier purchaserIdentifier:(id *)purchaserIdentifier forApplication:(id)application;
 - (void)run;
 @end
 
 @implementation KeybagRequestOperation
 
-- (KeybagRequestOperation)initWithKeybagRequest:(id)a3 clientIdentifierHeader:(id)a4 userAgent:(id)a5
+- (KeybagRequestOperation)initWithKeybagRequest:(id)request clientIdentifierHeader:(id)header userAgent:(id)agent
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  headerCopy = header;
+  agentCopy = agent;
   v15.receiver = self;
   v15.super_class = KeybagRequestOperation;
   v12 = [(KeybagRequestOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientIdentifierHeader, a4);
-    objc_storeStrong(&v13->_request, a3);
-    objc_storeStrong(&v13->_userAgent, a5);
+    objc_storeStrong(&v12->_clientIdentifierHeader, header);
+    objc_storeStrong(&v13->_request, request);
+    objc_storeStrong(&v13->_userAgent, agent);
   }
 
   return v13;
 }
 
-- (KeybagRequestOperation)initWithKeybagRequest:(id)a3 client:(id)a4
+- (KeybagRequestOperation)initWithKeybagRequest:(id)request client:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = KeybagRequestOperation;
   v9 = [(KeybagRequestOperation *)&v15 init];
   if (v9)
   {
-    v10 = [v8 clientIdentifierHeader];
+    clientIdentifierHeader = [clientCopy clientIdentifierHeader];
     clientIdentifierHeader = v9->_clientIdentifierHeader;
-    v9->_clientIdentifierHeader = v10;
+    v9->_clientIdentifierHeader = clientIdentifierHeader;
 
-    objc_storeStrong(&v9->_request, a3);
-    v12 = [v8 userAgent];
+    objc_storeStrong(&v9->_request, request);
+    userAgent = [clientCopy userAgent];
     userAgent = v9->_userAgent;
-    v9->_userAgent = v12;
+    v9->_userAgent = userAgent;
   }
 
   return v9;
@@ -50,7 +50,7 @@
 
 - (void)run
 {
-  v3 = [(SSKeybagRequest *)self->_request contentIdentifier];
+  contentIdentifier = [(SSKeybagRequest *)self->_request contentIdentifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -58,7 +58,7 @@
     goto LABEL_17;
   }
 
-  v4 = [LSApplicationProxy applicationProxyForIdentifier:v3];
+  v4 = [LSApplicationProxy applicationProxyForIdentifier:contentIdentifier];
   v5 = v4;
   if (!v4)
   {
@@ -72,10 +72,10 @@ LABEL_17:
     goto LABEL_32;
   }
 
-  v6 = [v5 itemID];
-  v7 = [v6 integerValue];
+  itemID = [v5 itemID];
+  integerValue = [itemID integerValue];
 
-  if (v7)
+  if (integerValue)
   {
     goto LABEL_32;
   }
@@ -86,19 +86,19 @@ LABEL_17:
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  v11 = [v8 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v12 = v10;
   }
@@ -113,11 +113,11 @@ LABEL_17:
     v13 = objc_opt_class();
     request = self->_request;
     v15 = v13;
-    v16 = [(SSKeybagRequest *)request contentIdentifier];
+    contentIdentifier2 = [(SSKeybagRequest *)request contentIdentifier];
     *v67 = 138412546;
     *&v67[4] = v13;
     *&v67[12] = 2112;
-    *&v67[14] = v16;
+    *&v67[14] = contentIdentifier2;
     LODWORD(v44) = 22;
     v43 = v67;
     v17 = _os_log_send_and_compose_impl();
@@ -170,21 +170,21 @@ LABEL_17:
       claimedBundleIdentifiers = +[SSLogConfig sharedConfig];
     }
 
-    v23 = [claimedBundleIdentifiers shouldLog];
-    v24 = [claimedBundleIdentifiers shouldLogToDisk];
-    v25 = [claimedBundleIdentifiers OSLogObject];
-    v26 = v25;
-    if (v24)
+    shouldLog2 = [claimedBundleIdentifiers shouldLog];
+    shouldLogToDisk = [claimedBundleIdentifiers shouldLogToDisk];
+    oSLogObject2 = [claimedBundleIdentifiers OSLogObject];
+    v26 = oSLogObject2;
+    if (shouldLogToDisk)
     {
-      v23 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v23 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v23)
+    if (shouldLog2)
     {
       v27 = objc_opt_class();
       v28 = v58[5];
@@ -230,7 +230,7 @@ LABEL_33:
   [(AuthorizeMachineOperation *)v31 setUserAgent:self->_userAgent];
   if (v19)
   {
-    v32 = [(SSKeybagRequest *)self->_request accountID];
+    accountID = [(SSKeybagRequest *)self->_request accountID];
     v33 = 0;
   }
 
@@ -239,12 +239,12 @@ LABEL_33:
     v46 = 0;
     v47 = 0;
     [(KeybagRequestOperation *)self _getDownloaderIdentifier:&v47 purchaserIdentifier:&v46 forApplication:v5];
-    v32 = v47;
+    accountID = v47;
     v33 = v46;
   }
 
-  [(AuthorizeMachineOperation *)v31 setAccountIdentifier:v32, v43];
-  if (([v33 isEqualToNumber:v32] & 1) == 0)
+  [(AuthorizeMachineOperation *)v31 setAccountIdentifier:accountID, v43];
+  if (([v33 isEqualToNumber:accountID] & 1) == 0)
   {
     [(AuthorizeMachineOperation *)v31 setFamilyMemberAccountIdentifier:v33];
     [(AuthorizeMachineOperation *)v31 setReason:@"family"];
@@ -261,19 +261,19 @@ LABEL_33:
     v34 = +[SSLogConfig sharedConfig];
   }
 
-  v35 = [v34 shouldLog];
+  shouldLog3 = [v34 shouldLog];
   if ([v34 shouldLogToDisk])
   {
-    v36 = v35 | 2;
+    v36 = shouldLog3 | 2;
   }
 
   else
   {
-    v36 = v35;
+    v36 = shouldLog3;
   }
 
-  v37 = [v34 OSLogObject];
-  if (!os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
+  oSLogObject3 = [v34 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
   {
     v36 &= 2u;
   }
@@ -287,7 +287,7 @@ LABEL_33:
   *v67 = 138412802;
   *&v67[4] = v38;
   *&v67[12] = 2112;
-  *&v67[14] = v32;
+  *&v67[14] = accountID;
   *&v67[22] = 2112;
   v68 = v33;
   v39 = v38;
@@ -296,7 +296,7 @@ LABEL_33:
 
   if (v40)
   {
-    v37 = [NSString stringWithCString:v40 encoding:4, v67, v44];
+    oSLogObject3 = [NSString stringWithCString:v40 encoding:4, v67, v44];
     free(v40);
     SSFileLog();
 LABEL_50:
@@ -310,40 +310,40 @@ LABEL_50:
   [(KeybagRequestOperation *)self setSuccess:v41];
 }
 
-- (void)_getDownloaderIdentifier:(id *)a3 purchaserIdentifier:(id *)a4 forApplication:(id)a5
+- (void)_getDownloaderIdentifier:(id *)identifier purchaserIdentifier:(id *)purchaserIdentifier forApplication:(id)application
 {
-  v19 = a5;
-  v8 = [(SSKeybagRequest *)self->_request accountID];
-  v9 = [v19 familyID];
-  if ([v9 longLongValue])
+  applicationCopy = application;
+  accountID = [(SSKeybagRequest *)self->_request accountID];
+  familyID = [applicationCopy familyID];
+  if ([familyID longLongValue])
   {
-    v10 = [v19 downloaderDSID];
-    v11 = [v19 purchaserDSID];
+    downloaderDSID = [applicationCopy downloaderDSID];
+    purchaserDSID = [applicationCopy purchaserDSID];
     v12 = +[SSAccountStore defaultStore];
     v13 = v12;
-    if (v10 && v11)
+    if (downloaderDSID && purchaserDSID)
     {
-      v14 = [v12 accountWithUniqueIdentifier:v10];
+      v14 = [v12 accountWithUniqueIdentifier:downloaderDSID];
       if (v14)
       {
-        v15 = v10;
+        v15 = downloaderDSID;
 
-        v16 = v11;
-        v8 = v16;
+        v16 = purchaserDSID;
+        accountID = v16;
       }
 
       else
       {
-        v15 = v8;
+        v15 = accountID;
       }
     }
 
     else
     {
-      v15 = v8;
+      v15 = accountID;
     }
 
-    if (a3)
+    if (identifier)
     {
       goto LABEL_12;
     }
@@ -351,19 +351,19 @@ LABEL_50:
 
   else
   {
-    v15 = v8;
-    if (a3)
+    v15 = accountID;
+    if (identifier)
     {
 LABEL_12:
       v17 = v15;
-      *a3 = v15;
+      *identifier = v15;
     }
   }
 
-  if (a4)
+  if (purchaserIdentifier)
   {
-    v18 = v8;
-    *a4 = v8;
+    v18 = accountID;
+    *purchaserIdentifier = accountID;
   }
 }
 

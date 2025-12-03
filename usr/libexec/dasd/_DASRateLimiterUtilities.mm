@@ -1,13 +1,13 @@
 @interface _DASRateLimiterUtilities
-+ (BOOL)consideredInLPMWithState:(id)a3;
-+ (BOOL)isAggregateClient:(id)a3;
++ (BOOL)consideredInLPMWithState:(id)state;
++ (BOOL)isAggregateClient:(id)client;
 + (id)assetsRateLimitConfiguration;
 + (id)ckRateLimitConfiguration;
 + (id)defaultRateLimiterConfiguration;
 + (id)getCurrentBootSessionUUID;
 + (id)pecRateLimitConfiguration;
-+ (id)rateLimitIdentifierForActivity:(id)a3;
-+ (void)adjustStartAfterDate:(id)a3 forActivity:(id)a4;
++ (id)rateLimitIdentifierForActivity:(id)activity;
++ (void)adjustStartAfterDate:(id)date forActivity:(id)activity;
 @end
 
 @implementation _DASRateLimiterUtilities
@@ -67,29 +67,29 @@
   return v4;
 }
 
-+ (BOOL)consideredInLPMWithState:(id)a3
++ (BOOL)consideredInLPMWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = +[_CDContextQueries keyPathForPluginStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
-  v6 = [v5 BOOLValue];
+  v5 = [stateCopy objectForKeyedSubscript:v4];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = +[_CDContextQueries keyPathForLowPowerModeStatus];
-  v8 = [v3 objectForKeyedSubscript:v7];
+  v8 = [stateCopy objectForKeyedSubscript:v7];
 
-  LOBYTE(v3) = [v8 BOOLValue];
-  return (v6 ^ 1) & v3;
+  LOBYTE(stateCopy) = [v8 BOOLValue];
+  return (bOOLValue ^ 1) & stateCopy;
 }
 
-+ (BOOL)isAggregateClient:(id)a3
++ (BOOL)isAggregateClient:(id)client
 {
-  v3 = a3;
-  v4 = [v3 groupName];
-  if (v4)
+  clientCopy = client;
+  groupName = [clientCopy groupName];
+  if (groupName)
   {
-    v5 = v4;
-    v6 = [v3 groupName];
-    v7 = [v6 isEqualToString:@"NSURLSessionBackgroundPoolName"];
+    v5 = groupName;
+    groupName2 = [clientCopy groupName];
+    v7 = [groupName2 isEqualToString:@"NSURLSessionBackgroundPoolName"];
 
     if (v7)
     {
@@ -97,12 +97,12 @@
     }
   }
 
-  v8 = [v3 groupName];
-  if (v8)
+  groupName3 = [clientCopy groupName];
+  if (groupName3)
   {
-    v9 = v8;
-    v10 = [v3 groupName];
-    v11 = [v10 isEqualToString:@"com.apple.ckdiscretionaryd"];
+    v9 = groupName3;
+    groupName4 = [clientCopy groupName];
+    v11 = [groupName4 isEqualToString:@"com.apple.ckdiscretionaryd"];
 
     if (v11)
     {
@@ -110,12 +110,12 @@
     }
   }
 
-  v12 = [v3 groupName];
-  if (v12)
+  groupName5 = [clientCopy groupName];
+  if (groupName5)
   {
-    v13 = v12;
-    v14 = [v3 groupName];
-    v15 = [v14 containsString:@"com.apple.mlhost"];
+    v13 = groupName5;
+    groupName6 = [clientCopy groupName];
+    v15 = [groupName6 containsString:@"com.apple.mlhost"];
 
     if (v15)
     {
@@ -123,9 +123,9 @@
     }
   }
 
-  v16 = [v3 widgetID];
+  widgetID = [clientCopy widgetID];
 
-  if (v16 || ([v3 rateLimitConfigurationName], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", _DASCKRateLimitConfigurationName), v17, (v18 & 1) != 0))
+  if (widgetID || ([clientCopy rateLimitConfigurationName], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", _DASCKRateLimitConfigurationName), v17, (v18 & 1) != 0))
   {
 LABEL_9:
     v19 = 1;
@@ -133,20 +133,20 @@ LABEL_9:
 
   else
   {
-    v21 = [v3 rateLimitConfigurationName];
-    v19 = [v21 isEqualToString:_DASBirdRateLimitConfigurationName];
+    rateLimitConfigurationName = [clientCopy rateLimitConfigurationName];
+    v19 = [rateLimitConfigurationName isEqualToString:_DASBirdRateLimitConfigurationName];
   }
 
   return v19;
 }
 
-+ (id)rateLimitIdentifierForActivity:(id)a3
++ (id)rateLimitIdentifierForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 rateLimitConfigurationName];
-  if (v5)
+  activityCopy = activity;
+  rateLimitConfigurationName = [activityCopy rateLimitConfigurationName];
+  if (rateLimitConfigurationName)
   {
-    v6 = [NSMutableString stringWithString:v5];
+    v6 = [NSMutableString stringWithString:rateLimitConfigurationName];
   }
 
   else
@@ -154,74 +154,74 @@ LABEL_9:
     v6 = 0;
   }
 
-  v7 = [v4 widgetID];
+  widgetID = [activityCopy widgetID];
 
-  if (v7)
+  if (widgetID)
   {
     goto LABEL_11;
   }
 
-  if (![a1 isAggregateClient:v4] || (objc_msgSend(v4, "relatedApplications"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, !v9))
+  if (![self isAggregateClient:activityCopy] || (objc_msgSend(activityCopy, "relatedApplications"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, !v9))
   {
-    if (!v5)
+    if (!rateLimitConfigurationName)
     {
-      v15 = [v4 identifier];
-      v16 = [v15 containsString:@"assetsd.backgroundjobservice.lowprioritysearchbattery"];
+      identifier = [activityCopy identifier];
+      v16 = [identifier containsString:@"assetsd.backgroundjobservice.lowprioritysearchbattery"];
 
       if (v16)
       {
-        v13 = _DASAssetsRateLimitConfigurationName;
+        serviceName2 = _DASAssetsRateLimitConfigurationName;
         goto LABEL_12;
       }
 
-      v17 = [v4 serviceName];
+      serviceName = [activityCopy serviceName];
 
-      if (v17)
+      if (serviceName)
       {
-        v13 = [v4 serviceName];
+        serviceName2 = [activityCopy serviceName];
         goto LABEL_12;
       }
 
-      v18 = [v4 involvedProcesses];
-      v19 = [v18 count];
+      involvedProcesses = [activityCopy involvedProcesses];
+      v19 = [involvedProcesses count];
 
       if (v19)
       {
-        v20 = [v4 involvedProcesses];
+        involvedProcesses2 = [activityCopy involvedProcesses];
       }
 
       else
       {
-        v21 = [v4 relatedApplications];
-        v22 = [v21 count];
+        relatedApplications = [activityCopy relatedApplications];
+        v22 = [relatedApplications count];
 
         if (!v22)
         {
-          v12 = [v4 bundleId];
+          bundleId = [activityCopy bundleId];
 
-          if (!v12)
+          if (!bundleId)
           {
             goto LABEL_13;
           }
 
-          v13 = [v4 bundleId];
+          serviceName2 = [activityCopy bundleId];
 LABEL_12:
-          v12 = v13;
+          bundleId = serviceName2;
           goto LABEL_13;
         }
 
-        v20 = [v4 relatedApplications];
+        involvedProcesses2 = [activityCopy relatedApplications];
       }
 
-      v23 = v20;
-      v12 = [v20 objectAtIndexedSubscript:0];
+      v23 = involvedProcesses2;
+      bundleId = [involvedProcesses2 objectAtIndexedSubscript:0];
 
       goto LABEL_13;
     }
 
 LABEL_11:
-    v13 = v6;
-    v6 = v13;
+    serviceName2 = v6;
+    v6 = serviceName2;
     goto LABEL_12;
   }
 
@@ -230,43 +230,43 @@ LABEL_11:
     v6 = +[NSMutableString string];
   }
 
-  v10 = [v4 relatedApplications];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  relatedApplications2 = [activityCopy relatedApplications];
+  v11 = [relatedApplications2 objectAtIndexedSubscript:0];
 
   [v6 appendFormat:@"-%@", v11];
   v6 = v6;
 
-  v12 = v6;
+  bundleId = v6;
 LABEL_13:
 
-  return v12;
+  return bundleId;
 }
 
-+ (void)adjustStartAfterDate:(id)a3 forActivity:(id)a4
++ (void)adjustStartAfterDate:(id)date forActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 startAfter];
-  if (v7 && (v8 = v7, [v6 startAfter], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "timeIntervalSinceDate:", v5), v11 = v10, v9, v8, v11 >= 0.0))
+  dateCopy = date;
+  activityCopy = activity;
+  startAfter = [activityCopy startAfter];
+  if (startAfter && (v8 = startAfter, [activityCopy startAfter], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "timeIntervalSinceDate:", dateCopy), v11 = v10, v9, v8, v11 >= 0.0))
   {
     v12 = [_DASDaemonLogger logForCategory:@"processRateLimiter"];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 identifier];
-      v14 = [v6 startAfter];
+      identifier = [activityCopy identifier];
+      startAfter2 = [activityCopy startAfter];
       v15 = 138412802;
-      v16 = v13;
+      v16 = identifier;
       v17 = 2112;
-      v18 = v14;
+      v18 = startAfter2;
       v19 = 2112;
-      v20 = v5;
+      v20 = dateCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Activity %@ already has same or later start date %@ than proposed start date %@", &v15, 0x20u);
     }
   }
 
   else
   {
-    [v6 setStartAfter:v5];
+    [activityCopy setStartAfter:dateCopy];
   }
 }
 

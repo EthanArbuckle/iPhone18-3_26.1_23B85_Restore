@@ -8,11 +8,11 @@
 {
 LABEL_1:
   v183 = (a2 - 16);
-  v7 = a1;
+  selfCopy = self;
   while (1)
   {
-    a1 = v7;
-    v8 = (a2 - v7) >> 4;
+    self = selfCopy;
+    v8 = (a2 - selfCopy) >> 4;
     v9 = v8 - 2;
     if (v8 > 2)
     {
@@ -27,17 +27,17 @@ LABEL_1:
     if (v8 == 2)
     {
       v72 = *(a2 - 8);
-      v73 = *(v7 + 8);
+      v73 = *(selfCopy + 8);
       v74 = v72 == v73;
       v75 = v72 < v73;
       if (v74)
       {
-        v75 = *(a2 - 4) < *(v7 + 12);
+        v75 = *(a2 - 4) < *(selfCopy + 12);
       }
 
       if (v75)
       {
-        v76 = v7;
+        v76 = selfCopy;
         v77 = (a2 - 16);
 LABEL_92:
 
@@ -51,14 +51,14 @@ LABEL_92:
 LABEL_9:
     if (v8 <= 23)
     {
-      v87 = (v7 + 16);
-      v89 = v7 == a2 || v87 == a2;
+      v87 = (selfCopy + 16);
+      v89 = selfCopy == a2 || v87 == a2;
       if (a4)
       {
         if (!v89)
         {
           v90 = 0;
-          v91 = v7;
+          v91 = selfCopy;
           do
           {
             v92 = v87;
@@ -80,10 +80,10 @@ LABEL_9:
               v99 = v90;
               while (1)
               {
-                v100 = (a1 + v99);
-                v101 = *(a1 + v99);
+                v100 = (self + v99);
+                v101 = *(self + v99);
                 *v100 = 0;
-                v102 = *(a1 + v99 + 16);
+                v102 = *(self + v99 + 16);
                 *(v100 + 2) = v101;
 
                 *(v100 + 3) = *(v100 + 1);
@@ -103,18 +103,18 @@ LABEL_9:
                 v99 -= 16;
                 if (!v104)
                 {
-                  v105 = a1 + v99 + 16;
+                  selfCopy2 = self + v99 + 16;
                   goto LABEL_127;
                 }
               }
 
-              v105 = a1;
+              selfCopy2 = self;
 LABEL_127:
-              v106 = *v105;
-              *v105 = v96;
+              v106 = *selfCopy2;
+              *selfCopy2 = v96;
 
-              *(v105 + 8) = v97;
-              *(v105 + 12) = v98;
+              *(selfCopy2 + 8) = v97;
+              *(selfCopy2 + 12) = v98;
             }
 
             v87 = v92 + 2;
@@ -128,25 +128,25 @@ LABEL_127:
 
       else if (!v89)
       {
-        v169 = (v7 - 8);
+        v169 = (selfCopy - 8);
         do
         {
           v170 = v87;
-          v171 = *(a1 + 24);
-          v172 = *(a1 + 8);
+          v171 = *(self + 24);
+          v172 = *(self + 8);
           v74 = v171 == v172;
           v173 = v171 < v172;
           if (v74)
           {
-            v173 = *(a1 + 28) < *(a1 + 12);
+            v173 = *(self + 28) < *(self + 12);
           }
 
           if (v173)
           {
             v174 = *v170;
             *v170 = 0;
-            v175 = *(a1 + 24);
-            v176 = *(a1 + 28);
+            v175 = *(self + 24);
+            v176 = *(self + 28);
             v177 = v169;
             do
             {
@@ -177,7 +177,7 @@ LABEL_127:
 
           v87 = v170 + 2;
           v169 += 16;
-          a1 = v170;
+          self = v170;
         }
 
         while (v170 + 2 != a2);
@@ -188,7 +188,7 @@ LABEL_127:
 
     if (!a3)
     {
-      if (v7 != a2)
+      if (selfCopy != a2)
       {
         v107 = v9 >> 1;
         v108 = v9 >> 1;
@@ -198,7 +198,7 @@ LABEL_127:
           if (v107 >= v108)
           {
             v110 = (2 * v108) | 1;
-            v111 = a1 + 16 * v110;
+            v111 = self + 16 * v110;
             if (2 * v109 + 2 < v8)
             {
               v112 = *(v111 + 8);
@@ -224,7 +224,7 @@ LABEL_127:
               }
             }
 
-            v117 = a1 + 16 * v109;
+            v117 = self + 16 * v109;
             v118 = *(v111 + 8);
             v119 = *(v117 + 8);
             v120 = *(v117 + 12);
@@ -256,7 +256,7 @@ LABEL_127:
                 }
 
                 v126 = (2 * v110) | 1;
-                v111 = a1 + 16 * v126;
+                v111 = self + 16 * v126;
                 if (2 * v110 + 2 < v8)
                 {
                   v127 = *(v111 + 8);
@@ -309,13 +309,13 @@ LABEL_127:
         do
         {
           v135 = 0;
-          v137 = *a1;
-          v136 = *(a1 + 8);
-          *a1 = 0;
-          v138 = a1;
+          v137 = *self;
+          v136 = *(self + 8);
+          *self = 0;
+          selfCopy3 = self;
           do
           {
-            v139 = v138 + 16 * v135;
+            v139 = selfCopy3 + 16 * v135;
             v140 = v139 + 16;
             if (2 * v135 + 2 >= v8)
             {
@@ -348,11 +348,11 @@ LABEL_127:
 
             v145 = *v140;
             *v140 = 0;
-            v146 = *v138;
-            *v138 = v145;
+            v146 = *selfCopy3;
+            *selfCopy3 = v145;
 
-            *(v138 + 8) = *(v140 + 8);
-            v138 = v140;
+            *(selfCopy3 + 8) = *(v140 + 8);
+            selfCopy3 = v140;
           }
 
           while (v135 <= ((v8 - 2) >> 1));
@@ -377,13 +377,13 @@ LABEL_127:
             *(a2 - 16) = v137;
 
             *(a2 - 8) = v136;
-            v151 = (v140 - a1 + 16) >> 4;
+            v151 = (v140 - self + 16) >> 4;
             v152 = v151 < 2;
             v153 = v151 - 2;
             if (!v152)
             {
               v154 = v153 >> 1;
-              v155 = a1 + 16 * (v153 >> 1);
+              v155 = self + 16 * (v153 >> 1);
               v156 = *(v155 + 8);
               v157 = *(v140 + 8);
               v158 = *(v140 + 12);
@@ -415,7 +415,7 @@ LABEL_127:
                   }
 
                   v154 = (v154 - 1) >> 1;
-                  v155 = a1 + 16 * v154;
+                  v155 = self + 16 * v154;
                   v165 = *(v155 + 8);
                   v74 = v165 == v161;
                   v166 = v165 < v161;
@@ -445,28 +445,28 @@ LABEL_127:
       return;
     }
 
-    v10 = (v7 + 16 * (v8 >> 1));
+    v10 = (selfCopy + 16 * (v8 >> 1));
     if (v8 < 0x81)
     {
-      std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(a1 + 16 * (v8 >> 1), a1, v183);
+      std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(self + 16 * (v8 >> 1), self, v183);
     }
 
     else
     {
-      std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(a1, a1 + 16 * (v8 >> 1), v183);
-      std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(a1 + 16, (v10 - 2), a2 - 32);
-      std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(a1 + 32, (v10 + 2), a2 - 48);
-      std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>((v10 - 2), a1 + 16 * (v8 >> 1), (v10 + 2));
-      v11 = *a1;
-      v12 = *(a1 + 8);
-      *a1 = 0;
+      std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(self, self + 16 * (v8 >> 1), v183);
+      std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(self + 16, (v10 - 2), a2 - 32);
+      std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(self + 32, (v10 + 2), a2 - 48);
+      std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>((v10 - 2), self + 16 * (v8 >> 1), (v10 + 2));
+      v11 = *self;
+      v12 = *(self + 8);
+      *self = 0;
       v13 = *v10;
       *v10 = 0;
-      v14 = *a1;
-      *a1 = v13;
+      v14 = *self;
+      *self = v13;
 
       v15 = *v10;
-      *(a1 + 8) = v10[1];
+      *(self + 8) = v10[1];
       *v10 = v11;
 
       v10[1] = v12;
@@ -475,31 +475,31 @@ LABEL_127:
     --a3;
     if (a4)
     {
-      v16 = *(a1 + 12);
+      v16 = *(self + 12);
       goto LABEL_19;
     }
 
-    v17 = *(a1 - 8);
-    v18 = *(a1 + 8);
-    v16 = *(a1 + 12);
+    v17 = *(self - 8);
+    v18 = *(self + 8);
+    v16 = *(self + 12);
     v74 = v17 == v18;
     v19 = v17 < v18;
     if (v74)
     {
-      v19 = *(a1 - 4) < v16;
+      v19 = *(self - 4) < v16;
     }
 
     if (v19)
     {
 LABEL_19:
-      v20 = *a1;
-      *a1 = 0;
-      v21 = *(a1 + 8);
-      v22 = a1;
+      v20 = *self;
+      *self = 0;
+      v21 = *(self + 8);
+      selfCopy4 = self;
       do
       {
-        v23 = v22;
-        v22 += 16;
+        v23 = selfCopy4;
+        selfCopy4 += 16;
         v24 = *(v23 + 24);
         v74 = v24 == v21;
         v25 = v24 < v21;
@@ -511,10 +511,10 @@ LABEL_19:
 
       while (v25);
       v26 = a2;
-      if (v23 == a1)
+      if (v23 == self)
       {
         v31 = a2;
-        while (v22 < v31)
+        while (selfCopy4 < v31)
         {
           v27 = (v31 - 16);
           v32 = *(v31 - 8);
@@ -557,23 +557,23 @@ LABEL_19:
       }
 
 LABEL_35:
-      if (v22 >= v27)
+      if (selfCopy4 >= v27)
       {
-        v7 = v22;
+        selfCopy = selfCopy4;
       }
 
       else
       {
         v35 = v27;
-        v7 = v22;
+        selfCopy = selfCopy4;
         do
         {
-          std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:nn200100]<OffRouteJunctionInfo *&,OffRouteJunctionInfo *&>(v7, v35);
+          std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:nn200100]<OffRouteJunctionInfo *&,OffRouteJunctionInfo *&>(selfCopy, v35);
           do
           {
-            v36 = *(v7 + 24);
-            v37 = *(v7 + 28);
-            v7 += 16;
+            v36 = *(selfCopy + 24);
+            v37 = *(selfCopy + 28);
+            selfCopy += 16;
             v74 = v36 == v21;
             v38 = v36 < v21;
             if (v74)
@@ -599,33 +599,33 @@ LABEL_35:
           while (!v41);
         }
 
-        while (v7 < v35);
+        while (selfCopy < v35);
       }
 
-      if (v7 - 16 != a1)
+      if (selfCopy - 16 != self)
       {
-        v42 = *(v7 - 16);
-        *(v7 - 16) = 0;
-        v43 = *a1;
-        *a1 = v42;
+        v42 = *(selfCopy - 16);
+        *(selfCopy - 16) = 0;
+        v43 = *self;
+        *self = v42;
 
-        *(a1 + 8) = *(v7 - 8);
+        *(self + 8) = *(selfCopy - 8);
       }
 
-      v44 = *(v7 - 16);
-      *(v7 - 16) = v20;
+      v44 = *(selfCopy - 16);
+      *(selfCopy - 16) = v20;
 
-      *(v7 - 8) = v21;
-      *(v7 - 4) = v16;
-      if (v22 < v27)
+      *(selfCopy - 8) = v21;
+      *(selfCopy - 4) = v16;
+      if (selfCopy4 < v27)
       {
         goto LABEL_52;
       }
 
-      v45 = std::__insertion_sort_incomplete[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *>(a1, v7 - 16);
-      if (std::__insertion_sort_incomplete[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *>(v7, a2))
+      v45 = std::__insertion_sort_incomplete[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *>(self, selfCopy - 16);
+      if (std::__insertion_sort_incomplete[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *>(selfCopy, a2))
       {
-        a2 = v7 - 16;
+        a2 = selfCopy - 16;
         if (!v45)
         {
           goto LABEL_1;
@@ -637,16 +637,16 @@ LABEL_35:
       if (!v45)
       {
 LABEL_52:
-        std::__introsort<std::_ClassicAlgPolicy,[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,false>(a1, v7 - 16, a3, a4 & 1);
+        std::__introsort<std::_ClassicAlgPolicy,[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,false>(self, selfCopy - 16, a3, a4 & 1);
         a4 = 0;
       }
     }
 
     else
     {
-      v46 = *a1;
-      *a1 = 0;
-      v47 = *(a1 + 8);
+      v46 = *self;
+      *self = 0;
+      v47 = *(self + 8);
       v48 = *(a2 - 8);
       v74 = v48 == v47;
       v49 = v48 > v47;
@@ -657,12 +657,12 @@ LABEL_52:
 
       if (v49)
       {
-        v50 = a1;
+        selfCopy5 = self;
         do
         {
-          v7 = v50 + 16;
-          v51 = *(v50 + 24);
-          v52 = *(v50 + 28) > v16;
+          selfCopy = selfCopy5 + 16;
+          v51 = *(selfCopy5 + 24);
+          v52 = *(selfCopy5 + 28) > v16;
           v74 = v51 == v47;
           v53 = v51 > v47;
           if (v74)
@@ -670,7 +670,7 @@ LABEL_52:
             v53 = v52;
           }
 
-          v50 = v7;
+          selfCopy5 = selfCopy;
         }
 
         while (!v53);
@@ -678,17 +678,17 @@ LABEL_52:
 
       else
       {
-        v54 = a1 + 16;
+        v54 = self + 16;
         do
         {
-          v7 = v54;
+          selfCopy = v54;
           if (v54 >= a2)
           {
             break;
           }
 
           v55 = *(v54 + 8);
-          v56 = *(v7 + 12) > v16;
+          v56 = *(selfCopy + 12) > v16;
           v74 = v55 == v47;
           v57 = v55 > v47;
           if (!v74)
@@ -696,14 +696,14 @@ LABEL_52:
             v56 = v57;
           }
 
-          v54 = v7 + 16;
+          v54 = selfCopy + 16;
         }
 
         while (!v56);
       }
 
       v58 = a2;
-      if (v7 < a2)
+      if (selfCopy < a2)
       {
         v59 = a2;
         do
@@ -724,14 +724,14 @@ LABEL_52:
         while (v62);
       }
 
-      while (v7 < v58)
+      while (selfCopy < v58)
       {
-        std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:nn200100]<OffRouteJunctionInfo *&,OffRouteJunctionInfo *&>(v7, v58);
+        std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:nn200100]<OffRouteJunctionInfo *&,OffRouteJunctionInfo *&>(selfCopy, v58);
         do
         {
-          v63 = *(v7 + 24);
-          v64 = *(v7 + 28);
-          v7 += 16;
+          v63 = *(selfCopy + 24);
+          v64 = *(selfCopy + 28);
+          selfCopy += 16;
           v74 = v63 == v47;
           v65 = v63 > v47;
           if (v74)
@@ -757,29 +757,29 @@ LABEL_52:
         while (v68);
       }
 
-      if (v7 - 16 != a1)
+      if (selfCopy - 16 != self)
       {
-        v69 = *(v7 - 16);
-        *(v7 - 16) = 0;
-        v70 = *a1;
-        *a1 = v69;
+        v69 = *(selfCopy - 16);
+        *(selfCopy - 16) = 0;
+        v70 = *self;
+        *self = v69;
 
-        *(a1 + 8) = *(v7 - 8);
+        *(self + 8) = *(selfCopy - 8);
       }
 
-      v71 = *(v7 - 16);
-      *(v7 - 16) = v46;
+      v71 = *(selfCopy - 16);
+      *(selfCopy - 16) = v46;
 
       a4 = 0;
-      *(v7 - 8) = v47;
-      *(v7 - 4) = v16;
+      *(selfCopy - 8) = v47;
+      *(selfCopy - 4) = v16;
     }
   }
 
   if (v8 == 3)
   {
 
-    std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(v7, v7 + 16, v183);
+    std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(selfCopy, selfCopy + 16, v183);
     return;
   }
 
@@ -788,51 +788,51 @@ LABEL_52:
     if (v8 == 5)
     {
 
-      std::__sort5[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(v7, v7 + 16, v7 + 32, v7 + 48, v183);
+      std::__sort5[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(selfCopy, selfCopy + 16, selfCopy + 32, selfCopy + 48, v183);
       return;
     }
 
     goto LABEL_9;
   }
 
-  std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(v7, v7 + 16, v7 + 32);
+  std::__sort3[abi:nn200100]<std::_ClassicAlgPolicy,-[VKLabelNavRoadGraph(junctionlist) offRouteGraphJunctionsWithNavContext:maxJunctions:isOnRoute:]::$_2 &,OffRouteJunctionInfo *,0>(selfCopy, selfCopy + 16, selfCopy + 32);
   v78 = *(a2 - 8);
-  v79 = *(v7 + 40);
+  v79 = *(selfCopy + 40);
   v74 = v78 == v79;
   v80 = v78 < v79;
   if (v74)
   {
-    v80 = *(a2 - 4) < *(v7 + 44);
+    v80 = *(a2 - 4) < *(selfCopy + 44);
   }
 
   if (v80)
   {
-    std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:nn200100]<OffRouteJunctionInfo *&,OffRouteJunctionInfo *&>((v7 + 32), v183);
-    v81 = *(v7 + 40);
-    v82 = *(v7 + 24);
+    std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:nn200100]<OffRouteJunctionInfo *&,OffRouteJunctionInfo *&>((selfCopy + 32), v183);
+    v81 = *(selfCopy + 40);
+    v82 = *(selfCopy + 24);
     v74 = v81 == v82;
     v83 = v81 < v82;
     if (v74)
     {
-      v83 = *(v7 + 44) < *(v7 + 28);
+      v83 = *(selfCopy + 44) < *(selfCopy + 28);
     }
 
     if (v83)
     {
-      std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:nn200100]<OffRouteJunctionInfo *&,OffRouteJunctionInfo *&>((v7 + 16), (v7 + 32));
-      v84 = *(v7 + 24);
-      v85 = *(v7 + 8);
+      std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:nn200100]<OffRouteJunctionInfo *&,OffRouteJunctionInfo *&>((selfCopy + 16), (selfCopy + 32));
+      v84 = *(selfCopy + 24);
+      v85 = *(selfCopy + 8);
       v74 = v84 == v85;
       v86 = v84 < v85;
       if (v74)
       {
-        v86 = *(v7 + 28) < *(v7 + 12);
+        v86 = *(selfCopy + 28) < *(selfCopy + 12);
       }
 
       if (v86)
       {
-        v77 = (v7 + 16);
-        v76 = v7;
+        v77 = (selfCopy + 16);
+        v76 = selfCopy;
         goto LABEL_92;
       }
     }

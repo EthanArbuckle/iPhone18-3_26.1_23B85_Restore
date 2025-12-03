@@ -1,22 +1,22 @@
 @interface HMDSelfRemovalWatchdog
 + (id)logCategory;
-- (HMDSelfRemovalWatchdog)initWithCurrentAccessoryUUID:(id)a3 workQueue:(id)a4;
+- (HMDSelfRemovalWatchdog)initWithCurrentAccessoryUUID:(id)d workQueue:(id)queue;
 - (id)_retrieveExpectedObjectIDsTokenMap;
-- (void)_stopWithError:(id)a3;
+- (void)_stopWithError:(id)error;
 - (void)configure;
-- (void)monitorDidObserveExportComplete:(id)a3;
-- (void)startWithCompletion:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)monitorDidObserveExportComplete:(id)complete;
+- (void)startWithCompletion:(id)completion;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDSelfRemovalWatchdog
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -27,14 +27,14 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDSelfRemovalWatchdog *)v6 monitor];
-  v10 = [v9 managedObjectContext];
+  monitor = [(HMDSelfRemovalWatchdog *)selfCopy monitor];
+  managedObjectContext = [monitor managedObjectContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __39__HMDSelfRemovalWatchdog_timerDidFire___block_invoke;
   v12[3] = &unk_27868A728;
-  v12[4] = v6;
-  [v10 performBlock:v12];
+  v12[4] = selfCopy;
+  [managedObjectContext performBlock:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -46,16 +46,16 @@ void __39__HMDSelfRemovalWatchdog_timerDidFire___block_invoke(uint64_t a1)
   [v1 _stopWithError:v2];
 }
 
-- (void)monitorDidObserveExportComplete:(id)a3
+- (void)monitorDidObserveExportComplete:(id)complete
 {
-  v4 = [(HMDSelfRemovalWatchdog *)self monitor];
-  v5 = [v4 managedObjectContext];
+  monitor = [(HMDSelfRemovalWatchdog *)self monitor];
+  managedObjectContext = [monitor managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__HMDSelfRemovalWatchdog_monitorDidObserveExportComplete___block_invoke;
   v6[3] = &unk_27868A728;
   v6[4] = self;
-  [v5 performBlock:v6];
+  [managedObjectContext performBlock:v6];
 }
 
 uint64_t __58__HMDSelfRemovalWatchdog_monitorDidObserveExportComplete___block_invoke(uint64_t a1)
@@ -82,20 +82,20 @@ uint64_t __58__HMDSelfRemovalWatchdog_monitorDidObserveExportComplete___block_in
 {
   v62 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBE4B0];
-  v4 = [(HMDSelfRemovalWatchdog *)self selfRemovalBeginDate];
-  v5 = [v3 fetchHistoryAfterDate:v4];
+  selfRemovalBeginDate = [(HMDSelfRemovalWatchdog *)self selfRemovalBeginDate];
+  v5 = [v3 fetchHistoryAfterDate:selfRemovalBeginDate];
 
   [v5 setResultType:5];
   v6 = +[HMDCoreData sharedInstance];
-  v7 = [v6 cloudPrivateStore];
-  v57 = v7;
+  cloudPrivateStore = [v6 cloudPrivateStore];
+  v57 = cloudPrivateStore;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
   [v5 setAffectedStores:v8];
 
-  v9 = [(HMDSelfRemovalWatchdog *)self monitor];
-  v10 = [v9 managedObjectContext];
+  monitor = [(HMDSelfRemovalWatchdog *)self monitor];
+  managedObjectContext = [monitor managedObjectContext];
   v51 = 0;
-  v11 = [v10 executeRequest:v5 error:&v51];
+  v11 = [managedObjectContext executeRequest:v5 error:&v51];
   v12 = v51;
 
   if (v11)
@@ -124,24 +124,24 @@ uint64_t __58__HMDSelfRemovalWatchdog_monitorDidObserveExportComplete___block_in
           }
 
           v18 = *(*(&v47 + 1) + 8 * i);
-          v19 = [v18 changes];
+          changes = [v18 changes];
           v46[0] = MEMORY[0x277D85DD0];
           v46[1] = 3221225472;
           v46[2] = __60__HMDSelfRemovalWatchdog__retrieveExpectedObjectIDsTokenMap__block_invoke;
           v46[3] = &unk_278676C18;
           v46[4] = self;
-          v20 = [v19 na_firstObjectPassingTest:v46];
+          v20 = [changes na_firstObjectPassingTest:v46];
 
           if (v20)
           {
             v26 = v18;
-            v27 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
             v52 = 0u;
             v53 = 0u;
             v54 = 0u;
             v55 = 0u;
-            v28 = [v26 changes];
-            v29 = [v28 countByEnumeratingWithState:&v52 objects:buf count:16];
+            changes2 = [v26 changes];
+            v29 = [changes2 countByEnumeratingWithState:&v52 objects:buf count:16];
             v13 = obj;
             if (v29)
             {
@@ -153,22 +153,22 @@ uint64_t __58__HMDSelfRemovalWatchdog_monitorDidObserveExportComplete___block_in
                 {
                   if (*v53 != v31)
                   {
-                    objc_enumerationMutation(v28);
+                    objc_enumerationMutation(changes2);
                   }
 
                   v33 = *(*(&v52 + 1) + 8 * j);
-                  v34 = [v26 token];
-                  v35 = [v33 changedObjectID];
-                  [v27 setObject:v34 forKey:v35];
+                  token = [v26 token];
+                  changedObjectID = [v33 changedObjectID];
+                  [dictionary setObject:token forKey:changedObjectID];
                 }
 
-                v30 = [v28 countByEnumeratingWithState:&v52 objects:buf count:16];
+                v30 = [changes2 countByEnumeratingWithState:&v52 objects:buf count:16];
               }
 
               while (v30);
             }
 
-            v25 = [v27 copy];
+            v25 = [dictionary copy];
             goto LABEL_21;
           }
         }
@@ -185,7 +185,7 @@ uint64_t __58__HMDSelfRemovalWatchdog_monitorDidObserveExportComplete___block_in
     }
 
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -207,7 +207,7 @@ LABEL_21:
   else
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = self;
+    selfCopy2 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
@@ -246,33 +246,33 @@ uint64_t __60__HMDSelfRemovalWatchdog__retrieveExpectedObjectIDsTokenMap__block_
   return v6;
 }
 
-- (void)_stopWithError:(id)a3
+- (void)_stopWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(HMDSelfRemovalWatchdog *)self watchdogTimer];
-  [v4 suspend];
+  errorCopy = error;
+  watchdogTimer = [(HMDSelfRemovalWatchdog *)self watchdogTimer];
+  [watchdogTimer suspend];
 
-  v5 = [(HMDSelfRemovalWatchdog *)self completion];
-  v6 = v5;
-  if (v5)
+  completion = [(HMDSelfRemovalWatchdog *)self completion];
+  v6 = completion;
+  if (completion)
   {
-    (*(v5 + 16))(v5, v7);
+    (*(completion + 16))(completion, errorCopy);
   }
 
   [(HMDSelfRemovalWatchdog *)self setCompletion:0];
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[HMDCoreDataCloudTransform sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__HMDSelfRemovalWatchdog_startWithCompletion___block_invoke;
   v7[3] = &unk_278689A68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 runTransformWithCompletion:v7];
 }
 
@@ -358,9 +358,9 @@ void __46__HMDSelfRemovalWatchdog_startWithCompletion___block_invoke_2(uint64_t 
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = +[HMDCoreDataCloudTransform sharedInstance];
-  v4 = [v3 newCloudMirrorExportStatusMonitor];
+  newCloudMirrorExportStatusMonitor = [v3 newCloudMirrorExportStatusMonitor];
   monitor = self->_monitor;
-  self->_monitor = v4;
+  self->_monitor = newCloudMirrorExportStatusMonitor;
 
   v15 = 0;
   v16 = &v15;
@@ -368,18 +368,18 @@ void __46__HMDSelfRemovalWatchdog_startWithCompletion___block_invoke_2(uint64_t 
   v18 = __Block_byref_object_copy__85229;
   v19 = __Block_byref_object_dispose__85230;
   v20 = 0;
-  v6 = [(HMDSelfRemovalWatchdog *)self monitor];
-  v7 = [v6 managedObjectContext];
+  monitor = [(HMDSelfRemovalWatchdog *)self monitor];
+  managedObjectContext = [monitor managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __35__HMDSelfRemovalWatchdog_configure__block_invoke;
   v14[3] = &unk_27868A688;
   v14[4] = self;
   v14[5] = &v15;
-  [v7 performBlockAndWait:v14];
+  [managedObjectContext performBlockAndWait:v14];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -393,7 +393,7 @@ void __46__HMDSelfRemovalWatchdog_startWithCompletion___block_invoke_2(uint64_t 
   }
 
   objc_autoreleasePoolPop(v8);
-  [(HMDSelfRemovalWatchdog *)v9 setCurrentAccessoryModelObjectID:v16[5]];
+  [(HMDSelfRemovalWatchdog *)selfCopy setCurrentAccessoryModelObjectID:v16[5]];
   _Block_object_dispose(&v15, 8);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -447,21 +447,21 @@ void __35__HMDSelfRemovalWatchdog_configure__block_invoke(uint64_t a1)
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDSelfRemovalWatchdog)initWithCurrentAccessoryUUID:(id)a3 workQueue:(id)a4
+- (HMDSelfRemovalWatchdog)initWithCurrentAccessoryUUID:(id)d workQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = HMDSelfRemovalWatchdog;
   v9 = [(HMDSelfRemovalWatchdog *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_currentAccessoryUUID, a3);
-    objc_storeStrong(&v10->_workQueue, a4);
-    v11 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&v9->_currentAccessoryUUID, d);
+    objc_storeStrong(&v10->_workQueue, queue);
+    date = [MEMORY[0x277CBEAA8] date];
     selfRemovalBeginDate = v10->_selfRemovalBeginDate;
-    v10->_selfRemovalBeginDate = v11;
+    v10->_selfRemovalBeginDate = date;
   }
 
   return v10;

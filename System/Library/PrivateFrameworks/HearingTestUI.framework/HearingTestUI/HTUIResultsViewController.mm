@@ -1,12 +1,12 @@
 @interface HTUIResultsViewController
-- (_TtC13HearingTestUI25HTUIResultsViewController)initWithAudiogram:(id)a3 healthStore:(id)a4 isHearingAssistAvailable:(BOOL)a5 application:(id)a6 deviceBluetoothUUID:(id)a7;
+- (_TtC13HearingTestUI25HTUIResultsViewController)initWithAudiogram:(id)audiogram healthStore:(id)store isHearingAssistAvailable:(BOOL)available application:(id)application deviceBluetoothUUID:(id)d;
 - (void)didTapDone;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation HTUIResultsViewController
 
-- (_TtC13HearingTestUI25HTUIResultsViewController)initWithAudiogram:(id)a3 healthStore:(id)a4 isHearingAssistAvailable:(BOOL)a5 application:(id)a6 deviceBluetoothUUID:(id)a7
+- (_TtC13HearingTestUI25HTUIResultsViewController)initWithAudiogram:(id)audiogram healthStore:(id)store isHearingAssistAvailable:(BOOL)available application:(id)application deviceBluetoothUUID:(id)d
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -16,15 +16,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(d);
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
-  v14 = HTUIResultsViewController.init(audiogram:healthStore:isHearingAssistAvailable:application:deviceBluetoothUUID:)(a3, a4, a5, a6, sub_20CDF5FF0, v13);
+  v14 = HTUIResultsViewController.init(audiogram:healthStore:isHearingAssistAvailable:application:deviceBluetoothUUID:)(audiogram, store, available, application, sub_20CDF5FF0, v13);
 
   return v14;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -34,8 +34,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_20CDF1CB4(a3);
+  selfCopy = self;
+  sub_20CDF1CB4(appear);
 }
 
 - (void)didTapDone
@@ -59,7 +59,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   [(HTUIResultsViewController *)self dismissViewControllerAnimated:1 completion:0, self];

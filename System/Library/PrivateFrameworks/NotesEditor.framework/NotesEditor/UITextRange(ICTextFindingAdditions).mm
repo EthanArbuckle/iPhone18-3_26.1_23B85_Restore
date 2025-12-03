@@ -8,47 +8,47 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 _ic_textFindingResult];
-  if (v8 && (v9 = v8, [v6 _ic_textFindingResult], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+  _ic_textFindingResult = [self _ic_textFindingResult];
+  if (_ic_textFindingResult && (v9 = _ic_textFindingResult, [v6 _ic_textFindingResult], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
   {
-    v11 = [a1 _ic_textFindingResult];
-    v12 = [v6 _ic_textFindingResult];
-    v13 = [v11 compare:v12];
+    _ic_textFindingResult2 = [self _ic_textFindingResult];
+    _ic_textFindingResult3 = [v6 _ic_textFindingResult];
+    v13 = [_ic_textFindingResult2 compare:_ic_textFindingResult3];
   }
 
   else
   {
-    v14 = [a1 _ic_textFindingResult];
-    if (v14)
+    _ic_textFindingResult4 = [self _ic_textFindingResult];
+    if (_ic_textFindingResult4)
     {
-      v15 = [a1 _ic_textFindingResult];
-      v16 = [v15 range];
+      _ic_textFindingResult5 = [self _ic_textFindingResult];
+      range = [_ic_textFindingResult5 range];
       v18 = v17;
     }
 
     else
     {
-      v16 = [v7 ic_characterRangeFromTextRange:a1];
+      range = [v7 ic_characterRangeFromTextRange:self];
       v18 = v19;
     }
 
-    v20 = [v6 _ic_textFindingResult];
-    if (v20)
+    _ic_textFindingResult6 = [v6 _ic_textFindingResult];
+    if (_ic_textFindingResult6)
     {
-      v21 = [v6 _ic_textFindingResult];
-      v22 = [v21 range];
+      _ic_textFindingResult7 = [v6 _ic_textFindingResult];
+      range2 = [_ic_textFindingResult7 range];
       v24 = v23;
     }
 
     else
     {
-      v22 = [v7 ic_characterRangeFromTextRange:v6];
+      range2 = [v7 ic_characterRangeFromTextRange:v6];
       v24 = v25;
     }
 
-    if (v16 >= v22)
+    if (range >= range2)
     {
-      if (v16 != v22)
+      if (range != range2)
       {
         v13 = 1;
         goto LABEL_16;

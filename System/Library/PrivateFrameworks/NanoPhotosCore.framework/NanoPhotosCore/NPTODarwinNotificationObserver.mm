@@ -1,15 +1,15 @@
 @interface NPTODarwinNotificationObserver
-- (NPTODarwinNotificationObserver)initWithNotificationName:(id)a3 queue:(id)a4 block:(id)a5;
+- (NPTODarwinNotificationObserver)initWithNotificationName:(id)name queue:(id)queue block:(id)block;
 - (void)dealloc;
 @end
 
 @implementation NPTODarwinNotificationObserver
 
-- (NPTODarwinNotificationObserver)initWithNotificationName:(id)a3 queue:(id)a4 block:(id)a5
+- (NPTODarwinNotificationObserver)initWithNotificationName:(id)name queue:(id)queue block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = NPTODarwinNotificationObserver;
   v11 = [(NPTODarwinNotificationObserver *)&v19 init];
@@ -20,13 +20,13 @@
   }
 
   v11->_notificationToken = -1;
-  v13 = [v8 UTF8String];
+  uTF8String = [nameCopy UTF8String];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __71__NPTODarwinNotificationObserver_initWithNotificationName_queue_block___block_invoke;
   handler[3] = &unk_27995B7F0;
-  v18 = v10;
-  v14 = notify_register_dispatch(v13, v12 + 2, v9, handler);
+  v18 = blockCopy;
+  v14 = notify_register_dispatch(uTF8String, v12 + 2, queueCopy, handler);
 
   if (v14)
   {

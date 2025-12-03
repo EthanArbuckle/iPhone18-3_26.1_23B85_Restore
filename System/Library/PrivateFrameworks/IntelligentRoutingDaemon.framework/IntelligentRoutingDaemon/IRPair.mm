@@ -1,31 +1,31 @@
 @interface IRPair
-+ (id)pairWithFirst:(id)a3 second:(id)a4;
-- (IRPair)initWithFirst:(id)a3 second:(id)a4;
++ (id)pairWithFirst:(id)first second:(id)second;
+- (IRPair)initWithFirst:(id)first second:(id)second;
 @end
 
 @implementation IRPair
 
-+ (id)pairWithFirst:(id)a3 second:(id)a4
++ (id)pairWithFirst:(id)first second:(id)second
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithFirst:v7 second:v6];
+  secondCopy = second;
+  firstCopy = first;
+  v8 = [[self alloc] initWithFirst:firstCopy second:secondCopy];
 
   return v8;
 }
 
-- (IRPair)initWithFirst:(id)a3 second:(id)a4
+- (IRPair)initWithFirst:(id)first second:(id)second
 {
-  v7 = a3;
-  v8 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v12.receiver = self;
   v12.super_class = IRPair;
   v9 = [(IRPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_first, a3);
-    objc_storeStrong(&v10->_second, a4);
+    objc_storeStrong(&v9->_first, first);
+    objc_storeStrong(&v10->_second, second);
   }
 
   return v10;

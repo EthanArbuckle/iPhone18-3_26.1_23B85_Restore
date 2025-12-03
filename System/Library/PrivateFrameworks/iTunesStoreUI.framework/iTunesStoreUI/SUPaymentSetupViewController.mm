@@ -1,24 +1,24 @@
 @interface SUPaymentSetupViewController
-- (SUPaymentSetupViewController)initWithPaymentSetupRequest:(id)a3;
+- (SUPaymentSetupViewController)initWithPaymentSetupRequest:(id)request;
 - (SUPaymentSetupViewControllerDelegate)delegate;
 - (void)_setup;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SUPaymentSetupViewController
 
-- (SUPaymentSetupViewController)initWithPaymentSetupRequest:(id)a3
+- (SUPaymentSetupViewController)initWithPaymentSetupRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = SUPaymentSetupViewController;
   v6 = [(SUPaymentSetupViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paymentSetupRequest, a3);
+    objc_storeStrong(&v6->_paymentSetupRequest, request);
     [(SUPaymentSetupViewController *)v7 _setup];
   }
 
@@ -29,8 +29,8 @@
 {
   [(SUPaymentSetupViewController *)self setModalPresentationStyle:5];
   v3 = objc_alloc(ISWeakLinkedClassForString());
-  v6 = [(SUPaymentSetupViewController *)self paymentSetupRequest];
-  v4 = [v3 initWithPaymentSetupRequest:v6];
+  paymentSetupRequest = [(SUPaymentSetupViewController *)self paymentSetupRequest];
+  v4 = [v3 initWithPaymentSetupRequest:paymentSetupRequest];
   childViewController = self->_childViewController;
   self->_childViewController = v4;
 }
@@ -38,42 +38,42 @@
 - (void)loadView
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [v4 setUserInteractionEnabled:0];
   [(SUPaymentSetupViewController *)self setView:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SUPaymentSetupViewController;
-  [(SUPaymentSetupViewController *)&v6 viewDidAppear:a3];
-  v4 = [(SUPaymentSetupViewController *)self childViewController];
+  [(SUPaymentSetupViewController *)&v6 viewDidAppear:appear];
+  childViewController = [(SUPaymentSetupViewController *)self childViewController];
 
-  if (v4)
+  if (childViewController)
   {
-    v5 = [(SUPaymentSetupViewController *)self childViewController];
-    [(SUPaymentSetupViewController *)self presentViewController:v5 animated:1 completion:0];
+    childViewController2 = [(SUPaymentSetupViewController *)self childViewController];
+    [(SUPaymentSetupViewController *)self presentViewController:childViewController2 animated:1 completion:0];
   }
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(SUPaymentSetupViewController *)self setChildViewController:0];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__SUPaymentSetupViewController_dismissViewControllerAnimated_completion___block_invoke;
   v9[3] = &unk_1E8164638;
   v9[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v8.receiver = self;
   v8.super_class = SUPaymentSetupViewController;
-  v7 = v6;
-  [(SUPaymentSetupViewController *)&v8 dismissViewControllerAnimated:v4 completion:v9];
+  v7 = completionCopy;
+  [(SUPaymentSetupViewController *)&v8 dismissViewControllerAnimated:animatedCopy completion:v9];
 }
 
 uint64_t __73__SUPaymentSetupViewController_dismissViewControllerAnimated_completion___block_invoke(uint64_t a1)

@@ -1,17 +1,17 @@
 @interface TabOverview.SearchBarBackgroundContainerView
-- (_TtCC12MobileSafari11TabOverview32SearchBarBackgroundContainerView)initWithCoder:(id)a3;
-- (_TtCC12MobileSafari11TabOverview32SearchBarBackgroundContainerView)initWithFrame:(CGRect)a3;
+- (_TtCC12MobileSafari11TabOverview32SearchBarBackgroundContainerView)initWithCoder:(id)coder;
+- (_TtCC12MobileSafari11TabOverview32SearchBarBackgroundContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation TabOverview.SearchBarBackgroundContainerView
 
-- (_TtCC12MobileSafari11TabOverview32SearchBarBackgroundContainerView)initWithFrame:(CGRect)a3
+- (_TtCC12MobileSafari11TabOverview32SearchBarBackgroundContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtCC12MobileSafari11TabOverview32SearchBarBackgroundContainerView_backgroundView;
   if (qword_1EA9D2238 != -1)
   {
@@ -32,12 +32,12 @@
   *(&self->super.super.super.super.super.isa + v8) = v10;
   v13.receiver = self;
   v13.super_class = type metadata accessor for TabOverview.SearchBarBackgroundContainerView();
-  v11 = [(SFFluidTabOverviewReusableView *)&v13 initWithFrame:x, y, width, height];
-  [*(&v11->super.super.super.super.super.isa + OBJC_IVAR____TtC12MobileSafari29SFFluidCollectionReusableView_contentView) addSubview_];
-  return v11;
+  height = [(SFFluidTabOverviewReusableView *)&v13 initWithFrame:x, y, width, height];
+  [*(&height->super.super.super.super.super.isa + OBJC_IVAR____TtC12MobileSafari29SFFluidCollectionReusableView_contentView) addSubview_];
+  return height;
 }
 
-- (_TtCC12MobileSafari11TabOverview32SearchBarBackgroundContainerView)initWithCoder:(id)a3
+- (_TtCC12MobileSafari11TabOverview32SearchBarBackgroundContainerView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtCC12MobileSafari11TabOverview32SearchBarBackgroundContainerView_backgroundView;
   if (qword_1EA9D2238 != -1)

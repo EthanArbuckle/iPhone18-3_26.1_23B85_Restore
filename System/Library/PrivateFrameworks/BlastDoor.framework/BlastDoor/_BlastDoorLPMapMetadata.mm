@@ -1,11 +1,11 @@
 @interface _BlastDoorLPMapMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)location;
 - (_BlastDoorLPMapMetadata)init;
-- (_BlastDoorLPMapMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_enumerateAsynchronousFields:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_BlastDoorLPMapMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_enumerateAsynchronousFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPMapMetadata
@@ -27,21 +27,21 @@
   return v3;
 }
 
-- (_BlastDoorLPMapMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPMapMetadata)initWithCoder:(id)coder
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v62.receiver = self;
   v62.super_class = _BlastDoorLPMapMetadata;
   v5 = [(_BlastDoorLPMapMetadata *)&v62 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"name");
+    v6 = decodeStringForKey(coderCopy, @"name");
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 
-    v8 = decodeNumberForKey(v4, @"locationLatitude");
-    v9 = decodeNumberForKey(v4, @"locationLongitude");
+    v8 = decodeNumberForKey(coderCopy, @"locationLatitude");
+    v9 = decodeNumberForKey(coderCopy, @"locationLongitude");
     v10 = v9;
     v11 = (v5 + 160);
     if (v8 && v9)
@@ -59,84 +59,84 @@
       *v11 = *MEMORY[0x277CE4278];
     }
 
-    v16 = decodeStringForKey(v4, @"address");
+    v16 = decodeStringForKey(coderCopy, @"address");
     v17 = *(v5 + 3);
     *(v5 + 3) = v16;
 
     v18 = MEMORY[0x277CBEB98];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 _bd_lp_strictlyDecodeObjectOfClasses:v20 forKey:@"addressComponents"];
+    v21 = [coderCopy _bd_lp_strictlyDecodeObjectOfClasses:v20 forKey:@"addressComponents"];
     v22 = *(v5 + 4);
     *(v5 + 4) = v21;
 
-    v23 = decodeStringForKey(v4, @"category");
+    v23 = decodeStringForKey(coderCopy, @"category");
     v24 = *(v5 + 5);
     *(v5 + 5) = v23;
 
-    v25 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"categoryIcon"];
+    v25 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"categoryIcon"];
     v26 = *(v5 + 6);
     *(v5 + 6) = v25;
 
-    v27 = decodeStringForKey(v4, @"searchQuery");
+    v27 = decodeStringForKey(coderCopy, @"searchQuery");
     v28 = *(v5 + 7);
     *(v5 + 7) = v27;
 
-    v29 = decodeStringForKey(v4, @"directionsType");
+    v29 = decodeStringForKey(coderCopy, @"directionsType");
     v30 = *(v5 + 8);
     *(v5 + 8) = v29;
 
-    v31 = decodeNumberForKey(v4, @"transportType");
+    v31 = decodeNumberForKey(coderCopy, @"transportType");
     v32 = *(v5 + 9);
     *(v5 + 9) = v31;
 
-    v33 = decodeStringForKey(v4, @"directionsSourceAddress");
+    v33 = decodeStringForKey(coderCopy, @"directionsSourceAddress");
     v34 = *(v5 + 10);
     *(v5 + 10) = v33;
 
     v35 = MEMORY[0x277CBEB98];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    v38 = [v4 _bd_lp_strictlyDecodeObjectOfClasses:v37 forKey:@"directionsSourceAddressComponents"];
+    v38 = [coderCopy _bd_lp_strictlyDecodeObjectOfClasses:v37 forKey:@"directionsSourceAddressComponents"];
     v39 = *(v5 + 11);
     *(v5 + 11) = v38;
 
-    v40 = decodeStringForKey(v4, @"directionsSourceLocationName");
+    v40 = decodeStringForKey(coderCopy, @"directionsSourceLocationName");
     v41 = *(v5 + 12);
     *(v5 + 12) = v40;
 
-    v42 = decodeStringForKey(v4, @"directionsDestinationAddress");
+    v42 = decodeStringForKey(coderCopy, @"directionsDestinationAddress");
     v43 = *(v5 + 13);
     *(v5 + 13) = v42;
 
     v44 = MEMORY[0x277CBEB98];
     v45 = objc_opt_class();
     v46 = [v44 setWithObjects:{v45, objc_opt_class(), 0}];
-    v47 = [v4 _bd_lp_strictlyDecodeObjectOfClasses:v46 forKey:@"directionsDestinationAddressComponents"];
+    v47 = [coderCopy _bd_lp_strictlyDecodeObjectOfClasses:v46 forKey:@"directionsDestinationAddressComponents"];
     v48 = *(v5 + 14);
     *(v5 + 14) = v47;
 
-    v49 = decodeStringForKey(v4, @"directionsDestinationLocationName");
+    v49 = decodeStringForKey(coderCopy, @"directionsDestinationLocationName");
     v50 = *(v5 + 15);
     *(v5 + 15) = v49;
 
-    v51 = decodeNumberForKey(v4, @"distance");
+    v51 = decodeNumberForKey(coderCopy, @"distance");
     v52 = *(v5 + 16);
     *(v5 + 16) = v51;
 
-    v53 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"image"];
+    v53 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"image"];
     v54 = *(v5 + 17);
     *(v5 + 17) = v53;
 
-    v55 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"darkImage"];
+    v55 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"darkImage"];
     v56 = *(v5 + 18);
     *(v5 + 18) = v55;
 
-    v57 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"storeFront"];
+    v57 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"storeFront"];
     v58 = *(v5 + 19);
     *(v5 + 19) = v57;
 
-    v5[9] = [v4 decodeBoolForKey:@"isPointOfInterest"];
+    v5[9] = [coderCopy decodeBoolForKey:@"isPointOfInterest"];
     v59 = v5;
   }
 
@@ -144,99 +144,99 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 _bd_lp_encodeObjectIfNotNil:*&self->_isPointOfInterest forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy _bd_lp_encodeObjectIfNotNil:*&self->_isPointOfInterest forKey:@"name"];
   if (CLLocationCoordinate2DIsValid(*&self->_storeFrontImage))
   {
     v4 = [MEMORY[0x277CCABB0] numberWithDouble:*&self->_storeFrontImage];
-    [v6 _bd_lp_encodeObjectIfNotNil:v4 forKey:@"locationLatitude"];
+    [coderCopy _bd_lp_encodeObjectIfNotNil:v4 forKey:@"locationLatitude"];
 
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_location.latitude];
-    [v6 _bd_lp_encodeObjectIfNotNil:v5 forKey:@"locationLongitude"];
+    [coderCopy _bd_lp_encodeObjectIfNotNil:v5 forKey:@"locationLongitude"];
   }
 
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_name forKey:@"address"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_address forKey:@"addressComponents"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_addressComponents forKey:@"category"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_category forKey:@"categoryIcon"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_categoryIcon forKey:@"searchQuery"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_searchQuery forKey:@"directionsType"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_directionsType forKey:@"transportType"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_transportType forKey:@"directionsSourceAddress"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_directionsSourceAddress forKey:@"directionsSourceAddressComponents"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_directionsSourceAddressComponents forKey:@"directionsSourceLocationName"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_directionsSourceLocationName forKey:@"directionsDestinationAddress"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_directionsDestinationAddress forKey:@"directionsDestinationAddressComponents"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_directionsDestinationAddressComponents forKey:@"directionsDestinationLocationName"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_directionsDestinationLocationName forKey:@"distance"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_distance forKey:@"image"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_image forKey:@"darkImage"];
-  [v6 _bd_lp_encodeObjectIfNotNil:self->_darkImage forKey:@"storeFront"];
-  [v6 encodeBool:*(&self->super.__dummyPropertyForObservation + 1) forKey:@"isPointOfInterest"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_name forKey:@"address"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_address forKey:@"addressComponents"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_addressComponents forKey:@"category"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_category forKey:@"categoryIcon"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_categoryIcon forKey:@"searchQuery"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_searchQuery forKey:@"directionsType"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_directionsType forKey:@"transportType"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_transportType forKey:@"directionsSourceAddress"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_directionsSourceAddress forKey:@"directionsSourceAddressComponents"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_directionsSourceAddressComponents forKey:@"directionsSourceLocationName"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_directionsSourceLocationName forKey:@"directionsDestinationAddress"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_directionsDestinationAddress forKey:@"directionsDestinationAddressComponents"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_directionsDestinationAddressComponents forKey:@"directionsDestinationLocationName"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_directionsDestinationLocationName forKey:@"distance"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_distance forKey:@"image"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_image forKey:@"darkImage"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_darkImage forKey:@"storeFront"];
+  [coderCopy encodeBool:*(&self->super.__dummyPropertyForObservation + 1) forKey:@"isPointOfInterest"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPMapMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPMapMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(_BlastDoorLPMapMetadata *)self name];
-    [(_BlastDoorLPMapMetadata *)v4 setName:v5];
+    name = [(_BlastDoorLPMapMetadata *)self name];
+    [(_BlastDoorLPMapMetadata *)v4 setName:name];
 
     [(_BlastDoorLPMapMetadata *)self location];
     [(_BlastDoorLPMapMetadata *)v4 setLocation:?];
-    v6 = [(_BlastDoorLPMapMetadata *)self address];
-    [(_BlastDoorLPMapMetadata *)v4 setAddress:v6];
+    address = [(_BlastDoorLPMapMetadata *)self address];
+    [(_BlastDoorLPMapMetadata *)v4 setAddress:address];
 
-    v7 = [(_BlastDoorLPMapMetadata *)self addressComponents];
-    [(_BlastDoorLPMapMetadata *)v4 setAddressComponents:v7];
+    addressComponents = [(_BlastDoorLPMapMetadata *)self addressComponents];
+    [(_BlastDoorLPMapMetadata *)v4 setAddressComponents:addressComponents];
 
-    v8 = [(_BlastDoorLPMapMetadata *)self category];
-    [(_BlastDoorLPMapMetadata *)v4 setCategory:v8];
+    category = [(_BlastDoorLPMapMetadata *)self category];
+    [(_BlastDoorLPMapMetadata *)v4 setCategory:category];
 
-    v9 = [(_BlastDoorLPMapMetadata *)self categoryIcon];
-    [(_BlastDoorLPMapMetadata *)v4 setCategoryIcon:v9];
+    categoryIcon = [(_BlastDoorLPMapMetadata *)self categoryIcon];
+    [(_BlastDoorLPMapMetadata *)v4 setCategoryIcon:categoryIcon];
 
-    v10 = [(_BlastDoorLPMapMetadata *)self searchQuery];
-    [(_BlastDoorLPMapMetadata *)v4 setSearchQuery:v10];
+    searchQuery = [(_BlastDoorLPMapMetadata *)self searchQuery];
+    [(_BlastDoorLPMapMetadata *)v4 setSearchQuery:searchQuery];
 
-    v11 = [(_BlastDoorLPMapMetadata *)self directionsType];
-    [(_BlastDoorLPMapMetadata *)v4 setDirectionsType:v11];
+    directionsType = [(_BlastDoorLPMapMetadata *)self directionsType];
+    [(_BlastDoorLPMapMetadata *)v4 setDirectionsType:directionsType];
 
-    v12 = [(_BlastDoorLPMapMetadata *)self transportType];
-    [(_BlastDoorLPMapMetadata *)v4 setTransportType:v12];
+    transportType = [(_BlastDoorLPMapMetadata *)self transportType];
+    [(_BlastDoorLPMapMetadata *)v4 setTransportType:transportType];
 
-    v13 = [(_BlastDoorLPMapMetadata *)self directionsSourceAddress];
-    [(_BlastDoorLPMapMetadata *)v4 setDirectionsSourceAddress:v13];
+    directionsSourceAddress = [(_BlastDoorLPMapMetadata *)self directionsSourceAddress];
+    [(_BlastDoorLPMapMetadata *)v4 setDirectionsSourceAddress:directionsSourceAddress];
 
-    v14 = [(_BlastDoorLPMapMetadata *)self directionsSourceAddressComponents];
-    [(_BlastDoorLPMapMetadata *)v4 setDirectionsSourceAddressComponents:v14];
+    directionsSourceAddressComponents = [(_BlastDoorLPMapMetadata *)self directionsSourceAddressComponents];
+    [(_BlastDoorLPMapMetadata *)v4 setDirectionsSourceAddressComponents:directionsSourceAddressComponents];
 
-    v15 = [(_BlastDoorLPMapMetadata *)self directionsSourceLocationName];
-    [(_BlastDoorLPMapMetadata *)v4 setDirectionsSourceLocationName:v15];
+    directionsSourceLocationName = [(_BlastDoorLPMapMetadata *)self directionsSourceLocationName];
+    [(_BlastDoorLPMapMetadata *)v4 setDirectionsSourceLocationName:directionsSourceLocationName];
 
-    v16 = [(_BlastDoorLPMapMetadata *)self directionsDestinationAddress];
-    [(_BlastDoorLPMapMetadata *)v4 setDirectionsDestinationAddress:v16];
+    directionsDestinationAddress = [(_BlastDoorLPMapMetadata *)self directionsDestinationAddress];
+    [(_BlastDoorLPMapMetadata *)v4 setDirectionsDestinationAddress:directionsDestinationAddress];
 
-    v17 = [(_BlastDoorLPMapMetadata *)self directionsDestinationAddressComponents];
-    [(_BlastDoorLPMapMetadata *)v4 setDirectionsDestinationAddressComponents:v17];
+    directionsDestinationAddressComponents = [(_BlastDoorLPMapMetadata *)self directionsDestinationAddressComponents];
+    [(_BlastDoorLPMapMetadata *)v4 setDirectionsDestinationAddressComponents:directionsDestinationAddressComponents];
 
-    v18 = [(_BlastDoorLPMapMetadata *)self directionsDestinationLocationName];
-    [(_BlastDoorLPMapMetadata *)v4 setDirectionsDestinationLocationName:v18];
+    directionsDestinationLocationName = [(_BlastDoorLPMapMetadata *)self directionsDestinationLocationName];
+    [(_BlastDoorLPMapMetadata *)v4 setDirectionsDestinationLocationName:directionsDestinationLocationName];
 
-    v19 = [(_BlastDoorLPMapMetadata *)self distance];
-    [(_BlastDoorLPMapMetadata *)v4 setDistance:v19];
+    distance = [(_BlastDoorLPMapMetadata *)self distance];
+    [(_BlastDoorLPMapMetadata *)v4 setDistance:distance];
 
-    v20 = [(_BlastDoorLPMapMetadata *)self image];
-    [(_BlastDoorLPMapMetadata *)v4 setImage:v20];
+    image = [(_BlastDoorLPMapMetadata *)self image];
+    [(_BlastDoorLPMapMetadata *)v4 setImage:image];
 
-    v21 = [(_BlastDoorLPMapMetadata *)self darkImage];
-    [(_BlastDoorLPMapMetadata *)v4 setDarkImage:v21];
+    darkImage = [(_BlastDoorLPMapMetadata *)self darkImage];
+    [(_BlastDoorLPMapMetadata *)v4 setDarkImage:darkImage];
 
-    v22 = [(_BlastDoorLPMapMetadata *)self storeFrontImage];
-    [(_BlastDoorLPMapMetadata *)v4 setStoreFrontImage:v22];
+    storeFrontImage = [(_BlastDoorLPMapMetadata *)self storeFrontImage];
+    [(_BlastDoorLPMapMetadata *)v4 setStoreFrontImage:storeFrontImage];
 
     [(_BlastDoorLPMapMetadata *)v4 setIsPointOfInterest:[(_BlastDoorLPMapMetadata *)self isPointOfInterest]];
     v23 = v4;
@@ -245,13 +245,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v29.receiver = self;
   v29.super_class = _BlastDoorLPMapMetadata;
-  if ([(_BlastDoorLPMapMetadata *)&v29 isEqual:v4])
+  if ([(_BlastDoorLPMapMetadata *)&v29 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -261,7 +261,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = *(v6 + 2);
       if (v7 | *&self->_isPointOfInterest && ![v7 isEqual:?])
       {
@@ -365,15 +365,15 @@ LABEL_8:
   return v5;
 }
 
-- (void)_enumerateAsynchronousFields:(id)a3
+- (void)_enumerateAsynchronousFields:(id)fields
 {
-  v3 = (a3 + 16);
-  v4 = *(a3 + 2);
-  v5 = a3;
+  v3 = (fields + 16);
+  v4 = *(fields + 2);
+  fieldsCopy = fields;
   v4();
-  (*v3)(v5, @"darkImage");
-  (*v3)(v5, @"storeFrontImage");
-  (*v3)(v5, @"categoryIcon");
+  (*v3)(fieldsCopy, @"darkImage");
+  (*v3)(fieldsCopy, @"storeFrontImage");
+  (*v3)(fieldsCopy, @"categoryIcon");
 }
 
 - (CLLocationCoordinate2D)location

@@ -1,19 +1,19 @@
 @interface MSCategoryTriageAction
-- (MSCategoryTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 categoryType:(unint64_t)a7 changeOptions:(unint64_t)a8;
+- (MSCategoryTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate categoryType:(unint64_t)type changeOptions:(unint64_t)options;
 - (id)_changeAction;
 @end
 
 @implementation MSCategoryTriageAction
 
-- (MSCategoryTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 categoryType:(unint64_t)a7 changeOptions:(unint64_t)a8
+- (MSCategoryTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate categoryType:(unint64_t)type changeOptions:(unint64_t)options
 {
   v11.receiver = self;
   v11.super_class = MSCategoryTriageAction;
-  result = [(MSTriageAction *)&v11 initWithMessageListSelection:a3 origin:a4 actor:a5 delegate:a6];
+  result = [(MSTriageAction *)&v11 initWithMessageListSelection:selection origin:origin actor:actor delegate:delegate];
   if (result)
   {
-    result->_categoryType = a7;
-    result->_changeOptions = a8;
+    result->_categoryType = type;
+    result->_changeOptions = options;
   }
 
   return result;
@@ -22,9 +22,9 @@
 - (id)_changeAction
 {
   v3 = objc_alloc(MEMORY[0x277D06DC0]);
-  v4 = [(MSTriageAction *)self messageListItemSelection];
-  v5 = [v4 messageListItems];
-  v6 = [v3 initWithMessageListItems:v5 origin:-[MSTriageAction origin](self actor:"origin") categoryType:-[MSTriageAction actor](self changeOptions:{"actor"), -[MSCategoryTriageAction categoryType](self, "categoryType"), -[MSCategoryTriageAction changeOptions](self, "changeOptions")}];
+  messageListItemSelection = [(MSTriageAction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  v6 = [v3 initWithMessageListItems:messageListItems origin:-[MSTriageAction origin](self actor:"origin") categoryType:-[MSTriageAction actor](self changeOptions:{"actor"), -[MSCategoryTriageAction categoryType](self, "categoryType"), -[MSCategoryTriageAction changeOptions](self, "changeOptions")}];
 
   return v6;
 }

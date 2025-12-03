@@ -1,9 +1,9 @@
 @interface _DASRequiresBuddyCompletePolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)buddyCompleteWithActivity:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)buddyCompleteWithActivity:(id)activity withState:(id)state;
 - (_DASRequiresBuddyCompletePolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 - (void)_updateCache;
 @end
 
@@ -68,8 +68,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(NSMutableDictionary *)self->_buddyCompleteForUserIdentifier keyEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v27 count:16];
+    keyEnumerator = [(NSMutableDictionary *)self->_buddyCompleteForUserIdentifier keyEnumerator];
+    v6 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v27 count:16];
     if (v6)
     {
       v7 = *v19;
@@ -79,7 +79,7 @@
         {
           if (*v19 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
@@ -87,7 +87,7 @@
           [(NSMutableDictionary *)self->_buddyCompleteForUserIdentifier setObject:v10 forKeyedSubscript:v9];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v18 objects:v27 count:16];
+        v6 = [keyEnumerator countByEnumeratingWithState:&v18 objects:v27 count:16];
       }
 
       while (v6);
@@ -137,21 +137,21 @@
   return v3;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
+  activityCopy = activity;
+  v5 = activityCopy;
   if (self->_fwIsAvailable)
   {
-    if ([v4 requiresBuddyComplete])
+    if ([activityCopy requiresBuddyComplete])
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [v5 fastPass];
-      v6 = v7 != 0;
+      fastPass = [v5 fastPass];
+      v6 = fastPass != 0;
     }
   }
 
@@ -163,10 +163,10 @@
   return v6;
 }
 
-- (BOOL)buddyCompleteWithActivity:(id)a3 withState:(id)a4
+- (BOOL)buddyCompleteWithActivity:(id)activity withState:(id)state
 {
-  v5 = a3;
-  v6 = v5;
+  activityCopy = activity;
+  v6 = activityCopy;
   if (self->_fwIsAvailable)
   {
     v14 = 0;
@@ -178,8 +178,8 @@
     block[1] = 3221225472;
     block[2] = sub_10004679C;
     block[3] = &unk_1001B5AB8;
-    v11 = v5;
-    v12 = self;
+    v11 = activityCopy;
+    selfCopy = self;
     v13 = &v14;
     dispatch_sync(queue, block);
     v8 = *(v15 + 24);
@@ -195,10 +195,10 @@
   return v8 & 1;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = [(_DASRequiresBuddyCompletePolicy *)self buddyCompleteWithActivity:v6 withState:a4];
+  activityCopy = activity;
+  v7 = [(_DASRequiresBuddyCompletePolicy *)self buddyCompleteWithActivity:activityCopy withState:state];
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
   v9 = [NSNumber numberWithBool:v7];
   v10 = [NSPredicate predicateWithFormat:@"buddyComplete = %@", v9];
@@ -209,7 +209,7 @@
     v11 = 0;
   }
 
-  else if ([(_DASRequiresBuddyCompletePolicy *)self appliesToActivity:v6])
+  else if ([(_DASRequiresBuddyCompletePolicy *)self appliesToActivity:activityCopy])
   {
     v11 = 33;
   }

@@ -1,45 +1,45 @@
 @interface HomeScreenConfigurationView
 - (int64_t)pbf_layoutOrientation;
-- (void)didSelectControl:(id)a3;
-- (void)posterPairDidUpdateConfiguredProperties:(id)a3;
-- (void)posterPairDidUpdateHomePosterAppearance:(id)a3;
-- (void)posterPairDidUpdateLockPosterSnapshots:(void *)a1;
+- (void)didSelectControl:(id)control;
+- (void)posterPairDidUpdateConfiguredProperties:(id)properties;
+- (void)posterPairDidUpdateHomePosterAppearance:(id)appearance;
+- (void)posterPairDidUpdateLockPosterSnapshots:(void *)snapshots;
 - (void)reloadLockPosterSnapshot;
-- (void)toggleLegibilityBlur:(id)a3;
+- (void)toggleLegibilityBlur:(id)blur;
 @end
 
 @implementation HomeScreenConfigurationView
 
-- (void)posterPairDidUpdateLockPosterSnapshots:(void *)a1
+- (void)posterPairDidUpdateLockPosterSnapshots:(void *)snapshots
 {
-  v1 = a1;
+  snapshotsCopy = snapshots;
   sub_21B6344B4();
 }
 
-- (void)posterPairDidUpdateConfiguredProperties:(id)a3
+- (void)posterPairDidUpdateConfiguredProperties:(id)properties
 {
-  v4 = a3;
-  v5 = self;
-  sub_21B6342D4(v4);
+  propertiesCopy = properties;
+  selfCopy = self;
+  sub_21B6342D4(propertiesCopy);
 }
 
-- (void)posterPairDidUpdateHomePosterAppearance:(id)a3
+- (void)posterPairDidUpdateHomePosterAppearance:(id)appearance
 {
-  v3 = self;
+  selfCopy = self;
   sub_21B6348F0();
 }
 
 - (void)reloadLockPosterSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B6344B4();
 }
 
-- (void)didSelectControl:(id)a3
+- (void)didSelectControl:(id)control
 {
-  v4 = a3;
-  v5 = self;
-  sub_21B636734(v4);
+  controlCopy = control;
+  selfCopy = self;
+  sub_21B636734(controlCopy);
 }
 
 - (int64_t)pbf_layoutOrientation
@@ -47,9 +47,9 @@
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v4 = [Strong layoutOrientationProviderForView_];
+    layoutOrientationProviderForView_ = [Strong layoutOrientationProviderForView_];
     swift_unknownObjectRelease();
-    return v4;
+    return layoutOrientationProviderForView_;
   }
 
   else
@@ -60,10 +60,10 @@
   }
 }
 
-- (void)toggleLegibilityBlur:(id)a3
+- (void)toggleLegibilityBlur:(id)blur
 {
-  v4 = a3;
-  v5 = self;
+  blurCopy = blur;
+  selfCopy = self;
   sub_21B636F80();
 }
 

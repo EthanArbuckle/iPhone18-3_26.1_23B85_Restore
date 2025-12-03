@@ -1,30 +1,30 @@
 @interface ADCommandExecutionContext
-- (ADCommandExecutionContext)initWithInfo:(id)a3;
+- (ADCommandExecutionContext)initWithInfo:(id)info;
 - (ADPeerInfo)originPeerInfo;
 - (AFCommandExecutionInfo)info;
 - (BOOL)isFromRemote;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)performBlock:(id)a3;
-- (void)updateInfoUsingBlock:(id)a3;
+- (void)performBlock:(id)block;
+- (void)updateInfoUsingBlock:(id)block;
 @end
 
 @implementation ADCommandExecutionContext
 
 - (id)description
 {
-  v3 = [(ADCommandExecutionContext *)self info];
+  info = [(ADCommandExecutionContext *)self info];
   v4 = [NSString alloc];
   v14.receiver = self;
   v14.super_class = ADCommandExecutionContext;
   v5 = [(ADCommandExecutionContext *)&v14 description];
-  v6 = [v3 executionID];
-  v7 = [v3 requestID];
-  v8 = [v3 turnId];
-  v9 = [v3 originPeerInfo];
+  executionID = [info executionID];
+  requestID = [info requestID];
+  turnId = [info turnId];
+  originPeerInfo = [info originPeerInfo];
   v10 = AFPeerInfoGetCompactDescription();
-  v11 = [v3 instanceInfo];
-  v12 = [v4 initWithFormat:@"%@ (id = %@, requestID = %@, turnID = %@, originPeer = %@, instance = %@)", v5, v6, v7, v8, v10, v11];
+  instanceInfo = [info instanceInfo];
+  v12 = [v4 initWithFormat:@"%@ (id = %@, requestID = %@, turnID = %@, originPeer = %@, instance = %@)", v5, executionID, requestID, turnId, v10, instanceInfo];
 
   return v12;
 }
@@ -40,21 +40,21 @@
 
 - (BOOL)isFromRemote
 {
-  v2 = [(ADCommandExecutionContext *)self info];
-  v3 = [v2 originPeerInfo];
-  v4 = v3 != 0;
+  info = [(ADCommandExecutionContext *)self info];
+  originPeerInfo = [info originPeerInfo];
+  v4 = originPeerInfo != 0;
 
   return v4;
 }
 
 - (ADPeerInfo)originPeerInfo
 {
-  v2 = [(ADCommandExecutionContext *)self info];
-  v3 = [v2 originPeerInfo];
+  info = [(ADCommandExecutionContext *)self info];
+  originPeerInfo = [info originPeerInfo];
 
-  if (v3)
+  if (originPeerInfo)
   {
-    v4 = [[ADPeerInfo alloc] initWithAFPeerInfo:v3];
+    v4 = [[ADPeerInfo alloc] initWithAFPeerInfo:originPeerInfo];
   }
 
   else
@@ -65,7 +65,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ADCommandExecutionContext alloc];
   v5 = [(AFCommandExecutionInfo *)self->_info copy];
@@ -74,27 +74,27 @@
   return v6;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
   v4 = self->_voucher;
-  v5 = a3;
+  blockCopy = block;
   voucher_adopt();
-  v5[2](v5);
+  blockCopy[2](blockCopy);
 
   v6 = voucher_adopt();
 }
 
-- (void)updateInfoUsingBlock:(id)a3
+- (void)updateInfoUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v10 = v4;
-    v5 = [(ADCommandExecutionContext *)self info];
-    if (v5)
+    v10 = blockCopy;
+    info = [(ADCommandExecutionContext *)self info];
+    if (info)
     {
-      v6 = v5;
-      v7 = [v5 mutatedCopyWithMutator:v10];
+      v6 = info;
+      v7 = [info mutatedCopyWithMutator:v10];
     }
 
     else
@@ -108,13 +108,13 @@
     self->_info = v8;
 
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v10;
+    blockCopy = v10;
   }
 }
 
-- (ADCommandExecutionContext)initWithInfo:(id)a3
+- (ADCommandExecutionContext)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = ADCommandExecutionContext;
   v5 = [(ADCommandExecutionContext *)&v14 init];
@@ -122,7 +122,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copy];
+    v7 = [infoCopy copy];
     info = v6->_info;
     v6->_info = v7;
 

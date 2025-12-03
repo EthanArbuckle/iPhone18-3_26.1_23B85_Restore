@@ -1,16 +1,16 @@
 @interface CDPEscapeOffersLedger
 - (BOOL)canOfferRPD;
 - (CDPEscapeOffersLedger)init;
-- (CDPEscapeOffersLedger)initWithExpectedEscapeOffers:(unint64_t)a3 recoveryFlowContext:(id)a4 deviceHasPasscode:(BOOL)a5 probationChecker:(id)a6 deviceIsVM:(BOOL)a7 isICDPEnabled:(BOOL)a8;
+- (CDPEscapeOffersLedger)initWithExpectedEscapeOffers:(unint64_t)offers recoveryFlowContext:(id)context deviceHasPasscode:(BOOL)passcode probationChecker:(id)checker deviceIsVM:(BOOL)m isICDPEnabled:(BOOL)enabled;
 - (NSString)description;
-- (void)insert:(unint64_t)a3;
+- (void)insert:(unint64_t)insert;
 @end
 
 @implementation CDPEscapeOffersLedger
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CDPEscapeOffersLedger.description.getter();
 
   v3 = sub_245193874();
@@ -20,23 +20,23 @@
 
 - (BOOL)canOfferRPD
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24517E41C();
 
   return v3 & 1;
 }
 
-- (CDPEscapeOffersLedger)initWithExpectedEscapeOffers:(unint64_t)a3 recoveryFlowContext:(id)a4 deviceHasPasscode:(BOOL)a5 probationChecker:(id)a6 deviceIsVM:(BOOL)a7 isICDPEnabled:(BOOL)a8
+- (CDPEscapeOffersLedger)initWithExpectedEscapeOffers:(unint64_t)offers recoveryFlowContext:(id)context deviceHasPasscode:(BOOL)passcode probationChecker:(id)checker deviceIsVM:(BOOL)m isICDPEnabled:(BOOL)enabled
 {
-  v13 = a4;
+  contextCopy = context;
   swift_unknownObjectRetain();
-  return sub_24517F1F0(a3, v13, a5, a6, a7, a8);
+  return sub_24517F1F0(offers, contextCopy, passcode, checker, m, enabled);
 }
 
-- (void)insert:(unint64_t)a3
+- (void)insert:(unint64_t)insert
 {
-  v4 = self;
-  sub_24517F4A8(a3);
+  selfCopy = self;
+  sub_24517F4A8(insert);
 }
 
 - (CDPEscapeOffersLedger)init

@@ -1,22 +1,22 @@
 @interface IMMergedDomainIdentifiers
 - (BOOL)isEmpty;
 - (IMMergedDomainIdentifiers)init;
-- (IMMergedDomainIdentifiers)initWithDomainIdentifiers:(id)a3 chatGUID:(id)a4;
-- (IMMergedDomainIdentifiers)initWithMergedDomainIdentifiers:(id)a3;
-- (IMMergedDomainIdentifiers)mergedDomainIdentifiersWithLatestChatGUID:(id)a3;
+- (IMMergedDomainIdentifiers)initWithDomainIdentifiers:(id)identifiers chatGUID:(id)d;
+- (IMMergedDomainIdentifiers)initWithMergedDomainIdentifiers:(id)identifiers;
+- (IMMergedDomainIdentifiers)mergedDomainIdentifiersWithLatestChatGUID:(id)d;
 - (NSArray)allChatGUIDs;
 - (NSArray)allIdentifiers;
 - (NSString)description;
-- (id)allDomainsForChatGUID:(id)a3;
+- (id)allDomainsForChatGUID:(id)d;
 - (id)dictionaryRepresentation;
-- (id)domainIdentifiersForChatGUID:(id)a3;
-- (id)identifiersForChatGUID:(id)a3 domain:(id)a4;
-- (void)setDomainIdentifiers:(id)a3 forChatGUID:(id)a4;
+- (id)domainIdentifiersForChatGUID:(id)d;
+- (id)identifiersForChatGUID:(id)d domain:(id)domain;
+- (void)setDomainIdentifiers:(id)identifiers forChatGUID:(id)d;
 @end
 
 @implementation IMMergedDomainIdentifiers
 
-- (IMMergedDomainIdentifiers)initWithMergedDomainIdentifiers:(id)a3
+- (IMMergedDomainIdentifiers)initWithMergedDomainIdentifiers:(id)identifiers
 {
   sub_1A83EA2FC(&qword_1EB2E88E8, &qword_1A8509AD8);
   v4 = sub_1A84E5D3C();
@@ -30,16 +30,16 @@
   return [(IMMergedDomainIdentifiers *)&v7 init];
 }
 
-- (IMMergedDomainIdentifiers)initWithDomainIdentifiers:(id)a3 chatGUID:(id)a4
+- (IMMergedDomainIdentifiers)initWithDomainIdentifiers:(id)identifiers chatGUID:(id)d
 {
-  v5 = a3;
-  if (a3)
+  identifiersCopy = identifiers;
+  if (identifiers)
   {
     sub_1A83EA2FC(&qword_1EB2E6E48, &qword_1A8502950);
-    v5 = sub_1A84E5D3C();
+    identifiersCopy = sub_1A84E5D3C();
   }
 
-  if (a4)
+  if (d)
   {
     v6 = sub_1A84E5DBC();
     v8 = v7;
@@ -51,16 +51,16 @@
     v8 = 0;
   }
 
-  return sub_1A84D6C74(v5, v6, v8);
+  return sub_1A84D6C74(identifiersCopy, v6, v8);
 }
 
-- (void)setDomainIdentifiers:(id)a3 forChatGUID:(id)a4
+- (void)setDomainIdentifiers:(id)identifiers forChatGUID:(id)d
 {
-  if (a3)
+  if (identifiers)
   {
     sub_1A83EA2FC(&qword_1EB2E6E48, &qword_1A8502950);
     v6 = sub_1A84E5D3C();
-    if (a4)
+    if (d)
     {
       v7 = sub_1A84E5DBC();
       if (v6)
@@ -71,7 +71,7 @@
           v10 = OBJC_IVAR___IMMergedDomainIdentifiers_mergedDomainIdentifiers;
           v11 = v8;
           swift_beginAccess();
-          v12 = self;
+          selfCopy = self;
           v13 = *(&self->super.isa + v10);
           isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
           v15 = *(&self->super.isa + v10);
@@ -87,15 +87,15 @@
     }
   }
 
-  else if (a4)
+  else if (d)
   {
     sub_1A84E5DBC();
   }
 }
 
-- (id)domainIdentifiersForChatGUID:(id)a3
+- (id)domainIdentifiersForChatGUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_1A84E5DBC();
     v6 = v5;
@@ -107,7 +107,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1A84D6F54(v4, v6);
 
   if (v8)
@@ -124,18 +124,18 @@
   return v9;
 }
 
-- (id)identifiersForChatGUID:(id)a3 domain:(id)a4
+- (id)identifiersForChatGUID:(id)d domain:(id)domain
 {
-  v4 = a4;
-  if (a3)
+  domainCopy = domain;
+  if (d)
   {
     v6 = sub_1A84E5DBC();
     v8 = v7;
-    if (v4)
+    if (domainCopy)
     {
 LABEL_3:
       v9 = sub_1A84E5DBC();
-      v4 = v10;
+      domainCopy = v10;
       goto LABEL_6;
     }
   }
@@ -144,7 +144,7 @@ LABEL_3:
   {
     v6 = 0;
     v8 = 0;
-    if (a4)
+    if (domain)
     {
       goto LABEL_3;
     }
@@ -152,8 +152,8 @@ LABEL_3:
 
   v9 = 0;
 LABEL_6:
-  v11 = self;
-  v12 = sub_1A84D70BC(v6, v8, v9, v4);
+  selfCopy = self;
+  v12 = sub_1A84D70BC(v6, v8, v9, domainCopy);
 
   if (v12)
   {
@@ -168,9 +168,9 @@ LABEL_6:
   return v13;
 }
 
-- (id)allDomainsForChatGUID:(id)a3
+- (id)allDomainsForChatGUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     sub_1A84E5DBC();
     v5 = v4;
@@ -181,8 +181,8 @@ LABEL_6:
     v5 = 0;
   }
 
-  v6 = self;
-  v7 = sub_1A84D7290(v6, v5);
+  selfCopy = self;
+  v7 = sub_1A84D7290(selfCopy, v5);
 
   if (v7)
   {
@@ -221,7 +221,7 @@ LABEL_6:
   v3 = OBJC_IVAR___IMMergedDomainIdentifiers_mergedDomainIdentifiers;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
+  selfCopy = self;
 
   sub_1A83EA2FC(&qword_1EB2E88E8, &qword_1A8509AD8);
   sub_1A84E5D4C();
@@ -231,9 +231,9 @@ LABEL_6:
   return v6;
 }
 
-- (IMMergedDomainIdentifiers)mergedDomainIdentifiersWithLatestChatGUID:(id)a3
+- (IMMergedDomainIdentifiers)mergedDomainIdentifiersWithLatestChatGUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_1A84E5DBC();
     v6 = v5;
@@ -245,7 +245,7 @@ LABEL_6:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1A84D7710(v4, v6);
 
   sub_1A83EA2FC(&qword_1EB2E6E48, &qword_1A8502950);
@@ -259,7 +259,7 @@ LABEL_6:
   v3 = OBJC_IVAR___IMMergedDomainIdentifiers_mergedDomainIdentifiers;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
+  selfCopy = self;
 
   sub_1A84A5B50(v6);
 
@@ -270,7 +270,7 @@ LABEL_6:
 
 - (NSArray)allIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A84D7F98();
 
   v3 = sub_1A84E5FEC();

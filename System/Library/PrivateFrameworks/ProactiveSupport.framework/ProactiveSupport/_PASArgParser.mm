@@ -1,42 +1,42 @@
 @interface _PASArgParser
-+ (_PASArgParser)parserWithHandler:(id)a3;
-+ (id)BOOLValueForArgument:(id)a3 error:(id *)a4;
-+ (id)enumValueForArgument:(id)a3 withMapping:(id)a4 error:(id *)a5;
-+ (id)numberValueForArgument:(id)a3 error:(id *)a4;
-+ (id)simpleParserWithHelpGenerator:(id)a3 version:(id)a4 handler:(id)a5;
-- (_PASArgParser)initWithHandler:(id)a3;
-- (id)_argumentParseTemplate:(id)a3 longArgs:(option *)a4;
++ (_PASArgParser)parserWithHandler:(id)handler;
++ (id)BOOLValueForArgument:(id)argument error:(id *)error;
++ (id)enumValueForArgument:(id)argument withMapping:(id)mapping error:(id *)error;
++ (id)numberValueForArgument:(id)argument error:(id *)error;
++ (id)simpleParserWithHelpGenerator:(id)generator version:(id)version handler:(id)handler;
+- (_PASArgParser)initWithHandler:(id)handler;
+- (id)_argumentParseTemplate:(id)template longArgs:(option *)args;
 - (id)description;
-- (id)naiveUsageHelpWithPositionalArgString:(id)a3;
+- (id)naiveUsageHelpWithPositionalArgString:(id)string;
 - (id)subcommandLongHelp;
-- (int)invokeHandlerWithArguments:(const char *)a3 count:(int)a4 parseErrorCode:(int)a5 error:(id *)a6;
-- (void)registerOption:(id)a3;
+- (int)invokeHandlerWithArguments:(const char *)arguments count:(int)count parseErrorCode:(int)code error:(id *)error;
+- (void)registerOption:(id)option;
 @end
 
 @implementation _PASArgParser
 
-- (id)_argumentParseTemplate:(id)a3 longArgs:(option *)a4
+- (id)_argumentParseTemplate:(id)template longArgs:(option *)args
 {
-  v7 = a3;
-  if (!a4)
+  templateCopy = template;
+  if (!args)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:622 description:{@"Invalid parameter not satisfying: %@", @"longArgsRef"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:622 description:{@"Invalid parameter not satisfying: %@", @"longArgsRef"}];
   }
 
   v8 = objc_opt_new();
-  if (v7)
+  if (templateCopy)
   {
-    v9 = [v7 registeredOptions];
+    registeredOptions = [templateCopy registeredOptions];
   }
 
   else
   {
-    v9 = self->_registeredOptions;
+    registeredOptions = self->_registeredOptions;
   }
 
-  v10 = v9;
-  v11 = malloc_type_calloc([(NSMutableArray *)v9 count]+ 1, 0x20uLL, 0x10500402E37B38AuLL);
+  v10 = registeredOptions;
+  v11 = malloc_type_calloc([(NSMutableArray *)registeredOptions count]+ 1, 0x20uLL, 0x10500402E37B38AuLL);
   if (!v11)
   {
     v25 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA18] reason:@"malloc failed" userInfo:0];
@@ -51,19 +51,19 @@
     do
     {
       v15 = [(NSMutableArray *)v10 objectAtIndexedSubscript:v13];
-      v16 = [v15 name];
-      *(p_val - 3) = [v16 UTF8String];
+      name = [v15 name];
+      *(p_val - 3) = [name UTF8String];
 
-      v17 = [v15 argMetavar];
-      *(p_val - 4) = v17 != 0;
+      argMetavar = [v15 argMetavar];
+      *(p_val - 4) = argMetavar != 0;
 
-      v18 = [v15 shortName];
+      shortName = [v15 shortName];
 
-      if (v18)
+      if (shortName)
       {
         *(p_val - 1) = 0;
-        v19 = [v15 shortName];
-        *p_val = *[v19 UTF8String];
+        shortName2 = [v15 shortName];
+        *p_val = *[shortName2 UTF8String];
       }
 
       else
@@ -72,16 +72,16 @@
         *p_val = 1;
       }
 
-      v20 = [v15 shortName];
+      shortName3 = [v15 shortName];
 
-      if (v20)
+      if (shortName3)
       {
-        v21 = [v15 shortName];
-        [v8 appendString:v21];
+        shortName4 = [v15 shortName];
+        [v8 appendString:shortName4];
 
-        v22 = [v15 argMetavar];
+        argMetavar2 = [v15 argMetavar];
 
-        if (v22)
+        if (argMetavar2)
         {
           [v8 appendString:@":"];
         }
@@ -94,12 +94,12 @@
     while (v13 < [(NSMutableArray *)v10 count]);
   }
 
-  *a4 = v12;
+  *args = v12;
 
   return v8;
 }
 
-- (int)invokeHandlerWithArguments:(const char *)a3 count:(int)a4 parseErrorCode:(int)a5 error:(id *)a6
+- (int)invokeHandlerWithArguments:(const char *)arguments count:(int)count parseErrorCode:(int)code error:(id *)error
 {
   v117 = *MEMORY[0x1E69E9840];
   v8 = 1;
@@ -111,20 +111,20 @@
   v10 = objc_opt_new();
   v91 = objc_opt_new();
   v93 = v10;
-  v94 = a3;
-  v95 = a4;
-  if (a4 < 2)
+  argumentsCopy = arguments;
+  countCopy = count;
+  if (count < 2)
   {
     v20 = 0;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3[1]];
+    v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:arguments[1]];
     if (!v11)
     {
-      v81 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v81 handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:478 description:@"possibleSubcommand: stringWithUTF8String unexpectedly returned nil"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:478 description:@"possibleSubcommand: stringWithUTF8String unexpectedly returned nil"];
     }
 
     v107 = 0u;
@@ -147,8 +147,8 @@ LABEL_6:
         }
 
         v17 = *(*(&v105 + 1) + 8 * v16);
-        v18 = [v17 name];
-        v19 = [v18 isEqualToString:v11];
+        name = [v17 name];
+        v19 = [name isEqualToString:v11];
 
         if (v19)
         {
@@ -188,27 +188,27 @@ LABEL_16:
     }
 
     v10 = v93;
-    a3 = v94;
-    a4 = v95;
+    arguments = argumentsCopy;
+    count = countCopy;
   }
 
   *v9 = 0;
   v104 = 0;
   v103 = 0;
   v21 = [(_PASArgParser *)self _argumentParseTemplate:v20 longArgs:&v103];
-  v92 = [v21 UTF8String];
+  uTF8String = [v21 UTF8String];
 
   if (v8)
   {
-    v96 = self->_registeredOptions;
+    registeredOptions = self->_registeredOptions;
     v89 = [(NSMutableSet *)self->_requiredOptions mutableCopy];
   }
 
   else
   {
-    v96 = [v20 registeredOptions];
-    v22 = [v20 requiredOptions];
-    v89 = [v22 mutableCopy];
+    registeredOptions = [v20 registeredOptions];
+    requiredOptions = [v20 requiredOptions];
+    v89 = [requiredOptions mutableCopy];
   }
 
   v83 = v8;
@@ -217,7 +217,7 @@ LABEL_16:
   v90 = 0;
   v88 = *MEMORY[0x1E696A588];
 LABEL_22:
-  v23 = getopt_long(a4, a3, v92, v103, &v104);
+  v23 = getopt_long(count, arguments, uTF8String, v103, &v104);
   if (v23 == 63)
   {
     v24 = *MEMORY[0x1E69E98F8];
@@ -240,7 +240,7 @@ LABEL_22:
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  v26 = v96;
+  v26 = registeredOptions;
   v27 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v99 objects:v115 count:16];
   if (!v27)
   {
@@ -265,8 +265,8 @@ LABEL_22:
         v33 = v103 + 1;
         while (1)
         {
-          v34 = [v31 name];
-          v35 = strcmp(name, [v34 UTF8String]);
+          name2 = [v31 name];
+          v35 = strcmp(name, [name2 UTF8String]);
 
           if (!v35)
           {
@@ -293,14 +293,14 @@ LABEL_22:
 LABEL_43:
         if ([v31 required])
         {
-          v41 = [v31 name];
-          [v89 removeObject:v41];
+          name3 = [v31 name];
+          [v89 removeObject:name3];
         }
 
-        v42 = [v31 argMetavar];
+        argMetavar = [v31 argMetavar];
 
         v10 = v93;
-        if (v42)
+        if (argMetavar)
         {
           if (*MEMORY[0x1E69E98E0])
           {
@@ -315,12 +315,12 @@ LABEL_43:
           v44 = MEMORY[0x1E696AEC0];
           if (v43 == 1)
           {
-            v45 = [v31 name];
-            v46 = [v44 stringWithFormat:@"Option: %@ missing required argument", v45];
+            name4 = [v31 name];
+            shortName2 = [v44 stringWithFormat:@"Option: %@ missing required argument", name4];
 
             v47 = MEMORY[0x1E696ABC0];
             v113 = v88;
-            v114 = v46;
+            v114 = shortName2;
             v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
             v49 = [v47 errorWithDomain:@"_PASArgParser" code:0 userInfo:v48];
 
@@ -329,49 +329,49 @@ LABEL_43:
             goto LABEL_55;
           }
 
-          v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:?];
+          null = [MEMORY[0x1E696AEC0] stringWithUTF8String:?];
         }
 
         else
         {
-          v51 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
         }
 
-        v50 = v51;
-        v52 = [v31 name];
-        [v93 setObject:v50 forKeyedSubscript:v52];
+        v50 = null;
+        name5 = [v31 name];
+        [v93 setObject:v50 forKeyedSubscript:name5];
 
-        v53 = [v31 name];
-        v54 = [v53 isEqualToString:@"help"];
+        name6 = [v31 name];
+        v54 = [name6 isEqualToString:@"help"];
 
         v97 |= v54;
-        v55 = [v31 shortName];
+        shortName = [v31 shortName];
 
-        if (!v55)
+        if (!shortName)
         {
 LABEL_56:
-          a3 = v94;
+          arguments = argumentsCopy;
 
-          a4 = v95;
+          count = countCopy;
           goto LABEL_22;
         }
 
-        v46 = [v31 shortName];
-        [v93 setObject:v50 forKeyedSubscript:v46];
+        shortName2 = [v31 shortName];
+        [v93 setObject:v50 forKeyedSubscript:shortName2];
 LABEL_55:
 
         goto LABEL_56;
       }
 
 LABEL_37:
-      v38 = [v31 shortName];
+      shortName3 = [v31 shortName];
 
-      if (v38)
+      if (shortName3)
       {
-        v39 = [v31 shortName];
-        v40 = [v39 UTF8String];
+        shortName4 = [v31 shortName];
+        uTF8String2 = [shortName4 UTF8String];
 
-        if (v24 == *v40)
+        if (v24 == *uTF8String2)
         {
           goto LABEL_43;
         }
@@ -389,8 +389,8 @@ LABEL_37:
 
 LABEL_57:
 
-  a3 = v94;
-  v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unrecognized option: (%s)", v94[*MEMORY[0x1E69E98F0] - 1]];
+  arguments = argumentsCopy;
+  v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unrecognized option: (%s)", argumentsCopy[*MEMORY[0x1E69E98F0] - 1]];
   v57 = MEMORY[0x1E696ABC0];
   v111 = v88;
   v112 = v56;
@@ -400,12 +400,12 @@ LABEL_57:
   v90 = v59;
   v10 = v93;
   v60 = v86;
-  a4 = v95;
+  count = countCopy;
 LABEL_59:
   if ((v97 & 1) == 0 && [v89 count])
   {
-    v61 = [v89 allObjects];
-    v62 = [v61 _pas_componentsJoinedByString:{@", "}];
+    allObjects = [v89 allObjects];
+    v62 = [allObjects _pas_componentsJoinedByString:{@", "}];
 
     v63 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing required options: %@", v62];
     v64 = MEMORY[0x1E696ABC0];
@@ -416,21 +416,21 @@ LABEL_59:
 
     v60 = v86;
     v90 = v66;
-    a4 = v95;
+    count = countCopy;
   }
 
   v67 = *MEMORY[0x1E69E98F0];
-  if (a4 > v67)
+  if (count > v67)
   {
-    v68 = a4 - v67;
-    v69 = &a3[v67];
+    v68 = count - v67;
+    v69 = &arguments[v67];
     do
     {
       v70 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*v69];
       if (!v70)
       {
-        v71 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v71 handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:585 description:@"posArgStr: stringWithUTF8String unexpectedly returned nil"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:585 description:@"posArgStr: stringWithUTF8String unexpectedly returned nil"];
 
         v60 = v86;
       }
@@ -448,10 +448,10 @@ LABEL_59:
   v72 = v90;
   if (v90)
   {
-    v73 = a6;
-    v74 = a5;
+    errorCopy2 = error;
+    codeCopy = code;
     v75 = v89;
-    if (a6)
+    if (error)
     {
       goto LABEL_69;
     }
@@ -463,60 +463,60 @@ LABEL_59:
     if (v83)
     {
       v79 = [[_PASArgToplevelHandlerParams alloc] initWithParser:self options:v10 positionalArguments:v91];
-      v74 = (*(self->_handler + 2))();
+      codeCopy = (*(self->_handler + 2))();
       v72 = 0;
     }
 
     else
     {
       v79 = [[_PASArgSubcommandHandlerParams alloc] initWithSubcommand:v60 options:v10 positionalArguments:v91];
-      v80 = [v60 handler];
+      handler = [v60 handler];
       v98 = 0;
-      v74 = (v80)[2](v80, v79, &v98);
+      codeCopy = (handler)[2](handler, v79, &v98);
       v72 = v98;
     }
 
-    v73 = a6;
+    errorCopy2 = error;
 
-    if (a6)
+    if (error)
     {
 LABEL_69:
       v76 = v72;
-      *v73 = v72;
+      *errorCopy2 = v72;
     }
   }
 
   v77 = *MEMORY[0x1E69E9840];
-  return v74;
+  return codeCopy;
 }
 
-- (id)naiveUsageHelpWithPositionalArgString:(id)a3
+- (id)naiveUsageHelpWithPositionalArgString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [MEMORY[0x1E696AD60] stringWithString:@"Usage:\n  "];
-  v6 = [MEMORY[0x1E696AE30] processInfo];
-  v7 = [v6 processName];
-  [v5 appendString:v7];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  [v5 appendString:processName];
 
   if ([(NSMutableArray *)self->_registeredSubcommands count])
   {
     [v5 appendString:@" [SUBCOMMAND]"];
   }
 
-  v8 = [(_PASArgParser *)self optionShortHelp];
-  [v5 appendString:v8];
+  optionShortHelp = [(_PASArgParser *)self optionShortHelp];
+  [v5 appendString:optionShortHelp];
 
-  if (v4)
+  if (stringCopy)
   {
-    [v5 appendString:v4];
+    [v5 appendString:stringCopy];
   }
 
   [v5 appendString:@"\n"];
-  v9 = [(_PASArgParser *)self subcommandLongHelp];
-  [v5 appendString:v9];
+  subcommandLongHelp = [(_PASArgParser *)self subcommandLongHelp];
+  [v5 appendString:subcommandLongHelp];
 
-  v10 = [(_PASArgParser *)self optionLongHelp];
-  [v5 appendString:v10];
+  optionLongHelp = [(_PASArgParser *)self optionLongHelp];
+  [v5 appendString:optionLongHelp];
 
   return v5;
 }
@@ -550,9 +550,9 @@ LABEL_69:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v9 helpDescription];
-        [v3 appendFormat:@"  %@ -- %@\n", v10, v11, v14];
+        name = [v9 name];
+        helpDescription = [v9 helpDescription];
+        [v3 appendFormat:@"  %@ -- %@\n", name, helpDescription, v14];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -566,15 +566,15 @@ LABEL_69:
   return v3;
 }
 
-- (void)registerOption:(id)a3
+- (void)registerOption:(id)option
 {
-  v6 = a3;
-  [(NSMutableArray *)self->_registeredOptions addObject:v6];
-  if ([v6 required])
+  optionCopy = option;
+  [(NSMutableArray *)self->_registeredOptions addObject:optionCopy];
+  if ([optionCopy required])
   {
     requiredOptions = self->_requiredOptions;
-    v5 = [v6 name];
-    [(NSMutableSet *)requiredOptions addObject:v5];
+    name = [optionCopy name];
+    [(NSMutableSet *)requiredOptions addObject:name];
   }
 }
 
@@ -651,13 +651,13 @@ LABEL_69:
   return v3;
 }
 
-- (_PASArgParser)initWithHandler:(id)a3
+- (_PASArgParser)initWithHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:340 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:340 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v17.receiver = self;
@@ -677,7 +677,7 @@ LABEL_69:
     requiredOptions = v6->_requiredOptions;
     v6->_requiredOptions = v11;
 
-    v13 = MEMORY[0x1AC566DD0](v5);
+    v13 = MEMORY[0x1AC566DD0](handlerCopy);
     handler = v6->_handler;
     v6->_handler = v13;
   }
@@ -685,28 +685,28 @@ LABEL_69:
   return v6;
 }
 
-+ (id)simpleParserWithHelpGenerator:(id)a3 version:(id)a4 handler:(id)a5
++ (id)simpleParserWithHelpGenerator:(id)generator version:(id)version handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  generatorCopy = generator;
+  versionCopy = version;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"_PASArgParser.m" lineNumber:360 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:360 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __63___PASArgParser_simpleParserWithHelpGenerator_version_handler___block_invoke;
   v20[3] = &unk_1E77F1C68;
-  v12 = v9;
+  v12 = generatorCopy;
   v22 = v12;
-  v13 = v10;
+  v13 = versionCopy;
   v21 = v13;
-  v14 = v11;
+  v14 = handlerCopy;
   v23 = v14;
-  v15 = [a1 parserWithHandler:v20];
+  v15 = [self parserWithHandler:v20];
   v16 = [_PASArgOption optionWithName:@"help" shortName:@"h" help:@"Display a help page."];
   [v15 registerOption:v16];
 
@@ -719,39 +719,39 @@ LABEL_69:
   return v15;
 }
 
-+ (_PASArgParser)parserWithHandler:(id)a3
++ (_PASArgParser)parserWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHandler:v4];
+  handlerCopy = handler;
+  v5 = [[self alloc] initWithHandler:handlerCopy];
 
   return v5;
 }
 
-+ (id)enumValueForArgument:(id)a3 withMapping:(id)a4 error:(id *)a5
++ (id)enumValueForArgument:(id)argument withMapping:(id)mapping error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  argumentCopy = argument;
+  mappingCopy = mapping;
+  if (argumentCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:a1 file:@"_PASArgParser.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"[argument isKindOfClass:[NSString class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"[argument isKindOfClass:[NSString class]]"}];
     }
 
-    v12 = v9;
-    v13 = [v10 objectForKeyedSubscript:v12];
+    v12 = argumentCopy;
+    v13 = [mappingCopy objectForKeyedSubscript:v12];
     v11 = v13;
-    if (a5 && !v13)
+    if (error && !v13)
     {
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Argument value %@ does not correspond an enum value.", v12];
       v15 = MEMORY[0x1E696ABC0];
       v20 = *MEMORY[0x1E696A588];
       v21[0] = v14;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-      *a5 = [v15 errorWithDomain:@"_PASArgParser" code:0 userInfo:v16];
+      *error = [v15 errorWithDomain:@"_PASArgParser" code:0 userInfo:v16];
     }
   }
 
@@ -765,31 +765,31 @@ LABEL_69:
   return v11;
 }
 
-+ (id)numberValueForArgument:(id)a3 error:(id *)a4
++ (id)numberValueForArgument:(id)argument error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  argumentCopy = argument;
+  if (argumentCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:a1 file:@"_PASArgParser.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"[argument isKindOfClass:[NSString class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"[argument isKindOfClass:[NSString class]]"}];
     }
 
-    v9 = v7;
+    v9 = argumentCopy;
     v10 = objc_opt_new();
     v8 = [v10 numberFromString:v9];
 
-    if (a4 && !v8)
+    if (error && !v8)
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Argument value %@ cannot be converted to a number.", v9];
       v12 = MEMORY[0x1E696ABC0];
       v17 = *MEMORY[0x1E696A588];
       v18[0] = v11;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-      *a4 = [v12 errorWithDomain:@"_PASArgParser" code:0 userInfo:v13];
+      *error = [v12 errorWithDomain:@"_PASArgParser" code:0 userInfo:v13];
     }
   }
 
@@ -803,11 +803,11 @@ LABEL_69:
   return v8;
 }
 
-+ (id)BOOLValueForArgument:(id)a3 error:(id *)a4
++ (id)BOOLValueForArgument:(id)argument error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  argumentCopy = argument;
+  if (argumentCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -815,13 +815,13 @@ LABEL_69:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:a2 object:a1 file:@"_PASArgParser.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"[argument isKindOfClass:[NSString class]]"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"[argument isKindOfClass:[NSString class]]"}];
       }
 
-      v8 = v7;
-      v9 = [v8 lowercaseString];
-      if ([v9 isEqualToString:@"yes"])
+      v8 = argumentCopy;
+      lowercaseString = [v8 lowercaseString];
+      if ([lowercaseString isEqualToString:@"yes"])
       {
       }
 
@@ -831,8 +831,8 @@ LABEL_69:
 
         if ((v10 & 1) == 0)
         {
-          v13 = [v8 lowercaseString];
-          if ([v13 isEqualToString:@"no"])
+          lowercaseString2 = [v8 lowercaseString];
+          if ([lowercaseString2 isEqualToString:@"no"])
           {
           }
 
@@ -842,39 +842,39 @@ LABEL_69:
 
             if ((v14 & 1) == 0)
             {
-              if (a4)
+              if (error)
               {
                 v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Argument value %@ cannot be converted to BOOLean.", v8];
                 v16 = MEMORY[0x1E696ABC0];
                 v19 = *MEMORY[0x1E696A588];
                 v20[0] = v15;
                 v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-                *a4 = [v16 errorWithDomain:@"_PASArgParser" code:0 userInfo:v17];
+                *error = [v16 errorWithDomain:@"_PASArgParser" code:0 userInfo:v17];
 
-                a4 = 0;
+                error = 0;
               }
 
               goto LABEL_10;
             }
           }
 
-          a4 = MEMORY[0x1E695E110];
+          error = MEMORY[0x1E695E110];
 LABEL_10:
 
           goto LABEL_11;
         }
       }
 
-      a4 = MEMORY[0x1E695E118];
+      error = MEMORY[0x1E695E118];
       goto LABEL_10;
     }
   }
 
-  a4 = 0;
+  error = 0;
 LABEL_11:
 
   v11 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 @end

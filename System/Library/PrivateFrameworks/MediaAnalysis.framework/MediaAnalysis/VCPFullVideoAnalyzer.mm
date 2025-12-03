@@ -1,32 +1,32 @@
 @interface VCPFullVideoAnalyzer
-- (VCPFullVideoAnalyzer)initWithTransform:(CGAffineTransform *)a3;
-- (VCPFullVideoAnalyzer)initWithVideoOrientation:(int)a3 preferredTransform:(CGAffineTransform *)a4 metaOrientation:(id)a5 privateResults:(id)a6 embeddings:(id)a7 isTimelapse:(BOOL)a8 isIris:(BOOL)a9 irisPhotoOffsetSec:(float)a10 irisPhotoExposureSec:(float)a11 slowMoRate:(float)a12 faceDominated:(BOOL)a13;
-- (float)estimateExpressionScore:(id)a3 encodeStats:(EncodeStats *)a4 frameWidth:(int)a5 frameHeight:(int)a6;
-- (float)estimateQualityScore:(void *)a3;
+- (VCPFullVideoAnalyzer)initWithTransform:(CGAffineTransform *)transform;
+- (VCPFullVideoAnalyzer)initWithVideoOrientation:(int)orientation preferredTransform:(CGAffineTransform *)transform metaOrientation:(id)metaOrientation privateResults:(id)results embeddings:(id)embeddings isTimelapse:(BOOL)timelapse isIris:(BOOL)iris irisPhotoOffsetSec:(float)self0 irisPhotoExposureSec:(float)self1 slowMoRate:(float)self2 faceDominated:(BOOL)self3;
+- (float)estimateExpressionScore:(id)score encodeStats:(EncodeStats *)stats frameWidth:(int)width frameHeight:(int)height;
+- (float)estimateQualityScore:(void *)score;
 - (float)getSceneSwichFrequency;
 - (id).cxx_construct;
-- (id)clipResults:(id *)a3;
+- (id)clipResults:(id *)results;
 - (id)processSceneResults;
 - (id)results;
-- (int)addResult:(__CFArray *)a3 to:(id)a4 forKey:(id)a5 optional:(BOOL)a6;
-- (int)addSceneAnalysisResult:(id)a3 to:(id)a4 clipRange:(id *)a5;
-- (int)addSceneAnalysisResult:(id)a3 to:(id)a4 optional:(BOOL)a5;
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 frameStats:(id)a6 flags:(unint64_t *)a7 cancel:(id)a8;
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 properties:(id)a6 frameStats:(id)a7 flags:(unint64_t *)a8 cancel:(id)a9;
-- (int)finishAnalysisPass:(id *)a3;
-- (int)isStableMetaMotion:(id *)a3;
-- (int)process:(int)a3;
-- (int)seedAnalyzersWithPixelBuffer:(__CVBuffer *)a3 startTime:(id *)a4 frameStats:(id)a5;
+- (int)addResult:(__CFArray *)result to:(id)to forKey:(id)key optional:(BOOL)optional;
+- (int)addSceneAnalysisResult:(id)result to:(id)to clipRange:(id *)range;
+- (int)addSceneAnalysisResult:(id)result to:(id)to optional:(BOOL)optional;
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats flags:(unint64_t *)flags cancel:(id)cancel;
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration properties:(id)properties frameStats:(id)stats flags:(unint64_t *)flags cancel:(id)cancel;
+- (int)finishAnalysisPass:(id *)pass;
+- (int)isStableMetaMotion:(id *)motion;
+- (int)process:(int)process;
+- (int)seedAnalyzersWithPixelBuffer:(__CVBuffer *)buffer startTime:(id *)time frameStats:(id)stats;
 - (void)dealloc;
-- (void)prepareLivePhotoAnalysisByScenes:(id)a3;
-- (void)prepareVideoAnalysisByScenes:(id)a3;
-- (void)processAndEstimateQualityScore:(void *)a3;
-- (void)reviseFrameTrackScore:(void *)a3 saliencyRegions:(id)a4;
+- (void)prepareLivePhotoAnalysisByScenes:(id)scenes;
+- (void)prepareVideoAnalysisByScenes:(id)scenes;
+- (void)processAndEstimateQualityScore:(void *)score;
+- (void)reviseFrameTrackScore:(void *)score saliencyRegions:(id)regions;
 @end
 
 @implementation VCPFullVideoAnalyzer
 
-- (VCPFullVideoAnalyzer)initWithTransform:(CGAffineTransform *)a3
+- (VCPFullVideoAnalyzer)initWithTransform:(CGAffineTransform *)transform
 {
   v39.receiver = self;
   v39.super_class = VCPFullVideoAnalyzer;
@@ -78,10 +78,10 @@
   if (v13)
   {
     action_score_low = LODWORD(v5->_frameBuffer.buffer_[34].motion_result_.action_score_);
-    v15 = *&a3->c;
-    v38[0] = *&a3->a;
+    v15 = *&transform->c;
+    v38[0] = *&transform->a;
     v38[1] = v15;
-    v38[2] = *&a3->tx;
+    v38[2] = *&transform->tx;
     v16 = angleForTransform(v38);
     ma::SceneAnalysis::SceneAnalysis(v13, action_score_low, v16, BYTE1(v5->_frameBuffer.buffer_[34].motion_result_.fine_action_score_), LOBYTE(v5->_frameBuffer.buffer_[34].motion_result_.fine_action_score_), BYTE2(v5->_frameBuffer.buffer_[34].motion_result_.fine_action_score_), &v5->_frameBuffer, +[VCPFullVideoAnalyzer useSceneprintInSceneAnalysis]);
   }
@@ -190,22 +190,22 @@ LABEL_30:
   return v34;
 }
 
-- (VCPFullVideoAnalyzer)initWithVideoOrientation:(int)a3 preferredTransform:(CGAffineTransform *)a4 metaOrientation:(id)a5 privateResults:(id)a6 embeddings:(id)a7 isTimelapse:(BOOL)a8 isIris:(BOOL)a9 irisPhotoOffsetSec:(float)a10 irisPhotoExposureSec:(float)a11 slowMoRate:(float)a12 faceDominated:(BOOL)a13
+- (VCPFullVideoAnalyzer)initWithVideoOrientation:(int)orientation preferredTransform:(CGAffineTransform *)transform metaOrientation:(id)metaOrientation privateResults:(id)results embeddings:(id)embeddings isTimelapse:(BOOL)timelapse isIris:(BOOL)iris irisPhotoOffsetSec:(float)self0 irisPhotoExposureSec:(float)self1 slowMoRate:(float)self2 faceDominated:(BOOL)self3
 {
-  v22 = a5;
-  v23 = a6;
-  v52 = a7;
+  metaOrientationCopy = metaOrientation;
+  resultsCopy = results;
+  embeddingsCopy = embeddings;
   v54.receiver = self;
   v54.super_class = VCPFullVideoAnalyzer;
   v24 = [(VCPFullVideoAnalyzer *)&v54 init];
   v25 = v24;
   if (v24)
   {
-    v51 = v22;
-    LOBYTE(v24->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) = a8;
-    BYTE1(v24->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) = a9;
-    BYTE2(v24->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) = a12 < 1.0;
-    LODWORD(v24->_frameBuffer.buffer_[34].motion_result_.action_score_) = a3;
+    v51 = metaOrientationCopy;
+    LOBYTE(v24->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) = timelapse;
+    BYTE1(v24->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) = iris;
+    BYTE2(v24->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) = rate < 1.0;
+    LODWORD(v24->_frameBuffer.buffer_[34].motion_result_.action_score_) = orientation;
     v26 = +[VCPFullVideoAnalyzer enableMoflow];
     BYTE1(v25->_frameBuffer.buffer_[34].motion_result_.gmv_[1]) = v26;
     v27 = operator new(0x3C0uLL, MEMORY[0x1E69E5398]);
@@ -242,10 +242,10 @@ LABEL_30:
     if (v33)
     {
       action_score_low = LODWORD(v25->_frameBuffer.buffer_[34].motion_result_.action_score_);
-      v35 = *&a4->c;
-      v53[0] = *&a4->a;
+      v35 = *&transform->c;
+      v53[0] = *&transform->a;
       v53[1] = v35;
-      v53[2] = *&a4->tx;
+      v53[2] = *&transform->tx;
       v36 = angleForTransform(v53);
       ma::SceneAnalysis::SceneAnalysis(v33, action_score_low, v36, BYTE1(v25->_frameBuffer.buffer_[34].motion_result_.fine_action_score_), LOBYTE(v25->_frameBuffer.buffer_[34].motion_result_.fine_action_score_), BYTE2(v25->_frameBuffer.buffer_[34].motion_result_.fine_action_score_), &v25->_frameBuffer, +[VCPFullVideoAnalyzer useSceneprintInSceneAnalysis]);
     }
@@ -267,9 +267,9 @@ LABEL_30:
     }
 
     v25->_metadataAnalysis = v40;
-    objc_storeStrong(&v25->_frameBuffer.buffer_[34].motion_result_.residual_var_, a6);
-    LOBYTE(v25->_frameBuffer.buffer_[34].motion_result_.gmv_[1]) = a13;
-    objc_storeStrong(&v25->_frameBuffer.buffer_[34].motion_result_.action_blocks_, a7);
+    objc_storeStrong(&v25->_frameBuffer.buffer_[34].motion_result_.residual_var_, results);
+    LOBYTE(v25->_frameBuffer.buffer_[34].motion_result_.gmv_[1]) = dominated;
+    objc_storeStrong(&v25->_frameBuffer.buffer_[34].motion_result_.action_blocks_, embeddings);
     if ((LOBYTE(v25->_frameBuffer.buffer_[34].motion_result_.gmv_[1]) & 1) != 0 || (v41 = objc_alloc_init(VCPMotionFlowSubtleMotionAnalyzer), v42 = *&v25->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[1], *&v25->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[1] = v41, v42, (preencodeAnalysis = *&v25->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[1]) != 0))
     {
       if (BYTE1(v25->_frameBuffer.buffer_[34].motion_result_.gmv_[1]) != 1 || (v44 = objc_alloc_init(VCPMotionFlowAnalyzer), v45 = *&v25->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[3], *&v25->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[3] = v44, v45, (preencodeAnalysis = *&v25->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[3]) != 0))
@@ -287,7 +287,7 @@ LABEL_30:
               if (sceneAnalysis)
               {
                 preencodeAnalysis = v25->_motionFilter;
-                v22 = v51;
+                metaOrientationCopy = v51;
                 if (!preencodeAnalysis)
                 {
                   goto LABEL_30;
@@ -299,7 +299,7 @@ LABEL_30:
                   goto LABEL_30;
                 }
 
-                if (ma::SceneAnalysis::Initialize(sceneAnalysis, v51, v23, a12) || MotionAnalysis<ma::ObstructionSegment>::Initialize(v25->_obstructionAnalysis))
+                if (ma::SceneAnalysis::Initialize(sceneAnalysis, v51, resultsCopy, rate) || MotionAnalysis<ma::ObstructionSegment>::Initialize(v25->_obstructionAnalysis))
                 {
                   goto LABEL_26;
                 }
@@ -320,7 +320,7 @@ LABEL_30:
                 v50 = v49;
                 ma::IrisAnalysis::IrisAnalysis(v49);
                 v25->_irisAnalysis = v50;
-                if (ma::IrisAnalysis::Initialize(v50, a10, a11))
+                if (ma::IrisAnalysis::Initialize(v50, sec, exposureSec))
                 {
 LABEL_26:
                   preencodeAnalysis = 0;
@@ -347,7 +347,7 @@ LABEL_30:
       }
     }
 
-    v22 = v51;
+    metaOrientationCopy = v51;
     goto LABEL_30;
   }
 
@@ -425,10 +425,10 @@ LABEL_31:
   [(VCPFullVideoAnalyzer *)&v12 dealloc];
 }
 
-- (int)seedAnalyzersWithPixelBuffer:(__CVBuffer *)a3 startTime:(id *)a4 frameStats:(id)a5
+- (int)seedAnalyzersWithPixelBuffer:(__CVBuffer *)buffer startTime:(id *)time frameStats:(id)stats
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   if (self->_frameBuffer.frame_count_ || !LODWORD(self->_frameBuffer.buffer_[34].motion_result_.action_score_))
   {
     return -50;
@@ -437,7 +437,7 @@ LABEL_31:
   v11 = Height;
   ma::PreEncodeAnalysis::Initialize(self->_preencodeAnalysis, Width, Height);
   sceneAnalysis = self->_sceneAnalysis;
-  v13 = *a4;
+  v13 = *time;
   ma::SceneAnalysis::SetStartTime(sceneAnalysis, &v13);
   if (ma::Histogram::InitializeAsIdealExposureHistogram(&self->_frameBuffer.buffer_[34].motion_result_, v11 * Width))
   {
@@ -450,19 +450,19 @@ LABEL_31:
   }
 }
 
-- (void)prepareVideoAnalysisByScenes:(id)a3
+- (void)prepareVideoAnalysisByScenes:(id)scenes
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  scenesCopy = scenes;
+  v5 = scenesCopy;
+  if (scenesCopy)
   {
     BYTE1(self->_frameBuffer.buffer_[34].motion_result_.track_score_) = 0;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = scenesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -505,19 +505,19 @@ LABEL_13:
   }
 }
 
-- (void)prepareLivePhotoAnalysisByScenes:(id)a3
+- (void)prepareLivePhotoAnalysisByScenes:(id)scenes
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  scenesCopy = scenes;
+  v5 = scenesCopy;
+  if (scenesCopy)
   {
     self->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[5] = 0.0;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v6 = v4;
+    v6 = scenesCopy;
     v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v7)
     {
@@ -592,24 +592,24 @@ LABEL_19:
 LABEL_20:
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 frameStats:(id)a6 flags:(unint64_t *)a7 cancel:(id)a8
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats flags:(unint64_t *)flags cancel:(id)cancel
 {
-  v10 = *a4;
-  v9 = *a5;
-  return [(VCPFullVideoAnalyzer *)self analyzeFrame:a3 timestamp:&v10 duration:&v9 properties:0 frameStats:a6 flags:a7 cancel:a8];
+  v10 = *timestamp;
+  v9 = *duration;
+  return [(VCPFullVideoAnalyzer *)self analyzeFrame:frame timestamp:&v10 duration:&v9 properties:0 frameStats:stats flags:flags cancel:cancel];
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 properties:(id)a6 frameStats:(id)a7 flags:(unint64_t *)a8 cancel:(id)a9
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration properties:(id)properties frameStats:(id)stats flags:(unint64_t *)flags cancel:(id)cancel
 {
   v107 = *MEMORY[0x1E69E9840];
-  v96 = a6;
-  v97 = a7;
-  v95 = a9;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v13 = [v97 videoActivityDescriptor];
+  propertiesCopy = properties;
+  statsCopy = stats;
+  cancelCopy = cancel;
+  Width = CVPixelBufferGetWidth(frame);
+  Height = CVPixelBufferGetHeight(frame);
+  videoActivityDescriptor = [statsCopy videoActivityDescriptor];
 
-  if (v13)
+  if (videoActivityDescriptor)
   {
     goto LABEL_82;
   }
@@ -629,26 +629,26 @@ LABEL_20:
   }
 
   v18 = [(VCPVideoActivityDescriptor *)v14 initWithFrameWidthInMb:v16 heightInMb:(v17 >> 4)];
-  [v97 setVideoActivityDescriptor:v18];
+  [statsCopy setVideoActivityDescriptor:v18];
 
-  v19 = [v97 videoActivityDescriptor];
+  videoActivityDescriptor2 = [statsCopy videoActivityDescriptor];
 
-  if (v19)
+  if (videoActivityDescriptor2)
   {
 LABEL_82:
-    if (self->_frameBuffer.frame_count_ || (v103 = *a4, (Descriptor = [(VCPFullVideoAnalyzer *)self seedAnalyzersWithPixelBuffer:a3 startTime:&v103 frameStats:v97]) == 0))
+    if (self->_frameBuffer.frame_count_ || (v103 = *timestamp, (Descriptor = [(VCPFullVideoAnalyzer *)self seedAnalyzersWithPixelBuffer:frame startTime:&v103 frameStats:statsCopy]) == 0))
     {
       Next = ma::FrameBuffer::GetNext(&self->_frameBuffer);
-      v94 = [v96 objectForKeyedSubscript:@"objects"];
+      v94 = [propertiesCopy objectForKeyedSubscript:@"objects"];
       if (v94)
       {
-        v89 = self;
+        selfCopy = self;
         v101 = 0u;
         v102 = 0u;
         v99 = 0u;
         v100 = 0u;
-        v21 = v94;
-        v22 = [v21 countByEnumeratingWithState:&v99 objects:v106 count:16];
+        dictionary = v94;
+        v22 = [dictionary countByEnumeratingWithState:&v99 objects:v106 count:16];
         if (v22)
         {
           v23 = *v100;
@@ -659,7 +659,7 @@ LABEL_82:
             {
               if (*v100 != v23)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(dictionary);
               }
 
               v26 = *(*(&v99 + 1) + 8 * i);
@@ -680,7 +680,7 @@ LABEL_82:
               v28 = v27;
               *&v29 = ma::Object::Object(v27).n128_u64[0];
               v103.value = v28;
-              v30 = [v21 objectForKeyedSubscript:{v26, v29}];
+              v30 = [dictionary objectForKeyedSubscript:{v26, v29}];
               v108 = NSRectFromString(v30);
               x = v108.origin.x;
               y = v108.origin.y;
@@ -705,7 +705,7 @@ LABEL_82:
               }
             }
 
-            v22 = [v21 countByEnumeratingWithState:&v99 objects:v106 count:16];
+            v22 = [dictionary countByEnumeratingWithState:&v99 objects:v106 count:16];
             if (v22)
             {
               continue;
@@ -715,12 +715,12 @@ LABEL_82:
           }
         }
 
-        self = v89;
+        self = selfCopy;
       }
 
-      v103 = *a4;
-      buf = *a5;
-      ma::Frame::Initialize(Next, &v103, &buf, a3, 1);
+      v103 = *timestamp;
+      buf = *duration;
+      ma::Frame::Initialize(Next, &v103, &buf, frame, 1);
       Descriptor = v37;
       if (v37)
       {
@@ -730,17 +730,17 @@ LABEL_82:
       if (BYTE1(self->_frameBuffer.buffer_[34].motion_result_.gmv_[1]) == 1)
       {
         v38 = *&self->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[3];
-        v103 = *a4;
-        buf = *a5;
-        [v38 analyzePixelBuffer:a3 withFrame:Next withTimestamp:&v103 andDuration:&buf cancel:v95];
+        v103 = *timestamp;
+        buf = *duration;
+        [v38 analyzePixelBuffer:frame withFrame:Next withTimestamp:&v103 andDuration:&buf cancel:cancelCopy];
       }
 
-      v39 = *a8;
+      v39 = *flags;
       encodeAnalysis = self->_encodeAnalysis;
-      *&v103.value = *&a4->var0;
+      *&v103.value = *&timestamp->var0;
       v41 = BYTE1(self->_frameBuffer.buffer_[34].motion_result_.fine_action_score_);
-      v103.epoch = a4->var3;
-      Descriptor = ma::EncodeAnalysis::ProcessFrame(encodeAnalysis, &v103, a3, Next, v41, (v39 >> 5) & 1 | BYTE1(self->_frameBuffer.buffer_[34].motion_result_.track_score_));
+      v103.epoch = timestamp->var3;
+      Descriptor = ma::EncodeAnalysis::ProcessFrame(encodeAnalysis, &v103, frame, Next, v41, (v39 >> 5) & 1 | BYTE1(self->_frameBuffer.buffer_[34].motion_result_.track_score_));
       if (Descriptor)
       {
         goto LABEL_39;
@@ -749,20 +749,20 @@ LABEL_82:
       if ((LOBYTE(self->_frameBuffer.buffer_[34].motion_result_.gmv_[1]) & 1) == 0)
       {
         v42 = *&self->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[1];
-        v103 = *a4;
-        buf = *a5;
-        [v42 analyzePixelBuffer:a3 withFrame:Next withTimestamp:&v103 andDuration:&buf hasSubtleScene:LODWORD(self->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[5]) cancel:v95];
+        v103 = *timestamp;
+        buf = *duration;
+        [v42 analyzePixelBuffer:frame withFrame:Next withTimestamp:&v103 andDuration:&buf hasSubtleScene:LODWORD(self->_frameBuffer.buffer_[34].motion_result_.motion_param_.__elems_[5]) cancel:cancelCopy];
       }
 
       if (ma::EncodeAnalysis::getEncodeStats(self->_encodeAnalysis))
       {
-        v43 = [v97 detectedFaces];
-        v44 = [v43 count] == 0;
+        detectedFaces = [statsCopy detectedFaces];
+        v44 = [detectedFaces count] == 0;
 
         if (!v44)
         {
-          v45 = [v97 detectedFaces];
-          [(VCPFullVideoAnalyzer *)self estimateExpressionScore:v45 encodeStats:ma::EncodeAnalysis::getEncodeStats(self->_encodeAnalysis) frameWidth:Width frameHeight:Height];
+          detectedFaces2 = [statsCopy detectedFaces];
+          [(VCPFullVideoAnalyzer *)self estimateExpressionScore:detectedFaces2 encodeStats:ma::EncodeAnalysis::getEncodeStats(self->_encodeAnalysis) frameWidth:Width frameHeight:Height];
           v47 = v46;
 
           v48 = *(Next + 4);
@@ -780,20 +780,20 @@ LABEL_82:
             v50 = v49;
           }
 
-          [v97 frameExpressionScore];
+          [statsCopy frameExpressionScore];
           if (v47 >= *&v52)
           {
             *&v52 = v47;
           }
 
           *&v52 = *&v52 * v50;
-          [v97 setFrameExpressionScore:v52];
+          [statsCopy setFrameExpressionScore:v52];
         }
       }
 
       if ((BYTE2(self->_frameBuffer.buffer_[34].motion_result_.track_score_) & 1) == 0)
       {
-        v53 = [VCPSaliencyRegion salientRegionsFromPixelBuffer:a3];
+        v53 = [VCPSaliencyRegion salientRegionsFromPixelBuffer:frame];
         [(VCPFullVideoAnalyzer *)self reviseFrameTrackScore:Next saliencyRegions:v53];
       }
 
@@ -813,7 +813,7 @@ LABEL_82:
 
       if ((BYTE1(self->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) & 1) == 0)
       {
-        Descriptor = ma::DescriptorAnalysis::GenerateDescriptor((self->_sceneAnalysis + 760), a3, Next);
+        Descriptor = ma::DescriptorAnalysis::GenerateDescriptor((self->_sceneAnalysis + 760), frame, Next);
         if (Descriptor)
         {
           goto LABEL_39;
@@ -860,12 +860,12 @@ LABEL_82:
 LABEL_67:
         if ((BYTE1(self->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) & 1) == 0 && *(*(self->_encodeAnalysis + 12) + 32) && *Next)
         {
-          v62 = [v97 videoActivityDescriptor];
-          [v62 ExtractActivityDescriptorFromStats:ma::EncodeAnalysis::getEncodeStats(self->_encodeAnalysis)];
+          videoActivityDescriptor3 = [statsCopy videoActivityDescriptor];
+          [videoActivityDescriptor3 ExtractActivityDescriptorFromStats:ma::EncodeAnalysis::getEncodeStats(self->_encodeAnalysis)];
         }
 
         LODWORD(v59) = *(Next + 19);
-        [v97 setCameraMotionScore:{v59, v89}];
+        [statsCopy setCameraMotionScore:{v59, selfCopy}];
         v64 = 176;
         if (!*(*(self->_encodeAnalysis + 12) + 32))
         {
@@ -873,30 +873,30 @@ LABEL_67:
         }
 
         LODWORD(v63) = *&Next[v64];
-        [v97 setSubjectActionScore:v63];
+        [statsCopy setSubjectActionScore:v63];
         LODWORD(v65) = *(Next + 48);
-        [v97 setSubtleMotionScore:v65];
+        [statsCopy setSubtleMotionScore:v65];
         LODWORD(v66) = *(Next + 86);
-        [v97 setInterestingnessScore:v66];
+        [statsCopy setInterestingnessScore:v66];
         LODWORD(v67) = *(Next + 88);
-        [v97 setColorfulnessScore:v67];
-        [v97 setFrameProcessedByVideoAnalyzer:Next[208]];
-        [v97 setSubMbMotionAvailable:*(*(self->_encodeAnalysis + 12) + 32) != 0];
+        [statsCopy setColorfulnessScore:v67];
+        [statsCopy setFrameProcessedByVideoAnalyzer:Next[208]];
+        [statsCopy setSubMbMotionAvailable:*(*(self->_encodeAnalysis + 12) + 32) != 0];
         [(VCPFullVideoAnalyzer *)self computeExposureScoreOfFrame:Next];
-        [v97 setExposureScore:?];
+        [statsCopy setExposureScore:?];
         v103 = *(Next + 228);
-        [v97 setMotionParam:&v103];
+        [statsCopy setMotionParam:&v103];
         v103 = *(Next + 252);
-        [v97 setMotionParamDiff:&v103];
+        [statsCopy setMotionParamDiff:&v103];
         self->_frameBuffer.buffer_[34].motion_result_.motion_param_diff_.__elems_[0] = ma::QualityAnalysis::currentSegmentScore(self->_sceneAnalysis + 123);
         self->_frameBuffer.buffer_[34].motion_result_.motion_param_diff_.__elems_[1] = ma::FineSubjectMotionAnalysis::currentSegmentScore((self->_sceneAnalysis + 496), *Next);
         LODWORD(v68) = *(Next + 46);
         [*&self->_frameBuffer.buffer_[34].motion_result_.valid_mb_ processFrameScore:Next[208] validScore:v68];
         self->_frameBuffer.buffer_[34].motion_result_.motion_param_diff_.__elems_[4] = v69;
-        [v97 interestingnessScore];
-        v70 = self;
+        [statsCopy interestingnessScore];
+        selfCopy2 = self;
         self->_frameBuffer.buffer_[34].motion_result_.motion_param_diff_.__elems_[2] = v71;
-        v21 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         for (j = 0; ; ++j)
         {
           v73 = *(Next + 41);
@@ -916,10 +916,10 @@ LABEL_67:
           v105[1] = v80;
           v81 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:2];
           v82 = [MEMORY[0x1E696AD98] numberWithInt:*v76];
-          [v21 setObject:v81 forKeyedSubscript:v82];
+          [dictionary setObject:v81 forKeyedSubscript:v82];
         }
 
-        objc_storeStrong(&v70->_frameBuffer.buffer_[34].motion_result_.motion_param_diff_.__elems_[5], v21);
+        objc_storeStrong(&selfCopy2->_frameBuffer.buffer_[34].motion_result_.motion_param_diff_.__elems_[5], dictionary);
         *&v83 = *(Next + 55) * 0.25;
         v84 = [MEMORY[0x1E696AD98] numberWithFloat:v83];
         v104[0] = v84;
@@ -927,8 +927,8 @@ LABEL_67:
         v86 = [MEMORY[0x1E696AD98] numberWithFloat:v85];
         v104[1] = v86;
         v87 = [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:2];
-        v88 = v70->_frameBuffer.buffer_[34].motion_result_.duration_.value;
-        v70->_frameBuffer.buffer_[34].motion_result_.duration_.value = v87;
+        v88 = selfCopy2->_frameBuffer.buffer_[34].motion_result_.duration_.value;
+        selfCopy2->_frameBuffer.buffer_[34].motion_result_.duration_.value = v87;
 
         Descriptor = 0;
 LABEL_38:
@@ -957,7 +957,7 @@ LABEL_39:
   return Descriptor;
 }
 
-- (int)isStableMetaMotion:(id *)a3
+- (int)isStableMetaMotion:(id *)motion
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = [*&self->_frameBuffer.buffer_[34].motion_result_.residual_var_ objectForKeyedSubscript:@"MetaMotionResults"];
@@ -989,7 +989,7 @@ LABEL_39:
         memset(&v18, 0, sizeof(v18));
         CMTimeRangeMakeFromDictionary(&v18, v10);
         range = v18;
-        v16 = *a3;
+        v16 = *motion;
         if (CMTimeRangeContainsTime(&range, &v16))
         {
           v12 = [(__CFDictionary *)v10 objectForKeyedSubscript:@"quality"];
@@ -1026,12 +1026,12 @@ LABEL_14:
   return v11;
 }
 
-- (float)estimateExpressionScore:(id)a3 encodeStats:(EncodeStats *)a4 frameWidth:(int)a5 frameHeight:(int)a6
+- (float)estimateExpressionScore:(id)score encodeStats:(EncodeStats *)stats frameWidth:(int)width frameHeight:(int)height
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  var25 = a4->var25;
-  var26 = a4->var26;
+  scoreCopy = score;
+  var25 = stats->var25;
+  var26 = stats->var26;
   v11 = var25 + 15;
   v10 = var25 < -15;
   v12 = var25 + 30;
@@ -1056,7 +1056,7 @@ LABEL_14:
 
   v36 = 0uLL;
   v37 = 0uLL;
-  v15 = v7;
+  v15 = scoreCopy;
   v16 = [v15 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v16)
   {
@@ -1114,7 +1114,7 @@ LABEL_14:
     {
       if (v21 < v22 >> 2)
       {
-        v28 = (a4->var19 + v24);
+        v28 = (stats->var19 + v24);
         v29 = (v22 >> 2) - v21;
         do
         {
@@ -1138,7 +1138,7 @@ LABEL_14:
   return v31 / 2500.0;
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
   frame_count = self->_frameBuffer.frame_count_;
   if (!frame_count || (LOBYTE(self->_frameBuffer.buffer_[34].motion_result_.track_score_) & 1) != 0)
@@ -1171,9 +1171,9 @@ LABEL_11:
         if (!result)
         {
           LOBYTE(self->_frameBuffer.buffer_[34].motion_result_.track_score_) = 1;
-          v9 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v10 = *&self->_frameBuffer.buffer_[34].motion_result_.subtle_motion_score_;
-          *&self->_frameBuffer.buffer_[34].motion_result_.subtle_motion_score_ = v9;
+          *&self->_frameBuffer.buffer_[34].motion_result_.subtle_motion_score_ = dictionary;
 
           if (BYTE1(self->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) == 1)
           {
@@ -1214,21 +1214,21 @@ LABEL_11:
   return result;
 }
 
-- (int)process:(int)a3
+- (int)process:(int)process
 {
-  if (a3 < 1 || self->_frameBuffer.frame_count_ <= a3)
+  if (process < 1 || self->_frameBuffer.frame_count_ <= process)
   {
     return -50;
   }
 
-  v5 = ma::FrameBuffer::Get(&self->_frameBuffer, a3 - 1);
-  v6 = ma::FrameBuffer::Get(&self->_frameBuffer, a3);
+  v5 = ma::FrameBuffer::Get(&self->_frameBuffer, process - 1);
+  v6 = ma::FrameBuffer::Get(&self->_frameBuffer, process);
   if ((LOBYTE(self->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) & 1) == 0)
   {
-    ma::MotionFilter::ProcessMotion(self->_motionFilter, a3, (v6 + 52), 2);
+    ma::MotionFilter::ProcessMotion(self->_motionFilter, process, (v6 + 52), 2);
   }
 
-  ma::MetaDataAnalysis::EstimateMetadataFromMotion(self->_metadataAnalysis, a3, (v6 + 52), BYTE1(self->_frameBuffer.buffer_[34].motion_result_.fine_action_score_));
+  ma::MetaDataAnalysis::EstimateMetadataFromMotion(self->_metadataAnalysis, process, (v6 + 52), BYTE1(self->_frameBuffer.buffer_[34].motion_result_.fine_action_score_));
   if (BYTE1(self->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) != 1 || (result = ma::IrisAnalysis::UpdateStats(self->_irisAnalysis, v5, v6)) == 0)
   {
     ma::PreEncodeAnalysis::ProcessFrame(self->_preencodeAnalysis, v6);
@@ -1240,27 +1240,27 @@ LABEL_11:
   return result;
 }
 
-- (void)processAndEstimateQualityScore:(void *)a3
+- (void)processAndEstimateQualityScore:(void *)score
 {
   if ((LOBYTE(self->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) & 1) == 0)
   {
     frame_count = self->_frameBuffer.frame_count_;
     if (frame_count >= 1)
     {
-      ma::MotionFilter::ProcessMotion(self->_motionFilter, frame_count - 1, (a3 + 52), 2);
+      ma::MotionFilter::ProcessMotion(self->_motionFilter, frame_count - 1, (score + 52), 2);
     }
   }
 
-  ma::MetaDataAnalysis::EstimateMetadataFromMotion(self->_metadataAnalysis, self->_frameBuffer.frame_count_ - 1, (a3 + 52), 1);
-  [(VCPFullVideoAnalyzer *)self estimateQualityScore:a3];
-  *(a3 + 19) = v6;
+  ma::MetaDataAnalysis::EstimateMetadataFromMotion(self->_metadataAnalysis, self->_frameBuffer.frame_count_ - 1, (score + 52), 1);
+  [(VCPFullVideoAnalyzer *)self estimateQualityScore:score];
+  *(score + 19) = v6;
 }
 
 - (id)processSceneResults
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SceneResults" to:v3 optional:0];
-  v4 = [v3 objectForKeyedSubscript:@"SceneResults"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SceneResults" to:dictionary optional:0];
+  v4 = [dictionary objectForKeyedSubscript:@"SceneResults"];
   for (i = 0; i < [v4 count]; ++i)
   {
     memset(&v13, 0, sizeof(v13));
@@ -1282,43 +1282,43 @@ LABEL_11:
   return v4;
 }
 
-- (float)estimateQualityScore:(void *)a3
+- (float)estimateQualityScore:(void *)score
 {
-  if (ma::Histogram::NoInfo((a3 + 360)) || (*(a3 + 108) & 1) != 0)
+  if (ma::Histogram::NoInfo((score + 360)) || (*(score + 108) & 1) != 0)
   {
     return 0.0;
   }
 
-  v5 = ma::Translation::AbsSum((a3 + 52));
+  v5 = ma::Translation::AbsSum((score + 52));
   v6 = expf(v5 * -0.07);
-  v7 = ma::Translation::AbsSum((a3 + 112));
+  v7 = ma::Translation::AbsSum((score + 112));
   return (fmaxf(v6, 0.0) * 0.7) + (fmaxf(expf(v7 * -10.0), 0.0) * 0.3);
 }
 
 - (id)results
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  if ([(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"CameraMotionResults" to:v3 optional:0]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SubjectMotionResults" to:v3 optional:0]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"QualityResults" to:v3 optional:0])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"CameraMotionResults" to:dictionary optional:0]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SubjectMotionResults" to:dictionary optional:0]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"QualityResults" to:dictionary optional:0])
   {
     goto LABEL_4;
   }
 
   if (*&self->_frameBuffer.buffer_[34].motion_result_.action_blocks_)
   {
-    v7 = [(VCPFullVideoAnalyzer *)self processSceneResults];
-    [v3 setObject:v7 forKeyedSubscript:@"SceneResults"];
+    processSceneResults = [(VCPFullVideoAnalyzer *)self processSceneResults];
+    [dictionary setObject:processSceneResults forKeyedSubscript:@"SceneResults"];
   }
 
-  else if ([(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SceneResults" to:v3 optional:0])
+  else if ([(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SceneResults" to:dictionary optional:0])
   {
     goto LABEL_4;
   }
 
   if ((BYTE1(self->_frameBuffer.buffer_[34].motion_result_.fine_action_score_) & 1) == 0)
   {
-    if (![(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"FeatureVectorResults" to:v3 optional:0])
+    if (![(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"FeatureVectorResults" to:dictionary optional:0])
     {
-      v8 = [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SceneprintResults" to:v3 optional:0];
+      v8 = [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SceneprintResults" to:dictionary optional:0];
       goto LABEL_12;
     }
 
@@ -1327,21 +1327,21 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v8 = [(VCPFullVideoAnalyzer *)self addResult:ma::IrisAnalysis::GetBoundBoxResults(self->_irisAnalysis) to:v3 forKey:@"IrisObjectsResults" optional:1];
+  v8 = [(VCPFullVideoAnalyzer *)self addResult:ma::IrisAnalysis::GetBoundBoxResults(self->_irisAnalysis) to:dictionary forKey:@"IrisObjectsResults" optional:1];
 LABEL_12:
-  if (v8 || [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"FineSubjectMotionResults" to:v3 optional:1]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SubtleMotionResults" to:v3 optional:1]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"MovingObjectsResults" to:v3 optional:1]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"OrientationResults" to:v3 optional:1]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"InterestingnessResults" to:v3 optional:1]|| [(VCPFullVideoAnalyzer *)self addResult:*(self->_obstructionAnalysis + 2) to:v3 forKey:@"ObstructionResults" optional:1])
+  if (v8 || [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"FineSubjectMotionResults" to:dictionary optional:1]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SubtleMotionResults" to:dictionary optional:1]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"MovingObjectsResults" to:dictionary optional:1]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"OrientationResults" to:dictionary optional:1]|| [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"InterestingnessResults" to:dictionary optional:1]|| [(VCPFullVideoAnalyzer *)self addResult:*(self->_obstructionAnalysis + 2) to:dictionary forKey:@"ObstructionResults" optional:1])
   {
     goto LABEL_4;
   }
 
-  if ([(VCPFullVideoAnalyzer *)self addResult:ma::PreEncodeAnalysis::GetResults(self->_preencodeAnalysis) to:v3 forKey:@"PreEncodeResults" optional:1])
+  if ([(VCPFullVideoAnalyzer *)self addResult:ma::PreEncodeAnalysis::GetResults(self->_preencodeAnalysis) to:dictionary forKey:@"PreEncodeResults" optional:1])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = dictionary;
   }
 
 LABEL_5:
@@ -1350,16 +1350,16 @@ LABEL_5:
   return v4;
 }
 
-- (int)addSceneAnalysisResult:(id)a3 to:(id)a4 optional:(BOOL)a5
+- (int)addSceneAnalysisResult:(id)result to:(id)to optional:(BOOL)optional
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  optionalCopy = optional;
+  resultCopy = result;
+  toCopy = to;
   cf = 0;
-  v10 = ma::SceneAnalysis::CopyProperty(self->_sceneAnalysis, v8, 0, &cf);
+  v10 = ma::SceneAnalysis::CopyProperty(self->_sceneAnalysis, resultCopy, 0, &cf);
   if (!v10)
   {
-    v10 = [(VCPFullVideoAnalyzer *)self addResult:cf to:v9 forKey:v8 optional:v5];
+    v10 = [(VCPFullVideoAnalyzer *)self addResult:cf to:toCopy forKey:resultCopy optional:optionalCopy];
   }
 
   if (cf)
@@ -1370,20 +1370,20 @@ LABEL_5:
   return v10;
 }
 
-- (int)addSceneAnalysisResult:(id)a3 to:(id)a4 clipRange:(id *)a5
+- (int)addSceneAnalysisResult:(id)result to:(id)to clipRange:(id *)range
 {
-  v8 = a3;
-  v9 = a4;
+  resultCopy = result;
+  toCopy = to;
   v15 = 0;
   sceneAnalysis = self->_sceneAnalysis;
-  v11 = *&a5->var0.var3;
-  *&v14.start.value = *&a5->var0.var0;
+  v11 = *&range->var0.var3;
+  *&v14.start.value = *&range->var0.var0;
   *&v14.start.epoch = v11;
-  *&v14.duration.timescale = *&a5->var1.var1;
-  v12 = ma::SceneAnalysis::CopyProperty(sceneAnalysis, &v14, v8, 0, &v15);
+  *&v14.duration.timescale = *&range->var1.var1;
+  v12 = ma::SceneAnalysis::CopyProperty(sceneAnalysis, &v14, resultCopy, 0, &v15);
   if (!v12)
   {
-    v12 = [(VCPFullVideoAnalyzer *)self addResult:v15 to:v9 forKey:v8 optional:0];
+    v12 = [(VCPFullVideoAnalyzer *)self addResult:v15 to:toCopy forKey:resultCopy optional:0];
   }
 
   if (v15)
@@ -1394,19 +1394,19 @@ LABEL_5:
   return v12;
 }
 
-- (int)addResult:(__CFArray *)a3 to:(id)a4 forKey:(id)a5 optional:(BOOL)a6
+- (int)addResult:(__CFArray *)result to:(id)to forKey:(id)key optional:(BOOL)optional
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  if (a3)
+  optionalCopy = optional;
+  toCopy = to;
+  keyCopy = key;
+  if (result)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = v6;
+    v11 = optionalCopy;
   }
 
   if (v11)
@@ -1419,10 +1419,10 @@ LABEL_5:
     v12 = -50;
   }
 
-  if (a3)
+  if (result)
   {
-    Copy = CFArrayCreateCopy(0, a3);
-    [v9 setObject:Copy forKey:v10];
+    Copy = CFArrayCreateCopy(0, result);
+    [toCopy setObject:Copy forKey:keyCopy];
 
     v12 = 0;
   }
@@ -1444,27 +1444,27 @@ LABEL_5:
   }
 }
 
-- (void)reviseFrameTrackScore:(void *)a3 saliencyRegions:(id)a4
+- (void)reviseFrameTrackScore:(void *)score saliencyRegions:(id)regions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  regionsCopy = regions;
   v6 = 0;
   v7 = 0;
   while (1)
   {
-    v8 = *(a3 + 39);
+    v8 = *(score + 39);
     v9 = v8 ? CFArrayGetCount(v8) : 0;
     if (v6 >= v9)
     {
       break;
     }
 
-    v10 = *CFArrayGetValueAtIndex(*(a3 + 39), v6);
+    v10 = *CFArrayGetValueAtIndex(*(score + 39), v6);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v11 = v5;
+    v11 = regionsCopy;
     v12 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v12)
     {
@@ -1503,36 +1503,36 @@ LABEL_16:
 
   if ((v7 & 1) == 0)
   {
-    *(a3 + 46) = 0;
+    *(score + 46) = 0;
   }
 }
 
-- (id)clipResults:(id *)a3
+- (id)clipResults:(id *)results
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = *&a3->var0.var3;
-  v14 = *&a3->var0.var0;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = *&results->var0.var3;
+  v14 = *&results->var0.var0;
   v15 = v6;
-  v16 = *&a3->var1.var1;
-  if ([(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"QualityResults" to:v5 clipRange:&v14]|| (v7 = *&a3->var0.var3, v14 = *&a3->var0.var0, v15 = v7, v16 = *&a3->var1.var1, [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"FineSubjectMotionResults" to:v5 clipRange:&v14]) || (v8 = *&a3->var0.var3, v14 = *&a3->var0.var0, v15 = v8, v16 = *&a3->var1.var1, [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SubtleMotionResults" to:v5 clipRange:&v14]) || (v9 = *&a3->var0.var3, v14 = *&a3->var0.var0, v15 = v9, v16 = *&a3->var1.var1, [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"CameraMotionResults" to:v5 clipRange:&v14]))
+  v16 = *&results->var1.var1;
+  if ([(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"QualityResults" to:dictionary clipRange:&v14]|| (v7 = *&results->var0.var3, v14 = *&results->var0.var0, v15 = v7, v16 = *&results->var1.var1, [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"FineSubjectMotionResults" to:dictionary clipRange:&v14]) || (v8 = *&results->var0.var3, v14 = *&results->var0.var0, v15 = v8, v16 = *&results->var1.var1, [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"SubtleMotionResults" to:dictionary clipRange:&v14]) || (v9 = *&results->var0.var3, v14 = *&results->var0.var0, v15 = v9, v16 = *&results->var1.var1, [(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"CameraMotionResults" to:dictionary clipRange:&v14]))
   {
     v10 = 0;
   }
 
   else
   {
-    v13 = *&a3->var0.var3;
-    v14 = *&a3->var0.var0;
+    v13 = *&results->var0.var3;
+    v14 = *&results->var0.var0;
     v15 = v13;
-    v16 = *&a3->var1.var1;
-    if ([(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"InterestingnessResults" to:v5 clipRange:&v14])
+    v16 = *&results->var1.var1;
+    if ([(VCPFullVideoAnalyzer *)self addSceneAnalysisResult:@"InterestingnessResults" to:dictionary clipRange:&v14])
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v5;
+      v10 = dictionary;
     }
   }
 

@@ -1,15 +1,15 @@
 @interface ASDatabaseCompetitionListEntryEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 @end
 
 @implementation ASDatabaseCompetitionListEntryEncoder
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v9 = objc_alloc_init(MEMORY[0x277CE9078]);
-  if ([(ASDatabaseCompetitionListEntryEncoder *)self applyPropertiesToObject:v9 persistentID:a3 row:a4 error:a5])
+  if ([(ASDatabaseCompetitionListEntryEncoder *)self applyPropertiesToObject:v9 persistentID:d row:row error:error])
   {
     v10 = v9;
   }
@@ -22,10 +22,10 @@
   return v10;
 }
 
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v9 = objc_alloc_init(MEMORY[0x277CE9078]);
-  if ([(ASDatabaseCompetitionListEntryEncoder *)self applyPropertiesToObject:v9 persistentID:a3 row:a4 error:a5])
+  if ([(ASDatabaseCompetitionListEntryEncoder *)self applyPropertiesToObject:v9 persistentID:d row:row error:error])
   {
     v10 = v9;
   }
@@ -38,17 +38,17 @@
   return v10;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = HDSQLiteColumnWithNameAsData();
-  [v6 setFriendUUID:v7];
+  [objectCopy setFriendUUID:v7];
 
-  [v6 setType:HDSQLiteColumnWithNameAsInt64()];
+  [objectCopy setType:HDSQLiteColumnWithNameAsInt64()];
   v8 = HDSQLiteColumnWithNameAsData();
-  [v6 setSystemFieldsOnlyRecord:v8];
+  [objectCopy setSystemFieldsOnlyRecord:v8];
 
-  [v6 setOwner:HDSQLiteColumnWithNameAsInt64()];
+  [objectCopy setOwner:HDSQLiteColumnWithNameAsInt64()];
   return 1;
 }
 

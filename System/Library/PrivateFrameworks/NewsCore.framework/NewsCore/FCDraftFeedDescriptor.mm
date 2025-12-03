@@ -1,33 +1,33 @@
 @interface FCDraftFeedDescriptor
-- (FCDraftFeedDescriptor)initWithChannel:(id)a3 articleListID:(id)a4 issueListID:(id)a5;
+- (FCDraftFeedDescriptor)initWithChannel:(id)channel articleListID:(id)d issueListID:(id)iD;
 - (id)name;
 @end
 
 @implementation FCDraftFeedDescriptor
 
-- (FCDraftFeedDescriptor)initWithChannel:(id)a3 articleListID:(id)a4 issueListID:(id)a5
+- (FCDraftFeedDescriptor)initWithChannel:(id)channel articleListID:(id)d issueListID:(id)iD
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  channelCopy = channel;
+  dCopy = d;
+  iDCopy = iD;
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v9 identifier];
-  v14 = [v12 stringWithFormat:@"drafts-%@", v13];
+  identifier = [channelCopy identifier];
+  v14 = [v12 stringWithFormat:@"drafts-%@", identifier];
 
   v22.receiver = self;
   v22.super_class = FCDraftFeedDescriptor;
   v15 = [(FCFeedDescriptor *)&v22 initWithIdentifier:v14];
   v16 = v15;
-  if (v10)
+  if (dCopy)
   {
     if (v15)
     {
-      objc_storeStrong(&v15->_channel, a3);
-      v17 = [v10 copy];
+      objc_storeStrong(&v15->_channel, channel);
+      v17 = [dCopy copy];
       articleListID = v16->_articleListID;
       v16->_articleListID = v17;
 
-      v19 = [v11 copy];
+      v19 = [iDCopy copy];
       issueListID = v16->_issueListID;
       v16->_issueListID = v19;
     }

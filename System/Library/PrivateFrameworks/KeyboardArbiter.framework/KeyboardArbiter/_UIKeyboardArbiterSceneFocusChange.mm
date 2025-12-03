@@ -1,11 +1,11 @@
 @interface _UIKeyboardArbiterSceneFocusChange
 + (id)focusNothingChange;
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIKeyboardArbiterSceneFocusChange)init;
-- (_UIKeyboardArbiterSceneFocusChange)initWithSceneIdentity:(id)a3 pid:(int)a4;
+- (_UIKeyboardArbiterSceneFocusChange)initWithSceneIdentity:(id)identity pid:(int)pid;
 - (id)_init;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 @end
 
 @implementation _UIKeyboardArbiterSceneFocusChange
@@ -42,7 +42,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"_UIKeyboardArbiterSceneFocusChangeRequest.m";
     v17 = 1024;
@@ -71,7 +71,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"_UIKeyboardArbiterSceneFocusChangeRequest.m";
     v17 = 1024;
@@ -87,27 +87,27 @@
   return result;
 }
 
-- (_UIKeyboardArbiterSceneFocusChange)initWithSceneIdentity:(id)a3 pid:(int)a4
+- (_UIKeyboardArbiterSceneFocusChange)initWithSceneIdentity:(id)identity pid:(int)pid
 {
-  v7 = a3;
+  identityCopy = identity;
   v11.receiver = self;
   v11.super_class = _UIKeyboardArbiterSceneFocusChange;
   v8 = [(_UIKeyboardArbiterSceneFocusChange *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sceneIdentity, a3);
-    v9->_pid = a4;
+    objc_storeStrong(&v8->_sceneIdentity, identity);
+    v9->_pid = pid;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -146,16 +146,16 @@
   return v9;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64___UIKeyboardArbiterSceneFocusChange_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_2797F45E0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = streamCopy;
+  v5 = streamCopy;
   [v5 appendProem:0 block:v6];
 }
 

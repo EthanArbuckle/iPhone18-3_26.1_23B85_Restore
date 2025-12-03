@@ -1,65 +1,65 @@
 @interface ACXApplication
-+ (BOOL)_isIndeterminateMISError:(int)a3;
-+ (id)gizmoApplicationsFromCompanionAppRecord:(id)a3 databaseUUID:(id)a4 startingSequenceNumber:(unint64_t)a5;
-+ (int)_systemTrustsApplicationWithBundleURL:(id)a3;
++ (BOOL)_isIndeterminateMISError:(int)error;
++ (id)gizmoApplicationsFromCompanionAppRecord:(id)record databaseUUID:(id)d startingSequenceNumber:(unint64_t)number;
++ (int)_systemTrustsApplicationWithBundleURL:(id)l;
 - (ACXApplication)init;
-- (ACXApplication)initWithApplicationRecord:(id)a3 gizmoBundleIdentifier:(id)a4 databaseUUID:(id)a5 sequenceNumber:(unint64_t)a6;
-- (ACXApplication)initWithBundleID:(id)a3 databaseUUID:(id)a4 sequenceNumber:(unint64_t)a5;
-- (ACXApplication)initWithCoder:(id)a3;
-- (ACXApplication)initWithSerializedDictionary:(id)a3 reevaluatingTrust:(BOOL)a4;
-- (id)_URLOfFirstItemWithExtension:(id)a3 inDirectory:(id)a4;
-- (id)_URLsOfExtensionsInBundleURL:(id)a3 mayNotExist:(BOOL)a4;
-- (id)_infoPlistForPluginBundle:(id)a3;
-- (id)_mostCurrentWKAppURLInCompanionAppRecord:(id)a3 isPlaceholder:(BOOL *)a4;
-- (id)_parseArchitectureSlicesForWatchKitAppExecutableURL:(id)a3;
-- (id)_storeMetadataWithError:(id *)a3;
-- (id)_watchKitApplicationNameFromWKAppInfoPlist:(id)a3 containerRecord:(id)a4;
+- (ACXApplication)initWithApplicationRecord:(id)record gizmoBundleIdentifier:(id)identifier databaseUUID:(id)d sequenceNumber:(unint64_t)number;
+- (ACXApplication)initWithBundleID:(id)d databaseUUID:(id)iD sequenceNumber:(unint64_t)number;
+- (ACXApplication)initWithCoder:(id)coder;
+- (ACXApplication)initWithSerializedDictionary:(id)dictionary reevaluatingTrust:(BOOL)trust;
+- (id)_URLOfFirstItemWithExtension:(id)extension inDirectory:(id)directory;
+- (id)_URLsOfExtensionsInBundleURL:(id)l mayNotExist:(BOOL)exist;
+- (id)_infoPlistForPluginBundle:(id)bundle;
+- (id)_mostCurrentWKAppURLInCompanionAppRecord:(id)record isPlaceholder:(BOOL *)placeholder;
+- (id)_parseArchitectureSlicesForWatchKitAppExecutableURL:(id)l;
+- (id)_storeMetadataWithError:(id *)error;
+- (id)_watchKitApplicationNameFromWKAppInfoPlist:(id)plist containerRecord:(id)record;
 - (id)appWithReevaluatedTrust;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)initForTesting;
 - (id)serialize;
 - (id)serializeAsRemoteApplication;
-- (void)_evaluateTrustInfoForReevaluation:(BOOL)a3;
+- (void)_evaluateTrustInfoForReevaluation:(BOOL)reevaluation;
 - (void)_populateStoreMetadata;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ACXApplication
 
-- (ACXApplication)initWithCoder:(id)a3
+- (ACXApplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = ACXApplication;
-  v5 = [(ACXRemoteApplication *)&v27 initWithCoder:v4];
+  v5 = [(ACXRemoteApplication *)&v27 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_6;
   }
 
-  if (![v4 containsValueForKey:@"watchAppURL"])
+  if (![coderCopy containsValueForKey:@"watchAppURL"])
   {
     goto LABEL_8;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchAppURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchAppURL"];
   v7 = [MEMORY[0x277CBEBC0] URLWithString:v6];
   watchAppURL = v5->_watchAppURL;
   v5->_watchAppURL = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lsSequenceNumber"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lsSequenceNumber"];
   v5->_lsSequenceNumber = [v9 unsignedIntegerValue];
 
   v10 = MEMORY[0x277CBEB98];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"clockFaceExtensionPaths"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"clockFaceExtensionPaths"];
   clockFaceExtensionPaths = v5->_clockFaceExtensionPaths;
   v5->_clockFaceExtensionPaths = v13;
 
-  v5->_isTrusted = [v4 decodeBoolForKey:@"isTrusted"];
-  if (([v4 containsValueForKey:@"companionAppURL"] & 1) == 0)
+  v5->_isTrusted = [coderCopy decodeBoolForKey:@"isTrusted"];
+  if (([coderCopy containsValueForKey:@"companionAppURL"] & 1) == 0)
   {
 LABEL_8:
     if (gLogHandle && *(gLogHandle + 44) < 3)
@@ -74,16 +74,16 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companionAppURL"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companionAppURL"];
   v16 = [MEMORY[0x277CBEBC0] URLWithString:v15];
   companionAppURL = v5->_companionAppURL;
   v5->_companionAppURL = v16;
 
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppIdentifier"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppIdentifier"];
   sourceAppIdentifier = v5->_sourceAppIdentifier;
   v5->_sourceAppIdentifier = v18;
 
-  if (([v4 containsValueForKey:@"companionAppName"] & 1) == 0)
+  if (([coderCopy containsValueForKey:@"companionAppName"] & 1) == 0)
   {
     if (gLogHandle && *(gLogHandle + 44) < 3)
     {
@@ -93,16 +93,16 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companionAppName"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companionAppName"];
   companionAppName = v5->_companionAppName;
   v5->_companionAppName = v20;
 
-  v5->_isPurchasedReDownload = [v4 decodeBoolForKey:@"isPurchasedReDownload"];
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoInstallOverride"];
+  v5->_isPurchasedReDownload = [coderCopy decodeBoolForKey:@"isPurchasedReDownload"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoInstallOverride"];
   v5->_autoInstallOverride = [v22 unsignedIntegerValue];
 
-  v5->_isEmbeddedPlaceholder = [v4 decodeBoolForKey:@"isEmbeddedPlaceholder"];
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceStatus"];
+  v5->_isEmbeddedPlaceholder = [coderCopy decodeBoolForKey:@"isEmbeddedPlaceholder"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceStatus"];
   deviceStatus = v5->_deviceStatus;
   v5->_deviceStatus = v23;
 
@@ -120,31 +120,31 @@ LABEL_11:
   return [(ACXRemoteApplication *)&v3 initForTesting];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = ACXApplication;
-  v4 = a3;
-  [(ACXRemoteApplication *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ACXRemoteApplication *)&v9 encodeWithCoder:coderCopy];
   v5 = [(NSURL *)self->_watchAppURL absoluteString:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"watchAppURL"];
+  [coderCopy encodeObject:v5 forKey:@"watchAppURL"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_lsSequenceNumber];
-  [v4 encodeObject:v6 forKey:@"lsSequenceNumber"];
+  [coderCopy encodeObject:v6 forKey:@"lsSequenceNumber"];
 
-  [v4 encodeObject:self->_clockFaceExtensionPaths forKey:@"clockFaceExtensionPaths"];
-  [v4 encodeBool:self->_isTrusted forKey:@"isTrusted"];
-  v7 = [(NSURL *)self->_companionAppURL absoluteString];
-  [v4 encodeObject:v7 forKey:@"companionAppURL"];
+  [coderCopy encodeObject:self->_clockFaceExtensionPaths forKey:@"clockFaceExtensionPaths"];
+  [coderCopy encodeBool:self->_isTrusted forKey:@"isTrusted"];
+  absoluteString = [(NSURL *)self->_companionAppURL absoluteString];
+  [coderCopy encodeObject:absoluteString forKey:@"companionAppURL"];
 
-  [v4 encodeObject:self->_sourceAppIdentifier forKey:@"sourceAppIdentifier"];
-  [v4 encodeObject:self->_companionAppName forKey:@"companionAppName"];
-  [v4 encodeBool:self->_isPurchasedReDownload forKey:@"isPurchasedReDownload"];
+  [coderCopy encodeObject:self->_sourceAppIdentifier forKey:@"sourceAppIdentifier"];
+  [coderCopy encodeObject:self->_companionAppName forKey:@"companionAppName"];
+  [coderCopy encodeBool:self->_isPurchasedReDownload forKey:@"isPurchasedReDownload"];
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_autoInstallOverride];
-  [v4 encodeObject:v8 forKey:@"autoInstallOverride"];
+  [coderCopy encodeObject:v8 forKey:@"autoInstallOverride"];
 
-  [v4 encodeBool:self->_isEmbeddedPlaceholder forKey:@"isEmbeddedPlaceholder"];
-  [v4 encodeObject:self->_deviceStatus forKey:@"deviceStatus"];
+  [coderCopy encodeBool:self->_isEmbeddedPlaceholder forKey:@"isEmbeddedPlaceholder"];
+  [coderCopy encodeObject:self->_deviceStatus forKey:@"deviceStatus"];
 }
 
 - (ACXApplication)init
@@ -154,23 +154,23 @@ LABEL_11:
   return [(ACXRemoteApplication *)&v3 init];
 }
 
-- (ACXApplication)initWithBundleID:(id)a3 databaseUUID:(id)a4 sequenceNumber:(unint64_t)a5
+- (ACXApplication)initWithBundleID:(id)d databaseUUID:(id)iD sequenceNumber:(unint64_t)number
 {
   v6.receiver = self;
   v6.super_class = ACXApplication;
-  return [(ACXRemoteApplication *)&v6 initWithBundleID:a3 databaseUUID:a4 sequenceNumber:a5];
+  return [(ACXRemoteApplication *)&v6 initWithBundleID:d databaseUUID:iD sequenceNumber:number];
 }
 
-- (ACXApplication)initWithSerializedDictionary:(id)a3 reevaluatingTrust:(BOOL)a4
+- (ACXApplication)initWithSerializedDictionary:(id)dictionary reevaluatingTrust:(BOOL)trust
 {
-  v4 = a4;
-  v6 = a3;
+  trustCopy = trust;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = ACXApplication;
-  v7 = [(ACXRemoteApplication *)&v42 initWithSerializedDictionary:v6];
+  v7 = [(ACXRemoteApplication *)&v42 initWithSerializedDictionary:dictionaryCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"LSSequenceNumber"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"LSSequenceNumber"];
     objc_opt_class();
     v9 = v8;
     if (objc_opt_isKindOfClass())
@@ -190,7 +190,7 @@ LABEL_11:
 
     v7->_lsSequenceNumber = [v10 unsignedIntegerValue];
 
-    v11 = [v6 objectForKeyedSubscript:@"watchAppURLString"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"watchAppURLString"];
     objc_opt_class();
     v12 = v11;
     if (objc_opt_isKindOfClass())
@@ -238,7 +238,7 @@ LABEL_15:
     watchAppURL = v7->_watchAppURL;
     v7->_watchAppURL = v14;
 
-    v16 = [v6 objectForKeyedSubscript:@"ACXClockfaceExtensionPaths"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"ACXClockfaceExtensionPaths"];
     objc_opt_class();
     v17 = v16;
     if (objc_opt_isKindOfClass())
@@ -256,7 +256,7 @@ LABEL_15:
       objc_storeStrong(&v7->_clockFaceExtensionPaths, v18);
     }
 
-    v19 = [v6 objectForKeyedSubscript:@"isTrusted"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isTrusted"];
     objc_opt_class();
     v20 = v19;
     if (objc_opt_isKindOfClass())
@@ -276,7 +276,7 @@ LABEL_15:
 
     v7->_isTrusted = [v21 BOOLValue];
 
-    v22 = [v6 objectForKeyedSubscript:@"companionAppURLString"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"companionAppURLString"];
     objc_opt_class();
     v23 = v22;
     if (objc_opt_isKindOfClass())
@@ -307,7 +307,7 @@ LABEL_62:
       companionAppURL = v7->_companionAppURL;
       v7->_companionAppURL = v24;
 
-      v26 = [v6 objectForKeyedSubscript:@"sourceAppIdentifier"];
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"sourceAppIdentifier"];
       objc_opt_class();
       v27 = v26;
       if (objc_opt_isKindOfClass())
@@ -325,7 +325,7 @@ LABEL_62:
         objc_storeStrong(&v7->_sourceAppIdentifier, v28);
       }
 
-      v29 = [v6 objectForKeyedSubscript:@"companionAppName"];
+      v29 = [dictionaryCopy objectForKeyedSubscript:@"companionAppName"];
       objc_opt_class();
       v30 = v29;
       if (objc_opt_isKindOfClass())
@@ -343,7 +343,7 @@ LABEL_62:
         companionAppName = v7->_companionAppName;
         v7->_companionAppName = v31;
 
-        v33 = [v6 objectForKeyedSubscript:@"isPurchaseReDownload"];
+        v33 = [dictionaryCopy objectForKeyedSubscript:@"isPurchaseReDownload"];
         objc_opt_class();
         v34 = v33;
         if (objc_opt_isKindOfClass())
@@ -366,7 +366,7 @@ LABEL_62:
           goto LABEL_60;
         }
 
-        v36 = [v6 objectForKeyedSubscript:@"autoInstallOverride"];
+        v36 = [dictionaryCopy objectForKeyedSubscript:@"autoInstallOverride"];
         objc_opt_class();
         v37 = _ACXValidateObject(v36);
 
@@ -375,7 +375,7 @@ LABEL_62:
           v7->_autoInstallOverride = [v37 unsignedIntegerValue];
         }
 
-        v38 = [v6 objectForKeyedSubscript:@"isPlaceholder"];
+        v38 = [dictionaryCopy objectForKeyedSubscript:@"isPlaceholder"];
         objc_opt_class();
         v39 = _ACXValidateObject(v38);
 
@@ -383,7 +383,7 @@ LABEL_62:
         {
           v7->_isEmbeddedPlaceholder = [v39 BOOLValue];
 
-          if (v4)
+          if (trustCopy)
           {
             [(ACXApplication *)v7 _evaluateTrustInfoForReevaluation:1];
           }
@@ -421,31 +421,31 @@ LABEL_64:
 {
   v19.receiver = self;
   v19.super_class = ACXApplication;
-  v3 = [(ACXRemoteApplication *)&v19 serialize];
-  v4 = [v3 mutableCopy];
+  serialize = [(ACXRemoteApplication *)&v19 serialize];
+  v4 = [serialize mutableCopy];
 
-  v5 = [(ACXApplication *)self watchAppURL];
-  v6 = [v5 absoluteString];
-  [v4 setObject:v6 forKeyedSubscript:@"watchAppURLString"];
+  watchAppURL = [(ACXApplication *)self watchAppURL];
+  absoluteString = [watchAppURL absoluteString];
+  [v4 setObject:absoluteString forKeyedSubscript:@"watchAppURLString"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ACXApplication lsSequenceNumber](self, "lsSequenceNumber")}];
   [v4 setObject:v7 forKeyedSubscript:@"LSSequenceNumber"];
 
-  v8 = [(ACXApplication *)self clockFaceExtensionPaths];
-  [v4 setObject:v8 forKeyedSubscript:@"ACXClockfaceExtensionPaths"];
+  clockFaceExtensionPaths = [(ACXApplication *)self clockFaceExtensionPaths];
+  [v4 setObject:clockFaceExtensionPaths forKeyedSubscript:@"ACXClockfaceExtensionPaths"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACXApplication isTrusted](self, "isTrusted")}];
   [v4 setObject:v9 forKeyedSubscript:@"isTrusted"];
 
-  v10 = [(ACXApplication *)self companionAppURL];
-  v11 = [v10 absoluteString];
-  [v4 setObject:v11 forKeyedSubscript:@"companionAppURLString"];
+  companionAppURL = [(ACXApplication *)self companionAppURL];
+  absoluteString2 = [companionAppURL absoluteString];
+  [v4 setObject:absoluteString2 forKeyedSubscript:@"companionAppURLString"];
 
-  v12 = [(ACXApplication *)self sourceAppIdentifier];
-  [v4 setObject:v12 forKeyedSubscript:@"sourceAppIdentifier"];
+  sourceAppIdentifier = [(ACXApplication *)self sourceAppIdentifier];
+  [v4 setObject:sourceAppIdentifier forKeyedSubscript:@"sourceAppIdentifier"];
 
-  v13 = [(ACXApplication *)self companionAppName];
-  [v4 setObject:v13 forKeyedSubscript:@"companionAppName"];
+  companionAppName = [(ACXApplication *)self companionAppName];
+  [v4 setObject:companionAppName forKeyedSubscript:@"companionAppName"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACXApplication isPurchasedReDownload](self, "isPurchasedReDownload")}];
   [v4 setObject:v14 forKeyedSubscript:@"isPurchaseReDownload"];
@@ -465,50 +465,50 @@ LABEL_64:
 {
   v4.receiver = self;
   v4.super_class = ACXApplication;
-  v2 = [(ACXRemoteApplication *)&v4 serialize];
+  serialize = [(ACXRemoteApplication *)&v4 serialize];
 
-  return v2;
+  return serialize;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25.receiver = self;
   v25.super_class = ACXApplication;
-  v4 = [(ACXRemoteApplication *)&v25 copyWithZone:a3];
+  v4 = [(ACXRemoteApplication *)&v25 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(ACXApplication *)self watchAppURL];
-    v6 = [v5 copy];
+    watchAppURL = [(ACXApplication *)self watchAppURL];
+    v6 = [watchAppURL copy];
     v7 = v4[33];
     v4[33] = v6;
 
     v4[34] = [(ACXApplication *)self lsSequenceNumber];
-    v8 = [(ACXApplication *)self clockFaceExtensionPaths];
-    v9 = [v8 copy];
+    clockFaceExtensionPaths = [(ACXApplication *)self clockFaceExtensionPaths];
+    v9 = [clockFaceExtensionPaths copy];
     v10 = v4[35];
     v4[35] = v9;
 
     *(v4 + 256) = [(ACXApplication *)self isTrusted];
-    v11 = [(ACXApplication *)self companionAppURL];
-    v12 = [v11 copy];
+    companionAppURL = [(ACXApplication *)self companionAppURL];
+    v12 = [companionAppURL copy];
     v13 = v4[36];
     v4[36] = v12;
 
-    v14 = [(ACXApplication *)self sourceAppIdentifier];
-    v15 = [v14 copy];
+    sourceAppIdentifier = [(ACXApplication *)self sourceAppIdentifier];
+    v15 = [sourceAppIdentifier copy];
     v16 = v4[38];
     v4[38] = v15;
 
-    v17 = [(ACXApplication *)self companionAppName];
-    v18 = [v17 copy];
+    companionAppName = [(ACXApplication *)self companionAppName];
+    v18 = [companionAppName copy];
     v19 = v4[37];
     v4[37] = v18;
 
     *(v4 + 257) = [(ACXApplication *)self isPurchasedReDownload];
     v4[40] = [(ACXApplication *)self autoInstallOverride];
     *(v4 + 258) = [(ACXApplication *)self isEmbeddedPlaceholder];
-    v20 = [(ACXApplication *)self deviceStatus];
-    v21 = [v20 copy];
+    deviceStatus = [(ACXApplication *)self deviceStatus];
+    v21 = [deviceStatus copy];
     v22 = v4[39];
     v4[39] = v21;
 
@@ -523,30 +523,30 @@ LABEL_64:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ACXSyncedApplication *)self bundleIdentifier];
-  v7 = [(ACXApplication *)self watchAppURL];
-  v8 = [v7 path];
-  v9 = [v3 stringWithFormat:@"<%@<%p> bundleID=%@ path=%@>", v5, self, v6, v8];
+  bundleIdentifier = [(ACXSyncedApplication *)self bundleIdentifier];
+  watchAppURL = [(ACXApplication *)self watchAppURL];
+  path = [watchAppURL path];
+  v9 = [v3 stringWithFormat:@"<%@<%p> bundleID=%@ path=%@>", v5, self, bundleIdentifier, path];
 
   return v9;
 }
 
-- (id)_parseArchitectureSlicesForWatchKitAppExecutableURL:(id)a3
+- (id)_parseArchitectureSlicesForWatchKitAppExecutableURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v4 = objc_opt_new();
-    v5 = [v3 fileSystemRepresentation];
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __70__ACXApplication__parseArchitectureSlicesForWatchKitAppExecutableURL___block_invoke;
     v13 = &unk_278C8D078;
     v6 = v4;
     v14 = v6;
-    if ((parse_macho_iterate_slices(v5, &v10) & 1) == 0 && (!gLogHandle || *(gLogHandle + 44) >= 3))
+    if ((parse_macho_iterate_slices(fileSystemRepresentation, &v10) & 1) == 0 && (!gLogHandle || *(gLogHandle + 44) >= 3))
     {
-      v9 = v3;
+      v9 = lCopy;
       MOLogWrite();
     }
 
@@ -601,15 +601,15 @@ LABEL_13:
       return;
     }
 
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [v4 userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-    v8 = [v7 domain];
-    if ([v8 isEqualToString:*MEMORY[0x277CCA050]])
+    domain = [v7 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA050]])
     {
-      v9 = [v7 code];
+      code = [v7 code];
 
-      if (v9 == 260)
+      if (code == 260)
       {
 LABEL_12:
 
@@ -623,7 +623,7 @@ LABEL_12:
 
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v10 = [(ACXSyncedApplication *)self bundleIdentifier];
+      bundleIdentifier = [(ACXSyncedApplication *)self bundleIdentifier];
       MOLogWrite();
     }
 
@@ -631,17 +631,17 @@ LABEL_12:
   }
 }
 
-+ (id)gizmoApplicationsFromCompanionAppRecord:(id)a3 databaseUUID:(id)a4 startingSequenceNumber:(unint64_t)a5
++ (id)gizmoApplicationsFromCompanionAppRecord:(id)record databaseUUID:(id)d startingSequenceNumber:(unint64_t)number
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  recordCopy = record;
+  dCopy = d;
+  if (recordCopy)
   {
     v9 = objc_opt_new();
-    v10 = [v7 counterpartIdentifiers];
-    v11 = v10;
-    if (v10 && [v10 count])
+    counterpartIdentifiers = [recordCopy counterpartIdentifiers];
+    v11 = counterpartIdentifiers;
+    if (counterpartIdentifiers && [counterpartIdentifiers count])
     {
       v25 = 0u;
       v26 = 0u;
@@ -663,7 +663,7 @@ LABEL_12:
               objc_enumerationMutation(v12);
             }
 
-            v17 = [objc_alloc(objc_opt_class()) initWithApplicationRecord:v7 gizmoBundleIdentifier:*(*(&v23 + 1) + 8 * i) databaseUUID:v8 sequenceNumber:a5];
+            v17 = [objc_alloc(objc_opt_class()) initWithApplicationRecord:recordCopy gizmoBundleIdentifier:*(*(&v23 + 1) + 8 * i) databaseUUID:dCopy sequenceNumber:number];
             if (!v17)
             {
 
@@ -673,7 +673,7 @@ LABEL_12:
             }
 
             v18 = v17;
-            ++a5;
+            ++number;
             [v9 addObject:v17];
           }
 
@@ -692,7 +692,7 @@ LABEL_12:
 
     else
     {
-      v19 = [objc_alloc(objc_opt_class()) initWithApplicationRecord:v7 gizmoBundleIdentifier:0 databaseUUID:v8 sequenceNumber:a5];
+      v19 = [objc_alloc(objc_opt_class()) initWithApplicationRecord:recordCopy gizmoBundleIdentifier:0 databaseUUID:dCopy sequenceNumber:number];
       if (!v19)
       {
 LABEL_21:
@@ -720,24 +720,24 @@ LABEL_22:
   return v19;
 }
 
-- (ACXApplication)initWithApplicationRecord:(id)a3 gizmoBundleIdentifier:(id)a4 databaseUUID:(id)a5 sequenceNumber:(unint64_t)a6
+- (ACXApplication)initWithApplicationRecord:(id)record gizmoBundleIdentifier:(id)identifier databaseUUID:(id)d sequenceNumber:(unint64_t)number
 {
   v215 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v175 = a4;
+  recordCopy = record;
+  identifierCopy = identifier;
   v208.receiver = self;
   v208.super_class = ACXApplication;
-  v176 = v9;
-  v174 = a5;
-  v10 = [ACXRemoteApplication initWithApplicationRecord:sel_initWithApplicationRecord_databaseUUID_sequenceNumber_ databaseUUID:v9 sequenceNumber:?];
+  v176 = recordCopy;
+  dCopy = d;
+  v10 = [ACXRemoteApplication initWithApplicationRecord:sel_initWithApplicationRecord_databaseUUID_sequenceNumber_ databaseUUID:recordCopy sequenceNumber:?];
   if (!v10)
   {
     goto LABEL_43;
   }
 
-  if (v9)
+  if (recordCopy)
   {
-    if ([v9 isPlaceholder])
+    if ([recordCopy isPlaceholder])
     {
       if (gLogHandle && *(gLogHandle + 44) < 3)
       {
@@ -747,11 +747,11 @@ LABEL_22:
       goto LABEL_6;
     }
 
-    v169 = [v9 bundleIdentifier];
-    v11 = [v9 applicationState];
-    v12 = [v11 isInstalled];
+    bundleIdentifier = [recordCopy bundleIdentifier];
+    applicationState = [recordCopy applicationState];
+    isInstalled = [applicationState isInstalled];
 
-    if ((v12 & 1) == 0)
+    if ((isInstalled & 1) == 0)
     {
       if (!gLogHandle || *(gLogHandle + 44) >= 3)
       {
@@ -761,8 +761,8 @@ LABEL_22:
       goto LABEL_30;
     }
 
-    v163 = [v9 compatibilityObject];
-    if ([v163 compatibilityState])
+    compatibilityObject = [recordCopy compatibilityObject];
+    if ([compatibilityObject compatibilityState])
     {
       if (gLogHandle && *(gLogHandle + 44) < 3)
       {
@@ -772,19 +772,19 @@ LABEL_22:
       goto LABEL_28;
     }
 
-    if ([v9 ACX_shouldBeTrackedByAppConduit])
+    if ([recordCopy ACX_shouldBeTrackedByAppConduit])
     {
-      if (v169)
+      if (bundleIdentifier)
       {
-        v161 = [v9 typeForInstallMachinery];
-        if ([v161 isEqualToString:*MEMORY[0x277CC1E40]])
+        typeForInstallMachinery = [recordCopy typeForInstallMachinery];
+        if ([typeForInstallMachinery isEqualToString:*MEMORY[0x277CC1E40]])
         {
           v13 = 2;
         }
 
         else
         {
-          if (([v161 isEqualToString:*MEMORY[0x277CC1E30]] & 1) == 0)
+          if (([typeForInstallMachinery isEqualToString:*MEMORY[0x277CC1E30]] & 1) == 0)
           {
             if (gLogHandle && *(gLogHandle + 44) < 3)
             {
@@ -798,44 +798,44 @@ LABEL_22:
         }
 
         [(ACXSyncedApplication *)v10 setApplicationType:v13];
-        -[ACXRemoteApplication setIsProfileValidated:](v10, "setIsProfileValidated:", [v9 isProfileValidated]);
-        [(ACXRemoteApplication *)v10 setCompanionAppBundleID:v169];
-        -[ACXRemoteApplication setIsBetaApp:](v10, "setIsBetaApp:", [v9 isBeta]);
-        -[ACXSyncedApplication setIsDeletable:](v10, "setIsDeletable:", [v9 isDeletable]);
-        v15 = [v9 iTunesMetadata];
-        v16 = [v15 sourceApp];
+        -[ACXRemoteApplication setIsProfileValidated:](v10, "setIsProfileValidated:", [recordCopy isProfileValidated]);
+        [(ACXRemoteApplication *)v10 setCompanionAppBundleID:bundleIdentifier];
+        -[ACXRemoteApplication setIsBetaApp:](v10, "setIsBetaApp:", [recordCopy isBeta]);
+        -[ACXSyncedApplication setIsDeletable:](v10, "setIsDeletable:", [recordCopy isDeletable]);
+        iTunesMetadata = [recordCopy iTunesMetadata];
+        sourceApp = [iTunesMetadata sourceApp];
         sourceAppIdentifier = v10->_sourceAppIdentifier;
-        v10->_sourceAppIdentifier = v16;
+        v10->_sourceAppIdentifier = sourceApp;
 
-        v18 = [v9 URL];
+        v18 = [recordCopy URL];
         companionAppURL = v10->_companionAppURL;
         v10->_companionAppURL = v18;
 
         if (v10->_companionAppURL)
         {
-          v20 = [objc_opt_class() localizedAppNameFromRecord:v9];
+          v20 = [objc_opt_class() localizedAppNameFromRecord:recordCopy];
           companionAppName = v10->_companionAppName;
           v10->_companionAppName = v20;
 
           if (v10->_companionAppName)
           {
-            v10->_lsSequenceNumber = [v9 sequenceNumber];
+            v10->_lsSequenceNumber = [recordCopy sequenceNumber];
             if ([(ACXRemoteApplication *)v10 isSystemApp])
             {
-              if (v175 && [v175 length])
+              if (identifierCopy && [identifierCopy length])
               {
-                [(ACXSyncedApplication *)v10 setBundleIdentifier:v175];
-                v22 = [v9 counterpartIdentifiers];
-                if ([v22 containsObject:v175])
+                [(ACXSyncedApplication *)v10 setBundleIdentifier:identifierCopy];
+                counterpartIdentifiers = [recordCopy counterpartIdentifiers];
+                if ([counterpartIdentifiers containsObject:identifierCopy])
                 {
                   [(ACXApplication *)v10 setIsTrusted:1];
-                  v23 = [objc_opt_class() localizedAppNameFromRecord:v9];
+                  v23 = [objc_opt_class() localizedAppNameFromRecord:recordCopy];
                   [(ACXSyncedApplication *)v10 setApplicationName:v23];
 
-                  v24 = [v9 ACX_watchKitAppExtensionBundleID];
-                  if (v24)
+                  aCX_watchKitAppExtensionBundleID = [recordCopy ACX_watchKitAppExtensionBundleID];
+                  if (aCX_watchKitAppExtensionBundleID)
                   {
-                    [(ACXRemoteApplication *)v10 setWatchKitAppExtensionBundleID:v24];
+                    [(ACXRemoteApplication *)v10 setWatchKitAppExtensionBundleID:aCX_watchKitAppExtensionBundleID];
                     [(ACXRemoteApplication *)v10 setWatchKitVersion:@"2.0"];
                     [(ACXRemoteApplication *)v10 setTeamID:&stru_2851ED680];
                   }
@@ -848,7 +848,7 @@ LABEL_43:
                   goto LABEL_44;
                 }
 
-                v56 = [v22 componentsJoinedByString:{@", "}];
+                v56 = [counterpartIdentifiers componentsJoinedByString:{@", "}];
                 if (!gLogHandle || *(gLogHandle + 44) >= 3)
                 {
                   v137 = v10->_companionAppName;
@@ -868,7 +868,7 @@ LABEL_112:
             }
 
             v207 = 0;
-            v159 = [(ACXApplication *)v10 _mostCurrentWKAppURLInCompanionAppRecord:v9 isPlaceholder:&v207];
+            v159 = [(ACXApplication *)v10 _mostCurrentWKAppURLInCompanionAppRecord:recordCopy isPlaceholder:&v207];
             if (!v159)
             {
               if (gLogHandle && *(gLogHandle + 44) >= 7)
@@ -1018,8 +1018,8 @@ LABEL_112:
                     {
                       if (!v207)
                       {
-                        v55 = [v148 watchKitAppExecutableHash];
-                        [(ACXRemoteApplication *)v10 setWatchKitAppExecutableHash:v55];
+                        watchKitAppExecutableHash = [v148 watchKitAppExecutableHash];
+                        [(ACXRemoteApplication *)v10 setWatchKitAppExecutableHash:watchKitAppExecutableHash];
                       }
 
                       v10->_autoInstallOverride = [v148 autoInstallOverride];
@@ -1027,7 +1027,7 @@ LABEL_112:
 
                     else if (!gLogHandle || *(gLogHandle + 44) >= 3)
                     {
-                      v136 = v169;
+                      v136 = bundleIdentifier;
                       v142 = v144;
                       MOLogWrite();
                     }
@@ -1037,19 +1037,19 @@ LABEL_112:
                     v60 = _ACXValidateObject(v59);
                     [(ACXRemoteApplication *)v10 setMinimumOSVersion:v60];
 
-                    v61 = [v176 iTunesMetadata];
-                    v10->_isPurchasedReDownload = [v61 isPurchasedRedownload];
+                    iTunesMetadata2 = [v176 iTunesMetadata];
+                    v10->_isPurchasedReDownload = [iTunesMetadata2 isPurchasedRedownload];
 
                     v146 = [v156 objectForKeyedSubscript:@"UIRequiredDeviceCapabilities"];
                     if (!v146)
                     {
 LABEL_133:
                       [(ACXRemoteApplication *)v10 setWatchKitVersion:@"2.0"];
-                      v70 = [v176 teamIdentifier];
-                      [(ACXRemoteApplication *)v10 setTeamID:v70];
+                      teamIdentifier = [v176 teamIdentifier];
+                      [(ACXRemoteApplication *)v10 setTeamID:teamIdentifier];
 
-                      v71 = [(ACXRemoteApplication *)v10 teamID];
-                      if (!v71 || (-[ACXRemoteApplication teamID](v10, "teamID"), v72 = objc_claimAutoreleasedReturnValue(), v73 = [v72 isEqualToString:@"0000000000"], v72, v71, v73))
+                      teamID = [(ACXRemoteApplication *)v10 teamID];
+                      if (!teamID || (-[ACXRemoteApplication teamID](v10, "teamID"), v72 = objc_claimAutoreleasedReturnValue(), v73 = [v72 isEqualToString:@"0000000000"], v72, teamID, v73))
                       {
                         [(ACXRemoteApplication *)v10 setTeamID:&stru_2851ED680];
                       }
@@ -1059,8 +1059,8 @@ LABEL_133:
                       {
                         v74 = [v156 objectForKeyedSubscript:v152];
                         objc_opt_class();
-                        v75 = _ACXValidateObject(v74);
-                        v76 = _ValidateSupportedArchitecturesListForPlaceholder(v75, v159);
+                        path = _ACXValidateObject(v74);
+                        v76 = _ValidateSupportedArchitecturesListForPlaceholder(path, v159);
                         [(ACXRemoteApplication *)v10 setArchitectureSlices:v76];
                       }
 
@@ -1072,8 +1072,8 @@ LABEL_133:
 
                         if (v74)
                         {
-                          v75 = [v159 URLByAppendingPathComponent:v74 isDirectory:0];
-                          v78 = [(ACXApplication *)v10 _parseArchitectureSlicesForWatchKitAppExecutableURL:v75];
+                          path = [v159 URLByAppendingPathComponent:v74 isDirectory:0];
+                          v78 = [(ACXApplication *)v10 _parseArchitectureSlicesForWatchKitAppExecutableURL:path];
                           [(ACXRemoteApplication *)v10 setArchitectureSlices:v78];
                         }
 
@@ -1084,8 +1084,8 @@ LABEL_133:
                             goto LABEL_144;
                           }
 
-                          v75 = [v159 path];
-                          v138 = v75;
+                          path = [v159 path];
+                          path2 = path;
                           MOLogWrite();
                         }
                       }
@@ -1105,12 +1105,12 @@ LABEL_144:
 
                         else if (!gLogHandle || *(gLogHandle + 44) >= 3)
                         {
-                          v138 = [v159 path];
+                          path2 = [v159 path];
                           MOLogWrite();
                         }
                       }
 
-                      v80 = [v156 objectForKeyedSubscript:{@"WKRunsIndependentlyOfCompanionApp", v138}];
+                      v80 = [v156 objectForKeyedSubscript:{@"WKRunsIndependentlyOfCompanionApp", path2}];
                       objc_opt_class();
                       v145 = _ACXValidateObject(v80);
 
@@ -1141,8 +1141,8 @@ LABEL_254:
                         clockFaceExtensionPaths = v10->_clockFaceExtensionPaths;
                         v10->_clockFaceExtensionPaths = v129;
 
-                        v131 = [(ACXApplication *)v10 clockFaceExtensionPaths];
-                        v132 = [v131 count] == 0;
+                        clockFaceExtensionPaths = [(ACXApplication *)v10 clockFaceExtensionPaths];
+                        v132 = [clockFaceExtensionPaths count] == 0;
 
                         if (!v132)
                         {
@@ -1152,8 +1152,8 @@ LABEL_254:
                         v133 = [objc_opt_class() buildLocalizedInfoPlistStringsDictForAppBundleURL:v10->_watchAppURL watchKitExtensionURL:v155];
                         [(ACXSyncedApplication *)v10 setLocalizedInfoPlistStrings:v133];
 
-                        v134 = [v176 ACX_externalVersionIdentifier];
-                        [(ACXSyncedApplication *)v10 setExternalVersionIdentifier:v134];
+                        aCX_externalVersionIdentifier = [v176 ACX_externalVersionIdentifier];
+                        [(ACXSyncedApplication *)v10 setExternalVersionIdentifier:aCX_externalVersionIdentifier];
 
                         [(ACXApplication *)v10 _populateStoreMetadata];
                         v128 = 1;
@@ -1180,12 +1180,12 @@ LABEL_156:
                         }
 
                         v83 = *(*(&v185 + 1) + 8 * v82);
-                        v173 = [v168 objectForKeyedSubscript:{v83, v139}];
+                        v173 = [v168 objectForKeyedSubscript:{v83, path6}];
                         v84 = [v173 objectForKeyedSubscript:@"NSExtension"];
                         objc_opt_class();
-                        v85 = _ACXValidateObject(v84);
+                        path3 = _ACXValidateObject(v84);
 
-                        if (v85)
+                        if (path3)
                         {
                           break;
                         }
@@ -1195,8 +1195,8 @@ LABEL_156:
                           goto LABEL_200;
                         }
 
-                        v85 = [v83 path];
-                        v139 = v85;
+                        path3 = [v83 path];
+                        path6 = path3;
                         MOLogWrite();
 LABEL_199:
 
@@ -1214,7 +1214,7 @@ LABEL_200:
                         }
                       }
 
-                      v86 = [v85 objectForKeyedSubscript:@"NSExtensionPointIdentifier"];
+                      v86 = [path3 objectForKeyedSubscript:@"NSExtensionPointIdentifier"];
                       objc_opt_class();
                       v171 = _ACXValidateObject(v86);
 
@@ -1225,27 +1225,27 @@ LABEL_200:
                         {
                           v157 = v83;
 
-                          v88 = [v173 objectForKeyedSubscript:@"CLKComplicationPrincipalClass"];
-                          if (v88)
+                          path7 = [v173 objectForKeyedSubscript:@"CLKComplicationPrincipalClass"];
+                          if (path7)
                           {
                             objc_opt_class();
-                            v89 = _ACXValidateObject(v88);
+                            v89 = _ACXValidateObject(path7);
                             v90 = v89 == 0;
 
                             if (v90)
                             {
                               if (!gLogHandle || *(gLogHandle + 44) >= 3)
                               {
-                                v139 = v169;
-                                v143 = v88;
+                                path6 = bundleIdentifier;
+                                v143 = path7;
                                 MOLogWrite();
                               }
 
-                              v88 = 0;
+                              path7 = 0;
                             }
                           }
 
-                          v91 = [v173 objectForKeyedSubscript:{@"CLKComplicationSupportedFamilies", v139, v143}];
+                          v91 = [v173 objectForKeyedSubscript:{@"CLKComplicationSupportedFamilies", path6, v143}];
                           if (v91)
                           {
                             objc_opt_class();
@@ -1254,7 +1254,7 @@ LABEL_200:
                             {
                               if (!gLogHandle || *(gLogHandle + 44) >= 3)
                               {
-                                v140 = v169;
+                                v140 = bundleIdentifier;
                                 v143 = v91;
                                 MOLogWrite();
                               }
@@ -1263,9 +1263,9 @@ LABEL_200:
                             }
                           }
 
-                          if (v88)
+                          if (path7)
                           {
-                            [(ACXRemoteApplication *)v10 setComplicationPrincipalClass:v88];
+                            [(ACXRemoteApplication *)v10 setComplicationPrincipalClass:path7];
                           }
 
                           if (v91)
@@ -1281,7 +1281,7 @@ LABEL_200:
                           {
                             if (!gLogHandle || *(gLogHandle + 44) >= 3)
                             {
-                              v141 = [v157 path];
+                              path4 = [v157 path];
                               MOLogWrite();
                             }
 
@@ -1320,12 +1320,12 @@ LABEL_200:
 
                         if ([v171 isEqualToString:@"com.apple.clockface"])
                         {
-                          v99 = [v83 path];
-                          v88 = v99;
-                          if (v99)
+                          path5 = [v83 path];
+                          path7 = path5;
+                          if (path5)
                           {
-                            [v149 addObject:v99];
-                            v88 = v99;
+                            [v149 addObject:path5];
+                            path7 = path5;
                           }
 
                           goto LABEL_196;
@@ -1336,7 +1336,7 @@ LABEL_200:
                           goto LABEL_197;
                         }
 
-                        v103 = [v85 objectForKeyedSubscript:@"NSExtensionAttributes"];
+                        v103 = [path3 objectForKeyedSubscript:@"NSExtensionAttributes"];
                         objc_opt_class();
                         v158 = _ACXValidateObject(v103);
 
@@ -1353,19 +1353,19 @@ LABEL_200:
                             {
                               if (!gLogHandle || *(gLogHandle + 44) >= 3)
                               {
-                                v139 = [v83 path];
+                                path6 = [v83 path];
                                 MOLogWrite();
                               }
 
 LABEL_246:
-                              v88 = v158;
+                              path7 = v158;
                               goto LABEL_196;
                             }
 
                             if ([v151 count])
                             {
-                              v105 = [(ACXRemoteApplication *)v10 intentsSupported];
-                              v106 = v105 == 0;
+                              intentsSupported = [(ACXRemoteApplication *)v10 intentsSupported];
+                              v106 = intentsSupported == 0;
 
                               if (v106)
                               {
@@ -1374,8 +1374,8 @@ LABEL_246:
 
                               else
                               {
-                                v107 = [(ACXRemoteApplication *)v10 intentsSupported];
-                                v108 = [v107 mutableCopy];
+                                intentsSupported2 = [(ACXRemoteApplication *)v10 intentsSupported];
+                                v108 = [intentsSupported2 mutableCopy];
 
                                 v183 = 0u;
                                 v184 = 0u;
@@ -1425,7 +1425,7 @@ LABEL_246:
                             {
                               if (!gLogHandle || *(gLogHandle + 44) >= 3)
                               {
-                                v139 = [v83 path];
+                                path6 = [v83 path];
                                 MOLogWrite();
                               }
 
@@ -1434,8 +1434,8 @@ LABEL_246:
 
                             if ([v116 count])
                             {
-                              v117 = [(ACXRemoteApplication *)v10 intentsRestrictedWhileLocked];
-                              v118 = v117 == 0;
+                              intentsRestrictedWhileLocked = [(ACXRemoteApplication *)v10 intentsRestrictedWhileLocked];
+                              v118 = intentsRestrictedWhileLocked == 0;
 
                               if (v118)
                               {
@@ -1444,8 +1444,8 @@ LABEL_246:
 
                               else
                               {
-                                v119 = [(ACXRemoteApplication *)v10 intentsRestrictedWhileLocked];
-                                v120 = [v119 mutableCopy];
+                                intentsRestrictedWhileLocked2 = [(ACXRemoteApplication *)v10 intentsRestrictedWhileLocked];
+                                v120 = [intentsRestrictedWhileLocked2 mutableCopy];
 
                                 v179 = 0u;
                                 v180 = 0u;
@@ -1498,8 +1498,8 @@ LABEL_246:
                         goto LABEL_198;
                       }
 
-                      v88 = [v83 path];
-                      v139 = v88;
+                      path7 = [v83 path];
+                      path6 = path7;
                       MOLogWrite();
 LABEL_196:
 
@@ -1596,7 +1596,7 @@ LABEL_111:
                   goto LABEL_111;
                 }
 
-                v58 = [v159 path];
+                path8 = [v159 path];
                 MOLogWrite();
 
                 goto LABEL_111;
@@ -1616,7 +1616,7 @@ LABEL_104:
               goto LABEL_104;
             }
 
-            v57 = [v159 path];
+            path9 = [v159 path];
             MOLogWrite();
 
             v46 = v156;
@@ -1702,16 +1702,16 @@ void __94__ACXApplication_initWithApplicationRecord_gizmoBundleIdentifier_databa
 LABEL_7:
 }
 
-- (void)_evaluateTrustInfoForReevaluation:(BOOL)a3
+- (void)_evaluateTrustInfoForReevaluation:(BOOL)reevaluation
 {
-  v3 = a3;
+  reevaluationCopy = reevaluation;
   if ([(ACXRemoteApplication *)self isProfileValidated])
   {
     v5 = objc_opt_class();
-    v6 = [(ACXApplication *)self companionAppURL];
-    v7 = [v5 _systemTrustsApplicationWithBundleURL:v6];
+    companionAppURL = [(ACXApplication *)self companionAppURL];
+    v7 = [v5 _systemTrustsApplicationWithBundleURL:companionAppURL];
 
-    if (v3 && v7 == 2)
+    if (reevaluationCopy && v7 == 2)
     {
       return;
     }
@@ -1730,17 +1730,17 @@ LABEL_7:
 - (id)appWithReevaluatedTrust
 {
   v3 = objc_alloc(MEMORY[0x277CC1E70]);
-  v4 = [(ACXRemoteApplication *)self companionAppBundleID];
+  companionAppBundleID = [(ACXRemoteApplication *)self companionAppBundleID];
   v12 = 0;
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v12];
+  v5 = [v3 initWithBundleIdentifier:companionAppBundleID allowPlaceholder:0 error:&v12];
   v6 = v12;
 
   if (v5)
   {
     v7 = objc_alloc(objc_opt_class());
-    v8 = [(ACXSyncedApplication *)self bundleIdentifier];
-    v9 = [(ACXSyncedApplication *)self databaseUUID];
-    v10 = [v7 initWithApplicationRecord:v5 gizmoBundleIdentifier:v8 databaseUUID:v9 sequenceNumber:{-[ACXSyncedApplication sequenceNumber](self, "sequenceNumber")}];
+    bundleIdentifier = [(ACXSyncedApplication *)self bundleIdentifier];
+    databaseUUID = [(ACXSyncedApplication *)self databaseUUID];
+    v10 = [v7 initWithApplicationRecord:v5 gizmoBundleIdentifier:bundleIdentifier databaseUUID:databaseUUID sequenceNumber:{-[ACXSyncedApplication sequenceNumber](self, "sequenceNumber")}];
 
 LABEL_6:
     goto LABEL_7;
@@ -1748,7 +1748,7 @@ LABEL_6:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v8 = [(ACXRemoteApplication *)self companionAppBundleID];
+    bundleIdentifier = [(ACXRemoteApplication *)self companionAppBundleID];
     MOLogWrite();
     v10 = 0;
     goto LABEL_6;
@@ -1760,11 +1760,11 @@ LABEL_7:
   return v10;
 }
 
-+ (BOOL)_isIndeterminateMISError:(int)a3
++ (BOOL)_isIndeterminateMISError:(int)error
 {
-  if (a3)
+  if (error)
   {
-    v3 = a3 == -402620405;
+    v3 = error == -402620405;
   }
 
   else
@@ -1772,20 +1772,20 @@ LABEL_7:
     v3 = 1;
   }
 
-  return !v3 && (a3 + 402620377) < 0xFFFFFFFE;
+  return !v3 && (error + 402620377) < 0xFFFFFFFE;
 }
 
-+ (int)_systemTrustsApplicationWithBundleURL:(id)a3
++ (int)_systemTrustsApplicationWithBundleURL:(id)l
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = *MEMORY[0x277D82AC0];
   v16[0] = *MEMORY[0x277D82AD0];
   v16[1] = v5;
   v17[0] = MEMORY[0x277CBEC38];
   v17[1] = MEMORY[0x277CBEC38];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
-  v7 = [v4 path];
+  path = [lCopy path];
   v8 = MISValidateSignature();
 
   if (v8)
@@ -1793,13 +1793,13 @@ LABEL_7:
     v9 = MISCopyErrorStringForErrorCode();
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      [v4 path];
+      [lCopy path];
       v14 = v8;
       v13 = v15 = v9;
       MOLogWrite();
     }
 
-    if ([a1 _isIndeterminateMISError:{v8, v13, v14, v15}])
+    if ([self _isIndeterminateMISError:{v8, v13, v14, v15}])
     {
       v10 = 2;
     }
@@ -1819,15 +1819,15 @@ LABEL_7:
   return v10;
 }
 
-- (id)_infoPlistForPluginBundle:(id)a3
+- (id)_infoPlistForPluginBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   if (_infoPlistForPluginBundle__onceToken != -1)
   {
     [ACXApplication _infoPlistForPluginBundle:];
   }
 
-  v4 = ACXLoadInfoPlist(v3, _infoPlistForPluginBundle__keysToLoad);
+  v4 = ACXLoadInfoPlist(bundleCopy, _infoPlistForPluginBundle__keysToLoad);
   v5 = v4;
   if (!v4)
   {
@@ -1844,7 +1844,7 @@ LABEL_7:
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
 LABEL_12:
-      v8 = [v3 path];
+      path = [bundleCopy path];
       MOLogWrite();
       goto LABEL_13;
     }
@@ -1859,30 +1859,30 @@ LABEL_18:
   v7 = v6;
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    path = v7;
   }
 
   else
   {
-    v8 = 0;
+    path = 0;
   }
 
-  if (v8)
+  if (path)
   {
-    v10 = [v8 objectForKeyedSubscript:@"NSExtensionPointIdentifier"];
+    v10 = [path objectForKeyedSubscript:@"NSExtensionPointIdentifier"];
     objc_opt_class();
     v11 = v10;
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      path3 = v11;
     }
 
     else
     {
-      v12 = 0;
+      path3 = 0;
     }
 
-    if (v12)
+    if (path3)
     {
       v9 = v5;
 LABEL_29:
@@ -1892,7 +1892,7 @@ LABEL_29:
 
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v14 = [v3 path];
+      path2 = [bundleCopy path];
       MOLogWrite();
     }
 
@@ -1903,7 +1903,7 @@ LABEL_28:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v12 = [v3 path];
+    path3 = [bundleCopy path];
     MOLogWrite();
     goto LABEL_28;
   }
@@ -1924,14 +1924,14 @@ uint64_t __44__ACXApplication__infoPlistForPluginBundle___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_URLOfFirstItemWithExtension:(id)a3 inDirectory:(id)a4
+- (id)_URLOfFirstItemWithExtension:(id)extension inDirectory:(id)directory
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  extensionCopy = extension;
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v24 = 0;
-  v8 = [v7 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:0 options:5 error:&v24];
+  v8 = [defaultManager contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:0 options:5 error:&v24];
   v9 = v24;
 
   if (v8)
@@ -1956,8 +1956,8 @@ uint64_t __44__ACXApplication__infoPlistForPluginBundle___block_invoke()
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 pathExtension];
-          v16 = [v15 isEqualToString:v5];
+          pathExtension = [v14 pathExtension];
+          v16 = [pathExtension isEqualToString:extensionCopy];
 
           if (v16)
           {
@@ -1990,21 +1990,21 @@ LABEL_12:
   return v11;
 }
 
-- (id)_mostCurrentWKAppURLInCompanionAppRecord:(id)a3 isPlaceholder:(BOOL *)a4
+- (id)_mostCurrentWKAppURLInCompanionAppRecord:(id)record isPlaceholder:(BOOL *)placeholder
 {
-  v6 = a3;
-  v7 = [v6 URL];
+  recordCopy = record;
+  v7 = [recordCopy URL];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 URLByAppendingPathComponent:@"Watch" isDirectory:1];
-    v10 = [(ACXApplication *)self _URLOfFirstItemWithExtension:@"app" inDirectory:v9];
+    bundleIdentifier = [v7 URLByAppendingPathComponent:@"Watch" isDirectory:1];
+    v10 = [(ACXApplication *)self _URLOfFirstItemWithExtension:@"app" inDirectory:bundleIdentifier];
     if (v10)
     {
       v11 = v10;
-      if (a4)
+      if (placeholder)
       {
-        *a4 = 0;
+        *placeholder = 0;
       }
     }
 
@@ -2013,9 +2013,9 @@ LABEL_12:
       v12 = [v8 URLByAppendingPathComponent:@"com.apple.WatchPlaceholder" isDirectory:1];
       v13 = [(ACXApplication *)self _URLOfFirstItemWithExtension:@"app" inDirectory:v12];
       v11 = v13;
-      if (a4 && v13)
+      if (placeholder && v13)
       {
-        *a4 = 1;
+        *placeholder = 1;
       }
     }
 
@@ -2024,7 +2024,7 @@ LABEL_12:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v9 = [v6 bundleIdentifier];
+    bundleIdentifier = [recordCopy bundleIdentifier];
     MOLogWrite();
     v11 = 0;
 LABEL_12:
@@ -2038,13 +2038,13 @@ LABEL_13:
   return v11;
 }
 
-- (id)_URLsOfExtensionsInBundleURL:(id)a3 mayNotExist:(BOOL)a4
+- (id)_URLsOfExtensionsInBundleURL:(id)l mayNotExist:(BOOL)exist
 {
-  v4 = a4;
-  v5 = [a3 URLByAppendingPathComponent:@"PlugIns" isDirectory:1];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  existCopy = exist;
+  v5 = [l URLByAppendingPathComponent:@"PlugIns" isDirectory:1];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v14 = 0;
-  v7 = [v6 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:0 options:5 error:&v14];
+  v7 = [defaultManager contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:0 options:5 error:&v14];
   v8 = v14;
 
   if (v7)
@@ -2054,26 +2054,26 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!existCopy)
   {
     goto LABEL_7;
   }
 
-  v9 = [v8 domain];
-  if (([v9 isEqualToString:*MEMORY[0x277CCA050]] & 1) == 0)
+  domain = [v8 domain];
+  if (([domain isEqualToString:*MEMORY[0x277CCA050]] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v10 = [v8 code];
+  code = [v8 code];
 
-  if (v10 != 260)
+  if (code != 260)
   {
 LABEL_7:
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v13 = [v5 path];
+      path = [v5 path];
       MOLogWrite();
     }
 
@@ -2085,11 +2085,11 @@ LABEL_11:
   return v7;
 }
 
-- (id)_watchKitApplicationNameFromWKAppInfoPlist:(id)a3 containerRecord:(id)a4
+- (id)_watchKitApplicationNameFromWKAppInfoPlist:(id)plist containerRecord:(id)record
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277CBEC40]];
+  plistCopy = plist;
+  recordCopy = record;
+  v7 = [plistCopy objectForKeyedSubscript:*MEMORY[0x277CBEC40]];
   objc_opt_class();
   v8 = v7;
   if (objc_opt_isKindOfClass())
@@ -2104,17 +2104,17 @@ LABEL_11:
 
   if (!v9)
   {
-    v10 = [v5 objectForKeyedSubscript:*MEMORY[0x277CBED50]];
+    v10 = [plistCopy objectForKeyedSubscript:*MEMORY[0x277CBED50]];
     objc_opt_class();
     v11 = v10;
     v9 = (objc_opt_isKindOfClass() & 1) != 0 ? v11 : 0;
 
     if (!v9)
     {
-      v12 = [v6 localizedShortName];
-      if (v12)
+      localizedShortName = [recordCopy localizedShortName];
+      if (localizedShortName)
       {
-        v9 = v12;
+        v9 = localizedShortName;
       }
 
       else
@@ -2127,20 +2127,20 @@ LABEL_11:
   return v9;
 }
 
-- (id)_storeMetadataWithError:(id *)a3
+- (id)_storeMetadataWithError:(id *)error
 {
-  v4 = [(ACXApplication *)self companionAppURL];
-  v5 = [v4 URLByDeletingLastPathComponent];
-  v6 = [v5 URLByAppendingPathComponent:@"iTunesMetadata.plist" isDirectory:0];
+  companionAppURL = [(ACXApplication *)self companionAppURL];
+  uRLByDeletingLastPathComponent = [companionAppURL URLByDeletingLastPathComponent];
+  v6 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"iTunesMetadata.plist" isDirectory:0];
 
   v12 = 0;
   v7 = [MEMORY[0x277D1C208] metadataFromPlistAtURL:v6 error:&v12];
   v8 = v12;
   v9 = v8;
-  if (a3 && !v7)
+  if (error && !v7)
   {
     v10 = v8;
-    *a3 = v9;
+    *error = v9;
   }
 
   return v7;

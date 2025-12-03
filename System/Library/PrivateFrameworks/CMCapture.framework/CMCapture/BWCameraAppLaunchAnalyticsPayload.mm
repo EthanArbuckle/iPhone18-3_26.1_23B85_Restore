@@ -43,35 +43,35 @@
 
 - (id)eventDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_isPrewarmed), @"isPrewarmed"}];
-  [v3 setObject:self->_launchMode forKeyedSubscript:@"launchMode"];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_devicePosition), @"devicePosition"}];
-  [v3 setObject:self->_prewarmReason forKeyedSubscript:@"prewarmReason"];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_ispStartDuration), @"ispStartDuration"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_numberOfGraphStartsDuringLaunch), @"numberOfGraphStartsDuringLaunch"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_deviceIsLocked), @"deviceIsLocked"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_deviceStolenDuration), @"deviceStolenDuration"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_deviceStolenCondition), @"deviceStolenCondition"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_isColdLaunch), @"isColdLaunch"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_isPrewarmed), @"isPrewarmed"}];
+  [dictionary setObject:self->_launchMode forKeyedSubscript:@"launchMode"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_devicePosition), @"devicePosition"}];
+  [dictionary setObject:self->_prewarmReason forKeyedSubscript:@"prewarmReason"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_ispStartDuration), @"ispStartDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_numberOfGraphStartsDuringLaunch), @"numberOfGraphStartsDuringLaunch"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_deviceIsLocked), @"deviceIsLocked"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_deviceStolenDuration), @"deviceStolenDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_deviceStolenCondition), @"deviceStolenCondition"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_isColdLaunch), @"isColdLaunch"}];
   if (self->_launchDuration)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"launchDuration"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", (self->_launchDuration - self->_ispStartDuration)), @"launchDurationExcludingISP"}];
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", (self->_launchDuration - (self->_ispStartDuration + self->_deviceStolenDuration))), @"netLaunchDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"launchDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", (self->_launchDuration - self->_ispStartDuration)), @"launchDurationExcludingISP"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", (self->_launchDuration - (self->_ispStartDuration + self->_deviceStolenDuration))), @"netLaunchDuration"}];
   }
 
   if ((self->_memoryStatusLevel & 0x80000000) == 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"memoryStatusLevel"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"memoryStatusLevel"}];
   }
 
   if ((self->_thermalLevel & 0x80000000) == 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"thermalLevel"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:"), @"thermalLevel"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

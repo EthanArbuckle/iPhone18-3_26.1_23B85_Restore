@@ -1,38 +1,38 @@
 @interface ASEMetrics
 - (_TtC9appstored10ASEMetrics)init;
-- (_TtC9appstored10ASEMetrics)initWithType:(int64_t)a3 bag:(id)a4;
-- (void)enqueueEvent:(AMSMetricsEvent *)a3 flushEvents:(BOOL)a4 completionHandler:(id)a5;
-- (void)enqueueEvents:(NSArray *)a3 flushEvents:(BOOL)a4 completionHandler:(id)a5;
-- (void)flushWithCompletionHandler:(id)a3;
+- (_TtC9appstored10ASEMetrics)initWithType:(int64_t)type bag:(id)bag;
+- (void)enqueueEvent:(AMSMetricsEvent *)event flushEvents:(BOOL)events completionHandler:(id)handler;
+- (void)enqueueEvents:(NSArray *)events flushEvents:(BOOL)flushEvents completionHandler:(id)handler;
+- (void)flushWithCompletionHandler:(id)handler;
 @end
 
 @implementation ASEMetrics
 
-- (_TtC9appstored10ASEMetrics)initWithType:(int64_t)a3 bag:(id)a4
+- (_TtC9appstored10ASEMetrics)initWithType:(int64_t)type bag:(id)bag
 {
   ObjectType = swift_getObjectType();
-  sub_1000056D0(a4 + OBJC_IVAR___Bag_bag, &v11);
-  v7 = a4;
+  sub_1000056D0(bag + OBJC_IVAR___Bag_bag, &v11);
+  bagCopy = bag;
   sub_100085D40(&qword_10059C3D0);
   sub_100085D40(&unk_10059CE80);
   swift_dynamicCast();
   v8 = objc_allocWithZone(ObjectType);
-  v9 = sub_100101074(a3, v12);
+  v9 = sub_100101074(type, v12);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v9;
 }
 
-- (void)enqueueEvent:(AMSMetricsEvent *)a3 flushEvents:(BOOL)a4 completionHandler:(id)a5
+- (void)enqueueEvent:(AMSMetricsEvent *)event flushEvents:(BOOL)events completionHandler:(id)handler
 {
   v9 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = event;
+  *(v13 + 24) = events;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = type metadata accessor for TaskPriority();
@@ -47,20 +47,20 @@
   v16[3] = 0;
   v16[4] = &unk_100436B80;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v11, &unk_100436B88, v16);
 }
 
-- (void)enqueueEvents:(NSArray *)a3 flushEvents:(BOOL)a4 completionHandler:(id)a5
+- (void)enqueueEvents:(NSArray *)events flushEvents:(BOOL)flushEvents completionHandler:(id)handler
 {
   v9 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = events;
+  *(v13 + 24) = flushEvents;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = type metadata accessor for TaskPriority();
@@ -75,17 +75,17 @@
   v16[3] = 0;
   v16[4] = &unk_100436B60;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  eventsCopy = events;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v11, &unk_100436B68, v16);
 }
 
-- (void)flushWithCompletionHandler:(id)a3
+- (void)flushWithCompletionHandler:(id)handler
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -101,7 +101,7 @@
   v12[3] = 0;
   v12[4] = &unk_1004366D0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v7, &unk_1004344E0, v12);
 }
 

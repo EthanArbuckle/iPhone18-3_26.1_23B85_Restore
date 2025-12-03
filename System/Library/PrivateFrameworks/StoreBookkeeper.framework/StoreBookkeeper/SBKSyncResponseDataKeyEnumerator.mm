@@ -1,8 +1,8 @@
 @interface SBKSyncResponseDataKeyEnumerator
-- (SBKSyncResponseDataKeyEnumerator)initWithResponseData:(id)a3;
-- (void)_processDeletedKey:(id)a3 isDirty:(BOOL *)a4;
+- (SBKSyncResponseDataKeyEnumerator)initWithResponseData:(id)data;
+- (void)_processDeletedKey:(id)key isDirty:(BOOL *)dirty;
 - (void)_processNextKey;
-- (void)enumerateKeysInResponseForTransaction:(id)a3 completionBlock:(id)a4;
+- (void)enumerateKeysInResponseForTransaction:(id)transaction completionBlock:(id)block;
 @end
 
 @implementation SBKSyncResponseDataKeyEnumerator
@@ -13,31 +13,31 @@
   while (1)
   {
     v8 = 0;
-    v4 = [(NSEnumerator *)self->_updatedKeysEnumerator nextObject];
+    nextObject = [(NSEnumerator *)self->_updatedKeysEnumerator nextObject];
 
-    if (v4)
+    if (nextObject)
     {
-      [(SBKSyncResponseDataKeyEnumerator *)self _processUpdatedKey:v4 isConflict:0 isDirty:&v8];
-      v3 = v4;
+      [(SBKSyncResponseDataKeyEnumerator *)self _processUpdatedKey:nextObject isConflict:0 isDirty:&v8];
+      v3 = nextObject;
       goto LABEL_8;
     }
 
-    v5 = [(NSEnumerator *)self->_conflictedKeysEnumerator nextObject];
-    if (v5)
+    nextObject2 = [(NSEnumerator *)self->_conflictedKeysEnumerator nextObject];
+    if (nextObject2)
     {
-      v3 = v5;
-      [(SBKSyncResponseDataKeyEnumerator *)self _processUpdatedKey:v5 isConflict:1 isDirty:&v8];
+      v3 = nextObject2;
+      [(SBKSyncResponseDataKeyEnumerator *)self _processUpdatedKey:nextObject2 isConflict:1 isDirty:&v8];
       goto LABEL_8;
     }
 
-    v6 = [(NSEnumerator *)self->_deletedKeysEnumerator nextObject];
-    if (!v6)
+    nextObject3 = [(NSEnumerator *)self->_deletedKeysEnumerator nextObject];
+    if (!nextObject3)
     {
       break;
     }
 
-    v3 = v6;
-    [(SBKSyncResponseDataKeyEnumerator *)self _processDeletedKey:v6 isDirty:&v8];
+    v3 = nextObject3;
+    [(SBKSyncResponseDataKeyEnumerator *)self _processDeletedKey:nextObject3 isDirty:&v8];
 LABEL_8:
     self->_resolvedConflictsNeedSyncToServer = (self->_resolvedConflictsNeedSyncToServer | v8) & 1;
   }
@@ -49,54 +49,54 @@ LABEL_8:
   }
 }
 
-- (void)_processDeletedKey:(id)a3 isDirty:(BOOL *)a4
+- (void)_processDeletedKey:(id)key isDirty:(BOOL *)dirty
 {
   transaction = self->_transaction;
-  v7 = a3;
-  v8 = [(SBKSyncTransaction *)transaction transactionProcessor];
-  [v8 transaction:self->_transaction processDeletedKey:v7 isDirty:a4];
+  keyCopy = key;
+  transactionProcessor = [(SBKSyncTransaction *)transaction transactionProcessor];
+  [transactionProcessor transaction:self->_transaction processDeletedKey:keyCopy isDirty:dirty];
 }
 
-- (void)enumerateKeysInResponseForTransaction:(id)a3 completionBlock:(id)a4
+- (void)enumerateKeysInResponseForTransaction:(id)transaction completionBlock:(id)block
 {
-  objc_storeStrong(&self->_transaction, a3);
-  v7 = a3;
-  v8 = a4;
+  objc_storeStrong(&self->_transaction, transaction);
+  transactionCopy = transaction;
+  blockCopy = block;
   v9 = MEMORY[0x26D6917A0]();
 
   completionBlock = self->_completionBlock;
   self->_completionBlock = v9;
 
-  v11 = [(SBKSyncResponseData *)self->_responseData updatedKeys];
-  v12 = [v11 objectEnumerator];
+  updatedKeys = [(SBKSyncResponseData *)self->_responseData updatedKeys];
+  objectEnumerator = [updatedKeys objectEnumerator];
   updatedKeysEnumerator = self->_updatedKeysEnumerator;
-  self->_updatedKeysEnumerator = v12;
+  self->_updatedKeysEnumerator = objectEnumerator;
 
-  v14 = [(SBKSyncResponseData *)self->_responseData conflictedKeys];
-  v15 = [v14 objectEnumerator];
+  conflictedKeys = [(SBKSyncResponseData *)self->_responseData conflictedKeys];
+  objectEnumerator2 = [conflictedKeys objectEnumerator];
   conflictedKeysEnumerator = self->_conflictedKeysEnumerator;
-  self->_conflictedKeysEnumerator = v15;
+  self->_conflictedKeysEnumerator = objectEnumerator2;
 
-  v17 = [(SBKSyncResponseData *)self->_responseData deletedKeys];
-  v18 = [v17 objectEnumerator];
+  deletedKeys = [(SBKSyncResponseData *)self->_responseData deletedKeys];
+  objectEnumerator3 = [deletedKeys objectEnumerator];
   deletedKeysEnumerator = self->_deletedKeysEnumerator;
-  self->_deletedKeysEnumerator = v18;
+  self->_deletedKeysEnumerator = objectEnumerator3;
 
   self->_resolvedConflictsNeedSyncToServer = 0;
 
   [(SBKSyncResponseDataKeyEnumerator *)self _processNextKey];
 }
 
-- (SBKSyncResponseDataKeyEnumerator)initWithResponseData:(id)a3
+- (SBKSyncResponseDataKeyEnumerator)initWithResponseData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = SBKSyncResponseDataKeyEnumerator;
   v6 = [(SBKSyncResponseDataKeyEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_responseData, a3);
+    objc_storeStrong(&v6->_responseData, data);
   }
 
   return v7;

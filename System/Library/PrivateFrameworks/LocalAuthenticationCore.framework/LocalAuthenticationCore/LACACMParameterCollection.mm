@@ -1,9 +1,9 @@
 @interface LACACMParameterCollection
 - (LACACMParameterCollection)init;
-- (LACACMParameterCollection)initWithParameter:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (LACACMParameterCollection)initWithParameter:(id)parameter;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)makeACMParameters;
-- (id)parameterWithType:(unsigned int)a3;
+- (id)parameterWithType:(unsigned int)type;
 - (void)makeACMParameters;
 @end
 
@@ -24,20 +24,20 @@
   return v2;
 }
 
-- (LACACMParameterCollection)initWithParameter:(id)a3
+- (LACACMParameterCollection)initWithParameter:(id)parameter
 {
-  v4 = a3;
+  parameterCopy = parameter;
   v5 = [(LACACMParameterCollection *)self init];
   v6 = v5;
   if (v5)
   {
-    [(LACACMParameterCollection *)v5 addParameter:v4];
+    [(LACACMParameterCollection *)v5 addParameter:parameterCopy];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = [(NSMutableArray *)self->_parameters mutableCopy];
@@ -47,7 +47,7 @@
   return v4;
 }
 
-- (id)parameterWithType:(unsigned int)a3
+- (id)parameterWithType:(unsigned int)type
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -70,7 +70,7 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 type] == a3)
+        if ([v9 type] == type)
         {
           v10 = v9;
           goto LABEL_11;
@@ -131,8 +131,8 @@ LABEL_25:
       }
 
       v10 = *(*(&v30 + 1) + 8 * i);
-      v11 = [v10 data];
-      v12 = [v11 length];
+      data = [v10 data];
+      v12 = [data length];
 
       if (HIDWORD(v12))
       {
@@ -145,8 +145,8 @@ LABEL_25:
         goto LABEL_24;
       }
 
-      v13 = [v10 data];
-      v14 = [v13 length];
+      data2 = [v10 data];
+      v14 = [data2 length];
 
       v15 = __CFADD__(v14, v8);
       v8 += v14;
@@ -184,8 +184,8 @@ LABEL_13:
     do
     {
       v20 = [(NSMutableArray *)self->_parameters objectAtIndexedSubscript:v19];
-      v21 = [v20 data];
-      v22 = [v21 length];
+      data3 = [v20 data];
+      v22 = [data3 length];
 
       v27 = 0;
       v28 = 0;
@@ -196,8 +196,8 @@ LABEL_13:
         v28 = [v16 mutableBytes] + v3 + v18;
         LODWORD(v29) = v22;
         [v16 replaceBytesInRange:v17 withBytes:{24, &v27}];
-        v23 = [v20 data];
-        [v16 replaceBytesInRange:v18 + v3 withBytes:{v22, objc_msgSend(v23, "bytes")}];
+        data4 = [v20 data];
+        [v16 replaceBytesInRange:v18 + v3 withBytes:{v22, objc_msgSend(data4, "bytes")}];
 
         v18 += v22;
       }
@@ -226,7 +226,7 @@ LABEL_26:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B0233000, a2, OS_LOG_TYPE_ERROR, "ACMParameter: %@ data length exceeds UINT32_MAX", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

@@ -1,9 +1,9 @@
 @interface RatchetCoolOffViewController
 - (void)loadView;
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5;
-- (void)ratchetCoolOffContentDidTapOnCustomCancel:(id)a3;
-- (void)ratchetCoolOffContentDidTapOnFileRadar:(id)a3;
-- (void)ratchetCoolOffContentDidTapOnLearnMore:(id)a3;
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply;
+- (void)ratchetCoolOffContentDidTapOnCustomCancel:(id)cancel;
+- (void)ratchetCoolOffContentDidTapOnFileRadar:(id)radar;
+- (void)ratchetCoolOffContentDidTapOnLearnMore:(id)more;
 - (void)viewDidLoad;
 @end
 
@@ -14,45 +14,45 @@
   v3 = objc_alloc_init(UIView);
   [(RatchetCoolOffViewController *)self setView:v3];
 
-  v4 = [(TransitionViewController *)self internalInfo];
-  v5 = [_TtC28LocalAuthenticationUIService21RatchetCoolOffFactory makeViewControllerWith:v4 delegate:self];
+  internalInfo = [(TransitionViewController *)self internalInfo];
+  v5 = [_TtC28LocalAuthenticationUIService21RatchetCoolOffFactory makeViewControllerWith:internalInfo delegate:self];
   contentVC = self->_contentVC;
   self->_contentVC = v5;
 
   [(RatchetCoolOffContentViewControllerType *)self->_contentVC willMoveToParent:self];
-  v7 = [(RatchetCoolOffViewController *)self view];
-  v8 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
-  [v7 addSubview:v8];
+  view = [(RatchetCoolOffViewController *)self view];
+  view2 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
+  [view addSubview:view2];
 
-  v9 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
-  v11 = [v10 topAnchor];
-  v12 = [(RatchetCoolOffViewController *)self view];
-  v13 = [v12 topAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  view4 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
+  topAnchor = [view4 topAnchor];
+  view5 = [(RatchetCoolOffViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v14 setActive:1];
 
-  v15 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
-  v16 = [v15 bottomAnchor];
-  v17 = [(RatchetCoolOffViewController *)self view];
-  v18 = [v17 bottomAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  view6 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
+  bottomAnchor = [view6 bottomAnchor];
+  view7 = [(RatchetCoolOffViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v19 setActive:1];
 
-  v20 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
-  v21 = [v20 leadingAnchor];
-  v22 = [(RatchetCoolOffViewController *)self view];
-  v23 = [v22 leadingAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  view8 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
+  leadingAnchor = [view8 leadingAnchor];
+  view9 = [(RatchetCoolOffViewController *)self view];
+  leadingAnchor2 = [view9 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v24 setActive:1];
 
-  v25 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
-  v26 = [v25 trailingAnchor];
-  v27 = [(RatchetCoolOffViewController *)self view];
-  v28 = [v27 trailingAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  view10 = [(RatchetCoolOffContentViewControllerType *)self->_contentVC view];
+  trailingAnchor = [view10 trailingAnchor];
+  view11 = [(RatchetCoolOffViewController *)self view];
+  trailingAnchor2 = [view11 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v29 setActive:1];
 
   v30 = self->_contentVC;
@@ -65,15 +65,15 @@
   v4.receiver = self;
   v4.super_class = RatchetCoolOffViewController;
   [(TransitionViewController *)&v4 viewDidLoad];
-  v3 = [(RatchetCoolOffViewController *)self presentationController];
-  [v3 setDelegate:self];
+  presentationController = [(RatchetCoolOffViewController *)self presentationController];
+  [presentationController setDelegate:self];
 }
 
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply
 {
-  v12 = a4;
-  v8 = a5;
-  if (a3 == 19)
+  valueCopy = value;
+  replyCopy = reply;
+  if (event == 19)
   {
     contentVC = self->_contentVC;
     v10 = 0.0;
@@ -81,13 +81,13 @@
 
   else
   {
-    if (a3 != 18)
+    if (event != 18)
     {
       goto LABEL_6;
     }
 
     v9 = self->_contentVC;
-    [v12 doubleValue];
+    [valueCopy doubleValue];
     contentVC = v9;
   }
 
@@ -95,20 +95,20 @@
 LABEL_6:
 }
 
-- (void)ratchetCoolOffContentDidTapOnCustomCancel:(id)a3
+- (void)ratchetCoolOffContentDidTapOnCustomCancel:(id)cancel
 {
   v4 = [LACError errorWithCode:LACErrorCodeUserCustomRatchetCancel debugDescription:@"Custom canceled by user."];
   [(TransitionViewController *)self uiCancelWithError:v4];
 }
 
-- (void)ratchetCoolOffContentDidTapOnLearnMore:(id)a3
+- (void)ratchetCoolOffContentDidTapOnLearnMore:(id)more
 {
   [(TransitionViewController *)self uiDismissed];
   v4 = +[LACUIDTOUtilities dtoLearnMoreLinkURL];
   [(TransitionViewController *)self uiOpenURL:v4];
 }
 
-- (void)ratchetCoolOffContentDidTapOnFileRadar:(id)a3
+- (void)ratchetCoolOffContentDidTapOnFileRadar:(id)radar
 {
   [(TransitionViewController *)self uiDismissed];
   v4 = +[LACUIDTOUtilities dtoUnexpectedSecurityDelayRadarURL];

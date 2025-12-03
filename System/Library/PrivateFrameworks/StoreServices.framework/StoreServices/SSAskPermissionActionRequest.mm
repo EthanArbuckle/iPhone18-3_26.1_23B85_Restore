@@ -1,26 +1,26 @@
 @interface SSAskPermissionActionRequest
-- (SSAskPermissionActionRequest)initWithURL:(id)a3;
-- (SSAskPermissionActionRequest)initWithXPCEncoding:(id)a3;
+- (SSAskPermissionActionRequest)initWithURL:(id)l;
+- (SSAskPermissionActionRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (void)startWithCompletionBlock:(id)a3;
+- (void)startWithCompletionBlock:(id)block;
 @end
 
 @implementation SSAskPermissionActionRequest
 
-- (SSAskPermissionActionRequest)initWithURL:(id)a3
+- (SSAskPermissionActionRequest)initWithURL:(id)l
 {
   v5.receiver = self;
   v5.super_class = SSAskPermissionActionRequest;
   result = [(SSRequest *)&v5 init];
   if (result)
   {
-    result->_url = a3;
+    result->_url = l;
   }
 
   return result;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -31,15 +31,15 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -74,7 +74,7 @@
   v20[2] = __57__SSAskPermissionActionRequest_startWithCompletionBlock___block_invoke;
   v20[3] = &unk_1E84AC760;
   v20[4] = self;
-  v20[5] = a3;
+  v20[5] = block;
   [(SSRequest *)self _startWithMessageID:140 messageBlock:v20, v18];
 }
 
@@ -129,9 +129,9 @@ void __47__SSAskPermissionActionRequest_copyXPCEncoding__block_invoke(uint64_t a
   SSXPCDictionarySetCFObject(v1, "1", v2);
 }
 
-- (SSAskPermissionActionRequest)initWithXPCEncoding:(id)a3
+- (SSAskPermissionActionRequest)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v8.receiver = self;
     v8.super_class = SSAskPermissionActionRequest;
@@ -139,7 +139,7 @@ void __47__SSAskPermissionActionRequest_copyXPCEncoding__block_invoke(uint64_t a
     if (v5)
     {
       objc_opt_class();
-      v7 = SSXPCDictionaryCopyCFObjectWithClass(a3, "1");
+      v7 = SSXPCDictionaryCopyCFObjectWithClass(encoding, "1");
       v5->_url = [MEMORY[0x1E695DFF8] URLWithString:v7];
     }
   }

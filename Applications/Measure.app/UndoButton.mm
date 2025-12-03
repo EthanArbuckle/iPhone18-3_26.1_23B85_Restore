@@ -1,21 +1,21 @@
 @interface UndoButton
-- (_TtC7Measure10UndoButton)initWithCoder:(id)a3;
-- (_TtC7Measure10UndoButton)initWithFrame:(CGRect)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)setUndoButton:(id)a3;
-- (void)undoFrom:(id)a3;
+- (_TtC7Measure10UndoButton)initWithCoder:(id)coder;
+- (_TtC7Measure10UndoButton)initWithFrame:(CGRect)frame;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)setUndoButton:(id)button;
+- (void)undoFrom:(id)from;
 @end
 
 @implementation UndoButton
 
-- (void)setUndoButton:(id)a3
+- (void)setUndoButton:(id)button
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7Measure10UndoButton_undoButton);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC7Measure10UndoButton_undoButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC7Measure10UndoButton_undoButton) = button;
+  buttonCopy = button;
 }
 
-- (_TtC7Measure10UndoButton)initWithCoder:(id)a3
+- (_TtC7Measure10UndoButton)initWithCoder:(id)coder
 {
   *&self->delegate[OBJC_IVAR____TtC7Measure10UndoButton_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -27,25 +27,25 @@
   return result;
 }
 
-- (_TtC7Measure10UndoButton)initWithFrame:(CGRect)a3
+- (_TtC7Measure10UndoButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)undoFrom:(id)a3
+- (void)undoFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
+  fromCopy = from;
+  selfCopy = self;
   sub_1001CBE40();
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = sub_1001CBF70();
 
   return v9;

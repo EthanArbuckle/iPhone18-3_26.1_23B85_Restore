@@ -1,21 +1,21 @@
 @interface ACNotifyWriter
-- (ACNotifyWriter)initWithKey:(id)a3;
+- (ACNotifyWriter)initWithKey:(id)key;
 - (void)dealloc;
-- (void)write:(unint64_t)a3;
+- (void)write:(unint64_t)write;
 @end
 
 @implementation ACNotifyWriter
 
-- (ACNotifyWriter)initWithKey:(id)a3
+- (ACNotifyWriter)initWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = ACNotifyWriter;
   v5 = [(ACNotifyWriter *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(ACNotifyWriter *)v5 setKey:v4];
+    [(ACNotifyWriter *)v5 setKey:keyCopy];
     v6->notifierToken = -1;
     v7 = [(ACNotifyWriter *)v6 key];
     v8 = notify_register_check([v7 UTF8String], &v6->notifierToken);
@@ -46,7 +46,7 @@
   [(ACNotifyWriter *)&v4 dealloc];
 }
 
-- (void)write:(unint64_t)a3
+- (void)write:(unint64_t)write
 {
   if (self->notifierToken == -1)
   {
@@ -63,8 +63,8 @@
     v5[1] = 3221225472;
     v6 = __24__ACNotifyWriter_write___block_invoke;
     v7 = &unk_1E7977870;
-    v8 = self;
-    v9 = a3;
+    selfCopy = self;
+    writeCopy = write;
     v4 = v5;
     os_unfair_lock_lock(&self->lock);
     v6(v4);

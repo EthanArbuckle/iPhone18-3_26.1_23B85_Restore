@@ -1,22 +1,22 @@
 @interface MPSGraphSpaceToDepth2DOp
-- (MPSGraphSpaceToDepth2DOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 blockSize:(unint64_t)a6 usePixelShuffleOrder:(BOOL)a7 name:(id)a8;
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphSpaceToDepth2DOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies blockSize:(unint64_t)size usePixelShuffleOrder:(BOOL)order name:(id)name;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphSpaceToDepth2DOp
 
-- (MPSGraphSpaceToDepth2DOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 blockSize:(unint64_t)a6 usePixelShuffleOrder:(BOOL)a7 name:(id)a8
+- (MPSGraphSpaceToDepth2DOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies blockSize:(unint64_t)size usePixelShuffleOrder:(BOOL)order name:(id)name
 {
-  self->_blockSize = a6;
-  self->_pixelShuffleOrder = a7;
-  return [(MPSGraphOperation *)self initWithGraph:a3 inputTensors:a4 controlDependencies:a5 name:a8];
+  self->_blockSize = size;
+  self->_pixelShuffleOrder = order;
+  return [(MPSGraphOperation *)self initWithGraph:graph inputTensors:tensors controlDependencies:dependencies name:name];
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v8 = a4;
-  v20 = a6;
+  gradientCopy = gradient;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->super._graph);
   v10 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:1];
   v11 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:2];
@@ -24,28 +24,28 @@
   blockSize = self->_blockSize;
   pixelShuffleOrder = self->_pixelShuffleOrder;
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [(MPSGraphOperation *)self name];
-  v17 = [v15 stringWithFormat:@"%@/%@/spaceToDepth2DGradient", v20, v16];
-  v18 = [WeakRetained depthToSpace2DTensor:v8 widthAxisTensor:v10 heightAxisTensor:v11 depthAxisTensor:v12 blockSize:blockSize usePixelShuffleOrder:pixelShuffleOrder name:v17];
+  name = [(MPSGraphOperation *)self name];
+  v17 = [v15 stringWithFormat:@"%@/%@/spaceToDepth2DGradient", nameCopy, name];
+  v18 = [WeakRetained depthToSpace2DTensor:gradientCopy widthAxisTensor:v10 heightAxisTensor:v11 depthAxisTensor:v12 blockSize:blockSize usePixelShuffleOrder:pixelShuffleOrder name:v17];
 
   return v18;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v47 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphSpaceToDepth2DOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphTensorShapeOps.mm", __p);
-  v12 = v11;
+  v12 = nameCopy;
   v46 = 260;
   v45[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v45);
+  StringAttr = mlir::Builder::getStringAttr(builder, v45);
   v15 = mlir::FileLineColLoc::get(StringAttr, 0x428u, 0);
   if (v12)
   {
     v16 = v12;
-    v17 = [v12 UTF8String];
-    v18 = strlen(v17);
+    uTF8String = [v12 UTF8String];
+    v18 = strlen(uTF8String);
     if (v18 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -60,7 +60,7 @@
     v44[2] = v18;
     if (v18)
     {
-      memmove(__dst, v17, v18);
+      memmove(__dst, uTF8String, v18);
     }
 
     v20 = &__dst[v19];
@@ -74,7 +74,7 @@
   }
 
   *v20 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, __dst, v14, &v40);
+  MPSSymbolTable::insertOpInSymbolTable(table, __dst, v14, &v40);
   v21 = v40.__r_.__value_.__r.__words[0];
   if ((v40.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -90,7 +90,7 @@
   }
 
   LOBYTE(v46) = v22;
-  v23 = mlir::Builder::getStringAttr(a3, v45);
+  v23 = mlir::Builder::getStringAttr(builder, v45);
   v24 = mlir::NameLoc::get(v23, v15);
   if (SHIBYTE(v40.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -114,8 +114,8 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  v25 = *a5;
-  if (*(a5 + 1) - *a5 < 0x20uLL)
+  v25 = *values;
+  if (*(values + 1) - *values < 0x20uLL)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
@@ -134,8 +134,8 @@ LABEL_16:
   }
 
   mlir::OperationState::OperationState(v45, v24, v27);
-  mlir::mps::SpaceToDepth2DOp::build(a3, v45, *v25, v25[1], v25[2], v25[3], self->_blockSize, self->_pixelShuffleOrder);
-  v29 = mlir::OpBuilder::create(a3, v45);
+  mlir::mps::SpaceToDepth2DOp::build(builder, v45, *v25, v25[1], v25[2], v25[3], self->_blockSize, self->_pixelShuffleOrder);
+  v29 = mlir::OpBuilder::create(builder, v45);
   v30 = *(*(v29 + 48) + 16);
   mlir::OperationState::~OperationState(v45);
   if (v30 == &mlir::detail::TypeIDResolver<mlir::mps::SpaceToDepth2DOp,void>::id)

@@ -4,7 +4,7 @@
 - (BOOL)connectToStore;
 - (BOOL)disconnectFromStore;
 - (IRPersistenceManager)init;
-- (IRPersistenceManager)initWithModelsDirectory:(id)a3 storesDirectory:(id)a4;
+- (IRPersistenceManager)initWithModelsDirectory:(id)directory storesDirectory:(id)storesDirectory;
 - (id)_getDefaultStoresDirectory;
 - (id)createManagedObjectContext;
 - (id)getLocalStoreURL;
@@ -16,18 +16,18 @@
 - (IRPersistenceManager)init
 {
   v3 = +[IRPersistenceManager defaultModelsDirectory];
-  v4 = [(IRPersistenceManager *)self _getDefaultStoresDirectory];
-  v5 = [(IRPersistenceManager *)self initWithModelsDirectory:v3 storesDirectory:v4];
+  _getDefaultStoresDirectory = [(IRPersistenceManager *)self _getDefaultStoresDirectory];
+  v5 = [(IRPersistenceManager *)self initWithModelsDirectory:v3 storesDirectory:_getDefaultStoresDirectory];
 
   return v5;
 }
 
-- (IRPersistenceManager)initWithModelsDirectory:(id)a3 storesDirectory:(id)a4
+- (IRPersistenceManager)initWithModelsDirectory:(id)directory storesDirectory:(id)storesDirectory
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 isFileURL] || !objc_msgSend(v7, "isFileURL"))
+  directoryCopy = directory;
+  storesDirectoryCopy = storesDirectory;
+  if (![directoryCopy isFileURL] || !objc_msgSend(storesDirectoryCopy, "isFileURL"))
   {
     goto LABEL_9;
   }
@@ -38,14 +38,14 @@
   if (self)
   {
     v8 = MEMORY[0x277CBEBC0];
-    v9 = [v6 path];
-    v10 = [v8 fileURLWithPath:v9 isDirectory:1];
+    path = [directoryCopy path];
+    v10 = [v8 fileURLWithPath:path isDirectory:1];
     modelsDirectory = self->_modelsDirectory;
     self->_modelsDirectory = v10;
 
     v12 = MEMORY[0x277CBEBC0];
-    v13 = [v7 path];
-    v14 = [v12 fileURLWithPath:v13 isDirectory:1];
+    path2 = [storesDirectoryCopy path];
+    v14 = [v12 fileURLWithPath:path2 isDirectory:1];
     storesDirectory = self->_storesDirectory;
     self->_storesDirectory = v14;
 
@@ -61,9 +61,9 @@
       {
         v19 = self->_managedObjectModel;
         v20 = v18;
-        v21 = [(NSManagedObjectModel *)v19 versionIdentifiers];
+        versionIdentifiers = [(NSManagedObjectModel *)v19 versionIdentifiers];
         *buf = 138412290;
-        v29 = v21;
+        v29 = versionIdentifiers;
         _os_log_impl(&dword_25543D000, v20, OS_LOG_TYPE_DEFAULT, "#persistence-manager, Loaded ManagedObjectModel Version: %@", buf, 0xCu);
       }
 
@@ -76,17 +76,17 @@
     }
 
 LABEL_9:
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
 LABEL_8:
   self = self;
-  v24 = self;
+  selfCopy = self;
 LABEL_10:
 
   v25 = *MEMORY[0x277D85DE8];
-  return v24;
+  return selfCopy;
 }
 
 - (id)getLocalStoreURL
@@ -108,8 +108,8 @@ LABEL_10:
   else
   {
     v4 = [IRPersistenceStore alloc];
-    v5 = [(IRPersistenceManager *)self getLocalStoreURL];
-    v6 = [(IRPersistenceStore *)v4 initWithURL:v5];
+    getLocalStoreURL = [(IRPersistenceManager *)self getLocalStoreURL];
+    v6 = [(IRPersistenceStore *)v4 initWithURL:getLocalStoreURL];
     persistenceStore = self->_persistenceStore;
     self->_persistenceStore = v6;
 
@@ -126,12 +126,12 @@ LABEL_10:
   os_unfair_lock_lock(&self->_lock);
   if ([(IRPersistenceManager *)self _isStoreConnected])
   {
-    v3 = [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator persistentStores];
-    v4 = [v3 firstObject];
+    persistentStores = [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator persistentStores];
+    firstObject = [persistentStores firstObject];
 
     persistentStoreCoordinator = self->_persistentStoreCoordinator;
     v14 = 0;
-    [(NSPersistentStoreCoordinator *)persistentStoreCoordinator removePersistentStore:v4 error:&v14];
+    [(NSPersistentStoreCoordinator *)persistentStoreCoordinator removePersistentStore:firstObject error:&v14];
     v6 = v14;
     if (v6)
     {
@@ -139,7 +139,7 @@ LABEL_10:
       v8 = *MEMORY[0x277D21260];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v4 URL];
+        v9 = [firstObject URL];
         *buf = 136315906;
         v16 = "#persistence-manager, ";
         v17 = 2112;
@@ -152,9 +152,9 @@ LABEL_10:
       }
     }
 
-    v10 = [(IRPersistenceManager *)self _isStoreConnected];
+    _isStoreConnected = [(IRPersistenceManager *)self _isStoreConnected];
 
-    v11 = !v10;
+    v11 = !_isStoreConnected;
   }
 
   else
@@ -173,18 +173,18 @@ LABEL_10:
   if ([(IRPersistenceManager *)self _isStoreConnected])
   {
     v3 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
-    v4 = [MEMORY[0x277CBE460] errorMergePolicy];
-    [v3 setMergePolicy:v4];
+    errorMergePolicy = [MEMORY[0x277CBE460] errorMergePolicy];
+    [v3 setMergePolicy:errorMergePolicy];
 
-    v5 = [(IRPersistenceManager *)self persistentStoreCoordinator];
-    [v3 setPersistentStoreCoordinator:v5];
+    persistentStoreCoordinator = [(IRPersistenceManager *)self persistentStoreCoordinator];
+    [v3 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
-    v6 = [MEMORY[0x277CCAC38] processInfo];
-    v7 = [v6 processName];
-    [v3 setName:v7];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    [v3 setName:processName];
 
-    v8 = [v3 name];
-    [v3 setTransactionAuthor:v8];
+    name = [v3 name];
+    [v3 setTransactionAuthor:name];
 
     [v3 setUndoManager:0];
   }
@@ -202,8 +202,8 @@ LABEL_10:
 + (id)defaultModelsDirectory
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [MEMORY[0x277CCA8D8] IRFrameworkBundle];
-  v4 = [v3 pathForResource:@"intelligentRouting" ofType:@"momd"];
+  iRFrameworkBundle = [MEMORY[0x277CCA8D8] IRFrameworkBundle];
+  v4 = [iRFrameworkBundle pathForResource:@"intelligentRouting" ofType:@"momd"];
   v5 = [v2 fileURLWithPath:v4 isDirectory:1];
 
   return v5;
@@ -211,13 +211,13 @@ LABEL_10:
 
 - (id)_getDefaultStoresDirectory
 {
-  v2 = [MEMORY[0x277CCAA00] userLibraryDirectoryPath];
-  v3 = v2;
-  if (v2)
+  userLibraryDirectoryPath = [MEMORY[0x277CCAA00] userLibraryDirectoryPath];
+  v3 = userLibraryDirectoryPath;
+  if (userLibraryDirectoryPath)
   {
-    v4 = [v2 stringByAppendingPathComponent:@"com.apple.intelligentroutingd"];
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v5 fileExistsAtPath:v4];
+    v4 = [userLibraryDirectoryPath stringByAppendingPathComponent:@"com.apple.intelligentroutingd"];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:v4];
 
     if ((v6 & 1) != 0 || ([MEMORY[0x277CCAA00] defaultManager], v7 = objc_claimAutoreleasedReturnValue(), v14 = 0, v8 = objc_msgSend(v7, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v4, 1, 0, &v14), v9 = v14, v7, v8) && !v9)
     {
@@ -250,8 +250,8 @@ LABEL_12:
 
 - (BOOL)_isStoreConnected
 {
-  v2 = [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator persistentStores];
-  v3 = [v2 count] != 0;
+  persistentStores = [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator persistentStores];
+  v3 = [persistentStores count] != 0;
 
   return v3;
 }
@@ -260,7 +260,7 @@ LABEL_12:
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_25543D000, log, OS_LOG_TYPE_ERROR, "#persistence-manager, [ErrorId - Store directory create error] Failed to create %@, error, %@", &v4, 0x16u);

@@ -1,5 +1,5 @@
 @interface CompletedIconView
-- (_TtC9SeymourUI17CompletedIconView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI17CompletedIconView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B993B2C();
 }
 
-- (_TtC9SeymourUI17CompletedIconView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI17CompletedIconView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,74 +1,74 @@
 @interface FLOWSchemaFLOWSmsContext
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isGroupMessageAtIndex:(unint64_t)a3;
-- (BOOL)isLongMessageListAtIndex:(unint64_t)a3;
-- (BOOL)isMultiLingualAtIndex:(unint64_t)a3;
-- (BOOL)isReadableAtIndex:(unint64_t)a3;
-- (BOOL)isSenderShortCodeListAtIndex:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isGroupMessageAtIndex:(unint64_t)index;
+- (BOOL)isLongMessageListAtIndex:(unint64_t)index;
+- (BOOL)isMultiLingualAtIndex:(unint64_t)index;
+- (BOOL)isReadableAtIndex:(unint64_t)index;
+- (BOOL)isSenderShortCodeListAtIndex:(unint64_t)index;
 - (FLOWSchemaFLOWSmsAudioContext)audioContext;
-- (FLOWSchemaFLOWSmsContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWSmsContext)initWithJSON:(id)a3;
+- (FLOWSchemaFLOWSmsContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWSmsContext)initWithJSON:(id)n;
 - (FLOWSchemaFLOWSmsTextContext)textContext;
 - (FLOWSchemaFLOWTextMessageLength)textMessageLength;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)personTypeAtIndex:(unint64_t)a3;
-- (int)readMessageTypeAtIndex:(unint64_t)a3;
-- (int)recipientTypeAtIndex:(unint64_t)a3;
+- (int)personTypeAtIndex:(unint64_t)index;
+- (int)readMessageTypeAtIndex:(unint64_t)index;
+- (int)recipientTypeAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)messageDurationsInSecondsAtIndex:(unint64_t)a3;
+- (unint64_t)messageDurationsInSecondsAtIndex:(unint64_t)index;
 - (unsigned)messageDurationMs;
-- (void)addIsGroupMessage:(BOOL)a3;
-- (void)addIsLongMessageList:(BOOL)a3;
-- (void)addIsMultiLingual:(BOOL)a3;
-- (void)addIsReadable:(BOOL)a3;
-- (void)addIsSenderShortCodeList:(BOOL)a3;
-- (void)addMessageDurationsInSeconds:(unint64_t)a3;
-- (void)addPersonType:(int)a3;
-- (void)addReadMessageType:(int)a3;
-- (void)addRecipientType:(int)a3;
+- (void)addIsGroupMessage:(BOOL)message;
+- (void)addIsLongMessageList:(BOOL)list;
+- (void)addIsMultiLingual:(BOOL)lingual;
+- (void)addIsReadable:(BOOL)readable;
+- (void)addIsSenderShortCodeList:(BOOL)list;
+- (void)addMessageDurationsInSeconds:(unint64_t)seconds;
+- (void)addPersonType:(int)type;
+- (void)addReadMessageType:(int)type;
+- (void)addRecipientType:(int)type;
 - (void)deleteAudioContext;
 - (void)deleteMessageDurationMs;
 - (void)deleteTextContext;
 - (void)deleteTextMessageLength;
-- (void)setAudioContext:(id)a3;
-- (void)setHasAppendingActionReadMessagesCount:(BOOL)a3;
-- (void)setHasEmojiUsed:(BOOL)a3;
-- (void)setHasIsLongMessage:(BOOL)a3;
-- (void)setHasIsReply:(BOOL)a3;
-- (void)setHasIsSenderShortCode:(BOOL)a3;
-- (void)setHasIsSummarized:(BOOL)a3;
-- (void)setHasKeyboardUsed:(BOOL)a3;
-- (void)setHasSummarySourceType:(BOOL)a3;
-- (void)setHasUserPersona:(BOOL)a3;
-- (void)setMessageDurationMs:(unsigned int)a3;
-- (void)setTextContext:(id)a3;
-- (void)setTextMessageLength:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAudioContext:(id)context;
+- (void)setHasAppendingActionReadMessagesCount:(BOOL)count;
+- (void)setHasEmojiUsed:(BOOL)used;
+- (void)setHasIsLongMessage:(BOOL)message;
+- (void)setHasIsReply:(BOOL)reply;
+- (void)setHasIsSenderShortCode:(BOOL)code;
+- (void)setHasIsSummarized:(BOOL)summarized;
+- (void)setHasKeyboardUsed:(BOOL)used;
+- (void)setHasSummarySourceType:(BOOL)type;
+- (void)setHasUserPersona:(BOOL)persona;
+- (void)setMessageDurationMs:(unsigned int)ms;
+- (void)setTextContext:(id)context;
+- (void)setTextMessageLength:(id)length;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWSmsContext
 
-- (FLOWSchemaFLOWSmsContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWSmsContext)initWithDictionary:(id)dictionary
 {
   v162 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v152.receiver = self;
   v152.super_class = FLOWSchemaFLOWSmsContext;
   v5 = [(FLOWSchemaFLOWSmsContext *)&v152 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"messageType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"messageType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSmsContext setMessageType:](v5, "setMessageType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"emojiUsed"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"emojiUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
 
     v103 = v7;
     v104 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"keyboardUsed"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"keyboardUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
     }
 
     v102 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"recipientType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"recipientType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,7 +123,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"messageDurationMs"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"messageDurationMs"];
     objc_opt_class();
     v115 = v16;
     if (objc_opt_isKindOfClass())
@@ -131,7 +131,7 @@
       -[FLOWSchemaFLOWSmsContext setMessageDurationMs:](v5, "setMessageDurationMs:", [v16 unsignedIntValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"textMessageLength"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"textMessageLength"];
     objc_opt_class();
     v114 = v17;
     if (objc_opt_isKindOfClass())
@@ -140,7 +140,7 @@
       [(FLOWSchemaFLOWSmsContext *)v5 setTextMessageLength:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"textContext"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"textContext"];
     objc_opt_class();
     v113 = v19;
     if (objc_opt_isKindOfClass())
@@ -149,7 +149,7 @@
       [(FLOWSchemaFLOWSmsContext *)v5 setTextContext:v20];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"audioContext"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"audioContext"];
     objc_opt_class();
     v112 = v21;
     if (objc_opt_isKindOfClass())
@@ -158,7 +158,7 @@
       [(FLOWSchemaFLOWSmsContext *)v5 setAudioContext:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"personType"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"personType"];
     objc_opt_class();
     v111 = v23;
     if (objc_opt_isKindOfClass())
@@ -197,7 +197,7 @@
       }
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"readMessageType"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"readMessageType"];
     objc_opt_class();
     v110 = v30;
     if (objc_opt_isKindOfClass())
@@ -236,7 +236,7 @@
       }
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"isMultiLingual"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"isMultiLingual"];
     objc_opt_class();
     v109 = v37;
     if (objc_opt_isKindOfClass())
@@ -275,7 +275,7 @@
       }
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"isReadable"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"isReadable"];
     objc_opt_class();
     v108 = v44;
     if (objc_opt_isKindOfClass())
@@ -314,7 +314,7 @@
       }
     }
 
-    v51 = [v4 objectForKeyedSubscript:@"isGroupMessage"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"isGroupMessage"];
     objc_opt_class();
     v107 = v51;
     if (objc_opt_isKindOfClass())
@@ -353,7 +353,7 @@
       }
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"languageConfidenceMatrix"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"languageConfidenceMatrix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -361,21 +361,21 @@
       [(FLOWSchemaFLOWSmsContext *)v5 setLanguageConfidenceMatrix:v59];
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"isSenderShortCode"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"isSenderShortCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSmsContext setIsSenderShortCode:](v5, "setIsSenderShortCode:", [v60 BOOLValue]);
     }
 
-    v61 = [v4 objectForKeyedSubscript:@"isLongMessage"];
+    v61 = [dictionaryCopy objectForKeyedSubscript:@"isLongMessage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSmsContext setIsLongMessage:](v5, "setIsLongMessage:", [v61 BOOLValue]);
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"isReply"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"isReply"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -386,14 +386,14 @@
     v98 = v61;
     v99 = v60;
     v100 = v58;
-    v63 = [v4 objectForKeyedSubscript:@"appendingActionReadMessagesCount"];
+    v63 = [dictionaryCopy objectForKeyedSubscript:@"appendingActionReadMessagesCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSmsContext setAppendingActionReadMessagesCount:](v5, "setAppendingActionReadMessagesCount:", [v63 intValue]);
     }
 
-    v64 = [v4 objectForKeyedSubscript:{@"isSenderShortCodeList", v63}];
+    v64 = [dictionaryCopy objectForKeyedSubscript:{@"isSenderShortCodeList", v63}];
     objc_opt_class();
     v106 = v64;
     if (objc_opt_isKindOfClass())
@@ -432,7 +432,7 @@
       }
     }
 
-    v71 = [v4 objectForKeyedSubscript:@"isLongMessageList"];
+    v71 = [dictionaryCopy objectForKeyedSubscript:@"isLongMessageList"];
     objc_opt_class();
     v105 = v71;
     if (objc_opt_isKindOfClass())
@@ -471,7 +471,7 @@
       }
     }
 
-    v78 = [v4 objectForKeyedSubscript:@"richAttachmentIntelligenceFeatureUsage"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"richAttachmentIntelligenceFeatureUsage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -480,7 +480,7 @@
     }
 
     v101 = v9;
-    v80 = [v4 objectForKeyedSubscript:@"messageDurationsInSeconds"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"messageDurationsInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -518,28 +518,28 @@
       }
     }
 
-    v87 = [v4 objectForKeyedSubscript:@"userPersona"];
+    v87 = [dictionaryCopy objectForKeyedSubscript:@"userPersona"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSmsContext setUserPersona:](v5, "setUserPersona:", [v87 intValue]);
     }
 
-    v88 = [v4 objectForKeyedSubscript:@"isSummarized"];
+    v88 = [dictionaryCopy objectForKeyedSubscript:@"isSummarized"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSmsContext setIsSummarized:](v5, "setIsSummarized:", [v88 BOOLValue]);
     }
 
-    v89 = [v4 objectForKeyedSubscript:@"summarySourceType"];
+    v89 = [dictionaryCopy objectForKeyedSubscript:@"summarySourceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWSmsContext setSummarySourceType:](v5, "setSummarySourceType:", [v89 intValue]);
     }
 
-    v90 = [v4 objectForKeyedSubscript:@"contact"];
+    v90 = [dictionaryCopy objectForKeyedSubscript:@"contact"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -547,7 +547,7 @@
       [(FLOWSchemaFLOWSmsContext *)v5 setContact:v91];
     }
 
-    v92 = [v4 objectForKeyedSubscript:@"tapback"];
+    v92 = [dictionaryCopy objectForKeyedSubscript:@"tapback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -561,30 +561,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWSmsContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWSmsContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWSmsContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWSmsContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWSmsContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -597,90 +597,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 0x40) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[FLOWSchemaFLOWSmsContext appendingActionReadMessagesCount](self, "appendingActionReadMessagesCount")}];
-    [v3 setObject:v4 forKeyedSubscript:@"appendingActionReadMessagesCount"];
+    [dictionary setObject:v4 forKeyedSubscript:@"appendingActionReadMessagesCount"];
   }
 
   if (self->_audioContext)
   {
-    v5 = [(FLOWSchemaFLOWSmsContext *)self audioContext];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    audioContext = [(FLOWSchemaFLOWSmsContext *)self audioContext];
+    dictionaryRepresentation = [audioContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"audioContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioContext"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"audioContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioContext"];
     }
   }
 
   if (self->_contact)
   {
-    v8 = [(FLOWSchemaFLOWSmsContext *)self contact];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    contact = [(FLOWSchemaFLOWSmsContext *)self contact];
+    dictionaryRepresentation2 = [contact dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"contact"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"contact"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"contact"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"contact"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSmsContext emojiUsed](self, "emojiUsed")}];
-    [v3 setObject:v11 forKeyedSubscript:@"emojiUsed"];
+    [dictionary setObject:v11 forKeyedSubscript:@"emojiUsed"];
   }
 
   if ([(NSArray *)self->_isGroupMessages count])
   {
-    v12 = [(FLOWSchemaFLOWSmsContext *)self isGroupMessages];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"isGroupMessage"];
+    isGroupMessages = [(FLOWSchemaFLOWSmsContext *)self isGroupMessages];
+    v13 = [isGroupMessages copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"isGroupMessage"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSmsContext isLongMessage](self, "isLongMessage")}];
-    [v3 setObject:v14 forKeyedSubscript:@"isLongMessage"];
+    [dictionary setObject:v14 forKeyedSubscript:@"isLongMessage"];
   }
 
   if ([(NSArray *)self->_isLongMessageLists count])
   {
-    v15 = [(FLOWSchemaFLOWSmsContext *)self isLongMessageLists];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"isLongMessageList"];
+    isLongMessageLists = [(FLOWSchemaFLOWSmsContext *)self isLongMessageLists];
+    v16 = [isLongMessageLists copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"isLongMessageList"];
   }
 
   if ([(NSArray *)self->_isMultiLinguals count])
   {
-    v17 = [(FLOWSchemaFLOWSmsContext *)self isMultiLinguals];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"isMultiLingual"];
+    isMultiLinguals = [(FLOWSchemaFLOWSmsContext *)self isMultiLinguals];
+    v18 = [isMultiLinguals copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"isMultiLingual"];
   }
 
   if ([(NSArray *)self->_isReadables count])
   {
-    v19 = [(FLOWSchemaFLOWSmsContext *)self isReadables];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"isReadable"];
+    isReadables = [(FLOWSchemaFLOWSmsContext *)self isReadables];
+    v20 = [isReadables copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"isReadable"];
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSmsContext isReply](self, "isReply")}];
-    [v3 setObject:v22 forKeyedSubscript:@"isReply"];
+    [dictionary setObject:v22 forKeyedSubscript:@"isReply"];
 
     has = self->_has;
   }
@@ -688,21 +688,21 @@
   if ((has & 8) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSmsContext isSenderShortCode](self, "isSenderShortCode")}];
-    [v3 setObject:v23 forKeyedSubscript:@"isSenderShortCode"];
+    [dictionary setObject:v23 forKeyedSubscript:@"isSenderShortCode"];
   }
 
   if ([(NSArray *)self->_isSenderShortCodeLists count])
   {
-    v24 = [(FLOWSchemaFLOWSmsContext *)self isSenderShortCodeLists];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"isSenderShortCodeList"];
+    isSenderShortCodeLists = [(FLOWSchemaFLOWSmsContext *)self isSenderShortCodeLists];
+    v25 = [isSenderShortCodeLists copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"isSenderShortCodeList"];
   }
 
   v26 = self->_has;
   if ((v26 & 0x100) != 0)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSmsContext isSummarized](self, "isSummarized")}];
-    [v3 setObject:v27 forKeyedSubscript:@"isSummarized"];
+    [dictionary setObject:v27 forKeyedSubscript:@"isSummarized"];
 
     v26 = self->_has;
   }
@@ -710,36 +710,36 @@
   if ((v26 & 4) != 0)
   {
     v28 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWSmsContext keyboardUsed](self, "keyboardUsed")}];
-    [v3 setObject:v28 forKeyedSubscript:@"keyboardUsed"];
+    [dictionary setObject:v28 forKeyedSubscript:@"keyboardUsed"];
   }
 
   if (self->_languageConfidenceMatrix)
   {
-    v29 = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
-    v30 = [v29 dictionaryRepresentation];
-    if (v30)
+    languageConfidenceMatrix = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
+    dictionaryRepresentation3 = [languageConfidenceMatrix dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v30 forKeyedSubscript:@"languageConfidenceMatrix"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"languageConfidenceMatrix"];
     }
 
     else
     {
-      v31 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v31 forKeyedSubscript:@"languageConfidenceMatrix"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"languageConfidenceMatrix"];
     }
   }
 
   if (self->_whichMessagesize == 6)
   {
     v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWSmsContext messageDurationMs](self, "messageDurationMs")}];
-    [v3 setObject:v32 forKeyedSubscript:@"messageDurationMs"];
+    [dictionary setObject:v32 forKeyedSubscript:@"messageDurationMs"];
   }
 
   if ([(NSArray *)self->_messageDurationsInSeconds count])
   {
-    v33 = [(FLOWSchemaFLOWSmsContext *)self messageDurationsInSeconds];
-    v34 = [v33 copy];
-    [v3 setObject:v34 forKeyedSubscript:@"messageDurationsInSeconds"];
+    messageDurationsInSeconds = [(FLOWSchemaFLOWSmsContext *)self messageDurationsInSeconds];
+    v34 = [messageDurationsInSeconds copy];
+    [dictionary setObject:v34 forKeyedSubscript:@"messageDurationsInSeconds"];
   }
 
   if (*&self->_has)
@@ -755,56 +755,56 @@
       v36 = off_1E78D61E8[v35];
     }
 
-    [v3 setObject:v36 forKeyedSubscript:@"messageType"];
+    [dictionary setObject:v36 forKeyedSubscript:@"messageType"];
   }
 
   if ([(NSArray *)self->_personTypes count])
   {
-    v37 = [(FLOWSchemaFLOWSmsContext *)self personTypes];
-    v38 = [v37 copy];
-    [v3 setObject:v38 forKeyedSubscript:@"personType"];
+    personTypes = [(FLOWSchemaFLOWSmsContext *)self personTypes];
+    v38 = [personTypes copy];
+    [dictionary setObject:v38 forKeyedSubscript:@"personType"];
   }
 
   if ([(NSArray *)self->_readMessageTypes count])
   {
-    v39 = [(FLOWSchemaFLOWSmsContext *)self readMessageTypes];
-    v40 = [v39 copy];
-    [v3 setObject:v40 forKeyedSubscript:@"readMessageType"];
+    readMessageTypes = [(FLOWSchemaFLOWSmsContext *)self readMessageTypes];
+    v40 = [readMessageTypes copy];
+    [dictionary setObject:v40 forKeyedSubscript:@"readMessageType"];
   }
 
   if ([(NSArray *)self->_recipientTypes count])
   {
-    v41 = [(FLOWSchemaFLOWSmsContext *)self recipientTypes];
-    v42 = [v41 copy];
-    [v3 setObject:v42 forKeyedSubscript:@"recipientType"];
+    recipientTypes = [(FLOWSchemaFLOWSmsContext *)self recipientTypes];
+    v42 = [recipientTypes copy];
+    [dictionary setObject:v42 forKeyedSubscript:@"recipientType"];
   }
 
   if (self->_richAttachmentIntelligenceFeatureUsage)
   {
-    v43 = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    richAttachmentIntelligenceFeatureUsage = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
+    dictionaryRepresentation4 = [richAttachmentIntelligenceFeatureUsage dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"richAttachmentIntelligenceFeatureUsage"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"richAttachmentIntelligenceFeatureUsage"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"richAttachmentIntelligenceFeatureUsage"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"richAttachmentIntelligenceFeatureUsage"];
     }
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    v46 = [(FLOWSchemaFLOWSmsContext *)self summarySourceType];
+    summarySourceType = [(FLOWSchemaFLOWSmsContext *)self summarySourceType];
     v47 = @"FLOWSUMMARYSOURCETYPE_UNKNOWN";
-    if (v46 == 1)
+    if (summarySourceType == 1)
     {
       v47 = @"FLOWSUMMARYSOURCETYPE_SINGLE_MESSAGE";
     }
 
-    if (v46 == 2)
+    if (summarySourceType == 2)
     {
       v48 = @"FLOWSUMMARYSOURCETYPE_MULTIPLE_MESSAGES";
     }
@@ -814,54 +814,54 @@
       v48 = v47;
     }
 
-    [v3 setObject:v48 forKeyedSubscript:@"summarySourceType"];
+    [dictionary setObject:v48 forKeyedSubscript:@"summarySourceType"];
   }
 
   if (self->_tapback)
   {
-    v49 = [(FLOWSchemaFLOWSmsContext *)self tapback];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    tapback = [(FLOWSchemaFLOWSmsContext *)self tapback];
+    dictionaryRepresentation5 = [tapback dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"tapback"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"tapback"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"tapback"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"tapback"];
     }
   }
 
   if (self->_textContext)
   {
-    v52 = [(FLOWSchemaFLOWSmsContext *)self textContext];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    textContext = [(FLOWSchemaFLOWSmsContext *)self textContext];
+    dictionaryRepresentation6 = [textContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"textContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"textContext"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"textContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"textContext"];
     }
   }
 
   if (self->_textMessageLength)
   {
-    v55 = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    textMessageLength = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
+    dictionaryRepresentation7 = [textMessageLength dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"textMessageLength"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"textMessageLength"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"textMessageLength"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"textMessageLength"];
     }
   }
 
@@ -878,13 +878,13 @@
       v59 = off_1E78D6208[v58];
     }
 
-    [v3 setObject:v59 forKeyedSubscript:@"userPersona"];
+    [dictionary setObject:v59 forKeyedSubscript:@"userPersona"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v60 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v60 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1042,28 +1042,28 @@ LABEL_27:
   return v16 ^ v17 ^ [(FLOWSchemaFLOWMessageTapback *)self->_tapback hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_122;
   }
 
   whichMessagesize = self->_whichMessagesize;
-  if (whichMessagesize != [v4 whichMessagesize])
+  if (whichMessagesize != [equalCopy whichMessagesize])
   {
     goto LABEL_122;
   }
 
   whichMessagecontext = self->_whichMessagecontext;
-  if (whichMessagecontext != [v4 whichMessagecontext])
+  if (whichMessagecontext != [equalCopy whichMessagecontext])
   {
     goto LABEL_122;
   }
 
   has = self->_has;
-  v8 = v4[88];
+  v8 = equalCopy[88];
   if ((*&has & 1) != (v8 & 1))
   {
     goto LABEL_122;
@@ -1072,13 +1072,13 @@ LABEL_27:
   if (*&has)
   {
     messageType = self->_messageType;
-    if (messageType != [v4 messageType])
+    if (messageType != [equalCopy messageType])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v8 = v4[88];
+    v8 = equalCopy[88];
   }
 
   v10 = (*&has >> 1) & 1;
@@ -1090,13 +1090,13 @@ LABEL_27:
   if (v10)
   {
     emojiUsed = self->_emojiUsed;
-    if (emojiUsed != [v4 emojiUsed])
+    if (emojiUsed != [equalCopy emojiUsed])
     {
       goto LABEL_122;
     }
 
     has = self->_has;
-    v8 = v4[88];
+    v8 = equalCopy[88];
   }
 
   v12 = (*&has >> 2) & 1;
@@ -1108,26 +1108,26 @@ LABEL_27:
   if (v12)
   {
     keyboardUsed = self->_keyboardUsed;
-    if (keyboardUsed != [v4 keyboardUsed])
+    if (keyboardUsed != [equalCopy keyboardUsed])
     {
       goto LABEL_122;
     }
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self recipientTypes];
-  v15 = [v4 recipientTypes];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self recipientTypes];
+  recipientTypes2 = [equalCopy recipientTypes];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v16 = [(FLOWSchemaFLOWSmsContext *)self recipientTypes];
-  if (v16)
+  recipientTypes3 = [(FLOWSchemaFLOWSmsContext *)self recipientTypes];
+  if (recipientTypes3)
   {
-    v17 = v16;
-    v18 = [(FLOWSchemaFLOWSmsContext *)self recipientTypes];
-    v19 = [v4 recipientTypes];
-    v20 = [v18 isEqual:v19];
+    v17 = recipientTypes3;
+    recipientTypes4 = [(FLOWSchemaFLOWSmsContext *)self recipientTypes];
+    recipientTypes5 = [equalCopy recipientTypes];
+    v20 = [recipientTypes4 isEqual:recipientTypes5];
 
     if (!v20)
     {
@@ -1140,25 +1140,25 @@ LABEL_27:
   }
 
   messageDurationMs = self->_messageDurationMs;
-  if (messageDurationMs != [v4 messageDurationMs])
+  if (messageDurationMs != [equalCopy messageDurationMs])
   {
     goto LABEL_122;
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
-  v15 = [v4 textMessageLength];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
+  recipientTypes2 = [equalCopy textMessageLength];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v22 = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
-  if (v22)
+  textMessageLength = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
+  if (textMessageLength)
   {
-    v23 = v22;
-    v24 = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
-    v25 = [v4 textMessageLength];
-    v26 = [v24 isEqual:v25];
+    v23 = textMessageLength;
+    textMessageLength2 = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
+    textMessageLength3 = [equalCopy textMessageLength];
+    v26 = [textMessageLength2 isEqual:textMessageLength3];
 
     if (!v26)
     {
@@ -1170,20 +1170,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self textContext];
-  v15 = [v4 textContext];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self textContext];
+  recipientTypes2 = [equalCopy textContext];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v27 = [(FLOWSchemaFLOWSmsContext *)self textContext];
-  if (v27)
+  textContext = [(FLOWSchemaFLOWSmsContext *)self textContext];
+  if (textContext)
   {
-    v28 = v27;
-    v29 = [(FLOWSchemaFLOWSmsContext *)self textContext];
-    v30 = [v4 textContext];
-    v31 = [v29 isEqual:v30];
+    v28 = textContext;
+    textContext2 = [(FLOWSchemaFLOWSmsContext *)self textContext];
+    textContext3 = [equalCopy textContext];
+    v31 = [textContext2 isEqual:textContext3];
 
     if (!v31)
     {
@@ -1195,20 +1195,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self audioContext];
-  v15 = [v4 audioContext];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self audioContext];
+  recipientTypes2 = [equalCopy audioContext];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v32 = [(FLOWSchemaFLOWSmsContext *)self audioContext];
-  if (v32)
+  audioContext = [(FLOWSchemaFLOWSmsContext *)self audioContext];
+  if (audioContext)
   {
-    v33 = v32;
-    v34 = [(FLOWSchemaFLOWSmsContext *)self audioContext];
-    v35 = [v4 audioContext];
-    v36 = [v34 isEqual:v35];
+    v33 = audioContext;
+    audioContext2 = [(FLOWSchemaFLOWSmsContext *)self audioContext];
+    audioContext3 = [equalCopy audioContext];
+    v36 = [audioContext2 isEqual:audioContext3];
 
     if (!v36)
     {
@@ -1220,20 +1220,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self personTypes];
-  v15 = [v4 personTypes];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self personTypes];
+  recipientTypes2 = [equalCopy personTypes];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v37 = [(FLOWSchemaFLOWSmsContext *)self personTypes];
-  if (v37)
+  personTypes = [(FLOWSchemaFLOWSmsContext *)self personTypes];
+  if (personTypes)
   {
-    v38 = v37;
-    v39 = [(FLOWSchemaFLOWSmsContext *)self personTypes];
-    v40 = [v4 personTypes];
-    v41 = [v39 isEqual:v40];
+    v38 = personTypes;
+    personTypes2 = [(FLOWSchemaFLOWSmsContext *)self personTypes];
+    personTypes3 = [equalCopy personTypes];
+    v41 = [personTypes2 isEqual:personTypes3];
 
     if (!v41)
     {
@@ -1245,20 +1245,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self readMessageTypes];
-  v15 = [v4 readMessageTypes];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self readMessageTypes];
+  recipientTypes2 = [equalCopy readMessageTypes];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v42 = [(FLOWSchemaFLOWSmsContext *)self readMessageTypes];
-  if (v42)
+  readMessageTypes = [(FLOWSchemaFLOWSmsContext *)self readMessageTypes];
+  if (readMessageTypes)
   {
-    v43 = v42;
-    v44 = [(FLOWSchemaFLOWSmsContext *)self readMessageTypes];
-    v45 = [v4 readMessageTypes];
-    v46 = [v44 isEqual:v45];
+    v43 = readMessageTypes;
+    readMessageTypes2 = [(FLOWSchemaFLOWSmsContext *)self readMessageTypes];
+    readMessageTypes3 = [equalCopy readMessageTypes];
+    v46 = [readMessageTypes2 isEqual:readMessageTypes3];
 
     if (!v46)
     {
@@ -1270,20 +1270,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self isMultiLinguals];
-  v15 = [v4 isMultiLinguals];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self isMultiLinguals];
+  recipientTypes2 = [equalCopy isMultiLinguals];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v47 = [(FLOWSchemaFLOWSmsContext *)self isMultiLinguals];
-  if (v47)
+  isMultiLinguals = [(FLOWSchemaFLOWSmsContext *)self isMultiLinguals];
+  if (isMultiLinguals)
   {
-    v48 = v47;
-    v49 = [(FLOWSchemaFLOWSmsContext *)self isMultiLinguals];
-    v50 = [v4 isMultiLinguals];
-    v51 = [v49 isEqual:v50];
+    v48 = isMultiLinguals;
+    isMultiLinguals2 = [(FLOWSchemaFLOWSmsContext *)self isMultiLinguals];
+    isMultiLinguals3 = [equalCopy isMultiLinguals];
+    v51 = [isMultiLinguals2 isEqual:isMultiLinguals3];
 
     if (!v51)
     {
@@ -1295,20 +1295,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self isReadables];
-  v15 = [v4 isReadables];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self isReadables];
+  recipientTypes2 = [equalCopy isReadables];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v52 = [(FLOWSchemaFLOWSmsContext *)self isReadables];
-  if (v52)
+  isReadables = [(FLOWSchemaFLOWSmsContext *)self isReadables];
+  if (isReadables)
   {
-    v53 = v52;
-    v54 = [(FLOWSchemaFLOWSmsContext *)self isReadables];
-    v55 = [v4 isReadables];
-    v56 = [v54 isEqual:v55];
+    v53 = isReadables;
+    isReadables2 = [(FLOWSchemaFLOWSmsContext *)self isReadables];
+    isReadables3 = [equalCopy isReadables];
+    v56 = [isReadables2 isEqual:isReadables3];
 
     if (!v56)
     {
@@ -1320,20 +1320,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self isGroupMessages];
-  v15 = [v4 isGroupMessages];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self isGroupMessages];
+  recipientTypes2 = [equalCopy isGroupMessages];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v57 = [(FLOWSchemaFLOWSmsContext *)self isGroupMessages];
-  if (v57)
+  isGroupMessages = [(FLOWSchemaFLOWSmsContext *)self isGroupMessages];
+  if (isGroupMessages)
   {
-    v58 = v57;
-    v59 = [(FLOWSchemaFLOWSmsContext *)self isGroupMessages];
-    v60 = [v4 isGroupMessages];
-    v61 = [v59 isEqual:v60];
+    v58 = isGroupMessages;
+    isGroupMessages2 = [(FLOWSchemaFLOWSmsContext *)self isGroupMessages];
+    isGroupMessages3 = [equalCopy isGroupMessages];
+    v61 = [isGroupMessages2 isEqual:isGroupMessages3];
 
     if (!v61)
     {
@@ -1345,20 +1345,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
-  v15 = [v4 languageConfidenceMatrix];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
+  recipientTypes2 = [equalCopy languageConfidenceMatrix];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v62 = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
-  if (v62)
+  languageConfidenceMatrix = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
+  if (languageConfidenceMatrix)
   {
-    v63 = v62;
-    v64 = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
-    v65 = [v4 languageConfidenceMatrix];
-    v66 = [v64 isEqual:v65];
+    v63 = languageConfidenceMatrix;
+    languageConfidenceMatrix2 = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
+    languageConfidenceMatrix3 = [equalCopy languageConfidenceMatrix];
+    v66 = [languageConfidenceMatrix2 isEqual:languageConfidenceMatrix3];
 
     if (!v66)
     {
@@ -1372,7 +1372,7 @@ LABEL_27:
 
   v67 = self->_has;
   v68 = (*&v67 >> 3) & 1;
-  v69 = v4[88];
+  v69 = equalCopy[88];
   if (v68 != ((v69 >> 3) & 1))
   {
     goto LABEL_122;
@@ -1381,13 +1381,13 @@ LABEL_27:
   if (v68)
   {
     isSenderShortCode = self->_isSenderShortCode;
-    if (isSenderShortCode != [v4 isSenderShortCode])
+    if (isSenderShortCode != [equalCopy isSenderShortCode])
     {
       goto LABEL_122;
     }
 
     v67 = self->_has;
-    v69 = v4[88];
+    v69 = equalCopy[88];
   }
 
   v71 = (*&v67 >> 4) & 1;
@@ -1399,13 +1399,13 @@ LABEL_27:
   if (v71)
   {
     isLongMessage = self->_isLongMessage;
-    if (isLongMessage != [v4 isLongMessage])
+    if (isLongMessage != [equalCopy isLongMessage])
     {
       goto LABEL_122;
     }
 
     v67 = self->_has;
-    v69 = v4[88];
+    v69 = equalCopy[88];
   }
 
   v73 = (*&v67 >> 5) & 1;
@@ -1417,13 +1417,13 @@ LABEL_27:
   if (v73)
   {
     isReply = self->_isReply;
-    if (isReply != [v4 isReply])
+    if (isReply != [equalCopy isReply])
     {
       goto LABEL_122;
     }
 
     v67 = self->_has;
-    v69 = v4[88];
+    v69 = equalCopy[88];
   }
 
   v75 = (*&v67 >> 6) & 1;
@@ -1435,26 +1435,26 @@ LABEL_27:
   if (v75)
   {
     appendingActionReadMessagesCount = self->_appendingActionReadMessagesCount;
-    if (appendingActionReadMessagesCount != [v4 appendingActionReadMessagesCount])
+    if (appendingActionReadMessagesCount != [equalCopy appendingActionReadMessagesCount])
     {
       goto LABEL_122;
     }
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self isSenderShortCodeLists];
-  v15 = [v4 isSenderShortCodeLists];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self isSenderShortCodeLists];
+  recipientTypes2 = [equalCopy isSenderShortCodeLists];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v77 = [(FLOWSchemaFLOWSmsContext *)self isSenderShortCodeLists];
-  if (v77)
+  isSenderShortCodeLists = [(FLOWSchemaFLOWSmsContext *)self isSenderShortCodeLists];
+  if (isSenderShortCodeLists)
   {
-    v78 = v77;
-    v79 = [(FLOWSchemaFLOWSmsContext *)self isSenderShortCodeLists];
-    v80 = [v4 isSenderShortCodeLists];
-    v81 = [v79 isEqual:v80];
+    v78 = isSenderShortCodeLists;
+    isSenderShortCodeLists2 = [(FLOWSchemaFLOWSmsContext *)self isSenderShortCodeLists];
+    isSenderShortCodeLists3 = [equalCopy isSenderShortCodeLists];
+    v81 = [isSenderShortCodeLists2 isEqual:isSenderShortCodeLists3];
 
     if (!v81)
     {
@@ -1466,20 +1466,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self isLongMessageLists];
-  v15 = [v4 isLongMessageLists];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self isLongMessageLists];
+  recipientTypes2 = [equalCopy isLongMessageLists];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v82 = [(FLOWSchemaFLOWSmsContext *)self isLongMessageLists];
-  if (v82)
+  isLongMessageLists = [(FLOWSchemaFLOWSmsContext *)self isLongMessageLists];
+  if (isLongMessageLists)
   {
-    v83 = v82;
-    v84 = [(FLOWSchemaFLOWSmsContext *)self isLongMessageLists];
-    v85 = [v4 isLongMessageLists];
-    v86 = [v84 isEqual:v85];
+    v83 = isLongMessageLists;
+    isLongMessageLists2 = [(FLOWSchemaFLOWSmsContext *)self isLongMessageLists];
+    isLongMessageLists3 = [equalCopy isLongMessageLists];
+    v86 = [isLongMessageLists2 isEqual:isLongMessageLists3];
 
     if (!v86)
     {
@@ -1491,20 +1491,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
-  v15 = [v4 richAttachmentIntelligenceFeatureUsage];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
+  recipientTypes2 = [equalCopy richAttachmentIntelligenceFeatureUsage];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v87 = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
-  if (v87)
+  richAttachmentIntelligenceFeatureUsage = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
+  if (richAttachmentIntelligenceFeatureUsage)
   {
-    v88 = v87;
-    v89 = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
-    v90 = [v4 richAttachmentIntelligenceFeatureUsage];
-    v91 = [v89 isEqual:v90];
+    v88 = richAttachmentIntelligenceFeatureUsage;
+    richAttachmentIntelligenceFeatureUsage2 = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
+    richAttachmentIntelligenceFeatureUsage3 = [equalCopy richAttachmentIntelligenceFeatureUsage];
+    v91 = [richAttachmentIntelligenceFeatureUsage2 isEqual:richAttachmentIntelligenceFeatureUsage3];
 
     if (!v91)
     {
@@ -1516,20 +1516,20 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self messageDurationsInSeconds];
-  v15 = [v4 messageDurationsInSeconds];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self messageDurationsInSeconds];
+  recipientTypes2 = [equalCopy messageDurationsInSeconds];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v92 = [(FLOWSchemaFLOWSmsContext *)self messageDurationsInSeconds];
-  if (v92)
+  messageDurationsInSeconds = [(FLOWSchemaFLOWSmsContext *)self messageDurationsInSeconds];
+  if (messageDurationsInSeconds)
   {
-    v93 = v92;
-    v94 = [(FLOWSchemaFLOWSmsContext *)self messageDurationsInSeconds];
-    v95 = [v4 messageDurationsInSeconds];
-    v96 = [v94 isEqual:v95];
+    v93 = messageDurationsInSeconds;
+    messageDurationsInSeconds2 = [(FLOWSchemaFLOWSmsContext *)self messageDurationsInSeconds];
+    messageDurationsInSeconds3 = [equalCopy messageDurationsInSeconds];
+    v96 = [messageDurationsInSeconds2 isEqual:messageDurationsInSeconds3];
 
     if (!v96)
     {
@@ -1543,7 +1543,7 @@ LABEL_27:
 
   v97 = self->_has;
   v98 = (*&v97 >> 7) & 1;
-  v99 = v4[88];
+  v99 = equalCopy[88];
   if (v98 != ((v99 >> 7) & 1))
   {
     goto LABEL_122;
@@ -1552,13 +1552,13 @@ LABEL_27:
   if (v98)
   {
     userPersona = self->_userPersona;
-    if (userPersona != [v4 userPersona])
+    if (userPersona != [equalCopy userPersona])
     {
       goto LABEL_122;
     }
 
     v97 = self->_has;
-    v99 = v4[88];
+    v99 = equalCopy[88];
   }
 
   v101 = (*&v97 >> 8) & 1;
@@ -1570,13 +1570,13 @@ LABEL_27:
   if (v101)
   {
     isSummarized = self->_isSummarized;
-    if (isSummarized != [v4 isSummarized])
+    if (isSummarized != [equalCopy isSummarized])
     {
       goto LABEL_122;
     }
 
     v97 = self->_has;
-    v99 = v4[88];
+    v99 = equalCopy[88];
   }
 
   v103 = (*&v97 >> 9) & 1;
@@ -1588,26 +1588,26 @@ LABEL_27:
   if (v103)
   {
     summarySourceType = self->_summarySourceType;
-    if (summarySourceType != [v4 summarySourceType])
+    if (summarySourceType != [equalCopy summarySourceType])
     {
       goto LABEL_122;
     }
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self contact];
-  v15 = [v4 contact];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self contact];
+  recipientTypes2 = [equalCopy contact];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_121;
   }
 
-  v105 = [(FLOWSchemaFLOWSmsContext *)self contact];
-  if (v105)
+  contact = [(FLOWSchemaFLOWSmsContext *)self contact];
+  if (contact)
   {
-    v106 = v105;
-    v107 = [(FLOWSchemaFLOWSmsContext *)self contact];
-    v108 = [v4 contact];
-    v109 = [v107 isEqual:v108];
+    v106 = contact;
+    contact2 = [(FLOWSchemaFLOWSmsContext *)self contact];
+    contact3 = [equalCopy contact];
+    v109 = [contact2 isEqual:contact3];
 
     if (!v109)
     {
@@ -1619,17 +1619,17 @@ LABEL_27:
   {
   }
 
-  v14 = [(FLOWSchemaFLOWSmsContext *)self tapback];
-  v15 = [v4 tapback];
-  if ((v14 != 0) == (v15 == 0))
+  recipientTypes = [(FLOWSchemaFLOWSmsContext *)self tapback];
+  recipientTypes2 = [equalCopy tapback];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
 LABEL_121:
 
     goto LABEL_122;
   }
 
-  v110 = [(FLOWSchemaFLOWSmsContext *)self tapback];
-  if (!v110)
+  tapback = [(FLOWSchemaFLOWSmsContext *)self tapback];
+  if (!tapback)
   {
 
 LABEL_125:
@@ -1637,10 +1637,10 @@ LABEL_125:
     goto LABEL_123;
   }
 
-  v111 = v110;
-  v112 = [(FLOWSchemaFLOWSmsContext *)self tapback];
-  v113 = [v4 tapback];
-  v114 = [v112 isEqual:v113];
+  v111 = tapback;
+  tapback2 = [(FLOWSchemaFLOWSmsContext *)self tapback];
+  tapback3 = [equalCopy tapback];
+  v114 = [tapback2 isEqual:tapback3];
 
   if (v114)
   {
@@ -1654,10 +1654,10 @@ LABEL_123:
   return v115;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v112 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1722,27 +1722,27 @@ LABEL_5:
     PBDataWriterWriteUint32Field();
   }
 
-  v11 = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
+  textMessageLength = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
 
-  if (v11)
+  if (textMessageLength)
   {
-    v12 = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
+    textMessageLength2 = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(FLOWSchemaFLOWSmsContext *)self textContext];
+  textContext = [(FLOWSchemaFLOWSmsContext *)self textContext];
 
-  if (v13)
+  if (textContext)
   {
-    v14 = [(FLOWSchemaFLOWSmsContext *)self textContext];
+    textContext2 = [(FLOWSchemaFLOWSmsContext *)self textContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(FLOWSchemaFLOWSmsContext *)self audioContext];
+  audioContext = [(FLOWSchemaFLOWSmsContext *)self audioContext];
 
-  if (v15)
+  if (audioContext)
   {
-    v16 = [(FLOWSchemaFLOWSmsContext *)self audioContext];
+    audioContext2 = [(FLOWSchemaFLOWSmsContext *)self audioContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1891,11 +1891,11 @@ LABEL_5:
     while (v39);
   }
 
-  v42 = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
+  languageConfidenceMatrix = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
 
-  if (v42)
+  if (languageConfidenceMatrix)
   {
-    v43 = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
+    languageConfidenceMatrix2 = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2001,11 +2001,11 @@ LABEL_62:
     while (v52);
   }
 
-  v55 = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
+  richAttachmentIntelligenceFeatureUsage = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
 
-  if (v55)
+  if (richAttachmentIntelligenceFeatureUsage)
   {
-    v56 = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
+    richAttachmentIntelligenceFeatureUsage2 = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2068,26 +2068,26 @@ LABEL_88:
   }
 
 LABEL_89:
-  v63 = [(FLOWSchemaFLOWSmsContext *)self contact];
+  contact = [(FLOWSchemaFLOWSmsContext *)self contact];
 
-  if (v63)
+  if (contact)
   {
-    v64 = [(FLOWSchemaFLOWSmsContext *)self contact];
+    contact2 = [(FLOWSchemaFLOWSmsContext *)self contact];
     PBDataWriterWriteSubmessage();
   }
 
-  v65 = [(FLOWSchemaFLOWSmsContext *)self tapback];
+  tapback = [(FLOWSchemaFLOWSmsContext *)self tapback];
 
-  if (v65)
+  if (tapback)
   {
-    v66 = [(FLOWSchemaFLOWSmsContext *)self tapback];
+    tapback2 = [(FLOWSchemaFLOWSmsContext *)self tapback];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasSummarySourceType:(BOOL)a3
+- (void)setHasSummarySourceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 512;
   }
@@ -2100,9 +2100,9 @@ LABEL_89:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIsSummarized:(BOOL)a3
+- (void)setHasIsSummarized:(BOOL)summarized
 {
-  if (a3)
+  if (summarized)
   {
     v3 = 256;
   }
@@ -2115,9 +2115,9 @@ LABEL_89:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasUserPersona:(BOOL)a3
+- (void)setHasUserPersona:(BOOL)persona
 {
-  if (a3)
+  if (persona)
   {
     v3 = 128;
   }
@@ -2130,83 +2130,83 @@ LABEL_89:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (unint64_t)messageDurationsInSecondsAtIndex:(unint64_t)a3
+- (unint64_t)messageDurationsInSecondsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_messageDurationsInSeconds objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSArray *)self->_messageDurationsInSeconds objectAtIndexedSubscript:index];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)addMessageDurationsInSeconds:(unint64_t)a3
+- (void)addMessageDurationsInSeconds:(unint64_t)seconds
 {
   messageDurationsInSeconds = self->_messageDurationsInSeconds;
   if (!messageDurationsInSeconds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_messageDurationsInSeconds;
-    self->_messageDurationsInSeconds = v6;
+    self->_messageDurationsInSeconds = array;
 
     messageDurationsInSeconds = self->_messageDurationsInSeconds;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:seconds];
   [(NSArray *)messageDurationsInSeconds addObject:v8];
 }
 
-- (BOOL)isLongMessageListAtIndex:(unint64_t)a3
+- (BOOL)isLongMessageListAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_isLongMessageLists objectAtIndexedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSArray *)self->_isLongMessageLists objectAtIndexedSubscript:index];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)addIsLongMessageList:(BOOL)a3
+- (void)addIsLongMessageList:(BOOL)list
 {
-  v3 = a3;
+  listCopy = list;
   isLongMessageLists = self->_isLongMessageLists;
   if (!isLongMessageLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_isLongMessageLists;
-    self->_isLongMessageLists = v6;
+    self->_isLongMessageLists = array;
 
     isLongMessageLists = self->_isLongMessageLists;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:listCopy];
   [(NSArray *)isLongMessageLists addObject:v8];
 }
 
-- (BOOL)isSenderShortCodeListAtIndex:(unint64_t)a3
+- (BOOL)isSenderShortCodeListAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_isSenderShortCodeLists objectAtIndexedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSArray *)self->_isSenderShortCodeLists objectAtIndexedSubscript:index];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)addIsSenderShortCodeList:(BOOL)a3
+- (void)addIsSenderShortCodeList:(BOOL)list
 {
-  v3 = a3;
+  listCopy = list;
   isSenderShortCodeLists = self->_isSenderShortCodeLists;
   if (!isSenderShortCodeLists)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_isSenderShortCodeLists;
-    self->_isSenderShortCodeLists = v6;
+    self->_isSenderShortCodeLists = array;
 
     isSenderShortCodeLists = self->_isSenderShortCodeLists;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:listCopy];
   [(NSArray *)isSenderShortCodeLists addObject:v8];
 }
 
-- (void)setHasAppendingActionReadMessagesCount:(BOOL)a3
+- (void)setHasAppendingActionReadMessagesCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -2219,9 +2219,9 @@ LABEL_89:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsReply:(BOOL)a3
+- (void)setHasIsReply:(BOOL)reply
 {
-  if (a3)
+  if (reply)
   {
     v3 = 32;
   }
@@ -2234,9 +2234,9 @@ LABEL_89:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasIsLongMessage:(BOOL)a3
+- (void)setHasIsLongMessage:(BOOL)message
 {
-  if (a3)
+  if (message)
   {
     v3 = 16;
   }
@@ -2249,9 +2249,9 @@ LABEL_89:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasIsSenderShortCode:(BOOL)a3
+- (void)setHasIsSenderShortCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 8;
   }
@@ -2264,98 +2264,98 @@ LABEL_89:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (BOOL)isGroupMessageAtIndex:(unint64_t)a3
+- (BOOL)isGroupMessageAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_isGroupMessages objectAtIndexedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSArray *)self->_isGroupMessages objectAtIndexedSubscript:index];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)addIsGroupMessage:(BOOL)a3
+- (void)addIsGroupMessage:(BOOL)message
 {
-  v3 = a3;
+  messageCopy = message;
   isGroupMessages = self->_isGroupMessages;
   if (!isGroupMessages)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_isGroupMessages;
-    self->_isGroupMessages = v6;
+    self->_isGroupMessages = array;
 
     isGroupMessages = self->_isGroupMessages;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:messageCopy];
   [(NSArray *)isGroupMessages addObject:v8];
 }
 
-- (BOOL)isReadableAtIndex:(unint64_t)a3
+- (BOOL)isReadableAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_isReadables objectAtIndexedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSArray *)self->_isReadables objectAtIndexedSubscript:index];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)addIsReadable:(BOOL)a3
+- (void)addIsReadable:(BOOL)readable
 {
-  v3 = a3;
+  readableCopy = readable;
   isReadables = self->_isReadables;
   if (!isReadables)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_isReadables;
-    self->_isReadables = v6;
+    self->_isReadables = array;
 
     isReadables = self->_isReadables;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:readableCopy];
   [(NSArray *)isReadables addObject:v8];
 }
 
-- (BOOL)isMultiLingualAtIndex:(unint64_t)a3
+- (BOOL)isMultiLingualAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_isMultiLinguals objectAtIndexedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSArray *)self->_isMultiLinguals objectAtIndexedSubscript:index];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)addIsMultiLingual:(BOOL)a3
+- (void)addIsMultiLingual:(BOOL)lingual
 {
-  v3 = a3;
+  lingualCopy = lingual;
   isMultiLinguals = self->_isMultiLinguals;
   if (!isMultiLinguals)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_isMultiLinguals;
-    self->_isMultiLinguals = v6;
+    self->_isMultiLinguals = array;
 
     isMultiLinguals = self->_isMultiLinguals;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:lingualCopy];
   [(NSArray *)isMultiLinguals addObject:v8];
 }
 
-- (int)readMessageTypeAtIndex:(unint64_t)a3
+- (int)readMessageTypeAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_readMessageTypes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_readMessageTypes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addReadMessageType:(int)a3
+- (void)addReadMessageType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   readMessageTypes = self->_readMessageTypes;
   if (!readMessageTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_readMessageTypes;
-    self->_readMessageTypes = v6;
+    self->_readMessageTypes = array;
 
     readMessageTypes = self->_readMessageTypes;
   }
@@ -2364,23 +2364,23 @@ LABEL_89:
   [(NSArray *)readMessageTypes addObject:v8];
 }
 
-- (int)personTypeAtIndex:(unint64_t)a3
+- (int)personTypeAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_personTypes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_personTypes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addPersonType:(int)a3
+- (void)addPersonType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   personTypes = self->_personTypes;
   if (!personTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_personTypes;
-    self->_personTypes = v6;
+    self->_personTypes = array;
 
     personTypes = self->_personTypes;
   }
@@ -2414,21 +2414,21 @@ LABEL_89:
   return v3;
 }
 
-- (void)setAudioContext:(id)a3
+- (void)setAudioContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   textContext = self->_textContext;
   self->_textContext = 0;
 
   v6 = 9;
-  if (!v4)
+  if (!contextCopy)
   {
     v6 = 0;
   }
 
   self->_whichMessagecontext = v6;
   audioContext = self->_audioContext;
-  self->_audioContext = v4;
+  self->_audioContext = contextCopy;
 }
 
 - (void)deleteTextContext
@@ -2456,15 +2456,15 @@ LABEL_89:
   return v3;
 }
 
-- (void)setTextContext:(id)a3
+- (void)setTextContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   audioContext = self->_audioContext;
   self->_audioContext = 0;
 
-  self->_whichMessagecontext = 8 * (v4 != 0);
+  self->_whichMessagecontext = 8 * (contextCopy != 0);
   textContext = self->_textContext;
-  self->_textContext = v4;
+  self->_textContext = contextCopy;
 }
 
 - (void)deleteTextMessageLength
@@ -2492,17 +2492,17 @@ LABEL_89:
   return v3;
 }
 
-- (void)setTextMessageLength:(id)a3
+- (void)setTextMessageLength:(id)length
 {
   self->_messageDurationMs = 0;
   v3 = 7;
-  if (!a3)
+  if (!length)
   {
     v3 = 0;
   }
 
   self->_whichMessagesize = v3;
-  objc_storeStrong(&self->_textMessageLength, a3);
+  objc_storeStrong(&self->_textMessageLength, length);
 }
 
 - (void)deleteMessageDurationMs
@@ -2527,32 +2527,32 @@ LABEL_89:
   }
 }
 
-- (void)setMessageDurationMs:(unsigned int)a3
+- (void)setMessageDurationMs:(unsigned int)ms
 {
   textMessageLength = self->_textMessageLength;
   self->_textMessageLength = 0;
 
   self->_whichMessagesize = 6;
-  self->_messageDurationMs = a3;
+  self->_messageDurationMs = ms;
 }
 
-- (int)recipientTypeAtIndex:(unint64_t)a3
+- (int)recipientTypeAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_recipientTypes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_recipientTypes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addRecipientType:(int)a3
+- (void)addRecipientType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   recipientTypes = self->_recipientTypes;
   if (!recipientTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recipientTypes;
-    self->_recipientTypes = v6;
+    self->_recipientTypes = array;
 
     recipientTypes = self->_recipientTypes;
   }
@@ -2561,9 +2561,9 @@ LABEL_89:
   [(NSArray *)recipientTypes addObject:v8];
 }
 
-- (void)setHasKeyboardUsed:(BOOL)a3
+- (void)setHasKeyboardUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 4;
   }
@@ -2576,9 +2576,9 @@ LABEL_89:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasEmojiUsed:(BOOL)a3
+- (void)setHasEmojiUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 2;
   }
@@ -2591,71 +2591,71 @@ LABEL_89:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v28.receiver = self;
   v28.super_class = FLOWSchemaFLOWSmsContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:policyCopy];
+  textMessageLength = [(FLOWSchemaFLOWSmsContext *)self textMessageLength];
+  v7 = [textMessageLength applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWSmsContext *)self deleteTextMessageLength];
   }
 
-  v9 = [(FLOWSchemaFLOWSmsContext *)self textContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  textContext = [(FLOWSchemaFLOWSmsContext *)self textContext];
+  v10 = [textContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWSmsContext *)self deleteTextContext];
   }
 
-  v12 = [(FLOWSchemaFLOWSmsContext *)self audioContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  audioContext = [(FLOWSchemaFLOWSmsContext *)self audioContext];
+  v13 = [audioContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(FLOWSchemaFLOWSmsContext *)self deleteAudioContext];
   }
 
-  v15 = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  languageConfidenceMatrix = [(FLOWSchemaFLOWSmsContext *)self languageConfidenceMatrix];
+  v16 = [languageConfidenceMatrix applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(FLOWSchemaFLOWSmsContext *)self deleteLanguageConfidenceMatrix];
   }
 
-  v18 = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  richAttachmentIntelligenceFeatureUsage = [(FLOWSchemaFLOWSmsContext *)self richAttachmentIntelligenceFeatureUsage];
+  v19 = [richAttachmentIntelligenceFeatureUsage applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(FLOWSchemaFLOWSmsContext *)self deleteRichAttachmentIntelligenceFeatureUsage];
   }
 
-  v21 = [(FLOWSchemaFLOWSmsContext *)self contact];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  contact = [(FLOWSchemaFLOWSmsContext *)self contact];
+  v22 = [contact applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(FLOWSchemaFLOWSmsContext *)self deleteContact];
   }
 
-  v24 = [(FLOWSchemaFLOWSmsContext *)self tapback];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  tapback = [(FLOWSchemaFLOWSmsContext *)self tapback];
+  v25 = [tapback applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(FLOWSchemaFLOWSmsContext *)self deleteTapback];
   }

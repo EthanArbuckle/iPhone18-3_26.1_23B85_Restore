@@ -1,31 +1,31 @@
 @interface LAUIPearlGlyphLabel
 - (CGSize)maximumSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LAUIPearlGlyphLabel)initWithStyle:(int64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LAUIPearlGlyphLabel)initWithStyle:(int64_t)style;
 - (id).cxx_construct;
 - (id)_applyVisibilityAnimated:(id *)location;
 - (void)_applyStyle;
 - (void)_applyVisibilityAnimated:;
-- (void)_applyVisibilityAnimated:(BOOL)a3;
-- (void)_updateBoundsSizeAnimated:(BOOL)a3;
-- (void)_updateFontAnimated:(BOOL)a3;
+- (void)_applyVisibilityAnimated:(BOOL)animated;
+- (void)_updateBoundsSizeAnimated:(BOOL)animated;
+- (void)_updateFontAnimated:(BOOL)animated;
 - (void)_updateGlyphPaused;
 - (void)_updateReduceBlurState;
 - (void)_updateText;
-- (void)_updateVisibilityAnimated:(BOOL)a3;
+- (void)_updateVisibilityAnimated:(BOOL)animated;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)layoutIfNeededAnimated:(BOOL)a3;
+- (void)layoutIfNeededAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setMaximumSize:(CGSize)a3 animated:(BOOL)a4;
-- (void)setShimmerEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)setText:(id)a3 animated:(BOOL)a4;
+- (void)setMaximumSize:(CGSize)size animated:(BOOL)animated;
+- (void)setShimmerEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setStyle:(int64_t)style animated:(BOOL)animated;
+- (void)setText:(id)text animated:(BOOL)animated;
 @end
 
 @implementation LAUIPearlGlyphLabel
 
-- (LAUIPearlGlyphLabel)initWithStyle:(int64_t)a3
+- (LAUIPearlGlyphLabel)initWithStyle:(int64_t)style
 {
   v51[12] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CBF3A0];
@@ -38,52 +38,52 @@
   v9 = v8;
   if (v8)
   {
-    *(v8 + 73) = a3;
+    *(v8 + 73) = style;
     v8[576] = 1;
     *(v8 + 600) = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
     *(v8 + 34) = *(v8 + 600);
-    v10 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     v51[0] = @"position";
     v51[1] = @"bounds";
-    *&v50.m11 = v10;
-    *&v50.m12 = v10;
+    *&v50.m11 = null;
+    *&v50.m12 = null;
     v51[2] = @"transform";
     v51[3] = @"backgroundColor";
-    *&v50.m13 = v10;
-    *&v50.m14 = v10;
+    *&v50.m13 = null;
+    *&v50.m14 = null;
     v51[4] = @"cornerRadius";
     v51[5] = @"contents";
-    *&v50.m21 = v10;
-    *&v50.m22 = v10;
+    *&v50.m21 = null;
+    *&v50.m22 = null;
     v51[6] = @"anchorPoint";
     v51[7] = @"opacity";
-    *&v50.m23 = v10;
-    *&v50.m24 = v10;
+    *&v50.m23 = null;
+    *&v50.m24 = null;
     v51[8] = @"strokeStart";
     v51[9] = @"strokeEnd";
-    *&v50.m31 = v10;
-    *&v50.m32 = v10;
+    *&v50.m31 = null;
+    *&v50.m32 = null;
     v51[10] = @"strokeColor";
     v51[11] = @"fillColor";
-    *&v50.m33 = v10;
-    *&v50.m34 = v10;
+    *&v50.m33 = null;
+    *&v50.m34 = null;
     v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:v51 count:12];
 
-    v11 = [(LAUIPearlGlyphLabel *)v9 layer];
-    [v11 setAllowsGroupOpacity:0];
+    layer = [(LAUIPearlGlyphLabel *)v9 layer];
+    [layer setAllowsGroupOpacity:0];
     v12 = objc_alloc_init(MEMORY[0x277D75D18]);
     container = v9->_container;
     v9->_container = v12;
 
-    v14 = [(UIView *)v9->_container layer];
+    layer2 = [(UIView *)v9->_container layer];
     CATransform3DMakeScale(&v50, 1.1, 1.1, 1.0);
-    [v14 setTransform:&v50];
+    [layer2 setTransform:&v50];
 
     [(LAUIPearlGlyphLabel *)v9 addSubview:v9->_container];
-    v15 = [(UIView *)v9->_container layer];
+    layer3 = [(UIView *)v9->_container layer];
 
-    [v15 setAllowsGroupOpacity:0];
-    [v15 setAllowsGroupBlending:0];
+    [layer3 setAllowsGroupOpacity:0];
+    [layer3 setAllowsGroupBlending:0];
     v16 = objc_alloc_init(MEMORY[0x277CD9E08]);
     background = v9->_background;
     v9->_background = v16;
@@ -105,12 +105,12 @@
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:2];
     [(CABackdropLayer *)v21 setFilters:v22];
 
-    [v15 addSublayer:v9->_background];
+    [layer3 addSublayer:v9->_background];
     v23 = objc_alloc_init(MEMORY[0x277D75D18]);
     labelContainer = v9->_labelContainer;
     v9->_labelContainer = v23;
 
-    v25 = [(UIView *)v9->_labelContainer layer];
+    layer4 = [(UIView *)v9->_labelContainer layer];
 
     [(UIView *)v9->_container addSubview:v9->_labelContainer];
     v26 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -124,12 +124,12 @@
     glyphContainer = v9->_glyphContainer;
     v9->_glyphContainer = v28;
 
-    v30 = [(UIView *)v9->_glyphContainer layer];
+    layer5 = [(UIView *)v9->_glyphContainer layer];
 
-    [v30 setAllowsGroupOpacity:0];
-    [v30 setAllowsGroupBlending:0];
+    [layer5 setAllowsGroupOpacity:0];
+    [layer5 setAllowsGroupBlending:0];
     v31 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA570]];
-    [v30 setCompositingFilter:v31];
+    [layer5 setCompositingFilter:v31];
 
     [(UIView *)v9->_container addSubview:v9->_glyphContainer];
     v32 = [LAUIPearlGlyphView alloc];
@@ -138,7 +138,7 @@
     glyph = v9->_glyph;
     v9->_glyph = v34;
 
-    v36 = [(LAUIPearlGlyphView *)v9->_glyph layer];
+    layer6 = [(LAUIPearlGlyphView *)v9->_glyph layer];
 
     [(LAUIPearlGlyphView *)v9->_glyph setBounds:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), 30.0, 30.0];
     [(LAUIPearlGlyphView *)v9->_glyph setState:2 animated:0];
@@ -149,7 +149,7 @@
     [v37 setValue:MEMORY[0x277CBEC28] forKey:@"inputNormalizeEdges"];
     v48 = v37;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
-    [v36 setFilters:v38];
+    [layer6 setFilters:v38];
 
     [(UIView *)v9->_glyphContainer addSubview:v9->_glyph];
     [(LAUIPearlGlyphLabel *)v9 _applyStyle];
@@ -161,12 +161,12 @@
     [(UILabel *)v9->_label setTextColor:v9->_textColor];
     v42 = UIAccessibilityIsReduceTransparencyEnabled() || UIAccessibilityIsReduceMotionEnabled();
     v9->_reduceBlur = v42;
-    v43 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v43 addObserver:v9 selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
-    [v43 addObserver:v9 selector:sel_reduceTransparencyDidChange_ name:*MEMORY[0x277D764C8] object:0];
-    [v43 addObserver:v9 selector:sel_reduceMotionDidChange_ name:*MEMORY[0x277D764C0] object:0];
-    [v43 addObserver:v9 selector:sel_boldTextStatusDidChange_ name:*MEMORY[0x277D76448] object:0];
-    [v43 addObserver:v9 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+    [defaultCenter addObserver:v9 selector:sel_reduceTransparencyDidChange_ name:*MEMORY[0x277D764C8] object:0];
+    [defaultCenter addObserver:v9 selector:sel_reduceMotionDidChange_ name:*MEMORY[0x277D764C0] object:0];
+    [defaultCenter addObserver:v9 selector:sel_boldTextStatusDidChange_ name:*MEMORY[0x277D76448] object:0];
+    [defaultCenter addObserver:v9 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
     [(LAUIPearlGlyphLabel *)v9 _updateFontAnimated:0];
     [(LAUIPearlGlyphLabel *)v9 _applyVisibilityAnimated:0];
   }
@@ -176,8 +176,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   visibilityTimer = self->_visibilityTimer;
   if (visibilityTimer)
@@ -193,19 +193,19 @@
   [(LAUIPearlGlyphLabel *)&v6 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
   width = self->_currentLabelSize.width;
   v8 = self->_currentMaximumSize.width;
   height = self->_currentMaximumSize.height;
-  v10 = [(UILabel *)self->_label font];
-  [v10 lineHeight];
+  font = [(UILabel *)self->_label font];
+  [font lineHeight];
   v12 = v11;
-  [v10 leading];
+  [font leading];
   if (width <= 0.0)
   {
     v14 = 0.0;
@@ -232,15 +232,15 @@
   v4.receiver = self;
   v4.super_class = LAUIPearlGlyphLabel;
   [(LAUIPearlGlyphLabel *)&v4 didMoveToWindow];
-  v3 = [(LAUIPearlGlyphLabel *)self window];
-  self->_inWindow = v3 != 0;
+  window = [(LAUIPearlGlyphLabel *)self window];
+  self->_inWindow = window != 0;
 
   [(LAUIPearlGlyphLabel *)self _updateText];
 }
 
-- (void)layoutIfNeededAnimated:(BOOL)a3
+- (void)layoutIfNeededAnimated:(BOOL)animated
 {
-  self->_animated = a3;
+  self->_animated = animated;
   [(LAUIPearlGlyphLabel *)self layoutIfNeeded];
   self->_animated = 0;
 }
@@ -251,8 +251,8 @@
   v189.receiver = self;
   v189.super_class = LAUIPearlGlyphLabel;
   [(LAUIPearlGlyphLabel *)&v189 layoutSubviews];
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   [(LAUIPearlGlyphLabel *)self bounds];
@@ -278,7 +278,7 @@
     m11_low = 0;
   }
 
-  v15 = [(UIView *)self->_container layer];
+  layer = [(UIView *)self->_container layer];
   if (animated)
   {
     v200[0] = v201[0];
@@ -293,7 +293,7 @@
     v17 = 0;
   }
 
-  v18 = v15;
+  v18 = layer;
   [v18 anchorPoint];
   v20 = v6 + v19 * v10;
   v22 = v8 + v21 * v12;
@@ -320,10 +320,10 @@
 
   width = self->_currentMaximumSize.width;
   height = self->_currentMaximumSize.height;
-  v25 = [(UILabel *)self->_label font];
-  [v25 lineHeight];
+  font = [(UILabel *)self->_label font];
+  [font lineHeight];
   v27 = v26;
-  [v25 leading];
+  [font leading];
   v29 = v28;
 
   [(CABackdropLayer *)self->_background cornerRadius];
@@ -382,7 +382,7 @@
   {
   }
 
-  v44 = [(UIView *)self->_glyphContainer layer];
+  layer2 = [(UIView *)self->_glyphContainer layer];
   v45 = *MEMORY[0x277CBF348];
   v46 = *(MEMORY[0x277CBF348] + 8);
   if (animated)
@@ -399,7 +399,7 @@
     v48 = 0;
   }
 
-  v49 = v44;
+  v49 = layer2;
   [v49 anchorPoint];
   v158 = 440;
   v51 = v166 + v50 * v169;
@@ -425,7 +425,7 @@
   {
   }
 
-  v54 = [(UIView *)self->_labelContainer layer];
+  layer3 = [(UIView *)self->_labelContainer layer];
   v55 = *MEMORY[0x277CBF3A0];
   v56 = *(MEMORY[0x277CBF3A0] + 8);
   v57 = *(MEMORY[0x277CBF3A0] + 16);
@@ -444,7 +444,7 @@
     v60 = 0;
   }
 
-  v61 = v54;
+  v61 = layer3;
   [v61 anchorPoint];
   v63 = round(v30 * (v166 + (v169 - v57) * 0.5)) / v30 + v62 * v57;
   v65 = round(v30 * (v165 + (v170 - v58) * 0.5)) / v30 + v64 * v58;
@@ -474,8 +474,8 @@
   v163 = v66;
   v160 = v69;
   v161 = v68;
-  v70 = [(UILabel *)self->_label layer];
-  [v70 bounds];
+  layer4 = [(UILabel *)self->_label layer];
+  [layer4 bounds];
   v72 = v71;
   v74 = v73;
   v76 = v75;
@@ -495,7 +495,7 @@
     v81 = 0;
   }
 
-  v82 = v70;
+  v82 = layer4;
   [v82 anchorPoint];
   v83 = fmin(v76, v79 + -12.0 + -12.0);
   v85 = round(v30 * (v163 + (v161 - v83) * 0.5)) / v30 + v84 * v83;
@@ -529,8 +529,8 @@
   begin = self->_labelSnapshots.__begin_;
   for (i = self->_labelSnapshots.var0; begin != i; ++begin)
   {
-    v91 = [(__end_ *)*begin layer];
-    [v91 bounds];
+    layer5 = [(__end_ *)*begin layer];
+    [layer5 bounds];
     v93 = v92;
     v95 = v94;
     v97 = v96;
@@ -539,7 +539,7 @@
     {
       v195[0] = v201[0];
       *(v195 + 15) = *(v201 + 15);
-      v70 = *&m21;
+      layer4 = *&m21;
       v182 = v188;
       v100 = m11_low;
     }
@@ -549,7 +549,7 @@
       v100 = 0;
     }
 
-    v101 = v91;
+    v101 = layer5;
     [v101 anchorPoint];
     v103 = v102;
     v105 = v104;
@@ -560,7 +560,7 @@
       LOBYTE(v192.m11) = v100;
       *(&v192.m11 + 1) = v195[0];
       *&v192.m13 = *(v195 + 15);
-      *&v192.m21 = v70;
+      *&v192.m21 = layer4;
       *&v192.m22 = v182;
       LOBYTE(v192.m24) = 1;
     }
@@ -580,8 +580,8 @@
   v108 = v107;
   v110 = v109;
   v112 = v111;
-  v113 = [(LAUIPearlGlyphView *)self->_glyph layer];
-  [v113 bounds];
+  layer6 = [(LAUIPearlGlyphView *)self->_glyph layer];
+  [layer6 bounds];
   v115 = v114;
   v117 = v116;
   v119 = v118;
@@ -600,7 +600,7 @@
     v123 = 0;
   }
 
-  v124 = v113;
+  v124 = layer6;
   [v124 anchorPoint];
   v126 = round(v30 * (v108 + (v164 - v119) * 0.5)) / v30 + v125 * v119;
   v128 = round(v30 * (v110 + (v112 - v121) * 0.5)) / v30 + v127 * v121;
@@ -667,8 +667,8 @@
   {
   }
 
-  v133 = self;
-  v134 = [(UIView *)self->_container layer];
+  selfCopy = self;
+  layer7 = [(UIView *)self->_container layer];
   begin_node = self->_masks.__tree_.__begin_node_;
   if (begin_node != &self->_masks.__tree_.__end_node_)
   {
@@ -682,7 +682,7 @@
         [v137 setCornerRadius:v172];
       }
 
-      [v136 convertRect:v134 fromLayer:{v166, v165, v169, v170}];
+      [v136 convertRect:layer7 fromLayer:{v166, v165, v169, v170}];
       v140 = v139;
       v142 = v141;
       v144 = v143;
@@ -693,7 +693,7 @@
       {
         v193[0] = v201[0];
         *(v193 + 15) = *(v201 + 15);
-        v133 = *&m21;
+        selfCopy = *&m21;
         v173 = v188;
         v149 = m11_low;
       }
@@ -714,7 +714,7 @@
         LOBYTE(v192.m11) = v149;
         *(&v192.m11 + 1) = v193[0];
         *&v192.m13 = *(v193 + 15);
-        *&v192.m21 = v133;
+        *&v192.m21 = selfCopy;
         *&v192.m22 = v173;
         LOBYTE(v192.m24) = 1;
       }
@@ -763,38 +763,38 @@
   }
 }
 
-- (void)setStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    v5 = a4;
-    self->_style = a3;
+    animatedCopy = animated;
+    self->_style = style;
     [(LAUIPearlGlyphLabel *)self _applyStyle];
 
-    [(LAUIPearlGlyphLabel *)self _applyVisibilityAnimated:v5];
+    [(LAUIPearlGlyphLabel *)self _applyVisibilityAnimated:animatedCopy];
   }
 }
 
-- (void)setShimmerEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setShimmerEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_shimmerEnabled != a3)
+  if (self->_shimmerEnabled != enabled)
   {
-    v5 = a4;
-    self->_shimmerEnabled = a3;
+    animatedCopy = animated;
+    self->_shimmerEnabled = enabled;
     self->_visibleNeedsUpdate = 1;
     [(LAUIPearlGlyphLabel *)self _updateGlyphPaused];
 
-    [(LAUIPearlGlyphLabel *)self _updateVisibilityAnimated:v5];
+    [(LAUIPearlGlyphLabel *)self _updateVisibilityAnimated:animatedCopy];
   }
 }
 
-- (void)setText:(id)a3 animated:(BOOL)a4
+- (void)setText:(id)text animated:(BOOL)animated
 {
-  v4 = a4;
-  v16 = a3;
-  if ([(NSString *)v16 length])
+  animatedCopy = animated;
+  textCopy = text;
+  if ([(NSString *)textCopy length])
   {
-    v6 = v16;
+    v6 = textCopy;
   }
 
   else
@@ -806,7 +806,7 @@
   text = self->_text;
   if (text == v6 || (v17 = v6) != 0 && text && (v8 = [(NSString *)text isEqualToString:v6], v6 = v17, v8))
   {
-    v9 = v4 && self->_textUpdateNeedsAnimation;
+    v9 = animatedCopy && self->_textUpdateNeedsAnimation;
     self->_textUpdateNeedsAnimation = v9;
   }
 
@@ -816,9 +816,9 @@
     v11 = self->_text;
     self->_text = v10;
 
-    v12 = [(UILabel *)self->_label text];
+    text = [(UILabel *)self->_label text];
     v13 = self->_text;
-    if (v13 == v12)
+    if (v13 == text)
     {
       LOBYTE(v15) = 0;
     }
@@ -827,7 +827,7 @@
     {
       if (v13)
       {
-        v14 = v12 == 0;
+        v14 = text == 0;
       }
 
       else
@@ -842,34 +842,34 @@
 
       else
       {
-        v15 = ![(NSString *)v13 isEqualToString:v12];
+        v15 = ![(NSString *)v13 isEqualToString:text];
       }
     }
 
     self->_textNeedsUpdate = v15;
-    self->_textUpdateNeedsAnimation = v15 && v4;
+    self->_textUpdateNeedsAnimation = v15 && animatedCopy;
     [(LAUIPearlGlyphLabel *)self _updateText];
 
     v6 = v17;
   }
 }
 
-- (void)setMaximumSize:(CGSize)a3 animated:(BOOL)a4
+- (void)setMaximumSize:(CGSize)size animated:(BOOL)animated
 {
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
-    a3.width = 1.79769313e308;
+    size.width = 1.79769313e308;
   }
 
-  if (a3.height <= 0.0)
+  if (size.height <= 0.0)
   {
-    a3.height = 1.79769313e308;
+    size.height = 1.79769313e308;
   }
 
-  if (self->_maximumSize.width != a3.width || self->_maximumSize.height != a3.height)
+  if (self->_maximumSize.width != size.width || self->_maximumSize.height != size.height)
   {
-    self->_maximumSize = a3;
-    [(LAUIPearlGlyphLabel *)self _updateFontAnimated:a4];
+    self->_maximumSize = size;
+    [(LAUIPearlGlyphLabel *)self _updateFontAnimated:animated];
   }
 }
 
@@ -901,35 +901,35 @@
     v42 = *&location[5];
     if (self->_textUpdateNeedsAnimation)
     {
-      v4 = [(UILabel *)self->_label text];
-      if (v4)
+      text = [(UILabel *)self->_label text];
+      if (text)
       {
         v5 = [(UILabel *)self->_label snapshotViewAfterScreenUpdates:0];
 
         if (v5)
         {
-          v6 = [(UILabel *)self->_label layer];
-          v7 = [v6 presentationLayer];
-          v8 = v7;
-          if (v7)
+          layer = [(UILabel *)self->_label layer];
+          presentationLayer = [layer presentationLayer];
+          v8 = presentationLayer;
+          if (presentationLayer)
           {
-            v9 = v7;
+            v9 = presentationLayer;
           }
 
           else
           {
-            v9 = v6;
+            v9 = layer;
           }
 
           v10 = v9;
 
-          v11 = [v5 layer];
+          layer2 = [v5 layer];
           [v10 opacity];
-          [v11 setOpacity:?];
+          [layer2 setOpacity:?];
           [v10 position];
-          [v11 setPosition:?];
+          [layer2 setPosition:?];
           [v10 bounds];
-          [v11 setBounds:?];
+          [layer2 setBounds:?];
           if (v10)
           {
             [v10 transform];
@@ -940,7 +940,7 @@
             memset(location, 0, sizeof(location));
           }
 
-          [v11 setTransform:location];
+          [layer2 setTransform:location];
 
           v12 = 1;
         }
@@ -973,13 +973,13 @@ LABEL_15:
   [(UILabel *)self->_label sizeToFit];
   [(LAUIPearlGlyphLabel *)self setNeedsLayout];
   [(LAUIPearlGlyphLabel *)self layoutIfNeeded];
-  v13 = [(UILabel *)self->_label layer];
-  [v13 removeAllAnimations];
-  [v13 setOpacity:0.0];
+  layer3 = [(UILabel *)self->_label layer];
+  [layer3 removeAllAnimations];
+  [layer3 setOpacity:0.0];
   if ((v12 & textUpdateNeedsAnimation) == 1)
   {
-    v14 = [v5 layer];
-    [v14 opacity];
+    layer4 = [v5 layer];
+    [layer4 opacity];
     if (v15 > 0.0)
     {
       p_labelSnapshots = &self->_labelSnapshots;
@@ -1051,7 +1051,7 @@ LABEL_15:
       v35 = v31;
       v36 = v42;
       v37 = 1;
-      v26 = v14;
+      v26 = layer4;
       [v26 opacity];
       v28 = v27;
       if (v27 != 0.0)
@@ -1166,9 +1166,9 @@ void __34__LAUIPearlGlyphLabel__updateText__block_invoke(uint64_t a1)
   self->_textColor = v11;
 }
 
-- (void)_updateVisibilityAnimated:(BOOL)a3
+- (void)_updateVisibilityAnimated:(BOOL)animated
 {
-  v4 = a3;
+  animatedCopy = animated;
   v30 = *MEMORY[0x277D85DE8];
   text = self->_text;
   v7 = text != 0;
@@ -1200,7 +1200,7 @@ void __34__LAUIPearlGlyphLabel__updateText__block_invoke(uint64_t a1)
     if (visibilityTimer)
     {
 LABEL_9:
-      LOBYTE(visibilityTimer) = a3;
+      LOBYTE(visibilityTimer) = animated;
     }
 
 LABEL_14:
@@ -1213,7 +1213,7 @@ LABEL_14:
 
   if (!self->_visibilityTimer)
   {
-    if (a3)
+    if (animated)
     {
       LAUI_CA_utilities::spring_factory::spring_factory(&v24, 1.0, 199.791, 25.4425, 0.0, 0);
       v11 = v24;
@@ -1228,10 +1228,10 @@ LABEL_14:
       v11 = 0;
     }
 
-    v12 = [(UILabel *)self->_label layer];
+    layer = [(UILabel *)self->_label layer];
     v19 = 0;
     v23 = 0;
-    if (v4)
+    if (animatedCopy)
     {
       v19 = v11;
       *v20 = v29[0];
@@ -1251,7 +1251,7 @@ LABEL_14:
       v13 = 0.0;
     }
 
-    v14 = v12;
+    v14 = layer;
     [v14 opacity];
     v16 = v15;
     if (v15 != v13)
@@ -1263,7 +1263,7 @@ LABEL_14:
       }
 
       [v14 setOpacity:v17];
-      if (v4)
+      if (animatedCopy)
       {
         v18 = LAUI_CA_utilities::add_additive_animation<double>(v14, @"opacity", &v19, v16, v13);
       }
@@ -1273,14 +1273,14 @@ LABEL_14:
     {
     }
 
-    [(LAUIPearlGlyphLabel *)self _updateBoundsSizeAnimated:v4];
-    if (v4)
+    [(LAUIPearlGlyphLabel *)self _updateBoundsSizeAnimated:animatedCopy];
+    if (animatedCopy)
     {
     }
   }
 }
 
-- (void)_applyVisibilityAnimated:(BOOL)a3
+- (void)_applyVisibilityAnimated:(BOOL)animated
 {
   if (self->_glyph)
   {
@@ -1296,7 +1296,7 @@ LABEL_14:
   }
 
   visible = self->_visible;
-  if (a3)
+  if (animated)
   {
     LAUI_CA_utilities::spring_factory::spring_factory(&v89, 1.0, 199.791, 25.4425, 0.0, 0);
     v84 = v89;
@@ -1314,7 +1314,7 @@ LABEL_14:
 
   [(CABackdropLayer *)self->_background setEnabled:!reduceBlur];
   v9 = self->_background;
-  v71 = [(CABackdropLayer *)v9 presentationLayer];
+  presentationLayer = [(CABackdropLayer *)v9 presentationLayer];
   v10 = [(CABackdropLayer *)v9 valueForKeyPath:@"filters.saturation.inputAmount"];
   v69 = reduceBlur;
   v70 = visible;
@@ -1416,13 +1416,13 @@ LABEL_20:
 
 LABEL_32:
   v34 = MEMORY[0x277D75348];
-  v35 = [v71 backgroundColor];
-  if (!v35)
+  backgroundColor = [presentationLayer backgroundColor];
+  if (!backgroundColor)
   {
-    v35 = [(CABackdropLayer *)v9 backgroundColor];
+    backgroundColor = [(CABackdropLayer *)v9 backgroundColor];
   }
 
-  v68 = [v34 colorWithCGColor:v35];
+  v68 = [v34 colorWithCGColor:backgroundColor];
   backgroundColor = self->_backgroundColor;
   if (!v70)
   {
@@ -1435,11 +1435,11 @@ LABEL_32:
     v37 = [(UIColor *)backgroundColor colorWithAlphaComponent:1.0];
 LABEL_38:
     v38 = v37;
-    v39 = a3;
+    animatedCopy2 = animated;
     goto LABEL_40;
   }
 
-  v39 = a3;
+  animatedCopy2 = animated;
   v38 = backgroundColor;
 LABEL_40:
   v40 = v68;
@@ -1493,23 +1493,23 @@ LABEL_50:
     v46 = textColor;
   }
 
-  v47 = v39;
-  v48 = [(UILabel *)self->_label textColor];
+  v47 = animatedCopy2;
+  textColor = [(UILabel *)self->_label textColor];
   v49 = v46;
   v50 = v49;
-  if (v48 == v49)
+  if (textColor == v49)
   {
 
     goto LABEL_61;
   }
 
-  if (!v49 || !v48)
+  if (!v49 || !textColor)
   {
 
     goto LABEL_60;
   }
 
-  v51 = [(UIColor *)v48 isEqual:v49];
+  v51 = [(UIColor *)textColor isEqual:v49];
 
   if ((v51 & 1) == 0)
   {
@@ -1519,7 +1519,7 @@ LABEL_60:
 
 LABEL_61:
 
-  v52 = [(UIView *)self->_glyphContainer layer];
+  layer = [(UIView *)self->_glyphContainer layer];
   if (v69)
   {
     v53 = 0.0;
@@ -1552,7 +1552,7 @@ LABEL_61:
     v83 = 1;
   }
 
-  v56 = v52;
+  v56 = layer;
   [v56 opacity];
   v58 = *&v57;
   if (v54 != *&v57)
@@ -1648,7 +1648,7 @@ LABEL_61:
 
 - (void)_applyVisibilityAnimated:
 {
-  WeakRetained = objc_loadWeakRetained(a1);
+  WeakRetained = objc_loadWeakRetained(self);
   v3 = WeakRetained;
   if (WeakRetained)
   {
@@ -1660,8 +1660,8 @@ LABEL_61:
       v3[70] = 0;
     }
 
-    v6 = [v3[51] layer];
-    if (*(a1 + 8) == 1)
+    layer = [v3[51] layer];
+    if (*(self + 8) == 1)
     {
       v7 = *(MEMORY[0x277CD9DE8] + 80);
       *&v45.m31 = *(MEMORY[0x277CD9DE8] + 64);
@@ -1684,18 +1684,18 @@ LABEL_61:
 
     LOBYTE(v41[0]) = 0;
     v44 = 0;
-    v11 = *(a1 + 72);
+    v11 = *(self + 72);
     if (v11 == 1)
     {
-      v12 = *(a1 + 32);
-      v41[0] = *(a1 + 16);
+      v12 = *(self + 32);
+      v41[0] = *(self + 16);
       v41[1] = v12;
-      v42 = *(a1 + 48);
-      v43 = *(a1 + 56);
+      v42 = *(self + 48);
+      v43 = *(self + 56);
       v44 = 1;
     }
 
-    v13 = v6;
+    v13 = layer;
     v14 = v13;
     memset(&v48, 0, sizeof(v48));
     if (v13)
@@ -1721,22 +1721,22 @@ LABEL_61:
     {
     }
 
-    v16 = [v3[54] layer];
-    v17 = *(a1 + 8);
+    layer2 = [v3[54] layer];
+    v17 = *(self + 8);
     LOBYTE(v37[0]) = 0;
     v40 = 0;
-    v18 = *(a1 + 72);
+    v18 = *(self + 72);
     if (v18 == 1)
     {
-      v19 = *(a1 + 32);
-      v37[0] = *(a1 + 16);
+      v19 = *(self + 32);
+      v37[0] = *(self + 16);
       v37[1] = v19;
-      v38 = *(a1 + 48);
-      v39 = *(a1 + 56);
+      v38 = *(self + 48);
+      v39 = *(self + 56);
       v40 = 1;
     }
 
-    v20 = v16;
+    v20 = layer2;
     [v20 opacity];
     v22 = *&v21;
     if (*&v21 != v17)
@@ -1753,18 +1753,18 @@ LABEL_61:
     {
     }
 
-    v24 = [v3[56] layer];
-    v25 = *(a1 + 8);
+    layer3 = [v3[56] layer];
+    v25 = *(self + 8);
     LOBYTE(v33[0]) = 0;
     v36 = 0;
-    v26 = *(a1 + 72);
+    v26 = *(self + 72);
     if (v26 == 1)
     {
-      v27 = *(a1 + 32);
-      v33[0] = *(a1 + 16);
+      v27 = *(self + 32);
+      v33[0] = *(self + 16);
       v33[1] = v27;
-      v34 = *(a1 + 48);
-      v35 = *(a1 + 56);
+      v34 = *(self + 48);
+      v35 = *(self + 56);
       v36 = 1;
     }
 
@@ -1778,7 +1778,7 @@ LABEL_61:
       v28 = 1.0;
     }
 
-    v29 = v24;
+    v29 = layer3;
     [v29 opacity];
     v31 = *&v30;
     if (v28 != *&v30)
@@ -1795,7 +1795,7 @@ LABEL_61:
     {
     }
 
-    [v3 _updateBoundsSizeAnimated:*(a1 + 9)];
+    [v3 _updateBoundsSizeAnimated:*(self + 9)];
     *(v3 + 570) = 0;
     *(v3 + 573) = 0;
   }
@@ -1811,29 +1811,29 @@ LABEL_61:
   return location;
 }
 
-- (void)_updateBoundsSizeAnimated:(BOOL)a3
+- (void)_updateBoundsSizeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(UILabel *)self->_label bounds];
   self->_currentMaximumSize = self->_maximumSize;
   self->_currentLabelSize.width = v5;
   self->_currentLabelSize.height = v6;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v9 = v8;
 
-  v10 = [(LAUIPearlGlyphLabel *)self layer];
-  [v10 anchorPoint];
+  layer = [(LAUIPearlGlyphLabel *)self layer];
+  [layer anchorPoint];
   v44 = v12;
   v45 = v11;
-  [v10 position];
+  [layer position];
   v42 = v14;
   v43 = v13;
   [(LAUIPearlGlyphLabel *)self sizeThatFits:1.79769313e308, 1.79769313e308];
   v40 = v16;
   v41 = v15;
   v39 = *MEMORY[0x277D76DA8];
-  [v10 bounds];
+  [layer bounds];
   v20 = v19;
   v22 = v21;
   v23 = fmax(v9, 1.0);
@@ -1865,14 +1865,14 @@ LABEL_61:
     v46 = v35.f64[0];
     v50 = v35;
     [MEMORY[0x277D75D18] performWithoutAnimation:v49];
-    if (v3)
+    if (animatedCopy)
     {
       LAUI_CA_utilities::spring_factory::spring_factory(v47, 1.0, 199.791, 25.4425, 0.0, 0);
-      v38 = LAUI_CA_utilities::add_additive_animation<CGSize>(v10, @"bounds.size", v47, v20, v22, v46, v36);
+      v38 = LAUI_CA_utilities::add_additive_animation<CGSize>(layer, @"bounds.size", v47, v20, v22, v46, v36);
     }
 
     [(LAUIPearlGlyphLabel *)self setNeedsLayout];
-    [(LAUIPearlGlyphLabel *)self layoutIfNeededAnimated:v3];
+    [(LAUIPearlGlyphLabel *)self layoutIfNeededAnimated:animatedCopy];
   }
 }
 
@@ -1888,15 +1888,15 @@ LABEL_61:
   }
 }
 
-- (void)_updateFontAnimated:(BOOL)a3
+- (void)_updateFontAnimated:(BOOL)animated
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   baseFont = self->_baseFont;
   self->_baseFont = v5;
 
-  v21 = [MEMORY[0x277D759A0] mainScreen];
-  [v21 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   v22 = self->_baseFont;
@@ -1923,7 +1923,7 @@ LABEL_61:
   {
     self->_textNeedsUpdate = 1;
 LABEL_12:
-    LOBYTE(text) = self->_textUpdateNeedsAnimation || a3;
+    LOBYTE(text) = self->_textUpdateNeedsAnimation || animated;
     goto LABEL_13;
   }
 

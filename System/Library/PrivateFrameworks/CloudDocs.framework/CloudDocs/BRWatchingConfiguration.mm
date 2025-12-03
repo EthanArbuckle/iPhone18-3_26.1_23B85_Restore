@@ -1,16 +1,16 @@
 @interface BRWatchingConfiguration
-- (BRWatchingConfiguration)initWithScopes:(id)a3 predicate:(id)a4;
+- (BRWatchingConfiguration)initWithScopes:(id)scopes predicate:(id)predicate;
 - (id)appLibraryIDToURLMapOfSuppliedAppIDs;
 - (id)appLibraryIDToURLMapOfSuppliedURLs;
 @end
 
 @implementation BRWatchingConfiguration
 
-- (BRWatchingConfiguration)initWithScopes:(id)a3 predicate:(id)a4
+- (BRWatchingConfiguration)initWithScopes:(id)scopes predicate:(id)predicate
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  scopesCopy = scopes;
+  predicateCopy = predicate;
   v41.receiver = self;
   v41.super_class = BRWatchingConfiguration;
   v8 = [(BRWatchingConfiguration *)&v41 init];
@@ -20,7 +20,7 @@
     goto LABEL_30;
   }
 
-  v35 = v7;
+  v35 = predicateCopy;
   v8->_watchTypes = 0;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   appLibraryIDs = v9->_appLibraryIDs;
@@ -34,8 +34,8 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v36 = v6;
-  v14 = v6;
+  v36 = scopesCopy;
+  v14 = scopesCopy;
   v15 = [v14 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (!v15)
   {
@@ -97,8 +97,8 @@ LABEL_15:
         }
 
         v30 = 0;
-        v7 = v35;
-        v6 = v36;
+        predicateCopy = v35;
+        scopesCopy = v36;
         goto LABEL_31;
       }
 
@@ -120,21 +120,21 @@ LABEL_16:
 
 LABEL_21:
 
-  v7 = v35;
-  v25 = [v35 br_watchedURL];
-  if (v25)
+  predicateCopy = v35;
+  br_watchedURL = [v35 br_watchedURL];
+  if (br_watchedURL)
   {
-    gatherPrefix = v25;
-    [(NSMutableArray *)v9->_urls addObject:v25];
+    gatherPrefix = br_watchedURL;
+    [(NSMutableArray *)v9->_urls addObject:br_watchedURL];
     v27 = 1;
     goto LABEL_28;
   }
 
-  v31 = [v35 br_urlWithWatchedChildren];
-  if (v31)
+  br_urlWithWatchedChildren = [v35 br_urlWithWatchedChildren];
+  if (br_urlWithWatchedChildren)
   {
-    gatherPrefix = v31;
-    [(NSMutableArray *)v9->_urls addObject:v31];
+    gatherPrefix = br_urlWithWatchedChildren;
+    [(NSMutableArray *)v9->_urls addObject:br_urlWithWatchedChildren];
     v27 = 2;
 LABEL_28:
     v9->_watchTypes = v27;
@@ -142,9 +142,9 @@ LABEL_28:
 
   else if ((v9->_watchTypes & 8) != 0)
   {
-    v34 = [v35 extractSearchTermFromPredicate];
+    extractSearchTermFromPredicate = [v35 extractSearchTermFromPredicate];
     gatherPrefix = v9->_gatherPrefix;
-    v9->_gatherPrefix = v34;
+    v9->_gatherPrefix = extractSearchTermFromPredicate;
   }
 
   else
@@ -153,7 +153,7 @@ LABEL_28:
     v9->_gatherPrefix = 0;
   }
 
-  v6 = v36;
+  scopesCopy = v36;
 
 LABEL_30:
   v30 = v9;
@@ -194,8 +194,8 @@ LABEL_31:
           v9 = *(*(&v26 + 1) + 8 * v8);
           for (i = 2; i != -1; --i)
           {
-            v11 = [MEMORY[0x1E696AC08] defaultManager];
-            v12 = [v11 URLForUbiquityContainerIdentifier:v9];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+            v12 = [defaultManager URLForUbiquityContainerIdentifier:v9];
 
             if (v12)
             {
@@ -207,12 +207,12 @@ LABEL_31:
           v14 = brc_default_log(1, 0);
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v24 = [v12 path];
-            v17 = [v24 fp_obfuscatedPath];
+            path = [v12 path];
+            fp_obfuscatedPath = [path fp_obfuscatedPath];
             *buf = 138413058;
             v31 = v9;
             v32 = 2112;
-            v33 = v17;
+            v33 = fp_obfuscatedPath;
             v34 = 1024;
             v35 = i;
             v36 = 2112;
@@ -273,7 +273,7 @@ LABEL_31:
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v24 = self;
+    selfCopy = self;
     obj = self->_urls;
     v5 = [(NSMutableArray *)obj countByEnumeratingWithState:&v28 objects:v40 count:16];
     if (v5)
@@ -291,13 +291,13 @@ LABEL_31:
           }
 
           v9 = *(*(&v28 + 1) + 8 * i);
-          v10 = [v9 br_containerID];
-          if (v10)
+          br_containerID = [v9 br_containerID];
+          if (br_containerID)
           {
             for (j = 2; j != -1; --j)
             {
-              v12 = [MEMORY[0x1E696AC08] defaultManager];
-              v13 = [v12 URLForUbiquityContainerIdentifier:v10];
+              defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+              v13 = [defaultManager URLForUbiquityContainerIdentifier:br_containerID];
 
               if (v13)
               {
@@ -309,12 +309,12 @@ LABEL_31:
             v15 = brc_default_log(1, 0);
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
             {
-              v26 = [v13 path];
-              v19 = [v26 fp_obfuscatedPath];
+              path = [v13 path];
+              fp_obfuscatedPath = [path fp_obfuscatedPath];
               *buf = 138413058;
-              v33 = v10;
+              v33 = br_containerID;
               v34 = 2112;
-              v35 = v19;
+              v35 = fp_obfuscatedPath;
               v36 = 1024;
               v37 = j;
               v38 = 2112;
@@ -326,7 +326,7 @@ LABEL_31:
 
             if (v13)
             {
-              [v4 setObject:v13 forKeyedSubscript:v10];
+              [v4 setObject:v13 forKeyedSubscript:br_containerID];
             }
 
             else
@@ -336,7 +336,7 @@ LABEL_31:
               if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
               {
                 *buf = 138412546;
-                v33 = v10;
+                v33 = br_containerID;
                 v34 = 2112;
                 v35 = v17;
                 _os_log_fault_impl(&dword_1AE2A9000, v18, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: failed to get container URL for %@%@", buf, 0x16u);
@@ -366,10 +366,10 @@ LABEL_31:
     }
 
     v20 = [v4 copy];
-    v21 = v24->_appLibraryIDToURLMapOfSuppliedURLs;
-    v24->_appLibraryIDToURLMapOfSuppliedURLs = v20;
+    v21 = selfCopy->_appLibraryIDToURLMapOfSuppliedURLs;
+    selfCopy->_appLibraryIDToURLMapOfSuppliedURLs = v20;
 
-    appLibraryIDToURLMapOfSuppliedURLs = v24->_appLibraryIDToURLMapOfSuppliedURLs;
+    appLibraryIDToURLMapOfSuppliedURLs = selfCopy->_appLibraryIDToURLMapOfSuppliedURLs;
   }
 
   v22 = *MEMORY[0x1E69E9840];

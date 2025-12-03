@@ -1,15 +1,15 @@
 @interface AAUICustodianSetupFlowController
-- (AAUICustodianSetupFlowController)initWithAccountManager:(id)a3;
-- (AAUICustodianSetupFlowController)initWithAccountManager:(id)a3 navigationController:(id)a4;
-- (AAUICustodianSetupFlowController)initWithAccountManager:(id)a3 navigationController:(id)a4 isADPUpsellFlow:(BOOL)a5 cdpContext:(id)a6;
+- (AAUICustodianSetupFlowController)initWithAccountManager:(id)manager;
+- (AAUICustodianSetupFlowController)initWithAccountManager:(id)manager navigationController:(id)controller;
+- (AAUICustodianSetupFlowController)initWithAccountManager:(id)manager navigationController:(id)controller isADPUpsellFlow:(BOOL)flow cdpContext:(id)context;
 - (AAUICustodianSetupFlowControllerDelegate)delegate;
 - (BOOL)_hasManatee;
 - (BOOL)isUpsellInSettings;
 - (UIViewController)presentedViewController;
-- (id)_setupContactSelectorVCWithViewModel:(id)a3 andSuggestedContacts:(id)a4;
+- (id)_setupContactSelectorVCWithViewModel:(id)model andSuggestedContacts:(id)contacts;
 - (id)navController;
-- (void)_beginAddRecoveryContactAfterSelectFlow:(id)a3;
-- (void)_beginAddRecoveryContactAfterSelectFlow:(id)a3 ifIsVerified:(BOOL)a4 andNoError:(id)a5;
+- (void)_beginAddRecoveryContactAfterSelectFlow:(id)flow;
+- (void)_beginAddRecoveryContactAfterSelectFlow:(id)flow ifIsVerified:(BOOL)verified andNoError:(id)error;
 - (void)_beginAddRecoveryContactFlow;
 - (void)_beginAddRecoveryContactUpsellFlow;
 - (void)_cancelCustodianInvite;
@@ -17,63 +17,63 @@
 - (void)_continueAddRecoveryContactUpsellFlow;
 - (void)_dismissCFUIfNeeded;
 - (void)_dismissWithCancel;
-- (void)_dismissWithError:(id)a3;
-- (void)_displayAlertForNotReachableContact:(id)a3;
+- (void)_dismissWithError:(id)error;
+- (void)_displayAlertForNotReachableContact:(id)contact;
 - (void)_displayCustodianAddNotAllowedAlert;
 - (void)_displayRatchetGenericErrorAlert;
 - (void)_fetchSuggestedContacts;
 - (void)_fetchSuggestedContactsForUpsell;
 - (void)_hideActivityIndicator;
-- (void)_inviteContact:(id)a3;
-- (void)_loadRemoteUIPresenterRequest:(id)a3;
+- (void)_inviteContact:(id)contact;
+- (void)_loadRemoteUIPresenterRequest:(id)request;
 - (void)_postAdpUpsellCFUCustodianFirstTimeSetupEvent;
 - (void)_removeRecoveryKeyAndDismissCFUIfNeeded;
-- (void)_sendEscapeOfferSelectedEvent:(id)a3;
-- (void)_sendTelemetryEventWithEscapeOffers:(id)a3 offers:(id)a4;
-- (void)_sendTelemetryForEvent:(id)a3 didSucceed:(BOOL)a4 error:(id)a5;
+- (void)_sendEscapeOfferSelectedEvent:(id)event;
+- (void)_sendTelemetryEventWithEscapeOffers:(id)offers offers:(id)a4;
+- (void)_sendTelemetryForEvent:(id)event didSucceed:(BOOL)succeed error:(id)error;
 - (void)_showActivityIndicator;
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4;
+- (void)_showAlertWithTitle:(id)title message:(id)message;
 - (void)_showChooseContact;
 - (void)_showChooseContactWithCancel;
-- (void)_showDataRecoveryServiceEnableUIWithPresenter:(id)a3 modal:(BOOL)a4;
+- (void)_showDataRecoveryServiceEnableUIWithPresenter:(id)presenter modal:(BOOL)modal;
 - (void)_showDeviceUpgradeUI;
 - (void)_showFirstTimeSetup;
-- (void)_showSuggestedContactSelector:(id)a3;
+- (void)_showSuggestedContactSelector:(id)selector;
 - (void)_startInviteMessageFlow;
-- (void)_validateAccountWithCompletion:(id)a3;
-- (void)_verifyAndInviteContact:(id)a3;
-- (void)_verifyCDPWithCompletion:(id)a3;
-- (void)accountContactSelector:(id)a3 didSelectContact:(id)a4;
-- (void)accountContactSelectorDismiss:(id)a3;
-- (void)accountContactSelectorShowOtherContacts:(id)a3;
-- (void)chooseContactController:(id)a3 didSelectContact:(id)a4;
+- (void)_validateAccountWithCompletion:(id)completion;
+- (void)_verifyAndInviteContact:(id)contact;
+- (void)_verifyCDPWithCompletion:(id)completion;
+- (void)accountContactSelector:(id)selector didSelectContact:(id)contact;
+- (void)accountContactSelectorDismiss:(id)dismiss;
+- (void)accountContactSelectorShowOtherContacts:(id)contacts;
+- (void)chooseContactController:(id)controller didSelectContact:(id)contact;
 - (void)dealloc;
-- (void)didSelectLocalContactFor:(id)a3;
+- (void)didSelectLocalContactFor:(id)for;
 - (void)didTapDismissAddRC;
 - (void)didTapPrimaryButton;
-- (void)inviteMessageFlowDidFinish:(id)a3;
-- (void)inviteMessageFlowWasCancelled:(id)a3;
-- (void)remoteUIDidDismiss:(id)a3;
+- (void)inviteMessageFlowDidFinish:(id)finish;
+- (void)inviteMessageFlowWasCancelled:(id)cancelled;
+- (void)remoteUIDidDismiss:(id)dismiss;
 - (void)start;
-- (void)startAddingDataRecoveryService:(id)a3;
+- (void)startAddingDataRecoveryService:(id)service;
 - (void)startWithoutFirstTimeSetup;
 @end
 
 @implementation AAUICustodianSetupFlowController
 
-- (AAUICustodianSetupFlowController)initWithAccountManager:(id)a3
+- (AAUICustodianSetupFlowController)initWithAccountManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_opt_new();
-  v6 = [(AAUICustodianSetupFlowController *)self initWithAccountManager:v4 navigationController:v5];
+  v6 = [(AAUICustodianSetupFlowController *)self initWithAccountManager:managerCopy navigationController:v5];
 
   return v6;
 }
 
-- (AAUICustodianSetupFlowController)initWithAccountManager:(id)a3 navigationController:(id)a4
+- (AAUICustodianSetupFlowController)initWithAccountManager:(id)manager navigationController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
+  controllerCopy = controller;
+  managerCopy = manager;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -81,38 +81,38 @@
     _os_log_impl(&dword_1C5355000, v8, OS_LOG_TYPE_DEFAULT, "Instantiating AAUICustodianSetupFlowController with nil cdpContext", v11, 2u);
   }
 
-  v9 = [(AAUICustodianSetupFlowController *)self initWithAccountManager:v7 navigationController:v6 isADPUpsellFlow:0 cdpContext:0];
+  v9 = [(AAUICustodianSetupFlowController *)self initWithAccountManager:managerCopy navigationController:controllerCopy isADPUpsellFlow:0 cdpContext:0];
   return v9;
 }
 
-- (AAUICustodianSetupFlowController)initWithAccountManager:(id)a3 navigationController:(id)a4 isADPUpsellFlow:(BOOL)a5 cdpContext:(id)a6
+- (AAUICustodianSetupFlowController)initWithAccountManager:(id)manager navigationController:(id)controller isADPUpsellFlow:(BOOL)flow cdpContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  managerCopy = manager;
+  controllerCopy = controller;
+  contextCopy = context;
   v25.receiver = self;
   v25.super_class = AAUICustodianSetupFlowController;
   v14 = [(AAUICustodianSetupFlowController *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_navigationController, a4);
-    objc_storeStrong(&v15->_accountManager, a3);
+    objc_storeStrong(&v14->_navigationController, controller);
+    objc_storeStrong(&v15->_accountManager, manager);
     v16 = objc_opt_new();
     custodianController = v15->_custodianController;
     v15->_custodianController = v16;
 
-    v15->_isADPUpsellFlow = a5;
-    objc_storeStrong(&v15->_cdpContext, a6);
+    v15->_isADPUpsellFlow = flow;
+    objc_storeStrong(&v15->_cdpContext, context);
     v18 = objc_alloc_init(MEMORY[0x1E698DD40]);
     v19 = [[AAUIDTOHelper alloc] initWithDTOController:v18];
     dtoHelper = v15->_dtoHelper;
     v15->_dtoHelper = v19;
 
-    v21 = [MEMORY[0x1E696AFB0] UUID];
-    v22 = [v21 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     telemetryFlowID = v15->_telemetryFlowID;
-    v15->_telemetryFlowID = v22;
+    v15->_telemetryFlowID = uUIDString;
   }
 
   return v15;
@@ -156,9 +156,9 @@
   [(AAUICustodianSetupFlowController *)self _continueAddRecoveryContactFlow];
 }
 
-- (void)startAddingDataRecoveryService:(id)a3
+- (void)startAddingDataRecoveryService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -166,13 +166,13 @@
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "Initating data recovery service enable UI", v6, 2u);
   }
 
-  [(AAUICustodianSetupFlowController *)self _showDataRecoveryServiceEnableUIWithPresenter:v4 modal:[(AAUICustodianSetupFlowController *)self forceInlinePresentation]^ 1];
+  [(AAUICustodianSetupFlowController *)self _showDataRecoveryServiceEnableUIWithPresenter:serviceCopy modal:[(AAUICustodianSetupFlowController *)self forceInlinePresentation]^ 1];
 }
 
-- (void)chooseContactController:(id)a3 didSelectContact:(id)a4
+- (void)chooseContactController:(id)controller didSelectContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contactCopy = contact;
   if ([(AAUICustodianSetupFlowController *)self uiVersion]== 1)
   {
     objc_initWeak(&location, self);
@@ -181,7 +181,7 @@
     v8[2] = __77__AAUICustodianSetupFlowController_chooseContactController_didSelectContact___block_invoke;
     v8[3] = &unk_1E820DC48;
     objc_copyWeak(&v10, &location);
-    v9 = v7;
+    v9 = contactCopy;
     [(AAUICustodianSetupFlowController *)self _validateAccountWithCompletion:v8];
 
     objc_destroyWeak(&v10);
@@ -190,7 +190,7 @@
 
   else
   {
-    [(AAUICustodianSetupFlowController *)self _verifyAndInviteContact:v7];
+    [(AAUICustodianSetupFlowController *)self _verifyAndInviteContact:contactCopy];
   }
 }
 
@@ -201,10 +201,10 @@ void __77__AAUICustodianSetupFlowController_chooseContactController_didSelectCon
   [WeakRetained _beginAddRecoveryContactAfterSelectFlow:*(a1 + 32) ifIsVerified:a2 andNoError:v5];
 }
 
-- (void)accountContactSelector:(id)a3 didSelectContact:(id)a4
+- (void)accountContactSelector:(id)selector didSelectContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  selectorCopy = selector;
+  contactCopy = contact;
   if ([(AAUICustodianSetupFlowController *)self uiVersion]== 1)
   {
     objc_initWeak(&location, self);
@@ -213,7 +213,7 @@ void __77__AAUICustodianSetupFlowController_chooseContactController_didSelectCon
     v8[2] = __76__AAUICustodianSetupFlowController_accountContactSelector_didSelectContact___block_invoke;
     v8[3] = &unk_1E820DC48;
     objc_copyWeak(&v10, &location);
-    v9 = v7;
+    v9 = contactCopy;
     [(AAUICustodianSetupFlowController *)self _validateAccountWithCompletion:v8];
 
     objc_destroyWeak(&v10);
@@ -222,7 +222,7 @@ void __77__AAUICustodianSetupFlowController_chooseContactController_didSelectCon
 
   else
   {
-    [(AAUICustodianSetupFlowController *)self _verifyAndInviteContact:v7];
+    [(AAUICustodianSetupFlowController *)self _verifyAndInviteContact:contactCopy];
   }
 }
 
@@ -233,13 +233,13 @@ void __76__AAUICustodianSetupFlowController_accountContactSelector_didSelectCont
   [WeakRetained _beginAddRecoveryContactAfterSelectFlow:*(a1 + 32) ifIsVerified:a2 andNoError:v5];
 }
 
-- (void)accountContactSelectorDismiss:(id)a3
+- (void)accountContactSelectorDismiss:(id)dismiss
 {
   v4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E698DB28] code:-7003 userInfo:0];
   [(AAUICustodianSetupFlowController *)self _dismissWithError:v4];
 }
 
-- (void)accountContactSelectorShowOtherContacts:(id)a3
+- (void)accountContactSelectorShowOtherContacts:(id)contacts
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -252,90 +252,90 @@ void __76__AAUICustodianSetupFlowController_accountContactSelector_didSelectCont
 - (void)_startInviteMessageFlow
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = [a1 navController];
+  navController = [self navController];
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(&dword_1C5355000, a2, OS_LOG_TYPE_DEBUG, "Opening invitation flow with navigation controller: %@", v4, 0xCu);
 }
 
-- (void)_loadRemoteUIPresenterRequest:(id)a3
+- (void)_loadRemoteUIPresenterRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_new();
-  [v5 setURL:v4];
+  [v5 setURL:requestCopy];
 
   [(AAUIGrandSlamRemoteUIPresenter *)self->_remoteUIPresenter setDelegate:self];
   [(AAUIGrandSlamRemoteUIPresenter *)self->_remoteUIPresenter loadRequest:v5];
 }
 
-- (void)remoteUIDidDismiss:(id)a3
+- (void)remoteUIDidDismiss:(id)dismiss
 {
   v4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69977D8] code:-5307 userInfo:0];
   [(AAUICustodianSetupFlowController *)self _dismissWithError:v4];
 }
 
-- (void)_sendTelemetryEventWithEscapeOffers:(id)a3 offers:(id)a4
+- (void)_sendTelemetryEventWithEscapeOffers:(id)offers offers:(id)a4
 {
-  v15 = a3;
+  offersCopy = offers;
   v6 = a4;
-  v7 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v8 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v8)
   {
     v9 = MEMORY[0x1E6985DB0];
-    v10 = [v8 aida_alternateDSID];
-    v11 = [(AAUICustodianSetupFlowController *)self telemetryFlowID];
-    v12 = [v9 analyticsEventWithName:v15 altDSID:v10 flowID:v11];
+    aida_alternateDSID = [v8 aida_alternateDSID];
+    telemetryFlowID = [(AAUICustodianSetupFlowController *)self telemetryFlowID];
+    v12 = [v9 analyticsEventWithName:offersCopy altDSID:aida_alternateDSID flowID:telemetryFlowID];
 
-    v13 = [v6 aaf_arrayAsCommaSeperatedString];
-    [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E6997818]];
+    aaf_arrayAsCommaSeperatedString = [v6 aaf_arrayAsCommaSeperatedString];
+    [v12 setObject:aaf_arrayAsCommaSeperatedString forKeyedSubscript:*MEMORY[0x1E6997818]];
 
-    v14 = [MEMORY[0x1E698B810] reporter];
-    [v14 sendEvent:v12];
+    reporter = [MEMORY[0x1E698B810] reporter];
+    [reporter sendEvent:v12];
   }
 }
 
-- (void)_sendEscapeOfferSelectedEvent:(id)a3
+- (void)_sendEscapeOfferSelectedEvent:(id)event
 {
-  v12 = a3;
-  v4 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  eventCopy = event;
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v5 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v5)
   {
     v6 = MEMORY[0x1E6985DB0];
     v7 = *MEMORY[0x1E698BA68];
-    v8 = [v5 aida_alternateDSID];
-    v9 = [(AAUICustodianSetupFlowController *)self telemetryFlowID];
-    v10 = [v6 analyticsEventWithName:v7 altDSID:v8 flowID:v9];
+    aida_alternateDSID = [v5 aida_alternateDSID];
+    telemetryFlowID = [(AAUICustodianSetupFlowController *)self telemetryFlowID];
+    v10 = [v6 analyticsEventWithName:v7 altDSID:aida_alternateDSID flowID:telemetryFlowID];
 
-    [v10 setObject:v12 forKeyedSubscript:*MEMORY[0x1E6997820]];
-    v11 = [MEMORY[0x1E698B810] reporter];
-    [v11 sendEvent:v10];
+    [v10 setObject:eventCopy forKeyedSubscript:*MEMORY[0x1E6997820]];
+    reporter = [MEMORY[0x1E698B810] reporter];
+    [reporter sendEvent:v10];
   }
 }
 
-- (void)_sendTelemetryForEvent:(id)a3 didSucceed:(BOOL)a4 error:(id)a5
+- (void)_sendTelemetryForEvent:(id)event didSucceed:(BOOL)succeed error:(id)error
 {
-  v6 = a4;
-  v17 = a3;
-  v8 = a5;
-  v9 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  succeedCopy = succeed;
+  eventCopy = event;
+  errorCopy = error;
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v10 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v10)
   {
     v11 = MEMORY[0x1E6985DB0];
-    v12 = [v10 aida_alternateDSID];
-    v13 = [(AAUICustodianSetupFlowController *)self telemetryFlowID];
-    v14 = [v11 analyticsEventWithName:v17 altDSID:v12 flowID:v13];
+    aida_alternateDSID = [v10 aida_alternateDSID];
+    telemetryFlowID = [(AAUICustodianSetupFlowController *)self telemetryFlowID];
+    v14 = [v11 analyticsEventWithName:eventCopy altDSID:aida_alternateDSID flowID:telemetryFlowID];
 
-    v15 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v15 = [MEMORY[0x1E696AD98] numberWithBool:succeedCopy];
     [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x1E6985E40]];
 
-    [v14 populateUnderlyingErrorsStartingWithRootError:v8];
-    v16 = [MEMORY[0x1E698B810] reporter];
-    [v16 sendEvent:v14];
+    [v14 populateUnderlyingErrorsStartingWithRootError:errorCopy];
+    reporter = [MEMORY[0x1E698B810] reporter];
+    [reporter sendEvent:v14];
   }
 }
 
@@ -368,12 +368,12 @@ void __76__AAUICustodianSetupFlowController_accountContactSelector_didSelectCont
     firstTimeSetupVC = self->_firstTimeSetupVC;
     self->_firstTimeSetupVC = v7;
 
-    v9 = [(AAUIOBWelcomeController *)self->_firstTimeSetupVC primaryButton];
-    [v9 addTarget:self action:sel__beginAddRecoveryContactFlow forEvents:64];
+    primaryButton = [(AAUIOBWelcomeController *)self->_firstTimeSetupVC primaryButton];
+    [primaryButton addTarget:self action:sel__beginAddRecoveryContactFlow forEvents:64];
 
     isADPUpsellFlow = self->_isADPUpsellFlow;
-    v11 = _AAUILogSystem();
-    v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
+    secondaryButton = _AAUILogSystem();
+    v12 = os_log_type_enabled(secondaryButton, OS_LOG_TYPE_DEBUG);
     if (isADPUpsellFlow)
     {
       if (v12)
@@ -389,12 +389,12 @@ void __76__AAUICustodianSetupFlowController_accountContactSelector_didSelectCont
         [AAUICustodianSetupFlowController _showFirstTimeSetup];
       }
 
-      v11 = [(AAUIOBWelcomeController *)self->_firstTimeSetupVC secondaryButton];
-      [v11 addTarget:self action:sel__dismissWithCancel forEvents:64];
+      secondaryButton = [(AAUIOBWelcomeController *)self->_firstTimeSetupVC secondaryButton];
+      [secondaryButton addTarget:self action:sel__dismissWithCancel forEvents:64];
     }
 
-    v13 = [(AAUICustodianSetupFlowController *)self navigationController];
-    [v13 pushViewController:self->_firstTimeSetupVC animated:1];
+    navigationController = [(AAUICustodianSetupFlowController *)self navigationController];
+    [navigationController pushViewController:self->_firstTimeSetupVC animated:1];
 
     if (self->_isADPUpsellFlow)
     {
@@ -406,29 +406,29 @@ void __76__AAUICustodianSetupFlowController_accountContactSelector_didSelectCont
 - (void)_postAdpUpsellCFUCustodianFirstTimeSetupEvent
 {
   v3 = MEMORY[0x1E6985DB0];
-  v4 = [(CDPContext *)self->_cdpContext altDSID];
-  v5 = [(CDPContext *)self->_cdpContext telemetryFlowID];
-  v7 = [v3 analyticsEventWithName:@"com.apple.appleaccount.custodianFirstTimeSetup" altDSID:v4 flowID:v5];
+  altDSID = [(CDPContext *)self->_cdpContext altDSID];
+  telemetryFlowID = [(CDPContext *)self->_cdpContext telemetryFlowID];
+  v7 = [v3 analyticsEventWithName:@"com.apple.appleaccount.custodianFirstTimeSetup" altDSID:altDSID flowID:telemetryFlowID];
 
-  v6 = [MEMORY[0x1E698B810] reporter];
-  [v6 sendEvent:v7];
+  reporter = [MEMORY[0x1E698B810] reporter];
+  [reporter sendEvent:v7];
 }
 
 - (void)_beginAddRecoveryContactFlow
 {
-  v3 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v4 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v4)
   {
     dtoHelper = self->_dtoHelper;
-    v6 = [v4 aa_altDSID];
+    aa_altDSID = [v4 aa_altDSID];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __64__AAUICustodianSetupFlowController__beginAddRecoveryContactFlow__block_invoke;
     v8[3] = &unk_1E820C140;
     v8[4] = self;
-    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:v6 completion:v8];
+    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:aa_altDSID completion:v8];
   }
 
   else
@@ -482,12 +482,12 @@ uint64_t __64__AAUICustodianSetupFlowController__beginAddRecoveryContactFlow__bl
   return [*(a1 + 32) _displayCustodianAddNotAllowedAlert];
 }
 
-- (void)_beginAddRecoveryContactAfterSelectFlow:(id)a3 ifIsVerified:(BOOL)a4 andNoError:(id)a5
+- (void)_beginAddRecoveryContactAfterSelectFlow:(id)flow ifIsVerified:(BOOL)verified andNoError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ([v9 ak_isIncompatibleDevicesError])
+  verifiedCopy = verified;
+  flowCopy = flow;
+  errorCopy = error;
+  if ([errorCopy ak_isIncompatibleDevicesError])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -500,15 +500,15 @@ uint64_t __64__AAUICustodianSetupFlowController__beginAddRecoveryContactFlow__bl
 
   else
   {
-    if ([v9 ak_isUserCancelError])
+    if ([errorCopy ak_isUserCancelError])
     {
-      [(AAUICustodianSetupFlowController *)self _dismissWithError:v9];
+      [(AAUICustodianSetupFlowController *)self _dismissWithError:errorCopy];
       goto LABEL_8;
     }
 
-    if (v6)
+    if (verifiedCopy)
     {
-      [(AAUICustodianSetupFlowController *)self _beginAddRecoveryContactAfterSelectFlow:v8];
+      [(AAUICustodianSetupFlowController *)self _beginAddRecoveryContactAfterSelectFlow:flowCopy];
       goto LABEL_8;
     }
 
@@ -537,31 +537,31 @@ void __100__AAUICustodianSetupFlowController__beginAddRecoveryContactAfterSelect
   [v1 setEnabled:1];
 }
 
-- (void)_beginAddRecoveryContactAfterSelectFlow:(id)a3
+- (void)_beginAddRecoveryContactAfterSelectFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  flowCopy = flow;
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v6 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v6)
   {
-    v7 = [v4 isFamilyMember];
+    isFamilyMember = [flowCopy isFamilyMember];
     v8 = kAATrustedContactsRCUpselluserSelectSuggestedContactFamily;
-    if (!v7)
+    if (!isFamilyMember)
     {
       v8 = kAATrustedContactsRCUpselluserSelectSuggestedContactDeviceIntelligence;
     }
 
     [(AAUICustodianSetupFlowController *)self _sendTelemetryForEvent:*v8 didSucceed:1 error:0];
     dtoHelper = self->_dtoHelper;
-    v10 = [v6 aa_altDSID];
+    aa_altDSID = [v6 aa_altDSID];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __76__AAUICustodianSetupFlowController__beginAddRecoveryContactAfterSelectFlow___block_invoke;
     v12[3] = &unk_1E820DC70;
     v12[4] = self;
-    v13 = v4;
-    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:v10 completion:v12];
+    v13 = flowCopy;
+    [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:aa_altDSID completion:v12];
   }
 
   else
@@ -696,8 +696,8 @@ uint64_t __76__AAUICustodianSetupFlowController__beginAddRecoveryContactAfterSel
     [AAUICustodianSetupFlowController _continueAddRecoveryContactFlow];
   }
 
-  v4 = [(AAUIOBWelcomeController *)self->_firstTimeSetupVC primaryButton];
-  [v4 setEnabled:0];
+  primaryButton = [(AAUIOBWelcomeController *)self->_firstTimeSetupVC primaryButton];
+  [primaryButton setEnabled:0];
 
   [(AAUICustodianSetupFlowController *)self _showActivityIndicator];
   [(AAUICustodianSetupFlowController *)self _sendEscapeOfferSelectedEvent:*MEMORY[0x1E698BB18]];
@@ -771,22 +771,22 @@ void __67__AAUICustodianSetupFlowController__continueAddRecoveryContactFlow__blo
 
 - (void)_displayCustodianAddNotAllowedAlert
 {
-  v4 = [(AAUIDTOHelper *)self->_dtoHelper makeCustodianAddOpNotAllowedAlert];
-  v3 = [(AAUICustodianSetupFlowController *)self navigationController];
-  [v3 presentViewController:v4 animated:1 completion:0];
+  makeCustodianAddOpNotAllowedAlert = [(AAUIDTOHelper *)self->_dtoHelper makeCustodianAddOpNotAllowedAlert];
+  navigationController = [(AAUICustodianSetupFlowController *)self navigationController];
+  [navigationController presentViewController:makeCustodianAddOpNotAllowedAlert animated:1 completion:0];
 }
 
 - (void)_displayRatchetGenericErrorAlert
 {
-  v4 = [(AAUIDTOHelper *)self->_dtoHelper makeGenericRatchetFailedAlert];
-  v3 = [(AAUICustodianSetupFlowController *)self navigationController];
-  [v3 presentViewController:v4 animated:1 completion:0];
+  makeGenericRatchetFailedAlert = [(AAUIDTOHelper *)self->_dtoHelper makeGenericRatchetFailedAlert];
+  navigationController = [(AAUICustodianSetupFlowController *)self navigationController];
+  [navigationController presentViewController:makeGenericRatchetFailedAlert animated:1 completion:0];
 }
 
 - (void)_beginAddRecoveryContactUpsellFlow
 {
-  v3 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v4 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v4)
   {
@@ -799,13 +799,13 @@ void __67__AAUICustodianSetupFlowController__continueAddRecoveryContactFlow__blo
       }
 
       dtoHelper = self->_dtoHelper;
-      v7 = [v4 aa_altDSID];
+      aa_altDSID = [v4 aa_altDSID];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __70__AAUICustodianSetupFlowController__beginAddRecoveryContactUpsellFlow__block_invoke_87;
       v9[3] = &unk_1E820C140;
       v9[4] = self;
-      [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:v7 completion:v9];
+      [(AAUIDTOHelper *)dtoHelper shouldGateUsingRatchetForAltDSID:aa_altDSID completion:v9];
     }
 
     else
@@ -965,10 +965,10 @@ uint64_t __70__AAUICustodianSetupFlowController__beginAddRecoveryContactUpsellFl
 
 - (void)_continueAddRecoveryContactUpsellFlow
 {
-  v3 = [(AAUICustodianSetupFlowController *)self _hasManatee];
+  _hasManatee = [(AAUICustodianSetupFlowController *)self _hasManatee];
   v4 = _AAUILogSystem();
   v5 = v4;
-  if (v3)
+  if (_hasManatee)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -1002,21 +1002,21 @@ uint64_t __70__AAUICustodianSetupFlowController__beginAddRecoveryContactUpsellFl
   return v3;
 }
 
-- (void)_showDataRecoveryServiceEnableUIWithPresenter:(id)a3 modal:(BOOL)a4
+- (void)_showDataRecoveryServiceEnableUIWithPresenter:(id)presenter modal:(BOOL)modal
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x1E698DDF8] sharedBag];
-  v8 = [v7 urlAtKey:*MEMORY[0x1E698DC60]];
+  modalCopy = modal;
+  presenterCopy = presenter;
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
+  v8 = [mEMORY[0x1E698DDF8] urlAtKey:*MEMORY[0x1E698DC60]];
 
   if (v8)
   {
     [(AAUICustodianSetupFlowController *)self _showActivityIndicator];
-    v9 = [[AAUIGrandSlamRemoteUIPresenter alloc] initWithAccountManager:self->_accountManager hookType:2 presenter:v6];
+    v9 = [[AAUIGrandSlamRemoteUIPresenter alloc] initWithAccountManager:self->_accountManager hookType:2 presenter:presenterCopy];
     remoteUIPresenter = self->_remoteUIPresenter;
     self->_remoteUIPresenter = v9;
 
-    [(AAUIGrandSlamRemoteUIPresenter *)self->_remoteUIPresenter setModalInPresentation:v4];
+    [(AAUIGrandSlamRemoteUIPresenter *)self->_remoteUIPresenter setModalInPresentation:modalCopy];
     [(AAUIGrandSlamRemoteUIPresenter *)self->_remoteUIPresenter setShowCancelInModalPresentation:1];
     [(AAUICustodianSetupFlowController *)self _loadRemoteUIPresenterRequest:v8];
   }
@@ -1035,9 +1035,9 @@ uint64_t __70__AAUICustodianSetupFlowController__beginAddRecoveryContactUpsellFl
   }
 }
 
-- (void)_validateAccountWithCompletion:(id)a3
+- (void)_validateAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accountManager = self->_accountManager;
   if (!accountManager)
   {
@@ -1050,22 +1050,22 @@ uint64_t __70__AAUICustodianSetupFlowController__beginAddRecoveryContactUpsellFl
     accountManager = self->_accountManager;
   }
 
-  v7 = [(AIDAAccountManager *)accountManager accounts];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [(AIDAAccountManager *)accountManager accounts];
+  v8 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v8)
   {
     v9 = MEMORY[0x1E6985DB0];
     v10 = *MEMORY[0x1E698BA38];
-    v11 = [v8 aida_alternateDSID];
-    v12 = [(AAUICustodianSetupFlowController *)self telemetryFlowID];
-    v13 = [v9 analyticsEventWithName:v10 altDSID:v11 flowID:v12];
+    aida_alternateDSID = [v8 aida_alternateDSID];
+    telemetryFlowID = [(AAUICustodianSetupFlowController *)self telemetryFlowID];
+    v13 = [v9 analyticsEventWithName:v10 altDSID:aida_alternateDSID flowID:telemetryFlowID];
 
     objc_initWeak(&location, self);
     v14 = objc_opt_new();
-    v15 = [(AAUICustodianSetupFlowController *)self navigationController];
-    v16 = [v15 presentingViewController];
-    LODWORD(v12) = [(AAUIDTOHelper *)self->_dtoHelper isDTOGatingEnabled];
+    navigationController = [(AAUICustodianSetupFlowController *)self navigationController];
+    presentingViewController = [navigationController presentingViewController];
+    LODWORD(telemetryFlowID) = [(AAUIDTOHelper *)self->_dtoHelper isDTOGatingEnabled];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __67__AAUICustodianSetupFlowController__validateAccountWithCompletion___block_invoke;
@@ -1074,8 +1074,8 @@ uint64_t __70__AAUICustodianSetupFlowController__beginAddRecoveryContactUpsellFl
     v19[4] = self;
     v17 = v13;
     v20 = v17;
-    v21 = v4;
-    [v14 aaui_custodianAuthForAccount:v8 presentingViewController:v16 forceInteraction:v12 ^ 1 completion:v19];
+    v21 = completionCopy;
+    [v14 aaui_custodianAuthForAccount:v8 presentingViewController:presentingViewController forceInteraction:telemetryFlowID ^ 1 completion:v19];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -1090,7 +1090,7 @@ uint64_t __70__AAUICustodianSetupFlowController__beginAddRecoveryContactUpsellFl
     }
 
     v17 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-4404];
-    (*(v4 + 2))(v4, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, v17);
   }
 }
 
@@ -1135,21 +1135,21 @@ void __67__AAUICustodianSetupFlowController__validateAccountWithCompletion___blo
   }
 }
 
-- (void)_verifyCDPWithCompletion:(id)a3
+- (void)_verifyCDPWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[AAUID2DEncryptionFlowContext alloc] initWithType:2];
   v6 = [AAUIManateeStateValidator alloc];
-  v7 = [(AAUICustodianSetupFlowController *)self navigationController];
-  v8 = [(AAUIManateeStateValidator *)v6 initWithFlowContext:v5 withPresentingViewController:v7];
+  navigationController = [(AAUICustodianSetupFlowController *)self navigationController];
+  v8 = [(AAUIManateeStateValidator *)v6 initWithFlowContext:v5 withPresentingViewController:navigationController];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__AAUICustodianSetupFlowController__verifyCDPWithCompletion___block_invoke;
   v11[3] = &unk_1E820C988;
   v12 = v8;
-  v13 = v4;
-  v9 = v4;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = v8;
   [(AAUIManateeStateValidator *)v10 verifyAndRepairManateeWithCompletion:v11];
 }
@@ -1174,15 +1174,15 @@ uint64_t __61__AAUICustodianSetupFlowController__verifyCDPWithCompletion___block
     _os_log_impl(&dword_1C5355000, v3, OS_LOG_TYPE_DEFAULT, "Show device upgrade UI...", buf, 2u);
   }
 
-  v4 = [MEMORY[0x1E698DDF8] sharedBag];
-  v5 = [v4 urlAtKey:*MEMORY[0x1E698DC68]];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
+  v5 = [mEMORY[0x1E698DDF8] urlAtKey:*MEMORY[0x1E698DC68]];
 
   if (v5)
   {
-    v6 = [(AAUICustodianSetupFlowController *)self navController];
-    v7 = [v6 topViewController];
-    firstTimeSetupVC = v7;
-    if (!v7)
+    navController = [(AAUICustodianSetupFlowController *)self navController];
+    topViewController = [navController topViewController];
+    firstTimeSetupVC = topViewController;
+    if (!topViewController)
     {
       firstTimeSetupVC = self->_firstTimeSetupVC;
     }
@@ -1307,7 +1307,7 @@ void __59__AAUICustodianSetupFlowController__fetchSuggestedContacts__block_invok
   }
 
   v11 = objc_opt_new();
-  v12 = [(AAUICustodianSetupFlowController *)self telemetryFlowID];
+  telemetryFlowID = [(AAUICustodianSetupFlowController *)self telemetryFlowID];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__AAUICustodianSetupFlowController__fetchSuggestedContactsForUpsell__block_invoke;
@@ -1315,7 +1315,7 @@ void __59__AAUICustodianSetupFlowController__fetchSuggestedContacts__block_invok
   v13[5] = v5;
   v13[6] = v7;
   v13[4] = self;
-  [v11 fetchSuggestedCustodiansForUpsellWithImagesOfSize:v12 telemetryFlowID:v13 andCompletion:50.0];
+  [v11 fetchSuggestedCustodiansForUpsellWithImagesOfSize:telemetryFlowID telemetryFlowID:v13 andCompletion:50.0];
 }
 
 void __68__AAUICustodianSetupFlowController__fetchSuggestedContactsForUpsell__block_invoke(uint64_t a1, void *a2)
@@ -1396,9 +1396,9 @@ LABEL_7:
   }
 }
 
-- (void)_showSuggestedContactSelector:(id)a3
+- (void)_showSuggestedContactSelector:(id)selector
 {
-  v4 = a3;
+  selectorCopy = selector;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1408,8 +1408,8 @@ LABEL_7:
 
   [(AAUICustodianSetupFlowController *)self _sendTelemetryForEvent:@"com.apple.appleaccount.custodian.ui.setup.presentSuggestedContactList" didSucceed:1 error:0];
   v6 = [[AAUIOBContactSelectorViewModel alloc] initWithFlow:0];
-  [(AAUIOBContactSelectorViewModel *)v6 setSuggestedContacts:v4];
-  v7 = [(AAUICustodianSetupFlowController *)self _setupContactSelectorVCWithViewModel:v6 andSuggestedContacts:v4];
+  [(AAUIOBContactSelectorViewModel *)v6 setSuggestedContacts:selectorCopy];
+  v7 = [(AAUICustodianSetupFlowController *)self _setupContactSelectorVCWithViewModel:v6 andSuggestedContacts:selectorCopy];
   objc_initWeak(buf, self);
   v8 = MEMORY[0x1E69DC628];
   v13 = MEMORY[0x1E69E9820];
@@ -1417,22 +1417,22 @@ LABEL_7:
   v15 = __66__AAUICustodianSetupFlowController__showSuggestedContactSelector___block_invoke;
   v16 = &unk_1E820DD38;
   objc_copyWeak(&v18, buf);
-  v17 = self;
+  selfCopy = self;
   v9 = [v8 actionWithHandler:&v13];
   if ([(AAUICustodianSetupFlowController *)self uiVersion:v13]== 1 && ![(AAUICustodianSetupFlowController *)self isUpsellInSettings])
   {
-    v10 = [(AAUICustodianSetupFlowController *)self navigationController];
-    [v10 presentViewController:v7 animated:1 completion:0];
+    navigationController = [(AAUICustodianSetupFlowController *)self navigationController];
+    [navigationController presentViewController:v7 animated:1 completion:0];
   }
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 primaryAction:v9];
-    v11 = [v7 navigationItem];
-    [v11 setRightBarButtonItem:v10];
+    navigationController = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 primaryAction:v9];
+    navigationItem = [v7 navigationItem];
+    [navigationItem setRightBarButtonItem:navigationController];
 
-    v12 = [(AAUICustodianSetupFlowController *)self navigationController];
-    [v12 pushViewController:v7 animated:1];
+    navigationController2 = [(AAUICustodianSetupFlowController *)self navigationController];
+    [navigationController2 pushViewController:v7 animated:1];
   }
 
   objc_destroyWeak(&v18);
@@ -1462,68 +1462,68 @@ void __66__AAUICustodianSetupFlowController__showSuggestedContactSelector___bloc
   return v3;
 }
 
-- (id)_setupContactSelectorVCWithViewModel:(id)a3 andSuggestedContacts:(id)a4
+- (id)_setupContactSelectorVCWithViewModel:(id)model andSuggestedContacts:(id)contacts
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  contactsCopy = contacts;
   if ([(AAUICustodianSetupFlowController *)self uiVersion]== 1)
   {
     v8 = MEMORY[0x1E69DCAB8];
     v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v10 = [v8 imageNamed:@"recovery_contact_shield_icon" inBundle:v9];
-    [v6 setImage:v10];
+    [modelCopy setImage:v10];
 
-    [v6 setUiVersion:{-[AAUICustodianSetupFlowController uiVersion](self, "uiVersion")}];
+    [modelCopy setUiVersion:{-[AAUICustodianSetupFlowController uiVersion](self, "uiVersion")}];
     LODWORD(v10) = [(AAUICustodianSetupFlowController *)self isUpsellInSettings];
     v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
     v12 = v11;
     if (v10)
     {
       v13 = [v11 localizedStringForKey:@"RC_SETTINGS_TITLE" value:&stru_1F447F790 table:@"Localizable"];
-      [v6 setTitle:v13];
+      [modelCopy setTitle:v13];
 
       v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
       v15 = [v14 localizedStringForKey:@"RC_SETTINGS_SUBTITLE" value:&stru_1F447F790 table:@"Localizable"];
-      [v6 setDetailText:v15];
+      [modelCopy setDetailText:v15];
 
-      v16 = [v7 count];
+      v16 = [contactsCopy count];
       v17 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
       v18 = v17;
       if (v16)
       {
         v19 = [v17 localizedStringForKey:@"RC_UPSELL_PRIMARY_BUTTON" value:&stru_1F447F790 table:@"Localizable"];
-        [v6 setPrimaryButton:v19];
+        [modelCopy setPrimaryButton:v19];
 
         v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
         v20 = [v18 localizedStringForKey:@"RC_UPSELL_SECONDARY_BUTTON_SETTINGS" value:&stru_1F447F790 table:@"Localizable"];
-        [v6 setSecondaryButton:v20];
+        [modelCopy setSecondaryButton:v20];
       }
 
       else
       {
         v20 = [v17 localizedStringForKey:@"RC_SETTINGS_PRIMARY_BUTTON_NO_SUGGESTIONS" value:&stru_1F447F790 table:@"Localizable"];
-        [v6 setPrimaryButton:v20];
+        [modelCopy setPrimaryButton:v20];
       }
 
-      v21 = [[AAUIAccountRecoveryContactUpsellSelectorVC alloc] initWithSelectorViewModel:v6 vcDelegate:self];
+      rcUpsellNavigationController = [[AAUIAccountRecoveryContactUpsellSelectorVC alloc] initWithSelectorViewModel:modelCopy vcDelegate:self];
     }
 
     else
     {
       v22 = [v11 localizedStringForKey:@"RC_UPSELL_TITLE" value:&stru_1F447F790 table:@"Localizable"];
-      [v6 setTitle:v22];
+      [modelCopy setTitle:v22];
 
       v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
       v24 = [v23 localizedStringForKey:@"RC_UPSELL_SUBTITLE" value:&stru_1F447F790 table:@"Localizable"];
-      [v6 setDetailText:v24];
+      [modelCopy setDetailText:v24];
 
       v25 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
       v26 = [v25 localizedStringForKey:@"RC_UPSELL_PRIMARY_BUTTON" value:&stru_1F447F790 table:@"Localizable"];
-      [v6 setPrimaryButton:v26];
+      [modelCopy setPrimaryButton:v26];
 
       v27 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccountUI"];
       v28 = [v27 localizedStringForKey:@"RC_UPSELL_SECONDARY_BUTTON" value:&stru_1F447F790 table:@"Localizable"];
-      [v6 setSecondaryButton:v28];
+      [modelCopy setSecondaryButton:v28];
 
       v29 = _AAUILogSystem();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -1531,21 +1531,21 @@ void __66__AAUICustodianSetupFlowController__showSuggestedContactSelector___bloc
         [AAUICustodianSetupFlowController _setupContactSelectorVCWithViewModel:v29 andSuggestedContacts:?];
       }
 
-      v30 = [[AAUIAccountRecoveryContactUpsellSelectorVC alloc] initWithSelectorViewModel:v6 vcDelegate:self];
+      v30 = [[AAUIAccountRecoveryContactUpsellSelectorVC alloc] initWithSelectorViewModel:modelCopy vcDelegate:self];
       v31 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v30];
       [(AAUICustodianSetupFlowController *)self setRcUpsellNavigationController:v31];
 
-      v21 = [(AAUICustodianSetupFlowController *)self rcUpsellNavigationController];
+      rcUpsellNavigationController = [(AAUICustodianSetupFlowController *)self rcUpsellNavigationController];
     }
   }
 
   else
   {
-    v21 = [[AAUIAccountContactSelectorViewController alloc] initWithViewModel:v6];
-    [(AAUIOBWelcomeController *)v21 setDelegate:self];
+    rcUpsellNavigationController = [[AAUIAccountContactSelectorViewController alloc] initWithViewModel:modelCopy];
+    [(AAUIOBWelcomeController *)rcUpsellNavigationController setDelegate:self];
   }
 
-  return v21;
+  return rcUpsellNavigationController;
 }
 
 - (void)_showChooseContact
@@ -1563,9 +1563,9 @@ void __66__AAUICustodianSetupFlowController__showSuggestedContactSelector___bloc
 
   [(AAUIChooseContactController *)self->_chooseContactController setDelegate:self];
   [(AAUIChooseContactController *)self->_chooseContactController setTelemetryFlowID:self->_telemetryFlowID];
-  v6 = [(AAUIChooseContactController *)self->_chooseContactController chooseContactViewController];
-  v7 = [(AAUICustodianSetupFlowController *)self navigationController];
-  [v7 showViewController:v6 sender:0];
+  chooseContactViewController = [(AAUIChooseContactController *)self->_chooseContactController chooseContactViewController];
+  navigationController = [(AAUICustodianSetupFlowController *)self navigationController];
+  [navigationController showViewController:chooseContactViewController sender:0];
 }
 
 - (void)_showChooseContactWithCancel
@@ -1584,7 +1584,7 @@ void __66__AAUICustodianSetupFlowController__showSuggestedContactSelector___bloc
 
   [(AAUIChooseContactController *)self->_chooseContactController setDelegate:self];
   [(AAUIChooseContactController *)self->_chooseContactController setTelemetryFlowID:self->_telemetryFlowID];
-  v6 = [(AAUIChooseContactController *)self->_chooseContactController chooseContactViewController];
+  chooseContactViewController = [(AAUIChooseContactController *)self->_chooseContactController chooseContactViewController];
   objc_initWeak(&buf, self);
   v7 = MEMORY[0x1E69DC628];
   v14[0] = MEMORY[0x1E69E9820];
@@ -1594,8 +1594,8 @@ void __66__AAUICustodianSetupFlowController__showSuggestedContactSelector___bloc
   objc_copyWeak(&v15, &buf);
   v8 = [v7 actionWithHandler:v14];
   v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 primaryAction:v8];
-  v10 = [v6 navigationItem];
-  [v10 setLeftBarButtonItem:v9];
+  navigationItem = [chooseContactViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:v9];
 
   v11 = *MEMORY[0x1E698BB28];
   v17[0] = *MEMORY[0x1E698BB18];
@@ -1603,8 +1603,8 @@ void __66__AAUICustodianSetupFlowController__showSuggestedContactSelector___bloc
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   [(AAUICustodianSetupFlowController *)self _sendTelemetryEventWithEscapeOffers:*MEMORY[0x1E698BA20] offers:v12];
 
-  v13 = [(AAUICustodianSetupFlowController *)self navigationController];
-  [v13 showViewController:v6 sender:0];
+  navigationController = [(AAUICustodianSetupFlowController *)self navigationController];
+  [navigationController showViewController:chooseContactViewController sender:0];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&buf);
@@ -1617,31 +1617,31 @@ void __64__AAUICustodianSetupFlowController__showChooseContactWithCancel__block_
   [WeakRetained _dismissWithError:v1];
 }
 
-- (void)_verifyAndInviteContact:(id)a3
+- (void)_verifyAndInviteContact:(id)contact
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 handle];
+    handle = [contactCopy handle];
     *buf = 138412290;
-    v14 = v6;
+    v14 = handle;
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "Verifying %@ is reachable.", buf, 0xCu);
   }
 
   [(AAUICustodianSetupFlowController *)self _showActivityIndicator];
   v7 = objc_alloc(MEMORY[0x1E698B908]);
-  v8 = [v4 handle];
-  v9 = [v7 initWithHandle:v8];
+  handle2 = [contactCopy handle];
+  v9 = [v7 initWithHandle:handle2];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__AAUICustodianSetupFlowController__verifyAndInviteContact___block_invoke;
   v11[3] = &unk_1E820DC70;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = contactCopy;
+  v10 = contactCopy;
   [v9 isRegisteredToiMessageWithCompletion:v11];
 }
 
@@ -1672,9 +1672,9 @@ uint64_t __60__AAUICustodianSetupFlowController__verifyAndInviteContact___block_
   }
 }
 
-- (void)_displayAlertForNotReachableContact:(id)a3
+- (void)_displayAlertForNotReachableContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -1682,8 +1682,8 @@ uint64_t __60__AAUICustodianSetupFlowController__verifyAndInviteContact___block_
   v6[3] = &unk_1E820D5C0;
   objc_copyWeak(&v8, &location);
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = contactCopy;
+  v5 = contactCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 
   objc_destroyWeak(&v8);
@@ -1720,24 +1720,24 @@ void __72__AAUICustodianSetupFlowController__displayAlertForNotReachableContact_
   [v15[14] presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)_inviteContact:(id)a3
+- (void)_inviteContact:(id)contact
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contactCopy = contact;
   v6 = _AAUILogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 handle];
+    handle = [contactCopy handle];
     *buf = 138412290;
-    v17 = v7;
+    v17 = handle;
     _os_log_impl(&dword_1C5355000, v6, OS_LOG_TYPE_DEFAULT, "Inviting %@...", buf, 0xCu);
   }
 
   v8 = objc_alloc(MEMORY[0x1E698B870]);
-  v9 = [v5 handle];
-  v10 = [v8 initWithHandle:v9 authResults:self->_authResults];
+  handle2 = [contactCopy handle];
+  v10 = [v8 initWithHandle:handle2 authResults:self->_authResults];
 
-  objc_storeStrong(&self->_invitedContact, a3);
+  objc_storeStrong(&self->_invitedContact, contact);
   objc_initWeak(buf, self);
   custodianController = self->_custodianController;
   v13[0] = MEMORY[0x1E69E9820];
@@ -1745,7 +1745,7 @@ void __72__AAUICustodianSetupFlowController__displayAlertForNotReachableContact_
   v13[2] = __51__AAUICustodianSetupFlowController__inviteContact___block_invoke;
   v13[3] = &unk_1E820DD88;
   v13[4] = self;
-  v12 = v5;
+  v12 = contactCopy;
   v14 = v12;
   objc_copyWeak(&v15, buf);
   [(AACustodianController *)custodianController setupCustodianshipWithContext:v10 completion:v13];
@@ -1898,17 +1898,17 @@ void __51__AAUICustodianSetupFlowController__inviteContact___block_invoke_166(ui
   [v4 _startInviteMessageFlow];
 }
 
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4
+- (void)_showAlertWithTitle:(id)title message:(id)message
 {
-  v9 = [MEMORY[0x1E69DC650] alertWithTitle:a3 message:a4];
+  v9 = [MEMORY[0x1E69DC650] alertWithTitle:title message:message];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"OK" value:&stru_1F447F790 table:@"Localizable"];
 
   v7 = [MEMORY[0x1E69DC648] actionWithTitle:v6 style:0 handler:0];
   [v9 addAction:v7];
 
-  v8 = [(AAUICustodianSetupFlowController *)self navigationController];
-  [v8 presentViewController:v9 animated:1 completion:0];
+  navigationController = [(AAUICustodianSetupFlowController *)self navigationController];
+  [navigationController presentViewController:v9 animated:1 completion:0];
 }
 
 - (void)_cancelCustodianInvite
@@ -1966,15 +1966,15 @@ void __58__AAUICustodianSetupFlowController__cancelCustodianInvite__block_invoke
   v1 = [v2 popViewControllerAnimated:1];
 }
 
-- (void)_dismissWithError:(id)a3
+- (void)_dismissWithError:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = errorCopy;
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "Dismissing setup flow controller with error=%@", buf, 0xCu);
   }
 
@@ -1983,8 +1983,8 @@ void __58__AAUICustodianSetupFlowController__cancelCustodianInvite__block_invoke
   v7[2] = __54__AAUICustodianSetupFlowController__dismissWithError___block_invoke;
   v7[3] = &unk_1E820BEB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -2102,8 +2102,8 @@ void __55__AAUICustodianSetupFlowController__dismissCFUIfNeeded__block_invoke_17
   if (v4)
   {
     v5 = objc_loadWeakRetained(&self->_delegate);
-    v6 = [v5 followUpUniqueIdentifier];
-    v7 = [v6 isEqualToString:@"com.apple.AAFollowUpIdentifier.RecoveryKeyMismatch"];
+    followUpUniqueIdentifier = [v5 followUpUniqueIdentifier];
+    v7 = [followUpUniqueIdentifier isEqualToString:@"com.apple.AAFollowUpIdentifier.RecoveryKeyMismatch"];
 
     if (v7)
     {
@@ -2145,7 +2145,7 @@ void __58__AAUICustodianSetupFlowController__hideActivityIndicator__block_invoke
   [v1 aaui_hideActivityIndicator];
 }
 
-- (void)inviteMessageFlowDidFinish:(id)a3
+- (void)inviteMessageFlowDidFinish:(id)finish
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2159,7 +2159,7 @@ void __58__AAUICustodianSetupFlowController__hideActivityIndicator__block_invoke
   [(AAUICustodianSetupFlowController *)self _dismissCFUIfNeeded];
 }
 
-- (void)inviteMessageFlowWasCancelled:(id)a3
+- (void)inviteMessageFlowWasCancelled:(id)cancelled
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2171,15 +2171,15 @@ void __58__AAUICustodianSetupFlowController__hideActivityIndicator__block_invoke
   [(AAUICustodianSetupFlowController *)self _cancelCustodianInvite];
 }
 
-- (void)didSelectLocalContactFor:(id)a3
+- (void)didSelectLocalContactFor:(id)for
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  forCopy = for;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = forCopy;
     _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "adding local contact %@", buf, 0xCu);
   }
 
@@ -2191,7 +2191,7 @@ void __58__AAUICustodianSetupFlowController__hideActivityIndicator__block_invoke
     v6[2] = __61__AAUICustodianSetupFlowController_didSelectLocalContactFor___block_invoke;
     v6[3] = &unk_1E820DC48;
     objc_copyWeak(&v8, buf);
-    v7 = v4;
+    v7 = forCopy;
     [(AAUICustodianSetupFlowController *)self _validateAccountWithCompletion:v6];
 
     objc_destroyWeak(&v8);
@@ -2200,7 +2200,7 @@ void __58__AAUICustodianSetupFlowController__hideActivityIndicator__block_invoke
 
   else
   {
-    [(AAUICustodianSetupFlowController *)self _verifyAndInviteContact:v4];
+    [(AAUICustodianSetupFlowController *)self _verifyAndInviteContact:forCopy];
   }
 }
 
@@ -2254,15 +2254,15 @@ void __61__AAUICustodianSetupFlowController_didSelectLocalContactFor___block_inv
 {
   if ([(AAUICustodianSetupFlowController *)self uiVersion]== 1 && ![(AAUICustodianSetupFlowController *)self isUpsellInSettings])
   {
-    v3 = [(AAUICustodianSetupFlowController *)self rcUpsellNavigationController];
+    rcUpsellNavigationController = [(AAUICustodianSetupFlowController *)self rcUpsellNavigationController];
   }
 
   else
   {
-    v3 = [(AAUICustodianSetupFlowController *)self navigationController];
+    rcUpsellNavigationController = [(AAUICustodianSetupFlowController *)self navigationController];
   }
 
-  return v3;
+  return rcUpsellNavigationController;
 }
 
 - (AAUICustodianSetupFlowControllerDelegate)delegate

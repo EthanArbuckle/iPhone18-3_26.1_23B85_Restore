@@ -11,15 +11,15 @@
 {
   if (HKIsUnitTesting())
   {
-    v0 = 0;
+    serviceWithDefaultShellEndpoint = 0;
   }
 
   else
   {
-    v0 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+    serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
   }
 
-  return v0;
+  return serviceWithDefaultShellEndpoint;
 }
 
 + (void)hd_openApplication:()HealthDaemon optionsDictionary:completion:
@@ -27,11 +27,11 @@
   v16 = a3;
   v8 = a4;
   v9 = a5;
-  v10 = [a1 hd_defaultService];
-  v11 = v10;
-  if (v10)
+  hd_defaultService = [self hd_defaultService];
+  v11 = hd_defaultService;
+  if (hd_defaultService)
   {
-    [v10 hd_openApplication:v16 optionsDictionary:v8 completion:v9];
+    [hd_defaultService hd_openApplication:v16 optionsDictionary:v8 completion:v9];
   }
 
   else
@@ -50,17 +50,17 @@
   v9 = a5;
   v10 = a3;
   v11 = [v8 optionsWithDictionary:a4];
-  [a1 openApplication:v10 withOptions:v11 completion:v9];
+  [self openApplication:v10 withOptions:v11 completion:v9];
 }
 
 + (uint64_t)hd_canOpenApplication:()HealthDaemon reason:
 {
   v6 = a3;
-  v7 = [a1 hd_defaultService];
-  v8 = v7;
-  if (v7)
+  hd_defaultService = [self hd_defaultService];
+  v8 = hd_defaultService;
+  if (hd_defaultService)
   {
-    v9 = [v7 canOpenApplication:v6 reason:a4];
+    v9 = [hd_defaultService canOpenApplication:v6 reason:a4];
   }
 
   else

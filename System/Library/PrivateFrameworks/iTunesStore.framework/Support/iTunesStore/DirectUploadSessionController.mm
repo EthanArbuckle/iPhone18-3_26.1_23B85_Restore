@@ -1,35 +1,35 @@
 @interface DirectUploadSessionController
-- (DirectUploadSessionController)initWithDispatchQueue:(id)a3;
+- (DirectUploadSessionController)initWithDispatchQueue:(id)queue;
 - (DirectUploadSessionDelegate)delegate;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)_addUploadTaskWithRequest:(id)a3 configuration:(id)a4 URLRequest:(id)a5;
-- (void)_asyncModifyTasksForDatabaseIDs:(id)a3 usingBlock:(id)a4;
-- (void)_cleanupForDatabaseID:(id)a3;
-- (void)_failUploadWithDatabaseID:(id)a3 error:(id)a4;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)_addUploadTaskWithRequest:(id)request configuration:(id)configuration URLRequest:(id)lRequest;
+- (void)_asyncModifyTasksForDatabaseIDs:(id)ds usingBlock:(id)block;
+- (void)_cleanupForDatabaseID:(id)d;
+- (void)_failUploadWithDatabaseID:(id)d error:(id)error;
 - (void)_flushProgress;
-- (void)addUploadTasksWithRequests:(id)a3;
-- (void)cancelUploadTasksWithDatabaseIdentifiers:(id)a3;
+- (void)addUploadTasksWithRequests:(id)requests;
+- (void)cancelUploadTasksWithDatabaseIdentifiers:(id)identifiers;
 - (void)dealloc;
 - (void)invalidURLSessions;
-- (void)pauseUploadTasksWithDatabaseIdentifiers:(id)a3;
+- (void)pauseUploadTasksWithDatabaseIdentifiers:(id)identifiers;
 @end
 
 @implementation DirectUploadSessionController
 
-- (DirectUploadSessionController)initWithDispatchQueue:(id)a3
+- (DirectUploadSessionController)initWithDispatchQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = DirectUploadSessionController;
   v6 = [(DirectUploadSessionController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
     v8 = objc_alloc_init(ISOperationQueue);
     preparationQueue = v7->_preparationQueue;
     v7->_preparationQueue = v8;
@@ -59,9 +59,9 @@
   [(DirectUploadSessionController *)&v5 dealloc];
 }
 
-- (void)addUploadTasksWithRequests:(id)a3
+- (void)addUploadTasksWithRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   if (!self->_uploadDatabaseIDs)
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -75,19 +75,19 @@
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
+  shouldLog = [v7 shouldLog];
   if ([v7 shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  oSLogObject = [v7 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v9 &= 2u;
   }
@@ -99,7 +99,7 @@
     *location = 138412546;
     *&location[4] = v11;
     v33 = 2048;
-    v34 = [v4 count];
+    v34 = [requestsCopy count];
     LODWORD(v22) = 22;
     v13 = _os_log_send_and_compose_impl();
 
@@ -120,7 +120,7 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = requestsCopy;
   v15 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v15)
   {
@@ -162,14 +162,14 @@
   objc_destroyWeak(location);
 }
 
-- (void)cancelUploadTasksWithDatabaseIdentifiers:(id)a3
+- (void)cancelUploadTasksWithDatabaseIdentifiers:(id)identifiers
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000D49C4;
   v3[3] = &unk_1003282D8;
   v3[4] = self;
-  [(DirectUploadSessionController *)self _asyncModifyTasksForDatabaseIDs:a3 usingBlock:v3];
+  [(DirectUploadSessionController *)self _asyncModifyTasksForDatabaseIDs:identifiers usingBlock:v3];
 }
 
 - (void)invalidURLSessions
@@ -209,27 +209,27 @@
   self->_sessions = 0;
 }
 
-- (void)pauseUploadTasksWithDatabaseIdentifiers:(id)a3
+- (void)pauseUploadTasksWithDatabaseIdentifiers:(id)identifiers
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000D4D38;
   v3[3] = &unk_1003282D8;
   v3[4] = self;
-  [(DirectUploadSessionController *)self _asyncModifyTasksForDatabaseIDs:a3 usingBlock:v3];
+  [(DirectUploadSessionController *)self _asyncModifyTasksForDatabaseIDs:identifiers usingBlock:v3];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  object = a4;
-  v6 = a5;
+  object = task;
+  dataCopy = data;
   v7 = objc_getAssociatedObject(object, "com.apple.itunesstored.upload.id");
   v8 = v7;
-  if (v6 && v7)
+  if (dataCopy && v7)
   {
     v9 = [DirectUploadResponse alloc];
-    v10 = [object response];
-    v11 = [(DirectUploadResponse *)v9 initWithURLResponse:v10 data:v6];
+    response = [object response];
+    v11 = [(DirectUploadResponse *)v9 initWithURLResponse:response data:dataCopy];
 
     if (v11)
     {
@@ -239,38 +239,38 @@
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [a5 itunes_statusCode];
-  if (v10 > 399)
+  taskCopy = task;
+  handlerCopy = handler;
+  itunes_statusCode = [response itunes_statusCode];
+  if (itunes_statusCode > 399)
   {
-    v11 = v10;
+    v11 = itunes_statusCode;
     v12 = SSError();
     v13 = [NSNumber numberWithInteger:v11];
     v14 = SSErrorBySettingUserInfoValue();
 
-    objc_setAssociatedObject(v8, "com.apple.itunesstored.upload.error", v14, 1);
+    objc_setAssociatedObject(taskCopy, "com.apple.itunesstored.upload.error", v14, 1);
     v15 = +[SSLogConfig sharedDaemonConfig];
     if (!v15)
     {
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
-    v18 = [v15 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v15 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 &= 2u;
     }
@@ -279,7 +279,7 @@
     {
       v19 = objc_opt_class();
       v20 = v19;
-      objc_getAssociatedObject(v8, "com.apple.itunesstored.upload.id");
+      objc_getAssociatedObject(taskCopy, "com.apple.itunesstored.upload.id");
       v23 = 138412802;
       v24 = v19;
       v26 = v25 = 2112;
@@ -292,11 +292,11 @@
       {
 LABEL_14:
 
-        v9[2](v9, 0);
+        handlerCopy[2](handlerCopy, 0);
         goto LABEL_15;
       }
 
-      v18 = [NSString stringWithCString:v21 encoding:4, &v23, v22];
+      oSLogObject = [NSString stringWithCString:v21 encoding:4, &v23, v22];
       free(v21);
       SSFileLog();
     }
@@ -304,38 +304,38 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v9[2](v9, 1);
+  handlerCopy[2](handlerCopy, 1);
 LABEL_15:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = objc_getAssociatedObject(v9, "com.apple.itunesstored.upload.id");
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  v11 = objc_getAssociatedObject(taskCopy, "com.apple.itunesstored.upload.id");
   if (v11)
   {
-    v12 = objc_getAssociatedObject(v9, "com.apple.itunesstored.upload.response");
+    v12 = objc_getAssociatedObject(taskCopy, "com.apple.itunesstored.upload.response");
     dispatchQueue = self->_dispatchQueue;
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000D5418;
     v15[3] = &unk_100328300;
-    v16 = v10;
+    v16 = errorCopy;
     v17 = v12;
-    v18 = v9;
-    v19 = self;
+    v18 = taskCopy;
+    selfCopy = self;
     v20 = v11;
-    v21 = v8;
+    v21 = sessionCopy;
     v14 = v12;
     dispatch_async(dispatchQueue, v15);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
-  v10 = objc_getAssociatedObject(a4, "com.apple.itunesstored.upload.id");
+  v10 = objc_getAssociatedObject(task, "com.apple.itunesstored.upload.id");
   v11 = v10;
   if (v10)
   {
@@ -345,18 +345,18 @@ LABEL_15:
     v13[2] = sub_1000D5A14;
     v13[3] = &unk_100328350;
     v14 = v10;
-    v15 = self;
-    v16 = a7;
-    v17 = a6;
+    selfCopy = self;
+    sendCopy = send;
+    sentCopy = sent;
     dispatch_async(dispatchQueue, v13);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = objc_getAssociatedObject(a4, "com.apple.itunesstored.upload.id");
+  connectionCopy = connection;
+  handlerCopy = handler;
+  v11 = objc_getAssociatedObject(task, "com.apple.itunesstored.upload.id");
   v12 = v11;
   if (v11)
   {
@@ -370,14 +370,14 @@ LABEL_15:
     dispatch_async(dispatchQueue, v14);
   }
 
-  v10[2](v10, v9);
+  handlerCopy[2](handlerCopy, connectionCopy);
 }
 
-- (void)_addUploadTaskWithRequest:(id)a3 configuration:(id)a4 URLRequest:(id)a5
+- (void)_addUploadTaskWithRequest:(id)request configuration:(id)configuration URLRequest:(id)lRequest
 {
-  v8 = a3;
-  v9 = a4;
-  v37 = a5;
+  requestCopy = request;
+  configurationCopy = configuration;
+  lRequestCopy = lRequest;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -398,8 +398,8 @@ LABEL_3:
       }
 
       v15 = *(*(&v38 + 1) + 8 * v14);
-      v16 = [v15 configuration];
-      v17 = [v16 isEqual:v9];
+      configuration = [v15 configuration];
+      v17 = [configuration isEqual:configurationCopy];
 
       if (v17)
       {
@@ -438,14 +438,14 @@ LABEL_9:
     self->_sessions = v19;
   }
 
-  v18 = [NSURLSession sessionWithConfiguration:v9 delegate:self delegateQueue:0];
+  v18 = [NSURLSession sessionWithConfiguration:configurationCopy delegate:self delegateQueue:0];
   [(NSMutableArray *)self->_sessions addObject:v18];
 LABEL_14:
-  v21 = [v8 localAssetURL];
-  v22 = [v18 uploadTaskWithRequest:v37 fromFile:v21];
+  localAssetURL = [requestCopy localAssetURL];
+  v22 = [v18 uploadTaskWithRequest:lRequestCopy fromFile:localAssetURL];
 
-  v36 = v8;
-  v23 = [[NSNumber alloc] initWithLongLong:{objc_msgSend(v8, "databaseIdentifier")}];
+  v36 = requestCopy;
+  v23 = [[NSNumber alloc] initWithLongLong:{objc_msgSend(requestCopy, "databaseIdentifier")}];
   objc_setAssociatedObject(v22, "com.apple.itunesstored.upload.id", v23, 1);
   v24 = +[SSLogConfig sharedDaemonConfig];
   if (!v24)
@@ -453,19 +453,19 @@ LABEL_14:
     v24 = +[SSLogConfig sharedConfig];
   }
 
-  v25 = [v24 shouldLog];
+  shouldLog = [v24 shouldLog];
   if ([v24 shouldLogToDisk])
   {
-    v26 = v25 | 2;
+    v26 = shouldLog | 2;
   }
 
   else
   {
-    v26 = v25;
+    v26 = shouldLog;
   }
 
-  v27 = [v24 OSLogObject];
-  if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+  oSLogObject = [v24 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v28 = v26;
   }
@@ -483,23 +483,23 @@ LABEL_14:
 
   v29 = objc_opt_class();
   v35 = v29;
-  v30 = [v22 taskIdentifier];
-  v31 = [v9 identifier];
+  taskIdentifier = [v22 taskIdentifier];
+  identifier = [configurationCopy identifier];
   v42 = 138413058;
   v43 = v29;
   v44 = 2048;
-  v45 = v30;
+  v45 = taskIdentifier;
   v46 = 2112;
   v47 = v23;
   v48 = 2112;
-  v49 = v31;
+  v49 = identifier;
   LODWORD(v34) = 42;
   v32 = _os_log_send_and_compose_impl();
 
   v33 = v36;
   if (v32)
   {
-    v27 = [NSString stringWithCString:v32 encoding:4, &v42, v34];
+    oSLogObject = [NSString stringWithCString:v32 encoding:4, &v42, v34];
     free(v32);
     SSFileLog();
 LABEL_26:
@@ -508,10 +508,10 @@ LABEL_26:
   [v22 resume];
 }
 
-- (void)_asyncModifyTasksForDatabaseIDs:(id)a3 usingBlock:(id)a4
+- (void)_asyncModifyTasksForDatabaseIDs:(id)ds usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -537,8 +537,8 @@ LABEL_26:
         v14[1] = 3221225472;
         v14[2] = sub_1000D6404;
         v14[3] = &unk_100328378;
-        v15 = v6;
-        v16 = v7;
+        v15 = dsCopy;
+        v16 = blockCopy;
         [v13 getTasksWithCompletionHandler:v14];
 
         v12 = v12 + 1;
@@ -552,14 +552,14 @@ LABEL_26:
   }
 }
 
-- (void)_cleanupForDatabaseID:(id)a3
+- (void)_cleanupForDatabaseID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  v12 = v4;
+  dCopy = d;
+  v5 = dCopy;
+  v12 = dCopy;
   if (self->_progress)
   {
-    v6 = [v4 longLongValue];
+    longLongValue = [dCopy longLongValue];
     v7 = [(NSMutableArray *)self->_progress count];
     if (v7 >= 1)
     {
@@ -567,7 +567,7 @@ LABEL_26:
       do
       {
         v9 = [(NSMutableArray *)self->_progress objectAtIndex:v8 - 2];
-        if ([v9 uploadDatabaseIdentifier] == v6)
+        if ([v9 uploadDatabaseIdentifier] == longLongValue)
         {
           [(NSMutableArray *)self->_progress removeObjectAtIndex:v8 - 2];
         }
@@ -592,15 +592,15 @@ LABEL_26:
   [(NSMutableArray *)self->_uploadDatabaseIDs removeObject:v5];
 }
 
-- (void)_failUploadWithDatabaseID:(id)a3 error:(id)a4
+- (void)_failUploadWithDatabaseID:(id)d error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
-  [(DirectUploadSessionController *)self _cleanupForDatabaseID:v8];
-  v7 = [(DirectUploadSessionController *)self delegate];
+  dCopy = d;
+  errorCopy = error;
+  [(DirectUploadSessionController *)self _cleanupForDatabaseID:dCopy];
+  delegate = [(DirectUploadSessionController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 uploadSessionController:self uploadDidFailWithDatabaseID:objc_msgSend(v8 error:{"longLongValue"), v6}];
+    [delegate uploadSessionController:self uploadDidFailWithDatabaseID:objc_msgSend(dCopy error:{"longLongValue"), errorCopy}];
   }
 }
 
@@ -616,11 +616,11 @@ LABEL_26:
 
   if ([(NSMutableArray *)self->_progress count])
   {
-    v5 = [(DirectUploadSessionController *)self delegate];
+    delegate = [(DirectUploadSessionController *)self delegate];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
 
-      v5 = 0;
+      delegate = 0;
     }
 
     v30 = objc_alloc_init(NSMutableArray);
@@ -628,7 +628,7 @@ LABEL_26:
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v28 = self;
+    selfCopy = self;
     obj = self->_progress;
     v32 = [(NSMutableArray *)obj countByEnumeratingWithState:&v33 objects:v43 count:16];
     if (v32)
@@ -646,29 +646,29 @@ LABEL_26:
           }
 
           v9 = *(*(&v33 + 1) + 8 * i);
-          v10 = [v9 countOfBytesExpectedToSend];
-          if (v10 >= 1)
+          countOfBytesExpectedToSend = [v9 countOfBytesExpectedToSend];
+          if (countOfBytesExpectedToSend >= 1)
           {
-            v11 = v10;
-            v12 = [v7[412] sharedDaemonConfig];
-            if (!v12)
+            v11 = countOfBytesExpectedToSend;
+            sharedDaemonConfig = [v7[412] sharedDaemonConfig];
+            if (!sharedDaemonConfig)
             {
-              v12 = [v7[412] sharedConfig];
+              sharedDaemonConfig = [v7[412] sharedConfig];
             }
 
-            v13 = [v12 shouldLog];
-            if ([v12 shouldLogToDisk])
+            shouldLog = [sharedDaemonConfig shouldLog];
+            if ([sharedDaemonConfig shouldLogToDisk])
             {
-              v14 = v13 | 2;
+              v14 = shouldLog | 2;
             }
 
             else
             {
-              v14 = v13;
+              v14 = shouldLog;
             }
 
-            v15 = [v12 OSLogObject];
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+            oSLogObject = [sharedDaemonConfig OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
             {
               v16 = v14;
             }
@@ -683,17 +683,17 @@ LABEL_26:
               v17 = objc_opt_class();
               v31 = v17;
               v18 = v7;
-              v19 = v5;
-              v20 = [v9 uploadDatabaseIdentifier];
-              v21 = [v9 countOfBytesSent];
+              v19 = delegate;
+              uploadDatabaseIdentifier = [v9 uploadDatabaseIdentifier];
+              countOfBytesSent = [v9 countOfBytesSent];
               v37 = 138412802;
               v38 = v17;
               v39 = 2048;
-              v40 = v20;
-              v5 = v19;
+              v40 = uploadDatabaseIdentifier;
+              delegate = v19;
               v7 = v18;
               v41 = 2048;
-              v42 = (v21 / v11);
+              v42 = (countOfBytesSent / v11);
               LODWORD(v26) = 32;
               v25 = &v37;
               v22 = _os_log_send_and_compose_impl();
@@ -701,9 +701,9 @@ LABEL_26:
               v6 = v27;
               if (v22)
               {
-                v15 = [NSString stringWithCString:v22 encoding:4, &v37, v26];
+                oSLogObject = [NSString stringWithCString:v22 encoding:4, &v37, v26];
                 free(v22);
-                v25 = v15;
+                v25 = oSLogObject;
                 SSFileLog();
                 goto LABEL_23;
               }
@@ -715,7 +715,7 @@ LABEL_23:
             }
           }
 
-          if (v5)
+          if (delegate)
           {
             v23 = [v9 copy];
             [v30 addObject:v23];
@@ -728,9 +728,9 @@ LABEL_23:
       while (v32);
     }
 
-    [v5 uploadSessionController:v28 uploadProgressDidChange:v30];
-    progress = v28->_progress;
-    v28->_progress = 0;
+    [delegate uploadSessionController:selfCopy uploadProgressDidChange:v30];
+    progress = selfCopy->_progress;
+    selfCopy->_progress = 0;
   }
 }
 

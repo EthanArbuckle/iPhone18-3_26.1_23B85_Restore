@@ -1,23 +1,23 @@
 @interface NDFPProvider
-+ (id)providerIDForBundle:(id)a3 sharedContainerIdentifier:(id)a4;
++ (id)providerIDForBundle:(id)bundle sharedContainerIdentifier:(id)identifier;
 - (BOOL)isForeground;
-- (NDFPProvider)initWithIdentifier:(id)a3 applicationIdentifier:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)providerDidEnterBackground:(id)a3;
-- (void)providerDidEnterForeground:(id)a3;
-- (void)removeObserver:(id)a3;
+- (NDFPProvider)initWithIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier;
+- (void)addObserver:(id)observer;
+- (void)providerDidEnterBackground:(id)background;
+- (void)providerDidEnterForeground:(id)foreground;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NDFPProvider
 
-- (void)providerDidEnterForeground:(id)a3
+- (void)providerDidEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = foregroundCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "FPProvider %@ entered foreground", buf, 0xCu);
   }
 
@@ -32,14 +32,14 @@
   self->_initializedForegroundState = 1;
 }
 
-- (void)providerDidEnterBackground:(id)a3
+- (void)providerDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   v5 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = backgroundCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "FPProvider %@ entered background", buf, 0xCu);
   }
 
@@ -54,36 +54,36 @@
   self->_initializedForegroundState = 1;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6.receiver = v5;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6.receiver = selfCopy;
   v6.super_class = NDFPProvider;
-  [(NDApplication *)&v6 removeObserver:v4];
-  if (![(NSMutableArray *)v5->super._observers count])
+  [(NDApplication *)&v6 removeObserver:observerCopy];
+  if (![(NSMutableArray *)selfCopy->super._observers count])
   {
-    [(FPProviderMonitor *)v5->_monitor removeObserver:v5 forProviderID:v5->super._bundleIdentifier];
+    [(FPProviderMonitor *)selfCopy->_monitor removeObserver:selfCopy forProviderID:selfCopy->super._bundleIdentifier];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(NSMutableArray *)v5->super._observers count])
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(NSMutableArray *)selfCopy->super._observers count])
   {
-    [(FPProviderMonitor *)v5->_monitor addObserver:v5 forProviderID:v5->super._bundleIdentifier];
+    [(FPProviderMonitor *)selfCopy->_monitor addObserver:selfCopy forProviderID:selfCopy->super._bundleIdentifier];
   }
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = NDFPProvider;
-  [(NDApplication *)&v6 addObserver:v4];
-  objc_sync_exit(v5);
+  [(NDApplication *)&v6 addObserver:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isForeground
@@ -103,20 +103,20 @@
   return self->_isForeground;
 }
 
-- (NDFPProvider)initWithIdentifier:(id)a3 applicationIdentifier:(id)a4
+- (NDFPProvider)initWithIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
   v14.receiver = self;
   v14.super_class = NDFPProvider;
-  v8 = [(NDApplication *)&v14 initWithIdentifier:v6];
+  v8 = [(NDApplication *)&v14 initWithIdentifier:identifierCopy];
   if (v8)
   {
     v9 = objc_alloc_init(FPProviderMonitor);
     monitor = v8->_monitor;
     v8->_monitor = v9;
 
-    v11 = [[NDSpringBoardApplication alloc] initWithIdentifier:v7];
+    v11 = [[NDSpringBoardApplication alloc] initWithIdentifier:applicationIdentifierCopy];
     springboardApplication = v8->_springboardApplication;
     v8->_springboardApplication = v11;
 
@@ -126,15 +126,15 @@
   return v8;
 }
 
-+ (id)providerIDForBundle:(id)a3 sharedContainerIdentifier:(id)a4
++ (id)providerIDForBundle:(id)bundle sharedContainerIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  bundleCopy = bundle;
+  identifierCopy = identifier;
+  v7 = identifierCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (bundleCopy && identifierCopy)
   {
-    v8 = [FPProviderMonitor providerIDForApplication:v5 sharedContainerIdentifier:v6];
+    v8 = [FPProviderMonitor providerIDForApplication:bundleCopy sharedContainerIdentifier:identifierCopy];
   }
 
   return v8;

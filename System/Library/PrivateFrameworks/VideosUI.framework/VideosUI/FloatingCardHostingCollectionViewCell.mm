@@ -7,7 +7,7 @@
 
 - (BOOL)_disableRasterizeInAnimations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E39C4A08();
 
   return v3 & 1;
@@ -15,7 +15,7 @@
 
 - (void)vui_prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E39C4C94();
 }
 

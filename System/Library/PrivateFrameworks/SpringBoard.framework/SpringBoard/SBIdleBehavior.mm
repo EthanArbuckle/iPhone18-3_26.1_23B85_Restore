@@ -1,18 +1,18 @@
 @interface SBIdleBehavior
-- (SBIdleBehavior)initWithDuration:(int64_t)a3 warnMode:(int64_t)a4;
+- (SBIdleBehavior)initWithDuration:(int64_t)duration warnMode:(int64_t)mode;
 @end
 
 @implementation SBIdleBehavior
 
-- (SBIdleBehavior)initWithDuration:(int64_t)a3 warnMode:(int64_t)a4
+- (SBIdleBehavior)initWithDuration:(int64_t)duration warnMode:(int64_t)mode
 {
   v7.receiver = self;
   v7.super_class = SBIdleBehavior;
   result = [(SBIdleBehavior *)&v7 init];
   if (result)
   {
-    result->_duration = a3;
-    result->_warnMode = a4;
+    result->_duration = duration;
+    result->_warnMode = mode;
   }
 
   return result;

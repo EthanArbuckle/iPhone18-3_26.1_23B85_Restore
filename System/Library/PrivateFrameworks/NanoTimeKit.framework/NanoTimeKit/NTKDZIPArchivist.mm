@@ -1,9 +1,9 @@
 @interface NTKDZIPArchivist
 + (id)sharedArchivist;
-- (BOOL)zippedDataForPath:(id)a3 toZipFile:(id)a4;
+- (BOOL)zippedDataForPath:(id)path toZipFile:(id)file;
 - (NTKDZIPArchivist)init;
-- (id)zippedDataForPath:(id)a3;
-- (void)unzipFile:(id)a3 toPath:(id)a4 completionHandler:(id)a5;
+- (id)zippedDataForPath:(id)path;
+- (void)unzipFile:(id)file toPath:(id)path completionHandler:(id)handler;
 @end
 
 @implementation NTKDZIPArchivist
@@ -42,22 +42,22 @@ void __35__NTKDZIPArchivist_sharedArchivist__block_invoke()
   return v2;
 }
 
-- (void)unzipFile:(id)a3 toPath:(id)a4 completionHandler:(id)a5
+- (void)unzipFile:(id)file toPath:(id)path completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  pathCopy = path;
+  handlerCopy = handler;
   unzipQueue = self->_unzipQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__NTKDZIPArchivist_unzipFile_toPath_completionHandler___block_invoke;
   block[3] = &unk_27877DC88;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = fileCopy;
+  v17 = pathCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = pathCopy;
+  v14 = fileCopy;
   dispatch_async(unzipQueue, block);
 }
 
@@ -127,15 +127,15 @@ LABEL_5:
   return (*(*(a1 + 48) + 16))();
 }
 
-- (id)zippedDataForPath:(id)a3
+- (id)zippedDataForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = NSTemporaryDirectory();
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 stringByAppendingPathComponent:v7];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v5 stringByAppendingPathComponent:uUIDString];
 
-  LODWORD(self) = [(NTKDZIPArchivist *)self zippedDataForPath:v4 toZipFile:v8];
+  LODWORD(self) = [(NTKDZIPArchivist *)self zippedDataForPath:pathCopy toZipFile:v8];
   if (self)
   {
     v14 = 0;
@@ -158,18 +158,18 @@ LABEL_5:
     v9 = 0;
   }
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  [v12 removeItemAtPath:v8 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtPath:v8 error:0];
 
   return v9;
 }
 
-- (BOOL)zippedDataForPath:(id)a3 toZipFile:(id)a4
+- (BOOL)zippedDataForPath:(id)path toZipFile:(id)file
 {
-  if (a3)
+  if (path)
   {
 
-    return _createArchive(a3, a4);
+    return _createArchive(path, file);
   }
 
   else

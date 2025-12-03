@@ -1,27 +1,27 @@
 @interface SYCompressedFileOutputStream
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (SYCompressedFileOutputStream)initWithURL:(id)a3 append:(BOOL)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (SYCompressedFileOutputStream)initWithURL:(id)l append:(BOOL)append;
 - (id)delegate;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (id)streamError;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (unint64_t)streamStatus;
-- (void)_SY_notifyOnQueue:(id)a3 handler:(id)a4;
-- (void)_postEventToDelegate:(unint64_t)a3;
+- (void)_SY_notifyOnQueue:(id)queue handler:(id)handler;
+- (void)_postEventToDelegate:(unint64_t)delegate;
 - (void)close;
 - (void)dealloc;
 - (void)open;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
+- (void)setDelegate:(id)delegate;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation SYCompressedFileOutputStream
 
-- (SYCompressedFileOutputStream)initWithURL:(id)a3 append:(BOOL)a4
+- (SYCompressedFileOutputStream)initWithURL:(id)l append:(BOOL)append
 {
-  v6 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = SYCompressedFileOutputStream;
   v7 = [(SYCompressedFileOutputStream *)&v15 init];
@@ -29,11 +29,11 @@
   if (v7)
   {
     v7->_fd = -1;
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     url = v8->_url;
     v8->_url = v9;
 
-    v8->_append = a4;
+    v8->_append = append;
     v8->_level = -1;
     v8->_internalLock._os_unfair_lock_opaque = 0;
     os_unfair_lock_lock(&v8->_internalLock);
@@ -57,11 +57,11 @@
   [(SYCompressedFileOutputStream *)&v3 dealloc];
 }
 
-- (void)_postEventToDelegate:(unint64_t)a3
+- (void)_postEventToDelegate:(unint64_t)delegate
 {
   os_unfair_lock_lock(&self->_internalLock);
   WeakRetained = objc_loadWeakRetained(&self->_internal->_delegate);
-  [WeakRetained stream:self handleEvent:a3];
+  [WeakRetained stream:self handleEvent:delegate];
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -75,15 +75,15 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!v4)
+  selfCopy = delegate;
+  if (!selfCopy)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  obj = v4;
+  obj = selfCopy;
   os_unfair_lock_lock(&self->_internalLock);
   objc_storeWeak(&self->_internal->_delegate, obj);
   os_unfair_lock_unlock(&self->_internalLock);
@@ -106,20 +106,20 @@
   return status;
 }
 
-- (void)_SY_notifyOnQueue:(id)a3 handler:(id)a4
+- (void)_SY_notifyOnQueue:(id)queue handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->_internalLock);
-  [(_SYStreamGuts *)self->_internal setEventHandler:v6 queue:v7];
+  [(_SYStreamGuts *)self->_internal setEventHandler:handlerCopy queue:queueCopy];
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  v13 = a3;
-  v6 = a4;
+  loopCopy = loop;
+  modeCopy = mode;
   os_unfair_lock_lock(&self->_internalLock);
   internal = self->_internal;
   if (!internal->_runloopSource)
@@ -127,9 +127,9 @@
     [(_SYStreamGuts *)internal createRunloopSourceForStream:self];
   }
 
-  v8 = [v13 getCFRunLoop];
+  getCFRunLoop = [loopCopy getCFRunLoop];
   runloopSource = self->_internal->_runloopSource;
-  v10 = [(__CFString *)v6 isEqualToString:*MEMORY[0x1E695D918]];
+  v10 = [(__CFString *)modeCopy isEqualToString:*MEMORY[0x1E695D918]];
   v11 = *MEMORY[0x1E695E8E0];
   if (v10)
   {
@@ -138,23 +138,23 @@
 
   else
   {
-    v12 = v6;
+    v12 = modeCopy;
   }
 
-  CFRunLoopAddSource(v8, runloopSource, v12);
+  CFRunLoopAddSource(getCFRunLoop, runloopSource, v12);
   os_unfair_lock_unlock(&self->_internalLock);
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
-  v12 = a3;
-  v6 = a4;
+  loopCopy = loop;
+  modeCopy = mode;
   os_unfair_lock_lock(&self->_internalLock);
   if (self->_internal->_runloopSource)
   {
-    v7 = [v12 getCFRunLoop];
+    getCFRunLoop = [loopCopy getCFRunLoop];
     runloopSource = self->_internal->_runloopSource;
-    v9 = [(__CFString *)v6 isEqualToString:*MEMORY[0x1E695D918]];
+    v9 = [(__CFString *)modeCopy isEqualToString:*MEMORY[0x1E695D918]];
     v10 = *MEMORY[0x1E695E8E0];
     if (v9)
     {
@@ -163,10 +163,10 @@
 
     else
     {
-      v11 = v6;
+      v11 = modeCopy;
     }
 
-    CFRunLoopRemoveSource(v7, runloopSource, v11);
+    CFRunLoopRemoveSource(getCFRunLoop, runloopSource, v11);
     os_unfair_lock_unlock(&self->_internalLock);
   }
 }
@@ -197,9 +197,9 @@
     [v5 appendFormat:@"%ld", level];
   }
 
-  v7 = [(NSURL *)self->_url filePathURL];
-  v8 = [v7 absoluteURL];
-  v9 = [v8 fileSystemRepresentation];
+  filePathURL = [(NSURL *)self->_url filePathURL];
+  absoluteURL = [filePathURL absoluteURL];
+  fileSystemRepresentation = [absoluteURL fileSystemRepresentation];
 
   if (self->_append)
   {
@@ -214,14 +214,14 @@
   v11 = self->_class;
   if (v11)
   {
-    self->_fd = open_dprotected_np(v9, v10, v11, 0, 436);
+    self->_fd = open_dprotected_np(fileSystemRepresentation, v10, v11, 0, 436);
   }
 
   else
   {
-    v12 = [(NSURL *)self->_url filePathURL];
-    v13 = [v12 absoluteURL];
-    self->_fd = open([v13 fileSystemRepresentation], v10, 436);
+    filePathURL2 = [(NSURL *)self->_url filePathURL];
+    absoluteURL2 = [filePathURL2 absoluteURL];
+    self->_fd = open([absoluteURL2 fileSystemRepresentation], v10, 436);
   }
 
   os_unfair_lock_lock(&self->_internalLock);
@@ -260,20 +260,20 @@ LABEL_18:
 
 - (void)close
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  file = v2->_file;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  file = selfCopy->_file;
   if (file)
   {
-    gzclose(v2->_file);
-    v2->_fd = -1;
-    v2->_file = 0;
-    os_unfair_lock_lock(&v2->_internalLock);
-    v2->_internal->_status = 6;
-    os_unfair_lock_unlock(&v2->_internalLock);
-    v7 = MEMORY[0x1E12E11B0](v2->_onClose);
-    onClose = v2->_onClose;
-    v2->_onClose = 0;
+    gzclose(selfCopy->_file);
+    selfCopy->_fd = -1;
+    selfCopy->_file = 0;
+    os_unfair_lock_lock(&selfCopy->_internalLock);
+    selfCopy->_internal->_status = 6;
+    os_unfair_lock_unlock(&selfCopy->_internalLock);
+    v7 = MEMORY[0x1E12E11B0](selfCopy->_onClose);
+    onClose = selfCopy->_onClose;
+    selfCopy->_onClose = 0;
   }
 
   else
@@ -281,7 +281,7 @@ LABEL_18:
     v7 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = v7;
   if (file)
@@ -296,20 +296,20 @@ LABEL_18:
 
   if (!v6)
   {
-    (*(v7 + 16))(v7, v2);
+    (*(v7 + 16))(v7, selfCopy);
     v5 = v7;
   }
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
-  v4 = a4;
+  lengthCopy = length;
   os_unfair_lock_lock(&self->_internalLock);
   internal = self->_internal;
   if (internal->_status == 2)
   {
     internal->_status = 4;
-    v8 = gzwrite(self->_file, a3, v4);
+    v8 = gzwrite(self->_file, write, lengthCopy);
     self->_internal->_status = 2;
     if (v8)
     {
@@ -354,24 +354,24 @@ LABEL_18:
   return v9;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"protection-class"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"protection-class"])
   {
     v14 = -1;
     fd = self->_fd;
     if (fd == -1)
     {
-      v8 = [(NSURL *)self->_url filePathURL];
-      v9 = [v8 absoluteURL];
-      v10 = [v9 fileSystemRepresentation];
+      filePathURL = [(NSURL *)self->_url filePathURL];
+      absoluteURL = [filePathURL absoluteURL];
+      fileSystemRepresentation = [absoluteURL fileSystemRepresentation];
 
       v15 = 0;
       v16[1] = 0;
       v16[2] = 0;
       v16[0] = 0x4000000000000005;
-      v11 = getattrlist(v10, v16, &v15, 8uLL, 1u);
+      v11 = getattrlist(fileSystemRepresentation, v16, &v15, 8uLL, 1u);
       v6 = HIDWORD(v15);
       if (v11)
       {
@@ -402,29 +402,29 @@ LABEL_18:
   else
   {
     os_unfair_lock_lock(&self->_internalLock);
-    v7 = [(_SYStreamGuts *)self->_internal propertyForKey:v4];
+    v7 = [(_SYStreamGuts *)self->_internal propertyForKey:keyCopy];
     os_unfair_lock_unlock(&self->_internalLock);
   }
 
   return v7;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 isEqualToString:@"protection-class"])
+  propertyCopy = property;
+  keyCopy = key;
+  if (![keyCopy isEqualToString:@"protection-class"])
   {
     os_unfair_lock_lock(&self->_internalLock);
-    [(_SYStreamGuts *)self->_internal storeProperty:v6 forKey:v7];
+    [(_SYStreamGuts *)self->_internal storeProperty:propertyCopy forKey:keyCopy];
     os_unfair_lock_unlock(&self->_internalLock);
 LABEL_7:
     v9 = 1;
     goto LABEL_9;
   }
 
-  if (![v6 isNSString])
+  if (![propertyCopy isNSString])
   {
 LABEL_8:
     v9 = 0;
@@ -433,24 +433,24 @@ LABEL_8:
 
   if (self->_fd == -1)
   {
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v16 = *MEMORY[0x1E696A3A0];
-    v17[0] = v6;
+    v17[0] = propertyCopy;
     v9 = 1;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    v14 = [(NSURL *)self->_url path];
-    v15 = [v12 setAttributes:v13 ofItemAtPath:v14 error:0];
+    path = [(NSURL *)self->_url path];
+    v15 = [defaultManager setAttributes:v13 ofItemAtPath:path error:0];
 
     if (v15)
     {
       goto LABEL_9;
     }
 
-    self->_class = _SYProtectionClassFromString(v6);
+    self->_class = _SYProtectionClassFromString(propertyCopy);
     goto LABEL_7;
   }
 
-  v8 = _SYProtectionClassFromString(v6);
+  v8 = _SYProtectionClassFromString(propertyCopy);
   if (!v8)
   {
     goto LABEL_8;
@@ -463,21 +463,21 @@ LABEL_9:
   return v9;
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (v6 == self)
+  streamCopy = stream;
+  if (streamCopy == self)
   {
-    if (a4 <= 3)
+    if (event <= 3)
     {
-      if (a4 == 1)
+      if (event == 1)
       {
         v7 = 192;
       }
 
       else
       {
-        if (a4 != 2)
+        if (event != 2)
         {
           goto LABEL_17;
         }
@@ -488,7 +488,7 @@ LABEL_9:
 
     else
     {
-      switch(a4)
+      switch(event)
       {
         case 4uLL:
           v7 = 208;

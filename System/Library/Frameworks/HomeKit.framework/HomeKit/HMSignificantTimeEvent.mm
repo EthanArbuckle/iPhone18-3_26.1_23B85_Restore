@@ -1,36 +1,36 @@
 @interface HMSignificantTimeEvent
-+ (id)createWithDictionary:(id)a3 home:(id)a4;
-- (BOOL)mergeFromNewObject:(id)a3;
++ (id)createWithDictionary:(id)dictionary home:(id)home;
+- (BOOL)mergeFromNewObject:(id)object;
 - (HMSignificantEvent)significantEvent;
-- (HMSignificantTimeEvent)initWithCoder:(id)a3;
-- (HMSignificantTimeEvent)initWithDict:(id)a3 significantEvent:(id)a4 offset:(id)a5;
+- (HMSignificantTimeEvent)initWithCoder:(id)coder;
+- (HMSignificantTimeEvent)initWithDict:(id)dict significantEvent:(id)event offset:(id)offset;
 - (HMSignificantTimeEvent)initWithSignificantEvent:(HMSignificantEvent)significantEvent offset:(NSDateComponents *)offset;
 - (NSDateComponents)offset;
 - (id)_serializeForAdd;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_updateFromDictionary:(id)a3;
-- (void)setOffset:(id)a3;
-- (void)setSignificantEvent:(id)a3;
-- (void)updateOffset:(id)a3 completionHandler:(id)a4;
-- (void)updateSignificantEvent:(id)a3 completionHandler:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_updateFromDictionary:(id)dictionary;
+- (void)setOffset:(id)offset;
+- (void)setSignificantEvent:(id)event;
+- (void)updateOffset:(id)offset completionHandler:(id)handler;
+- (void)updateSignificantEvent:(id)event completionHandler:(id)handler;
 @end
 
 @implementation HMSignificantTimeEvent
 
-- (HMSignificantTimeEvent)initWithCoder:(id)a3
+- (HMSignificantTimeEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HMSignificantTimeEvent;
-  v5 = [(HMEvent *)&v11 initWithCoder:v4];
+  v5 = [(HMEvent *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSignificantTimeEventSignificantEvent"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSignificantTimeEventSignificantEvent"];
     significantEvent = v5->_significantEvent;
     v5->_significantEvent = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSignificantTimeEventOffset"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSignificantTimeEventOffset"];
     offset = v5->_offset;
     v5->_offset = v8;
   }
@@ -38,43 +38,43 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMMutableSignificantTimeEvent alloc];
-  v5 = [(HMSignificantTimeEvent *)self significantEvent];
-  v6 = [(HMSignificantTimeEvent *)self offset];
-  v7 = [(HMSignificantTimeEvent *)v4 initWithSignificantEvent:v5 offset:v6];
+  significantEvent = [(HMSignificantTimeEvent *)self significantEvent];
+  offset = [(HMSignificantTimeEvent *)self offset];
+  v7 = [(HMSignificantTimeEvent *)v4 initWithSignificantEvent:significantEvent offset:offset];
 
   return v7;
 }
 
-+ (id)createWithDictionary:(id)a3 home:(id)a4
++ (id)createWithDictionary:(id)dictionary home:(id)home
 {
-  v4 = a3;
-  v5 = [v4 hmf_stringForKey:@"kSignificantTimeEventSignificantEvent"];
-  v6 = [v4 dateComponentsForKey:@"kSignificantTimeEventOffset"];
-  v7 = [[HMSignificantTimeEvent alloc] initWithDict:v4 significantEvent:v5 offset:v6];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy hmf_stringForKey:@"kSignificantTimeEventSignificantEvent"];
+  v6 = [dictionaryCopy dateComponentsForKey:@"kSignificantTimeEventOffset"];
+  v7 = [[HMSignificantTimeEvent alloc] initWithDict:dictionaryCopy significantEvent:v5 offset:v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMSignificantTimeEvent alloc];
-  v5 = [(HMSignificantTimeEvent *)self significantEvent];
-  v6 = [(HMSignificantTimeEvent *)self offset];
-  v7 = [(HMSignificantTimeEvent *)v4 initWithSignificantEvent:v5 offset:v6];
+  significantEvent = [(HMSignificantTimeEvent *)self significantEvent];
+  offset = [(HMSignificantTimeEvent *)self offset];
+  v7 = [(HMSignificantTimeEvent *)v4 initWithSignificantEvent:significantEvent offset:offset];
 
   return v7;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = HMSignificantTimeEvent;
-  v5 = [(HMEvent *)&v18 mergeFromNewObject:v4];
-  v6 = v4;
+  v5 = [(HMEvent *)&v18 mergeFromNewObject:objectCopy];
+  v6 = objectCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -90,26 +90,26 @@
 
   if (v8)
   {
-    v9 = [(HMSignificantTimeEvent *)self significantEvent];
-    v10 = [v8 significantEvent];
+    significantEvent = [(HMSignificantTimeEvent *)self significantEvent];
+    significantEvent2 = [v8 significantEvent];
     v11 = HMFEqualObjects();
 
     if ((v11 & 1) == 0)
     {
-      v12 = [v8 significantEvent];
-      [(HMSignificantTimeEvent *)self setSignificantEvent:v12];
+      significantEvent3 = [v8 significantEvent];
+      [(HMSignificantTimeEvent *)self setSignificantEvent:significantEvent3];
 
       v5 = 1;
     }
 
-    v13 = [(HMSignificantTimeEvent *)self offset];
-    v14 = [v8 offset];
+    offset = [(HMSignificantTimeEvent *)self offset];
+    offset2 = [v8 offset];
     v15 = HMFEqualObjects();
 
     if ((v15 & 1) == 0)
     {
-      v16 = [v8 offset];
-      [(HMSignificantTimeEvent *)self setOffset:v16];
+      offset3 = [v8 offset];
+      [(HMSignificantTimeEvent *)self setOffset:offset3];
 
       v5 = 1;
     }
@@ -118,17 +118,17 @@
   return v5;
 }
 
-- (void)updateOffset:(id)a3 completionHandler:(id)a4
+- (void)updateOffset:(id)offset completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMEvent *)self context];
-  if (!v7)
+  offsetCopy = offset;
+  handlerCopy = handler;
+  context = [(HMEvent *)self context];
+  if (!handlerCopy)
   {
     v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMSignificantTimeEvent updateOffset:completionHandler:]", @"completion"];
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -145,16 +145,16 @@
     objc_exception_throw(v31);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [(HMSignificantTimeEvent *)self offset];
-    v11 = [v10 isEqual:v6];
+    offset = [(HMSignificantTimeEvent *)self offset];
+    v11 = [offset isEqual:offsetCopy];
 
     if (v11)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy2 = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -162,34 +162,34 @@
         *buf = 138543618;
         v35 = v15;
         v36 = 2112;
-        v37 = v6;
+        v37 = offsetCopy;
         _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@Offset is already %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v12);
-      v16 = [v9 delegateCaller];
-      [v16 callCompletion:v7 error:0];
+      delegateCaller = [v9 delegateCaller];
+      [delegateCaller callCompletion:handlerCopy error:0];
     }
 
     else
     {
-      v21 = encodeRootObject(v6);
+      v21 = encodeRootObject(offsetCopy);
       if (v21)
       {
-        v16 = v21;
+        delegateCaller = v21;
         v32 = @"kSignificantTimeEventOffset";
         v33 = v21;
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-        [(HMEvent *)self _updateEventWithPayload:v22 completionHandler:v7];
+        [(HMEvent *)self _updateEventWithPayload:v22 completionHandler:handlerCopy];
       }
 
       else
       {
-        v23 = [v9 delegateCaller];
+        delegateCaller2 = [v9 delegateCaller];
         v24 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-        [v23 callCompletion:v7 error:v24];
+        [delegateCaller2 callCompletion:handlerCopy error:v24];
 
-        v16 = 0;
+        delegateCaller = 0;
       }
     }
   }
@@ -197,7 +197,7 @@
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -210,24 +210,24 @@
     }
 
     objc_autoreleasePoolPop(v17);
-    v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    v7[2](v7, v16);
+    delegateCaller = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    handlerCopy[2](handlerCopy, delegateCaller);
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSignificantEvent:(id)a3 completionHandler:(id)a4
+- (void)updateSignificantEvent:(id)event completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMEvent *)self context];
-  if (!v7)
+  eventCopy = event;
+  handlerCopy = handler;
+  context = [(HMEvent *)self context];
+  if (!handlerCopy)
   {
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMSignificantTimeEvent updateSignificantEvent:completionHandler:]", @"completion"];
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -244,16 +244,16 @@
     objc_exception_throw(v27);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [(HMSignificantTimeEvent *)self significantEvent];
-    v11 = [v10 isEqualToString:v6];
+    significantEvent = [(HMSignificantTimeEvent *)self significantEvent];
+    v11 = [significantEvent isEqualToString:eventCopy];
 
     if (v11)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy2 = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -261,28 +261,28 @@
         *buf = 138543618;
         v31 = v15;
         v32 = 2112;
-        v33 = v6;
+        v33 = eventCopy;
         _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@Significant event is already %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v12);
-      v16 = [v9 delegateCaller];
-      [v16 callCompletion:v7 error:0];
+      delegateCaller = [v9 delegateCaller];
+      [delegateCaller callCompletion:handlerCopy error:0];
     }
 
     else
     {
       v28 = @"kSignificantTimeEventSignificantEvent";
-      v29 = v6;
-      v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-      [(HMEvent *)self _updateEventWithPayload:v16 completionHandler:v7];
+      v29 = eventCopy;
+      delegateCaller = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
+      [(HMEvent *)self _updateEventWithPayload:delegateCaller completionHandler:handlerCopy];
     }
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -295,26 +295,26 @@
     }
 
     objc_autoreleasePoolPop(v17);
-    v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    v7[2](v7, v16);
+    delegateCaller = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    handlerCopy[2](handlerCopy, delegateCaller);
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateFromDictionary:(id)a3
+- (void)_updateFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = HMSignificantTimeEvent;
-  [(HMEvent *)&v7 _updateFromDictionary:v4];
-  v5 = [v4 hmf_stringForKey:@"kSignificantTimeEventSignificantEvent"];
+  [(HMEvent *)&v7 _updateFromDictionary:dictionaryCopy];
+  v5 = [dictionaryCopy hmf_stringForKey:@"kSignificantTimeEventSignificantEvent"];
   if (v5)
   {
     [(HMSignificantTimeEvent *)self setSignificantEvent:v5];
   }
 
-  v6 = [v4 dateComponentsForKey:@"kSignificantTimeEventOffset"];
+  v6 = [dictionaryCopy dateComponentsForKey:@"kSignificantTimeEventOffset"];
   if (v6)
   {
     [(HMSignificantTimeEvent *)self setOffset:v6];
@@ -325,18 +325,18 @@
 {
   v11.receiver = self;
   v11.super_class = HMSignificantTimeEvent;
-  v3 = [(HMEvent *)&v11 _serializeForAdd];
-  v4 = [v3 mutableCopy];
+  _serializeForAdd = [(HMEvent *)&v11 _serializeForAdd];
+  v4 = [_serializeForAdd mutableCopy];
 
-  v5 = [(HMSignificantTimeEvent *)self significantEvent];
-  [v4 setObject:v5 forKeyedSubscript:@"kSignificantTimeEventSignificantEvent"];
+  significantEvent = [(HMSignificantTimeEvent *)self significantEvent];
+  [v4 setObject:significantEvent forKeyedSubscript:@"kSignificantTimeEventSignificantEvent"];
 
-  v6 = [(HMSignificantTimeEvent *)self offset];
+  offset = [(HMSignificantTimeEvent *)self offset];
 
-  if (v6)
+  if (offset)
   {
-    v7 = [(HMSignificantTimeEvent *)self offset];
-    v8 = encodeRootObject(v7);
+    offset2 = [(HMSignificantTimeEvent *)self offset];
+    v8 = encodeRootObject(offset2);
     [v4 setObject:v8 forKeyedSubscript:@"kSignificantTimeEventOffset"];
   }
 
@@ -345,12 +345,12 @@
   return v9;
 }
 
-- (void)setOffset:(id)a3
+- (void)setOffset:(id)offset
 {
-  v4 = a3;
+  offsetCopy = offset;
   os_unfair_lock_lock_with_options();
   offset = self->_offset;
-  self->_offset = v4;
+  self->_offset = offsetCopy;
 
   os_unfair_lock_unlock(&self->super.super._lock);
 }
@@ -364,12 +364,12 @@
   return v3;
 }
 
-- (void)setSignificantEvent:(id)a3
+- (void)setSignificantEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   os_unfair_lock_lock_with_options();
   significantEvent = self->_significantEvent;
-  self->_significantEvent = v4;
+  self->_significantEvent = eventCopy;
 
   os_unfair_lock_unlock(&self->super.super._lock);
 }
@@ -383,18 +383,18 @@
   return v3;
 }
 
-- (HMSignificantTimeEvent)initWithDict:(id)a3 significantEvent:(id)a4 offset:(id)a5
+- (HMSignificantTimeEvent)initWithDict:(id)dict significantEvent:(id)event offset:(id)offset
 {
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  offsetCopy = offset;
   v14.receiver = self;
   v14.super_class = HMSignificantTimeEvent;
-  v11 = [(HMEvent *)&v14 initWithDict:a3];
+  v11 = [(HMEvent *)&v14 initWithDict:dict];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_significantEvent, a4);
-    objc_storeStrong(&v12->_offset, a5);
+    objc_storeStrong(&v11->_significantEvent, event);
+    objc_storeStrong(&v12->_offset, offset);
   }
 
   return v12;
@@ -407,8 +407,8 @@
   v6 = MEMORY[0x1E696AFB0];
   v7 = offset;
   v8 = significantEvent;
-  v9 = [v6 UUID];
-  v15[0] = v9;
+  uUID = [v6 UUID];
+  v15[0] = uUID;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v11 = [(HMSignificantTimeEvent *)self initWithDict:v10 significantEvent:v8 offset:v7];
 

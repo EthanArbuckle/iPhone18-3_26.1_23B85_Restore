@@ -1,20 +1,20 @@
 @interface BKUIAlertController
 - (BKUIAlertControllerListener)alertListener;
-- (void)addAction:(id)a3;
-- (void)bkui_addPreferredAction:(id)a3;
+- (void)addAction:(id)action;
+- (void)bkui_addPreferredAction:(id)action;
 @end
 
 @implementation BKUIAlertController
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 handler];
-  v6 = [v5 copy];
+  actionCopy = action;
+  handler = [actionCopy handler];
+  v6 = [handler copy];
 
   v7 = MEMORY[0x277D750F8];
-  v8 = [v4 title];
-  v9 = [v4 style];
+  title = [actionCopy title];
+  style = [actionCopy style];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -23,7 +23,7 @@
   v13[4] = self;
   v14 = v6;
   v10 = v6;
-  v11 = [v7 actionWithTitle:v8 style:v9 handler:v13];
+  v11 = [v7 actionWithTitle:title style:style handler:v13];
 
   v12.receiver = self;
   v12.super_class = BKUIAlertController;
@@ -43,15 +43,15 @@ void __33__BKUIAlertController_addAction___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)bkui_addPreferredAction:(id)a3
+- (void)bkui_addPreferredAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 handler];
-  v6 = [v5 copy];
+  actionCopy = action;
+  handler = [actionCopy handler];
+  v6 = [handler copy];
 
   v7 = MEMORY[0x277D750F8];
-  v8 = [v4 title];
-  v9 = [v4 style];
+  title = [actionCopy title];
+  style = [actionCopy style];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -60,7 +60,7 @@ void __33__BKUIAlertController_addAction___block_invoke(uint64_t a1, void *a2)
   v14[4] = self;
   v15 = v6;
   v10 = v6;
-  v11 = [v7 actionWithTitle:v8 style:v9 handler:v14];
+  v11 = [v7 actionWithTitle:title style:style handler:v14];
 
   v13.receiver = self;
   v13.super_class = BKUIAlertController;

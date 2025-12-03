@@ -1,23 +1,23 @@
 @interface SXTextDecoration
-- (int)styleWithValue:(id)a3 withType:(int)a4;
+- (int)styleWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXTextDecoration
 
-- (int)styleWithValue:(id)a3 withType:(int)a4
+- (int)styleWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"solid"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"solid"])
   {
     v5 = 0;
   }
 
-  else if ([v4 isEqualToString:@"dashed"])
+  else if ([valueCopy isEqualToString:@"dashed"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"dotted"])
+  else if ([valueCopy isEqualToString:@"dotted"])
   {
     v5 = 2;
   }

@@ -1,27 +1,27 @@
 @interface TSCH3DGetSelectionKnobsPositionsPipelineMergeLabelBounds
-+ (id)boundsWithLabelType:(int)a3 knobsMode:(int)a4;
-- (BOOL)p_hasExtentPointsForBounds:(id)a3 returningMinPoint:(CGPoint *)a4 maxPoint:(CGPoint *)a5;
-- (CGPoint)p_maxPoint:(CGPoint)a3 otherPoint:(CGPoint)a4;
-- (CGPoint)p_minPoint:(CGPoint)a3 otherPoint:(CGPoint)a4;
-- (TSCH3DGetSelectionKnobsPositionsPipelineMergeLabelBounds)initWithLabelType:(int)a3 knobsMode:(int)a4;
-- (void)addBounds:(CGRect)a3;
++ (id)boundsWithLabelType:(int)type knobsMode:(int)mode;
+- (BOOL)p_hasExtentPointsForBounds:(id)bounds returningMinPoint:(CGPoint *)point maxPoint:(CGPoint *)maxPoint;
+- (CGPoint)p_maxPoint:(CGPoint)point otherPoint:(CGPoint)otherPoint;
+- (CGPoint)p_minPoint:(CGPoint)point otherPoint:(CGPoint)otherPoint;
+- (TSCH3DGetSelectionKnobsPositionsPipelineMergeLabelBounds)initWithLabelType:(int)type knobsMode:(int)mode;
+- (void)addBounds:(CGRect)bounds;
 - (void)addNewBoundsArray;
-- (void)mergeBoundsIntoProjectedPoints:(id)a3;
+- (void)mergeBoundsIntoProjectedPoints:(id)points;
 @end
 
 @implementation TSCH3DGetSelectionKnobsPositionsPipelineMergeLabelBounds
 
-+ (id)boundsWithLabelType:(int)a3 knobsMode:(int)a4
++ (id)boundsWithLabelType:(int)type knobsMode:(int)mode
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  v6 = [a1 alloc];
+  v4 = *&mode;
+  v5 = *&type;
+  v6 = [self alloc];
   v11 = objc_msgSend_initWithLabelType_knobsMode_(v6, v7, v8, v9, v10, v5, v4);
 
   return v11;
 }
 
-- (TSCH3DGetSelectionKnobsPositionsPipelineMergeLabelBounds)initWithLabelType:(int)a3 knobsMode:(int)a4
+- (TSCH3DGetSelectionKnobsPositionsPipelineMergeLabelBounds)initWithLabelType:(int)type knobsMode:(int)mode
 {
   v11.receiver = self;
   v11.super_class = TSCH3DGetSelectionKnobsPositionsPipelineMergeLabelBounds;
@@ -29,8 +29,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_labelType = a3;
-    v6->_knobsMode = a4;
+    v6->_labelType = type;
+    v6->_knobsMode = mode;
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     labelsBounds = v7->_labelsBounds;
     v7->_labelsBounds = v8;
@@ -46,13 +46,13 @@
   objc_msgSend_addObject_(labelsBounds, v6, v7, v8, v9);
 }
 
-- (void)addBounds:(CGRect)a3
+- (void)addBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v31 = objc_msgSend_lastObject(self->_labelsBounds, a2, a3.origin.x, a3.origin.y, a3.size.width);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v31 = objc_msgSend_lastObject(self->_labelsBounds, a2, bounds.origin.x, bounds.origin.y, bounds.size.width);
   if (!v31)
   {
     v11 = MEMORY[0x277D81150];
@@ -67,13 +67,13 @@
   objc_msgSend_addObject_(v31, v27, v28, v29, v30, v26);
 }
 
-- (CGPoint)p_minPoint:(CGPoint)a3 otherPoint:(CGPoint)a4
+- (CGPoint)p_minPoint:(CGPoint)point otherPoint:(CGPoint)otherPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  isHorizontal = objc_msgSend_p_isHorizontal(self, a2, a3.x, a3.y, a4.x);
+  y = otherPoint.y;
+  x = otherPoint.x;
+  v6 = point.y;
+  v7 = point.x;
+  isHorizontal = objc_msgSend_p_isHorizontal(self, a2, point.x, point.y, otherPoint.x);
   if (v7 >= x)
   {
     v9 = y;
@@ -130,13 +130,13 @@
   return result;
 }
 
-- (CGPoint)p_maxPoint:(CGPoint)a3 otherPoint:(CGPoint)a4
+- (CGPoint)p_maxPoint:(CGPoint)point otherPoint:(CGPoint)otherPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  isHorizontal = objc_msgSend_p_isHorizontal(self, a2, a3.x, a3.y, a4.x);
+  y = otherPoint.y;
+  x = otherPoint.x;
+  v6 = point.y;
+  v7 = point.x;
+  isHorizontal = objc_msgSend_p_isHorizontal(self, a2, point.x, point.y, otherPoint.x);
   if (v7 <= x)
   {
     v9 = y;
@@ -193,20 +193,20 @@
   return result;
 }
 
-- (BOOL)p_hasExtentPointsForBounds:(id)a3 returningMinPoint:(CGPoint *)a4 maxPoint:(CGPoint *)a5
+- (BOOL)p_hasExtentPointsForBounds:(id)bounds returningMinPoint:(CGPoint *)point maxPoint:(CGPoint *)maxPoint
 {
   v141 = *MEMORY[0x277D85DE8];
-  v129 = a3;
-  if (objc_msgSend_count(v129, v7, v8, v9, v10))
+  boundsCopy = bounds;
+  if (objc_msgSend_count(boundsCopy, v7, v8, v9, v10))
   {
     v15 = objc_msgSend_array(MEMORY[0x277CBEB18], v11, v12, v13, v14);
     v137 = 0u;
     v138 = 0u;
     v135 = 0u;
     v136 = 0u;
-    obj = v129;
+    obj = boundsCopy;
     v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v16, v17, v18, v19, &v135, v140, 16);
-    v127 = a4;
+    pointCopy = point;
     if (v21)
     {
       v25 = *v136;
@@ -351,16 +351,16 @@
         v116 = v103;
       }
 
-      if (v127)
+      if (pointCopy)
       {
-        v127->x = v115;
-        v127->y = v116;
+        pointCopy->x = v115;
+        pointCopy->y = v116;
       }
 
-      if (a5)
+      if (maxPoint)
       {
-        a5->x = v101;
-        a5->y = v103;
+        maxPoint->x = v101;
+        maxPoint->y = v103;
       }
     }
   }
@@ -373,10 +373,10 @@
   return v94;
 }
 
-- (void)mergeBoundsIntoProjectedPoints:(id)a3
+- (void)mergeBoundsIntoProjectedPoints:(id)points
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pointsCopy = points;
   v6 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
   v61 = 0u;
@@ -472,12 +472,12 @@ LABEL_21:
     *&v41 = v41;
     *&v42 = v42;
     v43 = objc_msgSend_x_y_z_w_(TSCH3DVector, v40, v41, v42, 0.0, 0.0, *&v55, *&v56);
-    objc_msgSend_addObject_(v4, v44, v45, v46, v47, v43);
+    objc_msgSend_addObject_(pointsCopy, v44, v45, v46, v47, v43);
 
     *&v48 = v19;
     *&v49 = v20;
     v7 = objc_msgSend_x_y_z_w_(TSCH3DVector, v50, v48, v49, 0.0, 0.0);
-    objc_msgSend_addObject_(v4, v51, v52, v53, v54, v7);
+    objc_msgSend_addObject_(pointsCopy, v51, v52, v53, v54, v7);
     goto LABEL_21;
   }
 

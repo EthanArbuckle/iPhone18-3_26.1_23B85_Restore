@@ -1,8 +1,8 @@
 @interface SiriGKReusableSupplementaryView
 + (id)reuseIdentifier;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setSubview:(id)a3;
+- (void)setSubview:(id)subview;
 @end
 
 @implementation SiriGKReusableSupplementaryView
@@ -16,20 +16,20 @@
   return v4;
 }
 
-- (void)setSubview:(id)a3
+- (void)setSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   [(UIView *)self->_customSubview removeFromSuperview];
   customSubview = self->_customSubview;
-  self->_customSubview = v4;
-  v6 = v4;
+  self->_customSubview = subviewCopy;
+  v6 = subviewCopy;
 
   [(SiriGKReusableSupplementaryView *)self addSubview:self->_customSubview];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self->_customSubview sizeThatFits:a3.width, a3.height];
+  [(UIView *)self->_customSubview sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

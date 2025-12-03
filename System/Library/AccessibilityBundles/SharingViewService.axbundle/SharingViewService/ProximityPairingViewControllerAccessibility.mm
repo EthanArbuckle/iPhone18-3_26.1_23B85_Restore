@@ -1,27 +1,27 @@
 @interface ProximityPairingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_pairingComplete:(id)a3;
+- (void)_pairingComplete:(id)complete;
 - (void)_showFailed;
 @end
 
 @implementation ProximityPairingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceMethod:@"_showFailed" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceMethod:@"_pairingComplete:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_dismissButton" withType:"UIButton"];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_budsBatteryView" withType:"UIView"];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_budsBatteryLabel" withType:"UILabel"];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_mainBatteryView" withType:"UIView"];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_mainBatteryLabel" withType:"UILabel"];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_caseBatteryView" withType:"UIView"];
-  [v3 validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_caseBatteryLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceMethod:@"_showFailed" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceMethod:@"_pairingComplete:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_dismissButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_budsBatteryView" withType:"UIView"];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_budsBatteryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_mainBatteryView" withType:"UIView"];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_mainBatteryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_caseBatteryView" withType:"UIView"];
+  [validationsCopy validateClass:@"ProximityPairingViewController" hasInstanceVariable:@"_caseBatteryLabel" withType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -37,7 +37,7 @@
   [v5 _accessibilitySetUserTestingIsCancelButton:1];
 
   v6 = [(ProximityPairingViewControllerAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel = [v6 accessibilityLabel];
 
   objc_initWeak(&location, self);
   v8 = [(ProximityPairingViewControllerAccessibility *)self safeValueForKey:@"_budsBatteryView"];
@@ -52,7 +52,7 @@
   [v9 _setAccessibilityValueBlock:v25];
 
   v10 = [(ProximityPairingViewControllerAccessibility *)self safeValueForKey:@"_budsBatteryView"];
-  [v10 setAccessibilityLabel:v7];
+  [v10 setAccessibilityLabel:accessibilityLabel];
 
   v11 = [(ProximityPairingViewControllerAccessibility *)self safeValueForKey:@"_mainBatteryView"];
   [v11 setIsAccessibilityElement:1];
@@ -66,7 +66,7 @@
   [v12 _setAccessibilityValueBlock:v23];
 
   v13 = [(ProximityPairingViewControllerAccessibility *)self safeValueForKey:@"_mainBatteryView"];
-  [v13 setAccessibilityLabel:v7];
+  [v13 setAccessibilityLabel:accessibilityLabel];
 
   v14 = [(ProximityPairingViewControllerAccessibility *)self safeValueForKey:@"_caseBatteryView"];
   [v14 setIsAccessibilityElement:1];
@@ -119,16 +119,16 @@ id __89__ProximityPairingViewControllerAccessibility__accessibilityLoadAccessibi
 - (BOOL)accessibilityPerformEscape
 {
   v2 = [(ProximityPairingViewControllerAccessibility *)self safeValueForKey:@"_dismissButton"];
-  v3 = [v2 accessibilityActivate];
+  accessibilityActivate = [v2 accessibilityActivate];
 
-  return v3;
+  return accessibilityActivate;
 }
 
-- (void)_pairingComplete:(id)a3
+- (void)_pairingComplete:(id)complete
 {
   v3.receiver = self;
   v3.super_class = ProximityPairingViewControllerAccessibility;
-  [(ProximityPairingViewControllerAccessibility *)&v3 _pairingComplete:a3];
+  [(ProximityPairingViewControllerAccessibility *)&v3 _pairingComplete:complete];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 

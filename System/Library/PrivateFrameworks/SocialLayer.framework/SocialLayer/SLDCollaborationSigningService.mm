@@ -1,9 +1,9 @@
 @interface SLDCollaborationSigningService
 + (id)sharedService;
-- (BOOL)allowsConnection:(id)a3;
+- (BOOL)allowsConnection:(id)connection;
 - (SLDCollaborationSigningService)init;
-- (id)signData:(id)a3 forCollaborationIdentifier:(id)a4 trackingPreventionSalt:(id)a5 reply:(id)a6;
-- (id)signSourceProcessWithMetadata:(id)a3 reply:(id)a4;
+- (id)signData:(id)data forCollaborationIdentifier:(id)identifier trackingPreventionSalt:(id)salt reply:(id)reply;
+- (id)signSourceProcessWithMetadata:(id)metadata reply:(id)reply;
 @end
 
 @implementation SLDCollaborationSigningService
@@ -53,10 +53,10 @@ uint64_t __47__SLDCollaborationSigningService_sharedService__block_invoke()
   return v2;
 }
 
-- (BOOL)allowsConnection:(id)a3
+- (BOOL)allowsConnection:(id)connection
 {
-  v3 = a3;
-  if (SLDConnectionIsEntitledForCollaborationHandshake(v3) & 1) != 0 || (SLDConnectionHasPublicEntitlement(v3) & 1) != 0 || (SLDConnectionHasLegacyHighlightsEntitlement(v3))
+  connectionCopy = connection;
+  if (SLDConnectionIsEntitledForCollaborationHandshake(connectionCopy) & 1) != 0 || (SLDConnectionHasPublicEntitlement(connectionCopy) & 1) != 0 || (SLDConnectionHasLegacyHighlightsEntitlement(connectionCopy))
   {
     v4 = 1;
   }
@@ -66,7 +66,7 @@ uint64_t __47__SLDCollaborationSigningService_sharedService__block_invoke()
     v6 = SLDaemonLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(SLDCollaborationSigningService *)v3 allowsConnection:v6, v7, v8, v9, v10, v11, v12];
+      [(SLDCollaborationSigningService *)connectionCopy allowsConnection:v6, v7, v8, v9, v10, v11, v12];
     }
 
     v4 = 0;
@@ -75,20 +75,20 @@ uint64_t __47__SLDCollaborationSigningService_sharedService__block_invoke()
   return v4;
 }
 
-- (id)signData:(id)a3 forCollaborationIdentifier:(id)a4 trackingPreventionSalt:(id)a5 reply:(id)a6
+- (id)signData:(id)data forCollaborationIdentifier:(id)identifier trackingPreventionSalt:(id)salt reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  identifierCopy = identifier;
+  saltCopy = salt;
+  replyCopy = reply;
   v14 = SLDaemonLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     *&buf[4] = "[SLDCollaborationSigningService signData:forCollaborationIdentifier:trackingPreventionSalt:reply:]";
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = identifierCopy;
     _os_log_impl(&dword_231772000, v14, OS_LOG_TYPE_DEFAULT, "%s collaborationIdentifier: %@", buf, 0x16u);
   }
 
@@ -101,7 +101,7 @@ uint64_t __47__SLDCollaborationSigningService_sharedService__block_invoke()
   aBlock[2] = __99__SLDCollaborationSigningService_signData_forCollaborationIdentifier_trackingPreventionSalt_reply___block_invoke;
   aBlock[3] = &unk_278926028;
   v41 = buf;
-  v15 = v13;
+  v15 = replyCopy;
   v40 = v15;
   v16 = _Block_copy(aBlock);
   v37[0] = MEMORY[0x277D85DD0];
@@ -115,12 +115,12 @@ uint64_t __47__SLDCollaborationSigningService_sharedService__block_invoke()
   v29 = 3221225472;
   v30 = __99__SLDCollaborationSigningService_signData_forCollaborationIdentifier_trackingPreventionSalt_reply___block_invoke_13;
   v31 = &unk_2789260A0;
-  v32 = self;
-  v19 = v10;
+  selfCopy = self;
+  v19 = dataCopy;
   v33 = v19;
-  v20 = v11;
+  v20 = identifierCopy;
   v34 = v20;
-  v21 = v12;
+  v21 = saltCopy;
   v35 = v21;
   v22 = v17;
   v36 = v22;
@@ -220,37 +220,37 @@ void __99__SLDCollaborationSigningService_signData_forCollaborationIdentifier_tr
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)signSourceProcessWithMetadata:(id)a3 reply:(id)a4
+- (id)signSourceProcessWithMetadata:(id)metadata reply:(id)reply
 {
   v79 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v54 = a4;
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
+  metadataCopy = metadata;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   v7 = SLDaemonLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v55 localIdentifier];
+    localIdentifier = [metadataCopy localIdentifier];
     *buf = 136315650;
     *&buf[4] = "[SLDCollaborationSigningService signSourceProcessWithMetadata:reply:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = currentConnection;
     *&buf[22] = 2112;
-    *&buf[24] = v8;
+    *&buf[24] = localIdentifier;
     _os_log_impl(&dword_231772000, v7, OS_LOG_TYPE_DEFAULT, "%s connection: %@, metadata identifier: %@", buf, 0x20u);
   }
 
   v9 = MEMORY[0x277D46F48];
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v6, "processIdentifier")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(currentConnection, "processIdentifier")}];
   v73 = 0;
   v11 = [v9 handleForIdentifier:v10 error:&v73];
   v12 = v73;
 
-  v13 = [v11 identity];
-  if (v13 && !v12)
+  identity = [v11 identity];
+  if (identity && !v12)
   {
-    if (v6)
+    if (currentConnection)
     {
-      [v6 auditToken];
+      [currentConnection auditToken];
       if (v11)
       {
 LABEL_7:
@@ -272,8 +272,8 @@ LABEL_7:
 LABEL_13:
     if (SLDAuditTokensAreEqual(buf, v69))
     {
-      v21 = [v55 localIdentifier];
-      v22 = v21 == 0;
+      localIdentifier2 = [metadataCopy localIdentifier];
+      v22 = localIdentifier2 == 0;
 
       if (v22)
       {
@@ -293,7 +293,7 @@ LABEL_13:
       aBlock[2] = __70__SLDCollaborationSigningService_signSourceProcessWithMetadata_reply___block_invoke_31;
       aBlock[3] = &unk_278926028;
       v65 = buf;
-      v64 = v54;
+      v64 = replyCopy;
       v31 = _Block_copy(aBlock);
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
@@ -307,15 +307,15 @@ LABEL_13:
       v56[1] = 3221225472;
       v56[2] = __70__SLDCollaborationSigningService_signSourceProcessWithMetadata_reply___block_invoke_33;
       v56[3] = &unk_2789260F0;
-      v57 = v55;
+      v57 = metadataCopy;
       v35 = v34;
       v58 = v35;
-      v59 = v13;
+      v59 = identity;
       v36 = v32;
       v60 = v36;
       v37 = _Block_copy(v56);
-      v38 = [(SLDCollaborationSigningService *)self taskManager];
-      v20 = [v38 startAggregateTask:v37 withTimeout:v33 cancellationHandler:15.0];
+      taskManager = [(SLDCollaborationSigningService *)self taskManager];
+      v20 = [taskManager startAggregateTask:v37 withTimeout:v33 cancellationHandler:15.0];
 
       _Block_object_dispose(buf, 8);
     }
@@ -334,15 +334,15 @@ LABEL_13:
       v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
       v49 = [v47 errorWithDomain:@"com.apple.sociallayerd.SLDCollaborationSigningService" code:2 userInfo:v48];
 
-      v50 = [(SLDCollaborationSigningService *)self privateSerialQueue];
+      privateSerialQueue = [(SLDCollaborationSigningService *)self privateSerialQueue];
       v66[0] = MEMORY[0x277D85DD0];
       v66[1] = 3221225472;
       v66[2] = __70__SLDCollaborationSigningService_signSourceProcessWithMetadata_reply___block_invoke_30;
       v66[3] = &unk_2789260C8;
       v67 = v49;
-      v68 = v54;
+      v68 = replyCopy;
       v51 = v49;
-      dispatch_async(v50, v66);
+      dispatch_async(privateSerialQueue, v66);
 
       v20 = objc_opt_new();
     }
@@ -362,15 +362,15 @@ LABEL_13:
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
   v17 = [v15 errorWithDomain:@"com.apple.sociallayerd.SLDCollaborationSigningService" code:2 userInfo:v16];
 
-  v18 = [(SLDCollaborationSigningService *)self privateSerialQueue];
+  privateSerialQueue2 = [(SLDCollaborationSigningService *)self privateSerialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__SLDCollaborationSigningService_signSourceProcessWithMetadata_reply___block_invoke;
   block[3] = &unk_2789260C8;
   v71 = v17;
-  v72 = v54;
+  v72 = replyCopy;
   v19 = v17;
-  dispatch_async(v18, block);
+  dispatch_async(privateSerialQueue2, block);
 
   v20 = objc_opt_new();
 LABEL_22:

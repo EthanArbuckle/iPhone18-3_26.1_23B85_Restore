@@ -1,38 +1,38 @@
 @interface DaemonXPCHandler
 - (_TtC13SiriTTSDaemon16DaemonXPCHandler)init;
-- (void)adjustVolumeWithAccessoryId:(id)a3 volume:(float)a4 rampTime:(double)a5 didFinish:(id)a6;
-- (void)cancelWithRequest:(id)a3;
-- (void)clearDeviceCacheWithDidFinish:(id)a3;
-- (void)downloadedVoicesMatching:(id)a3 reply:(id)a4;
-- (void)forwardWithStreamObject:(id)a3;
-- (void)keepActive:(BOOL)a3 reply:(id)a4;
+- (void)adjustVolumeWithAccessoryId:(id)id volume:(float)volume rampTime:(double)time didFinish:(id)finish;
+- (void)cancelWithRequest:(id)request;
+- (void)clearDeviceCacheWithDidFinish:(id)finish;
+- (void)downloadedVoicesMatching:(id)matching reply:(id)reply;
+- (void)forwardWithStreamObject:(id)object;
+- (void)keepActive:(BOOL)active reply:(id)reply;
 - (void)killDaemon;
-- (void)signalWithInlineStreaming:(id)a3;
-- (void)speakWithPreviewRequest:(id)a3 reply:(id)a4;
-- (void)subscribeWithVoices:(id)a3 clientId:(id)a4 accessoryId:(id)a5 reply:(id)a6;
-- (void)subscribedVoicesWithClientId:(id)a3 reply:(id)a4;
+- (void)signalWithInlineStreaming:(id)streaming;
+- (void)speakWithPreviewRequest:(id)request reply:(id)reply;
+- (void)subscribeWithVoices:(id)voices clientId:(id)id accessoryId:(id)accessoryId reply:(id)reply;
+- (void)subscribedVoicesWithClientId:(id)id reply:(id)reply;
 @end
 
 @implementation DaemonXPCHandler
 
-- (void)downloadedVoicesMatching:(id)a3 reply:(id)a4
+- (void)downloadedVoicesMatching:(id)matching reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_100002584(a3, v8, v6);
+  matchingCopy = matching;
+  selfCopy = self;
+  sub_100002584(matching, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)subscribedVoicesWithClientId:(id)a3 reply:(id)a4
+- (void)subscribedVoicesWithClientId:(id)id reply:(id)reply
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(reply);
+  if (id)
   {
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v8;
+    id = v8;
   }
 
   else
@@ -43,62 +43,62 @@
   v9 = swift_allocObject();
   *(v9 + 16) = v6;
   v10 = *(&self->super.isa + OBJC_IVAR____TtC13SiriTTSDaemon16DaemonXPCHandler_subscriptionService);
-  v11 = self;
-  sub_1000027AC(v7, a3, sub_1000224C4, v9);
+  selfCopy = self;
+  sub_1000027AC(v7, id, sub_1000224C4, v9);
 }
 
-- (void)keepActive:(BOOL)a3 reply:(id)a4
+- (void)keepActive:(BOOL)active reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   _Block_copy(v6);
-  v7 = self;
-  sub_10001BF60(a3, v7, v6);
+  selfCopy = self;
+  sub_10001BF60(active, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)speakWithPreviewRequest:(id)a3 reply:(id)a4
+- (void)speakWithPreviewRequest:(id)request reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_100015D78(v8, sub_100022B24, v7);
+  requestCopy = request;
+  selfCopy = self;
+  sub_100015D78(requestCopy, sub_100022B24, v7);
 }
 
-- (void)cancelWithRequest:(id)a3
+- (void)cancelWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001D484(v4);
+  requestCopy = request;
+  selfCopy = self;
+  sub_10001D484(requestCopy);
 }
 
-- (void)signalWithInlineStreaming:(id)a3
+- (void)signalWithInlineStreaming:(id)streaming
 {
-  v4 = a3;
-  v5 = self;
-  sub_100020120(v4, "Received inline streaming signal %@", &dispatch thunk of InlineStreamingStorage.add(signal:));
+  streamingCopy = streaming;
+  selfCopy = self;
+  sub_100020120(streamingCopy, "Received inline streaming signal %@", &dispatch thunk of InlineStreamingStorage.add(signal:));
 }
 
-- (void)forwardWithStreamObject:(id)a3
+- (void)forwardWithStreamObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  sub_100020120(v4, "Received inline stream object %@", &dispatch thunk of InlineStreamingStorage.enqueue(streamObject:));
+  objectCopy = object;
+  selfCopy = self;
+  sub_100020120(objectCopy, "Received inline stream object %@", &dispatch thunk of InlineStreamingStorage.enqueue(streamObject:));
 }
 
-- (void)subscribeWithVoices:(id)a3 clientId:(id)a4 accessoryId:(id)a5 reply:(id)a6
+- (void)subscribeWithVoices:(id)voices clientId:(id)id accessoryId:(id)accessoryId reply:(id)reply
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(reply);
   type metadata accessor for SynthesisVoice();
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
-  if (a5)
+  if (accessoryId)
   {
     v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a5 = v14;
+    accessoryId = v14;
   }
 
   else
@@ -107,20 +107,20 @@
   }
 
   _Block_copy(v8);
-  v15 = self;
-  sub_1000202EC(v9, v10, v12, v13, a5, v15, v8);
+  selfCopy = self;
+  sub_1000202EC(v9, v10, v12, v13, accessoryId, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)adjustVolumeWithAccessoryId:(id)a3 volume:(float)a4 rampTime:(double)a5 didFinish:(id)a6
+- (void)adjustVolumeWithAccessoryId:(id)id volume:(float)volume rampTime:(double)time didFinish:(id)finish
 {
   v11 = sub_10000AEF4(&qword_100035810, &qword_100027D68);
   v12 = *(*(v11 - 8) + 64);
   __chkstk_darwin(v11 - 8);
   v14 = &v19 - v13;
-  v15 = _Block_copy(a6);
-  if (a3)
+  v15 = _Block_copy(finish);
+  if (id)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v16 = type metadata accessor for UUID();
@@ -134,19 +134,19 @@
   }
 
   _Block_copy(v15);
-  v18 = self;
-  sub_100021568(v14, v15, a4, a5);
+  selfCopy = self;
+  sub_100021568(v14, v15, volume, time);
   _Block_release(v15);
   _Block_release(v15);
 
   sub_100001E9C(v14, &qword_100035810, &qword_100027D68);
 }
 
-- (void)clearDeviceCacheWithDidFinish:(id)a3
+- (void)clearDeviceCacheWithDidFinish:(id)finish
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(finish);
   _Block_copy(v4);
-  v5 = self;
+  selfCopy = self;
   sub_100022068(v4);
   _Block_release(v4);
   _Block_release(v4);

@@ -1,7 +1,7 @@
 @interface WKParameterizedCAWallpaperInput
-- (BOOL)isEqual:(id)a3;
-- (WKParameterizedCAWallpaperInput)initWithFileURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (WKParameterizedCAWallpaperInput)initWithFileURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionBuilderBlock;
 - (id)wk_descriptionBuilder;
@@ -10,15 +10,15 @@
 
 @implementation WKParameterizedCAWallpaperInput
 
-- (WKParameterizedCAWallpaperInput)initWithFileURL:(id)a3
+- (WKParameterizedCAWallpaperInput)initWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = WKParameterizedCAWallpaperInput;
   v5 = [(WKParameterizedCAWallpaperInput *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     fileURL = v5->_fileURL;
     v5->_fileURL = v6;
   }
@@ -26,11 +26,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WKParameterizedCAWallpaperInput *)self fileURL];
-  v6 = [v4 initWithFileURL:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  fileURL = [(WKParameterizedCAWallpaperInput *)self fileURL];
+  v6 = [v4 initWithFileURL:fileURL];
 
   return v6;
 }
@@ -63,19 +63,19 @@ id __46__WKParameterizedCAWallpaperInput_na_identity__block_invoke_3()
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -84,7 +84,7 @@ id __46__WKParameterizedCAWallpaperInput_na_identity__block_invoke_3()
 {
   v3 = [MEMORY[0x1E69B3778] builderWithObject:self];
   objc_initWeak(&location, self);
-  v4 = [v3 activeMultilinePrefix];
+  activeMultilinePrefix = [v3 activeMultilinePrefix];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__WKParameterizedCAWallpaperInput_wk_descriptionBuilder__block_invoke;
@@ -92,7 +92,7 @@ id __46__WKParameterizedCAWallpaperInput_na_identity__block_invoke_3()
   objc_copyWeak(&v9, &location);
   v5 = v3;
   v8 = v5;
-  [v5 appendBodySectionWithName:0 multilinePrefix:v4 block:v7];
+  [v5 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -109,10 +109,10 @@ void __56__WKParameterizedCAWallpaperInput_wk_descriptionBuilder__block_invoke(u
 
 - (id)description
 {
-  v2 = [(WKParameterizedCAWallpaperInput *)self wk_descriptionBuilder];
-  v3 = [v2 build];
+  wk_descriptionBuilder = [(WKParameterizedCAWallpaperInput *)self wk_descriptionBuilder];
+  build = [wk_descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)descriptionBuilderBlock

@@ -10,8 +10,8 @@
   v14[5] = *MEMORY[0x277D85DE8];
   if ([(HMDLegacyPrimaryElectionConfirmationLogEvent *)self availableResidentCount])
   {
-    v3 = [(HMDLegacyPrimaryElectionConfirmationLogEvent *)self residentsRespondedCount];
-    v4 = (100 * (v3 / [(HMDLegacyPrimaryElectionConfirmationLogEvent *)self availableResidentCount]));
+    residentsRespondedCount = [(HMDLegacyPrimaryElectionConfirmationLogEvent *)self residentsRespondedCount];
+    v4 = (100 * (residentsRespondedCount / [(HMDLegacyPrimaryElectionConfirmationLogEvent *)self availableResidentCount]));
   }
 
   else
@@ -27,8 +27,8 @@
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
   v14[1] = v7;
   v13[2] = @"criteria";
-  v8 = [(HMDLegacyPrimaryElectionConfirmationLogEvent *)self criteria];
-  v14[2] = v8;
+  criteria = [(HMDLegacyPrimaryElectionConfirmationLogEvent *)self criteria];
+  v14[2] = criteria;
   v13[3] = @"changedPrimary";
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDLegacyPrimaryElectionConfirmationLogEvent changedPrimary](self, "changedPrimary")}];
   v13[4] = @"eventCount";

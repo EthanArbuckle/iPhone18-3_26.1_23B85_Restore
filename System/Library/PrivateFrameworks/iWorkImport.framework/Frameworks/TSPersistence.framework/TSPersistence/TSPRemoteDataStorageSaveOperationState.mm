@@ -1,22 +1,22 @@
 @interface TSPRemoteDataStorageSaveOperationState
-- (TSPRemoteDataStorageSaveOperationState)initWithChangeCount:(unint64_t)a3 originalPackageDataStorage:(id)a4 updatedPackageDataStorage:(id)a5;
+- (TSPRemoteDataStorageSaveOperationState)initWithChangeCount:(unint64_t)count originalPackageDataStorage:(id)storage updatedPackageDataStorage:(id)dataStorage;
 @end
 
 @implementation TSPRemoteDataStorageSaveOperationState
 
-- (TSPRemoteDataStorageSaveOperationState)initWithChangeCount:(unint64_t)a3 originalPackageDataStorage:(id)a4 updatedPackageDataStorage:(id)a5
+- (TSPRemoteDataStorageSaveOperationState)initWithChangeCount:(unint64_t)count originalPackageDataStorage:(id)storage updatedPackageDataStorage:(id)dataStorage
 {
-  v9 = a4;
-  v10 = a5;
+  storageCopy = storage;
+  dataStorageCopy = dataStorage;
   v14.receiver = self;
   v14.super_class = TSPRemoteDataStorageSaveOperationState;
   v11 = [(TSPRemoteDataStorageSaveOperationState *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_changeCount = a3;
-    objc_storeStrong(&v11->_originalPackageDataStorage, a4);
-    objc_storeStrong(&v12->_updatedPackageDataStorage, a5);
+    v11->_changeCount = count;
+    objc_storeStrong(&v11->_originalPackageDataStorage, storage);
+    objc_storeStrong(&v12->_updatedPackageDataStorage, dataStorage);
   }
 
   return v12;

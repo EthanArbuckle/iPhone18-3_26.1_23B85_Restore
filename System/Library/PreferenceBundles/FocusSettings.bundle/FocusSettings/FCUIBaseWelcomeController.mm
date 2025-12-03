@@ -1,14 +1,14 @@
 @interface FCUIBaseWelcomeController
-+ (id)colorForColorName:(id)a3;
++ (id)colorForColorName:(id)name;
 - (FCUISetupNavigationController)setupNavigationController;
 - (id)addBoldTrayButton;
-- (id)addBoldTrayButtonWithColor:(id)a3;
+- (id)addBoldTrayButtonWithColor:(id)color;
 - (id)addTrayButton;
-- (void)_closeButtonPressed:(id)a3;
-- (void)setHeaderViewDetailText:(id)a3;
-- (void)setHeaderViewTitle:(id)a3;
-- (void)setHeaderViewTitleHyphenationFactor:(float)a3;
-- (void)setShowCloseButton:(BOOL)a3;
+- (void)_closeButtonPressed:(id)pressed;
+- (void)setHeaderViewDetailText:(id)text;
+- (void)setHeaderViewTitle:(id)title;
+- (void)setHeaderViewTitleHyphenationFactor:(float)factor;
+- (void)setShowCloseButton:(BOOL)button;
 - (void)viewDidLoad;
 @end
 
@@ -19,21 +19,21 @@
   v7.receiver = self;
   v7.super_class = FCUIBaseWelcomeController;
   [(FCUIBaseWelcomeController *)&v7 viewDidLoad];
-  v3 = [(FCUIBaseWelcomeController *)self navigationItem];
+  navigationItem = [(FCUIBaseWelcomeController *)self navigationItem];
   v4 = +[NSBundle fcui_focusSettingsLocalizationBundle];
   v5 = [v4 localizedStringForKey:@"ONBOARDING_BACK_BUTTON" value:&stru_21648 table:0];
-  [v3 setBackButtonTitle:v5];
+  [navigationItem setBackButtonTitle:v5];
 
-  v6 = [(FCUIBaseWelcomeController *)self scrollView];
-  [v6 setDelegate:self];
+  scrollView = [(FCUIBaseWelcomeController *)self scrollView];
+  [scrollView setDelegate:self];
   [(FCUIBaseWelcomeController *)self setShowCloseButton:1];
 }
 
 - (FCUISetupNavigationController)setupNavigationController
 {
-  v2 = [(FCUIBaseWelcomeController *)self navigationController];
+  navigationController = [(FCUIBaseWelcomeController *)self navigationController];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = navigationController;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -52,68 +52,68 @@
   return v3;
 }
 
-- (void)setShowCloseButton:(BOOL)a3
+- (void)setShowCloseButton:(BOOL)button
 {
-  if (self->_showCloseButton != a3)
+  if (self->_showCloseButton != button)
   {
-    self->_showCloseButton = a3;
-    if (a3)
+    self->_showCloseButton = button;
+    if (button)
     {
-      v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"_closeButtonPressed:"];
-      v5 = [(FCUIBaseWelcomeController *)self navigationItem];
-      [v5 setRightBarButtonItem:v6];
+      navigationItem2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"_closeButtonPressed:"];
+      navigationItem = [(FCUIBaseWelcomeController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:navigationItem2];
     }
 
     else
     {
-      v6 = [(FCUIBaseWelcomeController *)self navigationItem];
-      [v6 setRightBarButtonItem:0];
+      navigationItem2 = [(FCUIBaseWelcomeController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItem:0];
     }
   }
 }
 
-- (void)setHeaderViewTitle:(id)a3
+- (void)setHeaderViewTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(FCUIBaseWelcomeController *)self headerView];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  headerView = [(FCUIBaseWelcomeController *)self headerView];
+  [headerView setTitle:titleCopy];
 }
 
-- (void)setHeaderViewTitleHyphenationFactor:(float)a3
+- (void)setHeaderViewTitleHyphenationFactor:(float)factor
 {
-  v5 = [(FCUIBaseWelcomeController *)self headerView];
-  *&v4 = a3;
-  [v5 setTitleHyphenationFactor:v4];
+  headerView = [(FCUIBaseWelcomeController *)self headerView];
+  *&v4 = factor;
+  [headerView setTitleHyphenationFactor:v4];
 }
 
-- (void)setHeaderViewDetailText:(id)a3
+- (void)setHeaderViewDetailText:(id)text
 {
-  v4 = a3;
-  v5 = [(FCUIBaseWelcomeController *)self headerView];
-  [v5 setDetailText:v4];
+  textCopy = text;
+  headerView = [(FCUIBaseWelcomeController *)self headerView];
+  [headerView setDetailText:textCopy];
 }
 
 - (id)addTrayButton
 {
   v3 = [OBTrayButton buttonWithType:1];
-  v4 = [(FCUIBaseWelcomeController *)self buttonTray];
-  [v4 addButton:v3];
+  buttonTray = [(FCUIBaseWelcomeController *)self buttonTray];
+  [buttonTray addButton:v3];
 
   return v3;
 }
 
-- (id)addBoldTrayButtonWithColor:(id)a3
+- (id)addBoldTrayButtonWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = +[OBBoldTrayButton boldButton];
   v6 = v5;
-  if (v4)
+  if (colorCopy)
   {
-    [v5 setTintColor:v4];
+    [v5 setTintColor:colorCopy];
   }
 
-  v7 = [(FCUIBaseWelcomeController *)self buttonTray];
-  [v7 addButton:v6];
+  buttonTray = [(FCUIBaseWelcomeController *)self buttonTray];
+  [buttonTray addButton:v6];
 
   return v6;
 }
@@ -121,15 +121,15 @@
 - (id)addBoldTrayButton
 {
   v3 = +[OBBoldTrayButton boldButton];
-  v4 = [(FCUIBaseWelcomeController *)self buttonTray];
-  [v4 addButton:v3];
+  buttonTray = [(FCUIBaseWelcomeController *)self buttonTray];
+  [buttonTray addButton:v3];
 
   return v3;
 }
 
-+ (id)colorForColorName:(id)a3
++ (id)colorForColorName:(id)name
 {
-  v3 = NSSelectorFromString(a3);
+  v3 = NSSelectorFromString(name);
   if (objc_opt_respondsToSelector())
   {
     v4 = [UIColor performSelector:v3];
@@ -143,10 +143,10 @@
   return v4;
 }
 
-- (void)_closeButtonPressed:(id)a3
+- (void)_closeButtonPressed:(id)pressed
 {
-  v3 = [(FCUIBaseWelcomeController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(FCUIBaseWelcomeController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

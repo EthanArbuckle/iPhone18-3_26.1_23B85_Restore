@@ -1,41 +1,41 @@
 @interface NCInternalToolsOverlayView
 + (id)debugViewIfInternal;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (NCInternalToolsOverlayView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (NCInternalToolsOverlayView)initWithFrame:(CGRect)frame;
 - (NCInternalToolsOverlayViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)handleLongPress:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)handleLongPress:(id)press;
 - (void)layoutSubviews;
-- (void)setBackgroundBlurView:(id)a3;
-- (void)setDebugHUDVisible:(BOOL)a3;
-- (void)setFeedbackGenerator:(id)a3;
-- (void)setOverlayButton:(id)a3;
-- (void)setTimeoutTimer:(id)a3;
+- (void)setBackgroundBlurView:(id)view;
+- (void)setDebugHUDVisible:(BOOL)visible;
+- (void)setFeedbackGenerator:(id)generator;
+- (void)setOverlayButton:(id)button;
+- (void)setTimeoutTimer:(id)timer;
 @end
 
 @implementation NCInternalToolsOverlayView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v15.value.super.isa = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v15.value.super.isa = event;
   NCInternalToolsOverlayView.hitTest(_:with:)(v10, __PAIR128__(*&y, *&x), v15);
   v12 = v11;
 
   return v12;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NCInternalToolsOverlayView *)self doubleTapLongPressRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  doubleTapLongPressRecognizer = [(NCInternalToolsOverlayView *)self doubleTapLongPressRecognizer];
 
-  if (v8 == v6)
+  if (doubleTapLongPressRecognizer == recognizerCopy)
   {
     objc_opt_self();
     if (swift_dynamicCastObjCClass())
@@ -80,77 +80,77 @@
   return Strong;
 }
 
-- (void)setOverlayButton:(id)a3
+- (void)setOverlayButton:(id)button
 {
   v4 = *(self + OBJC_IVAR___NCInternalToolsOverlayView_overlayButton);
-  *(self + OBJC_IVAR___NCInternalToolsOverlayView_overlayButton) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NCInternalToolsOverlayView_overlayButton) = button;
+  buttonCopy = button;
 }
 
-- (void)setFeedbackGenerator:(id)a3
+- (void)setFeedbackGenerator:(id)generator
 {
   v4 = *(self + OBJC_IVAR___NCInternalToolsOverlayView_feedbackGenerator);
-  *(self + OBJC_IVAR___NCInternalToolsOverlayView_feedbackGenerator) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NCInternalToolsOverlayView_feedbackGenerator) = generator;
+  generatorCopy = generator;
 }
 
-- (void)setTimeoutTimer:(id)a3
+- (void)setTimeoutTimer:(id)timer
 {
   v4 = *(self + OBJC_IVAR___NCInternalToolsOverlayView_timeoutTimer);
-  *(self + OBJC_IVAR___NCInternalToolsOverlayView_timeoutTimer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NCInternalToolsOverlayView_timeoutTimer) = timer;
+  timerCopy = timer;
 }
 
-- (void)setBackgroundBlurView:(id)a3
+- (void)setBackgroundBlurView:(id)view
 {
   v4 = *(self + OBJC_IVAR___NCInternalToolsOverlayView_backgroundBlurView);
-  *(self + OBJC_IVAR___NCInternalToolsOverlayView_backgroundBlurView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NCInternalToolsOverlayView_backgroundBlurView) = view;
+  viewCopy = view;
 }
 
-- (void)setDebugHUDVisible:(BOOL)a3
+- (void)setDebugHUDVisible:(BOOL)visible
 {
-  *(self + OBJC_IVAR___NCInternalToolsOverlayView_debugHUDVisible) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR___NCInternalToolsOverlayView_debugHUDVisible) = visible;
+  selfCopy = self;
   sub_21E8B2740();
-  [(NCInternalToolsOverlayView *)v3 setNeedsLayout];
+  [(NCInternalToolsOverlayView *)selfCopy setNeedsLayout];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   NCInternalToolsOverlayView.layoutSubviews()();
 }
 
-- (NCInternalToolsOverlayView)initWithFrame:(CGRect)a3
+- (NCInternalToolsOverlayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = NCInternalToolsOverlayView.gestureRecognizerShouldBegin(_:)(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = NCInternalToolsOverlayView.gestureRecognizerShouldBegin(_:)(beginCopy);
 
   return self & 1;
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [v4 state];
-  if (v5 == 3)
+  pressCopy = press;
+  selfCopy = self;
+  state = [pressCopy state];
+  if (state == 3)
   {
     sub_21E8B3858();
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
-    [v4 locationInView_];
+    [pressCopy locationInView_];
     sub_21E8B35DC();
   }
 }

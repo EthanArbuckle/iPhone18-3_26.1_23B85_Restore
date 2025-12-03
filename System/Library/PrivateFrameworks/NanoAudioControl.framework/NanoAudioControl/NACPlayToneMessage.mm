@@ -1,20 +1,20 @@
 @interface NACPlayToneMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShouldRepeat:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasShouldRepeat:(BOOL)repeat;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NACPlayToneMessage
 
-- (void)setHasShouldRepeat:(BOOL)a3
+- (void)setHasShouldRepeat:(BOOL)repeat
 {
-  if (a3)
+  if (repeat)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = NACPlayToneMessage;
   v4 = [(NACPlayToneMessage *)&v8 description];
-  v5 = [(NACPlayToneMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NACPlayToneMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   alertType = self->_alertType;
   if (alertType)
   {
-    [v3 setObject:alertType forKey:@"alertType"];
+    [dictionary setObject:alertType forKey:@"alertType"];
   }
 
   topic = self->_topic;
@@ -79,26 +79,26 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_alertType)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_topic)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_toneIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -106,7 +106,7 @@
   {
     shouldRepeat = self->_shouldRepeat;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -114,59 +114,59 @@
   {
     forPreview = self->_forPreview;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_alertType)
   {
-    [v4 setAlertType:?];
-    v4 = v6;
+    [toCopy setAlertType:?];
+    toCopy = v6;
   }
 
   if (self->_topic)
   {
     [v6 setTopic:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_toneIdentifier)
   {
     [v6 setToneIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[33] = self->_shouldRepeat;
-    v4[36] |= 2u;
+    toCopy[33] = self->_shouldRepeat;
+    toCopy[36] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[32] = self->_forPreview;
-    v4[36] |= 1u;
+    toCopy[32] = self->_forPreview;
+    toCopy[36] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_alertType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_alertType copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_topic copyWithZone:a3];
+  v8 = [(NSString *)self->_topic copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_toneIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_toneIdentifier copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -187,16 +187,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   alertType = self->_alertType;
-  if (alertType | *(v4 + 1))
+  if (alertType | *(equalCopy + 1))
   {
     if (![(NSString *)alertType isEqual:?])
     {
@@ -205,7 +205,7 @@
   }
 
   topic = self->_topic;
-  if (topic | *(v4 + 3))
+  if (topic | *(equalCopy + 3))
   {
     if (![(NSString *)topic isEqual:?])
     {
@@ -214,7 +214,7 @@
   }
 
   toneIdentifier = self->_toneIdentifier;
-  if (toneIdentifier | *(v4 + 2))
+  if (toneIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)toneIdentifier isEqual:?])
     {
@@ -224,7 +224,7 @@
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_10;
     }
@@ -234,40 +234,40 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if ((*(v4 + 36) & 2) == 0)
+  if ((*(equalCopy + 36) & 2) == 0)
   {
     goto LABEL_16;
   }
 
-  v10 = *(v4 + 33);
+  v10 = *(equalCopy + 33);
   if (self->_shouldRepeat)
   {
-    if ((*(v4 + 33) & 1) == 0)
+    if ((*(equalCopy + 33) & 1) == 0)
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 33))
+  else if (*(equalCopy + 33))
   {
     goto LABEL_16;
   }
 
 LABEL_10:
-  v8 = (*(v4 + 36) & 1) == 0;
+  v8 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if (*(v4 + 36))
+    if (*(equalCopy + 36))
     {
       if (self->_forPreview)
       {
-        if (*(v4 + 32))
+        if (*(equalCopy + 32))
         {
           goto LABEL_24;
         }
       }
 
-      else if (!*(v4 + 32))
+      else if (!*(equalCopy + 32))
       {
 LABEL_24:
         v8 = 1;
@@ -312,39 +312,39 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NACPlayToneMessage *)self setAlertType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NACPlayToneMessage *)self setTopic:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NACPlayToneMessage *)self setToneIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = v4[36];
+  v5 = fromCopy[36];
   if ((v5 & 2) != 0)
   {
-    self->_shouldRepeat = v4[33];
+    self->_shouldRepeat = fromCopy[33];
     *&self->_has |= 2u;
-    v5 = v4[36];
+    v5 = fromCopy[36];
   }
 
   if (v5)
   {
-    self->_forPreview = v4[32];
+    self->_forPreview = fromCopy[32];
     *&self->_has |= 1u;
   }
 }

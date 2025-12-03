@@ -1,50 +1,50 @@
 @interface CMIOExtensionSessionDualStream
-+ (id)sessionDualStreamWithPrimaryStream:(id)a3 secondaryStream:(id)a4;
-- (CMIOExtensionSessionDualStream)initWithPrimaryStream:(id)a3 secondaryStream:(id)a4;
++ (id)sessionDualStreamWithPrimaryStream:(id)stream secondaryStream:(id)secondaryStream;
+- (CMIOExtensionSessionDualStream)initWithPrimaryStream:(id)stream secondaryStream:(id)secondaryStream;
 - (CMIOExtensionSessionStream)activeStream;
-- (id)cachedPropertyStateForProperty:(id)a3;
-- (id)cachedPropertyStatesForProperties:(id)a3;
-- (id)copySample:(BOOL *)a3 streamID:(id)a4 error:(id *)a5;
+- (id)cachedPropertyStateForProperty:(id)property;
+- (id)cachedPropertyStatesForProperties:(id)properties;
+- (id)copySample:(BOOL *)sample streamID:(id)d error:(id *)error;
 - (id)delegate;
 - (id)formats;
 - (unint64_t)activeFormatIndex;
 - (void)completeTransaction;
 - (void)dealloc;
-- (void)propertyStatesForProperties:(id)a3 reply:(id)a4;
-- (void)receivedSample:(id)a3 streamID:(id)a4;
-- (void)receivedScheduledOutput:(id)a3 streamID:(id)a4;
-- (void)selectStream:(unint64_t)a3;
-- (void)setActiveFormatIndex:(unint64_t)a3;
-- (void)setActiveFormatIndex:(unint64_t)a3 reply:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setPropertyValues:(id)a3 reply:(id)a4;
-- (void)startStream:(id)a3;
-- (void)stopStream:(id)a3;
-- (void)updatePropertyStates:(id)a3 streamID:(id)a4;
+- (void)propertyStatesForProperties:(id)properties reply:(id)reply;
+- (void)receivedSample:(id)sample streamID:(id)d;
+- (void)receivedScheduledOutput:(id)output streamID:(id)d;
+- (void)selectStream:(unint64_t)stream;
+- (void)setActiveFormatIndex:(unint64_t)index;
+- (void)setActiveFormatIndex:(unint64_t)index reply:(id)reply;
+- (void)setDelegate:(id)delegate;
+- (void)setPropertyValues:(id)values reply:(id)reply;
+- (void)startStream:(id)stream;
+- (void)stopStream:(id)stream;
+- (void)updatePropertyStates:(id)states streamID:(id)d;
 @end
 
 @implementation CMIOExtensionSessionDualStream
 
-+ (id)sessionDualStreamWithPrimaryStream:(id)a3 secondaryStream:(id)a4
++ (id)sessionDualStreamWithPrimaryStream:(id)stream secondaryStream:(id)secondaryStream
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithPrimaryStream:a3 secondaryStream:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithPrimaryStream:stream secondaryStream:secondaryStream];
 
   return v4;
 }
 
-- (CMIOExtensionSessionDualStream)initWithPrimaryStream:(id)a3 secondaryStream:(id)a4
+- (CMIOExtensionSessionDualStream)initWithPrimaryStream:(id)stream secondaryStream:(id)secondaryStream
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (stream && secondaryStream)
   {
-    v6 = *(a3 + 3);
+    v6 = *(stream + 3);
     v16.receiver = self;
     v16.super_class = CMIOExtensionSessionDualStream;
-    v7 = -[CMIOExtensionSessionStream initWithPropertyStates:provider:](&v16, sel_initWithPropertyStates_provider_, v6, [a3 provider]);
+    v7 = -[CMIOExtensionSessionStream initWithPropertyStates:provider:](&v16, sel_initWithPropertyStates_provider_, v6, [stream provider]);
     if (v7)
     {
-      v7->_primaryStream = a3;
-      v7->_secondaryStream = a4;
+      v7->_primaryStream = stream;
+      v7->_secondaryStream = secondaryStream;
       v7->_activeStream = v7->_primaryStream;
       v8 = [CMIOExtensionPropertyState alloc];
       v9 = -[CMIOExtensionPropertyState initWithValue:](v8, "initWithValue:", [MEMORY[0x277CCABB0] numberWithInt:0]);
@@ -113,14 +113,14 @@
   return v3;
 }
 
-- (void)selectStream:(unint64_t)a3
+- (void)selectStream:(unint64_t)stream
 {
   os_unfair_lock_lock(&self->super._lock);
-  v5 = [(CMIOExtensionSessionStream *)self->_activeStream delegate];
+  delegate = [(CMIOExtensionSessionStream *)self->_activeStream delegate];
   activeStream = self->_activeStream;
   streaming = activeStream->_streaming;
   p_primaryStream = &self->_primaryStream;
-  if (a3 && activeStream == *p_primaryStream)
+  if (stream && activeStream == *p_primaryStream)
   {
     v9 = activeStream;
     [(CMIOExtensionSessionStream *)v9 setDelegate:0];
@@ -129,7 +129,7 @@
 LABEL_7:
     v11 = *p_primaryStream;
     self->_activeStream = v11;
-    [(CMIOExtensionSessionStream *)v11 setDelegate:v5];
+    [(CMIOExtensionSessionStream *)v11 setDelegate:delegate];
     v12 = self->_activeStream;
     v13 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v12->_propertyStates];
 
@@ -152,7 +152,7 @@ LABEL_7:
     return;
   }
 
-  if (!a3 && activeStream == self->_secondaryStream)
+  if (!stream && activeStream == self->_secondaryStream)
   {
     v9 = activeStream;
     [(CMIOExtensionSessionStream *)v9 setDelegate:0];
@@ -193,7 +193,7 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
   }
 }
 
-- (void)updatePropertyStates:(id)a3 streamID:(id)a4
+- (void)updatePropertyStates:(id)states streamID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -216,22 +216,22 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
         v15 = 2080;
         v16 = "[CMIOExtensionSessionDualStream updatePropertyStates:streamID:]";
         v17 = 2112;
-        v18 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v11, 0x26u);
       }
     }
   }
 
   p_primaryStream = &self->_primaryStream;
-  if (([(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_primaryStream streamID] UUIDString] isEqual:a4]& 1) != 0 || (p_primaryStream = &self->_secondaryStream, [(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_secondaryStream streamID] UUIDString] isEqual:a4]))
+  if (([(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_primaryStream streamID] UUIDString] isEqual:d]& 1) != 0 || (p_primaryStream = &self->_secondaryStream, [(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_secondaryStream streamID] UUIDString] isEqual:d]))
   {
-    [(CMIOExtensionSessionStream *)*p_primaryStream updatePropertyStates:a3 streamID:a4];
+    [(CMIOExtensionSessionStream *)*p_primaryStream updatePropertyStates:states streamID:d];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedSample:(id)a3 streamID:(id)a4
+- (void)receivedSample:(id)sample streamID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -254,24 +254,24 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
         v15 = 2080;
         v16 = "[CMIOExtensionSessionDualStream receivedSample:streamID:]";
         v17 = 2112;
-        v18 = self;
+        selfCopy = self;
         v19 = 2112;
-        v20 = a3;
+        sampleCopy = sample;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, sample %@", &v11, 0x30u);
       }
     }
   }
 
   p_primaryStream = &self->_primaryStream;
-  if (([(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_primaryStream streamID] UUIDString] isEqual:a4]& 1) != 0 || (p_primaryStream = &self->_secondaryStream, [(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_secondaryStream streamID] UUIDString] isEqual:a4]))
+  if (([(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_primaryStream streamID] UUIDString] isEqual:d]& 1) != 0 || (p_primaryStream = &self->_secondaryStream, [(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_secondaryStream streamID] UUIDString] isEqual:d]))
   {
-    [(CMIOExtensionSessionStream *)*p_primaryStream receivedSample:a3 streamID:a4];
+    [(CMIOExtensionSessionStream *)*p_primaryStream receivedSample:sample streamID:d];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copySample:(BOOL *)a3 streamID:(id)a4 error:(id *)a5
+- (id)copySample:(BOOL *)sample streamID:(id)d error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -294,18 +294,18 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
         v18 = 2080;
         v19 = "[CMIOExtensionSessionDualStream copySample:streamID:error:]";
         v20 = 2112;
-        v21 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v14, 0x26u);
       }
     }
   }
 
-  *a3 = 0;
-  *a5 = 0;
+  *sample = 0;
+  *error = 0;
   p_primaryStream = &self->_primaryStream;
-  if (([(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_primaryStream streamID] UUIDString] isEqual:a4]& 1) != 0 || (p_primaryStream = &self->_secondaryStream, [(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_secondaryStream streamID] UUIDString] isEqual:a4]))
+  if (([(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_primaryStream streamID] UUIDString] isEqual:d]& 1) != 0 || (p_primaryStream = &self->_secondaryStream, [(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_secondaryStream streamID] UUIDString] isEqual:d]))
   {
-    result = [(CMIOExtensionSessionStream *)*p_primaryStream copySample:a3 streamID:a4 error:a5];
+    result = [(CMIOExtensionSessionStream *)*p_primaryStream copySample:sample streamID:d error:error];
   }
 
   else
@@ -317,7 +317,7 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
   return result;
 }
 
-- (void)receivedScheduledOutput:(id)a3 streamID:(id)a4
+- (void)receivedScheduledOutput:(id)output streamID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -340,16 +340,16 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
         v15 = 2080;
         v16 = "[CMIOExtensionSessionDualStream receivedScheduledOutput:streamID:]";
         v17 = 2112;
-        v18 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v11, 0x26u);
       }
     }
   }
 
   p_primaryStream = &self->_primaryStream;
-  if (([(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_primaryStream streamID] UUIDString] isEqual:a4]& 1) != 0 || (p_primaryStream = &self->_secondaryStream, [(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_secondaryStream streamID] UUIDString] isEqual:a4]))
+  if (([(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_primaryStream streamID] UUIDString] isEqual:d]& 1) != 0 || (p_primaryStream = &self->_secondaryStream, [(NSString *)[(NSUUID *)[(CMIOExtensionSessionStream *)self->_secondaryStream streamID] UUIDString] isEqual:d]))
   {
-    [(CMIOExtensionSessionStream *)*p_primaryStream receivedScheduledOutput:a3 streamID:a4];
+    [(CMIOExtensionSessionStream *)*p_primaryStream receivedScheduledOutput:output streamID:d];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -358,27 +358,27 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
 - (id)delegate
 {
   os_unfair_lock_lock(&self->super._lock);
-  v3 = [(CMIOExtensionSessionStream *)self->_activeStream delegate];
+  delegate = [(CMIOExtensionSessionStream *)self->_activeStream delegate];
   os_unfair_lock_unlock(&self->super._lock);
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   os_unfair_lock_lock(&self->super._lock);
-  [(CMIOExtensionSessionStream *)self->_activeStream setDelegate:a3];
+  [(CMIOExtensionSessionStream *)self->_activeStream setDelegate:delegate];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (id)cachedPropertyStateForProperty:(id)a3
+- (id)cachedPropertyStateForProperty:(id)property
 {
-  v4 = [(CMIOExtensionSessionDualStream *)self activeStream];
+  activeStream = [(CMIOExtensionSessionDualStream *)self activeStream];
 
-  return [(CMIOExtensionSessionStream *)v4 cachedPropertyStateForProperty:a3];
+  return [(CMIOExtensionSessionStream *)activeStream cachedPropertyStateForProperty:property];
 }
 
-- (id)cachedPropertyStatesForProperties:(id)a3
+- (id)cachedPropertyStatesForProperties:(id)properties
 {
   v17 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -401,18 +401,18 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
         v13 = 2080;
         v14 = "[CMIOExtensionSessionDualStream cachedPropertyStatesForProperties:]";
         v15 = 2112;
-        v16 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v9, 0x26u);
       }
     }
   }
 
-  result = [(CMIOExtensionSessionStream *)[(CMIOExtensionSessionDualStream *)self activeStream] cachedPropertyStatesForProperties:a3];
+  result = [(CMIOExtensionSessionStream *)[(CMIOExtensionSessionDualStream *)self activeStream] cachedPropertyStatesForProperties:properties];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)propertyStatesForProperties:(id)a3 reply:(id)a4
+- (void)propertyStatesForProperties:(id)properties reply:(id)reply
 {
   v18 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -435,17 +435,17 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
         v14 = 2080;
         v15 = "[CMIOExtensionSessionDualStream propertyStatesForProperties:reply:]";
         v16 = 2112;
-        v17 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v10, 0x26u);
       }
     }
   }
 
-  [(CMIOExtensionSessionStream *)[(CMIOExtensionSessionDualStream *)self activeStream] propertyStatesForProperties:a3 reply:a4];
+  [(CMIOExtensionSessionStream *)[(CMIOExtensionSessionDualStream *)self activeStream] propertyStatesForProperties:properties reply:reply];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPropertyValues:(id)a3 reply:(id)a4
+- (void)setPropertyValues:(id)values reply:(id)reply
 {
   v24 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -468,23 +468,23 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
         v18 = 2080;
         v19 = "[CMIOExtensionSessionDualStream setPropertyValues:reply:]";
         v20 = 2112;
-        v21 = self;
+        selfCopy = self;
         v22 = 2112;
-        v23 = a3;
+        valuesCopy = values;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, propertyValues %@", &v14, 0x30u);
       }
     }
   }
 
-  v9 = [(CMIOExtensionSessionDualStream *)self activeStream];
-  v10 = [a3 objectForKeyedSubscript:0x284358F38];
+  activeStream = [(CMIOExtensionSessionDualStream *)self activeStream];
+  v10 = [values objectForKeyedSubscript:0x284358F38];
   if (v10)
   {
     v11 = v10;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 unsignedIntegerValue];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
       goto LABEL_16;
     }
 
@@ -498,7 +498,7 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
     {
       LOBYTE(v14) = 0;
       [v11 getBytes:&v14 length:1];
-      v12 = v14;
+      unsignedIntegerValue = v14;
       goto LABEL_16;
     }
 
@@ -506,50 +506,50 @@ void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_134(uint64
     {
       v14 = 0;
       [v11 getBytes:&v14 length:4];
-      v12 = v14;
+      unsignedIntegerValue = v14;
     }
 
     else
     {
 LABEL_15:
-      v12 = 0;
+      unsignedIntegerValue = 0;
     }
 
 LABEL_16:
-    [(CMIOExtensionSessionDualStream *)self selectStream:v12];
-    if ([a3 count] >= 2)
+    [(CMIOExtensionSessionDualStream *)self selectStream:unsignedIntegerValue];
+    if ([values count] >= 2)
     {
-      a3 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
-      [a3 removeObjectForKey:0x284358F38];
+      values = [MEMORY[0x277CBEB38] dictionaryWithDictionary:values];
+      [values removeObjectForKey:0x284358F38];
     }
   }
 
-  [(CMIOExtensionSessionStream *)v9 setPropertyValues:a3 reply:a4];
+  [(CMIOExtensionSessionStream *)activeStream setPropertyValues:values reply:reply];
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (id)formats
 {
-  v2 = [(CMIOExtensionSessionDualStream *)self activeStream];
+  activeStream = [(CMIOExtensionSessionDualStream *)self activeStream];
 
-  return [(CMIOExtensionSessionStream *)v2 formats];
+  return [(CMIOExtensionSessionStream *)activeStream formats];
 }
 
 - (unint64_t)activeFormatIndex
 {
-  v2 = [(CMIOExtensionSessionDualStream *)self activeStream];
+  activeStream = [(CMIOExtensionSessionDualStream *)self activeStream];
 
-  return [(CMIOExtensionSessionStream *)v2 activeFormatIndex];
+  return [(CMIOExtensionSessionStream *)activeStream activeFormatIndex];
 }
 
-- (void)setActiveFormatIndex:(unint64_t)a3
+- (void)setActiveFormatIndex:(unint64_t)index
 {
-  v4 = [(CMIOExtensionSessionDualStream *)self activeStream];
+  activeStream = [(CMIOExtensionSessionDualStream *)self activeStream];
 
-  [(CMIOExtensionSessionStream *)v4 setActiveFormatIndex:a3];
+  [(CMIOExtensionSessionStream *)activeStream setActiveFormatIndex:index];
 }
 
-- (void)setActiveFormatIndex:(unint64_t)a3 reply:(id)a4
+- (void)setActiveFormatIndex:(unint64_t)index reply:(id)reply
 {
   v20 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -572,19 +572,19 @@ LABEL_16:
         v14 = 2080;
         v15 = "[CMIOExtensionSessionDualStream setActiveFormatIndex:reply:]";
         v16 = 2112;
-        v17 = self;
+        selfCopy = self;
         v18 = 1024;
-        v19 = a3;
+        indexCopy = index;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@, %d", &v10, 0x2Cu);
       }
     }
   }
 
-  [(CMIOExtensionSessionStream *)[(CMIOExtensionSessionDualStream *)self activeStream] setActiveFormatIndex:a3 reply:a4];
+  [(CMIOExtensionSessionStream *)[(CMIOExtensionSessionDualStream *)self activeStream] setActiveFormatIndex:index reply:reply];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startStream:(id)a3
+- (void)startStream:(id)stream
 {
   v16 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -607,17 +607,17 @@ LABEL_16:
         v12 = 2080;
         v13 = "[CMIOExtensionSessionDualStream startStream:]";
         v14 = 2112;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v8, 0x26u);
       }
     }
   }
 
-  [(CMIOExtensionSessionStream *)[(CMIOExtensionSessionDualStream *)self activeStream] startStream:a3];
+  [(CMIOExtensionSessionStream *)[(CMIOExtensionSessionDualStream *)self activeStream] startStream:stream];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopStream:(id)a3
+- (void)stopStream:(id)stream
 {
   v16 = *MEMORY[0x277D85DE8];
   if (CMIOModuleLogLevel_once != -1)
@@ -640,21 +640,21 @@ LABEL_16:
         v12 = 2080;
         v13 = "[CMIOExtensionSessionDualStream stopStream:]";
         v14 = 2112;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@", &v8, 0x26u);
       }
     }
   }
 
-  [(CMIOExtensionSessionStream *)[(CMIOExtensionSessionDualStream *)self activeStream] stopStream:a3];
+  [(CMIOExtensionSessionStream *)[(CMIOExtensionSessionDualStream *)self activeStream] stopStream:stream];
   v7 = *MEMORY[0x277D85DE8];
 }
 
 - (void)completeTransaction
 {
-  v2 = [(CMIOExtensionSessionDualStream *)self activeStream];
+  activeStream = [(CMIOExtensionSessionDualStream *)self activeStream];
 
-  [(CMIOExtensionSessionStream *)v2 completeTransaction];
+  [(CMIOExtensionSessionStream *)activeStream completeTransaction];
 }
 
 void __47__CMIOExtensionSessionDualStream_selectStream___block_invoke_cold_1()

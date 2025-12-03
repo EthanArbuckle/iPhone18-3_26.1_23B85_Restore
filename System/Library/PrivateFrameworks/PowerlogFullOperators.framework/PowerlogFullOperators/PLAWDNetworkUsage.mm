@@ -1,13 +1,13 @@
 @interface PLAWDNetworkUsage
 + (id)entryAggregateDefinitionNetUsage;
 + (id)entryAggregateDefinitions;
-+ (id)getSharedObjWithOperator:(id)a3;
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4;
-- (void)handleNameConnectionCallback:(id)a3;
-- (void)handleNetCallback:(id)a3;
++ (id)getSharedObjWithOperator:(id)operator;
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn;
+- (void)handleNameConnectionCallback:(id)callback;
+- (void)handleNetCallback:(id)callback;
 - (void)resetNetUsageTable;
-- (void)startMetricCollection:(id)a3;
-- (void)stopMetricCollection:(id)a3;
+- (void)startMetricCollection:(id)collection;
+- (void)stopMetricCollection:(id)collection;
 @end
 
 @implementation PLAWDNetworkUsage
@@ -16,8 +16,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"NetworkUsage";
-  v2 = [a1 entryAggregateDefinitionNetUsage];
-  v7[0] = v2;
+  entryAggregateDefinitionNetUsage = [self entryAggregateDefinitionNetUsage];
+  v7[0] = entryAggregateDefinitionNetUsage;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -38,25 +38,25 @@
   v31[0] = v20;
   v30[1] = *MEMORY[0x277D3F540];
   v26[0] = @"NetProcessName";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat];
-  v27[0] = v18;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v27[0] = commonTypeDict_StringFormat;
   v26[1] = @"WifiIn";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat_aggregateFunction_sum];
-  v27[1] = v16;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat_aggregateFunction_sum];
+  v27[1] = commonTypeDict_IntegerFormat_aggregateFunction_sum;
   v26[2] = @"WifiOut";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v15 commonTypeDict_IntegerFormat_aggregateFunction_sum];
-  v27[2] = v3;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_aggregateFunction_sum2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat_aggregateFunction_sum];
+  v27[2] = commonTypeDict_IntegerFormat_aggregateFunction_sum2;
   v26[3] = @"CellIn";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat_aggregateFunction_sum];
-  v27[3] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_aggregateFunction_sum3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat_aggregateFunction_sum];
+  v27[3] = commonTypeDict_IntegerFormat_aggregateFunction_sum3;
   v26[4] = @"CellOut";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat_aggregateFunction_sum];
-  v27[4] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat_aggregateFunction_sum4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat_aggregateFunction_sum];
+  v27[4] = commonTypeDict_IntegerFormat_aggregateFunction_sum4;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:5];
   v31[1] = v8;
   v30[2] = *MEMORY[0x277D3F478];
@@ -81,13 +81,13 @@
   return v12;
 }
 
-+ (id)getSharedObjWithOperator:(id)a3
++ (id)getSharedObjWithOperator:(id)operator
 {
   v3 = plAwdNetworkUsage;
   if (!plAwdNetworkUsage)
   {
-    v4 = a3;
-    v5 = [(PLAWDAuxMetrics *)[PLAWDNetworkUsage alloc] initWithOperator:v4];
+    operatorCopy = operator;
+    v5 = [(PLAWDAuxMetrics *)[PLAWDNetworkUsage alloc] initWithOperator:operatorCopy];
 
     v6 = plAwdNetworkUsage;
     plAwdNetworkUsage = v5;
@@ -98,46 +98,46 @@
   return v3;
 }
 
-- (void)startMetricCollection:(id)a3
+- (void)startMetricCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v5 addObject:v4];
+  collectionCopy = collection;
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics addObject:collectionCopy];
 
   [(PLAWDNetworkUsage *)self resetNetUsageTable];
-  LODWORD(v5) = [v4 unsignedIntValue];
+  LODWORD(runningMetrics) = [collectionCopy unsignedIntValue];
 
-  if (v5 == 2031619)
+  if (runningMetrics == 2031619)
   {
     [(PLAWDNetworkUsage *)self setNetState:0];
     v6 = [MEMORY[0x277D3F6C0] entryKeyForType:*MEMORY[0x277D3F5D8] andName:*MEMORY[0x277D3F7E0]];
     v7 = objc_alloc(MEMORY[0x277D3F1A8]);
-    v8 = [(PLAWDAuxMetrics *)self operator];
+    operator = [(PLAWDAuxMetrics *)self operator];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __43__PLAWDNetworkUsage_startMetricCollection___block_invoke;
     v18[3] = &unk_279A58F10;
     v18[4] = self;
-    v9 = [v7 initWithOperator:v8 forEntryKey:v6 withBlock:v18];
+    v9 = [v7 initWithOperator:operator forEntryKey:v6 withBlock:v18];
 
     [(PLAWDNetworkUsage *)self setNetEventCallback:v9];
-    v10 = [(PLAWDNetworkUsage *)self netEventCallback];
-    [v10 requestEntry];
+    netEventCallback = [(PLAWDNetworkUsage *)self netEventCallback];
+    [netEventCallback requestEntry];
 
     v11 = [MEMORY[0x277D3F6C0] entryKeyForType:*MEMORY[0x277D3F5E8] andName:*MEMORY[0x277D3F7E8]];
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"GroupID_%@", v11];
     v13 = objc_alloc(MEMORY[0x277D3F1A8]);
-    v14 = [(PLAWDAuxMetrics *)self operator];
+    operator2 = [(PLAWDAuxMetrics *)self operator];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __43__PLAWDNetworkUsage_startMetricCollection___block_invoke_2;
     v17[3] = &unk_279A58F10;
     v17[4] = self;
-    v15 = [v13 initWithOperator:v14 forEntryKey:v12 withBlock:v17];
+    v15 = [v13 initWithOperator:operator2 forEntryKey:v12 withBlock:v17];
 
     [(PLAWDNetworkUsage *)self setNameConnectionCallback:v15];
-    v16 = [(PLAWDNetworkUsage *)self nameConnectionCallback];
-    [v16 requestEntry];
+    nameConnectionCallback = [(PLAWDNetworkUsage *)self nameConnectionCallback];
+    [nameConnectionCallback requestEntry];
   }
 }
 
@@ -161,20 +161,20 @@ uint64_t __43__PLAWDNetworkUsage_startMetricCollection___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)stopMetricCollection:(id)a3
+- (void)stopMetricCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v5 removeObject:v4];
+  collectionCopy = collection;
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics removeObject:collectionCopy];
 
-  v6 = [v4 longValue];
-  if (v6 == 2031619)
+  longValue = [collectionCopy longValue];
+  if (longValue == 2031619)
   {
     [(PLAWDNetworkUsage *)self setNetEventCallback:0];
   }
 
-  v7 = [(PLAWDAuxMetrics *)self runningMetrics];
-  v8 = [v7 count];
+  runningMetrics2 = [(PLAWDAuxMetrics *)self runningMetrics];
+  v8 = [runningMetrics2 count];
 
   if (!v8)
   {
@@ -183,17 +183,17 @@ uint64_t __43__PLAWDNetworkUsage_startMetricCollection___block_invoke_2(uint64_t
   }
 }
 
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 newMetricContainerWithIdentifier:{objc_msgSend(v6, "unsignedIntValue")}];
+  serverCopy = server;
+  connCopy = conn;
+  v8 = [connCopy newMetricContainerWithIdentifier:{objc_msgSend(serverCopy, "unsignedIntValue")}];
   v9 = 0;
-  if ([v6 longValue] == 2031619 && v8)
+  if ([serverCopy longValue] == 2031619 && v8)
   {
-    v10 = [(PLAWDNetworkUsage *)self netEventCallback];
-    [v10 requestEntry];
+    netEventCallback = [(PLAWDNetworkUsage *)self netEventCallback];
+    [netEventCallback requestEntry];
 
     sleep(5u);
     v11 = objc_opt_new();
@@ -202,23 +202,23 @@ uint64_t __43__PLAWDNetworkUsage_startMetricCollection___block_invoke_2(uint64_t
     {
       v55 = v11;
       v57 = v8;
-      v58 = v7;
-      v59 = v6;
+      v58 = connCopy;
+      v59 = serverCopy;
       v61 = objc_opt_new();
       v60 = objc_opt_new();
       v13 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:-86400.0];
-      v14 = [MEMORY[0x277CBEAA8] monotonicDate];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
       [v13 timeIntervalSince1970];
       v16 = v15;
-      [v14 timeIntervalSince1970];
+      [monotonicDate timeIntervalSince1970];
       v18 = v17 - v16;
 
       v19 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"NetworkUsage"];
-      v56 = self;
-      v20 = [(PLAWDAuxMetrics *)self operator];
-      v21 = [v20 storage];
+      selfCopy = self;
+      operator = [(PLAWDAuxMetrics *)self operator];
+      storage = [operator storage];
       v54 = v19;
-      v22 = [v21 aggregateEntriesForKey:v19 withBucketLength:86400.0 inTimeIntervalRange:{v16, v18}];
+      v22 = [storage aggregateEntriesForKey:v19 withBucketLength:86400.0 inTimeIntervalRange:{v16, v18}];
 
       v53 = v22;
       [MEMORY[0x277D3F190] summarizeAggregateEntries:v22];
@@ -290,49 +290,49 @@ uint64_t __43__PLAWDNetworkUsage_startMetricCollection___block_invoke_2(uint64_t
         while (v64);
       }
 
-      v43 = [v60 allKeys];
-      v44 = [v43 sortedArrayUsingSelector:sel_compare_];
-      v45 = [v44 reverseObjectEnumerator];
-      v46 = [v45 allObjects];
+      allKeys = [v60 allKeys];
+      v44 = [allKeys sortedArrayUsingSelector:sel_compare_];
+      reverseObjectEnumerator = [v44 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
       for (j = 0; j != 10; ++j)
       {
-        if ([v46 count] <= j)
+        if ([allObjects count] <= j)
         {
           break;
         }
 
-        v48 = [v46 objectAtIndexedSubscript:j];
+        v48 = [allObjects objectAtIndexedSubscript:j];
         v49 = [v60 objectForKey:v48];
 
         [v61 addObject:v49];
       }
 
-      v7 = v58;
+      connCopy = v58;
       v12 = v55;
       [v55 setTimestamp:{objc_msgSend(v58, "getAWDTimestamp")}];
       [v55 setUsages:v61];
       v8 = v57;
       [v57 setMetric:v55];
 
-      v6 = v59;
-      self = v56;
+      serverCopy = v59;
+      self = selfCopy;
     }
 
     [(PLAWDNetworkUsage *)self resetNetUsageTable];
-    v50 = [(PLAWDNetworkUsage *)self netEventCallback];
-    [v50 requestEntry];
+    netEventCallback2 = [(PLAWDNetworkUsage *)self netEventCallback];
+    [netEventCallback2 requestEntry];
 
-    v9 = [v7 submitMetric:v8];
+    v9 = [connCopy submitMetric:v8];
   }
 
   v51 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (void)handleNetCallback:(id)a3
+- (void)handleNetCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   if (v4)
   {
     v31 = v4;
@@ -357,8 +357,8 @@ uint64_t __43__PLAWDNetworkUsage_startMetricCollection___block_invoke_2(uint64_t
       v12 = [v31 objectForKeyedSubscript:@"CellOut"];
       [v7 setObject:v12 forKeyedSubscript:@"CellOut"];
 
-      v13 = [(PLAWDAuxMetrics *)self operator];
-      [v13 logEntry:v7];
+      operator = [(PLAWDAuxMetrics *)self operator];
+      [operator logEntry:v7];
 
       v14 = 0;
       v15 = 0;
@@ -399,16 +399,16 @@ uint64_t __43__PLAWDNetworkUsage_startMetricCollection___block_invoke_2(uint64_t
     v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v16];
     [v25 setObject:v29 forKeyedSubscript:@"CellOut"];
 
-    v30 = [(PLAWDAuxMetrics *)self operator];
-    [v30 logEntry:v25];
+    operator2 = [(PLAWDAuxMetrics *)self operator];
+    [operator2 logEntry:v25];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)handleNameConnectionCallback:(id)a3
+- (void)handleNameConnectionCallback:(id)callback
 {
-  v3 = [a3 objectForKey:@"group"];
+  v3 = [callback objectForKey:@"group"];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v4 = objc_opt_class();
@@ -427,9 +427,9 @@ uint64_t __43__PLAWDNetworkUsage_startMetricCollection___block_invoke_2(uint64_t
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s = %@", "-[PLAWDNetworkUsage handleNameConnectionCallback:]", v3];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDNetworkUsage.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDNetworkUsage handleNameConnectionCallback:]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:278];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:278];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))

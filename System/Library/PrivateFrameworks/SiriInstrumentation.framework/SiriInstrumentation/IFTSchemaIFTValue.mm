@@ -1,13 +1,13 @@
 @interface IFTSchemaIFTValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaIFTEntityValue)entity;
 - (IFTSchemaIFTEnumerationValue)enumeration;
 - (IFTSchemaIFTPrimitiveValue)primitive;
 - (IFTSchemaIFTQueryValue)query;
-- (IFTSchemaIFTValue)initWithDictionary:(id)a3;
-- (IFTSchemaIFTValue)initWithJSON:(id)a3;
+- (IFTSchemaIFTValue)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTValue)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -15,24 +15,24 @@
 - (void)deleteEnumeration;
 - (void)deletePrimitive;
 - (void)deleteQuery;
-- (void)setEntity:(id)a3;
-- (void)setEnumeration:(id)a3;
-- (void)setPrimitive:(id)a3;
-- (void)setQuery:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEntity:(id)entity;
+- (void)setEnumeration:(id)enumeration;
+- (void)setPrimitive:(id)primitive;
+- (void)setQuery:(id)query;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTValue
 
-- (IFTSchemaIFTValue)initWithDictionary:(id)a3
+- (IFTSchemaIFTValue)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = IFTSchemaIFTValue;
   v5 = [(IFTSchemaIFTValue *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"primitive"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"primitive"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(IFTSchemaIFTValue *)v5 setPrimitive:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"enumeration"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"enumeration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(IFTSchemaIFTValue *)v5 setEnumeration:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"entity"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"entity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(IFTSchemaIFTValue *)v5 setEntity:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"query"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"query"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTValue)initWithJSON:(id)a3
+- (IFTSchemaIFTValue)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTValue *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTValue *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTValue *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,74 +106,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_entity)
   {
-    v4 = [(IFTSchemaIFTValue *)self entity];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    entity = [(IFTSchemaIFTValue *)self entity];
+    dictionaryRepresentation = [entity dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"entity"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"entity"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"entity"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"entity"];
     }
   }
 
   if (self->_enumeration)
   {
-    v7 = [(IFTSchemaIFTValue *)self enumeration];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    enumeration = [(IFTSchemaIFTValue *)self enumeration];
+    dictionaryRepresentation2 = [enumeration dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"enumeration"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"enumeration"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"enumeration"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"enumeration"];
     }
   }
 
   if (self->_primitive)
   {
-    v10 = [(IFTSchemaIFTValue *)self primitive];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    primitive = [(IFTSchemaIFTValue *)self primitive];
+    dictionaryRepresentation3 = [primitive dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"primitive"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"primitive"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"primitive"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"primitive"];
     }
   }
 
   if (self->_query)
   {
-    v13 = [(IFTSchemaIFTValue *)self query];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    query = [(IFTSchemaIFTValue *)self query];
+    dictionaryRepresentation4 = [query dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"query"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"query"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"query"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"query"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -184,34 +184,34 @@
   return v4 ^ v5 ^ [(IFTSchemaIFTQueryValue *)self->_query hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   whichOneof_Value = self->_whichOneof_Value;
-  if (whichOneof_Value != [v4 whichOneof_Value])
+  if (whichOneof_Value != [equalCopy whichOneof_Value])
   {
     goto LABEL_23;
   }
 
-  v6 = [(IFTSchemaIFTValue *)self primitive];
-  v7 = [v4 primitive];
-  if ((v6 != 0) == (v7 == 0))
+  primitive = [(IFTSchemaIFTValue *)self primitive];
+  primitive2 = [equalCopy primitive];
+  if ((primitive != 0) == (primitive2 == 0))
   {
     goto LABEL_22;
   }
 
-  v8 = [(IFTSchemaIFTValue *)self primitive];
-  if (v8)
+  primitive3 = [(IFTSchemaIFTValue *)self primitive];
+  if (primitive3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTValue *)self primitive];
-    v11 = [v4 primitive];
-    v12 = [v10 isEqual:v11];
+    v9 = primitive3;
+    primitive4 = [(IFTSchemaIFTValue *)self primitive];
+    primitive5 = [equalCopy primitive];
+    v12 = [primitive4 isEqual:primitive5];
 
     if (!v12)
     {
@@ -223,20 +223,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTValue *)self enumeration];
-  v7 = [v4 enumeration];
-  if ((v6 != 0) == (v7 == 0))
+  primitive = [(IFTSchemaIFTValue *)self enumeration];
+  primitive2 = [equalCopy enumeration];
+  if ((primitive != 0) == (primitive2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(IFTSchemaIFTValue *)self enumeration];
-  if (v13)
+  enumeration = [(IFTSchemaIFTValue *)self enumeration];
+  if (enumeration)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTValue *)self enumeration];
-    v16 = [v4 enumeration];
-    v17 = [v15 isEqual:v16];
+    v14 = enumeration;
+    enumeration2 = [(IFTSchemaIFTValue *)self enumeration];
+    enumeration3 = [equalCopy enumeration];
+    v17 = [enumeration2 isEqual:enumeration3];
 
     if (!v17)
     {
@@ -248,20 +248,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTValue *)self entity];
-  v7 = [v4 entity];
-  if ((v6 != 0) == (v7 == 0))
+  primitive = [(IFTSchemaIFTValue *)self entity];
+  primitive2 = [equalCopy entity];
+  if ((primitive != 0) == (primitive2 == 0))
   {
     goto LABEL_22;
   }
 
-  v18 = [(IFTSchemaIFTValue *)self entity];
-  if (v18)
+  entity = [(IFTSchemaIFTValue *)self entity];
+  if (entity)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTValue *)self entity];
-    v21 = [v4 entity];
-    v22 = [v20 isEqual:v21];
+    v19 = entity;
+    entity2 = [(IFTSchemaIFTValue *)self entity];
+    entity3 = [equalCopy entity];
+    v22 = [entity2 isEqual:entity3];
 
     if (!v22)
     {
@@ -273,12 +273,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTValue *)self query];
-  v7 = [v4 query];
-  if ((v6 != 0) != (v7 == 0))
+  primitive = [(IFTSchemaIFTValue *)self query];
+  primitive2 = [equalCopy query];
+  if ((primitive != 0) != (primitive2 == 0))
   {
-    v23 = [(IFTSchemaIFTValue *)self query];
-    if (!v23)
+    query = [(IFTSchemaIFTValue *)self query];
+    if (!query)
     {
 
 LABEL_26:
@@ -286,10 +286,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v24 = v23;
-    v25 = [(IFTSchemaIFTValue *)self query];
-    v26 = [v4 query];
-    v27 = [v25 isEqual:v26];
+    v24 = query;
+    query2 = [(IFTSchemaIFTValue *)self query];
+    query3 = [equalCopy query];
+    v27 = [query2 isEqual:query3];
 
     if (v27)
     {
@@ -309,42 +309,42 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(IFTSchemaIFTValue *)self primitive];
+  toCopy = to;
+  primitive = [(IFTSchemaIFTValue *)self primitive];
 
-  if (v4)
+  if (primitive)
   {
-    v5 = [(IFTSchemaIFTValue *)self primitive];
+    primitive2 = [(IFTSchemaIFTValue *)self primitive];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTValue *)self enumeration];
+  enumeration = [(IFTSchemaIFTValue *)self enumeration];
 
-  if (v6)
+  if (enumeration)
   {
-    v7 = [(IFTSchemaIFTValue *)self enumeration];
+    enumeration2 = [(IFTSchemaIFTValue *)self enumeration];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(IFTSchemaIFTValue *)self entity];
+  entity = [(IFTSchemaIFTValue *)self entity];
 
-  if (v8)
+  if (entity)
   {
-    v9 = [(IFTSchemaIFTValue *)self entity];
+    entity2 = [(IFTSchemaIFTValue *)self entity];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(IFTSchemaIFTValue *)self query];
+  query = [(IFTSchemaIFTValue *)self query];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (query)
   {
-    v12 = [(IFTSchemaIFTValue *)self query];
+    query2 = [(IFTSchemaIFTValue *)self query];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
@@ -373,9 +373,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   primitive = self->_primitive;
   self->_primitive = 0;
 
@@ -385,9 +385,9 @@ LABEL_24:
   entity = self->_entity;
   self->_entity = 0;
 
-  self->_whichOneof_Value = 4 * (v4 != 0);
+  self->_whichOneof_Value = 4 * (queryCopy != 0);
   query = self->_query;
-  self->_query = v4;
+  self->_query = queryCopy;
 }
 
 - (void)deleteEntity
@@ -415,9 +415,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setEntity:(id)a3
+- (void)setEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   primitive = self->_primitive;
   self->_primitive = 0;
 
@@ -428,14 +428,14 @@ LABEL_24:
   self->_query = 0;
 
   v8 = 3;
-  if (!v4)
+  if (!entityCopy)
   {
     v8 = 0;
   }
 
   self->_whichOneof_Value = v8;
   entity = self->_entity;
-  self->_entity = v4;
+  self->_entity = entityCopy;
 }
 
 - (void)deleteEnumeration
@@ -463,9 +463,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setEnumeration:(id)a3
+- (void)setEnumeration:(id)enumeration
 {
-  v4 = a3;
+  enumerationCopy = enumeration;
   primitive = self->_primitive;
   self->_primitive = 0;
 
@@ -475,9 +475,9 @@ LABEL_24:
   query = self->_query;
   self->_query = 0;
 
-  self->_whichOneof_Value = 2 * (v4 != 0);
+  self->_whichOneof_Value = 2 * (enumerationCopy != 0);
   enumeration = self->_enumeration;
-  self->_enumeration = v4;
+  self->_enumeration = enumerationCopy;
 }
 
 - (void)deletePrimitive
@@ -505,9 +505,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setPrimitive:(id)a3
+- (void)setPrimitive:(id)primitive
 {
-  v4 = a3;
+  primitiveCopy = primitive;
   enumeration = self->_enumeration;
   self->_enumeration = 0;
 
@@ -517,49 +517,49 @@ LABEL_24:
   query = self->_query;
   self->_query = 0;
 
-  self->_whichOneof_Value = v4 != 0;
+  self->_whichOneof_Value = primitiveCopy != 0;
   primitive = self->_primitive;
-  self->_primitive = v4;
+  self->_primitive = primitiveCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = IFTSchemaIFTValue;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTValue *)self primitive];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  primitive = [(IFTSchemaIFTValue *)self primitive];
+  v7 = [primitive applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTValue *)self deletePrimitive];
   }
 
-  v9 = [(IFTSchemaIFTValue *)self enumeration];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  enumeration = [(IFTSchemaIFTValue *)self enumeration];
+  v10 = [enumeration applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTValue *)self deleteEnumeration];
   }
 
-  v12 = [(IFTSchemaIFTValue *)self entity];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  entity = [(IFTSchemaIFTValue *)self entity];
+  v13 = [entity applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTValue *)self deleteEntity];
   }
 
-  v15 = [(IFTSchemaIFTValue *)self query];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  query = [(IFTSchemaIFTValue *)self query];
+  v16 = [query applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTValue *)self deleteQuery];
   }

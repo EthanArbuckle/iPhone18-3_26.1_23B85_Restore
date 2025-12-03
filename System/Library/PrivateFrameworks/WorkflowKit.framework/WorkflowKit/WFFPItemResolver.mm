@@ -1,35 +1,35 @@
 @interface WFFPItemResolver
-- (WFFPItemResolver)initWithDomainID:(id)a3 relativeSubpath:(id)a4 completionHandler:(id)a5;
-- (void)collectionDidFinishGathering:(id)a3;
+- (WFFPItemResolver)initWithDomainID:(id)d relativeSubpath:(id)subpath completionHandler:(id)handler;
+- (void)collectionDidFinishGathering:(id)gathering;
 - (void)determineNextItemIfPossible;
-- (void)startObservingFolderItemCollection:(id)a3;
+- (void)startObservingFolderItemCollection:(id)collection;
 @end
 
 @implementation WFFPItemResolver
 
-- (void)startObservingFolderItemCollection:(id)a3
+- (void)startObservingFolderItemCollection:(id)collection
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   v5 = getWFFilesLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[WFFPItemResolver startObservingFolderItemCollection:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = collectionCopy;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEFAULT, "%s Observing new item: %@", buf, 0x16u);
   }
 
-  v6 = [(WFFPItemResolver *)self queue];
+  queue = [(WFFPItemResolver *)self queue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__WFFPItemResolver_startObservingFolderItemCollection___block_invoke;
   v9[3] = &unk_1E837F870;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = collectionCopy;
+  v7 = collectionCopy;
+  dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -67,30 +67,30 @@ void __55__WFFPItemResolver_startObservingFolderItemCollection___block_invoke(ui
   v3 = getWFFilesLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(WFFPItemResolver *)self mutableComponents];
+    mutableComponents = [(WFFPItemResolver *)self mutableComponents];
     *buf = 136315394;
     v21 = "[WFFPItemResolver determineNextItemIfPossible]";
     v22 = 2112;
-    v23 = v4;
+    v23 = mutableComponents;
     _os_log_impl(&dword_1CA256000, v3, OS_LOG_TYPE_DEFAULT, "%s Determining next item with mutable components: %@", buf, 0x16u);
   }
 
-  v5 = [(WFFPItemResolver *)self mutableComponents];
-  v6 = [v5 count];
+  mutableComponents2 = [(WFFPItemResolver *)self mutableComponents];
+  v6 = [mutableComponents2 count];
 
   if (v6)
   {
-    v7 = [(WFFPItemResolver *)self mutableComponents];
-    v8 = [v7 firstObject];
+    mutableComponents3 = [(WFFPItemResolver *)self mutableComponents];
+    firstObject = [mutableComponents3 firstObject];
 
-    v9 = [(WFFPItemResolver *)self mutableComponents];
-    [v9 removeObjectAtIndex:0];
+    mutableComponents4 = [(WFFPItemResolver *)self mutableComponents];
+    [mutableComponents4 removeObjectAtIndex:0];
 
-    v10 = [(WFFPItemResolver *)self mutableComponents];
-    v11 = [v10 count];
+    mutableComponents5 = [(WFFPItemResolver *)self mutableComponents];
+    v11 = [mutableComponents5 count];
 
-    v12 = [(WFFPItemResolver *)self collection];
-    v13 = [v12 items];
+    collection = [(WFFPItemResolver *)self collection];
+    items = [collection items];
     if (v11)
     {
       v14 = v18;
@@ -109,16 +109,16 @@ void __55__WFFPItemResolver_startObservingFolderItemCollection___block_invoke(ui
 
     v14[2] = v15;
     v14[3] = &unk_1E83764B0;
-    v14[4] = v8;
+    v14[4] = firstObject;
     v14[5] = self;
-    v16 = v8;
-    [v13 enumerateObjectsUsingBlock:v14];
+    completionHandler = firstObject;
+    [items enumerateObjectsUsingBlock:v14];
   }
 
   else
   {
-    v16 = [(WFFPItemResolver *)self completionHandler];
-    (*(v16 + 2))(v16, 0, 0);
+    completionHandler = [(WFFPItemResolver *)self completionHandler];
+    (*(completionHandler + 2))(completionHandler, 0, 0);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -159,18 +159,18 @@ void __47__WFFPItemResolver_determineNextItemIfPossible__block_invoke_2(uint64_t
   }
 }
 
-- (void)collectionDidFinishGathering:(id)a3
+- (void)collectionDidFinishGathering:(id)gathering
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  gatheringCopy = gathering;
   v5 = getWFFilesLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 items];
+    items = [gatheringCopy items];
     v8 = 136315394;
     v9 = "[WFFPItemResolver collectionDidFinishGathering:]";
     v10 = 2112;
-    v11 = v6;
+    v11 = items;
     _os_log_impl(&dword_1CA256000, v5, OS_LOG_TYPE_DEFAULT, "%s Collection Finished gathering with items: %@", &v8, 0x16u);
   }
 
@@ -178,15 +178,15 @@ void __47__WFFPItemResolver_determineNextItemIfPossible__block_invoke_2(uint64_t
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (WFFPItemResolver)initWithDomainID:(id)a3 relativeSubpath:(id)a4 completionHandler:(id)a5
+- (WFFPItemResolver)initWithDomainID:(id)d relativeSubpath:(id)subpath completionHandler:(id)handler
 {
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  dCopy = d;
+  subpathCopy = subpath;
+  handlerCopy = handler;
+  if (dCopy)
   {
-    if (v10)
+    if (subpathCopy)
     {
       goto LABEL_3;
     }
@@ -194,24 +194,24 @@ void __47__WFFPItemResolver_determineNextItemIfPossible__block_invoke_2(uint64_t
 
   else
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"WFFPItemResolver.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"domainID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFPItemResolver.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"domainID"}];
 
-    if (v10)
+    if (subpathCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v32 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v32 handleFailureInMethod:a2 object:self file:@"WFFPItemResolver.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"relativeSubpath"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFFPItemResolver.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"relativeSubpath"}];
 
 LABEL_3:
   v12 = [(WFFPItemResolver *)self init];
   if (v12)
   {
     v37 = 0;
-    v13 = [MEMORY[0x1E69673E8] providerDomainWithID:v9 error:&v37];
+    v13 = [MEMORY[0x1E69673E8] providerDomainWithID:dCopy error:&v37];
     v14 = v37;
     if (v13)
     {
@@ -222,44 +222,44 @@ LABEL_3:
       queue = v12->_queue;
       v12->_queue = v17;
 
-      v19 = [v10 componentsSeparatedByString:@"/"];
+      v19 = [subpathCopy componentsSeparatedByString:@"/"];
       v20 = [v19 mutableCopy];
 
-      v21 = [v11 copy];
+      v21 = [handlerCopy copy];
       completionHandler = v12->_completionHandler;
       v12->_completionHandler = v21;
 
-      if (([v10 isEqualToString:@"/"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", &stru_1F4A1C408) & 1) != 0 || objc_msgSend(v20, "count") == 1)
+      if (([subpathCopy isEqualToString:@"/"] & 1) != 0 || (objc_msgSend(subpathCopy, "isEqualToString:", &stru_1F4A1C408) & 1) != 0 || objc_msgSend(v20, "count") == 1)
       {
-        v23 = [MEMORY[0x1E69673B0] defaultManager];
+        defaultManager = [MEMORY[0x1E69673B0] defaultManager];
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
         v35[2] = __71__WFFPItemResolver_initWithDomainID_relativeSubpath_completionHandler___block_invoke;
         v35[3] = &unk_1E8376488;
         v24 = &v36;
         v36 = v12;
-        [v23 fetchRootItemForProviderDomain:v13 completionHandler:v35];
+        [defaultManager fetchRootItemForProviderDomain:v13 completionHandler:v35];
       }
 
       else
       {
         [v20 removeObjectAtIndex:0];
         objc_storeStrong(&v12->_mutableComponents, v20);
-        v28 = [MEMORY[0x1E69673B0] defaultManager];
-        v29 = [v28 rootCollectionForProviderDomain:v13];
+        defaultManager2 = [MEMORY[0x1E69673B0] defaultManager];
+        v29 = [defaultManager2 rootCollectionForProviderDomain:v13];
         collection = v12->_collection;
         v12->_collection = v29;
 
         [(FPItemCollection *)v12->_collection setDelegate:v12];
         [(FPItemCollection *)v12->_collection setWorkingQueue:v12->_queue];
-        v23 = [(WFFPItemResolver *)v12 queue];
+        defaultManager = [(WFFPItemResolver *)v12 queue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __71__WFFPItemResolver_initWithDomainID_relativeSubpath_completionHandler___block_invoke_2;
         block[3] = &unk_1E837FA70;
         v24 = &v34;
         v34 = v12;
-        dispatch_async(v23, block);
+        dispatch_async(defaultManager, block);
       }
 
       v25 = v12;

@@ -1,12 +1,12 @@
 @interface CSDChannelProviderManagerDataSource
-- (BOOL)isProviderInstalled:(id)a3;
+- (BOOL)isProviderInstalled:(id)installed;
 - (CSDChannelProviderManagerDataSource)init;
 - (CSDChannelProviderManagerDataSourceDelegate)delegate;
 - (NSDictionary)providerByIdentifier;
-- (id)providerForIdentifier:(id)a3;
+- (id)providerForIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)notifyDelegateProviderByIdentifierChanged;
-- (void)setProvider:(id)a3 forIdentifier:(id)a4;
+- (void)setProvider:(id)provider forIdentifier:(id)identifier;
 - (void)updateProviderByIdentifier;
 @end
 
@@ -42,38 +42,38 @@
 - (NSDictionary)providerByIdentifier
 {
   os_unfair_lock_lock(&self->_accessorLock);
-  v3 = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
-  v4 = [v3 copy];
+  mutableProviderByIdentifier = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
+  v4 = [mutableProviderByIdentifier copy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 
   return v4;
 }
 
-- (id)providerForIdentifier:(id)a3
+- (id)providerForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  mutableProviderByIdentifier = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
+  v6 = [mutableProviderByIdentifier objectForKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 
   return v6;
 }
 
-- (void)setProvider:(id)a3 forIdentifier:(id)a4
+- (void)setProvider:(id)provider forIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v7 = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  mutableProviderByIdentifier = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
+  v8 = [mutableProviderByIdentifier objectForKeyedSubscript:identifierCopy];
 
   if ((TUObjectsAreEqualOrNil() & 1) == 0)
   {
-    v9 = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
-    [v9 setObject:v10 forKeyedSubscript:v6];
+    mutableProviderByIdentifier2 = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
+    [mutableProviderByIdentifier2 setObject:providerCopy forKeyedSubscript:identifierCopy];
 
     [(CSDChannelProviderManagerDataSource *)self notifyDelegateProviderByIdentifierChanged];
   }
@@ -81,20 +81,20 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (BOOL)isProviderInstalled:(id)a3
+- (BOOL)isProviderInstalled:(id)installed
 {
-  v3 = [a3 bundleURL];
-  if (v3)
+  bundleURL = [installed bundleURL];
+  if (bundleURL)
   {
     v10 = 0;
-    v4 = [[LSApplicationRecord alloc] initWithURL:v3 allowPlaceholder:1 error:&v10];
+    v4 = [[LSApplicationRecord alloc] initWithURL:bundleURL allowPlaceholder:1 error:&v10];
     v5 = v10;
     if (!v4)
     {
       v6 = sub_100004778();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        sub_1004715F4(v3, v5, v6);
+        sub_1004715F4(bundleURL, v5, v6);
       }
     }
   }
@@ -104,10 +104,10 @@
     v4 = 0;
   }
 
-  v7 = [v4 applicationState];
-  v8 = [v7 isInstalled];
+  applicationState = [v4 applicationState];
+  isInstalled = [applicationState isInstalled];
 
-  return v8;
+  return isInstalled;
 }
 
 - (void)notifyDelegateProviderByIdentifierChanged
@@ -124,14 +124,14 @@
 - (void)updateProviderByIdentifier
 {
   os_unfair_lock_lock(&self->_accessorLock);
-  v3 = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
-  v4 = [v3 allValues];
+  mutableProviderByIdentifier = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
+  allValues = [mutableProviderByIdentifier allValues];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = allValues;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -148,9 +148,9 @@
         v9 = *(*(&v15 + 1) + 8 * i);
         if (![(CSDChannelProviderManagerDataSource *)self isProviderInstalled:v9, v15])
         {
-          v10 = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
-          v11 = [v9 identifier];
-          [v10 setObject:0 forKeyedSubscript:v11];
+          mutableProviderByIdentifier2 = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
+          identifier = [v9 identifier];
+          [mutableProviderByIdentifier2 setObject:0 forKeyedSubscript:identifier];
         }
       }
 
@@ -160,9 +160,9 @@
     while (v6);
   }
 
-  v12 = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
-  v13 = [v12 allValues];
-  v14 = [v5 isEqualToArray:v13];
+  mutableProviderByIdentifier3 = [(CSDChannelProviderManagerDataSource *)self mutableProviderByIdentifier];
+  allValues2 = [mutableProviderByIdentifier3 allValues];
+  v14 = [v5 isEqualToArray:allValues2];
 
   if ((v14 & 1) == 0)
   {

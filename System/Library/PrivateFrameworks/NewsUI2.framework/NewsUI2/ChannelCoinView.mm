@@ -1,6 +1,6 @@
 @interface ChannelCoinView
 - (unint64_t)accessibilityTraits;
-- (void)setAccessibilityTraits:(unint64_t)a3;
+- (void)setAccessibilityTraits:(unint64_t)traits;
 @end
 
 @implementation ChannelCoinView
@@ -10,10 +10,10 @@
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
-  v3 = [(ChannelCoinView *)&v7 accessibilityTraits];
+  accessibilityTraits = [(ChannelCoinView *)&v7 accessibilityTraits];
   v4 = *MEMORY[0x277D76548];
 
-  if ((v4 & ~v3) != 0)
+  if ((v4 & ~accessibilityTraits) != 0)
   {
     v5 = v4;
   }
@@ -23,14 +23,14 @@
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(ChannelCoinView *)&v4 setAccessibilityTraits:a3];
+  [(ChannelCoinView *)&v4 setAccessibilityTraits:traits];
 }
 
 @end

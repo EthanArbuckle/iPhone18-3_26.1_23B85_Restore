@@ -1,5 +1,5 @@
 @interface ISFallbackIconFactory
-- (ISFallbackIconFactory)initWithCGImage:(CGImage *)a3 idiom:(unint64_t)a4;
+- (ISFallbackIconFactory)initWithCGImage:(CGImage *)image idiom:(unint64_t)idiom;
 - (id)_createDarkFallbackIcon_iOS;
 - (id)_createDarkFallbackIcon_macOS;
 - (id)_createLightFallbackIcon_iOS;
@@ -29,7 +29,7 @@
   {
     if (idiom == 2)
     {
-      v3 = [(ISFallbackIconFactory *)self _createLightFallbackIcon_macOS];
+      _createLightFallbackIcon_macOS = [(ISFallbackIconFactory *)self _createLightFallbackIcon_macOS];
       goto LABEL_6;
     }
 
@@ -39,9 +39,9 @@
     }
   }
 
-  v3 = [(ISFallbackIconFactory *)self _createLightFallbackIcon_iOS];
+  _createLightFallbackIcon_macOS = [(ISFallbackIconFactory *)self _createLightFallbackIcon_iOS];
 LABEL_6:
-  a2 = v3;
+  a2 = _createLightFallbackIcon_macOS;
 LABEL_7:
 
   return a2;
@@ -55,15 +55,15 @@ LABEL_7:
   return _attemptLightSegmentationWithCroppedCGImage(v3, idiom);
 }
 
-- (ISFallbackIconFactory)initWithCGImage:(CGImage *)a3 idiom:(unint64_t)a4
+- (ISFallbackIconFactory)initWithCGImage:(CGImage *)image idiom:(unint64_t)idiom
 {
   v8.receiver = self;
   v8.super_class = ISFallbackIconFactory;
   v6 = [(ISFallbackIconFactory *)&v8 init];
   if (v6)
   {
-    v6->_cgImage = CGImageRetain(a3);
-    v6->_idiom = a4;
+    v6->_cgImage = CGImageRetain(image);
+    v6->_idiom = idiom;
   }
 
   return v6;
@@ -292,7 +292,7 @@ LABEL_23:
   {
     if (idiom == 2)
     {
-      v3 = [(ISFallbackIconFactory *)self _createDarkFallbackIcon_macOS];
+      _createDarkFallbackIcon_macOS = [(ISFallbackIconFactory *)self _createDarkFallbackIcon_macOS];
       goto LABEL_6;
     }
 
@@ -302,9 +302,9 @@ LABEL_23:
     }
   }
 
-  v3 = [(ISFallbackIconFactory *)self _createDarkFallbackIcon_iOS];
+  _createDarkFallbackIcon_macOS = [(ISFallbackIconFactory *)self _createDarkFallbackIcon_iOS];
 LABEL_6:
-  a2 = v3;
+  a2 = _createDarkFallbackIcon_macOS;
 LABEL_7:
 
   return a2;
@@ -429,7 +429,7 @@ LABEL_23:
   {
     if (idiom == 2)
     {
-      v3 = [(ISFallbackIconFactory *)self _createTintedFallbackIcon_macOS];
+      _createTintedFallbackIcon_macOS = [(ISFallbackIconFactory *)self _createTintedFallbackIcon_macOS];
       goto LABEL_6;
     }
 
@@ -439,9 +439,9 @@ LABEL_23:
     }
   }
 
-  v3 = [(ISFallbackIconFactory *)self _createTintedFallbackIcon_iOS];
+  _createTintedFallbackIcon_macOS = [(ISFallbackIconFactory *)self _createTintedFallbackIcon_iOS];
 LABEL_6:
-  a2 = v3;
+  a2 = _createTintedFallbackIcon_macOS;
 LABEL_7:
 
   return a2;

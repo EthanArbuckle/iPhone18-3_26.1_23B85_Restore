@@ -1,7 +1,7 @@
 @interface CEKExpandingSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (CGRect)accessibilityFrame;
 - (double)_axCurrentSliderValue;
 - (double)_axMaximumValue;
@@ -10,34 +10,34 @@
 - (id)accessibilityLabel;
 - (int64_t)_accessibilityExpandedStatus;
 - (unint64_t)accessibilityTraits;
-- (void)_axChangeValueInDirection:(int64_t)a3 withLargeStep:(BOOL)a4;
-- (void)_handleExpansionAnimationTimerFired:(id)a3;
+- (void)_axChangeValueInDirection:(int64_t)direction withLargeStep:(BOOL)step;
+- (void)_handleExpansionAnimationTimerFired:(id)fired;
 @end
 
 @implementation CEKExpandingSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_valueLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_levelIndicatorView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_handleExpansionAnimationTimerFired:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_setExpanded:animated:shouldNotify:" withFullSignature:{"v", "B", "B", "B", 0}];
-  [v3 validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"setValue:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"expanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_slider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"maximumValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"minimumValue" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_valueLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_levelIndicatorView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_handleExpansionAnimationTimerFired:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_setExpanded:animated:shouldNotify:" withFullSignature:{"v", "B", "B", "B", 0}];
+  [validationsCopy validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"setValue:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"expanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CEKExpandingSlider" hasInstanceMethod:@"_slider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"maximumValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"minimumValue" withFullSignature:{"d", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(CEKExpandingSliderAccessibility *)self _accessibilityStringForLabelKeyValues:@"_titleLabel"];
-  v3 = [v2 localizedLowercaseString];
+  localizedLowercaseString = [v2 localizedLowercaseString];
 
-  return v3;
+  return localizedLowercaseString;
 }
 
 - (CGRect)accessibilityFrame
@@ -83,7 +83,7 @@
     v6 = 3221225472;
     v7 = __56__CEKExpandingSliderAccessibility_accessibilityActivate__block_invoke;
     v8 = &unk_29F2AB728;
-    v9 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
     return 1;
   }
@@ -109,21 +109,21 @@ void __56__CEKExpandingSliderAccessibility_accessibilityActivate__block_invoke(u
 {
   v7.receiver = self;
   v7.super_class = CEKExpandingSliderAccessibility;
-  v3 = [(CEKExpandingSliderAccessibility *)&v7 accessibilityTraits];
-  v4 = [(CEKExpandingSliderAccessibility *)self _axIsSliderExpanded];
+  accessibilityTraits = [(CEKExpandingSliderAccessibility *)&v7 accessibilityTraits];
+  _axIsSliderExpanded = [(CEKExpandingSliderAccessibility *)self _axIsSliderExpanded];
   v5 = *MEMORY[0x29EDC7F60];
-  if (!v4)
+  if (!_axIsSliderExpanded)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v3 = a3 - 1;
-  if ((a3 - 1) <= 1)
+  v3 = scroll - 1;
+  if ((scroll - 1) <= 1)
   {
     [CEKExpandingSliderAccessibility _axChangeValueInDirection:"_axChangeValueInDirection:withLargeStep:" withLargeStep:?];
   }
@@ -144,30 +144,30 @@ void __56__CEKExpandingSliderAccessibility_accessibilityActivate__block_invoke(u
   }
 }
 
-- (void)_handleExpansionAnimationTimerFired:(id)a3
+- (void)_handleExpansionAnimationTimerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   if (![(CEKExpandingSliderAccessibility *)self _axIsSliderExpanded]|| !UIAccessibilityIsVoiceOverRunning() && !UIAccessibilityIsSwitchControlRunning())
   {
     v5.receiver = self;
     v5.super_class = CEKExpandingSliderAccessibility;
-    [(CEKExpandingSliderAccessibility *)&v5 _handleExpansionAnimationTimerFired:v4];
+    [(CEKExpandingSliderAccessibility *)&v5 _handleExpansionAnimationTimerFired:firedCopy];
   }
 }
 
-- (void)_axChangeValueInDirection:(int64_t)a3 withLargeStep:(BOOL)a4
+- (void)_axChangeValueInDirection:(int64_t)direction withLargeStep:(BOOL)step
 {
-  v4 = a4;
-  v7 = [(CEKExpandingSliderAccessibility *)self _axSemanticStyle];
-  v8 = [v7 safeStringForKey:@"displayName"];
+  stepCopy = step;
+  _axSemanticStyle = [(CEKExpandingSliderAccessibility *)self _axSemanticStyle];
+  v8 = [_axSemanticStyle safeStringForKey:@"displayName"];
 
   v9 = 1.0;
-  if (v4)
+  if (stepCopy)
   {
     v9 = 10.0;
   }
 
-  if (a3 == 1)
+  if (direction == 1)
   {
     v10 = &v14;
     v14 = MEMORY[0x29EDCA5F8];
@@ -177,7 +177,7 @@ void __56__CEKExpandingSliderAccessibility_accessibilityActivate__block_invoke(u
 
   else
   {
-    if (a3 != 2)
+    if (direction != 2)
     {
       goto LABEL_8;
     }

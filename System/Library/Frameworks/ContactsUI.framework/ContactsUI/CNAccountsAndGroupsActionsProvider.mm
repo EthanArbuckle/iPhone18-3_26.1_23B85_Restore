@@ -1,23 +1,23 @@
 @interface CNAccountsAndGroupsActionsProvider
-- (BOOL)addGroupToStoreForGroupItem:(id)a3 withName:(id)a4;
-- (BOOL)authorizedDeleteGroupForItem:(id)a3 completionHandler:(id)a4;
-- (BOOL)authorizedEditGroupNameForCell:(id)a3;
-- (BOOL)deleteGroupActionForItem:(id)a3 sourceView:(id)a4 completionHandler:(id)a5;
-- (BOOL)editGroupNameActionForItem:(id)a3 cell:(id)a4;
-- (BOOL)emailGroupForItem:(id)a3;
-- (BOOL)exportGroupForItem:(id)a3 sourceView:(id)a4;
-- (BOOL)isAuthorizedToEditItem:(id)a3;
-- (BOOL)messageGroupForItem:(id)a3;
-- (CNAccountsAndGroupsActionsProvider)initWithDataSource:(id)a3 saveManager:(id)a4;
+- (BOOL)addGroupToStoreForGroupItem:(id)item withName:(id)name;
+- (BOOL)authorizedDeleteGroupForItem:(id)item completionHandler:(id)handler;
+- (BOOL)authorizedEditGroupNameForCell:(id)cell;
+- (BOOL)deleteGroupActionForItem:(id)item sourceView:(id)view completionHandler:(id)handler;
+- (BOOL)editGroupNameActionForItem:(id)item cell:(id)cell;
+- (BOOL)emailGroupForItem:(id)item;
+- (BOOL)exportGroupForItem:(id)item sourceView:(id)view;
+- (BOOL)isAuthorizedToEditItem:(id)item;
+- (BOOL)messageGroupForItem:(id)item;
+- (CNAccountsAndGroupsActionsProvider)initWithDataSource:(id)source saveManager:(id)manager;
 - (CNAccountsAndGroupsActionsProviderDelegate)delegate;
-- (id)actionsForItem:(id)a3 cell:(id)a4;
-- (id)contextMenuConfigurationForItem:(id)a3 cell:(id)a4 atIndexPath:(id)a5;
-- (id)leadingActionsForItem:(id)a3 cell:(id)a4;
-- (id)trailingActionsForItem:(id)a3 cell:(id)a4 isCollectionViewEditing:(BOOL)a5;
-- (void)authorizedCreateGroupActionForContainerItem:(id)a3;
-- (void)createGroupActionForContainerItem:(id)a3 isCollectionViewEditing:(BOOL)a4;
-- (void)deleteGroupForItem:(id)a3 completionHandler:(id)a4;
-- (void)updateItem:(id)a3 withNewName:(id)a4;
+- (id)actionsForItem:(id)item cell:(id)cell;
+- (id)contextMenuConfigurationForItem:(id)item cell:(id)cell atIndexPath:(id)path;
+- (id)leadingActionsForItem:(id)item cell:(id)cell;
+- (id)trailingActionsForItem:(id)item cell:(id)cell isCollectionViewEditing:(BOOL)editing;
+- (void)authorizedCreateGroupActionForContainerItem:(id)item;
+- (void)createGroupActionForContainerItem:(id)item isCollectionViewEditing:(BOOL)editing;
+- (void)deleteGroupForItem:(id)item completionHandler:(id)handler;
+- (void)updateItem:(id)item withNewName:(id)name;
 @end
 
 @implementation CNAccountsAndGroupsActionsProvider
@@ -29,46 +29,46 @@
   return WeakRetained;
 }
 
-- (BOOL)isAuthorizedToEditItem:(id)a3
+- (BOOL)isAuthorizedToEditItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-  v6 = [v5 containerIdentifierForItem:v4];
+  itemCopy = item;
+  dataSource = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+  v6 = [dataSource containerIdentifierForItem:itemCopy];
 
-  v7 = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
-  LOBYTE(v4) = [v7 isAuthorizedToEditContainerWithIdentifier:v6];
+  groupsAndContainersSaveManager = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
+  LOBYTE(itemCopy) = [groupsAndContainersSaveManager isAuthorizedToEditContainerWithIdentifier:v6];
 
-  return v4;
+  return itemCopy;
 }
 
-- (BOOL)addGroupToStoreForGroupItem:(id)a3 withName:(id)a4
+- (BOOL)addGroupToStoreForGroupItem:(id)item withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  [(CNAccountsAndGroupsActionsProvider *)self setIssuedSaveRequestIdentifiers:v8];
+  itemCopy = item;
+  nameCopy = name;
+  array = [MEMORY[0x1E695DF70] array];
+  [(CNAccountsAndGroupsActionsProvider *)self setIssuedSaveRequestIdentifiers:array];
 
-  v9 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-  v10 = [v9 containerIdentifierForItem:v6];
+  dataSource = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+  v10 = [dataSource containerIdentifierForItem:itemCopy];
 
   if (v10)
   {
-    if ([v6 type] == 2)
+    if ([itemCopy type] == 2)
     {
-      v11 = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
-      v12 = [v11 accountForContainerIdentifier:v10];
+      groupsAndContainersSaveManager = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
+      v12 = [groupsAndContainersSaveManager accountForContainerIdentifier:v10];
 
-      v13 = [objc_alloc(MEMORY[0x1E695CF20]) initWithName:v7 type:2];
-      v14 = objc_alloc_init(MEMORY[0x1E695CF88]);
-      [v14 setIgnoresGuardianRestrictions:1];
-      v15 = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
-      v16 = [v14 saveRequestIdentifier];
-      [v15 addObject:v16];
+      v13 = [objc_alloc(MEMORY[0x1E695CF20]) initWithName:nameCopy type:2];
+      identifier3 = objc_alloc_init(MEMORY[0x1E695CF88]);
+      [identifier3 setIgnoresGuardianRestrictions:1];
+      issuedSaveRequestIdentifiers = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
+      saveRequestIdentifier = [identifier3 saveRequestIdentifier];
+      [issuedSaveRequestIdentifiers addObject:saveRequestIdentifier];
 
-      v17 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-      v18 = [v17 store];
-      v19 = [v12 identifier];
-      v20 = [v13 addContainerInStore:v18 toAccountWithIdentifier:v19 saveRequest:v14];
+      dataSource2 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+      store = [dataSource2 store];
+      identifier = [v12 identifier];
+      v20 = [v13 addContainerInStore:store toAccountWithIdentifier:identifier saveRequest:identifier3];
 
       if (!v20)
       {
@@ -76,34 +76,34 @@
         goto LABEL_10;
       }
 
-      v21 = [v13 identifier];
-      [v6 setIdentifier:v21];
+      identifier2 = [v13 identifier];
+      [itemCopy setIdentifier:identifier2];
 
-      [v6 setContainerIdentifier:0];
+      [itemCopy setContainerIdentifier:0];
     }
 
     else
     {
       v12 = objc_alloc_init(MEMORY[0x1E695CF28]);
-      [v12 setName:v7];
+      [v12 setName:nameCopy];
       v13 = objc_alloc_init(MEMORY[0x1E695CF88]);
       [v13 setIgnoresGuardianRestrictions:1];
-      v23 = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
-      v24 = [v13 saveRequestIdentifier];
-      [v23 addObject:v24];
+      issuedSaveRequestIdentifiers2 = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
+      saveRequestIdentifier2 = [v13 saveRequestIdentifier];
+      [issuedSaveRequestIdentifiers2 addObject:saveRequestIdentifier2];
 
-      v25 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-      v26 = [v25 store];
-      LODWORD(v24) = [v12 addGroupInStore:v26 toContainerWithIdentifier:v10 saveRequest:v13];
+      dataSource3 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+      store2 = [dataSource3 store];
+      LODWORD(saveRequestIdentifier2) = [v12 addGroupInStore:store2 toContainerWithIdentifier:v10 saveRequest:v13];
 
-      if (!v24)
+      if (!saveRequestIdentifier2)
       {
         v22 = 0;
         goto LABEL_12;
       }
 
-      v14 = [v12 identifier];
-      [v6 setIdentifier:v14];
+      identifier3 = [v12 identifier];
+      [itemCopy setIdentifier:identifier3];
     }
 
     v22 = 1;
@@ -119,20 +119,20 @@ LABEL_13:
   return v22;
 }
 
-- (void)authorizedCreateGroupActionForContainerItem:(id)a3
+- (void)authorizedCreateGroupActionForContainerItem:(id)item
 {
-  v13 = a3;
-  v4 = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
-  v5 = [v13 identifier];
-  v6 = [v4 accountForContainerIdentifier:v5];
+  itemCopy = item;
+  groupsAndContainersSaveManager = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
+  identifier = [itemCopy identifier];
+  v6 = [groupsAndContainersSaveManager accountForContainerIdentifier:identifier];
 
-  v7 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+  delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
   if (v6)
   {
-    v8 = [v6 identifier];
-    [(CNAccountsAndGroupsItem *)v7 expandSectionForAccountWithIdentifier:v8];
+    identifier2 = [v6 identifier];
+    [(CNAccountsAndGroupsItem *)delegate expandSectionForAccountWithIdentifier:identifier2];
 
-    if ([v13 type] == 2)
+    if ([itemCopy type] == 2)
     {
       v9 = 2;
     }
@@ -142,52 +142,52 @@ LABEL_13:
       v9 = 4;
     }
 
-    v7 = [[CNAccountsAndGroupsItem alloc] initWithType:v9 nameProvider:0];
-    [(CNAccountsAndGroupsItem *)v7 setIdentifier:@"groupPlaceholderIdentifier"];
-    v10 = [v13 identifier];
-    [(CNAccountsAndGroupsItem *)v7 setContainerIdentifier:v10];
+    delegate = [[CNAccountsAndGroupsItem alloc] initWithType:v9 nameProvider:0];
+    [(CNAccountsAndGroupsItem *)delegate setIdentifier:@"groupPlaceholderIdentifier"];
+    identifier3 = [itemCopy identifier];
+    [(CNAccountsAndGroupsItem *)delegate setContainerIdentifier:identifier3];
 
-    [(CNAccountsAndGroupsItem *)v7 setIndentationLevel:1];
-    v11 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-    v12 = [v6 identifier];
-    [v11 reloadCollectionViewAddingPlaceholderItem:v7 inSectionWithIdentifier:v12];
+    [(CNAccountsAndGroupsItem *)delegate setIndentationLevel:1];
+    delegate2 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+    identifier4 = [v6 identifier];
+    [delegate2 reloadCollectionViewAddingPlaceholderItem:delegate inSectionWithIdentifier:identifier4];
   }
 
   else
   {
-    v11 = CNContactsUIBundle();
-    v12 = [v11 localizedStringForKey:@"CREATE_GROUP_FAILURE" value:&stru_1F0CE7398 table:@"Localized"];
-    [(CNAccountsAndGroupsItem *)v7 presentErrorAlertWithMessage:v12 animated:1];
+    delegate2 = CNContactsUIBundle();
+    identifier4 = [delegate2 localizedStringForKey:@"CREATE_GROUP_FAILURE" value:&stru_1F0CE7398 table:@"Localized"];
+    [(CNAccountsAndGroupsItem *)delegate presentErrorAlertWithMessage:identifier4 animated:1];
   }
 }
 
-- (void)createGroupActionForContainerItem:(id)a3 isCollectionViewEditing:(BOOL)a4
+- (void)createGroupActionForContainerItem:(id)item isCollectionViewEditing:(BOOL)editing
 {
-  v11 = a3;
-  if (a4 || (-[CNAccountsAndGroupsActionsProvider groupsAndContainersSaveManager](self, "groupsAndContainersSaveManager"), v6 = objc_claimAutoreleasedReturnValue(), [v11 identifier], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isAuthorizedToEditContainerWithIdentifier:", v7), v7, v6, (v8 & 1) != 0))
+  itemCopy = item;
+  if (editing || (-[CNAccountsAndGroupsActionsProvider groupsAndContainersSaveManager](self, "groupsAndContainersSaveManager"), v6 = objc_claimAutoreleasedReturnValue(), [itemCopy identifier], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isAuthorizedToEditContainerWithIdentifier:", v7), v7, v6, (v8 & 1) != 0))
   {
-    [(CNAccountsAndGroupsActionsProvider *)self authorizedCreateGroupActionForContainerItem:v11];
+    [(CNAccountsAndGroupsActionsProvider *)self authorizedCreateGroupActionForContainerItem:itemCopy];
   }
 
   else
   {
     v9 = objc_alloc_init(CNAccountsAndGroupsAuthorizationContext);
     [(CNAccountsAndGroupsAuthorizationContext *)v9 setType:3];
-    [(CNAccountsAndGroupsAuthorizationContext *)v9 setContainerItem:v11];
-    v10 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-    [v10 showEditAuthorizationPaneWithAuthorizationContext:v9 animated:1];
+    [(CNAccountsAndGroupsAuthorizationContext *)v9 setContainerItem:itemCopy];
+    delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+    [delegate showEditAuthorizationPaneWithAuthorizationContext:v9 animated:1];
   }
 }
 
-- (void)updateItem:(id)a3 withNewName:(id)a4
+- (void)updateItem:(id)item withNewName:(id)name
 {
-  v31 = a3;
-  v6 = a4;
-  v7 = [v31 identifier];
-  v8 = [v7 isEqualToString:@"groupPlaceholderIdentifier"];
+  itemCopy = item;
+  nameCopy = name;
+  identifier = [itemCopy identifier];
+  v8 = [identifier isEqualToString:@"groupPlaceholderIdentifier"];
 
-  v9 = [v31 name];
-  if (([v9 isEqualToString:v6] & 1) == 0)
+  name = [itemCopy name];
+  if (([name isEqualToString:nameCopy] & 1) == 0)
   {
     v10 = (*(*MEMORY[0x1E6996570] + 16))();
 
@@ -196,36 +196,36 @@ LABEL_13:
       goto LABEL_7;
     }
 
-    v11 = [MEMORY[0x1E695DF70] array];
-    [(CNAccountsAndGroupsActionsProvider *)self setIssuedSaveRequestIdentifiers:v11];
+    array = [MEMORY[0x1E695DF70] array];
+    [(CNAccountsAndGroupsActionsProvider *)self setIssuedSaveRequestIdentifiers:array];
 
     if (v8)
     {
-      if (![(CNAccountsAndGroupsActionsProvider *)self addGroupToStoreForGroupItem:v31 withName:v6])
+      if (![(CNAccountsAndGroupsActionsProvider *)self addGroupToStoreForGroupItem:itemCopy withName:nameCopy])
       {
-        v12 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-        [v12 reloadCollectionViewDeletingItem:v31];
+        delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+        [delegate reloadCollectionViewDeletingItem:itemCopy];
 
 LABEL_16:
-        v13 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-        v29 = CNContactsUIBundle();
-        v30 = [v29 localizedStringForKey:@"UPDATE_GROUP_NAME_FAILURE" value:&stru_1F0CE7398 table:@"Localized"];
-        [v13 presentErrorAlertWithMessage:v30 animated:1];
+        delegate2 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+        delegate3 = CNContactsUIBundle();
+        v30 = [delegate3 localizedStringForKey:@"UPDATE_GROUP_NAME_FAILURE" value:&stru_1F0CE7398 table:@"Localized"];
+        [delegate2 presentErrorAlertWithMessage:v30 animated:1];
 
         goto LABEL_17;
       }
     }
 
-    else if ([v31 type] == 4)
+    else if ([itemCopy type] == 4)
     {
-      v14 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-      v15 = [v14 groupIdentifierForGroupItem:v31];
+      dataSource = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+      v15 = [dataSource groupIdentifierForGroupItem:itemCopy];
 
-      v16 = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
-      v17 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-      v18 = [v17 store];
-      v19 = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
-      v20 = [v16 updateGroupWithIdentifier:v15 inStore:v18 withNewName:v6 ignoresGuardianRestrictions:1 issuedRequestIdentifiers:v19];
+      groupsAndContainersSaveManager = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
+      dataSource2 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+      store = [dataSource2 store];
+      issuedSaveRequestIdentifiers = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
+      v20 = [groupsAndContainersSaveManager updateGroupWithIdentifier:v15 inStore:store withNewName:nameCopy ignoresGuardianRestrictions:1 issuedRequestIdentifiers:issuedSaveRequestIdentifiers];
 
       if ((v20 & 1) == 0)
       {
@@ -235,19 +235,19 @@ LABEL_16:
 
     else
     {
-      if ([v31 type] != 2)
+      if ([itemCopy type] != 2)
       {
         goto LABEL_16;
       }
 
-      v21 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-      v22 = [v21 containerIdentifierForItem:v31];
+      dataSource3 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+      v22 = [dataSource3 containerIdentifierForItem:itemCopy];
 
-      v23 = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
-      v24 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-      v25 = [v24 store];
-      v26 = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
-      v27 = [v23 updateContainerWithIdentifier:v22 inStore:v25 withNewName:v6 ignoresGuardianRestrictions:1 issuedRequestIdentifiers:v26];
+      groupsAndContainersSaveManager2 = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
+      dataSource4 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+      store2 = [dataSource4 store];
+      issuedSaveRequestIdentifiers2 = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
+      v27 = [groupsAndContainersSaveManager2 updateContainerWithIdentifier:v22 inStore:store2 withNewName:nameCopy ignoresGuardianRestrictions:1 issuedRequestIdentifiers:issuedSaveRequestIdentifiers2];
 
       if (!v27)
       {
@@ -255,17 +255,17 @@ LABEL_16:
       }
     }
 
-    [v31 setName:v6];
-    v28 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-    v13 = [v28 sectionIdentifierForItem:v31];
+    [itemCopy setName:nameCopy];
+    dataSource5 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+    delegate2 = [dataSource5 sectionIdentifierForItem:itemCopy];
 
-    if (!v13)
+    if (!delegate2)
     {
       goto LABEL_18;
     }
 
-    v29 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-    [v29 reloadCollectionViewForSectionWithIdentifier:v13 settingFilterForEditingItem:0 allowsReloadWhenEditing:0];
+    delegate3 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+    [delegate3 reloadCollectionViewForSectionWithIdentifier:delegate2 settingFilterForEditingItem:0 allowsReloadWhenEditing:0];
 LABEL_17:
 
     goto LABEL_18;
@@ -277,31 +277,31 @@ LABEL_7:
     goto LABEL_19;
   }
 
-  v13 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-  [v13 reloadCollectionViewDeletingItem:v31];
+  delegate2 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+  [delegate2 reloadCollectionViewDeletingItem:itemCopy];
 LABEL_18:
 
 LABEL_19:
 }
 
-- (BOOL)authorizedEditGroupNameForCell:(id)a3
+- (BOOL)authorizedEditGroupNameForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [v5 identifier];
-  v7 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-  [v7 setCurrentlyEditingGroupIdentifier:v6];
+  cellCopy = cell;
+  item = [cellCopy item];
+  identifier = [item identifier];
+  dataSource = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+  [dataSource setCurrentlyEditingGroupIdentifier:identifier];
 
-  [v4 beginEditingName];
+  [cellCopy beginEditingName];
   return 1;
 }
 
-- (BOOL)editGroupNameActionForItem:(id)a3 cell:(id)a4
+- (BOOL)editGroupNameActionForItem:(id)item cell:(id)cell
 {
-  v6 = a4;
-  if ([(CNAccountsAndGroupsActionsProvider *)self isAuthorizedToEditItem:a3])
+  cellCopy = cell;
+  if ([(CNAccountsAndGroupsActionsProvider *)self isAuthorizedToEditItem:item])
   {
-    v7 = [(CNAccountsAndGroupsActionsProvider *)self authorizedEditGroupNameForCell:v6];
+    v7 = [(CNAccountsAndGroupsActionsProvider *)self authorizedEditGroupNameForCell:cellCopy];
   }
 
   else
@@ -309,52 +309,52 @@ LABEL_19:
     v8 = objc_alloc_init(CNAccountsAndGroupsAuthorizationContext);
     v7 = 1;
     [(CNAccountsAndGroupsAuthorizationContext *)v8 setType:1];
-    [(CNAccountsAndGroupsAuthorizationContext *)v8 setCell:v6];
-    v9 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-    [v9 showEditAuthorizationPaneWithAuthorizationContext:v8 animated:1];
+    [(CNAccountsAndGroupsAuthorizationContext *)v8 setCell:cellCopy];
+    delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+    [delegate showEditAuthorizationPaneWithAuthorizationContext:v8 animated:1];
   }
 
   return v7;
 }
 
-- (BOOL)authorizedDeleteGroupForItem:(id)a3 completionHandler:(id)a4
+- (BOOL)authorizedDeleteGroupForItem:(id)item completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  [(CNAccountsAndGroupsActionsProvider *)self setIssuedSaveRequestIdentifiers:v8];
+  itemCopy = item;
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
+  [(CNAccountsAndGroupsActionsProvider *)self setIssuedSaveRequestIdentifiers:array];
 
-  v9 = [v6 identifier];
-  v10 = [v9 isEqualToString:@"groupPlaceholderIdentifier"];
+  identifier = [itemCopy identifier];
+  v10 = [identifier isEqualToString:@"groupPlaceholderIdentifier"];
 
   if (v10)
   {
     goto LABEL_7;
   }
 
-  if ([v6 type] == 2)
+  if ([itemCopy type] == 2)
   {
-    v11 = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
-    v12 = [v6 identifier];
-    v13 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-    v14 = [v13 store];
-    v15 = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
-    v16 = [v11 deleteContainerWithIdentifier:v12 inStore:v14 ignoresGuardianRestrictions:1 issuedRequestIdentifiers:v15];
+    groupsAndContainersSaveManager = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
+    identifier2 = [itemCopy identifier];
+    dataSource = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+    store = [dataSource store];
+    issuedSaveRequestIdentifiers = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
+    v16 = [groupsAndContainersSaveManager deleteContainerWithIdentifier:identifier2 inStore:store ignoresGuardianRestrictions:1 issuedRequestIdentifiers:issuedSaveRequestIdentifiers];
   }
 
   else
   {
-    if ([v6 type] != 4)
+    if ([itemCopy type] != 4)
     {
       goto LABEL_8;
     }
 
-    v11 = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
-    v12 = [v6 identifier];
-    v13 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-    v14 = [v13 store];
-    v15 = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
-    v16 = [v11 deleteGroupWithIdentifier:v12 inStore:v14 ignoresGuardianRestrictions:1 issuedRequestIdentifiers:v15];
+    groupsAndContainersSaveManager = [(CNAccountsAndGroupsActionsProvider *)self groupsAndContainersSaveManager];
+    identifier2 = [itemCopy identifier];
+    dataSource = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+    store = [dataSource store];
+    issuedSaveRequestIdentifiers = [(CNAccountsAndGroupsActionsProvider *)self issuedSaveRequestIdentifiers];
+    v16 = [groupsAndContainersSaveManager deleteGroupWithIdentifier:identifier2 inStore:store ignoresGuardianRestrictions:1 issuedRequestIdentifiers:issuedSaveRequestIdentifiers];
   }
 
   v17 = v16;
@@ -362,62 +362,62 @@ LABEL_19:
   if (v17)
   {
 LABEL_7:
-    v18 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-    [v18 setCurrentlyEditingGroupIdentifier:0];
+    dataSource2 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+    [dataSource2 setCurrentlyEditingGroupIdentifier:0];
 
-    v19 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-    [v19 reloadCollectionViewDeletingItem:v6];
+    delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+    [delegate reloadCollectionViewDeletingItem:itemCopy];
     v20 = 1;
     goto LABEL_9;
   }
 
 LABEL_8:
-  v19 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+  delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
   v21 = CNContactsUIBundle();
   v22 = [v21 localizedStringForKey:@"DELETE_GROUP_FAILURE" value:&stru_1F0CE7398 table:@"Localized"];
-  [v19 presentErrorAlertWithMessage:v22 animated:1];
+  [delegate presentErrorAlertWithMessage:v22 animated:1];
 
   v20 = 0;
 LABEL_9:
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v20);
+    handlerCopy[2](handlerCopy, v20);
   }
 
   return v20;
 }
 
-- (void)deleteGroupForItem:(id)a3 completionHandler:(id)a4
+- (void)deleteGroupForItem:(id)item completionHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  if ([(CNAccountsAndGroupsActionsProvider *)self isAuthorizedToEditItem:v9])
+  itemCopy = item;
+  handlerCopy = handler;
+  if ([(CNAccountsAndGroupsActionsProvider *)self isAuthorizedToEditItem:itemCopy])
   {
-    [(CNAccountsAndGroupsActionsProvider *)self authorizedDeleteGroupForItem:v9 completionHandler:v6];
+    [(CNAccountsAndGroupsActionsProvider *)self authorizedDeleteGroupForItem:itemCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v7 = objc_alloc_init(CNAccountsAndGroupsAuthorizationContext);
     [(CNAccountsAndGroupsAuthorizationContext *)v7 setType:2];
-    [(CNAccountsAndGroupsAuthorizationContext *)v7 setItem:v9];
-    [(CNAccountsAndGroupsAuthorizationContext *)v7 setActionCompletionHandler:v6];
-    v8 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-    [v8 showEditAuthorizationPaneWithAuthorizationContext:v7 animated:1];
+    [(CNAccountsAndGroupsAuthorizationContext *)v7 setItem:itemCopy];
+    [(CNAccountsAndGroupsAuthorizationContext *)v7 setActionCompletionHandler:handlerCopy];
+    delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+    [delegate showEditAuthorizationPaneWithAuthorizationContext:v7 animated:1];
   }
 }
 
-- (BOOL)deleteGroupActionForItem:(id)a3 sourceView:(id)a4 completionHandler:(id)a5
+- (BOOL)deleteGroupActionForItem:(id)item sourceView:(id)view completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = a4;
+  viewCopy = view;
   v12 = CNContactsUIBundle();
   v13 = [v12 localizedStringForKey:@"DELETE_GROUP_CONFIRMATION_ALERT_TITLE-%@" value:&stru_1F0CE7398 table:@"Localized"];
-  v14 = [v8 name];
-  v41 = [v10 localizedStringWithFormat:v13, v14];
+  name = [itemCopy name];
+  v41 = [v10 localizedStringWithFormat:v13, name];
 
   v15 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v41 message:0 preferredStyle:1];
   v16 = MEMORY[0x1E69DC648];
@@ -428,10 +428,10 @@ LABEL_9:
   v44[2] = __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourceView_completionHandler___block_invoke;
   v44[3] = &unk_1E74E4A88;
   v44[4] = self;
-  v45 = v8;
-  v19 = v9;
+  v45 = itemCopy;
+  v19 = handlerCopy;
   v46 = v19;
-  v20 = v8;
+  v20 = itemCopy;
   v21 = [v16 actionWithTitle:v18 style:2 handler:v44];
 
   [v15 addAction:v21];
@@ -447,23 +447,23 @@ LABEL_9:
   v26 = [v22 actionWithTitle:v24 style:1 handler:v42];
 
   [v15 addAction:v26];
-  v27 = [v15 popoverPresentationController];
-  [v27 setSourceView:v11];
+  popoverPresentationController = [v15 popoverPresentationController];
+  [popoverPresentationController setSourceView:viewCopy];
 
-  [v11 bounds];
+  [viewCopy bounds];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
 
-  v36 = [v15 popoverPresentationController];
-  [v36 setSourceRect:{v29, v31, v33, v35}];
+  popoverPresentationController2 = [v15 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v29, v31, v33, v35}];
 
-  v37 = [v15 popoverPresentationController];
-  [v37 setPermittedArrowDirections:15];
+  popoverPresentationController3 = [v15 popoverPresentationController];
+  [popoverPresentationController3 setPermittedArrowDirections:15];
 
-  v38 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-  [v38 presentController:v15 animated:1];
+  delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+  [delegate presentController:v15 animated:1];
 
   return 1;
 }
@@ -479,112 +479,112 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
   return result;
 }
 
-- (BOOL)exportGroupForItem:(id)a3 sourceView:(id)a4
+- (BOOL)exportGroupForItem:(id)item sourceView:(id)view
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-  [v8 resignAllFirstRespondersSavingCurrentlyEditing:0];
+  viewCopy = view;
+  itemCopy = item;
+  delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+  [delegate resignAllFirstRespondersSavingCurrentlyEditing:0];
 
-  v9 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+  dataSource = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
   v10 = +[CNContactListShareContactsAction descriptorForRequiredKeys];
   v18[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v12 = [v9 allContactsForItem:v7 keysToFetch:v11];
+  v12 = [dataSource allContactsForItem:itemCopy keysToFetch:v11];
 
   v13 = objc_alloc_init(CNContactListShareContactsActionContext);
-  v14 = [v7 name];
+  name = [itemCopy name];
 
-  [(CNContactListShareContactsActionContext *)v13 setGroupName:v14];
-  v15 = [[CNContactListShareContactsAction alloc] initWithContacts:v12 sourceView:v6 context:v13];
+  [(CNContactListShareContactsActionContext *)v13 setGroupName:name];
+  v15 = [[CNContactListShareContactsAction alloc] initWithContacts:v12 sourceView:viewCopy context:v13];
 
-  v16 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-  [(CNContactListShareContactsAction *)v15 setDelegate:v16];
+  delegate2 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+  [(CNContactListShareContactsAction *)v15 setDelegate:delegate2];
 
   [(CNContactListShareContactsAction *)v15 performAction];
   return 1;
 }
 
-- (BOOL)messageGroupForItem:(id)a3
+- (BOOL)messageGroupForItem:(id)item
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-  [v5 resignAllFirstRespondersSavingCurrentlyEditing:0];
+  itemCopy = item;
+  delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+  [delegate resignAllFirstRespondersSavingCurrentlyEditing:0];
 
   v6 = objc_alloc_init(MEMORY[0x1E695CF10]);
-  v7 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-  v8 = [MEMORY[0x1E695CF10] descriptorForRequiredKeys];
-  v20[0] = v8;
+  dataSource = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+  descriptorForRequiredKeys = [MEMORY[0x1E695CF10] descriptorForRequiredKeys];
+  v20[0] = descriptorForRequiredKeys;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  v10 = [v7 allContactsForItem:v4 keysToFetch:v9];
+  v10 = [dataSource allContactsForItem:itemCopy keysToFetch:v9];
 
   v11 = [v6 messageUrlForContacts:v10];
   if (v11)
   {
-    v12 = +[CNUIContactsEnvironment currentEnvironment];
-    v13 = [v12 applicationWorkspace];
+    delegate2 = +[CNUIContactsEnvironment currentEnvironment];
+    applicationWorkspace = [delegate2 applicationWorkspace];
     v18 = *MEMORY[0x1E6963550];
     v19 = MEMORY[0x1E695E118];
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    [v13 openSensitiveURLInBackground:v11 withOptions:v14];
+    [applicationWorkspace openSensitiveURLInBackground:v11 withOptions:v14];
   }
 
   else
   {
-    v12 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-    v13 = CNContactsUIBundle();
-    v14 = [v13 localizedStringForKey:@"MESSAGE_GROUP_FAILURE" value:&stru_1F0CE7398 table:@"Localized"];
+    delegate2 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+    applicationWorkspace = CNContactsUIBundle();
+    v14 = [applicationWorkspace localizedStringForKey:@"MESSAGE_GROUP_FAILURE" value:&stru_1F0CE7398 table:@"Localized"];
     v15 = CNContactsUIBundle();
     v16 = [v15 localizedStringForKey:@"MESSAGE_GROUP_FAILURE_HINT" value:&stru_1F0CE7398 table:@"Localized"];
-    [v12 presentErrorAlertWithTitle:v14 message:v16 animated:1];
+    [delegate2 presentErrorAlertWithTitle:v14 message:v16 animated:1];
   }
 
   return v11 != 0;
 }
 
-- (BOOL)emailGroupForItem:(id)a3
+- (BOOL)emailGroupForItem:(id)item
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-  [v5 resignAllFirstRespondersSavingCurrentlyEditing:0];
+  itemCopy = item;
+  delegate = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+  [delegate resignAllFirstRespondersSavingCurrentlyEditing:0];
 
   v6 = objc_alloc_init(MEMORY[0x1E695CEF0]);
-  v7 = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
-  v8 = [MEMORY[0x1E695CEF0] descriptorForRequiredKeys];
-  v18[0] = v8;
+  dataSource = [(CNAccountsAndGroupsActionsProvider *)self dataSource];
+  descriptorForRequiredKeys = [MEMORY[0x1E695CEF0] descriptorForRequiredKeys];
+  v18[0] = descriptorForRequiredKeys;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v10 = [v7 allContactsForItem:v4 keysToFetch:v9];
+  v10 = [dataSource allContactsForItem:itemCopy keysToFetch:v9];
 
   v11 = [v6 mailUrlForContacts:v10 needsEmailAddresses:0];
   if (v11)
   {
-    v12 = +[CNUIContactsEnvironment currentEnvironment];
-    v13 = [v12 applicationWorkspace];
+    delegate2 = +[CNUIContactsEnvironment currentEnvironment];
+    applicationWorkspace = [delegate2 applicationWorkspace];
     v16 = *MEMORY[0x1E6963550];
     v17 = MEMORY[0x1E695E118];
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    [v13 openSensitiveURLInBackground:v11 withOptions:v14];
+    [applicationWorkspace openSensitiveURLInBackground:v11 withOptions:v14];
   }
 
   else
   {
-    v12 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
-    v13 = CNContactsUIBundle();
-    v14 = [v13 localizedStringForKey:@"EMAIL_GROUP_FAILURE" value:&stru_1F0CE7398 table:@"Localized"];
-    [v12 presentErrorAlertWithMessage:v14 animated:1];
+    delegate2 = [(CNAccountsAndGroupsActionsProvider *)self delegate];
+    applicationWorkspace = CNContactsUIBundle();
+    v14 = [applicationWorkspace localizedStringForKey:@"EMAIL_GROUP_FAILURE" value:&stru_1F0CE7398 table:@"Localized"];
+    [delegate2 presentErrorAlertWithMessage:v14 animated:1];
   }
 
   return v11 != 0;
 }
 
-- (id)actionsForItem:(id)a3 cell:(id)a4
+- (id)actionsForItem:(id)item cell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 canEmail])
+  itemCopy = item;
+  cellCopy = cell;
+  if ([itemCopy canEmail])
   {
     v8 = MEMORY[0x1E69DC628];
     v9 = CNContactsUIBundle();
@@ -595,7 +595,7 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
     v54[2] = __58__CNAccountsAndGroupsActionsProvider_actionsForItem_cell___block_invoke;
     v54[3] = &unk_1E74E7808;
     v54[4] = self;
-    v55 = v6;
+    v55 = itemCopy;
     v12 = [v8 actionWithTitle:v10 image:v11 identifier:0 handler:v54];
 
     v13 = [MEMORY[0x1E695E0F0] arrayByAddingObject:v12];
@@ -606,7 +606,7 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
     v13 = MEMORY[0x1E695E0F0];
   }
 
-  if ([v6 canMessage])
+  if ([itemCopy canMessage])
   {
     v14 = MEMORY[0x1E69DC628];
     v15 = CNContactsUIBundle();
@@ -617,7 +617,7 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
     v52[2] = __58__CNAccountsAndGroupsActionsProvider_actionsForItem_cell___block_invoke_2;
     v52[3] = &unk_1E74E7808;
     v52[4] = self;
-    v53 = v6;
+    v53 = itemCopy;
     v18 = [v14 actionWithTitle:v16 image:v17 identifier:0 handler:v52];
 
     v19 = [v13 arrayByAddingObject:v18];
@@ -625,7 +625,7 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
     v13 = v19;
   }
 
-  if ([v6 canExport])
+  if ([itemCopy canExport])
   {
     v20 = MEMORY[0x1E69DC628];
     v21 = CNContactsUIBundle();
@@ -636,8 +636,8 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
     v49[2] = __58__CNAccountsAndGroupsActionsProvider_actionsForItem_cell___block_invoke_3;
     v49[3] = &unk_1E74E7830;
     v49[4] = self;
-    v50 = v6;
-    v51 = v7;
+    v50 = itemCopy;
+    v51 = cellCopy;
     v24 = [v20 actionWithTitle:v22 image:v23 identifier:0 handler:v49];
 
     v25 = [v13 arrayByAddingObject:v24];
@@ -645,7 +645,7 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
     v13 = v25;
   }
 
-  if ([v6 canRename])
+  if ([itemCopy canRename])
   {
     v26 = MEMORY[0x1E69DC628];
     v27 = CNContactsUIBundle();
@@ -656,8 +656,8 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
     v46[2] = __58__CNAccountsAndGroupsActionsProvider_actionsForItem_cell___block_invoke_4;
     v46[3] = &unk_1E74E7830;
     v46[4] = self;
-    v47 = v6;
-    v48 = v7;
+    v47 = itemCopy;
+    v48 = cellCopy;
     v30 = [v26 actionWithTitle:v28 image:v29 identifier:0 handler:v46];
 
     v31 = [v13 arrayByAddingObject:v30];
@@ -665,7 +665,7 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
     v13 = v31;
   }
 
-  if ([v6 canDelete])
+  if ([itemCopy canDelete])
   {
     v32 = MEMORY[0x1E69DC628];
     v33 = CNContactsUIBundle();
@@ -675,12 +675,12 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
     v40 = 3221225472;
     v41 = __58__CNAccountsAndGroupsActionsProvider_actionsForItem_cell___block_invoke_5;
     v42 = &unk_1E74E7830;
-    v43 = self;
-    v44 = v6;
-    v45 = v7;
+    selfCopy = self;
+    v44 = itemCopy;
+    v45 = cellCopy;
     v36 = [v32 actionWithTitle:v34 image:v35 identifier:0 handler:&v39];
 
-    [v36 setAttributes:{2, v39, v40, v41, v42, v43}];
+    [v36 setAttributes:{2, v39, v40, v41, v42, selfCopy}];
     v37 = [v13 arrayByAddingObject:v36];
 
     v13 = v37;
@@ -689,22 +689,22 @@ uint64_t __92__CNAccountsAndGroupsActionsProvider_deleteGroupActionForItem_sourc
   return v13;
 }
 
-- (id)contextMenuConfigurationForItem:(id)a3 cell:(id)a4 atIndexPath:(id)a5
+- (id)contextMenuConfigurationForItem:(id)item cell:(id)cell atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  cellCopy = cell;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__CNAccountsAndGroupsActionsProvider_contextMenuConfigurationForItem_cell_atIndexPath___block_invoke;
   aBlock[3] = &unk_1E74E4A60;
   aBlock[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = a5;
+  v17 = itemCopy;
+  v18 = cellCopy;
+  v10 = cellCopy;
+  v11 = itemCopy;
+  pathCopy = path;
   v13 = _Block_copy(aBlock);
-  v14 = [MEMORY[0x1E69DC8D8] configurationWithIdentifier:v12 previewProvider:0 actionProvider:v13];
+  v14 = [MEMORY[0x1E69DC8D8] configurationWithIdentifier:pathCopy previewProvider:0 actionProvider:v13];
 
   return v14;
 }
@@ -717,21 +717,21 @@ id __87__CNAccountsAndGroupsActionsProvider_contextMenuConfigurationForItem_cell
   return v2;
 }
 
-- (id)trailingActionsForItem:(id)a3 cell:(id)a4 isCollectionViewEditing:(BOOL)a5
+- (id)trailingActionsForItem:(id)item cell:(id)cell isCollectionViewEditing:(BOOL)editing
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  cellCopy = cell;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v8 canDelete])
+  if ([itemCopy canDelete])
   {
     v11 = MEMORY[0x1E69DC8E8];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __90__CNAccountsAndGroupsActionsProvider_trailingActionsForItem_cell_isCollectionViewEditing___block_invoke;
     v25[3] = &unk_1E74E4A10;
-    v27 = a5;
+    editingCopy = editing;
     v25[4] = self;
-    v26 = v8;
+    v26 = itemCopy;
     v12 = [v11 contextualActionWithStyle:1 title:0 handler:v25];
     v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"trash.fill"];
     [v12 setImage:v13];
@@ -739,18 +739,18 @@ id __87__CNAccountsAndGroupsActionsProvider_contextMenuConfigurationForItem_cell
     [v10 addObject:v12];
   }
 
-  if (!a5 && [v8 canRename])
+  if (!editing && [itemCopy canRename])
   {
     v14 = MEMORY[0x1E69DC8E8];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __90__CNAccountsAndGroupsActionsProvider_trailingActionsForItem_cell_isCollectionViewEditing___block_invoke_2;
     v21 = &unk_1E74E4A38;
-    v22 = self;
-    v23 = v8;
-    v24 = v9;
+    selfCopy = self;
+    v23 = itemCopy;
+    v24 = cellCopy;
     v15 = [v14 contextualActionWithStyle:0 title:0 handler:&v18];
-    v16 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"pencil", v18, v19, v20, v21, v22}];
+    v16 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"pencil", v18, v19, v20, v21, selfCopy}];
     [v15 setImage:v16];
 
     [v10 addObject:v15];
@@ -790,11 +790,11 @@ void __90__CNAccountsAndGroupsActionsProvider_trailingActionsForItem_cell_isColl
   dispatch_after(v5, MEMORY[0x1E69E96A0], block);
 }
 
-- (id)leadingActionsForItem:(id)a3 cell:(id)a4
+- (id)leadingActionsForItem:(id)item cell:(id)cell
 {
-  v5 = a3;
+  itemCopy = item;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v5 canEmail])
+  if ([itemCopy canEmail])
   {
     v7 = MEMORY[0x1E69DC8E8];
     v22[0] = MEMORY[0x1E69E9820];
@@ -802,7 +802,7 @@ void __90__CNAccountsAndGroupsActionsProvider_trailingActionsForItem_cell_isColl
     v22[2] = __65__CNAccountsAndGroupsActionsProvider_leadingActionsForItem_cell___block_invoke;
     v22[3] = &unk_1E74E7858;
     v22[4] = self;
-    v23 = v5;
+    v23 = itemCopy;
     v8 = [v7 contextualActionWithStyle:0 title:0 handler:v22];
     v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"envelope.fill"];
     [v8 setImage:v9];
@@ -813,17 +813,17 @@ void __90__CNAccountsAndGroupsActionsProvider_trailingActionsForItem_cell_isColl
     [v6 addObject:v8];
   }
 
-  if ([v5 canMessage])
+  if ([itemCopy canMessage])
   {
     v11 = MEMORY[0x1E69DC8E8];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __65__CNAccountsAndGroupsActionsProvider_leadingActionsForItem_cell___block_invoke_2;
     v19 = &unk_1E74E7858;
-    v20 = self;
-    v21 = v5;
+    selfCopy = self;
+    v21 = itemCopy;
     v12 = [v11 contextualActionWithStyle:0 title:0 handler:&v16];
-    v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"message.fill", v16, v17, v18, v19, v20}];
+    v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"message.fill", v16, v17, v18, v19, selfCopy}];
     [v12 setImage:v13];
 
     v14 = +[CNUIColorRepository groupsTextActionColor];
@@ -851,18 +851,18 @@ void __65__CNAccountsAndGroupsActionsProvider_leadingActionsForItem_cell___block
   v6[2](v6, [v4 messageGroupForItem:v5]);
 }
 
-- (CNAccountsAndGroupsActionsProvider)initWithDataSource:(id)a3 saveManager:(id)a4
+- (CNAccountsAndGroupsActionsProvider)initWithDataSource:(id)source saveManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = CNAccountsAndGroupsActionsProvider;
   v9 = [(CNAccountsAndGroupsActionsProvider *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_groupsAndContainersSaveManager, a4);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_groupsAndContainersSaveManager, manager);
     v11 = v10;
   }
 

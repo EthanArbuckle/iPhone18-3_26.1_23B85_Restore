@@ -1,10 +1,10 @@
 @interface VUIMediaAPIClient
 + (VUIMediaAPIClient)sharedInstance;
 + (void)initializeWithAppleTVClientIdentifier;
-- (VUIMediaAPIClient)initWithClientIdentifier:(id)a3;
+- (VUIMediaAPIClient)initWithClientIdentifier:(id)identifier;
 - (id)_createSession;
-- (id)_createTokenServiceWithSession:(id)a3;
-- (void)fetchContentForUrl:(id)a3 completion:(id)a4;
+- (id)_createTokenServiceWithSession:(id)session;
+- (void)fetchContentForUrl:(id)url completion:(id)completion;
 @end
 
 @implementation VUIMediaAPIClient
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __58__VUIMediaAPIClient_initializeWithAppleTVClientIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initializeWithAppleTVClientIdentifier_once != -1)
   {
     dispatch_once(&initializeWithAppleTVClientIdentifier_once, block);
@@ -42,48 +42,48 @@ void __58__VUIMediaAPIClient_initializeWithAppleTVClientIdentifier__block_invoke
   return v2;
 }
 
-- (VUIMediaAPIClient)initWithClientIdentifier:(id)a3
+- (VUIMediaAPIClient)initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = VUIMediaAPIClient;
   v5 = [(VUIMediaAPIClient *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(VUIMediaAPIClient *)v5 setClientIdentifier:v4];
-    v7 = [(VUIMediaAPIClient *)v6 _createSession];
+    [(VUIMediaAPIClient *)v5 setClientIdentifier:identifierCopy];
+    _createSession = [(VUIMediaAPIClient *)v6 _createSession];
   }
 
   return v6;
 }
 
-- (void)fetchContentForUrl:(id)a3 completion:(id)a4
+- (void)fetchContentForUrl:(id)url completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E698C7D8] vui_defaultBag];
+  urlCopy = url;
+  completionCopy = completion;
+  vui_defaultBag = [MEMORY[0x1E698C7D8] vui_defaultBag];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__19;
   v23 = __Block_byref_object_dispose__19;
   v9 = objc_alloc(MEMORY[0x1E698C9C0]);
-  v10 = [(VUIMediaAPIClient *)self tokenService];
-  v24 = [v9 initWithTokenService:v10 bag:v8];
+  tokenService = [(VUIMediaAPIClient *)self tokenService];
+  v24 = [v9 initWithTokenService:tokenService bag:vui_defaultBag];
 
-  v11 = [MEMORY[0x1E69D5920] activeAccount];
-  [v20[5] setAccount:v11];
-  v12 = [v6 URL];
-  v13 = [v12 absoluteString];
-  NSLog(&cfstr_CreatingPromis.isa, v13);
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  [v20[5] setAccount:activeAccount];
+  v12 = [urlCopy URL];
+  absoluteString = [v12 absoluteString];
+  NSLog(&cfstr_CreatingPromis.isa, absoluteString);
 
-  v14 = [v20[5] requestByEncodingRequest:v6 parameters:0];
+  v14 = [v20[5] requestByEncodingRequest:urlCopy parameters:0];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __51__VUIMediaAPIClient_fetchContentForUrl_completion___block_invoke;
   v16[3] = &unk_1E8733C48;
-  v15 = v7;
+  v15 = completionCopy;
   v16[4] = self;
   v17 = v15;
   v18 = &v19;
@@ -120,28 +120,28 @@ void __51__VUIMediaAPIClient_fetchContentForUrl_completion___block_invoke(uint64
 
 - (id)_createSession
 {
-  v3 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-  v4 = [objc_alloc(MEMORY[0x1E698CBA8]) initWithConfiguration:v3];
+  defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+  v4 = [objc_alloc(MEMORY[0x1E698CBA8]) initWithConfiguration:defaultSessionConfiguration];
   v5 = [(VUIMediaAPIClient *)self _createTokenServiceWithSession:v4];
   v6 = [objc_alloc(MEMORY[0x1E698C9B8]) initWithTokenService:v5];
   [v4 setProtocolHandler:v6];
   [(VUIMediaAPIClient *)self setSession:v4];
   [(VUIMediaAPIClient *)self setTokenService:v5];
-  v7 = [(VUIMediaAPIClient *)self session];
+  session = [(VUIMediaAPIClient *)self session];
 
-  return v7;
+  return session;
 }
 
-- (id)_createTokenServiceWithSession:(id)a3
+- (id)_createTokenServiceWithSession:(id)session
 {
   v4 = MEMORY[0x1E698C7D8];
-  v5 = a3;
-  v6 = [v4 vui_defaultBag];
+  sessionCopy = session;
+  vui_defaultBag = [v4 vui_defaultBag];
   v7 = objc_alloc(MEMORY[0x1E698C9E8]);
-  v8 = [(VUIMediaAPIClient *)self clientIdentifier];
-  v9 = [v7 initWithClientIdentifier:v8 bag:v6];
+  clientIdentifier = [(VUIMediaAPIClient *)self clientIdentifier];
+  v9 = [v7 initWithClientIdentifier:clientIdentifier bag:vui_defaultBag];
 
-  [v9 setSession:v5];
+  [v9 setSession:sessionCopy];
 
   return v9;
 }

@@ -1,7 +1,7 @@
 @interface HMIFeedbackSession
 + (id)logCategory;
 - (HMIFeedbackSession)init;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation HMIFeedbackSession
@@ -19,16 +19,16 @@
 
     [(NSOperationQueue *)v2->_operationQueue setName:@"HMIFeedback Queue"];
     [(NSOperationQueue *)v2->_operationQueue setMaxConcurrentOperationCount:1];
-    v5 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
     v6 = MEMORY[0x277CCAD30];
-    v7 = [(HMIFeedbackSession *)v2 operationQueue];
-    v8 = [v6 sessionWithConfiguration:v5 delegate:v2 delegateQueue:v7];
+    operationQueue = [(HMIFeedbackSession *)v2 operationQueue];
+    v8 = [v6 sessionWithConfiguration:defaultSessionConfiguration delegate:v2 delegateQueue:operationQueue];
     session = v2->_session;
     v2->_session = v8;
 
-    v10 = [[HMIHomeKitClient alloc] initWithNoCaching];
+    initWithNoCaching = [[HMIHomeKitClient alloc] initWithNoCaching];
     homeKitClient = v2->_homeKitClient;
-    v2->_homeKitClient = v10;
+    v2->_homeKitClient = initWithNoCaching;
 
     feedbackServiceHost = v2->_feedbackServiceHost;
     v2->_feedbackServiceHost = @"hkcvml.apple.com";
@@ -49,12 +49,12 @@
   return v2;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (+[HMIPreference isInternalInstall])
   {
     v11 = +[HMIPreference sharedInstance];
@@ -63,33 +63,33 @@
     if (v12)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         v16 = HMFGetLogIdentifier();
-        v17 = [(HMIFeedbackSession *)v14 feedbackServiceHost];
+        feedbackServiceHost = [(HMIFeedbackSession *)selfCopy feedbackServiceHost];
         *buf = 138543618;
         v49 = v16;
         v50 = 2112;
-        v51 = v17;
+        v51 = feedbackServiceHost;
         _os_log_impl(&dword_22D12F000, v15, OS_LOG_TYPE_INFO, "%{public}@Trusting host: %@ by default, not enforcing certificate pinning since user is donating videos to a dev server", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v13);
 LABEL_16:
-      v10[2](v10, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
       goto LABEL_21;
     }
   }
 
-  v18 = [v9 protectionSpace];
-  v19 = [v18 host];
-  v20 = [(HMIFeedbackSession *)self feedbackServiceHost];
-  v21 = [v19 isEqual:v20];
+  protectionSpace = [challengeCopy protectionSpace];
+  host = [protectionSpace host];
+  feedbackServiceHost2 = [(HMIFeedbackSession *)self feedbackServiceHost];
+  v21 = [host isEqual:feedbackServiceHost2];
 
   v22 = objc_autoreleasePoolPush();
-  v23 = self;
+  selfCopy2 = self;
   v24 = HMFGetOSLogHandle();
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_INFO);
   if (v21)
@@ -103,29 +103,29 @@ LABEL_16:
     }
 
     objc_autoreleasePoolPop(v22);
-    v27 = [v9 protectionSpace];
-    v28 = [v27 authenticationMethod];
-    v29 = [v28 isEqualToString:*MEMORY[0x277CCA720]];
+    protectionSpace2 = [challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace2 authenticationMethod];
+    v29 = [authenticationMethod isEqualToString:*MEMORY[0x277CCA720]];
 
     if (!v29)
     {
       goto LABEL_16;
     }
 
-    v30 = [(HMIFeedbackSession *)v23 feedbackServiceHost];
+    feedbackServiceHost3 = [(HMIFeedbackSession *)selfCopy2 feedbackServiceHost];
     AppleSSLPinned = SecPolicyCreateAppleSSLPinned();
 
     if (AppleSSLPinned)
     {
-      v32 = [v9 protectionSpace];
-      v33 = [v32 serverTrust];
+      protectionSpace3 = [challengeCopy protectionSpace];
+      serverTrust = [protectionSpace3 serverTrust];
 
-      v34 = SecTrustSetPolicies(v33, AppleSSLPinned);
+      v34 = SecTrustSetPolicies(serverTrust, AppleSSLPinned);
       CFRelease(AppleSSLPinned);
       if (v34)
       {
         v35 = objc_autoreleasePoolPush();
-        v36 = v23;
+        v36 = selfCopy2;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
@@ -141,10 +141,10 @@ LABEL_16:
       else
       {
         error = 0;
-        if (SecTrustEvaluateWithError(v33, &error))
+        if (SecTrustEvaluateWithError(serverTrust, &error))
         {
-          v45 = [MEMORY[0x277CCACF0] credentialForTrust:v33];
-          (v10)[2](v10, 0, v45);
+          v45 = [MEMORY[0x277CCACF0] credentialForTrust:serverTrust];
+          (handlerCopy)[2](handlerCopy, 0, v45);
 
           goto LABEL_21;
         }
@@ -155,7 +155,7 @@ LABEL_16:
         }
 
         v35 = objc_autoreleasePoolPush();
-        v36 = v23;
+        v36 = selfCopy2;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
@@ -172,27 +172,27 @@ LABEL_16:
     }
 
 LABEL_15:
-    v10[2](v10, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     goto LABEL_21;
   }
 
   if (v25)
   {
     v39 = HMFGetLogIdentifier();
-    v40 = [v9 protectionSpace];
-    v41 = [v40 host];
+    protectionSpace4 = [challengeCopy protectionSpace];
+    host2 = [protectionSpace4 host];
     *buf = 138543618;
     v49 = v39;
     v50 = 2112;
-    v51 = v41;
+    v51 = host2;
     _os_log_impl(&dword_22D12F000, v24, OS_LOG_TYPE_INFO, "%{public}@Trusting host: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v22);
   v42 = MEMORY[0x277CCACF0];
-  v43 = [v9 protectionSpace];
-  v44 = [v42 credentialForTrust:{objc_msgSend(v43, "serverTrust")}];
-  (v10)[2](v10, 0, v44);
+  protectionSpace5 = [challengeCopy protectionSpace];
+  v44 = [v42 credentialForTrust:{objc_msgSend(protectionSpace5, "serverTrust")}];
+  (handlerCopy)[2](handlerCopy, 0, v44);
 
 LABEL_21:
 }

@@ -6,10 +6,10 @@
 
 - (uint64_t)DA_isFailedDependencyError
 {
-  if ([a1 code] == 412)
+  if ([self code] == 412)
   {
-    v2 = [a1 domain];
-    v3 = [v2 isEqualToString:*MEMORY[0x277CFDB80]];
+    domain = [self domain];
+    v3 = [domain isEqualToString:*MEMORY[0x277CFDB80]];
   }
 
   else
@@ -17,10 +17,10 @@
     v3 = 0;
   }
 
-  if ([a1 code] == 7)
+  if ([self code] == 7)
   {
-    v4 = [a1 domain];
-    v5 = [v4 isEqualToString:*MEMORY[0x277CFDB18]];
+    domain2 = [self domain];
+    v5 = [domain2 isEqualToString:*MEMORY[0x277CFDB18]];
 
     v3 |= v5;
   }

@@ -1,8 +1,8 @@
 @interface USKResource
-+ (id)resourceWithPath:(id)a3;
-+ (id)resourceWithResourcePath:(id)a3;
-+ (id)resourceWithURL:(id)a3;
-+ (id)resourceWithUSKScene:(id)a3 path:(id)a4;
++ (id)resourceWithPath:(id)path;
++ (id)resourceWithResourcePath:(id)path;
++ (id)resourceWithURL:(id)l;
++ (id)resourceWithUSKScene:(id)scene path:(id)path;
 - (id).cxx_construct;
 - (id)dataNoCopy;
 - (void)dealloc;
@@ -10,16 +10,16 @@
 
 @implementation USKResource
 
-+ (id)resourceWithURL:(id)a3
++ (id)resourceWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   sub_27035CAC4();
-  if (objc_msgSend_checkResourceIsReachableAndReturnError_(v3, v4, 0, v5))
+  if (objc_msgSend_checkResourceIsReachableAndReturnError_(lCopy, v4, 0, v5))
   {
     v9 = objc_alloc_init(USKResource);
     if (v9)
     {
-      v10 = objc_msgSend_path(v3, v6, v7, v8);
+      v10 = objc_msgSend_path(lCopy, v6, v7, v8);
       v11 = v10;
       v15 = objc_msgSend_UTF8String(v11, v12, v13, v14);
       sub_2703122D4(__p, v15);
@@ -33,29 +33,29 @@
 
   else
   {
-    NSLog(&cfstr_WarningUnableT_0.isa, v3);
+    NSLog(&cfstr_WarningUnableT_0.isa, lCopy);
     v9 = 0;
   }
 
   return v9;
 }
 
-+ (id)resourceWithUSKScene:(id)a3 path:(id)a4
++ (id)resourceWithUSKScene:(id)scene path:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  pathCopy = path;
   sub_27035CAC4();
   pxrInternal__aapl__pxrReserved__::ArGetResolver(v7);
   v24 = 0uLL;
   v25 = 0;
-  v8 = v6;
+  v8 = pathCopy;
   v12 = objc_msgSend_UTF8String(v8, v9, v10, v11);
   sub_2703122D4(&v24, v12);
   if (pxrInternal__aapl__pxrReserved__::TfIsRelativePath())
   {
-    if (v5)
+    if (sceneCopy)
     {
-      objc_msgSend_usdStage(v5, v13, v14, v15);
+      objc_msgSend_usdStage(sceneCopy, v13, v14, v15);
     }
 
     else
@@ -98,16 +98,16 @@
   return v16;
 }
 
-+ (id)resourceWithPath:(id)a3
++ (id)resourceWithPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   sub_27035CAC4();
-  if (objc_msgSend_length(v3, v4, v5, v6))
+  if (objc_msgSend_length(pathCopy, v4, v5, v6))
   {
     v7 = objc_alloc_init(USKResource);
     if (v7)
     {
-      v8 = v3;
+      v8 = pathCopy;
       v12 = objc_msgSend_UTF8String(v8, v9, v10, v11);
       sub_2703122D4(__p, v12);
       sub_270312068(v7, __p);
@@ -127,11 +127,11 @@
   return v7;
 }
 
-+ (id)resourceWithResourcePath:(id)a3
++ (id)resourceWithResourcePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   sub_27035CAC4();
-  v7 = objc_msgSend_resolvedPath(v3, v4, v5, v6);
+  v7 = objc_msgSend_resolvedPath(pathCopy, v4, v5, v6);
   if (objc_msgSend_length(v7, v8, v9, v10))
   {
     v11 = objc_alloc_init(USKResource);

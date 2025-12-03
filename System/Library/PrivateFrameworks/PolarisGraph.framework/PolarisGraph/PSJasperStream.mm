@@ -1,10 +1,10 @@
 @interface PSJasperStream
-+ (id)jasperStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 width:(unint64_t)a5 height:(unint64_t)a6 pixelFormat:(unsigned int)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validate:(id *)a3;
++ (id)jasperStreamWithResourceKey:(id)key options:(ps_resource_options *)options width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validate:(id *)validate;
 - (PSJasperStream)init;
-- (PSJasperStream)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PSJasperStream)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PSJasperStream
@@ -23,46 +23,46 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = PSJasperStream;
-  [(PSResourceStream *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_width forKey:@"width"];
-  [v4 encodeInteger:self->_height forKey:@"height"];
-  [v4 encodeInt32:self->_pixelFormat forKey:@"pixelFormat"];
+  [(PSResourceStream *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_width forKey:@"width"];
+  [coderCopy encodeInteger:self->_height forKey:@"height"];
+  [coderCopy encodeInt32:self->_pixelFormat forKey:@"pixelFormat"];
 }
 
-- (PSJasperStream)initWithCoder:(id)a3
+- (PSJasperStream)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PSJasperStream;
-  v5 = [(PSResourceStream *)&v9 initWithCoder:v4];
+  v5 = [(PSResourceStream *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(PSResourceStream *)v5 setResourceClass:9];
-    v6->_width = [v4 decodeIntegerForKey:@"width"];
-    v6->_height = [v4 decodeIntegerForKey:@"height"];
-    v6->_pixelFormat = [v4 decodeInt32ForKey:@"pixelFormat"];
+    v6->_width = [coderCopy decodeIntegerForKey:@"width"];
+    v6->_height = [coderCopy decodeIntegerForKey:@"height"];
+    v6->_pixelFormat = [coderCopy decodeInt32ForKey:@"pixelFormat"];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v12.receiver = self;
@@ -87,32 +87,32 @@
   return v10;
 }
 
-+ (id)jasperStreamWithResourceKey:(id)a3 options:(ps_resource_options *)a4 width:(unint64_t)a5 height:(unint64_t)a6 pixelFormat:(unsigned int)a7
++ (id)jasperStreamWithResourceKey:(id)key options:(ps_resource_options *)options width:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format
 {
-  v11 = a3;
+  keyCopy = key;
   v12 = objc_alloc_init(PSJasperStream);
-  [(PSResourceStream *)v12 setKey:v11];
+  [(PSResourceStream *)v12 setKey:keyCopy];
   [(PSResourceStream *)v12 setProvider:9];
-  v12->_width = a5;
-  v12->_height = a6;
-  v12->_pixelFormat = a7;
-  [(PSResourceStream *)v12 setOptions:a4->storage_mode, a4->creation_mode];
+  v12->_width = width;
+  v12->_height = height;
+  v12->_pixelFormat = format;
+  [(PSResourceStream *)v12 setOptions:options->storage_mode, options->creation_mode];
 
   return v12;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   if ([(PSResourceStream *)self resourceClass]!= 9)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Resource Class invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_22;
     }
 
 LABEL_21:
-    *a3 = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v9];
+    *validate = [MEMORY[0x277CCA9B8] internalErrorWithCode:-4 description:v9];
     goto LABEL_22;
   }
 
@@ -121,7 +121,7 @@ LABEL_21:
   if (!v5)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stream key invalid"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_22;
     }
@@ -133,7 +133,7 @@ LABEL_21:
   if (!v6)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.creation_mode invalid for the stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_22;
     }
@@ -144,7 +144,7 @@ LABEL_21:
   if ([(PSResourceStream *)self options]== 0)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"options.storage_mode invalid for the stream"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_22;
     }
@@ -156,7 +156,7 @@ LABEL_21:
   if (v7 == 1 && (!self->_width || !self->_height))
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"CVDataBuffer properties required for descriptor mode (options.creation_mode)"];
-    if (!a3)
+    if (!validate)
     {
       goto LABEL_22;
     }
@@ -171,7 +171,7 @@ LABEL_21:
   }
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Jasper Stream should never have a creation mode with allocator since it is unsupported"];
-  if (a3)
+  if (validate)
   {
     goto LABEL_21;
   }

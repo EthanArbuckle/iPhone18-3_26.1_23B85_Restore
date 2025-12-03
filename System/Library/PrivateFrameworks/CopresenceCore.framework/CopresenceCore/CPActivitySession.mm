@@ -1,20 +1,20 @@
 @interface CPActivitySession
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CPActivitySession)init;
 - (NSString)description;
 - (NSString)persistentSceneIdentifier;
 - (NSUUID)identifier;
 - (TUConversationActivity)activity;
 - (TUConversationActivitySession)tuConversationActivitySession;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
-- (void)assertionWillInvalidate:(id)a3;
-- (void)associateSceneWithSceneID:(id)a3;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
+- (void)assertionWillInvalidate:(id)invalidate;
+- (void)associateSceneWithSceneID:(id)d;
 - (void)permitJoin;
-- (void)receivedResourceAtURL:(id)a3 withMetadata:(id)a4 fromParticipantIdentifier:(unint64_t)a5;
+- (void)receivedResourceAtURL:(id)l withMetadata:(id)metadata fromParticipantIdentifier:(unint64_t)identifier;
 - (void)resetSession;
-- (void)setActivity:(id)a3;
-- (void)updateActivityImage:(id)a3;
-- (void)updateApplicationState:(unint64_t)a3;
+- (void)setActivity:(id)activity;
+- (void)updateActivityImage:(id)image;
+- (void)updateApplicationState:(unint64_t)state;
 @end
 
 @implementation CPActivitySession
@@ -36,7 +36,7 @@
 - (NSString)persistentSceneIdentifier
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self) + 0x1C8);
-  v3 = self;
+  selfCopy = self;
   v2(v7);
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   BidirectionalCollection.last.getter();
@@ -62,20 +62,20 @@
   return *(self + v3);
 }
 
-- (void)setActivity:(id)a3
+- (void)setActivity:(id)activity
 {
   v5 = OBJC_IVAR___CPActivitySession_activity;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = activity;
+  activityCopy = activity;
+  selfCopy = self;
   ActivitySession.activity.didset(v6);
 }
 
 - (TUConversationActivitySession)tuConversationActivitySession
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ActivitySession.tuConversationActivitySession.getter();
 
   return v3;
@@ -83,31 +83,31 @@
 
 - (void)permitJoin
 {
-  v2 = self;
+  selfCopy = self;
   ActivitySession.permitJoin()();
 }
 
-- (void)updateApplicationState:(unint64_t)a3
+- (void)updateApplicationState:(unint64_t)state
 {
-  v4 = self;
-  ActivitySession.updateApplicationState(_:)(a3);
+  selfCopy = self;
+  ActivitySession.updateApplicationState(_:)(state);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = specialized ActivitySession.listener(_:shouldAcceptNewConnection:)(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = specialized ActivitySession.listener(_:shouldAcceptNewConnection:)(connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)associateSceneWithSceneID:(id)a3
+- (void)associateSceneWithSceneID:(id)d
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   ActivitySession.associateScene(sceneID:)(v8);
@@ -120,10 +120,10 @@
   return result;
 }
 
-- (void)updateActivityImage:(id)a3
+- (void)updateActivityImage:(id)image
 {
-  v4 = a3;
-  v8 = self;
+  imageCopy = image;
+  selfCopy = self;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 
@@ -131,7 +131,7 @@
   outlined consume of Data._Representation(v5, v7);
 }
 
-- (void)assertionWillInvalidate:(id)a3
+- (void)assertionWillInvalidate:(id)invalidate
 {
   v5 = *(self + OBJC_IVAR___CPActivitySession_queue);
   v6 = swift_allocObject();
@@ -146,8 +146,8 @@
   v11[2] = thunk for @escaping @callee_guaranteed () -> ();
   v11[3] = &block_descriptor_211;
   v8 = _Block_copy(v11);
-  v9 = self;
-  v10 = a3;
+  selfCopy = self;
+  invalidateCopy = invalidate;
 
   dispatch_sync(v5, v8);
   _Block_release(v8);
@@ -159,21 +159,21 @@
   }
 }
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  specialized ActivitySession.assertion(_:didInvalidateWithError:)(a4);
+  assertionCopy = assertion;
+  selfCopy = self;
+  errorCopy = error;
+  specialized ActivitySession.assertion(_:didInvalidateWithError:)(error);
 }
 
 - (void)resetSession
 {
-  v2 = self;
+  selfCopy = self;
   ActivitySession.resetSession()();
 }
 
-- (void)receivedResourceAtURL:(id)a3 withMetadata:(id)a4 fromParticipantIdentifier:(unint64_t)a5
+- (void)receivedResourceAtURL:(id)l withMetadata:(id)metadata fromParticipantIdentifier:(unint64_t)identifier
 {
   v8 = type metadata accessor for URL();
   v9 = *(v8 - 8);
@@ -181,12 +181,12 @@
   MEMORY[0x1EEE9AC00](v8);
   v12 = &v18 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a4;
-  v14 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v15 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = v16;
 
-  ActivitySession.receivedResource(atURL:withMetadata:fromParticipantIdentifier:)(v12, v15, v17, a5);
+  ActivitySession.receivedResource(atURL:withMetadata:fromParticipantIdentifier:)(v12, v15, v17, identifier);
   outlined consume of Data._Representation(v15, v17);
 
   (*(v9 + 8))(v12, v8);
@@ -194,7 +194,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ActivitySession.description.getter();
   v5 = v4;
 

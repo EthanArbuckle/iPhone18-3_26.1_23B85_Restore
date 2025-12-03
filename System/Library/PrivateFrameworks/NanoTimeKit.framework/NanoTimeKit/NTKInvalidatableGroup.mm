@@ -1,18 +1,18 @@
 @interface NTKInvalidatableGroup
-- (NTKInvalidatableGroup)initWithInvalidatables:(id)a3;
+- (NTKInvalidatableGroup)initWithInvalidatables:(id)invalidatables;
 @end
 
 @implementation NTKInvalidatableGroup
 
-- (NTKInvalidatableGroup)initWithInvalidatables:(id)a3
+- (NTKInvalidatableGroup)initWithInvalidatables:(id)invalidatables
 {
-  v4 = a3;
+  invalidatablesCopy = invalidatables;
   v9.receiver = self;
   v9.super_class = NTKInvalidatableGroup;
   v5 = [(NTKInvalidatableGroup *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [invalidatablesCopy copy];
     invalidatables = v5->_invalidatables;
     v5->_invalidatables = v6;
   }

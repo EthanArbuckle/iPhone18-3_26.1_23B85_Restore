@@ -1,21 +1,21 @@
 @interface CHBErrorBar
-+ (id)readErrorBarGraphicProperties:(const XlChartSeriesFormat *)a3 forStyleIndex:(unint64_t)a4 state:(id)a5;
-+ (int)edErrorBarTypeFrom:(int)a3;
-+ (int)xlErrorBarSourceFrom:(int)a3;
-+ (int)xlErrorBarTypeFrom:(int)a3 direction:(int)a4;
-+ (void)readFrom:(void *)a3 toSeries:(id)a4 state:(id)a5;
++ (id)readErrorBarGraphicProperties:(const XlChartSeriesFormat *)properties forStyleIndex:(unint64_t)index state:(id)state;
++ (int)edErrorBarTypeFrom:(int)from;
++ (int)xlErrorBarSourceFrom:(int)from;
++ (int)xlErrorBarTypeFrom:(int)from direction:(int)direction;
++ (void)readFrom:(void *)from toSeries:(id)series state:(id)state;
 @end
 
 @implementation CHBErrorBar
 
-+ (void)readFrom:(void *)a3 toSeries:(id)a4 state:(id)a5
++ (void)readFrom:(void *)from toSeries:(id)series state:(id)state
 {
-  v17 = a4;
-  v8 = a5;
-  if (a3)
+  seriesCopy = series;
+  stateCopy = state;
+  if (from)
   {
-    v9 = [v17 objectWithKey:(*(*a3 + 24))(a3)];
-    v10 = [a1 edErrorBarDirectionFrom:*(a3 + 60)];
+    v9 = [seriesCopy objectWithKey:(*(*from + 24))(from)];
+    v10 = [self edErrorBarDirectionFrom:*(from + 60)];
     if (v10 == 1)
     {
       [v9 errorBarYAxis];
@@ -29,38 +29,38 @@
     v12 = v11;
     if (!v11)
     {
-      v13 = [v9 chart];
-      v12 = [CHDErrorBar errorBarWithChart:v13];
+      chart = [v9 chart];
+      v12 = [CHDErrorBar errorBarWithChart:chart];
     }
 
-    [v12 setType:{objc_msgSend(a1, "edErrorBarTypeFrom:", *(a3 + 60))}];
+    [v12 setType:{objc_msgSend(self, "edErrorBarTypeFrom:", *(from + 60))}];
     [v12 setDirection:v10];
-    [v12 setValueType:*(a3 + 58)];
-    [v12 setNoEndCap:*(a3 + 236) == 0];
+    [v12 setValueType:*(from + 58)];
+    [v12 setNoEndCap:*(from + 236) == 0];
     if ([v12 valueType] == 4 || objc_msgSend(v12, "valueType") == 5)
     {
-      v14 = *(a3 + 19);
+      v14 = *(from + 19);
       if (!v14)
       {
-        v14 = *(a3 + 20);
+        v14 = *(from + 20);
       }
 
       if ([v12 type] == 2)
       {
-        v15 = [CHBData readFrom:v14 state:v8];
+        v15 = [CHBData readFrom:v14 state:stateCopy];
         [v12 setPlusValues:v15];
       }
 
       else
       {
-        v15 = [CHBData readFrom:v14 state:v8];
+        v15 = [CHBData readFrom:v14 state:stateCopy];
         [v12 setMinusValues:v15];
       }
     }
 
     else
     {
-      [v12 setValue:*(a3 + 27)];
+      [v12 setValue:*(from + 27)];
     }
 
     if (v11)
@@ -68,16 +68,16 @@
       [v12 setType:0];
     }
 
-    v16 = [a1 readErrorBarGraphicProperties:objc_msgSend(v8 forStyleIndex:"defaultFormatForXlSeries:" state:{a3), objc_msgSend(v9, "styleIndex"), v8}];
+    v16 = [self readErrorBarGraphicProperties:objc_msgSend(stateCopy forStyleIndex:"defaultFormatForXlSeries:" state:{from), objc_msgSend(v9, "styleIndex"), stateCopy}];
     [v12 setGraphicProperties:v16];
 
     [v9 setErrorBar:v12];
   }
 }
 
-+ (int)edErrorBarTypeFrom:(int)a3
++ (int)edErrorBarTypeFrom:(int)from
 {
-  if ((a3 & 0xFFFFFFFD) == 1)
+  if ((from & 0xFFFFFFFD) == 1)
   {
     return 2;
   }
@@ -88,19 +88,19 @@
   }
 }
 
-+ (id)readErrorBarGraphicProperties:(const XlChartSeriesFormat *)a3 forStyleIndex:(unint64_t)a4 state:(id)a5
++ (id)readErrorBarGraphicProperties:(const XlChartSeriesFormat *)properties forStyleIndex:(unint64_t)index state:(id)state
 {
-  v7 = a5;
-  v8 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartSeriesFormat:a3 state:v7];
-  v9 = [v7 autoStyling];
-  [v9 resolveGraphicPropertiesOfErrorBar:v8 forSeriesIndex:a4];
+  stateCopy = state;
+  v8 = [CHBGraphicProperties oadGraphicPropertiesFromXlChartSeriesFormat:properties state:stateCopy];
+  autoStyling = [stateCopy autoStyling];
+  [autoStyling resolveGraphicPropertiesOfErrorBar:v8 forSeriesIndex:index];
 
   return v8;
 }
 
-+ (int)xlErrorBarTypeFrom:(int)a3 direction:(int)a4
++ (int)xlErrorBarTypeFrom:(int)from direction:(int)direction
 {
-  if (a4 == 1)
+  if (direction == 1)
   {
     v4 = 4;
   }
@@ -110,7 +110,7 @@
     v4 = 2;
   }
 
-  if (a4 == 1)
+  if (direction == 1)
   {
     v5 = 3;
   }
@@ -120,7 +120,7 @@
     v5 = 1;
   }
 
-  if (a3 == 1)
+  if (from == 1)
   {
     return v4;
   }
@@ -131,16 +131,16 @@
   }
 }
 
-+ (int)xlErrorBarSourceFrom:(int)a3
++ (int)xlErrorBarSourceFrom:(int)from
 {
-  if ((a3 - 1) >= 5)
+  if ((from - 1) >= 5)
   {
     return 2;
   }
 
   else
   {
-    return a3;
+    return from;
   }
 }
 

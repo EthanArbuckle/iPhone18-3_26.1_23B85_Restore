@@ -107,7 +107,7 @@
     return self->inputImage;
   }
 
-  v10 = [(CILocalLightFilter *)self _polyKernel];
+  _polyKernel = [(CILocalLightFilter *)self _polyKernel];
   inputImage = self->inputImage;
   [(NSNumber *)self->inputLocalLight doubleValue];
   if (fabs(v11) >= 1.0e-10)
@@ -116,18 +116,18 @@
     v24[0] = inputImage;
     v24[1] = v9;
     v24[2] = self->inputLocalLight;
-    inputImage = [v10 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v24, 3), v12, v13, v14, v15}];
+    inputImage = [_polyKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v24, 3), v12, v13, v14, v15}];
   }
 
   [(NSNumber *)self->inputSmartShadows doubleValue];
   if (fabs(v16) >= 1.0e-10)
   {
-    v17 = [(CILocalLightFilter *)self _shadowKernel];
+    _shadowKernel = [(CILocalLightFilter *)self _shadowKernel];
     [(CIImage *)self->inputImage extent];
     v23[0] = inputImage;
     v23[1] = v9;
     v23[2] = self->inputSmartShadows;
-    return [v17 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v23, 3), v18, v19, v20, v21}];
+    return [_shadowKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v23, 3), v18, v19, v20, v21}];
   }
 
   return inputImage;

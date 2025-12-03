@@ -1,29 +1,29 @@
 @interface PXSimpleVideoScrubberControllerTarget
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)playerCurrentTime;
 - (PXSimpleVideoScrubberControllerTarget)init;
-- (PXSimpleVideoScrubberControllerTarget)initWithVideoPlayer:(id)a3;
-- (id)addPeriodicTimeObserverForInterval:(id *)a3 queue:(id)a4 usingBlock:(id)a5;
+- (PXSimpleVideoScrubberControllerTarget)initWithVideoPlayer:(id)player;
+- (id)addPeriodicTimeObserverForInterval:(id *)interval queue:(id)queue usingBlock:(id)block;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)videoScrubberController:(id)a3 seekToTime:(id *)a4 toleranceBefore:(id *)a5 toleranceAfter:(id *)a6 completionHandler:(id)a7;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)videoScrubberController:(id)controller seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler;
 @end
 
 @implementation PXSimpleVideoScrubberControllerTarget
 
-- (void)videoScrubberController:(id)a3 seekToTime:(id *)a4 toleranceBefore:(id *)a5 toleranceAfter:(id *)a6 completionHandler:(id)a7
+- (void)videoScrubberController:(id)controller seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler
 {
   videoPlayer = self->_videoPlayer;
-  v10 = *a4;
-  v9 = *a5;
-  v8 = *a6;
-  [(AVPlayer *)videoPlayer seekToTime:&v10 toleranceBefore:&v9 toleranceAfter:&v8 completionHandler:a7];
+  v10 = *time;
+  v9 = *before;
+  v8 = *after;
+  [(AVPlayer *)videoPlayer seekToTime:&v10 toleranceBefore:&v9 toleranceAfter:&v8 completionHandler:handler];
 }
 
-- (id)addPeriodicTimeObserverForInterval:(id *)a3 queue:(id)a4 usingBlock:(id)a5
+- (id)addPeriodicTimeObserverForInterval:(id *)interval queue:(id)queue usingBlock:(id)block
 {
   videoPlayer = self->_videoPlayer;
-  v8 = *a3;
-  v6 = [(AVPlayer *)videoPlayer addPeriodicTimeObserverForInterval:&v8 queue:a4 usingBlock:a5];
+  v8 = *interval;
+  v6 = [(AVPlayer *)videoPlayer addPeriodicTimeObserverForInterval:&v8 queue:queue usingBlock:block];
 
   return v6;
 }
@@ -42,40 +42,40 @@
   return result;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (avPlayerObservationContext != a6)
+  pathCopy = path;
+  changeCopy = change;
+  if (avPlayerObservationContext != context)
   {
     v19.receiver = self;
     v19.super_class = PXSimpleVideoScrubberControllerTarget;
-    [(PXSimpleVideoScrubberControllerTarget *)&v19 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+    [(PXSimpleVideoScrubberControllerTarget *)&v19 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
     goto LABEL_16;
   }
 
-  if ([v10 isEqualToString:@"status"])
+  if ([pathCopy isEqualToString:@"status"])
   {
-    v12 = [(PXSimpleVideoScrubberControllerTarget *)self statusChangeHandler];
+    statusChangeHandler = [(PXSimpleVideoScrubberControllerTarget *)self statusChangeHandler];
 
-    if (v12)
+    if (statusChangeHandler)
     {
-      v13 = [(PXSimpleVideoScrubberControllerTarget *)self statusChangeHandler];
+      statusChangeHandler2 = [(PXSimpleVideoScrubberControllerTarget *)self statusChangeHandler];
 LABEL_15:
-      v18 = v13;
-      (*(v13 + 16))();
+      v18 = statusChangeHandler2;
+      (*(statusChangeHandler2 + 16))();
 
       goto LABEL_16;
     }
   }
 
-  if ([v10 isEqualToString:@"currentItem.duration"])
+  if ([pathCopy isEqualToString:@"currentItem.duration"])
   {
-    v14 = [(PXSimpleVideoScrubberControllerTarget *)self durationChangeHandler];
+    durationChangeHandler = [(PXSimpleVideoScrubberControllerTarget *)self durationChangeHandler];
 
-    if (v14)
+    if (durationChangeHandler)
     {
-      v15 = [v11 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+      v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
       v16 = v15;
       if (v15)
       {
@@ -91,18 +91,18 @@ LABEL_15:
       *&self->_currentItemDuration.value = v20;
       self->_currentItemDuration.epoch = v21;
 
-      v13 = [(PXSimpleVideoScrubberControllerTarget *)self durationChangeHandler];
+      statusChangeHandler2 = [(PXSimpleVideoScrubberControllerTarget *)self durationChangeHandler];
       goto LABEL_15;
     }
   }
 
-  if ([v10 isEqualToString:@"currentItem"])
+  if ([pathCopy isEqualToString:@"currentItem"])
   {
-    v17 = [(PXSimpleVideoScrubberControllerTarget *)self playerItemChangeHandler];
+    playerItemChangeHandler = [(PXSimpleVideoScrubberControllerTarget *)self playerItemChangeHandler];
 
-    if (v17)
+    if (playerItemChangeHandler)
     {
-      v13 = [(PXSimpleVideoScrubberControllerTarget *)self playerItemChangeHandler];
+      statusChangeHandler2 = [(PXSimpleVideoScrubberControllerTarget *)self playerItemChangeHandler];
       goto LABEL_15;
     }
   }
@@ -120,16 +120,16 @@ LABEL_16:
   [(PXSimpleVideoScrubberControllerTarget *)&v3 dealloc];
 }
 
-- (PXSimpleVideoScrubberControllerTarget)initWithVideoPlayer:(id)a3
+- (PXSimpleVideoScrubberControllerTarget)initWithVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v10.receiver = self;
   v10.super_class = PXSimpleVideoScrubberControllerTarget;
   v6 = [(PXSimpleVideoScrubberControllerTarget *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_videoPlayer, a3);
+    objc_storeStrong(&v6->_videoPlayer, player);
     [(AVPlayer *)v7->_videoPlayer addObserver:v7 forKeyPath:@"status" options:0 context:avPlayerObservationContext];
     [(AVPlayer *)v7->_videoPlayer addObserver:v7 forKeyPath:@"currentItem" options:0 context:avPlayerObservationContext];
     [(AVPlayer *)v7->_videoPlayer addObserver:v7 forKeyPath:@"currentItem.duration" options:1 context:avPlayerObservationContext];
@@ -143,8 +143,8 @@ LABEL_16:
 
 - (PXSimpleVideoScrubberControllerTarget)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXVideoScrubberController.m" lineNumber:466 description:{@"%s is not available as initializer", "-[PXSimpleVideoScrubberControllerTarget init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoScrubberController.m" lineNumber:466 description:{@"%s is not available as initializer", "-[PXSimpleVideoScrubberControllerTarget init]"}];
 
   abort();
 }

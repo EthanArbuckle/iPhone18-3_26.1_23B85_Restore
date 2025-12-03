@@ -2,9 +2,9 @@
 + (MailboxAutoFetchController)sharedController;
 + (OS_os_log)signpostLog;
 + (id)log;
-- (BOOL)_shouldAutoFetchAccount:(id)a3 whenVisible:(BOOL)a4;
-- (MailboxAutoFetchController)initWithFavoritesPersistence:(id)a3;
-- (id)_invocationWithTarget:(id)a3 priority:(unint64_t)a4;
+- (BOOL)_shouldAutoFetchAccount:(id)account whenVisible:(BOOL)visible;
+- (MailboxAutoFetchController)initWithFavoritesPersistence:(id)persistence;
+- (id)_invocationWithTarget:(id)target priority:(unint64_t)priority;
 - (id)_visibleMailboxes;
 - (id)copyDiagnosticInformation;
 - (id)diagnosticInformation;
@@ -13,27 +13,27 @@
 - (void)_checkForWiFi;
 - (void)_cleanUpReachabilityTimer;
 - (void)_createJobList;
-- (void)_createJobListFinished:(id)a3;
-- (void)_doFetchChangedMailboxes:(id)a3 forAccount:(id)a4 options:(int)a5;
-- (void)_fetchCompleted:(id)a3;
+- (void)_createJobListFinished:(id)finished;
+- (void)_doFetchChangedMailboxes:(id)mailboxes forAccount:(id)account options:(int)options;
+- (void)_fetchCompleted:(id)completed;
 - (void)_finishAutoFetch;
-- (void)_logSignpostForMailboxFetch:(id)a3 finished:(BOOL)a4;
-- (void)_logSignpostForMailboxFetchRetry:(id)a3;
-- (void)_newNotificationSoundSent:(id)a3;
-- (void)_reportReachabilityChange:(id)a3;
+- (void)_logSignpostForMailboxFetch:(id)fetch finished:(BOOL)finished;
+- (void)_logSignpostForMailboxFetchRetry:(id)retry;
+- (void)_newNotificationSoundSent:(id)sent;
+- (void)_reportReachabilityChange:(id)change;
 - (void)_reportReachabilityTimeout;
-- (void)_reportSynchronousFetchCompletion:(id)a3;
+- (void)_reportSynchronousFetchCompletion:(id)completion;
 - (void)_scheduleAllJobs;
-- (void)_scheduleRequest:(id)a3 priority:(unint64_t)a4 selector:(SEL)a5;
-- (void)_scheduleRetryRequest:(id)a3 priority:(unint64_t)a4 selector:(SEL)a5;
-- (void)_startAutoFetch:(int)a3 withAccounts:(id)a4;
+- (void)_scheduleRequest:(id)request priority:(unint64_t)priority selector:(SEL)selector;
+- (void)_scheduleRetryRequest:(id)request priority:(unint64_t)priority selector:(SEL)selector;
+- (void)_startAutoFetch:(int)fetch withAccounts:(id)accounts;
 - (void)dealloc;
 - (void)fetchForPowernap;
-- (void)fetchNow:(int)a3 withAccounts:(id)a4;
-- (void)fetchNow:(int)a3 withMailboxes:(id)a4;
+- (void)fetchNow:(int)now withAccounts:(id)accounts;
+- (void)fetchNow:(int)now withMailboxes:(id)mailboxes;
 - (void)networkConfigurationChanged;
-- (void)setAutoFetchState:(int64_t)a3;
-- (void)setDataSource:(id)a3;
+- (void)setAutoFetchState:(int64_t)state;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation MailboxAutoFetchController
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000288DC;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001855D0 != -1)
   {
     dispatch_once(&qword_1001855D0, block);
@@ -69,8 +69,8 @@
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -78,17 +78,17 @@
 - (id)_visibleMailboxes
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v3 = [WeakRetained visibleMailboxesToSyncByMailbox];
+  visibleMailboxesToSyncByMailbox = [WeakRetained visibleMailboxesToSyncByMailbox];
 
   v4 = +[MailboxAutoFetchController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = visibleMailboxesToSyncByMailbox;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "visible mailboxes: %@", &v6, 0xCu);
   }
 
-  return v3;
+  return visibleMailboxesToSyncByMailbox;
 }
 
 + (id)log
@@ -97,7 +97,7 @@
   block[1] = 3221225472;
   block[2] = sub_100028858;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001855C0 != -1)
   {
     dispatch_once(&qword_1001855C0, block);
@@ -137,15 +137,15 @@
   }
 
   v8 = +[MFNetworkController sharedInstance];
-  v9 = [v8 dataStatus];
+  dataStatus = [v8 dataStatus];
 
-  if (v9)
+  if (dataStatus)
   {
     v10 = MFErrorCodeWithDataStatus();
     v11 = MFAutoFetchLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [NSNumber numberWithInteger:v9];
+      v12 = [NSNumber numberWithInteger:dataStatus];
       *buf = 138412290;
       v22 = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Cancelling autofetch, data status %@", buf, 0xCu);
@@ -169,13 +169,13 @@
   else
   {
     [(MailboxAutoFetchController *)self setAutoFetchState:2];
-    v15 = [(MailboxAutoFetchController *)self fetchScheduler];
+    fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10002AF0C;
     v20[3] = &unk_100156400;
     v20[4] = self;
-    v16 = [v15 afterDelay:v20 performBlock:40.0];
+    v16 = [fetchScheduler afterDelay:v20 performBlock:40.0];
     networkWakeupCancelationToken = self->_networkWakeupCancelationToken;
     self->_networkWakeupCancelationToken = v16;
 
@@ -227,8 +227,8 @@
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [v10 account];
-        v12 = [(MailboxAutoFetchController *)self _shouldAutoFetchAccount:v11 whenVisible:1];
+        account = [v10 account];
+        v12 = [(MailboxAutoFetchController *)self _shouldAutoFetchAccount:account whenVisible:1];
 
         if (v12)
         {
@@ -264,9 +264,9 @@
   }
 
   v16 = +[CPNetworkObserver sharedNetworkObserver];
-  v17 = [v16 isWiFiEnabled];
+  isWiFiEnabled = [v16 isWiFiEnabled];
 
-  if (!v17)
+  if (!isWiFiEnabled)
   {
     goto LABEL_21;
   }
@@ -279,13 +279,13 @@
   if (v21 > 0.0)
   {
     [(MailboxAutoFetchController *)self setAutoFetchState:1];
-    v22 = [(MailboxAutoFetchController *)self fetchScheduler];
+    fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_10002B4C8;
     v24[3] = &unk_100156400;
     v24[4] = self;
-    v23 = [v22 afterDelay:v24 performBlock:v21];
+    v23 = [fetchScheduler afterDelay:v24 performBlock:v21];
   }
 
   else
@@ -301,9 +301,9 @@ LABEL_21:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = +[MFNetworkController sharedInstance];
-    v5 = [v4 isFatPipe];
+    isFatPipe = [v4 isFatPipe];
     v6 = @"NO";
-    if (v5)
+    if (isFatPipe)
     {
       v6 = @"YES";
     }
@@ -320,8 +320,8 @@ LABEL_21:
   if ((fetchType & 0x8000) != 0)
   {
     self->_tryFetchWhenReachable = 0;
-    v11 = [WeakRetained activeAccountsToSyncByMailbox];
-    [v7 addObjectsFromArray:v11];
+    activeAccountsToSyncByMailbox = [WeakRetained activeAccountsToSyncByMailbox];
+    [v7 addObjectsFromArray:activeAccountsToSyncByMailbox];
   }
 
   else
@@ -336,8 +336,8 @@ LABEL_21:
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [WeakRetained activeAccountsToSyncByMailbox];
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    activeAccountsToSyncByMailbox = [WeakRetained activeAccountsToSyncByMailbox];
+    v12 = [activeAccountsToSyncByMailbox countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = *v23;
@@ -347,7 +347,7 @@ LABEL_21:
         {
           if (*v23 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(activeAccountsToSyncByMailbox);
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
@@ -357,7 +357,7 @@ LABEL_21:
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v12 = [activeAccountsToSyncByMailbox countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v12);
@@ -373,8 +373,8 @@ LABEL_20:
 
     v18 = [(MailboxAutoFetchController *)self _invocationWithTarget:v16 priority:8];
     v19 = +[NSNotificationCenter defaultCenter];
-    v20 = [v18 monitor];
-    [v19 addObserver:self selector:"_createJobListFinished:" name:MonitoredActivityEnded object:v20];
+    monitor = [v18 monitor];
+    [v19 addObserver:self selector:"_createJobListFinished:" name:MonitoredActivityEnded object:monitor];
 
     v21 = +[MFInvocationQueue sharedInvocationQueue];
     [v21 addInvocation:v18];
@@ -420,27 +420,27 @@ LABEL_20:
 
   self->_lastNonvisibleAutoFetchDate = CFAbsoluteTimeGetCurrent();
   v8 = +[MailboxAutoFetchController signpostLog];
-  v9 = [(MailboxAutoFetchController *)self signpostID];
-  if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
+  signpostID = [(MailboxAutoFetchController *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_END, v9, "AUTOFETCH", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_END, signpostID, "AUTOFETCH", "", buf, 2u);
   }
 
   if ((self->_fetchType & 0xFFFFFFFE) == EMFetchTypeResume)
   {
     v10 = +[MFNetworkController sharedInstance];
-    v11 = [v10 isFatPipe];
+    isFatPipe = [v10 isFatPipe];
 
-    if (v11)
+    if (isFatPipe)
     {
       v12 = +[MailPersistentStorage sharedStorage];
-      v13 = [v12 lastAdditionalMailboxesFetchDate];
-      if (!v13 || (+[NSDate date](NSDate, "date"), v14 = objc_claimAutoreleasedReturnValue(), [v14 timeIntervalSinceDate:v13], v16 = v15 > 7200.0, v14, v16))
+      lastAdditionalMailboxesFetchDate = [v12 lastAdditionalMailboxesFetchDate];
+      if (!lastAdditionalMailboxesFetchDate || (+[NSDate date](NSDate, "date"), v14 = objc_claimAutoreleasedReturnValue(), [v14 timeIntervalSinceDate:lastAdditionalMailboxesFetchDate], v16 = v15 > 7200.0, v14, v16))
       {
         WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-        v18 = [WeakRetained displayedAccountsToSyncByMailbox];
-        v19 = sub_100005C24(v18);
+        displayedAccountsToSyncByMailbox = [WeakRetained displayedAccountsToSyncByMailbox];
+        v19 = sub_100005C24(displayedAccountsToSyncByMailbox);
 
         if ([v19 count])
         {
@@ -451,15 +451,15 @@ LABEL_20:
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Scheduling fetch of additional mailboxes", buf, 2u);
           }
 
-          v21 = [(MailboxAutoFetchController *)self fetchProcessorScheduler];
+          fetchProcessorScheduler = [(MailboxAutoFetchController *)self fetchProcessorScheduler];
           v29[0] = _NSConcreteStackBlock;
           v29[1] = 3221225472;
           v29[2] = sub_10002C1C8;
           v29[3] = &unk_1001573C0;
           v30 = v12;
-          v31 = self;
+          selfCopy = self;
           v32 = v19;
-          [v21 performBlock:v29];
+          [fetchProcessorScheduler performBlock:v29];
         }
       }
     }
@@ -505,9 +505,9 @@ LABEL_20:
   }
 }
 
-- (MailboxAutoFetchController)initWithFavoritesPersistence:(id)a3
+- (MailboxAutoFetchController)initWithFavoritesPersistence:(id)persistence
 {
-  v5 = a3;
+  persistenceCopy = persistence;
   v18.receiver = self;
   v18.super_class = MailboxAutoFetchController;
   v6 = [(MailboxAutoFetchController *)&v18 init];
@@ -517,7 +517,7 @@ LABEL_20:
     accountResponsiveness = v6->_accountResponsiveness;
     v6->_accountResponsiveness = v7;
 
-    objc_storeStrong(&v6->_favoritesPersistence, a3);
+    objc_storeStrong(&v6->_favoritesPersistence, persistence);
     v9 = +[MFDiagnostics sharedController];
     [v9 addDiagnosticsGenerator:v6];
 
@@ -556,86 +556,86 @@ LABEL_20:
   [(MailboxAutoFetchController *)&v5 dealloc];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(MailboxAutoFetchController *)self fetchScheduler];
+  sourceCopy = source;
+  fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100028CA4;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v6 = v4;
+  v6 = sourceCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [fetchScheduler performBlock:v7];
 }
 
-- (void)fetchNow:(int)a3 withAccounts:(id)a4
+- (void)fetchNow:(int)now withAccounts:(id)accounts
 {
-  v6 = a4;
-  v7 = [(MailboxAutoFetchController *)self fetchScheduler];
+  accountsCopy = accounts;
+  fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000291AC;
   v9[3] = &unk_100156B00;
   v9[4] = self;
-  v11 = a3;
-  v8 = v6;
+  nowCopy = now;
+  v8 = accountsCopy;
   v10 = v8;
-  [v7 performBlock:v9];
+  [fetchScheduler performBlock:v9];
 }
 
-- (void)fetchNow:(int)a3 withMailboxes:(id)a4
+- (void)fetchNow:(int)now withMailboxes:(id)mailboxes
 {
-  v6 = a4;
-  v7 = [(MailboxAutoFetchController *)self fetchScheduler];
+  mailboxesCopy = mailboxes;
+  fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000292A4;
   v9[3] = &unk_100156B00;
-  v8 = v6;
+  v8 = mailboxesCopy;
   v10 = v8;
-  v11 = self;
-  v12 = a3;
-  [v7 performBlock:v9];
+  selfCopy = self;
+  nowCopy = now;
+  [fetchScheduler performBlock:v9];
 }
 
 - (void)fetchForPowernap
 {
-  v3 = [(MailboxAutoFetchController *)self fetchScheduler];
+  fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100029464;
   v4[3] = &unk_100156400;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [fetchScheduler performBlock:v4];
 }
 
 - (id)diagnosticInformation
 {
-  v2 = [(MailboxAutoFetchController *)self copyDiagnosticInformation];
+  copyDiagnosticInformation = [(MailboxAutoFetchController *)self copyDiagnosticInformation];
 
-  return v2;
+  return copyDiagnosticInformation;
 }
 
 - (void)networkConfigurationChanged
 {
-  v3 = [(MailboxAutoFetchController *)self fetchScheduler];
+  fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100029798;
   v4[3] = &unk_100156400;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [fetchScheduler performBlock:v4];
 }
 
-- (void)setAutoFetchState:(int64_t)a3
+- (void)setAutoFetchState:(int64_t)state
 {
   v5 = MFAutoFetchLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = sub_10000527C(self->_autoFetchState);
-    v7 = sub_10000527C(a3);
+    v7 = sub_10000527C(state);
     v8 = 138412546;
     v9 = v6;
     v10 = 2112;
@@ -643,79 +643,79 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "autofetch state changing: %@ => %@", &v8, 0x16u);
   }
 
-  self->_autoFetchState = a3;
+  self->_autoFetchState = state;
 }
 
-- (id)_invocationWithTarget:(id)a3 priority:(unint64_t)a4
+- (id)_invocationWithTarget:(id)target priority:(unint64_t)priority
 {
-  v4 = [MFMonitoredInvocation invocationWithSelector:"run" target:a3 taskName:0 priority:a4 canBeCancelled:0];
+  v4 = [MFMonitoredInvocation invocationWithSelector:"run" target:target taskName:0 priority:priority canBeCancelled:0];
 
   return v4;
 }
 
-- (void)_scheduleRetryRequest:(id)a3 priority:(unint64_t)a4 selector:(SEL)a5
+- (void)_scheduleRetryRequest:(id)request priority:(unint64_t)priority selector:(SEL)selector
 {
-  v8 = a3;
-  [v8 _markAsPendingRetryWithPriority:a4];
-  v9 = [(MailboxAutoFetchController *)self fetchScheduler];
+  requestCopy = request;
+  [requestCopy _markAsPendingRetryWithPriority:priority];
+  fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100029A20;
   v12[3] = &unk_100157370;
   v12[4] = self;
-  v10 = v8;
+  v10 = requestCopy;
   v13 = v10;
-  v14 = a4;
-  v15 = a5;
-  v11 = [v9 afterDelay:v12 performBlock:5.0];
+  priorityCopy = priority;
+  selectorCopy = selector;
+  v11 = [fetchScheduler afterDelay:v12 performBlock:5.0];
 }
 
-- (void)_scheduleRequest:(id)a3 priority:(unint64_t)a4 selector:(SEL)a5
+- (void)_scheduleRequest:(id)request priority:(unint64_t)priority selector:(SEL)selector
 {
-  v12 = a3;
+  requestCopy = request;
   v7 = [MailboxAutoFetchController _invocationWithTarget:"_invocationWithTarget:priority:" priority:?];
-  if ([v12 retry])
+  if ([requestCopy retry])
   {
-    v8 = [v12 mailbox];
-    [(MailboxAutoFetchController *)self _beginSignpostForMailboxFetch:v8];
+    mailbox = [requestCopy mailbox];
+    [(MailboxAutoFetchController *)self _beginSignpostForMailboxFetch:mailbox];
   }
 
   else
   {
-    v8 = [v12 mailbox];
-    [(MailboxAutoFetchController *)self _logSignpostForMailboxFetchRetry:v8];
+    mailbox = [requestCopy mailbox];
+    [(MailboxAutoFetchController *)self _logSignpostForMailboxFetchRetry:mailbox];
   }
 
-  [v12 _markAsScheduled];
+  [requestCopy _markAsScheduled];
   v9 = +[NSNotificationCenter defaultCenter];
-  v10 = [v7 monitor];
-  [v9 addObserver:self selector:a5 name:MonitoredActivityEnded object:v10];
+  monitor = [v7 monitor];
+  [v9 addObserver:self selector:selector name:MonitoredActivityEnded object:monitor];
 
   v11 = +[MFInvocationQueue sharedInvocationQueue];
   [v11 addInvocation:v7];
 }
 
-- (void)_doFetchChangedMailboxes:(id)a3 forAccount:(id)a4 options:(int)a5
+- (void)_doFetchChangedMailboxes:(id)mailboxes forAccount:(id)account options:(int)options
 {
-  v20 = a3;
-  v21 = a4;
-  v25 = [(MailboxAutoFetchController *)self _visibleMailboxes];
-  if ((a5 & 0x40) != 0)
+  mailboxesCopy = mailboxes;
+  accountCopy = account;
+  _visibleMailboxes = [(MailboxAutoFetchController *)self _visibleMailboxes];
+  if ((options & 0x40) != 0)
   {
-    v24 = 1;
+    isFrontmost = 1;
   }
 
   else
   {
     v8 = sub_100027C70();
-    v24 = [v8 isFrontmost];
+    isFrontmost = [v8 isFrontmost];
   }
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v20;
+  obj = mailboxesCopy;
   v9 = [obj countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v9)
   {
@@ -730,16 +730,16 @@ LABEL_20:
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v25 containsObject:{v11, v20}];
+        v12 = [_visibleMailboxes containsObject:{v11, mailboxesCopy}];
         v13 = MFAutoFetchLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v21 ef_publicDescription];
-          v15 = [v11 ef_publicDescription];
+          ef_publicDescription = [accountCopy ef_publicDescription];
+          ef_publicDescription2 = [v11 ef_publicDescription];
           *buf = 138543618;
-          v33 = v14;
+          v33 = ef_publicDescription;
           v34 = 2114;
-          v35 = v15;
+          v35 = ef_publicDescription2;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Preparing to fetch changed %{public}@ mailbox %{public}@", buf, 0x16u);
         }
 
@@ -748,17 +748,17 @@ LABEL_20:
 
         v17 = [[AutoFetchRequestPrivate alloc] initRequestForMailboxUid:v11];
         [v17 setIsVisibleFetch:v12];
-        [v17 setIsUserRequested:(a5 >> 5) & 1];
-        [v17 setShouldGrowFetchWindow:(a5 >> 7) & 1];
-        [v17 setShouldLoadOlderMessages:HIWORD(a5) & 1];
-        [v17 setShouldCompact:(a5 >> 15) & 1];
-        [v17 setDownloadAllMessages:(a5 >> 12) & 1];
-        [v17 setIsForegroundRequest:v24];
-        [v17 setIsScheduled:(a5 >> 9) & 1];
-        [v17 setIsPush:(a5 >> 8) & 1];
-        [v17 setShouldLoadMessageBody:(a5 & 0x400) == 0];
-        [v17 setDontNotify:(a5 >> 11) & 1];
-        if ((a5 & 0x800) != 0)
+        [v17 setIsUserRequested:(options >> 5) & 1];
+        [v17 setShouldGrowFetchWindow:(options >> 7) & 1];
+        [v17 setShouldLoadOlderMessages:HIWORD(options) & 1];
+        [v17 setShouldCompact:(options >> 15) & 1];
+        [v17 setDownloadAllMessages:(options >> 12) & 1];
+        [v17 setIsForegroundRequest:isFrontmost];
+        [v17 setIsScheduled:(options >> 9) & 1];
+        [v17 setIsPush:(options >> 8) & 1];
+        [v17 setShouldLoadMessageBody:(options & 0x400) == 0];
+        [v17 setDontNotify:(options >> 11) & 1];
+        if ((options & 0x800) != 0)
         {
           v30 = @"AutoFetchDontNotify";
           v31 = &__kCFBooleanTrue;
@@ -783,88 +783,88 @@ LABEL_20:
   }
 }
 
-- (void)_fetchCompleted:(id)a3
+- (void)_fetchCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:MonitoredActivityInvocation];
+  completedCopy = completed;
+  userInfo = [completedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:MonitoredActivityInvocation];
 
-  v7 = [v6 target];
+  target = [v6 target];
   v8 = +[NSNotificationCenter defaultCenter];
-  v9 = [v4 object];
-  [v8 removeObserver:self name:MonitoredActivityEnded object:v9];
+  object = [completedCopy object];
+  [v8 removeObserver:self name:MonitoredActivityEnded object:object];
 
-  v10 = [v7 account];
-  v11 = [v7 error];
-  if (v11 && [v7 retry])
+  account = [target account];
+  error = [target error];
+  if (error && [target retry])
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10002A390;
     v19[3] = &unk_1001563D8;
     v19[4] = self;
-    v20 = v7;
+    v20 = target;
     [v20 _healAccountWithCompletionHandler:v19];
     v12 = v20;
   }
 
   else
   {
-    v13 = [(MailboxAutoFetchController *)self fetchScheduler];
+    fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10002A3A8;
     v14[3] = &unk_100157398;
-    v15 = v7;
-    v16 = v10;
-    v17 = v11;
-    v18 = self;
-    [v13 performBlock:v14];
+    v15 = target;
+    v16 = account;
+    v17 = error;
+    selfCopy = self;
+    [fetchScheduler performBlock:v14];
 
     v12 = v15;
   }
 }
 
-- (void)_startAutoFetch:(int)a3 withAccounts:(id)a4
+- (void)_startAutoFetch:(int)fetch withAccounts:(id)accounts
 {
-  v7 = a4;
+  accountsCopy = accounts;
   v8 = MFAutoFetchLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 67113216;
-    v19 = a3 & 1;
+    v19 = fetch & 1;
     v20 = 1024;
-    v21 = (a3 >> 1) & 1;
+    v21 = (fetch >> 1) & 1;
     v22 = 1024;
-    v23 = (a3 >> 2) & 1;
+    v23 = (fetch >> 2) & 1;
     v24 = 1024;
-    v25 = (a3 >> 3) & 1;
+    v25 = (fetch >> 3) & 1;
     v26 = 1024;
-    v27 = (a3 >> 4) & 1;
+    v27 = (fetch >> 4) & 1;
     v28 = 1024;
-    v29 = (a3 >> 5) & 1;
+    v29 = (fetch >> 5) & 1;
     v30 = 1024;
-    v31 = (a3 >> 6) & 1;
+    v31 = (fetch >> 6) & 1;
     v32 = 1024;
-    v33 = (a3 >> 7) & 1;
+    v33 = (fetch >> 7) & 1;
     v34 = 1024;
-    v35 = (a3 >> 8) & 1;
+    v35 = (fetch >> 8) & 1;
     v36 = 1024;
-    v37 = (a3 >> 9) & 1;
+    v37 = (fetch >> 9) & 1;
     v38 = 1024;
-    v39 = (a3 >> 10) & 1;
+    v39 = (fetch >> 10) & 1;
     v40 = 1024;
-    v41 = (a3 >> 11) & 1;
+    v41 = (fetch >> 11) & 1;
     v42 = 1024;
-    v43 = (a3 >> 12) & 1;
+    v43 = (fetch >> 12) & 1;
     v44 = 1024;
-    v45 = (a3 >> 13) & 1;
+    v45 = (fetch >> 13) & 1;
     v46 = 1024;
-    v47 = (a3 >> 14) & 1;
+    v47 = (fetch >> 14) & 1;
     v48 = 1024;
-    v49 = (a3 >> 15) & 1;
+    v49 = (fetch >> 15) & 1;
     v50 = 1024;
-    v51 = HIWORD(a3) & 1;
+    v51 = HIWORD(fetch) & 1;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Starting auto fetch. Force: %{BOOL}d, DisplayErrors: %{BOOL}d, IncludePush: %{BOOL}d, IncludeManual: %{BOOL}d, IncludeNonvisible: %{BOOL}d, UserRequested: %{BOOL}d, ForegroundRequest: %{BOOL}d, ShouldGrowFetchWindow: %{BOOL}d, Pushed: %{BOOL}d, Scheduled: %{BOOL}d, FetchOnlyHeaders: %{BOOL}d, DontNotify: %{BOOL}d, DownloadAllMessages: %{BOOL}d, RequiresPower: %{BOOL}d, RequiresWifi: %{BOOL}d, Compact: %{BOOL}d, LoadOlderMessages: %{BOOL}d", buf, 0x68u);
   }
 
@@ -875,11 +875,11 @@ LABEL_20:
   }
 
   v9 = +[MailboxAutoFetchController signpostLog];
-  v10 = [(MailboxAutoFetchController *)self signpostID];
-  if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
+  signpostID = [(MailboxAutoFetchController *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, v10, "AUTOFETCH", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "AUTOFETCH", "", buf, 2u);
   }
 
   if (self->_visibleMailboxes)
@@ -888,26 +888,26 @@ LABEL_20:
     [v17 handleFailureInMethod:a2 object:self file:@"MailboxAutoFetchController.m" lineNumber:666 description:@"should not have existing visible stores for new auto fetch"];
   }
 
-  if ((a3 & 0x8000) != 0)
+  if ((fetch & 0x8000) != 0)
   {
-    v11 = &__NSArray0__struct;
+    _visibleMailboxes = &__NSArray0__struct;
   }
 
   else
   {
-    v11 = [(MailboxAutoFetchController *)self _visibleMailboxes];
+    _visibleMailboxes = [(MailboxAutoFetchController *)self _visibleMailboxes];
   }
 
   visibleMailboxes = self->_visibleMailboxes;
-  self->_visibleMailboxes = v11;
+  self->_visibleMailboxes = _visibleMailboxes;
 
   v13 = +[NSNotificationCenter defaultCenter];
   [v13 postNotificationName:@"MailboxAutoFetchProcessStartNotification" object:self];
 
   self->_lastAutoFetchHadErrors = 0;
   self->_lastAutoFetchHadSources = [(NSArray *)self->_visibleMailboxes count]!= 0;
-  self->_fetchType = a3;
-  v14 = [v7 copy];
+  self->_fetchType = fetch;
+  v14 = [accountsCopy copy];
   fetchAccounts = self->_fetchAccounts;
   self->_fetchAccounts = v14;
 
@@ -921,18 +921,18 @@ LABEL_20:
   self->_networkWakeupCancelationToken = 0;
 }
 
-- (void)_reportReachabilityChange:(id)a3
+- (void)_reportReachabilityChange:(id)change
 {
-  v4 = a3;
-  v5 = [(MailboxAutoFetchController *)self fetchScheduler];
+  changeCopy = change;
+  fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002AD44;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v6 = v4;
+  v6 = changeCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [fetchScheduler performBlock:v7];
 }
 
 - (void)_reportReachabilityTimeout
@@ -949,18 +949,18 @@ LABEL_20:
   [(MailboxAutoFetchController *)self _finishAutoFetch];
 }
 
-- (BOOL)_shouldAutoFetchAccount:(id)a3 whenVisible:(BOOL)a4
+- (BOOL)_shouldAutoFetchAccount:(id)account whenVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = a3;
-  if (([v6 canFetch] & 1) == 0)
+  visibleCopy = visible;
+  accountCopy = account;
+  if (([accountCopy canFetch] & 1) == 0)
   {
     v13 = MFAutoFetchLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v6 ef_publicDescription];
+      ef_publicDescription = [accountCopy ef_publicDescription];
       v31 = 138543362;
-      v32 = v15;
+      v32 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "should NOT fetch %{public}@: can’t fetch fetch", &v31, 0xCu);
     }
 
@@ -968,36 +968,36 @@ LABEL_20:
   }
 
   fetchAccounts = self->_fetchAccounts;
-  if (fetchAccounts && ![(NSArray *)fetchAccounts containsObject:v6])
+  if (fetchAccounts && ![(NSArray *)fetchAccounts containsObject:accountCopy])
   {
     v13 = MFAutoFetchLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v6 ef_publicDescription];
+      ef_publicDescription2 = [accountCopy ef_publicDescription];
       v31 = 138543362;
-      v32 = v18;
+      v32 = ef_publicDescription2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "should NOT fetch %{public}@: is not in the set of accounts to fetch", &v31, 0xCu);
     }
 
     goto LABEL_17;
   }
 
-  [v6 uniqueIdForPersistentConnection];
+  [accountCopy uniqueIdForPersistentConnection];
   Style = PCSettingsGetStyle();
-  v9 = [v6 canReceiveNewMailNotifications];
-  [v6 uniqueIdForPersistentConnection];
+  canReceiveNewMailNotifications = [accountCopy canReceiveNewMailNotifications];
+  [accountCopy uniqueIdForPersistentConnection];
   PollInterval = PCSettingsGetPollInterval();
   v11 = sub_100027C70();
-  v12 = [v11 isFrontmost];
+  isFrontmost = [v11 isFrontmost];
 
-  if ((v4 & v12) == 1)
+  if ((visibleCopy & isFrontmost) == 1)
   {
     v13 = MFAutoFetchLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 ef_publicDescription];
+      ef_publicDescription3 = [accountCopy ef_publicDescription];
       v31 = 138543362;
-      v32 = v14;
+      v32 = ef_publicDescription3;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "should fetch %{public}@: isVisible and not suspended", &v31, 0xCu);
     }
 
@@ -1008,7 +1008,7 @@ LABEL_48:
 
   if (Style == 1)
   {
-    v16 = v9;
+    v16 = canReceiveNewMailNotifications;
   }
 
   else
@@ -1021,9 +1021,9 @@ LABEL_48:
     v13 = MFAutoFetchLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v6 ef_publicDescription];
+      ef_publicDescription4 = [accountCopy ef_publicDescription];
       v31 = 138543362;
-      v32 = v17;
+      v32 = ef_publicDescription4;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "should fetch %{public}@: pushCapable and poll style", &v31, 0xCu);
     }
 
@@ -1037,7 +1037,7 @@ LABEL_48:
 
   else
   {
-    v20 = v9;
+    v20 = canReceiveNewMailNotifications;
   }
 
   if (v20 == 1)
@@ -1047,9 +1047,9 @@ LABEL_48:
       v13 = MFAutoFetchLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v6 ef_publicDescription];
+        ef_publicDescription5 = [accountCopy ef_publicDescription];
         v31 = 138543362;
-        v32 = v28;
+        v32 = ef_publicDescription5;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "should fetch %{public}@: pushCapable, push style, options include push.", &v31, 0xCu);
       }
 
@@ -1065,7 +1065,7 @@ LABEL_31:
 
     else
     {
-      v24 = v9;
+      v24 = canReceiveNewMailNotifications;
     }
 
     if ((v24 & 1) == 0 && !v21)
@@ -1073,9 +1073,9 @@ LABEL_31:
       v13 = MFAutoFetchLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v6 ef_publicDescription];
+        ef_publicDescription6 = [accountCopy ef_publicDescription];
         v31 = 138543362;
-        v32 = v25;
+        v32 = ef_publicDescription6;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "should fetch %{public}@: !pushCapable, !fetchOnManual, and !manual style", &v31, 0xCu);
       }
 
@@ -1088,7 +1088,7 @@ LABEL_31:
   v21 = Style == 2;
   if (Style == 2)
   {
-    v22 = v9;
+    v22 = canReceiveNewMailNotifications;
   }
 
   else
@@ -1106,9 +1106,9 @@ LABEL_31:
     v13 = MFAutoFetchLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v6 ef_publicDescription];
+      ef_publicDescription7 = [accountCopy ef_publicDescription];
       v31 = 138543362;
-      v32 = v23;
+      v32 = ef_publicDescription7;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "should fetch %{public}@: pushCapable, manual style, options include manual.", &v31, 0xCu);
     }
 
@@ -1116,14 +1116,14 @@ LABEL_31:
   }
 
 LABEL_38:
-  if ((v9 & 1) == 0 && PollInterval == -1 && Style != 1 && (self->_fetchType & 8) != 0)
+  if ((canReceiveNewMailNotifications & 1) == 0 && PollInterval == -1 && Style != 1 && (self->_fetchType & 8) != 0)
   {
     v13 = MFAutoFetchLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [v6 ef_publicDescription];
+      ef_publicDescription8 = [accountCopy ef_publicDescription];
       v31 = 138543362;
-      v32 = v29;
+      v32 = ef_publicDescription8;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "should fetch %{public}@: fetchOnManual, not poll style, options include manual", &v31, 0xCu);
     }
 
@@ -1133,16 +1133,16 @@ LABEL_38:
   v13 = MFAutoFetchLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v6 ef_publicDescription];
+    ef_publicDescription9 = [accountCopy ef_publicDescription];
     fetchType = self->_fetchType;
     v31 = 138544642;
-    v32 = v26;
+    v32 = ef_publicDescription9;
     v33 = 1024;
-    v34 = v4;
+    v34 = visibleCopy;
     v35 = 1024;
     v36 = Style;
     v37 = 1024;
-    v38 = v9;
+    v38 = canReceiveNewMailNotifications;
     v39 = 1024;
     v40 = PollInterval == -1;
     v41 = 1024;
@@ -1157,16 +1157,16 @@ LABEL_49:
   return v19;
 }
 
-- (void)_reportSynchronousFetchCompletion:(id)a3
+- (void)_reportSynchronousFetchCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:MonitoredActivityInvocation];
+  completionCopy = completion;
+  userInfo = [completionCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:MonitoredActivityInvocation];
 
-  v8 = [v7 target];
+  target = [v7 target];
   v9 = +[NSNotificationCenter defaultCenter];
-  v10 = [v5 object];
-  [v9 removeObserver:self name:MonitoredActivityEnded object:v10];
+  object = [completionCopy object];
+  [v9 removeObserver:self name:MonitoredActivityEnded object:object];
 
   if ([(MailboxAutoFetchController *)self autoFetchState]!= 4)
   {
@@ -1174,15 +1174,15 @@ LABEL_49:
     [v15 handleFailureInMethod:a2 object:self file:@"MailboxAutoFetchController.m" lineNumber:865 description:@"we should not get any fetches back while we're not waiting for them."];
   }
 
-  v11 = [v8 account];
-  v12 = [v8 error];
-  if (v12 && [v8 retry])
+  account = [target account];
+  error = [target error];
+  if (error && [target retry])
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10002B7C0;
     v20[3] = &unk_1001563D8;
-    v21[0] = v8;
+    v21[0] = target;
     v21[1] = self;
     [v21[0] _healAccountWithCompletionHandler:v20];
     v13 = v21;
@@ -1190,24 +1190,24 @@ LABEL_49:
 
   else
   {
-    v14 = [(MailboxAutoFetchController *)self fetchScheduler];
+    fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10002B840;
     v16[3] = &unk_100157398;
-    v17[0] = v8;
+    v17[0] = target;
     v17[1] = self;
-    v18 = v11;
-    v19 = v12;
-    [v14 performBlock:v16];
+    v18 = account;
+    v19 = error;
+    [fetchScheduler performBlock:v16];
     v13 = v17;
   }
 }
 
 - (void)_scheduleAllJobs
 {
-  v3 = [(MailboxAutoFetchController *)self pushedMailboxJobList];
-  if ([v3 count])
+  pushedMailboxJobList = [(MailboxAutoFetchController *)self pushedMailboxJobList];
+  if ([pushedMailboxJobList count])
   {
   }
 
@@ -1242,8 +1242,8 @@ LABEL_49:
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [v8 mailbox];
-        if ([v9 type] == 7)
+        mailbox = [v8 mailbox];
+        if ([mailbox type] == 7)
         {
           v10 = 8;
         }
@@ -1282,8 +1282,8 @@ LABEL_49:
         }
 
         v14 = *(*(&v21 + 1) + 8 * j);
-        v15 = [v14 mailbox];
-        if ([v15 type] == 7)
+        mailbox2 = [v14 mailbox];
+        if ([mailbox2 type] == 7)
         {
           v16 = 8;
         }
@@ -1312,32 +1312,32 @@ LABEL_25:
   [v18 releaseAssertionWithIdentifier:@"com.apple.mobilemail.autofetch"];
 }
 
-- (void)_createJobListFinished:(id)a3
+- (void)_createJobListFinished:(id)finished
 {
-  v4 = a3;
-  v5 = [(MailboxAutoFetchController *)self fetchScheduler];
+  finishedCopy = finished;
+  fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002C090;
   v7[3] = &unk_1001563D8;
-  v6 = v4;
+  v6 = finishedCopy;
   v8 = v6;
-  v9 = self;
-  [v5 performBlock:v7];
+  selfCopy = self;
+  [fetchScheduler performBlock:v7];
 }
 
-- (void)_newNotificationSoundSent:(id)a3
+- (void)_newNotificationSoundSent:(id)sent
 {
-  v4 = a3;
-  v5 = [(MailboxAutoFetchController *)self fetchScheduler];
+  sentCopy = sent;
+  fetchScheduler = [(MailboxAutoFetchController *)self fetchScheduler];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002C378;
   v7[3] = &unk_1001563D8;
-  v6 = v4;
+  v6 = sentCopy;
   v8 = v6;
-  v9 = self;
-  [v5 performBlock:v7];
+  selfCopy = self;
+  [fetchScheduler performBlock:v7];
 }
 
 - (id)copyDiagnosticInformation
@@ -1454,82 +1454,82 @@ LABEL_25:
   [v3 appendString:@"\n==== Autofetcher Joblist ====\n"];
   v16 = +[AutoFetchRequestPrivate currentRequests];
   objc_sync_enter(v16);
-  v17 = [v16 allObjects];
+  allObjects = [v16 allObjects];
   v23.length = [v16 count];
   v23.location = 0;
-  CFArrayApplyFunction(v17, v23, sub_10002C94C, v3);
+  CFArrayApplyFunction(allObjects, v23, sub_10002C94C, v3);
 
   objc_sync_exit(v16);
   [v3 appendString:@"\n==== Fetch History ====\n"];
   v18 = qword_1001855A8;
   objc_sync_enter(v18);
-  v19 = [qword_1001855A8 allValues];
+  allValues = [qword_1001855A8 allValues];
   v24.length = [qword_1001855A8 count];
   v24.location = 0;
-  CFArrayApplyFunction(v19, v24, sub_10002CAC0, v3);
+  CFArrayApplyFunction(allValues, v24, sub_10002CAC0, v3);
 
   objc_sync_exit(v18);
   [v3 appendString:@"\n==== Fetch History (Push) ====\n"];
   v20 = qword_1001855B0;
   objc_sync_enter(v20);
-  v21 = [qword_1001855B0 allValues];
+  allValues2 = [qword_1001855B0 allValues];
   v25.length = [qword_1001855B0 count];
   v25.location = 0;
-  CFArrayApplyFunction(v21, v25, sub_10002CAC0, v3);
+  CFArrayApplyFunction(allValues2, v25, sub_10002CAC0, v3);
 
   objc_sync_exit(v20);
   return v3;
 }
 
-- (void)_logSignpostForMailboxFetchRetry:(id)a3
+- (void)_logSignpostForMailboxFetchRetry:(id)retry
 {
-  v4 = a3;
-  v5 = [v4 account];
+  retryCopy = retry;
+  account = [retryCopy account];
   v6 = [NSString alloc];
-  v7 = [v5 ef_publicDescription];
-  v8 = [v4 ef_publicDescription];
-  v9 = [v6 initWithFormat:@"[%@ - %@]", v7, v8];
+  ef_publicDescription = [account ef_publicDescription];
+  ef_publicDescription2 = [retryCopy ef_publicDescription];
+  v9 = [v6 initWithFormat:@"[%@ - %@]", ef_publicDescription, ef_publicDescription2];
 
   v10 = +[MailboxAutoFetchController signpostLog];
-  v11 = [(MailboxAutoFetchController *)self signpostID];
-  if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
+  signpostID = [(MailboxAutoFetchController *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
     *buf = 138543362;
     v13 = v9;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_EVENT, v11, "AUTOFETCH MAILBOX", "Retry of Mailbox=%{signpost.description:attribute,public}@", buf, 0xCu);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_EVENT, signpostID, "AUTOFETCH MAILBOX", "Retry of Mailbox=%{signpost.description:attribute,public}@", buf, 0xCu);
   }
 }
 
-- (void)_logSignpostForMailboxFetch:(id)a3 finished:(BOOL)a4
+- (void)_logSignpostForMailboxFetch:(id)fetch finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 account];
+  finishedCopy = finished;
+  fetchCopy = fetch;
+  account = [fetchCopy account];
   v8 = [NSString alloc];
-  v9 = [v7 ef_publicDescription];
-  v10 = [v6 ef_publicDescription];
-  v11 = [v8 initWithFormat:@"[%@ - %@]", v9, v10];
+  ef_publicDescription = [account ef_publicDescription];
+  ef_publicDescription2 = [fetchCopy ef_publicDescription];
+  v11 = [v8 initWithFormat:@"[%@ - %@]", ef_publicDescription, ef_publicDescription2];
 
-  if (v4)
+  if (finishedCopy)
   {
     v12 = +[MailboxAutoFetchController signpostLog];
-    v13 = [(MailboxAutoFetchController *)self signpostID];
-    if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
+    signpostID = [(MailboxAutoFetchController *)self signpostID];
+    if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
       *buf = 138543362;
       v17 = v11;
       v14 = v12;
       v15 = OS_SIGNPOST_INTERVAL_END;
 LABEL_8:
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, v15, v13, "AUTOFETCH MAILBOX", "Mailbox=%{signpost.description:attribute,public}@", buf, 0xCu);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, v15, signpostID, "AUTOFETCH MAILBOX", "Mailbox=%{signpost.description:attribute,public}@", buf, 0xCu);
     }
   }
 
   else
   {
     v12 = +[MailboxAutoFetchController signpostLog];
-    v13 = [(MailboxAutoFetchController *)self signpostID];
-    if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
+    signpostID = [(MailboxAutoFetchController *)self signpostID];
+    if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
       *buf = 138543362;
       v17 = v11;

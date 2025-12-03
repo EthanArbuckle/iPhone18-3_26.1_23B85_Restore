@@ -4,16 +4,16 @@
 - (CKAccountOverrideInfo)accountOverrideInfo;
 - (CKPersona)persona;
 - (Class)classForCoder;
-- (void)setAccountOverrideInfo:(id)a3;
-- (void)setIsServiceManatee:(BOOL)a3;
-- (void)setPersona:(id)a3;
+- (void)setAccountOverrideInfo:(id)info;
+- (void)setIsServiceManatee:(BOOL)manatee;
+- (void)setPersona:(id)persona;
 @end
 
 @implementation CloudCoreContainerOptions
 
 - (BOOL)bypassPCSEncryption
 {
-  v2 = self;
+  selfCopy = self;
   sub_188445778();
   v4 = v3;
 
@@ -29,48 +29,48 @@
 
 - (CKAccountOverrideInfo)accountOverrideInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1884AC868();
 
   return v3;
 }
 
-- (void)setAccountOverrideInfo:(id)a3
+- (void)setAccountOverrideInfo:(id)info
 {
-  v5 = a3;
-  v6 = self;
-  sub_1884AC924(a3);
+  infoCopy = info;
+  selfCopy = self;
+  sub_1884AC924(info);
 }
 
 - (CKPersona)persona
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1884ACA70();
 
   return v3;
 }
 
-- (void)setPersona:(id)a3
+- (void)setPersona:(id)persona
 {
-  v5 = a3;
-  v6 = self;
-  sub_1884ACCE4(a3);
+  personaCopy = persona;
+  selfCopy = self;
+  sub_1884ACCE4(persona);
 }
 
 - (BOOL)isServiceManatee
 {
-  v2 = self;
+  selfCopy = self;
   sub_188445778();
   v4 = v3;
 
   return v4 & 1;
 }
 
-- (void)setIsServiceManatee:(BOOL)a3
+- (void)setIsServiceManatee:(BOOL)manatee
 {
-  v3 = a3;
-  v4 = self;
-  sub_1884ACF38(v3);
+  manateeCopy = manatee;
+  selfCopy = self;
+  sub_1884ACF38(manateeCopy);
 }
 
 @end

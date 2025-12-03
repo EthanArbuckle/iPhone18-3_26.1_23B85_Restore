@@ -1,8 +1,8 @@
 @interface ICCloudClientCloudService
-- (ICCloudClientCloudService)initWithListenerEndpointProvider:(id)a3;
+- (ICCloudClientCloudService)initWithListenerEndpointProvider:(id)provider;
 - (ICCloudServerListenerEndpointProviding)listenerEndpointProvider;
 - (NSXPCConnection)xpcConnection;
-- (id)_xpcConnectionWithListenerEndpoint:(id)a3;
+- (id)_xpcConnectionWithListenerEndpoint:(id)endpoint;
 - (void)dealloc;
 @end
 
@@ -107,14 +107,14 @@ LABEL_10:
   v10 = __Block_byref_object_copy__1145;
   v11 = __Block_byref_object_dispose__1146;
   v12 = 0;
-  v3 = [(ICCloudClientCloudService *)self serialQueue];
+  serialQueue = [(ICCloudClientCloudService *)self serialQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__ICCloudClientCloudService_xpcConnection__block_invoke;
   v6[3] = &unk_1E7BFA430;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -122,13 +122,13 @@ LABEL_10:
   return v4;
 }
 
-- (id)_xpcConnectionWithListenerEndpoint:(id)a3
+- (id)_xpcConnectionWithListenerEndpoint:(id)endpoint
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  endpointCopy = endpoint;
+  if (endpointCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v4];
+    v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
     v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F2CCED58];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
@@ -250,16 +250,16 @@ void __64__ICCloudClientCloudService__xpcConnectionWithListenerEndpoint___block_
   *(v4 + 8) = 0;
 }
 
-- (ICCloudClientCloudService)initWithListenerEndpointProvider:(id)a3
+- (ICCloudClientCloudService)initWithListenerEndpointProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = ICCloudClientCloudService;
   v5 = [(ICCloudClientCloudService *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_listenerEndpointProvider, v4);
+    objc_storeWeak(&v5->_listenerEndpointProvider, providerCopy);
     v7 = dispatch_queue_create("com.apple.itunescloudd.ICCloudClientCloudService.serial.queue", 0);
     serialQueue = v6->_serialQueue;
     v6->_serialQueue = v7;

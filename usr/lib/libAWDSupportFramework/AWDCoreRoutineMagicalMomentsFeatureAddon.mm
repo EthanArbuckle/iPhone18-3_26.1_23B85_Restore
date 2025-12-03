@@ -1,13 +1,13 @@
 @interface AWDCoreRoutineMagicalMomentsFeatureAddon
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineMagicalMomentsFeatureAddon
@@ -29,12 +29,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   if (*&self->_has)
@@ -45,7 +45,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_name)
   {
@@ -60,25 +60,25 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_name)
   {
-    [a3 setName:?];
+    [to setName:?];
   }
 
   if (*&self->_has)
   {
-    *(a3 + 4) = self->_value;
-    *(a3 + 20) |= 1u;
+    *(to + 4) = self->_value;
+    *(to + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 8) = [(NSString *)self->_name copyWithZone:a3];
+  *(v5 + 8) = [(NSString *)self->_name copyWithZone:zone];
   if (*&self->_has)
   {
     *(v5 + 16) = self->_value;
@@ -88,18 +88,18 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     name = self->_name;
-    if (!(name | *(a3 + 1)) || (v5 = [(NSString *)name isEqual:?]) != 0)
+    if (!(name | *(equal + 1)) || (v5 = [(NSString *)name isEqual:?]) != 0)
     {
-      LOBYTE(v5) = (*(a3 + 20) & 1) == 0;
+      LOBYTE(v5) = (*(equal + 20) & 1) == 0;
       if (*&self->_has)
       {
-        LOBYTE(v5) = (*(a3 + 20) & 1) != 0 && self->_value == *(a3 + 4);
+        LOBYTE(v5) = (*(equal + 20) & 1) != 0 && self->_value == *(equal + 4);
       }
     }
   }
@@ -123,16 +123,16 @@
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(AWDCoreRoutineMagicalMomentsFeatureAddon *)self setName:?];
   }
 
-  if (*(a3 + 20))
+  if (*(from + 20))
   {
-    self->_value = *(a3 + 4);
+    self->_value = *(from + 4);
     *&self->_has |= 1u;
   }
 }

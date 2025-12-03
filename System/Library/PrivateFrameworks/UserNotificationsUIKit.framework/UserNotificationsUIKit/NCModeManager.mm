@@ -1,13 +1,13 @@
 @interface NCModeManager
 - (NCModeManager)init;
 - (void)_fetchCurrentModeConfiguration;
-- (void)_notifyObserversWithBlock:(id)a3;
-- (void)_updateWithModeConfiguration:(id)a3 previousModeConfiguration:(id)a4;
-- (void)addObserver:(id)a3;
+- (void)_notifyObserversWithBlock:(id)block;
+- (void)_updateWithModeConfiguration:(id)configuration previousModeConfiguration:(id)modeConfiguration;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setModeConfiguration:(id)a3;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)removeObserver:(id)observer;
+- (void)setModeConfiguration:(id)configuration;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 @end
 
 @implementation NCModeManager
@@ -19,9 +19,9 @@
   v2 = [(NCModeManager *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    v5 = [v4 isEqualToString:@"com.apple.internal.NotificationsUITool"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:@"com.apple.internal.NotificationsUITool"];
 
     if (v5)
     {
@@ -60,18 +60,18 @@
   [(NCModeManager *)&v3 dealloc];
 }
 
-- (void)setModeConfiguration:(id)a3
+- (void)setModeConfiguration:(id)configuration
 {
   modeConfigurationService = self->_modeConfigurationService;
   v4 = 0;
-  [(DNDModeConfigurationService *)modeConfigurationService setModeConfiguration:a3 error:&v4];
+  [(DNDModeConfigurationService *)modeConfigurationService setModeConfiguration:configuration error:&v4];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     v10 = v5;
@@ -85,16 +85,16 @@
     }
 
     [(NSHashTable *)observers addObject:v10];
-    v9 = [(NCModeManager *)self currentModeConfiguration];
-    [v10 modeManager:self didUpdateCurrentModeConfiguration:v9 previousModeConfiguration:0];
+    currentModeConfiguration = [(NCModeManager *)self currentModeConfiguration];
+    [v10 modeManager:self didUpdateCurrentModeConfiguration:currentModeConfiguration previousModeConfiguration:0];
   }
 
-  MEMORY[0x2821F96F8](v4);
+  MEMORY[0x2821F96F8](observerCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observers = self->_observers;
     if (observers)
@@ -104,17 +104,17 @@
   }
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
-  v5 = a4;
-  v6 = [v5 state];
-  v9 = [v6 activeModeConfiguration];
+  updateCopy = update;
+  state = [updateCopy state];
+  activeModeConfiguration = [state activeModeConfiguration];
 
-  v7 = [v5 previousState];
+  previousState = [updateCopy previousState];
 
-  v8 = [v7 activeModeConfiguration];
+  activeModeConfiguration2 = [previousState activeModeConfiguration];
 
-  [(NCModeManager *)self _updateWithModeConfiguration:v9 previousModeConfiguration:v8];
+  [(NCModeManager *)self _updateWithModeConfiguration:activeModeConfiguration previousModeConfiguration:activeModeConfiguration2];
 }
 
 - (void)_fetchCurrentModeConfiguration
@@ -138,20 +138,20 @@ void __47__NCModeManager__fetchCurrentModeConfiguration__block_invoke(uint64_t a
   [*(a1 + 32) _updateWithModeConfiguration:v5 previousModeConfiguration:*(*(a1 + 32) + 32)];
 }
 
-- (void)_updateWithModeConfiguration:(id)a3 previousModeConfiguration:(id)a4
+- (void)_updateWithModeConfiguration:(id)configuration previousModeConfiguration:(id)modeConfiguration
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_currentModeConfiguration != v7)
+  configurationCopy = configuration;
+  modeConfigurationCopy = modeConfiguration;
+  if (self->_currentModeConfiguration != configurationCopy)
   {
-    objc_storeStrong(&self->_currentModeConfiguration, a3);
+    objc_storeStrong(&self->_currentModeConfiguration, configuration);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__NCModeManager__updateWithModeConfiguration_previousModeConfiguration___block_invoke;
     block[3] = &unk_2783715C0;
     block[4] = self;
-    v10 = v7;
-    v11 = v8;
+    v10 = configurationCopy;
+    v11 = modeConfigurationCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -168,11 +168,11 @@ void __72__NCModeManager__updateWithModeConfiguration_previousModeConfiguration_
   [v2 _notifyObserversWithBlock:v3];
 }
 
-- (void)_notifyObserversWithBlock:(id)a3
+- (void)_notifyObserversWithBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     observers = self->_observers;
     if (observers)
@@ -198,7 +198,7 @@ void __72__NCModeManager__updateWithModeConfiguration_previousModeConfiguration_
 
             v10 = *(*(&v13 + 1) + 8 * v9);
             v11 = objc_initWeak(&location, self);
-            v4[2](v4, self, v10);
+            blockCopy[2](blockCopy, self, v10);
 
             objc_destroyWeak(&location);
             ++v9;

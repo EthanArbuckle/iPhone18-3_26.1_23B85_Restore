@@ -1,6 +1,6 @@
 @interface LACSDKHelper
 + (LACSDKHelper)sharedInstance;
-- (BOOL)applicationIsRunningWithSDKVersionAtLeast:(int64_t)a3;
+- (BOOL)applicationIsRunningWithSDKVersionAtLeast:(int64_t)least;
 @end
 
 @implementation LACSDKHelper
@@ -24,9 +24,9 @@ uint64_t __30__LACSDKHelper_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)applicationIsRunningWithSDKVersionAtLeast:(int64_t)a3
+- (BOOL)applicationIsRunningWithSDKVersionAtLeast:(int64_t)least
 {
-  if ([(LACSDKHelper *)self _buildVersionForSDKVersion:a3])
+  if ([(LACSDKHelper *)self _buildVersionForSDKVersion:least])
   {
 
     return MEMORY[0x1EEE706E0]();

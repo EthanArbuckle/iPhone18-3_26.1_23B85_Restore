@@ -1,5 +1,5 @@
 @interface PXGSpriteEntitySerializable
-- (PXGSpriteEntitySerializable)initWithSerializableObject:(id)a3;
+- (PXGSpriteEntitySerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
 @end
 
@@ -12,15 +12,15 @@
   return PXGSerializeSpriteEntity(v2.var0);
 }
 
-- (PXGSpriteEntitySerializable)initWithSerializableObject:(id)a3
+- (PXGSpriteEntitySerializable)initWithSerializableObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7.receiver = self;
   v7.super_class = PXGSpriteEntitySerializable;
   v5 = [(PXGSpriteEntitySerializable *)&v7 init];
   if (v5)
   {
-    [(PXGSpriteEntitySerializable *)v5 setSpriteEntity:PXGDeserializeSpriteEntity(v4)];
+    [(PXGSpriteEntitySerializable *)v5 setSpriteEntity:PXGDeserializeSpriteEntity(objectCopy)];
   }
 
   return v5;

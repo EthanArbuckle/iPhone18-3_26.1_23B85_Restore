@@ -1,13 +1,13 @@
 @interface PickerTableViewCell
-- (_TtC18HealthExperienceUI19PickerTableViewCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI19PickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18HealthExperienceUI19PickerTableViewCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI19PickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation PickerTableViewCell
 
-- (_TtC18HealthExperienceUI19PickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18HealthExperienceUI19PickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
   }
@@ -21,7 +21,7 @@
   return sub_1BA092678(v4, v5);
 }
 
-- (_TtC18HealthExperienceUI19PickerTableViewCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI19PickerTableViewCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC18HealthExperienceUI19PickerTableViewCell_item;
   *v3 = 0u;

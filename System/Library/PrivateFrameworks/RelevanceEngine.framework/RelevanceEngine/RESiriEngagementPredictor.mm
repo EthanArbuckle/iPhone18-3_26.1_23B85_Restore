@@ -1,8 +1,8 @@
 @interface RESiriEngagementPredictor
 + (id)supportedFeatures;
 - (id)_init;
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6;
-- (void)siriServer:(id)a3 receivedCompletedRequestDomain:(id)a4;
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context;
+- (void)siriServer:(id)server receivedCompletedRequestDomain:(id)domain;
 @end
 
 @implementation RESiriEngagementPredictor
@@ -28,11 +28,11 @@
   return v5;
 }
 
-- (id)featureValueForFeature:(id)a3 element:(id)a4 engine:(id)a5 trainingContext:(id)a6
+- (id)featureValueForFeature:(id)feature element:(id)element engine:(id)engine trainingContext:(id)context
 {
   lastSiriDomain = self->_lastSiriDomain;
-  v8 = [a4 bundleIdentifier];
-  LODWORD(lastSiriDomain) = [(NSString *)lastSiriDomain isEqualToString:v8];
+  bundleIdentifier = [element bundleIdentifier];
+  LODWORD(lastSiriDomain) = [(NSString *)lastSiriDomain isEqualToString:bundleIdentifier];
 
   siriInfluence = 0.0;
   if (lastSiriDomain)
@@ -45,16 +45,16 @@
   return v10;
 }
 
-- (void)siriServer:(id)a3 receivedCompletedRequestDomain:(id)a4
+- (void)siriServer:(id)server receivedCompletedRequestDomain:(id)domain
 {
-  v5 = a4;
+  domainCopy = domain;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__RESiriEngagementPredictor_siriServer_receivedCompletedRequestDomain___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = domainCopy;
+  v6 = domainCopy;
   [(REPredictor *)self onQueue:v7];
 }
 

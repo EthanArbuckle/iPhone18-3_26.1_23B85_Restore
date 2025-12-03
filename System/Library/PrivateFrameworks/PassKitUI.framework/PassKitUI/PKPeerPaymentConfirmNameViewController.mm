@@ -1,31 +1,31 @@
 @interface PKPeerPaymentConfirmNameViewController
-- (PKPeerPaymentConfirmNameViewController)initWithFamilyMember:(id)a3 delegate:(id)a4 context:(int64_t)a5;
+- (PKPeerPaymentConfirmNameViewController)initWithFamilyMember:(id)member delegate:(id)delegate context:(int64_t)context;
 - (PKPeerPaymentConfirmNameViewControllerDelegate)delegate;
 - (void)_cancelPressed;
 - (void)_continue;
-- (void)showSpinner:(BOOL)a3;
+- (void)showSpinner:(BOOL)spinner;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPeerPaymentConfirmNameViewController
 
-- (PKPeerPaymentConfirmNameViewController)initWithFamilyMember:(id)a3 delegate:(id)a4 context:(int64_t)a5
+- (PKPeerPaymentConfirmNameViewController)initWithFamilyMember:(id)member delegate:(id)delegate context:(int64_t)context
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [MEMORY[0x1E696AD48] letterCharacterSet];
-  [v11 addCharactersInString:@"-. "];
+  memberCopy = member;
+  delegateCopy = delegate;
+  letterCharacterSet = [MEMORY[0x1E696AD48] letterCharacterSet];
+  [letterCharacterSet addCharactersInString:@"-. "];
   v12 = [MEMORY[0x1E69B8DD0] paymentSetupFieldWithIdentifier:*MEMORY[0x1E69BC1F0]];
-  [v12 setAllowedCharacters:v11];
-  v13 = [v9 firstName];
-  [v12 setDefaultValue:v13];
+  [v12 setAllowedCharacters:letterCharacterSet];
+  firstName = [memberCopy firstName];
+  [v12 setDefaultValue:firstName];
 
   [v12 setPopulateFromMeCard:0];
   v14 = [MEMORY[0x1E69B8DD0] paymentSetupFieldWithIdentifier:*MEMORY[0x1E69BC1F8]];
-  [v14 setAllowedCharacters:v11];
-  v15 = [v9 lastName];
-  [v14 setDefaultValue:v15];
+  [v14 setAllowedCharacters:letterCharacterSet];
+  lastName = [memberCopy lastName];
+  [v14 setDefaultValue:lastName];
 
   [v14 setPopulateFromMeCard:0];
   v16 = objc_alloc(MEMORY[0x1E69B8E38]);
@@ -36,12 +36,12 @@
 
   v22.receiver = self;
   v22.super_class = PKPeerPaymentConfirmNameViewController;
-  v19 = [(PKPaymentSetupFieldsViewController *)&v22 initWithWebService:0 context:a5 setupDelegate:self setupFieldsModel:v18];
+  v19 = [(PKPaymentSetupFieldsViewController *)&v22 initWithWebService:0 context:context setupDelegate:self setupFieldsModel:v18];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_familyMember, a3);
-    objc_storeWeak(&v20->_delegate, v10);
+    objc_storeStrong(&v19->_familyMember, member);
+    objc_storeWeak(&v20->_delegate, delegateCopy);
     [(PKPaymentSetupFieldsViewController *)v20 setPreferPrimaryButtonInNavigationBar:1];
   }
 
@@ -75,8 +75,8 @@
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
   [(PKPaymentSetupFieldsViewController *)self _setRightBarButtonItems:v8 animated:0];
 
-  v9 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v9 setAllowsMultipleSelection:0];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView setAllowsMultipleSelection:0];
   v10 = PKPassKitUIBundle();
   v11 = [v10 URLForResource:@"AppleCashIcon" withExtension:@"pdf"];
   v12 = PKUIScreenScale();
@@ -86,42 +86,42 @@
   [v14 setContentMode:1];
   [v14 setClipsToBounds:1];
   [v14 _setContinuousCornerRadius:20.0];
-  v15 = [(PKPaymentSetupFieldsViewController *)self headerView];
-  [v15 setTopPadding:30.0];
-  v16 = [(PKPeerPaymentConfirmNameViewController *)self traitCollection];
-  v17 = [v16 userInterfaceIdiom];
+  headerView = [(PKPaymentSetupFieldsViewController *)self headerView];
+  [headerView setTopPadding:30.0];
+  traitCollection = [(PKPeerPaymentConfirmNameViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   IsSetupAssistant = 0;
-  if ((v17 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(PKPaymentSetupTableViewController *)self context];
     IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
   }
 
-  [v15 setStyle:IsSetupAssistant];
-  v19 = [v15 titleLabel];
+  [headerView setStyle:IsSetupAssistant];
+  titleLabel = [headerView titleLabel];
   v20 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentCon_11.isa);
-  [v19 setText:v20];
+  [titleLabel setText:v20];
 
-  v21 = [v15 subtitleLabel];
+  subtitleLabel = [headerView subtitleLabel];
   v22 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentCon_12.isa);
-  [v21 setText:v22];
+  [subtitleLabel setText:v22];
 
-  [v15 setImageView:v14];
-  v23 = [(PKPaymentSetupTableViewController *)self dockView];
-  v24 = [v23 footerView];
-  [v24 setSetUpLaterButton:0];
+  [headerView setImageView:v14];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  footerView = [dockView footerView];
+  [footerView setSetUpLaterButton:0];
 
-  [v23 setPrimaryButton:0];
+  [dockView setPrimaryButton:0];
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (self->_showSpinner != a3)
+  if (self->_showSpinner != spinner)
   {
-    self->_showSpinner = a3;
-    [(UIBarButtonItem *)self->_cancelButton setEnabled:!a3];
+    self->_showSpinner = spinner;
+    [(UIBarButtonItem *)self->_cancelButton setEnabled:!spinner];
     if (self->_showSpinner)
     {
       spinnerButton = self->_spinnerButton;
@@ -155,16 +155,16 @@
 {
   [(PKPeerPaymentConfirmNameViewController *)self showSpinner:1];
   v3 = [(PKPaymentSetupFieldsViewController *)self fieldForIdentifier:*MEMORY[0x1E69BC1F0]];
-  v8 = [v3 submissionString];
+  submissionString = [v3 submissionString];
 
   v4 = [(PKPaymentSetupFieldsViewController *)self fieldForIdentifier:*MEMORY[0x1E69BC1F8]];
-  v5 = [v4 submissionString];
+  submissionString2 = [v4 submissionString];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained confirmNameViewController:self enteredFirstName:v8 lastName:v5];
+    [WeakRetained confirmNameViewController:self enteredFirstName:submissionString lastName:submissionString2];
   }
 
   else

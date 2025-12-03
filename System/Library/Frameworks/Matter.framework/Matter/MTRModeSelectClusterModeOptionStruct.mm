@@ -1,6 +1,6 @@
 @interface MTRModeSelectClusterModeOptionStruct
 - (MTRModeSelectClusterModeOptionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,25 +20,25 @@
     mode = v3->_mode;
     v3->_mode = &unk_284C3E588;
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     semanticTags = v3->_semanticTags;
-    v3->_semanticTags = v6;
+    v3->_semanticTags = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRModeSelectClusterModeOptionStruct);
-  v5 = [(MTRModeSelectClusterModeOptionStruct *)self label];
-  [(MTRModeSelectClusterModeOptionStruct *)v4 setLabel:v5];
+  label = [(MTRModeSelectClusterModeOptionStruct *)self label];
+  [(MTRModeSelectClusterModeOptionStruct *)v4 setLabel:label];
 
-  v6 = [(MTRModeSelectClusterModeOptionStruct *)self mode];
-  [(MTRModeSelectClusterModeOptionStruct *)v4 setMode:v6];
+  mode = [(MTRModeSelectClusterModeOptionStruct *)self mode];
+  [(MTRModeSelectClusterModeOptionStruct *)v4 setMode:mode];
 
-  v7 = [(MTRModeSelectClusterModeOptionStruct *)self semanticTags];
-  [(MTRModeSelectClusterModeOptionStruct *)v4 setSemanticTags:v7];
+  semanticTags = [(MTRModeSelectClusterModeOptionStruct *)self semanticTags];
+  [(MTRModeSelectClusterModeOptionStruct *)v4 setSemanticTags:semanticTags];
 
   return v4;
 }

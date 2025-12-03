@@ -1,54 +1,54 @@
 @interface VehicleListViewController
-- (BOOL)_isIndexPathOfAddNewCarCell:(id)a3;
+- (BOOL)_isIndexPathOfAddNewCarCell:(id)cell;
 - (BOOL)_shouldShowManualAddCell;
 - (BOOL)_shouldShowUnpairedVehicles;
 - (VehicleListViewController)init;
 - (id)actionCoordinator;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_consumeUpdatedUnpairedVehicles:(id)a3;
-- (void)_consumeUpdatedVirtualGarage:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_consumeUpdatedUnpairedVehicles:(id)vehicles;
+- (void)_consumeUpdatedVirtualGarage:(id)garage;
 - (void)_refreshSavedVehiclesStates;
 - (void)_setupConstraints;
-- (void)_updateVehicle:(id)a3 atIndex:(unint64_t)a4;
+- (void)_updateVehicle:(id)vehicle atIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)setSavedVehicles:(id)a3;
-- (void)setUnpairedVehicles:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)vehicleDetailViewController:(id)a3 deleteVehicle:(id)a4;
-- (void)vehicleDetailViewController:(id)a3 saveVehicleEdit:(id)a4;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)setSavedVehicles:(id)vehicles;
+- (void)setUnpairedVehicles:(id)vehicles;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)vehicleDetailViewController:(id)controller deleteVehicle:(id)vehicle;
+- (void)vehicleDetailViewController:(id)controller saveVehicleEdit:(id)edit;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation VehicleListViewController
 
-- (void)vehicleDetailViewController:(id)a3 deleteVehicle:(id)a4
+- (void)vehicleDetailViewController:(id)controller deleteVehicle:(id)vehicle
 {
-  v5 = a4;
+  vehicleCopy = vehicle;
   v6 = +[VGVirtualGarageService sharedService];
-  [v6 virtualGarageRemoveVehicle:v5];
+  [v6 virtualGarageRemoveVehicle:vehicleCopy];
 
-  v8 = [(VehicleListViewController *)self navigationController];
-  v7 = [v8 popToViewController:self animated:1];
+  navigationController = [(VehicleListViewController *)self navigationController];
+  v7 = [navigationController popToViewController:self animated:1];
 }
 
-- (void)vehicleDetailViewController:(id)a3 saveVehicleEdit:(id)a4
+- (void)vehicleDetailViewController:(id)controller saveVehicleEdit:(id)edit
 {
-  v4 = a4;
+  editCopy = edit;
   v5 = +[VGVirtualGarageService sharedService];
-  [v5 virtualGarageSaveVehicle:v4];
+  [v5 virtualGarageSaveVehicle:editCopy];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [v6 section];
-  if (v7 == 1)
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  section = [pathCopy section];
+  if (section == 1)
   {
     v13 = [(NSArray *)self->_unpairedVehicles count];
     v14 = sub_100022C48();
@@ -76,8 +76,8 @@ LABEL_36:
         if ([(NSArray *)v16 count])
         {
           v37 = v15;
-          v38 = self;
-          v39 = v6;
+          selfCopy = self;
+          v39 = pathCopy;
           v18 = [NSMutableArray arrayWithCapacity:[(NSArray *)v17 count]];
           v40 = 0u;
           v41 = 0u;
@@ -147,8 +147,8 @@ LABEL_27:
               v31 = [(NSArray *)v19 componentsJoinedByString:@", "];
               v32 = [NSString stringWithFormat:@"<%p> [%@]", v19, v31];
 
-              self = v38;
-              v6 = v39;
+              self = selfCopy;
+              pathCopy = v39;
               v15 = v37;
               v17 = v36;
               goto LABEL_39;
@@ -171,13 +171,13 @@ LABEL_39:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "User selected vehicle onboarding from VG with vehicles: %@", buf, 0xCu);
     }
 
-    v35 = [(VehicleListViewController *)self actionCoordinator];
-    [v35 presentVehicleOnboardingWithVehicles:self->_unpairedVehicles completion:0];
+    actionCoordinator = [(VehicleListViewController *)self actionCoordinator];
+    [actionCoordinator presentVehicleOnboardingWithVehicles:self->_unpairedVehicles completion:0];
 
     goto LABEL_41;
   }
 
-  if (v7)
+  if (section)
   {
     v15 = sub_100022C48();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -192,16 +192,16 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (![(VehicleListViewController *)self _isIndexPathOfAddNewCarCell:v6])
+  if (![(VehicleListViewController *)self _isIndexPathOfAddNewCarCell:pathCopy])
   {
-    v8 = -[NSArray objectAtIndexedSubscript:](self->_savedVehicles, "objectAtIndexedSubscript:", [v6 row]);
+    v8 = -[NSArray objectAtIndexedSubscript:](self->_savedVehicles, "objectAtIndexedSubscript:", [pathCopy row]);
     if (v8)
     {
-      v9 = v8;
+      actionCoordinator2 = v8;
       v10 = +[MKMapService sharedService];
       [v10 captureUserAction:2126 onTarget:660 eventValue:0];
 
-      v11 = [[VehicleDetailViewController alloc] initWithVehicle:v9 delegate:self];
+      v11 = [[VehicleDetailViewController alloc] initWithVehicle:actionCoordinator2 delegate:self];
       [(VehicleDetailViewController *)v11 setVehicleCount:[(NSArray *)self->_savedVehicles count]];
       v12 = [[UINavigationController alloc] initWithRootViewController:v11];
       [(VehicleListViewController *)self presentViewController:v12 animated:1 completion:0];
@@ -216,20 +216,20 @@ LABEL_32:
 
   if ([(VehicleListViewController *)self _shouldShowManualAddCell])
   {
-    v9 = [(VehicleListViewController *)self actionCoordinator];
-    [v9 presentLPRWithVehicle:0 scenario:0 presenter:self completionBlock:0];
+    actionCoordinator2 = [(VehicleListViewController *)self actionCoordinator];
+    [actionCoordinator2 presentLPRWithVehicle:0 scenario:0 presenter:self completionBlock:0];
     goto LABEL_32;
   }
 
 LABEL_41:
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    if (a4 == 1)
+    if (section == 1)
     {
       if ([(VehicleListViewController *)self _shouldShowUnpairedVehicles])
       {
@@ -257,14 +257,14 @@ LABEL_9:
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 1)
   {
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"kOnboardingCellIdentifier" forIndexPath:v7];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"kOnboardingCellIdentifier" forIndexPath:pathCopy];
     [v9 setAccessibilityIdentifier:@"OnboardVehicleCell"];
     v15 = self->_unpairedVehicles;
     if ([(NSArray *)v15 count])
@@ -274,19 +274,19 @@ LABEL_9:
         v16 = +[NSBundle mainBundle];
         v17 = [v16 localizedStringForKey:@"Onboard vehicles from VG [Title value:VG table:{Onboarding, Single]", @"localized string not found", 0}];
 
-        v18 = [(NSArray *)v15 firstObject];
-        v19 = [v18 manufacturer];
-        v20 = v19;
-        if (v19)
+        firstObject = [(NSArray *)v15 firstObject];
+        manufacturer = [firstObject manufacturer];
+        v20 = manufacturer;
+        if (manufacturer)
         {
-          v21 = [NSString stringWithFormat:v17, v19];
+          v21 = [NSString stringWithFormat:v17, manufacturer];
         }
 
         else
         {
-          v24 = [(NSArray *)v15 firstObject];
-          v25 = [v24 displayName];
-          v21 = [NSString stringWithFormat:v17, v25];
+          firstObject2 = [(NSArray *)v15 firstObject];
+          displayName = [firstObject2 displayName];
+          v21 = [NSString stringWithFormat:v17, displayName];
         }
       }
 
@@ -302,41 +302,41 @@ LABEL_9:
       v21 = 0;
     }
 
-    v26 = [v9 textLabel];
-    [v26 setText:v21];
+    textLabel = [v9 textLabel];
+    [textLabel setText:v21];
 
     v27 = +[UIColor systemBlueColor];
-    v28 = [v9 textLabel];
-    [v28 setTextColor:v27];
+    textLabel2 = [v9 textLabel];
+    [textLabel2 setTextColor:v27];
 
-    v13 = [v9 textLabel];
-    [v13 setAccessibilityIdentifier:@"OnboardVehicleCellTitle"];
+    textLabel3 = [v9 textLabel];
+    [textLabel3 setAccessibilityIdentifier:@"OnboardVehicleCellTitle"];
     goto LABEL_21;
   }
 
-  if (!v8)
+  if (!section)
   {
-    if ([(VehicleListViewController *)self _isIndexPathOfAddNewCarCell:v7]&& [(VehicleListViewController *)self _shouldShowManualAddCell])
+    if ([(VehicleListViewController *)self _isIndexPathOfAddNewCarCell:pathCopy]&& [(VehicleListViewController *)self _shouldShowManualAddCell])
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"kAddNewCarCellIdentifier" forIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"kAddNewCarCellIdentifier" forIndexPath:pathCopy];
       v10 = +[NSBundle mainBundle];
       v11 = [v10 localizedStringForKey:@"[LPR] Add License Plate car" value:@"localized string not found" table:0];
-      v12 = [v9 textLabel];
-      [v12 setText:v11];
+      textLabel4 = [v9 textLabel];
+      [textLabel4 setText:v11];
 
       [v9 setAccessibilityIdentifier:@"AddLicensePlateCell"];
-      v13 = +[UIColor systemBlueColor];
-      v14 = [v9 textLabel];
-      [v14 setTextColor:v13];
+      textLabel3 = +[UIColor systemBlueColor];
+      textLabel5 = [v9 textLabel];
+      [textLabel5 setTextColor:textLabel3];
     }
 
     else
     {
       v23 = +[VehicleCell reuseIdentifier];
-      v9 = [v6 dequeueReusableCellWithIdentifier:v23 forIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:v23 forIndexPath:pathCopy];
 
-      v13 = -[NSArray objectAtIndexedSubscript:](self->_savedVehicles, "objectAtIndexedSubscript:", [v7 row]);
-      [v9 setupWithVehicle:v13 cellStyle:1 isSelected:0];
+      textLabel3 = -[NSArray objectAtIndexedSubscript:](self->_savedVehicles, "objectAtIndexedSubscript:", [pathCopy row]);
+      [v9 setupWithVehicle:textLabel3 cellStyle:1 isSelected:0];
     }
 
 LABEL_21:
@@ -357,15 +357,15 @@ LABEL_22:
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
-    v8 = [(VehicleListViewController *)self _shouldShowUnpairedVehicles];
+    _shouldShowUnpairedVehicles = [(VehicleListViewController *)self _shouldShowUnpairedVehicles];
   }
 
-  else if (a4)
+  else if (section)
   {
     v9 = sub_100022C48();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -374,25 +374,25 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "Invalid section count in VehicleListVC", v11, 2u);
     }
 
-    v8 = 0;
+    _shouldShowUnpairedVehicles = 0;
   }
 
   else
   {
     v7 = [(NSArray *)self->_savedVehicles count];
-    v8 = v7 + [(VehicleListViewController *)self _shouldShowManualAddCell];
+    _shouldShowUnpairedVehicles = v7 + [(VehicleListViewController *)self _shouldShowManualAddCell];
   }
 
-  return v8;
+  return _shouldShowUnpairedVehicles;
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v6 = a3;
+  tappedCopy = tapped;
   v5 = +[MKMapService sharedService];
   [v5 captureUserAction:34 onTarget:660 eventValue:0];
 
-  [(ContaineeViewController *)self handleDismissAction:v6];
+  [(ContaineeViewController *)self handleDismissAction:tappedCopy];
 }
 
 - (BOOL)_shouldShowManualAddCell
@@ -416,31 +416,31 @@ LABEL_22:
   return IsEVRoutingSupported();
 }
 
-- (void)_updateVehicle:(id)a3 atIndex:(unint64_t)a4
+- (void)_updateVehicle:(id)vehicle atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(VehicleListViewController *)self savedVehicles];
-  v8 = [v7 count];
+  vehicleCopy = vehicle;
+  savedVehicles = [(VehicleListViewController *)self savedVehicles];
+  v8 = [savedVehicles count];
 
-  if (v8 <= a4)
+  if (v8 <= index)
   {
     v9 = sub_100022C48();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v18 = a4;
+      indexCopy = index;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Tried to update a vehicle at index out of bounds: %ld", buf, 0xCu);
     }
   }
 
-  else if (v6)
+  else if (vehicleCopy)
   {
     v9 = [(NSArray *)self->_savedVehicles mutableCopy];
-    [v9 replaceObjectAtIndex:a4 withObject:v6];
+    [v9 replaceObjectAtIndex:index withObject:vehicleCopy];
     v10 = [v9 copy];
     [(VehicleListViewController *)self setSavedVehicles:v10];
 
-    v11 = [NSIndexPath indexPathForRow:a4 inSection:0];
+    v11 = [NSIndexPath indexPathForRow:index inSection:0];
     tableView = self->_tableView;
     v16 = v11;
     v13 = [NSArray arrayWithObjects:&v16 count:1];
@@ -452,10 +452,10 @@ LABEL_22:
     v9 = sub_100022C48();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(VehicleListViewController *)self savedVehicles];
-      v15 = [v14 objectAtIndexedSubscript:a4];
+      savedVehicles2 = [(VehicleListViewController *)self savedVehicles];
+      v15 = [savedVehicles2 objectAtIndexedSubscript:index];
       *buf = 138412290;
-      v18 = v15;
+      indexCopy = v15;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Tried to update a vehicle with a nil vehicle.: %@", buf, 0xCu);
     }
   }
@@ -475,62 +475,62 @@ LABEL_22:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_isIndexPathOfAddNewCarCell:(id)a3
+- (BOOL)_isIndexPathOfAddNewCarCell:(id)cell
 {
-  v4 = a3;
-  if ([v4 section])
+  cellCopy = cell;
+  if ([cellCopy section])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 row];
+    v6 = [cellCopy row];
     v5 = v6 == [(NSArray *)self->_savedVehicles count];
   }
 
   return v5;
 }
 
-- (void)_consumeUpdatedUnpairedVehicles:(id)a3
+- (void)_consumeUpdatedUnpairedVehicles:(id)vehicles
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100AE94F0;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  vehiclesCopy = vehicles;
+  v3 = vehiclesCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)_consumeUpdatedVirtualGarage:(id)a3
+- (void)_consumeUpdatedVirtualGarage:(id)garage
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100AE9808;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  garageCopy = garage;
+  v3 = garageCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
 - (id)actionCoordinator
 {
-  v2 = [(VehicleListViewController *)self _maps_mapsSceneDelegate];
-  v3 = [v2 appCoordinator];
-  v4 = [v3 baseActionCoordinator];
+  _maps_mapsSceneDelegate = [(VehicleListViewController *)self _maps_mapsSceneDelegate];
+  appCoordinator = [_maps_mapsSceneDelegate appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
-  return v4;
+  return baseActionCoordinator;
 }
 
-- (void)setUnpairedVehicles:(id)a3
+- (void)setUnpairedVehicles:(id)vehicles
 {
-  v3 = a3;
-  v5 = a3;
+  vehiclesCopy = vehicles;
+  vehiclesCopy2 = vehicles;
   v6 = self->_unpairedVehicles;
-  v7 = v5;
+  v7 = vehiclesCopy2;
   if (v7 | v6)
   {
     v8 = [v6 isEqual:v7];
@@ -551,8 +551,8 @@ LABEL_22:
             v30 = v11;
             v31 = v9;
             v32 = v7;
-            v33 = self;
-            v34 = v3;
+            selfCopy = self;
+            v34 = vehiclesCopy;
             v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v13 count]);
             v35 = 0u;
             v36 = 0u;
@@ -622,8 +622,8 @@ LABEL_23:
                 v27 = [v15 componentsJoinedByString:{@", "}];
                 v28 = [NSString stringWithFormat:@"<%p> [%@]", v15, v27];
 
-                self = v33;
-                v3 = v34;
+                self = selfCopy;
+                vehiclesCopy = v34;
                 v7 = v32;
                 v9 = v31;
                 v13 = v29;
@@ -652,17 +652,17 @@ LABEL_26:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "VehicleListVC - unpaired vehicles updated. count from: %lu to: %lu, detail: %@", buf, 0x20u);
       }
 
-      objc_storeStrong(&self->_unpairedVehicles, v3);
+      objc_storeStrong(&self->_unpairedVehicles, vehiclesCopy);
     }
   }
 }
 
-- (void)setSavedVehicles:(id)a3
+- (void)setSavedVehicles:(id)vehicles
 {
-  v3 = a3;
-  v5 = a3;
+  vehiclesCopy = vehicles;
+  vehiclesCopy2 = vehicles;
   v6 = self->_savedVehicles;
-  v7 = v5;
+  v7 = vehiclesCopy2;
   if (v7 | v6)
   {
     v8 = [v6 isEqual:v7];
@@ -683,8 +683,8 @@ LABEL_26:
             v30 = v11;
             v31 = v9;
             v32 = v7;
-            v33 = self;
-            v34 = v3;
+            selfCopy = self;
+            v34 = vehiclesCopy;
             v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v13 count]);
             v35 = 0u;
             v36 = 0u;
@@ -754,8 +754,8 @@ LABEL_23:
                 v27 = [v15 componentsJoinedByString:{@", "}];
                 v28 = [NSString stringWithFormat:@"<%p> [%@]", v15, v27];
 
-                self = v33;
-                v3 = v34;
+                self = selfCopy;
+                vehiclesCopy = v34;
                 v7 = v32;
                 v9 = v31;
                 v13 = v29;
@@ -784,88 +784,88 @@ LABEL_26:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "VehicleListVC - vehicles updated. count from: %lu to: %lu, detail: %@", buf, 0x20u);
       }
 
-      objc_storeStrong(&self->_savedVehicles, v3);
+      objc_storeStrong(&self->_savedVehicles, vehiclesCopy);
     }
   }
 }
 
 - (void)_setupConstraints
 {
-  v34 = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
-  v35 = [(ContaineeViewController *)self headerView];
-  v33 = [v35 topAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  topAnchor = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
+  headerView = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v36[0] = v32;
-  v30 = [(ContainerHeaderView *)self->_titleHeaderView leadingAnchor];
-  v31 = [(ContaineeViewController *)self headerView];
-  v29 = [v31 leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  leadingAnchor = [(ContainerHeaderView *)self->_titleHeaderView leadingAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView2 leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v36[1] = v28;
-  v26 = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
-  v27 = [(ContaineeViewController *)self headerView];
-  v25 = [v27 trailingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  trailingAnchor = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView3 trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v36[2] = v24;
-  v22 = [(ContainerHeaderView *)self->_titleHeaderView bottomAnchor];
-  v23 = [(ContaineeViewController *)self headerView];
-  v21 = [v23 bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  bottomAnchor = [(ContainerHeaderView *)self->_titleHeaderView bottomAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView4 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v36[3] = v20;
-  v18 = [(UITableView *)self->_tableView topAnchor];
-  v19 = [(ContaineeViewController *)self contentView];
-  v17 = [v19 topAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  topAnchor3 = [(UITableView *)self->_tableView topAnchor];
+  contentView = [(ContaineeViewController *)self contentView];
+  topAnchor4 = [contentView topAnchor];
+  v16 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v36[4] = v16;
-  v14 = [(UITableView *)self->_tableView leadingAnchor];
-  v15 = [(ContaineeViewController *)self contentView];
-  v13 = [v15 leadingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13];
+  leadingAnchor3 = [(UITableView *)self->_tableView leadingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  leadingAnchor4 = [contentView2 leadingAnchor];
+  v3 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v36[5] = v3;
-  v4 = [(UITableView *)self->_tableView trailingAnchor];
-  v5 = [(ContaineeViewController *)self contentView];
-  v6 = [v5 trailingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  trailingAnchor3 = [(UITableView *)self->_tableView trailingAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  trailingAnchor4 = [contentView3 trailingAnchor];
+  v7 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v36[6] = v7;
-  v8 = [(UITableView *)self->_tableView bottomAnchor];
-  v9 = [(ContaineeViewController *)self contentView];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  bottomAnchor3 = [(UITableView *)self->_tableView bottomAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  bottomAnchor4 = [contentView4 bottomAnchor];
+  v11 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v36[7] = v11;
   v12 = [NSArray arrayWithObjects:v36 count:8];
   [NSLayoutConstraint activateConstraints:v12];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = VehicleListViewController;
-  [(ContaineeViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(VehicleListViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  [(ContaineeViewController *)&v7 viewWillDisappear:disappear];
+  traitCollection = [(VehicleListViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v5)
+  if (!userInterfaceIdiom)
   {
     v6 = +[UIApplication sharedMapsDelegate];
     [v6 setLockedOrientations:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = VehicleListViewController;
   [(ContaineeViewController *)&v9 viewWillAppear:?];
-  v5 = [(VehicleListViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(VehicleListViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v6)
+  if (!userInterfaceIdiom)
   {
     v7 = +[UIApplication sharedMapsDelegate];
     [v7 setLockedOrientations:2];
 
     v8 = +[UIDevice currentDevice];
-    [v8 setOrientation:1 animated:v3];
+    [v8 setOrientation:1 animated:appearCopy];
   }
 
   [(VehicleListViewController *)self _refreshSavedVehiclesStates];
@@ -876,22 +876,22 @@ LABEL_26:
   v29.receiver = self;
   v29.super_class = VehicleListViewController;
   [(ContaineeViewController *)&v29 viewDidLoad];
-  v3 = [(VehicleListViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"VehicleListView"];
+  view = [(VehicleListViewController *)self view];
+  [view setAccessibilityIdentifier:@"VehicleListView"];
 
   v4 = +[UIColor clearColor];
-  v5 = [(VehicleListViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view2 = [(VehicleListViewController *)self view];
+  [view2 setBackgroundColor:v4];
 
-  v6 = [(ContaineeViewController *)self headerView];
+  headerView = [(ContaineeViewController *)self headerView];
   v7 = sub_10000FA08(self);
   v8 = [ContainerHeaderView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v12 = [(ContainerHeaderView *)v8 initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(ContainerHeaderView *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(ContainerHeaderView *)v12 setDelegate:self];
+  height = [(ContainerHeaderView *)v8 initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(ContainerHeaderView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(ContainerHeaderView *)height setDelegate:self];
   if (v7 == 5)
   {
     v13 = 1;
@@ -902,19 +902,19 @@ LABEL_26:
     v13 = 2;
   }
 
-  [(ContainerHeaderView *)v12 setHeaderSize:v13];
+  [(ContainerHeaderView *)height setHeaderSize:v13];
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:@"[VirtualGarage] Vehicles" value:@"localized string not found" table:0];
-  [(ContainerHeaderView *)v12 setTitle:v15];
+  [(ContainerHeaderView *)height setTitle:v15];
 
-  [(ContainerHeaderView *)v12 setHairLineAlpha:0.0];
+  [(ContainerHeaderView *)height setHairLineAlpha:0.0];
   v16 = +[UIColor clearColor];
-  [(ContainerHeaderView *)v12 setBackgroundColor:v16];
+  [(ContainerHeaderView *)height setBackgroundColor:v16];
 
-  [v6 addSubview:v12];
+  [headerView addSubview:height];
   titleHeaderView = self->_titleHeaderView;
-  self->_titleHeaderView = v12;
-  v18 = v12;
+  self->_titleHeaderView = height;
+  v18 = height;
 
   v19 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, y, width, height}];
   tableView = self->_tableView;
@@ -941,8 +941,8 @@ LABEL_26:
 
   [(UITableView *)self->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kAddNewCarCellIdentifier"];
   [(UITableView *)self->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kOnboardingCellIdentifier"];
-  v28 = [(ContaineeViewController *)self contentView];
-  [v28 addSubview:self->_tableView];
+  contentView = [(ContaineeViewController *)self contentView];
+  [contentView addSubview:self->_tableView];
 
   [(VehicleListViewController *)self _setupConstraints];
 }
@@ -965,11 +965,11 @@ LABEL_26:
   v3 = v2;
   if (v2)
   {
-    v4 = [(ContaineeViewController *)v2 cardPresentationController];
-    [v4 setPresentedModally:1];
+    cardPresentationController = [(ContaineeViewController *)v2 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v5 = [(ContaineeViewController *)v3 cardPresentationController];
-    [v5 setTakesAvailableHeight:1];
+    cardPresentationController2 = [(ContaineeViewController *)v3 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:1];
 
     v6 = +[VGVirtualGarageService sharedService];
     [v6 registerObserver:v3];

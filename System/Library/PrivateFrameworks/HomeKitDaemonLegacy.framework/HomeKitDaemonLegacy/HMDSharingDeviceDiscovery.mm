@@ -6,11 +6,11 @@
 - (id)deviceLostHandler;
 - (unint64_t)discoveryFlags;
 - (void)dealloc;
-- (void)setDeviceChangedHandler:(id)a3;
-- (void)setDeviceFoundHandler:(id)a3;
-- (void)setDeviceLostHandler:(id)a3;
-- (void)setDiscoveryFlags:(unint64_t)a3;
-- (void)setDispatchQueue:(id)a3;
+- (void)setDeviceChangedHandler:(id)handler;
+- (void)setDeviceFoundHandler:(id)handler;
+- (void)setDeviceLostHandler:(id)handler;
+- (void)setDiscoveryFlags:(unint64_t)flags;
+- (void)setDispatchQueue:(id)queue;
 - (void)start;
 - (void)stop;
 @end
@@ -27,16 +27,16 @@ uint64_t __59__HMDSharingDeviceDiscovery_repairDevice_flags_completion___block_i
 
 - (void)stop
 {
-  v3 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  [v3 invalidate];
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  [deviceDiscovery invalidate];
 
   [(HMDSharingDeviceDiscovery *)self setDeviceDiscovery:0];
 }
 
 - (void)start
 {
-  v2 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  [v2 activateWithCompletion:&__block_literal_global_75550];
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  [deviceDiscovery activateWithCompletion:&__block_literal_global_75550];
 }
 
 void __34__HMDSharingDeviceDiscovery_start__block_invoke(uint64_t a1, void *a2)
@@ -80,52 +80,52 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeviceLostHandler:(id)a3
+- (void)setDeviceLostHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  [v5 setDeviceLostHandler:v4];
+  handlerCopy = handler;
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  [deviceDiscovery setDeviceLostHandler:handlerCopy];
 }
 
 - (id)deviceLostHandler
 {
-  v2 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  v3 = [v2 deviceLostHandler];
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  deviceLostHandler = [deviceDiscovery deviceLostHandler];
 
-  return v3;
+  return deviceLostHandler;
 }
 
-- (void)setDeviceChangedHandler:(id)a3
+- (void)setDeviceChangedHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  [v5 setDeviceChangedHandler:v4];
+  handlerCopy = handler;
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  [deviceDiscovery setDeviceChangedHandler:handlerCopy];
 }
 
 - (id)deviceChangedHandler
 {
-  v2 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  v3 = [v2 deviceChangedHandler];
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  deviceChangedHandler = [deviceDiscovery deviceChangedHandler];
 
-  return v3;
+  return deviceChangedHandler;
 }
 
-- (void)setDeviceFoundHandler:(id)a3
+- (void)setDeviceFoundHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  [v5 setDeviceFoundHandler:v4];
+  handlerCopy = handler;
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  [deviceDiscovery setDeviceFoundHandler:handlerCopy];
 }
 
 - (id)deviceFoundHandler
 {
-  v2 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  v3 = [v2 deviceFoundHandler];
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  deviceFoundHandler = [deviceDiscovery deviceFoundHandler];
 
-  return v3;
+  return deviceFoundHandler;
 }
 
-- (void)setDiscoveryFlags:(unint64_t)a3
+- (void)setDiscoveryFlags:(unint64_t)flags
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
@@ -136,38 +136,38 @@ LABEL_6:
     v10 = 138543618;
     v11 = v7;
     v12 = 2048;
-    v13 = a3;
+    flagsCopy = flags;
     _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@Setting device discovery flags to %ld", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v8 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  [v8 setDiscoveryFlags:a3];
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  [deviceDiscovery setDiscoveryFlags:flags];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (unint64_t)discoveryFlags
 {
-  v2 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  v3 = [v2 discoveryFlags];
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  discoveryFlags = [deviceDiscovery discoveryFlags];
 
-  return v3;
+  return discoveryFlags;
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  [v5 setDispatchQueue:v4];
+  queueCopy = queue;
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  [deviceDiscovery setDispatchQueue:queueCopy];
 }
 
 - (OS_dispatch_queue)dispatchQueue
 {
-  v2 = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
-  v3 = [v2 dispatchQueue];
+  deviceDiscovery = [(HMDSharingDeviceDiscovery *)self deviceDiscovery];
+  dispatchQueue = [deviceDiscovery dispatchQueue];
 
-  return v3;
+  return dispatchQueue;
 }
 
 - (SFDeviceDiscovery)deviceDiscovery

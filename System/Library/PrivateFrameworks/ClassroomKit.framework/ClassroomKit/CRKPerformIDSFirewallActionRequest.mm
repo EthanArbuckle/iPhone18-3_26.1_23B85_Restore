@@ -1,38 +1,38 @@
 @interface CRKPerformIDSFirewallActionRequest
-- (CRKPerformIDSFirewallActionRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CRKPerformIDSFirewallActionRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKPerformIDSFirewallActionRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CRKPerformIDSFirewallActionRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRKPerformIDSFirewallActionRequest action](self, "action", v7.receiver, v7.super_class)}];
-  [v4 encodeObject:v5 forKey:@"action"];
+  [coderCopy encodeObject:v5 forKey:@"action"];
 
-  v6 = [(CRKPerformIDSFirewallActionRequest *)self allowedAppleIDs];
-  [v4 encodeObject:v6 forKey:@"allowedAppleIDs"];
+  allowedAppleIDs = [(CRKPerformIDSFirewallActionRequest *)self allowedAppleIDs];
+  [coderCopy encodeObject:allowedAppleIDs forKey:@"allowedAppleIDs"];
 }
 
-- (CRKPerformIDSFirewallActionRequest)initWithCoder:(id)a3
+- (CRKPerformIDSFirewallActionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CRKPerformIDSFirewallActionRequest;
-  v5 = [(CATTaskRequest *)&v13 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     v5->_action = [v6 integerValue];
 
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"allowedAppleIDs"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"allowedAppleIDs"];
     allowedAppleIDs = v5->_allowedAppleIDs;
     v5->_allowedAppleIDs = v10;
   }

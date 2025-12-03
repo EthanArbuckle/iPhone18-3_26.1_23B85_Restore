@@ -1,12 +1,12 @@
 @interface VTAudioRouteChangeMonitor
 + (id)sharedInstance;
-- (BOOL)_hasDoAPSupport:(__CFDictionary *)a3;
-- (BOOL)_hasInEarDetectSupport:(__CFDictionary *)a3;
-- (BOOL)_isActiveRoute:(__CFDictionary *)a3;
+- (BOOL)_hasDoAPSupport:(__CFDictionary *)support;
+- (BOOL)_hasInEarDetectSupport:(__CFDictionary *)support;
+- (BOOL)_isActiveRoute:(__CFDictionary *)route;
 - (VTAudioRouteChangeMonitor)init;
 - (id)_CMSessionDispatchQueue;
-- (void)_notifyObserver:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)updateExternalRouteConnectionStatus;
 @end
 
@@ -31,13 +31,13 @@ uint64_t __52__VTAudioRouteChangeMonitor__CMSessionDispatchQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_hasDoAPSupport:(__CFDictionary *)a3
+- (BOOL)_hasDoAPSupport:(__CFDictionary *)support
 {
   v4 = *MEMORY[0x277D27398];
   result = 0;
-  if (CFDictionaryContainsKey(a3, *MEMORY[0x277D27398]))
+  if (CFDictionaryContainsKey(support, *MEMORY[0x277D27398]))
   {
-    Value = CFDictionaryGetValue(a3, v4);
+    Value = CFDictionaryGetValue(support, v4);
     if (CFBooleanGetValue(Value))
     {
       return 1;
@@ -47,13 +47,13 @@ uint64_t __52__VTAudioRouteChangeMonitor__CMSessionDispatchQueue__block_invoke()
   return result;
 }
 
-- (BOOL)_isActiveRoute:(__CFDictionary *)a3
+- (BOOL)_isActiveRoute:(__CFDictionary *)route
 {
   v4 = *MEMORY[0x277D273B8];
   result = 0;
-  if (CFDictionaryContainsKey(a3, *MEMORY[0x277D273B8]))
+  if (CFDictionaryContainsKey(route, *MEMORY[0x277D273B8]))
   {
-    Value = CFDictionaryGetValue(a3, v4);
+    Value = CFDictionaryGetValue(route, v4);
     if (CFBooleanGetValue(Value))
     {
       return 1;
@@ -63,13 +63,13 @@ uint64_t __52__VTAudioRouteChangeMonitor__CMSessionDispatchQueue__block_invoke()
   return result;
 }
 
-- (BOOL)_hasInEarDetectSupport:(__CFDictionary *)a3
+- (BOOL)_hasInEarDetectSupport:(__CFDictionary *)support
 {
   v4 = *MEMORY[0x277D273A8];
   result = 0;
-  if (CFDictionaryContainsKey(a3, *MEMORY[0x277D273A8]))
+  if (CFDictionaryContainsKey(support, *MEMORY[0x277D273A8]))
   {
-    Value = CFDictionaryGetValue(a3, v4);
+    Value = CFDictionaryGetValue(support, v4);
     if (CFBooleanGetValue(Value))
     {
       return 1;
@@ -81,13 +81,13 @@ uint64_t __52__VTAudioRouteChangeMonitor__CMSessionDispatchQueue__block_invoke()
 
 - (void)updateExternalRouteConnectionStatus
 {
-  v3 = [(VTAudioRouteChangeMonitor *)self _CMSessionDispatchQueue];
+  _CMSessionDispatchQueue = [(VTAudioRouteChangeMonitor *)self _CMSessionDispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__VTAudioRouteChangeMonitor_updateExternalRouteConnectionStatus__block_invoke;
   block[3] = &unk_2784ECFF8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(_CMSessionDispatchQueue, block);
 }
 
 uint64_t __64__VTAudioRouteChangeMonitor_updateExternalRouteConnectionStatus__block_invoke(uint64_t a1)
@@ -112,25 +112,25 @@ uint64_t __64__VTAudioRouteChangeMonitor_updateExternalRouteConnectionStatus__bl
   return [v4 enumerateObserversInQueue:v6];
 }
 
-- (void)_notifyObserver:(id)a3
+- (void)_notifyObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(VTEventMonitor *)self notifyObserver:?];
   if (objc_opt_respondsToSelector())
   {
-    [v4 VTAudioRouteChangeMonitorDidChangeAudioRoute:self];
+    [observerCopy VTAudioRouteChangeMonitorDidChangeAudioRoute:self];
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = [(VTAudioRouteChangeMonitor *)self _CMSessionDispatchQueue];
+  _CMSessionDispatchQueue = [(VTAudioRouteChangeMonitor *)self _CMSessionDispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__VTAudioRouteChangeMonitor__startMonitoringWithQueue___block_invoke;
   block[3] = &unk_2784ECFF8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(_CMSessionDispatchQueue, block);
 }
 
 uint64_t __55__VTAudioRouteChangeMonitor__startMonitoringWithQueue___block_invoke(uint64_t a1)

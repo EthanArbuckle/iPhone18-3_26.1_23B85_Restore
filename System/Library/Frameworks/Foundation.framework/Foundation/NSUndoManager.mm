@@ -1,9 +1,9 @@
 @interface NSUndoManager
 + (void)_endTopLevelGroupings;
 + (void)initialize;
-- (BOOL)_endUndoGroupRemovingIfEmpty:(BOOL)a3;
-- (BOOL)_shouldCoalesceTypingForText:(id)a3 :(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_endUndoGroupRemovingIfEmpty:(BOOL)empty;
+- (BOOL)_shouldCoalesceTypingForText:(id)text :(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSArray)runLoopModes;
 - (NSInteger)groupingLevel;
 - (NSString)description;
@@ -15,28 +15,28 @@
 - (NSString)undoMenuTitleForUndoActionName:(NSString *)actionName;
 - (NSUndoManager)init;
 - (_NSAuxiliaryUndoManagerReference)_auxiliaryReference;
-- (id)_methodSignatureForTargetSelector:(SEL)a3;
+- (id)_methodSignatureForTargetSelector:(SEL)selector;
 - (id)_undoActionInfo;
 - (id)prepareWithInvocationTarget:(id)target;
-- (id)redoActionUserInfoValueForKey:(id)a3;
-- (id)undoActionUserInfoValueForKey:(id)a3;
-- (void)__redoCommonDoSingle:(BOOL)a3;
+- (id)redoActionUserInfoValueForKey:(id)key;
+- (id)undoActionUserInfoValueForKey:(id)key;
+- (void)__redoCommonDoSingle:(BOOL)single;
 - (void)_assertNotAuxForPerformingAction;
 - (void)_cancelAutomaticTopLevelGroupEnding;
 - (void)_commitUndoGrouping;
-- (void)_connectionTerminated:(id)a3;
+- (void)_connectionTerminated:(id)terminated;
 - (void)_endEventGroupingIfOpen;
-- (void)_forwardTargetInvocation:(id)a3;
-- (void)_linkWithAuxiliaryManager:(id)a3;
+- (void)_forwardTargetInvocation:(id)invocation;
+- (void)_linkWithAuxiliaryManager:(id)manager;
 - (void)_postCheckpointNotification;
 - (void)_prepareEventGrouping;
-- (void)_processEndOfEventNotification:(id)a3;
+- (void)_processEndOfEventNotification:(id)notification;
 - (void)_registerUndoGroupOnMainManagerIfNecessary;
-- (void)_registerUndoObject:(id)a3;
-- (void)_removeAllActionsForConnectionUUID:(id)a3;
+- (void)_registerUndoObject:(id)object;
+- (void)_removeAllActionsForConnectionUUID:(id)d;
 - (void)_rollbackUndoGrouping;
 - (void)_scheduleAutomaticTopLevelGroupEnding;
-- (void)_setGroupIdentifier:(id)a3;
+- (void)_setGroupIdentifier:(id)identifier;
 - (void)_teardownRemoteConnections;
 - (void)beginUndoGrouping;
 - (void)dealloc;
@@ -48,7 +48,7 @@
 - (void)removeAllActionsWithTarget:(id)target;
 - (void)setActionIsDiscardable:(BOOL)discardable;
 - (void)setActionName:(NSString *)actionName;
-- (void)setActionUserInfoValue:(id)a3 forKey:(id)a4;
+- (void)setActionUserInfoValue:(id)value forKey:(id)key;
 - (void)setGroupsByEvent:(BOOL)groupsByEvent;
 - (void)setRunLoopModes:(NSArray *)runLoopModes;
 - (void)undo;
@@ -59,12 +59,12 @@
 
 + (void)initialize
 {
-  if (NSUndoManager == a1)
+  if (NSUndoManager == self)
   {
-    v4 = [objc_msgSend(MEMORY[0x1E695E000] standardUserDefaults];
-    if (v4)
+    standardUserDefaults = [objc_msgSend(MEMORY[0x1E695E000] standardUserDefaults];
+    if (standardUserDefaults)
     {
-      defaultLevelsOfUndo = v4;
+      defaultLevelsOfUndo = standardUserDefaults;
     }
   }
 }
@@ -165,8 +165,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(NSMutableDictionary *)self->_remote.var0.main.auxManagers allValues];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v13 count:16];
+    allValues = [(NSMutableDictionary *)self->_remote.var0.main.auxManagers allValues];
+    v5 = [allValues countByEnumeratingWithState:&v14 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -178,7 +178,7 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           v9 = *(*(&v14 + 1) + 8 * v8);
@@ -198,7 +198,7 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v13 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v14 objects:v13 count:16];
       }
 
       while (v6);
@@ -234,7 +234,7 @@
   [(NSUndoManager *)self _delayAutomaticTermination:-1.0];
 }
 
-- (void)_connectionTerminated:(id)a3
+- (void)_connectionTerminated:(id)terminated
 {
   v10 = *MEMORY[0x1E69E9840];
   if (self->_remote.isAux)
@@ -251,14 +251,14 @@
   if (os_log_type_enabled(_MergedGlobals_115, OS_LOG_TYPE_DEBUG))
   {
     v6 = 134218242;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = a3;
+    terminatedCopy = terminated;
     _os_log_debug_impl(&dword_18075C000, v5, OS_LOG_TYPE_DEBUG, "NSUndoManager<%p> (main) connection for UUID %{public}@ to auxiliary manager terminated", &v6, 0x16u);
   }
 
-  [(NSUndoManager *)self _removeAllActionsForConnectionUUID:a3];
-  [(NSMutableDictionary *)self->_remote.var0.main.auxManagers removeObjectForKey:a3];
+  [(NSUndoManager *)self _removeAllActionsForConnectionUUID:terminated];
+  [(NSMutableDictionary *)self->_remote.var0.main.auxManagers removeObjectForKey:terminated];
   if (![(NSMutableDictionary *)self->_remote.var0.main.auxManagers count])
   {
 
@@ -304,7 +304,7 @@
       if (os_log_type_enabled(_MergedGlobals_115, OS_LOG_TYPE_DEBUG))
       {
         v8 = 134218498;
-        v9 = self;
+        selfCopy = self;
         v10 = 2112;
         v11 = v5;
         v12 = 2112;
@@ -327,7 +327,7 @@ void __82__NSUndoManager_NSRemoteUndo_Internal___registerUndoGroupOnMainManagerI
   objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:v2 reason:@"NSUndoManager (aux) failed to connect to the main manager" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v4, &v3, 1)}]);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v20 = *MEMORY[0x1E69E9840];
   if (!self->_remote.isAux)
@@ -340,7 +340,7 @@ void __82__NSUndoManager_NSRemoteUndo_Internal___registerUndoGroupOnMainManagerI
     __assert_rtn("[NSUndoManager(NSRemoteUndo_XPCListenerDelegate) listener:shouldAcceptNewConnection:]", "NSUndoManager_Remote.m", 494, "!_remote.aux.inProcessConnection");
   }
 
-  if (self->_remote.var0.aux.var0.xpc.listener != a3)
+  if (self->_remote.var0.aux.var0.xpc.listener != listener)
   {
     __assert_rtn("[NSUndoManager(NSRemoteUndo_XPCListenerDelegate) listener:shouldAcceptNewConnection:]", "NSUndoManager_Remote.m", 495, "listener == _remote.aux.xpc.listener");
   }
@@ -383,20 +383,20 @@ void __82__NSUndoManager_NSRemoteUndo_Internal___registerUndoGroupOnMainManagerI
     v15 = __86__NSUndoManager_NSRemoteUndo_XPCListenerDelegate__listener_shouldAcceptNewConnection___block_invoke;
     v16 = &unk_1E69F5580;
     objc_copyWeak(&v17, &location);
-    [a4 setInvalidationHandler:&v13];
+    [connection setInvalidationHandler:&v13];
     v9 = [NSXPCInterface interfaceWithProtocol:&unk_1EEF7E238, v13, v14, v15, v16];
     v10 = MEMORY[0x1E695DFD8];
     *&buf = objc_opt_class();
     *(&buf + 1) = objc_opt_class();
     -[NSXPCInterface setClasses:forSelector:argumentIndex:ofReply:](v9, "setClasses:forSelector:argumentIndex:ofReply:", [v10 setWithArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &buf, 2)}], sel__connectForUUID_clearStacks_lastActionDate_withReply_, 0, 1);
-    [a4 setExportedInterface:v9];
+    [connection setExportedInterface:v9];
     v11 = [[_NSUndoManagerAuxiliaryExportedObject alloc] _initWithUndoManager:self];
-    [a4 setExportedObject:v11];
+    [connection setExportedObject:v11];
 
-    [a4 setRemoteObjectInterface:{+[NSXPCInterface interfaceWithProtocol:](NSXPCInterface, "interfaceWithProtocol:", &unk_1EEF7E398)}];
-    [a4 _setQueue:MEMORY[0x1E69E96A0]];
-    [a4 activate];
-    self->_remote.var0.aux.var0.xpc.connection = a4;
+    [connection setRemoteObjectInterface:{+[NSXPCInterface interfaceWithProtocol:](NSXPCInterface, "interfaceWithProtocol:", &unk_1EEF7E398)}];
+    [connection _setQueue:MEMORY[0x1E69E96A0]];
+    [connection activate];
+    self->_remote.var0.aux.var0.xpc.connection = connection;
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
@@ -500,7 +500,7 @@ LABEL_8:
   return v7;
 }
 
-- (void)_linkWithAuxiliaryManager:(id)a3
+- (void)_linkWithAuxiliaryManager:(id)manager
 {
   v54 = *MEMORY[0x1E69E9840];
   if (self->_remote.isAux)
@@ -522,7 +522,7 @@ LABEL_54:
     __assert_rtn("[NSUndoManager(NSRemoteUndo) _linkWithAuxiliaryManager:]", "NSUndoManager_Remote.m", 564, "!_remote.isAux");
   }
 
-  v5 = [a3 _inProcessManager];
+  _inProcessManager = [manager _inProcessManager];
   auxManagers = self->_remote.var0.main.auxManagers;
   if (!auxManagers)
   {
@@ -530,14 +530,14 @@ LABEL_54:
     self->_remote.var0.main.auxManagers = auxManagers;
   }
 
-  if (v5)
+  if (_inProcessManager)
   {
     v47 = 0uLL;
     v48 = 0uLL;
     v45 = 0uLL;
     v46 = 0uLL;
-    v7 = [(NSMutableDictionary *)auxManagers allValues];
-    v8 = [v7 countByEnumeratingWithState:&v45 objects:v44 count:16];
+    allValues = [(NSMutableDictionary *)auxManagers allValues];
+    v8 = [allValues countByEnumeratingWithState:&v45 objects:v44 count:16];
     if (v8)
     {
       v9 = *v46;
@@ -547,7 +547,7 @@ LABEL_54:
         {
           if (*v46 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v11 = *(*(&v45 + 1) + 8 * i);
@@ -558,7 +558,7 @@ LABEL_54:
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v45 objects:v44 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v45 objects:v44 count:16];
       }
 
       while (v8);
@@ -571,8 +571,8 @@ LABEL_54:
     v53 = 0uLL;
     v50 = 0uLL;
     v51 = 0uLL;
-    v12 = [(NSMutableDictionary *)auxManagers allValues];
-    v13 = [v12 countByEnumeratingWithState:&v50 objects:v49 count:16];
+    allValues2 = [(NSMutableDictionary *)auxManagers allValues];
+    v13 = [allValues2 countByEnumeratingWithState:&v50 objects:v49 count:16];
     if (v13)
     {
       v14 = *v51;
@@ -582,7 +582,7 @@ LABEL_54:
         {
           if (*v51 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allValues2);
           }
 
           v16 = *(*(&v50 + 1) + 8 * j);
@@ -593,7 +593,7 @@ LABEL_54:
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v50 objects:v49 count:16];
+        v13 = [allValues2 countByEnumeratingWithState:&v50 objects:v49 count:16];
       }
 
       while (v13);
@@ -602,7 +602,7 @@ LABEL_54:
 
   [(NSUndoManager *)self _endEventGroupingIfOpen];
   v17 = objc_alloc_init(NSUUID);
-  if (v5)
+  if (_inProcessManager)
   {
     if (qword_1ED43FA20 != -1)
     {
@@ -619,7 +619,7 @@ LABEL_54:
       _os_log_debug_impl(&dword_18075C000, v18, OS_LOG_TYPE_DEBUG, "NSUndoManager<%p> (main) opening in-process connection to auxiliary undo manager with UUID %{public}@", buf, 0x16u);
     }
 
-    v19 = [[_NSUndoManagerAuxiliaryExportedObject alloc] _initWithUndoManager:v5];
+    v19 = [[_NSUndoManagerAuxiliaryExportedObject alloc] _initWithUndoManager:_inProcessManager];
     v20 = [[_NSUndoManagerMainExportedObject alloc] _initWithUndoManager:self];
     v21 = [v19 _inProcessConnectForUUID:v17 mainInterface:v20 clearStacks:-[NSUndoManager canRedo](self lastActionDate:{"canRedo"), -[NSUndoManager _newestUndoActionDate](self, "_newestUndoActionDate")}];
     [(NSMutableDictionary *)self->_remote.var0.main.auxManagers setObject:v19 forKey:v17];
@@ -688,7 +688,7 @@ LABEL_54:
       _os_log_debug_impl(&dword_18075C000, v25, OS_LOG_TYPE_DEBUG, "NSUndoManager<%p> (main) opening cross-process connection to auxiliary undo manager with UUID %{public}@", buf, 0x16u);
     }
 
-    v26 = -[NSXPCConnection initWithListenerEndpoint:]([NSXPCConnection alloc], "initWithListenerEndpoint:", [a3 _endpoint]);
+    v26 = -[NSXPCConnection initWithListenerEndpoint:]([NSXPCConnection alloc], "initWithListenerEndpoint:", [manager _endpoint]);
     objc_initWeak(&location, self);
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
@@ -711,8 +711,8 @@ LABEL_54:
     [(NSXPCConnection *)v26 activate];
     v30 = [(NSXPCConnection *)v26 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_274];
     [(NSMutableDictionary *)self->_remote.var0.main.auxManagers setObject:v26 forKey:v17];
-    v31 = [(NSUndoManager *)self canRedo];
-    v32 = [(NSUndoManager *)self _newestUndoActionDate];
+    canRedo = [(NSUndoManager *)self canRedo];
+    _newestUndoActionDate = [(NSUndoManager *)self _newestUndoActionDate];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_invoke_3;
@@ -720,7 +720,7 @@ LABEL_54:
     v34[4] = v27;
     v34[5] = v17;
     v34[6] = self;
-    [v30 _connectForUUID:v17 clearStacks:v31 lastActionDate:v32 withReply:v34];
+    [v30 _connectForUUID:v17 clearStacks:canRedo lastActionDate:_newestUndoActionDate withReply:v34];
 
     objc_destroyWeak(&v36);
     objc_destroyWeak(&location);
@@ -926,9 +926,9 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
   }
 }
 
-- (BOOL)_endUndoGroupRemovingIfEmpty:(BOOL)a3
+- (BOOL)_endUndoGroupRemovingIfEmpty:(BOOL)empty
 {
-  v3 = a3;
+  emptyCopy = empty;
   v6 = 56;
   if ((self->_flags & 0x100000000) == 0)
   {
@@ -948,7 +948,7 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
   v8 = [objc_msgSend(v7 "topUndoObject")];
   if ((self->_flags & 0x300000000) == 0)
   {
-    if (v3)
+    if (emptyCopy)
     {
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", v8), @"NSUndoManagerGroupIsEmpty"}];
     }
@@ -961,15 +961,15 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
     [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:userInfo:" object:@"NSUndoManagerWillCloseUndoGroupNotification" userInfo:self, v9];
   }
 
-  v10 = [v7 isDiscardable];
-  if ((v8 & v3) == 1)
+  isDiscardable = [v7 isDiscardable];
+  if ((v8 & emptyCopy) == 1)
   {
     [v7 popUndoObject];
   }
 
   else
   {
-    v11 = v10;
+    v11 = isDiscardable;
     if (v8 && (self->_flags & 0x300000000) == 0)
     {
       [(_NSUndoStack *)self->_redoStack removeAllObjects];
@@ -979,9 +979,9 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
     {
       if ([v7 userInfo])
       {
-        v12 = [v7 userInfo];
+        userInfo = [v7 userInfo];
         v13 = [MEMORY[0x1E695DF00] now];
-        [v12 setObject:v13 forKey:_NSUndoManagerDateUserInfoKey];
+        [userInfo setObject:v13 forKey:_NSUndoManagerDateUserInfoKey];
       }
 
       else
@@ -1097,10 +1097,10 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
   [(NSUndoManager *)self _assertNotAuxForPerformingAction];
   [(NSUndoManager *)self _postCheckpointNotification];
   self->_flags |= 0x100000000uLL;
-  v4 = [(_NSUndoStack *)self->_undoStack topUndoObject];
-  if (v4)
+  topUndoObject = [(_NSUndoStack *)self->_undoStack topUndoObject];
+  if (topUndoObject)
   {
-    if (([v4 isEndMark] & 1) == 0)
+    if (([topUndoObject isEndMark] & 1) == 0)
     {
       self->_flags &= ~0x100000000uLL;
       v7 = NSStringFromSelector(a2);
@@ -1111,7 +1111,7 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
 
     [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:" object:@"NSUndoManagerWillUndoChangeNotification", self];
     [(NSUndoManager *)self beginUndoGrouping];
-    v5 = [(_NSUndoStack *)self->_undoStack isDiscardable];
+    isDiscardable = [(_NSUndoStack *)self->_undoStack isDiscardable];
     if (!(self->_flags >> 40))
     {
       [(_NSUndoStack *)self->_redoStack setGroupIdentifier:[(_NSUndoStack *)self->_undoStack groupIdentifier]];
@@ -1120,7 +1120,7 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
         [(_NSUndoStack *)self->_redoStack setUserInfo:[(_NSUndoStack *)self->_undoStack userInfo]];
         if (!(self->_flags >> 40))
         {
-          [(_NSUndoStack *)self->_redoStack setDiscardable:v5];
+          [(_NSUndoStack *)self->_redoStack setDiscardable:isDiscardable];
         }
       }
     }
@@ -1131,7 +1131,7 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
       [(NSUndoManager *)self _endUndoGroupRemovingIfEmpty:1];
     }
 
-    if (v5)
+    if (isDiscardable)
     {
       v10 = @"NSUndoManagerGroupIsDiscardableKey";
       v11[0] = MEMORY[0x1E695E118];
@@ -1149,16 +1149,16 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
   self->_flags &= ~0x100000000uLL;
 }
 
-- (void)__redoCommonDoSingle:(BOOL)a3
+- (void)__redoCommonDoSingle:(BOOL)single
 {
   [(NSUndoManager *)self _assertNotAuxForPerformingAction];
   if ([(NSUndoManager *)self canRedo])
   {
     self->_flags |= 0x200000000uLL;
-    v5 = [(_NSUndoStack *)self->_redoStack topUndoObject];
-    if (v5)
+    topUndoObject = [(_NSUndoStack *)self->_redoStack topUndoObject];
+    if (topUndoObject)
     {
-      if (([v5 isEndMark] & 1) == 0)
+      if (([topUndoObject isEndMark] & 1) == 0)
       {
         self->_flags &= ~0x200000000uLL;
         v8 = NSStringFromSelector(a2);
@@ -1169,7 +1169,7 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
 
       [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:" object:@"NSUndoManagerWillRedoChangeNotification", self];
       [(NSUndoManager *)self beginUndoGrouping];
-      v6 = [(_NSUndoStack *)self->_redoStack isDiscardable];
+      isDiscardable = [(_NSUndoStack *)self->_redoStack isDiscardable];
       if (!(self->_flags >> 40))
       {
         [(_NSUndoStack *)self->_undoStack setGroupIdentifier:[(_NSUndoStack *)self->_redoStack groupIdentifier]];
@@ -1178,7 +1178,7 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
           [(_NSUndoStack *)self->_undoStack setUserInfo:[(_NSUndoStack *)self->_redoStack userInfo]];
           if (!(self->_flags >> 40))
           {
-            [(_NSUndoStack *)self->_undoStack setDiscardable:v6];
+            [(_NSUndoStack *)self->_undoStack setDiscardable:isDiscardable];
           }
         }
       }
@@ -1186,7 +1186,7 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
       [(_NSUndoStack *)self->_redoStack popAndInvoke];
       [(NSUndoManager *)self _postCheckpointNotification];
       [(NSUndoManager *)self endUndoGrouping];
-      if (v6)
+      if (isDiscardable)
       {
         v7 = [MEMORY[0x1E695DF20] dictionaryWithObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", 1), @"NSUndoManagerGroupIsDiscardableKey"}];
       }
@@ -1211,11 +1211,11 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
   [(_NSUndoStack *)redoStack removeAllObjectsWithTarget:target];
 }
 
-- (void)_removeAllActionsForConnectionUUID:(id)a3
+- (void)_removeAllActionsForConnectionUUID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = [(_NSUndoStack *)self->_undoStack popAllActionsForConnectionUUID:?];
-  v6 = [(_NSUndoStack *)self->_redoStack popAllActionsForConnectionUUID:a3];
+  v6 = [(_NSUndoStack *)self->_redoStack popAllActionsForConnectionUUID:d];
   v7 = 56;
   if ((self->_flags & 0x100000000) == 0)
   {
@@ -1233,13 +1233,13 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = 134218754;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
       v12 = v5;
       v13 = 2048;
       v14 = v6;
       v15 = 2114;
-      v16 = a3;
+      dCopy = d;
       _os_log_debug_impl(&dword_18075C000, v8, OS_LOG_TYPE_DEBUG, "NSUndoManager<%p> (main) removed %lu undo actions and %lu redo actions due to invalidated connection with UUID %{public}@", &v9, 0x2Au);
     }
   }
@@ -1259,7 +1259,7 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
   return self->_proxy;
 }
 
-- (id)_methodSignatureForTargetSelector:(SEL)a3
+- (id)_methodSignatureForTargetSelector:(SEL)selector
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -1270,14 +1270,14 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
     result = self->_target;
     if (result)
     {
-      return [result methodSignatureForSelector:a3];
+      return [result methodSignatureForSelector:selector];
     }
   }
 
   return result;
 }
 
-- (void)_registerUndoObject:(id)a3
+- (void)_registerUndoObject:(id)object
 {
   flags = self->_flags;
   if (flags >> 40)
@@ -1309,7 +1309,7 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
       objc_exception_throw(v10);
     }
 
-    [v7 push:a3];
+    [v7 push:object];
     if ([(NSUndoManager *)self groupsByEvent])
     {
 
@@ -1318,18 +1318,18 @@ uint64_t __57__NSUndoManager_NSRemoteUndo___linkWithAuxiliaryManager___block_inv
   }
 }
 
-- (void)_forwardTargetInvocation:(id)a3
+- (void)_forwardTargetInvocation:(id)invocation
 {
   if (!self->_target)
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %@ %p received forwarded invocation while invocation target is nil. Call prepareWithInvocationTarget: before invoking %@", @"forwardInvocation:", v6, self, NSStringFromSelector(objc_msgSend(a3, "selector"))), 0}];
+    v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %@ %p received forwarded invocation while invocation target is nil. Call prepareWithInvocationTarget: before invoking %@", @"forwardInvocation:", v6, self, NSStringFromSelector(objc_msgSend(invocation, "selector"))), 0}];
     objc_exception_throw(v7);
   }
 
-  [a3 setTarget:0];
-  -[NSUndoManager _registerUndoObject:](self, "_registerUndoObject:", [objc_allocWithZone(_NSUndoInvocation) initWithTarget:self->_target invocation:a3]);
+  [invocation setTarget:0];
+  -[NSUndoManager _registerUndoObject:](self, "_registerUndoObject:", [objc_allocWithZone(_NSUndoInvocation) initWithTarget:self->_target invocation:invocation]);
   self->_target = 0;
 }
 
@@ -1365,20 +1365,20 @@ LABEL_10:
 
 - (NSString)undoActionName
 {
-  v2 = [(_NSUndoStack *)self->_undoStack groupIdentifier];
-  if (!v2)
+  groupIdentifier = [(_NSUndoStack *)self->_undoStack groupIdentifier];
+  if (!groupIdentifier)
   {
     return &stru_1EEEFDF90;
   }
 
-  v3 = v2;
+  v3 = groupIdentifier;
   if ((_NSIsNSString() & 1) == 0)
   {
     v4 = [(NSString *)v3 copy];
     [v4 setLocale:{objc_msgSend(MEMORY[0x1E695DF58], "currentLocale")}];
-    v5 = [v4 localizeParsingMarkdown];
+    localizeParsingMarkdown = [v4 localizeParsingMarkdown];
 
-    return v5;
+    return localizeParsingMarkdown;
   }
 
   return v3;
@@ -1386,26 +1386,26 @@ LABEL_10:
 
 - (NSString)redoActionName
 {
-  v2 = [(_NSUndoStack *)self->_redoStack groupIdentifier];
-  if (!v2)
+  groupIdentifier = [(_NSUndoStack *)self->_redoStack groupIdentifier];
+  if (!groupIdentifier)
   {
     return &stru_1EEEFDF90;
   }
 
-  v3 = v2;
+  v3 = groupIdentifier;
   if ((_NSIsNSString() & 1) == 0)
   {
     v4 = [(NSString *)v3 copy];
     [v4 setLocale:{objc_msgSend(MEMORY[0x1E695DF58], "currentLocale")}];
-    v5 = [v4 localize];
+    localize = [v4 localize];
 
-    return v5;
+    return localize;
   }
 
   return v3;
 }
 
-- (void)_setGroupIdentifier:(id)a3
+- (void)_setGroupIdentifier:(id)identifier
 {
   if (!(self->_flags >> 40))
   {
@@ -1425,7 +1425,7 @@ LABEL_10:
       objc_exception_throw(v10);
     }
 
-    [v7 setGroupIdentifier:a3];
+    [v7 setGroupIdentifier:identifier];
   }
 }
 
@@ -1462,7 +1462,7 @@ LABEL_10:
   }
 }
 
-- (void)setActionUserInfoValue:(id)a3 forKey:(id)a4
+- (void)setActionUserInfoValue:(id)value forKey:(id)key
 {
   if (!(self->_flags >> 40))
   {
@@ -1484,41 +1484,41 @@ LABEL_10:
 
     if ([v9 userInfo])
     {
-      v10 = [v9 userInfo];
-      if (a3)
+      userInfo = [v9 userInfo];
+      if (value)
       {
 
-        [v10 setObject:a3 forKey:a4];
+        [userInfo setObject:value forKey:key];
       }
 
       else
       {
 
-        [v10 removeObjectForKey:a4];
+        [userInfo removeObjectForKey:key];
       }
     }
 
-    else if (a3)
+    else if (value)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a3, a4, 0}];
+      v11 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{value, key, 0}];
 
       [v9 setUserInfo:v11];
     }
   }
 }
 
-- (id)undoActionUserInfoValueForKey:(id)a3
+- (id)undoActionUserInfoValueForKey:(id)key
 {
-  v4 = [(_NSUndoStack *)self->_undoStack userInfo];
+  userInfo = [(_NSUndoStack *)self->_undoStack userInfo];
 
-  return [v4 objectForKey:a3];
+  return [userInfo objectForKey:key];
 }
 
-- (id)redoActionUserInfoValueForKey:(id)a3
+- (id)redoActionUserInfoValueForKey:(id)key
 {
-  v4 = [(_NSUndoStack *)self->_redoStack userInfo];
+  userInfo = [(_NSUndoStack *)self->_redoStack userInfo];
 
-  return [v4 objectForKey:a3];
+  return [userInfo objectForKey:key];
 }
 
 - (NSString)undoMenuItemTitle
@@ -1586,13 +1586,13 @@ LABEL_10:
   return [(_NSUndoStack *)undoStack undoActionInfo];
 }
 
-- (BOOL)_shouldCoalesceTypingForText:(id)a3 :(id)a4
+- (BOOL)_shouldCoalesceTypingForText:(id)text :(id)a4
 {
   v6 = [-[NSUndoManager _undoStack](self "_undoStack")];
   if (v6)
   {
     v7 = v6;
-    while ([v7 target] != a4 || object_getClass(v7) != _NSUndoLightInvocation || objc_msgSend(v7, "_argument") != a3)
+    while ([v7 target] != a4 || object_getClass(v7) != _NSUndoLightInvocation || objc_msgSend(v7, "_argument") != text)
     {
       LODWORD(v6) = [v7 isEndMark];
       if (!v6)
@@ -1614,7 +1614,7 @@ LABEL_10:
   return v6;
 }
 
-- (void)_processEndOfEventNotification:(id)a3
+- (void)_processEndOfEventNotification:(id)notification
 {
   flags = self->_flags;
   if ((~flags & 0x5000000000) == 0)
@@ -1629,7 +1629,7 @@ LABEL_10:
   v14 = *MEMORY[0x1E69E9840];
   if (!+[NSThread isMainThread])
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:a1 lineNumber:@"NSUndoManager.m" description:1279, @"+[NSUndoManager(NSInternal) _endTopLevelGroupings] is only safe to invoke on the main thread."];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSUndoManager.m" description:1279, @"+[NSUndoManager(NSInternal) _endTopLevelGroupings] is only safe to invoke on the main thread."];
   }
 
   os_unfair_lock_lock(&_MergedGlobals_5_2);

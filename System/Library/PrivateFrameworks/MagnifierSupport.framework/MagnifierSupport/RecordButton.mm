@@ -1,8 +1,8 @@
 @interface RecordButton
 - (BOOL)isEnabled;
 - (void)awakeFromNib;
-- (void)drawRect:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation RecordButton
@@ -17,9 +17,9 @@
   [v2 setTitle:v3 forState:{0, v4.receiver, v4.super_class}];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_257E716EC();
 }
 
@@ -30,10 +30,10 @@
   return [(RecordButton *)&v3 isEnabled];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_257E711F0(a3);
+  selfCopy = self;
+  sub_257E711F0(enabled);
 }
 
 @end

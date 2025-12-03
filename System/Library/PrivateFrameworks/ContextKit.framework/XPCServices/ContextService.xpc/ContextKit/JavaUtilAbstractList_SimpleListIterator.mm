@@ -1,5 +1,5 @@
 @interface JavaUtilAbstractList_SimpleListIterator
-- (JavaUtilAbstractList_SimpleListIterator)initWithJavaUtilAbstractList:(id)a3;
+- (JavaUtilAbstractList_SimpleListIterator)initWithJavaUtilAbstractList:(id)list;
 - (id)next;
 - (void)dealloc;
 - (void)remove;
@@ -7,12 +7,12 @@
 
 @implementation JavaUtilAbstractList_SimpleListIterator
 
-- (JavaUtilAbstractList_SimpleListIterator)initWithJavaUtilAbstractList:(id)a3
+- (JavaUtilAbstractList_SimpleListIterator)initWithJavaUtilAbstractList:(id)list
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, list);
   self->pos_ = -1;
   self->lastPosition_ = -1;
-  self->expectedModCount_ = *(a3 + 2);
+  self->expectedModCount_ = *(list + 2);
   return self;
 }
 

@@ -1,44 +1,44 @@
 @interface PKBillPaymentRingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
-- (void)_accessibilityAdjust:(BOOL)a3;
+- (void)_accessibilityAdjust:(BOOL)adjust;
 @end
 
 @implementation PKBillPaymentRingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKBillPaymentRingView" hasInstanceVariable:@"_enterCurrencyAmountView" withType:"PKEnterCurrencyAmountView"];
-  [v3 validateClass:@"PKBillPaymentRingView" hasInstanceVariable:@"_topCurvedTextLabel" withType:"PKCurvedTextLabel"];
-  [v3 validateClass:@"PKBillPaymentRingView" hasInstanceVariable:@"_bottomCurvedTextLabel" withType:"PKCurvedTextLabel"];
-  [v3 validateClass:@"PKBillPaymentRingView" hasInstanceVariable:@"_maximumPaymentAmount" withType:"d"];
-  [v3 validateClass:@"PKBillPaymentRingView" hasInstanceVariable:@"_minimumPaymentAmount" withType:"d"];
-  [v3 validateClass:@"PKBillPaymentRingView" hasInstanceMethod:@"amount" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKBillPaymentRingView" hasInstanceMethod:@"setAmount:animated:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKBillPaymentRingView" hasInstanceVariable:@"_enterCurrencyAmountView" withType:"PKEnterCurrencyAmountView"];
+  [validationsCopy validateClass:@"PKBillPaymentRingView" hasInstanceVariable:@"_topCurvedTextLabel" withType:"PKCurvedTextLabel"];
+  [validationsCopy validateClass:@"PKBillPaymentRingView" hasInstanceVariable:@"_bottomCurvedTextLabel" withType:"PKCurvedTextLabel"];
+  [validationsCopy validateClass:@"PKBillPaymentRingView" hasInstanceVariable:@"_maximumPaymentAmount" withType:"d"];
+  [validationsCopy validateClass:@"PKBillPaymentRingView" hasInstanceVariable:@"_minimumPaymentAmount" withType:"d"];
+  [validationsCopy validateClass:@"PKBillPaymentRingView" hasInstanceMethod:@"amount" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKBillPaymentRingView" hasInstanceMethod:@"setAmount:animated:" withFullSignature:{"v", "@", "B", 0}];
 }
 
 - (id)accessibilityValue
 {
   v2 = [(PKBillPaymentRingViewAccessibility *)self safeUIViewForKey:@"_enterCurrencyAmountView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
 {
   v3 = [(PKBillPaymentRingViewAccessibility *)self safeUIViewForKey:@"_topCurvedTextLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(PKBillPaymentRingViewAccessibility *)self safeUIViewForKey:@"_bottomCurvedTextLabel"];
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
 }
 
-- (void)_accessibilityAdjust:(BOOL)a3
+- (void)_accessibilityAdjust:(BOOL)adjust
 {
   objc_opt_class();
   v4 = [(PKBillPaymentRingViewAccessibility *)self safeValueForKey:@"amount"];

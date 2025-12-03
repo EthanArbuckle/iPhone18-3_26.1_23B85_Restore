@@ -9,110 +9,110 @@
 
 - (id)nms_universalStoreLookupID
 {
-  v2 = [a1 universalStore];
-  v3 = [v2 globalPlaylistID];
-  v4 = v3;
-  if (v3)
+  universalStore = [self universalStore];
+  globalPlaylistID = [universalStore globalPlaylistID];
+  v4 = globalPlaylistID;
+  if (globalPlaylistID)
   {
-    v5 = v3;
+    universalCloudLibraryID = globalPlaylistID;
   }
 
   else
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = [a1 universalStore];
-    v8 = [v6 numberWithLongLong:{objc_msgSend(v7, "adamID")}];
+    universalStore2 = [self universalStore];
+    v8 = [v6 numberWithLongLong:{objc_msgSend(universalStore2, "adamID")}];
     v9 = MPStoreItemMetadataStringNormalizeStoreIDValue();
     v10 = v9;
     if (v9)
     {
-      v5 = v9;
+      universalCloudLibraryID = v9;
     }
 
     else
     {
-      v11 = [a1 universalStore];
-      v5 = [v11 universalCloudLibraryID];
+      universalStore3 = [self universalStore];
+      universalCloudLibraryID = [universalStore3 universalCloudLibraryID];
     }
   }
 
-  return v5;
+  return universalCloudLibraryID;
 }
 
 - (id)nms_syncInfoPlaylistIdentifier
 {
-  v2 = [a1 universalStore];
-  v3 = [v2 globalPlaylistID];
+  universalStore = [self universalStore];
+  globalPlaylistID = [universalStore globalPlaylistID];
 
-  if (v3)
+  if (globalPlaylistID)
   {
-    v4 = [a1 universalStore];
-    v5 = [v4 globalPlaylistID];
+    universalStore2 = [self universalStore];
+    globalPlaylistID2 = [universalStore2 globalPlaylistID];
   }
 
   else
   {
-    v6 = [a1 personalizedStore];
-    v7 = [v6 cloudID];
+    personalizedStore = [self personalizedStore];
+    cloudID = [personalizedStore cloudID];
 
     v8 = MEMORY[0x277CCABB0];
-    if (v7)
+    if (cloudID)
     {
-      v4 = [a1 personalizedStore];
-      [v8 numberWithUnsignedLongLong:{objc_msgSend(v4, "cloudID")}];
+      universalStore2 = [self personalizedStore];
+      [v8 numberWithUnsignedLongLong:{objc_msgSend(universalStore2, "cloudID")}];
     }
 
     else
     {
-      v4 = [a1 library];
-      [v8 numberWithLongLong:{objc_msgSend(v4, "persistentID")}];
+      universalStore2 = [self library];
+      [v8 numberWithLongLong:{objc_msgSend(universalStore2, "persistentID")}];
     }
     v9 = ;
-    v5 = [v9 stringValue];
+    globalPlaylistID2 = [v9 stringValue];
   }
 
-  return v5;
+  return globalPlaylistID2;
 }
 
 - (id)nms_syncInfoAlbumIdentifier
 {
-  v2 = [a1 universalStore];
-  v3 = [v2 adamID];
+  universalStore = [self universalStore];
+  adamID = [universalStore adamID];
 
-  if (v3)
+  if (adamID)
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [a1 universalStore];
-    v6 = [v5 adamID];
+    universalStore2 = [self universalStore];
+    adamID2 = [universalStore2 adamID];
 LABEL_3:
-    v7 = [v4 numberWithLongLong:v6];
-    v8 = [v7 stringValue];
+    v7 = [v4 numberWithLongLong:adamID2];
+    stringValue = [v7 stringValue];
 
     goto LABEL_6;
   }
 
-  v9 = [a1 personalizedStore];
-  v10 = [v9 cloudAlbumID];
+  personalizedStore = [self personalizedStore];
+  cloudAlbumID = [personalizedStore cloudAlbumID];
 
-  if (!v10)
+  if (!cloudAlbumID)
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [a1 library];
-    v6 = [v5 persistentID];
+    universalStore2 = [self library];
+    adamID2 = [universalStore2 persistentID];
     goto LABEL_3;
   }
 
-  v5 = [a1 personalizedStore];
-  v8 = [v5 cloudAlbumID];
+  universalStore2 = [self personalizedStore];
+  stringValue = [universalStore2 cloudAlbumID];
 LABEL_6:
 
-  return v8;
+  return stringValue;
 }
 
 + (id)nms_identifierSetWithLibraryPersistentID:()NanoMusicSync modelKind:
 {
   v6 = a4;
-  v7 = [a1 alloc];
+  v7 = [self alloc];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__MPIdentifierSet_NanoMusicSync__nms_identifierSetWithLibraryPersistentID_modelKind___block_invoke;

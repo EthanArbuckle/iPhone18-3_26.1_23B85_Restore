@@ -1,9 +1,9 @@
 @interface BMScreenRecordingEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMScreenRecordingEvent)initWithIsStart:(BOOL)a3;
-- (BMScreenRecordingEvent)initWithProto:(id)a3;
-- (BMScreenRecordingEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMScreenRecordingEvent)initWithIsStart:(BOOL)start;
+- (BMScreenRecordingEvent)initWithProto:(id)proto;
+- (BMScreenRecordingEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)json;
@@ -13,14 +13,14 @@
 
 @implementation BMScreenRecordingEvent
 
-- (BMScreenRecordingEvent)initWithIsStart:(BOOL)a3
+- (BMScreenRecordingEvent)initWithIsStart:(BOOL)start
 {
   v5.receiver = self;
   v5.super_class = BMScreenRecordingEvent;
   result = [(BMEventBase *)&v5 init];
   if (result)
   {
-    result->_isStart = a3;
+    result->_isStart = start;
   }
 
   return result;
@@ -44,10 +44,10 @@
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -68,9 +68,9 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMScreenRecordingEvent *)self jsonDict];
+  jsonDict = [(BMScreenRecordingEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -87,19 +87,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMScreenRecordingEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMScreenRecordingEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMScreenRecordingEvent)initWithProto:(id)a3
+- (BMScreenRecordingEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -115,30 +115,30 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self = -[BMScreenRecordingEvent initWithIsStart:](self, "initWithIsStart:", [v4 isStart]);
-  v5 = self;
+  self = -[BMScreenRecordingEvent initWithIsStart:](self, "initWithIsStart:", [protoCopy isStart]);
+  selfCopy = self;
 LABEL_8:
 
-  return v5;
+  return selfCopy;
 }
 
-- (BMScreenRecordingEvent)initWithProtoData:(id)a3
+- (BMScreenRecordingEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBScreenRecordingEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBScreenRecordingEvent alloc] initWithData:dataCopy];
 
     self = [(BMScreenRecordingEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -149,14 +149,14 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     isStart = self->_isStart;
-    v6 = isStart == [v4 isStart];
+    v6 = isStart == [equalCopy isStart];
   }
 
   else

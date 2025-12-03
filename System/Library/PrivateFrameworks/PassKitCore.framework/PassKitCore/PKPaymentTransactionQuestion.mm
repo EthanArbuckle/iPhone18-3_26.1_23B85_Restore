@@ -1,29 +1,29 @@
 @interface PKPaymentTransactionQuestion
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToQuestion:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToQuestion:(id)question;
 - (NSArray)allowedAnswers;
-- (PKPaymentTransactionQuestion)initWithCoder:(id)a3;
-- (PKPaymentTransactionQuestion)initWithDictionary:(id)a3;
+- (PKPaymentTransactionQuestion)initWithCoder:(id)coder;
+- (PKPaymentTransactionQuestion)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentTransactionQuestion
 
-- (PKPaymentTransactionQuestion)initWithDictionary:(id)a3
+- (PKPaymentTransactionQuestion)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PKPaymentTransactionQuestion;
   v5 = [(PKPaymentTransactionQuestion *)&v10 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"type"];
+    v6 = [dictionaryCopy PKStringForKey:@"type"];
     v5->_type = PKPaymentTransactionQuestionTypeFromString(v6);
 
-    v7 = [v4 PKDateForKey:@"expirationDate"];
+    v7 = [dictionaryCopy PKDateForKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v7;
 
@@ -82,9 +82,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_expirationDate];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_expirationDate];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_type - v4 + 32 * v4;
   v6 = self->_answered - v5 + 32 * v5;
   v7 = self->_answeredOnThisDevice - v6 + 32 * v6;
@@ -92,32 +92,32 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionQuestion *)self isEqualToQuestion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionQuestion *)self isEqualToQuestion:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToQuestion:(id)a3
+- (BOOL)isEqualToQuestion:(id)question
 {
-  v4 = a3;
+  questionCopy = question;
   expirationDate = self->_expirationDate;
-  v6 = [v4 expirationDate];
-  v7 = v6;
+  expirationDate = [questionCopy expirationDate];
+  v7 = expirationDate;
   if (expirationDate)
   {
-    v8 = v6 == 0;
+    v8 = expirationDate == 0;
   }
 
   else
@@ -127,7 +127,7 @@
 
   if (v8)
   {
-    if (expirationDate != v6)
+    if (expirationDate != expirationDate)
     {
 LABEL_12:
       v13 = 0;
@@ -137,7 +137,7 @@ LABEL_12:
 
   else
   {
-    v9 = [(NSDate *)expirationDate isEqual:v6];
+    v9 = [(NSDate *)expirationDate isEqual:expirationDate];
     if ((v9 & 1) == 0)
     {
       goto LABEL_12;
@@ -145,19 +145,19 @@ LABEL_12:
   }
 
   type = self->_type;
-  if (type != [v4 type])
+  if (type != [questionCopy type])
   {
     goto LABEL_12;
   }
 
   answered = self->_answered;
-  if (answered != [v4 answered])
+  if (answered != [questionCopy answered])
   {
     goto LABEL_12;
   }
 
   answeredOnThisDevice = self->_answeredOnThisDevice;
-  v13 = answeredOnThisDevice == [v4 answeredOnThisDevice];
+  v13 = answeredOnThisDevice == [questionCopy answeredOnThisDevice];
 LABEL_13:
 
   return v13;
@@ -209,34 +209,34 @@ LABEL_13:
   return v4;
 }
 
-- (PKPaymentTransactionQuestion)initWithCoder:(id)a3
+- (PKPaymentTransactionQuestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPaymentTransactionQuestion;
   v5 = [(PKPaymentTransactionQuestion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v6;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_answered = [v4 decodeIntegerForKey:@"answered"] != 0;
-    v5->_answeredOnThisDevice = [v4 decodeIntegerForKey:@"answeredOnThisDevice"] != 0;
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_answered = [coderCopy decodeIntegerForKey:@"answered"] != 0;
+    v5->_answeredOnThisDevice = [coderCopy decodeIntegerForKey:@"answeredOnThisDevice"] != 0;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeInteger:self->_answered forKey:@"answered"];
-  [v5 encodeInteger:self->_answeredOnThisDevice forKey:@"answeredOnThisDevice"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeInteger:self->_answered forKey:@"answered"];
+  [coderCopy encodeInteger:self->_answeredOnThisDevice forKey:@"answeredOnThisDevice"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
 }
 
 @end

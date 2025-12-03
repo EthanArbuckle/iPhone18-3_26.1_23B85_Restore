@@ -1,9 +1,9 @@
 @interface _CNAutocompletePeopleSuggesterPredictionSearchStrategyTask
-+ (id)_fallbackIdentifierByAssemblingDistinctValuesFromGroupResultSuggestion:(id)a3;
-+ (id)_identifierForGroupResultSuggestion:(id)a3;
-+ (int64_t)_addressTypeFromHandle:(id)a3;
-- (_CNAutocompletePeopleSuggesterPredictionSearchStrategyTask)initWithRequest:(id)a3 contactStore:(id)a4;
-- (id)run:(id *)a3;
++ (id)_fallbackIdentifierByAssemblingDistinctValuesFromGroupResultSuggestion:(id)suggestion;
++ (id)_identifierForGroupResultSuggestion:(id)suggestion;
++ (int64_t)_addressTypeFromHandle:(id)handle;
+- (_CNAutocompletePeopleSuggesterPredictionSearchStrategyTask)initWithRequest:(id)request contactStore:(id)store;
+- (id)run:(id *)run;
 - (void)convertResults;
 - (void)prepareQuery;
 - (void)runQuery;
@@ -18,36 +18,36 @@
   context = self->_context;
   self->_context = v3;
 
-  v5 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v6 = [v5 mainBundleIdentifier];
-  [(_PSPredictionContext *)self->_context setBundleID:v6];
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  mainBundleIdentifier = [currentEnvironment mainBundleIdentifier];
+  [(_PSPredictionContext *)self->_context setBundleID:mainBundleIdentifier];
 
-  v7 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
-  v8 = [v7 sendingAddressAccountIdentifier];
-  [(_PSPredictionContext *)self->_context setAccountIdentifier:v8];
+  fetchContext = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
+  sendingAddressAccountIdentifier = [fetchContext sendingAddressAccountIdentifier];
+  [(_PSPredictionContext *)self->_context setAccountIdentifier:sendingAddressAccountIdentifier];
 
-  v9 = [(CNAutocompleteFetchRequest *)self->_request searchString];
-  [(_PSPredictionContext *)self->_context setSearchPrefix:v9];
+  searchString = [(CNAutocompleteFetchRequest *)self->_request searchString];
+  [(_PSPredictionContext *)self->_context setSearchPrefix:searchString];
 
-  v10 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
-  v11 = [v10 otherAddressesAlreadyChosen];
-  [(_PSPredictionContext *)self->_context setSeedRecipients:v11];
+  fetchContext2 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
+  otherAddressesAlreadyChosen = [fetchContext2 otherAddressesAlreadyChosen];
+  [(_PSPredictionContext *)self->_context setSeedRecipients:otherAddressesAlreadyChosen];
 
-  v12 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
-  v13 = [v12 locationUUID];
+  fetchContext3 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
+  locationUUID = [fetchContext3 locationUUID];
 
-  if (v13)
+  if (locationUUID)
   {
-    v14 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
-    v15 = [v14 locationUUID];
-    v20[0] = v15;
+    fetchContext4 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
+    locationUUID2 = [fetchContext4 locationUUID];
+    v20[0] = locationUUID2;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     [(_PSPredictionContext *)self->_context setLocationUUIDs:v16];
   }
 
-  v17 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
-  v18 = [v17 date];
-  [(_PSPredictionContext *)self->_context setSuggestionDate:v18];
+  fetchContext5 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
+  date = [fetchContext5 date];
+  [(_PSPredictionContext *)self->_context setSuggestionDate:date];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -65,9 +65,9 @@
     _os_signpost_emit_with_name_impl(&dword_2155FE000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "Searching PeopleSuggester", "", buf, 2u);
   }
 
-  v7 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v8 = [v7 peopleSuggester];
-  v9 = [v8 autocompleteSearchResultsWithPredictionContext:self->_context];
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  peopleSuggester = [currentEnvironment peopleSuggester];
+  v9 = [peopleSuggester autocompleteSearchResultsWithPredictionContext:self->_context];
   psResults = self->_psResults;
   self->_psResults = v9;
 
@@ -82,17 +82,17 @@
 
 - (void)convertResults
 {
-  v3 = [(CNAutocompleteFetchRequest *)self->_request priorityDomainForSorting];
-  v4 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
-  v5 = [v4 sendingAddress];
-  v6 = [CNAutocompleteResultFactory factoryWithPriorityDomain:v3 sendingAddress:v5];
+  priorityDomainForSorting = [(CNAutocompleteFetchRequest *)self->_request priorityDomainForSorting];
+  fetchContext = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
+  sendingAddress = [fetchContext sendingAddress];
+  v6 = [CNAutocompleteResultFactory factoryWithPriorityDomain:priorityDomainForSorting sendingAddress:sendingAddress];
 
   v7 = objc_opt_new();
-  v8 = [(CNAutocompleteFetchRequest *)self->_request searchString];
-  if (v8)
+  searchString = [(CNAutocompleteFetchRequest *)self->_request searchString];
+  if (searchString)
   {
-    v9 = [(CNAutocompleteFetchRequest *)self->_request searchString];
-    v10 = [v9 length] == 0;
+    searchString2 = [(CNAutocompleteFetchRequest *)self->_request searchString];
+    v10 = [searchString2 length] == 0;
   }
 
   else
@@ -100,7 +100,7 @@
     v10 = 1;
   }
 
-  v11 = [(_PSPredictionContext *)self->_context bundleID];
+  bundleID = [(_PSPredictionContext *)self->_context bundleID];
   psResults = self->_psResults;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -110,8 +110,8 @@
   v19 = v7;
   v22 = v10;
   v20 = v6;
-  v21 = v11;
-  v13 = v11;
+  v21 = bundleID;
+  v13 = bundleID;
   v14 = v6;
   v15 = v7;
   v16 = [(NSArray *)psResults _cn_compactMap:v18];
@@ -119,25 +119,25 @@
   self->_results = v16;
 }
 
-- (_CNAutocompletePeopleSuggesterPredictionSearchStrategyTask)initWithRequest:(id)a3 contactStore:(id)a4
+- (_CNAutocompletePeopleSuggesterPredictionSearchStrategyTask)initWithRequest:(id)request contactStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = _CNAutocompletePeopleSuggesterPredictionSearchStrategyTask;
   v9 = [(CNTask *)&v13 initWithName:@"com.apple.contacts.autocomplete.prediction-search.ps"];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_contactStore, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_contactStore, store);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (id)run:(id *)a3
+- (id)run:(id *)run
 {
   [(_CNAutocompletePeopleSuggesterPredictionSearchStrategyTask *)self prepareQuery];
   [(_CNAutocompletePeopleSuggesterPredictionSearchStrategyTask *)self runQuery];
@@ -147,12 +147,12 @@
   return results;
 }
 
-+ (int64_t)_addressTypeFromHandle:(id)a3
++ (int64_t)_addressTypeFromHandle:(id)handle
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 length])
+  handleCopy = handle;
+  v4 = handleCopy;
+  if (!handleCopy || ![handleCopy length])
   {
     v7 = CNALoggingContextDebug();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -171,13 +171,13 @@ LABEL_7:
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   v7 = [v5 classificationOfHandleStrings:v6];
 
-  v8 = [v7 phoneNumbers];
-  v9 = [v8 count];
+  phoneNumbers = [v7 phoneNumbers];
+  v9 = [phoneNumbers count];
 
   if (!v9)
   {
-    v13 = [v7 emailAddresses];
-    v14 = [v13 count];
+    emailAddresses = [v7 emailAddresses];
+    v14 = [emailAddresses count];
 
     if (v14)
     {
@@ -203,37 +203,37 @@ LABEL_8:
   return v10;
 }
 
-+ (id)_identifierForGroupResultSuggestion:(id)a3
++ (id)_identifierForGroupResultSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 conversationIdentifier];
+  suggestionCopy = suggestion;
+  conversationIdentifier = [suggestionCopy conversationIdentifier];
   if ((*(*MEMORY[0x277CFBD30] + 16))())
   {
 
-    v5 = [a1 _fallbackIdentifierByAssemblingDistinctValuesFromGroupResultSuggestion:v4];
+    conversationIdentifier = [self _fallbackIdentifierByAssemblingDistinctValuesFromGroupResultSuggestion:suggestionCopy];
   }
 
-  return v5;
+  return conversationIdentifier;
 }
 
-+ (id)_fallbackIdentifierByAssemblingDistinctValuesFromGroupResultSuggestion:(id)a3
++ (id)_fallbackIdentifierByAssemblingDistinctValuesFromGroupResultSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [v3 groupName];
-  v6 = [v5 length];
+  suggestionCopy = suggestion;
+  array = [MEMORY[0x277CBEB18] array];
+  groupName = [suggestionCopy groupName];
+  v6 = [groupName length];
 
   if (v6)
   {
-    v7 = [v3 groupName];
-    [v4 addObject:v7];
+    groupName2 = [suggestionCopy groupName];
+    [array addObject:groupName2];
   }
 
-  v8 = [v3 recipients];
-  v9 = [v8 _cn_compactMap:&__block_literal_global_26];
+  recipients = [suggestionCopy recipients];
+  v9 = [recipients _cn_compactMap:&__block_literal_global_26];
 
-  [v4 addObjectsFromArray:v9];
-  v10 = [v4 sortedArrayUsingSelector:sel_compare_];
+  [array addObjectsFromArray:v9];
+  v10 = [array sortedArrayUsingSelector:sel_compare_];
   v11 = [v10 componentsJoinedByString:&stru_282787720];
 
   return v11;

@@ -1,6 +1,6 @@
 @interface MTRMediaInputClusterInputInfoStruct
 - (MTRMediaInputClusterInputInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMediaInputClusterInputInfoStruct);
-  v5 = [(MTRMediaInputClusterInputInfoStruct *)self index];
-  [(MTRMediaInputClusterInputInfoStruct *)v4 setIndex:v5];
+  index = [(MTRMediaInputClusterInputInfoStruct *)self index];
+  [(MTRMediaInputClusterInputInfoStruct *)v4 setIndex:index];
 
-  v6 = [(MTRMediaInputClusterInputInfoStruct *)self inputType];
-  [(MTRMediaInputClusterInputInfoStruct *)v4 setInputType:v6];
+  inputType = [(MTRMediaInputClusterInputInfoStruct *)self inputType];
+  [(MTRMediaInputClusterInputInfoStruct *)v4 setInputType:inputType];
 
-  v7 = [(MTRMediaInputClusterInputInfoStruct *)self name];
-  [(MTRMediaInputClusterInputInfoStruct *)v4 setName:v7];
+  name = [(MTRMediaInputClusterInputInfoStruct *)self name];
+  [(MTRMediaInputClusterInputInfoStruct *)v4 setName:name];
 
-  v8 = [(MTRMediaInputClusterInputInfoStruct *)self descriptionString];
-  [(MTRMediaInputClusterInputInfoStruct *)v4 setDescriptionString:v8];
+  descriptionString = [(MTRMediaInputClusterInputInfoStruct *)self descriptionString];
+  [(MTRMediaInputClusterInputInfoStruct *)v4 setDescriptionString:descriptionString];
 
   return v4;
 }

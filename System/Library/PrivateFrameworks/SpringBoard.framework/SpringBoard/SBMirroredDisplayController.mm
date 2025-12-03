@@ -1,30 +1,30 @@
 @interface SBMirroredDisplayController
 - (NSString)description;
-- (SBMirroredDisplayController)initWithExternalDisplayDefaults:(id)a3;
+- (SBMirroredDisplayController)initWithExternalDisplayDefaults:(id)defaults;
 - (void)_ensureCADisplayModeForMirroring;
 - (void)_updateDisplayAssertion;
-- (void)_updateIdleSleepReason:(id)a3;
-- (void)connectToDisplayIdentity:(id)a3 configuration:(id)a4 displayManager:(id)a5 sceneManager:(id)a6 caDisplayQueue:(id)a7 assertion:(id)a8 embeddedBacklightOn:(BOOL)a9;
+- (void)_updateIdleSleepReason:(id)reason;
+- (void)connectToDisplayIdentity:(id)identity configuration:(id)configuration displayManager:(id)manager sceneManager:(id)sceneManager caDisplayQueue:(id)queue assertion:(id)assertion embeddedBacklightOn:(BOOL)on;
 - (void)dealloc;
-- (void)displayAssertion:(id)a3 didLoseControlOfDisplayForDeactivationReasons:(unint64_t)a4;
-- (void)displayAssertionDidGainControlOfDisplay:(id)a3;
-- (void)displayIdentityDidUpdate:(id)a3 configuration:(id)a4;
-- (void)embeddedBacklightStateDidChange:(BOOL)a3 source:(int64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)displayAssertion:(id)assertion didLoseControlOfDisplayForDeactivationReasons:(unint64_t)reasons;
+- (void)displayAssertionDidGainControlOfDisplay:(id)display;
+- (void)displayIdentityDidUpdate:(id)update configuration:(id)configuration;
+- (void)embeddedBacklightStateDidChange:(BOOL)change source:(int64_t)source;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SBMirroredDisplayController
 
-- (SBMirroredDisplayController)initWithExternalDisplayDefaults:(id)a3
+- (SBMirroredDisplayController)initWithExternalDisplayDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v14.receiver = self;
   v14.super_class = SBMirroredDisplayController;
   v6 = [(SBMirroredDisplayController *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_externalDisplayDefaults, a3);
+    objc_storeStrong(&v6->_externalDisplayDefaults, defaults);
     objc_initWeak(&location, v7);
     v8 = MEMORY[0x277D85CD0];
     objc_copyWeak(&v12, &location);
@@ -73,13 +73,13 @@ id __63__SBMirroredDisplayController_initWithExternalDisplayDefaults___block_inv
   v10 = __42__SBMirroredDisplayController_description__block_invoke;
   v11 = &unk_2783A92D8;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   [v5 appendBodySectionWithName:v4 multilinePrefix:0 block:&v8];
 
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 void __42__SBMirroredDisplayController_description__block_invoke(uint64_t a1)
@@ -171,49 +171,49 @@ id __42__SBMirroredDisplayController_description__block_invoke_3(uint64_t a1)
   return [*(a1 + 32) appendUInt64:objc_msgSend(*(*(a1 + 40) + 72) withName:{"seed"), @"seed"}];
 }
 
-- (void)connectToDisplayIdentity:(id)a3 configuration:(id)a4 displayManager:(id)a5 sceneManager:(id)a6 caDisplayQueue:(id)a7 assertion:(id)a8 embeddedBacklightOn:(BOOL)a9
+- (void)connectToDisplayIdentity:(id)identity configuration:(id)configuration displayManager:(id)manager sceneManager:(id)sceneManager caDisplayQueue:(id)queue assertion:(id)assertion embeddedBacklightOn:(BOOL)on
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  identityCopy = identity;
+  configurationCopy = configuration;
+  queueCopy = queue;
+  assertionCopy = assertion;
   displayIdentity = self->_displayIdentity;
-  self->_displayIdentity = v14;
-  v19 = v14;
-  v20 = a5;
+  self->_displayIdentity = identityCopy;
+  v19 = identityCopy;
+  managerCopy = manager;
 
   currentConfiguration = self->_currentConfiguration;
-  self->_currentConfiguration = v15;
-  v22 = v15;
+  self->_currentConfiguration = configurationCopy;
+  v22 = configurationCopy;
 
-  v23 = [(FBSDisplayConfiguration *)self->_currentConfiguration CADisplay];
+  cADisplay = [(FBSDisplayConfiguration *)self->_currentConfiguration CADisplay];
   caDisplay = self->_caDisplay;
-  self->_caDisplay = v23;
+  self->_caDisplay = cADisplay;
 
   displayAssertion = self->_displayAssertion;
-  self->_displayAssertion = v17;
-  v26 = v17;
+  self->_displayAssertion = assertionCopy;
+  v26 = assertionCopy;
 
-  v27 = [(FBSDisplayIdentity *)v19 rootIdentity];
-  v28 = [v20 layoutPublisherForDisplay:v27];
+  rootIdentity = [(FBSDisplayIdentity *)v19 rootIdentity];
+  v28 = [managerCopy layoutPublisherForDisplay:rootIdentity];
 
   layoutPublisher = self->_layoutPublisher;
   self->_layoutPublisher = v28;
 
-  self->_embeddedBacklightOn = a9;
+  self->_embeddedBacklightOn = on;
   displayMutationQueue = self->_displayMutationQueue;
-  self->_displayMutationQueue = v16;
+  self->_displayMutationQueue = queueCopy;
 
   [(SBMirroredDisplayController *)self _updateIdleSleepReason:@"SBMirroredDisplayDisableIdleSleep"];
 }
 
-- (void)displayIdentityDidUpdate:(id)a3 configuration:(id)a4
+- (void)displayIdentityDidUpdate:(id)update configuration:(id)configuration
 {
   p_currentConfiguration = &self->_currentConfiguration;
-  v12 = a4;
+  configurationCopy = configuration;
   if (([(FBSDisplayConfiguration *)*p_currentConfiguration isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_currentConfiguration, a4);
+    objc_storeStrong(&self->_currentConfiguration, configuration);
     if ([(SBDisplayAssertion *)self->_displayAssertion hasControlOfDisplay])
     {
       layoutPublisher = self->_layoutPublisher;
@@ -244,16 +244,16 @@ id __42__SBMirroredDisplayController_description__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)embeddedBacklightStateDidChange:(BOOL)a3 source:(int64_t)a4
+- (void)embeddedBacklightStateDidChange:(BOOL)change source:(int64_t)source
 {
-  if (self->_embeddedBacklightOn != a3)
+  if (self->_embeddedBacklightOn != change)
   {
-    self->_embeddedBacklightOn = a3;
+    self->_embeddedBacklightOn = change;
     [(SBMirroredDisplayController *)self _updateDisplayAssertion];
   }
 }
 
-- (void)displayAssertionDidGainControlOfDisplay:(id)a3
+- (void)displayAssertionDidGainControlOfDisplay:(id)display
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -275,7 +275,7 @@ id __42__SBMirroredDisplayController_description__block_invoke_3(uint64_t a1)
   v15 = &unk_2783AB280;
   v16 = v7;
   v17 = v8;
-  v18 = self;
+  selfCopy = self;
   v19 = a2;
   v10 = v8;
   v11 = v7;
@@ -305,7 +305,7 @@ uint64_t __71__SBMirroredDisplayController_displayAssertionDidGainControlOfDispl
   return result;
 }
 
-- (void)displayAssertion:(id)a3 didLoseControlOfDisplayForDeactivationReasons:(unint64_t)a4
+- (void)displayAssertion:(id)assertion didLoseControlOfDisplayForDeactivationReasons:(unint64_t)reasons
 {
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -318,7 +318,7 @@ uint64_t __71__SBMirroredDisplayController_displayAssertionDidGainControlOfDispl
   [(BSAtomicSignal *)lostControlOfDisplaySignal signal];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -352,9 +352,9 @@ uint64_t __78__SBMirroredDisplayController_observeValueForKeyPath_ofObject_chang
 
 - (void)_ensureCADisplayModeForMirroring
 {
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBMirroredDisplayController _ensureCADisplayModeForMirroring]"];
-  [v1 handleFailureInFunction:v0 file:@"SBMirroredDisplayController.m" lineNumber:190 description:@"this call must be made on the main thread"];
+  [currentHandler handleFailureInFunction:v0 file:@"SBMirroredDisplayController.m" lineNumber:190 description:@"this call must be made on the main thread"];
 }
 
 void __63__SBMirroredDisplayController__ensureCADisplayModeForMirroring__block_invoke(uint64_t a1)
@@ -415,12 +415,12 @@ uint64_t __63__SBMirroredDisplayController__ensureCADisplayModeForMirroring__blo
   return [*(a1 + 32) _updateDisplayAssertion];
 }
 
-- (void)_updateIdleSleepReason:(id)a3
+- (void)_updateIdleSleepReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   if (![(NSString *)self->_idleSleepReason isEqualToString:?])
   {
-    objc_storeStrong(&self->_idleSleepReason, a3);
+    objc_storeStrong(&self->_idleSleepReason, reason);
     [(SBMirroredDisplayController *)self _updateDisplayAssertion];
   }
 }

@@ -3,9 +3,9 @@
 - (BOOL)authorized;
 - (CLLocation)cachedCurrentLocation;
 - (CLLocation)currentLocation;
-- (DBLocationManager)initWithBundleIdentifier:(id)a3;
-- (DBLocationManager)initWithBundlePath:(id)a3;
-- (DBLocationManager)initWithLocationManager:(id)a3 locationQueue:(id)a4;
+- (DBLocationManager)initWithBundleIdentifier:(id)identifier;
+- (DBLocationManager)initWithBundlePath:(id)path;
+- (DBLocationManager)initWithLocationManager:(id)manager locationQueue:(id)queue;
 - (NSString)description;
 - (id)_name;
 - (id)_queue_cachedCurrentLocation;
@@ -13,22 +13,22 @@
 - (void)_authorizeIfNeeded;
 - (void)_commonInit;
 - (void)_commonPostInit;
-- (void)_queue_didEnterRegionWithIdentifier:(id)a3;
-- (void)_queue_didExitRegionWithIDentifier:(id)a3;
+- (void)_queue_didEnterRegionWithIdentifier:(id)identifier;
+- (void)_queue_didExitRegionWithIDentifier:(id)dentifier;
 - (void)_queue_startUpdatingLocationNow;
 - (void)_queue_stopUpdatingLocationNow;
-- (void)_queue_updateCurrentLocation:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_queue_updateCurrentLocation:(id)location;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)startMonitoringForRegionWithIdentifier:(id)a3 locationCoordinate:(CLLocationCoordinate2D)a4 range:(double)a5;
-- (void)startUpdatingLocationWithIdentifier:(id)a3;
-- (void)stopMonitoringForRegionWithIdentifier:(id)a3;
-- (void)stopUpdatingLocationWithIdentifier:(id)a3;
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)removeObserver:(id)observer;
+- (void)startMonitoringForRegionWithIdentifier:(id)identifier locationCoordinate:(CLLocationCoordinate2D)coordinate range:(double)range;
+- (void)startUpdatingLocationWithIdentifier:(id)identifier;
+- (void)stopMonitoringForRegionWithIdentifier:(id)identifier;
+- (void)stopUpdatingLocationWithIdentifier:(id)identifier;
 @end
 
 @implementation DBLocationManager
@@ -41,14 +41,14 @@
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v3 = [(DBLocationManager *)self locationQueue];
+  locationQueue = [(DBLocationManager *)self locationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__DBLocationManager_currentLocation__block_invoke;
   v6[3] = &unk_278F02AA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(locationQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -69,19 +69,19 @@
   return v3;
 }
 
-- (DBLocationManager)initWithLocationManager:(id)a3 locationQueue:(id)a4
+- (DBLocationManager)initWithLocationManager:(id)manager locationQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = DBLocationManager;
   v9 = [(DBLocationManager *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locationQueue, a4);
+    objc_storeStrong(&v9->_locationQueue, queue);
     [(DBLocationManager *)v10 _commonInit];
-    objc_storeStrong(&v10->_locationManager, a3);
+    objc_storeStrong(&v10->_locationManager, manager);
     [(DBLocationManager *)v10 _commonPostInit];
     v11 = v10;
   }
@@ -89,18 +89,18 @@
   return v10;
 }
 
-- (DBLocationManager)initWithBundlePath:(id)a3
+- (DBLocationManager)initWithBundlePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = DBLocationManager;
   v6 = [(DBLocationManager *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundlePath, a3);
+    objc_storeStrong(&v6->_bundlePath, path);
     v8 = MEMORY[0x24C1CC8A0]([(DBLocationManager *)v7 _commonInit]);
-    v9 = [v8 stringByAppendingPathComponent:v5];
+    v9 = [v8 stringByAppendingPathComponent:pathCopy];
 
     v10 = objc_alloc(MEMORY[0x277CCA8D8]);
     v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
@@ -136,16 +136,16 @@ void __40__DBLocationManager_initWithBundlePath___block_invoke(uint64_t a1)
   [WeakRetained _commonPostInit];
 }
 
-- (DBLocationManager)initWithBundleIdentifier:(id)a3
+- (DBLocationManager)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = DBLocationManager;
   v6 = [(DBLocationManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
     [(DBLocationManager *)v7 _commonInit];
     objc_initWeak(&location, v7);
     locationQueue = v7->_locationQueue;
@@ -188,10 +188,10 @@ void __46__DBLocationManager_initWithBundleIdentifier___block_invoke(uint64_t a1
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(DBLocationManager *)self locationManager];
-  v5 = [v4 monitoredRegions];
+  locationManager = [(DBLocationManager *)self locationManager];
+  monitoredRegions = [locationManager monitoredRegions];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [monitoredRegions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -203,25 +203,25 @@ void __46__DBLocationManager_initWithBundleIdentifier___block_invoke(uint64_t a1
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(monitoredRegions);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(DBLocationManager *)self locationManager];
-        [v11 stopMonitoringForRegion:v10];
+        locationManager2 = [(DBLocationManager *)self locationManager];
+        [locationManager2 stopMonitoringForRegion:v10];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [monitoredRegions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [(DBLocationManager *)self locationManager];
-  [v12 stopUpdatingLocation];
+  locationManager3 = [(DBLocationManager *)self locationManager];
+  [locationManager3 stopUpdatingLocation];
 
   v13.receiver = self;
   v13.super_class = DBLocationManager;
@@ -236,8 +236,8 @@ void __46__DBLocationManager_initWithBundleIdentifier___block_invoke(uint64_t a1
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(DBLocationManager *)self activeAssertions];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  activeAssertions = [(DBLocationManager *)self activeAssertions];
+  v5 = [activeAssertions countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -248,14 +248,14 @@ void __46__DBLocationManager_initWithBundleIdentifier___block_invoke(uint64_t a1
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeAssertions);
         }
 
         v9 = [*(*(&v22 + 1) + 8 * i) description];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v6 = [activeAssertions countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v6);
@@ -264,7 +264,7 @@ void __46__DBLocationManager_initWithBundleIdentifier___block_invoke(uint64_t a1
   v21 = MEMORY[0x277CCACA8];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [(DBLocationManager *)self _name];
+  _name = [(DBLocationManager *)self _name];
   if ([(DBLocationManager *)self authorized])
   {
     v13 = @"YES";
@@ -285,45 +285,45 @@ void __46__DBLocationManager_initWithBundleIdentifier___block_invoke(uint64_t a1
     v14 = @"NO";
   }
 
-  v15 = [(DBLocationManager *)self monitoringRegions];
-  v16 = [v15 allKeys];
-  v17 = [v16 componentsJoinedByString:{@", "}];
+  monitoringRegions = [(DBLocationManager *)self monitoringRegions];
+  allKeys = [monitoringRegions allKeys];
+  v17 = [allKeys componentsJoinedByString:{@", "}];
   v18 = [v3 componentsJoinedByString:{@", "}];
-  v19 = [v21 stringWithFormat:@"<%@: %p %@ authorized=%@ active=%@ regions=[%@] assertions=[%@]>", v11, self, v12, v13, v14, v17, v18];
+  v19 = [v21 stringWithFormat:@"<%@: %p %@ authorized=%@ active=%@ regions=[%@] assertions=[%@]>", v11, self, _name, v13, v14, v17, v18];
 
   return v19;
 }
 
 - (BOOL)authorized
 {
-  v3 = [(DBLocationManager *)self bundleIdentifier];
+  bundleIdentifier = [(DBLocationManager *)self bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
     v4 = MEMORY[0x277CBFC10];
-    v5 = [(DBLocationManager *)self bundleIdentifier];
-    v6 = [v4 authorizationStatusForBundleIdentifier:v5];
+    bundleIdentifier2 = [(DBLocationManager *)self bundleIdentifier];
+    authorizationStatus = [v4 authorizationStatusForBundleIdentifier:bundleIdentifier2];
   }
 
   else
   {
-    v7 = [(DBLocationManager *)self bundlePath];
+    bundlePath = [(DBLocationManager *)self bundlePath];
 
-    if (v7)
+    if (bundlePath)
     {
       v8 = MEMORY[0x277CBFC10];
-      v5 = [(DBLocationManager *)self bundle];
-      v6 = [v8 authorizationStatusForBundle:v5];
+      bundleIdentifier2 = [(DBLocationManager *)self bundle];
+      authorizationStatus = [v8 authorizationStatusForBundle:bundleIdentifier2];
     }
 
     else
     {
-      v5 = [(DBLocationManager *)self locationManager];
-      v6 = [v5 authorizationStatus];
+      bundleIdentifier2 = [(DBLocationManager *)self locationManager];
+      authorizationStatus = [bundleIdentifier2 authorizationStatus];
     }
   }
 
-  v9 = v6;
+  v9 = authorizationStatus;
 
   return (v9 - 3) < 2;
 }
@@ -343,14 +343,14 @@ uint64_t __36__DBLocationManager_currentLocation__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v3 = [(DBLocationManager *)self locationQueue];
+  locationQueue = [(DBLocationManager *)self locationQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__DBLocationManager_cachedCurrentLocation__block_invoke;
   v6[3] = &unk_278F02AA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(locationQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -368,18 +368,18 @@ uint64_t __42__DBLocationManager_cachedCurrentLocation__block_invoke(uint64_t a1
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)startUpdatingLocationWithIdentifier:(id)a3
+- (void)startUpdatingLocationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBLocationManager *)self locationQueue];
+  identifierCopy = identifier;
+  locationQueue = [(DBLocationManager *)self locationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__DBLocationManager_startUpdatingLocationWithIdentifier___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(locationQueue, v7);
 }
 
 void __57__DBLocationManager_startUpdatingLocationWithIdentifier___block_invoke(uint64_t a1)
@@ -415,18 +415,18 @@ void __57__DBLocationManager_startUpdatingLocationWithIdentifier___block_invoke(
   }
 }
 
-- (void)stopUpdatingLocationWithIdentifier:(id)a3
+- (void)stopUpdatingLocationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBLocationManager *)self locationQueue];
+  identifierCopy = identifier;
+  locationQueue = [(DBLocationManager *)self locationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__DBLocationManager_stopUpdatingLocationWithIdentifier___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(locationQueue, v7);
 }
 
 void __56__DBLocationManager_stopUpdatingLocationWithIdentifier___block_invoke(uint64_t a1)
@@ -467,13 +467,13 @@ void __56__DBLocationManager_stopUpdatingLocationWithIdentifier___block_invoke(u
   }
 }
 
-- (void)startMonitoringForRegionWithIdentifier:(id)a3 locationCoordinate:(CLLocationCoordinate2D)a4 range:(double)a5
+- (void)startMonitoringForRegionWithIdentifier:(id)identifier locationCoordinate:(CLLocationCoordinate2D)coordinate range:(double)range
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v9 = a3;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  identifierCopy = identifier;
   [(DBLocationManager *)self _authorizeIfNeeded];
-  v10 = [(DBLocationManager *)self locationQueue];
+  locationQueue = [(DBLocationManager *)self locationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__DBLocationManager_startMonitoringForRegionWithIdentifier_locationCoordinate_range___block_invoke;
@@ -481,10 +481,10 @@ void __56__DBLocationManager_stopUpdatingLocationWithIdentifier___block_invoke(u
   v14 = latitude;
   v15 = longitude;
   block[4] = self;
-  v13 = v9;
-  v16 = a5;
-  v11 = v9;
-  dispatch_async(v10, block);
+  v13 = identifierCopy;
+  rangeCopy = range;
+  v11 = identifierCopy;
+  dispatch_async(locationQueue, block);
 }
 
 void __85__DBLocationManager_startMonitoringForRegionWithIdentifier_locationCoordinate_range___block_invoke(uint64_t a1)
@@ -525,18 +525,18 @@ void __85__DBLocationManager_startMonitoringForRegionWithIdentifier_locationCoor
   }
 }
 
-- (void)stopMonitoringForRegionWithIdentifier:(id)a3
+- (void)stopMonitoringForRegionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBLocationManager *)self locationQueue];
+  identifierCopy = identifier;
+  locationQueue = [(DBLocationManager *)self locationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__DBLocationManager_stopMonitoringForRegionWithIdentifier___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(locationQueue, v7);
 }
 
 void __59__DBLocationManager_stopMonitoringForRegionWithIdentifier___block_invoke(uint64_t a1)
@@ -563,18 +563,18 @@ void __59__DBLocationManager_stopMonitoringForRegionWithIdentifier___block_invok
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBLocationManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(DBLocationManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBLocationManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(DBLocationManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
 - (void)_commonInit
@@ -609,28 +609,28 @@ void __59__DBLocationManager_stopMonitoringForRegionWithIdentifier___block_invok
 
 - (void)_commonPostInit
 {
-  v3 = [(DBLocationManager *)self locationManager];
-  [v3 setDelegate:self];
+  locationManager = [(DBLocationManager *)self locationManager];
+  [locationManager setDelegate:self];
 
   v4 = *MEMORY[0x277CE4210];
-  v5 = [(DBLocationManager *)self locationManager];
-  [v5 setDistanceFilter:v4];
+  locationManager2 = [(DBLocationManager *)self locationManager];
+  [locationManager2 setDistanceFilter:v4];
 
-  v6 = [(DBLocationManager *)self locationManager];
-  [v6 setDesiredAccuracy:v4];
+  locationManager3 = [(DBLocationManager *)self locationManager];
+  [locationManager3 setDesiredAccuracy:v4];
 
   [(DBLocationManager *)self _authorizeIfNeeded];
 }
 
 - (void)_authorizeIfNeeded
 {
-  v3 = [(DBLocationManager *)self locationQueue];
+  locationQueue = [(DBLocationManager *)self locationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__DBLocationManager__authorizeIfNeeded__block_invoke;
   block[3] = &unk_278F01580;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(locationQueue, block);
 }
 
 void __39__DBLocationManager__authorizeIfNeeded__block_invoke(uint64_t a1)
@@ -644,16 +644,16 @@ void __39__DBLocationManager__authorizeIfNeeded__block_invoke(uint64_t a1)
 
 - (void)_queue_startUpdatingLocationNow
 {
-  v3 = [(DBLocationManager *)self locationQueue];
-  dispatch_assert_queue_V2(v3);
+  locationQueue = [(DBLocationManager *)self locationQueue];
+  dispatch_assert_queue_V2(locationQueue);
 
   [(DBLocationManager *)self setLocationActive:1];
-  v4 = [(DBLocationManager *)self locationManager];
-  [v4 startUpdatingLocation];
+  locationManager = [(DBLocationManager *)self locationManager];
+  [locationManager startUpdatingLocation];
 
-  v5 = [(DBLocationManager *)self locationManager];
-  v6 = [v5 location];
-  v8 = [v6 copy];
+  locationManager2 = [(DBLocationManager *)self locationManager];
+  location = [locationManager2 location];
+  v8 = [location copy];
 
   v7 = v8;
   if (v8)
@@ -665,11 +665,11 @@ void __39__DBLocationManager__authorizeIfNeeded__block_invoke(uint64_t a1)
 
 - (void)_queue_stopUpdatingLocationNow
 {
-  v3 = [(DBLocationManager *)self locationQueue];
-  dispatch_assert_queue_V2(v3);
+  locationQueue = [(DBLocationManager *)self locationQueue];
+  dispatch_assert_queue_V2(locationQueue);
 
-  v4 = [(DBLocationManager *)self locationManager];
-  [v4 stopUpdatingLocation];
+  locationManager = [(DBLocationManager *)self locationManager];
+  [locationManager stopUpdatingLocation];
 
   currentLocation = self->_currentLocation;
   self->_currentLocation = 0;
@@ -677,20 +677,20 @@ void __39__DBLocationManager__authorizeIfNeeded__block_invoke(uint64_t a1)
   [(DBLocationManager *)self setLocationActive:0];
 }
 
-- (void)_queue_updateCurrentLocation:(id)a3
+- (void)_queue_updateCurrentLocation:(id)location
 {
-  v10 = a3;
-  v5 = [(DBLocationManager *)self locationQueue];
-  dispatch_assert_queue_V2(v5);
+  locationCopy = location;
+  locationQueue = [(DBLocationManager *)self locationQueue];
+  dispatch_assert_queue_V2(locationQueue);
 
-  if (!v10 || self->_currentLocation)
+  if (!locationCopy || self->_currentLocation)
   {
-    v6 = [(DBLocationManager *)self lastPostedLocation];
-    [v6 distanceFromLocation:v10];
+    lastPostedLocation = [(DBLocationManager *)self lastPostedLocation];
+    [lastPostedLocation distanceFromLocation:locationCopy];
     v8 = v7;
 
-    objc_storeStrong(&self->_currentLocation, a3);
-    objc_storeStrong(&self->_cachedCurrentLocation, a3);
+    objc_storeStrong(&self->_currentLocation, location);
+    objc_storeStrong(&self->_cachedCurrentLocation, location);
     if (v8 <= 10.0)
     {
       goto LABEL_6;
@@ -699,27 +699,27 @@ void __39__DBLocationManager__authorizeIfNeeded__block_invoke(uint64_t a1)
 
   else
   {
-    objc_storeStrong(&self->_currentLocation, a3);
-    objc_storeStrong(&self->_cachedCurrentLocation, a3);
+    objc_storeStrong(&self->_currentLocation, location);
+    objc_storeStrong(&self->_cachedCurrentLocation, location);
   }
 
-  [(DBLocationManager *)self setLastPostedLocation:v10];
-  v9 = [(DBLocationManager *)self observers];
-  [v9 locationManager:self didUpdateLocation:v10];
+  [(DBLocationManager *)self setLastPostedLocation:locationCopy];
+  observers = [(DBLocationManager *)self observers];
+  [observers locationManager:self didUpdateLocation:locationCopy];
 
 LABEL_6:
 }
 
 - (id)_queue_currentLocation
 {
-  v3 = [(DBLocationManager *)self locationQueue];
-  dispatch_assert_queue_V2(v3);
+  locationQueue = [(DBLocationManager *)self locationQueue];
+  dispatch_assert_queue_V2(locationQueue);
 
   if (self->_currentLocation)
   {
     if ([(DBLocationManager *)self cacheUsedCount])
     {
-      v4 = [(DBLocationManager *)self cacheUsedCount];
+      cacheUsedCount = [(DBLocationManager *)self cacheUsedCount];
       v5 = [MEMORY[0x277CBEAA8] now];
       v6 = [DBDateFormatter formattedDateTimeStamp:v5];
 
@@ -730,22 +730,22 @@ LABEL_6:
       block[3] = &unk_278F01820;
       block[4] = self;
       v21 = v6;
-      v22 = v4;
+      v22 = cacheUsedCount;
       v8 = v6;
       dispatch_async(v7, block);
 
       [(DBLocationManager *)self setCacheUsedCount:0];
     }
 
-    v9 = self->_currentLocation;
+    _queue_cachedCurrentLocation = self->_currentLocation;
   }
 
   else
   {
-    v9 = [(DBLocationManager *)self _queue_cachedCurrentLocation];
-    v10 = [(DBLocationManager *)self cacheUsedCount];
-    [(DBLocationManager *)self setCacheUsedCount:v10 + 1];
-    if (__ROR8__(0xCCCCCCCCCCCCCCCDLL * v10, 2) <= 0xCCCCCCCCCCCCCCCuLL)
+    _queue_cachedCurrentLocation = [(DBLocationManager *)self _queue_cachedCurrentLocation];
+    cacheUsedCount2 = [(DBLocationManager *)self cacheUsedCount];
+    [(DBLocationManager *)self setCacheUsedCount:cacheUsedCount2 + 1];
+    if (__ROR8__(0xCCCCCCCCCCCCCCCDLL * cacheUsedCount2, 2) <= 0xCCCCCCCCCCCCCCCuLL)
     {
       v11 = [(DBLocationManager *)self cacheUsedCount]- 1;
       v12 = [MEMORY[0x277CBEAA8] now];
@@ -764,7 +764,7 @@ LABEL_6:
     }
   }
 
-  return v9;
+  return _queue_cachedCurrentLocation;
 }
 
 void __43__DBLocationManager__queue_currentLocation__block_invoke()
@@ -787,8 +787,8 @@ void __43__DBLocationManager__queue_currentLocation__block_invoke_102()
 
 - (id)_queue_cachedCurrentLocation
 {
-  v3 = [(DBLocationManager *)self locationQueue];
-  dispatch_assert_queue_V2(v3);
+  locationQueue = [(DBLocationManager *)self locationQueue];
+  dispatch_assert_queue_V2(locationQueue);
 
   cachedCurrentLocation = self->_cachedCurrentLocation;
   if (!cachedCurrentLocation || ((-[CLLocation timestamp](cachedCurrentLocation, "timestamp"), v5 = objc_claimAutoreleasedReturnValue(), (v6 = v5) == 0) ? ([MEMORY[0x277CBEAA8] distantPast], v7 = objc_claimAutoreleasedReturnValue()) : (v7 = v5), v8 = v7, v6, objc_msgSend(v8, "timeIntervalSinceNow"), v10 = fabs(v9), v8, v10 > 15.0))
@@ -801,9 +801,9 @@ void __43__DBLocationManager__queue_currentLocation__block_invoke_102()
     block[4] = self;
     dispatch_async(v11, block);
 
-    v12 = [(DBLocationManager *)self locationManager];
-    v13 = [v12 location];
-    v14 = [v13 copy];
+    locationManager = [(DBLocationManager *)self locationManager];
+    location = [locationManager location];
+    v14 = [location copy];
     v15 = self->_cachedCurrentLocation;
     self->_cachedCurrentLocation = v14;
   }
@@ -822,11 +822,11 @@ void __49__DBLocationManager__queue_cachedCurrentLocation__block_invoke(uint64_t
   }
 }
 
-- (void)_queue_didEnterRegionWithIdentifier:(id)a3
+- (void)_queue_didEnterRegionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBLocationManager *)self locationQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  locationQueue = [(DBLocationManager *)self locationQueue];
+  dispatch_assert_queue_V2(locationQueue);
 
   v6 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -834,19 +834,19 @@ void __49__DBLocationManager__queue_cachedCurrentLocation__block_invoke(uint64_t
     [DBLocationManager _queue_didEnterRegionWithIdentifier:];
   }
 
-  v7 = [(DBLocationManager *)self observers];
-  [v7 locationManager:self didEnterRegionIdentifier:v4];
+  observers = [(DBLocationManager *)self observers];
+  [observers locationManager:self didEnterRegionIdentifier:identifierCopy];
 
-  v8 = [(DBLocationManager *)self observers];
-  v9 = [(DBLocationManager *)self _queue_currentLocation];
-  [v8 locationManager:self didUpdateLocation:v9];
+  observers2 = [(DBLocationManager *)self observers];
+  _queue_currentLocation = [(DBLocationManager *)self _queue_currentLocation];
+  [observers2 locationManager:self didUpdateLocation:_queue_currentLocation];
 }
 
-- (void)_queue_didExitRegionWithIDentifier:(id)a3
+- (void)_queue_didExitRegionWithIDentifier:(id)dentifier
 {
-  v4 = a3;
-  v5 = [(DBLocationManager *)self locationQueue];
-  dispatch_assert_queue_V2(v5);
+  dentifierCopy = dentifier;
+  locationQueue = [(DBLocationManager *)self locationQueue];
+  dispatch_assert_queue_V2(locationQueue);
 
   v6 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -854,74 +854,74 @@ void __49__DBLocationManager__queue_cachedCurrentLocation__block_invoke(uint64_t
     [DBLocationManager _queue_didEnterRegionWithIdentifier:];
   }
 
-  v7 = [(DBLocationManager *)self observers];
-  [v7 locationManager:self didExitRegionIdentifier:v4];
+  observers = [(DBLocationManager *)self observers];
+  [observers locationManager:self didExitRegionIdentifier:dentifierCopy];
 
-  v8 = [(DBLocationManager *)self observers];
-  v9 = [(DBLocationManager *)self _queue_currentLocation];
-  [v8 locationManager:self didUpdateLocation:v9];
+  observers2 = [(DBLocationManager *)self observers];
+  _queue_currentLocation = [(DBLocationManager *)self _queue_currentLocation];
+  [observers2 locationManager:self didUpdateLocation:_queue_currentLocation];
 }
 
 - (id)_name
 {
-  v3 = [(DBLocationManager *)self bundlePath];
-  v4 = [v3 isEqualToString:@"/System/Library/LocationBundles/CarPlayHomeLocation.bundle"];
+  bundlePath = [(DBLocationManager *)self bundlePath];
+  v4 = [bundlePath isEqualToString:@"/System/Library/LocationBundles/CarPlayHomeLocation.bundle"];
 
   if (v4)
   {
-    v5 = @"HomeKit";
+    bundlePath3 = @"HomeKit";
   }
 
   else
   {
-    v6 = [(DBLocationManager *)self bundlePath];
+    bundlePath2 = [(DBLocationManager *)self bundlePath];
 
-    if (v6)
+    if (bundlePath2)
     {
-      v5 = [(DBLocationManager *)self bundlePath];
+      bundlePath3 = [(DBLocationManager *)self bundlePath];
     }
 
     else
     {
-      v7 = [(DBLocationManager *)self bundleIdentifier];
+      bundleIdentifier = [(DBLocationManager *)self bundleIdentifier];
 
-      if (v7)
+      if (bundleIdentifier)
       {
-        v5 = [(DBLocationManager *)self bundleIdentifier];
+        bundlePath3 = [(DBLocationManager *)self bundleIdentifier];
       }
 
       else
       {
-        v5 = @"Unnamed";
+        bundlePath3 = @"Unnamed";
       }
     }
   }
 
-  return v5;
+  return bundlePath3;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(DBLocationManager *)self locationManagerDidChangeAuthorization:v4, v5];
+    [(DBLocationManager *)self locationManagerDidChangeAuthorization:authorizationCopy, v5];
   }
 
   [(DBLocationManager *)self _authorizeIfNeeded];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = [a3 location];
-  v5 = [v6 copy];
+  location = [manager location];
+  v5 = [location copy];
   [(DBLocationManager *)self _queue_updateCurrentLocation:v5];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -929,34 +929,34 @@ void __49__DBLocationManager__queue_cachedCurrentLocation__block_invoke(uint64_t
   }
 }
 
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  regionCopy = region;
   v8 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v7 identifier];
+    identifier = [regionCopy identifier];
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2050;
-    v14 = a4;
+    stateCopy = state;
     v15 = 2114;
-    v16 = v10;
+    v16 = identifier;
     _os_log_debug_impl(&dword_248146000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ state=%{public}ld region=%{public}@", &v11, 0x20u);
   }
 
-  if (a4 == 2)
+  if (state == 2)
   {
-    v9 = [v7 identifier];
-    [(DBLocationManager *)self _queue_didExitRegionWithIDentifier:v9];
+    identifier2 = [regionCopy identifier];
+    [(DBLocationManager *)self _queue_didExitRegionWithIDentifier:identifier2];
     goto LABEL_7;
   }
 
-  if (a4 == 1)
+  if (state == 1)
   {
-    v9 = [v7 identifier];
-    [(DBLocationManager *)self _queue_didEnterRegionWithIdentifier:v9];
+    identifier2 = [regionCopy identifier];
+    [(DBLocationManager *)self _queue_didEnterRegionWithIdentifier:identifier2];
 LABEL_7:
   }
 }

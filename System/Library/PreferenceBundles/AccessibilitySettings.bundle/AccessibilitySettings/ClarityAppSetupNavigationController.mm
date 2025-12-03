@@ -1,5 +1,5 @@
 @interface ClarityAppSetupNavigationController
-- (ClarityAppSetupNavigationController)initWithSetupController:(id)a3;
+- (ClarityAppSetupNavigationController)initWithSetupController:(id)controller;
 - (ClarityAppSetupNavigationControllerDelegate)delegate;
 - (int64_t)_currentIndex;
 - (void)_cancelAppOnboarding;
@@ -10,9 +10,9 @@
 
 @implementation ClarityAppSetupNavigationController
 
-- (ClarityAppSetupNavigationController)initWithSetupController:(id)a3
+- (ClarityAppSetupNavigationController)initWithSetupController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v33.receiver = self;
   v33.super_class = ClarityAppSetupNavigationController;
   v6 = [(ClarityOnboardingNavigationWrapperController *)&v33 initWithController:0 shouldPresentWithAnimation:1];
@@ -21,11 +21,11 @@
     goto LABEL_5;
   }
 
-  v7 = [v5 bundleIdentifier];
+  bundleIdentifier = [controllerCopy bundleIdentifier];
   bundleIdentifier = v6->_bundleIdentifier;
-  v6->_bundleIdentifier = v7;
+  v6->_bundleIdentifier = bundleIdentifier;
 
-  objc_storeStrong(&v6->_appSetupController, a3);
+  objc_storeStrong(&v6->_appSetupController, controller);
   [(ClarityUIAppSetupController *)v6->_appSetupController setDelegate:v6];
   objc_initWeak(&location, v6);
   v30[0] = _NSConcreteStackBlock;
@@ -52,8 +52,8 @@
   v15 = +[ClarityUIAppSetupCoordinator sharedInstance];
   v16 = [v15 appNameForBundleIdentifier:v6->_bundleIdentifier];
 
-  v17 = [(ClarityUIAppSetupController *)v6->_appSetupController dataSource];
-  v18 = [v17 privacySpecifiers];
+  dataSource = [(ClarityUIAppSetupController *)v6->_appSetupController dataSource];
+  privacySpecifiers = [dataSource privacySpecifiers];
 
   v24 = _NSConcreteStackBlock;
   v25 = 3221225472;
@@ -63,7 +63,7 @@
   v28 = v19;
   v20 = v6;
   v29 = v20;
-  [v18 enumerateObjectsUsingBlock:&v24];
+  [privacySpecifiers enumerateObjectsUsingBlock:&v24];
   v21 = [(ClarityAppSetupNavigationController *)v20 _currentIndex:v24];
 
   objc_destroyWeak(&v31);
@@ -138,8 +138,8 @@ void __63__ClarityAppSetupNavigationController_initWithSetupController___block_i
 
 - (void)_continueAppOnboarding
 {
-  v3 = [(ClarityAppSetupNavigationController *)self _currentIndex];
-  if (v3 < 0)
+  _currentIndex = [(ClarityAppSetupNavigationController *)self _currentIndex];
+  if (_currentIndex < 0)
   {
 
     [(ClarityAppSetupNavigationController *)self _completeAppOnboarding];
@@ -147,17 +147,17 @@ void __63__ClarityAppSetupNavigationController_initWithSetupController___block_i
 
   else
   {
-    v5 = [(NSMutableArray *)self->_setupControllers objectAtIndex:v3];
-    v4 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
-    [v4 pushViewController:v5 animated:1];
+    v5 = [(NSMutableArray *)self->_setupControllers objectAtIndex:_currentIndex];
+    setUpNavigationController = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
+    [setUpNavigationController pushViewController:v5 animated:1];
   }
 }
 
 - (int64_t)_currentIndex
 {
-  v3 = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count];
+  setUpNavigationController = [(ClarityOnboardingNavigationWrapperController *)self setUpNavigationController];
+  viewControllers = [setUpNavigationController viewControllers];
+  v5 = [viewControllers count];
 
   return [(NSMutableArray *)self->_setupControllers count]+ ~v5;
 }

@@ -1,26 +1,26 @@
 @interface CBSParseHTMLTableOfContentsOperation
-- (CBSParseHTMLTableOfContentsOperation)initWithFilePath:(id)a3 packageContents:(id)a4;
+- (CBSParseHTMLTableOfContentsOperation)initWithFilePath:(id)path packageContents:(id)contents;
 - (void)main;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parserDidEndDocument:(id)a3;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parserDidEndDocument:(id)document;
 @end
 
 @implementation CBSParseHTMLTableOfContentsOperation
 
-- (CBSParseHTMLTableOfContentsOperation)initWithFilePath:(id)a3 packageContents:(id)a4
+- (CBSParseHTMLTableOfContentsOperation)initWithFilePath:(id)path packageContents:(id)contents
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  contentsCopy = contents;
   v16.receiver = self;
   v16.super_class = CBSParseHTMLTableOfContentsOperation;
   v9 = [(CBSParseHTMLTableOfContentsOperation *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mHTMLFilePath, a3);
-    objc_storeStrong(&v10->mPackageContents, a4);
+    objc_storeStrong(&v9->mHTMLFilePath, path);
+    objc_storeStrong(&v10->mPackageContents, contents);
     v11 = objc_opt_new();
     mChapters = v10->mChapters;
     v10->mChapters = v11;
@@ -59,11 +59,11 @@
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v9 = a4;
-  v10 = a7;
-  if ([v9 isEqualToString:@"nav"])
+  elementCopy = element;
+  attributesCopy = attributes;
+  if ([elementCopy isEqualToString:@"nav"])
   {
     self->mIsInNav = 1;
   }
@@ -73,7 +73,7 @@
     goto LABEL_10;
   }
 
-  if ([v9 isEqualToString:@"li"])
+  if ([elementCopy isEqualToString:@"li"])
   {
     if (self->mCurrentChapter)
     {
@@ -85,14 +85,14 @@
     self->mCurrentChapter = v11;
   }
 
-  else if ([v9 isEqualToString:@"a"])
+  else if ([elementCopy isEqualToString:@"a"])
   {
     v13 = objc_opt_new();
     mCurrentText = self->mCurrentText;
     self->mCurrentText = v13;
 
     mPackageContents = self->mPackageContents;
-    v16 = [v10 objectForKeyedSubscript:@"href"];
+    v16 = [attributesCopy objectForKeyedSubscript:@"href"];
     v20 = 0;
     v17 = [(CBSOPFPackageContents *)mPackageContents itemIdentifierForHref:v16 fragment:&v20];
     v18 = v20;
@@ -104,10 +104,10 @@
 LABEL_10:
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v19 = a4;
-  if ([v19 isEqualToString:@"nav"])
+  elementCopy = element;
+  if ([elementCopy isEqualToString:@"nav"])
   {
     self->mIsInNav = 0;
     goto LABEL_15;
@@ -115,30 +115,30 @@ LABEL_10:
 
   if (self->mIsInNav)
   {
-    if ([v19 isEqualToString:@"li"])
+    if ([elementCopy isEqualToString:@"li"])
     {
       if ([(NSMutableArray *)self->mParentChapters count])
       {
-        v7 = [(NSMutableArray *)self->mParentChapters lastObject];
+        lastObject = [(NSMutableArray *)self->mParentChapters lastObject];
         [(NSMutableArray *)self->mParentChapters removeLastObject];
-        v8 = [(CRKChapter *)self->mCurrentChapter title];
-        v9 = [v8 length];
+        title = [(CRKChapter *)self->mCurrentChapter title];
+        v9 = [title length];
 
         if (v9)
         {
-          v10 = [v7 subchapters];
-          v11 = [v10 arrayByAddingObject:self->mCurrentChapter];
-          [v7 setSubchapters:v11];
+          subchapters = [lastObject subchapters];
+          v11 = [subchapters arrayByAddingObject:self->mCurrentChapter];
+          [lastObject setSubchapters:v11];
         }
 
         mCurrentChapter = self->mCurrentChapter;
-        self->mCurrentChapter = v7;
+        self->mCurrentChapter = lastObject;
         goto LABEL_14;
       }
 
       v13 = 40;
-      v17 = [(CRKChapter *)self->mCurrentChapter title];
-      v18 = [v17 length];
+      title2 = [(CRKChapter *)self->mCurrentChapter title];
+      v18 = [title2 length];
 
       if (v18)
       {
@@ -148,7 +148,7 @@ LABEL_10:
 
     else
     {
-      if (![v19 isEqualToString:@"a"])
+      if (![elementCopy isEqualToString:@"a"])
       {
         goto LABEL_15;
       }
@@ -168,7 +168,7 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)parserDidEndDocument:(id)a3
+- (void)parserDidEndDocument:(id)document
 {
   if ([(CBSParseHTMLTableOfContentsOperation *)self isExecuting])
   {
@@ -178,12 +178,12 @@ LABEL_15:
   }
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v5 = a4;
+  occurredCopy = occurred;
   if ([(CBSParseHTMLTableOfContentsOperation *)self isExecuting])
   {
-    [(CBSParseHTMLTableOfContentsOperation *)self endOperationWithError:v5];
+    [(CBSParseHTMLTableOfContentsOperation *)self endOperationWithError:occurredCopy];
   }
 }
 

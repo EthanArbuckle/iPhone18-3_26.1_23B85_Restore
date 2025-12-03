@@ -1,7 +1,7 @@
 @interface NSAutoreleasePool
-+ (NSAutoreleasePool)allocWithZone:(_NSZone *)a3;
++ (NSAutoreleasePool)allocWithZone:(_NSZone *)zone;
 - (NSAutoreleasePool)init;
-- (NSAutoreleasePool)initWithCapacity:(unint64_t)a3;
+- (NSAutoreleasePool)initWithCapacity:(unint64_t)capacity;
 - (void)addObject:(id)anObject;
 - (void)drain;
 - (void)release;
@@ -126,7 +126,7 @@ LABEL_11:
   }
 }
 
-+ (NSAutoreleasePool)allocWithZone:(_NSZone *)a3
++ (NSAutoreleasePool)allocWithZone:(_NSZone *)zone
 {
   v8 = *MEMORY[0x1E69E9840];
   if (_NSDoAPCache == 1)
@@ -155,15 +155,15 @@ LABEL_11:
   else
   {
 LABEL_6:
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NSAutoreleasePool;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 
   return v4;
 }
 
-- (NSAutoreleasePool)initWithCapacity:(unint64_t)a3
+- (NSAutoreleasePool)initWithCapacity:(unint64_t)capacity
 {
   v4 = _NSMethodExceptionProem(self, a2);
   NSLog(@"%@: Do not use this init method.", v4);

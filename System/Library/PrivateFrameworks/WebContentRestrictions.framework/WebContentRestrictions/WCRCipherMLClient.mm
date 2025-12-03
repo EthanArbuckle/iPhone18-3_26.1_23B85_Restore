@@ -1,30 +1,30 @@
 @interface WCRCipherMLClient
-+ (id)categoryForCategoryLetter:(id)a3;
-+ (id)categoryForString:(id)a3 withError:(id *)a4;
++ (id)categoryForCategoryLetter:(id)letter;
++ (id)categoryForString:(id)string withError:(id *)error;
 + (void)activateCipherML;
 @end
 
 @implementation WCRCipherMLClient
 
-+ (id)categoryForCategoryLetter:(id)a3
++ (id)categoryForCategoryLetter:(id)letter
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"v"])
+  letterCopy = letter;
+  if ([letterCopy isEqualToString:@"v"])
   {
     v4 = &unk_2882740D8;
   }
 
-  else if ([v3 isEqualToString:@"|"])
+  else if ([letterCopy isEqualToString:@"|"])
   {
     v4 = &unk_2882740F0;
   }
 
-  else if ([v3 isEqualToString:@"g"])
+  else if ([letterCopy isEqualToString:@"g"])
   {
     v4 = &unk_288274108;
   }
 
-  else if ([v3 isEqualToString:@"w"])
+  else if ([letterCopy isEqualToString:@"w"])
   {
     v4 = &unk_288274120;
   }
@@ -37,14 +37,14 @@
   return v4;
 }
 
-+ (id)categoryForString:(id)a3 withError:(id *)a4
++ (id)categoryForString:(id)string withError:(id *)error
 {
   v5 = MEMORY[0x277CFA5A0];
-  v6 = a3;
+  stringCopy = string;
   v7 = [[v5 alloc] initWithUseCase:@"webContentRestrictions"];
   v8 = [objc_alloc(MEMORY[0x277CFA5A8]) initWithClientConfig:v7];
   v16 = 0;
-  v9 = [v8 dataByStringKeyword:v6 error:&v16];
+  v9 = [v8 dataByStringKeyword:stringCopy error:&v16];
 
   v10 = v16;
   v11 = v10;
@@ -54,11 +54,11 @@
     v13 = [objc_opt_class() categoryForCategoryLetter:v12];
   }
 
-  else if (a4)
+  else if (error)
   {
     v14 = v10;
     v13 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else

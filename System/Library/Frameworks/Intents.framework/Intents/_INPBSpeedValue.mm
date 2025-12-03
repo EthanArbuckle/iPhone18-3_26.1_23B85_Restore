@@ -1,50 +1,50 @@
 @interface _INPBSpeedValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBSpeedValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSpeedValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsUnit:(id)a3;
+- (int)StringAsUnit:(id)unit;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasUnit:(BOOL)a3;
-- (void)setUnit:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasUnit:(BOOL)unit;
+- (void)setUnit:(int)unit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSpeedValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBSpeedValue *)self hasMagnitude])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBSpeedValue *)self magnitude];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"magnitude"];
+    [dictionary setObject:v5 forKeyedSubscript:@"magnitude"];
   }
 
   if ([(_INPBSpeedValue *)self hasUnit])
   {
-    v6 = [(_INPBSpeedValue *)self unit];
-    if (v6 >= 5)
+    unit = [(_INPBSpeedValue *)self unit];
+    if (unit >= 5)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", unit];
     }
 
     else
     {
-      v7 = *(&off_1E72874E8 + v6);
+      v7 = *(&off_1E72874E8 + unit);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"unit"];
+    [dictionary setObject:v7 forKeyedSubscript:@"unit"];
   }
 
-  v8 = [(_INPBSpeedValue *)self valueMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBSpeedValue *)self valueMetadata];
+  dictionaryRepresentation = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -95,28 +95,28 @@
   return v9 ^ v8 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBSpeedValue *)self hasMagnitude];
-    if (v5 == [v4 hasMagnitude])
+    hasMagnitude = [(_INPBSpeedValue *)self hasMagnitude];
+    if (hasMagnitude == [equalCopy hasMagnitude])
     {
-      if (!-[_INPBSpeedValue hasMagnitude](self, "hasMagnitude") || ![v4 hasMagnitude] || (magnitude = self->_magnitude, objc_msgSend(v4, "magnitude"), magnitude == v7))
+      if (!-[_INPBSpeedValue hasMagnitude](self, "hasMagnitude") || ![equalCopy hasMagnitude] || (magnitude = self->_magnitude, objc_msgSend(equalCopy, "magnitude"), magnitude == v7))
       {
-        v8 = [(_INPBSpeedValue *)self hasUnit];
-        if (v8 == [v4 hasUnit])
+        hasUnit = [(_INPBSpeedValue *)self hasUnit];
+        if (hasUnit == [equalCopy hasUnit])
         {
-          if (!-[_INPBSpeedValue hasUnit](self, "hasUnit") || ![v4 hasUnit] || (unit = self->_unit, unit == objc_msgSend(v4, "unit")))
+          if (!-[_INPBSpeedValue hasUnit](self, "hasUnit") || ![equalCopy hasUnit] || (unit = self->_unit, unit == objc_msgSend(equalCopy, "unit")))
           {
-            v10 = [(_INPBSpeedValue *)self valueMetadata];
-            v11 = [v4 valueMetadata];
-            v12 = v11;
-            if ((v10 != 0) != (v11 == 0))
+            valueMetadata = [(_INPBSpeedValue *)self valueMetadata];
+            valueMetadata2 = [equalCopy valueMetadata];
+            v12 = valueMetadata2;
+            if ((valueMetadata != 0) != (valueMetadata2 == 0))
             {
-              v13 = [(_INPBSpeedValue *)self valueMetadata];
-              if (!v13)
+              valueMetadata3 = [(_INPBSpeedValue *)self valueMetadata];
+              if (!valueMetadata3)
               {
 
 LABEL_18:
@@ -124,10 +124,10 @@ LABEL_18:
                 goto LABEL_16;
               }
 
-              v14 = v13;
-              v15 = [(_INPBSpeedValue *)self valueMetadata];
-              v16 = [v4 valueMetadata];
-              v17 = [v15 isEqual:v16];
+              v14 = valueMetadata3;
+              valueMetadata4 = [(_INPBSpeedValue *)self valueMetadata];
+              valueMetadata5 = [equalCopy valueMetadata];
+              v17 = [valueMetadata4 isEqual:valueMetadata5];
 
               if (v17)
               {
@@ -150,7 +150,7 @@ LABEL_16:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSpeedValue allocWithZone:](_INPBSpeedValue init];
   if ([(_INPBSpeedValue *)self hasMagnitude])
@@ -164,39 +164,39 @@ LABEL_16:
     [(_INPBSpeedValue *)v5 setUnit:[(_INPBSpeedValue *)self unit]];
   }
 
-  v6 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v6 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBSpeedValue *)v5 setValueMetadata:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSpeedValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBSpeedValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSpeedValue)initWithCoder:(id)a3
+- (_INPBSpeedValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSpeedValue *)self initWithData:v6];
+    self = [(_INPBSpeedValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(_INPBSpeedValue *)self hasMagnitude])
   {
     magnitude = self->_magnitude;
@@ -209,42 +209,42 @@ LABEL_16:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_INPBSpeedValue *)self valueMetadata];
+  valueMetadata = [(_INPBSpeedValue *)self valueMetadata];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (valueMetadata)
   {
-    v8 = [(_INPBSpeedValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBSpeedValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (int)StringAsUnit:(id)a3
+- (int)StringAsUnit:(id)unit
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_SPEED_UNIT"])
+  unitCopy = unit;
+  if ([unitCopy isEqualToString:@"UNKNOWN_SPEED_UNIT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"METER_PER_SECOND"])
+  else if ([unitCopy isEqualToString:@"METER_PER_SECOND"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KILOMETER_PER_HOUR"])
+  else if ([unitCopy isEqualToString:@"KILOMETER_PER_HOUR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MILE_PER_HOUR"])
+  else if ([unitCopy isEqualToString:@"MILE_PER_HOUR"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KNOTS"])
+  else if ([unitCopy isEqualToString:@"KNOTS"])
   {
     v4 = 4;
   }
@@ -257,9 +257,9 @@ LABEL_16:
   return v4;
 }
 
-- (void)setHasUnit:(BOOL)a3
+- (void)setHasUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 2;
   }
@@ -272,10 +272,10 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setUnit:(int)a3
+- (void)setUnit:(int)unit
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (unit == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -283,7 +283,7 @@ LABEL_16:
   else
   {
     *&self->_has = has | 2;
-    self->_unit = a3;
+    self->_unit = unit;
   }
 }
 

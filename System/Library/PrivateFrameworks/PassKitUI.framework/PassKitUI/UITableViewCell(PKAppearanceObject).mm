@@ -7,30 +7,30 @@
 - (void)pk_applyAppearance:()PKAppearanceObject
 {
   v11 = a3;
-  v4 = [v11 foregroundColor];
-  [a1 setBackgroundColor:v4];
+  foregroundColor = [v11 foregroundColor];
+  [self setBackgroundColor:foregroundColor];
 
-  v5 = [a1 textLabel];
-  PKAppearanceApplyToContainer(v11, v5);
+  textLabel = [self textLabel];
+  PKAppearanceApplyToContainer(v11, textLabel);
 
-  v6 = [a1 textLabel];
-  v7 = [v11 textColor];
-  [v6 setTextColor:v7];
+  textLabel2 = [self textLabel];
+  textColor = [v11 textColor];
+  [textLabel2 setTextColor:textColor];
 
-  if ([a1 style] == 1000)
+  if ([self style] == 1000)
   {
-    v8 = [a1 editableTextField];
-    PKAppearanceApplyToContainer(v11, v8);
+    editableTextField = [self editableTextField];
+    PKAppearanceApplyToContainer(v11, editableTextField);
   }
 
   else
   {
-    v9 = [a1 detailTextLabel];
-    PKAppearanceApplyToContainer(v11, v9);
+    detailTextLabel = [self detailTextLabel];
+    PKAppearanceApplyToContainer(v11, detailTextLabel);
 
-    v8 = [a1 detailTextLabel];
-    v10 = [v11 altTextColor];
-    [v8 setTextColor:v10];
+    editableTextField = [self detailTextLabel];
+    altTextColor = [v11 altTextColor];
+    [editableTextField setTextColor:altTextColor];
   }
 }
 

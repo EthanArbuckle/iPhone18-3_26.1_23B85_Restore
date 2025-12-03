@@ -17,7 +17,7 @@
 
 - (BOOL)_installProvisioningProfiles
 {
-  v3 = [(MSDOperation *)self context];
+  context = [(MSDOperation *)self context];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -29,7 +29,7 @@
 
   else
   {
-    v5 = [(MSDOperation *)self context];
+    context2 = [(MSDOperation *)self context];
     objc_opt_class();
     v6 = objc_opt_isKindOfClass();
 
@@ -55,10 +55,10 @@
 
 - (BOOL)_installProvisioningProfilesInBackup
 {
-  v2 = [(MSDOperation *)self context];
+  context = [(MSDOperation *)self context];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v2 secondaryStagingRootPath];
-  v5 = [v4 stringByAppendingPathComponent:@"/var/MobileDevice/ProvisioningProfiles"];
+  secondaryStagingRootPath = [context secondaryStagingRootPath];
+  v5 = [secondaryStagingRootPath stringByAppendingPathComponent:@"/var/MobileDevice/ProvisioningProfiles"];
   v6 = sub_100063A54();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -97,9 +97,9 @@ LABEL_26:
   v10 = v9;
   v23 = v8;
   v24 = v7;
-  v25 = v4;
+  v25 = secondaryStagingRootPath;
   v26 = v3;
-  v27 = v2;
+  v27 = context;
   v11 = *v31;
   v28 = 1;
   do
@@ -167,9 +167,9 @@ LABEL_26:
 
   while (v10);
   v3 = v26;
-  v2 = v27;
+  context = v27;
   v7 = v24;
-  v4 = v25;
+  secondaryStagingRootPath = v25;
   v8 = v23;
   v21 = v28;
 LABEL_27:
@@ -179,22 +179,22 @@ LABEL_27:
 
 - (BOOL)_installStandaloneProvisioningProfile
 {
-  v2 = [(MSDOperation *)self context];
+  context = [(MSDOperation *)self context];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v2 stagingRootPath];
-  v5 = [v2 fileHash];
-  v6 = [v4 stringByAppendingPathComponent:v5];
-  v7 = [v2 identifier];
+  stagingRootPath = [context stagingRootPath];
+  fileHash = [context fileHash];
+  v6 = [stagingRootPath stringByAppendingPathComponent:fileHash];
+  identifier = [context identifier];
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v7;
+    v18 = identifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "INFO - Installing provisioning profile: %{public}@", buf, 0xCu);
   }
 
   v9 = +[MSDContentCacheManager sharedInstance];
-  v10 = [v9 copyFileIfPresentInCache:v5 toLocation:v6 verifyHash:{objc_msgSend(v2, "verifyFileHash")}];
+  v10 = [v9 copyFileIfPresentInCache:fileHash toLocation:v6 verifyHash:{objc_msgSend(context, "verifyFileHash")}];
 
   if (v10)
   {

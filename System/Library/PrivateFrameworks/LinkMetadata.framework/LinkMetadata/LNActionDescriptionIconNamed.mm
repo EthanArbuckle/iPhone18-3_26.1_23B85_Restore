@@ -1,21 +1,21 @@
 @interface LNActionDescriptionIconNamed
-- (BOOL)isEqual:(id)a3;
-- (LNActionDescriptionIconNamed)initWithCoder:(id)a3;
-- (LNActionDescriptionIconNamed)initWithName:(id)a3 bundleURL:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNActionDescriptionIconNamed)initWithCoder:(id)coder;
+- (LNActionDescriptionIconNamed)initWithName:(id)name bundleURL:(id)l;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionDescriptionIconNamed
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNActionDescriptionIconNamed *)self name];
-    v8 = [(LNActionDescriptionIconNamed *)v6 name];
-    v9 = v7;
-    v10 = v8;
+    name = [(LNActionDescriptionIconNamed *)self name];
+    name2 = [(LNActionDescriptionIconNamed *)v6 name];
+    v9 = name;
+    v10 = name2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNActionDescriptionIconNamed *)self bundleURL];
-    v16 = [(LNActionDescriptionIconNamed *)v6 bundleURL];
-    v14 = v15;
-    v17 = v16;
+    bundleURL = [(LNActionDescriptionIconNamed *)self bundleURL];
+    bundleURL2 = [(LNActionDescriptionIconNamed *)v6 bundleURL];
+    v14 = bundleURL;
+    v17 = bundleURL2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -84,10 +84,10 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNActionDescriptionIconNamed *)self name];
-  v4 = [v3 hash];
-  v5 = [(LNActionDescriptionIconNamed *)self bundleURL];
-  v6 = [v5 hash];
+  name = [(LNActionDescriptionIconNamed *)self name];
+  v4 = [name hash];
+  bundleURL = [(LNActionDescriptionIconNamed *)self bundleURL];
+  v6 = [bundleURL hash];
 
   return v6 ^ v4;
 }
@@ -97,51 +97,51 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNActionDescriptionIconNamed *)self name];
-  v7 = [(LNActionDescriptionIconNamed *)self bundleURL];
-  v8 = [v3 stringWithFormat:@"<%@: %p, name: %@, bundleURL: %@>", v5, self, v6, v7];
+  name = [(LNActionDescriptionIconNamed *)self name];
+  bundleURL = [(LNActionDescriptionIconNamed *)self bundleURL];
+  v8 = [v3 stringWithFormat:@"<%@: %p, name: %@, bundleURL: %@>", v5, self, name, bundleURL];
 
   return v8;
 }
 
-- (LNActionDescriptionIconNamed)initWithCoder:(id)a3
+- (LNActionDescriptionIconNamed)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
 
   if (v5)
   {
     self = [(LNActionDescriptionIconNamed *)self initWithName:v5 bundleURL:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNActionDescriptionIconNamed *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(LNActionDescriptionIconNamed *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(LNActionDescriptionIconNamed *)self bundleURL];
-  [v4 encodeObject:v6 forKey:@"bundleURL"];
+  bundleURL = [(LNActionDescriptionIconNamed *)self bundleURL];
+  [coderCopy encodeObject:bundleURL forKey:@"bundleURL"];
 }
 
-- (LNActionDescriptionIconNamed)initWithName:(id)a3 bundleURL:(id)a4
+- (LNActionDescriptionIconNamed)initWithName:(id)name bundleURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  nameCopy = name;
+  lCopy = l;
+  if (!nameCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"LNActionDescriptionIcon.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNActionDescriptionIcon.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
   v15.receiver = self;
@@ -149,11 +149,11 @@ LABEL_21:
   v9 = [(LNActionDescriptionIconNamed *)&v15 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     name = v9->_name;
     v9->_name = v10;
 
-    objc_storeStrong(&v9->_bundleURL, a4);
+    objc_storeStrong(&v9->_bundleURL, l);
     v12 = v9;
   }
 

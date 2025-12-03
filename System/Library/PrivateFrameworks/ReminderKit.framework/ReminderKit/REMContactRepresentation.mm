@@ -1,30 +1,30 @@
 @interface REMContactRepresentation
-+ (id)representationFromData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesContactRepresentation:(id)a3;
-- (REMContactRepresentation)initWithCoder:(id)a3;
-- (REMContactRepresentation)initWithPhones:(id)a3 emails:(id)a4;
++ (id)representationFromData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesContactRepresentation:(id)representation;
+- (REMContactRepresentation)initWithCoder:(id)coder;
+- (REMContactRepresentation)initWithPhones:(id)phones emails:(id)emails;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMContactRepresentation
 
-- (REMContactRepresentation)initWithPhones:(id)a3 emails:(id)a4
+- (REMContactRepresentation)initWithPhones:(id)phones emails:(id)emails
 {
-  v6 = a3;
-  v7 = a4;
+  phonesCopy = phones;
+  emailsCopy = emails;
   v14.receiver = self;
   v14.super_class = REMContactRepresentation;
   v8 = [(REMContactRepresentation *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [phonesCopy copy];
     phones = v8->_phones;
     v8->_phones = v9;
 
-    v11 = [v7 copy];
+    v11 = [emailsCopy copy];
     emails = v8->_emails;
     v8->_emails = v11;
   }
@@ -32,28 +32,28 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMContactRepresentation *)self phones];
-      v8 = [(REMContactRepresentation *)v6 phones];
-      v9 = v8;
-      if (v7 == v8)
+      phones = [(REMContactRepresentation *)self phones];
+      phones2 = [(REMContactRepresentation *)v6 phones];
+      v9 = phones2;
+      if (phones == phones2)
       {
       }
 
       else
       {
-        v10 = [(REMContactRepresentation *)self phones];
-        v11 = [(REMContactRepresentation *)v6 phones];
-        v12 = [v10 isEqual:v11];
+        phones3 = [(REMContactRepresentation *)self phones];
+        phones4 = [(REMContactRepresentation *)v6 phones];
+        v12 = [phones3 isEqual:phones4];
 
         if (!v12)
         {
@@ -61,18 +61,18 @@
         }
       }
 
-      v14 = [(REMContactRepresentation *)self emails];
-      v15 = [(REMContactRepresentation *)v6 emails];
-      if (v14 == v15)
+      emails = [(REMContactRepresentation *)self emails];
+      emails2 = [(REMContactRepresentation *)v6 emails];
+      if (emails == emails2)
       {
         v13 = 1;
       }
 
       else
       {
-        v16 = [(REMContactRepresentation *)self emails];
-        v17 = [(REMContactRepresentation *)v6 emails];
-        v13 = [v16 isEqual:v17];
+        emails3 = [(REMContactRepresentation *)self emails];
+        emails4 = [(REMContactRepresentation *)v6 emails];
+        v13 = [emails3 isEqual:emails4];
       }
 
       goto LABEL_12;
@@ -91,17 +91,17 @@ LABEL_13:
   return v13 & 1;
 }
 
-- (BOOL)matchesContactRepresentation:(id)a3
+- (BOOL)matchesContactRepresentation:(id)representation
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [(REMContactRepresentation *)self phones];
-  v7 = [v5 setWithArray:v6];
+  phones = [(REMContactRepresentation *)self phones];
+  v7 = [v5 setWithArray:phones];
 
   v8 = MEMORY[0x1E695DFD8];
-  v9 = [v4 phones];
-  v10 = [v8 setWithArray:v9];
+  phones2 = [representationCopy phones];
+  v10 = [v8 setWithArray:phones2];
 
   if ([v7 intersectsSet:v10])
   {
@@ -111,12 +111,12 @@ LABEL_13:
   else
   {
     v12 = MEMORY[0x1E695DFD8];
-    v13 = [(REMContactRepresentation *)self emails];
-    v14 = [v12 setWithArray:v13];
+    emails = [(REMContactRepresentation *)self emails];
+    v14 = [v12 setWithArray:emails];
 
     v15 = MEMORY[0x1E695DFD8];
-    v16 = [v4 emails];
-    v17 = [v15 setWithArray:v16];
+    emails2 = [representationCopy emails];
+    v17 = [v15 setWithArray:emails2];
 
     if ([v14 intersectsSet:v17])
     {
@@ -223,10 +223,10 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(REMContactRepresentation *)self phones];
-  v4 = [v3 hash];
-  v5 = [(REMContactRepresentation *)self emails];
-  v6 = [v5 hash];
+  phones = [(REMContactRepresentation *)self phones];
+  v4 = [phones hash];
+  emails = [(REMContactRepresentation *)self emails];
+  v6 = [emails hash];
 
   return v6 ^ v4;
 }
@@ -235,43 +235,43 @@ LABEL_23:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMContactRepresentation *)self phones];
-  v6 = [v5 count];
-  v7 = [(REMContactRepresentation *)self emails];
-  v8 = [v3 stringWithFormat:@"<%@: %p phones.count=%ld emails.count=%ld>", v4, self, v6, objc_msgSend(v7, "count")];
+  phones = [(REMContactRepresentation *)self phones];
+  v6 = [phones count];
+  emails = [(REMContactRepresentation *)self emails];
+  v8 = [v3 stringWithFormat:@"<%@: %p phones.count=%ld emails.count=%ld>", v4, self, v6, objc_msgSend(emails, "count")];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMContactRepresentation *)self phones];
-  [v4 encodeObject:v5 forKey:@"phones"];
+  coderCopy = coder;
+  phones = [(REMContactRepresentation *)self phones];
+  [coderCopy encodeObject:phones forKey:@"phones"];
 
-  v6 = [(REMContactRepresentation *)self emails];
-  [v4 encodeObject:v6 forKey:@"emails"];
+  emails = [(REMContactRepresentation *)self emails];
+  [coderCopy encodeObject:emails forKey:@"emails"];
 }
 
-- (REMContactRepresentation)initWithCoder:(id)a3
+- (REMContactRepresentation)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"phones"];
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:@"emails"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"phones"];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:@"emails"];
 
   v10 = [(REMContactRepresentation *)self initWithPhones:v8 emails:v9];
   return v10;
 }
 
-+ (id)representationFromData:(id)a3
++ (id)representationFromData:(id)data
 {
   v3 = MEMORY[0x1E696ACD0];
-  v4 = a3;
+  dataCopy = data;
   v10 = 0;
-  v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v10];
+  v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v10];
 
   v6 = v10;
   if (v6)

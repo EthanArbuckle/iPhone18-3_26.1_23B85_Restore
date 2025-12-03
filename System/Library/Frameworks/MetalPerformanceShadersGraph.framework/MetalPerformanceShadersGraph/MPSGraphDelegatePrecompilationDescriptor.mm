@@ -1,24 +1,24 @@
 @interface MPSGraphDelegatePrecompilationDescriptor
-- (MPSGraphDelegatePrecompilationDescriptor)initWithArchitecture:(id)a3 aneOptionsURL:(id)a4;
-- (MPSGraphDelegatePrecompilationDescriptor)initWithArchitecture:(id)a3 gpuCoreCount:(unint64_t)a4 aneOptionsURL:(id)a5;
+- (MPSGraphDelegatePrecompilationDescriptor)initWithArchitecture:(id)architecture aneOptionsURL:(id)l;
+- (MPSGraphDelegatePrecompilationDescriptor)initWithArchitecture:(id)architecture gpuCoreCount:(unint64_t)count aneOptionsURL:(id)l;
 - (void)validatePrecompilationOptions;
 @end
 
 @implementation MPSGraphDelegatePrecompilationDescriptor
 
-- (MPSGraphDelegatePrecompilationDescriptor)initWithArchitecture:(id)a3 aneOptionsURL:(id)a4
+- (MPSGraphDelegatePrecompilationDescriptor)initWithArchitecture:(id)architecture aneOptionsURL:(id)l
 {
   v64[24] = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v37 = a4;
+  architectureCopy = architecture;
+  lCopy = l;
   v39.receiver = self;
   v39.super_class = MPSGraphDelegatePrecompilationDescriptor;
   v6 = [(MPSGraphDelegatePrecompilationDescriptor *)&v39 init];
   v7 = v6;
   if (v6)
   {
-    [(MPSGraphDelegatePrecompilationDescriptor *)v6 setArchitecture:v38];
-    v36 = v38;
+    [(MPSGraphDelegatePrecompilationDescriptor *)v6 setArchitecture:architectureCopy];
+    v36 = architectureCopy;
     v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%i%s", @"h", 13, "p"];
     v64[0] = &unk_1F5B75C20;
     v35 = v40;
@@ -94,29 +94,29 @@
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v40 count:24];
 
     v15 = [v14 objectForKeyedSubscript:v36];
-    v16 = [v15 unsignedIntegerValue];
+    unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-    [(MPSGraphDelegatePrecompilationDescriptor *)v7 setGpuCoreCount:v16];
-    [(MPSGraphDelegatePrecompilationDescriptor *)v7 setAneOptionsURL:v37];
+    [(MPSGraphDelegatePrecompilationDescriptor *)v7 setGpuCoreCount:unsignedIntegerValue];
+    [(MPSGraphDelegatePrecompilationDescriptor *)v7 setAneOptionsURL:lCopy];
   }
 
   return v7;
 }
 
-- (MPSGraphDelegatePrecompilationDescriptor)initWithArchitecture:(id)a3 gpuCoreCount:(unint64_t)a4 aneOptionsURL:(id)a5
+- (MPSGraphDelegatePrecompilationDescriptor)initWithArchitecture:(id)architecture gpuCoreCount:(unint64_t)count aneOptionsURL:(id)l
 {
-  v7 = a3;
-  v8 = a5;
+  architectureCopy = architecture;
+  lCopy = l;
   NSLog(&cfstr_WarningGpuCore.isa);
-  v9 = [(MPSGraphDelegatePrecompilationDescriptor *)self initWithArchitecture:v7 aneOptionsURL:v8];
+  v9 = [(MPSGraphDelegatePrecompilationDescriptor *)self initWithArchitecture:architectureCopy aneOptionsURL:lCopy];
 
   return v9;
 }
 
 - (void)validatePrecompilationOptions
 {
-  v3 = [(MPSGraphDelegatePrecompilationDescriptor *)self architecture];
-  if (!v3 || (v4 = v3, -[MPSGraphDelegatePrecompilationDescriptor architecture](self, "architecture"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, !v6))
+  architecture = [(MPSGraphDelegatePrecompilationDescriptor *)self architecture];
+  if (!architecture || (v4 = architecture, -[MPSGraphDelegatePrecompilationDescriptor architecture](self, "architecture"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, !v6))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -129,14 +129,14 @@
     MTLReportFailure();
   }
 
-  v7 = [(MPSGraphDelegatePrecompilationDescriptor *)self aneOptionsURL];
+  aneOptionsURL = [(MPSGraphDelegatePrecompilationDescriptor *)self aneOptionsURL];
 
-  if (v7)
+  if (aneOptionsURL)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [(MPSGraphDelegatePrecompilationDescriptor *)self aneOptionsURL];
-    v10 = [v9 path];
-    v11 = [v8 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    aneOptionsURL2 = [(MPSGraphDelegatePrecompilationDescriptor *)self aneOptionsURL];
+    path = [aneOptionsURL2 path];
+    v11 = [defaultManager fileExistsAtPath:path];
 
     if ((v11 & 1) == 0 && MTLReportFailureTypeEnabled())
     {
@@ -144,9 +144,9 @@
     }
 
     v12 = MEMORY[0x1E695DEF0];
-    v13 = [(MPSGraphDelegatePrecompilationDescriptor *)self aneOptionsURL];
+    aneOptionsURL3 = [(MPSGraphDelegatePrecompilationDescriptor *)self aneOptionsURL];
     v20 = 0;
-    v14 = [v12 dataWithContentsOfURL:v13 options:2 error:&v20];
+    v14 = [v12 dataWithContentsOfURL:aneOptionsURL3 options:2 error:&v20];
     v15 = v20;
 
     if (!v14 && MTLReportFailureTypeEnabled())

@@ -3,27 +3,27 @@
 - (BOOL)hasUuidOfHighestConfidenceSuggestion;
 - (BOOL)hasUuidString;
 - (BOOL)hasWidgetUniqueId;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)layoutTypeAsString:(__CFString *)a1;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)layoutTypeAsString:(__CFString *)string;
 - (double)layoutScore;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)fourByEightSuggestionsAtIndex:(void *)a1;
-- (id)fourByFourSuggestionsAtIndex:(void *)a1;
-- (id)oneByFourSuggestionsAtIndex:(void *)a1;
-- (id)oneByOneSuggestionsAtIndex:(void *)a1;
-- (id)oneByTwoSuggestionsAtIndex:(void *)a1;
-- (id)twoByFourSuggestionsAtIndex:(void *)a1;
-- (id)twoByTwoSuggestionsAtIndex:(void *)a1;
-- (uint64_t)StringAsLayoutType:(uint64_t)a1;
-- (uint64_t)addFourByEightSuggestions:(uint64_t)a1;
-- (uint64_t)addFourByFourSuggestions:(uint64_t)a1;
-- (uint64_t)addOneByFourSuggestions:(uint64_t)a1;
-- (uint64_t)addOneByOneSuggestions:(uint64_t)a1;
-- (uint64_t)addOneByTwoSuggestions:(uint64_t)a1;
-- (uint64_t)addTwoByFourSuggestions:(uint64_t)a1;
-- (uint64_t)addTwoByTwoSuggestions:(uint64_t)a1;
+- (id)fourByEightSuggestionsAtIndex:(void *)index;
+- (id)fourByFourSuggestionsAtIndex:(void *)index;
+- (id)oneByFourSuggestionsAtIndex:(void *)index;
+- (id)oneByOneSuggestionsAtIndex:(void *)index;
+- (id)oneByTwoSuggestionsAtIndex:(void *)index;
+- (id)twoByFourSuggestionsAtIndex:(void *)index;
+- (id)twoByTwoSuggestionsAtIndex:(void *)index;
+- (uint64_t)StringAsLayoutType:(uint64_t)type;
+- (uint64_t)addFourByEightSuggestions:(uint64_t)suggestions;
+- (uint64_t)addFourByFourSuggestions:(uint64_t)suggestions;
+- (uint64_t)addOneByFourSuggestions:(uint64_t)suggestions;
+- (uint64_t)addOneByOneSuggestions:(uint64_t)suggestions;
+- (uint64_t)addOneByTwoSuggestions:(uint64_t)suggestions;
+- (uint64_t)addTwoByFourSuggestions:(uint64_t)suggestions;
+- (uint64_t)addTwoByTwoSuggestions:(uint64_t)suggestions;
 - (uint64_t)clearFourByEightSuggestions;
 - (uint64_t)clearFourByFourSuggestions;
 - (uint64_t)clearOneByFourSuggestions;
@@ -76,19 +76,19 @@
 - (uint64_t)uuidString;
 - (uint64_t)widgetUniqueId;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setFourByEightSuggestions:(uint64_t)a1;
-- (void)setFourByFourSuggestions:(uint64_t)a1;
-- (void)setOneByFourSuggestions:(uint64_t)a1;
-- (void)setOneByOneSuggestions:(uint64_t)a1;
-- (void)setOneByTwoSuggestions:(uint64_t)a1;
-- (void)setTwoByFourSuggestions:(uint64_t)a1;
-- (void)setTwoByTwoSuggestions:(uint64_t)a1;
-- (void)setUuidOfHighestConfidenceSuggestion:(uint64_t)a1;
-- (void)setUuidString:(uint64_t)a1;
-- (void)setWidgetUniqueId:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setFourByEightSuggestions:(uint64_t)suggestions;
+- (void)setFourByFourSuggestions:(uint64_t)suggestions;
+- (void)setOneByFourSuggestions:(uint64_t)suggestions;
+- (void)setOneByOneSuggestions:(uint64_t)suggestions;
+- (void)setOneByTwoSuggestions:(uint64_t)suggestions;
+- (void)setTwoByFourSuggestions:(uint64_t)suggestions;
+- (void)setTwoByTwoSuggestions:(uint64_t)suggestions;
+- (void)setUuidOfHighestConfidenceSuggestion:(uint64_t)suggestion;
+- (void)setUuidString:(uint64_t)string;
+- (void)setWidgetUniqueId:(uint64_t)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBSuggestionLayout
@@ -213,9 +213,9 @@
 
 - (uint64_t)isValidForSuggestionsWidget
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5(*(a1 + 115));
+    return OUTLINED_FUNCTION_5(*(self + 115));
   }
 
   else
@@ -226,9 +226,9 @@
 
 - (uint64_t)isLowConfidenceStackRotationForStaleStack
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5(*(a1 + 113));
+    return OUTLINED_FUNCTION_5(*(self + 113));
   }
 
   else
@@ -239,9 +239,9 @@
 
 - (uint64_t)isNPlusOne
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5(*(a1 + 114));
+    return OUTLINED_FUNCTION_5(*(self + 114));
   }
 
   else
@@ -252,9 +252,9 @@
 
 - (uint64_t)confidenceWarrantsSnappingOrNPlusOne
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5(*(a1 + 112));
+    return OUTLINED_FUNCTION_5(*(self + 112));
   }
 
   else
@@ -265,9 +265,9 @@
 
 - (double)layoutScore
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -309,8 +309,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBSuggestionLayout;
   v4 = [(ATXPBSuggestionLayout *)&v8 description];
-  v5 = [(ATXPBSuggestionLayout *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBSuggestionLayout *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -318,7 +318,7 @@
 - (id)dictionaryRepresentation
 {
   v103 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -333,7 +333,7 @@
       v6 = off_1E86A43D0[layoutType];
     }
 
-    [v3 setObject:v6 forKey:@"layoutType"];
+    [dictionary setObject:v6 forKey:@"layoutType"];
 
     has = self->_has;
   }
@@ -341,13 +341,13 @@
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_layoutScore];
-    [v3 setObject:v7 forKey:@"layoutScore"];
+    [dictionary setObject:v7 forKey:@"layoutScore"];
   }
 
   uuidString = self->_uuidString;
   if (uuidString)
   {
-    [v3 setObject:uuidString forKey:@"uuidString"];
+    [dictionary setObject:uuidString forKey:@"uuidString"];
   }
 
   if ([(NSMutableArray *)self->_oneByOneSuggestions count])
@@ -372,8 +372,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v92 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v92 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v92 objects:v102 count:16];
@@ -382,7 +382,7 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"oneByOneSuggestions"];
+    [dictionary setObject:v9 forKey:@"oneByOneSuggestions"];
   }
 
   if ([(NSMutableArray *)self->_oneByTwoSuggestions count])
@@ -407,8 +407,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v88 + 1) + 8 * j) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation2 = [*(*(&v88 + 1) + 8 * j) dictionaryRepresentation];
+          [v16 addObject:dictionaryRepresentation2];
         }
 
         v19 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v88 objects:v101 count:16];
@@ -417,7 +417,7 @@
       while (v19);
     }
 
-    [v3 setObject:v16 forKey:@"oneByTwoSuggestions"];
+    [dictionary setObject:v16 forKey:@"oneByTwoSuggestions"];
   }
 
   if ([(NSMutableArray *)self->_twoByTwoSuggestions count])
@@ -442,8 +442,8 @@
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v84 + 1) + 8 * k) dictionaryRepresentation];
-          [v23 addObject:v29];
+          dictionaryRepresentation3 = [*(*(&v84 + 1) + 8 * k) dictionaryRepresentation];
+          [v23 addObject:dictionaryRepresentation3];
         }
 
         v26 = [(NSMutableArray *)v24 countByEnumeratingWithState:&v84 objects:v100 count:16];
@@ -452,7 +452,7 @@
       while (v26);
     }
 
-    [v3 setObject:v23 forKey:@"twoByTwoSuggestions"];
+    [dictionary setObject:v23 forKey:@"twoByTwoSuggestions"];
   }
 
   if ([(NSMutableArray *)self->_oneByFourSuggestions count])
@@ -477,8 +477,8 @@
             objc_enumerationMutation(v31);
           }
 
-          v36 = [*(*(&v80 + 1) + 8 * m) dictionaryRepresentation];
-          [v30 addObject:v36];
+          dictionaryRepresentation4 = [*(*(&v80 + 1) + 8 * m) dictionaryRepresentation];
+          [v30 addObject:dictionaryRepresentation4];
         }
 
         v33 = [(NSMutableArray *)v31 countByEnumeratingWithState:&v80 objects:v99 count:16];
@@ -487,7 +487,7 @@
       while (v33);
     }
 
-    [v3 setObject:v30 forKey:@"oneByFourSuggestions"];
+    [dictionary setObject:v30 forKey:@"oneByFourSuggestions"];
   }
 
   if ([(NSMutableArray *)self->_twoByFourSuggestions count])
@@ -512,8 +512,8 @@
             objc_enumerationMutation(v38);
           }
 
-          v43 = [*(*(&v76 + 1) + 8 * n) dictionaryRepresentation];
-          [v37 addObject:v43];
+          dictionaryRepresentation5 = [*(*(&v76 + 1) + 8 * n) dictionaryRepresentation];
+          [v37 addObject:dictionaryRepresentation5];
         }
 
         v40 = [(NSMutableArray *)v38 countByEnumeratingWithState:&v76 objects:v98 count:16];
@@ -522,14 +522,14 @@
       while (v40);
     }
 
-    [v3 setObject:v37 forKey:@"twoByFourSuggestions"];
+    [dictionary setObject:v37 forKey:@"twoByFourSuggestions"];
   }
 
   v44 = self->_has;
   if ((v44 & 0x40) != 0)
   {
     v66 = [MEMORY[0x1E696AD98] numberWithBool:self->_isValidForSuggestionsWidget];
-    [v3 setObject:v66 forKey:@"isValidForSuggestionsWidget"];
+    [dictionary setObject:v66 forKey:@"isValidForSuggestionsWidget"];
 
     v44 = self->_has;
     if ((v44 & 8) == 0)
@@ -550,38 +550,38 @@ LABEL_57:
   }
 
   v67 = [MEMORY[0x1E696AD98] numberWithBool:self->_confidenceWarrantsSnappingOrNPlusOne];
-  [v3 setObject:v67 forKey:@"confidenceWarrantsSnappingOrNPlusOne"];
+  [dictionary setObject:v67 forKey:@"confidenceWarrantsSnappingOrNPlusOne"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_58:
     v45 = [MEMORY[0x1E696AD98] numberWithBool:self->_isNPlusOne];
-    [v3 setObject:v45 forKey:@"isNPlusOne"];
+    [dictionary setObject:v45 forKey:@"isNPlusOne"];
   }
 
 LABEL_59:
   widgetUniqueId = self->_widgetUniqueId;
   if (widgetUniqueId)
   {
-    [v3 setObject:widgetUniqueId forKey:@"widgetUniqueId"];
+    [dictionary setObject:widgetUniqueId forKey:@"widgetUniqueId"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v47 = [MEMORY[0x1E696AD98] numberWithBool:self->_isLowConfidenceStackRotationForStaleStack];
-    [v3 setObject:v47 forKey:@"isLowConfidenceStackRotationForStaleStack"];
+    [dictionary setObject:v47 forKey:@"isLowConfidenceStackRotationForStaleStack"];
   }
 
   uuidOfHighestConfidenceSuggestion = self->_uuidOfHighestConfidenceSuggestion;
   if (uuidOfHighestConfidenceSuggestion)
   {
-    [v3 setObject:uuidOfHighestConfidenceSuggestion forKey:@"uuidOfHighestConfidenceSuggestion"];
+    [dictionary setObject:uuidOfHighestConfidenceSuggestion forKey:@"uuidOfHighestConfidenceSuggestion"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v49 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numWidgetsInStack];
-    [v3 setObject:v49 forKey:@"numWidgetsInStack"];
+    [dictionary setObject:v49 forKey:@"numWidgetsInStack"];
   }
 
   if ([(NSMutableArray *)self->_fourByFourSuggestions count])
@@ -606,8 +606,8 @@ LABEL_59:
             objc_enumerationMutation(v51);
           }
 
-          v56 = [*(*(&v72 + 1) + 8 * ii) dictionaryRepresentation];
-          [v50 addObject:v56];
+          dictionaryRepresentation6 = [*(*(&v72 + 1) + 8 * ii) dictionaryRepresentation];
+          [v50 addObject:dictionaryRepresentation6];
         }
 
         v53 = [(NSMutableArray *)v51 countByEnumeratingWithState:&v72 objects:v97 count:16];
@@ -616,7 +616,7 @@ LABEL_59:
       while (v53);
     }
 
-    [v3 setObject:v50 forKey:@"fourByFourSuggestions"];
+    [dictionary setObject:v50 forKey:@"fourByFourSuggestions"];
   }
 
   if ([(NSMutableArray *)self->_fourByEightSuggestions count])
@@ -641,8 +641,8 @@ LABEL_59:
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v68 + 1) + 8 * jj) dictionaryRepresentation];
-          [v57 addObject:v63];
+          dictionaryRepresentation7 = [*(*(&v68 + 1) + 8 * jj) dictionaryRepresentation];
+          [v57 addObject:dictionaryRepresentation7];
         }
 
         v60 = [(NSMutableArray *)v58 countByEnumeratingWithState:&v68 objects:v96 count:16];
@@ -651,18 +651,18 @@ LABEL_59:
       while (v60);
     }
 
-    [v3 setObject:v57 forKey:@"fourByEightSuggestions"];
+    [dictionary setObject:v57 forKey:@"fourByEightSuggestions"];
   }
 
   v64 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v92 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -943,10 +943,10 @@ LABEL_46:
   v54 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v94 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -962,7 +962,7 @@ LABEL_46:
     *(v5 + 116) |= 1u;
   }
 
-  v8 = [(NSString *)self->_uuidString copyWithZone:a3];
+  v8 = [(NSString *)self->_uuidString copyWithZone:zone];
   v9 = *(v6 + 96);
   *(v6 + 96) = v8;
 
@@ -985,7 +985,7 @@ LABEL_46:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v83 + 1) + 8 * i) copyWithZone:a3];
+        v15 = [*(*(&v83 + 1) + 8 * i) copyWithZone:zone];
         [(ATXPBSuggestionLayout *)v6 addOneByOneSuggestions:v15];
       }
 
@@ -1014,7 +1014,7 @@ LABEL_46:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v79 + 1) + 8 * j) copyWithZone:a3];
+        v21 = [*(*(&v79 + 1) + 8 * j) copyWithZone:zone];
         [(ATXPBSuggestionLayout *)v6 addOneByTwoSuggestions:v21];
       }
 
@@ -1043,7 +1043,7 @@ LABEL_46:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v75 + 1) + 8 * k) copyWithZone:a3];
+        v27 = [*(*(&v75 + 1) + 8 * k) copyWithZone:zone];
         [(ATXPBSuggestionLayout *)v6 addTwoByTwoSuggestions:v27];
       }
 
@@ -1072,7 +1072,7 @@ LABEL_46:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v71 + 1) + 8 * m) copyWithZone:a3];
+        v33 = [*(*(&v71 + 1) + 8 * m) copyWithZone:zone];
         [(ATXPBSuggestionLayout *)v6 addOneByFourSuggestions:v33];
       }
 
@@ -1101,7 +1101,7 @@ LABEL_46:
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v67 + 1) + 8 * n) copyWithZone:a3];
+        v39 = [*(*(&v67 + 1) + 8 * n) copyWithZone:zone];
         [(ATXPBSuggestionLayout *)v6 addTwoByFourSuggestions:v39];
       }
 
@@ -1144,7 +1144,7 @@ LABEL_43:
   }
 
 LABEL_44:
-  v41 = [(NSString *)self->_widgetUniqueId copyWithZone:a3];
+  v41 = [(NSString *)self->_widgetUniqueId copyWithZone:zone];
   v42 = *(v6 + 104);
   *(v6 + 104) = v41;
 
@@ -1154,7 +1154,7 @@ LABEL_44:
     *(v6 + 116) |= 0x10u;
   }
 
-  v43 = [(NSString *)self->_uuidOfHighestConfidenceSuggestion copyWithZone:a3];
+  v43 = [(NSString *)self->_uuidOfHighestConfidenceSuggestion copyWithZone:zone];
   v44 = *(v6 + 88);
   *(v6 + 88) = v43;
 
@@ -1183,7 +1183,7 @@ LABEL_44:
           objc_enumerationMutation(v45);
         }
 
-        v50 = [*(*(&v63 + 1) + 8 * ii) copyWithZone:a3];
+        v50 = [*(*(&v63 + 1) + 8 * ii) copyWithZone:zone];
         [(ATXPBSuggestionLayout *)v6 addFourByFourSuggestions:v50];
       }
 
@@ -1212,7 +1212,7 @@ LABEL_44:
           objc_enumerationMutation(v51);
         }
 
-        v56 = [*(*(&v59 + 1) + 8 * jj) copyWithZone:{a3, v59}];
+        v56 = [*(*(&v59 + 1) + 8 * jj) copyWithZone:{zone, v59}];
         [(ATXPBSuggestionLayout *)v6 addFourByEightSuggestions:v56];
       }
 
@@ -1226,49 +1226,49 @@ LABEL_44:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_70;
   }
 
-  v5 = *(v4 + 116);
+  v5 = *(equalCopy + 116);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 116) & 4) == 0 || self->_layoutType != *(v4 + 10))
+    if ((*(equalCopy + 116) & 4) == 0 || self->_layoutType != *(equalCopy + 10))
     {
       goto LABEL_70;
     }
   }
 
-  else if ((*(v4 + 116) & 4) != 0)
+  else if ((*(equalCopy + 116) & 4) != 0)
   {
     goto LABEL_70;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 116) & 1) == 0 || self->_layoutScore != *(v4 + 1))
+    if ((*(equalCopy + 116) & 1) == 0 || self->_layoutScore != *(equalCopy + 1))
     {
       goto LABEL_70;
     }
   }
 
-  else if (*(v4 + 116))
+  else if (*(equalCopy + 116))
   {
     goto LABEL_70;
   }
 
   uuidString = self->_uuidString;
-  if (uuidString | *(v4 + 12) && ![(NSString *)uuidString isEqual:?])
+  if (uuidString | *(equalCopy + 12) && ![(NSString *)uuidString isEqual:?])
   {
     goto LABEL_70;
   }
 
   oneByOneSuggestions = self->_oneByOneSuggestions;
-  if (oneByOneSuggestions | *(v4 + 7))
+  if (oneByOneSuggestions | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)oneByOneSuggestions isEqual:?])
     {
@@ -1277,7 +1277,7 @@ LABEL_44:
   }
 
   oneByTwoSuggestions = self->_oneByTwoSuggestions;
-  if (oneByTwoSuggestions | *(v4 + 8))
+  if (oneByTwoSuggestions | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)oneByTwoSuggestions isEqual:?])
     {
@@ -1286,7 +1286,7 @@ LABEL_44:
   }
 
   twoByTwoSuggestions = self->_twoByTwoSuggestions;
-  if (twoByTwoSuggestions | *(v4 + 10))
+  if (twoByTwoSuggestions | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)twoByTwoSuggestions isEqual:?])
     {
@@ -1295,7 +1295,7 @@ LABEL_44:
   }
 
   oneByFourSuggestions = self->_oneByFourSuggestions;
-  if (oneByFourSuggestions | *(v4 + 6))
+  if (oneByFourSuggestions | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)oneByFourSuggestions isEqual:?])
     {
@@ -1304,7 +1304,7 @@ LABEL_44:
   }
 
   twoByFourSuggestions = self->_twoByFourSuggestions;
-  if (twoByFourSuggestions | *(v4 + 9))
+  if (twoByFourSuggestions | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)twoByFourSuggestions isEqual:?])
     {
@@ -1313,90 +1313,90 @@ LABEL_44:
   }
 
   has = self->_has;
-  v13 = *(v4 + 116);
+  v13 = *(equalCopy + 116);
   if ((has & 0x40) != 0)
   {
-    if ((*(v4 + 116) & 0x40) == 0)
+    if ((*(equalCopy + 116) & 0x40) == 0)
     {
       goto LABEL_70;
     }
 
-    v18 = *(v4 + 115);
+    v18 = *(equalCopy + 115);
     if (self->_isValidForSuggestionsWidget)
     {
-      if ((*(v4 + 115) & 1) == 0)
+      if ((*(equalCopy + 115) & 1) == 0)
       {
         goto LABEL_70;
       }
     }
 
-    else if (*(v4 + 115))
+    else if (*(equalCopy + 115))
     {
       goto LABEL_70;
     }
   }
 
-  else if ((*(v4 + 116) & 0x40) != 0)
+  else if ((*(equalCopy + 116) & 0x40) != 0)
   {
     goto LABEL_70;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 116) & 8) == 0)
+    if ((*(equalCopy + 116) & 8) == 0)
     {
       goto LABEL_70;
     }
 
-    v19 = *(v4 + 112);
+    v19 = *(equalCopy + 112);
     if (self->_confidenceWarrantsSnappingOrNPlusOne)
     {
-      if ((*(v4 + 112) & 1) == 0)
+      if ((*(equalCopy + 112) & 1) == 0)
       {
         goto LABEL_70;
       }
     }
 
-    else if (*(v4 + 112))
+    else if (*(equalCopy + 112))
     {
       goto LABEL_70;
     }
   }
 
-  else if ((*(v4 + 116) & 8) != 0)
+  else if ((*(equalCopy + 116) & 8) != 0)
   {
     goto LABEL_70;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 116) & 0x20) == 0)
+    if ((*(equalCopy + 116) & 0x20) == 0)
     {
       goto LABEL_70;
     }
 
-    v20 = *(v4 + 114);
+    v20 = *(equalCopy + 114);
     if (self->_isNPlusOne)
     {
-      if ((*(v4 + 114) & 1) == 0)
+      if ((*(equalCopy + 114) & 1) == 0)
       {
         goto LABEL_70;
       }
     }
 
-    else if (*(v4 + 114))
+    else if (*(equalCopy + 114))
     {
       goto LABEL_70;
     }
   }
 
-  else if ((*(v4 + 116) & 0x20) != 0)
+  else if ((*(equalCopy + 116) & 0x20) != 0)
   {
     goto LABEL_70;
   }
 
   widgetUniqueId = self->_widgetUniqueId;
-  if (widgetUniqueId | *(v4 + 13))
+  if (widgetUniqueId | *(equalCopy + 13))
   {
     if (![(NSString *)widgetUniqueId isEqual:?])
     {
@@ -1406,36 +1406,36 @@ LABEL_44:
     has = self->_has;
   }
 
-  v15 = *(v4 + 116);
+  v15 = *(equalCopy + 116);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 116) & 0x10) == 0)
+    if ((*(equalCopy + 116) & 0x10) == 0)
     {
       goto LABEL_70;
     }
 
-    v21 = *(v4 + 113);
+    v21 = *(equalCopy + 113);
     if (self->_isLowConfidenceStackRotationForStaleStack)
     {
-      if ((*(v4 + 113) & 1) == 0)
+      if ((*(equalCopy + 113) & 1) == 0)
       {
         goto LABEL_70;
       }
     }
 
-    else if (*(v4 + 113))
+    else if (*(equalCopy + 113))
     {
       goto LABEL_70;
     }
   }
 
-  else if ((*(v4 + 116) & 0x10) != 0)
+  else if ((*(equalCopy + 116) & 0x10) != 0)
   {
     goto LABEL_70;
   }
 
   uuidOfHighestConfidenceSuggestion = self->_uuidOfHighestConfidenceSuggestion;
-  if (!(uuidOfHighestConfidenceSuggestion | *(v4 + 11)))
+  if (!(uuidOfHighestConfidenceSuggestion | *(equalCopy + 11)))
   {
     goto LABEL_38;
   }
@@ -1449,28 +1449,28 @@ LABEL_70:
 
   has = self->_has;
 LABEL_38:
-  v17 = *(v4 + 116);
+  v17 = *(equalCopy + 116);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 116) & 2) == 0 || self->_numWidgetsInStack != *(v4 + 2))
+    if ((*(equalCopy + 116) & 2) == 0 || self->_numWidgetsInStack != *(equalCopy + 2))
     {
       goto LABEL_70;
     }
   }
 
-  else if ((*(v4 + 116) & 2) != 0)
+  else if ((*(equalCopy + 116) & 2) != 0)
   {
     goto LABEL_70;
   }
 
   fourByFourSuggestions = self->_fourByFourSuggestions;
-  if (fourByFourSuggestions | *(v4 + 4) && ![(NSMutableArray *)fourByFourSuggestions isEqual:?])
+  if (fourByFourSuggestions | *(equalCopy + 4) && ![(NSMutableArray *)fourByFourSuggestions isEqual:?])
   {
     goto LABEL_70;
   }
 
   fourByEightSuggestions = self->_fourByEightSuggestions;
-  if (fourByEightSuggestions | *(v4 + 3))
+  if (fourByEightSuggestions | *(equalCopy + 3))
   {
     v24 = [(NSMutableArray *)fourByEightSuggestions isEqual:?];
   }
@@ -1644,31 +1644,31 @@ LABEL_16:
   return result;
 }
 
-- (__CFString)layoutTypeAsString:(__CFString *)a1
+- (__CFString)layoutTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 0x12)
   {
-    a1 = off_1E86A43D0[a2];
+    string = off_1E86A43D0[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsLayoutType:(uint64_t)a1
+- (uint64_t)StringAsLayoutType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Eight1x1"])
@@ -1826,17 +1826,17 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addOneByOneSuggestions:(uint64_t)a1
+- (uint64_t)addOneByOneSuggestions:(uint64_t)suggestions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (suggestions)
   {
     v5 = OUTLINED_FUNCTION_13(56);
     if (!v5)
     {
       OUTLINED_FUNCTION_23(objc_alloc_init(MEMORY[0x1E695DF70]), 56);
-      v5 = *(a1 + 56);
+      v5 = *(suggestions + 56);
     }
 
     v3 = [v5 addObject:v7];
@@ -1856,15 +1856,15 @@ LABEL_4:
   return result;
 }
 
-- (id)oneByOneSuggestionsAtIndex:(void *)a1
+- (id)oneByOneSuggestionsAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_14(a1 56)];
+    index = [OUTLINED_FUNCTION_14(index 56)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearOneByTwoSuggestions
@@ -1877,17 +1877,17 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addOneByTwoSuggestions:(uint64_t)a1
+- (uint64_t)addOneByTwoSuggestions:(uint64_t)suggestions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (suggestions)
   {
     v5 = OUTLINED_FUNCTION_13(64);
     if (!v5)
     {
       OUTLINED_FUNCTION_23(objc_alloc_init(MEMORY[0x1E695DF70]), 64);
-      v5 = *(a1 + 64);
+      v5 = *(suggestions + 64);
     }
 
     v3 = [v5 addObject:v7];
@@ -1907,15 +1907,15 @@ LABEL_4:
   return result;
 }
 
-- (id)oneByTwoSuggestionsAtIndex:(void *)a1
+- (id)oneByTwoSuggestionsAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_14(a1 64)];
+    index = [OUTLINED_FUNCTION_14(index 64)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearTwoByTwoSuggestions
@@ -1928,17 +1928,17 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addTwoByTwoSuggestions:(uint64_t)a1
+- (uint64_t)addTwoByTwoSuggestions:(uint64_t)suggestions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (suggestions)
   {
     v5 = OUTLINED_FUNCTION_13(80);
     if (!v5)
     {
       OUTLINED_FUNCTION_23(objc_alloc_init(MEMORY[0x1E695DF70]), 80);
-      v5 = *(a1 + 80);
+      v5 = *(suggestions + 80);
     }
 
     v3 = [v5 addObject:v7];
@@ -1958,15 +1958,15 @@ LABEL_4:
   return result;
 }
 
-- (id)twoByTwoSuggestionsAtIndex:(void *)a1
+- (id)twoByTwoSuggestionsAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_14(a1 80)];
+    index = [OUTLINED_FUNCTION_14(index 80)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearOneByFourSuggestions
@@ -1979,17 +1979,17 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addOneByFourSuggestions:(uint64_t)a1
+- (uint64_t)addOneByFourSuggestions:(uint64_t)suggestions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (suggestions)
   {
     v5 = OUTLINED_FUNCTION_13(48);
     if (!v5)
     {
       OUTLINED_FUNCTION_23(objc_alloc_init(MEMORY[0x1E695DF70]), 48);
-      v5 = *(a1 + 48);
+      v5 = *(suggestions + 48);
     }
 
     v3 = [v5 addObject:v7];
@@ -2009,15 +2009,15 @@ LABEL_4:
   return result;
 }
 
-- (id)oneByFourSuggestionsAtIndex:(void *)a1
+- (id)oneByFourSuggestionsAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_14(a1 48)];
+    index = [OUTLINED_FUNCTION_14(index 48)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearTwoByFourSuggestions
@@ -2030,17 +2030,17 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addTwoByFourSuggestions:(uint64_t)a1
+- (uint64_t)addTwoByFourSuggestions:(uint64_t)suggestions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (suggestions)
   {
     v5 = OUTLINED_FUNCTION_13(72);
     if (!v5)
     {
       OUTLINED_FUNCTION_23(objc_alloc_init(MEMORY[0x1E695DF70]), 72);
-      v5 = *(a1 + 72);
+      v5 = *(suggestions + 72);
     }
 
     v3 = [v5 addObject:v7];
@@ -2060,15 +2060,15 @@ LABEL_4:
   return result;
 }
 
-- (id)twoByFourSuggestionsAtIndex:(void *)a1
+- (id)twoByFourSuggestionsAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_14(a1 72)];
+    index = [OUTLINED_FUNCTION_14(index 72)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)setIsValidForSuggestionsWidget:(uint64_t)result
@@ -2296,17 +2296,17 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addFourByFourSuggestions:(uint64_t)a1
+- (uint64_t)addFourByFourSuggestions:(uint64_t)suggestions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (suggestions)
   {
     v5 = OUTLINED_FUNCTION_13(32);
     if (!v5)
     {
       OUTLINED_FUNCTION_23(objc_alloc_init(MEMORY[0x1E695DF70]), 32);
-      v5 = *(a1 + 32);
+      v5 = *(suggestions + 32);
     }
 
     v3 = [v5 addObject:v7];
@@ -2326,15 +2326,15 @@ LABEL_4:
   return result;
 }
 
-- (id)fourByFourSuggestionsAtIndex:(void *)a1
+- (id)fourByFourSuggestionsAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_14(a1 32)];
+    index = [OUTLINED_FUNCTION_14(index 32)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearFourByEightSuggestions
@@ -2347,17 +2347,17 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addFourByEightSuggestions:(uint64_t)a1
+- (uint64_t)addFourByEightSuggestions:(uint64_t)suggestions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (suggestions)
   {
     v5 = OUTLINED_FUNCTION_13(24);
     if (!v5)
     {
       OUTLINED_FUNCTION_23(objc_alloc_init(MEMORY[0x1E695DF70]), 24);
-      v5 = *(a1 + 24);
+      v5 = *(suggestions + 24);
     }
 
     v3 = [v5 addObject:v7];
@@ -2377,21 +2377,21 @@ LABEL_4:
   return result;
 }
 
-- (id)fourByEightSuggestionsAtIndex:(void *)a1
+- (id)fourByEightSuggestionsAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_14(a1 24)];
+    index = [OUTLINED_FUNCTION_14(index 24)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v110 = a2;
-  if (!a1)
+  if (!to)
   {
     goto LABEL_70;
   }
@@ -2399,7 +2399,7 @@ LABEL_4:
   OUTLINED_FUNCTION_16();
   if ((v5 & 4) != 0)
   {
-    *(v110 + 10) = *(a1 + 40);
+    *(v110 + 10) = *(to + 40);
     *(v110 + 116) |= 4u;
     OUTLINED_FUNCTION_16();
     if ((v7 & 1) == 0)
@@ -2414,25 +2414,25 @@ LABEL_4:
   if (v5)
   {
 LABEL_6:
-    v6[1] = *(a1 + 8);
+    v6[1] = *(to + 8);
     *(v6 + v4) |= 1u;
   }
 
 LABEL_7:
-  v8 = *(a1 + 96);
+  v8 = *(to + 96);
   if (v8)
   {
     [(ATXPBSuggestionLayout *)v110 setUuidString:v8];
   }
 
-  if ([*(a1 + 56) count])
+  if ([*(to + 56) count])
   {
     if (v110)
     {
       [*(v110 + 7) removeAllObjects];
     }
 
-    if ([*(a1 + 56) count])
+    if ([*(to + 56) count])
     {
       OUTLINED_FUNCTION_12();
       do
@@ -2449,14 +2449,14 @@ LABEL_7:
     }
   }
 
-  if ([*(a1 + 64) count])
+  if ([*(to + 64) count])
   {
     if (v110)
     {
       [*(v110 + 8) removeAllObjects];
     }
 
-    if ([*(a1 + 64) count])
+    if ([*(to + 64) count])
     {
       OUTLINED_FUNCTION_12();
       do
@@ -2473,14 +2473,14 @@ LABEL_7:
     }
   }
 
-  if ([*(a1 + 80) count])
+  if ([*(to + 80) count])
   {
     if (v110)
     {
       [*(v110 + 10) removeAllObjects];
     }
 
-    if ([*(a1 + 80) count])
+    if ([*(to + 80) count])
     {
       OUTLINED_FUNCTION_12();
       do
@@ -2497,14 +2497,14 @@ LABEL_7:
     }
   }
 
-  if ([*(a1 + 48) count])
+  if ([*(to + 48) count])
   {
     if (v110)
     {
       [*(v110 + 6) removeAllObjects];
     }
 
-    if ([*(a1 + 48) count])
+    if ([*(to + 48) count])
     {
       OUTLINED_FUNCTION_12();
       do
@@ -2521,14 +2521,14 @@ LABEL_7:
     }
   }
 
-  if ([*(a1 + 72) count])
+  if ([*(to + 72) count])
   {
     if (v110)
     {
       [*(v110 + 9) removeAllObjects];
     }
 
-    if ([*(a1 + 72) count])
+    if ([*(to + 72) count])
     {
       OUTLINED_FUNCTION_12();
       do
@@ -2583,7 +2583,7 @@ LABEL_47:
   }
 
 LABEL_48:
-  v70 = *(a1 + 104);
+  v70 = *(to + 104);
   if (v70)
   {
     [(ATXPBSuggestionLayout *)v110 setWidgetUniqueId:v70];
@@ -2596,7 +2596,7 @@ LABEL_48:
     *(v73 + v75) = v74 | 0x10;
   }
 
-  v76 = *(a1 + 88);
+  v76 = *(to + 88);
   if (v76)
   {
     [(ATXPBSuggestionLayout *)v110 setUuidOfHighestConfidenceSuggestion:v76];
@@ -2605,18 +2605,18 @@ LABEL_48:
   OUTLINED_FUNCTION_16();
   if ((v79 & 2) != 0)
   {
-    *(v77 + 16) = *(a1 + 16);
+    *(v77 + 16) = *(to + 16);
     *(v77 + v78) |= 2u;
   }
 
-  if ([*(a1 + 32) count])
+  if ([*(to + 32) count])
   {
     if (v110)
     {
       [*(v110 + 4) removeAllObjects];
     }
 
-    if ([*(a1 + 32) count])
+    if ([*(to + 32) count])
     {
       OUTLINED_FUNCTION_12();
       do
@@ -2633,14 +2633,14 @@ LABEL_48:
     }
   }
 
-  if ([*(a1 + 24) count])
+  if ([*(to + 24) count])
   {
     if (v110)
     {
       [*(v110 + 3) removeAllObjects];
     }
 
-    if ([*(a1 + 24) count])
+    if ([*(to + 24) count])
     {
       OUTLINED_FUNCTION_12();
       do
@@ -2660,35 +2660,35 @@ LABEL_48:
 LABEL_70:
 }
 
-- (void)setUuidString:(uint64_t)a1
+- (void)setUuidString:(uint64_t)string
 {
-  if (a1)
+  if (string)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 96);
+    OUTLINED_FUNCTION_0_3(string, a2, 96);
   }
 }
 
-- (void)setWidgetUniqueId:(uint64_t)a1
+- (void)setWidgetUniqueId:(uint64_t)id
 {
-  if (a1)
+  if (id)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 104);
+    OUTLINED_FUNCTION_0_3(id, a2, 104);
   }
 }
 
-- (void)setUuidOfHighestConfidenceSuggestion:(uint64_t)a1
+- (void)setUuidOfHighestConfidenceSuggestion:(uint64_t)suggestion
 {
-  if (a1)
+  if (suggestion)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 88);
+    OUTLINED_FUNCTION_0_3(suggestion, a2, 88);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v103 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!from)
   {
     goto LABEL_70;
   }
@@ -2696,21 +2696,21 @@ LABEL_70:
   OUTLINED_FUNCTION_16();
   if ((v5 & 4) != 0)
   {
-    *(a1 + 40) = *(v3 + 10);
-    *(a1 + 116) |= 4u;
+    *(from + 40) = *(v3 + 10);
+    *(from + 116) |= 4u;
     OUTLINED_FUNCTION_16();
   }
 
   if (v5)
   {
-    *(a1 + 8) = *(v3 + 1);
-    *(a1 + v4) |= 1u;
+    *(from + 8) = *(v3 + 1);
+    *(from + v4) |= 1u;
   }
 
   v6 = *(v3 + 12);
   if (v6)
   {
-    [(ATXPBSuggestionLayout *)a1 setUuidString:v6];
+    [(ATXPBSuggestionLayout *)from setUuidString:v6];
   }
 
   v94 = 0u;
@@ -2843,7 +2843,7 @@ LABEL_70:
 
 LABEL_72:
     OUTLINED_FUNCTION_7(112);
-    *(a1 + v66) = v65 | 8;
+    *(from + v66) = v65 | 8;
     OUTLINED_FUNCTION_9();
     if ((v67 & 0x20) == 0)
     {
@@ -2854,7 +2854,7 @@ LABEL_72:
   }
 
   OUTLINED_FUNCTION_7(115);
-  *(a1 + v64) = v63 | 0x40;
+  *(from + v64) = v63 | 0x40;
   OUTLINED_FUNCTION_9();
   if ((v38 & 8) != 0)
   {
@@ -2866,34 +2866,34 @@ LABEL_45:
   {
 LABEL_46:
     OUTLINED_FUNCTION_7(114);
-    *(a1 + v40) = v39 | 0x20;
+    *(from + v40) = v39 | 0x20;
   }
 
 LABEL_47:
   v41 = *(v3 + 13);
   if (v41)
   {
-    [(ATXPBSuggestionLayout *)a1 setWidgetUniqueId:v41];
+    [(ATXPBSuggestionLayout *)from setWidgetUniqueId:v41];
   }
 
   OUTLINED_FUNCTION_9();
   if ((v42 & 0x10) != 0)
   {
     OUTLINED_FUNCTION_7(113);
-    *(a1 + v44) = v43 | 0x10;
+    *(from + v44) = v43 | 0x10;
   }
 
   v45 = *(v3 + 11);
   if (v45)
   {
-    [(ATXPBSuggestionLayout *)a1 setUuidOfHighestConfidenceSuggestion:v45];
+    [(ATXPBSuggestionLayout *)from setUuidOfHighestConfidenceSuggestion:v45];
   }
 
   OUTLINED_FUNCTION_16();
   if ((v47 & 2) != 0)
   {
-    *(a1 + 16) = *(v3 + 2);
-    *(a1 + v46) |= 2u;
+    *(from + 16) = *(v3 + 2);
+    *(from + v46) |= 2u;
   }
 
   v74 = 0u;
@@ -2916,7 +2916,7 @@ LABEL_47:
           objc_enumerationMutation(v48);
         }
 
-        v53 = [(ATXPBSuggestionLayout *)a1 addFourByFourSuggestions:?];
+        v53 = [(ATXPBSuggestionLayout *)from addFourByFourSuggestions:?];
       }
 
       while (v50 != v52);
@@ -2946,7 +2946,7 @@ LABEL_47:
           objc_enumerationMutation(v55);
         }
 
-        v60 = [(ATXPBSuggestionLayout *)a1 addFourByEightSuggestions:?];
+        v60 = [(ATXPBSuggestionLayout *)from addFourByEightSuggestions:?];
       }
 
       while (v57 != v59);
@@ -2960,59 +2960,59 @@ LABEL_70:
   v62 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setOneByOneSuggestions:(uint64_t)a1
+- (void)setOneByOneSuggestions:(uint64_t)suggestions
 {
-  if (a1)
+  if (suggestions)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 56);
+    OUTLINED_FUNCTION_0_3(suggestions, a2, 56);
   }
 }
 
-- (void)setOneByTwoSuggestions:(uint64_t)a1
+- (void)setOneByTwoSuggestions:(uint64_t)suggestions
 {
-  if (a1)
+  if (suggestions)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 64);
+    OUTLINED_FUNCTION_0_3(suggestions, a2, 64);
   }
 }
 
-- (void)setTwoByTwoSuggestions:(uint64_t)a1
+- (void)setTwoByTwoSuggestions:(uint64_t)suggestions
 {
-  if (a1)
+  if (suggestions)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 80);
+    OUTLINED_FUNCTION_0_3(suggestions, a2, 80);
   }
 }
 
-- (void)setOneByFourSuggestions:(uint64_t)a1
+- (void)setOneByFourSuggestions:(uint64_t)suggestions
 {
-  if (a1)
+  if (suggestions)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 48);
+    OUTLINED_FUNCTION_0_3(suggestions, a2, 48);
   }
 }
 
-- (void)setTwoByFourSuggestions:(uint64_t)a1
+- (void)setTwoByFourSuggestions:(uint64_t)suggestions
 {
-  if (a1)
+  if (suggestions)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 72);
+    OUTLINED_FUNCTION_0_3(suggestions, a2, 72);
   }
 }
 
-- (void)setFourByFourSuggestions:(uint64_t)a1
+- (void)setFourByFourSuggestions:(uint64_t)suggestions
 {
-  if (a1)
+  if (suggestions)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 32);
+    OUTLINED_FUNCTION_0_3(suggestions, a2, 32);
   }
 }
 
-- (void)setFourByEightSuggestions:(uint64_t)a1
+- (void)setFourByEightSuggestions:(uint64_t)suggestions
 {
-  if (a1)
+  if (suggestions)
   {
-    OUTLINED_FUNCTION_0_3(a1, a2, 24);
+    OUTLINED_FUNCTION_0_3(suggestions, a2, 24);
   }
 }
 

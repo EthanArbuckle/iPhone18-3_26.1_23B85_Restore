@@ -1,6 +1,6 @@
 @interface PBUIRenderService
 - (PBUIRenderService)init;
-- (void)renderRequest:(id)a3 reply:(id)a4;
+- (void)renderRequest:(id)request reply:(id)reply;
 @end
 
 @implementation PBUIRenderService
@@ -33,19 +33,19 @@
   return v2;
 }
 
-- (void)renderRequest:(id)a3 reply:(id)a4
+- (void)renderRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = objc_autoreleasePoolPush();
-  v9 = [(PBUIRenderService *)self renderer];
+  renderer = [(PBUIRenderService *)self renderer];
   v12 = 0;
-  v10 = [v9 renderRequest:v6 error:&v12];
+  v10 = [renderer renderRequest:requestCopy error:&v12];
   v11 = v12;
 
   CABackingStoreCollectBlocking();
   CARenderCollect();
-  v7[2](v7, v10, v11);
+  replyCopy[2](replyCopy, v10, v11);
 
   objc_autoreleasePoolPop(v8);
 }

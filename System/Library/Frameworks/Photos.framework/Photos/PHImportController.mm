@@ -1,29 +1,29 @@
 @interface PHImportController
-+ (BOOL)isValidFolderAtURL:(id)a3;
++ (BOOL)isValidFolderAtURL:(id)l;
 + (id)sharedInstance;
 - (BOOL)importInProgress;
-- (BOOL)sourceIsConnected:(id)a3;
+- (BOOL)sourceIsConnected:(id)connected;
 - (PHImportController)init;
-- (id)filterDuplicates:(id)a3 onSource:(id)a4 library:(id)a5 options:(id)a6 delegate:(id)a7;
-- (id)importSourceForURLs:(id)a3 exceptions:(id *)a4;
-- (id)importUrls:(id)a3 intoLibrary:(id)a4 withOptions:(id)a5 delegate:(id)a6 performanceDelegate:(id)a7 atEnd:(id)a8;
-- (id)importUrls:(id)a3 withOptions:(id)a4 delegate:(id)a5 atEnd:(id)a6;
+- (id)filterDuplicates:(id)duplicates onSource:(id)source library:(id)library options:(id)options delegate:(id)delegate;
+- (id)importSourceForURLs:(id)ls exceptions:(id *)exceptions;
+- (id)importUrls:(id)urls intoLibrary:(id)library withOptions:(id)options delegate:(id)delegate performanceDelegate:(id)performanceDelegate atEnd:(id)end;
+- (id)importUrls:(id)urls withOptions:(id)options delegate:(id)delegate atEnd:(id)end;
 - (id)supportedTypes;
-- (void)_addImportSource:(id)a3;
-- (void)_notifyOfFailureToAddImportSource:(id)a3 exceptions:(id)a4;
-- (void)_removeImportSourceWithUUID:(id)a3;
-- (void)accessSourceList:(id)a3;
-- (void)addImportControllerObserver:(id)a3;
-- (void)addImportSourceForUrls:(id)a3;
-- (void)deviceBrowser:(id)a3 didAddDevice:(id)a4 moreComing:(BOOL)a5;
-- (void)deviceBrowser:(id)a3 didRemoveDevice:(id)a4 moreGoing:(BOOL)a5;
+- (void)_addImportSource:(id)source;
+- (void)_notifyOfFailureToAddImportSource:(id)source exceptions:(id)exceptions;
+- (void)_removeImportSourceWithUUID:(id)d;
+- (void)accessSourceList:(id)list;
+- (void)addImportControllerObserver:(id)observer;
+- (void)addImportSourceForUrls:(id)urls;
+- (void)deviceBrowser:(id)browser didAddDevice:(id)device moreComing:(BOOL)coming;
+- (void)deviceBrowser:(id)browser didRemoveDevice:(id)device moreGoing:(BOOL)going;
 - (void)enableDeviceImport;
-- (void)importAssets:(id)a3 fromImportSource:(id)a4 intoLibrary:(id)a5 withOptions:(id)a6 progress:(id *)a7 delegate:(id)a8 performanceDelegate:(id)a9 atEnd:(id)a10;
-- (void)importAssets:(id)a3 fromImportSource:(id)a4 intoLibraryAtURL:(id)a5 withOptions:(id)a6 progress:(id *)a7 delegate:(id)a8 performanceDelegate:(id)a9 atEnd:(id)a10;
-- (void)importAssets:(id)a3 fromImportSource:(id)a4 withOptions:(id)a5 progress:(id *)a6 delegate:(id)a7 atEnd:(id)a8;
+- (void)importAssets:(id)assets fromImportSource:(id)source intoLibrary:(id)library withOptions:(id)options progress:(id *)progress delegate:(id)delegate performanceDelegate:(id)performanceDelegate atEnd:(id)self0;
+- (void)importAssets:(id)assets fromImportSource:(id)source intoLibraryAtURL:(id)l withOptions:(id)options progress:(id *)progress delegate:(id)delegate performanceDelegate:(id)performanceDelegate atEnd:(id)self0;
+- (void)importAssets:(id)assets fromImportSource:(id)source withOptions:(id)options progress:(id *)progress delegate:(id)delegate atEnd:(id)end;
 - (void)importEnding;
 - (void)importStarting;
-- (void)removeImportSource:(id)a3;
+- (void)removeImportSource:(id)source;
 @end
 
 @implementation PHImportController
@@ -44,9 +44,9 @@ uint64_t __36__PHImportController_sharedInstance__block_invoke()
   if (v2)
   {
     *&v2->_sourceListLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = weakObjectsHashTable;
   }
 
   return v3;
@@ -99,65 +99,65 @@ void __40__PHImportController_enableDeviceImport__block_invoke_2(uint64_t a1)
   dispatch_after(v2, v3, block);
 }
 
-- (void)deviceBrowser:(id)a3 didRemoveDevice:(id)a4 moreGoing:(BOOL)a5
+- (void)deviceBrowser:(id)browser didRemoveDevice:(id)device moreGoing:(BOOL)going
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  deviceCopy = device;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setDelegate:0];
+    [deviceCopy setDelegate:0];
     v7 = PLImportGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 name];
+      name = [deviceCopy name];
       v10 = 136315394;
       v11 = "[PHImportController deviceBrowser:didRemoveDevice:moreGoing:]";
       v12 = 2112;
-      v13 = v8;
+      v13 = name;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEFAULT, "%s - %@", &v10, 0x16u);
     }
 
-    v9 = [v6 UUIDString];
-    [(PHImportController *)self _removeImportSourceWithUUID:v9];
+    uUIDString = [deviceCopy UUIDString];
+    [(PHImportController *)self _removeImportSourceWithUUID:uUIDString];
   }
 }
 
-- (void)deviceBrowser:(id)a3 didAddDevice:(id)a4 moreComing:(BOOL)a5
+- (void)deviceBrowser:(id)browser didAddDevice:(id)device moreComing:(BOOL)coming
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  deviceCopy = device;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = PLImportGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 name];
+      name = [deviceCopy name];
       v10 = 136315394;
       v11 = "[PHImportController deviceBrowser:didAddDevice:moreComing:]";
       v12 = 2112;
-      v13 = v8;
+      v13 = name;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEFAULT, "%s - %@", &v10, 0x16u);
     }
 
-    v9 = [[PHImportDeviceSource alloc] initWithDevice:v6];
+    v9 = [[PHImportDeviceSource alloc] initWithDevice:deviceCopy];
     [(PHImportController *)self _addImportSource:v9];
   }
 }
 
-- (void)_removeImportSourceWithUUID:(id)a3
+- (void)_removeImportSourceWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __50__PHImportController__removeImportSourceWithUUID___block_invoke;
     v6[3] = &unk_1E75AAEB0;
     v6[4] = self;
-    v7 = v4;
+    v7 = dCopy;
     [(PHImportController *)self accessSourceList:v6];
   }
 }
@@ -209,18 +209,18 @@ void __50__PHImportController__removeImportSourceWithUUID___block_invoke(uint64_
   }
 }
 
-- (void)_addImportSource:(id)a3
+- (void)_addImportSource:(id)source
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sourceCopy = source;
+  v5 = sourceCopy;
+  if (sourceCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __39__PHImportController__addImportSource___block_invoke;
     v6[3] = &unk_1E75AAEB0;
     v6[4] = self;
-    v7 = v4;
+    v7 = sourceCopy;
     [(PHImportController *)self accessSourceList:v6];
   }
 }
@@ -279,43 +279,43 @@ void __39__PHImportController__addImportSource___block_invoke(uint64_t a1)
   }
 }
 
-- (void)importAssets:(id)a3 fromImportSource:(id)a4 intoLibrary:(id)a5 withOptions:(id)a6 progress:(id *)a7 delegate:(id)a8 performanceDelegate:(id)a9 atEnd:(id)a10
+- (void)importAssets:(id)assets fromImportSource:(id)source intoLibrary:(id)library withOptions:(id)options progress:(id *)progress delegate:(id)delegate performanceDelegate:(id)performanceDelegate atEnd:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  assetsCopy = assets;
+  sourceCopy = source;
+  libraryCopy = library;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  performanceDelegateCopy = performanceDelegate;
+  endCopy = end;
   if ([(PHImportController *)self importInProgress])
   {
-    if (v22)
+    if (endCopy)
     {
-      v23 = v17;
+      v23 = sourceCopy;
       v24 = objc_alloc_init(PHImportResults);
       v25 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"Import in progress. Cannot start another import session."];
       v26 = [(PHImportExceptionRecorder *)v24 addExceptionWithType:0 path:0 underlyingError:v25 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportController.m" line:399];
-      v22[2](v22, v24, 0);
+      endCopy[2](endCopy, v24, 0);
 
-      v17 = v23;
+      sourceCopy = v23;
     }
   }
 
   else
   {
     [(PHImportController *)self importStarting];
-    [v21 startImporting];
+    [performanceDelegateCopy startImporting];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __120__PHImportController_importAssets_fromImportSource_intoLibrary_withOptions_progress_delegate_performanceDelegate_atEnd___block_invoke;
     v27[3] = &unk_1E75A3EF8;
     v27[4] = self;
-    v28 = v21;
-    v29 = v19;
-    v30 = v17;
-    v31 = v22;
-    [PHImporter importAssets:v16 fromImportSource:v30 intoLibrary:v18 withOptions:v29 progress:a7 delegate:v20 atEnd:v27];
+    v28 = performanceDelegateCopy;
+    v29 = optionsCopy;
+    v30 = sourceCopy;
+    v31 = endCopy;
+    [PHImporter importAssets:assetsCopy fromImportSource:v30 intoLibrary:libraryCopy withOptions:v29 progress:progress delegate:delegateCopy atEnd:v27];
   }
 }
 
@@ -433,27 +433,27 @@ void __120__PHImportController_importAssets_fromImportSource_intoLibrary_withOpt
   }
 }
 
-- (void)importAssets:(id)a3 fromImportSource:(id)a4 withOptions:(id)a5 progress:(id *)a6 delegate:(id)a7 atEnd:(id)a8
+- (void)importAssets:(id)assets fromImportSource:(id)source withOptions:(id)options progress:(id *)progress delegate:(id)delegate atEnd:(id)end
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  endCopy = end;
+  delegateCopy = delegate;
+  optionsCopy = options;
+  sourceCopy = source;
+  assetsCopy = assets;
   v19 = +[PHPhotoLibrary systemPhotoLibraryURL];
-  [(PHImportController *)self importAssets:v18 fromImportSource:v17 intoLibraryAtURL:v19 withOptions:v16 progress:a6 delegate:v15 performanceDelegate:0 atEnd:v14];
+  [(PHImportController *)self importAssets:assetsCopy fromImportSource:sourceCopy intoLibraryAtURL:v19 withOptions:optionsCopy progress:progress delegate:delegateCopy performanceDelegate:0 atEnd:endCopy];
 }
 
-- (id)importUrls:(id)a3 intoLibrary:(id)a4 withOptions:(id)a5 delegate:(id)a6 performanceDelegate:(id)a7 atEnd:(id)a8
+- (id)importUrls:(id)urls intoLibrary:(id)library withOptions:(id)options delegate:(id)delegate performanceDelegate:(id)performanceDelegate atEnd:(id)end
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [v14 count];
-  if (v19 && !v20)
+  urlsCopy = urls;
+  libraryCopy = library;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  performanceDelegateCopy = performanceDelegate;
+  endCopy = end;
+  v20 = [urlsCopy count];
+  if (endCopy && !v20)
   {
     v21 = objc_alloc_init(PHImportResults);
     v22 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"Requested to import an empty asset list"];
@@ -462,14 +462,14 @@ void __120__PHImportController_importAssets_fromImportSource_intoLibrary_withOpt
     v25 = 337;
 LABEL_7:
     v27 = [(PHImportExceptionRecorder *)v23 addExceptionWithType:0 path:0 underlyingError:v24 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportController.m" line:v25];
-    v19[2](v19, v21);
+    endCopy[2](endCopy, v21);
 
     v28 = 0;
     goto LABEL_14;
   }
 
-  v26 = [(PHImportController *)self importInProgress];
-  if (v19 && v26)
+  importInProgress = [(PHImportController *)self importInProgress];
+  if (endCopy && importInProgress)
   {
     v21 = objc_alloc_init(PHImportResults);
     v22 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"Import in progress. Cannot start another import session."];
@@ -480,7 +480,7 @@ LABEL_7:
   }
 
   v49[0] = 0;
-  v29 = [(PHImportController *)self importSourceForURLs:v14 exceptions:v49];
+  v29 = [(PHImportController *)self importSourceForURLs:urlsCopy exceptions:v49];
   v30 = v49[0];
   if (![v30 count])
   {
@@ -489,7 +489,7 @@ LABEL_7:
 
   v31 = [PHImportResults resultsWithExceptions:v30];
   v32 = v31;
-  if (!v19)
+  if (!endCopy)
   {
 
 LABEL_12:
@@ -503,13 +503,13 @@ LABEL_12:
     v35[1] = 3221225472;
     v35[2] = __92__PHImportController_importUrls_intoLibrary_withOptions_delegate_performanceDelegate_atEnd___block_invoke;
     v35[3] = &unk_1E75A3ED0;
-    v36 = v16;
-    v37 = self;
+    v36 = optionsCopy;
+    selfCopy = self;
     v38 = v29;
-    v39 = v15;
-    v40 = v17;
+    v39 = libraryCopy;
+    v40 = delegateCopy;
     v42 = &v43;
-    v41 = v19;
+    v41 = endCopy;
     v33 = [v38 loadAssetsForLibrary:v39 allowDuplicates:0 order:0 atEnd:v35];
     v28 = v44[5];
 
@@ -517,7 +517,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v19[2](v19, v31);
+  endCopy[2](endCopy, v31);
 
   v28 = 0;
 LABEL_13:
@@ -614,8 +614,8 @@ void __92__PHImportController_importUrls_intoLibrary_withOptions_delegate_perfor
   if (self->_importInProgress)
   {
     self->_importInProgress = 0;
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 endActivity:self->_processInfoActivityToken];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo endActivity:self->_processInfoActivityToken];
 
     processInfoActivityToken = self->_processInfoActivityToken;
     self->_processInfoActivityToken = 0;
@@ -630,8 +630,8 @@ void __92__PHImportController_importUrls_intoLibrary_withOptions_delegate_perfor
   if (!self->_importInProgress)
   {
     self->_importInProgress = 1;
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    v4 = [v3 beginActivityWithOptions:0xFFFFFFLL reason:@"Photos Import"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    v4 = [processInfo beginActivityWithOptions:0xFFFFFFLL reason:@"Photos Import"];
     processInfoActivityToken = self->_processInfoActivityToken;
     self->_processInfoActivityToken = v4;
   }
@@ -647,40 +647,40 @@ void __92__PHImportController_importUrls_intoLibrary_withOptions_delegate_perfor
   return importInProgress;
 }
 
-- (id)filterDuplicates:(id)a3 onSource:(id)a4 library:(id)a5 options:(id)a6 delegate:(id)a7
+- (id)filterDuplicates:(id)duplicates onSource:(id)source library:(id)library options:(id)options delegate:(id)delegate
 {
   v39 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (![v11 count] || objc_msgSend(v14, "allowDuplicates"))
+  duplicatesCopy = duplicates;
+  sourceCopy = source;
+  libraryCopy = library;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  if (![duplicatesCopy count] || objc_msgSend(optionsCopy, "allowDuplicates"))
   {
-    v16 = v11;
+    v16 = duplicatesCopy;
     goto LABEL_32;
   }
 
-  if (!v11)
+  if (!duplicatesCopy)
   {
     _PFAssertFailHandler();
 LABEL_36:
     _PFAssertFailHandler();
   }
 
-  if (!v13)
+  if (!libraryCopy)
   {
     goto LABEL_36;
   }
 
-  v16 = [v11 mutableCopy];
+  v16 = [duplicatesCopy mutableCopy];
   v37 = 0;
   v17 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v18 = v11;
+  v18 = duplicatesCopy;
   v19 = [v18 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (!v19)
   {
@@ -696,9 +696,9 @@ LABEL_29:
 
   v20 = v19;
   v29 = v16;
-  v30 = v14;
-  v31 = v12;
-  v32 = v11;
+  v30 = optionsCopy;
+  v31 = sourceCopy;
+  v32 = duplicatesCopy;
   v21 = 0;
   v22 = *v34;
   while (2)
@@ -723,10 +723,10 @@ LABEL_29:
 
         else
         {
-          v25 = [v24 duplicateAssetsForLibrary:v13];
-          v26 = [v25 firstObject];
+          v25 = [v24 duplicateAssetsForLibrary:libraryCopy];
+          firstObject = [v25 firstObject];
 
-          v27 = [v15 importAsset:v24 asDuplicateOfLibraryAsset:v26 applyToAll:&v37];
+          v27 = [delegateCopy importAsset:v24 asDuplicateOfLibraryAsset:firstObject applyToAll:&v37];
           v21 = v27;
           if (v27)
           {
@@ -762,10 +762,10 @@ LABEL_25:
 
 LABEL_26:
 
-  v12 = v31;
-  v11 = v32;
+  sourceCopy = v31;
+  duplicatesCopy = v32;
   v16 = v29;
-  v14 = v30;
+  optionsCopy = v30;
   if (v21 != 2)
   {
     goto LABEL_29;
@@ -779,62 +779,62 @@ LABEL_32:
   return v16;
 }
 
-- (void)accessSourceList:(id)a3
+- (void)accessSourceList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   os_unfair_lock_lock(&self->_sourceListLock);
-  v4[2](v4);
+  listCopy[2](listCopy);
 
   os_unfair_lock_unlock(&self->_sourceListLock);
 }
 
-- (void)importAssets:(id)a3 fromImportSource:(id)a4 intoLibraryAtURL:(id)a5 withOptions:(id)a6 progress:(id *)a7 delegate:(id)a8 performanceDelegate:(id)a9 atEnd:(id)a10
+- (void)importAssets:(id)assets fromImportSource:(id)source intoLibraryAtURL:(id)l withOptions:(id)options progress:(id *)progress delegate:(id)delegate performanceDelegate:(id)performanceDelegate atEnd:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
-  v34 = a9;
-  v19 = a10;
-  v20 = a5;
-  v21 = [[PHPhotoLibrary alloc] initWithPhotoLibraryURL:v20];
+  assetsCopy = assets;
+  sourceCopy = source;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  performanceDelegateCopy = performanceDelegate;
+  endCopy = end;
+  lCopy = l;
+  v21 = [[PHPhotoLibrary alloc] initWithPhotoLibraryURL:lCopy];
 
   v36 = 0;
-  LOBYTE(v20) = [(PHPhotoLibrary *)v21 openAndWaitWithUpgrade:0 error:&v36];
+  LOBYTE(lCopy) = [(PHPhotoLibrary *)v21 openAndWaitWithUpgrade:0 error:&v36];
   v22 = v36;
-  if ((v20 & 1) == 0)
+  if ((lCopy & 1) == 0)
   {
     v23 = objc_opt_new();
     +[PHPhotoLibrary systemPhotoLibraryURL];
-    v33 = v19;
+    v33 = endCopy;
     v24 = v22;
-    v25 = self;
-    v26 = v18;
-    v27 = v17;
-    v28 = v16;
-    v30 = v29 = v15;
-    v31 = [v30 path];
+    selfCopy = self;
+    v26 = delegateCopy;
+    v27 = optionsCopy;
+    v28 = sourceCopy;
+    v30 = v29 = assetsCopy;
+    path = [v30 path];
 
-    v15 = v29;
-    v16 = v28;
-    v17 = v27;
-    v18 = v26;
-    self = v25;
+    assetsCopy = v29;
+    sourceCopy = v28;
+    optionsCopy = v27;
+    delegateCopy = v26;
+    self = selfCopy;
     v22 = v24;
-    v19 = v33;
-    v32 = [v23 addExceptionWithType:0 path:v31 underlyingError:v22 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportController.m" line:192];
-    v19[2](v19, v23, 0);
+    endCopy = v33;
+    v32 = [v23 addExceptionWithType:0 path:path underlyingError:v22 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportController.m" line:192];
+    endCopy[2](endCopy, v23, 0);
   }
 
-  [(PHImportController *)self importAssets:v15 fromImportSource:v16 intoLibrary:v21 withOptions:v17 progress:a7 delegate:v18 performanceDelegate:v34 atEnd:v19];
+  [(PHImportController *)self importAssets:assetsCopy fromImportSource:sourceCopy intoLibrary:v21 withOptions:optionsCopy progress:progress delegate:delegateCopy performanceDelegate:performanceDelegateCopy atEnd:endCopy];
 }
 
-- (id)importUrls:(id)a3 withOptions:(id)a4 delegate:(id)a5 atEnd:(id)a6
+- (id)importUrls:(id)urls withOptions:(id)options delegate:(id)delegate atEnd:(id)end
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  urlsCopy = urls;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  endCopy = end;
   v14 = [PHPhotoLibrary alloc];
   v15 = +[PHPhotoLibrary systemPhotoLibraryURL];
   v16 = [(PHPhotoLibrary *)v14 initWithPhotoLibraryURL:v15];
@@ -844,17 +844,17 @@ LABEL_32:
   v18 = v25;
   if (v17)
   {
-    v19 = [(PHImportController *)self importUrls:v10 intoLibrary:v16 withOptions:v11 delegate:v12 performanceDelegate:0 atEnd:v13];
+    v19 = [(PHImportController *)self importUrls:urlsCopy intoLibrary:v16 withOptions:optionsCopy delegate:delegateCopy performanceDelegate:0 atEnd:endCopy];
   }
 
   else
   {
     v20 = objc_opt_new();
     v21 = +[PHPhotoLibrary systemPhotoLibraryURL];
-    v22 = [v21 path];
+    path = [v21 path];
 
-    v23 = [v20 addExceptionWithType:0 path:v22 underlyingError:v18 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportController.m" line:179];
-    v13[2](v13, v20);
+    v23 = [v20 addExceptionWithType:0 path:path underlyingError:v18 file:"/Library/Caches/com.apple.xbs/Sources/Photos/Projects/PhotoKit/Sources/Import/PHImportController.m" line:179];
+    endCopy[2](endCopy, v20);
 
     v19 = 0;
   }
@@ -862,15 +862,15 @@ LABEL_32:
   return v19;
 }
 
-- (void)removeImportSource:(id)a3
+- (void)removeImportSource:(id)source
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 uuid];
-    [(PHImportController *)self _removeImportSourceWithUUID:v5];
+    uuid = [sourceCopy uuid];
+    [(PHImportController *)self _removeImportSourceWithUUID:uuid];
   }
 
   else
@@ -879,25 +879,25 @@ LABEL_32:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = sourceCopy;
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_ERROR, "ERROR: attempting to remove a non URL import source (%@)", &v7, 0xCu);
     }
   }
 }
 
-- (void)_notifyOfFailureToAddImportSource:(id)a3 exceptions:(id)a4
+- (void)_notifyOfFailureToAddImportSource:(id)source exceptions:(id)exceptions
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  exceptionsCopy = exceptions;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__PHImportController__notifyOfFailureToAddImportSource_exceptions___block_invoke;
   v10[3] = &unk_1E75AB248;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = sourceCopy;
+  v12 = exceptionsCopy;
+  v8 = exceptionsCopy;
+  v9 = sourceCopy;
   [(PHImportController *)self accessSourceList:v10];
 }
 
@@ -941,19 +941,19 @@ void __67__PHImportController__notifyOfFailureToAddImportSource_exceptions___blo
   }
 }
 
-- (id)importSourceForURLs:(id)a3 exceptions:(id *)a4
+- (id)importSourceForURLs:(id)ls exceptions:(id *)exceptions
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count])
+  lsCopy = ls;
+  if ([lsCopy count])
   {
-    v6 = [v5 firstObject];
-    if ([v5 count] != 1 || (v7 = MEMORY[0x1E69C08F0], objc_msgSend(MEMORY[0x1E69C08F0], "photosLibraryType"), v8 = objc_claimAutoreleasedReturnValue(), LODWORD(v7) = objc_msgSend(v7, "url:conformsToType:", v6, v8), v8, !v7) || (+[PHImportLibrarySource importLibrarySourceForURL:exceptions:](PHImportLibrarySource, "importLibrarySourceForURL:exceptions:", v6, a4), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    firstObject = [lsCopy firstObject];
+    if ([lsCopy count] != 1 || (v7 = MEMORY[0x1E69C08F0], objc_msgSend(MEMORY[0x1E69C08F0], "photosLibraryType"), v8 = objc_claimAutoreleasedReturnValue(), LODWORD(v7) = objc_msgSend(v7, "url:conformsToType:", firstObject, v8), v8, !v7) || (+[PHImportLibrarySource importLibrarySourceForURL:exceptions:](PHImportLibrarySource, "importLibrarySourceForURL:exceptions:", firstObject, exceptions), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v9 = [[PHImportUrlSource alloc] initWithURLs:v5];
+      v9 = [[PHImportUrlSource alloc] initWithURLs:lsCopy];
     }
 
-    if (![(PHImportUrlSource *)v9 containsSupportedMediaWithImportExceptions:a4])
+    if (![(PHImportUrlSource *)v9 containsSupportedMediaWithImportExceptions:exceptions])
     {
       v10 = PLImportGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -973,12 +973,12 @@ void __67__PHImportController__notifyOfFailureToAddImportSource_exceptions___blo
   return v9;
 }
 
-- (void)addImportSourceForUrls:(id)a3
+- (void)addImportSourceForUrls:(id)urls
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  urlsCopy = urls;
   v10 = 0;
-  v5 = [(PHImportController *)self importSourceForURLs:v4 exceptions:&v10];
+  v5 = [(PHImportController *)self importSourceForURLs:urlsCopy exceptions:&v10];
   v6 = v10;
   if ([v6 count])
   {
@@ -991,10 +991,10 @@ void __67__PHImportController__notifyOfFailureToAddImportSource_exceptions___blo
     v7 = PLImportGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v5 name];
-      v9 = [v4 count];
+      name = [v5 name];
+      v9 = [urlsCopy count];
       *buf = 138543618;
-      v12 = v8;
+      v12 = name;
       v13 = 2048;
       v14 = v9;
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_INFO, "Created source for '%{public}@' containing %lu URL(s)", buf, 0x16u);
@@ -1002,9 +1002,9 @@ void __67__PHImportController__notifyOfFailureToAddImportSource_exceptions___blo
   }
 }
 
-- (BOOL)sourceIsConnected:(id)a3
+- (BOOL)sourceIsConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1015,7 +1015,7 @@ void __67__PHImportController__notifyOfFailureToAddImportSource_exceptions___blo
   v7[3] = &unk_1E75AA3F8;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = connectedCopy;
   v8 = v5;
   [(PHImportController *)self accessSourceList:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -1032,16 +1032,16 @@ void __40__PHImportController_sourceIsConnected___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = v3 != 0;
 }
 
-- (void)addImportControllerObserver:(id)a3
+- (void)addImportControllerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__PHImportController_addImportControllerObserver___block_invoke;
   v6[3] = &unk_1E75AAEB0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(PHImportController *)self accessSourceList:v6];
 }
 
@@ -1090,9 +1090,9 @@ void __50__PHImportController_addImportControllerObserver___block_invoke(uint64_
 
 - (id)supportedTypes
 {
-  v2 = [MEMORY[0x1E69C08F0] typesSupportedForImport];
+  typesSupportedForImport = [MEMORY[0x1E69C08F0] typesSupportedForImport];
   v3 = +[PHImportLibrarySource supportedImportLibraryTypes];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  v4 = [typesSupportedForImport arrayByAddingObjectsFromArray:v3];
 
   return v4;
 }
@@ -1115,14 +1115,14 @@ uint64_t __40__PHImportController_enableDeviceImport__block_invoke_3(uint64_t a1
   return [*(*(a1 + 32) + 24) start];
 }
 
-+ (BOOL)isValidFolderAtURL:(id)a3
++ (BOOL)isValidFolderAtURL:(id)l
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v16 = 0;
   v4 = *MEMORY[0x1E695DBA0];
   v15 = 0;
-  v5 = [v3 getResourceValue:&v16 forKey:v4 error:&v15];
+  v5 = [lCopy getResourceValue:&v16 forKey:v4 error:&v15];
   v6 = v16;
   v7 = v15;
   if (v5)
@@ -1130,30 +1130,30 @@ uint64_t __40__PHImportController_enableDeviceImport__block_invoke_3(uint64_t a1
     if ([v6 BOOLValue])
     {
       v8 = MEMORY[0x1E69C08F0];
-      v9 = +[PHImportLibrarySource supportedImportLibraryTypes];
-      LOBYTE(v10) = [v8 url:v3 conformsToOneOfTypes:v9];
+      path = +[PHImportLibrarySource supportedImportLibraryTypes];
+      LOBYTE(v10) = [v8 url:lCopy conformsToOneOfTypes:path];
     }
 
     else
     {
-      v9 = [v3 path];
-      v12 = [v9 pathComponents];
-      if (([v9 isEqualToString:@"/"]& 1) != 0 || ([v9 isEqualToString:@"/Volumes"]& 1) != 0)
+      path = [lCopy path];
+      pathComponents = [path pathComponents];
+      if (([path isEqualToString:@"/"]& 1) != 0 || ([path isEqualToString:@"/Volumes"]& 1) != 0)
       {
         LOBYTE(v10) = 0;
       }
 
-      else if ([v12 count] == 2 || objc_msgSend(v12, "count") == 4 && -[NSObject hasPrefix:](v9, "hasPrefix:", @"/Volumes"))
+      else if ([pathComponents count] == 2 || objc_msgSend(pathComponents, "count") == 4 && -[NSObject hasPrefix:](path, "hasPrefix:", @"/Volumes"))
       {
-        v14 = [v9 lastPathComponent];
-        if ([v14 isEqualToString:@"dev"] & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"var") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"bin") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"sbin") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"cores") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"opt") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"home") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"private") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"usr") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"tmp") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"automount") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"net") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"Volumes") & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"Library"))
+        lastPathComponent = [path lastPathComponent];
+        if ([lastPathComponent isEqualToString:@"dev"] & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"var") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"bin") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"sbin") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"cores") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"opt") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"home") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"private") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"usr") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"tmp") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"automount") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"net") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"Volumes") & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", @"Library"))
         {
           LOBYTE(v10) = 0;
         }
 
         else
         {
-          v10 = [v14 isEqualToString:@"System"] ^ 1;
+          v10 = [lastPathComponent isEqualToString:@"System"] ^ 1;
         }
       }
 
@@ -1166,15 +1166,15 @@ uint64_t __40__PHImportController_enableDeviceImport__block_invoke_3(uint64_t a1
 
   else
   {
-    v9 = PLImportGetLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    path = PLImportGetLog();
+    if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v3 path];
+      path2 = [lCopy path];
       *buf = 138412546;
-      v18 = v11;
+      v18 = path2;
       v19 = 2112;
       v20 = v7;
-      _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_ERROR, "%@ is not a valid folder for import: %@", buf, 0x16u);
+      _os_log_impl(&dword_19C86F000, path, OS_LOG_TYPE_ERROR, "%@ is not a valid folder for import: %@", buf, 0x16u);
     }
 
     LOBYTE(v10) = 0;

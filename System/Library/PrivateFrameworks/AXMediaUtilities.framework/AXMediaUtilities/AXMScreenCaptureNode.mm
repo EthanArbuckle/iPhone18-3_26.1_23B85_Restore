@@ -1,8 +1,8 @@
 @interface AXMScreenCaptureNode
 - (AXMScreenGrabber)screenGrabber;
 - (void)nodeInitialize;
-- (void)produceImage:(id)a3;
-- (void)triggerWithScreenCaptureRegion:(CGRect)a3 interfaceOrientation:(int64_t)a4 options:(id)a5 cacheKey:(id)a6 resultHandler:(id)a7;
+- (void)produceImage:(id)image;
+- (void)triggerWithScreenCaptureRegion:(CGRect)region interfaceOrientation:(int64_t)orientation options:(id)options cacheKey:(id)key resultHandler:(id)handler;
 @end
 
 @implementation AXMScreenCaptureNode
@@ -15,18 +15,18 @@
   [(AXMSourceNode *)self setShouldProcessRemotely:1];
 }
 
-- (void)produceImage:(id)a3
+- (void)produceImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_autoreleasePoolPush();
-  objc_initWeak(&location, v4);
+  objc_initWeak(&location, imageCopy);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__AXMScreenCaptureNode_produceImage___block_invoke;
   v7[3] = &unk_1E7A1CBB8;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v6 = v4;
+  v6 = imageCopy;
   v8 = v6;
   [v6 produceImage:v7];
 
@@ -122,36 +122,36 @@ id __37__AXMScreenCaptureNode_produceImage___block_invoke(id *a1, void *a2, uint
   return screenGrabber;
 }
 
-- (void)triggerWithScreenCaptureRegion:(CGRect)a3 interfaceOrientation:(int64_t)a4 options:(id)a5 cacheKey:(id)a6 resultHandler:(id)a7
+- (void)triggerWithScreenCaptureRegion:(CGRect)region interfaceOrientation:(int64_t)orientation options:(id)options cacheKey:(id)key resultHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
   v25[3] = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v15)
+  optionsCopy = options;
+  keyCopy = key;
+  handlerCopy = handler;
+  if (!optionsCopy)
   {
-    v15 = +[AXMVisionAnalysisOptions defaultOptions];
+    optionsCopy = +[AXMVisionAnalysisOptions defaultOptions];
   }
 
   v24[0] = @"region";
   v18 = [MEMORY[0x1E696B098] axmValueWithCGRect:{x, y, width, height}];
   v25[0] = v18;
   v24[1] = @"orientation";
-  v19 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v19 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
   v25[1] = v19;
   v24[2] = @"diagnosticsEnabled";
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[AXMVisionEngineNode areDiagnosticsEnabled](self, "areDiagnosticsEnabled")}];
   v25[2] = v20;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
-  v22 = [AXMVisionPipelineContext contextWithSourceParameters:v21 options:v15];
+  v22 = [AXMVisionPipelineContext contextWithSourceParameters:v21 options:optionsCopy];
   v23.receiver = self;
   v23.super_class = AXMScreenCaptureNode;
-  [(AXMSourceNode *)&v23 triggerWithContext:v22 cacheKey:v16 resultHandler:v17];
+  [(AXMSourceNode *)&v23 triggerWithContext:v22 cacheKey:keyCopy resultHandler:handlerCopy];
 }
 
 @end

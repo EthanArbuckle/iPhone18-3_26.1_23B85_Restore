@@ -1,15 +1,15 @@
 @interface TabBarController
-- (_TtC9SeymourUI16TabBarController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI16TabBarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9SeymourUI16TabBarController)initWithTabs:(id)a3;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
+- (_TtC9SeymourUI16TabBarController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI16TabBarController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9SeymourUI16TabBarController)initWithTabs:(id)tabs;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation TabBarController
 
-- (_TtC9SeymourUI16TabBarController)initWithCoder:(id)a3
+- (_TtC9SeymourUI16TabBarController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9SeymourUI16TabBarController_paletteView;
   if (qword_27C760C40 != -1)
@@ -28,37 +28,37 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BB2CBD8();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BB2CDDC();
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v5 = a3;
-  if (a3)
+  controllersCopy = controllers;
+  if (controllers)
   {
     sub_20B51C88C(0, &qword_281100550);
-    v5 = sub_20C13CC74();
+    controllersCopy = sub_20C13CC74();
   }
 
-  v7 = self;
-  sub_20BB2D19C(v5, a4);
+  selfCopy = self;
+  sub_20BB2D19C(controllersCopy, animated);
 }
 
-- (_TtC9SeymourUI16TabBarController)initWithTabs:(id)a3
+- (_TtC9SeymourUI16TabBarController)initWithTabs:(id)tabs
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SeymourUI16TabBarController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI16TabBarController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

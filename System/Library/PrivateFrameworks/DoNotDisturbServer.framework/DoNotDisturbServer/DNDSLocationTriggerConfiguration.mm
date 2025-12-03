@@ -1,10 +1,10 @@
 @interface DNDSLocationTriggerConfiguration
 + (id)emptyConfiguration;
 - (DNDSLocationTriggerConfiguration)init;
-- (id)modeIdentifierForRegion:(id)a3;
+- (id)modeIdentifierForRegion:(id)region;
 - (id)regionIdentifiers;
 - (id)regions;
-- (void)addTriggerForModeWithIdentifier:(id)a3 forRegion:(id)a4;
+- (void)addTriggerForModeWithIdentifier:(id)identifier forRegion:(id)region;
 @end
 
 @implementation DNDSLocationTriggerConfiguration
@@ -23,13 +23,13 @@
   v2 = [(DNDSLocationTriggerConfiguration *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     modeIdentifierByRegionIdentifier = v2->_modeIdentifierByRegionIdentifier;
-    v2->_modeIdentifierByRegionIdentifier = v3;
+    v2->_modeIdentifierByRegionIdentifier = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     regionByRegionIdentifier = v2->_regionByRegionIdentifier;
-    v2->_regionByRegionIdentifier = v5;
+    v2->_regionByRegionIdentifier = dictionary2;
   }
 
   return v2;
@@ -38,8 +38,8 @@
 - (id)regions
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSMutableDictionary *)self->_regionByRegionIdentifier allValues];
-  v4 = [v2 setWithArray:v3];
+  allValues = [(NSMutableDictionary *)self->_regionByRegionIdentifier allValues];
+  v4 = [v2 setWithArray:allValues];
 
   return v4;
 }
@@ -47,29 +47,29 @@
 - (id)regionIdentifiers
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSMutableDictionary *)self->_regionByRegionIdentifier allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_regionByRegionIdentifier allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
 
-- (id)modeIdentifierForRegion:(id)a3
+- (id)modeIdentifierForRegion:(id)region
 {
   modeIdentifierByRegionIdentifier = self->_modeIdentifierByRegionIdentifier;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)modeIdentifierByRegionIdentifier objectForKeyedSubscript:v4];
+  identifier = [region identifier];
+  v5 = [(NSMutableDictionary *)modeIdentifierByRegionIdentifier objectForKeyedSubscript:identifier];
 
   return v5;
 }
 
-- (void)addTriggerForModeWithIdentifier:(id)a3 forRegion:(id)a4
+- (void)addTriggerForModeWithIdentifier:(id)identifier forRegion:(id)region
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 identifier];
-  [(NSMutableDictionary *)self->_modeIdentifierByRegionIdentifier setObject:v7 forKeyedSubscript:v8];
+  regionCopy = region;
+  identifierCopy = identifier;
+  identifier = [regionCopy identifier];
+  [(NSMutableDictionary *)self->_modeIdentifierByRegionIdentifier setObject:identifierCopy forKeyedSubscript:identifier];
 
-  [(NSMutableDictionary *)self->_regionByRegionIdentifier setObject:v6 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_regionByRegionIdentifier setObject:regionCopy forKeyedSubscript:identifier];
 }
 
 @end

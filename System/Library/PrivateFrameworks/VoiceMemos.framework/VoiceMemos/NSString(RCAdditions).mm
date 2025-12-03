@@ -8,21 +8,21 @@
 - (id)rc_reversedString
 {
   v2 = objc_opt_new();
-  v3 = [a1 length];
+  v3 = [self length];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__NSString_RCAdditions__rc_reversedString__block_invoke;
   v6[3] = &unk_279E44488;
   v4 = v2;
   v7 = v4;
-  [a1 enumerateSubstringsInRange:0 options:v3 usingBlock:{258, v6}];
+  [self enumerateSubstringsInRange:0 options:v3 usingBlock:{258, v6}];
 
   return v4;
 }
 
 - (id)rc_stringFromRealPath
 {
-  v1 = realpath_DARWIN_EXTSN([a1 fileSystemRepresentation], 0);
+  v1 = realpath_DARWIN_EXTSN([self fileSystemRepresentation], 0);
   if (v1)
   {
     v2 = v1;

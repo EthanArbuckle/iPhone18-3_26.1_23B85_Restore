@@ -11,7 +11,7 @@
   if (result)
   {
 
-    return [a1 _setIsEditable:0];
+    return [self _setIsEditable:0];
   }
 
   return result;
@@ -21,7 +21,7 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    return [a1 isEditable] ^ 1;
+    return [self isEditable] ^ 1;
   }
 
   else

@@ -1,12 +1,12 @@
 @interface PGGraphPublicEventCategoryNode
 + (MARelation)publicEventOfCategory;
 + (id)filter;
-+ (id)filterWithCategories:(id)a3;
-+ (id)filterWithCategory:(id)a3;
-- (BOOL)hasProperties:(id)a3;
++ (id)filterWithCategories:(id)categories;
++ (id)filterWithCategory:(id)category;
+- (BOOL)hasProperties:(id)properties;
 - (NSString)description;
-- (PGGraphPublicEventCategoryNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphPublicEventCategoryNode)initWithLabel:(id)a3 localizedName:(id)a4;
+- (PGGraphPublicEventCategoryNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphPublicEventCategoryNode)initWithLabel:(id)label localizedName:(id)name;
 - (PGGraphPublicEventCategoryNodeCollection)collection;
 - (id)associatedNodesForRemoval;
 - (id)propertyDictionary;
@@ -69,11 +69,11 @@ void __59__PGGraphPublicEventCategoryNode_associatedNodesForRemoval__block_invok
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"lcln"];
     v7 = v6;
@@ -95,29 +95,29 @@ void __59__PGGraphPublicEventCategoryNode_associatedNodesForRemoval__block_invok
   return v2;
 }
 
-- (PGGraphPublicEventCategoryNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphPublicEventCategoryNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v7 = a3;
-  v8 = [a5 objectForKeyedSubscript:@"lcln"];
-  v9 = [(PGGraphPublicEventCategoryNode *)self initWithLabel:v7 localizedName:v8];
+  labelCopy = label;
+  v8 = [properties objectForKeyedSubscript:@"lcln"];
+  v9 = [(PGGraphPublicEventCategoryNode *)self initWithLabel:labelCopy localizedName:v8];
 
   return v9;
 }
 
-- (PGGraphPublicEventCategoryNode)initWithLabel:(id)a3 localizedName:(id)a4
+- (PGGraphPublicEventCategoryNode)initWithLabel:(id)label localizedName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = PGGraphPublicEventCategoryNode;
   v8 = [(PGGraphNode *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [labelCopy copy];
     label = v8->_label;
     v8->_label = v9;
 
-    objc_storeStrong(&v8->_localizedName, a4);
+    objc_storeStrong(&v8->_localizedName, name);
   }
 
   return v8;
@@ -126,26 +126,26 @@ void __59__PGGraphPublicEventCategoryNode_associatedNodesForRemoval__block_invok
 + (MARelation)publicEventOfCategory
 {
   v2 = +[PGGraphPublicEventCategoryEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
-+ (id)filterWithCategories:(id)a3
++ (id)filterWithCategories:(id)categories
 {
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
+  categoriesCopy = categories;
   v5 = [v3 alloc];
-  v6 = [v5 initWithLabels:v4 domain:901 properties:MEMORY[0x277CBEC10]];
+  v6 = [v5 initWithLabels:categoriesCopy domain:901 properties:MEMORY[0x277CBEC10]];
 
   return v6;
 }
 
-+ (id)filterWithCategory:(id)a3
++ (id)filterWithCategory:(id)category
 {
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithLabel:v4 domain:901];
+  categoryCopy = category;
+  v5 = [[v3 alloc] initWithLabel:categoryCopy domain:901];
 
   return v5;
 }

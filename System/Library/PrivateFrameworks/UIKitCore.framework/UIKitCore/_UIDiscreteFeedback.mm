@@ -1,10 +1,10 @@
 @interface _UIDiscreteFeedback
-+ (id)discreteFeedbackForType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)discreteFeedbackForType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPlaying;
-- (_UIDiscreteFeedback)initWithDictionaryRepresentation:(id)a3;
+- (_UIDiscreteFeedback)initWithDictionaryRepresentation:(id)representation;
 - (id)_debugDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)_effectiveEventType;
 - (unsigned)_effectiveSystemSoundID;
@@ -99,31 +99,31 @@
   return result;
 }
 
-+ (id)discreteFeedbackForType:(int64_t)a3
++ (id)discreteFeedbackForType:(int64_t)type
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setType:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setType:type];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UIDiscreteFeedback;
-  result = [(_UIFeedback *)&v5 copyWithZone:a3];
+  result = [(_UIFeedback *)&v5 copyWithZone:zone];
   *(result + 17) = self->_type;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIDiscreteFeedback;
-  if ([(_UIFeedback *)&v7 isEqual:v4])
+  if ([(_UIFeedback *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_type == v4[17];
+    v5 = self->_type == equalCopy[17];
   }
 
   else
@@ -134,15 +134,15 @@
   return v5;
 }
 
-- (_UIDiscreteFeedback)initWithDictionaryRepresentation:(id)a3
+- (_UIDiscreteFeedback)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = _UIDiscreteFeedback;
-  v5 = [(_UIFeedback *)&v9 initWithDictionaryRepresentation:v4];
+  v5 = [(_UIFeedback *)&v9 initWithDictionaryRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"feedbackType"];
+    v6 = [representationCopy objectForKeyedSubscript:@"feedbackType"];
     v5->_type = [v6 intValue];
 
     v7 = v5;
@@ -156,8 +156,8 @@
   v10[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = _UIDiscreteFeedback;
-  v3 = [(_UIFeedback *)&v8 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(_UIFeedback *)&v8 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v9 = @"feedbackType";
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_type];
@@ -186,8 +186,8 @@
 
 - (BOOL)isPlaying
 {
-  v2 = [(_UIFeedback *)self _player];
-  v3 = v2 != 0;
+  _player = [(_UIFeedback *)self _player];
+  v3 = _player != 0;
 
   return v3;
 }
@@ -196,15 +196,15 @@
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v10[0] = @"feedbackType";
-  v3 = [(_UIDiscreteFeedback *)self type];
-  if ((v3 - 1) > 8)
+  type = [(_UIDiscreteFeedback *)self type];
+  if ((type - 1) > 8)
   {
     v4 = @"Unknown";
   }
 
   else
   {
-    v4 = off_1E7107788[v3 - 1];
+    v4 = off_1E7107788[type - 1];
   }
 
   v5 = v4;

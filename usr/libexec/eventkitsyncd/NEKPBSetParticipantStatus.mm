@@ -1,20 +1,20 @@
 @interface NEKPBSetParticipantStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NEKPBSetParticipantStatus
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = NEKPBSetParticipantStatus;
   v3 = [(NEKPBSetParticipantStatus *)&v7 description];
-  v4 = [(NEKPBSetParticipantStatus *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NEKPBSetParticipantStatus *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -71,16 +71,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     status = self->_status;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -88,56 +88,56 @@
   {
     span = self->_span;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_itemIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_storeIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[5] = self->_status;
-    *(v4 + 32) |= 2u;
+    toCopy[5] = self->_status;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[4] = self->_span;
-    *(v4 + 32) |= 1u;
+    toCopy[4] = self->_span;
+    *(toCopy + 32) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_itemIdentifier)
   {
-    [v4 setItemIdentifier:?];
-    v4 = v6;
+    [toCopy setItemIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_storeIdentifier)
   {
     [v6 setStoreIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -153,35 +153,35 @@
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(NSString *)self->_itemIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_itemIdentifier copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
-  v10 = [(NSString *)self->_storeIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_storeIdentifier copyWithZone:zone];
   v11 = v6[3];
   v6[3] = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_status != *(v4 + 5))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_status != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_16:
     v8 = 0;
@@ -190,25 +190,25 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_span != *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_span != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_16;
   }
 
   itemIdentifier = self->_itemIdentifier;
-  if (itemIdentifier | *(v4 + 1) && ![(NSString *)itemIdentifier isEqual:?])
+  if (itemIdentifier | *(equalCopy + 1) && ![(NSString *)itemIdentifier isEqual:?])
   {
     goto LABEL_16;
   }
 
   storeIdentifier = self->_storeIdentifier;
-  if (storeIdentifier | *(v4 + 3))
+  if (storeIdentifier | *(equalCopy + 3))
   {
     v8 = [(NSString *)storeIdentifier isEqual:?];
   }
@@ -251,34 +251,34 @@ LABEL_6:
   return v5 ^ [(NSString *)self->_storeIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) != 0)
   {
-    self->_status = *(v4 + 5);
+    self->_status = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
   }
 
   if (v5)
   {
-    self->_span = *(v4 + 4);
+    self->_span = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  v6 = v4;
-  if (*(v4 + 1))
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NEKPBSetParticipantStatus *)self setItemIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NEKPBSetParticipantStatus *)self setStoreIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

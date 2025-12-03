@@ -1,13 +1,13 @@
 @interface CNAUIMessagesImagesFacade
-- (id)imageDataForResult:(id)a3;
-- (id)imageForResult:(id)a3;
+- (id)imageDataForResult:(id)result;
+- (id)imageForResult:(id)result;
 @end
 
 @implementation CNAUIMessagesImagesFacade
 
-- (id)imageForResult:(id)a3
+- (id)imageForResult:(id)result
 {
-  v3 = [(CNAUIMessagesImagesFacade *)self imageDataForResult:a3];
+  v3 = [(CNAUIMessagesImagesFacade *)self imageDataForResult:result];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DCAB8] imageWithData:v3];
@@ -21,18 +21,18 @@
   return v4;
 }
 
-- (id)imageDataForResult:(id)a3
+- (id)imageDataForResult:(id)result
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultCopy = result;
   if (IMCoreLibraryCore() && getIMSPIGetGroupPhotosForChatsWithGroupIDsSymbolLoc())
   {
-    v4 = [v3 psSuggestion];
-    v5 = [v4 messagesGroupIdentifier];
+    psSuggestion = [resultCopy psSuggestion];
+    messagesGroupIdentifier = [psSuggestion messagesGroupIdentifier];
 
-    if (v5)
+    if (messagesGroupIdentifier)
     {
-      v11[0] = v5;
+      v11[0] = messagesGroupIdentifier;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
       IMSPIGetGroupPhotosForChatsWithGroupIDsSymbolLoc = getIMSPIGetGroupPhotosForChatsWithGroupIDsSymbolLoc();
       if (!IMSPIGetGroupPhotosForChatsWithGroupIDsSymbolLoc)
@@ -42,7 +42,7 @@
 
       v8 = IMSPIGetGroupPhotosForChatsWithGroupIDsSymbolLoc(v6);
 
-      v9 = [v8 objectForKeyedSubscript:v5];
+      v9 = [v8 objectForKeyedSubscript:messagesGroupIdentifier];
     }
 
     else

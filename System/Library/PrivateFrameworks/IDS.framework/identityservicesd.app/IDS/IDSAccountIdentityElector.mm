@@ -1,39 +1,39 @@
 @interface IDSAccountIdentityElector
-- (IDSAccountIdentityElector)initWithKeychainElectionStore:(id)a3 cloudKitElectionStore:(id)a4 groupServerElectionStore:(id)a5;
-- (void)_cleanupFailedElectionWithFullAccountIdentityCluster:(id)a3;
-- (void)_createAccountKeysWithFullAccountIdentity:(id)a3 serviceTypeNames:(id)a4 oldCluster:(id)a5 completion:(id)a6;
-- (void)_getCurrentAccountClusterWithCompletion:(id)a3;
-- (void)_getKeysForServiceTypeName:(id)a3 completion:(id)a4;
-- (void)_rollAccountKeyWithFullCluster:(id)a3 completion:(id)a4;
-- (void)getKeysForServiceTypeName:(id)a3 completion:(id)a4;
-- (void)rollAccountKeyWithCompletion:(id)a3;
+- (IDSAccountIdentityElector)initWithKeychainElectionStore:(id)store cloudKitElectionStore:(id)electionStore groupServerElectionStore:(id)serverElectionStore;
+- (void)_cleanupFailedElectionWithFullAccountIdentityCluster:(id)cluster;
+- (void)_createAccountKeysWithFullAccountIdentity:(id)identity serviceTypeNames:(id)names oldCluster:(id)cluster completion:(id)completion;
+- (void)_getCurrentAccountClusterWithCompletion:(id)completion;
+- (void)_getKeysForServiceTypeName:(id)name completion:(id)completion;
+- (void)_rollAccountKeyWithFullCluster:(id)cluster completion:(id)completion;
+- (void)getKeysForServiceTypeName:(id)name completion:(id)completion;
+- (void)rollAccountKeyWithCompletion:(id)completion;
 @end
 
 @implementation IDSAccountIdentityElector
 
-- (IDSAccountIdentityElector)initWithKeychainElectionStore:(id)a3 cloudKitElectionStore:(id)a4 groupServerElectionStore:(id)a5
+- (IDSAccountIdentityElector)initWithKeychainElectionStore:(id)store cloudKitElectionStore:(id)electionStore groupServerElectionStore:(id)serverElectionStore
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  electionStoreCopy = electionStore;
+  serverElectionStoreCopy = serverElectionStore;
   v15.receiver = self;
   v15.super_class = IDSAccountIdentityElector;
   v12 = [(IDSAccountIdentityElector *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_keychainElectionStore, a3);
-    objc_storeStrong(&v13->_cloudKitElectionStore, a4);
-    objc_storeStrong(&v13->_groupServerElectionStore, a5);
+    objc_storeStrong(&v12->_keychainElectionStore, store);
+    objc_storeStrong(&v13->_cloudKitElectionStore, electionStore);
+    objc_storeStrong(&v13->_groupServerElectionStore, serverElectionStore);
   }
 
   return v13;
 }
 
-- (void)getKeysForServiceTypeName:(id)a3 completion:(id)a4
+- (void)getKeysForServiceTypeName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v10 = _os_activity_create(&_mh_execute_header, "ElectAccountIdentity", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -42,18 +42,18 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v6;
+    v12 = nameCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "!setState serviceTypeName=%@", buf, 0xCu);
   }
 
-  [(IDSAccountIdentityElector *)self _getKeysForServiceTypeName:v6 completion:v7];
+  [(IDSAccountIdentityElector *)self _getKeysForServiceTypeName:nameCopy completion:completionCopy];
   os_activity_scope_leave(&state);
   cut_arc_os_release();
 }
 
-- (void)rollAccountKeyWithCompletion:(id)a3
+- (void)rollAccountKeyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v9 = _os_activity_create(&_mh_execute_header, "RollAccountKey", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
@@ -62,7 +62,7 @@
   v6[1] = 3221225472;
   v6[2] = sub_10032DF70;
   v6[3] = &unk_100BD7788;
-  v5 = v4;
+  v5 = completionCopy;
   v6[4] = self;
   v7 = v5;
   [(IDSAccountIdentityElector *)self _getCurrentAccountClusterWithCompletion:v6];
@@ -71,47 +71,47 @@
   cut_arc_os_release();
 }
 
-- (void)_getKeysForServiceTypeName:(id)a3 completion:(id)a4
+- (void)_getKeysForServiceTypeName:(id)name completion:(id)completion
 {
-  v6 = a3;
+  nameCopy = name;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10032E150;
   v9[3] = &unk_100BD77B0;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v7 = v6;
-  v8 = v12;
+  selfCopy = self;
+  completionCopy = completion;
+  v10 = nameCopy;
+  v7 = nameCopy;
+  v8 = completionCopy;
   [(IDSAccountIdentityElector *)self _getCurrentAccountClusterWithCompletion:v9];
 }
 
-- (void)_getCurrentAccountClusterWithCompletion:(id)a3
+- (void)_getCurrentAccountClusterWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IDSAccountIdentityElector *)self cloudKitElectionStore];
+  completionCopy = completion;
+  cloudKitElectionStore = [(IDSAccountIdentityElector *)self cloudKitElectionStore];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10032E6A8;
   v7[3] = &unk_100BD77D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchAccountIdentityItemWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [cloudKitElectionStore fetchAccountIdentityItemWithCompletion:v7];
 }
 
-- (void)_rollAccountKeyWithFullCluster:(id)a3 completion:(id)a4
+- (void)_rollAccountKeyWithFullCluster:(id)cluster completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 fullAccountIdentity];
-  v9 = [v6 fullServiceIdentitiesSigning];
-  v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+  clusterCopy = cluster;
+  completionCopy = completion;
+  fullAccountIdentity = [clusterCopy fullAccountIdentity];
+  fullServiceIdentitiesSigning = [clusterCopy fullServiceIdentitiesSigning];
+  v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(fullServiceIdentitiesSigning, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = v9;
+  v11 = fullServiceIdentitiesSigning;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -127,8 +127,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v20 + 1) + 8 * v15) identityServiceTypeName];
-        [v10 addObject:v16];
+        identityServiceTypeName = [*(*(&v20 + 1) + 8 * v15) identityServiceTypeName];
+        [v10 addObject:identityServiceTypeName];
 
         v15 = v15 + 1;
       }
@@ -144,23 +144,23 @@
   v18[1] = 3221225472;
   v18[2] = sub_10032EB68;
   v18[3] = &unk_100BD7800;
-  v19 = v7;
-  v17 = v7;
-  [(IDSAccountIdentityElector *)self _createAccountKeysWithFullAccountIdentity:v8 serviceTypeNames:v10 oldCluster:v6 completion:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [(IDSAccountIdentityElector *)self _createAccountKeysWithFullAccountIdentity:fullAccountIdentity serviceTypeNames:v10 oldCluster:clusterCopy completion:v18];
 }
 
-- (void)_createAccountKeysWithFullAccountIdentity:(id)a3 serviceTypeNames:(id)a4 oldCluster:(id)a5 completion:(id)a6
+- (void)_createAccountKeysWithFullAccountIdentity:(id)identity serviceTypeNames:(id)names oldCluster:(id)cluster completion:(id)completion
 {
-  v72 = a3;
-  v71 = a4;
-  v10 = a5;
-  v70 = a6;
+  identityCopy = identity;
+  namesCopy = names;
+  clusterCopy = cluster;
+  completionCopy = completion;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v104 = _os_activity_create(&_mh_execute_header, "Create account keys", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v104, &state);
   v11 = +[IDSFoundationLog accountIdentity];
-  v73 = v10;
+  v73 = clusterCopy;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
@@ -171,7 +171,7 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v106 = v72;
+    v106 = identityCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "!setState currentIdentity=%@", buf, 0xCu);
   }
 
@@ -179,7 +179,7 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v106 = v71;
+    v106 = namesCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "!setState serviceTypeNames=%@", buf, 0xCu);
   }
 
@@ -187,11 +187,11 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v106 = v10;
+    v106 = clusterCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "!setState oldCluster=%@", buf, 0xCu);
   }
 
-  if (v72)
+  if (identityCopy)
   {
     v15 = +[IDSFoundationLog accountIdentity];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -202,7 +202,7 @@
 
     v102 = 0;
     v16 = &v102;
-    v17 = [v72 rolledAccountIdenityWithError:&v102];
+    v17 = [identityCopy rolledAccountIdenityWithError:&v102];
   }
 
   else
@@ -237,7 +237,7 @@
     v100 = 0u;
     v97 = 0u;
     v98 = 0u;
-    v22 = v71;
+    v22 = namesCopy;
     v23 = [v22 countByEnumeratingWithState:&v97 objects:v109 count:16];
     if (v23)
     {
@@ -266,7 +266,7 @@
               _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Failed to create adming identity -- Fail {adminServiceIdentity: %{public}@}", buf, 0xCu);
             }
 
-            v70[2](v70, 0, 131073);
+            completionCopy[2](completionCopy, 0, 131073);
             goto LABEL_70;
           }
 
@@ -284,7 +284,7 @@
               _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Failed to create signingServiceIdenitty -- Fail {signingServiceIdentity: %{public}@}", buf, 0xCu);
             }
 
-            v70[2](v70, 0, 131074);
+            completionCopy[2](completionCopy, 0, 131074);
             goto LABEL_69;
           }
 
@@ -356,11 +356,11 @@
       __assert_rtn("[IDSAccountIdentityElector _createAccountKeysWithFullAccountIdentity:serviceTypeNames:oldCluster:completion:]", "IDSAccountIdentityElector.m", 262, "[oldCluster isParentOfCluster:newCluster]");
     }
 
-    v40 = [(IDSAccountIdentityElector *)self keychainElectionStore];
-    v27 = [v40 identifierForFullCluster:v73];
+    keychainElectionStore = [(IDSAccountIdentityElector *)self keychainElectionStore];
+    v27 = [keychainElectionStore identifierForFullCluster:v73];
 
-    v41 = [(IDSAccountIdentityElector *)self keychainElectionStore];
-    v68 = [v41 identifierForFullCluster:v22];
+    keychainElectionStore2 = [(IDSAccountIdentityElector *)self keychainElectionStore];
+    v68 = [keychainElectionStore2 identifierForFullCluster:v22];
 
     v42 = +[IDSFoundationLog accountIdentity];
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -393,30 +393,30 @@
 
     if (v69)
     {
-      v67 = [v22 groupID];
-      v46 = [v73 publicKey];
-      v66 = [v22 forwardingTicket];
+      groupID = [v22 groupID];
+      publicKey = [v73 publicKey];
+      forwardingTicket = [v22 forwardingTicket];
       v90 = v20;
       v65 = [v22 signData:v69 withError:&v90];
       v60 = v90;
 
-      v64 = [v22 publicKey];
+      publicKey2 = [v22 publicKey];
       v47 = v73;
       if (v73)
       {
-        v48 = [v73 groupID];
-        v63 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v48 generation]);
+        groupID2 = [v73 groupID];
+        v63 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [groupID2 generation]);
 
-        v49 = [v22 groupID];
-        v50 = [v49 stableGroupID];
-        v62 = [v50 dataRepresentation];
+        groupID3 = [v22 groupID];
+        stableGroupID = [groupID3 stableGroupID];
+        dataRepresentation = [stableGroupID dataRepresentation];
 
         v47 = v73;
       }
 
       else
       {
-        v62 = 0;
+        dataRepresentation = 0;
         v63 = 0;
       }
 
@@ -424,7 +424,7 @@
       if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v106 = v67;
+        v106 = groupID;
         _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "!setState newGroupID=%@", buf, 0xCu);
       }
 
@@ -437,31 +437,31 @@
         }
       }
 
-      v54 = [(IDSAccountIdentityElector *)self cloudKitElectionStore];
+      cloudKitElectionStore = [(IDSAccountIdentityElector *)self cloudKitElectionStore];
       v76[0] = _NSConcreteStackBlock;
       v76[1] = 3221225472;
       v76[2] = sub_10032FA60;
       v76[3] = &unk_100BD78A0;
       v76[4] = self;
       v77 = v22;
-      v87 = v70;
+      v87 = completionCopy;
       v78 = v27;
       v79 = v69;
       v55 = v65;
       v80 = v55;
-      v56 = v67;
+      v56 = groupID;
       v81 = v56;
-      v57 = v66;
+      v57 = forwardingTicket;
       v82 = v57;
-      v88 = v46;
-      v89 = v64;
+      v88 = publicKey;
+      v89 = publicKey2;
       v58 = v63;
       v83 = v58;
-      v59 = v62;
+      v59 = dataRepresentation;
       v84 = v59;
       v85 = v68;
       v86 = v73;
-      [v54 fetchAccountIdentityItemWithCompletion:v76];
+      [cloudKitElectionStore fetchAccountIdentityItemWithCompletion:v76];
 
       v20 = v61;
     }
@@ -477,7 +477,7 @@
       }
 
       [(IDSAccountIdentityElector *)self _cleanupFailedElectionWithFullAccountIdentityCluster:v22];
-      v70[2](v70, 0, 131075);
+      completionCopy[2](completionCopy, 0, 131075);
     }
 
 LABEL_69:
@@ -497,30 +497,30 @@ LABEL_70:
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Failed to create new account identity -- Fail {error: %{public}@}", buf, 0xCu);
     }
 
-    v70[2](v70, 0, 0x20000);
+    completionCopy[2](completionCopy, 0, 0x20000);
   }
 
   os_activity_scope_leave(&state);
   cut_arc_os_release();
 }
 
-- (void)_cleanupFailedElectionWithFullAccountIdentityCluster:(id)a3
+- (void)_cleanupFailedElectionWithFullAccountIdentityCluster:(id)cluster
 {
-  v4 = a3;
+  clusterCopy = cluster;
   v5 = +[IDSFoundationLog accountIdentity];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = v4;
+    v14 = clusterCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Cleaning up after failed election {cluster %{public}@}", buf, 0xCu);
   }
 
-  v6 = [(IDSAccountIdentityElector *)self keychainElectionStore];
-  v7 = [v6 identifierForFullCluster:v4];
+  keychainElectionStore = [(IDSAccountIdentityElector *)self keychainElectionStore];
+  v7 = [keychainElectionStore identifierForFullCluster:clusterCopy];
 
-  v8 = [(IDSAccountIdentityElector *)self keychainElectionStore];
+  keychainElectionStore2 = [(IDSAccountIdentityElector *)self keychainElectionStore];
   v12 = 0;
-  v9 = [v8 removeFullClusterWithIdentifier:v7 error:&v12];
+  v9 = [keychainElectionStore2 removeFullClusterWithIdentifier:v7 error:&v12];
   v10 = v12;
 
   if ((v9 & 1) == 0)
@@ -529,7 +529,7 @@ LABEL_70:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v14 = v4;
+      v14 = clusterCopy;
       v15 = 2112;
       v16 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Failed to clean up failed election {cluster: %{public}@, error: %{error}@}", buf, 0x16u);

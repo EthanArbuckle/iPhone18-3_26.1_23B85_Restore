@@ -1,11 +1,11 @@
 @interface CTDeviceIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isVinylCapable;
 - (CTDeviceIdentifier)init;
-- (CTDeviceIdentifier)initWithCoder:(id)a3;
-- (CTDeviceIdentifier)initWithDeviceType:(unint64_t)a3 EID:(id)a4 IMEI:(id)a5 idsDeviceId:(id)a6;
+- (CTDeviceIdentifier)initWithCoder:(id)coder;
+- (CTDeviceIdentifier)initWithDeviceType:(unint64_t)type EID:(id)d IMEI:(id)i idsDeviceId:(id)id;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTDeviceIdentifier
@@ -38,27 +38,27 @@
   return v3;
 }
 
-- (CTDeviceIdentifier)initWithDeviceType:(unint64_t)a3 EID:(id)a4 IMEI:(id)a5 idsDeviceId:(id)a6
+- (CTDeviceIdentifier)initWithDeviceType:(unint64_t)type EID:(id)d IMEI:(id)i idsDeviceId:(id)id
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  iCopy = i;
+  idCopy = id;
   v22.receiver = self;
   v22.super_class = CTDeviceIdentifier;
   v13 = [(CTDeviceIdentifier *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_deviceType = a3;
-    v15 = [v10 copy];
+    v13->_deviceType = type;
+    v15 = [dCopy copy];
     EID = v14->_EID;
     v14->_EID = v15;
 
-    v17 = [v11 copy];
+    v17 = [iCopy copy];
     IMEI = v14->_IMEI;
     v14->_IMEI = v17;
 
-    v19 = [v12 copy];
+    v19 = [idCopy copy];
     idsDeviceId = v14->_idsDeviceId;
     v14->_idsDeviceId = v19;
   }
@@ -84,31 +84,31 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTDeviceIdentifier *)self deviceName];
-  [v3 appendFormat:@" deviceName=%@", v4];
+  deviceName = [(CTDeviceIdentifier *)self deviceName];
+  [v3 appendFormat:@" deviceName=%@", deviceName];
 
-  v5 = [(CTDeviceIdentifier *)self modelName];
-  [v3 appendFormat:@" modelName=%@", v5];
+  modelName = [(CTDeviceIdentifier *)self modelName];
+  [v3 appendFormat:@" modelName=%@", modelName];
 
   [v3 appendFormat:@" deviceType=%s", CTDeviceTypeAsString(-[CTDeviceIdentifier deviceType](self, "deviceType"))];
   v6 = [(CTDeviceIdentifier *)self EID];
   [v3 appendFormat:@" EID=%@", v6];
 
-  v7 = [(CTDeviceIdentifier *)self IMEI];
-  [v3 appendFormat:@" IMEI=%@", v7];
+  iMEI = [(CTDeviceIdentifier *)self IMEI];
+  [v3 appendFormat:@" IMEI=%@", iMEI];
 
-  v8 = [(CTDeviceIdentifier *)self idsDeviceId];
-  [v3 appendFormat:@" idsDeviceId=%@", v8];
+  idsDeviceId = [(CTDeviceIdentifier *)self idsDeviceId];
+  [v3 appendFormat:@" idsDeviceId=%@", idsDeviceId];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -118,22 +118,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTDeviceIdentifier *)self deviceName];
-      v8 = [(CTDeviceIdentifier *)v6 deviceName];
-      if (v7 != v8)
+      deviceName = [(CTDeviceIdentifier *)self deviceName];
+      deviceName2 = [(CTDeviceIdentifier *)equalCopy deviceName];
+      if (deviceName != deviceName2)
       {
-        v3 = [(CTDeviceIdentifier *)self deviceName];
-        v4 = [(CTDeviceIdentifier *)v6 deviceName];
-        if (![v3 isEqualToString:v4])
+        deviceName3 = [(CTDeviceIdentifier *)self deviceName];
+        deviceName4 = [(CTDeviceIdentifier *)equalCopy deviceName];
+        if (![deviceName3 isEqualToString:deviceName4])
         {
           v9 = 0;
           goto LABEL_15;
         }
       }
 
-      v10 = [(CTDeviceIdentifier *)self modelName];
-      v11 = [(CTDeviceIdentifier *)v6 modelName];
-      if (v10 != v11 || (v12 = [(CTDeviceIdentifier *)self deviceType], v12 != [(CTDeviceIdentifier *)v6 deviceType]))
+      modelName = [(CTDeviceIdentifier *)self modelName];
+      modelName2 = [(CTDeviceIdentifier *)equalCopy modelName];
+      if (modelName != modelName2 || (v12 = [(CTDeviceIdentifier *)self deviceType], v12 != [(CTDeviceIdentifier *)equalCopy deviceType]))
       {
 
         v9 = 0;
@@ -141,12 +141,12 @@
       }
 
       v13 = [(CTDeviceIdentifier *)self EID];
-      v14 = [(CTDeviceIdentifier *)v6 EID];
+      v14 = [(CTDeviceIdentifier *)equalCopy EID];
       v33 = v13;
       if (v13 != v14)
       {
         v15 = [(CTDeviceIdentifier *)self EID];
-        v29 = [(CTDeviceIdentifier *)v6 EID];
+        v29 = [(CTDeviceIdentifier *)equalCopy EID];
         v30 = v15;
         if (![v15 isEqualToString:v29])
         {
@@ -155,33 +155,33 @@
         }
       }
 
-      v17 = [(CTDeviceIdentifier *)self IMEI];
-      v31 = [(CTDeviceIdentifier *)v6 IMEI];
-      v32 = v17;
-      if (v17 == v31)
+      iMEI = [(CTDeviceIdentifier *)self IMEI];
+      iMEI2 = [(CTDeviceIdentifier *)equalCopy IMEI];
+      v32 = iMEI;
+      if (iMEI == iMEI2)
       {
         v28 = v14;
       }
 
       else
       {
-        v18 = [(CTDeviceIdentifier *)self IMEI];
-        v26 = [(CTDeviceIdentifier *)v6 IMEI];
-        v27 = v18;
-        if (![v18 isEqualToString:?])
+        iMEI3 = [(CTDeviceIdentifier *)self IMEI];
+        iMEI4 = [(CTDeviceIdentifier *)equalCopy IMEI];
+        v27 = iMEI3;
+        if (![iMEI3 isEqualToString:?])
         {
           v9 = 0;
-          v23 = v31;
+          v23 = iMEI2;
           goto LABEL_27;
         }
 
         v28 = v14;
       }
 
-      v19 = [(CTDeviceIdentifier *)self idsDeviceId];
-      v20 = [(CTDeviceIdentifier *)v6 idsDeviceId];
-      v21 = v20;
-      if (v19 == v20)
+      idsDeviceId = [(CTDeviceIdentifier *)self idsDeviceId];
+      idsDeviceId2 = [(CTDeviceIdentifier *)equalCopy idsDeviceId];
+      v21 = idsDeviceId2;
+      if (idsDeviceId == idsDeviceId2)
       {
 
         v9 = 1;
@@ -189,15 +189,15 @@
 
       else
       {
-        v24 = [(CTDeviceIdentifier *)self idsDeviceId];
-        [(CTDeviceIdentifier *)v6 idsDeviceId];
-        v22 = v25 = v19;
-        v9 = [v24 isEqualToString:v22];
+        idsDeviceId3 = [(CTDeviceIdentifier *)self idsDeviceId];
+        [(CTDeviceIdentifier *)equalCopy idsDeviceId];
+        v22 = v25 = idsDeviceId;
+        v9 = [idsDeviceId3 isEqualToString:v22];
       }
 
-      v23 = v31;
+      v23 = iMEI2;
       v14 = v28;
-      if (v32 == v31)
+      if (v32 == iMEI2)
       {
 LABEL_28:
 
@@ -206,7 +206,7 @@ LABEL_28:
 LABEL_30:
 
 LABEL_14:
-          if (v7 == v8)
+          if (deviceName == deviceName2)
           {
 LABEL_16:
 
@@ -236,32 +236,32 @@ LABEL_17:
   return v9;
 }
 
-- (CTDeviceIdentifier)initWithCoder:(id)a3
+- (CTDeviceIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CTDeviceIdentifier;
   v5 = [(CTDeviceIdentifier *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelName"];
     modelName = v5->_modelName;
     v5->_modelName = v8;
 
-    v5->_deviceType = [v4 decodeIntegerForKey:@"deviceType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EID"];
+    v5->_deviceType = [coderCopy decodeIntegerForKey:@"deviceType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EID"];
     EID = v5->_EID;
     v5->_EID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IMEI"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IMEI"];
     IMEI = v5->_IMEI;
     v5->_IMEI = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsDeviceId"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsDeviceId"];
     idsDeviceId = v5->_idsDeviceId;
     v5->_idsDeviceId = v14;
   }
@@ -269,16 +269,16 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceName = self->_deviceName;
-  v5 = a3;
-  [v5 encodeObject:deviceName forKey:@"deviceName"];
-  [v5 encodeObject:self->_modelName forKey:@"modelName"];
-  [v5 encodeInteger:self->_deviceType forKey:@"deviceType"];
-  [v5 encodeObject:self->_EID forKey:@"EID"];
-  [v5 encodeObject:self->_IMEI forKey:@"IMEI"];
-  [v5 encodeObject:self->_idsDeviceId forKey:@"idsDeviceId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceName forKey:@"deviceName"];
+  [coderCopy encodeObject:self->_modelName forKey:@"modelName"];
+  [coderCopy encodeInteger:self->_deviceType forKey:@"deviceType"];
+  [coderCopy encodeObject:self->_EID forKey:@"EID"];
+  [coderCopy encodeObject:self->_IMEI forKey:@"IMEI"];
+  [coderCopy encodeObject:self->_idsDeviceId forKey:@"idsDeviceId"];
 }
 
 @end

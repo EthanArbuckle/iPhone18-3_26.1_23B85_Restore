@@ -1,16 +1,16 @@
 @interface AWDWiFiMetricsManagerLeakyAPStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLeakyApDecision:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasLeakyApDecision:(BOOL)decision;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerLeakyAPStats
@@ -24,9 +24,9 @@
   [(AWDWiFiMetricsManagerLeakyAPStats *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLeakyApDecision:(BOOL)a3
+- (void)setHasLeakyApDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 8;
   }
@@ -78,47 +78,47 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_version), @"version"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_version), @"version"}];
   }
 
   oui = self->_oui;
   if (oui)
   {
-    [v3 setObject:oui forKey:@"oui"];
+    [dictionary setObject:oui forKey:@"oui"];
   }
 
   leakyApStats = self->_leakyApStats;
   if (leakyApStats)
   {
-    [v3 setObject:leakyApStats forKey:@"leakyApStats"];
+    [dictionary setObject:leakyApStats forKey:@"leakyApStats"];
   }
 
   v7 = self->_has;
   if ((v7 & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_leakyApDecision), @"leakyApDecision"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_leakyApDecision), @"leakyApDecision"}];
     v7 = self->_has;
   }
 
   if (v7)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_hashCode), @"hashCode"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_hashCode), @"hashCode"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -160,50 +160,50 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 56) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 56) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_version;
-    *(a3 + 56) |= 4u;
+    *(to + 3) = self->_version;
+    *(to + 56) |= 4u;
   }
 
   if (self->_oui)
   {
-    [a3 setOui:?];
+    [to setOui:?];
   }
 
   if (self->_leakyApStats)
   {
-    [a3 setLeakyApStats:?];
+    [to setLeakyApStats:?];
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    *(a3 + 8) = self->_leakyApDecision;
-    *(a3 + 56) |= 8u;
+    *(to + 8) = self->_leakyApDecision;
+    *(to + 56) |= 8u;
     v6 = self->_has;
   }
 
   if (v6)
   {
-    *(a3 + 1) = self->_hashCode;
-    *(a3 + 56) |= 1u;
+    *(to + 1) = self->_hashCode;
+    *(to + 56) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -219,8 +219,8 @@
     *(v5 + 56) |= 4u;
   }
 
-  *(v6 + 48) = [(NSData *)self->_oui copyWithZone:a3];
-  *(v6 + 40) = [(NSData *)self->_leakyApStats copyWithZone:a3];
+  *(v6 + 48) = [(NSData *)self->_oui copyWithZone:zone];
+  *(v6 + 40) = [(NSData *)self->_leakyApStats copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 8) != 0)
   {
@@ -238,21 +238,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 56);
+    v6 = *(equal + 56);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 56) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 56) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_25;
       }
     }
 
-    else if ((*(a3 + 56) & 2) != 0)
+    else if ((*(equal + 56) & 2) != 0)
     {
 LABEL_25:
       LOBYTE(v5) = 0;
@@ -261,40 +261,40 @@ LABEL_25:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 56) & 4) == 0 || self->_version != *(a3 + 3))
+      if ((*(equal + 56) & 4) == 0 || self->_version != *(equal + 3))
       {
         goto LABEL_25;
       }
     }
 
-    else if ((*(a3 + 56) & 4) != 0)
+    else if ((*(equal + 56) & 4) != 0)
     {
       goto LABEL_25;
     }
 
     oui = self->_oui;
-    if (!(oui | *(a3 + 6)) || (v5 = [(NSData *)oui isEqual:?]) != 0)
+    if (!(oui | *(equal + 6)) || (v5 = [(NSData *)oui isEqual:?]) != 0)
     {
       leakyApStats = self->_leakyApStats;
-      if (!(leakyApStats | *(a3 + 5)) || (v5 = [(NSData *)leakyApStats isEqual:?]) != 0)
+      if (!(leakyApStats | *(equal + 5)) || (v5 = [(NSData *)leakyApStats isEqual:?]) != 0)
       {
         if ((*&self->_has & 8) != 0)
         {
-          if ((*(a3 + 56) & 8) == 0 || self->_leakyApDecision != *(a3 + 8))
+          if ((*(equal + 56) & 8) == 0 || self->_leakyApDecision != *(equal + 8))
           {
             goto LABEL_25;
           }
         }
 
-        else if ((*(a3 + 56) & 8) != 0)
+        else if ((*(equal + 56) & 8) != 0)
         {
           goto LABEL_25;
         }
 
-        LOBYTE(v5) = (*(a3 + 56) & 1) == 0;
+        LOBYTE(v5) = (*(equal + 56) & 1) == 0;
         if (*&self->_has)
         {
-          if ((*(a3 + 56) & 1) == 0 || self->_hashCode != *(a3 + 1))
+          if ((*(equal + 56) & 1) == 0 || self->_hashCode != *(equal + 1))
           {
             goto LABEL_25;
           }
@@ -358,43 +358,43 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 56);
+  v5 = *(from + 56);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 56);
+    v5 = *(from + 56);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_version = *(a3 + 3);
+    self->_version = *(from + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(AWDWiFiMetricsManagerLeakyAPStats *)self setOui:?];
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDWiFiMetricsManagerLeakyAPStats *)self setLeakyApStats:?];
   }
 
-  v6 = *(a3 + 56);
+  v6 = *(from + 56);
   if ((v6 & 8) != 0)
   {
-    self->_leakyApDecision = *(a3 + 8);
+    self->_leakyApDecision = *(from + 8);
     *&self->_has |= 8u;
-    v6 = *(a3 + 56);
+    v6 = *(from + 56);
   }
 
   if (v6)
   {
-    self->_hashCode = *(a3 + 1);
+    self->_hashCode = *(from + 1);
     *&self->_has |= 1u;
   }
 }

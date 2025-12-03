@@ -1,6 +1,6 @@
 @interface NUNIClassicGeometry
-- (int)addIndices:(const unsigned __int16 *)a3 count:(int)a4 vbase:(int)a5;
-- (int)addVertices:(const NUNIClassicVertex *)a3 count:(int)a4;
+- (int)addIndices:(const unsigned __int16 *)indices count:(int)count vbase:(int)vbase;
+- (int)addVertices:(const NUNIClassicVertex *)vertices count:(int)count;
 - (void)dealloc;
 @end
 
@@ -15,37 +15,37 @@
   [(NUNIClassicGeometry *)&v3 dealloc];
 }
 
-- (int)addVertices:(const NUNIClassicVertex *)a3 count:(int)a4
+- (int)addVertices:(const NUNIClassicVertex *)vertices count:(int)count
 {
   vcount = self->_vcount;
-  v8 = malloc_type_realloc(self->_vertices, 32 * (vcount + a4), 0x10000406D1CE384uLL);
+  v8 = malloc_type_realloc(self->_vertices, 32 * (vcount + count), 0x10000406D1CE384uLL);
   self->_vertices = v8;
-  memcpy(v8 + 32 * vcount, a3, 32 * a4);
-  self->_vcount += a4;
+  memcpy(v8 + 32 * vcount, vertices, 32 * count);
+  self->_vcount += count;
   return vcount;
 }
 
-- (int)addIndices:(const unsigned __int16 *)a3 count:(int)a4 vbase:(int)a5
+- (int)addIndices:(const unsigned __int16 *)indices count:(int)count vbase:(int)vbase
 {
-  v5 = a5;
+  vbaseCopy = vbase;
   icount = self->_icount;
-  v10 = malloc_type_realloc(self->_indices, 2 * (icount + a4), 0x1000040BDFB0063uLL);
+  v10 = malloc_type_realloc(self->_indices, 2 * (icount + count), 0x1000040BDFB0063uLL);
   self->_indices = v10;
-  if (a4 >= 1)
+  if (count >= 1)
   {
-    v11 = a4;
+    countCopy = count;
     v12 = &v10[icount];
     do
     {
-      v13 = *a3++;
-      *v12++ = v13 + v5;
-      --v11;
+      v13 = *indices++;
+      *v12++ = v13 + vbaseCopy;
+      --countCopy;
     }
 
-    while (v11);
+    while (countCopy);
   }
 
-  self->_icount += a4;
+  self->_icount += count;
   return icount;
 }
 

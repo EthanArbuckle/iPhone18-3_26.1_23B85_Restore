@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMTextInputSession_v0;
-  v2 = [(BMTextInputSession *)&v4 sessionInput];
-  if (v2 < 4)
+  sessionInput = [(BMTextInputSession *)&v4 sessionInput];
+  if (sessionInput < 4)
   {
-    return v2 + 1;
+    return sessionInput + 1;
   }
 
   else

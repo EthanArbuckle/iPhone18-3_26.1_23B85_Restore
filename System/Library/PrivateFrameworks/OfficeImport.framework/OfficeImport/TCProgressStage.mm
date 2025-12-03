@@ -1,16 +1,16 @@
 @interface TCProgressStage
-- (TCProgressStage)initWithSteps:(double)a3 takingSteps:(double)a4 name:(id)a5 inContext:(id)a6;
-- (id)initBranchWithSteps:(double)a3 takingSteps:(double)a4 name:(id)a5 inContext:(id)a6;
-- (id)initRootStageInContext:(id)a3;
-- (void)advanceProgress:(double)a3;
+- (TCProgressStage)initWithSteps:(double)steps takingSteps:(double)takingSteps name:(id)name inContext:(id)context;
+- (id)initBranchWithSteps:(double)steps takingSteps:(double)takingSteps name:(id)name inContext:(id)context;
+- (id)initRootStageInContext:(id)context;
+- (void)advanceProgress:(double)progress;
 - (void)dealloc;
 @end
 
 @implementation TCProgressStage
 
-- (id)initRootStageInContext:(id)a3
+- (id)initRootStageInContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = TCProgressStage;
   v6 = [(TCProgressStage *)&v10 init];
@@ -21,53 +21,53 @@
     v8 = *(v6 + 5);
     *(v6 + 5) = 0;
 
-    objc_storeStrong(v7 + 6, a3);
+    objc_storeStrong(v7 + 6, context);
   }
 
   return v7;
 }
 
-- (TCProgressStage)initWithSteps:(double)a3 takingSteps:(double)a4 name:(id)a5 inContext:(id)a6
+- (TCProgressStage)initWithSteps:(double)steps takingSteps:(double)takingSteps name:(id)name inContext:(id)context
 {
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = TCProgressStage;
   v13 = [(TCProgressStage *)&v17 init];
   if (v13)
   {
-    v14 = [v12 currentStage];
+    currentStage = [contextCopy currentStage];
     m_parentStage = v13->m_parentStage;
-    v13->m_parentStage = v14;
+    v13->m_parentStage = currentStage;
 
     v13->m_currentPosition = 0.0;
-    v13->m_totalSteps = a3;
-    v13->m_stepsInParent = a4;
-    objc_storeStrong(&v13->m_name, a5);
-    objc_storeStrong(&v13->m_context, a6);
+    v13->m_totalSteps = steps;
+    v13->m_stepsInParent = takingSteps;
+    objc_storeStrong(&v13->m_name, name);
+    objc_storeStrong(&v13->m_context, context);
   }
 
   return v13;
 }
 
-- (id)initBranchWithSteps:(double)a3 takingSteps:(double)a4 name:(id)a5 inContext:(id)a6
+- (id)initBranchWithSteps:(double)steps takingSteps:(double)takingSteps name:(id)name inContext:(id)context
 {
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = TCProgressStage;
   v13 = [(TCProgressStage *)&v17 init];
   if (v13)
   {
-    v14 = [v12 rootStage];
+    rootStage = [contextCopy rootStage];
     m_parentStage = v13->m_parentStage;
-    v13->m_parentStage = v14;
+    v13->m_parentStage = rootStage;
 
     v13->m_currentPosition = 0.0;
-    v13->m_totalSteps = a3;
-    v13->m_stepsInParent = a4;
-    objc_storeStrong(&v13->m_name, a5);
-    objc_storeStrong(&v13->m_context, a6);
+    v13->m_totalSteps = steps;
+    v13->m_stepsInParent = takingSteps;
+    objc_storeStrong(&v13->m_name, name);
+    objc_storeStrong(&v13->m_context, context);
   }
 
   return v13;
@@ -83,10 +83,10 @@
   [(TCProgressStage *)&v4 dealloc];
 }
 
-- (void)advanceProgress:(double)a3
+- (void)advanceProgress:(double)progress
 {
   m_currentPosition = self->m_currentPosition;
-  v4 = m_currentPosition + a3;
+  v4 = m_currentPosition + progress;
   if (m_currentPosition != v4)
   {
     self->m_currentPosition = v4;

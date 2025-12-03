@@ -1,28 +1,28 @@
 @interface ARUIAnimationKeyCoordinator
 + (id)animationKeyCache;
-+ (id)animationKeyForType:(unint64_t)a3 ringIndex:(int64_t)a4;
-+ (id)animationKeyFormatForType:(unint64_t)a3;
++ (id)animationKeyForType:(unint64_t)type ringIndex:(int64_t)index;
++ (id)animationKeyFormatForType:(unint64_t)type;
 @end
 
 @implementation ARUIAnimationKeyCoordinator
 
-+ (id)animationKeyForType:(unint64_t)a3 ringIndex:(int64_t)a4
++ (id)animationKeyForType:(unint64_t)type ringIndex:(int64_t)index
 {
-  if (a4 > 2)
+  if (index > 2)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v6 = [a1 animationKeyFormatForType:a3];
-    v8 = [v9 stringWithFormat:v6, a4];
+    animationKeyCache = [self animationKeyFormatForType:type];
+    index = [v9 stringWithFormat:animationKeyCache, index];
   }
 
   else
   {
-    v6 = [a1 animationKeyCache];
-    v7 = [v6 objectAtIndexedSubscript:a3];
-    v8 = [v7 objectAtIndexedSubscript:a4];
+    animationKeyCache = [self animationKeyCache];
+    v7 = [animationKeyCache objectAtIndexedSubscript:type];
+    index = [v7 objectAtIndexedSubscript:index];
   }
 
-  return v8;
+  return index;
 }
 
 + (id)animationKeyCache
@@ -43,16 +43,16 @@ void __48__ARUIAnimationKeyCoordinator_animationKeyCache__block_invoke()
   animationKeyCache___animationKeyCache = &unk_1F4C88000;
 }
 
-+ (id)animationKeyFormatForType:(unint64_t)a3
++ (id)animationKeyFormatForType:(unint64_t)type
 {
-  if (a3 - 1 > 5)
+  if (type - 1 > 5)
   {
     return @"percentage-%lu";
   }
 
   else
   {
-    return off_1E83CE080[a3 - 1];
+    return off_1E83CE080[type - 1];
   }
 }
 

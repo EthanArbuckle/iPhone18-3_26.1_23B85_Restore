@@ -1,12 +1,12 @@
 @interface BKLibrarymetadataEditorCoverBorderView
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation BKLibrarymetadataEditorCoverBorderView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [UIColor tertiaryLabelColor:a3.origin.x];
+  v4 = [UIColor tertiaryLabelColor:rect.origin.x];
   [v4 setStroke];
 
   [(BKLibrarymetadataEditorCoverBorderView *)self bounds];

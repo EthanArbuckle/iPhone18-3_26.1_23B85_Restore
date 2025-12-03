@@ -1,12 +1,12 @@
 @interface MDLMeshBufferData
 - (MDLMeshBufferAllocator)allocator;
-- (MDLMeshBufferData)initWithLength:(unint64_t)a3 data:(id)a4 allocator:(id)a5 zone:(id)a6;
+- (MDLMeshBufferData)initWithLength:(unint64_t)length data:(id)data allocator:(id)allocator zone:(id)zone;
 - (MDLMeshBufferData)initWithType:(MDLMeshBufferType)type data:(NSData *)data;
 - (MDLMeshBufferData)initWithType:(MDLMeshBufferType)type length:(NSUInteger)length;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)map;
 - (void)dealloc;
-- (void)fillData:(id)a3 offset:(unint64_t)a4;
+- (void)fillData:(id)data offset:(unint64_t)offset;
 @end
 
 @implementation MDLMeshBufferData
@@ -92,28 +92,28 @@
   return v9;
 }
 
-- (MDLMeshBufferData)initWithLength:(unint64_t)a3 data:(id)a4 allocator:(id)a5 zone:(id)a6
+- (MDLMeshBufferData)initWithLength:(unint64_t)length data:(id)data allocator:(id)allocator zone:(id)zone
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  allocatorCopy = allocator;
+  zoneCopy = zone;
   v23.receiver = self;
   v23.super_class = MDLMeshBufferData;
   v13 = [(MDLMeshBufferData *)&v23 init];
   v14 = v13;
-  if (v13 && ((objc_storeStrong(&v13->_zone, a6), objc_storeStrong(&v14->_zoneDefault, v14->_zone), (zoneDefault = v14->_zoneDefault) == 0) || objc_msgSend_reserveMemory_allocator_(zoneDefault, v15, v14->_length, v11)))
+  if (v13 && ((objc_storeStrong(&v13->_zone, zone), objc_storeStrong(&v14->_zoneDefault, v14->_zone), (zoneDefault = v14->_zoneDefault) == 0) || objc_msgSend_reserveMemory_allocator_(zoneDefault, v15, v14->_length, allocatorCopy)))
   {
-    objc_storeStrong(&v14->_allocator, a5);
-    v14->_length = a3;
+    objc_storeStrong(&v14->_allocator, allocator);
+    v14->_length = length;
     v17 = objc_alloc(MEMORY[0x277CBEB28]);
-    if (v10)
+    if (dataCopy)
     {
-      v19 = objc_msgSend_initWithData_(v17, v18, v10);
+      v19 = objc_msgSend_initWithData_(v17, v18, dataCopy);
     }
 
     else
     {
-      v19 = objc_msgSend_initWithLength_(v17, v18, a3);
+      v19 = objc_msgSend_initWithLength_(v17, v18, length);
     }
 
     data = v14->_data;
@@ -143,26 +143,26 @@
   [(MDLMeshBufferData *)&v4 dealloc];
 }
 
-- (void)fillData:(id)a3 offset:(unint64_t)a4
+- (void)fillData:(id)data offset:(unint64_t)offset
 {
-  v18 = a3;
-  v8 = objc_msgSend_length(v18, v6, v7);
+  dataCopy = data;
+  v8 = objc_msgSend_length(dataCopy, v6, v7);
   length = self->_length;
   v12 = objc_msgSend_mutableBytes(self->_data, v10, v11);
-  v13 = v18;
+  v13 = dataCopy;
   v16 = objc_msgSend_bytes(v13, v14, v15);
-  v17 = v8 + a4 - length;
-  if (v8 + a4 < length)
+  v17 = v8 + offset - length;
+  if (v8 + offset < length)
   {
     v17 = 0;
   }
 
-  memcpy((v12 + a4), v16, v17 + v8);
+  memcpy((v12 + offset), v16, v17 + v8);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(MDLMeshBufferData, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(MDLMeshBufferData, a2, zone);
   data = self->_data;
   length = self->_length;
   allocator = self->_allocator;

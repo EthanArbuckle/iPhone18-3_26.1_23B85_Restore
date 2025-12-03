@@ -1,33 +1,33 @@
 @interface IMAutomaticEventNotificationQueue
-- (void)_didAddNotification:(id)a3;
+- (void)_didAddNotification:(id)notification;
 - (void)_didCancelNotifications;
 - (void)_didProcessQueue;
-- (void)_invokeEvent:(id)a3;
+- (void)_invokeEvent:(id)event;
 @end
 
 @implementation IMAutomaticEventNotificationQueue
 
-- (void)_invokeEvent:(id)a3
+- (void)_invokeEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
-    v5 = a3;
-    v4 = [(IMEventNotificationQueue *)self eventNotificationList];
-    [v4 removeLinkedListNode:v5];
+    eventCopy = event;
+    eventNotificationList = [(IMEventNotificationQueue *)self eventNotificationList];
+    [eventNotificationList removeLinkedListNode:eventCopy];
 
-    [v5 invoke];
-    [v5 cancel];
-    [v5 cache];
+    [eventCopy invoke];
+    [eventCopy cancel];
+    [eventCopy cache];
   }
 }
 
 - (void)_didProcessQueue
 {
-  v3 = [(IMEventNotificationQueue *)self eventNotificationList];
-  -[IMEventNotificationQueue _setBusy:](self, "_setBusy:", [v3 count] != 0);
+  eventNotificationList = [(IMEventNotificationQueue *)self eventNotificationList];
+  -[IMEventNotificationQueue _setBusy:](self, "_setBusy:", [eventNotificationList count] != 0);
 }
 
-- (void)_didAddNotification:(id)a3
+- (void)_didAddNotification:(id)notification
 {
   [(IMEventNotificationQueue *)self _setBusy:1];
 
@@ -36,8 +36,8 @@
 
 - (void)_didCancelNotifications
 {
-  v3 = [(IMEventNotificationQueue *)self eventNotificationList];
-  -[IMEventNotificationQueue _setBusy:](self, "_setBusy:", [v3 count] != 0);
+  eventNotificationList = [(IMEventNotificationQueue *)self eventNotificationList];
+  -[IMEventNotificationQueue _setBusy:](self, "_setBusy:", [eventNotificationList count] != 0);
 }
 
 @end

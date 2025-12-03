@@ -2,16 +2,16 @@
 - (void)disableUserInteractionAndStartSpinner;
 - (void)enableUserInteractionAndStopSpinner;
 - (void)forgotSecurityCode;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation CDPSingleICSCEntryViewController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CDPSingleICSCEntryViewController;
-  [(PSKeychainSyncTextEntryController *)&v4 viewDidDisappear:a3];
+  [(PSKeychainSyncTextEntryController *)&v4 viewDidDisappear:disappear];
   [(CDPSingleICSCEntryViewController *)self enableUserInteractionAndStopSpinner];
 }
 
@@ -90,21 +90,21 @@ void __54__CDPSingleICSCEntryViewController_forgotSecurityCode__block_invoke_3(u
 
 - (void)disableUserInteractionAndStartSpinner
 {
-  v3 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  v4 = [(CDPSingleICSCEntryViewController *)self navigationItem];
-  [v3 startAnimatingInNavItem:v4 forIdentifier:@"singleICSCEntryController" hideBackButton:1];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  navigationItem = [(CDPSingleICSCEntryViewController *)self navigationItem];
+  [mEMORY[0x277D3FA90] startAnimatingInNavItem:navigationItem forIdentifier:@"singleICSCEntryController" hideBackButton:1];
 
-  v5 = [(CDPSingleICSCEntryViewController *)self view];
-  [v5 setUserInteractionEnabled:0];
+  view = [(CDPSingleICSCEntryViewController *)self view];
+  [view setUserInteractionEnabled:0];
 }
 
 - (void)enableUserInteractionAndStopSpinner
 {
-  v2 = [(CDPSingleICSCEntryViewController *)self view];
-  [v2 setUserInteractionEnabled:1];
+  view = [(CDPSingleICSCEntryViewController *)self view];
+  [view setUserInteractionEnabled:1];
 
-  v3 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  [v3 stopAnimatingForIdentifier:@"singleICSCEntryController"];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  [mEMORY[0x277D3FA90] stopAnimatingForIdentifier:@"singleICSCEntryController"];
 }
 
 @end

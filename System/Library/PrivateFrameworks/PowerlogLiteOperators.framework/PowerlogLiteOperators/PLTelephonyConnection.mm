@@ -1,17 +1,17 @@
 @interface PLTelephonyConnection
 + (id)sharedTelephonyConnection;
-- (BOOL)requestBasebandCoreDump:(id)a3;
-- (BOOL)requestBasebandStateDump:(id)a3;
+- (BOOL)requestBasebandCoreDump:(id)dump;
+- (BOOL)requestBasebandStateDump:(id)dump;
 - (PLTelephonyConnection)init;
 - (__CTServerConnection)connection;
 - (id)currentCallStatus;
-- (id)getProperty:(id)a3 forTrace:(id)a4;
-- (id)humanReadableRATName:(__CFString *)a3;
+- (id)getProperty:(id)property forTrace:(id)trace;
+- (id)humanReadableRATName:(__CFString *)name;
 - (void)deregisterForAllTelephonyNotifications;
 - (void)enableDiagLogging;
-- (void)getRAT:(id *)a3 preferredRAT:(id *)a4 campedRAT:(id *)a5;
-- (void)getSignalStrength:(int64_t *)a3 asPercentage:(int64_t *)a4 withBars:(int64_t *)a5;
-- (void)registerCallback:(void *)a3 forTelephonyNotification:(__CFString *)a4;
+- (void)getRAT:(id *)t preferredRAT:(id *)aT campedRAT:(id *)rAT;
+- (void)getSignalStrength:(int64_t *)strength asPercentage:(int64_t *)percentage withBars:(int64_t *)bars;
+- (void)registerCallback:(void *)callback forTelephonyNotification:(__CFString *)notification;
 - (void)teardownConnection;
 @end
 
@@ -62,10 +62,10 @@ void __50__PLTelephonyConnection_sharedTelephonyConnection__block_invoke()
   return v3;
 }
 
-- (void)getRAT:(id *)a3 preferredRAT:(id *)a4 campedRAT:(id *)a5
+- (void)getRAT:(id *)t preferredRAT:(id *)aT campedRAT:(id *)rAT
 {
   v37 = *MEMORY[0x277D85DE8];
-  if (a3 && a4 && a5)
+  if (t && aT && rAT)
   {
     v33 = 0;
     v34 = 0;
@@ -94,9 +94,9 @@ void __50__PLTelephonyConnection_sharedTelephonyConnection__block_invoke()
           v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not get the selected radio mode. (domain: %d error: %d)", v11, v10];
           v14 = MEMORY[0x277D3F178];
           v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Compositions/Baseband/PLTelephonyConnection.m"];
-          v16 = [v15 lastPathComponent];
+          lastPathComponent = [v15 lastPathComponent];
           v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTelephonyConnection getRAT:preferredRAT:campedRAT:]"];
-          [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:69];
+          [v14 logMessage:v13 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:69];
 
           v18 = PLLogCommon();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -109,8 +109,8 @@ void __50__PLTelephonyConnection_sharedTelephonyConnection__block_invoke()
       }
     }
 
-    *a3 = [(PLTelephonyConnection *)self humanReadableRATName:v34];
-    *a4 = [(PLTelephonyConnection *)self humanReadableRATName:v33];
+    *t = [(PLTelephonyConnection *)self humanReadableRATName:v34];
+    *aT = [(PLTelephonyConnection *)self humanReadableRATName:v33];
     [(PLTelephonyConnection *)self connection];
     RadioAccessTechnology = _CTServerConnectionGetRadioAccessTechnology();
     v20 = HIDWORD(RadioAccessTechnology);
@@ -135,9 +135,9 @@ void __50__PLTelephonyConnection_sharedTelephonyConnection__block_invoke()
           v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not get the selected radio mode. (domain: %d error: %d)", v21, v20];
           v24 = MEMORY[0x277D3F178];
           v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Compositions/Baseband/PLTelephonyConnection.m"];
-          v26 = [v25 lastPathComponent];
+          lastPathComponent2 = [v25 lastPathComponent];
           v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTelephonyConnection getRAT:preferredRAT:campedRAT:]"];
-          [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:78];
+          [v24 logMessage:v23 fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:78];
 
           v28 = PLLogCommon();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -150,7 +150,7 @@ void __50__PLTelephonyConnection_sharedTelephonyConnection__block_invoke()
       }
     }
 
-    *a5 = [(PLTelephonyConnection *)self humanReadableRATName:v32];
+    *rAT = [(PLTelephonyConnection *)self humanReadableRATName:v32];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -197,9 +197,9 @@ uint64_t __55__PLTelephonyConnection_getRAT_preferredRAT_campedRAT___block_invok
         v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not enable diag logging. (domain: %d error: %d)", v4, v3];
         v7 = MEMORY[0x277D3F178];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Compositions/Baseband/PLTelephonyConnection.m"];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent = [v8 lastPathComponent];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTelephonyConnection enableDiagLogging]"];
-        [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:94];
+        [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:94];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -222,10 +222,10 @@ uint64_t __42__PLTelephonyConnection_enableDiagLogging__block_invoke(uint64_t a1
   return result;
 }
 
-- (BOOL)requestBasebandStateDump:(id)a3
+- (BOOL)requestBasebandStateDump:(id)dump
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dumpCopy = dump;
   [(PLTelephonyConnection *)self connection];
   v5 = _CTServerConnectionDumpBasebandState();
 
@@ -250,9 +250,9 @@ uint64_t __42__PLTelephonyConnection_enableDiagLogging__block_invoke(uint64_t a1
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to dump baseband state (domain=%d, error=%d)", v5, HIDWORD(v5)];
         v9 = MEMORY[0x277D3F178];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Compositions/Baseband/PLTelephonyConnection.m"];
-        v11 = [v10 lastPathComponent];
+        lastPathComponent = [v10 lastPathComponent];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTelephonyConnection requestBasebandStateDump:]"];
-        [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:101];
+        [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:101];
 
         v13 = PLLogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -279,10 +279,10 @@ uint64_t __50__PLTelephonyConnection_requestBasebandStateDump___block_invoke(uin
   return result;
 }
 
-- (BOOL)requestBasebandCoreDump:(id)a3
+- (BOOL)requestBasebandCoreDump:(id)dump
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dumpCopy = dump;
   [(PLTelephonyConnection *)self connection];
   v5 = _CTServerConnectionResetModemWithCrashLogs();
 
@@ -307,9 +307,9 @@ uint64_t __50__PLTelephonyConnection_requestBasebandStateDump___block_invoke(uin
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to get baseband core dump (domain=%d, error=%d)", v5, HIDWORD(v5)];
         v9 = MEMORY[0x277D3F178];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Compositions/Baseband/PLTelephonyConnection.m"];
-        v11 = [v10 lastPathComponent];
+        lastPathComponent = [v10 lastPathComponent];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTelephonyConnection requestBasebandCoreDump:]"];
-        [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:111];
+        [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:111];
 
         v13 = PLLogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -336,11 +336,11 @@ uint64_t __49__PLTelephonyConnection_requestBasebandCoreDump___block_invoke(uint
   return result;
 }
 
-- (id)getProperty:(id)a3 forTrace:(id)a4
+- (id)getProperty:(id)property forTrace:(id)trace
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  traceCopy = trace;
   v34 = 0;
   v33 = 0;
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -361,9 +361,9 @@ uint64_t __49__PLTelephonyConnection_requestBasebandCoreDump___block_invoke(uint
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLTelephonyConnection getProperty:forTrace:]"];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Compositions/Baseband/PLTelephonyConnection.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTelephonyConnection getProperty:forTrace:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:122];
+      [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:122];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -375,11 +375,11 @@ uint64_t __49__PLTelephonyConnection_requestBasebandCoreDump___block_invoke(uint
     }
   }
 
-  v15 = self;
-  objc_sync_enter(v15);
-  [(PLTelephonyConnection *)v15 connection];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PLTelephonyConnection *)selfCopy connection];
   v16 = _CTServerConnectionCopyTraceProperty();
-  objc_sync_exit(v15);
+  objc_sync_exit(selfCopy);
 
   if (HIDWORD(v16))
   {
@@ -398,12 +398,12 @@ uint64_t __49__PLTelephonyConnection_requestBasebandCoreDump___block_invoke(uint
 
       if (byte_2811F7F3E == 1)
       {
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to retrieve property %@ from telephony trace %@ (domain=%d, error=%d)", v6, v7, v16, HIDWORD(v16), v27, v28, v29, v30, v31];
+        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to retrieve property %@ from telephony trace %@ (domain=%d, error=%d)", propertyCopy, traceCopy, v16, HIDWORD(v16), v27, v28, v29, v30, v31];
         v20 = MEMORY[0x277D3F178];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Compositions/Baseband/PLTelephonyConnection.m"];
-        v22 = [v21 lastPathComponent];
+        lastPathComponent2 = [v21 lastPathComponent];
         v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTelephonyConnection getProperty:forTrace:]"];
-        [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:132];
+        [v20 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:132];
 
         v24 = PLLogCommon();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -442,12 +442,12 @@ uint64_t __46__PLTelephonyConnection_getProperty_forTrace___block_invoke_42(uint
   return result;
 }
 
-- (void)getSignalStrength:(int64_t *)a3 asPercentage:(int64_t *)a4 withBars:(int64_t *)a5
+- (void)getSignalStrength:(int64_t *)strength asPercentage:(int64_t *)percentage withBars:(int64_t *)bars
 {
   CTIndicatorsGetSignalStrength();
-  *a3 = -1;
-  *a4 = -1;
-  *a5 = -1;
+  *strength = -1;
+  *percentage = -1;
+  *bars = -1;
 }
 
 - (id)currentCallStatus
@@ -477,78 +477,78 @@ uint64_t __46__PLTelephonyConnection_getProperty_forTrace___block_invoke_42(uint
   return v6;
 }
 
-- (id)humanReadableRATName:(__CFString *)a3
+- (id)humanReadableRATName:(__CFString *)name
 {
-  if (a3)
+  if (name)
   {
-    if (CFEqual(a3, *MEMORY[0x277CC3D60]) || CFEqual(a3, *MEMORY[0x277CC3E00]) || CFEqual(a3, *MEMORY[0x277CC3E08]))
+    if (CFEqual(name, *MEMORY[0x277CC3D60]) || CFEqual(name, *MEMORY[0x277CC3E00]) || CFEqual(name, *MEMORY[0x277CC3E08]))
     {
       v5 = @"GSM";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3D78]) || CFEqual(a3, *MEMORY[0x277CC3E28]))
+    else if (CFEqual(name, *MEMORY[0x277CC3D78]) || CFEqual(name, *MEMORY[0x277CC3E28]))
     {
       v5 = @"UMTS";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3D98]))
+    else if (CFEqual(name, *MEMORY[0x277CC3D98]))
     {
       v5 = @"Dual";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3DD8]) || CFEqual(a3, *MEMORY[0x277CC3E38]))
+    else if (CFEqual(name, *MEMORY[0x277CC3DD8]) || CFEqual(name, *MEMORY[0x277CC3E38]))
     {
       v5 = @"Unknown";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3DA0]) || CFEqual(a3, *MEMORY[0x277CC3DE8]))
+    else if (CFEqual(name, *MEMORY[0x277CC3DA0]) || CFEqual(name, *MEMORY[0x277CC3DE8]))
     {
       v5 = @"1x";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3DA8]) || CFEqual(a3, *MEMORY[0x277CC3DF0]))
+    else if (CFEqual(name, *MEMORY[0x277CC3DA8]) || CFEqual(name, *MEMORY[0x277CC3DF0]))
     {
       v5 = @"EVDO";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3DB0]) || CFEqual(a3, *MEMORY[0x277CC3DF8]))
+    else if (CFEqual(name, *MEMORY[0x277CC3DB0]) || CFEqual(name, *MEMORY[0x277CC3DF8]))
     {
       v5 = @"CDMAHybrid";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3DB8]) || CFEqual(a3, *MEMORY[0x277CC3E10]))
+    else if (CFEqual(name, *MEMORY[0x277CC3DB8]) || CFEqual(name, *MEMORY[0x277CC3E10]))
     {
       v5 = @"LTE";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3DC8]) || CFEqual(a3, *MEMORY[0x277CC3E30]))
+    else if (CFEqual(name, *MEMORY[0x277CC3DC8]) || CFEqual(name, *MEMORY[0x277CC3E30]))
     {
       v5 = @"UTRAN";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3DC0]))
+    else if (CFEqual(name, *MEMORY[0x277CC3DC0]))
     {
       v5 = @"Automatic";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3D88]) || CFEqual(a3, *MEMORY[0x277CC3E20]))
+    else if (CFEqual(name, *MEMORY[0x277CC3D88]) || CFEqual(name, *MEMORY[0x277CC3E20]))
     {
       v5 = @"NR";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3DD0]))
+    else if (CFEqual(name, *MEMORY[0x277CC3DD0]))
     {
       v5 = @"NR_SA";
     }
 
-    else if (CFEqual(a3, *MEMORY[0x277CC3D80]))
+    else if (CFEqual(name, *MEMORY[0x277CC3D80]))
     {
       v5 = @"NR_NSA";
     }
 
     else
     {
-      v5 = [(__CFString *)a3 copy];
+      v5 = [(__CFString *)name copy];
     }
   }
 
@@ -627,9 +627,9 @@ uint64_t __46__PLTelephonyConnection_getProperty_forTrace___block_invoke_42(uint
           v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to allocate a CTServer connection"];
           v8 = MEMORY[0x277D3F178];
           v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Compositions/Baseband/PLTelephonyConnection.m"];
-          v10 = [v9 lastPathComponent];
+          lastPathComponent = [v9 lastPathComponent];
           v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTelephonyConnection connection]"];
-          [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:299];
+          [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:299];
 
           v12 = PLLogCommon();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -656,10 +656,10 @@ uint64_t __35__PLTelephonyConnection_connection__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)registerCallback:(void *)a3 forTelephonyNotification:(__CFString *)a4
+- (void)registerCallback:(void *)callback forTelephonyNotification:(__CFString *)notification
 {
   CTTelephonyCenterGetDefault();
-  v5 = [(PLTelephonyConnection *)self observerAgent];
+  observerAgent = [(PLTelephonyConnection *)self observerAgent];
   CTTelephonyCenterAddObserver();
 }
 

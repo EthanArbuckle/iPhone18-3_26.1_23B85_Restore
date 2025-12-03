@@ -1,16 +1,16 @@
 @interface SiriUILabelComponentView
-+ (id)labelForComponentModel:(id)a3;
-+ (id)viewForComponent:(id)a3;
++ (id)labelForComponentModel:(id)model;
++ (id)viewForComponent:(id)component;
 @end
 
 @implementation SiriUILabelComponentView
 
-+ (id)viewForComponent:(id)a3
++ (id)viewForComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [SiriUIDetailLabelComponentView viewForComponent:v4];
+    v5 = [SiriUIDetailLabelComponentView viewForComponent:componentCopy];
 LABEL_5:
     v6 = v5;
     goto LABEL_9;
@@ -18,7 +18,7 @@ LABEL_5:
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 labelForComponentModel:v4];
+    v5 = [self labelForComponentModel:componentCopy];
     goto LABEL_5;
   }
 
@@ -34,58 +34,58 @@ LABEL_9:
   return v6;
 }
 
-+ (id)labelForComponentModel:(id)a3
++ (id)labelForComponentModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 style];
+  modelCopy = model;
+  style = [modelCopy style];
   v5 = 0;
-  if (v4 > 2)
+  if (style > 2)
   {
-    switch(v4)
+    switch(style)
     {
       case 3:
-        v6 = [MEMORY[0x277D756B8] siriui_configuredCaptionLabel];
+        siriui_configuredCaptionLabel = [MEMORY[0x277D756B8] siriui_configuredCaptionLabel];
         break;
       case 4:
-        v6 = [MEMORY[0x277D756B8] siriui_configuredFootnoteLabel];
+        siriui_configuredCaptionLabel = [MEMORY[0x277D756B8] siriui_configuredFootnoteLabel];
         break;
       case 5:
-        v6 = [MEMORY[0x277D756B8] siriui_configuredTitleLabel];
+        siriui_configuredCaptionLabel = [MEMORY[0x277D756B8] siriui_configuredTitleLabel];
         break;
       default:
         goto LABEL_15;
     }
   }
 
-  else if (v4)
+  else if (style)
   {
-    if (v4 == 1)
+    if (style == 1)
     {
-      v6 = [MEMORY[0x277D756B8] siriui_configuredBodyLabel];
+      siriui_configuredCaptionLabel = [MEMORY[0x277D756B8] siriui_configuredBodyLabel];
     }
 
     else
     {
-      if (v4 != 2)
+      if (style != 2)
       {
         goto LABEL_15;
       }
 
-      v6 = [MEMORY[0x277D756B8] siriui_configuredSubheadLabel];
+      siriui_configuredCaptionLabel = [MEMORY[0x277D756B8] siriui_configuredSubheadLabel];
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x277D756B8] siriui_configuredHeadlineLabel];
+    siriui_configuredCaptionLabel = [MEMORY[0x277D756B8] siriui_configuredHeadlineLabel];
   }
 
-  v5 = v6;
+  v5 = siriui_configuredCaptionLabel;
 LABEL_15:
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v3 text];
+  text = [modelCopy text];
 
-  [v5 setText:v7];
+  [v5 setText:text];
   LODWORD(v8) = 1144750080;
   [v5 setContentHuggingPriority:1 forAxis:v8];
   LODWORD(v9) = 1144750080;

@@ -1,8 +1,8 @@
 @interface SBOverlayUISceneController
 + (id)_setupInfo;
-- (BOOL)_isAllowedToRecreateSceneOnConnectingWindowScene:(id)a3;
-- (id)_subterraneanSceneIdentifierForWindowScene:(id)a3;
-- (void)windowSceneDidConnect:(id)a3;
+- (BOOL)_isAllowedToRecreateSceneOnConnectingWindowScene:(id)scene;
+- (id)_subterraneanSceneIdentifierForWindowScene:(id)scene;
+- (void)windowSceneDidConnect:(id)connect;
 @end
 
 @implementation SBOverlayUISceneController
@@ -25,45 +25,45 @@
   return v2;
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
   v10.receiver = self;
   v10.super_class = SBOverlayUISceneController;
-  v4 = a3;
-  [(SBSystemUISceneController *)&v10 windowSceneDidConnect:v4];
+  connectCopy = connect;
+  [(SBSystemUISceneController *)&v10 windowSceneDidConnect:connectCopy];
   v5 = objc_alloc_init(MEMORY[0x277D75980]);
   v6 = objc_alloc_init(MEMORY[0x277D75180]);
   [v5 setSpecification:{v6, v10.receiver, v10.super_class}];
 
-  v7 = [(SBOverlayUISceneController *)self _subterraneanSceneIdentifierForWindowScene:v4];
+  v7 = [(SBOverlayUISceneController *)self _subterraneanSceneIdentifierForWindowScene:connectCopy];
   [v5 setIdentifier:v7];
 
-  v8 = [(SBSystemUISceneController *)self _newSceneControllerForWindowScene:v4 sceneRequestOptions:v5 traitsRole:@"SBTraitsParticipantRoleSubterraneanOverlayUI" level:*MEMORY[0x277D772B0] + -3.0 + -1.0];
+  v8 = [(SBSystemUISceneController *)self _newSceneControllerForWindowScene:connectCopy sceneRequestOptions:v5 traitsRole:@"SBTraitsParticipantRoleSubterraneanOverlayUI" level:*MEMORY[0x277D772B0] + -3.0 + -1.0];
   subterraneanSceneController = self->_subterraneanSceneController;
   self->_subterraneanSceneController = v8;
 }
 
-- (BOOL)_isAllowedToRecreateSceneOnConnectingWindowScene:(id)a3
+- (BOOL)_isAllowedToRecreateSceneOnConnectingWindowScene:(id)scene
 {
-  v3 = [a3 identifier];
-  v4 = [v3 containsString:@"Subterranean"];
+  identifier = [scene identifier];
+  v4 = [identifier containsString:@"Subterranean"];
 
   return v4 ^ 1;
 }
 
-- (id)_subterraneanSceneIdentifierForWindowScene:(id)a3
+- (id)_subterraneanSceneIdentifierForWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(SBSystemUISceneController *)self sceneWorkspaceController];
-  v6 = [v5 sceneWorkspaceIdentifier];
-  v7 = [v6 componentsSeparatedByString:@"."];
-  v8 = [v7 lastObject];
+  sceneCopy = scene;
+  sceneWorkspaceController = [(SBSystemUISceneController *)self sceneWorkspaceController];
+  sceneWorkspaceIdentifier = [sceneWorkspaceController sceneWorkspaceIdentifier];
+  v7 = [sceneWorkspaceIdentifier componentsSeparatedByString:@"."];
+  lastObject = [v7 lastObject];
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v4 _fbsDisplayIdentity];
+  _fbsDisplayIdentity = [sceneCopy _fbsDisplayIdentity];
 
-  v11 = [v10 description];
-  v12 = [v9 stringWithFormat:@"SUIS-%@:[%@] - Subterranean", v8, v11];
+  v11 = [_fbsDisplayIdentity description];
+  v12 = [v9 stringWithFormat:@"SUIS-%@:[%@] - Subterranean", lastObject, v11];
 
   return v12;
 }

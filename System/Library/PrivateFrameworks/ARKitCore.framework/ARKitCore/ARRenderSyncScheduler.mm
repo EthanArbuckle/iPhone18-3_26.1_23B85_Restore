@@ -1,16 +1,16 @@
 @interface ARRenderSyncScheduler
-- (ARRenderSyncScheduler)initWithExpectedFramesPerSecond:(int64_t)a3;
+- (ARRenderSyncScheduler)initWithExpectedFramesPerSecond:(int64_t)second;
 - (BOOL)schedulingActive;
-- (unint64_t)_callbackActionForBlockWithLatency:(double)a3;
+- (unint64_t)_callbackActionForBlockWithLatency:(double)latency;
 - (void)_callback;
-- (void)_tryNextBlockWithTotalTried:(unint64_t)a3;
-- (void)setSchedulingActive:(BOOL)a3;
-- (void)submitBlock:(id)a3;
+- (void)_tryNextBlockWithTotalTried:(unint64_t)tried;
+- (void)setSchedulingActive:(BOOL)active;
+- (void)submitBlock:(id)block;
 @end
 
 @implementation ARRenderSyncScheduler
 
-- (ARRenderSyncScheduler)initWithExpectedFramesPerSecond:(int64_t)a3
+- (ARRenderSyncScheduler)initWithExpectedFramesPerSecond:(int64_t)second
 {
   v17.receiver = self;
   v17.super_class = ARRenderSyncScheduler;
@@ -35,7 +35,7 @@
     v14[2] = __57__ARRenderSyncScheduler_initWithExpectedFramesPerSecond___block_invoke;
     v14[3] = &unk_1E817BD88;
     objc_copyWeak(&v15, &location);
-    v11 = [(ARDisplayLink *)v10 initWithPreferredFramesPerSecond:a3 callback:v14];
+    v11 = [(ARDisplayLink *)v10 initWithPreferredFramesPerSecond:second callback:v14];
     displayLink = v5->_displayLink;
     v5->_displayLink = v11;
 
@@ -60,12 +60,12 @@ void __57__ARRenderSyncScheduler_initWithExpectedFramesPerSecond___block_invoke(
   return schedulingActive;
 }
 
-- (void)setSchedulingActive:(BOOL)a3
+- (void)setSchedulingActive:(BOOL)active
 {
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  self->_schedulingActive = a3;
-  if (!a3)
+  self->_schedulingActive = active;
+  if (!active)
   {
     if ([(ARRenderSyncScheduler *)self excessiveCallbackOptions]== 1)
     {
@@ -90,13 +90,13 @@ void __57__ARRenderSyncScheduler_initWithExpectedFramesPerSecond___block_invoke(
             }
 
             v10 = *(*(&v13 + 1) + 8 * v9);
-            v11 = [(ARDisplayLink *)self->_displayLink runloop];
+            runloop = [(ARDisplayLink *)self->_displayLink runloop];
             v12[0] = MEMORY[0x1E69E9820];
             v12[1] = 3221225472;
             v12[2] = __45__ARRenderSyncScheduler_setSchedulingActive___block_invoke;
             v12[3] = &unk_1E817BFE8;
             v12[4] = v10;
-            [v11 runOnRunLoop:v12];
+            [runloop runOnRunLoop:v12];
 
             ++v9;
           }
@@ -121,29 +121,29 @@ void __45__ARRenderSyncScheduler_setSchedulingActive___block_invoke(uint64_t a1)
   v1[2]();
 }
 
-- (void)submitBlock:(id)a3
+- (void)submitBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   if (self->_schedulingActive)
   {
     v5 = objc_opt_new();
-    v6 = [MEMORY[0x1E695DF00] date];
-    [v5 setEntryTimestamp:v6];
+    date = [MEMORY[0x1E695DF00] date];
+    [v5 setEntryTimestamp:date];
 
-    [v5 setBlock:v4];
+    [v5 setBlock:blockCopy];
     [(NSMutableArray *)self->_blocks addObject:v5];
   }
 
   else
   {
-    v7 = [(ARDisplayLink *)self->_displayLink runloop];
+    runloop = [(ARDisplayLink *)self->_displayLink runloop];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __37__ARRenderSyncScheduler_submitBlock___block_invoke;
     v8[3] = &unk_1E817CC30;
-    v9 = v4;
-    [v7 runOnRunLoop:v8];
+    v9 = blockCopy;
+    [runloop runOnRunLoop:v8];
   }
 
   [(NSMutableArray *)self->_blocks count];
@@ -161,7 +161,7 @@ void __45__ARRenderSyncScheduler_setSchedulingActive___block_invoke(uint64_t a1)
   [(ARRenderSyncScheduler *)self _tryNextBlockWithTotalTried:0];
 }
 
-- (void)_tryNextBlockWithTotalTried:(unint64_t)a3
+- (void)_tryNextBlockWithTotalTried:(unint64_t)tried
 {
   os_unfair_lock_lock(&self->_lock);
   if (!self->_schedulingActive)
@@ -171,12 +171,12 @@ void __45__ARRenderSyncScheduler_setSchedulingActive___block_invoke(uint64_t a1)
     goto LABEL_21;
   }
 
-  v5 = [(NSMutableArray *)self->_blocks firstObject];
-  v13 = v5;
-  if (v5)
+  firstObject = [(NSMutableArray *)self->_blocks firstObject];
+  v13 = firstObject;
+  if (firstObject)
   {
-    v6 = [v5 entryTimestamp];
-    [v6 timeIntervalSinceNow];
+    entryTimestamp = [firstObject entryTimestamp];
+    [entryTimestamp timeIntervalSinceNow];
     v8 = -v7;
 
     v9 = [(ARRenderSyncScheduler *)self _callbackActionForBlockWithLatency:v8];
@@ -195,10 +195,10 @@ void __45__ARRenderSyncScheduler_setSchedulingActive___block_invoke(uint64_t a1)
     os_unfair_lock_unlock(&self->_lock);
     if (v13)
     {
-      if (!a3)
+      if (!tried)
       {
-        v12 = [v13 block];
-        v12[2]();
+        block = [v13 block];
+        block[2]();
 
         self->_reportAdjustments = 1;
         if ((v9 & 2) == 0)
@@ -211,8 +211,8 @@ void __45__ARRenderSyncScheduler_setSchedulingActive___block_invoke(uint64_t a1)
 
       if ([(ARRenderSyncScheduler *)self excessiveCallbackOptions]== 1)
       {
-        v11 = [v13 block];
-        v11[2]();
+        block2 = [v13 block];
+        block2[2]();
       }
 
       self->_reportAdjustments = 1;
@@ -220,7 +220,7 @@ void __45__ARRenderSyncScheduler_setSchedulingActive___block_invoke(uint64_t a1)
       goto LABEL_17;
     }
 
-    if (!a3 && self->_reportAdjustments)
+    if (!tried && self->_reportAdjustments)
     {
 LABEL_17:
       kdebug_trace();
@@ -230,7 +230,7 @@ LABEL_17:
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    if (!a3 && self->_reportAdjustments)
+    if (!tried && self->_reportAdjustments)
     {
       goto LABEL_17;
     }
@@ -240,7 +240,7 @@ LABEL_17:
   {
 LABEL_19:
     kdebug_trace();
-    [(ARRenderSyncScheduler *)self _tryNextBlockWithTotalTried:a3 + 1];
+    [(ARRenderSyncScheduler *)self _tryNextBlockWithTotalTried:tried + 1];
   }
 
 LABEL_20:
@@ -248,7 +248,7 @@ LABEL_20:
 LABEL_21:
 }
 
-- (unint64_t)_callbackActionForBlockWithLatency:(double)a3
+- (unint64_t)_callbackActionForBlockWithLatency:(double)latency
 {
   [(ARRenderSyncScheduler *)self inputJitterBufferInterval];
   v6 = v5;
@@ -258,7 +258,7 @@ LABEL_21:
   kdebug_trace();
   if (!self->_initialLatencyReached)
   {
-    if (v6 > a3)
+    if (v6 > latency)
     {
       return 0;
     }
@@ -277,7 +277,7 @@ LABEL_21:
     }
   }
 
-  [(ARRollingNumberSeries *)self->_latencies appendNumber:a3];
+  [(ARRollingNumberSeries *)self->_latencies appendNumber:latency];
   v9 = [(ARRollingNumberSeries *)self->_latencies count];
   if (v9 != [(ARRollingNumberSeries *)self->_latencies windowSize])
   {

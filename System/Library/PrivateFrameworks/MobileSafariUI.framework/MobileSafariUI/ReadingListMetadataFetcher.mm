@@ -1,23 +1,23 @@
 @interface ReadingListMetadataFetcher
-+ (BOOL)shouldFetchMetadataForBookmark:(id)a3;
-+ (BOOL)shouldFetchThumbnailForBookmark:(id)a3;
++ (BOOL)shouldFetchMetadataForBookmark:(id)bookmark;
++ (BOOL)shouldFetchThumbnailForBookmark:(id)bookmark;
 + (id)sharedMetadataFetcher;
-- (BOOL)_lockAndSaveBookmark:(id)a3 postNotification:(BOOL)a4;
-- (BOOL)_queue:(id)a3 containsBookmark:(id)a4;
-- (id)_initWithBookmarkCollection:(id)a3;
-- (void)_didFailMetadataFetchForBookmarkWithID:(int)a3;
-- (void)_didFinishFetchingMetadataForItem:(id)a3;
-- (void)_didFinishFetchingThumbnailForItem:(id)a3;
-- (void)_fetchMetadataForPendingItem:(id)a3;
-- (void)_fetchMetadataWithDefaultProviderForPendingItem:(id)a3;
+- (BOOL)_lockAndSaveBookmark:(id)bookmark postNotification:(BOOL)notification;
+- (BOOL)_queue:(id)_queue containsBookmark:(id)bookmark;
+- (id)_initWithBookmarkCollection:(id)collection;
+- (void)_didFailMetadataFetchForBookmarkWithID:(int)d;
+- (void)_didFinishFetchingMetadataForItem:(id)item;
+- (void)_didFinishFetchingThumbnailForItem:(id)item;
+- (void)_fetchMetadataForPendingItem:(id)item;
+- (void)_fetchMetadataWithDefaultProviderForPendingItem:(id)item;
 - (void)_fetchNextItemMetadata;
 - (void)_fetchNextItemThumbnail;
-- (void)_fetchThumbnailForPendingItem:(id)a3;
-- (void)_fetchThumbnailWithDefaultProviderForPendingItem:(id)a3;
-- (void)_setThumbnailImage:(id)a3 fromURL:(id)a4 forBookmarkWithID:(int)a5;
-- (void)_setTitle:(id)a3 previewText:(id)a4 thumbnailURLString:(id)a5 thumbnailImage:(id)a6 forItem:(id)a7;
-- (void)fetchMetadataForReadingListBookmark:(id)a3 withProvider:(id)a4;
-- (void)fetchThumbnailForReadingListBookmark:(id)a3 withProvider:(id)a4;
+- (void)_fetchThumbnailForPendingItem:(id)item;
+- (void)_fetchThumbnailWithDefaultProviderForPendingItem:(id)item;
+- (void)_setThumbnailImage:(id)image fromURL:(id)l forBookmarkWithID:(int)d;
+- (void)_setTitle:(id)title previewText:(id)text thumbnailURLString:(id)string thumbnailImage:(id)image forItem:(id)item;
+- (void)fetchMetadataForReadingListBookmark:(id)bookmark withProvider:(id)provider;
+- (void)fetchThumbnailForReadingListBookmark:(id)bookmark withProvider:(id)provider;
 @end
 
 @implementation ReadingListMetadataFetcher
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __51__ReadingListMetadataFetcher_sharedMetadataFetcher__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedMetadataFetcher_onceToken != -1)
   {
     dispatch_once(&sharedMetadataFetcher_onceToken, block);
@@ -48,27 +48,27 @@ void __51__ReadingListMetadataFetcher_sharedMetadataFetcher__block_invoke(uint64
   sharedMetadataFetcher_sharedInstance = v2;
 }
 
-- (id)_initWithBookmarkCollection:(id)a3
+- (id)_initWithBookmarkCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = ReadingListMetadataFetcher;
   v6 = [(ReadingListMetadataFetcher *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collection, a3);
+    objc_storeStrong(&v6->_collection, collection);
     v8 = dispatch_queue_create("com.apple.Safari.ReadingListMetadataFetcher", 0);
     metadataSynchronizationQueue = v7->_metadataSynchronizationQueue;
     v7->_metadataSynchronizationQueue = v8;
 
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     bookmarksPendingMetadata = v7->_bookmarksPendingMetadata;
-    v7->_bookmarksPendingMetadata = v10;
+    v7->_bookmarksPendingMetadata = array;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     bookmarksPendingThumbnail = v7->_bookmarksPendingThumbnail;
-    v7->_bookmarksPendingThumbnail = v12;
+    v7->_bookmarksPendingThumbnail = array2;
 
     v14 = v7;
   }
@@ -76,24 +76,24 @@ void __51__ReadingListMetadataFetcher_sharedMetadataFetcher__block_invoke(uint64
   return v7;
 }
 
-+ (BOOL)shouldFetchMetadataForBookmark:(id)a3
++ (BOOL)shouldFetchMetadataForBookmark:(id)bookmark
 {
-  v3 = a3;
-  if ([v3 hasFetchedMetadata])
+  bookmarkCopy = bookmark;
+  if ([bookmarkCopy hasFetchedMetadata])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 title];
-    if ([v5 length] && (WBSUnifiedFieldInputTypeForString() - 1) >= 2)
+    title = [bookmarkCopy title];
+    if ([title length] && (WBSUnifiedFieldInputTypeForString() - 1) >= 2)
     {
-      v6 = [v3 previewText];
-      if ([v6 length])
+      previewText = [bookmarkCopy previewText];
+      if ([previewText length])
       {
-        v7 = [v3 readingListIconURL];
-        v4 = [v7 length] == 0;
+        readingListIconURL = [bookmarkCopy readingListIconURL];
+        v4 = [readingListIconURL length] == 0;
       }
 
       else
@@ -111,21 +111,21 @@ void __51__ReadingListMetadataFetcher_sharedMetadataFetcher__block_invoke(uint64
   return v4;
 }
 
-+ (BOOL)shouldFetchThumbnailForBookmark:(id)a3
++ (BOOL)shouldFetchThumbnailForBookmark:(id)bookmark
 {
-  v3 = a3;
-  if ([v3 hasFetchedMetadata])
+  bookmarkCopy = bookmark;
+  if ([bookmarkCopy hasFetchedMetadata])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 readingListIconURL];
-    if (v5)
+    readingListIconURL = [bookmarkCopy readingListIconURL];
+    if (readingListIconURL)
     {
-      v6 = [v3 readingListIconUUID];
-      v4 = v6 == 0;
+      readingListIconUUID = [bookmarkCopy readingListIconUUID];
+      v4 = readingListIconUUID == 0;
     }
 
     else
@@ -137,20 +137,20 @@ void __51__ReadingListMetadataFetcher_sharedMetadataFetcher__block_invoke(uint64
   return v4;
 }
 
-- (void)fetchMetadataForReadingListBookmark:(id)a3 withProvider:(id)a4
+- (void)fetchMetadataForReadingListBookmark:(id)bookmark withProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  providerCopy = provider;
   metadataSynchronizationQueue = self->_metadataSynchronizationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__ReadingListMetadataFetcher_fetchMetadataForReadingListBookmark_withProvider___block_invoke;
   block[3] = &unk_2781D58E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = bookmarkCopy;
+  v13 = providerCopy;
+  v9 = providerCopy;
+  v10 = bookmarkCopy;
   dispatch_async(metadataSynchronizationQueue, block);
 }
 
@@ -174,20 +174,20 @@ uint64_t __79__ReadingListMetadataFetcher_fetchMetadataForReadingListBookmark_wi
   return result;
 }
 
-- (void)fetchThumbnailForReadingListBookmark:(id)a3 withProvider:(id)a4
+- (void)fetchThumbnailForReadingListBookmark:(id)bookmark withProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  providerCopy = provider;
   metadataSynchronizationQueue = self->_metadataSynchronizationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__ReadingListMetadataFetcher_fetchThumbnailForReadingListBookmark_withProvider___block_invoke;
   block[3] = &unk_2781D58E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = bookmarkCopy;
+  v13 = providerCopy;
+  v9 = providerCopy;
+  v10 = bookmarkCopy;
   dispatch_async(metadataSynchronizationQueue, block);
 }
 
@@ -215,13 +215,13 @@ uint64_t __80__ReadingListMetadataFetcher_fetchThumbnailForReadingListBookmark_w
   return result;
 }
 
-- (void)_fetchMetadataForPendingItem:(id)a3
+- (void)_fetchMetadataForPendingItem:(id)item
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   self->_isFetchingMetadata = 1;
-  v5 = [v4 provider];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  provider = [itemCopy provider];
+  if (provider && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v6 = WBS_LOG_CHANNEL_PREFIXReadingList();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -234,19 +234,19 @@ uint64_t __80__ReadingListMetadataFetcher_fetchThumbnailForReadingListBookmark_w
       _os_log_impl(&dword_215819000, v7, OS_LOG_TYPE_INFO, "Begin fetching metadata for Reading List item with provider %{public}@", buf, 0xCu);
     }
 
-    v10 = [v4 bookmark];
+    bookmark = [itemCopy bookmark];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __59__ReadingListMetadataFetcher__fetchMetadataForPendingItem___block_invoke;
     v11[3] = &unk_2781D7D10;
     v11[4] = self;
-    v12 = v4;
-    [v5 fetchMetadataForBookmark:v10 completion:v11];
+    v12 = itemCopy;
+    [provider fetchMetadataForBookmark:bookmark completion:v11];
   }
 
   else
   {
-    [(ReadingListMetadataFetcher *)self _fetchMetadataWithDefaultProviderForPendingItem:v4];
+    [(ReadingListMetadataFetcher *)self _fetchMetadataWithDefaultProviderForPendingItem:itemCopy];
   }
 }
 
@@ -320,9 +320,9 @@ void __59__ReadingListMetadataFetcher__fetchMetadataForPendingItem___block_invok
   dispatch_async(v4, v5);
 }
 
-- (void)_fetchMetadataWithDefaultProviderForPendingItem:(id)a3
+- (void)_fetchMetadataWithDefaultProviderForPendingItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = WBS_LOG_CHANNEL_PREFIXReadingList();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -330,17 +330,17 @@ void __59__ReadingListMetadataFetcher__fetchMetadataForPendingItem___block_invok
     _os_log_impl(&dword_215819000, v5, OS_LOG_TYPE_INFO, "Begin fetching metadata for Reading List item with default provider", buf, 2u);
   }
 
-  v6 = [v4 bookmark];
+  bookmark = [itemCopy bookmark];
   v7 = objc_alloc_init(ReadingListMetadataProvider);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__ReadingListMetadataFetcher__fetchMetadataWithDefaultProviderForPendingItem___block_invoke;
   v10[3] = &unk_2781D7D60;
   v10[4] = self;
-  v11 = v4;
-  v12 = v6;
-  v8 = v6;
-  v9 = v4;
+  v11 = itemCopy;
+  v12 = bookmark;
+  v8 = bookmark;
+  v9 = itemCopy;
   [(ReadingListMetadataProvider *)v7 fetchMetadataForBookmark:v8 completion:v10];
 }
 
@@ -400,14 +400,14 @@ void __78__ReadingListMetadataFetcher__fetchMetadataWithDefaultProviderForPendin
   dispatch_async(v4, v5);
 }
 
-- (void)_fetchThumbnailForPendingItem:(id)a3
+- (void)_fetchThumbnailForPendingItem:(id)item
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   self->_isFetchingThumbnail = 1;
-  v5 = [v4 bookmark];
-  v6 = [v4 provider];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  bookmark = [itemCopy bookmark];
+  provider = [itemCopy provider];
+  if (provider && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v7 = WBS_LOG_CHANNEL_PREFIXReadingList();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -425,14 +425,14 @@ void __78__ReadingListMetadataFetcher__fetchMetadataWithDefaultProviderForPendin
     v11[2] = __60__ReadingListMetadataFetcher__fetchThumbnailForPendingItem___block_invoke;
     v11[3] = &unk_2781D7DB0;
     v11[4] = self;
-    v12 = v4;
-    v13 = v5;
-    [v6 fetchThumbnailForBookmark:v13 completion:v11];
+    v12 = itemCopy;
+    v13 = bookmark;
+    [provider fetchThumbnailForBookmark:v13 completion:v11];
   }
 
   else
   {
-    [(ReadingListMetadataFetcher *)self _fetchThumbnailWithDefaultProviderForPendingItem:v4];
+    [(ReadingListMetadataFetcher *)self _fetchThumbnailWithDefaultProviderForPendingItem:itemCopy];
   }
 }
 
@@ -504,14 +504,14 @@ void __60__ReadingListMetadataFetcher__fetchThumbnailForPendingItem___block_invo
   dispatch_async(v4, v5);
 }
 
-- (void)_fetchThumbnailWithDefaultProviderForPendingItem:(id)a3
+- (void)_fetchThumbnailWithDefaultProviderForPendingItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (!self->_defaultThumbnailProvider)
   {
-    v5 = [MEMORY[0x277D4A778] sharedManager];
+    mEMORY[0x277D4A778] = [MEMORY[0x277D4A778] sharedManager];
     defaultThumbnailProvider = self->_defaultThumbnailProvider;
-    self->_defaultThumbnailProvider = v5;
+    self->_defaultThumbnailProvider = mEMORY[0x277D4A778];
   }
 
   v7 = WBS_LOG_CHANNEL_PREFIXReadingList();
@@ -521,19 +521,19 @@ void __60__ReadingListMetadataFetcher__fetchThumbnailForPendingItem___block_invo
     _os_log_impl(&dword_215819000, v7, OS_LOG_TYPE_INFO, "Begin fetching thumbnail for Reading List item with default provider", buf, 2u);
   }
 
-  v8 = [v4 bookmark];
+  bookmark = [itemCopy bookmark];
   v9 = self->_defaultThumbnailProvider;
-  v10 = [v4 bookmark];
+  bookmark2 = [itemCopy bookmark];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __79__ReadingListMetadataFetcher__fetchThumbnailWithDefaultProviderForPendingItem___block_invoke;
   v13[3] = &unk_2781D7DB0;
-  v14 = v8;
-  v15 = self;
-  v16 = v4;
-  v11 = v4;
-  v12 = v8;
-  [(ReadingListMetadataProvider *)v9 fetchThumbnailForBookmark:v10 completion:v13];
+  v14 = bookmark;
+  selfCopy = self;
+  v16 = itemCopy;
+  v11 = itemCopy;
+  v12 = bookmark;
+  [(ReadingListMetadataProvider *)v9 fetchThumbnailForBookmark:bookmark2 completion:v13];
 }
 
 void __79__ReadingListMetadataFetcher__fetchThumbnailWithDefaultProviderForPendingItem___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -589,69 +589,69 @@ void __79__ReadingListMetadataFetcher__fetchThumbnailWithDefaultProviderForPendi
   dispatch_async(v5, v6);
 }
 
-- (void)_setTitle:(id)a3 previewText:(id)a4 thumbnailURLString:(id)a5 thumbnailImage:(id)a6 forItem:(id)a7
+- (void)_setTitle:(id)title previewText:(id)text thumbnailURLString:(id)string thumbnailImage:(id)image forItem:(id)item
 {
-  v33 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  textCopy = text;
+  stringCopy = string;
+  imageCopy = image;
   collection = self->_collection;
-  v16 = [a7 bookmark];
-  v17 = -[WebBookmarkCollection bookmarkWithID:](collection, "bookmarkWithID:", [v16 identifier]);
+  bookmark = [item bookmark];
+  v17 = -[WebBookmarkCollection bookmarkWithID:](collection, "bookmarkWithID:", [bookmark identifier]);
 
   if (v17)
   {
-    v18 = [v17 title];
-    v19 = [v17 previewText];
-    v20 = [v17 readingListIconURL];
-    if ([v33 length] && (!objc_msgSend(v18, "length") || (WBSUnifiedFieldInputTypeForString() - 1) <= 1))
+    title = [v17 title];
+    previewText = [v17 previewText];
+    readingListIconURL = [v17 readingListIconURL];
+    if ([titleCopy length] && (!objc_msgSend(title, "length") || (WBSUnifiedFieldInputTypeForString() - 1) <= 1))
     {
-      [v17 setTitle:v33];
+      [v17 setTitle:titleCopy];
     }
 
-    v21 = [v17 previewText];
-    if ([v21 length])
+    previewText2 = [v17 previewText];
+    if ([previewText2 length])
     {
     }
 
     else
     {
-      v22 = [v12 length];
+      v22 = [textCopy length];
 
       if (v22)
       {
-        [v17 setPreviewText:v12];
+        [v17 setPreviewText:textCopy];
       }
     }
 
-    v23 = [v17 readingListIconUUID];
-    v24 = [v23 length];
+    readingListIconUUID = [v17 readingListIconUUID];
+    v24 = [readingListIconUUID length];
 
     if (!v24)
     {
-      if (!v14)
+      if (!imageCopy)
       {
-        [v17 setReadingListIconURL:v13];
+        [v17 setReadingListIconURL:stringCopy];
 LABEL_14:
-        v25 = [v17 title];
+        title2 = [v17 title];
         if (WBSIsEqual())
         {
-          v32 = v13;
-          v26 = v19;
-          v27 = v20;
-          v28 = [v17 previewText];
+          v32 = stringCopy;
+          v26 = previewText;
+          v27 = readingListIconURL;
+          previewText3 = [v17 previewText];
           v29 = v26;
           if (WBSIsEqual())
           {
-            v30 = [v17 readingListIconURL];
+            readingListIconURL2 = [v17 readingListIconURL];
             if (WBSIsEqual())
             {
-              v31 = [v17 hasFetchedMetadata];
+              hasFetchedMetadata = [v17 hasFetchedMetadata];
 
-              v20 = v27;
-              v19 = v29;
-              v13 = v32;
-              if ((v31 & 1) == 0)
+              readingListIconURL = v27;
+              previewText = v29;
+              stringCopy = v32;
+              if ((hasFetchedMetadata & 1) == 0)
               {
                 goto LABEL_24;
               }
@@ -660,9 +660,9 @@ LABEL_14:
             }
           }
 
-          v20 = v27;
-          v19 = v29;
-          v13 = v32;
+          readingListIconURL = v27;
+          previewText = v29;
+          stringCopy = v32;
         }
 
 LABEL_23:
@@ -672,7 +672,7 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      [(WebBookmarkCollection *)self->_collection saveIconWithData:v14 urlString:v13 forBookmark:v17];
+      [(WebBookmarkCollection *)self->_collection saveIconWithData:imageCopy urlString:stringCopy forBookmark:v17];
     }
 
     [v17 setHasFetchedMetadata:1];
@@ -682,24 +682,24 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_setThumbnailImage:(id)a3 fromURL:(id)a4 forBookmarkWithID:(int)a5
+- (void)_setThumbnailImage:(id)image fromURL:(id)l forBookmarkWithID:(int)d
 {
-  v5 = *&a5;
-  v11 = a3;
-  v8 = a4;
+  v5 = *&d;
+  imageCopy = image;
+  lCopy = l;
   v9 = [(WebBookmarkCollection *)self->_collection bookmarkWithID:v5];
   v10 = v9;
   if (v9)
   {
     [v9 setHasFetchedMetadata:1];
-    [(WebBookmarkCollection *)self->_collection saveIconWithData:v11 urlString:v8 forBookmark:v10];
+    [(WebBookmarkCollection *)self->_collection saveIconWithData:imageCopy urlString:lCopy forBookmark:v10];
     [(ReadingListMetadataFetcher *)self _lockAndSaveBookmark:v10 postNotification:1];
   }
 }
 
-- (void)_didFailMetadataFetchForBookmarkWithID:(int)a3
+- (void)_didFailMetadataFetchForBookmarkWithID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v5 = WBS_LOG_CHANNEL_PREFIXReadingList();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -715,22 +715,22 @@ LABEL_25:
   }
 }
 
-- (BOOL)_lockAndSaveBookmark:(id)a3 postNotification:(BOOL)a4
+- (BOOL)_lockAndSaveBookmark:(id)bookmark postNotification:(BOOL)notification
 {
-  v4 = a4;
+  notificationCopy = notification;
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [objc_opt_class() isLockedSync];
-  if ((v7 & 1) != 0 || [objc_opt_class() lockSync])
+  bookmarkCopy = bookmark;
+  isLockedSync = [objc_opt_class() isLockedSync];
+  if ((isLockedSync & 1) != 0 || [objc_opt_class() lockSync])
   {
     collection = self->_collection;
-    v15[0] = v6;
+    v15[0] = bookmarkCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     v10 = [(WebBookmarkCollection *)collection saveBookmarks:v9 postNotification:0];
 
     if (v10)
     {
-      v11 = !v4;
+      v11 = !notificationCopy;
     }
 
     else
@@ -745,11 +745,11 @@ LABEL_25:
       v13[2] = __68__ReadingListMetadataFetcher__lockAndSaveBookmark_postNotification___block_invoke;
       v13[3] = &unk_2781D4C88;
       v13[4] = self;
-      v14 = v6;
+      v14 = bookmarkCopy;
       dispatch_async(MEMORY[0x277D85CD0], v13);
     }
 
-    if ((v7 & 1) == 0)
+    if ((isLockedSync & 1) == 0)
     {
       [objc_opt_class() unlockSync];
     }
@@ -779,15 +779,15 @@ void __68__ReadingListMetadataFetcher__lockAndSaveBookmark_postNotification___bl
 {
   if ([(NSMutableArray *)self->_bookmarksPendingMetadata count])
   {
-    v3 = [(NSMutableArray *)self->_bookmarksPendingMetadata firstObject];
-    [(ReadingListMetadataFetcher *)self _fetchMetadataForPendingItem:v3];
+    firstObject = [(NSMutableArray *)self->_bookmarksPendingMetadata firstObject];
+    [(ReadingListMetadataFetcher *)self _fetchMetadataForPendingItem:firstObject];
   }
 }
 
-- (void)_didFinishFetchingMetadataForItem:(id)a3
+- (void)_didFinishFetchingMetadataForItem:(id)item
 {
   self->_isFetchingMetadata = 0;
-  [(NSMutableArray *)self->_bookmarksPendingMetadata removeObject:a3];
+  [(NSMutableArray *)self->_bookmarksPendingMetadata removeObject:item];
 
   [(ReadingListMetadataFetcher *)self _fetchNextItemMetadata];
 }
@@ -796,29 +796,29 @@ void __68__ReadingListMetadataFetcher__lockAndSaveBookmark_postNotification___bl
 {
   if ([(NSMutableArray *)self->_bookmarksPendingThumbnail count])
   {
-    v3 = [(NSMutableArray *)self->_bookmarksPendingThumbnail firstObject];
-    [(ReadingListMetadataFetcher *)self _fetchThumbnailForPendingItem:v3];
+    firstObject = [(NSMutableArray *)self->_bookmarksPendingThumbnail firstObject];
+    [(ReadingListMetadataFetcher *)self _fetchThumbnailForPendingItem:firstObject];
   }
 }
 
-- (void)_didFinishFetchingThumbnailForItem:(id)a3
+- (void)_didFinishFetchingThumbnailForItem:(id)item
 {
   self->_isFetchingThumbnail = 0;
-  [(NSMutableArray *)self->_bookmarksPendingThumbnail removeObject:a3];
+  [(NSMutableArray *)self->_bookmarksPendingThumbnail removeObject:item];
 
   [(ReadingListMetadataFetcher *)self _fetchNextItemThumbnail];
 }
 
-- (BOOL)_queue:(id)a3 containsBookmark:(id)a4
+- (BOOL)_queue:(id)_queue containsBookmark:(id)bookmark
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 identifier];
+  _queueCopy = _queue;
+  identifier = [bookmark identifier];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = _queueCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -833,10 +833,10 @@ void __68__ReadingListMetadataFetcher__lockAndSaveBookmark_postNotification___bl
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) bookmark];
-        v13 = [v12 identifier];
+        bookmark = [*(*(&v16 + 1) + 8 * i) bookmark];
+        identifier2 = [bookmark identifier];
 
-        if (v13 == v6)
+        if (identifier2 == identifier)
         {
           v14 = 1;
           goto LABEL_11;

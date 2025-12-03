@@ -1,22 +1,22 @@
 @interface PKAccountWebServiceAccountsRequest
-- (id)_urlRequestWithServiceURL:(id)a3 AppleAccountInformation:(id)a4;
+- (id)_urlRequestWithServiceURL:(id)l AppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceAccountsRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 AppleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l AppleAccountInformation:(id)information
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (informationCopy)
     {
       v16 = @"accounts";
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
-      v10 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:v9 queryParameters:0 appleAccountInformation:v8];
+      v10 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v9 queryParameters:0 appleAccountInformation:v8];
 
       [v10 setHTTPMethod:@"GET"];
       [v10 setCachePolicy:1];

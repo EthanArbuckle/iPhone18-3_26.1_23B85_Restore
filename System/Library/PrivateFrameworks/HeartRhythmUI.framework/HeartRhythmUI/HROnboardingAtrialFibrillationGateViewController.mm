@@ -4,41 +4,41 @@
 - (id)ageIneligiblePromptAckButtonString;
 - (id)ageIneligiblePromptBodyString;
 - (id)ageIneligiblePromptTitleString;
-- (id)axidForElementWithString:(id)a3;
+- (id)axidForElementWithString:(id)string;
 - (id)diagnosisIneligiblePromptAckButtonString;
 - (id)diagnosisIneligiblePromptBodyString;
 - (id)diagnosisIneligiblePromptTitleString;
 - (id)footnoteString;
-- (id)initForOnboarding:(BOOL)a3 hasAtrialFibrillationDiagnosis:(id)a4;
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
+- (id)initForOnboarding:(BOOL)onboarding hasAtrialFibrillationDiagnosis:(id)diagnosis;
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
 - (void)_adjustButtonFooterViewLocationForViewContentHeight;
 - (void)_setUpButtonFooterView;
 - (void)_setUpStackedButtonView;
 - (void)_updateButtonState;
-- (void)optionSelectorView:(id)a3 didSelectOptionAtIndex:(int64_t)a4;
-- (void)setDiagnosis:(id)a3;
-- (void)setIsValidAge:(id)a3;
+- (void)optionSelectorView:(id)view didSelectOptionAtIndex:(int64_t)index;
+- (void)setDiagnosis:(id)diagnosis;
+- (void)setIsValidAge:(id)age;
 - (void)setUpConstraints;
 - (void)setUpUI;
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4;
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HROnboardingAtrialFibrillationGateViewController
 
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
-  v4 = a3;
+  onboardingCopy = onboarding;
   v8.receiver = self;
   v8.super_class = HROnboardingAtrialFibrillationGateViewController;
-  v5 = [(HROnboardingAtrialFibrillationGateViewController *)&v8 initForOnboarding:a3 upgradingFromAlgorithmVersion:a4];
+  v5 = [(HROnboardingAtrialFibrillationGateViewController *)&v8 initForOnboarding:onboarding upgradingFromAlgorithmVersion:version];
   v6 = v5;
   if (v5)
   {
     v5[1088] = 0;
-    if (v4)
+    if (onboardingCopy)
     {
       [v5 configureNavigationButtonWithTypeCancelWithConfirmForAtrialFibrillation];
     }
@@ -47,23 +47,23 @@
   return v6;
 }
 
-- (id)initForOnboarding:(BOOL)a3 hasAtrialFibrillationDiagnosis:(id)a4
+- (id)initForOnboarding:(BOOL)onboarding hasAtrialFibrillationDiagnosis:(id)diagnosis
 {
-  v5 = a3;
-  v7 = a4;
+  onboardingCopy = onboarding;
+  diagnosisCopy = diagnosis;
   v11.receiver = self;
   v11.super_class = HROnboardingAtrialFibrillationGateViewController;
-  v8 = [(HROnboardingAtrialFibrillationGateViewController *)&v11 initForOnboarding:v5];
+  v8 = [(HROnboardingAtrialFibrillationGateViewController *)&v11 initForOnboarding:onboardingCopy];
   v9 = v8;
   if (v8)
   {
     *(v8 + 1088) = 0;
-    if (v5)
+    if (onboardingCopy)
     {
       [v8 configureNavigationButtonWithTypeCancelWithConfirmForAtrialFibrillation];
     }
 
-    objc_storeStrong(v9 + 139, a4);
+    objc_storeStrong(v9 + 139, diagnosis);
   }
 
   return v9;
@@ -77,11 +77,11 @@
   [(HROnboardingAtrialFibrillationGateViewController *)self _setUpButtonFooterView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HROnboardingAtrialFibrillationGateViewController;
-  [(HROnboardingAtrialFibrillationGateViewController *)&v4 viewWillAppear:a3];
+  [(HROnboardingAtrialFibrillationGateViewController *)&v4 viewWillAppear:appear];
   [(HROnboardingAtrialFibrillationGateViewController *)self _adjustButtonFooterViewLocationForViewContentHeight];
 }
 
@@ -103,114 +103,114 @@
 
   v4 = HRHeartRhythmUIFrameworkBundle();
   v5 = [v4 localizedStringForKey:@"ATRIAL_FIBRILLATION_DETECTION_ONBOARDING_GATE_TITLE" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
-  v6 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-  [v6 setText:v5];
+  titleLabel = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+  [titleLabel setText:v5];
 
-  v7 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-  [v7 setTextAlignment:4];
+  titleLabel2 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+  [titleLabel2 setTextAlignment:4];
 
-  v8 = [(HROnboardingAtrialFibrillationGateViewController *)self titleFont];
-  v9 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-  [v9 setFont:v8];
+  titleFont = [(HROnboardingAtrialFibrillationGateViewController *)self titleFont];
+  titleLabel3 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+  [titleLabel3 setFont:titleFont];
 
-  v10 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel4 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+  [titleLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-  [v11 setNumberOfLines:0];
+  titleLabel5 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+  [titleLabel5 setNumberOfLines:0];
 
-  v12 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-  v13 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-  [v12 addSubview:v13];
+  contentView = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+  titleLabel6 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+  [contentView addSubview:titleLabel6];
 
   v14 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingAtrialFibrillationGateViewController *)self setBodyLabel:v14];
 
   v15 = HRHeartRhythmUIFrameworkBundle();
   v16 = [v15 localizedStringForKey:@"ATRIAL_FIBRILLATION_DETECTION_ONBOARDING_GATE_BODY" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
-  v17 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  [v17 setText:v16];
+  bodyLabel = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  [bodyLabel setText:v16];
 
-  v18 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  [v18 setTextAlignment:4];
+  bodyLabel2 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  [bodyLabel2 setTextAlignment:4];
 
-  v19 = [(HROnboardingAtrialFibrillationGateViewController *)self _bodyFont];
-  v20 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  [v20 setFont:v19];
+  _bodyFont = [(HROnboardingAtrialFibrillationGateViewController *)self _bodyFont];
+  bodyLabel3 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  [bodyLabel3 setFont:_bodyFont];
 
-  v21 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v22 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  [v22 setTextColor:v21];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  bodyLabel4 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  [bodyLabel4 setTextColor:secondaryLabelColor];
 
-  v23 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bodyLabel5 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  [bodyLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v24 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  [v24 setNumberOfLines:0];
+  bodyLabel6 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  [bodyLabel6 setNumberOfLines:0];
 
   v25 = [(HROnboardingAtrialFibrillationGateViewController *)self axidForElementWithString:@"GetStartedSubtitle"];
-  v26 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  [v26 setAccessibilityIdentifier:v25];
+  bodyLabel7 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  [bodyLabel7 setAccessibilityIdentifier:v25];
 
-  v27 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-  v28 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  [v27 addSubview:v28];
+  contentView2 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+  bodyLabel8 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  [contentView2 addSubview:bodyLabel8];
 
   v29 = objc_alloc_init(HRQuestionSelectionView);
   [(HROnboardingAtrialFibrillationGateViewController *)self setAgeQuestionView:v29];
 
-  v30 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
-  [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+  ageQuestionView = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
+  [ageQuestionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v31 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
-  [v31 setIdentifier:@"AgeQuestionID"];
+  ageQuestionView2 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
+  [ageQuestionView2 setIdentifier:@"AgeQuestionID"];
 
-  v32 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
-  [v32 setDelegate:self];
+  ageQuestionView3 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
+  [ageQuestionView3 setDelegate:self];
 
   v33 = HRHeartRhythmUIFrameworkBundle();
   v34 = [v33 localizedStringForKey:@"ATRIAL_FIBRILLATION_DETECTION_ONBOARDING_GATE_AGE_PROMPT" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
-  v35 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
-  [v35 setQuestionText:v34];
+  ageQuestionView4 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
+  [ageQuestionView4 setQuestionText:v34];
 
-  v36 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
-  [v36 reloadOptions];
+  ageQuestionView5 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
+  [ageQuestionView5 reloadOptions];
 
-  v37 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-  v38 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
-  [v37 addSubview:v38];
+  contentView3 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+  ageQuestionView6 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
+  [contentView3 addSubview:ageQuestionView6];
 
   v39 = objc_alloc_init(HRQuestionSelectionView);
   [(HROnboardingAtrialFibrillationGateViewController *)self setPreviousAfibQuestionView:v39];
 
-  v40 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-  [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
+  previousAfibQuestionView = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+  [previousAfibQuestionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v41 = HRHeartRhythmUIFrameworkBundle();
   v42 = [v41 localizedStringForKey:@"ATRIAL_FIBRILLATION_DETECTION_ONBOARDING_GATE_DIAGNOSIS_PROMPT" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
-  v43 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-  [v43 setQuestionText:v42];
+  previousAfibQuestionView2 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+  [previousAfibQuestionView2 setQuestionText:v42];
 
-  v44 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-  [v44 setIdentifier:@"DiagnosisQuestionID"];
+  previousAfibQuestionView3 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+  [previousAfibQuestionView3 setIdentifier:@"DiagnosisQuestionID"];
 
-  v45 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-  [v45 setDelegate:self];
+  previousAfibQuestionView4 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+  [previousAfibQuestionView4 setDelegate:self];
 
   prefilledDiagnosis = self->_prefilledDiagnosis;
   if (prefilledDiagnosis)
   {
     v47 = [(NSNumber *)prefilledDiagnosis isEqual:&unk_286471770];
-    v48 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-    [v48 setSelectedIndex:v47];
+    previousAfibQuestionView5 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+    [previousAfibQuestionView5 setSelectedIndex:v47];
   }
 
-  v49 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-  [v49 reloadOptions];
+  previousAfibQuestionView6 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+  [previousAfibQuestionView6 reloadOptions];
 
-  v50 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-  v51 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-  [v50 addSubview:v51];
+  contentView4 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+  previousAfibQuestionView7 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+  [contentView4 addSubview:previousAfibQuestionView7];
 
   [(HROnboardingAtrialFibrillationGateViewController *)self _setUpStackedButtonView];
   [(HROnboardingAtrialFibrillationGateViewController *)self _updateButtonState];
@@ -223,15 +223,15 @@
   v4 = [v3 localizedStringForKey:@"ONBOARDING_CONTINUE" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable"];
   v10[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  v6 = [(HROnboardingAtrialFibrillationGateViewController *)self footnoteString];
-  v7 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v5 footerText:v6 boldFooterText:0 delegate:self];
+  footnoteString = [(HROnboardingAtrialFibrillationGateViewController *)self footnoteString];
+  v7 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v5 footerText:footnoteString boldFooterText:0 delegate:self];
   [(HROnboardingAtrialFibrillationGateViewController *)self setStackedButtonView:v7];
 
-  v8 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackedButtonView = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+  [stackedButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-  [v9 setFixedBottomButtonSpacing:1];
+  stackedButtonView2 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+  [stackedButtonView2 setFixedBottomButtonSpacing:1];
 }
 
 - (void)setUpConstraints
@@ -239,79 +239,79 @@
   v37.receiver = self;
   v37.super_class = HROnboardingAtrialFibrillationGateViewController;
   [(HROnboardingAtrialFibrillationGateViewController *)&v37 setUpConstraints];
-  v3 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-  v4 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+  titleLabel = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+  contentView = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v3 hrui_alignHorizontalConstraintsWithView:v4 insets:?];
+  [titleLabel hrui_alignHorizontalConstraintsWithView:contentView insets:?];
 
-  v5 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-  v6 = [v5 topAnchor];
-  v7 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-  v8 = [v7 topAnchor];
+  titleLabel2 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+  topAnchor = [titleLabel2 topAnchor];
+  contentView2 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
   [(HROnboardingAtrialFibrillationGateViewController *)self contentTop];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:?];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [v9 setActive:1];
 
-  v10 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  v11 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-  [v10 hk_alignHorizontalConstraintsWithView:v11 margin:0.0];
+  bodyLabel = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  titleLabel3 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+  [bodyLabel hk_alignHorizontalConstraintsWithView:titleLabel3 margin:0.0];
 
-  v12 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  v13 = [v12 topAnchor];
-  v14 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:15.0];
+  bodyLabel2 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  topAnchor3 = [bodyLabel2 topAnchor];
+  titleLabel4 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+  bottomAnchor = [titleLabel4 bottomAnchor];
+  v16 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:15.0];
   [v16 setActive:1];
 
-  v17 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
-  v18 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-  [v17 hk_alignHorizontalConstraintsWithView:v18 margin:0.0];
+  ageQuestionView = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
+  contentView3 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+  [ageQuestionView hk_alignHorizontalConstraintsWithView:contentView3 margin:0.0];
 
-  v19 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
-  v20 = [v19 topAnchor];
-  v21 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:37.0];
+  ageQuestionView2 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
+  topAnchor4 = [ageQuestionView2 topAnchor];
+  bodyLabel3 = [(HROnboardingAtrialFibrillationGateViewController *)self bodyLabel];
+  bottomAnchor2 = [bodyLabel3 bottomAnchor];
+  v23 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:37.0];
   [v23 setActive:1];
 
-  v24 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-  v25 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-  [v24 hk_alignHorizontalConstraintsWithView:v25 margin:0.0];
+  previousAfibQuestionView = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+  contentView4 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+  [previousAfibQuestionView hk_alignHorizontalConstraintsWithView:contentView4 margin:0.0];
 
-  v26 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-  v27 = [v26 topAnchor];
-  v28 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  previousAfibQuestionView2 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+  topAnchor5 = [previousAfibQuestionView2 topAnchor];
+  ageQuestionView3 = [(HROnboardingAtrialFibrillationGateViewController *)self ageQuestionView];
+  bottomAnchor3 = [ageQuestionView3 bottomAnchor];
+  v30 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3];
   [v30 setActive:1];
 
-  v31 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-  v32 = [v31 bottomAnchor];
-  v33 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-  v34 = [v33 bottomAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  contentView5 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+  bottomAnchor4 = [contentView5 bottomAnchor];
+  previousAfibQuestionView3 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+  bottomAnchor5 = [previousAfibQuestionView3 bottomAnchor];
+  v35 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   [(HROnboardingAtrialFibrillationGateViewController *)self setContentViewBottomConstraint:v35];
 
-  v36 = [(HROnboardingAtrialFibrillationGateViewController *)self contentViewBottomConstraint];
-  [v36 setActive:1];
+  contentViewBottomConstraint = [(HROnboardingAtrialFibrillationGateViewController *)self contentViewBottomConstraint];
+  [contentViewBottomConstraint setActive:1];
 }
 
-- (void)setDiagnosis:(id)a3
+- (void)setDiagnosis:(id)diagnosis
 {
-  v5 = a3;
+  diagnosisCopy = diagnosis;
   if (([(NSNumber *)self->_diagnosis isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_diagnosis, a3);
+    objc_storeStrong(&self->_diagnosis, diagnosis);
     [(HROnboardingAtrialFibrillationGateViewController *)self _updateButtonState];
   }
 }
 
-- (void)setIsValidAge:(id)a3
+- (void)setIsValidAge:(id)age
 {
-  v5 = a3;
+  ageCopy = age;
   if (([(NSNumber *)self->_isValidAge isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_isValidAge, a3);
+    objc_storeStrong(&self->_isValidAge, age);
     [(HROnboardingAtrialFibrillationGateViewController *)self _updateButtonState];
   }
 }
@@ -319,72 +319,72 @@
 - (void)_adjustButtonFooterViewLocationForViewContentHeight
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingAtrialFibrillationGateViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(HROnboardingAtrialFibrillationGateViewController *)self view];
+  [view layoutIfNeeded];
 
-  v4 = [(HROnboardingAtrialFibrillationGateViewController *)self view];
-  v5 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-  v6 = [v5 buttons];
-  v7 = [v6 firstObject];
-  [v7 frame];
+  view2 = [(HROnboardingAtrialFibrillationGateViewController *)self view];
+  stackedButtonView = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+  buttons = [stackedButtonView buttons];
+  firstObject = [buttons firstObject];
+  [firstObject frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-  [v4 convertRect:v16 fromView:{v9, v11, v13, v15}];
+  stackedButtonView2 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+  [view2 convertRect:stackedButtonView2 fromView:{v9, v11, v13, v15}];
   v18 = v17;
 
-  v19 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-  [v19 frame];
+  contentView = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+  [contentView frame];
   v21 = v20;
-  v22 = [(HROnboardingAtrialFibrillationGateViewController *)self view];
-  [v22 safeAreaInsets];
+  view3 = [(HROnboardingAtrialFibrillationGateViewController *)self view];
+  [view3 safeAreaInsets];
   v24 = v18 - v23;
 
   if (v21 > v24)
   {
     [(HROnboardingAtrialFibrillationGateViewController *)self removeFooterView];
-    v25 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-    [v25 setBlurHidden:1];
+    stackedButtonView3 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+    [stackedButtonView3 setBlurHidden:1];
 
-    v26 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-    v27 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-    [v26 addSubview:v27];
+    contentView2 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+    stackedButtonView4 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+    [contentView2 addSubview:stackedButtonView4];
 
-    v28 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-    v29 = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
-    [v28 hk_alignHorizontalConstraintsWithView:v29 margin:0.0];
+    stackedButtonView5 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+    titleLabel = [(HROnboardingAtrialFibrillationGateViewController *)self titleLabel];
+    [stackedButtonView5 hk_alignHorizontalConstraintsWithView:titleLabel margin:0.0];
 
-    v30 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-    v31 = [v30 topAnchor];
-    v32 = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
-    v33 = [v32 bottomAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33 constant:20.0];
+    stackedButtonView6 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+    topAnchor = [stackedButtonView6 topAnchor];
+    previousAfibQuestionView = [(HROnboardingAtrialFibrillationGateViewController *)self previousAfibQuestionView];
+    bottomAnchor = [previousAfibQuestionView bottomAnchor];
+    v34 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:20.0];
     [v34 setActive:1];
 
     v35 = MEMORY[0x277CCAAD0];
-    v36 = [(HROnboardingAtrialFibrillationGateViewController *)self contentViewBottomConstraint];
-    v44[0] = v36;
+    contentViewBottomConstraint = [(HROnboardingAtrialFibrillationGateViewController *)self contentViewBottomConstraint];
+    v44[0] = contentViewBottomConstraint;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:1];
     [v35 deactivateConstraints:v37];
 
     [(HROnboardingAtrialFibrillationGateViewController *)self setContentViewBottomConstraint:0];
-    v38 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
-    v39 = [v38 bottomAnchor];
-    v40 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-    v41 = [v40 bottomAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41];
+    contentView3 = [(HROnboardingAtrialFibrillationGateViewController *)self contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    stackedButtonView7 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+    bottomAnchor3 = [stackedButtonView7 bottomAnchor];
+    v42 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     [(HROnboardingAtrialFibrillationGateViewController *)self setContentViewBottomConstraint:v42];
 
-    v43 = [(HROnboardingAtrialFibrillationGateViewController *)self contentViewBottomConstraint];
-    [v43 setActive:1];
+    contentViewBottomConstraint2 = [(HROnboardingAtrialFibrillationGateViewController *)self contentViewBottomConstraint];
+    [contentViewBottomConstraint2 setActive:1];
   }
 }
 
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index
 {
-  if (a4)
+  if (index)
   {
     return;
   }
@@ -392,45 +392,45 @@
   if (![(HROnboardingAtrialFibrillationGateViewController *)self _meetsAgeRequirement])
   {
     v6 = MEMORY[0x277D75110];
-    v7 = [(HROnboardingAtrialFibrillationGateViewController *)self ageIneligiblePromptBodyString];
-    v14 = [v6 alertControllerWithTitle:0 message:v7 preferredStyle:1];
+    ageIneligiblePromptBodyString = [(HROnboardingAtrialFibrillationGateViewController *)self ageIneligiblePromptBodyString];
+    delegate = [v6 alertControllerWithTitle:0 message:ageIneligiblePromptBodyString preferredStyle:1];
 
     v8 = MEMORY[0x277D750F8];
-    v9 = [(HROnboardingAtrialFibrillationGateViewController *)self ageIneligiblePromptAckButtonString];
+    ageIneligiblePromptAckButtonString = [(HROnboardingAtrialFibrillationGateViewController *)self ageIneligiblePromptAckButtonString];
 LABEL_7:
-    v12 = v9;
-    v13 = [v8 actionWithTitle:v9 style:1 handler:0];
-    [v14 addAction:v13];
+    v12 = ageIneligiblePromptAckButtonString;
+    v13 = [v8 actionWithTitle:ageIneligiblePromptAckButtonString style:1 handler:0];
+    [delegate addAction:v13];
 
-    [(HROnboardingAtrialFibrillationGateViewController *)self presentViewController:v14 animated:1 completion:0];
+    [(HROnboardingAtrialFibrillationGateViewController *)self presentViewController:delegate animated:1 completion:0];
     goto LABEL_8;
   }
 
   if (![(HROnboardingAtrialFibrillationGateViewController *)self _meetsDiagnosisRequirement])
   {
     v10 = MEMORY[0x277D75110];
-    v11 = [(HROnboardingAtrialFibrillationGateViewController *)self diagnosisIneligiblePromptBodyString];
-    v14 = [v10 alertControllerWithTitle:0 message:v11 preferredStyle:1];
+    diagnosisIneligiblePromptBodyString = [(HROnboardingAtrialFibrillationGateViewController *)self diagnosisIneligiblePromptBodyString];
+    delegate = [v10 alertControllerWithTitle:0 message:diagnosisIneligiblePromptBodyString preferredStyle:1];
 
     v8 = MEMORY[0x277D750F8];
-    v9 = [(HROnboardingAtrialFibrillationGateViewController *)self diagnosisIneligiblePromptAckButtonString];
+    ageIneligiblePromptAckButtonString = [(HROnboardingAtrialFibrillationGateViewController *)self diagnosisIneligiblePromptAckButtonString];
     goto LABEL_7;
   }
 
-  v14 = [(HROnboardingAtrialFibrillationGateViewController *)self delegate];
-  [v14 stepForward];
+  delegate = [(HROnboardingAtrialFibrillationGateViewController *)self delegate];
+  [delegate stepForward];
 LABEL_8:
 }
 
-- (void)optionSelectorView:(id)a3 didSelectOptionAtIndex:(int64_t)a4
+- (void)optionSelectorView:(id)view didSelectOptionAtIndex:(int64_t)index
 {
-  v12 = a3;
-  v6 = [v12 identifier];
-  v7 = [v6 isEqualToString:@"AgeQuestionID"];
+  viewCopy = view;
+  identifier = [viewCopy identifier];
+  v7 = [identifier isEqualToString:@"AgeQuestionID"];
 
   if (v7)
   {
-    if (a4)
+    if (index)
     {
       v8 = MEMORY[0x277CBEC28];
     }
@@ -445,12 +445,12 @@ LABEL_8:
 
   else
   {
-    v9 = [v12 identifier];
-    v10 = [v9 isEqualToString:@"DiagnosisQuestionID"];
+    identifier2 = [viewCopy identifier];
+    v10 = [identifier2 isEqualToString:@"DiagnosisQuestionID"];
 
     if (v10)
     {
-      if (a4)
+      if (index)
       {
         v11 = MEMORY[0x277CBEC28];
       }
@@ -468,17 +468,17 @@ LABEL_8:
 - (void)_updateButtonState
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingAtrialFibrillationGateViewController *)self isValidAge];
-  if (v3 && (v4 = v3, [(HROnboardingAtrialFibrillationGateViewController *)self diagnosis], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  isValidAge = [(HROnboardingAtrialFibrillationGateViewController *)self isValidAge];
+  if (isValidAge && (v4 = isValidAge, [(HROnboardingAtrialFibrillationGateViewController *)self diagnosis], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v6 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-    v7 = [v6 buttons];
+    stackedButtonView = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+    buttons = [stackedButtonView buttons];
 
-    v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    v8 = [buttons countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v8)
     {
       v9 = v8;
@@ -489,7 +489,7 @@ LABEL_8:
         {
           if (*v26 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(buttons);
           }
 
           v12 = *(*(&v25 + 1) + 8 * i);
@@ -498,7 +498,7 @@ LABEL_8:
           [v12 setBackgroundColor:v13];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v9 = [buttons countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v9);
@@ -511,10 +511,10 @@ LABEL_8:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-    v7 = [v14 buttons];
+    stackedButtonView2 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+    buttons = [stackedButtonView2 buttons];
 
-    v15 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    v15 = [buttons countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v15)
     {
       v16 = v15;
@@ -525,16 +525,16 @@ LABEL_8:
         {
           if (*v22 != v17)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(buttons);
           }
 
           v19 = *(*(&v21 + 1) + 8 * j);
           [v19 setEnabled:0];
-          v20 = [MEMORY[0x277D75348] lightGrayColor];
-          [v19 setBackgroundColor:v20];
+          lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+          [v19 setBackgroundColor:lightGrayColor];
         }
 
-        v16 = [v7 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v16 = [buttons countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v16);
@@ -544,42 +544,42 @@ LABEL_8:
 
 - (void)_setUpButtonFooterView
 {
-  v3 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+  stackedButtonView = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [(HROnboardingAtrialFibrillationGateViewController *)self setFooterView:v3 insets:?];
+  [(HROnboardingAtrialFibrillationGateViewController *)self setFooterView:stackedButtonView insets:?];
 
-  v4 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-  v5 = [(HROnboardingAtrialFibrillationGateViewController *)self view];
-  [v4 alignBlurViewHorizontalConstraintsWithView:v5];
+  stackedButtonView2 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+  view = [(HROnboardingAtrialFibrillationGateViewController *)self view];
+  [stackedButtonView2 alignBlurViewHorizontalConstraintsWithView:view];
 
-  v6 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
-  [v6 setBlurHidden:0];
+  stackedButtonView3 = [(HROnboardingAtrialFibrillationGateViewController *)self stackedButtonView];
+  [stackedButtonView3 setBlurHidden:0];
 }
 
 - (BOOL)_meetsAgeRequirement
 {
-  v3 = [(HROnboardingAtrialFibrillationGateViewController *)self isValidAge];
-  if (v3)
+  isValidAge = [(HROnboardingAtrialFibrillationGateViewController *)self isValidAge];
+  if (isValidAge)
   {
-    v4 = [(HROnboardingAtrialFibrillationGateViewController *)self isValidAge];
-    v5 = [v4 BOOLValue];
+    isValidAge2 = [(HROnboardingAtrialFibrillationGateViewController *)self isValidAge];
+    bOOLValue = [isValidAge2 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)_meetsDiagnosisRequirement
 {
-  v3 = [(HROnboardingAtrialFibrillationGateViewController *)self diagnosis];
-  if (v3)
+  diagnosis = [(HROnboardingAtrialFibrillationGateViewController *)self diagnosis];
+  if (diagnosis)
   {
-    v4 = [(HROnboardingAtrialFibrillationGateViewController *)self diagnosis];
-    v5 = [v4 BOOLValue] ^ 1;
+    diagnosis2 = [(HROnboardingAtrialFibrillationGateViewController *)self diagnosis];
+    v5 = [diagnosis2 BOOLValue] ^ 1;
   }
 
   else
@@ -646,10 +646,10 @@ LABEL_8:
   return v3;
 }
 
-- (id)axidForElementWithString:(id)a3
+- (id)axidForElementWithString:(id)string
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"BirthDate.%@", a3];
-  v4 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:2 suffix:v3];
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"BirthDate.%@", string];
+  v4 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:2 suffix:string];
 
   return v4;
 }

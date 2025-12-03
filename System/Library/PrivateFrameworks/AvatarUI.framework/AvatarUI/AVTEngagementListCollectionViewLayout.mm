@@ -1,22 +1,22 @@
 @interface AVTEngagementListCollectionViewLayout
-- (AVTEngagementListCollectionViewLayout)initWithEngagementLayout:(id)a3;
-- (CGPoint)centerForCenteringElementAtIndex:(int64_t)a3 visibleBoundsSize:(CGSize)a4 proposedOrigin:(CGPoint)a5;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
-- (CGRect)frameForElementAtIndex:(int64_t)a3 visibleBounds:(CGRect)a4;
+- (AVTEngagementListCollectionViewLayout)initWithEngagementLayout:(id)layout;
+- (CGPoint)centerForCenteringElementAtIndex:(int64_t)index visibleBoundsSize:(CGSize)size proposedOrigin:(CGPoint)origin;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (CGRect)frameForElementAtIndex:(int64_t)index visibleBounds:(CGRect)bounds;
 - (CGSize)collectionViewContentSize;
-- (CGSize)contentSizeForVisibleBounds:(CGRect)a3 numberOfItems:(int64_t)a4;
-- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)a3;
-- (id)indexesForElementsInRect:(CGRect)a3 visibleBounds:(CGRect)a4 numberOfItems:(int64_t)a5;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (CGSize)contentSizeForVisibleBounds:(CGRect)bounds numberOfItems:(int64_t)items;
+- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)bounds;
+- (id)indexesForElementsInRect:(CGRect)rect visibleBounds:(CGRect)bounds numberOfItems:(int64_t)items;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)clearTargetContentOffsetForAnimations;
 - (void)invalidateLayout;
-- (void)setTargetContentOffsetForAnimations:(CGPoint)a3;
+- (void)setTargetContentOffsetForAnimations:(CGPoint)animations;
 @end
 
 @implementation AVTEngagementListCollectionViewLayout
 
-- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)a3
+- (UIEdgeInsets)engagementInsetsForCollectionViewBounds:(CGSize)bounds
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -29,24 +29,24 @@
   return result;
 }
 
-- (AVTEngagementListCollectionViewLayout)initWithEngagementLayout:(id)a3
+- (AVTEngagementListCollectionViewLayout)initWithEngagementLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = AVTEngagementListCollectionViewLayout;
   v6 = [(AVTEngagementListCollectionViewLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_engagementLayout, a3);
+    objc_storeStrong(&v6->_engagementLayout, layout);
   }
 
   return v7;
 }
 
-- (void)setTargetContentOffsetForAnimations:(CGPoint)a3
+- (void)setTargetContentOffsetForAnimations:(CGPoint)animations
 {
-  v4 = [MEMORY[0x1E696B098] valueWithCGPoint:{a3.x, a3.y}];
+  v4 = [MEMORY[0x1E696B098] valueWithCGPoint:{animations.x, animations.y}];
   [(AVTEngagementListCollectionViewLayout *)self setTargetContentOffset:v4];
 }
 
@@ -57,19 +57,19 @@
   [(AVTEngagementListCollectionViewLayout *)self setIgnoredProposedContentOffset:0];
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(AVTEngagementListCollectionViewLayout *)self targetContentOffset];
+  y = offset.y;
+  x = offset.x;
+  targetContentOffset = [(AVTEngagementListCollectionViewLayout *)self targetContentOffset];
 
-  if (v6)
+  if (targetContentOffset)
   {
     v7 = [MEMORY[0x1E696B098] valueWithCGPoint:{x, y}];
     [(AVTEngagementListCollectionViewLayout *)self setIgnoredProposedContentOffset:v7];
 
-    v8 = [(AVTEngagementListCollectionViewLayout *)self targetContentOffset];
-    [v8 CGPointValue];
+    targetContentOffset2 = [(AVTEngagementListCollectionViewLayout *)self targetContentOffset];
+    [targetContentOffset2 CGPointValue];
     x = v9;
     y = v10;
   }
@@ -83,15 +83,15 @@
 
 - (void)invalidateLayout
 {
-  v3 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(AVTEngagementListCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   [(AVTEngagementListCollectionViewLayout *)self engagementInsetsForCollectionViewBounds:v4, v5];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  [v14 setEngagementBoundsInsets:{v7, v9, v11, v13}];
+  engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  [engagementLayout setEngagementBoundsInsets:{v7, v9, v11, v13}];
 
   v15.receiver = self;
   v15.super_class = AVTEngagementListCollectionViewLayout;
@@ -100,10 +100,10 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
-  v4 = [v3 numberOfSections];
+  collectionView = [(AVTEngagementListCollectionViewLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  if (v4 <= 0)
+  if (numberOfSections <= 0)
   {
     v10 = *MEMORY[0x1E695F060];
     v12 = *(MEMORY[0x1E695F060] + 8);
@@ -111,13 +111,13 @@
 
   else
   {
-    v5 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
-    v6 = [v5 numberOfItemsInSection:0];
+    collectionView2 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
+    v6 = [collectionView2 numberOfItemsInSection:0];
 
-    v7 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-    v8 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
-    [v8 bounds];
-    [v7 contentSizeForVisibleBounds:v6 numberOfItems:?];
+    engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+    collectionView3 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
+    [collectionView3 bounds];
+    [engagementLayout contentSizeForVisibleBounds:v6 numberOfItems:?];
     v10 = v9;
     v12 = v11;
   }
@@ -129,40 +129,40 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
-  v9 = [v8 numberOfSections];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  collectionView = [(AVTEngagementListCollectionViewLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  if (v9 < 1)
+  if (numberOfSections < 1)
   {
     v24 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF70] array];
-    v11 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-    v12 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
-    [v12 bounds];
+    array = [MEMORY[0x1E695DF70] array];
+    engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+    collectionView2 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
+    [collectionView2 bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
-    v22 = [v11 indexesForElementsInRect:objc_msgSend(v21 visibleBounds:"numberOfItemsInSection:" numberOfItems:{0), x, y, width, height, v14, v16, v18, v20}];
+    collectionView3 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
+    v22 = [engagementLayout indexesForElementsInRect:objc_msgSend(collectionView3 visibleBounds:"numberOfItemsInSection:" numberOfItems:{0), x, y, width, height, v14, v16, v18, v20}];
 
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = __75__AVTEngagementListCollectionViewLayout_layoutAttributesForElementsInRect___block_invoke;
     v29 = &unk_1E7F3C6F8;
-    v30 = self;
-    v31 = v10;
-    v23 = v10;
+    selfCopy = self;
+    v31 = array;
+    v23 = array;
     [v22 enumerateIndexesUsingBlock:&v26];
     v24 = [v23 copy];
   }
@@ -179,30 +179,30 @@ void __75__AVTEngagementListCollectionViewLayout_layoutAttributesForElementsInRe
   [*(a1 + 40) addObject:v5];
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = MEMORY[0x1E69DC858];
-  v5 = a3;
-  v6 = [v4 layoutAttributesForCellWithIndexPath:v5];
-  v7 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  v8 = [v5 row];
+  pathCopy = path;
+  v6 = [v4 layoutAttributesForCellWithIndexPath:pathCopy];
+  engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  v8 = [pathCopy row];
 
-  v9 = [(AVTEngagementListCollectionViewLayout *)self collectionView];
-  [v9 bounds];
-  [v7 frameForElementAtIndex:v8 visibleBounds:?];
+  collectionView = [(AVTEngagementListCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
+  [engagementLayout frameForElementAtIndex:v8 visibleBounds:?];
   [v6 setFrame:?];
 
   return v6;
 }
 
-- (CGRect)frameForElementAtIndex:(int64_t)a3 visibleBounds:(CGRect)a4
+- (CGRect)frameForElementAtIndex:(int64_t)index visibleBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  [v9 frameForElementAtIndex:a3 visibleBounds:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  [engagementLayout frameForElementAtIndex:index visibleBounds:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -219,30 +219,30 @@ void __75__AVTEngagementListCollectionViewLayout_layoutAttributesForElementsInRe
   return result;
 }
 
-- (id)indexesForElementsInRect:(CGRect)a3 visibleBounds:(CGRect)a4 numberOfItems:(int64_t)a5
+- (id)indexesForElementsInRect:(CGRect)rect visibleBounds:(CGRect)bounds numberOfItems:(int64_t)items
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  v14 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  v15 = [v14 indexesForElementsInRect:a5 visibleBounds:v13 numberOfItems:{v12, v11, v10, x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
+  engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  v15 = [engagementLayout indexesForElementsInRect:items visibleBounds:v13 numberOfItems:{v12, v11, v10, x, y, width, height}];
 
   return v15;
 }
 
-- (CGPoint)centerForCenteringElementAtIndex:(int64_t)a3 visibleBoundsSize:(CGSize)a4 proposedOrigin:(CGPoint)a5
+- (CGPoint)centerForCenteringElementAtIndex:(int64_t)index visibleBoundsSize:(CGSize)size proposedOrigin:(CGPoint)origin
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
-  v10 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  [v10 centerForCenteringElementAtIndex:a3 visibleBoundsSize:width proposedOrigin:{height, x, y}];
+  y = origin.y;
+  x = origin.x;
+  height = size.height;
+  width = size.width;
+  engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  [engagementLayout centerForCenteringElementAtIndex:index visibleBoundsSize:width proposedOrigin:{height, x, y}];
   v12 = v11;
   v14 = v13;
 
@@ -253,14 +253,14 @@ void __75__AVTEngagementListCollectionViewLayout_layoutAttributesForElementsInRe
   return result;
 }
 
-- (CGSize)contentSizeForVisibleBounds:(CGRect)a3 numberOfItems:(int64_t)a4
+- (CGSize)contentSizeForVisibleBounds:(CGRect)bounds numberOfItems:(int64_t)items
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
-  [v9 contentSizeForVisibleBounds:a4 numberOfItems:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  engagementLayout = [(AVTEngagementListCollectionViewLayout *)self engagementLayout];
+  [engagementLayout contentSizeForVisibleBounds:items numberOfItems:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
 

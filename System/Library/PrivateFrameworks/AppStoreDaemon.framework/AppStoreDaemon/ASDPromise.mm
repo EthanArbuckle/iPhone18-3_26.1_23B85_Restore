@@ -1,118 +1,118 @@
 @interface ASDPromise
-+ (ASDPromise)promiseWithError:(id)a3;
-+ (ASDPromise)promiseWithValue:(id)a3;
-+ (id)onScheduler:(id)a3 usingBlock:(id)a4;
-- (ASDPromise)initWithError:(id)a3;
-- (ASDPromise)initWithValue:(id)a3;
++ (ASDPromise)promiseWithError:(id)error;
++ (ASDPromise)promiseWithValue:(id)value;
++ (id)onScheduler:(id)scheduler usingBlock:(id)block;
+- (ASDPromise)initWithError:(id)error;
+- (ASDPromise)initWithValue:(id)value;
 - (BOOL)isResolved;
 - (id)completionHandlerAdapter;
-- (id)flatMapUsingTransformer:(id)a3 onScheduler:(id)a4;
-- (id)initOnScheduler:(id)a3 withExecutor:(id)a4;
-- (id)initWithState:(void *)a3 result:;
-- (id)joinWithPromise:(id)a3;
-- (id)mapUsingTransformer:(id)a3 onScheduler:(id)a4;
-- (void)_invokeExecutor:(void *)a3 onScheduler:;
-- (void)alwaysPerform:(id)a3 onScheduler:(id)a4;
-- (void)rejectWithError:(id)a3;
-- (void)resolveWithValue:(id)a3;
-- (void)thenPerform:(id)a3 orCatchError:(id)a4 onScheduler:(id)a5;
+- (id)flatMapUsingTransformer:(id)transformer onScheduler:(id)scheduler;
+- (id)initOnScheduler:(id)scheduler withExecutor:(id)executor;
+- (id)initWithState:(void *)state result:;
+- (id)joinWithPromise:(id)promise;
+- (id)mapUsingTransformer:(id)transformer onScheduler:(id)scheduler;
+- (void)_invokeExecutor:(void *)executor onScheduler:;
+- (void)alwaysPerform:(id)perform onScheduler:(id)scheduler;
+- (void)rejectWithError:(id)error;
+- (void)resolveWithValue:(id)value;
+- (void)thenPerform:(id)perform orCatchError:(id)error onScheduler:(id)scheduler;
 @end
 
 @implementation ASDPromise
 
-+ (id)onScheduler:(id)a3 usingBlock:(id)a4
++ (id)onScheduler:(id)scheduler usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initOnScheduler:v7 withExecutor:v6];
+  blockCopy = block;
+  schedulerCopy = scheduler;
+  v8 = [[self alloc] initOnScheduler:schedulerCopy withExecutor:blockCopy];
 
   return v8;
 }
 
-+ (ASDPromise)promiseWithValue:(id)a3
++ (ASDPromise)promiseWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithValue:v4];
+  valueCopy = value;
+  v5 = [[self alloc] initWithValue:valueCopy];
 
   return v5;
 }
 
-+ (ASDPromise)promiseWithError:(id)a3
++ (ASDPromise)promiseWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithError:v4];
+  errorCopy = error;
+  v5 = [[self alloc] initWithError:errorCopy];
 
   return v5;
 }
 
-- (id)initWithState:(void *)a3 result:
+- (id)initWithState:(void *)state result:
 {
-  v6 = a3;
-  if (a1)
+  stateCopy = state;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = ASDPromise;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v7 = objc_alloc_init(MEMORY[0x1E696AE68]);
-      v8 = a1[3];
-      a1[3] = v7;
+      v8 = self[3];
+      self[3] = v7;
 
-      a1[2] = a2;
-      objc_storeStrong(a1 + 4, a3);
+      self[2] = a2;
+      objc_storeStrong(self + 4, state);
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v10 = a1[1];
-      a1[1] = v9;
+      v10 = self[1];
+      self[1] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (ASDPromise)initWithValue:(id)a3
+- (ASDPromise)initWithValue:(id)value
 {
-  v4 = [ASDPromiseResult resultWithValue:a3];
+  v4 = [ASDPromiseResult resultWithValue:value];
   v5 = [(ASDPromise *)&self->super.isa initWithState:v4 result:?];
 
   return v5;
 }
 
-- (ASDPromise)initWithError:(id)a3
+- (ASDPromise)initWithError:(id)error
 {
-  v4 = [ASDPromiseResult resultWithError:a3];
+  v4 = [ASDPromiseResult resultWithError:error];
   v5 = [(ASDPromise *)&self->super.isa initWithState:v4 result:?];
 
   return v5;
 }
 
-- (id)initOnScheduler:(id)a3 withExecutor:(id)a4
+- (id)initOnScheduler:(id)scheduler withExecutor:(id)executor
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  executorCopy = executor;
   v8 = [(ASDPromise *)self init];
   v9 = v8;
   if (v8)
   {
-    [(ASDPromise *)v8 _invokeExecutor:v7 onScheduler:v6];
+    [(ASDPromise *)v8 _invokeExecutor:executorCopy onScheduler:schedulerCopy];
   }
 
   return v9;
 }
 
-- (void)_invokeExecutor:(void *)a3 onScheduler:
+- (void)_invokeExecutor:(void *)executor onScheduler:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __42__ASDPromise__invokeExecutor_onScheduler___block_invoke;
     v7[3] = &unk_1E7CDB890;
-    v7[4] = a1;
+    v7[4] = self;
     v8 = v5;
-    [a3 scheduleBlock:v7];
+    [executor scheduleBlock:v7];
   }
 }
 
@@ -135,40 +135,40 @@
   return v3;
 }
 
-- (void)alwaysPerform:(id)a3 onScheduler:(id)a4
+- (void)alwaysPerform:(id)perform onScheduler:(id)scheduler
 {
-  v6 = a3;
+  performCopy = perform;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__ASDPromise_alwaysPerform_onScheduler___block_invoke;
   v10[3] = &unk_1E7CDD770;
-  v11 = v6;
+  v11 = performCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__ASDPromise_alwaysPerform_onScheduler___block_invoke_2;
   v8[3] = &unk_1E7CDB730;
   v9 = v11;
   v7 = v11;
-  [(ASDPromise *)self thenPerform:v10 orCatchError:v8 onScheduler:a4];
+  [(ASDPromise *)self thenPerform:v10 orCatchError:v8 onScheduler:scheduler];
 }
 
-- (void)thenPerform:(id)a3 orCatchError:(id)a4 onScheduler:(id)a5
+- (void)thenPerform:(id)perform orCatchError:(id)error onScheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  performCopy = perform;
+  errorCopy = error;
+  schedulerCopy = scheduler;
   stateLock = self->_stateLock;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __51__ASDPromise_thenPerform_orCatchError_onScheduler___block_invoke;
   v15[3] = &unk_1E7CDD7B8;
-  v18 = v8;
-  v19 = v9;
-  v16 = v10;
-  v17 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = performCopy;
+  v19 = errorCopy;
+  v16 = schedulerCopy;
+  selfCopy = self;
+  v12 = schedulerCopy;
+  v13 = errorCopy;
+  v14 = performCopy;
   ASDWithLock(stateLock, v15);
 }
 
@@ -201,21 +201,21 @@ LABEL_7:
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)mapUsingTransformer:(id)a3 onScheduler:(id)a4
+- (id)mapUsingTransformer:(id)transformer onScheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  transformerCopy = transformer;
+  schedulerCopy = scheduler;
   v8 = objc_alloc_init(ASDPromise);
-  if (!v7)
+  if (!schedulerCopy)
   {
-    v7 = objc_alloc_init(ASDSyncTaskScheduler);
+    schedulerCopy = objc_alloc_init(ASDSyncTaskScheduler);
   }
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __46__ASDPromise_mapUsingTransformer_onScheduler___block_invoke;
   v16[3] = &unk_1E7CDD3F0;
-  v18 = v6;
+  v18 = transformerCopy;
   v17 = v8;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -223,8 +223,8 @@ LABEL_7:
   v14[3] = &unk_1E7CDB980;
   v9 = v17;
   v15 = v9;
-  v10 = v6;
-  [(ASDPromise *)self thenPerform:v16 orCatchError:v14 onScheduler:v7];
+  v10 = transformerCopy;
+  [(ASDPromise *)self thenPerform:v16 orCatchError:v14 onScheduler:schedulerCopy];
   v11 = v15;
   v12 = v9;
 
@@ -237,31 +237,31 @@ void __46__ASDPromise_mapUsingTransformer_onScheduler___block_invoke(uint64_t a1
   [*(a1 + 32) resolveWithValue:v2];
 }
 
-- (id)flatMapUsingTransformer:(id)a3 onScheduler:(id)a4
+- (id)flatMapUsingTransformer:(id)transformer onScheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  transformerCopy = transformer;
+  schedulerCopy = scheduler;
   v8 = objc_alloc_init(ASDPromise);
-  if (!v7)
+  if (!schedulerCopy)
   {
-    v7 = objc_alloc_init(ASDSyncTaskScheduler);
+    schedulerCopy = objc_alloc_init(ASDSyncTaskScheduler);
   }
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __50__ASDPromise_flatMapUsingTransformer_onScheduler___block_invoke;
   v17[3] = &unk_1E7CDD808;
-  v20 = v6;
+  v20 = transformerCopy;
   v18 = v8;
-  v19 = v7;
+  v19 = schedulerCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __50__ASDPromise_flatMapUsingTransformer_onScheduler___block_invoke_4;
   v15[3] = &unk_1E7CDB980;
   v9 = v18;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = schedulerCopy;
+  v11 = transformerCopy;
   [(ASDPromise *)self thenPerform:v17 orCatchError:v15 onScheduler:v10];
   v12 = v16;
   v13 = v9;
@@ -285,15 +285,15 @@ void __50__ASDPromise_flatMapUsingTransformer_onScheduler___block_invoke(uint64_
   [v2 thenPerform:v5 orCatchError:v3 onScheduler:*(a1 + 40)];
 }
 
-- (id)joinWithPromise:(id)a3
+- (id)joinWithPromise:(id)promise
 {
-  v4 = a3;
+  promiseCopy = promise;
   v5 = objc_alloc_init(ASDPromise);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __30__ASDPromise_joinWithPromise___block_invoke;
   v14[3] = &unk_1E7CDD830;
-  v15 = v4;
+  v15 = promiseCopy;
   v16 = v5;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -301,7 +301,7 @@ void __50__ASDPromise_flatMapUsingTransformer_onScheduler___block_invoke(uint64_
   v12[3] = &unk_1E7CDB980;
   v6 = v16;
   v13 = v6;
-  v7 = v4;
+  v7 = promiseCopy;
   v8 = objc_opt_new();
   [(ASDPromise *)self thenPerform:v14 orCatchError:v12 onScheduler:v8];
 
@@ -371,17 +371,17 @@ uint64_t __38__ASDPromise_completionHandlerAdapter__block_invoke(uint64_t a1, ui
   }
 }
 
-- (void)resolveWithValue:(id)a3
+- (void)resolveWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   stateLock = self->_stateLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__ASDPromise_resolveWithValue___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = valueCopy;
+  v6 = valueCopy;
   ASDWithLock(stateLock, v7);
 }
 
@@ -434,17 +434,17 @@ uint64_t __31__ASDPromise_resolveWithValue___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)rejectWithError:(id)a3
+- (void)rejectWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   stateLock = self->_stateLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__ASDPromise_rejectWithError___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   ASDWithLock(stateLock, v7);
 }
 

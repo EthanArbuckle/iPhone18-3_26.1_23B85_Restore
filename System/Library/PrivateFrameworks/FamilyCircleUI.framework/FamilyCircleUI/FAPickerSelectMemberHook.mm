@@ -1,13 +1,13 @@
 @interface FAPickerSelectMemberHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (FAPickerSelectMemberHook)init;
 - (RUIServerHookDelegate)delegate;
 - (id)activateAction;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
-- (void)setActivateAction:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
+- (void)setActivateAction:(id)action;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation FAPickerSelectMemberHook
@@ -22,12 +22,12 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___FAPickerSelectMemberHook_delegate;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -56,9 +56,9 @@
   return v4;
 }
 
-- (void)setActivateAction:(id)a3
+- (void)setActivateAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -77,44 +77,44 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_21BB5AEC4(v7);
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_21BC5FD10(v4);
+  elementCopy = element;
+  selfCopy = self;
+  v6 = sub_21BC5FD10(elementCopy);
 
   return v6 & 1;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_21BC5FDBC(v4);
+  modelCopy = model;
+  selfCopy = self;
+  v6 = sub_21BC5FDBC(modelCopy);
 
   return v6 & 1;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(completion);
   v9 = sub_21BE2890C();
-  v10 = a5;
-  v11 = self;
-  sub_21BC604DC(v10, v9);
+  modelCopy = model;
+  selfCopy = self;
+  sub_21BC604DC(modelCopy, v9);
 
-  v12 = v11 + OBJC_IVAR___FAPickerSelectMemberHook_activateAction;
+  v12 = selfCopy + OBJC_IVAR___FAPickerSelectMemberHook_activateAction;
   swift_beginAccess();
   v13 = *v12;
   if (*v12)
   {
     v14 = *(v12 + 1);
 
-    v13(v10);
+    v13(modelCopy);
     sub_21BB5AEC4(v13);
   }
 
@@ -123,13 +123,13 @@
   _Block_release(v8);
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v8 = self;
+  v6 = _Block_copy(completion);
+  modelCopy = model;
+  selfCopy = self;
   v9 = sub_21BBB5D24(MEMORY[0x277D84F90]);
-  sub_21BC604DC(v7, v9);
+  sub_21BC604DC(modelCopy, v9);
 
   v6[2](v6, 1, 0);
 

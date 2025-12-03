@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFAppearanceModeCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFAppearanceModeCharacteristic *)self appearanceModeValue];
+  appearanceModeValue = [(CAFAppearanceModeCharacteristic *)self appearanceModeValue];
 
-  return NSStringFromAppearanceMode(v2);
+  return NSStringFromAppearanceMode(appearanceModeValue);
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface AMSAutoBugCaptureProbeOptions
-- (AMSAutoBugCaptureProbeOptions)initWithEnabled:(BOOL)a3 duration:(double)a4 target:(id)a5;
+- (AMSAutoBugCaptureProbeOptions)initWithEnabled:(BOOL)enabled duration:(double)duration target:(id)target;
 @end
 
 @implementation AMSAutoBugCaptureProbeOptions
 
-- (AMSAutoBugCaptureProbeOptions)initWithEnabled:(BOOL)a3 duration:(double)a4 target:(id)a5
+- (AMSAutoBugCaptureProbeOptions)initWithEnabled:(BOOL)enabled duration:(double)duration target:(id)target
 {
-  if (a5)
+  if (target)
   {
     sub_192F967CC();
   }

@@ -1,15 +1,15 @@
 @interface AMSDeviceMessenger
 - (AMSDeviceMessenger)init;
 - (id)_getProxyObject;
-- (id)_identifierFromDialogRequest:(id)a3;
-- (id)clearDialog:(id)a3;
-- (id)dialogsWithFilter:(id)a3;
-- (id)sendDialog:(id)a3 account:(id)a4;
-- (void)_sendDelegateUpdateForMessage:(id)a3;
-- (void)addUpdateHandlerForType:(int64_t)a3 filter:(id)a4 handler:(id)a5;
-- (void)deviceMessengerDidClearMessage:(id)a3;
-- (void)deviceMessengerDidReceiveMessage:(id)a3;
-- (void)deviceMessengerDidReceiveReply:(id)a3;
+- (id)_identifierFromDialogRequest:(id)request;
+- (id)clearDialog:(id)dialog;
+- (id)dialogsWithFilter:(id)filter;
+- (id)sendDialog:(id)dialog account:(id)account;
+- (void)_sendDelegateUpdateForMessage:(id)message;
+- (void)addUpdateHandlerForType:(int64_t)type filter:(id)filter handler:(id)handler;
+- (void)deviceMessengerDidClearMessage:(id)message;
+- (void)deviceMessengerDidReceiveMessage:(id)message;
+- (void)deviceMessengerDidReceiveReply:(id)reply;
 - (void)deviceMessengerDidUpdateDevices;
 @end
 
@@ -62,27 +62,27 @@ void __26__AMSDeviceMessenger_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addUpdateHandlerForType:(int64_t)a3 filter:(id)a4 handler:(id)a5
+- (void)addUpdateHandlerForType:(int64_t)type filter:(id)filter handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  filterCopy = filter;
+  handlerCopy = handler;
+  if (!filterCopy)
   {
-    v8 = objc_alloc_init(AMSDeviceMessengerFilter);
+    filterCopy = objc_alloc_init(AMSDeviceMessengerFilter);
   }
 
-  [(AMSDeviceMessengerFilter *)v8 setMessageType:a3];
-  v10 = [(AMSDeviceMessenger *)self queue];
+  [(AMSDeviceMessengerFilter *)filterCopy setMessageType:type];
+  queue = [(AMSDeviceMessenger *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__AMSDeviceMessenger_addUpdateHandlerForType_filter_handler___block_invoke;
   block[3] = &unk_1E73B4378;
-  v15 = self;
-  v16 = v9;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, block);
+  selfCopy = self;
+  v16 = handlerCopy;
+  v14 = filterCopy;
+  v11 = handlerCopy;
+  v12 = filterCopy;
+  dispatch_sync(queue, block);
 }
 
 void __61__AMSDeviceMessenger_addUpdateHandlerForType_filter_handler___block_invoke(uint64_t a1)
@@ -96,27 +96,27 @@ void __61__AMSDeviceMessenger_addUpdateHandlerForType_filter_handler___block_inv
   [v3 addObject:v4];
 }
 
-- (id)dialogsWithFilter:(id)a3
+- (id)dialogsWithFilter:(id)filter
 {
-  v4 = a3;
-  if (!v4)
+  filterCopy = filter;
+  if (!filterCopy)
   {
-    v4 = objc_alloc_init(AMSDeviceMessengerFilter);
+    filterCopy = objc_alloc_init(AMSDeviceMessengerFilter);
   }
 
-  [(AMSDeviceMessengerFilter *)v4 setMessageType:1];
+  [(AMSDeviceMessengerFilter *)filterCopy setMessageType:1];
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [(AMSDeviceMessenger *)self _getProxyObject];
+  _getProxyObject = [(AMSDeviceMessenger *)self _getProxyObject];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __40__AMSDeviceMessenger_dialogsWithFilter___block_invoke;
   v12[3] = &unk_1E73B6CD0;
   v7 = v5;
   v13 = v7;
-  v14 = self;
-  v15 = v4;
-  v8 = v4;
-  [v6 addFinishBlock:v12];
+  selfCopy = self;
+  v15 = filterCopy;
+  v8 = filterCopy;
+  [_getProxyObject addFinishBlock:v12];
 
   v9 = v15;
   v10 = v7;
@@ -243,22 +243,22 @@ void __40__AMSDeviceMessenger_dialogsWithFilter___block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (id)clearDialog:(id)a3
+- (id)clearDialog:(id)dialog
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 logKey];
-  v6 = AMSSetLogKey(v5);
+  dialogCopy = dialog;
+  logKey = [dialogCopy logKey];
+  v6 = AMSSetLogKey(logKey);
 
-  v7 = [(AMSDeviceMessenger *)self _identifierFromDialogRequest:v4];
+  v7 = [(AMSDeviceMessenger *)self _identifierFromDialogRequest:dialogCopy];
   v8 = +[AMSLogConfig sharedConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = AMSLogKey();
@@ -268,14 +268,14 @@ void __40__AMSDeviceMessenger_dialogsWithFilter___block_invoke_2(uint64_t a1, vo
     v30 = v11;
     v31 = 2114;
     v32 = v7;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Clearing dialog with identifier: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Clearing dialog with identifier: %{public}@", buf, 0x20u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v12 = objc_alloc_init(AMSMutableBinaryPromise);
-    v13 = [(AMSDeviceMessenger *)self _getProxyObject];
+    _getProxyObject = [(AMSDeviceMessenger *)self _getProxyObject];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __34__AMSDeviceMessenger_clearDialog___block_invoke;
@@ -283,9 +283,9 @@ void __40__AMSDeviceMessenger_dialogsWithFilter___block_invoke_2(uint64_t a1, vo
     v14 = v12;
     v23 = v14;
     v24 = v7;
-    v25 = v4;
-    v26 = self;
-    [v13 addFinishBlock:v22];
+    v25 = dialogCopy;
+    selfCopy = self;
+    [_getProxyObject addFinishBlock:v22];
 
     v15 = v14;
     v16 = v15;
@@ -299,16 +299,16 @@ void __40__AMSDeviceMessenger_dialogsWithFilter___block_invoke_2(uint64_t a1, vo
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v19 = objc_opt_class();
-      v20 = [v4 logKey];
+      logKey2 = [dialogCopy logKey];
       *buf = 138543618;
       v28 = v19;
       v29 = 2114;
-      v30 = v20;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid dialog for clear", buf, 0x16u);
+      v30 = logKey2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid dialog for clear", buf, 0x16u);
     }
 
     v15 = AMSError(2, @"AMSDeviceMessenger Error", @"Invalid bridge dialog for clear", 0);
@@ -408,23 +408,23 @@ LABEL_10:
   [*(a1 + 48) finishWithSuccess:v5 == 0 error:{v5, *v16, *&v16[16], v17}];
 }
 
-- (id)sendDialog:(id)a3 account:(id)a4
+- (id)sendDialog:(id)dialog account:(id)account
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 logKey];
-  v9 = AMSSetLogKey(v8);
+  dialogCopy = dialog;
+  accountCopy = account;
+  logKey = [dialogCopy logKey];
+  v9 = AMSSetLogKey(logKey);
 
-  v10 = [(AMSDeviceMessenger *)self _identifierFromDialogRequest:v6];
+  v10 = [(AMSDeviceMessenger *)self _identifierFromDialogRequest:dialogCopy];
   v11 = +[AMSLogConfig sharedConfig];
   if (!v11)
   {
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = objc_opt_class();
     v14 = AMSLogKey();
@@ -434,25 +434,25 @@ LABEL_10:
     v34 = v14;
     v35 = 2114;
     v36 = v10;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Sending dialog with identifier: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Sending dialog with identifier: %{public}@", buf, 0x20u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v15 = objc_alloc_init(AMSMutableBinaryPromise);
-    v16 = [(AMSDeviceMessenger *)self _getProxyObject];
+    _getProxyObject = [(AMSDeviceMessenger *)self _getProxyObject];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __41__AMSDeviceMessenger_sendDialog_account___block_invoke;
     v25[3] = &unk_1E73B6D20;
     v17 = v15;
     v26 = v17;
-    v27 = v7;
-    v28 = v6;
+    v27 = accountCopy;
+    v28 = dialogCopy;
     v29 = v10;
-    v30 = self;
-    [v16 addFinishBlock:v25];
+    selfCopy = self;
+    [_getProxyObject addFinishBlock:v25];
 
     v18 = v17;
     v19 = v18;
@@ -466,16 +466,16 @@ LABEL_10:
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
-      v23 = [v6 logKey];
+      logKey2 = [dialogCopy logKey];
       *buf = 138543618;
       v32 = v22;
       v33 = 2114;
-      v34 = v23;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid dialog for send", buf, 0x16u);
+      v34 = logKey2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid dialog for send", buf, 0x16u);
     }
 
     v18 = AMSError(2, @"AMSDeviceMessenger Error", @"Invalid bridge dialog for send", 0);
@@ -597,85 +597,85 @@ LABEL_10:
   [*(a1 + 48) finishWithSuccess:v5 == 0 error:{v5, *v16, *&v16[16], v17}];
 }
 
-- (void)deviceMessengerDidClearMessage:(id)a3
+- (void)deviceMessengerDidClearMessage:(id)message
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = +[AMSLogConfig sharedConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
-    v8 = [v4 logKey];
+    logKey = [messageCopy logKey];
     v9 = 138543874;
     v10 = v7;
     v11 = 2114;
-    v12 = v8;
+    v12 = logKey;
     v13 = 2114;
-    v14 = v4;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Daemon received clear for: %{public}@", &v9, 0x20u);
+    v14 = messageCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Daemon received clear for: %{public}@", &v9, 0x20u);
   }
 
-  [(AMSDeviceMessenger *)self _sendDelegateUpdateForMessage:v4];
+  [(AMSDeviceMessenger *)self _sendDelegateUpdateForMessage:messageCopy];
 }
 
-- (void)deviceMessengerDidReceiveMessage:(id)a3
+- (void)deviceMessengerDidReceiveMessage:(id)message
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = +[AMSLogConfig sharedConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
-    v8 = [v4 logKey];
+    logKey = [messageCopy logKey];
     v9 = 138543874;
     v10 = v7;
     v11 = 2114;
-    v12 = v8;
+    v12 = logKey;
     v13 = 2114;
-    v14 = v4;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Daemon received message: %{public}@", &v9, 0x20u);
+    v14 = messageCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Daemon received message: %{public}@", &v9, 0x20u);
   }
 
-  [(AMSDeviceMessenger *)self _sendDelegateUpdateForMessage:v4];
+  [(AMSDeviceMessenger *)self _sendDelegateUpdateForMessage:messageCopy];
 }
 
-- (void)deviceMessengerDidReceiveReply:(id)a3
+- (void)deviceMessengerDidReceiveReply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[AMSLogConfig sharedConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
-    v8 = [v4 logKey];
+    logKey = [replyCopy logKey];
     v9 = 138543874;
     v10 = v7;
     v11 = 2114;
-    v12 = v8;
+    v12 = logKey;
     v13 = 2114;
-    v14 = v4;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Daemon received reply: %{public}@", &v9, 0x20u);
+    v14 = replyCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Daemon received reply: %{public}@", &v9, 0x20u);
   }
 
-  [(AMSDeviceMessenger *)self _sendDelegateUpdateForMessage:v4];
+  [(AMSDeviceMessenger *)self _sendDelegateUpdateForMessage:replyCopy];
 }
 
 - (void)deviceMessengerDidUpdateDevices
@@ -687,12 +687,12 @@ LABEL_10:
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
     v6 = objc_opt_class();
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Daemon did update devices", &v5, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Daemon did update devices", &v5, 0xCu);
   }
 
   [(AMSDeviceMessenger *)self _sendDelegateUpdateForMessage:0];
@@ -730,24 +730,24 @@ void __37__AMSDeviceMessenger__getProxyObject__block_invoke(uint64_t a1, void *a
   WeakRetained[1] = v3;
 }
 
-- (id)_identifierFromDialogRequest:(id)a3
+- (id)_identifierFromDialogRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v4 length];
+  requestCopy = request;
+  identifier = [requestCopy identifier];
+  v5 = [identifier length];
 
   if (v5)
   {
-    v6 = [v3 identifier];
+    identifier2 = [requestCopy identifier];
   }
 
   else
   {
-    v7 = [v3 title];
-    v8 = v7;
-    if (v7)
+    title = [requestCopy title];
+    v8 = title;
+    if (title)
     {
-      v9 = v7;
+      v9 = title;
     }
 
     else
@@ -757,11 +757,11 @@ void __37__AMSDeviceMessenger__getProxyObject__block_invoke(uint64_t a1, void *a
 
     v10 = v9;
 
-    v11 = [v3 message];
-    v12 = v11;
-    if (v11)
+    message = [requestCopy message];
+    v12 = message;
+    if (message)
     {
-      v13 = v11;
+      v13 = message;
     }
 
     else
@@ -771,39 +771,39 @@ void __37__AMSDeviceMessenger__getProxyObject__block_invoke(uint64_t a1, void *a
 
     v14 = v13;
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v10, v14];
+    identifier2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v10, v14];
   }
 
-  return v6;
+  return identifier2;
 }
 
-- (void)_sendDelegateUpdateForMessage:(id)a3
+- (void)_sendDelegateUpdateForMessage:(id)message
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = +[AMSLogConfig sharedConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
     v12 = objc_opt_class();
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: Sending update to delegate", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: Sending update to delegate", buf, 0xCu);
   }
 
-  v7 = [(AMSDeviceMessenger *)self queue];
+  queue = [(AMSDeviceMessenger *)self queue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__AMSDeviceMessenger__sendDelegateUpdateForMessage___block_invoke;
   v9[3] = &unk_1E73B3DE0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  dispatch_sync(v7, v9);
+  v10 = messageCopy;
+  v8 = messageCopy;
+  dispatch_sync(queue, v9);
 }
 
 void __52__AMSDeviceMessenger__sendDelegateUpdateForMessage___block_invoke(uint64_t a1)

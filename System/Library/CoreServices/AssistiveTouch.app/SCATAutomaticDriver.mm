@@ -1,23 +1,23 @@
 @interface SCATAutomaticDriver
 - (BOOL)_handleSelectAction;
-- (BOOL)pauseScanningForPointPickerNumberOfCycles:(unint64_t)a3;
-- (SCATAutomaticDriver)initWithDelegate:(id)a3;
+- (BOOL)pauseScanningForPointPickerNumberOfCycles:(unint64_t)cycles;
+- (SCATAutomaticDriver)initWithDelegate:(id)delegate;
 - (double)focusInterval;
 - (id)description;
 - (unint64_t)maxAutoscanCycles;
 - (void)_autoscanToNextFocusContext;
-- (void)_didTransitionToPhase:(int)a3;
-- (void)_didWrapInDirection:(int64_t)a3;
+- (void)_didTransitionToPhase:(int)phase;
+- (void)_didWrapInDirection:(int64_t)direction;
 - (void)_endAutoscanning;
 - (void)_idleTimerDidFire;
 - (void)_pauseForMaximumNumberOfCycles;
-- (void)_willStepToNextFocusContext:(id)a3 inDirection:(int64_t)a4;
-- (void)actionHandlerDidCancelPendingAction:(id)a3;
-- (void)actionHandlerDidFireAction:(id)a3;
+- (void)_willStepToNextFocusContext:(id)context inDirection:(int64_t)direction;
+- (void)actionHandlerDidCancelPendingAction:(id)action;
+- (void)actionHandlerDidFireAction:(id)action;
 - (void)dealloc;
-- (void)outputManager:(id)a3 didSpeakFocusContext:(id)a4;
+- (void)outputManager:(id)manager didSpeakFocusContext:(id)context;
 - (void)pauseAutoscanning;
-- (void)resumeAutoscanning:(BOOL)a3;
+- (void)resumeAutoscanning:(BOOL)autoscanning;
 - (void)willDrillIntoGroup;
 - (void)willDrillOutOfGroup;
 - (void)willFinishAsScannerDriver;
@@ -25,11 +25,11 @@
 
 @implementation SCATAutomaticDriver
 
-- (SCATAutomaticDriver)initWithDelegate:(id)a3
+- (SCATAutomaticDriver)initWithDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = SCATAutomaticDriver;
-  v3 = [(SCATDriver *)&v6 initWithDelegate:a3];
+  v3 = [(SCATDriver *)&v6 initWithDelegate:delegate];
   if (v3)
   {
     v4 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SCATAutomaticDriver *)self focusTimer];
-  [v3 cancel];
+  focusTimer = [(SCATAutomaticDriver *)self focusTimer];
+  [focusTimer cancel];
 
   v4.receiver = self;
   v4.super_class = SCATAutomaticDriver;
@@ -57,10 +57,10 @@
   v11.super_class = SCATAutomaticDriver;
   v3 = [(SCATDriver *)&v11 description];
   v4 = [NSNumber numberWithInteger:[(SCATAutomaticDriver *)self currentCycleCount]];
-  v5 = [(SCATAutomaticDriver *)self focusTimer];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 isPending]);
-  v7 = [(SCATAutomaticDriver *)self focusTimer];
-  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 isActive]);
+  focusTimer = [(SCATAutomaticDriver *)self focusTimer];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [focusTimer isPending]);
+  focusTimer2 = [(SCATAutomaticDriver *)self focusTimer];
+  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [focusTimer2 isActive]);
   v9 = [NSString stringWithFormat:@"%@ cycle:%@ focusTimer:p%@:a%@", v3, v4, v6, v8];
 
   return v9;
@@ -88,24 +88,24 @@
   [(SCATAutomaticDriver *)self _autoscanToNextFocusContext];
 }
 
-- (BOOL)pauseScanningForPointPickerNumberOfCycles:(unint64_t)a3
+- (BOOL)pauseScanningForPointPickerNumberOfCycles:(unint64_t)cycles
 {
-  v5 = [(SCATDriver *)self _canAutomaticallyPauseScanner];
-  if (v5)
+  _canAutomaticallyPauseScanner = [(SCATDriver *)self _canAutomaticallyPauseScanner];
+  if (_canAutomaticallyPauseScanner)
   {
-    if ([(SCATAutomaticDriver *)self maxAutoscanCycles]<= a3)
+    if ([(SCATAutomaticDriver *)self maxAutoscanCycles]<= cycles)
     {
       [(SCATAutomaticDriver *)self _pauseForMaximumNumberOfCycles];
-      LOBYTE(v5) = 1;
+      LOBYTE(_canAutomaticallyPauseScanner) = 1;
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(_canAutomaticallyPauseScanner) = 0;
     }
   }
 
-  return v5;
+  return _canAutomaticallyPauseScanner;
 }
 
 - (double)focusInterval
@@ -127,11 +127,11 @@
 
   if (v9 < 0.4)
   {
-    v11 = [(SCATDriver *)self activeElementManager];
-    v12 = [v11 numberOfItemsInCurrentScanCycle];
-    v13 = [v12 unsignedIntegerValue];
+    activeElementManager = [(SCATDriver *)self activeElementManager];
+    numberOfItemsInCurrentScanCycle = [activeElementManager numberOfItemsInCurrentScanCycle];
+    unsignedIntegerValue = [numberOfItemsInCurrentScanCycle unsignedIntegerValue];
 
-    if ((v13 - 1) < 2)
+    if ((unsignedIntegerValue - 1) < 2)
     {
       v9 = v9 + v9;
     }
@@ -143,15 +143,15 @@
 - (unint64_t)maxAutoscanCycles
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchScanCycles];
+  assistiveTouchScanCycles = [v2 assistiveTouchScanCycles];
 
-  return v3;
+  return assistiveTouchScanCycles;
 }
 
-- (void)_didTransitionToPhase:(int)a3
+- (void)_didTransitionToPhase:(int)phase
 {
-  v3 = *&a3;
-  if (a3 == 1)
+  v3 = *&phase;
+  if (phase == 1)
   {
     [(SCATAutomaticDriver *)self setCurrentCycleCount:0];
     [(SCATAutomaticDriver *)self _autoscanToNextFocusContext];
@@ -169,35 +169,35 @@
 
 - (void)_autoscanToNextFocusContext
 {
-  v3 = [(SCATAutomaticDriver *)self focusTimer];
+  focusTimer = [(SCATAutomaticDriver *)self focusTimer];
   [(SCATAutomaticDriver *)self focusInterval];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004722C;
   v4[3] = &unk_1001D3488;
   v4[4] = self;
-  [v3 afterDelay:v4 processBlock:?];
+  [focusTimer afterDelay:v4 processBlock:?];
 }
 
 - (void)_endAutoscanning
 {
-  v3 = [(SCATAutomaticDriver *)self focusTimer];
-  [v3 cancel];
+  focusTimer = [(SCATAutomaticDriver *)self focusTimer];
+  [focusTimer cancel];
 
   [(SCATAutomaticDriver *)self setShouldScanToNextFocusContextAfterSpeaking:0];
 }
 
-- (void)outputManager:(id)a3 didSpeakFocusContext:(id)a4
+- (void)outputManager:(id)manager didSpeakFocusContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = SCATAutomaticDriver;
-  [(SCATDriver *)&v7 outputManager:a3 didSpeakFocusContext:a4];
+  [(SCATDriver *)&v7 outputManager:manager didSpeakFocusContext:context];
   if ([(SCATAutomaticDriver *)self shouldScanToNextFocusContextAfterSpeaking])
   {
-    v5 = [(SCATAutomaticDriver *)self focusTimer];
-    v6 = [v5 isPending];
+    focusTimer = [(SCATAutomaticDriver *)self focusTimer];
+    isPending = [focusTimer isPending];
 
-    if ((v6 & 1) == 0)
+    if ((isPending & 1) == 0)
     {
       [(SCATDriver *)self _stepToNextFocusContextInDirection:0];
       [(SCATAutomaticDriver *)self _autoscanToNextFocusContext];
@@ -215,9 +215,9 @@
   return [(SCATDriver *)&v4 _handleSelectAction];
 }
 
-- (void)_didWrapInDirection:(int64_t)a3
+- (void)_didWrapInDirection:(int64_t)direction
 {
-  if ([(SCATDriver *)self lastWrapDirection]== a3)
+  if ([(SCATDriver *)self lastWrapDirection]== direction)
   {
     v5 = [(SCATAutomaticDriver *)self currentCycleCount]+ 1;
   }
@@ -230,7 +230,7 @@
   [(SCATAutomaticDriver *)self setCurrentCycleCount:v5];
   v6.receiver = self;
   v6.super_class = SCATAutomaticDriver;
-  [(SCATDriver *)&v6 _didWrapInDirection:a3];
+  [(SCATDriver *)&v6 _didWrapInDirection:direction];
 }
 
 - (void)_idleTimerDidFire
@@ -240,28 +240,28 @@
   [(SCATDriver *)&v2 _idleTimerDidFire];
 }
 
-- (void)_willStepToNextFocusContext:(id)a3 inDirection:(int64_t)a4
+- (void)_willStepToNextFocusContext:(id)context inDirection:(int64_t)direction
 {
-  v6 = a3;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = SCATAutomaticDriver;
-  [(SCATDriver *)&v26 _willStepToNextFocusContext:v6 inDirection:a4];
-  v7 = [v6 selectBehavior];
-  if ([(SCATDriver *)self _canAutomaticallyPauseScanner]&& v7 != 4)
+  [(SCATDriver *)&v26 _willStepToNextFocusContext:contextCopy inDirection:direction];
+  selectBehavior = [contextCopy selectBehavior];
+  if ([(SCATDriver *)self _canAutomaticallyPauseScanner]&& selectBehavior != 4)
   {
-    v8 = [v6 element];
+    element = [contextCopy element];
     v25 = 0;
-    v9 = [(SCATDriver *)self activeElementManager];
-    v10 = v9;
-    if (a4 == 1)
+    activeElementManager = [(SCATDriver *)self activeElementManager];
+    v10 = activeElementManager;
+    if (direction == 1)
     {
-      v11 = [v9 lastElementWithOptions:&v25];
-      v12 = [v8 isEqual:v11];
+      v11 = [activeElementManager lastElementWithOptions:&v25];
+      v12 = [element isEqual:v11];
 
       if ((v12 & 1) == 0)
       {
-        v13 = [v8 parentGroup];
-        if (!v13 || (v14 = v13, [v13 lastChild], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v8, "isEqual:", v15), v15, v14, (v16 & 1) == 0))
+        parentGroup = [element parentGroup];
+        if (!parentGroup || (v14 = parentGroup, [parentGroup lastChild], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(element, "isEqual:", v15), v15, v14, (v16 & 1) == 0))
         {
 LABEL_13:
 
@@ -272,20 +272,20 @@ LABEL_13:
 
     else
     {
-      v17 = [v9 firstElementWithOptions:&v25];
-      v18 = [v8 isEqual:v17];
+      v17 = [activeElementManager firstElementWithOptions:&v25];
+      v18 = [element isEqual:v17];
 
       if ((v18 & 1) == 0)
       {
-        v19 = [v8 parentGroup];
-        if (!v19)
+        parentGroup2 = [element parentGroup];
+        if (!parentGroup2)
         {
           goto LABEL_13;
         }
 
-        v20 = v19;
-        v21 = [v19 firstChild];
-        v22 = [v8 isEqual:v21];
+        v20 = parentGroup2;
+        firstChild = [parentGroup2 firstChild];
+        v22 = [element isEqual:firstChild];
 
         if (!v22)
         {
@@ -294,10 +294,10 @@ LABEL_13:
       }
     }
 
-    v23 = [(SCATAutomaticDriver *)self currentCycleCount];
-    v24 = [(SCATAutomaticDriver *)self maxAutoscanCycles];
+    currentCycleCount = [(SCATAutomaticDriver *)self currentCycleCount];
+    maxAutoscanCycles = [(SCATAutomaticDriver *)self maxAutoscanCycles];
 
-    if (v23 >= v24)
+    if (currentCycleCount >= maxAutoscanCycles)
     {
       [(SCATAutomaticDriver *)self _pauseForMaximumNumberOfCycles];
     }
@@ -308,13 +308,13 @@ LABEL_14:
 
 - (void)_pauseForMaximumNumberOfCycles
 {
-  v3 = [(SCATDriver *)self activeElementManager];
-  v4 = [v3 isMenuElementManager];
+  activeElementManager = [(SCATDriver *)self activeElementManager];
+  isMenuElementManager = [activeElementManager isMenuElementManager];
 
-  if (v4)
+  if (isMenuElementManager)
   {
-    v5 = [(SCATDriver *)self activeElementManager];
-    [v5 closeCurrentScanningContext];
+    activeElementManager2 = [(SCATDriver *)self activeElementManager];
+    [activeElementManager2 closeCurrentScanningContext];
 
     [(SCATDriver *)self endScanning];
   }
@@ -326,19 +326,19 @@ LABEL_14:
   }
 }
 
-- (void)actionHandlerDidFireAction:(id)a3
+- (void)actionHandlerDidFireAction:(id)action
 {
   v4.receiver = self;
   v4.super_class = SCATAutomaticDriver;
-  [(SCATDriver *)&v4 actionHandlerDidFireAction:a3];
+  [(SCATDriver *)&v4 actionHandlerDidFireAction:action];
   [(SCATAutomaticDriver *)self _autoscanToNextFocusContext];
 }
 
-- (void)actionHandlerDidCancelPendingAction:(id)a3
+- (void)actionHandlerDidCancelPendingAction:(id)action
 {
   v4.receiver = self;
   v4.super_class = SCATAutomaticDriver;
-  [(SCATDriver *)&v4 actionHandlerDidCancelPendingAction:a3];
+  [(SCATDriver *)&v4 actionHandlerDidCancelPendingAction:action];
   [(SCATAutomaticDriver *)self _autoscanToNextFocusContext];
 }
 
@@ -349,11 +349,11 @@ LABEL_14:
   [(SCATAutomaticDriver *)self _endAutoscanning];
 }
 
-- (void)resumeAutoscanning:(BOOL)a3
+- (void)resumeAutoscanning:(BOOL)autoscanning
 {
-  v3 = a3;
+  autoscanningCopy = autoscanning;
   [(SCATAutomaticDriver *)self setForcePause:0];
-  if (v3)
+  if (autoscanningCopy)
   {
 
     [(SCATAutomaticDriver *)self _autoscanToNextFocusContext];

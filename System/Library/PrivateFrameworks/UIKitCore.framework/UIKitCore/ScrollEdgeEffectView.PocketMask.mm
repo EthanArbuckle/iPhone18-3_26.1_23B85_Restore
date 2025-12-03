@@ -1,14 +1,14 @@
 @interface ScrollEdgeEffectView.PocketMask
 - (BOOL)isHidden;
 - (UIEdgeInsets)alignmentRectInsets;
-- (_TtCC5UIKit20ScrollEdgeEffectView10PocketMask)initWithCoder:(id)a3;
+- (_TtCC5UIKit20ScrollEdgeEffectView10PocketMask)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation ScrollEdgeEffectView.PocketMask
 
-- (_TtCC5UIKit20ScrollEdgeEffectView10PocketMask)initWithCoder:(id)a3
+- (_TtCC5UIKit20ScrollEdgeEffectView10PocketMask)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtCC5UIKit20ScrollEdgeEffectView10PocketMask_layout;
   *v3 = 0u;
@@ -37,25 +37,25 @@
   return [(UIView *)&v3 isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = self;
-  if ([(ScrollEdgeEffectView.PocketMask *)v4 isHidden]== v3)
+  hiddenCopy = hidden;
+  selfCopy = self;
+  if ([(ScrollEdgeEffectView.PocketMask *)selfCopy isHidden]== hiddenCopy)
   {
   }
 
   else
   {
-    v5.receiver = v4;
+    v5.receiver = selfCopy;
     v5.super_class = _s10PocketMaskCMa();
-    [(UIView *)&v5 setHidden:v3];
+    [(UIView *)&v5 setHidden:hiddenCopy];
   }
 }
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188FFD8D4();
   v5 = v4;
   v7 = v6;
@@ -74,7 +74,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188FFD9C4();
 }
 

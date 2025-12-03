@@ -1,9 +1,9 @@
 @interface MapsSuggestionsBaseImprover
 + (BOOL)isEnabled;
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 - (NSString)uniqueName;
-- (uint64_t)improveMyUndecoratedSubtitle:(void *)a3 forEntry:;
-- (uint64_t)improveMyUndecoratedTitle:(void *)a3 forEntry:;
+- (uint64_t)improveMyUndecoratedSubtitle:(void *)subtitle forEntry:;
+- (uint64_t)improveMyUndecoratedTitle:(void *)title forEntry:;
 @end
 
 @implementation MapsSuggestionsBaseImprover
@@ -15,9 +15,9 @@
   return [v2 description];
 }
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   result = [(MapsSuggestionsBaseImprover *)self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
@@ -25,21 +25,21 @@
 
 + (BOOL)isEnabled
 {
-  result = [a1 doesNotRecognizeSelector:a2];
+  result = [self doesNotRecognizeSelector:a2];
   __break(1u);
   return result;
 }
 
-- (uint64_t)improveMyUndecoratedTitle:(void *)a3 forEntry:
+- (uint64_t)improveMyUndecoratedTitle:(void *)title forEntry:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  titleCopy = title;
+  v7 = titleCopy;
+  if (self)
   {
-    if (v6)
+    if (titleCopy)
     {
-      a1 = [v6 updateUndecoratedTitle:v5];
+      self = [titleCopy updateUndecoratedTitle:v5];
     }
 
     else
@@ -50,23 +50,23 @@
         OUTLINED_FUNCTION_9_0(&dword_1C5126000, v9, v10, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an entry", v11, v12, v13, v14, 2u);
       }
 
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)improveMyUndecoratedSubtitle:(void *)a3 forEntry:
+- (uint64_t)improveMyUndecoratedSubtitle:(void *)subtitle forEntry:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  subtitleCopy = subtitle;
+  v7 = subtitleCopy;
+  if (self)
   {
-    if (v6)
+    if (subtitleCopy)
     {
-      a1 = [v6 updateUndecoratedSubtitle:v5];
+      self = [subtitleCopy updateUndecoratedSubtitle:v5];
     }
 
     else
@@ -77,11 +77,11 @@
         OUTLINED_FUNCTION_9_0(&dword_1C5126000, v9, v10, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires an entry", v11, v12, v13, v14, 2u);
       }
 
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface NSDictionary
-- (BOOL)tsu_BOOLValueForKey:(id)a3;
+- (BOOL)tsu_BOOLValueForKey:(id)key;
 - (NSSet)tsu_allKeysAsSet;
 - (id)tsu_invertedCopy;
-- (id)tsu_onlyKeyForObject:(id)a3;
+- (id)tsu_onlyKeyForObject:(id)object;
 @end
 
 @implementation NSDictionary
@@ -57,33 +57,33 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)tsu_BOOLValueForKey:(id)a3
+- (BOOL)tsu_BOOLValueForKey:(id)key
 {
-  v3 = [(NSDictionary *)self objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self objectForKeyedSubscript:key];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSSet)tsu_allKeysAsSet
 {
-  v2 = [(NSDictionary *)self allKeys];
-  v3 = [NSSet setWithArray:v2];
+  allKeys = [(NSDictionary *)self allKeys];
+  v3 = [NSSet setWithArray:allKeys];
 
   return v3;
 }
 
-- (id)tsu_onlyKeyForObject:(id)a3
+- (id)tsu_onlyKeyForObject:(id)object
 {
-  v3 = [(NSDictionary *)self allKeysForObject:a3];
+  v3 = [(NSDictionary *)self allKeysForObject:object];
   if ([v3 count] >= 2)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
@@ -104,9 +104,9 @@ LABEL_11:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v6 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
 @end

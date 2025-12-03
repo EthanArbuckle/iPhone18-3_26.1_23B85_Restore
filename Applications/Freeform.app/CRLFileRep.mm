@@ -1,35 +1,35 @@
 @interface CRLFileRep
 - (NSString)crlaxDescriptionForConnections;
-- (_TtC8Freeform10CRLFileRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (_TtC8Freeform10CRLFileRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (_TtC8Freeform11CRLFileItem)item;
 - (int64_t)supportedMediaTypes;
 - (void)enterPreviewMode;
-- (void)processChangedProperty:(unint64_t)a3;
+- (void)processChangedProperty:(unint64_t)property;
 - (void)willBeRemoved;
 @end
 
 @implementation CRLFileRep
 
-- (_TtC8Freeform10CRLFileRep)initWithLayout:(id)a3 canvas:(id)a4
+- (_TtC8Freeform10CRLFileRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_100BABCAC(v5, a4);
+  layoutCopy = layout;
+  canvasCopy = canvas;
+  return sub_100BABCAC(layoutCopy, canvas);
 }
 
 - (void)willBeRemoved
 {
-  v2 = self;
+  selfCopy = self;
   sub_100BABDB0();
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for CRLFileRep();
   v4 = v5.receiver;
-  [(CRLCanvasRep *)&v5 processChangedProperty:a3];
-  if (a3 == 53)
+  [(CRLCanvasRep *)&v5 processChangedProperty:property];
+  if (property == 53)
   {
     CRLLinkViewHostingRep.resetLinkView()();
   }
@@ -37,7 +37,7 @@
 
 - (_TtC8Freeform11CRLFileItem)item
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BAC798();
 
   return v3;
@@ -45,7 +45,7 @@
 
 - (NSString)crlaxDescriptionForConnections
 {
-  v2 = self;
+  selfCopy = self;
   sub_100BACE08();
 
   v3 = String._bridgeToObjectiveC()();
@@ -55,11 +55,11 @@
 
 - (int64_t)supportedMediaTypes
 {
-  v2 = self;
-  v3 = [(CRLCanvasRep *)v2 layout];
-  v4 = [(CRLCanvasLayout *)v3 isInGroup];
+  selfCopy = self;
+  layout = [(CRLCanvasRep *)selfCopy layout];
+  isInGroup = [(CRLCanvasLayout *)layout isInGroup];
 
-  if (v4)
+  if (isInGroup)
   {
     return 3;
   }
@@ -72,8 +72,8 @@
 
 - (void)enterPreviewMode
 {
-  v6 = self;
-  v2 = [(CRLCanvasRep *)v6 info];
+  selfCopy = self;
+  info = [(CRLCanvasRep *)selfCopy info];
   type metadata accessor for CRLBoardItem(0);
   v3 = swift_isaMask & *swift_dynamicCastClassUnconditional();
   v4 = (*(v3 + 624))();

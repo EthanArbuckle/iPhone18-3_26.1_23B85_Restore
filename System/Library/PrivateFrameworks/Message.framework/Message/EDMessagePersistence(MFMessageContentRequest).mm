@@ -7,7 +7,7 @@
 
 - (uint64_t)mailDropAttachmentPresentForMessage:()MFMessageContentRequest
 {
-  v3 = [a1 cachedMetadataJSONForKey:@"maild.isMailDropAttachmentPresent" messageID:a3];
+  v3 = [self cachedMetadataJSONForKey:@"maild.isMailDropAttachmentPresent" messageID:a3];
   if ([v3 isEqualToString:@"1"])
   {
     v4 = MEMORY[0x1E695E118];
@@ -38,7 +38,7 @@
     v4 = @"0";
   }
 
-  return [a1 setCachedMetadataJSON:v4 forKey:@"maild.isMailDropAttachmentPresent" messageID:a4];
+  return [self setCachedMetadataJSON:v4 forKey:@"maild.isMailDropAttachmentPresent" messageID:a4];
 }
 
 @end

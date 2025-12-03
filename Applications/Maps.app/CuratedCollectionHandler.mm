@@ -1,34 +1,34 @@
 @interface CuratedCollectionHandler
 + (id)_delimiterString;
 - (BOOL)canShare;
-- (CuratedCollectionHandler)initWithCollection:(id)a3;
+- (CuratedCollectionHandler)initWithCollection:(id)collection;
 - (MKMapItemIdentifier)curatedCollectionIdentifier;
 - (id)identifier;
 - (id)publisherAttribution;
 - (id)sharingURL;
 - (id)subtitle;
 - (id)title;
-- (void)deleteCollection:(id)a3;
-- (void)retrieveGeoCollectionWithRefinedItems:(id)a3;
-- (void)setCollection:(id)a3;
-- (void)setCuratedCollection:(id)a3;
-- (void)updateWithMapsSyncCachedCuratedCollection:(id)a3;
+- (void)deleteCollection:(id)collection;
+- (void)retrieveGeoCollectionWithRefinedItems:(id)items;
+- (void)setCollection:(id)collection;
+- (void)setCuratedCollection:(id)collection;
+- (void)updateWithMapsSyncCachedCuratedCollection:(id)collection;
 @end
 
 @implementation CuratedCollectionHandler
 
-- (void)retrieveGeoCollectionWithRefinedItems:(id)a3
+- (void)retrieveGeoCollectionWithRefinedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = [CuratedCollectionResolver alloc];
-  v6 = [(CuratedCollectionHandler *)self curatedCollectionIdentifier];
+  curatedCollectionIdentifier = [(CuratedCollectionHandler *)self curatedCollectionIdentifier];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100CF8BD4;
   v10[3] = &unk_101650ED0;
-  v11 = v4;
-  v7 = v4;
-  v8 = [(CuratedCollectionResolver *)v5 initWithCuratedCollectionIdentifier:v6 handler:v10];
+  v11 = itemsCopy;
+  v7 = itemsCopy;
+  v8 = [(CuratedCollectionResolver *)v5 initWithCuratedCollectionIdentifier:curatedCollectionIdentifier handler:v10];
   resolver = self->_resolver;
   self->_resolver = v8;
 
@@ -37,49 +37,49 @@
 
 - (BOOL)canShare
 {
-  v2 = [(CuratedCollectionHandler *)self sharingURL];
-  v3 = v2 != 0;
+  sharingURL = [(CuratedCollectionHandler *)self sharingURL];
+  v3 = sharingURL != 0;
 
   return v3;
 }
 
 - (id)sharingURL
 {
-  v3 = [(CuratedCollectionHandler *)self curatedCollection];
-  v4 = [v3 curatedCollectionIdentifier];
+  curatedCollection = [(CuratedCollectionHandler *)self curatedCollection];
+  curatedCollectionIdentifier = [curatedCollection curatedCollectionIdentifier];
 
-  v5 = [(CuratedCollectionHandler *)self curatedCollection];
-  v6 = [v5 resultProviderIdentifier];
+  curatedCollection2 = [(CuratedCollectionHandler *)self curatedCollection];
+  resultProviderIdentifier = [curatedCollection2 resultProviderIdentifier];
 
-  return [GEOMapURLBuilder URLForCuratedCollection:v4 provider:v6];
+  return [GEOMapURLBuilder URLForCuratedCollection:curatedCollectionIdentifier provider:resultProviderIdentifier];
 }
 
-- (void)deleteCollection:(id)a3
+- (void)deleteCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = +[CuratedCollectionSyncManager sharedManager];
-  v6 = [(CuratedCollectionHandler *)self curatedCollection];
+  curatedCollection = [(CuratedCollectionHandler *)self curatedCollection];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100CF8EE4;
   v8[3] = &unk_101661760;
-  v9 = v4;
-  v7 = v4;
-  [v5 removeSavedMapsSyncCuratedCollection:v6 completion:v8];
+  v9 = collectionCopy;
+  v7 = collectionCopy;
+  [v5 removeSavedMapsSyncCuratedCollection:curatedCollection completion:v8];
 }
 
 - (id)publisherAttribution
 {
   if (!self->_publisherAttribution)
   {
-    v3 = [(CuratedCollectionHandler *)self curatedCollection];
+    curatedCollection = [(CuratedCollectionHandler *)self curatedCollection];
 
-    if (v3)
+    if (curatedCollection)
     {
       v4 = +[GEOCollectionPublisherAttributionManager sharedInstance];
-      v5 = [(CuratedCollectionHandler *)self curatedCollection];
-      v6 = [v5 publisherAttribution];
-      v7 = [v4 bestAttributionForPublisher:v6];
+      curatedCollection2 = [(CuratedCollectionHandler *)self curatedCollection];
+      publisherAttribution = [curatedCollection2 publisherAttribution];
+      v7 = [v4 bestAttributionForPublisher:publisherAttribution];
       publisherAttribution = self->_publisherAttribution;
       self->_publisherAttribution = v7;
     }
@@ -92,36 +92,36 @@
 
 - (id)subtitle
 {
-  v3 = [(CuratedCollectionHandler *)self publisherAttribution];
-  v4 = [v3 displayName];
+  publisherAttribution = [(CuratedCollectionHandler *)self publisherAttribution];
+  displayName = [publisherAttribution displayName];
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Number of places [Curated Collection]" value:@"localized string not found" table:0];
-  v7 = [(CuratedCollectionHandler *)self curatedCollection];
-  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v6, [v7 placesCount]);
+  curatedCollection = [(CuratedCollectionHandler *)self curatedCollection];
+  v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v6, [curatedCollection placesCount]);
 
-  if (v4)
+  if (displayName)
   {
     v9 = +[UIApplication sharedApplication];
-    v10 = [v9 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [v9 userInterfaceLayoutDirection];
 
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v17[0] = v8;
-      v17[1] = v4;
+      v17[1] = displayName;
       v11 = v17;
     }
 
     else
     {
-      v16[0] = v4;
+      v16[0] = displayName;
       v16[1] = v8;
       v11 = v16;
     }
 
     v13 = [NSArray arrayWithObjects:v11 count:2];
-    v14 = [objc_opt_class() _delimiterString];
-    v12 = [v13 componentsJoinedByString:v14];
+    _delimiterString = [objc_opt_class() _delimiterString];
+    v12 = [v13 componentsJoinedByString:_delimiterString];
   }
 
   else
@@ -134,87 +134,87 @@
 
 - (id)title
 {
-  v2 = [(CollectionHandler *)self collection];
-  v3 = [v2 title];
+  collection = [(CollectionHandler *)self collection];
+  title = [collection title];
 
-  return v3;
+  return title;
 }
 
 - (id)identifier
 {
-  v2 = [(CollectionHandler *)self collection];
-  v3 = [v2 identifier];
-  v4 = [v3 UUIDString];
+  collection = [(CollectionHandler *)self collection];
+  identifier = [collection identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (MKMapItemIdentifier)curatedCollectionIdentifier
 {
   v3 = [MKMapItemIdentifier alloc];
-  v4 = [(CuratedCollectionHandler *)self curatedCollection];
-  v5 = [v4 curatedCollectionIdentifier];
-  v6 = [(CuratedCollectionHandler *)self curatedCollection];
-  v7 = [v6 resultProviderIdentifier];
-  v8 = [v3 initWithMUID:v5 resultProviderID:v7 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
+  curatedCollection = [(CuratedCollectionHandler *)self curatedCollection];
+  curatedCollectionIdentifier = [curatedCollection curatedCollectionIdentifier];
+  curatedCollection2 = [(CuratedCollectionHandler *)self curatedCollection];
+  resultProviderIdentifier = [curatedCollection2 resultProviderIdentifier];
+  v8 = [v3 initWithMUID:curatedCollectionIdentifier resultProviderID:resultProviderIdentifier coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
 
   return v8;
 }
 
-- (void)setCuratedCollection:(id)a3
+- (void)setCuratedCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_curatedCollection != v5)
+  collectionCopy = collection;
+  if (self->_curatedCollection != collectionCopy)
   {
-    objc_storeStrong(&self->_curatedCollection, a3);
+    objc_storeStrong(&self->_curatedCollection, collection);
     [(CollectionHandler *)self loadImage];
     objc_initWeak(&location, self);
     v6 = +[MapsUIImageCache sharedCache];
-    v7 = [(CuratedCollectionHandler *)self publisherAttribution];
-    v8 = [v7 iconIdentifier];
+    publisherAttribution = [(CuratedCollectionHandler *)self publisherAttribution];
+    iconIdentifier = [publisherAttribution iconIdentifier];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100CF9410;
     v9[3] = &unk_101650EA8;
     objc_copyWeak(&v10, &location);
-    [v6 getImageForPublisherWithIconIdentifier:v8 completion:v9];
+    [v6 getImageForPublisherWithIconIdentifier:iconIdentifier completion:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)setCollection:(id)a3
+- (void)setCollection:(id)collection
 {
   v5.receiver = self;
   v5.super_class = CuratedCollectionHandler;
-  v4 = a3;
-  [(CollectionHandler *)&v5 setCollection:v4];
-  [(CuratedCollectionHandler *)self setCuratedCollection:v4, v5.receiver, v5.super_class];
+  collectionCopy = collection;
+  [(CollectionHandler *)&v5 setCollection:collectionCopy];
+  [(CuratedCollectionHandler *)self setCuratedCollection:collectionCopy, v5.receiver, v5.super_class];
 }
 
-- (void)updateWithMapsSyncCachedCuratedCollection:(id)a3
+- (void)updateWithMapsSyncCachedCuratedCollection:(id)collection
 {
-  v6 = a3;
-  v4 = [(CollectionHandler *)self collection];
-  v5 = [v6 isEqual:v4];
+  collectionCopy = collection;
+  collection = [(CollectionHandler *)self collection];
+  v5 = [collectionCopy isEqual:collection];
 
   if ((v5 & 1) == 0)
   {
-    [(CuratedCollectionHandler *)self setCollection:v6];
+    [(CuratedCollectionHandler *)self setCollection:collectionCopy];
   }
 }
 
-- (CuratedCollectionHandler)initWithCollection:(id)a3
+- (CuratedCollectionHandler)initWithCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v8.receiver = self;
   v8.super_class = CuratedCollectionHandler;
-  v5 = [(CollectionHandler *)&v8 initWithCollection:v4];
+  v5 = [(CollectionHandler *)&v8 initWithCollection:collectionCopy];
   v6 = v5;
   if (v5)
   {
-    [(CuratedCollectionHandler *)v5 setCuratedCollection:v4];
+    [(CuratedCollectionHandler *)v5 setCuratedCollection:collectionCopy];
   }
 
   return v6;

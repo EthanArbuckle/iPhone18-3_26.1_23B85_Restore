@@ -1,5 +1,5 @@
 @interface WBUHistory
-- (WBUHistory)initWithDatabaseID:(id)a3;
+- (WBUHistory)initWithDatabaseID:(id)d;
 - (id)_createHistoryStore;
 @end
 
@@ -8,17 +8,17 @@
 - (id)_createHistoryStore
 {
   v3 = [off_279EB0F48 alloc];
-  v4 = [(WBSHistory *)self databaseID];
-  v5 = [v3 initWithDatabaseID:v4 itemCountLimit:4000 historyAgeLimit:-[WBUHistory _historyItemClass](self historyItemClass:{"_historyItemClass"), *(&self->super.super.isa + *off_279EB0F58)}];
+  databaseID = [(WBSHistory *)self databaseID];
+  v5 = [v3 initWithDatabaseID:databaseID itemCountLimit:4000 historyAgeLimit:-[WBUHistory _historyItemClass](self historyItemClass:{"_historyItemClass"), *(&self->super.super.isa + *off_279EB0F58)}];
 
   return v5;
 }
 
-- (WBUHistory)initWithDatabaseID:(id)a3
+- (WBUHistory)initWithDatabaseID:(id)d
 {
   v7.receiver = self;
   v7.super_class = WBUHistory;
-  v3 = [(WBSHistory *)&v7 initWithDatabaseID:a3];
+  v3 = [(WBSHistory *)&v7 initWithDatabaseID:d];
   v4 = v3;
   if (v3)
   {

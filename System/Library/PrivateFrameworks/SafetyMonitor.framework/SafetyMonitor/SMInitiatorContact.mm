@@ -1,6 +1,6 @@
 @interface SMInitiatorContact
 - (SMInitiatorContact)init;
-- (SMInitiatorContact)initWithIdentifier:(id)a3 shouldBeCleanedUpDate:(id)a4 cloudkitShareZoneCleanedUpSuccessfully:(BOOL)a5 syncDate:(id)a6 keyReleaseMessageSendDate:(id)a7 scheduledSendExpiryDate:(id)a8 phoneCache:(id)a9 watchCache:(id)a10 sessionID:(id)a11 safetyCacheKey:(id)a12 allowReadToken:(id)a13 scheduleSendMessageGUID:(id)a14 unlockLocation:(id)a15 lockLocation:(id)a16 startingLocation:(id)a17 offWristLocation:(id)a18 parkedCarLocation:(id)a19 destinationMapItem:(id)a20 timeCacheUploadCompletion:(id)a21 maxCacheSize:(double)a22 maxLocationsInTrace:(int64_t)a23 maxTimeBetweenCacheUpdates:(double)a24 numCacheUpdates:(int64_t)a25 timeTilCacheRelease:(double)a26 numberOfSuccessfulCacheUpdates:(int64_t)a27 numberOfMessageCancelling:(int64_t)a28 numberOfSuccessfulMessageCancelling:(int64_t)a29 numberOfMessageScheduling:(int64_t)a30 numberOfSuccessfulMessageScheduling:(int64_t)a31 wasCacheReleased:(BOOL)a32 wasScheduledSendTriggered:(BOOL)a33 locationOfTrigger:(id)a34 triggerDate:(id)a35 lockState:(BOOL)a36 cacheUpdateBackstopExpiryDate:(id)a37 workoutEvents:(id)a38 numberOfHandoffBecomingActive:(int64_t)a39 numberOfHandoffBecomingNonActive:(int64_t)a40 earliestActiveDeviceIdentifier:(id)a41 latestActiveDeviceIdentifier:(id)a42;
+- (SMInitiatorContact)initWithIdentifier:(id)identifier shouldBeCleanedUpDate:(id)date cloudkitShareZoneCleanedUpSuccessfully:(BOOL)successfully syncDate:(id)syncDate keyReleaseMessageSendDate:(id)sendDate scheduledSendExpiryDate:(id)expiryDate phoneCache:(id)cache watchCache:(id)self0 sessionID:(id)self1 safetyCacheKey:(id)self2 allowReadToken:(id)self3 scheduleSendMessageGUID:(id)self4 unlockLocation:(id)self5 lockLocation:(id)self6 startingLocation:(id)self7 offWristLocation:(id)self8 parkedCarLocation:(id)self9 destinationMapItem:(id)item timeCacheUploadCompletion:(id)completion maxCacheSize:(double)size maxLocationsInTrace:(int64_t)trace maxTimeBetweenCacheUpdates:(double)updates numCacheUpdates:(int64_t)cacheUpdates timeTilCacheRelease:(double)release numberOfSuccessfulCacheUpdates:(int64_t)successfulCacheUpdates numberOfMessageCancelling:(int64_t)cancelling numberOfSuccessfulMessageCancelling:(int64_t)messageCancelling numberOfMessageScheduling:(int64_t)identifier0 numberOfSuccessfulMessageScheduling:(int64_t)identifier1 wasCacheReleased:(BOOL)identifier2 wasScheduledSendTriggered:(BOOL)identifier3 locationOfTrigger:(id)identifier4 triggerDate:(id)identifier5 lockState:(BOOL)identifier6 cacheUpdateBackstopExpiryDate:(id)identifier7 workoutEvents:(id)identifier8 numberOfHandoffBecomingActive:(int64_t)identifier9 numberOfHandoffBecomingNonActive:(int64_t)date0 earliestActiveDeviceIdentifier:(id)date1 latestActiveDeviceIdentifier:(id)date2;
 - (id)description;
 @end
 
@@ -19,91 +19,91 @@
   return v7;
 }
 
-- (SMInitiatorContact)initWithIdentifier:(id)a3 shouldBeCleanedUpDate:(id)a4 cloudkitShareZoneCleanedUpSuccessfully:(BOOL)a5 syncDate:(id)a6 keyReleaseMessageSendDate:(id)a7 scheduledSendExpiryDate:(id)a8 phoneCache:(id)a9 watchCache:(id)a10 sessionID:(id)a11 safetyCacheKey:(id)a12 allowReadToken:(id)a13 scheduleSendMessageGUID:(id)a14 unlockLocation:(id)a15 lockLocation:(id)a16 startingLocation:(id)a17 offWristLocation:(id)a18 parkedCarLocation:(id)a19 destinationMapItem:(id)a20 timeCacheUploadCompletion:(id)a21 maxCacheSize:(double)a22 maxLocationsInTrace:(int64_t)a23 maxTimeBetweenCacheUpdates:(double)a24 numCacheUpdates:(int64_t)a25 timeTilCacheRelease:(double)a26 numberOfSuccessfulCacheUpdates:(int64_t)a27 numberOfMessageCancelling:(int64_t)a28 numberOfSuccessfulMessageCancelling:(int64_t)a29 numberOfMessageScheduling:(int64_t)a30 numberOfSuccessfulMessageScheduling:(int64_t)a31 wasCacheReleased:(BOOL)a32 wasScheduledSendTriggered:(BOOL)a33 locationOfTrigger:(id)a34 triggerDate:(id)a35 lockState:(BOOL)a36 cacheUpdateBackstopExpiryDate:(id)a37 workoutEvents:(id)a38 numberOfHandoffBecomingActive:(int64_t)a39 numberOfHandoffBecomingNonActive:(int64_t)a40 earliestActiveDeviceIdentifier:(id)a41 latestActiveDeviceIdentifier:(id)a42
+- (SMInitiatorContact)initWithIdentifier:(id)identifier shouldBeCleanedUpDate:(id)date cloudkitShareZoneCleanedUpSuccessfully:(BOOL)successfully syncDate:(id)syncDate keyReleaseMessageSendDate:(id)sendDate scheduledSendExpiryDate:(id)expiryDate phoneCache:(id)cache watchCache:(id)self0 sessionID:(id)self1 safetyCacheKey:(id)self2 allowReadToken:(id)self3 scheduleSendMessageGUID:(id)self4 unlockLocation:(id)self5 lockLocation:(id)self6 startingLocation:(id)self7 offWristLocation:(id)self8 parkedCarLocation:(id)self9 destinationMapItem:(id)item timeCacheUploadCompletion:(id)completion maxCacheSize:(double)size maxLocationsInTrace:(int64_t)trace maxTimeBetweenCacheUpdates:(double)updates numCacheUpdates:(int64_t)cacheUpdates timeTilCacheRelease:(double)release numberOfSuccessfulCacheUpdates:(int64_t)successfulCacheUpdates numberOfMessageCancelling:(int64_t)cancelling numberOfSuccessfulMessageCancelling:(int64_t)messageCancelling numberOfMessageScheduling:(int64_t)identifier0 numberOfSuccessfulMessageScheduling:(int64_t)identifier1 wasCacheReleased:(BOOL)identifier2 wasScheduledSendTriggered:(BOOL)identifier3 locationOfTrigger:(id)identifier4 triggerDate:(id)identifier5 lockState:(BOOL)identifier6 cacheUpdateBackstopExpiryDate:(id)identifier7 workoutEvents:(id)identifier8 numberOfHandoffBecomingActive:(int64_t)identifier9 numberOfHandoffBecomingNonActive:(int64_t)date0 earliestActiveDeviceIdentifier:(id)date1 latestActiveDeviceIdentifier:(id)date2
 {
-  v98 = a4;
-  v89 = a7;
-  v102 = a8;
-  v97 = a9;
-  v96 = a10;
-  v47 = a14;
-  v95 = a15;
-  v94 = a16;
-  v93 = a17;
-  v92 = a18;
-  v91 = a19;
-  v48 = a20;
-  v101 = a21;
-  v90 = a34;
-  v49 = a35;
-  v100 = a37;
-  v50 = a38;
-  v51 = a41;
-  v99 = a42;
-  if (a3)
+  dateCopy = date;
+  sendDateCopy = sendDate;
+  expiryDateCopy = expiryDate;
+  cacheCopy = cache;
+  watchCacheCopy = watchCache;
+  iDCopy = iD;
+  locationCopy = location;
+  lockLocationCopy = lockLocation;
+  startingLocationCopy = startingLocation;
+  wristLocationCopy = wristLocation;
+  carLocationCopy = carLocation;
+  itemCopy = item;
+  completionCopy = completion;
+  triggerCopy = trigger;
+  triggerDateCopy = triggerDate;
+  backstopExpiryDateCopy = backstopExpiryDate;
+  eventsCopy = events;
+  deviceIdentifierCopy = deviceIdentifier;
+  activeDeviceIdentifierCopy = activeDeviceIdentifier;
+  if (identifier)
   {
-    v86 = v50;
-    v52 = v48;
+    v86 = eventsCopy;
+    v52 = itemCopy;
     v103.receiver = self;
     v103.super_class = SMInitiatorContact;
-    v53 = [(SMContact *)&v103 initWithIdentifier:a3 sessionID:a11 allowReadToken:a13 safetyCacheKey:a12 syncDate:a6 sharingInvitationData:0 shareURL:0 participantID:0];
-    v54 = v98;
-    v55 = v47;
-    v56 = v102;
-    v57 = v89;
+    v53 = [(SMContact *)&v103 initWithIdentifier:identifier sessionID:d allowReadToken:token safetyCacheKey:key syncDate:syncDate sharingInvitationData:0 shareURL:0 participantID:0];
+    v54 = dateCopy;
+    v55 = iDCopy;
+    v56 = expiryDateCopy;
+    v57 = sendDateCopy;
     if (v53)
     {
-      v58 = [v98 copy];
+      v58 = [dateCopy copy];
       shouldBeCleanedUpDate = v53->_shouldBeCleanedUpDate;
       v53->_shouldBeCleanedUpDate = v58;
 
-      v53->_cloudkitShareZoneCleanedUpSuccessfully = a5;
-      v60 = [v102 copy];
+      v53->_cloudkitShareZoneCleanedUpSuccessfully = successfully;
+      v60 = [expiryDateCopy copy];
       scheduledSendExpiryDate = v53->_scheduledSendExpiryDate;
       v53->_scheduledSendExpiryDate = v60;
 
-      v62 = [v89 copy];
+      v62 = [sendDateCopy copy];
       keyReleaseMessageSendDate = v53->_keyReleaseMessageSendDate;
       v53->_keyReleaseMessageSendDate = v62;
 
-      objc_storeStrong(&v53->_unlockLocation, a15);
-      objc_storeStrong(&v53->_lockLocation, a16);
-      objc_storeStrong(&v53->_startingLocation, a17);
-      objc_storeStrong(&v53->_offWristLocation, a18);
-      objc_storeStrong(&v53->_parkedCarLocation, a19);
+      objc_storeStrong(&v53->_unlockLocation, location);
+      objc_storeStrong(&v53->_lockLocation, lockLocation);
+      objc_storeStrong(&v53->_startingLocation, startingLocation);
+      objc_storeStrong(&v53->_offWristLocation, wristLocation);
+      objc_storeStrong(&v53->_parkedCarLocation, carLocation);
       v64 = [v52 copy];
       destinationMapItem = v53->_destinationMapItem;
       v53->_destinationMapItem = v64;
 
-      objc_storeStrong(&v53->_phoneCache, a9);
-      objc_storeStrong(&v53->_watchCache, a10);
+      objc_storeStrong(&v53->_phoneCache, cache);
+      objc_storeStrong(&v53->_watchCache, watchCache);
       v66 = [v55 copy];
       scheduleSendMessageGUID = v53->_scheduleSendMessageGUID;
       v53->_scheduleSendMessageGUID = v66;
 
-      v68 = [v101 copy];
+      v68 = [completionCopy copy];
       timeCacheUploadCompletion = v53->_timeCacheUploadCompletion;
       v53->_timeCacheUploadCompletion = v68;
 
-      v53->_maxCacheSize = a22;
-      v53->_maxLocationsInTrace = a23;
-      v53->_maxTimeBetweenCacheUpdates = a24;
-      v53->_numCacheUpdates = a25;
-      v53->_timeTilCacheRelease = a26;
-      v53->_numberOfSuccessfulCacheUpdates = a27;
-      v53->_numberOfMessageCancelling = a28;
-      v53->_numberOfSuccessfulMessageCancelling = a29;
-      v53->_numberOfMessageScheduling = a30;
-      v53->_numberOfSuccessfulMessageScheduling = a31;
-      v53->_wasCacheReleased = a32;
-      v53->_wasScheduledSendTriggered = a33;
-      objc_storeStrong(&v53->_locationOfTrigger, a34);
-      v70 = [v49 copy];
+      v53->_maxCacheSize = size;
+      v53->_maxLocationsInTrace = trace;
+      v53->_maxTimeBetweenCacheUpdates = updates;
+      v53->_numCacheUpdates = cacheUpdates;
+      v53->_timeTilCacheRelease = release;
+      v53->_numberOfSuccessfulCacheUpdates = successfulCacheUpdates;
+      v53->_numberOfMessageCancelling = cancelling;
+      v53->_numberOfSuccessfulMessageCancelling = messageCancelling;
+      v53->_numberOfMessageScheduling = scheduling;
+      v53->_numberOfSuccessfulMessageScheduling = messageScheduling;
+      v53->_wasCacheReleased = released;
+      v53->_wasScheduledSendTriggered = triggered;
+      objc_storeStrong(&v53->_locationOfTrigger, trigger);
+      v70 = [triggerDateCopy copy];
       triggerDate = v53->_triggerDate;
       v53->_triggerDate = v70;
 
-      v53->_lockState = a36;
-      v72 = [v100 copy];
+      v53->_lockState = state;
+      v72 = [backstopExpiryDateCopy copy];
       cacheUpdateBackstopExpiryDate = v53->_cacheUpdateBackstopExpiryDate;
       v53->_cacheUpdateBackstopExpiryDate = v72;
 
@@ -120,29 +120,29 @@
       v78 = v74;
       objc_storeStrong(&v53->_workoutEvents, v74);
 
-      v53->_numberOfHandoffBecomingActive = a39;
-      v53->_numberOfHandoffBecomingNonActive = a40;
-      v79 = [v51 copy];
+      v53->_numberOfHandoffBecomingActive = active;
+      v53->_numberOfHandoffBecomingNonActive = nonActive;
+      v79 = [deviceIdentifierCopy copy];
       earliestActiveDeviceIdentifier = v53->_earliestActiveDeviceIdentifier;
       v53->_earliestActiveDeviceIdentifier = v79;
 
-      v81 = [v99 copy];
+      v81 = [activeDeviceIdentifierCopy copy];
       latestActiveDeviceIdentifier = v53->_latestActiveDeviceIdentifier;
       v53->_latestActiveDeviceIdentifier = v81;
 
-      v57 = v89;
-      v56 = v102;
+      v57 = sendDateCopy;
+      v56 = expiryDateCopy;
     }
 
-    v75 = v53;
-    v77 = v75;
-    v48 = v52;
-    v50 = v86;
+    selfCopy = v53;
+    v77 = selfCopy;
+    itemCopy = v52;
+    eventsCopy = v86;
   }
 
   else
   {
-    v75 = self;
+    selfCopy = self;
     v76 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
     {
@@ -151,10 +151,10 @@
     }
 
     v77 = 0;
-    v54 = v98;
-    v55 = v47;
-    v56 = v102;
-    v57 = v89;
+    v54 = dateCopy;
+    v55 = iDCopy;
+    v56 = expiryDateCopy;
+    v57 = sendDateCopy;
   }
 
   return v77;
@@ -163,32 +163,32 @@
 - (id)description
 {
   v21 = MEMORY[0x277CCACA8];
-  v30 = [(SMContact *)self sessionUUID];
-  v29 = [(SMContact *)self identifier];
-  v25 = [(SMContact *)self syncDate];
-  v28 = [v25 stringFromDate];
-  v24 = [(SMInitiatorContact *)self keyReleaseMessageSendDate];
-  v19 = [v24 stringFromDate];
-  v23 = [(SMInitiatorContact *)self shouldBeCleanedUpDate];
-  v27 = [v23 stringFromDate];
-  v18 = [(SMContact *)self allowReadToken];
-  v26 = [(SMContact *)self safetyCacheKey];
-  v17 = [(SMInitiatorContact *)self cloudkitShareZoneCleanedUpSuccessfully];
-  v20 = [(SMInitiatorContact *)self scheduledSendExpiryDate];
-  v16 = [v20 stringFromDate];
-  v15 = [(SMInitiatorContact *)self scheduleSendMessageGUID];
-  v14 = [(SMInitiatorContact *)self startingLocation];
-  v13 = [(SMInitiatorContact *)self unlockLocation];
-  v12 = [(SMInitiatorContact *)self lockLocation];
-  v3 = [(SMInitiatorContact *)self parkedCarLocation];
-  v4 = [(SMInitiatorContact *)self offWristLocation];
-  v5 = [(SMInitiatorContact *)self workoutEvents];
-  v6 = [v5 count];
-  v7 = [(SMInitiatorContact *)self numberOfHandoffBecomingActive];
-  v8 = [(SMInitiatorContact *)self numberOfHandoffBecomingNonActive];
-  v9 = [(SMInitiatorContact *)self earliestActiveDeviceIdentifier];
-  v10 = [(SMInitiatorContact *)self latestActiveDeviceIdentifier];
-  v22 = [v21 stringWithFormat:@"sessionID, %@, identifier, %@, syncDate, %@, keyReleaseMessageDate, %@, shouldBeCleanedUpDate, %@, allowReadToken, %@, safetyCacheKey, %@, cloudKitCleanedUp, %d, scheduledSendDate, %@, scheduledSendGUID, %@, startLocation, %@, unlockLocation, %@, lockLocation, %@, parkedCarLocation, %@, offWristLocation, %@, workoutEventsCount, %lu, numberOfHandoffBecomingActive, %ld, numberOfHandoffBecomingNonActive, %ld, earliestActiveDeviceIdentifier, %@, latestActiveDeviceIdentifier, %@", v30, v29, v28, v19, v27, v18, v26, v17, v16, v15, v14, v13, v12, v3, v4, v6, v7, v8, v9, v10];
+  sessionUUID = [(SMContact *)self sessionUUID];
+  identifier = [(SMContact *)self identifier];
+  syncDate = [(SMContact *)self syncDate];
+  stringFromDate = [syncDate stringFromDate];
+  keyReleaseMessageSendDate = [(SMInitiatorContact *)self keyReleaseMessageSendDate];
+  stringFromDate2 = [keyReleaseMessageSendDate stringFromDate];
+  shouldBeCleanedUpDate = [(SMInitiatorContact *)self shouldBeCleanedUpDate];
+  stringFromDate3 = [shouldBeCleanedUpDate stringFromDate];
+  allowReadToken = [(SMContact *)self allowReadToken];
+  safetyCacheKey = [(SMContact *)self safetyCacheKey];
+  cloudkitShareZoneCleanedUpSuccessfully = [(SMInitiatorContact *)self cloudkitShareZoneCleanedUpSuccessfully];
+  scheduledSendExpiryDate = [(SMInitiatorContact *)self scheduledSendExpiryDate];
+  stringFromDate4 = [scheduledSendExpiryDate stringFromDate];
+  scheduleSendMessageGUID = [(SMInitiatorContact *)self scheduleSendMessageGUID];
+  startingLocation = [(SMInitiatorContact *)self startingLocation];
+  unlockLocation = [(SMInitiatorContact *)self unlockLocation];
+  lockLocation = [(SMInitiatorContact *)self lockLocation];
+  parkedCarLocation = [(SMInitiatorContact *)self parkedCarLocation];
+  offWristLocation = [(SMInitiatorContact *)self offWristLocation];
+  workoutEvents = [(SMInitiatorContact *)self workoutEvents];
+  v6 = [workoutEvents count];
+  numberOfHandoffBecomingActive = [(SMInitiatorContact *)self numberOfHandoffBecomingActive];
+  numberOfHandoffBecomingNonActive = [(SMInitiatorContact *)self numberOfHandoffBecomingNonActive];
+  earliestActiveDeviceIdentifier = [(SMInitiatorContact *)self earliestActiveDeviceIdentifier];
+  latestActiveDeviceIdentifier = [(SMInitiatorContact *)self latestActiveDeviceIdentifier];
+  v22 = [v21 stringWithFormat:@"sessionID, %@, identifier, %@, syncDate, %@, keyReleaseMessageDate, %@, shouldBeCleanedUpDate, %@, allowReadToken, %@, safetyCacheKey, %@, cloudKitCleanedUp, %d, scheduledSendDate, %@, scheduledSendGUID, %@, startLocation, %@, unlockLocation, %@, lockLocation, %@, parkedCarLocation, %@, offWristLocation, %@, workoutEventsCount, %lu, numberOfHandoffBecomingActive, %ld, numberOfHandoffBecomingNonActive, %ld, earliestActiveDeviceIdentifier, %@, latestActiveDeviceIdentifier, %@", sessionUUID, identifier, stringFromDate, stringFromDate2, stringFromDate3, allowReadToken, safetyCacheKey, cloudkitShareZoneCleanedUpSuccessfully, stringFromDate4, scheduleSendMessageGUID, startingLocation, unlockLocation, lockLocation, parkedCarLocation, offWristLocation, v6, numberOfHandoffBecomingActive, numberOfHandoffBecomingNonActive, earliestActiveDeviceIdentifier, latestActiveDeviceIdentifier];
 
   return v22;
 }

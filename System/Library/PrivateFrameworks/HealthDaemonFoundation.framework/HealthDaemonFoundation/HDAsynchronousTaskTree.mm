@@ -1,29 +1,29 @@
 @interface HDAsynchronousTaskTree
-- (HDAsynchronousTaskTree)initWithDescription:(id)a3 completion:(id)a4;
+- (HDAsynchronousTaskTree)initWithDescription:(id)description completion:(id)completion;
 - (NSArray)allErrors;
-- (void)_addTask:(void *)a3 queue:;
-- (void)_completeCurrentTaskWithResult:(void *)a3 error:;
+- (void)_addTask:(void *)task queue:;
+- (void)_completeCurrentTaskWithResult:(void *)result error:;
 - (void)_lock_beginNextTask;
 - (void)_lock_insertPendingSubtasks;
-- (void)_lock_reportResult:(uint64_t)a1;
-- (void)_runPendingCheckpointTasks:(void *)a3 completion:;
-- (void)addCheckpointTaskOnQueue:(id)a3 task:(id)a4;
-- (void)addTaskOnQueue:(id)a3 timeout:(double)a4 task:(id)a5;
+- (void)_lock_reportResult:(uint64_t)result;
+- (void)_runPendingCheckpointTasks:(void *)tasks completion:;
+- (void)addCheckpointTaskOnQueue:(id)queue task:(id)task;
+- (void)addTaskOnQueue:(id)queue timeout:(double)timeout task:(id)task;
 - (void)begin;
 @end
 
 @implementation HDAsynchronousTaskTree
 
-- (HDAsynchronousTaskTree)initWithDescription:(id)a3 completion:(id)a4
+- (HDAsynchronousTaskTree)initWithDescription:(id)description completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  completionCopy = completion;
   v22.receiver = self;
   v22.super_class = HDAsynchronousTaskTree;
   v8 = [(HDAsynchronousTaskTree *)&v22 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [descriptionCopy copy];
     groupDescription = v8->_groupDescription;
     v8->_groupDescription = v9;
 
@@ -41,7 +41,7 @@
     v8->_lock_taskErrors = v15;
 
     *&v8->_lock_started = 0;
-    v17 = [v7 copy];
+    v17 = [completionCopy copy];
     lock_completion = v8->_lock_completion;
     v8->_lock_completion = v17;
 
@@ -65,8 +65,8 @@
 
 - (void)begin
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"HDAsynchronousTaskTree.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"!_lock_started"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HDAsynchronousTaskTree.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"!_lock_started"}];
 }
 
 void __63__HDAsynchronousTaskTree__completeCurrentTaskWithResult_error___block_invoke_2(uint64_t a1)
@@ -206,13 +206,13 @@ uint64_t __64__HDAsynchronousTaskTree__runPendingCheckpointTasks_completion___bl
   return result;
 }
 
-- (void)addTaskOnQueue:(id)a3 timeout:(double)a4 task:(id)a5
+- (void)addTaskOnQueue:(id)queue timeout:(double)timeout task:(id)task
 {
-  v18 = a3;
-  v8 = a5;
-  if (v18)
+  queueCopy = queue;
+  taskCopy = task;
+  if (queueCopy)
   {
-    if (v8)
+    if (taskCopy)
     {
       goto LABEL_3;
     }
@@ -220,17 +220,17 @@ uint64_t __64__HDAsynchronousTaskTree__runPendingCheckpointTasks_completion___bl
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     OUTLINED_FUNCTION_1_2();
     [v13 handleFailureInMethod:@"queue != nil" object:? file:? lineNumber:? description:?];
 
-    if (v8)
+    if (taskCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v14 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1_2();
   [v15 handleFailureInMethod:@"handler != nil" object:? file:? lineNumber:? description:?];
 
@@ -238,53 +238,53 @@ LABEL_3:
   v9 = atomic_load(&self->_rejectAddTask);
   if (v9)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     OUTLINED_FUNCTION_1_2();
     [v17 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
   }
 
   v10 = objc_alloc_init(HDAsynchronousTask);
-  [(HDAsynchronousTask *)v10 setQueue:v18];
+  [(HDAsynchronousTask *)v10 setQueue:queueCopy];
   if (v10)
   {
-    objc_setProperty_nonatomic_copy(v10, v11, v8, 16);
-    v10->_timeout = a4;
-    v10->_hasTimeout = a4 > 0.0;
+    objc_setProperty_nonatomic_copy(v10, v11, taskCopy, 16);
+    v10->_timeout = timeout;
+    v10->_hasTimeout = timeout > 0.0;
   }
 
-  [(HDAsynchronousTaskTree *)self _addTask:v10 queue:v18];
+  [(HDAsynchronousTaskTree *)self _addTask:v10 queue:queueCopy];
 }
 
-- (void)_addTask:(void *)a3 queue:
+- (void)_addTask:(void *)task queue:
 {
   v8 = a2;
-  v5 = a3;
-  if (a1)
+  taskCopy = task;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v6 = atomic_load((a1 + 40));
-    if ((v6 & 1) == 0 && (*(a1 + 43) & 1) == 0)
+    os_unfair_lock_lock((self + 8));
+    v6 = atomic_load((self + 40));
+    if ((v6 & 1) == 0 && (*(self + 43) & 1) == 0)
     {
       v7 = 16;
-      if (*(a1 + 42))
+      if (*(self + 42))
       {
         v7 = 24;
       }
 
-      [*(a1 + v7) addObject:v8];
+      [*(self + v7) addObject:v8];
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 }
 
-- (void)addCheckpointTaskOnQueue:(id)a3 task:(id)a4
+- (void)addCheckpointTaskOnQueue:(id)queue task:(id)task
 {
-  v14 = a3;
-  v6 = a4;
-  if (!v6)
+  queueCopy = queue;
+  taskCopy = task;
+  if (!taskCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     OUTLINED_FUNCTION_1_2();
     [v11 handleFailureInMethod:@"checkpointHandler != nil" object:? file:? lineNumber:? description:?];
   }
@@ -292,51 +292,51 @@ LABEL_3:
   v7 = atomic_load(&self->_rejectAddTask);
   if (v7)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     OUTLINED_FUNCTION_1_2();
     [v13 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
   }
 
   v8 = objc_alloc_init(HDAsynchronousTask);
-  [(HDAsynchronousTask *)v8 setQueue:v14];
+  [(HDAsynchronousTask *)v8 setQueue:queueCopy];
   if (v8)
   {
-    objc_setProperty_nonatomic_copy(v8, v9, v6, 40);
+    objc_setProperty_nonatomic_copy(v8, v9, taskCopy, 40);
   }
 
-  [(HDAsynchronousTaskTree *)self _addTask:v8 queue:v14];
+  [(HDAsynchronousTaskTree *)self _addTask:v8 queue:queueCopy];
 }
 
 - (void)_lock_beginNextTask
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  os_unfair_lock_assert_owner((a1 + 8));
-  if (*(a1 + 43))
+  os_unfair_lock_assert_owner((self + 8));
+  if (*(self + 43))
   {
     return;
   }
 
-  if ([*(a1 + 16) count])
+  if ([*(self + 16) count])
   {
-    v2 = atomic_load((a1 + 40));
+    v2 = atomic_load((self + 40));
     if ((v2 & 1) == 0)
     {
-      v3 = [*(a1 + 16) objectAtIndexedSubscript:0];
-      [*(a1 + 16) removeObjectAtIndex:0];
+      v3 = [*(self + 16) objectAtIndexedSubscript:0];
+      [*(self + 16) removeObjectAtIndex:0];
       if (v3 && *(v3 + 40))
       {
-        atomic_store(1u, (a1 + 41));
+        atomic_store(1u, (self + 41));
         v4 = *(v3 + 24);
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __45__HDAsynchronousTaskTree__lock_beginNextTask__block_invoke;
         block[3] = &unk_2796BDA28;
         v19 = v3;
-        v20 = a1;
+        selfCopy = self;
         v5 = v3;
         dispatch_async(v4, block);
         v6 = v19;
@@ -375,7 +375,7 @@ LABEL_3:
         v13[3] = &unk_2796BDD50;
         v14 = v3;
         v15 = v10;
-        v16 = a1;
+        selfCopy2 = self;
         v17 = sel__lock_beginNextTask;
         v6 = v3;
         v5 = v10;
@@ -385,79 +385,79 @@ LABEL_3:
       return;
     }
 
-    *(a1 + 43) = 1;
-    v8 = a1;
+    *(self + 43) = 1;
+    selfCopy4 = self;
     v7 = 3;
   }
 
   else
   {
-    *(a1 + 43) = 1;
-    v7 = [*(a1 + 32) count] != 0;
-    v8 = a1;
+    *(self + 43) = 1;
+    v7 = [*(self + 32) count] != 0;
+    selfCopy4 = self;
   }
 
-  [(HDAsynchronousTaskTree *)v8 _lock_reportResult:v7];
+  [(HDAsynchronousTaskTree *)selfCopy4 _lock_reportResult:v7];
 }
 
-- (void)_completeCurrentTaskWithResult:(void *)a3 error:
+- (void)_completeCurrentTaskWithResult:(void *)result error:
 {
-  v5 = a3;
-  if (a1)
+  resultCopy = result;
+  if (self)
   {
-    os_unfair_lock_assert_not_owner((a1 + 8));
+    os_unfair_lock_assert_not_owner((self + 8));
     if (!(!v7 & v6))
     {
       switch(a2)
       {
         case 0:
-          os_unfair_lock_lock((a1 + 8));
-          [(HDAsynchronousTaskTree *)a1 _lock_insertPendingSubtasks];
-          [(HDAsynchronousTaskTree *)a1 _lock_beginNextTask];
-          os_unfair_lock_unlock((a1 + 8));
+          os_unfair_lock_lock((self + 8));
+          [(HDAsynchronousTaskTree *)self _lock_insertPendingSubtasks];
+          [(HDAsynchronousTaskTree *)self _lock_beginNextTask];
+          os_unfair_lock_unlock((self + 8));
           break;
         case 1:
         case 3:
-          if (!v5)
+          if (!resultCopy)
           {
-            v5 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Asynchronous task failed without reporting an error."];
+            resultCopy = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Asynchronous task failed without reporting an error."];
           }
 
-          os_unfair_lock_lock((a1 + 8));
-          [*(a1 + 32) addObject:v5];
-          v8 = [*(a1 + 24) copy];
-          [*(a1 + 24) removeAllObjects];
-          os_unfair_lock_unlock((a1 + 8));
+          os_unfair_lock_lock((self + 8));
+          [*(self + 32) addObject:resultCopy];
+          v8 = [*(self + 24) copy];
+          [*(self + 24) removeAllObjects];
+          os_unfair_lock_unlock((self + 8));
           v12[0] = MEMORY[0x277D85DD0];
           v12[1] = 3221225472;
           v12[2] = __63__HDAsynchronousTaskTree__completeCurrentTaskWithResult_error___block_invoke;
           v12[3] = &unk_2796BD9B0;
-          v12[4] = a1;
+          v12[4] = self;
           v9 = v12;
           goto LABEL_13;
         case 2:
-          os_unfair_lock_lock((a1 + 8));
-          *(a1 + 43) = 1;
-          if (!v5)
+          os_unfair_lock_lock((self + 8));
+          *(self + 43) = 1;
+          if (!resultCopy)
           {
-            v5 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Asynchronous task had a critical failure without reporting an error."];
+            resultCopy = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Asynchronous task had a critical failure without reporting an error."];
           }
 
-          [*(a1 + 32) addObject:v5];
-          v8 = [MEMORY[0x277CBEB18] arrayWithArray:*(a1 + 24)];
-          v10 = [*(a1 + 16) copy];
+          [*(self + 32) addObject:resultCopy];
+          v8 = [MEMORY[0x277CBEB18] arrayWithArray:*(self + 24)];
+          v10 = [*(self + 16) copy];
           [v8 addObjectsFromArray:v10];
 
-          [*(a1 + 24) removeAllObjects];
-          os_unfair_lock_unlock((a1 + 8));
+          [*(self + 24) removeAllObjects];
+          os_unfair_lock_unlock((self + 8));
           OUTLINED_FUNCTION_0_4();
           v11[1] = 3221225472;
           v11[2] = __63__HDAsynchronousTaskTree__completeCurrentTaskWithResult_error___block_invoke_2;
           v11[3] = &unk_2796BD9B0;
-          v11[4] = a1;
+          v11[4] = self;
           v9 = v11;
 LABEL_13:
-          [(HDAsynchronousTaskTree *)a1 _runPendingCheckpointTasks:v8 completion:v9];
+          [(HDAsynchronousTaskTree *)self _runPendingCheckpointTasks:v8 completion:v9];
 
           break;
         default:
@@ -469,19 +469,19 @@ LABEL_13:
 
 - (void)_lock_insertPendingSubtasks
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    os_unfair_lock_assert_owner(a1 + 2);
-    v3 = *&v1[4]._os_unfair_lock_opaque;
-    v2 = *&v1[6]._os_unfair_lock_opaque;
-    v1 += 4;
+    selfCopy = self;
+    os_unfair_lock_assert_owner(self + 2);
+    v3 = *&selfCopy[4]._os_unfair_lock_opaque;
+    v2 = *&selfCopy[6]._os_unfair_lock_opaque;
+    selfCopy += 4;
     [v2 addObjectsFromArray:v3];
-    [*&v1->_os_unfair_lock_opaque removeAllObjects];
-    v4 = *&v1->_os_unfair_lock_opaque;
-    objc_storeStrong(v1, *&v1[2]._os_unfair_lock_opaque);
-    v5 = *&v1[2]._os_unfair_lock_opaque;
-    *&v1[2]._os_unfair_lock_opaque = v4;
+    [*&selfCopy->_os_unfair_lock_opaque removeAllObjects];
+    v4 = *&selfCopy->_os_unfair_lock_opaque;
+    objc_storeStrong(selfCopy, *&selfCopy[2]._os_unfair_lock_opaque);
+    v5 = *&selfCopy[2]._os_unfair_lock_opaque;
+    *&selfCopy[2]._os_unfair_lock_opaque = v4;
   }
 }
 
@@ -494,20 +494,20 @@ void __63__HDAsynchronousTaskTree__completeCurrentTaskWithResult_error___block_i
   os_unfair_lock_unlock(v2);
 }
 
-- (void)_runPendingCheckpointTasks:(void *)a3 completion:
+- (void)_runPendingCheckpointTasks:(void *)tasks completion:
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  tasksCopy = tasks;
+  if (self)
   {
     v7 = objc_alloc_init(HDSynchronousTaskGroup);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __64__HDAsynchronousTaskTree__runPendingCheckpointTasks_completion___block_invoke;
     v24[3] = &unk_2796BDDA0;
-    v24[4] = a1;
-    v25 = v6;
+    v24[4] = self;
+    v25 = tasksCopy;
     [(HDSynchronousTaskGroup *)v7 setDidFinish:v24];
     [(HDSynchronousTaskGroup *)v7 beginTask];
     v20 = 0u;
@@ -534,7 +534,7 @@ void __63__HDAsynchronousTaskTree__completeCurrentTaskWithResult_error___block_i
           v13 = *(*(&v20 + 1) + 8 * v12);
           if (v13 && *(v13 + 40))
           {
-            atomic_store(1u, (a1 + 41));
+            atomic_store(1u, (self + 41));
             [(HDSynchronousTaskGroup *)v7 beginTask];
             v14 = *(v13 + 24);
             block[0] = MEMORY[0x277D85DD0];
@@ -542,7 +542,7 @@ void __63__HDAsynchronousTaskTree__completeCurrentTaskWithResult_error___block_i
             block[2] = __64__HDAsynchronousTaskTree__runPendingCheckpointTasks_completion___block_invoke_2;
             block[3] = &unk_2796BDAC0;
             block[4] = v13;
-            block[5] = a1;
+            block[5] = self;
             v19 = v7;
             dispatch_async(v14, block);
           }
@@ -565,18 +565,18 @@ void __63__HDAsynchronousTaskTree__completeCurrentTaskWithResult_error___block_i
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lock_reportResult:(uint64_t)a1
+- (void)_lock_reportResult:(uint64_t)result
 {
-  if (a1)
+  if (result)
   {
-    os_unfair_lock_assert_owner((a1 + 8));
-    v4 = _Block_copy(*(a1 + 48));
-    v5 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    os_unfair_lock_assert_owner((result + 8));
+    v4 = _Block_copy(*(result + 48));
+    v5 = *(result + 48);
+    *(result + 48) = 0;
 
     if (a2)
     {
-      [*(a1 + 32) firstObject];
+      [*(result + 32) firstObject];
       objc_claimAutoreleasedReturnValue();
     }
 

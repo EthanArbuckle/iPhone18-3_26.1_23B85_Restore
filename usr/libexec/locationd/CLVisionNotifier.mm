@@ -1,28 +1,28 @@
 @interface CLVisionNotifier
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)hasSessionTimedOut:(double)a3;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)hasSessionTimedOut:(double)out;
 - (CLVisionNotifier)init;
 - (void)beginService;
-- (void)closeSessionWithState:(unint64_t)a3 fromClient:(id)a4;
-- (void)deregisterForVisionNotifications:(id)a3;
+- (void)closeSessionWithState:(unint64_t)state fromClient:(id)client;
+- (void)deregisterForVisionNotifications:(id)notifications;
 - (void)endService;
-- (void)registerForVisionNotifications:(id)a3;
-- (void)sendARSessionState:(id)a3 fromClient:(id)a4;
-- (void)sendVIOEstimation:(id)a3 fromClient:(id)a4;
-- (void)sendVLLocalizationResult:(id)a3 fromClient:(id)a4;
-- (void)startSessionWithState:(unint64_t)a3 fromClient:(id)a4;
-- (void)updateClientsWithHandler:(id)a3;
+- (void)registerForVisionNotifications:(id)notifications;
+- (void)sendARSessionState:(id)state fromClient:(id)client;
+- (void)sendVIOEstimation:(id)estimation fromClient:(id)client;
+- (void)sendVLLocalizationResult:(id)result fromClient:(id)client;
+- (void)startSessionWithState:(unint64_t)state fromClient:(id)client;
+- (void)updateClientsWithHandler:(id)handler;
 @end
 
 @implementation CLVisionNotifier
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -100,29 +100,29 @@
   }
 }
 
-- (void)registerForVisionNotifications:(id)a3
+- (void)registerForVisionNotifications:(id)notifications
 {
   [-[CLVisionNotifier universe](self "universe")];
   clients = self->_clients;
 
-  [(NSMutableSet *)clients addObject:a3];
+  [(NSMutableSet *)clients addObject:notifications];
 }
 
-- (void)deregisterForVisionNotifications:(id)a3
+- (void)deregisterForVisionNotifications:(id)notifications
 {
   [-[CLVisionNotifier universe](self "universe")];
   clients = self->_clients;
 
-  [(NSMutableSet *)clients removeObject:a3];
+  [(NSMutableSet *)clients removeObject:notifications];
 }
 
-- (void)sendARSessionState:(id)a3 fromClient:(id)a4
+- (void)sendARSessionState:(id)state fromClient:(id)client
 {
   [-[CLVisionNotifier universe](self "universe")];
   v10 = 0;
-  if (a3 && [a3 length] == 8)
+  if (state && [state length] == 8)
   {
-    [a3 getBytes:&v10 length:8];
+    [state getBytes:&v10 length:8];
     if (v10 == 1)
     {
       if ([(CLVisionNotifier *)self isARSessionActive])
@@ -144,15 +144,15 @@
           sub_101899E4C();
         }
 
-        [(CLVisionNotifier *)self closeSessionWithState:2 fromClient:a4];
+        [(CLVisionNotifier *)self closeSessionWithState:2 fromClient:client];
       }
 
-      [(CLVisionNotifier *)self startSessionWithState:v10 fromClient:a4];
+      [(CLVisionNotifier *)self startSessionWithState:v10 fromClient:client];
     }
 
     else
     {
-      [(CLVisionNotifier *)self closeSessionWithState:v10 fromClient:a4];
+      [(CLVisionNotifier *)self closeSessionWithState:v10 fromClient:client];
     }
   }
 
@@ -189,11 +189,11 @@
   }
 }
 
-- (void)sendVIOEstimation:(id)a3 fromClient:(id)a4
+- (void)sendVIOEstimation:(id)estimation fromClient:(id)client
 {
   [-[CLVisionNotifier universe](self "universe")];
   v13 = 0;
-  v7 = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObject:objc_opt_class()] fromData:a3 error:&v13];
+  v7 = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObject:objc_opt_class()] fromData:estimation error:&v13];
   if (v13 || (v8 = v7) == 0)
   {
     if (qword_1025D46A0 != -1)
@@ -251,7 +251,7 @@
         sub_101899F20();
       }
 
-      [(CLVisionNotifier *)self startSessionWithState:1 fromClient:a4];
+      [(CLVisionNotifier *)self startSessionWithState:1 fromClient:client];
     }
 
     [(CLVisionNotifier *)self setLastARKitUpdate:sub_1000081AC()];
@@ -260,16 +260,16 @@
     v12[2] = sub_1004D1634;
     v12[3] = &unk_102458EB0;
     v12[4] = v8;
-    v12[5] = a4;
+    v12[5] = client;
     [(CLVisionNotifier *)self updateClientsWithHandler:v12];
   }
 }
 
-- (void)sendVLLocalizationResult:(id)a3 fromClient:(id)a4
+- (void)sendVLLocalizationResult:(id)result fromClient:(id)client
 {
   [-[CLVisionNotifier universe](self "universe")];
   v13 = 0;
-  v7 = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObject:objc_opt_class()] fromData:a3 error:&v13];
+  v7 = [NSKeyedUnarchiver unarchivedObjectOfClasses:[NSSet setWithObject:objc_opt_class()] fromData:result error:&v13];
   if (v13 || (v8 = v7) == 0)
   {
     if (qword_1025D46A0 != -1)
@@ -327,7 +327,7 @@
         sub_101899FF4();
       }
 
-      [(CLVisionNotifier *)self startSessionWithState:1 fromClient:a4];
+      [(CLVisionNotifier *)self startSessionWithState:1 fromClient:client];
     }
 
     [(CLVisionNotifier *)self setLastARKitUpdate:sub_1000081AC()];
@@ -336,12 +336,12 @@
     v12[2] = sub_1004D1900;
     v12[3] = &unk_102458EB0;
     v12[4] = v8;
-    v12[5] = a4;
+    v12[5] = client;
     [(CLVisionNotifier *)self updateClientsWithHandler:v12];
   }
 }
 
-- (void)updateClientsWithHandler:(id)a3
+- (void)updateClientsWithHandler:(id)handler
 {
   [-[CLVisionNotifier universe](self "universe")];
   v10 = 0u;
@@ -364,7 +364,7 @@
           objc_enumerationMutation(clients);
         }
 
-        (*(a3 + 2))(a3, *(*(&v10 + 1) + 8 * v9));
+        (*(handler + 2))(handler, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
@@ -376,7 +376,7 @@
   }
 }
 
-- (void)startSessionWithState:(unint64_t)a3 fromClient:(id)a4
+- (void)startSessionWithState:(unint64_t)state fromClient:(id)client
 {
   [-[CLVisionNotifier universe](self "universe")];
   [(CLVisionNotifier *)self setArSessionActive:1];
@@ -391,27 +391,27 @@
   if (os_log_type_enabled(qword_1025D46A8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349314;
-    v10 = a3;
+    stateCopy = state;
     v11 = 2082;
-    v12 = [a4 UTF8String];
+    uTF8String = [client UTF8String];
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEBUG, "CLVN,startSessionWithState:%{public}lu fromClient:%{public}s", buf, 0x16u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_10189A0C8(a4, a3);
+    sub_10189A0C8(client, state);
   }
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1004D1BA0;
   v8[3] = &unk_102458ED8;
-  v8[4] = a4;
-  v8[5] = a3;
+  v8[4] = client;
+  v8[5] = state;
   [(CLVisionNotifier *)self updateClientsWithHandler:v8];
 }
 
-- (void)closeSessionWithState:(unint64_t)a3 fromClient:(id)a4
+- (void)closeSessionWithState:(unint64_t)state fromClient:(id)client
 {
   [-[CLVisionNotifier universe](self "universe")];
   [(CLVisionNotifier *)self setArSessionActive:0];
@@ -426,27 +426,27 @@
   if (os_log_type_enabled(qword_1025D46A8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349314;
-    v10 = a3;
+    stateCopy = state;
     v11 = 2082;
-    v12 = [a4 UTF8String];
+    uTF8String = [client UTF8String];
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEBUG, "CLVN,closeSessionWithState:%{public}lu fromClient:%{public}s", buf, 0x16u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_10189A1D4(a4, a3);
+    sub_10189A1D4(client, state);
   }
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1004D1D34;
   v8[3] = &unk_102458ED8;
-  v8[4] = a4;
-  v8[5] = a3;
+  v8[4] = client;
+  v8[5] = state;
   [(CLVisionNotifier *)self updateClientsWithHandler:v8];
 }
 
-- (BOOL)hasSessionTimedOut:(double)a3
+- (BOOL)hasSessionTimedOut:(double)out
 {
   [(CLVisionNotifier *)self lastARKitUpdate];
   if (v5 < 0.0)
@@ -455,7 +455,7 @@
   }
 
   [(CLVisionNotifier *)self lastARKitUpdate];
-  return vabdd_f64(a3, v7) > 10.0;
+  return vabdd_f64(out, v7) > 10.0;
 }
 
 @end

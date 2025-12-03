@@ -1,15 +1,15 @@
 @interface BMCalendarEventTitle
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMCalendarEventTitle)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMCalendarEventTitle)initWithTitle:(id)a3 interaction:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMCalendarEventTitle)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMCalendarEventTitle)initWithTitle:(id)title interaction:(id)interaction;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMCalendarEventTitle
@@ -28,25 +28,25 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMCalendarEventTitle *)self title];
-    v7 = [v5 title];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    title = [(BMCalendarEventTitle *)self title];
+    title2 = [v5 title];
+    v8 = title2;
+    if (title == title2)
     {
     }
 
     else
     {
-      v9 = [(BMCalendarEventTitle *)self title];
-      v10 = [v5 title];
-      v11 = [v9 isEqual:v10];
+      title3 = [(BMCalendarEventTitle *)self title];
+      title4 = [v5 title];
+      v11 = [title3 isEqual:title4];
 
       if (!v11)
       {
@@ -57,18 +57,18 @@ LABEL_11:
       }
     }
 
-    v13 = [(BMCalendarEventTitle *)self interaction];
-    v14 = [v5 interaction];
-    if (v13 == v14)
+    interaction = [(BMCalendarEventTitle *)self interaction];
+    interaction2 = [v5 interaction];
+    if (interaction == interaction2)
     {
       v12 = 1;
     }
 
     else
     {
-      v15 = [(BMCalendarEventTitle *)self interaction];
-      v16 = [v5 interaction];
-      v12 = [v15 isEqual:v16];
+      interaction3 = [(BMCalendarEventTitle *)self interaction];
+      interaction4 = [v5 interaction];
+      v12 = [interaction3 isEqual:interaction4];
     }
 
     goto LABEL_11;
@@ -83,30 +83,30 @@ LABEL_12:
 - (id)jsonDictionary
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMCalendarEventTitle *)self title];
-  v4 = [(BMCalendarEventTitle *)self interaction];
-  v5 = [v4 base64EncodedStringWithOptions:0];
+  title = [(BMCalendarEventTitle *)self title];
+  interaction = [(BMCalendarEventTitle *)self interaction];
+  v5 = [interaction base64EncodedStringWithOptions:0];
 
   v11[0] = @"title";
-  v6 = v3;
-  if (!v3)
+  null = title;
+  if (!title)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v11[1] = @"interaction";
-  v12[0] = v6;
-  v7 = v5;
+  v12[0] = null;
+  null2 = v5;
   if (!v5)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[1] = v7;
+  v12[1] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   if (v5)
   {
-    if (v3)
+    if (title)
     {
       goto LABEL_7;
     }
@@ -115,7 +115,7 @@ LABEL_12:
   else
   {
 
-    if (v3)
+    if (title)
     {
       goto LABEL_7;
     }
@@ -127,22 +127,22 @@ LABEL_7:
   return v8;
 }
 
-- (BMCalendarEventTitle)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMCalendarEventTitle)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"title"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"title"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"interaction"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"interaction"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
 LABEL_7:
       self = [(BMCalendarEventTitle *)self initWithTitle:v8 interaction:v10];
-      v11 = self;
+      selfCopy = self;
       goto LABEL_8;
     }
 
@@ -162,7 +162,7 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      if (a4)
+      if (error)
       {
         v17 = objc_alloc(MEMORY[0x1E696ABC0]);
         v18 = *MEMORY[0x1E698F240];
@@ -174,11 +174,11 @@ LABEL_7:
         v22 = &v26;
 LABEL_22:
         v23 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:1];
-        *a4 = [v17 initWithDomain:v18 code:2 userInfo:v23];
+        *error = [v17 initWithDomain:v18 code:2 userInfo:v23];
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v17 = objc_alloc(MEMORY[0x1E696ABC0]);
       v18 = *MEMORY[0x1E698F240];
@@ -192,7 +192,7 @@ LABEL_22:
     }
 
     v10 = 0;
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -203,10 +203,10 @@ LABEL_22:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
@@ -218,44 +218,44 @@ LABEL_22:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
   v16 = [v14 initWithDomain:v15 code:2 userInfo:v9];
   v8 = 0;
-  v11 = 0;
-  *a4 = v16;
+  selfCopy = 0;
+  *error = v16;
 LABEL_8:
 
 LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMCalendarEventTitle *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_interaction)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v22.receiver = self;
   v22.super_class = BMCalendarEventTitle;
   v5 = [(BMEventBase *)&v22 init];
@@ -264,12 +264,12 @@ LABEL_9:
     goto LABEL_27;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -280,18 +280,18 @@ LABEL_9:
       while (1)
       {
         v23 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v23 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v23 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v23 & 0x7F) << v7;
@@ -308,9 +308,9 @@ LABEL_9:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -342,13 +342,13 @@ LABEL_16:
       *(&v5->super.super.isa + v17) = v15;
 
 LABEL_24:
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_26:
     v20 = 0;
@@ -366,25 +366,25 @@ LABEL_27:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMCalendarEventTitle *)self title];
-  v5 = [(BMCalendarEventTitle *)self interaction];
-  v6 = [v3 initWithFormat:@"BMCalendarEventTitle with title: %@, interaction: %@", v4, v5];
+  title = [(BMCalendarEventTitle *)self title];
+  interaction = [(BMCalendarEventTitle *)self interaction];
+  v6 = [v3 initWithFormat:@"BMCalendarEventTitle with title: %@, interaction: %@", title, interaction];
 
   return v6;
 }
 
-- (BMCalendarEventTitle)initWithTitle:(id)a3 interaction:(id)a4
+- (BMCalendarEventTitle)initWithTitle:(id)title interaction:(id)interaction
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  interactionCopy = interaction;
   v11.receiver = self;
   v11.super_class = BMCalendarEventTitle;
   v9 = [(BMEventBase *)&v11 init];
   if (v9)
   {
     v9->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v9->_interaction, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v9->_interaction, interaction);
   }
 
   return v9;
@@ -404,9 +404,9 @@ LABEL_27:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -414,8 +414,8 @@ LABEL_27:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMCalendarEventTitle alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,28 +1,28 @@
 @interface PDRRegistry
 + (id)sharedInstance;
 - (BOOL)isPaired;
-- (BOOL)removeDelegate:(id)a3;
+- (BOOL)removeDelegate:(id)delegate;
 - (PDRRegistry)init;
-- (id)deviceForBluetoothID:(id)a3;
-- (id)deviceForPairingID:(id)a3;
-- (id)deviceFromNRDevice:(id)a3;
+- (id)deviceForBluetoothID:(id)d;
+- (id)deviceForPairingID:(id)d;
+- (id)deviceFromNRDevice:(id)device;
 - (id)getActiveDevice;
 - (id)getActivePairedDeviceExcludingAltAccount;
 - (id)getActivePairedDeviceIncludingAltAccount;
-- (id)getAllDevicesWithArchivedAltAccountDevicesMatching:(id)a3;
-- (id)getAllDevicesWithArchivedDevicesMatching:(id)a3;
+- (id)getAllDevicesWithArchivedAltAccountDevicesMatching:(id)matching;
+- (id)getAllDevicesWithArchivedDevicesMatching:(id)matching;
 - (id)getDevices;
-- (id)getDevicesExcluding:(unint64_t)a3;
-- (id)getDevicesMatching:(id)a3;
+- (id)getDevicesExcluding:(unint64_t)excluding;
+- (id)getDevicesMatching:(id)matching;
 - (id)getPairedDevices;
 - (id)getSetupCompletedDevices;
 - (id)pairingID;
 - (id)pairingStorePath;
 - (int64_t)compatibilityState;
 - (unint64_t)switchIndex;
-- (void)addDelegate:(id)a3;
-- (void)getDevicesWithBlock:(id)a3;
-- (void)getSwitchEventsAfterIndex:(unsigned int)a3 process:(id)a4;
+- (void)addDelegate:(id)delegate;
+- (void)getDevicesWithBlock:(id)block;
+- (void)getSwitchEventsAfterIndex:(unsigned int)index process:(id)process;
 - (void)start;
 - (void)stop;
 @end
@@ -58,33 +58,33 @@
   }
 }
 
-- (void)getDevicesWithBlock:(id)a3
+- (void)getDevicesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(PDRRegistry *)self getDevicesExcluding:0];
-  v4[2](v4, v5);
+  blockCopy[2](blockCopy, v5);
 }
 
 - (id)getDevices
 {
-  v3 = [objc_opt_class() activePairedDeviceSelectorBlock];
-  v4 = [(PDRRegistry *)self getDevicesMatching:v3];
+  activePairedDeviceSelectorBlock = [objc_opt_class() activePairedDeviceSelectorBlock];
+  v4 = [(PDRRegistry *)self getDevicesMatching:activePairedDeviceSelectorBlock];
 
   return v4;
 }
 
 - (id)getPairedDevices
 {
-  v3 = [objc_opt_class() pairedDevicesSelectorBlock];
-  v4 = [(PDRRegistry *)self getDevicesMatching:v3];
+  pairedDevicesSelectorBlock = [objc_opt_class() pairedDevicesSelectorBlock];
+  v4 = [(PDRRegistry *)self getDevicesMatching:pairedDevicesSelectorBlock];
 
   return v4;
 }
 
 - (id)getSetupCompletedDevices
 {
-  v3 = [objc_opt_class() setupCompletedDevicesSelectorBlock];
-  v4 = [(PDRRegistry *)self getDevicesMatching:v3];
+  setupCompletedDevicesSelectorBlock = [objc_opt_class() setupCompletedDevicesSelectorBlock];
+  v4 = [(PDRRegistry *)self getDevicesMatching:setupCompletedDevicesSelectorBlock];
 
   return v4;
 }
@@ -121,9 +121,9 @@ uint64_t __68__PDRRegistry_NanoRegistryStyle__setupCompletedDevicesSelectorBlock
   return v3;
 }
 
-- (id)getDevicesMatching:(id)a3
+- (id)getDevicesMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -134,7 +134,7 @@ uint64_t __68__PDRRegistry_NanoRegistryStyle__setupCompletedDevicesSelectorBlock
   v8[1] = 3221225472;
   v8[2] = __53__PDRRegistry_NanoRegistryStyle__getDevicesMatching___block_invoke;
   v8[3] = &unk_2787A7A78;
-  v5 = v4;
+  v5 = matchingCopy;
   v9 = v5;
   v10 = &v11;
   [(PDRRegistry *)self getDevicesWithBlock:v8];
@@ -183,9 +183,9 @@ void __53__PDRRegistry_NanoRegistryStyle__getDevicesMatching___block_invoke(uint
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getAllDevicesWithArchivedDevicesMatching:(id)a3
+- (id)getAllDevicesWithArchivedDevicesMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -196,7 +196,7 @@ void __53__PDRRegistry_NanoRegistryStyle__getDevicesMatching___block_invoke(uint
   v8[1] = 3221225472;
   v8[2] = __75__PDRRegistry_NanoRegistryStyle__getAllDevicesWithArchivedDevicesMatching___block_invoke;
   v8[3] = &unk_2787A7A78;
-  v5 = v4;
+  v5 = matchingCopy;
   v9 = v5;
   v10 = &v11;
   [(PDRRegistry *)self getDevicesWithBlock:v8];
@@ -249,9 +249,9 @@ void __75__PDRRegistry_NanoRegistryStyle__getAllDevicesWithArchivedDevicesMatchi
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getAllDevicesWithArchivedAltAccountDevicesMatching:(id)a3
+- (id)getAllDevicesWithArchivedAltAccountDevicesMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -262,7 +262,7 @@ void __75__PDRRegistry_NanoRegistryStyle__getAllDevicesWithArchivedDevicesMatchi
   v8[1] = 3221225472;
   v8[2] = __85__PDRRegistry_NanoRegistryStyle__getAllDevicesWithArchivedAltAccountDevicesMatching___block_invoke;
   v8[3] = &unk_2787A7A78;
-  v5 = v4;
+  v5 = matchingCopy;
   v9 = v5;
   v10 = &v11;
   [(PDRRegistry *)self getDevicesWithBlock:v8];
@@ -315,10 +315,10 @@ void __85__PDRRegistry_NanoRegistryStyle__getAllDevicesWithArchivedAltAccountDev
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)deviceFromNRDevice:(id)a3
+- (id)deviceFromNRDevice:(id)device
 {
-  v4 = [a3 pairingID];
-  v5 = [(PDRRegistry *)self deviceForPairingID:v4];
+  pairingID = [device pairingID];
+  v5 = [(PDRRegistry *)self deviceForPairingID:pairingID];
 
   return v5;
 }
@@ -386,7 +386,7 @@ void __85__PDRRegistry_NanoRegistryStyle__getAllDevicesWithArchivedAltAccountDev
   return -1;
 }
 
-- (id)getDevicesExcluding:(unint64_t)a3
+- (id)getDevicesExcluding:(unint64_t)excluding
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();
@@ -422,7 +422,7 @@ void __85__PDRRegistry_NanoRegistryStyle__getAllDevicesWithArchivedAltAccountDev
   return 0;
 }
 
-- (void)getSwitchEventsAfterIndex:(unsigned int)a3 process:(id)a4
+- (void)getSwitchEventsAfterIndex:(unsigned int)index process:(id)process
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();
@@ -431,16 +431,7 @@ void __85__PDRRegistry_NanoRegistryStyle__getAllDevicesWithArchivedAltAccountDev
   NSRequestConcreteImplementation();
 }
 
-- (id)deviceForBluetoothID:(id)a3
-{
-  OUTLINED_FUNCTION_1();
-  objc_opt_class();
-  OUTLINED_FUNCTION_0_0();
-  NSRequestConcreteImplementation();
-  return 0;
-}
-
-- (id)deviceForPairingID:(id)a3
+- (id)deviceForBluetoothID:(id)d
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();
@@ -449,7 +440,16 @@ void __85__PDRRegistry_NanoRegistryStyle__getAllDevicesWithArchivedAltAccountDev
   return 0;
 }
 
-- (void)addDelegate:(id)a3
+- (id)deviceForPairingID:(id)d
+{
+  OUTLINED_FUNCTION_1();
+  objc_opt_class();
+  OUTLINED_FUNCTION_0_0();
+  NSRequestConcreteImplementation();
+  return 0;
+}
+
+- (void)addDelegate:(id)delegate
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();
@@ -458,7 +458,7 @@ void __85__PDRRegistry_NanoRegistryStyle__getAllDevicesWithArchivedAltAccountDev
   NSRequestConcreteImplementation();
 }
 
-- (BOOL)removeDelegate:(id)a3
+- (BOOL)removeDelegate:(id)delegate
 {
   OUTLINED_FUNCTION_1();
   objc_opt_class();

@@ -1,72 +1,72 @@
 @interface PKAccountBankAccountsViewController
 - (BOOL)_hasBankAccounts;
-- (BOOL)_isBankAccountIndexPath:(id)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (PKAccountBankAccountsViewController)initWithAccount:(id)a3 paymentWebService:(id)a4 context:(int64_t)a5;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (BOOL)_isBankAccountIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (PKAccountBankAccountsViewController)initWithAccount:(id)account paymentWebService:(id)service context:(int64_t)context;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_addBankAccountInformationViewController;
-- (id)_bankAccountCellForRowAtIndexPath:(id)a3;
-- (id)_fundingSourceForIndexPath:(id)a3;
-- (id)_indexPathForFundingSourceIdentifier:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_sectionTypeForSection:(unint64_t)a3;
-- (void)_configureBankAccountCell:(id)a3 withFundingSource:(id)a4;
-- (void)_didSelectDeleteBankAccountAtIndexPath:(id)a3 withCompletionHandler:(id)a4;
-- (void)_fetchAccountUserInfo:(id)a3;
+- (id)_bankAccountCellForRowAtIndexPath:(id)path;
+- (id)_fundingSourceForIndexPath:(id)path;
+- (id)_indexPathForFundingSourceIdentifier:(id)identifier;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_sectionTypeForSection:(unint64_t)section;
+- (void)_configureBankAccountCell:(id)cell withFundingSource:(id)source;
+- (void)_didSelectDeleteBankAccountAtIndexPath:(id)path withCompletionHandler:(id)handler;
+- (void)_fetchAccountUserInfo:(id)info;
 - (void)_presentAddBankAccount;
-- (void)_presentContactSupportWithSourceItem:(id)a3;
-- (void)_presentLinkAccountForFundingSource:(id)a3;
+- (void)_presentContactSupportWithSourceItem:(id)item;
+- (void)_presentLinkAccountForFundingSource:(id)source;
 - (void)_reloadFundingSources;
-- (void)_setAndFilterFundingSources:(id)a3;
+- (void)_setAndFilterFundingSources:(id)sources;
 - (void)_toggleEditingMode;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)_updateEditButtonIfNecessary;
-- (void)addBankAccountInformationViewController:(id)a3 didAddFundingSource:(id)a4;
-- (void)addBankAccountInformationViewController:(id)a3 didFailWithError:(id)a4;
-- (void)addBankAccountInformationViewControllerDidFinish:(id)a3;
+- (void)addBankAccountInformationViewController:(id)controller didAddFundingSource:(id)source;
+- (void)addBankAccountInformationViewController:(id)controller didFailWithError:(id)error;
+- (void)addBankAccountInformationViewControllerDidFinish:(id)finish;
 - (void)dealloc;
-- (void)didUpdatePaymentFundingSources:(id)a3 accountIdentifier:(id)a4;
-- (void)preflightWithCompletion:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
+- (void)didUpdatePaymentFundingSources:(id)sources accountIdentifier:(id)identifier;
+- (void)preflightWithCompletion:(id)completion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
 - (void)viewDidLoad;
 @end
 
 @implementation PKAccountBankAccountsViewController
 
-- (PKAccountBankAccountsViewController)initWithAccount:(id)a3 paymentWebService:(id)a4 context:(int64_t)a5
+- (PKAccountBankAccountsViewController)initWithAccount:(id)account paymentWebService:(id)service context:(int64_t)context
 {
-  v9 = a3;
-  v10 = a4;
+  accountCopy = account;
+  serviceCopy = service;
   v20.receiver = self;
   v20.super_class = PKAccountBankAccountsViewController;
   v11 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v20, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleDefaultRoundedCornerBehavior], 2);
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_account, a3);
-    v12->_accountFeatureIdentifier = [v9 feature];
-    objc_storeStrong(&v12->_paymentWebService, a4);
-    v13 = [MEMORY[0x1E69B8400] sharedInstance];
+    objc_storeStrong(&v11->_account, account);
+    v12->_accountFeatureIdentifier = [accountCopy feature];
+    objc_storeStrong(&v12->_paymentWebService, service);
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v12->_accountService;
-    v12->_accountService = v13;
+    v12->_accountService = mEMORY[0x1E69B8400];
 
-    v12->_context = a5;
+    v12->_context = context;
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     deletingFundingSources = v12->_deletingFundingSources;
     v12->_deletingFundingSources = v15;
 
-    v17 = [(PKAccountBankAccountsViewController *)v12 navigationItem];
+    navigationItem = [(PKAccountBankAccountsViewController *)v12 navigationItem];
     v18 = PKLocalizedFeatureString();
-    [v17 setTitle:v18];
+    [navigationItem setTitle:v18];
 
     v12->_loadingFundingSources = 0;
     [(PKAccountService *)v12->_accountService registerObserver:v12];
@@ -88,27 +88,27 @@
   v13.receiver = self;
   v13.super_class = PKAccountBankAccountsViewController;
   [(PKSectionTableViewController *)&v13 viewDidLoad];
-  v3 = [(PKAccountBankAccountsViewController *)self tableView];
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  [v3 setAllowsSelectionDuringEditing:1];
+  tableView = [(PKAccountBankAccountsViewController *)self tableView];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  [tableView setAllowsSelectionDuringEditing:1];
   if (PKPaymentSetupContextIsBridge())
   {
     v4 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v5 = [v4 backgroundColor];
-    [v3 setBackgroundColor:v5];
+    backgroundColor = [v4 backgroundColor];
+    [tableView setBackgroundColor:backgroundColor];
 
-    v6 = [v3 backgroundView];
-    v7 = [v4 backgroundColor];
-    [v6 setBackgroundColor:v7];
+    backgroundView = [tableView backgroundView];
+    backgroundColor2 = [v4 backgroundColor];
+    [backgroundView setBackgroundColor:backgroundColor2];
 
-    v8 = [v4 tableViewSeparatorColor];
-    [v3 setSeparatorColor:v8];
+    tableViewSeparatorColor = [v4 tableViewSeparatorColor];
+    [tableView setSeparatorColor:tableViewSeparatorColor];
 
-    v9 = [v4 tintColor];
-    [v3 setSectionIndexColor:v9];
+    tintColor = [v4 tintColor];
+    [tableView setSectionIndexColor:tintColor];
 
-    v10 = [v4 foregroundColor];
-    [v3 setSectionIndexBackgroundColor:v10];
+    foregroundColor = [v4 foregroundColor];
+    [tableView setSectionIndexBackgroundColor:foregroundColor];
 
     if ([v4 hasDarkAppearance])
     {
@@ -120,7 +120,7 @@
       v11 = 0;
     }
 
-    [v3 setIndicatorStyle:v11];
+    [tableView setIndicatorStyle:v11];
   }
 
   if (![(PKAccountBankAccountsViewController *)self _hasBankAccounts])
@@ -128,18 +128,18 @@
     [(PKAccountBankAccountsViewController *)self _reloadFundingSources];
   }
 
-  v12 = [(PKAccountBankAccountsViewController *)self view];
-  [v12 setAccessibilityIdentifier:*MEMORY[0x1E69B9508]];
+  view = [(PKAccountBankAccountsViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9508]];
 }
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
   if (self->_loadingFundingSources)
   {
     v4 = MEMORY[0x1E69DC8C8];
-    v5 = a3;
-    v6 = [v4 loadingConfiguration];
-    v7 = [v6 updatedConfigurationForState:v5];
+    stateCopy = state;
+    loadingConfiguration = [v4 loadingConfiguration];
+    v7 = [loadingConfiguration updatedConfigurationForState:stateCopy];
   }
 
   else
@@ -165,8 +165,8 @@
     unavailableFundingSourcesWithoutVerification = self->_unavailableFundingSourcesWithoutVerification;
     self->_unavailableFundingSourcesWithoutVerification = 0;
 
-    v6 = [(PKAccountBankAccountsViewController *)self tableView];
-    [v6 reloadData];
+    tableView = [(PKAccountBankAccountsViewController *)self tableView];
+    [tableView reloadData];
 
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
@@ -205,10 +205,10 @@ void __60__PKAccountBankAccountsViewController__reloadFundingSources__block_invo
   }
 }
 
-- (void)_setAndFilterFundingSources:(id)a3
+- (void)_setAndFilterFundingSources:(id)sources
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sourcesCopy = sources;
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -216,7 +216,7 @@ void __60__PKAccountBankAccountsViewController__reloadFundingSources__block_invo
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = sourcesCopy;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
@@ -232,18 +232,18 @@ void __60__PKAccountBankAccountsViewController__reloadFundingSources__block_invo
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [v10 fundingDetails];
+        fundingDetails = [v10 fundingDetails];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = v11;
-          v13 = [v12 status];
+          v12 = fundingDetails;
+          status = [v12 status];
           v14 = v4;
-          if (v13 == 2)
+          if (status == 2)
           {
-            v15 = [v12 verificationDetails];
+            verificationDetails = [v12 verificationDetails];
 
-            if (v15)
+            if (verificationDetails)
             {
               v14 = v23;
             }
@@ -275,26 +275,26 @@ void __60__PKAccountBankAccountsViewController__reloadFundingSources__block_invo
   availableFundingSources = self->_availableFundingSources;
   self->_availableFundingSources = v4;
 
-  v21 = [(PKAccountBankAccountsViewController *)self tableView];
-  [v21 reloadData];
+  tableView = [(PKAccountBankAccountsViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_toggleEditingMode
 {
-  v3 = [(PKAccountBankAccountsViewController *)self tableView];
-  [v3 setEditing:objc_msgSend(v3 animated:{"isEditing") ^ 1, 1}];
+  tableView = [(PKAccountBankAccountsViewController *)self tableView];
+  [tableView setEditing:objc_msgSend(tableView animated:{"isEditing") ^ 1, 1}];
   [(PKAccountBankAccountsViewController *)self _updateEditButtonIfNecessary];
 }
 
 - (void)_updateEditButtonIfNecessary
 {
-  v7 = [(PKAccountBankAccountsViewController *)self navigationItem];
+  navigationItem = [(PKAccountBankAccountsViewController *)self navigationItem];
   if ([(PKAccountBankAccountsViewController *)self _hasBankAccounts])
   {
-    v3 = [(PKAccountBankAccountsViewController *)self tableView];
-    v4 = [v3 isEditing];
+    tableView = [(PKAccountBankAccountsViewController *)self tableView];
+    isEditing = [tableView isEditing];
 
-    if (v4)
+    if (isEditing)
     {
       v5 = 0;
     }
@@ -305,22 +305,22 @@ void __60__PKAccountBankAccountsViewController__reloadFundingSources__block_invo
     }
 
     v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:v5 target:self action:sel__editButtonPressed_];
-    [v7 setRightBarButtonItem:v6];
+    [navigationItem setRightBarButtonItem:v6];
   }
 
   else
   {
-    [v7 setRightBarButtonItem:0];
+    [navigationItem setRightBarButtonItem:0];
   }
 }
 
-- (BOOL)_isBankAccountIndexPath:(id)a3
+- (BOOL)_isBankAccountIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[PKAccountBankAccountsViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [v4 section]);
+  pathCopy = path;
+  v5 = -[PKAccountBankAccountsViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [pathCopy section]);
   if (v5 == 2)
   {
-    v6 = [v4 row];
+    v6 = [pathCopy row];
     v7 = 1168;
 LABEL_7:
     v8 = v6 < [*(&self->super.super.super.super.super.isa + v7) count];
@@ -335,23 +335,23 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v6 = [v4 row];
+    v6 = [pathCopy row];
     v7 = 1152;
     goto LABEL_7;
   }
 
-  v8 = [v4 row] == 0;
+  v8 = [pathCopy row] == 0;
 LABEL_9:
 
   return v8;
 }
 
-- (void)_didSelectDeleteBankAccountAtIndexPath:(id)a3 withCompletionHandler:(id)a4
+- (void)_didSelectDeleteBankAccountAtIndexPath:(id)path withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKAccountBankAccountsViewController *)self _fundingSourceForIndexPath:v6];
-  v9 = -[PKAccountBankAccountsViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [v6 section]);
+  pathCopy = path;
+  handlerCopy = handler;
+  v8 = [(PKAccountBankAccountsViewController *)self _fundingSourceForIndexPath:pathCopy];
+  v9 = -[PKAccountBankAccountsViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [pathCopy section]);
   if (v9 > 2)
   {
     v10 = 0;
@@ -375,20 +375,20 @@ LABEL_9:
     [(NSMutableArray *)self->_deletingFundingSources addObject:v8];
     v11 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     [v11 startAnimating];
-    v12 = [(PKAccountBankAccountsViewController *)self tableView];
-    v13 = [v12 cellForRowAtIndexPath:v6];
+    tableView = [(PKAccountBankAccountsViewController *)self tableView];
+    v13 = [tableView cellForRowAtIndexPath:pathCopy];
 
     [v13 setEditingAccessoryView:v11];
     [v13 setAccessoryView:v11];
     v14 = objc_alloc_init(MEMORY[0x1E69B8498]);
-    v15 = [(PKAccount *)self->_account accountIdentifier];
-    [v14 setAccountIdentifier:v15];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+    [v14 setAccountIdentifier:accountIdentifier];
 
-    v16 = [(PKAccount *)self->_account accountBaseURL];
-    [v14 setBaseURL:v16];
+    accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+    [v14 setBaseURL:accountBaseURL];
 
-    v17 = [v8 identifier];
-    [v14 setFundingSourceIdentifier:v17];
+    identifier = [v8 identifier];
+    [v14 setFundingSourceIdentifier:identifier];
 
     objc_initWeak(&location, self);
     paymentWebService = self->_paymentWebService;
@@ -397,7 +397,7 @@ LABEL_9:
     v19[2] = __100__PKAccountBankAccountsViewController__didSelectDeleteBankAccountAtIndexPath_withCompletionHandler___block_invoke;
     v19[3] = &unk_1E801EF88;
     objc_copyWeak(&v23, &location);
-    v22 = v7;
+    v22 = handlerCopy;
     v20 = v8;
     v21 = v10;
     [(PKPaymentWebService *)paymentWebService deleteFundingSourceWithRequest:v14 completion:v19];
@@ -407,7 +407,7 @@ LABEL_9:
   }
 
 LABEL_7:
-  (*(v7 + 2))(v7, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 }
 
 void __100__PKAccountBankAccountsViewController__didSelectDeleteBankAccountAtIndexPath_withCompletionHandler___block_invoke(id *a1, void *a2, void *a3)
@@ -556,9 +556,9 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (![(PKAccountBankAccountsViewController *)self _hasBankAccounts])
   {
     v21[0] = 0;
@@ -595,15 +595,15 @@ LABEL_9:
       if (accountFeatureIdentifier != 5)
       {
 LABEL_9:
-        v8 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __63__PKAccountBankAccountsViewController_preflightWithCompletion___block_invoke_10;
         v10[3] = &unk_1E801F050;
         objc_copyWeak(&v13, &location);
         v12 = v21;
-        v11 = v4;
-        v9 = [v5 evaluateWithInput:v8 completion:v10];
+        v11 = completionCopy;
+        v9 = [v5 evaluateWithInput:null completion:v10];
 
         objc_destroyWeak(&v13);
         objc_destroyWeak(&v19);
@@ -628,9 +628,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
 LABEL_10:
@@ -900,27 +900,27 @@ uint64_t __63__PKAccountBankAccountsViewController_preflightWithCompletion___blo
 
 - (id)_addBankAccountInformationViewController
 {
-  v3 = [(PKAccount *)self->_account type];
-  if (v3 == 4)
+  type = [(PKAccount *)self->_account type];
+  if (type == 4)
   {
-    v4 = [(PKAccount *)self->_account savingsDetails];
+    savingsDetails = [(PKAccount *)self->_account savingsDetails];
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (type == 1)
   {
-    v4 = [(PKAccount *)self->_account creditDetails];
+    savingsDetails = [(PKAccount *)self->_account creditDetails];
 LABEL_5:
-    v5 = v4;
-    v6 = [v4 countryCode];
+    v5 = savingsDetails;
+    countryCode = [savingsDetails countryCode];
 
     goto LABEL_7;
   }
 
-  v6 = 0;
+  countryCode = 0;
 LABEL_7:
   v7 = [objc_alloc(MEMORY[0x1E69B86A8]) initWithType:1];
-  v8 = [[PKAddBankAccountInformationViewController alloc] initWithDelegate:self bankInformation:v7 accountCountryCode:v6 featureAccount:self->_account];
+  v8 = [[PKAddBankAccountInformationViewController alloc] initWithDelegate:self bankInformation:v7 accountCountryCode:countryCode featureAccount:self->_account];
   [(PKAddBankAccountInformationViewController *)v8 setOfferKeychainPreFill:[(PKAccountBankAccountsViewController *)self _hasBankAccounts]^ 1];
   v9 = [[PKNavigationController alloc] initWithRootViewController:v8];
   [(PKNavigationController *)v9 setSupportedInterfaceOrientations:2];
@@ -938,60 +938,60 @@ LABEL_7:
   {
     v3 = PKLocalizedFeatureString();
     v4 = PKLocalizedFeatureString();
-    v7 = PKDisplayableErrorCustom();
+    _addBankAccountInformationViewController = PKDisplayableErrorCustom();
 
-    v5 = PKAlertForDisplayableErrorWithHandlers(v7, 0, 0, 0);
-    v6 = [(PKAccountBankAccountsViewController *)self navigationController];
-    [v6 presentViewController:v5 animated:1 completion:0];
+    navigationController2 = PKAlertForDisplayableErrorWithHandlers(_addBankAccountInformationViewController, 0, 0, 0);
+    navigationController = [(PKAccountBankAccountsViewController *)self navigationController];
+    [navigationController presentViewController:navigationController2 animated:1 completion:0];
   }
 
   else
   {
-    v7 = [(PKAccountBankAccountsViewController *)self _addBankAccountInformationViewController];
-    v5 = [(PKAccountBankAccountsViewController *)self navigationController];
-    [v5 presentViewController:v7 animated:1 completion:0];
+    _addBankAccountInformationViewController = [(PKAccountBankAccountsViewController *)self _addBankAccountInformationViewController];
+    navigationController2 = [(PKAccountBankAccountsViewController *)self navigationController];
+    [navigationController2 presentViewController:_addBankAccountInformationViewController animated:1 completion:0];
   }
 }
 
-- (void)_presentContactSupportWithSourceItem:(id)a3
+- (void)_presentContactSupportWithSourceItem:(id)item
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKAccount *)self->_account type];
-  if (v5 == 1)
+  itemCopy = item;
+  type = [(PKAccount *)self->_account type];
+  if (type == 1)
   {
-    v7 = [(PKAccount *)self->_account associatedPassUniqueID];
-    v11 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v24[0] = v7;
+    associatedPassUniqueID = [(PKAccount *)self->_account associatedPassUniqueID];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v24[0] = associatedPassUniqueID;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __76__PKAccountBankAccountsViewController__presentContactSupportWithSourceItem___block_invoke_2;
     v20[3] = &unk_1E801F078;
     v20[4] = self;
-    v21 = v4;
-    [v11 getPassesWithUniqueIdentifiers:v12 handler:v20];
+    v21 = itemCopy;
+    [mEMORY[0x1E69B8A58] getPassesWithUniqueIdentifiers:v12 handler:v20];
 
     goto LABEL_9;
   }
 
-  if (v5 == 4)
+  if (type == 4)
   {
-    v6 = [(PKAccount *)self->_account savingsDetails];
-    v7 = [v6 contactNumber];
+    savingsDetails = [(PKAccount *)self->_account savingsDetails];
+    associatedPassUniqueID = [savingsDetails contactNumber];
 
     if (+[PKBusinessChatController deviceSupportsBusinessChat])
     {
       v8 = [[PKAccountSupportTopicsViewController alloc] initWithAccount:self->_account];
       v9 = [[PKNavigationController alloc] initWithRootViewController:v8];
-      v10 = [(PKAccountBankAccountsViewController *)self navigationController];
-      [v10 presentViewController:v9 animated:1 completion:0];
+      navigationController = [(PKAccountBankAccountsViewController *)self navigationController];
+      [navigationController presentViewController:v9 animated:1 completion:0];
 
 LABEL_8:
       goto LABEL_9;
     }
 
-    if ([v7 length])
+    if ([associatedPassUniqueID length])
     {
       v13 = MEMORY[0x1E69DC650];
       v14 = PKLocalizedFeatureString();
@@ -1002,9 +1002,9 @@ LABEL_8:
       v22[1] = 3221225472;
       v22[2] = __76__PKAccountBankAccountsViewController__presentContactSupportWithSourceItem___block_invoke;
       v22[3] = &unk_1E80112E8;
-      v7 = v7;
-      v23 = v7;
-      v16 = [v15 actionWithTitle:v7 style:0 handler:v22];
+      associatedPassUniqueID = associatedPassUniqueID;
+      v23 = associatedPassUniqueID;
+      v16 = [v15 actionWithTitle:associatedPassUniqueID style:0 handler:v22];
       [(PKAccountSupportTopicsViewController *)v8 addAction:v16];
 
       v17 = MEMORY[0x1E69DC648];
@@ -1076,40 +1076,40 @@ uint64_t __76__PKAccountBankAccountsViewController__presentContactSupportWithSou
   return [v2 presentContactViewController:1 sourceItem:v8];
 }
 
-- (void)_presentLinkAccountForFundingSource:(id)a3
+- (void)_presentLinkAccountForFundingSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if (!self->_loadingLinkAccountFlow)
   {
     self->_loadingLinkAccountFlow = 1;
     v5 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     [v5 startAnimating];
     v6 = MEMORY[0x1E696AC88];
-    v7 = [v4 identifier];
-    v8 = [(PKAccountBankAccountsViewController *)self _indexPathForFundingSourceIdentifier:v7];
+    identifier = [sourceCopy identifier];
+    v8 = [(PKAccountBankAccountsViewController *)self _indexPathForFundingSourceIdentifier:identifier];
     v9 = [v6 indexPathForRow:1 inSection:{objc_msgSend(v8, "section")}];
 
-    v10 = [(PKAccountBankAccountsViewController *)self tableView];
-    v11 = [v10 cellForRowAtIndexPath:v9];
+    tableView = [(PKAccountBankAccountsViewController *)self tableView];
+    v11 = [tableView cellForRowAtIndexPath:v9];
 
     [v11 setAccessoryView:v5];
     v12 = objc_alloc(MEMORY[0x1E69B8D48]);
-    v13 = [MEMORY[0x1E69B8EF8] sharedService];
-    v14 = [v12 initWithWebService:v13];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    v14 = [v12 initWithWebService:mEMORY[0x1E69B8EF8]];
 
     v15 = [[PKApplyControllerConfiguration alloc] initWithSetupDelegate:self context:0 provisioningController:v14];
     [(PKApplyControllerConfiguration *)v15 setFeature:[(PKAccount *)self->_account feature]];
     [(PKApplyControllerConfiguration *)v15 setApplicationType:6];
     [(PKApplyControllerConfiguration *)v15 setVerificationType:2];
-    [(PKApplyControllerConfiguration *)v15 setFundingSource:v4];
+    [(PKApplyControllerConfiguration *)v15 setFundingSource:sourceCopy];
     [(PKApplyControllerConfiguration *)v15 setAccount:self->_account];
     v16 = [[PKApplyController alloc] initWithApplyConfiguration:v15];
     applyController = self->_applyController;
     self->_applyController = v16;
 
     v18 = self->_applyController;
-    v19 = [(PKAccount *)self->_account applyServiceURL];
-    [(PKApplyController *)v18 setApplyServiceURL:v19];
+    applyServiceURL = [(PKAccount *)self->_account applyServiceURL];
+    [(PKApplyController *)v18 setApplyServiceURL:applyServiceURL];
 
     objc_initWeak(&location, self);
     v20 = self->_applyController;
@@ -1118,7 +1118,7 @@ uint64_t __76__PKAccountBankAccountsViewController__presentContactSupportWithSou
     v21[2] = __75__PKAccountBankAccountsViewController__presentLinkAccountForFundingSource___block_invoke;
     v21[3] = &unk_1E801F0A0;
     objc_copyWeak(&v23, &location);
-    v22 = v4;
+    v22 = sourceCopy;
     [(PKApplyController *)v20 nextViewControllerWithCompletion:v21];
 
     objc_destroyWeak(&v23);
@@ -1196,15 +1196,15 @@ LABEL_8:
   return v4 + [(NSMutableArray *)self->_unavailableFundingSourcesWithoutVerification count]!= 0;
 }
 
-- (void)_fetchAccountUserInfo:(id)a3
+- (void)_fetchAccountUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
+  infoCopy = info;
+  v5 = infoCopy;
   if (self->_loadingAccountUserInfo)
   {
-    if (v4)
+    if (infoCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(infoCopy + 2))(infoCopy, 0);
     }
   }
 
@@ -1214,14 +1214,14 @@ LABEL_8:
     [(PKSectionTableViewController *)self reloadData];
     objc_initWeak(&location, self);
     accountService = self->_accountService;
-    v7 = [(PKAccount *)self->_account accountIdentifier];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __61__PKAccountBankAccountsViewController__fetchAccountUserInfo___block_invoke;
     v8[3] = &unk_1E801F0C8;
     objc_copyWeak(&v10, &location);
     v9 = v5;
-    [(PKAccountService *)accountService userInfoForAccountIdentifier:v7 forceFetch:1 completion:v8];
+    [(PKAccountService *)accountService userInfoForAccountIdentifier:accountIdentifier forceFetch:1 completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -1282,13 +1282,13 @@ void __61__PKAccountBankAccountsViewController__fetchAccountUserInfo___block_inv
   }
 }
 
-- (id)_fundingSourceForIndexPath:(id)a3
+- (id)_fundingSourceForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [v4 section];
+  pathCopy = path;
+  v5 = [pathCopy row];
+  section = [pathCopy section];
 
-  v7 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:v6];
+  v7 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section];
   if (v7 == 2)
   {
     v8 = 1168;
@@ -1315,7 +1315,7 @@ LABEL_8:
 
   if (!v5)
   {
-    v5 = v6 - 1;
+    v5 = section - 1;
     p_unavailableFundingSourcesWithVerification = &self->_unavailableFundingSourcesWithVerification;
 LABEL_9:
     v10 = [(NSMutableArray *)*p_unavailableFundingSourcesWithVerification objectAtIndex:v5];
@@ -1329,15 +1329,15 @@ LABEL_11:
   return v10;
 }
 
-- (id)_indexPathForFundingSourceIdentifier:(id)a3
+- (id)_indexPathForFundingSourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   availableFundingSources = self->_availableFundingSources;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __76__PKAccountBankAccountsViewController__indexPathForFundingSourceIdentifier___block_invoke;
   v21[3] = &unk_1E801F0F0;
-  v6 = v4;
+  v6 = identifierCopy;
   v22 = v6;
   v7 = [(NSMutableArray *)availableFundingSources indexOfObjectPassingTest:v21];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1458,14 +1458,14 @@ uint64_t __76__PKAccountBankAccountsViewController__indexPathForFundingSourceIde
   return v8;
 }
 
-- (unint64_t)_sectionTypeForSection:(unint64_t)a3
+- (unint64_t)_sectionTypeForSection:(unint64_t)section
 {
-  if (!a3)
+  if (!section)
   {
     return 0;
   }
 
-  if (a3 - 1 < [(NSMutableArray *)self->_unavailableFundingSourcesWithVerification count])
+  if (section - 1 < [(NSMutableArray *)self->_unavailableFundingSourcesWithVerification count])
   {
     return 1;
   }
@@ -1473,9 +1473,9 @@ uint64_t __76__PKAccountBankAccountsViewController__indexPathForFundingSourceIde
   return 2;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (self->_loadingFundingSources)
   {
     v5 = 0;
@@ -1498,9 +1498,9 @@ uint64_t __76__PKAccountBankAccountsViewController__indexPathForFundingSourceIde
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:a4];
+  v5 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section];
   if (v5 == 2)
   {
     v7 = [(NSMutableArray *)self->_unavailableFundingSourcesWithVerification count];
@@ -1532,21 +1532,21 @@ uint64_t __76__PKAccountBankAccountsViewController__indexPathForFundingSourceIde
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKAccountBankAccountsViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKAccountBankAccountsViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [pathCopy section]);
   v9 = v8;
   if (!v8)
   {
     v10 = &OBJC_IVAR___PKAccountBankAccountsViewController__availableFundingSources;
 LABEL_8:
     v11 = [*(&self->super.super.super.super.super.isa + *v10) count];
-    if ([v7 row] < v11)
+    if ([pathCopy row] < v11)
     {
 LABEL_9:
-      v12 = [(PKAccountBankAccountsViewController *)self _bankAccountCellForRowAtIndexPath:v7];
+      v12 = [(PKAccountBankAccountsViewController *)self _bankAccountCellForRowAtIndexPath:pathCopy];
       goto LABEL_22;
     }
 
@@ -1593,7 +1593,7 @@ LABEL_9:
   }
 
   [(NSMutableArray *)self->_unavailableFundingSourcesWithVerification count];
-  if (![v7 row])
+  if (![pathCopy row])
   {
     goto LABEL_9;
   }
@@ -1604,21 +1604,21 @@ LABEL_9:
   v16 = @"LinkAccountCell";
 LABEL_19:
   v17 = *v15;
-  v12 = [v6 dequeueReusableCellWithIdentifier:v16];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:v16];
   if (!v12)
   {
     v12 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:v16];
-    v18 = [v12 textLabel];
-    v19 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v18 setTextColor:v19];
+    textLabel = [v12 textLabel];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [textLabel setTextColor:systemBlueColor];
   }
 
-  v20 = [v12 textLabel];
-  v21 = [v12 detailTextLabel];
-  [v20 setText:v13];
-  [v20 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-  [v21 setText:0];
-  [v21 setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
+  textLabel2 = [v12 textLabel];
+  detailTextLabel = [v12 detailTextLabel];
+  [textLabel2 setText:v13];
+  [textLabel2 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
+  [detailTextLabel setText:0];
+  [detailTextLabel setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
   [v12 setAccessoryView:v14];
   [v12 setAccessibilityIdentifier:v17];
 
@@ -1627,18 +1627,18 @@ LABEL_22:
   return v12;
 }
 
-- (id)_bankAccountCellForRowAtIndexPath:(id)a3
+- (id)_bankAccountCellForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PKAccountBankAccountsViewController *)self tableView];
-  v6 = [v5 dequeueReusableCellWithIdentifier:@"BankAccountCell"];
+  pathCopy = path;
+  tableView = [(PKAccountBankAccountsViewController *)self tableView];
+  v6 = [tableView dequeueReusableCellWithIdentifier:@"BankAccountCell"];
 
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"BankAccountCell"];
   }
 
-  v7 = [(PKAccountBankAccountsViewController *)self _fundingSourceForIndexPath:v4];
+  v7 = [(PKAccountBankAccountsViewController *)self _fundingSourceForIndexPath:pathCopy];
   if (![(NSMutableArray *)self->_deletingFundingSources containsObject:v7])
   {
     [v6 setAccessoryView:0];
@@ -1665,24 +1665,24 @@ LABEL_8:
   return v6;
 }
 
-- (void)_configureBankAccountCell:(id)a3 withFundingSource:(id)a4
+- (void)_configureBankAccountCell:(id)cell withFundingSource:(id)source
 {
-  v19 = a3;
-  v5 = [a4 bankAccountRepresentation];
-  v6 = [v5 bankName];
-  v7 = [v5 maskedAccountNumber];
-  v8 = [v5 status];
-  v9 = [v19 textLabel];
-  v10 = [v19 detailTextLabel];
-  [v9 setText:v6];
-  [v9 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-  [v10 setText:v7];
-  [v10 setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
+  cellCopy = cell;
+  bankAccountRepresentation = [source bankAccountRepresentation];
+  bankName = [bankAccountRepresentation bankName];
+  maskedAccountNumber = [bankAccountRepresentation maskedAccountNumber];
+  status = [bankAccountRepresentation status];
+  textLabel = [cellCopy textLabel];
+  detailTextLabel = [cellCopy detailTextLabel];
+  [textLabel setText:bankName];
+  [textLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
+  [detailTextLabel setText:maskedAccountNumber];
+  [detailTextLabel setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
   if (PKPaymentSetupContextIsBridge())
   {
     v11 = PKBridgeAppearanceGetAppearanceSpecifier();
     v12 = v11;
-    if (v8 == 2)
+    if (status == 2)
     {
       [v11 altTextColor];
     }
@@ -1692,20 +1692,20 @@ LABEL_8:
       [v11 textColor];
     }
     v13 = ;
-    [v9 setTextColor:v13];
+    [textLabel setTextColor:v13];
 
     v14 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v15 = [v14 altTextColor];
-    [v10 setTextColor:v15];
+    altTextColor = [v14 altTextColor];
+    [detailTextLabel setTextColor:altTextColor];
 
-    v16 = PKBridgeAppearanceGetAppearanceSpecifier();
-    v17 = [v16 foregroundColor];
-    [v19 setBackgroundColor:v17];
+    secondaryLabelColor = PKBridgeAppearanceGetAppearanceSpecifier();
+    foregroundColor = [secondaryLabelColor foregroundColor];
+    [cellCopy setBackgroundColor:foregroundColor];
   }
 
   else
   {
-    if (v8 == 2)
+    if (status == 2)
     {
       [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
@@ -1715,21 +1715,21 @@ LABEL_8:
       [MEMORY[0x1E69DC888] labelColor];
     }
     v18 = ;
-    [v9 setTextColor:v18];
+    [textLabel setTextColor:v18];
 
-    v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v10 setTextColor:v16];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [detailTextLabel setTextColor:secondaryLabelColor];
   }
 
-  [v19 setAccessibilityIdentifier:*MEMORY[0x1E69B9508]];
-  [v19 pkui_setExcludedFromScreenCapture:1 andBroadcasting:1];
+  [cellCopy setAccessibilityIdentifier:*MEMORY[0x1E69B9508]];
+  [cellCopy pkui_setExcludedFromScreenCapture:1 andBroadcasting:1];
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E69DC8E8];
   v9 = PKLocalizedFeatureString();
@@ -1738,7 +1738,7 @@ LABEL_8:
   v17[2] = __100__PKAccountBankAccountsViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke;
   v17[3] = &unk_1E801BDA8;
   objc_copyWeak(&v19, &location);
-  v10 = v7;
+  v10 = pathCopy;
   v18 = v10;
   v11 = [v8 contextualActionWithStyle:1 title:v9 handler:v17];
 
@@ -1768,9 +1768,9 @@ void __100__PKAccountBankAccountsViewController_tableView_trailingSwipeActionsCo
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(PKAccountBankAccountsViewController *)self _sectionTypeForSection:a4]== 2)
+  if ([(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section]== 2)
   {
     v5 = [(NSMutableArray *)self->_unavailableFundingSourcesWithoutVerification count];
     if (v5)
@@ -1787,9 +1787,9 @@ void __100__PKAccountBankAccountsViewController_tableView_trailingSwipeActionsCo
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:a4];
+  v6 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section];
   switch(v6)
   {
     case 2uLL:
@@ -1806,7 +1806,7 @@ void __100__PKAccountBankAccountsViewController_tableView_trailingSwipeActionsCo
 
       break;
     case 1uLL:
-      if ([(PKAccountBankAccountsViewController *)self _sectionTypeForSection:a4 + 1]== 2)
+      if ([(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section + 1]== 2)
       {
         goto LABEL_11;
       }
@@ -1837,11 +1837,11 @@ LABEL_16:
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(PKAccountBankAccountsViewController *)self tableView:v6 titleForHeaderInSection:a4];
-  if ([v7 length] || (-[PKAccountBankAccountsViewController tableView:heightForHeaderInSection:](self, "tableView:heightForHeaderInSection:", v6, a4), v8 == *MEMORY[0x1E69DE3D0]))
+  viewCopy = view;
+  v7 = [(PKAccountBankAccountsViewController *)self tableView:viewCopy titleForHeaderInSection:section];
+  if ([v7 length] || (-[PKAccountBankAccountsViewController tableView:heightForHeaderInSection:](self, "tableView:heightForHeaderInSection:", viewCopy, section), v8 == *MEMORY[0x1E69DE3D0]))
   {
     v9 = 0;
   }
@@ -1855,9 +1855,9 @@ LABEL_16:
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:a4];
+  v6 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section];
   if (v6 != 1)
   {
     if (!v6 && [(PKAccount *)self->_account type]== 4 && [(PKAccount *)self->_associatedAccount isCoOwner])
@@ -1878,7 +1878,7 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  if ([(PKAccountBankAccountsViewController *)self _sectionTypeForSection:a4 + 1]== 2)
+  if ([(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section + 1]== 2)
   {
 LABEL_7:
     v9 = 0;
@@ -1892,9 +1892,9 @@ LABEL_8:
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:a4];
+  v6 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section];
   if (v6 == 2)
   {
     return *MEMORY[0x1E69DE3D0];
@@ -1911,7 +1911,7 @@ LABEL_8:
     return *MEMORY[0x1E69DE3D0];
   }
 
-  v8 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:a4 - 1];
+  v8 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section - 1];
   result = *MEMORY[0x1E69DE3D0];
   if (v8)
   {
@@ -1921,9 +1921,9 @@ LABEL_8:
   return result;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:a4];
+  v6 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section];
   if (v6 == 2)
   {
     return *MEMORY[0x1E69DE3D0];
@@ -1940,7 +1940,7 @@ LABEL_8:
     return *MEMORY[0x1E69DE3D0];
   }
 
-  v8 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:a4 + 1];
+  v8 = [(PKAccountBankAccountsViewController *)self _sectionTypeForSection:section + 1];
   result = *MEMORY[0x1E69DE3D0];
   if (v8 != 2)
   {
@@ -1950,20 +1950,20 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[PKAccountBankAccountsViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [v5 section]);
+  pathCopy = path;
+  v6 = -[PKAccountBankAccountsViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [pathCopy section]);
   if (v6 == 2)
   {
-    v10 = [v5 row];
+    v10 = [pathCopy row];
     v9 = v10 == [(NSMutableArray *)self->_unavailableFundingSourcesWithoutVerification count];
     goto LABEL_11;
   }
 
   if (v6 == 1)
   {
-    if ([v5 row] == 1)
+    if ([pathCopy row] == 1)
     {
       v8 = 1218;
       goto LABEL_8;
@@ -1979,7 +1979,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v7 = [v5 row];
+  v7 = [pathCopy row];
   if (v7 != [(NSMutableArray *)self->_availableFundingSources count])
   {
     goto LABEL_9;
@@ -1993,18 +1993,18 @@ LABEL_11:
   return v9 & 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEditing])
+  viewCopy = view;
+  pathCopy = path;
+  if ([viewCopy isEditing])
   {
     [(PKAccountBankAccountsViewController *)self _toggleEditingMode];
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [v7 row];
-  v9 = -[PKAccountBankAccountsViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [v7 section]);
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [pathCopy row];
+  v9 = -[PKAccountBankAccountsViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [pathCopy section]);
   if (v9 == 2)
   {
     if (v8 != [(NSMutableArray *)self->_unavailableFundingSourcesWithoutVerification count])
@@ -2012,7 +2012,7 @@ LABEL_11:
       goto LABEL_15;
     }
 
-    v10 = [v6 cellForRowAtIndexPath:v7];
+    v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
     [(PKAccountBankAccountsViewController *)self _presentContactSupportWithSourceItem:v10];
     goto LABEL_14;
   }
@@ -2024,7 +2024,7 @@ LABEL_11:
       goto LABEL_15;
     }
 
-    v10 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:{objc_msgSend(v7, "section")}];
+    v10 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:{objc_msgSend(pathCopy, "section")}];
     v11 = [(PKAccountBankAccountsViewController *)self _fundingSourceForIndexPath:v10];
     [(PKAccountBankAccountsViewController *)self _presentLinkAccountForFundingSource:v11];
 
@@ -2089,17 +2089,17 @@ void __73__PKAccountBankAccountsViewController_tableView_didSelectRowAtIndexPath
   }
 }
 
-- (void)addBankAccountInformationViewController:(id)a3 didAddFundingSource:(id)a4
+- (void)addBankAccountInformationViewController:(id)controller didAddFundingSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __99__PKAccountBankAccountsViewController_addBankAccountInformationViewController_didAddFundingSource___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = sourceCopy;
+  v6 = sourceCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v9);
@@ -2151,7 +2151,7 @@ void __99__PKAccountBankAccountsViewController_addBankAccountInformationViewCont
   }
 }
 
-- (void)addBankAccountInformationViewControllerDidFinish:(id)a3
+- (void)addBankAccountInformationViewControllerDidFinish:(id)finish
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2240,20 +2240,20 @@ void __88__PKAccountBankAccountsViewController_addBankAccountInformationViewCont
   }
 }
 
-- (void)addBankAccountInformationViewController:(id)a3 didFailWithError:(id)a4
+- (void)addBankAccountInformationViewController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __96__PKAccountBankAccountsViewController_addBankAccountInformationViewController_didFailWithError___block_invoke;
   v10[3] = &unk_1E8011828;
   objc_copyWeak(&v13, &location);
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = errorCopy;
+  v12 = controllerCopy;
+  v8 = controllerCopy;
+  v9 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v13);
@@ -2277,33 +2277,33 @@ void __96__PKAccountBankAccountsViewController_addBankAccountInformationViewCont
   }
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
   [(PKAccountBankAccountsViewController *)self _reloadFundingSources];
-  v4 = [(PKAccountBankAccountsViewController *)self presentedViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(PKAccountBankAccountsViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)didUpdatePaymentFundingSources:(id)a3 accountIdentifier:(id)a4
+- (void)didUpdatePaymentFundingSources:(id)sources accountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKAccount *)self->_account accountIdentifier];
-  v9 = v7;
+  sourcesCopy = sources;
+  identifierCopy = identifier;
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  v9 = identifierCopy;
   v10 = v9;
-  if (v8 == v9)
+  if (accountIdentifier == v9)
   {
   }
 
   else
   {
-    if (!v9 || !v8)
+    if (!v9 || !accountIdentifier)
     {
 
       goto LABEL_9;
     }
 
-    v11 = [v8 isEqualToString:v9];
+    v11 = [accountIdentifier isEqualToString:v9];
 
     if (!v11)
     {
@@ -2317,7 +2317,7 @@ void __96__PKAccountBankAccountsViewController_addBankAccountInformationViewCont
   block[2] = __88__PKAccountBankAccountsViewController_didUpdatePaymentFundingSources_accountIdentifier___block_invoke;
   block[3] = &unk_1E80110E0;
   objc_copyWeak(&v14, &location);
-  v13 = v6;
+  v13 = sourcesCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v14);

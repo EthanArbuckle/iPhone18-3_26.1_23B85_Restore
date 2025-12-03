@@ -1,17 +1,17 @@
 @interface TVFilterResultDetailHeaderCell
 - (BOOL)canBecomeFocused;
 - (NSArray)preferredFocusEnvironments;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)primaryActionButtonPressed:(id)a3;
-- (void)secondaryActionButtonPressed:(id)a3;
+- (void)primaryActionButtonPressed:(id)pressed;
+- (void)secondaryActionButtonPressed:(id)pressed;
 @end
 
 @implementation TVFilterResultDetailHeaderCell
 
 - (BOOL)canBecomeFocused
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20B8331BC();
 
   return v3 & 1;
@@ -20,8 +20,8 @@
 - (NSArray)preferredFocusEnvironments
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI30TVFilterResultDetailHeaderCell_buttonStackView);
-  v3 = self;
-  v4 = [v2 arrangedSubviews];
+  selfCopy = self;
+  arrangedSubviews = [v2 arrangedSubviews];
   sub_20B51C88C(0, &qword_27C762910);
   v5 = sub_20C13CC74();
 
@@ -41,36 +41,36 @@
   v6 = type metadata accessor for TVFilterResultDetailHeaderCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(TVFilterResultDetailHeaderCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI30TVFilterResultDetailHeaderCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 
-- (void)primaryActionButtonPressed:(id)a3
+- (void)primaryActionButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_20B837780();
 }
 
-- (void)secondaryActionButtonPressed:(id)a3
+- (void)secondaryActionButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_20B837964();
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20B835248(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_20B835248(contextCopy, coordinatorCopy);
 }
 
 @end

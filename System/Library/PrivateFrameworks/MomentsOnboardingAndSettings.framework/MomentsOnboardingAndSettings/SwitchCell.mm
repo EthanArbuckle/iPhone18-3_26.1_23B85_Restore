@@ -1,13 +1,13 @@
 @interface SwitchCell
-- (_TtC28MomentsOnboardingAndSettings10SwitchCell)initWithCoder:(id)a3;
-- (_TtC28MomentsOnboardingAndSettings10SwitchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC28MomentsOnboardingAndSettings10SwitchCell)initWithCoder:(id)coder;
+- (_TtC28MomentsOnboardingAndSettings10SwitchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation SwitchCell
 
-- (_TtC28MomentsOnboardingAndSettings10SwitchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC28MomentsOnboardingAndSettings10SwitchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC28MomentsOnboardingAndSettings10SwitchCell_onSwitchChange);
@@ -26,20 +26,20 @@
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for SwitchCell();
-  v10 = [(SwitchCell *)&v12 initWithStyle:a3 reuseIdentifier:v8];
+  v10 = [(SwitchCell *)&v12 initWithStyle:style reuseIdentifier:v8];
 
   return v10;
 }
 
-- (_TtC28MomentsOnboardingAndSettings10SwitchCell)initWithCoder:(id)a3
+- (_TtC28MomentsOnboardingAndSettings10SwitchCell)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC28MomentsOnboardingAndSettings10SwitchCell_onSwitchChange);
   *v4 = 0;
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SwitchCell();
-  v5 = a3;
-  v6 = [(SwitchCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SwitchCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

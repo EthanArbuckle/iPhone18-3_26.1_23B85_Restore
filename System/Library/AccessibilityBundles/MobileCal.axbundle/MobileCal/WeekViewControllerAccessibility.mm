@@ -1,6 +1,6 @@
 @interface WeekViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)accessibilityScrollStatusForScrollView:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)accessibilityScrollStatusForScrollView:(id)view;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateWeekScroller;
 - (void)viewDidLoad;
@@ -8,16 +8,16 @@
 
 @implementation WeekViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WeekGroupView"];
-  [v3 validateClass:@"WeekViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"WeekView" hasClassMethod:@"dayWidthForOrientation:withViewInViewHierarchy:" withFullSignature:{"d", "q", "@", 0}];
-  [v3 validateClass:@"WeekViewController" hasInstanceVariable:@"_weekScroller" withType:"UIScrollView"];
-  [v3 validateClass:@"WeekViewController" hasInstanceVariable:@"_visibleWeeks" withType:"NSMutableArray"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"interfaceOrientation" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"WeekGroupView" hasInstanceMethod:@"dateForXOffset:" withFullSignature:{"@", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WeekGroupView"];
+  [validationsCopy validateClass:@"WeekViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"WeekView" hasClassMethod:@"dayWidthForOrientation:withViewInViewHierarchy:" withFullSignature:{"d", "q", "@", 0}];
+  [validationsCopy validateClass:@"WeekViewController" hasInstanceVariable:@"_weekScroller" withType:"UIScrollView"];
+  [validationsCopy validateClass:@"WeekViewController" hasInstanceVariable:@"_visibleWeeks" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"interfaceOrientation" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"WeekGroupView" hasInstanceMethod:@"dateForXOffset:" withFullSignature:{"@", "d", 0}];
 }
 
 - (void)_axAnnotateWeekScroller
@@ -43,10 +43,10 @@
   [(WeekViewControllerAccessibility *)self _axAnnotateWeekScroller];
 }
 
-- (id)accessibilityScrollStatusForScrollView:(id)a3
+- (id)accessibilityScrollStatusForScrollView:(id)view
 {
   v62 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  viewCopy = view;
   v43 = [(WeekViewControllerAccessibility *)self safeValueForKey:@"_weekScroller"];
   v44 = 0;
   v45 = &v44;
@@ -57,8 +57,8 @@
   v56 = __74__WeekViewControllerAccessibility_accessibilityScrollStatusForScrollView___block_invoke;
   v57 = &unk_29F2D2BB8;
   v60 = &v44;
-  v58 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = viewCopy;
   v59 = v5;
   AXPerformSafeBlock();
   v6 = v45[3];
@@ -93,8 +93,8 @@
         v20 = v19;
         v22 = v21;
         v24 = v23;
-        v25 = [v15 superview];
-        [v16 convertRect:v25 fromView:{v18, v20, v22, v24}];
+        superview = [v15 superview];
+        [v16 convertRect:superview fromView:{v18, v20, v22, v24}];
         v27 = v26;
         v29 = v28;
         v31 = v30;
@@ -137,8 +137,8 @@ LABEL_12:
   AXPerformSafeBlock();
   if (*(v45 + 5) || (_AXAssert(), *(v45 + 5)))
   {
-    v36 = [MEMORY[0x29EDB8D98] currentCalendar];
-    v37 = [v36 dateFromComponents:*(v45 + 5)];
+    currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+    v37 = [currentCalendar dateFromComponents:*(v45 + 5)];
 
     v38 = AXDateStringForFormat();
     v39 = MEMORY[0x29EDBA0F8];

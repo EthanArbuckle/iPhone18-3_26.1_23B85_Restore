@@ -1,94 +1,94 @@
 @interface WFFileRepresentation
-+ (BOOL)coordinateFileOperation:(unint64_t)a3 shouldCoordinate:(BOOL)a4 fileURL:(id)a5 destinationURL:(id)a6 accessor:(id)a7;
-+ (BOOL)fileIsInDisallowedDirectory:(id)a3;
-+ (BOOL)isAllowedToRepresentFileURL:(id)a3;
-+ (id)fileWithData:(id)a3 ofType:(id)a4 proposedFilename:(id)a5 originalURL:(id)a6;
-+ (id)fileWithURL:(id)a3 options:(int64_t)a4 ofType:(id)a5 proposedFilename:(id)a6 originalURL:(id)a7;
-+ (id)proposedFilenameForFile:(id)a3 ofType:(id)a4 unsanitizedName:(id *)a5;
-+ (id)sanitizedFilename:(id)a3 withExtension:(id)a4 unsanitizedName:(id *)a5;
-+ (id)typeOfData:(id)a3;
-+ (id)typeOfFile:(id)a3;
-+ (void)addDisallowedDirectory:(id)a3;
-- (BOOL)atomicReplaceAcrossVolumesIfNeededWithURLForReplacing:(id)a3 sourceURL:(id)a4 error:(id *)a5;
-- (BOOL)writeToFileURL:(id)a3 copy:(BOOL)a4 overwrite:(BOOL)a5 error:(id *)a6;
-- (BOOL)writeToTemporaryFileURL:(id)a3 error:(id *)a4;
++ (BOOL)coordinateFileOperation:(unint64_t)operation shouldCoordinate:(BOOL)coordinate fileURL:(id)l destinationURL:(id)rL accessor:(id)accessor;
++ (BOOL)fileIsInDisallowedDirectory:(id)directory;
++ (BOOL)isAllowedToRepresentFileURL:(id)l;
++ (id)fileWithData:(id)data ofType:(id)type proposedFilename:(id)filename originalURL:(id)l;
++ (id)fileWithURL:(id)l options:(int64_t)options ofType:(id)type proposedFilename:(id)filename originalURL:(id)rL;
++ (id)proposedFilenameForFile:(id)file ofType:(id)type unsanitizedName:(id *)name;
++ (id)sanitizedFilename:(id)filename withExtension:(id)extension unsanitizedName:(id *)name;
++ (id)typeOfData:(id)data;
++ (id)typeOfFile:(id)file;
++ (void)addDisallowedDirectory:(id)directory;
+- (BOOL)atomicReplaceAcrossVolumesIfNeededWithURLForReplacing:(id)replacing sourceURL:(id)l error:(id *)error;
+- (BOOL)writeToFileURL:(id)l copy:(BOOL)copy overwrite:(BOOL)overwrite error:(id *)error;
+- (BOOL)writeToTemporaryFileURL:(id)l error:(id *)error;
 - (NSData)data;
 - (NSString)wfName;
 - (NSURL)fileURL;
-- (WFFileRepresentation)initWithCoder:(id)a3;
-- (WFFileRepresentation)initWithData:(id)a3 ofType:(id)a4 proposedFilename:(id)a5 originalURL:(id)a6;
-- (WFFileRepresentation)initWithFileURL:(id)a3 options:(int64_t)a4 ofType:(id)a5 proposedFilename:(id)a6 originalURL:(id)a7;
-- (id)copyWithName:(id)a3 addingExtensionIfNecessary:(BOOL)a4 zone:(_NSZone *)a5;
+- (WFFileRepresentation)initWithCoder:(id)coder;
+- (WFFileRepresentation)initWithData:(id)data ofType:(id)type proposedFilename:(id)filename originalURL:(id)l;
+- (WFFileRepresentation)initWithFileURL:(id)l options:(int64_t)options ofType:(id)type proposedFilename:(id)filename originalURL:(id)rL;
+- (id)copyWithName:(id)name addingExtensionIfNecessary:(BOOL)necessary zone:(_NSZone *)zone;
 - (id)description;
 - (id)inputStream;
-- (id)mappedDataWithError:(id *)a3;
-- (id)typeForUserEnteredName:(id)a3 addingExtensionIfNecessary:(BOOL)a4;
-- (id)updatedFilenameForUserEnteredName:(id)a3 addingExtensionIfNecessary:(BOOL)a4;
+- (id)mappedDataWithError:(id *)error;
+- (id)typeForUserEnteredName:(id)name addingExtensionIfNecessary:(BOOL)necessary;
+- (id)updatedFilenameForUserEnteredName:(id)name addingExtensionIfNecessary:(BOOL)necessary;
 - (int64_t)fileSize;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFileRepresentation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeBool:self->_isTemporaryFile forKey:@"isTemporaryFile"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_isTemporaryFile forKey:@"isTemporaryFile"];
   wfName = self->_wfName;
   if (wfName)
   {
-    [v4 encodeObject:wfName forKey:@"wfName"];
+    [coderCopy encodeObject:wfName forKey:@"wfName"];
   }
 
   wfType = self->_wfType;
   if (wfType)
   {
-    [v4 encodeObject:wfType forKey:@"wfType"];
+    [coderCopy encodeObject:wfType forKey:@"wfType"];
   }
 
   originalURL = self->_originalURL;
   if (originalURL)
   {
-    [v4 encodeObject:originalURL forKey:@"originalURL"];
+    [coderCopy encodeObject:originalURL forKey:@"originalURL"];
   }
 
   creationDate = self->_creationDate;
   if (creationDate)
   {
-    [v4 encodeObject:creationDate forKey:@"creationDate"];
+    [coderCopy encodeObject:creationDate forKey:@"creationDate"];
   }
 
   modificationDate = self->_modificationDate;
   if (modificationDate)
   {
-    [v4 encodeObject:modificationDate forKey:@"modificationDate"];
+    [coderCopy encodeObject:modificationDate forKey:@"modificationDate"];
   }
 
   if (self->_isHidden)
   {
-    [v4 encodeBool:1 forKey:@"isHidden"];
+    [coderCopy encodeBool:1 forKey:@"isHidden"];
   }
 
-  v10 = [v4 wfFileCoder];
-  v11 = v10;
-  if (v10)
+  wfFileCoder = [coderCopy wfFileCoder];
+  v11 = wfFileCoder;
+  if (wfFileCoder)
   {
-    v12 = [v10 sharedDirectory];
+    sharedDirectory = [wfFileCoder sharedDirectory];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v14 = [(NSURL *)self->_fileURL wf_isContainedByDirectoryAtURL:v12];
-    if (v12 || (isKindOfClass) && ([v11 deletionResponsibility] == 1 && -[WFFileRepresentation deletesFileOnDeallocation](self, "deletesFileOnDeallocation") || ((self->_fileURL != 0) & (isKindOfClass | v14)) == 0))
+    v14 = [(NSURL *)self->_fileURL wf_isContainedByDirectoryAtURL:sharedDirectory];
+    if (sharedDirectory || (isKindOfClass) && ([v11 deletionResponsibility] == 1 && -[WFFileRepresentation deletesFileOnDeallocation](self, "deletesFileOnDeallocation") || ((self->_fileURL != 0) & (isKindOfClass | v14)) == 0))
     {
-      v18 = [(WFFileRepresentation *)self filename];
-      v19 = [v11 sharedTemporaryDirectory];
-      v20 = [WFTemporaryFileManager proposedFileURLForFilename:v18 inDirectory:v19];
+      filename = [(WFFileRepresentation *)self filename];
+      sharedTemporaryDirectory = [v11 sharedTemporaryDirectory];
+      v20 = [WFTemporaryFileManager proposedFileURLForFilename:filename inDirectory:sharedTemporaryDirectory];
 
       v28 = 0;
-      LOBYTE(v18) = [(WFFileRepresentation *)self writeToFileURL:v20 copy:1 overwrite:0 error:&v28];
+      LOBYTE(filename) = [(WFFileRepresentation *)self writeToFileURL:v20 copy:1 overwrite:0 error:&v28];
       v21 = v28;
-      if ((v18 & 1) == 0)
+      if ((filename & 1) == 0)
       {
         v22 = getWFFileRepresentationLogObject();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -103,47 +103,47 @@
 
       v23 = MEMORY[0x277CCAA00];
       v24 = v20;
-      v25 = [v23 defaultManager];
-      [v25 wf_removeExtendedAttributeName:@"INFileURLAssociatedAuditToken" ofItemAtURL:v24];
+      defaultManager = [v23 defaultManager];
+      [defaultManager wf_removeExtendedAttributeName:@"INFileURLAssociatedAuditToken" ofItemAtURL:v24];
 
-      v26 = [MEMORY[0x277CCAA00] defaultManager];
-      [v26 wf_removeExtendedAttributeName:@"INFileURLHasAssociatedAuditToken" ofItemAtURL:v24];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager2 wf_removeExtendedAttributeName:@"INFileURLHasAssociatedAuditToken" ofItemAtURL:v24];
 
-      [v11 archiveFileAtURL:v24 fileShouldBeDeletedOnDeallocation:1 withCoder:v4];
+      [v11 archiveFileAtURL:v24 fileShouldBeDeletedOnDeallocation:1 withCoder:coderCopy];
     }
 
     else
     {
-      v15 = [(WFFileRepresentation *)self fileURL];
-      [v11 archiveFileAtURL:v15 fileShouldBeDeletedOnDeallocation:0 withCoder:v4];
+      fileURL = [(WFFileRepresentation *)self fileURL];
+      [v11 archiveFileAtURL:fileURL fileShouldBeDeletedOnDeallocation:0 withCoder:coderCopy];
     }
 
     filename = self->_filename;
     if (filename)
     {
-      [v4 encodeObject:filename forKey:@"filename"];
+      [coderCopy encodeObject:filename forKey:@"filename"];
     }
   }
 
   else
   {
-    v16 = [(WFFileRepresentation *)self data];
-    [v4 encodeObject:v16 forKey:@"data"];
+    data = [(WFFileRepresentation *)self data];
+    [coderCopy encodeObject:data forKey:@"data"];
 
-    v17 = [(WFFileRepresentation *)self filename];
-    [v4 encodeObject:v17 forKey:@"filename"];
+    filename2 = [(WFFileRepresentation *)self filename];
+    [coderCopy encodeObject:filename2 forKey:@"filename"];
   }
 }
 
-- (WFFileRepresentation)initWithCoder:(id)a3
+- (WFFileRepresentation)initWithCoder:(id)coder
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wfType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"filename"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wfType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filename"];
   v29 = 0;
-  v7 = [v4 wfFileCoder];
-  v8 = [v7 decodeFileWithCoder:v4 fileShouldBeDeletedOnDeallocation:&v29 + 1 fileIsSecurityScoped:&v29];
+  wfFileCoder = [coderCopy wfFileCoder];
+  v8 = [wfFileCoder decodeFileWithCoder:coderCopy fileShouldBeDeletedOnDeallocation:&v29 + 1 fileIsSecurityScoped:&v29];
 
   if (v29 == 1)
   {
@@ -216,30 +216,30 @@ LABEL_5:
   v11->_filename = v12;
 
   objc_storeStrong(&v11->_wfType, v5);
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wfName"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wfName"];
   v15 = [v14 copy];
   wfName = v11->_wfName;
   v11->_wfName = v15;
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   v18 = [v17 copy];
   data = v11->_data;
   v11->_data = v18;
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalURL"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalURL"];
   originalURL = v11->_originalURL;
   v11->_originalURL = v20;
 
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
   creationDate = v11->_creationDate;
   v11->_creationDate = v22;
 
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
   modificationDate = v11->_modificationDate;
   v11->_modificationDate = v24;
 
-  v11->_isHidden = [v4 decodeBoolForKey:@"isHidden"];
-  v11->_isTemporaryFile = [v4 decodeBoolForKey:@"isTemporaryFile"];
+  v11->_isHidden = [coderCopy decodeBoolForKey:@"isHidden"];
+  v11->_isTemporaryFile = [coderCopy decodeBoolForKey:@"isTemporaryFile"];
   if (!v11->_data && !v11->_fileURL)
   {
     v26 = getWFFileRepresentationLogObject();
@@ -259,39 +259,39 @@ LABEL_23:
   return v11;
 }
 
-- (id)copyWithName:(id)a3 addingExtensionIfNecessary:(BOOL)a4 zone:(_NSZone *)a5
+- (id)copyWithName:(id)name addingExtensionIfNecessary:(BOOL)necessary zone:(_NSZone *)zone
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(WFFileRepresentation *)self typeForUserEnteredName:v8 addingExtensionIfNecessary:v6];
-  v10 = [(WFFileRepresentation *)self representationType];
-  v11 = [objc_opt_class() allocWithZone:a5];
-  if (v10 == 1)
+  necessaryCopy = necessary;
+  nameCopy = name;
+  v9 = [(WFFileRepresentation *)self typeForUserEnteredName:nameCopy addingExtensionIfNecessary:necessaryCopy];
+  representationType = [(WFFileRepresentation *)self representationType];
+  v11 = [objc_opt_class() allocWithZone:zone];
+  if (representationType == 1)
   {
-    v12 = [(WFFileRepresentation *)self fileURL];
-    if (v8)
+    fileURL = [(WFFileRepresentation *)self fileURL];
+    if (nameCopy)
     {
-      v13 = [v11 initWithFileURL:v12 options:5 ofType:v9 proposedFilename:v8 originalURL:self->_originalURL];
+      v13 = [v11 initWithFileURL:fileURL options:5 ofType:v9 proposedFilename:nameCopy originalURL:self->_originalURL];
 LABEL_6:
       v14 = v13;
       goto LABEL_10;
     }
 
-    v15 = [(WFFileRepresentation *)self wfName];
-    v16 = [v11 initWithFileURL:v12 options:5 ofType:v9 proposedFilename:v15 originalURL:self->_originalURL];
+    wfName = [(WFFileRepresentation *)self wfName];
+    v16 = [v11 initWithFileURL:fileURL options:5 ofType:v9 proposedFilename:wfName originalURL:self->_originalURL];
   }
 
   else
   {
-    v12 = [(WFFileRepresentation *)self data];
-    if (v8)
+    fileURL = [(WFFileRepresentation *)self data];
+    if (nameCopy)
     {
-      v13 = [v11 initWithData:v12 ofType:v9 proposedFilename:v8 originalURL:self->_originalURL];
+      v13 = [v11 initWithData:fileURL ofType:v9 proposedFilename:nameCopy originalURL:self->_originalURL];
       goto LABEL_6;
     }
 
-    v15 = [(WFFileRepresentation *)self wfName];
-    v16 = [v11 initWithData:v12 ofType:v9 proposedFilename:v15 originalURL:self->_originalURL];
+    wfName = [(WFFileRepresentation *)self wfName];
+    v16 = [v11 initWithData:fileURL ofType:v9 proposedFilename:wfName originalURL:self->_originalURL];
   }
 
   v14 = v16;
@@ -313,35 +313,35 @@ LABEL_10:
   wfName = self->_wfName;
   if (wfName)
   {
-    v3 = wfName;
+    stringByDeletingPathExtension = wfName;
   }
 
   else
   {
-    v4 = [(WFFileRepresentation *)self filename];
-    v3 = [v4 stringByDeletingPathExtension];
+    filename = [(WFFileRepresentation *)self filename];
+    stringByDeletingPathExtension = [filename stringByDeletingPathExtension];
   }
 
-  return v3;
+  return stringByDeletingPathExtension;
 }
 
-- (id)updatedFilenameForUserEnteredName:(id)a3 addingExtensionIfNecessary:(BOOL)a4
+- (id)updatedFilenameForUserEnteredName:(id)name addingExtensionIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(WFFileRepresentation *)self typeForUserEnteredName:v6 addingExtensionIfNecessary:v4];
-  v8 = [WFFileRepresentation proposedFilenameForFile:v6 ofType:v7];
+  necessaryCopy = necessary;
+  nameCopy = name;
+  v7 = [(WFFileRepresentation *)self typeForUserEnteredName:nameCopy addingExtensionIfNecessary:necessaryCopy];
+  v8 = [WFFileRepresentation proposedFilenameForFile:nameCopy ofType:v7];
 
   return v8;
 }
 
-- (id)typeForUserEnteredName:(id)a3 addingExtensionIfNecessary:(BOOL)a4
+- (id)typeForUserEnteredName:(id)name addingExtensionIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = [MEMORY[0x277D79F68] typeFromFilename:a3];
+  necessaryCopy = necessary;
+  v6 = [MEMORY[0x277D79F68] typeFromFilename:name];
   if (([v6 isDeclared] & 1) == 0)
   {
-    if (v4)
+    if (necessaryCopy)
     {
       [(WFFileRepresentation *)self wfType];
     }
@@ -363,13 +363,13 @@ LABEL_10:
   v7.receiver = self;
   v7.super_class = WFFileRepresentation;
   v3 = [(WFFileRepresentation *)&v7 description];
-  v4 = [(WFFileRepresentation *)self filename];
-  v5 = [v3 stringByAppendingFormat:@": %@", v4];
+  filename = [(WFFileRepresentation *)self filename];
+  v5 = [v3 stringByAppendingFormat:@": %@", filename];
 
   return v5;
 }
 
-- (id)mappedDataWithError:(id *)a3
+- (id)mappedDataWithError:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
   data = self->_data;
@@ -383,7 +383,7 @@ LABEL_10:
     fileURL = self->_fileURL;
     if (fileURL)
     {
-      v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:fileURL options:8 error:a3];
+      v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:fileURL options:8 error:error];
     }
 
     else
@@ -394,7 +394,7 @@ LABEL_10:
         v10 = 136315394;
         v11 = "[WFFileRepresentation mappedDataWithError:]";
         v12 = 2112;
-        v13 = self;
+        selfCopy = self;
         _os_log_impl(&dword_21E1BD000, v8, OS_LOG_TYPE_FAULT, "%s Both _data and _fileURL are nil in fileRepresentation: %@", &v10, 0x16u);
       }
 
@@ -407,20 +407,20 @@ LABEL_10:
 
 - (id)inputStream
 {
-  v3 = [(WFFileRepresentation *)self representationType];
+  representationType = [(WFFileRepresentation *)self representationType];
   v4 = objc_alloc(MEMORY[0x277CBEAE0]);
-  if (v3 == 1)
+  if (representationType == 1)
   {
-    v5 = [(WFFileRepresentation *)self fileURL];
-    v6 = [v4 initWithURL:v5];
+    fileURL = [(WFFileRepresentation *)self fileURL];
+    v6 = [v4 initWithURL:fileURL];
 
     objc_setAssociatedObject(v6, sel_inputStream, self, 1);
   }
 
   else
   {
-    v7 = [(WFFileRepresentation *)self data];
-    v6 = [v4 initWithData:v7];
+    data = [(WFFileRepresentation *)self data];
+    v6 = [v4 initWithData:data];
   }
 
   return v6;
@@ -437,12 +437,12 @@ LABEL_10:
 
   else if (self->_fileURL)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [(NSURL *)self->_fileURL path];
-    v7 = [v5 attributesOfItemAtPath:v6 error:0];
-    v8 = [v7 fileSize];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [(NSURL *)self->_fileURL path];
+    v7 = [defaultManager attributesOfItemAtPath:path error:0];
+    fileSize = [v7 fileSize];
 
-    return v8;
+    return fileSize;
   }
 
   else
@@ -451,23 +451,23 @@ LABEL_10:
   }
 }
 
-- (BOOL)atomicReplaceAcrossVolumesIfNeededWithURLForReplacing:(id)a3 sourceURL:(id)a4 error:(id *)a5
+- (BOOL)atomicReplaceAcrossVolumesIfNeededWithURLForReplacing:(id)replacing sourceURL:(id)l error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 wf_fileIsOnSameVolumeAsURL:v8])
+  replacingCopy = replacing;
+  lCopy = l;
+  if ([replacingCopy wf_fileIsOnSameVolumeAsURL:lCopy])
   {
-    v9 = getWFFilesLogObject();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    defaultManager = getWFFilesLogObject();
+    if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315650;
       v34 = "[WFFileRepresentation atomicReplaceAcrossVolumesIfNeededWithURLForReplacing:sourceURL:error:]";
       v35 = 2112;
-      v36 = v7;
+      v36 = replacingCopy;
       v37 = 2112;
-      v38 = v8;
-      _os_log_impl(&dword_21E1BD000, v9, OS_LOG_TYPE_DEFAULT, "%s Files are on the same volume not attempting replace across volumes (%@) - (%@)", buf, 0x20u);
+      v38 = lCopy;
+      _os_log_impl(&dword_21E1BD000, defaultManager, OS_LOG_TYPE_DEFAULT, "%s Files are on the same volume not attempting replace across volumes (%@) - (%@)", buf, 0x20u);
     }
 
     v10 = 0;
@@ -475,23 +475,23 @@ LABEL_10:
 
   else
   {
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v32 = 0;
-    v11 = [v9 URLForDirectory:99 inDomain:1 appropriateForURL:v7 create:1 error:&v32];
+    v11 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:replacingCopy create:1 error:&v32];
     v12 = v32;
     [MEMORY[0x277CCAD78] UUID];
-    v13 = v27 = a5;
-    v14 = [v13 UUIDString];
-    v15 = [v11 URLByAppendingPathComponent:v14];
+    v13 = v27 = error;
+    uUIDString = [v13 UUIDString];
+    v15 = [v11 URLByAppendingPathComponent:uUIDString];
 
     v16 = v11;
     v31 = v12;
-    v17 = [v9 copyItemAtURL:v8 toURL:v15 error:&v31];
+    v17 = [defaultManager copyItemAtURL:lCopy toURL:v15 error:&v31];
     v18 = v31;
 
     v30 = v18;
     v28 = v15;
-    v19 = [v9 replaceItemAtURL:v7 withItemAtURL:v15 backupItemName:0 options:0 resultingItemURL:0 error:&v30];
+    v19 = [defaultManager replaceItemAtURL:replacingCopy withItemAtURL:v15 backupItemName:0 options:0 resultingItemURL:0 error:&v30];
     v20 = v30;
 
     if (v11)
@@ -513,7 +513,7 @@ LABEL_10:
     if (v11)
     {
       v29 = 0;
-      v22 = [v9 removeItemAtURL:v16 error:&v29];
+      v22 = [defaultManager removeItemAtURL:v16 error:&v29];
       v23 = v29;
       if ((v22 & 1) == 0)
       {
@@ -546,13 +546,13 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)writeToFileURL:(id)a3 copy:(BOOL)a4 overwrite:(BOOL)a5 error:(id *)a6
+- (BOOL)writeToFileURL:(id)l copy:(BOOL)copy overwrite:(BOOL)overwrite error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  overwriteCopy = overwrite;
+  copyCopy = copy;
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  if (![objc_opt_class() fileIsInDisallowedDirectory:v10])
+  lCopy = l;
+  if (![objc_opt_class() fileIsInDisallowedDirectory:lCopy])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -560,20 +560,20 @@ LABEL_10:
     v40 = __Block_byref_object_copy__8915;
     v41 = __Block_byref_object_dispose__8916;
     v42 = 0;
-    v13 = [v10 wf_fileIsShortcutsOwned];
+    wf_fileIsShortcutsOwned = [lCopy wf_fileIsShortcutsOwned];
     if (self->_fileURL)
     {
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
-      if (v7)
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      if (overwriteCopy)
       {
         v15 = self->_fileURL;
-        if (v8)
+        if (copyCopy)
         {
-          v16 = [MEMORY[0x277CCAD78] UUID];
-          v17 = [v16 UUIDString];
-          v18 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:v17];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          uUIDString = [uUID UUIDString];
+          v18 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:uUIDString];
 
-          if (([v14 copyItemAtURL:self->_fileURL toURL:v18 error:a6] & 1) == 0)
+          if (([defaultManager copyItemAtURL:self->_fileURL toURL:v18 error:error] & 1) == 0)
           {
 
             v12 = 0;
@@ -591,27 +591,27 @@ LABEL_19:
         v34[1] = 3221225472;
         v34[2] = __60__WFFileRepresentation_writeToFileURL_copy_overwrite_error___block_invoke;
         v34[3] = &unk_278346868;
-        v35 = v14;
+        v35 = defaultManager;
         v20 = v15;
-        v37 = self;
+        selfCopy = self;
         v38 = buf;
         v36 = v20;
-        v12 = [v19 coordinateFileOperation:1 shouldCoordinate:v13 ^ 1u fileURL:v10 destinationURL:0 accessor:v34];
+        v12 = [v19 coordinateFileOperation:1 shouldCoordinate:wf_fileIsShortcutsOwned ^ 1u fileURL:lCopy destinationURL:0 accessor:v34];
       }
 
       else
       {
         v22 = objc_opt_class();
         fileURL = self->_fileURL;
-        if (v8)
+        if (copyCopy)
         {
           v31[0] = MEMORY[0x277D85DD0];
           v31[1] = 3221225472;
           v31[2] = __60__WFFileRepresentation_writeToFileURL_copy_overwrite_error___block_invoke_73;
           v31[3] = &unk_278346840;
-          v32 = v14;
+          v32 = defaultManager;
           v33 = buf;
-          v12 = [v22 coordinateFileOperation:3 shouldCoordinate:v13 ^ 1u fileURL:fileURL destinationURL:v10 accessor:v31];
+          v12 = [v22 coordinateFileOperation:3 shouldCoordinate:wf_fileIsShortcutsOwned ^ 1u fileURL:fileURL destinationURL:lCopy accessor:v31];
           v20 = v32;
         }
 
@@ -621,9 +621,9 @@ LABEL_19:
           v28[1] = 3221225472;
           v28[2] = __60__WFFileRepresentation_writeToFileURL_copy_overwrite_error___block_invoke_74;
           v28[3] = &unk_278346840;
-          v29 = v14;
+          v29 = defaultManager;
           v30 = buf;
-          v12 = [v22 coordinateFileOperation:4 shouldCoordinate:v13 ^ 1u fileURL:fileURL destinationURL:v10 accessor:v28];
+          v12 = [v22 coordinateFileOperation:4 shouldCoordinate:wf_fileIsShortcutsOwned ^ 1u fileURL:fileURL destinationURL:lCopy accessor:v28];
           v20 = v29;
         }
       }
@@ -636,18 +636,18 @@ LABEL_19:
       v26[1] = 3221225472;
       v26[2] = __60__WFFileRepresentation_writeToFileURL_copy_overwrite_error___block_invoke_75;
       v26[3] = &unk_278346890;
-      v27 = v7;
+      v27 = overwriteCopy;
       v26[4] = self;
       v26[5] = buf;
-      v12 = [v21 coordinateFileOperation:1 shouldCoordinate:v13 ^ 1u fileURL:v10 destinationURL:0 accessor:v26];
+      v12 = [v21 coordinateFileOperation:1 shouldCoordinate:wf_fileIsShortcutsOwned ^ 1u fileURL:lCopy destinationURL:0 accessor:v26];
     }
 
-    if (a6)
+    if (error)
     {
       v24 = *(*&buf[8] + 40);
       if (v24)
       {
-        *a6 = v24;
+        *error = v24;
       }
     }
 
@@ -660,7 +660,7 @@ LABEL_19:
     *buf = 136315394;
     *&buf[4] = "[WFFileRepresentation writeToFileURL:copy:overwrite:error:]";
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = lCopy;
     _os_log_impl(&dword_21E1BD000, v11, OS_LOG_TYPE_ERROR, "%s Cannot save file URL to disallowed directory: %@", buf, 0x16u);
   }
 
@@ -821,15 +821,15 @@ uint64_t __60__WFFileRepresentation_writeToFileURL_copy_overwrite_error___block_
   return v6;
 }
 
-- (BOOL)writeToTemporaryFileURL:(id)a3 error:(id *)a4
+- (BOOL)writeToTemporaryFileURL:(id)l error:(id *)error
 {
-  v7 = a3;
-  if (v7 && [(WFFileRepresentation *)self writeToFileURL:v7 copy:[(WFFileRepresentation *)self deletesFileOnDeallocation]^ 1 overwrite:0 error:a4])
+  lCopy = l;
+  if (lCopy && [(WFFileRepresentation *)self writeToFileURL:lCopy copy:[(WFFileRepresentation *)self deletesFileOnDeallocation]^ 1 overwrite:0 error:error])
   {
     v8 = 1;
     self->_deletesFileOnDeallocation = 1;
     self->_isTemporaryFile = 1;
-    objc_storeStrong(&self->_fileURL, a3);
+    objc_storeStrong(&self->_fileURL, l);
     INFileURLSetMarkedForDeletionOnDeallocation();
   }
 
@@ -848,8 +848,8 @@ uint64_t __60__WFFileRepresentation_writeToFileURL_copy_overwrite_error___block_
   {
     if (self->_data)
     {
-      v4 = [(WFFileRepresentation *)self filename];
-      v5 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:v4];
+      filename = [(WFFileRepresentation *)self filename];
+      v5 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:filename];
 
       [(WFFileRepresentation *)self writeToTemporaryFileURL:v5 error:0];
       fileURL = self->_fileURL;
@@ -917,11 +917,11 @@ uint64_t __60__WFFileRepresentation_writeToFileURL_copy_overwrite_error___block_
         goto LABEL_8;
       }
 
-      v3 = [MEMORY[0x277CCAC38] processInfo];
-      v4 = v3;
-      if (v3)
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      v4 = processInfo;
+      if (processInfo)
       {
-        [v3 if_auditToken];
+        [processInfo if_auditToken];
       }
 
       else
@@ -937,16 +937,16 @@ LABEL_8:
         v6 = getWFFileRepresentationLogObject();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = [(NSURL *)self->_fileURL absoluteString];
+          absoluteString = [(NSURL *)self->_fileURL absoluteString];
           *buf = 136315394;
           *&buf[4] = "[WFFileRepresentation dealloc]";
           *&buf[12] = 2112;
-          *&buf[14] = v7;
+          *&buf[14] = absoluteString;
           _os_log_impl(&dword_21E1BD000, v6, OS_LOG_TYPE_DEFAULT, "%s Deleting file on deallocation: %@", buf, 0x16u);
         }
 
-        v8 = [MEMORY[0x277CCAA00] defaultManager];
-        [v8 removeItemAtURL:self->_fileURL error:0];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        [defaultManager removeItemAtURL:self->_fileURL error:0];
       }
     }
 
@@ -972,19 +972,19 @@ LABEL_8:
   [(WFFileRepresentation *)&v11 dealloc];
 }
 
-- (WFFileRepresentation)initWithFileURL:(id)a3 options:(int64_t)a4 ofType:(id)a5 proposedFilename:(id)a6 originalURL:(id)a7
+- (WFFileRepresentation)initWithFileURL:(id)l options:(int64_t)options ofType:(id)type proposedFilename:(id)filename originalURL:(id)rL
 {
   v77 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  typeCopy = type;
+  filenameCopy = filename;
+  rLCopy = rL;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 isFileURL])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [lCopy isFileURL])
   {
-    if ((a4 & 8) != 0)
+    if ((options & 8) != 0)
     {
-      if ([v12 startAccessingSecurityScopedResource])
+      if ([lCopy startAccessingSecurityScopedResource])
       {
         v16 = 1;
         goto LABEL_10;
@@ -1001,7 +1001,7 @@ LABEL_8:
 
     v16 = 0;
 LABEL_10:
-    if ([objc_opt_class() fileIsInDisallowedDirectory:v12])
+    if ([objc_opt_class() fileIsInDisallowedDirectory:lCopy])
     {
       v18 = getWFFileRepresentationLogObject();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1009,19 +1009,19 @@ LABEL_10:
         *buf = 136315394;
         *&buf[4] = "[WFFileRepresentation initWithFileURL:options:ofType:proposedFilename:originalURL:]";
         *&buf[12] = 2112;
-        *&buf[14] = v12;
+        *&buf[14] = lCopy;
         _os_log_impl(&dword_21E1BD000, v18, OS_LOG_TYPE_ERROR, "%s Cannot represent file URL, returning nil: %@", buf, 0x16u);
       }
 
       if (v16)
       {
-        [v12 stopAccessingSecurityScopedResource];
+        [lCopy stopAccessingSecurityScopedResource];
       }
 
       goto LABEL_37;
     }
 
-    if ((v16 & 1) == 0 && ([objc_opt_class() sandboxAllowsRepresentingFileURL:v12] & 1) == 0)
+    if ((v16 & 1) == 0 && ([objc_opt_class() sandboxAllowsRepresentingFileURL:lCopy] & 1) == 0)
     {
       v25 = getWFFileRepresentationLogObject();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1029,23 +1029,23 @@ LABEL_10:
         *buf = 136315394;
         *&buf[4] = "[WFFileRepresentation initWithFileURL:options:ofType:proposedFilename:originalURL:]";
         *&buf[12] = 2112;
-        *&buf[14] = v12;
+        *&buf[14] = lCopy;
         _os_log_impl(&dword_21E1BD000, v25, OS_LOG_TYPE_ERROR, "%s Cannot represent file URL, returning nil: %@", buf, 0x16u);
       }
 
       goto LABEL_37;
     }
 
-    v52 = v12;
+    v52 = lCopy;
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v74 = __Block_byref_object_copy__8915;
     v75 = __Block_byref_object_dispose__8916;
     v76 = 0;
-    if (v13)
+    if (typeCopy)
     {
-      obj = v13;
+      obj = typeCopy;
     }
 
     else
@@ -1054,20 +1054,20 @@ LABEL_10:
     }
 
     v19 = objc_opt_class();
-    v20 = v14;
-    if (!v14)
+    lastPathComponent = filenameCopy;
+    if (!filenameCopy)
     {
-      v20 = [v52 lastPathComponent];
+      lastPathComponent = [v52 lastPathComponent];
     }
 
     v64 = 0;
-    v50 = [v19 proposedFilenameForFile:v20 ofType:obj unsanitizedName:&v64];
+    v50 = [v19 proposedFilenameForFile:lastPathComponent ofType:obj unsanitizedName:&v64];
     v49 = v64;
-    if (!v14)
+    if (!filenameCopy)
     {
     }
 
-    if ((a4 & 5) != 5 && (a4 & 3) != 3)
+    if ((options & 5) != 5 && (options & 3) != 3)
     {
       v21 = *&buf[8];
       v22 = v52;
@@ -1081,7 +1081,7 @@ LABEL_28:
       self = [(WFFileRepresentation *)&v56 init];
       if (self)
       {
-        if ((a4 & 8) != 0)
+        if ((options & 8) != 0)
         {
           if (*(*&buf[8] + 40) == v52)
           {
@@ -1094,8 +1094,8 @@ LABEL_28:
           }
         }
 
-        self->_deletesFileOnDeallocation = a4 & 1;
-        self->_isTemporaryFile = a4 & 1;
+        self->_deletesFileOnDeallocation = options & 1;
+        self->_isTemporaryFile = options & 1;
         objc_storeStrong(&self->_fileURL, *(*&buf[8] + 40));
         v38 = [v50 copy];
         filename = self->_filename;
@@ -1109,13 +1109,13 @@ LABEL_28:
         v55 = 0;
         [v22 getResourceValue:&v55 forKey:*MEMORY[0x277CBE7C0] error:0];
         v34 = v55;
-        v42 = v34;
+        date = v34;
         if (!v34)
         {
-          v42 = [MEMORY[0x277CBEAA8] date];
+          date = [MEMORY[0x277CBEAA8] date];
         }
 
-        objc_storeStrong(&self->_creationDate, v42);
+        objc_storeStrong(&self->_creationDate, date);
         if (!v34)
         {
         }
@@ -1129,25 +1129,25 @@ LABEL_28:
         [v22 getResourceValue:&v53 forKey:*MEMORY[0x277CBE888] error:0];
         v45 = v53;
         self->_isHidden = [v45 BOOLValue];
-        objc_storeStrong(&self->_originalURL, a7);
+        objc_storeStrong(&self->_originalURL, rL);
         self->_initialRepresentationType = 1;
         self = self;
 
         v52 = v22;
-        v26 = self;
+        selfCopy = self;
         goto LABEL_60;
       }
 
 LABEL_44:
-      v26 = 0;
+      selfCopy = 0;
 LABEL_61:
 
       _Block_object_dispose(buf, 8);
       goto LABEL_38;
     }
 
-    v46 = [v52 wf_fileIsDirectory];
-    if (v46)
+    wf_fileIsDirectory = [v52 wf_fileIsDirectory];
+    if (wf_fileIsDirectory)
     {
       [WFTemporaryFileManager createTemporaryDirectoryWithFilename:v50];
     }
@@ -1162,7 +1162,7 @@ LABEL_61:
 
     if (*(*&buf[8] + 40))
     {
-      if ((a4 & 5) != 5)
+      if ((options & 5) != 5)
       {
         v48 = objc_opt_class();
         v36 = *(*&buf[8] + 40);
@@ -1173,7 +1173,7 @@ LABEL_61:
         v37 = v52;
         v58 = v37;
         v59 = buf;
-        if ([v48 coordinateFileOperation:4 shouldCoordinate:(a4 >> 4) & 1 fileURL:v37 destinationURL:v36 accessor:v57])
+        if ([v48 coordinateFileOperation:4 shouldCoordinate:(options >> 4) & 1 fileURL:v37 destinationURL:v36 accessor:v57])
         {
           v22 = *(*&buf[8] + 40);
 
@@ -1181,7 +1181,7 @@ LABEL_61:
           goto LABEL_27;
         }
 
-        v26 = 0;
+        selfCopy = 0;
         v34 = v58;
         v52 = v37;
 LABEL_60:
@@ -1190,9 +1190,9 @@ LABEL_60:
         goto LABEL_61;
       }
 
-      v29 = [MEMORY[0x277CCAD78] UUID];
-      v30 = [v29 UUIDString];
-      v31 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:v30];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v31 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:uUIDString];
 
       if (v31)
       {
@@ -1207,7 +1207,7 @@ LABEL_60:
         v63 = buf;
         v33 = v31;
         v62 = v33;
-        LOBYTE(v32) = [v47 coordinateFileOperation:3 shouldCoordinate:(a4 >> 4) & 1 fileURL:v22 destinationURL:v32 accessor:v60];
+        LOBYTE(v32) = [v47 coordinateFileOperation:3 shouldCoordinate:(options >> 4) & 1 fileURL:v22 destinationURL:v32 accessor:v60];
 
         if ((v32 & 1) == 0)
         {
@@ -1223,9 +1223,9 @@ LABEL_60:
         *v65 = 136315906;
         v66 = "[WFFileRepresentation initWithFileURL:options:ofType:proposedFilename:originalURL:]";
         v67 = 2050;
-        v68 = a4;
+        optionsCopy2 = options;
         v69 = 1026;
-        v70 = v46;
+        v70 = wf_fileIsDirectory;
         v71 = 2112;
         v72 = v50;
         v35 = "%s Failed to create temporary file URL, adoptionBehavior = %{public}ld, isDirectory = %{public}d, filename = %@";
@@ -1241,9 +1241,9 @@ LABEL_60:
         *v65 = 136315906;
         v66 = "[WFFileRepresentation initWithFileURL:options:ofType:proposedFilename:originalURL:]";
         v67 = 2050;
-        v68 = a4;
+        optionsCopy2 = options;
         v69 = 1026;
-        v70 = v46;
+        v70 = wf_fileIsDirectory;
         v71 = 2112;
         v72 = v50;
         v35 = "%s Failed to create new file URL, adoptionBehavior = %{public}ld, isDirectory = %{public}d, filename = %@";
@@ -1252,15 +1252,15 @@ LABEL_58:
       }
     }
 
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_60;
   }
 
 LABEL_37:
-  v26 = 0;
+  selfCopy = 0;
 LABEL_38:
 
-  return v26;
+  return selfCopy;
 }
 
 uint64_t __84__WFFileRepresentation_initWithFileURL_options_ofType_proposedFilename_originalURL___block_invoke(void *a1, void *a2, void *a3, void *a4)
@@ -1419,43 +1419,43 @@ LABEL_9:
   return v14;
 }
 
-- (WFFileRepresentation)initWithData:(id)a3 ofType:(id)a4 proposedFilename:(id)a5 originalURL:(id)a6
+- (WFFileRepresentation)initWithData:(id)data ofType:(id)type proposedFilename:(id)filename originalURL:(id)l
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dataCopy = data;
+  typeCopy = type;
+  filenameCopy = filename;
+  lCopy = l;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"WFFileRepresentation.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"[data isKindOfClass:[NSData class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFileRepresentation.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"[data isKindOfClass:[NSData class]]"}];
   }
 
   v15 = [(WFFileRepresentation *)self init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [dataCopy copy];
     data = v15->_data;
     v15->_data = v16;
 
-    v18 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v15->_creationDate;
-    v15->_creationDate = v18;
+    v15->_creationDate = date;
 
-    objc_storeStrong(&v15->_originalURL, a6);
+    objc_storeStrong(&v15->_originalURL, l);
     v15->_isTemporaryFile = 1;
     v15->_initialRepresentationType = 0;
-    if (v12)
+    if (typeCopy)
     {
-      v20 = v12;
+      v20 = typeCopy;
       wfType = v15->_wfType;
       v15->_wfType = v20;
     }
 
     else
     {
-      wfType = [MEMORY[0x277D79F68] typeFromFilename:v13];
+      wfType = [MEMORY[0x277D79F68] typeFromFilename:filenameCopy];
       if ([wfType isDeclared])
       {
         v22 = wfType;
@@ -1473,7 +1473,7 @@ LABEL_9:
     v24 = objc_opt_class();
     v25 = v15->_wfType;
     v34 = 0;
-    v26 = [v24 proposedFilenameForFile:v13 ofType:v25 unsanitizedName:&v34];
+    v26 = [v24 proposedFilenameForFile:filenameCopy ofType:v25 unsanitizedName:&v34];
     v27 = v34;
     filename = v15->_filename;
     v15->_filename = v26;
@@ -1488,27 +1488,27 @@ LABEL_9:
   return v15;
 }
 
-+ (BOOL)coordinateFileOperation:(unint64_t)a3 shouldCoordinate:(BOOL)a4 fileURL:(id)a5 destinationURL:(id)a6 accessor:(id)a7
++ (BOOL)coordinateFileOperation:(unint64_t)operation shouldCoordinate:(BOOL)coordinate fileURL:(id)l destinationURL:(id)rL accessor:(id)accessor
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  lCopy = l;
+  rLCopy = rL;
+  accessorCopy = accessor;
+  if (accessorCopy)
   {
-    if (a4)
+    if (coordinate)
     {
       goto LABEL_3;
     }
 
 LABEL_19:
-    v18 = v15[2](v15, 0, v13, v14);
+    v18 = accessorCopy[2](accessorCopy, 0, lCopy, rLCopy);
     goto LABEL_20;
   }
 
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:a1 file:@"WFFileRepresentation.m" lineNumber:615 description:{@"Invalid parameter not satisfying: %@", @"accessor"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WFFileRepresentation.m" lineNumber:615 description:{@"Invalid parameter not satisfying: %@", @"accessor"}];
 
-  if (!a4)
+  if (!coordinate)
   {
     goto LABEL_19;
   }
@@ -1521,9 +1521,9 @@ LABEL_3:
   v41 = 0x2020000000;
   v18 = 1;
   v42 = 1;
-  if (a3 > 2)
+  if (operation > 2)
   {
-    if (a3 == 3)
+    if (operation == 3)
     {
       v23 = v31;
       v31[0] = MEMORY[0x277D85DD0];
@@ -1532,15 +1532,15 @@ LABEL_3:
       v31[3] = &unk_2783468E0;
       v31[6] = &v39;
       v32 = 0;
-      v26 = v15;
+      v26 = accessorCopy;
       v31[4] = 0;
       v31[5] = v26;
       v20 = &v32;
-      [v16 coordinateReadingItemAtURL:v13 options:2 writingItemAtURL:v14 options:8 error:&v32 byAccessor:v31];
+      [v16 coordinateReadingItemAtURL:lCopy options:2 writingItemAtURL:rLCopy options:8 error:&v32 byAccessor:v31];
       goto LABEL_15;
     }
 
-    if (a3 == 4)
+    if (operation == 4)
     {
       v23 = v29;
       v29[0] = MEMORY[0x277D85DD0];
@@ -1549,11 +1549,11 @@ LABEL_3:
       v29[3] = &unk_2783468E0;
       v29[6] = &v39;
       v30 = 0;
-      v24 = v15;
+      v24 = accessorCopy;
       v29[4] = 0;
       v29[5] = v24;
       v20 = &v30;
-      [v16 coordinateWritingItemAtURL:v13 options:2 writingItemAtURL:v14 options:8 error:&v30 byAccessor:v29];
+      [v16 coordinateWritingItemAtURL:lCopy options:2 writingItemAtURL:rLCopy options:8 error:&v30 byAccessor:v29];
 LABEL_15:
       v21 = (v23 + 5);
       v22 = (v23 + 4);
@@ -1566,9 +1566,9 @@ LABEL_16:
 
   else
   {
-    if (a3 - 1 < 2)
+    if (operation - 1 < 2)
     {
-      if (a3 == 2)
+      if (operation == 2)
       {
         v19 = 1;
       }
@@ -1585,15 +1585,15 @@ LABEL_16:
       v33[3] = &unk_2783468B8;
       v35[1] = &v39;
       v34 = 0;
-      v35[0] = v15;
+      v35[0] = accessorCopy;
       v20 = &v36;
-      [v16 coordinateWritingItemAtURL:v13 options:v19 error:&v36 byAccessor:v33];
+      [v16 coordinateWritingItemAtURL:lCopy options:v19 error:&v36 byAccessor:v33];
       v21 = v35;
       v22 = &v34;
       goto LABEL_16;
     }
 
-    if (!a3)
+    if (!operation)
     {
       v23 = v37;
       v37[0] = MEMORY[0x277D85DD0];
@@ -1602,11 +1602,11 @@ LABEL_16:
       v37[3] = &unk_2783468B8;
       v37[6] = &v39;
       v38 = 0;
-      v25 = v15;
+      v25 = accessorCopy;
       v37[4] = 0;
       v37[5] = v25;
       v20 = &v38;
-      [v16 coordinateReadingItemAtURL:v13 options:2 error:&v38 byAccessor:v37];
+      [v16 coordinateReadingItemAtURL:lCopy options:2 error:&v38 byAccessor:v37];
       goto LABEL_15;
     }
   }
@@ -1645,120 +1645,120 @@ uint64_t __97__WFFileRepresentation_coordinateFileOperation_shouldCoordinate_fil
   return result;
 }
 
-+ (id)proposedFilenameForFile:(id)a3 ofType:(id)a4 unsanitizedName:(id *)a5
++ (id)proposedFilenameForFile:(id)file ofType:(id)type unsanitizedName:(id *)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 pathExtension];
-  v10 = [v8 fileExtension];
-  v11 = [MEMORY[0x277D79F68] typeFromFileExtension:v9];
-  if (([v11 isDeclared] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", v10))
+  fileCopy = file;
+  typeCopy = type;
+  pathExtension = [fileCopy pathExtension];
+  fileExtension = [typeCopy fileExtension];
+  v11 = [MEMORY[0x277D79F68] typeFromFileExtension:pathExtension];
+  if (([v11 isDeclared] & 1) != 0 || objc_msgSend(pathExtension, "isEqualToString:", fileExtension))
   {
-    v12 = [v7 hasSuffix:@".rtfd.zip"];
-    v13 = [v7 stringByDeletingPathExtension];
-    v14 = v13;
+    v12 = [fileCopy hasSuffix:@".rtfd.zip"];
+    stringByDeletingPathExtension = [fileCopy stringByDeletingPathExtension];
+    v14 = stringByDeletingPathExtension;
     if (v12)
     {
-      v15 = [v13 stringByDeletingPathExtension];
+      v13StringByDeletingPathExtension = [stringByDeletingPathExtension stringByDeletingPathExtension];
 
-      v7 = v14;
-      v14 = v15;
+      fileCopy = v14;
+      v14 = v13StringByDeletingPathExtension;
     }
 
-    v7 = v14;
+    fileCopy = v14;
   }
 
-  v16 = v7;
-  if ([v11 isEqualToType:v8])
+  v16 = fileCopy;
+  if ([v11 isEqualToType:typeCopy])
   {
     goto LABEL_7;
   }
 
-  v18 = [v8 fileExtension];
-  if ([v18 length])
+  fileExtension2 = [typeCopy fileExtension];
+  if ([fileExtension2 length])
   {
 
-    v17 = v10;
+    v17 = fileExtension;
   }
 
   else
   {
-    v19 = [v11 conformsToType:v8];
+    v19 = [v11 conformsToType:typeCopy];
 
-    v17 = v10;
+    v17 = fileExtension;
     if (v19)
     {
 LABEL_7:
-      v17 = v9;
+      v17 = pathExtension;
     }
   }
 
   v20 = v17;
   if ([v16 length])
   {
-    v21 = [a1 sanitizedFilename:v16 withExtension:v20 unsanitizedName:a5];
+    v21 = [self sanitizedFilename:v16 withExtension:v20 unsanitizedName:name];
     goto LABEL_22;
   }
 
   v22 = *MEMORY[0x277CE1DB0];
-  if ([v8 conformsToUTType:*MEMORY[0x277CE1DB0]])
+  if ([typeCopy conformsToUTType:*MEMORY[0x277CE1DB0]])
   {
-    v31 = a5;
+    nameCopy2 = name;
     v23 = [MEMORY[0x277D79F68] typeWithUTType:v22];
-    v24 = [v23 typeDescription];
-    v25 = [MEMORY[0x277CBEAF8] currentLocale];
-    v26 = [v24 capitalizedStringWithLocale:v25];
+    typeDescription = [v23 typeDescription];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    typeDescription3 = [typeDescription capitalizedStringWithLocale:currentLocale];
   }
 
   else
   {
-    v27 = [v8 typeDescription];
-    if (v27)
+    typeDescription2 = [typeCopy typeDescription];
+    if (typeDescription2)
     {
-      v28 = v27;
-      v29 = v28;
+      uUIDString = typeDescription2;
+      uUID = uUIDString;
 LABEL_20:
-      v26 = v28;
+      typeDescription3 = uUIDString;
 
       goto LABEL_21;
     }
 
-    v31 = a5;
-    v24 = [v8 typesConformedTo];
-    v25 = [v24 firstObject];
-    v26 = [v25 typeDescription];
+    nameCopy2 = name;
+    typeDescription = [typeCopy typesConformedTo];
+    currentLocale = [typeDescription firstObject];
+    typeDescription3 = [currentLocale typeDescription];
     v23 = 0;
   }
 
-  a5 = v31;
-  if (!v26)
+  name = nameCopy2;
+  if (!typeDescription3)
   {
-    v29 = [MEMORY[0x277CCAD78] UUID];
-    v28 = [v29 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     goto LABEL_20;
   }
 
 LABEL_21:
-  v21 = [a1 sanitizedFilename:v26 withExtension:v20 unsanitizedName:a5];
+  v21 = [self sanitizedFilename:typeDescription3 withExtension:v20 unsanitizedName:name];
 
 LABEL_22:
 
   return v21;
 }
 
-+ (id)sanitizedFilename:(id)a3 withExtension:(id)a4 unsanitizedName:(id *)a5
++ (id)sanitizedFilename:(id)filename withExtension:(id)extension unsanitizedName:(id *)name
 {
-  v7 = a4;
-  if (a5)
+  extensionCopy = extension;
+  if (name)
   {
-    v8 = a3;
-    *a5 = a3;
+    filenameCopy = filename;
+    *name = filename;
   }
 
-  v9 = [a3 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
-  if ([v7 length])
+  v9 = [filename stringByReplacingOccurrencesOfString:@"/" withString:@":"];
+  if ([extensionCopy length])
   {
-    v10 = [v9 stringByAppendingPathExtension:v7];
+    v10 = [v9 stringByAppendingPathExtension:extensionCopy];
   }
 
   else
@@ -1767,23 +1767,23 @@ LABEL_22:
   }
 
   v11 = v10;
-  v12 = [v10 wf_filenameTruncatedToMaximumLength];
+  wf_filenameTruncatedToMaximumLength = [v10 wf_filenameTruncatedToMaximumLength];
 
-  return v12;
+  return wf_filenameTruncatedToMaximumLength;
 }
 
-+ (id)typeOfFile:(id)a3
++ (id)typeOfFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 wfFileType];
-  v5 = v4;
-  if (!v4 || [v4 isEqualToUTType:*MEMORY[0x277CE1D48]])
+  fileCopy = file;
+  wfFileType = [fileCopy wfFileType];
+  v5 = wfFileType;
+  if (!wfFileType || [wfFileType isEqualToUTType:*MEMORY[0x277CE1D48]])
   {
     WFFaultIfLoadingMagicKitInDaemon();
     v6 = MEMORY[0x277D79F68];
-    v7 = [GEMagicKit magicForFileAtURL:v3];
-    v8 = [v7 uniformType];
-    v9 = [v6 typeWithString:v8];
+    v7 = [GEMagicKit magicForFileAtURL:fileCopy];
+    uniformType = [v7 uniformType];
+    v9 = [v6 typeWithString:uniformType];
 
     v5 = v9;
     if (!v9)
@@ -1795,15 +1795,15 @@ LABEL_22:
   return v5;
 }
 
-+ (id)typeOfData:(id)a3
++ (id)typeOfData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   WFFaultIfLoadingMagicKitInDaemon();
   v4 = MEMORY[0x277D79F68];
-  v5 = [GEMagicKit magicForData:v3];
+  v5 = [GEMagicKit magicForData:dataCopy];
 
-  v6 = [v5 uniformType];
-  v7 = [v4 typeWithString:v6];
+  uniformType = [v5 uniformType];
+  v7 = [v4 typeWithString:uniformType];
 
   if (v7)
   {
@@ -1820,12 +1820,12 @@ LABEL_22:
   return v9;
 }
 
-+ (BOOL)isAllowedToRepresentFileURL:(id)a3
++ (BOOL)isAllowedToRepresentFileURL:(id)l
 {
-  v4 = a3;
-  if ([a1 sandboxAllowsRepresentingFileURL:v4])
+  lCopy = l;
+  if ([self sandboxAllowsRepresentingFileURL:lCopy])
   {
-    v5 = [a1 fileIsInDisallowedDirectory:v4] ^ 1;
+    v5 = [self fileIsInDisallowedDirectory:lCopy] ^ 1;
   }
 
   else
@@ -1836,16 +1836,16 @@ LABEL_22:
   return v5;
 }
 
-+ (BOOL)fileIsInDisallowedDirectory:(id)a3
++ (BOOL)fileIsInDisallowedDirectory:(id)directory
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [a3 URLByResolvingSymlinksInPath];
+  uRLByResolvingSymlinksInPath = [directory URLByResolvingSymlinksInPath];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a1 disallowedDirectoryURLs];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  disallowedDirectoryURLs = [self disallowedDirectoryURLs];
+  v6 = [disallowedDirectoryURLs countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1856,15 +1856,15 @@ LABEL_22:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(disallowedDirectoryURLs);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        if (([v4 wf_proposedFileIsContainedByDirectoryAtURL:v10] & 1) == 0)
+        if (([uRLByResolvingSymlinksInPath wf_proposedFileIsContainedByDirectoryAtURL:v10] & 1) == 0)
         {
-          v11 = [v4 absoluteString];
-          v12 = [v10 absoluteString];
-          v13 = [v11 hasPrefix:v12];
+          absoluteString = [uRLByResolvingSymlinksInPath absoluteString];
+          absoluteString2 = [v10 absoluteString];
+          v13 = [absoluteString hasPrefix:absoluteString2];
 
           if ((v13 & 1) == 0)
           {
@@ -1876,7 +1876,7 @@ LABEL_22:
         goto LABEL_13;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [disallowedDirectoryURLs countByEnumeratingWithState:&v16 objects:v20 count:16];
       v14 = 0;
       if (v7)
       {
@@ -1897,10 +1897,10 @@ LABEL_13:
   return v14;
 }
 
-+ (void)addDisallowedDirectory:(id)a3
++ (void)addDisallowedDirectory:(id)directory
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (directory)
   {
     v4 = _disallowedDirectoryURLs;
     if (!_disallowedDirectoryURLs)
@@ -1909,7 +1909,7 @@ LABEL_13:
     }
 
     v8 = v4;
-    v5 = [v8 arrayByAddingObject:a3];
+    v5 = [v8 arrayByAddingObject:directory];
     v6 = _disallowedDirectoryURLs;
     _disallowedDirectoryURLs = v5;
   }
@@ -1926,24 +1926,24 @@ LABEL_13:
   }
 }
 
-+ (id)fileWithURL:(id)a3 options:(int64_t)a4 ofType:(id)a5 proposedFilename:(id)a6 originalURL:(id)a7
++ (id)fileWithURL:(id)l options:(int64_t)options ofType:(id)type proposedFilename:(id)filename originalURL:(id)rL
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithFileURL:v15 options:a4 ofType:v14 proposedFilename:v13 originalURL:v12];
+  rLCopy = rL;
+  filenameCopy = filename;
+  typeCopy = type;
+  lCopy = l;
+  v16 = [[self alloc] initWithFileURL:lCopy options:options ofType:typeCopy proposedFilename:filenameCopy originalURL:rLCopy];
 
   return v16;
 }
 
-+ (id)fileWithData:(id)a3 ofType:(id)a4 proposedFilename:(id)a5 originalURL:(id)a6
++ (id)fileWithData:(id)data ofType:(id)type proposedFilename:(id)filename originalURL:(id)l
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithData:v13 ofType:v12 proposedFilename:v11 originalURL:v10];
+  lCopy = l;
+  filenameCopy = filename;
+  typeCopy = type;
+  dataCopy = data;
+  v14 = [[self alloc] initWithData:dataCopy ofType:typeCopy proposedFilename:filenameCopy originalURL:lCopy];
 
   return v14;
 }

@@ -1,36 +1,36 @@
 @interface __TVModalPresenterNavigationController
 - (BOOL)shouldAutorotate;
-- (__TVModalPresenterNavigationController)initWithRootViewController:(id)a3;
+- (__TVModalPresenterNavigationController)initWithRootViewController:(id)controller;
 - (id)activeDocument;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
-- (id)popViewControllerAnimated:(BOOL)a3;
-- (void)_dismissForLastViewController:(BOOL)a3;
-- (void)_ensureNavigationBarHiddenSafelyForViewSize:(CGSize)a3;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
-- (void)popViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (id)popViewControllerAnimated:(BOOL)animated;
+- (void)_dismissForLastViewController:(BOOL)controller;
+- (void)_ensureNavigationBarHiddenSafelyForViewSize:(CGSize)size;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
+- (void)popViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)reset;
-- (void)updatePreferredFocusedViewStateForFocus:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updatePreferredFocusedViewStateForFocus:(BOOL)focus;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation __TVModalPresenterNavigationController
 
-- (__TVModalPresenterNavigationController)initWithRootViewController:(id)a3
+- (__TVModalPresenterNavigationController)initWithRootViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = __TVModalPresenterNavigationController;
-  v6 = [(__TVModalPresenterNavigationController *)&v15 initWithRootViewController:v5];
+  v6 = [(__TVModalPresenterNavigationController *)&v15 initWithRootViewController:controllerCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootViewController, a3);
+    objc_storeStrong(&v6->_rootViewController, controller);
     v8 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:5 valueOptions:0x10000];
     pushCompletionBlocks = v7->_pushCompletionBlocks;
     v7->_pushCompletionBlocks = v8;
@@ -40,11 +40,11 @@
     v7->_popCompletionBlocks = v10;
 
     [(__TVModalPresenterNavigationController *)v7 setNavigationBarHidden:1 animated:0];
-    v12 = [(__TVModalPresenterNavigationController *)v7 navigationBar];
-    [v12 setPrefersLargeTitles:1];
+    navigationBar = [(__TVModalPresenterNavigationController *)v7 navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
 
-    v13 = [(__TVModalPresenterNavigationController *)v7 navigationBar];
-    [v13 _setHidesShadow:1];
+    navigationBar2 = [(__TVModalPresenterNavigationController *)v7 navigationBar];
+    [navigationBar2 _setHidesShadow:1];
   }
 
   return v7;
@@ -52,10 +52,10 @@
 
 - (id)childViewControllerForHomeIndicatorAutoHidden
 {
-  v2 = [(__TVModalPresenterNavigationController *)self childViewControllers];
-  v3 = [v2 lastObject];
+  childViewControllers = [(__TVModalPresenterNavigationController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (void)viewDidLayoutSubviews
@@ -63,28 +63,28 @@
   v6.receiver = self;
   v6.super_class = __TVModalPresenterNavigationController;
   [(__TVModalPresenterNavigationController *)&v6 viewDidLayoutSubviews];
-  v3 = [(__TVModalPresenterNavigationController *)self view];
-  [v3 frame];
+  view = [(__TVModalPresenterNavigationController *)self view];
+  [view frame];
   [(__TVModalPresenterNavigationController *)self _ensureNavigationBarHiddenSafelyForViewSize:v4, v5];
 }
 
-- (void)_ensureNavigationBarHiddenSafelyForViewSize:(CGSize)a3
+- (void)_ensureNavigationBarHiddenSafelyForViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(__TVModalPresenterNavigationController *)self topViewController];
-  v13 = objc_getAssociatedObject(v6, "TVMLPresenterConfiguration");
+  height = size.height;
+  width = size.width;
+  topViewController = [(__TVModalPresenterNavigationController *)self topViewController];
+  v13 = objc_getAssociatedObject(topViewController, "TVMLPresenterConfiguration");
 
   v8 = v13;
   if (v13)
   {
-    v7 = [v13 navigationBarHidden];
+    navigationBarHidden = [v13 navigationBarHidden];
     v8 = v13;
-    if (v7)
+    if (navigationBarHidden)
     {
-      v9 = [v13 configurationType];
+      configurationType = [v13 configurationType];
       v8 = v13;
-      if (v9 == 1 || (v7 = [v13 configurationType], v8 = v13, v7 == 3))
+      if (configurationType == 1 || (navigationBarHidden = [v13 configurationType], v8 = v13, navigationBarHidden == 3))
       {
         if ([v8 configurationType] == 1)
         {
@@ -98,85 +98,85 @@
 
         if (width == v10 && height == v11 || ([v13 navigationBarHidden] & 1) == 0)
         {
-          v12 = [v13 navigationBarHidden];
+          navigationBarHidden2 = [v13 navigationBarHidden];
         }
 
         else
         {
-          v12 = 0;
+          navigationBarHidden2 = 0;
         }
 
-        v7 = [(__TVModalPresenterNavigationController *)self setNavigationBarHidden:v12];
+        navigationBarHidden = [(__TVModalPresenterNavigationController *)self setNavigationBarHidden:navigationBarHidden2];
         v8 = v13;
       }
     }
   }
 
-  MEMORY[0x2821F96F8](v7, v8);
+  MEMORY[0x2821F96F8](navigationBarHidden, v8);
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)pushViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v10 = a3;
-  if (a5)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if (completion)
   {
     pushCompletionBlocks = self->_pushCompletionBlocks;
-    v9 = MEMORY[0x26D6AFBB0](a5);
-    [(NSMapTable *)pushCompletionBlocks setObject:v9 forKey:v10];
+    v9 = MEMORY[0x26D6AFBB0](completion);
+    [(NSMapTable *)pushCompletionBlocks setObject:v9 forKey:controllerCopy];
   }
 
-  [(__TVModalPresenterNavigationController *)self pushViewController:v10 animated:v6];
+  [(__TVModalPresenterNavigationController *)self pushViewController:controllerCopy animated:animatedCopy];
 }
 
-- (void)popViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)popViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  if (a4)
+  animatedCopy = animated;
+  if (completion)
   {
     popCompletionBlocks = self->_popCompletionBlocks;
-    v7 = MEMORY[0x26D6AFBB0](a4, a2);
-    v8 = [(__TVModalPresenterNavigationController *)self viewControllers];
-    v9 = [v8 lastObject];
-    [(NSMapTable *)popCompletionBlocks setObject:v7 forKey:v9];
+    v7 = MEMORY[0x26D6AFBB0](completion, a2);
+    viewControllers = [(__TVModalPresenterNavigationController *)self viewControllers];
+    lastObject = [viewControllers lastObject];
+    [(NSMapTable *)popCompletionBlocks setObject:v7 forKey:lastObject];
   }
 
-  v10 = [(__TVModalPresenterNavigationController *)self popViewControllerAnimated:v4];
+  v10 = [(__TVModalPresenterNavigationController *)self popViewControllerAnimated:animatedCopy];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(__TVModalPresenterNavigationController *)self viewControllers];
-  v8 = [v7 count];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllers = [(__TVModalPresenterNavigationController *)self viewControllers];
+  v8 = [viewControllers count];
 
   if (v8 == 1)
   {
-    v9 = [v6 navigationItem];
-    [v9 setHidesBackButton:1];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem setHidesBackButton:1];
   }
 
-  v10 = [(__TVModalPresenterNavigationController *)self viewControllers];
-  [(__TVModalPresenterNavigationController *)self setPreviousViewControllers:v10];
+  viewControllers2 = [(__TVModalPresenterNavigationController *)self viewControllers];
+  [(__TVModalPresenterNavigationController *)self setPreviousViewControllers:viewControllers2];
 
   v11.receiver = self;
   v11.super_class = __TVModalPresenterNavigationController;
-  [(__TVModalPresenterNavigationController *)&v11 pushViewController:v6 animated:v4];
+  [(__TVModalPresenterNavigationController *)&v11 pushViewController:controllerCopy animated:animatedCopy];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(__TVModalPresenterNavigationController *)self viewControllers];
-  [(__TVModalPresenterNavigationController *)self setPreviousViewControllers:v5];
+  animatedCopy = animated;
+  viewControllers = [(__TVModalPresenterNavigationController *)self viewControllers];
+  [(__TVModalPresenterNavigationController *)self setPreviousViewControllers:viewControllers];
 
-  v6 = [(__TVModalPresenterNavigationController *)self viewControllers];
-  v7 = [v6 count];
+  viewControllers2 = [(__TVModalPresenterNavigationController *)self viewControllers];
+  v7 = [viewControllers2 count];
 
   if (v7 == 2)
   {
-    [(__TVModalPresenterNavigationController *)self _dismissForLastViewController:v3];
+    [(__TVModalPresenterNavigationController *)self _dismissForLastViewController:animatedCopy];
     v8 = 0;
   }
 
@@ -184,41 +184,41 @@
   {
     v10.receiver = self;
     v10.super_class = __TVModalPresenterNavigationController;
-    v8 = [(__TVModalPresenterNavigationController *)&v10 popViewControllerAnimated:v3];
+    v8 = [(__TVModalPresenterNavigationController *)&v10 popViewControllerAnimated:animatedCopy];
   }
 
   return v8;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   self->_isModalNavVisisble = 1;
   v3.receiver = self;
   v3.super_class = __TVModalPresenterNavigationController;
-  [(__TVModalPresenterNavigationController *)&v3 viewWillAppear:a3];
+  [(__TVModalPresenterNavigationController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = __TVModalPresenterNavigationController;
-  [(__TVModalPresenterNavigationController *)&v5 viewDidAppear:a3];
-  v4 = [(__TVModalPresenterNavigationController *)self interactivePopGestureRecognizer];
-  [v4 setEnabled:0];
+  [(__TVModalPresenterNavigationController *)&v5 viewDidAppear:appear];
+  interactivePopGestureRecognizer = [(__TVModalPresenterNavigationController *)self interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ([(__TVModalPresenterNavigationController *)self isBeingDismissed])
   {
-    v5 = [MEMORY[0x277D75128] sharedApplication];
-    v6 = [v5 delegate];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    delegate = [mEMORY[0x277D75128] delegate];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 setOverrideOrientation:0];
+      [delegate setOverrideOrientation:0];
     }
 
     self->_isModalNavVisisble = 0;
@@ -226,22 +226,22 @@
 
   v7.receiver = self;
   v7.super_class = __TVModalPresenterNavigationController;
-  [(__TVModalPresenterNavigationController *)&v7 viewWillDisappear:v3];
+  [(__TVModalPresenterNavigationController *)&v7 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = __TVModalPresenterNavigationController;
-  [(__TVModalPresenterNavigationController *)&v6 viewDidDisappear:a3];
+  [(__TVModalPresenterNavigationController *)&v6 viewDidDisappear:disappear];
   if (!self->_isModalNavVisisble)
   {
-    v4 = [(__TVModalPresenterNavigationController *)self dismissalBlock];
+    dismissalBlock = [(__TVModalPresenterNavigationController *)self dismissalBlock];
 
-    if (v4)
+    if (dismissalBlock)
     {
-      v5 = [(__TVModalPresenterNavigationController *)self dismissalBlock];
-      v5[2]();
+      dismissalBlock2 = [(__TVModalPresenterNavigationController *)self dismissalBlock];
+      dismissalBlock2[2]();
 
       [(__TVModalPresenterNavigationController *)self setDismissalBlock:0];
     }
@@ -262,32 +262,32 @@
 
 - (BOOL)shouldAutorotate
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom] == 1 || self->_isModalNavVisisble;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = [currentDevice userInterfaceIdiom] == 1 || self->_isModalNavVisisble;
 
   return v4;
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
-  v13 = a3;
-  v5 = [(__TVModalPresenterNavigationController *)self previousViewControllers];
-  v6 = [(__TVModalPresenterNavigationController *)self viewControllers];
-  if (([v5 containsObject:v13] & 1) == 0 && (objc_msgSend(v6, "lastObject"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == v13))
+  controllerCopy = controller;
+  previousViewControllers = [(__TVModalPresenterNavigationController *)self previousViewControllers];
+  viewControllers = [(__TVModalPresenterNavigationController *)self viewControllers];
+  if (([previousViewControllers containsObject:controllerCopy] & 1) == 0 && (objc_msgSend(viewControllers, "lastObject"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == controllerCopy))
   {
-    v10 = [(NSMapTable *)self->_pushCompletionBlocks objectForKey:v13];
-    [(NSMapTable *)self->_pushCompletionBlocks removeObjectForKey:v13];
+    v10 = [(NSMapTable *)self->_pushCompletionBlocks objectForKey:controllerCopy];
+    [(NSMapTable *)self->_pushCompletionBlocks removeObjectForKey:controllerCopy];
   }
 
   else
   {
     popCompletionBlocks = self->_popCompletionBlocks;
-    v9 = [v5 lastObject];
-    v10 = [(NSMapTable *)popCompletionBlocks objectForKey:v9];
+    lastObject = [previousViewControllers lastObject];
+    v10 = [(NSMapTable *)popCompletionBlocks objectForKey:lastObject];
 
     v11 = self->_popCompletionBlocks;
-    v12 = [v5 lastObject];
-    [(NSMapTable *)v11 removeObjectForKey:v12];
+    lastObject2 = [previousViewControllers lastObject];
+    [(NSMapTable *)v11 removeObjectForKey:lastObject2];
   }
 
   [(__TVModalPresenterNavigationController *)self setPreviousViewControllers:0];
@@ -297,38 +297,38 @@
   }
 }
 
-- (void)_dismissForLastViewController:(BOOL)a3
+- (void)_dismissForLastViewController:(BOOL)controller
 {
-  v3 = a3;
-  v5 = [(__TVModalPresenterNavigationController *)self previousViewControllers];
-  v9 = [v5 lastObject];
+  controllerCopy = controller;
+  previousViewControllers = [(__TVModalPresenterNavigationController *)self previousViewControllers];
+  lastObject = [previousViewControllers lastObject];
 
-  v6 = [(NSMapTable *)self->_popCompletionBlocks objectForKey:v9];
+  v6 = [(NSMapTable *)self->_popCompletionBlocks objectForKey:lastObject];
   v7 = +[_TVModalPresenter presenter];
-  [v7 _dismissAnimated:v3 completion:v6];
+  [v7 _dismissAnimated:controllerCopy completion:v6];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"TVModalPresenterDismissedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TVModalPresenterDismissedNotification" object:0];
 }
 
-- (void)updatePreferredFocusedViewStateForFocus:(BOOL)a3
+- (void)updatePreferredFocusedViewStateForFocus:(BOOL)focus
 {
-  v3 = a3;
-  v4 = [(__TVModalPresenterNavigationController *)self childViewControllers];
-  v5 = [v4 lastObject];
+  focusCopy = focus;
+  childViewControllers = [(__TVModalPresenterNavigationController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  if ([v5 conformsToProtocol:&unk_287E7C098])
+  if ([lastObject conformsToProtocol:&unk_287E7C098])
   {
-    [v5 updatePreferredFocusedViewStateForFocus:v3];
+    [lastObject updatePreferredFocusedViewStateForFocus:focusCopy];
   }
 }
 
 - (id)activeDocument
 {
-  v2 = [(__TVModalPresenterNavigationController *)self topViewController];
-  if ([v2 conformsToProtocol:&unk_287E7C190])
+  topViewController = [(__TVModalPresenterNavigationController *)self topViewController];
+  if ([topViewController conformsToProtocol:&unk_287E7C190])
   {
-    v3 = v2;
+    v3 = topViewController;
   }
 
   else
@@ -336,9 +336,9 @@
     v3 = 0;
   }
 
-  v4 = [v3 activeDocument];
+  activeDocument = [v3 activeDocument];
 
-  return v4;
+  return activeDocument;
 }
 
 @end

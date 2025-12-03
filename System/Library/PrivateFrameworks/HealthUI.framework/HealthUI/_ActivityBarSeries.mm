@@ -1,74 +1,74 @@
 @interface _ActivityBarSeries
 - (HKActivityBarSeriesDelegate)activityBarDelegate;
-- (_ActivityBarSeries)initWithUnitPreferenceController:(id)a3 activityBarDelegate:(id)a4 displayTypeController:(id)a5;
-- (void)_drawPath:(id)a3 withFillStyle:(id)a4 strokeStyle:(id)a5 axisRect:(CGRect)a6 context:(CGContext *)a7;
-- (void)drawWithBlockCoordinates:(id)a3 visibleBarCount:(int64_t)a4 pointTransform:(CGAffineTransform *)a5 context:(CGContext *)a6 axisRect:(CGRect)a7 seriesRenderingDelegate:(id)a8;
-- (void)updateLegendsForTimeScope:(int64_t)a3 range:(id)a4 drawingDuringScrolling:(BOOL)a5;
+- (_ActivityBarSeries)initWithUnitPreferenceController:(id)controller activityBarDelegate:(id)delegate displayTypeController:(id)typeController;
+- (void)_drawPath:(id)path withFillStyle:(id)style strokeStyle:(id)strokeStyle axisRect:(CGRect)rect context:(CGContext *)context;
+- (void)drawWithBlockCoordinates:(id)coordinates visibleBarCount:(int64_t)count pointTransform:(CGAffineTransform *)transform context:(CGContext *)context axisRect:(CGRect)rect seriesRenderingDelegate:(id)delegate;
+- (void)updateLegendsForTimeScope:(int64_t)scope range:(id)range drawingDuringScrolling:(BOOL)scrolling;
 @end
 
 @implementation _ActivityBarSeries
 
-- (_ActivityBarSeries)initWithUnitPreferenceController:(id)a3 activityBarDelegate:(id)a4 displayTypeController:(id)a5
+- (_ActivityBarSeries)initWithUnitPreferenceController:(id)controller activityBarDelegate:(id)delegate displayTypeController:(id)typeController
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  typeControllerCopy = typeController;
   v15.receiver = self;
   v15.super_class = _ActivityBarSeries;
   v12 = [(HKBarSeries *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_unitPreferenceController, a3);
-    objc_storeWeak(&v13->_activityBarDelegate, v10);
-    objc_storeStrong(&v13->_displayTypeController, a5);
+    objc_storeStrong(&v12->_unitPreferenceController, controller);
+    objc_storeWeak(&v13->_activityBarDelegate, delegateCopy);
+    objc_storeStrong(&v13->_displayTypeController, typeController);
     v13->_lastLegendUpdateTime = 0.0;
   }
 
   return v13;
 }
 
-- (void)updateLegendsForTimeScope:(int64_t)a3 range:(id)a4 drawingDuringScrolling:(BOOL)a5
+- (void)updateLegendsForTimeScope:(int64_t)scope range:(id)range drawingDuringScrolling:(BOOL)scrolling
 {
-  v5 = a5;
-  v8 = a4;
+  scrollingCopy = scrolling;
+  rangeCopy = range;
   v9 = CACurrentMediaTime();
-  if (!v5 || ([(_ActivityBarSeries *)self lastLegendUpdateTime], v9 - v10 >= 0.2))
+  if (!scrollingCopy || ([(_ActivityBarSeries *)self lastLegendUpdateTime], v9 - v10 >= 0.2))
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __77___ActivityBarSeries_updateLegendsForTimeScope_range_drawingDuringScrolling___block_invoke;
     v11[3] = &unk_1E81BA608;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = scope;
     *&v11[6] = v9;
-    [(HKGraphSeries *)self untransformedChartPointsForTimeScope:a3 resolution:0 range:v8 completion:v11];
+    [(HKGraphSeries *)self untransformedChartPointsForTimeScope:scope resolution:0 range:rangeCopy completion:v11];
   }
 }
 
-- (void)drawWithBlockCoordinates:(id)a3 visibleBarCount:(int64_t)a4 pointTransform:(CGAffineTransform *)a5 context:(CGContext *)a6 axisRect:(CGRect)a7 seriesRenderingDelegate:(id)a8
+- (void)drawWithBlockCoordinates:(id)coordinates visibleBarCount:(int64_t)count pointTransform:(CGAffineTransform *)transform context:(CGContext *)context axisRect:(CGRect)rect seriesRenderingDelegate:(id)delegate
 {
-  height = a7.size.height;
-  rect = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v16 = a8;
-  v60 = a3;
-  if ([v16 seriesDrawingDuringTiling] && (-[HKBarSeries tiledStrokeStyle](self, "tiledStrokeStyle"), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  height = rect.size.height;
+  rect = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegateCopy = delegate;
+  coordinatesCopy = coordinates;
+  if ([delegateCopy seriesDrawingDuringTiling] && (-[HKBarSeries tiledStrokeStyle](self, "tiledStrokeStyle"), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v18 = v17;
-    v19 = [(HKBarSeries *)self unselectedStrokeStyle];
+    unselectedStrokeStyle = [(HKBarSeries *)self unselectedStrokeStyle];
   }
 
   else
   {
-    v19 = [(HKBarSeries *)self tiledStrokeStyle];
+    unselectedStrokeStyle = [(HKBarSeries *)self tiledStrokeStyle];
   }
 
-  [v19 lineWidth];
+  [unselectedStrokeStyle lineWidth];
   v21 = v20;
-  v22 = [(HKBarSeries *)self selectedStrokeStyle];
-  [v22 lineWidth];
+  selectedStrokeStyle = [(HKBarSeries *)self selectedStrokeStyle];
+  [selectedStrokeStyle lineWidth];
   v24 = v23;
 
   if (v24 < v21)
@@ -76,13 +76,13 @@
     v24 = v21;
   }
 
-  [v16 screenRectForSeries:self];
+  [delegateCopy screenRectForSeries:self];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
 
-  [(HKBarSeries *)self barWidthForVisibleBarCount:a4 axisRect:v26 minimumSpacing:v28, v30, v32, v24];
+  [(HKBarSeries *)self barWidthForVisibleBarCount:count axisRect:v26 minimumSpacing:v28, v30, v32, v24];
   v34 = v33;
   v35 = v24 + v33;
   v82.origin.x = x;
@@ -104,16 +104,16 @@
   v78 = 0u;
   v79 = 0u;
   [(HKGraphSeries *)self selectedPathRange];
-  v42 = [(HKBarSeries *)self selectedFillStyle];
-  if (v42)
+  selectedFillStyle = [(HKBarSeries *)self selectedFillStyle];
+  if (selectedFillStyle)
   {
     v43 = 1;
   }
 
   else
   {
-    v44 = [(HKBarSeries *)self selectedStrokeStyle];
-    v43 = v44 != 0;
+    selectedStrokeStyle2 = [(HKBarSeries *)self selectedStrokeStyle];
+    v43 = selectedStrokeStyle2 != 0;
   }
 
   v63[0] = MEMORY[0x1E69E9820];
@@ -137,91 +137,91 @@
   v48 = v40;
   v76 = v34;
   v67 = v48;
-  v68 = self;
-  v49 = *&a5->c;
-  v62[0] = *&a5->a;
+  selfCopy = self;
+  v49 = *&transform->c;
+  v62[0] = *&transform->a;
   v62[1] = v49;
-  v62[2] = *&a5->tx;
-  [v60 enumerateCoordinatesWithTransform:v62 roundToViewScale:1 block:v63];
+  v62[2] = *&transform->tx;
+  [coordinatesCopy enumerateCoordinatesWithTransform:v62 roundToViewScale:1 block:v63];
 
-  v50 = [(_ActivityBarSeries *)self missedGoalUnselectedFillStyle];
-  if (v50)
+  missedGoalUnselectedFillStyle = [(_ActivityBarSeries *)self missedGoalUnselectedFillStyle];
+  if (missedGoalUnselectedFillStyle)
   {
-    [(_ActivityBarSeries *)self _drawPath:v46 withFillStyle:v50 strokeStyle:v19 axisRect:a6 context:x, y, rect, height];
+    [(_ActivityBarSeries *)self _drawPath:v46 withFillStyle:missedGoalUnselectedFillStyle strokeStyle:unselectedStrokeStyle axisRect:context context:x, y, rect, height];
   }
 
   else
   {
-    v51 = [(HKBarSeries *)self unselectedFillStyle];
-    [(_ActivityBarSeries *)self _drawPath:v46 withFillStyle:v51 strokeStyle:v19 axisRect:a6 context:x, y, rect, height];
+    unselectedFillStyle = [(HKBarSeries *)self unselectedFillStyle];
+    [(_ActivityBarSeries *)self _drawPath:v46 withFillStyle:unselectedFillStyle strokeStyle:unselectedStrokeStyle axisRect:context context:x, y, rect, height];
   }
 
-  v52 = [(HKBarSeries *)self unselectedFillStyle];
-  [(_ActivityBarSeries *)self _drawPath:v45 withFillStyle:v52 strokeStyle:v19 axisRect:a6 context:x, y, rect, height];
+  unselectedFillStyle2 = [(HKBarSeries *)self unselectedFillStyle];
+  [(_ActivityBarSeries *)self _drawPath:v45 withFillStyle:unselectedFillStyle2 strokeStyle:unselectedStrokeStyle axisRect:context context:x, y, rect, height];
 
-  v53 = [(HKBarSeries *)self selectedFillStyle];
-  v54 = v53;
-  if (!v53)
+  selectedFillStyle2 = [(HKBarSeries *)self selectedFillStyle];
+  unselectedFillStyle3 = selectedFillStyle2;
+  if (!selectedFillStyle2)
   {
-    v54 = [(HKBarSeries *)self unselectedFillStyle];
+    unselectedFillStyle3 = [(HKBarSeries *)self unselectedFillStyle];
   }
 
-  v55 = [(HKBarSeries *)self selectedStrokeStyle];
-  v56 = v55;
-  if (v55)
+  selectedStrokeStyle3 = [(HKBarSeries *)self selectedStrokeStyle];
+  v56 = selectedStrokeStyle3;
+  if (selectedStrokeStyle3)
   {
-    v57 = v55;
-  }
-
-  else
-  {
-    v57 = v19;
-  }
-
-  [(_ActivityBarSeries *)self _drawPath:v48 withFillStyle:v54 strokeStyle:v57 axisRect:a6 context:x, y, rect, height];
-
-  if (!v53)
-  {
-  }
-
-  v58 = [(_ActivityBarSeries *)self pausedUnselectedFillStyle];
-  if (v58)
-  {
-    [(_ActivityBarSeries *)self _drawPath:v47 withFillStyle:v58 strokeStyle:v19 axisRect:a6 context:x, y, rect, height];
+    v57 = selectedStrokeStyle3;
   }
 
   else
   {
-    v59 = [(HKBarSeries *)self unselectedFillStyle];
-    [(_ActivityBarSeries *)self _drawPath:v47 withFillStyle:v59 strokeStyle:v19 axisRect:a6 context:x, y, rect, height];
+    v57 = unselectedStrokeStyle;
+  }
+
+  [(_ActivityBarSeries *)self _drawPath:v48 withFillStyle:unselectedFillStyle3 strokeStyle:v57 axisRect:context context:x, y, rect, height];
+
+  if (!selectedFillStyle2)
+  {
+  }
+
+  pausedUnselectedFillStyle = [(_ActivityBarSeries *)self pausedUnselectedFillStyle];
+  if (pausedUnselectedFillStyle)
+  {
+    [(_ActivityBarSeries *)self _drawPath:v47 withFillStyle:pausedUnselectedFillStyle strokeStyle:unselectedStrokeStyle axisRect:context context:x, y, rect, height];
+  }
+
+  else
+  {
+    unselectedFillStyle4 = [(HKBarSeries *)self unselectedFillStyle];
+    [(_ActivityBarSeries *)self _drawPath:v47 withFillStyle:unselectedFillStyle4 strokeStyle:unselectedStrokeStyle axisRect:context context:x, y, rect, height];
   }
 }
 
-- (void)_drawPath:(id)a3 withFillStyle:(id)a4 strokeStyle:(id)a5 axisRect:(CGRect)a6 context:(CGContext *)a7
+- (void)_drawPath:(id)path withFillStyle:(id)style strokeStyle:(id)strokeStyle axisRect:(CGRect)rect context:(CGContext *)context
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v19 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (([v19 isEmpty] & 1) == 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pathCopy = path;
+  styleCopy = style;
+  strokeStyleCopy = strokeStyle;
+  if (([pathCopy isEmpty] & 1) == 0)
   {
-    if (v16)
+    if (strokeStyleCopy)
     {
-      CGContextSaveGState(a7);
-      [v16 applyToContext:a7];
-      CGContextAddPath(a7, [v19 CGPath]);
-      CGContextStrokePath(a7);
-      CGContextRestoreGState(a7);
+      CGContextSaveGState(context);
+      [strokeStyleCopy applyToContext:context];
+      CGContextAddPath(context, [pathCopy CGPath]);
+      CGContextStrokePath(context);
+      CGContextRestoreGState(context);
     }
 
-    if (v15)
+    if (styleCopy)
     {
-      v17 = [v19 CGPath];
+      cGPath = [pathCopy CGPath];
       [(HKGraphSeries *)self alpha];
-      [v15 renderPath:v17 context:a7 axisRect:x alpha:{y, width, height, v18}];
+      [styleCopy renderPath:cGPath context:context axisRect:x alpha:{y, width, height, v18}];
     }
   }
 }

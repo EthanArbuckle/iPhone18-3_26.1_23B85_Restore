@@ -1,21 +1,21 @@
 @interface PKApplyOfferCreditCardViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (PKApplyOfferCreditCardViewAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PKApplyOfferCreditCardViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_creditLimitTitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_creditLimitLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_aprForPurchaseTitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_aprForPurchaseLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_feeTitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_feeLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_bodyLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_creditLimitTitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_creditLimitLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_aprForPurchaseTitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_aprForPurchaseLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_feeTitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_feeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKApplyOfferCreditCardView" hasInstanceVariable:@"_bodyLabel" withType:"UILabel"];
 }
 
 - (PKApplyOfferCreditCardViewAccessibility)init

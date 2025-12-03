@@ -1,11 +1,11 @@
 @interface ICIntentsExtension
 - (ICIntentsExtension)init;
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 - (void)dealloc;
-- (void)noteContextDidUnlockObjectCreation:(id)a3;
-- (void)noteContextWillLockObjectCreation:(id)a3;
-- (void)persistentContainerDidUnlockDatabase:(id)a3;
-- (void)persistentContainerWillLockDatabase:(id)a3;
+- (void)noteContextDidUnlockObjectCreation:(id)creation;
+- (void)noteContextWillLockObjectCreation:(id)creation;
+- (void)persistentContainerDidUnlockDatabase:(id)database;
+- (void)persistentContainerWillLockDatabase:(id)database;
 @end
 
 @implementation ICIntentsExtension
@@ -68,9 +68,9 @@
   [(ICIntentsExtension *)&v8 dealloc];
 }
 
-- (void)persistentContainerWillLockDatabase:(id)a3
+- (void)persistentContainerWillLockDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = os_log_create("com.apple.notes", "Intents");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -102,7 +102,7 @@
   objc_destroyWeak(buf);
 }
 
-- (void)persistentContainerDidUnlockDatabase:(id)a3
+- (void)persistentContainerDidUnlockDatabase:(id)database
 {
   v4 = os_log_create("com.apple.notes", "Intents");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -128,9 +128,9 @@
   }
 }
 
-- (void)noteContextWillLockObjectCreation:(id)a3
+- (void)noteContextWillLockObjectCreation:(id)creation
 {
-  v4 = a3;
+  creationCopy = creation;
   v5 = os_log_create("com.apple.notes", "Intents");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -162,7 +162,7 @@
   objc_destroyWeak(buf);
 }
 
-- (void)noteContextDidUnlockObjectCreation:(id)a3
+- (void)noteContextDidUnlockObjectCreation:(id)creation
 {
   v4 = os_log_create("com.apple.notes", "Intents");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -188,9 +188,9 @@
   }
 }
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

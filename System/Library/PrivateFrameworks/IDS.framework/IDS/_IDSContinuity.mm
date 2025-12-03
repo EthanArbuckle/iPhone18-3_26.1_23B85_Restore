@@ -1,44 +1,44 @@
 @interface _IDSContinuity
-- (_IDSContinuity)initWithDelegate:(id)a3 queue:(id)a4 delegateContext:(id)a5;
-- (void)_callDelegateWithBlock:(id)a3;
-- (void)_daemonDied:(id)a3;
+- (_IDSContinuity)initWithDelegate:(id)delegate queue:(id)queue delegateContext:(id)context;
+- (void)_callDelegateWithBlock:(id)block;
+- (void)_daemonDied:(id)died;
 - (void)_handleReconnect;
-- (void)continuityDidDiscoverType:(int64_t)a3 withData:(id)a4 fromPeer:(id)a5;
-- (void)continuityDidFailToStartAdvertisingOfType:(int64_t)a3 withError:(id)a4;
-- (void)continuityDidFailToStartScanningForType:(int64_t)a3 withError:(id)a4;
-- (void)continuityDidLosePeer:(id)a3 forType:(int64_t)a4;
-- (void)continuityDidStartAdvertisingOfType:(int64_t)a3;
-- (void)continuityDidStartScanningForType:(int64_t)a3;
-- (void)continuityDidStartTrackingPeer:(id)a3 forType:(int64_t)a4 error:(id)a5;
-- (void)continuityDidStopAdvertisingOfType:(int64_t)a3;
-- (void)continuityDidStopAdvertisingOfType:(int64_t)a3 withError:(id)a4;
-- (void)continuityDidStopScanningForType:(int64_t)a3;
-- (void)continuityDidStopTrackingPeer:(id)a3 forType:(int64_t)a4;
-- (void)continuityDidUpdateStateToState:(int64_t)a3;
+- (void)continuityDidDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer;
+- (void)continuityDidFailToStartAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)continuityDidFailToStartScanningForType:(int64_t)type withError:(id)error;
+- (void)continuityDidLosePeer:(id)peer forType:(int64_t)type;
+- (void)continuityDidStartAdvertisingOfType:(int64_t)type;
+- (void)continuityDidStartScanningForType:(int64_t)type;
+- (void)continuityDidStartTrackingPeer:(id)peer forType:(int64_t)type error:(id)error;
+- (void)continuityDidStopAdvertisingOfType:(int64_t)type;
+- (void)continuityDidStopAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)continuityDidStopScanningForType:(int64_t)type;
+- (void)continuityDidStopTrackingPeer:(id)peer forType:(int64_t)type;
+- (void)continuityDidUpdateStateToState:(int64_t)state;
 - (void)dealloc;
-- (void)startAdvertisingOfType:(int64_t)a3 withData:(id)a4 withOptions:(id)a5;
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5;
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 peers:(id)a6;
-- (void)startTrackingPeer:(id)a3 forType:(int64_t)a4;
-- (void)stopAdvertisingOfType:(int64_t)a3;
-- (void)stopScanningForType:(int64_t)a3;
-- (void)stopTrackingPeer:(id)a3 forType:(int64_t)a4;
+- (void)startAdvertisingOfType:(int64_t)type withData:(id)data withOptions:(id)options;
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask;
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask peers:(id)peers;
+- (void)startTrackingPeer:(id)peer forType:(int64_t)type;
+- (void)stopAdvertisingOfType:(int64_t)type;
+- (void)stopScanningForType:(int64_t)type;
+- (void)stopTrackingPeer:(id)peer forType:(int64_t)type;
 @end
 
 @implementation _IDSContinuity
 
-- (_IDSContinuity)initWithDelegate:(id)a3 queue:(id)a4 delegateContext:(id)a5
+- (_IDSContinuity)initWithDelegate:(id)delegate queue:(id)queue delegateContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  contextCopy = context;
   v11 = +[IDSInternalQueueController sharedInstance];
-  v12 = [v11 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v11 assertQueueIsCurrent];
 
-  if (v12)
+  if (assertQueueIsCurrent)
   {
-    v13 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B41A4C();
     }
@@ -52,7 +52,7 @@
       sub_195B26A7C();
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -62,198 +62,198 @@
     v16 = [(_IDSContinuity *)&v26 init];
     if (v16)
     {
-      v17 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v17 addObserver:v16 selector:sel__daemonDied_ name:@"__k_IDSDaemonDidConnectNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v16 selector:sel__daemonDied_ name:@"__k_IDSDaemonDidConnectNotification" object:0];
 
-      v18 = [MEMORY[0x1E6995700] weakRefWithObject:v10];
+      v18 = [MEMORY[0x1E6995700] weakRefWithObject:contextCopy];
       delegateContext = v16->_delegateContext;
       v16->_delegateContext = v18;
 
-      v20 = [MEMORY[0x1E6995700] weakRefWithObject:v8];
+      v20 = [MEMORY[0x1E6995700] weakRefWithObject:delegateCopy];
       delegate = v16->_delegate;
       v16->_delegate = v20;
 
-      objc_storeStrong(&v16->_queue, a4);
+      objc_storeStrong(&v16->_queue, queue);
       v16->_state = 0;
       v22 = +[IDSDaemonController sharedInstance];
-      v23 = [v22 listener];
-      [v23 addHandler:v16];
+      listener = [v22 listener];
+      [listener addHandler:v16];
 
       v24 = +[IDSDaemonController sharedInstance];
       [v24 continuityClientInstanceCreated];
     }
 
     self = v16;
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0 object:0];
 
   v4 = +[IDSDaemonController sharedInstance];
-  v5 = [v4 listener];
-  [v5 removeHandler:self];
+  listener = [v4 listener];
+  [listener removeHandler:self];
 
   v6.receiver = self;
   v6.super_class = _IDSContinuity;
   [(_IDSContinuity *)&v6 dealloc];
 }
 
-- (void)startAdvertisingOfType:(int64_t)a3 withData:(id)a4 withOptions:(id)a5
+- (void)startAdvertisingOfType:(int64_t)type withData:(id)data withOptions:(id)options
 {
-  v7 = a5;
-  v8 = a4;
+  optionsCopy = options;
+  dataCopy = data;
   v9 = +[IDSInternalQueueController sharedInstance];
-  v10 = [v9 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v9 assertQueueIsCurrent];
 
-  if (v10)
+  if (assertQueueIsCurrent)
   {
-    v11 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B41AEC();
     }
   }
 
   v12 = +[IDSDaemonController sharedInstance];
-  [v12 continuityStartAdvertisingOfType:a3 withData:v8 withOptions:v7];
+  [v12 continuityStartAdvertisingOfType:type withData:dataCopy withOptions:optionsCopy];
 }
 
-- (void)stopAdvertisingOfType:(int64_t)a3
+- (void)stopAdvertisingOfType:(int64_t)type
 {
   v4 = +[IDSInternalQueueController sharedInstance];
-  v5 = [v4 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v4 assertQueueIsCurrent];
 
-  if (v5)
+  if (assertQueueIsCurrent)
   {
-    v6 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B41B8C();
     }
   }
 
   v7 = +[IDSDaemonController sharedInstance];
-  [v7 continuityStopAdvertisingOfType:a3];
+  [v7 continuityStopAdvertisingOfType:type];
 }
 
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5 peers:(id)a6
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask peers:(id)peers
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  peersCopy = peers;
+  maskCopy = mask;
+  dataCopy = data;
   v12 = +[IDSInternalQueueController sharedInstance];
-  v13 = [v12 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v12 assertQueueIsCurrent];
 
-  if (v13)
+  if (assertQueueIsCurrent)
   {
-    v14 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B41C2C();
     }
   }
 
-  v15 = [v9 __imArrayByApplyingBlock:&unk_1F09E7460];
+  v15 = [peersCopy __imArrayByApplyingBlock:&unk_1F09E7460];
 
   v16 = +[IDSDaemonController sharedInstance];
-  [v16 continuityStartScanningForType:a3 withData:v11 mask:v10 peers:v15];
+  [v16 continuityStartScanningForType:type withData:dataCopy mask:maskCopy peers:v15];
 }
 
-- (void)startScanningForType:(int64_t)a3 withData:(id)a4 mask:(id)a5
+- (void)startScanningForType:(int64_t)type withData:(id)data mask:(id)mask
 {
-  v7 = a5;
-  v8 = a4;
+  maskCopy = mask;
+  dataCopy = data;
   v9 = +[IDSInternalQueueController sharedInstance];
-  v10 = [v9 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v9 assertQueueIsCurrent];
 
-  if (v10)
+  if (assertQueueIsCurrent)
   {
-    v11 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B41CCC();
     }
   }
 
   v12 = +[IDSDaemonController sharedInstance];
-  [v12 continuityStartScanningForType:a3 withData:v8 mask:v7];
+  [v12 continuityStartScanningForType:type withData:dataCopy mask:maskCopy];
 }
 
-- (void)stopScanningForType:(int64_t)a3
+- (void)stopScanningForType:(int64_t)type
 {
   v4 = +[IDSInternalQueueController sharedInstance];
-  v5 = [v4 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v4 assertQueueIsCurrent];
 
-  if (v5)
+  if (assertQueueIsCurrent)
   {
-    v6 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B41EAC();
     }
   }
 
   v7 = +[IDSDaemonController sharedInstance];
-  [v7 continuityStopScanningForType:a3];
+  [v7 continuityStopScanningForType:type];
 }
 
-- (void)startTrackingPeer:(id)a3 forType:(int64_t)a4
+- (void)startTrackingPeer:(id)peer forType:(int64_t)type
 {
-  v5 = a3;
+  peerCopy = peer;
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B41F4C();
     }
   }
 
   v9 = +[IDSDaemonController sharedInstance];
-  v10 = [v5 UUIDString];
+  uUIDString = [peerCopy UUIDString];
 
-  [v9 continuityStartTrackingPeer:v10 forType:a4];
+  [v9 continuityStartTrackingPeer:uUIDString forType:type];
 }
 
-- (void)stopTrackingPeer:(id)a3 forType:(int64_t)a4
+- (void)stopTrackingPeer:(id)peer forType:(int64_t)type
 {
-  v5 = a3;
+  peerCopy = peer;
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B41FEC();
     }
   }
 
   v9 = +[IDSDaemonController sharedInstance];
-  v10 = [v5 UUIDString];
+  uUIDString = [peerCopy UUIDString];
 
-  [v9 continuityStopTrackingPeer:v10 forType:a4];
+  [v9 continuityStopTrackingPeer:uUIDString forType:type];
 }
 
 - (void)_handleReconnect
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B4208C();
     }
@@ -270,7 +270,7 @@
   [v6 continuityClientInstanceCreated];
 }
 
-- (void)_daemonDied:(id)a3
+- (void)_daemonDied:(id)died
 {
   v4 = +[IDSInternalQueueController sharedInstance];
   v5[0] = MEMORY[0x1E69E9820];
@@ -281,46 +281,46 @@
   [v4 performBlock:v5];
 }
 
-- (void)_callDelegateWithBlock:(id)a3
+- (void)_callDelegateWithBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = +[IDSInternalQueueController sharedInstance];
-    v6 = [v5 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-    if (v6)
+    if (assertQueueIsCurrent)
     {
-      v7 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B4212C();
       }
     }
 
-    v8 = [(CUTWeakReference *)self->_delegate object];
-    v9 = v8;
+    object = [(CUTWeakReference *)self->_delegate object];
+    v9 = object;
     queue = self->_queue;
-    if (queue && v8)
+    if (queue && object)
     {
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = sub_195B15EE8;
       v11[3] = &unk_1E743F110;
-      v13 = v4;
+      v13 = blockCopy;
       v12 = v9;
       dispatch_async(queue, v11);
     }
   }
 }
 
-- (void)continuityDidUpdateStateToState:(int64_t)a3
+- (void)continuityDidUpdateStateToState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_state = a3;
+    self->_state = state;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_195B15F7C;
@@ -330,151 +330,151 @@
   }
 }
 
-- (void)continuityDidStartAdvertisingOfType:(int64_t)a3
+- (void)continuityDidStartAdvertisingOfType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_195B16050;
   v3[3] = &unk_1E74433A0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = type;
   [(_IDSContinuity *)self _callDelegateWithBlock:v3];
 }
 
-- (void)continuityDidStopAdvertisingOfType:(int64_t)a3
+- (void)continuityDidStopAdvertisingOfType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_195B16138;
   v3[3] = &unk_1E74433A0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = type;
   [(_IDSContinuity *)self _callDelegateWithBlock:v3];
 }
 
-- (void)continuityDidStopAdvertisingOfType:(int64_t)a3 withError:(id)a4
+- (void)continuityDidStopAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195B16250;
   v8[3] = &unk_1E74433C8;
-  v9 = v6;
-  v10 = a3;
+  v9 = errorCopy;
+  typeCopy = type;
   v8[4] = self;
-  v7 = v6;
+  v7 = errorCopy;
   [(_IDSContinuity *)self _callDelegateWithBlock:v8];
 }
 
-- (void)continuityDidFailToStartAdvertisingOfType:(int64_t)a3 withError:(id)a4
+- (void)continuityDidFailToStartAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195B16368;
   v8[3] = &unk_1E74433C8;
-  v9 = v6;
-  v10 = a3;
+  v9 = errorCopy;
+  typeCopy = type;
   v8[4] = self;
-  v7 = v6;
+  v7 = errorCopy;
   [(_IDSContinuity *)self _callDelegateWithBlock:v8];
 }
 
-- (void)continuityDidStartScanningForType:(int64_t)a3
+- (void)continuityDidStartScanningForType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_195B16470;
   v3[3] = &unk_1E74433A0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = type;
   [(_IDSContinuity *)self _callDelegateWithBlock:v3];
 }
 
-- (void)continuityDidStopScanningForType:(int64_t)a3
+- (void)continuityDidStopScanningForType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_195B16558;
   v3[3] = &unk_1E74433A0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = type;
   [(_IDSContinuity *)self _callDelegateWithBlock:v3];
 }
 
-- (void)continuityDidFailToStartScanningForType:(int64_t)a3 withError:(id)a4
+- (void)continuityDidFailToStartScanningForType:(int64_t)type withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195B16670;
   v8[3] = &unk_1E74433C8;
-  v9 = v6;
-  v10 = a3;
+  v9 = errorCopy;
+  typeCopy = type;
   v8[4] = self;
-  v7 = v6;
+  v7 = errorCopy;
   [(_IDSContinuity *)self _callDelegateWithBlock:v8];
 }
 
-- (void)continuityDidDiscoverType:(int64_t)a3 withData:(id)a4 fromPeer:(id)a5
+- (void)continuityDidDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  peerCopy = peer;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_195B167D4;
   v12[3] = &unk_1E74433F0;
-  v13 = v9;
-  v14 = self;
-  v15 = v8;
-  v16 = a3;
-  v10 = v8;
-  v11 = v9;
+  v13 = peerCopy;
+  selfCopy = self;
+  v15 = dataCopy;
+  typeCopy = type;
+  v10 = dataCopy;
+  v11 = peerCopy;
   [(_IDSContinuity *)self _callDelegateWithBlock:v12];
 }
 
-- (void)continuityDidLosePeer:(id)a3 forType:(int64_t)a4
+- (void)continuityDidLosePeer:(id)peer forType:(int64_t)type
 {
-  v6 = a3;
+  peerCopy = peer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195B1691C;
   v8[3] = &unk_1E74433C8;
-  v9 = v6;
-  v10 = self;
-  v11 = a4;
-  v7 = v6;
+  v9 = peerCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v7 = peerCopy;
   [(_IDSContinuity *)self _callDelegateWithBlock:v8];
 }
 
-- (void)continuityDidStartTrackingPeer:(id)a3 forType:(int64_t)a4 error:(id)a5
+- (void)continuityDidStartTrackingPeer:(id)peer forType:(int64_t)type error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  peerCopy = peer;
+  errorCopy = error;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_195B16A90;
   v12[3] = &unk_1E74433F0;
-  v13 = v8;
-  v14 = self;
-  v15 = v9;
-  v16 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = peerCopy;
+  selfCopy = self;
+  v15 = errorCopy;
+  typeCopy = type;
+  v10 = errorCopy;
+  v11 = peerCopy;
   [(_IDSContinuity *)self _callDelegateWithBlock:v12];
 }
 
-- (void)continuityDidStopTrackingPeer:(id)a3 forType:(int64_t)a4
+- (void)continuityDidStopTrackingPeer:(id)peer forType:(int64_t)type
 {
-  v6 = a3;
+  peerCopy = peer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195B16BD8;
   v8[3] = &unk_1E74433C8;
-  v9 = v6;
-  v10 = self;
-  v11 = a4;
-  v7 = v6;
+  v9 = peerCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v7 = peerCopy;
   [(_IDSContinuity *)self _callDelegateWithBlock:v8];
 }
 

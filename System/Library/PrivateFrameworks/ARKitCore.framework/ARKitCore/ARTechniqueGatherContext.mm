@@ -1,28 +1,28 @@
 @interface ARTechniqueGatherContext
-- (ARTechniqueGatherContext)initWithCoder:(id)a3;
-- (ARTechniqueGatherContext)initWithParentContext:(id)a3;
+- (ARTechniqueGatherContext)initWithCoder:(id)coder;
+- (ARTechniqueGatherContext)initWithParentContext:(id)context;
 - (BOOL)gatheredDataWasAlreadyCaptured;
 - (NSString)description;
 - (id)anchorsToAdd;
 - (id)anchorsToRemove;
 - (id)captureGatheredData;
 - (id)imageData;
-- (id)resultDataOfClass:(Class)a3;
+- (id)resultDataOfClass:(Class)class;
 - (int64_t)cameraPosition;
 @end
 
 @implementation ARTechniqueGatherContext
 
-- (ARTechniqueGatherContext)initWithParentContext:(id)a3
+- (ARTechniqueGatherContext)initWithParentContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ARTechniqueGatherContext;
   v6 = [(ARTechniqueGatherContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parentContext, a3);
+    objc_storeStrong(&v6->_parentContext, context);
     v7->_stateLock._os_unfair_lock_opaque = 0;
     v7->_resultsCaptured = 0;
   }
@@ -33,8 +33,8 @@
 - (id)captureGatheredData
 {
   v3 = objc_opt_new();
-  v4 = [(ARTechniqueGatherContext *)self gatheredData];
-  [v3 addObjectsFromArray:v4];
+  gatheredData = [(ARTechniqueGatherContext *)self gatheredData];
+  [v3 addObjectsFromArray:gatheredData];
 
   os_unfair_lock_lock(&self->_stateLock);
   self->_resultsCaptured = 1;
@@ -45,31 +45,31 @@
 
 - (id)imageData
 {
-  v2 = [(ARTechniqueGatherContext *)self parentContext];
-  v3 = [v2 imageData];
+  parentContext = [(ARTechniqueGatherContext *)self parentContext];
+  imageData = [parentContext imageData];
 
-  return v3;
+  return imageData;
 }
 
 - (int64_t)cameraPosition
 {
-  v2 = [(ARTechniqueGatherContext *)self parentContext];
-  v3 = [v2 cameraPosition];
+  parentContext = [(ARTechniqueGatherContext *)self parentContext];
+  cameraPosition = [parentContext cameraPosition];
 
-  return v3;
+  return cameraPosition;
 }
 
-- (id)resultDataOfClass:(Class)a3
+- (id)resultDataOfClass:(Class)class
 {
   v5 = [self->_parentContext resultDataOfClass:?];
-  v6 = [(ARTechniqueGatherContext *)self gatheredData];
+  gatheredData = [(ARTechniqueGatherContext *)self gatheredData];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __46__ARTechniqueGatherContext_resultDataOfClass___block_invoke;
   v12[3] = &__block_descriptor_40_e41_B24__0___ARResultData__8__NSDictionary_16lu32l8;
-  v12[4] = a3;
+  v12[4] = class;
   v7 = [MEMORY[0x1E696AE18] predicateWithBlock:v12];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  v8 = [gatheredData filteredArrayUsingPredicate:v7];
 
   if (v5)
   {
@@ -88,40 +88,40 @@
 
 - (id)anchorsToAdd
 {
-  v3 = [(ARTechniqueGatherContext *)self parentContext];
+  parentContext = [(ARTechniqueGatherContext *)self parentContext];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ARTechniqueGatherContext *)self parentContext];
-    v6 = [v5 anchorsToAdd];
+    parentContext2 = [(ARTechniqueGatherContext *)self parentContext];
+    anchorsToAdd = [parentContext2 anchorsToAdd];
   }
 
   else
   {
-    v6 = 0;
+    anchorsToAdd = 0;
   }
 
-  return v6;
+  return anchorsToAdd;
 }
 
 - (id)anchorsToRemove
 {
-  v3 = [(ARTechniqueGatherContext *)self parentContext];
+  parentContext = [(ARTechniqueGatherContext *)self parentContext];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ARTechniqueGatherContext *)self parentContext];
-    v6 = [v5 anchorsToRemove];
+    parentContext2 = [(ARTechniqueGatherContext *)self parentContext];
+    anchorsToRemove = [parentContext2 anchorsToRemove];
   }
 
   else
   {
-    v6 = 0;
+    anchorsToRemove = 0;
   }
 
-  return v6;
+  return anchorsToRemove;
 }
 
 - (NSString)description
@@ -132,27 +132,27 @@
   v4 = [(ARTechniqueGatherContext *)&v10 description];
   v5 = [v3 stringWithFormat:@"%@\n", v4];
 
-  v6 = [(ARTechniqueGatherContext *)self gatheredData];
-  [v5 appendFormat:@"gatheredData: %@\n", v6];
+  gatheredData = [(ARTechniqueGatherContext *)self gatheredData];
+  [v5 appendFormat:@"gatheredData: %@\n", gatheredData];
 
-  v7 = [(ARTechniqueGatherContext *)self imageData];
-  [v5 appendFormat:@"imageData: %@\n", v7];
+  imageData = [(ARTechniqueGatherContext *)self imageData];
+  [v5 appendFormat:@"imageData: %@\n", imageData];
 
-  v8 = [(ARTechniqueGatherContext *)self parentContext];
-  [v5 appendFormat:@"parentContext: %@\n", v8];
+  parentContext = [(ARTechniqueGatherContext *)self parentContext];
+  [v5 appendFormat:@"parentContext: %@\n", parentContext];
 
   return v5;
 }
 
-- (ARTechniqueGatherContext)initWithCoder:(id)a3
+- (ARTechniqueGatherContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ARTechniqueGatherContext;
   v5 = [(ARTechniqueGatherContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"parentContext"];
+    v6 = [coderCopy decodeObjectForKey:@"parentContext"];
     parentContext = v5->_parentContext;
     v5->_parentContext = v6;
   }

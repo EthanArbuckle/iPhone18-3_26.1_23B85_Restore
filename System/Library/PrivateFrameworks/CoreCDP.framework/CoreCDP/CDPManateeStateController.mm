@@ -1,9 +1,9 @@
 @interface CDPManateeStateController
-- (BOOL)_checkCircleStateWithError:(id *)a3;
-- (BOOL)isManateeAvailable:(id *)a3;
+- (BOOL)_checkCircleStateWithError:(id *)error;
+- (BOOL)isManateeAvailable:(id *)available;
 - (CDPManateeStateController)init;
-- (CDPManateeStateController)initWithContext:(id)a3;
-- (CDPManateeStateController)initWithContext:(id)a3 circleProxy:(id)a4;
+- (CDPManateeStateController)initWithContext:(id)context;
+- (CDPManateeStateController)initWithContext:(id)context circleProxy:(id)proxy;
 @end
 
 @implementation CDPManateeStateController
@@ -16,10 +16,10 @@
   return v4;
 }
 
-- (CDPManateeStateController)initWithContext:(id)a3
+- (CDPManateeStateController)initWithContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v5 = _CDPLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -27,19 +27,19 @@
       [CDPManateeStateController initWithContext:v5];
     }
 
-    v4 = +[CDPContext contextForPrimaryAccount];
+    contextCopy = +[CDPContext contextForPrimaryAccount];
   }
 
-  v6 = [[CDPCircleProxyImpl alloc] initWithContext:v4];
-  v7 = [(CDPManateeStateController *)self initWithContext:v4 circleProxy:v6];
+  v6 = [[CDPCircleProxyImpl alloc] initWithContext:contextCopy];
+  v7 = [(CDPManateeStateController *)self initWithContext:contextCopy circleProxy:v6];
 
   return v7;
 }
 
-- (CDPManateeStateController)initWithContext:(id)a3 circleProxy:(id)a4
+- (CDPManateeStateController)initWithContext:(id)context circleProxy:(id)proxy
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  proxyCopy = proxy;
   v18.receiver = self;
   v18.super_class = CDPManateeStateController;
   v9 = [(CDPManateeStateController *)&v18 init];
@@ -55,7 +55,7 @@
     goto LABEL_11;
   }
 
-  v11 = [CDPContext preflightContext:v7];
+  v11 = [CDPContext preflightContext:contextCopy];
   if (!v11)
   {
     v16 = _CDPLogSystem();
@@ -70,7 +70,7 @@
   v12 = v11;
   objc_storeStrong(p_isa + 2, v11);
 
-  v13 = v8;
+  v13 = proxyCopy;
   if (!v13)
   {
     v16 = _CDPLogSystem();
@@ -86,7 +86,7 @@ LABEL_11:
   }
 
   v14 = v13;
-  objc_storeStrong(p_isa + 1, a4);
+  objc_storeStrong(p_isa + 1, proxy);
 
   v15 = p_isa;
 LABEL_12:
@@ -94,17 +94,17 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)isManateeAvailable:(id *)a3
+- (BOOL)isManateeAvailable:(id *)available
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CDPContext *)self->_context altDSID];
+    altDSID = [(CDPContext *)self->_context altDSID];
     *buf = 141558274;
     v22 = 1752392040;
     v23 = 2112;
-    v24 = v6;
+    v24 = altDSID;
     _os_log_impl(&dword_1DED99000, v5, OS_LOG_TYPE_DEFAULT, "CDPManateeStateController: Trying to determine manatee availability for altDSID: %{mask.hash}@", buf, 0x16u);
   }
 
@@ -133,7 +133,7 @@ LABEL_16:
       [(CDPManateeStateController *)v12 isManateeAvailable:v15];
     }
 
-    if (!a3)
+    if (!available)
     {
       v13 = 0;
       goto LABEL_16;
@@ -149,12 +149,12 @@ LABEL_16:
     [(CDPManateeStateController *)v10 isManateeAvailable:v14];
   }
 
-  if (a3)
+  if (available)
   {
 LABEL_14:
     v16 = v10;
     v13 = 0;
-    *a3 = v10;
+    *available = v10;
     goto LABEL_17;
   }
 
@@ -165,7 +165,7 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)_checkCircleStateWithError:(id *)a3
+- (BOOL)_checkCircleStateWithError:(id *)error
 {
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -183,10 +183,10 @@ LABEL_17:
     v9 = self->_circleProxy != 0;
   }
 
-  else if (a3)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5403 underlyingError:v8];
-    *a3 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else

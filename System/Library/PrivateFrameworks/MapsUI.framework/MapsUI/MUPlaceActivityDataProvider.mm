@@ -2,14 +2,14 @@
 - (BOOL)supportsNoteSharing;
 - (LPMapMetadata)mapMetadataSpecialization;
 - (MKAnnotationView)annotationView;
-- (MUPlaceActivityDataProvider)initWithConfiguration:(id)a3;
+- (MUPlaceActivityDataProvider)initWithConfiguration:(id)configuration;
 - (NSData)mapItemAsSerializedData;
 - (id)activityTitle;
 - (id)activityURL;
 - (id)airDropJSON;
-- (id)thumbnailImageForSuggestedSize:(CGSize)a3 useAnnotation:(BOOL)a4;
-- (void)fetchHTMLTemplateWithCompletion:(id)a3;
-- (void)fetchNoteWithCompletion:(id)a3;
+- (id)thumbnailImageForSuggestedSize:(CGSize)size useAnnotation:(BOOL)annotation;
+- (void)fetchHTMLTemplateWithCompletion:(id)completion;
+- (void)fetchNoteWithCompletion:(id)completion;
 - (void)preload;
 @end
 
@@ -19,59 +19,59 @@
 {
   v38[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E696ECD0]);
-  v4 = [(MUPlaceActivityDataProvider *)self activityTitle];
-  [v3 setName:v4];
+  activityTitle = [(MUPlaceActivityDataProvider *)self activityTitle];
+  [v3 setName:activityTitle];
 
-  v5 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-  v6 = [v5 _shortAddress];
-  [v3 setAddress:v6];
+  mapItem = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+  _shortAddress = [mapItem _shortAddress];
+  [v3 setAddress:_shortAddress];
 
-  v7 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-  v8 = [v7 _cnPostalAddress];
-  [v3 setAddressComponents:v8];
+  mapItem2 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+  _cnPostalAddress = [mapItem2 _cnPostalAddress];
+  [v3 setAddressComponents:_cnPostalAddress];
 
-  v9 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-  [v9 _coordinate];
+  mapItem3 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+  [mapItem3 _coordinate];
   [v3 setLocation:?];
 
-  v10 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-  v11 = categoryIconFromMapItem(v10);
+  mapItem4 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+  v11 = categoryIconFromMapItem(mapItem4);
   [v3 setCategoryIcon:v11];
 
-  v12 = [(MUPlaceActivityDataProvider *)self mapItem];
-  v13 = [v12 _firstLocalizedCategoryName];
+  mapItem5 = [(MUPlaceActivityDataProvider *)self mapItem];
+  _firstLocalizedCategoryName = [mapItem5 _firstLocalizedCategoryName];
 
-  if (v13)
+  if (_firstLocalizedCategoryName)
   {
-    v14 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-    v15 = [v14 _firstLocalizedCategoryName];
-    [v3 setCategory:v15];
+    mapItem6 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+    _firstLocalizedCategoryName2 = [mapItem6 _firstLocalizedCategoryName];
+    [v3 setCategory:_firstLocalizedCategoryName2];
   }
 
-  v16 = [MEMORY[0x1E696F268] sharedLocationManager];
-  v17 = [v16 currentLocation];
+  mEMORY[0x1E696F268] = [MEMORY[0x1E696F268] sharedLocationManager];
+  currentLocation = [mEMORY[0x1E696F268] currentLocation];
 
-  v18 = [v17 latLng];
-  [v18 lat];
+  latLng = [currentLocation latLng];
+  [latLng lat];
   v20 = v19;
-  v21 = [v17 latLng];
-  [v21 lng];
+  latLng2 = [currentLocation latLng];
+  [latLng2 lng];
   v23 = CLLocationCoordinate2DMake(v20, v22);
 
-  v24 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+  mapItem7 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
   v25 = [objc_alloc(MEMORY[0x1E6985C40]) initWithLatitude:v23.latitude longitude:v23.longitude];
   v26 = objc_alloc(MEMORY[0x1E6985C40]);
-  [v24 _coordinate];
+  [mapItem7 _coordinate];
   v28 = v27;
-  [v24 _coordinate];
+  [mapItem7 _coordinate];
   v29 = [v26 initWithLatitude:v28 longitude:?];
   v30 = MEMORY[0x1E696AD98];
   [v25 distanceFromLocation:v29];
   v31 = [v30 numberWithDouble:?];
   [v3 setDistance:v31];
 
-  v32 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-  v38[0] = v32;
+  mapItem8 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+  v38[0] = mapItem8;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
 
   v34 = annotatedSnapshotImageWithMapItems(v33, 1);
@@ -85,54 +85,54 @@
   return v3;
 }
 
-- (id)thumbnailImageForSuggestedSize:(CGSize)a3 useAnnotation:(BOOL)a4
+- (id)thumbnailImageForSuggestedSize:(CGSize)size useAnnotation:(BOOL)annotation
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = size.height;
+  width = size.width;
+  if (annotation)
   {
-    v7 = [(MUPlaceActivityDataProvider *)self annotationView];
+    annotationView = [(MUPlaceActivityDataProvider *)self annotationView];
   }
 
   else
   {
-    v7 = 0;
+    annotationView = 0;
   }
 
-  v8 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-  v9 = [v8 _mapsui_thumbnailWithSize:v7 annotationView:{width, height}];
+  mapItem = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+  v9 = [mapItem _mapsui_thumbnailWithSize:annotationView annotationView:{width, height}];
 
   return v9;
 }
 
-- (void)fetchNoteWithCompletion:(id)a3
+- (void)fetchNoteWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration notesProvider];
+  completionCopy = completion;
+  notesProvider = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration notesProvider];
 
-  if (v5 && (MapsFeature_IsEnabled_Maps66() & 1) != 0)
+  if (notesProvider && (MapsFeature_IsEnabled_Maps66() & 1) != 0)
   {
-    v6 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration notesProvider];
+    notesProvider2 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration notesProvider];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __55__MUPlaceActivityDataProvider_fetchNoteWithCompletion___block_invoke;
     v7[3] = &unk_1E82195B8;
-    v8 = v4;
-    [v6 fetchNoteWithCompletion:v7];
+    v8 = completionCopy;
+    [notesProvider2 fetchNoteWithCompletion:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)fetchHTMLTemplateWithCompletion:(id)a3
+- (void)fetchHTMLTemplateWithCompletion:(id)completion
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MUPlaceActivityDataProvider *)self mapItem];
-  v33[0] = v5;
+  completionCopy = completion;
+  mapItem = [(MUPlaceActivityDataProvider *)self mapItem];
+  v33[0] = mapItem;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
 
   v31[0] = 0;
@@ -189,8 +189,8 @@
   v16 = v29;
   v17 = v27;
   block[4] = self;
-  v14 = v4;
-  v11 = v4;
+  v14 = completionCopy;
+  v11 = completionCopy;
   dispatch_group_notify(v10, MEMORY[0x1E69E96A0], block);
 
   _Block_object_dispose(v27, 8);
@@ -250,14 +250,14 @@ void __63__MUPlaceActivityDataProvider_fetchHTMLTemplateWithCompletion___block_i
 - (id)airDropJSON
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration airdropJSONBlock];
+  airdropJSONBlock = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration airdropJSONBlock];
 
-  if (!v3 || ([(MUPlaceActivityDataProviderConfiguration *)self->_configuration airdropJSONBlock], v4 = objc_claimAutoreleasedReturnValue(), v4[2](), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!airdropJSONBlock || ([(MUPlaceActivityDataProviderConfiguration *)self->_configuration airdropJSONBlock], v4 = objc_claimAutoreleasedReturnValue(), v4[2](), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
     v9[0] = @"SFAirDropActivitySubjectMain";
-    v6 = [(MUPlaceActivityDataProvider *)self activityTitle];
+    activityTitle = [(MUPlaceActivityDataProvider *)self activityTitle];
     v9[1] = @"SFAirDropActivitySubjectMapsLinkType";
-    v10[0] = v6;
+    v10[0] = activityTitle;
     v10[1] = &unk_1F450DCD0;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
   }
@@ -269,13 +269,13 @@ void __63__MUPlaceActivityDataProvider_fetchHTMLTemplateWithCompletion___block_i
 
 - (MKAnnotationView)annotationView
 {
-  v3 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration annotationBlock];
+  annotationBlock = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration annotationBlock];
 
-  if (!v3 || ([(MUPlaceActivityDataProviderConfiguration *)self->_configuration annotationBlock], v4 = objc_claimAutoreleasedReturnValue(), v4[2](), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!annotationBlock || ([(MUPlaceActivityDataProviderConfiguration *)self->_configuration annotationBlock], v4 = objc_claimAutoreleasedReturnValue(), v4[2](), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
     v6 = objc_alloc(MEMORY[0x1E696F278]);
-    v7 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-    v8 = [v6 initWithMapItem:v7];
+    mapItem = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+    v8 = [v6 initWithMapItem:mapItem];
 
     v5 = [objc_alloc(MEMORY[0x1E696F2C8]) initWithAnnotation:v8 reuseIdentifier:0];
   }
@@ -285,57 +285,57 @@ void __63__MUPlaceActivityDataProvider_fetchHTMLTemplateWithCompletion___block_i
 
 - (id)activityTitle
 {
-  v3 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration activityTitleBlock];
+  activityTitleBlock = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration activityTitleBlock];
 
-  if (v3)
+  if (activityTitleBlock)
   {
-    v4 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration activityTitleBlock];
-    v3 = v4[2]();
+    activityTitleBlock2 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration activityTitleBlock];
+    activityTitleBlock = activityTitleBlock2[2]();
   }
 
-  if ([v3 length])
+  if ([activityTitleBlock length])
   {
-    v5 = v3;
+    name = activityTitleBlock;
   }
 
   else
   {
-    v6 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-    v5 = [v6 name];
+    mapItem = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+    name = [mapItem name];
   }
 
-  return v5;
+  return name;
 }
 
 - (id)activityURL
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration activityURLBlock];
+  activityURLBlock = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration activityURLBlock];
 
-  if (!v3 || (v4 = [(MUPlaceActivityDataProvider *)self supportsURLShorteningService], [(MUPlaceActivityDataProviderConfiguration *)self->_configuration activityURLBlock], v5 = objc_claimAutoreleasedReturnValue(), (v5)[2](v5, !v4), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  if (!activityURLBlock || (v4 = [(MUPlaceActivityDataProvider *)self supportsURLShorteningService], [(MUPlaceActivityDataProviderConfiguration *)self->_configuration activityURLBlock], v5 = objc_claimAutoreleasedReturnValue(), (v5)[2](v5, !v4), _fullSharingURL = objc_claimAutoreleasedReturnValue(), v5, !_fullSharingURL))
   {
-    v7 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-    v6 = [v7 _fullSharingURL];
+    mapItem = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+    _fullSharingURL = [mapItem _fullSharingURL];
 
-    if (!v6)
+    if (!_fullSharingURL)
     {
       v8 = objc_alloc_init(MEMORY[0x1E696F418]);
-      v9 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-      v13[0] = v9;
+      mapItem2 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+      v13[0] = mapItem2;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-      v6 = [v8 urlForOpeningMapItems:v10 options:0];
+      _fullSharingURL = [v8 urlForOpeningMapItems:v10 options:0];
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return _fullSharingURL;
 }
 
 - (BOOL)supportsNoteSharing
 {
-  v2 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration notesProvider];
-  if (v2)
+  notesProvider = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration notesProvider];
+  if (notesProvider)
   {
     IsEnabled_Maps66 = MapsFeature_IsEnabled_Maps66();
   }
@@ -351,8 +351,8 @@ void __63__MUPlaceActivityDataProvider_fetchHTMLTemplateWithCompletion___block_i
 - (NSData)mapItemAsSerializedData
 {
   v2 = MEMORY[0x1E696ACC8];
-  v3 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
-  v4 = [v2 archivedDataWithRootObject:v3 requiringSecureCoding:1 error:0];
+  mapItem = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration mapItem];
+  v4 = [v2 archivedDataWithRootObject:mapItem requiringSecureCoding:1 error:0];
 
   return v4;
 }
@@ -362,20 +362,20 @@ void __63__MUPlaceActivityDataProvider_fetchHTMLTemplateWithCompletion___block_i
   v4.receiver = self;
   v4.super_class = MUPlaceActivityDataProvider;
   [(MUActivityDataProvider *)&v4 preload];
-  v3 = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration notesProvider];
-  [v3 preload];
+  notesProvider = [(MUPlaceActivityDataProviderConfiguration *)self->_configuration notesProvider];
+  [notesProvider preload];
 }
 
-- (MUPlaceActivityDataProvider)initWithConfiguration:(id)a3
+- (MUPlaceActivityDataProvider)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = MUPlaceActivityDataProvider;
   v6 = [(MUActivityDataProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;

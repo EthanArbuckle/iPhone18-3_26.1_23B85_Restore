@@ -1,10 +1,10 @@
 @interface BLDaemon
 + (id)daemon;
 - (BLDaemon)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)_setupForNotifications;
 - (void)dealloc;
-- (void)lrq_setupBeforeListenersWithCompletion:(id)a3;
+- (void)lrq_setupBeforeListenersWithCompletion:(id)completion;
 - (void)lrq_setupCacheDelete;
 - (void)lrq_setupListeners;
 - (void)sq_finishedStartingUp;
@@ -89,39 +89,39 @@
   }
 
   [(BLDaemon *)self _setupForNotifications];
-  v4 = [(BLDaemon *)self listenersReadyQueue];
+  listenersReadyQueue = [(BLDaemon *)self listenersReadyQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C2DB4;
   block[3] = &unk_10011CFE8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(listenersReadyQueue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = BLDaemonLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = [v7 processIdentifier];
+    *&buf[4] = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Connection request from pid=%d", buf, 8u);
   }
 
   objc_opt_class();
-  v9 = [v7 valueForEntitlement:@"com.apple.ibooks.BLService.private"];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.ibooks.BLService.private"];
   v10 = BUDynamicCast();
 
   objc_opt_class();
-  v11 = [v7 valueForEntitlement:@"com.apple.itunesstored.private"];
+  v11 = [connectionCopy valueForEntitlement:@"com.apple.itunesstored.private"];
   v12 = BUDynamicCast();
 
-  v13 = [v10 BOOLValue];
-  v14 = [v12 BOOLValue];
-  v15 = [(BLDaemon *)self libraryService];
-  v16 = v15 == 0;
+  bOOLValue = [v10 BOOLValue];
+  bOOLValue2 = [v12 BOOLValue];
+  libraryService = [(BLDaemon *)self libraryService];
+  v16 = libraryService == 0;
 
   if (v16)
   {
@@ -129,38 +129,38 @@
     [(BLDaemon *)self setLibraryService:v17];
   }
 
-  v18 = [(BLDaemon *)self libraryService];
+  libraryService2 = [(BLDaemon *)self libraryService];
 
-  v19 = (v18 != 0) & (v13 | v14);
+  v19 = (libraryService2 != 0) & (bOOLValue | bOOLValue2);
   if (v19)
   {
     v20 = BLDaemonLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v7 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       *buf = 67109120;
-      *&buf[4] = v21;
+      *&buf[4] = processIdentifier;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Accepting new connection from pid %d", buf, 8u);
     }
 
-    v22 = [(BLDaemon *)self libraryServiceListener];
-    v23 = v22 == v6;
+    libraryServiceListener = [(BLDaemon *)self libraryServiceListener];
+    v23 = libraryServiceListener == listenerCopy;
 
     if (v23)
     {
       v24 = +[BLServiceInterface mainInterface];
-      [v7 setExportedInterface:v24];
+      [connectionCopy setExportedInterface:v24];
 
-      v25 = [(BLDaemon *)self libraryService];
-      [v7 setExportedObject:v25];
+      libraryService3 = [(BLDaemon *)self libraryService];
+      [connectionCopy setExportedObject:libraryService3];
     }
 
-    [v7 resume];
+    [connectionCopy resume];
   }
 
   else
   {
-    v26 = [v7 valueForEntitlement:@"com.apple.application-identifier"];
+    v26 = [connectionCopy valueForEntitlement:@"com.apple.application-identifier"];
     if (v26)
     {
       objc_opt_class();
@@ -172,7 +172,7 @@
     }
 
     v27 = @"Service not ready (probably before first unlock)";
-    if (v18)
+    if (libraryService2)
     {
       v27 = @"Process missing entitlements.";
     }
@@ -181,9 +181,9 @@
     v29 = BLDaemonLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v7 processIdentifier];
+      processIdentifier2 = [connectionCopy processIdentifier];
       *buf = 67109634;
-      *&buf[4] = v30;
+      *&buf[4] = processIdentifier2;
       *v39 = 2114;
       *&v39[2] = v26;
       *&v39[10] = 2114;
@@ -191,7 +191,7 @@
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Refusing connection to pid %d. (appIdentifier: %{public}@) %{public}@", buf, 0x1Cu);
     }
 
-    if (!v18)
+    if (!libraryService2)
     {
       if (MGGetBoolAnswer())
       {
@@ -229,24 +229,24 @@
   return v19;
 }
 
-- (void)lrq_setupBeforeListenersWithCompletion:(id)a3
+- (void)lrq_setupBeforeListenersWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [(BLDaemon *)self listenersReadyQueue];
-  dispatch_assert_queue_V2(v4);
+  completionCopy = completion;
+  listenersReadyQueue = [(BLDaemon *)self listenersReadyQueue];
+  dispatch_assert_queue_V2(listenersReadyQueue);
 
-  v5 = [(BLDaemon *)self libraryService];
+  libraryService = [(BLDaemon *)self libraryService];
 
-  if (v5)
+  if (libraryService)
   {
-    v6 = [(BLDaemon *)self libraryService];
-    [v6 performPreListenerStartupWithCompletion:v8];
+    libraryService2 = [(BLDaemon *)self libraryService];
+    [libraryService2 performPreListenerStartupWithCompletion:completionCopy];
   }
 
   else
   {
-    v7 = objc_retainBlock(v8);
-    v6 = v7;
+    v7 = objc_retainBlock(completionCopy);
+    libraryService2 = v7;
     if (v7)
     {
       (*(v7 + 2))(v7, 0);
@@ -256,8 +256,8 @@
 
 - (void)lrq_setupListeners
 {
-  v3 = [(BLDaemon *)self listenersReadyQueue];
-  dispatch_assert_queue_V2(v3);
+  listenersReadyQueue = [(BLDaemon *)self listenersReadyQueue];
+  dispatch_assert_queue_V2(listenersReadyQueue);
 
   v4 = BLDaemonLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -269,11 +269,11 @@
   v5 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.ibooks.BLService"];
   [(BLDaemon *)self setLibraryServiceListener:v5];
 
-  v6 = [(BLDaemon *)self libraryServiceListener];
-  [v6 setDelegate:self];
+  libraryServiceListener = [(BLDaemon *)self libraryServiceListener];
+  [libraryServiceListener setDelegate:self];
 
-  v7 = [(BLDaemon *)self libraryServiceListener];
-  [v7 resume];
+  libraryServiceListener2 = [(BLDaemon *)self libraryServiceListener];
+  [libraryServiceListener2 resume];
 
   v8 = notify_post(BLDownloadQueueServerStarted);
   if (v8)
@@ -291,8 +291,8 @@
 
 - (void)lrq_setupCacheDelete
 {
-  v3 = [(BLDaemon *)self listenersReadyQueue];
-  dispatch_assert_queue_V2(v3);
+  listenersReadyQueue = [(BLDaemon *)self listenersReadyQueue];
+  dispatch_assert_queue_V2(listenersReadyQueue);
 
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;
@@ -307,8 +307,8 @@
 
 - (void)sq_finishedStartingUp
 {
-  v3 = [(BLDaemon *)self startupQueue];
-  dispatch_assert_queue_V2(v3);
+  startupQueue = [(BLDaemon *)self startupQueue];
+  dispatch_assert_queue_V2(startupQueue);
 
   v4 = BLDaemonLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -317,8 +317,8 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Starting the library service.", buf, 2u);
   }
 
-  v5 = [(BLDaemon *)self libraryService];
-  [v5 startPendingOperations];
+  libraryService = [(BLDaemon *)self libraryService];
+  [libraryService startPendingOperations];
 
   v6 = objc_alloc_init(BLCacheDeleteStorageManager);
   [(BLDaemon *)self setCacheDeleteManager:v6];
@@ -330,8 +330,8 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Doing initial calculation of storage usage.", v12, 2u);
   }
 
-  v8 = [(BLDaemon *)self cacheDeleteManager];
-  [v8 updateAvailableStorage];
+  cacheDeleteManager = [(BLDaemon *)self cacheDeleteManager];
+  [cacheDeleteManager updateAvailableStorage];
 
   v9 = +[NSNotificationCenter defaultCenter];
   v10 = +[NSOperationQueue mainQueue];
@@ -342,9 +342,9 @@
 {
   v3 = +[BLNotificationManager sharedInstance];
   v4 = [BLNotificationService alloc];
-  v7 = [(BLDaemon *)self libraryService];
-  v5 = [v7 automaticDownloadProcessor];
-  v6 = [(BLNotificationService *)v4 initWithAutomaticDownloadProcessor:v5];
+  libraryService = [(BLDaemon *)self libraryService];
+  automaticDownloadProcessor = [libraryService automaticDownloadProcessor];
+  v6 = [(BLNotificationService *)v4 initWithAutomaticDownloadProcessor:automaticDownloadProcessor];
   [(BLDaemon *)self setNotificationService:v6];
 }
 

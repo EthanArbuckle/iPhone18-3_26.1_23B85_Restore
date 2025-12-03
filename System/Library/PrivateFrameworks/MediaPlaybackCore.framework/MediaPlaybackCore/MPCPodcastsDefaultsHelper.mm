@@ -3,7 +3,7 @@
 - (BOOL)remoteSkipInsteadOfNextTrack;
 - (double)skipBackwardInterval;
 - (double)skipForwardInterval;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation MPCPodcastsDefaultsHelper
@@ -17,7 +17,7 @@
 
 - (double)skipForwardInterval
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PodcastsDefaultsHelper.skipForwardInterval.getter();
 
   return v3;
@@ -25,7 +25,7 @@
 
 - (double)skipBackwardInterval
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PodcastsDefaultsHelper.skipBackwardInterval.getter();
 
   return v3;
@@ -33,28 +33,28 @@
 
 - (BOOL)remoteSkipInsteadOfNextTrack
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PodcastsDefaultsHelper.remoteSkipInsteadOfNextTrack.getter();
 
   return v3 & 1;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v10 = sub_1C6016940();
     v12 = v11;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v18, 0, sizeof(v18));
-    v16 = a5;
-    v17 = self;
-    if (a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (change)
     {
       goto LABEL_4;
     }
@@ -66,18 +66,18 @@ LABEL_7:
 
   v10 = 0;
   v12 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   sub_1C6017390();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!change)
   {
     goto LABEL_7;
   }
@@ -88,7 +88,7 @@ LABEL_4:
   v15 = sub_1C6016860();
 
 LABEL_8:
-  PodcastsDefaultsHelper.observeValue(forKeyPath:of:change:context:)(v10, v12, v18, v15, a6);
+  PodcastsDefaultsHelper.observeValue(forKeyPath:of:change:context:)(v10, v12, v18, v15, context);
 
   sub_1C5CBCF4C(v18);
 }

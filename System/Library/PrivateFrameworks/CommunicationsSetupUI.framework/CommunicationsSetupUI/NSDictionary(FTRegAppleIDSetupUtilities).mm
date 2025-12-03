@@ -9,10 +9,10 @@
 
 - (id)__ftreg_responseProfileID
 {
-  v2 = [a1 objectForKey:@"realm-user-id"];
+  v2 = [self objectForKey:@"realm-user-id"];
   if (![v2 length])
   {
-    v3 = [a1 objectForKey:@"profile-id"];
+    v3 = [self objectForKey:@"profile-id"];
 
     v2 = v3;
   }
@@ -22,27 +22,27 @@
 
 - (uint64_t)__ftreg_responseIsUpgrade
 {
-  v1 = [a1 objectForKey:@"isUpgrade"];
-  v2 = [v1 BOOLValue];
+  v1 = [self objectForKey:@"isUpgrade"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (BOOL)__ftreg_isValidSetupDictionary
 {
-  v2 = [a1 __ftreg_responseAppleID];
-  v3 = v2;
-  if (v2 && [v2 length])
+  __ftreg_responseAppleID = [self __ftreg_responseAppleID];
+  v3 = __ftreg_responseAppleID;
+  if (__ftreg_responseAppleID && [__ftreg_responseAppleID length])
   {
-    v4 = [a1 __ftreg_responseProfileID];
-    v5 = v4;
-    if (v4 && [v4 length])
+    __ftreg_responseProfileID = [self __ftreg_responseProfileID];
+    v5 = __ftreg_responseProfileID;
+    if (__ftreg_responseProfileID && [__ftreg_responseProfileID length])
     {
-      v6 = [a1 __ftreg_responseAuthToken];
-      v7 = v6;
-      if (v6)
+      __ftreg_responseAuthToken = [self __ftreg_responseAuthToken];
+      v7 = __ftreg_responseAuthToken;
+      if (__ftreg_responseAuthToken)
       {
-        v8 = [v6 length] != 0;
+        v8 = [__ftreg_responseAuthToken length] != 0;
       }
 
       else
@@ -67,7 +67,7 @@
 
 - (id)__ftreg_candidateAliases
 {
-  v1 = [a1 objectForKey:@"handles"];
+  v1 = [self objectForKey:@"handles"];
   v2 = v1;
   if (v1 && [v1 count])
   {

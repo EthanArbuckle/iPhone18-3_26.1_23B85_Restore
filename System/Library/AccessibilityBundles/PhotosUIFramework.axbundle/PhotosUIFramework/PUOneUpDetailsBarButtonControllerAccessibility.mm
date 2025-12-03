@@ -1,22 +1,22 @@
 @interface PUOneUpDetailsBarButtonControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axDetailsShowing;
 - (id)_axAssetViewModel;
-- (void)_axLoadDetailsButtonAccessibility:(id)a3;
+- (void)_axLoadDetailsButtonAccessibility:(id)accessibility;
 - (void)update;
 @end
 
 @implementation PUOneUpDetailsBarButtonControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUAssetViewModel" hasInstanceMethod:@"isAccessoryViewVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"assetViewModelForAssetReference:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"currentAssetReference" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUOneUpDetailsBarButtonController" hasInstanceMethod:@"update" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUOneUpDetailsBarButtonController" hasSwiftField:@"browseViewModel" withSwiftType:"PUBrowsingViewModel"];
-  [v3 validateClass:@"PUOneUpDetailsBarButtonController" hasSwiftField:@"barButtonItem" withSwiftType:"AnimatableBarButtonItem"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUAssetViewModel" hasInstanceMethod:@"isAccessoryViewVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"assetViewModelForAssetReference:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"currentAssetReference" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUOneUpDetailsBarButtonController" hasInstanceMethod:@"update" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUOneUpDetailsBarButtonController" hasSwiftField:@"browseViewModel" withSwiftType:"PUBrowsingViewModel"];
+  [validationsCopy validateClass:@"PUOneUpDetailsBarButtonController" hasSwiftField:@"barButtonItem" withSwiftType:"AnimatableBarButtonItem"];
 }
 
 - (id)_axAssetViewModel
@@ -51,28 +51,28 @@ uint64_t __67__PUOneUpDetailsBarButtonControllerAccessibility__axAssetViewModel_
 
 - (BOOL)_axDetailsShowing
 {
-  v2 = [(PUOneUpDetailsBarButtonControllerAccessibility *)self _axAssetViewModel];
-  v3 = [v2 safeBoolForKey:@"isAccessoryViewVisible"];
+  _axAssetViewModel = [(PUOneUpDetailsBarButtonControllerAccessibility *)self _axAssetViewModel];
+  v3 = [_axAssetViewModel safeBoolForKey:@"isAccessoryViewVisible"];
 
   return v3;
 }
 
-- (void)_axLoadDetailsButtonAccessibility:(id)a3
+- (void)_axLoadDetailsButtonAccessibility:(id)accessibility
 {
-  v7 = a3;
+  accessibilityCopy = accessibility;
   if ([(PUOneUpDetailsBarButtonControllerAccessibility *)self _axDetailsShowing])
   {
-    v4 = [v7 accessibilityTraits];
-    v5 = *MEMORY[0x29EDC7FC0] | v4;
+    accessibilityTraits = [accessibilityCopy accessibilityTraits];
+    v5 = *MEMORY[0x29EDC7FC0] | accessibilityTraits;
   }
 
   else
   {
     v6 = *MEMORY[0x29EDC7FC0];
-    v5 = [v7 accessibilityTraits] & ~v6;
+    v5 = [accessibilityCopy accessibilityTraits] & ~v6;
   }
 
-  [v7 setAccessibilityTraits:v5];
+  [accessibilityCopy setAccessibilityTraits:v5];
 }
 
 - (void)update

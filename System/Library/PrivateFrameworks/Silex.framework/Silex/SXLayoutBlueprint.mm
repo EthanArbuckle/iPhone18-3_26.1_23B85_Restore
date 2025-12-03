@@ -1,54 +1,54 @@
 @interface SXLayoutBlueprint
 - (CGSize)blueprintSize;
-- (SXLayoutBlueprint)initWithLayoutOptions:(id)a3 componentBlueprintFactory:(id)a4 unitConverterFactory:(id)a5;
+- (SXLayoutBlueprint)initWithLayoutOptions:(id)options componentBlueprintFactory:(id)factory unitConverterFactory:(id)converterFactory;
 - (SXLayoutBlueprint)parentLayoutBlueprint;
 - (SXLayoutBlueprint)rootLayoutBlueprint;
-- (id)componentBlueprintForComponentIdentifier:(id)a3 includeChildren:(BOOL)a4;
-- (id)componentsInRect:(CGRect)a3;
-- (id)containerComponentIdentifierContainingComponentWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)componentBlueprintForComponentIdentifier:(id)identifier includeChildren:(BOOL)children;
+- (id)componentsInRect:(CGRect)rect;
+- (id)containerComponentIdentifierContainingComponentWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)layoutDescriptionForBlueprint:(id)a3 depth:(unint64_t)a4;
-- (id)snapLinesIncludingChildren:(BOOL)a3;
+- (id)layoutDescriptionForBlueprint:(id)blueprint depth:(unint64_t)depth;
+- (id)snapLinesIncludingChildren:(BOOL)children;
 - (void)endUpdates;
-- (void)invalidateDependentsOfComponentNode:(id)a3 forDependencyResolver:(id)a4;
+- (void)invalidateDependentsOfComponentNode:(id)node forDependencyResolver:(id)resolver;
 - (void)invalidateDependentsOfInvalidatedComponents;
-- (void)invalidatePositionForComponentWithIdentifier:(id)a3;
-- (void)invalidateSizeForComponentWithIdentifier:(id)a3;
-- (void)invalidateSizeForComponentWithIdentifier:(id)a3 suggestedSize:(CGSize)a4;
-- (void)invalidateState:(id)a3 forComponentWithIdentifier:(id)a4;
-- (void)registerLayout:(id)a3 sizer:(id)a4 forComponent:(id)a5 atIndex:(unint64_t)a6;
-- (void)startUpdatesForWidth:(double)a3;
-- (void)storeComponentsFromBlueprint:(id)a3 inDictionary:(id)a4;
-- (void)unregisterLayout:(id)a3;
-- (void)updatePosition:(CGPoint)a3 forComponentWithIdentifier:(id)a4;
-- (void)updateSize:(CGSize)a3 forComponentWithIdentifier:(id)a4;
+- (void)invalidatePositionForComponentWithIdentifier:(id)identifier;
+- (void)invalidateSizeForComponentWithIdentifier:(id)identifier;
+- (void)invalidateSizeForComponentWithIdentifier:(id)identifier suggestedSize:(CGSize)size;
+- (void)invalidateState:(id)state forComponentWithIdentifier:(id)identifier;
+- (void)registerLayout:(id)layout sizer:(id)sizer forComponent:(id)component atIndex:(unint64_t)index;
+- (void)startUpdatesForWidth:(double)width;
+- (void)storeComponentsFromBlueprint:(id)blueprint inDictionary:(id)dictionary;
+- (void)unregisterLayout:(id)layout;
+- (void)updatePosition:(CGPoint)position forComponentWithIdentifier:(id)identifier;
+- (void)updateSize:(CGSize)size forComponentWithIdentifier:(id)identifier;
 @end
 
 @implementation SXLayoutBlueprint
 
-- (SXLayoutBlueprint)initWithLayoutOptions:(id)a3 componentBlueprintFactory:(id)a4 unitConverterFactory:(id)a5
+- (SXLayoutBlueprint)initWithLayoutOptions:(id)options componentBlueprintFactory:(id)factory unitConverterFactory:(id)converterFactory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  optionsCopy = options;
+  factoryCopy = factory;
+  converterFactoryCopy = converterFactory;
   v21.receiver = self;
   v21.super_class = SXLayoutBlueprint;
   v12 = [(SXLayoutBlueprint *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_layoutOptions, a3);
-    objc_storeStrong(&v13->_componentBlueprintFactory, a4);
-    objc_storeStrong(&v13->_unitConverterFactory, a5);
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v12->_layoutOptions, options);
+    objc_storeStrong(&v13->_componentBlueprintFactory, factory);
+    objc_storeStrong(&v13->_unitConverterFactory, converterFactory);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     blueprint = v13->_blueprint;
-    v13->_blueprint = v14;
+    v13->_blueprint = dictionary;
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     orderedComponentIdentifiers = v13->_orderedComponentIdentifiers;
-    v13->_orderedComponentIdentifiers = v16;
+    v13->_orderedComponentIdentifiers = array;
 
     v18 = [MEMORY[0x1E695DFA8] set];
     invalidatedComponents = v13->_invalidatedComponents;
@@ -58,68 +58,68 @@
   return v13;
 }
 
-- (void)registerLayout:(id)a3 sizer:(id)a4 forComponent:(id)a5 atIndex:(unint64_t)a6
+- (void)registerLayout:(id)layout sizer:(id)sizer forComponent:(id)component atIndex:(unint64_t)index
 {
   componentBlueprintFactory = self->_componentBlueprintFactory;
-  v11 = a5;
-  v17 = [(SXComponentBlueprintFactory *)componentBlueprintFactory componentBlueprintForComponent:v11 layout:a3 sizer:a4];
+  componentCopy = component;
+  v17 = [(SXComponentBlueprintFactory *)componentBlueprintFactory componentBlueprintForComponent:componentCopy layout:layout sizer:sizer];
   [v17 setParentLayoutBlueprint:self];
   blueprint = self->_blueprint;
-  v13 = [v11 identifier];
-  [(NSMutableDictionary *)blueprint setObject:v17 forKey:v13];
+  identifier = [componentCopy identifier];
+  [(NSMutableDictionary *)blueprint setObject:v17 forKey:identifier];
 
   v14 = [(NSMutableArray *)self->_orderedComponentIdentifiers count];
   orderedComponentIdentifiers = self->_orderedComponentIdentifiers;
-  v16 = [v11 identifier];
+  identifier2 = [componentCopy identifier];
 
-  if (v14 <= a6)
+  if (v14 <= index)
   {
-    [(NSMutableArray *)orderedComponentIdentifiers addObject:v16];
+    [(NSMutableArray *)orderedComponentIdentifiers addObject:identifier2];
   }
 
   else
   {
-    [(NSMutableArray *)orderedComponentIdentifiers insertObject:v16 atIndex:a6];
+    [(NSMutableArray *)orderedComponentIdentifiers insertObject:identifier2 atIndex:index];
   }
 }
 
-- (void)unregisterLayout:(id)a3
+- (void)unregisterLayout:(id)layout
 {
   blueprint = self->_blueprint;
-  v5 = a3;
-  v6 = [v5 component];
-  v7 = [v6 identifier];
-  [(NSMutableDictionary *)blueprint removeObjectForKey:v7];
+  layoutCopy = layout;
+  component = [layoutCopy component];
+  identifier = [component identifier];
+  [(NSMutableDictionary *)blueprint removeObjectForKey:identifier];
 
   orderedComponentIdentifiers = self->_orderedComponentIdentifiers;
-  v10 = [v5 component];
+  component2 = [layoutCopy component];
 
-  v9 = [v10 identifier];
-  [(NSMutableArray *)orderedComponentIdentifiers removeObject:v9];
+  identifier2 = [component2 identifier];
+  [(NSMutableArray *)orderedComponentIdentifiers removeObject:identifier2];
 }
 
-- (void)invalidatePositionForComponentWithIdentifier:(id)a3
+- (void)invalidatePositionForComponentWithIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v4 = [SXLayoutBlueprint componentBlueprintForComponentIdentifier:"componentBlueprintForComponentIdentifier:includeChildren:" includeChildren:?];
   v5 = v4;
   if (v4)
   {
     self->_isComplete = 0;
     [v4 invalidatePosition];
-    [(NSMutableSet *)self->_invalidatedComponents addObject:v6];
+    [(NSMutableSet *)self->_invalidatedComponents addObject:identifierCopy];
   }
 }
 
-- (void)invalidateSizeForComponentWithIdentifier:(id)a3
+- (void)invalidateSizeForComponentWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v9 = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:v4 includeChildren:1];
-  v5 = [v9 componentState];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  v9 = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:identifierCopy includeChildren:1];
+  componentState = [v9 componentState];
+  v6 = componentState;
+  if (componentState)
   {
-    v7 = v5;
+    v7 = componentState;
   }
 
   else
@@ -129,30 +129,30 @@
 
   v8 = v7;
 
-  [(SXLayoutBlueprint *)self invalidateSizeForComponentWithIdentifier:v4 suggestedSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  [(SXLayoutBlueprint *)self invalidateSizeForComponentWithIdentifier:identifierCopy suggestedSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 }
 
-- (void)invalidateState:(id)a3 forComponentWithIdentifier:(id)a4
+- (void)invalidateState:(id)state forComponentWithIdentifier:(id)identifier
 {
-  v11 = a4;
-  v6 = a3;
-  v7 = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:v11 includeChildren:1];
-  v8 = [v7 componentState];
-  [v7 setComponentState:v6];
-  v9 = [v7 componentSizer];
-  v10 = [v9 requiresSizeChangeForStateChange:v6 fromState:v8];
+  identifierCopy = identifier;
+  stateCopy = state;
+  v7 = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:identifierCopy includeChildren:1];
+  componentState = [v7 componentState];
+  [v7 setComponentState:stateCopy];
+  componentSizer = [v7 componentSizer];
+  v10 = [componentSizer requiresSizeChangeForStateChange:stateCopy fromState:componentState];
 
   if (v10)
   {
-    [(SXLayoutBlueprint *)self invalidateSizeForComponentWithIdentifier:v11 suggestedSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+    [(SXLayoutBlueprint *)self invalidateSizeForComponentWithIdentifier:identifierCopy suggestedSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   }
 }
 
-- (void)invalidateSizeForComponentWithIdentifier:(id)a3 suggestedSize:(CGSize)a4
+- (void)invalidateSizeForComponentWithIdentifier:(id)identifier suggestedSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
   v7 = [SXLayoutBlueprint componentBlueprintForComponentIdentifier:"componentBlueprintForComponentIdentifier:includeChildren:" includeChildren:?];
   v8 = v7;
   if (v7)
@@ -160,19 +160,19 @@
     self->_isComplete = 0;
     [v7 setSuggestedSizeAfterInvalidation:{width, height}];
     [v8 invalidateSize];
-    v9 = [v8 parentLayoutBlueprint];
-    v10 = [v9 parentLayoutBlueprint];
+    parentLayoutBlueprint = [v8 parentLayoutBlueprint];
+    v9ParentLayoutBlueprint = [parentLayoutBlueprint parentLayoutBlueprint];
 
-    if (v10)
+    if (v9ParentLayoutBlueprint)
     {
-      v11 = [v8 component];
-      v12 = [v11 identifier];
-      v13 = [v10 containerComponentIdentifierContainingComponentWithIdentifier:v12];
+      component = [v8 component];
+      identifier = [component identifier];
+      v13 = [v9ParentLayoutBlueprint containerComponentIdentifierContainingComponentWithIdentifier:identifier];
 
-      [v10 invalidateSizeForComponentWithIdentifier:v13];
+      [v9ParentLayoutBlueprint invalidateSizeForComponentWithIdentifier:v13];
     }
 
-    [(NSMutableSet *)self->_invalidatedComponents addObject:v14];
+    [(NSMutableSet *)self->_invalidatedComponents addObject:identifierCopy];
   }
 }
 
@@ -202,26 +202,26 @@
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:v9, v16];
-        v11 = [v10 parentLayoutBlueprint];
-        v12 = [v11 dependencySolver];
+        parentLayoutBlueprint = [v10 parentLayoutBlueprint];
+        dependencySolver = [parentLayoutBlueprint dependencySolver];
 
         if (([v10 hasValidSize] & 1) == 0)
         {
-          v13 = [(SXComponentDependencyResolver *)v12 componentNodeForComponentIdentifier:v9 andAttribute:2];
-          [(SXLayoutBlueprint *)self invalidateDependentsOfComponentNode:v13 forDependencyResolver:v12];
+          v13 = [(SXComponentDependencyResolver *)dependencySolver componentNodeForComponentIdentifier:v9 andAttribute:2];
+          [(SXLayoutBlueprint *)self invalidateDependentsOfComponentNode:v13 forDependencyResolver:dependencySolver];
         }
 
         if (([v10 hasValidPosition] & 1) == 0)
         {
-          v14 = [(SXComponentDependencyResolver *)v12 componentNodeForComponentIdentifier:v9 andAttribute:1];
-          [(SXLayoutBlueprint *)self invalidateDependentsOfComponentNode:v14 forDependencyResolver:v12];
+          v14 = [(SXComponentDependencyResolver *)dependencySolver componentNodeForComponentIdentifier:v9 andAttribute:1];
+          [(SXLayoutBlueprint *)self invalidateDependentsOfComponentNode:v14 forDependencyResolver:dependencySolver];
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v10 layoutBlueprint];
-          [v15 invalidateDependentsOfInvalidatedComponents];
+          layoutBlueprint = [v10 layoutBlueprint];
+          [layoutBlueprint invalidateDependentsOfInvalidatedComponents];
         }
       }
 
@@ -232,18 +232,18 @@
   }
 }
 
-- (void)invalidateDependentsOfComponentNode:(id)a3 forDependencyResolver:(id)a4
+- (void)invalidateDependentsOfComponentNode:(id)node forDependencyResolver:(id)resolver
 {
   v50 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  nodeCopy = node;
+  resolverCopy = resolver;
   v7 = [MEMORY[0x1E696AC70] hashTableWithOptions:512];
   v8 = [MEMORY[0x1E696AC70] hashTableWithOptions:512];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v15 = [(SXComponentDependencyResolver *)v6 componentNodesDependentOnComponentNode:v5, v9, v10, v11, v12, v13, v14, v5, self, v40];
+  v15 = [(SXComponentDependencyResolver *)resolverCopy componentNodesDependentOnComponentNode:nodeCopy, v9, v10, v11, v12, v13, v14, nodeCopy, self, v40];
   v16 = [v15 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v16)
   {
@@ -267,14 +267,14 @@
     while (v17);
   }
 
-  v20 = [v8 anyObject];
-  if (v20)
+  anyObject = [v8 anyObject];
+  if (anyObject)
   {
-    v21 = v20;
+    v21 = anyObject;
     do
     {
-      v22 = [(SXFullscreenCaption *)v21 text];
-      v23 = [v39 componentBlueprintForComponentIdentifier:v22];
+      text = [(SXFullscreenCaption *)v21 text];
+      v23 = [v39 componentBlueprintForComponentIdentifier:text];
 
       if ([(SXFullscreenCaption *)v21 caption]== 1)
       {
@@ -292,7 +292,7 @@
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v30 = [(SXComponentDependencyResolver *)v6 componentNodesDependentOnComponentNode:v21, v24, v25, v26, v27, v28, v29, v37, v39, 0];
+      v30 = [(SXComponentDependencyResolver *)resolverCopy componentNodesDependentOnComponentNode:v21, v24, v25, v26, v27, v28, v29, v37, v39, 0];
       v31 = [v30 countByEnumeratingWithState:&v40 objects:v48 count:16];
       if (v31)
       {
@@ -320,12 +320,12 @@
         while (v32);
       }
 
-      v36 = [v8 anyObject];
+      anyObject2 = [v8 anyObject];
 
-      v21 = v36;
+      v21 = anyObject2;
     }
 
-    while (v36);
+    while (anyObject2);
   }
 }
 
@@ -341,36 +341,36 @@ void __40__SXLayoutBlueprint_invalidateBlueprint__block_invoke(uint64_t a1, uint
   }
 }
 
-- (void)updateSize:(CGSize)a3 forComponentWithIdentifier:(id)a4
+- (void)updateSize:(CGSize)size forComponentWithIdentifier:(id)identifier
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:a4];
+  height = size.height;
+  width = size.width;
+  v6 = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:identifier];
   [v6 updateSize:{round(width), round(height)}];
 }
 
-- (void)updatePosition:(CGPoint)a3 forComponentWithIdentifier:(id)a4
+- (void)updatePosition:(CGPoint)position forComponentWithIdentifier:(id)identifier
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:a4];
+  y = position.y;
+  x = position.x;
+  v6 = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:identifier];
   [v6 updatePosition:{round(x), round(y)}];
 }
 
-- (id)componentBlueprintForComponentIdentifier:(id)a3 includeChildren:(BOOL)a4
+- (id)componentBlueprintForComponentIdentifier:(id)identifier includeChildren:(BOOL)children
 {
-  v4 = a4;
+  childrenCopy = children;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   if ([(NSMutableDictionary *)self->_flattenedBlueprint count])
   {
-    v7 = [(NSMutableDictionary *)self->_flattenedBlueprint objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_flattenedBlueprint objectForKey:identifierCopy];
   }
 
-  else if (v6)
+  else if (identifierCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_blueprint objectForKey:v6];
-    if (!v7 && v4)
+    v7 = [(NSMutableDictionary *)self->_blueprint objectForKey:identifierCopy];
+    if (!v7 && childrenCopy)
     {
       v18 = 0u;
       v19 = 0u;
@@ -395,8 +395,8 @@ void __40__SXLayoutBlueprint_invalidateBlueprint__block_invoke(uint64_t a1, uint
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v15 = [v14 layoutBlueprint];
-              v7 = [v15 componentBlueprintForComponentIdentifier:v6 includeChildren:1];
+              layoutBlueprint = [v14 layoutBlueprint];
+              v7 = [layoutBlueprint componentBlueprintForComponentIdentifier:identifierCopy includeChildren:1];
 
               if (v7)
               {
@@ -429,10 +429,10 @@ LABEL_21:
   return v7;
 }
 
-- (id)containerComponentIdentifierContainingComponentWithIdentifier:(id)a3
+- (id)containerComponentIdentifierContainingComponentWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v16 = a3;
+  identifierCopy = identifier;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -452,19 +452,19 @@ LABEL_21:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:*(*(&v18 + 1) + 8 * i), v16];
+        identifierCopy = [(SXLayoutBlueprint *)self componentBlueprintForComponentIdentifier:*(*(&v18 + 1) + 8 * i), identifierCopy];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = v8;
-          v10 = [v9 layoutBlueprint];
-          v11 = [v10 componentIdentifiers];
-          v12 = [v11 containsObject:v16];
+          v9 = identifierCopy;
+          layoutBlueprint = [v9 layoutBlueprint];
+          componentIdentifiers = [layoutBlueprint componentIdentifiers];
+          v12 = [componentIdentifiers containsObject:identifierCopy];
 
           if (v12)
           {
-            v14 = [v9 component];
-            v13 = [v14 identifier];
+            component = [v9 component];
+            identifier = [component identifier];
 
             goto LABEL_13;
           }
@@ -481,18 +481,18 @@ LABEL_21:
     }
   }
 
-  v13 = 0;
+  identifier = 0;
 LABEL_13:
 
-  return v13;
+  return identifier;
 }
 
-- (id)componentsInRect:(CGRect)a3
+- (id)componentsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v72 = *MEMORY[0x1E69E9840];
   v8 = [MEMORY[0x1E695DFA8] set];
   v66 = 0u;
@@ -609,11 +609,11 @@ LABEL_13:
         v81.size.width = width;
         v81.size.height = height;
         v43 = CGRectGetHeight(v81);
-        v44 = [v31 layoutBlueprint];
-        v45 = [v44 componentsInRect:{rect.origin.y, v41, v42, v43}];
+        layoutBlueprint = [v31 layoutBlueprint];
+        v45 = [layoutBlueprint componentsInRect:{rect.origin.y, v41, v42, v43}];
         [v8 unionSet:v45];
 
-        v46 = [v31 component];
+        component = [v31 component];
         v47 = objc_opt_class();
         if (v47 == objc_opt_class())
         {
@@ -621,7 +621,7 @@ LABEL_13:
 
         else
         {
-          v48 = [v31 component];
+          component2 = [v31 component];
           v49 = v16;
           v50 = objc_opt_class();
           v51 = v20;
@@ -662,14 +662,14 @@ LABEL_21:
   return v8;
 }
 
-- (void)startUpdatesForWidth:(double)a3
+- (void)startUpdatesForWidth:(double)width
 {
   self->_updating = 1;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   flattenedBlueprint = self->_flattenedBlueprint;
-  self->_flattenedBlueprint = v5;
+  self->_flattenedBlueprint = dictionary;
 
-  self->_blueprintSize.width = a3;
+  self->_blueprintSize.width = width;
 }
 
 - (void)endUpdates
@@ -761,22 +761,22 @@ void __31__SXLayoutBlueprint_endUpdates__block_invoke(void *a1, uint64_t a2, voi
   }
 }
 
-- (void)storeComponentsFromBlueprint:(id)a3 inDictionary:(id)a4
+- (void)storeComponentsFromBlueprint:(id)blueprint inDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   blueprint = self->_blueprint;
-  v8 = a3;
-  [v6 addEntriesFromDictionary:blueprint];
-  v9 = [v8 blueprint];
+  blueprintCopy = blueprint;
+  [dictionaryCopy addEntriesFromDictionary:blueprint];
+  blueprint = [blueprintCopy blueprint];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__SXLayoutBlueprint_storeComponentsFromBlueprint_inDictionary___block_invoke;
   v11[3] = &unk_1E8500958;
-  v12 = v6;
-  v13 = self;
-  v10 = v6;
-  [v9 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = dictionaryCopy;
+  selfCopy = self;
+  v10 = dictionaryCopy;
+  [blueprint enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __63__SXLayoutBlueprint_storeComponentsFromBlueprint_inDictionary___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -792,24 +792,24 @@ void __63__SXLayoutBlueprint_storeComponentsFromBlueprint_inDictionary___block_i
   }
 }
 
-- (id)snapLinesIncludingChildren:(BOOL)a3
+- (id)snapLinesIncludingChildren:(BOOL)children
 {
-  v3 = a3;
-  v4 = self;
+  childrenCopy = children;
+  selfCopy = self;
   v28 = *MEMORY[0x1E69E9840];
   v21 = [(NSOrderedSet *)self->_snapLines mutableCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v4->_orderedComponentIdentifiers;
+  v5 = selfCopy->_orderedComponentIdentifiers;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v24;
     v9 = 0x1E84FC000uLL;
-    v22 = v4;
+    v22 = selfCopy;
     do
     {
       for (i = 0; i != v7; ++i)
@@ -819,30 +819,30 @@ void __63__SXLayoutBlueprint_storeComponentsFromBlueprint_inDictionary___block_i
           objc_enumerationMutation(v5);
         }
 
-        v11 = [(SXLayoutBlueprint *)v4 componentBlueprintForComponentIdentifier:*(*(&v23 + 1) + 8 * i), v21];
-        if (v3)
+        v11 = [(SXLayoutBlueprint *)selfCopy componentBlueprintForComponentIdentifier:*(*(&v23 + 1) + 8 * i), v21];
+        if (childrenCopy)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = v3;
+            v12 = childrenCopy;
             v13 = v5;
             v14 = v9;
             v15 = v11;
-            v16 = [v15 layoutBlueprint];
-            v17 = [v16 snapLines];
+            layoutBlueprint = [v15 layoutBlueprint];
+            snapLines = [layoutBlueprint snapLines];
 
-            if (v17)
+            if (snapLines)
             {
-              v18 = [v15 layoutBlueprint];
-              v19 = [v18 snapLinesIncludingChildren:1];
+              layoutBlueprint2 = [v15 layoutBlueprint];
+              v19 = [layoutBlueprint2 snapLinesIncludingChildren:1];
               [v21 unionOrderedSet:v19];
             }
 
             v9 = v14;
             v5 = v13;
-            v3 = v12;
-            v4 = v22;
+            childrenCopy = v12;
+            selfCopy = v22;
           }
         }
       }
@@ -856,9 +856,9 @@ void __63__SXLayoutBlueprint_storeComponentsFromBlueprint_inDictionary___block_i
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   *(v4 + 8) = self->_isComplete;
   objc_storeStrong((v4 + 24), self->_layoutOptions);
   WeakRetained = objc_loadWeakRetained(&self->_parentLayoutBlueprint);
@@ -914,26 +914,26 @@ void __34__SXLayoutBlueprint_copyWithZone___block_invoke(uint64_t a1, void *a2, 
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_parentLayoutBlueprint);
-    v5 = [v4 rootLayoutBlueprint];
+    selfCopy = [v4 rootLayoutBlueprint];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p", objc_opt_class(), self];
   [v3 appendFormat:@"; isComplete: %d", -[SXLayoutBlueprint isComplete](self, "isComplete")];
-  v4 = [(SXLayoutBlueprint *)self componentIdentifiers];
-  [v3 appendFormat:@"; number of components: %lu", objc_msgSend(v4, "count")];
+  componentIdentifiers = [(SXLayoutBlueprint *)self componentIdentifiers];
+  [v3 appendFormat:@"; number of components: %lu", objc_msgSend(componentIdentifiers, "count")];
 
-  v5 = [(SXLayoutBlueprint *)self layoutOptions];
-  [v3 appendFormat:@"; options: %@", v5];
+  layoutOptions = [(SXLayoutBlueprint *)self layoutOptions];
+  [v3 appendFormat:@"; options: %@", layoutOptions];
 
   [v3 appendString:@">"];
 
@@ -950,23 +950,23 @@ void __34__SXLayoutBlueprint_copyWithZone___block_invoke(uint64_t a1, void *a2, 
   return v6;
 }
 
-- (id)layoutDescriptionForBlueprint:(id)a3 depth:(unint64_t)a4
+- (id)layoutDescriptionForBlueprint:(id)blueprint depth:(unint64_t)depth
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AD60] string];
-  v23 = a4;
-  for (i = 2 * a4; i; --i)
+  blueprintCopy = blueprint;
+  string = [MEMORY[0x1E696AD60] string];
+  depthCopy = depth;
+  for (i = 2 * depth; i; --i)
   {
-    [v6 appendString:@" "];
+    [string appendString:@" "];
   }
 
-  v25 = [MEMORY[0x1E696AD60] string];
+  string2 = [MEMORY[0x1E696AD60] string];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = [v5 blueprint];
+  obj = [blueprintCopy blueprint];
   v8 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
@@ -983,23 +983,23 @@ void __34__SXLayoutBlueprint_copyWithZone___block_invoke(uint64_t a1, void *a2, 
           objc_enumerationMutation(obj);
         }
 
-        v14 = [v5 componentBlueprintForComponentIdentifier:*(*(&v26 + 1) + 8 * j)];
-        [v25 appendFormat:v11, v6, v14];
+        v14 = [blueprintCopy componentBlueprintForComponentIdentifier:*(*(&v26 + 1) + 8 * j)];
+        [string2 appendFormat:v11, string, v14];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 layoutBlueprint];
-          [(SXLayoutBlueprint *)self layoutDescriptionForBlueprint:v15 depth:v23 + 1];
-          v16 = v6;
-          v17 = v5;
+          layoutBlueprint = [v14 layoutBlueprint];
+          [(SXLayoutBlueprint *)self layoutDescriptionForBlueprint:layoutBlueprint depth:depthCopy + 1];
+          v16 = string;
+          v17 = blueprintCopy;
           v18 = v11;
           v20 = v19 = v12;
-          [v25 appendString:v20];
+          [string2 appendString:v20];
 
           v12 = v19;
           v11 = v18;
-          v5 = v17;
-          v6 = v16;
+          blueprintCopy = v17;
+          string = v16;
         }
       }
 
@@ -1009,7 +1009,7 @@ void __34__SXLayoutBlueprint_copyWithZone___block_invoke(uint64_t a1, void *a2, 
     while (v9);
   }
 
-  return v25;
+  return string2;
 }
 
 - (SXLayoutBlueprint)parentLayoutBlueprint

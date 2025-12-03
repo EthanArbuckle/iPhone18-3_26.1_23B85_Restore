@@ -1,34 +1,34 @@
 @interface HDMCAnalysisManager
 - (BOOL)_hasHealthAppDevicesWithHigherAlgorithmVersions;
-- (BOOL)initiateCycleFactorsAutomaticUpgradeWithDatabaseAccessibilityAssertion:(id)a3 error:(id *)a4;
+- (BOOL)initiateCycleFactorsAutomaticUpgradeWithDatabaseAccessibilityAssertion:(id)assertion error:(id *)error;
 - (HDProfile)profile;
 - (HKMCAnalysis)currentAnalysis;
-- (id)_analysisWithAlgorithmsAnalysis:(id)a3 algorithmsCycles:(id)a4 recentSymptoms:(unint64_t)a5 mostRecentBasalBodyTemperature:(id)a6 lastLoggedDayIndex:(id)a7 lastMenstrualFlowDayIndex:(id)a8 numberOfDailySleepHeartRateStatisticsForPast100Days:(int64_t)a9 numberOfDailyAwakeHeartRateStatisticsForPast100Days:(int64_t)a10 featureSettings:(id)a11 useHeartRateInput:(BOOL)a12 useWristTemperatureInput:(BOOL)a13 deviationsFeatureSettings:(id)a14;
-- (id)_analyzeWithForceIncludeCycles:(BOOL)a3 forceAnalyzeCompleteHistory:(BOOL)a4 error:(id *)a5;
-- (id)_initWithProfile:(id)a3 settingsManager:(id)a4 featureAvailabilityManager:(id)a5 heartRateAvailabilityManager:(id)a6 wristTemperatureAvailabilityManager:(id)a7 deviationsAvailabilityManager:(id)a8 deviceScopedStorageManager:(id)a9 calendarCache:(id)a10 dayStreamProcessorProvider:(id)a11 historicalAnalyzerProvider:(id)a12;
-- (id)_processorConfigurationForTodayIndex:(int64_t)a3 deviationsFeatureStatus:(id)a4 calendar:(id)a5;
-- (id)_queue_analyzeNowWithForceIncludeCycles:(BOOL)a3 forceAnalyzeCompleteHistory:(BOOL)a4 error:(id *)a5;
-- (id)_queue_computeAnalysisWithDatabaseAccessibilityAssertion:(id)a3 forceIncludeCycles:(BOOL)a4 forceAnalyzeCompleteHistory:(BOOL)a5 error:(id *)a6;
+- (id)_analysisWithAlgorithmsAnalysis:(id)analysis algorithmsCycles:(id)cycles recentSymptoms:(unint64_t)symptoms mostRecentBasalBodyTemperature:(id)temperature lastLoggedDayIndex:(id)index lastMenstrualFlowDayIndex:(id)dayIndex numberOfDailySleepHeartRateStatisticsForPast100Days:(int64_t)days numberOfDailyAwakeHeartRateStatisticsForPast100Days:(int64_t)self0 featureSettings:(id)self1 useHeartRateInput:(BOOL)self2 useWristTemperatureInput:(BOOL)self3 deviationsFeatureSettings:(id)self4;
+- (id)_analyzeWithForceIncludeCycles:(BOOL)cycles forceAnalyzeCompleteHistory:(BOOL)history error:(id *)error;
+- (id)_initWithProfile:(id)profile settingsManager:(id)manager featureAvailabilityManager:(id)availabilityManager heartRateAvailabilityManager:(id)rateAvailabilityManager wristTemperatureAvailabilityManager:(id)temperatureAvailabilityManager deviationsAvailabilityManager:(id)deviationsAvailabilityManager deviceScopedStorageManager:(id)storageManager calendarCache:(id)self0 dayStreamProcessorProvider:(id)self1 historicalAnalyzerProvider:(id)self2;
+- (id)_processorConfigurationForTodayIndex:(int64_t)index deviationsFeatureStatus:(id)status calendar:(id)calendar;
+- (id)_queue_analyzeNowWithForceIncludeCycles:(BOOL)cycles forceAnalyzeCompleteHistory:(BOOL)history error:(id *)error;
+- (id)_queue_computeAnalysisWithDatabaseAccessibilityAssertion:(id)assertion forceIncludeCycles:(BOOL)cycles forceAnalyzeCompleteHistory:(BOOL)history error:(id *)error;
 - (id)_takeAccessibilityAssertion;
-- (void)_calendarDayDidChange:(id)a3;
+- (void)_calendarDayDidChange:(id)change;
 - (void)_hasHealthAppDevicesWithHigherAlgorithmVersions;
 - (void)_queue_analyzeIfNeeded;
 - (void)_queue_enqueueMaintenanceOperationIfNeeded;
 - (void)_queue_runMaintenanceOperation;
 - (void)_startObserving;
 - (void)_takeAccessibilityAssertion;
-- (void)_userCharacteristicsDidChange:(id)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)_userCharacteristicsDidChange:(id)change;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
-- (void)featureAvailabilityProvidingDidUpdateSettings:(id)a3;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
-- (void)registerObserver:(id)a3 queue:(id)a4 userInitiated:(BOOL)a5;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
-- (void)settingsManagerDidUpdateAlgorithmVersionMismatchSettings:(id)a3;
-- (void)settingsManagerDidUpdateAnalysisSettings:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
+- (void)featureAvailabilityProvidingDidUpdateSettings:(id)settings;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
+- (void)registerObserver:(id)observer queue:(id)queue userInitiated:(BOOL)initiated;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
+- (void)settingsManagerDidUpdateAlgorithmVersionMismatchSettings:(id)settings;
+- (void)settingsManagerDidUpdateAnalysisSettings:(id)settings;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HDMCAnalysisManager
@@ -49,41 +49,41 @@ id __218__HDMCAnalysisManager_initWithProfile_settingsManager_featureAvailabilit
   return v0;
 }
 
-- (id)_initWithProfile:(id)a3 settingsManager:(id)a4 featureAvailabilityManager:(id)a5 heartRateAvailabilityManager:(id)a6 wristTemperatureAvailabilityManager:(id)a7 deviationsAvailabilityManager:(id)a8 deviceScopedStorageManager:(id)a9 calendarCache:(id)a10 dayStreamProcessorProvider:(id)a11 historicalAnalyzerProvider:(id)a12
+- (id)_initWithProfile:(id)profile settingsManager:(id)manager featureAvailabilityManager:(id)availabilityManager heartRateAvailabilityManager:(id)rateAvailabilityManager wristTemperatureAvailabilityManager:(id)temperatureAvailabilityManager deviationsAvailabilityManager:(id)deviationsAvailabilityManager deviceScopedStorageManager:(id)storageManager calendarCache:(id)self0 dayStreamProcessorProvider:(id)self1 historicalAnalyzerProvider:(id)self2
 {
-  v17 = a3;
-  obj = a4;
-  v58 = a4;
-  v57 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v56 = a9;
-  v55 = a10;
-  v21 = a11;
-  v22 = a12;
+  profileCopy = profile;
+  obj = manager;
+  managerCopy = manager;
+  availabilityManagerCopy = availabilityManager;
+  rateAvailabilityManagerCopy = rateAvailabilityManager;
+  temperatureAvailabilityManagerCopy = temperatureAvailabilityManager;
+  deviationsAvailabilityManagerCopy = deviationsAvailabilityManager;
+  storageManagerCopy = storageManager;
+  cacheCopy = cache;
+  providerCopy = provider;
+  analyzerProviderCopy = analyzerProvider;
   v64.receiver = self;
   v64.super_class = HDMCAnalysisManager;
   v23 = [(HDMCAnalysisManager *)&v64 init];
   v24 = v23;
   if (v23)
   {
-    aBlock = v22;
-    objc_storeWeak(&v23->_profile, v17);
+    aBlock = analyzerProviderCopy;
+    objc_storeWeak(&v23->_profile, profileCopy);
     v24->_lock._os_unfair_lock_opaque = 0;
     objc_storeStrong(&v24->_settingsManager, obj);
-    objc_storeStrong(&v24->_featureAvailabilityManager, a5);
-    v25 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v18 healthDataSource:v17];
+    objc_storeStrong(&v24->_featureAvailabilityManager, availabilityManager);
+    v25 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:rateAvailabilityManagerCopy healthDataSource:profileCopy];
     heartRateFeatureStatusManager = v24->_heartRateFeatureStatusManager;
     v24->_heartRateFeatureStatusManager = v25;
 
-    v27 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v19 healthDataSource:v17];
+    v27 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:temperatureAvailabilityManagerCopy healthDataSource:profileCopy];
     wristTemperatureFeatureStatusManager = v24->_wristTemperatureFeatureStatusManager;
     v24->_wristTemperatureFeatureStatusManager = v27;
 
-    if (v20)
+    if (deviationsAvailabilityManagerCopy)
     {
-      v29 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v20 healthDataSource:v17];
+      v29 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:deviationsAvailabilityManagerCopy healthDataSource:profileCopy];
     }
 
     else
@@ -94,7 +94,7 @@ id __218__HDMCAnalysisManager_initWithProfile_settingsManager_featureAvailabilit
     deviationsFeatureStatusManager = v24->_deviationsFeatureStatusManager;
     v24->_deviationsFeatureStatusManager = v29;
 
-    objc_storeStrong(&v24->_deviceScopedStorageManager, a9);
+    objc_storeStrong(&v24->_deviceScopedStorageManager, storageManager);
     v31 = [HDMCDeviationInputManager alloc];
     WeakRetained = objc_loadWeakRetained(&v24->_profile);
     v33 = [(HDMCDeviationInputManager *)v31 initWithProfile:WeakRetained];
@@ -115,12 +115,12 @@ id __218__HDMCAnalysisManager_initWithProfile_settingsManager_featureAvailabilit
     queue = v24->_queue;
     v24->_queue = v41;
 
-    objc_storeStrong(&v24->_calendarCache, a10);
-    v43 = _Block_copy(v21);
+    objc_storeStrong(&v24->_calendarCache, cache);
+    v43 = _Block_copy(providerCopy);
     dayStreamProcessorProvider = v24->_dayStreamProcessorProvider;
     v24->_dayStreamProcessorProvider = v43;
 
-    v45 = _Block_copy(v22);
+    v45 = _Block_copy(analyzerProviderCopy);
     historicalAnalyzerProvider = v24->_historicalAnalyzerProvider;
     v24->_historicalAnalyzerProvider = v45;
 
@@ -137,13 +137,13 @@ id __218__HDMCAnalysisManager_initWithProfile_settingsManager_featureAvailabilit
     v24->_analyzeOperation = v49;
 
     v51 = objc_loadWeakRetained(&v24->_profile);
-    v52 = [v51 database];
-    [v52 addProtectedDataObserver:v24 queue:v24->_queue];
+    database = [v51 database];
+    [database addProtectedDataObserver:v24 queue:v24->_queue];
 
     [(HDMCAnalysisManager *)v24 _startObserving];
     objc_destroyWeak(&v62);
     objc_destroyWeak(&location);
-    v22 = aBlock;
+    analyzerProviderCopy = aBlock;
   }
 
   return v24;
@@ -182,8 +182,8 @@ void __273__HDMCAnalysisManager__initWithProfile_settingsManager_featureAvailabi
 
         v8 = *(*(&v39 + 1) + 8 * v7);
         WeakRetained = objc_loadWeakRetained(&self->_profile);
-        v10 = [WeakRetained dataManager];
-        [v10 removeObserver:self forDataType:v8];
+        dataManager = [WeakRetained dataManager];
+        [dataManager removeObserver:self forDataType:v8];
 
         ++v7;
       }
@@ -217,8 +217,8 @@ void __273__HDMCAnalysisManager__initWithProfile_settingsManager_featureAvailabi
 
         v16 = *(*(&v35 + 1) + 8 * v15);
         v17 = objc_loadWeakRetained(&self->_profile);
-        v18 = [v17 dataManager];
-        [v18 removeObserver:self forDataType:v16];
+        dataManager2 = [v17 dataManager];
+        [dataManager2 removeObserver:self forDataType:v16];
 
         ++v15;
       }
@@ -252,8 +252,8 @@ void __273__HDMCAnalysisManager__initWithProfile_settingsManager_featureAvailabi
 
         v24 = *(*(&v31 + 1) + 8 * v23);
         v25 = objc_loadWeakRetained(&self->_profile);
-        v26 = [v25 dataManager];
-        [v26 removeObserver:self forDataType:v24];
+        dataManager3 = [v25 dataManager];
+        [dataManager3 removeObserver:self forDataType:v24];
 
         ++v23;
       }
@@ -265,11 +265,11 @@ void __273__HDMCAnalysisManager__initWithProfile_settingsManager_featureAvailabi
     while (v21);
   }
 
-  v27 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v27 removeObserver:self name:*MEMORY[0x277D104E8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D104E8] object:0];
 
-  v28 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v28 removeObserver:self name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277CBE580] object:0];
 
   v30.receiver = self;
   v30.super_class = HDMCAnalysisManager;
@@ -277,7 +277,7 @@ void __273__HDMCAnalysisManager__initWithProfile_settingsManager_featureAvailabi
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
   dispatch_assert_queue_V2(self->_queue);
   if (self->_queue_needsMaintenanceAnalysis)
@@ -317,8 +317,8 @@ void __273__HDMCAnalysisManager__initWithProfile_settingsManager_featureAvailabi
 
         v8 = *(*(&v38 + 1) + 8 * v7);
         WeakRetained = objc_loadWeakRetained(&self->_profile);
-        v10 = [WeakRetained dataManager];
-        [v10 addObserver:self forDataType:v8];
+        dataManager = [WeakRetained dataManager];
+        [dataManager addObserver:self forDataType:v8];
 
         ++v7;
       }
@@ -352,8 +352,8 @@ void __273__HDMCAnalysisManager__initWithProfile_settingsManager_featureAvailabi
 
         v16 = *(*(&v34 + 1) + 8 * v15);
         v17 = objc_loadWeakRetained(&self->_profile);
-        v18 = [v17 dataManager];
-        [v18 addObserver:self forDataType:v16];
+        dataManager2 = [v17 dataManager];
+        [dataManager2 addObserver:self forDataType:v16];
 
         ++v15;
       }
@@ -387,8 +387,8 @@ void __273__HDMCAnalysisManager__initWithProfile_settingsManager_featureAvailabi
 
         v24 = *(*(&v30 + 1) + 8 * v23);
         v25 = objc_loadWeakRetained(&self->_profile);
-        v26 = [v25 dataManager];
-        [v26 addObserver:self forDataType:v24];
+        dataManager3 = [v25 dataManager];
+        [dataManager3 addObserver:self forDataType:v24];
 
         ++v23;
       }
@@ -400,26 +400,26 @@ void __273__HDMCAnalysisManager__initWithProfile_settingsManager_featureAvailabi
     while (v21);
   }
 
-  v27 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v27 addObserver:self selector:sel__userCharacteristicsDidChange_ name:*MEMORY[0x277D104E8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__userCharacteristicsDidChange_ name:*MEMORY[0x277D104E8] object:0];
 
-  v28 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v28 addObserver:self selector:sel__calendarDayDidChange_ name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__calendarDayDidChange_ name:*MEMORY[0x277CBE580] object:0];
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v5 = a3;
+  addedCopy = added;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__HDMCAnalysisManager_samplesAdded_anchor___block_invoke;
   v8[3] = &unk_27865A778;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = addedCopy;
+  v7 = addedCopy;
   dispatch_async(queue, v8);
 }
 
@@ -448,17 +448,17 @@ uint64_t __43__HDMCAnalysisManager_samplesAdded_anchor___block_invoke(uint64_t a
   return result;
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
-  v5 = a3;
+  removedCopy = removed;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__HDMCAnalysisManager_samplesOfTypesWereRemoved_anchor___block_invoke;
   v8[3] = &unk_27865A778;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = removedCopy;
+  v7 = removedCopy;
   dispatch_async(queue, v8);
 }
 
@@ -490,11 +490,11 @@ uint64_t __56__HDMCAnalysisManager_samplesOfTypesWereRemoved_anchor___block_invo
 - (id)_takeAccessibilityAssertion
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained database];
+  database = [WeakRetained database];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v9 = 0;
-  v6 = [v3 takeAccessibilityAssertionWithOwnerIdentifier:v5 timeout:&v9 error:300.0];
+  v6 = [database takeAccessibilityAssertionWithOwnerIdentifier:v5 timeout:&v9 error:300.0];
   v7 = v9;
 
   if (!v6)
@@ -509,7 +509,7 @@ uint64_t __56__HDMCAnalysisManager_samplesOfTypesWereRemoved_anchor___block_invo
   return v6;
 }
 
-- (void)settingsManagerDidUpdateAnalysisSettings:(id)a3
+- (void)settingsManagerDidUpdateAnalysisSettings:(id)settings
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -540,7 +540,7 @@ uint64_t __64__HDMCAnalysisManager_settingsManagerDidUpdateAnalysisSettings___bl
   return result;
 }
 
-- (void)settingsManagerDidUpdateAlgorithmVersionMismatchSettings:(id)a3
+- (void)settingsManagerDidUpdateAlgorithmVersionMismatchSettings:(id)settings
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -571,7 +571,7 @@ uint64_t __80__HDMCAnalysisManager_settingsManagerDidUpdateAlgorithmVersionMisma
   return result;
 }
 
-- (void)_userCharacteristicsDidChange:(id)a3
+- (void)_userCharacteristicsDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -602,7 +602,7 @@ uint64_t __53__HDMCAnalysisManager__userCharacteristicsDidChange___block_invoke(
   return result;
 }
 
-- (void)_calendarDayDidChange:(id)a3
+- (void)_calendarDayDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -633,10 +633,10 @@ uint64_t __45__HDMCAnalysisManager__calendarDayDidChange___block_invoke(uint64_t
   return result;
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providingCopy = providing;
   dispatch_assert_queue_V2(self->_queue);
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC2E8];
@@ -645,11 +645,11 @@ uint64_t __45__HDMCAnalysisManager__calendarDayDidChange___block_invoke(uint64_t
     v7 = v6;
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [v5 featureIdentifier];
+    featureIdentifier = [providingCopy featureIdentifier];
     v12 = 138543618;
     v13 = v8;
     v14 = 2114;
-    v15 = v10;
+    v15 = featureIdentifier;
     _os_log_impl(&dword_2293D1000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received feature status update for %{public}@", &v12, 0x16u);
   }
 
@@ -658,7 +658,7 @@ uint64_t __45__HDMCAnalysisManager__calendarDayDidChange___block_invoke(uint64_t
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -677,19 +677,19 @@ uint64_t __45__HDMCAnalysisManager__calendarDayDidChange___block_invoke(uint64_t
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)featureAvailabilityProvidingDidUpdateSettings:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateSettings:(id)settings
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   dispatch_assert_queue_V2(self->_queue);
   p_queue_lastFeatureSettings = &self->_queue_lastFeatureSettings;
   if (self->_queue_lastFeatureSettings)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v7 = [WeakRetained featureSettingsManager];
-    v8 = [v4 featureIdentifier];
+    featureSettingsManager = [WeakRetained featureSettingsManager];
+    featureIdentifier = [settingsCopy featureIdentifier];
     v24 = 0;
-    v9 = [v7 featureSettingsForFeatureIdentifier:v8 error:&v24];
+    v9 = [featureSettingsManager featureSettingsForFeatureIdentifier:featureIdentifier error:&v24];
     v10 = v24;
 
     if (v9)
@@ -764,7 +764,7 @@ uint64_t __45__HDMCAnalysisManager__calendarDayDidChange___block_invoke(uint64_t
   return v3;
 }
 
-- (id)_analyzeWithForceIncludeCycles:(BOOL)a3 forceAnalyzeCompleteHistory:(BOOL)a4 error:(id *)a5
+- (id)_analyzeWithForceIncludeCycles:(BOOL)cycles forceAnalyzeCompleteHistory:(BOOL)history error:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -785,18 +785,18 @@ uint64_t __45__HDMCAnalysisManager__calendarDayDidChange___block_invoke(uint64_t
   v12[3] = &unk_27865A858;
   v12[4] = self;
   v12[5] = &v21;
-  v13 = a3;
-  v14 = a4;
+  cyclesCopy = cycles;
+  historyCopy = history;
   v12[6] = &v15;
   dispatch_sync(queue, v12);
   v7 = v16[5];
   v8 = v7;
   if (v7)
   {
-    if (a5)
+    if (error)
     {
       v9 = v7;
-      *a5 = v8;
+      *error = v8;
     }
 
     else
@@ -863,9 +863,9 @@ void __88__HDMCAnalysisManager__analyzeWithForceIncludeCycles_forceAnalyzeComple
     v7 = [v3 maintenanceOperationWithName:v5 queue:queue synchronousBlock:v16];
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v9 = [WeakRetained daemon];
-    v10 = [v9 maintenanceWorkCoordinator];
-    [v10 enqueueMaintenanceOperation:v7];
+    daemon = [WeakRetained daemon];
+    maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+    [maintenanceWorkCoordinator enqueueMaintenanceOperation:v7];
 
     _HKInitializeLogging();
     v11 = *MEMORY[0x277CCC2E8];
@@ -910,12 +910,12 @@ void __88__HDMCAnalysisManager__analyzeWithForceIncludeCycles_forceAnalyzeComple
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_queue_analyzeNowWithForceIncludeCycles:(BOOL)a3 forceAnalyzeCompleteHistory:(BOOL)a4 error:(id *)a5
+- (id)_queue_analyzeNowWithForceIncludeCycles:(BOOL)cycles forceAnalyzeCompleteHistory:(BOOL)history error:(id *)error
 {
   dispatch_assert_queue_V2(self->_queue);
   v9 = [MEMORY[0x277CCD288] transactionWithOwner:self activityName:@"analyzeNowWithForceIncludeCycles"];
-  v10 = [(HDMCAnalysisManager *)self _takeAccessibilityAssertion];
-  v11 = [MEMORY[0x277D10788] contextForAccessibilityAssertion:v10];
+  _takeAccessibilityAssertion = [(HDMCAnalysisManager *)self _takeAccessibilityAssertion];
+  v11 = [MEMORY[0x277D10788] contextForAccessibilityAssertion:_takeAccessibilityAssertion];
   [v11 setCacheScope:1];
   v27 = 0;
   v28 = &v27;
@@ -924,20 +924,20 @@ void __88__HDMCAnalysisManager__analyzeWithForceIncludeCycles_forceAnalyzeComple
   v31 = __Block_byref_object_dispose__1;
   v32 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v13 = [WeakRetained database];
+  database = [WeakRetained database];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnalyzeCompleteHistory_error___block_invoke;
   v21 = &unk_27865A880;
   v24 = &v27;
-  v22 = self;
-  v14 = v10;
+  selfCopy = self;
+  v14 = _takeAccessibilityAssertion;
   v23 = v14;
-  v25 = a3;
-  v26 = a4;
-  LODWORD(a5) = [v13 performWithTransactionContext:v11 error:a5 block:&v18];
+  cyclesCopy = cycles;
+  historyCopy = history;
+  LODWORD(error) = [database performWithTransactionContext:v11 error:error block:&v18];
 
-  if (a5 && v28[5])
+  if (error && v28[5])
   {
     os_unfair_lock_lock(&self->_lock);
     objc_storeStrong(&self->_lock_currentAnalysis, v28[5]);
@@ -970,14 +970,14 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
   return *(*(*(a1 + 48) + 8) + 40) != 0;
 }
 
-- (id)_queue_computeAnalysisWithDatabaseAccessibilityAssertion:(id)a3 forceIncludeCycles:(BOOL)a4 forceAnalyzeCompleteHistory:(BOOL)a5 error:(id *)a6
+- (id)_queue_computeAnalysisWithDatabaseAccessibilityAssertion:(id)assertion forceIncludeCycles:(BOOL)cycles forceAnalyzeCompleteHistory:(BOOL)history error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  historyCopy = history;
+  cyclesCopy = cycles;
   v380 = *MEMORY[0x277D85DE8];
-  v259 = a3;
+  assertionCopy = assertion;
   dispatch_assert_queue_V2(self->_queue);
-  v261 = self;
+  selfCopy = self;
   if (self->_test_analysis)
   {
     _HKInitializeLogging();
@@ -1006,35 +1006,35 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
     goto LABEL_226;
   }
 
-  v256 = a6;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v19 = [WeakRetained daemon];
-  v20 = [v19 behavior];
-  v21 = [v20 tinkerModeEnabled];
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  tinkerModeEnabled = [behavior tinkerModeEnabled];
 
-  if (!v21)
+  if (!tinkerModeEnabled)
   {
-    v28 = v261;
-    if ([(HKObserverSet *)v261->_userInitiatedObservers count])
+    v28 = selfCopy;
+    if ([(HKObserverSet *)selfCopy->_userInitiatedObservers count])
     {
       v252 = 1;
     }
 
     else
     {
-      v29 = [MEMORY[0x277CCDD30] sharedBehavior];
-      v252 = [v29 isAppleWatch] | v8;
+      mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+      v252 = [mEMORY[0x277CCDD30] isAppleWatch] | cyclesCopy;
 
-      v28 = v261;
+      v28 = selfCopy;
     }
 
-    v262 = [(HKCalendarCache *)v28->_calendarCache currentCalendar];
+    currentCalendar = [(HKCalendarCache *)v28->_calendarCache currentCalendar];
     v30 = HKMCTodayIndex();
-    v31 = objc_loadWeakRetained(&v261->_profile);
-    v32 = [v31 featureSettingsManager];
+    v31 = objc_loadWeakRetained(&selfCopy->_profile);
+    featureSettingsManager = [v31 featureSettingsManager];
     v33 = *MEMORY[0x277CCC090];
     v358 = 0;
-    obj = [v32 featureSettingsForFeatureIdentifier:v33 error:&v358];
+    obj = [featureSettingsManager featureSettingsForFeatureIdentifier:v33 error:&v358];
     v34 = v358;
 
     if (!obj)
@@ -1049,12 +1049,12 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       if (v55)
       {
         v56 = v55;
-        if (v256)
+        if (errorCopy)
         {
           v57 = v55;
           v17 = 0;
           v55 = v56;
-          *v256 = v56;
+          *errorCopy = v56;
         }
 
         else
@@ -1076,7 +1076,7 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       goto LABEL_225;
     }
 
-    heartRateFeatureStatusManager = v261->_heartRateFeatureStatusManager;
+    heartRateFeatureStatusManager = selfCopy->_heartRateFeatureStatusManager;
     v357 = v34;
     v254 = [(HKFeatureStatusManager *)heartRateFeatureStatusManager featureStatusWithError:&v357];
     v36 = v357;
@@ -1093,12 +1093,12 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       if (v58)
       {
         v59 = v58;
-        if (v256)
+        if (errorCopy)
         {
           v60 = v58;
           v17 = 0;
           v58 = v59;
-          *v256 = v59;
+          *errorCopy = v59;
         }
 
         else
@@ -1122,7 +1122,7 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
 
     v37 = *MEMORY[0x277CCBEA0];
     v38 = [(NSArray *)v254 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
-    v250 = [v38 areAllRequirementsSatisfied];
+    areAllRequirementsSatisfied = [v38 areAllRequirementsSatisfied];
 
     _HKInitializeLogging();
     v39 = *MEMORY[0x277CCC2E8];
@@ -1131,7 +1131,7 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       v40 = objc_opt_class();
       v41 = v40;
       v42 = @"NO";
-      if (v250)
+      if (areAllRequirementsSatisfied)
       {
         v42 = @"YES";
       }
@@ -1143,7 +1143,7 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       _os_log_impl(&dword_2293D1000, v39, OS_LOG_TYPE_DEFAULT, "[%{public}@] Use heart rate input: %@", buf, 0x16u);
     }
 
-    wristTemperatureFeatureStatusManager = v261->_wristTemperatureFeatureStatusManager;
+    wristTemperatureFeatureStatusManager = selfCopy->_wristTemperatureFeatureStatusManager;
     v356 = v36;
     v253 = [(HKFeatureStatusManager *)wristTemperatureFeatureStatusManager featureStatusWithError:&v356];
     v44 = v356;
@@ -1160,12 +1160,12 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       if (v61)
       {
         v62 = v61;
-        if (v256)
+        if (errorCopy)
         {
           v63 = v61;
           v17 = 0;
           v61 = v62;
-          *v256 = v62;
+          *errorCopy = v62;
         }
 
         else
@@ -1188,7 +1188,7 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
     }
 
     v45 = [(NSArray *)v253 objectForKeyedSubscript:v37];
-    v245 = [v45 areAllRequirementsSatisfied];
+    areAllRequirementsSatisfied2 = [v45 areAllRequirementsSatisfied];
 
     _HKInitializeLogging();
     v46 = *MEMORY[0x277CCC2E8];
@@ -1197,7 +1197,7 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       v47 = objc_opt_class();
       v48 = v47;
       v49 = @"NO";
-      if (v245)
+      if (areAllRequirementsSatisfied2)
       {
         v49 = @"YES";
       }
@@ -1209,12 +1209,12 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       _os_log_impl(&dword_2293D1000, v46, OS_LOG_TYPE_DEFAULT, "[%{public}@] Use wrist temperature input: %@", buf, 0x16u);
     }
 
-    deviationsFeatureStatusManager = v261->_deviationsFeatureStatusManager;
+    deviationsFeatureStatusManager = selfCopy->_deviationsFeatureStatusManager;
     v355 = v44;
     v251 = [(HKFeatureStatusManager *)deviationsFeatureStatusManager featureStatusWithError:&v355];
     v51 = v355;
 
-    if (v261->_deviationsFeatureStatusManager && !v251)
+    if (selfCopy->_deviationsFeatureStatusManager && !v251)
     {
       _HKInitializeLogging();
       if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_ERROR))
@@ -1226,12 +1226,12 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       if (v52)
       {
         v53 = v52;
-        if (v256)
+        if (errorCopy)
         {
           v54 = v52;
           v17 = 0;
           v52 = v53;
-          *v256 = v53;
+          *errorCopy = v53;
         }
 
         else
@@ -1253,17 +1253,17 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       goto LABEL_222;
     }
 
-    v246 = [(HDMCAnalysisManager *)v261 _processorConfigurationForTodayIndex:v30 deviationsFeatureStatus:v251 calendar:v262];
-    v260 = (*(v261->_dayStreamProcessorProvider + 2))();
-    v244 = (*(v261->_historicalAnalyzerProvider + 2))();
+    v246 = [(HDMCAnalysisManager *)selfCopy _processorConfigurationForTodayIndex:v30 deviationsFeatureStatus:v251 calendar:currentCalendar];
+    v260 = (*(selfCopy->_dayStreamProcessorProvider + 2))();
+    v244 = (*(selfCopy->_historicalAnalyzerProvider + 2))();
     if (!v260)
     {
-      [HDMCAnalysisManager _queue_computeAnalysisWithDatabaseAccessibilityAssertion:a2 forceIncludeCycles:v261 forceAnalyzeCompleteHistory:? error:?];
+      [HDMCAnalysisManager _queue_computeAnalysisWithDatabaseAccessibilityAssertion:a2 forceIncludeCycles:selfCopy forceAnalyzeCompleteHistory:? error:?];
     }
 
     if (!v244)
     {
-      [HDMCAnalysisManager _queue_computeAnalysisWithDatabaseAccessibilityAssertion:a2 forceIncludeCycles:v261 forceAnalyzeCompleteHistory:? error:?];
+      [HDMCAnalysisManager _queue_computeAnalysisWithDatabaseAccessibilityAssertion:a2 forceIncludeCycles:selfCopy forceAnalyzeCompleteHistory:? error:?];
     }
 
     v243 = [[HDMCSymptomHistoryBuilder alloc] initWithCurrentDayIndex:v30];
@@ -1312,14 +1312,14 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
       v69 = v68;
       if ((spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v68))
       {
-        v70 = [MEMORY[0x277CCABB0] numberWithBool:v250];
+        v70 = [MEMORY[0x277CCABB0] numberWithBool:areAllRequirementsSatisfied];
         *buf = 138412290;
         v364 = v70;
         _os_signpost_emit_with_name_impl(&dword_2293D1000, v69, OS_SIGNPOST_INTERVAL_BEGIN, spid, "menstrual-cycles-analysis", "useHeartRateInput=%@", buf, 0xCu);
       }
     }
 
-    v71 = [(HKObserverSet *)v261->_userInitiatedObservers count];
+    v71 = [(HKObserverSet *)selfCopy->_userInitiatedObservers count];
     v72 = v30 - *MEMORY[0x277CCCEF8] + 1;
     if (v71)
     {
@@ -1328,7 +1328,7 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
 
     else
     {
-      v73 = v7;
+      v73 = historyCopy;
     }
 
     v74 = v73 == 0;
@@ -1356,12 +1356,12 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
     }
 
     v248 = v77;
-    v78 = [MEMORY[0x277CBEAA8] date];
-    v79 = [v78 hk_morningIndexWithCalendar:v262];
+    date = [MEMORY[0x277CBEAA8] date];
+    v79 = [date hk_morningIndexWithCalendar:currentCalendar];
 
     v80 = MEMORY[0x277D105E8];
-    v81 = objc_loadWeakRetained(&v261->_profile);
-    calendarCache = v261->_calendarCache;
+    v81 = objc_loadWeakRetained(&selfCopy->_profile);
+    calendarCache = selfCopy->_calendarCache;
     v322 = v51;
     v247 = [v80 hdmc_ongoingFactorsOnDayIndex:v76 profile:v81 calendarCache:calendarCache error:&v322];
     v83 = v322;
@@ -1382,7 +1382,7 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
     if (v247)
     {
       v321 = v83;
-      v87 = [(HDMCAnalysisManager *)v261 initiateCycleFactorsAutomaticUpgradeWithDatabaseAccessibilityAssertion:v259 error:&v321];
+      v87 = [(HDMCAnalysisManager *)selfCopy initiateCycleFactorsAutomaticUpgradeWithDatabaseAccessibilityAssertion:assertionCopy error:&v321];
       v88 = v321;
 
       if (v87)
@@ -1408,8 +1408,8 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
               v93 = *(*(&v317 + 1) + 8 * i);
               [v93 hkmc_cycleFactor];
               v94 = HAMenstrualAlgorithmsPhaseFromHKMCCycleFactor();
-              v95 = [v93 startDate];
-              [v260 beginPhase:v94 onJulianDay:{objc_msgSend(v95, "hk_dayIndexWithCalendar:", v262)}];
+              startDate = [v93 startDate];
+              [v260 beginPhase:v94 onJulianDay:{objc_msgSend(startDate, "hk_dayIndexWithCalendar:", currentCalendar)}];
             }
 
             v90 = [v89 countByEnumeratingWithState:&v317 objects:v379 count:16];
@@ -1427,11 +1427,11 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
         v310 = &v309;
         v311 = 0x2020000000;
         v312 = 0;
-        if (v250)
+        if (areAllRequirementsSatisfied)
         {
           v97 = [HDMCHeartStatisticsEnumerator alloc];
-          v98 = objc_loadWeakRetained(&v261->_profile);
-          v99 = [(HDMCHeartStatisticsEnumerator *)v97 initWithProfile:v98 calendarCache:v261->_calendarCache dayIndexRange:v79 - 100 databaseAccessibilityAssertion:100, v259];
+          v98 = objc_loadWeakRetained(&selfCopy->_profile);
+          assertionCopy = [(HDMCHeartStatisticsEnumerator *)v97 initWithProfile:v98 calendarCache:selfCopy->_calendarCache dayIndexRange:v79 - 100 databaseAccessibilityAssertion:100, assertionCopy];
 
           _HKInitializeLogging();
           v100 = *MEMORY[0x277CCC2E8];
@@ -1451,7 +1451,7 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
           v305 = v96;
           v306 = &v313;
           v307 = &v309;
-          v102 = [(HDMCHeartStatisticsEnumerator *)v99 enumerateWithError:&v308 handler:v304];
+          v102 = [(HDMCHeartStatisticsEnumerator *)assertionCopy enumerateWithError:&v308 handler:v304];
           v103 = v308;
 
           if (!v102)
@@ -1472,9 +1472,9 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
         }
 
         v112 = [HDMCDaySummaryEnumerator alloc];
-        v113 = objc_loadWeakRetained(&v261->_profile);
-        LOBYTE(v231) = v245;
-        v239 = [(HDMCDaySummaryEnumerator *)v112 initWithProfile:v113 calendarCache:v261->_calendarCache dayIndexRange:v248 ascending:v257 includeFactors:1 includeWristTemperature:1, v231];
+        v113 = objc_loadWeakRetained(&selfCopy->_profile);
+        LOBYTE(v231) = areAllRequirementsSatisfied2;
+        v231 = [(HDMCDaySummaryEnumerator *)v112 initWithProfile:v113 calendarCache:selfCopy->_calendarCache dayIndexRange:v248 ascending:v257 includeFactors:1 includeWristTemperature:1, v231];
 
         _HKInitializeLogging();
         v114 = *MEMORY[0x277CCC2E8];
@@ -1497,10 +1497,10 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
         v282[3] = &unk_27865A8F8;
         v294 = v76;
         v295 = v240;
-        v282[4] = v261;
+        v282[4] = selfCopy;
         v287 = &v345;
         v116 = v260;
-        v297 = v250;
+        v297 = areAllRequirementsSatisfied;
         v283 = v116;
         v288 = &v300;
         v249 = v96;
@@ -1516,10 +1516,10 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
         v293 = &v341;
         v233 = v244;
         v286 = v233;
-        v117 = [(HDMCDaySummaryEnumerator *)v239 enumerateWithError:&v299 handler:v282];
+        v117 = [(HDMCDaySummaryEnumerator *)v231 enumerateWithError:&v299 handler:v282];
         v241 = v299;
 
-        if (v250)
+        if (areAllRequirementsSatisfied)
         {
           v118 = v301[3];
           if (v118 < v79 - 1)
@@ -1553,14 +1553,14 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
         {
           v128 = objc_opt_class();
           v236 = [MEMORY[0x277CCABB0] numberWithInteger:v346[3]];
-          v258 = [(NSArray *)v246 birthDateComponents];
-          v237 = [v258 hk_dayIndexDateDescription];
+          birthDateComponents = [(NSArray *)v246 birthDateComponents];
+          hk_dayIndexDateDescription = [birthDateComponents hk_dayIndexDateDescription];
           v129 = HKSensitiveLogItem();
-          v235 = [(NSArray *)v246 userReportedCycleLength];
-          v130 = [(NSArray *)v246 julianDayOfUserReportedCycleLength];
-          v131 = [(NSArray *)v246 userReportedMenstruationLength];
-          v132 = [(NSArray *)v246 julianDayOfUserReportedMenstruationLength];
-          v133 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HKMCSettingsManager dayStreamProcessorAlgorithmVersion](v261->_settingsManager, "dayStreamProcessorAlgorithmVersion")}];
+          userReportedCycleLength = [(NSArray *)v246 userReportedCycleLength];
+          julianDayOfUserReportedCycleLength = [(NSArray *)v246 julianDayOfUserReportedCycleLength];
+          userReportedMenstruationLength = [(NSArray *)v246 userReportedMenstruationLength];
+          julianDayOfUserReportedMenstruationLength = [(NSArray *)v246 julianDayOfUserReportedMenstruationLength];
+          v133 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HKMCSettingsManager dayStreamProcessorAlgorithmVersion](selfCopy->_settingsManager, "dayStreamProcessorAlgorithmVersion")}];
           *buf = 138545154;
           v364 = v128;
           v365 = 2112;
@@ -1568,13 +1568,13 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
           v367 = 2112;
           v368 = v129;
           v369 = 2112;
-          v370 = v235;
+          v370 = userReportedCycleLength;
           v371 = 2112;
-          v372 = v130;
+          v372 = julianDayOfUserReportedCycleLength;
           v373 = 2112;
-          v374 = v131;
+          v374 = userReportedMenstruationLength;
           v375 = 2112;
-          v376 = v132;
+          v376 = julianDayOfUserReportedMenstruationLength;
           v377 = 2112;
           v378 = v133;
           _os_log_impl(&dword_2293D1000, v127, OS_LOG_TYPE_DEFAULT, "[%{public}@] Analyzing %@ summaries with user entered birthdate: %@, cycle length: %@ (%@), period length: %@ (%@) alg version %@", buf, 0x52u);
@@ -1611,16 +1611,16 @@ BOOL __97__HDMCAnalysisManager__queue_analyzeNowWithForceIncludeCycles_forceAnal
 
         if (v117)
         {
-          test_algorithmsAnalysis = v261->_test_algorithmsAnalysis;
+          test_algorithmsAnalysis = selfCopy->_test_algorithmsAnalysis;
           if (test_algorithmsAnalysis)
           {
             v139 = test_algorithmsAnalysis;
             goto LABEL_142;
           }
 
-          v150 = [v324[5] integerValue];
+          integerValue = [v324[5] integerValue];
           v281 = v241;
-          v151 = [v116 analyzeWithMostRecentMenstrualFlowJulianDayUpdated:v150 error:&v281];
+          v151 = [v116 analyzeWithMostRecentMenstrualFlowJulianDayUpdated:integerValue error:&v281];
           v152 = v281;
 
           v139 = v151;
@@ -1634,7 +1634,7 @@ LABEL_142:
             if (os_log_type_enabled(v153, OS_LOG_TYPE_DEFAULT))
             {
               v154 = objc_opt_class();
-              v155 = [(HAMenstrualAlgorithmsAnalysis *)v139 hkmc_description];
+              hkmc_description = [(HAMenstrualAlgorithmsAnalysis *)v139 hkmc_description];
               v156 = HKSensitiveLogItem();
               *buf = 138543618;
               v364 = v154;
@@ -1647,8 +1647,8 @@ LABEL_142:
             v280 = 0u;
             v277 = 0u;
             v278 = 0u;
-            v157 = [(HAMenstrualAlgorithmsAnalysis *)v238 menstruationPredictions];
-            v158 = [v157 countByEnumeratingWithState:&v277 objects:v362 count:16];
+            menstruationPredictions = [(HAMenstrualAlgorithmsAnalysis *)v238 menstruationPredictions];
+            v158 = [menstruationPredictions countByEnumeratingWithState:&v277 objects:v362 count:16];
             if (v158)
             {
               v159 = *v278;
@@ -1658,7 +1658,7 @@ LABEL_142:
                 {
                   if (*v278 != v159)
                   {
-                    objc_enumerationMutation(v157);
+                    objc_enumerationMutation(menstruationPredictions);
                   }
 
                   v161 = *(*(&v277 + 1) + 8 * j);
@@ -1667,7 +1667,7 @@ LABEL_142:
                   if (os_log_type_enabled(v162, OS_LOG_TYPE_DEFAULT))
                   {
                     v163 = objc_opt_class();
-                    v164 = [v161 hkmc_description];
+                    hkmc_description2 = [v161 hkmc_description];
                     v165 = HKSensitiveLogItem();
                     *buf = 138543618;
                     v364 = v163;
@@ -1677,7 +1677,7 @@ LABEL_142:
                   }
                 }
 
-                v158 = [v157 countByEnumeratingWithState:&v277 objects:v362 count:16];
+                v158 = [menstruationPredictions countByEnumeratingWithState:&v277 objects:v362 count:16];
               }
 
               while (v158);
@@ -1687,8 +1687,8 @@ LABEL_142:
             v276 = 0u;
             v273 = 0u;
             v274 = 0u;
-            v166 = [(HAMenstrualAlgorithmsAnalysis *)v238 fertilityPredictions];
-            v167 = [v166 countByEnumeratingWithState:&v273 objects:v361 count:16];
+            fertilityPredictions = [(HAMenstrualAlgorithmsAnalysis *)v238 fertilityPredictions];
+            v167 = [fertilityPredictions countByEnumeratingWithState:&v273 objects:v361 count:16];
             if (v167)
             {
               v168 = *v274;
@@ -1698,7 +1698,7 @@ LABEL_142:
                 {
                   if (*v274 != v168)
                   {
-                    objc_enumerationMutation(v166);
+                    objc_enumerationMutation(fertilityPredictions);
                   }
 
                   v170 = *(*(&v273 + 1) + 8 * k);
@@ -1707,7 +1707,7 @@ LABEL_142:
                   if (os_log_type_enabled(v171, OS_LOG_TYPE_DEFAULT))
                   {
                     v172 = objc_opt_class();
-                    v173 = [v170 hkmc_description];
+                    hkmc_description3 = [v170 hkmc_description];
                     v174 = HKSensitiveLogItem();
                     *buf = 138543618;
                     v364 = v172;
@@ -1717,7 +1717,7 @@ LABEL_142:
                   }
                 }
 
-                v167 = [v166 countByEnumeratingWithState:&v273 objects:v361 count:16];
+                v167 = [fertilityPredictions countByEnumeratingWithState:&v273 objects:v361 count:16];
               }
 
               while (v167);
@@ -1729,7 +1729,7 @@ LABEL_142:
               goto LABEL_184;
             }
 
-            test_algorithmsCycles = v261->_test_algorithmsCycles;
+            test_algorithmsCycles = selfCopy->_test_algorithmsCycles;
             if (test_algorithmsCycles)
             {
               v176 = test_algorithmsCycles;
@@ -1774,11 +1774,11 @@ LABEL_170:
                       if (os_log_type_enabled(v188, OS_LOG_TYPE_DEBUG))
                       {
                         v189 = objc_opt_class();
-                        v190 = [v186 hkmc_description];
+                        hkmc_description4 = [v186 hkmc_description];
                         *buf = 138543618;
                         v364 = v189;
                         v365 = 2112;
-                        v366 = v190;
+                        v366 = hkmc_description4;
                         _os_log_debug_impl(&dword_2293D1000, v188, OS_LOG_TYPE_DEBUG, "[%{public}@] Cycle: %@", buf, 0x16u);
                       }
                     }
@@ -1801,24 +1801,24 @@ LABEL_184:
                 v194 = v193;
                 if ((spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v193))
                 {
-                  v195 = [MEMORY[0x277CCABB0] numberWithBool:v250];
+                  v195 = [MEMORY[0x277CCABB0] numberWithBool:areAllRequirementsSatisfied];
                   *buf = 138412290;
                   v364 = v195;
                   _os_signpost_emit_with_name_impl(&dword_2293D1000, v194, OS_SIGNPOST_INTERVAL_END, spid, "menstrual-cycles-analysis", "useHeartRateInput=%@", buf, 0xCu);
                 }
               }
 
-              v196 = [(HDMCSymptomHistoryBuilder *)v234 recentSymptoms];
+              recentSymptoms = [(HDMCSymptomHistoryBuilder *)v234 recentSymptoms];
               v197 = v350[5];
               v198 = v336[5];
               v199 = v330[5];
               v200 = v314[3];
               v201 = v310[3];
-              v202 = [(NSArray *)v251 onboardingRecord];
-              v203 = [v202 featureSettings];
-              BYTE1(v232) = v245;
-              LOBYTE(v232) = v250;
-              v204 = [(HDMCAnalysisManager *)v261 _analysisWithAlgorithmsAnalysis:v238 algorithmsCycles:v177 recentSymptoms:v196 mostRecentBasalBodyTemperature:v197 lastLoggedDayIndex:v198 lastMenstrualFlowDayIndex:v199 numberOfDailySleepHeartRateStatisticsForPast100Days:v200 numberOfDailyAwakeHeartRateStatisticsForPast100Days:v201 featureSettings:obj useHeartRateInput:v232 useWristTemperatureInput:v203 deviationsFeatureSettings:?];
+              onboardingRecord = [(NSArray *)v251 onboardingRecord];
+              featureSettings = [onboardingRecord featureSettings];
+              BYTE1(v232) = areAllRequirementsSatisfied2;
+              LOBYTE(v232) = areAllRequirementsSatisfied;
+              v204 = [(HDMCAnalysisManager *)selfCopy _analysisWithAlgorithmsAnalysis:v238 algorithmsCycles:v177 recentSymptoms:recentSymptoms mostRecentBasalBodyTemperature:v197 lastLoggedDayIndex:v198 lastMenstrualFlowDayIndex:v199 numberOfDailySleepHeartRateStatisticsForPast100Days:v200 numberOfDailyAwakeHeartRateStatisticsForPast100Days:v201 featureSettings:obj useHeartRateInput:v232 useWristTemperatureInput:featureSettings deviationsFeatureSettings:?];
 
               _HKInitializeLogging();
               v205 = *MEMORY[0x277CCC2E8];
@@ -1834,7 +1834,7 @@ LABEL_184:
 
               v207 = MEMORY[0x277D10848];
               v267 = 0;
-              v208 = objc_loadWeakRetained(&v261->_profile);
+              v208 = objc_loadWeakRetained(&selfCopy->_profile);
               v266 = v241;
               LOBYTE(v207) = [v207 hdmc_analysisSampleInfo:&v267 forProfile:v208 error:&v266];
               v209 = v267;
@@ -1868,8 +1868,8 @@ LABEL_184:
                   _os_log_impl(&dword_2293D1000, v212, OS_LOG_TYPE_DEFAULT, "[%{public}@] Did update analysis: %@", buf, 0x16u);
                 }
 
-                objc_storeStrong(&v261->_queue_lastFeatureSettings, obj);
-                v215 = v261->_observers;
+                objc_storeStrong(&selfCopy->_queue_lastFeatureSettings, obj);
+                v215 = selfCopy->_observers;
                 v263[0] = MEMORY[0x277D85DD0];
                 v263[1] = 3221225472;
                 v263[2] = __133__HDMCAnalysisManager__queue_computeAnalysisWithDatabaseAccessibilityAssertion_forceIncludeCycles_forceAnalyzeCompleteHistory_error___block_invoke_363;
@@ -1895,10 +1895,10 @@ LABEL_184:
                 v220 = v219;
                 if (v219)
                 {
-                  if (v256)
+                  if (errorCopy)
                   {
                     v221 = v219;
-                    *v256 = v220;
+                    *errorCopy = v220;
                   }
 
                   else
@@ -1955,11 +1955,11 @@ LABEL_219:
             v177 = v229;
             if (v229)
             {
-              if (v256)
+              if (errorCopy)
               {
                 v230 = v229;
                 v17 = 0;
-                *v256 = v177;
+                *errorCopy = v177;
 LABEL_237:
                 v64 = v177;
                 goto LABEL_219;
@@ -1984,7 +1984,7 @@ LABEL_237:
           v147 = v223;
           if (v223)
           {
-            if (v256)
+            if (errorCopy)
             {
               v148 = v223;
               v224 = v223;
@@ -2007,7 +2007,7 @@ LABEL_237:
             v143 = v142;
             if ((spid - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v142))
             {
-              v144 = [MEMORY[0x277CCABB0] numberWithBool:v250];
+              v144 = [MEMORY[0x277CCABB0] numberWithBool:areAllRequirementsSatisfied];
               *buf = 138412290;
               v364 = v144;
               _os_signpost_emit_with_name_impl(&dword_2293D1000, v143, OS_SIGNPOST_INTERVAL_END, spid, "menstrual-cycles-analysis", "useHeartRateInput=%@", buf, 0xCu);
@@ -2026,14 +2026,14 @@ LABEL_237:
           v147 = v146;
           if (v146)
           {
-            if (v256)
+            if (errorCopy)
             {
               v148 = v146;
               v149 = v146;
 LABEL_136:
               v17 = 0;
               v147 = v148;
-              *v256 = v148;
+              *errorCopy = v148;
               v64 = v148;
 LABEL_220:
 
@@ -2057,7 +2057,7 @@ LABEL_220:
       v107 = v110;
       if (v110)
       {
-        if (v256)
+        if (errorCopy)
         {
           v108 = v110;
           v111 = v110;
@@ -2082,14 +2082,14 @@ LABEL_220:
       v107 = v106;
       if (v106)
       {
-        if (v256)
+        if (errorCopy)
         {
           v108 = v106;
           v109 = v106;
 LABEL_102:
           v17 = 0;
           v107 = v108;
-          *v256 = v108;
+          *errorCopy = v108;
           v64 = v108;
 LABEL_221:
 
@@ -2136,14 +2136,14 @@ LABEL_225:
     _os_log_impl(&dword_2293D1000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping analysis since this is not a primary profile", buf, 0xCu);
   }
 
-  v25 = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
-  v26 = v25;
-  if (v25)
+  hk_featureUnavailableForProfileError = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
+  v26 = hk_featureUnavailableForProfileError;
+  if (hk_featureUnavailableForProfileError)
   {
-    if (v256)
+    if (errorCopy)
     {
-      v27 = v25;
-      *v256 = v26;
+      v27 = hk_featureUnavailableForProfileError;
+      *errorCopy = v26;
     }
 
     else
@@ -2320,17 +2320,17 @@ void __133__HDMCAnalysisManager__queue_computeAnalysisWithDatabaseAccessibilityA
   }
 }
 
-- (id)_analysisWithAlgorithmsAnalysis:(id)a3 algorithmsCycles:(id)a4 recentSymptoms:(unint64_t)a5 mostRecentBasalBodyTemperature:(id)a6 lastLoggedDayIndex:(id)a7 lastMenstrualFlowDayIndex:(id)a8 numberOfDailySleepHeartRateStatisticsForPast100Days:(int64_t)a9 numberOfDailyAwakeHeartRateStatisticsForPast100Days:(int64_t)a10 featureSettings:(id)a11 useHeartRateInput:(BOOL)a12 useWristTemperatureInput:(BOOL)a13 deviationsFeatureSettings:(id)a14
+- (id)_analysisWithAlgorithmsAnalysis:(id)analysis algorithmsCycles:(id)cycles recentSymptoms:(unint64_t)symptoms mostRecentBasalBodyTemperature:(id)temperature lastLoggedDayIndex:(id)index lastMenstrualFlowDayIndex:(id)dayIndex numberOfDailySleepHeartRateStatisticsForPast100Days:(int64_t)days numberOfDailyAwakeHeartRateStatisticsForPast100Days:(int64_t)self0 featureSettings:(id)self1 useHeartRateInput:(BOOL)self2 useWristTemperatureInput:(BOOL)self3 deviationsFeatureSettings:(id)self4
 {
   v133 = *MEMORY[0x277D85DE8];
-  v107 = a3;
-  v106 = a4;
-  v105 = a6;
-  v104 = a7;
-  v103 = a8;
-  v102 = a11;
-  v97 = a14;
-  v112 = self;
+  analysisCopy = analysis;
+  cyclesCopy = cycles;
+  temperatureCopy = temperature;
+  indexCopy = index;
+  dayIndexCopy = dayIndex;
+  settingsCopy = settings;
+  featureSettingsCopy = featureSettings;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_queue);
   v111 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v122 = 0u;
@@ -2358,8 +2358,8 @@ void __133__HDMCAnalysisManager__queue_computeAnalysisWithDatabaseAccessibilityA
 
         v26 = *(*(&v122 + 1) + 8 * v24);
         v27 = MEMORY[0x277D10848];
-        WeakRetained = objc_loadWeakRetained(&v112->_profile);
-        v29 = [MEMORY[0x277CBEAA8] distantFuture];
+        WeakRetained = objc_loadWeakRetained(&selfCopy->_profile);
+        distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
         v30 = HDSampleEntityPredicateForEndDate();
         v121 = v25;
         v31 = [v27 samplesWithType:v26 profile:WeakRetained encodingOptions:0 predicate:v30 limit:v23 anchor:0 error:&v121];
@@ -2382,20 +2382,20 @@ void __133__HDMCAnalysisManager__queue_computeAnalysisWithDatabaseAccessibilityA
     v21 = 0;
   }
 
-  v32 = [v102 menstruationProjectionsEnabled];
-  v33 = [v102 fertileWindowProjectionsEnabled];
+  menstruationProjectionsEnabled = [settingsCopy menstruationProjectionsEnabled];
+  fertileWindowProjectionsEnabled = [settingsCopy fertileWindowProjectionsEnabled];
   v34 = [v111 copy];
-  obja = v33;
-  [(HDMCAnalysisManager *)v112 _forceDisablePredictionsFromOngoingCycleFactors:v34 menstruationProjectionsEnabled:v32 fertileWindowProjectionsEnabled:v33 useHeartRateInput:a12 useWristTemperatureInput:a13];
+  obja = fertileWindowProjectionsEnabled;
+  [(HDMCAnalysisManager *)selfCopy _forceDisablePredictionsFromOngoingCycleFactors:v34 menstruationProjectionsEnabled:menstruationProjectionsEnabled fertileWindowProjectionsEnabled:fertileWindowProjectionsEnabled useHeartRateInput:input useWristTemperatureInput:temperatureInput];
 
-  v35 = v107;
-  v36 = [v107 hkmc_statistics];
-  v37 = [v36 cycleLengthMedian];
+  v35 = analysisCopy;
+  hkmc_statistics = [analysisCopy hkmc_statistics];
+  cycleLengthMedian = [hkmc_statistics cycleLengthMedian];
 
   v38 = MEMORY[0x277CCC2E8];
-  if (!v37)
+  if (!cycleLengthMedian)
   {
-    v39 = objc_loadWeakRetained(&v112->_profile);
+    v39 = objc_loadWeakRetained(&selfCopy->_profile);
     v40 = _UserCharacteristicOfType(v39, *MEMORY[0x277CCDEE8]);
 
     _HKInitializeLogging();
@@ -2412,25 +2412,25 @@ void __133__HDMCAnalysisManager__queue_computeAnalysisWithDatabaseAccessibilityA
       v129 = v45;
       _os_log_impl(&dword_2293D1000, v42, OS_LOG_TYPE_DEFAULT, "[%{public}@] Replacing statistics cycle length with user entered cycle length: %@", buf, 0x16u);
 
-      v35 = v107;
+      v35 = analysisCopy;
     }
 
     if (v40)
     {
       v46 = MEMORY[0x277CCABB0];
-      v47 = [MEMORY[0x277CCDAB0] dayUnit];
-      [v40 doubleValueForUnit:v47];
+      dayUnit = [MEMORY[0x277CCDAB0] dayUnit];
+      [v40 doubleValueForUnit:dayUnit];
       v48 = [v46 numberWithDouble:?];
 
-      [v36 setCycleLengthMedian:v48];
+      [hkmc_statistics setCycleLengthMedian:v48];
     }
   }
 
-  v49 = [v36 menstruationLengthMedian];
+  menstruationLengthMedian = [hkmc_statistics menstruationLengthMedian];
 
-  if (!v49)
+  if (!menstruationLengthMedian)
   {
-    v50 = objc_loadWeakRetained(&v112->_profile);
+    v50 = objc_loadWeakRetained(&selfCopy->_profile);
     v51 = _UserCharacteristicOfType(v50, *MEMORY[0x277CCDEF0]);
 
     _HKInitializeLogging();
@@ -2447,50 +2447,50 @@ void __133__HDMCAnalysisManager__queue_computeAnalysisWithDatabaseAccessibilityA
       v129 = v56;
       _os_log_impl(&dword_2293D1000, v53, OS_LOG_TYPE_DEFAULT, "[%{public}@] Replacing statistics period length with user entered period length: %@", buf, 0x16u);
 
-      v35 = v107;
+      v35 = analysisCopy;
     }
 
     if (v51)
     {
       v57 = MEMORY[0x277CCABB0];
-      v58 = [MEMORY[0x277CCDAB0] dayUnit];
-      [v51 doubleValueForUnit:v58];
+      dayUnit2 = [MEMORY[0x277CCDAB0] dayUnit];
+      [v51 doubleValueForUnit:dayUnit2];
       v59 = [v57 numberWithDouble:?];
 
-      [v36 setMenstruationLengthMedian:v59];
+      [hkmc_statistics setMenstruationLengthMedian:v59];
     }
   }
 
-  if (a13)
+  if (temperatureInput)
   {
-    v101 = [(HKMCSettingsManager *)v112->_settingsManager dayStreamProcessorPredictionPrimarySourceOverride];
-    if (!v32)
+    dayStreamProcessorPredictionPrimarySourceOverride = [(HKMCSettingsManager *)selfCopy->_settingsManager dayStreamProcessorPredictionPrimarySourceOverride];
+    if (!menstruationProjectionsEnabled)
     {
 LABEL_24:
-      v60 = 0;
+      areAllMenstruationPredictionAlgorithmAttributesSupported = 0;
       goto LABEL_27;
     }
   }
 
   else
   {
-    v101 = 0;
-    if (!v32)
+    dayStreamProcessorPredictionPrimarySourceOverride = 0;
+    if (!menstruationProjectionsEnabled)
     {
       goto LABEL_24;
     }
   }
 
-  v60 = [(HKMCSettingsManager *)v112->_settingsManager areAllMenstruationPredictionAlgorithmAttributesSupported];
+  areAllMenstruationPredictionAlgorithmAttributesSupported = [(HKMCSettingsManager *)selfCopy->_settingsManager areAllMenstruationPredictionAlgorithmAttributesSupported];
 LABEL_27:
   if (obja)
   {
-    v61 = [(HKMCSettingsManager *)v112->_settingsManager areAllFertileWindowPredictionAlgorithmAttributesSupported];
+    areAllFertileWindowPredictionAlgorithmAttributesSupported = [(HKMCSettingsManager *)selfCopy->_settingsManager areAllFertileWindowPredictionAlgorithmAttributesSupported];
   }
 
   else
   {
-    v61 = 0;
+    areAllFertileWindowPredictionAlgorithmAttributesSupported = 0;
   }
 
   _HKInitializeLogging();
@@ -2500,7 +2500,7 @@ LABEL_27:
     v63 = v62;
     v64 = objc_opt_class();
     v65 = @"OFF";
-    if (v60)
+    if (areAllMenstruationPredictionAlgorithmAttributesSupported)
     {
       v66 = @"ON";
     }
@@ -2514,7 +2514,7 @@ LABEL_27:
     v127 = v64;
     v129 = v66;
     v128 = 2112;
-    if (v61)
+    if (areAllFertileWindowPredictionAlgorithmAttributesSupported)
     {
       v65 = @"ON";
     }
@@ -2525,10 +2525,10 @@ LABEL_27:
     _os_log_impl(&dword_2293D1000, v63, OS_LOG_TYPE_DEFAULT, "[%{public}@] Surfacing analysis with period predictions: %@, fertility predictions: %@", buf, 0x20u);
   }
 
-  if (v60)
+  if (areAllMenstruationPredictionAlgorithmAttributesSupported)
   {
-    v96 = [v35 hkmc_menstruationProjections];
-    if (!v61)
+    hkmc_menstruationProjections = [v35 hkmc_menstruationProjections];
+    if (!areAllFertileWindowPredictionAlgorithmAttributesSupported)
     {
 LABEL_39:
       v68 = MEMORY[0x277CBEBF8];
@@ -2538,23 +2538,23 @@ LABEL_39:
 
   else
   {
-    v96 = MEMORY[0x277CBEBF8];
-    if (!v61)
+    hkmc_menstruationProjections = MEMORY[0x277CBEBF8];
+    if (!areAllFertileWindowPredictionAlgorithmAttributesSupported)
     {
       goto LABEL_39;
     }
   }
 
-  v69 = [MEMORY[0x277CBEAA8] date];
-  v70 = [(HKCalendarCache *)v112->_calendarCache currentCalendar];
-  v68 = [v35 hkmc_fertileWindowProjectionsWithOverridePredictionPrimarySource:v101 currentDayIndex:{objc_msgSend(v69, "hk_dayIndexWithCalendar:", v70)}];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [(HKCalendarCache *)selfCopy->_calendarCache currentCalendar];
+  v68 = [v35 hkmc_fertileWindowProjectionsWithOverridePredictionPrimarySource:dayStreamProcessorPredictionPrimarySourceOverride currentDayIndex:{objc_msgSend(date, "hk_dayIndexWithCalendar:", currentCalendar)}];
 
 LABEL_42:
   v95 = [v68 subarrayWithRange:{0, objc_msgSend(v68, "count") != 0}];
 
-  if (v106)
+  if (cyclesCopy)
   {
-    v71 = [v106 count];
+    v71 = [cyclesCopy count];
     v72 = [MEMORY[0x277CBEB18] arrayWithCapacity:v71];
     v116[0] = MEMORY[0x277D85DD0];
     v116[1] = 3221225472;
@@ -2562,11 +2562,11 @@ LABEL_42:
     v116[3] = &unk_27865A920;
     v117 = v72;
     v118 = v71;
-    v119 = a13;
-    v116[4] = v112;
+    temperatureInputCopy = temperatureInput;
+    v116[4] = selfCopy;
     v120 = obja;
     v73 = v72;
-    [v106 enumerateObjectsWithOptions:2 usingBlock:v116];
+    [cyclesCopy enumerateObjectsWithOptions:2 usingBlock:v116];
     v94 = [v73 copy];
   }
 
@@ -2575,16 +2575,16 @@ LABEL_42:
     v94 = 0;
   }
 
-  v99 = v32;
-  v108 = v36;
-  v74 = [v35 hkmc_deviations];
+  v99 = menstruationProjectionsEnabled;
+  v108 = hkmc_statistics;
+  hkmc_deviations = [v35 hkmc_deviations];
   v114[0] = MEMORY[0x277D85DD0];
   v114[1] = 3221225472;
   v114[2] = __352__HDMCAnalysisManager__analysisWithAlgorithmsAnalysis_algorithmsCycles_recentSymptoms_mostRecentBasalBodyTemperature_lastLoggedDayIndex_lastMenstrualFlowDayIndex_numberOfDailySleepHeartRateStatisticsForPast100Days_numberOfDailyAwakeHeartRateStatisticsForPast100Days_featureSettings_useHeartRateInput_useWristTemperatureInput_deviationsFeatureSettings___block_invoke_2;
   v114[3] = &unk_27865A948;
-  v98 = v97;
+  v98 = featureSettingsCopy;
   v115 = v98;
-  v75 = [(__CFString *)v74 hk_filter:v114];
+  v75 = [(__CFString *)hkmc_deviations hk_filter:v114];
   if (HKShowSensitiveLogItems())
   {
     _HKInitializeLogging();
@@ -2596,7 +2596,7 @@ LABEL_42:
       *buf = 138543618;
       v127 = v78;
       v128 = 2112;
-      v129 = v74;
+      v129 = hkmc_deviations;
       v79 = v78;
       _os_log_impl(&dword_2293D1000, v77, OS_LOG_TYPE_DEFAULT, "[%{public}@] Deviations detected (all): %@", buf, 0x16u);
     }
@@ -2617,14 +2617,14 @@ LABEL_42:
   }
 
   v84 = objc_alloc(MEMORY[0x277D11960]);
-  v85 = objc_loadWeakRetained(&v112->_profile);
+  v85 = objc_loadWeakRetained(&selfCopy->_profile);
   v86 = [HDMCRecentBasalBodyTemperatureRangeQuery recentRangeForAnalysisWithProfile:v85];
-  v87 = [v86 recentBasalBodyTemperatureWithMostRecentQuantity:v105];
-  v88 = [v35 isUserInactive];
+  v87 = [v86 recentBasalBodyTemperatureWithMostRecentQuantity:temperatureCopy];
+  isUserInactive = [v35 isUserInactive];
   v89 = [v111 copy];
-  LOBYTE(v93) = [(HDMCAnalysisManager *)v112 _hasHealthAppDevicesWithHigherAlgorithmVersions];
-  LOBYTE(v92) = v88;
-  v113 = [v84 initWithStatistics:v108 menstruationProjections:v96 fertileWindowProjections:v95 menstruationProjectionsEnabled:v99 fertileWindowProjectionsEnabled:obja cycles:v94 deviations:v75 recentSymptoms:a5 recentBasalBodyTemperature:v87 lastLoggedDayIndex:v104 lastMenstrualFlowDayIndex:v103 isPeriodLogLate:v92 ongoingCycleFactors:v89 numberOfDailySleepHeartRateStatisticsForPast100Days:a9 numberOfDailyAwakeHeartRateStatisticsForPast100Days:a10 hasHealthAppDevicesWithHigherAlgorithmVersions:v93];
+  LOBYTE(v93) = [(HDMCAnalysisManager *)selfCopy _hasHealthAppDevicesWithHigherAlgorithmVersions];
+  LOBYTE(v92) = isUserInactive;
+  v113 = [v84 initWithStatistics:v108 menstruationProjections:hkmc_menstruationProjections fertileWindowProjections:v95 menstruationProjectionsEnabled:v99 fertileWindowProjectionsEnabled:obja cycles:v94 deviations:v75 recentSymptoms:symptoms recentBasalBodyTemperature:v87 lastLoggedDayIndex:indexCopy lastMenstrualFlowDayIndex:dayIndexCopy isPeriodLogLate:v92 ongoingCycleFactors:v89 numberOfDailySleepHeartRateStatisticsForPast100Days:days numberOfDailyAwakeHeartRateStatisticsForPast100Days:past100Days hasHealthAppDevicesWithHigherAlgorithmVersions:v93];
 
   v90 = *MEMORY[0x277D85DE8];
 
@@ -2681,11 +2681,11 @@ uint64_t __352__HDMCAnalysisManager__analysisWithAlgorithmsAnalysis_algorithmsCy
   return [v2 deviationDetectionEnabledForType:v3];
 }
 
-- (id)_processorConfigurationForTodayIndex:(int64_t)a3 deviationsFeatureStatus:(id)a4 calendar:(id)a5
+- (id)_processorConfigurationForTodayIndex:(int64_t)index deviationsFeatureStatus:(id)status calendar:(id)calendar
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  statusCopy = status;
+  calendarCopy = calendar;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v11 = _UserCharacteristicOfType(WeakRetained, *MEMORY[0x277CCBB18]);
 
@@ -2694,26 +2694,26 @@ uint64_t __352__HDMCAnalysisManager__analysisWithAlgorithmsAnalysis_algorithmsCy
   v14 = _UserCharacteristicOfType(v12, *MEMORY[0x277CCDEE8]);
 
   v15 = objc_loadWeakRetained(&self->_profile);
-  v16 = _UserCharacteristicModificationDayOfType(v15, v13, v9);
+  v16 = _UserCharacteristicModificationDayOfType(v15, v13, calendarCopy);
 
   v17 = objc_loadWeakRetained(&self->_profile);
   v18 = *MEMORY[0x277CCDEF0];
   v19 = _UserCharacteristicOfType(v17, *MEMORY[0x277CCDEF0]);
 
   v20 = objc_loadWeakRetained(&self->_profile);
-  v21 = _UserCharacteristicModificationDayOfType(v20, v18, v9);
+  v21 = _UserCharacteristicModificationDayOfType(v20, v18, calendarCopy);
 
   v22 = [(HKMCSettingsManager *)self->_settingsManager cycleLengthModificationDayIndexOverriding:v16];
   v23 = [(HKMCSettingsManager *)self->_settingsManager periodLengthModificationDayIndexOverriding:v21];
   v24 = [MEMORY[0x277D0FC98] hkmc_configurationWithBirthDateComponents:v11 userReportedCycleLength:v14 onDayIndex:v22 userReportedMenstruationLength:v19 onDayIndex:v23];
-  [v24 setTodayAsJulianDay:a3];
-  if (v8)
+  [v24 setTodayAsJulianDay:index];
+  if (statusCopy)
   {
     v52 = v14;
     v53 = v11;
     v25 = *MEMORY[0x277CCBEA0];
-    v26 = [v8 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
-    v27 = [v26 areAllRequirementsSatisfied];
+    v26 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+    areAllRequirementsSatisfied = [v26 areAllRequirementsSatisfied];
 
     _HKInitializeLogging();
     v28 = *MEMORY[0x277CCC2E8];
@@ -2722,7 +2722,7 @@ uint64_t __352__HDMCAnalysisManager__analysisWithAlgorithmsAnalysis_algorithmsCy
       v29 = v28;
       v30 = objc_opt_class();
       v31 = @"NO";
-      if (v27)
+      if (areAllRequirementsSatisfied)
       {
         v31 = @"YES";
       }
@@ -2735,29 +2735,29 @@ uint64_t __352__HDMCAnalysisManager__analysisWithAlgorithmsAnalysis_algorithmsCy
       _os_log_impl(&dword_2293D1000, v29, OS_LOG_TYPE_DEFAULT, "[%{public}@] Deviation detection meets usage requirements: %@", buf, 0x16u);
     }
 
-    v33 = [v8 onboardingRecord];
-    v34 = [v33 featureSettings];
+    onboardingRecord = [statusCopy onboardingRecord];
+    featureSettings = [onboardingRecord featureSettings];
 
     deviationInputManager = self->_deviationInputManager;
     v54 = 0;
-    LOBYTE(v33) = [(HDMCDeviationInputManager *)deviationInputManager clearStateIfNecessaryFromSettings:v34 usageRequirementsSatisfied:v27 error:&v54];
+    LOBYTE(onboardingRecord) = [(HDMCDeviationInputManager *)deviationInputManager clearStateIfNecessaryFromSettings:featureSettings usageRequirementsSatisfied:areAllRequirementsSatisfied error:&v54];
     v36 = v54;
-    if ((v33 & 1) == 0 && (_HKInitializeLogging(), os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_ERROR)))
+    if ((onboardingRecord & 1) == 0 && (_HKInitializeLogging(), os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_ERROR)))
     {
       [HDMCAnalysisManager _processorConfigurationForTodayIndex:deviationsFeatureStatus:calendar:];
-      if (v27)
+      if (areAllRequirementsSatisfied)
       {
         goto LABEL_9;
       }
     }
 
-    else if (v27)
+    else if (areAllRequirementsSatisfied)
     {
 LABEL_9:
-      v37 = [v34 deviationDetectionEnabledSetExplicitlyForAnyType];
+      deviationDetectionEnabledSetExplicitlyForAnyType = [featureSettings deviationDetectionEnabledSetExplicitlyForAnyType];
       v38 = MEMORY[0x277D0FCB0];
       v39 = objc_loadWeakRetained(&self->_profile);
-      v40 = [v38 hdmc_deviationInputWithProfile:v39 enabledSetExplicitly:v37 calendar:v9];
+      v40 = [v38 hdmc_deviationInputWithProfile:v39 enabledSetExplicitly:deviationDetectionEnabledSetExplicitlyForAnyType calendar:calendarCopy];
       [v24 setDeviationInput:v40];
 
 LABEL_15:
@@ -2773,12 +2773,12 @@ LABEL_15:
       v45 = v44;
       v46 = objc_opt_class();
       v51 = v46;
-      v47 = [v8 objectForKeyedSubscript:v25];
-      v48 = [v47 unsatisfiedRequirementIdentifiers];
+      v47 = [statusCopy objectForKeyedSubscript:v25];
+      unsatisfiedRequirementIdentifiers = [v47 unsatisfiedRequirementIdentifiers];
       *buf = 138543618;
       v56 = v46;
       v57 = 2112;
-      v58 = v48;
+      v58 = unsatisfiedRequirementIdentifiers;
       _os_log_impl(&dword_2293D1000, v45, OS_LOG_TYPE_DEFAULT, "[%{public}@] Deviation detection unsatisfied usage requirements: %@", buf, 0x16u);
     }
 
@@ -2821,7 +2821,7 @@ LABEL_16:
   v7 = v12;
   if (v6)
   {
-    v8 = [v6 hasHealthAppDevicesWithHigherAlgorithmVersions];
+    hasHealthAppDevicesWithHigherAlgorithmVersions = [v6 hasHealthAppDevicesWithHigherAlgorithmVersions];
     _HKInitializeLogging();
     v9 = *v3;
     if (os_signpost_enabled(v9))
@@ -2839,22 +2839,22 @@ LABEL_16:
       [HDMCAnalysisManager _hasHealthAppDevicesWithHigherAlgorithmVersions];
     }
 
-    v8 = 0;
+    hasHealthAppDevicesWithHigherAlgorithmVersions = 0;
   }
 
-  return v8;
+  return hasHealthAppDevicesWithHigherAlgorithmVersions;
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4 userInitiated:(BOOL)a5
+- (void)registerObserver:(id)observer queue:(id)queue userInitiated:(BOOL)initiated
 {
-  v5 = a5;
+  initiatedCopy = initiated;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  [(HKObserverSet *)self->_observers registerObserver:v8 queue:v9];
-  if (v5)
+  observerCopy = observer;
+  queueCopy = queue;
+  [(HKObserverSet *)self->_observers registerObserver:observerCopy queue:queueCopy];
+  if (initiatedCopy)
   {
-    [(HKObserverSet *)self->_userInitiatedObservers registerObserver:v8 queue:v9];
+    [(HKObserverSet *)self->_userInitiatedObservers registerObserver:observerCopy queue:queueCopy];
     _HKInitializeLogging();
     v10 = *MEMORY[0x277CCC2E8];
     if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
@@ -2863,7 +2863,7 @@ LABEL_16:
       *buf = 138543618;
       v17 = objc_opt_class();
       v18 = 2114;
-      v19 = v8;
+      v19 = observerCopy;
       v12 = v17;
       _os_log_impl(&dword_2293D1000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Analyze if needed due to user-initiated observer add: %{public}@", buf, 0x16u);
     }
@@ -2880,12 +2880,12 @@ LABEL_16:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
-  v5 = a3;
-  [(HKObserverSet *)observers unregisterObserver:v5];
-  [(HKObserverSet *)self->_userInitiatedObservers unregisterObserver:v5];
+  observerCopy = observer;
+  [(HKObserverSet *)observers unregisterObserver:observerCopy];
+  [(HKObserverSet *)self->_userInitiatedObservers unregisterObserver:observerCopy];
 }
 
 - (HDProfile)profile
@@ -2895,17 +2895,17 @@ LABEL_16:
   return WeakRetained;
 }
 
-- (BOOL)initiateCycleFactorsAutomaticUpgradeWithDatabaseAccessibilityAssertion:(id)a3 error:(id *)a4
+- (BOOL)initiateCycleFactorsAutomaticUpgradeWithDatabaseAccessibilityAssertion:(id)assertion error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMCAnalysisManager *)self profile];
-  v8 = v7;
-  if (v7)
+  assertionCopy = assertion;
+  profile = [(HDMCAnalysisManager *)self profile];
+  v8 = profile;
+  if (profile)
   {
-    v9 = [v7 onboardingCompletionManager];
+    onboardingCompletionManager = [profile onboardingCompletionManager];
     v10 = *MEMORY[0x277CCC090];
     v27 = 0;
-    v11 = [v9 onboardingCompletionsForHighestVersionOfFeatureIdentifier:v10 error:&v27];
+    v11 = [onboardingCompletionManager onboardingCompletionsForHighestVersionOfFeatureIdentifier:v10 error:&v27];
     v12 = v27;
 
     v13 = v11 != 0;
@@ -2914,10 +2914,10 @@ LABEL_16:
       v20 = v12;
       if (v20)
       {
-        if (a4)
+        if (error)
         {
           v21 = v20;
-          *a4 = v20;
+          *error = v20;
         }
 
         else
@@ -2936,12 +2936,12 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v14 = [v11 firstObject];
-    v15 = v14;
-    if (v14 && [v14 version] <= 1)
+    firstObject = [v11 firstObject];
+    v15 = firstObject;
+    if (firstObject && [firstObject version] <= 1)
     {
-      v16 = [v6 cloneWithOwnerIdentifier:@"HDMCAnalysisManager+CycleFactorsAutomaticUpgrade"];
-      v17 = [(HDMCAnalysisManager *)self queue];
+      v16 = [assertionCopy cloneWithOwnerIdentifier:@"HDMCAnalysisManager+CycleFactorsAutomaticUpgrade"];
+      queue = [(HDMCAnalysisManager *)self queue];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __130__HDMCAnalysisManager_CycleFactorsAutomaticUpgrade__initiateCycleFactorsAutomaticUpgradeWithDatabaseAccessibilityAssertion_error___block_invoke;
@@ -2949,15 +2949,15 @@ LABEL_16:
       v24[4] = self;
       v25 = v16;
       v26 = v8;
-      v18 = v16;
-      dispatch_async(v17, v24);
+      _test_didNotUpgradeOnboardingRecord2 = v16;
+      dispatch_async(queue, v24);
     }
 
     else
     {
-      v19 = [(HDMCAnalysisManager *)self _test_didNotUpgradeOnboardingRecord];
+      _test_didNotUpgradeOnboardingRecord = [(HDMCAnalysisManager *)self _test_didNotUpgradeOnboardingRecord];
 
-      if (!v19)
+      if (!_test_didNotUpgradeOnboardingRecord)
       {
 LABEL_10:
 
@@ -2965,14 +2965,14 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v18 = [(HDMCAnalysisManager *)self _test_didNotUpgradeOnboardingRecord];
-      v18[2]();
+      _test_didNotUpgradeOnboardingRecord2 = [(HDMCAnalysisManager *)self _test_didNotUpgradeOnboardingRecord];
+      _test_didNotUpgradeOnboardingRecord2[2]();
     }
 
     goto LABEL_10;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a4 code:1 description:@"Profile is going away"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:1 description:@"Profile is going away"];
   v13 = 0;
 LABEL_18:
 

@@ -1,27 +1,27 @@
 @interface WLKSubscriptionData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSubscriptionData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSubscriptionData:(id)data;
 - (BOOL)isTVPlusSubscriber;
-- (WLKSubscriptionData)initWithCoder:(id)a3;
-- (WLKSubscriptionData)initWithDictionary:(id)a3;
-- (id)subscriptionByAdamID:(id)a3;
+- (WLKSubscriptionData)initWithCoder:(id)coder;
+- (WLKSubscriptionData)initWithDictionary:(id)dictionary;
+- (id)subscriptionByAdamID:(id)d;
 - (id)subscriptions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WLKSubscriptionData
 
-- (WLKSubscriptionData)initWithDictionary:(id)a3
+- (WLKSubscriptionData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v29.receiver = self;
     v29.super_class = WLKSubscriptionData;
     v5 = [(WLKSubscriptionData *)&v29 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [dictionaryCopy copy];
       backingDictionary = v5->_backingDictionary;
       v5->_backingDictionary = v6;
 
@@ -57,7 +57,7 @@
     }
 
     self = v5;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
@@ -69,10 +69,10 @@
       _os_log_impl(&dword_272A0F000, v21, OS_LOG_TYPE_DEFAULT, "Initializing WLKSubscriptionData with an empty dictionary", buf, 2u);
     }
 
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 void __42__WLKSubscriptionData_initWithDictionary___block_invoke(uint64_t a1, void *a2)
@@ -115,9 +115,9 @@ LABEL_9:
   return v2;
 }
 
-- (id)subscriptionByAdamID:(id)a3
+- (id)subscriptionByAdamID:(id)d
 {
-  v3 = [(NSDictionary *)self->_subscriptionsByAdamID wlk_dictionaryForKey:a3];
+  v3 = [(NSDictionary *)self->_subscriptionsByAdamID wlk_dictionaryForKey:d];
   v4 = [v3 copy];
 
   return v4;
@@ -125,16 +125,16 @@ LABEL_9:
 
 - (BOOL)isTVPlusSubscriber
 {
-  v2 = [(WLKSubscriptionData *)self activeTVPlusSubscription];
-  v3 = v2 != 0;
+  activeTVPlusSubscription = [(WLKSubscriptionData *)self activeTVPlusSubscription];
+  v3 = activeTVPlusSubscription != 0;
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -142,19 +142,19 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKSubscriptionData *)self isEqualToSubscriptionData:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKSubscriptionData *)self isEqualToSubscriptionData:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSubscriptionData:(id)a3
+- (BOOL)isEqualToSubscriptionData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy)
   {
-    v6 = *(v4 + 1);
+    v6 = *(dataCopy + 1);
     v7 = self->_backingDictionary;
     v8 = v6;
     v9 = v8;
@@ -181,10 +181,10 @@ LABEL_9:
   return v10;
 }
 
-- (WLKSubscriptionData)initWithCoder:(id)a3
+- (WLKSubscriptionData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
@@ -192,30 +192,30 @@ LABEL_9:
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v5 setWithObjects:{v6, v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_WLKSubscriptionDataCoderKeyBackingDictionary"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_WLKSubscriptionDataCoderKeyBackingDictionary"];
     self = [(WLKSubscriptionData *)self initWithDictionary:v11];
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The coder must allow keyed coding."];
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The coder must allow keyed coding."];
   }
 
-  [v4 encodeObject:self->_backingDictionary forKey:@"_WLKSubscriptionDataCoderKeyBackingDictionary"];
+  [coderCopy encodeObject:self->_backingDictionary forKey:@"_WLKSubscriptionDataCoderKeyBackingDictionary"];
 }
 
 @end

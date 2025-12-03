@@ -1,9 +1,9 @@
 @interface CXServiceClient
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)clientCanAccessSandboxFileURL:(id)a3;
+- (BOOL)clientCanAccessSandboxFileURL:(id)l;
 - (BOOL)isConnected;
 - (BOOL)isPermittedToUseBluetoothAccessories;
-- (CXServiceClient)initWithConnection:(id)a3;
+- (CXServiceClient)initWithConnection:(id)connection;
 - (CXServiceClientDelegate)delegate;
 - (id)description;
 - (int)processIdentifier;
@@ -12,23 +12,23 @@
 
 @implementation CXServiceClient
 
-- (CXServiceClient)initWithConnection:(id)a3
+- (CXServiceClient)initWithConnection:(id)connection
 {
-  v5 = a3;
-  v6 = [v5 remoteProcess];
-  v7 = v6;
-  if (v6)
+  connectionCopy = connection;
+  remoteProcess = [connectionCopy remoteProcess];
+  v7 = remoteProcess;
+  if (remoteProcess)
   {
-    v8 = [v6 cx_applicationIdentifier];
-    if ([v8 length])
+    cx_applicationIdentifier = [remoteProcess cx_applicationIdentifier];
+    if ([cx_applicationIdentifier length])
     {
-      v9 = [v7 cx_applicationRecord];
-      if (v9)
+      cx_applicationRecord = [v7 cx_applicationRecord];
+      if (cx_applicationRecord)
       {
-        v10 = [v7 cx_capabilities];
-        v11 = [v9 cx_backgroundModeOptions];
-        v12 = [v10 containsObject:@"private-provider-api"];
-        if ((v12 & 1) != 0 || v11)
+        cx_capabilities = [v7 cx_capabilities];
+        cx_backgroundModeOptions = [cx_applicationRecord cx_backgroundModeOptions];
+        v12 = [cx_capabilities containsObject:@"private-provider-api"];
+        if ((v12 & 1) != 0 || cx_backgroundModeOptions)
         {
           v24.receiver = self;
           v24.super_class = CXServiceClient;
@@ -36,19 +36,19 @@
           v15 = v14;
           if (v14)
           {
-            v14->_backgroundModeOptions = v11;
-            v16 = [v9 bundleIdentifier];
+            v14->_backgroundModeOptions = cx_backgroundModeOptions;
+            bundleIdentifier = [cx_applicationRecord bundleIdentifier];
             bundleIdentifier = v15->_bundleIdentifier;
-            v15->_bundleIdentifier = v16;
+            v15->_bundleIdentifier = bundleIdentifier;
 
-            v18 = [v9 URL];
+            v18 = [cx_applicationRecord URL];
             bundleURL = v15->_bundleURL;
             v15->_bundleURL = v18;
 
-            objc_storeStrong(&v15->_connection, a3);
-            objc_storeStrong(&v15->_identifier, v8);
-            v20 = [v9 localizedName];
-            v21 = [v20 copy];
+            objc_storeStrong(&v15->_connection, connection);
+            objc_storeStrong(&v15->_identifier, cx_applicationIdentifier);
+            localizedName = [cx_applicationRecord localizedName];
+            v21 = [localizedName copy];
             localizedName = v15->_localizedName;
             v15->_localizedName = v21;
 
@@ -56,50 +56,50 @@
           }
 
           self = v15;
-          v13 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v13 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v13 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)invalidate
 {
-  v2 = [(CXServiceClient *)self connection];
-  [v2 invalidate];
+  connection = [(CXServiceClient *)self connection];
+  [connection invalidate];
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
 {
-  v8 = [(CXServiceClient *)self connection];
-  v4 = [v8 remoteProcess];
-  v5 = [v4 auditToken];
-  v6 = v5;
-  if (v5)
+  connection = [(CXServiceClient *)self connection];
+  remoteProcess = [connection remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  v6 = auditToken;
+  if (auditToken)
   {
-    [v5 realToken];
+    [auditToken realToken];
   }
 
   else
@@ -113,9 +113,9 @@
 
 - (BOOL)isConnected
 {
-  v2 = [(CXServiceClient *)self connection];
-  v3 = [v2 remoteTarget];
-  v4 = v3 != 0;
+  connection = [(CXServiceClient *)self connection];
+  remoteTarget = [connection remoteTarget];
+  v4 = remoteTarget != 0;
 
   return v4;
 }
@@ -133,28 +133,28 @@
 
 - (int)processIdentifier
 {
-  v2 = [(CXServiceClient *)self connection];
-  v3 = [v2 remoteProcess];
-  v4 = [v3 pid];
+  connection = [(CXServiceClient *)self connection];
+  remoteProcess = [connection remoteProcess];
+  v4 = [remoteProcess pid];
 
   return v4;
 }
 
-- (BOOL)clientCanAccessSandboxFileURL:(id)a3
+- (BOOL)clientCanAccessSandboxFileURL:(id)l
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v34 = 0u;
   v35 = 0u;
   [(CXServiceClient *)self auditToken];
-  if ([v4 isFileURL])
+  if ([lCopy isFileURL])
   {
     v33 = 0;
-    v5 = [v4 checkResourceIsReachableAndReturnError:&v33];
+    v5 = [lCopy checkResourceIsReachableAndReturnError:&v33];
     v6 = v33;
     if (v5)
     {
-      if ([v4 fileSystemRepresentation])
+      if ([lCopy fileSystemRepresentation])
       {
         v7 = *MEMORY[0x1E69E9BD0];
         *buf = v34;
@@ -184,7 +184,7 @@
         v8 = CXDefaultLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          [(CXServiceClient *)v4 clientCanAccessSandboxFileURL:v8, v24, v25, v26, v27, v28, v29];
+          [(CXServiceClient *)lCopy clientCanAccessSandboxFileURL:v8, v24, v25, v26, v27, v28, v29];
         }
       }
     }
@@ -204,7 +204,7 @@
     v6 = CXDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CXServiceClient *)v4 clientCanAccessSandboxFileURL:v6, v12, v13, v14, v15, v16, v17];
+      [(CXServiceClient *)lCopy clientCanAccessSandboxFileURL:v6, v12, v13, v14, v15, v16, v17];
     }
   }
 
@@ -219,8 +219,8 @@ LABEL_15:
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   v4 = NSStringFromSelector(sel_identifier);
-  v5 = [(CXServiceClient *)self identifier];
-  [v3 appendFormat:@" %@=%@", v4, v5];
+  identifier = [(CXServiceClient *)self identifier];
+  [v3 appendFormat:@" %@=%@", v4, identifier];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector(sel_isConnected);

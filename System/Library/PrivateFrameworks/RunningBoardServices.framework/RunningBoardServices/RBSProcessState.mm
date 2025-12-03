@@ -1,20 +1,20 @@
 @interface RBSProcessState
-+ (id)stateWithProcess:(id)a3;
-+ (id)statesForPredicate:(id)a3 withDescriptor:(id)a4 error:(id *)a5;
-+ (id)untrackedRunningStateforProcess:(id)a3;
-+ (void)setActiveStateDescriptor:(id)a3;
-- (BOOL)isDifferentFromState:(id)a3 significantly:(BOOL *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)stateWithProcess:(id)process;
++ (id)statesForPredicate:(id)predicate withDescriptor:(id)descriptor error:(id *)error;
++ (id)untrackedRunningStateforProcess:(id)process;
++ (void)setActiveStateDescriptor:(id)descriptor;
+- (BOOL)isDifferentFromState:(id)state significantly:(BOOL *)significantly;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)assertions;
 - (NSString)description;
 - (RBSProcessState)init;
-- (RBSProcessState)initWithRBSXPCCoder:(id)a3;
-- (id)_lock_encodedStateForDescriptor:(uint64_t)a1;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_lock_finalizeCodingForValues:(uint64_t)a1;
-- (void)encodeWithPreviousState:(id)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
-- (void)initWithProcess:(void *)a1;
+- (RBSProcessState)initWithRBSXPCCoder:(id)coder;
+- (id)_lock_encodedStateForDescriptor:(uint64_t)descriptor;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_lock_finalizeCodingForValues:(uint64_t)values;
+- (void)encodeWithPreviousState:(id)state;
+- (void)encodeWithRBSXPCCoder:(id)coder;
+- (void)initWithProcess:(void *)process;
 @end
 
 @implementation RBSProcessState
@@ -45,16 +45,16 @@
 {
   terminationResistance = self->_terminationResistance;
   cpuRole = self->_cpuRole;
-  v5 = [(NSSet *)self->_endowmentNamespaces allObjects];
-  v6 = [v5 count];
-  v7 = [(NSSet *)self->_tags allObjects];
-  v8 = [v7 count];
-  v9 = [(NSSet *)self->_legacyAssertions allObjects];
-  v54 = [v9 count];
-  v52 = [(NSSet *)self->_primitiveAssertions allObjects];
-  v35 = [v52 count];
-  v10 = [(NSSet *)self->_endowmentInfos allObjects];
-  v53 = [v10 count];
+  allObjects = [(NSSet *)self->_endowmentNamespaces allObjects];
+  v6 = [allObjects count];
+  allObjects2 = [(NSSet *)self->_tags allObjects];
+  v8 = [allObjects2 count];
+  allObjects3 = [(NSSet *)self->_legacyAssertions allObjects];
+  v54 = [allObjects3 count];
+  allObjects4 = [(NSSet *)self->_primitiveAssertions allObjects];
+  v35 = [allObjects4 count];
+  allObjects5 = [(NSSet *)self->_endowmentInfos allObjects];
+  v53 = [allObjects5 count];
   v37 = objc_alloc(MEMORY[0x1E696AEC0]);
   v41 = [objc_opt_class() description];
   v39 = NSStringFromRBSTaskState(self->_taskState);
@@ -112,7 +112,7 @@
   v33 = v14;
   if (v6)
   {
-    v49 = [v5 componentsJoinedByString:{@", \n\t"}];
+    v49 = [allObjects componentsJoinedByString:{@", \n\t"}];
     v32 = @"\n\t]";
   }
 
@@ -129,10 +129,10 @@
   }
 
   v31 = v15;
-  v42 = v10;
+  v42 = allObjects5;
   if (v53)
   {
-    v48 = [v10 componentsJoinedByString:{@", \n\t"}];
+    v48 = [allObjects5 componentsJoinedByString:{@", \n\t"}];
   }
 
   else
@@ -154,7 +154,7 @@
   v40 = v8;
   if (v8)
   {
-    v47 = [v7 componentsJoinedByString:{@", \n\t"}];
+    v47 = [allObjects2 componentsJoinedByString:{@", \n\t"}];
     v17 = @"\n\t]";
   }
 
@@ -165,7 +165,7 @@
   }
 
   v43 = v6;
-  v46 = v7;
+  v46 = allObjects2;
   if (v54)
   {
     v18 = @" legacyAssertions:[\n\t";
@@ -178,7 +178,7 @@
 
   if (v54)
   {
-    v19 = [v9 componentsJoinedByString:{@", \n\t"}];
+    v19 = [allObjects3 componentsJoinedByString:{@", \n\t"}];
     v20 = @"\n\t]";
   }
 
@@ -188,10 +188,10 @@
     v19 = &stru_1F01CD8F0;
   }
 
-  v45 = v9;
+  v45 = allObjects3;
   if (v35)
   {
-    v21 = [v52 componentsJoinedByString:{@", \n\t"}];
+    v21 = [allObjects4 componentsJoinedByString:{@", \n\t"}];
     v29 = v18;
     v27 = v16;
     v22 = v38;
@@ -237,61 +237,61 @@
   return v25;
 }
 
-+ (id)stateWithProcess:(id)a3
++ (id)stateWithProcess:(id)process
 {
-  v3 = a3;
-  v4 = [[RBSProcessState alloc] initWithProcess:v3];
+  processCopy = process;
+  v4 = [[RBSProcessState alloc] initWithProcess:processCopy];
 
   return v4;
 }
 
-+ (id)untrackedRunningStateforProcess:(id)a3
++ (id)untrackedRunningStateforProcess:(id)process
 {
-  v3 = [RBSProcessState stateWithProcess:a3];
+  v3 = [RBSProcessState stateWithProcess:process];
   [v3 setTaskState:2];
 
   return v3;
 }
 
-+ (id)statesForPredicate:(id)a3 withDescriptor:(id)a4 error:(id *)a5
++ (id)statesForPredicate:(id)predicate withDescriptor:(id)descriptor error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  descriptorCopy = descriptor;
+  predicateCopy = predicate;
   v9 = +[RBSConnection sharedInstance];
-  v10 = [v9 statesForPredicate:v8 withDescriptor:v7 error:a5];
+  v10 = [v9 statesForPredicate:predicateCopy withDescriptor:descriptorCopy error:error];
 
   return v10;
 }
 
-+ (void)setActiveStateDescriptor:(id)a3
++ (void)setActiveStateDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
-  v5 = v4;
-  if (v6)
+  descriptorCopy = descriptor;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v5 = threadDictionary;
+  if (descriptorCopy)
   {
-    [v4 setObject:v6 forKey:@"RBSProcessStateDescriptor"];
+    [threadDictionary setObject:descriptorCopy forKey:@"RBSProcessStateDescriptor"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"RBSProcessStateDescriptor"];
+    [threadDictionary removeObjectForKey:@"RBSProcessStateDescriptor"];
   }
 }
 
-- (BOOL)isDifferentFromState:(id)a3 significantly:(BOOL *)a4
+- (BOOL)isDifferentFromState:(id)state significantly:(BOOL *)significantly
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  stateCopy = state;
+  v7 = stateCopy;
+  if (stateCopy)
   {
-    if (self == v6)
+    if (self == stateCopy)
     {
       goto LABEL_39;
     }
 
-    if (self->_taskState == v6->_taskState && (v8 = [(RBSProcessHandle *)self->_process pid], v8 == [(RBSProcessHandle *)v7->_process pid]))
+    if (self->_taskState == stateCopy->_taskState && (v8 = [(RBSProcessHandle *)self->_process pid], v8 == [(RBSProcessHandle *)v7->_process pid]))
     {
       endowmentNamespaces = self->_endowmentNamespaces;
       v10 = v7->_endowmentNamespaces;
@@ -403,9 +403,9 @@ LABEL_39:
   }
 
 LABEL_36:
-  if (a4)
+  if (significantly)
   {
-    *a4 = v14;
+    *significantly = v14;
   }
 
   v26 = 1;
@@ -414,9 +414,9 @@ LABEL_40:
   return v26;
 }
 
-- (void)encodeWithPreviousState:(id)a3
+- (void)encodeWithPreviousState:(id)state
 {
-  v87 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_codedState)
   {
@@ -424,13 +424,13 @@ LABEL_40:
     codedState = self->_codedState;
     self->_codedState = v4;
 
-    if (v87)
+    if (stateCopy)
     {
-      v6 = *(v87 + 2);
-      v7 = *(v87 + 1);
-      v8 = v87;
+      v6 = *(stateCopy + 2);
+      v7 = *(stateCopy + 1);
+      v8 = stateCopy;
       v9 = v7;
-      if (self->_process == *(v87 + 6))
+      if (self->_process == *(stateCopy + 6))
       {
         v10 = self->_codedState;
         v11 = v7;
@@ -450,7 +450,7 @@ LABEL_40:
           v14 = 0;
         }
 
-        v8 = v87;
+        v8 = stateCopy;
       }
 
       if (self->_lastStateChangeTimestamp == *(v8 + 11))
@@ -473,7 +473,7 @@ LABEL_40:
           v19 = 0;
         }
 
-        v8 = v87;
+        v8 = stateCopy;
       }
 
       if ((v6 & 1) != 0 && self->_taskState == v8[36] && self->_debugState == v8[37])
@@ -513,7 +513,7 @@ LABEL_40:
           }
         }
 
-        v8 = v87;
+        v8 = stateCopy;
       }
 
       if ((v6 & 4) != 0 && self->_terminationResistance == v8[38])
@@ -537,7 +537,7 @@ LABEL_40:
           v33 = 0;
         }
 
-        v8 = v87;
+        v8 = stateCopy;
       }
 
       if ((v6 & 0x40) != 0 && self->_cpuRole == v8[39])
@@ -561,14 +561,14 @@ LABEL_40:
           v38 = 0;
         }
 
-        v8 = v87;
+        v8 = stateCopy;
       }
 
       if ((v6 & 0x8000) != 0)
       {
         endowmentNamespaces = self->_endowmentNamespaces;
         v40 = *(v8 + 7);
-        if (endowmentNamespaces == v40 || endowmentNamespaces && v40 && (Count = CFSetGetCount(self->_endowmentNamespaces), v42 = CFSetGetCount(v40), v8 = v87, Count == v42) && (v43 = [(NSSet *)endowmentNamespaces isEqualToSet:v40], v8 = v87, v43))
+        if (endowmentNamespaces == v40 || endowmentNamespaces && v40 && (Count = CFSetGetCount(self->_endowmentNamespaces), v42 = CFSetGetCount(v40), v8 = stateCopy, Count == v42) && (v43 = [(NSSet *)endowmentNamespaces isEqualToSet:v40], v8 = stateCopy, v43))
         {
           v44 = self->_codedState;
           self->_codedValues |= 0x8000uLL;
@@ -589,7 +589,7 @@ LABEL_40:
             v48 = 0;
           }
 
-          v8 = v87;
+          v8 = stateCopy;
         }
       }
 
@@ -597,7 +597,7 @@ LABEL_40:
       {
         tags = self->_tags;
         v50 = *(v8 + 8);
-        if (tags == v50 || tags && v50 && (v51 = CFSetGetCount(self->_tags), v52 = CFSetGetCount(v50), v8 = v87, v51 == v52) && (v53 = [(NSSet *)tags isEqualToSet:v50], v8 = v87, v53))
+        if (tags == v50 || tags && v50 && (v51 = CFSetGetCount(self->_tags), v52 = CFSetGetCount(v50), v8 = stateCopy, v51 == v52) && (v53 = [(NSSet *)tags isEqualToSet:v50], v8 = stateCopy, v53))
         {
           v54 = self->_codedState;
           self->_codedValues |= 2uLL;
@@ -618,7 +618,7 @@ LABEL_40:
             v58 = 0;
           }
 
-          v8 = v87;
+          v8 = stateCopy;
         }
       }
 
@@ -626,7 +626,7 @@ LABEL_40:
       {
         legacyAssertions = self->_legacyAssertions;
         v60 = *(v8 + 9);
-        if (legacyAssertions == v60 || legacyAssertions && v60 && (v61 = CFSetGetCount(self->_legacyAssertions), v62 = CFSetGetCount(v60), v8 = v87, v61 == v62) && (v63 = [(NSSet *)legacyAssertions isEqualToSet:v60], v8 = v87, v63))
+        if (legacyAssertions == v60 || legacyAssertions && v60 && (v61 = CFSetGetCount(self->_legacyAssertions), v62 = CFSetGetCount(v60), v8 = stateCopy, v61 == v62) && (v63 = [(NSSet *)legacyAssertions isEqualToSet:v60], v8 = stateCopy, v63))
         {
           v64 = self->_codedState;
           self->_codedValues |= 8uLL;
@@ -647,7 +647,7 @@ LABEL_40:
             v68 = 0;
           }
 
-          v8 = v87;
+          v8 = stateCopy;
         }
       }
 
@@ -655,7 +655,7 @@ LABEL_40:
       {
         primitiveAssertions = self->_primitiveAssertions;
         v70 = *(v8 + 10);
-        if (primitiveAssertions == v70 || primitiveAssertions && v70 && (v71 = CFSetGetCount(self->_primitiveAssertions), v72 = CFSetGetCount(v70), v8 = v87, v71 == v72) && (v73 = [(NSSet *)primitiveAssertions isEqualToSet:v70], v8 = v87, v73))
+        if (primitiveAssertions == v70 || primitiveAssertions && v70 && (v71 = CFSetGetCount(self->_primitiveAssertions), v72 = CFSetGetCount(v70), v8 = stateCopy, v71 == v72) && (v73 = [(NSSet *)primitiveAssertions isEqualToSet:v70], v8 = stateCopy, v73))
         {
           v74 = self->_codedState;
           self->_codedValues |= 0x10uLL;
@@ -676,7 +676,7 @@ LABEL_40:
             v78 = 0;
           }
 
-          v8 = v87;
+          v8 = stateCopy;
         }
       }
 
@@ -717,16 +717,16 @@ LABEL_40:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v7) = 1;
   }
 
-  else if (v4 && (v6 = objc_opt_class(), v6 == objc_opt_class()))
+  else if (equalCopy && (v6 = objc_opt_class(), v6 == objc_opt_class()))
   {
     v7 = ![(RBSProcessState *)self isDifferentFromState:v5 significantly:0];
   }
@@ -739,42 +739,42 @@ LABEL_40:
   return v7;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 threadDictionary];
-  v8 = [v6 objectForKey:@"RBSProcessStateDescriptor"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v8 = [threadDictionary objectForKey:@"RBSProcessStateDescriptor"];
 
   if (v8)
   {
     v7 = [(RBSProcessState *)self _lock_encodedStateForDescriptor:v8];
-    [v4 encodeObject:v7 forKey:@"_codedState"];
+    [coderCopy encodeObject:v7 forKey:@"_codedState"];
 
-    v4 = v7;
+    coderCopy = v7;
   }
 
   else
   {
-    [(RBSProcessState *)self encodeWithRBSXPCCoder:v4];
+    [(RBSProcessState *)self encodeWithRBSXPCCoder:coderCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (RBSProcessState)initWithRBSXPCCoder:(id)a3
+- (RBSProcessState)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_codedState"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_codedState"];
   if (v5)
   {
     v6 = [RBSXPCCoder coderWithMessage:v5];
 
-    v4 = v6;
+    coderCopy = v6;
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_process"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_process"];
   if (v7)
   {
     v8 = [(RBSProcessState *)self init];
@@ -782,42 +782,42 @@ LABEL_40:
     if (v8)
     {
       objc_storeStrong(&v8->_process, v7);
-      v9->_taskState = [v4 decodeInt64ForKey:@"_taskState"];
-      v9->_debugState = [v4 decodeInt64ForKey:@"_debugState"];
-      v9->_terminationResistance = [v4 decodeInt64ForKey:@"_terminationResistance"];
-      v9->_cpuRole = [v4 decodeInt64ForKey:@"_cpuRole"];
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lastStateChangeTimestamp"];
+      v9->_taskState = [coderCopy decodeInt64ForKey:@"_taskState"];
+      v9->_debugState = [coderCopy decodeInt64ForKey:@"_debugState"];
+      v9->_terminationResistance = [coderCopy decodeInt64ForKey:@"_terminationResistance"];
+      v9->_cpuRole = [coderCopy decodeInt64ForKey:@"_cpuRole"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastStateChangeTimestamp"];
       lastStateChangeTimestamp = v9->_lastStateChangeTimestamp;
       v9->_lastStateChangeTimestamp = v10;
 
       v12 = objc_opt_class();
-      v13 = [v4 decodeCollectionOfClass:v12 containingClass:objc_opt_class() forKey:@"_endowmentNamespaces"];
+      v13 = [coderCopy decodeCollectionOfClass:v12 containingClass:objc_opt_class() forKey:@"_endowmentNamespaces"];
       endowmentNamespaces = v9->_endowmentNamespaces;
       v9->_endowmentNamespaces = v13;
 
       v15 = objc_opt_class();
-      v16 = [v4 decodeCollectionOfClass:v15 containingClass:objc_opt_class() forKey:@"_tags"];
+      v16 = [coderCopy decodeCollectionOfClass:v15 containingClass:objc_opt_class() forKey:@"_tags"];
       tags = v9->_tags;
       v9->_tags = v16;
 
       v18 = objc_opt_class();
-      v19 = [v4 decodeCollectionOfClass:v18 containingClass:objc_opt_class() forKey:@"_legacyAssertions"];
+      v19 = [coderCopy decodeCollectionOfClass:v18 containingClass:objc_opt_class() forKey:@"_legacyAssertions"];
       legacyAssertions = v9->_legacyAssertions;
       v9->_legacyAssertions = v19;
 
       v21 = objc_opt_class();
-      v22 = [v4 decodeCollectionOfClass:v21 containingClass:objc_opt_class() forKey:@"_primitiveAssertions"];
+      v22 = [coderCopy decodeCollectionOfClass:v21 containingClass:objc_opt_class() forKey:@"_primitiveAssertions"];
       primitiveAssertions = v9->_primitiveAssertions;
       v9->_primitiveAssertions = v22;
 
       v24 = objc_opt_class();
-      v25 = [v4 decodeCollectionOfClass:v24 containingClass:objc_opt_class() forKey:@"_endowmentInfos"];
+      v25 = [coderCopy decodeCollectionOfClass:v24 containingClass:objc_opt_class() forKey:@"_endowmentInfos"];
       endowmentInfos = v9->_endowmentInfos;
       v9->_endowmentInfos = v25;
     }
 
     self = v9;
-    v27 = self;
+    selfCopy = self;
   }
 
   else
@@ -828,45 +828,45 @@ LABEL_40:
       [RBSProcessState initWithRBSXPCCoder:v28];
     }
 
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
-- (void)initWithProcess:(void *)a1
+- (void)initWithProcess:(void *)process
 {
   v4 = a2;
-  if (a1)
+  if (process)
   {
-    v5 = [a1 init];
-    a1 = v5;
+    v5 = [process init];
+    process = v5;
     if (v5)
     {
       objc_storeStrong((v5 + 48), a2);
     }
   }
 
-  return a1;
+  return process;
 }
 
-- (void)_lock_finalizeCodingForValues:(uint64_t)a1
+- (void)_lock_finalizeCodingForValues:(uint64_t)values
 {
-  if (a1)
+  if (values)
   {
-    os_unfair_lock_assert_owner((a1 + 32));
-    v4 = *(a1 + 8);
-    v5 = a2 & ~*(a1 + 16);
+    os_unfair_lock_assert_owner((values + 32));
+    v4 = *(values + 8);
+    v5 = a2 & ~*(values + 16);
     if (v4 && !v5)
     {
-      v6 = xpc_dictionary_get_value(*(a1 + 8), "_process");
+      v6 = xpc_dictionary_get_value(*(values + 8), "_process");
 
       if (v6)
       {
         return;
       }
 
-      v4 = *(a1 + 8);
+      v4 = *(values + 8);
     }
 
     v7 = [RBSXPCCoder coderWithMessage:v4];
@@ -875,28 +875,28 @@ LABEL_40:
       v13 = v7;
       if (([v7 containsValueForKey:@"_process"] & 1) == 0)
       {
-        [v13 encodeObject:*(a1 + 48) forKey:@"_process"];
+        [v13 encodeObject:*(values + 48) forKey:@"_process"];
       }
 
       if (([v13 containsValueForKey:@"_lastStateChangeTimestamp"] & 1) == 0)
       {
-        [v13 encodeObject:*(a1 + 88) forKey:@"_lastStateChangeTimestamp"];
+        [v13 encodeObject:*(values + 88) forKey:@"_lastStateChangeTimestamp"];
       }
 
       if (v5)
       {
-        v8 = *(a1 + 16);
+        v8 = *(values + 16);
         if ((v8 & 1) == 0)
         {
-          if (*(a1 + 36))
+          if (*(values + 36))
           {
-            *(a1 + 16) = v8 | 1;
+            *(values + 16) = v8 | 1;
             [v13 encodeInt64:? forKey:?];
           }
 
-          if (*(a1 + 37))
+          if (*(values + 37))
           {
-            *(a1 + 16) |= 1uLL;
+            *(values + 16) |= 1uLL;
             [v13 encodeInt64:? forKey:?];
           }
         }
@@ -904,12 +904,12 @@ LABEL_40:
 
       if ((v5 & 4) != 0)
       {
-        v9 = *(a1 + 16);
+        v9 = *(values + 16);
         if ((v9 & 4) == 0)
         {
-          if (*(a1 + 38))
+          if (*(values + 38))
           {
-            *(a1 + 16) = v9 | 4;
+            *(values + 16) = v9 | 4;
             [v13 encodeInt64:? forKey:?];
           }
         }
@@ -917,78 +917,78 @@ LABEL_40:
 
       if ((v5 & 0x40) != 0)
       {
-        v10 = *(a1 + 16);
+        v10 = *(values + 16);
         if ((v10 & 0x40) == 0)
         {
-          if (*(a1 + 39))
+          if (*(values + 39))
           {
-            *(a1 + 16) = v10 | 0x40;
+            *(values + 16) = v10 | 0x40;
             [v13 encodeInt64:? forKey:?];
           }
         }
       }
 
-      if ((v5 & 0x8000) != 0 && (*(a1 + 17) & 0x80) == 0 && [*(a1 + 56) count])
+      if ((v5 & 0x8000) != 0 && (*(values + 17) & 0x80) == 0 && [*(values + 56) count])
       {
-        *(a1 + 16) |= 0x8000uLL;
-        [v13 encodeObject:*(a1 + 56) forKey:@"_endowmentNamespaces"];
+        *(values + 16) |= 0x8000uLL;
+        [v13 encodeObject:*(values + 56) forKey:@"_endowmentNamespaces"];
       }
 
-      if ((v5 & 2) != 0 && (*(a1 + 16) & 2) == 0 && [*(a1 + 64) count])
+      if ((v5 & 2) != 0 && (*(values + 16) & 2) == 0 && [*(values + 64) count])
       {
-        *(a1 + 16) |= 2uLL;
-        [v13 encodeObject:*(a1 + 64) forKey:@"_tags"];
+        *(values + 16) |= 2uLL;
+        [v13 encodeObject:*(values + 64) forKey:@"_tags"];
       }
 
-      if ((v5 & 8) != 0 && (*(a1 + 16) & 8) == 0 && [*(a1 + 72) count])
+      if ((v5 & 8) != 0 && (*(values + 16) & 8) == 0 && [*(values + 72) count])
       {
-        *(a1 + 16) |= 8uLL;
-        [v13 encodeObject:*(a1 + 72) forKey:@"_legacyAssertions"];
+        *(values + 16) |= 8uLL;
+        [v13 encodeObject:*(values + 72) forKey:@"_legacyAssertions"];
       }
 
-      if ((v5 & 0x10) != 0 && (*(a1 + 16) & 0x10) == 0 && [*(a1 + 80) count])
+      if ((v5 & 0x10) != 0 && (*(values + 16) & 0x10) == 0 && [*(values + 80) count])
       {
-        *(a1 + 16) |= 0x10uLL;
-        [v13 encodeObject:*(a1 + 80) forKey:@"_primitiveAssertions"];
+        *(values + 16) |= 0x10uLL;
+        [v13 encodeObject:*(values + 80) forKey:@"_primitiveAssertions"];
       }
 
-      if ((v5 & 0x20) != 0 && (*(a1 + 16) & 0x20) == 0 && [*(a1 + 96) count])
+      if ((v5 & 0x20) != 0 && (*(values + 16) & 0x20) == 0 && [*(values + 96) count])
       {
-        *(a1 + 16) |= 0x20uLL;
-        [v13 encodeObject:*(a1 + 96) forKey:@"_endowmentInfos"];
+        *(values + 16) |= 0x20uLL;
+        [v13 encodeObject:*(values + 96) forKey:@"_endowmentInfos"];
       }
 
-      v11 = [v13 createMessage];
-      v12 = *(a1 + 8);
-      *(a1 + 8) = v11;
+      createMessage = [v13 createMessage];
+      v12 = *(values + 8);
+      *(values + 8) = createMessage;
     }
   }
 }
 
-- (id)_lock_encodedStateForDescriptor:(uint64_t)a1
+- (id)_lock_encodedStateForDescriptor:(uint64_t)descriptor
 {
-  if (a1)
+  if (descriptor)
   {
     v4 = a2;
-    os_unfair_lock_assert_owner((a1 + 32));
-    v5 = [v4 values];
-    v6 = [(RBSProcessStateDescriptor *)v4 _endowmentNamespaces];
+    os_unfair_lock_assert_owner((descriptor + 32));
+    values = [v4 values];
+    _endowmentNamespaces = [(RBSProcessStateDescriptor *)v4 _endowmentNamespaces];
 
-    v7 = [v6 count];
+    v7 = [_endowmentNamespaces count];
     if (v7)
     {
-      v8 = v5 | 0x8000;
+      v8 = values | 0x8000;
     }
 
     else
     {
-      v8 = v5;
+      v8 = values;
     }
 
-    [(RBSProcessState *)a1 _lock_finalizeCodingForValues:v8];
-    v9 = *(a1 + 16) & v8;
+    [(RBSProcessState *)descriptor _lock_finalizeCodingForValues:v8];
+    v9 = *(descriptor + 16) & v8;
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9];
-    v11 = [*(a1 + 24) objectForKey:v10];
+    v11 = [*(descriptor + 24) objectForKey:v10];
     v12 = v11;
     if (v11)
     {
@@ -999,7 +999,7 @@ LABEL_100:
     }
 
     v14 = xpc_dictionary_create(0, 0, 0);
-    v15 = *(a1 + 8);
+    v15 = *(descriptor + 8);
     v16 = v14;
     v17 = v16;
     if (v15)
@@ -1020,7 +1020,7 @@ LABEL_100:
       v20 = v16 != 0;
     }
 
-    v21 = *(a1 + 8);
+    v21 = *(descriptor + 8);
     v13 = v17;
     if (v21)
     {
@@ -1044,7 +1044,7 @@ LABEL_100:
 
     if (v9)
     {
-      v24 = *(a1 + 8);
+      v24 = *(descriptor + 8);
       v25 = v13;
       if (v24)
       {
@@ -1067,7 +1067,7 @@ LABEL_100:
         v2 = 0;
       }
 
-      v28 = *(a1 + 8);
+      v28 = *(descriptor + 8);
       v29 = v25;
       if (v28)
       {
@@ -1107,7 +1107,7 @@ LABEL_20:
       goto LABEL_20;
     }
 
-    v31 = *(a1 + 8);
+    v31 = *(descriptor + 8);
     v32 = v13;
     if (v31)
     {
@@ -1142,7 +1142,7 @@ LABEL_21:
     }
 
 LABEL_50:
-    v35 = *(a1 + 8);
+    v35 = *(descriptor + 8);
     v36 = v13;
     if (v35)
     {
@@ -1177,7 +1177,7 @@ LABEL_22:
     }
 
 LABEL_58:
-    v39 = *(a1 + 8);
+    v39 = *(descriptor + 8);
     v40 = v13;
     if (v39)
     {
@@ -1212,7 +1212,7 @@ LABEL_23:
     }
 
 LABEL_66:
-    v43 = *(a1 + 8);
+    v43 = *(descriptor + 8);
     v44 = v13;
     if (v43)
     {
@@ -1247,7 +1247,7 @@ LABEL_24:
     }
 
 LABEL_74:
-    v47 = *(a1 + 8);
+    v47 = *(descriptor + 8);
     v48 = v13;
     if (v47)
     {
@@ -1276,14 +1276,14 @@ LABEL_25:
       if ((v9 & 0x40) == 0)
       {
 LABEL_97:
-        v59 = *(a1 + 24);
+        v59 = *(descriptor + 24);
         if (!v59)
         {
           v60 = objc_alloc_init(MEMORY[0x1E695DF90]);
-          v61 = *(a1 + 24);
-          *(a1 + 24) = v60;
+          v61 = *(descriptor + 24);
+          *(descriptor + 24) = v60;
 
-          v59 = *(a1 + 24);
+          v59 = *(descriptor + 24);
         }
 
         [v59 setObject:v13 forKey:v10];
@@ -1291,7 +1291,7 @@ LABEL_97:
       }
 
 LABEL_90:
-      v55 = *(a1 + 8);
+      v55 = *(descriptor + 8);
       v56 = v13;
       if (v55)
       {
@@ -1317,7 +1317,7 @@ LABEL_90:
     }
 
 LABEL_82:
-    v51 = *(a1 + 8);
+    v51 = *(descriptor + 8);
     v52 = v13;
     if (v51)
     {
@@ -1354,7 +1354,7 @@ LABEL_101:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [[RBSProcessState allocWithZone:?], self->_process];
   [v5 setTaskState:self->_taskState];

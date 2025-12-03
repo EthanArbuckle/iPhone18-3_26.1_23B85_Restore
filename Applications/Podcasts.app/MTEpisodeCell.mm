@@ -1,30 +1,30 @@
 @interface MTEpisodeCell
-+ (CGSize)artworkSizeForStyle:(unint64_t)a3;
-+ (double)estimatedHeightForWidth:(double)a3 showsArtwork:(BOOL)a4;
++ (CGSize)artworkSizeForStyle:(unint64_t)style;
++ (double)estimatedHeightForWidth:(double)width showsArtwork:(BOOL)artwork;
 - (BOOL)isCurrentPlayerItem;
 - (BOOL)isExpanded;
 - (BOOL)shouldShowNowPlaying;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MTColorTheme)colorTheme;
 - (MTEpisode)episode;
 - (MTEpisodeActionController)actionController;
-- (MTEpisodeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTEpisodeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (MTEpisodeCellDelegate)delegate;
 - (MTEpisodeLockup)episodeLockup;
 - (unint64_t)style;
 - (void)dismissActionSheetsAndPopovers;
 - (void)fixEmptyTextContainers;
 - (void)layoutSubviews;
-- (void)lockup:(id)a3 moreButtonTapped:(id)a4;
-- (void)lockupDidChangeSize:(id)a3;
+- (void)lockup:(id)lockup moreButtonTapped:(id)tapped;
+- (void)lockupDidChangeSize:(id)size;
 - (void)prepareForReuse;
-- (void)setColorTheme:(id)a3;
-- (void)setCurrentPlayerItem:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setEpisode:(id)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setShouldShowNowPlaying:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setColorTheme:(id)theme;
+- (void)setCurrentPlayerItem:(BOOL)item;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setEpisode:(id)episode;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setShouldShowNowPlaying:(BOOL)playing;
+- (void)setStyle:(unint64_t)style;
 - (void)setupCell;
 - (void)updateActionSheetsAndPopovers;
 - (void)updateCurrentRowHeight;
@@ -32,27 +32,27 @@
 
 @implementation MTEpisodeCell
 
-+ (double)estimatedHeightForWidth:(double)a3 showsArtwork:(BOOL)a4
++ (double)estimatedHeightForWidth:(double)width showsArtwork:(BOOL)artwork
 {
-  v6 = [a1 styleForWidth:a4 showsArtwork:?];
+  v6 = [self styleForWidth:artwork showsArtwork:?];
 
-  [a1 estimatedHeightForWidth:v6 style:a3];
+  [self estimatedHeightForWidth:v6 style:width];
   return result;
 }
 
-+ (CGSize)artworkSizeForStyle:(unint64_t)a3
++ (CGSize)artworkSizeForStyle:(unint64_t)style
 {
-  [MTEpisodeLockup artworkSizeForStyle:a3];
+  [MTEpisodeLockup artworkSizeForStyle:style];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (MTEpisodeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTEpisodeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = MTEpisodeCell;
-  v4 = [(MTEpisodeCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTEpisodeCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -65,9 +65,9 @@
 - (void)setupCell
 {
   [(MTEpisodeCell *)self setClipsToBounds:1];
-  v4 = [(MTEpisodeCell *)self contentView];
-  v3 = [(MTEpisodeCell *)self episodeLockup];
-  [v4 addSubview:v3];
+  contentView = [(MTEpisodeCell *)self contentView];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [contentView addSubview:episodeLockup];
 }
 
 - (MTEpisodeLockup)episodeLockup
@@ -86,12 +86,12 @@
   return episodeLockup;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if ([(MTEpisodeCell *)self style]!= a3)
+  if ([(MTEpisodeCell *)self style]!= style)
   {
-    v5 = [(MTEpisodeCell *)self episodeLockup];
-    [v5 setStyle:a3];
+    episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+    [episodeLockup setStyle:style];
 
     [(MTEpisodeCell *)self setNeedsLayout];
   }
@@ -99,24 +99,24 @@
 
 - (unint64_t)style
 {
-  v2 = [(MTEpisodeCell *)self episodeLockup];
-  v3 = [v2 style];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  style = [episodeLockup style];
 
-  return v3;
+  return style;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(MTEpisodeCell *)self isEditing]!= a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if ([(MTEpisodeCell *)self isEditing]!= editing)
   {
-    v7 = [(MTEpisodeCell *)self episodeLockup];
-    [v7 setEditing:v5];
+    episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+    [episodeLockup setEditing:editingCopy];
 
     v8.receiver = self;
     v8.super_class = MTEpisodeCell;
-    [(MTEpisodeCell *)&v8 setEditing:v5 animated:v4];
+    [(MTEpisodeCell *)&v8 setEditing:editingCopy animated:animatedCopy];
     [(MTEpisodeCell *)self updateOverlayForIsNew];
   }
 }
@@ -130,61 +130,61 @@
   if (v4 != v8 || v6 != v7)
   {
     v10 = v7;
-    v11 = [(MTEpisodeCell *)self _tableView];
-    v13 = [v11 indexPathForCell:self];
+    _tableView = [(MTEpisodeCell *)self _tableView];
+    v13 = [_tableView indexPathForCell:self];
 
     if (v13)
     {
-      v12 = [(MTEpisodeCell *)self _tableView];
-      [v12 _setHeight:v13 forRowAtIndexPath:v10];
+      _tableView2 = [(MTEpisodeCell *)self _tableView];
+      [_tableView2 _setHeight:v13 forRowAtIndexPath:v10];
     }
 
     [(MTEpisodeCell *)self setNeedsLayout];
   }
 }
 
-- (void)setEpisode:(id)a3
+- (void)setEpisode:(id)episode
 {
-  v4 = a3;
-  v5 = [(MTEpisodeCell *)self episodeLockup];
-  [v5 setEpisode:v4];
+  episodeCopy = episode;
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup setEpisode:episodeCopy];
 
   [(MTEpisodeCell *)self updateOverlayForIsNew];
 }
 
 - (MTEpisode)episode
 {
-  v2 = [(MTEpisodeCell *)self episodeLockup];
-  v3 = [v2 episode];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  episode = [episodeLockup episode];
 
-  return v3;
+  return episode;
 }
 
-- (void)setColorTheme:(id)a3
+- (void)setColorTheme:(id)theme
 {
-  v10 = a3;
-  v4 = [(MTEpisodeCell *)self colorTheme];
-  if (v4 != v10)
+  themeCopy = theme;
+  colorTheme = [(MTEpisodeCell *)self colorTheme];
+  if (colorTheme != themeCopy)
   {
-    v5 = [(MTEpisodeCell *)self colorTheme];
-    v6 = [v5 isEqual:v10];
+    colorTheme2 = [(MTEpisodeCell *)self colorTheme];
+    v6 = [colorTheme2 isEqual:themeCopy];
 
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v7 = [(MTEpisodeCell *)self episodeLockup];
-    [v7 setColorTheme:v10];
+    episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+    [episodeLockup setColorTheme:themeCopy];
 
-    v8 = [UIColor backgroundColorForTheme:v10];
+    v8 = [UIColor backgroundColorForTheme:themeCopy];
     [(MTEpisodeCell *)self setBackgroundColor:v8];
 
-    v4 = [UIColor selectedBackgroundColorForTheme:v10];
+    colorTheme = [UIColor selectedBackgroundColorForTheme:themeCopy];
     v9 = objc_opt_new();
-    [v9 setBackgroundColor:v4];
+    [v9 setBackgroundColor:colorTheme];
     [(MTEpisodeCell *)self setMultipleSelectionBackgroundView:v9];
-    [(MTEpisodeCell *)self setSelectionTintColor:v4];
+    [(MTEpisodeCell *)self setSelectionTintColor:colorTheme];
   }
 
 LABEL_5:
@@ -192,83 +192,83 @@ LABEL_5:
 
 - (MTColorTheme)colorTheme
 {
-  v2 = [(MTEpisodeCell *)self episodeLockup];
-  v3 = [v2 colorTheme];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  colorTheme = [episodeLockup colorTheme];
 
-  return v3;
+  return colorTheme;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  v5 = [(MTEpisodeCell *)self episodeLockup];
-  [v5 setExpanded:v3];
+  expandedCopy = expanded;
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup setExpanded:expandedCopy];
 
   [(MTEpisodeCell *)self setNeedsLayout];
 }
 
 - (BOOL)isExpanded
 {
-  v2 = [(MTEpisodeCell *)self episodeLockup];
-  v3 = [v2 isExpanded];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  isExpanded = [episodeLockup isExpanded];
 
-  return v3;
+  return isExpanded;
 }
 
-- (void)setCurrentPlayerItem:(BOOL)a3
+- (void)setCurrentPlayerItem:(BOOL)item
 {
-  v3 = a3;
-  v4 = [(MTEpisodeCell *)self episodeLockup];
-  [v4 setCurrentPlayerItem:v3];
+  itemCopy = item;
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup setCurrentPlayerItem:itemCopy];
 }
 
 - (BOOL)isCurrentPlayerItem
 {
-  v2 = [(MTEpisodeCell *)self episodeLockup];
-  v3 = [v2 isCurrentPlayerItem];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  isCurrentPlayerItem = [episodeLockup isCurrentPlayerItem];
 
-  return v3;
+  return isCurrentPlayerItem;
 }
 
 - (BOOL)shouldShowNowPlaying
 {
-  v2 = [(MTEpisodeCell *)self episodeLockup];
-  v3 = [v2 shouldShowNowPlaying];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  shouldShowNowPlaying = [episodeLockup shouldShowNowPlaying];
 
-  return v3;
+  return shouldShowNowPlaying;
 }
 
-- (void)setShouldShowNowPlaying:(BOOL)a3
+- (void)setShouldShowNowPlaying:(BOOL)playing
 {
-  v3 = a3;
-  v4 = [(MTEpisodeCell *)self episodeLockup];
-  [v4 setShouldShowNowPlaying:v3];
+  playingCopy = playing;
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup setShouldShowNowPlaying:playingCopy];
 }
 
 - (MTEpisodeActionController)actionController
 {
-  v2 = [(MTEpisodeCell *)self episodeLockup];
-  v3 = [v2 actionController];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  actionController = [episodeLockup actionController];
 
-  return v3;
+  return actionController;
 }
 
 - (void)dismissActionSheetsAndPopovers
 {
-  v2 = [(MTEpisodeCell *)self episodeLockup];
-  [v2 dismissActionSheetsAndPopovers];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup dismissActionSheetsAndPopovers];
 }
 
 - (void)updateActionSheetsAndPopovers
 {
-  v2 = [(MTEpisodeCell *)self episodeLockup];
-  [v2 updateActionSheetsAndPopovers];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup updateActionSheetsAndPopovers];
 }
 
 - (void)fixEmptyTextContainers
 {
-  v2 = [(MTEpisodeCell *)self episodeLockup];
-  [v2 fixEmptyTextContainers];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup fixEmptyTextContainers];
 }
 
 - (void)prepareForReuse
@@ -276,11 +276,11 @@ LABEL_5:
   v5.receiver = self;
   v5.super_class = MTEpisodeCell;
   [(MTEpisodeCell *)&v5 prepareForReuse];
-  v3 = [(MTEpisodeCell *)self episodeLockup];
-  [v3 prepareForReuse];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup prepareForReuse];
 
-  v4 = [(MTEpisodeCell *)self episodeLockup];
-  [v4 setDelegate:self];
+  episodeLockup2 = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup2 setDelegate:self];
 }
 
 - (void)layoutSubviews
@@ -288,25 +288,25 @@ LABEL_5:
   v13.receiver = self;
   v13.super_class = MTEpisodeCell;
   [(MTEpisodeCell *)&v13 layoutSubviews];
-  v3 = [(MTEpisodeCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MTEpisodeCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MTEpisodeCell *)self episodeLockup];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup setFrame:{v5, v7, v9, v11}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(MTEpisodeCell *)self layoutManager:a3.width];
+  width = fits.width;
+  v5 = [(MTEpisodeCell *)self layoutManager:fits.width];
   [v5 contentRectForCell:self forState:-[MTEpisodeCell currentStateMask](self rowWidth:{"currentStateMask"), width}];
   v7 = v6;
 
-  v8 = [(MTEpisodeCell *)self episodeLockup];
-  [v8 sizeThatFits:{v7, 1.79769313e308}];
+  episodeLockup = [(MTEpisodeCell *)self episodeLockup];
+  [episodeLockup sizeThatFits:{v7, 1.79769313e308}];
   v10 = v9;
 
   v11 = v10 + kMTCollectionViewInterLineSpacing;
@@ -316,17 +316,17 @@ LABEL_5:
   return result;
 }
 
-- (void)lockup:(id)a3 moreButtonTapped:(id)a4
+- (void)lockup:(id)lockup moreButtonTapped:(id)tapped
 {
-  v5 = a4;
-  v6 = [(MTEpisodeCell *)self delegate];
-  [v6 cell:self moreButtonTapped:v5];
+  tappedCopy = tapped;
+  delegate = [(MTEpisodeCell *)self delegate];
+  [delegate cell:self moreButtonTapped:tappedCopy];
 }
 
-- (void)lockupDidChangeSize:(id)a3
+- (void)lockupDidChangeSize:(id)size
 {
-  v4 = [(MTEpisodeCell *)self delegate];
-  [v4 cellDidChangeSize:self];
+  delegate = [(MTEpisodeCell *)self delegate];
+  [delegate cellDidChangeSize:self];
 }
 
 - (MTEpisodeCellDelegate)delegate

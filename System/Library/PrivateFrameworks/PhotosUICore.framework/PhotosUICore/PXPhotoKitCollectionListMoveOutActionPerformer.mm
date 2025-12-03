@@ -1,6 +1,6 @@
 @interface PXPhotoKitCollectionListMoveOutActionPerformer
-+ (BOOL)canPerformOnCollectionList:(id)a3;
-+ (id)_grandParentOfCollection:(id)a3;
++ (BOOL)canPerformOnCollectionList:(id)list;
++ (id)_grandParentOfCollection:(id)collection;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
@@ -10,47 +10,47 @@
 - (void)performBackgroundTask
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotoKitCollectionListActionPerformer *)self collectionList];
-  v4 = [PXPhotoKitCollectionListMoveOutActionPerformer _grandParentOfCollection:v3];
+  collectionList = [(PXPhotoKitCollectionListActionPerformer *)self collectionList];
+  v4 = [PXPhotoKitCollectionListMoveOutActionPerformer _grandParentOfCollection:collectionList];
   if (v4)
   {
     v5 = [PXMoveToCollectionListAction alloc];
-    v10[0] = v3;
+    v10[0] = collectionList;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     v7 = [(PXMoveToCollectionListAction *)v5 initWithCollections:v6 targetCollectionList:v4];
 
-    v8 = [(PXActionPerformer *)self undoManager];
+    undoManager = [(PXActionPerformer *)self undoManager];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __71__PXPhotoKitCollectionListMoveOutActionPerformer_performBackgroundTask__block_invoke;
     v9[3] = &unk_1E774C5C0;
     v9[4] = self;
-    [(PXAction *)v7 executeWithUndoManager:v8 completionHandler:v9];
+    [(PXAction *)v7 executeWithUndoManager:undoManager completionHandler:v9];
   }
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitCollectionListActionPerformer *)self collectionList];
-  v4 = [v3 photoLibrary];
-  v5 = [v4 librarySpecificFetchOptions];
+  collectionList = [(PXPhotoKitCollectionListActionPerformer *)self collectionList];
+  photoLibrary = [collectionList photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v5 setIncludeRootFolder:1];
-  v6 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:v3 options:v5];
-  v7 = [v6 firstObject];
+  [librarySpecificFetchOptions setIncludeRootFolder:1];
+  v6 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:collectionList options:librarySpecificFetchOptions];
+  firstObject = [v6 firstObject];
 
-  if (v7 && ([MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:v7 options:v5], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
+  if (firstObject && ([MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:firstObject options:librarySpecificFetchOptions], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "firstObject"), v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
   {
-    v10 = [(PXActionPerformer *)self presentationEnvironment];
+    presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __76__PXPhotoKitCollectionListMoveOutActionPerformer_performUserInteractionTask__block_invoke;
     v15[3] = &unk_1E7749210;
     v16 = v9;
-    v17 = v7;
-    v18 = self;
+    v17 = firstObject;
+    selfCopy = self;
     v11 = v9;
-    v12 = [v10 presentAlertWithConfigurationHandler:v15];
+    v12 = [presentationEnvironment presentAlertWithConfigurationHandler:v15];
 
     if (!v12)
     {
@@ -110,34 +110,34 @@ void __76__PXPhotoKitCollectionListMoveOutActionPerformer_performUserInteraction
   [v4 addActionWithTitle:v12 style:0 action:v13];
 }
 
-+ (id)_grandParentOfCollection:(id)a3
++ (id)_grandParentOfCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 librarySpecificFetchOptions];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v5 setIncludeRootFolder:1];
-  v6 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:v3 options:v5];
+  [librarySpecificFetchOptions setIncludeRootFolder:1];
+  v6 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:collectionCopy options:librarySpecificFetchOptions];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:v7 options:v5];
-    v9 = [v8 firstObject];
+    v8 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:firstObject options:librarySpecificFetchOptions];
+    firstObject2 = [v8 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject2 = 0;
   }
 
-  return v9;
+  return firstObject2;
 }
 
-+ (BOOL)canPerformOnCollectionList:(id)a3
++ (BOOL)canPerformOnCollectionList:(id)list
 {
-  v3 = [PXPhotoKitCollectionListMoveOutActionPerformer _grandParentOfCollection:a3];
+  v3 = [PXPhotoKitCollectionListMoveOutActionPerformer _grandParentOfCollection:list];
   v4 = v3 != 0;
 
   return v4;

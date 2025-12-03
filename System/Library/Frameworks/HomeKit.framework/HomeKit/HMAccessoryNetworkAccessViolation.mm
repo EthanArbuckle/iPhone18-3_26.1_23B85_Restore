@@ -1,17 +1,17 @@
 @interface HMAccessoryNetworkAccessViolation
 - (BOOL)hasCurrentViolation;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessoryNetworkAccessViolation)initWithCoder:(id)a3;
-- (HMAccessoryNetworkAccessViolation)initWithLastViolationDate:(id)a3 lastViolationResetDate:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessoryNetworkAccessViolation)initWithCoder:(id)coder;
+- (HMAccessoryNetworkAccessViolation)initWithLastViolationDate:(id)date lastViolationResetDate:(id)resetDate;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessoryNetworkAccessViolation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -23,20 +23,20 @@
   objc_exception_throw(v10);
 }
 
-- (HMAccessoryNetworkAccessViolation)initWithCoder:(id)a3
+- (HMAccessoryNetworkAccessViolation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMANAV.lastOccurrenceDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMANAV.lastResetDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMANAV.lastOccurrenceDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMANAV.lastResetDate"];
 
   v7 = [(HMAccessoryNetworkAccessViolation *)self initWithLastViolationDate:v5 lastViolationResetDate:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -46,7 +46,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -57,8 +57,8 @@
     v6 = v5;
     if (v6 && ([(HMAccessoryNetworkAccessViolation *)self lastViolationDate], v7 = objc_claimAutoreleasedReturnValue(), [(HMAccessoryNetworkAccessViolation *)v6 lastViolationDate], v8 = objc_claimAutoreleasedReturnValue(), v9 = HMFEqualObjects(), v8, v7, v9))
     {
-      v10 = [(HMAccessoryNetworkAccessViolation *)self lastResetDate];
-      v11 = [(HMAccessoryNetworkAccessViolation *)v6 lastResetDate];
+      lastResetDate = [(HMAccessoryNetworkAccessViolation *)self lastResetDate];
+      lastResetDate2 = [(HMAccessoryNetworkAccessViolation *)v6 lastResetDate];
       v12 = HMFEqualObjects();
     }
 
@@ -73,49 +73,49 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMAccessoryNetworkAccessViolation *)self lastViolationDate];
-  v4 = [v3 hash];
-  v5 = [(HMAccessoryNetworkAccessViolation *)self lastResetDate];
-  v6 = [v5 hash];
+  lastViolationDate = [(HMAccessoryNetworkAccessViolation *)self lastViolationDate];
+  v4 = [lastViolationDate hash];
+  lastResetDate = [(HMAccessoryNetworkAccessViolation *)self lastResetDate];
+  v6 = [lastResetDate hash];
 
   return v6 ^ v4;
 }
 
 - (BOOL)hasCurrentViolation
 {
-  v3 = [(HMAccessoryNetworkAccessViolation *)self lastViolationDate];
+  lastViolationDate = [(HMAccessoryNetworkAccessViolation *)self lastViolationDate];
 
-  if (!v3)
+  if (!lastViolationDate)
   {
     return 0;
   }
 
-  v4 = [(HMAccessoryNetworkAccessViolation *)self lastResetDate];
+  lastResetDate = [(HMAccessoryNetworkAccessViolation *)self lastResetDate];
 
-  if (!v4)
+  if (!lastResetDate)
   {
     return 1;
   }
 
-  v5 = [(HMAccessoryNetworkAccessViolation *)self lastViolationDate];
-  v6 = [(HMAccessoryNetworkAccessViolation *)self lastResetDate];
-  v7 = [v5 compare:v6] == 1;
+  lastViolationDate2 = [(HMAccessoryNetworkAccessViolation *)self lastViolationDate];
+  lastResetDate2 = [(HMAccessoryNetworkAccessViolation *)self lastResetDate];
+  v7 = [lastViolationDate2 compare:lastResetDate2] == 1;
 
   return v7;
 }
 
-- (HMAccessoryNetworkAccessViolation)initWithLastViolationDate:(id)a3 lastViolationResetDate:(id)a4
+- (HMAccessoryNetworkAccessViolation)initWithLastViolationDate:(id)date lastViolationResetDate:(id)resetDate
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  resetDateCopy = resetDate;
   v12.receiver = self;
   v12.super_class = HMAccessoryNetworkAccessViolation;
   v9 = [(HMAccessoryNetworkAccessViolation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lastViolationDate, a3);
-    objc_storeStrong(&v10->_lastResetDate, a4);
+    objc_storeStrong(&v9->_lastViolationDate, date);
+    objc_storeStrong(&v10->_lastResetDate, resetDate);
   }
 
   return v10;

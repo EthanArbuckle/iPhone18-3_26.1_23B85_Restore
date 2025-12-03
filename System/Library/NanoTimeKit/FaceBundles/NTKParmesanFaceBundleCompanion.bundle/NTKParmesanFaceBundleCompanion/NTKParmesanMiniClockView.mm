@@ -1,26 +1,26 @@
 @interface NTKParmesanMiniClockView
 - (CLKUITimeViewConfiguration)configuration;
 - (NSDate)overrideDate;
-- (NTKParmesanMiniClockView)initWithCoder:(id)a3;
-- (NTKParmesanMiniClockView)initWithDevice:(id)a3 clockTimer:(id)a4;
-- (NTKParmesanMiniClockView)initWithFrame:(CGRect)a3;
+- (NTKParmesanMiniClockView)initWithCoder:(id)coder;
+- (NTKParmesanMiniClockView)initWithDevice:(id)device clockTimer:(id)timer;
+- (NTKParmesanMiniClockView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)paddingInsets;
 - (unint64_t)state;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)setPaddingInsets:(UIEdgeInsets)a3;
-- (void)setState:(unint64_t)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setOverrideDate:(id)date;
+- (void)setPaddingInsets:(UIEdgeInsets)insets;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation NTKParmesanMiniClockView
 
-- (NTKParmesanMiniClockView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (NTKParmesanMiniClockView)initWithDevice:(id)device clockTimer:(id)timer
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR___NTKParmesanMiniClockView_digitalTimeView) = 0;
-  v6 = a3;
-  v7 = a4;
-  sub_23BFA3B2C(v6, v16);
+  deviceCopy = device;
+  timerCopy = timer;
+  sub_23BFA3B2C(deviceCopy, v16);
   v8 = self + OBJC_IVAR___NTKParmesanMiniClockView_layoutConstants;
   v9 = v16[7];
   *(v8 + 6) = v16[6];
@@ -37,12 +37,12 @@
   *(v8 + 1) = v12;
   v15.receiver = self;
   v15.super_class = type metadata accessor for ParmesanMiniClockView();
-  v13 = [(CLKUITimeView *)&v15 initWithDevice:v6 clockTimer:v7];
+  v13 = [(CLKUITimeView *)&v15 initWithDevice:deviceCopy clockTimer:timerCopy];
 
   return v13;
 }
 
-- (NTKParmesanMiniClockView)initWithCoder:(id)a3
+- (NTKParmesanMiniClockView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR___NTKParmesanMiniClockView_digitalTimeView) = 0;
   result = sub_23BFFAB00();
@@ -69,22 +69,22 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for ParmesanMiniClockView();
-  v2 = [(CLKUITimeView *)&v4 configuration];
+  configuration = [(CLKUITimeView *)&v4 configuration];
 
-  return v2;
+  return configuration;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v5 = type metadata accessor for ParmesanMiniClockView();
   v10.receiver = self;
   v10.super_class = v5;
-  v6 = a3;
-  v7 = self;
-  v8 = [(CLKUITimeView *)&v10 configuration];
-  v9.receiver = v7;
+  configurationCopy = configuration;
+  selfCopy = self;
+  configuration = [(CLKUITimeView *)&v10 configuration];
+  v9.receiver = selfCopy;
   v9.super_class = v5;
-  [(CLKUITimeView *)&v9 setConfiguration:v6];
+  [(CLKUITimeView *)&v9 setConfiguration:configurationCopy];
   sub_23BF8903C();
 }
 
@@ -98,11 +98,11 @@
   v9 = type metadata accessor for ParmesanMiniClockView();
   v20.receiver = self;
   v20.super_class = v9;
-  v10 = self;
-  v11 = [(CLKUITimeView *)&v20 overrideDate];
-  if (v11)
+  selfCopy = self;
+  overrideDate = [(CLKUITimeView *)&v20 overrideDate];
+  if (overrideDate)
   {
-    v12 = v11;
+    v12 = overrideDate;
     sub_23BFF8D80();
 
     v13 = 0;
@@ -129,12 +129,12 @@
   return v17;
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
   v5 = sub_23BF4A264(&qword_27E1E0B80);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (date)
   {
     sub_23BFF8D80();
     v8 = sub_23BFF8D90();
@@ -147,7 +147,7 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_23BF885B0(v7);
 }
 
@@ -163,12 +163,12 @@
   return result;
 }
 
-- (void)setPaddingInsets:(UIEdgeInsets)a3
+- (void)setPaddingInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v15.receiver = self;
   v15.super_class = type metadata accessor for ParmesanMiniClockView();
   v7 = v15.receiver;
@@ -196,12 +196,12 @@
   return [(CLKUITimeView *)&v3 state];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ParmesanMiniClockView();
   v4 = v7.receiver;
-  [(CLKUITimeView *)&v7 setState:a3];
+  [(CLKUITimeView *)&v7 setState:state];
   v5 = *&v4[OBJC_IVAR___NTKParmesanMiniClockView_digitalTimeView];
   if (v5)
   {
@@ -210,7 +210,7 @@
   }
 }
 
-- (NTKParmesanMiniClockView)initWithFrame:(CGRect)a3
+- (NTKParmesanMiniClockView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

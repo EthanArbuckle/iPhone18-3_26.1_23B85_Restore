@@ -1,33 +1,33 @@
 @interface _INPBMessage
-- (BOOL)isEqual:(id)a3;
-- (_INPBMessage)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBMessage)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAttributes:(id)a3;
-- (int)StringAsEffect:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsAttributes:(id)attributes;
+- (int)StringAsEffect:(id)effect;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)addAttachmentFile:(id)a3;
-- (void)addAttribute:(int)a3;
-- (void)addInlineGlyphContent:(id)a3;
-- (void)addRecipient:(id)a3;
+- (void)addAttachmentFile:(id)file;
+- (void)addAttribute:(int)attribute;
+- (void)addInlineGlyphContent:(id)content;
+- (void)addRecipient:(id)recipient;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAttachmentFiles:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setConversationIdentifier:(id)a3;
-- (void)setEffect:(int)a3;
-- (void)setFileExtension:(id)a3;
-- (void)setGroupName:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setInlineGlyphContents:(id)a3;
-- (void)setLocationName:(id)a3;
-- (void)setRecipients:(id)a3;
-- (void)setServiceName:(id)a3;
-- (void)setTranslatedToLanguage:(id)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAttachmentFiles:(id)files;
+- (void)setContent:(id)content;
+- (void)setConversationIdentifier:(id)identifier;
+- (void)setEffect:(int)effect;
+- (void)setFileExtension:(id)extension;
+- (void)setGroupName:(id)name;
+- (void)setHasType:(BOOL)type;
+- (void)setIdentifier:(id)identifier;
+- (void)setInlineGlyphContents:(id)contents;
+- (void)setLocationName:(id)name;
+- (void)setRecipients:(id)recipients;
+- (void)setServiceName:(id)name;
+- (void)setTranslatedToLanguage:(id)language;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBMessage
@@ -43,10 +43,10 @@
 - (id)dictionaryRepresentation
 {
   v90 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_attachmentFiles count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
@@ -66,8 +66,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v83 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v83 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v83 objects:v89 count:16];
@@ -76,7 +76,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"attachmentFile"];
+    [dictionary setObject:array forKeyedSubscript:@"attachmentFile"];
   }
 
   if (self->_attributes.count)
@@ -106,75 +106,75 @@
       while (v12 < [(_INPBMessage *)self attributesCount]);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"attribute"];
+    [dictionary setObject:v11 forKeyedSubscript:@"attribute"];
   }
 
-  v15 = [(_INPBMessage *)self audioMessageFile];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"audioMessageFile"];
+  audioMessageFile = [(_INPBMessage *)self audioMessageFile];
+  dictionaryRepresentation2 = [audioMessageFile dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"audioMessageFile"];
 
   if (self->_content)
   {
-    v17 = [(_INPBMessage *)self content];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"content"];
+    content = [(_INPBMessage *)self content];
+    v18 = [content copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"content"];
   }
 
   if (self->_conversationIdentifier)
   {
-    v19 = [(_INPBMessage *)self conversationIdentifier];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"conversationIdentifier"];
+    conversationIdentifier = [(_INPBMessage *)self conversationIdentifier];
+    v20 = [conversationIdentifier copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"conversationIdentifier"];
   }
 
-  v21 = [(_INPBMessage *)self dateLastMessageRead];
-  v22 = [v21 dictionaryRepresentation];
-  [v3 setObject:v22 forKeyedSubscript:@"dateLastMessageRead"];
+  dateLastMessageRead = [(_INPBMessage *)self dateLastMessageRead];
+  dictionaryRepresentation3 = [dateLastMessageRead dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"dateLastMessageRead"];
 
-  v23 = [(_INPBMessage *)self dateSent];
-  v24 = [v23 dictionaryRepresentation];
-  [v3 setObject:v24 forKeyedSubscript:@"dateSent"];
+  dateSent = [(_INPBMessage *)self dateSent];
+  dictionaryRepresentation4 = [dateSent dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"dateSent"];
 
   if ([(_INPBMessage *)self hasEffect])
   {
-    v25 = [(_INPBMessage *)self effect];
-    if ((v25 - 1) >= 0xD)
+    effect = [(_INPBMessage *)self effect];
+    if ((effect - 1) >= 0xD)
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v25];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", effect];
     }
 
     else
     {
-      v26 = *(&off_1E727E7D0 + (v25 - 1));
+      v26 = *(&off_1E727E7D0 + (effect - 1));
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"effect"];
+    [dictionary setObject:v26 forKeyedSubscript:@"effect"];
   }
 
   if (self->_fileExtension)
   {
-    v27 = [(_INPBMessage *)self fileExtension];
-    v28 = [v27 copy];
-    [v3 setObject:v28 forKeyedSubscript:@"fileExtension"];
+    fileExtension = [(_INPBMessage *)self fileExtension];
+    v28 = [fileExtension copy];
+    [dictionary setObject:v28 forKeyedSubscript:@"fileExtension"];
   }
 
   if (self->_groupName)
   {
-    v29 = [(_INPBMessage *)self groupName];
-    v30 = [v29 copy];
-    [v3 setObject:v30 forKeyedSubscript:@"groupName"];
+    groupName = [(_INPBMessage *)self groupName];
+    v30 = [groupName copy];
+    [dictionary setObject:v30 forKeyedSubscript:@"groupName"];
   }
 
   if (self->_identifier)
   {
-    v31 = [(_INPBMessage *)self identifier];
-    v32 = [v31 copy];
-    [v3 setObject:v32 forKeyedSubscript:@"identifier"];
+    identifier = [(_INPBMessage *)self identifier];
+    v32 = [identifier copy];
+    [dictionary setObject:v32 forKeyedSubscript:@"identifier"];
   }
 
   if ([(NSArray *)self->_inlineGlyphContents count])
   {
-    v33 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
@@ -194,8 +194,8 @@
             objc_enumerationMutation(v34);
           }
 
-          v39 = [*(*(&v79 + 1) + 8 * j) dictionaryRepresentation];
-          [v33 addObject:v39];
+          dictionaryRepresentation5 = [*(*(&v79 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation5];
         }
 
         v36 = [(NSArray *)v34 countByEnumeratingWithState:&v79 objects:v88 count:16];
@@ -204,39 +204,39 @@
       while (v36);
     }
 
-    [v3 setObject:v33 forKeyedSubscript:@"inlineGlyphContent"];
+    [dictionary setObject:array2 forKeyedSubscript:@"inlineGlyphContent"];
   }
 
-  v40 = [(_INPBMessage *)self linkMetadata];
-  v41 = [v40 dictionaryRepresentation];
-  [v3 setObject:v41 forKeyedSubscript:@"linkMetadata"];
+  linkMetadata = [(_INPBMessage *)self linkMetadata];
+  dictionaryRepresentation6 = [linkMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"linkMetadata"];
 
-  v42 = [(_INPBMessage *)self location];
-  v43 = [v42 dictionaryRepresentation];
-  [v3 setObject:v43 forKeyedSubscript:@"location"];
+  location = [(_INPBMessage *)self location];
+  dictionaryRepresentation7 = [location dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"location"];
 
   if (self->_locationName)
   {
-    v44 = [(_INPBMessage *)self locationName];
-    v45 = [v44 copy];
-    [v3 setObject:v45 forKeyedSubscript:@"locationName"];
+    locationName = [(_INPBMessage *)self locationName];
+    v45 = [locationName copy];
+    [dictionary setObject:v45 forKeyedSubscript:@"locationName"];
   }
 
-  v46 = [(_INPBMessage *)self numberOfAttachments];
-  v47 = [v46 dictionaryRepresentation];
-  [v3 setObject:v47 forKeyedSubscript:@"numberOfAttachments"];
+  numberOfAttachments = [(_INPBMessage *)self numberOfAttachments];
+  dictionaryRepresentation8 = [numberOfAttachments dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"numberOfAttachments"];
 
-  v48 = [(_INPBMessage *)self paymentAmount];
-  v49 = [v48 dictionaryRepresentation];
-  [v3 setObject:v49 forKeyedSubscript:@"paymentAmount"];
+  paymentAmount = [(_INPBMessage *)self paymentAmount];
+  dictionaryRepresentation9 = [paymentAmount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"paymentAmount"];
 
-  v50 = [(_INPBMessage *)self reaction];
-  v51 = [v50 dictionaryRepresentation];
-  [v3 setObject:v51 forKeyedSubscript:@"reaction"];
+  reaction = [(_INPBMessage *)self reaction];
+  dictionaryRepresentation10 = [reaction dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"reaction"];
 
   if ([(NSArray *)self->_recipients count])
   {
-    v52 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
@@ -256,8 +256,8 @@
             objc_enumerationMutation(v53);
           }
 
-          v58 = [*(*(&v75 + 1) + 8 * k) dictionaryRepresentation];
-          [v52 addObject:v58];
+          dictionaryRepresentation11 = [*(*(&v75 + 1) + 8 * k) dictionaryRepresentation];
+          [array3 addObject:dictionaryRepresentation11];
         }
 
         v55 = [(NSArray *)v53 countByEnumeratingWithState:&v75 objects:v87 count:16];
@@ -266,58 +266,58 @@
       while (v55);
     }
 
-    [v3 setObject:v52 forKeyedSubscript:@"recipient"];
+    [dictionary setObject:array3 forKeyedSubscript:@"recipient"];
   }
 
-  v59 = [(_INPBMessage *)self referencedMessage];
-  v60 = [v59 dictionaryRepresentation];
-  [v3 setObject:v60 forKeyedSubscript:@"referencedMessage"];
+  referencedMessage = [(_INPBMessage *)self referencedMessage];
+  dictionaryRepresentation12 = [referencedMessage dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"referencedMessage"];
 
-  v61 = [(_INPBMessage *)self sender];
-  v62 = [v61 dictionaryRepresentation];
-  [v3 setObject:v62 forKeyedSubscript:@"sender"];
+  sender = [(_INPBMessage *)self sender];
+  dictionaryRepresentation13 = [sender dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"sender"];
 
   if (self->_serviceName)
   {
-    v63 = [(_INPBMessage *)self serviceName];
-    v64 = [v63 copy];
-    [v3 setObject:v64 forKeyedSubscript:@"serviceName"];
+    serviceName = [(_INPBMessage *)self serviceName];
+    v64 = [serviceName copy];
+    [dictionary setObject:v64 forKeyedSubscript:@"serviceName"];
   }
 
-  v65 = [(_INPBMessage *)self speakableGroupName];
-  v66 = [v65 dictionaryRepresentation];
-  [v3 setObject:v66 forKeyedSubscript:@"speakableGroupName"];
+  speakableGroupName = [(_INPBMessage *)self speakableGroupName];
+  dictionaryRepresentation14 = [speakableGroupName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"speakableGroupName"];
 
-  v67 = [(_INPBMessage *)self sticker];
-  v68 = [v67 dictionaryRepresentation];
-  [v3 setObject:v68 forKeyedSubscript:@"sticker"];
+  sticker = [(_INPBMessage *)self sticker];
+  dictionaryRepresentation15 = [sticker dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"sticker"];
 
   if (self->_translatedToLanguage)
   {
-    v69 = [(_INPBMessage *)self translatedToLanguage];
-    v70 = [v69 copy];
-    [v3 setObject:v70 forKeyedSubscript:@"translatedToLanguage"];
+    translatedToLanguage = [(_INPBMessage *)self translatedToLanguage];
+    v70 = [translatedToLanguage copy];
+    [dictionary setObject:v70 forKeyedSubscript:@"translatedToLanguage"];
   }
 
   if ([(_INPBMessage *)self hasType])
   {
-    v71 = [(_INPBMessage *)self type];
-    if ((v71 - 1) >= 0x23)
+    type = [(_INPBMessage *)self type];
+    if ((type - 1) >= 0x23)
     {
-      v72 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v71];
+      v72 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v72 = *(&off_1E727E838 + (v71 - 1));
+      v72 = *(&off_1E727E838 + (type - 1));
     }
 
-    [v3 setObject:v72 forKeyedSubscript:@"type"];
+    [dictionary setObject:v72 forKeyedSubscript:@"type"];
   }
 
   v73 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -369,28 +369,28 @@
   return v28 ^ v29 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_122;
   }
 
-  v5 = [(_INPBMessage *)self attachmentFiles];
-  v6 = [v4 attachmentFiles];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self attachmentFiles];
+  attachmentFiles2 = [equalCopy attachmentFiles];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v7 = [(_INPBMessage *)self attachmentFiles];
-  if (v7)
+  attachmentFiles3 = [(_INPBMessage *)self attachmentFiles];
+  if (attachmentFiles3)
   {
-    v8 = v7;
-    v9 = [(_INPBMessage *)self attachmentFiles];
-    v10 = [v4 attachmentFiles];
-    v11 = [v9 isEqual:v10];
+    v8 = attachmentFiles3;
+    attachmentFiles4 = [(_INPBMessage *)self attachmentFiles];
+    attachmentFiles5 = [equalCopy attachmentFiles];
+    v11 = [attachmentFiles4 isEqual:attachmentFiles5];
 
     if (!v11)
     {
@@ -407,20 +407,20 @@
     goto LABEL_122;
   }
 
-  v5 = [(_INPBMessage *)self audioMessageFile];
-  v6 = [v4 audioMessageFile];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self audioMessageFile];
+  attachmentFiles2 = [equalCopy audioMessageFile];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v12 = [(_INPBMessage *)self audioMessageFile];
-  if (v12)
+  audioMessageFile = [(_INPBMessage *)self audioMessageFile];
+  if (audioMessageFile)
   {
-    v13 = v12;
-    v14 = [(_INPBMessage *)self audioMessageFile];
-    v15 = [v4 audioMessageFile];
-    v16 = [v14 isEqual:v15];
+    v13 = audioMessageFile;
+    audioMessageFile2 = [(_INPBMessage *)self audioMessageFile];
+    audioMessageFile3 = [equalCopy audioMessageFile];
+    v16 = [audioMessageFile2 isEqual:audioMessageFile3];
 
     if (!v16)
     {
@@ -432,20 +432,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self content];
-  v6 = [v4 content];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self content];
+  attachmentFiles2 = [equalCopy content];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v17 = [(_INPBMessage *)self content];
-  if (v17)
+  content = [(_INPBMessage *)self content];
+  if (content)
   {
-    v18 = v17;
-    v19 = [(_INPBMessage *)self content];
-    v20 = [v4 content];
-    v21 = [v19 isEqual:v20];
+    v18 = content;
+    content2 = [(_INPBMessage *)self content];
+    content3 = [equalCopy content];
+    v21 = [content2 isEqual:content3];
 
     if (!v21)
     {
@@ -457,20 +457,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self conversationIdentifier];
-  v6 = [v4 conversationIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self conversationIdentifier];
+  attachmentFiles2 = [equalCopy conversationIdentifier];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v22 = [(_INPBMessage *)self conversationIdentifier];
-  if (v22)
+  conversationIdentifier = [(_INPBMessage *)self conversationIdentifier];
+  if (conversationIdentifier)
   {
-    v23 = v22;
-    v24 = [(_INPBMessage *)self conversationIdentifier];
-    v25 = [v4 conversationIdentifier];
-    v26 = [v24 isEqual:v25];
+    v23 = conversationIdentifier;
+    conversationIdentifier2 = [(_INPBMessage *)self conversationIdentifier];
+    conversationIdentifier3 = [equalCopy conversationIdentifier];
+    v26 = [conversationIdentifier2 isEqual:conversationIdentifier3];
 
     if (!v26)
     {
@@ -482,20 +482,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self dateLastMessageRead];
-  v6 = [v4 dateLastMessageRead];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self dateLastMessageRead];
+  attachmentFiles2 = [equalCopy dateLastMessageRead];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v27 = [(_INPBMessage *)self dateLastMessageRead];
-  if (v27)
+  dateLastMessageRead = [(_INPBMessage *)self dateLastMessageRead];
+  if (dateLastMessageRead)
   {
-    v28 = v27;
-    v29 = [(_INPBMessage *)self dateLastMessageRead];
-    v30 = [v4 dateLastMessageRead];
-    v31 = [v29 isEqual:v30];
+    v28 = dateLastMessageRead;
+    dateLastMessageRead2 = [(_INPBMessage *)self dateLastMessageRead];
+    dateLastMessageRead3 = [equalCopy dateLastMessageRead];
+    v31 = [dateLastMessageRead2 isEqual:dateLastMessageRead3];
 
     if (!v31)
     {
@@ -507,20 +507,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self dateSent];
-  v6 = [v4 dateSent];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self dateSent];
+  attachmentFiles2 = [equalCopy dateSent];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v32 = [(_INPBMessage *)self dateSent];
-  if (v32)
+  dateSent = [(_INPBMessage *)self dateSent];
+  if (dateSent)
   {
-    v33 = v32;
-    v34 = [(_INPBMessage *)self dateSent];
-    v35 = [v4 dateSent];
-    v36 = [v34 isEqual:v35];
+    v33 = dateSent;
+    dateSent2 = [(_INPBMessage *)self dateSent];
+    dateSent3 = [equalCopy dateSent];
+    v36 = [dateSent2 isEqual:dateSent3];
 
     if (!v36)
     {
@@ -532,38 +532,38 @@
   {
   }
 
-  v37 = [(_INPBMessage *)self hasEffect];
-  if (v37 != [v4 hasEffect])
+  hasEffect = [(_INPBMessage *)self hasEffect];
+  if (hasEffect != [equalCopy hasEffect])
   {
     goto LABEL_122;
   }
 
   if ([(_INPBMessage *)self hasEffect])
   {
-    if ([v4 hasEffect])
+    if ([equalCopy hasEffect])
     {
       effect = self->_effect;
-      if (effect != [v4 effect])
+      if (effect != [equalCopy effect])
       {
         goto LABEL_122;
       }
     }
   }
 
-  v5 = [(_INPBMessage *)self fileExtension];
-  v6 = [v4 fileExtension];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self fileExtension];
+  attachmentFiles2 = [equalCopy fileExtension];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v39 = [(_INPBMessage *)self fileExtension];
-  if (v39)
+  fileExtension = [(_INPBMessage *)self fileExtension];
+  if (fileExtension)
   {
-    v40 = v39;
-    v41 = [(_INPBMessage *)self fileExtension];
-    v42 = [v4 fileExtension];
-    v43 = [v41 isEqual:v42];
+    v40 = fileExtension;
+    fileExtension2 = [(_INPBMessage *)self fileExtension];
+    fileExtension3 = [equalCopy fileExtension];
+    v43 = [fileExtension2 isEqual:fileExtension3];
 
     if (!v43)
     {
@@ -575,20 +575,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self groupName];
-  v6 = [v4 groupName];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self groupName];
+  attachmentFiles2 = [equalCopy groupName];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v44 = [(_INPBMessage *)self groupName];
-  if (v44)
+  groupName = [(_INPBMessage *)self groupName];
+  if (groupName)
   {
-    v45 = v44;
-    v46 = [(_INPBMessage *)self groupName];
-    v47 = [v4 groupName];
-    v48 = [v46 isEqual:v47];
+    v45 = groupName;
+    groupName2 = [(_INPBMessage *)self groupName];
+    groupName3 = [equalCopy groupName];
+    v48 = [groupName2 isEqual:groupName3];
 
     if (!v48)
     {
@@ -600,20 +600,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self identifier];
+  attachmentFiles2 = [equalCopy identifier];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v49 = [(_INPBMessage *)self identifier];
-  if (v49)
+  identifier = [(_INPBMessage *)self identifier];
+  if (identifier)
   {
-    v50 = v49;
-    v51 = [(_INPBMessage *)self identifier];
-    v52 = [v4 identifier];
-    v53 = [v51 isEqual:v52];
+    v50 = identifier;
+    identifier2 = [(_INPBMessage *)self identifier];
+    identifier3 = [equalCopy identifier];
+    v53 = [identifier2 isEqual:identifier3];
 
     if (!v53)
     {
@@ -625,20 +625,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self inlineGlyphContents];
-  v6 = [v4 inlineGlyphContents];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self inlineGlyphContents];
+  attachmentFiles2 = [equalCopy inlineGlyphContents];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v54 = [(_INPBMessage *)self inlineGlyphContents];
-  if (v54)
+  inlineGlyphContents = [(_INPBMessage *)self inlineGlyphContents];
+  if (inlineGlyphContents)
   {
-    v55 = v54;
-    v56 = [(_INPBMessage *)self inlineGlyphContents];
-    v57 = [v4 inlineGlyphContents];
-    v58 = [v56 isEqual:v57];
+    v55 = inlineGlyphContents;
+    inlineGlyphContents2 = [(_INPBMessage *)self inlineGlyphContents];
+    inlineGlyphContents3 = [equalCopy inlineGlyphContents];
+    v58 = [inlineGlyphContents2 isEqual:inlineGlyphContents3];
 
     if (!v58)
     {
@@ -650,20 +650,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self linkMetadata];
-  v6 = [v4 linkMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self linkMetadata];
+  attachmentFiles2 = [equalCopy linkMetadata];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v59 = [(_INPBMessage *)self linkMetadata];
-  if (v59)
+  linkMetadata = [(_INPBMessage *)self linkMetadata];
+  if (linkMetadata)
   {
-    v60 = v59;
-    v61 = [(_INPBMessage *)self linkMetadata];
-    v62 = [v4 linkMetadata];
-    v63 = [v61 isEqual:v62];
+    v60 = linkMetadata;
+    linkMetadata2 = [(_INPBMessage *)self linkMetadata];
+    linkMetadata3 = [equalCopy linkMetadata];
+    v63 = [linkMetadata2 isEqual:linkMetadata3];
 
     if (!v63)
     {
@@ -675,20 +675,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self location];
-  v6 = [v4 location];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self location];
+  attachmentFiles2 = [equalCopy location];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v64 = [(_INPBMessage *)self location];
-  if (v64)
+  location = [(_INPBMessage *)self location];
+  if (location)
   {
-    v65 = v64;
-    v66 = [(_INPBMessage *)self location];
-    v67 = [v4 location];
-    v68 = [v66 isEqual:v67];
+    v65 = location;
+    location2 = [(_INPBMessage *)self location];
+    location3 = [equalCopy location];
+    v68 = [location2 isEqual:location3];
 
     if (!v68)
     {
@@ -700,20 +700,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self locationName];
-  v6 = [v4 locationName];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self locationName];
+  attachmentFiles2 = [equalCopy locationName];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v69 = [(_INPBMessage *)self locationName];
-  if (v69)
+  locationName = [(_INPBMessage *)self locationName];
+  if (locationName)
   {
-    v70 = v69;
-    v71 = [(_INPBMessage *)self locationName];
-    v72 = [v4 locationName];
-    v73 = [v71 isEqual:v72];
+    v70 = locationName;
+    locationName2 = [(_INPBMessage *)self locationName];
+    locationName3 = [equalCopy locationName];
+    v73 = [locationName2 isEqual:locationName3];
 
     if (!v73)
     {
@@ -725,20 +725,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self numberOfAttachments];
-  v6 = [v4 numberOfAttachments];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self numberOfAttachments];
+  attachmentFiles2 = [equalCopy numberOfAttachments];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v74 = [(_INPBMessage *)self numberOfAttachments];
-  if (v74)
+  numberOfAttachments = [(_INPBMessage *)self numberOfAttachments];
+  if (numberOfAttachments)
   {
-    v75 = v74;
-    v76 = [(_INPBMessage *)self numberOfAttachments];
-    v77 = [v4 numberOfAttachments];
-    v78 = [v76 isEqual:v77];
+    v75 = numberOfAttachments;
+    numberOfAttachments2 = [(_INPBMessage *)self numberOfAttachments];
+    numberOfAttachments3 = [equalCopy numberOfAttachments];
+    v78 = [numberOfAttachments2 isEqual:numberOfAttachments3];
 
     if (!v78)
     {
@@ -750,20 +750,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self paymentAmount];
-  v6 = [v4 paymentAmount];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self paymentAmount];
+  attachmentFiles2 = [equalCopy paymentAmount];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v79 = [(_INPBMessage *)self paymentAmount];
-  if (v79)
+  paymentAmount = [(_INPBMessage *)self paymentAmount];
+  if (paymentAmount)
   {
-    v80 = v79;
-    v81 = [(_INPBMessage *)self paymentAmount];
-    v82 = [v4 paymentAmount];
-    v83 = [v81 isEqual:v82];
+    v80 = paymentAmount;
+    paymentAmount2 = [(_INPBMessage *)self paymentAmount];
+    paymentAmount3 = [equalCopy paymentAmount];
+    v83 = [paymentAmount2 isEqual:paymentAmount3];
 
     if (!v83)
     {
@@ -775,20 +775,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self reaction];
-  v6 = [v4 reaction];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self reaction];
+  attachmentFiles2 = [equalCopy reaction];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v84 = [(_INPBMessage *)self reaction];
-  if (v84)
+  reaction = [(_INPBMessage *)self reaction];
+  if (reaction)
   {
-    v85 = v84;
-    v86 = [(_INPBMessage *)self reaction];
-    v87 = [v4 reaction];
-    v88 = [v86 isEqual:v87];
+    v85 = reaction;
+    reaction2 = [(_INPBMessage *)self reaction];
+    reaction3 = [equalCopy reaction];
+    v88 = [reaction2 isEqual:reaction3];
 
     if (!v88)
     {
@@ -800,20 +800,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self recipients];
-  v6 = [v4 recipients];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self recipients];
+  attachmentFiles2 = [equalCopy recipients];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v89 = [(_INPBMessage *)self recipients];
-  if (v89)
+  recipients = [(_INPBMessage *)self recipients];
+  if (recipients)
   {
-    v90 = v89;
-    v91 = [(_INPBMessage *)self recipients];
-    v92 = [v4 recipients];
-    v93 = [v91 isEqual:v92];
+    v90 = recipients;
+    recipients2 = [(_INPBMessage *)self recipients];
+    recipients3 = [equalCopy recipients];
+    v93 = [recipients2 isEqual:recipients3];
 
     if (!v93)
     {
@@ -825,20 +825,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self referencedMessage];
-  v6 = [v4 referencedMessage];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self referencedMessage];
+  attachmentFiles2 = [equalCopy referencedMessage];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v94 = [(_INPBMessage *)self referencedMessage];
-  if (v94)
+  referencedMessage = [(_INPBMessage *)self referencedMessage];
+  if (referencedMessage)
   {
-    v95 = v94;
-    v96 = [(_INPBMessage *)self referencedMessage];
-    v97 = [v4 referencedMessage];
-    v98 = [v96 isEqual:v97];
+    v95 = referencedMessage;
+    referencedMessage2 = [(_INPBMessage *)self referencedMessage];
+    referencedMessage3 = [equalCopy referencedMessage];
+    v98 = [referencedMessage2 isEqual:referencedMessage3];
 
     if (!v98)
     {
@@ -850,20 +850,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self sender];
-  v6 = [v4 sender];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self sender];
+  attachmentFiles2 = [equalCopy sender];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v99 = [(_INPBMessage *)self sender];
-  if (v99)
+  sender = [(_INPBMessage *)self sender];
+  if (sender)
   {
-    v100 = v99;
-    v101 = [(_INPBMessage *)self sender];
-    v102 = [v4 sender];
-    v103 = [v101 isEqual:v102];
+    v100 = sender;
+    sender2 = [(_INPBMessage *)self sender];
+    sender3 = [equalCopy sender];
+    v103 = [sender2 isEqual:sender3];
 
     if (!v103)
     {
@@ -875,20 +875,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self serviceName];
-  v6 = [v4 serviceName];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self serviceName];
+  attachmentFiles2 = [equalCopy serviceName];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v104 = [(_INPBMessage *)self serviceName];
-  if (v104)
+  serviceName = [(_INPBMessage *)self serviceName];
+  if (serviceName)
   {
-    v105 = v104;
-    v106 = [(_INPBMessage *)self serviceName];
-    v107 = [v4 serviceName];
-    v108 = [v106 isEqual:v107];
+    v105 = serviceName;
+    serviceName2 = [(_INPBMessage *)self serviceName];
+    serviceName3 = [equalCopy serviceName];
+    v108 = [serviceName2 isEqual:serviceName3];
 
     if (!v108)
     {
@@ -900,20 +900,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self speakableGroupName];
-  v6 = [v4 speakableGroupName];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self speakableGroupName];
+  attachmentFiles2 = [equalCopy speakableGroupName];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v109 = [(_INPBMessage *)self speakableGroupName];
-  if (v109)
+  speakableGroupName = [(_INPBMessage *)self speakableGroupName];
+  if (speakableGroupName)
   {
-    v110 = v109;
-    v111 = [(_INPBMessage *)self speakableGroupName];
-    v112 = [v4 speakableGroupName];
-    v113 = [v111 isEqual:v112];
+    v110 = speakableGroupName;
+    speakableGroupName2 = [(_INPBMessage *)self speakableGroupName];
+    speakableGroupName3 = [equalCopy speakableGroupName];
+    v113 = [speakableGroupName2 isEqual:speakableGroupName3];
 
     if (!v113)
     {
@@ -925,20 +925,20 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self sticker];
-  v6 = [v4 sticker];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self sticker];
+  attachmentFiles2 = [equalCopy sticker];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
     goto LABEL_121;
   }
 
-  v114 = [(_INPBMessage *)self sticker];
-  if (v114)
+  sticker = [(_INPBMessage *)self sticker];
+  if (sticker)
   {
-    v115 = v114;
-    v116 = [(_INPBMessage *)self sticker];
-    v117 = [v4 sticker];
-    v118 = [v116 isEqual:v117];
+    v115 = sticker;
+    sticker2 = [(_INPBMessage *)self sticker];
+    sticker3 = [equalCopy sticker];
+    v118 = [sticker2 isEqual:sticker3];
 
     if (!v118)
     {
@@ -950,22 +950,22 @@
   {
   }
 
-  v5 = [(_INPBMessage *)self translatedToLanguage];
-  v6 = [v4 translatedToLanguage];
-  if ((v5 != 0) == (v6 == 0))
+  attachmentFiles = [(_INPBMessage *)self translatedToLanguage];
+  attachmentFiles2 = [equalCopy translatedToLanguage];
+  if ((attachmentFiles != 0) == (attachmentFiles2 == 0))
   {
 LABEL_121:
 
     goto LABEL_122;
   }
 
-  v119 = [(_INPBMessage *)self translatedToLanguage];
-  if (v119)
+  translatedToLanguage = [(_INPBMessage *)self translatedToLanguage];
+  if (translatedToLanguage)
   {
-    v120 = v119;
-    v121 = [(_INPBMessage *)self translatedToLanguage];
-    v122 = [v4 translatedToLanguage];
-    v123 = [v121 isEqual:v122];
+    v120 = translatedToLanguage;
+    translatedToLanguage2 = [(_INPBMessage *)self translatedToLanguage];
+    translatedToLanguage3 = [equalCopy translatedToLanguage];
+    v123 = [translatedToLanguage2 isEqual:translatedToLanguage3];
 
     if (!v123)
     {
@@ -977,10 +977,10 @@ LABEL_121:
   {
   }
 
-  v126 = [(_INPBMessage *)self hasType];
-  if (v126 == [v4 hasType])
+  hasType = [(_INPBMessage *)self hasType];
+  if (hasType == [equalCopy hasType])
   {
-    if (!-[_INPBMessage hasType](self, "hasType") || ![v4 hasType] || (type = self->_type, type == objc_msgSend(v4, "type")))
+    if (!-[_INPBMessage hasType](self, "hasType") || ![equalCopy hasType] || (type = self->_type, type == objc_msgSend(equalCopy, "type")))
     {
       v124 = 1;
       goto LABEL_123;
@@ -994,26 +994,26 @@ LABEL_123:
   return v124;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBMessage allocWithZone:](_INPBMessage init];
-  v6 = [(NSArray *)self->_attachmentFiles copyWithZone:a3];
+  v6 = [(NSArray *)self->_attachmentFiles copyWithZone:zone];
   [(_INPBMessage *)v5 setAttachmentFiles:v6];
 
   PBRepeatedInt32Copy();
-  v7 = [(_INPBFile *)self->_audioMessageFile copyWithZone:a3];
+  v7 = [(_INPBFile *)self->_audioMessageFile copyWithZone:zone];
   [(_INPBMessage *)v5 setAudioMessageFile:v7];
 
-  v8 = [(NSString *)self->_content copyWithZone:a3];
+  v8 = [(NSString *)self->_content copyWithZone:zone];
   [(_INPBMessage *)v5 setContent:v8];
 
-  v9 = [(NSString *)self->_conversationIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_conversationIdentifier copyWithZone:zone];
   [(_INPBMessage *)v5 setConversationIdentifier:v9];
 
-  v10 = [(_INPBDateTime *)self->_dateLastMessageRead copyWithZone:a3];
+  v10 = [(_INPBDateTime *)self->_dateLastMessageRead copyWithZone:zone];
   [(_INPBMessage *)v5 setDateLastMessageRead:v10];
 
-  v11 = [(_INPBDateTime *)self->_dateSent copyWithZone:a3];
+  v11 = [(_INPBDateTime *)self->_dateSent copyWithZone:zone];
   [(_INPBMessage *)v5 setDateSent:v11];
 
   if ([(_INPBMessage *)self hasEffect])
@@ -1021,55 +1021,55 @@ LABEL_123:
     [(_INPBMessage *)v5 setEffect:[(_INPBMessage *)self effect]];
   }
 
-  v12 = [(NSString *)self->_fileExtension copyWithZone:a3];
+  v12 = [(NSString *)self->_fileExtension copyWithZone:zone];
   [(_INPBMessage *)v5 setFileExtension:v12];
 
-  v13 = [(NSString *)self->_groupName copyWithZone:a3];
+  v13 = [(NSString *)self->_groupName copyWithZone:zone];
   [(_INPBMessage *)v5 setGroupName:v13];
 
-  v14 = [(NSString *)self->_identifier copyWithZone:a3];
+  v14 = [(NSString *)self->_identifier copyWithZone:zone];
   [(_INPBMessage *)v5 setIdentifier:v14];
 
-  v15 = [(NSArray *)self->_inlineGlyphContents copyWithZone:a3];
+  v15 = [(NSArray *)self->_inlineGlyphContents copyWithZone:zone];
   [(_INPBMessage *)v5 setInlineGlyphContents:v15];
 
-  v16 = [(_INPBMessageLinkMetadata *)self->_linkMetadata copyWithZone:a3];
+  v16 = [(_INPBMessageLinkMetadata *)self->_linkMetadata copyWithZone:zone];
   [(_INPBMessage *)v5 setLinkMetadata:v16];
 
-  v17 = [(_INPBLocation *)self->_location copyWithZone:a3];
+  v17 = [(_INPBLocation *)self->_location copyWithZone:zone];
   [(_INPBMessage *)v5 setLocation:v17];
 
-  v18 = [(NSString *)self->_locationName copyWithZone:a3];
+  v18 = [(NSString *)self->_locationName copyWithZone:zone];
   [(_INPBMessage *)v5 setLocationName:v18];
 
-  v19 = [(_INPBInteger *)self->_numberOfAttachments copyWithZone:a3];
+  v19 = [(_INPBInteger *)self->_numberOfAttachments copyWithZone:zone];
   [(_INPBMessage *)v5 setNumberOfAttachments:v19];
 
-  v20 = [(_INPBCurrencyAmountValue *)self->_paymentAmount copyWithZone:a3];
+  v20 = [(_INPBCurrencyAmountValue *)self->_paymentAmount copyWithZone:zone];
   [(_INPBMessage *)v5 setPaymentAmount:v20];
 
-  v21 = [(_INPBMessageReaction *)self->_reaction copyWithZone:a3];
+  v21 = [(_INPBMessageReaction *)self->_reaction copyWithZone:zone];
   [(_INPBMessage *)v5 setReaction:v21];
 
-  v22 = [(NSArray *)self->_recipients copyWithZone:a3];
+  v22 = [(NSArray *)self->_recipients copyWithZone:zone];
   [(_INPBMessage *)v5 setRecipients:v22];
 
-  v23 = [(_INPBMessage *)self->_referencedMessage copyWithZone:a3];
+  v23 = [(_INPBMessage *)self->_referencedMessage copyWithZone:zone];
   [(_INPBMessage *)v5 setReferencedMessage:v23];
 
-  v24 = [(_INPBContact *)self->_sender copyWithZone:a3];
+  v24 = [(_INPBContact *)self->_sender copyWithZone:zone];
   [(_INPBMessage *)v5 setSender:v24];
 
-  v25 = [(NSString *)self->_serviceName copyWithZone:a3];
+  v25 = [(NSString *)self->_serviceName copyWithZone:zone];
   [(_INPBMessage *)v5 setServiceName:v25];
 
-  v26 = [(_INPBDataString *)self->_speakableGroupName copyWithZone:a3];
+  v26 = [(_INPBDataString *)self->_speakableGroupName copyWithZone:zone];
   [(_INPBMessage *)v5 setSpeakableGroupName:v26];
 
-  v27 = [(_INPBSticker *)self->_sticker copyWithZone:a3];
+  v27 = [(_INPBSticker *)self->_sticker copyWithZone:zone];
   [(_INPBMessage *)v5 setSticker:v27];
 
-  v28 = [(NSString *)self->_translatedToLanguage copyWithZone:a3];
+  v28 = [(NSString *)self->_translatedToLanguage copyWithZone:zone];
   [(_INPBMessage *)v5 setTranslatedToLanguage:v28];
 
   if ([(_INPBMessage *)self hasType])
@@ -1080,34 +1080,34 @@ LABEL_123:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBMessage *)self data];
+  coderCopy = coder;
+  data = [(_INPBMessage *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBMessage)initWithCoder:(id)a3
+- (_INPBMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBMessage *)self initWithData:v6];
+    self = [(_INPBMessage *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v83 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
@@ -1150,43 +1150,43 @@ LABEL_123:
     while (v11 < self->_attributes.count);
   }
 
-  v13 = [(_INPBMessage *)self audioMessageFile];
+  audioMessageFile = [(_INPBMessage *)self audioMessageFile];
 
-  if (v13)
+  if (audioMessageFile)
   {
-    v14 = [(_INPBMessage *)self audioMessageFile];
+    audioMessageFile2 = [(_INPBMessage *)self audioMessageFile];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBMessage *)self content];
+  content = [(_INPBMessage *)self content];
 
-  if (v15)
+  if (content)
   {
     content = self->_content;
     PBDataWriterWriteStringField();
   }
 
-  v17 = [(_INPBMessage *)self conversationIdentifier];
+  conversationIdentifier = [(_INPBMessage *)self conversationIdentifier];
 
-  if (v17)
+  if (conversationIdentifier)
   {
     conversationIdentifier = self->_conversationIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(_INPBMessage *)self dateLastMessageRead];
+  dateLastMessageRead = [(_INPBMessage *)self dateLastMessageRead];
 
-  if (v19)
+  if (dateLastMessageRead)
   {
-    v20 = [(_INPBMessage *)self dateLastMessageRead];
+    dateLastMessageRead2 = [(_INPBMessage *)self dateLastMessageRead];
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(_INPBMessage *)self dateSent];
+  dateSent = [(_INPBMessage *)self dateSent];
 
-  if (v21)
+  if (dateSent)
   {
-    v22 = [(_INPBMessage *)self dateSent];
+    dateSent2 = [(_INPBMessage *)self dateSent];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1196,25 +1196,25 @@ LABEL_123:
     PBDataWriterWriteInt32Field();
   }
 
-  v24 = [(_INPBMessage *)self fileExtension];
+  fileExtension = [(_INPBMessage *)self fileExtension];
 
-  if (v24)
+  if (fileExtension)
   {
     fileExtension = self->_fileExtension;
     PBDataWriterWriteStringField();
   }
 
-  v26 = [(_INPBMessage *)self groupName];
+  groupName = [(_INPBMessage *)self groupName];
 
-  if (v26)
+  if (groupName)
   {
     groupName = self->_groupName;
     PBDataWriterWriteStringField();
   }
 
-  v28 = [(_INPBMessage *)self identifier];
+  identifier = [(_INPBMessage *)self identifier];
 
-  if (v28)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
@@ -1249,51 +1249,51 @@ LABEL_123:
     while (v32);
   }
 
-  v36 = [(_INPBMessage *)self linkMetadata];
+  linkMetadata = [(_INPBMessage *)self linkMetadata];
 
-  if (v36)
+  if (linkMetadata)
   {
-    v37 = [(_INPBMessage *)self linkMetadata];
+    linkMetadata2 = [(_INPBMessage *)self linkMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(_INPBMessage *)self location];
+  location = [(_INPBMessage *)self location];
 
-  if (v38)
+  if (location)
   {
-    v39 = [(_INPBMessage *)self location];
+    location2 = [(_INPBMessage *)self location];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(_INPBMessage *)self locationName];
+  locationName = [(_INPBMessage *)self locationName];
 
-  if (v40)
+  if (locationName)
   {
     locationName = self->_locationName;
     PBDataWriterWriteStringField();
   }
 
-  v42 = [(_INPBMessage *)self numberOfAttachments];
+  numberOfAttachments = [(_INPBMessage *)self numberOfAttachments];
 
-  if (v42)
+  if (numberOfAttachments)
   {
-    v43 = [(_INPBMessage *)self numberOfAttachments];
+    numberOfAttachments2 = [(_INPBMessage *)self numberOfAttachments];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(_INPBMessage *)self paymentAmount];
+  paymentAmount = [(_INPBMessage *)self paymentAmount];
 
-  if (v44)
+  if (paymentAmount)
   {
-    v45 = [(_INPBMessage *)self paymentAmount];
+    paymentAmount2 = [(_INPBMessage *)self paymentAmount];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(_INPBMessage *)self reaction];
+  reaction = [(_INPBMessage *)self reaction];
 
-  if (v46)
+  if (reaction)
   {
-    v47 = [(_INPBMessage *)self reaction];
+    reaction2 = [(_INPBMessage *)self reaction];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1326,49 +1326,49 @@ LABEL_123:
     while (v50);
   }
 
-  v54 = [(_INPBMessage *)self referencedMessage];
+  referencedMessage = [(_INPBMessage *)self referencedMessage];
 
-  if (v54)
+  if (referencedMessage)
   {
-    v55 = [(_INPBMessage *)self referencedMessage];
+    referencedMessage2 = [(_INPBMessage *)self referencedMessage];
     PBDataWriterWriteSubmessage();
   }
 
-  v56 = [(_INPBMessage *)self sender];
+  sender = [(_INPBMessage *)self sender];
 
-  if (v56)
+  if (sender)
   {
-    v57 = [(_INPBMessage *)self sender];
+    sender2 = [(_INPBMessage *)self sender];
     PBDataWriterWriteSubmessage();
   }
 
-  v58 = [(_INPBMessage *)self serviceName];
+  serviceName = [(_INPBMessage *)self serviceName];
 
-  if (v58)
+  if (serviceName)
   {
     serviceName = self->_serviceName;
     PBDataWriterWriteStringField();
   }
 
-  v60 = [(_INPBMessage *)self speakableGroupName];
+  speakableGroupName = [(_INPBMessage *)self speakableGroupName];
 
-  if (v60)
+  if (speakableGroupName)
   {
-    v61 = [(_INPBMessage *)self speakableGroupName];
+    speakableGroupName2 = [(_INPBMessage *)self speakableGroupName];
     PBDataWriterWriteSubmessage();
   }
 
-  v62 = [(_INPBMessage *)self sticker];
+  sticker = [(_INPBMessage *)self sticker];
 
-  if (v62)
+  if (sticker)
   {
-    v63 = [(_INPBMessage *)self sticker];
+    sticker2 = [(_INPBMessage *)self sticker];
     PBDataWriterWriteSubmessage();
   }
 
-  v64 = [(_INPBMessage *)self translatedToLanguage];
+  translatedToLanguage = [(_INPBMessage *)self translatedToLanguage];
 
-  if (v64)
+  if (translatedToLanguage)
   {
     translatedToLanguage = self->_translatedToLanguage;
     PBDataWriterWriteStringField();
@@ -1383,180 +1383,180 @@ LABEL_123:
   v67 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TEXT"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"TEXT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AUDIO"])
+  else if ([typeCopy isEqualToString:@"AUDIO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DIGITAL_TOUCH"])
+  else if ([typeCopy isEqualToString:@"DIGITAL_TOUCH"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HANDWRITING"])
+  else if ([typeCopy isEqualToString:@"HANDWRITING"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"STICKER"])
+  else if ([typeCopy isEqualToString:@"STICKER"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_LIKED"])
+  else if ([typeCopy isEqualToString:@"TAPBACK_LIKED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_DISLIKED"])
+  else if ([typeCopy isEqualToString:@"TAPBACK_DISLIKED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_EMPHASIZED"])
+  else if ([typeCopy isEqualToString:@"TAPBACK_EMPHASIZED"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_LOVED"])
+  else if ([typeCopy isEqualToString:@"TAPBACK_LOVED"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_QUESTIONED"])
+  else if ([typeCopy isEqualToString:@"TAPBACK_QUESTIONED"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"TAPBACK_LAUGHED"])
+  else if ([typeCopy isEqualToString:@"TAPBACK_LAUGHED"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_CALENDAR"])
+  else if ([typeCopy isEqualToString:@"MEDIA_TYPE_CALENDAR"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_LOCATION"])
+  else if ([typeCopy isEqualToString:@"MEDIA_TYPE_LOCATION"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_ADDRESS_CARD"])
+  else if ([typeCopy isEqualToString:@"MEDIA_TYPE_ADDRESS_CARD"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_IMAGE"])
+  else if ([typeCopy isEqualToString:@"MEDIA_TYPE_IMAGE"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_VIDEO"])
+  else if ([typeCopy isEqualToString:@"MEDIA_TYPE_VIDEO"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_PASS"])
+  else if ([typeCopy isEqualToString:@"MEDIA_TYPE_PASS"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_AUDIO"])
+  else if ([typeCopy isEqualToString:@"MEDIA_TYPE_AUDIO"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"PAYMENT_SENT"])
+  else if ([typeCopy isEqualToString:@"PAYMENT_SENT"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"PAYMENT_REQUEST"])
+  else if ([typeCopy isEqualToString:@"PAYMENT_REQUEST"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"PAYMENT_NOTE"])
+  else if ([typeCopy isEqualToString:@"PAYMENT_NOTE"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"ANIMOJI"])
+  else if ([typeCopy isEqualToString:@"ANIMOJI"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVITY_SNIPPET"])
+  else if ([typeCopy isEqualToString:@"ACTIVITY_SNIPPET"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"FILE"])
+  else if ([typeCopy isEqualToString:@"FILE"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"LINK"])
+  else if ([typeCopy isEqualToString:@"LINK"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"MESSAGE_REACTION"])
+  else if ([typeCopy isEqualToString:@"MESSAGE_REACTION"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"SAFETY_MONITOR"])
+  else if ([typeCopy isEqualToString:@"SAFETY_MONITOR"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"LOCATION_REQUEST"])
+  else if ([typeCopy isEqualToString:@"LOCATION_REQUEST"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"SHARED_LOCATION"])
+  else if ([typeCopy isEqualToString:@"SHARED_LOCATION"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"FIND_MY"])
+  else if ([typeCopy isEqualToString:@"FIND_MY"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"SCREEN_TIME_REQUEST"])
+  else if ([typeCopy isEqualToString:@"SCREEN_TIME_REQUEST"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"ASK_TO"])
+  else if ([typeCopy isEqualToString:@"ASK_TO"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"MEDIA_TYPE_ANIMATED_IMAGE"])
+  else if ([typeCopy isEqualToString:@"MEDIA_TYPE_ANIMATED_IMAGE"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_PARTY_ATTACHMENT"])
+  else if ([typeCopy isEqualToString:@"THIRD_PARTY_ATTACHMENT"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"POLL"])
+  else if ([typeCopy isEqualToString:@"POLL"])
   {
     v4 = 35;
   }
@@ -1569,9 +1569,9 @@ LABEL_123:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -1584,10 +1584,10 @@ LABEL_123:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -1595,182 +1595,182 @@ LABEL_123:
   else
   {
     *&self->_has = has | 2;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 
-- (void)setTranslatedToLanguage:(id)a3
+- (void)setTranslatedToLanguage:(id)language
 {
-  v4 = [a3 copy];
+  v4 = [language copy];
   translatedToLanguage = self->_translatedToLanguage;
   self->_translatedToLanguage = v4;
 
   MEMORY[0x1EEE66BB8](v4, translatedToLanguage);
 }
 
-- (void)setServiceName:(id)a3
+- (void)setServiceName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   serviceName = self->_serviceName;
   self->_serviceName = v4;
 
   MEMORY[0x1EEE66BB8](v4, serviceName);
 }
 
-- (void)addRecipient:(id)a3
+- (void)addRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   recipients = self->_recipients;
-  v8 = v4;
+  v8 = recipientCopy;
   if (!recipients)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recipients;
-    self->_recipients = v6;
+    self->_recipients = array;
 
-    v4 = v8;
+    recipientCopy = v8;
     recipients = self->_recipients;
   }
 
-  [(NSArray *)recipients addObject:v4];
+  [(NSArray *)recipients addObject:recipientCopy];
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = [a3 mutableCopy];
+  v4 = [recipients mutableCopy];
   recipients = self->_recipients;
   self->_recipients = v4;
 
   MEMORY[0x1EEE66BB8](v4, recipients);
 }
 
-- (void)setLocationName:(id)a3
+- (void)setLocationName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   locationName = self->_locationName;
   self->_locationName = v4;
 
   MEMORY[0x1EEE66BB8](v4, locationName);
 }
 
-- (void)addInlineGlyphContent:(id)a3
+- (void)addInlineGlyphContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   inlineGlyphContents = self->_inlineGlyphContents;
-  v8 = v4;
+  v8 = contentCopy;
   if (!inlineGlyphContents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_inlineGlyphContents;
-    self->_inlineGlyphContents = v6;
+    self->_inlineGlyphContents = array;
 
-    v4 = v8;
+    contentCopy = v8;
     inlineGlyphContents = self->_inlineGlyphContents;
   }
 
-  [(NSArray *)inlineGlyphContents addObject:v4];
+  [(NSArray *)inlineGlyphContents addObject:contentCopy];
 }
 
-- (void)setInlineGlyphContents:(id)a3
+- (void)setInlineGlyphContents:(id)contents
 {
-  v4 = [a3 mutableCopy];
+  v4 = [contents mutableCopy];
   inlineGlyphContents = self->_inlineGlyphContents;
   self->_inlineGlyphContents = v4;
 
   MEMORY[0x1EEE66BB8](v4, inlineGlyphContents);
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, identifier);
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   groupName = self->_groupName;
   self->_groupName = v4;
 
   MEMORY[0x1EEE66BB8](v4, groupName);
 }
 
-- (void)setFileExtension:(id)a3
+- (void)setFileExtension:(id)extension
 {
-  v4 = [a3 copy];
+  v4 = [extension copy];
   fileExtension = self->_fileExtension;
   self->_fileExtension = v4;
 
   MEMORY[0x1EEE66BB8](v4, fileExtension);
 }
 
-- (int)StringAsEffect:(id)a3
+- (int)StringAsEffect:(id)effect
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HAPPY_BIRTHDAY"])
+  effectCopy = effect;
+  if ([effectCopy isEqualToString:@"HAPPY_BIRTHDAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CONFETTI"])
+  else if ([effectCopy isEqualToString:@"CONFETTI"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LASERS"])
+  else if ([effectCopy isEqualToString:@"LASERS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FIREWORKS"])
+  else if ([effectCopy isEqualToString:@"FIREWORKS"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SHOOTING_STAR"])
+  else if ([effectCopy isEqualToString:@"SHOOTING_STAR"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"INVISBLE_INK"])
+  else if ([effectCopy isEqualToString:@"INVISBLE_INK"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"GENTLE"])
+  else if ([effectCopy isEqualToString:@"GENTLE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"LOUD"])
+  else if ([effectCopy isEqualToString:@"LOUD"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"IMPACT"])
+  else if ([effectCopy isEqualToString:@"IMPACT"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SPARKLES"])
+  else if ([effectCopy isEqualToString:@"SPARKLES"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"HEART"])
+  else if ([effectCopy isEqualToString:@"HEART"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ECHO"])
+  else if ([effectCopy isEqualToString:@"ECHO"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SPOTLIGHT"])
+  else if ([effectCopy isEqualToString:@"SPOTLIGHT"])
   {
     v4 = 13;
   }
@@ -1783,10 +1783,10 @@ LABEL_123:
   return v4;
 }
 
-- (void)setEffect:(int)a3
+- (void)setEffect:(int)effect
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (effect == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -1794,52 +1794,52 @@ LABEL_123:
   else
   {
     *&self->_has = has | 1;
-    self->_effect = a3;
+    self->_effect = effect;
   }
 }
 
-- (void)setConversationIdentifier:(id)a3
+- (void)setConversationIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   conversationIdentifier = self->_conversationIdentifier;
   self->_conversationIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, conversationIdentifier);
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v4 = [a3 copy];
+  v4 = [content copy];
   content = self->_content;
   self->_content = v4;
 
   MEMORY[0x1EEE66BB8](v4, content);
 }
 
-- (int)StringAsAttributes:(id)a3
+- (int)StringAsAttributes:(id)attributes
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"READ"])
+  attributesCopy = attributes;
+  if ([attributesCopy isEqualToString:@"READ"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UNREAD"])
+  else if ([attributesCopy isEqualToString:@"UNREAD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FLAGGED"])
+  else if ([attributesCopy isEqualToString:@"FLAGGED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UNFLAGGED"])
+  else if ([attributesCopy isEqualToString:@"UNFLAGGED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PLAYED"])
+  else if ([attributesCopy isEqualToString:@"PLAYED"])
   {
     v4 = 5;
   }
@@ -1852,35 +1852,35 @@ LABEL_123:
   return v4;
 }
 
-- (void)addAttribute:(int)a3
+- (void)addAttribute:(int)attribute
 {
-  if (a3 != 0x7FFFFFFF)
+  if (attribute != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addAttachmentFile:(id)a3
+- (void)addAttachmentFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   attachmentFiles = self->_attachmentFiles;
-  v8 = v4;
+  v8 = fileCopy;
   if (!attachmentFiles)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_attachmentFiles;
-    self->_attachmentFiles = v6;
+    self->_attachmentFiles = array;
 
-    v4 = v8;
+    fileCopy = v8;
     attachmentFiles = self->_attachmentFiles;
   }
 
-  [(NSArray *)attachmentFiles addObject:v4];
+  [(NSArray *)attachmentFiles addObject:fileCopy];
 }
 
-- (void)setAttachmentFiles:(id)a3
+- (void)setAttachmentFiles:(id)files
 {
-  v4 = [a3 mutableCopy];
+  v4 = [files mutableCopy];
   attachmentFiles = self->_attachmentFiles;
   self->_attachmentFiles = v4;
 

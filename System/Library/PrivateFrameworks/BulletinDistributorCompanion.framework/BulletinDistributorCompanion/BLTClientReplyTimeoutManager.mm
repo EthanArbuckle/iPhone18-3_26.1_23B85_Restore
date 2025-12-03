@@ -1,21 +1,21 @@
 @interface BLTClientReplyTimeoutManager
-- (BLTClientReplyTimeoutManager)initWithQueue:(id)a3;
-- (BOOL)invalidateClientReplyTimeout:(id)a3;
-- (id)addClientReplyTimeoutForBulletin:(id)a3 sectionID:(id)a4 timeout:(double)a5 handler:(id)a6;
+- (BLTClientReplyTimeoutManager)initWithQueue:(id)queue;
+- (BOOL)invalidateClientReplyTimeout:(id)timeout;
+- (id)addClientReplyTimeoutForBulletin:(id)bulletin sectionID:(id)d timeout:(double)timeout handler:(id)handler;
 - (void)_handleClientReplyTimeout;
 - (void)_invalidateClientReplyTimer;
 - (void)_sortTimeouts;
-- (void)_startClientReplyTimerWithFireDate:(id)a3;
+- (void)_startClientReplyTimerWithFireDate:(id)date;
 - (void)_startNextClientReplyTimer;
 - (void)dealloc;
-- (void)extendClientReplyTimeout:(id)a3 additionalTime:(unint64_t)a4;
+- (void)extendClientReplyTimeout:(id)timeout additionalTime:(unint64_t)time;
 @end
 
 @implementation BLTClientReplyTimeoutManager
 
-- (BLTClientReplyTimeoutManager)initWithQueue:(id)a3
+- (BLTClientReplyTimeoutManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = BLTClientReplyTimeoutManager;
   v6 = [(BLTClientReplyTimeoutManager *)&v11 init];
@@ -23,11 +23,11 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     clientReplyTimeouts = v7->_clientReplyTimeouts;
-    v7->_clientReplyTimeouts = v8;
+    v7->_clientReplyTimeouts = array;
 
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
   }
 
   return v7;
@@ -47,28 +47,28 @@
   if ([(NSMutableArray *)self->_clientReplyTimeouts count])
   {
     v4 = [(NSMutableArray *)self->_clientReplyTimeouts objectAtIndexedSubscript:0];
-    v3 = [v4 timeout];
-    [(BLTClientReplyTimeoutManager *)self _startClientReplyTimerWithFireDate:v3];
+    timeout = [v4 timeout];
+    [(BLTClientReplyTimeoutManager *)self _startClientReplyTimerWithFireDate:timeout];
   }
 }
 
-- (void)_startClientReplyTimerWithFireDate:(id)a3
+- (void)_startClientReplyTimerWithFireDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(BLTClientReplyTimeoutManager *)self _invalidateClientReplyTimer];
   os_unfair_lock_lock(&self->_lock);
   objc_initWeak(&location, self);
   v5 = [objc_alloc(MEMORY[0x277D6C0A8]) initWithIdentifier:@"com.apple.bulletindistributor.clientReplyTimeout"];
   [(BLTClientReplyTimeoutManager *)self setTimer:v5];
 
-  v6 = [(BLTClientReplyTimeoutManager *)self timer];
+  timer = [(BLTClientReplyTimeoutManager *)self timer];
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__BLTClientReplyTimeoutManager__startClientReplyTimerWithFireDate___block_invoke;
   v8[3] = &unk_278D321F0;
   objc_copyWeak(&v9, &location);
-  [v6 scheduleForDate:v4 leewayInterval:queue queue:v8 handler:1.0];
+  [timer scheduleForDate:dateCopy leewayInterval:queue queue:v8 handler:1.0];
 
   os_unfair_lock_unlock(&self->_lock);
   objc_destroyWeak(&v9);
@@ -84,17 +84,17 @@ void __67__BLTClientReplyTimeoutManager__startClientReplyTimerWithFireDate___blo
 - (void)_invalidateClientReplyTimer
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLTClientReplyTimeoutManager *)self timer];
-  [v3 invalidate];
+  timer = [(BLTClientReplyTimeoutManager *)self timer];
+  [timer invalidate];
 
   [(BLTClientReplyTimeoutManager *)self setTimer:0];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)invalidateClientReplyTimeout:(id)a3
+- (BOOL)invalidateClientReplyTimeout:(id)timeout
 {
-  v4 = [(NSMutableArray *)self->_clientReplyTimeouts indexOfObject:a3];
+  v4 = [(NSMutableArray *)self->_clientReplyTimeouts indexOfObject:timeout];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_clientReplyTimeouts removeObjectAtIndex:v4];
@@ -107,19 +107,19 @@ void __67__BLTClientReplyTimeoutManager__startClientReplyTimerWithFireDate___blo
   return v4 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)extendClientReplyTimeout:(id)a3 additionalTime:(unint64_t)a4
+- (void)extendClientReplyTimeout:(id)timeout additionalTime:(unint64_t)time
 {
-  v6 = a3;
-  if (v6)
+  timeoutCopy = timeout;
+  if (timeoutCopy)
   {
-    if (a4)
+    if (time)
     {
-      v11 = v6;
-      if ([(NSMutableArray *)self->_clientReplyTimeouts indexOfObject:v6]!= 0x7FFFFFFFFFFFFFFFLL)
+      v11 = timeoutCopy;
+      if ([(NSMutableArray *)self->_clientReplyTimeouts indexOfObject:timeoutCopy]!= 0x7FFFFFFFFFFFFFFFLL)
       {
         v7 = v11;
-        v8 = [v7 timeout];
-        v9 = [v8 dateByAddingTimeInterval:a4];
+        timeout = [v7 timeout];
+        v9 = [timeout dateByAddingTimeInterval:time];
 
         [v7 setTimeout:v9];
         [(BLTClientReplyTimeoutManager *)self _sortTimeouts];
@@ -141,8 +141,8 @@ void __67__BLTClientReplyTimeoutManager__startClientReplyTimerWithFireDate___blo
   if ([(NSMutableArray *)self->_clientReplyTimeouts count])
   {
     v4 = [(NSMutableArray *)self->_clientReplyTimeouts objectAtIndexedSubscript:0];
-    v3 = [v4 timeoutHandler];
-    v3[2]();
+    timeoutHandler = [v4 timeoutHandler];
+    timeoutHandler[2]();
 
     [(NSMutableArray *)self->_clientReplyTimeouts removeObjectAtIndex:0];
     [(BLTClientReplyTimeoutManager *)self _startNextClientReplyTimer];
@@ -151,10 +151,10 @@ void __67__BLTClientReplyTimeoutManager__startClientReplyTimerWithFireDate___blo
 
 - (void)_sortTimeouts
 {
-  v4 = [(NSMutableArray *)self->_clientReplyTimeouts firstObject];
+  firstObject = [(NSMutableArray *)self->_clientReplyTimeouts firstObject];
   [(NSMutableArray *)self->_clientReplyTimeouts sortUsingComparator:&__block_literal_global_13];
-  v3 = [(NSMutableArray *)self->_clientReplyTimeouts firstObject];
-  if (v4 != v3)
+  firstObject2 = [(NSMutableArray *)self->_clientReplyTimeouts firstObject];
+  if (firstObject != firstObject2)
   {
     [(BLTClientReplyTimeoutManager *)self _startNextClientReplyTimer];
   }
@@ -170,29 +170,29 @@ uint64_t __45__BLTClientReplyTimeoutManager__sortTimeouts__block_invoke(uint64_t
   return v7;
 }
 
-- (id)addClientReplyTimeoutForBulletin:(id)a3 sectionID:(id)a4 timeout:(double)a5 handler:(id)a6
+- (id)addClientReplyTimeoutForBulletin:(id)bulletin sectionID:(id)d timeout:(double)timeout handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  bulletinCopy = bulletin;
+  dCopy = d;
   v12 = MEMORY[0x277CBEAA8];
-  v13 = a6;
-  v14 = [v12 dateWithTimeIntervalSinceNow:a5];
+  handlerCopy = handler;
+  v14 = [v12 dateWithTimeIntervalSinceNow:timeout];
   v15 = blt_general_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v19 = 138412802;
     v20 = v14;
     v21 = 2112;
-    v22 = v10;
+    v22 = bulletinCopy;
     v23 = 2112;
-    v24 = v11;
+    v24 = dCopy;
     _os_log_impl(&dword_241FB3000, v15, OS_LOG_TYPE_INFO, "Add client reply timer (%@) for bulletin %@ in section %@", &v19, 0x20u);
   }
 
   v16 = objc_alloc_init(BLTClientReplyTimeout);
   [(BLTClientReplyTimeout *)v16 setTimeout:v14];
-  [(BLTClientReplyTimeout *)v16 setTimeoutHandler:v13];
+  [(BLTClientReplyTimeout *)v16 setTimeoutHandler:handlerCopy];
 
   [(NSMutableArray *)self->_clientReplyTimeouts addObject:v16];
   if ([(NSMutableArray *)self->_clientReplyTimeouts count]== 1)

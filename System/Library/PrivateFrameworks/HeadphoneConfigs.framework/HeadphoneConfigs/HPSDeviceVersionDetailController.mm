@@ -2,23 +2,23 @@
 - (id)getBudVersion;
 - (id)getCaseVersion;
 - (id)specifiers;
-- (void)userDidTapLink:(id)a3;
+- (void)userDidTapLink:(id)link;
 @end
 
 @implementation HPSDeviceVersionDetailController
 
 - (id)getBudVersion
 {
-  v2 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"device-bud-version"];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"device-bud-version"];
 
   return v3;
 }
 
 - (id)getCaseVersion
 {
-  v2 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"device-case-version"];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"device-case-version"];
 
   return v3;
 }
@@ -50,10 +50,10 @@
 
     [v6 setProperty:@"userDidTapLink:" forKey:*MEMORY[0x277D3FF50]];
     [v5 addObject:v6];
-    v15 = [(HPSDeviceVersionDetailController *)self getBudVersion];
+    getBudVersion = [(HPSDeviceVersionDetailController *)self getBudVersion];
 
     v16 = MEMORY[0x277D3FED8];
-    if (v15)
+    if (getBudVersion)
     {
       v17 = MEMORY[0x277D3FAD8];
       v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -64,9 +64,9 @@
       [v5 addObject:v20];
     }
 
-    v21 = [(HPSDeviceVersionDetailController *)self getCaseVersion];
+    getCaseVersion = [(HPSDeviceVersionDetailController *)self getCaseVersion];
 
-    if (v21)
+    if (getCaseVersion)
     {
       v22 = MEMORY[0x277D3FAD8];
       v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -86,11 +86,11 @@
   return v4;
 }
 
-- (void)userDidTapLink:(id)a3
+- (void)userDidTapLink:(id)link
 {
-  v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"https://support.apple.com/ht213317?cid=mc-ols-airpods-article_ht213317-ios_ui-06152022"];
-  [v4 openSensitiveURL:v3 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
 @end

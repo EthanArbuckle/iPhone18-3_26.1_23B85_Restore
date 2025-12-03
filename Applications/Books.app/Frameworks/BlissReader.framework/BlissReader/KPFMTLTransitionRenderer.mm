@@ -1,15 +1,15 @@
 @interface KPFMTLTransitionRenderer
-- (BOOL)addAnimationsAtTime:(double)a3 relativeToCurrentMediaTime:(BOOL)a4;
-- (BOOL)shouldDrawFrameAtLayerTime:(double)a3;
-- (KPFMTLTransitionRenderer)initWithEffectClass:(Class)a3 direction:(unint64_t)a4 duration:(double)a5 effect:(id)a6 session:(id)a7;
-- (KPFMTLTransitionRenderer)initWithEffectClass:(Class)a3 direction:(unint64_t)a4 duration:(double)a5 session:(id)a6;
+- (BOOL)addAnimationsAtTime:(double)time relativeToCurrentMediaTime:(BOOL)mediaTime;
+- (BOOL)shouldDrawFrameAtLayerTime:(double)time;
+- (KPFMTLTransitionRenderer)initWithEffectClass:(Class)class direction:(unint64_t)direction duration:(double)duration effect:(id)effect session:(id)session;
+- (KPFMTLTransitionRenderer)initWithEffectClass:(Class)class direction:(unint64_t)direction duration:(double)duration session:(id)session;
 - (id)plugin;
-- (void)animateWithDelay:(double)a3;
+- (void)animateWithDelay:(double)delay;
 - (void)dealloc;
-- (void)drawFrameAtLayerTime:(double)a3;
+- (void)drawFrameAtLayerTime:(double)time;
 - (void)p_generateTextures;
 - (void)p_initMetalLayerIfNeeded;
-- (void)registerForTransitionEndCallback:(SEL)a3 target:(id)a4;
+- (void)registerForTransitionEndCallback:(SEL)callback target:(id)target;
 - (void)removeAnimations;
 - (void)renderTextures;
 - (void)setupPluginContext;
@@ -18,37 +18,37 @@
 
 @implementation KPFMTLTransitionRenderer
 
-- (KPFMTLTransitionRenderer)initWithEffectClass:(Class)a3 direction:(unint64_t)a4 duration:(double)a5 effect:(id)a6 session:(id)a7
+- (KPFMTLTransitionRenderer)initWithEffectClass:(Class)class direction:(unint64_t)direction duration:(double)duration effect:(id)effect session:(id)session
 {
-  v13 = a6;
-  v14 = a7;
+  effectCopy = effect;
+  sessionCopy = session;
   v32.receiver = self;
   v32.super_class = KPFMTLTransitionRenderer;
   v15 = [(KPFMTLTransitionRenderer *)&v32 init];
   v16 = v15;
   if (v15)
   {
-    v15->mEffectClass = a3;
-    objc_storeStrong(&v15->mEffect, a6);
-    objc_storeStrong(&v16->mSession, a7);
-    v16->mDirection = a4;
-    v16->mDuration = a5;
+    v15->mEffectClass = class;
+    objc_storeStrong(&v15->mEffect, effect);
+    objc_storeStrong(&v16->mSession, session);
+    v16->mDirection = direction;
+    v16->mDuration = duration;
     v17 = [KNAnimationContext alloc];
-    v18 = [(KPFSession *)v16->mSession showLayer];
-    [v18 bounds];
+    showLayer = [(KPFSession *)v16->mSession showLayer];
+    [showLayer bounds];
     v20 = v19;
     v22 = v21;
-    v23 = [(KPFSession *)v16->mSession showLayer];
-    v24 = [(KNAnimationContext *)v17 initWithShowSize:v23 viewScale:1 baseLayer:v20 isBaseLayerVisible:v22, 1.0];
+    showLayer2 = [(KPFSession *)v16->mSession showLayer];
+    v24 = [(KNAnimationContext *)v17 initWithShowSize:showLayer2 viewScale:1 baseLayer:v20 isBaseLayerVisible:v22, 1.0];
     mAnimationContext = v16->mAnimationContext;
     v16->mAnimationContext = v24;
 
     mTextures = v16->mTextures;
     v16->mTextures = 0;
 
-    v27 = [(KPFSession *)v16->mSession sharedMetalLayer];
+    sharedMetalLayer = [(KPFSession *)v16->mSession sharedMetalLayer];
     metalLayer = v16->metalLayer;
-    v16->metalLayer = v27;
+    v16->metalLayer = sharedMetalLayer;
 
     v29 = dispatch_semaphore_create(3);
     mInFlightSemaphore = v16->mInFlightSemaphore;
@@ -58,35 +58,35 @@
   return v16;
 }
 
-- (KPFMTLTransitionRenderer)initWithEffectClass:(Class)a3 direction:(unint64_t)a4 duration:(double)a5 session:(id)a6
+- (KPFMTLTransitionRenderer)initWithEffectClass:(Class)class direction:(unint64_t)direction duration:(double)duration session:(id)session
 {
-  v11 = a6;
+  sessionCopy = session;
   v29.receiver = self;
   v29.super_class = KPFMTLTransitionRenderer;
   v12 = [(KPFMTLTransitionRenderer *)&v29 init];
   v13 = v12;
   if (v12)
   {
-    v12->mEffectClass = a3;
-    objc_storeStrong(&v12->mCAKPFSession, a6);
-    v13->mDirection = a4;
-    v13->mDuration = a5;
+    v12->mEffectClass = class;
+    objc_storeStrong(&v12->mCAKPFSession, session);
+    v13->mDirection = direction;
+    v13->mDuration = duration;
     v14 = [KNAnimationContext alloc];
-    v15 = [v11 showLayer];
-    [v15 bounds];
+    showLayer = [sessionCopy showLayer];
+    [showLayer bounds];
     v17 = v16;
     v19 = v18;
-    v20 = [v11 showLayer];
-    v21 = [(KNAnimationContext *)v14 initWithShowSize:v20 viewScale:1 baseLayer:v17 isBaseLayerVisible:v19, 1.0];
+    showLayer2 = [sessionCopy showLayer];
+    v21 = [(KNAnimationContext *)v14 initWithShowSize:showLayer2 viewScale:1 baseLayer:v17 isBaseLayerVisible:v19, 1.0];
     mAnimationContext = v13->mAnimationContext;
     v13->mAnimationContext = v21;
 
     mTextures = v13->mTextures;
     v13->mTextures = 0;
 
-    v24 = [v11 sharedMetalLayer];
+    sharedMetalLayer = [sessionCopy sharedMetalLayer];
     metalLayer = v13->metalLayer;
-    v13->metalLayer = v24;
+    v13->metalLayer = sharedMetalLayer;
 
     v26 = dispatch_semaphore_create(3);
     mInFlightSemaphore = v13->mInFlightSemaphore;
@@ -124,19 +124,19 @@
   v6 = objc_opt_new();
   [(KNAnimationPluginContext *)self->mContext setMetalContext:v6];
 
-  v7 = [(TSDMetalLayer *)self->metalLayer device];
-  v8 = [(KNAnimationPluginContext *)self->mContext metalContext];
-  [v8 setDevice:v7];
+  device = [(TSDMetalLayer *)self->metalLayer device];
+  metalContext = [(KNAnimationPluginContext *)self->mContext metalContext];
+  [metalContext setDevice:device];
 
-  v9 = [(TSDMetalLayer *)self->metalLayer pixelFormat];
-  v10 = [(KNAnimationPluginContext *)self->mContext metalContext];
-  [v10 setPixelFormat:v9];
+  pixelFormat = [(TSDMetalLayer *)self->metalLayer pixelFormat];
+  metalContext2 = [(KNAnimationPluginContext *)self->mContext metalContext];
+  [metalContext2 setPixelFormat:pixelFormat];
 
   [(TSDMetalLayer *)self->metalLayer bounds];
   v12 = v11;
   v14 = v13;
-  v15 = [(KNAnimationPluginContext *)self->mContext metalContext];
-  [v15 setLayerSize:{v12, v14}];
+  metalContext3 = [(KNAnimationPluginContext *)self->mContext metalContext];
+  [metalContext3 setLayerSize:{v12, v14}];
 
   metalLayer = self->metalLayer;
 
@@ -166,9 +166,9 @@
     mCAKPFSession = self->mSession;
   }
 
-  v4 = [mCAKPFSession sharedMetalLayer];
+  sharedMetalLayer = [mCAKPFSession sharedMetalLayer];
   metalLayer = self->metalLayer;
-  self->metalLayer = v4;
+  self->metalLayer = sharedMetalLayer;
 
   [(TSDMetalLayer *)self->metalLayer displayAtCurrentLayerTime];
   [(TSDMetalLayer *)self->metalLayer setDelegate:self];
@@ -178,24 +178,24 @@
     mSession = self->mSession;
   }
 
-  v7 = [mSession showLayer];
-  [v7 bounds];
+  showLayer = [mSession showLayer];
+  [showLayer bounds];
   [(TSDMetalLayer *)self->metalLayer setBounds:?];
 
   [(TSDMetalLayer *)self->metalLayer setPresentsWithTransaction:0];
   v8 = self->mCAKPFSession;
   v9 = +[TSUColor blackColor];
-  v10 = [v9 CGColor];
+  cGColor = [v9 CGColor];
   if (v8)
   {
-    v11 = [self->mCAKPFSession showLayer];
-    [v11 setBackgroundColor:v10];
+    showLayer2 = [self->mCAKPFSession showLayer];
+    [showLayer2 setBackgroundColor:cGColor];
 
-    v12 = [self->mCAKPFSession showLayer];
-    [v12 setSublayers:0];
+    showLayer3 = [self->mCAKPFSession showLayer];
+    [showLayer3 setSublayers:0];
 
-    v13 = [self->mCAKPFSession showLayer];
-    [v13 addSublayer:self->metalLayer];
+    showLayer4 = [self->mCAKPFSession showLayer];
+    [showLayer4 addSublayer:self->metalLayer];
 
     if (self->metalLayer)
     {
@@ -207,14 +207,14 @@
 
   else
   {
-    v15 = [(KPFSession *)self->mSession showLayer];
-    [v15 setBackgroundColor:v10];
+    showLayer5 = [(KPFSession *)self->mSession showLayer];
+    [showLayer5 setBackgroundColor:cGColor];
 
-    v16 = [(KPFSession *)self->mSession showLayer];
-    [v16 setSublayers:0];
+    showLayer6 = [(KPFSession *)self->mSession showLayer];
+    [showLayer6 setSublayers:0];
 
-    v17 = [(KPFSession *)self->mSession showLayer];
-    [v17 addSublayer:self->metalLayer];
+    showLayer7 = [(KPFSession *)self->mSession showLayer];
+    [showLayer7 addSublayer:self->metalLayer];
 
     if (self->metalLayer)
     {
@@ -239,17 +239,17 @@ LABEL_11:
 
 - (void)p_generateTextures
 {
-  v3 = [(KPFGingerEffect *)self->mEffect textures];
-  v4 = [v3 objectAtIndex:0];
+  textures = [(KPFGingerEffect *)self->mEffect textures];
+  v4 = [textures objectAtIndex:0];
 
   mCAKPFSession = self->mCAKPFSession;
   if (mCAKPFSession)
   {
-    v6 = [mCAKPFSession KPFDocument];
-    v7 = [self->mCAKPFSession currentEvent];
-    v8 = [v7 textures];
-    v9 = [v8 objectAtIndex:0];
-    v10 = [v6 newImageForTextureName:v9];
+    kPFDocument = [mCAKPFSession KPFDocument];
+    currentEvent = [self->mCAKPFSession currentEvent];
+    textures2 = [currentEvent textures];
+    v9 = [textures2 objectAtIndex:0];
+    v10 = [kPFDocument newImageForTextureName:v9];
   }
 
   else
@@ -258,17 +258,17 @@ LABEL_11:
   }
 
   v11 = [[TSDTexturedRectangle alloc] initWithCGImage:v10];
-  v12 = [(KPFGingerEffect *)self->mEffect textures];
-  v13 = [v12 objectAtIndex:1];
+  textures3 = [(KPFGingerEffect *)self->mEffect textures];
+  v13 = [textures3 objectAtIndex:1];
 
   v14 = self->mCAKPFSession;
   if (v14)
   {
-    v15 = [(CAKPFSession *)v14 KPFDocument];
-    v16 = [self->mCAKPFSession currentEvent];
-    v17 = [v16 textures];
-    v18 = [v17 objectAtIndex:1];
-    v19 = [v15 newImageForTextureName:v18];
+    kPFDocument2 = [(CAKPFSession *)v14 KPFDocument];
+    currentEvent2 = [self->mCAKPFSession currentEvent];
+    textures4 = [currentEvent2 textures];
+    v18 = [textures4 objectAtIndex:1];
+    v19 = [kPFDocument2 newImageForTextureName:v18];
   }
 
   else
@@ -307,9 +307,9 @@ LABEL_11:
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(KNAnimationPluginContext *)self->mContext metalContext];
-        v10 = [v9 device];
-        [v8 setupMetalTextureForDevice:v10];
+        metalContext = [(KNAnimationPluginContext *)self->mContext metalContext];
+        device = [metalContext device];
+        [v8 setupMetalTextureForDevice:device];
 
         v7 = v7 + 1;
       }
@@ -322,7 +322,7 @@ LABEL_11:
   }
 }
 
-- (void)animateWithDelay:(double)a3
+- (void)animateWithDelay:(double)delay
 {
   if (!self->mTextures)
   {
@@ -332,7 +332,7 @@ LABEL_11:
     [(KPFMTLTransitionRenderer *)self renderTextures];
   }
 
-  if ([(KPFMTLTransitionRenderer *)self addAnimationsAtTime:1 relativeToCurrentMediaTime:a3])
+  if ([(KPFMTLTransitionRenderer *)self addAnimationsAtTime:1 relativeToCurrentMediaTime:delay])
   {
     self->mIsRealtime = 1;
     [(TSDMetalLayer *)self->metalLayer startAnimation];
@@ -353,15 +353,15 @@ LABEL_11:
   }
 }
 
-- (BOOL)addAnimationsAtTime:(double)a3 relativeToCurrentMediaTime:(BOOL)a4
+- (BOOL)addAnimationsAtTime:(double)time relativeToCurrentMediaTime:(BOOL)mediaTime
 {
-  v4 = a3;
-  if (a4)
+  timeCopy = time;
+  if (mediaTime)
   {
-    v4 = CACurrentMediaTime() + a3;
+    timeCopy = CACurrentMediaTime() + time;
   }
 
-  self->mStartTime = v4;
+  self->mStartTime = timeCopy;
   self->mDelayTime = 0.0;
   return 1;
 }
@@ -384,23 +384,23 @@ LABEL_11:
 
 - (void)removeAnimations
 {
-  v3 = [(TSDMetalLayer *)self->metalLayer superlayer];
+  superlayer = [(TSDMetalLayer *)self->metalLayer superlayer];
 
-  if (v3)
+  if (superlayer)
   {
     [(TSDMetalLayer *)self->metalLayer stopAnimation];
     [(TSDMetalLayer *)self->metalLayer setPresentsWithTransaction:0];
     self->mIsRealtime = 0;
     self->_isAnimationBeingStopped = 1;
-    v4 = [(KPFMTLTransitionRenderer *)self plugin];
+    plugin = [(KPFMTLTransitionRenderer *)self plugin];
     if (self->mWasPluginNotifiedOfAnimationStart && (objc_opt_respondsToSelector() & 1) != 0)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_6BAD4;
       block[3] = &unk_45ADB0;
-      v17 = v4;
-      v18 = self;
+      v17 = plugin;
+      selfCopy = self;
       dispatch_async(&_dispatch_main_q, block);
     }
 
@@ -450,28 +450,28 @@ LABEL_11:
   }
 }
 
-- (void)registerForTransitionEndCallback:(SEL)a3 target:(id)a4
+- (void)registerForTransitionEndCallback:(SEL)callback target:(id)target
 {
-  v6 = a4;
-  if (a3)
+  targetCopy = target;
+  if (callback)
   {
-    v7 = a3;
+    callbackCopy = callback;
   }
 
   else
   {
-    v7 = 0;
+    callbackCopy = 0;
   }
 
-  self->mTransitionEndCallbackTarget = v6;
-  self->mTransitionEndCallbackSelector = v7;
+  self->mTransitionEndCallbackTarget = targetCopy;
+  self->mTransitionEndCallbackSelector = callbackCopy;
 
   _objc_release_x1();
 }
 
-- (BOOL)shouldDrawFrameAtLayerTime:(double)a3
+- (BOOL)shouldDrawFrameAtLayerTime:(double)time
 {
-  if (self->mStartTime > a3)
+  if (self->mStartTime > time)
   {
     self->mForceRenderFirstFrame = 1;
   }
@@ -479,25 +479,25 @@ LABEL_11:
   return !self->mAnimationRanToCompletion;
 }
 
-- (void)drawFrameAtLayerTime:(double)a3
+- (void)drawFrameAtLayerTime:(double)time
 {
   if (!self->mIsRealtime)
   {
-    a3 = 0.0;
+    time = 0.0;
   }
 
-  v5 = [(KPFMTLTransitionRenderer *)self plugin];
+  plugin = [(KPFMTLTransitionRenderer *)self plugin];
   if (!self->mWasPluginNotifiedOfAnimationStart && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [(KPFMTLTransitionRenderer *)self setupPluginContext];
-    [v5 animationWillBeginWithContext:self->mContext];
+    [plugin animationWillBeginWithContext:self->mContext];
     self->mWasPluginNotifiedOfAnimationStart = 1;
   }
 
   [(TSDMetalLayer *)self->metalLayer setDelegate:self];
   v6 = objc_autoreleasePoolPush();
-  v7 = [(TSDMetalLayer *)self->metalLayer nextDrawable];
-  if (!v7)
+  nextDrawable = [(TSDMetalLayer *)self->metalLayer nextDrawable];
+  if (!nextDrawable)
   {
     v8 = +[TSUAssertionHandler currentHandler];
     v9 = [NSString stringWithUTF8String:"[KPFMTLTransitionRenderer drawFrameAtLayerTime:]"];
@@ -505,8 +505,8 @@ LABEL_11:
     [v8 handleFailureInFunction:v9 file:v10 lineNumber:358 description:{@"invalid nil value for '%s'", "drawable"}];
   }
 
-  v11 = [v7 texture];
-  if (!v11)
+  texture = [nextDrawable texture];
+  if (!texture)
   {
     v12 = +[TSUAssertionHandler currentHandler];
     v13 = [NSString stringWithUTF8String:"[KPFMTLTransitionRenderer drawFrameAtLayerTime:]"];
@@ -516,10 +516,10 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!nextDrawable)
   {
 LABEL_14:
-    v15 = 0;
+    commandBuffer = 0;
     goto LABEL_15;
   }
 
@@ -534,10 +534,10 @@ LABEL_14:
   commandQueue = self->_commandQueue;
   if (!commandQueue)
   {
-    v17 = [(TSDMetalLayer *)self->metalLayer device];
-    v18 = [v17 newCommandQueue];
+    device = [(TSDMetalLayer *)self->metalLayer device];
+    newCommandQueue = [device newCommandQueue];
     v19 = self->_commandQueue;
-    self->_commandQueue = v18;
+    self->_commandQueue = newCommandQueue;
 
     commandQueue = self->_commandQueue;
     if (!commandQueue)
@@ -551,8 +551,8 @@ LABEL_14:
     }
   }
 
-  v15 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  if (!v15)
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  if (!commandBuffer)
   {
     v23 = +[TSUAssertionHandler currentHandler];
     v24 = [NSString stringWithUTF8String:"[KPFMTLTransitionRenderer drawFrameAtLayerTime:]"];
@@ -569,32 +569,32 @@ LABEL_14:
   }
 
   v45 = mContext;
-  v27 = [(KNAnimationPluginContext *)v45 metalContext];
-  [v27 setCommandQueue:self->_commandQueue];
-  [v27 setCommandBuffer:v15];
-  [v27 setCurrentBuffer:self->mCurrentBuffer];
+  metalContext = [(KNAnimationPluginContext *)v45 metalContext];
+  [metalContext setCommandQueue:self->_commandQueue];
+  [metalContext setCommandBuffer:commandBuffer];
+  [metalContext setCurrentBuffer:self->mCurrentBuffer];
   v28 = +[MTLRenderPassDescriptor renderPassDescriptor];
-  v29 = [v28 colorAttachments];
-  v30 = [v29 objectAtIndexedSubscript:0];
-  [v30 setTexture:v11];
+  colorAttachments = [v28 colorAttachments];
+  v30 = [colorAttachments objectAtIndexedSubscript:0];
+  [v30 setTexture:texture];
 
-  v31 = [v28 colorAttachments];
-  v32 = [v31 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v28 colorAttachments];
+  v32 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v32 setLoadAction:2];
 
-  v33 = [v28 colorAttachments];
-  v34 = [v33 objectAtIndexedSubscript:0];
+  colorAttachments3 = [v28 colorAttachments];
+  v34 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v34 setStoreAction:1];
 
-  v35 = [v28 colorAttachments];
-  v36 = [v35 objectAtIndexedSubscript:0];
+  colorAttachments4 = [v28 colorAttachments];
+  v36 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v36 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-  [v27 setPassDescriptor:v28];
-  v44 = [v15 renderCommandEncoderWithDescriptor:v28];
-  v37 = [v27 renderEncoder];
+  [metalContext setPassDescriptor:v28];
+  v44 = [commandBuffer renderCommandEncoderWithDescriptor:v28];
+  renderEncoder = [metalContext renderEncoder];
 
-  if (v37)
+  if (renderEncoder)
   {
     v38 = +[TSUAssertionHandler currentHandler];
     v39 = [NSString stringWithUTF8String:"[KPFMTLTransitionRenderer drawFrameAtLayerTime:]"];
@@ -602,14 +602,14 @@ LABEL_14:
     [v38 handleFailureInFunction:v39 file:v40 lineNumber:397 description:{@"expected nil value for '%s'", "metalContext.renderEncoder"}];
   }
 
-  [v27 setRenderEncoder:v44];
-  self->mPercent = (a3 - self->mStartTime) / self->mDuration;
+  [metalContext setRenderEncoder:v44];
+  self->mPercent = (time - self->mStartTime) / self->mDuration;
   TSUClamp();
   self->mPercent = v41;
   [(KNAnimationPluginContext *)v45 setPercent:?];
   self->mAnimationRanToCompletion = self->mPercent >= 1.0;
-  v42 = [(KPFMTLTransitionRenderer *)self plugin];
-  [v42 renderFrameWithContext:self->mContext];
+  plugin2 = [(KPFMTLTransitionRenderer *)self plugin];
+  [plugin2 renderFrameWithContext:self->mContext];
 
   [v44 endEncoding];
   if (self->mIsRealtime)
@@ -618,8 +618,8 @@ LABEL_14:
     v52[1] = 3221225472;
     v52[2] = sub_6C2D0;
     v52[3] = &unk_45C0B0;
-    v53 = v7;
-    [v15 addScheduledHandler:v52];
+    v53 = nextDrawable;
+    [commandBuffer addScheduledHandler:v52];
   }
 
   objc_initWeak(&location, self->mInFlightSemaphore);
@@ -628,9 +628,9 @@ LABEL_14:
   v49[2] = sub_6C2D8;
   v49[3] = &unk_45C0D8;
   objc_copyWeak(&v50, &location);
-  [v15 addCompletedHandler:v49];
+  [commandBuffer addCompletedHandler:v49];
   v6 = v43;
-  [v15 commit];
+  [commandBuffer commit];
   self->mCurrentBuffer = (self->mCurrentBuffer + 1) % 3;
   self->mForceRenderFirstFrame = 0;
   objc_destroyWeak(&v50);
@@ -643,8 +643,8 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = sub_6C318;
     block[3] = &unk_45ADB0;
-    v47 = v15;
-    v48 = self;
+    v47 = commandBuffer;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, block);
   }
 

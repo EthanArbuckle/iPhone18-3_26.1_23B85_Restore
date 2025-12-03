@@ -1,19 +1,19 @@
 @interface GKConstantPowerNoiseModifier
-- (GKConstantPowerNoiseModifier)initWithConstantPower:(double)a3;
+- (GKConstantPowerNoiseModifier)initWithConstantPower:(double)power;
 - (double)valueAt:(GKConstantPowerNoiseModifier *)self;
 - (id)cloneModule;
 @end
 
 @implementation GKConstantPowerNoiseModifier
 
-- (GKConstantPowerNoiseModifier)initWithConstantPower:(double)a3
+- (GKConstantPowerNoiseModifier)initWithConstantPower:(double)power
 {
   v5.receiver = self;
   v5.super_class = GKConstantPowerNoiseModifier;
   result = [(GKNoiseModifier *)&v5 initWithInputModuleCount:1];
   if (result)
   {
-    result->_power = a3;
+    result->_power = power;
   }
 
   return result;

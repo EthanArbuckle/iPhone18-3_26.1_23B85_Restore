@@ -1,19 +1,19 @@
 @interface CNBadgingAvatarView
-- (CNBadgingAvatarView)initWithAvatarViewController:(id)a3;
+- (CNBadgingAvatarView)initWithAvatarViewController:(id)controller;
 - (UIImage)badgeImage;
 - (id)currentLikenessScope;
 - (id)imageRenderer;
 - (id)schedulerProvider;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)renderLikenessBadge:(id)a3;
+- (void)renderLikenessBadge:(id)badge;
 - (void)renderMediaContextBadgeImage;
-- (void)setBadgeImage:(id)a3;
-- (void)setBadgeStyleSettings:(id)a3;
-- (void)setImage:(id)a3 forAccessoryViewType:(unint64_t)a4;
-- (void)setIsDoNotDisturb:(BOOL)a3;
-- (void)setIsMarkedForSyndication:(BOOL)a3;
-- (void)setMediaContextBadge:(id)a3;
+- (void)setBadgeImage:(id)image;
+- (void)setBadgeStyleSettings:(id)settings;
+- (void)setImage:(id)image forAccessoryViewType:(unint64_t)type;
+- (void)setIsDoNotDisturb:(BOOL)disturb;
+- (void)setIsMarkedForSyndication:(BOOL)syndication;
+- (void)setMediaContextBadge:(id)badge;
 - (void)updateBadgeCropStyle;
 - (void)updateBadgeImageViewBackgroundColor;
 - (void)updateBadgeImageViewContentMode;
@@ -24,16 +24,16 @@
 
 @implementation CNBadgingAvatarView
 
-- (void)renderLikenessBadge:(id)a3
+- (void)renderLikenessBadge:(id)badge
 {
-  v4 = a3;
-  v5 = [(CNBadgingAvatarView *)self currentLikenessScope];
-  if (v5)
+  badgeCopy = badge;
+  currentLikenessScope = [(CNBadgingAvatarView *)self currentLikenessScope];
+  if (currentLikenessScope)
   {
-    v6 = [(CNBadgingAvatarView *)self imageRenderer];
-    v7 = [(CNBadgingAvatarView *)self schedulerProvider];
-    v8 = [v7 backgroundScheduler];
-    v9 = [v6 renderedLikenessForBadge:v4 scope:v5 workScheduler:v8];
+    imageRenderer = [(CNBadgingAvatarView *)self imageRenderer];
+    schedulerProvider = [(CNBadgingAvatarView *)self schedulerProvider];
+    backgroundScheduler = [schedulerProvider backgroundScheduler];
+    v9 = [imageRenderer renderedLikenessForBadge:badgeCopy scope:currentLikenessScope workScheduler:backgroundScheduler];
 
     v23 = 0;
     v24 = &v23;
@@ -42,8 +42,8 @@
     v27 = __Block_byref_object_dispose__48814;
     v28 = 0;
     objc_initWeak(&location, self);
-    v10 = [(CNBadgingAvatarView *)self schedulerProvider];
-    v11 = [v10 mainThreadScheduler];
+    schedulerProvider2 = [(CNBadgingAvatarView *)self schedulerProvider];
+    mainThreadScheduler = [schedulerProvider2 mainThreadScheduler];
 
     v12 = MEMORY[0x1E69967A0];
     v17[0] = MEMORY[0x1E69E9820];
@@ -51,16 +51,16 @@
     v17[2] = __43__CNBadgingAvatarView_renderLikenessBadge___block_invoke;
     v17[3] = &unk_1E74E54A0;
     objc_copyWeak(&v21, &location);
-    v13 = v11;
+    v13 = mainThreadScheduler;
     v18 = v13;
     v20 = &v23;
-    v19 = v4;
+    v19 = badgeCopy;
     v14 = [v12 observerWithResultBlock:v17];
     v15 = [v9 subscribe:v14];
     [(CNBadgingAvatarView *)self setLikenessBadgeRendererToken:v15];
 
-    v16 = [(CNBadgingAvatarView *)self likenessBadgeRendererToken];
-    objc_storeWeak(v24 + 5, v16);
+    likenessBadgeRendererToken = [(CNBadgingAvatarView *)self likenessBadgeRendererToken];
+    objc_storeWeak(v24 + 5, likenessBadgeRendererToken);
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -116,26 +116,26 @@ void __43__CNBadgingAvatarView_renderLikenessBadge___block_invoke_2(uint64_t a1)
 
 - (void)renderMediaContextBadgeImage
 {
-  v3 = [(CNBadgingAvatarView *)self likenessBadgeRendererToken];
-  [v3 cancel];
+  likenessBadgeRendererToken = [(CNBadgingAvatarView *)self likenessBadgeRendererToken];
+  [likenessBadgeRendererToken cancel];
 
   [(CNBadgingAvatarView *)self setLikenessBadgeRendererToken:0];
-  v4 = [(CNBadgingAvatarView *)self mediaContextBadge];
+  mediaContextBadge = [(CNBadgingAvatarView *)self mediaContextBadge];
 
-  if (v4)
+  if (mediaContextBadge)
   {
-    v7 = [(CNBadgingAvatarView *)self mediaContextBadge];
-    [(CNBadgingAvatarView *)self renderLikenessBadge:v7];
+    mediaContextBadge2 = [(CNBadgingAvatarView *)self mediaContextBadge];
+    [(CNBadgingAvatarView *)self renderLikenessBadge:mediaContextBadge2];
   }
 
   else
   {
-    v5 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
-    [v5 removeFromSuperview];
+    mediaContextBadgeView = [(CNBadgingAvatarView *)self mediaContextBadgeView];
+    [mediaContextBadgeView removeFromSuperview];
 
-    v6 = [(CNBadgingAvatarView *)self badgeImage];
+    badgeImage = [(CNBadgingAvatarView *)self badgeImage];
 
-    if (v6)
+    if (badgeImage)
     {
 
       [(CNBadgingAvatarView *)self updateBadgeImageViewPosition];
@@ -143,22 +143,22 @@ void __43__CNBadgingAvatarView_renderLikenessBadge___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setMediaContextBadge:(id)a3
+- (void)setMediaContextBadge:(id)badge
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_mediaContextBadge] & 1) == 0)
+  badgeCopy = badge;
+  if (([badgeCopy isEqual:self->_mediaContextBadge] & 1) == 0)
   {
-    objc_storeStrong(&self->_mediaContextBadge, a3);
+    objc_storeStrong(&self->_mediaContextBadge, badge);
     [(CNBadgingAvatarView *)self renderMediaContextBadgeImage];
   }
 }
 
-- (void)setIsDoNotDisturb:(BOOL)a3
+- (void)setIsDoNotDisturb:(BOOL)disturb
 {
-  if (self->_isDoNotDisturb != a3)
+  if (self->_isDoNotDisturb != disturb)
   {
-    self->_isDoNotDisturb = a3;
-    if (a3)
+    self->_isDoNotDisturb = disturb;
+    if (disturb)
     {
       v4 = [MEMORY[0x1E69DCAB8] cnui_symbolImageNamed:@"moon.fill" scale:-1 withColor:0 useFixedSize:1 compatibleWithTextStyle:*MEMORY[0x1E69DDD28]];
       [(CNBadgingAvatarView *)self setBadgeImage:v4];
@@ -175,12 +175,12 @@ void __43__CNBadgingAvatarView_renderLikenessBadge___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setIsMarkedForSyndication:(BOOL)a3
+- (void)setIsMarkedForSyndication:(BOOL)syndication
 {
-  if (self->_isMarkedForSyndication != a3)
+  if (self->_isMarkedForSyndication != syndication)
   {
-    self->_isMarkedForSyndication = a3;
-    if (a3)
+    self->_isMarkedForSyndication = syndication;
+    if (syndication)
     {
       v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"star.circle.fill"];
       [(CNBadgingAvatarView *)self setBadgeImage:v4];
@@ -199,28 +199,28 @@ void __43__CNBadgingAvatarView_renderLikenessBadge___block_invoke_2(uint64_t a1)
 
 - (void)updateBadgeImageViewPosition
 {
-  v4 = [(CNBadgingAvatarView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(CNBadgingAvatarView *)self effectiveUserInterfaceLayoutDirection];
   v5 = MEMORY[0x1E6996AB0];
-  v6 = [(CNBadgingAvatarView *)self badgeImageView];
-  [v6 frame];
+  badgeImageView = [(CNBadgingAvatarView *)self badgeImageView];
+  [badgeImageView frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CNBadgingAvatarView *)self avatarViewController];
-  v16 = [v15 view];
-  [v16 frame];
+  avatarViewController = [(CNBadgingAvatarView *)self avatarViewController];
+  view = [avatarViewController view];
+  [view frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(CNBadgingAvatarView *)self badgeStyleSettings];
-  v26 = [v25 cnuiBadgePosition];
-  v27 = [(CNBadgingAvatarView *)self mediaContextBadge];
-  if (v27)
+  badgeStyleSettings = [(CNBadgingAvatarView *)self badgeStyleSettings];
+  cnuiBadgePosition = [badgeStyleSettings cnuiBadgePosition];
+  mediaContextBadge = [(CNBadgingAvatarView *)self mediaContextBadge];
+  if (mediaContextBadge)
   {
-    v2 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
-    [v2 frame];
+    mediaContextBadgeView = [(CNBadgingAvatarView *)self mediaContextBadgeView];
+    [mediaContextBadgeView frame];
   }
 
   else
@@ -231,74 +231,74 @@ void __43__CNBadgingAvatarView_renderLikenessBadge___block_invoke_2(uint64_t a1)
     v31 = *(MEMORY[0x1E695F058] + 24);
   }
 
-  [v5 frameForBadgeWithFrame:v26 onAvatarFrame:v4 == 1 withPosition:v8 mediaContextFrame:v10 isRTL:{v12, v14, v18, v20, v22, v24, v28, v29, v30, v31}];
+  [v5 frameForBadgeWithFrame:cnuiBadgePosition onAvatarFrame:effectiveUserInterfaceLayoutDirection == 1 withPosition:v8 mediaContextFrame:v10 isRTL:{v12, v14, v18, v20, v22, v24, v28, v29, v30, v31}];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  v40 = [(CNBadgingAvatarView *)self badgeImageView];
-  [v40 setFrame:{v33, v35, v37, v39}];
+  badgeImageView2 = [(CNBadgingAvatarView *)self badgeImageView];
+  [badgeImageView2 setFrame:{v33, v35, v37, v39}];
 
-  if (v27)
+  if (mediaContextBadge)
   {
   }
 
-  v41 = [(CNBadgingAvatarView *)self badgeImageView];
-  [v41 setAutoresizingMask:18];
+  badgeImageView3 = [(CNBadgingAvatarView *)self badgeImageView];
+  [badgeImageView3 setAutoresizingMask:18];
 
-  v42 = [(CNBadgingAvatarView *)self badgeStyleSettings];
-  v43 = [v42 position];
+  badgeStyleSettings2 = [(CNBadgingAvatarView *)self badgeStyleSettings];
+  position = [badgeStyleSettings2 position];
 
-  if (v43 <= 3)
+  if (position <= 3)
   {
-    v44 = qword_199E43EE8[v43];
-    v45 = [(CNBadgingAvatarView *)self badgeImageView];
-    [v45 setAutoresizingMask:{objc_msgSend(v45, "autoresizingMask") | v44}];
+    v44 = qword_199E43EE8[position];
+    badgeImageView4 = [(CNBadgingAvatarView *)self badgeImageView];
+    [badgeImageView4 setAutoresizingMask:{objc_msgSend(badgeImageView4, "autoresizingMask") | v44}];
   }
 }
 
 - (void)updateBadgeImageViewContentMode
 {
-  v5 = [(CNBadgingAvatarView *)self badgeStyleSettings];
-  v3 = [v5 contentMode];
-  v4 = [(CNBadgingAvatarView *)self badgeImageView];
-  [v4 setContentMode:v3];
+  badgeStyleSettings = [(CNBadgingAvatarView *)self badgeStyleSettings];
+  contentMode = [badgeStyleSettings contentMode];
+  badgeImageView = [(CNBadgingAvatarView *)self badgeImageView];
+  [badgeImageView setContentMode:contentMode];
 }
 
 - (void)updateBadgeImageViewBackgroundColor
 {
-  v5 = [(CNBadgingAvatarView *)self badgeStyleSettings];
-  v3 = [v5 backgroundColor];
-  v4 = [(CNBadgingAvatarView *)self badgeImageView];
-  [v4 setBackgroundColor:v3];
+  badgeStyleSettings = [(CNBadgingAvatarView *)self badgeStyleSettings];
+  backgroundColor = [badgeStyleSettings backgroundColor];
+  badgeImageView = [(CNBadgingAvatarView *)self badgeImageView];
+  [badgeImageView setBackgroundColor:backgroundColor];
 }
 
 - (void)updateBadgeCropStyle
 {
   v3 = MEMORY[0x1E6996AB0];
-  v6 = [(CNBadgingAvatarView *)self badgeImageView];
-  v4 = [v6 layer];
-  v5 = [(CNBadgingAvatarView *)self badgeStyleSettings];
-  [v3 cropAvatarBadgeLayer:v4 withCropStyle:{objc_msgSend(v5, "cropStyle")}];
+  badgeImageView = [(CNBadgingAvatarView *)self badgeImageView];
+  layer = [badgeImageView layer];
+  badgeStyleSettings = [(CNBadgingAvatarView *)self badgeStyleSettings];
+  [v3 cropAvatarBadgeLayer:layer withCropStyle:{objc_msgSend(badgeStyleSettings, "cropStyle")}];
 }
 
 - (void)updateBadgeTintColor
 {
-  v5 = [(CNBadgingAvatarView *)self badgeStyleSettings];
-  v3 = [v5 color];
-  v4 = [(CNBadgingAvatarView *)self badgeImageView];
-  [v4 setTintColor:v3];
+  badgeStyleSettings = [(CNBadgingAvatarView *)self badgeStyleSettings];
+  color = [badgeStyleSettings color];
+  badgeImageView = [(CNBadgingAvatarView *)self badgeImageView];
+  [badgeImageView setTintColor:color];
 }
 
-- (void)setBadgeStyleSettings:(id)a3
+- (void)setBadgeStyleSettings:(id)settings
 {
-  v6 = a3;
+  settingsCopy = settings;
   if (![(CNBadgingAvatarBadgeStyleSettings *)self->_badgeStyleSettings isEqual:?])
   {
-    objc_storeStrong(&self->_badgeStyleSettings, a3);
-    v5 = [(CNBadgingAvatarView *)self badgeImage];
+    objc_storeStrong(&self->_badgeStyleSettings, settings);
+    badgeImage = [(CNBadgingAvatarView *)self badgeImage];
 
-    if (v5)
+    if (badgeImage)
     {
       [(CNBadgingAvatarView *)self updateBadgeImageViewPosition];
       [(CNBadgingAvatarView *)self updateBadgeTintColor];
@@ -309,30 +309,30 @@ void __43__CNBadgingAvatarView_renderLikenessBadge___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setImage:(id)a3 forAccessoryViewType:(unint64_t)a4
+- (void)setImage:(id)image forAccessoryViewType:(unint64_t)type
 {
-  v32 = a3;
-  if (a4 < 2)
+  imageCopy = image;
+  if (type < 2)
   {
-    v6 = [(CNBadgingAvatarView *)self badgeImageView];
+    badgeImageView = [(CNBadgingAvatarView *)self badgeImageView];
 
-    if (!v6)
+    if (!badgeImageView)
     {
       v7 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       [(CNBadgingAvatarView *)self setBadgeImageView:v7];
 
-      v8 = [(CNBadgingAvatarView *)self badgeImageView];
-      [v8 setClipsToBounds:1];
+      badgeImageView2 = [(CNBadgingAvatarView *)self badgeImageView];
+      [badgeImageView2 setClipsToBounds:1];
     }
 
-    v9 = [(CNBadgingAvatarView *)self badgeImageView];
-    v10 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
+    badgeImageView3 = [(CNBadgingAvatarView *)self badgeImageView];
+    mediaContextBadgeView = [(CNBadgingAvatarView *)self mediaContextBadgeView];
 
-    v11 = [(CNBadgingAvatarView *)self badgeImageView];
-    if (v10)
+    badgeImageView4 = [(CNBadgingAvatarView *)self badgeImageView];
+    if (mediaContextBadgeView)
     {
-      v12 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
-      [(CNBadgingAvatarView *)self insertSubview:v11 aboveSubview:v12];
+      mediaContextBadgeView2 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
+      [(CNBadgingAvatarView *)self insertSubview:badgeImageView4 aboveSubview:mediaContextBadgeView2];
 LABEL_13:
 
       goto LABEL_14;
@@ -341,57 +341,57 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v13 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
+    mediaContextBadgeView3 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
 
-    if (!v13)
+    if (!mediaContextBadgeView3)
     {
       v14 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       [(CNBadgingAvatarView *)self setMediaContextBadgeView:v14];
     }
 
-    v9 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
-    v15 = [(CNBadgingAvatarView *)self badgeImageView];
+    badgeImageView3 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
+    badgeImageView5 = [(CNBadgingAvatarView *)self badgeImageView];
 
-    v11 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
-    if (v15)
+    badgeImageView4 = [(CNBadgingAvatarView *)self mediaContextBadgeView];
+    if (badgeImageView5)
     {
-      v12 = [(CNBadgingAvatarView *)self badgeImageView];
-      [(CNBadgingAvatarView *)self insertSubview:v11 belowSubview:v12];
+      mediaContextBadgeView2 = [(CNBadgingAvatarView *)self badgeImageView];
+      [(CNBadgingAvatarView *)self insertSubview:badgeImageView4 belowSubview:mediaContextBadgeView2];
       goto LABEL_13;
     }
 
 LABEL_12:
-    v12 = [(CNBadgingAvatarView *)self avatarViewController];
-    v16 = [v12 view];
-    [(CNBadgingAvatarView *)self insertSubview:v11 aboveSubview:v16];
+    mediaContextBadgeView2 = [(CNBadgingAvatarView *)self avatarViewController];
+    view = [mediaContextBadgeView2 view];
+    [(CNBadgingAvatarView *)self insertSubview:badgeImageView4 aboveSubview:view];
 
     goto LABEL_13;
   }
 
-  v9 = 0;
+  badgeImageView3 = 0;
 LABEL_14:
   v17 = [(CNBadgingAvatarView *)self effectiveUserInterfaceLayoutDirection]== 1;
   v18 = MEMORY[0x1E6996AB0];
-  v19 = [(CNBadgingAvatarView *)self avatarViewController];
-  v20 = [v19 view];
-  [v20 bounds];
-  [v18 avatarBadgeRectForAvatarInRect:a4 badgeType:v17 isRTL:?];
+  avatarViewController = [(CNBadgingAvatarView *)self avatarViewController];
+  view2 = [avatarViewController view];
+  [view2 bounds];
+  [v18 avatarBadgeRectForAvatarInRect:type badgeType:v17 isRTL:?];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
 
-  [v9 setImage:v32];
-  [v9 setFrame:{v22, v24, v26, v28}];
-  v29 = [(CNBadgingAvatarView *)self mediaContextBadge];
-  if (v29)
+  [badgeImageView3 setImage:imageCopy];
+  [badgeImageView3 setFrame:{v22, v24, v26, v28}];
+  mediaContextBadge = [(CNBadgingAvatarView *)self mediaContextBadge];
+  if (mediaContextBadge)
   {
-    v30 = v29;
-    v31 = [(CNBadgingAvatarView *)self badgeImage];
+    v30 = mediaContextBadge;
+    badgeImage = [(CNBadgingAvatarView *)self badgeImage];
 
-    if (v31)
+    if (badgeImage)
     {
       [(CNBadgingAvatarView *)self updateBadgeImageViewPosition];
     }
@@ -402,16 +402,16 @@ LABEL_14:
 {
   v3 = [(CNBadgingAvatarView *)self effectiveUserInterfaceLayoutDirection]== 1;
   v4 = MEMORY[0x1E6996AB0];
-  v5 = [(CNBadgingAvatarView *)self avatarViewController];
-  v6 = [v5 view];
-  [v6 bounds];
+  avatarViewController = [(CNBadgingAvatarView *)self avatarViewController];
+  view = [avatarViewController view];
+  [view bounds];
   [v4 avatarBadgeRectForAvatarInRect:0 badgeType:v3 isRTL:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CNBadgingAvatarView *)self badgeImageView];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  badgeImageView = [(CNBadgingAvatarView *)self badgeImageView];
+  [badgeImageView setFrame:{v8, v10, v12, v14}];
 
   [(CNBadgingAvatarView *)self updateBadgeImageViewPosition];
 }
@@ -419,11 +419,11 @@ LABEL_14:
 - (id)schedulerProvider
 {
   objc_opt_class();
-  v3 = [(CNBadgingAvatarView *)self avatarViewController];
-  v4 = [v3 view];
+  avatarViewController = [(CNBadgingAvatarView *)self avatarViewController];
+  view = [avatarViewController view];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = view;
   }
 
   else
@@ -433,19 +433,19 @@ LABEL_14:
 
   v6 = v5;
 
-  v7 = [v6 schedulerProvider];
+  schedulerProvider = [v6 schedulerProvider];
 
-  return v7;
+  return schedulerProvider;
 }
 
 - (id)imageRenderer
 {
   objc_opt_class();
-  v3 = [(CNBadgingAvatarView *)self avatarViewController];
-  v4 = [v3 view];
+  avatarViewController = [(CNBadgingAvatarView *)self avatarViewController];
+  view = [avatarViewController view];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = view;
   }
 
   else
@@ -455,19 +455,19 @@ LABEL_14:
 
   v6 = v5;
 
-  v7 = [v6 imageRenderer];
+  imageRenderer = [v6 imageRenderer];
 
-  return v7;
+  return imageRenderer;
 }
 
 - (id)currentLikenessScope
 {
   objc_opt_class();
-  v3 = [(CNBadgingAvatarView *)self avatarViewController];
-  v4 = [v3 view];
+  avatarViewController = [(CNBadgingAvatarView *)self avatarViewController];
+  view = [avatarViewController view];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = view;
   }
 
   else
@@ -477,36 +477,36 @@ LABEL_14:
 
   v6 = v5;
 
-  v7 = [v6 currentLikenessScope];
+  currentLikenessScope = [v6 currentLikenessScope];
 
-  return v7;
+  return currentLikenessScope;
 }
 
 - (UIImage)badgeImage
 {
-  v2 = [(CNBadgingAvatarView *)self badgeImageView];
-  v3 = [v2 image];
+  badgeImageView = [(CNBadgingAvatarView *)self badgeImageView];
+  image = [badgeImageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setBadgeImage:(id)a3
+- (void)setBadgeImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    [(CNBadgingAvatarView *)self setImage:a3 forAccessoryViewType:0];
+    [(CNBadgingAvatarView *)self setImage:image forAccessoryViewType:0];
 
     [(CNBadgingAvatarView *)self updateBadgeImageViewBackgroundColor];
   }
 
   else
   {
-    v4 = [(CNBadgingAvatarView *)self badgeImageView];
-    [v4 setImage:0];
+    badgeImageView = [(CNBadgingAvatarView *)self badgeImageView];
+    [badgeImageView setImage:0];
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    v5 = [(CNBadgingAvatarView *)self badgeImageView];
-    [v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    badgeImageView2 = [(CNBadgingAvatarView *)self badgeImageView];
+    [badgeImageView2 setBackgroundColor:clearColor];
   }
 }
 
@@ -521,37 +521,37 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v3 = [(CNBadgingAvatarView *)self likenessBadgeRendererToken];
-  [v3 cancel];
+  likenessBadgeRendererToken = [(CNBadgingAvatarView *)self likenessBadgeRendererToken];
+  [likenessBadgeRendererToken cancel];
 
   v4.receiver = self;
   v4.super_class = CNBadgingAvatarView;
   [(CNBadgingAvatarView *)&v4 dealloc];
 }
 
-- (CNBadgingAvatarView)initWithAvatarViewController:(id)a3
+- (CNBadgingAvatarView)initWithAvatarViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = CNBadgingAvatarView;
   v6 = [(CNBadgingAvatarView *)&v21 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_avatarViewController, a3);
+    objc_storeStrong(&v6->_avatarViewController, controller);
     [(CNBadgingAvatarView *)v7 frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(CNAvatarViewController *)v7->_avatarViewController view];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    view = [(CNAvatarViewController *)v7->_avatarViewController view];
+    [view setFrame:{v9, v11, v13, v15}];
 
-    v17 = [(CNAvatarViewController *)v7->_avatarViewController view];
-    [v17 setAutoresizingMask:18];
+    view2 = [(CNAvatarViewController *)v7->_avatarViewController view];
+    [view2 setAutoresizingMask:18];
 
-    v18 = [(CNAvatarViewController *)v7->_avatarViewController view];
-    [(CNBadgingAvatarView *)v7 addSubview:v18];
+    view3 = [(CNAvatarViewController *)v7->_avatarViewController view];
+    [(CNBadgingAvatarView *)v7 addSubview:view3];
 
     v19 = v7;
   }

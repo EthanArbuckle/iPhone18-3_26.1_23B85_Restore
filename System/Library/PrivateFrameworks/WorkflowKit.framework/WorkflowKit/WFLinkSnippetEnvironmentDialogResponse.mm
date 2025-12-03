@@ -1,32 +1,32 @@
 @interface WFLinkSnippetEnvironmentDialogResponse
-- (WFLinkSnippetEnvironmentDialogResponse)initWithBSXPCCoder:(id)a3;
-- (WFLinkSnippetEnvironmentDialogResponse)initWithCoder:(id)a3;
-- (WFLinkSnippetEnvironmentDialogResponse)initWithEnvironment:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFLinkSnippetEnvironmentDialogResponse)initWithBSXPCCoder:(id)coder;
+- (WFLinkSnippetEnvironmentDialogResponse)initWithCoder:(id)coder;
+- (WFLinkSnippetEnvironmentDialogResponse)initWithEnvironment:(id)environment;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLinkSnippetEnvironmentDialogResponse
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFLinkSnippetEnvironmentDialogResponse;
-  v4 = a3;
-  [(WFDialogResponse *)&v6 encodeWithBSXPCCoder:v4];
+  coderCopy = coder;
+  [(WFDialogResponse *)&v6 encodeWithBSXPCCoder:coderCopy];
   v5 = [(WFLinkSnippetEnvironmentDialogResponse *)self environment:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"environment"];
+  [coderCopy encodeObject:v5 forKey:@"environment"];
 }
 
-- (WFLinkSnippetEnvironmentDialogResponse)initWithBSXPCCoder:(id)a3
+- (WFLinkSnippetEnvironmentDialogResponse)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFLinkSnippetEnvironmentDialogResponse;
-  v5 = [(WFDialogResponse *)&v10 initWithBSXPCCoder:v4];
+  v5 = [(WFDialogResponse *)&v10 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
     environment = v5->_environment;
     v5->_environment = v6;
 
@@ -36,25 +36,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFLinkSnippetEnvironmentDialogResponse;
-  v4 = a3;
-  [(WFDialogResponse *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogResponse *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFLinkSnippetEnvironmentDialogResponse *)self environment:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"environment"];
+  [coderCopy encodeObject:v5 forKey:@"environment"];
 }
 
-- (WFLinkSnippetEnvironmentDialogResponse)initWithCoder:(id)a3
+- (WFLinkSnippetEnvironmentDialogResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFLinkSnippetEnvironmentDialogResponse;
-  v5 = [(WFDialogResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFDialogResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"environment"];
     environment = v5->_environment;
     v5->_environment = v6;
 
@@ -64,16 +64,16 @@
   return v5;
 }
 
-- (WFLinkSnippetEnvironmentDialogResponse)initWithEnvironment:(id)a3
+- (WFLinkSnippetEnvironmentDialogResponse)initWithEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v10.receiver = self;
   v10.super_class = WFLinkSnippetEnvironmentDialogResponse;
   v6 = [(WFDialogResponse *)&v10 initWithResponseCode:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_environment, a3);
+    objc_storeStrong(&v6->_environment, environment);
     v8 = v7;
   }
 

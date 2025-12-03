@@ -1,28 +1,28 @@
 @interface MTMPUTheme
 + (id)_themeAssetCache;
-+ (id)cachedObjectWithKey:(id)a3 block:(id)a4;
++ (id)cachedObjectWithKey:(id)key block:(id)block;
 @end
 
 @implementation MTMPUTheme
 
-+ (id)cachedObjectWithKey:(id)a3 block:(id)a4
++ (id)cachedObjectWithKey:(id)key block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  keyCopy = key;
+  blockCopy = block;
+  if (keyCopy)
   {
-    v8 = [a1 _themeAssetCache];
-    v9 = [v8 objectForKey:v6];
+    _themeAssetCache = [self _themeAssetCache];
+    v9 = [_themeAssetCache objectForKey:keyCopy];
 
-    if (v7)
+    if (blockCopy)
     {
       if (!v9)
       {
-        v9 = v7[2](v7);
+        v9 = blockCopy[2](blockCopy);
         if (v9)
         {
-          v10 = [a1 _themeAssetCache];
-          [v10 setObject:v9 forKey:v6];
+          _themeAssetCache2 = [self _themeAssetCache];
+          [_themeAssetCache2 setObject:v9 forKey:keyCopy];
         }
       }
     }

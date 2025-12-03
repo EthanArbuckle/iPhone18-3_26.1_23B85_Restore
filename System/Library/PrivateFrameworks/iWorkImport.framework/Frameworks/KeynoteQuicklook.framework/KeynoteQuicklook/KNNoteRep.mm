@@ -1,23 +1,23 @@
 @interface KNNoteRep
-- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)a3;
-- (KNNoteRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)tap;
+- (KNNoteRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (TSDContainerInfo)containerInfo;
 - (double)columnHeight;
 - (id)childReps;
 - (void)dealloc;
-- (void)storage:(id)a3 didChangeRange:(_NSRange)a4 delta:(int64_t)a5 broadcastKind:(unint64_t)a6;
+- (void)storage:(id)storage didChangeRange:(_NSRange)range delta:(int64_t)delta broadcastKind:(unint64_t)kind;
 - (void)updateChildrenFromLayout;
-- (void)willBeginEditingContainedInfo:(id)a3;
-- (void)willEndEditingContainedInfo:(id)a3;
+- (void)willBeginEditingContainedInfo:(id)info;
+- (void)willEndEditingContainedInfo:(id)info;
 @end
 
 @implementation KNNoteRep
 
-- (KNNoteRep)initWithLayout:(id)a3 canvas:(id)a4
+- (KNNoteRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v17.receiver = self;
   v17.super_class = KNNoteRep;
-  v4 = [(TSDRep *)&v17 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v17 initWithLayout:layout canvas:canvas];
   v7 = v4;
   if (v4)
   {
@@ -42,11 +42,11 @@
   [(TSDRep *)&v3 dealloc];
 }
 
-- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)a3
+- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   v7 = objc_msgSend_containedRep(self, v5, v6);
-  LOBYTE(self) = v7 == v4;
+  LOBYTE(self) = v7 == tapCopy;
 
   return self;
 }
@@ -118,25 +118,25 @@
   return v4;
 }
 
-- (void)willBeginEditingContainedInfo:(id)a3
+- (void)willBeginEditingContainedInfo:(id)info
 {
-  v4 = objc_msgSend_layout(self, a2, a3);
+  v4 = objc_msgSend_layout(self, a2, info);
   objc_msgSend_createContainedLayoutForEditing(v4, v5, v6);
 
   objc_msgSend_updateChildrenFromLayout(self, v7, v8);
 }
 
-- (void)willEndEditingContainedInfo:(id)a3
+- (void)willEndEditingContainedInfo:(id)info
 {
-  v4 = objc_msgSend_layout(self, a2, a3);
+  v4 = objc_msgSend_layout(self, a2, info);
   objc_msgSend_createContainedLayoutForEditing(v4, v5, v6);
 
   objc_msgSend_updateChildrenFromLayout(self, v7, v8);
 }
 
-- (void)storage:(id)a3 didChangeRange:(_NSRange)a4 delta:(int64_t)a5 broadcastKind:(unint64_t)a6
+- (void)storage:(id)storage didChangeRange:(_NSRange)range delta:(int64_t)delta broadcastKind:(unint64_t)kind
 {
-  v8 = objc_msgSend_layout(self, a2, a3, a4.location, a4.length, a5, a6);
+  v8 = objc_msgSend_layout(self, a2, storage, range.location, range.length, delta, kind);
   objc_msgSend_createContainedLayoutForEditing(v8, v6, v7);
 }
 

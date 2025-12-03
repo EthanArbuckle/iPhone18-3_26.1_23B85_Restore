@@ -1,17 +1,17 @@
 @interface BMAutonamingInferences
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAutonamingInferences)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMAutonamingInferences)initWithPhotosPersonIdentifier:(id)a3 inferredName:(id)a4 inferredContactIdentifier:(id)a5 inferredRelationshipToDeviceOwner:(id)a6 confidence:(id)a7;
-- (BMAutonamingInferences)initWithPhotosPersonIdentifier:(id)a3 inferredName:(id)a4 inferredContactIdentifier:(id)a5 inferredRelationshipToDeviceOwner:(id)a6 confidence:(id)a7 imageMessageIdentifier:(id)a8 contextMessageIdentifiers:(id)a9 modelVersion:(id)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMAutonamingInferences)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMAutonamingInferences)initWithPhotosPersonIdentifier:(id)identifier inferredName:(id)name inferredContactIdentifier:(id)contactIdentifier inferredRelationshipToDeviceOwner:(id)owner confidence:(id)confidence;
+- (BMAutonamingInferences)initWithPhotosPersonIdentifier:(id)identifier inferredName:(id)name inferredContactIdentifier:(id)contactIdentifier inferredRelationshipToDeviceOwner:(id)owner confidence:(id)confidence imageMessageIdentifier:(id)messageIdentifier contextMessageIdentifiers:(id)identifiers modelVersion:(id)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_contextMessageIdentifiersJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAutonamingInferences
@@ -42,25 +42,25 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAutonamingInferences *)self photosPersonIdentifier];
-    v7 = [v5 photosPersonIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    photosPersonIdentifier = [(BMAutonamingInferences *)self photosPersonIdentifier];
+    photosPersonIdentifier2 = [v5 photosPersonIdentifier];
+    v8 = photosPersonIdentifier2;
+    if (photosPersonIdentifier == photosPersonIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMAutonamingInferences *)self photosPersonIdentifier];
-      v10 = [v5 photosPersonIdentifier];
-      v11 = [v9 isEqual:v10];
+      photosPersonIdentifier3 = [(BMAutonamingInferences *)self photosPersonIdentifier];
+      photosPersonIdentifier4 = [v5 photosPersonIdentifier];
+      v11 = [photosPersonIdentifier3 isEqual:photosPersonIdentifier4];
 
       if (!v11)
       {
@@ -68,18 +68,18 @@
       }
     }
 
-    v13 = [(BMAutonamingInferences *)self inferredName];
-    v14 = [v5 inferredName];
-    v15 = v14;
-    if (v13 == v14)
+    inferredName = [(BMAutonamingInferences *)self inferredName];
+    inferredName2 = [v5 inferredName];
+    v15 = inferredName2;
+    if (inferredName == inferredName2)
     {
     }
 
     else
     {
-      v16 = [(BMAutonamingInferences *)self inferredName];
-      v17 = [v5 inferredName];
-      v18 = [v16 isEqual:v17];
+      inferredName3 = [(BMAutonamingInferences *)self inferredName];
+      inferredName4 = [v5 inferredName];
+      v18 = [inferredName3 isEqual:inferredName4];
 
       if (!v18)
       {
@@ -87,18 +87,18 @@
       }
     }
 
-    v19 = [(BMAutonamingInferences *)self inferredContactIdentifier];
-    v20 = [v5 inferredContactIdentifier];
-    v21 = v20;
-    if (v19 == v20)
+    inferredContactIdentifier = [(BMAutonamingInferences *)self inferredContactIdentifier];
+    inferredContactIdentifier2 = [v5 inferredContactIdentifier];
+    v21 = inferredContactIdentifier2;
+    if (inferredContactIdentifier == inferredContactIdentifier2)
     {
     }
 
     else
     {
-      v22 = [(BMAutonamingInferences *)self inferredContactIdentifier];
-      v23 = [v5 inferredContactIdentifier];
-      v24 = [v22 isEqual:v23];
+      inferredContactIdentifier3 = [(BMAutonamingInferences *)self inferredContactIdentifier];
+      inferredContactIdentifier4 = [v5 inferredContactIdentifier];
+      v24 = [inferredContactIdentifier3 isEqual:inferredContactIdentifier4];
 
       if (!v24)
       {
@@ -106,18 +106,18 @@
       }
     }
 
-    v25 = [(BMAutonamingInferences *)self inferredRelationshipToDeviceOwner];
-    v26 = [v5 inferredRelationshipToDeviceOwner];
-    v27 = v26;
-    if (v25 == v26)
+    inferredRelationshipToDeviceOwner = [(BMAutonamingInferences *)self inferredRelationshipToDeviceOwner];
+    inferredRelationshipToDeviceOwner2 = [v5 inferredRelationshipToDeviceOwner];
+    v27 = inferredRelationshipToDeviceOwner2;
+    if (inferredRelationshipToDeviceOwner == inferredRelationshipToDeviceOwner2)
     {
     }
 
     else
     {
-      v28 = [(BMAutonamingInferences *)self inferredRelationshipToDeviceOwner];
-      v29 = [v5 inferredRelationshipToDeviceOwner];
-      v30 = [v28 isEqual:v29];
+      inferredRelationshipToDeviceOwner3 = [(BMAutonamingInferences *)self inferredRelationshipToDeviceOwner];
+      inferredRelationshipToDeviceOwner4 = [v5 inferredRelationshipToDeviceOwner];
+      v30 = [inferredRelationshipToDeviceOwner3 isEqual:inferredRelationshipToDeviceOwner4];
 
       if (!v30)
       {
@@ -146,18 +146,18 @@
       }
     }
 
-    v34 = [(BMAutonamingInferences *)self imageMessageIdentifier];
-    v35 = [v5 imageMessageIdentifier];
-    v36 = v35;
-    if (v34 == v35)
+    imageMessageIdentifier = [(BMAutonamingInferences *)self imageMessageIdentifier];
+    imageMessageIdentifier2 = [v5 imageMessageIdentifier];
+    v36 = imageMessageIdentifier2;
+    if (imageMessageIdentifier == imageMessageIdentifier2)
     {
     }
 
     else
     {
-      v37 = [(BMAutonamingInferences *)self imageMessageIdentifier];
-      v38 = [v5 imageMessageIdentifier];
-      v39 = [v37 isEqual:v38];
+      imageMessageIdentifier3 = [(BMAutonamingInferences *)self imageMessageIdentifier];
+      imageMessageIdentifier4 = [v5 imageMessageIdentifier];
+      v39 = [imageMessageIdentifier3 isEqual:imageMessageIdentifier4];
 
       if (!v39)
       {
@@ -165,18 +165,18 @@
       }
     }
 
-    v40 = [(BMAutonamingInferences *)self contextMessageIdentifiers];
-    v41 = [v5 contextMessageIdentifiers];
-    v42 = v41;
-    if (v40 == v41)
+    contextMessageIdentifiers = [(BMAutonamingInferences *)self contextMessageIdentifiers];
+    contextMessageIdentifiers2 = [v5 contextMessageIdentifiers];
+    v42 = contextMessageIdentifiers2;
+    if (contextMessageIdentifiers == contextMessageIdentifiers2)
     {
     }
 
     else
     {
-      v43 = [(BMAutonamingInferences *)self contextMessageIdentifiers];
-      v44 = [v5 contextMessageIdentifiers];
-      v45 = [v43 isEqual:v44];
+      contextMessageIdentifiers3 = [(BMAutonamingInferences *)self contextMessageIdentifiers];
+      contextMessageIdentifiers4 = [v5 contextMessageIdentifiers];
+      v45 = [contextMessageIdentifiers3 isEqual:contextMessageIdentifiers4];
 
       if (!v45)
       {
@@ -188,18 +188,18 @@ LABEL_31:
       }
     }
 
-    v47 = [(BMAutonamingInferences *)self modelVersion];
-    v48 = [v5 modelVersion];
-    if (v47 == v48)
+    modelVersion = [(BMAutonamingInferences *)self modelVersion];
+    modelVersion2 = [v5 modelVersion];
+    if (modelVersion == modelVersion2)
     {
       v12 = 1;
     }
 
     else
     {
-      v49 = [(BMAutonamingInferences *)self modelVersion];
-      v50 = [v5 modelVersion];
-      v12 = [v49 isEqual:v50];
+      modelVersion3 = [(BMAutonamingInferences *)self modelVersion];
+      modelVersion4 = [v5 modelVersion];
+      v12 = [modelVersion3 isEqual:modelVersion4];
     }
 
     goto LABEL_31;
@@ -214,10 +214,10 @@ LABEL_32:
 - (id)jsonDictionary
 {
   v32[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAutonamingInferences *)self photosPersonIdentifier];
-  v4 = [(BMAutonamingInferences *)self inferredName];
-  v5 = [(BMAutonamingInferences *)self inferredContactIdentifier];
-  v6 = [(BMAutonamingInferences *)self inferredRelationshipToDeviceOwner];
+  photosPersonIdentifier = [(BMAutonamingInferences *)self photosPersonIdentifier];
+  inferredName = [(BMAutonamingInferences *)self inferredName];
+  inferredContactIdentifier = [(BMAutonamingInferences *)self inferredContactIdentifier];
+  inferredRelationshipToDeviceOwner = [(BMAutonamingInferences *)self inferredRelationshipToDeviceOwner];
   if (![(BMAutonamingInferences *)self hasConfidence]|| ([(BMAutonamingInferences *)self confidence], fabs(v7) == INFINITY))
   {
     v9 = 0;
@@ -231,91 +231,91 @@ LABEL_32:
     v9 = [v8 numberWithDouble:?];
   }
 
-  v10 = [(BMAutonamingInferences *)self imageMessageIdentifier];
-  v11 = [(BMAutonamingInferences *)self _contextMessageIdentifiersJSONArray];
-  v12 = [(BMAutonamingInferences *)self modelVersion];
+  imageMessageIdentifier = [(BMAutonamingInferences *)self imageMessageIdentifier];
+  _contextMessageIdentifiersJSONArray = [(BMAutonamingInferences *)self _contextMessageIdentifiersJSONArray];
+  modelVersion = [(BMAutonamingInferences *)self modelVersion];
   v31[0] = @"photosPersonIdentifier";
-  v13 = v3;
-  if (!v3)
+  null = photosPersonIdentifier;
+  if (!photosPersonIdentifier)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v13;
-  v32[0] = v13;
+  v26 = null;
+  v32[0] = null;
   v31[1] = @"inferredName";
-  v14 = v4;
-  if (!v4)
+  null2 = inferredName;
+  if (!inferredName)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v3;
-  v25 = v14;
-  v32[1] = v14;
+  v30 = photosPersonIdentifier;
+  v25 = null2;
+  v32[1] = null2;
   v31[2] = @"inferredContactIdentifier";
-  v15 = v5;
-  if (!v5)
+  null3 = inferredContactIdentifier;
+  if (!inferredContactIdentifier)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v4;
-  v24 = v15;
-  v32[2] = v15;
+  v29 = inferredName;
+  v24 = null3;
+  v32[2] = null3;
   v31[3] = @"inferredRelationshipToDeviceOwner";
-  v16 = v6;
-  if (!v6)
+  null4 = inferredRelationshipToDeviceOwner;
+  if (!inferredRelationshipToDeviceOwner)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v5;
-  v32[3] = v16;
+  v28 = inferredContactIdentifier;
+  v32[3] = null4;
   v31[4] = @"confidence";
-  v17 = v9;
+  null5 = v9;
   if (!v9)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v6;
-  v32[4] = v17;
+  v27 = inferredRelationshipToDeviceOwner;
+  v32[4] = null5;
   v31[5] = @"imageMessageIdentifier";
-  v18 = v10;
-  if (!v10)
+  null6 = imageMessageIdentifier;
+  if (!imageMessageIdentifier)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[5] = v18;
+  v32[5] = null6;
   v31[6] = @"contextMessageIdentifiers";
-  v19 = v11;
-  if (!v11)
+  null7 = _contextMessageIdentifiersJSONArray;
+  if (!_contextMessageIdentifiersJSONArray)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[6] = v19;
+  v32[6] = null7;
   v31[7] = @"modelVersion";
-  v20 = v12;
-  if (!v12)
+  null8 = modelVersion;
+  if (!modelVersion)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[7] = v20;
+  v32[7] = null8;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:8];
-  if (v12)
+  if (modelVersion)
   {
-    if (v11)
+    if (_contextMessageIdentifiersJSONArray)
     {
       goto LABEL_23;
     }
 
 LABEL_36:
 
-    if (v10)
+    if (imageMessageIdentifier)
     {
       goto LABEL_24;
     }
@@ -323,13 +323,13 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if (!v11)
+  if (!_contextMessageIdentifiersJSONArray)
   {
     goto LABEL_36;
   }
 
 LABEL_23:
-  if (v10)
+  if (imageMessageIdentifier)
   {
     goto LABEL_24;
   }
@@ -380,8 +380,8 @@ LABEL_32:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMAutonamingInferences *)self contextMessageIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  contextMessageIdentifiers = [(BMAutonamingInferences *)self contextMessageIdentifiers];
+  v5 = [contextMessageIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -392,13 +392,13 @@ LABEL_32:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contextMessageIdentifiers);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [contextMessageIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -409,20 +409,20 @@ LABEL_32:
   return v3;
 }
 
-- (BMAutonamingInferences)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAutonamingInferences)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v122[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"photosPersonIdentifier"];
-  v97 = self;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"photosPersonIdentifier"];
+  selfCopy = self;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
-        v19 = a4;
+        errorCopy = error;
         v20 = objc_alloc(MEMORY[0x1E696ABC0]);
         v21 = *MEMORY[0x1E698F240];
         v121 = *MEMORY[0x1E696A578];
@@ -433,8 +433,8 @@ LABEL_32:
         v10 = v22;
         v8 = 0;
         v24 = 0;
-        *v19 = [v20 initWithDomain:v23 code:2 userInfo:v9];
-        self = v97;
+        *errorCopy = [v20 initWithDomain:v23 code:2 userInfo:v9];
+        self = selfCopy;
         goto LABEL_89;
       }
 
@@ -451,20 +451,20 @@ LABEL_32:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"inferredName"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"inferredName"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v10 = 0;
         v24 = 0;
         goto LABEL_89;
       }
 
-      v38 = a4;
+      errorCopy2 = error;
       v39 = objc_alloc(MEMORY[0x1E696ABC0]);
       v40 = *MEMORY[0x1E698F240];
       v119 = *MEMORY[0x1E696A578];
@@ -481,23 +481,23 @@ LABEL_32:
       v47 = [v46 initWithDomain:v40 code:2 userInfo:v45];
       v10 = 0;
       v24 = 0;
-      *v38 = v47;
+      *errorCopy2 = v47;
 LABEL_76:
-      self = v97;
+      self = selfCopy;
       goto LABEL_88;
     }
 
-    v96 = a4;
+    errorCopy4 = error;
     v10 = v9;
   }
 
   else
   {
-    v96 = a4;
+    errorCopy4 = error;
     v10 = 0;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"inferredContactIdentifier"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"inferredContactIdentifier"];
   v94 = v10;
   if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -508,7 +508,7 @@ LABEL_76:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v96)
+    if (errorCopy4)
     {
       v93 = objc_alloc(MEMORY[0x1E696ABC0]);
       v48 = *MEMORY[0x1E698F240];
@@ -520,7 +520,7 @@ LABEL_76:
       v10 = v94;
       v44 = 0;
       v24 = 0;
-      *v96 = [v93 initWithDomain:v49 code:2 userInfo:v12];
+      *errorCopy4 = [v93 initWithDomain:v49 code:2 userInfo:v12];
       goto LABEL_86;
     }
 
@@ -531,7 +531,7 @@ LABEL_76:
 
   v92 = v11;
 LABEL_10:
-  v12 = [v6 objectForKeyedSubscript:@"inferredRelationshipToDeviceOwner"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"inferredRelationshipToDeviceOwner"];
   v90 = v11;
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -540,7 +540,7 @@ LABEL_10:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v96)
+      if (errorCopy4)
       {
         v55 = objc_alloc(MEMORY[0x1E696ABC0]);
         v56 = *MEMORY[0x1E698F240];
@@ -555,7 +555,7 @@ LABEL_10:
         v91 = v58;
         v95 = 0;
         v24 = 0;
-        *v96 = [v59 initWithDomain:v60 code:2 userInfo:?];
+        *errorCopy4 = [v59 initWithDomain:v60 code:2 userInfo:?];
         v36 = v57;
         v44 = v92;
         v7 = v85;
@@ -580,7 +580,7 @@ LABEL_10:
     v95 = 0;
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"confidence"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
   v89 = v12;
   v91 = v15;
   if (v15 && (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -588,7 +588,7 @@ LABEL_10:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v96)
+      if (errorCopy4)
       {
         v63 = objc_alloc(MEMORY[0x1E696ABC0]);
         v64 = *MEMORY[0x1E698F240];
@@ -602,7 +602,7 @@ LABEL_10:
         v10 = v94;
         v87 = v65;
         v24 = 0;
-        *v96 = [v66 initWithDomain:v67 code:2 userInfo:?];
+        *errorCopy4 = [v66 initWithDomain:v67 code:2 userInfo:?];
         v44 = v92;
         v8 = v14;
         v7 = v13;
@@ -626,7 +626,7 @@ LABEL_10:
     v83 = 0;
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"imageMessageIdentifier"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"imageMessageIdentifier"];
   v8 = v14;
   v82 = v9;
   v87 = v17;
@@ -645,7 +645,7 @@ LABEL_10:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v96)
+        if (errorCopy4)
         {
           v68 = objc_alloc(MEMORY[0x1E696ABC0]);
           v69 = *MEMORY[0x1E698F240];
@@ -658,7 +658,7 @@ LABEL_10:
           v71 = [v70 initWithDomain:v69 code:2 userInfo:v28];
           v88 = 0;
           v24 = 0;
-          *v96 = v71;
+          *errorCopy4 = v71;
           v36 = v83;
           v7 = v84;
           goto LABEL_82;
@@ -684,9 +684,9 @@ LABEL_10:
     v7 = v13;
   }
 
-  v25 = [v6 objectForKeyedSubscript:@"contextMessageIdentifiers"];
-  v26 = [MEMORY[0x1E695DFB0] null];
-  v27 = [v25 isEqual:v26];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"contextMessageIdentifiers"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v27 = [v25 isEqual:null];
 
   if (v27)
   {
@@ -703,7 +703,7 @@ LABEL_10:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v36 = v83;
-        if (!v96)
+        if (!errorCopy4)
         {
           v24 = 0;
           v11 = v90;
@@ -718,7 +718,7 @@ LABEL_10:
         v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
         v74 = [v72 initWithDomain:v73 code:2 userInfo:v37];
         v24 = 0;
-        *v96 = v74;
+        *errorCopy4 = v74;
 LABEL_72:
         v12 = v89;
         goto LABEL_81;
@@ -755,7 +755,7 @@ LABEL_72:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v96)
+        if (errorCopy4)
         {
           v50 = objc_alloc(MEMORY[0x1E696ABC0]);
           v51 = *MEMORY[0x1E698F240];
@@ -770,7 +770,7 @@ LABEL_62:
           v62 = [v50 initWithDomain:v51 code:2 userInfo:v61];
           v8 = v86;
           v12 = v89;
-          *v96 = v62;
+          *errorCopy4 = v62;
 
           v24 = 0;
           v37 = v25;
@@ -783,7 +783,7 @@ LABEL_62:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v96)
+        if (errorCopy4)
         {
           v50 = objc_alloc(MEMORY[0x1E696ABC0]);
           v51 = *MEMORY[0x1E698F240];
@@ -819,18 +819,18 @@ LABEL_66:
 
 LABEL_49:
 
-  v34 = [v6 objectForKeyedSubscript:@"modelVersion"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
   if (!v34)
   {
     v37 = 0;
-    v35 = v97;
+    v35 = selfCopy;
     v36 = v83;
     v8 = v86;
     goto LABEL_79;
   }
 
   objc_opt_class();
-  v35 = v97;
+  v35 = selfCopy;
   v36 = v83;
   v8 = v86;
   if (objc_opt_isKindOfClass())
@@ -846,12 +846,12 @@ LABEL_49:
     v12 = v89;
 LABEL_79:
     v24 = [(BMAutonamingInferences *)v35 initWithPhotosPersonIdentifier:v8 inferredName:v94 inferredContactIdentifier:v92 inferredRelationshipToDeviceOwner:v95 confidence:v36 imageMessageIdentifier:v88 contextMessageIdentifiers:v28 modelVersion:v37];
-    v97 = v24;
+    selfCopy = v24;
   }
 
   else
   {
-    if (v96)
+    if (errorCopy4)
     {
       v81 = objc_alloc(MEMORY[0x1E696ABC0]);
       v80 = *MEMORY[0x1E698F240];
@@ -859,7 +859,7 @@ LABEL_79:
       v77 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"modelVersion"];
       v103 = v77;
       v78 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
-      *v96 = [v81 initWithDomain:v80 code:2 userInfo:v78];
+      *errorCopy4 = [v81 initWithDomain:v80 code:2 userInfo:v78];
     }
 
     v37 = 0;
@@ -882,7 +882,7 @@ LABEL_84:
 
 LABEL_85:
 LABEL_86:
-  self = v97;
+  self = selfCopy;
 LABEL_87:
 
 LABEL_88:
@@ -897,15 +897,15 @@ LABEL_90:
 {
   v3 = objc_opt_new();
   [(BMAutonamingInferences *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_photosPersonIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -977,9 +977,9 @@ LABEL_90:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v31.receiver = self;
   v31.super_class = BMAutonamingInferences;
   v5 = [(BMEventBase *)&v31 init];
@@ -989,12 +989,12 @@ LABEL_90:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_47;
       }
@@ -1005,18 +1005,18 @@ LABEL_90:
       while (1)
       {
         LOBYTE(v32) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v32 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (LOBYTE(v32) & 0x7F) << v8;
@@ -1033,9 +1033,9 @@ LABEL_90:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_47;
       }
@@ -1052,18 +1052,18 @@ LABEL_16:
         {
           v5->_hasConfidence = 1;
           v32 = 0.0;
-          v19 = [v4 position] + 4;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 4, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 4;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 4, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v25 = [v4 data];
-            [v25 getBytes:&v32 range:{objc_msgSend(v4, "position"), 4}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v5->_confidence = v32;
@@ -1110,8 +1110,8 @@ LABEL_51:
       [v6 addObject:v23];
 
 LABEL_39:
-      v22 = [v4 position];
-      if (v22 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_47;
       }
@@ -1163,8 +1163,8 @@ LABEL_47:
   contextMessageIdentifiers = v5->_contextMessageIdentifiers;
   v5->_contextMessageIdentifiers = v26;
 
-  v28 = [v4 hasError];
-  if (v28)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_48:
     v29 = 0;
@@ -1182,45 +1182,45 @@ LABEL_49:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAutonamingInferences *)self photosPersonIdentifier];
-  v5 = [(BMAutonamingInferences *)self inferredName];
-  v6 = [(BMAutonamingInferences *)self inferredContactIdentifier];
-  v7 = [(BMAutonamingInferences *)self inferredRelationshipToDeviceOwner];
+  photosPersonIdentifier = [(BMAutonamingInferences *)self photosPersonIdentifier];
+  inferredName = [(BMAutonamingInferences *)self inferredName];
+  inferredContactIdentifier = [(BMAutonamingInferences *)self inferredContactIdentifier];
+  inferredRelationshipToDeviceOwner = [(BMAutonamingInferences *)self inferredRelationshipToDeviceOwner];
   v8 = MEMORY[0x1E696AD98];
   [(BMAutonamingInferences *)self confidence];
   v9 = [v8 numberWithDouble:?];
-  v10 = [(BMAutonamingInferences *)self imageMessageIdentifier];
-  v11 = [(BMAutonamingInferences *)self contextMessageIdentifiers];
-  v12 = [(BMAutonamingInferences *)self modelVersion];
-  v13 = [v3 initWithFormat:@"BMAutonamingInferences with photosPersonIdentifier: %@, inferredName: %@, inferredContactIdentifier: %@, inferredRelationshipToDeviceOwner: %@, confidence: %@, imageMessageIdentifier: %@, contextMessageIdentifiers: %@, modelVersion: %@", v4, v5, v6, v7, v9, v10, v11, v12];
+  imageMessageIdentifier = [(BMAutonamingInferences *)self imageMessageIdentifier];
+  contextMessageIdentifiers = [(BMAutonamingInferences *)self contextMessageIdentifiers];
+  modelVersion = [(BMAutonamingInferences *)self modelVersion];
+  v13 = [v3 initWithFormat:@"BMAutonamingInferences with photosPersonIdentifier: %@, inferredName: %@, inferredContactIdentifier: %@, inferredRelationshipToDeviceOwner: %@, confidence: %@, imageMessageIdentifier: %@, contextMessageIdentifiers: %@, modelVersion: %@", photosPersonIdentifier, inferredName, inferredContactIdentifier, inferredRelationshipToDeviceOwner, v9, imageMessageIdentifier, contextMessageIdentifiers, modelVersion];
 
   return v13;
 }
 
-- (BMAutonamingInferences)initWithPhotosPersonIdentifier:(id)a3 inferredName:(id)a4 inferredContactIdentifier:(id)a5 inferredRelationshipToDeviceOwner:(id)a6 confidence:(id)a7 imageMessageIdentifier:(id)a8 contextMessageIdentifiers:(id)a9 modelVersion:(id)a10
+- (BMAutonamingInferences)initWithPhotosPersonIdentifier:(id)identifier inferredName:(id)name inferredContactIdentifier:(id)contactIdentifier inferredRelationshipToDeviceOwner:(id)owner confidence:(id)confidence imageMessageIdentifier:(id)messageIdentifier contextMessageIdentifiers:(id)identifiers modelVersion:(id)self0
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v17 = a7;
-  v24 = a8;
-  v23 = a9;
-  v18 = a10;
+  identifierCopy = identifier;
+  nameCopy = name;
+  contactIdentifierCopy = contactIdentifier;
+  ownerCopy = owner;
+  confidenceCopy = confidence;
+  messageIdentifierCopy = messageIdentifier;
+  identifiersCopy = identifiers;
+  versionCopy = version;
   v29.receiver = self;
   v29.super_class = BMAutonamingInferences;
   v19 = [(BMEventBase *)&v29 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v19->_photosPersonIdentifier, a3);
-    objc_storeStrong(&v19->_inferredName, a4);
-    objc_storeStrong(&v19->_inferredContactIdentifier, a5);
-    objc_storeStrong(&v19->_inferredRelationshipToDeviceOwner, a6);
-    if (v17)
+    objc_storeStrong(&v19->_photosPersonIdentifier, identifier);
+    objc_storeStrong(&v19->_inferredName, name);
+    objc_storeStrong(&v19->_inferredContactIdentifier, contactIdentifier);
+    objc_storeStrong(&v19->_inferredRelationshipToDeviceOwner, owner);
+    if (confidenceCopy)
     {
       v19->_hasConfidence = 1;
-      [v17 floatValue];
+      [confidenceCopy floatValue];
       v21 = v20;
     }
 
@@ -1231,9 +1231,9 @@ LABEL_49:
     }
 
     v19->_confidence = v21;
-    objc_storeStrong(&v19->_imageMessageIdentifier, a8);
-    objc_storeStrong(&v19->_contextMessageIdentifiers, a9);
-    objc_storeStrong(&v19->_modelVersion, a10);
+    objc_storeStrong(&v19->_imageMessageIdentifier, messageIdentifier);
+    objc_storeStrong(&v19->_contextMessageIdentifiers, identifiers);
+    objc_storeStrong(&v19->_modelVersion, version);
   }
 
   return v19;
@@ -1274,9 +1274,9 @@ id __33__BMAutonamingInferences_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1284,8 +1284,8 @@ id __33__BMAutonamingInferences_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAutonamingInferences alloc] initByReadFrom:v7];
     v4 = v8;
@@ -1298,15 +1298,15 @@ id __33__BMAutonamingInferences_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (BMAutonamingInferences)initWithPhotosPersonIdentifier:(id)a3 inferredName:(id)a4 inferredContactIdentifier:(id)a5 inferredRelationshipToDeviceOwner:(id)a6 confidence:(id)a7
+- (BMAutonamingInferences)initWithPhotosPersonIdentifier:(id)identifier inferredName:(id)name inferredContactIdentifier:(id)contactIdentifier inferredRelationshipToDeviceOwner:(id)owner confidence:(id)confidence
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  confidenceCopy = confidence;
+  ownerCopy = owner;
+  contactIdentifierCopy = contactIdentifier;
+  nameCopy = name;
+  identifierCopy = identifier;
   v17 = objc_opt_new();
-  v18 = [(BMAutonamingInferences *)self initWithPhotosPersonIdentifier:v16 inferredName:v15 inferredContactIdentifier:v14 inferredRelationshipToDeviceOwner:v13 confidence:v12 imageMessageIdentifier:0 contextMessageIdentifiers:v17];
+  v18 = [(BMAutonamingInferences *)self initWithPhotosPersonIdentifier:identifierCopy inferredName:nameCopy inferredContactIdentifier:contactIdentifierCopy inferredRelationshipToDeviceOwner:ownerCopy confidence:confidenceCopy imageMessageIdentifier:0 contextMessageIdentifiers:v17];
 
   return v18;
 }

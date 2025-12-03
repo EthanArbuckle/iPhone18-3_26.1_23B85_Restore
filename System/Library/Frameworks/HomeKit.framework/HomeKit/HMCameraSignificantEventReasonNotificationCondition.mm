@@ -1,8 +1,8 @@
 @interface HMCameraSignificantEventReasonNotificationCondition
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMCameraSignificantEventReasonNotificationCondition)initWithPredicate:(id)a3;
-- (HMCameraSignificantEventReasonNotificationCondition)initWithSignificantEventTypes:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMCameraSignificantEventReasonNotificationCondition)initWithPredicate:(id)predicate;
+- (HMCameraSignificantEventReasonNotificationCondition)initWithSignificantEventTypes:(unint64_t)types;
 - (NSArray)attributeDescriptions;
 - (NSPredicate)predicate;
 - (NSString)shortDescription;
@@ -14,9 +14,9 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v9 = [(HMCameraSignificantEventReasonNotificationCondition *)self significantEventTypes];
+  significantEventTypes = [(HMCameraSignificantEventReasonNotificationCondition *)self significantEventTypes];
   v4 = NSPrintF();
-  v5 = [v3 initWithName:@"Significant Events" value:{v4, v9, &unk_19BE377F8}];
+  v5 = [v3 initWithName:@"Significant Events" value:{v4, significantEventTypes, &unk_19BE377F8}];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
@@ -32,13 +32,13 @@
   return [v2 shortDescription];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -49,8 +49,8 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMCameraSignificantEventReasonNotificationCondition *)self significantEventTypes];
-    v8 = v7 == [v6 significantEventTypes];
+    significantEventTypes = [(HMCameraSignificantEventReasonNotificationCondition *)self significantEventTypes];
+    v8 = significantEventTypes == [v6 significantEventTypes];
   }
 
   else
@@ -63,30 +63,30 @@
 
 - (NSPredicate)predicate
 {
-  v2 = [(HMCameraSignificantEventReasonNotificationCondition *)self significantEventTypes];
+  significantEventTypes = [(HMCameraSignificantEventReasonNotificationCondition *)self significantEventTypes];
 
-  return [HMCameraBulletinBoardSmartNotification predicateForSignificantEventTypes:v2];
+  return [HMCameraBulletinBoardSmartNotification predicateForSignificantEventTypes:significantEventTypes];
 }
 
-- (HMCameraSignificantEventReasonNotificationCondition)initWithSignificantEventTypes:(unint64_t)a3
+- (HMCameraSignificantEventReasonNotificationCondition)initWithSignificantEventTypes:(unint64_t)types
 {
   v5.receiver = self;
   v5.super_class = HMCameraSignificantEventReasonNotificationCondition;
   result = [(HMCameraSignificantEventReasonNotificationCondition *)&v5 init];
   if (result)
   {
-    result->_significantEventTypes = a3;
+    result->_significantEventTypes = types;
   }
 
   return result;
 }
 
-- (HMCameraSignificantEventReasonNotificationCondition)initWithPredicate:(id)a3
+- (HMCameraSignificantEventReasonNotificationCondition)initWithPredicate:(id)predicate
 {
-  v4 = a3;
-  if (v4)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
-    v5 = v4;
+    v5 = predicateCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
@@ -107,21 +107,21 @@
       if (v9)
       {
         self = -[HMCameraSignificantEventReasonNotificationCondition initWithSignificantEventTypes:](self, "initWithSignificantEventTypes:", [v9 integerValue]);
-        v11 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v11 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
 
-    return v11;
+    return selfCopy;
   }
 
   else

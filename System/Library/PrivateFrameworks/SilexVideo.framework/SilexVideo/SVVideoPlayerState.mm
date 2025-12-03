@@ -3,8 +3,8 @@
 - (BOOL)isFullScreen;
 - (SVVideoPlayerState)init;
 - (double)customControlHeight;
-- (void)setIsFullScreen:(BOOL)a3;
-- (void)set_isFullScreen:(BOOL)a3;
+- (void)setIsFullScreen:(BOOL)screen;
+- (void)set_isFullScreen:(BOOL)screen;
 @end
 
 @implementation SVVideoPlayerState
@@ -16,43 +16,43 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)set_isFullScreen:(BOOL)a3
+- (void)set_isFullScreen:(BOOL)screen
 {
   v5 = OBJC_IVAR___SVVideoPlayerState__isFullScreen;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = screen;
 }
 
 - (BOOL)isFullScreen
 {
   swift_getKeyPath();
   sub_2660A6110();
-  v3 = self;
+  selfCopy = self;
   sub_2660A7058();
 
   v4 = OBJC_IVAR___SVVideoPlayerState__isFullScreen;
   swift_beginAccess();
-  LOBYTE(v4) = *(&v3->super.isa + v4);
+  LOBYTE(v4) = *(&selfCopy->super.isa + v4);
 
   return v4;
 }
 
-- (void)setIsFullScreen:(BOOL)a3
+- (void)setIsFullScreen:(BOOL)screen
 {
-  v4 = self;
-  VideoPlayerState.isFullScreen.setter(a3);
+  selfCopy = self;
+  VideoPlayerState.isFullScreen.setter(screen);
 }
 
 - (double)customControlHeight
 {
   swift_getKeyPath();
   sub_2660A6110();
-  v3 = self;
+  selfCopy = self;
   sub_2660A7058();
 
   v4 = OBJC_IVAR___SVVideoPlayerState__isFullScreen;
   swift_beginAccess();
-  LODWORD(v4) = *(&v3->super.isa + v4);
+  LODWORD(v4) = *(&selfCopy->super.isa + v4);
 
   result = 32.0;
   if (v4)

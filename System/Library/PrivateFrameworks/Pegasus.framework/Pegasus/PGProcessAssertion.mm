@@ -1,54 +1,54 @@
 @interface PGProcessAssertion
-+ (id)assertionWithDomainAttribute:(id)a3 forProcessWithIdentifier:(int)a4 explanation:(id)a5;
-+ (id)pipVisibleAssertionForProcessWithIdentifier:(int)a3 explanation:(id)a4 legacy:(BOOL)a5;
-+ (id)transientTaskAssertionForProcessWithIdentifier:(int)a3 explanation:(id)a4;
++ (id)assertionWithDomainAttribute:(id)attribute forProcessWithIdentifier:(int)identifier explanation:(id)explanation;
++ (id)pipVisibleAssertionForProcessWithIdentifier:(int)identifier explanation:(id)explanation legacy:(BOOL)legacy;
++ (id)transientTaskAssertionForProcessWithIdentifier:(int)identifier explanation:(id)explanation;
 - (BOOL)_isInvalidated;
-- (PGProcessAssertion)initWithExplanation:(id)a3;
+- (PGProcessAssertion)initWithExplanation:(id)explanation;
 - (id)description;
-- (void)_setInvalidated:(BOOL)a3;
-- (void)acquireWithTarget:(id)a3 domainAttribute:(id)a4;
+- (void)_setInvalidated:(BOOL)invalidated;
+- (void)acquireWithTarget:(id)target domainAttribute:(id)attribute;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PGProcessAssertion
 
-+ (id)transientTaskAssertionForProcessWithIdentifier:(int)a3 explanation:(id)a4
++ (id)transientTaskAssertionForProcessWithIdentifier:(int)identifier explanation:(id)explanation
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [a1 transientTaskDomainAttribute];
-  v8 = [a1 assertionWithDomainAttribute:v7 forProcessWithIdentifier:v4 explanation:v6];
+  v4 = *&identifier;
+  explanationCopy = explanation;
+  transientTaskDomainAttribute = [self transientTaskDomainAttribute];
+  v8 = [self assertionWithDomainAttribute:transientTaskDomainAttribute forProcessWithIdentifier:v4 explanation:explanationCopy];
 
   return v8;
 }
 
-+ (id)pipVisibleAssertionForProcessWithIdentifier:(int)a3 explanation:(id)a4 legacy:(BOOL)a5
++ (id)pipVisibleAssertionForProcessWithIdentifier:(int)identifier explanation:(id)explanation legacy:(BOOL)legacy
 {
-  v6 = *&a3;
-  v8 = a4;
-  if (a5)
+  v6 = *&identifier;
+  explanationCopy = explanation;
+  if (legacy)
   {
-    [a1 pipVisibleLegacyDomainAttribute];
+    [self pipVisibleLegacyDomainAttribute];
   }
 
   else
   {
-    [a1 pipVisibleDomainAttribute];
+    [self pipVisibleDomainAttribute];
   }
   v9 = ;
-  v10 = [a1 assertionWithDomainAttribute:v9 forProcessWithIdentifier:v6 explanation:v8];
+  v10 = [self assertionWithDomainAttribute:v9 forProcessWithIdentifier:v6 explanation:explanationCopy];
 
   return v10;
 }
 
-+ (id)assertionWithDomainAttribute:(id)a3 forProcessWithIdentifier:(int)a4 explanation:(id)a5
++ (id)assertionWithDomainAttribute:(id)attribute forProcessWithIdentifier:(int)identifier explanation:(id)explanation
 {
-  v6 = *&a4;
+  v6 = *&identifier;
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [[PGProcessAssertion alloc] initWithExplanation:v8];
+  attributeCopy = attribute;
+  explanationCopy = explanation;
+  v9 = [[PGProcessAssertion alloc] initWithExplanation:explanationCopy];
 
   if (v6 < 1)
   {
@@ -66,21 +66,21 @@
   else
   {
     v10 = [MEMORY[0x1E69C7640] targetWithPid:v6];
-    [(PGProcessAssertion *)v9 acquireWithTarget:v10 domainAttribute:v7];
+    [(PGProcessAssertion *)v9 acquireWithTarget:v10 domainAttribute:attributeCopy];
   }
 
   return v9;
 }
 
-- (PGProcessAssertion)initWithExplanation:(id)a3
+- (PGProcessAssertion)initWithExplanation:(id)explanation
 {
-  v4 = a3;
+  explanationCopy = explanation;
   v9.receiver = self;
   v9.super_class = PGProcessAssertion;
   v5 = [(PGProcessAssertion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [explanationCopy copy];
     explanation = v5->_explanation;
     v5->_explanation = v6;
   }
@@ -99,11 +99,11 @@
   return v5;
 }
 
-- (void)acquireWithTarget:(id)a3 domainAttribute:(id)a4
+- (void)acquireWithTarget:(id)target domainAttribute:(id)attribute
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  targetCopy = target;
+  attributeCopy = attribute;
   BSDispatchQueueAssertMain();
   if (self->_assertion)
   {
@@ -126,11 +126,11 @@
     *buf = 136315906;
     v21 = "[PGProcessAssertion acquireWithTarget:domainAttribute:]";
     v22 = 2114;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    v25 = v7;
+    v25 = targetCopy;
     v26 = 2114;
-    v27 = v8;
+    v27 = attributeCopy;
     _os_log_impl(&dword_1BB282000, v12, OS_LOG_TYPE_DEFAULT, "%s %{public}@ target: %{public}@ domain: %{public}@", buf, 0x2Au);
   }
 
@@ -141,10 +141,10 @@
   v16[2] = __56__PGProcessAssertion_acquireWithTarget_domainAttribute___block_invoke;
   v16[3] = &unk_1E7F323B8;
   v16[4] = self;
-  v17 = v7;
-  v18 = v8;
-  v14 = v8;
-  v15 = v7;
+  v17 = targetCopy;
+  v18 = attributeCopy;
+  v14 = attributeCopy;
+  v15 = targetCopy;
   objc_copyWeak(&v19, buf);
   dispatch_async(v13, v16);
   objc_destroyWeak(&v19);
@@ -235,18 +235,18 @@ LABEL_6:
   return lock_invalidated;
 }
 
-- (void)_setInvalidated:(BOOL)a3
+- (void)_setInvalidated:(BOOL)invalidated
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_invalidated = a3;
+  self->_lock_invalidated = invalidated;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"PGProcessAssertion.m" lineNumber:111 description:{@"Released %@ without invalidating first.", a2}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"PGProcessAssertion.m" lineNumber:111 description:{@"Released %@ without invalidating first.", a2}];
 }
 
 - (void)invalidate
@@ -256,13 +256,13 @@ LABEL_6:
   v3 = PGLogCommon();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(RBSAssertion *)self->_assertion isValid];
+    isValid = [(RBSAssertion *)self->_assertion isValid];
     v5 = 136315650;
     v6 = "[PGProcessAssertion invalidate]";
     v7 = 2114;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = v4;
+    v10 = isValid;
     _os_log_impl(&dword_1BB282000, v3, OS_LOG_TYPE_DEFAULT, "%s Invalidating %{public}@. was valid: %{BOOL}u", &v5, 0x1Cu);
   }
 

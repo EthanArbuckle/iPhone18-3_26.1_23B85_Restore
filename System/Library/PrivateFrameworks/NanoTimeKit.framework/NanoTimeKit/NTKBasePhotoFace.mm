@@ -1,9 +1,9 @@
 @interface NTKBasePhotoFace
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
 - (BOOL)_allowsEditing;
-- (id)_localizedNameForComplicationSlot:(id)a3;
+- (id)_localizedNameForComplicationSlot:(id)slot;
 @end
 
 @implementation NTKBasePhotoFace
@@ -36,17 +36,17 @@
   return v2;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"top"])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:@"top"])
   {
     v4 = @"ABOVE_TIME";
   }
 
   else
   {
-    v5 = [v3 isEqualToString:@"bottom"];
+    v5 = [slotCopy isEqualToString:@"bottom"];
     v4 = @"BELOW_TIME";
     if (!v5)
     {
@@ -62,15 +62,15 @@
 
 - (BOOL)_allowsEditing
 {
-  v2 = [(NTKFace *)self resourceDirectory];
-  v3 = v2 != 0;
+  resourceDirectory = [(NTKFace *)self resourceDirectory];
+  v3 = resourceDirectory != 0;
 
   return v3;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 14)
+  if (mode == 14)
   {
     v5 = NTKCompanionClockFaceLocalizedString(@"EDIT_MODE_LABEL_PHOTO_POSITION_COMPANION", @"Time Position");
   }

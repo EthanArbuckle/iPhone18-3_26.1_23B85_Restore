@@ -1,15 +1,15 @@
 @interface CameraCodecSettingsController
-+ (id)_titleForColorSpace:(int64_t)a3;
-- (id)_enhancedRAWResolution:(id)a3;
-- (id)_enhancedResolution:(id)a3;
-- (id)_enhancedResolutionFooterForPhotoEncodingBehavior:(int64_t)a3 allow48MP:(BOOL)a4 capabilities:(id)a5;
-- (id)_photoResolutionValuesForPhotoEncodingBehavior:(int64_t)a3 allow48MP:(BOOL)a4 outTitles:(id *)a5 capabilities:(id)a6;
-- (id)_selectedProRawFileFormat:(id)a3;
++ (id)_titleForColorSpace:(int64_t)space;
+- (id)_enhancedRAWResolution:(id)resolution;
+- (id)_enhancedResolution:(id)resolution;
+- (id)_enhancedResolutionFooterForPhotoEncodingBehavior:(int64_t)behavior allow48MP:(BOOL)p capabilities:(id)capabilities;
+- (id)_photoResolutionValuesForPhotoEncodingBehavior:(int64_t)behavior allow48MP:(BOOL)p outTitles:(id *)titles capabilities:(id)capabilities;
+- (id)_selectedProRawFileFormat:(id)format;
 - (id)specifiers;
-- (void)_setLinearDNGControlEnabled:(id)a3 specifier:(id)a4;
-- (void)_setProResControlEnabled:(id)a3 specifier:(id)a4;
+- (void)_setLinearDNGControlEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setProResControlEnabled:(id)enabled specifier:(id)specifier;
 - (void)emitNavigationEvent;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -29,9 +29,9 @@
   if ([v5 isHEVCEncodingSupported])
   {
     v6 = sub_57BC(@"CAM_FORMATS_CAPTURE_FOOTER");
-    v7 = [v5 back4kMaxFPS];
-    v8 = [v5 backHighFrameRate1080pMaxFPS];
-    if (v7 < 31 || v8 < 121)
+    back4kMaxFPS = [v5 back4kMaxFPS];
+    backHighFrameRate1080pMaxFPS = [v5 backHighFrameRate1080pMaxFPS];
+    if (back4kMaxFPS < 31 || backHighFrameRate1080pMaxFPS < 121)
     {
 LABEL_13:
       v11 = sub_57BC(@"CAM_FORMATS_CAPTURE_TITLE");
@@ -66,7 +66,7 @@ LABEL_13:
       goto LABEL_17;
     }
 
-    if (v7 < 0x3D)
+    if (back4kMaxFPS < 0x3D)
     {
       if ([v5 isCinematicModeSupported])
       {
@@ -101,12 +101,12 @@ LABEL_12:
   }
 
 LABEL_17:
-  v20 = [v5 isLinearDNGSupported];
+  isLinearDNGSupported = [v5 isLinearDNGSupported];
   v21 = [v5 isPhotoResolutionSupported:3 forPhotoEncoding:1];
   v22 = [v5 isPhotoResolutionSupported:2 forPhotoEncoding:1];
-  v98 = [v5 isProRawJpegXLSupported];
-  v23 = [v5 isBackQuadraTeleSupported];
-  if ((v20 & 1) != 0 || (v21 & 1) != 0 || v22)
+  isProRawJpegXLSupported = [v5 isProRawJpegXLSupported];
+  isBackQuadraTeleSupported = [v5 isBackQuadraTeleSupported];
+  if ((isLinearDNGSupported & 1) != 0 || (v21 & 1) != 0 || v22)
   {
     v25 = sub_57BC(@"CAM_PHOTO_CAPTURE_HEADER");
     v24 = [PSSpecifier groupSpecifierWithName:v25];
@@ -138,8 +138,8 @@ LABEL_17:
     v29 = PSFooterTextGroupKey;
     [v24 setObject:v28 forKeyedSubscript:PSFooterTextGroupKey];
 
-    v96 = v23;
-    if (v23)
+    v96 = isBackQuadraTeleSupported;
+    if (isBackQuadraTeleSupported)
     {
       v30 = sub_57BC(@"ENHANCED_RESOLUTION_FOOTER_FUSION_CAMERAS");
       [v24 setObject:v30 forKeyedSubscript:v29];
@@ -164,29 +164,29 @@ LABEL_17:
 
     v24 = v32;
     v21 = v105;
-    v23 = v96;
+    isBackQuadraTeleSupported = v96;
   }
 
-  if (v20)
+  if (isLinearDNGSupported)
   {
-    v38 = [v5 enhancedRAWResolutionSupported];
-    v39 = [v5 isBackQuadraSuperWideSupported];
+    enhancedRAWResolutionSupported = [v5 enhancedRAWResolutionSupported];
+    isBackQuadraSuperWideSupported = [v5 isBackQuadraSuperWideSupported];
     if (v21)
     {
-      v40 = v39;
-      v41 = v23;
+      v40 = isBackQuadraSuperWideSupported;
+      v41 = isBackQuadraTeleSupported;
       v42 = sub_57BC(@"CAM_PRO_RAW_48MP_TITLE");
-      v43 = [v5 isCameraButtonSupported];
+      isCameraButtonSupported = [v5 isCameraButtonSupported];
       if (v22)
       {
         v44 = @"CAM_PRO_RAW_48MP_FOOTER_24MP";
-        if (v43)
+        if (isCameraButtonSupported)
         {
           v44 = @"CAM_PRO_RAW_48MP_FOOTER_24MP_CAMERA_BUTTON";
         }
 
         v45 = @"CAM_PRO_RAW_48MP_FOOTER_ULTRA_WIDE_CAMERA_BUTTON";
-        if (!v43)
+        if (!isCameraButtonSupported)
         {
           v45 = @"CAM_PRO_RAW_48MP_FOOTER_ULTRA_WIDE";
         }
@@ -210,12 +210,12 @@ LABEL_17:
         }
 
 LABEL_55:
-        v56 = [v4 lastObject];
+        lastObject = [v4 lastObject];
 
         v100 = v24;
         v103 = v47;
-        v97 = v38;
-        if (v56 == v24)
+        v97 = enhancedRAWResolutionSupported;
+        if (lastObject == v24)
         {
           [v24 setObject:v47 forKeyedSubscript:PSFooterTextGroupKey];
         }
@@ -241,7 +241,7 @@ LABEL_55:
         {
           v63 = v4;
           v64 = v103;
-          if (!v98)
+          if (!isProRawJpegXLSupported)
           {
 LABEL_63:
 
@@ -291,7 +291,7 @@ LABEL_66:
     else
     {
       v42 = sub_57BC(@"CAM_LINEAR_DNG_TITLE");
-      if ((v38 & 1) == 0)
+      if ((enhancedRAWResolutionSupported & 1) == 0)
       {
         v55 = @"CAM_LINEAR_DNG_FOOTER";
 LABEL_54:
@@ -299,12 +299,12 @@ LABEL_54:
         goto LABEL_55;
       }
 
-      v43 = [v5 isCameraButtonSupported];
+      isCameraButtonSupported = [v5 isCameraButtonSupported];
       v53 = @"CAM_LINEAR_DNG_10_BIT_NO_SIZE_FOOTER";
       v54 = @"CAM_LINEAR_DNG_10_BIT_NO_SIZE_FOOTER_CAMERA_BUTTON";
     }
 
-    if (v43)
+    if (isCameraButtonSupported)
     {
       v55 = v54;
     }
@@ -361,7 +361,7 @@ LABEL_67:
     v72 = sub_57BC(@"CAM_FORMATS_PRO_RES_TITLE");
     v73 = [v5 isProResVideoSupportedForMode:1 videoConfiguration:5 outputToExternalStorage:0 frontRearSimultaneousVideoEnabled:0];
     v74 = [v5 isProResVideoSupportedForMode:1 videoConfiguration:13 outputToExternalStorage:1 frontRearSimultaneousVideoEnabled:0];
-    v75 = [v5 externalStorageSupported];
+    externalStorageSupported = [v5 externalStorageSupported];
     v76 = @"CAM_FORMATS_PRO_RES_1080P_ONLY_FOOTER";
     if (v73)
     {
@@ -379,7 +379,7 @@ LABEL_67:
       v77 = @"CAM_FORMATS_PRO_RES_EXTERNAL_STORAGE_FOOTER_4k_120";
     }
 
-    if (v75)
+    if (externalStorageSupported)
     {
       v78 = v77;
     }
@@ -408,13 +408,13 @@ LABEL_67:
       v99 = v72;
       v101 = v24;
       v104 = v4;
-      v84 = [v5 supportedProResColorSpaces];
-      v85 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v84, "count")}];
+      supportedProResColorSpaces = [v5 supportedProResColorSpaces];
+      v85 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(supportedProResColorSpaces, "count")}];
       v109 = 0u;
       v110 = 0u;
       v111 = 0u;
       v112 = 0u;
-      v86 = v84;
+      v86 = supportedProResColorSpaces;
       v87 = [v86 countByEnumeratingWithState:&v109 objects:v115 count:16];
       if (v87)
       {
@@ -456,9 +456,9 @@ LABEL_89:
   return v3;
 }
 
-+ (id)_titleForColorSpace:(int64_t)a3
++ (id)_titleForColorSpace:(int64_t)space
 {
-  switch(a3)
+  switch(space)
   {
     case 0:
       v4 = @"PRO_RES_COLOR_SPACE_SDR";
@@ -494,41 +494,41 @@ LABEL_7:
   v4 = [_NSLocalizedStringResource alloc];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v4 initWithKey:@"CAM_FORMATS_TITLE" table:@"CameraSettings" locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v4 initWithKey:@"CAM_FORMATS_TITLE" table:@"CameraSettings" locale:v5 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 bundleURL];
-  v13 = [v9 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v10 bundleURL:v12];
+  bundleURL2 = [v11 bundleURL];
+  v13 = [v9 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v10 bundleURL:bundleURL2];
 
   v15 = v13;
   v14 = [NSArray arrayWithObjects:&v15 count:1];
   [(CameraCodecSettingsController *)self pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.camera" title:v8 localizedNavigationComponents:v14 deepLink:v3];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = CameraCodecSettingsController;
-  [(CameraCodecSettingsController *)&v15 tableView:a3 didSelectRowAtIndexPath:v6];
+  [(CameraCodecSettingsController *)&v15 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(CameraCodecSettingsController *)self specifierForID:@"CameraCaptureGroupSpecifier"];
   if (v7)
   {
     v8 = [(CameraCodecSettingsController *)self indexPathForSpecifier:v7];
-    v9 = [v8 section];
+    section = [v8 section];
   }
 
   else
   {
-    v9 = -1;
+    section = -1;
   }
 
-  if ([v6 section] == v9)
+  if ([pathCopy section] == section)
   {
-    v10 = [v6 row] == &dword_0 + 1;
+    v10 = [pathCopy row] == &dword_0 + 1;
     v11 = +[PFMediaCapabilities newFormatsConfiguration];
     [PFMediaCapabilities setNewFormatsConfiguration:v10 fromSource:2];
     if (v11 != v10)
@@ -545,23 +545,23 @@ LABEL_7:
   }
 }
 
-- (void)_setLinearDNGControlEnabled:(id)a3 specifier:(id)a4
+- (void)_setLinearDNGControlEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(CAMUserPreferenceEnableLinearDNGControl, a3, @"com.apple.camera");
+  CFPreferencesSetAppValue(CAMUserPreferenceEnableLinearDNGControl, enabled, @"com.apple.camera");
   CFPreferencesAppSynchronize(@"com.apple.camera");
 
   [(CameraSettingsBaseController *)self reloadSpecifiers];
 }
 
-- (void)_setProResControlEnabled:(id)a3 specifier:(id)a4
+- (void)_setProResControlEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(CAMUserPreferenceEnableProResControl, a3, @"com.apple.camera");
+  CFPreferencesSetAppValue(CAMUserPreferenceEnableProResControl, enabled, @"com.apple.camera");
   CFPreferencesAppSynchronize(@"com.apple.camera");
 
   [(CameraSettingsBaseController *)self reloadSpecifiers];
 }
 
-- (id)_enhancedResolution:(id)a3
+- (id)_enhancedResolution:(id)resolution
 {
   v3 = +[PFMediaCapabilities newFormatsConfiguration]!= &dword_0 + 1;
   v4 = +[CameraSettingsBaseController capabilities];
@@ -571,17 +571,17 @@ LABEL_7:
   v7 = v6;
   if (keyExistsAndHasValidFormat)
   {
-    v8 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v8 = v6;
+    integerValue = v6;
   }
 
-  if ([v4 isPhotoResolutionSupported:v8 forMode:0 device:0 photoEncoding:v3])
+  if ([v4 isPhotoResolutionSupported:integerValue forMode:0 device:0 photoEncoding:v3])
   {
-    v9 = v8;
+    v9 = integerValue;
   }
 
   else
@@ -594,7 +594,7 @@ LABEL_7:
   return v10;
 }
 
-- (id)_enhancedRAWResolution:(id)a3
+- (id)_enhancedRAWResolution:(id)resolution
 {
   v3 = +[CameraSettingsBaseController capabilities];
   keyExistsAndHasValidFormat = 0;
@@ -603,17 +603,17 @@ LABEL_7:
   v6 = v5;
   if (keyExistsAndHasValidFormat)
   {
-    v7 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v7 = v5;
+    integerValue = v5;
   }
 
-  if ([v3 isPhotoResolutionSupported:v7 forMode:0 device:0 photoEncoding:2])
+  if ([v3 isPhotoResolutionSupported:integerValue forMode:0 device:0 photoEncoding:2])
   {
-    v8 = v7;
+    v8 = integerValue;
   }
 
   else
@@ -626,27 +626,27 @@ LABEL_7:
   return v9;
 }
 
-- (id)_photoResolutionValuesForPhotoEncodingBehavior:(int64_t)a3 allow48MP:(BOOL)a4 outTitles:(id *)a5 capabilities:(id)a6
+- (id)_photoResolutionValuesForPhotoEncodingBehavior:(int64_t)behavior allow48MP:(BOOL)p outTitles:(id *)titles capabilities:(id)capabilities
 {
-  v7 = a4;
-  v9 = a6;
+  pCopy = p;
+  capabilitiesCopy = capabilities;
   v10 = +[NSMutableArray array];
   v11 = +[NSMutableArray array];
-  if ([v9 isPhotoResolutionSupported:1 forMode:0 device:0 photoEncoding:a3])
+  if ([capabilitiesCopy isPhotoResolutionSupported:1 forMode:0 device:0 photoEncoding:behavior])
   {
     [v10 addObject:&off_32248];
     v12 = sub_57BC(@"CAM_PHOTO_RESOLUTION_12MP");
     [v11 addObject:v12];
   }
 
-  if ([v9 isPhotoResolutionSupported:2 forMode:0 device:0 photoEncoding:a3])
+  if ([capabilitiesCopy isPhotoResolutionSupported:2 forMode:0 device:0 photoEncoding:behavior])
   {
     [v10 addObject:&off_32260];
     v13 = sub_57BC(@"CAM_PHOTO_RESOLUTION_24MP");
     [v11 addObject:v13];
   }
 
-  if (v7 && [v9 isPhotoResolutionSupported:3 forMode:0 device:0 photoEncoding:a3])
+  if (pCopy && [capabilitiesCopy isPhotoResolutionSupported:3 forMode:0 device:0 photoEncoding:behavior])
   {
     [v10 addObject:&off_32278];
     v14 = sub_57BC(@"CAM_PHOTO_RESOLUTION_48MP");
@@ -654,16 +654,16 @@ LABEL_7:
   }
 
   v15 = v11;
-  *a5 = v11;
+  *titles = v11;
 
   return v10;
 }
 
-- (id)_enhancedResolutionFooterForPhotoEncodingBehavior:(int64_t)a3 allow48MP:(BOOL)a4 capabilities:(id)a5
+- (id)_enhancedResolutionFooterForPhotoEncodingBehavior:(int64_t)behavior allow48MP:(BOOL)p capabilities:(id)capabilities
 {
-  v5 = a4;
-  v7 = a5;
-  if (a3 == 2)
+  pCopy = p;
+  capabilitiesCopy = capabilities;
+  if (behavior == 2)
   {
     v8 = @"ENHANCED_RAW_RESOLUTION_SIZE_FOOTER";
   }
@@ -676,39 +676,39 @@ LABEL_7:
   v9 = sub_57BC(v8);
   v10 = [NSMutableString stringWithString:v9];
 
-  if ([v7 isPhotoResolutionSupported:1 forMode:0 device:0 photoEncoding:a3])
+  if ([capabilitiesCopy isPhotoResolutionSupported:1 forMode:0 device:0 photoEncoding:behavior])
   {
-    if (a3 > 2)
+    if (behavior > 2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = sub_57BC(off_2CC10[a3]);
+      v11 = sub_57BC(off_2CC10[behavior]);
     }
 
     [v10 appendFormat:@"\n%@", v11];
   }
 
-  if ([v7 isPhotoResolutionSupported:2 forMode:0 device:0 photoEncoding:a3])
+  if ([capabilitiesCopy isPhotoResolutionSupported:2 forMode:0 device:0 photoEncoding:behavior])
   {
-    if (a3 > 2)
+    if (behavior > 2)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = sub_57BC(off_2CC28[a3]);
+      v12 = sub_57BC(off_2CC28[behavior]);
     }
 
     [v10 appendFormat:@"\n%@", v12];
   }
 
-  if (v5 && [v7 isPhotoResolutionSupported:3 forMode:0 device:0 photoEncoding:a3])
+  if (pCopy && [capabilitiesCopy isPhotoResolutionSupported:3 forMode:0 device:0 photoEncoding:behavior])
   {
-    if (a3 == 2)
+    if (behavior == 2)
     {
       v13 = @"ENHANCED_RAW_RESOLUTION_SIZE_FOOTER_48MP";
     }
@@ -725,7 +725,7 @@ LABEL_7:
   return v10;
 }
 
-- (id)_selectedProRawFileFormat:(id)a3
+- (id)_selectedProRawFileFormat:(id)format
 {
   v3 = +[CameraProRawCodecSettingsController selectedProRawFileFormat];
   v4 = [CameraProRawCodecSettingsController proRawFileFormatPreferenceTitleForValue:v3];

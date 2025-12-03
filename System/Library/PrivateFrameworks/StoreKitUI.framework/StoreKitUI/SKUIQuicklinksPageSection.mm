@@ -1,19 +1,19 @@
 @interface SKUIQuicklinksPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SKUIQuicklinksPageSection)initWithPageComponent:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SKUIQuicklinksPageSection)initWithPageComponent:(id)component;
 - (id)_quicklinksViewController;
-- (id)cellForIndexPath:(id)a3;
+- (id)cellForIndexPath:(id)path;
 - (void)dealloc;
-- (void)quicklinksViewController:(id)a3 didSelectLink:(id)a4 atIndex:(int64_t)a5;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)quicklinksViewController:(id)controller didSelectLink:(id)link atIndex:(int64_t)index;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SKUIQuicklinksPageSection
 
-- (SKUIQuicklinksPageSection)initWithPageComponent:(id)a3
+- (SKUIQuicklinksPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIQuicklinksPageSection initWithPageComponent:];
@@ -21,7 +21,7 @@
 
   v7.receiver = self;
   v7.super_class = SKUIQuicklinksPageSection;
-  v5 = [(SKUIStorePageSection *)&v7 initWithPageComponent:v4];
+  v5 = [(SKUIStorePageSection *)&v7 initWithPageComponent:componentCopy];
 
   return v5;
 }
@@ -34,49 +34,49 @@
   [(SKUIStorePageSection *)&v3 dealloc];
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v9 = [v4 collectionView];
-  [v9 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIQuicklinksPageSectionReuseIdentifier"];
-  v5 = [(SKUIQuicklinksPageSection *)self _quicklinksViewController];
-  v6 = [v4 collectionView];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIQuicklinksPageSectionReuseIdentifier"];
+  _quicklinksViewController = [(SKUIQuicklinksPageSection *)self _quicklinksViewController];
+  collectionView2 = [contextCopy collectionView];
 
-  [v6 bounds];
-  [v5 willTransitionToSize:0 withTransitionCoordinator:{v7, v8}];
+  [collectionView2 bounds];
+  [_quicklinksViewController willTransitionToSize:0 withTransitionCoordinator:{v7, v8}];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SKUIQuicklinksPageSectionReuseIdentifier" forIndexPath:v4];
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SKUIQuicklinksPageSectionReuseIdentifier" forIndexPath:pathCopy];
 
-  v8 = [(SKUIQuicklinksPageSection *)self _quicklinksViewController];
-  v9 = [v8 view];
+  _quicklinksViewController = [(SKUIQuicklinksPageSection *)self _quicklinksViewController];
+  view = [_quicklinksViewController view];
 
-  v10 = [v7 contentChildView];
+  contentChildView = [v7 contentChildView];
 
-  if (v9 != v10)
+  if (view != contentChildView)
   {
     [v7 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-    [v7 setContentChildView:v9];
+    [v7 setContentChildView:view];
   }
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SKUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
-  [v5 bounds];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  [collectionView bounds];
   v7 = v6;
 
-  v8 = [(SKUIQuicklinksPageSection *)self _quicklinksViewController];
-  v9 = [v8 view];
-  [v9 bounds];
+  _quicklinksViewController = [(SKUIQuicklinksPageSection *)self _quicklinksViewController];
+  view = [_quicklinksViewController view];
+  [view bounds];
   v11 = v10;
 
   v12 = v7;
@@ -86,33 +86,33 @@
   return result;
 }
 
-- (void)quicklinksViewController:(id)a3 didSelectLink:(id)a4 atIndex:(int64_t)a5
+- (void)quicklinksViewController:(id)controller didSelectLink:(id)link atIndex:(int64_t)index
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = [(SKUIStorePageSection *)self clickEventWithLink:v8 elementName:*MEMORY[0x277D6A4D0] index:a5];
+  controllerCopy = controller;
+  linkCopy = link;
+  v9 = [(SKUIStorePageSection *)self clickEventWithLink:linkCopy elementName:*MEMORY[0x277D6A4D0] index:index];
   if (v9)
   {
-    [v14 frameForLinkAtIndex:a5];
+    [controllerCopy frameForLinkAtIndex:index];
     SKUIMetricsSetClickEventPositionWithPoint(v9, v10, v11);
-    v12 = [(SKUIStorePageSection *)self context];
-    v13 = [v12 metricsController];
-    [v13 recordEvent:v9];
+    context = [(SKUIStorePageSection *)self context];
+    metricsController = [context metricsController];
+    [metricsController recordEvent:v9];
   }
 
-  [(SKUIStorePageSection *)self showPageWithLink:v8];
+  [(SKUIStorePageSection *)self showPageWithLink:linkCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   quicklinksViewController = self->_quicklinksViewController;
-  v8 = a4;
-  [(SKUIQuicklinksViewController *)quicklinksViewController willTransitionToSize:v8 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SKUIQuicklinksViewController *)quicklinksViewController willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v9.receiver = self;
   v9.super_class = SKUIQuicklinksPageSection;
-  [(SKUIStorePageSection *)&v9 willTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SKUIStorePageSection *)&v9 willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 - (id)_quicklinksViewController
@@ -120,27 +120,27 @@
   quicklinksViewController = self->_quicklinksViewController;
   if (!quicklinksViewController)
   {
-    v4 = [(SKUIStorePageSection *)self context];
+    context = [(SKUIStorePageSection *)self context];
     v5 = objc_alloc_init(SKUIQuicklinksViewController);
     v6 = self->_quicklinksViewController;
     self->_quicklinksViewController = v5;
 
     [(SKUIQuicklinksViewController *)self->_quicklinksViewController setDelegate:self];
-    v7 = [(SKUIStorePageSection *)self pageComponent];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
     v8 = self->_quicklinksViewController;
-    v9 = [v4 colorScheme];
-    [(SKUIQuicklinksViewController *)v8 setColoringWithColorScheme:v9];
+    colorScheme = [context colorScheme];
+    [(SKUIQuicklinksViewController *)v8 setColoringWithColorScheme:colorScheme];
 
     v10 = self->_quicklinksViewController;
-    v11 = [v7 links];
-    [(SKUIQuicklinksViewController *)v10 setLinks:v11];
+    links = [pageComponent links];
+    [(SKUIQuicklinksViewController *)v10 setLinks:links];
 
     v12 = self->_quicklinksViewController;
-    v13 = [v7 title];
-    [(SKUIQuicklinksViewController *)v12 setTitle:v13];
+    title = [pageComponent title];
+    [(SKUIQuicklinksViewController *)v12 setTitle:title];
 
-    v14 = [v4 parentViewController];
-    [v14 addChildViewController:self->_quicklinksViewController];
+    parentViewController = [context parentViewController];
+    [parentViewController addChildViewController:self->_quicklinksViewController];
 
     quicklinksViewController = self->_quicklinksViewController;
   }

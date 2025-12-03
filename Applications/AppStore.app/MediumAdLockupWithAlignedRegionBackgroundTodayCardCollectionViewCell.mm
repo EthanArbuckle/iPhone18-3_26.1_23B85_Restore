@@ -1,7 +1,7 @@
 @interface MediumAdLockupWithAlignedRegionBackgroundTodayCardCollectionViewCell
 - (NSArray)accessibilityElements;
 - (void)layoutSubviews;
-- (void)setAccessibilityElements:(id)a3;
+- (void)setAccessibilityElements:(id)elements;
 @end
 
 @implementation MediumAdLockupWithAlignedRegionBackgroundTodayCardCollectionViewCell
@@ -22,7 +22,7 @@
   sub_10002849C(&qword_1009701B0);
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_1007B10D0;
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1001DB1E4();
   v6 = *&v5[OBJC_IVAR____TtC8AppStore45MediumAdLockupWithAlignedRegionBackgroundView_lockupView];
 
@@ -34,18 +34,18 @@
   return v7.super.isa;
 }
 
-- (void)setAccessibilityElements:(id)a3
+- (void)setAccessibilityElements:(id)elements
 {
-  if (a3)
+  if (elements)
   {
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = self;
+    selfCopy = self;
     v5.super.isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5.super.isa = 0;
   }
 

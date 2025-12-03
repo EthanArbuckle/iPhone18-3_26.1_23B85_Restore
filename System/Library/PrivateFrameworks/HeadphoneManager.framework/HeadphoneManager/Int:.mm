@@ -8,9 +8,9 @@
 
 - (uint64_t)String
 {
-  v1 = *a1;
+  v1 = *self;
 
-  return a1;
+  return self;
 }
 
 - (unint64_t)String
@@ -29,7 +29,7 @@
 
 - (void)String
 {
-  v4 = *a1;
+  v4 = *self;
 
   result = a2;
   *a2 = v4;

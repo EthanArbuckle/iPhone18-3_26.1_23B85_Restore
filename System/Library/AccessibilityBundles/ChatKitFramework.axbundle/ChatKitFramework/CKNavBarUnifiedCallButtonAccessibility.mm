@@ -1,5 +1,5 @@
 @interface CKNavBarUnifiedCallButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (void)accessibilityLabel;
@@ -7,13 +7,13 @@
 
 @implementation CKNavBarUnifiedCallButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKNavBarUnifiedCallButton" hasInstanceMethod:@"isFaceTimeVideoAvailable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKNavBarUnifiedCallButton" hasInstanceMethod:@"isFaceTimeAudioAvailable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKNavBarUnifiedCallButton" hasInstanceMethod:@"isTelephonyAvailable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKNavBarUnifiedCallButton" hasInstanceMethod:@"buttonStyle" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKNavBarUnifiedCallButton" hasInstanceMethod:@"isFaceTimeVideoAvailable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKNavBarUnifiedCallButton" hasInstanceMethod:@"isFaceTimeAudioAvailable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKNavBarUnifiedCallButton" hasInstanceMethod:@"isTelephonyAvailable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKNavBarUnifiedCallButton" hasInstanceMethod:@"buttonStyle" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -93,7 +93,7 @@ LABEL_20:
 - (void)accessibilityLabel
 {
   v6 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDBA070] numberWithInteger:a1];
+  v3 = [MEMORY[0x29EDBA070] numberWithInteger:self];
   v4 = 138412290;
   v5 = v3;
   _os_log_error_impl(&dword_29BCB0000, a2, OS_LOG_TYPE_ERROR, "Missing label for button style: %@", &v4, 0xCu);

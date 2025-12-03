@@ -1,12 +1,12 @@
 @interface PHASESessionVolume
-- (PHASESessionVolume)initWithValue:(float)a3 unit:(int64_t)a4 muted:(BOOL)a5;
-- (PHASESessionVolume)initWithValues:(float)a3 raw:(float)a4 unit:(int64_t)a5 muted:(BOOL)a6;
+- (PHASESessionVolume)initWithValue:(float)value unit:(int64_t)unit muted:(BOOL)muted;
+- (PHASESessionVolume)initWithValues:(float)values raw:(float)raw unit:(int64_t)unit muted:(BOOL)muted;
 - (id)description;
 @end
 
 @implementation PHASESessionVolume
 
-- (PHASESessionVolume)initWithValue:(float)a3 unit:(int64_t)a4 muted:(BOOL)a5
+- (PHASESessionVolume)initWithValue:(float)value unit:(int64_t)unit muted:(BOOL)muted
 {
   v27 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
@@ -15,10 +15,10 @@
   v9 = v8;
   if (v8)
   {
-    v8->_value = a3;
-    v8->_unit = a4;
-    v8->_muted = a5;
-    if (a4)
+    v8->_value = value;
+    v8->_unit = unit;
+    v8->_muted = muted;
+    if (unit)
     {
       v10 = **(Phase::Logger::GetInstance(v8) + 448);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -28,9 +28,9 @@
         v21 = 1024;
         v22 = 43;
         v23 = 2048;
-        v24 = *&a4;
+        valueCopy3 = *&unit;
         v25 = 2048;
-        v26 = a3;
+        valueCopy = value;
         v11 = "%25s:%-5d Error: unimplemented volume unit %ld, value %f";
         v12 = v10;
         v13 = OS_LOG_TYPE_ERROR;
@@ -41,15 +41,15 @@ LABEL_13:
 
     else
     {
-      v14 = 1.0;
-      if (a3 <= 1.0)
+      valueCopy2 = 1.0;
+      if (value <= 1.0)
       {
-        v14 = a3;
+        valueCopy2 = value;
       }
 
-      if (a3 >= 0.0)
+      if (value >= 0.0)
       {
-        v15 = v14;
+        v15 = valueCopy2;
       }
 
       else
@@ -57,7 +57,7 @@ LABEL_13:
         v15 = 0.0;
       }
 
-      if (v15 != a3)
+      if (v15 != value)
       {
         v16 = **(Phase::Logger::GetInstance(v8) + 448);
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -67,9 +67,9 @@ LABEL_13:
           v21 = 1024;
           v22 = 36;
           v23 = 2048;
-          v24 = a3;
+          valueCopy3 = value;
           v25 = 2048;
-          v26 = v15;
+          valueCopy = v15;
           v11 = "%25s:%-5d Warning: clamping scalar volume %f to %f";
           v12 = v16;
           v13 = OS_LOG_TYPE_DEFAULT;
@@ -82,12 +82,12 @@ LABEL_13:
   return v9;
 }
 
-- (PHASESessionVolume)initWithValues:(float)a3 raw:(float)a4 unit:(int64_t)a5 muted:(BOOL)a6
+- (PHASESessionVolume)initWithValues:(float)values raw:(float)raw unit:(int64_t)unit muted:(BOOL)muted
 {
-  result = [(PHASESessionVolume *)self initWithValue:a5 unit:a6 muted:?];
+  result = [(PHASESessionVolume *)self initWithValue:unit unit:muted muted:?];
   if (result)
   {
-    result->_raw = a4;
+    result->_raw = raw;
   }
 
   return result;

@@ -11,7 +11,7 @@
   type metadata accessor for FollowingNotificationsViewController();
   swift_allocObject();
   swift_unknownObjectUnownedInit();
-  v3 = self;
+  selfCopy = self;
 
   v4 = sub_219BE1E04();
 

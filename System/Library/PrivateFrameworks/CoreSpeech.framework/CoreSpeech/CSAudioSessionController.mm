@@ -1,28 +1,28 @@
 @interface CSAudioSessionController
 + (id)sharedInstance;
 - (BOOL)_createXPCClientConnectionIfNeeded;
-- (CSAudioSessionController)initWithEndpointId:(id)a3;
+- (CSAudioSessionController)initWithEndpointId:(id)id;
 - (unsigned)_getAudioSessionID;
 - (unsigned)getAudioSessionID;
-- (void)CSXPCClient:(id)a3 didDisconnect:(BOOL)a4;
-- (void)_audioRouteChanged:(id)a3;
-- (void)_handleInterruption:(id)a3;
-- (void)_mediaServicesWereLost:(id)a3;
-- (void)_mediaServicesWereReset:(id)a3;
+- (void)CSXPCClient:(id)client didDisconnect:(BOOL)disconnect;
+- (void)_audioRouteChanged:(id)changed;
+- (void)_handleInterruption:(id)interruption;
+- (void)_mediaServicesWereLost:(id)lost;
+- (void)_mediaServicesWereReset:(id)reset;
 - (void)_registerAudioRouteChangeNotification;
 - (void)_registerInterruptionNotification;
 - (void)_startMonitoring;
 - (void)_stopMonitoring;
 - (void)_teardownXPCClientIfNeeded;
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)a4;
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)a4;
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)a4;
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)a4;
-- (void)coreSpeechDaemonStateMonitor:(id)a3 didReceiveStateChanged:(unint64_t)a4;
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)info;
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)info;
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)info;
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)info;
+- (void)coreSpeechDaemonStateMonitor:(id)monitor didReceiveStateChanged:(unint64_t)changed;
 - (void)dealloc;
-- (void)getAudioSessionIDWithCompletion:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)getAudioSessionIDWithCompletion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSAudioSessionController
@@ -45,16 +45,16 @@
   endpointId = self->_endpointId;
   if (endpointId)
   {
-    v4 = [(NSUUID *)endpointId UUIDString];
+    uUIDString = [(NSUUID *)endpointId UUIDString];
   }
 
   else
   {
-    v4 = 0;
+    uUIDString = 0;
   }
 
-  v5 = [(CSAudioSessionController *)self sessionInfoProvider];
-  v6 = [v5 audioSessionIdForDeviceId:v4];
+  sessionInfoProvider = [(CSAudioSessionController *)self sessionInfoProvider];
+  v6 = [sessionInfoProvider audioSessionIdForDeviceId:uUIDString];
 
   return v6;
 }
@@ -99,8 +99,8 @@ uint64_t __45__CSAudioSessionController_getAudioSessionID__block_invoke(uint64_t
   self->_xpcClient = v3;
 
   [(CSAudioSessionController *)self setSessionInfoProvider:self->_xpcClient];
-  v5 = [(CSAudioSessionController *)self sessionInfoProvider];
-  [v5 registerObserver:self];
+  sessionInfoProvider = [(CSAudioSessionController *)self sessionInfoProvider];
+  [sessionInfoProvider registerObserver:self];
 
   [(CSXPCClient *)self->_xpcClient setDelegate:self];
   [(CSXPCClient *)self->_xpcClient connect];
@@ -127,7 +127,7 @@ LABEL_3:
   return v6;
 }
 
-- (void)coreSpeechDaemonStateMonitor:(id)a3 didReceiveStateChanged:(unint64_t)a4
+- (void)coreSpeechDaemonStateMonitor:(id)monitor didReceiveStateChanged:(unint64_t)changed
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -135,7 +135,7 @@ LABEL_3:
   v5[2] = __80__CSAudioSessionController_coreSpeechDaemonStateMonitor_didReceiveStateChanged___block_invoke;
   v5[3] = &unk_2784C6EC0;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = changed;
   dispatch_async(queue, v5);
 }
 
@@ -192,7 +192,7 @@ void __80__CSAudioSessionController_coreSpeechDaemonStateMonitor_didReceiveState
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)CSXPCClient:(id)a3 didDisconnect:(BOOL)a4
+- (void)CSXPCClient:(id)client didDisconnect:(BOOL)disconnect
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -272,8 +272,8 @@ uint64_t __54__CSAudioSessionController_CSXPCClient_didDisconnect___block_invoke
     }
 
     [(CSXPCClient *)xpcClient setDelegate:0];
-    v5 = [(CSAudioSessionController *)self sessionInfoProvider];
-    [v5 unregisterObserver:self];
+    sessionInfoProvider = [(CSAudioSessionController *)self sessionInfoProvider];
+    [sessionInfoProvider unregisterObserver:self];
 
     v6 = self->_xpcClient;
     self->_xpcClient = 0;
@@ -284,17 +284,17 @@ uint64_t __54__CSAudioSessionController_CSXPCClient_didDisconnect___block_invoke
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_audioRouteChanged:(id)a3
+- (void)_audioRouteChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__CSAudioSessionController__audioRouteChanged___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -350,17 +350,17 @@ void __47__CSAudioSessionController__audioRouteChanged___block_invoke(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mediaServicesWereReset:(id)a3
+- (void)_mediaServicesWereReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__CSAudioSessionController__mediaServicesWereReset___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resetCopy;
+  v6 = resetCopy;
   dispatch_async(queue, v7);
 }
 
@@ -419,17 +419,17 @@ uint64_t __52__CSAudioSessionController__mediaServicesWereReset___block_invoke(u
   return result;
 }
 
-- (void)_mediaServicesWereLost:(id)a3
+- (void)_mediaServicesWereLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__CSAudioSessionController__mediaServicesWereLost___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lostCopy;
+  v6 = lostCopy;
   dispatch_async(queue, v7);
 }
 
@@ -485,17 +485,17 @@ void __51__CSAudioSessionController__mediaServicesWereLost___block_invoke(uint64
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleInterruption:(id)a3
+- (void)_handleInterruption:(id)interruption
 {
-  v4 = a3;
+  interruptionCopy = interruption;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__CSAudioSessionController__handleInterruption___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = interruptionCopy;
+  v6 = interruptionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -613,17 +613,17 @@ void __48__CSAudioSessionController__handleInterruption___block_invoke(uint64_t 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)a4
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __122__CSAudioSessionController_audioSessionInfoProvider_didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo___block_invoke;
   v8[3] = &unk_2784C6FA8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = infoCopy;
+  v7 = infoCopy;
   dispatch_async(queue, v8);
 }
 
@@ -677,17 +677,17 @@ void __122__CSAudioSessionController_audioSessionInfoProvider_didReceiveAudioSes
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)a4
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __121__CSAudioSessionController_audioSessionInfoProvider_didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo___block_invoke;
   v8[3] = &unk_2784C6FA8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = infoCopy;
+  v7 = infoCopy;
   dispatch_async(queue, v8);
 }
 
@@ -741,17 +741,17 @@ void __121__CSAudioSessionController_audioSessionInfoProvider_didReceiveAudioSes
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)a4
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __111__CSAudioSessionController_audioSessionInfoProvider_didReceiveAudioSessionRouteChangeNotificationWithUserInfo___block_invoke;
   v8[3] = &unk_2784C6FA8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = infoCopy;
+  v7 = infoCopy;
   dispatch_async(queue, v8);
 }
 
@@ -805,17 +805,17 @@ void __111__CSAudioSessionController_audioSessionInfoProvider_didReceiveAudioSes
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)a4
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __112__CSAudioSessionController_audioSessionInfoProvider_didReceiveAudioSessionInterruptionNotificationWithUserInfo___block_invoke;
   v8[3] = &unk_2784C6FA8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = infoCopy;
+  v7 = infoCopy;
   dispatch_async(queue, v8);
 }
 
@@ -869,11 +869,11 @@ void __112__CSAudioSessionController_audioSessionInfoProvider_didReceiveAudioSes
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAudioSessionIDWithCompletion:(id)a3
+- (void)getAudioSessionIDWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -881,7 +881,7 @@ void __112__CSAudioSessionController_audioSessionInfoProvider_didReceiveAudioSes
     v7[2] = __60__CSAudioSessionController_getAudioSessionIDWithCompletion___block_invoke;
     v7[3] = &unk_2784C6E98;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -895,11 +895,11 @@ uint64_t __60__CSAudioSessionController_getAudioSessionIDWithCompletion___block_
   return v3(v1, v2, 0);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -907,7 +907,7 @@ uint64_t __60__CSAudioSessionController_getAudioSessionIDWithCompletion___block_
     v7[2] = __47__CSAudioSessionController_unregisterObserver___block_invoke;
     v7[3] = &unk_2784C6FA8;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -926,11 +926,11 @@ uint64_t __47__CSAudioSessionController_unregisterObserver___block_invoke(uint64
   return result;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -938,7 +938,7 @@ uint64_t __47__CSAudioSessionController_unregisterObserver___block_invoke(uint64
     v7[2] = __45__CSAudioSessionController_registerObserver___block_invoke;
     v7[3] = &unk_2784C6FA8;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -978,9 +978,9 @@ uint64_t __45__CSAudioSessionController_registerObserver___block_invoke(uint64_t
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (CSAudioSessionController)initWithEndpointId:(id)a3
+- (CSAudioSessionController)initWithEndpointId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = CSAudioSessionController;
   v5 = [(CSAudioSessionController *)&v14 init];
@@ -991,11 +991,11 @@ uint64_t __45__CSAudioSessionController_registerObserver___block_invoke(uint64_t
     queue = v5->_queue;
     v5->_queue = v7;
 
-    v9 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v9;
+    v5->_observers = weakObjectsHashTable;
 
-    v11 = [v4 copy];
+    v11 = [idCopy copy];
     endpointId = v5->_endpointId;
     v5->_endpointId = v11;
   }

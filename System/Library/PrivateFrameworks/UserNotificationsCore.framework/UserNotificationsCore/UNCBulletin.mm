@@ -1,57 +1,57 @@
 @interface UNCBulletin
-- (UNCBulletin)initWithBulletinID:(id)a3 sectionID:(id)a4 universalSectionID:(id)a5 dismissalID:(id)a6 date:(id)a7 title:(id)a8 subtitle:(id)a9 message:(id)a10;
-- (UNCBulletin)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UNCBulletin)initWithBulletinID:(id)d sectionID:(id)iD universalSectionID:(id)sectionID dismissalID:(id)dismissalID date:(id)date title:(id)title subtitle:(id)subtitle message:(id)self0;
+- (UNCBulletin)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNCBulletin
 
-- (UNCBulletin)initWithBulletinID:(id)a3 sectionID:(id)a4 universalSectionID:(id)a5 dismissalID:(id)a6 date:(id)a7 title:(id)a8 subtitle:(id)a9 message:(id)a10
+- (UNCBulletin)initWithBulletinID:(id)d sectionID:(id)iD universalSectionID:(id)sectionID dismissalID:(id)dismissalID date:(id)date title:(id)title subtitle:(id)subtitle message:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  sectionIDCopy = sectionID;
+  dismissalIDCopy = dismissalID;
+  dateCopy = date;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  messageCopy = message;
   v42.receiver = self;
   v42.super_class = UNCBulletin;
   v24 = [(UNCBulletin *)&v42 init];
   if (v24)
   {
-    v25 = [v16 copy];
+    v25 = [dCopy copy];
     bulletinID = v24->_bulletinID;
     v24->_bulletinID = v25;
 
-    v27 = [v17 copy];
+    v27 = [iDCopy copy];
     sectionID = v24->_sectionID;
     v24->_sectionID = v27;
 
-    v29 = [v18 copy];
+    v29 = [sectionIDCopy copy];
     universalSectionID = v24->_universalSectionID;
     v24->_universalSectionID = v29;
 
-    v31 = [v19 copy];
+    v31 = [dismissalIDCopy copy];
     dismissalID = v24->_dismissalID;
     v24->_dismissalID = v31;
 
-    v33 = [v20 copy];
+    v33 = [dateCopy copy];
     date = v24->_date;
     v24->_date = v33;
 
-    v35 = [v21 copy];
+    v35 = [titleCopy copy];
     title = v24->_title;
     v24->_title = v35;
 
-    v37 = [v22 copy];
+    v37 = [subtitleCopy copy];
     subtitle = v24->_subtitle;
     v24->_subtitle = v37;
 
-    v39 = [v23 copy];
+    v39 = [messageCopy copy];
     message = v24->_message;
     v24->_message = v39;
   }
@@ -62,85 +62,85 @@
 - (id)description
 {
   v2 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v3 = [v2 build];
+  build = [v2 build];
 
-  return v3;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(UNCBulletin *)self bulletinID];
-  v6 = [(UNCBulletin *)self sectionID];
-  v7 = [(UNCBulletin *)self universalSectionID];
-  v8 = [(UNCBulletin *)self dismissalID];
-  v9 = [(UNCBulletin *)self date];
-  v10 = [(UNCBulletin *)self title];
-  v11 = [(UNCBulletin *)self subtitle];
-  v12 = [(UNCBulletin *)self message];
-  v13 = [v4 initWithBulletinID:v5 sectionID:v6 universalSectionID:v7 dismissalID:v8 date:v9 title:v10 subtitle:v11 message:v12];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  bulletinID = [(UNCBulletin *)self bulletinID];
+  sectionID = [(UNCBulletin *)self sectionID];
+  universalSectionID = [(UNCBulletin *)self universalSectionID];
+  dismissalID = [(UNCBulletin *)self dismissalID];
+  date = [(UNCBulletin *)self date];
+  title = [(UNCBulletin *)self title];
+  subtitle = [(UNCBulletin *)self subtitle];
+  message = [(UNCBulletin *)self message];
+  v13 = [v4 initWithBulletinID:bulletinID sectionID:sectionID universalSectionID:universalSectionID dismissalID:dismissalID date:date title:title subtitle:subtitle message:message];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UNCBulletin *)self bulletinID];
-  [v4 encodeObject:v5 forKey:@"bulletinID"];
+  coderCopy = coder;
+  bulletinID = [(UNCBulletin *)self bulletinID];
+  [coderCopy encodeObject:bulletinID forKey:@"bulletinID"];
 
-  v6 = [(UNCBulletin *)self sectionID];
-  [v4 encodeObject:v6 forKey:@"sectionID"];
+  sectionID = [(UNCBulletin *)self sectionID];
+  [coderCopy encodeObject:sectionID forKey:@"sectionID"];
 
-  v7 = [(UNCBulletin *)self universalSectionID];
-  [v4 encodeObject:v7 forKey:@"universalSectionID"];
+  universalSectionID = [(UNCBulletin *)self universalSectionID];
+  [coderCopy encodeObject:universalSectionID forKey:@"universalSectionID"];
 
-  v8 = [(UNCBulletin *)self date];
-  [v4 encodeObject:v8 forKey:@"date"];
+  date = [(UNCBulletin *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  v9 = [(UNCBulletin *)self title];
-  [v4 encodeObject:v9 forKey:@"title"];
+  title = [(UNCBulletin *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v10 = [(UNCBulletin *)self subtitle];
-  [v4 encodeObject:v10 forKey:@"subtitle"];
+  subtitle = [(UNCBulletin *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v11 = [(UNCBulletin *)self message];
-  [v4 encodeObject:v11 forKey:@"message"];
+  message = [(UNCBulletin *)self message];
+  [coderCopy encodeObject:message forKey:@"message"];
 }
 
-- (UNCBulletin)initWithCoder:(id)a3
+- (UNCBulletin)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = UNCBulletin;
   v5 = [(UNCBulletin *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bulletinID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bulletinID"];
     bulletinID = v5->_bulletinID;
     v5->_bulletinID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionID"];
     sectionID = v5->_sectionID;
     v5->_sectionID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"universalSectionID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"universalSectionID"];
     universalSectionID = v5->_universalSectionID;
     v5->_universalSectionID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     message = v5->_message;
     v5->_message = v18;
   }

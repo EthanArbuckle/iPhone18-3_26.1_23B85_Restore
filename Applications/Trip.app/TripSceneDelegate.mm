@@ -1,33 +1,33 @@
 @interface TripSceneDelegate
 - (_TtC4Trip17TripSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneWillEnterForeground:(id)foreground;
 @end
 
 @implementation TripSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10003C87C(v8, v9);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10003C87C(sceneCopy, sessionCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_10003C4F8(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_10003C4F8(disconnectCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v5 = a3;
-  v3 = [v5 session];
-  v4 = [v3 role];
+  foregroundCopy = foreground;
+  session = [foregroundCopy session];
+  role = [session role];
 
   CAFSignpostEmit_SceneWillEnterForeground();
 }

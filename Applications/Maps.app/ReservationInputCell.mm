@@ -1,93 +1,93 @@
 @interface ReservationInputCell
-- ($6DEE646D0694EE33DDAF15C88EA05AA8)suggestionsForString:(id)a3 inputIndex:(unsigned int)a4;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- ($6DEE646D0694EE33DDAF15C88EA05AA8)suggestionsForString:(id)string inputIndex:(unsigned int)index;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (NSString)placeholderText;
 - (NSString)text;
 - (id)detailTextColor;
 - (void)configureTextField;
-- (void)doneButtonTapped:(id)a3;
+- (void)doneButtonTapped:(id)tapped;
 - (void)loadDetailView;
-- (void)setDetailTextColor:(id)a3;
-- (void)setPlaceholderText:(id)a3;
-- (void)setRequired:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)setType:(int64_t)a3;
-- (void)updateTextColorForText:(id)a3;
+- (void)setDetailTextColor:(id)color;
+- (void)setPlaceholderText:(id)text;
+- (void)setRequired:(BOOL)required;
+- (void)setText:(id)text;
+- (void)setType:(int64_t)type;
+- (void)updateTextColorForText:(id)text;
 @end
 
 @implementation ReservationInputCell
 
-- (void)setRequired:(BOOL)a3
+- (void)setRequired:(BOOL)required
 {
-  if (self->_required == !a3)
+  if (self->_required == !required)
   {
-    self->_required = a3;
-    v5 = [(ReservationInputCell *)self text];
-    [(ReservationInputCell *)self updateTextColorForText:v5];
+    self->_required = required;
+    text = [(ReservationInputCell *)self text];
+    [(ReservationInputCell *)self updateTextColorForText:text];
   }
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
-    self->_type = a3;
+    self->_type = type;
     [(ReservationInputCell *)self configureTextField];
   }
 }
 
 - (NSString)text
 {
-  v2 = [(ReservationInputCell *)self textField];
-  v3 = [v2 text];
+  textField = [(ReservationInputCell *)self textField];
+  text = [textField text];
 
-  return v3;
+  return text;
 }
 
 - (id)detailTextColor
 {
-  v2 = [(ReservationInputCell *)self textField];
-  v3 = [v2 textColor];
+  textField = [(ReservationInputCell *)self textField];
+  textColor = [textField textColor];
 
-  return v3;
+  return textColor;
 }
 
-- (void)setDetailTextColor:(id)a3
+- (void)setDetailTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(ReservationInputCell *)self textField];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  textField = [(ReservationInputCell *)self textField];
+  [textField setTextColor:colorCopy];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
-  v4 = [(ReservationInputCell *)self textField];
-  [v4 setText:v5];
+  textCopy = text;
+  textField = [(ReservationInputCell *)self textField];
+  [textField setText:textCopy];
 
-  [(ReservationInputCell *)self updateTextColorForText:v5];
+  [(ReservationInputCell *)self updateTextColorForText:textCopy];
 }
 
 - (NSString)placeholderText
 {
-  v2 = [(ReservationInputCell *)self textField];
-  v3 = [v2 placeholder];
+  textField = [(ReservationInputCell *)self textField];
+  placeholder = [textField placeholder];
 
-  return v3;
+  return placeholder;
 }
 
-- (void)setPlaceholderText:(id)a3
+- (void)setPlaceholderText:(id)text
 {
-  v4 = a3;
-  v5 = [(ReservationInputCell *)self textField];
-  [v5 setPlaceholder:v4];
+  textCopy = text;
+  textField = [(ReservationInputCell *)self textField];
+  [textField setPlaceholder:textCopy];
 }
 
-- (void)updateTextColorForText:(id)a3
+- (void)updateTextColorForText:(id)text
 {
-  v6 = a3;
-  if (-[ReservationInputCell required](self, "required") && ![v6 length])
+  textCopy = text;
+  if (-[ReservationInputCell required](self, "required") && ![textCopy length])
   {
     v4 = +[UIColor redColor];
   }
@@ -101,17 +101,17 @@
   [(ReservationTableViewCell *)self setTitleTextColor:v4];
 }
 
-- ($6DEE646D0694EE33DDAF15C88EA05AA8)suggestionsForString:(id)a3 inputIndex:(unsigned int)a4
+- ($6DEE646D0694EE33DDAF15C88EA05AA8)suggestionsForString:(id)string inputIndex:(unsigned int)index
 {
-  v5 = a3;
+  stringCopy = string;
   v6 = +[CNPhoneNumber defaultCountryCode];
-  v7 = [CNPhoneNumber phoneNumberWithDigits:v5 countryCode:v6];
+  v7 = [CNPhoneNumber phoneNumberWithDigits:stringCopy countryCode:v6];
 
-  v8 = [v7 formattedStringValue];
-  v9 = v8;
-  if (v8)
+  formattedStringValue = [v7 formattedStringValue];
+  v9 = formattedStringValue;
+  if (formattedStringValue)
   {
-    v16 = v8;
+    v16 = formattedStringValue;
     v10 = [NSArray arrayWithObjects:&v16 count:1];
     v11 = [v9 length];
     v12 = [v9 copy];
@@ -132,19 +132,19 @@
   return result;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  if (![v10 length] || -[ReservationInputCell type](self, "type") || (objc_msgSend(v10, "isEqualToString:", @" ") & 1) != 0)
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  if (![stringCopy length] || -[ReservationInputCell type](self, "type") || (objc_msgSend(stringCopy, "isEqualToString:", @" ") & 1) != 0)
   {
     goto LABEL_8;
   }
 
-  v11 = [v9 text];
-  v12 = [v11 stringByReplacingCharactersInRange:location withString:{length, v10}];
+  text = [fieldCopy text];
+  v12 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   if (![v12 length])
   {
@@ -153,14 +153,14 @@
   }
 
   v13 = [CNPhoneNumber phoneNumberWithStringValue:v12];
-  v14 = [v13 formattedStringValue];
-  v15 = [v14 length];
+  formattedStringValue = [v13 formattedStringValue];
+  v15 = [formattedStringValue length];
 
   if (v15)
   {
 LABEL_8:
-    v17 = [v9 text];
-    v18 = [v17 stringByReplacingCharactersInRange:location withString:{length, v10}];
+    text2 = [fieldCopy text];
+    v18 = [text2 stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
     [(ReservationInputCell *)self updateTextColorForText:v18];
     v16 = 1;
@@ -173,111 +173,111 @@ LABEL_9:
   return v16;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(ReservationInputCell *)self textField];
+  returnCopy = return;
+  textField = [(ReservationInputCell *)self textField];
 
-  if (v5 == v4)
+  if (textField == returnCopy)
   {
-    [(ReservationInputCell *)self doneButtonTapped:v4];
+    [(ReservationInputCell *)self doneButtonTapped:returnCopy];
   }
 
   return 1;
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  v3 = [(ReservationInputCell *)self textField];
-  [v3 resignFirstResponder];
+  textField = [(ReservationInputCell *)self textField];
+  [textField resignFirstResponder];
 }
 
 - (void)configureTextField
 {
-  v3 = [(ReservationInputCell *)self type];
-  if (v3 <= 1)
+  type = [(ReservationInputCell *)self type];
+  if (type <= 1)
   {
-    if (!v3)
+    if (!type)
     {
-      v19 = [(ReservationInputCell *)self textField];
-      [v19 setAutocorrectionType:1];
+      textField = [(ReservationInputCell *)self textField];
+      [textField setAutocorrectionType:1];
 
-      v20 = [(ReservationInputCell *)self textField];
-      [v20 setKeyboardType:5];
+      textField2 = [(ReservationInputCell *)self textField];
+      [textField2 setKeyboardType:5];
 
-      v21 = [(ReservationInputCell *)self textField];
-      [v21 setTextContentType:UITextContentTypeTelephoneNumber];
+      textField3 = [(ReservationInputCell *)self textField];
+      [textField3 setTextContentType:UITextContentTypeTelephoneNumber];
       goto LABEL_14;
     }
 
-    if (v3 != 1)
+    if (type != 1)
     {
       return;
     }
 
-    v7 = [(ReservationInputCell *)self textField];
-    [v7 setAutocorrectionType:1];
+    textField4 = [(ReservationInputCell *)self textField];
+    [textField4 setAutocorrectionType:1];
 
-    v8 = [(ReservationInputCell *)self textField];
-    [v8 setAutocapitalizationType:0];
+    textField5 = [(ReservationInputCell *)self textField];
+    [textField5 setAutocapitalizationType:0];
 
-    v9 = [(ReservationInputCell *)self textField];
-    [v9 setTextContentType:UITextContentTypeEmailAddress];
+    textField6 = [(ReservationInputCell *)self textField];
+    [textField6 setTextContentType:UITextContentTypeEmailAddress];
 
-    v10 = [(ReservationInputCell *)self textField];
-    v21 = v10;
+    textField7 = [(ReservationInputCell *)self textField];
+    textField3 = textField7;
     v11 = 7;
   }
 
   else
   {
-    switch(v3)
+    switch(type)
     {
       case 2:
-        v12 = [(ReservationInputCell *)self textField];
-        [v12 setAutocorrectionType:1];
+        textField8 = [(ReservationInputCell *)self textField];
+        [textField8 setAutocorrectionType:1];
 
-        v13 = [(ReservationInputCell *)self textField];
-        [v13 setAutocapitalizationType:1];
+        textField9 = [(ReservationInputCell *)self textField];
+        [textField9 setAutocapitalizationType:1];
 
         v14 = &UITextContentTypeGivenName;
         break;
       case 3:
-        v15 = [(ReservationInputCell *)self textField];
-        [v15 setAutocorrectionType:1];
+        textField10 = [(ReservationInputCell *)self textField];
+        [textField10 setAutocorrectionType:1];
 
-        v16 = [(ReservationInputCell *)self textField];
-        [v16 setAutocapitalizationType:1];
+        textField11 = [(ReservationInputCell *)self textField];
+        [textField11 setAutocapitalizationType:1];
 
         v14 = &UITextContentTypeFamilyName;
         break;
       case 4:
-        v4 = [(ReservationInputCell *)self textField];
-        [v4 setAutocorrectionType:2];
+        textField12 = [(ReservationInputCell *)self textField];
+        [textField12 setAutocorrectionType:2];
 
-        v5 = [(ReservationInputCell *)self textField];
-        [v5 setAutocapitalizationType:2];
+        textField13 = [(ReservationInputCell *)self textField];
+        [textField13 setAutocapitalizationType:2];
 
-        v6 = [(ReservationInputCell *)self textField];
-        [v6 setKeyboardType:0];
+        textField14 = [(ReservationInputCell *)self textField];
+        [textField14 setKeyboardType:0];
 
-        v21 = [(ReservationInputCell *)self textField];
-        [v21 setTextSuggestionDelegate:0];
+        textField3 = [(ReservationInputCell *)self textField];
+        [textField3 setTextSuggestionDelegate:0];
         goto LABEL_14;
       default:
         return;
     }
 
     v17 = *v14;
-    v18 = [(ReservationInputCell *)self textField];
-    [v18 setTextContentType:v17];
+    textField15 = [(ReservationInputCell *)self textField];
+    [textField15 setTextContentType:v17];
 
-    v10 = [(ReservationInputCell *)self textField];
-    v21 = v10;
+    textField7 = [(ReservationInputCell *)self textField];
+    textField3 = textField7;
     v11 = 0;
   }
 
-  [v10 setKeyboardType:v11];
+  [textField7 setKeyboardType:v11];
 LABEL_14:
 }
 
@@ -287,38 +287,38 @@ LABEL_14:
   [(ReservationInputCell *)self setTextField:v3];
 
   v4 = +[UIColor clearColor];
-  v5 = [(ReservationInputCell *)self textField];
-  [v5 setBackgroundColor:v4];
+  textField = [(ReservationInputCell *)self textField];
+  [textField setBackgroundColor:v4];
 
-  v6 = [(ReservationTableViewCell *)self titleLabel];
-  v7 = [v6 font];
-  v8 = [(ReservationInputCell *)self textField];
-  [v8 setFont:v7];
+  titleLabel = [(ReservationTableViewCell *)self titleLabel];
+  font = [titleLabel font];
+  textField2 = [(ReservationInputCell *)self textField];
+  [textField2 setFont:font];
 
-  v9 = [(ReservationInputCell *)self textField];
-  [v9 setDelegate:self];
+  textField3 = [(ReservationInputCell *)self textField];
+  [textField3 setDelegate:self];
 
-  v10 = [(ReservationInputCell *)self textField];
-  [v10 setTextAlignment:2];
+  textField4 = [(ReservationInputCell *)self textField];
+  [textField4 setTextAlignment:2];
 
-  v11 = [(ReservationInputCell *)self textField];
-  [v11 setReturnKeyType:9];
+  textField5 = [(ReservationInputCell *)self textField];
+  [textField5 setReturnKeyType:9];
 
-  v12 = [(ReservationInputCell *)self textField];
-  v13 = [v12 textInputTraits];
-  [v13 setContentsIsSingleValue:1];
+  textField6 = [(ReservationInputCell *)self textField];
+  textInputTraits = [textField6 textInputTraits];
+  [textInputTraits setContentsIsSingleValue:1];
 
-  v14 = [(ReservationInputCell *)self textField];
+  textField7 = [(ReservationInputCell *)self textField];
   LODWORD(v15) = 1132068864;
-  [v14 setContentHuggingPriority:0 forAxis:v15];
+  [textField7 setContentHuggingPriority:0 forAxis:v15];
 
-  v16 = [(ReservationTableViewCell *)self titleLabel];
+  titleLabel2 = [(ReservationTableViewCell *)self titleLabel];
   LODWORD(v17) = 1148846080;
-  [v16 setContentHuggingPriority:0 forAxis:v17];
+  [titleLabel2 setContentHuggingPriority:0 forAxis:v17];
 
   [(ReservationInputCell *)self configureTextField];
-  v18 = [(ReservationInputCell *)self textField];
-  [(ReservationTableViewCell *)self setDetailView:v18];
+  textField8 = [(ReservationInputCell *)self textField];
+  [(ReservationTableViewCell *)self setDetailView:textField8];
 }
 
 @end

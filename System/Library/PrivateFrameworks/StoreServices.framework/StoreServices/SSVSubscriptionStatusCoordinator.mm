@@ -4,26 +4,26 @@
 + (id)sharedCoordinator;
 + (void)beginSuspendingSubscriptionStatusChangeNotifications;
 + (void)endSuspendingSubscriptionStatusChangeNotifications;
-+ (void)removeUserDefaultsForAccountIdentifier:(id)a3;
++ (void)removeUserDefaultsForAccountIdentifier:(id)identifier;
 + (void)sendChangeNotification;
-+ (void)updateUserDefaultsWithStatus:(id)a3;
-+ (void)updateWithResponseDictionary:(id)a3 accountIdentifier:(id)a4;
++ (void)updateUserDefaultsWithStatus:(id)status;
++ (void)updateWithResponseDictionary:(id)dictionary accountIdentifier:(id)identifier;
 - (SSVSubscriptionStatus)lastKnownStatus;
 - (SSVSubscriptionStatusCoordinator)init;
 - (id)_copyStatusDateFromUserDefaults;
 - (id)_copyStatusFromUserDefaults;
-- (id)_copyValidStatusForStatus:(id)a3;
+- (id)_copyValidStatusForStatus:(id)status;
 - (void)_accountStoreChangedNotification;
 - (void)_deviceStoreFrontChangedNotification;
 - (void)_externalChangeNotification;
-- (void)_fireStatusBlocksWithStatus:(id)a3 isFinal:(BOOL)a4 error:(id)a5;
-- (void)_handleRequestResponseWithStatus:(id)a3 isFinal:(BOOL)a4 error:(id)a5;
+- (void)_fireStatusBlocksWithStatus:(id)status isFinal:(BOOL)final error:(id)error;
+- (void)_handleRequestResponseWithStatus:(id)status isFinal:(BOOL)final error:(id)error;
 - (void)_invalidateLastKnownStatus;
-- (void)_updateSubscriptionStatusAccessPolicyAllowingNotification:(BOOL)a3;
+- (void)_updateSubscriptionStatusAccessPolicyAllowingNotification:(BOOL)notification;
 - (void)_validateLastKnownStatus;
 - (void)dealloc;
-- (void)getStatusWithOptions:(id)a3 statusBlock:(id)a4;
-- (void)modifyLastKnownStatusUsingBlock:(id)a3;
+- (void)getStatusWithOptions:(id)options statusBlock:(id)block;
+- (void)modifyLastKnownStatusUsingBlock:(id)block;
 - (void)reset;
 @end
 
@@ -60,9 +60,9 @@
     v9 = v2;
     v13 = v9;
     dispatch_sync(v8, block);
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v9 selector:sel__accountStoreChangedNotification name:0x1F50437D8 object:0];
-    [v10 addObserver:v9 selector:sel__deviceStoreFrontChangedNotification name:@"SSDeviceStoreFrontChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__accountStoreChangedNotification name:0x1F50437D8 object:0];
+    [defaultCenter addObserver:v9 selector:sel__deviceStoreFrontChangedNotification name:@"SSDeviceStoreFrontChangedNotification" object:0];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -79,9 +79,9 @@ void __40__SSVSubscriptionStatusCoordinator_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0x1F50437D8 object:0];
-  [v3 removeObserver:self name:@"SSDeviceStoreFrontChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0x1F50437D8 object:0];
+  [defaultCenter removeObserver:self name:@"SSDeviceStoreFrontChangedNotification" object:0];
   notify_cancel(self->_notificationToken);
 
   v4.receiver = self;
@@ -95,7 +95,7 @@ void __40__SSVSubscriptionStatusCoordinator_init__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __53__SSVSubscriptionStatusCoordinator_sharedCoordinator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sOnce != -1)
   {
     dispatch_once(&sOnce, block);
@@ -137,20 +137,20 @@ void __53__SSVSubscriptionStatusCoordinator_sharedCoordinator__block_invoke(uint
   return v5;
 }
 
-- (void)getStatusWithOptions:(id)a3 statusBlock:(id)a4
+- (void)getStatusWithOptions:(id)options statusBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__SSVSubscriptionStatusCoordinator_getStatusWithOptions_statusBlock___block_invoke;
   block[3] = &unk_1E84AC000;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = optionsCopy;
+  selfCopy = self;
+  v14 = blockCopy;
+  v9 = blockCopy;
+  v10 = optionsCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -392,17 +392,17 @@ void __51__SSVSubscriptionStatusCoordinator_lastKnownStatus__block_invoke(uint64
   }
 }
 
-- (void)modifyLastKnownStatusUsingBlock:(id)a3
+- (void)modifyLastKnownStatusUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__SSVSubscriptionStatusCoordinator_modifyLastKnownStatusUsingBlock___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -445,20 +445,20 @@ void __41__SSVSubscriptionStatusCoordinator_reset__block_invoke(uint64_t a1)
   *(v4 + 48) = 0;
 }
 
-+ (void)updateUserDefaultsWithStatus:(id)a3
++ (void)updateUserDefaultsWithStatus:(id)status
 {
-  v3 = [a3 copyUserDefaultsRepresentation];
-  if (v3)
+  copyUserDefaultsRepresentation = [status copyUserDefaultsRepresentation];
+  if (copyUserDefaultsRepresentation)
   {
-    v6 = v3;
-    v4 = v3;
+    v6 = copyUserDefaultsRepresentation;
+    v4 = copyUserDefaultsRepresentation;
     CFPreferencesSetAppValue(@"FuseSubscriptionStatus", v4, @"com.apple.itunesstored");
     CFRelease(v4);
     v5 = objc_alloc_init(MEMORY[0x1E695DF00]);
     CFPreferencesSetAppValue(@"FuseSubscriptionStatusDate", v5, @"com.apple.itunesstored");
     CFRelease(v5);
     CFPreferencesAppSynchronize(@"com.apple.itunesstored");
-    v3 = v6;
+    copyUserDefaultsRepresentation = v6;
   }
 }
 
@@ -546,25 +546,25 @@ uint64_t __68__SSVSubscriptionStatusCoordinator__accountStoreChangedNotification
   return v3;
 }
 
-- (id)_copyValidStatusForStatus:(id)a3
+- (id)_copyValidStatusForStatus:(id)status
 {
-  v3 = a3;
-  if (v3)
+  statusCopy = status;
+  if (statusCopy)
   {
     v4 = +[SSAccountStore defaultStore];
-    v5 = [v4 activeAccount];
-    v6 = [v5 uniqueIdentifier];
+    activeAccount = [v4 activeAccount];
+    uniqueIdentifier = [activeAccount uniqueIdentifier];
 
-    v7 = [v3 accountIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    accountIdentifier = [statusCopy accountIdentifier];
+    v8 = accountIdentifier;
+    if (uniqueIdentifier == accountIdentifier)
     {
       v9 = 1;
     }
 
-    else if (v7)
+    else if (accountIdentifier)
     {
-      v9 = [v6 isEqualToNumber:v7];
+      v9 = [uniqueIdentifier isEqualToNumber:accountIdentifier];
     }
 
     else
@@ -575,14 +575,14 @@ uint64_t __68__SSVSubscriptionStatusCoordinator__accountStoreChangedNotification
     v11 = +[SSVTelephonyController sharedController];
     if (([v11 isPhoneNumberAccessRestricted] & 1) == 0)
     {
-      v12 = [v11 phoneNumber];
-      v13 = [v3 phoneNumber];
-      v14 = v13;
-      if (v12 != v13)
+      phoneNumber = [v11 phoneNumber];
+      phoneNumber2 = [statusCopy phoneNumber];
+      v14 = phoneNumber2;
+      if (phoneNumber != phoneNumber2)
       {
-        if (v13)
+        if (phoneNumber2)
         {
-          v15 = [v12 isEqualToString:v13];
+          v15 = [phoneNumber isEqualToString:phoneNumber2];
         }
 
         else
@@ -599,7 +599,7 @@ LABEL_21:
         }
 
 LABEL_14:
-        v16 = [v3 copy];
+        v16 = [statusCopy copy];
         v10 = v16;
         if ((v9 & 1) == 0)
         {
@@ -652,13 +652,13 @@ void __63__SSVSubscriptionStatusCoordinator__externalChangeNotification__block_i
   [v2 postNotificationName:@"SSVSubscriptionStatusDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_fireStatusBlocksWithStatus:(id)a3 isFinal:(BOOL)a4 error:(id)a5
+- (void)_fireStatusBlocksWithStatus:(id)status isFinal:(BOOL)final error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  finalCopy = final;
+  statusCopy = status;
+  errorCopy = error;
   v10 = [(NSMutableArray *)self->_statusBlocks copy];
-  if (v6)
+  if (finalCopy)
   {
     [(NSMutableArray *)self->_statusBlocks removeAllObjects];
   }
@@ -671,9 +671,9 @@ void __63__SSVSubscriptionStatusCoordinator__externalChangeNotification__block_i
     v12[2] = __78__SSVSubscriptionStatusCoordinator__fireStatusBlocksWithStatus_isFinal_error___block_invoke;
     v12[3] = &unk_1E84ACFF8;
     v13 = v10;
-    v14 = v8;
-    v16 = v6;
-    v15 = v9;
+    v14 = statusCopy;
+    v16 = finalCopy;
+    v15 = errorCopy;
     dispatch_async(callbackQueue, v12);
   }
 }
@@ -713,21 +713,21 @@ void __78__SSVSubscriptionStatusCoordinator__fireStatusBlocksWithStatus_isFinal_
   }
 }
 
-- (void)_handleRequestResponseWithStatus:(id)a3 isFinal:(BOOL)a4 error:(id)a5
+- (void)_handleRequestResponseWithStatus:(id)status isFinal:(BOOL)final error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  statusCopy = status;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__SSVSubscriptionStatusCoordinator__handleRequestResponseWithStatus_isFinal_error___block_invoke;
   v13[3] = &unk_1E84ACFF8;
-  v17 = a4;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  finalCopy = final;
+  v14 = statusCopy;
+  selfCopy = self;
+  v16 = errorCopy;
+  v11 = errorCopy;
+  v12 = statusCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -764,15 +764,15 @@ uint64_t __83__SSVSubscriptionStatusCoordinator__handleRequestResponseWithStatus
   return [v8 _fireStatusBlocksWithStatus:v9 isFinal:v7 & 1 error:v10];
 }
 
-- (void)_updateSubscriptionStatusAccessPolicyAllowingNotification:(BOOL)a3
+- (void)_updateSubscriptionStatusAccessPolicyAllowingNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v5 = [SSPrivacyController shouldDisplayPrivacyLinkWithIdentifier:@"com.apple.onboarding.applemusic"];
   if (self->_subscriptionStatusAccessPolicy != v5)
   {
     self->_subscriptionStatusAccessPolicy = v5;
-    if (v3)
+    if (notificationCopy)
     {
       callbackQueue = self->_callbackQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -810,8 +810,8 @@ void __94__SSVSubscriptionStatusCoordinator__updateSubscriptionStatusAccessPolic
 
 + (void)beginSuspendingSubscriptionStatusChangeNotifications
 {
-  v2 = [a1 _changeNotificationSuspensionAccessQueue];
-  dispatch_sync(v2, &__block_literal_global_36);
+  _changeNotificationSuspensionAccessQueue = [self _changeNotificationSuspensionAccessQueue];
+  dispatch_sync(_changeNotificationSuspensionAccessQueue, &__block_literal_global_36);
 }
 
 + (void)endSuspendingSubscriptionStatusChangeNotifications
@@ -820,17 +820,17 @@ void __94__SSVSubscriptionStatusCoordinator__updateSubscriptionStatusAccessPolic
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v3 = [a1 _changeNotificationSuspensionAccessQueue];
+  _changeNotificationSuspensionAccessQueue = [self _changeNotificationSuspensionAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__SSVSubscriptionStatusCoordinator_Private__endSuspendingSubscriptionStatusChangeNotifications__block_invoke;
   block[3] = &unk_1E84AC2A8;
   block[4] = &v5;
-  dispatch_sync(v3, block);
+  dispatch_sync(_changeNotificationSuspensionAccessQueue, block);
 
   if (*(v6 + 24) == 1)
   {
-    [a1 _sendChangeNotification];
+    [self _sendChangeNotification];
   }
 
   _Block_object_dispose(&v5, 8);
@@ -851,15 +851,15 @@ uint64_t __95__SSVSubscriptionStatusCoordinator_Private__endSuspendingSubscripti
   return result;
 }
 
-+ (void)removeUserDefaultsForAccountIdentifier:(id)a3
++ (void)removeUserDefaultsForAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [a1 copyStatusFromUserDefaults];
-  v5 = [v4 accountIdentifier];
-  if (v6 && v5 && [v6 isEqual:v5])
+  identifierCopy = identifier;
+  copyStatusFromUserDefaults = [self copyStatusFromUserDefaults];
+  accountIdentifier = [copyStatusFromUserDefaults accountIdentifier];
+  if (identifierCopy && accountIdentifier && [identifierCopy isEqual:accountIdentifier])
   {
-    [v4 resetAccountBasedProperties];
-    [a1 updateUserDefaultsWithStatus:v4];
+    [copyStatusFromUserDefaults resetAccountBasedProperties];
+    [self updateUserDefaultsWithStatus:copyStatusFromUserDefaults];
   }
 }
 
@@ -869,17 +869,17 @@ uint64_t __95__SSVSubscriptionStatusCoordinator_Private__endSuspendingSubscripti
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v3 = [a1 _changeNotificationSuspensionAccessQueue];
+  _changeNotificationSuspensionAccessQueue = [self _changeNotificationSuspensionAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__SSVSubscriptionStatusCoordinator_Private__sendChangeNotification__block_invoke;
   block[3] = &unk_1E84AC2A8;
   block[4] = &v5;
-  dispatch_sync(v3, block);
+  dispatch_sync(_changeNotificationSuspensionAccessQueue, block);
 
   if (*(v6 + 24) == 1)
   {
-    [a1 _sendChangeNotification];
+    [self _sendChangeNotification];
   }
 
   _Block_object_dispose(&v5, 8);
@@ -900,20 +900,20 @@ uint64_t __67__SSVSubscriptionStatusCoordinator_Private__sendChangeNotification_
   return result;
 }
 
-+ (void)updateWithResponseDictionary:(id)a3 accountIdentifier:(id)a4
++ (void)updateWithResponseDictionary:(id)dictionary accountIdentifier:(id)identifier
 {
-  v26 = a4;
-  v6 = [a3 objectForKey:@"subscriptionStatus"];
+  identifierCopy = identifier;
+  v6 = [dictionary objectForKey:@"subscriptionStatus"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = +[SSAccountStore defaultStore];
-    v8 = [v7 activeAccount];
-    v9 = [v8 uniqueIdentifier];
+    activeAccount = [v7 activeAccount];
+    uniqueIdentifier = [activeAccount uniqueIdentifier];
 
-    if (v9)
+    if (uniqueIdentifier)
     {
-      v10 = v9 == v26;
+      v10 = uniqueIdentifier == identifierCopy;
     }
 
     else
@@ -921,49 +921,49 @@ uint64_t __67__SSVSubscriptionStatusCoordinator_Private__sendChangeNotification_
       v10 = 1;
     }
 
-    if (!v10 && (!v26 || ![v26 isEqualToNumber:v9]))
+    if (!v10 && (!identifierCopy || ![identifierCopy isEqualToNumber:uniqueIdentifier]))
     {
       goto LABEL_31;
     }
 
     v11 = objc_alloc_init(SSVSubscriptionStatus);
-    [(SSVSubscriptionStatus *)v11 setAccountIdentifier:v26];
+    [(SSVSubscriptionStatus *)v11 setAccountIdentifier:identifierCopy];
     [(SSVSubscriptionStatus *)v11 setValuesUsingStatusDictionary:v6];
-    v12 = [a1 copyStatusFromUserDefaults];
-    if (!v12)
+    copyStatusFromUserDefaults = [self copyStatusFromUserDefaults];
+    if (!copyStatusFromUserDefaults)
     {
-      v22 = a1;
+      selfCopy2 = self;
       v23 = v11;
       goto LABEL_29;
     }
 
-    v13 = [(SSVSubscriptionStatus *)v11 accountStatus];
-    v14 = [(SSVSubscriptionStatus *)v12 accountStatus];
-    v15 = v13 != v14;
-    if (v13 != v14)
+    accountStatus = [(SSVSubscriptionStatus *)v11 accountStatus];
+    accountStatus2 = [(SSVSubscriptionStatus *)copyStatusFromUserDefaults accountStatus];
+    v15 = accountStatus != accountStatus2;
+    if (accountStatus != accountStatus2)
     {
-      [(SSVSubscriptionStatus *)v12 setAccountStatus:v13];
+      [(SSVSubscriptionStatus *)copyStatusFromUserDefaults setAccountStatus:accountStatus];
     }
 
-    v16 = [(SSVSubscriptionStatus *)v11 carrierBundlingStatus];
-    if (v16 != [(SSVSubscriptionStatus *)v12 carrierBundlingStatus])
+    carrierBundlingStatus = [(SSVSubscriptionStatus *)v11 carrierBundlingStatus];
+    if (carrierBundlingStatus != [(SSVSubscriptionStatus *)copyStatusFromUserDefaults carrierBundlingStatus])
     {
-      [(SSVSubscriptionStatus *)v12 setCarrierBundlingStatus:v16];
+      [(SSVSubscriptionStatus *)copyStatusFromUserDefaults setCarrierBundlingStatus:carrierBundlingStatus];
       v15 = 1;
     }
 
-    v17 = [(SSVSubscriptionStatus *)v12 accountIdentifier];
-    if (v17 == v26)
+    accountIdentifier = [(SSVSubscriptionStatus *)copyStatusFromUserDefaults accountIdentifier];
+    if (accountIdentifier == identifierCopy)
     {
     }
 
     else
     {
-      if (v26 && ([(SSVSubscriptionStatus *)v12 accountIdentifier], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (identifierCopy && ([(SSVSubscriptionStatus *)copyStatusFromUserDefaults accountIdentifier], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v19 = v18;
-        v20 = [(SSVSubscriptionStatus *)v12 accountIdentifier];
-        v21 = [v26 isEqualToNumber:v20];
+        accountIdentifier2 = [(SSVSubscriptionStatus *)copyStatusFromUserDefaults accountIdentifier];
+        v21 = [identifierCopy isEqualToNumber:accountIdentifier2];
 
         if (v21)
         {
@@ -975,20 +975,20 @@ uint64_t __67__SSVSubscriptionStatusCoordinator_Private__sendChangeNotification_
       {
       }
 
-      [(SSVSubscriptionStatus *)v12 setAccountIdentifier:v26];
+      [(SSVSubscriptionStatus *)copyStatusFromUserDefaults setAccountIdentifier:identifierCopy];
       v15 = 1;
     }
 
 LABEL_22:
-    v24 = [(SSVSubscriptionStatus *)v11 acceptedStoreTermsVersion];
-    if (v24 != [(SSVSubscriptionStatus *)v12 acceptedStoreTermsVersion])
+    acceptedStoreTermsVersion = [(SSVSubscriptionStatus *)v11 acceptedStoreTermsVersion];
+    if (acceptedStoreTermsVersion != [(SSVSubscriptionStatus *)copyStatusFromUserDefaults acceptedStoreTermsVersion])
     {
-      [(SSVSubscriptionStatus *)v12 setAcceptedStoreTermsVersion:v24];
+      [(SSVSubscriptionStatus *)copyStatusFromUserDefaults setAcceptedStoreTermsVersion:acceptedStoreTermsVersion];
       v15 = 1;
     }
 
-    v25 = [(SSVSubscriptionStatus *)v11 latestStoreTermsVersion];
-    if (v25 == [(SSVSubscriptionStatus *)v12 latestStoreTermsVersion])
+    latestStoreTermsVersion = [(SSVSubscriptionStatus *)v11 latestStoreTermsVersion];
+    if (latestStoreTermsVersion == [(SSVSubscriptionStatus *)copyStatusFromUserDefaults latestStoreTermsVersion])
     {
       if (!v15)
       {
@@ -998,14 +998,14 @@ LABEL_22:
 
     else
     {
-      [(SSVSubscriptionStatus *)v12 setLatestStoreTermsVersion:v25];
+      [(SSVSubscriptionStatus *)copyStatusFromUserDefaults setLatestStoreTermsVersion:latestStoreTermsVersion];
     }
 
-    v22 = a1;
-    v23 = v12;
+    selfCopy2 = self;
+    v23 = copyStatusFromUserDefaults;
 LABEL_29:
-    [v22 updateUserDefaultsWithStatus:v23];
-    [a1 sendChangeNotification];
+    [selfCopy2 updateUserDefaultsWithStatus:v23];
+    [self sendChangeNotification];
 LABEL_30:
 
 LABEL_31:

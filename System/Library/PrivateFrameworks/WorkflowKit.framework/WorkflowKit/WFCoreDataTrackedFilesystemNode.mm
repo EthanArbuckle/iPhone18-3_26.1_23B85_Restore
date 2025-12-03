@@ -7,13 +7,13 @@
 - (id)descriptor
 {
   v3 = [WFTrackedFilesystemNode alloc];
-  v4 = [(WFCoreDataTrackedFilesystemNode *)self identifier];
-  v5 = [(WFCoreDataTrackedFilesystemNode *)self bookmark];
-  v6 = [(WFCoreDataTrackedFilesystemNode *)self filesList];
-  v7 = [(WFCoreDataTrackedFilesystemNode *)self isDirectory];
-  v8 = [(WFCoreDataTrackedFilesystemNode *)self ignoringSubfolders];
-  v9 = [(WFCoreDataTrackedFilesystemNode *)self triggers];
-  v10 = [(WFTrackedFilesystemNode *)v3 initWithIdentifier:v4 bookmark:v5 fileData:v6 isDirectory:v7 ignoringSubfolders:v8 triggersData:v9];
+  identifier = [(WFCoreDataTrackedFilesystemNode *)self identifier];
+  bookmark = [(WFCoreDataTrackedFilesystemNode *)self bookmark];
+  filesList = [(WFCoreDataTrackedFilesystemNode *)self filesList];
+  isDirectory = [(WFCoreDataTrackedFilesystemNode *)self isDirectory];
+  ignoringSubfolders = [(WFCoreDataTrackedFilesystemNode *)self ignoringSubfolders];
+  triggers = [(WFCoreDataTrackedFilesystemNode *)self triggers];
+  v10 = [(WFTrackedFilesystemNode *)v3 initWithIdentifier:identifier bookmark:bookmark fileData:filesList isDirectory:isDirectory ignoringSubfolders:ignoringSubfolders triggersData:triggers];
 
   return v10;
 }

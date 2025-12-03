@@ -9,23 +9,23 @@
 - (id)_modelForNearbyTransit;
 - (id)_modelForRatingAndPhotos;
 - (void)_addNearbyTransitToFavorites;
-- (void)_updateAndNotifyObservers:(BOOL)a3;
+- (void)_updateAndNotifyObservers:(BOOL)observers;
 - (void)_updateFeatures;
 - (void)dealloc;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setOfflineMapsDiscoveryActionDelegate:(id)a3;
-- (void)setShowEVOnboardingBanner:(BOOL)a3;
-- (void)setShowNearbyTransitBanner:(BOOL)a3;
-- (void)setShowOfflineDownloadingTip:(BOOL)a3;
-- (void)setShowOfflineMapsBanner:(BOOL)a3;
-- (void)setShowOfflinePairedDeviceDiskSpaceTip:(BOOL)a3;
-- (void)setShowPreferredNetworksBanner:(BOOL)a3;
-- (void)setShowRatingsAndPhotosBanner:(BOOL)a3;
-- (void)setShowTransitPayBanner:(BOOL)a3;
-- (void)setTransitPayActionDelegate:(id)a3;
-- (void)source:(id)a3 didUpdateAvailability:(BOOL)a4;
-- (void)updateFeaturesWithSuggestions:(id)a3;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
+- (void)setActive:(BOOL)active;
+- (void)setOfflineMapsDiscoveryActionDelegate:(id)delegate;
+- (void)setShowEVOnboardingBanner:(BOOL)banner;
+- (void)setShowNearbyTransitBanner:(BOOL)banner;
+- (void)setShowOfflineDownloadingTip:(BOOL)tip;
+- (void)setShowOfflineMapsBanner:(BOOL)banner;
+- (void)setShowOfflinePairedDeviceDiskSpaceTip:(BOOL)tip;
+- (void)setShowPreferredNetworksBanner:(BOOL)banner;
+- (void)setShowRatingsAndPhotosBanner:(BOOL)banner;
+- (void)setShowTransitPayBanner:(BOOL)banner;
+- (void)setTransitPayActionDelegate:(id)delegate;
+- (void)source:(id)source didUpdateAvailability:(BOOL)availability;
+- (void)updateFeaturesWithSuggestions:(id)suggestions;
 @end
 
 @implementation FeatureDiscoveryDataProvider
@@ -42,46 +42,46 @@
     nearbyTransitDiscoverySource = v2->_nearbyTransitDiscoverySource;
     v2->_nearbyTransitDiscoverySource = v3;
 
-    v5 = [(NearbyTransitFeatureDiscoverySource *)v2->_nearbyTransitDiscoverySource observers];
-    [v5 registerObserver:v2];
+    observers = [(NearbyTransitFeatureDiscoverySource *)v2->_nearbyTransitDiscoverySource observers];
+    [observers registerObserver:v2];
 
     [(NearbyTransitFeatureDiscoverySource *)v2->_nearbyTransitDiscoverySource updateFeatureAvailabilityIfNecessary];
     v6 = MapsSuggestionsResourceDepotForMapsProcess();
     v7 = objc_alloc_init(RealPaymentPolygonFetcher);
     v8 = objc_alloc_init(MapsRealLocationUpdater);
     v9 = [TransitPayFeatureDiscoverySource alloc];
-    v10 = [v6 oneInsights];
-    v11 = [(TransitPayFeatureDiscoverySource *)v9 initWithInsights:v10 paymentPolygonFetcher:v7 locationUpdater:v8 isActive:1];
+    oneInsights = [v6 oneInsights];
+    v11 = [(TransitPayFeatureDiscoverySource *)v9 initWithInsights:oneInsights paymentPolygonFetcher:v7 locationUpdater:v8 isActive:1];
     transitPayDiscoverySource = v2->_transitPayDiscoverySource;
     v2->_transitPayDiscoverySource = v11;
 
-    v13 = [(TransitPayFeatureDiscoverySource *)v2->_transitPayDiscoverySource observers];
-    [v13 registerObserver:v2];
+    observers2 = [(TransitPayFeatureDiscoverySource *)v2->_transitPayDiscoverySource observers];
+    [observers2 registerObserver:v2];
 
     [(TransitPayFeatureDiscoverySource *)v2->_transitPayDiscoverySource updateFeatureEligibility];
     v14 = [OfflineMapsFeatureDiscoverySource alloc];
-    v15 = [v6 oneInsights];
-    v16 = [(OfflineMapsFeatureDiscoverySource *)v14 initWithInsights:v15 locationUpdater:v8 isActive:GEOSupportsOfflineMaps()];
+    oneInsights2 = [v6 oneInsights];
+    v16 = [(OfflineMapsFeatureDiscoverySource *)v14 initWithInsights:oneInsights2 locationUpdater:v8 isActive:GEOSupportsOfflineMaps()];
     offlineMapsFeatureDiscoverySource = v2->_offlineMapsFeatureDiscoverySource;
     v2->_offlineMapsFeatureDiscoverySource = v16;
 
-    v18 = [(OfflineMapsFeatureDiscoverySource *)v2->_offlineMapsFeatureDiscoverySource observers];
-    [v18 registerObserver:v2];
+    observers3 = [(OfflineMapsFeatureDiscoverySource *)v2->_offlineMapsFeatureDiscoverySource observers];
+    [observers3 registerObserver:v2];
 
     [(OfflineMapsFeatureDiscoverySource *)v2->_offlineMapsFeatureDiscoverySource updateFeatureEligibility];
     v19 = [[OfflineMapsDownloadFeatureTipSource alloc] initWithIsActive:GEOSupportsOfflineMaps()];
     offlineMapsDownloadFeatureTipSource = v2->_offlineMapsDownloadFeatureTipSource;
     v2->_offlineMapsDownloadFeatureTipSource = v19;
 
-    v21 = [(OfflineMapsDownloadFeatureTipSource *)v2->_offlineMapsDownloadFeatureTipSource observers];
-    [v21 registerObserver:v2];
+    observers4 = [(OfflineMapsDownloadFeatureTipSource *)v2->_offlineMapsDownloadFeatureTipSource observers];
+    [observers4 registerObserver:v2];
 
     v22 = [[OfflineMapsPairedDeviceDiskSpaceTipSource alloc] initWithIsActive:GEOSupportsOfflineMaps()];
     offlineMapsPairedDeviceDiskSpaceTipSource = v2->_offlineMapsPairedDeviceDiskSpaceTipSource;
     v2->_offlineMapsPairedDeviceDiskSpaceTipSource = v22;
 
-    v24 = [(OfflineMapsPairedDeviceDiskSpaceTipSource *)v2->_offlineMapsPairedDeviceDiskSpaceTipSource observers];
-    [v24 registerObserver:v2];
+    observers5 = [(OfflineMapsPairedDeviceDiskSpaceTipSource *)v2->_offlineMapsPairedDeviceDiskSpaceTipSource observers];
+    [observers5 registerObserver:v2];
 
     v25 = [[EVRoutingFeatureDiscoverySource alloc] initWithPriority:1 delegate:v2];
     evRoutingFeatureDiscoverySource = v2->_evRoutingFeatureDiscoverySource;
@@ -91,8 +91,8 @@
     preferredNetworkFeatureDiscoverySource = v2->_preferredNetworkFeatureDiscoverySource;
     v2->_preferredNetworkFeatureDiscoverySource = v27;
 
-    v29 = [(PreferredNetworksFeatureDiscoverySource *)v2->_preferredNetworkFeatureDiscoverySource observers];
-    [v29 registerObserver:v2];
+    observers6 = [(PreferredNetworksFeatureDiscoverySource *)v2->_preferredNetworkFeatureDiscoverySource observers];
+    [observers6 registerObserver:v2];
 
     v2->_showNearbyTransitBanner = [(NearbyTransitFeatureDiscoverySource *)v2->_nearbyTransitDiscoverySource shouldShowFeature];
     v2->_hasInitialData = [(NearbyTransitFeatureDiscoverySource *)v2->_nearbyTransitDiscoverySource hasInitialData];
@@ -105,16 +105,16 @@
 - (void)_updateFeatures
 {
   v7 = objc_alloc_init(NSMutableArray);
-  v3 = [(FeatureDiscoveryDataProvider *)self _featureTipModelWithPrecedence];
-  v4 = [(FeatureDiscoveryDataProvider *)self _featureDiscoveryModelWithPrecedence];
-  if (v3)
+  _featureTipModelWithPrecedence = [(FeatureDiscoveryDataProvider *)self _featureTipModelWithPrecedence];
+  _featureDiscoveryModelWithPrecedence = [(FeatureDiscoveryDataProvider *)self _featureDiscoveryModelWithPrecedence];
+  if (_featureTipModelWithPrecedence)
   {
-    [v7 addObject:v3];
+    [v7 addObject:_featureTipModelWithPrecedence];
   }
 
-  if (v4)
+  if (_featureDiscoveryModelWithPrecedence)
   {
-    [v7 addObject:v4];
+    [v7 addObject:_featureDiscoveryModelWithPrecedence];
   }
 
   v5 = [v7 copy];
@@ -126,60 +126,60 @@
 {
   if ([(FeatureDiscoveryDataProvider *)self showOfflineDownloadingTip])
   {
-    v3 = [(OfflineMapsDownloadFeatureTipSource *)self->_offlineMapsDownloadFeatureTipSource offlineMapsDownloadTipModel];
+    offlineMapsDownloadTipModel = [(OfflineMapsDownloadFeatureTipSource *)self->_offlineMapsDownloadFeatureTipSource offlineMapsDownloadTipModel];
   }
 
   else if ([(FeatureDiscoveryDataProvider *)self showOfflinePairedDeviceDiskSpaceTip])
   {
-    v3 = [(OfflineMapsPairedDeviceDiskSpaceTipSource *)self->_offlineMapsPairedDeviceDiskSpaceTipSource offlineMapsPairedDeviceDiskSpaceTipModel];
+    offlineMapsDownloadTipModel = [(OfflineMapsPairedDeviceDiskSpaceTipSource *)self->_offlineMapsPairedDeviceDiskSpaceTipSource offlineMapsPairedDeviceDiskSpaceTipModel];
   }
 
   else
   {
-    v3 = 0;
+    offlineMapsDownloadTipModel = 0;
   }
 
-  return v3;
+  return offlineMapsDownloadTipModel;
 }
 
 - (id)_featureDiscoveryModelWithPrecedence
 {
   if ([(FeatureDiscoveryDataProvider *)self showEVOnboardingBanner])
   {
-    v3 = [(FeatureDiscoveryDataProvider *)self _modelForEVRouting];
+    _modelForEVRouting = [(FeatureDiscoveryDataProvider *)self _modelForEVRouting];
   }
 
   else if ([(FeatureDiscoveryDataProvider *)self showPreferredNetworksBanner])
   {
-    v3 = [(FeatureDiscoveryDataProvider *)self _modelForPreferredNetworks];
+    _modelForEVRouting = [(FeatureDiscoveryDataProvider *)self _modelForPreferredNetworks];
   }
 
   else if ([(FeatureDiscoveryDataProvider *)self showOfflineMapsBanner])
   {
-    v3 = [(FeatureDiscoveryDataProvider *)self _modelForOfflineMapsTip];
+    _modelForEVRouting = [(FeatureDiscoveryDataProvider *)self _modelForOfflineMapsTip];
   }
 
   else if ([(FeatureDiscoveryDataProvider *)self showTransitPayBanner])
   {
-    v3 = [(FeatureDiscoveryDataProvider *)self _modelForTransitPay];
+    _modelForEVRouting = [(FeatureDiscoveryDataProvider *)self _modelForTransitPay];
   }
 
   else if ([(FeatureDiscoveryDataProvider *)self showNearbyTransitBanner])
   {
-    v3 = [(FeatureDiscoveryDataProvider *)self _modelForNearbyTransit];
+    _modelForEVRouting = [(FeatureDiscoveryDataProvider *)self _modelForNearbyTransit];
   }
 
   else if ([(FeatureDiscoveryDataProvider *)self showRatingsAndPhotosBanner])
   {
-    v3 = [(FeatureDiscoveryDataProvider *)self _modelForRatingAndPhotos];
+    _modelForEVRouting = [(FeatureDiscoveryDataProvider *)self _modelForRatingAndPhotos];
   }
 
   else
   {
-    v3 = 0;
+    _modelForEVRouting = 0;
   }
 
-  return v3;
+  return _modelForEVRouting;
 }
 
 - (GEOObserverHashTable)observers
@@ -218,42 +218,42 @@
   return WeakRetained;
 }
 
-- (void)setOfflineMapsDiscoveryActionDelegate:(id)a3
+- (void)setOfflineMapsDiscoveryActionDelegate:(id)delegate
 {
-  obj = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  obj = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (obj)
   {
-    WeakRetained = objc_loadWeakRetained(&v4->_offlineMapsDiscoveryActionDelegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_offlineMapsDiscoveryActionDelegate);
 
     if (WeakRetained != obj)
     {
-      objc_storeWeak(&v4->_offlineMapsDiscoveryActionDelegate, obj);
-      [(OfflineMapsFeatureDiscoverySource *)v4->_offlineMapsFeatureDiscoverySource setActionDelegate:obj];
+      objc_storeWeak(&selfCopy->_offlineMapsDiscoveryActionDelegate, obj);
+      [(OfflineMapsFeatureDiscoverySource *)selfCopy->_offlineMapsFeatureDiscoverySource setActionDelegate:obj];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setTransitPayActionDelegate:(id)a3
+- (void)setTransitPayActionDelegate:(id)delegate
 {
-  obj = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  obj = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (obj)
   {
-    WeakRetained = objc_loadWeakRetained(&v4->_transitPayActionDelegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_transitPayActionDelegate);
 
     if (WeakRetained != obj)
     {
-      objc_storeWeak(&v4->_transitPayActionDelegate, obj);
-      [(TransitPayFeatureDiscoverySource *)v4->_transitPayDiscoverySource setTransitPayActionDelegate:obj];
+      objc_storeWeak(&selfCopy->_transitPayActionDelegate, obj);
+      [(TransitPayFeatureDiscoverySource *)selfCopy->_transitPayDiscoverySource setTransitPayActionDelegate:obj];
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_modelForNearbyTransit
@@ -327,81 +327,81 @@
   [v4 saveWithCompletion:&stru_1016290D8];
 }
 
-- (void)setShowOfflinePairedDeviceDiskSpaceTip:(BOOL)a3
+- (void)setShowOfflinePairedDeviceDiskSpaceTip:(BOOL)tip
 {
-  if (self->_showOfflinePairedDeviceDiskSpaceTip != a3)
+  if (self->_showOfflinePairedDeviceDiskSpaceTip != tip)
   {
-    self->_showOfflinePairedDeviceDiskSpaceTip = a3;
+    self->_showOfflinePairedDeviceDiskSpaceTip = tip;
     [(FeatureDiscoveryDataProvider *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)setShowOfflineDownloadingTip:(BOOL)a3
+- (void)setShowOfflineDownloadingTip:(BOOL)tip
 {
-  if (self->_showOfflineDownloadingTip != a3)
+  if (self->_showOfflineDownloadingTip != tip)
   {
-    self->_showOfflineDownloadingTip = a3;
+    self->_showOfflineDownloadingTip = tip;
     [(FeatureDiscoveryDataProvider *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)setShowPreferredNetworksBanner:(BOOL)a3
+- (void)setShowPreferredNetworksBanner:(BOOL)banner
 {
-  if (self->_showPreferredNetworksBanner != a3)
+  if (self->_showPreferredNetworksBanner != banner)
   {
-    self->_showPreferredNetworksBanner = a3;
+    self->_showPreferredNetworksBanner = banner;
     [(FeatureDiscoveryDataProvider *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)setShowEVOnboardingBanner:(BOOL)a3
+- (void)setShowEVOnboardingBanner:(BOOL)banner
 {
-  if (self->_showEVOnboardingBanner != a3)
+  if (self->_showEVOnboardingBanner != banner)
   {
-    self->_showEVOnboardingBanner = a3;
+    self->_showEVOnboardingBanner = banner;
     [(FeatureDiscoveryDataProvider *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)setShowRatingsAndPhotosBanner:(BOOL)a3
+- (void)setShowRatingsAndPhotosBanner:(BOOL)banner
 {
-  if (self->_showRatingsAndPhotosBanner != a3)
+  if (self->_showRatingsAndPhotosBanner != banner)
   {
-    self->_showRatingsAndPhotosBanner = a3;
+    self->_showRatingsAndPhotosBanner = banner;
     [(FeatureDiscoveryDataProvider *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)setShowOfflineMapsBanner:(BOOL)a3
+- (void)setShowOfflineMapsBanner:(BOOL)banner
 {
-  if (self->_showOfflineMapsBanner != a3)
+  if (self->_showOfflineMapsBanner != banner)
   {
-    self->_showOfflineMapsBanner = a3;
+    self->_showOfflineMapsBanner = banner;
     [(FeatureDiscoveryDataProvider *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)setShowTransitPayBanner:(BOOL)a3
+- (void)setShowTransitPayBanner:(BOOL)banner
 {
-  if (self->_showTransitPayBanner != a3)
+  if (self->_showTransitPayBanner != banner)
   {
-    self->_showTransitPayBanner = a3;
+    self->_showTransitPayBanner = banner;
     [(FeatureDiscoveryDataProvider *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)setShowNearbyTransitBanner:(BOOL)a3
+- (void)setShowNearbyTransitBanner:(BOOL)banner
 {
-  if (self->_showNearbyTransitBanner != a3)
+  if (self->_showNearbyTransitBanner != banner)
   {
-    self->_showNearbyTransitBanner = a3;
+    self->_showNearbyTransitBanner = banner;
     [(FeatureDiscoveryDataProvider *)self _updateAndNotifyObservers:1];
   }
 }
 
-- (void)updateFeaturesWithSuggestions:(id)a3
+- (void)updateFeaturesWithSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -413,7 +413,7 @@
     v5[2] = sub_100796A4C;
     v5[3] = &unk_1016290B8;
     v5[4] = &v6;
-    [v4 enumerateObjectsUsingBlock:v5];
+    [suggestionsCopy enumerateObjectsUsingBlock:v5];
   }
 
   [(FeatureDiscoveryDataProvider *)self setShowRatingsAndPhotosBanner:*(v7 + 24)];
@@ -421,13 +421,13 @@
   _Block_object_dispose(&v6, 8);
 }
 
-- (void)_updateAndNotifyObservers:(BOOL)a3
+- (void)_updateAndNotifyObservers:(BOOL)observers
 {
   if (self->_active)
   {
-    v3 = a3;
+    observersCopy = observers;
     [(FeatureDiscoveryDataProvider *)self _updateFeatures];
-    if (v3)
+    if (observersCopy)
     {
       observers = self->_observers;
 
@@ -444,14 +444,14 @@
   [(FeatureDiscoveryDataProvider *)&v3 dealloc];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     [(NearbyTransitFeatureDiscoverySource *)self->_nearbyTransitDiscoverySource setActive:?];
-    if (v3)
+    if (activeCopy)
     {
       [(FeatureDiscoveryDataProvider *)self _updateFeatures];
 
@@ -460,17 +460,17 @@
   }
 }
 
-- (void)source:(id)a3 didUpdateAvailability:(BOOL)a4
+- (void)source:(id)source didUpdateAvailability:(BOOL)availability
 {
-  v6 = a3;
-  if (self->_evRoutingFeatureDiscoverySource == v6)
+  sourceCopy = source;
+  if (self->_evRoutingFeatureDiscoverySource == sourceCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100796D70;
     v10[3] = &unk_101661AE0;
     v10[4] = self;
-    v11 = a4;
+    availabilityCopy = availability;
     dispatch_async(&_dispatch_main_q, v10);
   }
 
@@ -502,51 +502,51 @@
   }
 }
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   nearbyTransitDiscoverySource = self->_nearbyTransitDiscoverySource;
-  v11 = v4;
-  if (nearbyTransitDiscoverySource == v4)
+  v11 = updateCopy;
+  if (nearbyTransitDiscoverySource == updateCopy)
   {
     [(FeatureDiscoveryDataProvider *)self setShowNearbyTransitBanner:[(NearbyTransitFeatureDiscoverySource *)nearbyTransitDiscoverySource shouldShowFeature]];
     [(FeatureDiscoveryDataProvider *)self setHasInitialData:[(NearbyTransitFeatureDiscoverySource *)self->_nearbyTransitDiscoverySource hasInitialData]];
-    v4 = v11;
+    updateCopy = v11;
   }
 
   transitPayDiscoverySource = self->_transitPayDiscoverySource;
-  if (transitPayDiscoverySource == v4)
+  if (transitPayDiscoverySource == updateCopy)
   {
     [(FeatureDiscoveryDataProvider *)self setShowTransitPayBanner:[(TransitPayFeatureDiscoverySource *)transitPayDiscoverySource showFeature]];
-    v4 = v11;
+    updateCopy = v11;
   }
 
   offlineMapsFeatureDiscoverySource = self->_offlineMapsFeatureDiscoverySource;
-  if (offlineMapsFeatureDiscoverySource == v4)
+  if (offlineMapsFeatureDiscoverySource == updateCopy)
   {
     [(FeatureDiscoveryDataProvider *)self setShowOfflineMapsBanner:[(OfflineMapsFeatureDiscoverySource *)offlineMapsFeatureDiscoverySource showFeature]];
-    v4 = v11;
+    updateCopy = v11;
   }
 
   preferredNetworkFeatureDiscoverySource = self->_preferredNetworkFeatureDiscoverySource;
-  if (preferredNetworkFeatureDiscoverySource == v4)
+  if (preferredNetworkFeatureDiscoverySource == updateCopy)
   {
     [(FeatureDiscoveryDataProvider *)self setShowPreferredNetworksBanner:[(PreferredNetworksFeatureDiscoverySource *)preferredNetworkFeatureDiscoverySource showFeature]];
-    v4 = v11;
+    updateCopy = v11;
   }
 
   offlineMapsDownloadFeatureTipSource = self->_offlineMapsDownloadFeatureTipSource;
-  if (offlineMapsDownloadFeatureTipSource == v4)
+  if (offlineMapsDownloadFeatureTipSource == updateCopy)
   {
     [(FeatureDiscoveryDataProvider *)self setShowOfflineDownloadingTip:[(OfflineMapsDownloadFeatureTipSource *)offlineMapsDownloadFeatureTipSource showFeature]];
-    v4 = v11;
+    updateCopy = v11;
   }
 
   offlineMapsPairedDeviceDiskSpaceTipSource = self->_offlineMapsPairedDeviceDiskSpaceTipSource;
-  if (offlineMapsPairedDeviceDiskSpaceTipSource == v4)
+  if (offlineMapsPairedDeviceDiskSpaceTipSource == updateCopy)
   {
     [(FeatureDiscoveryDataProvider *)self setShowOfflinePairedDeviceDiskSpaceTip:[(OfflineMapsPairedDeviceDiskSpaceTipSource *)offlineMapsPairedDeviceDiskSpaceTipSource showFeature]];
-    v4 = v11;
+    updateCopy = v11;
   }
 }
 

@@ -1,61 +1,61 @@
 @interface PDFPageLayer
 + (id)pageShadowMetrics;
-- (BOOL)_hasTileWithFrameInLayer:(CGRect)a3;
-- (BOOL)_isTile:(id)a3 occludedByTiles:(id)a4;
+- (BOOL)_hasTileWithFrameInLayer:(CGRect)layer;
+- (BOOL)_isTile:(id)tile occludedByTiles:(id)tiles;
 - (BOOL)isVisible;
 - (CGAffineTransform)layerEffectTransform;
-- (CGRect)_layerTileToRootViewBounds:(id)a3;
+- (CGRect)_layerTileToRootViewBounds:(id)bounds;
 - (CGRect)_pageLayerVisibleRect;
-- (PDFPageLayer)initWithPage:(id)a3 geometryInterface:(id)a4 andRenderingProperties:(id)a5;
-- (id)_subtractRectB:(CGRect)a3 fromRectA:(CGRect)a4;
+- (PDFPageLayer)initWithPage:(id)page geometryInterface:(id)interface andRenderingProperties:(id)properties;
+- (id)_subtractRectB:(CGRect)b fromRectA:(CGRect)a;
 - (id)geometryInterface;
 - (id)page;
 - (id)renderingProperties;
 - (int64_t)displayBox;
 - (void)_forceTileUpdate;
-- (void)_hideTileLayer:(BOOL)a3;
-- (void)_printRectsArray:(id)a3;
+- (void)_hideTileLayer:(BOOL)layer;
+- (void)_printRectsArray:(id)array;
 - (void)_releasePageLayerEffects;
 - (void)_releaseTiles;
-- (void)_renderingPropertyUpdate:(id)a3;
-- (void)_setEnablePageShadows:(BOOL)a3;
+- (void)_renderingPropertyUpdate:(id)update;
+- (void)_setEnablePageShadows:(BOOL)shadows;
 - (void)_tileUpdateComplete;
-- (void)_updateLayerEffect:(id)a3 withPageTransform:(CGAffineTransform *)a4;
+- (void)_updateLayerEffect:(id)effect withPageTransform:(CGAffineTransform *)transform;
 - (void)_updateTiles;
-- (void)addPageLayerEffect:(id)a3;
-- (void)applyTileLayoutScale:(double)a3;
+- (void)addPageLayerEffect:(id)effect;
+- (void)applyTileLayoutScale:(double)scale;
 - (void)dealloc;
-- (void)initPageCornerRadiusForMagnification:(double)a3;
+- (void)initPageCornerRadiusForMagnification:(double)magnification;
 - (void)layoutSublayers;
-- (void)removePageLayerEffectForID:(id)a3;
+- (void)removePageLayerEffectForID:(id)d;
 - (void)restoreOriginalTileLayout;
 - (void)saveOriginalTileLayout;
-- (void)scalePageLayerEffects:(double)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setMasksToBounds:(BOOL)a3;
+- (void)scalePageLayerEffects:(double)effects;
+- (void)setCornerRadius:(double)radius;
+- (void)setMasksToBounds:(BOOL)bounds;
 - (void)setNeedsTilesUpdate;
-- (void)tileDrawingComplete:(id)a3;
-- (void)updatePageLayerEffectForID:(id)a3;
+- (void)tileDrawingComplete:(id)complete;
+- (void)updatePageLayerEffectForID:(id)d;
 - (void)updatePageLayerEffects;
 @end
 
 @implementation PDFPageLayer
 
-- (PDFPageLayer)initWithPage:(id)a3 geometryInterface:(id)a4 andRenderingProperties:(id)a5
+- (PDFPageLayer)initWithPage:(id)page geometryInterface:(id)interface andRenderingProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pageCopy = page;
+  interfaceCopy = interface;
+  propertiesCopy = properties;
   v49.receiver = self;
   v49.super_class = PDFPageLayer;
   v11 = [(PDFPageLayer *)&v49 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_page, v8);
-    objc_storeWeak(&v12->_geometryInterface, v9);
-    objc_storeWeak(&v12->_renderingProperties, v10);
-    v12->_oldPageRotation = [v8 rotation];
+    objc_storeWeak(&v11->_page, pageCopy);
+    objc_storeWeak(&v12->_geometryInterface, interfaceCopy);
+    objc_storeWeak(&v12->_renderingProperties, propertiesCopy);
+    v12->_oldPageRotation = [pageCopy rotation];
     v13 = objc_alloc_init(MEMORY[0x1E6979398]);
     contentLayer = v12->_contentLayer;
     v12->_contentLayer = v13;
@@ -86,8 +86,8 @@
     [(CALayer *)v12->_shadowLayer1 setName:@"shadowLayer1"];
     [(CALayer *)v12->_shadowLayer1 setMasksToBounds:0];
     v21 = v12->_shadowLayer1;
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    -[CALayer setBackgroundColor:](v21, "setBackgroundColor:", [v22 CGColor]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[CALayer setBackgroundColor:](v21, "setBackgroundColor:", [clearColor CGColor]);
 
     [(CALayer *)v12->_shadowLayer1 setZPosition:-1000.0];
     [(PDFPageLayer *)v12 insertSublayer:v12->_shadowLayer1 below:v12->_contentLayer];
@@ -98,15 +98,15 @@
     [(CALayer *)v12->_shadowLayer2 setName:@"shadowLayer2"];
     [(CALayer *)v12->_shadowLayer2 setMasksToBounds:0];
     v25 = v12->_shadowLayer2;
-    v26 = [MEMORY[0x1E69DC888] clearColor];
-    -[CALayer setBackgroundColor:](v25, "setBackgroundColor:", [v26 CGColor]);
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    -[CALayer setBackgroundColor:](v25, "setBackgroundColor:", [clearColor2 CGColor]);
 
     [(CALayer *)v12->_shadowLayer2 setZPosition:-1000.0];
     [(PDFPageLayer *)v12 insertSublayer:v12->_shadowLayer2 below:v12->_shadowLayer1];
     v27 = v12->_tilesLayer;
     CGAffineTransformMakeScale(&v48, 1.0, -1.0);
     [(CALayer *)v27 setAffineTransform:&v48];
-    [v8 boundsForBox:{objc_msgSend(v10, "displayBox")}];
+    [pageCopy boundsForBox:{objc_msgSend(propertiesCopy, "displayBox")}];
     v12->_oldBoundsForBox.origin.x = v28;
     v12->_oldBoundsForBox.origin.y = v29;
     v12->_oldBoundsForBox.size.width = v30;
@@ -122,32 +122,32 @@
     atomic_store(0, &v12->_isTiling);
     atomic_store(0, &v12->_requestedTiling);
     [(PDFPageLayer *)v12 setAllowsGroupBlending:0];
-    v34 = [v10 enablePageShadows];
+    enablePageShadows = [propertiesCopy enablePageShadows];
     v35 = 0;
-    if (v34)
+    if (enablePageShadows)
     {
-      v35 = [v10 isDarkMode] ^ 1;
+      v35 = [propertiesCopy isDarkMode] ^ 1;
     }
 
     [(PDFPageLayer *)v12 _setEnablePageShadows:v35];
-    v36 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v36 addObserver:v12 selector:sel__renderingPropertyUpdate_ name:@"PDFRenderingPropertiesChanged" object:v10];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__renderingPropertyUpdate_ name:@"PDFRenderingPropertiesChanged" object:propertiesCopy];
 
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v37 addObserver:v12 selector:sel__pageDidRotate_ name:@"PDFPageDidRotate" object:v8];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v12 selector:sel__pageDidRotate_ name:@"PDFPageDidRotate" object:pageCopy];
 
-    v38 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v38 addObserver:v12 selector:sel__pageDidRotate_ name:@"PDFPageDidChangeBounds" object:v8];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v12 selector:sel__pageDidRotate_ name:@"PDFPageDidChangeBounds" object:pageCopy];
 
-    v39 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v39 addObserver:v12 selector:sel__pageChangedPageRef_ name:@"PDFPagePageRefChanged" object:v8];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v12 selector:sel__pageChangedPageRef_ name:@"PDFPagePageRefChanged" object:pageCopy];
 
     v40 = [[PDFTimer alloc] initWithThrottleDelay:sel__forceTileUpdate forSelector:v12 forTarget:0.1];
     forcedUpdateTimer = v12->_forcedUpdateTimer;
     v12->_forcedUpdateTimer = v40;
 
-    v42 = [v8 document];
-    v43 = [v42 indexForPage:v8];
+    document = [pageCopy document];
+    v43 = [document indexForPage:pageCopy];
 
     v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PDFPageLayer, page index %d", v43];
     [(PDFPageLayer *)v12 setName:v44];
@@ -162,19 +162,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PDFPageLayer;
   [(PDFPageLayer *)&v4 dealloc];
 }
 
-- (void)setMasksToBounds:(BOOL)a3
+- (void)setMasksToBounds:(BOOL)bounds
 {
   v3.receiver = self;
   v3.super_class = PDFPageLayer;
-  [(PDFPageLayer *)&v3 setMasksToBounds:a3];
+  [(PDFPageLayer *)&v3 setMasksToBounds:bounds];
 }
 
 + (id)pageShadowMetrics
@@ -316,9 +316,9 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
 - (int64_t)displayBox
 {
   WeakRetained = objc_loadWeakRetained(&self->_renderingProperties);
-  v3 = [WeakRetained displayBox];
+  displayBox = [WeakRetained displayBox];
 
-  return v3;
+  return displayBox;
 }
 
 - (void)_tileUpdateComplete
@@ -367,56 +367,56 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   return v20;
 }
 
-- (void)addPageLayerEffect:(id)a3
+- (void)addPageLayerEffect:(id)effect
 {
-  v4 = a3;
-  if (v4)
+  effectCopy = effect;
+  if (effectCopy)
   {
-    v13 = v4;
+    v13 = effectCopy;
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     pageLayerEffects = self->_pageLayerEffects;
-    v6 = [v13 UUID];
-    v7 = [(NSMutableDictionary *)pageLayerEffects objectForKey:v6];
+    uUID = [v13 UUID];
+    v7 = [(NSMutableDictionary *)pageLayerEffects objectForKey:uUID];
 
     if (v7)
     {
       [v7 removeFromSuperlayer];
       v8 = self->_pageLayerEffects;
-      v9 = [v7 UUID];
-      [(NSMutableDictionary *)v8 removeObjectForKey:v9];
+      uUID2 = [v7 UUID];
+      [(NSMutableDictionary *)v8 removeObjectForKey:uUID2];
     }
 
     [(CALayer *)self->_effectsLayer addSublayer:v13];
     v10 = self->_pageLayerEffects;
-    v11 = [v13 UUID];
-    [(NSMutableDictionary *)v10 setObject:v13 forKey:v11];
+    uUID3 = [v13 UUID];
+    [(NSMutableDictionary *)v10 setObject:v13 forKey:uUID3];
 
-    v12 = [v13 UUID];
-    [(PDFPageLayer *)self updatePageLayerEffectForID:v12];
+    uUID4 = [v13 UUID];
+    [(PDFPageLayer *)self updatePageLayerEffectForID:uUID4];
 
     [MEMORY[0x1E6979518] commit];
-    v4 = v13;
+    effectCopy = v13;
   }
 }
 
-- (void)removePageLayerEffectForID:(id)a3
+- (void)removePageLayerEffectForID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = [(NSMutableDictionary *)self->_pageLayerEffects objectForKey:?];
   if (v4)
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [v4 removeFromSuperlayer];
-    [(NSMutableDictionary *)self->_pageLayerEffects removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_pageLayerEffects removeObjectForKey:dCopy];
     [MEMORY[0x1E6979518] commit];
   }
 }
 
-- (void)updatePageLayerEffectForID:(id)a3
+- (void)updatePageLayerEffectForID:(id)d
 {
-  v4 = [(PDFPageLayer *)self pageLayerEffectForID:a3];
+  v4 = [(PDFPageLayer *)self pageLayerEffectForID:d];
   if (v4)
   {
     [MEMORY[0x1E6979518] begin];
@@ -436,12 +436,12 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   v16 = 0u;
   v14 = 0u;
   [(PDFPageLayer *)self layerEffectTransform];
-  v3 = [(PDFPageLayer *)self _pageLayerEffects];
+  _pageLayerEffects = [(PDFPageLayer *)self _pageLayerEffects];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v17 count:16];
+  v4 = [_pageLayerEffects countByEnumeratingWithState:&v10 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -453,7 +453,7 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_pageLayerEffects);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -465,7 +465,7 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v17 count:16];
+      v5 = [_pageLayerEffects countByEnumeratingWithState:&v10 objects:v17 count:16];
     }
 
     while (v5);
@@ -474,37 +474,37 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)_updateLayerEffect:(id)a3 withPageTransform:(CGAffineTransform *)a4
+- (void)_updateLayerEffect:(id)effect withPageTransform:(CGAffineTransform *)transform
 {
-  v6 = a3;
-  [v6 pageFrame];
+  effectCopy = effect;
+  [effectCopy pageFrame];
   v8 = v7;
   CenterPoint = PDFRectGetCenterPoint(v9, v10, v7);
   v13 = PDFPointToCGPoint(CenterPoint, v12);
-  v15 = vaddq_f64(*&a4->tx, vmlaq_n_f64(vmulq_n_f64(*&a4->c, v14), *&a4->a, v13));
+  v15 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v14), *&transform->a, v13));
   v16 = PDFPointFromCGPoint(v15.f64[0], v15.f64[1]);
   PDFRectMakeFromCenter(v16, v17, v8);
   WeakRetained = objc_loadWeakRetained(&self->_page);
-  v19 = [WeakRetained rotation];
+  rotation = [WeakRetained rotation];
   v20 = objc_loadWeakRetained(&self->_renderingProperties);
   [WeakRetained boundsForBox:{objc_msgSend(v20, "displayBox")}];
   v22 = v21;
   v24 = v23;
 
-  PDFRectRotate(v19, v22, v24);
+  PDFRectRotate(rotation, v22, v24);
   v25 = *(MEMORY[0x1E695EFD0] + 16);
   *&v27.a = *MEMORY[0x1E695EFD0];
   *&v27.c = v25;
   *&v27.tx = *(MEMORY[0x1E695EFD0] + 32);
-  [v6 setFrame:{PDFRectToCGRect(objc_msgSend(v6, "setAffineTransform:", &v27))}];
-  if ([v6 shouldRotateContent])
+  [effectCopy setFrame:{PDFRectToCGRect(objc_msgSend(effectCopy, "setAffineTransform:", &v27))}];
+  if ([effectCopy shouldRotateContent])
   {
-    v26 = PDFDegToRad(v19);
+    v26 = PDFDegToRad(rotation);
     CGAffineTransformMakeRotation(&v27, v26);
-    [v6 setAffineTransform:&v27];
+    [effectCopy setAffineTransform:&v27];
   }
 
-  [v6 update];
+  [effectCopy update];
 }
 
 - (CGAffineTransform)layerEffectTransform
@@ -516,10 +516,10 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   *&retstr->a = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_page);
   v7 = objc_loadWeakRetained(&self->_renderingProperties);
-  v8 = [v7 displayBox];
+  displayBox = [v7 displayBox];
   if (WeakRetained)
   {
-    [WeakRetained transformForBox:v8];
+    [WeakRetained transformForBox:displayBox];
   }
 
   else
@@ -532,13 +532,13 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   return [PDFPage setNativeRotationDrawingEnabledForThisThread:v5];
 }
 
-- (void)scalePageLayerEffects:(double)a3
+- (void)scalePageLayerEffects:(double)effects
 {
   [(CALayer *)self->_effectsLayer frame];
   v6 = v5;
   v8 = v7;
   effectsLayer = self->_effectsLayer;
-  CGAffineTransformMakeScale(&v10, a3, a3);
+  CGAffineTransformMakeScale(&v10, effects, effects);
   [(CALayer *)effectsLayer setAffineTransform:&v10];
   [(CALayer *)self->_effectsLayer setFrame:0.0, 0.0, v6, v8];
 }
@@ -633,7 +633,7 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)applyTileLayoutScale:(double)a3
+- (void)applyTileLayoutScale:(double)scale
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -673,11 +673,11 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)initPageCornerRadiusForMagnification:(double)a3
+- (void)initPageCornerRadiusForMagnification:(double)magnification
 {
   WeakRetained = objc_loadWeakRetained(&self->_renderingProperties);
   [(PDFPageLayer *)self bounds];
-  [WeakRetained adjustedPageCornerRadiusForPageSize:v6 magnification:{v7, a3}];
+  [WeakRetained adjustedPageCornerRadiusForPageSize:v6 magnification:{v7, magnification}];
   v9 = v8;
 
   [(PDFPageLayer *)self setCornerRadius:v9];
@@ -686,14 +686,14 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   [(PDFPageLayer *)self setCornerCurve:v10];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   [(PDFPageLayer *)self cornerRadius];
-  if (v5 != a3)
+  if (v5 != radius)
   {
     v6.receiver = self;
     v6.super_class = PDFPageLayer;
-    [(PDFPageLayer *)&v6 setCornerRadius:a3];
+    [(PDFPageLayer *)&v6 setCornerRadius:radius];
     [(PDFPageLayer *)self setNeedsLayout];
   }
 }
@@ -772,12 +772,12 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
 - (void)_releasePageLayerEffects
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_pageLayerEffects objectEnumerator];
+  objectEnumerator = [(NSMutableDictionary *)self->_pageLayerEffects objectEnumerator];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -789,14 +789,14 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) removeFromSuperlayer];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -805,13 +805,13 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   [(NSMutableDictionary *)self->_pageLayerEffects removeAllObjects];
 }
 
-- (void)_hideTileLayer:(BOOL)a3
+- (void)_hideTileLayer:(BOOL)layer
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_tileLayerHidden != a3)
+  if (self->_tileLayerHidden != layer)
   {
-    v3 = a3;
-    self->_tileLayerHidden = a3;
+    layerCopy = layer;
+    self->_tileLayerHidden = layer;
     [(CALayer *)self->_tilesLayer setHidden:?];
     v12 = 0u;
     v13 = 0u;
@@ -833,7 +833,7 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) setHidden:{v3, v10}];
+          [*(*(&v10 + 1) + 8 * v9++) setHidden:{layerCopy, v10}];
         }
 
         while (v7 != v9);
@@ -845,53 +845,53 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setEnablePageShadows:(BOOL)a3
+- (void)_setEnablePageShadows:(BOOL)shadows
 {
-  v3 = a3;
+  shadowsCopy = shadows;
   v22 = self->_shadowLayer1;
   v5 = self->_shadowLayer2;
   v6 = +[PDFRenderingProperties isSolariumEnabled];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  if (v3)
+  if (shadowsCopy)
   {
-    v7 = [objc_opt_class() pageShadowMetrics];
+    pageShadowMetrics = [objc_opt_class() pageShadowMetrics];
     if (!v6)
     {
-      v8 = [MEMORY[0x1E69DC888] blackColor];
-      v9 = [v7 objectForKeyedSubscript:@"PageShadowsBorderOpacity"];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      v9 = [pageShadowMetrics objectForKeyedSubscript:@"PageShadowsBorderOpacity"];
       [v9 doubleValue];
-      v10 = [v8 colorWithAlphaComponent:?];
+      v10 = [blackColor colorWithAlphaComponent:?];
       -[CALayer setBorderColor:](v22, "setBorderColor:", [v10 CGColor]);
 
-      v11 = [v7 objectForKeyedSubscript:@"kPageShadowsBorderWidth"];
+      v11 = [pageShadowMetrics objectForKeyedSubscript:@"kPageShadowsBorderWidth"];
       [v11 doubleValue];
       [(CALayer *)v22 setBorderWidth:?];
     }
 
-    v12 = [v7 objectForKeyedSubscript:@"kPageShadowsOpacityShadow1"];
+    v12 = [pageShadowMetrics objectForKeyedSubscript:@"kPageShadowsOpacityShadow1"];
     [v12 doubleValue];
     *&v13 = v13;
     [(CALayer *)v22 setShadowOpacity:v13];
 
-    v14 = [v7 objectForKeyedSubscript:@"kPageShadowsRadiusShadow1"];
+    v14 = [pageShadowMetrics objectForKeyedSubscript:@"kPageShadowsRadiusShadow1"];
     [v14 doubleValue];
     [(CALayer *)v22 setShadowRadius:?];
 
-    v15 = [v7 objectForKeyedSubscript:@"kPageShadowsOffsetShadow1"];
+    v15 = [pageShadowMetrics objectForKeyedSubscript:@"kPageShadowsOffsetShadow1"];
     [v15 doubleValue];
     [(CALayer *)v22 setShadowOffset:0.0, v16];
 
-    v17 = [v7 objectForKeyedSubscript:@"kPageShadowsOpacityShadow2"];
+    v17 = [pageShadowMetrics objectForKeyedSubscript:@"kPageShadowsOpacityShadow2"];
     [v17 doubleValue];
     *&v18 = v18;
     [(CALayer *)v5 setShadowOpacity:v18];
 
-    v19 = [v7 objectForKeyedSubscript:@"kPageShadowsRadiusShadow2"];
+    v19 = [pageShadowMetrics objectForKeyedSubscript:@"kPageShadowsRadiusShadow2"];
     [v19 doubleValue];
     [(CALayer *)v5 setShadowRadius:?];
 
-    v20 = [v7 objectForKeyedSubscript:@"kPageShadowsOffsetShadow2"];
+    v20 = [pageShadowMetrics objectForKeyedSubscript:@"kPageShadowsOffsetShadow2"];
     [v20 doubleValue];
     [(CALayer *)v5 setShadowOffset:0.0, v21];
   }
@@ -912,10 +912,10 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)tileDrawingComplete:(id)a3
+- (void)tileDrawingComplete:(id)complete
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completeCopy = complete;
   context = objc_autoreleasePoolPush();
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -942,7 +942,7 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
         if (([v12 isWorking] & 1) == 0)
         {
           v13 = v5;
-          if (v12[30] < v4[30] || (v14 = [v12 hasContent], v13 = v6, v14))
+          if (v12[30] < completeCopy[30] || (v14 = [v12 hasContent], v13 = v6, v14))
           {
             [v13 addObject:v12];
           }
@@ -992,10 +992,10 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
   [MEMORY[0x1E6979518] setDisableActions:1];
   while ([v15 count])
   {
-    v22 = [v15 lastObject];
+    lastObject = [v15 lastObject];
     [v15 removeLastObject];
-    [v22 removeFromSuperlayer];
-    [(NSMutableArray *)self->_tiles removeObject:v22];
+    [lastObject removeFromSuperlayer];
+    [(NSMutableArray *)self->_tiles removeObject:lastObject];
   }
 
   [MEMORY[0x1E6979518] commit];
@@ -1018,9 +1018,9 @@ void __35__PDFPageLayer_setNeedsTilesUpdate__block_invoke(uint64_t a1)
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v44 + 1) + 8 * k) contents];
+        contents = [*(*(&v44 + 1) + 8 * k) contents];
 
-        if (!v28)
+        if (!contents)
         {
           v29 = 0;
           goto LABEL_34;
@@ -1051,23 +1051,23 @@ LABEL_34:
     v57[1] = v32;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:2];
 
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v34 postNotificationName:@"PDFPageDrawingComplete" object:self userInfo:v33];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PDFPageDrawingComplete" object:self userInfo:v33];
   }
 
   if (GetDefaultsWriteLogPerfTimes())
   {
-    v35 = [v31 document];
-    v36 = [v35 indexForPage:v31];
+    document = [v31 document];
+    v36 = [document indexForPage:v31];
 
     if (v29)
     {
-      v37 = [MEMORY[0x1E695DF00] date];
-      [v37 timeIntervalSince1970];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSince1970];
       v39 = (v38 * 1000.0);
 
-      v40 = [MEMORY[0x1E695DF00] date];
-      [v40 timeIntervalSinceDate:self->_lastZoomChange];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [date2 timeIntervalSinceDate:self->_lastZoomChange];
       v42 = v41;
 
       NSLog(&cfstr_Pdfkit2Logperf_1.isa, v36, v39, v42);
@@ -1079,14 +1079,14 @@ LABEL_34:
   objc_autoreleasePoolPop(context);
 }
 
-- (BOOL)_isTile:(id)a3 occludedByTiles:(id)a4
+- (BOOL)_isTile:(id)tile occludedByTiles:(id)tiles
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tileCopy = tile;
+  tilesCopy = tiles;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = MEMORY[0x1E696B098];
-  [(PDFPageLayer *)self _layerTileToRootViewBounds:v6];
+  [(PDFPageLayer *)self _layerTileToRootViewBounds:tileCopy];
   v10 = [v9 PDFKitValueWithPDFRect:?];
   [v8 addObject:v10];
 
@@ -1094,7 +1094,7 @@ LABEL_34:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v7;
+  v11 = tilesCopy;
   v12 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v12)
   {
@@ -1151,22 +1151,22 @@ LABEL_34:
   return v31;
 }
 
-- (id)_subtractRectB:(CGRect)a3 fromRectA:(CGRect)a4
+- (id)_subtractRectB:(CGRect)b fromRectA:(CGRect)a
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = a.size.height;
+  width = a.size.width;
+  y = a.origin.y;
+  x = a.origin.x;
+  v8 = b.size.height;
+  v9 = b.size.width;
+  v10 = b.origin.y;
+  v11 = b.origin.x;
   v128[1] = *MEMORY[0x1E69E9840];
   v148.origin.x = v11;
   v148.origin.y = v10;
   v148.size.width = v9;
   v148.size.height = v8;
-  if (!PDFRectIntersectsRect(a4, v148))
+  if (!PDFRectIntersectsRect(a, v148))
   {
     v13 = [MEMORY[0x1E696B098] PDFKitValueWithPDFRect:{x, y, width, height}];
     v128[0] = v13;
@@ -1411,12 +1411,12 @@ LABEL_6:
   return v12;
 }
 
-- (CGRect)_layerTileToRootViewBounds:(id)a3
+- (CGRect)_layerTileToRootViewBounds:(id)bounds
 {
-  v4 = a3;
+  boundsCopy = bounds;
   WeakRetained = objc_loadWeakRetained(&self->_geometryInterface);
-  [v4 bounds];
-  [v4 convertRect:self toLayer:?];
+  [boundsCopy bounds];
+  [boundsCopy convertRect:self toLayer:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1525,12 +1525,12 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_hasTileWithFrameInLayer:(CGRect)a3
+- (BOOL)_hasTileWithFrameInLayer:(CGRect)layer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = layer.size.height;
+  width = layer.size.width;
+  y = layer.origin.y;
+  x = layer.origin.x;
   v24 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
@@ -1573,16 +1573,16 @@ LABEL_14:
   return v8;
 }
 
-- (void)_printRectsArray:(id)a3
+- (void)_printRectsArray:(id)array
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  NSLog(&cfstr_RectCountD.isa, [v3 count]);
+  arrayCopy = array;
+  NSLog(&cfstr_RectCountD.isa, [arrayCopy count]);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v3;
+  v4 = arrayCopy;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -1613,13 +1613,13 @@ LABEL_14:
   }
 }
 
-- (void)_renderingPropertyUpdate:(id)a3
+- (void)_renderingPropertyUpdate:(id)update
 {
-  v9 = [a3 userInfo];
-  v4 = [v9 objectForKey:@"PDFRenderingPropertyKey"];
-  v5 = [v4 integerValue];
+  userInfo = [update userInfo];
+  v4 = [userInfo objectForKey:@"PDFRenderingPropertyKey"];
+  integerValue = [v4 integerValue];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFELL) == 6)
+  if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
     WeakRetained = objc_loadWeakRetained(&self->_renderingProperties);
     if ([WeakRetained enablePageShadows])
@@ -1635,7 +1635,7 @@ LABEL_14:
     [(PDFPageLayer *)self _setEnablePageShadows:v7];
   }
 
-  if (v5 == 7 || v5 == 0)
+  if (integerValue == 7 || integerValue == 0)
   {
     [(PDFPageLayer *)self forceTileUpdate];
     [(PDFPageLayer *)self updatePageLayerEffects];
@@ -1702,18 +1702,18 @@ LABEL_14:
       v36 = v35;
       v38 = v37;
       v129 = +[PDFTilePool sharedPool];
-      v39 = [v129 tileSurfaceSize];
+      tileSurfaceSize = [v129 tileSurfaceSize];
       v40.n128_u64[0] = 0;
       v41.n128_u64[0] = 0;
-      [v13 convertRootViewRect:self toPageLayer:{PDFRectMake(v40, v41, v39, v39)}];
+      [v13 convertRootViewRect:self toPageLayer:{PDFRectMake(v40, v41, tileSurfaceSize, tileSurfaceSize)}];
       v117 = v42;
-      v116 = v39 / v42;
-      obj = v39;
-      if (vabdd_f64(self->_lastLayoutZoomFactor, v39 / v42) > 0.0001)
+      v116 = tileSurfaceSize / v42;
+      obj = tileSurfaceSize;
+      if (vabdd_f64(self->_lastLayoutZoomFactor, tileSurfaceSize / v42) > 0.0001)
       {
         v43 = v34;
-        v44 = [MEMORY[0x1E695DF00] date];
-        [v44 timeIntervalSinceDate:self->_lastZoomChange];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceDate:self->_lastZoomChange];
         v46 = v45;
 
         if (self->_lastZoomChange && v46 < self->_zoomGenerationDelay)
@@ -1745,19 +1745,19 @@ LABEL_69:
         self->_lastLayerFrameInRootView.size.width = v36;
         self->_lastLayerFrameInRootView.size.height = v38;
         ++self->_generationCount;
-        v48 = [MEMORY[0x1E695DF00] date];
+        date2 = [MEMORY[0x1E695DF00] date];
         lastZoomChange = self->_lastZoomChange;
-        self->_lastZoomChange = v48;
+        self->_lastZoomChange = date2;
 
         [(PDFPageLayer *)self updatePageLayerEffects];
         v26 = isForcingUpdate;
-        v39 = obj;
+        tileSurfaceSize = obj;
       }
 
       v50 = objc_alloc_init(MEMORY[0x1E695DF70]);
       if (v32 < v15)
       {
-        v53 = ((v15 - v32) / v39);
+        v53 = ((v15 - v32) / tileSurfaceSize);
       }
 
       else
@@ -1768,7 +1768,7 @@ LABEL_69:
       v112 = v34;
       if (v34 < v17)
       {
-        v54 = ((v17 - v34) / v39);
+        v54 = ((v17 - v34) / tileSurfaceSize);
       }
 
       else
@@ -1783,7 +1783,7 @@ LABEL_69:
         v55 = v38;
       }
 
-      v114 = (v55 / v39);
+      v114 = (v55 / tileSurfaceSize);
       v115 = v53;
       if (v54 <= v114)
       {
@@ -1793,7 +1793,7 @@ LABEL_69:
           v56 = v36;
         }
 
-        v113 = (v56 / v39);
+        v113 = (v56 / tileSurfaceSize);
         v57 = MEMORY[0x1E695EFD0];
         v122 = v32;
         v123 = v15;
@@ -1802,13 +1802,13 @@ LABEL_69:
         {
           if (v115 <= v113)
           {
-            v128 = v112 + v54 * v39;
+            v128 = v112 + v54 * tileSurfaceSize;
             v58 = v115;
             do
             {
-              v51.n128_f64[0] = v32 + v58 * v39;
+              v51.n128_f64[0] = v32 + v58 * tileSurfaceSize;
               v52.n128_f64[0] = v128;
-              v150.origin.x = PDFRectMake(v51, v52, v39, v39);
+              v150.origin.x = PDFRectMake(v51, v52, tileSurfaceSize, tileSurfaceSize);
               x = v150.origin.x;
               y = v150.origin.y;
               width = v150.size.width;
@@ -1846,15 +1846,15 @@ LABEL_69:
                   v71 = [PDFPageLayerTile alloc];
                   generationCount = self->_generationCount;
                   t2 = location;
-                  v73 = [(PDFPageLayerTile *)v71 initWithFrame:self forPageLayer:&t2 withRenderingTransform:generationCount tileContentsScale:v67 generationID:v68, v69, v70, v116];
-                  [(PDFPageLayerTile *)v73 setRootViewFrame:x, y, width, height];
+                  v116 = [(PDFPageLayerTile *)v71 initWithFrame:self forPageLayer:&t2 withRenderingTransform:generationCount tileContentsScale:v67 generationID:v68, v69, v70, v116];
+                  [(PDFPageLayerTile *)v116 setRootViewFrame:x, y, width, height];
                   if ([v13 flipsTileContents])
                   {
                     CGAffineTransformMakeScale(&t2, 1.0, -1.0);
-                    [(PDFPageLayerTile *)v73 setAffineTransform:&t2];
+                    [(PDFPageLayerTile *)v116 setAffineTransform:&t2];
                   }
 
-                  [v50 addObject:v73];
+                  [v50 addObject:v116];
                 }
               }
 
@@ -1862,7 +1862,7 @@ LABEL_69:
               v32 = v122;
               v15 = v123;
               v17 = v121;
-              v39 = obj;
+              tileSurfaceSize = obj;
             }
 
             while (v113 + 1 != v58);
@@ -1922,10 +1922,10 @@ LABEL_69:
       [MEMORY[0x1E6979518] setDisableActions:1];
       while ([v76 count])
       {
-        v86 = [v76 lastObject];
+        lastObject = [v76 lastObject];
         [v76 removeLastObject];
-        [v86 removeFromSuperlayer];
-        [(NSMutableArray *)self->_tiles removeObject:v86];
+        [lastObject removeFromSuperlayer];
+        [(NSMutableArray *)self->_tiles removeObject:lastObject];
       }
 
       [MEMORY[0x1E6979518] commit];

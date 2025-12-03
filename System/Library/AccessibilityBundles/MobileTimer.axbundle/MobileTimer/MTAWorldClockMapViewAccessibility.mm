@@ -1,9 +1,9 @@
 @interface MTAWorldClockMapViewAccessibility
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityElements;
-- (void)_accessibilityAnnounceSolarRegionChange:(CGPoint)a3;
-- (void)addCity:(id)a3;
-- (void)removeCity:(id)a3;
+- (void)_accessibilityAnnounceSolarRegionChange:(CGPoint)change;
+- (void)addCity:(id)city;
+- (void)removeCity:(id)city;
 @end
 
 @implementation MTAWorldClockMapViewAccessibility
@@ -64,35 +64,35 @@ uint64_t __58__MTAWorldClockMapViewAccessibility_accessibilityElements__block_in
   }
 }
 
-- (void)addCity:(id)a3
+- (void)addCity:(id)city
 {
   v4.receiver = self;
   v4.super_class = MTAWorldClockMapViewAccessibility;
-  [(MTAWorldClockMapViewAccessibility *)&v4 addCity:a3];
+  [(MTAWorldClockMapViewAccessibility *)&v4 addCity:city];
   [(MTAWorldClockMapViewAccessibility *)self _accessibilityRemoveValueForKey:*MEMORY[0x29EDC7620]];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (void)removeCity:(id)a3
+- (void)removeCity:(id)city
 {
   v4.receiver = self;
   v4.super_class = MTAWorldClockMapViewAccessibility;
-  [(MTAWorldClockMapViewAccessibility *)&v4 removeCity:a3];
+  [(MTAWorldClockMapViewAccessibility *)&v4 removeCity:city];
   [(MTAWorldClockMapViewAccessibility *)self _accessibilityRemoveValueForKey:*MEMORY[0x29EDC7620]];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (void)_accessibilityAnnounceSolarRegionChange:(CGPoint)a3
+- (void)_accessibilityAnnounceSolarRegionChange:(CGPoint)change
 {
-  y = a3.y;
-  x = a3.x;
+  y = change.y;
+  x = change.x;
   if (objc_opt_respondsToSelector())
   {
     v6 = [(MTAWorldClockMapViewAccessibility *)self _accessibilityValueForKey:@"accessibilitySolarTerminatorPath"];
     if (!v6)
     {
-      v7 = [MEMORY[0x29EDC7C40] mainScreen];
-      [v7 bounds];
+      mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+      [mainScreen bounds];
       v9 = v8;
       v11 = v10;
       v13 = v12;
@@ -143,13 +143,13 @@ void __77__MTAWorldClockMapViewAccessibility__accessibilityAnnounceSolarRegionCh
   *(v4 + 40) = v3;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v28 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v8 = [(MTAWorldClockMapViewAccessibility *)self accessibilityElements];
+  eventCopy = event;
+  accessibilityElements = [(MTAWorldClockMapViewAccessibility *)self accessibilityElements];
   UIAccessibilityPointForPoint();
   v10 = v9;
   v12 = v11;
@@ -157,7 +157,7 @@ void __77__MTAWorldClockMapViewAccessibility__accessibilityAnnounceSolarRegionCh
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = v8;
+  v13 = accessibilityElements;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
@@ -174,7 +174,7 @@ void __77__MTAWorldClockMapViewAccessibility__accessibilityAnnounceSolarRegionCh
 
         v18 = *(*(&v23 + 1) + 8 * i);
         [(MTAWorldClockMapViewAccessibility *)self convertPoint:v18 toView:x, y];
-        if ([v18 pointInside:v7 withEvent:?])
+        if ([v18 pointInside:eventCopy withEvent:?])
         {
           [(MTAWorldClockMapViewAccessibility *)self _accessibilityRemoveValueForKey:@"accessibilitySolarRegion"];
           v19 = v18;
@@ -203,7 +203,7 @@ void __77__MTAWorldClockMapViewAccessibility__accessibilityAnnounceSolarRegionCh
 
   v22.receiver = self;
   v22.super_class = MTAWorldClockMapViewAccessibility;
-  v19 = [(MTAWorldClockMapViewAccessibility *)&v22 _accessibilityHitTest:v7 withEvent:x, y];
+  v19 = [(MTAWorldClockMapViewAccessibility *)&v22 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_13:
 
   v20 = *MEMORY[0x29EDCA608];

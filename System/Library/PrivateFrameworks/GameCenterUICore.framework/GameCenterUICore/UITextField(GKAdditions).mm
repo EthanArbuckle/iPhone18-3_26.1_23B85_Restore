@@ -6,22 +6,22 @@
 
 - (uint64_t)isReallyFirstResponder
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 keyWindow];
-  v4 = [v3 firstResponder];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  firstResponder = [keyWindow firstResponder];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 superview], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "superview"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6 == a1))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([firstResponder superview], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "superview"), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6 == self))
   {
-    v7 = 1;
+    isFirstResponder = 1;
   }
 
   else
   {
-    v7 = [a1 isFirstResponder];
+    isFirstResponder = [self isFirstResponder];
   }
 
-  return v7;
+  return isFirstResponder;
 }
 
 @end

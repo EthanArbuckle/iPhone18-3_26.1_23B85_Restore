@@ -19,11 +19,11 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  v5 = [v4 items];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  items = [metaData items];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v6 = [items countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -34,10 +34,10 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) type];
+        type = [*(*(&v14 + 1) + 8 * i) type];
         v11 = SFIsPDF();
 
         if (!v11)
@@ -47,7 +47,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v7 = [items countByEnumeratingWithState:&v14 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -72,20 +72,20 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
-  if (v4 < 2)
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
+  if (totalSharedItemsCount < 2)
   {
     v14.receiver = self;
     v14.super_class = SDAirDropHandlerPDFs;
-    v11 = [(SDAirDropHandlerGenericFiles *)&v14 suitableContentsDescription];
+    suitableContentsDescription = [(SDAirDropHandlerGenericFiles *)&v14 suitableContentsDescription];
   }
 
   else
   {
-    v5 = v4;
+    v5 = totalSharedItemsCount;
     v15 = @"PDF";
-    v6 = [NSNumber numberWithUnsignedInteger:v4];
+    v6 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
     v16 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v17 = v7;
@@ -101,12 +101,12 @@ LABEL_13:
 
     else
     {
-      [NSString localizedStringWithFormat:v10, v3, v5];
+      [NSString localizedStringWithFormat:v10, senderName, v5];
     }
-    v11 = ;
+    suitableContentsDescription = ;
   }
 
-  return v11;
+  return suitableContentsDescription;
 }
 
 @end

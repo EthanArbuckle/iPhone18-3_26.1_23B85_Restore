@@ -3,39 +3,39 @@
 + (id)remoteInterface;
 - (SPBeaconSharingManager)init;
 - (SPBeaconSharingXPCProtocol)proxy;
-- (void)acceptShare:(id)a3 completion:(id)a4;
-- (void)allSharesIncludingHiddenWithCompletion:(id)a3;
-- (void)allSharesWithCompletion:(id)a3;
-- (void)checkDataIntegrityWithShareIdentifier:(id)a3 completion:(id)a4;
-- (void)cleanupAllRecordsOfType:(unint64_t)a3 completion:(id)a4;
-- (void)declineShare:(id)a3 completion:(id)a4;
-- (void)delegatedShare:(id)a3 completion:(id)a4;
-- (void)downloadKeysWithCircleIdentifier:(id)a3 fromBookmark:(BOOL)a4 completion:(id)a5;
-- (void)forceBreakAllSharesOfType:(unint64_t)a3 completion:(id)a4;
-- (void)forceBreakAllSharesWithUser:(id)a3 completion:(id)a4;
-- (void)forceDeclineShare:(id)a3 completion:(id)a4;
-- (void)forceStopSharing:(id)a3 completion:(id)a4;
-- (void)importDelegatedShare:(id)a3 completion:(id)a4;
-- (void)importSharePreview:(id)a3 completion:(id)a4;
-- (void)interruptionHandler:(id)a3;
-- (void)invalidationHandler:(id)a3;
-- (void)isBeaconDelegated:(id)a3 completion:(id)a4;
-- (void)lookForOrphanedRecordsWithCompletion:(id)a3;
-- (void)receivedUpdatedShares:(id)a3;
-- (void)removeExpiredSharesWithCompletion:(id)a3;
-- (void)removeImportedShare:(id)a3 completion:(id)a4;
-- (void)removeShare:(id)a3 completion:(id)a4;
-- (void)requestShare:(id)a3 completion:(id)a4;
-- (void)revokeShare:(id)a3 completion:(id)a4;
-- (void)share:(id)a3 recipients:(id)a4 completion:(id)a5;
-- (void)share:(id)a3 recipients:(id)a4 shareType:(unint64_t)a5 completion:(id)a6;
-- (void)sharingLimitsWithCompletion:(id)a3;
-- (void)startRefreshingSharesWithBlock:(id)a3 completion:(id)a4;
-- (void)stopRefreshingSharesWithCompletion:(id)a3;
-- (void)stopSharing:(id)a3 completion:(id)a4;
-- (void)stopTemporaryItemLocationShare:(id)a3 completion:(id)a4;
-- (void)updatedCircleIdentifiers:(id)a3 completion:(id)a4;
-- (void)uploadKeysWithCircleIdentifier:(id)a3 isInitialUpload:(BOOL)a4 completion:(id)a5;
+- (void)acceptShare:(id)share completion:(id)completion;
+- (void)allSharesIncludingHiddenWithCompletion:(id)completion;
+- (void)allSharesWithCompletion:(id)completion;
+- (void)checkDataIntegrityWithShareIdentifier:(id)identifier completion:(id)completion;
+- (void)cleanupAllRecordsOfType:(unint64_t)type completion:(id)completion;
+- (void)declineShare:(id)share completion:(id)completion;
+- (void)delegatedShare:(id)share completion:(id)completion;
+- (void)downloadKeysWithCircleIdentifier:(id)identifier fromBookmark:(BOOL)bookmark completion:(id)completion;
+- (void)forceBreakAllSharesOfType:(unint64_t)type completion:(id)completion;
+- (void)forceBreakAllSharesWithUser:(id)user completion:(id)completion;
+- (void)forceDeclineShare:(id)share completion:(id)completion;
+- (void)forceStopSharing:(id)sharing completion:(id)completion;
+- (void)importDelegatedShare:(id)share completion:(id)completion;
+- (void)importSharePreview:(id)preview completion:(id)completion;
+- (void)interruptionHandler:(id)handler;
+- (void)invalidationHandler:(id)handler;
+- (void)isBeaconDelegated:(id)delegated completion:(id)completion;
+- (void)lookForOrphanedRecordsWithCompletion:(id)completion;
+- (void)receivedUpdatedShares:(id)shares;
+- (void)removeExpiredSharesWithCompletion:(id)completion;
+- (void)removeImportedShare:(id)share completion:(id)completion;
+- (void)removeShare:(id)share completion:(id)completion;
+- (void)requestShare:(id)share completion:(id)completion;
+- (void)revokeShare:(id)share completion:(id)completion;
+- (void)share:(id)share recipients:(id)recipients completion:(id)completion;
+- (void)share:(id)share recipients:(id)recipients shareType:(unint64_t)type completion:(id)completion;
+- (void)sharingLimitsWithCompletion:(id)completion;
+- (void)startRefreshingSharesWithBlock:(id)block completion:(id)completion;
+- (void)stopRefreshingSharesWithCompletion:(id)completion;
+- (void)stopSharing:(id)sharing completion:(id)completion;
+- (void)stopTemporaryItemLocationShare:(id)share completion:(id)completion;
+- (void)updatedCircleIdentifiers:(id)identifiers completion:(id)completion;
+- (void)uploadKeysWithCircleIdentifier:(id)identifier isInitialUpload:(BOOL)upload completion:(id)completion;
 @end
 
 @implementation SPBeaconSharingManager
@@ -106,13 +106,13 @@ void __41__SPBeaconSharingManager_remoteInterface__block_invoke()
 - (SPBeaconSharingXPCProtocol)proxy
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v3 = [(SPBeaconSharingManager *)self session];
+  session = [(SPBeaconSharingManager *)self session];
 
-  if (!v3)
+  if (!session)
   {
-    v4 = [(SPBeaconSharingManager *)self serviceDescription];
+    serviceDescription = [(SPBeaconSharingManager *)self serviceDescription];
 
-    if (!v4)
+    if (!serviceDescription)
     {
       objc_initWeak(location, self);
       aBlock[0] = MEMORY[0x277D85DD0];
@@ -141,40 +141,40 @@ void __41__SPBeaconSharingManager_remoteInterface__block_invoke()
     }
 
     v12 = objc_alloc(MEMORY[0x277D07BA8]);
-    v13 = [(SPBeaconSharingManager *)self serviceDescription];
-    v14 = [v12 initWithServiceDescription:v13];
+    serviceDescription2 = [(SPBeaconSharingManager *)self serviceDescription];
+    v14 = [v12 initWithServiceDescription:serviceDescription2];
     [(SPBeaconSharingManager *)self setSession:v14];
 
     v15 = LogCategory_BeaconSharing();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(SPBeaconSharingManager *)self serviceDescription];
-      v17 = [v16 machService];
+      serviceDescription3 = [(SPBeaconSharingManager *)self serviceDescription];
+      machService = [serviceDescription3 machService];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v17;
+      *(location + 4) = machService;
       _os_log_impl(&dword_2643D0000, v15, OS_LOG_TYPE_DEFAULT, "SPBeaconSharingManager: Establishing XPC connection to %@", location, 0xCu);
     }
 
-    v18 = [(SPBeaconSharingManager *)self session];
-    [v18 resume];
+    session2 = [(SPBeaconSharingManager *)self session];
+    [session2 resume];
 
     v19 = LogCategory_BeaconSharing();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(SPBeaconSharingManager *)self serviceDescription];
-      v21 = [v20 machService];
+      serviceDescription4 = [(SPBeaconSharingManager *)self serviceDescription];
+      machService2 = [serviceDescription4 machService];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v21;
+      *(location + 4) = machService2;
       _os_log_impl(&dword_2643D0000, v19, OS_LOG_TYPE_DEFAULT, "SPBeaconSharingManager: Established XPC connection to %@", location, 0xCu);
     }
   }
 
-  v22 = [(SPBeaconSharingManager *)self session];
-  v23 = [v22 proxy];
+  session3 = [(SPBeaconSharingManager *)self session];
+  proxy = [session3 proxy];
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return proxy;
 }
 
 void __31__SPBeaconSharingManager_proxy__block_invoke(uint64_t a1, void *a2)
@@ -191,25 +191,25 @@ void __31__SPBeaconSharingManager_proxy__block_invoke_2(uint64_t a1, void *a2)
   [WeakRetained invalidationHandler:v3];
 }
 
-- (void)interruptionHandler:(id)a3
+- (void)interruptionHandler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_BeaconSharing();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPBeaconSharingManager: interruptionHandler %@", buf, 0xCu);
   }
 
-  v6 = [(SPBeaconSharingManager *)self queue];
+  queue = [(SPBeaconSharingManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SPBeaconSharingManager_interruptionHandler___block_invoke;
   block[3] = &unk_279B58AE8;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -318,14 +318,14 @@ void __46__SPBeaconSharingManager_interruptionHandler___block_invoke_10(uint64_t
   }
 }
 
-- (void)invalidationHandler:(id)a3
+- (void)invalidationHandler:(id)handler
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = LogCategory_BeaconSharing();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SPBeaconSharingManager *)self serviceDescription];
-    v6 = [v5 debugDescription];
+    serviceDescription = [(SPBeaconSharingManager *)self serviceDescription];
+    v6 = [serviceDescription debugDescription];
     v8 = 138412290;
     v9 = v6;
     _os_log_impl(&dword_2643D0000, v4, OS_LOG_TYPE_DEFAULT, "SPBeaconSharingManager: invalidationHandler %@", &v8, 0xCu);
@@ -376,22 +376,22 @@ void __43__SPBeaconSharingManager_exportedInterface__block_invoke()
   return v3;
 }
 
-- (void)share:(id)a3 recipients:(id)a4 completion:(id)a5
+- (void)share:(id)share recipients:(id)recipients completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  shareCopy = share;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __54__SPBeaconSharingManager_share_recipients_completion___block_invoke;
   v14[3] = &unk_279B593C0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = shareCopy;
+  v16 = recipientsCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = recipientsCopy;
+  v13 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling share:recipient:completion", OS_ACTIVITY_FLAG_DEFAULT, v14);
 }
 
@@ -473,23 +473,23 @@ void __54__SPBeaconSharingManager_share_recipients_completion___block_invoke_122
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)share:(id)a3 recipients:(id)a4 shareType:(unint64_t)a5 completion:(id)a6
+- (void)share:(id)share recipients:(id)recipients shareType:(unint64_t)type completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  shareCopy = share;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __64__SPBeaconSharingManager_share_recipients_shareType_completion___block_invoke;
   activity_block[3] = &unk_279B593E8;
   activity_block[4] = self;
-  v17 = v10;
-  v19 = v12;
-  v20 = a5;
-  v18 = v11;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = shareCopy;
+  v19 = completionCopy;
+  typeCopy = type;
+  v18 = recipientsCopy;
+  v13 = completionCopy;
+  v14 = recipientsCopy;
+  v15 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling share:recipient:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -574,19 +574,19 @@ void __64__SPBeaconSharingManager_share_recipients_shareType_completion___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestShare:(id)a3 completion:(id)a4
+- (void)requestShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __50__SPBeaconSharingManager_requestShare_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = shareCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling requestShare:unknownBeacon:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -655,19 +655,19 @@ void __50__SPBeaconSharingManager_requestShare_completion___block_invoke_125(uin
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeShare:(id)a3 completion:(id)a4
+- (void)removeShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __49__SPBeaconSharingManager_removeShare_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = shareCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling removeShare:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -714,19 +714,19 @@ void __49__SPBeaconSharingManager_removeShare_completion___block_invoke_2(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)revokeShare:(id)a3 completion:(id)a4
+- (void)revokeShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __49__SPBeaconSharingManager_revokeShare_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = shareCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling revokeShare:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -773,19 +773,19 @@ void __49__SPBeaconSharingManager_revokeShare_completion___block_invoke_2(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptShare:(id)a3 completion:(id)a4
+- (void)acceptShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __49__SPBeaconSharingManager_acceptShare_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = shareCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling acceptShare:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -832,19 +832,19 @@ void __49__SPBeaconSharingManager_acceptShare_completion___block_invoke_2(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)declineShare:(id)a3 completion:(id)a4
+- (void)declineShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __50__SPBeaconSharingManager_declineShare_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = shareCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling declineShare:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -891,19 +891,19 @@ void __50__SPBeaconSharingManager_declineShare_completion___block_invoke_2(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSharing:(id)a3 completion:(id)a4
+- (void)stopSharing:(id)sharing completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sharingCopy = sharing;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __49__SPBeaconSharingManager_stopSharing_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = sharingCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = sharingCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling stopSharing:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -950,17 +950,17 @@ void __49__SPBeaconSharingManager_stopSharing_completion___block_invoke_2(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanupAllRecordsOfType:(unint64_t)a3 completion:(id)a4
+- (void)cleanupAllRecordsOfType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __61__SPBeaconSharingManager_cleanupAllRecordsOfType_completion___block_invoke;
   activity_block[3] = &unk_279B597F0;
-  v9 = v6;
-  v10 = a3;
+  v9 = completionCopy;
+  typeCopy = type;
   activity_block[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling cleanupAllRecordsOfType:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1002,17 +1002,17 @@ void __61__SPBeaconSharingManager_cleanupAllRecordsOfType_completion___block_inv
   [v4 cleanupAllRecordsOfType:v5 completion:v6];
 }
 
-- (void)forceBreakAllSharesOfType:(unint64_t)a3 completion:(id)a4
+- (void)forceBreakAllSharesOfType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __63__SPBeaconSharingManager_forceBreakAllSharesOfType_completion___block_invoke;
   activity_block[3] = &unk_279B597F0;
-  v9 = v6;
-  v10 = a3;
+  v9 = completionCopy;
+  typeCopy = type;
   activity_block[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling forceBreakAllSharesOfType:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1059,19 +1059,19 @@ void __63__SPBeaconSharingManager_forceBreakAllSharesOfType_completion___block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceBreakAllSharesWithUser:(id)a3 completion:(id)a4
+- (void)forceBreakAllSharesWithUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __65__SPBeaconSharingManager_forceBreakAllSharesWithUser_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = userCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = userCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling forceBreakAllSharesWithUser:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1118,19 +1118,19 @@ void __65__SPBeaconSharingManager_forceBreakAllSharesWithUser_completion___block
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceDeclineShare:(id)a3 completion:(id)a4
+- (void)forceDeclineShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __55__SPBeaconSharingManager_forceDeclineShare_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = shareCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling forceDeclineShare:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1177,19 +1177,19 @@ void __55__SPBeaconSharingManager_forceDeclineShare_completion___block_invoke_2(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceStopSharing:(id)a3 completion:(id)a4
+- (void)forceStopSharing:(id)sharing completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sharingCopy = sharing;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __54__SPBeaconSharingManager_forceStopSharing_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = sharingCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = sharingCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling forceStopSharing:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1236,16 +1236,16 @@ void __54__SPBeaconSharingManager_forceStopSharing_completion___block_invoke_2(u
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allSharesWithCompletion:(id)a3
+- (void)allSharesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__SPBeaconSharingManager_allSharesWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling allSharesWithCompletion", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -1300,16 +1300,16 @@ void __50__SPBeaconSharingManager_allSharesWithCompletion___block_invoke_136(uin
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allSharesIncludingHiddenWithCompletion:(id)a3
+- (void)allSharesIncludingHiddenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__SPBeaconSharingManager_allSharesIncludingHiddenWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling allSharesIncludingHidden:completion:", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -1364,19 +1364,19 @@ void __65__SPBeaconSharingManager_allSharesIncludingHiddenWithCompletion___block
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startRefreshingSharesWithBlock:(id)a3 completion:(id)a4
+- (void)startRefreshingSharesWithBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __68__SPBeaconSharingManager_startRefreshingSharesWithBlock_completion___block_invoke;
   activity_block[3] = &unk_279B59868;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = blockCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = blockCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling startRefreshingSharesWithBlock:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1471,16 +1471,16 @@ void __68__SPBeaconSharingManager_startRefreshingSharesWithBlock_completion___bl
   dispatch_async(v4, v7);
 }
 
-- (void)stopRefreshingSharesWithCompletion:(id)a3
+- (void)stopRefreshingSharesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__SPBeaconSharingManager_stopRefreshingSharesWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling stopRefreshingSharesWithCompletion", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -1520,20 +1520,20 @@ void __61__SPBeaconSharingManager_stopRefreshingSharesWithCompletion___block_inv
   [v4 stopRefreshingSharesWithCompletion:v5];
 }
 
-- (void)uploadKeysWithCircleIdentifier:(id)a3 isInitialUpload:(BOOL)a4 completion:(id)a5
+- (void)uploadKeysWithCircleIdentifier:(id)identifier isInitialUpload:(BOOL)upload completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __84__SPBeaconSharingManager_uploadKeysWithCircleIdentifier_isInitialUpload_completion___block_invoke;
   v12[3] = &unk_279B59890;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = identifierCopy;
+  uploadCopy = upload;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   _os_activity_initiate(&dword_2643D0000, "os_activity_initiate: Calling uploadKeysWithCircleIdentifier:isInitialUpload:completion:", OS_ACTIVITY_FLAG_DEFAULT, v12);
 }
 
@@ -1603,20 +1603,20 @@ void __84__SPBeaconSharingManager_uploadKeysWithCircleIdentifier_isInitialUpload
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)downloadKeysWithCircleIdentifier:(id)a3 fromBookmark:(BOOL)a4 completion:(id)a5
+- (void)downloadKeysWithCircleIdentifier:(id)identifier fromBookmark:(BOOL)bookmark completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__SPBeaconSharingManager_downloadKeysWithCircleIdentifier_fromBookmark_completion___block_invoke;
   v12[3] = &unk_279B59890;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = identifierCopy;
+  bookmarkCopy = bookmark;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   _os_activity_initiate(&dword_2643D0000, "os_activity_initiate: Calling downloadKeysWithCircleIdentifier:completion:", OS_ACTIVITY_FLAG_DEFAULT, v12);
 }
 
@@ -1678,19 +1678,19 @@ void __83__SPBeaconSharingManager_downloadKeysWithCircleIdentifier_fromBookmark_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)updatedCircleIdentifiers:(id)a3 completion:(id)a4
+- (void)updatedCircleIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __62__SPBeaconSharingManager_updatedCircleIdentifiers_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifiersCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifiersCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling updatedCircleIdentifiers:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1737,19 +1737,19 @@ void __62__SPBeaconSharingManager_updatedCircleIdentifiers_completion___block_in
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkDataIntegrityWithShareIdentifier:(id)a3 completion:(id)a4
+- (void)checkDataIntegrityWithShareIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __75__SPBeaconSharingManager_checkDataIntegrityWithShareIdentifier_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling checkDataIntegrityWithShareIdentifier:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -1806,16 +1806,16 @@ void __75__SPBeaconSharingManager_checkDataIntegrityWithShareIdentifier_completi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lookForOrphanedRecordsWithCompletion:(id)a3
+- (void)lookForOrphanedRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__SPBeaconSharingManager_lookForOrphanedRecordsWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling lookForOrphanedRecordsWithCompletion:", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -1854,16 +1854,16 @@ void __63__SPBeaconSharingManager_lookForOrphanedRecordsWithCompletion___block_i
   [v4 lookForOrphanedRecordsWithCompletion:v5];
 }
 
-- (void)removeExpiredSharesWithCompletion:(id)a3
+- (void)removeExpiredSharesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__SPBeaconSharingManager_removeExpiredSharesWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling removeExpiredSharesWithCompletion", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -1902,16 +1902,16 @@ void __60__SPBeaconSharingManager_removeExpiredSharesWithCompletion___block_invo
   [v4 removeExpiredSharesWithCompletion:v5];
 }
 
-- (void)sharingLimitsWithCompletion:(id)a3
+- (void)sharingLimitsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__SPBeaconSharingManager_sharingLimitsWithCompletion___block_invoke;
   v6[3] = &unk_279B58B80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling sharingLimitsWithCompletion", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -1950,19 +1950,19 @@ void __54__SPBeaconSharingManager_sharingLimitsWithCompletion___block_invoke_2(u
   [v4 sharingLimitsWithCompletion:v5];
 }
 
-- (void)importSharePreview:(id)a3 completion:(id)a4
+- (void)importSharePreview:(id)preview completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  previewCopy = preview;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __56__SPBeaconSharingManager_importSharePreview_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = previewCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = previewCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling importSharePreview:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -2029,19 +2029,19 @@ void __56__SPBeaconSharingManager_importSharePreview_completion___block_invoke_1
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)importDelegatedShare:(id)a3 completion:(id)a4
+- (void)importDelegatedShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __58__SPBeaconSharingManager_importDelegatedShare_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = shareCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling importDelegatedShare:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -2109,19 +2109,19 @@ void __58__SPBeaconSharingManager_importDelegatedShare_completion___block_invoke
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeImportedShare:(id)a3 completion:(id)a4
+- (void)removeImportedShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __57__SPBeaconSharingManager_removeImportedShare_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = shareCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling removeImportedShare:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -2188,19 +2188,19 @@ void __57__SPBeaconSharingManager_removeImportedShare_completion___block_invoke_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)delegatedShare:(id)a3 completion:(id)a4
+- (void)delegatedShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __52__SPBeaconSharingManager_delegatedShare_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = shareCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling delegatedShare:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -2268,19 +2268,19 @@ void __52__SPBeaconSharingManager_delegatedShare_completion___block_invoke_169(u
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopTemporaryItemLocationShare:(id)a3 completion:(id)a4
+- (void)stopTemporaryItemLocationShare:(id)share completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  shareCopy = share;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __68__SPBeaconSharingManager_stopTemporaryItemLocationShare_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = shareCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = shareCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling stopTemporaryItemLocationShare:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -2351,19 +2351,19 @@ void __68__SPBeaconSharingManager_stopTemporaryItemLocationShare_completion___bl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isBeaconDelegated:(id)a3 completion:(id)a4
+- (void)isBeaconDelegated:(id)delegated completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  delegatedCopy = delegated;
+  completionCopy = completion;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __55__SPBeaconSharingManager_isBeaconDelegated_completion___block_invoke;
   activity_block[3] = &unk_279B58BD0;
   activity_block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = delegatedCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = delegatedCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Calling isBeaconDelegated:completion", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -2431,16 +2431,16 @@ void __55__SPBeaconSharingManager_isBeaconDelegated_completion___block_invoke_17
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedUpdatedShares:(id)a3
+- (void)receivedUpdatedShares:(id)shares
 {
-  v4 = a3;
+  sharesCopy = shares;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__SPBeaconSharingManager_receivedUpdatedShares___block_invoke;
   v6[3] = &unk_279B58C78;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sharesCopy;
+  v5 = sharesCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSession: Called receivedUpdatedShares", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 

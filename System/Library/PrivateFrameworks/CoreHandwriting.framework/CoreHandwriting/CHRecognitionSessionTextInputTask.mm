@@ -1,29 +1,29 @@
 @interface CHRecognitionSessionTextInputTask
-- (CHRecognitionSessionTextInputTask)initWithLocales:(id)a3 strokeProvider:(id)a4 initialTextInputTargets:(id)a5 inputResult:(id)a6 recognitionEnvironment:(int64_t)a7 calculateDocumentProvider:(id)a8;
-- (CHRecognitionSessionTextInputTask)initWithSessionMode:(int64_t)a3 locales:(id)a4 preferredLocales:(id)a5 strokeProvider:(id)a6 calculateDocumentProvider:(id)a7 inputResult:(id)a8 recognitionQOSClass:(unsigned int)a9 recognitionEnvironment:(int64_t)a10 isHighResponsivenessTask:(BOOL)a11 strokeGroupingRequirement:(int64_t)a12 principalLineRequirement:(int64_t)a13 subjectStrokeIdentifiers:(id)a14 recognitionOptions:(id)a15 partialResultBlock:(id)a16 wantsAutoRefine:(BOOL)a17;
+- (CHRecognitionSessionTextInputTask)initWithLocales:(id)locales strokeProvider:(id)provider initialTextInputTargets:(id)targets inputResult:(id)result recognitionEnvironment:(int64_t)environment calculateDocumentProvider:(id)documentProvider;
+- (CHRecognitionSessionTextInputTask)initWithSessionMode:(int64_t)mode locales:(id)locales preferredLocales:(id)preferredLocales strokeProvider:(id)provider calculateDocumentProvider:(id)documentProvider inputResult:(id)result recognitionQOSClass:(unsigned int)class recognitionEnvironment:(int64_t)self0 isHighResponsivenessTask:(BOOL)self1 strokeGroupingRequirement:(int64_t)self2 principalLineRequirement:(int64_t)self3 subjectStrokeIdentifiers:(id)self4 recognitionOptions:(id)self5 partialResultBlock:(id)self6 wantsAutoRefine:(BOOL)self7;
 - (id)newGroupingManager;
 - (id)newStrokeClassifier;
-- (id)textCorrectionResultsForGroupingResult:(id)a3 groupingManager:(id)a4;
+- (id)textCorrectionResultsForGroupingResult:(id)result groupingManager:(id)manager;
 @end
 
 @implementation CHRecognitionSessionTextInputTask
 
-- (CHRecognitionSessionTextInputTask)initWithLocales:(id)a3 strokeProvider:(id)a4 initialTextInputTargets:(id)a5 inputResult:(id)a6 recognitionEnvironment:(int64_t)a7 calculateDocumentProvider:(id)a8
+- (CHRecognitionSessionTextInputTask)initWithLocales:(id)locales strokeProvider:(id)provider initialTextInputTargets:(id)targets inputResult:(id)result recognitionEnvironment:(int64_t)environment calculateDocumentProvider:(id)documentProvider
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  localesCopy = locales;
+  providerCopy = provider;
+  targetsCopy = targets;
+  resultCopy = result;
+  documentProviderCopy = documentProvider;
   v31.receiver = self;
   v31.super_class = CHRecognitionSessionTextInputTask;
   v30 = 0;
   v29 = 0;
   v28 = 0;
-  v24 = [(CHRecognitionSessionTask *)&v31 initWithSessionMode:1 locales:v14 preferredLocales:v14 strokeProvider:v15 calculateDocumentProvider:v18 inputResult:v17 recognitionQOSClass:v28 recognitionEnvironment:a7 isHighResponsivenessTask:v29 strokeGroupingRequirement:0 principalLineRequirement:0 subjectStrokeIdentifiers:0 recognitionOptions:0 partialResultBlock:0 wantsAutoRefine:v30];
+  v24 = [(CHRecognitionSessionTask *)&v31 initWithSessionMode:1 locales:localesCopy preferredLocales:localesCopy strokeProvider:providerCopy calculateDocumentProvider:documentProviderCopy inputResult:resultCopy recognitionQOSClass:v28 recognitionEnvironment:environment isHighResponsivenessTask:v29 strokeGroupingRequirement:0 principalLineRequirement:0 subjectStrokeIdentifiers:0 recognitionOptions:0 partialResultBlock:0 wantsAutoRefine:v30];
   if (v24)
   {
-    v25 = objc_msgSend_copy(v16, v19, v20, v21, v22, v23);
+    v25 = objc_msgSend_copy(targetsCopy, v19, v20, v21, v22, v23);
     initialTextInputTargets = v24->_initialTextInputTargets;
     v24->_initialTextInputTargets = v25;
   }
@@ -31,7 +31,7 @@
   return v24;
 }
 
-- (CHRecognitionSessionTextInputTask)initWithSessionMode:(int64_t)a3 locales:(id)a4 preferredLocales:(id)a5 strokeProvider:(id)a6 calculateDocumentProvider:(id)a7 inputResult:(id)a8 recognitionQOSClass:(unsigned int)a9 recognitionEnvironment:(int64_t)a10 isHighResponsivenessTask:(BOOL)a11 strokeGroupingRequirement:(int64_t)a12 principalLineRequirement:(int64_t)a13 subjectStrokeIdentifiers:(id)a14 recognitionOptions:(id)a15 partialResultBlock:(id)a16 wantsAutoRefine:(BOOL)a17
+- (CHRecognitionSessionTextInputTask)initWithSessionMode:(int64_t)mode locales:(id)locales preferredLocales:(id)preferredLocales strokeProvider:(id)provider calculateDocumentProvider:(id)documentProvider inputResult:(id)result recognitionQOSClass:(unsigned int)class recognitionEnvironment:(int64_t)self0 isHighResponsivenessTask:(BOOL)self1 strokeGroupingRequirement:(int64_t)self2 principalLineRequirement:(int64_t)self3 subjectStrokeIdentifiers:(id)self4 recognitionOptions:(id)self5 partialResultBlock:(id)self6 wantsAutoRefine:(BOOL)self7
 {
   if (qword_1EA84DC48 != -1)
   {
@@ -70,22 +70,22 @@ LABEL_8:
   return 0;
 }
 
-- (id)textCorrectionResultsForGroupingResult:(id)a3 groupingManager:(id)a4
+- (id)textCorrectionResultsForGroupingResult:(id)result groupingManager:(id)manager
 {
   v444 = *MEMORY[0x1E69E9840];
-  v400 = a3;
-  v404 = a4;
+  resultCopy = result;
+  managerCopy = manager;
   v408 = objc_msgSend_inputResult(self, v6, v7, v8, v9, v10);
   v405 = objc_msgSend_recognitionLocales(self, v11, v12, v13, v14, v15);
   v21 = objc_msgSend_activeTextInputQuery(self, v16, v17, v18, v19, v20);
   v27 = objc_msgSend_recognitionSession(v21, v22, v23, v24, v25, v26);
   v33 = objc_msgSend_strokeGroupOrdering(v27, v28, v29, v30, v31, v32);
-  v401 = objc_msgSend_strokeGroupsSortedBy_textGroupsOnly_(v400, v34, v33, 0, v35, v36);
+  v401 = objc_msgSend_strokeGroupsSortedBy_textGroupsOnly_(resultCopy, v34, v33, 0, v35, v36);
 
   v42 = objc_msgSend_activeTextInputQuery(self, v37, v38, v39, v40, v41);
   v48 = objc_msgSend_textInputTargetsDataSource(v42, v43, v44, v45, v46, v47);
 
-  v418 = self;
+  selfCopy = self;
   v399 = v48;
   if (v48)
   {
@@ -106,7 +106,7 @@ LABEL_8:
       *&block[16] = sub_183784F34;
       v437 = &unk_1E6DDDD60;
       v438 = v60;
-      v439 = self;
+      selfCopy2 = self;
       v440 = v409;
       v68 = v67;
       v441 = v68;
@@ -241,12 +241,12 @@ LABEL_21:
         v137 = 0;
 LABEL_25:
         v419 = v92;
-        v413 = v404;
+        v413 = managerCopy;
         v178 = v417;
         v412 = v405;
         v416 = v137;
         v411 = v178;
-        if (v418)
+        if (selfCopy)
         {
           v179 = v178;
           objc_opt_self();
@@ -368,7 +368,7 @@ LABEL_25:
             v208 = v419;
           }
 
-          v326 = objc_msgSend_strokeProvider(v418, v308, v309, v310, v311, v312);
+          v326 = objc_msgSend_strokeProvider(selfCopy, v308, v309, v310, v311, v312);
           v327 = v208;
           v328 = v326;
           objc_opt_self();
@@ -392,11 +392,11 @@ LABEL_25:
             v344 = 0;
           }
 
-          v350 = objc_msgSend_delegate(v418, v345, v346, v347, v348, v349);
+          v350 = objc_msgSend_delegate(selfCopy, v345, v346, v347, v348, v349);
           v355 = objc_msgSend_textCorrectionRecognizerForLocales_(v350, v351, v412, v352, v353, v354);
 
           v356 = v428;
-          v362 = objc_msgSend_calculateDocumentProvider(v418, v357, v358, v359, v360, v361);
+          v362 = objc_msgSend_calculateDocumentProvider(selfCopy, v357, v358, v359, v360, v361);
           v368 = objc_msgSend_declaredVariables(v362, v363, v364, v365, v366, v367);
           v370 = objc_msgSend_textCorrectionResultForDrawing_targetContentInfo_originalDrawing_lastStroke_localTypedContextBounds_normalizedDrawingScaleFactor_previousCorrectionResult_declaredVariables_(v355, v369, v222, v179, v223, v344, v416, v368, x, y, width, height, v356);
 
@@ -416,7 +416,7 @@ LABEL_25:
       }
 
       objc_autoreleasePoolPop(context);
-      self = v418;
+      self = selfCopy;
       if (++v91 == v407)
       {
         v391 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v86, &v424, v435, 16, v90);

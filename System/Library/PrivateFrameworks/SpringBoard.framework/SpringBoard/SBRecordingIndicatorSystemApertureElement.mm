@@ -1,30 +1,30 @@
 @interface SBRecordingIndicatorSystemApertureElement
 - (BOOL)shouldSuppressElementWhileOtherElementsPresent;
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4;
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view;
 - (NSDirectionalEdgeInsets)preferredIndicatorEdgeOutsets;
 - (SAUIIndicatorLayoutHosting)layoutHost;
 - (SBRecordingIndicatorManager)recordingIndicatorManager;
-- (SBRecordingIndicatorSystemApertureElement)initWithInterSensorRegionIndicatorVisualRepresentation:(id)a3 microRegionIndicatorVisualRepresentation:(id)a4 recordingIndicatorManager:(id)a5 minimumOnTimeCoordinator:(id)a6;
+- (SBRecordingIndicatorSystemApertureElement)initWithInterSensorRegionIndicatorVisualRepresentation:(id)representation microRegionIndicatorVisualRepresentation:(id)visualRepresentation recordingIndicatorManager:(id)manager minimumOnTimeCoordinator:(id)coordinator;
 - (SBSystemAperturePlatformElementHosting)platformElementHost;
 - (void)_cancelDwellTimer;
 - (void)_ensureMotRequirements;
 - (void)_startDwellTimer;
 - (void)dealloc;
-- (void)didUpdateFixedIndicatorViewAlpha:(double)a3;
-- (void)didUpdateFixedIndicatorViewBlurProgress:(double)a3;
-- (void)didUpdateFixedIndicatorViewTransform:(CGAffineTransform *)a3;
-- (void)didUpdateIndicatorViewAlpha:(double)a3;
-- (void)didUpdateIndicatorViewBlurProgress:(double)a3;
-- (void)didUpdateIndicatorViewTransform:(CGAffineTransform *)a3;
-- (void)didUpdateInterSensorRegionFrameInScreenSpace:(CGRect)a3;
-- (void)element:(id)a3 visibilityWillChange:(BOOL)a4;
+- (void)didUpdateFixedIndicatorViewAlpha:(double)alpha;
+- (void)didUpdateFixedIndicatorViewBlurProgress:(double)progress;
+- (void)didUpdateFixedIndicatorViewTransform:(CGAffineTransform *)transform;
+- (void)didUpdateIndicatorViewAlpha:(double)alpha;
+- (void)didUpdateIndicatorViewBlurProgress:(double)progress;
+- (void)didUpdateIndicatorViewTransform:(CGAffineTransform *)transform;
+- (void)didUpdateInterSensorRegionFrameInScreenSpace:(CGRect)space;
+- (void)element:(id)element visibilityWillChange:(BOOL)change;
 - (void)pulse;
 - (void)resetInternalState;
-- (void)setInterSensorDwellTimerSatisfied:(BOOL)a3;
-- (void)setMinimumOnTimeSatisfied:(BOOL)a3;
-- (void)setSuppressed:(BOOL)a3;
-- (void)systemApertureContainerView:(id)a3 didChangeCenter:(CGPoint)a4;
-- (void)systemApertureContainerView:(id)a3 didChangeFrame:(CGRect)a4;
+- (void)setInterSensorDwellTimerSatisfied:(BOOL)satisfied;
+- (void)setMinimumOnTimeSatisfied:(BOOL)satisfied;
+- (void)setSuppressed:(BOOL)suppressed;
+- (void)systemApertureContainerView:(id)view didChangeCenter:(CGPoint)center;
+- (void)systemApertureContainerView:(id)view didChangeFrame:(CGRect)frame;
 @end
 
 @implementation SBRecordingIndicatorSystemApertureElement
@@ -42,12 +42,12 @@
   return WeakRetained;
 }
 
-- (SBRecordingIndicatorSystemApertureElement)initWithInterSensorRegionIndicatorVisualRepresentation:(id)a3 microRegionIndicatorVisualRepresentation:(id)a4 recordingIndicatorManager:(id)a5 minimumOnTimeCoordinator:(id)a6
+- (SBRecordingIndicatorSystemApertureElement)initWithInterSensorRegionIndicatorVisualRepresentation:(id)representation microRegionIndicatorVisualRepresentation:(id)visualRepresentation recordingIndicatorManager:(id)manager minimumOnTimeCoordinator:(id)coordinator
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  representationCopy = representation;
+  visualRepresentationCopy = visualRepresentation;
+  managerCopy = manager;
+  coordinatorCopy = coordinator;
   v21.receiver = self;
   v21.super_class = SBRecordingIndicatorSystemApertureElement;
   v16 = [(SBRecordingIndicatorSystemApertureElement *)&v21 init];
@@ -58,15 +58,15 @@
     elementIdentifier = v16->_elementIdentifier;
     v16->_elementIdentifier = v18;
 
-    objc_storeStrong(&v16->_interSensorRegionIndicator, a3);
-    objc_storeStrong(&v16->_microRegionIndicator, a4);
-    objc_storeWeak(&v16->_recordingIndicatorManager, v14);
-    if (!v15)
+    objc_storeStrong(&v16->_interSensorRegionIndicator, representation);
+    objc_storeStrong(&v16->_microRegionIndicator, visualRepresentation);
+    objc_storeWeak(&v16->_recordingIndicatorManager, managerCopy);
+    if (!coordinatorCopy)
     {
       [SBRecordingIndicatorSystemApertureElement initWithInterSensorRegionIndicatorVisualRepresentation:a2 microRegionIndicatorVisualRepresentation:v16 recordingIndicatorManager:? minimumOnTimeCoordinator:?];
     }
 
-    objc_storeStrong(&v16->_minimumOnTimeCoordinator, a6);
+    objc_storeStrong(&v16->_minimumOnTimeCoordinator, coordinator);
   }
 
   return v16;
@@ -88,95 +88,95 @@
   [(SBRecordingIndicatorSystemApertureElement *)self setMinimumOnTimeSatisfied:0];
 }
 
-- (void)setInterSensorDwellTimerSatisfied:(BOOL)a3
+- (void)setInterSensorDwellTimerSatisfied:(BOOL)satisfied
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_interSensorDwellTimerSatisfied != a3)
+  if (self->_interSensorDwellTimerSatisfied != satisfied)
   {
-    v3 = a3;
+    satisfiedCopy = satisfied;
     v5 = SBLogStatusBarish();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       interSensorDwellTimerSatisfied = self->_interSensorDwellTimerSatisfied;
       v8[0] = 67109376;
-      v8[1] = v3;
+      v8[1] = satisfiedCopy;
       v9 = 1024;
       v10 = interSensorDwellTimerSatisfied;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[Recording Indicator] element dwell time satisfied changed: %{BOOL}u; oldValue: %{BOOL}u", v8, 0xEu);
     }
 
-    self->_interSensorDwellTimerSatisfied = v3;
+    self->_interSensorDwellTimerSatisfied = satisfiedCopy;
     WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
     [WeakRetained indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:self];
   }
 }
 
-- (void)setMinimumOnTimeSatisfied:(BOOL)a3
+- (void)setMinimumOnTimeSatisfied:(BOOL)satisfied
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_minimumOnTimeSatisfied != a3)
+  if (self->_minimumOnTimeSatisfied != satisfied)
   {
-    v3 = a3;
+    satisfiedCopy = satisfied;
     v5 = SBLogStatusBarish();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       minimumOnTimeSatisfied = self->_minimumOnTimeSatisfied;
       v8[0] = 67109376;
-      v8[1] = v3;
+      v8[1] = satisfiedCopy;
       v9 = 1024;
       v10 = minimumOnTimeSatisfied;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[Recording Indicator] element MOT changed: %{BOOL}u; oldValue: %{BOOL}u", v8, 0xEu);
     }
 
-    self->_minimumOnTimeSatisfied = v3;
+    self->_minimumOnTimeSatisfied = satisfiedCopy;
     WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
     [WeakRetained indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:self];
   }
 }
 
-- (void)setSuppressed:(BOOL)a3
+- (void)setSuppressed:(BOOL)suppressed
 {
-  self->_suppressed = a3;
-  v3 = [(SBRecordingIndicatorSystemApertureElement *)self recordingIndicatorManager];
-  [v3 updateRecordingIndicatorLocationIfNecessary];
+  self->_suppressed = suppressed;
+  recordingIndicatorManager = [(SBRecordingIndicatorSystemApertureElement *)self recordingIndicatorManager];
+  [recordingIndicatorManager updateRecordingIndicatorLocationIfNecessary];
 }
 
 - (BOOL)shouldSuppressElementWhileOtherElementsPresent
 {
-  v2 = [(SBRecordingIndicatorSystemApertureElement *)self recordingIndicatorManager];
-  v3 = v2;
-  if (v2)
+  recordingIndicatorManager = [(SBRecordingIndicatorSystemApertureElement *)self recordingIndicatorManager];
+  v3 = recordingIndicatorManager;
+  if (recordingIndicatorManager)
   {
-    v4 = [v2 _shouldSuppressSystemApertureElementWhileOtherElementsPresent];
+    _shouldSuppressSystemApertureElementWhileOtherElementsPresent = [recordingIndicatorManager _shouldSuppressSystemApertureElementWhileOtherElementsPresent];
   }
 
   else
   {
-    v4 = 1;
+    _shouldSuppressSystemApertureElementWhileOtherElementsPresent = 1;
   }
 
-  return v4;
+  return _shouldSuppressSystemApertureElementWhileOtherElementsPresent;
 }
 
-- (void)element:(id)a3 visibilityWillChange:(BOOL)a4
+- (void)element:(id)element visibilityWillChange:(BOOL)change
 {
-  v4 = [(SBRecordingIndicatorSystemApertureElement *)self recordingIndicatorManager:a3];
+  v4 = [(SBRecordingIndicatorSystemApertureElement *)self recordingIndicatorManager:element];
   [v4 updateRecordingIndicatorLocationIfNecessary];
 }
 
-- (void)didUpdateIndicatorViewAlpha:(double)a3
+- (void)didUpdateIndicatorViewAlpha:(double)alpha
 {
-  v5 = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
-  [v5 opacity];
+  highLevelLayer = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
+  [highLevelLayer opacity];
   v7 = v6;
 
-  v8 = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
-  *&v9 = a3;
-  [v8 setOpacity:v9];
+  highLevelLayer2 = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
+  *&v9 = alpha;
+  [highLevelLayer2 setOpacity:v9];
 
-  if (v7 != a3)
+  if (v7 != alpha)
   {
-    if (a3 == 0.0)
+    if (alpha == 0.0)
     {
       [(SBRecordingIndicatorSystemApertureElement *)self setInterSensorDwellTimerSatisfied:0];
     }
@@ -185,33 +185,33 @@
   }
 }
 
-- (void)didUpdateIndicatorViewTransform:(CGAffineTransform *)a3
+- (void)didUpdateIndicatorViewTransform:(CGAffineTransform *)transform
 {
-  v4 = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
-  v5 = *&a3->c;
-  v6[0] = *&a3->a;
+  highLevelLayer = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
+  v5 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v5;
-  v6[2] = *&a3->tx;
-  [v4 setAffineTransform:v6];
+  v6[2] = *&transform->tx;
+  [highLevelLayer setAffineTransform:v6];
 }
 
-- (void)didUpdateIndicatorViewBlurProgress:(double)a3
+- (void)didUpdateIndicatorViewBlurProgress:(double)progress
 {
-  v4 = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
-  [v4 setBlurRadius:a3 * 4.5];
+  highLevelLayer = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
+  [highLevelLayer setBlurRadius:progress * 4.5];
 }
 
-- (void)didUpdateFixedIndicatorViewAlpha:(double)a3
+- (void)didUpdateFixedIndicatorViewAlpha:(double)alpha
 {
-  v5 = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator highLevelLayer];
-  [v5 opacity];
+  highLevelLayer = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator highLevelLayer];
+  [highLevelLayer opacity];
   v7 = v6;
 
-  v8 = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator highLevelLayer];
-  *&v9 = a3;
-  [v8 setOpacity:v9];
+  highLevelLayer2 = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator highLevelLayer];
+  *&v9 = alpha;
+  [highLevelLayer2 setOpacity:v9];
 
-  if (v7 != a3)
+  if (v7 != alpha)
   {
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_platformElementHost);
@@ -357,42 +357,42 @@ void __67__SBRecordingIndicatorSystemApertureElement__ensureMotRequirements__blo
   self->_interSensorDwellTimer = 0;
 }
 
-- (void)didUpdateFixedIndicatorViewTransform:(CGAffineTransform *)a3
+- (void)didUpdateFixedIndicatorViewTransform:(CGAffineTransform *)transform
 {
-  v4 = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator highLevelLayer];
-  v5 = *&a3->c;
-  v6[0] = *&a3->a;
+  highLevelLayer = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator highLevelLayer];
+  v5 = *&transform->c;
+  v6[0] = *&transform->a;
   v6[1] = v5;
-  v6[2] = *&a3->tx;
-  [v4 setAffineTransform:v6];
+  v6[2] = *&transform->tx;
+  [highLevelLayer setAffineTransform:v6];
 }
 
-- (void)didUpdateFixedIndicatorViewBlurProgress:(double)a3
+- (void)didUpdateFixedIndicatorViewBlurProgress:(double)progress
 {
-  v4 = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator highLevelLayer];
-  [v4 setBlurRadius:a3 * 4.5];
+  highLevelLayer = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator highLevelLayer];
+  [highLevelLayer setBlurRadius:progress * 4.5];
 }
 
-- (void)didUpdateInterSensorRegionFrameInScreenSpace:(CGRect)a3
+- (void)didUpdateInterSensorRegionFrameInScreenSpace:(CGRect)space
 {
-  v3 = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator highLevelLayer];
+  highLevelLayer = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator highLevelLayer];
   UIRectGetCenter();
-  [v3 setPosition:?];
+  [highLevelLayer setPosition:?];
 }
 
-- (void)systemApertureContainerView:(id)a3 didChangeCenter:(CGPoint)a4
+- (void)systemApertureContainerView:(id)view didChangeCenter:(CGPoint)center
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
-  [v6 setPosition:{x, y}];
+  y = center.y;
+  x = center.x;
+  highLevelLayer = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
+  [highLevelLayer setPosition:{x, y}];
 }
 
-- (void)systemApertureContainerView:(id)a3 didChangeFrame:(CGRect)a4
+- (void)systemApertureContainerView:(id)view didChangeFrame:(CGRect)frame
 {
-  v4 = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
+  highLevelLayer = [(SBRecordingIndicatorVisualRepresentation *)self->_microRegionIndicator highLevelLayer];
   UIRectGetCenter();
-  [v4 setPosition:?];
+  [highLevelLayer setPosition:?];
 }
 
 - (NSDirectionalEdgeInsets)preferredIndicatorEdgeOutsets
@@ -414,21 +414,21 @@ void __67__SBRecordingIndicatorSystemApertureElement__ensureMotRequirements__blo
   return result;
 }
 
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator contentView];
-  [v6 bounds];
+  viewCopy = view;
+  contentView = [(SBRecordingIndicatorVisualRepresentation *)self->_interSensorRegionIndicator contentView];
+  [contentView bounds];
   v8 = v7;
   v10 = v9;
 
   if (*MEMORY[0x277CBF3A8] == v8 && *(MEMORY[0x277CBF3A8] + 8) == v10)
   {
     v12 = SBHScreenTypeForCurrentDevice();
-    v13 = [v5 window];
-    v14 = [v13 windowScene];
-    v15 = [v14 screen];
-    [SBRecordingIndicatorVisualRepresentation indicatorFrameForScreenType:v12 screen:v15 style:3];
+    window = [viewCopy window];
+    windowScene = [window windowScene];
+    screen = [windowScene screen];
+    [SBRecordingIndicatorVisualRepresentation indicatorFrameForScreenType:v12 screen:screen style:3];
     v8 = v16;
     v10 = v17;
   }

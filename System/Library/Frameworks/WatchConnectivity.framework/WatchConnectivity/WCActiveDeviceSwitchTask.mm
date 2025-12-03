@@ -1,22 +1,22 @@
 @interface WCActiveDeviceSwitchTask
-+ (id)taskStateToString:(unint64_t)a3;
++ (id)taskStateToString:(unint64_t)string;
 - (id)description;
 @end
 
 @implementation WCActiveDeviceSwitchTask
 
-+ (id)taskStateToString:(unint64_t)a3
++ (id)taskStateToString:(unint64_t)string
 {
-  if (a3 <= 2)
+  if (string <= 2)
   {
-    if (!a3)
+    if (!string)
     {
       return @"Queued";
     }
 
-    if (a3 != 1)
+    if (string != 1)
     {
-      if (a3 == 2)
+      if (string == 2)
       {
         return @"AwaitingActivationRequest";
       }
@@ -27,11 +27,11 @@
     return @"Started";
   }
 
-  else if (a3 > 887)
+  else if (string > 887)
   {
-    if (a3 != 888)
+    if (string != 888)
     {
-      if (a3 == 999)
+      if (string == 999)
       {
         return @"Halted";
       }
@@ -44,9 +44,9 @@
 
   else
   {
-    if (a3 != 3)
+    if (string != 3)
     {
-      if (a3 == 4)
+      if (string == 4)
       {
         return @"ActivationCompleted";
       }

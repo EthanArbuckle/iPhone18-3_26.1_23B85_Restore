@@ -1,25 +1,25 @@
 @interface SBFFileCacheFileStore
 - (NSString)description;
 - (SBFFileCacheFileStore)init;
-- (SBFFileCacheFileStore)initWithDirectoryURL:(id)a3;
-- (id)fileCache:(id)a3 loadFileWrapperNamed:(id)a4;
-- (id)fileURLForFileNamed:(id)a3;
-- (void)fileCache:(id)a3 removeFileWrapperNamed:(id)a4;
-- (void)fileCache:(id)a3 storeFileWrapper:(id)a4;
-- (void)removeAllFileWrappersForFileCache:(id)a3;
+- (SBFFileCacheFileStore)initWithDirectoryURL:(id)l;
+- (id)fileCache:(id)cache loadFileWrapperNamed:(id)named;
+- (id)fileURLForFileNamed:(id)named;
+- (void)fileCache:(id)cache removeFileWrapperNamed:(id)named;
+- (void)fileCache:(id)cache storeFileWrapper:(id)wrapper;
+- (void)removeAllFileWrappersForFileCache:(id)cache;
 @end
 
 @implementation SBFFileCacheFileStore
 
-- (SBFFileCacheFileStore)initWithDirectoryURL:(id)a3
+- (SBFFileCacheFileStore)initWithDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = SBFFileCacheFileStore;
   v5 = [(SBFFileCacheFileStore *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     directoryURL = v5->_directoryURL;
     v5->_directoryURL = v6;
   }
@@ -36,57 +36,57 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBFFileCacheFileStore *)self directoryURL];
-  v5 = [v3 appendObject:v4 withName:@"directoryURL"];
+  directoryURL = [(SBFFileCacheFileStore *)self directoryURL];
+  v5 = [v3 appendObject:directoryURL withName:@"directoryURL"];
 
-  v6 = [v3 build];
+  build = [v3 build];
+
+  return build;
+}
+
+- (id)fileURLForFileNamed:(id)named
+{
+  namedCopy = named;
+  directoryURL = [(SBFFileCacheFileStore *)self directoryURL];
+  v6 = [directoryURL URLByAppendingPathComponent:namedCopy];
 
   return v6;
 }
 
-- (id)fileURLForFileNamed:(id)a3
+- (void)fileCache:(id)cache storeFileWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = [(SBFFileCacheFileStore *)self directoryURL];
-  v6 = [v5 URLByAppendingPathComponent:v4];
-
-  return v6;
-}
-
-- (void)fileCache:(id)a3 storeFileWrapper:(id)a4
-{
-  v7 = a4;
-  v5 = [v7 filename];
-  if (!v5)
+  wrapperCopy = wrapper;
+  filename = [wrapperCopy filename];
+  if (!filename)
   {
-    v5 = [v7 preferredFilename];
+    filename = [wrapperCopy preferredFilename];
   }
 
-  v6 = [(SBFFileCacheFileStore *)self fileURLForFileNamed:v5];
-  [v7 writeToURL:v6 options:1 originalContentsURL:0 error:0];
+  v6 = [(SBFFileCacheFileStore *)self fileURLForFileNamed:filename];
+  [wrapperCopy writeToURL:v6 options:1 originalContentsURL:0 error:0];
 }
 
-- (id)fileCache:(id)a3 loadFileWrapperNamed:(id)a4
+- (id)fileCache:(id)cache loadFileWrapperNamed:(id)named
 {
-  v4 = [(SBFFileCacheFileStore *)self fileURLForFileNamed:a4];
+  v4 = [(SBFFileCacheFileStore *)self fileURLForFileNamed:named];
   v5 = [objc_alloc(MEMORY[0x1E696AC38]) initWithURL:v4 options:0 error:0];
 
   return v5;
 }
 
-- (void)fileCache:(id)a3 removeFileWrapperNamed:(id)a4
+- (void)fileCache:(id)cache removeFileWrapperNamed:(id)named
 {
-  v5 = [(SBFFileCacheFileStore *)self fileURLForFileNamed:a4];
+  v5 = [(SBFFileCacheFileStore *)self fileURLForFileNamed:named];
   v4 = objc_alloc_init(MEMORY[0x1E696AC08]);
   [v4 removeItemAtURL:v5 error:0];
 }
 
-- (void)removeAllFileWrappersForFileCache:(id)a3
+- (void)removeAllFileWrappersForFileCache:(id)cache
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(SBFFileCacheFileStore *)self directoryURL];
+  directoryURL = [(SBFFileCacheFileStore *)self directoryURL];
   v4 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v5 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:0 options:4 error:0];
+  v5 = [v4 contentsOfDirectoryAtURL:directoryURL includingPropertiesForKeys:0 options:4 error:0];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;

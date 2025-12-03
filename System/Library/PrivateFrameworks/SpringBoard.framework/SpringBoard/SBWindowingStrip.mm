@@ -1,26 +1,26 @@
 @interface SBWindowingStrip
 + (id)emptyStrip;
-- (BOOL)containsDisplayItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SBWindowingStrip)initWithAppLayoutsInStrip:(id)a3;
+- (BOOL)containsDisplayItem:(id)item;
+- (BOOL)isEqual:(id)equal;
+- (SBWindowingStrip)initWithAppLayoutsInStrip:(id)strip;
 @end
 
 @implementation SBWindowingStrip
 
-- (SBWindowingStrip)initWithAppLayoutsInStrip:(id)a3
+- (SBWindowingStrip)initWithAppLayoutsInStrip:(id)strip
 {
-  v5 = a3;
+  stripCopy = strip;
   v12.receiver = self;
   v12.super_class = SBWindowingStrip;
   v6 = [(SBWindowingStrip *)&v12 init];
   if (v6)
   {
-    if (!v5)
+    if (!stripCopy)
     {
       [(SBWindowingStrip *)a2 initWithAppLayoutsInStrip:v6];
     }
 
-    v7 = [v5 copy];
+    v7 = [stripCopy copy];
     appLayoutsInStrip = v6->_appLayoutsInStrip;
     v6->_appLayoutsInStrip = v7;
 
@@ -52,16 +52,16 @@ void __30__SBWindowingStrip_emptyStrip__block_invoke()
   emptyStrip_emptyStrip = v1;
 }
 
-- (BOOL)containsDisplayItem:(id)a3
+- (BOOL)containsDisplayItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   appLayoutsInStrip = self->_appLayoutsInStrip;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__SBWindowingStrip_containsDisplayItem___block_invoke;
   v8[3] = &unk_2783C11D8;
-  v9 = v4;
-  v6 = v4;
+  v9 = itemCopy;
+  v6 = itemCopy;
   LOBYTE(appLayoutsInStrip) = [(NSArray *)appLayoutsInStrip bs_containsObjectPassingTest:v8];
 
   return appLayoutsInStrip;
@@ -79,10 +79,10 @@ uint64_t __40__SBWindowingStrip_containsDisplayItem___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -90,7 +90,7 @@ uint64_t __40__SBWindowingStrip_containsDisplayItem___block_invoke(uint64_t a1, 
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())

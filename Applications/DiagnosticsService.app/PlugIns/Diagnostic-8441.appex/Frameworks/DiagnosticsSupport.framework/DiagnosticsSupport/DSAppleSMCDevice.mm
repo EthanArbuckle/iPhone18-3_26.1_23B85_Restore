@@ -1,11 +1,11 @@
 @interface DSAppleSMCDevice
 - (BOOL)closeAppleSMC;
-- (BOOL)openAppleSMC:(int)a3;
-- (BOOL)writeDataFor:(id)a3 value:(void *)a4 size:(unint64_t)a5;
-- (BOOL)writeValueFor:(id)a3 andValue:(id)a4;
+- (BOOL)openAppleSMC:(int)c;
+- (BOOL)writeDataFor:(id)for value:(void *)value size:(unint64_t)size;
+- (BOOL)writeValueFor:(id)for andValue:(id)value;
 - (DSAppleSMCDevice)init;
-- (double)readValueFor:(id)a3;
-- (int)readDataFor:(id)a3 value:(void *)a4 size:(unint64_t)a5;
+- (double)readValueFor:(id)for;
+- (int)readDataFor:(id)for value:(void *)value size:(unint64_t)size;
 - (void)closeAppleSMC;
 @end
 
@@ -25,16 +25,16 @@
   return result;
 }
 
-- (BOOL)openAppleSMC:(int)a3
+- (BOOL)openAppleSMC:(int)c
 {
   *mainPort = 0;
   connect = 0;
   if (self->_isConnectionOpen)
   {
-    v5 = [(DSAppleSMCDevice *)self closeAppleSMC];
+    closeAppleSMC = [(DSAppleSMCDevice *)self closeAppleSMC];
     v6 = DiagnosticLogHandleForCategory(6);
     v7 = v6;
-    if (v5)
+    if (closeAppleSMC)
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
@@ -83,7 +83,7 @@ LABEL_16:
   IOObjectRelease(mainPort[0]);
   if (v12)
   {
-    if (IOServiceOpen(v12, mach_task_self_, a3, &connect))
+    if (IOServiceOpen(v12, mach_task_self_, c, &connect))
     {
       v13 = DiagnosticLogHandleForCategory(6);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -145,9 +145,9 @@ LABEL_7:
   return 1;
 }
 
-- (double)readValueFor:(id)a3
+- (double)readValueFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -194,7 +194,7 @@ LABEL_7:
     }
   }
 
-  v6 = [v4 cStringUsingEncoding:4];
+  v6 = [forCopy cStringUsingEncoding:4];
   v48 = smckSMCMakeUInt32Key(v6);
   BYTE6(v51) = 9;
   v7 = callIOFunction(2, [(DSAppleSMCDevice *)self dataPort], &v48, &v25);
@@ -257,9 +257,9 @@ LABEL_14:
   return v11;
 }
 
-- (int)readDataFor:(id)a3 value:(void *)a4 size:(unint64_t)a5
+- (int)readDataFor:(id)for value:(void *)value size:(unint64_t)size
 {
-  v8 = a3;
+  forCopy = for;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -306,7 +306,7 @@ LABEL_14:
     }
   }
 
-  v10 = [v8 cStringUsingEncoding:4];
+  v10 = [forCopy cStringUsingEncoding:4];
   v50 = smckSMCMakeUInt32Key(v10);
   BYTE6(v53) = 9;
   v11 = callIOFunction(2, [(DSAppleSMCDevice *)self dataPort], &v50, &v27);
@@ -332,7 +332,7 @@ LABEL_13:
   }
 
   v12 = 0;
-  if (HIDWORD(__n[1]) <= 0x78 && HIDWORD(__n[1]) <= a5)
+  if (HIDWORD(__n[1]) <= 0x78 && HIDWORD(__n[1]) <= size)
   {
     BYTE4(v41) = 0;
     v38 = smckSMCMakeUInt32Key(v10);
@@ -341,7 +341,7 @@ LABEL_13:
     v13 = callIOFunction(2, [(DSAppleSMCDevice *)self dataPort], &v38, v23);
     if (!v13 && !BYTE8(v24))
     {
-      memcpy(a4, v25, HIDWORD(__n[1]));
+      memcpy(value, v25, HIDWORD(__n[1]));
       v12 = 1;
       goto LABEL_14;
     }
@@ -369,10 +369,10 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)writeValueFor:(id)a3 andValue:(id)a4
+- (BOOL)writeValueFor:(id)for andValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  valueCopy = value;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -409,7 +409,7 @@ LABEL_14:
     }
   }
 
-  v9 = [v6 cStringUsingEncoding:4];
+  v9 = [forCopy cStringUsingEncoding:4];
   v41 = smckSMCMakeUInt32Key(v9);
   BYTE6(v44) = 9;
   v10 = callIOFunction(2, [(DSAppleSMCDevice *)self dataPort], &v41, v34);
@@ -442,7 +442,7 @@ LABEL_13:
   if (BYTE12(v34[1]) <= 0x78u)
   {
     v12 = returnEnumForDataTypeStr(v34[2]);
-    [v7 floatValue];
+    [valueCopy floatValue];
     if (translateFloatToFixed(v12, &v39[12], HIDWORD(v34[1]), v13) != 1)
     {
       v15 = DiagnosticLogHandleForCategory(6);
@@ -484,9 +484,9 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)writeDataFor:(id)a3 value:(void *)a4 size:(unint64_t)a5
+- (BOOL)writeDataFor:(id)for value:(void *)value size:(unint64_t)size
 {
-  v8 = a3;
+  forCopy = for;
   v35 = 0u;
   v36 = 0u;
   memset(v37, 0, sizeof(v37));
@@ -510,19 +510,19 @@ LABEL_14:
     }
   }
 
-  v10 = [v8 cStringUsingEncoding:4];
+  v10 = [forCopy cStringUsingEncoding:4];
   v37[6] = 6;
   v34 = smckSMCMakeUInt32Key(v10);
-  DWORD2(v36) = a5;
-  if (a5)
+  DWORD2(v36) = size;
+  if (size)
   {
-    v11 = a5 - 1;
-    if (a5 - 1 >= 0x1F)
+    v11 = size - 1;
+    if (size - 1 >= 0x1F)
     {
       v11 = 31;
     }
 
-    memcpy(&v37[12], a4, v11 + 1);
+    memcpy(&v37[12], value, v11 + 1);
   }
 
   v12 = callIOFunction(2, [(DSAppleSMCDevice *)self dataPort], &v34, v24);

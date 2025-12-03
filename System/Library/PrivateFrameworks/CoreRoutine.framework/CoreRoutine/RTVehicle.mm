@@ -1,20 +1,20 @@
 @interface RTVehicle
-- (BOOL)isEqual:(id)a3;
-- (RTVehicle)initWithCoder:(id)a3;
-- (RTVehicle)initWithDateInterval:(id)a3 vehicleName:(id)a4 vehicleModelName:(id)a5 bluetoothAddress:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (RTVehicle)initWithCoder:(id)coder;
+- (RTVehicle)initWithDateInterval:(id)interval vehicleName:(id)name vehicleModelName:(id)modelName bluetoothAddress:(id)address;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTVehicle
 
-- (RTVehicle)initWithDateInterval:(id)a3 vehicleName:(id)a4 vehicleModelName:(id)a5 bluetoothAddress:(id)a6
+- (RTVehicle)initWithDateInterval:(id)interval vehicleName:(id)name vehicleModelName:(id)modelName bluetoothAddress:(id)address
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  intervalCopy = interval;
+  nameCopy = name;
+  modelNameCopy = modelName;
+  addressCopy = address;
+  if (intervalCopy)
   {
     v20.receiver = self;
     v20.super_class = RTVehicle;
@@ -22,14 +22,14 @@
     p_isa = &v15->super.isa;
     if (v15)
     {
-      objc_storeStrong(&v15->_vehicleName, a4);
-      objc_storeStrong(p_isa + 3, a5);
-      objc_storeStrong(p_isa + 4, a6);
-      objc_storeStrong(p_isa + 1, a3);
+      objc_storeStrong(&v15->_vehicleName, name);
+      objc_storeStrong(p_isa + 3, modelName);
+      objc_storeStrong(p_isa + 4, address);
+      objc_storeStrong(p_isa + 1, interval);
     }
 
     self = p_isa;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -41,47 +41,47 @@
       _os_log_error_impl(&dword_1BF1C4000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dateInterval", buf, 2u);
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dateInterval = self->_dateInterval;
-  v5 = a3;
-  [v5 encodeObject:dateInterval forKey:@"vehicleDateInterval"];
-  [v5 encodeObject:self->_vehicleName forKey:@"vehicleName"];
-  [v5 encodeObject:self->_vehicleModelName forKey:@"vehicleModelName"];
-  [v5 encodeObject:self->_bluetoothAddress forKey:@"vehicleBluetoothAddress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dateInterval forKey:@"vehicleDateInterval"];
+  [coderCopy encodeObject:self->_vehicleName forKey:@"vehicleName"];
+  [coderCopy encodeObject:self->_vehicleModelName forKey:@"vehicleModelName"];
+  [coderCopy encodeObject:self->_bluetoothAddress forKey:@"vehicleBluetoothAddress"];
 }
 
-- (RTVehicle)initWithCoder:(id)a3
+- (RTVehicle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleDateInterval"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleModelName"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleBluetoothAddress"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleDateInterval"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleModelName"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleBluetoothAddress"];
 
   v9 = [(RTVehicle *)self initWithDateInterval:v5 vehicleName:v6 vehicleModelName:v7 bluetoothAddress:v8];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = [v6 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v7 = [equalCopy isMemberOfClass:objc_opt_class()];
   vehicleName = self->_vehicleName;
   if (vehicleName)
   {
-    v3 = [v6 vehicleName];
-    v9 = self->_vehicleName;
-    if (v3)
+    vehicleName = [equalCopy vehicleName];
+    vehicleModelName = self->_vehicleName;
+    if (vehicleName)
     {
-      v4 = [v6 vehicleName];
-      LOBYTE(v10) = [v9 isEqual:v4];
+      vehicleName2 = [equalCopy vehicleName];
+      LOBYTE(v10) = [vehicleModelName isEqual:vehicleName2];
       if ((v10 & 1) != 0 || self->_vehicleName)
       {
 
@@ -95,7 +95,7 @@ LABEL_12:
     else
     {
       v10 = 0;
-      if (v9)
+      if (vehicleModelName)
       {
         goto LABEL_12;
       }
@@ -107,11 +107,11 @@ LABEL_12:
     v10 = 0;
   }
 
-  v9 = v10;
-  v11 = [v6 vehicleName];
-  LOBYTE(v10) = v11 == 0;
+  vehicleModelName = v10;
+  vehicleName3 = [equalCopy vehicleName];
+  LOBYTE(v10) = vehicleName3 == 0;
 
-  if (v9)
+  if (vehicleModelName)
   {
   }
 
@@ -124,12 +124,12 @@ LABEL_13:
   vehicleModelName = self->_vehicleModelName;
   if (vehicleModelName)
   {
-    v4 = [v6 vehicleModelName];
-    v13 = self->_vehicleModelName;
-    if (v4)
+    vehicleName2 = [equalCopy vehicleModelName];
+    bluetoothAddress = self->_vehicleModelName;
+    if (vehicleName2)
     {
-      v9 = [v6 vehicleModelName];
-      LOBYTE(v14) = [v13 isEqual:v9];
+      vehicleModelName = [equalCopy vehicleModelName];
+      LOBYTE(v14) = [bluetoothAddress isEqual:vehicleModelName];
       if ((v14 & 1) != 0 || self->_vehicleModelName)
       {
 
@@ -143,7 +143,7 @@ LABEL_24:
     else
     {
       v14 = 0;
-      if (v13)
+      if (bluetoothAddress)
       {
         goto LABEL_24;
       }
@@ -155,11 +155,11 @@ LABEL_24:
     v14 = 0;
   }
 
-  v13 = v14;
-  v15 = [v6 vehicleModelName];
-  LOBYTE(v14) = v15 == 0;
+  bluetoothAddress = v14;
+  vehicleModelName2 = [equalCopy vehicleModelName];
+  LOBYTE(v14) = vehicleModelName2 == 0;
 
-  if (v13)
+  if (bluetoothAddress)
   {
   }
 
@@ -172,12 +172,12 @@ LABEL_25:
   bluetoothAddress = self->_bluetoothAddress;
   if (bluetoothAddress)
   {
-    v4 = [v6 bluetoothAddress];
+    vehicleName2 = [equalCopy bluetoothAddress];
     v17 = self->_bluetoothAddress;
-    if (v4)
+    if (vehicleName2)
     {
-      v13 = [v6 bluetoothAddress];
-      v18 = [(NSString *)v17 isEqual:v13];
+      bluetoothAddress = [equalCopy bluetoothAddress];
+      v18 = [(NSString *)v17 isEqual:bluetoothAddress];
       if ((v18 & 1) != 0 || self->_bluetoothAddress)
       {
 
@@ -204,8 +204,8 @@ LABEL_36:
   }
 
   v19 = v18;
-  v20 = [v6 bluetoothAddress];
-  v18 = v20 == 0;
+  bluetoothAddress2 = [equalCopy bluetoothAddress];
+  v18 = bluetoothAddress2 == 0;
 
   if (v19)
   {
@@ -218,8 +218,8 @@ LABEL_36:
 
 LABEL_37:
   dateInterval = self->_dateInterval;
-  v22 = [v6 dateInterval];
-  LOBYTE(dateInterval) = [(NSDateInterval *)dateInterval isEqual:v22];
+  dateInterval = [equalCopy dateInterval];
+  LOBYTE(dateInterval) = [(NSDateInterval *)dateInterval isEqual:dateInterval];
 
   return v7 & v10 & v14 & v18 & dateInterval;
 }
@@ -227,12 +227,12 @@ LABEL_37:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(RTVehicle *)self dateInterval];
-  v5 = [v4 description];
-  v6 = [(RTVehicle *)self vehicleName];
-  v7 = [(RTVehicle *)self vehicleModelName];
-  v8 = [(RTVehicle *)self bluetoothAddress];
-  v9 = [v3 stringWithFormat:@"dateInterval, %@, vehicleName, %@, vehicleModelName, %@, bluetoothAddress, %@", v5, v6, v7, v8];
+  dateInterval = [(RTVehicle *)self dateInterval];
+  v5 = [dateInterval description];
+  vehicleName = [(RTVehicle *)self vehicleName];
+  vehicleModelName = [(RTVehicle *)self vehicleModelName];
+  bluetoothAddress = [(RTVehicle *)self bluetoothAddress];
+  v9 = [v3 stringWithFormat:@"dateInterval, %@, vehicleName, %@, vehicleModelName, %@, bluetoothAddress, %@", v5, vehicleName, vehicleModelName, bluetoothAddress];
 
   return v9;
 }

@@ -1,14 +1,14 @@
 @interface VNEntityIdentificationModelTrainedModelVIPv2
-+ (id)trainedModelBuiltFromConfiguration:(id)a3 dataProvider:(id)a4 canceller:(id)a5 error:(id *)a6;
-- (VNEntityIdentificationModelTrainedModelVIPv2)initWithCoder:(id)a3;
-- (VNEntityIdentificationModelTrainedModelVIPv2)initWithFaceIDModel:(shared_ptr<vision:(id)a4 :(unint64_t)a5 mod:(id)a6 :(id)a7 FaceIDModel>)a3 entityPrintOriginatingRequestSpecifier:maximumElementsPerID:entityUniqueIdentifiers:entityPrintCounts:;
++ (id)trainedModelBuiltFromConfiguration:(id)configuration dataProvider:(id)provider canceller:(id)canceller error:(id *)error;
+- (VNEntityIdentificationModelTrainedModelVIPv2)initWithCoder:(id)coder;
+- (VNEntityIdentificationModelTrainedModelVIPv2)initWithFaceIDModel:(shared_ptr<vision:(id)model :(unint64_t)a5 mod:(id)mod :(id)a7 FaceIDModel>)a3 entityPrintOriginatingRequestSpecifier:maximumElementsPerID:entityUniqueIdentifiers:entityPrintCounts:;
 - (id).cxx_construct;
-- (id)predictionsForObservation:(id)a3 limit:(unint64_t)a4 canceller:(id)a5 error:(id *)a6;
+- (id)predictionsForObservation:(id)observation limit:(unint64_t)limit canceller:(id)canceller error:(id *)error;
 - (id)printCountsForAllEntities;
-- (id)printCountsForEntitiesWithUniqueIdentifiers:(id)a3;
-- (id)trainingEntityPrintsForEntityWithUniqueIdentifier:(id)a3 error:(id *)a4;
-- (unint64_t)printCountForEntityWithUniqueIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)printCountsForEntitiesWithUniqueIdentifiers:(id)identifiers;
+- (id)trainingEntityPrintsForEntityWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (unint64_t)printCountForEntityWithUniqueIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNEntityIdentificationModelTrainedModelVIPv2
@@ -20,13 +20,13 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 vn_encodeEntityUniqueIdentifierArray:self->_entityUniqueIdentifiers forKey:@"entityUniqueIdentifiers"];
-  [v4 encodeObject:self->_entityPrintCounts forKey:@"entityPrintCounts"];
-  [v4 encodeObject:self->_entityPrintOriginatingRequestSpecifier forKey:@"entityPrintOriginatingRequestSpecifier"];
-  [v4 encodeInt:self->_maximumElementsPerID forKey:@"maximumElementsPerID"];
+  coderCopy = coder;
+  [coderCopy vn_encodeEntityUniqueIdentifierArray:self->_entityUniqueIdentifiers forKey:@"entityUniqueIdentifiers"];
+  [coderCopy encodeObject:self->_entityPrintCounts forKey:@"entityPrintCounts"];
+  [coderCopy encodeObject:self->_entityPrintOriginatingRequestSpecifier forKey:@"entityPrintOriginatingRequestSpecifier"];
+  [coderCopy encodeInt:self->_maximumElementsPerID forKey:@"maximumElementsPerID"];
   v5 = objc_autoreleasePoolPush();
   VNNSMutableDataStreambuf::VNNSMutableDataStreambuf(&__sb);
   v8.__loc_ = 0;
@@ -39,13 +39,13 @@
   {
     std::ostream::flush();
     v7 = v13;
-    [v4 encodeObject:v7 forKey:@"faceIDModel"];
+    [coderCopy encodeObject:v7 forKey:@"faceIDModel"];
   }
 
   else
   {
     v7 = VNErrorForCVMLStatus(v6);
-    [v4 failWithError:v7];
+    [coderCopy failWithError:v7];
   }
 
   std::ostream::~ostream();
@@ -54,9 +54,9 @@
   objc_autoreleasePoolPop(v5);
 }
 
-- (VNEntityIdentificationModelTrainedModelVIPv2)initWithCoder:(id)a3
+- (VNEntityIdentificationModelTrainedModelVIPv2)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = VNEntityIdentificationModelTrainedModelVIPv2;
   v5 = [(VNEntityIdentificationModelTrainedModelVIPv2 *)&v38 init];
@@ -65,11 +65,11 @@
     goto LABEL_16;
   }
 
-  v6 = [v4 vn_decodeEntityUniqueIdentifierArrayForKey:@"entityUniqueIdentifiers"];
+  v6 = [coderCopy vn_decodeEntityUniqueIdentifierArrayForKey:@"entityUniqueIdentifiers"];
   v7 = *(v5 + 5);
   *(v5 + 5) = v6;
 
-  v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"entityPrintCounts"];
+  v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"entityPrintCounts"];
   v9 = *(v5 + 6);
   *(v5 + 6) = v8;
 
@@ -78,17 +78,17 @@
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"entity unique identifier counts (%lu) do not agree with the print counts (%lu)", objc_msgSend(*(v5 + 5), "count"), objc_msgSend(*(v5 + 6), "count")];
     v22 = VNEntityIdentificationModelErrorWithLocalizedDescriptionAndUnderlyingError(3, v14, 0);
-    [v4 failWithError:v22];
+    [coderCopy failWithError:v22];
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityPrintOriginatingRequestSpecifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityPrintOriginatingRequestSpecifier"];
   v12 = *(v5 + 3);
   *(v5 + 3) = v11;
 
-  v13 = [v4 decodeIntForKey:@"maximumElementsPerID"];
+  v13 = [coderCopy decodeIntForKey:@"maximumElementsPerID"];
   *(v5 + 8) = v13;
   v37 = 0;
   _newFaceIDModel(&v30, v13, &v37);
@@ -111,13 +111,13 @@ LABEL_12:
   if (!v17)
   {
 LABEL_11:
-    [v4 failWithError:v14];
+    [coderCopy failWithError:v14];
     goto LABEL_12;
   }
 
 LABEL_5:
   v18 = objc_autoreleasePoolPush();
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceIDModel"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceIDModel"];
   if (!v19)
   {
 LABEL_8:
@@ -148,7 +148,7 @@ LABEL_8:
 
   v27 = VNErrorForCVMLStatus(v20);
   v28 = [VNError errorForInternalErrorWithLocalizedDescription:v26 underlyingError:v27];
-  [v4 failWithError:v28];
+  [coderCopy failWithError:v28];
 
   std::istream::~istream();
   __sb = MEMORY[0x1E69E5538] + 16;
@@ -181,7 +181,7 @@ LABEL_17:
   v8[3] = &unk_1E77B5488;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [(NSArray *)entityUniqueIdentifiers enumerateObjectsUsingBlock:v8];
   v6 = v5;
 
@@ -195,11 +195,11 @@ void __73__VNEntityIdentificationModelTrainedModelVIPv2_printCountsForAllEntitie
   [*(a1 + 32) setObject:v5 forKeyedSubscript:v6];
 }
 
-- (id)printCountsForEntitiesWithUniqueIdentifiers:(id)a3
+- (id)printCountsForEntitiesWithUniqueIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v4];
+  identifiersCopy = identifiers;
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
+  v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:identifiersCopy];
   entityUniqueIdentifiers = self->_entityUniqueIdentifiers;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -208,7 +208,7 @@ void __73__VNEntityIdentificationModelTrainedModelVIPv2_printCountsForAllEntitie
   v13 = v6;
   v8 = v5;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v9 = v6;
   [(NSArray *)entityUniqueIdentifiers enumerateObjectsUsingBlock:v12];
   v10 = v8;
@@ -232,34 +232,34 @@ void __92__VNEntityIdentificationModelTrainedModelVIPv2_printCountsForEntitiesWi
   }
 }
 
-- (unint64_t)printCountForEntityWithUniqueIdentifier:(id)a3
+- (unint64_t)printCountForEntityWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSArray *)self->_entityUniqueIdentifiers indexOfObject:v4];
+  identifierCopy = identifier;
+  v5 = [(NSArray *)self->_entityUniqueIdentifiers indexOfObject:identifierCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = 0;
+    unsignedIntegerValue = 0;
   }
 
   else
   {
     v7 = [(NSArray *)self->_entityPrintCounts objectAtIndex:v5];
-    v6 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (id)predictionsForObservation:(id)a3 limit:(unint64_t)a4 canceller:(id)a5 error:(id *)a6
+- (id)predictionsForObservation:(id)observation limit:(unint64_t)limit canceller:(id)canceller error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(VNEntityIdentificationModelTrainedModelVIPv2 *)self entityPrintOriginatingRequestSpecifier];
-  if (v11)
+  observationCopy = observation;
+  cancellerCopy = canceller;
+  entityPrintOriginatingRequestSpecifier = [(VNEntityIdentificationModelTrainedModelVIPv2 *)self entityPrintOriginatingRequestSpecifier];
+  if (entityPrintOriginatingRequestSpecifier)
   {
-    if ([VNEntityIdentificationModel validateAceptableObservation:v9 forEntityPrintOriginatingRequestSpecifier:v11 error:a6])
+    if ([VNEntityIdentificationModel validateAceptableObservation:observationCopy forEntityPrintOriginatingRequestSpecifier:entityPrintOriginatingRequestSpecifier error:error])
     {
-      v12 = [v9 VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:v11 error:a6];
+      v12 = [observationCopy VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:entityPrintOriginatingRequestSpecifier error:error];
       if (v12)
       {
         [v12 VNEntityIdentificationModelPrintData];
@@ -469,9 +469,9 @@ uint64_t __129__VNEntityIdentificationModelTrainedModelVIPv2__predictionsForObse
   return v9;
 }
 
-- (id)trainingEntityPrintsForEntityWithUniqueIdentifier:(id)a3 error:(id *)a4
+- (id)trainingEntityPrintsForEntityWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (!self)
   {
 LABEL_5:
@@ -480,13 +480,13 @@ LABEL_5:
     goto LABEL_21;
   }
 
-  v7 = [(NSArray *)self->_entityUniqueIdentifiers indexOfObject:v6];
+  v7 = [(NSArray *)self->_entityUniqueIdentifiers indexOfObject:identifierCopy];
   v8 = v7;
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = VNEntityIdentificationModelErrorForUnknownEntityUniqueIdentifier(v6);
+      *error = VNEntityIdentificationModelErrorForUnknownEntityUniqueIdentifier(identifierCopy);
     }
 
     goto LABEL_5;
@@ -498,18 +498,18 @@ LABEL_5:
     v11 = MEMORY[0x48];
     if (MEMORY[0x48])
     {
-      v20 = [(VNEntityIdentificationModelTrainedModelVIPv2 *)self entityPrintOriginatingRequestSpecifier];
-      v12 = [v20 requestClassAndReturnError:a4];
+      entityPrintOriginatingRequestSpecifier = [(VNEntityIdentificationModelTrainedModelVIPv2 *)self entityPrintOriginatingRequestSpecifier];
+      v12 = [entityPrintOriginatingRequestSpecifier requestClassAndReturnError:error];
       if (v12)
       {
-        v13 = [v20 requestRevision];
+        requestRevision = [entityPrintOriginatingRequestSpecifier requestRevision];
         v14 = MEMORY[0x40];
         v15 = MEMORY[0x60];
         v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v11];
         v17 = 0;
         while (1)
         {
-          v18 = [v12 createVNEntityIdentificationModelEntryPrintForRevision:v13 fromDescriptorData:vision::mod::ImageDescriptorBufferAbstract::getDataForKthDescriptor(0 length:v17) elementCount:v14 error:{v15, a4}];
+          v18 = [v12 createVNEntityIdentificationModelEntryPrintForRevision:requestRevision fromDescriptorData:vision::mod::ImageDescriptorBufferAbstract::getDataForKthDescriptor(0 length:v17) elementCount:v14 error:{v15, error}];
           if (!v18)
           {
             break;
@@ -540,10 +540,10 @@ LABEL_19:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     VNErrorForCVMLStatus(IdentityTrainingData);
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -556,13 +556,13 @@ LABEL_21:
   return v9;
 }
 
-- (VNEntityIdentificationModelTrainedModelVIPv2)initWithFaceIDModel:(shared_ptr<vision:(id)a4 :(unint64_t)a5 mod:(id)a6 :(id)a7 FaceIDModel>)a3 entityPrintOriginatingRequestSpecifier:maximumElementsPerID:entityUniqueIdentifiers:entityPrintCounts:
+- (VNEntityIdentificationModelTrainedModelVIPv2)initWithFaceIDModel:(shared_ptr<vision:(id)model :(unint64_t)a5 mod:(id)mod :(id)a7 FaceIDModel>)a3 entityPrintOriginatingRequestSpecifier:maximumElementsPerID:entityUniqueIdentifiers:entityPrintCounts:
 {
   ptr = a3.__ptr_;
   v12 = a3.__cntrl_;
   v13 = a5;
-  v14 = a6;
-  +[VNError VNAssert:log:](VNError, "VNAssert:log:", [v13 count] == objc_msgSend(v14, "count"), @"entity unique identifier / print count mismatch");
+  modCopy = mod;
+  +[VNError VNAssert:log:](VNError, "VNAssert:log:", [v13 count] == objc_msgSend(modCopy, "count"), @"entity unique identifier / print count mismatch");
   v29.receiver = self;
   v29.super_class = VNEntityIdentificationModelTrainedModelVIPv2;
   v15 = [(VNEntityIdentificationModelTrainedModelVIPv2 *)&v29 init];
@@ -589,18 +589,18 @@ LABEL_21:
     entityPrintOriginatingRequestSpecifier = v16->_entityPrintOriginatingRequestSpecifier;
     v16->_entityPrintOriginatingRequestSpecifier = v21;
 
-    v23 = 0x7FFFFFFF;
-    if (a4 < 0x7FFFFFFF)
+    modelCopy = 0x7FFFFFFF;
+    if (model < 0x7FFFFFFF)
     {
-      v23 = a4;
+      modelCopy = model;
     }
 
-    v16->_maximumElementsPerID = v23;
+    v16->_maximumElementsPerID = modelCopy;
     v24 = [v13 copy];
     entityUniqueIdentifiers = v16->_entityUniqueIdentifiers;
     v16->_entityUniqueIdentifiers = v24;
 
-    v26 = [v14 copy];
+    v26 = [modCopy copy];
     entityPrintCounts = v16->_entityPrintCounts;
     v16->_entityPrintCounts = v26;
   }
@@ -608,33 +608,33 @@ LABEL_21:
   return v16;
 }
 
-+ (id)trainedModelBuiltFromConfiguration:(id)a3 dataProvider:(id)a4 canceller:(id)a5 error:(id *)a6
++ (id)trainedModelBuiltFromConfiguration:(id)configuration dataProvider:(id)provider canceller:(id)canceller error:(id *)error
 {
   v46[9] = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v38 = a4;
-  v35 = a5;
-  if (!v35)
+  configurationCopy = configuration;
+  providerCopy = provider;
+  cancellerCopy = canceller;
+  if (!cancellerCopy)
   {
-    v35 = objc_alloc_init(VNCanceller);
+    cancellerCopy = objc_alloc_init(VNCanceller);
   }
 
-  v36 = [v34 entityPrintOriginatingRequestSpecifier];
-  v8 = [v38 trainedModelEntityCount];
-  v33 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
-  v32 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
-  if (v8)
+  entityPrintOriginatingRequestSpecifier = [configurationCopy entityPrintOriginatingRequestSpecifier];
+  trainedModelEntityCount = [providerCopy trainedModelEntityCount];
+  v33 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:trainedModelEntityCount];
+  v32 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:trainedModelEntityCount];
+  if (trainedModelEntityCount)
   {
-    v28 = v8;
+    v28 = trainedModelEntityCount;
     v37 = 0;
     while (1)
     {
-      if ([(VNCanceller *)v35 wasSignalled])
+      if ([(VNCanceller *)cancellerCopy wasSignalled])
       {
-        if (a6)
+        if (error)
         {
           VNEntityIdentificationModelErrorWithLocalizedDescriptionAndUnderlyingError(4, @"operation was cancelled", 0);
-          *a6 = v23 = 0;
+          *error = v23 = 0;
         }
 
         else
@@ -645,9 +645,9 @@ LABEL_21:
         goto LABEL_33;
       }
 
-      v30 = [v38 trainedModelUniqueIdentifierOfEntityAtIndex:v37];
+      v30 = [providerCopy trainedModelUniqueIdentifierOfEntityAtIndex:v37];
       [v33 addObject:v30];
-      v9 = [v38 trainedModelNumberOfObservationsForEntityAtIndex:v37];
+      v9 = [providerCopy trainedModelNumberOfObservationsForEntityAtIndex:v37];
       v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9];
       [v32 addObject:v10];
 
@@ -664,7 +664,7 @@ LABEL_12:
       if ([v17 count])
       {
         [v17 firstObject];
-        v44 = [objc_claimAutoreleasedReturnValue() VNEntityIdentificationModelPrintByteLength];
+        vNEntityIdentificationModelPrintByteLength = [objc_claimAutoreleasedReturnValue() VNEntityIdentificationModelPrintByteLength];
         v46[3] = 1;
         v42 = 0;
         v43 = 0;
@@ -682,7 +682,7 @@ LABEL_12:
     v12 = 0;
     while (1)
     {
-      v13 = [v38 trainedModelObservationAtIndex:v12 forEntityAtIndex:v37];
+      v13 = [providerCopy trainedModelObservationAtIndex:v12 forEntityAtIndex:v37];
       v14 = v13;
       if (!v13 || (VNEntityIdentificationModelObservationConformingObject(v13) & 1) == 0)
       {
@@ -690,17 +690,17 @@ LABEL_12:
       }
 
       v46[0] = 0;
-      v15 = [v14 VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:v36 error:v46];
+      v15 = [v14 VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:entityPrintOriginatingRequestSpecifier error:v46];
       v16 = v46[0];
       if (!v15)
       {
-        if (a6)
+        if (error)
         {
           v20 = MEMORY[0x1E696AEC0];
-          v21 = [v14 originatingRequestSpecifier];
-          v22 = [v20 stringWithFormat:@"entity index %lu, observation index %lu was generated by %@, which is not compatible with the model requirement of %@", v37, v12, v21, v36];
+          originatingRequestSpecifier = [v14 originatingRequestSpecifier];
+          v22 = [v20 stringWithFormat:@"entity index %lu, observation index %lu was generated by %@, which is not compatible with the model requirement of %@", v37, v12, originatingRequestSpecifier, entityPrintOriginatingRequestSpecifier];
 
-          *a6 = VNEntityIdentificationModelErrorWithLocalizedDescriptionAndUnderlyingError(3, v22, v16);
+          *error = VNEntityIdentificationModelErrorWithLocalizedDescriptionAndUnderlyingError(3, v22, v16);
         }
 
         goto LABEL_22;
@@ -714,13 +714,13 @@ LABEL_12:
       }
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_23;
     }
 
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid observation at index %lu for entity at index %lu", v12, v37];
-    *a6 = [VNError errorForInvalidModelWithLocalizedDescription:v16];
+    *error = [VNError errorForInvalidModelWithLocalizedDescription:v16];
 LABEL_22:
 
 LABEL_23:
@@ -730,12 +730,12 @@ LABEL_23:
   else
   {
 LABEL_18:
-    v18 = [v34 faceIDModelMaximumElementsPerID];
-    _newFaceIDModel(&v44, v18, a6);
-    v19 = v44;
-    if (v44)
+    faceIDModelMaximumElementsPerID = [configurationCopy faceIDModelMaximumElementsPerID];
+    _newFaceIDModel(&vNEntityIdentificationModelPrintByteLength, faceIDModelMaximumElementsPerID, error);
+    v19 = vNEntityIdentificationModelPrintByteLength;
+    if (vNEntityIdentificationModelPrintByteLength)
     {
-      v25 = [a1 alloc];
+      v25 = [self alloc];
       v24 = v45;
       v39 = v19;
       v40 = v45;
@@ -744,7 +744,7 @@ LABEL_18:
         atomic_fetch_add_explicit(&v45->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      v23 = [v25 initWithFaceIDModel:&v39 entityPrintOriginatingRequestSpecifier:v36 maximumElementsPerID:v18 entityUniqueIdentifiers:v33 entityPrintCounts:v32];
+      v23 = [v25 initWithFaceIDModel:&v39 entityPrintOriginatingRequestSpecifier:entityPrintOriginatingRequestSpecifier maximumElementsPerID:faceIDModelMaximumElementsPerID entityUniqueIdentifiers:v33 entityPrintCounts:v32];
       if (v40)
       {
         std::__shared_weak_count::__release_shared[abi:ne200100](v40);

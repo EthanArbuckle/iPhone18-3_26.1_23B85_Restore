@@ -1,30 +1,30 @@
 @interface MPSGraphMaxPool4DGradientOp
-- (MPSGraphMaxPool4DGradientOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 gradientWithIndices:(BOOL)a7 name:(id)a8;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphMaxPool4DGradientOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor gradientWithIndices:(BOOL)indices name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphMaxPool4DGradientOp
 
-- (MPSGraphMaxPool4DGradientOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 gradientWithIndices:(BOOL)a7 name:(id)a8
+- (MPSGraphMaxPool4DGradientOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor gradientWithIndices:(BOOL)indices name:(id)name
 {
-  self->_gradientWithIndices = a7;
+  self->_gradientWithIndices = indices;
   v9.receiver = self;
   v9.super_class = MPSGraphMaxPool4DGradientOp;
-  return [(MPSGraphPooling4DBaseOp *)&v9 initWithGraph:a3 inputTensors:a4 controlDependencies:a5 descriptor:a6 name:a8];
+  return [(MPSGraphPooling4DBaseOp *)&v9 initWithGraph:graph inputTensors:tensors controlDependencies:dependencies descriptor:descriptor name:name];
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v14 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphMaxPool4DGradientOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphPoolingOps.mm", __p);
-  MPSSymbolTable::getLocationByInsertingOp<mlir::mps::PoolMaxGradientOp>(a4, a3, __p, 0x321u, v14);
+  MPSSymbolTable::getLocationByInsertingOp<mlir::mps::PoolMaxGradientOp>(table, builder, __p, 0x321u, nameCopy);
   if (v17 < 0)
   {
     operator delete(__p[0]);
   }
 
-  v11 = *(a5 + 1) - *a5;
+  v11 = *(values + 1) - *values;
   if (!v11)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
@@ -35,10 +35,10 @@
     if (v11 >= 9 && v11 != 16)
     {
 LABEL_9:
-      MLIRElementType = getMLIRElementType(*a3, [(MPSGraphPooling4DOpDescriptor *)self->super._desc returnIndicesDataType]);
+      MLIRElementType = getMLIRElementType(*builder, [(MPSGraphPooling4DOpDescriptor *)self->super._desc returnIndicesDataType]);
       mlir::TypeAttr::get(MLIRElementType);
-      v15 = [(MPSGraphPooling4DOpDescriptor *)self->super._desc kernelSizes];
-      nsArrayToAttr(v15, a3);
+      kernelSizes = [(MPSGraphPooling4DOpDescriptor *)self->super._desc kernelSizes];
+      nsArrayToAttr(kernelSizes, builder);
     }
   }
 

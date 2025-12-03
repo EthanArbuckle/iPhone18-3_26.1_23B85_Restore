@@ -1,6 +1,6 @@
 @interface ICMusicSubscriptionFairPlayKeyStatus
-- (BOOL)isEqual:(id)a3;
-- (ICMusicSubscriptionFairPlayKeyStatus)initWithFairPlaySubscriptionInfo:(FPSubscriptionInfo_)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICMusicSubscriptionFairPlayKeyStatus)initWithFairPlaySubscriptionInfo:(FPSubscriptionInfo_)info;
 - (id)description;
 @end
 
@@ -27,19 +27,19 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%p> - accountUniqueIdentifier: %llu - hasOfflinePlaybackKeys=%@ - hasOnlinePlaybackKeys=%@", self, self->_accountUniqueIdentifier, v3, v2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_hasOfflinePlaybackKeys == v4[9] && self->_hasOnlinePlaybackKeys == v4[8];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_hasOfflinePlaybackKeys == equalCopy[9] && self->_hasOnlinePlaybackKeys == equalCopy[8];
 
   return v5;
 }
 
-- (ICMusicSubscriptionFairPlayKeyStatus)initWithFairPlaySubscriptionInfo:(FPSubscriptionInfo_)a3
+- (ICMusicSubscriptionFairPlayKeyStatus)initWithFairPlaySubscriptionInfo:(FPSubscriptionInfo_)info
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = info.var1;
+  var0 = info.var0;
   result = [(ICMusicSubscriptionFairPlayKeyStatus *)self init];
   if (result)
   {

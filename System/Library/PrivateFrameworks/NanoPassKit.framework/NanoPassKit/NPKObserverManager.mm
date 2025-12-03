@@ -1,9 +1,9 @@
 @interface NPKObserverManager
 - (NPKObserverManager)init;
-- (void)_enumerateObserversTablesCopy:(BOOL)a3 withBlock:(id)a4;
-- (void)_enumerateObserversUsingBlock:(id)a3;
-- (void)_registerObserver:(id)a3 withRelativePriority:(unint64_t)a4;
-- (void)_unregisterObserver:(id)a3;
+- (void)_enumerateObserversTablesCopy:(BOOL)copy withBlock:(id)block;
+- (void)_enumerateObserversUsingBlock:(id)block;
+- (void)_registerObserver:(id)observer withRelativePriority:(unint64_t)priority;
+- (void)_unregisterObserver:(id)observer;
 @end
 
 @implementation NPKObserverManager
@@ -27,39 +27,39 @@
   return v2;
 }
 
-- (void)_registerObserver:(id)a3 withRelativePriority:(unint64_t)a4
+- (void)_registerObserver:(id)observer withRelativePriority:(unint64_t)priority
 {
-  v6 = a3;
-  [(NPKObserverManager *)self _unregisterObserver:v6];
-  if (([(NSMutableIndexSet *)self->_priorityIndexSet containsIndex:a4]& 1) != 0)
+  observerCopy = observer;
+  [(NPKObserverManager *)self _unregisterObserver:observerCopy];
+  if (([(NSMutableIndexSet *)self->_priorityIndexSet containsIndex:priority]& 1) != 0)
   {
     observersTables = self->_observersTables;
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    v11 = [(NSMutableDictionary *)observersTables objectForKeyedSubscript:v8];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:priority];
+    pk_weakObjectsHashTableUsingPointerPersonality = [(NSMutableDictionary *)observersTables objectForKeyedSubscript:v8];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAA50] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x277CCAA50] pk_weakObjectsHashTableUsingPointerPersonality];
     v9 = self->_observersTables;
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    [(NSMutableDictionary *)v9 setObject:v11 forKeyedSubscript:v10];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:priority];
+    [(NSMutableDictionary *)v9 setObject:pk_weakObjectsHashTableUsingPointerPersonality forKeyedSubscript:v10];
 
-    [(NSMutableIndexSet *)self->_priorityIndexSet addIndex:a4];
+    [(NSMutableIndexSet *)self->_priorityIndexSet addIndex:priority];
   }
 
-  [v11 addObject:v6];
+  [pk_weakObjectsHashTableUsingPointerPersonality addObject:observerCopy];
 }
 
-- (void)_unregisterObserver:(id)a3
+- (void)_unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__NPKObserverManager__unregisterObserver___block_invoke;
   v6[3] = &unk_279947170;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(NPKObserverManager *)self _enumerateObserversTablesCopy:0 withBlock:v6];
 }
 
@@ -71,15 +71,15 @@ void __42__NPKObserverManager__unregisterObserver___block_invoke(uint64_t a1, vo
   [v6 removeObject:*(a1 + 32)];
 }
 
-- (void)_enumerateObserversUsingBlock:(id)a3
+- (void)_enumerateObserversUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__NPKObserverManager__enumerateObserversUsingBlock___block_invoke;
   v6[3] = &unk_279947198;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(NPKObserverManager *)self _enumerateObserversTablesCopy:1 withBlock:v6];
 }
 
@@ -121,18 +121,18 @@ void __52__NPKObserverManager__enumerateObserversUsingBlock___block_invoke(uint6
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enumerateObserversTablesCopy:(BOOL)a3 withBlock:(id)a4
+- (void)_enumerateObserversTablesCopy:(BOOL)copy withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   priorityIndexSet = self->_priorityIndexSet;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__NPKObserverManager__enumerateObserversTablesCopy_withBlock___block_invoke;
   v9[3] = &unk_2799471C0;
-  v11 = a3;
+  copyCopy = copy;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [(NSMutableIndexSet *)priorityIndexSet enumerateIndexesWithOptions:2 usingBlock:v9];
 }
 

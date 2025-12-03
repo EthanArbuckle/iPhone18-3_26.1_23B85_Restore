@@ -1,25 +1,25 @@
 @interface AISSymptom
-- (AISSymptom)initWithAltDSID:(id)a3 priority:(unsigned __int8)a4 problemFlag:(unint64_t)a5 errorInfo:(id)a6;
+- (AISSymptom)initWithAltDSID:(id)d priority:(unsigned __int8)priority problemFlag:(unint64_t)flag errorInfo:(id)info;
 @end
 
 @implementation AISSymptom
 
-- (AISSymptom)initWithAltDSID:(id)a3 priority:(unsigned __int8)a4 problemFlag:(unint64_t)a5 errorInfo:(id)a6
+- (AISSymptom)initWithAltDSID:(id)d priority:(unsigned __int8)priority problemFlag:(unint64_t)flag errorInfo:(id)info
 {
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  infoCopy = info;
   v16.receiver = self;
   v16.super_class = AISSymptom;
   v12 = [(AISSymptom *)&v16 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [dCopy copy];
     altDSID = v12->_altDSID;
     v12->_altDSID = v13;
 
-    v12->_priority = a4;
-    v12->_problemFlag = a5;
-    objc_storeStrong(&v12->_errorInfo, a6);
+    v12->_priority = priority;
+    v12->_problemFlag = flag;
+    objc_storeStrong(&v12->_errorInfo, info);
   }
 
   return v12;

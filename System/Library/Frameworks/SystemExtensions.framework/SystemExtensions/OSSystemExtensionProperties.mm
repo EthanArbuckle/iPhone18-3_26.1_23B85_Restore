@@ -1,40 +1,40 @@
 @interface OSSystemExtensionProperties
-- (OSSystemExtensionProperties)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (OSSystemExtensionProperties)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OSSystemExtensionProperties
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(OSSystemExtensionProperties *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(OSSystemExtensionProperties *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  [v4 encodeBool:-[OSSystemExtensionProperties isEnabled](self forKey:{"isEnabled"), @"isEnabled"}];
-  v6 = [(OSSystemExtensionProperties *)self displayName];
-  [v4 encodeObject:v6 forKey:@"displayName"];
+  [coderCopy encodeBool:-[OSSystemExtensionProperties isEnabled](self forKey:{"isEnabled"), @"isEnabled"}];
+  displayName = [(OSSystemExtensionProperties *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v7 = [(OSSystemExtensionProperties *)self usageDescription];
-  [v4 encodeObject:v7 forKey:@"usageDescription"];
+  usageDescription = [(OSSystemExtensionProperties *)self usageDescription];
+  [coderCopy encodeObject:usageDescription forKey:@"usageDescription"];
 }
 
-- (OSSystemExtensionProperties)initWithCoder:(id)a3
+- (OSSystemExtensionProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = OSSystemExtensionProperties;
   v5 = [(OSSystemExtensionProperties *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     [(OSSystemExtensionProperties *)v5 setBundleIdentifier:v6];
 
-    -[OSSystemExtensionProperties setIsEnabled:](v5, "setIsEnabled:", [v4 decodeBoolForKey:@"isEnabled"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    -[OSSystemExtensionProperties setIsEnabled:](v5, "setIsEnabled:", [coderCopy decodeBoolForKey:@"isEnabled"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     [(OSSystemExtensionProperties *)v5 setDisplayName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"usageDescription"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"usageDescription"];
     [(OSSystemExtensionProperties *)v5 setUsageDescription:v8];
   }
 

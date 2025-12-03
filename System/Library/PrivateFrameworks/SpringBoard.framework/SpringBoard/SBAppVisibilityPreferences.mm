@@ -1,6 +1,6 @@
 @interface SBAppVisibilityPreferences
 - (BOOL)update;
-- (SBAppVisibilityPreferences)initWithDefaultVisible:(BOOL)a3 bundleID:(id)a4 containerPath:(id)a5;
+- (SBAppVisibilityPreferences)initWithDefaultVisible:(BOOL)visible bundleID:(id)d containerPath:(id)path;
 - (id)description;
 - (uint64_t)setCurrentlyVisible:(uint64_t)result;
 @end
@@ -13,36 +13,36 @@
   _CFPreferencesAppSynchronizeWithContainer();
   keyExistsAndHasValidFormat = 0;
   _CFPreferencesGetAppBooleanValueWithContainer();
-  v3 = CFPreferencesGetAppBooleanValue(@"SBIconVisibility", self->_bundleID, &keyExistsAndHasValidFormat) != 0;
+  isDefaultVisible = CFPreferencesGetAppBooleanValue(@"SBIconVisibility", self->_bundleID, &keyExistsAndHasValidFormat) != 0;
   if (!keyExistsAndHasValidFormat)
   {
-    v3 = [(SBAppVisibilityPreferences *)self isDefaultVisible];
+    isDefaultVisible = [(SBAppVisibilityPreferences *)self isDefaultVisible];
   }
 
-  v4 = [(SBAppVisibilityPreferences *)self isCurrentlyVisible];
-  self->_currentlyVisible = v3;
-  return v3 ^ v4;
+  isCurrentlyVisible = [(SBAppVisibilityPreferences *)self isCurrentlyVisible];
+  self->_currentlyVisible = isDefaultVisible;
+  return isDefaultVisible ^ isCurrentlyVisible;
 }
 
-- (SBAppVisibilityPreferences)initWithDefaultVisible:(BOOL)a3 bundleID:(id)a4 containerPath:(id)a5
+- (SBAppVisibilityPreferences)initWithDefaultVisible:(BOOL)visible bundleID:(id)d containerPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = SBAppVisibilityPreferences;
   v10 = [(SBAppVisibilityPreferences *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     bundleID = v10->_bundleID;
     v10->_bundleID = v11;
 
-    v13 = [v9 copy];
+    v13 = [pathCopy copy];
     containerPath = v10->_containerPath;
     v10->_containerPath = v13;
 
-    v10->_defaultVisible = a3;
-    v10->_currentlyVisible = a3;
+    v10->_defaultVisible = visible;
+    v10->_currentlyVisible = visible;
     [(SBAppVisibilityPreferences *)v10 update];
   }
 

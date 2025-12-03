@@ -1,77 +1,77 @@
 @interface BSTransaction
 + (id)_defaultTransactionLog;
 - (BOOL)_isRootTransaction;
-- (BOOL)_removeMilestones:(char)a3 ignoringAuditHistory:;
-- (BOOL)hasChildTransactionsOfClass:(Class)a3;
+- (BOOL)_removeMilestones:(char)milestones ignoringAuditHistory:;
+- (BOOL)hasChildTransactionsOfClass:(Class)class;
 - (BOOL)hasStarted;
 - (BOOL)isComplete;
 - (BOOL)isFinishedWorking;
 - (BOOL)isInterrupted;
 - (BOOL)isInterruptible;
 - (BOOL)isRunning;
-- (BOOL)isWaitingForMilestone:(id)a3;
-- (BOOL)removeMilestone:(id)a3;
-- (BOOL)removeMilestones:(id)a3;
+- (BOOL)isWaitingForMilestone:(id)milestone;
+- (BOOL)removeMilestone:(id)milestone;
+- (BOOL)removeMilestones:(id)milestones;
 - (BSTransaction)init;
 - (NSArray)allErrors;
 - (NSArray)childTransactions;
 - (NSSet)milestones;
-- (id)_buildGraphEdgeDescriptionWithType:(uint64_t)a1 fromTransaction:(id)a2 toTransaction:(void *)a3;
-- (id)_childTransactionsWithSchedulingPolicy:(uint64_t)a1;
-- (id)_createErrorWithCode:(uint64_t)a3 reason:(uint64_t)a4 description:(uint64_t)a5 precipitatingError:;
-- (id)_descriptionForDebugging:(uint64_t)a1 indentLevel:(int)a2;
-- (id)_descriptionForDebugging:(uint64_t)a3 indentLevel:(void *)a4 visited:;
+- (id)_buildGraphEdgeDescriptionWithType:(uint64_t)type fromTransaction:(id)transaction toTransaction:(void *)toTransaction;
+- (id)_childTransactionsWithSchedulingPolicy:(uint64_t)policy;
+- (id)_createErrorWithCode:(uint64_t)code reason:(uint64_t)reason description:(uint64_t)description precipitatingError:;
+- (id)_descriptionForDebugging:(uint64_t)debugging indentLevel:(int)level;
+- (id)_descriptionForDebugging:(uint64_t)debugging indentLevel:(void *)level visited:;
 - (id)_graphNodeDebugName;
 - (id)_graphNodeIdentifier;
 - (id)_loggingProem;
-- (id)_stringForMilestones:(id)a3;
-- (id)childTransactionsOfClass:(Class)a3;
+- (id)_stringForMilestones:(id)milestones;
+- (id)childTransactionsOfClass:(Class)class;
 - (id)completionBlock;
 - (uint64_t)_areConcurrentChildTransactionsFinishedWorking;
 - (uint64_t)_beginIfPossible;
-- (uint64_t)_evaluateParentTransactionsWithSchedulingPolicy:(uint64_t)a3 evaluator:;
+- (uint64_t)_evaluateParentTransactionsWithSchedulingPolicy:(uint64_t)policy evaluator:;
 - (uint64_t)_terminateNow;
-- (void)_addAuditHistoryItem:(id)a3;
-- (void)_addDebugLogCategory:(id)a3;
+- (void)_addAuditHistoryItem:(id)item;
+- (void)_addDebugLogCategory:(id)category;
 - (void)_checkAndReportIfCompleted;
-- (void)_childRelationshipForTransaction:(uint64_t)a1;
-- (void)_enumerateObserversWithBlock:(id)a3;
+- (void)_childRelationshipForTransaction:(uint64_t)transaction;
+- (void)_enumerateObserversWithBlock:(id)block;
 - (void)_evaluateCompletion;
-- (void)_failForTimeoutWithDescription:(id)a3;
-- (void)_failWithError:(uint64_t)a1;
-- (void)_failWithReason:(id)a3 description:(id)a4 precipitatingError:(id)a5;
+- (void)_failForTimeoutWithDescription:(id)description;
+- (void)_failWithError:(uint64_t)error;
+- (void)_failWithReason:(id)reason description:(id)description precipitatingError:(id)error;
 - (void)_inFinishedWorkingState;
 - (void)_initializeAuditHistoryIfNecessary;
-- (void)_interruptWithReason:(char)a3 force:;
+- (void)_interruptWithReason:(char)reason force:;
 - (void)_isDoingWork;
 - (void)_noteCompleted;
-- (void)_parentRelationshipForTransaction:(void *)a1;
-- (void)_populateGraphIntoNodes:(void *)a3 edges:;
-- (void)_preventTransactionCompletionForReason:(char)a3 ignoringAuditHistory:(uint64_t)a4 andExecuteBlock:;
-- (void)_removeChildTransactionRelationship:(id *)a1;
-- (void)_removeDebugLogCategory:(id)a3;
-- (void)_removeParentTransaction:(uint64_t)a1;
-- (void)_setState:(uint64_t)a1;
-- (void)_unsafe_enumerateChildTransactionsWithBlock:(uint64_t)a1;
-- (void)_unsafe_enumerateParentTransactionsWithBlock:(uint64_t)a1;
-- (void)addChildTransaction:(id)a3 withSchedulingPolicy:(unint64_t)a4;
-- (void)addMilestone:(id)a3;
-- (void)addMilestones:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_parentRelationshipForTransaction:(void *)transaction;
+- (void)_populateGraphIntoNodes:(void *)nodes edges:;
+- (void)_preventTransactionCompletionForReason:(char)reason ignoringAuditHistory:(uint64_t)history andExecuteBlock:;
+- (void)_removeChildTransactionRelationship:(id *)relationship;
+- (void)_removeDebugLogCategory:(id)category;
+- (void)_removeParentTransaction:(uint64_t)transaction;
+- (void)_setState:(uint64_t)state;
+- (void)_unsafe_enumerateChildTransactionsWithBlock:(uint64_t)block;
+- (void)_unsafe_enumerateParentTransactionsWithBlock:(uint64_t)block;
+- (void)addChildTransaction:(id)transaction withSchedulingPolicy:(unint64_t)policy;
+- (void)addMilestone:(id)milestone;
+- (void)addMilestones:(id)milestones;
+- (void)addObserver:(id)observer;
 - (void)begin;
 - (void)dealloc;
-- (void)evaluateMilestone:(id)a3 withEvaluator:(id)a4;
-- (void)failWithReason:(id)a3;
-- (void)interruptWithReason:(id)a3;
-- (void)listenForSatisfiedMilestone:(id)a3 withBlock:(id)a4;
-- (void)registerBlockObserver:(id)a3;
+- (void)evaluateMilestone:(id)milestone withEvaluator:(id)evaluator;
+- (void)failWithReason:(id)reason;
+- (void)interruptWithReason:(id)reason;
+- (void)listenForSatisfiedMilestone:(id)milestone withBlock:(id)block;
+- (void)registerBlockObserver:(id)observer;
 - (void)removeAllChildTransactions;
-- (void)removeAllChildTransactionsOfClass:(Class)a3;
+- (void)removeAllChildTransactionsOfClass:(Class)class;
 - (void)removeAllMilestones;
-- (void)removeChildTransaction:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setAuditHistoryEnabled:(BOOL)a3;
-- (void)setCompletionBlock:(id)a3;
+- (void)removeChildTransaction:(id)transaction;
+- (void)removeObserver:(id)observer;
+- (void)setAuditHistoryEnabled:(BOOL)enabled;
+- (void)setCompletionBlock:(id)block;
 @end
 
 @implementation BSTransaction
@@ -152,18 +152,18 @@
 
 - (void)_initializeAuditHistoryIfNecessary
 {
-  if (a1 && !a1[10] && [a1 isAuditHistoryEnabled])
+  if (self && !self[10] && [self isAuditHistoryEnabled])
   {
     v2 = objc_alloc_init(BSAuditHistory);
-    v3 = a1[10];
-    a1[10] = v2;
+    v3 = self[10];
+    self[10] = v2;
   }
 }
 
 - (NSArray)childTransactions
 {
-  v3 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v3);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_childTransactionRelationships, "count")}];
   v7[0] = MEMORY[0x1E69E9820];
@@ -233,8 +233,8 @@ uint64_t __22__BSTransaction_begin__block_invoke(uint64_t a1)
 
 - (BOOL)isComplete
 {
-  v3 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v3);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   return self->_state == 3 || self->_failed || self->_aborted;
 }
@@ -267,8 +267,8 @@ uint64_t __22__BSTransaction_begin__block_invoke(uint64_t a1)
   if (result)
   {
     v1 = result;
-    v2 = [result queue];
-    BSDispatchQueueAssert(v2);
+    queue = [result queue];
+    BSDispatchQueueAssert(queue);
 
     return (v1[9] == 1);
   }
@@ -279,23 +279,23 @@ uint64_t __22__BSTransaction_begin__block_invoke(uint64_t a1)
 - (void)begin
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v4);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  v5 = self;
-  v6 = v5;
-  if (v5->_failed)
+  selfCopy = self;
+  v6 = selfCopy;
+  if (selfCopy->_failed)
   {
-    if ([(BSTransaction *)v5 _debugLoggingEnabled])
+    if ([(BSTransaction *)selfCopy _debugLoggingEnabled])
     {
       context = objc_autoreleasePoolPush();
-      v7 = [v6 _descriptionProem];
+      _descriptionProem = [v6 _descriptionProem];
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v8 = [v6 _debugLogCategories];
-      v9 = [v8 countByEnumeratingWithState:&v36 objects:v47 count:16];
+      _debugLogCategories = [v6 _debugLogCategories];
+      v9 = [_debugLogCategories countByEnumeratingWithState:&v36 objects:v47 count:16];
       if (v9)
       {
         v10 = *v37;
@@ -306,14 +306,14 @@ uint64_t __22__BSTransaction_begin__block_invoke(uint64_t a1)
           {
             if (*v37 != v10)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(_debugLogCategories);
             }
 
             v12 = *(*(&v36 + 1) + 8 * v11);
-            if (v7 && os_log_type_enabled(*(*(&v36 + 1) + 8 * v11), OS_LOG_TYPE_DEBUG))
+            if (_descriptionProem && os_log_type_enabled(*(*(&v36 + 1) + 8 * v11), OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v42 = v7;
+              v42 = _descriptionProem;
               _os_log_debug_impl(&dword_18FEF6000, v12, OS_LOG_TYPE_DEBUG, "%@:", buf, 0xCu);
             }
 
@@ -321,13 +321,13 @@ uint64_t __22__BSTransaction_begin__block_invoke(uint64_t a1)
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
             {
               v14 = objc_opt_class();
-              v15 = [*(v6 + 144) localizedDescription];
+              localizedDescription = [*(v6 + 144) localizedDescription];
               *buf = 138543874;
               v42 = v14;
               v43 = 2048;
               v44 = v6;
               v45 = 2114;
-              v46 = v15;
+              v46 = localizedDescription;
               _os_log_debug_impl(&dword_18FEF6000, v13, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Unable to begin transaction, because the transaction failed prior to starting with error: %{public}@", buf, 0x20u);
             }
 
@@ -335,7 +335,7 @@ uint64_t __22__BSTransaction_begin__block_invoke(uint64_t a1)
           }
 
           while (v9 != v11);
-          v9 = [v8 countByEnumeratingWithState:&v36 objects:v47 count:16];
+          v9 = [_debugLogCategories countByEnumeratingWithState:&v36 objects:v47 count:16];
         }
 
         while (v9);
@@ -347,16 +347,16 @@ uint64_t __22__BSTransaction_begin__block_invoke(uint64_t a1)
 
   else
   {
-    if (v5->_state)
+    if (selfCopy->_state)
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:v6 file:@"BSTransaction.m" lineNumber:386 description:@"Cannot begin a transaction that has already begun or completed."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"BSTransaction.m" lineNumber:386 description:@"Cannot begin a transaction that has already begun or completed."];
     }
 
     if (([(BSTransaction *)v6 _evaluateParentTransactionsWithSchedulingPolicy:&__block_literal_global_322 evaluator:?]& 1) == 0)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:v6 file:@"BSTransaction.m" lineNumber:387 description:@"Cannot begin a serial child transaction if all parents are not finished doing work."];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v6 file:@"BSTransaction.m" lineNumber:387 description:@"Cannot begin a serial child transaction if all parents are not finished doing work."];
     }
 
     v16 = objc_alloc_init(MEMORY[0x1E695DF00]);
@@ -372,13 +372,13 @@ uint64_t __22__BSTransaction_begin__block_invoke(uint64_t a1)
     if ([v6 _isRootTransaction] && (objc_msgSend(v6, "isComplete") & 1) == 0 && objc_msgSend(v6, "_debugLoggingEnabled"))
     {
       contexta = objc_autoreleasePoolPush();
-      v18 = [v6 _descriptionProem];
+      _descriptionProem2 = [v6 _descriptionProem];
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v19 = [v6 _debugLogCategories];
-      v20 = [v19 countByEnumeratingWithState:&v31 objects:v40 count:16];
+      _debugLogCategories2 = [v6 _debugLogCategories];
+      v20 = [_debugLogCategories2 countByEnumeratingWithState:&v31 objects:v40 count:16];
       if (v20)
       {
         v21 = *v32;
@@ -389,14 +389,14 @@ uint64_t __22__BSTransaction_begin__block_invoke(uint64_t a1)
           {
             if (*v32 != v21)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(_debugLogCategories2);
             }
 
             v23 = *(*(&v31 + 1) + 8 * v22);
-            if (v18 && os_log_type_enabled(*(*(&v31 + 1) + 8 * v22), OS_LOG_TYPE_DEBUG))
+            if (_descriptionProem2 && os_log_type_enabled(*(*(&v31 + 1) + 8 * v22), OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v42 = v18;
+              v42 = _descriptionProem2;
               _os_log_debug_impl(&dword_18FEF6000, v23, OS_LOG_TYPE_DEBUG, "%@:", buf, 0xCu);
             }
 
@@ -418,7 +418,7 @@ uint64_t __22__BSTransaction_begin__block_invoke(uint64_t a1)
           }
 
           while (v20 != v22);
-          v20 = [v19 countByEnumeratingWithState:&v31 objects:v40 count:16];
+          v20 = [_debugLogCategories2 countByEnumeratingWithState:&v31 objects:v40 count:16];
         }
 
         while (v20);
@@ -447,8 +447,8 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
   if (result)
   {
     v1 = result;
-    v2 = [result queue];
-    BSDispatchQueueAssert(v2);
+    queue = [result queue];
+    BSDispatchQueueAssert(queue);
 
     return (v1[9] == 2);
   }
@@ -475,8 +475,8 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
 
 - (BOOL)isRunning
 {
-  v3 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v3);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   if (([(BSTransaction *)self _isDoingWork]& 1) != 0)
   {
@@ -489,17 +489,17 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
 - (void)_checkAndReportIfCompleted
 {
   v54 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1[2] count];
-    v3 = [a1[7] count];
-    if ([a1 isRunning])
+    v2 = [self[2] count];
+    v3 = [self[7] count];
+    if ([self isRunning])
     {
-      v4 = [a1 isComplete];
-      v5 = [(BSTransaction *)a1 _areConcurrentChildTransactionsFinishedWorking];
-      if ((v4 & 1) == 0)
+      isComplete = [self isComplete];
+      _areConcurrentChildTransactionsFinishedWorking = [(BSTransaction *)self _areConcurrentChildTransactionsFinishedWorking];
+      if ((isComplete & 1) == 0)
       {
-        v6 = v5;
+        v6 = _areConcurrentChildTransactionsFinishedWorking;
         *buf = 0;
         *&buf[8] = buf;
         *&buf[16] = 0x2020000000;
@@ -508,8 +508,8 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
         *&v50[8] = 3221225472;
         *&v50[16] = __46__BSTransaction__areChildTransactionsComplete__block_invoke;
         v51 = &unk_1E72CB0B0;
-        v52 = buf;
-        [(BSTransaction *)a1 _unsafe_enumerateChildTransactionsWithBlock:v50];
+        selfCopy = buf;
+        [(BSTransaction *)self _unsafe_enumerateChildTransactionsWithBlock:v50];
         v7 = *(*&buf[8] + 24);
         _Block_object_dispose(buf, 8);
         if (v2)
@@ -525,29 +525,29 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
         if (((v3 == 0) & v6) == 1)
         {
           v34 = v8;
-          if (([a1 isFinishedWorking] & 1) == 0)
+          if (([self isFinishedWorking] & 1) == 0)
           {
-            [(BSTransaction *)a1 _setState:?];
-            [a1 _didFinishWork];
+            [(BSTransaction *)self _setState:?];
+            [self _didFinishWork];
             *v50 = MEMORY[0x1E69E9820];
             *&v50[8] = 3221225472;
             *&v50[16] = __47__BSTransaction__notifyObserversOfFinishedWork__block_invoke;
             v51 = &unk_1E72CB088;
-            v52 = a1;
-            [a1 _enumerateObserversWithBlock:v50];
+            selfCopy = self;
+            [self _enumerateObserversWithBlock:v50];
             v43 = 0u;
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
-            v9 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             *v50 = MEMORY[0x1E69E9820];
             *&v50[8] = 3221225472;
             *&v50[16] = __57__BSTransaction__parentTransactionsWithSchedulingPolicy___block_invoke;
             v51 = &unk_1E72CB190;
             v53 = 0;
-            v10 = v9;
-            v52 = v10;
-            [(BSTransaction *)a1 _unsafe_enumerateParentTransactionsWithBlock:v50];
+            v10 = array;
+            selfCopy = v10;
+            [(BSTransaction *)self _unsafe_enumerateParentTransactionsWithBlock:v50];
 
             v11 = [v10 countByEnumeratingWithState:&v43 objects:v50 count:16];
             if (v11)
@@ -565,15 +565,15 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
                   v14 = *(*(&v43 + 1) + 8 * i);
                   if (v14)
                   {
-                    v15 = [*(*(&v43 + 1) + 8 * i) queue];
-                    BSDispatchQueueAssert(v15);
+                    queue = [*(*(&v43 + 1) + 8 * i) queue];
+                    BSDispatchQueueAssert(queue);
 
                     if (os_log_type_enabled(v14[11], OS_LOG_TYPE_INFO) || [v14 isAuditHistoryEnabled])
                     {
-                      v16 = [a1 _descriptionProem];
+                      _descriptionProem = [self _descriptionProem];
                       if ([v14 isAuditHistoryEnabled])
                       {
-                        [v14 _addAuditHistoryItem:{@"Child transaction finished work: %@", v16}];
+                        [v14 _addAuditHistoryItem:{@"Child transaction finished work: %@", _descriptionProem}];
                       }
 
                       v17 = v14[11];
@@ -585,13 +585,13 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
                         *&buf[12] = 2048;
                         *&buf[14] = v14;
                         *&buf[22] = 2114;
-                        v49 = v16;
+                        v49 = _descriptionProem;
                         v19 = v18;
                         _os_log_impl(&dword_18FEF6000, v17, OS_LOG_TYPE_INFO, "<%{public}@:%p> Child transaction finished work: %{public}@", buf, 0x20u);
                       }
                     }
 
-                    [v14 _childTransactionDidFinishWork:a1];
+                    [v14 _childTransactionDidFinishWork:self];
                     [(BSTransaction *)v14 _checkAndReportIfCompleted];
                   }
                 }
@@ -606,7 +606,7 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
             v42 = 0u;
             v39 = 0u;
             v40 = 0u;
-            v20 = [(BSTransaction *)a1 _childTransactionsWithSchedulingPolicy:?];
+            v20 = [(BSTransaction *)self _childTransactionsWithSchedulingPolicy:?];
             v21 = [v20 countByEnumeratingWithState:&v39 objects:buf count:16];
             if (v21)
             {
@@ -635,23 +635,23 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
 
         if ((v8 & v7) != 0)
         {
-          if ([a1 _shouldComplete])
+          if ([self _shouldComplete])
           {
-            [a1 _willComplete];
+            [self _willComplete];
 
-            [(BSTransaction *)a1 _noteCompleted];
+            [(BSTransaction *)self _noteCompleted];
           }
 
-          else if ([a1 _debugLoggingEnabled])
+          else if ([self _debugLoggingEnabled])
           {
             v24 = objc_autoreleasePoolPush();
-            v25 = [a1 _descriptionProem];
+            _descriptionProem2 = [self _descriptionProem];
             v37 = 0u;
             v38 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v26 = [a1 _debugLogCategories];
-            v27 = [v26 countByEnumeratingWithState:&v35 objects:v47 count:16];
+            _debugLogCategories = [self _debugLogCategories];
+            v27 = [_debugLogCategories countByEnumeratingWithState:&v35 objects:v47 count:16];
             if (v27)
             {
               v28 = *v36;
@@ -662,14 +662,14 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
                 {
                   if (*v36 != v28)
                   {
-                    objc_enumerationMutation(v26);
+                    objc_enumerationMutation(_debugLogCategories);
                   }
 
                   v30 = *(*(&v35 + 1) + 8 * v29);
-                  if (v25 && os_log_type_enabled(*(*(&v35 + 1) + 8 * v29), OS_LOG_TYPE_DEBUG))
+                  if (_descriptionProem2 && os_log_type_enabled(*(*(&v35 + 1) + 8 * v29), OS_LOG_TYPE_DEBUG))
                   {
                     *v50 = 138412290;
-                    *&v50[4] = v25;
+                    *&v50[4] = _descriptionProem2;
                     _os_log_debug_impl(&dword_18FEF6000, v30, OS_LOG_TYPE_DEBUG, "%@:", v50, 0xCu);
                   }
 
@@ -680,7 +680,7 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
                     *v50 = 138543618;
                     *&v50[4] = v32;
                     *&v50[12] = 2048;
-                    *&v50[14] = a1;
+                    *&v50[14] = self;
                     v33 = v32;
                     _os_log_debug_impl(&dword_18FEF6000, v31, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Transaction wishes to extend its life beyond its normal completion", v50, 0x16u);
                   }
@@ -689,7 +689,7 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
                 }
 
                 while (v27 != v29);
-                v27 = [v26 countByEnumeratingWithState:&v35 objects:v47 count:16];
+                v27 = [_debugLogCategories countByEnumeratingWithState:&v35 objects:v47 count:16];
               }
 
               while (v27);
@@ -704,7 +704,7 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
     else
     {
 
-      [(BSTransaction *)a1 _areConcurrentChildTransactionsFinishedWorking];
+      [(BSTransaction *)self _areConcurrentChildTransactionsFinishedWorking];
     }
   }
 }
@@ -720,7 +720,7 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
   v3[2] = __63__BSTransaction__areConcurrentChildTransactionsFinishedWorking__block_invoke;
   v3[3] = &unk_1E72CB0B0;
   v3[4] = &v4;
-  [(BSTransaction *)a1 _unsafe_enumerateChildTransactionsWithBlock:v3];
+  [(BSTransaction *)self _unsafe_enumerateChildTransactionsWithBlock:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -728,8 +728,8 @@ uint64_t __22__BSTransaction_begin__block_invoke_2(uint64_t a1, void *a2)
 
 - (BOOL)_isRootTransaction
 {
-  v3 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v3);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   return [(NSMutableArray *)self->_parentTransactionRelationships count]== 0;
 }
@@ -788,54 +788,54 @@ uint64_t __22__BSTransaction_begin__block_invoke_3(uint64_t a1, void *a2)
 - (void)_noteCompleted
 {
   v59 = *MEMORY[0x1E69E9840];
-  if (a1[9] != 3)
+  if (self[9] != 3)
   {
-    v1 = a1;
-    [(BSTransaction *)v1 _setState:?];
-    [v1[4] timeIntervalSinceNow];
+    selfCopy = self;
+    [(BSTransaction *)selfCopy _setState:?];
+    [selfCopy[4] timeIntervalSinceNow];
     v3 = -v2;
-    if ([v1 isAuditHistoryEnabled])
+    if ([selfCopy isAuditHistoryEnabled])
     {
-      [v1 _addAuditHistoryItem:{@"Completed after %.2fs.", *&v3}];
+      [selfCopy _addAuditHistoryItem:{@"Completed after %.2fs.", *&v3}];
     }
 
-    v4 = v1[11];
+    v4 = selfCopy[11];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 138543874;
       *&buf[4] = objc_opt_class();
       *&buf[12] = 2048;
-      *&buf[14] = v1;
+      *&buf[14] = selfCopy;
       *&buf[22] = 2050;
       v57 = v3;
       v5 = *&buf[4];
       _os_log_impl(&dword_18FEF6000, v4, OS_LOG_TYPE_INFO, "<%{public}@:%p> Completed after %{public}.2fs.", buf, 0x20u);
     }
 
-    [v1 _didComplete];
-    v6 = v1[16];
+    [selfCopy _didComplete];
+    v6 = selfCopy[16];
     if (v6)
     {
-      (*(v6 + 16))(v6, [v1 isFailed] ^ 1);
-      v7 = v1[16];
-      v1[16] = 0;
+      (*(v6 + 16))(v6, [selfCopy isFailed] ^ 1);
+      v7 = selfCopy[16];
+      selfCopy[16] = 0;
     }
 
-    [v1[5] removeAllObjects];
-    v8 = v1[5];
-    v1[5] = 0;
+    [selfCopy[5] removeAllObjects];
+    v8 = selfCopy[5];
+    selfCopy[5] = 0;
 
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __45__BSTransaction__notifyObserversOfCompletion__block_invoke;
     v53[3] = &unk_1E72CB088;
-    v53[4] = v1;
-    [v1 _enumerateObserversWithBlock:v53];
+    v53[4] = selfCopy;
+    [selfCopy _enumerateObserversWithBlock:v53];
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v9 = v1[15];
+    v9 = selfCopy[15];
     v10 = [v9 countByEnumeratingWithState:&v49 objects:buf count:16];
     if (v10)
     {
@@ -849,7 +849,7 @@ uint64_t __22__BSTransaction_begin__block_invoke_3(uint64_t a1, void *a2)
             objc_enumerationMutation(v9);
           }
 
-          [v1[8] removeObject:*(*(&v49 + 1) + 8 * i)];
+          [selfCopy[8] removeObject:*(*(&v49 + 1) + 8 * i)];
         }
 
         v10 = [v9 countByEnumeratingWithState:&v49 objects:buf count:16];
@@ -858,22 +858,22 @@ uint64_t __22__BSTransaction_begin__block_invoke_3(uint64_t a1, void *a2)
       while (v10);
     }
 
-    [v1[15] removeAllObjects];
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"BSTransactionCompletedNotification" object:v1];
+    [selfCopy[15] removeAllObjects];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"BSTransactionCompletedNotification" object:selfCopy];
 
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
     *&buf[16] = __36__BSTransaction__parentTransactions__block_invoke;
     v57 = COERCE_DOUBLE(&unk_1E72CB060);
-    v15 = v14;
+    v15 = array;
     v58 = v15;
-    [(BSTransaction *)v1 _unsafe_enumerateParentTransactionsWithBlock:buf];
+    [(BSTransaction *)selfCopy _unsafe_enumerateParentTransactionsWithBlock:buf];
 
     v16 = [v15 countByEnumeratingWithState:&v45 objects:v55 count:16];
     if (v16)
@@ -891,12 +891,12 @@ uint64_t __22__BSTransaction_begin__block_invoke_3(uint64_t a1, void *a2)
           v19 = *(*(&v45 + 1) + 8 * j);
           if (v19)
           {
-            v20 = [*(*(&v45 + 1) + 8 * j) queue];
-            BSDispatchQueueAssert(v20);
+            queue = [*(*(&v45 + 1) + 8 * j) queue];
+            BSDispatchQueueAssert(queue);
 
-            if ([v1 isFailed])
+            if ([selfCopy isFailed])
             {
-              v21 = [v19 _shouldFailForChildTransaction:v1];
+              v21 = [v19 _shouldFailForChildTransaction:selfCopy];
             }
 
             else
@@ -906,10 +906,10 @@ uint64_t __22__BSTransaction_begin__block_invoke_3(uint64_t a1, void *a2)
 
             if (os_log_type_enabled(v19[11], OS_LOG_TYPE_INFO) || [v19 isAuditHistoryEnabled])
             {
-              v22 = [v1 _descriptionProem];
+              _descriptionProem = [selfCopy _descriptionProem];
               if ([v19 isAuditHistoryEnabled])
               {
-                [v19 _addAuditHistoryItem:{@"Child transaction completed: %@", v22}];
+                [v19 _addAuditHistoryItem:{@"Child transaction completed: %@", _descriptionProem}];
               }
 
               v23 = v19[11];
@@ -921,21 +921,21 @@ uint64_t __22__BSTransaction_begin__block_invoke_3(uint64_t a1, void *a2)
                 *&buf[12] = 2048;
                 *&buf[14] = v19;
                 *&buf[22] = 2114;
-                v57 = *&v22;
+                v57 = *&_descriptionProem;
                 v25 = v24;
                 _os_log_impl(&dword_18FEF6000, v23, OS_LOG_TYPE_INFO, "<%{public}@:%p> Child transaction completed: %{public}@", buf, 0x20u);
               }
             }
 
-            [v19 _childTransactionDidComplete:v1];
+            [v19 _childTransactionDidComplete:selfCopy];
             if (v21)
             {
               v26 = MEMORY[0x1E696AEC0];
-              v27 = [v1 _descriptionProem];
-              v28 = [v26 stringWithFormat:@"Child transaction failed: %@", v27];
+              _descriptionProem2 = [selfCopy _descriptionProem];
+              v28 = [v26 stringWithFormat:@"Child transaction failed: %@", _descriptionProem2];
 
-              v29 = [v1 error];
-              v30 = [(BSTransaction *)v19 _createErrorWithCode:@"child transaction" reason:v28 description:v29 precipitatingError:?];
+              error = [selfCopy error];
+              v30 = [(BSTransaction *)v19 _createErrorWithCode:@"child transaction" reason:v28 description:error precipitatingError:?];
 
               [(BSTransaction *)v19 _failWithError:v30];
             }
@@ -950,16 +950,16 @@ uint64_t __22__BSTransaction_begin__block_invoke_3(uint64_t a1, void *a2)
       while (v16);
     }
 
-    if ([v1 _isRootTransaction] && objc_msgSend(v1, "_debugLoggingEnabled"))
+    if ([selfCopy _isRootTransaction] && objc_msgSend(selfCopy, "_debugLoggingEnabled"))
     {
       context = objc_autoreleasePoolPush();
-      v31 = [v1 _descriptionProem];
+      _descriptionProem3 = [selfCopy _descriptionProem];
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v32 = [v1 _debugLogCategories];
-      v33 = [v32 countByEnumeratingWithState:&v41 objects:v54 count:16];
+      _debugLogCategories = [selfCopy _debugLogCategories];
+      v33 = [_debugLogCategories countByEnumeratingWithState:&v41 objects:v54 count:16];
       if (v33)
       {
         v34 = *v42;
@@ -970,14 +970,14 @@ uint64_t __22__BSTransaction_begin__block_invoke_3(uint64_t a1, void *a2)
           {
             if (*v42 != v34)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(_debugLogCategories);
             }
 
             v36 = *(*(&v41 + 1) + 8 * v35);
-            if (v31 && os_log_type_enabled(*(*(&v41 + 1) + 8 * v35), OS_LOG_TYPE_DEBUG))
+            if (_descriptionProem3 && os_log_type_enabled(*(*(&v41 + 1) + 8 * v35), OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              *&buf[4] = v31;
+              *&buf[4] = _descriptionProem3;
               _os_log_debug_impl(&dword_18FEF6000, v36, OS_LOG_TYPE_DEBUG, "%@:", buf, 0xCu);
             }
 
@@ -988,9 +988,9 @@ uint64_t __22__BSTransaction_begin__block_invoke_3(uint64_t a1, void *a2)
               *buf = 138543874;
               *&buf[4] = v38;
               *&buf[12] = 2048;
-              *&buf[14] = v1;
+              *&buf[14] = selfCopy;
               *&buf[22] = 2114;
-              v57 = *&v1;
+              v57 = *&selfCopy;
               v39 = v38;
               _os_log_debug_impl(&dword_18FEF6000, v37, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Transaction completed: %{public}@", buf, 0x20u);
             }
@@ -999,7 +999,7 @@ uint64_t __22__BSTransaction_begin__block_invoke_3(uint64_t a1, void *a2)
           }
 
           while (v33 != v35);
-          v33 = [v32 countByEnumeratingWithState:&v41 objects:v54 count:16];
+          v33 = [_debugLogCategories countByEnumeratingWithState:&v41 objects:v54 count:16];
         }
 
         while (v33);
@@ -1038,8 +1038,8 @@ uint64_t __45__BSTransaction__notifyObserversOfCompletion__block_invoke(uint64_t
 
 - (BOOL)isInterrupted
 {
-  v3 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v3);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   return self->_interrupted;
 }
@@ -1050,13 +1050,13 @@ uint64_t __45__BSTransaction__notifyObserversOfCompletion__block_invoke(uint64_t
   if ([(BSTransaction *)self _debugLoggingEnabled])
   {
     context = objc_autoreleasePoolPush();
-    v3 = [(BSTransaction *)self _descriptionProem];
+    _descriptionProem = [(BSTransaction *)self _descriptionProem];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = [(BSTransaction *)self _debugLogCategories];
-    v5 = [v4 countByEnumeratingWithState:&v24 objects:v33 count:16];
+    _debugLogCategories = [(BSTransaction *)self _debugLogCategories];
+    v5 = [_debugLogCategories countByEnumeratingWithState:&v24 objects:v33 count:16];
     if (v5)
     {
       v6 = *v25;
@@ -1067,14 +1067,14 @@ uint64_t __45__BSTransaction__notifyObserversOfCompletion__block_invoke(uint64_t
         {
           if (*v25 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_debugLogCategories);
           }
 
           v8 = *(*(&v24 + 1) + 8 * v7);
-          if (v3 && os_log_type_enabled(*(*(&v24 + 1) + 8 * v7), OS_LOG_TYPE_DEBUG))
+          if (_descriptionProem && os_log_type_enabled(*(*(&v24 + 1) + 8 * v7), OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v30 = v3;
+            v30 = _descriptionProem;
             _os_log_debug_impl(&dword_18FEF6000, v8, OS_LOG_TYPE_DEBUG, "%@:", buf, 0xCu);
           }
 
@@ -1085,7 +1085,7 @@ uint64_t __45__BSTransaction__notifyObserversOfCompletion__block_invoke(uint64_t
             *buf = 138543618;
             v30 = v10;
             v31 = 2048;
-            v32 = self;
+            selfCopy = self;
             v11 = v10;
             _os_log_debug_impl(&dword_18FEF6000, v9, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Dealloc", buf, 0x16u);
           }
@@ -1094,7 +1094,7 @@ uint64_t __45__BSTransaction__notifyObserversOfCompletion__block_invoke(uint64_t
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v24 objects:v33 count:16];
+        v5 = [_debugLogCategories countByEnumeratingWithState:&v24 objects:v33 count:16];
       }
 
       while (v5);
@@ -1142,47 +1142,47 @@ uint64_t __45__BSTransaction__notifyObserversOfCompletion__block_invoke(uint64_t
   [(BSTransaction *)&v19 dealloc];
 }
 
-- (void)_removeParentTransaction:(uint64_t)a1
+- (void)_removeParentTransaction:(uint64_t)transaction
 {
-  if (a1)
+  if (transaction)
   {
-    v3 = [(BSTransaction *)*(a1 + 8) _parentRelationshipForTransaction:a2];
+    v3 = [(BSTransaction *)*(transaction + 8) _parentRelationshipForTransaction:a2];
     v5 = v3;
     if (!v3)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel__removeParentTransaction_ object:a1 file:@"BSTransaction.m" lineNumber:1099 description:@"Cannot remove a parent transaction that is not actually a parent."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__removeParentTransaction_ object:transaction file:@"BSTransaction.m" lineNumber:1099 description:@"Cannot remove a parent transaction that is not actually a parent."];
 
       v3 = 0;
     }
 
-    [*(a1 + 8) removeObject:v3];
-    if ([*(a1 + 8) count] && !*(a1 + 72))
+    [*(transaction + 8) removeObject:v3];
+    if ([*(transaction + 8) count] && !*(transaction + 72))
     {
-      [(BSTransaction *)a1 _beginIfPossible];
+      [(BSTransaction *)transaction _beginIfPossible];
     }
   }
 }
 
 - (NSSet)milestones
 {
-  v3 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v3);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   milestones = self->_milestones;
 
   return milestones;
 }
 
-- (void)_unsafe_enumerateChildTransactionsWithBlock:(uint64_t)a1
+- (void)_unsafe_enumerateChildTransactionsWithBlock:(uint64_t)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (block)
   {
     if (!a2)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:sel__unsafe_enumerateChildTransactionsWithBlock_ object:a1 file:@"BSTransaction.m" lineNumber:1229 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__unsafe_enumerateChildTransactionsWithBlock_ object:block file:@"BSTransaction.m" lineNumber:1229 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
     }
 
     v17 = 0;
@@ -1190,7 +1190,7 @@ uint64_t __45__BSTransaction__notifyObserversOfCompletion__block_invoke(uint64_t
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = *(a1 + 48);
+    v4 = *(block + 48);
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v5)
     {
@@ -1240,21 +1240,21 @@ LABEL_6:
   }
 }
 
-- (void)addChildTransaction:(id)a3 withSchedulingPolicy:(unint64_t)a4
+- (void)addChildTransaction:(id)transaction withSchedulingPolicy:(unint64_t)policy
 {
   v76 = *MEMORY[0x1E69E9840];
-  v7 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v7);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  if (a4 == 1)
+  if (policy == 1)
   {
-    v8 = a3;
-    if (a3 && *(a3 + 9))
+    transactionCopy5 = transaction;
+    if (transaction && *(transaction + 9))
     {
-      v50 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v50 handleFailureInMethod:a2 object:self file:@"BSTransaction.m" lineNumber:262 description:@"Cannot add a serial child transaction if the child has already begun."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"BSTransaction.m" lineNumber:262 description:@"Cannot add a serial child transaction if the child has already begun."];
 
-      v8 = a3;
+      transactionCopy5 = transaction;
     }
 
     [(BSTransaction *)self _inFinishedWorkingState];
@@ -1264,13 +1264,13 @@ LABEL_22:
       if ([(BSTransaction *)self _debugLoggingEnabled])
       {
         contexta = objc_autoreleasePoolPush();
-        v19 = [(BSTransaction *)self _descriptionProem];
+        _descriptionProem = [(BSTransaction *)self _descriptionProem];
         v58 = 0u;
         v59 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v20 = [(BSTransaction *)self _debugLogCategories];
-        v21 = [v20 countByEnumeratingWithState:&v56 objects:v68 count:16];
+        _debugLogCategories = [(BSTransaction *)self _debugLogCategories];
+        v21 = [_debugLogCategories countByEnumeratingWithState:&v56 objects:v68 count:16];
         if (v21)
         {
           v22 = *v57;
@@ -1280,14 +1280,14 @@ LABEL_22:
             {
               if (*v57 != v22)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(_debugLogCategories);
               }
 
               v24 = *(*(&v56 + 1) + 8 * i);
-              if (v19 && os_log_type_enabled(*(*(&v56 + 1) + 8 * i), OS_LOG_TYPE_DEBUG))
+              if (_descriptionProem && os_log_type_enabled(*(*(&v56 + 1) + 8 * i), OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                *&buf[4] = v19;
+                *&buf[4] = _descriptionProem;
                 _os_log_debug_impl(&dword_18FEF6000, v24, OS_LOG_TYPE_DEBUG, "%@:", buf, 0xCu);
               }
 
@@ -1300,13 +1300,13 @@ LABEL_22:
                 *&buf[12] = 2048;
                 *&buf[14] = self;
                 v74 = 2114;
-                v75 = a3;
+                transactionCopy6 = transaction;
                 v27 = v26;
                 _os_log_debug_impl(&dword_18FEF6000, v25, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Cannot add child transaction because we have already completed: %{public}@", buf, 0x20u);
               }
             }
 
-            v21 = [v20 countByEnumeratingWithState:&v56 objects:v68 count:16];
+            v21 = [_debugLogCategories countByEnumeratingWithState:&v56 objects:v68 count:16];
           }
 
           while (v21);
@@ -1318,16 +1318,16 @@ LABEL_22:
       return;
     }
 
-    if (!v8)
+    if (!transactionCopy5)
     {
       return;
     }
 
     if (self)
     {
-      v28 = [(BSTransaction *)self _childRelationshipForTransaction:v8];
+      v28 = [(BSTransaction *)self _childRelationshipForTransaction:transactionCopy5];
 
-      v8 = a3;
+      transactionCopy5 = transaction;
       if (v28)
       {
         return;
@@ -1338,8 +1338,8 @@ LABEL_22:
     if (v29 && (*buf = v29, *&buf[8] = _BSTransactionChildRelationship, (v30 = objc_msgSendSuper2(buf, sel_init)) != 0))
     {
       v55 = v30;
-      objc_storeStrong(v30 + 1, v8);
-      v55[2] = a4;
+      objc_storeStrong(v30 + 1, transactionCopy5);
+      v55[2] = policy;
       if (!self)
       {
         goto LABEL_82;
@@ -1399,10 +1399,10 @@ LABEL_82:
     [(BSTransaction *)self _willAddChildTransaction:v32];
     if (os_log_type_enabled(self->_auditHistoryLog, OS_LOG_TYPE_INFO) || [(BSTransaction *)self isAuditHistoryEnabled])
     {
-      v37 = [v32 _descriptionProem];
+      _descriptionProem2 = [v32 _descriptionProem];
       if ([(BSTransaction *)self isAuditHistoryEnabled])
       {
-        [(BSTransaction *)self _addAuditHistoryItem:@"Adding child transaction: %@", v37];
+        [(BSTransaction *)self _addAuditHistoryItem:@"Adding child transaction: %@", _descriptionProem2];
       }
 
       v38 = self->_auditHistoryLog;
@@ -1414,7 +1414,7 @@ LABEL_82:
         *&v70[12] = 2048;
         *&v70[14] = self;
         v71 = 2114;
-        v72 = v37;
+        v72 = _descriptionProem2;
         v40 = v39;
         _os_log_impl(&dword_18FEF6000, v38, OS_LOG_TYPE_INFO, "<%{public}@:%p> Adding child transaction: %{public}@", v70, 0x20u);
       }
@@ -1437,8 +1437,8 @@ LABEL_82:
 
       if (v42)
       {
-        v51 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v51 handleFailureInMethod:sel__addParentTransaction_withSchedulingPolicy_ object:v32 file:@"BSTransaction.m" lineNumber:1090 description:@"Cannot add the same parent transaction twice."];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel__addParentTransaction_withSchedulingPolicy_ object:v32 file:@"BSTransaction.m" lineNumber:1090 description:@"Cannot add the same parent transaction twice."];
       }
 
       v43 = [_BSTransactionParentRelationship alloc];
@@ -1466,8 +1466,8 @@ LABEL_82:
     [(BSTransaction *)self _didAddChildTransaction:v32];
     if (!self->_inSubclassBegin)
     {
-      v46 = [(BSTransaction *)self _isDoingWork];
-      v47 = v41 ? 0 : v46;
+      _isDoingWork = [(BSTransaction *)self _isDoingWork];
+      v47 = v41 ? 0 : _isDoingWork;
       if ((v47 & 1) != 0 || ((v48 = [(BSTransaction *)self _inFinishedWorkingState], v41 == 1) ? (v49 = v48) : (v49 = 0), v49 == 1))
       {
         [(BSTransaction *)v32 _beginIfPossible];
@@ -1478,9 +1478,9 @@ LABEL_82:
     goto LABEL_82;
   }
 
-  v9 = [(BSTransaction *)self _inFinishedWorkingState];
-  v8 = a3;
-  if (a4 || !v9)
+  _inFinishedWorkingState = [(BSTransaction *)self _inFinishedWorkingState];
+  transactionCopy5 = transaction;
+  if (policy || !_inFinishedWorkingState)
   {
     goto LABEL_22;
   }
@@ -1488,13 +1488,13 @@ LABEL_82:
   if ([(BSTransaction *)self _debugLoggingEnabled])
   {
     context = objc_autoreleasePoolPush();
-    v10 = [(BSTransaction *)self _descriptionProem];
+    _descriptionProem3 = [(BSTransaction *)self _descriptionProem];
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v11 = [(BSTransaction *)self _debugLogCategories];
-    v12 = [v11 countByEnumeratingWithState:&v60 objects:v69 count:16];
+    _debugLogCategories2 = [(BSTransaction *)self _debugLogCategories];
+    v12 = [_debugLogCategories2 countByEnumeratingWithState:&v60 objects:v69 count:16];
     if (v12)
     {
       v13 = *v61;
@@ -1504,14 +1504,14 @@ LABEL_82:
         {
           if (*v61 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(_debugLogCategories2);
           }
 
           v15 = *(*(&v60 + 1) + 8 * k);
-          if (v10 && os_log_type_enabled(*(*(&v60 + 1) + 8 * k), OS_LOG_TYPE_DEBUG))
+          if (_descriptionProem3 && os_log_type_enabled(*(*(&v60 + 1) + 8 * k), OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            *&buf[4] = v10;
+            *&buf[4] = _descriptionProem3;
             _os_log_debug_impl(&dword_18FEF6000, v15, OS_LOG_TYPE_DEBUG, "%@:", buf, 0xCu);
           }
 
@@ -1524,13 +1524,13 @@ LABEL_82:
             *&buf[12] = 2048;
             *&buf[14] = self;
             v74 = 2114;
-            v75 = a3;
+            transactionCopy6 = transaction;
             v18 = v17;
             _os_log_debug_impl(&dword_18FEF6000, v16, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Cannot add concurrent child transaction because we have already finished doing work: %{public}@", buf, 0x20u);
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v60 objects:v69 count:16];
+        v12 = [_debugLogCategories2 countByEnumeratingWithState:&v60 objects:v69 count:16];
       }
 
       while (v12);
@@ -1540,11 +1540,11 @@ LABEL_82:
   }
 }
 
-- (BOOL)hasChildTransactionsOfClass:(Class)a3
+- (BOOL)hasChildTransactionsOfClass:(Class)class
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v4);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   v16 = 0u;
   v17 = 0u;
@@ -1596,11 +1596,11 @@ LABEL_13:
   return v12;
 }
 
-- (id)childTransactionsOfClass:(Class)a3
+- (id)childTransactionsOfClass:(Class)class
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v4);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
@@ -1643,11 +1643,11 @@ LABEL_13:
   return v5;
 }
 
-- (void)removeAllChildTransactionsOfClass:(Class)a3
+- (void)removeAllChildTransactionsOfClass:(Class)class
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v4);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   v16 = 0u;
   v17 = 0u;
@@ -1699,10 +1699,10 @@ LABEL_13:
   }
 }
 
-- (void)_removeChildTransactionRelationship:(id *)a1
+- (void)_removeChildTransactionRelationship:(id *)relationship
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (relationship)
   {
     if (a2)
     {
@@ -1715,47 +1715,47 @@ LABEL_13:
     }
 
     v5 = v4;
-    [a1 _willRemoveChildTransaction:v5];
-    if (os_log_type_enabled(a1[11], OS_LOG_TYPE_INFO) || [a1 isAuditHistoryEnabled])
+    [relationship _willRemoveChildTransaction:v5];
+    if (os_log_type_enabled(relationship[11], OS_LOG_TYPE_INFO) || [relationship isAuditHistoryEnabled])
     {
-      v6 = [v5 _descriptionProem];
-      if ([a1 isAuditHistoryEnabled])
+      _descriptionProem = [v5 _descriptionProem];
+      if ([relationship isAuditHistoryEnabled])
       {
-        [a1 _addAuditHistoryItem:{@"Removing child transaction: %@", v6}];
+        [relationship _addAuditHistoryItem:{@"Removing child transaction: %@", _descriptionProem}];
       }
 
-      v7 = a1[11];
+      v7 = relationship[11];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138543874;
         v10 = objc_opt_class();
         v11 = 2048;
-        v12 = a1;
+        relationshipCopy = relationship;
         v13 = 2114;
-        v14 = v6;
+        v14 = _descriptionProem;
         v8 = v10;
         _os_log_impl(&dword_18FEF6000, v7, OS_LOG_TYPE_INFO, "<%{public}@:%p> Removing child transaction: %{public}@", buf, 0x20u);
       }
     }
 
-    [(BSTransaction *)v5 _removeParentTransaction:a1];
-    [a1[6] removeObject:a2];
-    [a1 _didRemoveChildTransaction:v5];
-    if ([a1 isRunning])
+    [(BSTransaction *)v5 _removeParentTransaction:relationship];
+    [relationship[6] removeObject:a2];
+    [relationship _didRemoveChildTransaction:v5];
+    if ([relationship isRunning])
     {
-      [(BSTransaction *)a1 _checkAndReportIfCompleted];
+      [(BSTransaction *)relationship _checkAndReportIfCompleted];
     }
   }
 }
 
-- (void)removeChildTransaction:(id)a3
+- (void)removeChildTransaction:(id)transaction
 {
-  v5 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v5);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  if (a3)
+  if (transaction)
   {
-    v6 = [(BSTransaction *)self _childRelationshipForTransaction:a3];
+    v6 = [(BSTransaction *)self _childRelationshipForTransaction:transaction];
     if (v6)
     {
       [(BSTransaction *)&self->super.isa _removeChildTransactionRelationship:v6];
@@ -1763,16 +1763,16 @@ LABEL_13:
   }
 }
 
-- (void)_childRelationshipForTransaction:(uint64_t)a1
+- (void)_childRelationshipForTransaction:(uint64_t)transaction
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (transaction)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = *(a1 + 48);
+    v3 = *(transaction + 48);
     v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
@@ -1830,8 +1830,8 @@ LABEL_16:
 - (void)removeAllChildTransactions
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v3);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   v10 = 0u;
   v11 = 0u;
@@ -1866,13 +1866,13 @@ LABEL_16:
 - (NSArray)allErrors
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(BSTransaction *)self childTransactions];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childTransactions = [(BSTransaction *)self childTransactions];
+  v5 = [childTransactions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -1882,14 +1882,14 @@ LABEL_16:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childTransactions);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) allErrors];
-        [v3 addObjectsFromArray:v8];
+        allErrors = [*(*(&v10 + 1) + 8 * i) allErrors];
+        [array addObjectsFromArray:allErrors];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [childTransactions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -1897,90 +1897,90 @@ LABEL_16:
 
   if (self->_error)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)registerBlockObserver:(id)a3
+- (void)registerBlockObserver:(id)observer
 {
-  v6 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v6);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  if (!a3)
+  if (!observer)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"BSTransaction.m" lineNumber:346 description:{@"Invalid parameter not satisfying: %@", @"blockObserverCallback"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSTransaction.m" lineNumber:346 description:{@"Invalid parameter not satisfying: %@", @"blockObserverCallback"}];
   }
 
   v7 = objc_alloc_init(BSTransactionBlockObserver);
-  (*(a3 + 2))(a3);
+  (*(observer + 2))(observer);
   [(NSMutableArray *)self->_blockObservers addObject:v7];
   [(BSTransaction *)self addObserver:v7];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v5);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  if (a3 && ![(NSHashTable *)self->_observers containsObject:a3])
+  if (observer && ![(NSHashTable *)self->_observers containsObject:observer])
   {
     observers = self->_observers;
 
-    [(NSHashTable *)observers addObject:a3];
+    [(NSHashTable *)observers addObject:observer];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v5);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  if (a3 && [(NSHashTable *)self->_observers containsObject:a3])
+  if (observer && [(NSHashTable *)self->_observers containsObject:observer])
   {
-    [(NSHashTable *)self->_observers removeObject:a3];
+    [(NSHashTable *)self->_observers removeObject:observer];
     blockObservers = self->_blockObservers;
 
-    [(NSMutableArray *)blockObservers removeObject:a3];
+    [(NSMutableArray *)blockObservers removeObject:observer];
   }
 }
 
-- (void)_setState:(uint64_t)a1
+- (void)_setState:(uint64_t)state
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (state)
   {
-    v4 = *(a1 + 72);
+    v4 = *(state + 72);
     if (v4 != a2)
     {
-      if (!os_log_type_enabled(*(a1 + 88), OS_LOG_TYPE_INFO))
+      if (!os_log_type_enabled(*(state + 88), OS_LOG_TYPE_INFO))
       {
-        if (![a1 isAuditHistoryEnabled])
+        if (![state isAuditHistoryEnabled])
         {
 LABEL_11:
-          *(a1 + 72) = a2;
+          *(state + 72) = a2;
           return;
         }
 
-        v4 = *(a1 + 72);
+        v4 = *(state + 72);
       }
 
       v5 = NSStringFromBSTransactionState(v4);
       v6 = NSStringFromBSTransactionState(a2);
-      if ([a1 isAuditHistoryEnabled])
+      if ([state isAuditHistoryEnabled])
       {
-        [a1 _addAuditHistoryItem:{@"State changed from '%@' to '%@'", v5, v6}];
+        [state _addAuditHistoryItem:{@"State changed from '%@' to '%@'", v5, v6}];
       }
 
-      v7 = *(a1 + 88);
+      v7 = *(state + 88);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138544130;
         v10 = objc_opt_class();
         v11 = 2048;
-        v12 = a1;
+        stateCopy = state;
         v13 = 2114;
         v14 = v5;
         v15 = 2114;
@@ -1994,19 +1994,19 @@ LABEL_11:
   }
 }
 
-- (id)_childTransactionsWithSchedulingPolicy:(uint64_t)a1
+- (id)_childTransactionsWithSchedulingPolicy:(uint64_t)policy
 {
-  if (a1)
+  if (policy)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __56__BSTransaction__childTransactionsWithSchedulingPolicy___block_invoke;
     v7[3] = &unk_1E72CB190;
     v9 = a2;
-    v5 = v4;
+    v5 = array;
     v8 = v5;
-    [(BSTransaction *)a1 _unsafe_enumerateChildTransactionsWithBlock:v7];
+    [(BSTransaction *)policy _unsafe_enumerateChildTransactionsWithBlock:v7];
   }
 
   else
@@ -2017,26 +2017,26 @@ LABEL_11:
   return v5;
 }
 
-- (void)_preventTransactionCompletionForReason:(char)a3 ignoringAuditHistory:(uint64_t)a4 andExecuteBlock:
+- (void)_preventTransactionCompletionForReason:(char)reason ignoringAuditHistory:(uint64_t)history andExecuteBlock:
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1 && a4)
+  if (self && history)
   {
-    [*(a1 + 16) addObject:a2];
-    if ((a3 & 1) == 0)
+    [*(self + 16) addObject:a2];
+    if ((reason & 1) == 0)
     {
-      if ([a1 isAuditHistoryEnabled])
+      if ([self isAuditHistoryEnabled])
       {
-        [a1 _addAuditHistoryItem:{@"Life assertion taken for reason: %@", a2}];
+        [self _addAuditHistoryItem:{@"Life assertion taken for reason: %@", a2}];
       }
 
-      v8 = *(a1 + 88);
+      v8 = *(self + 88);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138543874;
         v14 = objc_opt_class();
         v15 = 2048;
-        v16 = a1;
+        selfCopy2 = self;
         v17 = 2114;
         v18 = a2;
         v9 = v14;
@@ -2044,24 +2044,24 @@ LABEL_11:
       }
     }
 
-    (*(a4 + 16))(a4);
-    if (a2 && [*(a1 + 16) containsObject:a2])
+    (*(history + 16))(history);
+    if (a2 && [*(self + 16) containsObject:a2])
     {
-      if ((a3 & 1) == 0)
+      if ((reason & 1) == 0)
       {
-        if ([a1 isAuditHistoryEnabled])
+        if ([self isAuditHistoryEnabled])
         {
-          [a1 _addAuditHistoryItem:{@"Life assertion removed for reason: %@", a2}];
+          [self _addAuditHistoryItem:{@"Life assertion removed for reason: %@", a2}];
         }
 
-        v10 = *(a1 + 88);
+        v10 = *(self + 88);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v11 = objc_opt_class();
           *buf = 138543874;
           v14 = v11;
           v15 = 2048;
-          v16 = a1;
+          selfCopy2 = self;
           v17 = 2114;
           v18 = a2;
           v12 = v11;
@@ -2069,18 +2069,18 @@ LABEL_11:
         }
       }
 
-      [*(a1 + 16) removeObject:a2];
-      if (![*(a1 + 16) count])
+      [*(self + 16) removeObject:a2];
+      if (![*(self + 16) count])
       {
-        if ((*(a1 + 137) & 1) != 0 || *(a1 + 24) == 1)
+        if ((*(self + 137) & 1) != 0 || *(self + 24) == 1)
         {
-          if ([a1 isRunning])
+          if ([self isRunning])
           {
-            [(BSTransaction *)a1 _terminateNow];
+            [(BSTransaction *)self _terminateNow];
           }
         }
 
-        [(BSTransaction *)a1 _checkAndReportIfCompleted];
+        [(BSTransaction *)self _checkAndReportIfCompleted];
       }
     }
   }
@@ -2088,8 +2088,8 @@ LABEL_11:
 
 - (BOOL)isInterruptible
 {
-  v3 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v3);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   v8 = 0;
   v9 = &v8;
@@ -2144,49 +2144,49 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
   return result;
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
-  if (self->_completionBlock != a3)
+  if (self->_completionBlock != block)
   {
-    v5 = [a3 copy];
+    v5 = [block copy];
     completionBlock = self->_completionBlock;
     self->_completionBlock = v5;
   }
 }
 
-- (void)interruptWithReason:(id)a3
+- (void)interruptWithReason:(id)reason
 {
-  v5 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v5);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  [(BSTransaction *)self _interruptWithReason:a3 force:0];
+  [(BSTransaction *)self _interruptWithReason:reason force:0];
 }
 
-- (void)_interruptWithReason:(char)a3 force:
+- (void)_interruptWithReason:(char)reason force:
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v5 = a1;
-    v6 = v5;
-    if (a3 & 1) != 0 || ([v5 isInterruptible])
+    selfCopy = self;
+    v6 = selfCopy;
+    if (reason & 1) != 0 || ([selfCopy isInterruptible])
     {
       if ([v6 isComplete])
       {
-        v16 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v16 handleFailureInMethod:sel__interruptWithReason_force_ object:v6 file:@"BSTransaction.m" lineNumber:1407 description:@"Cannot interrupt a completed transaction."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel__interruptWithReason_force_ object:v6 file:@"BSTransaction.m" lineNumber:1407 description:@"Cannot interrupt a completed transaction."];
       }
 
       if (([v6 isRunning] & 1) == 0)
       {
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v17 handleFailureInMethod:sel__interruptWithReason_force_ object:v6 file:@"BSTransaction.m" lineNumber:1408 description:@"Cannot interrupt a non-running transaction."];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel__interruptWithReason_force_ object:v6 file:@"BSTransaction.m" lineNumber:1408 description:@"Cannot interrupt a non-running transaction."];
       }
 
       if (*(v6 + 25))
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:sel__interruptWithReason_force_ object:v6 file:@"BSTransaction.m" lineNumber:1409 description:@"Cannot interrupt an already interrupted transaction."];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:sel__interruptWithReason_force_ object:v6 file:@"BSTransaction.m" lineNumber:1409 description:@"Cannot interrupt an already interrupted transaction."];
       }
 
       if ([v6 isAuditHistoryEnabled])
@@ -2220,7 +2220,7 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
       v19[3] = &unk_1E72CB1B8;
       v19[4] = v6;
       v19[5] = a2;
-      v20 = a3;
+      reasonCopy = reason;
       [(BSTransaction *)v6 _preventTransactionCompletionForReason:0 ignoringAuditHistory:v19 andExecuteBlock:?];
       if (([v6 isComplete] & 1) == 0)
       {
@@ -2256,41 +2256,41 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)failWithReason:(id)a3
+- (void)failWithReason:(id)reason
 {
-  v4 = [(BSTransaction *)self _createErrorWithCode:a3 reason:0 description:0 precipitatingError:?];
+  v4 = [(BSTransaction *)self _createErrorWithCode:reason reason:0 description:0 precipitatingError:?];
   [(BSTransaction *)self _failWithError:v4];
 }
 
-- (id)_createErrorWithCode:(uint64_t)a3 reason:(uint64_t)a4 description:(uint64_t)a5 precipitatingError:
+- (id)_createErrorWithCode:(uint64_t)code reason:(uint64_t)reason description:(uint64_t)description precipitatingError:
 {
-  if (a1)
+  if (self)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Transaction %@.", off_1E72CB220[a2 - 1]];
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    v12 = v11;
-    if (a4)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v12 = dictionary;
+    if (reason)
     {
-      [v11 setObject:a4 forKey:@"error-description"];
-      v13 = [v10 stringByAppendingFormat:@" %@", a4];
+      [dictionary setObject:reason forKey:@"error-description"];
+      reason = [v10 stringByAppendingFormat:@" %@", reason];
 
-      v10 = v13;
+      v10 = reason;
     }
 
-    if (a3)
+    if (code)
     {
-      [v12 setObject:a3 forKey:@"error-reason"];
-      v14 = [v10 stringByAppendingFormat:@" (%@)", a3];
+      [v12 setObject:code forKey:@"error-reason"];
+      code = [v10 stringByAppendingFormat:@" (%@)", code];
 
-      v10 = v14;
+      v10 = code;
     }
 
-    if (a5)
+    if (description)
     {
-      [v12 setObject:a5 forKey:@"precipitating-error"];
+      [v12 setObject:description forKey:@"precipitating-error"];
     }
 
-    v15 = [BSDescriptionBuilder succinctDescriptionForObject:a1];
+    v15 = [BSDescriptionBuilder succinctDescriptionForObject:self];
     [v12 setObject:v15 forKey:@"transaction"];
 
     [v12 setObject:v10 forKey:*MEMORY[0x1E696A588]];
@@ -2305,31 +2305,31 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
   return v16;
 }
 
-- (void)_failWithError:(uint64_t)a1
+- (void)_failWithError:(uint64_t)error
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = [a1 queue];
-    BSDispatchQueueAssert(v4);
+    queue = [error queue];
+    BSDispatchQueueAssert(queue);
 
-    if ((*(a1 + 24) & 1) == 0 && (*(a1 + 137) & 1) == 0 && ([a1 isComplete] & 1) == 0)
+    if ((*(error + 24) & 1) == 0 && (*(error + 137) & 1) == 0 && ([error isComplete] & 1) == 0)
     {
-      v5 = *(a1 + 144);
-      *(a1 + 137) = 1;
+      v5 = *(error + 144);
+      *(error + 137) = 1;
       if (!v5)
       {
         if (!v3)
         {
-          v3 = [(BSTransaction *)a1 _createErrorWithCode:0 reason:0 description:0 precipitatingError:?];
+          v3 = [(BSTransaction *)error _createErrorWithCode:0 reason:0 description:0 precipitatingError:?];
         }
 
-        objc_storeStrong((a1 + 144), v3);
+        objc_storeStrong((error + 144), v3);
       }
 
-      v6 = [v3 userInfo];
-      v7 = [v6 objectForKey:@"error-reason"];
+      userInfo = [v3 userInfo];
+      v7 = [userInfo objectForKey:@"error-reason"];
 
       v8 = @"(unspecified)";
       if (v7)
@@ -2338,58 +2338,58 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
       }
 
       v9 = v8;
-      if ([a1 isAuditHistoryEnabled])
+      if ([error isAuditHistoryEnabled])
       {
-        [a1 _addAuditHistoryItem:{@"Failing for reason: %@", v9}];
+        [error _addAuditHistoryItem:{@"Failing for reason: %@", v9}];
       }
 
-      v10 = *(a1 + 88);
+      v10 = *(error + 88);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138543874;
         v13 = objc_opt_class();
         v14 = 2048;
-        v15 = a1;
+        errorCopy = error;
         v16 = 2114;
         v17 = v9;
         v11 = v13;
         _os_log_impl(&dword_18FEF6000, v10, OS_LOG_TYPE_INFO, "<%{public}@:%p> Failing for reason: %{public}@", buf, 0x20u);
       }
 
-      if (![*(a1 + 16) count])
+      if (![*(error + 16) count])
       {
-        [(BSTransaction *)a1 _terminateNow];
+        [(BSTransaction *)error _terminateNow];
       }
     }
   }
 }
 
-- (void)addMilestone:(id)a3
+- (void)addMilestone:(id)milestone
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:milestone];
   [(BSTransaction *)self addMilestones:?];
 }
 
-- (void)addMilestones:(id)a3
+- (void)addMilestones:(id)milestones
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v4);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  if ([a3 count])
+  if ([milestones count])
   {
     if ([(BSTransaction *)self isFinishedWorking])
     {
       if ([(BSTransaction *)self _debugLoggingEnabled])
       {
         context = objc_autoreleasePoolPush();
-        v5 = [(BSTransaction *)self _descriptionProem];
+        _descriptionProem = [(BSTransaction *)self _descriptionProem];
         v22 = 0u;
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v6 = [(BSTransaction *)self _debugLogCategories];
-        v7 = [v6 countByEnumeratingWithState:&v20 objects:v30 count:16];
+        _debugLogCategories = [(BSTransaction *)self _debugLogCategories];
+        v7 = [_debugLogCategories countByEnumeratingWithState:&v20 objects:v30 count:16];
         if (v7)
         {
           v8 = *v21;
@@ -2400,14 +2400,14 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
             {
               if (*v21 != v8)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(_debugLogCategories);
               }
 
               v10 = *(*(&v20 + 1) + 8 * v9);
-              if (v5 && os_log_type_enabled(*(*(&v20 + 1) + 8 * v9), OS_LOG_TYPE_DEBUG))
+              if (_descriptionProem && os_log_type_enabled(*(*(&v20 + 1) + 8 * v9), OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v25 = v5;
+                v25 = _descriptionProem;
                 _os_log_debug_impl(&dword_18FEF6000, v10, OS_LOG_TYPE_DEBUG, "%@:", buf, 0xCu);
               }
 
@@ -2415,11 +2415,11 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
               if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
               {
                 v12 = objc_opt_class();
-                v13 = [(BSTransaction *)self _stringForMilestones:a3];
+                v13 = [(BSTransaction *)self _stringForMilestones:milestones];
                 *buf = 138543874;
                 v25 = v12;
                 v26 = 2048;
-                v27 = self;
+                selfCopy2 = self;
                 v28 = 2114;
                 v29 = v13;
                 _os_log_debug_impl(&dword_18FEF6000, v11, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Cannot add milestones because we have already finished working: %{public}@", buf, 0x20u);
@@ -2429,7 +2429,7 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
             }
 
             while (v7 != v9);
-            v7 = [v6 countByEnumeratingWithState:&v20 objects:v30 count:16];
+            v7 = [_debugLogCategories countByEnumeratingWithState:&v20 objects:v30 count:16];
           }
 
           while (v7);
@@ -2445,7 +2445,7 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
       {
         if ([(BSTransaction *)self isAuditHistoryEnabled])
         {
-          v14 = [(BSTransaction *)self _stringForMilestones:a3];
+          v14 = [(BSTransaction *)self _stringForMilestones:milestones];
           [(BSTransaction *)self _addAuditHistoryItem:@"Milestones added: %@", v14];
         }
 
@@ -2453,58 +2453,58 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v16 = objc_opt_class();
-          v17 = [(BSTransaction *)self _stringForMilestones:a3];
+          v17 = [(BSTransaction *)self _stringForMilestones:milestones];
           *buf = 138543874;
           v25 = v16;
           v26 = 2048;
-          v27 = self;
+          selfCopy2 = self;
           v28 = 2114;
           v29 = v17;
           _os_log_impl(&dword_18FEF6000, v15, OS_LOG_TYPE_INFO, "<%{public}@:%p> Milestones added: %{public}@", buf, 0x20u);
         }
       }
 
-      [(NSMutableSet *)self->_milestones unionSet:a3];
+      [(NSMutableSet *)self->_milestones unionSet:milestones];
     }
   }
 }
 
-- (BOOL)removeMilestone:(id)a3
+- (BOOL)removeMilestone:(id)milestone
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:milestone];
   LOBYTE(self) = [(BSTransaction *)self removeMilestones:v4];
 
   return self;
 }
 
-- (BOOL)removeMilestones:(id)a3
+- (BOOL)removeMilestones:(id)milestones
 {
-  v5 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v5);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  return [(BSTransaction *)&self->super.isa _removeMilestones:a3 ignoringAuditHistory:0];
+  return [(BSTransaction *)&self->super.isa _removeMilestones:milestones ignoringAuditHistory:0];
 }
 
-- (BOOL)_removeMilestones:(char)a3 ignoringAuditHistory:
+- (BOOL)_removeMilestones:(char)milestones ignoringAuditHistory:
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if ([a1 isComplete])
+  if ([self isComplete])
   {
-    if ([a1 _debugLoggingEnabled])
+    if ([self _debugLoggingEnabled])
     {
       context = objc_autoreleasePoolPush();
-      v5 = [a1 _descriptionProem];
+      _descriptionProem = [self _descriptionProem];
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v6 = [a1 _debugLogCategories];
-      v7 = [v6 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      _debugLogCategories = [self _debugLogCategories];
+      v7 = [_debugLogCategories countByEnumeratingWithState:&v23 objects:v33 count:16];
       if (v7)
       {
         v8 = *v24;
@@ -2515,14 +2515,14 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
           {
             if (*v24 != v8)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(_debugLogCategories);
             }
 
             v10 = *(*(&v23 + 1) + 8 * v9);
-            if (v5 && os_log_type_enabled(*(*(&v23 + 1) + 8 * v9), OS_LOG_TYPE_DEBUG))
+            if (_descriptionProem && os_log_type_enabled(*(*(&v23 + 1) + 8 * v9), OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v28 = v5;
+              v28 = _descriptionProem;
               _os_log_debug_impl(&dword_18FEF6000, v10, OS_LOG_TYPE_DEBUG, "%@:", buf, 0xCu);
             }
 
@@ -2530,11 +2530,11 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
             {
               v12 = objc_opt_class();
-              v13 = [a1 _stringForMilestones:a2];
+              v13 = [self _stringForMilestones:a2];
               *buf = 138543874;
               v28 = v12;
               v29 = 2048;
-              v30 = a1;
+              selfCopy2 = self;
               v31 = 2114;
               v32 = v13;
               _os_log_debug_impl(&dword_18FEF6000, v11, OS_LOG_TYPE_DEBUG, "<%{public}@:%p> Attempt to remove milestones once completed: %{public}@", buf, 0x20u);
@@ -2544,7 +2544,7 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
           }
 
           while (v7 != v9);
-          v7 = [v6 countByEnumeratingWithState:&v23 objects:v33 count:16];
+          v7 = [_debugLogCategories countByEnumeratingWithState:&v23 objects:v33 count:16];
         }
 
         while (v7);
@@ -2558,25 +2558,25 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
 
   v14 = [a2 count];
   v15 = v14 != 0;
-  if (v14 && (a3 & 1) == 0)
+  if (v14 && (milestones & 1) == 0)
   {
-    if (os_log_type_enabled(a1[11], OS_LOG_TYPE_INFO) || [a1 isAuditHistoryEnabled])
+    if (os_log_type_enabled(self[11], OS_LOG_TYPE_INFO) || [self isAuditHistoryEnabled])
     {
-      if ([a1 isAuditHistoryEnabled])
+      if ([self isAuditHistoryEnabled])
       {
-        v16 = [a1 _stringForMilestones:a2];
-        [a1 _addAuditHistoryItem:{@"Removed milestones: %@", v16}];
+        v16 = [self _stringForMilestones:a2];
+        [self _addAuditHistoryItem:{@"Removed milestones: %@", v16}];
       }
 
-      v17 = a1[11];
+      v17 = self[11];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v18 = objc_opt_class();
-        v19 = [a1 _stringForMilestones:a2];
+        v19 = [self _stringForMilestones:a2];
         *buf = 138543874;
         v28 = v18;
         v29 = 2048;
-        v30 = a1;
+        selfCopy2 = self;
         v31 = 2114;
         v32 = v19;
         _os_log_impl(&dword_18FEF6000, v17, OS_LOG_TYPE_INFO, "<%{public}@:%p> Removed milestones: %{public}@", buf, 0x20u);
@@ -2592,50 +2592,50 @@ uint64_t __32__BSTransaction_isInterruptible__block_invoke(uint64_t a1, void *a2
   }
 
 LABEL_27:
-  [a1[7] minusSet:a2];
-  [(BSTransaction *)a1 _checkAndReportIfCompleted];
+  [self[7] minusSet:a2];
+  [(BSTransaction *)self _checkAndReportIfCompleted];
   return v15;
 }
 
 - (void)removeAllMilestones
 {
-  v3 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v3);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   milestones = self->_milestones;
 
   [(BSTransaction *)self removeMilestones:milestones];
 }
 
-- (BOOL)isWaitingForMilestone:(id)a3
+- (BOOL)isWaitingForMilestone:(id)milestone
 {
-  v5 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v5);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   milestones = self->_milestones;
 
-  return [(NSMutableSet *)milestones containsObject:a3];
+  return [(NSMutableSet *)milestones containsObject:milestone];
 }
 
-- (void)evaluateMilestone:(id)a3 withEvaluator:(id)a4
+- (void)evaluateMilestone:(id)milestone withEvaluator:(id)evaluator
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v7);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  if (a4 && ![(BSTransaction *)self isComplete]&& [(BSTransaction *)self isWaitingForMilestone:a3]&& (*(a4 + 2))(a4))
+  if (evaluator && ![(BSTransaction *)self isComplete]&& [(BSTransaction *)self isWaitingForMilestone:milestone]&& (*(evaluator + 2))(evaluator))
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Milestone satisfied: %@", a3];
-    [(BSTransaction *)self _addAuditHistoryItem:@"%@", v8];
+    milestone = [MEMORY[0x1E696AEC0] stringWithFormat:@"Milestone satisfied: %@", milestone];
+    [(BSTransaction *)self _addAuditHistoryItem:@"%@", milestone];
     v9 = self->_auditHistoryLog;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138543874;
       v13 = objc_opt_class();
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
-      v17 = a3;
+      milestoneCopy = milestone;
       v10 = v13;
       _os_log_impl(&dword_18FEF6000, v9, OS_LOG_TYPE_INFO, "<%{public}@:%p> Milestone satisfied: %{public}@", buf, 0x20u);
     }
@@ -2645,8 +2645,8 @@ LABEL_27:
     v11[2] = __49__BSTransaction_evaluateMilestone_withEvaluator___block_invoke;
     v11[3] = &unk_1E72CACC0;
     v11[4] = self;
-    v11[5] = a3;
-    [(BSTransaction *)self _preventTransactionCompletionForReason:v8 ignoringAuditHistory:1 andExecuteBlock:v11];
+    v11[5] = milestone;
+    [(BSTransaction *)self _preventTransactionCompletionForReason:milestone ignoringAuditHistory:1 andExecuteBlock:v11];
   }
 }
 
@@ -2692,31 +2692,31 @@ void __49__BSTransaction_evaluateMilestone_withEvaluator___block_invoke(uint64_t
   }
 }
 
-- (void)listenForSatisfiedMilestone:(id)a3 withBlock:(id)a4
+- (void)listenForSatisfiedMilestone:(id)milestone withBlock:(id)block
 {
-  v8 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v8);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  if (a3 && a4)
+  if (milestone && block)
   {
-    v9 = [(NSMutableDictionary *)self->_milestonesToHandlers objectForKey:a3];
+    v9 = [(NSMutableDictionary *)self->_milestonesToHandlers objectForKey:milestone];
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
       [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
     }
 
-    v7 = [a4 copy];
+    v7 = [block copy];
     [v9 addObject:v7];
   }
 }
 
-- (id)_descriptionForDebugging:(uint64_t)a1 indentLevel:(int)a2
+- (id)_descriptionForDebugging:(uint64_t)debugging indentLevel:(int)level
 {
-  if (a1)
+  if (debugging)
   {
     v4 = [MEMORY[0x1E695DFA8] set];
-    v5 = [(BSTransaction *)a1 _descriptionForDebugging:a2 indentLevel:0 visited:v4];
+    v5 = [(BSTransaction *)debugging _descriptionForDebugging:level indentLevel:0 visited:v4];
   }
 
   else
@@ -2727,21 +2727,21 @@ void __49__BSTransaction_evaluateMilestone_withEvaluator___block_invoke(uint64_t
   return v5;
 }
 
-- (void)_enumerateObserversWithBlock:(id)a3
+- (void)_enumerateObserversWithBlock:(id)block
 {
-  v8 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v8);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
-  if (a3)
+  if (block)
   {
-    v9 = [(NSHashTable *)self->_observers allObjects];
-    v5 = [v9 count];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v5 = [allObjects count];
     if (v5)
     {
       for (i = 0; i != v5; ++i)
       {
-        v7 = [v9 objectAtIndex:i];
-        (*(a3 + 2))(a3, v7);
+        v7 = [allObjects objectAtIndex:i];
+        (*(block + 2))(block, v7);
       }
     }
   }
@@ -2749,21 +2749,21 @@ void __49__BSTransaction_evaluateMilestone_withEvaluator___block_invoke(uint64_t
 
 - (void)_evaluateCompletion
 {
-  v3 = [(BSTransaction *)self queue];
-  BSDispatchQueueAssert(v3);
+  queue = [(BSTransaction *)self queue];
+  BSDispatchQueueAssert(queue);
 
   [(BSTransaction *)&self->super.isa _checkAndReportIfCompleted];
 }
 
-- (void)_failForTimeoutWithDescription:(id)a3
+- (void)_failForTimeoutWithDescription:(id)description
 {
-  v4 = [(BSTransaction *)self _createErrorWithCode:@"timeout" reason:a3 description:0 precipitatingError:?];
+  v4 = [(BSTransaction *)self _createErrorWithCode:@"timeout" reason:description description:0 precipitatingError:?];
   [(BSTransaction *)self _failWithError:v4];
 }
 
-- (void)_failWithReason:(id)a3 description:(id)a4 precipitatingError:(id)a5
+- (void)_failWithReason:(id)reason description:(id)description precipitatingError:(id)error
 {
-  v6 = [(BSTransaction *)self _createErrorWithCode:a3 reason:a4 description:a5 precipitatingError:?];
+  v6 = [(BSTransaction *)self _createErrorWithCode:reason reason:description description:error precipitatingError:?];
   [(BSTransaction *)self _failWithError:v6];
 }
 
@@ -2776,16 +2776,16 @@ void __39__BSTransaction__defaultTransactionLog__block_invoke()
 
 - (id)_graphNodeIdentifier
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = MEMORY[0x1E696AEC0];
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v1 = [v2 stringWithFormat:@"%@-%p", v4, v1];
+    selfCopy = [v2 stringWithFormat:@"%@-%p", v4, selfCopy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_graphNodeDebugName
@@ -2795,17 +2795,17 @@ void __39__BSTransaction__defaultTransactionLog__block_invoke()
   return NSStringFromClass(v2);
 }
 
-- (void)_populateGraphIntoNodes:(void *)a3 edges:
+- (void)_populateGraphIntoNodes:(void *)nodes edges:
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    v7 = [a1 _customizedDescriptionProperties];
-    v8 = v7;
-    if (v7)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    _customizedDescriptionProperties = [self _customizedDescriptionProperties];
+    v8 = _customizedDescriptionProperties;
+    if (_customizedDescriptionProperties)
     {
-      v9 = [v7 bs_filter:&__block_literal_global_143];
+      v9 = [_customizedDescriptionProperties bs_filter:&__block_literal_global_143];
     }
 
     else
@@ -2813,54 +2813,54 @@ void __39__BSTransaction__defaultTransactionLog__block_invoke()
       v9 = 0;
     }
 
-    [v6 addEntriesFromDictionary:v9];
-    v10 = [(BSTransaction *)a1 _graphNodeIdentifier];
-    [v6 setObject:v10 forKey:@"id"];
+    [dictionary addEntriesFromDictionary:v9];
+    _graphNodeIdentifier = [(BSTransaction *)self _graphNodeIdentifier];
+    [dictionary setObject:_graphNodeIdentifier forKey:@"id"];
 
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", a1];
-    [v6 setObject:v11 forKey:@"pointer"];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", self];
+    [dictionary setObject:v11 forKey:@"pointer"];
 
-    v12 = [a1 _graphNodeDebugName];
-    [v6 setObject:v12 forKey:@"name"];
+    _graphNodeDebugName = [self _graphNodeDebugName];
+    [dictionary setObject:_graphNodeDebugName forKey:@"name"];
 
-    v13 = NSStringFromBSTransactionState(*(a1 + 72));
-    [v6 setObject:v13 forKey:@"state"];
+    v13 = NSStringFromBSTransactionState(*(self + 72));
+    [dictionary setObject:v13 forKey:@"state"];
 
-    if (*(a1 + 25) == 1)
+    if (*(self + 25) == 1)
     {
-      [v6 setObject:MEMORY[0x1E695E118] forKey:@"interrupted"];
+      [dictionary setObject:MEMORY[0x1E695E118] forKey:@"interrupted"];
     }
 
-    if (*(a1 + 24) == 1)
+    if (*(self + 24) == 1)
     {
-      [v6 setObject:MEMORY[0x1E695E118] forKey:@"aborted"];
+      [dictionary setObject:MEMORY[0x1E695E118] forKey:@"aborted"];
     }
 
-    if (*(a1 + 137) == 1)
+    if (*(self + 137) == 1)
     {
-      [v6 setObject:MEMORY[0x1E695E118] forKey:@"failed"];
+      [dictionary setObject:MEMORY[0x1E695E118] forKey:@"failed"];
     }
 
-    v14 = *(a1 + 144);
+    v14 = *(self + 144);
     if (v14)
     {
       v15 = [v14 description];
-      [v6 setObject:v15 forKey:@"error"];
+      [dictionary setObject:v15 forKey:@"error"];
     }
 
-    if ([*(a1 + 56) count])
+    if ([*(self + 56) count])
     {
-      v16 = [a1 _stringForMilestones:*(a1 + 56)];
-      [v6 setObject:v16 forKey:@"milestonesRemaining"];
+      v16 = [self _stringForMilestones:*(self + 56)];
+      [dictionary setObject:v16 forKey:@"milestonesRemaining"];
     }
 
-    [a2 addObject:v6];
+    [a2 addObject:dictionary];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v17 = *(a1 + 48);
+    v17 = *(self + 48);
     v18 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v18)
     {
@@ -2880,7 +2880,7 @@ void __39__BSTransaction__defaultTransactionLog__block_invoke()
           {
             v23 = 0;
 LABEL_26:
-            v25 = [BSTransaction _buildGraphEdgeDescriptionWithType:a1 fromTransaction:v23 toTransaction:?];
+            v25 = [BSTransaction _buildGraphEdgeDescriptionWithType:self fromTransaction:v23 toTransaction:?];
             goto LABEL_27;
           }
 
@@ -2897,12 +2897,12 @@ LABEL_26:
             goto LABEL_28;
           }
 
-          v25 = [BSTransaction _buildGraphEdgeDescriptionWithType:a1 fromTransaction:v23 toTransaction:?];
+          v25 = [BSTransaction _buildGraphEdgeDescriptionWithType:self fromTransaction:v23 toTransaction:?];
 LABEL_27:
           v26 = v25;
 LABEL_28:
-          [a3 addObject:v26];
-          [(BSTransaction *)v23 _populateGraphIntoNodes:a2 edges:a3];
+          [nodes addObject:v26];
+          [(BSTransaction *)v23 _populateGraphIntoNodes:a2 edges:nodes];
 
           objc_autoreleasePoolPop(v22);
         }
@@ -2927,30 +2927,30 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
   return result;
 }
 
-- (id)_buildGraphEdgeDescriptionWithType:(uint64_t)a1 fromTransaction:(id)a2 toTransaction:(void *)a3
+- (id)_buildGraphEdgeDescriptionWithType:(uint64_t)type fromTransaction:(id)transaction toTransaction:(void *)toTransaction
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v9[0] = a1;
+  v9[0] = type;
   v8[0] = @"type";
   v8[1] = @"from";
-  v4 = [(BSTransaction *)a2 _graphNodeIdentifier];
-  v9[1] = v4;
+  _graphNodeIdentifier = [(BSTransaction *)transaction _graphNodeIdentifier];
+  v9[1] = _graphNodeIdentifier;
   v8[2] = @"to";
-  v5 = [(BSTransaction *)a3 _graphNodeIdentifier];
-  v9[2] = v5;
+  _graphNodeIdentifier2 = [(BSTransaction *)toTransaction _graphNodeIdentifier];
+  v9[2] = _graphNodeIdentifier2;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
   return v6;
 }
 
-- (id)_descriptionForDebugging:(uint64_t)a3 indentLevel:(void *)a4 visited:
+- (id)_descriptionForDebugging:(uint64_t)debugging indentLevel:(void *)level visited:
 {
   v80[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v5 = a1;
+    selfCopy = self;
     v54 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    for (i = a3; a3; --a3)
+    for (i = debugging; debugging; --debugging)
     {
       [v54 appendString:@"    "];
     }
@@ -2960,20 +2960,20 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
     v6 = [v52 mutableCopy];
     [v6 appendString:@"    "];
     v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v8 = [v5 _descriptionProem];
-    v9 = v8;
+    _descriptionProem = [selfCopy _descriptionProem];
+    v9 = _descriptionProem;
     v10 = &stru_1F03A1A98;
     if (!i)
     {
       v10 = @"\n";
     }
 
-    [v7 appendFormat:@"%@%@%@\n", v10, v54, v8];
+    [v7 appendFormat:@"%@%@%@\n", v10, v54, _descriptionProem];
 
-    if (([a4 containsObject:v5] & 1) == 0)
+    if (([level containsObject:selfCopy] & 1) == 0)
     {
-      [a4 addObject:v5];
-      if (*(v5 + 72) == 3)
+      [level addObject:selfCopy];
+      if (*(selfCopy + 72) == 3)
       {
         v11 = @"YES\n";
       }
@@ -2984,9 +2984,9 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
       }
 
       [v7 appendFormat:@"%@Completed: %@", v52, v11];
-      v48 = [v5 _customizedDescriptionProperties];
-      v12 = [v48 count];
-      if (v48)
+      _customizedDescriptionProperties = [selfCopy _customizedDescriptionProperties];
+      v12 = [_customizedDescriptionProperties count];
+      if (_customizedDescriptionProperties)
       {
         v13 = v12;
         if (v12)
@@ -3005,16 +3005,16 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
           v72 = v6;
           v73 = &v76;
           v74 = v13;
-          [v48 enumerateKeysAndObjectsUsingBlock:v69];
+          [_customizedDescriptionProperties enumerateKeysAndObjectsUsingBlock:v69];
           [v14 appendString:@"\n"];
 
           _Block_object_dispose(&v76, 8);
         }
       }
 
-      if (([v5 isComplete] & 1) == 0)
+      if (([selfCopy isComplete] & 1) == 0)
       {
-        if ([v5 isInterruptible])
+        if ([selfCopy isInterruptible])
         {
           v15 = @"YES\n";
         }
@@ -3027,32 +3027,32 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
         [v7 appendFormat:@"%@Interruptible? %@", v52, v15];
       }
 
-      if (*(v5 + 25) == 1)
+      if (*(selfCopy + 25) == 1)
       {
         [v7 appendFormat:@"%@Interrupted: %@", v52, @"YES\n"];
       }
 
-      if (*(v5 + 137) == 1)
+      if (*(selfCopy + 137) == 1)
       {
         [v7 appendFormat:@"%@Failed: %@", v52, @"YES\n"];
       }
 
-      if (*(v5 + 24) == 1)
+      if (*(selfCopy + 24) == 1)
       {
         [v7 appendFormat:@"%@Aborted: %@", v52, @"YES\n"];
       }
 
-      v16 = *(v5 + 144);
+      v16 = *(selfCopy + 144);
       if (v16)
       {
-        v17 = [v16 domain];
-        [v7 appendFormat:@"%@Error domain: %@; Code: %d\n", v52, v17, objc_msgSend(*(v5 + 144), "code")];
+        domain = [v16 domain];
+        [v7 appendFormat:@"%@Error domain: %@; Code: %d\n", v52, domain, objc_msgSend(*(selfCopy + 144), "code")];
 
-        v18 = [*(v5 + 144) localizedDescription];
-        [v7 appendFormat:@"%@Error description: %@\n", v52, v18];
+        localizedDescription = [*(selfCopy + 144) localizedDescription];
+        [v7 appendFormat:@"%@Error description: %@\n", v52, localizedDescription];
       }
 
-      v19 = [*(v5 + 56) count];
+      v19 = [*(selfCopy + 56) count];
       if (v19)
       {
         v20 = @"\n";
@@ -3070,8 +3070,8 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
         v68 = 0u;
         v65 = 0u;
         v66 = 0u;
-        v47 = v5;
-        v21 = *(v5 + 56);
+        v47 = selfCopy;
+        v21 = *(selfCopy + 56);
         v22 = [v21 countByEnumeratingWithState:&v65 objects:v75 count:16];
         if (v22)
         {
@@ -3107,15 +3107,15 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
           while (v22);
         }
 
-        v5 = v47;
+        selfCopy = v47;
         [v7 appendString:@"\n"];
       }
 
-      v27 = *(v5 + 80);
+      v27 = *(selfCopy + 80);
       if (v27)
       {
-        v28 = [v27 items];
-        v29 = [v28 count];
+        items = [v27 items];
+        v29 = [items count];
         if (v29)
         {
           v30 = @"\n";
@@ -3132,7 +3132,7 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
           v31 = 0;
           do
           {
-            v32 = [v28 objectAtIndex:v31];
+            v32 = [items objectAtIndex:v31];
             [v7 appendFormat:@"%@%@", v6, v32];
 
             if (++v31 < v29)
@@ -3146,8 +3146,8 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
         }
       }
 
-      v33 = [(BSTransaction *)v5 _childTransactionsWithSchedulingPolicy:?];
-      v34 = [(BSTransaction *)v5 _childTransactionsWithSchedulingPolicy:?];
+      v33 = [(BSTransaction *)selfCopy _childTransactionsWithSchedulingPolicy:?];
+      v34 = [(BSTransaction *)selfCopy _childTransactionsWithSchedulingPolicy:?];
       if ([v34 count])
       {
         v35 = @"\n";
@@ -3165,7 +3165,7 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
       v60[3] = &unk_1E72CB168;
       v36 = v7;
       v64 = a2;
-      v62 = a4;
+      levelCopy = level;
       v63 = i;
       v61 = v36;
       [v34 enumerateObjectsUsingBlock:v60];
@@ -3186,7 +3186,7 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
       v55[3] = &unk_1E72CB168;
       v38 = v36;
       v59 = a2;
-      v57 = a4;
+      levelCopy2 = level;
       v58 = i;
       v56 = v38;
       [v33 enumerateObjectsUsingBlock:v55];
@@ -3194,7 +3194,7 @@ uint64_t __54__BSTransaction__sanitizedCustomDescriptionProperties__block_invoke
       {
         v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        [(BSTransaction *)v5 _populateGraphIntoNodes:v39 edges:v40];
+        [(BSTransaction *)selfCopy _populateGraphIntoNodes:v39 edges:v40];
         v80[0] = @"nodes";
         v80[1] = @"edges";
         v76 = v39;
@@ -3374,15 +3374,15 @@ void __62__BSTransaction__descriptionForDebugging_indentLevel_visited___block_in
   [v2 appendFormat:@"%@", v3];
 }
 
-- (void)_parentRelationshipForTransaction:(void *)a1
+- (void)_parentRelationshipForTransaction:(void *)transaction
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  transactionCopy = transaction;
+  v4 = [transactionCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -3393,7 +3393,7 @@ void __62__BSTransaction__descriptionForDebugging_indentLevel_visited___block_in
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(transactionCopy);
         }
 
         v7 = *(*(&v12 + 1) + 8 * v6);
@@ -3417,7 +3417,7 @@ void __62__BSTransaction__descriptionForDebugging_indentLevel_visited___block_in
       }
 
       while (v4 != v6);
-      v9 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [transactionCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       v4 = v9;
     }
 
@@ -3430,13 +3430,13 @@ LABEL_15:
   return v10;
 }
 
-- (void)_unsafe_enumerateParentTransactionsWithBlock:(uint64_t)a1
+- (void)_unsafe_enumerateParentTransactionsWithBlock:(uint64_t)block
 {
   v19 = *MEMORY[0x1E69E9840];
   if (!a2)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:sel__unsafe_enumerateParentTransactionsWithBlock_ object:a1 file:@"BSTransaction.m" lineNumber:1140 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__unsafe_enumerateParentTransactionsWithBlock_ object:block file:@"BSTransaction.m" lineNumber:1140 description:{@"Invalid parameter not satisfying: %@", @"block != nil"}];
   }
 
   v17 = 0;
@@ -3444,7 +3444,7 @@ LABEL_15:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = *(a1 + 8);
+  v4 = *(block + 8);
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v5)
   {
@@ -3516,20 +3516,20 @@ uint64_t __56__BSTransaction__childTransactionsWithSchedulingPolicy___block_invo
 - (uint64_t)_terminateNow
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (*(a1 + 137) == 1)
+  if (*(self + 137) == 1)
   {
-    v2 = [*(a1 + 144) userInfo];
-    v3 = [v2 objectForKey:@"error-reason"];
-    [a1 _willFailWithReason:v3];
+    userInfo = [*(self + 144) userInfo];
+    v3 = [userInfo objectForKey:@"error-reason"];
+    [self _willFailWithReason:v3];
   }
 
-  [a1 _willComplete];
+  [self _willComplete];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [a1 childTransactions];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  childTransactions = [self childTransactions];
+  v5 = [childTransactions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = *v19;
@@ -3539,15 +3539,15 @@ uint64_t __56__BSTransaction__childTransactionsWithSchedulingPolicy___block_invo
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childTransactions);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
         if (v8)
         {
-          v9 = *(a1 + 144);
-          v10 = [*(*(&v18 + 1) + 8 * i) queue];
-          BSDispatchQueueAssert(v10);
+          v9 = *(self + 144);
+          queue = [*(*(&v18 + 1) + 8 * i) queue];
+          BSDispatchQueueAssert(queue);
 
           if ((*(v8 + 24) & 1) == 0 && (*(v8 + 137) & 1) == 0 && ([v8 isComplete] & 1) == 0)
           {
@@ -3590,13 +3590,13 @@ uint64_t __56__BSTransaction__childTransactionsWithSchedulingPolicy___block_invo
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [childTransactions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
   }
 
-  return [(BSTransaction *)a1 _noteCompleted];
+  return [(BSTransaction *)self _noteCompleted];
 }
 
 uint64_t __44__BSTransaction__interruptWithReason_force___block_invoke(uint64_t a1)
@@ -3639,15 +3639,15 @@ uint64_t __44__BSTransaction__interruptWithReason_force___block_invoke(uint64_t 
   return [*(a1 + 32) removeAllMilestones];
 }
 
-- (uint64_t)_evaluateParentTransactionsWithSchedulingPolicy:(uint64_t)a3 evaluator:
+- (uint64_t)_evaluateParentTransactionsWithSchedulingPolicy:(uint64_t)policy evaluator:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (!a3)
+    if (!policy)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel__evaluateParentTransactionsWithSchedulingPolicy_evaluator_ object:v3 file:@"BSTransaction.m" lineNumber:1515 description:{@"Invalid parameter not satisfying: %@", @"evaluator"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__evaluateParentTransactionsWithSchedulingPolicy_evaluator_ object:selfCopy file:@"BSTransaction.m" lineNumber:1515 description:{@"Invalid parameter not satisfying: %@", @"evaluator"}];
     }
 
     v9 = 0;
@@ -3660,13 +3660,13 @@ uint64_t __44__BSTransaction__interruptWithReason_force___block_invoke(uint64_t 
     v8[3] = &unk_1E72CB200;
     v8[5] = &v9;
     v8[6] = a2;
-    v8[4] = a3;
-    [(BSTransaction *)v3 _unsafe_enumerateParentTransactionsWithBlock:v8];
-    LOBYTE(v3) = *(v10 + 24);
+    v8[4] = policy;
+    [(BSTransaction *)selfCopy _unsafe_enumerateParentTransactionsWithBlock:v8];
+    LOBYTE(selfCopy) = *(v10 + 24);
     _Block_object_dispose(&v9, 8);
   }
 
-  return v3 & 1;
+  return selfCopy & 1;
 }
 
 void *__75__BSTransaction__evaluateParentTransactionsWithSchedulingPolicy_evaluator___block_invoke(void *result, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -3696,19 +3696,19 @@ void *__75__BSTransaction__evaluateParentTransactionsWithSchedulingPolicy_evalua
   return result;
 }
 
-- (void)setAuditHistoryEnabled:(BOOL)a3
+- (void)setAuditHistoryEnabled:(BOOL)enabled
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_auditHistoryEnabled != a3)
+  if (self->_auditHistoryEnabled != enabled)
   {
-    self->_auditHistoryEnabled = a3;
+    self->_auditHistoryEnabled = enabled;
     [(BSTransaction *)self _initializeAuditHistoryIfNecessary];
     v10 = 0u;
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v4 = [(BSTransaction *)self childTransactions];
-    v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    childTransactions = [(BSTransaction *)self childTransactions];
+    v5 = [childTransactions countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v5)
     {
       v6 = *v9;
@@ -3719,14 +3719,14 @@ void *__75__BSTransaction__evaluateParentTransactionsWithSchedulingPolicy_evalua
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(childTransactions);
           }
 
           [*(*(&v8 + 1) + 8 * v7++) setAuditHistoryEnabled:self->_auditHistoryEnabled];
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [childTransactions countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -3734,13 +3734,13 @@ void *__75__BSTransaction__evaluateParentTransactionsWithSchedulingPolicy_evalua
   }
 }
 
-- (void)_addAuditHistoryItem:(id)a3
+- (void)_addAuditHistoryItem:(id)item
 {
   if (self->_auditHistory)
   {
     if (self->_state != 3)
     {
-      v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:a3 arguments:&v7];
+      v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:item arguments:&v7];
       auditHistory = self->_auditHistory;
       v6 = [BSAuditHistoryItem itemWithString:v4];
       [(BSAuditHistory *)auditHistory addItem:v6];
@@ -3748,12 +3748,12 @@ void *__75__BSTransaction__evaluateParentTransactionsWithSchedulingPolicy_evalua
   }
 }
 
-- (id)_stringForMilestones:(id)a3
+- (id)_stringForMilestones:(id)milestones
 {
-  if ([a3 count])
+  if ([milestones count])
   {
-    v4 = [a3 allObjects];
-    v5 = [v4 componentsJoinedByString:{@", "}];
+    allObjects = [milestones allObjects];
+    v5 = [allObjects componentsJoinedByString:{@", "}];
   }
 
   else
@@ -3764,12 +3764,12 @@ void *__75__BSTransaction__evaluateParentTransactionsWithSchedulingPolicy_evalua
   return v5;
 }
 
-- (void)_addDebugLogCategory:(id)a3
+- (void)_addDebugLogCategory:(id)category
 {
   v18 = *MEMORY[0x1E69E9840];
   if (self->_debugLogCategories)
   {
-    if (!a3)
+    if (!category)
     {
       return;
     }
@@ -3781,14 +3781,14 @@ void *__75__BSTransaction__evaluateParentTransactionsWithSchedulingPolicy_evalua
     debugLogCategories = self->_debugLogCategories;
     self->_debugLogCategories = v5;
 
-    if (!a3)
+    if (!category)
     {
       return;
     }
   }
 
-  [(NSMutableSet *)self->_debugLogCategories addObject:a3];
-  if (!self->_disableDebugLogCheckForUnitTesting && os_log_type_enabled(a3, OS_LOG_TYPE_DEBUG))
+  [(NSMutableSet *)self->_debugLogCategories addObject:category];
+  if (!self->_disableDebugLogCheckForUnitTesting && os_log_type_enabled(category, OS_LOG_TYPE_DEBUG))
   {
     self->_debugLoggingEnabled = 1;
     [(BSTransaction *)self _initializeAuditHistoryIfNecessary];
@@ -3819,7 +3819,7 @@ void *__75__BSTransaction__evaluateParentTransactionsWithSchedulingPolicy_evalua
         }
 
         v12 = v11;
-        [v12 _addDebugLogCategory:{a3, v13}];
+        [v12 _addDebugLogCategory:{category, v13}];
       }
 
       v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -3829,9 +3829,9 @@ void *__75__BSTransaction__evaluateParentTransactionsWithSchedulingPolicy_evalua
   }
 }
 
-- (void)_removeDebugLogCategory:(id)a3
+- (void)_removeDebugLogCategory:(id)category
 {
-  if (a3)
+  if (category)
   {
     [(NSMutableSet *)self->_debugLogCategories removeObject:?];
   }
@@ -3840,8 +3840,8 @@ void *__75__BSTransaction__evaluateParentTransactionsWithSchedulingPolicy_evalua
 - (id)_loggingProem
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(BSTransaction *)self _descriptionProem];
-  v4 = [v2 stringWithFormat:@"%@: ", v3];
+  _descriptionProem = [(BSTransaction *)self _descriptionProem];
+  v4 = [v2 stringWithFormat:@"%@: ", _descriptionProem];
 
   return v4;
 }

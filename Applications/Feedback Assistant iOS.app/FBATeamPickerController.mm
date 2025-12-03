@@ -1,27 +1,27 @@
 @interface FBATeamPickerController
 - (NSArray)teams;
-- (_TtC18Feedback_Assistant23FBATeamPickerController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18Feedback_Assistant23FBATeamPickerController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP18Feedback_Assistant21FBATeamPickerDelegate_)pickerDelegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)tableView:viewForHeaderInSection:;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (void)dismissSelf;
-- (void)setFormStub:(id)a3;
-- (void)setSelectedTeam:(id)a3;
-- (void)setShowsDismissButton:(BOOL)a3;
-- (void)setTeams:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setFormStub:(id)stub;
+- (void)setSelectedTeam:(id)team;
+- (void)setShowsDismissButton:(BOOL)button;
+- (void)setTeams:(id)teams;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation FBATeamPickerController
 
-- (void)setFormStub:(id)a3
+- (void)setFormStub:(id)stub
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000481EC(a3);
+  stubCopy = stub;
+  selfCopy = self;
+  sub_1000481EC(stub);
 }
 
 - (NSArray)teams
@@ -34,25 +34,25 @@
   return v3.super.isa;
 }
 
-- (void)setTeams:(id)a3
+- (void)setTeams:(id)teams
 {
   sub_1000497E4(0, &qword_100109610, FBKTeam_ptr);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1000484A8(v4);
 }
 
-- (void)setSelectedTeam:(id)a3
+- (void)setSelectedTeam:(id)team
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant23FBATeamPickerController_selectedTeam);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant23FBATeamPickerController_selectedTeam) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant23FBATeamPickerController_selectedTeam) = team;
+  teamCopy = team;
 }
 
-- (void)setShowsDismissButton:(BOOL)a3
+- (void)setShowsDismissButton:(BOOL)button
 {
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant23FBATeamPickerController_showsDismissButton) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant23FBATeamPickerController_showsDismissButton) = button;
+  selfCopy = self;
   sub_100048658();
 }
 
@@ -65,11 +65,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100048770();
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v3 = *(self + OBJC_IVAR____TtC18Feedback_Assistant23FBATeamPickerController_teams);
   if (!(v3 >> 62))
@@ -92,10 +92,10 @@
   return v0;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = 5.0;
-  if (!a4)
+  if (!section)
   {
     return 15.0;
   }
@@ -103,7 +103,7 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -111,9 +111,9 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_100048A2C(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_100048A2C(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 
@@ -131,14 +131,14 @@
   v6[2] = sub_100088474;
   v6[3] = &unk_1000E03A8;
   v4 = _Block_copy(v6);
-  v5 = self;
+  selfCopy = self;
 
-  [(FBATeamPickerController *)v5 dismissViewControllerAnimated:1 completion:v4];
+  [(FBATeamPickerController *)selfCopy dismissViewControllerAnimated:1 completion:v4];
 
   _Block_release(v4);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -146,16 +146,16 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10004982C();
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (_TtC18Feedback_Assistant23FBATeamPickerController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18Feedback_Assistant23FBATeamPickerController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -167,8 +167,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100049448(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100049448(v5, v7, bundle);
 }
 
 @end

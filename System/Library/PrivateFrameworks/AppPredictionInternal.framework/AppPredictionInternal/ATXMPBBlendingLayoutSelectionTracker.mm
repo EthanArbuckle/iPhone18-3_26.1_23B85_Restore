@@ -1,12 +1,12 @@
 @interface ATXMPBBlendingLayoutSelectionTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBBlendingLayoutSelectionTracker
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = ATXMPBBlendingLayoutSelectionTracker;
   v4 = [(ATXMPBBlendingLayoutSelectionTracker *)&v8 description];
-  v5 = [(ATXMPBBlendingLayoutSelectionTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBBlendingLayoutSelectionTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   layoutType = self->_layoutType;
   if (layoutType)
   {
-    [v3 setObject:layoutType forKey:@"layoutType"];
+    [dictionary setObject:layoutType forKey:@"layoutType"];
   }
 
   highestConfidenceCategory = self->_highestConfidenceCategory;
@@ -72,141 +72,141 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_layoutType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_highestConfidenceCategory)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_highestRankingClientModelId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_consumerSubType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_execuableTypeOfHighestRankingSuggestion)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_highestRankingClientModelABGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_layoutType)
   {
-    [v4 setLayoutType:?];
-    v4 = v5;
+    [toCopy setLayoutType:?];
+    toCopy = v5;
   }
 
   if (self->_highestConfidenceCategory)
   {
     [v5 setHighestConfidenceCategory:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_highestRankingClientModelId)
   {
     [v5 setHighestRankingClientModelId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_consumerSubType)
   {
     [v5 setConsumerSubType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_execuableTypeOfHighestRankingSuggestion)
   {
     [v5 setExecuableTypeOfHighestRankingSuggestion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_abGroup)
   {
     [v5 setAbGroup:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_highestRankingClientModelABGroup)
   {
     [v5 setHighestRankingClientModelABGroup:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_layoutType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_layoutType copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
-  v8 = [(NSString *)self->_highestConfidenceCategory copyWithZone:a3];
+  v8 = [(NSString *)self->_highestConfidenceCategory copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_highestRankingClientModelId copyWithZone:a3];
+  v10 = [(NSString *)self->_highestRankingClientModelId copyWithZone:zone];
   v11 = v5[6];
   v5[6] = v10;
 
-  v12 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v12 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(NSString *)self->_execuableTypeOfHighestRankingSuggestion copyWithZone:a3];
+  v14 = [(NSString *)self->_execuableTypeOfHighestRankingSuggestion copyWithZone:zone];
   v15 = v5[3];
   v5[3] = v14;
 
-  v16 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v16 = [(NSString *)self->_abGroup copyWithZone:zone];
   v17 = v5[1];
   v5[1] = v16;
 
-  v18 = [(NSString *)self->_highestRankingClientModelABGroup copyWithZone:a3];
+  v18 = [(NSString *)self->_highestRankingClientModelABGroup copyWithZone:zone];
   v19 = v5[5];
   v5[5] = v18;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((layoutType = self->_layoutType, !(layoutType | v4[7])) || -[NSString isEqual:](layoutType, "isEqual:")) && ((highestConfidenceCategory = self->_highestConfidenceCategory, !(highestConfidenceCategory | v4[4])) || -[NSString isEqual:](highestConfidenceCategory, "isEqual:")) && ((highestRankingClientModelId = self->_highestRankingClientModelId, !(highestRankingClientModelId | v4[6])) || -[NSString isEqual:](highestRankingClientModelId, "isEqual:")) && ((consumerSubType = self->_consumerSubType, !(consumerSubType | v4[2])) || -[NSString isEqual:](consumerSubType, "isEqual:")) && ((execuableTypeOfHighestRankingSuggestion = self->_execuableTypeOfHighestRankingSuggestion, !(execuableTypeOfHighestRankingSuggestion | v4[3])) || -[NSString isEqual:](execuableTypeOfHighestRankingSuggestion, "isEqual:")) && ((abGroup = self->_abGroup, !(abGroup | v4[1])) || -[NSString isEqual:](abGroup, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((layoutType = self->_layoutType, !(layoutType | equalCopy[7])) || -[NSString isEqual:](layoutType, "isEqual:")) && ((highestConfidenceCategory = self->_highestConfidenceCategory, !(highestConfidenceCategory | equalCopy[4])) || -[NSString isEqual:](highestConfidenceCategory, "isEqual:")) && ((highestRankingClientModelId = self->_highestRankingClientModelId, !(highestRankingClientModelId | equalCopy[6])) || -[NSString isEqual:](highestRankingClientModelId, "isEqual:")) && ((consumerSubType = self->_consumerSubType, !(consumerSubType | equalCopy[2])) || -[NSString isEqual:](consumerSubType, "isEqual:")) && ((execuableTypeOfHighestRankingSuggestion = self->_execuableTypeOfHighestRankingSuggestion, !(execuableTypeOfHighestRankingSuggestion | equalCopy[3])) || -[NSString isEqual:](execuableTypeOfHighestRankingSuggestion, "isEqual:")) && ((abGroup = self->_abGroup, !(abGroup | equalCopy[1])) || -[NSString isEqual:](abGroup, "isEqual:")))
   {
     highestRankingClientModelABGroup = self->_highestRankingClientModelABGroup;
-    if (highestRankingClientModelABGroup | v4[5])
+    if (highestRankingClientModelABGroup | equalCopy[5])
     {
       v12 = [(NSString *)highestRankingClientModelABGroup isEqual:?];
     }
@@ -236,40 +236,40 @@
   return v6 ^ v8 ^ [(NSString *)self->_highestRankingClientModelABGroup hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[7])
+  fromCopy = from;
+  if (fromCopy[7])
   {
     [(ATXMPBBlendingLayoutSelectionTracker *)self setLayoutType:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(ATXMPBBlendingLayoutSelectionTracker *)self setHighestConfidenceCategory:?];
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(ATXMPBBlendingLayoutSelectionTracker *)self setHighestRankingClientModelId:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(ATXMPBBlendingLayoutSelectionTracker *)self setConsumerSubType:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(ATXMPBBlendingLayoutSelectionTracker *)self setExecuableTypeOfHighestRankingSuggestion:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(ATXMPBBlendingLayoutSelectionTracker *)self setAbGroup:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(ATXMPBBlendingLayoutSelectionTracker *)self setHighestRankingClientModelABGroup:?];
   }

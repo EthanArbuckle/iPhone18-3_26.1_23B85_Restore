@@ -1,24 +1,24 @@
 @interface HDClinicalIngestionExtractReferencesOperation
-- (HDClinicalIngestionExtractReferencesOperation)initWithTask:(id)a3 account:(id)a4 resourceData:(id)a5 sourceResourceObjects:(id)a6 nextOperation:(id)a7;
+- (HDClinicalIngestionExtractReferencesOperation)initWithTask:(id)task account:(id)account resourceData:(id)data sourceResourceObjects:(id)objects nextOperation:(id)operation;
 - (void)main;
 @end
 
 @implementation HDClinicalIngestionExtractReferencesOperation
 
-- (HDClinicalIngestionExtractReferencesOperation)initWithTask:(id)a3 account:(id)a4 resourceData:(id)a5 sourceResourceObjects:(id)a6 nextOperation:(id)a7
+- (HDClinicalIngestionExtractReferencesOperation)initWithTask:(id)task account:(id)account resourceData:(id)data sourceResourceObjects:(id)objects nextOperation:(id)operation
 {
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  objectsCopy = objects;
   v20.receiver = self;
   v20.super_class = HDClinicalIngestionExtractReferencesOperation;
-  v14 = [(HDClinicalIngestionPerAccountOperation *)&v20 initWithTask:a3 account:a4 nextOperation:a7];
+  v14 = [(HDClinicalIngestionPerAccountOperation *)&v20 initWithTask:task account:account nextOperation:operation];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [dataCopy copy];
     FHIRResourceData = v14->_FHIRResourceData;
     v14->_FHIRResourceData = v15;
 
-    v17 = [v13 copy];
+    v17 = [objectsCopy copy];
     sourceResourceObjects = v14->_sourceResourceObjects;
     v14->_sourceResourceObjects = v17;
   }
@@ -51,21 +51,21 @@
   v33[2] = sub_24274;
   v33[3] = sub_24284;
   v34 = 0;
-  v6 = [(HDClinicalIngestionOperation *)self healthRecordsServiceClient];
+  healthRecordsServiceClient = [(HDClinicalIngestionOperation *)self healthRecordsServiceClient];
   v7 = [(NSArray *)self->_sourceResourceObjects count];
   if ([(NSArray *)self->_FHIRResourceData count]+ v7)
   {
     v8 = [HDReferenceExtractionRequest alloc];
     sourceResourceObjects = self->_sourceResourceObjects;
     FHIRResourceData = self->_FHIRResourceData;
-    v11 = [(HDClinicalIngestionPerAccountOperation *)self account];
-    v12 = [v11 gateway];
-    v13 = [v12 baseURL];
-    v14 = [v8 initWithResources:sourceResourceObjects FHIRResourceData:FHIRResourceData serverBaseURL:v13];
+    account = [(HDClinicalIngestionPerAccountOperation *)self account];
+    gateway = [account gateway];
+    baseURL = [gateway baseURL];
+    v14 = [v8 initWithResources:sourceResourceObjects FHIRResourceData:FHIRResourceData serverBaseURL:baseURL];
 
     if (v14)
     {
-      if (v6)
+      if (healthRecordsServiceClient)
       {
         v15 = dispatch_group_create();
         dispatch_group_enter(v15);
@@ -77,7 +77,7 @@
         v31 = &v32;
         v16 = v15;
         v29 = v16;
-        [v6 executeFHIRReferenceExtractionRequest:v14 completion:v28];
+        [healthRecordsServiceClient executeFHIRReferenceExtractionRequest:v14 completion:v28];
         dispatch_group_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
 
 LABEL_14:

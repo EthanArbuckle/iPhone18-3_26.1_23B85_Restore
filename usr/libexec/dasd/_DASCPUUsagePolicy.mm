@@ -1,10 +1,10 @@
 @interface _DASCPUUsagePolicy
 + (id)initializeTriggers;
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASCPUUsagePolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASCPUUsagePolicy
@@ -60,16 +60,16 @@
   return v3;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"com.apple.duetactivityscheduler.cpuusagepolicy.cpuusagelevelchange"])
+  stateCopy = state;
+  if ([trigger isEqualToString:@"com.apple.duetactivityscheduler.cpuusagepolicy.cpuusagelevelchange"])
   {
     v6 = +[_CDContextQueries keyPathForCPUUsageLevel];
-    v7 = [v5 objectForKeyedSubscript:v6];
-    v8 = [v7 integerValue];
+    v7 = [stateCopy objectForKeyedSubscript:v6];
+    integerValue = [v7 integerValue];
 
-    v9 = v8 != qword_10020B9C8;
+    v9 = integerValue != qword_10020B9C8;
   }
 
   else
@@ -80,26 +80,26 @@
   return v9;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 isContinuedProcessingTask])
+  activityCopy = activity;
+  if ([activityCopy isContinuedProcessingTask])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 schedulingPriority];
-    if (v5 >= _DASSchedulingPriorityUserInitiated || ([v3 triggersRestart] & 1) != 0 || (objc_msgSend(v3, "isIntensive") & 1) != 0 || (objc_msgSend(v3, "requestsImmediateRuntime") & 1) != 0)
+    schedulingPriority = [activityCopy schedulingPriority];
+    if (schedulingPriority >= _DASSchedulingPriorityUserInitiated || ([activityCopy triggersRestart] & 1) != 0 || (objc_msgSend(activityCopy, "isIntensive") & 1) != 0 || (objc_msgSend(activityCopy, "requestsImmediateRuntime") & 1) != 0)
     {
       v4 = 0;
     }
 
     else
     {
-      v7 = [v3 startBefore];
-      [v7 timeIntervalSinceNow];
+      startBefore = [activityCopy startBefore];
+      [startBefore timeIntervalSinceNow];
       v4 = v8 >= 0.0;
     }
   }
@@ -107,12 +107,12 @@
   return v4;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  if ([v6 isRunning])
+  if ([activityCopy isRunning])
   {
     v9 = 0x384uLL;
     v10 = 0;
@@ -122,11 +122,11 @@ LABEL_16:
   }
 
   v11 = +[_CDContextQueries keyPathForCPUUsageLevel];
-  v12 = [v7 objectForKeyedSubscript:v11];
-  v13 = [v12 integerValue];
+  v12 = [stateCopy objectForKeyedSubscript:v11];
+  integerValue = [v12 integerValue];
 
-  v14 = [_DASDeviceActivityPolicy isDeviceInUse:v7];
-  if ((v14 & 1) == 0 && ([_DASPhotosPolicy isiCPLActivity:v6]|| [_DASPhotosPolicy isAppLibraryActivity:v6]))
+  v14 = [_DASDeviceActivityPolicy isDeviceInUse:stateCopy];
+  if ((v14 & 1) == 0 && ([_DASPhotosPolicy isiCPLActivity:activityCopy]|| [_DASPhotosPolicy isAppLibraryActivity:activityCopy]))
   {
     v9 = 0x384uLL;
     v10 = 0;
@@ -137,8 +137,8 @@ LABEL_17:
   }
 
   v15 = qword_10020B9C8;
-  v16 = [v6 schedulingPriority];
-  if (v16 <= _DASSchedulingPriorityBackground)
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority <= _DASSchedulingPriorityBackground)
   {
     v19 = &qword_100209E88;
     if (v14)
@@ -151,23 +151,23 @@ LABEL_17:
 
   else
   {
-    v17 = [v6 schedulingPriority];
-    if (v17 <= _DASSchedulingPriorityDefault || [v6 isContinuedProcessingTask])
+    schedulingPriority2 = [activityCopy schedulingPriority];
+    if (schedulingPriority2 <= _DASSchedulingPriorityDefault || [activityCopy isContinuedProcessingTask])
     {
       v15 = qword_100209E88;
     }
   }
 
-  if (v13 > v15)
+  if (integerValue > v15)
   {
-    [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"Max allowed CPU Usage level" withRequiredValue:v15 withCurrentValue:v13];
+    [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"Max allowed CPU Usage level" withRequiredValue:v15 withCurrentValue:integerValue];
     v9 = 0x384uLL;
     v10 = 33;
     goto LABEL_16;
   }
 
-  v23 = (100 - v13) / 100.0;
-  v24 = [NSNumber numberWithInteger:v13];
+  v23 = (100 - integerValue) / 100.0;
+  v24 = [NSNumber numberWithInteger:integerValue];
   v25 = [NSPredicate predicateWithFormat:@"cpuLevel == %@", v24];
   [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v25];
 

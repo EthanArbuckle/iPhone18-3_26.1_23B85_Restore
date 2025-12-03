@@ -1,7 +1,7 @@
 @interface CNMeCardSharingSettingsNameEditingCell
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setTextField:(id)a3;
+- (void)setTextField:(id)field;
 @end
 
 @implementation CNMeCardSharingSettingsNameEditingCell
@@ -16,24 +16,24 @@
   self->_textField = 0;
 }
 
-- (void)setTextField:(id)a3
+- (void)setTextField:(id)field
 {
-  v5 = a3;
+  fieldCopy = field;
   textField = self->_textField;
-  v10 = v5;
-  if (textField != v5)
+  v10 = fieldCopy;
+  if (textField != fieldCopy)
   {
-    v7 = [(UITextField *)textField superview];
-    v8 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
+    superview = [(UITextField *)textField superview];
+    contentView = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
 
-    if (v7 == v8)
+    if (superview == contentView)
     {
       [(UITextField *)self->_textField removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_textField, a3);
-    v9 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
-    [v9 addSubview:self->_textField];
+    objc_storeStrong(&self->_textField, field);
+    contentView2 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
+    [contentView2 addSubview:self->_textField];
   }
 
   [(CNMeCardSharingSettingsNameEditingCell *)self setNeedsLayout];
@@ -44,20 +44,20 @@
   v15.receiver = self;
   v15.super_class = CNMeCardSharingSettingsNameEditingCell;
   [(CNMeCardSharingSettingsNameEditingCell *)&v15 layoutSubviews];
-  v3 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
-  [v3 layoutMargins];
+  contentView = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
+  [contentView layoutMargins];
   v5 = v4;
-  v6 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
-  [v6 bounds];
+  contentView2 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
+  [contentView2 bounds];
   Width = CGRectGetWidth(v16);
-  v8 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
-  [v8 layoutMargins];
+  contentView3 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
+  [contentView3 layoutMargins];
   v10 = v9;
-  v11 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
-  [v11 layoutMargins];
+  contentView4 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
+  [contentView4 layoutMargins];
   v13 = Width - (v10 + v12);
-  v14 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
-  [v14 bounds];
+  contentView5 = [(CNMeCardSharingSettingsNameEditingCell *)self contentView];
+  [contentView5 bounds];
   [(UITextField *)self->_textField setFrame:v5, 0.0, v13, CGRectGetHeight(v17)];
 }
 

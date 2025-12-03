@@ -1,31 +1,31 @@
 @interface ASAKey
-+ (id)keyInPEMFormat:(id)a3 isPublic:(BOOL)a4;
-- (ASAKey)initWithName:(id)a3 privateKey:(id)a4 publicKey:(id)a5 creationDate:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)keyInPEMFormat:(id)format isPublic:(BOOL)public;
+- (ASAKey)initWithName:(id)name privateKey:(id)key publicKey:(id)publicKey creationDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (NSString)privateKeyPEM;
 - (NSString)publicKeyPEM;
 @end
 
 @implementation ASAKey
 
-- (ASAKey)initWithName:(id)a3 privateKey:(id)a4 publicKey:(id)a5 creationDate:(id)a6
+- (ASAKey)initWithName:(id)name privateKey:(id)key publicKey:(id)publicKey creationDate:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  keyCopy = key;
+  publicKeyCopy = publicKey;
+  dateCopy = date;
   v20.receiver = self;
   v20.super_class = ASAKey;
   v15 = [(ASAKey *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a3);
-    objc_storeStrong(&v16->_privateKey, a4);
-    objc_storeStrong(&v16->_publicKey, a5);
-    if (v14)
+    objc_storeStrong(&v15->_name, name);
+    objc_storeStrong(&v16->_privateKey, key);
+    objc_storeStrong(&v16->_publicKey, publicKey);
+    if (dateCopy)
     {
-      v17 = v14;
+      v17 = dateCopy;
     }
 
     else
@@ -74,24 +74,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ASAKey *)self name];
-    v7 = [v5 name];
-    if (CRXUObjectsEqual(v6, v7))
+    v5 = equalCopy;
+    name = [(ASAKey *)self name];
+    name2 = [v5 name];
+    if (CRXUObjectsEqual(name, name2))
     {
-      v8 = [(ASAKey *)self privateKey];
-      v9 = [v5 privateKey];
-      if (CRXUObjectsEqual(v8, v9))
+      privateKey = [(ASAKey *)self privateKey];
+      privateKey2 = [v5 privateKey];
+      if (CRXUObjectsEqual(privateKey, privateKey2))
       {
-        v10 = [(ASAKey *)self publicKey];
-        v11 = [v5 publicKey];
-        v12 = CRXUObjectsEqual(v10, v11);
+        publicKey = [(ASAKey *)self publicKey];
+        publicKey2 = [v5 publicKey];
+        v12 = CRXUObjectsEqual(publicKey, publicKey2);
       }
 
       else
@@ -114,10 +114,10 @@
   return v12;
 }
 
-+ (id)keyInPEMFormat:(id)a3 isPublic:(BOOL)a4
++ (id)keyInPEMFormat:(id)format isPublic:(BOOL)public
 {
-  v4 = a4;
-  if (a4)
+  publicCopy = public;
+  if (public)
   {
     v5 = 120;
   }
@@ -127,13 +127,13 @@
     v5 = 167;
   }
 
-  v6 = a3;
+  formatCopy = format;
   v7 = [[NSMutableData alloc] initWithCapacity:v5];
   v8 = v7;
-  if (v4)
+  if (publicCopy)
   {
     [v7 appendBytes:&unk_100084370 length:23];
-    [v8 appendData:v6];
+    [v8 appendData:formatCopy];
 
     v9 = "-----END PUBLIC KEY-----";
     v10 = "-----BEGIN PUBLIC KEY-----";
@@ -142,11 +142,11 @@
   else
   {
     [v7 appendBytes:&unk_100084387 length:8];
-    [v8 appendBytes:objc_msgSend(v6 length:{"bytes") + 97, 48}];
+    [v8 appendBytes:objc_msgSend(formatCopy length:{"bytes") + 97, 48}];
     [v8 appendBytes:&unk_10008438F length:14];
-    v11 = [v6 bytes];
+    bytes = [formatCopy bytes];
 
-    [v8 appendBytes:v11 length:97];
+    [v8 appendBytes:bytes length:97];
     v9 = "-----END EC PRIVATE KEY-----";
     v10 = "-----BEGIN EC PRIVATE KEY-----";
   }

@@ -1,30 +1,30 @@
 @interface MTNoContentTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MTNoContentTableViewCell)init;
-- (MTNoContentTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTNoContentTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)_layoutMargins;
 - (UIEdgeInsets)contentInset;
 - (void)layoutSubviews;
-- (void)setColorTheme:(id)a3;
+- (void)setColorTheme:(id)theme;
 - (void)setupCell;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MTNoContentTableViewCell
 
 - (MTNoContentTableViewCell)init
 {
-  v3 = [objc_opt_class() reuseIdentifier];
-  v4 = [(MTNoContentTableViewCell *)self initWithReuseIdentifier:v3];
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
+  v4 = [(MTNoContentTableViewCell *)self initWithReuseIdentifier:reuseIdentifier];
 
   return v4;
 }
 
-- (MTNoContentTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTNoContentTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = MTNoContentTableViewCell;
-  v4 = [(MTTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -48,26 +48,26 @@
   self->_messageLabel = v3;
 
   [(UILabel *)self->_messageLabel setAutoresizingMask:18];
-  v5 = [(MTNoContentTableViewCell *)self message];
-  [(UILabel *)self->_messageLabel setText:v5];
+  message = [(MTNoContentTableViewCell *)self message];
+  [(UILabel *)self->_messageLabel setText:message];
 
   [(UILabel *)self->_messageLabel setAlpha:1.0];
   [(UILabel *)self->_messageLabel setOpaque:1];
-  v6 = [(MTNoContentTableViewCell *)self contentView];
-  [v6 addSubview:self->_messageLabel];
+  contentView = [(MTNoContentTableViewCell *)self contentView];
+  [contentView addSubview:self->_messageLabel];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = MTNoContentTableViewCell;
-  v4 = a3;
-  [(MTNoContentTableViewCell *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(MTNoContentTableViewCell *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(MTNoContentTableViewCell *)self traitCollection:v8.receiver];
-  v6 = [v5 horizontalSizeClass];
-  v7 = [v4 horizontalSizeClass];
+  horizontalSizeClass = [v5 horizontalSizeClass];
+  horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-  if (v6 != v7)
+  if (horizontalSizeClass != horizontalSizeClass2)
   {
     [(MTNoContentTableViewCell *)self setNeedsLayout];
   }
@@ -78,8 +78,8 @@
   v17.receiver = self;
   v17.super_class = MTNoContentTableViewCell;
   [(MTTableViewCell *)&v17 layoutSubviews];
-  v3 = [(MTNoContentTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MTNoContentTableViewCell *)self contentView];
+  [contentView bounds];
   CGRectGetHeight(v18);
 
   [(UILabel *)self->_messageLabel frame];
@@ -91,7 +91,7 @@
   v8 = v7;
   [(MTNoContentTableViewCell *)self bounds];
   Width = CGRectGetWidth(v19);
-  v10 = [(MTNoContentTableViewCell *)self isHorizontallyRegular];
+  isHorizontallyRegular = [(MTNoContentTableViewCell *)self isHorizontallyRegular];
   v11 = +[UIScreen mainScreen];
   [v11 scale];
   v13 = v12;
@@ -115,7 +115,7 @@
   }
 
   v15 = 0.0;
-  if (v10)
+  if (isHorizontallyRegular)
   {
     v15 = v8;
   }
@@ -125,25 +125,25 @@
   [(UIView *)self->super._separator setFrame:v14, CGRectGetMaxY(v20) + -24.0 - 1.0 / v13, v16, 1.0 / v13];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v6.receiver = self;
   v6.super_class = MTNoContentTableViewCell;
-  [(MTNoContentTableViewCell *)&v6 sizeThatFits:a3.width, a3.height];
+  [(MTNoContentTableViewCell *)&v6 sizeThatFits:fits.width, fits.height];
   v5 = v4 + 24.0;
   result.height = v5;
   result.width = v3;
   return result;
 }
 
-- (void)setColorTheme:(id)a3
+- (void)setColorTheme:(id)theme
 {
-  v9 = a3;
-  objc_storeStrong(&self->_colorTheme, a3);
-  v5 = [v9 backgroundColor];
-  if (v5)
+  themeCopy = theme;
+  objc_storeStrong(&self->_colorTheme, theme);
+  backgroundColor = [themeCopy backgroundColor];
+  if (backgroundColor)
   {
-    [(MTNoContentTableViewCell *)self setBackgroundColor:v5];
+    [(MTNoContentTableViewCell *)self setBackgroundColor:backgroundColor];
   }
 
   else
@@ -152,10 +152,10 @@
     [(MTNoContentTableViewCell *)self setBackgroundColor:v6];
   }
 
-  v7 = [UIColor secondaryTextColorForTheme:v9];
+  v7 = [UIColor secondaryTextColorForTheme:themeCopy];
   [(UILabel *)self->_messageLabel setTextColor:v7];
 
-  v8 = [UIColor separatorColorForTheme:v9];
+  v8 = [UIColor separatorColorForTheme:themeCopy];
   [(UIView *)self->super._separator setBackgroundColor:v8];
 }
 

@@ -2,9 +2,9 @@
 - (BOOL)has_click;
 - (NSString)log;
 - (NSString)worker_process_type;
-- (Offset<siri::speech::schema_fb::TextToSpeechResponseDevData>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::TextToSpeechResponseDevData>)addObjectToBuffer:(void *)buffer;
 - (QSSQSSVersionInfo)server_info;
-- (QSSTextToSpeechResponseDevData)initWithFlatbuffData:(id)a3 root:(const TextToSpeechResponseDevData *)a4 verify:(BOOL)a5;
+- (QSSTextToSpeechResponseDevData)initWithFlatbuffData:(id)data root:(const TextToSpeechResponseDevData *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -39,7 +39,7 @@ flatbuffers::DetachedBuffer *__46__QSSTextToSpeechResponseDevData_flatbuffData__
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechResponseDevData>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechResponseDevData>)addObjectToBuffer:(void *)buffer
 {
   v5 = [(QSSTextToSpeechResponseDevData *)self log];
   v6 = v5;
@@ -48,41 +48,41 @@ flatbuffers::DetachedBuffer *__46__QSSTextToSpeechResponseDevData_flatbuffData__
     v5 = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)v5 UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSTextToSpeechResponseDevData *)self server_info];
-  v11 = [v10 addObjectToBuffer:a3];
+  server_info = [(QSSTextToSpeechResponseDevData *)self server_info];
+  v11 = [server_info addObjectToBuffer:buffer];
 
-  v12 = [(QSSTextToSpeechResponseDevData *)self has_click];
-  v13 = [(QSSTextToSpeechResponseDevData *)self worker_process_type];
-  v14 = v13;
-  if (!v13)
+  has_click = [(QSSTextToSpeechResponseDevData *)self has_click];
+  worker_process_type = [(QSSTextToSpeechResponseDevData *)self worker_process_type];
+  v14 = worker_process_type;
+  if (!worker_process_type)
   {
-    v13 = &stru_2879AE8E0;
+    worker_process_type = &stru_2879AE8E0;
   }
 
-  v15 = [(__CFString *)v13 UTF8String];
-  v16 = strlen(v15);
-  v17 = flatbuffers::FlatBufferBuilder::CreateString(a3, v15, v16);
+  uTF8String2 = [(__CFString *)worker_process_type UTF8String];
+  v16 = strlen(uTF8String2);
+  v17 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v16);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v18 = *(a3 + 5);
-  v19 = *(a3 + 6);
-  v20 = *(a3 + 4);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v18 = *(buffer + 5);
+  v19 = *(buffer + 6);
+  v20 = *(buffer + 4);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
   if (v11)
   {
-    v21 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v11);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v21);
+    v21 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v11);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v21);
   }
 
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 8, v12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 10, v17);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 8, has_click);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 10, v17);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v20 - v19 + v18);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v20 - v19 + v18);
 }
 
 - (NSString)worker_process_type
@@ -163,42 +163,42 @@ flatbuffers::DetachedBuffer *__46__QSSTextToSpeechResponseDevData_flatbuffData__
   return v6;
 }
 
-- (QSSTextToSpeechResponseDevData)initWithFlatbuffData:(id)a3 root:(const TextToSpeechResponseDevData *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechResponseDevData)initWithFlatbuffData:(id)data root:(const TextToSpeechResponseDevData *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTextToSpeechResponseDevData;
   v10 = [(QSSTextToSpeechResponseDevData *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -220,9 +220,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

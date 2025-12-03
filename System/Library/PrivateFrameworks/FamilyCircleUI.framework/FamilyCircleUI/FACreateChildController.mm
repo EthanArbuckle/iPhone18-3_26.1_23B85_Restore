@@ -1,47 +1,47 @@
 @interface FACreateChildController
-- (FACreateChildController)initWithAppleAccount:(id)a3;
+- (FACreateChildController)initWithAppleAccount:(id)account;
 - (FACreateChildControllerDelegate)delegate;
 - (UIViewController)presentingViewController;
-- (id)_createNewAccountContextForAgeRange:(unint64_t)a3;
-- (id)_repairAuthContextWithAuthResults:(id)a3;
-- (id)_repairFAContextWithAuthResults:(id)a3;
-- (id)_repairParametersFromAuthResults:(id)a3;
-- (void)_createAccountWithAgeRange:(unint64_t)a3 completion:(id)a4;
-- (void)_dismissPresentedViewControllerWithCompletion:(id)a3;
-- (void)_repairAccountWithAuthenticationResults:(id)a3 completion:(id)a4;
+- (id)_createNewAccountContextForAgeRange:(unint64_t)range;
+- (id)_repairAuthContextWithAuthResults:(id)results;
+- (id)_repairFAContextWithAuthResults:(id)results;
+- (id)_repairParametersFromAuthResults:(id)results;
+- (void)_createAccountWithAgeRange:(unint64_t)range completion:(id)completion;
+- (void)_dismissPresentedViewControllerWithCompletion:(id)completion;
+- (void)_repairAccountWithAuthenticationResults:(id)results completion:(id)completion;
 - (void)_setupPresentedViewController;
-- (void)navigationController:(id)a3 didPresentInitialViewController:(id)a4;
-- (void)navigationController:(id)a3 presentViewController:(id)a4;
+- (void)navigationController:(id)controller didPresentInitialViewController:(id)viewController;
+- (void)navigationController:(id)controller presentViewController:(id)viewController;
 @end
 
 @implementation FACreateChildController
 
-- (FACreateChildController)initWithAppleAccount:(id)a3
+- (FACreateChildController)initWithAppleAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v6 = [(FACreateChildController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appleAccount, a3);
+    objc_storeStrong(&v6->_appleAccount, account);
   }
 
   return v7;
 }
 
-- (void)_createAccountWithAgeRange:(unint64_t)a3 completion:(id)a4
+- (void)_createAccountWithAgeRange:(unint64_t)range completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(FACreateChildController *)self _setupPresentedViewController];
-  v7 = [(FACreateChildController *)self _createNewAccountContextForAgeRange:a3];
+  v7 = [(FACreateChildController *)self _createNewAccountContextForAgeRange:range];
   v8 = objc_alloc_init(MEMORY[0x277CF0178]);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__FACreateChildController__createAccountWithAgeRange_completion___block_invoke;
   v10[3] = &unk_2782F2F98;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v8 authenticateWithContext:v7 completion:v10];
 }
 
@@ -89,10 +89,10 @@ void __65__FACreateChildController__createAccountWithAgeRange_completion___block
   }
 }
 
-- (void)_repairAccountWithAuthenticationResults:(id)a3 completion:(id)a4
+- (void)_repairAccountWithAuthenticationResults:(id)results completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  completionCopy = completion;
   [(FACreateChildController *)self _setupPresentedViewController];
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -104,10 +104,10 @@ void __65__FACreateChildController__createAccountWithAgeRange_completion___block
   aBlock[1] = 3221225472;
   aBlock[2] = __78__FACreateChildController__repairAccountWithAuthenticationResults_completion___block_invoke;
   aBlock[3] = &unk_2782F2FC0;
-  v9 = v7;
+  v9 = completionCopy;
   v24 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [(FACreateChildController *)self _repairFAContextWithAuthResults:v6];
+  v11 = [(FACreateChildController *)self _repairFAContextWithAuthResults:resultsCopy];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -194,14 +194,14 @@ void __78__FACreateChildController__repairAccountWithAuthenticationResults_compl
   [v2 _dismissPresentedViewControllerWithCompletion:v3];
 }
 
-- (id)_createNewAccountContextForAgeRange:(unint64_t)a3
+- (id)_createNewAccountContextForAgeRange:(unint64_t)range
 {
   v5 = objc_alloc_init(MEMORY[0x277CF0380]);
-  v6 = [(ACAccount *)self->_appleAccount aa_altDSID];
-  [v5 setAltDSID:v6];
+  aa_altDSID = [(ACAccount *)self->_appleAccount aa_altDSID];
+  [v5 setAltDSID:aa_altDSID];
 
-  v7 = [(ACAccount *)self->_appleAccount username];
-  [v5 setUsername:v7];
+  username = [(ACAccount *)self->_appleAccount username];
+  [v5 setUsername:username];
 
   [v5 setIsUsernameEditable:0];
   v8 = objc_opt_respondsToSelector();
@@ -211,10 +211,10 @@ void __78__FACreateChildController__repairAccountWithAuthenticationResults_compl
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(FACreateChildController *)v5 _createNewAccountContextForAgeRange:a3, v10];
+      [(FACreateChildController *)v5 _createNewAccountContextForAgeRange:range, v10];
     }
 
-    [v5 setRequestedNewAccountAgeRange:a3];
+    [v5 setRequestedNewAccountAgeRange:range];
   }
 
   else
@@ -245,10 +245,10 @@ void __78__FACreateChildController__repairAccountWithAuthenticationResults_compl
 
     [(FANavigationController *)self->_navController setFamilyDelegate:self];
     v6 = self->_navController;
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v9 = 2;
     }
@@ -262,25 +262,25 @@ void __78__FACreateChildController__repairAccountWithAuthenticationResults_compl
   }
 }
 
-- (void)_dismissPresentedViewControllerWithCompletion:(id)a3
+- (void)_dismissPresentedViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FANavigationController *)self->_navController presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(FANavigationController *)self->_navController presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __73__FACreateChildController__dismissPresentedViewControllerWithCompletion___block_invoke;
     v6[3] = &unk_2782F3088;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -295,30 +295,30 @@ void __73__FACreateChildController__dismissPresentedViewControllerWithCompletion
   [v2 dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (id)_repairFAContextWithAuthResults:(id)a3
+- (id)_repairFAContextWithAuthResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = [[FACircleContext alloc] initWithEventType:@"FACircleEventTypeFamilyRepair"];
-  v6 = [(FACreateChildController *)self _repairParametersFromAuthResults:v4];
+  v6 = [(FACreateChildController *)self _repairParametersFromAuthResults:resultsCopy];
   [(FACircleContext *)v5 setAdditionalParameters:v6];
 
-  v7 = [(FACreateChildController *)self _repairAuthContextWithAuthResults:v4];
+  v7 = [(FACreateChildController *)self _repairAuthContextWithAuthResults:resultsCopy];
 
   [(FACircleContext *)v5 setAuthContext:v7];
 
   return v5;
 }
 
-- (id)_repairParametersFromAuthResults:(id)a3
+- (id)_repairParametersFromAuthResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = *MEMORY[0x277CEFF88];
-  v6 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEFF88]];
+  v6 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFF88]];
 
   if (v6)
   {
-    v7 = [v3 objectForKeyedSubscript:v5];
+    v7 = [resultsCopy objectForKeyedSubscript:v5];
     [v4 setObject:v7 forKeyedSubscript:@"memberId"];
   }
 
@@ -332,11 +332,11 @@ void __73__FACreateChildController__dismissPresentedViewControllerWithCompletion
   }
 
   v8 = *MEMORY[0x277CEFF78];
-  v9 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEFF78]];
+  v9 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFF78]];
 
   if (v9)
   {
-    v10 = [v3 objectForKeyedSubscript:v8];
+    v10 = [resultsCopy objectForKeyedSubscript:v8];
     [v4 setObject:v10 forKeyedSubscript:@"altDSID"];
   }
 
@@ -349,7 +349,7 @@ void __73__FACreateChildController__dismissPresentedViewControllerWithCompletion
     }
   }
 
-  v11 = [v3 objectForKeyedSubscript:*MEMORY[0x277CEFFA0]];
+  v11 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFFA0]];
   v12 = *MEMORY[0x277CED1C8];
   v13 = [v11 objectForKeyedSubscript:*MEMORY[0x277CED1C8]];
 
@@ -371,33 +371,33 @@ void __73__FACreateChildController__dismissPresentedViewControllerWithCompletion
   return v4;
 }
 
-- (id)_repairAuthContextWithAuthResults:(id)a3
+- (id)_repairAuthContextWithAuthResults:(id)results
 {
   v3 = MEMORY[0x277CF0170];
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_alloc_init(v3);
   [v5 setNeedsNewAppleID:1];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEFFD8]];
+  v6 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277CEFFD8]];
 
   [v5 setUsername:v6];
 
   return v5;
 }
 
-- (void)navigationController:(id)a3 didPresentInitialViewController:(id)a4
+- (void)navigationController:(id)controller didPresentInitialViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = [v5 presentingViewController];
+  controllerCopy = controller;
+  presentingViewController = [controllerCopy presentingViewController];
 
-  if (!v6)
+  if (!presentingViewController)
   {
-    v7 = [(FACreateChildController *)self presentingViewController];
+    presentingViewController2 = [(FACreateChildController *)self presentingViewController];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __80__FACreateChildController_navigationController_didPresentInitialViewController___block_invoke;
     v8[3] = &unk_2782F29E8;
     v8[4] = self;
-    [v7 presentViewController:v5 animated:1 completion:v8];
+    [presentingViewController2 presentViewController:controllerCopy animated:1 completion:v8];
   }
 }
 
@@ -407,16 +407,16 @@ void __80__FACreateChildController_navigationController_didPresentInitialViewCon
   [v2 createChildControllerDidPresentInitialViewController:*(a1 + 32)];
 }
 
-- (void)navigationController:(id)a3 presentViewController:(id)a4
+- (void)navigationController:(id)controller presentViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(FACreateChildController *)self presentingViewController];
+  viewControllerCopy = viewController;
+  presentingViewController = [(FACreateChildController *)self presentingViewController];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__FACreateChildController_navigationController_presentViewController___block_invoke;
   v7[3] = &unk_2782F29E8;
   v7[4] = self;
-  [v6 presentViewController:v5 animated:1 completion:v7];
+  [presentingViewController presentViewController:viewControllerCopy animated:1 completion:v7];
 }
 
 void __70__FACreateChildController_navigationController_presentViewController___block_invoke(uint64_t a1)

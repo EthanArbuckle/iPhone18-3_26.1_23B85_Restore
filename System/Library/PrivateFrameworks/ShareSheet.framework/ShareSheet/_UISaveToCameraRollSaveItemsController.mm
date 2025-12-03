@@ -1,27 +1,27 @@
 @interface _UISaveToCameraRollSaveItemsController
-- (_UISaveToCameraRollSaveItemsController)initWithItems:(id)a3 saveCompletionBlock:(id)a4;
-- (void)_didCompleteSavingItem:(id)a3 error:(id)a4 contextInfo:(void *)a5;
+- (_UISaveToCameraRollSaveItemsController)initWithItems:(id)items saveCompletionBlock:(id)block;
+- (void)_didCompleteSavingItem:(id)item error:(id)error contextInfo:(void *)info;
 - (void)_invokeSaveCompletionBlock;
-- (void)_noteDidCompleteSavingItem:(id)a3 error:(id)a4;
+- (void)_noteDidCompleteSavingItem:(id)item error:(id)error;
 - (void)beginSaving;
-- (void)beginSavingItem:(id)a3;
+- (void)beginSavingItem:(id)item;
 @end
 
 @implementation _UISaveToCameraRollSaveItemsController
 
-- (_UISaveToCameraRollSaveItemsController)initWithItems:(id)a3 saveCompletionBlock:(id)a4
+- (_UISaveToCameraRollSaveItemsController)initWithItems:(id)items saveCompletionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = _UISaveToCameraRollSaveItemsController;
   v9 = [(_UISaveToCameraRollSaveItemsController *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_itemsToSchedule, a3);
+    objc_storeStrong(&v9->_itemsToSchedule, items);
     v10->_successToReport = 1;
-    v11 = MEMORY[0x18CFF58E0](v8);
+    v11 = MEMORY[0x18CFF58E0](blockCopy);
     saveCompletionBlock = v10->_saveCompletionBlock;
     v10->_saveCompletionBlock = v11;
 
@@ -73,13 +73,13 @@
   }
 }
 
-- (void)beginSavingItem:(id)a3
+- (void)beginSavingItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_UISaveToCameraRollSaveItemsController *)self _saveImage:v4];
+    [(_UISaveToCameraRollSaveItemsController *)self _saveImage:itemCopy];
   }
 
   else
@@ -87,14 +87,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_UISaveToCameraRollSaveItemsController *)self backgroundQueueForFileReading];
+      backgroundQueueForFileReading = [(_UISaveToCameraRollSaveItemsController *)self backgroundQueueForFileReading];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __58___UISaveToCameraRollSaveItemsController_beginSavingItem___block_invoke;
       block[3] = &unk_1E71F91A0;
-      v10 = v4;
-      v11 = self;
-      dispatch_async(v5, block);
+      v10 = itemCopy;
+      selfCopy = self;
+      dispatch_async(backgroundQueueForFileReading, block);
 
       v6 = v10;
     }
@@ -104,13 +104,13 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(_UISaveToCameraRollSaveItemsController *)self _saveImageData:v4];
+        [(_UISaveToCameraRollSaveItemsController *)self _saveImageData:itemCopy];
         goto LABEL_11;
       }
 
-      if (!_UIActivityItemIsLivePhoto(v4))
+      if (!_UIActivityItemIsLivePhoto(itemCopy))
       {
-        [(_UISaveToCameraRollSaveItemsController *)self _saveVideoAtPath:v4];
+        [(_UISaveToCameraRollSaveItemsController *)self _saveVideoAtPath:itemCopy];
         goto LABEL_11;
       }
 
@@ -119,7 +119,7 @@
       v7[2] = __58___UISaveToCameraRollSaveItemsController_beginSavingItem___block_invoke_2;
       v7[3] = &unk_1E71FAF80;
       v7[4] = self;
-      v8 = v4;
+      v8 = itemCopy;
       [v8 saveToPhotoLibraryWithCompletionHandler:v7];
       v6 = v8;
     }
@@ -128,33 +128,33 @@
 LABEL_11:
 }
 
-- (void)_didCompleteSavingItem:(id)a3 error:(id)a4 contextInfo:(void *)a5
+- (void)_didCompleteSavingItem:(id)item error:(id)error contextInfo:(void *)info
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  errorCopy = error;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83___UISaveToCameraRollSaveItemsController__didCompleteSavingItem_error_contextInfo___block_invoke;
   block[3] = &unk_1E71F9638;
   block[4] = self;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = itemCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = itemCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_noteDidCompleteSavingItem:(id)a3 error:(id)a4
+- (void)_noteDidCompleteSavingItem:(id)item error:(id)error
 {
   p_errorToReport = &self->_errorToReport;
   errorToReport = self->_errorToReport;
   --self->_pendingSaveCount;
   if (errorToReport)
   {
-    a4 = errorToReport;
+    error = errorToReport;
   }
 
-  objc_storeStrong(&self->_errorToReport, a4);
+  objc_storeStrong(&self->_errorToReport, error);
   v8 = *(p_errorToReport - 1);
   *(p_errorToReport - 32) = *p_errorToReport == 0;
   if (!v8)

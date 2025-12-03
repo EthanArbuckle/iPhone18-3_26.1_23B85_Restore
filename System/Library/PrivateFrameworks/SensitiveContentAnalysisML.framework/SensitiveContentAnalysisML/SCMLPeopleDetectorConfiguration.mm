@@ -1,33 +1,33 @@
 @interface SCMLPeopleDetectorConfiguration
-- (BOOL)isEqual:(id)a3;
-- (SCMLPeopleDetectorConfiguration)initWithModelManagerServicesUseCaseID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SCMLPeopleDetectorConfiguration)initWithModelManagerServicesUseCaseID:(id)d;
 - (unint64_t)hash;
 @end
 
 @implementation SCMLPeopleDetectorConfiguration
 
-- (SCMLPeopleDetectorConfiguration)initWithModelManagerServicesUseCaseID:(id)a3
+- (SCMLPeopleDetectorConfiguration)initWithModelManagerServicesUseCaseID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = SCMLPeopleDetectorConfiguration;
   v5 = [(SCMLPeopleDetectorConfiguration *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF58] currentLocale];
-    [(SCMLPeopleDetectorConfiguration *)v5 setLocale:v6];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [(SCMLPeopleDetectorConfiguration *)v5 setLocale:currentLocale];
 
     [(SCMLPeopleDetectorConfiguration *)v5 setOnBehalfOfProcessID:0xFFFFFFFFLL];
-    [(SCMLPeopleDetectorConfiguration *)v5 setModelManagerServicesUseCaseID:v4];
+    [(SCMLPeopleDetectorConfiguration *)v5 setModelManagerServicesUseCaseID:dCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -37,7 +37,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       locale = self->_locale;
       v7 = v5->_locale;
       v8 = (locale == v7 || v7 && [(NSLocale *)locale isEqual:?]) && [(NSString *)self->_modelManagerServicesUseCaseID isEqualToString:v5->_modelManagerServicesUseCaseID]&& self->_onBehalfOfProcessID == v5->_onBehalfOfProcessID;

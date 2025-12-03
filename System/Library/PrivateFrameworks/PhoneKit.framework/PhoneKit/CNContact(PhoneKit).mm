@@ -10,31 +10,31 @@
 
 - (BOOL)canExceedUnifyingThreshold
 {
-  v2 = [a1 phoneNumbers];
-  if ([v2 count] > 0x14)
+  phoneNumbers = [self phoneNumbers];
+  if ([phoneNumbers count] > 0x14)
   {
     v4 = 1;
   }
 
   else
   {
-    v3 = [a1 emailAddresses];
-    if ([v3 count] <= 0x14)
+    emailAddresses = [self emailAddresses];
+    if ([emailAddresses count] <= 0x14)
     {
-      v5 = [a1 postalAddresses];
-      if ([v5 count] <= 0x14)
+      postalAddresses = [self postalAddresses];
+      if ([postalAddresses count] <= 0x14)
       {
-        v6 = [a1 urlAddresses];
-        if ([v6 count] <= 0x14)
+        urlAddresses = [self urlAddresses];
+        if ([urlAddresses count] <= 0x14)
         {
-          v7 = [a1 contactRelations];
-          if ([v7 count] <= 0x14)
+          contactRelations = [self contactRelations];
+          if ([contactRelations count] <= 0x14)
           {
-            v8 = [a1 socialProfiles];
-            if ([v8 count] <= 0x14)
+            socialProfiles = [self socialProfiles];
+            if ([socialProfiles count] <= 0x14)
             {
-              v9 = [a1 instantMessageAddresses];
-              v4 = [v9 count] > 0x14;
+              instantMessageAddresses = [self instantMessageAddresses];
+              v4 = [instantMessageAddresses count] > 0x14;
             }
 
             else
@@ -74,9 +74,9 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 isKeyAvailable:*MEMORY[0x277CBCFC0]])
+  if ([self isKeyAvailable:*MEMORY[0x277CBCFC0]])
   {
-    [a1 emailAddresses];
+    [self emailAddresses];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -97,8 +97,8 @@
           v9 = *(*(&v14 + 1) + 8 * i);
           if (([v9 isSuggested] & 1) == 0)
           {
-            v10 = [v9 value];
-            v11 = [v10 isEqualToString:v4];
+            value = [v9 value];
+            v11 = [value isEqualToString:v4];
 
             if (v11)
             {
@@ -135,9 +135,9 @@ LABEL_14:
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 isKeyAvailable:*MEMORY[0x277CBD098]])
+  if ([self isKeyAvailable:*MEMORY[0x277CBD098]])
   {
-    [a1 phoneNumbers];
+    [self phoneNumbers];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -158,8 +158,8 @@ LABEL_14:
           v9 = *(*(&v14 + 1) + 8 * i);
           if (([v9 isSuggested] & 1) == 0)
           {
-            v10 = [v9 value];
-            v11 = [v10 isLikePhoneNumber:v4];
+            value = [v9 value];
+            v11 = [value isLikePhoneNumber:v4];
 
             if (v11)
             {
@@ -196,9 +196,9 @@ LABEL_14:
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 isKeyAvailable:*MEMORY[0x277CBD138]])
+  if ([self isKeyAvailable:*MEMORY[0x277CBD138]])
   {
-    [a1 socialProfiles];
+    [self socialProfiles];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -217,9 +217,9 @@ LABEL_14:
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v9 value];
-          v11 = [v10 username];
-          v12 = [v11 isEqualToString:v4];
+          value = [v9 value];
+          username = [value username];
+          v12 = [username isEqualToString:v4];
 
           if (v12)
           {
@@ -258,7 +258,7 @@ LABEL_13:
   v5 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:v4];
   if (v5)
   {
-    v6 = [a1 labeledValueForPhoneNumber:v5];
+    v6 = [self labeledValueForPhoneNumber:v5];
   }
 
   else

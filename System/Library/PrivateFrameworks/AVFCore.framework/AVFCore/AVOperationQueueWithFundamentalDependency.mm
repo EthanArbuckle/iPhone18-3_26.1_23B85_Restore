@@ -1,25 +1,25 @@
 @interface AVOperationQueueWithFundamentalDependency
-- (AVOperationQueueWithFundamentalDependency)initWithFundamentalOperation:(id)a3;
-- (void)addOperation:(id)a3;
-- (void)addOperations:(id)a3 waitUntilFinished:(BOOL)a4;
+- (AVOperationQueueWithFundamentalDependency)initWithFundamentalOperation:(id)operation;
+- (void)addOperation:(id)operation;
+- (void)addOperations:(id)operations waitUntilFinished:(BOOL)finished;
 - (void)dealloc;
 @end
 
 @implementation AVOperationQueueWithFundamentalDependency
 
-- (AVOperationQueueWithFundamentalDependency)initWithFundamentalOperation:(id)a3
+- (AVOperationQueueWithFundamentalDependency)initWithFundamentalOperation:(id)operation
 {
   v7.receiver = self;
   v7.super_class = AVOperationQueueWithFundamentalDependency;
   v4 = [(AVOperationQueueWithFundamentalDependency *)&v7 init];
   if (v4)
   {
-    v4->_fundamentalOperation = a3;
-    if (a3)
+    v4->_fundamentalOperation = operation;
+    if (operation)
     {
       v6.receiver = v4;
       v6.super_class = AVOperationQueueWithFundamentalDependency;
-      [(AVOperationQueueWithFundamentalDependency *)&v6 addOperation:a3];
+      [(AVOperationQueueWithFundamentalDependency *)&v6 addOperation:operation];
     }
   }
 
@@ -33,21 +33,21 @@
   [(AVOperationQueueWithFundamentalDependency *)&v3 dealloc];
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   if (self->_fundamentalOperation)
   {
-    [a3 addDependency:?];
+    [operation addDependency:?];
   }
 
   v5.receiver = self;
   v5.super_class = AVOperationQueueWithFundamentalDependency;
-  [(AVOperationQueueWithFundamentalDependency *)&v5 addOperation:a3];
+  [(AVOperationQueueWithFundamentalDependency *)&v5 addOperation:operation];
 }
 
-- (void)addOperations:(id)a3 waitUntilFinished:(BOOL)a4
+- (void)addOperations:(id)operations waitUntilFinished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v17 = *MEMORY[0x1E69E9840];
   if (self->_fundamentalOperation)
   {
@@ -55,7 +55,7 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [operations countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -66,13 +66,13 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(operations);
           }
 
           [*(*(&v12 + 1) + 8 * i) addDependency:self->_fundamentalOperation];
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [operations countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -81,7 +81,7 @@
 
   v11.receiver = self;
   v11.super_class = AVOperationQueueWithFundamentalDependency;
-  [(AVOperationQueueWithFundamentalDependency *)&v11 addOperations:a3 waitUntilFinished:v4];
+  [(AVOperationQueueWithFundamentalDependency *)&v11 addOperations:operations waitUntilFinished:finishedCopy];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface PLBackgroundJobSharedAssetContainerUpdateWorker
-+ (BOOL)_updateSharingCompositionForMemories:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (BOOL)_updateSharingCompositionForSuggestions:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (BOOL)performWorkOnAllItemsInContext:(id)a3 withError:(id *)a4;
-+ (id)_memoriesContainingAssetIds:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)_suggestionsContainingAssetIds:(id)a3 inContext:(id)a4 error:(id *)a5;
-- (id)_workItemForJobFlags:(int64_t)a3 limit:(unint64_t)a4 inLibrary:(id)a5;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
++ (BOOL)_updateSharingCompositionForMemories:(id)memories inContext:(id)context error:(id *)error;
++ (BOOL)_updateSharingCompositionForSuggestions:(id)suggestions inContext:(id)context error:(id *)error;
++ (BOOL)performWorkOnAllItemsInContext:(id)context withError:(id *)error;
++ (id)_memoriesContainingAssetIds:(id)ids inContext:(id)context error:(id *)error;
++ (id)_suggestionsContainingAssetIds:(id)ids inContext:(id)context error:(id *)error;
+- (id)_workItemForJobFlags:(int64_t)flags limit:(unint64_t)limit inLibrary:(id)library;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
 @end
 
 @implementation PLBackgroundJobSharedAssetContainerUpdateWorker
 
-+ (BOOL)performWorkOnAllItemsInContext:(id)a3 withError:(id *)a4
++ (BOOL)performWorkOnAllItemsInContext:(id)context withError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PLBackgroundJobSharedAssetContainerUpdateWorker.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSharedAssetContainerUpdateWorker.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   v26 = 0;
-  v8 = [a1 _memoriesContainingAssetIds:0 inContext:v7 error:&v26];
+  v8 = [self _memoriesContainingAssetIds:0 inContext:contextCopy error:&v26];
   v9 = v26;
   if (!v8)
   {
@@ -30,7 +30,7 @@
   }
 
   v25 = v9;
-  v10 = [objc_opt_class() _updateSharingCompositionForMemories:v8 inContext:v7 error:&v25];
+  v10 = [objc_opt_class() _updateSharingCompositionForMemories:v8 inContext:contextCopy error:&v25];
   v11 = v25;
 
   if ((v10 & 1) == 0)
@@ -43,7 +43,7 @@ LABEL_9:
       goto LABEL_15;
     }
 
-    v17 = NSStringFromClass(a1);
+    v17 = NSStringFromClass(self);
     *buf = 138543618;
     v28 = v17;
     v29 = 2112;
@@ -53,13 +53,13 @@ LABEL_9:
   }
 
   v24 = v11;
-  v8 = [a1 _suggestionsContainingAssetIds:0 inContext:v7 error:&v24];
+  v8 = [self _suggestionsContainingAssetIds:0 inContext:contextCopy error:&v24];
   v9 = v24;
 
   if (v8)
   {
     v23 = v9;
-    v12 = [objc_opt_class() _updateSharingCompositionForSuggestions:v8 inContext:v7 error:&v23];
+    v12 = [objc_opt_class() _updateSharingCompositionForSuggestions:v8 inContext:contextCopy error:&v23];
     v13 = v23;
 
     if (v12)
@@ -76,7 +76,7 @@ LABEL_9:
   v16 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    v17 = NSStringFromClass(a1);
+    v17 = NSStringFromClass(self);
     *buf = 138543618;
     v28 = v17;
     v29 = 2112;
@@ -90,11 +90,11 @@ LABEL_15:
 
   v19 = v9;
   v14 = v19;
-  if (a4)
+  if (error)
   {
     v20 = v19;
     v15 = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -107,25 +107,25 @@ LABEL_18:
   return v15;
 }
 
-+ (BOOL)_updateSharingCompositionForSuggestions:(id)a3 inContext:(id)a4 error:(id *)a5
++ (BOOL)_updateSharingCompositionForSuggestions:(id)suggestions inContext:(id)context error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  suggestionsCopy = suggestions;
   v8 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = NSStringFromClass(a1);
+    v9 = NSStringFromClass(self);
     *buf = 138543362;
     v20 = v9;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_INFO, "%{public}@: Updating sharingComposition for Suggestions...", buf, 0xCu);
   }
 
-  if (v7)
+  if (suggestionsCopy)
   {
-    v10 = [PLSuggestion predicateForPrivateOnlyCollectionsWithinSubset:v7];
-    v11 = [PLSuggestion predicateForSharedOnlyCollectionsWithinSubset:v7];
+    v10 = [PLSuggestion predicateForPrivateOnlyCollectionsWithinSubset:suggestionsCopy];
+    v11 = [PLSuggestion predicateForSharedOnlyCollectionsWithinSubset:suggestionsCopy];
     v18 = 0;
-    v12 = PLUpdateSharingCompositionForSharedAssetContainers(v7, &v18, v10, v11);
+    v12 = PLUpdateSharingCompositionForSharedAssetContainers(suggestionsCopy, &v18, v10, v11);
     v13 = v18;
 
     v14 = v13;
@@ -141,11 +141,11 @@ LABEL_18:
     v14 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v16 = v14;
     v15 = 0;
-    *a5 = v14;
+    *error = v14;
   }
 
   else
@@ -158,11 +158,11 @@ LABEL_10:
   return v15;
 }
 
-+ (id)_suggestionsContainingAssetIds:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)_suggestionsContainingAssetIds:(id)ids inContext:(id)context error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  idsCopy = ids;
+  contextCopy = context;
   v9 = MEMORY[0x1E695D5E0];
   v10 = +[PLSuggestion entityName];
   v11 = [v9 fetchRequestWithEntityName:v10];
@@ -173,44 +173,44 @@ LABEL_10:
   [v11 setPropertiesToFetch:v12];
 
   [v11 setResultType:0];
-  if (v7)
+  if (idsCopy)
   {
-    v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@ OR ANY %K IN %@", @"keyAssets", v7, @"representativeSuggestionAssets", v7];
-    [v11 setPredicate:v13];
+    idsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@ OR ANY %K IN %@", @"keyAssets", idsCopy, @"representativeSuggestionAssets", idsCopy];
+    [v11 setPredicate:idsCopy];
   }
 
   v19 = 0;
-  v14 = [v8 executeFetchRequest:v11 error:&v19];
+  v14 = [contextCopy executeFetchRequest:v11 error:&v19];
   v15 = v19;
   v16 = v15;
-  if (!v14 && a5)
+  if (!v14 && error)
   {
     v17 = v15;
-    *a5 = v16;
+    *error = v16;
   }
 
   return v14;
 }
 
-+ (BOOL)_updateSharingCompositionForMemories:(id)a3 inContext:(id)a4 error:(id *)a5
++ (BOOL)_updateSharingCompositionForMemories:(id)memories inContext:(id)context error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  memoriesCopy = memories;
   v8 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = NSStringFromClass(a1);
+    v9 = NSStringFromClass(self);
     *buf = 138543362;
     v20 = v9;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_INFO, "%{public}@: Updating sharingComposition for Memories...", buf, 0xCu);
   }
 
-  if (v7)
+  if (memoriesCopy)
   {
-    v10 = [PLMemory predicateForPrivateOnlyCollectionsWithinSubset:v7];
-    v11 = [PLMemory predicateForSharedOnlyCollectionsWithinSubset:v7];
+    v10 = [PLMemory predicateForPrivateOnlyCollectionsWithinSubset:memoriesCopy];
+    v11 = [PLMemory predicateForSharedOnlyCollectionsWithinSubset:memoriesCopy];
     v18 = 0;
-    v12 = PLUpdateSharingCompositionForSharedAssetContainers(v7, &v18, v10, v11);
+    v12 = PLUpdateSharingCompositionForSharedAssetContainers(memoriesCopy, &v18, v10, v11);
     v13 = v18;
 
     v14 = v13;
@@ -226,11 +226,11 @@ LABEL_10:
     v14 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v16 = v14;
     v15 = 0;
-    *a5 = v14;
+    *error = v14;
   }
 
   else
@@ -243,11 +243,11 @@ LABEL_10:
   return v15;
 }
 
-+ (id)_memoriesContainingAssetIds:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)_memoriesContainingAssetIds:(id)ids inContext:(id)context error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  idsCopy = ids;
+  contextCopy = context;
   v9 = MEMORY[0x1E695D5E0];
   v10 = +[PLMemory entityName];
   v11 = [v9 fetchRequestWithEntityName:v10];
@@ -258,34 +258,34 @@ LABEL_10:
   [v11 setPropertiesToFetch:v12];
 
   [v11 setResultType:0];
-  if (v7)
+  if (idsCopy)
   {
-    v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@ OR ANY %K IN %@", @"extendedCuratedAssets", v7, @"userCuratedAssets", v7];
-    [v11 setPredicate:v13];
+    idsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K IN %@ OR ANY %K IN %@", @"extendedCuratedAssets", idsCopy, @"userCuratedAssets", idsCopy];
+    [v11 setPredicate:idsCopy];
   }
 
   v19 = 0;
-  v14 = [v8 executeFetchRequest:v11 error:&v19];
+  v14 = [contextCopy executeFetchRequest:v11 error:&v19];
   v15 = v19;
   v16 = v15;
-  if (!v14 && a5)
+  if (!v14 && error)
   {
     v17 = v15;
-    *a5 = v16;
+    *error = v16;
   }
 
   return v14;
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
+  if (!libraryCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSharedAssetContainerUpdateWorker.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobSharedAssetContainerUpdateWorker.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
   v28[0] = 0;
@@ -294,25 +294,25 @@ LABEL_10:
   v28[3] = __Block_byref_object_copy__51815;
   v28[4] = __Block_byref_object_dispose__51816;
   v29 = 0;
-  v12 = [v10 managedObjectContext];
-  v13 = v9;
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v13 = itemCopy;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __90__PLBackgroundJobSharedAssetContainerUpdateWorker_performWorkOnItem_inLibrary_completion___block_invoke;
   v22[3] = &unk_1E75780D8;
   v14 = v13;
   v23 = v14;
-  v15 = v10;
+  v15 = libraryCopy;
   v27 = v28;
   v24 = v15;
-  v25 = self;
-  v16 = v12;
+  selfCopy = self;
+  v16 = managedObjectContext;
   v26 = v16;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __90__PLBackgroundJobSharedAssetContainerUpdateWorker_performWorkOnItem_inLibrary_completion___block_invoke_113;
   v19[3] = &unk_1E7573998;
-  v17 = v11;
+  v17 = completionCopy;
   v20 = v17;
   v21 = v28;
   [v15 performTransaction:v22 completionHandler:v19];
@@ -739,13 +739,13 @@ LABEL_63:
 LABEL_67:
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
   v43 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v27 = a4;
+  libraryCopy = library;
+  criteriasCopy = criterias;
   v6 = +[PLBackgroundJobCriteria criteriaForDiscretionaryResourceWorker];
-  v7 = [v27 containsObject:v6];
+  v7 = [criteriasCopy containsObject:v6];
 
   if (v7)
   {
@@ -761,14 +761,14 @@ LABEL_67:
     v33[3] = &unk_1E7578820;
     v35 = &v36;
     v33[4] = self;
-    v34 = v26;
+    v34 = libraryCopy;
     [v34 performBlockAndWait:v33];
-    v8 = [v37[5] identifiers];
-    v9 = [v8 count] == 0;
+    identifiers = [v37[5] identifiers];
+    v9 = [identifiers count] == 0;
 
     if (v9)
     {
-      v24 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
+      initWithZeroWorkItems = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItems];
     }
 
     else
@@ -788,8 +788,8 @@ LABEL_67:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v12 = [v37[5] identifiers];
-      v13 = [v12 countByEnumeratingWithState:&v29 objects:v42 count:16];
+      identifiers2 = [v37[5] identifiers];
+      v13 = [identifiers2 countByEnumeratingWithState:&v29 objects:v42 count:16];
       if (v13)
       {
         v14 = *v30;
@@ -799,7 +799,7 @@ LABEL_67:
           {
             if (*v30 != v14)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(identifiers2);
             }
 
             v16 = *(*(&v29 + 1) + 8 * i);
@@ -809,11 +809,11 @@ LABEL_67:
               [v11 addObject:v19];
             }
 
-            v20 = [v11 lastObject];
-            [v20 addObject:v16];
+            lastObject = [v11 lastObject];
+            [lastObject addObject:v16];
           }
 
-          v13 = [v12 countByEnumeratingWithState:&v29 objects:v42 count:16];
+          v13 = [identifiers2 countByEnumeratingWithState:&v29 objects:v42 count:16];
         }
 
         while (v13);
@@ -827,7 +827,7 @@ LABEL_67:
       v21 = [v11 _pl_map:v28];
       v22 = [PLBackgroundJobWorkerPendingWorkItems alloc];
       v23 = +[PLBackgroundJobCriteria criteriaForDiscretionaryResourceWorker];
-      v24 = [(PLBackgroundJobWorkerPendingWorkItems *)v22 initWithCriteria:v23 workItemsNeedingProcessing:v21];
+      initWithZeroWorkItems = [(PLBackgroundJobWorkerPendingWorkItems *)v22 initWithCriteria:v23 workItemsNeedingProcessing:v21];
     }
 
     _Block_object_dispose(&v36, 8);
@@ -835,10 +835,10 @@ LABEL_67:
 
   else
   {
-    v24 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItems = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
   }
 
-  return v24;
+  return initWithZeroWorkItems;
 }
 
 void __102__PLBackgroundJobSharedAssetContainerUpdateWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke(uint64_t a1)
@@ -889,25 +889,25 @@ PLBackgroundJobSharedAssetContainerUpdateWorkItem *__102__PLBackgroundJobSharedA
   return v7;
 }
 
-- (id)_workItemForJobFlags:(int64_t)a3 limit:(unint64_t)a4 inLibrary:(id)a5
+- (id)_workItemForJobFlags:(int64_t)flags limit:(unint64_t)limit inLibrary:(id)library
 {
-  v8 = a5;
+  libraryCopy = library;
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __88__PLBackgroundJobSharedAssetContainerUpdateWorker__workItemForJobFlags_limit_inLibrary___block_invoke;
   v16[3] = &unk_1E7576428;
-  v17 = v8;
-  v18 = self;
+  v17 = libraryCopy;
+  selfCopy = self;
   v19 = v9;
-  v20 = a3;
-  v21 = a4;
+  flagsCopy = flags;
+  limitCopy = limit;
   v10 = v9;
-  v11 = v8;
+  v11 = libraryCopy;
   [v11 performBlockAndWait:v16];
   v12 = [PLBackgroundJobSharedAssetContainerUpdateWorkItem alloc];
   v13 = [v10 copy];
-  v14 = [(PLBackgroundJobSharedAssetContainerUpdateWorkItem *)v12 initWithFlags:a3 identifiers:v13];
+  v14 = [(PLBackgroundJobSharedAssetContainerUpdateWorkItem *)v12 initWithFlags:flags identifiers:v13];
 
   return v14;
 }

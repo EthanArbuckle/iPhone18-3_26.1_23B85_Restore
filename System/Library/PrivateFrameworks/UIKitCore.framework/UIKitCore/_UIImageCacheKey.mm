@@ -1,7 +1,7 @@
 @interface _UIImageCacheKey
-+ (id)keyWithName:(void *)a3 configuration:;
-+ (id)keyWithName:(void *)a3 configuration:(void *)a4 bundle:;
-- (BOOL)isEqual:(id)a3;
++ (id)keyWithName:(void *)name configuration:;
++ (id)keyWithName:(void *)name configuration:(void *)configuration bundle:;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -16,10 +16,10 @@
   return v4 ^ v5 ^ [(NSBundle *)self->_bundle hash];
 }
 
-+ (id)keyWithName:(void *)a3 configuration:(void *)a4 bundle:
++ (id)keyWithName:(void *)name configuration:(void *)configuration bundle:
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  configurationCopy = configuration;
   v8 = a2;
   objc_opt_self();
   v9 = objc_opt_new();
@@ -29,20 +29,20 @@
   *(v9 + 8) = v10;
 
   v12 = *(v9 + 16);
-  *(v9 + 16) = v6;
-  v13 = v6;
+  *(v9 + 16) = nameCopy;
+  v13 = nameCopy;
 
   v14 = *(v9 + 24);
-  *(v9 + 24) = v7;
+  *(v9 + 24) = configurationCopy;
 
   *(v9 + 32) &= 0xFCu;
 
   return v9;
 }
 
-+ (id)keyWithName:(void *)a3 configuration:
++ (id)keyWithName:(void *)name configuration:
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_new();
@@ -52,8 +52,8 @@
   *(v6 + 8) = v7;
 
   v9 = *(v6 + 16);
-  *(v6 + 16) = v4;
-  v10 = v4;
+  *(v6 + 16) = nameCopy;
+  v10 = nameCopy;
 
   v11 = *(v6 + 24);
   *(v6 + 24) = 0;
@@ -63,18 +63,18 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v8) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

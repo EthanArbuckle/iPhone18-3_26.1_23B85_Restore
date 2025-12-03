@@ -1,24 +1,24 @@
 @interface HUCalendarScrubberViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)_axLoadAccessibilityInformationForCalendarCell:(id)a3 atIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)_axLoadAccessibilityInformationForCalendarCell:(id)cell atIndexPath:(id)path;
 @end
 
 @implementation HUCalendarScrubberViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUCalendarScrubberViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"HUCalendarScrubberViewController" hasInstanceVariable:@"_dataSource" withType:"HUCalendarScrubberDataSource"];
-  [v3 validateClass:@"HUCalendarScrubberDataSource" hasInstanceMethod:@"dateAtIndexPath:" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUCalendarScrubberViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"HUCalendarScrubberViewController" hasInstanceVariable:@"_dataSource" withType:"HUCalendarScrubberDataSource"];
+  [validationsCopy validateClass:@"HUCalendarScrubberDataSource" hasInstanceMethod:@"dateAtIndexPath:" withFullSignature:{"@", 0}];
 }
 
-- (void)_axLoadAccessibilityInformationForCalendarCell:(id)a3 atIndexPath:(id)a4
+- (void)_axLoadAccessibilityInformationForCalendarCell:(id)cell atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 setIsAccessibilityElement:1];
+  cellCopy = cell;
+  pathCopy = path;
+  [cellCopy setIsAccessibilityElement:1];
   location = 0;
   p_location = &location;
   v19 = 0x3032000000;
@@ -31,34 +31,34 @@
   v16[4] = &unk_29F2C6B90;
   v16[7] = &location;
   v16[5] = self;
-  v8 = v7;
+  v8 = pathCopy;
   v16[6] = v8;
   AXPerformSafeBlock();
   v9 = p_location[5];
 
   _Block_object_dispose(&location, 8);
   v10 = AXDateStringForFormat();
-  [v6 setAccessibilityLabel:v10];
+  [cellCopy setAccessibilityLabel:v10];
 
-  objc_initWeak(&location, v6);
+  objc_initWeak(&location, cellCopy);
   v15[0] = MEMORY[0x29EDCA5F8];
   v15[1] = 3221225472;
   v15[2] = __108__HUCalendarScrubberViewControllerAccessibility__axLoadAccessibilityInformationForCalendarCell_atIndexPath___block_invoke_2;
   v15[3] = &unk_29F2C6BB8;
   objc_copyWeak(v16, &location);
-  [v6 _setAccessibilityTraitsBlock:v15];
+  [cellCopy _setAccessibilityTraitsBlock:v15];
   v13[0] = MEMORY[0x29EDCA5F8];
   v13[1] = 3221225472;
   v13[2] = __108__HUCalendarScrubberViewControllerAccessibility__axLoadAccessibilityInformationForCalendarCell_atIndexPath___block_invoke_3;
   v13[3] = &unk_29F2C6B48;
   objc_copyWeak(&v14, &location);
-  [v6 _setAccessibilityValueBlock:v13];
+  [cellCopy _setAccessibilityValueBlock:v13];
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
   v11[2] = __108__HUCalendarScrubberViewControllerAccessibility__axLoadAccessibilityInformationForCalendarCell_atIndexPath___block_invoke_4;
   v11[3] = &unk_29F2C6B48;
   objc_copyWeak(&v12, &location);
-  [v6 _setAccessibilityHintBlock:v11];
+  [cellCopy _setAccessibilityHintBlock:v11];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&v14);
   objc_destroyWeak(v16);
@@ -130,13 +130,13 @@ id __108__HUCalendarScrubberViewControllerAccessibility__axLoadAccessibilityInfo
   return v2;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = HUCalendarScrubberViewControllerAccessibility;
-  v6 = a4;
-  v7 = [(HUCalendarScrubberViewControllerAccessibility *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
-  [(HUCalendarScrubberViewControllerAccessibility *)self _axLoadAccessibilityInformationForCalendarCell:v7 atIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(HUCalendarScrubberViewControllerAccessibility *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
+  [(HUCalendarScrubberViewControllerAccessibility *)self _axLoadAccessibilityInformationForCalendarCell:v7 atIndexPath:pathCopy, v9.receiver, v9.super_class];
 
   return v7;
 }

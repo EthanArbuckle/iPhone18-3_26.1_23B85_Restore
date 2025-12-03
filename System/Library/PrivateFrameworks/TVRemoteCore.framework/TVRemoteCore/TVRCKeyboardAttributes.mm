@@ -1,10 +1,10 @@
 @interface TVRCKeyboardAttributes
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAttributes:(id)a3;
-- (TVRCKeyboardAttributes)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAttributes:(id)attributes;
+- (TVRCKeyboardAttributes)initWithCoder:(id)coder;
 - (id)_init;
-- (void)applyToTextField:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyToTextField:(id)field;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCKeyboardAttributes
@@ -22,56 +22,56 @@
   return result;
 }
 
-- (TVRCKeyboardAttributes)initWithCoder:(id)a3
+- (TVRCKeyboardAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TVRCKeyboardAttributes *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(TVRCKeyboardAttributes *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rtiDataPayload"];
-    rtiDataPayload = v5->_rtiDataPayload;
-    v5->_rtiDataPayload = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rtiDataPayload"];
+    rtiDataPayload = _init->_rtiDataPayload;
+    _init->_rtiDataPayload = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-    title = v5->_title;
-    v5->_title = v8;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    title = _init->_title;
+    _init->_title = v8;
 
-    v5->_likelyPINEntry = [v4 decodeBoolForKey:@"likelyPINEntry"];
-    v5->_secure = [v4 decodeBoolForKey:@"secure"];
-    v5->_enablesReturnKeyAutomatically = [v4 decodeBoolForKey:@"enablesReturnKeyAutomatically"];
-    v5->_keyboardType = [v4 decodeIntegerForKey:@"keyboardType"];
-    v5->_returnKeyType = [v4 decodeIntegerForKey:@"returnKeyType"];
-    v5->_autocapitalizationType = [v4 decodeIntegerForKey:@"autocapitalizationType"];
-    v5->_autocorrectionType = [v4 decodeIntegerForKey:@"autocorrectionType"];
-    v5->_spellCheckingType = [v4 decodeIntegerForKey:@"spellCheckingType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PINEntryAttributes"];
-    PINEntryAttributes = v5->_PINEntryAttributes;
-    v5->_PINEntryAttributes = v10;
+    _init->_likelyPINEntry = [coderCopy decodeBoolForKey:@"likelyPINEntry"];
+    _init->_secure = [coderCopy decodeBoolForKey:@"secure"];
+    _init->_enablesReturnKeyAutomatically = [coderCopy decodeBoolForKey:@"enablesReturnKeyAutomatically"];
+    _init->_keyboardType = [coderCopy decodeIntegerForKey:@"keyboardType"];
+    _init->_returnKeyType = [coderCopy decodeIntegerForKey:@"returnKeyType"];
+    _init->_autocapitalizationType = [coderCopy decodeIntegerForKey:@"autocapitalizationType"];
+    _init->_autocorrectionType = [coderCopy decodeIntegerForKey:@"autocorrectionType"];
+    _init->_spellCheckingType = [coderCopy decodeIntegerForKey:@"spellCheckingType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PINEntryAttributes"];
+    PINEntryAttributes = _init->_PINEntryAttributes;
+    _init->_PINEntryAttributes = v10;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rtiDataPayload = self->_rtiDataPayload;
-  v5 = a3;
-  [v5 encodeObject:rtiDataPayload forKey:@"rtiDataPayload"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeBool:self->_likelyPINEntry forKey:@"likelyPINEntry"];
-  [v5 encodeBool:self->_secure forKey:@"secure"];
-  [v5 encodeBool:self->_enablesReturnKeyAutomatically forKey:@"enablesReturnKeyAutomatically"];
-  [v5 encodeInteger:self->_keyboardType forKey:@"keyboardType"];
-  [v5 encodeInteger:self->_returnKeyType forKey:@"returnKeyType"];
-  [v5 encodeInteger:self->_autocapitalizationType forKey:@"autocapitalizationType"];
-  [v5 encodeInteger:self->_autocorrectionType forKey:@"autocorrectionType"];
-  [v5 encodeInteger:self->_spellCheckingType forKey:@"spellCheckingType"];
-  [v5 encodeObject:self->_PINEntryAttributes forKey:@"PINEntryAttributes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rtiDataPayload forKey:@"rtiDataPayload"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeBool:self->_likelyPINEntry forKey:@"likelyPINEntry"];
+  [coderCopy encodeBool:self->_secure forKey:@"secure"];
+  [coderCopy encodeBool:self->_enablesReturnKeyAutomatically forKey:@"enablesReturnKeyAutomatically"];
+  [coderCopy encodeInteger:self->_keyboardType forKey:@"keyboardType"];
+  [coderCopy encodeInteger:self->_returnKeyType forKey:@"returnKeyType"];
+  [coderCopy encodeInteger:self->_autocapitalizationType forKey:@"autocapitalizationType"];
+  [coderCopy encodeInteger:self->_autocorrectionType forKey:@"autocorrectionType"];
+  [coderCopy encodeInteger:self->_spellCheckingType forKey:@"spellCheckingType"];
+  [coderCopy encodeObject:self->_PINEntryAttributes forKey:@"PINEntryAttributes"];
 }
 
-- (BOOL)isEqualToAttributes:(id)a3
+- (BOOL)isEqualToAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   rtiDataPayload = self->_rtiDataPayload;
   if (!rtiDataPayload)
   {
@@ -81,14 +81,14 @@
       goto LABEL_23;
     }
 
-    if (!v4[2] || ![(NSString *)title isEqualToString:?])
+    if (!attributesCopy[2] || ![(NSString *)title isEqualToString:?])
     {
       goto LABEL_19;
     }
 
     if (self->_title)
     {
-      if (!v4[2])
+      if (!attributesCopy[2])
       {
         goto LABEL_19;
       }
@@ -97,15 +97,15 @@
     else
     {
 LABEL_23:
-      if (v4[2])
+      if (attributesCopy[2])
       {
         goto LABEL_19;
       }
     }
 
-    if (self->_likelyPINEntry == *(v4 + 8) && self->_secure == *(v4 + 9) && self->_enablesReturnKeyAutomatically == *(v4 + 10) && self->_keyboardType == v4[6] && self->_returnKeyType == v4[7] && self->_autocapitalizationType == v4[8] && self->_autocorrectionType == v4[9])
+    if (self->_likelyPINEntry == *(attributesCopy + 8) && self->_secure == *(attributesCopy + 9) && self->_enablesReturnKeyAutomatically == *(attributesCopy + 10) && self->_keyboardType == attributesCopy[6] && self->_returnKeyType == attributesCopy[7] && self->_autocapitalizationType == attributesCopy[8] && self->_autocorrectionType == attributesCopy[9])
     {
-      v6 = self->_spellCheckingType == v4[10];
+      v6 = self->_spellCheckingType == attributesCopy[10];
       goto LABEL_20;
     }
 
@@ -114,36 +114,36 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v4)
+  if (!attributesCopy)
   {
     goto LABEL_19;
   }
 
-  v6 = [(RTIDataPayload *)rtiDataPayload isEqual:v4[5]];
+  v6 = [(RTIDataPayload *)rtiDataPayload isEqual:attributesCopy[5]];
 LABEL_20:
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TVRCKeyboardAttributes *)self isEqualToAttributes:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TVRCKeyboardAttributes *)self isEqualToAttributes:equalCopy];
 
   return v5;
 }
 
-- (void)applyToTextField:(id)a3
+- (void)applyToTextField:(id)field
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 _rtiSourceSession];
-  v6 = v5;
-  if (!v5 || !self->_rtiDataPayload)
+  fieldCopy = field;
+  _rtiSourceSession = [fieldCopy _rtiSourceSession];
+  v6 = _rtiSourceSession;
+  if (!_rtiSourceSession || !self->_rtiDataPayload)
   {
-    [v4 setSecureTextEntry:self->_secure];
-    [v4 setEnablesReturnKeyAutomatically:self->_enablesReturnKeyAutomatically];
+    [fieldCopy setSecureTextEntry:self->_secure];
+    [fieldCopy setEnablesReturnKeyAutomatically:self->_enablesReturnKeyAutomatically];
     keyboardType = self->_keyboardType;
     if (keyboardType > 6)
     {
@@ -173,7 +173,7 @@ LABEL_20:
       if (keyboardType == 7 || (v16 = keyboardType == 8, keyboardType = 0, !v16))
       {
 LABEL_33:
-        [v4 setKeyboardType:keyboardType];
+        [fieldCopy setKeyboardType:keyboardType];
         if ((self->_returnKeyType - 1) >= 0xB)
         {
           returnKeyType = 0;
@@ -184,7 +184,7 @@ LABEL_33:
           returnKeyType = self->_returnKeyType;
         }
 
-        [v4 setReturnKeyType:returnKeyType];
+        [fieldCopy setReturnKeyType:returnKeyType];
         if ((self->_autocapitalizationType - 1) >= 3)
         {
           autocapitalizationType = 0;
@@ -195,7 +195,7 @@ LABEL_33:
           autocapitalizationType = self->_autocapitalizationType;
         }
 
-        [v4 setAutocapitalizationType:autocapitalizationType];
+        [fieldCopy setAutocapitalizationType:autocapitalizationType];
         if (self->_autocorrectionType == 2)
         {
           v19 = 2;
@@ -206,7 +206,7 @@ LABEL_33:
           v19 = 1;
         }
 
-        [v4 setAutocorrectionType:v19];
+        [fieldCopy setAutocorrectionType:v19];
         spellCheckingType = self->_spellCheckingType;
         if (spellCheckingType == 2)
         {
@@ -218,7 +218,7 @@ LABEL_33:
           v21 = spellCheckingType == 1;
         }
 
-        [v4 setSpellCheckingType:v21];
+        [fieldCopy setSpellCheckingType:v21];
         goto LABEL_46;
       }
     }
@@ -265,23 +265,23 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  [v5 handleTextActionPayload:?];
+  [_rtiSourceSession handleTextActionPayload:?];
   rtiDataPayload = self->_rtiDataPayload;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = self->_rtiDataPayload;
-    v9 = [(RTIDataPayload *)v8 documentTraits];
-    v10 = [v9 prompt];
-    [v4 setPlaceholder:v10];
+    documentTraits = [(RTIDataPayload *)v8 documentTraits];
+    prompt = [documentTraits prompt];
+    [fieldCopy setPlaceholder:prompt];
 
     v11 = _TVRCRemoteTextInputLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(RTIDataPayload *)v8 documentTraits];
-      v13 = [v12 prompt];
+      documentTraits2 = [(RTIDataPayload *)v8 documentTraits];
+      prompt2 = [documentTraits2 prompt];
       v23 = 138412290;
-      v24 = v13;
+      v24 = prompt2;
       _os_log_impl(&dword_26CF7F000, v11, OS_LOG_TYPE_DEFAULT, "Setting textfield prompt to '%@'", &v23, 0xCu);
     }
   }

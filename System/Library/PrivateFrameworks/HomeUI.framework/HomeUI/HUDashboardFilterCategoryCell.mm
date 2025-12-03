@@ -4,25 +4,25 @@
 - (BOOL)isRearranging;
 - (HFItem)item;
 - (HUBackgroundEffectViewGrouping)backgroundEffectGrouper;
-- (HUDashboardFilterCategoryCell)initWithFrame:(CGRect)a3;
+- (HUDashboardFilterCategoryCell)initWithFrame:(CGRect)frame;
 - (HUGridCellLayoutOptions)layoutOptions;
 - (UICellConfigurationState)_bridgedConfigurationState;
 - (unint64_t)backgroundDisplayStyle;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)prepareForReuse;
-- (void)setBackgroundDisplayStyle:(unint64_t)a3;
-- (void)setBackgroundEffectGrouper:(id)a3;
-- (void)setCellContentsHidden:(BOOL)a3;
-- (void)setItem:(id)a3;
-- (void)setLayoutOptions:(id)a3;
-- (void)setRearranging:(BOOL)a3;
+- (void)setBackgroundDisplayStyle:(unint64_t)style;
+- (void)setBackgroundEffectGrouper:(id)grouper;
+- (void)setCellContentsHidden:(BOOL)hidden;
+- (void)setItem:(id)item;
+- (void)setLayoutOptions:(id)options;
+- (void)setRearranging:(BOOL)rearranging;
 @end
 
 @implementation HUDashboardFilterCategoryCell
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CF0766C();
 }
 
@@ -35,8 +35,8 @@
   v7 = type metadata accessor for DashboardFilterCategoryCell();
   v16.receiver = self;
   v16.super_class = v7;
-  v8 = self;
-  v9 = [(HUDashboardFilterCategoryCell *)&v16 _bridgedConfigurationState];
+  selfCopy = self;
+  _bridgedConfigurationState = [(HUDashboardFilterCategoryCell *)&v16 _bridgedConfigurationState];
   sub_20D5660C8();
 
   v10 = sub_20D566098();
@@ -65,13 +65,13 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
   v5 = OBJC_IVAR___HUDashboardFilterCategoryCell_layoutOptions;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = options;
+  optionsCopy = options;
 }
 
 - (BOOL)areCellContentsHidden
@@ -81,11 +81,11 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setCellContentsHidden:(BOOL)a3
+- (void)setCellContentsHidden:(BOOL)hidden
 {
   v5 = OBJC_IVAR___HUDashboardFilterCategoryCell_areCellContentsHidden;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = hidden;
 }
 
 - (HFItem)item
@@ -95,29 +95,29 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
   v5 = OBJC_IVAR___HUDashboardFilterCategoryCell_item;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.super.super.super.isa + v5) = item;
+  itemCopy = item;
+  selfCopy = self;
 
-  [(HUDashboardFilterCategoryCell *)v8 setNeedsUpdateConfiguration];
+  [(HUDashboardFilterCategoryCell *)selfCopy setNeedsUpdateConfiguration];
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_20D5660D8();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D5660C8();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_20D5660B8();
   v10 = type metadata accessor for DashboardFilterCategoryCell();
-  v11.receiver = v8;
+  v11.receiver = selfCopy;
   v11.super_class = v10;
   [(HUDashboardFilterCategoryCell *)&v11 _bridgedUpdateConfigurationUsingState:v9];
 
@@ -134,11 +134,11 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setBackgroundDisplayStyle:(unint64_t)a3
+- (void)setBackgroundDisplayStyle:(unint64_t)style
 {
   v5 = OBJC_IVAR___HUDashboardFilterCategoryCell_backgroundDisplayStyle;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = style;
 }
 
 - (HUBackgroundEffectViewGrouping)backgroundEffectGrouper
@@ -149,14 +149,14 @@
   return v2;
 }
 
-- (void)setBackgroundEffectGrouper:(id)a3
+- (void)setBackgroundEffectGrouper:(id)grouper
 {
   v5 = OBJC_IVAR___HUDashboardFilterCategoryCell_backgroundEffectGrouper;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = grouper;
   swift_unknownObjectRetain_n();
-  v7 = self;
+  selfCopy = self;
   sub_20CF0855C(v6);
   swift_unknownObjectRelease();
 
@@ -170,18 +170,18 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setRearranging:(BOOL)a3
+- (void)setRearranging:(BOOL)rearranging
 {
-  v4 = self;
-  sub_20CF092D8(a3);
+  selfCopy = self;
+  sub_20CF092D8(rearranging);
 }
 
-- (HUDashboardFilterCategoryCell)initWithFrame:(CGRect)a3
+- (HUDashboardFilterCategoryCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___HUDashboardFilterCategoryCell_layoutOptions) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___HUDashboardFilterCategoryCell_areCellContentsHidden) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___HUDashboardFilterCategoryCell_item) = 0;

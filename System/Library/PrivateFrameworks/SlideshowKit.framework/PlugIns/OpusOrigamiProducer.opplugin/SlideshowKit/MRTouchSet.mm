@@ -2,15 +2,15 @@
 - (BOOL)isActive;
 - (CGPoint)centroid;
 - (MRTouchSet)init;
-- (MRTouchSet)initWithPosition:(CGPoint)a3 andCountOfTouches:(unint64_t)a4;
-- (MRTouchSet)initWithTouch:(id)a3;
-- (MRTouchSet)initWithTouches:(id)a3;
-- (MRTouchSet)initWithUITouches:(id)a3 inView:(id)a4 withLocationFactor:(CGSize)a5;
+- (MRTouchSet)initWithPosition:(CGPoint)position andCountOfTouches:(unint64_t)touches;
+- (MRTouchSet)initWithTouch:(id)touch;
+- (MRTouchSet)initWithTouches:(id)touches;
+- (MRTouchSet)initWithUITouches:(id)touches inView:(id)view withLocationFactor:(CGSize)factor;
 - (double)rotation;
 - (double)scale;
 - (id)description;
-- (id)updateWithPosition:(CGPoint)a3 andCountOfTouches:(unint64_t)a4;
-- (id)updateWithUITouches:(id)a3 inView:(id)a4;
+- (id)updateWithPosition:(CGPoint)position andCountOfTouches:(unint64_t)touches;
+- (id)updateWithUITouches:(id)touches inView:(id)view;
 - (unint64_t)countOfActiveTouches;
 - (void)cancelAllTouches;
 - (void)dealloc;
@@ -33,23 +33,23 @@
   return result;
 }
 
-- (MRTouchSet)initWithTouch:(id)a3
+- (MRTouchSet)initWithTouch:(id)touch
 {
   v4 = [(MRTouchSet *)self init];
   if (v4)
   {
-    v4->_touches = [[NSMutableSet alloc] initWithObjects:{a3, 0}];
+    v4->_touches = [[NSMutableSet alloc] initWithObjects:{touch, 0}];
   }
 
   return v4;
 }
 
-- (MRTouchSet)initWithTouches:(id)a3
+- (MRTouchSet)initWithTouches:(id)touches
 {
   v4 = [(MRTouchSet *)self init];
   if (v4)
   {
-    v4->_touches = [[NSMutableSet alloc] initWithSet:a3];
+    v4->_touches = [[NSMutableSet alloc] initWithSet:touches];
   }
 
   return v4;
@@ -96,10 +96,10 @@
   }
 }
 
-- (MRTouchSet)initWithUITouches:(id)a3 inView:(id)a4 withLocationFactor:(CGSize)a5
+- (MRTouchSet)initWithUITouches:(id)touches inView:(id)view withLocationFactor:(CGSize)factor
 {
-  height = a5.height;
-  width = a5.width;
+  height = factor.height;
+  width = factor.width;
   v9 = [(MRTouchSet *)self init];
   if (v9)
   {
@@ -111,7 +111,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v10 = [touches countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -123,11 +123,11 @@
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(touches);
           }
 
           v14 = *(*(&v19 + 1) + 8 * v13);
-          v15 = [[MRTouch alloc] initWithUITouch:v14 inView:a4];
+          v15 = [[MRTouch alloc] initWithUITouch:v14 inView:view];
           [(MRTouch *)v15 location];
           [(MRTouch *)v15 setLocation:v16 * v9->_locationFactor.width, v17 * v9->_locationFactor.height];
           [(NSMutableSet *)v9->_touches addObject:v15];
@@ -137,7 +137,7 @@
         }
 
         while (v11 != v13);
-        v11 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [touches countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v11);
@@ -147,15 +147,15 @@
   return v9;
 }
 
-- (id)updateWithUITouches:(id)a3 inView:(id)a4
+- (id)updateWithUITouches:(id)touches inView:(id)view
 {
-  v7 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [a3 count]);
+  v7 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [touches count]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = a3;
-  v9 = [a3 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  touchesCopy = touches;
+  v9 = [touches countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v9)
   {
     v10 = v9;
@@ -167,7 +167,7 @@
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(touchesCopy);
         }
 
         v13 = *(*(&v30 + 1) + 8 * v12);
@@ -176,14 +176,14 @@
         if (v15)
         {
           v16 = v15;
-          [v13 locationInView:a4];
+          [v13 locationInView:view];
           v18 = v17;
           v20 = v19;
-          [a4 contentScaleFactor];
+          [view contentScaleFactor];
           v22 = v18 * (v21 * self->_locationFactor.width);
-          [a4 bounds];
+          [view bounds];
           v24 = v23 - v20;
-          [a4 contentScaleFactor];
+          [view contentScaleFactor];
           [(MRTouch *)v16 setLocation:v22, self->_locationFactor.height * (v25 * v24)];
           [v13 timestamp];
           [(MRTouch *)v16 setTimestamp:?];
@@ -196,7 +196,7 @@ LABEL_8:
 
         if (![v13 phase])
         {
-          v16 = [[MRTouch alloc] initWithUITouch:v13 inView:a4];
+          v16 = [[MRTouch alloc] initWithUITouch:v13 inView:view];
           [(MRTouch *)v16 location];
           [(MRTouch *)v16 setLocation:v26 * self->_locationFactor.width, v27 * self->_locationFactor.height];
           [(NSMutableSet *)self->_touches addObject:v16];
@@ -213,7 +213,7 @@ LABEL_10:
       }
 
       while (v10 != v12);
-      v28 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v28 = [touchesCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
       v10 = v28;
     }
 
@@ -223,14 +223,14 @@ LABEL_10:
   return v7;
 }
 
-- (MRTouchSet)initWithPosition:(CGPoint)a3 andCountOfTouches:(unint64_t)a4
+- (MRTouchSet)initWithPosition:(CGPoint)position andCountOfTouches:(unint64_t)touches
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v7 = [(MRTouchSet *)self init];
   if (v7)
   {
-    for (v7->_touches = objc_alloc_init(NSMutableSet); a4; --a4)
+    for (v7->_touches = objc_alloc_init(NSMutableSet); touches; --touches)
     {
       v8 = objc_alloc_init(MRTouch);
       [(MRTouch *)v8 setLocation:x, y];
@@ -243,11 +243,11 @@ LABEL_10:
   return v7;
 }
 
-- (id)updateWithPosition:(CGPoint)a3 andCountOfTouches:(unint64_t)a4
+- (id)updateWithPosition:(CGPoint)position andCountOfTouches:(unint64_t)touches
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [NSMutableSet setWithCapacity:a4];
+  y = position.y;
+  x = position.x;
+  v7 = [NSMutableSet setWithCapacity:touches];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;

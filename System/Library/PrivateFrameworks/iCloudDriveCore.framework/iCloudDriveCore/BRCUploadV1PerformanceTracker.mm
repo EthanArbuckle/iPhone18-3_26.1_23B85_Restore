@@ -1,41 +1,41 @@
 @interface BRCUploadV1PerformanceTracker
-- (id)_initWithCapacity:(unint64_t)a3;
-- (void)_stopTrackingItemWithIdentifier:(id)a3 endEvent:(BOOL)a4;
+- (id)_initWithCapacity:(unint64_t)capacity;
+- (void)_stopTrackingItemWithIdentifier:(id)identifier endEvent:(BOOL)event;
 - (void)close;
 - (void)dealloc;
-- (void)startTrackingItemWithIdentifier:(id)a3;
+- (void)startTrackingItemWithIdentifier:(id)identifier;
 @end
 
 @implementation BRCUploadV1PerformanceTracker
 
-- (id)_initWithCapacity:(unint64_t)a3
+- (id)_initWithCapacity:(unint64_t)capacity
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = capacity;
+  if (capacity)
   {
     v8.receiver = self;
     v8.super_class = BRCUploadV1PerformanceTracker;
     v4 = [(BRCUploadV1PerformanceTracker *)&v8 init];
     if (v4)
     {
-      v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v3];
+      v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:selfCopy];
       itemsToSignpostTracker = v4->_itemsToSignpostTracker;
       v4->_itemsToSignpostTracker = v5;
 
-      v4->_maxCapacity = v3;
+      v4->_maxCapacity = selfCopy;
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)startTrackingItemWithIdentifier:(id)a3
+- (void)startTrackingItemWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_itemsToSignpostTracker;
   objc_sync_enter(v5);
   if ([(NSMutableDictionary *)self->_itemsToSignpostTracker count]>= self->_maxCapacity)
@@ -55,7 +55,7 @@
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_itemsToSignpostTracker objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_itemsToSignpostTracker objectForKeyedSubscript:identifierCopy];
 
     if (v6)
     {
@@ -64,7 +64,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v15 = v4;
+        v15 = identifierCopy;
         v16 = 2112;
         v17 = v7;
         v9 = "[WARNING] Item with identifier %@ is already tracked%@";
@@ -80,7 +80,7 @@ LABEL_7:
       v7 = [[BRCSignpostTracker alloc] initWithLabel:3];
       if (v7)
       {
-        [(NSMutableDictionary *)self->_itemsToSignpostTracker setObject:v7 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_itemsToSignpostTracker setObject:v7 forKeyedSubscript:identifierCopy];
         goto LABEL_9;
       }
 
@@ -99,17 +99,17 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopTrackingItemWithIdentifier:(id)a3 endEvent:(BOOL)a4
+- (void)_stopTrackingItemWithIdentifier:(id)identifier endEvent:(BOOL)event
 {
-  v4 = a4;
-  v9 = a3;
+  eventCopy = event;
+  identifierCopy = identifier;
   v6 = self->_itemsToSignpostTracker;
   objc_sync_enter(v6);
-  v7 = [(NSMutableDictionary *)self->_itemsToSignpostTracker objectForKeyedSubscript:v9];
+  v7 = [(NSMutableDictionary *)self->_itemsToSignpostTracker objectForKeyedSubscript:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    if (v4)
+    if (eventCopy)
     {
       [v7 endSignpostEvent];
     }
@@ -119,7 +119,7 @@ LABEL_9:
       [v7 dropSignpostEvent];
     }
 
-    [(NSMutableDictionary *)self->_itemsToSignpostTracker removeObjectForKey:v9];
+    [(NSMutableDictionary *)self->_itemsToSignpostTracker removeObjectForKey:identifierCopy];
   }
 
   objc_sync_exit(v6);
@@ -149,8 +149,8 @@ LABEL_9:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(NSMutableDictionary *)self->_itemsToSignpostTracker allValues];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_itemsToSignpostTracker allValues];
+  v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = *v13;
@@ -161,14 +161,14 @@ LABEL_9:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v12 + 1) + 8 * v10++) dropSignpostEvent];
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);

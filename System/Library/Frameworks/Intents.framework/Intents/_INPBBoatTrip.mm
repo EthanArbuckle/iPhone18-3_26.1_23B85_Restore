@@ -1,55 +1,55 @@
 @interface _INPBBoatTrip
-- (BOOL)isEqual:(id)a3;
-- (_INPBBoatTrip)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBBoatTrip)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBoatName:(id)a3;
-- (void)setBoatNumber:(id)a3;
-- (void)setProvider:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBoatName:(id)name;
+- (void)setBoatNumber:(id)number;
+- (void)setProvider:(id)provider;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBBoatTrip
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"arrivalBoatTerminalLocation"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  arrivalBoatTerminalLocation = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
+  dictionaryRepresentation = [arrivalBoatTerminalLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"arrivalBoatTerminalLocation"];
 
   if (self->_boatName)
   {
-    v6 = [(_INPBBoatTrip *)self boatName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"boatName"];
+    boatName = [(_INPBBoatTrip *)self boatName];
+    v7 = [boatName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"boatName"];
   }
 
   if (self->_boatNumber)
   {
-    v8 = [(_INPBBoatTrip *)self boatNumber];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"boatNumber"];
+    boatNumber = [(_INPBBoatTrip *)self boatNumber];
+    v9 = [boatNumber copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"boatNumber"];
   }
 
-  v10 = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"departureBoatTerminalLocation"];
+  departureBoatTerminalLocation = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
+  dictionaryRepresentation2 = [departureBoatTerminalLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"departureBoatTerminalLocation"];
 
   if (self->_provider)
   {
-    v12 = [(_INPBBoatTrip *)self provider];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"provider"];
+    provider = [(_INPBBoatTrip *)self provider];
+    v13 = [provider copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"provider"];
   }
 
-  v14 = [(_INPBBoatTrip *)self tripDuration];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"tripDuration"];
+  tripDuration = [(_INPBBoatTrip *)self tripDuration];
+  dictionaryRepresentation3 = [tripDuration dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"tripDuration"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -62,28 +62,28 @@
   return v6 ^ v7 ^ [(_INPBDateTimeRange *)self->_tripDuration hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
-  v6 = [v4 arrivalBoatTerminalLocation];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBoatTerminalLocation = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
+  arrivalBoatTerminalLocation2 = [equalCopy arrivalBoatTerminalLocation];
+  if ((arrivalBoatTerminalLocation != 0) == (arrivalBoatTerminalLocation2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
-  if (v7)
+  arrivalBoatTerminalLocation3 = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
+  if (arrivalBoatTerminalLocation3)
   {
-    v8 = v7;
-    v9 = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
-    v10 = [v4 arrivalBoatTerminalLocation];
-    v11 = [v9 isEqual:v10];
+    v8 = arrivalBoatTerminalLocation3;
+    arrivalBoatTerminalLocation4 = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
+    arrivalBoatTerminalLocation5 = [equalCopy arrivalBoatTerminalLocation];
+    v11 = [arrivalBoatTerminalLocation4 isEqual:arrivalBoatTerminalLocation5];
 
     if (!v11)
     {
@@ -95,20 +95,20 @@
   {
   }
 
-  v5 = [(_INPBBoatTrip *)self boatName];
-  v6 = [v4 boatName];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBoatTerminalLocation = [(_INPBBoatTrip *)self boatName];
+  arrivalBoatTerminalLocation2 = [equalCopy boatName];
+  if ((arrivalBoatTerminalLocation != 0) == (arrivalBoatTerminalLocation2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(_INPBBoatTrip *)self boatName];
-  if (v12)
+  boatName = [(_INPBBoatTrip *)self boatName];
+  if (boatName)
   {
-    v13 = v12;
-    v14 = [(_INPBBoatTrip *)self boatName];
-    v15 = [v4 boatName];
-    v16 = [v14 isEqual:v15];
+    v13 = boatName;
+    boatName2 = [(_INPBBoatTrip *)self boatName];
+    boatName3 = [equalCopy boatName];
+    v16 = [boatName2 isEqual:boatName3];
 
     if (!v16)
     {
@@ -120,20 +120,20 @@
   {
   }
 
-  v5 = [(_INPBBoatTrip *)self boatNumber];
-  v6 = [v4 boatNumber];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBoatTerminalLocation = [(_INPBBoatTrip *)self boatNumber];
+  arrivalBoatTerminalLocation2 = [equalCopy boatNumber];
+  if ((arrivalBoatTerminalLocation != 0) == (arrivalBoatTerminalLocation2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(_INPBBoatTrip *)self boatNumber];
-  if (v17)
+  boatNumber = [(_INPBBoatTrip *)self boatNumber];
+  if (boatNumber)
   {
-    v18 = v17;
-    v19 = [(_INPBBoatTrip *)self boatNumber];
-    v20 = [v4 boatNumber];
-    v21 = [v19 isEqual:v20];
+    v18 = boatNumber;
+    boatNumber2 = [(_INPBBoatTrip *)self boatNumber];
+    boatNumber3 = [equalCopy boatNumber];
+    v21 = [boatNumber2 isEqual:boatNumber3];
 
     if (!v21)
     {
@@ -145,20 +145,20 @@
   {
   }
 
-  v5 = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
-  v6 = [v4 departureBoatTerminalLocation];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBoatTerminalLocation = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
+  arrivalBoatTerminalLocation2 = [equalCopy departureBoatTerminalLocation];
+  if ((arrivalBoatTerminalLocation != 0) == (arrivalBoatTerminalLocation2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
-  if (v22)
+  departureBoatTerminalLocation = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
+  if (departureBoatTerminalLocation)
   {
-    v23 = v22;
-    v24 = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
-    v25 = [v4 departureBoatTerminalLocation];
-    v26 = [v24 isEqual:v25];
+    v23 = departureBoatTerminalLocation;
+    departureBoatTerminalLocation2 = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
+    departureBoatTerminalLocation3 = [equalCopy departureBoatTerminalLocation];
+    v26 = [departureBoatTerminalLocation2 isEqual:departureBoatTerminalLocation3];
 
     if (!v26)
     {
@@ -170,20 +170,20 @@
   {
   }
 
-  v5 = [(_INPBBoatTrip *)self provider];
-  v6 = [v4 provider];
-  if ((v5 != 0) == (v6 == 0))
+  arrivalBoatTerminalLocation = [(_INPBBoatTrip *)self provider];
+  arrivalBoatTerminalLocation2 = [equalCopy provider];
+  if ((arrivalBoatTerminalLocation != 0) == (arrivalBoatTerminalLocation2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_INPBBoatTrip *)self provider];
-  if (v27)
+  provider = [(_INPBBoatTrip *)self provider];
+  if (provider)
   {
-    v28 = v27;
-    v29 = [(_INPBBoatTrip *)self provider];
-    v30 = [v4 provider];
-    v31 = [v29 isEqual:v30];
+    v28 = provider;
+    provider2 = [(_INPBBoatTrip *)self provider];
+    provider3 = [equalCopy provider];
+    v31 = [provider2 isEqual:provider3];
 
     if (!v31)
     {
@@ -195,12 +195,12 @@
   {
   }
 
-  v5 = [(_INPBBoatTrip *)self tripDuration];
-  v6 = [v4 tripDuration];
-  if ((v5 != 0) != (v6 == 0))
+  arrivalBoatTerminalLocation = [(_INPBBoatTrip *)self tripDuration];
+  arrivalBoatTerminalLocation2 = [equalCopy tripDuration];
+  if ((arrivalBoatTerminalLocation != 0) != (arrivalBoatTerminalLocation2 == 0))
   {
-    v32 = [(_INPBBoatTrip *)self tripDuration];
-    if (!v32)
+    tripDuration = [(_INPBBoatTrip *)self tripDuration];
+    if (!tripDuration)
     {
 
 LABEL_35:
@@ -208,10 +208,10 @@ LABEL_35:
       goto LABEL_33;
     }
 
-    v33 = v32;
-    v34 = [(_INPBBoatTrip *)self tripDuration];
-    v35 = [v4 tripDuration];
-    v36 = [v34 isEqual:v35];
+    v33 = tripDuration;
+    tripDuration2 = [(_INPBBoatTrip *)self tripDuration];
+    tripDuration3 = [equalCopy tripDuration];
+    v36 = [tripDuration2 isEqual:tripDuration3];
 
     if (v36)
     {
@@ -231,130 +231,130 @@ LABEL_33:
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBBoatTrip allocWithZone:](_INPBBoatTrip init];
-  v6 = [(_INPBLocationValue *)self->_arrivalBoatTerminalLocation copyWithZone:a3];
+  v6 = [(_INPBLocationValue *)self->_arrivalBoatTerminalLocation copyWithZone:zone];
   [(_INPBBoatTrip *)v5 setArrivalBoatTerminalLocation:v6];
 
-  v7 = [(NSString *)self->_boatName copyWithZone:a3];
+  v7 = [(NSString *)self->_boatName copyWithZone:zone];
   [(_INPBBoatTrip *)v5 setBoatName:v7];
 
-  v8 = [(NSString *)self->_boatNumber copyWithZone:a3];
+  v8 = [(NSString *)self->_boatNumber copyWithZone:zone];
   [(_INPBBoatTrip *)v5 setBoatNumber:v8];
 
-  v9 = [(_INPBLocationValue *)self->_departureBoatTerminalLocation copyWithZone:a3];
+  v9 = [(_INPBLocationValue *)self->_departureBoatTerminalLocation copyWithZone:zone];
   [(_INPBBoatTrip *)v5 setDepartureBoatTerminalLocation:v9];
 
-  v10 = [(NSString *)self->_provider copyWithZone:a3];
+  v10 = [(NSString *)self->_provider copyWithZone:zone];
   [(_INPBBoatTrip *)v5 setProvider:v10];
 
-  v11 = [(_INPBDateTimeRange *)self->_tripDuration copyWithZone:a3];
+  v11 = [(_INPBDateTimeRange *)self->_tripDuration copyWithZone:zone];
   [(_INPBBoatTrip *)v5 setTripDuration:v11];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBBoatTrip *)self data];
+  coderCopy = coder;
+  data = [(_INPBBoatTrip *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBBoatTrip)initWithCoder:(id)a3
+- (_INPBBoatTrip)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBBoatTrip *)self initWithData:v6];
+    self = [(_INPBBoatTrip *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
-  v4 = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
+  toCopy = to;
+  arrivalBoatTerminalLocation = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
 
-  if (v4)
+  if (arrivalBoatTerminalLocation)
   {
-    v5 = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
+    arrivalBoatTerminalLocation2 = [(_INPBBoatTrip *)self arrivalBoatTerminalLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBBoatTrip *)self boatName];
+  boatName = [(_INPBBoatTrip *)self boatName];
 
-  if (v6)
+  if (boatName)
   {
     boatName = self->_boatName;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_INPBBoatTrip *)self boatNumber];
+  boatNumber = [(_INPBBoatTrip *)self boatNumber];
 
-  if (v8)
+  if (boatNumber)
   {
     boatNumber = self->_boatNumber;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
+  departureBoatTerminalLocation = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
 
-  if (v10)
+  if (departureBoatTerminalLocation)
   {
-    v11 = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
+    departureBoatTerminalLocation2 = [(_INPBBoatTrip *)self departureBoatTerminalLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBBoatTrip *)self provider];
+  provider = [(_INPBBoatTrip *)self provider];
 
-  if (v12)
+  if (provider)
   {
     provider = self->_provider;
     PBDataWriterWriteStringField();
   }
 
-  v14 = [(_INPBBoatTrip *)self tripDuration];
+  tripDuration = [(_INPBBoatTrip *)self tripDuration];
 
-  v15 = v17;
-  if (v14)
+  v15 = toCopy;
+  if (tripDuration)
   {
-    v16 = [(_INPBBoatTrip *)self tripDuration];
+    tripDuration2 = [(_INPBBoatTrip *)self tripDuration];
     PBDataWriterWriteSubmessage();
 
-    v15 = v17;
+    v15 = toCopy;
   }
 }
 
-- (void)setProvider:(id)a3
+- (void)setProvider:(id)provider
 {
-  v4 = [a3 copy];
+  v4 = [provider copy];
   provider = self->_provider;
   self->_provider = v4;
 
   MEMORY[0x1EEE66BB8](v4, provider);
 }
 
-- (void)setBoatNumber:(id)a3
+- (void)setBoatNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   boatNumber = self->_boatNumber;
   self->_boatNumber = v4;
 
   MEMORY[0x1EEE66BB8](v4, boatNumber);
 }
 
-- (void)setBoatName:(id)a3
+- (void)setBoatName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   boatName = self->_boatName;
   self->_boatName = v4;
 

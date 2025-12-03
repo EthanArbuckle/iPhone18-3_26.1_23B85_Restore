@@ -1,54 +1,54 @@
 @interface UIViewController
-+ (id)jsa_topMostViewControllerForWindow:(id)a3;
-+ (void)jsa_presentViewController:(id)a3 options:(id)a4 animated:(BOOL)a5 completion:(id)a6;
++ (id)jsa_topMostViewControllerForWindow:(id)window;
++ (void)jsa_presentViewController:(id)controller options:(id)options animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation UIViewController
 
-+ (id)jsa_topMostViewControllerForWindow:(id)a3
++ (id)jsa_topMostViewControllerForWindow:(id)window
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  windowCopy = window;
+  v4 = windowCopy;
+  if (windowCopy)
   {
-    v5 = v3;
+    keyWindow = windowCopy;
   }
 
   else
   {
     v6 = +[JSABridge sharedInstance];
-    v7 = [v6 windowManager];
-    v5 = [v7 keyWindow];
+    windowManager = [v6 windowManager];
+    keyWindow = [windowManager keyWindow];
   }
 
-  v8 = [v5 rootViewController];
-  v9 = [v8 presentedViewController];
+  rootViewController = [keyWindow rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v9)
+  if (presentedViewController)
   {
     do
     {
-      v10 = [v8 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v11 = [v10 presentedViewController];
+      v10PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v8 = v10;
+      rootViewController = presentedViewController2;
     }
 
-    while (v11);
+    while (v10PresentedViewController);
   }
 
   else
   {
-    v10 = v8;
+    presentedViewController2 = rootViewController;
   }
 
-  return v10;
+  return presentedViewController2;
 }
 
-+ (void)jsa_presentViewController:(id)a3 options:(id)a4 animated:(BOOL)a5 completion:(id)a6
++ (void)jsa_presentViewController:(id)controller options:(id)options animated:(BOOL)animated completion:(id)completion
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(completion);
   v9 = sub_8434C();
   if (v8)
   {
@@ -62,8 +62,8 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  _sSo16UIViewControllerC5JSAppE7present_7options8animated10completionyAB_SDys11AnyHashableVypGSbyycSgtFZ_0(v11, v9, a5, v8, v10);
+  controllerCopy = controller;
+  _sSo16UIViewControllerC5JSAppE7present_7options8animated10completionyAB_SDys11AnyHashableVypGSbyycSgtFZ_0(controllerCopy, v9, animated, v8, v10);
   sub_2C0EC(v8);
 }
 

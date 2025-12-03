@@ -6,21 +6,21 @@
 
 - (uint64_t)weight
 {
-  v2 = [a1 technology];
-  v3 = [v2 string];
+  technology = [self technology];
+  string = [technology string];
 
-  v4 = [v3 characterAtIndex:0];
+  v4 = [string characterAtIndex:0];
   switch(v4)
   {
     case 'v':
       v5 = 1;
       break;
     case 'n':
-      v6 = [a1 name];
-      v7 = [a1 primaryLanguage];
-      v8 = [v6 hasPrefix:v7];
+      name = [self name];
+      primaryLanguage = [self primaryLanguage];
+      v8 = [name hasPrefix:primaryLanguage];
 
-      v9 = [v3 hasPrefix:@"neural"];
+      v9 = [string hasPrefix:@"neural"];
       v10 = 3;
       if (!v8)
       {

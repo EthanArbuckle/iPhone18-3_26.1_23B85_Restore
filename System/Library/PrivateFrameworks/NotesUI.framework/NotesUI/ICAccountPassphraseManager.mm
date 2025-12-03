@@ -1,106 +1,106 @@
 @interface ICAccountPassphraseManager
 - (BOOL)removePassphrase;
-- (BOOL)setPassphrase:(id)a3 hint:(id)a4;
-- (BOOL)setPassphrase:(id)a3 hint:(id)a4 isReset:(BOOL)a5;
-- (ICAccountPassphraseManager)initWithAccount:(id)a3;
+- (BOOL)setPassphrase:(id)passphrase hint:(id)hint;
+- (BOOL)setPassphrase:(id)passphrase hint:(id)hint isReset:(BOOL)reset;
+- (ICAccountPassphraseManager)initWithAccount:(id)account;
 - (UIWindow)window;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)changePassphrase:(id)a3 toPassphrase:(id)a4 hint:(id)a5 completion:(id)a6;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)changePassphrase:(id)passphrase toPassphrase:(id)toPassphrase hint:(id)hint completion:(id)completion;
 - (void)removePassphrase;
-- (void)updateDivergedNotesFromPassphrase:(id)a3 toAccountPassphrase:(id)a4 completion:(id)a5;
-- (void)updateDivergedNotesWithConfiguration:(id)a3 completion:(id)a4;
+- (void)updateDivergedNotesFromPassphrase:(id)passphrase toAccountPassphrase:(id)accountPassphrase completion:(id)completion;
+- (void)updateDivergedNotesWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation ICAccountPassphraseManager
 
-- (ICAccountPassphraseManager)initWithAccount:(id)a3
+- (ICAccountPassphraseManager)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v10.receiver = self;
   v10.super_class = ICAccountPassphraseManager;
   v6 = [(ICAccountPassphraseManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    objc_storeStrong(&v6->_account, account);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
   }
 
   return v7;
 }
 
-- (BOOL)setPassphrase:(id)a3 hint:(id)a4
+- (BOOL)setPassphrase:(id)passphrase hint:(id)hint
 {
-  v6 = a4;
-  v7 = a3;
+  hintCopy = hint;
+  passphraseCopy = passphrase;
   v8 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(ICAccountPassphraseManager *)self setPassphrase:v6 hint:v8];
+    [(ICAccountPassphraseManager *)self setPassphrase:hintCopy hint:v8];
   }
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = *MEMORY[0x1E69B73C0];
-  v11 = [(ICAccountPassphraseManager *)self account];
-  [v9 postNotificationName:v10 object:v11];
+  account = [(ICAccountPassphraseManager *)self account];
+  [defaultCenter postNotificationName:v10 object:account];
 
-  v12 = [MEMORY[0x1E69B7800] sharedContext];
-  v13 = [v12 crossProcessChangeCoordinator];
-  [v13 postCrossProcessNotificationName:v10];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  crossProcessChangeCoordinator = [mEMORY[0x1E69B7800] crossProcessChangeCoordinator];
+  [crossProcessChangeCoordinator postCrossProcessNotificationName:v10];
 
-  LOBYTE(v12) = [(ICAccountPassphraseManager *)self setPassphrase:v7 hint:v6 isReset:1];
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
+  LOBYTE(mEMORY[0x1E69B7800]) = [(ICAccountPassphraseManager *)self setPassphrase:passphraseCopy hint:hintCopy isReset:1];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v15 = *MEMORY[0x1E69B73A0];
-  v16 = [(ICAccountPassphraseManager *)self account];
-  [v14 postNotificationName:v15 object:v16];
+  account2 = [(ICAccountPassphraseManager *)self account];
+  [defaultCenter2 postNotificationName:v15 object:account2];
 
-  v17 = [MEMORY[0x1E69B7800] sharedContext];
-  v18 = [v17 crossProcessChangeCoordinator];
-  [v18 postCrossProcessNotificationName:v15];
+  mEMORY[0x1E69B7800]2 = [MEMORY[0x1E69B7800] sharedContext];
+  crossProcessChangeCoordinator2 = [mEMORY[0x1E69B7800]2 crossProcessChangeCoordinator];
+  [crossProcessChangeCoordinator2 postCrossProcessNotificationName:v15];
 
-  return v12;
+  return mEMORY[0x1E69B7800];
 }
 
-- (BOOL)setPassphrase:(id)a3 hint:(id)a4 isReset:(BOOL)a5
+- (BOOL)setPassphrase:(id)passphrase hint:(id)hint isReset:(BOOL)reset
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ICAccountPassphraseManager *)self account];
-  v11 = [v10 cryptoStrategy];
-  v12 = [v11 hasPassphraseSet];
+  resetCopy = reset;
+  passphraseCopy = passphrase;
+  hintCopy = hint;
+  account = [(ICAccountPassphraseManager *)self account];
+  cryptoStrategy = [account cryptoStrategy];
+  hasPassphraseSet = [cryptoStrategy hasPassphraseSet];
 
-  v13 = [MEMORY[0x1E69B7718] sharedController];
-  [v13 cancelAndWaitWithReason:@"Setting passphrase"];
+  mEMORY[0x1E69B7718] = [MEMORY[0x1E69B7718] sharedController];
+  [mEMORY[0x1E69B7718] cancelAndWaitWithReason:@"Setting passphrase"];
 
-  v14 = [(ICAccountPassphraseManager *)self account];
-  LODWORD(v11) = [v14 isPassphraseCorrect:v8];
+  account2 = [(ICAccountPassphraseManager *)self account];
+  LODWORD(cryptoStrategy) = [account2 isPassphraseCorrect:passphraseCopy];
 
-  if (v11)
+  if (cryptoStrategy)
   {
-    v15 = os_log_create("com.apple.notes", "Crypto");
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    managedObjectContext = os_log_create("com.apple.notes", "Crypto");
+    if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_DEBUG))
     {
       [ICAccountPassphraseManager setPassphrase:? hint:? isReset:?];
     }
 
     v16 = 1;
 LABEL_13:
-    v22 = v15;
+    account5 = managedObjectContext;
     goto LABEL_18;
   }
 
-  v17 = [(ICAccountPassphraseManager *)self account];
-  v18 = [v17 cryptoStrategy];
-  v19 = [v18 setPassphrase:v8 hint:v9];
+  account3 = [(ICAccountPassphraseManager *)self account];
+  cryptoStrategy2 = [account3 cryptoStrategy];
+  v19 = [cryptoStrategy2 setPassphrase:passphraseCopy hint:hintCopy];
 
   if ((v19 & 1) == 0)
   {
-    v15 = os_log_create("com.apple.notes", "Crypto");
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    managedObjectContext = os_log_create("com.apple.notes", "Crypto");
+    if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
     {
-      [ICAccountPassphraseManager setPassphrase:v15 hint:? isReset:?];
+      [ICAccountPassphraseManager setPassphrase:managedObjectContext hint:? isReset:?];
     }
 
     v16 = 0;
@@ -109,14 +109,14 @@ LABEL_13:
 
   v20 = os_log_create("com.apple.notes", "Analytics");
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG);
-  if (v12)
+  if (hasPassphraseSet)
   {
     if (v21)
     {
-      [ICAccountPassphraseManager setPassphrase:v5 hint:? isReset:?];
+      [ICAccountPassphraseManager setPassphrase:resetCopy hint:? isReset:?];
     }
 
-    [MEMORY[0x1E69B7780] incrementRecentPasswordChangeCountAsReset:v5];
+    [MEMORY[0x1E69B7780] incrementRecentPasswordChangeCountAsReset:resetCopy];
   }
 
   else
@@ -127,34 +127,34 @@ LABEL_13:
     }
   }
 
-  v23 = [MEMORY[0x1E69B7850] sharedController];
-  v24 = [(ICAccountPassphraseManager *)self account];
-  [v23 enrollInReaskForAccount:v24];
+  mEMORY[0x1E69B7850] = [MEMORY[0x1E69B7850] sharedController];
+  account4 = [(ICAccountPassphraseManager *)self account];
+  [mEMORY[0x1E69B7850] enrollInReaskForAccount:account4];
 
-  v22 = [(ICAccountPassphraseManager *)self account];
-  v15 = [v22 managedObjectContext];
-  v16 = [v15 ic_saveWithLogDescription:@"Set account passphrase"];
+  account5 = [(ICAccountPassphraseManager *)self account];
+  managedObjectContext = [account5 managedObjectContext];
+  v16 = [managedObjectContext ic_saveWithLogDescription:@"Set account passphrase"];
 LABEL_18:
 
   return v16;
 }
 
-- (void)changePassphrase:(id)a3 toPassphrase:(id)a4 hint:(id)a5 completion:(id)a6
+- (void)changePassphrase:(id)passphrase toPassphrase:(id)toPassphrase hint:(id)hint completion:(id)completion
 {
   v61 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v48 = a5;
-  v12 = a6;
+  passphraseCopy = passphrase;
+  toPassphraseCopy = toPassphrase;
+  hintCopy = hint;
+  completionCopy = completion;
   v13 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v44 = [(ICAccountPassphraseManager *)self account];
-    v45 = [v44 shortLoggingDescription];
-    v46 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "length") != 0}];
-    v47 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v48, "length") != 0}];
+    account = [(ICAccountPassphraseManager *)self account];
+    shortLoggingDescription = [account shortLoggingDescription];
+    v46 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(passphraseCopy, "length") != 0}];
+    v47 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(hintCopy, "length") != 0}];
     *location = 138413314;
-    *&location[4] = v45;
+    *&location[4] = shortLoggingDescription;
     v53 = 2112;
     v54 = v46;
     v55 = 2112;
@@ -166,15 +166,15 @@ LABEL_18:
     _os_log_debug_impl(&dword_1D4171000, v13, OS_LOG_TYPE_DEBUG, "Changing passphrase for account… {account: %@, hasDivergedKey: %@, hasHint: %@}%s:%d", location, 0x30u);
   }
 
-  v14 = [(ICAccountPassphraseManager *)self window];
-  v15 = v14 == 0;
+  window = [(ICAccountPassphraseManager *)self window];
+  v15 = window == 0;
 
   if (v15)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((self.window) != nil)" functionName:"-[ICAccountPassphraseManager changePassphrase:toPassphrase:hint:completion:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "self.window"}];
   }
 
-  if (v10 && (-[ICAccountPassphraseManager account](self, "account"), v16 = objc_claimAutoreleasedReturnValue(), [v16 cryptoStrategy], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "authenticateWithPassphrase:", v10), v17, v16, (v18 & 1) == 0))
+  if (passphraseCopy && (-[ICAccountPassphraseManager account](self, "account"), v16 = objc_claimAutoreleasedReturnValue(), [v16 cryptoStrategy], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "authenticateWithPassphrase:", passphraseCopy), v17, v16, (v18 & 1) == 0))
   {
     v38 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -182,7 +182,7 @@ LABEL_18:
       [ICAccountPassphraseManager changePassphrase:? toPassphrase:? hint:? completion:?];
     }
 
-    if (v12)
+    if (completionCopy)
     {
       goto LABEL_13;
     }
@@ -190,49 +190,49 @@ LABEL_18:
 
   else
   {
-    v19 = [(ICAccountPassphraseManager *)self account];
-    v20 = [v19 isAuthenticated];
+    account2 = [(ICAccountPassphraseManager *)self account];
+    isAuthenticated = [account2 isAuthenticated];
 
-    if (v20)
+    if (isAuthenticated)
     {
       v21 = objc_alloc_init(MEMORY[0x1E69B7720]);
-      [v21 setPassphrase:v11];
-      [v21 setDivergedPassphrase:v10];
-      v22 = [MEMORY[0x1E69B76D0] sharedState];
-      v23 = [(ICAccountPassphraseManager *)self account];
-      v24 = [v23 identifier];
-      v25 = [v22 cachedMainKeyForIdentifier:v24];
+      [v21 setPassphrase:toPassphraseCopy];
+      [v21 setDivergedPassphrase:passphraseCopy];
+      mEMORY[0x1E69B76D0] = [MEMORY[0x1E69B76D0] sharedState];
+      account3 = [(ICAccountPassphraseManager *)self account];
+      identifier = [account3 identifier];
+      v25 = [mEMORY[0x1E69B76D0] cachedMainKeyForIdentifier:identifier];
       [v21 setDivergedV1MainKey:v25];
 
-      v26 = [MEMORY[0x1E69B76D0] sharedState];
-      v27 = [(ICAccountPassphraseManager *)self account];
-      v28 = [v27 accountDataCreateIfNecessary];
-      v29 = [v28 identifier];
-      v30 = [v26 cachedMainKeyForIdentifier:v29];
+      mEMORY[0x1E69B76D0]2 = [MEMORY[0x1E69B76D0] sharedState];
+      account4 = [(ICAccountPassphraseManager *)self account];
+      accountDataCreateIfNecessary = [account4 accountDataCreateIfNecessary];
+      identifier2 = [accountDataCreateIfNecessary identifier];
+      v30 = [mEMORY[0x1E69B76D0]2 cachedMainKeyForIdentifier:identifier2];
       [v21 setDivergedV1NeoMainKey:v30];
 
       [v21 setIncludeAllAuthenticatedObjects:1];
       [v21 setUserInitiated:1];
-      v31 = [MEMORY[0x1E696AD88] defaultCenter];
-      v32 = [(ICAccountPassphraseManager *)self account];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      account5 = [(ICAccountPassphraseManager *)self account];
       v33 = *MEMORY[0x1E69B73C0];
-      [v31 postNotificationName:*MEMORY[0x1E69B73C0] object:v32];
+      [defaultCenter postNotificationName:*MEMORY[0x1E69B73C0] object:account5];
 
-      v34 = [MEMORY[0x1E69B7800] sharedContext];
-      v35 = [v34 crossProcessChangeCoordinator];
-      [v35 postCrossProcessNotificationName:v33];
+      mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+      crossProcessChangeCoordinator = [mEMORY[0x1E69B7800] crossProcessChangeCoordinator];
+      [crossProcessChangeCoordinator postCrossProcessNotificationName:v33];
 
-      if ([(ICAccountPassphraseManager *)self setPassphrase:v11 hint:v48 isReset:0])
+      if ([(ICAccountPassphraseManager *)self setPassphrase:toPassphraseCopy hint:hintCopy isReset:0])
       {
-        v36 = [(ICAccountPassphraseManager *)self account];
-        objc_initWeak(location, v36);
+        account6 = [(ICAccountPassphraseManager *)self account];
+        objc_initWeak(location, account6);
 
         v49[0] = MEMORY[0x1E69E9820];
         v49[1] = 3221225472;
         v49[2] = __76__ICAccountPassphraseManager_changePassphrase_toPassphrase_hint_completion___block_invoke;
         v49[3] = &unk_1E846D848;
         objc_copyWeak(&v51, location);
-        v50 = v12;
+        v50 = completionCopy;
         [(ICAccountPassphraseManager *)self updateDivergedNotesWithConfiguration:v21 completion:v49];
 
         objc_destroyWeak(&v51);
@@ -241,18 +241,18 @@ LABEL_18:
 
       else
       {
-        v39 = [MEMORY[0x1E696AD88] defaultCenter];
-        v40 = [(ICAccountPassphraseManager *)self account];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        account7 = [(ICAccountPassphraseManager *)self account];
         v41 = *MEMORY[0x1E69B73A0];
-        [v39 postNotificationName:*MEMORY[0x1E69B73A0] object:v40];
+        [defaultCenter2 postNotificationName:*MEMORY[0x1E69B73A0] object:account7];
 
-        v42 = [MEMORY[0x1E69B7800] sharedContext];
-        v43 = [v42 crossProcessChangeCoordinator];
-        [v43 postCrossProcessNotificationName:v41];
+        mEMORY[0x1E69B7800]2 = [MEMORY[0x1E69B7800] sharedContext];
+        crossProcessChangeCoordinator2 = [mEMORY[0x1E69B7800]2 crossProcessChangeCoordinator];
+        [crossProcessChangeCoordinator2 postCrossProcessNotificationName:v41];
 
-        if (v12)
+        if (completionCopy)
         {
-          (*(v12 + 2))(v12, 0);
+          (*(completionCopy + 2))(completionCopy, 0);
         }
       }
 
@@ -265,10 +265,10 @@ LABEL_18:
       [ICAccountPassphraseManager changePassphrase:? toPassphrase:? hint:? completion:?];
     }
 
-    if (v12)
+    if (completionCopy)
     {
 LABEL_13:
-      (*(v12 + 2))(v12, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -305,74 +305,74 @@ uint64_t __76__ICAccountPassphraseManager_changePassphrase_toPassphrase_hint_com
     [(ICAccountPassphraseManager *)self removePassphrase];
   }
 
-  v4 = [MEMORY[0x1E69B7718] sharedController];
-  [v4 cancelAndWaitWithReason:@"Removing passphrase"];
+  mEMORY[0x1E69B7718] = [MEMORY[0x1E69B7718] sharedController];
+  [mEMORY[0x1E69B7718] cancelAndWaitWithReason:@"Removing passphrase"];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E69B73C0];
-  v7 = [(ICAccountPassphraseManager *)self account];
-  [v5 postNotificationName:v6 object:v7];
+  account = [(ICAccountPassphraseManager *)self account];
+  [defaultCenter postNotificationName:v6 object:account];
 
-  v8 = [MEMORY[0x1E69B7800] sharedContext];
-  v9 = [v8 crossProcessChangeCoordinator];
-  [v9 postCrossProcessNotificationName:v6];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  crossProcessChangeCoordinator = [mEMORY[0x1E69B7800] crossProcessChangeCoordinator];
+  [crossProcessChangeCoordinator postCrossProcessNotificationName:v6];
 
-  v10 = [(ICAccountPassphraseManager *)self account];
-  v11 = [v10 cryptoStrategy];
-  [v11 removePassphrase];
+  account2 = [(ICAccountPassphraseManager *)self account];
+  cryptoStrategy = [account2 cryptoStrategy];
+  [cryptoStrategy removePassphrase];
 
-  v12 = [(ICAccountPassphraseManager *)self account];
-  v13 = [v12 managedObjectContext];
-  LOBYTE(v10) = [v13 ic_saveWithLogDescription:@"Removed account passphrase"];
+  account3 = [(ICAccountPassphraseManager *)self account];
+  managedObjectContext = [account3 managedObjectContext];
+  LOBYTE(account2) = [managedObjectContext ic_saveWithLogDescription:@"Removed account passphrase"];
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v15 = *MEMORY[0x1E69B73A0];
-  v16 = [(ICAccountPassphraseManager *)self account];
-  [v14 postNotificationName:v15 object:v16];
+  account4 = [(ICAccountPassphraseManager *)self account];
+  [defaultCenter2 postNotificationName:v15 object:account4];
 
-  v17 = [MEMORY[0x1E69B7800] sharedContext];
-  v18 = [v17 crossProcessChangeCoordinator];
-  [v18 postCrossProcessNotificationName:v15];
+  mEMORY[0x1E69B7800]2 = [MEMORY[0x1E69B7800] sharedContext];
+  crossProcessChangeCoordinator2 = [mEMORY[0x1E69B7800]2 crossProcessChangeCoordinator];
+  [crossProcessChangeCoordinator2 postCrossProcessNotificationName:v15];
 
-  return v10;
+  return account2;
 }
 
-- (void)updateDivergedNotesFromPassphrase:(id)a3 toAccountPassphrase:(id)a4 completion:(id)a5
+- (void)updateDivergedNotesFromPassphrase:(id)passphrase toAccountPassphrase:(id)accountPassphrase completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passphraseCopy = passphrase;
+  accountPassphraseCopy = accountPassphrase;
+  completionCopy = completion;
   v11 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [ICAccountPassphraseManager updateDivergedNotesFromPassphrase:? toAccountPassphrase:? completion:?];
   }
 
-  v12 = [(ICAccountPassphraseManager *)self window];
+  window = [(ICAccountPassphraseManager *)self window];
 
-  if (!v12)
+  if (!window)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((self.window) != nil)" functionName:"-[ICAccountPassphraseManager updateDivergedNotesFromPassphrase:toAccountPassphrase:completion:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "self.window"}];
   }
 
-  v13 = [(ICAccountPassphraseManager *)self account];
-  v14 = [v13 cryptoStrategy];
-  v15 = [v14 authenticateWithPassphrase:v9];
+  account = [(ICAccountPassphraseManager *)self account];
+  cryptoStrategy = [account cryptoStrategy];
+  v15 = [cryptoStrategy authenticateWithPassphrase:accountPassphraseCopy];
 
   if (v15)
   {
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v17 = *MEMORY[0x1E69B73C0];
-    v18 = [(ICAccountPassphraseManager *)self account];
-    [v16 postNotificationName:v17 object:v18];
+    account2 = [(ICAccountPassphraseManager *)self account];
+    [defaultCenter postNotificationName:v17 object:account2];
 
-    v19 = [MEMORY[0x1E69B7800] sharedContext];
-    v20 = [v19 crossProcessChangeCoordinator];
-    [v20 postCrossProcessNotificationName:v17];
+    mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+    crossProcessChangeCoordinator = [mEMORY[0x1E69B7800] crossProcessChangeCoordinator];
+    [crossProcessChangeCoordinator postCrossProcessNotificationName:v17];
 
     v21 = objc_alloc_init(MEMORY[0x1E69B7720]);
-    [v21 setPassphrase:v9];
-    [v21 setDivergedPassphrase:v8];
+    [v21 setPassphrase:accountPassphraseCopy];
+    [v21 setDivergedPassphrase:passphraseCopy];
     [v21 setIncludeAllAuthenticatedObjects:1];
     [v21 setUserInitiated:1];
     v23[0] = MEMORY[0x1E69E9820];
@@ -380,7 +380,7 @@ uint64_t __76__ICAccountPassphraseManager_changePassphrase_toPassphrase_hint_com
     v23[2] = __95__ICAccountPassphraseManager_updateDivergedNotesFromPassphrase_toAccountPassphrase_completion___block_invoke;
     v23[3] = &unk_1E846C850;
     v23[4] = self;
-    v24 = v10;
+    v24 = completionCopy;
     [(ICAccountPassphraseManager *)self updateDivergedNotesWithConfiguration:v21 completion:v23];
   }
 
@@ -392,9 +392,9 @@ uint64_t __76__ICAccountPassphraseManager_changePassphrase_toPassphrase_hint_com
       [ICAccountPassphraseManager updateDivergedNotesFromPassphrase:? toAccountPassphrase:? completion:?];
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -421,10 +421,10 @@ uint64_t __95__ICAccountPassphraseManager_updateDivergedNotesFromPassphrase_toAc
   return result;
 }
 
-- (void)updateDivergedNotesWithConfiguration:(id)a3 completion:(id)a4
+- (void)updateDivergedNotesWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E69DDA98];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
@@ -434,38 +434,38 @@ uint64_t __95__ICAccountPassphraseManager_updateDivergedNotesFromPassphrase_toAc
   v32[1] = v32;
   v32[2] = 0x2020000000;
   v33 = 0;
-  v12 = [(ICAccountPassphraseManager *)self account];
-  v13 = [v12 objectID];
+  account = [(ICAccountPassphraseManager *)self account];
+  objectID = [account objectID];
 
   v14 = [ICLongRunningTaskController alloc];
-  v15 = [(ICAccountPassphraseManager *)self window];
-  v16 = [(ICLongRunningTaskController *)v14 initWithWindow:v15 intervalBeforeOpeningProgressDialog:1.0];
+  window = [(ICAccountPassphraseManager *)self window];
+  v16 = [(ICLongRunningTaskController *)v14 initWithWindow:window intervalBeforeOpeningProgressDialog:1.0];
 
   v17 = __ICLocalizedFrameworkString_impl(@"Changing Password…", @"Changing Password…", 0, 1);
   [(ICLongRunningTaskController *)v16 setProgressString:v17];
 
   [(ICLongRunningTaskController *)v16 setIndeterminate:1];
   [(ICLongRunningTaskController *)v16 setShouldShowCircularProgress:1];
-  v18 = [(ICAccountPassphraseManager *)self window];
-  v19 = [v18 rootViewController];
-  v20 = [v19 ic_topViewController];
-  [(ICLongRunningTaskController *)v16 setViewControllerToPresentFrom:v20];
+  window2 = [(ICAccountPassphraseManager *)self window];
+  rootViewController = [window2 rootViewController];
+  ic_topViewController = [rootViewController ic_topViewController];
+  [(ICLongRunningTaskController *)v16 setViewControllerToPresentFrom:ic_topViewController];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __78__ICAccountPassphraseManager_updateDivergedNotesWithConfiguration_completion___block_invoke_43;
   v28[3] = &unk_1E846D870;
   v31 = v32;
-  v21 = v13;
+  v21 = objectID;
   v29 = v21;
-  v22 = v6;
+  v22 = configurationCopy;
   v30 = v22;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __78__ICAccountPassphraseManager_updateDivergedNotesWithConfiguration_completion___block_invoke_2;
   v24[3] = &unk_1E846D898;
   v27 = v11;
-  v23 = v7;
+  v23 = completionCopy;
   v25 = v23;
   v26 = v32;
   [(ICLongRunningTaskController *)v16 startTask:v28 completionBlock:v24];
@@ -506,7 +506,7 @@ uint64_t __78__ICAccountPassphraseManager_updateDivergedNotesWithConfiguration_c
   return result;
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   v3 = dispatch_get_global_queue(-32768, 0);
   dispatch_async(v3, &__block_literal_global_46);
@@ -596,8 +596,8 @@ void __60__ICAccountPassphraseManager_applicationDidEnterBackground___block_invo
 
 - (void)removePassphrase
 {
-  v1 = [a1 account];
-  v2 = [v1 shortLoggingDescription];
+  account = [self account];
+  shortLoggingDescription = [account shortLoggingDescription];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_1_5();
   OUTLINED_FUNCTION_1_1();

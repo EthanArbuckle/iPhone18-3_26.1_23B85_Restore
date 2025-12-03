@@ -1,7 +1,7 @@
 @interface ComAppleContextkitUtilKeylessMapBase
-- (id)getWithHashesWithIntArray:(id)a3;
-- (id)valueForEmbeddedWithInt:(int)a3;
-- (id)valueForIndexWithInt:(int)a3;
+- (id)getWithHashesWithIntArray:(id)array;
+- (id)valueForEmbeddedWithInt:(int)int;
+- (id)valueForIndexWithInt:(int)int;
 - (void)close;
 - (void)dealloc;
 @end
@@ -32,14 +32,14 @@ LABEL_8:
   [(OrgApacheLuceneStoreDirectory *)dir close];
 }
 
-- (id)getWithHashesWithIntArray:(id)a3
+- (id)getWithHashesWithIntArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     goto LABEL_71;
   }
 
-  v5 = *(a3 + 2);
+  v5 = *(array + 2);
   if (v5 != self->numHashFunctions_)
   {
     v57 = new_JavaLangIllegalArgumentException_initWithNSString_(@"Array is of wrong size");
@@ -51,7 +51,7 @@ LABEL_8:
     IOSArray_throwOutOfBoundsWithMsg(v5, 0);
   }
 
-  v58 = *(a3 + 3);
+  v58 = *(array + 3);
   v6 = v5 - 1;
   if (qword_100554168 != -1)
   {
@@ -80,40 +80,40 @@ LABEL_14:
           goto LABEL_71;
         }
 
-        v26 = [(JavaUtilHashMap *)v24 entrySet];
-        if (!v26)
+        entrySet = [(JavaUtilHashMap *)v24 entrySet];
+        if (!entrySet)
         {
           goto LABEL_71;
         }
 
-        v27 = [v26 iterator];
-        if (!v27)
+        iterator = [entrySet iterator];
+        if (!iterator)
         {
           goto LABEL_71;
         }
 
-        v28 = v27;
-        if ([v27 hasNext])
+        v28 = iterator;
+        if ([iterator hasNext])
         {
           do
           {
-            v29 = [v28 next];
-            if (!v29)
+            next = [v28 next];
+            if (!next)
             {
               goto LABEL_71;
             }
 
-            v30 = v29;
-            if (-[JavaUtilHashMap containsKeyWithId:](v19, "containsKeyWithId:", [v29 getKey]))
+            v30 = next;
+            if (-[JavaUtilHashMap containsKeyWithId:](v19, "containsKeyWithId:", [next getKey]))
             {
-              v31 = [v30 getValue];
-              if (!v31)
+              getValue = [v30 getValue];
+              if (!getValue)
               {
                 goto LABEL_71;
               }
 
-              v32 = v31 + 12;
-              while (v32 < &v31[4 * *(v31 + 2) + 12])
+              v32 = getValue + 12;
+              while (v32 < &getValue[4 * *(getValue + 2) + 12])
               {
                 if (!v22)
                 {
@@ -145,37 +145,37 @@ LABEL_30:
           goto LABEL_71;
         }
 
-        v34 = [(JavaUtilHashMap *)v24 entrySet];
-        if (!v34)
+        entrySet2 = [(JavaUtilHashMap *)v24 entrySet];
+        if (!entrySet2)
         {
           goto LABEL_71;
         }
 
-        v35 = [v34 iterator];
-        if (!v35)
+        iterator2 = [entrySet2 iterator];
+        if (!iterator2)
         {
           goto LABEL_71;
         }
 
-        v36 = v35;
-        if ([v35 hasNext])
+        v36 = iterator2;
+        if ([iterator2 hasNext])
         {
           while (1)
           {
-            v37 = [v36 next];
-            if (!v37)
+            next2 = [v36 next];
+            if (!next2)
             {
               break;
             }
 
-            v38 = [v37 getValue];
-            if (!v38)
+            getValue2 = [next2 getValue];
+            if (!getValue2)
             {
               break;
             }
 
-            v39 = v38 + 12;
-            while (v39 < &v38[4 * *(v38 + 2) + 12])
+            v39 = getValue2 + 12;
+            while (v39 < &getValue2[4 * *(getValue2 + 2) + 12])
             {
               if (!v22)
               {
@@ -224,14 +224,14 @@ LABEL_45:
       v66 = 0uLL;
       v63 = 0uLL;
       v64 = 0uLL;
-      v43 = [(JavaUtilHashMap *)v19 keySet];
-      if (!v43)
+      keySet = [(JavaUtilHashMap *)v19 keySet];
+      if (!keySet)
       {
         goto LABEL_71;
       }
 
-      v44 = v43;
-      v45 = [v43 countByEnumeratingWithState:&v63 objects:v68 count:16];
+      v44 = keySet;
+      v45 = [keySet countByEnumeratingWithState:&v63 objects:v68 count:16];
       if (v45)
       {
         v46 = v45;
@@ -267,14 +267,14 @@ LABEL_45:
       v62 = 0uLL;
       v59 = 0uLL;
       v60 = 0uLL;
-      v50 = [(JavaUtilHashMap *)v19 keySet];
-      if (!v50)
+      keySet2 = [(JavaUtilHashMap *)v19 keySet];
+      if (!keySet2)
       {
         goto LABEL_71;
       }
 
-      v51 = v50;
-      v52 = [v50 countByEnumeratingWithState:&v59 objects:v67 count:16];
+      v51 = keySet2;
+      v52 = [keySet2 countByEnumeratingWithState:&v59 objects:v67 count:16];
       if (v52)
       {
         v53 = v52;
@@ -310,13 +310,13 @@ LABEL_45:
     v9 = 1;
     while (1)
     {
-      v10 = *(a3 + 2);
+      v10 = *(array + 2);
       if (v9 >= v10)
       {
         IOSArray_throwOutOfBoundsWithMsg(v10, v9);
       }
 
-      v11 = *(a3 + v9 + 3);
+      v11 = *(array + v9 + 3);
       numBuckets = self->numBuckets_;
       v13 = JavaLangMath_absWithInt_(v11);
       input = self->input_;
@@ -326,16 +326,16 @@ LABEL_45:
       }
 
       [(OrgApacheLuceneStoreIndexInput *)input seekWithLong:self->bucketsOffset_ + 4 * (v13 % numBuckets)];
-      v15 = [(OrgApacheLuceneStoreDataInput *)self->input_ readInt];
-      v16 = [(OrgApacheLuceneStoreDataInput *)self->input_ readInt];
-      if (v16 == v15)
+      readInt = [(OrgApacheLuceneStoreDataInput *)self->input_ readInt];
+      readInt2 = [(OrgApacheLuceneStoreDataInput *)self->input_ readInt];
+      if (readInt2 == readInt)
       {
         return 0;
       }
 
-      v17 = v16;
+      v17 = readInt2;
       v18 = [ComAppleContextkitUtilKeylessMapBase_BucketOffset alloc];
-      v18->start_ = v15;
+      v18->start_ = readInt;
       v18->end_ = v17;
       v18->valueGroup_ = v11 + v58;
       IOSObjectArray_SetAndConsume(v7, v9++ - 1, v18);
@@ -349,10 +349,10 @@ LABEL_45:
   return v41;
 }
 
-- (id)valueForIndexWithInt:(int)a3
+- (id)valueForIndexWithInt:(int)int
 {
   input = self->input_;
-  if (!input || ([(OrgApacheLuceneStoreIndexInput *)input seekWithLong:self->valuesIndexOffset_ + 4 * a3], [(OrgApacheLuceneStoreIndexInput *)self->input_ seekWithLong:[(OrgApacheLuceneStoreDataInput *)self->input_ readInt]], (valueConverter = self->valueConverter_) == 0))
+  if (!input || ([(OrgApacheLuceneStoreIndexInput *)input seekWithLong:self->valuesIndexOffset_ + 4 * int], [(OrgApacheLuceneStoreIndexInput *)self->input_ seekWithLong:[(OrgApacheLuceneStoreDataInput *)self->input_ readInt]], (valueConverter = self->valueConverter_) == 0))
   {
     JreThrowNullPointerException();
   }
@@ -362,7 +362,7 @@ LABEL_45:
   return [(ComAppleContextkitUtilValueMarshalling_ValueConverter *)valueConverter readValueWithOrgApacheLuceneStoreIndexInput:v6];
 }
 
-- (id)valueForEmbeddedWithInt:(int)a3
+- (id)valueForEmbeddedWithInt:(int)int
 {
   valueConverter = self->valueConverter_;
   if (!valueConverter)
@@ -370,7 +370,7 @@ LABEL_45:
     JreThrowNullPointerException();
   }
 
-  v4 = JavaLangInteger_valueOfWithInt_(a3);
+  v4 = JavaLangInteger_valueOfWithInt_(int);
 
   return [(ComAppleContextkitUtilValueMarshalling_ValueConverter *)valueConverter fromEmbeddedValueWithJavaLangInteger:v4];
 }

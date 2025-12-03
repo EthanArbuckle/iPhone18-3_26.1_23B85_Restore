@@ -1,27 +1,27 @@
 @interface OrgApacheLuceneSearchFieldComparator_TermOrdValComparator
-- (id)getLeafComparatorWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
-- (id)getSortedDocValuesWithOrgApacheLuceneIndexLeafReaderContext:(id)a3 withNSString:(id)a4;
-- (int)compareValuesWithId:(id)a3 withId:(id)a4;
+- (id)getLeafComparatorWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
+- (id)getSortedDocValuesWithOrgApacheLuceneIndexLeafReaderContext:(id)context withNSString:(id)string;
+- (int)compareValuesWithId:(id)id withId:(id)withId;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchFieldComparator_TermOrdValComparator
 
-- (id)getSortedDocValuesWithOrgApacheLuceneIndexLeafReaderContext:(id)a3 withNSString:(id)a4
+- (id)getSortedDocValuesWithOrgApacheLuceneIndexLeafReaderContext:(id)context withNSString:(id)string
 {
-  if (!a3)
+  if (!context)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 reader];
+  reader = [context reader];
 
-  return OrgApacheLuceneIndexDocValues_getSortedWithOrgApacheLuceneIndexLeafReader_withNSString_(v5, a4);
+  return OrgApacheLuceneIndexDocValues_getSortedWithOrgApacheLuceneIndexLeafReader_withNSString_(reader, string);
 }
 
-- (id)getLeafComparatorWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)getLeafComparatorWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
-  JreStrongAssign(&self->termsIndex_, [(OrgApacheLuceneSearchFieldComparator_TermOrdValComparator *)self getSortedDocValuesWithOrgApacheLuceneIndexLeafReaderContext:a3 withNSString:self->field_]);
+  JreStrongAssign(&self->termsIndex_, [(OrgApacheLuceneSearchFieldComparator_TermOrdValComparator *)self getSortedDocValuesWithOrgApacheLuceneIndexLeafReaderContext:context withNSString:self->field_]);
   ++self->currentReaderGen_;
   if (self->topValue_)
   {
@@ -59,13 +59,13 @@
   return self;
 }
 
-- (int)compareValuesWithId:(id)a3 withId:(id)a4
+- (int)compareValuesWithId:(id)id withId:(id)withId
 {
-  if (a3)
+  if (id)
   {
-    if (a4)
+    if (withId)
     {
-      return [a3 compareToWithId:a4];
+      return [id compareToWithId:withId];
     }
 
     else
@@ -74,7 +74,7 @@
     }
   }
 
-  else if (a4)
+  else if (withId)
   {
     return self->missingSortCmp_;
   }

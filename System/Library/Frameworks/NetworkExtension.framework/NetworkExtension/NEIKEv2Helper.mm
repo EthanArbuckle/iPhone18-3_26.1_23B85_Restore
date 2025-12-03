@@ -1,14 +1,14 @@
 @interface NEIKEv2Helper
-+ (NEIKEv2ChildSAProposal)createIKEv2ChildSAProposalFromProtocol:(void *)a3 saParameters:;
-+ (NEIKEv2IKESAProposal)createIKESAProposalFromProtocol:(void *)a3 saParameters:(void *)a4 options:(unsigned int *)a5 nonceSize:;
-+ (id)createRouteArrayFromTunnelConfig:(void *)a3 localTS:(void *)a4 remoteTS:(void *)a5 gatewayAddress:(int)a6 isIPv4:;
-+ (uint64_t)copyAdditionalKEMProtocolsForSAParameters:(uint64_t)a1;
-+ (uint64_t)getIdentifierType:(uint64_t)a1;
++ (NEIKEv2ChildSAProposal)createIKEv2ChildSAProposalFromProtocol:(void *)protocol saParameters:;
++ (NEIKEv2IKESAProposal)createIKESAProposalFromProtocol:(void *)protocol saParameters:(void *)parameters options:(unsigned int *)options nonceSize:;
++ (id)createRouteArrayFromTunnelConfig:(void *)config localTS:(void *)s remoteTS:(void *)tS gatewayAddress:(int)address isIPv4:;
++ (uint64_t)copyAdditionalKEMProtocolsForSAParameters:(uint64_t)parameters;
++ (uint64_t)getIdentifierType:(uint64_t)type;
 @end
 
 @implementation NEIKEv2Helper
 
-+ (uint64_t)getIdentifierType:(uint64_t)a1
++ (uint64_t)getIdentifierType:(uint64_t)type
 {
   v2 = a2;
   objc_opt_self();
@@ -41,13 +41,13 @@
   return v3;
 }
 
-+ (id)createRouteArrayFromTunnelConfig:(void *)a3 localTS:(void *)a4 remoteTS:(void *)a5 gatewayAddress:(int)a6 isIPv4:
++ (id)createRouteArrayFromTunnelConfig:(void *)config localTS:(void *)s remoteTS:(void *)tS gatewayAddress:(int)address isIPv4:
 {
   v77 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v56 = a3;
-  v61 = a4;
-  v64 = a5;
+  configCopy = config;
+  sCopy = s;
+  tSCopy = tS;
   objc_opt_self();
   v63 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v71 = 0u;
@@ -75,7 +75,7 @@
       }
 
       v15 = *(*(&v71 + 1) + 8 * i);
-      if (a6)
+      if (address)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -84,11 +84,11 @@
         }
 
         v16 = [NEIPv4Route alloc];
-        v17 = [v15 address];
-        v18 = [v17 hostname];
-        v19 = [v15 subnetMaskAddress];
-        v20 = [v19 hostname];
-        v21 = [(NEIPv4Route *)v16 initWithDestinationAddress:v18 subnetMask:v20];
+        address = [v15 address];
+        hostname = [address hostname];
+        subnetMaskAddress = [v15 subnetMaskAddress];
+        hostname2 = [subnetMaskAddress hostname];
+        v21 = [(NEIPv4Route *)v16 initWithDestinationAddress:hostname subnetMask:hostname2];
       }
 
       else
@@ -100,13 +100,13 @@
         }
 
         v22 = [NEIPv6Route alloc];
-        v17 = [v15 address];
-        v18 = [v17 hostname];
-        v19 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v15, "prefix")}];
-        v21 = [(NEIPv6Route *)v22 initWithDestinationAddress:v18 networkPrefixLength:v19];
+        address = [v15 address];
+        hostname = [address hostname];
+        subnetMaskAddress = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(v15, "prefix")}];
+        v21 = [(NEIPv6Route *)v22 initWithDestinationAddress:hostname networkPrefixLength:subnetMaskAddress];
       }
 
-      [(NEIPv4Route *)v21 setGatewayAddress:v64];
+      [(NEIPv4Route *)v21 setGatewayAddress:tSCopy];
       [v63 addObject:v21];
       ++v12;
     }
@@ -117,7 +117,7 @@
   while (v11);
 LABEL_16:
 
-  if (a6)
+  if (address)
   {
     v23 = 7;
   }
@@ -128,7 +128,7 @@ LABEL_16:
   }
 
   v24 = @"::";
-  if (a6)
+  if (address)
   {
     v24 = @"0.0.0.0";
     v25 = @"255.255.255.255";
@@ -145,7 +145,7 @@ LABEL_16:
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v26 = v61;
+  v26 = sCopy;
   v27 = [v26 countByEnumeratingWithState:&v67 objects:v75 count:16];
   if (v27)
   {
@@ -169,36 +169,36 @@ LABEL_24:
         goto LABEL_48;
       }
 
-      v32 = [v31 startAddress];
-      v33 = [v32 hostname];
-      if (v33)
+      startAddress = [v31 startAddress];
+      hostname3 = [startAddress hostname];
+      if (hostname3)
       {
-        v34 = v33;
+        v34 = hostname3;
         v35 = v26;
-        v36 = [v31 endAddress];
-        v37 = [v36 hostname];
+        endAddress = [v31 endAddress];
+        hostname4 = [endAddress hostname];
 
-        if (v37)
+        if (hostname4)
         {
-          v38 = [v31 startAddress];
-          v39 = [v38 hostname];
+          startAddress2 = [v31 startAddress];
+          hostname5 = [startAddress2 hostname];
 
-          v40 = [v31 endAddress];
-          v41 = [v40 hostname];
+          endAddress2 = [v31 endAddress];
+          hostname6 = [endAddress2 hostname];
 
           v26 = v35;
-          if (v39 && v41 && ([(__CFString *)v39 isEqualToString:v58]&& [(__CFString *)v41 isEqualToString:v57]|| [(__CFString *)v39 isEqualToString:v58, v56]&& [(__CFString *)v41 isEqualToString:v58]))
+          if (hostname5 && hostname6 && ([(__CFString *)hostname5 isEqualToString:v58]&& [(__CFString *)hostname6 isEqualToString:v57]|| [(__CFString *)hostname5 isEqualToString:v58, configCopy]&& [(__CFString *)hostname6 isEqualToString:v58]))
           {
             if (!v12)
             {
               v52 = off_1E7F04C50;
-              if (!a6)
+              if (!address)
               {
                 v52 = off_1E7F04C60;
               }
 
-              v53 = [(__objc2_class *)*v52 defaultRoute];
-              [v63 addObject:v53];
+              defaultRoute = [(__objc2_class *)*v52 defaultRoute];
+              [v63 addObject:defaultRoute];
 
               v49 = v63;
               v51 = v63;
@@ -209,18 +209,18 @@ LABEL_24:
 
           else
           {
-            v42 = NEGetPrefixForAddressRangeStrings(v39, v41);
+            v42 = NEGetPrefixForAddressRangeStrings(hostname5, hostname6);
             if (v42)
             {
               v43 = v42;
-              if (!a6)
+              if (!address)
               {
                 v47 = [NEIPv6Route alloc];
                 v48 = [MEMORY[0x1E696AD98] numberWithInt:v43];
-                v45 = [(NEIPv6Route *)v47 initWithDestinationAddress:v39 networkPrefixLength:v48];
+                v45 = [(NEIPv6Route *)v47 initWithDestinationAddress:hostname5 networkPrefixLength:v48];
 
                 v26 = v35;
-                [(NEIPv6Route *)v45 setGatewayAddress:v64];
+                [(NEIPv6Route *)v45 setGatewayAddress:tSCopy];
                 [v63 addObject:v45];
                 goto LABEL_47;
               }
@@ -229,23 +229,23 @@ LABEL_24:
               if (v44)
               {
                 v45 = v44;
-                v46 = [[NEIPv4Route alloc] initWithDestinationAddress:v39 subnetMask:v44];
-                [(NEIPv4Route *)v46 setGatewayAddress:v64];
+                v46 = [[NEIPv4Route alloc] initWithDestinationAddress:hostname5 subnetMask:v44];
+                [(NEIPv4Route *)v46 setGatewayAddress:tSCopy];
                 [v63 addObject:v46];
 
 LABEL_47:
                 v29 = v59;
 
                 ++v12;
-                v60 = v39;
-                v62 = v41;
+                v60 = hostname5;
+                v62 = hostname6;
                 goto LABEL_48;
               }
             }
           }
 
-          v60 = v39;
-          v62 = v41;
+          v60 = hostname5;
+          v62 = hostname6;
         }
 
         else
@@ -290,8 +290,8 @@ LABEL_52:
   }
 
   v51 = v50;
-  v39 = v60;
-  v41 = v62;
+  hostname5 = v60;
+  hostname6 = v62;
 LABEL_59:
 
   v54 = *MEMORY[0x1E69E9840];
@@ -299,13 +299,13 @@ LABEL_59:
   return v51;
 }
 
-+ (uint64_t)copyAdditionalKEMProtocolsForSAParameters:(uint64_t)a1
++ (uint64_t)copyAdditionalKEMProtocolsForSAParameters:(uint64_t)parameters
 {
   v26 = *MEMORY[0x1E69E9840];
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 postQuantumKeyExchangeMethods];
-  v4 = [v3 count];
+  postQuantumKeyExchangeMethods = [v2 postQuantumKeyExchangeMethods];
+  v4 = [postQuantumKeyExchangeMethods count];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v4];
@@ -313,8 +313,8 @@ LABEL_59:
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v3;
-    v6 = v3;
+    v19 = postQuantumKeyExchangeMethods;
+    v6 = postQuantumKeyExchangeMethods;
     v7 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v7)
     {
@@ -330,10 +330,10 @@ LABEL_59:
             objc_enumerationMutation(v6);
           }
 
-          v12 = [*(*(&v20 + 1) + 8 * i) intValue];
-          if (v12)
+          intValue = [*(*(&v20 + 1) + 8 * i) intValue];
+          if (intValue)
           {
-            v13 = [[NEIKEv2KEMProtocol alloc] initWithMethod:v12];
+            v13 = [[NEIKEv2KEMProtocol alloc] initWithMethod:intValue];
             v24 = v13;
             v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
             v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
@@ -359,7 +359,7 @@ LABEL_59:
       v16 = 0;
     }
 
-    v3 = v19;
+    postQuantumKeyExchangeMethods = v19;
   }
 
   else
@@ -371,38 +371,38 @@ LABEL_59:
   return v16;
 }
 
-+ (NEIKEv2IKESAProposal)createIKESAProposalFromProtocol:(void *)a3 saParameters:(void *)a4 options:(unsigned int *)a5 nonceSize:
++ (NEIKEv2IKESAProposal)createIKESAProposalFromProtocol:(void *)protocol saParameters:(void *)parameters options:(unsigned int *)options nonceSize:
 {
   v52 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a3;
-  v45 = a4;
+  protocolCopy = protocol;
+  parametersCopy = parameters;
   objc_opt_self();
-  if (v9)
+  if (protocolCopy)
   {
     v10 = objc_alloc_init(NEIKEv2IKESAProposal);
-    -[NEIKEv2IKESAProposal setLifetimeSeconds:](v10, "setLifetimeSeconds:", (60 * [v9 lifetimeMinutes]));
-    v11 = [v9 encryptionAlgorithm];
+    -[NEIKEv2IKESAProposal setLifetimeSeconds:](v10, "setLifetimeSeconds:", (60 * [protocolCopy lifetimeMinutes]));
+    encryptionAlgorithm = [protocolCopy encryptionAlgorithm];
     v12 = [NEIKEv2EncryptionProtocol alloc];
     v43 = v8;
-    if (v11 > 3)
+    if (encryptionAlgorithm > 3)
     {
-      if (v11 > 5)
+      if (encryptionAlgorithm > 5)
       {
-        if (v11 == 6)
+        if (encryptionAlgorithm == 6)
         {
           v13 = 5;
           goto LABEL_17;
         }
 
-        if (v11 == 7)
+        if (encryptionAlgorithm == 7)
         {
           v13 = 6;
           goto LABEL_17;
         }
       }
 
-      else if (v11 != 4)
+      else if (encryptionAlgorithm != 4)
       {
         v13 = 4;
 LABEL_17:
@@ -414,7 +414,7 @@ LABEL_17:
       goto LABEL_13;
     }
 
-    switch(v11)
+    switch(encryptionAlgorithm)
     {
       case 1:
         v16 = 2;
@@ -434,10 +434,10 @@ LABEL_21:
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:{1, v43}];
         [(NEIKEv2IKESAProposal *)v10 setEncryptionProtocols:v19];
 
-        v20 = [v9 integrityAlgorithm];
-        if (v20 > 3)
+        integrityAlgorithm = [protocolCopy integrityAlgorithm];
+        if (integrityAlgorithm > 3)
         {
-          if (v20 == 4)
+          if (integrityAlgorithm == 4)
           {
             v21 = 6;
             if (v18)
@@ -449,7 +449,7 @@ LABEL_21:
             goto LABEL_37;
           }
 
-          if (v20 == 5)
+          if (integrityAlgorithm == 5)
           {
             v21 = 7;
             if (v18)
@@ -466,7 +466,7 @@ LABEL_38:
             v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
             [(NEIKEv2IKESAProposal *)v10 setPrfProtocols:v25];
 
-            v26 = [(NEIKEv2PRFProtocol *)v24 nonceSize];
+            nonceSize = [(NEIKEv2PRFProtocol *)v24 nonceSize];
             if (v18)
             {
               v47 = v23;
@@ -474,27 +474,27 @@ LABEL_38:
               [(NEIKEv2IKESAProposal *)v10 setIntegrityProtocols:v27];
             }
 
-            if (a5 && v26 > *a5)
+            if (options && nonceSize > *options)
             {
-              *a5 = v26;
+              *options = nonceSize;
             }
 
-            v28 = -[NEIKEv2KEMProtocol initWithMethod:]([NEIKEv2KEMProtocol alloc], "initWithMethod:", [v9 diffieHellmanGroup]);
+            v28 = -[NEIKEv2KEMProtocol initWithMethod:]([NEIKEv2KEMProtocol alloc], "initWithMethod:", [protocolCopy diffieHellmanGroup]);
             v46 = v28;
             v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
             [(NEIKEv2IKESAProposal *)v10 setKemProtocols:v29];
 
-            v30 = [NEIKEv2Helper copyAdditionalKEMProtocolsForSAParameters:v9];
+            v30 = [NEIKEv2Helper copyAdditionalKEMProtocolsForSAParameters:protocolCopy];
             [(NEIKEv2IKESAProposal *)v10 setAdditionalKEMProtocols:v30];
 
             v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
             v8 = v44;
             if ([v44 useExtendedAuthentication])
             {
-              v32 = [v45 objectForKeyedSubscript:@"AccountName"];
+              v32 = [parametersCopy objectForKeyedSubscript:@"AccountName"];
               if (v32)
               {
-                [v45 objectForKeyedSubscript:@"AccountName"];
+                [parametersCopy objectForKeyedSubscript:@"AccountName"];
               }
 
               else
@@ -505,9 +505,9 @@ LABEL_38:
 
               if (v33)
               {
-                v34 = [v44 identityReferenceInternal];
+                identityReferenceInternal = [v44 identityReferenceInternal];
 
-                if (v34)
+                if (identityReferenceInternal)
                 {
                   v35 = [[NEIKEv2EAPProtocol alloc] initWithMethod:7];
                   [v31 addObject:v35];
@@ -517,9 +517,9 @@ LABEL_38:
                 [v31 addObject:v36];
               }
 
-              v37 = [v44 identityReferenceInternal];
+              identityReferenceInternal2 = [v44 identityReferenceInternal];
 
-              if (v37)
+              if (identityReferenceInternal2)
               {
                 v38 = [[NEIKEv2EAPProtocol alloc] initWithMethod:6];
                 [v31 addObject:v38];
@@ -555,7 +555,7 @@ LABEL_56:
 
         else
         {
-          if (v20 == 1)
+          if (integrityAlgorithm == 1)
           {
             v21 = 2;
             if (v18)
@@ -567,7 +567,7 @@ LABEL_56:
             goto LABEL_37;
           }
 
-          if (v20 == 2)
+          if (integrityAlgorithm == 2)
           {
             v21 = 2;
             if (v18)
@@ -616,22 +616,22 @@ LABEL_57:
   return v39;
 }
 
-+ (NEIKEv2ChildSAProposal)createIKEv2ChildSAProposalFromProtocol:(void *)a3 saParameters:
++ (NEIKEv2ChildSAProposal)createIKEv2ChildSAProposalFromProtocol:(void *)protocol saParameters:
 {
   v31 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  protocolCopy = protocol;
   objc_opt_self();
-  if (v5)
+  if (protocolCopy)
   {
     v6 = objc_alloc_init(NEIKEv2ChildSAProposal);
     [(NEIKEv2ChildSAProposal *)v6 setProtocol:3];
-    -[NEIKEv2ChildSAProposal setLifetimeSeconds:](v6, "setLifetimeSeconds:", (60 * [v5 lifetimeMinutes]));
-    v7 = [v5 encryptionAlgorithm];
+    -[NEIKEv2ChildSAProposal setLifetimeSeconds:](v6, "setLifetimeSeconds:", (60 * [protocolCopy lifetimeMinutes]));
+    encryptionAlgorithm = [protocolCopy encryptionAlgorithm];
     v8 = [NEIKEv2EncryptionProtocol alloc];
-    if (v7 <= 4)
+    if (encryptionAlgorithm <= 4)
     {
-      switch(v7)
+      switch(encryptionAlgorithm)
       {
         case 1:
           v11 = 2;
@@ -653,16 +653,16 @@ LABEL_20:
 
           if (v14)
           {
-            v16 = [v5 integrityAlgorithm];
+            integrityAlgorithm = [protocolCopy integrityAlgorithm];
             v17 = [NEIKEv2IntegrityProtocol alloc];
-            if ((v16 - 1) > 4)
+            if ((integrityAlgorithm - 1) > 4)
             {
               v18 = 12;
             }
 
             else
             {
-              v18 = qword_1BAA4F928[v16 - 1];
+              v18 = qword_1BAA4F928[integrityAlgorithm - 1];
             }
 
             v19 = [(NEIKEv2IntegrityProtocol *)v17 initWithType:v18];
@@ -673,12 +673,12 @@ LABEL_20:
 
           if ([v4 enablePFS])
           {
-            v21 = -[NEIKEv2KEMProtocol initWithMethod:]([NEIKEv2KEMProtocol alloc], "initWithMethod:", [v5 diffieHellmanGroup]);
+            v21 = -[NEIKEv2KEMProtocol initWithMethod:]([NEIKEv2KEMProtocol alloc], "initWithMethod:", [protocolCopy diffieHellmanGroup]);
             v26 = v21;
             v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
             [(NEIKEv2ChildSAProposal *)v6 setKemProtocols:v22];
 
-            v23 = [NEIKEv2Helper copyAdditionalKEMProtocolsForSAParameters:v5];
+            v23 = [NEIKEv2Helper copyAdditionalKEMProtocolsForSAParameters:protocolCopy];
             [(NEIKEv2ChildSAProposal *)v6 setAdditionalKEMProtocols:v23];
           }
 
@@ -693,7 +693,7 @@ LABEL_13:
       goto LABEL_17;
     }
 
-    switch(v7)
+    switch(encryptionAlgorithm)
     {
       case 5:
         v10 = 4;

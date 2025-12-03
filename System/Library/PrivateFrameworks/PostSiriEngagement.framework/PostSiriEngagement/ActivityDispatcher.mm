@@ -1,8 +1,8 @@
 @interface ActivityDispatcher
-+ (id)getErrorFailedCollectors:(id)a3;
++ (id)getErrorFailedCollectors:(id)collectors;
 + (id)getErrorNoCollectorDefinitionsToRun;
 + (id)getExecQ;
-- (void)runCollectorsDefinedInParameters:(id)a3 completion:(id)a4;
+- (void)runCollectorsDefinedInParameters:(id)parameters completion:(id)completion;
 @end
 
 @implementation ActivityDispatcher
@@ -46,14 +46,14 @@ uint64_t __57__ActivityDispatcher_getErrorNoCollectorDefinitionsToRun__block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)getErrorFailedCollectors:(id)a3
++ (id)getErrorFailedCollectors:(id)collectors
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA9B8];
   v10 = @"failed_collectors";
-  v11[0] = a3;
+  v11[0] = collectors;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  collectorsCopy = collectors;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v7 = [v3 errorWithDomain:@"PostSiriEngagement" code:-10 userInfo:v6];
 
@@ -62,14 +62,14 @@ uint64_t __57__ActivityDispatcher_getErrorNoCollectorDefinitionsToRun__block_inv
   return v7;
 }
 
-- (void)runCollectorsDefinedInParameters:(id)a3 completion:(id)a4
+- (void)runCollectorsDefinedInParameters:(id)parameters completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  specialized ActivityDispatcher.runCollectorsDefinedIn(parameters:completion:)(v6, v8, v9, v5);
+  selfCopy = self;
+  specialized ActivityDispatcher.runCollectorsDefinedIn(parameters:completion:)(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

@@ -1,15 +1,15 @@
 @interface BKHIDBiometricEventProcessor
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
 @end
 
 @implementation BKHIDBiometricEventProcessor
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = *a3;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  v9 = *event;
   IntegerValue = IOHIDEventGetIntegerValue();
   if (IntegerValue > 3)
   {
@@ -25,7 +25,7 @@
   else
   {
     Copy = IOHIDEventCreateCopy();
-    v12 = [v8 destinationsForEvent:Copy fromSender:v7];
+    v12 = [dispatcherCopy destinationsForEvent:Copy fromSender:senderCopy];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -46,9 +46,9 @@
           }
 
           v17 = *(*(&v20 + 1) + 8 * v16);
-          [v7 eventSource];
+          [senderCopy eventSource];
           BKSHIDEventSetSimpleDeliveryInfo();
-          [v8 postEvent:Copy toDestination:v17];
+          [dispatcherCopy postEvent:Copy toDestination:v17];
           ++v16;
         }
 

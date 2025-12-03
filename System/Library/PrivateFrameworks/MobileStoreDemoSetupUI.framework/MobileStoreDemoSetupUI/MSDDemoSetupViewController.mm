@@ -1,8 +1,8 @@
 @interface MSDDemoSetupViewController
 - (MSDDemoSetupViewController)init;
-- (void)_continueTapped:(id)a3;
+- (void)_continueTapped:(id)tapped;
 - (void)_showEraseConfirmation;
-- (void)_skipTapped:(id)a3;
+- (void)_skipTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -24,52 +24,52 @@
 {
   v9 = [MSDSetupUILocalization localizedStringForKey:@"CONTINUE_BUTTON"];
   v3 = [MSDSetupUILocalization localizedStringForKey:@"NOT_A_DEMO_DEVICE_BUTTON"];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v5 = [MEMORY[0x277D37618] boldButton];
-  [v5 setTitle:v9 forState:0];
-  [v5 addTarget:self action:sel__continueTapped_ forControlEvents:64];
-  v6 = [(MSDDemoSetupViewController *)self buttonTray];
-  [v6 addButton:v5];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton setTitle:v9 forState:0];
+  [boldButton addTarget:self action:sel__continueTapped_ forControlEvents:64];
+  buttonTray = [(MSDDemoSetupViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v7 = [MEMORY[0x277D37650] linkButton];
-  [v7 setTitle:v3 forState:0];
-  [v7 addTarget:self action:sel__skipTapped_ forControlEvents:64];
-  v8 = [(MSDDemoSetupViewController *)self buttonTray];
-  [v8 addButton:v7];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [linkButton setTitle:v3 forState:0];
+  [linkButton addTarget:self action:sel__skipTapped_ forControlEvents:64];
+  buttonTray2 = [(MSDDemoSetupViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 }
 
-- (void)_continueTapped:(id)a3
+- (void)_continueTapped:(id)tapped
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  tappedCopy = tapped;
   v4 = defaultLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138543618;
     v21 = objc_opt_class();
     v22 = 2114;
-    v23 = v3;
+    v23 = tappedCopy;
     v5 = v21;
     _os_log_impl(&dword_259BCA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Continue button tapped from: %{public}@", &v20, 0x16u);
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBFC10]);
-  v7 = [v6 authorizationStatus];
+  authorizationStatus = [v6 authorizationStatus];
   v8 = defaultLogHandle();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7 < 3)
+  if (authorizationStatus < 3)
   {
     if (v9)
     {
       v14 = objc_opt_class();
       v15 = v14;
-      v16 = [v6 authorizationStatus];
+      authorizationStatus2 = [v6 authorizationStatus];
       v20 = 138543618;
       v21 = v14;
       v22 = 1024;
-      LODWORD(v23) = v16;
+      LODWORD(v23) = authorizationStatus2;
       _os_log_impl(&dword_259BCA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: location authorization status is %d; showing Location view", &v20, 0x12u);
     }
 
@@ -82,11 +82,11 @@
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [v6 authorizationStatus];
+      authorizationStatus3 = [v6 authorizationStatus];
       v20 = 138543618;
       v21 = v10;
       v22 = 1024;
-      LODWORD(v23) = v12;
+      LODWORD(v23) = authorizationStatus3;
       _os_log_impl(&dword_259BCA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: location is authorized: %d; showing Store Search view", &v20, 0x12u);
     }
 
@@ -100,17 +100,17 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_skipTapped:(id)a3
+- (void)_skipTapped:(id)tapped
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = defaultLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
     v9 = objc_opt_class();
     v10 = 2114;
-    v11 = v4;
+    v11 = tappedCopy;
     v6 = v9;
     _os_log_impl(&dword_259BCA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Not a Demo Device button tapped from: %{public}@", &v8, 0x16u);
   }

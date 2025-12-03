@@ -1,14 +1,14 @@
 @interface CRLineWrappingClassifierOutput
-- (CRLineWrappingClassifierOutput)initWithWrappingProbability:(double)a3;
+- (CRLineWrappingClassifierOutput)initWithWrappingProbability:(double)probability;
 @end
 
 @implementation CRLineWrappingClassifierOutput
 
-- (CRLineWrappingClassifierOutput)initWithWrappingProbability:(double)a3
+- (CRLineWrappingClassifierOutput)initWithWrappingProbability:(double)probability
 {
   if (self)
   {
-    self->_wrappingProbability = a3;
+    self->_wrappingProbability = probability;
   }
 
   return self;

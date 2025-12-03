@@ -1,20 +1,20 @@
 @interface CMIOExtensionDiscoverySessionRegistration
 - (BOOL)isRetryAllowed;
-- (CMIOExtensionDiscoverySessionRegistration)initWithBundleID:(id)a3 token:(unint64_t)a4;
+- (CMIOExtensionDiscoverySessionRegistration)initWithBundleID:(id)d token:(unint64_t)token;
 - (void)dealloc;
 @end
 
 @implementation CMIOExtensionDiscoverySessionRegistration
 
-- (CMIOExtensionDiscoverySessionRegistration)initWithBundleID:(id)a3 token:(unint64_t)a4
+- (CMIOExtensionDiscoverySessionRegistration)initWithBundleID:(id)d token:(unint64_t)token
 {
   v8.receiver = self;
   v8.super_class = CMIOExtensionDiscoverySessionRegistration;
   v6 = [(CMIOExtensionDiscoverySessionRegistration *)&v8 init];
   if (v6)
   {
-    v6->_bundleID = a3;
-    v6->_token = a4;
+    v6->_bundleID = d;
+    v6->_token = token;
     v6->_numOfRetryAttempts = 0;
   }
 

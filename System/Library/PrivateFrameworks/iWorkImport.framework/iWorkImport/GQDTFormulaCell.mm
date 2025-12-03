@@ -1,6 +1,6 @@
 @interface GQDTFormulaCell
 - (void)dealloc;
-- (void)setResultCell:(id)a3;
+- (void)setResultCell:(id)cell;
 @end
 
 @implementation GQDTFormulaCell
@@ -12,11 +12,11 @@
   [(GQDTCell *)&v3 dealloc];
 }
 
-- (void)setResultCell:(id)a3
+- (void)setResultCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
 
-  self->mResultCell = a3;
+  self->mResultCell = cell;
 }
 
 @end

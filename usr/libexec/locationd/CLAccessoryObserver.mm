@@ -1,23 +1,23 @@
 @interface CLAccessoryObserver
-- (BOOL)isOnDenyList:(id)a3;
-- (BOOL)sendEphemeris:(id)a3;
-- (BOOL)sendReferenceTime:(double)a3;
-- (BOOL)sendReferenceTime:(double)a3 locationLatitude:(double)a4 longitude:(double)a5 accuracy:(double)a6;
-- (BOOL)setupAccessory:(id)a3 withListenerCall:(BOOL)a4;
+- (BOOL)isOnDenyList:(id)list;
+- (BOOL)sendEphemeris:(id)ephemeris;
+- (BOOL)sendReferenceTime:(double)time;
+- (BOOL)sendReferenceTime:(double)time locationLatitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy;
+- (BOOL)setupAccessory:(id)accessory withListenerCall:(BOOL)call;
 - (BOOL)setupEphemeris;
 - (BOOL)startLocation;
 - (BOOL)stopLocation;
-- (CLAccessoryObserver)initWithListener:(const CLAccessoryObserverListener *)a3 silo:(id)a4 timeSync:(BOOL)a5;
+- (CLAccessoryObserver)initWithListener:(const CLAccessoryObserverListener *)listener silo:(id)silo timeSync:(BOOL)sync;
 - (id).cxx_construct;
-- (void)accessoryConnected:(id)a3;
-- (void)accessoryDidDisconnect:(id)a3;
+- (void)accessoryConnected:(id)connected;
+- (void)accessoryDidDisconnect:(id)disconnect;
 - (void)dealloc;
-- (void)ephemerisURLRequested:(id)a3;
-- (void)locationPointDataRequested:(id)a3;
-- (void)nmeaReceived:(id)a3;
-- (void)onStarkTimeSyncNotification:(id)a3;
-- (void)sendGPRMCDataStatusValues:(BOOL)a3;
-- (void)timeRequested:(id)a3;
+- (void)ephemerisURLRequested:(id)requested;
+- (void)locationPointDataRequested:(id)requested;
+- (void)nmeaReceived:(id)received;
+- (void)onStarkTimeSyncNotification:(id)notification;
+- (void)sendGPRMCDataStatusValues:(BOOL)values;
+- (void)timeRequested:(id)requested;
 @end
 
 @implementation CLAccessoryObserver
@@ -48,7 +48,7 @@
   [(EAAccessoryManager *)v5 setAreLocationAccessoriesEnabled:1];
   if (!self->fAccessory)
   {
-    v6 = [(EAAccessoryManager *)v5 connectedAccessories];
+    connectedAccessories = [(EAAccessoryManager *)v5 connectedAccessories];
     if (qword_1025D45E0 != -1)
     {
       sub_1018EE1FC();
@@ -57,7 +57,7 @@
     v7 = qword_1025D45E8;
     if (os_log_type_enabled(qword_1025D45E8, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [(NSArray *)v6 count];
+      v8 = [(NSArray *)connectedAccessories count];
       *buf = 134349056;
       *&buf[4] = v8;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEBUG, "AccessoryObserver,examining %{public}lu connected accessories", buf, 0xCu);
@@ -65,14 +65,14 @@
 
     if (sub_10000A100(121, 2))
     {
-      sub_1018EE224(v6);
+      sub_1018EE224(connectedAccessories);
     }
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [(NSArray *)v6 countByEnumeratingWithState:&v30 objects:v45 count:16];
+    v9 = [(NSArray *)connectedAccessories countByEnumeratingWithState:&v30 objects:v45 count:16];
     if (v9)
     {
       v10 = *v31;
@@ -82,7 +82,7 @@
         {
           if (*v31 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(connectedAccessories);
           }
 
           v12 = *(*(&v30 + 1) + 8 * i);
@@ -176,7 +176,7 @@
           }
         }
 
-        v9 = [(NSArray *)v6 countByEnumeratingWithState:&v30 objects:v45 count:16];
+        v9 = [(NSArray *)connectedAccessories countByEnumeratingWithState:&v30 objects:v45 count:16];
       }
 
       while (v9);
@@ -218,7 +218,7 @@
   return 1;
 }
 
-- (CLAccessoryObserver)initWithListener:(const CLAccessoryObserverListener *)a3 silo:(id)a4 timeSync:(BOOL)a5
+- (CLAccessoryObserver)initWithListener:(const CLAccessoryObserverListener *)listener silo:(id)silo timeSync:(BOOL)sync
 {
   v21.receiver = self;
   v21.super_class = CLAccessoryObserver;
@@ -227,15 +227,15 @@
   if (v8)
   {
     v8->fAccessory = 0;
-    v10 = *&a3->info;
-    v11 = *&a3->onReferenceTime;
-    onEphemerisURL = a3->onEphemerisURL;
-    *&v8->fListener.onDisconnected = *&a3->onDisconnected;
+    v10 = *&listener->info;
+    v11 = *&listener->onReferenceTime;
+    onEphemerisURL = listener->onEphemerisURL;
+    *&v8->fListener.onDisconnected = *&listener->onDisconnected;
     *&v8->fListener.onReferenceTime = v11;
     *&v8->fListener.info = v10;
     v8->fListener.onEphemerisURL = onEphemerisURL;
-    v8->fSilo = a4;
-    v8->_iAPTimeSyncEnable = a5;
+    v8->fSilo = silo;
+    v8->_iAPTimeSyncEnable = sync;
     [+[NSNotificationCenter defaultCenter](NSNotificationCenter addObserver:"addObserver:selector:name:object:" selector:v8 name:"accessoryConnected:" object:EAAccessoryDidConnectNotification, 0];
     [+[NSNotificationCenter defaultCenter](NSNotificationCenter addObserver:"addObserver:selector:name:object:" selector:v9 name:"accessoryDisconnected:" object:EAAccessoryDidDisconnectNotification, 0];
     v13 = +[NSNotificationCenter defaultCenter];
@@ -268,24 +268,24 @@
   [(CLAccessoryObserver *)&v3 dealloc];
 }
 
-- (void)accessoryDidDisconnect:(id)a3
+- (void)accessoryDidDisconnect:(id)disconnect
 {
   fSilo = self->fSilo;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1006366B8;
   v4[3] = &unk_1024473F0;
-  v4[4] = a3;
+  v4[4] = disconnect;
   v4[5] = self;
   [(CLSilo *)fSilo async:v4];
 }
 
-- (BOOL)sendReferenceTime:(double)a3
+- (BOOL)sendReferenceTime:(double)time
 {
   if (self->fAccessory)
   {
     v10 = 0;
-    v4 = sub_100153734(&v10 + 1, &v10, a3);
+    v4 = sub_100153734(&v10 + 1, &v10, time);
     LODWORD(v4) = v10;
     v5 = [(EAAccessory *)self->fAccessory sendGpsWeek:HIDWORD(v10) gpsTOW:*&v4 / 1000.0];
     if ((v5 & 1) == 0)
@@ -334,14 +334,14 @@
   return v5;
 }
 
-- (BOOL)sendReferenceTime:(double)a3 locationLatitude:(double)a4 longitude:(double)a5 accuracy:(double)a6
+- (BOOL)sendReferenceTime:(double)time locationLatitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy
 {
   if (self->fAccessory)
   {
     v16 = 0;
-    v10 = sub_100153734(&v16 + 1, &v16, a3);
+    v10 = sub_100153734(&v16 + 1, &v16, time);
     LODWORD(v10) = v16;
-    v11 = [(EAAccessory *)self->fAccessory sendEphemerisPointDataGpsWeek:HIDWORD(v16) gpsTOW:a6 latitude:*&v10 / 1000.0 longitude:a4 accuracy:a5];
+    v11 = [(EAAccessory *)self->fAccessory sendEphemerisPointDataGpsWeek:HIDWORD(v16) gpsTOW:accuracy latitude:*&v10 / 1000.0 longitude:latitude accuracy:longitude];
     if ((v11 & 1) == 0)
     {
       if (qword_1025D45E0 != -1)
@@ -388,7 +388,7 @@
   return v11;
 }
 
-- (BOOL)sendEphemeris:(id)a3
+- (BOOL)sendEphemeris:(id)ephemeris
 {
   fAccessory = self->fAccessory;
   if (!fAccessory)
@@ -417,7 +417,7 @@ LABEL_17:
     return v4;
   }
 
-  if (([(EAAccessory *)fAccessory sendEphemeris:a3]& 1) != 0)
+  if (([(EAAccessory *)fAccessory sendEphemeris:ephemeris]& 1) != 0)
   {
     LOBYTE(v4) = 1;
     return v4;
@@ -445,9 +445,9 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)isOnDenyList:(id)a3
+- (BOOL)isOnDenyList:(id)list
 {
-  v4 = +[CLAccessoryObserverHelper isDenyListAccessory:name:model:serialNumber:firmware:hardwareRevision:](CLAccessoryObserverHelper, "isDenyListAccessory:name:model:serialNumber:firmware:hardwareRevision:", [a3 manufacturer], objc_msgSend(a3, "name"), objc_msgSend(a3, "modelNumber"), objc_msgSend(a3, "serialNumber"), objc_msgSend(a3, "firmwareRevision"), objc_msgSend(a3, "hardwareRevision"));
+  v4 = +[CLAccessoryObserverHelper isDenyListAccessory:name:model:serialNumber:firmware:hardwareRevision:](CLAccessoryObserverHelper, "isDenyListAccessory:name:model:serialNumber:firmware:hardwareRevision:", [list manufacturer], objc_msgSend(list, "name"), objc_msgSend(list, "modelNumber"), objc_msgSend(list, "serialNumber"), objc_msgSend(list, "firmwareRevision"), objc_msgSend(list, "hardwareRevision"));
   if (v4)
   {
     if (qword_1025D45E0 != -1)
@@ -459,32 +459,32 @@ LABEL_17:
     if (os_log_type_enabled(qword_1025D45E8, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 136381955;
-      v8 = [objc_msgSend(a3 "manufacturer")];
+      v8 = [objc_msgSend(list "manufacturer")];
       v9 = 2081;
-      v10 = [objc_msgSend(a3 "modelNumber")];
+      v10 = [objc_msgSend(list "modelNumber")];
       v11 = 2081;
-      v12 = [objc_msgSend(a3 "firmwareRevision")];
+      v12 = [objc_msgSend(list "firmwareRevision")];
       v13 = 2081;
-      v14 = [objc_msgSend(a3 "serialNumber")];
+      v14 = [objc_msgSend(list "serialNumber")];
       v15 = 2081;
-      v16 = [objc_msgSend(a3 "name")];
+      v16 = [objc_msgSend(list "name")];
       v17 = 2081;
-      v18 = [objc_msgSend(a3 "hardwareRevision")];
+      v18 = [objc_msgSend(list "hardwareRevision")];
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "AccessoryObserver,AccessoryInDenyList,manufacturer,%{private}s,model,%{private}s,firmware,%{private}s,serialNumber,%{private}s,name,%{private}s,hardwareRevision,%{private}s", &v7, 0x3Eu);
     }
 
     if (sub_10000A100(121, 2))
     {
-      sub_1018EEA30(a3);
+      sub_1018EEA30(list);
     }
   }
 
   return v4;
 }
 
-- (BOOL)setupAccessory:(id)a3 withListenerCall:(BOOL)a4
+- (BOOL)setupAccessory:(id)accessory withListenerCall:(BOOL)call
 {
-  v4 = a4;
+  callCopy = call;
   if ([(EAAccessory *)self->fAccessory isEqual:?])
   {
     if (qword_1025D45E0 != -1)
@@ -495,12 +495,12 @@ LABEL_17:
     v7 = qword_1025D45E8;
     if (os_log_type_enabled(qword_1025D45E8, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1000238CC([a3 name], __p);
+      sub_1000238CC([accessory name], __p);
       v8 = SHIBYTE(__p[2]) >= 0 ? __p : __p[0];
       *buf = 136315394;
       *&buf[4] = v8;
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = accessory;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "AccessoryObserver,already connected to accessory %s (%p)", buf, 0x16u);
       if (SHIBYTE(__p[2]) < 0)
       {
@@ -510,7 +510,7 @@ LABEL_17:
 
     if (sub_10000A100(121, 2))
     {
-      sub_1018EEBEC(a3);
+      sub_1018EEBEC(accessory);
     }
 
     return 0;
@@ -526,7 +526,7 @@ LABEL_17:
   v96 = 0u;
   memset(buf, 0, sizeof(buf));
   v104 = 257;
-  sub_1006360B4(a3, buf);
+  sub_1006360B4(accessory, buf);
   if (qword_1025D4620 != -1)
   {
     sub_1018EE46C();
@@ -588,7 +588,7 @@ LABEL_17:
     operator delete(v76[0]);
   }
 
-  if ([(CLAccessoryObserver *)self isOnDenyList:a3]|| sub_100CE5278(&self->fAccessoryMobileAssetConfig, buf))
+  if ([(CLAccessoryObserver *)self isOnDenyList:accessory]|| sub_100CE5278(&self->fAccessoryMobileAssetConfig, buf))
   {
     v103[24] = 1;
     p_fListener = &self->fListener;
@@ -655,7 +655,7 @@ LABEL_17:
     goto LABEL_122;
   }
 
-  if ([a3 supportsLocation])
+  if ([accessory supportsLocation])
   {
     if (self->fAccessory)
     {
@@ -772,7 +772,7 @@ LABEL_17:
         }
       }
 
-      if (v4)
+      if (callCopy)
       {
         v92 = 0u;
         memset(v93, 0, sizeof(v93));
@@ -820,8 +820,8 @@ LABEL_17:
       }
     }
 
-    self->fAccessory = a3;
-    v25 = a3;
+    self->fAccessory = accessory;
+    accessoryCopy = accessory;
     [(EAAccessory *)self->fAccessory setDelegate:self];
     [(EAAccessory *)self->fAccessory setNMEASentencesToFilter:[NSArray arrayWithObjects:@"GPGGA", @"GPRMC", @"GPGSV", @"PASCD", @"PAGCD", @"PAACD", @"GPHDT", 0]];
     [(CLAccessoryObserver *)self setupEphemeris];
@@ -1040,12 +1040,12 @@ LABEL_46:
   return v9;
 }
 
-- (void)sendGPRMCDataStatusValues:(BOOL)a3
+- (void)sendGPRMCDataStatusValues:(BOOL)values
 {
   fAccessory = self->fAccessory;
   if (fAccessory)
   {
-    if (([(EAAccessory *)fAccessory sendGPRMCDataStatusValueA:1 ValueV:1 ValueX:a3]& 1) == 0)
+    if (([(EAAccessory *)fAccessory sendGPRMCDataStatusValueA:1 ValueV:1 ValueX:values]& 1) == 0)
     {
       if (qword_1025D45E0 != -1)
       {
@@ -1087,19 +1087,19 @@ LABEL_46:
   }
 }
 
-- (void)accessoryConnected:(id)a3
+- (void)accessoryConnected:(id)connected
 {
   fSilo = self->fSilo;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100638AA0;
   v4[3] = &unk_1024473F0;
-  v4[4] = a3;
+  v4[4] = connected;
   v4[5] = self;
   [(CLSilo *)fSilo async:v4];
 }
 
-- (void)nmeaReceived:(id)a3
+- (void)nmeaReceived:(id)received
 {
   fSilo = self->fSilo;
   v4[0] = _NSConcreteStackBlock;
@@ -1107,11 +1107,11 @@ LABEL_46:
   v4[2] = sub_100638D7C;
   v4[3] = &unk_1024473F0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = received;
   [(CLSilo *)fSilo async:v4];
 }
 
-- (void)timeRequested:(id)a3
+- (void)timeRequested:(id)requested
 {
   fSilo = self->fSilo;
   v4[0] = _NSConcreteStackBlock;
@@ -1122,7 +1122,7 @@ LABEL_46:
   [(CLSilo *)fSilo async:v4];
 }
 
-- (void)locationPointDataRequested:(id)a3
+- (void)locationPointDataRequested:(id)requested
 {
   fSilo = self->fSilo;
   v4[0] = _NSConcreteStackBlock;
@@ -1133,7 +1133,7 @@ LABEL_46:
   [(CLSilo *)fSilo async:v4];
 }
 
-- (void)ephemerisURLRequested:(id)a3
+- (void)ephemerisURLRequested:(id)requested
 {
   fSilo = self->fSilo;
   v4[0] = _NSConcreteStackBlock;
@@ -1144,14 +1144,14 @@ LABEL_46:
   [(CLSilo *)fSilo async:v4];
 }
 
-- (void)onStarkTimeSyncNotification:(id)a3
+- (void)onStarkTimeSyncNotification:(id)notification
 {
   fSilo = self->fSilo;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100639674;
   v4[3] = &unk_1024473F0;
-  v4[4] = a3;
+  v4[4] = notification;
   v4[5] = self;
   [(CLSilo *)fSilo async:v4];
 }

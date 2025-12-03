@@ -1,11 +1,11 @@
 @interface RCPVirtualHIDService
-+ (id)serviceWithIdentifier:(id)a3 properties:(id)a4;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5;
++ (id)serviceWithIdentifier:(id)identifier properties:(id)properties;
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service;
 - (NSString)description;
-- (RCPVirtualHIDService)initWithIdentifier:(id)a3 properties:(id)a4;
-- (id)propertyForKey:(id)a3 forService:(id)a4;
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5;
-- (void)postHIDEvent:(__IOHIDEvent *)a3;
+- (RCPVirtualHIDService)initWithIdentifier:(id)identifier properties:(id)properties;
+- (id)propertyForKey:(id)key forService:(id)service;
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service;
+- (void)postHIDEvent:(__IOHIDEvent *)event;
 - (void)stop;
 @end
 
@@ -24,8 +24,8 @@
   v9 = [(NSDictionary *)v5 objectForKeyedSubscript:@"PrimaryUsagePage"];
   v10 = [(NSDictionary *)v5 objectForKeyedSubscript:@"PrimaryUsage"];
 
-  v11 = [v9 unsignedIntValue];
-  v12 = [v10 unsignedIntValue];
+  unsignedIntValue = [v9 unsignedIntValue];
+  unsignedIntValue2 = [v10 unsignedIntValue];
   if (v6)
   {
     v13 = v6;
@@ -34,7 +34,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v14 = v12 | (v11 << 16);
+  v14 = unsignedIntValue2 | (unsignedIntValue << 16);
   if (v14 > 851971)
   {
     if (v14 > 851979)
@@ -113,7 +113,7 @@ LABEL_22:
 
   v15 = 0;
 LABEL_25:
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%.02X/0x%.02X: (%@) %@", v11, v12, v8, v15];
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%.02X/0x%.02X: (%@) %@", unsignedIntValue, unsignedIntValue2, v8, v15];
 
   v17 = [v3 stringByAppendingFormat:@" (%@) %@", identifier, v16];
 
@@ -132,32 +132,32 @@ LABEL_25:
   dispatch_after(v3, v4, block);
 }
 
-+ (id)serviceWithIdentifier:(id)a3 properties:(id)a4
++ (id)serviceWithIdentifier:(id)identifier properties:(id)properties
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdentifier:v7 properties:v6];
+  propertiesCopy = properties;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithIdentifier:identifierCopy properties:propertiesCopy];
 
   return v8;
 }
 
-- (RCPVirtualHIDService)initWithIdentifier:(id)a3 properties:(id)a4
+- (RCPVirtualHIDService)initWithIdentifier:(id)identifier properties:(id)properties
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   v33.receiver = self;
   v33.super_class = RCPVirtualHIDService;
   v8 = [(RCPVirtualHIDService *)&v33 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     v10 = *(v8 + 6);
     *(v8 + 6) = v9;
 
-    v11 = [v7 properties];
+    properties = [propertiesCopy properties];
     v12 = *(v8 + 7);
-    *(v8 + 7) = v11;
+    *(v8 + 7) = properties;
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v14 = *(v8 + 8);
@@ -172,12 +172,12 @@ LABEL_25:
     v18 = *(v8 + 3);
     *(v8 + 3) = v17;
 
-    v19 = [MEMORY[0x277CF0CA8] sharedInstance];
-    v20 = [v19 deviceClass];
+    mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+    deviceClass = [mEMORY[0x277CF0CA8] deviceClass];
 
-    if (v20 || _AXSAssistiveTouchEnabled())
+    if (deviceClass || _AXSAssistiveTouchEnabled())
     {
-      if ([v7 sendsMousePointerEvents])
+      if ([propertiesCopy sendsMousePointerEvents])
       {
         objc_opt_class();
         if (objc_opt_respondsToSelector())
@@ -209,7 +209,7 @@ LABEL_25:
 
     else
     {
-      if (![v7 sendsMousePointerEvents])
+      if (![propertiesCopy sendsMousePointerEvents])
       {
         goto LABEL_13;
       }
@@ -271,7 +271,7 @@ void __54__RCPVirtualHIDService_initWithIdentifier_properties___block_invoke(uin
   }
 }
 
-- (void)postHIDEvent:(__IOHIDEvent *)a3
+- (void)postHIDEvent:(__IOHIDEvent *)event
 {
   v11 = *MEMORY[0x277D85DE8];
   if (!self->_readyForPointerEvents && IOHIDEventGetType() == 17)
@@ -280,7 +280,7 @@ void __54__RCPVirtualHIDService_initWithIdentifier_properties___block_invoke(uin
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_2619DE000, v5, OS_LOG_TYPE_DEFAULT, "waiting for ready: (%{public}@)", &v9, 0xCu);
     }
 
@@ -297,61 +297,61 @@ void __54__RCPVirtualHIDService_initWithIdentifier_properties___block_invoke(uin
     }
   }
 
-  [(HIDVirtualEventService *)self->_eventService dispatchEvent:a3];
+  [(HIDVirtualEventService *)self->_eventService dispatchEvent:event];
 }
 
-- (id)propertyForKey:(id)a3 forService:(id)a4
+- (id)propertyForKey:(id)key forService:(id)service
 {
-  v5 = a3;
-  v6 = _RCPIsAllowlistedProperty(v5);
+  keyCopy = key;
+  v6 = _RCPIsAllowlistedProperty(keyCopy);
   v7 = 56;
   if (v6)
   {
     v7 = 64;
   }
 
-  v8 = [*(&self->super.isa + v7) objectForKeyedSubscript:v5];
+  v8 = [*(&self->super.isa + v7) objectForKeyedSubscript:keyCopy];
 
   return v8;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (_RCPIsAllowlistedProperty(v8))
+  propertyCopy = property;
+  keyCopy = key;
+  if (_RCPIsAllowlistedProperty(keyCopy))
   {
-    [(NSMutableDictionary *)self->_dynamicMetaProperties setObject:v7 forKey:v8];
+    [(NSMutableDictionary *)self->_dynamicMetaProperties setObject:propertyCopy forKey:keyCopy];
   }
 
-  if ([v8 isEqual:@"DeviceOpenedByEventSystem"])
+  if ([keyCopy isEqual:@"DeviceOpenedByEventSystem"])
   {
-    self->_isOpen = [v7 BOOLValue];
+    self->_isOpen = [propertyCopy BOOLValue];
     waitForEventSystemGroup = self->_waitForEventSystemGroup;
 LABEL_5:
     dispatch_group_leave(waitForEventSystemGroup);
     goto LABEL_13;
   }
 
-  if (![v8 isEqual:@"BKReadyToReceivePointerEvents"])
+  if (![keyCopy isEqual:@"BKReadyToReceivePointerEvents"])
   {
-    [v8 isEqual:@"BatchInterval"];
+    [keyCopy isEqual:@"BatchInterval"];
     goto LABEL_13;
   }
 
-  v10 = [v7 BOOLValue];
+  bOOLValue = [propertyCopy BOOLValue];
   v11 = RCPLogPlayback();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13[0] = 67109378;
-    v13[1] = v10;
+    v13[1] = bOOLValue;
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2619DE000, v11, OS_LOG_TYPE_DEFAULT, "--> pointer ready: (%{BOOL}u): %@", v13, 0x12u);
   }
 
-  if (v10 && !self->_readyForPointerEvents)
+  if (bOOLValue && !self->_readyForPointerEvents)
   {
     self->_readyForPointerEvents = 1;
     waitForEventSystemGroup = self->_waitForPointerReadyGroup;
@@ -363,14 +363,14 @@ LABEL_13:
   return 1;
 }
 
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service
 {
   v10 = *MEMORY[0x277D85DE8];
   v6 = RCPLogPlayback();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = @"terminated";
-    if (a3 == 10)
+    if (notification == 10)
     {
       v7 = @"enumerated";
     }

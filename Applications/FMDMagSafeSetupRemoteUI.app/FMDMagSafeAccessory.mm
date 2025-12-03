@@ -1,34 +1,34 @@
 @interface FMDMagSafeAccessory
 - (BOOL)isValid;
-- (FMDMagSafeAccessory)initWithCoder:(id)a3;
+- (FMDMagSafeAccessory)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDMagSafeAccessory
 
 - (BOOL)isValid
 {
-  v4 = [(FMDMagSafeAccessory *)self findMyEnabled];
-  if (v4 && ([(FMDExtAccessoryInfo *)self name], (v2 = objc_claimAutoreleasedReturnValue()) == 0))
+  findMyEnabled = [(FMDMagSafeAccessory *)self findMyEnabled];
+  if (findMyEnabled && ([(FMDExtAccessoryInfo *)self name], (v2 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v10 = 1;
   }
 
   else
   {
-    v5 = [(FMDExtAccessoryInfo *)self serialNumbers];
-    if (v5)
+    serialNumbers = [(FMDExtAccessoryInfo *)self serialNumbers];
+    if (serialNumbers)
     {
-      v6 = v5;
-      v7 = [(FMDExtAccessoryInfo *)self accessoryIdentifier];
-      if (v7)
+      v6 = serialNumbers;
+      accessoryIdentifier = [(FMDExtAccessoryInfo *)self accessoryIdentifier];
+      if (accessoryIdentifier)
       {
-        v8 = v7;
-        v9 = [(FMDExtAccessoryInfo *)self accessoryType];
-        v10 = v9 == 0;
+        v8 = accessoryIdentifier;
+        accessoryType = [(FMDExtAccessoryInfo *)self accessoryType];
+        v10 = accessoryType == 0;
 
-        if ((v4 & 1) == 0)
+        if ((findMyEnabled & 1) == 0)
         {
           return !v10;
         }
@@ -38,7 +38,7 @@
       {
 
         v10 = 1;
-        if ((v4 & 1) == 0)
+        if ((findMyEnabled & 1) == 0)
         {
           return !v10;
         }
@@ -48,7 +48,7 @@
     else
     {
       v10 = 1;
-      if (!v4)
+      if (!findMyEnabled)
       {
         return !v10;
       }
@@ -60,84 +60,84 @@
 
 - (id)description
 {
-  v3 = [(FMDExtAccessoryInfo *)self accessoryIdentifier];
-  v4 = [(FMDExtAccessoryInfo *)self serialNumbers];
-  v5 = [(FMDExtAccessoryInfo *)self firmwareVersion];
-  v6 = [(FMDMagSafeAccessory *)self style];
-  v7 = [NSString stringWithFormat:@"%@ %@ %@ %@", v3, v4, v5, v6];
+  accessoryIdentifier = [(FMDExtAccessoryInfo *)self accessoryIdentifier];
+  serialNumbers = [(FMDExtAccessoryInfo *)self serialNumbers];
+  firmwareVersion = [(FMDExtAccessoryInfo *)self firmwareVersion];
+  style = [(FMDMagSafeAccessory *)self style];
+  v7 = [NSString stringWithFormat:@"%@ %@ %@ %@", accessoryIdentifier, serialNumbers, firmwareVersion, style];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDExtAccessoryInfo *)self accessoryIdentifier];
-  [v4 encodeObject:v5 forKey:@"accessoryIdentifier"];
+  coderCopy = coder;
+  accessoryIdentifier = [(FMDExtAccessoryInfo *)self accessoryIdentifier];
+  [coderCopy encodeObject:accessoryIdentifier forKey:@"accessoryIdentifier"];
 
-  v6 = [(FMDExtAccessoryInfo *)self accessoryType];
-  [v4 encodeObject:v6 forKey:@"accessoryType"];
+  accessoryType = [(FMDExtAccessoryInfo *)self accessoryType];
+  [coderCopy encodeObject:accessoryType forKey:@"accessoryType"];
 
-  v7 = [(FMDExtAccessoryInfo *)self serialNumbers];
-  [v4 encodeObject:v7 forKey:@"serialNumbers"];
+  serialNumbers = [(FMDExtAccessoryInfo *)self serialNumbers];
+  [coderCopy encodeObject:serialNumbers forKey:@"serialNumbers"];
 
-  v8 = [(FMDExtAccessoryInfo *)self firmwareVersion];
-  [v4 encodeObject:v8 forKey:@"firmwareVersion"];
+  firmwareVersion = [(FMDExtAccessoryInfo *)self firmwareVersion];
+  [coderCopy encodeObject:firmwareVersion forKey:@"firmwareVersion"];
 
-  v9 = [(FMDExtAccessoryInfo *)self name];
-  [v4 encodeObject:v9 forKey:@"name"];
+  name = [(FMDExtAccessoryInfo *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v10 = [(FMDMagSafeAccessory *)self style];
-  [v4 encodeObject:v10 forKey:@"style"];
+  style = [(FMDMagSafeAccessory *)self style];
+  [coderCopy encodeObject:style forKey:@"style"];
 
-  v11 = [(FMDExtAccessoryInfo *)self additionalInfo];
-  [v4 encodeObject:v11 forKey:@"additionalInfo"];
+  additionalInfo = [(FMDExtAccessoryInfo *)self additionalInfo];
+  [coderCopy encodeObject:additionalInfo forKey:@"additionalInfo"];
 
-  v12 = [(FMDExtAccessoryInfo *)self deviceDiscoveryId];
-  [v4 encodeObject:v12 forKey:@"deviceDiscoveryId"];
+  deviceDiscoveryId = [(FMDExtAccessoryInfo *)self deviceDiscoveryId];
+  [coderCopy encodeObject:deviceDiscoveryId forKey:@"deviceDiscoveryId"];
 
-  [v4 encodeBool:-[FMDMagSafeAccessory findMyEnabled](self forKey:{"findMyEnabled"), @"findMyEnabled"}];
-  v13 = [(FMDMagSafeAccessory *)self lastLostModeKeyRollTime];
-  [v4 encodeObject:v13 forKey:@"lastLostModeKeyRollTime"];
+  [coderCopy encodeBool:-[FMDMagSafeAccessory findMyEnabled](self forKey:{"findMyEnabled"), @"findMyEnabled"}];
+  lastLostModeKeyRollTime = [(FMDMagSafeAccessory *)self lastLostModeKeyRollTime];
+  [coderCopy encodeObject:lastLostModeKeyRollTime forKey:@"lastLostModeKeyRollTime"];
 }
 
-- (FMDMagSafeAccessory)initWithCoder:(id)a3
+- (FMDMagSafeAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = FMDMagSafeAccessory;
   v5 = [(FMDMagSafeAccessory *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryIdentifier"];
     [(FMDExtAccessoryInfo *)v5 setAccessoryIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryType"];
     [(FMDExtAccessoryInfo *)v5 setAccessoryType:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firmwareVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firmwareVersion"];
     [(FMDExtAccessoryInfo *)v5 setFirmwareVersion:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(FMDExtAccessoryInfo *)v5 setName:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"style"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"style"];
     [(FMDMagSafeAccessory *)v5 setStyle:v10];
 
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [NSSet setWithObjects:v11, v12, objc_opt_class(), 0];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"serialNumbers"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"serialNumbers"];
     [(FMDExtAccessoryInfo *)v5 setSerialNumbers:v14];
 
-    v15 = [v4 decodeObjectOfClasses:v13 forKey:@"additionalInfo"];
+    v15 = [coderCopy decodeObjectOfClasses:v13 forKey:@"additionalInfo"];
     [(FMDExtAccessoryInfo *)v5 setAdditionalInfo:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceDiscoveryId"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceDiscoveryId"];
     [(FMDExtAccessoryInfo *)v5 setDeviceDiscoveryId:v16];
 
-    -[FMDMagSafeAccessory setFindMyEnabled:](v5, "setFindMyEnabled:", [v4 decodeBoolForKey:@"findMyEnabled"]);
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastLostModeKeyRollTime"];
+    -[FMDMagSafeAccessory setFindMyEnabled:](v5, "setFindMyEnabled:", [coderCopy decodeBoolForKey:@"findMyEnabled"]);
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastLostModeKeyRollTime"];
     [(FMDMagSafeAccessory *)v5 setLastLostModeKeyRollTime:v17];
   }
 

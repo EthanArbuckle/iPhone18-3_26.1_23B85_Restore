@@ -1,20 +1,20 @@
 @interface DDUISearchWebHandler
-+ (id)webSearchURLForQueryString:(id)a3;
++ (id)webSearchURLForQueryString:(id)string;
 @end
 
 @implementation DDUISearchWebHandler
 
-+ (id)webSearchURLForQueryString:(id)a3
++ (id)webSearchURLForQueryString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
     v4 = +[_SFSearchEngineController sharedInstance];
     [v4 reloadSearchEngines];
 
     v5 = +[_SFSearchEngineController sharedInstance];
-    v6 = [v5 defaultSearchEngine];
-    v7 = [v6 searchURLForUserTypedString:v3];
+    defaultSearchEngine = [v5 defaultSearchEngine];
+    v7 = [defaultSearchEngine searchURLForUserTypedString:stringCopy];
 
     v8 = v7;
   }

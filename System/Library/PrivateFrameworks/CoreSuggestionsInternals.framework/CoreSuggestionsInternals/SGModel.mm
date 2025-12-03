@@ -1,59 +1,59 @@
 @interface SGModel
-+ (Class)modelClassForObjective:(unint64_t)a3;
-+ (id)featurize:(id)a3;
-+ (id)newTransformerInstanceForLanguage:(id)a3;
-+ (id)trainingFeaturesOf:(id)a3 inLanguage:(id)a4;
-+ (id)trainingFeaturesOf:(id)a3 inLanguage:(id)a4 withObjective:(unint64_t)a5;
-+ (id)transformerInstanceForLanguage:(id)a3;
-+ (id)transformerInstanceForLanguage:(id)a3 withObjective:(unint64_t)a4;
-- (SGModel)initWithModel:(id)a3 locale:(id)a4 featurizer:(id)a5 modelSource:(id)a6;
-- (id)predictForInput:(id)a3;
-- (id)trainingFeaturesOf:(id)a3;
++ (Class)modelClassForObjective:(unint64_t)objective;
++ (id)featurize:(id)featurize;
++ (id)newTransformerInstanceForLanguage:(id)language;
++ (id)trainingFeaturesOf:(id)of inLanguage:(id)language;
++ (id)trainingFeaturesOf:(id)of inLanguage:(id)language withObjective:(unint64_t)objective;
++ (id)transformerInstanceForLanguage:(id)language;
++ (id)transformerInstanceForLanguage:(id)language withObjective:(unint64_t)objective;
+- (SGModel)initWithModel:(id)model locale:(id)locale featurizer:(id)featurizer modelSource:(id)source;
+- (id)predictForInput:(id)input;
+- (id)trainingFeaturesOf:(id)of;
 @end
 
 @implementation SGModel
 
-- (id)trainingFeaturesOf:(id)a3
+- (id)trainingFeaturesOf:(id)of
 {
-  v4 = a3;
+  ofCopy = of;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = ofCopy;
   }
 
   else
   {
     v6 = objc_opt_class();
-    v7 = [(SGModel *)self locale];
-    v5 = [v6 trainingFeaturesOf:v4 inLanguage:v7];
+    locale = [(SGModel *)self locale];
+    v5 = [v6 trainingFeaturesOf:ofCopy inLanguage:locale];
   }
 
   return v5;
 }
 
-- (id)predictForInput:(id)a3
+- (id)predictForInput:(id)input
 {
-  v5 = a3;
-  v6 = [(PMLTransformerProtocol *)self->_featurizer transform:v5];
+  inputCopy = input;
+  v6 = [(PMLTransformerProtocol *)self->_featurizer transform:inputCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"[vector isKindOfClass:PMLSparseVector.class]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"[vector isKindOfClass:PMLSparseVector.class]"}];
   }
 
   v7 = [objc_alloc(MEMORY[0x277D02560]) initWithSource:self->_modelSource vector:v6];
   v8 = objc_opt_class();
-  v9 = [v7 source];
-  if (([v8 isEqual:{objc_msgSend(v9, "modelClass")}] & 1) == 0)
+  source = [v7 source];
+  if (([v8 isEqual:{objc_msgSend(source, "modelClass")}] & 1) == 0)
   {
     __assert_rtn("[SGModel predictForInput:]", "SGModels.m", 83, "[[self class] isEqual:features.source.modelClass]");
   }
 
   model = self->_model;
-  v11 = [v7 vector];
-  v12 = [(PMLMultiLabelClassifierProtocol *)model predict:v11];
+  vector = [v7 vector];
+  v12 = [(PMLMultiLabelClassifierProtocol *)model predict:vector];
 
   if (v12)
   {
@@ -62,8 +62,8 @@
 
   else
   {
-    v14 = [(PMLMultiLabelClassifierProtocol *)self->_model outputDimension];
-    for (i = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v14]; v14; --v14)
+    outputDimension = [(PMLMultiLabelClassifierProtocol *)self->_model outputDimension];
+    for (i = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:outputDimension]; outputDimension; --outputDimension)
     {
       [i addObject:&unk_284749110];
     }
@@ -72,15 +72,15 @@
   return i;
 }
 
-- (SGModel)initWithModel:(id)a3 locale:(id)a4 featurizer:(id)a5 modelSource:(id)a6
+- (SGModel)initWithModel:(id)model locale:(id)locale featurizer:(id)featurizer modelSource:(id)source
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  modelCopy = model;
+  localeCopy = locale;
+  featurizerCopy = featurizer;
+  sourceCopy = source;
+  if (modelCopy)
   {
-    if (v13)
+    if (localeCopy)
     {
       goto LABEL_3;
     }
@@ -88,22 +88,22 @@
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"model"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"model"}];
 
-    if (v13)
+    if (localeCopy)
     {
 LABEL_3:
-      if (v14)
+      if (featurizerCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v21 = [MEMORY[0x277CCA890] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"featurizer"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"featurizer"}];
 
-      if (v15)
+      if (sourceCopy)
       {
         goto LABEL_5;
       }
@@ -112,23 +112,23 @@ LABEL_10:
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"locale"}];
 
-  if (!v14)
+  if (!featurizerCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v15)
+  if (sourceCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v22 = [MEMORY[0x277CCA890] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"modelSource"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"modelSource"}];
 
 LABEL_5:
   v23.receiver = self;
@@ -137,24 +137,24 @@ LABEL_5:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_model, a3);
-    objc_storeStrong(&v17->_locale, a4);
-    objc_storeStrong(&v17->_featurizer, a5);
-    objc_storeStrong(&v17->_modelSource, a6);
+    objc_storeStrong(&v16->_model, model);
+    objc_storeStrong(&v17->_locale, locale);
+    objc_storeStrong(&v17->_featurizer, featurizer);
+    objc_storeStrong(&v17->_modelSource, source);
   }
 
   return v17;
 }
 
-+ (id)featurize:(id)a3
++ (id)featurize:(id)featurize
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 rangeOfString:@"%PHONE%"];
+  featurizeCopy = featurize;
+  v5 = [featurizeCopy rangeOfString:@"%PHONE%"];
   v7 = [[SGDataDetectorMatch alloc] initWithMatchType:0 range:0 labelRange:0 labelString:0 valueRange:0 valueString:&stru_284703F00, v5, v6, @"%PHONE%"];
   v18[0] = @"INPUT_TEXT";
   v18[1] = @"TARGET_MATCH";
-  v19[0] = v4;
+  v19[0] = featurizeCopy;
   v19[1] = v7;
   v18[2] = @"DD_MATCHES";
   v17 = v7;
@@ -162,11 +162,11 @@ LABEL_5:
   v19[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
 
-  v10 = [a1 transformerInstanceForLanguage:@"en"];
-  v11 = [v10 transformer];
+  v10 = [self transformerInstanceForLanguage:@"en"];
+  transformer = [v10 transformer];
 
-  v12 = [v11 transformers];
-  v13 = [v11 transform:v9 stopAfterTransformerWithIndex:{objc_msgSend(v12, "count") - 2}];
+  transformers = [transformer transformers];
+  v13 = [transformer transform:v9 stopAfterTransformerWithIndex:{objc_msgSend(transformers, "count") - 2}];
 
   v14 = [v13 _pas_componentsJoinedByString:@" "];
 
@@ -175,31 +175,31 @@ LABEL_5:
   return v14;
 }
 
-+ (id)newTransformerInstanceForLanguage:(id)a3
++ (id)newTransformerInstanceForLanguage:(id)language
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:a1 file:@"SGModels.m" lineNumber:202 description:{@"%@ must implement +newTransformerInstanceForLanguage:", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:202 description:{@"%@ must implement +newTransformerInstanceForLanguage:", objc_opt_class()}];
 
   return 0;
 }
 
-+ (id)trainingFeaturesOf:(id)a3 inLanguage:(id)a4 withObjective:(unint64_t)a5
++ (id)trainingFeaturesOf:(id)of inLanguage:(id)language withObjective:(unint64_t)objective
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_msgSend(a1 modelClassForObjective:{a5), "trainingFeaturesOf:inLanguage:", v9, v8}];
+  languageCopy = language;
+  ofCopy = of;
+  v10 = [objc_msgSend(self modelClassForObjective:{objective), "trainingFeaturesOf:inLanguage:", ofCopy, languageCopy}];
 
   return v10;
 }
 
-+ (id)trainingFeaturesOf:(id)a3 inLanguage:(id)a4
++ (id)trainingFeaturesOf:(id)of inLanguage:(id)language
 {
-  v6 = a3;
-  v7 = [a1 transformerInstanceForLanguage:a4];
+  ofCopy = of;
+  v7 = [self transformerInstanceForLanguage:language];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 trainingFeaturesOf:v6];
+    v9 = [v7 trainingFeaturesOf:ofCopy];
   }
 
   else
@@ -210,11 +210,11 @@ LABEL_5:
   return v9;
 }
 
-+ (Class)modelClassForObjective:(unint64_t)a3
++ (Class)modelClassForObjective:(unint64_t)objective
 {
-  if (a3 > 3)
+  if (objective > 3)
   {
-    if (a3 < 8)
+    if (objective < 8)
     {
 LABEL_5:
       v6 = objc_opt_class();
@@ -222,30 +222,30 @@ LABEL_5:
     }
   }
 
-  else if ((a3 & 0x8000000000000000) == 0)
+  else if ((objective & 0x8000000000000000) == 0)
   {
     goto LABEL_5;
   }
 
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a2 object:a1 file:@"SGModels.m" lineNumber:178 description:{@"Undefined class for model objective %lu", a3}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:178 description:{@"Undefined class for model objective %lu", objective}];
 
 LABEL_6:
 
   return v6;
 }
 
-+ (id)transformerInstanceForLanguage:(id)a3 withObjective:(unint64_t)a4
++ (id)transformerInstanceForLanguage:(id)language withObjective:(unint64_t)objective
 {
-  v6 = a3;
-  v7 = [objc_msgSend(a1 modelClassForObjective:{a4), "transformerInstanceForLanguage:", v6}];
+  languageCopy = language;
+  v7 = [objc_msgSend(self modelClassForObjective:{objective), "transformerInstanceForLanguage:", languageCopy}];
 
   return v7;
 }
 
-+ (id)transformerInstanceForLanguage:(id)a3
++ (id)transformerInstanceForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   if (transformerInstanceForLanguage___pasOnceToken789 != -1)
   {
     dispatch_once(&transformerInstanceForLanguage___pasOnceToken789, &__block_literal_global_683);
@@ -253,9 +253,9 @@ LABEL_6:
 
   v5 = transformerInstanceForLanguage___pasExprOnceResult;
   v6 = objc_autoreleasePoolPush();
-  if (v4)
+  if (languageCopy)
   {
-    v7 = v4;
+    v7 = languageCopy;
   }
 
   else
@@ -263,7 +263,7 @@ LABEL_6:
     v7 = &stru_284703F00;
   }
 
-  v8 = NSStringFromClass(a1);
+  v8 = NSStringFromClass(self);
   v9 = [(__CFString *)v7 stringByAppendingString:v8];
 
   objc_autoreleasePoolPop(v6);
@@ -280,15 +280,15 @@ LABEL_6:
   v20 = &v22;
   v10 = v9;
   v18 = v10;
-  v21 = a1;
-  v11 = v4;
+  selfCopy = self;
+  v11 = languageCopy;
   v19 = v11;
   [v5 runWithLockAcquired:&v14];
-  v12 = [v23[5] result];
+  result = [v23[5] result];
 
   _Block_object_dispose(&v22, 8);
 
-  return v12;
+  return result;
 }
 
 void __42__SGModel_transformerInstanceForLanguage___block_invoke_56(uint64_t a1, void *a2)

@@ -1,74 +1,74 @@
 @interface SCSharingReminder
-- (BOOL)isEqual:(id)a3;
-- (SCSharingReminder)initWithCoder:(id)a3;
-- (SCSharingReminder)initWithIdentifier:(id)a3 displayName:(id)a4 type:(id)a5 deliverAfter:(double)a6;
+- (BOOL)isEqual:(id)equal;
+- (SCSharingReminder)initWithCoder:(id)coder;
+- (SCSharingReminder)initWithIdentifier:(id)identifier displayName:(id)name type:(id)type deliverAfter:(double)after;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCSharingReminder
 
-- (SCSharingReminder)initWithIdentifier:(id)a3 displayName:(id)a4 type:(id)a5 deliverAfter:(double)a6
+- (SCSharingReminder)initWithIdentifier:(id)identifier displayName:(id)name type:(id)type deliverAfter:(double)after
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  typeCopy = type;
   v19.receiver = self;
   v19.super_class = SCSharingReminder;
   v14 = [(SCSharingReminder *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    objc_storeStrong(&v15->_displayName, a4);
-    v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a6];
+    objc_storeStrong(&v14->_identifier, identifier);
+    objc_storeStrong(&v15->_displayName, name);
+    v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:after];
     scheduledDate = v15->_scheduledDate;
     v15->_scheduledDate = v16;
 
-    objc_storeStrong(&v15->_type, a5);
+    objc_storeStrong(&v15->_type, type);
   }
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCSharingReminder *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(SCSharingReminder *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(SCSharingReminder *)self displayName];
-  [v4 encodeObject:v6 forKey:@"displayName"];
+  displayName = [(SCSharingReminder *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v7 = [(SCSharingReminder *)self scheduledDate];
-  [v4 encodeObject:v7 forKey:@"scheduledDate"];
+  scheduledDate = [(SCSharingReminder *)self scheduledDate];
+  [coderCopy encodeObject:scheduledDate forKey:@"scheduledDate"];
 
-  v8 = [(SCSharingReminder *)self type];
-  [v4 encodeObject:v8 forKey:@"type"];
+  type = [(SCSharingReminder *)self type];
+  [coderCopy encodeObject:type forKey:@"type"];
 }
 
-- (SCSharingReminder)initWithCoder:(id)a3
+- (SCSharingReminder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SCSharingReminder;
   v5 = [(SCSharingReminder *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduledDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduledDate"];
     scheduledDate = v5->_scheduledDate;
     v5->_scheduledDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v12;
   }
@@ -76,10 +76,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -89,19 +89,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SCSharingReminder *)v5 identifier];
-      v7 = [(SCSharingReminder *)self identifier];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      identifier = [(SCSharingReminder *)v5 identifier];
+      identifier2 = [(SCSharingReminder *)self identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v8 = [(SCSharingReminder *)v5 type];
-        v9 = [(SCSharingReminder *)self type];
-        if ([v8 isEqualToString:v9])
+        type = [(SCSharingReminder *)v5 type];
+        type2 = [(SCSharingReminder *)self type];
+        if ([type isEqualToString:type2])
         {
-          v10 = [MEMORY[0x277CBEA80] currentCalendar];
-          v11 = [(SCSharingReminder *)v5 scheduledDate];
-          v12 = [(SCSharingReminder *)self scheduledDate];
-          v13 = [v10 isDate:v11 inSameDayAsDate:v12];
+          currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+          scheduledDate = [(SCSharingReminder *)v5 scheduledDate];
+          scheduledDate2 = [(SCSharingReminder *)self scheduledDate];
+          v13 = [currentCalendar isDate:scheduledDate inSameDayAsDate:scheduledDate2];
         }
 
         else
@@ -127,14 +127,14 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [(SCSharingReminder *)self scheduledDate];
-  v5 = [v3 components:28 fromDate:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  scheduledDate = [(SCSharingReminder *)self scheduledDate];
+  v5 = [currentCalendar components:28 fromDate:scheduledDate];
 
-  v6 = [(SCSharingReminder *)self identifier];
-  v7 = [v6 hash];
-  v8 = [(SCSharingReminder *)self type];
-  v9 = [v8 hash] ^ v7;
+  identifier = [(SCSharingReminder *)self identifier];
+  v7 = [identifier hash];
+  type = [(SCSharingReminder *)self type];
+  v9 = [type hash] ^ v7;
   v10 = [v5 hash];
 
   return v9 ^ v10;
@@ -143,12 +143,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SCSharingReminder *)self identifier];
-  v5 = [(SCSharingReminder *)self displayName];
-  v6 = [(SCSharingReminder *)self type];
-  v7 = [(SCSharingReminder *)self scheduledDate];
-  v8 = localizedDateStringFromUTC(v7);
-  v9 = [v3 stringWithFormat:@"%@ %@ [%@] scheduled: %@", v4, v5, v6, v8];
+  identifier = [(SCSharingReminder *)self identifier];
+  displayName = [(SCSharingReminder *)self displayName];
+  type = [(SCSharingReminder *)self type];
+  scheduledDate = [(SCSharingReminder *)self scheduledDate];
+  v8 = localizedDateStringFromUTC(scheduledDate);
+  v9 = [v3 stringWithFormat:@"%@ %@ [%@] scheduled: %@", identifier, displayName, type, v8];
 
   return v9;
 }

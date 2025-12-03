@@ -1,18 +1,18 @@
 @interface MTTaskGroup
-+ (id)taskGroupWithTasks:(id)a3 completionBlock:(id)a4;
++ (id)taskGroupWithTasks:(id)tasks completionBlock:(id)block;
 - (id)description;
 @end
 
 @implementation MTTaskGroup
 
-+ (id)taskGroupWithTasks:(id)a3 completionBlock:(id)a4
++ (id)taskGroupWithTasks:(id)tasks completionBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  tasksCopy = tasks;
   v7 = objc_opt_new();
-  [v7 setTasks:v6];
+  [v7 setTasks:tasksCopy];
 
-  [v7 setCompletionBlock:v5];
+  [v7 setCompletionBlock:blockCopy];
 
   return v7;
 }
@@ -21,8 +21,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTTaskGroup *)self tasks];
-  v6 = [v3 stringWithFormat:@"<%@:%p tasks: %@>", v4, self, v5];
+  tasks = [(MTTaskGroup *)self tasks];
+  v6 = [v3 stringWithFormat:@"<%@:%p tasks: %@>", v4, self, tasks];
 
   return v6;
 }

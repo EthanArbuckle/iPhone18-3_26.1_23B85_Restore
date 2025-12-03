@@ -1,31 +1,31 @@
 @interface HDMedicalRecordsStoreServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
 + (id)requiredEntitlements;
-- (id)_medicalRecordForClinicalRecordWithUUID:(id)a3 privateSourceBundleIdentifiersByPublic:(id)a4 error:(id *)a5;
-- (id)_privateSourceBundleIdentifiersByPublicWithError:(id *)a3;
-- (void)remote_fetchMedicalRecordsForClinicalRecordsUUIDs:(id)a3 completion:(id)a4;
+- (id)_medicalRecordForClinicalRecordWithUUID:(id)d privateSourceBundleIdentifiersByPublic:(id)public error:(id *)error;
+- (id)_privateSourceBundleIdentifiersByPublicWithError:(id *)error;
+- (void)remote_fetchMedicalRecordsForClinicalRecordsUUIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation HDMedicalRecordsStoreServer
 
-- (void)remote_fetchMedicalRecordsForClinicalRecordsUUIDs:(id)a3 completion:(id)a4
+- (void)remote_fetchMedicalRecordsForClinicalRecordsUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = objc_alloc_init(NSMutableArray);
-  v9 = [(HDMedicalRecordsStoreServer *)self profile];
-  v10 = [v9 database];
+  profile = [(HDMedicalRecordsStoreServer *)self profile];
+  database = [profile database];
   v20 = 0;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1D6EC;
   v17[3] = &unk_106570;
   v17[4] = self;
-  v11 = v6;
+  v11 = dsCopy;
   v18 = v11;
   v12 = v8;
   v19 = v12;
-  v13 = [HDClinicalRecordEntity performReadTransactionWithHealthDatabase:v10 error:&v20 block:v17];
+  v13 = [HDClinicalRecordEntity performReadTransactionWithHealthDatabase:database error:&v20 block:v17];
   v14 = v20;
 
   if (v13)
@@ -40,15 +40,15 @@
     v16 = v14;
   }
 
-  v7[2](v7, v15, v16);
+  completionCopy[2](completionCopy, v15, v16);
 }
 
-- (id)_medicalRecordForClinicalRecordWithUUID:(id)a3 privateSourceBundleIdentifiersByPublic:(id)a4 error:(id *)a5
+- (id)_medicalRecordForClinicalRecordWithUUID:(id)d privateSourceBundleIdentifiersByPublic:(id)public error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HDMedicalRecordsStoreServer *)self profile];
-  v11 = [HDClinicalRecordEntity objectWithUUID:v9 encodingOptions:0 profile:v10 error:a5];
+  publicCopy = public;
+  dCopy = d;
+  profile = [(HDMedicalRecordsStoreServer *)self profile];
+  v11 = [HDClinicalRecordEntity objectWithUUID:dCopy encodingOptions:0 profile:profile error:error];
 
   if (!v11)
   {
@@ -56,10 +56,10 @@
     goto LABEL_11;
   }
 
-  v12 = [(HDMedicalRecordsStoreServer *)self client];
-  v13 = [v12 authorizationOracle];
-  v14 = [v11 sampleType];
-  v15 = [v13 authorizationStatusRecordForType:v14 error:a5];
+  client = [(HDMedicalRecordsStoreServer *)self client];
+  authorizationOracle = [client authorizationOracle];
+  sampleType = [v11 sampleType];
+  v15 = [authorizationOracle authorizationStatusRecordForType:sampleType error:error];
 
   if (v15)
   {
@@ -67,23 +67,23 @@
     {
       if ([v15 canRead])
       {
-        v16 = [v11 sourceRevision];
-        v17 = [v16 source];
-        v18 = [v17 bundleIdentifier];
+        sourceRevision = [v11 sourceRevision];
+        source = [sourceRevision source];
+        bundleIdentifier = [source bundleIdentifier];
 
-        v19 = [v8 objectForKeyedSubscript:v18];
+        v19 = [publicCopy objectForKeyedSubscript:bundleIdentifier];
         if (v19)
         {
-          v20 = [v11 FHIRResource];
+          fHIRResource = [v11 FHIRResource];
           v21 = [HKFHIRIdentifier alloc];
-          v22 = [v20 resourceType];
-          [v20 identifier];
-          v23 = v29 = v18;
-          v24 = [v21 initWithResourceType:v22 identifier:v23];
+          resourceType = [fHIRResource resourceType];
+          [fHIRResource identifier];
+          v23 = v29 = bundleIdentifier;
+          v24 = [v21 initWithResourceType:resourceType identifier:v23];
 
-          v25 = [(HDMedicalRecordsStoreServer *)self profile];
-          v18 = v29;
-          v26 = [HDMedicalRecordEntity medicalRecordWithSourceBundleIdentifier:v19 FHIRIdentifier:v24 profile:v25 error:a5];
+          profile2 = [(HDMedicalRecordsStoreServer *)self profile];
+          bundleIdentifier = v29;
+          v26 = [HDMedicalRecordEntity medicalRecordWithSourceBundleIdentifier:v19 FHIRIdentifier:v24 profile:profile2 error:error];
         }
 
         else
@@ -92,7 +92,7 @@
           v28 = HKLogHealthRecords;
           if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
           {
-            sub_9E35C(v18, v28);
+            sub_9E35C(bundleIdentifier, v28);
           }
 
           v26 = 0;
@@ -104,7 +104,7 @@
 
     else
     {
-      [NSError hk_assignError:a5 code:5 description:@"Authorization not determined"];
+      [NSError hk_assignError:error code:5 description:@"Authorization not determined"];
     }
   }
 
@@ -116,11 +116,11 @@ LABEL_11:
   return v26;
 }
 
-- (id)_privateSourceBundleIdentifiersByPublicWithError:(id *)a3
+- (id)_privateSourceBundleIdentifiersByPublicWithError:(id *)error
 {
-  v4 = [(HDMedicalRecordsStoreServer *)self profile];
-  v5 = [v4 database];
-  v6 = [HDClinicalAccountEntity allAccountsInHealthDatabase:v5 error:a3];
+  profile = [(HDMedicalRecordsStoreServer *)self profile];
+  database = [profile database];
+  v6 = [HDClinicalAccountEntity allAccountsInHealthDatabase:database error:error];
 
   if (v6)
   {
@@ -135,15 +135,15 @@ LABEL_11:
   return v7;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v6 = [a4 entitlements];
+  entitlements = [client entitlements];
   v7 = HKPrivateHealthKitAccessIdentifierHealthRecordsPrivate;
-  v8 = [v6 hasPrivateAccessEntitlementWithIdentifier:HKPrivateHealthKitAccessIdentifierHealthRecordsPrivate];
+  v8 = [entitlements hasPrivateAccessEntitlementWithIdentifier:HKPrivateHealthKitAccessIdentifierHealthRecordsPrivate];
 
   if ((v8 & 1) == 0)
   {
-    [NSError hk_assignError:a5 code:4 format:@"Missing %@ entitlement.", v7];
+    [NSError hk_assignError:error code:4 format:@"Missing %@ entitlement.", v7];
   }
 
   return v8;

@@ -36,10 +36,10 @@
 
   else
   {
-    v7 = [v4 hk_isDatabaseAccessibilityError];
+    hk_isDatabaseAccessibilityError = [v4 hk_isDatabaseAccessibilityError];
     _HKInitializeLogging();
     v8 = *MEMORY[0x1E696B940];
-    if (v7)
+    if (hk_isDatabaseAccessibilityError)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
@@ -55,7 +55,7 @@
     v6 = 0;
   }
 
-  v9 = [a1 localizationStringSuffixForWheelchairUser:v6];
+  v9 = [self localizationStringSuffixForWheelchairUser:v6];
 
   return v9;
 }
@@ -98,8 +98,8 @@
   v9 = a5;
   v10 = a4;
   v11 = a3;
-  v12 = [v8 sortDescriptorsForMostRecentSamples];
-  v13 = [a1 _queryForMostRecentSampleOfType:v11 predicate:v10 sortDescriptors:v12 completion:v9];
+  sortDescriptorsForMostRecentSamples = [v8 sortDescriptorsForMostRecentSamples];
+  v13 = [self _queryForMostRecentSampleOfType:v11 predicate:v10 sortDescriptors:sortDescriptorsForMostRecentSamples completion:v9];
 
   return v13;
 }
@@ -110,15 +110,15 @@
   v9 = MEMORY[0x1E696C3C8];
   v10 = a4;
   v11 = a3;
-  v12 = [v9 sortDescriptorsForMostRecentSamples];
+  sortDescriptorsForMostRecentSamples = [v9 sortDescriptorsForMostRecentSamples];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __86__HKHealthStore_HKUIAdditions__queryForMostRecentQuantityOfType_predicate_completion___block_invoke;
   v16[3] = &unk_1E81BA250;
   v17 = v8;
-  v18 = a1;
+  selfCopy = self;
   v13 = v8;
-  v14 = [a1 _queryForMostRecentSampleOfType:v11 predicate:v10 sortDescriptors:v12 completion:v16];
+  v14 = [self _queryForMostRecentSampleOfType:v11 predicate:v10 sortDescriptors:sortDescriptorsForMostRecentSamples completion:v16];
 
   return v14;
 }
@@ -130,7 +130,7 @@
   v12 = a6;
   v13 = MEMORY[0x1E696C3C8];
   v14 = a5;
-  v15 = [v13 sortDescriptorsForMostRecentSamples];
+  sortDescriptorsForMostRecentSamples = [v13 sortDescriptorsForMostRecentSamples];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __98__HKHealthStore_HKUIAdditions__queryForMostRecentQuantityOfType_healthStore_predicate_completion___block_invoke;
@@ -138,11 +138,11 @@
   v22 = v10;
   v23 = v11;
   v24 = v12;
-  v25 = a1;
+  selfCopy = self;
   v16 = v12;
   v17 = v11;
   v18 = v10;
-  v19 = [a1 _queryForMostRecentSampleOfType:v18 predicate:v14 sortDescriptors:v15 completion:v21];
+  v19 = [self _queryForMostRecentSampleOfType:v18 predicate:v14 sortDescriptors:sortDescriptorsForMostRecentSamples completion:v21];
 
   return v19;
 }
@@ -151,7 +151,7 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x1E696C3C8] sortDescriptorsForMostRecentSamples];
+  sortDescriptorsForMostRecentSamples = [MEMORY[0x1E696C3C8] sortDescriptorsForMostRecentSamples];
   v9 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:*MEMORY[0x1E696BD08]];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -160,11 +160,11 @@
   v16 = v9;
   v17 = v6;
   v18 = v7;
-  v19 = a1;
+  selfCopy = self;
   v10 = v7;
   v11 = v6;
   v12 = v9;
-  v13 = [a1 _queryForMostRecentSampleOfType:v12 predicate:0 sortDescriptors:v8 completion:v15];
+  v13 = [self _queryForMostRecentSampleOfType:v12 predicate:0 sortDescriptors:sortDescriptorsForMostRecentSamples completion:v15];
 
   return v13;
 }
@@ -176,8 +176,8 @@
   v14 = MEMORY[0x1E696C378];
   v15 = a5;
   v16 = a4;
-  v17 = [v16 startDate];
-  v18 = [v14 predicateForSamplesWithStartDate:v17 endDate:0 options:1];
+  startDate = [v16 startDate];
+  v18 = [v14 predicateForSamplesWithStartDate:startDate endDate:0 options:1];
 
   if (a6 && ([v12 identifier], v19 = objc_claimAutoreleasedReturnValue(), v20 = *MEMORY[0x1E696BD08], v19, v19 == v20))
   {
@@ -189,22 +189,22 @@
     v21 = 32;
   }
 
-  v22 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v23 = [v16 startDate];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  startDate2 = [v16 startDate];
 
-  v24 = [v22 startOfDayForDate:v23];
+  v24 = [currentCalendar startOfDayForDate:startDate2];
   v25 = v24;
   if (v24)
   {
-    v26 = v24;
+    date = v24;
   }
 
   else
   {
-    v26 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v27 = v26;
+  v27 = date;
 
   v28 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v28 setDay:1];
@@ -214,7 +214,7 @@
   v33 = __120__HKHealthStore_HKUIAdditions___queryForMostRecentAudioExposureQuantityOfType_sample_healthStore_attenuated_completion___block_invoke;
   v34 = &unk_1E81BA2A0;
   v35 = v13;
-  v36 = a1;
+  selfCopy = self;
   v30 = v13;
   [v29 setInitialResultsHandler:&v31];
   [v15 executeQuery:{v29, v31, v32, v33, v34}];
@@ -240,7 +240,7 @@
 
   v14 = 0;
   v15 = 0;
-  [a1 _assignMostRecentQuantity:&v15 dateInterval:&v14 forQuantitySample:v8];
+  [self _assignMostRecentQuantity:&v15 dateInterval:&v14 forQuantitySample:v8];
   v12 = v15;
   v13 = v14;
   if (v11)
@@ -257,12 +257,12 @@ LABEL_4:
   v11 = a4;
   v7 = a5;
   v8 = a3;
-  v9 = [v8 _mostRecentQuantityStatistics];
-  v10 = [v8 _mostRecentQuantityDateInterval];
+  _mostRecentQuantityStatistics = [v8 _mostRecentQuantityStatistics];
+  _mostRecentQuantityDateInterval = [v8 _mostRecentQuantityDateInterval];
 
   if (v7)
   {
-    v7[2](v7, v9, v10, v11);
+    v7[2](v7, _mostRecentQuantityStatistics, _mostRecentQuantityDateInterval, v11);
   }
 }
 
@@ -275,9 +275,9 @@ LABEL_4:
   v4 = MEMORY[0x1E695DEC8];
   v5 = a3;
   v6 = [v4 arrayWithObjects:v10 count:2];
-  v7 = [v5 identifier];
+  identifier = [v5 identifier];
 
-  v8 = [v6 containsObject:v7];
+  v8 = [v6 containsObject:identifier];
   return v8;
 }
 
@@ -318,9 +318,9 @@ LABEL_4:
     {
       *a3 = [v7 quantity];
       v10 = objc_alloc(MEMORY[0x1E696AB80]);
-      v11 = [v7 startDate];
-      v12 = [v7 endDate];
-      *a4 = [v10 initWithStartDate:v11 endDate:v12];
+      startDate = [v7 startDate];
+      endDate = [v7 endDate];
+      *a4 = [v10 initWithStartDate:startDate endDate:endDate];
     }
   }
 
@@ -354,7 +354,7 @@ LABEL_4:
 
   v12 = objc_alloc_init(HKDemographicsInformationWrapper);
   v43 = 0;
-  v13 = [a1 dateOfBirthComponentsWithError:&v43];
+  v13 = [self dateOfBirthComponentsWithError:&v43];
   v14 = v43;
   if (v14 && (_HKInitializeLogging(), os_log_type_enabled(*MEMORY[0x1E696B940], OS_LOG_TYPE_ERROR)))
   {
@@ -372,15 +372,15 @@ LABEL_4:
 
   if (v11)
   {
-    v15 = [v11 birthday];
-    if ([v15 year] == 0x7FFFFFFFFFFFFFFFLL)
+    birthday = [v11 birthday];
+    if ([birthday year] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = v15;
+      v13 = birthday;
     }
   }
 
@@ -392,7 +392,7 @@ LABEL_13:
   }
 
   v42 = v14;
-  v16 = [a1 biologicalSexWithError:&v42];
+  v16 = [self biologicalSexWithError:&v42];
   v17 = v42;
 
   v18 = MEMORY[0x1E696B988];
@@ -408,7 +408,7 @@ LABEL_13:
   v33 = v16;
   [(HKDemographicsInformationWrapper *)v12 setBiologicalSexObject:v16];
   v41 = v17;
-  v19 = [a1 _heightCharacteristicQuantityWithError:&v41];
+  v19 = [self _heightCharacteristicQuantityWithError:&v41];
   v20 = v41;
 
   if (v20)
@@ -422,7 +422,7 @@ LABEL_13:
 
   [(HKDemographicsInformationWrapper *)v12 setHeightQuantity:v19];
   v40 = v20;
-  v21 = [a1 _bodyMassCharacteristicQuantityWithError:&v40];
+  v21 = [self _bodyMassCharacteristicQuantityWithError:&v40];
   v22 = v40;
 
   if (v22)
@@ -436,7 +436,7 @@ LABEL_13:
 
   [(HKDemographicsInformationWrapper *)v12 setWeightQuantity:v21, v21];
   v39 = v22;
-  v23 = [a1 fitzpatrickSkinTypeWithError:&v39];
+  v23 = [self fitzpatrickSkinTypeWithError:&v39];
   v24 = v39;
 
   if (v24)
@@ -450,7 +450,7 @@ LABEL_13:
 
   [(HKDemographicsInformationWrapper *)v12 setFitzpatrickSkinTypeObject:v23];
   v38 = v24;
-  v25 = [a1 bloodTypeWithError:&v38];
+  v25 = [self bloodTypeWithError:&v38];
   v26 = v38;
 
   if (v26)
@@ -465,7 +465,7 @@ LABEL_13:
   v27 = v19;
   [(HKDemographicsInformationWrapper *)v12 setBloodTypeObject:v25];
   v37 = v26;
-  v28 = [a1 wheelchairUseWithError:&v37];
+  v28 = [self wheelchairUseWithError:&v37];
   v29 = v37;
 
   if (v29)
@@ -479,7 +479,7 @@ LABEL_13:
 
   [(HKDemographicsInformationWrapper *)v12 setWheelchairUseObject:v28];
   v36 = v29;
-  v30 = [a1 _cardioFitnessMedicationsUseWithError:&v36];
+  v30 = [self _cardioFitnessMedicationsUseWithError:&v36];
   v31 = v36;
 
   if (v31)
@@ -492,7 +492,7 @@ LABEL_13:
   }
 
   [(HKDemographicsInformationWrapper *)v12 setCardioFitnessMedicationsUseObject:v30];
-  [a1 _fetchFirstAndLastNamesForInfoWrapper:v12 meContact:v34 completion:v35];
+  [self _fetchFirstAndLastNamesForInfoWrapper:v12 meContact:v34 completion:v35];
 }
 
 - (void)_fetchFirstAndLastNamesForInfoWrapper:()HKUIAdditions meContact:completion:
@@ -500,17 +500,17 @@ LABEL_13:
   v12 = a4;
   v8 = a5;
   v9 = a3;
-  v10 = [a1 profileIdentifier];
-  v11 = [v10 type];
+  profileIdentifier = [self profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v11 == 1)
+  if (type == 1)
   {
-    [a1 _primaryProfileFetchFirstAndLastNamesForInfoWrapper:v9 meContact:v12 completion:v8];
+    [self _primaryProfileFetchFirstAndLastNamesForInfoWrapper:v9 meContact:v12 completion:v8];
   }
 
   else
   {
-    [a1 _nonPrimaryProfileFetchFirstAndLastNamesForInfoWrapper:v9 completion:v8];
+    [self _nonPrimaryProfileFetchFirstAndLastNamesForInfoWrapper:v9 completion:v8];
   }
 }
 
@@ -519,13 +519,13 @@ LABEL_13:
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [MEMORY[0x1E696C210] healthAppDefaultsDomainWithHealthStore:a1];
+  v11 = [MEMORY[0x1E696C210] healthAppDefaultsDomainWithHealthStore:self];
   v12 = *MEMORY[0x1E696C918];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __105__HKHealthStore_HKUIAdditions___primaryProfileFetchFirstAndLastNamesForInfoWrapper_meContact_completion___block_invoke;
   v16[3] = &unk_1E81BA2F0;
-  v16[4] = a1;
+  v16[4] = self;
   v17 = v8;
   v18 = v9;
   v19 = v10;
@@ -539,7 +539,7 @@ LABEL_13:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E696C340]) initWithHealthStore:a1];
+  v8 = [objc_alloc(MEMORY[0x1E696C340]) initWithHealthStore:self];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __98__HKHealthStore_HKUIAdditions___nonPrimaryProfileFetchFirstAndLastNamesForInfoWrapper_completion___block_invoke;
@@ -557,29 +557,29 @@ LABEL_13:
   v9 = a5;
   v10 = a6;
   v11 = a3;
-  v12 = [v10 middleName];
+  middleName = [v10 middleName];
   if (![v17 length])
   {
-    v13 = [v10 givenName];
+    givenName = [v10 givenName];
 
-    v17 = v13;
+    v17 = givenName;
   }
 
   if (![v9 length])
   {
-    v14 = [v10 familyName];
+    familyName = [v10 familyName];
 
-    v9 = v14;
+    v9 = familyName;
   }
 
   [v11 setFirstName:v17];
-  [v11 setMiddleName:v12];
+  [v11 setMiddleName:middleName];
   [v11 setLastName:v9];
-  v15 = [v10 postalAddresses];
-  [v11 setPostalAddresses:v15];
+  postalAddresses = [v10 postalAddresses];
+  [v11 setPostalAddresses:postalAddresses];
 
-  v16 = [v10 emailAddresses];
-  [v11 setEmailAddresses:v16];
+  emailAddresses = [v10 emailAddresses];
+  [v11 setEmailAddresses:emailAddresses];
 }
 
 + (void)localizationStringAdditionForWheelchairUser

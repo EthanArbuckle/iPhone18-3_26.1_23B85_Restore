@@ -1,18 +1,18 @@
 @interface HMMRTCSessionManager
 + (id)sharedManager;
-- (void)addCommonField:(id)a3 withValue:(id)a4;
-- (void)removeCommonField:(id)a3;
-- (void)setSessionFactory:(id)a3;
+- (void)addCommonField:(id)field withValue:(id)value;
+- (void)removeCommonField:(id)field;
+- (void)setSessionFactory:(id)factory;
 @end
 
 @implementation HMMRTCSessionManager
 
-- (void)removeCommonField:(id)a3
+- (void)removeCommonField:(id)field
 {
-  v7 = a3;
+  fieldCopy = field;
   os_unfair_lock_lock_with_options();
   v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:self->_commonFields];
-  [v4 removeObjectForKey:v7];
+  [v4 removeObjectForKey:fieldCopy];
   v5 = [v4 copy];
   commonFields = self->_commonFields;
   self->_commonFields = v5;
@@ -20,10 +20,10 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addCommonField:(id)a3 withValue:(id)a4
+- (void)addCommonField:(id)field withValue:(id)value
 {
-  v10 = a3;
-  v6 = a4;
+  fieldCopy = field;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
   if (self->_commonFields)
   {
@@ -35,7 +35,7 @@
     [MEMORY[0x277CBEB38] dictionary];
   }
   v7 = ;
-  [v7 setObject:v6 forKey:v10];
+  [v7 setObject:valueCopy forKey:fieldCopy];
   v8 = [v7 copy];
   commonFields = self->_commonFields;
   self->_commonFields = v8;
@@ -43,12 +43,12 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setSessionFactory:(id)a3
+- (void)setSessionFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   os_unfair_lock_lock_with_options();
   sessionFactory = self->_sessionFactory;
-  self->_sessionFactory = v4;
+  self->_sessionFactory = factoryCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }

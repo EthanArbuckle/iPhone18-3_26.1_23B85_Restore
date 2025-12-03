@@ -1,20 +1,20 @@
 @interface FBApplicationDataStoreRepositoryServer
 + (id)sharedInstance;
 - (id)_init;
-- (void)_handleGetAvailableDataStores:(id)a3;
-- (void)_handleGetObjectForKey:(id)a3;
-- (void)_handleMigrateIdentifier:(id)a3;
-- (void)_handleRemoveAllObjects:(id)a3;
-- (void)_handleRemoveObjectForKey:(id)a3 context:(id)a4;
-- (void)_handleSetChangesInterest:(id)a3 context:(id)a4;
-- (void)_handleSetObjectForKey:(id)a3 context:(id)a4;
-- (void)_handleSetPrefetchedKeys:(id)a3 context:(id)a4;
-- (void)_handleSynchronize:(id)a3;
-- (void)applicationDataStoreRepositoryClientContext:(id)a3 repositoryInvalidatedForAppID:(id)a4;
-- (void)applicationDataStoreRepositoryClientContext:(id)a3 valueChangedForObject:(id)a4 key:(id)a5 appID:(id)a6;
-- (void)noteClientDidConnect:(id)a3 withMessage:(id)a4;
-- (void)noteClientDidDisconnect:(id)a3;
-- (void)noteDidReceiveMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5;
+- (void)_handleGetAvailableDataStores:(id)stores;
+- (void)_handleGetObjectForKey:(id)key;
+- (void)_handleMigrateIdentifier:(id)identifier;
+- (void)_handleRemoveAllObjects:(id)objects;
+- (void)_handleRemoveObjectForKey:(id)key context:(id)context;
+- (void)_handleSetChangesInterest:(id)interest context:(id)context;
+- (void)_handleSetObjectForKey:(id)key context:(id)context;
+- (void)_handleSetPrefetchedKeys:(id)keys context:(id)context;
+- (void)_handleSynchronize:(id)synchronize;
+- (void)applicationDataStoreRepositoryClientContext:(id)context repositoryInvalidatedForAppID:(id)d;
+- (void)applicationDataStoreRepositoryClientContext:(id)context valueChangedForObject:(id)object key:(id)key appID:(id)d;
+- (void)noteClientDidConnect:(id)connect withMessage:(id)message;
+- (void)noteClientDidDisconnect:(id)disconnect;
+- (void)noteDidReceiveMessage:(id)message withType:(int64_t)type fromClient:(id)client;
 @end
 
 @implementation FBApplicationDataStoreRepositoryServer
@@ -43,13 +43,13 @@ void __56__FBApplicationDataStoreRepositoryServer_sharedInstance__block_invoke()
 
 - (id)_init
 {
-  v3 = [@"FBApplicationDataStoreRepositoryServer" UTF8String];
+  uTF8String = [@"FBApplicationDataStoreRepositoryServer" UTF8String];
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v5 = dispatch_queue_create(v3, v4);
+  v5 = dispatch_queue_create(uTF8String, v4);
 
   v6 = MEMORY[0x1E698F4D0];
-  v7 = [MEMORY[0x1E698F500] userInitiated];
-  v8 = [v6 queueWithName:@"FBApplicationDataStoreRepositoryServer" serviceQuality:v7 targetQueue:v5];
+  userInitiated = [MEMORY[0x1E698F500] userInitiated];
+  v8 = [v6 queueWithName:@"FBApplicationDataStoreRepositoryServer" serviceQuality:userInitiated targetQueue:v5];
 
   v9 = *MEMORY[0x1E699F808];
   v17.receiver = self;
@@ -58,9 +58,9 @@ void __56__FBApplicationDataStoreRepositoryServer_sharedInstance__block_invoke()
   if (v10)
   {
     v11 = +[FBApplicationDataStoreRepositoryManager sharedInstance];
-    v12 = [v11 dataStore];
+    dataStore = [v11 dataStore];
     dataStore = v10->_dataStore;
-    v10->_dataStore = v12;
+    v10->_dataStore = dataStore;
 
     v14 = +[FBServiceClientAuthenticator sharedSystemClientAuthenticator];
     connectionAuthenticator = v10->_connectionAuthenticator;
@@ -70,88 +70,88 @@ void __56__FBApplicationDataStoreRepositoryServer_sharedInstance__block_invoke()
   return v10;
 }
 
-- (void)noteClientDidConnect:(id)a3 withMessage:(id)a4
+- (void)noteClientDidConnect:(id)connect withMessage:(id)message
 {
-  v5 = a3;
+  connectCopy = connect;
   v6 = [[FBApplicationDataStoreRepositoryServerClientContext alloc] initWithDataStore:self->_dataStore];
   [(FBApplicationDataStoreRepositoryServerClientContext *)v6 setDelegate:self];
-  [v5 setContext:v6];
+  [connectCopy setContext:v6];
 }
 
-- (void)noteClientDidDisconnect:(id)a3
+- (void)noteClientDidDisconnect:(id)disconnect
 {
-  v3 = [a3 context];
-  [v3 setDelegate:0];
+  context = [disconnect context];
+  [context setDelegate:0];
 }
 
-- (void)noteDidReceiveMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5
+- (void)noteDidReceiveMessage:(id)message withType:(int64_t)type fromClient:(id)client
 {
-  v9 = a3;
-  v8 = [a5 context];
-  if (a4 <= 3)
+  messageCopy = message;
+  context = [client context];
+  if (type <= 3)
   {
-    if (a4 > 1)
+    if (type > 1)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
-        [(FBApplicationDataStoreRepositoryServer *)self _handleMigrateIdentifier:v9];
+        [(FBApplicationDataStoreRepositoryServer *)self _handleMigrateIdentifier:messageCopy];
       }
 
       else
       {
-        [(FBApplicationDataStoreRepositoryServer *)self _handleGetObjectForKey:v9];
+        [(FBApplicationDataStoreRepositoryServer *)self _handleGetObjectForKey:messageCopy];
       }
     }
 
-    else if (a4)
+    else if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
-        [(FBApplicationDataStoreRepositoryServer *)self _handleGetAvailableDataStores:v9];
+        [(FBApplicationDataStoreRepositoryServer *)self _handleGetAvailableDataStores:messageCopy];
       }
     }
 
     else
     {
-      [(FBApplicationDataStoreRepositoryServer *)self _handleSynchronize:v9];
+      [(FBApplicationDataStoreRepositoryServer *)self _handleSynchronize:messageCopy];
     }
   }
 
-  else if (a4 <= 5)
+  else if (type <= 5)
   {
-    if (a4 == 4)
+    if (type == 4)
     {
-      [(FBApplicationDataStoreRepositoryServer *)self _handleSetObjectForKey:v9 context:v8];
+      [(FBApplicationDataStoreRepositoryServer *)self _handleSetObjectForKey:messageCopy context:context];
     }
 
     else
     {
-      [(FBApplicationDataStoreRepositoryServer *)self _handleRemoveObjectForKey:v9 context:v8];
+      [(FBApplicationDataStoreRepositoryServer *)self _handleRemoveObjectForKey:messageCopy context:context];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 6:
-        [(FBApplicationDataStoreRepositoryServer *)self _handleRemoveAllObjects:v9];
+        [(FBApplicationDataStoreRepositoryServer *)self _handleRemoveAllObjects:messageCopy];
         break;
       case 8:
-        [(FBApplicationDataStoreRepositoryServer *)self _handleSetChangesInterest:v9 context:v8];
+        [(FBApplicationDataStoreRepositoryServer *)self _handleSetChangesInterest:messageCopy context:context];
         break;
       case 7:
-        [(FBApplicationDataStoreRepositoryServer *)self _handleSetPrefetchedKeys:v9 context:v8];
+        [(FBApplicationDataStoreRepositoryServer *)self _handleSetPrefetchedKeys:messageCopy context:context];
         break;
     }
   }
 }
 
-- (void)_handleSetPrefetchedKeys:(id)a3 context:(id)a4
+- (void)_handleSetPrefetchedKeys:(id)keys context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 payload];
+  contextCopy = context;
+  keysCopy = keys;
+  payload = [keysCopy payload];
   v9 = *MEMORY[0x1E699F850];
   v10 = BSDeserializeCFValueFromXPCDictionaryWithKey();
 
@@ -166,7 +166,7 @@ void __56__FBApplicationDataStoreRepositoryServer_sharedInstance__block_invoke()
     v11 = 0;
   }
 
-  [v6 setPrefetchedKeys:v11];
+  [contextCopy setPrefetchedKeys:v11];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__FBApplicationDataStoreRepositoryServer__handleSetPrefetchedKeys_context___block_invoke;
@@ -174,7 +174,7 @@ void __56__FBApplicationDataStoreRepositoryServer_sharedInstance__block_invoke()
   v13[4] = self;
   v14 = v11;
   v12 = v11;
-  [v7 sendReplyMessageWithPacker:v13];
+  [keysCopy sendReplyMessageWithPacker:v13];
 }
 
 void __75__FBApplicationDataStoreRepositoryServer__handleSetPrefetchedKeys_context___block_invoke(uint64_t a1, void *a2)
@@ -192,33 +192,33 @@ void __75__FBApplicationDataStoreRepositoryServer__handleSetPrefetchedKeys_conte
   }
 }
 
-- (void)_handleSetChangesInterest:(id)a3 context:(id)a4
+- (void)_handleSetChangesInterest:(id)interest context:(id)context
 {
-  v5 = a4;
-  v8 = a3;
-  v6 = [v8 payload];
-  v7 = xpc_dictionary_get_BOOL(v6, *MEMORY[0x1E699F820]);
+  contextCopy = context;
+  interestCopy = interest;
+  payload = [interestCopy payload];
+  v7 = xpc_dictionary_get_BOOL(payload, *MEMORY[0x1E699F820]);
 
-  [v5 setInterestedInAllChanges:v7];
-  [v8 sendReplyMessageWithPacker:&__block_literal_global_12];
+  [contextCopy setInterestedInAllChanges:v7];
+  [interestCopy sendReplyMessageWithPacker:&__block_literal_global_12];
 }
 
-- (void)_handleSynchronize:(id)a3
+- (void)_handleSynchronize:(id)synchronize
 {
   dataStore = self->_dataStore;
-  v4 = a3;
+  synchronizeCopy = synchronize;
   [(FBApplicationDataStoreRepository *)dataStore flushSynchronously];
-  [v4 sendReplyMessageWithPacker:&__block_literal_global_14];
+  [synchronizeCopy sendReplyMessageWithPacker:&__block_literal_global_14];
 }
 
-- (void)_handleGetAvailableDataStores:(id)a3
+- (void)_handleGetAvailableDataStores:(id)stores
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __72__FBApplicationDataStoreRepositoryServer__handleGetAvailableDataStores___block_invoke;
   v3[3] = &unk_1E783B268;
   v3[4] = self;
-  [a3 sendReplyMessageWithPacker:v3];
+  [stores sendReplyMessageWithPacker:v3];
 }
 
 void __72__FBApplicationDataStoreRepositoryServer__handleGetAvailableDataStores___block_invoke(uint64_t a1, void *a2)
@@ -234,11 +234,11 @@ void __72__FBApplicationDataStoreRepositoryServer__handleGetAvailableDataStores_
   BSSerializeCFValueToXPCDictionaryWithKey();
 }
 
-- (void)_handleMigrateIdentifier:(id)a3
+- (void)_handleMigrateIdentifier:(id)identifier
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 payload];
+  identifierCopy = identifier;
+  payload = [identifierCopy payload];
   v6 = *MEMORY[0x1E699F828];
   v7 = BSDeserializeStringFromXPCDictionaryWithKey();
   v8 = *MEMORY[0x1E699F830];
@@ -274,15 +274,15 @@ void __72__FBApplicationDataStoreRepositoryServer__handleGetAvailableDataStores_
   v17[3] = &unk_1E783B268;
   v18 = v14;
   v15 = v14;
-  [v4 sendReplyMessageWithPacker:v17];
+  [identifierCopy sendReplyMessageWithPacker:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleGetObjectForKey:(id)a3
+- (void)_handleGetObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 payload];
+  keyCopy = key;
+  payload = [keyCopy payload];
   v6 = *MEMORY[0x1E699F840];
   v7 = BSDeserializeStringFromXPCDictionaryWithKey();
   v8 = *MEMORY[0x1E699F828];
@@ -293,10 +293,10 @@ void __72__FBApplicationDataStoreRepositoryServer__handleGetAvailableDataStores_
   v12[3] = &unk_1E783BE20;
   v13 = v7;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v10 = v9;
   v11 = v7;
-  [v4 sendReplyMessageWithPacker:v12];
+  [keyCopy sendReplyMessageWithPacker:v12];
 }
 
 void __65__FBApplicationDataStoreRepositoryServer__handleGetObjectForKey___block_invoke(void *a1, void *a2)
@@ -316,16 +316,16 @@ void __65__FBApplicationDataStoreRepositoryServer__handleGetObjectForKey___block
   }
 }
 
-- (void)_handleSetObjectForKey:(id)a3 context:(id)a4
+- (void)_handleSetObjectForKey:(id)key context:(id)context
 {
-  v5 = a3;
+  keyCopy = key;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__FBApplicationDataStoreRepositoryServer__handleSetObjectForKey_context___block_invoke;
   v7[3] = &unk_1E783BDF8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = keyCopy;
+  selfCopy = self;
+  v6 = keyCopy;
   [v6 sendReplyMessageWithPacker:v7];
 }
 
@@ -346,16 +346,16 @@ void __73__FBApplicationDataStoreRepositoryServer__handleSetObjectForKey_context
   }
 }
 
-- (void)_handleRemoveObjectForKey:(id)a3 context:(id)a4
+- (void)_handleRemoveObjectForKey:(id)key context:(id)context
 {
-  v5 = a3;
+  keyCopy = key;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__FBApplicationDataStoreRepositoryServer__handleRemoveObjectForKey_context___block_invoke;
   v7[3] = &unk_1E783BDF8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = keyCopy;
+  selfCopy = self;
+  v6 = keyCopy;
   [v6 sendReplyMessageWithPacker:v7];
 }
 
@@ -369,16 +369,16 @@ void __76__FBApplicationDataStoreRepositoryServer__handleRemoveObjectForKey_cont
   [*(*(a1 + 40) + 56) removeObjectForKey:v3 forApplication:v5];
 }
 
-- (void)_handleRemoveAllObjects:(id)a3
+- (void)_handleRemoveAllObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__FBApplicationDataStoreRepositoryServer__handleRemoveAllObjects___block_invoke;
   v6[3] = &unk_1E783BDF8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = objectsCopy;
+  selfCopy = self;
+  v5 = objectsCopy;
   [v5 sendReplyMessageWithPacker:v6];
 }
 
@@ -391,24 +391,24 @@ void __66__FBApplicationDataStoreRepositoryServer__handleRemoveAllObjects___bloc
   [*(*(a1 + 40) + 56) removeAllObjectsForApplication:v4];
 }
 
-- (void)applicationDataStoreRepositoryClientContext:(id)a3 valueChangedForObject:(id)a4 key:(id)a5 appID:(id)a6
+- (void)applicationDataStoreRepositoryClientContext:(id)context valueChangedForObject:(id)object key:(id)key appID:(id)d
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 clientHandle];
-  if (v13)
+  objectCopy = object;
+  keyCopy = key;
+  dCopy = d;
+  clientHandle = [context clientHandle];
+  if (clientHandle)
   {
     v14 = MEMORY[0x1E699FCF8];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __118__FBApplicationDataStoreRepositoryServer_applicationDataStoreRepositoryClientContext_valueChangedForObject_key_appID___block_invoke;
     v17[3] = &unk_1E783BE20;
-    v18 = v11;
-    v19 = v12;
-    v20 = v10;
+    v18 = keyCopy;
+    v19 = dCopy;
+    v20 = objectCopy;
     v15 = [v14 messageWithPacker:v17];
-    v16 = [MEMORY[0x1E695DFD8] setWithObject:v13];
+    v16 = [MEMORY[0x1E695DFD8] setWithObject:clientHandle];
     [(FBSServiceFacility *)self sendMessage:v15 withType:9 toClients:v16];
   }
 }
@@ -430,20 +430,20 @@ void __118__FBApplicationDataStoreRepositoryServer_applicationDataStoreRepositor
   }
 }
 
-- (void)applicationDataStoreRepositoryClientContext:(id)a3 repositoryInvalidatedForAppID:(id)a4
+- (void)applicationDataStoreRepositoryClientContext:(id)context repositoryInvalidatedForAppID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 clientHandle];
-  if (v7)
+  dCopy = d;
+  clientHandle = [context clientHandle];
+  if (clientHandle)
   {
     v8 = MEMORY[0x1E699FCF8];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __116__FBApplicationDataStoreRepositoryServer_applicationDataStoreRepositoryClientContext_repositoryInvalidatedForAppID___block_invoke;
     v11[3] = &unk_1E783B268;
-    v12 = v6;
+    v12 = dCopy;
     v9 = [v8 messageWithPacker:v11];
-    v10 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+    v10 = [MEMORY[0x1E695DFD8] setWithObject:clientHandle];
     [(FBSServiceFacility *)self sendMessage:v9 withType:10 toClients:v10];
   }
 }

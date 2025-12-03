@@ -1,13 +1,13 @@
 @interface RAPReportComposerLabelStatusPart
-- (RAPReportComposerLabelStatusPart)initWithCorrectableFlag:(id)a3;
+- (RAPReportComposerLabelStatusPart)initWithCorrectableFlag:(id)flag;
 @end
 
 @implementation RAPReportComposerLabelStatusPart
 
-- (RAPReportComposerLabelStatusPart)initWithCorrectableFlag:(id)a3
+- (RAPReportComposerLabelStatusPart)initWithCorrectableFlag:(id)flag
 {
-  v4 = a3;
-  v5 = [[RAPReportComposerLabelStatusSection alloc] initWithCorrectableFlag:v4];
+  flagCopy = flag;
+  v5 = [[RAPReportComposerLabelStatusSection alloc] initWithCorrectableFlag:flagCopy];
 
   v10 = v5;
   v6 = [NSArray arrayWithObjects:&v10 count:1];

@@ -1,15 +1,15 @@
 @interface IXDataPromise
-+ (BOOL)promiseExists:(BOOL *)a3 withUUID:(id)a4 error:(id *)a5;
-+ (id)outstandingPromisesForCreator:(unint64_t)a3;
-- (BOOL)cancelForReason:(id)a3 client:(unint64_t)a4 error:(id *)a5;
++ (BOOL)promiseExists:(BOOL *)exists withUUID:(id)d error:(id *)error;
++ (id)outstandingPromisesForCreator:(unint64_t)creator;
+- (BOOL)cancelForReason:(id)reason client:(unint64_t)client error:(id *)error;
 - (BOOL)isComplete;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)localIsComplete;
-- (BOOL)preflightWithError:(id *)a3;
-- (BOOL)resetWithError:(id *)a3;
-- (IXDataPromise)initWithCoder:(id)a3;
-- (IXDataPromise)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5;
-- (IXDataPromise)initWithSeed:(id)a3;
+- (BOOL)preflightWithError:(id *)error;
+- (BOOL)resetWithError:(id *)error;
+- (IXDataPromise)initWithCoder:(id)coder;
+- (IXDataPromise)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed;
+- (IXDataPromise)initWithSeed:(id)seed;
 - (NSError)error;
 - (NSError)localError;
 - (NSString)name;
@@ -21,22 +21,22 @@
 - (unint64_t)errorSourceIdentifier;
 - (unint64_t)hash;
 - (unint64_t)totalBytesNeededOnDisk;
-- (void)_clientDelegate_didCancelWithError:(id)a3 client:(unint64_t)a4;
+- (void)_clientDelegate_didCancelWithError:(id)error client:(unint64_t)client;
 - (void)_clientDelegate_didComplete;
-- (void)cancelForReason:(id)a3 client:(unint64_t)a4 completion:(id)a5;
+- (void)cancelForReason:(id)reason client:(unint64_t)client completion:(id)completion;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)resetWithCompletion:(id)a3;
-- (void)setComplete:(BOOL)a3;
-- (void)setPercentComplete:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)preflightWithCompletion:(id)completion;
+- (void)resetWithCompletion:(id)completion;
+- (void)setComplete:(BOOL)complete;
+- (void)setPercentComplete:(double)complete;
 @end
 
 @implementation IXDataPromise
 
-- (IXDataPromise)initWithSeed:(id)a3
+- (IXDataPromise)initWithSeed:(id)seed
 {
-  v5 = a3;
+  seedCopy = seed;
   v10.receiver = self;
   v10.super_class = IXDataPromise;
   v6 = [(IXDataPromise *)&v10 init];
@@ -44,7 +44,7 @@
   if (v6)
   {
     v6->_ivarLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_seed, a3);
+    objc_storeStrong(&v6->_seed, seed);
     v8 = +[IXServerConnection sharedConnection];
     [v8 registerDataPromiseForUpdates:v7 notifyDaemon:0];
   }
@@ -55,8 +55,8 @@
 - (void)dealloc
 {
   v3 = +[IXServerConnection sharedConnection];
-  v4 = [(IXDataPromiseSeed *)self->_seed uniqueIdentifier];
-  [v3 unregisterForUpdatesForDataPromiseWithUUID:v4];
+  uniqueIdentifier = [(IXDataPromiseSeed *)self->_seed uniqueIdentifier];
+  [v3 unregisterForUpdatesForDataPromiseWithUUID:uniqueIdentifier];
 
   v5.receiver = self;
   v5.super_class = IXDataPromise;
@@ -65,34 +65,34 @@
 
 - (NSString)name
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 name];
+  seed = [(IXDataPromise *)self seed];
+  name = [seed name];
 
-  return v3;
+  return name;
 }
 
 - (unint64_t)creatorIdentifier
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 creatorIdentifier];
+  seed = [(IXDataPromise *)self seed];
+  creatorIdentifier = [seed creatorIdentifier];
 
-  return v3;
+  return creatorIdentifier;
 }
 
 - (NSUUID)uniqueIdentifier
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 uniqueIdentifier];
+  seed = [(IXDataPromise *)self seed];
+  uniqueIdentifier = [seed uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (unint64_t)totalBytesNeededOnDisk
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 totalBytesNeededOnDisk];
+  seed = [(IXDataPromise *)self seed];
+  totalBytesNeededOnDisk = [seed totalBytesNeededOnDisk];
 
-  return v3;
+  return totalBytesNeededOnDisk;
 }
 
 - (NSError)error
@@ -102,7 +102,7 @@
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__11;
   v15 = __Block_byref_object_dispose__11;
-  v16 = [(IXDataPromise *)self localError];
+  localError = [(IXDataPromise *)self localError];
   v3 = v12[5];
   if (!v3)
   {
@@ -114,14 +114,14 @@
     v10[4] = self;
     v10[5] = &v11;
     v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
-    v6 = [(IXDataPromise *)self uniqueIdentifier];
+    uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __22__IXDataPromise_error__block_invoke_6;
     v9[3] = &unk_1E85C5BC8;
     v9[4] = self;
     v9[5] = &v11;
-    [v5 _remote_IXSDataPromise:v6 getErrorInfo:v9];
+    [v5 _remote_IXSDataPromise:uniqueIdentifier getErrorInfo:v9];
 
     v3 = v12[5];
   }
@@ -223,14 +223,14 @@ LABEL_9:
     v9[3] = &unk_1E85C5998;
     v9[4] = self;
     v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
-    v6 = [(IXDataPromise *)self uniqueIdentifier];
+    uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __38__IXDataPromise_errorSourceIdentifier__block_invoke_8;
     v8[3] = &unk_1E85C5BC8;
     v8[4] = self;
     v8[5] = &v10;
-    [v5 _remote_IXSDataPromise:v6 getErrorInfo:v8];
+    [v5 _remote_IXSDataPromise:uniqueIdentifier getErrorInfo:v8];
 
     v3 = v11[3];
   }
@@ -327,14 +327,14 @@ LABEL_9:
     v10[3] = &unk_1E85C5998;
     v10[4] = self;
     v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v10];
-    v7 = [(IXDataPromise *)self uniqueIdentifier];
+    uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __27__IXDataPromise_isComplete__block_invoke_9;
     v9[3] = &unk_1E85C59C0;
     v9[4] = self;
     v9[5] = &v11;
-    [v6 _remote_IXSDataPromise:v7 getIsComplete:v9];
+    [v6 _remote_IXSDataPromise:uniqueIdentifier getIsComplete:v9];
 
     v4 = *(v12 + 24);
   }
@@ -394,12 +394,12 @@ void __27__IXDataPromise_isComplete__block_invoke_9(uint64_t a1, char a2, void *
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setComplete:(BOOL)a3
+- (void)setComplete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [(IXDataPromise *)self localError];
-  if (v5)
+  localError = [(IXDataPromise *)self localError];
+  if (localError)
   {
     v6 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -407,12 +407,12 @@ void __27__IXDataPromise_isComplete__block_invoke_9(uint64_t a1, char a2, void *
       *buf = 136315394;
       v11 = "[IXDataPromise setComplete:]";
       v12 = 2112;
-      v13 = v5;
+      v13 = localError;
       _os_log_impl(&dword_1DA47A000, v6, OS_LOG_TYPE_DEFAULT, "%s: Called after error %@ occurred; ignoring.", buf, 0x16u);
     }
   }
 
-  else if (v3)
+  else if (completeCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -533,14 +533,14 @@ void __29__IXDataPromise_setComplete___block_invoke_11(uint64_t a1, void *a2)
   v9[3] = &unk_1E85C5998;
   v9[4] = self;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v9];
-  v5 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __32__IXDataPromise_percentComplete__block_invoke_13;
   v8[3] = &unk_1E85C6718;
   v8[4] = self;
   v8[5] = &v10;
-  [v4 _remote_IXSDataPromise:v5 getPercentComplete:v8];
+  [v4 _remote_IXSDataPromise:uniqueIdentifier getPercentComplete:v8];
 
   v6 = v11[3];
   _Block_object_dispose(&v10, 8);
@@ -595,18 +595,18 @@ void __32__IXDataPromise_percentComplete__block_invoke_13(uint64_t a1, void *a2,
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPercentComplete:(double)a3
+- (void)setPercentComplete:(double)complete
 {
   v5 = +[IXServerConnection sharedConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__IXDataPromise_setPercentComplete___block_invoke;
   v8[3] = &unk_1E85C6740;
-  *&v8[5] = a3;
+  *&v8[5] = complete;
   v8[4] = self;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v8];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
-  [v6 _remote_IXSDataPromise:v7 setPercentComplete:a3];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+  [v6 _remote_IXSDataPromise:uniqueIdentifier setPercentComplete:complete];
 }
 
 void __36__IXDataPromise_setPercentComplete___block_invoke(uint64_t a1, void *a2)
@@ -636,29 +636,29 @@ void __36__IXDataPromise_setPercentComplete___block_invoke(uint64_t a1, void *a2
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = +[IXGlobalConfiguration sharedInstance];
-  v4 = [v3 userVolumeURL];
+  userVolumeURL = [v3 userVolumeURL];
 
   v5 = IXGetLoggingHandle(kIXLoggingSubsystem);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 path];
+    path = [userVolumeURL path];
     v9 = 136315650;
     v10 = "[IXDataPromise preflightPath]";
     v11 = 2112;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v6;
+    v14 = path;
     _os_log_impl(&dword_1DA47A000, v5, OS_LOG_TYPE_DEFAULT, "%s: WARNING: Preflight called on %@ which assumes data will end up on the volume containing %@; this may not be accurate.", &v9, 0x20u);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return userVolumeURL;
 }
 
-- (IXDataPromise)initWithCoder:(id)a3
+- (IXDataPromise)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = IXDataPromise;
   v5 = [(IXDataPromise *)&v11 init];
@@ -666,7 +666,7 @@ void __36__IXDataPromise_setPercentComplete___block_invoke(uint64_t a1, void *a2
   if (v5)
   {
     v5->_ivarLock._os_unfair_lock_opaque = 0;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seed"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seed"];
     seed = v6->_seed;
     v6->_seed = v7;
 
@@ -677,16 +677,16 @@ void __36__IXDataPromise_setPercentComplete___block_invoke(uint64_t a1, void *a2
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IXDataPromise *)self seed];
-  [v4 encodeObject:v5 forKey:@"seed"];
+  coderCopy = coder;
+  seed = [(IXDataPromise *)self seed];
+  [coderCopy encodeObject:seed forKey:@"seed"];
 }
 
-- (IXDataPromise)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5
+- (IXDataPromise)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed
 {
-  v8 = a3;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = IXDataPromise;
   v9 = [(IXDataPromise *)&v16 init];
@@ -698,14 +698,14 @@ void __36__IXDataPromise_setPercentComplete___block_invoke(uint64_t a1, void *a2
     v11 = objc_opt_new();
     [(IXDataPromise *)v10 setSeed:v11];
 
-    v12 = [(IXDataPromise *)v10 seed];
-    [v12 setName:v8];
+    seed = [(IXDataPromise *)v10 seed];
+    [seed setName:nameCopy];
 
-    v13 = [(IXDataPromise *)v10 seed];
-    [v13 setCreatorIdentifier:a4];
+    seed2 = [(IXDataPromise *)v10 seed];
+    [seed2 setCreatorIdentifier:client];
 
-    v14 = [(IXDataPromise *)v10 seed];
-    [v14 setTotalBytesNeededOnDisk:a5];
+    seed3 = [(IXDataPromise *)v10 seed];
+    [seed3 setTotalBytesNeededOnDisk:needed];
   }
 
   return v10;
@@ -713,23 +713,23 @@ void __36__IXDataPromise_setPercentComplete___block_invoke(uint64_t a1, void *a2
 
 - (unint64_t)hash
 {
-  v2 = [(IXDataPromise *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IXDataPromise *)self uniqueIdentifier];
-    v7 = [v5 uniqueIdentifier];
+    v5 = equalCopy;
+    uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+    uniqueIdentifier2 = [v5 uniqueIdentifier];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [uniqueIdentifier isEqual:uniqueIdentifier2];
   }
 
   else
@@ -745,20 +745,20 @@ void __36__IXDataPromise_setPercentComplete___block_invoke(uint64_t a1, void *a2
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(IXDataPromise *)self name];
-  v7 = [(IXDataPromise *)self seed];
-  v8 = [v7 uniqueIdentifier];
+  name = [(IXDataPromise *)self name];
+  seed = [(IXDataPromise *)self seed];
+  uniqueIdentifier = [seed uniqueIdentifier];
   v9 = IXStringForClientID([(IXDataPromise *)self creatorIdentifier]);
-  v10 = [v3 stringWithFormat:@"<%@<%p> name:%@ uuid:%@ creator:%@>", v5, self, v6, v8, v9];
+  v10 = [v3 stringWithFormat:@"<%@<%p> name:%@ uuid:%@ creator:%@>", v5, self, name, uniqueIdentifier, v9];
 
   return v10;
 }
 
-- (void)cancelForReason:(id)a3 client:(unint64_t)a4 completion:(id)a5
+- (void)cancelForReason:(id)reason client:(unint64_t)client completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  reasonCopy = reason;
+  completionCopy = completion;
+  if (!reasonCopy)
   {
     v15 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -771,7 +771,7 @@ void __36__IXDataPromise_setPercentComplete___block_invoke(uint64_t a1, void *a2
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!client)
   {
     v19 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -783,14 +783,14 @@ void __36__IXDataPromise_setPercentComplete___block_invoke(uint64_t a1, void *a2
     v18 = 362;
 LABEL_10:
     v20 = _CreateError("[IXDataPromise cancelForReason:client:completion:]", v18, @"IXErrorDomain", 4uLL, 0, 0, v17, v16, v21);
-    v10[2](v10, v20);
+    completionCopy[2](completionCopy, v20);
 
     goto LABEL_11;
   }
 
   os_unfair_lock_lock(&self->_ivarLock);
-  objc_storeStrong(&self->_error, a3);
-  self->_errorSourceIdentifier = a4;
+  objc_storeStrong(&self->_error, reason);
+  self->_errorSourceIdentifier = client;
   self->_complete = 0;
   os_unfair_lock_unlock(&self->_ivarLock);
   v11 = +[IXServerConnection sharedConnection];
@@ -798,12 +798,12 @@ LABEL_10:
   v22 = 3221225472;
   v23 = __51__IXDataPromise_cancelForReason_client_completion___block_invoke;
   v24 = &unk_1E85C6638;
-  v25 = self;
-  v12 = v10;
+  selfCopy = self;
+  v12 = completionCopy;
   v26 = v12;
   v13 = [v11 remoteObjectProxyWithErrorHandler:&v21];
   v14 = [(IXDataPromise *)self uniqueIdentifier:v21];
-  [v13 _remote_IXSDataPromise:v14 cancelForReason:v9 client:a4 completion:v12];
+  [v13 _remote_IXSDataPromise:v14 cancelForReason:reasonCopy client:client completion:v12];
 
 LABEL_11:
 }
@@ -829,9 +829,9 @@ void __51__IXDataPromise_cancelForReason_client_completion___block_invoke(uint64
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)cancelForReason:(id)a3 client:(unint64_t)a4 error:(id *)a5
+- (BOOL)cancelForReason:(id)reason client:(unint64_t)client error:(id *)error
 {
-  v9 = a3;
+  reasonCopy = reason;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -842,7 +842,7 @@ void __51__IXDataPromise_cancelForReason_client_completion___block_invoke(uint64
   v26 = __Block_byref_object_copy__11;
   v27 = __Block_byref_object_dispose__11;
   v28 = 0;
-  if (!v9)
+  if (!reasonCopy)
   {
     v13 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -854,7 +854,7 @@ void __51__IXDataPromise_cancelForReason_client_completion___block_invoke(uint64
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!client)
   {
     v16 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -871,8 +871,8 @@ LABEL_10:
   }
 
   os_unfair_lock_lock(&self->_ivarLock);
-  objc_storeStrong(&self->_error, a3);
-  self->_errorSourceIdentifier = a4;
+  objc_storeStrong(&self->_error, reason);
+  self->_errorSourceIdentifier = client;
   self->_complete = 0;
   os_unfair_lock_unlock(&self->_ivarLock);
   v10 = +[IXServerConnection sharedConnection];
@@ -883,20 +883,20 @@ LABEL_10:
   v22[4] = self;
   v22[5] = &v23;
   v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v22];
-  v12 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __46__IXDataPromise_cancelForReason_client_error___block_invoke_29;
   v21[3] = &unk_1E85C53F8;
   v21[4] = &v23;
   v21[5] = &v29;
-  [v11 _remote_IXSDataPromise:v12 cancelForReason:v9 client:a4 completion:v21];
+  [v11 _remote_IXSDataPromise:uniqueIdentifier cancelForReason:reasonCopy client:client completion:v21];
 
 LABEL_11:
   v19 = *(v30 + 24);
-  if (a5 && (v30[3] & 1) == 0)
+  if (error && (v30[3] & 1) == 0)
   {
-    *a5 = v24[5];
+    *error = v24[5];
     v19 = *(v30 + 24);
   }
 
@@ -946,18 +946,18 @@ void __46__IXDataPromise_cancelForReason_client_error___block_invoke_29(uint64_t
   }
 }
 
-- (void)resetWithCompletion:(id)a3
+- (void)resetWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[IXServerConnection sharedConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __37__IXDataPromise_resetWithCompletion___block_invoke;
   v12[3] = &unk_1E85C5470;
-  v6 = v4;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __37__IXDataPromise_resetWithCompletion___block_invoke_30;
@@ -965,7 +965,7 @@ void __46__IXDataPromise_cancelForReason_client_error___block_invoke_29(uint64_t
   v10[4] = self;
   v11 = v6;
   v9 = v6;
-  [v7 _remote_IXSDataPromise:v8 resetWithCompletion:v10];
+  [v7 _remote_IXSDataPromise:uniqueIdentifier resetWithCompletion:v10];
 }
 
 void __37__IXDataPromise_resetWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1038,7 +1038,7 @@ void __37__IXDataPromise_resetWithCompletion___block_invoke_2(uint64_t a1, void 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)resetWithError:(id *)a3
+- (BOOL)resetWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -1057,7 +1057,7 @@ void __37__IXDataPromise_resetWithCompletion___block_invoke_2(uint64_t a1, void 
   v11[3] = &unk_1E85C5560;
   v11[4] = &v12;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v11];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __32__IXDataPromise_resetWithError___block_invoke_31;
@@ -1065,12 +1065,12 @@ void __37__IXDataPromise_resetWithCompletion___block_invoke_2(uint64_t a1, void 
   v10[4] = self;
   v10[5] = &v12;
   v10[6] = &v18;
-  [v6 _remote_IXSDataPromise:v7 resetWithCompletion:v10];
+  [v6 _remote_IXSDataPromise:uniqueIdentifier resetWithCompletion:v10];
 
   v8 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v8 = *(v19 + 24);
   }
 
@@ -1119,25 +1119,25 @@ uint64_t __32__IXDataPromise_resetWithError___block_invoke_31(uint64_t a1, void 
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[IXServerConnection sharedConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __41__IXDataPromise_preflightWithCompletion___block_invoke;
   v12[3] = &unk_1E85C5470;
-  v6 = v4;
+  v6 = completionCopy;
   v13 = v6;
   v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__IXDataPromise_preflightWithCompletion___block_invoke_32;
   v10[3] = &unk_1E85C6768;
   v11 = v6;
   v9 = v6;
-  [v7 _remote_IXSDataPromise:v8 preflightWithCompletion:v10];
+  [v7 _remote_IXSDataPromise:uniqueIdentifier preflightWithCompletion:v10];
 }
 
 void __41__IXDataPromise_preflightWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1162,7 +1162,7 @@ void __41__IXDataPromise_preflightWithCompletion___block_invoke(uint64_t a1, voi
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)preflightWithError:(id *)a3
+- (BOOL)preflightWithError:(id *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -1177,18 +1177,18 @@ void __41__IXDataPromise_preflightWithCompletion___block_invoke(uint64_t a1, voi
   v12[3] = &unk_1E85C5560;
   v12[4] = &v13;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __36__IXDataPromise_preflightWithError___block_invoke_33;
   v11[3] = &unk_1E85C6790;
   v11[4] = &v13;
-  [v6 _remote_IXSDataPromise:v7 preflightWithCompletion:v11];
+  [v6 _remote_IXSDataPromise:uniqueIdentifier preflightWithCompletion:v11];
 
   v8 = v14[5];
-  if (a3 && v8)
+  if (error && v8)
   {
-    *a3 = v8;
+    *error = v8;
     v8 = v14[5];
   }
 
@@ -1253,20 +1253,20 @@ void __36__IXDataPromise_preflightWithError___block_invoke_33(uint64_t a1, void 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)_clientDelegate_didCancelWithError:(id)a3 client:(unint64_t)a4
+- (void)_clientDelegate_didCancelWithError:(id)error client:(unint64_t)client
 {
-  v6 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_ivarLock);
   self->_complete = 0;
   error = self->_error;
-  self->_error = v6;
+  self->_error = errorCopy;
 
-  self->_errorSourceIdentifier = a4;
+  self->_errorSourceIdentifier = client;
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-+ (id)outstandingPromisesForCreator:(unint64_t)a3
++ (id)outstandingPromisesForCreator:(unint64_t)creator
 {
   v9 = 0;
   v10 = &v9;
@@ -1281,7 +1281,7 @@ void __36__IXDataPromise_preflightWithError___block_invoke_33(uint64_t a1, void 
   v8[2] = __58__IXDataPromise_IXTesting__outstandingPromisesForCreator___block_invoke_137;
   v8[3] = &unk_1E85C67B8;
   v8[4] = &v9;
-  [v5 _remote_fetchRegisteredDataPromiseInfoForCreator:a3 completion:v8];
+  [v5 _remote_fetchRegisteredDataPromiseInfoForCreator:creator completion:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1331,9 +1331,9 @@ void __58__IXDataPromise_IXTesting__outstandingPromisesForCreator___block_invoke
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)promiseExists:(BOOL *)a3 withUUID:(id)a4 error:(id *)a5
++ (BOOL)promiseExists:(BOOL *)exists withUUID:(id)d error:(id *)error
 {
-  v7 = a4;
+  dCopy = d;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -1362,10 +1362,10 @@ void __58__IXDataPromise_IXTesting__outstandingPromisesForCreator___block_invoke
   v13[4] = &v15;
   v13[5] = &v21;
   v13[6] = &v25;
-  [v9 _remote_checkIfDataPromiseExistsForUUID:v7 completion:v13];
+  [v9 _remote_checkIfDataPromiseExistsForUUID:dCopy completion:v13];
 
   v10 = v26;
-  if (!a5 || (v26[3] & 1) != 0)
+  if (!error || (v26[3] & 1) != 0)
   {
     if (!*(v26 + 24))
     {
@@ -1373,12 +1373,12 @@ void __58__IXDataPromise_IXTesting__outstandingPromisesForCreator___block_invoke
     }
 
 LABEL_6:
-    *a3 = *(v22 + 24);
+    *exists = *(v22 + 24);
     v11 = *(v10 + 24);
     goto LABEL_7;
   }
 
-  *a5 = v16[5];
+  *error = v16[5];
   v10 = v26;
   if (v26[3])
   {

@@ -7,9 +7,9 @@
 - (BOOL)rem_all
 {
   v2 = [(INDeleteTasksIntent *)self all];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

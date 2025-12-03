@@ -1,44 +1,44 @@
 @interface VCSessionManager
-+ (id)playbackSynchronizationGroupUUIDWithXPCDictionary:(id)a3;
++ (id)playbackSynchronizationGroupUUIDWithXPCDictionary:(id)dictionary;
 + (id)sharedInstance;
-+ (void)addNSError:(id)a3 toXPCArgumentDictionary:(id)a4;
++ (void)addNSError:(id)error toXPCArgumentDictionary:(id)dictionary;
 - (VCSessionManager)init;
-- (id)newParticpantUpdateConfigurationsWithXPCArgs:(id)a3;
-- (id)participantConfigFromXPCDictionary:(id)a3;
-- (id)sessionForStreamToken:(unsigned int)a3;
-- (id)sessionForUUID:(id)a3;
+- (id)newParticpantUpdateConfigurationsWithXPCArgs:(id)args;
+- (id)participantConfigFromXPCDictionary:(id)dictionary;
+- (id)sessionForStreamToken:(unsigned int)token;
+- (id)sessionForUUID:(id)d;
 - (void)dealloc;
 - (void)deregisterBlocksForService;
 - (void)registerBlocksForService;
-- (void)releaseSession:(id)a3;
-- (void)setScreenAndCameraMixingEnabled:(BOOL)a3;
-- (void)setSharingEnabled:(BOOL)a3;
-- (void)vcSession:(id)a3 addParticipantWithID:(id)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)vcSession:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)vcSession:(id)a3 didStopWithError:(id)a4;
-- (void)vcSession:(id)a3 downlinkRateAdaptationDidChangeWithInfo:(id)a4;
-- (void)vcSession:(id)a3 oneToOneModeEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)vcSession:(id)a3 participantDidStopReacting:(id)a4;
-- (void)vcSession:(id)a3 participantID:(id)a4 audioEnabled:(BOOL)a5 didSucceed:(BOOL)a6 error:(id)a7;
-- (void)vcSession:(id)a3 participantID:(id)a4 audioPaused:(BOOL)a5 didSucceed:(BOOL)a6 error:(id)a7;
-- (void)vcSession:(id)a3 participantID:(id)a4 didChangeMediaPriority:(unsigned __int8)a5 description:(id)a6;
-- (void)vcSession:(id)a3 participantID:(id)a4 didDetectError:(id)a5;
-- (void)vcSession:(id)a3 participantID:(id)a4 mediaStateDidChange:(unsigned int)a5 forMediaType:(unsigned int)a6 didSucceed:(BOOL)a7 error:(id)a8;
-- (void)vcSession:(id)a3 participantID:(id)a4 mixingDidChangeForMediaType:(unsigned int)a5 mixingMediaType:(unsigned int)a6;
-- (void)vcSession:(id)a3 participantID:(id)a4 reactionDidStart:(id)a5;
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteAudioEnabledDidChange:(BOOL)a5;
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteAudioPausedDidChange:(BOOL)a5;
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteMediaStateDidChange:(unsigned int)a5 forMediaType:(unsigned int)a6;
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteScreenEnabledDidChange:(BOOL)a5;
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteVideoEnabledDidChange:(BOOL)a5;
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteVideoPausedDidChange:(BOOL)a5;
-- (void)vcSession:(id)a3 participantID:(id)a4 screenEnabled:(BOOL)a5 didSucceed:(BOOL)a6 error:(id)a7;
-- (void)vcSession:(id)a3 participantID:(id)a4 videoEnabled:(BOOL)a5 didSucceed:(BOOL)a6 error:(id)a7;
-- (void)vcSession:(id)a3 participantID:(id)a4 videoPaused:(BOOL)a5 didSucceed:(BOOL)a6 error:(id)a7;
-- (void)vcSession:(id)a3 removeParticipantWithID:(id)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)vcSession:(id)a3 updateConfiguration:(id)a4 didSucceed:(BOOL)a5 error:(id)a6;
-- (void)vcSession:(id)a3 uplinkRateAdaptationDidChangeWithInfo:(id)a4;
-- (void)vcSessionShouldReconnect:(id)a3;
+- (void)releaseSession:(id)session;
+- (void)setScreenAndCameraMixingEnabled:(BOOL)enabled;
+- (void)setSharingEnabled:(BOOL)enabled;
+- (void)vcSession:(id)session addParticipantWithID:(id)d didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSession:(id)session didStart:(BOOL)start error:(id)error;
+- (void)vcSession:(id)session didStopWithError:(id)error;
+- (void)vcSession:(id)session downlinkRateAdaptationDidChangeWithInfo:(id)info;
+- (void)vcSession:(id)session oneToOneModeEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSession:(id)session participantDidStopReacting:(id)reacting;
+- (void)vcSession:(id)session participantID:(id)d audioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSession:(id)session participantID:(id)d audioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSession:(id)session participantID:(id)d didChangeMediaPriority:(unsigned __int8)priority description:(id)description;
+- (void)vcSession:(id)session participantID:(id)d didDetectError:(id)error;
+- (void)vcSession:(id)session participantID:(id)d mediaStateDidChange:(unsigned int)change forMediaType:(unsigned int)type didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSession:(id)session participantID:(id)d mixingDidChangeForMediaType:(unsigned int)type mixingMediaType:(unsigned int)mediaType;
+- (void)vcSession:(id)session participantID:(id)d reactionDidStart:(id)start;
+- (void)vcSession:(id)session participantID:(id)d remoteAudioEnabledDidChange:(BOOL)change;
+- (void)vcSession:(id)session participantID:(id)d remoteAudioPausedDidChange:(BOOL)change;
+- (void)vcSession:(id)session participantID:(id)d remoteMediaStateDidChange:(unsigned int)change forMediaType:(unsigned int)type;
+- (void)vcSession:(id)session participantID:(id)d remoteScreenEnabledDidChange:(BOOL)change;
+- (void)vcSession:(id)session participantID:(id)d remoteVideoEnabledDidChange:(BOOL)change;
+- (void)vcSession:(id)session participantID:(id)d remoteVideoPausedDidChange:(BOOL)change;
+- (void)vcSession:(id)session participantID:(id)d screenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSession:(id)session participantID:(id)d videoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSession:(id)session participantID:(id)d videoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSession:(id)session removeParticipantWithID:(id)d didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSession:(id)session updateConfiguration:(id)configuration didSucceed:(BOOL)succeed error:(id)error;
+- (void)vcSession:(id)session uplinkRateAdaptationDidChangeWithInfo:(id)info;
+- (void)vcSessionShouldReconnect:(id)reconnect;
 @end
 
 @implementation VCSessionManager
@@ -61,23 +61,23 @@ void __34__VCSessionManager_sharedInstance__block_invoke()
   }
 }
 
-+ (void)addNSError:(id)a3 toXPCArgumentDictionary:(id)a4
++ (void)addNSError:(id)error toXPCArgumentDictionary:(id)dictionary
 {
-  if (a3)
+  if (error)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:3];
-    if ([a3 domain])
+    if ([error domain])
     {
-      [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"domain"), @"ERROR_DOMAIN"}];
+      [v6 setObject:objc_msgSend(error forKeyedSubscript:{"domain"), @"ERROR_DOMAIN"}];
     }
 
-    [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(a3, "code")), @"ERROR_CODE"}];
-    if ([a3 userInfo])
+    [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(error, "code")), @"ERROR_CODE"}];
+    if ([error userInfo])
     {
-      [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"userInfo"), @"ERROR_USERINFO"}];
+      [v6 setObject:objc_msgSend(error forKeyedSubscript:{"userInfo"), @"ERROR_USERINFO"}];
     }
 
-    [a4 setObject:v6 forKeyedSubscript:@"vcSessionError"];
+    [dictionary setObject:v6 forKeyedSubscript:@"vcSessionError"];
   }
 }
 
@@ -122,7 +122,7 @@ void __34__VCSessionManager_sharedInstance__block_invoke()
   [(VCSessionManager *)&v5 dealloc];
 }
 
-- (id)sessionForUUID:(id)a3
+- (id)sessionForUUID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -136,7 +136,7 @@ void __34__VCSessionManager_sharedInstance__block_invoke()
   v6[1] = 3221225472;
   v6[2] = __35__VCSessionManager_sessionForUUID___block_invoke;
   v6[3] = &unk_1E85F3E08;
-  v6[5] = a3;
+  v6[5] = d;
   v6[6] = &v7;
   v6[4] = self;
   dispatch_sync(xpcCommandQueue, v6);
@@ -152,7 +152,7 @@ uint64_t __35__VCSessionManager_sessionForUUID___block_invoke(void *a1)
   return result;
 }
 
-- (id)sessionForStreamToken:(unsigned int)a3
+- (id)sessionForStreamToken:(unsigned int)token
 {
   v14 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -166,7 +166,7 @@ uint64_t __35__VCSessionManager_sessionForUUID___block_invoke(void *a1)
   v6[1] = 3221225472;
   v6[2] = __42__VCSessionManager_sessionForStreamToken___block_invoke;
   v6[3] = &unk_1E85F64A0;
-  v7 = a3;
+  tokenCopy = token;
   v6[4] = self;
   v6[5] = &v8;
   dispatch_sync(xpcCommandQueue, v6);
@@ -225,7 +225,7 @@ uint64_t __42__VCSessionManager_sessionForStreamToken___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setSharingEnabled:(BOOL)a3
+- (void)setSharingEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -234,7 +234,7 @@ uint64_t __42__VCSessionManager_sessionForStreamToken___block_invoke(uint64_t a1
   block[2] = __38__VCSessionManager_setSharingEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -412,7 +412,7 @@ LABEL_18:
   }
 }
 
-- (void)setScreenAndCameraMixingEnabled:(BOOL)a3
+- (void)setScreenAndCameraMixingEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -421,7 +421,7 @@ LABEL_18:
   block[2] = __52__VCSessionManager_setScreenAndCameraMixingEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -599,61 +599,61 @@ LABEL_18:
   }
 }
 
-- (void)vcSession:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)vcSession:(id)session didStart:(BOOL)start error:(id)error
 {
-  v6 = a4;
-  if (a4)
+  startCopy = start;
+  if (start)
   {
     kdebug_trace();
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v6), @"vcSessionStarted", 0}];
-  [VCSessionManager addNSError:a5 toXPCArgumentDictionary:v8];
+  v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", startCopy), @"vcSessionStarted", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v8];
   v9 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v9 sendMessageAsync:"vcSessionDidStart" arguments:v8 context:a3];
+  [v9 sendMessageAsync:"vcSessionDidStart" arguments:v8 context:session];
 }
 
-- (void)vcSession:(id)a3 didStopWithError:(id)a4
+- (void)vcSession:(id)session didStopWithError:(id)error
 {
   kdebug_trace();
   v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
-  if (a4)
+  if (error)
   {
-    [VCSessionManager addNSError:a4 toXPCArgumentDictionary:v6];
+    [VCSessionManager addNSError:error toXPCArgumentDictionary:v6];
   }
 
-  [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"transportMetadata"), @"vcSessionDidStopMetadata"}];
+  [v6 setObject:objc_msgSend(session forKeyedSubscript:{"transportMetadata"), @"vcSessionDidStopMetadata"}];
   v7 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v7 sendMessageAsync:"vcSessionDidStop" arguments:v6 context:a3];
+  [v7 sendMessageAsync:"vcSessionDidStop" arguments:v6 context:session];
 }
 
-- (void)vcSession:(id)a3 uplinkRateAdaptationDidChangeWithInfo:(id)a4
+- (void)vcSession:(id)session uplinkRateAdaptationDidChangeWithInfo:(id)info
 {
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a4, @"vcSessionParameterRateAdaptationInfo", 0}];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{info, @"vcSessionParameterRateAdaptationInfo", 0}];
   v6 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v6 sendMessageAsync:"vcSessionUplinkRateAdaptationInfoDidChange" arguments:v5 context:a3];
+  [v6 sendMessageAsync:"vcSessionUplinkRateAdaptationInfoDidChange" arguments:v5 context:session];
 }
 
-- (void)vcSession:(id)a3 downlinkRateAdaptationDidChangeWithInfo:(id)a4
+- (void)vcSession:(id)session downlinkRateAdaptationDidChangeWithInfo:(id)info
 {
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a4, @"vcSessionParameterRateAdaptationInfo", 0}];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{info, @"vcSessionParameterRateAdaptationInfo", 0}];
   v6 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v6 sendMessageAsync:"vcSessionDownlinkRateAdaptationInfoDidChange" arguments:v5 context:a3];
+  [v6 sendMessageAsync:"vcSessionDownlinkRateAdaptationInfoDidChange" arguments:v5 context:session];
 }
 
-- (void)vcSession:(id)a3 addParticipantWithID:(id)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)vcSession:(id)session addParticipantWithID:(id)d didSucceed:(BOOL)succeed error:(id)error
 {
-  v7 = a5;
-  v10 = [a3 participantForID:a4];
+  succeedCopy = succeed;
+  v10 = [session participantForID:d];
   [v10 participantVideoToken];
   [v10 idsParticipantID];
   kdebug_trace();
   v11 = [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
-  v12 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v7), @"vcSessionSucceeded", a4, @"vcSessionParticipantID", v11, @"vcSessionParameterStreamTokens", 0}];
+  v12 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", succeedCopy), @"vcSessionSucceeded", d, @"vcSessionParticipantID", v11, @"vcSessionParameterStreamTokens", 0}];
   if (v12)
   {
     objc_opt_class();
@@ -664,228 +664,228 @@ LABEL_18:
     }
   }
 
-  [VCSessionManager addNSError:a6 toXPCArgumentDictionary:v12];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v12];
   v14 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v14 sendMessageAsync:"vcSessionAddParticipantDidSuceed" arguments:v12 context:a3];
+  [v14 sendMessageAsync:"vcSessionAddParticipantDidSuceed" arguments:v12 context:session];
 }
 
-- (void)vcSession:(id)a3 removeParticipantWithID:(id)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)vcSession:(id)session removeParticipantWithID:(id)d didSucceed:(BOOL)succeed error:(id)error
 {
-  v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", a5), @"vcSessionSucceeded", a4, @"vcSessionParticipantID", 0}];
-  [VCSessionManager addNSError:a6 toXPCArgumentDictionary:v8];
+  v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", succeed), @"vcSessionSucceeded", d, @"vcSessionParticipantID", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v8];
   v9 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v9 sendMessageAsync:"vcSessionRemoveParticipantDidSucceed" arguments:v8 context:a3];
+  [v9 sendMessageAsync:"vcSessionRemoveParticipantDidSucceed" arguments:v8 context:session];
 }
 
-- (void)vcSession:(id)a3 updateConfiguration:(id)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)vcSession:(id)session updateConfiguration:(id)configuration didSucceed:(BOOL)succeed error:(id)error
 {
-  v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", a5), @"vcSessionSucceeded", a4, @"vcSessionConfiguration", 0}];
-  [VCSessionManager addNSError:a6 toXPCArgumentDictionary:v8];
+  v8 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", succeed), @"vcSessionSucceeded", configuration, @"vcSessionConfiguration", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v8];
   v9 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v9 sendMessageAsync:"vcSessionDidUpdateConfiguration" arguments:v8 context:a3];
+  [v9 sendMessageAsync:"vcSessionDidUpdateConfiguration" arguments:v8 context:session];
 }
 
-- (void)vcSession:(id)a3 oneToOneModeEnabled:(BOOL)a4 didSucceed:(BOOL)a5 error:(id)a6
+- (void)vcSession:(id)session oneToOneModeEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v7 = a4;
+  enabledCopy = enabled;
   v9 = MEMORY[0x1E695DF90];
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:a5];
-  v11 = [v9 dictionaryWithObjectsAndKeys:{v10, @"vcSessionSucceeded", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v7), @"vcSessionOneOnOneModeEnabled", 0}];
-  [VCSessionManager addNSError:a6 toXPCArgumentDictionary:v11];
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:succeed];
+  v11 = [v9 dictionaryWithObjectsAndKeys:{v10, @"vcSessionSucceeded", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", enabledCopy), @"vcSessionOneOnOneModeEnabled", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v11];
   v12 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v12 sendMessageAsync:"vcSessionSetOneToOneEnabledDidChange" arguments:v11 context:a3];
+  [v12 sendMessageAsync:"vcSessionSetOneToOneEnabledDidChange" arguments:v11 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 audioEnabled:(BOOL)a5 didSucceed:(BOOL)a6 error:(id)a7
+- (void)vcSession:(id)session participantID:(id)d audioEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v8 = a6;
+  succeedCopy = succeed;
   v11 = MEMORY[0x1E695DF90];
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:a5];
-  v13 = [v11 dictionaryWithObjectsAndKeys:{@"vcSessionAudioEnabledDidSucceed", @"vcServiceType", a4, @"vcSessionParticipantID", v12, @"vcSessionParameterAudioEnabled", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v8), @"vcSessionSucceeded", 0}];
-  [VCSessionManager addNSError:a7 toXPCArgumentDictionary:v13];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
+  v13 = [v11 dictionaryWithObjectsAndKeys:{@"vcSessionAudioEnabledDidSucceed", @"vcServiceType", d, @"vcSessionParticipantID", v12, @"vcSessionParameterAudioEnabled", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", succeedCopy), @"vcSessionSucceeded", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v13];
   v14 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v14 sendMessageAsync:"vcSessionAudioEnabledDidSucceed" arguments:v13 context:a3];
+  [v14 sendMessageAsync:"vcSessionAudioEnabledDidSucceed" arguments:v13 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 videoEnabled:(BOOL)a5 didSucceed:(BOOL)a6 error:(id)a7
+- (void)vcSession:(id)session participantID:(id)d videoEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v8 = a6;
+  succeedCopy = succeed;
   v11 = MEMORY[0x1E695DF90];
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:a5];
-  v13 = [v11 dictionaryWithObjectsAndKeys:{@"vcSessionVideoEnabledDidSucceed", @"vcServiceType", a4, @"vcSessionParticipantID", v12, @"vcSessionParameterVideoEnabled", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v8), @"vcSessionSucceeded", 0}];
-  [VCSessionManager addNSError:a7 toXPCArgumentDictionary:v13];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
+  v13 = [v11 dictionaryWithObjectsAndKeys:{@"vcSessionVideoEnabledDidSucceed", @"vcServiceType", d, @"vcSessionParticipantID", v12, @"vcSessionParameterVideoEnabled", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", succeedCopy), @"vcSessionSucceeded", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v13];
   v14 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v14 sendMessageAsync:"vcSessionVideoEnabledDidSucceed" arguments:v13 context:a3];
+  [v14 sendMessageAsync:"vcSessionVideoEnabledDidSucceed" arguments:v13 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 screenEnabled:(BOOL)a5 didSucceed:(BOOL)a6 error:(id)a7
+- (void)vcSession:(id)session participantID:(id)d screenEnabled:(BOOL)enabled didSucceed:(BOOL)succeed error:(id)error
 {
-  v8 = a6;
+  succeedCopy = succeed;
   v11 = MEMORY[0x1E695DF90];
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:a5];
-  v13 = [v11 dictionaryWithObjectsAndKeys:{@"vcSessionScreenEnabledDidSucceed", @"vcServiceType", a4, @"vcSessionParticipantID", v12, @"vcSessionParameterScreenEnabled", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v8), @"vcSessionSucceeded", 0}];
-  [VCSessionManager addNSError:a7 toXPCArgumentDictionary:v13];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:enabled];
+  v13 = [v11 dictionaryWithObjectsAndKeys:{@"vcSessionScreenEnabledDidSucceed", @"vcServiceType", d, @"vcSessionParticipantID", v12, @"vcSessionParameterScreenEnabled", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", succeedCopy), @"vcSessionSucceeded", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v13];
   v14 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v14 sendMessageAsync:"vcSessionScreenEnabledDidSucceed" arguments:v13 context:a3];
+  [v14 sendMessageAsync:"vcSessionScreenEnabledDidSucceed" arguments:v13 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteAudioEnabledDidChange:(BOOL)a5
+- (void)vcSession:(id)session participantID:(id)d remoteAudioEnabledDidChange:(BOOL)change
 {
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"vcSessionRemoteAudioEnabledDidChange", @"vcServiceType", a4, @"vcSessionParticipantID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", a5), @"vcSessionParameterAudioEnabled", 0}];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"vcSessionRemoteAudioEnabledDidChange", @"vcServiceType", d, @"vcSessionParticipantID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", change), @"vcSessionParameterAudioEnabled", 0}];
   v7 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v7 sendMessageAsync:"vcSessionRemoteAudioEnabledDidChange" arguments:v6 context:a3];
+  [v7 sendMessageAsync:"vcSessionRemoteAudioEnabledDidChange" arguments:v6 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteVideoEnabledDidChange:(BOOL)a5
+- (void)vcSession:(id)session participantID:(id)d remoteVideoEnabledDidChange:(BOOL)change
 {
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"vcSessionRemoteVideoEnabledDidChange", @"vcServiceType", a4, @"vcSessionParticipantID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", a5), @"vcSessionParameterVideoEnabled", 0}];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"vcSessionRemoteVideoEnabledDidChange", @"vcServiceType", d, @"vcSessionParticipantID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", change), @"vcSessionParameterVideoEnabled", 0}];
   v7 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v7 sendMessageAsync:"vcSessionRemoteVideoEnabledDidChange" arguments:v6 context:a3];
+  [v7 sendMessageAsync:"vcSessionRemoteVideoEnabledDidChange" arguments:v6 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteScreenEnabledDidChange:(BOOL)a5
+- (void)vcSession:(id)session participantID:(id)d remoteScreenEnabledDidChange:(BOOL)change
 {
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"vcSessionRemoteScreenEnabledDidChange", @"vcServiceType", a4, @"vcSessionParticipantID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", a5), @"vcSessionParameterScreenEnabled", 0}];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"vcSessionRemoteScreenEnabledDidChange", @"vcServiceType", d, @"vcSessionParticipantID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", change), @"vcSessionParameterScreenEnabled", 0}];
   v7 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v7 sendMessageAsync:"vcSessionRemoteScreenEnabledDidChange" arguments:v6 context:a3];
+  [v7 sendMessageAsync:"vcSessionRemoteScreenEnabledDidChange" arguments:v6 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 audioPaused:(BOOL)a5 didSucceed:(BOOL)a6 error:(id)a7
+- (void)vcSession:(id)session participantID:(id)d audioPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
-  v8 = a6;
+  succeedCopy = succeed;
   v11 = MEMORY[0x1E695DF90];
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:a5];
-  v13 = [v11 dictionaryWithObjectsAndKeys:{@"vcSessionAudioPausedDidSucceed", @"vcServiceType", a4, @"vcSessionParticipantID", v12, @"vcSessionParameterAudioPaused", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v8), @"vcSessionSucceeded", 0}];
-  [VCSessionManager addNSError:a7 toXPCArgumentDictionary:v13];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:paused];
+  v13 = [v11 dictionaryWithObjectsAndKeys:{@"vcSessionAudioPausedDidSucceed", @"vcServiceType", d, @"vcSessionParticipantID", v12, @"vcSessionParameterAudioPaused", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", succeedCopy), @"vcSessionSucceeded", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v13];
   v14 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v14 sendMessageAsync:"vcSessionAudioPausedDidSucceed" arguments:v13 context:a3];
+  [v14 sendMessageAsync:"vcSessionAudioPausedDidSucceed" arguments:v13 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 videoPaused:(BOOL)a5 didSucceed:(BOOL)a6 error:(id)a7
+- (void)vcSession:(id)session participantID:(id)d videoPaused:(BOOL)paused didSucceed:(BOOL)succeed error:(id)error
 {
-  v8 = a6;
+  succeedCopy = succeed;
   v11 = MEMORY[0x1E695DF90];
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:a5];
-  v13 = [v11 dictionaryWithObjectsAndKeys:{@"vcSessionVideoPausedDidSucceed", @"vcServiceType", a4, @"vcSessionParticipantID", v12, @"vcSessionParameterVideoPaused", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v8), @"vcSessionSucceeded", 0}];
-  [VCSessionManager addNSError:a7 toXPCArgumentDictionary:v13];
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:paused];
+  v13 = [v11 dictionaryWithObjectsAndKeys:{@"vcSessionVideoPausedDidSucceed", @"vcServiceType", d, @"vcSessionParticipantID", v12, @"vcSessionParameterVideoPaused", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", succeedCopy), @"vcSessionSucceeded", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v13];
   v14 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v14 sendMessageAsync:"vcSessionVideoPausedDidSucceed" arguments:v13 context:a3];
+  [v14 sendMessageAsync:"vcSessionVideoPausedDidSucceed" arguments:v13 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteAudioPausedDidChange:(BOOL)a5
+- (void)vcSession:(id)session participantID:(id)d remoteAudioPausedDidChange:(BOOL)change
 {
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"vcSessionRemoteAudioPausedDidChange", @"vcServiceType", a4, @"vcSessionParticipantID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", a5), @"vcSessionParameterAudioPaused", 0}];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"vcSessionRemoteAudioPausedDidChange", @"vcServiceType", d, @"vcSessionParticipantID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", change), @"vcSessionParameterAudioPaused", 0}];
   v7 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v7 sendMessageAsync:"vcSessionRemoteAudioPausedDidChange" arguments:v6 context:a3];
+  [v7 sendMessageAsync:"vcSessionRemoteAudioPausedDidChange" arguments:v6 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteVideoPausedDidChange:(BOOL)a5
+- (void)vcSession:(id)session participantID:(id)d remoteVideoPausedDidChange:(BOOL)change
 {
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"vcSessionRemoteVideoPausedDidChange", @"vcServiceType", a4, @"vcSessionParticipantID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", a5), @"vcSessionParameterVideoPaused", 0}];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{@"vcSessionRemoteVideoPausedDidChange", @"vcServiceType", d, @"vcSessionParticipantID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", change), @"vcSessionParameterVideoPaused", 0}];
   v7 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v7 sendMessageAsync:"vcSessionRemoteVideoPausedDidChange" arguments:v6 context:a3];
+  [v7 sendMessageAsync:"vcSessionRemoteVideoPausedDidChange" arguments:v6 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 mediaStateDidChange:(unsigned int)a5 forMediaType:(unsigned int)a6 didSucceed:(BOOL)a7 error:(id)a8
+- (void)vcSession:(id)session participantID:(id)d mediaStateDidChange:(unsigned int)change forMediaType:(unsigned int)type didSucceed:(BOOL)succeed error:(id)error
 {
-  v9 = a7;
-  v10 = *&a5;
+  succeedCopy = succeed;
+  v10 = *&change;
   v13 = MEMORY[0x1E695DF90];
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a6];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&type];
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v10];
-  v16 = [v13 dictionaryWithObjectsAndKeys:{@"vcSessionMediaStateDidChange", @"vcServiceType", a4, @"vcSessionParticipantID", v14, @"vcSessionParameterMediaType", v15, @"vcSessionParameterMediaState", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", v9), @"vcSessionSucceeded", 0}];
-  [VCSessionManager addNSError:a8 toXPCArgumentDictionary:v16];
+  v16 = [v13 dictionaryWithObjectsAndKeys:{@"vcSessionMediaStateDidChange", @"vcServiceType", d, @"vcSessionParticipantID", v14, @"vcSessionParameterMediaType", v15, @"vcSessionParameterMediaState", objc_msgSend(MEMORY[0x1E696AD98], "numberWithBool:", succeedCopy), @"vcSessionSucceeded", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v16];
   v17 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v17 sendMessageAsync:"vcSessionMediaStateDidChange" arguments:v16 context:a3];
+  [v17 sendMessageAsync:"vcSessionMediaStateDidChange" arguments:v16 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 remoteMediaStateDidChange:(unsigned int)a5 forMediaType:(unsigned int)a6
+- (void)vcSession:(id)session participantID:(id)d remoteMediaStateDidChange:(unsigned int)change forMediaType:(unsigned int)type
 {
-  v6 = *&a5;
+  v6 = *&change;
   v9 = MEMORY[0x1E695DF90];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a6];
-  v11 = [v9 dictionaryWithObjectsAndKeys:{@"vcSessionRemoteMediaStateDidChange", @"vcServiceType", a4, @"vcSessionParticipantID", v10, @"vcSessionParameterMediaType", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v6), @"vcSessionParameterMediaState", 0}];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&type];
+  v11 = [v9 dictionaryWithObjectsAndKeys:{@"vcSessionRemoteMediaStateDidChange", @"vcServiceType", d, @"vcSessionParticipantID", v10, @"vcSessionParameterMediaType", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v6), @"vcSessionParameterMediaState", 0}];
   v12 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v12 sendMessageAsync:"vcSessionRemoteMediaStateDidChange" arguments:v11 context:a3];
+  [v12 sendMessageAsync:"vcSessionRemoteMediaStateDidChange" arguments:v11 context:session];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 mixingDidChangeForMediaType:(unsigned int)a5 mixingMediaType:(unsigned int)a6
+- (void)vcSession:(id)session participantID:(id)d mixingDidChangeForMediaType:(unsigned int)type mixingMediaType:(unsigned int)mediaType
 {
-  v6 = *&a6;
+  v6 = *&mediaType;
   v9[4] = *MEMORY[0x1E69E9840];
   v8[0] = @"vcServiceType";
   v8[1] = @"vcSessionParticipantID";
   v9[0] = @"vcSessionRemoteMixingMediaDidChange";
-  v9[1] = a4;
+  v9[1] = d;
   v8[2] = @"vcSessionParameterMediaType";
-  v9[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a5];
+  v9[2] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&type];
   v8[3] = @"vcSessionParameterMixingMediaType";
   v9[3] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)vcSessionShouldReconnect:(id)a3
+- (void)vcSessionShouldReconnect:(id)reconnect
 {
   v4 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v4 sendMessageAsync:"vcSessionShouldReconnect" arguments:&unk_1F579E580 context:a3];
+  [v4 sendMessageAsync:"vcSessionShouldReconnect" arguments:&unk_1F579E580 context:reconnect];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 didChangeMediaPriority:(unsigned __int8)a5 description:(id)a6
+- (void)vcSession:(id)session participantID:(id)d didChangeMediaPriority:(unsigned __int8)priority description:(id)description
 {
-  v7 = a5;
+  priorityCopy = priority;
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v10 setObject:@"vcSessionMediaPrioritiesDidChange" forKeyedSubscript:@"vcServiceType"];
-  [v10 setObject:a4 forKeyedSubscript:@"vcSessionParticipantID"];
-  [v10 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", v7), @"vcSessionParameterParticipantMediaPriority"}];
-  if (a6)
+  [v10 setObject:d forKeyedSubscript:@"vcSessionParticipantID"];
+  [v10 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", priorityCopy), @"vcSessionParameterParticipantMediaPriority"}];
+  if (description)
   {
-    [v10 setObject:a6 forKeyedSubscript:@"vcSessionParameterParticipantMediaPriorityString"];
+    [v10 setObject:description forKeyedSubscript:@"vcSessionParameterParticipantMediaPriorityString"];
   }
 
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 reactionDidStart:(id)a5
+- (void)vcSession:(id)session participantID:(id)d reactionDidStart:(id)start
 {
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v8 setObject:@"vcSessionReactionDidStart" forKeyedSubscript:@"vcServiceType"];
-  [v8 setObject:a4 forKeyedSubscript:@"vcSessionParticipantID"];
-  [v8 setObject:a5 forKeyedSubscript:@"vcSessionParameterReactionType"];
+  [v8 setObject:d forKeyedSubscript:@"vcSessionParticipantID"];
+  [v8 setObject:start forKeyedSubscript:@"vcSessionParameterReactionType"];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)vcSession:(id)a3 participantDidStopReacting:(id)a4
+- (void)vcSession:(id)session participantDidStopReacting:(id)reacting
 {
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v6 setObject:@"vcSessionReactionDidStopReacting" forKeyedSubscript:@"vcServiceType"];
-  [v6 setObject:a4 forKeyedSubscript:@"vcSessionParticipantID"];
+  [v6 setObject:reacting forKeyedSubscript:@"vcSessionParticipantID"];
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (void)vcSession:(id)a3 participantID:(id)a4 didDetectError:(id)a5
+- (void)vcSession:(id)session participantID:(id)d didDetectError:(id)error
 {
-  v7 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{a4, @"vcSessionParticipantID", 0}];
-  [VCSessionManager addNSError:a5 toXPCArgumentDictionary:v7];
+  v7 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{d, @"vcSessionParticipantID", 0}];
+  [VCSessionManager addNSError:error toXPCArgumentDictionary:v7];
   v8 = +[AVConferenceXPCServer AVConferenceXPCServerSingleton];
 
-  [v8 sendMessageAsync:"vcSessionDidDetectError" arguments:v7 context:a3];
+  [v8 sendMessageAsync:"vcSessionDidDetectError" arguments:v7 context:session];
 }
 
 - (void)registerBlocksForService
@@ -1581,9 +1581,9 @@ uint64_t __44__VCSessionManager_registerBlocksForService__block_invoke_4_293(uin
   [v2 deregisterFromService:"vcSessionSetMediaState"];
 }
 
-+ (id)playbackSynchronizationGroupUUIDWithXPCDictionary:(id)a3
++ (id)playbackSynchronizationGroupUUIDWithXPCDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"vcSessionParameterIsPlaybackSyncGroupUUID"];
+  v3 = [dictionary objectForKeyedSubscript:@"vcSessionParameterIsPlaybackSyncGroupUUID"];
   if (v3)
   {
     v4 = v3;
@@ -1602,33 +1602,33 @@ uint64_t __44__VCSessionManager_registerBlocksForService__block_invoke_4_293(uin
   return v3;
 }
 
-- (id)participantConfigFromXPCDictionary:(id)a3
+- (id)participantConfigFromXPCDictionary:(id)dictionary
 {
   v4 = objc_alloc_init(VCSessionParticipantConfig);
-  -[VCSessionParticipantConfig setIdsParticipantID:](v4, "setIdsParticipantID:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionIDSParticipantID", "unsignedLongLongValue"}]);
-  -[VCSessionParticipantConfig setUuid:](v4, "setUuid:", [a3 objectForKeyedSubscript:@"vcSessionParticipantID"]);
-  -[VCSessionParticipantConfig setParticipantData:](v4, "setParticipantData:", [a3 objectForKeyedSubscript:@"vcSessionParticipantData"]);
-  -[VCSessionParticipantConfig setAudioEnabled:](v4, "setAudioEnabled:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterAudioEnabled", "BOOLValue"}]);
-  -[VCSessionParticipantConfig setVideoEnabled:](v4, "setVideoEnabled:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterVideoEnabled", "BOOLValue"}]);
-  -[VCSessionParticipantConfig setScreenEnabled:](v4, "setScreenEnabled:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterScreenEnabled", "BOOLValue"}]);
-  -[VCSessionParticipantConfig setScreenControlEnabled:](v4, "setScreenControlEnabled:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterParticipantScreenControlEnabled", "BOOLValue"}]);
-  -[VCSessionParticipantConfig setAudioMuted:](v4, "setAudioMuted:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterMute", "BOOLValue"}]);
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterVolume", "floatValue"}];
+  -[VCSessionParticipantConfig setIdsParticipantID:](v4, "setIdsParticipantID:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionIDSParticipantID", "unsignedLongLongValue"}]);
+  -[VCSessionParticipantConfig setUuid:](v4, "setUuid:", [dictionary objectForKeyedSubscript:@"vcSessionParticipantID"]);
+  -[VCSessionParticipantConfig setParticipantData:](v4, "setParticipantData:", [dictionary objectForKeyedSubscript:@"vcSessionParticipantData"]);
+  -[VCSessionParticipantConfig setAudioEnabled:](v4, "setAudioEnabled:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterAudioEnabled", "BOOLValue"}]);
+  -[VCSessionParticipantConfig setVideoEnabled:](v4, "setVideoEnabled:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterVideoEnabled", "BOOLValue"}]);
+  -[VCSessionParticipantConfig setScreenEnabled:](v4, "setScreenEnabled:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterScreenEnabled", "BOOLValue"}]);
+  -[VCSessionParticipantConfig setScreenControlEnabled:](v4, "setScreenControlEnabled:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterParticipantScreenControlEnabled", "BOOLValue"}]);
+  -[VCSessionParticipantConfig setAudioMuted:](v4, "setAudioMuted:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterMute", "BOOLValue"}]);
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterVolume", "floatValue"}];
   [(VCSessionParticipantConfig *)v4 setVolume:?];
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterAudioPosition", "floatValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterAudioPosition", "floatValue"}];
   [(VCSessionParticipantConfig *)v4 setAudioPosition:?];
-  -[VCSessionParticipantConfig setAudioPaused:](v4, "setAudioPaused:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterAudioPaused", "BOOLValue"}]);
-  -[VCSessionParticipantConfig setVideoPaused:](v4, "setVideoPaused:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterVideoPaused", "BOOLValue"}]);
-  -[VCSessionParticipantConfig setVideoQuality:](v4, "setVideoQuality:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterVideoQuality", "unsignedIntegerValue"}]);
-  -[VCSessionParticipantConfig setVisibilityIndex:](v4, "setVisibilityIndex:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterVisibilityIndex", "unsignedIntegerValue"}]);
-  -[VCSessionParticipantConfig setProminenceIndex:](v4, "setProminenceIndex:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterProminenceIndex", "unsignedIntegerValue"}]);
-  -[VCSessionParticipantConfig setPositionalInfo:](v4, "setPositionalInfo:", [a3 objectForKeyedSubscript:@"vcSessionPositionalInfo"]);
-  -[VCSessionParticipantConfig setMediaStates:](v4, "setMediaStates:", +[AVCSessionParticipant unarchiveMediaStatesWithData:](AVCSessionParticipant, "unarchiveMediaStatesWithData:", [a3 objectForKeyedSubscript:@"vcSessionParameterMediaStates"]));
-  -[VCSessionParticipantConfig setIsPlaybackSynchronizationGroupMember:](v4, "setIsPlaybackSynchronizationGroupMember:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionParameterIsPlaybackSyncGroupMember", "BOOLValue"}]);
+  -[VCSessionParticipantConfig setAudioPaused:](v4, "setAudioPaused:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterAudioPaused", "BOOLValue"}]);
+  -[VCSessionParticipantConfig setVideoPaused:](v4, "setVideoPaused:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterVideoPaused", "BOOLValue"}]);
+  -[VCSessionParticipantConfig setVideoQuality:](v4, "setVideoQuality:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterVideoQuality", "unsignedIntegerValue"}]);
+  -[VCSessionParticipantConfig setVisibilityIndex:](v4, "setVisibilityIndex:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterVisibilityIndex", "unsignedIntegerValue"}]);
+  -[VCSessionParticipantConfig setProminenceIndex:](v4, "setProminenceIndex:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterProminenceIndex", "unsignedIntegerValue"}]);
+  -[VCSessionParticipantConfig setPositionalInfo:](v4, "setPositionalInfo:", [dictionary objectForKeyedSubscript:@"vcSessionPositionalInfo"]);
+  -[VCSessionParticipantConfig setMediaStates:](v4, "setMediaStates:", +[AVCSessionParticipant unarchiveMediaStatesWithData:](AVCSessionParticipant, "unarchiveMediaStatesWithData:", [dictionary objectForKeyedSubscript:@"vcSessionParameterMediaStates"]));
+  -[VCSessionParticipantConfig setIsPlaybackSynchronizationGroupMember:](v4, "setIsPlaybackSynchronizationGroupMember:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionParameterIsPlaybackSyncGroupMember", "BOOLValue"}]);
   return v4;
 }
 
-- (void)releaseSession:(id)a3
+- (void)releaseSession:(id)session
 {
   block[6] = *MEMORY[0x1E69E9840];
   sessionQueue = self->_sessionQueue;
@@ -1636,7 +1636,7 @@ uint64_t __44__VCSessionManager_registerBlocksForService__block_invoke_4_293(uin
   block[1] = 3221225472;
   block[2] = __35__VCSessionManager_releaseSession___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = session;
   block[5] = self;
   dispatch_async(sessionQueue, block);
 }
@@ -1665,10 +1665,10 @@ uint64_t __35__VCSessionManager_releaseSession___block_invoke_2(uint64_t a1)
   return [v2 setObject:0 forKeyedSubscript:v3];
 }
 
-- (id)newParticpantUpdateConfigurationsWithXPCArgs:(id)a3
+- (id)newParticpantUpdateConfigurationsWithXPCArgs:(id)args
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:@"vcSessionParameterParticipantConfiguration"];
+  v4 = [args objectForKeyedSubscript:@"vcSessionParameterParticipantConfiguration"];
   v35 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
   if (!v35)
   {
@@ -1755,7 +1755,7 @@ uint64_t __35__VCSessionManager_releaseSession___block_invoke_2(uint64_t a1)
                   v42 = 2112;
                   v43 = v23;
                   v44 = 2048;
-                  v45 = self;
+                  selfCopy3 = self;
                   v18 = v25;
                   v19 = " [%s] %s:%d %@(%p) Failed to rebuild the participant update config";
 LABEL_29:
@@ -1812,7 +1812,7 @@ LABEL_40:
                 v42 = 2112;
                 v43 = v20;
                 v44 = 2048;
-                v45 = self;
+                selfCopy3 = self;
                 v18 = v22;
                 v19 = " [%s] %s:%d %@(%p) Participant ID update config data is missing";
                 goto LABEL_29;
@@ -1867,7 +1867,7 @@ LABEL_39:
               v42 = 2112;
               v43 = v15;
               v44 = 2048;
-              v45 = self;
+              selfCopy3 = self;
               v18 = v17;
               v19 = " [%s] %s:%d %@(%p) Participant ID not provided";
               goto LABEL_29;

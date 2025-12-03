@@ -1,91 +1,91 @@
 @interface AKBiometricRatchetUIContext
-- (AKBiometricRatchetUIContext)initWithAttributes:(id)a3 presentationContext:(id)a4;
-- (AKBiometricRatchetUIContext)initWithReason:(id)a3 calloutReason:(id)a4 deeplinkURL:(id)a5 presentationContext:(id)a6 fallbackToNoAuth:(BOOL)a7 useShortExpiration:(BOOL)a8;
-- (AKBiometricRatchetUIContext)initWithReason:(id)a3 calloutReason:(id)a4 deeplinkURL:(id)a5 presentationContext:(id)a6 fallbackToNoAuth:(BOOL)a7 useShortExpiration:(BOOL)a8 beginRatchetTitle:(id)a9 beginRatchetBody:(id)a10 showsLocationWarning:(BOOL)a11 countdownText:(id)a12 findMyErrorTitle:(id)a13 findMyErrorMessage:(id)a14 metaContext:(id)a15;
-- (AKBiometricRatchetUIContext)initWithReason:(id)a3 calloutReason:(id)a4 deeplinkURL:(id)a5 presentationContext:(id)a6 fallbackToNoAuth:(BOOL)a7 useShortExpiration:(BOOL)a8 beginRatchetTitle:(id)a9 beginRatchetBody:(id)a10 showsLocationWarning:(BOOL)a11 countdownText:(id)a12 findMyErrorTitle:(id)a13 findMyErrorMessage:(id)a14 metaContext:(id)a15 embeddedUIPresentationMode:(id)a16 embeddedUIRightNavButtonTitle:(id)a17;
+- (AKBiometricRatchetUIContext)initWithAttributes:(id)attributes presentationContext:(id)context;
+- (AKBiometricRatchetUIContext)initWithReason:(id)reason calloutReason:(id)calloutReason deeplinkURL:(id)l presentationContext:(id)context fallbackToNoAuth:(BOOL)auth useShortExpiration:(BOOL)expiration;
+- (AKBiometricRatchetUIContext)initWithReason:(id)reason calloutReason:(id)calloutReason deeplinkURL:(id)l presentationContext:(id)context fallbackToNoAuth:(BOOL)auth useShortExpiration:(BOOL)expiration beginRatchetTitle:(id)title beginRatchetBody:(id)self0 showsLocationWarning:(BOOL)self1 countdownText:(id)self2 findMyErrorTitle:(id)self3 findMyErrorMessage:(id)self4 metaContext:(id)self5;
+- (AKBiometricRatchetUIContext)initWithReason:(id)reason calloutReason:(id)calloutReason deeplinkURL:(id)l presentationContext:(id)context fallbackToNoAuth:(BOOL)auth useShortExpiration:(BOOL)expiration beginRatchetTitle:(id)title beginRatchetBody:(id)self0 showsLocationWarning:(BOOL)self1 countdownText:(id)self2 findMyErrorTitle:(id)self3 findMyErrorMessage:(id)self4 metaContext:(id)self5 embeddedUIPresentationMode:(id)self6 embeddedUIRightNavButtonTitle:(id)self7;
 - (AKBiometricRatchetUIProvider)bioRatchetUIProvider;
 - (NSString)debugDescription;
 - (UIViewController)presentingViewController;
-- (id)_findMappedDeeplinkFor:(id)a3 withKey:(id)a4;
+- (id)_findMappedDeeplinkFor:(id)for withKey:(id)key;
 - (void)_assertValidPresentingViewController;
-- (void)presentRatchetUIWithCompletion:(id)a3;
+- (void)presentRatchetUIWithCompletion:(id)completion;
 @end
 
 @implementation AKBiometricRatchetUIContext
 
-- (AKBiometricRatchetUIContext)initWithReason:(id)a3 calloutReason:(id)a4 deeplinkURL:(id)a5 presentationContext:(id)a6 fallbackToNoAuth:(BOOL)a7 useShortExpiration:(BOOL)a8
+- (AKBiometricRatchetUIContext)initWithReason:(id)reason calloutReason:(id)calloutReason deeplinkURL:(id)l presentationContext:(id)context fallbackToNoAuth:(BOOL)auth useShortExpiration:(BOOL)expiration
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reason);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, calloutReason);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, l);
   v19 = 0;
-  objc_storeStrong(&v19, a6);
-  v18 = a7;
-  v17 = a8;
-  v8 = v23;
-  v23 = 0;
+  objc_storeStrong(&v19, context);
+  authCopy = auth;
+  expirationCopy = expiration;
+  v8 = selfCopy;
+  selfCopy = 0;
   v16.receiver = v8;
   v16.super_class = AKBiometricRatchetUIContext;
-  v23 = [(AKBiometricRatchetContext *)&v16 initWithReason:location[0] calloutReason:v21 deeplinkURL:v20 fallbackToNoAuth:a7 useShortExpiration:a8];
-  objc_storeStrong(&v23, v23);
-  if (v23)
+  selfCopy = [(AKBiometricRatchetContext *)&v16 initWithReason:location[0] calloutReason:v21 deeplinkURL:v20 fallbackToNoAuth:auth useShortExpiration:expiration];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v23->_presentingViewController, v19);
+    objc_storeWeak(&selfCopy->_presentingViewController, v19);
   }
 
-  v10 = MEMORY[0x277D82BE0](v23);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (AKBiometricRatchetUIContext)initWithReason:(id)a3 calloutReason:(id)a4 deeplinkURL:(id)a5 presentationContext:(id)a6 fallbackToNoAuth:(BOOL)a7 useShortExpiration:(BOOL)a8 beginRatchetTitle:(id)a9 beginRatchetBody:(id)a10 showsLocationWarning:(BOOL)a11 countdownText:(id)a12 findMyErrorTitle:(id)a13 findMyErrorMessage:(id)a14 metaContext:(id)a15
+- (AKBiometricRatchetUIContext)initWithReason:(id)reason calloutReason:(id)calloutReason deeplinkURL:(id)l presentationContext:(id)context fallbackToNoAuth:(BOOL)auth useShortExpiration:(BOOL)expiration beginRatchetTitle:(id)title beginRatchetBody:(id)self0 showsLocationWarning:(BOOL)self1 countdownText:(id)self2 findMyErrorTitle:(id)self3 findMyErrorMessage:(id)self4 metaContext:(id)self5
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reason);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, calloutReason);
   v34 = 0;
-  objc_storeStrong(&v34, a5);
+  objc_storeStrong(&v34, l);
   v33 = 0;
-  objc_storeStrong(&v33, a6);
-  v32 = a7;
-  v31 = a8;
+  objc_storeStrong(&v33, context);
+  authCopy = auth;
+  expirationCopy = expiration;
   v30 = 0;
-  objc_storeStrong(&v30, a9);
+  objc_storeStrong(&v30, title);
   v29 = 0;
-  objc_storeStrong(&v29, a10);
-  v28 = a11;
+  objc_storeStrong(&v29, body);
+  warningCopy = warning;
   v27 = 0;
-  objc_storeStrong(&v27, a12);
+  objc_storeStrong(&v27, text);
   v26 = 0;
-  objc_storeStrong(&v26, a13);
+  objc_storeStrong(&v26, errorTitle);
   v25 = 0;
-  objc_storeStrong(&v25, a14);
+  objc_storeStrong(&v25, message);
   v24 = 0;
-  objc_storeStrong(&v24, a15);
-  v15 = v37;
-  v37 = 0;
+  objc_storeStrong(&v24, metaContext);
+  v15 = selfCopy;
+  selfCopy = 0;
   v23.receiver = v15;
   v23.super_class = AKBiometricRatchetUIContext;
-  v37 = [(AKBiometricRatchetContext *)&v23 initWithReason:location[0] calloutReason:v35 deeplinkURL:v34 fallbackToNoAuth:v32 useShortExpiration:v31 beginRatchetTitle:v30 beginRatchetBody:v29 showsLocationWarning:v28 countdownText:v27 findMyErrorTitle:v26 findMyErrorMessage:v25 metaContext:v24 notInteractive:0];
-  objc_storeStrong(&v37, v37);
-  if (v37)
+  selfCopy = [(AKBiometricRatchetContext *)&v23 initWithReason:location[0] calloutReason:v35 deeplinkURL:v34 fallbackToNoAuth:authCopy useShortExpiration:expirationCopy beginRatchetTitle:v30 beginRatchetBody:v29 showsLocationWarning:warningCopy countdownText:v27 findMyErrorTitle:v26 findMyErrorMessage:v25 metaContext:v24 notInteractive:0];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v37->_presentingViewController, v33);
+    objc_storeWeak(&selfCopy->_presentingViewController, v33);
   }
 
-  v17 = MEMORY[0x277D82BE0](v37);
+  v17 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
@@ -96,55 +96,55 @@
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v35, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v37, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v17;
 }
 
-- (AKBiometricRatchetUIContext)initWithReason:(id)a3 calloutReason:(id)a4 deeplinkURL:(id)a5 presentationContext:(id)a6 fallbackToNoAuth:(BOOL)a7 useShortExpiration:(BOOL)a8 beginRatchetTitle:(id)a9 beginRatchetBody:(id)a10 showsLocationWarning:(BOOL)a11 countdownText:(id)a12 findMyErrorTitle:(id)a13 findMyErrorMessage:(id)a14 metaContext:(id)a15 embeddedUIPresentationMode:(id)a16 embeddedUIRightNavButtonTitle:(id)a17
+- (AKBiometricRatchetUIContext)initWithReason:(id)reason calloutReason:(id)calloutReason deeplinkURL:(id)l presentationContext:(id)context fallbackToNoAuth:(BOOL)auth useShortExpiration:(BOOL)expiration beginRatchetTitle:(id)title beginRatchetBody:(id)self0 showsLocationWarning:(BOOL)self1 countdownText:(id)self2 findMyErrorTitle:(id)self3 findMyErrorMessage:(id)self4 metaContext:(id)self5 embeddedUIPresentationMode:(id)self6 embeddedUIRightNavButtonTitle:(id)self7
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reason);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, calloutReason);
   v38 = 0;
-  objc_storeStrong(&v38, a5);
+  objc_storeStrong(&v38, l);
   v37 = 0;
-  objc_storeStrong(&v37, a6);
-  v36 = a7;
-  v35 = a8;
+  objc_storeStrong(&v37, context);
+  authCopy = auth;
+  expirationCopy = expiration;
   v34 = 0;
-  objc_storeStrong(&v34, a9);
+  objc_storeStrong(&v34, title);
   v33 = 0;
-  objc_storeStrong(&v33, a10);
-  v32 = a11;
+  objc_storeStrong(&v33, body);
+  warningCopy = warning;
   v31 = 0;
-  objc_storeStrong(&v31, a12);
+  objc_storeStrong(&v31, text);
   v30 = 0;
-  objc_storeStrong(&v30, a13);
+  objc_storeStrong(&v30, errorTitle);
   v29 = 0;
-  objc_storeStrong(&v29, a14);
+  objc_storeStrong(&v29, message);
   v28 = 0;
-  objc_storeStrong(&v28, a15);
+  objc_storeStrong(&v28, metaContext);
   v27 = 0;
-  objc_storeStrong(&v27, a16);
+  objc_storeStrong(&v27, mode);
   v26 = 0;
-  objc_storeStrong(&v26, a17);
-  v17 = v41;
-  v41 = 0;
+  objc_storeStrong(&v26, buttonTitle);
+  v17 = selfCopy;
+  selfCopy = 0;
   v25.receiver = v17;
   v25.super_class = AKBiometricRatchetUIContext;
-  v41 = [(AKBiometricRatchetContext *)&v25 initWithReason:location[0] calloutReason:v39 deeplinkURL:v38 fallbackToNoAuth:v36 useShortExpiration:v35 beginRatchetTitle:v34 beginRatchetBody:v33 showsLocationWarning:v32 countdownText:v31 findMyErrorTitle:v30 findMyErrorMessage:v29 metaContext:v28 notInteractive:0];
-  objc_storeStrong(&v41, v41);
-  if (v41)
+  selfCopy = [(AKBiometricRatchetContext *)&v25 initWithReason:location[0] calloutReason:v39 deeplinkURL:v38 fallbackToNoAuth:authCopy useShortExpiration:expirationCopy beginRatchetTitle:v34 beginRatchetBody:v33 showsLocationWarning:warningCopy countdownText:v31 findMyErrorTitle:v30 findMyErrorMessage:v29 metaContext:v28 notInteractive:0];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v41->_presentingViewController, v37);
-    objc_storeStrong(&v41->_embeddedUIPresentationMode, v27);
-    objc_storeStrong(&v41->_embeddedUIRightNavButtonTitle, v26);
+    objc_storeWeak(&selfCopy->_presentingViewController, v37);
+    objc_storeStrong(&selfCopy->_embeddedUIPresentationMode, v27);
+    objc_storeStrong(&selfCopy->_embeddedUIRightNavButtonTitle, v26);
   }
 
-  v19 = MEMORY[0x277D82BE0](v41);
+  v19 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v28, 0);
@@ -157,36 +157,36 @@
   objc_storeStrong(&v38, 0);
   objc_storeStrong(&v39, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v19;
 }
 
-- (AKBiometricRatchetUIContext)initWithAttributes:(id)a3 presentationContext:(id)a4
+- (AKBiometricRatchetUIContext)initWithAttributes:(id)attributes presentationContext:(id)context
 {
-  v78 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, attributes);
   v76 = 0;
-  objc_storeStrong(&v76, a4);
-  v75 = 0;
+  objc_storeStrong(&v76, context);
+  bOOLValue = 0;
   v54 = objc_opt_class();
   v55 = [location[0] objectForKeyedSubscript:@"fallback"];
   v74 = _AKSafeCast_6(v54, v55);
   *&v4 = MEMORY[0x277D82BD8](v55).n128_u64[0];
   if (v74)
   {
-    v75 = [v74 BOOLValue];
+    bOOLValue = [v74 BOOLValue];
   }
 
-  v73 = 0;
+  bOOLValue2 = 0;
   v51 = objc_opt_class();
   v52 = [location[0] objectForKeyedSubscript:@"notInteractive"];
   v72 = _AKSafeCast_6(v51, v52);
   *&v5 = MEMORY[0x277D82BD8](v52).n128_u64[0];
   if (v72)
   {
-    v73 = [v72 BOOLValue];
+    bOOLValue2 = [v72 BOOLValue];
   }
 
   v49 = objc_opt_class();
@@ -236,7 +236,7 @@
   v66 = 0;
   if (v68 && v67)
   {
-    v9 = [(AKBiometricRatchetUIContext *)v78 _findMappedDeeplinkFor:v68 withKey:v67, v6];
+    v9 = [(AKBiometricRatchetUIContext *)selfCopy _findMappedDeeplinkFor:v68 withKey:v67, v6];
     v10 = v66;
     v66 = v9;
     MEMORY[0x277D82BD8](v10);
@@ -274,14 +274,14 @@
     MEMORY[0x277D82BD8](v32);
   }
 
-  v63 = 0;
+  bOOLValue3 = 0;
   v30 = objc_opt_class();
   v31 = [location[0] objectForKeyedSubscript:@"disableFM"];
   v62 = _AKSafeCast_6(v30, v31);
   *&v11 = MEMORY[0x277D82BD8](v31).n128_u64[0];
   if (v62)
   {
-    v63 = [v62 BOOLValue];
+    bOOLValue3 = [v62 BOOLValue];
   }
 
   v28 = objc_opt_class();
@@ -336,20 +336,20 @@
     v12 = MEMORY[0x277D82BD8](v16).n128_u64[0];
   }
 
-  v13 = v78;
-  v78 = 0;
+  v13 = selfCopy;
+  selfCopy = 0;
   v56.receiver = v13;
   v56.super_class = AKBiometricRatchetUIContext;
-  v78 = [(AKBiometricRatchetContext *)&v56 initWithReason:v71 calloutReason:v69 deeplinkURL:v66 fallbackToNoAuth:v75 & 1 useShortExpiration:0 beginRatchetTitle:v65 beginRatchetBody:*&v12 showsLocationWarning:v64 countdownText:v63 & 1 findMyErrorTitle:v70 findMyErrorMessage:v61 metaContext:v60 notInteractive:v59, v73 & 1];
-  objc_storeStrong(&v78, v78);
-  if (v78)
+  selfCopy = [(AKBiometricRatchetContext *)&v56 initWithReason:v71 calloutReason:v69 deeplinkURL:v66 fallbackToNoAuth:bOOLValue & 1 useShortExpiration:0 beginRatchetTitle:v65 beginRatchetBody:*&v12 showsLocationWarning:v64 countdownText:bOOLValue3 & 1 findMyErrorTitle:v70 findMyErrorMessage:v61 metaContext:v60 notInteractive:v59, bOOLValue2 & 1];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v78->_presentingViewController, v76);
-    objc_storeStrong(&v78->_embeddedUIPresentationMode, v58);
-    objc_storeStrong(&v78->_embeddedUIRightNavButtonTitle, v57);
+    objc_storeWeak(&selfCopy->_presentingViewController, v76);
+    objc_storeStrong(&selfCopy->_embeddedUIPresentationMode, v58);
+    objc_storeStrong(&selfCopy->_embeddedUIRightNavButtonTitle, v57);
   }
 
-  v15 = MEMORY[0x277D82BE0](v78);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v57, 0);
   objc_storeStrong(&v58, 0);
   objc_storeStrong(&v59, 0);
@@ -368,13 +368,13 @@
   objc_storeStrong(&v74, 0);
   objc_storeStrong(&v76, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v78, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v15;
 }
 
 - (AKBiometricRatchetUIProvider)bioRatchetUIProvider
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_bioRatchetUIProvider)
   {
@@ -390,13 +390,13 @@
 
     objc_storeStrong(location, 0);
     v2 = [AKBiometricRatchetiOSUIProvider alloc];
-    v3 = [(AKBiometricRatchetiOSUIProvider *)v2 initWithContext:v12];
-    bioRatchetUIProvider = v12->_bioRatchetUIProvider;
-    v12->_bioRatchetUIProvider = v3;
+    v3 = [(AKBiometricRatchetiOSUIProvider *)v2 initWithContext:selfCopy];
+    bioRatchetUIProvider = selfCopy->_bioRatchetUIProvider;
+    selfCopy->_bioRatchetUIProvider = v3;
     MEMORY[0x277D82BD8](bioRatchetUIProvider);
   }
 
-  v5 = v12->_bioRatchetUIProvider;
+  v5 = selfCopy->_bioRatchetUIProvider;
 
   return v5;
 }
@@ -423,12 +423,12 @@
   }
 }
 
-- (void)presentRatchetUIWithCompletion:(id)a3
+- (void)presentRatchetUIWithCompletion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v8 = _AKLogSystem();
   v7 = 2;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -440,38 +440,38 @@
   }
 
   objc_storeStrong(&v8, 0);
-  v3 = [(AKBiometricRatchetUIContext *)v10 bioRatchetUIProvider];
-  [(AKBiometricRatchetUIProvider *)v3 presentRatchetUIWithCompletion:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  bioRatchetUIProvider = [(AKBiometricRatchetUIContext *)selfCopy bioRatchetUIProvider];
+  [(AKBiometricRatchetUIProvider *)bioRatchetUIProvider presentRatchetUIWithCompletion:location[0]];
+  MEMORY[0x277D82BD8](bioRatchetUIProvider);
   objc_storeStrong(location, 0);
 }
 
 - (NSString)debugDescription
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v7.receiver = self;
   v7.super_class = AKBiometricRatchetUIContext;
   v8[0] = [(AKBiometricRatchetContext *)&v7 debugDescription];
   v4 = MEMORY[0x277CCACA8];
   v3 = v8[0];
-  WeakRetained = objc_loadWeakRetained(&v9->_presentingViewController);
-  v6 = [v4 stringWithFormat:@"%@ \tpresentationContext: %@, \n", v3, WeakRetained];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_presentingViewController);
+  weakRetained = [v4 stringWithFormat:@"%@ \tpresentationContext: %@, \n", v3, WeakRetained];
   MEMORY[0x277D82BD8](WeakRetained);
   objc_storeStrong(v8, 0);
 
-  return v6;
+  return weakRetained;
 }
 
-- (id)_findMappedDeeplinkFor:(id)a3 withKey:(id)a4
+- (id)_findMappedDeeplinkFor:(id)for withKey:(id)key
 {
   v17 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, for);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, key);
   v13 = 0;
   if ([v14 isEqualToString:@"url"])
   {
@@ -483,12 +483,12 @@
 
   else if ([v14 isEqualToString:@"urlBagKey"])
   {
-    v10 = [MEMORY[0x277CF02F0] sharedBag];
-    v6 = [v10 urlAtKey:v14];
+    mEMORY[0x277CF02F0] = [MEMORY[0x277CF02F0] sharedBag];
+    v6 = [mEMORY[0x277CF02F0] urlAtKey:v14];
     v7 = v13;
     v13 = v6;
     MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF02F0]);
     if (!v13)
     {
       oslog = _AKLogSystem();

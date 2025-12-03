@@ -7,8 +7,8 @@
 - (id)mtGreetingString:()Notification
 {
   v5 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
-  v7 = [v5 bs_dayPeriodForDate:a1 inLocale:v6];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v7 = [v5 bs_dayPeriodForDate:self inLocale:currentLocale];
 
   if (v7 > 0xA)
   {
@@ -43,12 +43,12 @@
     v10 = v8;
   }
 
-  v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v12 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [v11 setTimeZone:v12];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [currentCalendar setTimeZone:systemTimeZone];
 
-  v13 = [MEMORY[0x1E695DF00] date];
-  v14 = [v11 component:32 fromDate:v13];
+  date = [MEMORY[0x1E695DF00] date];
+  v14 = [currentCalendar component:32 fromDate:date];
 
   if ((v14 - 3) <= 6 && [(__CFString *)v10 hasPrefix:@"DND_BEDTIME_EVENING_GREETING"])
   {

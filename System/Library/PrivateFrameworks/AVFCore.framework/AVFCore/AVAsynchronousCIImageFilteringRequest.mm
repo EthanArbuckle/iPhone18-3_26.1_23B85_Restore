@@ -2,7 +2,7 @@
 - (CGSize)renderSize;
 - (CIImage)sourceImage;
 - (CMTime)compositionTime;
-- (id)initUsingCompositingRequest:(id)a3 sourceFrame:(__CVBuffer *)a4 cancellationTest:(id)a5 defaultCIContextProvider:(id)a6 completionHandler:(id)a7;
+- (id)initUsingCompositingRequest:(id)request sourceFrame:(__CVBuffer *)frame cancellationTest:(id)test defaultCIContextProvider:(id)provider completionHandler:(id)handler;
 - (void)_willDeallocOrFinalize;
 - (void)dealloc;
 - (void)finishWithError:(NSError *)error;
@@ -11,7 +11,7 @@
 
 @implementation AVAsynchronousCIImageFilteringRequest
 
-- (id)initUsingCompositingRequest:(id)a3 sourceFrame:(__CVBuffer *)a4 cancellationTest:(id)a5 defaultCIContextProvider:(id)a6 completionHandler:(id)a7
+- (id)initUsingCompositingRequest:(id)request sourceFrame:(__CVBuffer *)frame cancellationTest:(id)test defaultCIContextProvider:(id)provider completionHandler:(id)handler
 {
   v15.receiver = self;
   v15.super_class = AVAsynchronousCIImageFilteringRequest;
@@ -21,11 +21,11 @@
     v13 = objc_alloc_init(AVAsynchronousCIImageFilteringRequestInternal);
     v12->_internal = v13;
     CFRetain(v13);
-    [(AVAsynchronousCIImageFilteringRequestInternal *)v12->_internal setCompositingRequest:a3];
-    [(AVAsynchronousCIImageFilteringRequestInternal *)v12->_internal setCancellationTest:a5];
-    [(AVAsynchronousCIImageFilteringRequestInternal *)v12->_internal setDefaultCIContextProvider:a6];
-    [(AVAsynchronousCIImageFilteringRequestInternal *)v12->_internal setCompletionHandler:a7];
-    [(AVAsynchronousCIImageFilteringRequestInternal *)v12->_internal setSourcePBuf:a4];
+    [(AVAsynchronousCIImageFilteringRequestInternal *)v12->_internal setCompositingRequest:request];
+    [(AVAsynchronousCIImageFilteringRequestInternal *)v12->_internal setCancellationTest:test];
+    [(AVAsynchronousCIImageFilteringRequestInternal *)v12->_internal setDefaultCIContextProvider:provider];
+    [(AVAsynchronousCIImageFilteringRequestInternal *)v12->_internal setCompletionHandler:handler];
+    [(AVAsynchronousCIImageFilteringRequestInternal *)v12->_internal setSourcePBuf:frame];
   }
 
   return v12;
@@ -51,9 +51,9 @@
 
 - (CGSize)renderSize
 {
-  v2 = [(AVAsynchronousVideoCompositionRequest *)[(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal compositingRequest] renderContext];
+  renderContext = [(AVAsynchronousVideoCompositionRequest *)[(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal compositingRequest] renderContext];
 
-  [(AVVideoCompositionRenderContext *)v2 size];
+  [(AVVideoCompositionRenderContext *)renderContext size];
   result.height = v4;
   result.width = v3;
   return result;
@@ -63,11 +63,11 @@
 {
   if (![(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal sourceCIImage])
   {
-    v3 = [(AVAsynchronousVideoCompositionRequest *)[(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal compositingRequest] videoCompositionInstruction];
+    videoCompositionInstruction = [(AVAsynchronousVideoCompositionRequest *)[(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal compositingRequest] videoCompositionInstruction];
     if ([(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal sourcePBuf])
     {
-      v4 = [(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal sourcePBuf];
-      v5 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:v4];
+      sourcePBuf = [(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal sourcePBuf];
+      v5 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:sourcePBuf];
     }
 
     else
@@ -77,9 +77,9 @@
 
     v6 = v5;
     memset(&v23, 0, sizeof(v23));
-    if (v3)
+    if (videoCompositionInstruction)
     {
-      [v3 sourceTrackPreferredTransform];
+      [videoCompositionInstruction sourceTrackPreferredTransform];
     }
 
     v22 = v23;
@@ -136,10 +136,10 @@
       v6 = [v6 imageByApplyingTransform:&v22];
     }
 
-    v16 = [(AVAsynchronousVideoCompositionRequest *)[(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal compositingRequest] renderContext];
-    if (v16)
+    renderContext = [(AVAsynchronousVideoCompositionRequest *)[(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal compositingRequest] renderContext];
+    if (renderContext)
     {
-      [(AVVideoCompositionRenderContext *)v16 renderTransform];
+      [(AVVideoCompositionRenderContext *)renderContext renderTransform];
     }
 
     else
@@ -149,10 +149,10 @@
 
     if (!CGAffineTransformIsIdentity(&v22))
     {
-      v17 = [(AVAsynchronousVideoCompositionRequest *)[(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal compositingRequest] renderContext];
-      if (v17)
+      renderContext2 = [(AVAsynchronousVideoCompositionRequest *)[(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal compositingRequest] renderContext];
+      if (renderContext2)
       {
-        [(AVVideoCompositionRenderContext *)v17 renderTransform];
+        [(AVVideoCompositionRenderContext *)renderContext2 renderTransform];
       }
 
       else
@@ -209,14 +209,14 @@
   {
     if (v9 || (v14 = [(CIImage *)filteredImage pixelBuffer]) == 0)
     {
-      v12 = [(AVVideoCompositionRenderContext *)[(AVAsynchronousVideoCompositionRequest *)[(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal compositingRequest] renderContext] newPixelBuffer];
-      if (!v12)
+      newPixelBuffer = [(AVVideoCompositionRenderContext *)[(AVAsynchronousVideoCompositionRequest *)[(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal compositingRequest] renderContext] newPixelBuffer];
+      if (!newPixelBuffer)
       {
         [AVAsynchronousCIImageFilteringRequest finishWithImage:? context:?];
         return;
       }
 
-      v13 = v12;
+      v13 = newPixelBuffer;
       if (v9 || (v9 = (*([(AVAsynchronousCIImageFilteringRequestInternal *)self->_internal defaultCIContextProvider]+ 16))()) != 0)
       {
         [(CIContext *)v9 render:filteredImage toCVPixelBuffer:v13];

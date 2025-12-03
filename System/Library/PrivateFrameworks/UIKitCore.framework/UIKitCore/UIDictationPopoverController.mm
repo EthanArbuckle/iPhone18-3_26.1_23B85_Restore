@@ -1,47 +1,47 @@
 @interface UIDictationPopoverController
 - (BOOL)canPresentTip;
 - (CGRect)clipBounds;
-- (CGRect)rectInWindow:(CGRect)a3;
+- (CGRect)rectInWindow:(CGRect)window;
 - (CGRect)sourceRect;
-- (UIDictationPopoverController)initWithContentView:(id)a3 contentSize:(CGSize)a4 inputDelegate:(id)a5;
+- (UIDictationPopoverController)initWithContentView:(id)view contentSize:(CGSize)size inputDelegate:(id)delegate;
 - (int64_t)overrideUserInterfaceStyle;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)dealloc;
 - (void)dismissTip;
-- (void)forwardRemoteDictationPopover:(BOOL)a3;
-- (void)keyboardDidChange:(id)a3;
-- (void)movePopoverView:(CGRect)a3 editMenuFrame:(id)a4;
-- (void)movePopoverViewForEditMenuFrame:(CGRect)a3;
+- (void)forwardRemoteDictationPopover:(BOOL)popover;
+- (void)keyboardDidChange:(id)change;
+- (void)movePopoverView:(CGRect)view editMenuFrame:(id)frame;
+- (void)movePopoverViewForEditMenuFrame:(CGRect)frame;
 - (void)movePopoverViewToCurrentCareLocation;
-- (void)presentTip:(id)a3 tipDescription:(id)a4;
-- (void)setRemoteDictationPopover:(id)a3;
-- (void)textDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)presentTip:(id)tip tipDescription:(id)description;
+- (void)setRemoteDictationPopover:(id)popover;
+- (void)textDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation UIDictationPopoverController
 
-- (UIDictationPopoverController)initWithContentView:(id)a3 contentSize:(CGSize)a4 inputDelegate:(id)a5
+- (UIDictationPopoverController)initWithContentView:(id)view contentSize:(CGSize)size inputDelegate:(id)delegate
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  delegateCopy = delegate;
   v49.receiver = self;
   v49.super_class = UIDictationPopoverController;
   v12 = [(UIKeyboardPopoverController *)&v49 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dictationView, a3);
+    objc_storeStrong(&v12->_dictationView, view);
     [(UIViewController *)v13 setPreferredContentSize:width, height];
-    objc_storeStrong(&v13->_inputDelegate, a5);
-    v14 = [v11 selectedTextRange];
-    v15 = [v14 start];
-    [v11 caretRectForPosition:v15];
+    objc_storeStrong(&v13->_inputDelegate, delegate);
+    selectedTextRange = [delegateCopy selectedTextRange];
+    start = [selectedTextRange start];
+    [delegateCopy caretRectForPosition:start];
     v13->_initCaretRectInView.origin.x = v16;
     v13->_initCaretRectInView.origin.y = v17;
     v13->_initCaretRectInView.size.width = v18;
@@ -49,12 +49,12 @@
 
     if (!+[UIKeyboard isKeyboardProcess])
     {
-      v20 = [(UITextInput *)v13->_inputDelegate textInputView];
-      v21 = [v20 keyboardSceneDelegate];
-      v22 = v21;
-      if (v21)
+      textInputView = [(UITextInput *)v13->_inputDelegate textInputView];
+      keyboardSceneDelegate = [textInputView keyboardSceneDelegate];
+      v22 = keyboardSceneDelegate;
+      if (keyboardSceneDelegate)
       {
-        v23 = v21;
+        v23 = keyboardSceneDelegate;
       }
 
       else
@@ -64,14 +64,14 @@
 
       v24 = v23;
 
-      v25 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       scrollViews = v13->_scrollViews;
-      v13->_scrollViews = v25;
+      v13->_scrollViews = array;
 
-      v27 = [v11 textInputView];
-      if (v27)
+      textInputView2 = [delegateCopy textInputView];
+      if (textInputView2)
       {
-        v28 = v27;
+        v28 = textInputView2;
         do
         {
           objc_opt_class();
@@ -83,49 +83,49 @@
             [v30 _addScrollViewScrollObserver:v13];
           }
 
-          v31 = [v28 superview];
+          superview = [v28 superview];
 
-          v28 = v31;
+          v28 = superview;
         }
 
-        while (v31);
+        while (superview);
       }
 
-      v32 = [v24 containerRootController];
-      v33 = [v32 bottomEdgeView];
+      containerRootController = [v24 containerRootController];
+      bottomEdgeView = [containerRootController bottomEdgeView];
       bottomEdgeView = v13->_bottomEdgeView;
-      v13->_bottomEdgeView = v33;
+      v13->_bottomEdgeView = bottomEdgeView;
 
-      v35 = [v24 containerRootController];
-      v36 = [v35 inputViewSet];
+      containerRootController2 = [v24 containerRootController];
+      inputViewSet = [containerRootController2 inputViewSet];
 
       [(UIView *)&v13->_bottomEdgeView->super.super.isa _addGeometryChangeObserver:v13];
       [(UIView *)v13->_bottomEdgeView frame];
       v13->_bottomMargin = CGRectGetMinY(v50);
-      v37 = [v11 textInputView];
-      v38 = [v36 inputAccessoryView];
-      v39 = [v37 isDescendantOfView:v38];
+      textInputView3 = [delegateCopy textInputView];
+      inputAccessoryView = [inputViewSet inputAccessoryView];
+      v39 = [textInputView3 isDescendantOfView:inputAccessoryView];
 
       if (v39)
       {
-        v40 = [v36 inputAccessoryView];
+        inputAccessoryView2 = [inputViewSet inputAccessoryView];
         inputAccessoryView = v13->_inputAccessoryView;
-        v13->_inputAccessoryView = v40;
+        v13->_inputAccessoryView = inputAccessoryView2;
       }
 
-      v42 = [v11 selectedTextRange];
-      v43 = [v11 selectionRectsForRange:v42];
-      v44 = [v43 firstObject];
-      v13->_isVerticalText = [v44 isVertical];
+      selectedTextRange2 = [delegateCopy selectedTextRange];
+      v43 = [delegateCopy selectionRectsForRange:selectedTextRange2];
+      firstObject = [v43 firstObject];
+      v13->_isVerticalText = [firstObject isVertical];
 
-      v45 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v45 addObserver:v13 selector:sel_keyboardDidChange_ name:@"UIKeyboardDidShowNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v13 selector:sel_keyboardDidChange_ name:@"UIKeyboardDidShowNotification" object:0];
 
-      v46 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v46 addObserver:v13 selector:sel_keyboardDidChange_ name:@"UIKeyboardDidHideNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v13 selector:sel_keyboardDidChange_ name:@"UIKeyboardDidHideNotification" object:0];
 
-      v47 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v47 addObserver:v13 selector:sel_textDidChange_ name:*off_1E70ECAC0 object:0];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter3 addObserver:v13 selector:sel_textDidChange_ name:*off_1E70ECAC0 object:0];
     }
   }
 
@@ -171,12 +171,12 @@
     self->_scrollViews = 0;
 
     [(UIView *)&self->_bottomEdgeView->super.super.isa _removeGeometryChangeObserver:?];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v17[0] = @"UIKeyboardDidShowNotification";
     v17[1] = @"UIKeyboardDidHideNotification";
     v17[2] = *off_1E70ECAC0;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:3];
-    [(NSNotificationCenter *)v9 _uiRemoveObserver:v10 names:?];
+    [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v10 names:?];
   }
 
   inputDelegate = self->_inputDelegate;
@@ -194,26 +194,26 @@
   v31.super_class = UIDictationPopoverController;
   [(UIKeyboardPopoverController *)&v31 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(UIViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(UIViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(UIViewController *)self view];
-  [v5 addSubview:self->_dictationView];
+  view2 = [(UIViewController *)self view];
+  [view2 addSubview:self->_dictationView];
 
   [(UIView *)self->_dictationView setNeedsLayout];
-  v6 = [(UIView *)self->_dictationView topAnchor];
-  v7 = [(UIViewController *)self view];
-  v8 = [v7 safeAreaLayoutGuide];
-  v9 = [v8 topAnchor];
-  v10 = [v6 constraintEqualToAnchor:v9];
+  topAnchor = [(UIView *)self->_dictationView topAnchor];
+  view3 = [(UIViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   dictationViewTopConstraint = self->_dictationViewTopConstraint;
   self->_dictationViewTopConstraint = v10;
 
-  v12 = [(UIView *)self->_dictationView bottomAnchor];
-  v13 = [(UIViewController *)self view];
-  v14 = [v13 safeAreaLayoutGuide];
-  v15 = [v14 bottomAnchor];
-  v16 = [v12 constraintEqualToAnchor:v15];
+  bottomAnchor = [(UIView *)self->_dictationView bottomAnchor];
+  view4 = [(UIViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   dictationViewBottomConstraint = self->_dictationViewBottomConstraint;
   self->_dictationViewBottomConstraint = v16;
 
@@ -221,27 +221,27 @@
   v18 = self->_dictationViewBottomConstraint;
   v32[0] = self->_dictationViewTopConstraint;
   v32[1] = v18;
-  v30 = [(UIView *)self->_dictationView leadingAnchor];
-  v19 = [(UIViewController *)self view];
-  v20 = [v19 safeAreaLayoutGuide];
-  v21 = [v20 leadingAnchor];
-  v22 = [v30 constraintEqualToAnchor:v21];
+  leadingAnchor = [(UIView *)self->_dictationView leadingAnchor];
+  view5 = [(UIViewController *)self view];
+  safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide3 leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[2] = v22;
-  v23 = [(UIView *)self->_dictationView trailingAnchor];
-  v24 = [(UIViewController *)self view];
-  v25 = [v24 safeAreaLayoutGuide];
-  v26 = [v25 trailingAnchor];
-  v27 = [v23 constraintEqualToAnchor:v26];
+  trailingAnchor = [(UIView *)self->_dictationView trailingAnchor];
+  view6 = [(UIViewController *)self view];
+  safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide4 trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[3] = v27;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
   [v29 activateConstraints:v28];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = UIDictationPopoverController;
-  [(UIViewController *)&v12 viewDidAppear:a3];
+  [(UIViewController *)&v12 viewDidAppear:appear];
   [(UIDictationPopoverController *)self forwardRemoteDictationPopover:1];
   [(UIDictationPopoverController *)self rectInWindow:self->_initCaretRectInView.origin.x, self->_initCaretRectInView.origin.y, self->_initCaretRectInView.size.width, self->_initCaretRectInView.size.height];
   self->_sourceRect.origin.x = v4;
@@ -255,45 +255,45 @@
   self->_clipBounds.size.height = v11;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = UIDictationPopoverController;
-  [(UIViewController *)&v4 viewDidDisappear:a3];
+  [(UIViewController *)&v4 viewDidDisappear:disappear];
   [(UIDictationPopoverController *)self forwardRemoteDictationPopover:0];
 }
 
-- (void)forwardRemoteDictationPopover:(BOOL)a3
+- (void)forwardRemoteDictationPopover:(BOOL)popover
 {
-  v3 = a3;
+  popoverCopy = popover;
   v23[4] = *MEMORY[0x1E69E9840];
   p_popoverFrame = &self->_popoverFrame;
-  v6 = [(UIViewController *)self popoverPresentationController];
-  v7 = [v6 popoverView];
-  [v7 frame];
+  popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+  popoverView = [popoverPresentationController popoverView];
+  [popoverView frame];
   p_popoverFrame->origin.x = v8;
   p_popoverFrame->origin.y = v9;
   p_popoverFrame->size.width = v10;
   p_popoverFrame->size.height = v11;
 
-  v12 = [(UIViewController *)self popoverPresentationController];
-  self->_arrowDirection = [v12 arrowDirection];
+  popoverPresentationController2 = [(UIViewController *)self popoverPresentationController];
+  self->_arrowDirection = [popoverPresentationController2 arrowDirection];
 
   if (+[UIKeyboard isKeyboardProcess])
   {
     v13 = +[UIKeyboardImpl activeInstance];
-    v14 = [v13 inputDelegateManager];
-    v15 = [v14 inputSystemSourceSession];
+    inputDelegateManager = [v13 inputDelegateManager];
+    inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-    if (v15)
+    if (inputSystemSourceSession)
     {
-      v16 = [v15 textOperations];
-      [v16 setCustomInfoType:0x1EFB7C8F0];
+      textOperations = [inputSystemSourceSession textOperations];
+      [textOperations setCustomInfoType:0x1EFB7C8F0];
       v22[0] = @"selector";
       v17 = NSStringFromSelector(sel_setRemoteDictationPopover_);
       v23[0] = v17;
       v22[1] = @"appear";
-      v18 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v18 = [MEMORY[0x1E696AD98] numberWithBool:popoverCopy];
       v23[1] = v18;
       v22[2] = @"arrowDirection";
       v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_arrowDirection];
@@ -302,30 +302,30 @@
       v20 = [MEMORY[0x1E696B098] valueWithRect:{p_popoverFrame->origin.x, p_popoverFrame->origin.y, p_popoverFrame->size.width, p_popoverFrame->size.height}];
       v23[3] = v20;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:4];
-      [v16 setCustomInfo:v21];
+      [textOperations setCustomInfo:v21];
 
-      [v15 flushOperations];
+      [inputSystemSourceSession flushOperations];
     }
   }
 }
 
-- (void)setRemoteDictationPopover:(id)a3
+- (void)setRemoteDictationPopover:(id)popover
 {
   p_popoverFrame = &self->_popoverFrame;
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"popoverFrame"];
+  popoverCopy = popover;
+  v6 = [popoverCopy objectForKeyedSubscript:@"popoverFrame"];
   [v6 CGRectValue];
   p_popoverFrame->origin.x = v7;
   p_popoverFrame->origin.y = v8;
   p_popoverFrame->size.width = v9;
   p_popoverFrame->size.height = v10;
 
-  v11 = [v5 objectForKeyedSubscript:@"arrowDirection"];
+  v11 = [popoverCopy objectForKeyedSubscript:@"arrowDirection"];
 
-  v12 = [v11 intValue];
-  if (self->_arrowDirection != v12)
+  intValue = [v11 intValue];
+  if (self->_arrowDirection != intValue)
   {
-    self->_arrowDirection = v12;
+    self->_arrowDirection = intValue;
     [(UIDictationPopoverController *)self clipBounds];
     self->_clipBounds.origin.x = v13;
     self->_clipBounds.origin.y = v14;
@@ -342,12 +342,12 @@
 - (CGRect)clipBounds
 {
   arrowDirection = self->_arrowDirection;
-  v4 = [(UITextInput *)self->_inputDelegate textInputView];
-  v5 = [v4 keyboardSceneDelegate];
-  v6 = v5;
-  if (v5)
+  textInputView = [(UITextInput *)self->_inputDelegate textInputView];
+  keyboardSceneDelegate = [textInputView keyboardSceneDelegate];
+  v6 = keyboardSceneDelegate;
+  if (keyboardSceneDelegate)
   {
-    v7 = v5;
+    v7 = keyboardSceneDelegate;
   }
 
   else
@@ -357,16 +357,16 @@
 
   v8 = v7;
 
-  v9 = [v8 containerRootController];
-  v10 = [v9 view];
-  [v10 frame];
+  containerRootController = [v8 containerRootController];
+  view = [containerRootController view];
+  [view frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v8 containerRootController];
-  v20 = [v19 view];
-  [v20 safeAreaInsets];
+  containerRootController2 = [v8 containerRootController];
+  view2 = [containerRootController2 view];
+  [view2 safeAreaInsets];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -402,13 +402,13 @@
 
 - (int64_t)overrideUserInterfaceStyle
 {
-  v3 = [(UIViewController *)self view];
-  v4 = [v3 window];
-  if (v4)
+  view = [(UIViewController *)self view];
+  window = [view window];
+  if (window)
   {
-    v5 = [(UIViewController *)self view];
-    v6 = [v5 _inheritedRenderConfig];
-    if ([v6 lightKeyboard])
+    view2 = [(UIViewController *)self view];
+    _inheritedRenderConfig = [view2 _inheritedRenderConfig];
+    if ([_inheritedRenderConfig lightKeyboard])
     {
       v7 = 1;
     }
@@ -427,7 +427,7 @@
   return v7;
 }
 
-- (void)textDidChange:(id)a3
+- (void)textDidChange:(id)change
 {
   if (self->_arrowDirection == 1)
   {
@@ -502,14 +502,14 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
   }
 }
 
-- (void)keyboardDidChange:(id)a3
+- (void)keyboardDidChange:(id)change
 {
-  v4 = [(UITextInput *)self->_inputDelegate textInputView];
-  v5 = [v4 keyboardSceneDelegate];
-  v6 = v5;
-  if (v5)
+  textInputView = [(UITextInput *)self->_inputDelegate textInputView];
+  keyboardSceneDelegate = [textInputView keyboardSceneDelegate];
+  v6 = keyboardSceneDelegate;
+  if (keyboardSceneDelegate)
   {
-    v7 = v5;
+    v7 = keyboardSceneDelegate;
   }
 
   else
@@ -519,35 +519,35 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
 
   v11 = v7;
 
-  v8 = [v11 containerRootController];
-  v9 = [v8 bottomEdgeView];
+  containerRootController = [v11 containerRootController];
+  bottomEdgeView = [containerRootController bottomEdgeView];
 
-  [(UIView *)v9 frame];
+  [(UIView *)bottomEdgeView frame];
   self->_bottomMargin = CGRectGetMinY(v13);
   bottomEdgeView = self->_bottomEdgeView;
-  if (v9 != bottomEdgeView)
+  if (bottomEdgeView != bottomEdgeView)
   {
     [(UIView *)bottomEdgeView _removeGeometryChangeObserver:?];
-    objc_storeStrong(&self->_bottomEdgeView, v9);
+    objc_storeStrong(&self->_bottomEdgeView, bottomEdgeView);
     [(UIView *)&self->_bottomEdgeView->super.super.isa _addGeometryChangeObserver:?];
   }
 
   [(UIDictationPopoverController *)self _observeScrollViewDidScroll:0];
 }
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  v6 = a4;
-  if ((a3->var0 & 2) != 0)
+  ancestorCopy = ancestor;
+  if ((changed->var0 & 2) != 0)
   {
-    v16 = v6;
-    [v6 frame];
+    v16 = ancestorCopy;
+    [ancestorCopy frame];
     Width = CGRectGetWidth(v18);
-    v8 = [v16 window];
-    [v8 frame];
+    window = [v16 window];
+    [window frame];
     v9 = vabdd_f64(Width, CGRectGetWidth(v19));
 
-    v6 = v16;
+    ancestorCopy = v16;
     if (v9 < 1.0)
     {
       [v16 frame];
@@ -562,18 +562,18 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
       }
 
       [(UIDictationPopoverController *)self _observeScrollViewDidScroll:0];
-      v6 = v16;
+      ancestorCopy = v16;
     }
   }
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = v4;
+  scrollCopy = scroll;
+  v5 = scrollCopy;
   if (self->_arrowDirection != 1)
   {
-    v37 = v4;
+    v37 = scrollCopy;
     IsEmpty = CGRectIsEmpty(self->_editMenuFrame);
     v5 = v37;
     if (IsEmpty)
@@ -583,16 +583,16 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
       inputDelegate = self->_inputDelegate;
       if (isKindOfClass)
       {
-        v9 = inputDelegate;
+        textInputView = inputDelegate;
       }
 
       else
       {
-        v9 = [(UITextInput *)inputDelegate textInputView];
+        textInputView = [(UITextInput *)inputDelegate textInputView];
       }
 
-      v10 = v9;
-      if (v9)
+      v10 = textInputView;
+      if (textInputView)
       {
         do
         {
@@ -610,12 +610,12 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
             break;
           }
 
-          v14 = [v10 superview];
+          superview = [v10 superview];
 
-          v10 = v14;
+          v10 = superview;
         }
 
-        while (v14);
+        while (superview);
       }
 
       [v10 bounds];
@@ -687,14 +687,14 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
   }
 }
 
-- (void)movePopoverView:(CGRect)a3 editMenuFrame:(id)a4
+- (void)movePopoverView:(CGRect)view editMenuFrame:(id)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
   v22[2] = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  frameCopy = frame;
   self->_sourceRect.origin.x = x;
   self->_sourceRect.origin.y = y;
   self->_sourceRect.size.width = width;
@@ -702,13 +702,13 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
   if (+[UIKeyboard usesInputSystemUI])
   {
     v10 = +[UIKeyboardImpl activeInstance];
-    if (v9)
+    if (frameCopy)
     {
       v21[0] = @"sourceRect";
       v11 = [MEMORY[0x1E696B098] valueWithRect:{x, y, width, height}];
       v21[1] = @"editMenuFrame";
       v22[0] = v11;
-      v22[1] = v9;
+      v22[1] = frameCopy;
       v12 = MEMORY[0x1E695DF20];
       v13 = v22;
       v14 = v21;
@@ -732,12 +732,12 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
 
   else
   {
-    v16 = [(UIViewController *)self popoverPresentationController];
-    [v16 _sendDelegateWillRepositionToRect];
+    popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+    [popoverPresentationController _sendDelegateWillRepositionToRect];
 
-    v17 = [(UIViewController *)self popoverPresentationController];
+    popoverPresentationController2 = [(UIViewController *)self popoverPresentationController];
     [(UIViewController *)self preferredContentSize];
-    [v17 setPopoverContentSize:?];
+    [popoverPresentationController2 setPopoverContentSize:?];
 
     [(UIDictationPopoverController *)self forwardRemoteDictationPopover:1];
   }
@@ -747,9 +747,9 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
 {
   p_initCaretRectInView = &self->_initCaretRectInView;
   inputDelegate = self->_inputDelegate;
-  v5 = [(UITextInput *)inputDelegate selectedTextRange];
-  v6 = [v5 start];
-  [(UITextInput *)inputDelegate caretRectForPosition:v6];
+  selectedTextRange = [(UITextInput *)inputDelegate selectedTextRange];
+  start = [selectedTextRange start];
+  [(UITextInput *)inputDelegate caretRectForPosition:start];
   p_initCaretRectInView->origin.x = v7;
   p_initCaretRectInView->origin.y = v8;
   p_initCaretRectInView->size.width = v9;
@@ -764,26 +764,26 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
   [(UIDictationPopoverController *)self movePopoverView:v19 editMenuFrame:v12, v14, v16, v18];
 }
 
-- (void)movePopoverViewForEditMenuFrame:(CGRect)a3
+- (void)movePopoverViewForEditMenuFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIViewController *)self popoverPresentationController];
-  v9 = [v8 popoverView];
-  v10 = [v9 arrowDirection];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+  popoverView = [popoverPresentationController popoverView];
+  arrowDirection = [popoverView arrowDirection];
 
-  v11 = [(UIViewController *)self view];
-  v12 = [v11 window];
+  view = [(UIViewController *)self view];
+  window = [view window];
 
-  if (v12)
+  if (window)
   {
     v37.origin.x = x;
     v37.origin.y = y;
     v37.size.width = width;
     v37.size.height = height;
-    if (CGRectIsEmpty(v37) || self->_needsRestoreArrowDirction || ((p_popoverFrame = &self->_popoverFrame, p_editMenuFrame = &self->_editMenuFrame, v10 != 1) ? (v15 = self->_editMenuFrame.size.height) : (v15 = -self->_editMenuFrame.size.height), v38.origin.x = p_popoverFrame->origin.x, v38.origin.y = self->_popoverFrame.origin.y, v38.size.width = self->_popoverFrame.size.width, v38.size.height = self->_popoverFrame.size.height, v42 = CGRectOffset(v38, 0.0, v15), v39.origin.x = x, v39.origin.y = y, v39.size.width = width, v39.size.height = height, !CGRectIntersectsRect(v39, v42)))
+    if (CGRectIsEmpty(v37) || self->_needsRestoreArrowDirction || ((p_popoverFrame = &self->_popoverFrame, p_editMenuFrame = &self->_editMenuFrame, arrowDirection != 1) ? (v15 = self->_editMenuFrame.size.height) : (v15 = -self->_editMenuFrame.size.height), v38.origin.x = p_popoverFrame->origin.x, v38.origin.y = self->_popoverFrame.origin.y, v38.size.width = self->_popoverFrame.size.width, v38.size.height = self->_popoverFrame.size.height, v42 = CGRectOffset(v38, 0.0, v15), v39.origin.x = x, v39.origin.y = y, v39.size.width = width, v39.size.height = height, !CGRectIntersectsRect(v39, v42)))
     {
       if (!CGRectIsEmpty(self->_editMenuFrame))
       {
@@ -795,9 +795,9 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
         {
           if (self->_needsRestoreArrowDirction)
           {
-            v22 = [(UIViewController *)self popoverPresentationController];
-            v23 = [v22 popoverView];
-            [v23 setArrowDirection:2];
+            popoverPresentationController2 = [(UIViewController *)self popoverPresentationController];
+            popoverView2 = [popoverPresentationController2 popoverView];
+            [popoverView2 setArrowDirection:2];
 
             [(UIViewController *)self _updateContentOverlayInsetsFromParentIfNecessary];
             self->_needsRestoreArrowDirction = 0;
@@ -819,7 +819,7 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
       v17 = y;
       v18 = width;
       v19 = height;
-      if (v10 == 1)
+      if (arrowDirection == 1)
       {
         MaxY = CGRectGetMaxY(*&v16);
         MinY = MaxY + CGRectGetHeight(self->_sourceRect);
@@ -842,9 +842,9 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
 
       else
       {
-        v28 = [(UIViewController *)self popoverPresentationController];
-        v29 = [v28 popoverView];
-        [v29 setArrowDirection:1];
+        popoverPresentationController3 = [(UIViewController *)self popoverPresentationController];
+        popoverView3 = [popoverPresentationController3 popoverView];
+        [popoverView3 setArrowDirection:1];
 
         [(UIViewController *)self _updateContentOverlayInsetsFromParentIfNecessary];
         self->_needsRestoreArrowDirction = 1;
@@ -856,8 +856,8 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
         v31 = CGRectGetMaxY(self->_sourceRect);
         v32 = self->_popoverFrame.size.width;
         v33 = self->_popoverFrame.size.height;
-        v34 = [(UIViewController *)self popoverPresentationController];
-        [v34 setPopoverFrame:1 animated:{v30, v31, v32, v33}];
+        popoverPresentationController4 = [(UIViewController *)self popoverPresentationController];
+        [popoverPresentationController4 setPopoverFrame:1 animated:{v30, v31, v32, v33}];
       }
 
       p_editMenuFrame->origin.x = x;
@@ -876,41 +876,41 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
   }
 }
 
-- (CGRect)rectInWindow:(CGRect)a3
+- (CGRect)rectInWindow:(CGRect)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UITextInput *)self->_inputDelegate textInputView];
-  v9 = [v8 keyboardSceneDelegate];
-  if (v9)
+  height = window.size.height;
+  width = window.size.width;
+  y = window.origin.y;
+  x = window.origin.x;
+  textInputView = [(UITextInput *)self->_inputDelegate textInputView];
+  keyboardSceneDelegate = [textInputView keyboardSceneDelegate];
+  if (keyboardSceneDelegate)
   {
-    v10 = [(UITextInput *)self->_inputDelegate textInputView];
-    v11 = [v10 keyboardSceneDelegate];
-    v12 = [v11 containerWindow];
+    textInputView2 = [(UITextInput *)self->_inputDelegate textInputView];
+    keyboardSceneDelegate2 = [textInputView2 keyboardSceneDelegate];
+    containerWindow = [keyboardSceneDelegate2 containerWindow];
   }
 
   else
   {
-    v10 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v12 = [v10 containerWindow];
+    textInputView2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
+    containerWindow = [textInputView2 containerWindow];
   }
 
-  v13 = [(UITextInput *)self->_inputDelegate textInputView];
-  [v12 convertRect:v13 fromView:{x, y, width, height}];
+  textInputView3 = [(UITextInput *)self->_inputDelegate textInputView];
+  [containerWindow convertRect:textInputView3 fromView:{x, y, width, height}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(UIViewController *)self view];
-  v23 = [v22 window];
-  if (v23)
+  view = [(UIViewController *)self view];
+  window = [view window];
+  if (window)
   {
-    v24 = [(UIViewController *)self view];
-    v25 = [v24 window];
-    [v12 convertRect:v25 toView:{v15, v17, v19, v21}];
+    view2 = [(UIViewController *)self view];
+    window2 = [view2 window];
+    [containerWindow convertRect:window2 toView:{v15, v17, v19, v21}];
     v15 = v26;
     v17 = v27;
     v19 = v28;
@@ -945,15 +945,15 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
 {
   if (+[UIKeyboard usesInputSystemUI])
   {
-    v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v4 = [v3 containerWindow];
+    popoverPresentationController = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
+    containerWindow = [popoverPresentationController containerWindow];
   }
 
   else
   {
-    v3 = [(UIViewController *)self popoverPresentationController];
-    v5 = [v3 popoverView];
-    v4 = [v5 superview];
+    popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+    popoverView = [popoverPresentationController popoverView];
+    containerWindow = [popoverView superview];
   }
 
   p_popoverFrame = &self->_popoverFrame;
@@ -978,28 +978,28 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
     height = v22.size.height;
   }
 
-  v11 = [(UIViewController *)self popoverPresentationController];
-  v12 = [v11 popoverView];
-  v13 = [v12 arrowDirection];
+  popoverPresentationController2 = [(UIViewController *)self popoverPresentationController];
+  popoverView2 = [popoverPresentationController2 popoverView];
+  arrowDirection = [popoverView2 arrowDirection];
 
-  if (v13 == 2)
+  if (arrowDirection == 2)
   {
     v23.origin.x = x;
     v23.origin.y = y;
     v23.size.width = width;
     v23.size.height = height;
     v14 = CGRectGetMinY(v23) + -135.5;
-    [v4 safeAreaInsets];
+    [containerWindow safeAreaInsets];
     v16 = v14 >= v15;
   }
 
   else
   {
-    v17 = [(UIViewController *)self popoverPresentationController];
-    v18 = [v17 popoverView];
-    v19 = [v18 arrowDirection];
+    popoverPresentationController3 = [(UIViewController *)self popoverPresentationController];
+    popoverView3 = [popoverPresentationController3 popoverView];
+    arrowDirection2 = [popoverView3 arrowDirection];
 
-    if (v19 == 1)
+    if (arrowDirection2 == 1)
     {
       v24.origin.x = x;
       v24.origin.y = y;
@@ -1017,31 +1017,31 @@ void __46__UIDictationPopoverController_textDidChange___block_invoke(uint64_t a1
   return v16;
 }
 
-- (void)presentTip:(id)a3 tipDescription:(id)a4
+- (void)presentTip:(id)tip tipDescription:(id)description
 {
   v118[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tipCopy = tip;
+  descriptionCopy = description;
   if (!+[UIKeyboard usesInputSystemUI])
   {
     title = self->_title;
     if (title)
     {
 LABEL_12:
-      [(UILabel *)title setText:v6];
-      [(UITextView *)self->_textView setText:v7];
+      [(UILabel *)title setText:tipCopy];
+      [(UITextView *)self->_textView setText:descriptionCopy];
 
-      v8 = [(UIViewController *)self popoverPresentationController];
+      popoverPresentationController = [(UIViewController *)self popoverPresentationController];
       [(UIViewController *)self preferredContentSize];
       v85 = v84;
       [(UIViewController *)self preferredContentSize];
-      [v8 setPopoverContentSize:{v85, v86 + 135.5}];
+      [popoverPresentationController setPopoverContentSize:{v85, v86 + 135.5}];
       goto LABEL_13;
     }
 
-    v106 = v7;
-    v107 = v6;
-    v113 = [MEMORY[0x1E695DF70] array];
+    v106 = descriptionCopy;
+    v107 = tipCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v10 = [UILabel alloc];
     v11 = *MEMORY[0x1E695F058];
     v12 = *(MEMORY[0x1E695F058] + 8);
@@ -1056,26 +1056,26 @@ LABEL_12:
 
     [(UILabel *)self->_title setTextAlignment:1];
     [(UIView *)self->_title setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [(UIViewController *)self view];
-    [v18 insertSubview:self->_title belowSubview:self->_dictationView];
+    view = [(UIViewController *)self view];
+    [view insertSubview:self->_title belowSubview:self->_dictationView];
 
-    v111 = [(UIView *)self->_title heightAnchor];
-    v108 = [v111 constraintEqualToConstant:20.0];
+    heightAnchor = [(UIView *)self->_title heightAnchor];
+    v108 = [heightAnchor constraintEqualToConstant:20.0];
     v118[0] = v108;
-    v100 = [(UIView *)self->_title leadingAnchor];
-    v105 = [(UIViewController *)self view];
-    v96 = [v105 safeAreaLayoutGuide];
-    v19 = [v96 leadingAnchor];
-    v20 = [v100 constraintEqualToAnchor:v19];
+    leadingAnchor = [(UIView *)self->_title leadingAnchor];
+    view2 = [(UIViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v118[1] = v20;
-    v21 = [(UIView *)self->_title trailingAnchor];
-    v22 = [(UIViewController *)self view];
-    v23 = [v22 safeAreaLayoutGuide];
-    v24 = [v23 trailingAnchor];
-    v25 = [v21 constraintEqualToAnchor:v24];
+    trailingAnchor = [(UIView *)self->_title trailingAnchor];
+    view3 = [(UIViewController *)self view];
+    safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v118[2] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v118 count:3];
-    [v113 addObjectsFromArray:v26];
+    [array addObjectsFromArray:v26];
 
     v27 = [[UITextView alloc] initWithFrame:0 textContainer:v11, v12, v13, v14];
     textView = self->_textView;
@@ -1091,105 +1091,105 @@ LABEL_12:
 
     [(UITextView *)self->_textView setTextAlignment:1];
     [(UIView *)self->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v31 = [(UIViewController *)self view];
-    [v31 insertSubview:self->_textView belowSubview:self->_dictationView];
+    view4 = [(UIViewController *)self view];
+    [view4 insertSubview:self->_textView belowSubview:self->_dictationView];
 
-    v109 = [(UIView *)self->_textView topAnchor];
-    v101 = [(UIView *)self->_title bottomAnchor];
-    v97 = [v109 constraintEqualToAnchor:v101];
+    topAnchor = [(UIView *)self->_textView topAnchor];
+    bottomAnchor = [(UIView *)self->_title bottomAnchor];
+    v97 = [topAnchor constraintEqualToAnchor:bottomAnchor];
     v117[0] = v97;
-    v90 = [(UIView *)self->_textView leadingAnchor];
-    v93 = [(UIViewController *)self view];
-    v32 = [v93 safeAreaLayoutGuide];
-    v33 = [v32 leadingAnchor];
-    v34 = [v90 constraintEqualToAnchor:v33 constant:8.0];
+    leadingAnchor3 = [(UIView *)self->_textView leadingAnchor];
+    view5 = [(UIViewController *)self view];
+    safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+    leadingAnchor4 = [safeAreaLayoutGuide3 leadingAnchor];
+    v34 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:8.0];
     v117[1] = v34;
-    v35 = [(UIView *)self->_textView trailingAnchor];
-    v36 = [(UIViewController *)self view];
-    v37 = [v36 safeAreaLayoutGuide];
-    v38 = [v37 trailingAnchor];
-    v39 = [v35 constraintEqualToAnchor:v38 constant:-8.0];
+    trailingAnchor3 = [(UIView *)self->_textView trailingAnchor];
+    view6 = [(UIViewController *)self view];
+    safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
+    trailingAnchor4 = [safeAreaLayoutGuide4 trailingAnchor];
+    v39 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-8.0];
     v117[2] = v39;
     v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v117 count:3];
-    [v113 addObjectsFromArray:v40];
+    [array addObjectsFromArray:v40];
 
     v41 = [[UIView alloc] initWithFrame:v11, v12, v13, v14];
     v42 = +[UIColor lightGrayColor];
     [(UIView *)v41 setBackgroundColor:v42];
 
     [(UIView *)v41 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v43 = [(UIViewController *)self view];
-    [v43 insertSubview:v41 belowSubview:self->_dictationView];
+    view7 = [(UIViewController *)self view];
+    [view7 insertSubview:v41 belowSubview:self->_dictationView];
 
-    v102 = [(UIView *)v41 heightAnchor];
-    v98 = [v102 constraintEqualToConstant:0.5];
+    heightAnchor2 = [(UIView *)v41 heightAnchor];
+    v98 = [heightAnchor2 constraintEqualToConstant:0.5];
     v116[0] = v98;
-    v91 = [(UIView *)v41 leadingAnchor];
-    v94 = [(UIViewController *)self view];
-    v44 = [v94 safeAreaLayoutGuide];
-    v45 = [v44 leadingAnchor];
-    v46 = [v91 constraintEqualToAnchor:v45];
+    leadingAnchor5 = [(UIView *)v41 leadingAnchor];
+    view8 = [(UIViewController *)self view];
+    safeAreaLayoutGuide5 = [view8 safeAreaLayoutGuide];
+    leadingAnchor6 = [safeAreaLayoutGuide5 leadingAnchor];
+    v46 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v116[1] = v46;
     v110 = v41;
-    v47 = [(UIView *)v41 trailingAnchor];
-    v48 = [(UIViewController *)self view];
-    v49 = [v48 safeAreaLayoutGuide];
-    v50 = [v49 trailingAnchor];
-    v51 = [v47 constraintEqualToAnchor:v50];
+    trailingAnchor5 = [(UIView *)v41 trailingAnchor];
+    view9 = [(UIViewController *)self view];
+    safeAreaLayoutGuide6 = [view9 safeAreaLayoutGuide];
+    trailingAnchor6 = [safeAreaLayoutGuide6 trailingAnchor];
+    v51 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v116[2] = v51;
     v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v116 count:3];
-    [v113 addObjectsFromArray:v52];
+    [array addObjectsFromArray:v52];
 
-    v53 = [(UIViewController *)self view];
-    v54 = [v53 backgroundColor];
-    [(UIView *)self->_dictationView setBackgroundColor:v54];
+    view10 = [(UIViewController *)self view];
+    backgroundColor = [view10 backgroundColor];
+    [(UIView *)self->_dictationView setBackgroundColor:backgroundColor];
 
-    v55 = [(UIViewController *)self popoverPresentationController];
-    v56 = [v55 popoverView];
-    if ([v56 arrowDirection] == 2)
+    popoverPresentationController2 = [(UIViewController *)self popoverPresentationController];
+    popoverView = [popoverPresentationController2 popoverView];
+    if ([popoverView arrowDirection] == 2)
     {
 
       v57 = v110;
 LABEL_6:
       [(NSLayoutConstraint *)self->_dictationViewTopConstraint setActive:0];
-      v58 = [(UIView *)self->_dictationView topAnchor];
-      v99 = [(UIView *)v57 bottomAnchor];
-      v103 = v58;
-      v95 = [v58 constraintEqualToAnchor:v99];
+      topAnchor2 = [(UIView *)self->_dictationView topAnchor];
+      bottomAnchor2 = [(UIView *)v57 bottomAnchor];
+      v103 = topAnchor2;
+      v95 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2];
       v115[0] = v95;
-      v59 = [(UIView *)self->_dictationView topAnchor];
-      v92 = [(UIViewController *)self view];
-      v89 = [v92 safeAreaLayoutGuide];
-      v60 = [v89 bottomAnchor];
+      topAnchor3 = [(UIView *)self->_dictationView topAnchor];
+      view11 = [(UIViewController *)self view];
+      safeAreaLayoutGuide7 = [view11 safeAreaLayoutGuide];
+      bottomAnchor3 = [safeAreaLayoutGuide7 bottomAnchor];
       [(UIViewController *)self preferredContentSize];
-      v112 = v59;
-      v88 = v60;
-      v87 = [v59 constraintEqualToAnchor:v60 constant:-v61];
+      v112 = topAnchor3;
+      v88 = bottomAnchor3;
+      v87 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:-v61];
       v115[1] = v87;
-      v62 = [(UIView *)self->_textView bottomAnchor];
-      v63 = [(UIView *)v57 bottomAnchor];
-      v64 = [v62 constraintEqualToAnchor:v63];
-      v115[2] = v64;
-      v65 = [(UIView *)self->_title topAnchor];
-      v66 = [(UIViewController *)self view];
-      v67 = [v66 topAnchor];
-      v68 = [v65 constraintEqualToAnchor:v67 constant:15.0];
+      bottomAnchor4 = [(UIView *)self->_textView bottomAnchor];
+      bottomAnchor5 = [(UIView *)v57 bottomAnchor];
+      v63BottomAnchor = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
+      v115[2] = v63BottomAnchor;
+      topAnchor4 = [(UIView *)self->_title topAnchor];
+      view12 = [(UIViewController *)self view];
+      topAnchor5 = [view12 topAnchor];
+      v68 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:15.0];
       v115[3] = v68;
       v69 = v115;
 LABEL_11:
       v83 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:4];
-      [v113 addObjectsFromArray:v83];
+      [array addObjectsFromArray:v83];
 
-      [MEMORY[0x1E69977A0] activateConstraints:v113];
+      [MEMORY[0x1E69977A0] activateConstraints:array];
       title = self->_title;
-      v7 = v106;
-      v6 = v107;
+      descriptionCopy = v106;
+      tipCopy = v107;
       goto LABEL_12;
     }
 
-    v70 = [(UIViewController *)self popoverPresentationController];
-    v71 = [v70 popoverView];
-    if ([v71 arrowDirection] == 1)
+    popoverPresentationController3 = [(UIViewController *)self popoverPresentationController];
+    popoverView2 = [popoverPresentationController3 popoverView];
+    if ([popoverView2 arrowDirection] == 1)
     {
 
       v57 = v110;
@@ -1197,14 +1197,14 @@ LABEL_11:
 
     else
     {
-      v104 = [(UIViewController *)self popoverPresentationController];
-      v72 = [v104 popoverView];
-      [v72 frame];
+      popoverPresentationController4 = [(UIViewController *)self popoverPresentationController];
+      popoverView3 = [popoverPresentationController4 popoverView];
+      [popoverView3 frame];
       v73 = CGRectGetMinY(v119) + -135.5;
-      v74 = [(UIViewController *)self popoverPresentationController];
-      v75 = [v74 popoverView];
-      v76 = [v75 superview];
-      [v76 safeAreaInsets];
+      popoverPresentationController5 = [(UIViewController *)self popoverPresentationController];
+      popoverView4 = [popoverPresentationController5 popoverView];
+      superview = [popoverView4 superview];
+      [superview safeAreaInsets];
       v78 = v77;
 
       v57 = v110;
@@ -1215,35 +1215,35 @@ LABEL_11:
     }
 
     [(NSLayoutConstraint *)self->_dictationViewBottomConstraint setActive:0];
-    v79 = [(UIView *)self->_dictationView bottomAnchor];
-    v99 = [(UIView *)v57 topAnchor];
-    v103 = v79;
-    v95 = [v79 constraintEqualToAnchor:v99];
+    bottomAnchor6 = [(UIView *)self->_dictationView bottomAnchor];
+    bottomAnchor2 = [(UIView *)v57 topAnchor];
+    v103 = bottomAnchor6;
+    v95 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor2];
     v114[0] = v95;
-    v80 = [(UIView *)self->_dictationView bottomAnchor];
-    v92 = [(UIViewController *)self view];
-    v89 = [v92 safeAreaLayoutGuide];
-    v81 = [v89 topAnchor];
+    bottomAnchor7 = [(UIView *)self->_dictationView bottomAnchor];
+    view11 = [(UIViewController *)self view];
+    safeAreaLayoutGuide7 = [view11 safeAreaLayoutGuide];
+    topAnchor6 = [safeAreaLayoutGuide7 topAnchor];
     [(UIViewController *)self preferredContentSize];
-    v112 = v80;
-    v88 = v81;
-    v87 = [v80 constraintEqualToAnchor:v81 constant:v82];
+    v112 = bottomAnchor7;
+    v88 = topAnchor6;
+    v87 = [bottomAnchor7 constraintEqualToAnchor:topAnchor6 constant:v82];
     v114[1] = v87;
-    v62 = [(UIView *)self->_textView bottomAnchor];
-    v63 = [(UIViewController *)self view];
-    v64 = [v63 bottomAnchor];
-    v65 = [v62 constraintEqualToAnchor:v64];
-    v114[2] = v65;
-    v66 = [(UIView *)self->_title topAnchor];
-    v67 = [(UIView *)v57 bottomAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67 constant:15.0];
+    bottomAnchor4 = [(UIView *)self->_textView bottomAnchor];
+    bottomAnchor5 = [(UIViewController *)self view];
+    v63BottomAnchor = [bottomAnchor5 bottomAnchor];
+    topAnchor4 = [bottomAnchor4 constraintEqualToAnchor:v63BottomAnchor];
+    v114[2] = topAnchor4;
+    view12 = [(UIView *)self->_title topAnchor];
+    topAnchor5 = [(UIView *)v57 bottomAnchor];
+    v68 = [view12 constraintEqualToAnchor:topAnchor5 constant:15.0];
     v114[3] = v68;
     v69 = v114;
     goto LABEL_11;
   }
 
-  v8 = +[UIKeyboardImpl activeInstance];
-  [v8 forwardDictationEvent_handleTip:v6 title:v7];
+  popoverPresentationController = +[UIKeyboardImpl activeInstance];
+  [popoverPresentationController forwardDictationEvent_handleTip:tipCopy title:descriptionCopy];
 
 LABEL_13:
 }
@@ -1252,15 +1252,15 @@ LABEL_13:
 {
   if (+[UIKeyboard usesInputSystemUI])
   {
-    v3 = +[UIKeyboardImpl activeInstance];
-    [v3 forwardDictationEvent_handleTip:0 title:0];
+    popoverPresentationController = +[UIKeyboardImpl activeInstance];
+    [popoverPresentationController forwardDictationEvent_handleTip:0 title:0];
   }
 
   else
   {
-    v3 = [(UIViewController *)self popoverPresentationController];
+    popoverPresentationController = [(UIViewController *)self popoverPresentationController];
     [(UIViewController *)self preferredContentSize];
-    [v3 setPopoverContentSize:?];
+    [popoverPresentationController setPopoverContentSize:?];
   }
 }
 

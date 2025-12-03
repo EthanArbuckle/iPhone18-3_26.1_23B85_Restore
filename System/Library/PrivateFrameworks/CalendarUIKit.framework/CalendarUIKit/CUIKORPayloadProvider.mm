@@ -2,19 +2,19 @@
 + (CUIKORPayloadProvider)sharedProvider;
 + (NSCache)backgroundImageCache;
 - (CUIKORPayloadProvider)init;
-- (id)_lookupQueue_activeRequestForId:(int64_t)a3;
-- (id)_renderBackgroundImageWithState:(id)a3;
-- (id)_renderColorBlockImageWithState:(id)a3 colorBarColor:(id)a4 backgroundColor:(id)a5 stripeColor:(id)a6 stripedImageAlpha:(double)a7;
-- (id)_renderColorBlockImageWithState:(id)a3 forTravelTime:(BOOL)a4;
-- (id)_renderReminderImageWithState:(id)a3;
-- (id)_renderTextImageWithState:(id)a3 options:(unint64_t)a4;
-- (id)_textDrawInfoWithState:(id)a3 options:(unint64_t)a4;
-- (int64_t)requestPayloadForState:(id)a3 requestOptions:(unint64_t)a4 resultHandler:(id)a5;
-- (void)_lookupQueue_enqueueRequest:(id)a3;
-- (void)_lookupQueue_removeRequestId:(int64_t)a3;
-- (void)_renderRequestId:(int64_t)a3;
-- (void)_scheduleRequestId:(int64_t)a3;
-- (void)cancelRequest:(int64_t)a3;
+- (id)_lookupQueue_activeRequestForId:(int64_t)id;
+- (id)_renderBackgroundImageWithState:(id)state;
+- (id)_renderColorBlockImageWithState:(id)state colorBarColor:(id)color backgroundColor:(id)backgroundColor stripeColor:(id)stripeColor stripedImageAlpha:(double)alpha;
+- (id)_renderColorBlockImageWithState:(id)state forTravelTime:(BOOL)time;
+- (id)_renderReminderImageWithState:(id)state;
+- (id)_renderTextImageWithState:(id)state options:(unint64_t)options;
+- (id)_textDrawInfoWithState:(id)state options:(unint64_t)options;
+- (int64_t)requestPayloadForState:(id)state requestOptions:(unint64_t)options resultHandler:(id)handler;
+- (void)_lookupQueue_enqueueRequest:(id)request;
+- (void)_lookupQueue_removeRequestId:(int64_t)id;
+- (void)_renderRequestId:(int64_t)id;
+- (void)_scheduleRequestId:(int64_t)id;
+- (void)cancelRequest:(int64_t)request;
 @end
 
 @implementation CUIKORPayloadProvider
@@ -93,12 +93,12 @@ uint64_t __45__CUIKORPayloadProvider_backgroundImageCache__block_invoke()
   return [v2 setCountLimit:10];
 }
 
-- (int64_t)requestPayloadForState:(id)a3 requestOptions:(unint64_t)a4 resultHandler:(id)a5
+- (int64_t)requestPayloadForState:(id)state requestOptions:(unint64_t)options resultHandler:(id)handler
 {
   add_explicit = atomic_fetch_add_explicit(&requestPayloadForState_requestOptions_resultHandler__nextRequestId, 1uLL, memory_order_relaxed);
-  v9 = a5;
-  v10 = a3;
-  v11 = [[CUIKORContentImageRequest alloc] initWithId:add_explicit options:a4 state:v10 resultHandler:v9];
+  handlerCopy = handler;
+  stateCopy = state;
+  v11 = [[CUIKORContentImageRequest alloc] initWithId:add_explicit options:options state:stateCopy resultHandler:handlerCopy];
 
   [(CUIKORPayloadProvider *)self _lookupQueue_enqueueRequest:v11];
   if (_bitmaskContainsOption())
@@ -114,14 +114,14 @@ uint64_t __45__CUIKORPayloadProvider_backgroundImageCache__block_invoke()
   return add_explicit;
 }
 
-- (void)cancelRequest:(int64_t)a3
+- (void)cancelRequest:(int64_t)request
 {
-  if (a3 < 0)
+  if (request < 0)
   {
     v4 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(CUIKORPayloadProvider *)a3 cancelRequest:v4];
+      [(CUIKORPayloadProvider *)request cancelRequest:v4];
     }
   }
 
@@ -132,17 +132,17 @@ uint64_t __45__CUIKORPayloadProvider_backgroundImageCache__block_invoke()
   }
 }
 
-- (void)_scheduleRequestId:(int64_t)a3
+- (void)_scheduleRequestId:(int64_t)id
 {
   objc_initWeak(&location, self);
-  v5 = [(CUIKORPayloadProvider *)self drawingQueue];
+  drawingQueue = [(CUIKORPayloadProvider *)self drawingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__CUIKORPayloadProvider__scheduleRequestId___block_invoke;
   block[3] = &unk_1E8399B38;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
-  dispatch_async(v5, block);
+  v7[1] = id;
+  dispatch_async(drawingQueue, block);
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -154,36 +154,36 @@ void __44__CUIKORPayloadProvider__scheduleRequestId___block_invoke(uint64_t a1)
   [WeakRetained _renderRequestId:*(a1 + 40)];
 }
 
-- (void)_renderRequestId:(int64_t)a3
+- (void)_renderRequestId:(int64_t)id
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = [(CUIKORPayloadProvider *)self _lookupQueue_activeRequestForId:?];
   if (v5)
   {
-    [(CUIKORPayloadProvider *)self _lookupQueue_removeRequestId:a3];
-    v6 = [v5 state];
-    if (([v6 isValid]& 1) != 0)
+    [(CUIKORPayloadProvider *)self _lookupQueue_removeRequestId:id];
+    state = [v5 state];
+    if (([state isValid]& 1) != 0)
     {
-      v7 = [v5 options];
+      options = [v5 options];
       v8 = +[CUIKLogSubsystem signpost];
       v9 = v8;
-      if (a3 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
+      if (id <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1CAB19000, v9, OS_SIGNPOST_INTERVAL_BEGIN, a3 + 1, "RenderPayload", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1CAB19000, v9, OS_SIGNPOST_INTERVAL_BEGIN, id + 1, "RenderPayload", "", buf, 2u);
       }
 
-      v10 = [v6 traitCollection];
-      [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v10];
+      traitCollection = [state traitCollection];
+      [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:traitCollection];
 
       if (_bitmaskContainsOption())
       {
-        v11 = [objc_opt_class() backgroundImageCache];
-        v12 = [v11 objectForKey:v6];
+        backgroundImageCache = [objc_opt_class() backgroundImageCache];
+        v12 = [backgroundImageCache objectForKey:state];
         if (!v12)
         {
-          v12 = [(CUIKORPayloadProvider *)self _renderBackgroundImageWithState:v6];
-          [v11 setObject:v12 forKey:v6];
+          v12 = [(CUIKORPayloadProvider *)self _renderBackgroundImageWithState:state];
+          [backgroundImageCache setObject:v12 forKey:state];
         }
       }
 
@@ -194,11 +194,11 @@ void __44__CUIKORPayloadProvider__scheduleRequestId___block_invoke(uint64_t a1)
 
       if (_bitmaskContainsOption())
       {
-        [v6 estimatedTextFrame];
+        [state estimatedTextFrame];
         v14 = 0;
         if (v15 > 0.0 && v13 > 0.0)
         {
-          v14 = [(CUIKORPayloadProvider *)self _renderTextImageWithState:v6 options:v7];
+          v14 = [(CUIKORPayloadProvider *)self _renderTextImageWithState:state options:options];
         }
       }
 
@@ -209,9 +209,9 @@ void __44__CUIKORPayloadProvider__scheduleRequestId___block_invoke(uint64_t a1)
 
       if (_bitmaskContainsOption())
       {
-        v16 = [(CUIKORPayloadProvider *)self _renderTravelTimeImageWithState:v6];
-        v17 = [(CUIKORPayloadProvider *)self stringGenerator];
-        v18 = [v17 generateTravelTimeStringWithState:v6];
+        v16 = [(CUIKORPayloadProvider *)self _renderTravelTimeImageWithState:state];
+        stringGenerator = [(CUIKORPayloadProvider *)self stringGenerator];
+        v18 = [stringGenerator generateTravelTimeStringWithState:state];
       }
 
       else
@@ -222,18 +222,18 @@ void __44__CUIKORPayloadProvider__scheduleRequestId___block_invoke(uint64_t a1)
 
       v19 = +[CUIKLogSubsystem signpost];
       v20 = v19;
-      if (a3 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
+      if (id <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_1CAB19000, v20, OS_SIGNPOST_INTERVAL_END, a3 + 1, "RenderPayload", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_1CAB19000, v20, OS_SIGNPOST_INTERVAL_END, id + 1, "RenderPayload", "", buf, 2u);
       }
 
-      v21 = [[CUIKORContentPayload alloc] initWithRequestId:a3 requestOptions:v7 backgroundImage:v12 textImage:v14 textDrawInfo:0 travelTimeImage:v16 travelTimeString:v18];
-      if ((v7 & 0x10) != 0)
+      v21 = [[CUIKORContentPayload alloc] initWithRequestId:id requestOptions:options backgroundImage:v12 textImage:v14 textDrawInfo:0 travelTimeImage:v16 travelTimeString:v18];
+      if ((options & 0x10) != 0)
       {
         dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-        v22 = [v5 resultHandler];
-        (v22)[2](v22, v21);
+        resultHandler = [v5 resultHandler];
+        (resultHandler)[2](resultHandler, v21);
       }
 
       else
@@ -246,7 +246,7 @@ void __44__CUIKORPayloadProvider__scheduleRequestId___block_invoke(uint64_t a1)
         v25 = v21;
         dispatch_async(MEMORY[0x1E69E96A0], block);
 
-        v22 = v24;
+        resultHandler = v24;
       }
     }
 
@@ -255,19 +255,19 @@ void __44__CUIKORPayloadProvider__scheduleRequestId___block_invoke(uint64_t a1)
       v12 = +[CUIKLogSubsystem defaultCategory];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(CUIKORPayloadProvider *)v6 _renderRequestId:a3, v12];
+        [(CUIKORPayloadProvider *)state _renderRequestId:id, v12];
       }
     }
   }
 
   else
   {
-    v6 = +[CUIKLogSubsystem defaultCategory];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    state = +[CUIKLogSubsystem defaultCategory];
+    if (os_log_type_enabled(state, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v27 = a3;
-      _os_log_impl(&dword_1CAB19000, v6, OS_LOG_TYPE_INFO, "Aborting occurrence render. Could not find request with id <%ld>", buf, 0xCu);
+      idCopy = id;
+      _os_log_impl(&dword_1CAB19000, state, OS_LOG_TYPE_INFO, "Aborting occurrence render. Could not find request with id <%ld>", buf, 0xCu);
     }
   }
 }
@@ -278,61 +278,61 @@ void __42__CUIKORPayloadProvider__renderRequestId___block_invoke(uint64_t a1)
   v2[2](v2, *(a1 + 40));
 }
 
-- (id)_renderBackgroundImageWithState:(id)a3
+- (id)_renderBackgroundImageWithState:(id)state
 {
-  v4 = a3;
-  if ([v4 isReminder])
+  stateCopy = state;
+  if ([stateCopy isReminder])
   {
-    [(CUIKORPayloadProvider *)self _renderReminderImageWithState:v4];
+    [(CUIKORPayloadProvider *)self _renderReminderImageWithState:stateCopy];
   }
 
   else
   {
-    [(CUIKORPayloadProvider *)self _renderColorBlockImageWithState:v4 forTravelTime:0];
+    [(CUIKORPayloadProvider *)self _renderColorBlockImageWithState:stateCopy forTravelTime:0];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)_renderReminderImageWithState:(id)a3
+- (id)_renderReminderImageWithState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 isSelected];
-  v5 = [v3 reminderStackDepth];
-  v6 = [v3 userInterfaceStyle];
-  v7 = [v3 isMiniPreviewInEventDetail];
-  v8 = [v3 isCompleted];
+  stateCopy = state;
+  isSelected = [stateCopy isSelected];
+  reminderStackDepth = [stateCopy reminderStackDepth];
+  userInterfaceStyle = [stateCopy userInterfaceStyle];
+  isMiniPreviewInEventDetail = [stateCopy isMiniPreviewInEventDetail];
+  isCompleted = [stateCopy isCompleted];
 
-  return [CUIKOccurrenceRenderer renderReminderBackgroundSelected:v4 stackDepth:v5 userInterfaceStyle:v6 miniPreview:v7 completed:v8];
+  return [CUIKOccurrenceRenderer renderReminderBackgroundSelected:isSelected stackDepth:reminderStackDepth userInterfaceStyle:userInterfaceStyle miniPreview:isMiniPreviewInEventDetail completed:isCompleted];
 }
 
-- (id)_renderColorBlockImageWithState:(id)a3 forTravelTime:(BOOL)a4
+- (id)_renderColorBlockImageWithState:(id)state forTravelTime:(BOOL)time
 {
-  v6 = a3;
-  v7 = [v6 isSelected];
-  v8 = [v6 userInterfaceStyle];
-  v9 = [v6 baseColor];
-  v10 = [v6 isCancelled];
-  v11 = [v6 isDeclined];
-  v12 = [v6 isTentative];
-  v13 = [v6 needsReply];
-  if (a4)
+  stateCopy = state;
+  isSelected = [stateCopy isSelected];
+  userInterfaceStyle = [stateCopy userInterfaceStyle];
+  baseColor = [stateCopy baseColor];
+  isCancelled = [stateCopy isCancelled];
+  isDeclined = [stateCopy isDeclined];
+  isTentative = [stateCopy isTentative];
+  needsReply = [stateCopy needsReply];
+  if (time)
   {
-    v14 = 0;
+    colorBarColor = 0;
   }
 
   else
   {
-    v14 = [v6 colorBarColor];
+    colorBarColor = [stateCopy colorBarColor];
   }
 
-  if (v10 & 1 | ((v13 & 1) == 0))
+  if (isCancelled & 1 | ((needsReply & 1) == 0))
   {
-    if ((v10 | v11))
+    if ((isCancelled | isDeclined))
     {
       v15 = 1.0;
-      if (v7)
+      if (isSelected)
       {
         CUIKSelectedDeclinedBackgroundColor();
       }
@@ -346,16 +346,16 @@ void __42__CUIKORPayloadProvider__renderRequestId___block_invoke(uint64_t a1)
       goto LABEL_25;
     }
 
-    if (!v12)
+    if (!isTentative)
     {
-      if (v7)
+      if (isSelected)
       {
-        [v9 colorWithAlphaComponent:0.9];
+        [baseColor colorWithAlphaComponent:0.9];
       }
 
       else
       {
-        CUIKBackgroundColorForCalendarColorWithOpaqueForStyle(v9, 0, v8, 0);
+        CUIKBackgroundColorForCalendarColorWithOpaqueForStyle(baseColor, 0, userInterfaceStyle, 0);
       }
       v16 = ;
       v18 = 0;
@@ -363,18 +363,18 @@ void __42__CUIKORPayloadProvider__renderRequestId___block_invoke(uint64_t a1)
       goto LABEL_25;
     }
 
-    if (v7)
+    if (isSelected)
     {
-      v16 = [v9 colorWithAlphaComponent:1.0];
+      v16 = [baseColor colorWithAlphaComponent:1.0];
       v17 = CUIKSelectedTentativeStripeColor();
       goto LABEL_10;
     }
 
-    v16 = CUIKBackgroundColorForCalendarColorWithOpaqueForStyle(v9, 1, v8, 0);
-    v18 = CUIKLightStripeColorForColor(v9);
-    if (v8 == 2)
+    v16 = CUIKBackgroundColorForCalendarColorWithOpaqueForStyle(baseColor, 1, userInterfaceStyle, 0);
+    v18 = CUIKLightStripeColorForColor(baseColor);
+    if (userInterfaceStyle == 2)
     {
-      v20 = CUIKColorDarkenedToPercentageWithFinalAlpha(v9, 0.25);
+      v20 = CUIKColorDarkenedToPercentageWithFinalAlpha(baseColor, 0.25);
 
       v18 = v20;
     }
@@ -384,7 +384,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v7)
+  if (!isSelected)
   {
     v16 = CUIKNeedsReplyBackgroundColor();
     v18 = CUIKNeedsReplyStripeColor();
@@ -399,71 +399,71 @@ LABEL_10:
 LABEL_16:
   v15 = *v19;
 LABEL_25:
-  v21 = [(CUIKORPayloadProvider *)self _renderColorBlockImageWithState:v6 colorBarColor:v14 backgroundColor:v16 stripeColor:v18 stripedImageAlpha:v15];
+  v21 = [(CUIKORPayloadProvider *)self _renderColorBlockImageWithState:stateCopy colorBarColor:colorBarColor backgroundColor:v16 stripeColor:v18 stripedImageAlpha:v15];
 
   return v21;
 }
 
-- (id)_renderColorBlockImageWithState:(id)a3 colorBarColor:(id)a4 backgroundColor:(id)a5 stripeColor:(id)a6 stripedImageAlpha:(double)a7
+- (id)_renderColorBlockImageWithState:(id)state colorBarColor:(id)color backgroundColor:(id)backgroundColor stripeColor:(id)stripeColor stripedImageAlpha:(double)alpha
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  [CUIKORImageUtils backgroundImageFrameForState:a3];
+  stripeColorCopy = stripeColor;
+  backgroundColorCopy = backgroundColor;
+  colorCopy = color;
+  [CUIKORImageUtils backgroundImageFrameForState:state];
   v15 = v14;
   v17 = v16;
-  v18 = [v13 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  v19 = [v12 CGColor];
-  v20 = [v11 CGColor];
+  cGColor2 = [backgroundColorCopy CGColor];
+  cGColor3 = [stripeColorCopy CGColor];
 
-  return [CUIKOccurrenceRenderer renderColorBlockImageWithSize:v18 colorBarColor:v19 backgroundColor:v20 stripeColor:v15 stripedImageAlpha:v17, a7];
+  return [CUIKOccurrenceRenderer renderColorBlockImageWithSize:cGColor colorBarColor:cGColor2 backgroundColor:cGColor3 stripeColor:v15 stripedImageAlpha:v17, alpha];
 }
 
-- (id)_renderTextImageWithState:(id)a3 options:(unint64_t)a4
+- (id)_renderTextImageWithState:(id)state options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [(CUIKORPayloadProvider *)self stringGenerator];
-  v8 = [v7 generateContentStringsWithState:v6 options:a4];
-  [v6 textSpace];
+  stateCopy = state;
+  stringGenerator = [(CUIKORPayloadProvider *)self stringGenerator];
+  v8 = [stringGenerator generateContentStringsWithState:stateCopy options:options];
+  [stateCopy textSpace];
   v10 = v9;
   v12 = v11;
-  v13 = [v6 primaryTextFont];
-  [v6 languageAwareInsets];
+  primaryTextFont = [stateCopy primaryTextFont];
+  [stateCopy languageAwareInsets];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [v6 leadingIcon];
-  v23 = [v6 trailingIcons];
-  v24 = [v6 isReminder];
+  leadingIcon = [stateCopy leadingIcon];
+  trailingIcons = [stateCopy trailingIcons];
+  isReminder = [stateCopy isReminder];
 
-  v25 = [CUIKOccurrenceRenderer renderStrings:v8 withSize:v13 font:v22 edgeInsets:v23 leadingIcon:v24 trailingIcons:v10 shouldAutoHideLeadingIcon:v12, v15, v17, v19, v21];
+  v25 = [CUIKOccurrenceRenderer renderStrings:v8 withSize:primaryTextFont font:leadingIcon edgeInsets:trailingIcons leadingIcon:isReminder trailingIcons:v10 shouldAutoHideLeadingIcon:v12, v15, v17, v19, v21];
 
   return v25;
 }
 
-- (id)_textDrawInfoWithState:(id)a3 options:(unint64_t)a4
+- (id)_textDrawInfoWithState:(id)state options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [(CUIKORPayloadProvider *)self stringGenerator];
-  v8 = [v7 generateContentStringsWithState:v6 options:a4];
+  stateCopy = state;
+  stringGenerator = [(CUIKORPayloadProvider *)self stringGenerator];
+  v8 = [stringGenerator generateContentStringsWithState:stateCopy options:options];
   v29 = 0.0;
   v30 = 0.0;
-  [v6 textSpace];
+  [stateCopy textSpace];
   v10 = v9;
   v12 = v11;
-  v13 = [v6 primaryTextFont];
-  [v6 languageAwareInsets];
+  primaryTextFont = [stateCopy primaryTextFont];
+  [stateCopy languageAwareInsets];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [v6 leadingIcon];
-  v23 = [v6 trailingIcons];
-  v24 = [v6 isReminder];
+  leadingIcon = [stateCopy leadingIcon];
+  trailingIcons = [stateCopy trailingIcons];
+  isReminder = [stateCopy isReminder];
 
-  v25 = [CUIKOccurrenceRenderer renderingBlockForStrings:v8 withSize:v13 font:v22 edgeInsets:v23 leadingIcon:&v29 trailingIcons:v24 outImageSize:v10 shouldAutoHideLeadingIcon:v12, v15, v17, v19, v21];
+  v25 = [CUIKOccurrenceRenderer renderingBlockForStrings:v8 withSize:primaryTextFont font:leadingIcon edgeInsets:trailingIcons leadingIcon:&v29 trailingIcons:isReminder outImageSize:v10 shouldAutoHideLeadingIcon:v12, v15, v17, v19, v21];
 
   v26 = [CUIKORTextDrawInfo alloc];
   v27 = [(CUIKORTextDrawInfo *)v26 initWithContentSize:v25 renderingBlock:v29, v30];
@@ -471,18 +471,18 @@ LABEL_25:
   return v27;
 }
 
-- (void)_lookupQueue_enqueueRequest:(id)a3
+- (void)_lookupQueue_enqueueRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CUIKORPayloadProvider *)self lookupQueue];
+  requestCopy = request;
+  lookupQueue = [(CUIKORPayloadProvider *)self lookupQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__CUIKORPayloadProvider__lookupQueue_enqueueRequest___block_invoke;
   v7[3] = &unk_1E8399B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = requestCopy;
+  v6 = requestCopy;
+  dispatch_sync(lookupQueue, v7);
 }
 
 void __53__CUIKORPayloadProvider__lookupQueue_enqueueRequest___block_invoke(uint64_t a1)
@@ -493,7 +493,7 @@ void __53__CUIKORPayloadProvider__lookupQueue_enqueueRequest___block_invoke(uint
   [v4 setObject:v2 forKeyedSubscript:v3];
 }
 
-- (id)_lookupQueue_activeRequestForId:(int64_t)a3
+- (id)_lookupQueue_activeRequestForId:(int64_t)id
 {
   v9 = 0;
   v10 = &v9;
@@ -501,15 +501,15 @@ void __53__CUIKORPayloadProvider__lookupQueue_enqueueRequest___block_invoke(uint
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v5 = [(CUIKORPayloadProvider *)self lookupQueue];
+  lookupQueue = [(CUIKORPayloadProvider *)self lookupQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__CUIKORPayloadProvider__lookupQueue_activeRequestForId___block_invoke;
   block[3] = &unk_1E8399B88;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = id;
+  dispatch_sync(lookupQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -527,16 +527,16 @@ void __57__CUIKORPayloadProvider__lookupQueue_activeRequestForId___block_invoke(
   *(v4 + 40) = v3;
 }
 
-- (void)_lookupQueue_removeRequestId:(int64_t)a3
+- (void)_lookupQueue_removeRequestId:(int64_t)id
 {
-  v5 = [(CUIKORPayloadProvider *)self lookupQueue];
+  lookupQueue = [(CUIKORPayloadProvider *)self lookupQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__CUIKORPayloadProvider__lookupQueue_removeRequestId___block_invoke;
   v6[3] = &unk_1E8399BB0;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = id;
+  dispatch_sync(lookupQueue, v6);
 }
 
 void __54__CUIKORPayloadProvider__lookupQueue_removeRequestId___block_invoke(uint64_t a1)

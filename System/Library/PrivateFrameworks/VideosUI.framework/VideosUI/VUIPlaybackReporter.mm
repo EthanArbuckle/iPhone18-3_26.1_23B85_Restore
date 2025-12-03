@@ -1,18 +1,18 @@
 @interface VUIPlaybackReporter
-- (BOOL)_isTransitionValidForPlayer:(id)a3 fromState:(id)a4 toState:(id)a5;
+- (BOOL)_isTransitionValidForPlayer:(id)player fromState:(id)state toState:(id)toState;
 - (VUIPlaybackReporter)init;
-- (id)_createSessionForPlayer:(id)a3;
-- (id)_sessionForPlayer:(id)a3;
-- (void)_beginSession:(id)a3;
-- (void)_endSession:(id)a3;
-- (void)_endSessions:(id)a3;
-- (void)_handlePlaybackChangeForPlayer:(id)a3 fromState:(id)a4 toState:(id)a5 reason:(id)a6;
-- (void)_logWithFormat:(id)a3;
-- (void)_playerCurrentMediaItemWillChange:(id)a3;
-- (void)_playerStateWillChange:(id)a3;
+- (id)_createSessionForPlayer:(id)player;
+- (id)_sessionForPlayer:(id)player;
+- (void)_beginSession:(id)session;
+- (void)_endSession:(id)session;
+- (void)_endSessions:(id)sessions;
+- (void)_handlePlaybackChangeForPlayer:(id)player fromState:(id)state toState:(id)toState reason:(id)reason;
+- (void)_logWithFormat:(id)format;
+- (void)_playerCurrentMediaItemWillChange:(id)change;
+- (void)_playerStateWillChange:(id)change;
 - (void)_registerObservers;
 - (void)_removeObservers;
-- (void)_reportForSession:(id)a3 state:(id)a4 reason:(id)a5;
+- (void)_reportForSession:(id)session state:(id)state reason:(id)reason;
 - (void)dealloc;
 @end
 
@@ -42,9 +42,9 @@
 
 - (void)_registerObservers
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__playerStateWillChange_ name:*MEMORY[0x1E69D60A8] object:0];
-  [v3 addObserver:self selector:sel__playerCurrentMediaItemWillChange_ name:*MEMORY[0x1E69D5F18] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__playerStateWillChange_ name:*MEMORY[0x1E69D60A8] object:0];
+  [defaultCenter addObserver:self selector:sel__playerCurrentMediaItemWillChange_ name:*MEMORY[0x1E69D5F18] object:0];
 }
 
 - (void)dealloc
@@ -55,39 +55,39 @@
   [(VUIPlaybackReporter *)&v3 dealloc];
 }
 
-- (void)_logWithFormat:(id)a3
+- (void)_logWithFormat:(id)format
 {
   v11 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v12];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v12];
 
-  v7 = [(VUIPlaybackReporter *)self logObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  logObject = [(VUIPlaybackReporter *)self logObject];
+  if (os_log_type_enabled(logObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", objc_opt_class(), v6];
     *buf = 138412290;
     v10 = v8;
-    _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
+    _os_log_impl(&dword_1E323F000, logObject, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 }
 
 - (void)_removeObservers
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (id)_sessionForPlayer:(id)a3
+- (id)_sessionForPlayer:(id)player
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  playerCopy = player;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(VUIPlaybackReporter *)self sessions];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sessions = [(VUIPlaybackReporter *)self sessions];
+  v6 = [sessions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -97,20 +97,20 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sessions);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 player];
+        player = [v9 player];
 
-        if (v10 == v4)
+        if (player == playerCopy)
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [sessions countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -125,84 +125,84 @@ LABEL_11:
   return v6;
 }
 
-- (void)_endSessions:(id)a3
+- (void)_endSessions:(id)sessions
 {
-  v5 = a3;
-  if ([v5 count])
+  sessionsCopy = sessions;
+  if ([sessionsCopy count])
   {
-    v4 = [(VUIPlaybackReporter *)self sessions];
-    [v4 removeObjectsInArray:v5];
+    sessions = [(VUIPlaybackReporter *)self sessions];
+    [sessions removeObjectsInArray:sessionsCopy];
   }
 }
 
-- (void)_endSession:(id)a3
+- (void)_endSession:(id)session
 {
-  v4 = a3;
-  [(VUIPlaybackReporter *)self _logWithFormat:@"Will end reporting for %@", v4];
-  v5 = [(VUIPlaybackReporter *)self sessions];
-  [v5 removeObject:v4];
+  sessionCopy = session;
+  [(VUIPlaybackReporter *)self _logWithFormat:@"Will end reporting for %@", sessionCopy];
+  sessions = [(VUIPlaybackReporter *)self sessions];
+  [sessions removeObject:sessionCopy];
 }
 
-- (void)_beginSession:(id)a3
+- (void)_beginSession:(id)session
 {
-  v4 = a3;
-  [(VUIPlaybackReporter *)self _logWithFormat:@"Will begin reporting for %@", v4];
-  v5 = [(VUIPlaybackReporter *)self sessions];
-  [v5 addObject:v4];
+  sessionCopy = session;
+  [(VUIPlaybackReporter *)self _logWithFormat:@"Will begin reporting for %@", sessionCopy];
+  sessions = [(VUIPlaybackReporter *)self sessions];
+  [sessions addObject:sessionCopy];
 }
 
-- (void)_playerStateWillChange:(id)a3
+- (void)_playerStateWillChange:(id)change
 {
-  v4 = a3;
-  v9 = [v4 object];
-  v5 = [v4 userInfo];
+  changeCopy = change;
+  object = [changeCopy object];
+  userInfo = [changeCopy userInfo];
 
-  [(VUIPlaybackReporter *)self _logWithFormat:@"_playerStateWillChange %@", v5];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69D6098]];
-  v7 = [v9 state];
-  v8 = [v5 objectForKey:*MEMORY[0x1E69D6088]];
-  [(VUIPlaybackReporter *)self _handlePlaybackChangeForPlayer:v9 fromState:v7 toState:v6 reason:v8];
+  [(VUIPlaybackReporter *)self _logWithFormat:@"_playerStateWillChange %@", userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69D6098]];
+  state = [object state];
+  v8 = [userInfo objectForKey:*MEMORY[0x1E69D6088]];
+  [(VUIPlaybackReporter *)self _handlePlaybackChangeForPlayer:object fromState:state toState:v6 reason:v8];
 }
 
-- (void)_playerCurrentMediaItemWillChange:(id)a3
+- (void)_playerCurrentMediaItemWillChange:(id)change
 {
-  v4 = a3;
-  v10 = [v4 object];
+  changeCopy = change;
+  object = [changeCopy object];
   v5 = [(VUIPlaybackReporter *)self _sessionForPlayer:?];
-  v6 = [v4 userInfo];
+  userInfo = [changeCopy userInfo];
 
-  [(VUIPlaybackReporter *)self _logWithFormat:@"_playerCurrentMediaItemWillChange %@", v6];
-  v7 = [v6 objectForKey:*MEMORY[0x1E69D5F08]];
+  [(VUIPlaybackReporter *)self _logWithFormat:@"_playerCurrentMediaItemWillChange %@", userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E69D5F08]];
   if (v5)
   {
-    [(VUIPlaybackReporter *)self _logWithFormat:@"Stopping %@", v10];
-    v8 = [v10 state];
-    v9 = [MEMORY[0x1E69D5A40] stopped];
-    [(VUIPlaybackReporter *)self _handlePlaybackChangeForPlayer:v10 fromState:v8 toState:v9 reason:v7];
+    [(VUIPlaybackReporter *)self _logWithFormat:@"Stopping %@", object];
+    state = [object state];
+    stopped = [MEMORY[0x1E69D5A40] stopped];
+    [(VUIPlaybackReporter *)self _handlePlaybackChangeForPlayer:object fromState:state toState:stopped reason:v7];
 
     [(VUIPlaybackReporter *)self _endSession:v5];
   }
 }
 
-- (void)_handlePlaybackChangeForPlayer:(id)a3 fromState:(id)a4 toState:(id)a5 reason:(id)a6
+- (void)_handlePlaybackChangeForPlayer:(id)player fromState:(id)state toState:(id)toState reason:(id)reason
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v35 = a6;
-  v13 = [(VUIPlaybackReporter *)self _sessionForPlayer:v10];
-  v14 = [(VUIPlaybackReporter *)self _isTransitionValidForPlayer:v10 fromState:v11 toState:v12];
-  v15 = [MEMORY[0x1E69D5A40] playing];
+  playerCopy = player;
+  stateCopy = state;
+  toStateCopy = toState;
+  reasonCopy = reason;
+  v13 = [(VUIPlaybackReporter *)self _sessionForPlayer:playerCopy];
+  v14 = [(VUIPlaybackReporter *)self _isTransitionValidForPlayer:playerCopy fromState:stateCopy toState:toStateCopy];
+  playing = [MEMORY[0x1E69D5A40] playing];
 
-  if (v15 == v12)
+  if (playing == toStateCopy)
   {
     if ([(VUIPlaybackReporter *)self enforceSinglePlaybackSession])
     {
       v31 = v14;
       v32 = v13;
-      v33 = v12;
-      v34 = v11;
+      v33 = toStateCopy;
+      v34 = stateCopy;
       v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v37 = 0u;
       v38 = 0u;
@@ -225,20 +225,20 @@ LABEL_11:
             }
 
             v22 = *(*(&v37 + 1) + 8 * i);
-            v23 = [v22 player];
-            v24 = v23;
-            if (v23 != v10)
+            player = [v22 player];
+            v24 = player;
+            if (player != playerCopy)
             {
-              [(VUIPlaybackReporter *)self _logWithFormat:v20, v23];
+              [(VUIPlaybackReporter *)self _logWithFormat:v20, player];
               if ([v22 reportingEnabled])
               {
                 [MEMORY[0x1E69D5A40] stopped];
-                v25 = v10;
+                v25 = playerCopy;
                 v27 = v26 = v20;
-                [(VUIPlaybackReporter *)self _reportForSession:v22 state:v27 reason:v35];
+                [(VUIPlaybackReporter *)self _reportForSession:v22 state:v27 reason:reasonCopy];
 
                 v20 = v26;
-                v10 = v25;
+                playerCopy = v25;
               }
 
               [v16 addObject:v22];
@@ -252,15 +252,15 @@ LABEL_11:
       }
 
       [(VUIPlaybackReporter *)self _endSessions:v16];
-      v12 = v33;
-      v11 = v34;
+      toStateCopy = v33;
+      stateCopy = v34;
       v13 = v32;
       v14 = v31;
     }
 
     if (!v13)
     {
-      v13 = [(VUIPlaybackReporter *)self _createSessionForPlayer:v10];
+      v13 = [(VUIPlaybackReporter *)self _createSessionForPlayer:playerCopy];
       if (v13)
       {
         [(VUIPlaybackReporter *)self _beginSession:v13];
@@ -269,7 +269,7 @@ LABEL_11:
 
       else
       {
-        [(VUIPlaybackReporter *)self _logWithFormat:@"Invalid player. Not creating session %@", v10];
+        [(VUIPlaybackReporter *)self _logWithFormat:@"Invalid player. Not creating session %@", playerCopy];
       }
     }
   }
@@ -280,53 +280,53 @@ LABEL_11:
     v29 = @"Valid";
   }
 
-  [(VUIPlaybackReporter *)self _logWithFormat:@"Transition: %@ --> %@ (%@), %@, reason:%@", v11, v12, v29, v10, v35];
+  [(VUIPlaybackReporter *)self _logWithFormat:@"Transition: %@ --> %@ (%@), %@, reason:%@", stateCopy, toStateCopy, v29, playerCopy, reasonCopy];
   if (v14)
   {
     if (v13)
     {
       if ([v13 reportingEnabled])
       {
-        [(VUIPlaybackReporter *)self _reportForSession:v13 state:v12 reason:v35];
+        [(VUIPlaybackReporter *)self _reportForSession:v13 state:toStateCopy reason:reasonCopy];
       }
     }
 
     else
     {
-      [(VUIPlaybackReporter *)self _logWithFormat:@"Ignoring event for un-matched session %@", v10];
+      [(VUIPlaybackReporter *)self _logWithFormat:@"Ignoring event for un-matched session %@", playerCopy];
     }
   }
 
-  v30 = [MEMORY[0x1E69D5A40] stopped];
+  stopped = [MEMORY[0x1E69D5A40] stopped];
 
-  if (v30 == v12 && v13)
+  if (stopped == toStateCopy && v13)
   {
     [(VUIPlaybackReporter *)self _endSession:v13];
   }
 }
 
-- (BOOL)_isTransitionValidForPlayer:(id)a3 fromState:(id)a4 toState:(id)a5
+- (BOOL)_isTransitionValidForPlayer:(id)player fromState:(id)state toState:(id)toState
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = MEMORY[0x1E69D5A40];
-  v8 = a5;
-  v9 = [v7 playing];
+  toStateCopy = toState;
+  playing = [v7 playing];
 
-  if (v9 == v8)
+  if (playing == toStateCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69D5A40] playing];
-    v11 = v10 == v6;
+    playing2 = [MEMORY[0x1E69D5A40] playing];
+    v11 = playing2 == stateCopy;
   }
 
   return v11;
 }
 
-- (void)_reportForSession:(id)a3 state:(id)a4 reason:(id)a5
+- (void)_reportForSession:(id)session state:(id)state reason:(id)reason
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -337,7 +337,7 @@ LABEL_11:
   [v9 raise];
 }
 
-- (id)_createSessionForPlayer:(id)a3
+- (id)_createSessionForPlayer:(id)player
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];

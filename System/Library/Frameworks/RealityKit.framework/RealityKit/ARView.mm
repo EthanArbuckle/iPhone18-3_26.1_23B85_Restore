@@ -1,52 +1,52 @@
 @interface ARView
 + (Class)layerClass;
 - (ARSession)session;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)handleTapForEntityAccessibilityWrapper:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)handleTapForEntityAccessibilityWrapper:(id)wrapper;
 - (CALayer)renderLayer;
 - (NSArray)entityAccessibilityWrappers;
 - (double)contentScaleFactor;
-- (float)distanceInMetersFromEntityAccessibilityWrapper:(id)a3;
+- (float)distanceInMetersFromEntityAccessibilityWrapper:(id)wrapper;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)handleRotation:(id)a3;
-- (void)handleScale:(id)a3;
-- (void)handleSingleTapWithRecognizer:(id)a3;
-- (void)handleTranslation:(id)a3;
+- (void)handleRotation:(id)rotation;
+- (void)handleScale:(id)scale;
+- (void)handleSingleTapWithRecognizer:(id)recognizer;
+- (void)handleTranslation:(id)translation;
 - (void)layoutSubviews;
-- (void)restartEngineWithNotification:(id)a3;
-- (void)setContentScaleFactor:(double)a3;
-- (void)setSession:(id)a3;
-- (void)willResignActiveWithNotification:(id)a3;
-- (void)windowDidRotateWithNotification:(id)a3;
-- (void)windowWillAnimateRotationWithNotification:(id)a3;
-- (void)windowWillRotateWithNotification:(id)a3;
+- (void)restartEngineWithNotification:(id)notification;
+- (void)setContentScaleFactor:(double)factor;
+- (void)setSession:(id)session;
+- (void)willResignActiveWithNotification:(id)notification;
+- (void)windowDidRotateWithNotification:(id)notification;
+- (void)windowWillAnimateRotationWithNotification:(id)notification;
+- (void)windowWillRotateWithNotification:(id)notification;
 @end
 
 @implementation ARView
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   ARView.didMoveToWindow()();
 }
 
-- (void)windowWillRotateWithNotification:(id)a3
+- (void)windowWillRotateWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  ARView.windowWillRotate(notification:)(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  ARView.windowWillRotate(notification:)(notificationCopy);
 }
 
-- (void)windowWillAnimateRotationWithNotification:(id)a3
+- (void)windowWillAnimateRotationWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   specialized ARView.windowWillAnimateRotation(notification:)();
 }
 
-- (void)windowDidRotateWithNotification:(id)a3
+- (void)windowDidRotateWithNotification:(id)notification
 {
   v4 = OBJC_IVAR____TtC10RealityKit6ARView___disableCounterRotation;
   swift_beginAccess();
@@ -59,7 +59,7 @@
 
 - (NSArray)entityAccessibilityWrappers
 {
-  v2 = self;
+  selfCopy = self;
   ARView.entityAccessibilityWrappers.getter();
 
   type metadata accessor for __EntityAccessibilityWrapper();
@@ -68,22 +68,22 @@
   return v3.super.isa;
 }
 
-- (float)distanceInMetersFromEntityAccessibilityWrapper:(id)a3
+- (float)distanceInMetersFromEntityAccessibilityWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = self;
+  wrapperCopy = wrapper;
+  selfCopy = self;
   ARView.distanceInMetersFromEntityAccessibilityWrapper(_:)();
   v7 = v6;
 
   return v7;
 }
 
-- (BOOL)handleTapForEntityAccessibilityWrapper:(id)a3
+- (BOOL)handleTapForEntityAccessibilityWrapper:(id)wrapper
 {
   if (swift_weakLoadStrong())
   {
-    v5 = a3;
-    v6 = self;
+    wrapperCopy = wrapper;
+    selfCopy = self;
 
     ARView.handleTapForEntity(_:shouldNotifyDelegateAlways:)(v7, 0);
     v9 = v8;
@@ -106,9 +106,9 @@
 
 - (CALayer)renderLayer
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC10RealityKit6ARView_renderView) layer];
+  layer = [*(&self->super.super.super.isa + OBJC_IVAR____TtC10RealityKit6ARView_renderView) layer];
 
-  return v2;
+  return layer;
 }
 
 - (double)contentScaleFactor
@@ -119,12 +119,12 @@
   return result;
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
   v10.receiver = self;
   v10.super_class = type metadata accessor for ARView();
   v4 = v10.receiver;
-  [(ARView *)&v10 setContentScaleFactor:a3];
+  [(ARView *)&v10 setContentScaleFactor:factor];
   if (*(v4 + OBJC_IVAR____TtC10RealityKit6ARView_initialized) == 1)
   {
     [v4 bounds];
@@ -135,23 +135,23 @@
   }
 }
 
-- (void)willResignActiveWithNotification:(id)a3
+- (void)willResignActiveWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   specialized ARView.willResignActive(notification:)();
 }
 
-- (void)restartEngineWithNotification:(id)a3
+- (void)restartEngineWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   specialized ARView.restartEngine(notification:)();
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   ARView.didMoveToSuperview()();
 }
 
@@ -180,59 +180,59 @@
   return self;
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v4 = a3;
-  v5 = self;
-  ARView.session.setter(v4);
+  sessionCopy = session;
+  selfCopy = self;
+  ARView.session.setter(sessionCopy);
 }
 
-- (void)handleTranslation:(id)a3
+- (void)handleTranslation:(id)translation
 {
-  v4 = a3;
-  v5 = self;
-  specialized ARView.handleTranslation(_:)(v4);
+  translationCopy = translation;
+  selfCopy = self;
+  specialized ARView.handleTranslation(_:)(translationCopy);
 }
 
-- (void)handleRotation:(id)a3
+- (void)handleRotation:(id)rotation
 {
-  v4 = a3;
-  v5 = self;
-  specialized ARView.handleRotation(_:)(v4);
+  rotationCopy = rotation;
+  selfCopy = self;
+  specialized ARView.handleRotation(_:)(rotationCopy);
 }
 
-- (void)handleScale:(id)a3
+- (void)handleScale:(id)scale
 {
-  v4 = a3;
-  v5 = self;
-  specialized ARView.handleScale(_:)(v4);
+  scaleCopy = scale;
+  selfCopy = self;
+  specialized ARView.handleScale(_:)(scaleCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = specialized ARView.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:)(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = specialized ARView.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:)(recognizerCopy, gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = ARView.gestureRecognizer(_:shouldReceive:)(v6, v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = ARView.gestureRecognizer(_:shouldReceive:)(recognizerCopy, touchCopy);
 
   return v9;
 }
 
-- (void)handleSingleTapWithRecognizer:(id)a3
+- (void)handleSingleTapWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v7 = self;
-  [v4 locationInView_];
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  [recognizerCopy locationInView_];
   ARView.handleTapAtPoint(point:)(__PAIR128__(v6, v5));
 }
 

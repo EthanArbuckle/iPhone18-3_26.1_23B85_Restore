@@ -1,46 +1,46 @@
 @interface FAAccountNotificationPlugin
-- (void)_enableScreentimeForAccount:(id)a3;
-- (void)_notifyAccountChange:(id)a3 changeType:(int)a4;
+- (void)_enableScreentimeForAccount:(id)account;
+- (void)_notifyAccountChange:(id)change changeType:(int)type;
 - (void)_setRestrictionsOnProtoAccountAdded;
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation FAAccountNotificationPlugin
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  v15 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (a4 == 3)
+  accountCopy = account;
+  storeCopy = store;
+  oldAccountCopy = oldAccount;
+  if (type == 3)
   {
-    v12 = self;
-    v13 = v11;
+    selfCopy2 = self;
+    v13 = oldAccountCopy;
     v14 = 3;
   }
 
   else
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
 
-    v12 = self;
-    v13 = v15;
+    selfCopy2 = self;
+    v13 = accountCopy;
     v14 = 1;
   }
 
-  [(FAAccountNotificationPlugin *)v12 _notifyAccountChange:v13 changeType:v14];
+  [(FAAccountNotificationPlugin *)selfCopy2 _notifyAccountChange:v13 changeType:v14];
 LABEL_6:
 }
 
-- (void)_notifyAccountChange:(id)a3 changeType:(int)a4
+- (void)_notifyAccountChange:(id)change changeType:(int)type
 {
-  v6 = a3;
+  changeCopy = change;
   v7 = _FALogSystem();
   v8 = v7;
-  if (v6)
+  if (changeCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -51,7 +51,7 @@ LABEL_6:
     v8 = objc_alloc_init(FAFamilyCircleRequest);
     v9 = os_transaction_create();
     v10 = [v8 serviceRemoteObjectWithErrorHandler:&stru_4130];
-    if (a4 == 3)
+    if (type == 3)
     {
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
@@ -59,12 +59,12 @@ LABEL_6:
       v19[3] = &unk_4158;
       v17 = &v20;
       v20 = v9;
-      [v10 didDeleteAccount:v6 replyBlock:v19];
+      [v10 didDeleteAccount:changeCopy replyBlock:v19];
     }
 
     else
     {
-      if (a4 != 1)
+      if (type != 1)
       {
 LABEL_17:
 
@@ -76,18 +76,18 @@ LABEL_17:
       v21[2] = nullsub_1;
       v21[3] = &unk_4158;
       v22 = v9;
-      [v10 didAddAccount:v6 replyBlock:v21];
-      [(FAAccountNotificationPlugin *)self _enableScreentimeForAccount:v6];
-      v11 = [v6 accountType];
-      v12 = [v11 identifier];
+      [v10 didAddAccount:changeCopy replyBlock:v21];
+      [(FAAccountNotificationPlugin *)self _enableScreentimeForAccount:changeCopy];
+      accountType = [changeCopy accountType];
+      identifier = [accountType identifier];
       v13 = +[AKAccountManager sharedInstance];
-      v14 = [v13 protoAccountType];
-      v15 = [v14 identifier];
-      if ([v12 isEqualToString:v15])
+      protoAccountType = [v13 protoAccountType];
+      identifier2 = [protoAccountType identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v18 = [v6 proto_ageRange];
+        proto_ageRange = [changeCopy proto_ageRange];
 
-        if (v18 == &dword_0 + 1)
+        if (proto_ageRange == &dword_0 + 1)
         {
           v16 = _FALogSystem();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -121,9 +121,9 @@ LABEL_18:
 - (void)_setRestrictionsOnProtoAccountAdded
 {
   v2 = +[AKFeatureManager sharedManager];
-  v3 = [v2 isAgeAttestationPhase1Enabled];
+  isAgeAttestationPhase1Enabled = [v2 isAgeAttestationPhase1Enabled];
 
-  if (v3)
+  if (isAgeAttestationPhase1Enabled)
   {
     v5 = objc_alloc_init(FASettingProtoAccountRestrictionsRequest);
     [v5 setRestrictionsWithCompletion:&stru_4198];
@@ -140,13 +140,13 @@ LABEL_18:
   }
 }
 
-- (void)_enableScreentimeForAccount:(id)a3
+- (void)_enableScreentimeForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc_init(NSNumberFormatter);
-  v5 = [v3 aa_personID];
+  aa_personID = [accountCopy aa_personID];
 
-  v6 = [v4 numberFromString:v5];
+  v6 = [v4 numberFromString:aa_personID];
 
   v7 = _FALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

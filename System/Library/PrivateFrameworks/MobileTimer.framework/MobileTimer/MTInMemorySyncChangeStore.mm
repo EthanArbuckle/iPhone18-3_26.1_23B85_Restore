@@ -1,7 +1,7 @@
 @interface MTInMemorySyncChangeStore
 - (MTInMemorySyncChangeStore)init;
 - (id)loadChanges;
-- (void)persistChanges:(id)a3;
+- (void)persistChanges:(id)changes;
 @end
 
 @implementation MTInMemorySyncChangeStore
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)persistChanges:(id)a3
+- (void)persistChanges:(id)changes
 {
-  v4 = [MEMORY[0x1E695DF70] arrayWithArray:a3];
+  v4 = [MEMORY[0x1E695DF70] arrayWithArray:changes];
   changes = self->_changes;
   self->_changes = v4;
 

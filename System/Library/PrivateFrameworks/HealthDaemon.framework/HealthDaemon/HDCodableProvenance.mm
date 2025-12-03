@@ -1,16 +1,16 @@
 @interface HDCodableProvenance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decodedDeviceUUID;
 - (id)decodedSourceUUID;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOriginMinorVersion:(BOOL)a3;
-- (void)setHasOriginPatchVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOriginMinorVersion:(BOOL)version;
+- (void)setHasOriginPatchVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableProvenance
@@ -45,9 +45,9 @@
   return v3;
 }
 
-- (void)setHasOriginMinorVersion:(BOOL)a3
+- (void)setHasOriginMinorVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasOriginPatchVersion:(BOOL)a3
+- (void)setHasOriginPatchVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableProvenance;
   v4 = [(HDCodableProvenance *)&v8 description];
-  v5 = [(HDCodableProvenance *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableProvenance *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   originBuild = self->_originBuild;
   if (originBuild)
   {
-    [v3 setObject:originBuild forKey:@"originBuild"];
+    [dictionary setObject:originBuild forKey:@"originBuild"];
   }
 
   sourceUUID = self->_sourceUUID;
@@ -171,44 +171,44 @@ LABEL_17:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_originBuild)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sourceUUID)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_deviceUUID)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sourceVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_originProductType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_timeZoneName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -216,7 +216,7 @@ LABEL_17:
   {
     originMajorVersion = self->_originMajorVersion;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -237,68 +237,68 @@ LABEL_15:
 
   originMinorVersion = self->_originMinorVersion;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_16:
     originPatchVersion = self->_originPatchVersion;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_17:
   if (self->_contributorUUID)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_originBuild)
   {
-    [v4 setOriginBuild:?];
-    v4 = v6;
+    [toCopy setOriginBuild:?];
+    toCopy = v6;
   }
 
   if (self->_sourceUUID)
   {
     [v6 setSourceUUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceUUID)
   {
     [v6 setDeviceUUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sourceVersion)
   {
     [v6 setSourceVersion:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_originProductType)
   {
     [v6 setOriginProductType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_timeZoneName)
   {
     [v6 setTimeZoneName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 8) = self->_originMajorVersion;
-    *(v4 + 80) |= 1u;
+    *(toCopy + 8) = self->_originMajorVersion;
+    *(toCopy + 80) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -317,47 +317,47 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  *(v4 + 9) = self->_originMinorVersion;
-  *(v4 + 80) |= 2u;
+  *(toCopy + 9) = self->_originMinorVersion;
+  *(toCopy + 80) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_16:
-    *(v4 + 10) = self->_originPatchVersion;
-    *(v4 + 80) |= 4u;
+    *(toCopy + 10) = self->_originPatchVersion;
+    *(toCopy + 80) |= 4u;
   }
 
 LABEL_17:
   if (self->_contributorUUID)
   {
     [v6 setContributorUUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_originBuild copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_originBuild copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSData *)self->_sourceUUID copyWithZone:a3];
+  v8 = [(NSData *)self->_sourceUUID copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSData *)self->_deviceUUID copyWithZone:a3];
+  v10 = [(NSData *)self->_deviceUUID copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
-  v12 = [(NSString *)self->_sourceVersion copyWithZone:a3];
+  v12 = [(NSString *)self->_sourceVersion copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
-  v14 = [(NSString *)self->_originProductType copyWithZone:a3];
+  v14 = [(NSString *)self->_originProductType copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
-  v16 = [(NSString *)self->_timeZoneName copyWithZone:a3];
+  v16 = [(NSString *)self->_timeZoneName copyWithZone:zone];
   v17 = *(v5 + 72);
   *(v5 + 72) = v16;
 
@@ -397,23 +397,23 @@ LABEL_4:
   }
 
 LABEL_5:
-  v19 = [(NSData *)self->_contributorUUID copyWithZone:a3];
+  v19 = [(NSData *)self->_contributorUUID copyWithZone:zone];
   v20 = *(v5 + 8);
   *(v5 + 8) = v19;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   originBuild = self->_originBuild;
-  if (originBuild | *(v4 + 3))
+  if (originBuild | *(equalCopy + 3))
   {
     if (![(NSString *)originBuild isEqual:?])
     {
@@ -422,7 +422,7 @@ LABEL_5:
   }
 
   sourceUUID = self->_sourceUUID;
-  if (sourceUUID | *(v4 + 7))
+  if (sourceUUID | *(equalCopy + 7))
   {
     if (![(NSData *)sourceUUID isEqual:?])
     {
@@ -431,7 +431,7 @@ LABEL_5:
   }
 
   deviceUUID = self->_deviceUUID;
-  if (deviceUUID | *(v4 + 2))
+  if (deviceUUID | *(equalCopy + 2))
   {
     if (![(NSData *)deviceUUID isEqual:?])
     {
@@ -440,7 +440,7 @@ LABEL_5:
   }
 
   sourceVersion = self->_sourceVersion;
-  if (sourceVersion | *(v4 + 8))
+  if (sourceVersion | *(equalCopy + 8))
   {
     if (![(NSString *)sourceVersion isEqual:?])
     {
@@ -449,7 +449,7 @@ LABEL_5:
   }
 
   originProductType = self->_originProductType;
-  if (originProductType | *(v4 + 6))
+  if (originProductType | *(equalCopy + 6))
   {
     if (![(NSString *)originProductType isEqual:?])
     {
@@ -458,7 +458,7 @@ LABEL_5:
   }
 
   timeZoneName = self->_timeZoneName;
-  if (timeZoneName | *(v4 + 9))
+  if (timeZoneName | *(equalCopy + 9))
   {
     if (![(NSString *)timeZoneName isEqual:?])
     {
@@ -466,16 +466,16 @@ LABEL_5:
     }
   }
 
-  v11 = *(v4 + 80);
+  v11 = *(equalCopy + 80);
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_originMajorVersion != *(v4 + 8))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_originMajorVersion != *(equalCopy + 8))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
 LABEL_31:
     v13 = 0;
@@ -484,32 +484,32 @@ LABEL_31:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_originMinorVersion != *(v4 + 9))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_originMinorVersion != *(equalCopy + 9))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 80) & 4) == 0 || self->_originPatchVersion != *(v4 + 10))
+    if ((*(equalCopy + 80) & 4) == 0 || self->_originPatchVersion != *(equalCopy + 10))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 80) & 4) != 0)
+  else if ((*(equalCopy + 80) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   contributorUUID = self->_contributorUUID;
-  if (contributorUUID | *(v4 + 1))
+  if (contributorUUID | *(equalCopy + 1))
   {
     v13 = [(NSData *)contributorUUID isEqual:?];
   }
@@ -570,52 +570,52 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSData *)self->_contributorUUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(HDCodableProvenance *)self setOriginBuild:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HDCodableProvenance *)self setSourceUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(HDCodableProvenance *)self setDeviceUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(HDCodableProvenance *)self setSourceVersion:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCodableProvenance *)self setOriginProductType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(HDCodableProvenance *)self setTimeZoneName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(fromCopy + 80);
   if (v5)
   {
-    self->_originMajorVersion = v4[8];
+    self->_originMajorVersion = fromCopy[8];
     *&self->_has |= 1u;
-    v5 = *(v4 + 80);
+    v5 = *(fromCopy + 80);
     if ((v5 & 2) == 0)
     {
 LABEL_15:
@@ -628,25 +628,25 @@ LABEL_15:
     }
   }
 
-  else if ((v4[20] & 2) == 0)
+  else if ((fromCopy[20] & 2) == 0)
   {
     goto LABEL_15;
   }
 
-  self->_originMinorVersion = v4[9];
+  self->_originMinorVersion = fromCopy[9];
   *&self->_has |= 2u;
-  if ((v4[20] & 4) != 0)
+  if ((fromCopy[20] & 4) != 0)
   {
 LABEL_16:
-    self->_originPatchVersion = v4[10];
+    self->_originPatchVersion = fromCopy[10];
     *&self->_has |= 4u;
   }
 
 LABEL_17:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(HDCodableProvenance *)self setContributorUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

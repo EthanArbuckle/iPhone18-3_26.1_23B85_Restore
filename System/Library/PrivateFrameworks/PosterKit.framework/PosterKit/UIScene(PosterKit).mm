@@ -8,35 +8,35 @@
 
 - (id)pr_posterHostedContentSettings
 {
-  v1 = [a1 _FBSScene];
-  v2 = v1;
-  if (v1)
+  _FBSScene = [self _FBSScene];
+  v2 = _FBSScene;
+  if (_FBSScene)
   {
-    v3 = [v1 settings];
-    v4 = [v3 pr_posterHostedContentSettings];
+    settings = [_FBSScene settings];
+    pr_posterHostedContentSettings = [settings pr_posterHostedContentSettings];
   }
 
   else
   {
-    v4 = 0;
+    pr_posterHostedContentSettings = 0;
   }
 
-  return v4;
+  return pr_posterHostedContentSettings;
 }
 
 - (id)pr_posterContentsLuminance
 {
-  v1 = [a1 _FBSScene];
-  v2 = v1;
-  if (v1)
+  _FBSScene = [self _FBSScene];
+  v2 = _FBSScene;
+  if (_FBSScene)
   {
-    v3 = [v1 settings];
-    v4 = [v3 pr_posterTitleStyleConfiguration];
+    settings = [_FBSScene settings];
+    pr_posterTitleStyleConfiguration = [settings pr_posterTitleStyleConfiguration];
 
-    if (v4)
+    if (pr_posterTitleStyleConfiguration)
     {
       v5 = MEMORY[0x1E696AD98];
-      [v4 contentsLuminance];
+      [pr_posterTitleStyleConfiguration contentsLuminance];
       v6 = [v5 numberWithDouble:?];
     }
 
@@ -58,8 +58,8 @@
 {
   v4 = a3;
   v5 = [PROverlaySceneObserverImpl alloc];
-  v6 = [a1 _FBSScene];
-  v7 = [(PROverlaySceneObserverImpl *)v5 initWithScene:v6 observer:v4];
+  _FBSScene = [self _FBSScene];
+  v7 = [(PROverlaySceneObserverImpl *)v5 initWithScene:_FBSScene observer:v4];
 
   return v7;
 }

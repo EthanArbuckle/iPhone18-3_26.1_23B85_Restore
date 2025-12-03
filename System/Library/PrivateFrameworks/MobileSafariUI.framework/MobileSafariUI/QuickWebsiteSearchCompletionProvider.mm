@@ -1,40 +1,40 @@
 @interface QuickWebsiteSearchCompletionProvider
-- (void)setQueryToComplete:(id)a3;
+- (void)setQueryToComplete:(id)complete;
 @end
 
 @implementation QuickWebsiteSearchCompletionProvider
 
-- (void)setQueryToComplete:(id)a3
+- (void)setQueryToComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [v4 queryString];
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v6 BOOLForKey:@"DisableWebsiteSpecificSearch"];
+  completeCopy = complete;
+  queryString = [completeCopy queryString];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults BOOLForKey:@"DisableWebsiteSpecificSearch"];
 
   if (v7)
   {
-    [(CompletionProvider *)self setCompletions:MEMORY[0x277CBEBF8] forString:v5];
+    [(CompletionProvider *)self setCompletions:MEMORY[0x277CBEBF8] forString:queryString];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v8 = [[QuickWebsiteSearchQuery alloc] initWithUserEnteredQuery:v4];
-    v9 = [MEMORY[0x277D4A028] sharedController];
-    v10 = [(QuickWebsiteSearchQuery *)v8 searchTerms];
+    v8 = [[QuickWebsiteSearchQuery alloc] initWithUserEnteredQuery:completeCopy];
+    mEMORY[0x277D4A028] = [MEMORY[0x277D4A028] sharedController];
+    searchTerms = [(QuickWebsiteSearchQuery *)v8 searchTerms];
 
-    if (v10)
+    if (searchTerms)
     {
       v11 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __59__QuickWebsiteSearchCompletionProvider_setQueryToComplete___block_invoke;
       block[3] = &unk_2781D9330;
-      v13 = v9;
-      v14 = v5;
-      v15 = self;
+      v13 = mEMORY[0x277D4A028];
+      v14 = queryString;
+      selfCopy = self;
       v16 = v8;
-      v17 = v4;
+      v17 = completeCopy;
       objc_copyWeak(&v18, &location);
       dispatch_async(v11, block);
 
@@ -43,7 +43,7 @@
 
     else
     {
-      [(CompletionProvider *)self setCompletions:MEMORY[0x277CBEBF8] forString:v5];
+      [(CompletionProvider *)self setCompletions:MEMORY[0x277CBEBF8] forString:queryString];
     }
 
     objc_destroyWeak(&location);

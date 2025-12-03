@@ -1,20 +1,20 @@
 @interface TSDStyleWarmingOperation
-- (TSDStyleWarmingOperation)initWithStyle:(id)a3 property:(int)a4 accessController:(id)a5;
+- (TSDStyleWarmingOperation)initWithStyle:(id)style property:(int)property accessController:(id)controller;
 - (void)warm;
 @end
 
 @implementation TSDStyleWarmingOperation
 
-- (TSDStyleWarmingOperation)initWithStyle:(id)a3 property:(int)a4 accessController:(id)a5
+- (TSDStyleWarmingOperation)initWithStyle:(id)style property:(int)property accessController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = TSDStyleWarmingOperation;
   result = [(TSDStyleWarmingOperation *)&v9 init];
   if (result)
   {
-    result->mStyle = a3;
-    result->mProperty = a4;
-    result->mAccessController = a5;
+    result->mStyle = style;
+    result->mProperty = property;
+    result->mAccessController = controller;
   }
 
   return result;
@@ -27,9 +27,9 @@
   v3 = TSUDynamicCast();
   if (v3)
   {
-    v4 = [v3 imageData];
+    imageData = [v3 imageData];
     v5 = objc_autoreleasePoolPush();
-    [v4 NSData];
+    [imageData NSData];
 
     objc_autoreleasePoolPop(v5);
   }

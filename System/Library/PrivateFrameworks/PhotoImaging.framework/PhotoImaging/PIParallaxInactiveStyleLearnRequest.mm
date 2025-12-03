@@ -1,8 +1,8 @@
 @interface PIParallaxInactiveStyleLearnRequest
 - (CGRect)sourceFrame;
 - (CGRect)targetFrame;
-- (PIParallaxInactiveStyleLearnRequest)initWithFromPixelBuffer:(id)a3 frame:(CGRect)a4 toPixelBuffer:(id)a5 frame:(CGRect)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PIParallaxInactiveStyleLearnRequest)initWithFromPixelBuffer:(id)buffer frame:(CGRect)frame toPixelBuffer:(id)pixelBuffer frame:(CGRect)a6;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 @end
 
@@ -41,20 +41,20 @@
   return [(NURenderJob *)v3 initWithRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18.receiver = self;
   v18.super_class = PIParallaxInactiveStyleLearnRequest;
-  v4 = [(NURenderRequest *)&v18 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v18 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(PIParallaxInactiveStyleLearnRequest *)self fromBuffer];
+    fromBuffer = [(PIParallaxInactiveStyleLearnRequest *)self fromBuffer];
     v6 = v4[20];
-    v4[20] = v5;
+    v4[20] = fromBuffer;
 
-    v7 = [(PIParallaxInactiveStyleLearnRequest *)self toBuffer];
+    toBuffer = [(PIParallaxInactiveStyleLearnRequest *)self toBuffer];
     v8 = v4[21];
-    v4[21] = v7;
+    v4[21] = toBuffer;
 
     [(PIParallaxInactiveStyleLearnRequest *)self sourceFrame];
     v4[22] = v9;
@@ -71,22 +71,22 @@
   return v4;
 }
 
-- (PIParallaxInactiveStyleLearnRequest)initWithFromPixelBuffer:(id)a3 frame:(CGRect)a4 toPixelBuffer:(id)a5 frame:(CGRect)a6
+- (PIParallaxInactiveStyleLearnRequest)initWithFromPixelBuffer:(id)buffer frame:(CGRect)frame toPixelBuffer:(id)pixelBuffer frame:(CGRect)a6
 {
   height = a6.size.height;
   width = a6.size.width;
   y = a6.origin.y;
   x = a6.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  v17 = a3;
-  v18 = a5;
+  v11 = frame.size.height;
+  v12 = frame.size.width;
+  v13 = frame.origin.y;
+  v14 = frame.origin.x;
+  bufferCopy = buffer;
+  pixelBufferCopy = pixelBuffer;
   v19 = +[PIPhotoEditHelper newComposition];
   v20 = MEMORY[0x1E695F658];
-  v21 = [MEMORY[0x1E695F610] whiteColor];
-  v22 = [v20 imageWithColor:v21];
+  whiteColor = [MEMORY[0x1E695F610] whiteColor];
+  v22 = [v20 imageWithColor:whiteColor];
   v23 = [PIPhotoEditHelper imageSourceWithCIImage:v22 orientation:1];
 
   [v19 setObject:v23 forKeyedSubscript:@"source"];
@@ -97,8 +97,8 @@
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_fromBuffer, a3);
-    objc_storeStrong(&v25->_toBuffer, a5);
+    objc_storeStrong(&v24->_fromBuffer, buffer);
+    objc_storeStrong(&v25->_toBuffer, pixelBuffer);
     v25->_sourceFrame.origin.x = v14;
     v25->_sourceFrame.origin.y = v13;
     v25->_sourceFrame.size.width = v12;

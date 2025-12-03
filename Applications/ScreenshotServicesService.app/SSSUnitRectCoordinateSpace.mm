@@ -1,34 +1,34 @@
 @interface SSSUnitRectCoordinateSpace
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4;
-- (CGRect)_rectInViewSpaceForUnitRect:(CGRect)a3;
-- (CGRect)_unitRectOfRectInViewSpace:(CGRect)a3;
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space;
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space;
+- (CGRect)_rectInViewSpaceForUnitRect:(CGRect)rect;
+- (CGRect)_unitRectOfRectInViewSpace:(CGRect)space;
 - (CGRect)bounds;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
-- (SSSUnitRectCoordinateSpace)initWithView:(id)a3;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
+- (SSSUnitRectCoordinateSpace)initWithView:(id)view;
 @end
 
 @implementation SSSUnitRectCoordinateSpace
 
-- (SSSUnitRectCoordinateSpace)initWithView:(id)a3
+- (SSSUnitRectCoordinateSpace)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = SSSUnitRectCoordinateSpace;
   v5 = [(SSSUnitRectCoordinateSpace *)&v8 init];
   view = v5->_view;
-  v5->_view = v4;
+  v5->_view = viewCopy;
 
   return v5;
 }
 
-- (CGRect)_unitRectOfRectInViewSpace:(CGRect)a3
+- (CGRect)_unitRectOfRectInViewSpace:(CGRect)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
   [(UIView *)self->_view bounds];
   v9 = (x - v7) / v8;
   v12 = (y - v10) / v11;
@@ -41,12 +41,12 @@
   return result;
 }
 
-- (CGRect)_rectInViewSpaceForUnitRect:(CGRect)a3
+- (CGRect)_rectInViewSpaceForUnitRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(UIView *)self->_view bounds];
   v9 = v7 + x * v8;
   v12 = v10 + y * v11;
@@ -59,31 +59,31 @@
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toCoordinateSpace:(id)space
 {
-  [a4 convertRect:self fromCoordinateSpace:{a3.x, a3.y, 1.0, 1.0}];
+  [space convertRect:self fromCoordinateSpace:{point.x, point.y, 1.0, 1.0}];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromCoordinateSpace:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromCoordinateSpace:(id)space
 {
-  [(SSSUnitRectCoordinateSpace *)self convertRect:a4 fromCoordinateSpace:a3.x, a3.y, 1.0, 1.0];
+  [(SSSUnitRectCoordinateSpace *)self convertRect:space fromCoordinateSpace:point.x, point.y, 1.0, 1.0];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   [(SSSUnitRectCoordinateSpace *)self _rectInViewSpaceForUnitRect:x, y, width, height];
-  [v9 convertRect:self->_view fromCoordinateSpace:?];
+  [spaceCopy convertRect:self->_view fromCoordinateSpace:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -100,9 +100,9 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  [(UIView *)self->_view convertRect:a4 fromCoordinateSpace:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)self->_view convertRect:space fromCoordinateSpace:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
   [(SSSUnitRectCoordinateSpace *)self _unitRectOfRectInViewSpace:?];
   result.size.height = v8;

@@ -1,24 +1,24 @@
 @interface MLCPaddingGPUDeviceOps
-+ (id)deviceOpsWithForwardKernel:(id)a3 gradientKernel:(id)a4;
-- (MLCPaddingGPUDeviceOps)initWithForwardKernel:(id)a3 gradientKernel:(id)a4;
++ (id)deviceOpsWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel;
+- (MLCPaddingGPUDeviceOps)initWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel;
 @end
 
 @implementation MLCPaddingGPUDeviceOps
 
-+ (id)deviceOpsWithForwardKernel:(id)a3 gradientKernel:(id)a4
++ (id)deviceOpsWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithForwardKernel:v7 gradientKernel:v6];
+  gradientKernelCopy = gradientKernel;
+  kernelCopy = kernel;
+  v8 = [[self alloc] initWithForwardKernel:kernelCopy gradientKernel:gradientKernelCopy];
 
   return v8;
 }
 
-- (MLCPaddingGPUDeviceOps)initWithForwardKernel:(id)a3 gradientKernel:(id)a4
+- (MLCPaddingGPUDeviceOps)initWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel
 {
   v5.receiver = self;
   v5.super_class = MLCPaddingGPUDeviceOps;
-  result = [(MLCGPUDeviceOps *)&v5 initWithForwardKernel:a3 gradientKernel:a4 secondaryGradientKernel:0 forwardStatistics:0 gradientStatistics:0];
+  result = [(MLCGPUDeviceOps *)&v5 initWithForwardKernel:kernel gradientKernel:gradientKernel secondaryGradientKernel:0 forwardStatistics:0 gradientStatistics:0];
   if (result)
   {
     result->_paddingType = 0;

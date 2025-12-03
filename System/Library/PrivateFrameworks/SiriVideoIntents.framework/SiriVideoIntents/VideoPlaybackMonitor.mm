@@ -1,47 +1,47 @@
 @interface VideoPlaybackMonitor
-- (void)controller:(id)a3 didFailWithError:(id)a4;
-- (void)controller:(id)a3 didLoadResponse:(id)a4;
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5;
-- (void)controller:(id)a3 playerPathDidChange:(id)a4;
-- (void)controllerWillReloadForInvalidation:(id)a3;
+- (void)controller:(id)controller didFailWithError:(id)error;
+- (void)controller:(id)controller didLoadResponse:(id)response;
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to;
+- (void)controller:(id)controller playerPathDidChange:(id)change;
+- (void)controllerWillReloadForInvalidation:(id)invalidation;
 @end
 
 @implementation VideoPlaybackMonitor
 
-- (void)controller:(id)a3 didLoadResponse:(id)a4
+- (void)controller:(id)controller didLoadResponse:(id)response
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  responseCopy = response;
 
   sub_26983E8A4();
 }
 
-- (void)controller:(id)a3 playbackStateDidChangeFrom:(unsigned int)a4 to:(unsigned int)a5
+- (void)controller:(id)controller playbackStateDidChangeFrom:(unsigned int)from to:(unsigned int)to
 {
-  v5 = a3;
+  controllerCopy = controller;
 
   sub_26983ED08();
 }
 
-- (void)controller:(id)a3 playerPathDidChange:(id)a4
+- (void)controller:(id)controller playerPathDidChange:(id)change
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  changeCopy = change;
 
   sub_26983F018();
 }
 
-- (void)controllerWillReloadForInvalidation:(id)a3
+- (void)controllerWillReloadForInvalidation:(id)invalidation
 {
-  v3 = a3;
+  invalidationCopy = invalidation;
 
   sub_26983F45C();
 }
 
-- (void)controller:(id)a3 didFailWithError:(id)a4
+- (void)controller:(id)controller didFailWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
 
   sub_26983F720();
 }

@@ -1,13 +1,13 @@
 @interface PXStoryChromeButtonFactory
-+ (Class)buttonClassWithGlassEffect:(BOOL)a3;
++ (Class)buttonClassWithGlassEffect:(BOOL)effect;
 - (_TtC12PhotosUICore26PXStoryChromeButtonFactory)init;
 @end
 
 @implementation PXStoryChromeButtonFactory
 
-+ (Class)buttonClassWithGlassEffect:(BOOL)a3
++ (Class)buttonClassWithGlassEffect:(BOOL)effect
 {
-  if (a3 && MEMORY[0x1A590D320](a1, a2))
+  if (effect && MEMORY[0x1A590D320](self, a2))
   {
     type metadata accessor for PXStoryChromeSystemButton();
   }

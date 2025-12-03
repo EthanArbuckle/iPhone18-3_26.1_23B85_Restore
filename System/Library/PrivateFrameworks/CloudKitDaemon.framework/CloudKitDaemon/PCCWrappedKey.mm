@@ -1,16 +1,16 @@
 @interface PCCWrappedKey
-- (PCCWrappedKey)initWithKey:(id)a3 permittedRemoteMeasurement:(id)a4 attestation:(id)a5;
+- (PCCWrappedKey)initWithKey:(id)key permittedRemoteMeasurement:(id)measurement attestation:(id)attestation;
 - (void)dealloc;
 @end
 
 @implementation PCCWrappedKey
 
-- (PCCWrappedKey)initWithKey:(id)a3 permittedRemoteMeasurement:(id)a4 attestation:(id)a5
+- (PCCWrappedKey)initWithKey:(id)key permittedRemoteMeasurement:(id)measurement attestation:(id)attestation
 {
   v153 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  measurementCopy = measurement;
+  attestationCopy = attestation;
   v144.receiver = self;
   v144.super_class = PCCWrappedKey;
   v13 = [(PCCWrappedKey *)&v144 init];
@@ -19,13 +19,13 @@
     goto LABEL_29;
   }
 
-  if (v10)
+  if (attestationCopy)
   {
     v14 = MEMORY[0x277CBEB28];
-    v15 = objc_msgSend_applicationEnclaveQuote(v10, v11, v12);
+    v15 = objc_msgSend_applicationEnclaveQuote(attestationCopy, v11, v12);
     v16 = v15;
     v19 = objc_msgSend_bytes(v16, v17, v18);
-    v22 = objc_msgSend_applicationEnclaveQuote(v10, v20, v21);
+    v22 = objc_msgSend_applicationEnclaveQuote(attestationCopy, v20, v21);
     v25 = objc_msgSend_length(v22, v23, v24);
     v27 = objc_msgSend_dataWithBytes_length_(v14, v26, v19, v25);
 
@@ -33,10 +33,10 @@
     v143[0] = objc_msgSend_mutableBytes(v28, v29, v30);
     v143[1] = objc_msgSend_length(v27, v31, v32);
     v33 = MEMORY[0x277CBEB28];
-    v36 = objc_msgSend_quotingEnclaveQuote(v10, v34, v35);
+    v36 = objc_msgSend_quotingEnclaveQuote(attestationCopy, v34, v35);
     v37 = v36;
     v40 = objc_msgSend_bytes(v37, v38, v39);
-    v43 = objc_msgSend_quotingEnclaveQuote(v10, v41, v42);
+    v43 = objc_msgSend_quotingEnclaveQuote(attestationCopy, v41, v42);
     v46 = objc_msgSend_length(v43, v44, v45);
     v48 = objc_msgSend_dataWithBytes_length_(v33, v47, v40, v46);
 
@@ -45,10 +45,10 @@
     v143[2] = objc_msgSend_mutableBytes(v50, v51, v52);
     v143[3] = objc_msgSend_length(v48, v53, v54);
     v55 = MEMORY[0x277CBEB28];
-    v58 = objc_msgSend_certificate(v10, v56, v57);
+    v58 = objc_msgSend_certificate(attestationCopy, v56, v57);
     v59 = v58;
     v61 = objc_msgSend_cStringUsingEncoding_(v59, v60, 4);
-    v64 = objc_msgSend_certificate(v10, v62, v63);
+    v64 = objc_msgSend_certificate(attestationCopy, v62, v63);
     v66 = objc_msgSend_lengthOfBytesUsingEncoding_(v64, v65, 4);
     v68 = objc_msgSend_dataWithBytes_length_(v55, v67, v61, v66);
 
@@ -73,10 +73,10 @@
       v133 = v68;
       v134 = v27;
       v129 = v49;
-      v130 = v10;
+      v130 = attestationCopy;
       v135 = v13;
-      v136 = v8;
-      v131 = v9;
+      v136 = keyCopy;
+      v131 = measurementCopy;
       v132 = v78;
       v141 = 0u;
       v142 = 0u;
@@ -130,8 +130,8 @@
         while (v88);
       }
 
-      v10 = v130;
-      v9 = v131;
+      attestationCopy = v130;
+      measurementCopy = v131;
       v76 = v128;
       v49 = v129;
       v106 = v138;
@@ -143,13 +143,13 @@
       v133 = v68;
       v134 = v27;
       v135 = v13;
-      v136 = v8;
+      v136 = keyCopy;
       v132 = v78;
       v107 = 243;
       v106 = &unk_27D71ABC8;
     }
 
-    v108 = v9;
+    v108 = measurementCopy;
     v113 = objc_msgSend_bytes(v108, v109, v110);
     v114 = 0;
     memset(v149, 0, sizeof(v149));
@@ -158,7 +158,7 @@
     BYTE2(v151) = v137;
     do
     {
-      if (v114 >= objc_msgSend_length(v9, v111, v112, v127, v128, v129, v130, v131))
+      if (v114 >= objc_msgSend_length(measurementCopy, v111, v112, v127, v128, v129, v130, v131))
       {
         break;
       }
@@ -177,7 +177,7 @@
     }
 
     v13 = v135;
-    v8 = v136;
+    keyCopy = v136;
     if (v115 || (v146 = 0, memset(v145, 0, sizeof(v145)), *&v118 = sub_22540EFEC(v147, v145).n128_u64[0], v119))
     {
 
@@ -186,7 +186,7 @@
 
     objc_msgSend_secret(v136, v116, v117, v118);
     v135->_wrappedInvocationKey = sub_22540EF3C(v145);
-    v123 = objc_msgSend_routingToken(v10, v121, v122);
+    v123 = objc_msgSend_routingToken(attestationCopy, v121, v122);
     routingToken = v135->_routingToken;
     v135->_routingToken = v123;
 

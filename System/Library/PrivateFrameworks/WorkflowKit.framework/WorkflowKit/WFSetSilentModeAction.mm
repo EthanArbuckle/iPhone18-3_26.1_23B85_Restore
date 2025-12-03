@@ -1,7 +1,7 @@
 @interface WFSetSilentModeAction
 - (id)defaultParameterStatesForStaccato;
 - (id)hiddenParameterKeysForStaccato;
-- (id)localizedFocusFilterDescriptionWithContext:(id)a3;
+- (id)localizedFocusFilterDescriptionWithContext:(id)context;
 - (id)staccatoNameOverride;
 @end
 
@@ -11,15 +11,15 @@
 {
   v2 = WFLocalizedString(@"Silent Mode");
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x1E696B100]);
-  v6 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  v7 = [v5 initWithKey:@"Silent Mode" table:@"Localizable" locale:v6 bundleURL:v4];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  v7 = [v5 initWithKey:@"Silent Mode" table:@"Localizable" locale:autoupdatingCurrentLocale bundleURL:bundleURL];
 
-  v8 = [v7 localize];
+  localize = [v7 localize];
 
-  return v8;
+  return localize;
 }
 
 - (id)hiddenParameterKeysForStaccato
@@ -49,11 +49,11 @@
   return v3;
 }
 
-- (id)localizedFocusFilterDescriptionWithContext:(id)a3
+- (id)localizedFocusFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Turn Silent Mode on or off while in this Focus.", @"Turn Silent Mode on or off while in this Focus.");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

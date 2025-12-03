@@ -1,19 +1,19 @@
 @interface FCCoreConfigurationFetchedValueDescriptor
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4;
+- (BOOL)isValue:(id)value equalToValue:(id)toValue;
 - (FCCoreConfigurationFetchedValueDescriptor)init;
-- (FCCoreConfigurationFetchedValueDescriptor)initWithConfigurationManager:(id)a3;
+- (FCCoreConfigurationFetchedValueDescriptor)initWithConfigurationManager:(id)manager;
 - (id)fastCachedValue;
-- (void)fetchValueWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4 completion:(id)a5;
+- (void)fetchValueWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCCoreConfigurationFetchedValueDescriptor
 
 - (id)fastCachedValue
 {
-  v2 = [(FCCoreConfigurationFetchedValueDescriptor *)self configurationManager];
-  v3 = [v2 configuration];
+  configurationManager = [(FCCoreConfigurationFetchedValueDescriptor *)self configurationManager];
+  configuration = [configurationManager configuration];
 
-  return v3;
+  return configuration;
 }
 
 - (FCCoreConfigurationFetchedValueDescriptor)init
@@ -42,11 +42,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCCoreConfigurationFetchedValueDescriptor)initWithConfigurationManager:(id)a3
+- (FCCoreConfigurationFetchedValueDescriptor)initWithConfigurationManager:(id)manager
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "configurationManager"];
     *buf = 136315906;
@@ -66,32 +66,32 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configurationManager, a3);
+    objc_storeStrong(&v6->_configurationManager, manager);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (void)fetchValueWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4 completion:(id)a5
+- (void)fetchValueWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service completion:(id)completion
 {
-  v6 = a5;
-  v7 = [(FCCoreConfigurationFetchedValueDescriptor *)self configurationManager];
+  completionCopy = completion;
+  configurationManager = [(FCCoreConfigurationFetchedValueDescriptor *)self configurationManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __99__FCCoreConfigurationFetchedValueDescriptor_fetchValueWithCachePolicy_qualityOfService_completion___block_invoke;
   v9[3] = &unk_1E7C39EA8;
-  v10 = v6;
-  v8 = v6;
-  [v7 fetchConfigurationIfNeededWithCompletion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [configurationManager fetchConfigurationIfNeededWithCompletion:v9];
 }
 
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4
+- (BOOL)isValue:(id)value equalToValue:(id)toValue
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  valueCopy = value;
+  toValueCopy = toValue;
+  if (!valueCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "left"];
     *buf = 136315906;
@@ -104,13 +104,13 @@
     v18 = v9;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v6)
+    if (toValueCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v6)
+  else if (toValueCopy)
   {
     goto LABEL_6;
   }
@@ -132,7 +132,7 @@
 LABEL_6:
 
   v7 = *MEMORY[0x1E69E9840];
-  return v5 == v6;
+  return valueCopy == toValueCopy;
 }
 
 @end

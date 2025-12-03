@@ -1,19 +1,19 @@
 @interface VUIMPMediaEntityImageLoadParams
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MPArtworkCatalog)artworkCatalog;
 - (NSString)description;
 - (NSString)imageIdentifier;
 - (VUIMPMediaEntityImageLoadParams)init;
-- (VUIMPMediaEntityImageLoadParams)initWithMediaItem:(id)a3 andImageType:(unint64_t)a4;
+- (VUIMPMediaEntityImageLoadParams)initWithMediaItem:(id)item andImageType:(unint64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation VUIMPMediaEntityImageLoadParams
 
-- (VUIMPMediaEntityImageLoadParams)initWithMediaItem:(id)a3 andImageType:(unint64_t)a4
+- (VUIMPMediaEntityImageLoadParams)initWithMediaItem:(id)item andImageType:(unint64_t)type
 {
-  v7 = a3;
-  if (!v7)
+  itemCopy = item;
+  if (!itemCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaItem"}];
   }
@@ -24,8 +24,8 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mediaItem, a3);
-    v9->_imageType = a4;
+    objc_storeStrong(&v8->_mediaItem, item);
+    v9->_imageType = type;
   }
 
   return v9;
@@ -46,8 +46,8 @@
   artworkCatalog = self->_artworkCatalog;
   if (!artworkCatalog)
   {
-    v4 = [(VUIMPMediaEntityImageLoadParams *)self mediaItem];
-    v5 = [v4 vui_artworkCatalogWithImageType:{-[VUIMPMediaEntityImageLoadParams imageType](self, "imageType")}];
+    mediaItem = [(VUIMPMediaEntityImageLoadParams *)self mediaItem];
+    v5 = [mediaItem vui_artworkCatalogWithImageType:{-[VUIMPMediaEntityImageLoadParams imageType](self, "imageType")}];
     v6 = self->_artworkCatalog;
     self->_artworkCatalog = v5;
 
@@ -61,8 +61,8 @@
 {
   if (!self->_calculatedIdentifier)
   {
-    v3 = [(VUIMPMediaEntityImageLoadParams *)self mediaItem];
-    v4 = [v3 vui_imageIdentifierWithImageType:{-[VUIMPMediaEntityImageLoadParams imageType](self, "imageType")}];
+    mediaItem = [(VUIMPMediaEntityImageLoadParams *)self mediaItem];
+    v4 = [mediaItem vui_imageIdentifierWithImageType:{-[VUIMPMediaEntityImageLoadParams imageType](self, "imageType")}];
     imageIdentifier = self->_imageIdentifier;
     self->_imageIdentifier = v4;
 
@@ -76,31 +76,31 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VUIMPMediaEntityImageLoadParams *)self imageIdentifier];
-  v3 = [v2 hash];
+  imageIdentifier = [(VUIMPMediaEntityImageLoadParams *)self imageIdentifier];
+  v3 = [imageIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIMPMediaEntityImageLoadParams *)self imageType];
-    if (v7 == [(VUIMPMediaEntityImageLoadParams *)v6 imageType])
+    imageType = [(VUIMPMediaEntityImageLoadParams *)self imageType];
+    if (imageType == [(VUIMPMediaEntityImageLoadParams *)v6 imageType])
     {
-      v8 = [(VUIMPMediaEntityImageLoadParams *)self imageIdentifier];
-      v9 = [(VUIMPMediaEntityImageLoadParams *)v6 imageIdentifier];
-      v10 = v8;
-      v11 = v9;
+      imageIdentifier = [(VUIMPMediaEntityImageLoadParams *)self imageIdentifier];
+      imageIdentifier2 = [(VUIMPMediaEntityImageLoadParams *)v6 imageIdentifier];
+      v10 = imageIdentifier;
+      v11 = imageIdentifier2;
       v12 = v11;
       if (v10 == v11)
       {
@@ -140,8 +140,8 @@
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIMPMediaEntityImageLoadParams *)self imageIdentifier];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"imageIdentifier", v6];
+  imageIdentifier = [(VUIMPMediaEntityImageLoadParams *)self imageIdentifier];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"imageIdentifier", imageIdentifier];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];

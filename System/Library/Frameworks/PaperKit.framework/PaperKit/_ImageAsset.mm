@@ -2,23 +2,23 @@
 - (CGRect)acceptableCropRect;
 - (CGRect)faceAreaRect;
 - (CGRect)preferredCropRect;
-- (_ImageAsset)initWithImage:(id)a3;
+- (_ImageAsset)initWithImage:(id)image;
 - (unint64_t)pixelHeight;
 - (unint64_t)pixelWidth;
 @end
 
 @implementation _ImageAsset
 
-- (_ImageAsset)initWithImage:(id)a3
+- (_ImageAsset)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = _ImageAsset;
   v6 = [(_ImageAsset *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_image, a3);
+    objc_storeStrong(&v6->_image, image);
   }
 
   return v7;
@@ -39,8 +39,8 @@
 
 - (unint64_t)pixelWidth
 {
-  v2 = [(_ImageAsset *)self image];
-  [v2 size];
+  image = [(_ImageAsset *)self image];
+  [image size];
   v4 = v3;
 
   return v4;
@@ -48,8 +48,8 @@
 
 - (unint64_t)pixelHeight
 {
-  v2 = [(_ImageAsset *)self image];
-  [v2 size];
+  image = [(_ImageAsset *)self image];
+  [image size];
   v4 = v3;
 
   return v4;

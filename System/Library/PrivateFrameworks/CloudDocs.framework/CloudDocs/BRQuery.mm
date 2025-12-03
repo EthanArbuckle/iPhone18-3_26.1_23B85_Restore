@@ -1,55 +1,55 @@
 @interface BRQuery
-- (BOOL)_collectUpdates:(id)a3;
-- (BRQuery)initWithQuery:(id)a3 values:(id)a4 sortingAttributes:(id)a5 items:(id)a6;
+- (BOOL)_collectUpdates:(id)updates;
+- (BRQuery)initWithQuery:(id)query values:(id)values sortingAttributes:(id)attributes items:(id)items;
 - (NSMetadataQuery)query;
 - (NSString)description;
-- (const)resultAtIndex:(int64_t)a3;
-- (id)_classifyItems:(id)a3 deletedItemIDs:(id)a4;
-- (id)_replacementObjectForQueryItem:(id)a3;
-- (id)_replacementObjectsForArrayOfQueryItem:(id)a3;
-- (id)attributeValueForName:(id)a3 forResultAtIndex:(int64_t)a4;
-- (id)valuesOfAttribute:(id)a3;
-- (int64_t)indexOfResult:(const void *)a3;
-- (unsigned)executeWithOptions:(unint64_t)a3;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
-- (void)_handleAddedItemsNotifications:(id)a3 userInfo:(id)a4;
-- (void)_handleRemovedItemsNotifications:(id)a3 userInfo:(id)a4;
-- (void)_handleReplacedItemsNotifications:(id)a3 userInfo:(id)a4;
-- (void)_monitorNetworkForQueryItemIfNecessary:(id)a3 fpItemID:(id)a4;
-- (void)_monitorTransferForFPItemIfNecessary:(id)a3;
-- (void)_performBlockAsync:(id)a3;
-- (void)_postNote:(__CFString *)a3;
-- (void)_postNote:(__CFString *)a3 userInfo:(id)a4;
-- (void)_processChanges:(id)a3;
+- (const)resultAtIndex:(int64_t)index;
+- (id)_classifyItems:(id)items deletedItemIDs:(id)ds;
+- (id)_replacementObjectForQueryItem:(id)item;
+- (id)_replacementObjectsForArrayOfQueryItem:(id)item;
+- (id)attributeValueForName:(id)name forResultAtIndex:(int64_t)index;
+- (id)valuesOfAttribute:(id)attribute;
+- (int64_t)indexOfResult:(const void *)result;
+- (unsigned)executeWithOptions:(unint64_t)options;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationWillResignActive:(id)active;
+- (void)_handleAddedItemsNotifications:(id)notifications userInfo:(id)info;
+- (void)_handleRemovedItemsNotifications:(id)notifications userInfo:(id)info;
+- (void)_handleReplacedItemsNotifications:(id)notifications userInfo:(id)info;
+- (void)_monitorNetworkForQueryItemIfNecessary:(id)necessary fpItemID:(id)d;
+- (void)_monitorTransferForFPItemIfNecessary:(id)necessary;
+- (void)_performBlockAsync:(id)async;
+- (void)_postNote:(__CFString *)note;
+- (void)_postNote:(__CFString *)note userInfo:(id)info;
+- (void)_processChanges:(id)changes;
 - (void)_processProgressUpdateBatch;
 - (void)_processUpdates;
 - (void)_runQuery;
 - (void)_sendHasUpdateNotificationIfNeeded;
-- (void)_setQueryState:(int)a3;
-- (void)_stopMonitoringTransferForFPItemID:(id)a3;
+- (void)_setQueryState:(int)state;
+- (void)_stopMonitoringTransferForFPItemID:(id)d;
 - (void)_stopProgressObservers;
 - (void)_watchScopes;
 - (void)dealloc;
 - (void)disableUpdates;
 - (void)enableUpdates;
 - (void)itemCollectionGathererDidInvalidate;
-- (void)itemCollectionGathererDidReceiveUpdates:(id)a3 deleteItemsWithIDs:(id)a4;
+- (void)itemCollectionGathererDidReceiveUpdates:(id)updates deleteItemsWithIDs:(id)ds;
 - (void)itemCollectionGathererFinishedGathering;
-- (void)itemCollectionGathererGatheredItems:(id)a3;
-- (void)networkReachabilityChanged:(BOOL)a3;
-- (void)notificationReceiverDidReceiveNotifications:(id)a3;
-- (void)notificationsReceiverDidFinishGathering:(id)a3;
-- (void)notificationsReceiverDidInvalidate:(id)a3;
-- (void)notificationsReceiverDidReceiveNotificationsBatch:(id)a3;
+- (void)itemCollectionGathererGatheredItems:(id)items;
+- (void)networkReachabilityChanged:(BOOL)changed;
+- (void)notificationReceiverDidReceiveNotifications:(id)notifications;
+- (void)notificationsReceiverDidFinishGathering:(id)gathering;
+- (void)notificationsReceiverDidInvalidate:(id)invalidate;
+- (void)notificationsReceiverDidReceiveNotificationsBatch:(id)batch;
 - (void)processUpdates;
-- (void)setBatchingParameters:(id *)a3;
-- (void)setCreateResultFunction:(void *)a3 withContext:(void *)a4 callbacks:(id *)a5;
-- (void)setCreateValueFunction:(void *)a3 withContext:(void *)a4 callbacks:(id *)a5;
-- (void)setExternalDocumentsBundleIdentifier:(id)a3;
-- (void)setQueryQueue:(id)a3;
-- (void)setSearchScope:(id)a3 withOptions:(unsigned int)a4;
-- (void)setSendHasUpdateNotification:(BOOL)a3;
+- (void)setBatchingParameters:(id *)parameters;
+- (void)setCreateResultFunction:(void *)function withContext:(void *)context callbacks:(id *)callbacks;
+- (void)setCreateValueFunction:(void *)function withContext:(void *)context callbacks:(id *)callbacks;
+- (void)setExternalDocumentsBundleIdentifier:(id)identifier;
+- (void)setQueryQueue:(id)queue;
+- (void)setSearchScope:(id)scope withOptions:(unsigned int)options;
+- (void)setSendHasUpdateNotification:(BOOL)notification;
 - (void)stop;
 @end
 
@@ -73,21 +73,21 @@
   return [v4 stringWithFormat:@"<%@:%p %@ state:%s predicate:%@>", v5, self, v3, v6, self->_predicate];
 }
 
-- (BRQuery)initWithQuery:(id)a3 values:(id)a4 sortingAttributes:(id)a5 items:(id)a6
+- (BRQuery)initWithQuery:(id)query values:(id)values sortingAttributes:(id)attributes items:(id)items
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  queryCopy = query;
+  valuesCopy = values;
+  attributesCopy = attributes;
+  itemsCopy = items;
   v49.receiver = self;
   v49.super_class = BRQuery;
   v14 = [(BRQuery *)&v49 init];
-  [v14 setQuery:v10];
-  v15 = [v10 predicate];
+  [v14 setQuery:queryCopy];
+  predicate = [queryCopy predicate];
   v16 = *(v14 + 6);
-  *(v14 + 6) = v15;
+  *(v14 + 6) = predicate;
 
-  v17 = [[BRItemCollectionGatherer alloc] initWithDelegate:v14 query:v10];
+  v17 = [[BRItemCollectionGatherer alloc] initWithDelegate:v14 query:queryCopy];
   v18 = *(v14 + 35);
   *(v14 + 35) = v17;
 
@@ -123,11 +123,11 @@
   objc_copyWeak(&v47, &location);
   br_pacer_set_event_handler(v31, &v43);
   br_pacer_resume(*(v14 + 41));
-  v32 = [v11 copy];
+  v32 = [valuesCopy copy];
   v33 = *(v14 + 12);
   *(v14 + 12) = v32;
 
-  v34 = [v12 copy];
+  v34 = [attributesCopy copy];
   v35 = *(v14 + 13);
   *(v14 + 13) = v34;
 
@@ -166,10 +166,10 @@ void __56__BRQuery_initWithQuery_values_sortingAttributes_items___block_invoke(u
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)valuesOfAttribute:(id)a3
+- (id)valuesOfAttribute:(id)attribute
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributeCopy = attribute;
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableArray count](self->_results, "count")}];
   v16 = 0u;
   v17 = 0u;
@@ -195,7 +195,7 @@ void __56__BRQuery_initWithQuery_values_sortingAttributes_items___block_invoke(u
 
         v9 = *(*(&v16 + 1) + 8 * v11);
 
-        v13 = [v9 attributeForName:{v4, v16}];
+        v13 = [v9 attributeForName:{attributeCopy, v16}];
         if (v13)
         {
           [v5 addObject:v13];
@@ -217,7 +217,7 @@ void __56__BRQuery_initWithQuery_values_sortingAttributes_items___block_invoke(u
   return v5;
 }
 
-- (void)_setQueryState:(int)a3
+- (void)_setQueryState:(int)state
 {
   v30 = *MEMORY[0x1E69E9840];
   memset(v22, 0, sizeof(v22));
@@ -226,11 +226,11 @@ void __56__BRQuery_initWithQuery_values_sortingAttributes_items___block_invoke(u
   v6 = brc_default_log(1, 0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v18 = queryStateToCString[a3];
+    v18 = queryStateToCString[state];
     *location = 134218754;
     *&location[4] = v22[0];
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2080;
     v27 = v18;
     v28 = 2112;
@@ -238,8 +238,8 @@ void __56__BRQuery_initWithQuery_values_sortingAttributes_items___block_invoke(u
     _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx %@: setting state to %s%@", location, 0x2Au);
   }
 
-  self->_queryState = a3;
-  if (a3 == 4)
+  self->_queryState = state;
+  if (state == 4)
   {
     [(BRItemCollectionGatherer *)self->_collectionGatherer invalidate];
     collectionGatherer = self->_collectionGatherer;
@@ -250,18 +250,18 @@ void __56__BRQuery_initWithQuery_values_sortingAttributes_items___block_invoke(u
     networkReachabilityToken = self->_networkReachabilityToken;
     self->_networkReachabilityToken = 0;
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v16 = getUIApplicationWillResignActiveNotification();
-    [v11 removeObserver:self name:v16 object:0];
+    [defaultCenter removeObserver:self name:v16 object:0];
 
     v13 = getUIApplicationDidBecomeActiveNotification();
-    [v11 removeObserver:self name:v13 object:0];
+    [defaultCenter removeObserver:self name:v13 object:0];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     if (!self->_networkReachabilityToken)
     {
@@ -287,12 +287,12 @@ LABEL_9:
       objc_destroyWeak(location);
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v12 = getUIApplicationWillResignActiveNotification();
-    [v11 addObserver:self selector:sel__applicationWillResignActive_ name:v12 object:0];
+    [defaultCenter addObserver:self selector:sel__applicationWillResignActive_ name:v12 object:0];
 
     v13 = getUIApplicationDidBecomeActiveNotification();
-    [v11 addObserver:self selector:sel__applicationDidBecomeActive_ name:v13 object:0];
+    [defaultCenter addObserver:self selector:sel__applicationDidBecomeActive_ name:v13 object:0];
     goto LABEL_9;
   }
 
@@ -378,15 +378,15 @@ uint64_t __24__BRQuery_enableUpdates__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_performBlockAsync:(id)a3
+- (void)_performBlockAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __30__BRQuery__performBlockAsync___block_invoke;
   v12[3] = &unk_1E7A16670;
   v12[4] = self;
-  v5 = v4;
+  v5 = asyncCopy;
   v13 = v5;
   v6 = MEMORY[0x1B26FEA90](v12);
   queryQueue = self->_queryQueue;
@@ -482,7 +482,7 @@ void __30__BRQuery__performBlockAsync___block_invoke(uint64_t a1)
     *buf = 134218498;
     v9 = v7[0];
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v3;
     _os_log_debug_impl(&dword_1AE2A9000, v4, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx stopping %@%@", buf, 0x20u);
@@ -516,7 +516,7 @@ void __30__BRQuery__performBlockAsync___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (unsigned)executeWithOptions:(unint64_t)a3
+- (unsigned)executeWithOptions:(unint64_t)options
 {
   if (self->_results)
   {
@@ -535,24 +535,24 @@ void __30__BRQuery__performBlockAsync___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (id)attributeValueForName:(id)a3 forResultAtIndex:(int64_t)a4
+- (id)attributeValueForName:(id)name forResultAtIndex:(int64_t)index
 {
-  v6 = a3;
-  if ([(NSMutableArray *)self->_results count]<= a4)
+  nameCopy = name;
+  if ([(NSMutableArray *)self->_results count]<= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_results objectAtIndex:a4];
-    v8 = [v7 attributeForName:v6];
+    v7 = [(NSMutableArray *)self->_results objectAtIndex:index];
+    v8 = [v7 attributeForName:nameCopy];
   }
 
   return v8;
 }
 
-- (int64_t)indexOfResult:(const void *)a3
+- (int64_t)indexOfResult:(const void *)result
 {
   v5 = [(NSMutableArray *)self->_results count];
   if (v5 < 1)
@@ -566,7 +566,7 @@ void __30__BRQuery__performBlockAsync___block_invoke(uint64_t a1)
   {
     create_result_callbacks_equal = self->_create_result_callbacks_equal;
     v9 = [(NSMutableArray *)self->_results objectAtIndex:v7];
-    LODWORD(create_result_callbacks_equal) = create_result_callbacks_equal([v9 replacement], a3);
+    LODWORD(create_result_callbacks_equal) = create_result_callbacks_equal([v9 replacement], result);
 
     if (create_result_callbacks_equal)
     {
@@ -582,38 +582,38 @@ void __30__BRQuery__performBlockAsync___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)_replacementObjectForQueryItem:(id)a3
+- (id)_replacementObjectForQueryItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
+  itemCopy = item;
+  v5 = itemCopy;
   if (self->_create_result_fn)
   {
-    v6 = [v4 replacement];
-    if (!v6)
+    replacement = [itemCopy replacement];
+    if (!replacement)
     {
-      v6 = (self->_create_result_fn)(self, v5, self->_create_result_context);
-      [v5 setReplacement:v6];
+      replacement = (self->_create_result_fn)(self, v5, self->_create_result_context);
+      [v5 setReplacement:replacement];
     }
   }
 
   else
   {
-    v6 = v4;
+    replacement = itemCopy;
   }
 
-  return v6;
+  return replacement;
 }
 
-- (id)_replacementObjectsForArrayOfQueryItem:(id)a3
+- (id)_replacementObjectsForArrayOfQueryItem:(id)item
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  itemCopy = item;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = itemCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -646,42 +646,42 @@ void __30__BRQuery__performBlockAsync___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (const)resultAtIndex:(int64_t)a3
+- (const)resultAtIndex:(int64_t)index
 {
-  if ([(NSMutableArray *)self->_results count]<= a3)
+  if ([(NSMutableArray *)self->_results count]<= index)
   {
     return 0;
   }
 
-  v5 = [(NSMutableArray *)self->_results objectAtIndex:a3];
+  v5 = [(NSMutableArray *)self->_results objectAtIndex:index];
   v6 = [(BRQuery *)self _replacementObjectForQueryItem:v5];
 
   return v6;
 }
 
-- (void)setBatchingParameters:(id *)a3
+- (void)setBatchingParameters:(id *)parameters
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var4;
-  *&self->_batchingParameters.progress_max_num = *&a3->var2;
+  v3 = *&parameters->var0;
+  v4 = *&parameters->var4;
+  *&self->_batchingParameters.progress_max_num = *&parameters->var2;
   *&self->_batchingParameters.update_max_num = v4;
   *&self->_batchingParameters.first_max_num = v3;
 }
 
-- (void)setExternalDocumentsBundleIdentifier:(id)a3
+- (void)setExternalDocumentsBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCreateResultFunction:(void *)a3 withContext:(void *)a4 callbacks:(id *)a5
+- (void)setCreateResultFunction:(void *)function withContext:(void *)context callbacks:(id *)callbacks
 {
-  self->_create_result_fn = a3;
-  self->_create_result_context = a4;
-  if (!a5)
+  self->_create_result_fn = function;
+  self->_create_result_context = context;
+  if (!callbacks)
   {
     self->_create_result_callbacks_equal = MLEqualCallback;
 LABEL_7:
@@ -689,14 +689,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  var4 = a5->var4;
+  var4 = callbacks->var4;
   if (!var4)
   {
     var4 = MLEqualCallback;
   }
 
   self->_create_result_callbacks_equal = var4;
-  var2 = a5->var2;
+  var2 = callbacks->var2;
   if (!var2)
   {
     goto LABEL_7;
@@ -706,11 +706,11 @@ LABEL_8:
   self->_create_result_callbacks_release = var2;
 }
 
-- (void)setCreateValueFunction:(void *)a3 withContext:(void *)a4 callbacks:(id *)a5
+- (void)setCreateValueFunction:(void *)function withContext:(void *)context callbacks:(id *)callbacks
 {
-  self->_create_value_fn = a3;
-  self->_create_value_context = a4;
-  if (!a5)
+  self->_create_value_fn = function;
+  self->_create_value_context = context;
+  if (!callbacks)
   {
     self->_create_value_callbacks_equal = MLEqualCallback;
 LABEL_7:
@@ -718,14 +718,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  var4 = a5->var4;
+  var4 = callbacks->var4;
   if (!var4)
   {
     var4 = MLEqualCallback;
   }
 
   self->_create_value_callbacks_equal = var4;
-  var2 = a5->var2;
+  var2 = callbacks->var2;
   if (!var2)
   {
     goto LABEL_7;
@@ -735,22 +735,22 @@ LABEL_8:
   self->_create_value_callbacks_release = var2;
 }
 
-- (void)setSearchScope:(id)a3 withOptions:(unsigned int)a4
+- (void)setSearchScope:(id)scope withOptions:(unsigned int)options
 {
-  v6 = [a3 copy];
+  v6 = [scope copy];
   searchScopes = self->_searchScopes;
   self->_searchScopes = v6;
 
-  self->_scopeOptions = a4;
+  self->_scopeOptions = options;
 }
 
-- (void)setQueryQueue:(id)a3
+- (void)setQueryQueue:(id)queue
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_queryQueue != v5)
+  queueCopy = queue;
+  v6 = queueCopy;
+  if (self->_queryQueue != queueCopy)
   {
-    if ([(NSOperationQueue *)v5 maxConcurrentOperationCount]!= 1)
+    if ([(NSOperationQueue *)queueCopy maxConcurrentOperationCount]!= 1)
     {
       v7 = brc_bread_crumbs("[BRQuery setQueryQueue:]", 784);
       v8 = brc_default_log(0, 0);
@@ -760,11 +760,11 @@ LABEL_8:
       }
     }
 
-    objc_storeStrong(&self->_queryQueue, a3);
+    objc_storeStrong(&self->_queryQueue, queue);
   }
 }
 
-- (void)_postNote:(__CFString *)a3
+- (void)_postNote:(__CFString *)note
 {
   v5 = brc_bread_crumbs("[BRQuery _postNote:]", 797);
   v6 = brc_default_log(1, 0);
@@ -773,37 +773,37 @@ LABEL_8:
     [BRQuery _postNote:];
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:a3 object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:note object:self];
 }
 
-- (void)_postNote:(__CFString *)a3 userInfo:(id)a4
+- (void)_postNote:(__CFString *)note userInfo:(id)info
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  infoCopy = info;
   v7 = brc_bread_crumbs("[BRQuery _postNote:userInfo:]", 803);
   v8 = brc_default_log(1, 0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412802;
-    v12 = a3;
+    noteCopy = note;
     v13 = 2112;
-    v14 = v6;
+    v14 = infoCopy;
     v15 = 2112;
     v16 = v7;
     _os_log_debug_impl(&dword_1AE2A9000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] posting %@: %@%@", &v11, 0x20u);
   }
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:a3 object:self userInfo:v6];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:note object:self userInfo:infoCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_collectUpdates:(id)a3
+- (BOOL)_collectUpdates:(id)updates
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   memset(v34, 0, sizeof(v34));
   __brc_create_section(0, "[BRQuery _collectUpdates:]", 809, 0, v34);
   v5 = brc_bread_crumbs("[BRQuery _collectUpdates:]", 809);
@@ -813,7 +813,7 @@ LABEL_8:
     *buf = 134218498;
     v37 = v34[0];
     v38 = 2112;
-    v39 = v4;
+    v39 = updatesCopy;
     v40 = 2112;
     v41 = v5;
     _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx changes = %@%@", buf, 0x20u);
@@ -823,7 +823,7 @@ LABEL_8:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = updatesCopy;
   v7 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v7)
   {
@@ -839,10 +839,10 @@ LABEL_8:
 
         v10 = *(*(&v30 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 fileObjectID];
-        v13 = [v10 isDead];
-        v14 = [v10 diffs];
-        if ((v13 & 1) == 0)
+        fileObjectID = [v10 fileObjectID];
+        isDead = [v10 isDead];
+        diffs = [v10 diffs];
+        if ((isDead & 1) == 0)
         {
           if ([(NSPredicate *)self->_predicate evaluateWithObject:v10])
           {
@@ -855,26 +855,26 @@ LABEL_8:
 
         v15 = 1;
 LABEL_13:
-        v16 = [(NSMutableDictionary *)self->_resultsByRowID objectForKey:v12];
+        v16 = [(NSMutableDictionary *)self->_resultsByRowID objectForKey:fileObjectID];
         if (v16)
         {
           if (v15)
           {
-            [(NSMutableDictionary *)self->_toBeReplacedByFileObjectID removeObjectForKey:v12];
+            [(NSMutableDictionary *)self->_toBeReplacedByFileObjectID removeObjectForKey:fileObjectID];
 LABEL_30:
-            [(NSMutableDictionary *)self->_toBeRemovedByFileObjectID setObject:v16 forKey:v12];
+            [(NSMutableDictionary *)self->_toBeRemovedByFileObjectID setObject:v16 forKey:fileObjectID];
             goto LABEL_33;
           }
 
-          if ((v14 & 0xC030) != 0)
+          if ((diffs & 0xC030) != 0)
           {
             active_platform = dyld_get_active_platform();
             if ((active_platform & 0xFFFFFFFB) == 2 || active_platform == 1 || active_platform == 11)
             {
               if ((dyld_program_sdk_at_least() & 1) == 0)
               {
-                [(NSMutableDictionary *)self->_toBeReplacedByFileObjectID removeObjectForKey:v12];
-                [(NSMutableDictionary *)self->_toBeInsertedByFileObjectID setObject:v10 forKey:v12];
+                [(NSMutableDictionary *)self->_toBeReplacedByFileObjectID removeObjectForKey:fileObjectID];
+                [(NSMutableDictionary *)self->_toBeInsertedByFileObjectID setObject:v10 forKey:fileObjectID];
                 goto LABEL_30;
               }
             }
@@ -885,8 +885,8 @@ LABEL_30:
             }
           }
 
-          [(NSMutableDictionary *)self->_toBeReplacedByFileObjectID setObject:v10 forKey:v12];
-          [(NSMutableDictionary *)self->_toBeRemovedByFileObjectID removeObjectForKey:v12];
+          [(NSMutableDictionary *)self->_toBeReplacedByFileObjectID setObject:v10 forKey:fileObjectID];
+          [(NSMutableDictionary *)self->_toBeRemovedByFileObjectID removeObjectForKey:fileObjectID];
         }
 
         else
@@ -894,16 +894,16 @@ LABEL_30:
           toBeInsertedByFileObjectID = self->_toBeInsertedByFileObjectID;
           if (v15)
           {
-            v16 = [(NSMutableDictionary *)toBeInsertedByFileObjectID objectForKey:v12];
+            v16 = [(NSMutableDictionary *)toBeInsertedByFileObjectID objectForKey:fileObjectID];
             if ([v16 canMerge:v10])
             {
-              [(NSMutableDictionary *)self->_toBeInsertedByFileObjectID removeObjectForKey:v12];
+              [(NSMutableDictionary *)self->_toBeInsertedByFileObjectID removeObjectForKey:fileObjectID];
             }
           }
 
           else
           {
-            v19 = [(NSMutableDictionary *)toBeInsertedByFileObjectID objectForKey:v12];
+            v19 = [(NSMutableDictionary *)toBeInsertedByFileObjectID objectForKey:fileObjectID];
             v16 = v19;
             if (v19)
             {
@@ -912,7 +912,7 @@ LABEL_30:
 
             else
             {
-              [(NSMutableDictionary *)self->_toBeInsertedByFileObjectID setObject:v10 forKey:v12];
+              [(NSMutableDictionary *)self->_toBeInsertedByFileObjectID setObject:v10 forKey:fileObjectID];
               v16 = 0;
             }
           }
@@ -961,7 +961,7 @@ LABEL_33:
 - (void)_processUpdates
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [*a1 subarrayWithRange:{0, 200}];
+  v5 = [*self subarrayWithRange:{0, 200}];
   v7[0] = 67109634;
   v7[1] = 200;
   v8 = 2112;
@@ -985,10 +985,10 @@ void __26__BRQuery__processUpdates__block_invoke(uint64_t a1, unint64_t a2)
   [v4 setReplacement:0];
 }
 
-- (void)_processChanges:(id)a3
+- (void)_processChanges:(id)changes
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changesCopy = changes;
   memset(v22, 0, sizeof(v22));
   __brc_create_section(0, "[BRQuery _processChanges:]", 998, 0, v22);
   v5 = brc_bread_crumbs("[BRQuery _processChanges:]", 998);
@@ -998,9 +998,9 @@ void __26__BRQuery__processUpdates__block_invoke(uint64_t a1, unint64_t a2)
     *buf = 134218754;
     v25 = v22[0];
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
-    v29 = v4;
+    v29 = changesCopy;
     v30 = 2112;
     v31 = v5;
     _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx %@: processing changes %@%@", buf, 0x2Au);
@@ -1058,7 +1058,7 @@ void __26__BRQuery__processUpdates__block_invoke(uint64_t a1, unint64_t a2)
       self->_needsCrashMarking = 0;
     }
 
-    if ([(BRQuery *)self _collectUpdates:v4, v18]|| self->_needsCrashEvicting && [(NSMutableArray *)self->_results count])
+    if ([(BRQuery *)self _collectUpdates:changesCopy, v18]|| self->_needsCrashEvicting && [(NSMutableArray *)self->_results count])
     {
       [(BRQuery *)self _processUpdates];
     }
@@ -1089,8 +1089,8 @@ void __26__BRQuery__processUpdates__block_invoke(uint64_t a1, unint64_t a2)
 {
   if (!atomic_load_explicit(&self->_disableCount, memory_order_acquire))
   {
-    v3 = [(BRQuery *)self receiver];
-    [v3 flush];
+    receiver = [(BRQuery *)self receiver];
+    [receiver flush];
   }
 }
 
@@ -1102,14 +1102,14 @@ void __26__BRQuery__processUpdates__block_invoke(uint64_t a1, unint64_t a2)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSendHasUpdateNotification:(BOOL)a3
+- (void)setSendHasUpdateNotification:(BOOL)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __40__BRQuery_setSendHasUpdateNotification___block_invoke;
   v3[3] = &unk_1E7A15768;
   v3[4] = self;
-  v4 = a3;
+  notificationCopy = notification;
   [(BRQuery *)self _performBlockAsync:v3];
 }
 
@@ -1147,16 +1147,16 @@ uint64_t __40__BRQuery_setSendHasUpdateNotification___block_invoke(uint64_t resu
   return result;
 }
 
-- (void)notificationsReceiverDidInvalidate:(id)a3
+- (void)notificationsReceiverDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__BRQuery_notificationsReceiverDidInvalidate___block_invoke;
   v6[3] = &unk_1E7A14A08;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = invalidateCopy;
+  v5 = invalidateCopy;
   [(BRQuery *)self _performBlockAsync:v6];
 }
 
@@ -1238,10 +1238,10 @@ void __46__BRQuery_notificationsReceiverDidInvalidate___block_invoke(uint64_t a1
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notificationsReceiverDidFinishGathering:(id)a3
+- (void)notificationsReceiverDidFinishGathering:(id)gathering
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  gatheringCopy = gathering;
   memset(v9, 0, sizeof(v9));
   __brc_create_section(0, "[BRQuery notificationsReceiverDidFinishGathering:]", 1113, 0, v9);
   v5 = brc_bread_crumbs("[BRQuery notificationsReceiverDidFinishGathering:]", 1113);
@@ -1251,7 +1251,7 @@ void __46__BRQuery_notificationsReceiverDidInvalidate___block_invoke(uint64_t a1
     *buf = 134218498;
     v11 = v9[0];
     v12 = 2112;
-    v13 = v4;
+    v13 = gatheringCopy;
     v14 = 2112;
     v15 = v5;
     _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx received gathering done for %@%@", buf, 0x20u);
@@ -1262,7 +1262,7 @@ void __46__BRQuery_notificationsReceiverDidInvalidate___block_invoke(uint64_t a1
   v8[2] = __51__BRQuery_notificationsReceiverDidFinishGathering___block_invoke;
   v8[3] = &unk_1E7A16978;
   v8[4] = self;
-  [v4 dequeue:-1 block:v8];
+  [gatheringCopy dequeue:-1 block:v8];
   __brc_leave_section(v9);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -1282,10 +1282,10 @@ void __51__BRQuery_notificationsReceiverDidFinishGathering___block_invoke(uint64
   [v4 _performBlockAsync:v6];
 }
 
-- (void)notificationsReceiverDidReceiveNotificationsBatch:(id)a3
+- (void)notificationsReceiverDidReceiveNotificationsBatch:(id)batch
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  batchCopy = batch;
   memset(v9, 0, sizeof(v9));
   __brc_create_section(0, "[BRQuery notificationsReceiverDidReceiveNotificationsBatch:]", 1124, 0, v9);
   v5 = brc_bread_crumbs("[BRQuery notificationsReceiverDidReceiveNotificationsBatch:]", 1124);
@@ -1295,7 +1295,7 @@ void __51__BRQuery_notificationsReceiverDidFinishGathering___block_invoke(uint64
     *buf = 134218498;
     v11 = v9[0];
     v12 = 2112;
-    v13 = v4;
+    v13 = batchCopy;
     v14 = 2112;
     v15 = v5;
     _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx received notifications for %@%@", buf, 0x20u);
@@ -1306,7 +1306,7 @@ void __51__BRQuery_notificationsReceiverDidFinishGathering___block_invoke(uint64
   v8[2] = __61__BRQuery_notificationsReceiverDidReceiveNotificationsBatch___block_invoke;
   v8[3] = &unk_1E7A16978;
   v8[4] = self;
-  [v4 dequeue:-1 block:v8];
+  [batchCopy dequeue:-1 block:v8];
   __brc_leave_section(v9);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -1326,7 +1326,7 @@ void __61__BRQuery_notificationsReceiverDidReceiveNotificationsBatch___block_inv
   [v4 _performBlockAsync:v6];
 }
 
-- (void)notificationReceiverDidReceiveNotifications:(id)a3
+- (void)notificationReceiverDidReceiveNotifications:(id)notifications
 {
   if (self->_sendHasUpdateNotification)
   {
@@ -1341,9 +1341,9 @@ void __61__BRQuery_notificationsReceiverDidReceiveNotificationsBatch___block_inv
   }
 }
 
-- (void)networkReachabilityChanged:(BOOL)a3
+- (void)networkReachabilityChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v17 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_progressQueue);
   memset(v10, 0, sizeof(v10));
@@ -1354,7 +1354,7 @@ void __61__BRQuery_notificationsReceiverDidReceiveNotificationsBatch___block_inv
   {
     v8 = "not reachable";
     *buf = 134218498;
-    if (v3)
+    if (changedCopy)
     {
       v8 = "reachable";
     }
@@ -1367,7 +1367,7 @@ void __61__BRQuery_notificationsReceiverDidReceiveNotificationsBatch___block_inv
     _os_log_debug_impl(&dword_1AE2A9000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx network is %s%@", buf, 0x20u);
   }
 
-  self->_isNetworkOffline = !v3;
+  self->_isNetworkOffline = !changedCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __38__BRQuery_networkReachabilityChanged___block_invoke;
@@ -1432,36 +1432,36 @@ void __38__BRQuery_networkReachabilityChanged___block_invoke_2(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_monitorTransferForFPItemIfNecessary:(id)a3
+- (void)_monitorTransferForFPItemIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   dispatch_assert_queue_V2(self->_progressQueue);
-  if (([v4 isUploading] & 1) != 0 || objc_msgSend(v4, "isDownloading"))
+  if (([necessaryCopy isUploading] & 1) != 0 || objc_msgSend(necessaryCopy, "isDownloading"))
   {
     progressObserverByFPItemID = self->_progressObserverByFPItemID;
-    v6 = [v4 itemID];
-    v7 = [(NSMutableDictionary *)progressObserverByFPItemID objectForKeyedSubscript:v6];
+    itemID = [necessaryCopy itemID];
+    itemID3 = [(NSMutableDictionary *)progressObserverByFPItemID objectForKeyedSubscript:itemID];
 
-    if (v7)
+    if (itemID3)
     {
-      [(BRFPItemProgressObserver *)v7 updateWithFPItem:v4];
+      [(BRFPItemProgressObserver *)itemID3 updateWithFPItem:necessaryCopy];
     }
 
     else
     {
-      v7 = [[BRFPItemProgressObserver alloc] initWithFPItem:v4 queue:self->_progressQueue];
+      itemID3 = [[BRFPItemProgressObserver alloc] initWithFPItem:necessaryCopy queue:self->_progressQueue];
       objc_initWeak(&location, self);
       v10 = MEMORY[0x1E69E9820];
       v11 = 3221225472;
       v12 = __48__BRQuery__monitorTransferForFPItemIfNecessary___block_invoke;
       v13 = &unk_1E7A169A0;
       objc_copyWeak(&v14, &location);
-      [(BRFPItemProgressObserver *)v7 setProgressHandler:&v10];
+      [(BRFPItemProgressObserver *)itemID3 setProgressHandler:&v10];
       v8 = self->_progressObserverByFPItemID;
-      v9 = [v4 itemID];
-      [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v9];
+      itemID2 = [necessaryCopy itemID];
+      [(NSMutableDictionary *)v8 setObject:itemID3 forKeyedSubscript:itemID2];
 
-      [(BRFPItemProgressObserver *)v7 start];
+      [(BRFPItemProgressObserver *)itemID3 start];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
     }
@@ -1469,8 +1469,8 @@ void __38__BRQuery_networkReachabilityChanged___block_invoke_2(uint64_t a1)
 
   else
   {
-    v7 = [v4 itemID];
-    [(BRQuery *)self _stopMonitoringTransferForFPItemID:v7];
+    itemID3 = [necessaryCopy itemID];
+    [(BRQuery *)self _stopMonitoringTransferForFPItemID:itemID3];
   }
 }
 
@@ -1489,38 +1489,38 @@ void __48__BRQuery__monitorTransferForFPItemIfNecessary___block_invoke(uint64_t 
   }
 }
 
-- (void)_monitorNetworkForQueryItemIfNecessary:(id)a3 fpItemID:(id)a4
+- (void)_monitorNetworkForQueryItemIfNecessary:(id)necessary fpItemID:(id)d
 {
-  v7 = a4;
-  v6 = a3;
-  if ([v6 isInTransfer])
+  dCopy = d;
+  necessaryCopy = necessary;
+  if ([necessaryCopy isInTransfer])
   {
-    [v6 setIsNetworkOffline:self->_isNetworkOffline];
+    [necessaryCopy setIsNetworkOffline:self->_isNetworkOffline];
 
-    [(NSMutableSet *)self->_fpItemIDsInTransfer addObject:v7];
+    [(NSMutableSet *)self->_fpItemIDsInTransfer addObject:dCopy];
   }
 
   else
   {
-    [v6 setIsNetworkOffline:0];
+    [necessaryCopy setIsNetworkOffline:0];
 
-    [(NSMutableSet *)self->_fpItemIDsInTransfer removeObject:v7];
+    [(NSMutableSet *)self->_fpItemIDsInTransfer removeObject:dCopy];
   }
 }
 
-- (void)_stopMonitoringTransferForFPItemID:(id)a3
+- (void)_stopMonitoringTransferForFPItemID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_progressQueue);
-  v4 = [(NSMutableDictionary *)self->_progressObserverByFPItemID objectForKeyedSubscript:v6];
+  v4 = [(NSMutableDictionary *)self->_progressObserverByFPItemID objectForKeyedSubscript:dCopy];
   v5 = v4;
   if (v4)
   {
     [v4 stop];
-    [(NSMutableDictionary *)self->_progressObserverByFPItemID setObject:0 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_progressObserverByFPItemID setObject:0 forKeyedSubscript:dCopy];
   }
 
-  [(NSMutableSet *)self->_fpItemIDsWithProgressUpdates removeObject:v6];
+  [(NSMutableSet *)self->_fpItemIDsWithProgressUpdates removeObject:dCopy];
 }
 
 - (void)_stopProgressObservers
@@ -1739,11 +1739,11 @@ void __38__BRQuery__processProgressUpdateBatch__block_invoke_138(uint64_t a1, vo
   [v8 setAttribute:v7 forKey:@"ul%"];
 }
 
-- (id)_classifyItems:(id)a3 deletedItemIDs:(id)a4
+- (id)_classifyItems:(id)items deletedItemIDs:(id)ds
 {
   v71 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  dsCopy = ds;
   v43 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v48 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1751,7 +1751,7 @@ void __38__BRQuery__processProgressUpdateBatch__block_invoke_138(uint64_t a1, vo
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v7;
+  obj = dsCopy;
   v8 = [obj countByEnumeratingWithState:&v53 objects:v70 count:16];
   if (v8)
   {
@@ -1792,7 +1792,7 @@ void __38__BRQuery__processProgressUpdateBatch__block_invoke_138(uint64_t a1, vo
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v46 = v6;
+  v46 = itemsCopy;
   v17 = [v46 countByEnumeratingWithState:&v49 objects:v67 count:16];
   if (v17)
   {
@@ -1815,26 +1815,26 @@ void __38__BRQuery__processProgressUpdateBatch__block_invoke_138(uint64_t a1, vo
         v22 = *(*(&v49 + 1) + 8 * v21);
         if (v16 && [*(*(&v49 + 1) + 8 * v21) br_isDocumentsFolder])
         {
-          v23 = brc_bread_crumbs("[BRQuery _classifyItems:deletedItemIDs:]", 1325);
+          itemID = brc_bread_crumbs("[BRQuery _classifyItems:deletedItemIDs:]", 1325);
           v24 = brc_default_log(1, 0);
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
           {
             *buf = v41;
             v60 = v22;
             v61 = 2112;
-            *v62 = v23;
+            *v62 = itemID;
             _os_log_debug_impl(&dword_1AE2A9000, v24, OS_LOG_TYPE_DEBUG, "[DEBUG] Ignoring Documents Folder %@ from NSMDQ results%@", buf, 0x16u);
           }
 
           goto LABEL_35;
         }
 
-        v23 = [v22 itemID];
+        itemID = [v22 itemID];
         predicate = self->_predicate;
         v26 = [[BRQueryItem alloc] initWithFPItem:v22];
         v27 = [(NSPredicate *)predicate evaluateWithObject:v26];
 
-        v24 = [(NSMutableDictionary *)self->_fpItemIDToResultItem objectForKey:v23];
+        v24 = [(NSMutableDictionary *)self->_fpItemIDToResultItem objectForKey:itemID];
         if (v24)
         {
           v28 = [(NSMutableArray *)self->_results indexOfObjectIdenticalTo:v24];
@@ -1850,9 +1850,9 @@ void __38__BRQuery__processProgressUpdateBatch__block_invoke_138(uint64_t a1, vo
           else if (v27)
           {
 LABEL_27:
-            v29 = [v22 fileURL];
+            fileURL = [v22 fileURL];
 
-            if (v29)
+            if (fileURL)
             {
               v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v28];
               [v43 setObject:v22 forKey:v30];
@@ -1867,22 +1867,22 @@ LABEL_27:
           v33 = brc_default_log(1, 0);
           if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
           {
-            v36 = [v22 fileURL];
+            fileURL2 = [v22 fileURL];
             *buf = 138413058;
             v60 = v22;
             v61 = 1024;
             *v62 = v27;
             *&v62[4] = 2112;
-            *&v62[6] = v36;
-            v37 = v36;
+            *&v62[6] = fileURL2;
+            v37 = fileURL2;
             v63 = 2112;
             v64 = v32;
             _os_log_debug_impl(&dword_1AE2A9000, v33, OS_LOG_TYPE_DEBUG, "[DEBUG] Removing %@ from the set -- itemSatisfiesPredicate = %d, url = %@%@", buf, 0x26u);
           }
 
-          v34 = [v22 itemID];
+          itemID2 = [v22 itemID];
           v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v28];
-          [v48 setObject:v34 forKey:v35];
+          [v48 setObject:itemID2 forKey:v35];
 
           v16 = v31;
           v20 = v44;
@@ -1920,20 +1920,20 @@ LABEL_35:
   return v38;
 }
 
-- (void)_handleAddedItemsNotifications:(id)a3 userInfo:(id)a4
+- (void)_handleAddedItemsNotifications:(id)notifications userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  notificationsCopy = notifications;
+  infoCopy = info;
+  if ([notificationsCopy count])
   {
     v8 = [(NSMutableArray *)self->_results count];
-    v9 = [v6 count];
+    v9 = [notificationsCopy count];
     v10 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{v8, v9}];
     WeakRetained = objc_loadWeakRetained(&self->_query);
     [WeakRetained willChange:2 valuesAtIndexes:v10 forKey:@"results"];
-    if (v7)
+    if (infoCopy)
     {
-      v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+      v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(notificationsCopy, "count")}];
     }
 
     else
@@ -1946,15 +1946,15 @@ LABEL_35:
     block[1] = 3221225472;
     block[2] = __51__BRQuery__handleAddedItemsNotifications_userInfo___block_invoke;
     block[3] = &unk_1E7A149E0;
-    v17 = v6;
+    v17 = notificationsCopy;
     v14 = v12;
     v18 = v14;
-    v19 = self;
+    selfCopy = self;
     dispatch_sync(progressQueue, block);
-    if (v7)
+    if (infoCopy)
     {
       v15 = [(BRQuery *)self _replacementObjectsForArrayOfQueryItem:v14];
-      [v7 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696A648]];
+      [infoCopy setObject:v15 forKeyedSubscript:*MEMORY[0x1E696A648]];
     }
 
     [WeakRetained didChange:2 valuesAtIndexes:v10 forKey:@"results"];
@@ -1996,11 +1996,11 @@ void __51__BRQuery__handleAddedItemsNotifications_userInfo___block_invoke_2(uint
   [v7 setObject:v3 forKey:v8];
 }
 
-- (void)_handleReplacedItemsNotifications:(id)a3 userInfo:(id)a4
+- (void)_handleReplacedItemsNotifications:(id)notifications userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  notificationsCopy = notifications;
+  infoCopy = info;
+  if ([notificationsCopy count])
   {
     v8 = objc_alloc_init(MEMORY[0x1E696AD50]);
     v22[0] = MEMORY[0x1E69E9820];
@@ -2009,12 +2009,12 @@ void __51__BRQuery__handleAddedItemsNotifications_userInfo___block_invoke_2(uint
     v22[3] = &unk_1E7A16A18;
     v9 = v8;
     v23 = v9;
-    [v6 enumerateKeysAndObjectsUsingBlock:v22];
+    [notificationsCopy enumerateKeysAndObjectsUsingBlock:v22];
     WeakRetained = objc_loadWeakRetained(&self->_query);
     [WeakRetained willChange:4 valuesAtIndexes:v9 forKey:@"results"];
-    if (v7)
+    if (infoCopy)
     {
-      v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+      v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(notificationsCopy, "count")}];
     }
 
     else
@@ -2027,15 +2027,15 @@ void __51__BRQuery__handleAddedItemsNotifications_userInfo___block_invoke_2(uint
     v16 = 3221225472;
     v17 = __54__BRQuery__handleReplacedItemsNotifications_userInfo___block_invoke_2;
     v18 = &unk_1E7A149E0;
-    v19 = v6;
+    v19 = notificationsCopy;
     v13 = v11;
     v20 = v13;
-    v21 = self;
+    selfCopy = self;
     dispatch_sync(progressQueue, &v15);
-    if (v7)
+    if (infoCopy)
     {
       v14 = [(BRQuery *)self _replacementObjectsForArrayOfQueryItem:v13, v15, v16, v17, v18, v19];
-      [v7 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696A650]];
+      [infoCopy setObject:v14 forKeyedSubscript:*MEMORY[0x1E696A650]];
     }
 
     [WeakRetained didChange:4 valuesAtIndexes:v9 forKey:{@"results", v15, v16, v17, v18}];
@@ -2094,17 +2094,17 @@ void __54__BRQuery__handleReplacedItemsNotifications_userInfo___block_invoke_3(u
   [v15 merge:v10 allowMergingFileObjectIDIfPossible:1];
 }
 
-- (void)_handleRemovedItemsNotifications:(id)a3 userInfo:(id)a4
+- (void)_handleRemovedItemsNotifications:(id)notifications userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  notificationsCopy = notifications;
+  infoCopy = info;
+  if ([notificationsCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_query);
     v9 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    if (v7)
+    if (infoCopy)
     {
-      v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+      v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(notificationsCopy, "count")}];
     }
 
     else
@@ -2117,18 +2117,18 @@ void __54__BRQuery__handleReplacedItemsNotifications_userInfo___block_invoke_3(u
     block[1] = 3221225472;
     block[2] = __53__BRQuery__handleRemovedItemsNotifications_userInfo___block_invoke;
     block[3] = &unk_1E7A15740;
-    v17 = v6;
+    v17 = notificationsCopy;
     v12 = v10;
     v18 = v12;
-    v19 = self;
+    selfCopy = self;
     v13 = v9;
     v20 = v13;
     dispatch_sync(progressQueue, block);
     [WeakRetained willChange:3 valuesAtIndexes:v13 forKey:@"results"];
-    if (v7)
+    if (infoCopy)
     {
       v14 = [(BRQuery *)self _replacementObjectsForArrayOfQueryItem:v12];
-      [v7 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696A658]];
+      [infoCopy setObject:v14 forKeyedSubscript:*MEMORY[0x1E696A658]];
     }
 
     v15[0] = MEMORY[0x1E69E9820];
@@ -2214,16 +2214,16 @@ void __50__BRQuery_itemCollectionGathererFinishedGathering__block_invoke(uint64_
   }
 }
 
-- (void)itemCollectionGathererGatheredItems:(id)a3
+- (void)itemCollectionGathererGatheredItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__BRQuery_itemCollectionGathererGatheredItems___block_invoke;
   v6[3] = &unk_1E7A14A08;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = itemsCopy;
+  v5 = itemsCopy;
   [(BRQuery *)self _performBlockAsync:v6];
 }
 
@@ -2266,19 +2266,19 @@ void __47__BRQuery_itemCollectionGathererGatheredItems___block_invoke(uint64_t a
   }
 }
 
-- (void)itemCollectionGathererDidReceiveUpdates:(id)a3 deleteItemsWithIDs:(id)a4
+- (void)itemCollectionGathererDidReceiveUpdates:(id)updates deleteItemsWithIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  dsCopy = ds;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__BRQuery_itemCollectionGathererDidReceiveUpdates_deleteItemsWithIDs___block_invoke;
   v10[3] = &unk_1E7A149E0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = updatesCopy;
+  v12 = dsCopy;
+  v8 = dsCopy;
+  v9 = updatesCopy;
   [(BRQuery *)self _performBlockAsync:v10];
 }
 
@@ -2420,21 +2420,21 @@ void __46__BRQuery_itemCollectionGathererDidInvalidate__block_invoke_144(uint64_
   [v4 setReplacement:0];
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activeCopy = active;
   queryState = self->_queryState;
   v6 = queryState > 4;
   v7 = (1 << queryState) & 0x13;
   if (v6 || v7 == 0)
   {
-    v9 = [MEMORY[0x1E69C7640] currentProcess];
+    currentProcess = [MEMORY[0x1E69C7640] currentProcess];
     v10 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.common" name:@"FinishTaskInterruptable"];
     v11 = objc_alloc(MEMORY[0x1E69C7548]);
     v21[0] = v10;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-    v13 = [v11 initWithExplanation:@"NSMDQ resigning" target:v9 attributes:v12];
+    v13 = [v11 initWithExplanation:@"NSMDQ resigning" target:currentProcess attributes:v12];
 
     [v13 acquireWithInvalidationHandler:&__block_literal_global_159];
     v14 = brc_bread_crumbs("[BRQuery _applicationWillResignActive:]", 1616);
@@ -2480,7 +2480,7 @@ uint64_t __40__BRQuery__applicationWillResignActive___block_invoke_160(uint64_t 
   return [*(a1 + 32) invalidate];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   v4 = brc_bread_crumbs("[BRQuery _applicationDidBecomeActive:]", 1627);
   v5 = brc_default_log(1, 0);

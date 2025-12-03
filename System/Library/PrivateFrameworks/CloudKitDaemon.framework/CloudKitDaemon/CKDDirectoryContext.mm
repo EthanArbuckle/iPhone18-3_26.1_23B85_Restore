@@ -1,8 +1,8 @@
 @interface CKDDirectoryContext
 + (id)daemonDatabaseDirectoryName;
-- (CKDDirectoryContext)initWithContainer:(id)a3;
-- (CKDDirectoryContext)initWithTestRootDirectory:(id)a3;
-- (id)applicationCachesDirectoryForDataContainerDirectory:(id)a3 usingHomeCachesDirectory:(BOOL)a4;
+- (CKDDirectoryContext)initWithContainer:(id)container;
+- (CKDDirectoryContext)initWithTestRootDirectory:(id)directory;
+- (id)applicationCachesDirectoryForDataContainerDirectory:(id)directory usingHomeCachesDirectory:(BOOL)cachesDirectory;
 @end
 
 @implementation CKDDirectoryContext
@@ -33,16 +33,16 @@ LABEL_8:
   return v3;
 }
 
-- (CKDDirectoryContext)initWithContainer:(id)a3
+- (CKDDirectoryContext)initWithContainer:(id)container
 {
   v211 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  containerCopy = container;
   v206.receiver = self;
   v206.super_class = CKDDirectoryContext;
   v7 = [(CKDDirectoryContext *)&v206 init];
   if (v7)
   {
-    v8 = objc_msgSend_containerID(v4, v5, v6);
+    v8 = objc_msgSend_containerID(containerCopy, v5, v6);
     v9 = *(v7 + 1);
     *(v7 + 1) = v8;
 
@@ -50,7 +50,7 @@ LABEL_8:
     v13 = *(v7 + 3);
     *(v7 + 3) = v12;
 
-    v16 = objc_msgSend_applicationBundleID(v4, v14, v15);
+    v16 = objc_msgSend_applicationBundleID(containerCopy, v14, v15);
     v17 = objc_alloc(MEMORY[0x277CC1E50]);
     v205 = 0;
     v19 = objc_msgSend_initWithBundleIdentifier_error_(v17, v18, v16, &v205);
@@ -113,12 +113,12 @@ LABEL_8:
 
     v199 = v32;
     v202 = objc_msgSend_applicationCachesDirectoryForDataContainerDirectory_usingHomeCachesDirectory_(v7, v39, v41, 0);
-    v44 = objc_msgSend_applicationBundleID(v4, v42, v43);
-    v47 = objc_msgSend_personaID(v4, v45, v46);
+    v44 = objc_msgSend_applicationBundleID(containerCopy, v42, v43);
+    v47 = objc_msgSend_personaID(containerCopy, v45, v46);
 
     if (v47)
     {
-      v50 = objc_msgSend_personaID(v4, v48, v49);
+      v50 = objc_msgSend_personaID(containerCopy, v48, v49);
       v52 = objc_msgSend_stringByAppendingString_(v44, v51, v50);
 
       v44 = v52;
@@ -130,10 +130,10 @@ LABEL_8:
     v56 = CKContainerEnvironmentString();
     v58 = objc_msgSend_stringByAppendingString_(v53, v57, v56);
 
-    v61 = objc_msgSend_accountOverrideInfo(v4, v59, v60);
+    v61 = objc_msgSend_accountOverrideInfo(containerCopy, v59, v60);
     v64 = objc_msgSend_accountID(v61, v62, v63);
 
-    v67 = objc_msgSend_accountOverrideInfo(v4, v65, v66);
+    v67 = objc_msgSend_accountOverrideInfo(containerCopy, v65, v66);
     v70 = v67;
     if (v64)
     {
@@ -150,14 +150,14 @@ LABEL_22:
         v203 = v41;
         if (*MEMORY[0x277CBC810] == 1)
         {
-          v80 = objc_msgSend_options(v4, v74, v75);
+          v80 = objc_msgSend_options(containerCopy, v74, v75);
           v83 = objc_msgSend_fakeEntitlements(v80, v81, v82);
           v86 = objc_msgSend_count(v83, v84, v85);
 
           if (v86)
           {
             v87 = MEMORY[0x277CCAAA0];
-            v88 = objc_msgSend_options(v4, v74, v75);
+            v88 = objc_msgSend_options(containerCopy, v74, v75);
             v91 = objc_msgSend_fakeEntitlements(v88, v89, v90);
             v93 = objc_msgSend_dataWithJSONObject_options_error_(v87, v92, v91, 0, 0);
 
@@ -189,18 +189,18 @@ LABEL_22:
 
         v103 = objc_msgSend_CKSafeHashStringForPathComponent(v58, v74, v75);
         objc_storeStrong(v7 + 2, v103);
-        v106 = objc_msgSend_deviceContext(v4, v104, v105);
+        v106 = objc_msgSend_deviceContext(containerCopy, v104, v105);
         v109 = objc_msgSend_testDevice(v106, v107, v108);
 
         if (v109)
         {
           v198 = v16;
-          v112 = objc_msgSend_deviceContext(v4, v110, v111);
+          v112 = objc_msgSend_deviceContext(containerCopy, v110, v111);
           v115 = objc_msgSend_testDevice(v112, v113, v114);
           v118 = objc_msgSend_daemonServer(v115, v116, v117);
           v121 = objc_msgSend_dataDirectory(v118, v119, v120);
 
-          v124 = objc_msgSend_deviceContext(v4, v122, v123);
+          v124 = objc_msgSend_deviceContext(containerCopy, v122, v123);
           v127 = objc_msgSend_testDevice(v124, v125, v126);
           v130 = objc_msgSend_deviceID(v127, v128, v129);
           v132 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v121, v131, v130, 1);
@@ -228,7 +228,7 @@ LABEL_22:
           v164 = *(v7 + 7);
           *(v7 + 7) = v163;
 
-          v167 = objc_msgSend_applicationBundleID(v4, v165, v166);
+          v167 = objc_msgSend_applicationBundleID(containerCopy, v165, v166);
           v170 = objc_msgSend_CKSafeStringForPathComponent(v167, v168, v169);
           v172 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v147, v171, v170, 1);
 
@@ -280,7 +280,7 @@ LABEL_41:
           v184 = *(v7 + 7);
           *(v7 + 7) = v183;
 
-          v187 = objc_msgSend_applicationBundleID(v4, v185, v186);
+          v187 = objc_msgSend_applicationBundleID(containerCopy, v185, v186);
           v190 = objc_msgSend_CKSafeStringForPathComponent(v187, v188, v189);
           v192 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v202, v191, v190, 1);
 
@@ -299,7 +299,7 @@ LABEL_41:
         goto LABEL_41;
       }
 
-      v70 = objc_msgSend_accountOverrideInfo(v4, v74, v75);
+      v70 = objc_msgSend_accountOverrideInfo(containerCopy, v74, v75);
       v71 = objc_msgSend_altDSID(v70, v76, v77);
     }
 
@@ -316,9 +316,9 @@ LABEL_42:
   return v7;
 }
 
-- (CKDDirectoryContext)initWithTestRootDirectory:(id)a3
+- (CKDDirectoryContext)initWithTestRootDirectory:(id)directory
 {
-  v5 = a3;
+  directoryCopy = directory;
   v27.receiver = self;
   v27.super_class = CKDDirectoryContext;
   v6 = [(CKDDirectoryContext *)&v27 init];
@@ -328,8 +328,8 @@ LABEL_42:
     containerIdentifier = v6->_containerIdentifier;
     v6->_containerIdentifier = @"com.apple.test.container";
 
-    v10 = objc_msgSend_applicationCachesDirectoryForDataContainerDirectory_usingHomeCachesDirectory_(v7, v9, v5, 0);
-    objc_storeStrong(&v7->_containerDirectory, a3);
+    v10 = objc_msgSend_applicationCachesDirectoryForDataContainerDirectory_usingHomeCachesDirectory_(v7, v9, directoryCopy, 0);
+    objc_storeStrong(&v7->_containerDirectory, directory);
     v13 = objc_msgSend_containerDirectory(v7, v11, v12);
     v15 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v13, v14, @"CloudKit", 1);
     v17 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v15, v16, @"FakeTestHash", 1);
@@ -351,22 +351,22 @@ LABEL_42:
   return v7;
 }
 
-- (id)applicationCachesDirectoryForDataContainerDirectory:(id)a3 usingHomeCachesDirectory:(BOOL)a4
+- (id)applicationCachesDirectoryForDataContainerDirectory:(id)directory usingHomeCachesDirectory:(BOOL)cachesDirectory
 {
-  v4 = a4;
+  cachesDirectoryCopy = cachesDirectory;
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v8 = v5;
-  if (v5)
+  directoryCopy = directory;
+  v8 = directoryCopy;
+  if (directoryCopy)
   {
-    v9 = objc_msgSend_path(v5, v6, v7);
+    v9 = objc_msgSend_path(directoryCopy, v6, v7);
     v11 = objc_msgSend_stringByAppendingPathComponent_(v9, v10, @"Library");
     v13 = objc_msgSend_stringByAppendingPathComponent_(v11, v12, @"Caches");
   }
 
   else
   {
-    if (v4)
+    if (cachesDirectoryCopy)
     {
       CKGetPersonaAwareHomeCacheDirectory(0, v6, v7);
     }

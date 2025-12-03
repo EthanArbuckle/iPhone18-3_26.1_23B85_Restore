@@ -1,8 +1,8 @@
 @interface MTPodcastEpisodeFilter
 - (MTPodcastEpisodeFilter)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)filterExcludingPlayed;
-- (id)predicateForPodcast:(id)a3;
+- (id)predicateForPodcast:(id)podcast;
 @end
 
 @implementation MTPodcastEpisodeFilter
@@ -29,7 +29,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setPlayStateFilter:self->_playStateFilter];
@@ -52,34 +52,34 @@
   return v2;
 }
 
-- (id)predicateForPodcast:(id)a3
+- (id)predicateForPodcast:(id)podcast
 {
-  v4 = a3;
-  v5 = [v4 uuid];
+  podcastCopy = podcast;
+  uuid = [podcastCopy uuid];
   v6 = objc_opt_new();
-  v7 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:v5];
+  v7 = [MTEpisode predicateForAllEpisodesOnPodcastUuid:uuid];
   [v6 addObject:v7];
 
   if ([(MTPodcastEpisodeFilter *)self restrictToUserEpisodes])
   {
-    v8 = +[MTEpisode predicateForUserEpisodesOnPodcastUuid:episodeLimit:deletePlayedEpisodes:limitToDownloadBehaviorAutomatic:](MTEpisode, "predicateForUserEpisodesOnPodcastUuid:episodeLimit:deletePlayedEpisodes:limitToDownloadBehaviorAutomatic:", v5, 0, [v4 deletePlayedEpisodesResolvedValue], 0);
+    v8 = +[MTEpisode predicateForUserEpisodesOnPodcastUuid:episodeLimit:deletePlayedEpisodes:limitToDownloadBehaviorAutomatic:](MTEpisode, "predicateForUserEpisodesOnPodcastUuid:episodeLimit:deletePlayedEpisodes:limitToDownloadBehaviorAutomatic:", uuid, 0, [podcastCopy deletePlayedEpisodesResolvedValue], 0);
     [v6 addObject:v8];
   }
 
-  v9 = [(MTPodcastEpisodeFilter *)self playStateFilter];
-  if (v9 == 2 || [(MTPodcastEpisodeFilter *)self playStateFilter]== 1)
+  playStateFilter = [(MTPodcastEpisodeFilter *)self playStateFilter];
+  if (playStateFilter == 2 || [(MTPodcastEpisodeFilter *)self playStateFilter]== 1)
   {
-    v10 = [MTEpisode predicateForVisuallyPlayed:v9 == 2];
+    v10 = [MTEpisode predicateForVisuallyPlayed:playStateFilter == 2];
     [v6 addObject:v10];
   }
 
-  v11 = [(MTPodcastEpisodeFilter *)self excludingEpisodeUuid];
-  v12 = [v11 length];
+  excludingEpisodeUuid = [(MTPodcastEpisodeFilter *)self excludingEpisodeUuid];
+  v12 = [excludingEpisodeUuid length];
 
   if (v12)
   {
-    v13 = [(MTPodcastEpisodeFilter *)self excludingEpisodeUuid];
-    v14 = [MTEpisode predicateForEpisodeUuid:v13];
+    excludingEpisodeUuid2 = [(MTPodcastEpisodeFilter *)self excludingEpisodeUuid];
+    v14 = [MTEpisode predicateForEpisodeUuid:excludingEpisodeUuid2];
 
     v15 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v14];
     [v6 addObject:v15];
@@ -93,9 +93,9 @@
 
   if (+[PFClientUtil isPodcastsApp](PFClientUtil, "isPodcastsApp") && ([(MTPodcastEpisodeFilter *)self excludeExplicit]== 1 || ![(MTPodcastEpisodeFilter *)self excludeExplicit]&& !+[PFRestrictionsController isExplicitContentAllowed]))
   {
-    if ([v4 isExplicit])
+    if ([podcastCopy isExplicit])
     {
-      v17 = [MEMORY[0x1E696AE18] falsePredicate];
+      falsePredicate = [MEMORY[0x1E696AE18] falsePredicate];
       goto LABEL_23;
     }
 
@@ -115,9 +115,9 @@
     [v6 addObject:v20];
   }
 
-  v17 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v6];
+  falsePredicate = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v6];
 LABEL_23:
-  v21 = v17;
+  v21 = falsePredicate;
 
   return v21;
 }

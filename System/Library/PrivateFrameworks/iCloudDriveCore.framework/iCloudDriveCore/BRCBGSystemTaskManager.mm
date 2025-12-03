@@ -1,13 +1,13 @@
 @interface BRCBGSystemTaskManager
-+ (id)_prepareBGSystemTaskIdentifierWithBaseName:(id)a3 personaIdentifier:(id)a4;
++ (id)_prepareBGSystemTaskIdentifierWithBaseName:(id)name personaIdentifier:(id)identifier;
 + (id)sharedManager;
-- (BOOL)unregisterTaskWithIdentifier:(id)a3;
+- (BOOL)unregisterTaskWithIdentifier:(id)identifier;
 - (id)_init;
-- (void)_cancelSyncTasks:(id)a3 scheduler:(id)a4;
-- (void)completeTask:(id)a3;
-- (void)expireTask:(id)a3;
+- (void)_cancelSyncTasks:(id)tasks scheduler:(id)scheduler;
+- (void)completeTask:(id)task;
+- (void)expireTask:(id)task;
 - (void)garbageCollectAllDanglingSyncTasks;
-- (void)submitBGSystemTaskWithIdentifier:(id)a3 configuration:(id)a4 block:(id)a5;
+- (void)submitBGSystemTaskWithIdentifier:(id)identifier configuration:(id)configuration block:(id)block;
 - (void)unregisterAllTasks;
 @end
 
@@ -53,36 +53,36 @@ uint64_t __39__BRCBGSystemTaskManager_sharedManager__block_invoke()
   return v2;
 }
 
-+ (id)_prepareBGSystemTaskIdentifierWithBaseName:(id)a3 personaIdentifier:(id)a4
++ (id)_prepareBGSystemTaskIdentifierWithBaseName:(id)name personaIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"__defaultPersonaID__"])
+  nameCopy = name;
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"__defaultPersonaID__"])
   {
-    v7 = v5;
+    identifierCopy = nameCopy;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v5, v6];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", nameCopy, identifierCopy];
   }
 
-  v8 = v7;
+  v8 = identifierCopy;
 
   return v8;
 }
 
-- (void)_cancelSyncTasks:(id)a3 scheduler:(id)a4
+- (void)_cancelSyncTasks:(id)tasks scheduler:(id)scheduler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v21 = a4;
+  tasksCopy = tasks;
+  schedulerCopy = scheduler;
   v20 = xpc_dictionary_create(0, 0, 0);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v5;
+  v6 = tasksCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v7)
   {
@@ -100,16 +100,16 @@ uint64_t __39__BRCBGSystemTaskManager_sharedManager__block_invoke()
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 identifier];
-        if ([v13 containsString:@"com.apple.bird.bgst."])
+        identifier = [v12 identifier];
+        if ([identifier containsString:@"com.apple.bird.bgst."])
         {
           v14 = brc_bread_crumbs();
           v15 = brc_default_log();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v17 = [v12 identifier];
+            identifier2 = [v12 identifier];
             *buf = v19;
-            v30 = v17;
+            v30 = identifier2;
             v31 = 2112;
             v32 = v14;
             _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] Unregistering task with ID: %@%@", buf, 0x16u);
@@ -119,9 +119,9 @@ uint64_t __39__BRCBGSystemTaskManager_sharedManager__block_invoke()
           v22[1] = 3221225472;
           v22[2] = __53__BRCBGSystemTaskManager__cancelSyncTasks_scheduler___block_invoke;
           v22[3] = &unk_278501118;
-          v16 = v21;
+          v16 = schedulerCopy;
           v23 = v16;
-          v24 = v13;
+          v24 = identifier;
           [v16 submitTaskRequestWithIdentifier:v24 descriptor:v20 completionHandler:v22];
         }
       }
@@ -148,29 +148,29 @@ uint64_t __53__BRCBGSystemTaskManager__cancelSyncTasks_scheduler___block_invoke(
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_223E7A000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] Going to list all the submitted tasks from DAS and unregister old tasks from last bird run%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitBGSystemTaskWithIdentifier:(id)a3 configuration:(id)a4 block:(id)a5
+- (void)submitBGSystemTaskWithIdentifier:(id)identifier configuration:(id)configuration block:(id)block
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  configurationCopy = configuration;
+  blockCopy = block;
   v10 = MEMORY[0x277D77BF8];
-  v11 = a3;
-  v12 = [v10 sharedManager];
-  v13 = [v12 br_currentPersonaID];
+  identifierCopy = identifier;
+  sharedManager = [v10 sharedManager];
+  br_currentPersonaID = [sharedManager br_currentPersonaID];
 
-  v14 = [objc_opt_class() _prepareBGSystemTaskIdentifierWithBaseName:v11 personaIdentifier:v13];
+  v14 = [objc_opt_class() _prepareBGSystemTaskIdentifierWithBaseName:identifierCopy personaIdentifier:br_currentPersonaID];
 
   if ([v14 length] >= 0x81)
   {
     [BRCBGSystemTaskManager submitBGSystemTaskWithIdentifier:configuration:block:];
   }
 
-  v15 = [MEMORY[0x277CF0800] br_taskRequestWithIdentifier:v14 configuration:v8];
+  v15 = [MEMORY[0x277CF0800] br_taskRequestWithIdentifier:v14 configuration:configurationCopy];
   v31[0] = *MEMORY[0x277CFAC00];
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
   [v15 setRelatedApplications:v16];
@@ -182,15 +182,15 @@ uint64_t __53__BRCBGSystemTaskManager__cancelSyncTasks_scheduler___block_invoke(
   v24[2] = __79__BRCBGSystemTaskManager_submitBGSystemTaskWithIdentifier_configuration_block___block_invoke;
   v24[3] = &unk_2785011B8;
   v25 = v14;
-  v26 = self;
-  v27 = v13;
+  selfCopy = self;
+  v27 = br_currentPersonaID;
   v28 = v15;
-  v29 = v8;
-  v30 = v9;
-  v18 = v8;
+  v29 = configurationCopy;
+  v30 = blockCopy;
+  v18 = configurationCopy;
   v19 = v15;
-  v20 = v9;
-  v21 = v13;
+  v20 = blockCopy;
+  v21 = br_currentPersonaID;
   v22 = v14;
   dispatch_async(queue, v24);
 
@@ -421,55 +421,55 @@ void __79__BRCBGSystemTaskManager_submitBGSystemTaskWithIdentifier_configuration
   }
 }
 
-- (void)completeTask:(id)a3
+- (void)completeTask:(id)task
 {
-  v4 = a3;
-  [v4 completeTask];
-  v5 = [MEMORY[0x277D77BF8] sharedManager];
-  v6 = [v5 br_currentPersonaID];
+  taskCopy = task;
+  [taskCopy completeTask];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)v7->_personaToTaskIdentifiersMap objectForKeyedSubscript:v6];
-  v9 = [v4 taskIdentifier];
-  [v8 removeObject:v9];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMutableDictionary *)selfCopy->_personaToTaskIdentifiersMap objectForKeyedSubscript:br_currentPersonaID];
+  taskIdentifier = [taskCopy taskIdentifier];
+  [v8 removeObject:taskIdentifier];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   v10 = brc_bread_crumbs();
   v11 = brc_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [BRCBGSystemTaskManager completeTask:v4];
+    [BRCBGSystemTaskManager completeTask:taskCopy];
   }
 }
 
-- (void)expireTask:(id)a3
+- (void)expireTask:(id)task
 {
-  v4 = a3;
-  if (([v4 expireTask] & 1) == 0)
+  taskCopy = task;
+  if (([taskCopy expireTask] & 1) == 0)
   {
-    [(BRCBGSystemTaskManager *)self completeTask:v4];
+    [(BRCBGSystemTaskManager *)self completeTask:taskCopy];
   }
 }
 
-- (BOOL)unregisterTaskWithIdentifier:(id)a3
+- (BOOL)unregisterTaskWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D77BF8] sharedManager];
-  v6 = [v5 br_currentPersonaID];
+  identifierCopy = identifier;
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
 
-  v7 = [objc_opt_class() _prepareBGSystemTaskIdentifierWithBaseName:v4 personaIdentifier:v6];
-  v8 = [MEMORY[0x277CF0810] sharedScheduler];
-  v9 = [v8 deregisterTaskWithIdentifier:v7];
+  v7 = [objc_opt_class() _prepareBGSystemTaskIdentifierWithBaseName:identifierCopy personaIdentifier:br_currentPersonaID];
+  mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
+  v9 = [mEMORY[0x277CF0810] deregisterTaskWithIdentifier:v7];
 
   if (v9)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [(NSMutableDictionary *)v10->_personaToTaskIdentifiersMap objectForKeyedSubscript:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [(NSMutableDictionary *)selfCopy->_personaToTaskIdentifiersMap objectForKeyedSubscript:br_currentPersonaID];
     [v11 removeObject:v7];
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   return v9;
@@ -478,7 +478,7 @@ void __79__BRCBGSystemTaskManager_submitBGSystemTaskWithIdentifier_configuration
 - (void)unregisterAllTasks
 {
   v9 = *MEMORY[0x277D85DE8];
-  [a1 count];
+  [self count];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_1_1(&dword_223E7A000, v1, v2, "[DEBUG] Unregistering %lu submitted tasks%@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];

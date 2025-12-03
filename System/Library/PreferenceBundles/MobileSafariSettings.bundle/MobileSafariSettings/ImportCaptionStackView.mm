@@ -1,13 +1,13 @@
 @interface ImportCaptionStackView
-- (ImportCaptionStackView)initWithButtonAction:(id)a3;
-- (void)setLabelText:(id)a3;
+- (ImportCaptionStackView)initWithButtonAction:(id)action;
+- (void)setLabelText:(id)text;
 @end
 
 @implementation ImportCaptionStackView
 
-- (ImportCaptionStackView)initWithButtonAction:(id)a3
+- (ImportCaptionStackView)initWithButtonAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v25.receiver = self;
   v25.super_class = ImportCaptionStackView;
   v5 = [(ImportCaptionStackView *)&v25 init];
@@ -31,10 +31,10 @@
     [(UILabel *)v6->_label setTextAlignment:1];
     [(UILabel *)v6->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ImportCaptionStackView *)v6 addArrangedSubview:v6->_label];
-    v10 = [(UILabel *)v6->_label widthAnchor];
-    v11 = [(ImportCaptionStackView *)v6 layoutMarginsGuide];
-    v12 = [v11 widthAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    widthAnchor = [(UILabel *)v6->_label widthAnchor];
+    layoutMarginsGuide = [(ImportCaptionStackView *)v6 layoutMarginsGuide];
+    widthAnchor2 = [layoutMarginsGuide widthAnchor];
+    v13 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v13 setActive:1];
 
     [(UILabel *)v6->_label setHidden:1];
@@ -51,7 +51,7 @@
     v20 = [v15 initWithString:v16 attributes:v19];
     [v14 setAttributedTitle:v20];
 
-    v21 = [UIButton buttonWithConfiguration:v14 primaryAction:v4];
+    v21 = [UIButton buttonWithConfiguration:v14 primaryAction:actionCopy];
     chooseOtherButton = v6->_chooseOtherButton;
     v6->_chooseOtherButton = v21;
 
@@ -64,12 +64,12 @@
   return v6;
 }
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
-  objc_storeStrong(&self->_labelText, a3);
-  v5 = a3;
-  [(UILabel *)self->_label setText:v5];
-  [(UILabel *)self->_label setHidden:v5 == 0];
+  objc_storeStrong(&self->_labelText, text);
+  textCopy = text;
+  [(UILabel *)self->_label setText:textCopy];
+  [(UILabel *)self->_label setHidden:textCopy == 0];
 }
 
 @end

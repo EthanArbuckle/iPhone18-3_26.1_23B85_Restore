@@ -1,21 +1,21 @@
 @interface _MTLIOHandleCompressed
-- (_MTLIOHandleCompressed)initWithDevice:(id)a3 path:(const char *)a4 compressionType:(int64_t)a5 error:(id *)a6 uncached:(BOOL)a7;
-- (int64_t)read:(void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5 stagingBuffer:(void *)a6 stagingBufferSize:(unint64_t)a7;
-- (int64_t)read:(void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5 stagingBuffer:(void *)a6 stagingBufferSize:(unint64_t)a7 needsDecompress:(BOOL *)a8;
+- (_MTLIOHandleCompressed)initWithDevice:(id)device path:(const char *)path compressionType:(int64_t)type error:(id *)error uncached:(BOOL)uncached;
+- (int64_t)read:(void *)read size:(unint64_t)size offset:(unint64_t)offset stagingBuffer:(void *)buffer stagingBufferSize:(unint64_t)bufferSize;
+- (int64_t)read:(void *)read size:(unint64_t)size offset:(unint64_t)offset stagingBuffer:(void *)buffer stagingBufferSize:(unint64_t)bufferSize needsDecompress:(BOOL *)decompress;
 - (void)dealloc;
-- (void)readIntoStagingBuffer:(unint64_t)a3 offset:(unint64_t)a4 stagingBuffer:(void *)a5 stagingBufferSize:(unint64_t)a6;
-- (void)readIntoStagingBuffer:(unint64_t)a3 offset:(unint64_t)a4 stagingBuffer:(void *)a5 stagingBufferSize:(unint64_t)a6 needsDecompress:(BOOL *)a7;
+- (void)readIntoStagingBuffer:(unint64_t)buffer offset:(unint64_t)offset stagingBuffer:(void *)stagingBuffer stagingBufferSize:(unint64_t)size;
+- (void)readIntoStagingBuffer:(unint64_t)buffer offset:(unint64_t)offset stagingBuffer:(void *)stagingBuffer stagingBufferSize:(unint64_t)size needsDecompress:(BOOL *)decompress;
 @end
 
 @implementation _MTLIOHandleCompressed
 
-- (_MTLIOHandleCompressed)initWithDevice:(id)a3 path:(const char *)a4 compressionType:(int64_t)a5 error:(id *)a6 uncached:(BOOL)a7
+- (_MTLIOHandleCompressed)initWithDevice:(id)device path:(const char *)path compressionType:(int64_t)type error:(id *)error uncached:(BOOL)uncached
 {
-  v7 = a7;
+  uncachedCopy = uncached;
   v40[1] = *MEMORY[0x1E69E9840];
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v32.receiver = self;
@@ -23,14 +23,14 @@
   v12 = [(_MTLObjectWithLabel *)&v32 init];
   if (v12)
   {
-    v12->_device = a3;
-    v13 = open(a4, 0);
+    v12->_device = device;
+    v13 = open(path, 0);
     v12->_fd = v13;
     if ((v13 & 0x80000000) == 0)
     {
       if (fstat(v13, &v31) < 0)
       {
-        if (!a6)
+        if (!error)
         {
           goto LABEL_22;
         }
@@ -47,12 +47,12 @@
       {
         if ((v31.st_mode & 0xF000) == 0x8000)
         {
-          if (v7)
+          if (uncachedCopy)
           {
             fcntl(v12->_fd, 48, 1);
           }
 
-          v14 = MTLIOCreateDecompressionContext(v12->_fd, a5);
+          v14 = MTLIOCreateDecompressionContext(v12->_fd, type);
           v12->_handle = v14;
           if (v14)
           {
@@ -62,7 +62,7 @@
               if (MTLTraceEnabled())
               {
                 [(_MTLIOHandleCompressed *)v12 globalTraceObjectID];
-                [a3 registryID];
+                [device registryID];
                 kdebug_trace();
               }
             }
@@ -70,7 +70,7 @@
             goto LABEL_23;
           }
 
-          if (a6)
+          if (error)
           {
             v15 = MEMORY[0x1E696ABC0];
             v16 = *__error();
@@ -85,7 +85,7 @@
           goto LABEL_22;
         }
 
-        if (!a6)
+        if (!error)
         {
           goto LABEL_22;
         }
@@ -104,7 +104,7 @@
       goto LABEL_21;
     }
 
-    if (a6)
+    if (error)
     {
       v15 = MEMORY[0x1E696ABC0];
       v16 = *__error();
@@ -120,7 +120,7 @@ LABEL_15:
       v23 = v15;
       v24 = v16;
 LABEL_21:
-      *a6 = [v23 errorWithDomain:@"MTLIOError" code:v24 userInfo:v22];
+      *error = [v23 errorWithDomain:@"MTLIOError" code:v24 userInfo:v22];
     }
 
 LABEL_22:
@@ -152,20 +152,20 @@ LABEL_23:
   [(_MTLObjectWithLabel *)&v5 dealloc];
 }
 
-- (int64_t)read:(void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5 stagingBuffer:(void *)a6 stagingBufferSize:(unint64_t)a7
+- (int64_t)read:(void *)read size:(unint64_t)size offset:(unint64_t)offset stagingBuffer:(void *)buffer stagingBufferSize:(unint64_t)bufferSize
 {
-  v12 = MTLIODecompressionContextStagingBufferSize(self->_handle, a4, a5);
+  v12 = MTLIODecompressionContextStagingBufferSize(self->_handle, size, offset);
   handle = self->_handle;
 
-  return MTLIODecompressionContextRead(handle, a3, a6, v12, a4, a5, 1);
+  return MTLIODecompressionContextRead(handle, read, buffer, v12, size, offset, 1);
 }
 
-- (void)readIntoStagingBuffer:(unint64_t)a3 offset:(unint64_t)a4 stagingBuffer:(void *)a5 stagingBufferSize:(unint64_t)a6
+- (void)readIntoStagingBuffer:(unint64_t)buffer offset:(unint64_t)offset stagingBuffer:(void *)stagingBuffer stagingBufferSize:(unint64_t)size
 {
-  v11 = MTLIODecompressionContextStagingBufferSize(self->_handle, a3, a4);
-  if (MTLIODecompressionContextRead(self->_handle, a5, a5 + a6 - v11, v11, a3, a4, 1) == a3)
+  v11 = MTLIODecompressionContextStagingBufferSize(self->_handle, buffer, offset);
+  if (MTLIODecompressionContextRead(self->_handle, stagingBuffer, stagingBuffer + size - v11, v11, buffer, offset, 1) == buffer)
   {
-    return a5;
+    return stagingBuffer;
   }
 
   else
@@ -174,22 +174,22 @@ LABEL_23:
   }
 }
 
-- (int64_t)read:(void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5 stagingBuffer:(void *)a6 stagingBufferSize:(unint64_t)a7 needsDecompress:(BOOL *)a8
+- (int64_t)read:(void *)read size:(unint64_t)size offset:(unint64_t)offset stagingBuffer:(void *)buffer stagingBufferSize:(unint64_t)bufferSize needsDecompress:(BOOL *)decompress
 {
-  *a8 = 1;
-  v12 = MTLIODecompressionContextStagingBufferSize(self->_handle, a4, a5);
-  v13 = MTLIODecompressionContextOffset(self->_handle, a4, a5);
+  *decompress = 1;
+  v12 = MTLIODecompressionContextStagingBufferSize(self->_handle, size, offset);
+  v13 = MTLIODecompressionContextOffset(self->_handle, size, offset);
   fd = self->_fd;
 
-  return pread(fd, a6, v12, v13);
+  return pread(fd, buffer, v12, v13);
 }
 
-- (void)readIntoStagingBuffer:(unint64_t)a3 offset:(unint64_t)a4 stagingBuffer:(void *)a5 stagingBufferSize:(unint64_t)a6 needsDecompress:(BOOL *)a7
+- (void)readIntoStagingBuffer:(unint64_t)buffer offset:(unint64_t)offset stagingBuffer:(void *)stagingBuffer stagingBufferSize:(unint64_t)size needsDecompress:(BOOL *)decompress
 {
-  *a7 = 1;
-  v12 = MTLIODecompressionContextStagingBufferSize(self->_handle, a3, a4);
-  v13 = MTLIODecompressionContextOffset(self->_handle, a3, a4);
-  v14 = a5 + a6 - v12;
+  *decompress = 1;
+  v12 = MTLIODecompressionContextStagingBufferSize(self->_handle, buffer, offset);
+  v13 = MTLIODecompressionContextOffset(self->_handle, buffer, offset);
+  v14 = stagingBuffer + size - v12;
   if (pread(self->_fd, v14, v12, v13) >= v12)
   {
     return v14;

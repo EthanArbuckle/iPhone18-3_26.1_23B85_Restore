@@ -1,55 +1,55 @@
 @interface ProximityAutoFillMainController
 - (id)deviceForSession;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_deviceFound:(id)a3;
+- (void)_deviceFound:(id)found;
 - (void)_handlePairingFinished;
-- (void)_handlePromptForPINWithFlags:(unsigned int)a3 throttleSeconds:(int)a4;
-- (void)_handleVisualAuthEvent:(int64_t)a3;
-- (void)_handleVisualAuthScannedCode:(id)a3;
-- (void)_tryPIN:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)_handlePromptForPINWithFlags:(unsigned int)flags throttleSeconds:(int)seconds;
+- (void)_handleVisualAuthEvent:(int64_t)event;
+- (void)_handleVisualAuthScannedCode:(id)code;
+- (void)_tryPIN:(id)n;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)deviceDiscoveryStart;
 - (void)deviceDiscoveryStop;
-- (void)dismiss:(int)a3 completion:(id)a4;
-- (void)ensureStoppedWithDismiss:(BOOL)a3 reason:(int)a4;
-- (void)fileRadar:(id)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)handlePasswordPicked:(id)a3;
-- (void)passwordViewController:(id)a3 selectedCredential:(id)a4;
-- (void)passwordViewControllerDidFinish:(id)a3;
+- (void)dismiss:(int)dismiss completion:(id)completion;
+- (void)ensureStoppedWithDismiss:(BOOL)dismiss reason:(int)reason;
+- (void)fileRadar:(id)radar;
+- (void)handleButtonActions:(id)actions;
+- (void)handlePasswordPicked:(id)picked;
+- (void)passwordViewController:(id)controller selectedCredential:(id)credential;
+- (void)passwordViewControllerDidFinish:(id)finish;
 - (void)sessionStart;
 - (void)sessionStop;
 - (void)showAuthenticateUI;
-- (void)showDoneUI:(id)a3;
-- (void)showPairingUIWithFlags:(unsigned int)a3 throttleSeconds:(int)a4;
+- (void)showDoneUI:(id)i;
+- (void)showPairingUIWithFlags:(unsigned int)flags throttleSeconds:(int)seconds;
 - (void)showPasswordPickerUI;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ProximityAutoFillMainController
 
-- (void)_tryPIN:(id)a3
+- (void)_tryPIN:(id)n
 {
-  v7 = a3;
+  nCopy = n;
   if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
     v4 = IsAppleInternalBuild();
     v5 = @"*";
     if (v4)
     {
-      v5 = v7;
+      v5 = nCopy;
     }
 
     v6 = v5;
     LogPrintF();
   }
 
-  [(SFRemoteAutoFillSession *)self->_autoFillSession tryPIN:v7, v6];
+  [(SFRemoteAutoFillSession *)self->_autoFillSession tryPIN:nCopy, v6];
 }
 
-- (void)_handlePromptForPINWithFlags:(unsigned int)a3 throttleSeconds:(int)a4
+- (void)_handlePromptForPINWithFlags:(unsigned int)flags throttleSeconds:(int)seconds
 {
   if (self->_pin)
   {
@@ -70,8 +70,8 @@
     v6[2] = sub_10010E478;
     v6[3] = &unk_1001955E8;
     v6[4] = self;
-    v7 = a3;
-    v8 = a4;
+    flagsCopy = flags;
+    secondsCopy = seconds;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
@@ -106,12 +106,12 @@
 
 - (void)sessionStart
 {
-  v3 = [(ProximityAutoFillMainController *)self deviceForSession];
-  if (v3)
+  deviceForSession = [(ProximityAutoFillMainController *)self deviceForSession];
+  if (deviceForSession)
   {
     if (dword_1001BEC30 <= 50 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
     {
-      v8 = v3;
+      v8 = deviceForSession;
       LogPrintF();
     }
 
@@ -129,7 +129,7 @@
     }
 
     [(SFRemoteAutoFillSession *)self->_autoFillSession setDispatchQueue:self->_workQueue, v8];
-    [(SFRemoteAutoFillSession *)self->_autoFillSession setPeerDevice:v3];
+    [(SFRemoteAutoFillSession *)self->_autoFillSession setPeerDevice:deviceForSession];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10010E95C;
@@ -163,17 +163,17 @@
   }
 }
 
-- (void)passwordViewController:(id)a3 selectedCredential:(id)a4
+- (void)passwordViewController:(id)controller selectedCredential:(id)credential
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  credentialCopy = credential;
   if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
   vcPicker = self->_vcPicker;
-  v9 = v6;
+  v9 = controllerCopy;
   v10 = vcPicker;
   v11 = v10;
   if (v10 == v9)
@@ -208,26 +208,26 @@ LABEL_15:
   block[2] = sub_10010ED98;
   block[3] = &unk_100195A70;
   block[4] = self;
-  v15 = v7;
-  v13 = v7;
+  v15 = credentialCopy;
+  v13 = credentialCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)passwordViewControllerDidFinish:(id)a3
+- (void)passwordViewControllerDidFinish:(id)finish
 {
-  v3 = a3;
-  v4 = v3;
+  finishCopy = finish;
+  v4 = finishCopy;
   if (dword_1001BEC30 <= 30)
   {
-    v5 = v3;
-    if (dword_1001BEC30 != -1 || (v3 = _LogCategory_Initialize(), v4 = v5, v3))
+    v5 = finishCopy;
+    if (dword_1001BEC30 != -1 || (finishCopy = _LogCategory_Initialize(), v4 = v5, finishCopy))
     {
-      v3 = LogPrintF();
+      finishCopy = LogPrintF();
       v4 = v5;
     }
   }
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(finishCopy, v4);
 }
 
 - (id)deviceForSession
@@ -255,12 +255,12 @@ LABEL_15:
   return v3;
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
-  v17 = a3;
-  v4 = [v17 bleDevice];
-  v5 = [v4 advertisementFields];
-  v6 = [v5 objectForKeyedSubscript:@"bdAddr"];
+  foundCopy = found;
+  bleDevice = [foundCopy bleDevice];
+  advertisementFields = [bleDevice advertisementFields];
+  v6 = [advertisementFields objectForKeyedSubscript:@"bdAddr"];
 
   if (v6)
   {
@@ -301,7 +301,7 @@ LABEL_14:
       LogPrintF();
     }
 
-    v16 = v17;
+    v16 = foundCopy;
     device = self->_device;
     self->_device = v16;
     goto LABEL_13;
@@ -416,9 +416,9 @@ LABEL_15:
   }
 }
 
-- (void)_handleVisualAuthScannedCode:(id)a3
+- (void)_handleVisualAuthScannedCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -437,7 +437,7 @@ LABEL_15:
     else
     {
       self->_visualAuthTryingCode = 1;
-      [(ProximityAutoFillMainController *)self _tryPIN:v4];
+      [(ProximityAutoFillMainController *)self _tryPIN:codeCopy];
     }
   }
 
@@ -449,9 +449,9 @@ LABEL_12:
   }
 }
 
-- (void)_handleVisualAuthEvent:(int64_t)a3
+- (void)_handleVisualAuthEvent:(int64_t)event
 {
-  if (a3 == 2)
+  if (event == 2)
   {
     if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
     {
@@ -462,8 +462,8 @@ LABEL_12:
     vcVisualAuth = self->_vcVisualAuth;
     self->_vcVisualAuth = 0;
 
-    v6 = [(UIViewController *)self->_vcVisualAuthParent view];
-    [v6 setHidden:0];
+    view = [(UIViewController *)self->_vcVisualAuthParent view];
+    [view setHidden:0];
 
     vcVisualAuthParent = self->_vcVisualAuthParent;
     self->_vcVisualAuthParent = 0;
@@ -471,7 +471,7 @@ LABEL_12:
     [(ProximityAutoFillMainController *)self showPairingUIWithFlags:0 throttleSeconds:0xFFFFFFFFLL];
   }
 
-  else if (a3 == 1)
+  else if (event == 1)
   {
     if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
     {
@@ -492,10 +492,10 @@ LABEL_12:
   }
 }
 
-- (void)showPairingUIWithFlags:(unsigned int)a3 throttleSeconds:(int)a4
+- (void)showPairingUIWithFlags:(unsigned int)flags throttleSeconds:(int)seconds
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&seconds;
+  v5 = *&flags;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
@@ -536,9 +536,9 @@ LABEL_12:
 
     if (!self->_vcVisualAuth)
     {
-      v9 = [(SVSCommonNavController *)self->_vcNav visibleViewController];
+      visibleViewController = [(SVSCommonNavController *)self->_vcNav visibleViewController];
       vcVisualAuthParent = self->_vcVisualAuthParent;
-      self->_vcVisualAuthParent = v9;
+      self->_vcVisualAuthParent = visibleViewController;
 
       v11 = +[VPScannerViewController instantiateViewController];
       vcVisualAuth = self->_vcVisualAuth;
@@ -572,17 +572,17 @@ LABEL_12:
   }
 }
 
-- (void)showDoneUI:(id)a3
+- (void)showDoneUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
-    v9 = [v4 localizedDescription];
+    localizedDescription = [iCopy localizedDescription];
     LogPrintF();
   }
 
-  v5 = v4;
+  v5 = iCopy;
   v10 = v5;
   if (!v5)
   {
@@ -608,7 +608,7 @@ LABEL_12:
     vcDone = self->_vcDone;
   }
 
-  [(ProximityAutoFillDoneViewController *)vcDone setError:v5, v9];
+  [(ProximityAutoFillDoneViewController *)vcDone setError:v5, localizedDescription];
   sub_100127D6C(self->_vcNav, self->_vcDone, 0);
 }
 
@@ -702,30 +702,30 @@ LABEL_19:
   }
 }
 
-- (void)handlePasswordPicked:(id)a3
+- (void)handlePasswordPicked:(id)picked
 {
-  v4 = a3;
-  v13 = v4;
+  pickedCopy = picked;
+  v13 = pickedCopy;
   if (dword_1001BEC30 <= 30)
   {
-    if (dword_1001BEC30 != -1 || (v5 = _LogCategory_Initialize(), v4 = v13, v5))
+    if (dword_1001BEC30 != -1 || (v5 = _LogCategory_Initialize(), pickedCopy = v13, v5))
     {
-      v12 = v4;
+      v12 = pickedCopy;
       LogPrintF();
-      v4 = v13;
+      pickedCopy = v13;
     }
   }
 
-  if (v4)
+  if (pickedCopy)
   {
     self->_pickerState = 4;
-    v6 = [v4 user];
+    user = [pickedCopy user];
     pickedUsername = self->_pickedUsername;
-    self->_pickedUsername = v6;
+    self->_pickedUsername = user;
 
-    v8 = [v13 password];
+    password = [v13 password];
     pickedPassword = self->_pickedPassword;
-    self->_pickedPassword = v8;
+    self->_pickedPassword = password;
 
     if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
     {
@@ -755,14 +755,14 @@ LABEL_19:
   [(ProximityAutoFillMainController *)self showDoneUI:v10, v12];
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -773,7 +773,7 @@ LABEL_19:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) events] & 0x10) != 0)
@@ -787,26 +787,26 @@ LABEL_19:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)fileRadar:(id)a3
+- (void)fileRadar:(id)radar
 {
-  v3 = a3;
+  radarCopy = radar;
   if (dword_1001BEC30 <= 60 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
-    v19 = [v3 localizedDescription];
+    localizedDescription = [radarCopy localizedDescription];
     LogPrintF();
   }
 
-  if (v3)
+  if (radarCopy)
   {
-    v4 = [v3 localizedDescription];
-    v5 = [NSMutableString stringWithFormat:@"AutoFill: %@", v4];
+    localizedDescription2 = [radarCopy localizedDescription];
+    v5 = [NSMutableString stringWithFormat:@"AutoFill: %@", localizedDescription2];
   }
 
   else
@@ -869,14 +869,14 @@ LABEL_19:
   [v17 openURL:v18 withCompletionHandler:0];
 }
 
-- (void)ensureStoppedWithDismiss:(BOOL)a3 reason:(int)a4
+- (void)ensureStoppedWithDismiss:(BOOL)dismiss reason:(int)reason
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&reason;
+  dismissCopy = dismiss;
   if (dword_1001BEC30 <= 50 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
     v7 = "no";
-    if (v5)
+    if (dismissCopy)
     {
       v7 = "yes";
     }
@@ -915,16 +915,16 @@ LABEL_19:
   vcVisualAuthParent = self->_vcVisualAuthParent;
   self->_vcVisualAuthParent = 0;
 
-  if (v5)
+  if (dismissCopy)
   {
 
     [(ProximityAutoFillMainController *)self dismiss:v4];
   }
 }
 
-- (void)dismiss:(int)a3 completion:(id)a4
+- (void)dismiss:(int)dismiss completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (!self->_dismissed)
   {
     self->_dismissed = 1;
@@ -933,15 +933,15 @@ LABEL_19:
     v8[1] = 3221225472;
     v8[2] = sub_100110F30;
     v9 = v8[3] = &unk_1001959D0;
-    v10 = v6;
+    v10 = completionCopy;
     v7 = v9;
-    [(ProximityAutoFillMainController *)self dismissViewControllerAnimated:a3 != 19 completion:v8];
+    [(ProximityAutoFillMainController *)self dismissViewControllerAnimated:dismiss != 19 completion:v8];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -954,14 +954,14 @@ LABEL_19:
       LogPrintF();
     }
 
-    v8 = self;
-    v6 = &v8;
+    selfCopy = self;
+    v6 = &selfCopy;
   }
 
   else
   {
-    v5 = [(ProximityAutoFillMainController *)self _remoteViewControllerProxy];
-    [v5 setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.ProximityAutoFill"];
+    _remoteViewControllerProxy = [(ProximityAutoFillMainController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:@"com.apple.SharingViewService.ProximityAutoFill"];
 
     if (self->_dismissed)
     {
@@ -978,17 +978,17 @@ LABEL_19:
       [(ProximityAutoFillMainController *)self ensureStoppedWithDismiss:1 reason:21];
     }
 
-    v7 = self;
-    v6 = &v7;
+    selfCopy2 = self;
+    v6 = &selfCopy2;
   }
 
   v6[1] = ProximityAutoFillMainController;
-  objc_msgSendSuper2(v6, "viewDidDisappear:", v3, v7);
+  objc_msgSendSuper2(v6, "viewDidDisappear:", disappearCopy, selfCopy2);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -996,49 +996,49 @@ LABEL_19:
 
   v14.receiver = self;
   v14.super_class = ProximityAutoFillMainController;
-  [(ProximityAutoFillMainController *)&v14 viewDidAppear:v3];
+  [(ProximityAutoFillMainController *)&v14 viewDidAppear:appearCopy];
   v5 = [UIStoryboard storyboardWithName:@"ProximityAutoFill" bundle:0];
   mainStoryboard = self->_mainStoryboard;
   self->_mainStoryboard = v5;
 
-  v7 = [(UIStoryboard *)self->_mainStoryboard instantiateInitialViewController];
+  instantiateInitialViewController = [(UIStoryboard *)self->_mainStoryboard instantiateInitialViewController];
   vcNav = self->_vcNav;
-  self->_vcNav = v7;
+  self->_vcNav = instantiateInitialViewController;
 
   [(SVSCommonNavController *)self->_vcNav setDelegate:self];
   [(SVSCommonNavController *)self->_vcNav setModalPresentationStyle:4];
   [(SVSCommonNavController *)self->_vcNav setTransitioningDelegate:self->_vcNav];
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SVSCommonNavController *)self->_vcNav setModalTransitionStyle:2];
   }
 
-  v11 = [(SVSCommonNavController *)self->_vcNav viewControllers];
-  v12 = [v11 firstObject];
+  viewControllers = [(SVSCommonNavController *)self->_vcNav viewControllers];
+  firstObject = [viewControllers firstObject];
   vcStart = self->_vcStart;
-  self->_vcStart = v12;
+  self->_vcStart = firstObject;
 
   [(SVSBaseViewController *)self->_vcStart setMainController:self];
   [(ProximityAutoFillMainController *)self presentViewController:self->_vcNav animated:1 completion:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ProximityAutoFillMainController;
-  [(ProximityAutoFillMainController *)&v4 viewWillAppear:a3];
+  [(ProximityAutoFillMainController *)&v4 viewWillAppear:appear];
   [(ProximityAutoFillMainController *)self deviceDiscoveryStart];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v7;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BEC30 <= 30 && (dword_1001BEC30 != -1 || _LogCategory_Initialize()))
   {
@@ -1049,8 +1049,8 @@ LABEL_19:
   workQueue = self->_workQueue;
   self->_workQueue = v9;
 
-  v11 = [(ProximityAutoFillMainController *)self _remoteViewControllerProxy];
-  [v11 setAllowsAlertStacking:1];
+  _remoteViewControllerProxy = [(ProximityAutoFillMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
 
   CFStringGetTypeID();
   v12 = CFDictionaryGetTypedValue();
@@ -1152,26 +1152,26 @@ LABEL_31:
     self->_prefSkipAuth = v22;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(ProximityAutoFillMainController *)self view];
-  v3 = [v2 window];
+  view = [(ProximityAutoFillMainController *)self view];
+  window = [view window];
 
-  if (!v3)
+  if (!window)
   {
     return 30;
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return (1 << [UIApp activeInterfaceOrientation]);
   }

@@ -2,17 +2,17 @@
 + (unint64_t)nextTaskIdentifier;
 - (C2NetworkingDelegateURLSession)session;
 - (C2NetworkingDelegateURLSessionDataTask)init;
-- (void)__didReceiveData:(id)a3 completionHandler:(id)a4;
-- (void)_drainInputStream:(id)a3 sinkData:(id)a4 completionHandler:(id)a5;
+- (void)__didReceiveData:(id)data completionHandler:(id)handler;
+- (void)_drainInputStream:(id)stream sinkData:(id)data completionHandler:(id)handler;
 - (void)cancel;
 - (void)handleCompletion;
-- (void)handleResponse:(id)a3 completionHandler:(id)a4;
-- (void)processRequest:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
+- (void)handleResponse:(id)response completionHandler:(id)handler;
+- (void)processRequest:(id)request configuration:(id)configuration completionHandler:(id)handler;
 - (void)resume;
-- (void)setupRequest:(id)a3;
-- (void)setupRequestBodyForRequest:(id)a3 completionHandler:(id)a4;
-- (void)streamResponseBody:(id)a3 offset:(unsigned int)a4 completionHandler:(id)a5;
-- (void)willSendRequest:(id)a3;
+- (void)setupRequest:(id)request;
+- (void)setupRequestBodyForRequest:(id)request completionHandler:(id)handler;
+- (void)streamResponseBody:(id)body offset:(unsigned int)offset completionHandler:(id)handler;
+- (void)willSendRequest:(id)request;
 @end
 
 @implementation C2NetworkingDelegateURLSessionDataTask
@@ -44,44 +44,44 @@
   return v2;
 }
 
-- (void)setupRequest:(id)a3
+- (void)setupRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  clientQueue = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v6 = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
+  syntheticError = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
 
-  if (v6)
+  if (syntheticError)
   {
-    v4[2](v4, 0);
+    requestCopy[2](requestCopy, 0);
   }
 
   else
   {
-    v7 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-    v8 = [v7 networkingDelegate];
+    session = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+    networkingDelegate = [session networkingDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-      v11 = [v10 networkingDelegate];
-      v12 = [(C2NetworkingDelegateURLSessionDataTask *)self currentRequest];
-      v13 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-      v14 = [v13 configuration];
+      session2 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+      networkingDelegate2 = [session2 networkingDelegate];
+      currentRequest = [(C2NetworkingDelegateURLSessionDataTask *)self currentRequest];
+      session3 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+      configuration = [session3 configuration];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __55__C2NetworkingDelegateURLSessionDataTask_setupRequest___block_invoke;
       v15[3] = &unk_278D40408;
       v15[4] = self;
-      v16 = v4;
-      [v11 willHandleRequest:v12 configuration:v14 completionHandler:v15];
+      v16 = requestCopy;
+      [networkingDelegate2 willHandleRequest:currentRequest configuration:configuration completionHandler:v15];
     }
 
     else
     {
-      [(C2NetworkingDelegateURLSessionDataTask *)self willSendRequest:v4];
+      [(C2NetworkingDelegateURLSessionDataTask *)self willSendRequest:requestCopy];
     }
   }
 }
@@ -111,30 +111,30 @@ void __55__C2NetworkingDelegateURLSessionDataTask_setupRequest___block_invoke(ui
   dispatch_async(v7, v9);
 }
 
-- (void)willSendRequest:(id)a3
+- (void)willSendRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  clientQueue = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v6 = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
+  syntheticError = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
 
-  if (v6)
+  if (syntheticError)
   {
-    v4[2](v4, 0);
+    requestCopy[2](requestCopy, 0);
   }
 
   else
   {
-    v7 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-    v8 = [v7 delegateQueue];
+    session = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+    delegateQueue = [session delegateQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __58__C2NetworkingDelegateURLSessionDataTask_willSendRequest___block_invoke;
     v9[3] = &unk_278D403E0;
     v9[4] = self;
-    v10 = v4;
-    [v8 addOperationWithBlock:v9];
+    v10 = requestCopy;
+    [delegateQueue addOperationWithBlock:v9];
   }
 }
 
@@ -170,38 +170,38 @@ void __58__C2NetworkingDelegateURLSessionDataTask_willSendRequest___block_invoke
   dispatch_async(v4, v7);
 }
 
-- (void)_drainInputStream:(id)a3 sinkData:(id)a4 completionHandler:(id)a5
+- (void)_drainInputStream:(id)stream sinkData:(id)data completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
-  dispatch_assert_queue_V2(v11);
+  streamCopy = stream;
+  dataCopy = data;
+  handlerCopy = handler;
+  clientQueue = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v12 = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
+  syntheticError = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
 
-  if (v12)
+  if (syntheticError)
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
     bzero(v29, 0x8000uLL);
-    v13 = [v8 read:v29 maxLength:0x8000];
+    v13 = [streamCopy read:v29 maxLength:0x8000];
     if (v13 < 1)
     {
-      [v8 close];
-      -[C2NetworkingDelegateURLSessionDataTask setCountOfBytesSent:](self, "setCountOfBytesSent:", [v9 length]);
-      v19 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
+      [streamCopy close];
+      -[C2NetworkingDelegateURLSessionDataTask setCountOfBytesSent:](self, "setCountOfBytesSent:", [dataCopy length]);
+      clientQueue2 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __87__C2NetworkingDelegateURLSessionDataTask__drainInputStream_sinkData_completionHandler___block_invoke_3;
       v21[3] = &unk_278D40430;
-      v23 = v10;
-      v22 = v9;
-      dispatch_async(v19, v21);
+      v23 = handlerCopy;
+      v22 = dataCopy;
+      dispatch_async(clientQueue2, v21);
 
       v18 = v23;
     }
@@ -210,20 +210,20 @@ void __58__C2NetworkingDelegateURLSessionDataTask_willSendRequest___block_invoke
     {
       v14 = v13;
       v15 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v29 length:v13];
-      [v9 appendData:v15];
+      [dataCopy appendData:v15];
 
-      v16 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-      v17 = [v16 delegateQueue];
+      session = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+      delegateQueue = [session delegateQueue];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __87__C2NetworkingDelegateURLSessionDataTask__drainInputStream_sinkData_completionHandler___block_invoke;
       v24[3] = &unk_278D404A8;
       v24[4] = self;
       v28 = v14;
-      v25 = v9;
-      v26 = v8;
-      v27 = v10;
-      [v17 addOperationWithBlock:v24];
+      v25 = dataCopy;
+      v26 = streamCopy;
+      v27 = handlerCopy;
+      [delegateQueue addOperationWithBlock:v24];
 
       v18 = v25;
     }
@@ -260,59 +260,59 @@ void __87__C2NetworkingDelegateURLSessionDataTask__drainInputStream_sinkData_com
   dispatch_async(v8, block);
 }
 
-- (void)setupRequestBodyForRequest:(id)a3 completionHandler:(id)a4
+- (void)setupRequestBodyForRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
-  dispatch_assert_queue_V2(v8);
+  requestCopy = request;
+  handlerCopy = handler;
+  clientQueue = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v9 = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
+  syntheticError = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
 
-  if (v9)
+  if (syntheticError)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v10 = [v6 HTTPBodyStream];
-    v11 = v10;
-    if (v10)
+    hTTPBodyStream = [requestCopy HTTPBodyStream];
+    v11 = hTTPBodyStream;
+    if (hTTPBodyStream)
     {
-      [v10 open];
-      v12 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
+      [hTTPBodyStream open];
+      clientQueue2 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __87__C2NetworkingDelegateURLSessionDataTask_setupRequestBodyForRequest_completionHandler___block_invoke;
       block[3] = &unk_278D404D0;
       block[4] = self;
       v21 = v11;
-      v22 = v7;
-      dispatch_async(v12, block);
+      v22 = handlerCopy;
+      dispatch_async(clientQueue2, block);
     }
 
     else
     {
-      v13 = [v6 HTTPBody];
-      if (v13)
+      hTTPBody = [requestCopy HTTPBody];
+      if (hTTPBody)
       {
-        v14 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-        v15 = [v14 delegateQueue];
+        session = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+        delegateQueue = [session delegateQueue];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __87__C2NetworkingDelegateURLSessionDataTask_setupRequestBodyForRequest_completionHandler___block_invoke_2;
         v16[3] = &unk_278D404F8;
         v16[4] = self;
-        v17 = v13;
-        v19 = v7;
-        v18 = v6;
-        [v15 addOperationWithBlock:v16];
+        v17 = hTTPBody;
+        v19 = handlerCopy;
+        v18 = requestCopy;
+        [delegateQueue addOperationWithBlock:v16];
       }
 
       else
       {
-        v7[2](v7, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
     }
   }
@@ -350,30 +350,30 @@ void __87__C2NetworkingDelegateURLSessionDataTask_setupRequestBodyForRequest_com
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)processRequest:(id)a3 configuration:(id)a4 completionHandler:(id)a5
+- (void)processRequest:(id)request configuration:(id)configuration completionHandler:(id)handler
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
-  dispatch_assert_queue_V2(v11);
+  requestCopy = request;
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  clientQueue = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v12 = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
+  syntheticError = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
 
-  if (v12)
+  if (syntheticError)
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v13 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-    v14 = [v13 networkingDelegate];
+    session = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+    networkingDelegate = [session networkingDelegate];
     v15 = objc_opt_respondsToSelector();
 
-    v16 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-    v17 = [v16 networkingDelegate];
+    session2 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+    networkingDelegate2 = [session2 networkingDelegate];
     if (v15)
     {
       v35[0] = MEMORY[0x277D85DD0];
@@ -381,8 +381,8 @@ void __87__C2NetworkingDelegateURLSessionDataTask_setupRequestBodyForRequest_com
       v35[2] = __89__C2NetworkingDelegateURLSessionDataTask_processRequest_configuration_completionHandler___block_invoke;
       v35[3] = &unk_278D40548;
       v35[4] = self;
-      v36 = v10;
-      [v17 processRequest:v8 callback:v35];
+      v36 = handlerCopy;
+      [networkingDelegate2 processRequest:requestCopy callback:v35];
 
       v18 = v36;
     }
@@ -391,8 +391,8 @@ void __87__C2NetworkingDelegateURLSessionDataTask_setupRequestBodyForRequest_com
     {
       v19 = objc_opt_respondsToSelector();
 
-      v20 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-      v21 = [v20 networkingDelegate];
+      session3 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+      networkingDelegate3 = [session3 networkingDelegate];
       if (v19)
       {
         v33[0] = MEMORY[0x277D85DD0];
@@ -400,8 +400,8 @@ void __87__C2NetworkingDelegateURLSessionDataTask_setupRequestBodyForRequest_com
         v33[2] = __89__C2NetworkingDelegateURLSessionDataTask_processRequest_configuration_completionHandler___block_invoke_3;
         v33[3] = &unk_278D40570;
         v33[4] = self;
-        v34 = v10;
-        [v21 handleRequest:v8 completionHandler:v33];
+        v34 = handlerCopy;
+        [networkingDelegate3 handleRequest:requestCopy completionHandler:v33];
 
         v18 = v34;
       }
@@ -421,30 +421,30 @@ void __87__C2NetworkingDelegateURLSessionDataTask_setupRequestBodyForRequest_com
           if (os_log_type_enabled(C2_DEFAULT_LOG_INTERNAL_1, OS_LOG_TYPE_ERROR))
           {
             v27 = v26;
-            v28 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-            v29 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-            v30 = [v29 networkingDelegate];
+            session4 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+            session5 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+            networkingDelegate4 = [session5 networkingDelegate];
             *buf = 138412802;
-            v38 = self;
+            selfCopy = self;
             v39 = 2112;
-            v40 = v28;
+            v40 = session4;
             v41 = 2112;
-            v42 = v30;
+            v42 = networkingDelegate4;
             _os_log_impl(&dword_242158000, v27, OS_LOG_TYPE_ERROR, "Unable to identify appropriate selector on network delegate. self=%@, session=%@, networkingDelegate=%@", buf, 0x20u);
           }
 
           __assert_rtn("[C2NetworkingDelegateURLSessionDataTask processRequest:configuration:completionHandler:]", "C2NetworkingDelegateURLSession.m", 209, "false");
         }
 
-        v23 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-        v24 = [v23 networkingDelegate];
+        session6 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+        networkingDelegate5 = [session6 networkingDelegate];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __89__C2NetworkingDelegateURLSessionDataTask_processRequest_configuration_completionHandler___block_invoke_5;
         v31[3] = &unk_278D40570;
         v31[4] = self;
-        v32 = v10;
-        [v24 handleRequest:v8 configuration:v9 completionHandler:v31];
+        v32 = handlerCopy;
+        [networkingDelegate5 handleRequest:requestCopy configuration:configurationCopy completionHandler:v31];
 
         v18 = v32;
       }
@@ -516,33 +516,33 @@ uint64_t __89__C2NetworkingDelegateURLSessionDataTask_processRequest_configurati
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handleResponse:(id)a3 completionHandler:(id)a4
+- (void)handleResponse:(id)response completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
-  dispatch_assert_queue_V2(v8);
+  responseCopy = response;
+  handlerCopy = handler;
+  clientQueue = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v9 = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
+  syntheticError = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
 
-  if (v9)
+  if (syntheticError)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    [(C2NetworkingDelegateURLSessionDataTask *)self setResponse:v6];
-    v10 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-    v11 = [v10 delegateQueue];
+    [(C2NetworkingDelegateURLSessionDataTask *)self setResponse:responseCopy];
+    session = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+    delegateQueue = [session delegateQueue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __75__C2NetworkingDelegateURLSessionDataTask_handleResponse_completionHandler___block_invoke;
     v12[3] = &unk_278D404D0;
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
-    [v11 addOperationWithBlock:v12];
+    v13 = responseCopy;
+    v14 = handlerCopy;
+    [delegateQueue addOperationWithBlock:v12];
   }
 }
 
@@ -594,50 +594,50 @@ uint64_t __75__C2NetworkingDelegateURLSessionDataTask_handleResponse_completionH
   return v2();
 }
 
-- (void)streamResponseBody:(id)a3 offset:(unsigned int)a4 completionHandler:(id)a5
+- (void)streamResponseBody:(id)body offset:(unsigned int)offset completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
-  dispatch_assert_queue_V2(v10);
+  bodyCopy = body;
+  handlerCopy = handler;
+  clientQueue = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v11 = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
+  syntheticError = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
 
-  if (v11)
+  if (syntheticError)
   {
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    v12 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-    v13 = [v12 networkingDelegate];
+    session = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+    networkingDelegate = [session networkingDelegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-      v16 = [v15 networkingDelegate];
-      v17 = [v16 responseBufferSize];
+      session2 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+      networkingDelegate2 = [session2 networkingDelegate];
+      responseBufferSize = [networkingDelegate2 responseBufferSize];
     }
 
     else
     {
-      v17 = 0x8000;
+      responseBufferSize = 0x8000;
     }
 
-    v18 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-    v19 = [v18 delegateQueue];
+    session3 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+    delegateQueue = [session3 delegateQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __86__C2NetworkingDelegateURLSessionDataTask_streamResponseBody_offset_completionHandler___block_invoke;
     v20[3] = &unk_278D405E8;
-    v24 = a4;
-    v25 = v17;
-    v21 = v8;
-    v22 = self;
-    v23 = v9;
-    [v19 addOperationWithBlock:v20];
+    offsetCopy = offset;
+    v25 = responseBufferSize;
+    v21 = bodyCopy;
+    selfCopy = self;
+    v23 = handlerCopy;
+    [delegateQueue addOperationWithBlock:v20];
   }
 }
 
@@ -700,41 +700,41 @@ void __86__C2NetworkingDelegateURLSessionDataTask_streamResponseBody_offset_comp
   dispatch_async(v2, v4);
 }
 
-- (void)__didReceiveData:(id)a3 completionHandler:(id)a4
+- (void)__didReceiveData:(id)data completionHandler:(id)handler
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-  v8 = [v7 sessionDelegate];
+  handlerCopy = handler;
+  dataCopy = data;
+  session = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+  sessionDelegate = [session sessionDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 URLSession:v7 dataTask:self _didReceiveData:v6 completionHandler:v9];
+    [sessionDelegate URLSession:session dataTask:self _didReceiveData:dataCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    [v8 URLSession:v7 dataTask:self didReceiveData:v6];
+    [sessionDelegate URLSession:session dataTask:self didReceiveData:dataCopy];
 
-    v9[2]();
+    handlerCopy[2]();
   }
 }
 
 - (void)handleCompletion
 {
-  v3 = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(C2NetworkingDelegateURLSessionDataTask *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v4 = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
-  v5 = [(C2NetworkingDelegateURLSessionDataTask *)self session];
-  v6 = [v5 delegateQueue];
+  syntheticError = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
+  session = [(C2NetworkingDelegateURLSessionDataTask *)self session];
+  delegateQueue = [session delegateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__C2NetworkingDelegateURLSessionDataTask_handleCompletion__block_invoke;
   v8[3] = &unk_278D40638;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 addOperationWithBlock:v8];
+  v9 = syntheticError;
+  v7 = syntheticError;
+  [delegateQueue addOperationWithBlock:v8];
 }
 
 void __58__C2NetworkingDelegateURLSessionDataTask_handleCompletion__block_invoke(uint64_t a1)
@@ -828,9 +828,9 @@ void __48__C2NetworkingDelegateURLSessionDataTask_resume__block_invoke_5(uint64_
 
 - (void)cancel
 {
-  v3 = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
+  syntheticError = [(C2NetworkingDelegateURLSessionDataTask *)self syntheticError];
 
-  if (!v3)
+  if (!syntheticError)
   {
     v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"C2NetworkingDelegateURLSessionErrorDomain" code:-1 userInfo:0];
     [(C2NetworkingDelegateURLSessionDataTask *)self setSyntheticError:v4];

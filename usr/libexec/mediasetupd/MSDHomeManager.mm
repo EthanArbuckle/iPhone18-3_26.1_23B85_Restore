@@ -5,24 +5,24 @@
 - (HMHome)currentHome;
 - (MSDHomeManager)init;
 - (NSArray)allHomes;
-- (id)homeWithIdentifier:(id)a3;
-- (void)_addHomeDelegates:(id)a3;
+- (id)homeWithIdentifier:(id)identifier;
+- (void)_addHomeDelegates:(id)delegates;
 - (void)_handleHomeKitSyncComplete;
 - (void)_homeWasRemoved;
 - (void)_noteHomesStillLoading;
-- (void)_withReadinessLock:(id)a3;
-- (void)_withRequestLock:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)awaitCurrentHomeWithCompletion:(id)a3;
-- (void)homeDidEnableMultiUser:(id)a3;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHomePermanently:(id)a4;
-- (void)homeManager:(id)a3 didUpdateStatus:(unint64_t)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)registerToAcceptCloudSharesForContainers:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)shareManager:(id)a3 didReceiveShareInvitation:(id)a4 completionHandler:(id)a5;
+- (void)_withReadinessLock:(id)lock;
+- (void)_withRequestLock:(id)lock;
+- (void)addDelegate:(id)delegate;
+- (void)awaitCurrentHomeWithCompletion:(id)completion;
+- (void)homeDidEnableMultiUser:(id)user;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHomePermanently:(id)permanently;
+- (void)homeManager:(id)manager didUpdateStatus:(unint64_t)status;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)registerToAcceptCloudSharesForContainers:(id)containers;
+- (void)removeDelegate:(id)delegate;
+- (void)shareManager:(id)manager didReceiveShareInvitation:(id)invitation completionHandler:(id)handler;
 @end
 
 @implementation MSDHomeManager
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000D65C;
   block[3] = &unk_1000508C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100059A48 != -1)
   {
     dispatch_once(&qword_100059A48, block);
@@ -76,33 +76,33 @@
   return v3;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  [(NSMutableSet *)self->_delegates addObject:v5];
+  [(NSMutableSet *)self->_delegates addObject:delegateCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  [(NSMutableSet *)self->_delegates removeObject:v5];
+  [(NSMutableSet *)self->_delegates removeObject:delegateCopy];
   objc_sync_exit(v4);
 }
 
-- (id)homeWithIdentifier:(id)a3
+- (id)homeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(MSDHomeManager *)self allHomes];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allHomes = [(MSDHomeManager *)self allHomes];
+  v6 = [allHomes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -112,12 +112,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allHomes);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 uniqueIdentifier];
-        v11 = [v10 isEqual:v4];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        v11 = [uniqueIdentifier isEqual:identifierCopy];
 
         if (v11)
         {
@@ -126,7 +126,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allHomes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -156,17 +156,17 @@ LABEL_11:
   [(MSDHomeManager *)self _withReadinessLock:v5];
   if (v7[3])
   {
-    v3 = [(HMHomeManager *)self->_homeManager currentHome];
+    currentHome = [(HMHomeManager *)self->_homeManager currentHome];
   }
 
   else
   {
-    v3 = 0;
+    currentHome = 0;
   }
 
   _Block_object_dispose(&v6, 8);
 
-  return v3;
+  return currentHome;
 }
 
 - (HMAccessory)currentAccessory
@@ -184,17 +184,17 @@ LABEL_11:
   [(MSDHomeManager *)self _withReadinessLock:v5];
   if (v7[3])
   {
-    v3 = [(HMHomeManager *)self->_homeManager currentAccessory];
+    currentAccessory = [(HMHomeManager *)self->_homeManager currentAccessory];
   }
 
   else
   {
-    v3 = 0;
+    currentAccessory = 0;
   }
 
   _Block_object_dispose(&v6, 8);
 
-  return v3;
+  return currentAccessory;
 }
 
 - (NSArray)allHomes
@@ -212,24 +212,24 @@ LABEL_11:
   [(MSDHomeManager *)self _withReadinessLock:v5];
   if (v7[3])
   {
-    v3 = [(HMHomeManager *)self->_homeManager homes];
+    homes = [(HMHomeManager *)self->_homeManager homes];
   }
 
   else
   {
-    v3 = 0;
+    homes = 0;
   }
 
   _Block_object_dispose(&v6, 8);
 
-  return v3;
+  return homes;
 }
 
-- (void)awaitCurrentHomeWithCompletion:(id)a3
+- (void)awaitCurrentHomeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v10 = 0;
     v11 = &v10;
@@ -243,7 +243,7 @@ LABEL_11:
     v7[3] = &unk_1000511D0;
     v9 = &v10;
     v7[4] = self;
-    v6 = v4;
+    v6 = completionCopy;
     v8 = v6;
     [(MSDHomeManager *)self _withRequestLock:v7];
     if (v11[5])
@@ -255,26 +255,26 @@ LABEL_11:
   }
 }
 
-- (void)registerToAcceptCloudSharesForContainers:(id)a3
+- (void)registerToAcceptCloudSharesForContainers:(id)containers
 {
-  v4 = a3;
-  v5 = [(HMHomeManager *)self->_homeManager userCloudShareManager];
-  [v5 setDelegate:self];
+  containersCopy = containers;
+  userCloudShareManager = [(HMHomeManager *)self->_homeManager userCloudShareManager];
+  [userCloudShareManager setDelegate:self];
 
-  v6 = [(HMHomeManager *)self->_homeManager userCloudShareManager];
+  userCloudShareManager2 = [(HMHomeManager *)self->_homeManager userCloudShareManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000E0A0;
   v8[3] = &unk_100050BD8;
-  v9 = v4;
-  v7 = v4;
-  [v6 registerForContainerIDs:v7 completion:v8];
+  v9 = containersCopy;
+  v7 = containersCopy;
+  [userCloudShareManager2 registerForContainerIDs:v7 completion:v8];
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  homeCopy = home;
   os_unfair_lock_lock(&self->_readinessLock);
   isWaitingToStart = self->_isWaitingToStart;
   os_unfair_lock_unlock(&self->_readinessLock);
@@ -299,15 +299,15 @@ LABEL_9:
     if (v10)
     {
       v14 = 138478083;
-      v15 = v6;
+      v15 = managerCopy;
       v16 = 2113;
-      v17 = v7;
+      v17 = homeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "HMHomeManager %{private}@ Added Home %{private}@", &v14, 0x16u);
     }
 
-    if (![v7 isCurrentUserRestrictedGuest])
+    if (![homeCopy isCurrentUserRestrictedGuest])
     {
-      [v7 setDelegate:self];
+      [homeCopy setDelegate:self];
       v9 = +[MSDDataController sharedInstance];
       [v9 refreshDataForReason:0 completion:&stru_100051210];
       goto LABEL_11;
@@ -327,10 +327,10 @@ LABEL_9:
 LABEL_11:
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  homeCopy = home;
   os_unfair_lock_lock(&self->_readinessLock);
   isWaitingToStart = self->_isWaitingToStart;
   os_unfair_lock_unlock(&self->_readinessLock);
@@ -347,22 +347,22 @@ LABEL_11:
 
   else
   {
-    v10 = [v7 uuid];
-    v11 = [v6 isHomeRemovedPermanently:v10];
+    uuid = [homeCopy uuid];
+    v11 = [managerCopy isHomeRemovedPermanently:uuid];
 
     v12 = sub_100030FE4();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = @"NO";
       v14 = 138478339;
-      v15 = v6;
+      v15 = managerCopy;
       v16 = 2113;
       if (v11)
       {
         v13 = @"YES";
       }
 
-      v17 = v7;
+      v17 = homeCopy;
       v18 = 2113;
       v19 = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "HMHomeManager %{private}@ Removed Home %{private}@ isRemovedPermanently: %{private}@", &v14, 0x20u);
@@ -375,10 +375,10 @@ LABEL_11:
   }
 }
 
-- (void)homeManager:(id)a3 didRemoveHomePermanently:(id)a4
+- (void)homeManager:(id)manager didRemoveHomePermanently:(id)permanently
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  permanentlyCopy = permanently;
   os_unfair_lock_lock(&self->_readinessLock);
   isWaitingToStart = self->_isWaitingToStart;
   os_unfair_lock_unlock(&self->_readinessLock);
@@ -399,9 +399,9 @@ LABEL_11:
     if (v10)
     {
       v11 = 138478083;
-      v12 = v6;
+      v12 = managerCopy;
       v13 = 2113;
-      v14 = v7;
+      v14 = permanentlyCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "HMHomeManager %{private}@ Permanently Removed Home %{private}@", &v11, 0x16u);
     }
 
@@ -409,14 +409,14 @@ LABEL_11:
   }
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = [(MSDHomeManager *)self isHomeManagerReady:v4];
+  homesCopy = homes;
+  v5 = [(MSDHomeManager *)self isHomeManagerReady:homesCopy];
   v6 = sub_100030FE4();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 status];
+    [homesCopy status];
     v7 = HMHomeManagerStatusToString();
     v11 = 136315650;
     v12 = "[MSDHomeManager homeManagerDidUpdateHomes:]";
@@ -440,24 +440,24 @@ LABEL_11:
     v9 = sub_100030FE4();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 homes];
+      homes = [homesCopy homes];
       v11 = 138477827;
-      v12 = v10;
+      v12 = homes;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received update on homes: %{private}@", &v11, 0xCu);
     }
 
-    [(MSDHomeManager *)self _addHomeDelegates:v4];
+    [(MSDHomeManager *)self _addHomeDelegates:homesCopy];
   }
 }
 
-- (void)homeManager:(id)a3 didUpdateStatus:(unint64_t)a4
+- (void)homeManager:(id)manager didUpdateStatus:(unint64_t)status
 {
-  v5 = a3;
-  v6 = [(MSDHomeManager *)self isHomeManagerReady:v5];
+  managerCopy = manager;
+  v6 = [(MSDHomeManager *)self isHomeManagerReady:managerCopy];
   v7 = sub_100030FE4();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    [v5 status];
+    [managerCopy status];
     v8 = HMHomeManagerStatusToString();
     *buf = 136315650;
     *&buf[4] = "[MSDHomeManager homeManager:didUpdateStatus:]";
@@ -480,7 +480,7 @@ LABEL_11:
     v11[3] = &unk_100051238;
     v13 = buf;
     v11[4] = self;
-    v12 = v5;
+    v12 = managerCopy;
     [(MSDHomeManager *)self _withReadinessLock:v11];
     if (*(*&buf[8] + 24))
     {
@@ -499,38 +499,38 @@ LABEL_11:
   }
 }
 
-- (void)homeDidEnableMultiUser:(id)a3
+- (void)homeDidEnableMultiUser:(id)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = sub_100030FE4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = [v3 isMultiUserEnabled];
+    v6[1] = [userCopy isMultiUserEnabled];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Home MUEnablement status changed : %d", v6, 8u);
   }
 
-  if ([v3 isMultiUserEnabled])
+  if ([userCopy isMultiUserEnabled])
   {
     v5 = [[MSDDataRefresh alloc] initWithReason:2];
     [(MSDDataRefresh *)v5 performRefreshWithCompletion:&stru_100051278];
   }
 }
 
-- (void)shareManager:(id)a3 didReceiveShareInvitation:(id)a4 completionHandler:(id)a5
+- (void)shareManager:(id)manager didReceiveShareInvitation:(id)invitation completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  invitationCopy = invitation;
+  handlerCopy = handler;
   v10 = sub_100030FE4();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315651;
     v15 = "[MSDHomeManager shareManager:didReceiveShareInvitation:completionHandler:]";
     v16 = 2113;
-    v17 = v7;
+    v17 = managerCopy;
     v18 = 2113;
-    v19 = v8;
+    v19 = invitationCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s, Manager:%{private}@ invitation: %{private}@", buf, 0x20u);
   }
 
@@ -538,20 +538,20 @@ LABEL_11:
   v12[1] = 3221225472;
   v12[2] = sub_10000F048;
   v12[3] = &unk_1000512A0;
-  v13 = v9;
-  v11 = v9;
-  [MSDHomeCloudShareCreate acceptInvitation:v8 completion:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [MSDHomeCloudShareCreate acceptInvitation:invitationCopy completion:v12];
 }
 
-- (void)_addHomeDelegates:(id)a3
+- (void)_addHomeDelegates:(id)delegates
 {
-  v4 = [a3 homes];
+  homes = [delegates homes];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000F1B8;
   v5[3] = &unk_1000512C8;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [homes enumerateObjectsUsingBlock:v5];
 }
 
 - (BOOL)isHomeKitReady
@@ -591,20 +591,20 @@ LABEL_11:
   }
 }
 
-- (void)_withReadinessLock:(id)a3
+- (void)_withReadinessLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_readinessLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_readinessLock);
 }
 
-- (void)_withRequestLock:(id)a3
+- (void)_withRequestLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_requestQueueLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_requestQueueLock);
 }

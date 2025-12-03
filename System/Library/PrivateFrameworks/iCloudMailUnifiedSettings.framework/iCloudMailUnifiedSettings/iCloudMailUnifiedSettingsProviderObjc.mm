@@ -1,20 +1,20 @@
 @interface iCloudMailUnifiedSettingsProviderObjc
-- (iCloudMailUnifiedSettingsProviderObjc)initWithAccountManager:(id)a3 presenter:(id)a4;
-- (iCloudMailUnifiedSettingsProviderObjc)initWithPresenter:(id)a3;
+- (iCloudMailUnifiedSettingsProviderObjc)initWithAccountManager:(id)manager presenter:(id)presenter;
+- (iCloudMailUnifiedSettingsProviderObjc)initWithPresenter:(id)presenter;
 @end
 
 @implementation iCloudMailUnifiedSettingsProviderObjc
 
-- (iCloudMailUnifiedSettingsProviderObjc)initWithAccountManager:(id)a3 presenter:(id)a4
+- (iCloudMailUnifiedSettingsProviderObjc)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = iCloudMailUnifiedSettingsProviderObjc;
   v8 = [(iCloudMailUnifiedSettingsProviderObjc *)&v12 init];
   if (v8)
   {
-    v9 = [[iCloudMailUnifiedSettingsProvider alloc] initWithAccountManager:v6 presenter:v7];
+    v9 = [[iCloudMailUnifiedSettingsProvider alloc] initWithAccountManager:managerCopy presenter:presenterCopy];
     provider = v8->provider;
     v8->provider = v9;
   }
@@ -22,15 +22,15 @@
   return v8;
 }
 
-- (iCloudMailUnifiedSettingsProviderObjc)initWithPresenter:(id)a3
+- (iCloudMailUnifiedSettingsProviderObjc)initWithPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v9.receiver = self;
   v9.super_class = iCloudMailUnifiedSettingsProviderObjc;
   v5 = [(iCloudMailUnifiedSettingsProviderObjc *)&v9 init];
   if (v5)
   {
-    v6 = [[iCloudMailUnifiedSettingsProvider alloc] initWithPresenter:v4];
+    v6 = [[iCloudMailUnifiedSettingsProvider alloc] initWithPresenter:presenterCopy];
     provider = v5->provider;
     v5->provider = v6;
   }

@@ -1,44 +1,44 @@
 @interface SLDHighlightPillRenderer
-- (CGImage)_newAvatarImageFromImageData:(id)a3;
-- (SLDHighlightPillRenderer)initWithStyle:(id)a3 tag:(id)a4;
-- (void)_drawAvatarImage:(CGImage *)a3 inContext:(CGContext *)a4 atRect:(CGRect)a5;
-- (void)_drawKnockoutBorderWidth:(double)a3 atXPosition:(double)a4 aroundImageWithYPosition:(double)a5 diameter:(double)a6 inContext:(CGContext *)a7;
-- (void)_renderAvatarsInContext:(CGContext *)a3;
+- (CGImage)_newAvatarImageFromImageData:(id)data;
+- (SLDHighlightPillRenderer)initWithStyle:(id)style tag:(id)tag;
+- (void)_drawAvatarImage:(CGImage *)image inContext:(CGContext *)context atRect:(CGRect)rect;
+- (void)_drawKnockoutBorderWidth:(double)width atXPosition:(double)position aroundImageWithYPosition:(double)yPosition diameter:(double)diameter inContext:(CGContext *)context;
+- (void)_renderAvatarsInContext:(CGContext *)context;
 - (void)dealloc;
-- (void)renderInContext:(CGContext *)a3;
+- (void)renderInContext:(CGContext *)context;
 @end
 
 @implementation SLDHighlightPillRenderer
 
-- (SLDHighlightPillRenderer)initWithStyle:(id)a3 tag:(id)a4
+- (SLDHighlightPillRenderer)initWithStyle:(id)style tag:(id)tag
 {
-  v7 = a3;
-  v8 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v14.receiver = self;
   v14.super_class = SLDHighlightPillRenderer;
   v9 = [(SLDHighlightPillRenderer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_slotStyle, a3);
-    objc_storeStrong(&v10->_slotTag, a4);
-    v11 = [[SLHighlightPillMetrics alloc] initWithSlotStyle:v7 tag:v8];
+    objc_storeStrong(&v9->_slotStyle, style);
+    objc_storeStrong(&v10->_slotTag, tag);
+    v11 = [[SLHighlightPillMetrics alloc] initWithSlotStyle:styleCopy tag:tagCopy];
     metricsProvider = v10->_metricsProvider;
     v10->_metricsProvider = v11;
 
-    v10->_RTL = [v7 layoutDirection] == 1;
+    v10->_RTL = [styleCopy layoutDirection] == 1;
     v10->_font = CFRetain([(SLHighlightPillMetrics *)v10->_metricsProvider baseFont]);
   }
 
   return v10;
 }
 
-- (void)renderInContext:(CGContext *)a3
+- (void)renderInContext:(CGContext *)context
 {
-  v5 = [(SLDHighlightPillRenderer *)self metricsProvider];
-  v6 = [v5 hasValidMetricsForDrawing];
+  metricsProvider = [(SLDHighlightPillRenderer *)self metricsProvider];
+  hasValidMetricsForDrawing = [metricsProvider hasValidMetricsForDrawing];
 
-  if (v6)
+  if (hasValidMetricsForDrawing)
   {
     v7 = SLGeneralTelemetryLogHandle();
     v8 = os_signpost_id_generate(v7);
@@ -51,78 +51,78 @@
       _os_signpost_emit_with_name_impl(&dword_231772000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "DaemonHighlightPillRenderInContext", "", &buf, 2u);
     }
 
-    v11 = [(SLDHighlightPillRenderer *)self slotStyle];
-    v12 = [v11 displayScale];
+    slotStyle = [(SLDHighlightPillRenderer *)self slotStyle];
+    displayScale = [slotStyle displayScale];
 
-    v13 = [(SLDHighlightPillRenderer *)self metricsProvider];
-    [v13 pillSize];
-    v15 = SLRoundToScale(v14 * 0.5, v12);
+    metricsProvider2 = [(SLDHighlightPillRenderer *)self metricsProvider];
+    [metricsProvider2 pillSize];
+    v15 = SLRoundToScale(v14 * 0.5, displayScale);
 
-    v16 = [(SLDHighlightPillRenderer *)self isRTL];
-    [(SLDHighlightPillRenderer *)self _renderAvatarsInContext:a3];
-    v17 = [(SLDHighlightPillRenderer *)self metricsProvider];
-    if ([v17 useDoubleLinedLabel])
+    isRTL = [(SLDHighlightPillRenderer *)self isRTL];
+    [(SLDHighlightPillRenderer *)self _renderAvatarsInContext:context];
+    metricsProvider3 = [(SLDHighlightPillRenderer *)self metricsProvider];
+    if ([metricsProvider3 useDoubleLinedLabel])
     {
-      v18 = [(SLDHighlightPillRenderer *)self metricsProvider];
-      v19 = [v18 firstLine];
+      metricsProvider4 = [(SLDHighlightPillRenderer *)self metricsProvider];
+      firstLine = [metricsProvider4 firstLine];
 
-      if (v19)
+      if (firstLine)
       {
-        v20 = [(SLDHighlightPillRenderer *)self metricsProvider];
-        v21 = [v20 firstLine];
+        metricsProvider5 = [(SLDHighlightPillRenderer *)self metricsProvider];
+        firstLine2 = [metricsProvider5 firstLine];
 
-        v22 = [(SLDHighlightPillRenderer *)self metricsProvider];
-        v23 = [v22 secondLine];
+        metricsProvider6 = [(SLDHighlightPillRenderer *)self metricsProvider];
+        secondLine = [metricsProvider6 secondLine];
 
-        BoundsWithOptions = CTLineGetBoundsWithOptions(v21, 0);
+        BoundsWithOptions = CTLineGetBoundsWithOptions(firstLine2, 0);
         height = BoundsWithOptions.size.height;
-        CGContextSaveGState(a3);
+        CGContextSaveGState(context);
         v25 = CTFontGetAscent([(SLDHighlightPillRenderer *)self font]);
         CGContextSetFontRenderingStyle();
-        if (v23)
+        if (secondLine)
         {
-          v26 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v26 margins];
+          metricsProvider7 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider7 margins];
           v28 = v25 + v27;
         }
 
         else
         {
-          v55 = SLRoundToScale(height, v12);
-          v28 = SLRoundToScale(v25 + v15 + v55 * -0.5, v12);
+          v55 = SLRoundToScale(height, displayScale);
+          v28 = SLRoundToScale(v25 + v15 + v55 * -0.5, displayScale);
         }
 
-        v56 = [(SLDHighlightPillRenderer *)self metricsProvider];
-        [v56 pillSize];
-        if (v16)
+        metricsProvider8 = [(SLDHighlightPillRenderer *)self metricsProvider];
+        [metricsProvider8 pillSize];
+        if (isRTL)
         {
-          PenOffsetForFlush = CTLineGetPenOffsetForFlush(v21, 1.0, v57);
-          v59 = SLRoundToScale(PenOffsetForFlush, v12);
+          PenOffsetForFlush = CTLineGetPenOffsetForFlush(firstLine2, 1.0, v57);
+          v59 = SLRoundToScale(PenOffsetForFlush, displayScale);
 
-          v60 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v60 margins];
+          metricsProvider9 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider9 margins];
           v62 = v59 - v61;
-          v63 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v63 avatarContainerWidth];
+          metricsProvider10 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider10 avatarContainerWidth];
           v65 = v62 - v64;
-          v66 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v66 labelHorizontalMargins];
+          metricsProvider11 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider11 labelHorizontalMargins];
           v68 = v65 - v67;
         }
 
         else
         {
-          v69 = CTLineGetPenOffsetForFlush(v21, 0.0, v57);
-          v70 = SLRoundToScale(v69, v12);
+          v69 = CTLineGetPenOffsetForFlush(firstLine2, 0.0, v57);
+          v70 = SLRoundToScale(v69, displayScale);
 
-          v60 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v60 margins];
+          metricsProvider9 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider9 margins];
           v72 = v70 + v71;
-          v63 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v63 avatarContainerWidth];
+          metricsProvider10 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider10 avatarContainerWidth];
           v74 = v72 + v73;
-          v66 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v66 labelHorizontalMargins];
+          metricsProvider11 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider11 labelHorizontalMargins];
           v68 = v74 + v75;
         }
 
@@ -132,48 +132,48 @@
         buf.d = -1.0;
         buf.tx = v68;
         buf.ty = v28;
-        CGContextSetTextMatrix(a3, &buf);
-        CTLineDraw(v21, a3);
-        if (!v23)
+        CGContextSetTextMatrix(context, &buf);
+        CTLineDraw(firstLine2, context);
+        if (!secondLine)
         {
           goto LABEL_27;
         }
 
-        v76 = [(SLDHighlightPillRenderer *)self metricsProvider];
-        [v76 pillSize];
-        if (v16)
+        metricsProvider12 = [(SLDHighlightPillRenderer *)self metricsProvider];
+        [metricsProvider12 pillSize];
+        if (isRTL)
         {
-          v78 = CTLineGetPenOffsetForFlush(v23, 1.0, v77);
-          v79 = SLRoundToScale(v78, v12);
+          v78 = CTLineGetPenOffsetForFlush(secondLine, 1.0, v77);
+          v79 = SLRoundToScale(v78, displayScale);
 
-          v80 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v80 margins];
+          metricsProvider13 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider13 margins];
           v82 = v79 - v81;
-          v83 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v83 avatarContainerWidth];
+          metricsProvider14 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider14 avatarContainerWidth];
           v85 = v82 - v84;
-          v86 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v86 labelHorizontalMargins];
+          metricsProvider15 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider15 labelHorizontalMargins];
           v88 = v85 - v87;
         }
 
         else
         {
-          v89 = CTLineGetPenOffsetForFlush(v23, 0.0, v77);
-          v90 = SLRoundToScale(v89, v12);
+          v89 = CTLineGetPenOffsetForFlush(secondLine, 0.0, v77);
+          v90 = SLRoundToScale(v89, displayScale);
 
-          v80 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v80 margins];
+          metricsProvider13 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider13 margins];
           v92 = v90 + v91;
-          v83 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v83 avatarContainerWidth];
+          metricsProvider14 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider14 avatarContainerWidth];
           v94 = v92 + v93;
-          v86 = [(SLDHighlightPillRenderer *)self metricsProvider];
-          [v86 labelHorizontalMargins];
+          metricsProvider15 = [(SLDHighlightPillRenderer *)self metricsProvider];
+          [metricsProvider15 labelHorizontalMargins];
           v88 = v94 + v95;
         }
 
-        v96 = SLRoundToScale(height, v12);
+        v96 = SLRoundToScale(height, displayScale);
         buf.a = 1.0;
         buf.b = 0.0;
         buf.c = 0.0;
@@ -188,10 +188,10 @@
     {
     }
 
-    v30 = [(SLDHighlightPillRenderer *)self metricsProvider];
-    v31 = [v30 firstLine];
+    metricsProvider16 = [(SLDHighlightPillRenderer *)self metricsProvider];
+    firstLine3 = [metricsProvider16 firstLine];
 
-    if (!v31)
+    if (!firstLine3)
     {
 LABEL_27:
       v97 = SLGeneralTelemetryLogHandle();
@@ -205,46 +205,46 @@ LABEL_27:
       goto LABEL_30;
     }
 
-    v32 = [(SLDHighlightPillRenderer *)self metricsProvider];
-    v23 = [v32 firstLine];
+    metricsProvider17 = [(SLDHighlightPillRenderer *)self metricsProvider];
+    secondLine = [metricsProvider17 firstLine];
 
-    CGContextSaveGState(a3);
-    v101 = CTLineGetBoundsWithOptions(v23, 0);
+    CGContextSaveGState(context);
+    v101 = CTLineGetBoundsWithOptions(secondLine, 0);
     v33 = v101.size.height;
     ascent = 0.0;
-    CTLineGetTypographicBounds(v23, &ascent, 0, 0);
-    ascent = SLRoundToScale(ascent, v12);
-    v34 = SLRoundToScale(v33, v12);
-    v35 = [(SLDHighlightPillRenderer *)self metricsProvider];
-    [v35 pillSize];
-    v37 = CTLineGetPenOffsetForFlush(v23, 0.0, v36);
-    v38 = SLRoundToScale(v37, v12);
+    CTLineGetTypographicBounds(secondLine, &ascent, 0, 0);
+    ascent = SLRoundToScale(ascent, displayScale);
+    v34 = SLRoundToScale(v33, displayScale);
+    metricsProvider18 = [(SLDHighlightPillRenderer *)self metricsProvider];
+    [metricsProvider18 pillSize];
+    v37 = CTLineGetPenOffsetForFlush(secondLine, 0.0, v36);
+    v38 = SLRoundToScale(v37, displayScale);
 
-    v39 = [(SLDHighlightPillRenderer *)self metricsProvider];
-    [v39 margins];
+    metricsProvider19 = [(SLDHighlightPillRenderer *)self metricsProvider];
+    [metricsProvider19 margins];
     v41 = v40;
     v43 = v42;
-    v44 = [(SLDHighlightPillRenderer *)self metricsProvider];
-    v45 = v44;
-    if (v16)
+    metricsProvider20 = [(SLDHighlightPillRenderer *)self metricsProvider];
+    v45 = metricsProvider20;
+    if (isRTL)
     {
-      [v44 chevronSize];
+      [metricsProvider20 chevronSize];
       v47 = v43 + v46;
-      v48 = [(SLDHighlightPillRenderer *)self metricsProvider];
-      [v48 labelHorizontalMargins];
+      metricsProvider21 = [(SLDHighlightPillRenderer *)self metricsProvider];
+      [metricsProvider21 labelHorizontalMargins];
       v50 = v47 + v49;
     }
 
     else
     {
-      [v44 avatarContainerWidth];
+      [metricsProvider20 avatarContainerWidth];
       v52 = v41 + v51;
-      v48 = [(SLDHighlightPillRenderer *)self metricsProvider];
-      [v48 labelHorizontalMargins];
+      metricsProvider21 = [(SLDHighlightPillRenderer *)self metricsProvider];
+      [metricsProvider21 labelHorizontalMargins];
       v50 = v52 + v53;
     }
 
-    v54 = SLRoundToScale(v15 + v34 * -0.5 + ascent, v12);
+    v54 = SLRoundToScale(v15 + v34 * -0.5 + ascent, displayScale);
     CGContextSetFontRenderingStyle();
     buf.a = 1.0;
     buf.b = 0.0;
@@ -253,9 +253,9 @@ LABEL_27:
     buf.tx = v38 + v50;
     buf.ty = v54;
 LABEL_26:
-    CGContextSetTextMatrix(a3, &buf);
-    CTLineDraw(v23, a3);
-    CGContextRestoreGState(a3);
+    CGContextSetTextMatrix(context, &buf);
+    CTLineDraw(secondLine, context);
+    CGContextRestoreGState(context);
     goto LABEL_27;
   }
 
@@ -268,32 +268,32 @@ LABEL_26:
 LABEL_30:
 }
 
-- (void)_renderAvatarsInContext:(CGContext *)a3
+- (void)_renderAvatarsInContext:(CGContext *)context
 {
   v97 = *MEMORY[0x277D85DE8];
-  v4 = [(SLDHighlightPillRenderer *)self metricsProvider];
-  v5 = [(SLDHighlightPillRenderer *)self slotStyle];
-  v6 = [v5 displayScale];
+  metricsProvider = [(SLDHighlightPillRenderer *)self metricsProvider];
+  slotStyle = [(SLDHighlightPillRenderer *)self slotStyle];
+  displayScale = [slotStyle displayScale];
 
-  [v4 avatarDiameter];
+  [metricsProvider avatarDiameter];
   v8 = v7;
-  [v4 overlappedAvatarKnockoutBorderWidth];
+  [metricsProvider overlappedAvatarKnockoutBorderWidth];
   v10 = v9;
-  [v4 pillSize];
+  [metricsProvider pillSize];
   v12 = v11 * 0.5;
-  [v4 avatarDiameter];
-  v14 = SLRoundToScale(v12 - v13 * 0.5, v6);
-  [v4 overlappedAvatarVisibleWidth];
+  [metricsProvider avatarDiameter];
+  v14 = SLRoundToScale(v12 - v13 * 0.5, displayScale);
+  [metricsProvider overlappedAvatarVisibleWidth];
   v16 = v15;
-  v87 = self;
-  v17 = [(SLDHighlightPillRenderer *)self slotStyle];
-  v18 = [v17 layoutDirection];
+  selfCopy = self;
+  slotStyle2 = [(SLDHighlightPillRenderer *)self slotStyle];
+  layoutDirection = [slotStyle2 layoutDirection];
 
-  [v4 margins];
+  [metricsProvider margins];
   v20 = v19;
-  [v4 avatarContainerWidth];
+  [metricsProvider avatarContainerWidth];
   v22 = v20 + v21;
-  if (v18 == 1)
+  if (layoutDirection == 1)
   {
     v23 = 1.0;
   }
@@ -303,9 +303,9 @@ LABEL_30:
     v23 = -1.0;
   }
 
-  if (v18 == 1)
+  if (layoutDirection == 1)
   {
-    [v4 pillSize];
+    [metricsProvider pillSize];
     v25 = v24 - v22;
   }
 
@@ -314,12 +314,12 @@ LABEL_30:
     v25 = v22 - v8;
   }
 
-  v26 = [v4 imageCount];
-  v27 = [(SLDHighlightPillRenderer *)self slotTag];
-  v28 = [v27 pinnedSender];
-  if (v28)
+  imageCount = [metricsProvider imageCount];
+  slotTag = [(SLDHighlightPillRenderer *)self slotTag];
+  pinnedSender = [slotTag pinnedSender];
+  if (pinnedSender)
   {
-    v29 = v26 > 1;
+    v29 = imageCount > 1;
   }
 
   else
@@ -328,34 +328,34 @@ LABEL_30:
   }
 
   v30 = v29;
-  v31 = v26 - v30;
+  v31 = imageCount - v30;
 
-  v32 = self;
-  v33 = [(SLDHighlightPillRenderer *)self slotTag];
-  v34 = [v33 sendersToDisplay];
+  selfCopy2 = self;
+  slotTag2 = [(SLDHighlightPillRenderer *)self slotTag];
+  sendersToDisplay = [slotTag2 sendersToDisplay];
 
-  if ([v34 count] > v31)
+  if ([sendersToDisplay count] > v31)
   {
-    v35 = [v34 subarrayWithRange:{0, v31}];
+    v35 = [sendersToDisplay subarrayWithRange:{0, v31}];
 
-    v34 = v35;
+    sendersToDisplay = v35;
   }
 
-  v36 = [(SLDHighlightPillRenderer *)v87 slotTag];
-  v37 = [v36 groupPhotoPath];
-  v85 = v26;
-  v86 = v34;
-  if (v37)
+  slotTag3 = [(SLDHighlightPillRenderer *)selfCopy slotTag];
+  groupPhotoPath = [slotTag3 groupPhotoPath];
+  v85 = imageCount;
+  v86 = sendersToDisplay;
+  if (groupPhotoPath)
   {
-    v38 = v37;
-    v39 = [(SLDHighlightPillRenderer *)v87 slotTag];
-    v40 = [v39 groupID];
+    v38 = groupPhotoPath;
+    slotTag4 = [(SLDHighlightPillRenderer *)selfCopy slotTag];
+    groupID = [slotTag4 groupID];
 
-    if (v40)
+    if (groupID)
     {
-      v41 = [(SLDHighlightPillRenderer *)v87 slotTag];
-      v42 = [v41 groupID];
-      v43 = SLDCreateGroupPhotoImageWithGroupID(v42);
+      slotTag5 = [(SLDHighlightPillRenderer *)selfCopy slotTag];
+      groupID2 = [slotTag5 groupID];
+      v43 = SLDCreateGroupPhotoImageWithGroupID(groupID2);
 
       if (v43)
       {
@@ -366,29 +366,29 @@ LABEL_30:
       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v96 = v87;
+        v96 = selfCopy;
         _os_log_impl(&dword_231772000, v44, OS_LOG_TYPE_INFO, "[%@] SLDHighlightPillRenderer Failed to get avatar image from IMSPI. Trying with groupPhotoFileURL.", buf, 0xCu);
       }
 
       v45 = MEMORY[0x277CBEA90];
-      v46 = [(SLDHighlightPillRenderer *)v87 slotTag];
-      v47 = [v46 groupPhotoPath];
-      v48 = [v45 dataWithContentsOfURL:v47 options:1 error:0];
+      slotTag6 = [(SLDHighlightPillRenderer *)selfCopy slotTag];
+      groupPhotoPath2 = [slotTag6 groupPhotoPath];
+      v48 = [v45 dataWithContentsOfURL:groupPhotoPath2 options:1 error:0];
 
-      v43 = [(SLDHighlightPillRenderer *)v87 _newAvatarImageFromImageData:v48];
+      v43 = [(SLDHighlightPillRenderer *)selfCopy _newAvatarImageFromImageData:v48];
       if (v43)
       {
 LABEL_21:
-        [(SLDHighlightPillRenderer *)v87 _drawAvatarImage:v43 inContext:a3 atRect:v25, v14, v8, v8];
+        [(SLDHighlightPillRenderer *)selfCopy _drawAvatarImage:v43 inContext:context atRect:v25, v14, v8, v8];
         CGImageRelease(v43);
       }
 
       else
       {
-        v80 = [(SLDHighlightPillRenderer *)v87 slotStyle];
-        v81 = [(SLDHighlightPillRenderer *)v87 metricsProvider];
-        [v81 pillSize];
-        SLDRenderContactSilhouetteInContextAtRect(v80, a3, 1, v82, v25, v14, v8, v8);
+        slotStyle3 = [(SLDHighlightPillRenderer *)selfCopy slotStyle];
+        metricsProvider2 = [(SLDHighlightPillRenderer *)selfCopy metricsProvider];
+        [metricsProvider2 pillSize];
+        SLDRenderContactSilhouetteInContextAtRect(slotStyle3, context, 1, v82, v25, v14, v8, v8);
       }
 
       v25 = v25 + v16 * v23;
@@ -402,12 +402,12 @@ LABEL_21:
   {
   }
 
-  v84 = v4;
+  v84 = metricsProvider;
   v92 = 0u;
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = [v34 reverseObjectEnumerator];
+  obj = [sendersToDisplay reverseObjectEnumerator];
   v51 = [obj countByEnumeratingWithState:&v90 objects:v94 count:16];
   if (v51)
   {
@@ -441,28 +441,28 @@ LABEL_26:
       }
 
       v56 = *(*(&v90 + 1) + 8 * v54);
-      v57 = [v56 thumbnailImageData];
-      v58 = [(SLDHighlightPillRenderer *)v32 _newAvatarImageFromImageData:v57];
+      thumbnailImageData = [v56 thumbnailImageData];
+      v58 = [(SLDHighlightPillRenderer *)selfCopy2 _newAvatarImageFromImageData:thumbnailImageData];
       if (v50)
       {
-        [(SLDHighlightPillRenderer *)v32 _drawKnockoutBorderWidth:a3 atXPosition:v10 aroundImageWithYPosition:v25 - v10 diameter:v14 inContext:v8];
+        [(SLDHighlightPillRenderer *)selfCopy2 _drawKnockoutBorderWidth:context atXPosition:v10 aroundImageWithYPosition:v25 - v10 diameter:v14 inContext:v8];
       }
 
       if (v58)
       {
-        [(SLDHighlightPillRenderer *)v32 _drawAvatarImage:v58 inContext:a3 atRect:v25, v14, v8, v8];
+        [(SLDHighlightPillRenderer *)selfCopy2 _drawAvatarImage:v58 inContext:context atRect:v25, v14, v8, v8];
         CGImageRelease(v58);
       }
 
       else
       {
-        v59 = [v56 contact];
-        v60 = [(SLDHighlightPillRenderer *)v32 slotStyle];
-        v61 = [(SLDHighlightPillRenderer *)v32 metricsProvider];
-        [v61 pillSize];
-        SLDRenderContactMonogramInContextAtRect(v60, v59, a3, 1, v62, v25, v14, v8, v8);
+        contact = [v56 contact];
+        slotStyle4 = [(SLDHighlightPillRenderer *)selfCopy2 slotStyle];
+        metricsProvider3 = [(SLDHighlightPillRenderer *)selfCopy2 metricsProvider];
+        [metricsProvider3 pillSize];
+        SLDRenderContactMonogramInContextAtRect(slotStyle4, contact, context, 1, v62, v25, v14, v8, v8);
 
-        v32 = v87;
+        selfCopy2 = selfCopy;
       }
 
       ++v49;
@@ -489,53 +489,53 @@ LABEL_26:
     v50 = 0;
   }
 
-  v4 = v84;
+  metricsProvider = v84;
 LABEL_42:
-  v63 = [(SLDHighlightPillRenderer *)v32 metricsProvider];
-  if (![v63 shouldDisplayPin])
+  metricsProvider4 = [(SLDHighlightPillRenderer *)selfCopy2 metricsProvider];
+  if (![metricsProvider4 shouldDisplayPin])
   {
 LABEL_48:
 
     goto LABEL_49;
   }
 
-  v64 = [(SLDHighlightPillRenderer *)v32 slotTag];
-  v65 = [v64 pinnedSender];
+  slotTag7 = [(SLDHighlightPillRenderer *)selfCopy2 slotTag];
+  pinnedSender2 = [slotTag7 pinnedSender];
 
-  if (v65 && v49 < v85)
+  if (pinnedSender2 && v49 < v85)
   {
-    v66 = v4;
+    v66 = metricsProvider;
     if (v50)
     {
-      [(SLDHighlightPillRenderer *)v87 _drawKnockoutBorderWidth:a3 atXPosition:v10 aroundImageWithYPosition:v25 - v10 diameter:v14 inContext:v8];
+      [(SLDHighlightPillRenderer *)selfCopy _drawKnockoutBorderWidth:context atXPosition:v10 aroundImageWithYPosition:v25 - v10 diameter:v14 inContext:v8];
     }
 
-    v67 = [(SLDHighlightPillRenderer *)v87 slotStyle];
-    v68 = SLDCreateColorNamed(v67, @"HighlightStarColor");
+    slotStyle5 = [(SLDHighlightPillRenderer *)selfCopy slotStyle];
+    v68 = SLDCreateColorNamed(slotStyle5, @"HighlightStarColor");
 
-    CGContextSetFillColorWithColor(a3, v68);
+    CGContextSetFillColorWithColor(context, v68);
     CGColorRelease(v68);
     v98.origin.x = v25;
     v98.origin.y = v14;
     v98.size.width = v8;
     v98.size.height = v8;
-    CGContextFillEllipseInRect(a3, v98);
-    v69 = SLRoundToScale(v8 * 0.68, v6);
-    v70 = [(SLDHighlightPillRenderer *)v87 slotStyle];
-    v63 = SLDSystemVectorGlyphWithSlotStyle(v70, @"pin.fill", 1, 4, v69);
+    CGContextFillEllipseInRect(context, v98);
+    v69 = SLRoundToScale(v8 * 0.68, displayScale);
+    slotStyle6 = [(SLDHighlightPillRenderer *)selfCopy slotStyle];
+    metricsProvider4 = SLDSystemVectorGlyphWithSlotStyle(slotStyle6, @"pin.fill", 1, 4, v69);
 
-    [v63 contentBounds];
+    [metricsProvider4 contentBounds];
     v72 = v71;
-    [v63 contentBounds];
-    v74 = SLRectCenteredInRectToScale(v25, v14, v72, v73, v25, v14, v8, v8, v6);
+    [metricsProvider4 contentBounds];
+    v74 = SLRectCenteredInRectToScale(v25, v14, v72, v73, v25, v14, v8, v8, displayScale);
     v76 = v75;
     v77 = objc_alloc(MEMORY[0x277D77800]);
-    v78 = [v77 initWithVectorGlyph:v63 tintColor:CGColorGetConstantColor(*MEMORY[0x277CBF4D8])];
-    CGContextSaveGState(a3);
-    [v78 drawInContext:a3 atPoint:{v74, v76}];
-    CGContextRestoreGState(a3);
+    v78 = [v77 initWithVectorGlyph:metricsProvider4 tintColor:CGColorGetConstantColor(*MEMORY[0x277CBF4D8])];
+    CGContextSaveGState(context);
+    [v78 drawInContext:context atPoint:{v74, v76}];
+    CGContextRestoreGState(context);
 
-    v4 = v66;
+    metricsProvider = v66;
     goto LABEL_48;
   }
 
@@ -544,16 +544,16 @@ LABEL_49:
   v79 = *MEMORY[0x277D85DE8];
 }
 
-- (CGImage)_newAvatarImageFromImageData:(id)a3
+- (CGImage)_newAvatarImageFromImageData:(id)data
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (!dataCopy)
   {
     goto LABEL_5;
   }
 
-  v5 = CGDataProviderCreateWithCFData(v3);
+  v5 = CGDataProviderCreateWithCFData(dataCopy);
   ImageAtIndex = v5;
   if (v5)
   {
@@ -575,52 +575,52 @@ LABEL_6:
   return ImageAtIndex;
 }
 
-- (void)_drawAvatarImage:(CGImage *)a3 inContext:(CGContext *)a4 atRect:(CGRect)a5
+- (void)_drawAvatarImage:(CGImage *)image inContext:(CGContext *)context atRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  CGImageRetain(a3);
-  CGContextSaveGState(a4);
-  v12 = [(SLDHighlightPillRenderer *)self metricsProvider];
-  [v12 pillSize];
-  CGContextTranslateCTM(a4, 0.0, v13);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGImageRetain(image);
+  CGContextSaveGState(context);
+  metricsProvider = [(SLDHighlightPillRenderer *)self metricsProvider];
+  [metricsProvider pillSize];
+  CGContextTranslateCTM(context, 0.0, v13);
 
-  CGContextScaleCTM(a4, 1.0, -1.0);
-  CGContextBeginPath(a4);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextBeginPath(context);
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
   v15.size.height = height;
-  CGContextAddEllipseInRect(a4, v15);
-  CGContextClip(a4);
-  CGContextClosePath(a4);
+  CGContextAddEllipseInRect(context, v15);
+  CGContextClip(context);
+  CGContextClosePath(context);
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
   v16.size.height = height;
-  CGContextDrawImage(a4, v16, a3);
-  CGContextRestoreGState(a4);
+  CGContextDrawImage(context, v16, image);
+  CGContextRestoreGState(context);
 
-  CGImageRelease(a3);
+  CGImageRelease(image);
 }
 
-- (void)_drawKnockoutBorderWidth:(double)a3 atXPosition:(double)a4 aroundImageWithYPosition:(double)a5 diameter:(double)a6 inContext:(CGContext *)a7
+- (void)_drawKnockoutBorderWidth:(double)width atXPosition:(double)position aroundImageWithYPosition:(double)yPosition diameter:(double)diameter inContext:(CGContext *)context
 {
-  CGContextSaveGState(a7);
+  CGContextSaveGState(context);
   ConstantColor = CGColorGetConstantColor(*MEMORY[0x277CBF3C0]);
-  CGContextSetFillColorWithColor(a7, ConstantColor);
-  CGContextSetBlendMode(a7, kCGBlendModeClear);
-  CGContextBeginPath(a7);
-  v14.origin.x = a4;
-  v14.origin.y = a5 - a3;
-  v14.size.width = a6 + a3 * 2.0;
+  CGContextSetFillColorWithColor(context, ConstantColor);
+  CGContextSetBlendMode(context, kCGBlendModeClear);
+  CGContextBeginPath(context);
+  v14.origin.x = position;
+  v14.origin.y = yPosition - width;
+  v14.size.width = diameter + width * 2.0;
   v14.size.height = v14.size.width;
-  CGContextAddEllipseInRect(a7, v14);
-  CGContextDrawPath(a7, kCGPathFill);
+  CGContextAddEllipseInRect(context, v14);
+  CGContextDrawPath(context, kCGPathFill);
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 }
 
 - (void)dealloc

@@ -1,21 +1,21 @@
 @interface FeedItemTableViewCell
-- (_TtC8NewsFeed21FeedItemTableViewCell)initWithCoder:(id)a3;
-- (_TtC8NewsFeed21FeedItemTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8NewsFeed21FeedItemTableViewCell)initWithCoder:(id)coder;
+- (_TtC8NewsFeed21FeedItemTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation FeedItemTableViewCell
 
-- (_TtC8NewsFeed21FeedItemTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed21FeedItemTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (identifier)
   {
     sub_1D726207C();
     v7 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeed21FeedItemTableViewCell_identifier);
     *v7 = 0;
     v7[1] = 0;
-    a4 = sub_1D726203C();
+    identifier = sub_1D726203C();
   }
 
   else
@@ -27,12 +27,12 @@
 
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v9 = [(FeedItemTableViewCell *)&v11 initWithStyle:3 reuseIdentifier:a4];
+  v9 = [(FeedItemTableViewCell *)&v11 initWithStyle:3 reuseIdentifier:identifier];
 
   return v9;
 }
 
-- (_TtC8NewsFeed21FeedItemTableViewCell)initWithCoder:(id)a3
+- (_TtC8NewsFeed21FeedItemTableViewCell)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeed21FeedItemTableViewCell_identifier);
   *v3 = 0;

@@ -1,6 +1,6 @@
 @interface UICollectionViewTableHeaderFooterView
-- (UICollectionViewTableHeaderFooterView)initWithCoder:(id)a3;
-- (UICollectionViewTableHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (UICollectionViewTableHeaderFooterView)initWithCoder:(id)coder;
+- (UICollectionViewTableHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 - (UICollectionViewTableLayout)_tableLayout;
 - (UICollectionViewTableLayoutAttributes)_tableAttributes;
 - (UIColor)tintColor;
@@ -8,14 +8,14 @@
 - (UILabel)textLabel;
 - (UIView)backgroundView;
 - (UIView)contentView;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)_commonInit;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundView:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)setBackgroundView:(id)view;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation UICollectionViewTableHeaderFooterView
@@ -23,14 +23,14 @@
 - (void)_commonInit
 {
   v3 = [UITableViewHeaderFooterView alloc];
-  v4 = [(UICollectionReusableView *)self reuseIdentifier];
-  v5 = [(UITableViewHeaderFooterView *)v3 initWithReuseIdentifier:v4];
+  reuseIdentifier = [(UICollectionReusableView *)self reuseIdentifier];
+  v5 = [(UITableViewHeaderFooterView *)v3 initWithReuseIdentifier:reuseIdentifier];
 
   [(UIView *)self addSubview:v5];
   [(UICollectionViewTableHeaderFooterView *)self setTableViewHeaderFooterView:v5];
 }
 
-- (UICollectionViewTableHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (UICollectionViewTableHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = UICollectionViewTableHeaderFooterView;
@@ -38,36 +38,36 @@
   v4 = *(MEMORY[0x1E695F058] + 8);
   v5 = *(MEMORY[0x1E695F058] + 16);
   v6 = *(MEMORY[0x1E695F058] + 24);
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = [(UICollectionReusableView *)&v10 initWithFrame:v3, v4, v5, v6];
-  [(UICollectionReusableView *)v8 _setReuseIdentifier:v7, v10.receiver, v10.super_class];
+  [(UICollectionReusableView *)v8 _setReuseIdentifier:identifierCopy, v10.receiver, v10.super_class];
 
   [(UICollectionViewTableHeaderFooterView *)v8 _commonInit];
   return v8;
 }
 
-- (UICollectionViewTableHeaderFooterView)initWithCoder:(id)a3
+- (UICollectionViewTableHeaderFooterView)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = UICollectionViewTableHeaderFooterView;
-  v3 = a3;
-  v4 = [(UICollectionReusableView *)&v8 initWithCoder:v3];
-  v5 = [v3 decodeObjectForKey:{@"UITableViewHeaderFooterView", v8.receiver, v8.super_class}];
+  coderCopy = coder;
+  v4 = [(UICollectionReusableView *)&v8 initWithCoder:coderCopy];
+  v5 = [coderCopy decodeObjectForKey:{@"UITableViewHeaderFooterView", v8.receiver, v8.super_class}];
 
   [(UICollectionViewTableHeaderFooterView *)v4 setTableViewHeaderFooterView:v5];
-  v6 = [(UICollectionViewTableHeaderFooterView *)v4 tableViewHeaderFooterView];
-  [(UIView *)v4 addSubview:v6];
+  tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)v4 tableViewHeaderFooterView];
+  [(UIView *)v4 addSubview:tableViewHeaderFooterView];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UICollectionViewTableHeaderFooterView;
-  v4 = a3;
-  [(UICollectionReusableView *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_tableViewHeaderFooterView forKey:{@"UITableViewHeaderFooterView", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UICollectionReusableView *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_tableViewHeaderFooterView forKey:{@"UITableViewHeaderFooterView", v5.receiver, v5.super_class}];
 }
 
 - (void)prepareForReuse
@@ -75,8 +75,8 @@
   v4.receiver = self;
   v4.super_class = UICollectionViewTableHeaderFooterView;
   [(UICollectionReusableView *)&v4 prepareForReuse];
-  v3 = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
-  [v3 setNeedsLayout];
+  tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
+  [tableViewHeaderFooterView setNeedsLayout];
 }
 
 - (void)layoutSubviews
@@ -89,60 +89,60 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
+  [tableViewHeaderFooterView setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v11.receiver = self;
   v11.super_class = UICollectionViewTableHeaderFooterView;
-  [(UICollectionReusableView *)&v11 applyLayoutAttributes:a3];
-  v4 = [(UICollectionViewTableHeaderFooterView *)self _tableAttributes];
-  v5 = [(UICollectionReusableView *)self _collectionView];
+  [(UICollectionReusableView *)&v11 applyLayoutAttributes:attributes];
+  _tableAttributes = [(UICollectionViewTableHeaderFooterView *)self _tableAttributes];
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
   [(UITableViewHeaderFooterView *)self->_tableViewHeaderFooterView _setTableViewStyle:0 updateFrame:0];
-  v6 = [(UICollectionViewTableHeaderFooterView *)self _tableLayout];
-  v7 = [v6 _constants];
-  [(UITableViewHeaderFooterView *)self->_tableViewHeaderFooterView _setConstants:v7];
+  _tableLayout = [(UICollectionViewTableHeaderFooterView *)self _tableLayout];
+  _constants = [_tableLayout _constants];
+  [(UITableViewHeaderFooterView *)self->_tableViewHeaderFooterView _setConstants:_constants];
 
-  v8 = [(UICollectionViewTableHeaderFooterView *)self _tableLayout];
-  [(UITableViewHeaderFooterView *)self->_tableViewHeaderFooterView setTable:v8];
+  _tableLayout2 = [(UICollectionViewTableHeaderFooterView *)self _tableLayout];
+  [(UITableViewHeaderFooterView *)self->_tableViewHeaderFooterView setTable:_tableLayout2];
 
-  -[UITableViewHeaderFooterView setSectionHeader:](self->_tableViewHeaderFooterView, "setSectionHeader:", [v4 isHeader]);
-  [v4 maxTitleWidth];
+  -[UITableViewHeaderFooterView setSectionHeader:](self->_tableViewHeaderFooterView, "setSectionHeader:", [_tableAttributes isHeader]);
+  [_tableAttributes maxTitleWidth];
   [(UITableViewHeaderFooterView *)self->_tableViewHeaderFooterView setMaxTitleWidth:?];
-  [v4 margins];
+  [_tableAttributes margins];
   [(UITableViewHeaderFooterView *)self->_tableViewHeaderFooterView _setMarginWidth:v9];
-  [v4 margins];
+  [_tableAttributes margins];
   [(UITableViewHeaderFooterView *)self->_tableViewHeaderFooterView _setRightMarginWidth:v10];
-  -[UITableViewHeaderFooterView setTextAlignment:](self->_tableViewHeaderFooterView, "setTextAlignment:", [v4 textAlignment]);
-  -[UITableViewHeaderFooterView _setInsetsContentViewsToSafeArea:](self->_tableViewHeaderFooterView, "_setInsetsContentViewsToSafeArea:", [v4 insetsContentViewsToSafeArea]);
+  -[UITableViewHeaderFooterView setTextAlignment:](self->_tableViewHeaderFooterView, "setTextAlignment:", [_tableAttributes textAlignment]);
+  -[UITableViewHeaderFooterView _setInsetsContentViewsToSafeArea:](self->_tableViewHeaderFooterView, "_setInsetsContentViewsToSafeArea:", [_tableAttributes insetsContentViewsToSafeArea]);
   [(UITableViewHeaderFooterView *)self->_tableViewHeaderFooterView _setupLabelAppearance];
-  -[UICollectionViewTableHeaderFooterView setFloating:](self, "setFloating:", [v4 floating]);
+  -[UICollectionViewTableHeaderFooterView setFloating:](self, "setFloating:", [_tableAttributes floating]);
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   WeakRetained = objc_loadWeakRetained(&self->super._collectionView);
-  v6 = [WeakRetained collectionViewLayout];
-  if (v6)
+  collectionViewLayout = [WeakRetained collectionViewLayout];
+  if (collectionViewLayout)
   {
-    v7 = v6;
+    v7 = collectionViewLayout;
     v8 = objc_loadWeakRetained(&self->super._collectionView);
-    v9 = [v8 collectionViewLayout];
-    v10 = [v9 _estimatesSizes];
+    collectionViewLayout2 = [v8 collectionViewLayout];
+    _estimatesSizes = [collectionViewLayout2 _estimatesSizes];
 
-    if (v10)
+    if (_estimatesSizes)
     {
       v11 = objc_loadWeakRetained(&self->super._collectionView);
-      v12 = [v11 collectionViewLayout];
-      v13 = [v12 _cellsShouldConferWithAutolayoutEngineForSizingInfo];
+      collectionViewLayout3 = [v11 collectionViewLayout];
+      _cellsShouldConferWithAutolayoutEngineForSizingInfo = [collectionViewLayout3 _cellsShouldConferWithAutolayoutEngineForSizingInfo];
 
-      if (v13)
+      if (_cellsShouldConferWithAutolayoutEngineForSizingInfo)
       {
-        v14 = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
-        v15 = _preferredAttributesFittingAttributesWithInnerView(self, v4, v14);
+        tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
+        v15 = _preferredAttributesFittingAttributesWithInnerView(self, attributesCopy, tableViewHeaderFooterView);
 
         goto LABEL_7;
       }
@@ -153,7 +153,7 @@
   {
   }
 
-  v15 = v4;
+  v15 = attributesCopy;
 LABEL_7:
 
   return v15;
@@ -161,13 +161,13 @@ LABEL_7:
 
 - (UICollectionViewTableLayout)_tableLayout
 {
-  v2 = [(UICollectionReusableView *)self _collectionView];
-  v3 = [v2 collectionViewLayout];
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
+  collectionViewLayout = [_collectionView collectionViewLayout];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = collectionViewLayout;
   }
 
   else
@@ -180,11 +180,11 @@ LABEL_7:
 
 - (UICollectionViewTableLayoutAttributes)_tableAttributes
 {
-  v2 = [(UICollectionReusableView *)self _layoutAttributes];
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = _layoutAttributes;
   }
 
   else
@@ -197,56 +197,56 @@ LABEL_7:
 
 - (UIColor)tintColor
 {
-  v2 = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
-  v3 = [v2 tintColor];
+  tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
+  tintColor = [tableViewHeaderFooterView tintColor];
 
-  return v3;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
-  [v5 setTintColor:v4];
+  colorCopy = color;
+  tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
+  [tableViewHeaderFooterView setTintColor:colorCopy];
 }
 
 - (UILabel)textLabel
 {
-  v2 = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
-  v3 = [v2 textLabel];
+  tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
+  textLabel = [tableViewHeaderFooterView textLabel];
 
-  return v3;
+  return textLabel;
 }
 
 - (UILabel)detailTextLabel
 {
-  v2 = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
-  v3 = [v2 detailTextLabel];
+  tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
+  detailTextLabel = [tableViewHeaderFooterView detailTextLabel];
 
-  return v3;
+  return detailTextLabel;
 }
 
 - (UIView)contentView
 {
-  v2 = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
-  v3 = [v2 contentView];
+  tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
+  contentView = [tableViewHeaderFooterView contentView];
 
-  return v3;
+  return contentView;
 }
 
 - (UIView)backgroundView
 {
-  v2 = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
-  v3 = [v2 backgroundView];
+  tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
+  backgroundView = [tableViewHeaderFooterView backgroundView];
 
-  return v3;
+  return backgroundView;
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v4 = a3;
-  v5 = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
-  [v5 setBackgroundView:v4];
+  viewCopy = view;
+  tableViewHeaderFooterView = [(UICollectionViewTableHeaderFooterView *)self tableViewHeaderFooterView];
+  [tableViewHeaderFooterView setBackgroundView:viewCopy];
 }
 
 @end

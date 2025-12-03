@@ -1,20 +1,20 @@
 @interface CERuleCriteria
-- (CERuleCriteria)initWithCoder:(id)a3;
-- (CERuleCriteria)initWithDictionary:(id)a3;
+- (CERuleCriteria)initWithCoder:(id)coder;
+- (CERuleCriteria)initWithDictionary:(id)dictionary;
 - (NSNumber)max;
 - (NSNumber)min;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMax:(id)a3;
-- (void)setMin:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMax:(id)max;
+- (void)setMin:(id)min;
 @end
 
 @implementation CERuleCriteria
 
-- (CERuleCriteria)initWithDictionary:(id)a3
+- (CERuleCriteria)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = CERuleCriteria;
   v5 = [(CERuleCriteria *)&v14 init];
@@ -22,7 +22,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 objectForKeyedSubscript:@"min"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"min"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       }
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"max"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"max"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,19 +62,19 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CERuleCriteria *)self min];
-  [v4 encodeObject:v5 forKey:@"min"];
+  [coderCopy encodeObject:v5 forKey:@"min"];
 
   v6 = [(CERuleCriteria *)self max];
-  [v4 encodeObject:v6 forKey:@"max"];
+  [coderCopy encodeObject:v6 forKey:@"max"];
 }
 
-- (CERuleCriteria)initWithCoder:(id)a3
+- (CERuleCriteria)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CERuleCriteria;
   v5 = [(CERuleCriteria *)&v12 init];
@@ -82,11 +82,11 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"min"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"min"];
     min = v6->_min;
     v6->_min = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"max"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"max"];
     max = v6->_max;
     v6->_max = v9;
   }
@@ -94,7 +94,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CERuleCriteria allocWithZone:?]];
   v4->_lock._os_unfair_lock_opaque = 0;
@@ -135,22 +135,22 @@
   return v3;
 }
 
-- (void)setMin:(id)a3
+- (void)setMin:(id)min
 {
-  v4 = a3;
+  minCopy = min;
   os_unfair_lock_lock(&self->_lock);
   min = self->_min;
-  self->_min = v4;
+  self->_min = minCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setMax:(id)a3
+- (void)setMax:(id)max
 {
-  v4 = a3;
+  maxCopy = max;
   os_unfair_lock_lock(&self->_lock);
   max = self->_max;
-  self->_max = v4;
+  self->_max = maxCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }

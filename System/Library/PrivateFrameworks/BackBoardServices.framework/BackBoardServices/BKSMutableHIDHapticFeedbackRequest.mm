@@ -1,28 +1,28 @@
 @interface BKSMutableHIDHapticFeedbackRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setPattern:(id)a3;
-- (void)setPowerSourceID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setPattern:(id)pattern;
+- (void)setPowerSourceID:(id)d;
 @end
 
 @implementation BKSMutableHIDHapticFeedbackRequest
 
-- (void)setPowerSourceID:(id)a3
+- (void)setPowerSourceID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  dCopy = d;
+  if (dCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [(NSNumber *)v5 classForCoder];
-      if (!v9)
+      classForCoder = [(NSNumber *)dCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"powerSourceID", v10, v12];
@@ -37,7 +37,7 @@
         v19 = 2114;
         v20 = v16;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 2114;
         v24 = @"BKSHIDHapticFeedbackRequest.m";
         v25 = 1024;
@@ -55,17 +55,17 @@
   }
 
   powerSourceID = self->super._powerSourceID;
-  self->super._powerSourceID = v5;
+  self->super._powerSourceID = dCopy;
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPattern:(id)a3
+- (void)setPattern:(id)pattern
 {
   v37 = *MEMORY[0x1E69E9840];
-  v24 = a3;
+  patternCopy = pattern;
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  if (!v24)
+  if (!patternCopy)
   {
     v10 = NSStringFromClass(v6);
     v11 = [v5 stringWithFormat:@"Value for '%@' was unexpectedly nil. Expected %@.", @"pattern", v10];
@@ -80,7 +80,7 @@
       v27 = 2114;
       v28 = v14;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDHapticFeedbackRequest.m";
       v33 = 1024;
@@ -99,13 +99,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [v24 classForCoder];
-    if (!v16)
+    classForCoder = [patternCopy classForCoder];
+    if (!classForCoder)
     {
-      v16 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v17 = NSStringFromClass(v16);
+    v17 = NSStringFromClass(classForCoder);
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     v20 = [v15 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"pattern", v17, v19];
@@ -120,7 +120,7 @@
       v27 = 2114;
       v28 = v23;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDHapticFeedbackRequest.m";
       v33 = 1024;
@@ -136,14 +136,14 @@
     JUMPOUT(0x1863AF058);
   }
 
-  v7 = [v24 copy];
+  v7 = [patternCopy copy];
   pattern = self->super._pattern;
   self->super._pattern = v7;
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSHIDHapticFeedbackRequest alloc];
 

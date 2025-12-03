@@ -1,7 +1,7 @@
 @interface SplunkLogger
 - (NSURL)splunkUploadURL;
 - (SplunkLogger)init;
-- (void)logEventNamed:(id)a3 value:(id)a4 unique:(BOOL)a5;
+- (void)logEventNamed:(id)named value:(id)value unique:(BOOL)unique;
 - (void)postEvents;
 @end
 
@@ -30,8 +30,8 @@
 
 - (NSURL)splunkUploadURL
 {
-  v3 = [(SplunkLogger *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SplunkLogger *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   splunkUploadURL = self->_splunkUploadURL;
   if (!splunkUploadURL)
@@ -54,7 +54,7 @@
     v15 = sub_133FC;
     v16 = &unk_2CFE0;
     v19 = v21;
-    v17 = self;
+    selfCopy = self;
     v10 = v5;
     v18 = v10;
     v11 = [v8 dataTaskWithURL:v9 completionHandler:&v13];
@@ -72,28 +72,28 @@
 
 - (void)postEvents
 {
-  v3 = [(SplunkLogger *)self queue];
+  queue = [(SplunkLogger *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_13764;
   block[3] = &unk_2CAA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)logEventNamed:(id)a3 value:(id)a4 unique:(BOOL)a5
+- (void)logEventNamed:(id)named value:(id)value unique:(BOOL)unique
 {
-  v7 = a3;
-  v8 = [a4 mutableCopy];
+  namedCopy = named;
+  v8 = [value mutableCopy];
   v9 = +[NSDate date];
   [v9 timeIntervalSince1970];
   v11 = [NSNumber numberWithLong:1000 * v10];
 
   [v8 setObject:v11 forKeyedSubscript:@"eventTime"];
   [v8 setObject:@"xp_ios_storage_mgmt" forKeyedSubscript:@"topic"];
-  [v8 setObject:v7 forKeyedSubscript:@"eventType"];
+  [v8 setObject:namedCopy forKeyedSubscript:@"eventType"];
 
-  v12 = [(SplunkLogger *)self queue];
+  queue = [(SplunkLogger *)self queue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_13D0C;
@@ -101,7 +101,7 @@
   v14[4] = self;
   v15 = v8;
   v13 = v8;
-  dispatch_async(v12, v14);
+  dispatch_async(queue, v14);
 }
 
 @end

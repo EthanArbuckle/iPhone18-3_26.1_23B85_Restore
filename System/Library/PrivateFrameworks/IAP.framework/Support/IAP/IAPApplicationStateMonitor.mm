@@ -2,9 +2,9 @@
 - (BOOL)isAnyAppOpenInForeground;
 - (IAPApplicationStateMonitor)init;
 - (NSSet)foregroundAppBundleIDs;
-- (id)applicationInfoForBundleIDSync:(id)a3;
+- (id)applicationInfoForBundleIDSync:(id)sync;
 - (void)dealloc;
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
 - (void)sharedInit;
 - (void)startObserving;
 - (void)stopObserving;
@@ -96,16 +96,16 @@
   else
   {
     [(BKSApplicationStateMonitor *)self->_appStateMonitor invalidate];
-    v3 = [(IAPApplicationStateMonitor *)self foregroundBundleIDsQueue];
-    if (v3)
+    foregroundBundleIDsQueue = [(IAPApplicationStateMonitor *)self foregroundBundleIDsQueue];
+    if (foregroundBundleIDsQueue)
     {
-      v4 = v3;
+      v4 = foregroundBundleIDsQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100051C90;
       block[3] = &unk_1001155E0;
       block[4] = self;
-      dispatch_sync(v3, block);
+      dispatch_sync(foregroundBundleIDsQueue, block);
 
       return;
     }
@@ -114,22 +114,22 @@
   __break(0x5510u);
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IAPApplicationStateMonitor *)self foregroundBundleIDsQueue];
-  if (v11)
+  monitorCopy = monitor;
+  layoutCopy = layout;
+  contextCopy = context;
+  foregroundBundleIDsQueue = [(IAPApplicationStateMonitor *)self foregroundBundleIDsQueue];
+  if (foregroundBundleIDsQueue)
   {
-    v12 = v11;
+    v12 = foregroundBundleIDsQueue;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100051DE4;
     v14[3] = &unk_100115608;
     v14[4] = self;
-    v15 = v9;
-    v13 = v9;
+    v15 = layoutCopy;
+    v13 = layoutCopy;
     dispatch_sync(v12, v14);
   }
 
@@ -139,9 +139,9 @@
   }
 }
 
-- (id)applicationInfoForBundleIDSync:(id)a3
+- (id)applicationInfoForBundleIDSync:(id)sync
 {
-  result = a3;
+  result = sync;
   if ((&self->_appStateMonitor & 7) != 0)
   {
     __break(0x5516u);

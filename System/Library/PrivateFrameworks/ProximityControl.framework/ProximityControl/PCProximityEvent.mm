@@ -1,10 +1,10 @@
 @interface PCProximityEvent
-- (BOOL)isEqual:(id)a3;
-- (PCProximityEvent)initWithCoder:(id)a3;
-- (PCProximityEvent)initWithError:(id)a3 mediaRemoteID:(id)a4;
-- (PCProximityEvent)initWithType:(int64_t)a3 mediaRemoteID:(id)a4 info:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PCProximityEvent)initWithCoder:(id)coder;
+- (PCProximityEvent)initWithError:(id)error mediaRemoteID:(id)d;
+- (PCProximityEvent)initWithType:(int64_t)type mediaRemoteID:(id)d info:(id)info;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PCProximityEvent
@@ -38,8 +38,8 @@
   error = self->_error;
   if (error)
   {
-    v9 = [(NSError *)error localizedDescription];
-    [v7 appendFormat:@", error=%@", v9];
+    localizedDescription = [(NSError *)error localizedDescription];
+    [v7 appendFormat:@", error=%@", localizedDescription];
   }
 
   [v7 appendString:@">"];
@@ -47,21 +47,21 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([v5 eventType] != self->_eventType || self->_expectsDisplayContext != objc_msgSend(v5, "expectsDisplayContext"))
     {
       goto LABEL_13;
     }
 
-    v6 = [v5 mediaRemoteID];
+    mediaRemoteID = [v5 mediaRemoteID];
     mediaRemoteID = self->_mediaRemoteID;
-    v8 = v6;
+    v8 = mediaRemoteID;
     v9 = mediaRemoteID;
     v10 = v9;
     if (v8 == v9)
@@ -83,9 +83,9 @@
       }
     }
 
-    v13 = [v5 error];
+    error = [v5 error];
     error = self->_error;
-    v8 = v13;
+    v8 = error;
     v15 = error;
     v10 = v15;
     if (v8 == v15)
@@ -111,9 +111,9 @@ LABEL_14:
       }
     }
 
-    v18 = [v5 info];
+    info = [v5 info];
     info = self->_info;
-    v8 = v18;
+    v8 = info;
     v20 = info;
     v10 = v20;
     if (v8 == v20)
@@ -141,82 +141,82 @@ LABEL_15:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   error = self->_error;
-  v8 = v4;
+  v8 = coderCopy;
   if (error)
   {
-    [v4 encodeObject:error forKey:@"err"];
-    v4 = v8;
+    [coderCopy encodeObject:error forKey:@"err"];
+    coderCopy = v8;
   }
 
   if (LODWORD(self->_eventType))
   {
     [v8 encodeInteger:SLODWORD(self->_eventType) forKey:@"type"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   if (self->_expectsDisplayContext)
   {
     [v8 encodeBool:1 forKey:@"exp"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   info = self->_info;
   if (info)
   {
     [v8 encodeObject:info forKey:@"info"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   mediaRemoteID = self->_mediaRemoteID;
   if (mediaRemoteID)
   {
     [v8 encodeObject:mediaRemoteID forKey:@"mID"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
-- (PCProximityEvent)initWithType:(int64_t)a3 mediaRemoteID:(id)a4 info:(id)a5
+- (PCProximityEvent)initWithType:(int64_t)type mediaRemoteID:(id)d info:(id)info
 {
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = PCProximityEvent;
   v11 = [(PCProximityEvent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_eventType = a3;
-    objc_storeStrong(&v11->_info, a5);
-    objc_storeStrong(&v12->_mediaRemoteID, a4);
+    v11->_eventType = type;
+    objc_storeStrong(&v11->_info, info);
+    objc_storeStrong(&v12->_mediaRemoteID, d);
   }
 
   return v12;
 }
 
-- (PCProximityEvent)initWithError:(id)a3 mediaRemoteID:(id)a4
+- (PCProximityEvent)initWithError:(id)error mediaRemoteID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  errorCopy = error;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = PCProximityEvent;
   v9 = [(PCProximityEvent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_error, a3);
-    objc_storeStrong(&v10->_mediaRemoteID, a4);
+    objc_storeStrong(&v9->_error, error);
+    objc_storeStrong(&v10->_mediaRemoteID, d);
   }
 
   return v10;
 }
 
-- (PCProximityEvent)initWithCoder:(id)a3
+- (PCProximityEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PCProximityEvent;
   v5 = [(PCProximityEvent *)&v10 init];
@@ -230,7 +230,7 @@ LABEL_15:
       LODWORD(v5->_eventType) = v11;
     }
 
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"exp"])
     {
       v5->_expectsDisplayContext = [v6 decodeBoolForKey:@"exp"];

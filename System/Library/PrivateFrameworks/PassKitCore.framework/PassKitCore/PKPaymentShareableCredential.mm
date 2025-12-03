@@ -1,60 +1,60 @@
 @interface PKPaymentShareableCredential
-- (BOOL)_isEqualToCredential:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentShareableCredential)initWithCoder:(id)a3;
-- (PKPaymentShareableCredential)initWithEncryptedProvisioningTarget:(id)a3 provisioningSharingIdentifier:(id)a4 passThumbnailImageData:(id)a5 isBackgroundProvisioning:(BOOL)a6;
+- (BOOL)_isEqualToCredential:(id)credential;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentShareableCredential)initWithCoder:(id)coder;
+- (PKPaymentShareableCredential)initWithEncryptedProvisioningTarget:(id)target provisioningSharingIdentifier:(id)identifier passThumbnailImageData:(id)data isBackgroundProvisioning:(BOOL)provisioning;
 - (id)activationMethods;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentShareableCredential
 
-- (PKPaymentShareableCredential)initWithEncryptedProvisioningTarget:(id)a3 provisioningSharingIdentifier:(id)a4 passThumbnailImageData:(id)a5 isBackgroundProvisioning:(BOOL)a6
+- (PKPaymentShareableCredential)initWithEncryptedProvisioningTarget:(id)target provisioningSharingIdentifier:(id)identifier passThumbnailImageData:(id)data isBackgroundProvisioning:(BOOL)provisioning
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  targetCopy = target;
+  identifierCopy = identifier;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = PKPaymentShareableCredential;
   v14 = [(PKPaymentCredential *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_sharingInstanceIdentifier, a4);
-    objc_storeStrong(&v15->_encryptedProvisioningTarget, a3);
-    objc_storeStrong(&v15->_passThumbnailImageData, a5);
-    v15->_backgroundProvisioning = a6;
+    objc_storeStrong(&v14->_sharingInstanceIdentifier, identifier);
+    objc_storeStrong(&v15->_encryptedProvisioningTarget, target);
+    objc_storeStrong(&v15->_passThumbnailImageData, data);
+    v15->_backgroundProvisioning = provisioning;
     [(PKPaymentCredential *)v15 setCardType:3];
   }
 
   return v15;
 }
 
-- (PKPaymentShareableCredential)initWithCoder:(id)a3
+- (PKPaymentShareableCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKPaymentShareableCredential;
-  v5 = [(PKPaymentCredential *)&v15 initWithCoder:v4];
+  v5 = [(PKPaymentCredential *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingInstanceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingInstanceIdentifier"];
     sharingInstanceIdentifier = v5->_sharingInstanceIdentifier;
     v5->_sharingInstanceIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptedProvisioningTarget"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptedProvisioningTarget"];
     encryptedProvisioningTarget = v5->_encryptedProvisioningTarget;
     v5->_encryptedProvisioningTarget = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passThumbnailImageData"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passThumbnailImageData"];
     passThumbnailImageData = v5->_passThumbnailImageData;
     v5->_passThumbnailImageData = v10;
 
-    v5->_backgroundProvisioning = [v4 decodeBoolForKey:@"backgroundProvisioning"];
-    v5->_source = [v4 decodeIntegerForKey:@"source"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalizedAuth"];
+    v5->_backgroundProvisioning = [coderCopy decodeBoolForKey:@"backgroundProvisioning"];
+    v5->_source = [coderCopy decodeIntegerForKey:@"source"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalizedAuth"];
     externalizedAuth = v5->_externalizedAuth;
     v5->_externalizedAuth = v12;
   }
@@ -62,18 +62,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPaymentShareableCredential;
-  v4 = a3;
-  [(PKPaymentCredential *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_sharingInstanceIdentifier forKey:{@"sharingInstanceIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_encryptedProvisioningTarget forKey:@"encryptedProvisioningTarget"];
-  [v4 encodeObject:self->_passThumbnailImageData forKey:@"passThumbnailImageData"];
-  [v4 encodeBool:self->_backgroundProvisioning forKey:@"backgroundProvisioning"];
-  [v4 encodeInteger:self->_source forKey:@"source"];
-  [v4 encodeObject:self->_externalizedAuth forKey:@"externalizedAuth"];
+  coderCopy = coder;
+  [(PKPaymentCredential *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_sharingInstanceIdentifier forKey:{@"sharingInstanceIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_encryptedProvisioningTarget forKey:@"encryptedProvisioningTarget"];
+  [coderCopy encodeObject:self->_passThumbnailImageData forKey:@"passThumbnailImageData"];
+  [coderCopy encodeBool:self->_backgroundProvisioning forKey:@"backgroundProvisioning"];
+  [coderCopy encodeInteger:self->_source forKey:@"source"];
+  [coderCopy encodeObject:self->_externalizedAuth forKey:@"externalizedAuth"];
 }
 
 - (id)description
@@ -112,19 +112,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_encryptedProvisioningTarget];
-  [v3 safelyAddObject:self->_sharingInstanceIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_encryptedProvisioningTarget];
+  [array safelyAddObject:self->_sharingInstanceIdentifier];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_source - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -132,22 +132,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentShareableCredential *)self _isEqualToCredential:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentShareableCredential *)self _isEqualToCredential:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToCredential:(id)a3
+- (BOOL)_isEqualToCredential:(id)credential
 {
-  v4 = a3;
-  if (!v4)
+  credentialCopy = credential;
+  if (!credentialCopy)
   {
     goto LABEL_16;
   }
 
   encryptedProvisioningTarget = self->_encryptedProvisioningTarget;
-  v6 = v4[15];
+  v6 = credentialCopy[15];
   if (encryptedProvisioningTarget)
   {
     v7 = v6 == 0;
@@ -172,7 +172,7 @@
   }
 
   sharingInstanceIdentifier = self->_sharingInstanceIdentifier;
-  v9 = v4[16];
+  v9 = credentialCopy[16];
   if (sharingInstanceIdentifier)
   {
     v10 = v9 == 0;
@@ -188,7 +188,7 @@
     if (sharingInstanceIdentifier == v9)
     {
 LABEL_19:
-      v11 = self->_source == v4[18];
+      v11 = self->_source == credentialCopy[18];
       goto LABEL_17;
     }
   }

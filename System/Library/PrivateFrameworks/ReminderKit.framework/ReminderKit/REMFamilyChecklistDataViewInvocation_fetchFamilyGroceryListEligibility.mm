@@ -1,72 +1,72 @@
 @interface REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility
-- (BOOL)isEqual:(id)a3;
-- (REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility)initWithCoder:(id)a3;
-- (REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility)initWithLocaleIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility)initWithCoder:(id)coder;
+- (REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility)initWithLocaleIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility
 
-- (REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility)initWithLocaleIdentifier:(id)a3
+- (REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility)initWithLocaleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility;
   v6 = [(REMStoreInvocationValueStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localeIdentifier, a3);
+    objc_storeStrong(&v6->_localeIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility)initWithCoder:(id)a3
+- (REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localeIdentifier"];
 
   if (v5)
   {
     self = [(REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility *)self initWithLocaleIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility *)self localeIdentifier];
-  [v4 encodeObject:v5 forKey:@"localeIdentifier"];
+  coderCopy = coder;
+  localeIdentifier = [(REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility *)self localeIdentifier];
+  [coderCopy encodeObject:localeIdentifier forKey:@"localeIdentifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility *)self localeIdentifier];
-    v6 = [v4 localeIdentifier];
-    if (v5 == v6)
+    localeIdentifier = [(REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility *)self localeIdentifier];
+    localeIdentifier2 = [equalCopy localeIdentifier];
+    if (localeIdentifier == localeIdentifier2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility *)self localeIdentifier];
-      v8 = [v4 localeIdentifier];
-      v9 = [v7 isEqual:v8];
+      localeIdentifier3 = [(REMFamilyChecklistDataViewInvocation_fetchFamilyGroceryListEligibility *)self localeIdentifier];
+      localeIdentifier4 = [equalCopy localeIdentifier];
+      v9 = [localeIdentifier3 isEqual:localeIdentifier4];
     }
   }
 

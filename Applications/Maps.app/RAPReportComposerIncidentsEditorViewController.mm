@@ -1,16 +1,16 @@
 @interface RAPReportComposerIncidentsEditorViewController
-- (RAPReportComposerIncidentsEditorViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5;
+- (RAPReportComposerIncidentsEditorViewController)initWithReport:(id)report question:(id)question completion:(id)completion;
 - (id)tableParts;
 - (void)_presentMapPicker;
-- (void)inlineMapViewModelUpdatedSelectedCoordinate:(id)a3;
+- (void)inlineMapViewModelUpdatedSelectedCoordinate:(id)coordinate;
 @end
 
 @implementation RAPReportComposerIncidentsEditorViewController
 
 - (void)_presentMapPicker
 {
-  v3 = [(RAPIncidentsQuestion *)self->_question incidentLayoutItem];
-  v4 = +[TrafficIncidentLayoutItem styleAttributesForType:](TrafficIncidentLayoutItem, "styleAttributesForType:", [v3 incidentType]);
+  incidentLayoutItem = [(RAPIncidentsQuestion *)self->_question incidentLayoutItem];
+  v4 = +[TrafficIncidentLayoutItem styleAttributesForType:](TrafficIncidentLayoutItem, "styleAttributesForType:", [incidentLayoutItem incidentType]);
 
   v5 = [[RAPMarkerViewAttributes alloc] initWithTitle:0 styleAttributes:v4];
   objc_initWeak(&location, self);
@@ -36,16 +36,16 @@
   v22 = [(RAPIncidentsQuestion *)self->_question localizedTitle:v24];
   [(RAPEditLocationViewController *)self->_mapPicker setNavigationTitle:v22];
 
-  v23 = [(RAPReportComposerIncidentsEditorViewController *)self navigationController];
-  [v23 pushViewController:self->_mapPicker animated:1];
+  navigationController = [(RAPReportComposerIncidentsEditorViewController *)self navigationController];
+  [navigationController pushViewController:self->_mapPicker animated:1];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&location);
 }
 
-- (void)inlineMapViewModelUpdatedSelectedCoordinate:(id)a3
+- (void)inlineMapViewModelUpdatedSelectedCoordinate:(id)coordinate
 {
-  [a3 selectedCoordinate];
+  [coordinate selectedCoordinate];
   latitude = v10.latitude;
   longitude = v10.longitude;
   if (CLLocationCoordinate2DIsValid(v10))
@@ -66,16 +66,16 @@
   labelMarkerPickerPart = self->_labelMarkerPickerPart;
   if (!labelMarkerPickerPart)
   {
-    v5 = [(RAPIncidentsQuestion *)self->_question incidentLayoutItem];
-    v6 = +[TrafficIncidentLayoutItem styleAttributesForType:](TrafficIncidentLayoutItem, "styleAttributesForType:", [v5 incidentType]);
+    incidentLayoutItem = [(RAPIncidentsQuestion *)self->_question incidentLayoutItem];
+    v6 = +[TrafficIncidentLayoutItem styleAttributesForType:](TrafficIncidentLayoutItem, "styleAttributesForType:", [incidentLayoutItem incidentType]);
 
     v7 = [[RAPMarkerViewAttributes alloc] initWithTitle:0 styleAttributes:v6];
     v8 = [RAPReportComposerMapFeaturePickerPart alloc];
-    v9 = [(RAPQuestion *)self->_question report];
-    v10 = [v9 _context];
-    v11 = [v10 mapCamera];
-    v12 = [(RAPQuestion *)self->_question report];
-    v13 = [(RAPReportComposerMapFeaturePickerPart *)v8 initWithFeatureKind:1 camera:v11 report:v12 delegate:self markerViewAttributes:v7];
+    report = [(RAPQuestion *)self->_question report];
+    _context = [report _context];
+    mapCamera = [_context mapCamera];
+    report2 = [(RAPQuestion *)self->_question report];
+    v13 = [(RAPReportComposerMapFeaturePickerPart *)v8 initWithFeatureKind:1 camera:mapCamera report:report2 delegate:self markerViewAttributes:v7];
     v14 = self->_labelMarkerPickerPart;
     self->_labelMarkerPickerPart = v13;
 
@@ -87,8 +87,8 @@
   if (!commentPart)
   {
     v16 = [RAPReportComposerCommentPart alloc];
-    v17 = [(RAPIncidentsQuestion *)self->_question commentQuestion];
-    v18 = [(RAPReportComposerCommentPart *)v16 initWithCommentQuestion:v17];
+    commentQuestion = [(RAPIncidentsQuestion *)self->_question commentQuestion];
+    v18 = [(RAPReportComposerCommentPart *)v16 initWithCommentQuestion:commentQuestion];
     v19 = self->_commentPart;
     self->_commentPart = v18;
 
@@ -100,19 +100,19 @@
   return v3;
 }
 
-- (RAPReportComposerIncidentsEditorViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5
+- (RAPReportComposerIncidentsEditorViewController)initWithReport:(id)report question:(id)question completion:(id)completion
 {
-  v9 = a4;
+  questionCopy = question;
   v15.receiver = self;
   v15.super_class = RAPReportComposerIncidentsEditorViewController;
-  v10 = [(RAPReportTableViewController *)&v15 initWithReport:a3 question:v9 completion:a5];
+  v10 = [(RAPReportTableViewController *)&v15 initWithReport:report question:questionCopy completion:completion];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_question, a4);
-    v12 = [(RAPReportTableViewController *)v11 sendButtonItem];
-    v13 = [(RAPReportComposerIncidentsEditorViewController *)v11 navigationItem];
-    [v13 setRightBarButtonItem:v12];
+    objc_storeStrong(&v10->_question, question);
+    sendButtonItem = [(RAPReportTableViewController *)v11 sendButtonItem];
+    navigationItem = [(RAPReportComposerIncidentsEditorViewController *)v11 navigationItem];
+    [navigationItem setRightBarButtonItem:sendButtonItem];
   }
 
   return v11;

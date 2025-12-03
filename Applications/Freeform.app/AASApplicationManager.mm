@@ -4,8 +4,8 @@
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
 - (void)applicationWillTerminate;
-- (void)setIsSaltRegenerated:(BOOL)a3;
-- (void)userIdentifierDidReset:(id)a3;
+- (void)setIsSaltRegenerated:(BOOL)regenerated;
+- (void)userIdentifierDidReset:(id)reset;
 @end
 
 @implementation AASApplicationManager
@@ -24,7 +24,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_10064191C(0, 0, v5, &unk_101476340, v8);
 }
 
@@ -47,33 +47,33 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsSaltRegenerated:(BOOL)a3
+- (void)setIsSaltRegenerated:(BOOL)regenerated
 {
   v5 = OBJC_IVAR____TtC8Freeform21AASApplicationManager_isSaltRegenerated;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = regenerated;
 }
 
 - (void)applicationWillTerminate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F794C();
 }
 
 - (void)applicationDidEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F7A4C();
 }
 
-- (void)userIdentifierDidReset:(id)a3
+- (void)userIdentifierDidReset:(id)reset
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1006F7D9C();
 
   (*(v5 + 8))(v7, v4);

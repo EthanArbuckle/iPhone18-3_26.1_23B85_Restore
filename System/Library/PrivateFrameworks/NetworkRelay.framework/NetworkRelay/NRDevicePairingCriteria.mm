@@ -1,8 +1,8 @@
 @interface NRDevicePairingCriteria
-- (NRDevicePairingCriteria)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NRDevicePairingCriteria)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDevicePairingCriteria
@@ -10,17 +10,17 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"Type %zu Transport %u", -[NRDevicePairingCriteria deviceType](self, "deviceType"), -[NRDevicePairingCriteria pairingTransport](self, "pairingTransport")];
-  v4 = [(NRDevicePairingCriteria *)self rssi];
+  rssi = [(NRDevicePairingCriteria *)self rssi];
 
-  if (v4)
+  if (rssi)
   {
-    v5 = [(NRDevicePairingCriteria *)self rssi];
-    [v3 appendFormat:@" RSSI %@", v5];
+    rssi2 = [(NRDevicePairingCriteria *)self rssi];
+    [v3 appendFormat:@" RSSI %@", rssi2];
   }
 
-  v6 = [(NRDevicePairingCriteria *)self migrationPairing];
+  migrationPairing = [(NRDevicePairingCriteria *)self migrationPairing];
   v7 = "NO";
-  if (v6)
+  if (migrationPairing)
   {
     v7 = "YES";
   }
@@ -28,12 +28,12 @@
   [v3 appendFormat:@" migrationPairing %s", v7];
   if ([(NRDevicePairingCriteria *)self migrationPairing])
   {
-    v8 = [(NRDevicePairingCriteria *)self nrDeviceIdentifiers];
+    nrDeviceIdentifiers = [(NRDevicePairingCriteria *)self nrDeviceIdentifiers];
 
-    if (v8)
+    if (nrDeviceIdentifiers)
     {
-      v9 = [(NRDevicePairingCriteria *)self nrDeviceIdentifiers];
-      [v3 appendFormat:@" nrDeviceIdentifiers %@", v9];
+      nrDeviceIdentifiers2 = [(NRDevicePairingCriteria *)self nrDeviceIdentifiers];
+      [v3 appendFormat:@" nrDeviceIdentifiers %@", nrDeviceIdentifiers2];
     }
   }
 
@@ -42,40 +42,40 @@
     [v3 appendFormat:@" psm %u", -[NRDevicePairingCriteria psm](self, "psm")];
   }
 
-  v10 = [(NRDevicePairingCriteria *)self serviceUUID];
+  serviceUUID = [(NRDevicePairingCriteria *)self serviceUUID];
 
-  if (v10)
+  if (serviceUUID)
   {
-    v11 = [(NRDevicePairingCriteria *)self serviceUUID];
-    [v3 appendFormat:@" service %@", v11];
+    serviceUUID2 = [(NRDevicePairingCriteria *)self serviceUUID];
+    [v3 appendFormat:@" service %@", serviceUUID2];
   }
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInt64:-[NRDevicePairingCriteria deviceType](self forKey:{"deviceType"), @"deviceType"}];
-  [v7 encodeInt32:-[NRDevicePairingCriteria pairingTransport](self forKey:{"pairingTransport"), @"pairingTransport"}];
-  v4 = [(NRDevicePairingCriteria *)self rssi];
-  [v7 encodeObject:v4 forKey:@"rssi"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[NRDevicePairingCriteria deviceType](self forKey:{"deviceType"), @"deviceType"}];
+  [coderCopy encodeInt32:-[NRDevicePairingCriteria pairingTransport](self forKey:{"pairingTransport"), @"pairingTransport"}];
+  rssi = [(NRDevicePairingCriteria *)self rssi];
+  [coderCopy encodeObject:rssi forKey:@"rssi"];
 
-  [v7 encodeBool:-[NRDevicePairingCriteria migrationPairing](self forKey:{"migrationPairing"), @"migrationPairing"}];
-  v5 = [(NRDevicePairingCriteria *)self nrDeviceIdentifiers];
-  [v7 encodeObject:v5 forKey:@"nrDeviceIdentifiers"];
+  [coderCopy encodeBool:-[NRDevicePairingCriteria migrationPairing](self forKey:{"migrationPairing"), @"migrationPairing"}];
+  nrDeviceIdentifiers = [(NRDevicePairingCriteria *)self nrDeviceIdentifiers];
+  [coderCopy encodeObject:nrDeviceIdentifiers forKey:@"nrDeviceIdentifiers"];
 
-  [v7 encodeInt32:-[NRDevicePairingCriteria psm](self forKey:{"psm"), @"psm"}];
-  v6 = [(NRDevicePairingCriteria *)self serviceUUID];
-  [v7 encodeObject:v6 forKey:@"serviceUUID"];
+  [coderCopy encodeInt32:-[NRDevicePairingCriteria psm](self forKey:{"psm"), @"psm"}];
+  serviceUUID = [(NRDevicePairingCriteria *)self serviceUUID];
+  [coderCopy encodeObject:serviceUUID forKey:@"serviceUUID"];
 
-  [v7 encodeInt64:-[NRDevicePairingCriteria bluetoothRole](self forKey:{"bluetoothRole"), @"bluetoothRole"}];
+  [coderCopy encodeInt64:-[NRDevicePairingCriteria bluetoothRole](self forKey:{"bluetoothRole"), @"bluetoothRole"}];
 }
 
-- (NRDevicePairingCriteria)initWithCoder:(id)a3
+- (NRDevicePairingCriteria)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = NRDevicePairingCriteria;
   v5 = [(NRDevicePairingCriteria *)&v26 init];
@@ -112,40 +112,40 @@ LABEL_7:
   }
 
   v6 = v5;
-  -[NRDevicePairingCriteria setDeviceType:](v5, "setDeviceType:", [v4 decodeInt64ForKey:@"deviceType"]);
-  -[NRDevicePairingCriteria setPairingTransport:](v6, "setPairingTransport:", [v4 decodeInt32ForKey:@"pairingTransport"]);
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rssi"];
+  -[NRDevicePairingCriteria setDeviceType:](v5, "setDeviceType:", [coderCopy decodeInt64ForKey:@"deviceType"]);
+  -[NRDevicePairingCriteria setPairingTransport:](v6, "setPairingTransport:", [coderCopy decodeInt32ForKey:@"pairingTransport"]);
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rssi"];
   [(NRDevicePairingCriteria *)v6 setRssi:v7];
 
-  -[NRDevicePairingCriteria setMigrationPairing:](v6, "setMigrationPairing:", [v4 decodeBoolForKey:@"migrationPairing"]);
-  v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"nrDeviceIdentifiers"];
+  -[NRDevicePairingCriteria setMigrationPairing:](v6, "setMigrationPairing:", [coderCopy decodeBoolForKey:@"migrationPairing"]);
+  v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"nrDeviceIdentifiers"];
   [(NRDevicePairingCriteria *)v6 setNrDeviceIdentifiers:v8];
 
-  -[NRDevicePairingCriteria setPsm:](v6, "setPsm:", [v4 decodeInt32ForKey:@"psm"]);
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceUUID"];
+  -[NRDevicePairingCriteria setPsm:](v6, "setPsm:", [coderCopy decodeInt32ForKey:@"psm"]);
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceUUID"];
   [(NRDevicePairingCriteria *)v6 setServiceUUID:v9];
 
-  -[NRDevicePairingCriteria setBluetoothRole:](v6, "setBluetoothRole:", [v4 decodeInt64ForKey:@"bluetoothRole"]);
+  -[NRDevicePairingCriteria setBluetoothRole:](v6, "setBluetoothRole:", [coderCopy decodeInt64ForKey:@"bluetoothRole"]);
   v10 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setDeviceType:{-[NRDevicePairingCriteria deviceType](self, "deviceType")}];
   [v4 setPairingTransport:{-[NRDevicePairingCriteria pairingTransport](self, "pairingTransport")}];
-  v5 = [(NRDevicePairingCriteria *)self rssi];
-  [v4 setRssi:v5];
+  rssi = [(NRDevicePairingCriteria *)self rssi];
+  [v4 setRssi:rssi];
 
   [v4 setMigrationPairing:{-[NRDevicePairingCriteria migrationPairing](self, "migrationPairing")}];
-  v6 = [(NRDevicePairingCriteria *)self nrDeviceIdentifiers];
-  v7 = [v6 copy];
+  nrDeviceIdentifiers = [(NRDevicePairingCriteria *)self nrDeviceIdentifiers];
+  v7 = [nrDeviceIdentifiers copy];
   [v4 setNrDeviceIdentifiers:v7];
 
   [v4 setPsm:{-[NRDevicePairingCriteria psm](self, "psm")}];
-  v8 = [(NRDevicePairingCriteria *)self serviceUUID];
-  v9 = [v8 copy];
+  serviceUUID = [(NRDevicePairingCriteria *)self serviceUUID];
+  v9 = [serviceUUID copy];
   [v4 setServiceUUID:v9];
 
   [v4 setBluetoothRole:{-[NRDevicePairingCriteria bluetoothRole](self, "bluetoothRole")}];
